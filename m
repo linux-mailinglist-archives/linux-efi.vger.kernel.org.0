@@ -2,81 +2,128 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 790BB107B3
-	for <lists+linux-efi@lfdr.de>; Wed,  1 May 2019 13:59:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C965D11208
+	for <lists+linux-efi@lfdr.de>; Thu,  2 May 2019 06:04:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726363AbfEAL7e (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 1 May 2019 07:59:34 -0400
-Received: from bmailout1.hostsharing.net ([83.223.95.100]:55325 "EHLO
-        bmailout1.hostsharing.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726083AbfEAL7d (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 1 May 2019 07:59:33 -0400
-Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (Client CN "*.hostsharing.net", Issuer "COMODO RSA Domain Validation Secure Server CA" (not verified))
-        by bmailout1.hostsharing.net (Postfix) with ESMTPS id 31CB530000F2A;
-        Wed,  1 May 2019 13:59:31 +0200 (CEST)
-Received: by h08.hostsharing.net (Postfix, from userid 100393)
-        id EE4CF233EA5; Wed,  1 May 2019 13:59:30 +0200 (CEST)
-Date:   Wed, 1 May 2019 13:59:30 +0200
-From:   Lukas Wunner <lukas@wunner.de>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Borislav Petkov <bp@suse.de>, Rik van Riel <riel@surriel.com>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        "Jason A. Donenfeld" <Jason@zx2c4.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Nicolai Stange <nstange@suse.de>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Radim =?iso-8859-1?B?S3I/P23hPz8=?= <rkrcmar@redhat.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        kvm ML <kvm@vger.kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>, x86-ml <x86@kernel.org>
-Subject: Re: [PATCH 4.19 083/100] x86/fpu: Dont export
- __kernel_fpu_{begin,end}()
-Message-ID: <20190501115930.wa7ubea67rmsoqo7@wunner.de>
-References: <20190430113608.616903219@linuxfoundation.org>
- <20190430113612.682532449@linuxfoundation.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190430113612.682532449@linuxfoundation.org>
-User-Agent: NeoMutt/20170113 (1.7.2)
+        id S1725613AbfEBEEw (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 2 May 2019 00:04:52 -0400
+Received: from mail-pl1-f193.google.com ([209.85.214.193]:42450 "EHLO
+        mail-pl1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725372AbfEBEEw (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 2 May 2019 00:04:52 -0400
+Received: by mail-pl1-f193.google.com with SMTP id x15so397958pln.9;
+        Wed, 01 May 2019 21:04:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=rM4F3y1QRq9xFsJANLJ2PQUCgusKq4bJmMsIhz12PE0=;
+        b=Ts+TRyYTEECnYuiapH/JiLE3aOdUcKZNWtildqgDgHamRd1VdgzSGCAWO44xInhGdj
+         +mSemGh+TE4HS0enaJJsBrtkBbEcqWjz1lpnryVQHRWMubhUVwQSTmS9EEIDPhXvjgjU
+         6g+o0scjwM2Wa4GBwJx9KfNyLLX34ZxZRDRKa2cvK6CWUZXFH0y6AEjV9qy3spZmahNA
+         b+SQITUSMYLUc8ch/bNzxbVNjMDumR6A+WyTsRmnX8GEt5nMTj+WfPGejfq+coffthgc
+         ++DUO+WcK0FirgVSRFVswobYbN0c12GGZ64G5JL7y1dbW1ZfpZpkx9vTuLSTED8o15Aa
+         1gWA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=rM4F3y1QRq9xFsJANLJ2PQUCgusKq4bJmMsIhz12PE0=;
+        b=PIQfgCDkuK6JeaM8WapizqgQYIoEHVzR4evwt9U4hEUUPDxqCNDlSguhadEdALMLh1
+         a2AQEtCa6FgXBLYjkUbo6JtMUoSf+NKSeYyODoeWeZq1F2UL1ChnjgyhTSKrCABE3PiB
+         ahrglisHc/uQp0lJ321PI0qoKfi+ttaSiBSvznCX2PlZJaK3AZrUHbfpRuRpT3my1lg2
+         IwW1rVUW3gofKfZ9J12BsogSYPK0P6Fk4OioyRRd30B49wpqj4hB+Rhci4mcLqPtangr
+         6kuXjFbt2wZB0RQYAQ5QASeALElXZpDSBl1wlLR3efH6M5yxoLzjowDufz4iO9QMZjy0
+         iNzg==
+X-Gm-Message-State: APjAAAUhdwqVlMuycEHwAssfkVJPYJEbEz22/zHr4S752TayfVZcK/3G
+        QUiBNFaZLmeFJi9PmEhatfc=
+X-Google-Smtp-Source: APXvYqwIlSDxRSKdkfXgyWtEN1++MlQ6biUp+2bnooCkGaXvtPFj1C9E0K1kp+y/Rsm678WOZw1y7g==
+X-Received: by 2002:a17:902:b28:: with SMTP id 37mr1260911plq.322.1556769891072;
+        Wed, 01 May 2019 21:04:51 -0700 (PDT)
+Received: from linux-l9pv.suse ([202.47.205.198])
+        by smtp.gmail.com with ESMTPSA id k4sm1107687pgh.27.2019.05.01.21.04.46
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Wed, 01 May 2019 21:04:50 -0700 (PDT)
+From:   "Lee, Chun-Yi" <joeyli.kernel@gmail.com>
+X-Google-Original-From: "Lee, Chun-Yi" <jlee@suse.com>
+To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        James Morris <jmorris@namei.org>,
+        "Serge E . Hallyn" <serge@hallyn.com>,
+        David Howells <dhowells@redhat.com>,
+        Josh Boyer <jwboyer@fedoraproject.org>,
+        Nayna Jain <nayna@linux.ibm.com>,
+        Mimi Zohar <zohar@linux.ibm.com>
+Cc:     linux-efi@vger.kernel.org, linux-security-module@vger.kernel.org,
+        linux-kernel@vger.kernel.org, "Lee, Chun-Yi" <jlee@suse.com>,
+        Kees Cook <keescook@chromium.org>,
+        Anton Vorontsov <anton@enomsg.org>,
+        Colin Cross <ccross@android.com>,
+        Tony Luck <tony.luck@intel.com>
+Subject: [PATCH 1/2 v2] efi: add a function to convert the status value to string
+Date:   Thu,  2 May 2019 12:04:39 +0800
+Message-Id: <20190502040441.30372-1-jlee@suse.com>
+X-Mailer: git-send-email 2.12.3
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, Apr 30, 2019 at 01:38:52PM +0200, Greg Kroah-Hartman wrote:
-> commit 12209993e98c5fa1855c467f22a24e3d5b8be205 upstream.
-> 
-> There is one user of __kernel_fpu_begin() and before invoking it,
-> it invokes preempt_disable(). So it could invoke kernel_fpu_begin()
-> right away. The 32bit version of arch_efi_call_virt_setup() and
-> arch_efi_call_virt_teardown() does this already.
-> 
-> The comment above *kernel_fpu*() claims that before invoking
-> __kernel_fpu_begin() preemption should be disabled and that KVM is a
-> good example of doing it. Well, KVM doesn't do that since commit
-> 
->   f775b13eedee2 ("x86,kvm: move qemu/guest FPU switching out to vcpu_run")
-> 
-> so it is not an example anymore.
-> 
-> With EFI gone as the last user of __kernel_fpu_{begin|end}(), both can
-> be made static and not exported anymore.
+This function can be used to convert EFI status value to string
+for printing out debug message. Using this function can improve
+the readability of log.
 
-This is just a cleanup and therefore doesn't seem to satisfy the rules
-for stable patches per Documentation/process/stable-kernel-rules.rst
-("It must fix a real bug that bothers people / fix a problem that causes
-a build error").
+v2.
+- Changed the wording in subject and description.
+- Moved the marco immediately after the status value definitions.
+- Turned into a proper function instead of inline.
 
-Why is it being queued up for stable and why are the rules disregarded here?
+Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Cc: Kees Cook <keescook@chromium.org>
+Cc: Anton Vorontsov <anton@enomsg.org>
+Cc: Colin Cross <ccross@android.com>
+Cc: Tony Luck <tony.luck@intel.com>
+Signed-off-by: "Lee, Chun-Yi" <jlee@suse.com>
+---
+ include/linux/efi.h | 28 ++++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
 
-Thanks,
+diff --git a/include/linux/efi.h b/include/linux/efi.h
+index 54357a258b35..6f3f89a32eef 100644
+--- a/include/linux/efi.h
++++ b/include/linux/efi.h
+@@ -42,6 +42,34 @@
+ #define EFI_ABORTED		(21 | (1UL << (BITS_PER_LONG-1)))
+ #define EFI_SECURITY_VIOLATION	(26 | (1UL << (BITS_PER_LONG-1)))
+ 
++#define EFI_STATUS_STR(_status) \
++case EFI_##_status: \
++	return "EFI_" __stringify(_status);
++
++static __attribute__((unused)) char *
++efi_status_to_str(unsigned long status)
++{
++	switch (status) {
++	EFI_STATUS_STR(SUCCESS)
++	EFI_STATUS_STR(LOAD_ERROR)
++	EFI_STATUS_STR(INVALID_PARAMETER)
++	EFI_STATUS_STR(UNSUPPORTED)
++	EFI_STATUS_STR(BAD_BUFFER_SIZE)
++	EFI_STATUS_STR(BUFFER_TOO_SMALL)
++	EFI_STATUS_STR(NOT_READY)
++	EFI_STATUS_STR(DEVICE_ERROR)
++	EFI_STATUS_STR(WRITE_PROTECTED)
++	EFI_STATUS_STR(OUT_OF_RESOURCES)
++	EFI_STATUS_STR(NOT_FOUND)
++	EFI_STATUS_STR(ABORTED)
++	EFI_STATUS_STR(SECURITY_VIOLATION)
++	default:
++		pr_warn("Unknown efi status: 0x%lx", status);
++	}
++
++	return "Unknown efi status";
++}
++
+ typedef unsigned long efi_status_t;
+ typedef u8 efi_bool_t;
+ typedef u16 efi_char16_t;		/* UNICODE character */
+-- 
+2.16.4
 
-Lukas
