@@ -2,55 +2,57 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0AC5912196
-	for <lists+linux-efi@lfdr.de>; Thu,  2 May 2019 20:03:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0298B1219D
+	for <lists+linux-efi@lfdr.de>; Thu,  2 May 2019 20:04:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726407AbfEBSDV (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 2 May 2019 14:03:21 -0400
-Received: from mail-it1-f194.google.com ([209.85.166.194]:34812 "EHLO
-        mail-it1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726393AbfEBSDU (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 2 May 2019 14:03:20 -0400
-Received: by mail-it1-f194.google.com with SMTP id p18so6219692itm.1
-        for <linux-efi@vger.kernel.org>; Thu, 02 May 2019 11:03:20 -0700 (PDT)
+        id S1726366AbfEBSEQ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 2 May 2019 14:04:16 -0400
+Received: from mail-io1-f65.google.com ([209.85.166.65]:36488 "EHLO
+        mail-io1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726193AbfEBSEP (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 2 May 2019 14:04:15 -0400
+Received: by mail-io1-f65.google.com with SMTP id d19so3011610ioc.3
+        for <linux-efi@vger.kernel.org>; Thu, 02 May 2019 11:04:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=pxRYtB+CK6Ich2oLVLgzBqTdwyqbVB4RtVqM1iRZzuk=;
-        b=AHmFY0vpHLiYI3WSJEyOMUm1XfkTvSqPKSXw7HXgBlZL663topOcjXDnBPRqIqlJBZ
-         41mzOPiqZaRtuyFfHaL4mGPxlCLNHu4LV2R7fWyVBFrX/iHu/sT8OcmEoNEmFBIohMaB
-         1zzdwFk0aOGsG8ei3M4dHdTt7jBYuJCq/uKAybSgLx0QIWRh4yXJ48BbMciuTz9jrWto
-         NVeD6ozfjOaWvO3Eso+0U/ljm39krOkrfHpLrfyb4uCaEq8BXNyShmacpEduMePeZnTu
-         IbXH83VvWrEFWFA12FOu80yYxNDIqLTFG4pgYFy8HKi5s7DZwfr28Z5lro8hdbiLOdVN
-         nqMA==
+        bh=SU8aAABM065YNEdWIrP9VLfp6wM73Cy7sMn9LwYteHs=;
+        b=f6K3kASCYwWOdpWL00hYEo/+O/+CwPAE2qa1EtzQcxap9LAXrl7bqlrPM0S9hqlXsQ
+         qX1HzZF4jMJasflI6Mybe9MKHpeTHoWe5acw8gOxw8Hf9pIhift/FFiimHgdv2e4xZfb
+         9kf/xiRQxrC/X8/LFpH6zxYwZ4Wn+mxVYzkhqbPxAfzwgjb60gpIKkR4SlezVynmltla
+         wTVQkENc8evGTLe+QtK8AJopchFw5aKJ7SA+Gf4T3TrKQPeZB9KFLZ+YusbTSKcVvgf+
+         8lb7chFVhHZ5bqsR3MBHXCsCgth8bLv9Qb4BtrcxHEASc7H/izDiylpK/cJV/CYmLy8D
+         gDSQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=pxRYtB+CK6Ich2oLVLgzBqTdwyqbVB4RtVqM1iRZzuk=;
-        b=sYDt7isBdaoo1oKKL/8SnGUAW0bjjc2Y9q493E9CeNxrnwPF9v/UdLka4HGUUEciU8
-         TVCRP0vDTS2m8O552W8RklTEA6UG6/o6xvgkA8+vo/6ouFGRmT2BA2GHCshSTtA7GSDu
-         UM9Fx73ZOvApEWYFPG6+TGg/N7uNFrQn4zXppRP27V17ASeMkFaYPyW47GakasDXM81s
-         uvDxD6j28pE0OldLkzAT7DbmEHmBh8s3aYBbKMWhJ0RT02U9svQRzKrXqSzuf14tzWVn
-         3eHTWoShZEXtRAGmTRQ5L07bpgG7jpXckc+4VxWdHAroY0F8vevSDluXhzVI3CT0lx4R
-         h4kA==
-X-Gm-Message-State: APjAAAVnLaw+4sPu7s2DyRrZ3zBnKWJR9nzPlFjeyOzj1bmMNzkC14pU
-        p8A0cXhsb0Jic4IKP5Oc8Y+D+DPKiHLSxW15mUVCzg==
-X-Google-Smtp-Source: APXvYqyqfla42J1qTMxEwr32GVdabbeeY3qkXtELGveMOE53U2Kq5Sc4qHI4ai6a8x3wPxU1FzWZVuf2XCzdmkD/TOA=
-X-Received: by 2002:a24:eb04:: with SMTP id h4mr3780308itj.16.1556820199498;
- Thu, 02 May 2019 11:03:19 -0700 (PDT)
+        bh=SU8aAABM065YNEdWIrP9VLfp6wM73Cy7sMn9LwYteHs=;
+        b=ommC24siNodxSoaF6u85WgkSGeZbJZJsj5B9Og/MqrMb2HPkjMWbAsEDGVAdeUHsx5
+         Hiz7EWTe/9WaHRKJWGPeXlRRSdP1rSzya3tKEXlUU+eJjQ8xMYbjDV7RmJ3kVx2uGFhE
+         Cq6ZP9ImtJeHZJ/bNbme89mtnmeAUNT/rwKtcnOeACIfgDP6EmkiYRdy8GU6XK39JNL5
+         fS39U8xuSlP5PguxwutkcWRUL4xfEQBuBxwtGmxM9gr9lgSphiWlzp2g8p6k3gz22NSX
+         MK/dA0Gdg1wNrxPVsVrc0QoggrPCFVALb6h+fgxgUR3xK2GA6cItGwcZTofJnKyJ7rvb
+         +10g==
+X-Gm-Message-State: APjAAAWzFjYGXQGfgP10xNZPa8wr8PtsYHS/Ff1sKiukQdQolQN6zFid
+        MOiIOarYhNHOTpDf1IvV4vEXZ674AfcV1oXS8tWDCg==
+X-Google-Smtp-Source: APXvYqyOj3bra2PT4XDD15cGgua2vqDCD5l2gbA7o5aTdMvJLqabYtOM7r7Cn1WgphZlqar6cqRNgFtIRQ6JGsZ4xt0=
+X-Received: by 2002:a5e:8348:: with SMTP id y8mr3682573iom.88.1556820254756;
+ Thu, 02 May 2019 11:04:14 -0700 (PDT)
 MIME-Version: 1.0
 References: <20190227202658.197113-1-matthewgarrett@google.com>
  <20190227202658.197113-3-matthewgarrett@google.com> <CAJzaN5pUJoOCz5-ZDSnTb6dbVPuy0QwmFD0CeofAGK+bRQx0og@mail.gmail.com>
- <20190502083240.GJ14532@linux.intel.com>
-In-Reply-To: <20190502083240.GJ14532@linux.intel.com>
+ <CACdnJutpBPAX6TOGgs3Ng2v_cC5hAf-3pHThESvjQ9vbvQeVkA@mail.gmail.com> <CAKv+Gu9PF4u=-7QL4e36Q3S5kC4+5Z=yLYHLT9jE+eNY7YUV7A@mail.gmail.com>
+In-Reply-To: <CAKv+Gu9PF4u=-7QL4e36Q3S5kC4+5Z=yLYHLT9jE+eNY7YUV7A@mail.gmail.com>
 From:   Matthew Garrett <mjg59@google.com>
-Date:   Thu, 2 May 2019 11:03:08 -0700
-Message-ID: <CACdnJuv1vwi7hgyGb-7a0dKfRhwdXTgj2baxO=qzpB_JJ1a9XQ@mail.gmail.com>
+Date:   Thu, 2 May 2019 11:04:03 -0700
+Message-ID: <CACdnJuvDuw0X9iwEqOu7EjM5ca1f+n7f=xqzrTPS9PyrmqKNHQ@mail.gmail.com>
 Subject: Re: [PATCH V5 2/4] tpm: Reserve the TPM final events table
-To:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-Cc:     Bartosz Szczepanek <bsz@semihalf.com>,
+To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Cc:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        Bartosz Szczepanek <bsz@semihalf.com>,
         linux-integrity <linux-integrity@vger.kernel.org>,
         Peter Huewe <peterhuewe@gmx.de>,
         Jason Gunthorpe <jgg@ziepe.ca>,
@@ -65,21 +67,26 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, May 2, 2019 at 1:32 AM Jarkko Sakkinen
-<jarkko.sakkinen@linux.intel.com> wrote:
+On Thu, May 2, 2019 at 12:15 AM Ard Biesheuvel
+<ard.biesheuvel@linaro.org> wrote:
 >
-> On Tue, Apr 30, 2019 at 03:07:09PM +0200, Bartosz Szczepanek wrote:
-> > I may be a little late with this comment, but I've just tested these
-> > patches on aarch64 platform (from the top of jjs/master) and got
-> > kernel panic ("Unable to handle kernel read", full log at the end of
-> > mail). I think there's problem with below call to
-> > tpm2_calc_event_log_size(), where physical address of efi.tpm_log is
-> > passed as (void *) and never remapped:
+> (+ Ingo)
 >
-> Not late. This is not part of any PR yet. Thank you for the
-> feedback!
+> On Tue, 30 Apr 2019 at 21:52, Matthew Garrett <mjg59@google.com> wrote:
+> >
+> > On Tue, Apr 30, 2019 at 6:07 AM Bartosz Szczepanek <bsz@semihalf.com> wrote:
+> > >
+> > > I may be a little late with this comment, but I've just tested these
+> > > patches on aarch64 platform (from the top of jjs/master) and got
+> > > kernel panic ("Unable to handle kernel read", full log at the end of
+> > > mail). I think there's problem with below call to
+> > > tpm2_calc_event_log_size(), where physical address of efi.tpm_log is
+> > > passed as (void *) and never remapped:
+> >
+> > Yes, it looks like this is just broken. Can you try with the attached patch?
 >
-> Matthew, can you send an updated version of the whole patch set
-> with fixes to this issue and also reordering of the includes?
+> I'm a bit uncomfortable with EFI code that is obviously broken and
+> untested being queued for the next merge window in another tree.
 
-Yes, I'll resend and let's do this again for 5.3.
+The patchset was Cc:ed to linux-efi@. Is there anything else I should
+have done to ensure you picked it up rather than Jarkko?
