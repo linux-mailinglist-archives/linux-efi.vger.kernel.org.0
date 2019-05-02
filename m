@@ -2,235 +2,140 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E99BF1120C
-	for <lists+linux-efi@lfdr.de>; Thu,  2 May 2019 06:05:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0588211380
+	for <lists+linux-efi@lfdr.de>; Thu,  2 May 2019 08:45:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726197AbfEBEE4 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 2 May 2019 00:04:56 -0400
-Received: from mail-pg1-f193.google.com ([209.85.215.193]:46895 "EHLO
-        mail-pg1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725372AbfEBEEz (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 2 May 2019 00:04:55 -0400
-Received: by mail-pg1-f193.google.com with SMTP id n2so422830pgg.13;
-        Wed, 01 May 2019 21:04:55 -0700 (PDT)
+        id S1726111AbfEBGps (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 2 May 2019 02:45:48 -0400
+Received: from mail-wm1-f66.google.com ([209.85.128.66]:39582 "EHLO
+        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725772AbfEBGps (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 2 May 2019 02:45:48 -0400
+Received: by mail-wm1-f66.google.com with SMTP id n25so1071498wmk.4;
+        Wed, 01 May 2019 23:45:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=jz1PSIAOwqEC7aMJdQtzoyve7waLviSL+4YglVxn7es=;
-        b=K11pW5qiJtxsZ0bF9x/JRCq8UPI9nEoAJGhuM7BK17TmlQ8MXwJlduwGMxy2FtAlPU
-         OjI3+SGNjqd4sm4ytXxEKRaukqPp1QmTqC10DeBvxl2+sGv6GKIEwsuB1gev3F3LQ8Ro
-         p72yPJrpddRbgocW4EIJDC0VfkHxCTwyRnY3c0F0BXE9OK2FECHGnNtRmBGhmFVMkKA5
-         jhLErVoU5w3CEXIzdDgWyWcPNBS4a3w4E3OD7PIMSrQwJCHGrX68ibaimnX8E1zdDQks
-         IC6Al1qfyCS0HSQv0itwJMIaenTssHmuOY6mQVXBJIODxJ35ChL/IclAMbp+dvUrkGa0
-         gnGg==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=Q5TbwoEekfcdWv0mvvbYsS+6EAW/pbX53UiDfesuTQE=;
+        b=NkDrQqdzsz7vqv7J7Z+qWoH4I7sKeTclvlPsys8BOFZ/pGQEYnXZiqU468Xukcb5ej
+         EaTL3lS7Ua692kp9CFF3u5r8eLdUc9fAq9fA2aMWDK22JbzSO6AvHTTUOTiUcg5mb8hv
+         n7afcTWrB5ZVtZLFViHCYbdHOwFb2ujoIWMc23aM9q3zlVlfdqYktm8mshhlYmhvtA/u
+         n4D2ltETl+EXDtC2UY+W71va/YDbalvSMIpcC4oidwuT0LzdvKhS62Xkc6PklohFVSjl
+         b9H9uGD+Ao4lz/rzP/fvn2hWFSaH7iawNpgUJsrD5NcEyDRVqpmovOAQiU8NViCtYGx/
+         uoRQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=jz1PSIAOwqEC7aMJdQtzoyve7waLviSL+4YglVxn7es=;
-        b=qNQWDI5bBy/kGKQhXhn6noGxWQwXMK4s0Bu0II6ZX0QJCUgrNpefDxHdBycZJ1LsCo
-         POZp4uBfvrhPAi0iCurK2FXxSZfI8mCPnH8MqH15Tj6NfIzwMZ4bxKZ0es/dSoKfXjPY
-         tX8WQw7927TquawOVnap/3oBPsinYhgO2sM/McswQOpdKoQpnUH1nOsWsnHGThbtzog3
-         OWBM72dfXyuDRzBTPokcSJjVlEvBYCOdf+IzteDCx3on/O797VmHjaCAFdbF2S4mnDQu
-         lvBg5pFn0JMLWEUP97SZqUfUubUIM+A6mk+drbhMlGPdLTa6h/jXaCQtQqo2AmITu8gS
-         fP4Q==
-X-Gm-Message-State: APjAAAUg15GBNYkKLgREph1F8Enjff0PJ/xwDxCoJWt9p5+ZqJVSEZvJ
-        VVd0huqqwM4WE85o4JJQMq8=
-X-Google-Smtp-Source: APXvYqxeWFXdp9Aaw2xVD6N3+II2bl82wdzZQQIjljIKkZW1twnJvGKHWabJWPcKHP5bXGU8BZVw6w==
-X-Received: by 2002:a65:6545:: with SMTP id a5mr1661162pgw.264.1556769895131;
-        Wed, 01 May 2019 21:04:55 -0700 (PDT)
-Received: from linux-l9pv.suse ([202.47.205.198])
-        by smtp.gmail.com with ESMTPSA id k4sm1107687pgh.27.2019.05.01.21.04.51
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Wed, 01 May 2019 21:04:54 -0700 (PDT)
-From:   "Lee, Chun-Yi" <joeyli.kernel@gmail.com>
-X-Google-Original-From: "Lee, Chun-Yi" <jlee@suse.com>
-To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        James Morris <jmorris@namei.org>,
-        "Serge E . Hallyn" <serge@hallyn.com>,
-        David Howells <dhowells@redhat.com>,
-        Josh Boyer <jwboyer@fedoraproject.org>,
-        Nayna Jain <nayna@linux.ibm.com>,
-        Mimi Zohar <zohar@linux.ibm.com>
-Cc:     linux-efi@vger.kernel.org, linux-security-module@vger.kernel.org,
-        linux-kernel@vger.kernel.org, "Lee, Chun-Yi" <jlee@suse.com>
-Subject: [PATCH 2/2 v3] efi: print appropriate status message when loading certificates
-Date:   Thu,  2 May 2019 12:04:40 +0800
-Message-Id: <20190502040441.30372-2-jlee@suse.com>
-X-Mailer: git-send-email 2.12.3
-In-Reply-To: <20190502040441.30372-1-jlee@suse.com>
-References: <20190502040441.30372-1-jlee@suse.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Q5TbwoEekfcdWv0mvvbYsS+6EAW/pbX53UiDfesuTQE=;
+        b=g8IAIl0WWRn+WHDcxtHYRiAGtj5/IfR0TXZS0ryOrD49gyhe6wRgdrs0M6+14/jUZJ
+         8fH7pxpPIU9b9vazSVZd65lPqhykTKUl/oCdSCVBcoJiXaGAQyr/eI1rnPNKUYeCFrEA
+         bUYkncPPafA1dnwnNNUTe32Z0CAGZx29t1no782TC3HEffv4vOqKSVLHpJA9MRCPObr4
+         1mdWl1wtthTFlc7sZZ2QPwW6r056PTMgMhjrCwzoWL2NMFxCdtFHSVzDmt89D0uAi2pT
+         KXMh6SzJFaoY6BkYUW3KbPrY/rnSZ7NPvY1GvK5iw7mp9pGT/sKhDTJHUa8Pz9lJ6Wf0
+         BMSg==
+X-Gm-Message-State: APjAAAX3HU9T9aAYouzmyaGIeeRR4+7EOCb5grskSa9eoJJ1apiYav/x
+        4On8jp/NVkeJ2KIbrN87srDFNVjwxhOCE7bSC/k=
+X-Google-Smtp-Source: APXvYqxacmpdifyZqaQ70wlBxsip7duNZrsQz8yyYGYo8OFOM9BWyr7LJEEvIFkHeyZpTzKAL1znrY1h3nxxfQ8EWdM=
+X-Received: by 2002:a1c:f719:: with SMTP id v25mr1087705wmh.90.1556779545217;
+ Wed, 01 May 2019 23:45:45 -0700 (PDT)
+MIME-Version: 1.0
+References: <20190227202658.197113-1-matthewgarrett@google.com>
+ <20190227202658.197113-3-matthewgarrett@google.com> <CAJzaN5pUJoOCz5-ZDSnTb6dbVPuy0QwmFD0CeofAGK+bRQx0og@mail.gmail.com>
+ <CACdnJutpBPAX6TOGgs3Ng2v_cC5hAf-3pHThESvjQ9vbvQeVkA@mail.gmail.com> <CACdnJuvYAfFboej4e5jQ=iwhb-5Pi7BgSKEWGqJ0q=uarCoOfQ@mail.gmail.com>
+In-Reply-To: <CACdnJuvYAfFboej4e5jQ=iwhb-5Pi7BgSKEWGqJ0q=uarCoOfQ@mail.gmail.com>
+From:   Bartosz Szczepanek <barteks7r@gmail.com>
+Date:   Thu, 2 May 2019 08:45:34 +0200
+Message-ID: <CAJzaN5ofshg4KseGhOL2LSLDQNoAHC6Ve25gpgWU69bEfBq1fw@mail.gmail.com>
+Subject: Re: [PATCH V5 2/4] tpm: Reserve the TPM final events table
+To:     Matthew Garrett <mjg59@google.com>
+Cc:     linux-integrity <linux-integrity@vger.kernel.org>,
+        Peter Huewe <peterhuewe@gmx.de>,
+        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        Roberto Sassu <roberto.sassu@huawei.com>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        LSM List <linux-security-module@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        =?UTF-8?Q?Thi=C3=A9baud_Weksteen?= <tweek@google.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-When loading certificates list from UEFI variable, the original error
-message direct shows the efi status code from UEFI firmware. It looks
-ugly:
+Second patch tries to unmap "mapping" which is not declared. I'm on
+top of jjs/master and your TPM_MEMREMAP patches are already there, so
+the first patch applied cleanly. Using it, kernel still panicked on
+boot:
 
-[    2.335031] Couldn't get size: 0x800000000000000e
-[    2.335032] Couldn't get UEFI MokListRT
-[    2.339985] Couldn't get size: 0x800000000000000e
-[    2.339987] Couldn't get UEFI dbx list
-
-So, this patch shows the status string instead of status code.
-
-On the other hand, the "Couldn't get UEFI" message doesn't need
-to be exposed when db/dbx/mok variable do not exist. So, this
-patch set the message level to debug.
-
-v3.
-- Print messages similar to db/mok when loading dbx hash to blacklist:
-[    1.500952] EFI: Blacklisting hash of an executable: UEFI:dbx
-[    1.501773] blacklist: Loaded blacklisting hash
-'bin:80b4d96931bf0d02fd91a61e19d14f1da452e66db2408ca8604d411f92659f0a'
-
-- Setting messages for the existence of db/mok/dbx lists to debug level.
-
-v2.
-Setting the MODSIGN messages level to debug.
-
-Link:
-https://forums.opensuse.org/showthread.php/535324-MODSIGN-Couldn-t-get-UEFI-db-list?p=2897516#post2897516
-Cc: James Morris <jmorris@namei.org>
-Cc: Serge E. Hallyn" <serge@hallyn.com>
-Cc: David Howells <dhowells@redhat.com>
-Cc: Nayna Jain <nayna@linux.ibm.com>
-Cc: Josh Boyer <jwboyer@fedoraproject.org>
-Cc: Mimi Zohar <zohar@linux.ibm.com>
-Signed-off-by: "Lee, Chun-Yi" <jlee@suse.com>
----
- certs/blacklist.c                             |  3 +-
- security/integrity/platform_certs/load_uefi.c | 40 +++++++++++++++++++--------
- 2 files changed, 31 insertions(+), 12 deletions(-)
-
-diff --git a/certs/blacklist.c b/certs/blacklist.c
-index 3a507b9e2568..f91437e39e44 100644
---- a/certs/blacklist.c
-+++ b/certs/blacklist.c
-@@ -100,7 +100,8 @@ int mark_hash_blacklisted(const char *hash)
- 	if (IS_ERR(key)) {
- 		pr_err("Problem blacklisting hash (%ld)\n", PTR_ERR(key));
- 		return PTR_ERR(key);
--	}
-+	} else
-+		pr_notice("Loaded blacklisting hash '%s'\n", hash);
- 	return 0;
- }
- 
-diff --git a/security/integrity/platform_certs/load_uefi.c b/security/integrity/platform_certs/load_uefi.c
-index 81b19c52832b..6b6996e5bc27 100644
---- a/security/integrity/platform_certs/load_uefi.c
-+++ b/security/integrity/platform_certs/load_uefi.c
-@@ -1,5 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0
- 
-+#define pr_fmt(fmt) "EFI: "fmt
-+
- #include <linux/kernel.h>
- #include <linux/sched.h>
- #include <linux/cred.h>
-@@ -35,6 +37,18 @@ static __init bool uefi_check_ignore_db(void)
- 	return status == EFI_SUCCESS;
- }
- 
-+static void str16_to_str(efi_char16_t *str16, char *str, int str_size)
-+{
-+	int i = 0;
-+
-+	while (str16[i] != '\0' && i < (str_size - 1)) {
-+		str[i] = str16[i];
-+		i++;
-+	}
-+
-+	str[i] = '\0';
-+}
-+
- /*
-  * Get a certificate list blob from the named EFI variable.
-  */
-@@ -44,13 +58,20 @@ static __init void *get_cert_list(efi_char16_t *name, efi_guid_t *guid,
- 	efi_status_t status;
- 	unsigned long lsize = 4;
- 	unsigned long tmpdb[4];
-+	char namestr[16];
- 	void *db;
- 
-+	str16_to_str(name, namestr, ARRAY_SIZE(namestr));
- 	status = efi.get_variable(name, guid, NULL, &lsize, &tmpdb);
- 	if (status != EFI_BUFFER_TOO_SMALL) {
--		pr_err("Couldn't get size: 0x%lx\n", status);
-+		if (status == EFI_NOT_FOUND)
-+			pr_debug("UEFI %s list doesn't exist\n", namestr);
-+		else
-+			pr_err("Couldn't get size for UEFI %s list: %s\n",
-+				namestr, efi_status_to_str(status));
- 		return NULL;
- 	}
-+	pr_debug("UEFI %s list exists\n", namestr);
- 
- 	db = kmalloc(lsize, GFP_KERNEL);
- 	if (!db)
-@@ -59,7 +80,8 @@ static __init void *get_cert_list(efi_char16_t *name, efi_guid_t *guid,
- 	status = efi.get_variable(name, guid, NULL, &lsize, db);
- 	if (status != EFI_SUCCESS) {
- 		kfree(db);
--		pr_err("Error reading db var: 0x%lx\n", status);
-+		pr_err("Error reading UEFI %s list: %s\n",
-+			namestr, efi_status_to_str(status));
- 		return NULL;
- 	}
- 
-@@ -95,6 +117,7 @@ static __init void uefi_blacklist_hash(const char *source, const void *data,
- static __init void uefi_blacklist_x509_tbs(const char *source,
- 					   const void *data, size_t len)
- {
-+	pr_info("Blacklisting X.509 TBS hash: %s\n", source);
- 	uefi_blacklist_hash(source, data, len, "tbs:", 4);
- }
- 
-@@ -104,6 +127,7 @@ static __init void uefi_blacklist_x509_tbs(const char *source,
- static __init void uefi_blacklist_binary(const char *source,
- 					 const void *data, size_t len)
- {
-+	pr_info("Blacklisting hash of an executable: %s\n", source);
- 	uefi_blacklist_hash(source, data, len, "bin:", 4);
- }
- 
-@@ -154,9 +178,7 @@ static int __init load_uefi_certs(void)
- 	 */
- 	if (!uefi_check_ignore_db()) {
- 		db = get_cert_list(L"db", &secure_var, &dbsize);
--		if (!db) {
--			pr_err("MODSIGN: Couldn't get UEFI db list\n");
--		} else {
-+		if (db) {
- 			rc = parse_efi_signature_list("UEFI:db",
- 					db, dbsize, get_handler_for_db);
- 			if (rc)
-@@ -167,9 +189,7 @@ static int __init load_uefi_certs(void)
- 	}
- 
- 	mok = get_cert_list(L"MokListRT", &mok_var, &moksize);
--	if (!mok) {
--		pr_info("Couldn't get UEFI MokListRT\n");
--	} else {
-+	if (mok) {
- 		rc = parse_efi_signature_list("UEFI:MokListRT",
- 					      mok, moksize, get_handler_for_db);
- 		if (rc)
-@@ -178,9 +198,7 @@ static int __init load_uefi_certs(void)
- 	}
- 
- 	dbx = get_cert_list(L"dbx", &secure_var, &dbxsize);
--	if (!dbx) {
--		pr_info("Couldn't get UEFI dbx list\n");
--	} else {
-+	if (dbx) {
- 		rc = parse_efi_signature_list("UEFI:dbx",
- 					      dbx, dbxsize,
- 					      get_handler_for_dbx);
--- 
-2.16.4
-
+EFI stub: Booting Linux Kernel...
+EFI stub: EFI_RNG_PROTOCOL unavailable, no randomness supplied
+EFI stub: Using DTB from configuration table
+EFI stub: Exiting boot services and installing virtual address map...
+[    0.000000] Booting Linux on physical CPU 0x0000000000 [0x420f5162]
+[    0.000000] Linux version 5.1.0-rc2+ (root@localhost.localdomain)
+(gcc version 7.3.1 20180712 (Red Hat 7.3.1-6) (GCC)) #78 SMP Wed May 1
+01:05:38 EDT 2019
+[    0.000000] earlycon: pl11 at MMIO 0x0000000402020000 (options '115200n8')
+[    0.000000] printk: bootconsole [pl11] enabled
+[    0.000000] efi: Getting EFI parameters from FDT:
+[    0.000000] efi: EFI v2.60 by Cavium Inc.
+TX2-FW-Release-7.2-build_08-0-g14f8c5bf8a Apr 15 2019 18:51:41
+[    0.000000] efi:  TPMFinalLog=0xed5f0000  SMBIOS=0xfad90000  SMBIOS
+3.0=0xed530000  ACPI 2.0=0xeda90000  ESRT=0xfafdb218
+MEMATTR=0xf8489018  TPMEventLog=0xedaa9018  MEMRESERVE=0xedaa8018
+[    0.000000] Unhandled fault at 0xffff7dfffe77a018
+[    0.000000] Mem abort info:
+[    0.000000]   ESR = 0x96000003
+[    0.000000]   Exception class = DABT (current EL), IL = 32 bits
+[    0.000000]   SET = 0, FnV = 0
+[    0.000000]   EA = 0, S1PTW = 0
+[    0.000000] Data abort info:
+[    0.000000]   ISV = 0, ISS = 0x00000003
+[    0.000000]   CM = 0, WnR = 0
+[    0.000000] swapper pgtable: 4k pages, 48-bit VAs, pgdp = (____ptrval____)
+[    0.000000] [ffff7dfffe77a018] pgd=0000000081b12003
+[    0.000000] ------------[ cut here ]------------
+[    0.000000] kernel BUG at arch/arm64/mm/fault.c:189!
+[    0.000000] Internal error: Oops - BUG: 0 [#1] SMP
+[    0.000000] Modules linked in:
+[    0.000000] CPU: 0 PID: 0 Comm: swapper Not tainted 5.1.0-rc2+ #78
+[    0.000000] pstate: 60400089 (nZCv daIf +PAN -UAO)
+[    0.000000] pc : show_pte+0x1d0/0x1f0
+[    0.000000] lr : show_pte+0x88/0x1f0
+[    0.000000] sp : ffff000011533b30
+[    0.000000] x29: ffff000011533b30 x28: ffff0000115473c0
+[    0.000000] x27: ffff000011542500 x26: ffff7dfffe73a010
+[    0.000000] x25: 0000000000000018 x24: 0000000000000025
+[    0.000000] x23: 00000000000000fb x22: ffff0000117fc000
+[    0.000000] x21: ffff000010f32000 x20: ffffffffffffffff
+[    0.000000] x19: ffff7dfffe77a018 x18: ffffffffffffffff
+[    0.000000] x17: 0000000000000000 x16: 0000000000000000
+[    0.000000] x15: ffff00001153d708 x14: ffff00001172f420
+[    0.000000] x13: ffff00001172f069 x12: ffff000011568000
+[    0.000000] x11: ffff000011533800 x10: ffff000011533800
+[    0.000000] x9 : ffff00001153ef58 x8 : 303030303030303d
+[    0.000000] x7 : 646770205d383130 x6 : ffff00001172e7ff
+[    0.000000] x5 : 0000000000000000 x4 : 0000000000000000
+[    0.000000] x3 : 0000000000000000 x2 : 0000000000000000
+[    0.000000] x1 : 0000000081b12000 x0 : 0000000000000ff8
+[    0.000000] Process swapper (pid: 0, stack limit = 0x(____ptrval____))
+[    0.000000] Call trace:
+[    0.000000]  show_pte+0x1d0/0x1f0
+[    0.000000]  do_mem_abort+0xa8/0xb0
+[    0.000000]  el1_da+0x20/0xc4
+[    0.000000]  efi_tpm_eventlog_init+0xe8/0x268
+[    0.000000]  efi_config_parse_tables+0x180/0x29c
+[    0.000000]  uefi_init+0x1d0/0x22c
+[    0.000000]  efi_init+0x90/0x180
+[    0.000000]  setup_arch+0x1f4/0x5fc
+[    0.000000]  start_kernel+0x90/0x51c
+[    0.000000] Code: 910d6000 94030b20 17ffffe6 d503201f (d4210000)
+[    0.000000] random: get_random_bytes called from
+print_oops_end_marker+0x54/0x70 with crng_init=0
+[    0.000000] ---[ end trace 0000000000000000 ]---
+[    0.000000] Kernel panic - not syncing: Attempted to kill the idle task!
+[    0.000000] ---[ end Kernel panic - not syncing: Attempted to kill
+the idle task! ]---
