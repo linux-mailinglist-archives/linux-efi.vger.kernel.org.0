@@ -2,378 +2,307 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id ADE2713005
-	for <lists+linux-efi@lfdr.de>; Fri,  3 May 2019 16:24:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2CFE3145E0
+	for <lists+linux-efi@lfdr.de>; Mon,  6 May 2019 10:18:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727425AbfECOYE (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 3 May 2019 10:24:04 -0400
-Received: from mail-io1-f67.google.com ([209.85.166.67]:41506 "EHLO
-        mail-io1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727792AbfECOYE (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 3 May 2019 10:24:04 -0400
-Received: by mail-io1-f67.google.com with SMTP id r10so5320395ioc.8
-        for <linux-efi@vger.kernel.org>; Fri, 03 May 2019 07:24:03 -0700 (PDT)
+        id S1725837AbfEFISF (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 6 May 2019 04:18:05 -0400
+Received: from mail-wr1-f65.google.com ([209.85.221.65]:43665 "EHLO
+        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725836AbfEFISF (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 6 May 2019 04:18:05 -0400
+Received: by mail-wr1-f65.google.com with SMTP id r4so736219wro.10;
+        Mon, 06 May 2019 01:18:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=pA9kFE6H0SmKi93C2T8w40I2Yq3ijHdSE2kp5F4UjpM=;
-        b=MCyk1ycsMKHSoO/gC4Yskr13D7YXYX3ZhF92fkQlLVkLqtiSLmy0obOCTLfOn+T9PM
-         BosUT4A94MSMAYMLDaHqzoDV5CGVpejKgb/nB+yYq7bZz7pUQj6q33k6bxqDkYpfGFed
-         be/tfAyZKJEemAKtLhWwsYbH6MIQ/avBMqQuVKv27soX4aRDx/Jxa5lZANhV9km46AeW
-         s706+NNxnUaEPSqG4D0CTVBXm7Ho0pTARpLyM1Y7p2DFnKacVz5KI6qc1C4Mn0qTpUBY
-         C1QISuzkKi4JfHyIWZAcgyLWRn2Pl4VqYMD1qNuNytbqtjZ2oWT8RjaTgRndaTFdY3rs
-         Wimg==
+        d=gmail.com; s=20161025;
+        h=sender:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition:user-agent;
+        bh=EtQWlK7MWbGFL/+UPZ6+2MsDqXkrZm+Jh7YUBE4e58Q=;
+        b=H62LreGhGvhUyELhR1Pa3SNeqfU6jeWPZJG77C+YtLf1KM3miyZ5Mqya6EdqX/08EB
+         QcKMfbQzd309L85qdKKmDAOjeelZSzev2hURtIjxZNaOW/DIwaccctL1UPbbRNNQqCNh
+         nDXYz/nOBHbjQ/UmbEIhBawYnlR10buQhD1Z4cGmGvA6QRZa6tIKRpUItKwyQwJODsFt
+         DXIZMm8e30CzMz2NDbZWIt0z8iUQbhLNTd+dNtn2eVM6cRLKF9p28H4WZt6DIHIzEOHF
+         ANMgvyUYtyiot9jd2lqfCaLEHTwLCGk2DEjATj3lm8ZThpLp7td1WLkzrhpglVVWXVZ3
+         b5Pw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=pA9kFE6H0SmKi93C2T8w40I2Yq3ijHdSE2kp5F4UjpM=;
-        b=pnaS8I+y6lR80WRg41uA2jILNZvxZNTRR0G9VWxWAgsomCrP+i1l00ZyPGCBbKBPgh
-         EnOAI+DzmJRf/9y/YAd8dQuIcMp8O++7dSXGEjjrwtTMVHJwVQ+1FnPE50M3id7KJPG7
-         7CupBd12h18KpJZNXdZBdmt7b8gyWEvtP4F7SARpnS57K6poY3OJSFkdDPOQlQMRJD8N
-         2E59VVXTryr6qaPekDnG1lfZ5X/ebFD0ef9shaZsl0Y9krPb993D4WEmX/gNLSWKjOom
-         RlOaWZrme3gT6o33l19lbYRqz/BNoLjzQQ209n/Q9bW60fBKq6DvPH6z8vYSXEd1JJVk
-         nI2w==
-X-Gm-Message-State: APjAAAUnqwQzVEwN6TSe6EPOw08SZRblrDxwp7Jh9SRMaKL6sOUTKKEl
-        9jsG3FyfYW77wQvYrgJFkBG7tyA9ppSaVmZcq2z75Q==
-X-Google-Smtp-Source: APXvYqyTKaim5gfkGTEXuZ9zBpnja9n0rJ06943CS3ntrXMDvHi7DgmdpH5lwKbYV+MN6E/L5BM0u44bAZ5SqpMMJ1o=
-X-Received: by 2002:a5e:9b17:: with SMTP id j23mr7421271iok.60.1556893442990;
- Fri, 03 May 2019 07:24:02 -0700 (PDT)
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :mime-version:content-disposition:user-agent;
+        bh=EtQWlK7MWbGFL/+UPZ6+2MsDqXkrZm+Jh7YUBE4e58Q=;
+        b=kEc+xloBTMpVzSLJSqtrDRuhtN4CRYuRi657IogFqGMAsUyha5WuBz0wPGIOUQ67vy
+         MlQGqNbtMUxeTDqVMjvIrC+w4Mj/PTp33GQd6jnT9Wuw8Ozx6UllncKaYQIj/sPkDO6C
+         esNjozEW5Tm+a2Ku2zwzLGjcAUHNvtOylK6xU79C0KP4ycmDzvmTzPrHFi+0OHelYp8F
+         3h3m8UeG3xX3XMlP56AFXILexssWDYFdPpzychEb/qFJEOVrGsjrLdacjOngK3BdV/WM
+         NzJ9unss4GjpIl0P9rooRwPa/UGkI4BzsYmcc/Il4VokPeMi201hP+k4PSlwsJwpqyhI
+         G06w==
+X-Gm-Message-State: APjAAAXehmOqByoHs2MBYzO0M7R/dZwqnUSaJPLdfAjh507ratp0o2Cf
+        +4OYfXp2sbZqZFZ39MhIJwQ=
+X-Google-Smtp-Source: APXvYqyReuBc+h/d1ANtdvOn4zQMU4XlHt8pvRHD6t9aUW9EetsgmMQKsnUpfggOLsrRL20cu6oIsA==
+X-Received: by 2002:a5d:6a03:: with SMTP id m3mr12484203wru.135.1557130682573;
+        Mon, 06 May 2019 01:18:02 -0700 (PDT)
+Received: from gmail.com (2E8B0CD5.catv.pool.telekom.hu. [46.139.12.213])
+        by smtp.gmail.com with ESMTPSA id h81sm27734751wmf.33.2019.05.06.01.18.01
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Mon, 06 May 2019 01:18:01 -0700 (PDT)
+Date:   Mon, 6 May 2019 10:17:59 +0200
+From:   Ingo Molnar <mingo@kernel.org>
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
+        James Morse <james.morse@arm.com>,
+        Matt Fleming <matt@codeblueprint.co.uk>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Borislav Petkov <bp@alien8.de>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Peter Zijlstra <a.p.zijlstra@chello.nl>
+Subject: [GIT PULL] EFI changes for v5.2
+Message-ID: <20190506081759.GA30024@gmail.com>
 MIME-Version: 1.0
-References: <20190502040441.30372-1-jlee@suse.com> <20190502040441.30372-2-jlee@suse.com>
- <CAKv+Gu8MESd3BXCKR=EH7Z1kWegm9XjTP38jBsizpgDAuyA3YQ@mail.gmail.com>
- <20190503071819.GN11486@linux-l9pv.suse> <CAKv+Gu9CdWYMELxBz9WqaB4BSRbRx81iR-x4P+2OANAcfLUhUQ@mail.gmail.com>
- <20190503085834.GQ11486@linux-l9pv.suse>
-In-Reply-To: <20190503085834.GQ11486@linux-l9pv.suse>
-From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Date:   Fri, 3 May 2019 16:23:51 +0200
-Message-ID: <CAKv+Gu-AuoObBW5Ha_cXtYQOdeYYpTRBu=6RqH7+DYvwACKR1A@mail.gmail.com>
-Subject: Re: [PATCH 2/2 v3] efi: print appropriate status message when loading certificates
-To:     joeyli <jlee@suse.com>
-Cc:     Peter Jones <pjones@redhat.com>,
-        Matthew Garrett <mjg59@google.com>,
-        "Lee, Chun-Yi" <joeyli.kernel@gmail.com>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        David Howells <dhowells@redhat.com>,
-        James Morris <jmorris@namei.org>,
-        "Serge E . Hallyn" <serge@hallyn.com>,
-        Josh Boyer <jwboyer@fedoraproject.org>,
-        Nayna Jain <nayna@linux.ibm.com>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        linux-security-module <linux-security-module@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, 3 May 2019 at 10:59, joeyli <jlee@suse.com> wrote:
->
-> On Fri, May 03, 2019 at 10:07:59AM +0200, Ard Biesheuvel wrote:
-> > On Fri, 3 May 2019 at 09:18, joeyli <jlee@suse.com> wrote:
-> > >
-> > > Hi Ard,
-> > >
-> > > On Thu, May 02, 2019 at 11:04:34AM +0200, Ard Biesheuvel wrote:
-> > > > On Thu, 2 May 2019 at 06:04, Lee, Chun-Yi <joeyli.kernel@gmail.com> wrote:
-> > > > >
-> > > > > When loading certificates list from UEFI variable, the original error
-> > > > > message direct shows the efi status code from UEFI firmware. It looks
-> > > > > ugly:
-> > > > >
-> > > > > [    2.335031] Couldn't get size: 0x800000000000000e
-> > > > > [    2.335032] Couldn't get UEFI MokListRT
-> > > > > [    2.339985] Couldn't get size: 0x800000000000000e
-> > > > > [    2.339987] Couldn't get UEFI dbx list
-> > > > >
-> > > > > So, this patch shows the status string instead of status code.
-> > > > >
-> > > > > On the other hand, the "Couldn't get UEFI" message doesn't need
-> > > > > to be exposed when db/dbx/mok variable do not exist. So, this
-> > > > > patch set the message level to debug.
-> > > > >
-> > > > > v3.
-> > > > > - Print messages similar to db/mok when loading dbx hash to blacklist:
-> > > > > [    1.500952] EFI: Blacklisting hash of an executable: UEFI:dbx
-> > > > > [    1.501773] blacklist: Loaded blacklisting hash
-> > > > > 'bin:80b4d96931bf0d02fd91a61e19d14f1da452e66db2408ca8604d411f92659f0a'
-> > > > >
-> > > > > - Setting messages for the existence of db/mok/dbx lists to debug level.
-> > > > >
-> > > > > v2.
-> > > > > Setting the MODSIGN messages level to debug.
-> > > > >
-> > > > > Link:
-> > > > > https://forums.opensuse.org/showthread.php/535324-MODSIGN-Couldn-t-get-UEFI-db-list?p=2897516#post2897516
-> > > > > Cc: James Morris <jmorris@namei.org>
-> > > > > Cc: Serge E. Hallyn" <serge@hallyn.com>
-> > > > > Cc: David Howells <dhowells@redhat.com>
-> > > > > Cc: Nayna Jain <nayna@linux.ibm.com>
-> > > > > Cc: Josh Boyer <jwboyer@fedoraproject.org>
-> > > > > Cc: Mimi Zohar <zohar@linux.ibm.com>
-> > > > > Signed-off-by: "Lee, Chun-Yi" <jlee@suse.com>
-> > > > > ---
-> > > > >  certs/blacklist.c                             |  3 +-
-> > > > >  security/integrity/platform_certs/load_uefi.c | 40 +++++++++++++++++++--------
-> > > > >  2 files changed, 31 insertions(+), 12 deletions(-)
-> > > > >
-> > > > > diff --git a/certs/blacklist.c b/certs/blacklist.c
-> > > > > index 3a507b9e2568..f91437e39e44 100644
-> > > > > --- a/certs/blacklist.c
-> > > > > +++ b/certs/blacklist.c
-> > > > > @@ -100,7 +100,8 @@ int mark_hash_blacklisted(const char *hash)
-> > > > >         if (IS_ERR(key)) {
-> > > > >                 pr_err("Problem blacklisting hash (%ld)\n", PTR_ERR(key));
-> > > > >                 return PTR_ERR(key);
-> > > > > -       }
-> > > > > +       } else
-> > > > > +               pr_notice("Loaded blacklisting hash '%s'\n", hash);
-> > > > >         return 0;
-> > > > >  }
-> > > > >
-> > > > > diff --git a/security/integrity/platform_certs/load_uefi.c b/security/integrity/platform_certs/load_uefi.c
-> > > > > index 81b19c52832b..6b6996e5bc27 100644
-> > > > > --- a/security/integrity/platform_certs/load_uefi.c
-> > > > > +++ b/security/integrity/platform_certs/load_uefi.c
-> > > > > @@ -1,5 +1,7 @@
-> > > > >  // SPDX-License-Identifier: GPL-2.0
-> > > > >
-> > > > > +#define pr_fmt(fmt) "EFI: "fmt
-> > > > > +
-> > > > >  #include <linux/kernel.h>
-> > > > >  #include <linux/sched.h>
-> > > > >  #include <linux/cred.h>
-> > > > > @@ -35,6 +37,18 @@ static __init bool uefi_check_ignore_db(void)
-> > > > >         return status == EFI_SUCCESS;
-> > > > >  }
-> > > > >
-> > > > > +static void str16_to_str(efi_char16_t *str16, char *str, int str_size)
-> > > > > +{
-> > > > > +       int i = 0;
-> > > > > +
-> > > > > +       while (str16[i] != '\0' && i < (str_size - 1)) {
-> > > > > +               str[i] = str16[i];
-> > > > > +               i++;
-> > > > > +       }
-> > > > > +
-> > > > > +       str[i] = '\0';
-> > > > > +}
-> > > > > +
-> > > > >  /*
-> > > > >   * Get a certificate list blob from the named EFI variable.
-> > > > >   */
-> > > > > @@ -44,13 +58,20 @@ static __init void *get_cert_list(efi_char16_t *name, efi_guid_t *guid,
-> > > > >         efi_status_t status;
-> > > > >         unsigned long lsize = 4;
-> > > > >         unsigned long tmpdb[4];
-> > > > > +       char namestr[16];
-> > > > >         void *db;
-> > > > >
-> > > > > +       str16_to_str(name, namestr, ARRAY_SIZE(namestr));
-> > > >
-> > > > Please drop this (and the function above) - instead, just return NULL
-> > > > if the variable is not found (without reporting an error).
-> > > >
-> > >
-> > > This name string is for printing debug level message, not error message.
-> > > This function already returns NULL when EFI_NOT_FOUND be returned by
-> > > firmware.
-> > >
-> > > > >         status = efi.get_variable(name, guid, NULL, &lsize, &tmpdb);
-> > > > >         if (status != EFI_BUFFER_TOO_SMALL) {
-> > > > > -               pr_err("Couldn't get size: 0x%lx\n", status);
-> > > > > +               if (status == EFI_NOT_FOUND)
-> > > > > +                       pr_debug("UEFI %s list doesn't exist\n", namestr);
-> > > > > +               else
-> > > > > +                       pr_err("Couldn't get size for UEFI %s list: %s\n",
-> > > > > +                               namestr, efi_status_to_str(status));
-> > > > >                 return NULL;
-> > >
-> > > here returns NULL when EFI_NOT_FOUND. The message of existence is for
-> > > debugging.
-> > >
-> >
-> > I understand that. But I don't think we need it.
-> >
->
-> OK. I will remove the debug message.
->
-> > > > >         }
-> > > > > +       pr_debug("UEFI %s list exists\n", namestr);
-> > > > >
-> > > > >         db = kmalloc(lsize, GFP_KERNEL);
-> > > > >         if (!db)
-> > > > > @@ -59,7 +80,8 @@ static __init void *get_cert_list(efi_char16_t *name, efi_guid_t *guid,
-> > > > >         status = efi.get_variable(name, guid, NULL, &lsize, db);
-> > > > >         if (status != EFI_SUCCESS) {
-> > > > >                 kfree(db);
-> > > > > -               pr_err("Error reading db var: 0x%lx\n", status);
-> > > > > +               pr_err("Error reading UEFI %s list: %s\n",
-> > > > > +                       namestr, efi_status_to_str(status));
-> > > > >                 return NULL;
-> > > > >         }
-> > > > >
-> > > > > @@ -95,6 +117,7 @@ static __init void uefi_blacklist_hash(const char *source, const void *data,
-> > > > >  static __init void uefi_blacklist_x509_tbs(const char *source,
-> > > > >                                            const void *data, size_t len)
-> > > > >  {
-> > > > > +       pr_info("Blacklisting X.509 TBS hash: %s\n", source);
-> > > > >         uefi_blacklist_hash(source, data, len, "tbs:", 4);
-> > > > >  }
-> > > > >
-> > > > > @@ -104,6 +127,7 @@ static __init void uefi_blacklist_x509_tbs(const char *source,
-> > > > >  static __init void uefi_blacklist_binary(const char *source,
-> > > > >                                          const void *data, size_t len)
-> > > > >  {
-> > > > > +       pr_info("Blacklisting hash of an executable: %s\n", source);
-> > > > >         uefi_blacklist_hash(source, data, len, "bin:", 4);
-> > > > >  }
-> > > > >
-> > > >
-> > > > These are separate changes - I don't have an opinion whether they are
-> > > > appropriate or not, but they should be in a separate patch.
-> > > >
-> > >
-> > > I will move the message of blacklising hash to other patch. Thanks!
-> > >
-> > > > > @@ -154,9 +178,7 @@ static int __init load_uefi_certs(void)
-> > > > >          */
-> > > > >         if (!uefi_check_ignore_db()) {
-> > > > >                 db = get_cert_list(L"db", &secure_var, &dbsize);
-> > > > > -               if (!db) {
-> > > > > -                       pr_err("MODSIGN: Couldn't get UEFI db list\n");
-> > > > > -               } else {
-> > > > > +               if (db) {
-> > > > >                         rc = parse_efi_signature_list("UEFI:db",
-> > > > >                                         db, dbsize, get_handler_for_db);
-> > > > >                         if (rc)
-> > > > > @@ -167,9 +189,7 @@ static int __init load_uefi_certs(void)
-> > > > >         }
-> > > > >
-> > > > >         mok = get_cert_list(L"MokListRT", &mok_var, &moksize);
-> > > > > -       if (!mok) {
-> > > > > -               pr_info("Couldn't get UEFI MokListRT\n");
-> > > > > -       } else {
-> > > > > +       if (mok) {
-> > > > >                 rc = parse_efi_signature_list("UEFI:MokListRT",
-> > > > >                                               mok, moksize, get_handler_for_db);
-> > > > >                 if (rc)
-> > > > > @@ -178,9 +198,7 @@ static int __init load_uefi_certs(void)
-> > > > >         }
-> > > > >
-> > > > >         dbx = get_cert_list(L"dbx", &secure_var, &dbxsize);
-> > > > > -       if (!dbx) {
-> > > > > -               pr_info("Couldn't get UEFI dbx list\n");
-> > > > > -       } else {
-> > > > > +       if (dbx) {
-> > > > >                 rc = parse_efi_signature_list("UEFI:dbx",
-> > > > >                                               dbx, dbxsize,
-> > > > >                                               get_handler_for_dbx);
-> > > > > --
-> > > > > 2.16.4
-> > > > >
-> > > >
-> > > > I think we should consider carefully what it means if some of these
-> > > > variables don't exist:
-> > > > - if secure boot is enabled, db and dbx must exist, so if they don't,
-> > > > something is wrong
-> > >
-> > > The existence of db/dbx is not related to secure boot. If manufacturer/user
-> > > enrolled certificate/hash to db or dbx, then the variable will be created.
-> > > If user didn't enroll anything to db/dbx, then variables will not show up.
-> > >
-> >
-> > Yes, but if secure boot is enabled and db is empty, how could you have
-> > booted in the first place?
-> >
->
-> I agree. When secure boot enabled, kernel can not be booted without db.
->
-> > And what about the converse case: if secure boot is not enabled, why
-> > should we trust the contents of db?
-> >
->
-> The db and dbx are authenticated variables that it protected by KEK.
-> So it can be trusted even secure boot is disabled. Unless manufacturer
-> or user's KEK is leaked.
->
+Linus,
 
-Is that true for non-secureboot capable firmware? Of course, in that
-case, we cannot be sure that the kernel itself is trusted, but we
-shouldn't open up another hole either.
+Please pull the latest efi-core-for-linus git tree from:
 
-> > > > - secure boot might be enabled but we may be booting without shim.
-> > >
-> > > Shim always creates MokListRT no matter secure boot enabled or disabled.
-> > >
-> >
-> > That is not my point. What happens if you booted with secure boot
-> > enabled but without the help of shim?
-> >
->
-> Without shim, the signed EFI stub can still be booted by EFI boot manager.
-> But the MokListRT will not be created for runtime. So MOK signed kernel
-> module can not be verified. (or IMA can not verify MOK signed kernel image
-> for kexec...)
->
+   git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git efi-core-for-linus
 
-So if we opt out of using shim, we lose kexec capability as well? That
-doesn't make any sense.
+   # HEAD: 02562d0ca1084a688ac5c92e0e92947f62f13093 efi/libstub/arm: Omit unneeded stripping of ksymtab/kcrctab sections
 
-In general, I am very uncomfortable with the way we have painted
-ourselves into a corner with shim. If I install Suse on a system that
-has the Suse cert in db or KEK, why would I need shim in the first
-place?
+The changes in this cycle were:
 
-> > > > - secure boot might be disabled.
-> > > >
-> > >
-> > > It's not about secure boot, db/dbx/MokListRT are always available at
-> > > runtime if user was enrolled something to those list.
-> > >
-> >
-> > Yes, but again, depending on whether shim was involved, and/or whether
-> > secure boot was enabled or not, the way we interpret these things may
-> > be very different.
-> >
-> > I want the reasoning to be sound before merging any patches that deal
-> > with these variables.
->
-> Here is a simple summary:
->
-> When secure boot is enabled:
->     - db/dbx: Can be trusted because they are authenticated variables.
->               (unless end user doesn't want to trust db/dbx)
->     - MokListRT:
->         - with shim: MokListRT will be created. It can be trusted.
->         - without shim: MokListRT will not be created.
->                         MOK protected kernel module or file can not be
->                         verified.
->
+ - Squash a spurious warning when using the EFI framebuffer on a non-EFI boot
+ - Use DMI data to annotate RAS memory errors on ARM just like we do on Intel
+ - Followup cleanups for DMI
+ - libstub Makefile cleanups
 
-So who polices that MoKlistRT is not created?
+ Thanks,
 
-> When secure boot is disabled:
->     - db/dbx: Can be trusted because they are authenticated variables.
->               (unless end user doesn't want to trust db/dbx)
+	Ingo
 
-Is this true? Does non-secure boot capable firmware still guarantee
-that db/dbx can't be created?
+------------------>
+Ard Biesheuvel (2):
+      efifb: Omit memory map check on legacy boot
+      efi/libstub/arm: Omit unneeded stripping of ksymtab/kcrctab sections
 
->     - MokListRT:
->         - with shim: MokListRT will be created. But it can not be trusted.
->                      MOK protected kernel module or file can not be
->                      verified.
->         - without shim: MokListRT will not be created.
->                         MOK protected kernel module or file can not be
->                         verified.
->
+Marcin Benka (1):
+      efi/arm: Show SMBIOS bank/device location in CPER and GHES error logs
 
-Enabling this securely involves more than connecting the dots when it
-comes to db, MokListRT etc. I would like for someone to convince me as
-a maintainer, as well as the IMA maintainers, that the security
-requirements are still met in all cases we care about. Just copying db
-and MokListRT into a kernel keychain doesn't appear to do that, and if
-it does, it needs more documentation to clarify that.
+Masahiro Yamada (1):
+      efi/libstub: Refactor the cmd_stubcopy Makefile command
+
+Robert Richter (1):
+      efi: Unify DMI setup code over the arm/arm64, ia64 and x86 architectures
+
+
+ arch/ia64/kernel/setup.c              |  4 +---
+ arch/x86/kernel/setup.c               |  6 ++----
+ drivers/firmware/dmi_scan.c           | 28 +++++++++++++++-------------
+ drivers/firmware/efi/arm-runtime.c    |  6 ++----
+ drivers/firmware/efi/libstub/Makefile | 14 +++++++-------
+ drivers/video/fbdev/efifb.c           |  3 ++-
+ include/linux/dmi.h                   |  8 ++------
+ 7 files changed, 31 insertions(+), 38 deletions(-)
+
+diff --git a/arch/ia64/kernel/setup.c b/arch/ia64/kernel/setup.c
+index 583a3746d70b..c9cfa760cd57 100644
+--- a/arch/ia64/kernel/setup.c
++++ b/arch/ia64/kernel/setup.c
+@@ -1058,9 +1058,7 @@ check_bugs (void)
+ 
+ static int __init run_dmi_scan(void)
+ {
+-	dmi_scan_machine();
+-	dmi_memdev_walk();
+-	dmi_set_dump_stack_arch_desc();
++	dmi_setup();
+ 	return 0;
+ }
+ core_initcall(run_dmi_scan);
+diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
+index 3d872a527cd9..3773905cd2c1 100644
+--- a/arch/x86/kernel/setup.c
++++ b/arch/x86/kernel/setup.c
+@@ -1005,13 +1005,11 @@ void __init setup_arch(char **cmdline_p)
+ 	if (efi_enabled(EFI_BOOT))
+ 		efi_init();
+ 
+-	dmi_scan_machine();
+-	dmi_memdev_walk();
+-	dmi_set_dump_stack_arch_desc();
++	dmi_setup();
+ 
+ 	/*
+ 	 * VMware detection requires dmi to be available, so this
+-	 * needs to be done after dmi_scan_machine(), for the boot CPU.
++	 * needs to be done after dmi_setup(), for the boot CPU.
+ 	 */
+ 	init_hypervisor_platform();
+ 
+diff --git a/drivers/firmware/dmi_scan.c b/drivers/firmware/dmi_scan.c
+index 099d83e4e910..fae2d5c43314 100644
+--- a/drivers/firmware/dmi_scan.c
++++ b/drivers/firmware/dmi_scan.c
+@@ -416,11 +416,8 @@ static void __init save_mem_devices(const struct dmi_header *dm, void *v)
+ 	nr++;
+ }
+ 
+-void __init dmi_memdev_walk(void)
++static void __init dmi_memdev_walk(void)
+ {
+-	if (!dmi_available)
+-		return;
+-
+ 	if (dmi_walk_early(count_mem_devices) == 0 && dmi_memdev_nr) {
+ 		dmi_memdev = dmi_alloc(sizeof(*dmi_memdev) * dmi_memdev_nr);
+ 		if (dmi_memdev)
+@@ -614,7 +611,7 @@ static int __init dmi_smbios3_present(const u8 *buf)
+ 	return 1;
+ }
+ 
+-void __init dmi_scan_machine(void)
++static void __init dmi_scan_machine(void)
+ {
+ 	char __iomem *p, *q;
+ 	char buf[32];
+@@ -769,15 +766,20 @@ static int __init dmi_init(void)
+ subsys_initcall(dmi_init);
+ 
+ /**
+- * dmi_set_dump_stack_arch_desc - set arch description for dump_stack()
++ *	dmi_setup - scan and setup DMI system information
+  *
+- * Invoke dump_stack_set_arch_desc() with DMI system information so that
+- * DMI identifiers are printed out on task dumps.  Arch boot code should
+- * call this function after dmi_scan_machine() if it wants to print out DMI
+- * identifiers on task dumps.
++ *	Scan the DMI system information. This setups DMI identifiers
++ *	(dmi_system_id) for printing it out on task dumps and prepares
++ *	DIMM entry information (dmi_memdev_info) from the SMBIOS table
++ *	for using this when reporting memory errors.
+  */
+-void __init dmi_set_dump_stack_arch_desc(void)
++void __init dmi_setup(void)
+ {
++	dmi_scan_machine();
++	if (!dmi_available)
++		return;
++
++	dmi_memdev_walk();
+ 	dump_stack_set_arch_desc("%s", dmi_ids_string);
+ }
+ 
+@@ -841,7 +843,7 @@ static bool dmi_is_end_of_table(const struct dmi_system_id *dmi)
+  *	returns non zero or we hit the end. Callback function is called for
+  *	each successful match. Returns the number of matches.
+  *
+- *	dmi_scan_machine must be called before this function is called.
++ *	dmi_setup must be called before this function is called.
+  */
+ int dmi_check_system(const struct dmi_system_id *list)
+ {
+@@ -871,7 +873,7 @@ EXPORT_SYMBOL(dmi_check_system);
+  *	Walk the blacklist table until the first match is found.  Return the
+  *	pointer to the matching entry or NULL if there's no match.
+  *
+- *	dmi_scan_machine must be called before this function is called.
++ *	dmi_setup must be called before this function is called.
+  */
+ const struct dmi_system_id *dmi_first_match(const struct dmi_system_id *list)
+ {
+diff --git a/drivers/firmware/efi/arm-runtime.c b/drivers/firmware/efi/arm-runtime.c
+index 0c1af675c338..e2ac5fa5531b 100644
+--- a/drivers/firmware/efi/arm-runtime.c
++++ b/drivers/firmware/efi/arm-runtime.c
+@@ -162,13 +162,11 @@ void efi_virtmap_unload(void)
+ static int __init arm_dmi_init(void)
+ {
+ 	/*
+-	 * On arm64/ARM, DMI depends on UEFI, and dmi_scan_machine() needs to
++	 * On arm64/ARM, DMI depends on UEFI, and dmi_setup() needs to
+ 	 * be called early because dmi_id_init(), which is an arch_initcall
+ 	 * itself, depends on dmi_scan_machine() having been called already.
+ 	 */
+-	dmi_scan_machine();
+-	if (dmi_available)
+-		dmi_set_dump_stack_arch_desc();
++	dmi_setup();
+ 	return 0;
+ }
+ core_initcall(arm_dmi_init);
+diff --git a/drivers/firmware/efi/libstub/Makefile b/drivers/firmware/efi/libstub/Makefile
+index b0103e16fc1b..b1f7b64652db 100644
+--- a/drivers/firmware/efi/libstub/Makefile
++++ b/drivers/firmware/efi/libstub/Makefile
+@@ -71,7 +71,6 @@ CFLAGS_arm64-stub.o		:= -DTEXT_OFFSET=$(TEXT_OFFSET)
+ extra-$(CONFIG_EFI_ARMSTUB)	:= $(lib-y)
+ lib-$(CONFIG_EFI_ARMSTUB)	:= $(patsubst %.o,%.stub.o,$(lib-y))
+ 
+-STUBCOPY_RM-y			:= -R *ksymtab* -R *kcrctab*
+ STUBCOPY_FLAGS-$(CONFIG_ARM64)	+= --prefix-alloc-sections=.init \
+ 				   --prefix-symbols=__efistub_
+ STUBCOPY_RELOC-$(CONFIG_ARM64)	:= R_AARCH64_ABS
+@@ -86,12 +85,13 @@ $(obj)/%.stub.o: $(obj)/%.o FORCE
+ # this time, use objcopy and leave all sections in place.
+ #
+ quiet_cmd_stubcopy = STUBCPY $@
+-      cmd_stubcopy = if $(STRIP) --strip-debug $(STUBCOPY_RM-y) -o $@ $<; \
+-		     then if $(OBJDUMP) -r $@ | grep $(STUBCOPY_RELOC-y); \
+-		     then (echo >&2 "$@: absolute symbol references not allowed in the EFI stub"; \
+-			   rm -f $@; /bin/false);			  \
+-		     else $(OBJCOPY) $(STUBCOPY_FLAGS-y) $< $@; fi	  \
+-		     else /bin/false; fi
++      cmd_stubcopy =							\
++	$(STRIP) --strip-debug -o $@ $<;				\
++	if $(OBJDUMP) -r $@ | grep $(STUBCOPY_RELOC-y); then		\
++		echo "$@: absolute symbol references not allowed in the EFI stub" >&2; \
++		/bin/false;						\
++	fi;								\
++	$(OBJCOPY) $(STUBCOPY_FLAGS-y) $< $@
+ 
+ #
+ # ARM discards the .data section because it disallows r/w data in the
+diff --git a/drivers/video/fbdev/efifb.c b/drivers/video/fbdev/efifb.c
+index ba906876cc45..9e529cc2b4ff 100644
+--- a/drivers/video/fbdev/efifb.c
++++ b/drivers/video/fbdev/efifb.c
+@@ -464,7 +464,8 @@ static int efifb_probe(struct platform_device *dev)
+ 	info->apertures->ranges[0].base = efifb_fix.smem_start;
+ 	info->apertures->ranges[0].size = size_remap;
+ 
+-	if (!efi_mem_desc_lookup(efifb_fix.smem_start, &md)) {
++	if (efi_enabled(EFI_BOOT) &&
++	    !efi_mem_desc_lookup(efifb_fix.smem_start, &md)) {
+ 		if ((efifb_fix.smem_start + efifb_fix.smem_len) >
+ 		    (md.phys_addr + (md.num_pages << EFI_PAGE_SHIFT))) {
+ 			pr_err("efifb: video memory @ 0x%lx spans multiple EFI memory regions\n",
+diff --git a/include/linux/dmi.h b/include/linux/dmi.h
+index c46fdb36700b..8de8c4f15163 100644
+--- a/include/linux/dmi.h
++++ b/include/linux/dmi.h
+@@ -102,9 +102,7 @@ const struct dmi_system_id *dmi_first_match(const struct dmi_system_id *list);
+ extern const char * dmi_get_system_info(int field);
+ extern const struct dmi_device * dmi_find_device(int type, const char *name,
+ 	const struct dmi_device *from);
+-extern void dmi_scan_machine(void);
+-extern void dmi_memdev_walk(void);
+-extern void dmi_set_dump_stack_arch_desc(void);
++extern void dmi_setup(void);
+ extern bool dmi_get_date(int field, int *yearp, int *monthp, int *dayp);
+ extern int dmi_get_bios_year(void);
+ extern int dmi_name_in_vendors(const char *str);
+@@ -122,9 +120,7 @@ static inline int dmi_check_system(const struct dmi_system_id *list) { return 0;
+ static inline const char * dmi_get_system_info(int field) { return NULL; }
+ static inline const struct dmi_device * dmi_find_device(int type, const char *name,
+ 	const struct dmi_device *from) { return NULL; }
+-static inline void dmi_scan_machine(void) { return; }
+-static inline void dmi_memdev_walk(void) { }
+-static inline void dmi_set_dump_stack_arch_desc(void) { }
++static inline void dmi_setup(void) { }
+ static inline bool dmi_get_date(int field, int *yearp, int *monthp, int *dayp)
+ {
+ 	if (yearp)
