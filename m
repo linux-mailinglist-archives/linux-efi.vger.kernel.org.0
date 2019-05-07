@@ -2,27 +2,27 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5BFD515CB6
-	for <lists+linux-efi@lfdr.de>; Tue,  7 May 2019 08:06:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5BB2415976
+	for <lists+linux-efi@lfdr.de>; Tue,  7 May 2019 07:37:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726677AbfEGGGL (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 7 May 2019 02:06:11 -0400
-Received: from mail.kernel.org ([198.145.29.99]:53858 "EHLO mail.kernel.org"
+        id S1727629AbfEGFhA (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 7 May 2019 01:37:00 -0400
+Received: from mail.kernel.org ([198.145.29.99]:56740 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726427AbfEGFd6 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Tue, 7 May 2019 01:33:58 -0400
+        id S1727382AbfEGFhA (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Tue, 7 May 2019 01:37:00 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 52EAD214AE;
-        Tue,  7 May 2019 05:33:56 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 1D62920C01;
+        Tue,  7 May 2019 05:36:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1557207237;
-        bh=03GaiAtYzY09njXPIqenCXIBIX9FGb+c3b6xKyYkjRU=;
+        s=default; t=1557207418;
+        bh=BdgObAC3fFlR0Js2Ty8pV2oYIcVW9JV+U9TauSCP3z4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=w2gcApx2NM3iSQV/DVtvZwGi59OZZN1yWU8+8z8SGrkfIiKEj+KLgSC34WE10Nco1
-         85plcTIuKicIfdY39qTYUcs6ObvcrVRQTYeSZEypNUDw3+Sn1cINIPD2MW44qhbl+c
-         bJuRYtTaGJX771FRSNdjCC+8yAqEVsLHWSZD9pN4=
+        b=1Uj0LqoKyCiZ3QFPW2MLJb9lRorYh68FSjluWP18J7nutRjIYLrIJKF26Fk3d+ru0
+         X9ygRuN65f4gAqo7fNPSOWxo8Tfrz8Z6ERqyjb9Uza5LTqHHVpBGEE7/rN1vu4kBu+
+         Hzu2weFCMYokrKIn1Hkz0rCdDcMzdPY0J0PKQFg0=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Jian-Hong Pan <jian-hong@endlessm.com>,
@@ -35,12 +35,12 @@ Cc:     Jian-Hong Pan <jian-hong@endlessm.com>,
         Thomas Gleixner <tglx@linutronix.de>,
         linux-efi@vger.kernel.org, linux@endlessm.com,
         Ingo Molnar <mingo@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 5.0 42/99] x86/reboot, efi: Use EFI reboot for Acer TravelMate X514-51T
-Date:   Tue,  7 May 2019 01:31:36 -0400
-Message-Id: <20190507053235.29900-42-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 31/81] x86/reboot, efi: Use EFI reboot for Acer TravelMate X514-51T
+Date:   Tue,  7 May 2019 01:35:02 -0400
+Message-Id: <20190507053554.30848-31-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190507053235.29900-1-sashal@kernel.org>
-References: <20190507053235.29900-1-sashal@kernel.org>
+In-Reply-To: <20190507053554.30848-1-sashal@kernel.org>
+References: <20190507053554.30848-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -129,10 +129,10 @@ index 725624b6c0c0..8fd3cedd9acc 100644
  	/* Apple */
  	{	/* Handle problems with rebooting on Apple MacBook5 */
 diff --git a/include/linux/efi.h b/include/linux/efi.h
-index a86485ac7c87..de05a4302529 100644
+index 401e4b254e30..cc3391796c0b 100644
 --- a/include/linux/efi.h
 +++ b/include/linux/efi.h
-@@ -1598,7 +1598,12 @@ efi_status_t efi_setup_gop(efi_system_table_t *sys_table_arg,
+@@ -1564,7 +1564,12 @@ efi_status_t efi_setup_gop(efi_system_table_t *sys_table_arg,
  			   struct screen_info *si, efi_guid_t *proto,
  			   unsigned long size);
  
