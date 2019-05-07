@@ -2,27 +2,27 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5BB2415976
-	for <lists+linux-efi@lfdr.de>; Tue,  7 May 2019 07:37:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 17CDF15B5C
+	for <lists+linux-efi@lfdr.de>; Tue,  7 May 2019 07:53:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727629AbfEGFhA (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 7 May 2019 01:37:00 -0400
-Received: from mail.kernel.org ([198.145.29.99]:56740 "EHLO mail.kernel.org"
+        id S1728776AbfEGFxZ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 7 May 2019 01:53:25 -0400
+Received: from mail.kernel.org ([198.145.29.99]:58626 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727382AbfEGFhA (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Tue, 7 May 2019 01:37:00 -0400
+        id S1726771AbfEGFjA (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Tue, 7 May 2019 01:39:00 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 1D62920C01;
-        Tue,  7 May 2019 05:36:57 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 5806020675;
+        Tue,  7 May 2019 05:38:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1557207418;
-        bh=BdgObAC3fFlR0Js2Ty8pV2oYIcVW9JV+U9TauSCP3z4=;
+        s=default; t=1557207538;
+        bh=prF2+gzSL6pxxVsXtk5gbC5lgyW15N7BbcAWOLNLIG0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1Uj0LqoKyCiZ3QFPW2MLJb9lRorYh68FSjluWP18J7nutRjIYLrIJKF26Fk3d+ru0
-         X9ygRuN65f4gAqo7fNPSOWxo8Tfrz8Z6ERqyjb9Uza5LTqHHVpBGEE7/rN1vu4kBu+
-         Hzu2weFCMYokrKIn1Hkz0rCdDcMzdPY0J0PKQFg0=
+        b=z+cBOhAywL2742FYff0RQQquCwudtqWLrmMLa0K4A/sOXQMAMRvqP/sYgpoRMRpm2
+         yo467TeyrpLwzaQVJoDUUiI7dRzlIirwpP/IrgV8mLCtA7jqkZ10yhGklgLPSDLt+d
+         +LAszKYc/Y87IA8wZrEFHca5VubsroPWzoPmrLig=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Jian-Hong Pan <jian-hong@endlessm.com>,
@@ -35,12 +35,12 @@ Cc:     Jian-Hong Pan <jian-hong@endlessm.com>,
         Thomas Gleixner <tglx@linutronix.de>,
         linux-efi@vger.kernel.org, linux@endlessm.com,
         Ingo Molnar <mingo@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 4.19 31/81] x86/reboot, efi: Use EFI reboot for Acer TravelMate X514-51T
-Date:   Tue,  7 May 2019 01:35:02 -0400
-Message-Id: <20190507053554.30848-31-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 17/95] x86/reboot, efi: Use EFI reboot for Acer TravelMate X514-51T
+Date:   Tue,  7 May 2019 01:37:06 -0400
+Message-Id: <20190507053826.31622-17-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190507053554.30848-1-sashal@kernel.org>
-References: <20190507053554.30848-1-sashal@kernel.org>
+In-Reply-To: <20190507053826.31622-1-sashal@kernel.org>
+References: <20190507053826.31622-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -90,7 +90,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  2 files changed, 27 insertions(+), 1 deletion(-)
 
 diff --git a/arch/x86/kernel/reboot.c b/arch/x86/kernel/reboot.c
-index 725624b6c0c0..8fd3cedd9acc 100644
+index 2126b9d27c34..c663d5fcff2e 100644
 --- a/arch/x86/kernel/reboot.c
 +++ b/arch/x86/kernel/reboot.c
 @@ -81,6 +81,19 @@ static int __init set_bios_reboot(const struct dmi_system_id *d)
@@ -129,10 +129,10 @@ index 725624b6c0c0..8fd3cedd9acc 100644
  	/* Apple */
  	{	/* Handle problems with rebooting on Apple MacBook5 */
 diff --git a/include/linux/efi.h b/include/linux/efi.h
-index 401e4b254e30..cc3391796c0b 100644
+index b68b7d199fee..2dab158b74c4 100644
 --- a/include/linux/efi.h
 +++ b/include/linux/efi.h
-@@ -1564,7 +1564,12 @@ efi_status_t efi_setup_gop(efi_system_table_t *sys_table_arg,
+@@ -1518,7 +1518,12 @@ efi_status_t efi_setup_gop(efi_system_table_t *sys_table_arg,
  			   struct screen_info *si, efi_guid_t *proto,
  			   unsigned long size);
  
