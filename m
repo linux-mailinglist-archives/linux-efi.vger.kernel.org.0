@@ -2,27 +2,27 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3EB681F149
-	for <lists+linux-efi@lfdr.de>; Wed, 15 May 2019 13:54:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F27581F04B
+	for <lists+linux-efi@lfdr.de>; Wed, 15 May 2019 13:43:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727593AbfEOLuc (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 15 May 2019 07:50:32 -0400
-Received: from mail.kernel.org ([198.145.29.99]:60608 "EHLO mail.kernel.org"
+        id S1727022AbfEOLmv (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 15 May 2019 07:42:51 -0400
+Received: from mail.kernel.org ([198.145.29.99]:38768 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729153AbfEOLWV (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Wed, 15 May 2019 07:22:21 -0400
+        id S1732286AbfEOL1v (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Wed, 15 May 2019 07:27:51 -0400
 Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 0EAE321473;
-        Wed, 15 May 2019 11:22:20 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id AB8A320843;
+        Wed, 15 May 2019 11:27:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1557919340;
-        bh=r8cVeMBCukKCuY2dTVNCx5/k5K50UNORfuoANlTQb8U=;
+        s=default; t=1557919670;
+        bh=GG0qt3ctbTqUNhqn8fE9gUxNmpq9AC1MRoQ2tNGlc/E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EOONPdwIFJwdxnxoM2RoSoLNgW3B2ATf840usZeVSqLsuzU9ivnTMq8o2dasfAv+H
-         FeI4eqlope+Xyj9xLmFvFBs/7gM2eGNPMFFS31vAfSh+nrOXi4r22gbvMk5mjZLDgo
-         +DqrnWsWPUockV13dKRckw/KPob+f511HSDqqbhs=
+        b=1ZduIT7eTPouDwv98655pYGW5ds1fJWH0YNZmICegdGKRLL10LwJmmZuAW6OOjejp
+         8mwrZjoX8KDt0KKmJ98wh88SlYpgaowhO6wBKObnw5U9K57ZCtez+oqjD7/IPS8M/z
+         +aNMd7abYG2Km2FsAQrLRhtPpCNv61Ckazw4LYDs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -36,12 +36,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Thomas Gleixner <tglx@linutronix.de>,
         linux-efi@vger.kernel.org, linux@endlessm.com,
         Ingo Molnar <mingo@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 037/113] x86/reboot, efi: Use EFI reboot for Acer TravelMate X514-51T
-Date:   Wed, 15 May 2019 12:55:28 +0200
-Message-Id: <20190515090656.429469518@linuxfoundation.org>
+Subject: [PATCH 5.0 049/137] x86/reboot, efi: Use EFI reboot for Acer TravelMate X514-51T
+Date:   Wed, 15 May 2019 12:55:30 +0200
+Message-Id: <20190515090657.030753220@linuxfoundation.org>
 X-Mailer: git-send-email 2.21.0
-In-Reply-To: <20190515090652.640988966@linuxfoundation.org>
-References: <20190515090652.640988966@linuxfoundation.org>
+In-Reply-To: <20190515090651.633556783@linuxfoundation.org>
+References: <20190515090651.633556783@linuxfoundation.org>
 User-Agent: quilt/0.66
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -128,10 +128,10 @@ index 725624b6c0c05..8fd3cedd9accd 100644
  	/* Apple */
  	{	/* Handle problems with rebooting on Apple MacBook5 */
 diff --git a/include/linux/efi.h b/include/linux/efi.h
-index 401e4b254e30b..cc3391796c0b8 100644
+index a86485ac7c878..de05a43025292 100644
 --- a/include/linux/efi.h
 +++ b/include/linux/efi.h
-@@ -1564,7 +1564,12 @@ efi_status_t efi_setup_gop(efi_system_table_t *sys_table_arg,
+@@ -1598,7 +1598,12 @@ efi_status_t efi_setup_gop(efi_system_table_t *sys_table_arg,
  			   struct screen_info *si, efi_guid_t *proto,
  			   unsigned long size);
  
