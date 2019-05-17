@@ -2,123 +2,111 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E1C5D21008
-	for <lists+linux-efi@lfdr.de>; Thu, 16 May 2019 23:32:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F214521576
+	for <lists+linux-efi@lfdr.de>; Fri, 17 May 2019 10:41:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727793AbfEPVc1 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 16 May 2019 17:32:27 -0400
-Received: from mail-wm1-f65.google.com ([209.85.128.65]:52368 "EHLO
-        mail-wm1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726619AbfEPVcZ (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 16 May 2019 17:32:25 -0400
-Received: by mail-wm1-f65.google.com with SMTP id y3so5017574wmm.2
-        for <linux-efi@vger.kernel.org>; Thu, 16 May 2019 14:32:24 -0700 (PDT)
+        id S1728047AbfEQIll (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 17 May 2019 04:41:41 -0400
+Received: from mail-it1-f193.google.com ([209.85.166.193]:38461 "EHLO
+        mail-it1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727816AbfEQIlk (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 17 May 2019 04:41:40 -0400
+Received: by mail-it1-f193.google.com with SMTP id i63so10720694ita.3
+        for <linux-efi@vger.kernel.org>; Fri, 17 May 2019 01:41:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=u8GkOq3mFgmT114W9q0A9mveOj1yfbx4rAlQUC/tkPc=;
-        b=r+7o95atwX8dZuEaXrHT3RNs2JbAxvK0UioLsku9KT5XxUcL/dUY4XAvA33SYj1rQt
-         lv3ZhZejg+q39JWKLjynNLqayrtND0Dse1BayIx+h5gxRhk/UvoAteBiyWaSw92w8x4j
-         NKUEd+pWdmhjZqslPcN6t4ZJe6vpy4TyHzUQEJpOqqa1HebJfu6qwCpImeJ3ftlhb+en
-         bYMfZ7mlvE6Zui2nqnn7qH/x89TfcUOD3gavYtX3xQA/cyapCDpyTFidNvgGPWudNl9Q
-         6AnoPOKE7h6QnPaq9IuIWhGd6OAtXYloglkuWCz9LiPvyh0Ylec4U3OIQ5pu/LmxvGmK
-         6GaA==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=OzAD5c2YizDdXZbA4lFyJqsN3eVyddIrW3Cl6aBVZRg=;
+        b=Xlq1AsNGys96BcJAGk3jRBqqXiqDnK5XJM67Eue97/ry1AF7IBdBuiWHQqQt8ybR72
+         turN3fd11DHO0M++Ig3/ByLeWYX4w6mK480OfEHBndQywtZ/KxrBuBlRHPutEkc93JQh
+         wS8DPbkSd+GU+EjD5Y1YzoWf/hFXsM4Ud1ZixydW7cqiHx50m2u3ifeFFg008+JfPufC
+         DciS5AmnXx6+pmy3bzhFCOOrHD+rrMVtdLUrN9JxhVVJN8M8BbM5PgLBniecKgNHiydU
+         Zyl7gY5mGVtybOTP6jrLwWU/H1nIlDEh7Tf9wDJJXDETE4WxisDYJckOZLcLPNPA71H8
+         Qv3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=u8GkOq3mFgmT114W9q0A9mveOj1yfbx4rAlQUC/tkPc=;
-        b=q/BNh6HGRJ1BHzG+/zl6npfclRhn2heF4eUWuS4p1ct9Fbtyk+/2IVPJGSKFVu6NjZ
-         UCcOyDaIIsVpVJAnsY5vpz49fF1JY2hbqaim7Op849CtOyKanxBNh25QXheTU6skNvoS
-         1lnYr6P5+J8duPnZT5fFnsBvs4osYtMCXnQmrGrAXCyO24JiPk2c72tN19FkwY6Un16E
-         188FHOw1rlttsKn5QSxf/Wbmuc0/gy3BZk14GwFO80Cn2F1BIwsbc6V6kuz4VeWk0eR+
-         fefrDc9ESlTLr/G5QzwwM+cSRtUCG0svM93M7LmiIkaT8b41dvguCrOgrMBHLIyffCAK
-         UjuQ==
-X-Gm-Message-State: APjAAAXDM/EhC/Kt6DW2AHG+LH6kZCna0bfLpVwF1IoBz8atX65zriAw
-        USm88WLZDsZl2OE/KJkJWjJL1mGXXtYQIA==
-X-Google-Smtp-Source: APXvYqyodnUXX+qnMYtwnRikj3XwNk4wh2PhFd949xag5qsz/UDhXHRfrGb9RwVRtwN9lKCOpTJQqg==
-X-Received: by 2002:a05:600c:22c9:: with SMTP id 9mr11058445wmg.4.1558042343288;
-        Thu, 16 May 2019 14:32:23 -0700 (PDT)
-Received: from sudo.home ([2a01:cb1d:112:6f00:55a9:76bd:5bf2:be83])
-        by smtp.gmail.com with ESMTPSA id e12sm6756988wrs.8.2019.05.16.14.32.22
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 16 May 2019 14:32:22 -0700 (PDT)
-From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
-To:     linux-efi@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>
-Cc:     Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH 1/1] fbdev/efifb: ignore framebuffer memmap entries that lack any memory types
-Date:   Thu, 16 May 2019 23:31:59 +0200
-Message-Id: <20190516213159.3530-2-ard.biesheuvel@linaro.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190516213159.3530-1-ard.biesheuvel@linaro.org>
-References: <20190516213159.3530-1-ard.biesheuvel@linaro.org>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=OzAD5c2YizDdXZbA4lFyJqsN3eVyddIrW3Cl6aBVZRg=;
+        b=ogDbzvHlbnidIU7kN/uQzaVqyvDwHVmmyvV4VB848vnOlvPxxTWVdd3jHr3bhm39LZ
+         dpAAObi41skmFREY5fQmDygYUmSYYbV6OLSfcraZxOyhOls3HrspfeMNZQ/HyfesX9uv
+         oUExjsgCVGijrqYRTcoN9fsm3b9AlEVCXcj+9vGnQGARS4pFG65AOGFBk1qHINL9uCia
+         2uCTQRFWJw8ZA4ncMYVE8n/xHQZdE9oELX7/bePOshWBQaVnYcz52aJ2SoMiBYnEcW9u
+         XmqrSt6ysa76E66DKxQ8W6cJ1kqCySQNo7wOeGV4GqzYD7xjJXNBrYdoy2xppEjtGYdD
+         uLlg==
+X-Gm-Message-State: APjAAAXZ6STRtA+Bv93nY1WCP3emOhsyg3JDu4W0csRri3a9rMeVjKST
+        VaNit2Irt9lulRec/H03P92gWSDJtg7jiZ6TVxZKpw==
+X-Google-Smtp-Source: APXvYqxxG19vrc4zh9B8cysrofVDaZKTfnys80lHH5g51hp2fuu5wvhQpGmof7CNTeCpZzuD/GyqsNliegUDGmUlJpw=
+X-Received: by 2002:a24:9fc5:: with SMTP id c188mr1592711ite.104.1558082499923;
+ Fri, 17 May 2019 01:41:39 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20190517082633.GA3890@zhanggen-UX430UQ>
+In-Reply-To: <20190517082633.GA3890@zhanggen-UX430UQ>
+From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Date:   Fri, 17 May 2019 10:41:28 +0200
+Message-ID: <CAKv+Gu98JNK34Q6MNOe3aq0W5rbv6hUFiuc7cHxHJat5aTk_gg@mail.gmail.com>
+Subject: Re: [PATCH] efi_64: Fix a missing-check bug in arch/x86/platform/efi/efi_64.c
+ of Linux 5.1
+To:     Gen Zhang <blackgod016574@gmail.com>,
+        linux-efi <linux-efi@vger.kernel.org>
+Cc:     Darren Hart <dvhart@infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Commit 38ac0287b7f4
+Hello Gen,
 
-  ("fbdev/efifb: Honour UEFI memory map attributes when mapping the FB")
+Thanks for the patch.
 
-updated the EFI framebuffer code to use memory mappings for the linear
-framebuffer that are permitted by the memory attributes described by the
-EFI memory map for the particular region, if the framebuffer happens to
-be covered by the EFI memory map (which is typically only the case for
-framebuffers in shared memory). This is required since non-X86 systems
-may require cacheable attributes for memory mappings that are shared
-with other masters (such as GPUs), and this information cannot be
-described by the Graphics Output Protocol (GOP) EFI protocol itself,
-and so we rely on the EFI memory map for this.
+On Fri, 17 May 2019 at 10:26, Gen Zhang <blackgod016574@gmail.com> wrote:
+>
+> save_pgd is allocated by kmalloc_array. And it is dereferenced in the
+> following codes. However, memory allocation functions such as
+> kmalloc_array may fail. Dereferencing this save_pgd null pointer may
+> cause the kernel go wrong. Thus we should check this allocation and add
+> error handling code.
+>
+> Signed-off-by: Gen Zhang <blackgod016574@gmail.com>
+>
+> ---
+> diff --git a/arch/x86/platform/efi/efi_64.c b/arch/x86/platform/efi/efi_64.c
+> index cf0347f..fb9ae57 100644
+> --- a/arch/x86/platform/efi/efi_64.c
+> +++ b/arch/x86/platform/efi/efi_64.c
+> @@ -91,6 +91,8 @@ pgd_t * __init efi_call_phys_prolog(void)
+>
+>         n_pgds = DIV_ROUND_UP((max_pfn << PAGE_SHIFT), PGDIR_SIZE);
+>         save_pgd = kmalloc_array(n_pgds, sizeof(*save_pgd), GFP_KERNEL);
+> +       if (!save_pgd)
+> +               goto err;
+>
+>         /*
+>          * Build 1:1 identity mapping for efi=old_map usage. Note that
+> @@ -142,6 +144,9 @@ pgd_t * __init efi_call_phys_prolog(void)
+>         __flush_tlb_all();
+>
+>         return save_pgd;
+> +err:
+> +       __flush_tlb_all();
 
-As reported by James, this breaks some x86 systems:
+What is the point of the goto and the TLB flush?
 
-  [ 1.173368] efifb: probing for efifb
-  [ 1.173386] efifb: abort, cannot remap video memory 0x1d5000 @ 0xcf800000
-  [ 1.173395] Trying to free nonexistent resource <00000000cf800000-00000000cf9d4bff>
-  [ 1.173413] efi-framebuffer: probe of efi-framebuffer.0 failed with error -5
+> +       return ERR_PTR(-ENOMEM);
 
-The problem turns out to be that the memory map entry that describes the
-framebuffer has no memory attributes listed at all, and so we end up with
-a mem_flags value of 0x0.
+Returning an error here is not going to make much difference, given
+that the caller of efi_call_phys_prolog() does not bother to check it,
+and passes the result straight into efi_call_phys_epilog(), which
+happily attempts to dereference it.
 
-So work around this by ensuring that the memory map entry's attribute field
-has a sane value before using it to mask the set of usable attributes.
+So if you want to fix this properly, please fix it at the call site as
+well. I'd prefer to avoid ERR_PTR() and just return NULL for a failed
+allocation though.
 
-Fixes: 38ac0287b7f4 ("fbdev/efifb: Honour UEFI memory map attributes when ...")
-Cc: <stable@vger.kernel.org> # v4.19+
-Cc: Peter Jones <pjones@redhat.com>
-Reported-by: James Hilliard <james.hilliard1@gmail.com>
-Tested-by: James Hilliard <james.hilliard1@gmail.com>
-Signed-off-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
----
- drivers/video/fbdev/efifb.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/video/fbdev/efifb.c b/drivers/video/fbdev/efifb.c
-index 9e529cc2b4ff..9f39f0c360e0 100644
---- a/drivers/video/fbdev/efifb.c
-+++ b/drivers/video/fbdev/efifb.c
-@@ -477,8 +477,12 @@ static int efifb_probe(struct platform_device *dev)
- 		 * If the UEFI memory map covers the efifb region, we may only
- 		 * remap it using the attributes the memory map prescribes.
- 		 */
--		mem_flags |= EFI_MEMORY_WT | EFI_MEMORY_WB;
--		mem_flags &= md.attribute;
-+		md.attribute &= EFI_MEMORY_UC | EFI_MEMORY_WC |
-+				EFI_MEMORY_WT | EFI_MEMORY_WB;
-+		if (md.attribute) {
-+			mem_flags |= EFI_MEMORY_WT | EFI_MEMORY_WB;
-+			mem_flags &= md.attribute;
-+		}
- 	}
- 	if (mem_flags & EFI_MEMORY_WC)
- 		info->screen_base = ioremap_wc(efifb_fix.smem_start,
--- 
-2.20.1
-
+>  }
+>
+>  void __init efi_call_phys_epilog(pgd_t *save_pgd)
+> ---
