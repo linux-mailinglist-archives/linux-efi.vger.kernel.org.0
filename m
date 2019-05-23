@@ -2,27 +2,27 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D41E2897A
-	for <lists+linux-efi@lfdr.de>; Thu, 23 May 2019 21:42:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DF3D028903
+	for <lists+linux-efi@lfdr.de>; Thu, 23 May 2019 21:41:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391117AbfEWTiT (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 23 May 2019 15:38:19 -0400
-Received: from mail.kernel.org ([198.145.29.99]:33760 "EHLO mail.kernel.org"
+        id S2391591AbfEWTaO (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 23 May 2019 15:30:14 -0400
+Received: from mail.kernel.org ([198.145.29.99]:43632 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2390689AbfEWTXY (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Thu, 23 May 2019 15:23:24 -0400
+        id S2392075AbfEWTaN (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Thu, 23 May 2019 15:30:13 -0400
 Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C78DB2133D;
-        Thu, 23 May 2019 19:23:22 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id A73572133D;
+        Thu, 23 May 2019 19:30:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1558639403;
+        s=default; t=1558639812;
         bh=OGUu2Sgn161BC2t3viF5PL0nsPJFqDhoMlU0WpAaogM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Hb+8msRb3vaKvREwcdjpzVP7jZt5fWFbuZyxaL1gnc5igJTDgDWHGfUzwosFna/Bz
-         KVSQGbatpXItnP8U0Iawz7UCUz3NQLZgtTRDPHeibBSoZ/PQXHJ6l4CRC0ctVqZ2+E
-         lIPxEP1W6D/MJ2LsIElVV35Va1plIAMNbnnEecZ8=
+        b=FIPJs5pPweJZYGilRi0McxlSJqqfTRGy0ZjKTBixtZ+FWXoDsWyitMQR0UT0FDXG6
+         hRI4i9rM5iwdn3MgFrRqGEVYdAxWGFCshkjsD/6LjiU1QV270/RrgNRRTs1QXXT878
+         S4eb+cQXrlV6BlDjanmEMU62p/ToQ3HZpTz1u4CU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -36,12 +36,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Peter Zijlstra <peterz@infradead.org>,
         Thomas Gleixner <tglx@linutronix.de>,
         linux-efi@vger.kernel.org, Ingo Molnar <mingo@kernel.org>
-Subject: [PATCH 5.0 076/139] fbdev/efifb: Ignore framebuffer memmap entries that lack any memory types
-Date:   Thu, 23 May 2019 21:06:04 +0200
-Message-Id: <20190523181730.726918040@linuxfoundation.org>
+Subject: [PATCH 5.1 085/122] fbdev/efifb: Ignore framebuffer memmap entries that lack any memory types
+Date:   Thu, 23 May 2019 21:06:47 +0200
+Message-Id: <20190523181716.171067117@linuxfoundation.org>
 X-Mailer: git-send-email 2.21.0
-In-Reply-To: <20190523181720.120897565@linuxfoundation.org>
-References: <20190523181720.120897565@linuxfoundation.org>
+In-Reply-To: <20190523181705.091418060@linuxfoundation.org>
+References: <20190523181705.091418060@linuxfoundation.org>
 User-Agent: quilt/0.66
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
