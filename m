@@ -2,96 +2,91 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F0E12A3BC
-	for <lists+linux-efi@lfdr.de>; Sat, 25 May 2019 11:41:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C00B42A3FC
+	for <lists+linux-efi@lfdr.de>; Sat, 25 May 2019 13:26:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726464AbfEYJlH (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sat, 25 May 2019 05:41:07 -0400
-Received: from mail-pf1-f196.google.com ([209.85.210.196]:37129 "EHLO
-        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726453AbfEYJlH (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sat, 25 May 2019 05:41:07 -0400
-Received: by mail-pf1-f196.google.com with SMTP id a23so6768243pff.4;
-        Sat, 25 May 2019 02:41:07 -0700 (PDT)
+        id S1726755AbfEYL0F (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 25 May 2019 07:26:05 -0400
+Received: from mail-wr1-f68.google.com ([209.85.221.68]:40575 "EHLO
+        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726653AbfEYL0F (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sat, 25 May 2019 07:26:05 -0400
+Received: by mail-wr1-f68.google.com with SMTP id t4so4092270wrx.7
+        for <linux-efi@vger.kernel.org>; Sat, 25 May 2019 04:26:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=jiTZ2o51d/sXyhPszg2Yj4q0qpn+Df3pI4yEQ+F+CaU=;
-        b=Je7TqJvXMENlCk3KNfujP2JkxLFkRJ216vC0Pn/xn9SjRXrCQTi/Wt9sIKeYqRqlG2
-         05v409w0p5WS2azWc8YEdW+mBWMaJM4Z2oznxJRoxm20gwGNcVijA+CRZ4Zr5TZhBCmn
-         6NhhmYFiT0UPe2jvDG4EUdX2JlVZp2bWjxwFykOxUqT7B5PKrx6uRwS1kzv8YXW9JmVu
-         rtn9w592U9knYw3AEW+j/NDrp5xlYv+jOFbhj1n6wQuMHldhjkPXCFGqUnx/h8bj8UDh
-         AISuuICfKbz7o9/kp3VX+oEXrj2uK6V4A9W+jFnOzDT0Ji4olXXeD7oLA7WDgeW+tnbF
-         a8eQ==
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=l3Jmq85Hmw2WeX8gpf6pOoI0z6l9EWC+tkDaeefNI1o=;
+        b=ldLaiCWcwfHAzZPNr/OkUNDMUtsFV81IstXNblmin3fdJrm4WBVKshRjXDYhIAQGBQ
+         YY0iQMRNPSYJF6qcuAJkt7xpff8wZ0jJz5jlK+eHCCWOUNHE5hlTpG5KKUhAF2ecJSby
+         GoqQ6l2PIL8dO7MkQqUO/BktFQiyWYqJJ/ZaAQZCLEdU9K/Lh4gVl5rPBxtOBAgB5JIR
+         oHvWxA3a5EaoGbJ7eTpo9bY5gsLTmyqgGnErLbZwf1N+G0luqYe2ffMgu/2zwK6S8K27
+         x9w9tWA7y6bRVWuj9YK2dCXCG08Vwv06MPwBnBldyvei5VDF+cmJ1Z3AiAXbLKLSeBEu
+         u6LQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=jiTZ2o51d/sXyhPszg2Yj4q0qpn+Df3pI4yEQ+F+CaU=;
-        b=ig+pn8o0s+PZeYhIY/LdMxPUi4AiqBmtPjJBuXq3Un+oflbU3IBm+GGb/jFkBrHVKO
-         3IsthW8i3lHQnS+PBR1pP7pcnul1W03eRhydY5htQNQo+OTGTdevIsUqjqQrmSuS6b5C
-         fGA75HF5c5PRI6hNumtq/dC3aC/sFbuyZwE4842hiapsk58T6ZCbaXwRHSGMQpADsYn/
-         KFZvZgmctMxNiScGjMfmVMBfH7glnAcdXcWqKqTBcS3O+ZQ0qt1E4BlYxZ/w7oULrpAL
-         uJ2wt3yDioomb/klHfrBsl+lfikKuvb3SvR/bW/8lMbger8BJZsaqQ8iiUTxRufyTHGM
-         Xhiw==
-X-Gm-Message-State: APjAAAVJJ+iAybwCwl0kq7YN5YWB9DXozZ7KmUwFmDmgoD9a7oYB2lh4
-        Rw+hGY8PdVAOlW/vrWOwFT0=
-X-Google-Smtp-Source: APXvYqzzWIEPodUUePFSoAYLslp64HJ+9tPcEwWIi6JyrCzBEdEYh4VWXmIHQtKNIIQ+Gu/Ecs0ujA==
-X-Received: by 2002:a62:590f:: with SMTP id n15mr27824591pfb.204.1558777266747;
-        Sat, 25 May 2019 02:41:06 -0700 (PDT)
-Received: from zhanggen-UX430UQ ([66.42.35.75])
-        by smtp.gmail.com with ESMTPSA id k22sm4951489pfk.54.2019.05.25.02.41.01
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=l3Jmq85Hmw2WeX8gpf6pOoI0z6l9EWC+tkDaeefNI1o=;
+        b=gb2tLvsvsBpIC7PerrdXnkZl1NdiMDhFOtfTclwO/CeQW+Yfp2pv5FjKWWg2Hk4vSB
+         WGbb6axV7gktIO5LLPmypzIHY0Dc6kBHp52705DqmM2PQ4TaGMnev4tpX6PAPRcNkvEH
+         h3rD8ozWpMO3aLXmIRVnUF2d6WQHBMt1hCB/NaWcykS15QVYMKSzAOEjsAiCuC0rdpSR
+         rzLq3DD8ikzaFUCpKAvBHds22YURp27Rizt/NWwKqPH3e5Qa2J4ATPEAbe9SoiO4sha3
+         ONiAOnBesYTuvgHOkEEreV3mZRbqZgxJ8W9rzMihIXAcBAwseujykN6VNrBfDvex69j3
+         wZXA==
+X-Gm-Message-State: APjAAAVejbZomxGrqp+3egcfVW+DiRuXR2XuiI9Zhd8BMabYA3XujmUt
+        WBUwlPXxBQSsXHE6rctVUCGyyJJhegQF0w==
+X-Google-Smtp-Source: APXvYqy+jHj17CyeDcnuuzBRgIjzq+0LH01TDDqXY29xxw4IQdwZmhUcOU+muNgW0OCl981nMxs5sQ==
+X-Received: by 2002:adf:dc12:: with SMTP id t18mr6275253wri.61.1558783563569;
+        Sat, 25 May 2019 04:26:03 -0700 (PDT)
+Received: from sudo.home ([2a01:cb1d:112:6f00:3ccc:7074:9336:6a6e])
+        by smtp.gmail.com with ESMTPSA id y16sm4942010wru.28.2019.05.25.04.26.02
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Sat, 25 May 2019 02:41:05 -0700 (PDT)
-Date:   Sat, 25 May 2019 17:40:52 +0800
-From:   Gen Zhang <blackgod016574@gmail.com>
-To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Cc:     Darren Hart <dvhart@infradead.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2] efi_64: Fix a missing-check bug in
- arch/x86/platform/efi/efi_64.c
-Message-ID: <20190525094052.GA13189@zhanggen-UX430UQ>
-References: <20190517082633.GA3890@zhanggen-UX430UQ>
- <CAKv+Gu98JNK34Q6MNOe3aq0W5rbv6hUFiuc7cHxHJat5aTk_gg@mail.gmail.com>
- <20190517090628.GA4162@zhanggen-UX430UQ>
- <CAKv+Gu_mwFpdtNZm9QMFn69+vOMTOpv9gvuhnBL2NBXvwkhXqg@mail.gmail.com>
- <20190523005133.GA14881@zhanggen-UX430UQ>
- <CAKv+Gu_wRYZdDYXso0B5m_BPJznGQXpCWq4_0u34bConu0V1ow@mail.gmail.com>
- <20190525023608.GA11613@zhanggen-UX430UQ>
- <CAKv+Gu-agMymoGm0G8Yj-siXwtPnqYjAHeu-wQwRT47Jqd27JA@mail.gmail.com>
+        Sat, 25 May 2019 04:26:02 -0700 (PDT)
+From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
+To:     linux-efi@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>
+Cc:     Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        linux-kernel@vger.kernel.org, Gen Zhang <blackgod016574@gmail.com>,
+        Rob Bradford <robert.bradford@intel.com>
+Subject: [GIT PULL 0/2] EFI fixes for v5.2
+Date:   Sat, 25 May 2019 13:25:57 +0200
+Message-Id: <20190525112559.7917-1-ard.biesheuvel@linaro.org>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAKv+Gu-agMymoGm0G8Yj-siXwtPnqYjAHeu-wQwRT47Jqd27JA@mail.gmail.com>
-User-Agent: Mutt/1.5.24 (2015-08-30)
+Content-Transfer-Encoding: 8bit
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Sat, May 25, 2019 at 11:18:36AM +0200, Ard Biesheuvel wrote:
-> On Sat, 25 May 2019 at 04:36, Gen Zhang <blackgod016574@gmail.com> wrote:
-> >
-> > On Fri, May 24, 2019 at 06:07:10PM +0200, Ard Biesheuvel wrote:
-> > > Apologies for only spotting this now, but I seem to have given some bad advice.
-> > >
-> > > efi_call_phys_prolog() in efi_64.c will also return NULL if
-> > > (!efi_enabled(EFI_OLD_MEMMAP)), but this is not an error condition. So
-> > > that occurrence has to be updated: please return efi_mm.pgd instead.
-> > Thanks for your reply, Ard. You mean that we should return efi_mm.pgd
-> > when allcoation fails? And we should delete return EFI_ABORTED on the
-> > caller site, right? In that case, how should we handle the NULL pointer
-> > returned by condition if(!efi_enabled(EFI_OLD_MEMMAP)) on the caller
-> > site?
-> >
-> 
-> No, the other way around. I have already updated the patch, so don't
-> worry about it.
-> 
-> https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git/commit/?h=urgent&id=d2dc2bc7b60b936b95da4b04c2912c02974c3e9f
-Thanks for your reply and update, Ard! That's really nice of you.
+The following changes since commit a188339ca5a396acc588e5851ed7e19f66b0ebd9:
 
-Thanks
-Gen
+  Linux 5.2-rc1 (2019-05-19 15:47:09 -0700)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git tags/efi-urgent
+
+for you to fetch changes up to a7decd94d514721f8bf5da02e3ae66758b80603a:
+
+  efi: Allow the number of EFI configuration tables entries to be zero (2019-05-25 13:10:50 +0200)
+
+----------------------------------------------------------------
+A pair of low priority EFI fixes for v5.2:
+- deal with systems where EFI does not expose a single configuration table
+- add missing handling for memory allocation failures to x86 old_map code
+
+----------------------------------------------------------------
+Gen Zhang (1):
+      efi/x86: Add missing error handling to old_memmap 1:1 mapping code
+
+Rob Bradford (1):
+      efi: Allow the number of EFI configuration tables entries to be zero
+
+ arch/x86/platform/efi/efi.c    | 2 ++
+ arch/x86/platform/efi/efi_64.c | 9 ++++++---
+ arch/x86/platform/efi/quirks.c | 3 +++
+ drivers/firmware/efi/efi.c     | 3 +++
+ 4 files changed, 14 insertions(+), 3 deletions(-)
