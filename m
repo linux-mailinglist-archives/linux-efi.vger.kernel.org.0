@@ -2,379 +2,276 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5EBF532817
-	for <lists+linux-efi@lfdr.de>; Mon,  3 Jun 2019 07:42:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 41E6F3504F
+	for <lists+linux-efi@lfdr.de>; Tue,  4 Jun 2019 21:35:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726535AbfFCFmR (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 3 Jun 2019 01:42:17 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:55306 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726383AbfFCFmR (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 3 Jun 2019 01:42:17 -0400
-Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x535fU3h133829
-        for <linux-efi@vger.kernel.org>; Mon, 3 Jun 2019 01:42:15 -0400
-Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 2svwh087b4-1
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <linux-efi@vger.kernel.org>; Mon, 03 Jun 2019 01:42:10 -0400
-Received: from localhost
-        by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <linux-efi@vger.kernel.org> from <rppt@linux.ibm.com>;
-        Mon, 3 Jun 2019 06:42:08 +0100
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
-        by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-        Mon, 3 Jun 2019 06:42:03 +0100
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com [9.149.105.62])
-        by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x535g2TC27197572
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 3 Jun 2019 05:42:02 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 6B628AE045;
-        Mon,  3 Jun 2019 05:42:02 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 43A4FAE04D;
-        Mon,  3 Jun 2019 05:42:01 +0000 (GMT)
-Received: from rapoport-lnx (unknown [9.148.8.53])
-        by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
-        Mon,  3 Jun 2019 05:42:01 +0000 (GMT)
-Date:   Mon, 3 Jun 2019 08:41:59 +0300
-From:   Mike Rapoport <rppt@linux.ibm.com>
-To:     Dan Williams <dan.j.williams@intel.com>
-Cc:     linux-efi@vger.kernel.org, x86@kernel.org,
-        Borislav Petkov <bp@alien8.de>, Ingo Molnar <mingo@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Darren Hart <dvhart@infradead.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        kbuild test robot <lkp@intel.com>, vishal.l.verma@intel.com,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        linux-nvdimm@lists.01.org
-Subject: Re: [PATCH v2 4/8] x86, efi: Reserve UEFI 2.8 Specific Purpose
- Memory for dax
-References: <155925716254.3775979.16716824941364738117.stgit@dwillia2-desk3.amr.corp.intel.com>
- <155925718351.3775979.13546720620952434175.stgit@dwillia2-desk3.amr.corp.intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <155925718351.3775979.13546720620952434175.stgit@dwillia2-desk3.amr.corp.intel.com>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-X-TM-AS-GCONF: 00
-x-cbid: 19060305-0020-0000-0000-000003432C4E
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19060305-0021-0000-0000-000021963D2F
-Message-Id: <20190603054159.GA5747@rapoport-lnx>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-06-03_04:,,
- signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1906030041
+        id S1726343AbfFDTfR (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 4 Jun 2019 15:35:17 -0400
+Received: from mail-yb1-f201.google.com ([209.85.219.201]:50640 "EHLO
+        mail-yb1-f201.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726179AbfFDTfR (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 4 Jun 2019 15:35:17 -0400
+Received: by mail-yb1-f201.google.com with SMTP id v5so2138647ybq.17
+        for <linux-efi@vger.kernel.org>; Tue, 04 Jun 2019 12:35:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=date:message-id:mime-version:subject:from:to:cc;
+        bh=nqmyeC+ULMhm5Z1OXDXUW8a3IDjcGN3t8NAaEwxyp+8=;
+        b=jX3jKalZwMxYkWjR6dmDpaA+Nuo32n4Mlg3GToGdy0KAj2yfRjhN1IhPQt6m9eMJpz
+         fTvBHvYMtoZ6Gbk7ds7d1zgV8oepN2qSDif4HRtLakhCjviJD5xGP+HAkZcrwQa3G7Pf
+         NfnFyNc4wRO0j6jFGMyfcaYTu00wS8M1WwK/vaHeDVfBLdjtWBYVpLocsyyO6Z85Ew70
+         PcMehjozG++MBQbcq/DdEAeTaebadCM34tcS91sOC58FlVpV/ReH4kncbtsvKEZudc9d
+         zPv4t+btQde6yfHYKTfKooqGsthPFdRHBO68IWj4D78/M0YuCwRA4XJ3Hx/D1AUxs+2H
+         bYRQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:message-id:mime-version:subject:from:to:cc;
+        bh=nqmyeC+ULMhm5Z1OXDXUW8a3IDjcGN3t8NAaEwxyp+8=;
+        b=WjWSRSdF3JWBMNCIm/p7AwtDiSv/k+lVpkFctRfhgQuNVUQ58QVzOF+Be131Yqey7S
+         a7DWo+fjGfCuuRVpnA9mnv7+qXcp+diOZ0VkChu472fFZR7s9H6efqUO8eLlCNFM7LsE
+         S4JYBG2oAlEX7XvZCsY7Csr6J/pLCN6UwsAudhQi7braty+CQwvStDMsK1VU8p8E0vPy
+         TUh1JnxsZ1XMiRU5KCHWjYdxLFd9gvdu+LjEnee6D6DVEWcos5/Jcmj1NgDe8FKQNMIv
+         muf2wW7rdz/2ikFld+MMIQw1Lmg88E0ziPlX5+7xQu1RvqsBQ41+0o1XpJNZ22Dt6sQ4
+         9MuA==
+X-Gm-Message-State: APjAAAX1tWf/hDMU0xl61gURHjOtAWLdYbCHt3OXiechENYkNIXdyNat
+        RqvJSiBWKGNGjaI5F3h1Lj2qY17eozGTXUVbyKTRdg==
+X-Google-Smtp-Source: APXvYqw+rT2sweEiRPfNq4mwfjbwGro9KCHLP23tZyY9BfQsoWOTXQiL9fIXEnZmN3yZbpJP2Q50i7jmMSvpJxURMg/mzA==
+X-Received: by 2002:a25:6f0b:: with SMTP id k11mr15970733ybc.303.1559676916128;
+ Tue, 04 Jun 2019 12:35:16 -0700 (PDT)
+Date:   Tue,  4 Jun 2019 12:35:11 -0700
+Message-Id: <20190604193511.153831-1-matthewgarrett@google.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.22.0.rc1.311.g5d7573a151-goog
+Subject: [PATCH] tpm: Don't duplicate events from the final event log in the
+ TCG2 log
+From:   Matthew Garrett <matthewgarrett@google.com>
+To:     linux-integrity@vger.kernel.org
+Cc:     peterhuewe@gmx.de, jarkko.sakkinen@linux.intel.com, jgg@ziepe.ca,
+        linux-efi@vger.kernel.org, ard.biesheuvel@linaro.org,
+        Matthew Garrett <matthewgarrett@google.com>,
+        Matthew Garrett <mjg59@google.com>,
+        Joe Richey <joerichey@google.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hi Dan,
+After the first call to GetEventLog() on UEFI systems using the TCG2
+crypto agile log format, any further log events (other than those
+triggered by ExitBootServices()) will be logged in both the main log and
+also in the Final Events Log. While the kernel only calls GetEventLog()
+immediately before ExitBootServices(), we can't control whether earlier
+parts of the boot process have done so. This will result in log entries
+that exist in both logs, and so the current approach of simply appending
+the Final Event Log to the main log will result in events being
+duplicated.
 
-On Thu, May 30, 2019 at 03:59:43PM -0700, Dan Williams wrote:
-> UEFI 2.8 defines an EFI_MEMORY_SP attribute bit to augment the
-> interpretation of the EFI Memory Types as "reserved for a special
-> purpose".
-> 
-> The proposed Linux behavior for specific purpose memory is that it is
-> reserved for direct-access (device-dax) by default and not available for
-> any kernel usage, not even as an OOM fallback. Later, through udev
-> scripts or another init mechanism, these device-dax claimed ranges can
-> be reconfigured and hot-added to the available System-RAM with a unique
-> node identifier.
-> 
-> This patch introduces 3 new concepts at once given the entanglement
-> between early boot enumeration relative to memory that can optionally be
-> reserved from the kernel page allocator by default. The new concepts
-> are:
-> 
-> - E820_TYPE_SPECIFIC: Upon detecting the EFI_MEMORY_SP attribute on
->   EFI_CONVENTIONAL memory, update the E820 map with this new type. Only
->   perform this classification if the CONFIG_EFI_SPECIFIC_DAX=y policy is
->   enabled, otherwise treat it as typical ram.
-> 
-> - IORES_DESC_APPLICATION_RESERVED: Add a new I/O resource descriptor for
->   a device driver to search iomem resources for application specific
->   memory. Teach the iomem code to identify such ranges as "Application
->   Reserved".
-> 
-> - MEMBLOCK_APP_SPECIFIC: Given the memory ranges can fallback to the
->   traditional System RAM pool the expectation is that they will have
->   typical SRAT entries. In order to support a policy of device-dax by
->   default with the option to hotplug later, the numa initialization code
->   is taught to avoid marking online MEMBLOCK_APP_SPECIFIC regions.
+We can avoid this problem by looking at the size of the Final Event Log
+just before we call ExitBootServices() and exporting this to the main
+kernel. The kernel can then skip over all events that occured before
+ExitBootServices() and only append events that were not also logged to
+the main log.
 
-I'd appreciate a more elaborate description how this flag is going to be
-used.
+Signed-off-by: Matthew Garrett <mjg59@google.com>
+Reported-by: Joe Richey <joerichey@google.com>
+Suggested-by: Joe Richey <joerichey@google.com>
+---
+ drivers/char/tpm/eventlog/efi.c               | 11 ++++++-
+ .../firmware/efi/libstub/efi-stub-helper.c    | 15 ++++++++++
+ drivers/firmware/efi/libstub/efistub.h        |  2 ++
+ drivers/firmware/efi/libstub/fdt.c            | 27 ++++++-----------
+ drivers/firmware/efi/libstub/tpm.c            | 30 +++++++++++++++++++
+ drivers/firmware/efi/tpm.c                    |  2 +-
+ include/linux/efi.h                           |  1 +
+ 7 files changed, 68 insertions(+), 20 deletions(-)
+
+diff --git a/drivers/char/tpm/eventlog/efi.c b/drivers/char/tpm/eventlog/efi.c
+index 9179cf6bdee9..06b7fc99aa4a 100644
+--- a/drivers/char/tpm/eventlog/efi.c
++++ b/drivers/char/tpm/eventlog/efi.c
+@@ -80,6 +80,8 @@ int tpm_read_log_efi(struct tpm_chip *chip)
+ 		goto out;
+ 	}
  
-> A follow-on change integrates parsing of the ACPI HMAT to identify the
-> node and sub-range boundaries of EFI_MEMORY_SP designated memory. For
-> now, just identify and reserve memory of this type.
-> 
-> Cc: <x86@kernel.org>
-> Cc: Borislav Petkov <bp@alien8.de>
-> Cc: Ingo Molnar <mingo@redhat.com>
-> Cc: "H. Peter Anvin" <hpa@zytor.com>
-> Cc: Darren Hart <dvhart@infradead.org>
-> Cc: Andy Shevchenko <andy@infradead.org>
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>
-> Reported-by: kbuild test robot <lkp@intel.com>
-> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-> ---
->  arch/x86/Kconfig                  |   20 ++++++++++++++++++++
->  arch/x86/boot/compressed/eboot.c  |    5 ++++-
->  arch/x86/boot/compressed/kaslr.c  |    2 +-
->  arch/x86/include/asm/e820/types.h |    9 +++++++++
->  arch/x86/kernel/e820.c            |    9 +++++++--
->  arch/x86/kernel/setup.c           |    1 +
->  arch/x86/platform/efi/efi.c       |   37 +++++++++++++++++++++++++++++++++----
->  drivers/acpi/numa.c               |   15 ++++++++++++++-
->  include/linux/efi.h               |   14 ++++++++++++++
->  include/linux/ioport.h            |    1 +
->  include/linux/memblock.h          |    7 +++++++
->  mm/memblock.c                     |    4 ++++
->  12 files changed, 115 insertions(+), 9 deletions(-)
++	efi_tpm_final_log_size -= log_tbl->final_events_early_size;
++
+ 	tmp = krealloc(log->bios_event_log,
+ 		       log_size + efi_tpm_final_log_size,
+ 		       GFP_KERNEL);
+@@ -90,8 +92,15 @@ int tpm_read_log_efi(struct tpm_chip *chip)
+ 	}
  
-...
-
-> diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
-> index 08a5f4a131f5..ddde1c7b1f9a 100644
-> --- a/arch/x86/kernel/setup.c
-> +++ b/arch/x86/kernel/setup.c
-> @@ -1109,6 +1109,7 @@ void __init setup_arch(char **cmdline_p)
-> 
->  	if (efi_enabled(EFI_MEMMAP)) {
->  		efi_fake_memmap();
-> +		efi_find_app_specific();
->  		efi_find_mirror();
->  		efi_esrt_init();
-> 
-> diff --git a/arch/x86/platform/efi/efi.c b/arch/x86/platform/efi/efi.c
-> index e1cb01a22fa8..899f1305c77a 100644
-> --- a/arch/x86/platform/efi/efi.c
-> +++ b/arch/x86/platform/efi/efi.c
-> @@ -123,10 +123,15 @@ void __init efi_find_mirror(void)
->   * more than the max 128 entries that can fit in the e820 legacy
->   * (zeropage) memory map.
->   */
-> +enum add_efi_mode {
-> +	ADD_EFI_ALL,
-> +	ADD_EFI_APP_SPECIFIC,
-> +};
-> 
-> -static void __init do_add_efi_memmap(void)
-> +static void __init do_add_efi_memmap(enum add_efi_mode mode)
->  {
->  	efi_memory_desc_t *md;
-> +	int add = 0;
-> 
->  	for_each_efi_memory_desc(md) {
->  		unsigned long long start = md->phys_addr;
-> @@ -139,7 +144,9 @@ static void __init do_add_efi_memmap(void)
->  		case EFI_BOOT_SERVICES_CODE:
->  		case EFI_BOOT_SERVICES_DATA:
->  		case EFI_CONVENTIONAL_MEMORY:
-> -			if (md->attribute & EFI_MEMORY_WB)
-> +			if (is_efi_dax(md))
-> +				e820_type = E820_TYPE_SPECIFIC;
-> +			else if (md->attribute & EFI_MEMORY_WB)
->  				e820_type = E820_TYPE_RAM;
->  			else
->  				e820_type = E820_TYPE_RESERVED;
-> @@ -165,9 +172,24 @@ static void __init do_add_efi_memmap(void)
->  			e820_type = E820_TYPE_RESERVED;
->  			break;
->  		}
-> +
-> +		if (e820_type == E820_TYPE_SPECIFIC) {
-> +			memblock_remove(start, size);
-> +			memblock_add_range(&memblock.reserved, start, size,
-> +					MAX_NUMNODES, MEMBLOCK_APP_SPECIFIC);
-
-Why cannot this happen at e820__memblock_setup()?
-Then memblock_remove() call should not be required as nothing will
-memblock_add() the region. 
-
-> +		} else if (mode != ADD_EFI_APP_SPECIFIC)
-> +			continue;
-> +
-> +		add++;
->  		e820__range_add(start, size, e820_type);
->  	}
-> -	e820__update_table(e820_table);
-> +	if (add)
-> +		e820__update_table(e820_table);
-> +}
-> +
-> +void __init efi_find_app_specific(void)
-> +{
-> +	do_add_efi_memmap(ADD_EFI_APP_SPECIFIC);
->  }
-> 
->  int __init efi_memblock_x86_reserve_range(void)
-> @@ -200,7 +222,7 @@ int __init efi_memblock_x86_reserve_range(void)
->  		return rv;
-> 
->  	if (add_efi_memmap)
-> -		do_add_efi_memmap();
-> +		do_add_efi_memmap(ADD_EFI_ALL);
-> 
->  	WARN(efi.memmap.desc_version != 1,
->  	     "Unexpected EFI_MEMORY_DESCRIPTOR version %ld",
-> @@ -753,6 +775,13 @@ static bool should_map_region(efi_memory_desc_t *md)
->  	if (IS_ENABLED(CONFIG_X86_32))
->  		return false;
-> 
-> +	/*
-> +	 * Specific purpose memory assigned to device-dax is
-> +	 * not mapped by default.
-> +	 */
-> +	if (is_efi_dax(md))
-> +		return false;
-> +
->  	/*
->  	 * Map all of RAM so that we can access arguments in the 1:1
->  	 * mapping when making EFI runtime calls.
-> diff --git a/drivers/acpi/numa.c b/drivers/acpi/numa.c
-> index 30995834ad70..9083bb8f611b 100644
-> --- a/drivers/acpi/numa.c
-> +++ b/drivers/acpi/numa.c
-> @@ -260,7 +260,7 @@ void __init acpi_numa_slit_init(struct acpi_table_slit *slit)
->  int __init
->  acpi_numa_memory_affinity_init(struct acpi_srat_mem_affinity *ma)
->  {
-> -	u64 start, end;
-> +	u64 start, end, i, a_start, a_end;
->  	u32 hotpluggable;
->  	int node, pxm;
-> 
-> @@ -283,6 +283,19 @@ acpi_numa_memory_affinity_init(struct acpi_srat_mem_affinity *ma)
->  	if (acpi_srat_revision <= 1)
->  		pxm &= 0xff;
-> 
-> +	/* Clamp Application Specific Memory */
-> +	for_each_mem_range(i, &memblock.reserved, NULL, NUMA_NO_NODE,
-> +			MEMBLOCK_APP_SPECIFIC, &a_start, &a_end, NULL) {
-> +		pr_debug("%s: SP: %#llx %#llx SRAT: %#llx %#llx\n", __func__,
-> +				a_start, a_end, start, end);
-> +		if (a_start <= start && a_end >= end)
-> +			goto out_err;
-> +		if (a_start >= start && a_start < end)
-> +			start = a_start;
-> +		if (a_end <= end && end > start)
-> +			end = a_end;
-> +	}
-> +
->  	node = acpi_map_pxm_to_node(pxm);
->  	if (node == NUMA_NO_NODE || node >= MAX_NUMNODES) {
->  		pr_err("SRAT: Too many proximity domains.\n");
-> diff --git a/include/linux/efi.h b/include/linux/efi.h
-> index 91368f5ce114..b57b123cbdf9 100644
-> --- a/include/linux/efi.h
-> +++ b/include/linux/efi.h
-> @@ -129,6 +129,19 @@ typedef struct {
->  	u64 attribute;
->  } efi_memory_desc_t;
-> 
-> +#ifdef CONFIG_EFI_SPECIFIC_DAX
-> +static inline bool is_efi_dax(efi_memory_desc_t *md)
-> +{
-> +	return md->type == EFI_CONVENTIONAL_MEMORY
-> +		&& (md->attribute & EFI_MEMORY_SP);
-> +}
-> +#else
-> +static inline bool is_efi_dax(efi_memory_desc_t *md)
-> +{
-> +	return false;
-> +}
-> +#endif
-> +
->  typedef struct {
->  	efi_guid_t guid;
->  	u32 headersize;
-> @@ -1043,6 +1056,7 @@ extern efi_status_t efi_query_variable_store(u32 attributes,
->  					     unsigned long size,
->  					     bool nonblocking);
->  extern void efi_find_mirror(void);
-> +extern void efi_find_app_specific(void);
->  #else
-> 
->  static inline efi_status_t efi_query_variable_store(u32 attributes,
-> diff --git a/include/linux/ioport.h b/include/linux/ioport.h
-> index da0ebaec25f0..2d79841ee9b9 100644
-> --- a/include/linux/ioport.h
-> +++ b/include/linux/ioport.h
-> @@ -133,6 +133,7 @@ enum {
->  	IORES_DESC_PERSISTENT_MEMORY_LEGACY	= 5,
->  	IORES_DESC_DEVICE_PRIVATE_MEMORY	= 6,
->  	IORES_DESC_DEVICE_PUBLIC_MEMORY		= 7,
-> +	IORES_DESC_APPLICATION_RESERVED		= 8,
->  };
-> 
->  /* helpers to define resources */
-> diff --git a/include/linux/memblock.h b/include/linux/memblock.h
-> index 676d3900e1bd..58c29180f2cd 100644
-> --- a/include/linux/memblock.h
-> +++ b/include/linux/memblock.h
-> @@ -35,12 +35,14 @@ extern unsigned long long max_possible_pfn;
->   * @MEMBLOCK_HOTPLUG: hotpluggable region
->   * @MEMBLOCK_MIRROR: mirrored region
->   * @MEMBLOCK_NOMAP: don't add to kernel direct mapping
-> + * @MEMBLOCK_APP_SPECIFIC: reserved / application specific range
->   */
->  enum memblock_flags {
->  	MEMBLOCK_NONE		= 0x0,	/* No special request */
->  	MEMBLOCK_HOTPLUG	= 0x1,	/* hotpluggable region */
->  	MEMBLOCK_MIRROR		= 0x2,	/* mirrored region */
->  	MEMBLOCK_NOMAP		= 0x4,	/* don't add to kernel direct mapping */
-> +	MEMBLOCK_APP_SPECIFIC	= 0x8,  /* reserved / application specific range */
->  };
-> 
->  /**
-> @@ -215,6 +217,11 @@ static inline bool memblock_is_mirror(struct memblock_region *m)
->  	return m->flags & MEMBLOCK_MIRROR;
->  }
-> 
-> +static inline bool memblock_is_app_specific(struct memblock_region *m)
-> +{
-> +	return m->flags & MEMBLOCK_APP_SPECIFIC;
-> +}
-> +
->  static inline bool memblock_is_nomap(struct memblock_region *m)
->  {
->  	return m->flags & MEMBLOCK_NOMAP;
-> diff --git a/mm/memblock.c b/mm/memblock.c
-> index 6bbad46f4d2c..654fecb52ba5 100644
-> --- a/mm/memblock.c
-> +++ b/mm/memblock.c
-> @@ -982,6 +982,10 @@ static bool should_skip_region(struct memblock_region *m, int nid, int flags)
->  	if ((flags & MEMBLOCK_MIRROR) && !memblock_is_mirror(m))
->  		return true;
-> 
-> +	/* if we want specific memory skip non-specific memory regions */
-> +	if ((flags & MEMBLOCK_APP_SPECIFIC) && !memblock_is_app_specific(m))
-> +		return true;
-> +
-
-With this the MEMBLOCK_APP_SPECIFIC won't be skipped for traversals that
-don't set memblock_flags explicitly. Is this the intention?
-
->  	/* skip nomap memory unless we were asked for it explicitly */
->  	if (!(flags & MEMBLOCK_NOMAP) && memblock_is_nomap(m))
->  		return true;
-> 
-
+ 	log->bios_event_log = tmp;
++
++	/*
++	 * Copy any of the final events log that didn't also end up in the
++	 * main log. Events can be logged in both if events are generated
++	 * between GetEventLog() and ExitBootServices().
++	 */
+ 	memcpy((void *)log->bios_event_log + log_size,
+-	       final_tbl->events, efi_tpm_final_log_size);
++	       final_tbl->events + log_tbl->final_events_early_size,
++	       efi_tpm_final_log_size);
+ 	log->bios_event_log_end = log->bios_event_log +
+ 		log_size + efi_tpm_final_log_size;
+ 
+diff --git a/drivers/firmware/efi/libstub/efi-stub-helper.c b/drivers/firmware/efi/libstub/efi-stub-helper.c
+index e4610e72b78f..1db780c0f07b 100644
+--- a/drivers/firmware/efi/libstub/efi-stub-helper.c
++++ b/drivers/firmware/efi/libstub/efi-stub-helper.c
+@@ -926,3 +926,18 @@ efi_status_t efi_exit_boot_services(efi_system_table_t *sys_table_arg,
+ fail:
+ 	return status;
+ }
++
++void *get_efi_config_table(efi_system_table_t *sys_table, efi_guid_t guid)
++{
++	efi_config_table_t *tables = (efi_config_table_t *)sys_table->tables;
++	int i;
++
++	for (i = 0; i < sys_table->nr_tables; i++) {
++		if (efi_guidcmp(tables[i].guid, guid) != 0)
++			continue;
++
++		return (void *)tables[i].table;
++	}
++
++	return NULL;
++}
+diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
+index 1b1dfcaa6fb9..7f1556fd867d 100644
+--- a/drivers/firmware/efi/libstub/efistub.h
++++ b/drivers/firmware/efi/libstub/efistub.h
+@@ -65,6 +65,8 @@ efi_status_t check_platform_features(efi_system_table_t *sys_table_arg);
+ 
+ efi_status_t efi_random_get_seed(efi_system_table_t *sys_table_arg);
+ 
++void *get_efi_config_table(efi_system_table_t *sys_table, efi_guid_t guid);
++
+ /* Helper macros for the usual case of using simple C variables: */
+ #ifndef fdt_setprop_inplace_var
+ #define fdt_setprop_inplace_var(fdt, node_offset, name, var) \
+diff --git a/drivers/firmware/efi/libstub/fdt.c b/drivers/firmware/efi/libstub/fdt.c
+index 5440ba17a1c5..0bf0190917e0 100644
+--- a/drivers/firmware/efi/libstub/fdt.c
++++ b/drivers/firmware/efi/libstub/fdt.c
+@@ -363,26 +363,17 @@ efi_status_t allocate_new_fdt_and_exit_boot(efi_system_table_t *sys_table,
+ 
+ void *get_fdt(efi_system_table_t *sys_table, unsigned long *fdt_size)
+ {
+-	efi_guid_t fdt_guid = DEVICE_TREE_GUID;
+-	efi_config_table_t *tables;
+-	int i;
++	void *fdt;
+ 
+-	tables = (efi_config_table_t *)sys_table->tables;
++	fdt = get_efi_config_table(sys_table, DEVICE_TREE_GUID);
+ 
+-	for (i = 0; i < sys_table->nr_tables; i++) {
+-		void *fdt;
++	if (!fdt)
++		return NULL;
+ 
+-		if (efi_guidcmp(tables[i].guid, fdt_guid) != 0)
+-			continue;
+-
+-		fdt = (void *)tables[i].table;
+-		if (fdt_check_header(fdt) != 0) {
+-			pr_efi_err(sys_table, "Invalid header detected on UEFI supplied FDT, ignoring ...\n");
+-			return NULL;
+-		}
+-		*fdt_size = fdt_totalsize(fdt);
+-		return fdt;
++	if (fdt_check_header(fdt) != 0) {
++		pr_efi_err(sys_table, "Invalid header detected on UEFI supplied FDT, ignoring ...\n");
++		return NULL;
+ 	}
+-
+-	return NULL;
++	*fdt_size = fdt_totalsize(fdt);
++	return fdt;
+ }
+diff --git a/drivers/firmware/efi/libstub/tpm.c b/drivers/firmware/efi/libstub/tpm.c
+index 6b3b507a54eb..3cd5a8b1ff6d 100644
+--- a/drivers/firmware/efi/libstub/tpm.c
++++ b/drivers/firmware/efi/libstub/tpm.c
+@@ -64,11 +64,13 @@ void efi_retrieve_tpm2_eventlog(efi_system_table_t *sys_table_arg)
+ 	efi_status_t status;
+ 	efi_physical_addr_t log_location = 0, log_last_entry = 0;
+ 	struct linux_efi_tpm_eventlog *log_tbl = NULL;
++	struct efi_tcg2_final_events_table *final_events_table;
+ 	unsigned long first_entry_addr, last_entry_addr;
+ 	size_t log_size, last_entry_size;
+ 	efi_bool_t truncated;
+ 	int version = EFI_TCG2_EVENT_LOG_FORMAT_TCG_2;
+ 	void *tcg2_protocol = NULL;
++	int final_events_size = 0;
+ 
+ 	status = efi_call_early(locate_protocol, &tcg2_guid, NULL,
+ 				&tcg2_protocol);
+@@ -134,8 +136,36 @@ void efi_retrieve_tpm2_eventlog(efi_system_table_t *sys_table_arg)
+ 		return;
+ 	}
+ 
++	/*
++	 * Figure out whether any events have already been logged to the
++	 * final events structure, and if so how much space they take up
++	 */
++	final_events_table = get_efi_config_table(sys_table_arg,
++						LINUX_EFI_TPM_FINAL_LOG_GUID);
++	if (final_events_table && final_events_table->nr_events) {
++		struct tcg_pcr_event2_head *header;
++		int offset;
++		void *data;
++		int event_size;
++		int i = final_events_table->nr_events;
++
++		data = (void *)final_events_table;
++		offset = sizeof(final_events_table->version) +
++			sizeof(final_events_table->nr_events);
++
++		while (i) {
++			header = data + offset + final_events_size;
++			event_size = __calc_tpm2_event_size(header,
++						   (void *)(long)log_location,
++						   false);
++			final_events_size += event_size;
++			i--;
++		}
++	}
++
+ 	memset(log_tbl, 0, sizeof(*log_tbl) + log_size);
+ 	log_tbl->size = log_size;
++	log_tbl->final_events_early_size = final_events_size;
+ 	log_tbl->version = version;
+ 	memcpy(log_tbl->log, (void *) first_entry_addr, log_size);
+ 
+diff --git a/drivers/firmware/efi/tpm.c b/drivers/firmware/efi/tpm.c
+index 2c912ea08166..0bdceb5913aa 100644
+--- a/drivers/firmware/efi/tpm.c
++++ b/drivers/firmware/efi/tpm.c
+@@ -76,7 +76,7 @@ int __init efi_tpm_eventlog_init(void)
+ 		goto out;
+ 	}
+ 
+-	tbl_size = tpm2_calc_event_log_size(efi.tpm_final_log
++	tbl_size = tpm2_calc_event_log_size((void *)efi.tpm_final_log
+ 					    + sizeof(final_tbl->version)
+ 					    + sizeof(final_tbl->nr_events),
+ 					    final_tbl->nr_events,
+diff --git a/include/linux/efi.h b/include/linux/efi.h
+index e33c70a52a9d..d3e7b7475e02 100644
+--- a/include/linux/efi.h
++++ b/include/linux/efi.h
+@@ -1703,6 +1703,7 @@ struct linux_efi_random_seed {
+ 
+ struct linux_efi_tpm_eventlog {
+ 	u32	size;
++	u32	final_events_early_size;
+ 	u8	version;
+ 	u8	log[];
+ };
 -- 
-Sincerely yours,
-Mike.
+2.22.0.rc1.311.g5d7573a151-goog
 
