@@ -2,137 +2,240 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D9662370EF
-	for <lists+linux-efi@lfdr.de>; Thu,  6 Jun 2019 11:54:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 28B7737192
+	for <lists+linux-efi@lfdr.de>; Thu,  6 Jun 2019 12:25:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727959AbfFFJyz (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 6 Jun 2019 05:54:55 -0400
-Received: from mail-it1-f196.google.com ([209.85.166.196]:35377 "EHLO
-        mail-it1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727852AbfFFJyy (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 6 Jun 2019 05:54:54 -0400
-Received: by mail-it1-f196.google.com with SMTP id n189so2165988itd.0
-        for <linux-efi@vger.kernel.org>; Thu, 06 Jun 2019 02:54:54 -0700 (PDT)
+        id S1726952AbfFFKZd (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 6 Jun 2019 06:25:33 -0400
+Received: from mail-wm1-f66.google.com ([209.85.128.66]:51006 "EHLO
+        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727236AbfFFKZd (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 6 Jun 2019 06:25:33 -0400
+Received: by mail-wm1-f66.google.com with SMTP id f204so1869838wme.0
+        for <linux-efi@vger.kernel.org>; Thu, 06 Jun 2019 03:25:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=8P8yzaRHEtc9JnJhJ2Vcca1eVVavzK9/2U+jP565fm0=;
-        b=soldPpgwSbwWi7a0R2nLws0VmYyEMoN2MS6nALAIJ2i8Ny6tl1OSqjSZ/ScD8YR4+z
-         /MUIhRqMAswM8bnBZUwQUBXderhwnAMhb09fpeeviwpQMgB+M6FeSdkFanasIMI9cXXj
-         siA7L6gR7LpSIdujqDGXl7vKvKNpYNnmLYP5Yv+jvOvFIDUCkFnauTX6Xnz014PIEKho
-         3c8DPdOBy9jEjvoTVGJUwcWaTONl21AbTcm3vmeAnpirAmfhkpAi7o/Qnmv43+uw+YQ+
-         QKaU8tZe/eoILactvgNvkdS5vQhGvuYXLv9XWakLeadWlEBbrIUkY4Ha78NZPOxXvSf3
-         CTYA==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=RQPlTg6uUpRE5oDmTjzARjoKoGmiagH9gmTW8/5dICA=;
+        b=UHQRx9Q/KPp0M2GSy4P9+yc1sYzXq6q24bkA1bqR34fF2QbVm13+ho75oqFRknjsgC
+         SVVUmntzGH5wu64W+PUJ2neWS8USpW69Onp6mWIbCMvnkt63kIyE5iIvhMWBbfYfR2yY
+         piidjN91uUZWF7z90ZuS4wSIEBr2PpAb03rs1gpvC0LXDh1HVP/ds7h0IMoGABHWIrGT
+         VZks4dQi0P4RPa3OrKE7kfGroD+4lSUVh7ix1eHnE8FVbQHMlgBV/i8ICTZq7hNs/3J/
+         omvf6NHpSdeIdewEohYNsMq4fW2F9dCP8zjQ9tpWYNaUL/pGuolExMYF5nW506KlfTCm
+         558g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=8P8yzaRHEtc9JnJhJ2Vcca1eVVavzK9/2U+jP565fm0=;
-        b=B01MFYOYZQiCozamcBAiG8VWRehiishGNcEi/bHO963fc71P0N9RKqGLykqXRB4auY
-         M3qXzuP6Y81PoBo+tOmH7+bTMmEvZc8WWMSztaUYdo0fZ2DGHtAju/iecyTjZwUjqZmu
-         KELHP/GkcvJan302Cjj2+9+O5qc/znZegMxG8Af2dedSw6U7BLD/rv5z9Z9noVCTVTHI
-         HrFqAFDPuiIoeyErAFXYNhO+MAToCj5Zm9bD1/pHiU9i1GS6u6JWrPPwSLC2aE1sbXXk
-         4n+zKhXC1aZXxQALY9HlyBx/Cg5Qmr7zKY9/6e8FfOvZRlXtb9QhgCRvi6plpyFcZeed
-         qwYQ==
-X-Gm-Message-State: APjAAAU1V3TT+li+Fw/mLxc1OJHFgH/bSGjUk4pZ7TvJS8N1S69BYWTU
-        rXJJ0Q6T5m0+8NJOwkMm5Ujmdo2rU04RAOHm0VJfzA==
-X-Google-Smtp-Source: APXvYqz6XRs3yBdb3JcP7AkuvjidH9m/e8zfPFvfRXiSbwTxc22Z2J/y3l2mcT9Y1/3ogKBHOBlDgqUV4+rbTiVEyBw=
-X-Received: by 2002:a02:b01c:: with SMTP id p28mr30692269jah.130.1559814891244;
- Thu, 06 Jun 2019 02:54:51 -0700 (PDT)
-MIME-Version: 1.0
-References: <779905244.a0lJJiZRjM@devpool35> <1993275.kHlTELq40E@devpool35>
- <CAKv+Gu9oq+LseNvB9h1u+Q7QVOJFJwm_RyE1dMRgeVuL6D9fNQ@mail.gmail.com> <2433398.iiuBUrR0On@devpool35>
-In-Reply-To: <2433398.iiuBUrR0On@devpool35>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=RQPlTg6uUpRE5oDmTjzARjoKoGmiagH9gmTW8/5dICA=;
+        b=V2y/9sOTaQuN+Y2+QK8FA3s/jz4v3R8YbsLbaYcd7+3QxurNOX6OSkgH+DbLXm24e9
+         nEvFzMqThNUJmb+dhzvKckVb2klEDYSIXf/v41nXu50pLv+sZpTgGe98JyPKu4rXRjwe
+         F6GZL9sZ9rrqfmIo6gp9HCbBRuuiZECsMCSDrTiNpwRb6ESuLTK1HXoBtZGIPR+OxH80
+         eYbGV+dTlN3qHgb3rYydcKayfVa9gz7UCQR84bLgpHMk4Ex5lnWZRcQSdtMtlWEOLcKo
+         TAZ3q+U9mx050E8x5kY/ExOkECN34NlOUDvSUT8Tg8k/JxAueO1YFMbbmPrw72WRFvsd
+         OgGw==
+X-Gm-Message-State: APjAAAW4juFByyYd4vzhslajqa5XmJrqHV3EGlLPbi1TXBR11F17Mj08
+        5Ok2E4fSG7/EFYKTVV+kDEKdgw==
+X-Google-Smtp-Source: APXvYqxtP51Qaz6shxqnhOZ9cKxoIVrRs3bzSOFLOZkb/NNy24Ga1KGipcJ1DF27pOigk4ZUHRtsJg==
+X-Received: by 2002:a1c:c909:: with SMTP id f9mr13914013wmb.115.1559816730398;
+        Thu, 06 Jun 2019 03:25:30 -0700 (PDT)
+Received: from sudo.home ([2a01:cb1d:112:6f00:99ee:9f00:43cc:cfbf])
+        by smtp.gmail.com with ESMTPSA id u23sm1146611wmj.33.2019.06.06.03.25.29
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 06 Jun 2019 03:25:29 -0700 (PDT)
 From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Date:   Thu, 6 Jun 2019 11:54:37 +0200
-Message-ID: <CAKv+Gu_GOprKzXmm0kzi50hR8MJ6g02uZBAnKi=5x+kFOuqz1w@mail.gmail.com>
-Subject: Re: Building arm64 EFI stub with -fpie breaks build of 4.9.x
- (undefined reference to `__efistub__GLOBAL_OFFSET_TABLE_')
-To:     Rolf Eike Beer <eb@emlix.com>
-Cc:     Greg KH <gregkh@linuxfoundation.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Matt Fleming <matt@codeblueprint.co.uk>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Linux Kernel Developers List <linux-kernel@vger.kernel.org>,
-        stable <stable@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+To:     eb@emlix.com
+Cc:     linux-efi@vger.kernel.org, gregkh@linuxfoundation.org,
+        stable@vger.kernel.org, ndesaulniers@google.com,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Subject: [PATCH for-4.9-stable] efi/libstub: Unify command line param parsing
+Date:   Thu,  6 Jun 2019 12:25:13 +0200
+Message-Id: <20190606102513.16321-1-ard.biesheuvel@linaro.org>
+X-Mailer: git-send-email 2.20.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, 6 Jun 2019 at 11:40, Rolf Eike Beer <eb@emlix.com> wrote:
->
-> Ard Biesheuvel wrote:
-> > On Thu, 6 Jun 2019 at 09:50, Rolf Eike Beer <eb@emlix.com> wrote:
-> > > Am Donnerstag, 6. Juni 2019, 09:38:41 CEST schrieb Rolf Eike Beer:
-> > > > Greg KH wrote:
-> > > > > On Wed, Jun 05, 2019 at 05:19:40PM +0200, Rolf Eike Beer wrote:
-> > > > > > I decided to dig out a toy project which uses a DragonBoard 410c.
-> > > > > > This
-> > > > > > has
-> > > > > > been "running" with kernel 4.9, which I would keep this way for
-> > > > > > unrelated
-> > > > > > reasons. The vanilla 4.9 kernel wasn't bootable back then, but it
-> > > > > > was
-> > > > > > buildable, which was good enough.
-> > > > > >
-> > > > > > Upgrading the kernel to 4.9.180 caused the boot to suddenly fail:
-> > > > > >
-> > > > > > aarch64-unknown-linux-gnueabi-ld:
-> > > > > > ./drivers/firmware/efi/libstub/lib.a(arm64- stub.stub.o): in
-> > > > > > function
-> > > > > > `handle_kernel_image':
-> > > > > > /tmp/e2/build/linux-4.9.139/drivers/firmware/efi/libstub/arm64-stub.
-> > > > > > c:63
-> > > > > >
-> > > > > > undefined reference to `__efistub__GLOBAL_OFFSET_TABLE_'
-> > > > > > aarch64-unknown-linux-gnueabi-ld:
-> > > > > > ./drivers/firmware/efi/libstub/lib.a(arm64- stub.stub.o): relocation
-> > > > > > R_AARCH64_ADR_PREL_PG_HI21 against symbol
-> > > > > > `__efistub__GLOBAL_OFFSET_TABLE_' which may bind externally can not
-> > > > > > be
-> > > > > > used when making a shared object; recompile with -fPIC
-> > > > > > /tmp/e2/build/linux-4.9.139/drivers/firmware/efi/libstub/arm64-stub.
-> > > > > > c:63
-> > > > > >
-> > > > > > (.init.text+0xc): dangerous relocation: unsupported relocation
-> > > > > > /tmp/e2/build/linux-4.9.139/Makefile:1001: recipe for target
-> > > > > > 'vmlinux'
-> > > > > > failed -make[1]: *** [vmlinux] Error 1
-> > > > > >
-> > > > > > This is caused by commit 27b5ebf61818749b3568354c64a8ec2d9cd5ecca
-> > > > > > from
-> > > > > > linux-4.9.y (which is 91ee5b21ee026c49e4e7483de69b55b8b47042be),
-> > > > > > reverting
-> > > > > > this commit fixes the build.
-> > > > > >
-> > > > > > This happens with vanilla binutils 2.32 and gcc 8.3.0 as well as
-> > > > > > 9.1.0.
-> > > > > > See
-> > > > > > the attached .config for reference.
-> > > > > >
-> > > > > > If you have questions or patches just ping me.
-> > > > >
-> > > > > Does Linus's latest tree also fail for you (or 5.1)?
-> > > >
-> > > > 5.1.7 with the same config as before and "make olddefconfig" builds for
-> > > > me.
-> > >
-> > > Just for the fun of it: both 4.19 and 4.19.48 also work.
->
-> > Could you please check whether patch
-> > 60f38de7a8d4e816100ceafd1b382df52527bd50 applies cleanly, and whether
-> > it fixes the problem? Thanks.
->
-> The part in drivers/firmware/efi/libstub/arm-stub.c needs to be applied by
-> hand, but afterwards things build fine.
->
+Commit 60f38de7a8d4e816100ceafd1b382df52527bd50 upstream.
 
-Thanks.
+Merge the parsing of the command line carried out in arm-stub.c with
+the handling in efi_parse_options(). Note that this also fixes the
+missing handling of CONFIG_CMDLINE_FORCE=y, in which case the builtin
+command line should supersede the one passed by the firmware.
 
-I'll send out a backport.
+Signed-off-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Matt Fleming <matt@codeblueprint.co.uk>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: bhe@redhat.com
+Cc: bhsharma@redhat.com
+Cc: bp@alien8.de
+Cc: eugene@hp.com
+Cc: evgeny.kalugin@intel.com
+Cc: jhugo@codeaurora.org
+Cc: leif.lindholm@linaro.org
+Cc: linux-efi@vger.kernel.org
+Cc: mark.rutland@arm.com
+Cc: roy.franz@cavium.com
+Cc: rruigrok@codeaurora.org
+Link: http://lkml.kernel.org/r/20170404160910.28115-1-ard.biesheuvel@linaro.org
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+[ardb: fix up merge conflicts with 4.9.180]
+Signed-off-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+---
+This fixes the GCC build issue reported by Eike.
+
+Note that testing of arm64 stable kernels should cover CONFIG_RANDOMIZE_BASE,
+since it has a profound impact on how the kernel binary gets put together.
+
+ drivers/firmware/efi/libstub/arm-stub.c        | 23 ++++++--------------
+ drivers/firmware/efi/libstub/arm64-stub.c      |  4 +---
+ drivers/firmware/efi/libstub/efi-stub-helper.c | 19 +++++++++-------
+ drivers/firmware/efi/libstub/efistub.h         |  2 ++
+ include/linux/efi.h                            |  2 +-
+ 5 files changed, 22 insertions(+), 28 deletions(-)
+
+diff --git a/drivers/firmware/efi/libstub/arm-stub.c b/drivers/firmware/efi/libstub/arm-stub.c
+index 993aa56755f6..726d1467b778 100644
+--- a/drivers/firmware/efi/libstub/arm-stub.c
++++ b/drivers/firmware/efi/libstub/arm-stub.c
+@@ -18,7 +18,6 @@
+ 
+ #include "efistub.h"
+ 
+-bool __nokaslr;
+ 
+ static int efi_get_secureboot(efi_system_table_t *sys_table_arg)
+ {
+@@ -268,18 +267,6 @@ unsigned long efi_entry(void *handle, efi_system_table_t *sys_table,
+ 		goto fail;
+ 	}
+ 
+-	/* check whether 'nokaslr' was passed on the command line */
+-	if (IS_ENABLED(CONFIG_RANDOMIZE_BASE)) {
+-		static const u8 default_cmdline[] = CONFIG_CMDLINE;
+-		const u8 *str, *cmdline = cmdline_ptr;
+-
+-		if (IS_ENABLED(CONFIG_CMDLINE_FORCE))
+-			cmdline = default_cmdline;
+-		str = strstr(cmdline, "nokaslr");
+-		if (str == cmdline || (str > cmdline && *(str - 1) == ' '))
+-			__nokaslr = true;
+-	}
+-
+ 	si = setup_graphics(sys_table);
+ 
+ 	status = handle_kernel_image(sys_table, image_addr, &image_size,
+@@ -291,9 +278,13 @@ unsigned long efi_entry(void *handle, efi_system_table_t *sys_table,
+ 		goto fail_free_cmdline;
+ 	}
+ 
+-	status = efi_parse_options(cmdline_ptr);
+-	if (status != EFI_SUCCESS)
+-		pr_efi_err(sys_table, "Failed to parse EFI cmdline options\n");
++	if (IS_ENABLED(CONFIG_CMDLINE_EXTEND) ||
++	    IS_ENABLED(CONFIG_CMDLINE_FORCE) ||
++	    cmdline_size == 0)
++		efi_parse_options(CONFIG_CMDLINE);
++
++	if (!IS_ENABLED(CONFIG_CMDLINE_FORCE) && cmdline_size > 0)
++		efi_parse_options(cmdline_ptr);
+ 
+ 	secure_boot = efi_get_secureboot(sys_table);
+ 	if (secure_boot > 0)
+diff --git a/drivers/firmware/efi/libstub/arm64-stub.c b/drivers/firmware/efi/libstub/arm64-stub.c
+index 959d9b8d4845..f7a6970e9abc 100644
+--- a/drivers/firmware/efi/libstub/arm64-stub.c
++++ b/drivers/firmware/efi/libstub/arm64-stub.c
+@@ -24,8 +24,6 @@
+ 
+ #include "efistub.h"
+ 
+-extern bool __nokaslr;
+-
+ efi_status_t check_platform_features(efi_system_table_t *sys_table_arg)
+ {
+ 	u64 tg;
+@@ -60,7 +58,7 @@ efi_status_t handle_kernel_image(efi_system_table_t *sys_table_arg,
+ 	u64 phys_seed = 0;
+ 
+ 	if (IS_ENABLED(CONFIG_RANDOMIZE_BASE)) {
+-		if (!__nokaslr) {
++		if (!nokaslr()) {
+ 			status = efi_get_random_bytes(sys_table_arg,
+ 						      sizeof(phys_seed),
+ 						      (u8 *)&phys_seed);
+diff --git a/drivers/firmware/efi/libstub/efi-stub-helper.c b/drivers/firmware/efi/libstub/efi-stub-helper.c
+index 09d10dcf1fc6..1c963c4d1bde 100644
+--- a/drivers/firmware/efi/libstub/efi-stub-helper.c
++++ b/drivers/firmware/efi/libstub/efi-stub-helper.c
+@@ -32,6 +32,13 @@
+ 
+ static unsigned long __chunk_size = EFI_READ_CHUNK_SIZE;
+ 
++static int __section(.data) __nokaslr;
++
++int __pure nokaslr(void)
++{
++	return __nokaslr;
++}
++
+ /*
+  * Allow the platform to override the allocation granularity: this allows
+  * systems that have the capability to run with a larger page size to deal
+@@ -351,17 +358,13 @@ void efi_free(efi_system_table_t *sys_table_arg, unsigned long size,
+  * environments, first in the early boot environment of the EFI boot
+  * stub, and subsequently during the kernel boot.
+  */
+-efi_status_t efi_parse_options(char *cmdline)
++efi_status_t efi_parse_options(char const *cmdline)
+ {
+ 	char *str;
+ 
+-	/*
+-	 * Currently, the only efi= option we look for is 'nochunk', which
+-	 * is intended to work around known issues on certain x86 UEFI
+-	 * versions. So ignore for now on other architectures.
+-	 */
+-	if (!IS_ENABLED(CONFIG_X86))
+-		return EFI_SUCCESS;
++	str = strstr(cmdline, "nokaslr");
++	if (str == cmdline || (str && str > cmdline && *(str - 1) == ' '))
++		__nokaslr = 1;
+ 
+ 	/*
+ 	 * If no EFI parameters were specified on the cmdline we've got
+diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
+index fac67992bede..d0e5acab547f 100644
+--- a/drivers/firmware/efi/libstub/efistub.h
++++ b/drivers/firmware/efi/libstub/efistub.h
+@@ -15,6 +15,8 @@
+  */
+ #undef __init
+ 
++extern int __pure nokaslr(void);
++
+ void efi_char16_printk(efi_system_table_t *, efi_char16_t *);
+ 
+ efi_status_t efi_open_volume(efi_system_table_t *sys_table_arg, void *__image,
+diff --git a/include/linux/efi.h b/include/linux/efi.h
+index e6711bf9f0d1..02c4f16685b6 100644
+--- a/include/linux/efi.h
++++ b/include/linux/efi.h
+@@ -1427,7 +1427,7 @@ efi_status_t handle_cmdline_files(efi_system_table_t *sys_table_arg,
+ 				  unsigned long *load_addr,
+ 				  unsigned long *load_size);
+ 
+-efi_status_t efi_parse_options(char *cmdline);
++efi_status_t efi_parse_options(char const *cmdline);
+ 
+ efi_status_t efi_setup_gop(efi_system_table_t *sys_table_arg,
+ 			   struct screen_info *si, efi_guid_t *proto,
+-- 
+2.20.1
+
