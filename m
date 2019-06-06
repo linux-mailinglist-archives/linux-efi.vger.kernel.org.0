@@ -2,102 +2,122 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A5823733A
-	for <lists+linux-efi@lfdr.de>; Thu,  6 Jun 2019 13:44:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 784FC37440
+	for <lists+linux-efi@lfdr.de>; Thu,  6 Jun 2019 14:37:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727309AbfFFLoI (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 6 Jun 2019 07:44:08 -0400
-Received: from mx1.emlix.com ([188.40.240.192]:36596 "EHLO mx1.emlix.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727310AbfFFLoI (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Thu, 6 Jun 2019 07:44:08 -0400
-Received: from mailer.emlix.com (unknown [81.20.119.6])
-        (using TLSv1.2 with cipher ADH-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mx1.emlix.com (Postfix) with ESMTPS id B865560076;
-        Thu,  6 Jun 2019 13:44:06 +0200 (CEST)
-From:   Rolf Eike Beer <eb@emlix.com>
-To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Cc:     linux-efi@vger.kernel.org, gregkh@linuxfoundation.org,
-        stable@vger.kernel.org, ndesaulniers@google.com
-Subject: Re: [PATCH for-4.9-stable] efi/libstub: Unify command line param parsing
-Date:   Thu, 06 Jun 2019 13:44:06 +0200
-Message-ID: <2196650.4E46qPc46x@devpool35>
-Organization: emlix GmbH
-In-Reply-To: <20190606102513.16321-1-ard.biesheuvel@linaro.org>
-References: <20190606102513.16321-1-ard.biesheuvel@linaro.org>
+        id S1727218AbfFFMhX (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 6 Jun 2019 08:37:23 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:18107 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726877AbfFFMhX (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Thu, 6 Jun 2019 08:37:23 -0400
+Received: from DGGEMS413-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id CD0E381C6E43ED1BC2B1;
+        Thu,  6 Jun 2019 20:37:17 +0800 (CST)
+Received: from lhrphicprd00229.huawei.com (10.123.41.22) by
+ DGGEMS413-HUB.china.huawei.com (10.3.19.213) with Microsoft SMTP Server id
+ 14.3.439.0; Thu, 6 Jun 2019 20:37:08 +0800
+From:   Jonathan Cameron <Jonathan.Cameron@huawei.com>
+To:     <linux-edac@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+        <linux-efi@vger.kernel.org>
+CC:     <linuxarm@huawei.com>, <rjw@rjwysocki.net>, <tony.luck@intel.com>,
+        <bp@alien8.de>, <james.morse@arm.com>, <ard.beisheuvel@linaro.org>,
+        <nariman.poushin@linaro.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [RFC PATCH 0/6] CCIX Protocol Error reporting
+Date:   Thu, 6 Jun 2019 20:36:48 +0800
+Message-ID: <20190606123654.78973-1-Jonathan.Cameron@huawei.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart31848172.T2U0eTky2d"; micalg="pgp-sha256"; protocol="application/pgp-signature"
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.123.41.22]
+X-CFilter-Loop: Reflected
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
---nextPart31848172.T2U0eTky2d
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="UTF-8"
+UEFI 2.8 defines a new CPER record Appendix N for CCIX Protocol Error Records
+(PER). www.uefi.org
 
-Ard Biesheuvel wrote:
-> Commit 60f38de7a8d4e816100ceafd1b382df52527bd50 upstream.
->=20
-> Merge the parsing of the command line carried out in arm-stub.c with
-> the handling in efi_parse_options(). Note that this also fixes the
-> missing handling of CONFIG_CMDLINE_FORCE=3Dy, in which case the builtin
-> command line should supersede the one passed by the firmware.
->=20
-> Signed-off-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
-> Cc: Linus Torvalds <torvalds@linux-foundation.org>
-> Cc: Matt Fleming <matt@codeblueprint.co.uk>
-> Cc: Peter Zijlstra <peterz@infradead.org>
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Cc: bhe@redhat.com
-> Cc: bhsharma@redhat.com
-> Cc: bp@alien8.de
-> Cc: eugene@hp.com
-> Cc: evgeny.kalugin@intel.com
-> Cc: jhugo@codeaurora.org
-> Cc: leif.lindholm@linaro.org
-> Cc: linux-efi@vger.kernel.org
-> Cc: mark.rutland@arm.com
-> Cc: roy.franz@cavium.com
-> Cc: rruigrok@codeaurora.org
-> Link:
-> http://lkml.kernel.org/r/20170404160910.28115-1-ard.biesheuvel@linaro.org
-> Signed-off-by: Ingo Molnar <mingo@kernel.org>
-> [ardb: fix up merge conflicts with 4.9.180]
-> Signed-off-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
-> ---
-> This fixes the GCC build issue reported by Eike.
->=20
-> Note that testing of arm64 stable kernels should cover
-> CONFIG_RANDOMIZE_BASE, since it has a profound impact on how the kernel
-> binary gets put together.
+These include Protocol Error Record logs which are defined in the
+CCIX 1.0 Base Specification www.ccixconsortium.com.
 
-Confirmed, this patch works for me on top of 4.9.180.
-=2D-=20
-Rolf Eike Beer, emlix GmbH, http://www.emlix.com
-=46on +49 551 30664-0, Fax +49 551 30664-11
-Gothaer Platz 3, 37083 G=C3=B6ttingen, Germany
-Sitz der Gesellschaft: G=C3=B6ttingen, Amtsgericht G=C3=B6ttingen HR B 3160
-Gesch=C3=A4ftsf=C3=BChrung: Heike Jordan, Dr. Uwe Kracke =E2=80=93 Ust-IdNr=
-=2E: DE 205 198 055
+Handling of coherency protocol errors is complex and how Linux does this
+will take some time to evolve.  For now, fatal errors are handled via the
+usual means and everything else is reported.
 
-emlix - smart embedded open source
---nextPart31848172.T2U0eTky2d
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
+There are 6 types of error defined, covering:
+* Memory errors
+* Cache errors
+* Address translation unit errors
+* CCIX port errors 
+* CCIX link errors
+* Agent internal errors.
 
------BEGIN PGP SIGNATURE-----
+The set includes tracepoints to report the errors to RAS Daemon and a patch
+set for RAS Daemon will follow shortly.
 
-iLMEAAEIAB0WIQQ/Uctzh31xzAxFCLur5FH7Xu2t/AUCXPj8hgAKCRCr5FH7Xu2t
-/KqvBACxZ44yrgwXFYO5IWDP4c6Gj4rNZNK006TUmmaVB3n7KbmstKkpXivHCuvi
-7hTrt+dMHZhz2uGImeVtHai19TPD0cMTYJ5IvbCBpCCKzMXLSO8iznEGlzDDRhZm
-EGBsQ1AhxH0e65RKZ8cadPHdr10R193FNmW/xIVFnrYQcHKEHg==
-=L3Vj
------END PGP SIGNATURE-----
+There are several open questions for this RFC.
+1. Reporting of vendor data.  We have little choice but to do this via a
+   dynamic array as these blocks can take arbitrary size. I had hoped
+   no one would actually use these given the odd mismatch between a
+   standard error structure and non standard element, but there are
+   already designs out there that do use it.
+2. The trade off between explicit tracepoint fields, on which we might
+   want to filter, and the simplicity of a blob. I have gone for having
+   the whole of the block specific to the PER error type in an opaque blob.
+   Perhaps this is not the right balance?
+3. Whether defining 6 new tracepoints is sensible. I think it is:
+   * They are all defined by the CCIX specification as independant error
+     classes.
+   * Many of them can only be generated by particular types of agent.
+   * The handling required will vary widely depending on types.
+     In the kernel some map cleanly onto existing handling. Keeping the
+     whole flow separate will aide this. They vary by a similar amount
+     in scope to the RAS errors found on an existing system which have
+     independent tracepoints.
+   * Separating them out allows for filtering on the tracepoints by
+     elements that are not shared between them.
+   * Muxing the lot into one record type can lead to ugly code both in
+     kernel and in userspace.
 
---nextPart31848172.T2U0eTky2d--
+Rasdaemon patches will follow shortly.
 
+This patch is being distributed by the CCIX Consortium, Inc. (CCIX) to
+you and other parties that are paticipating (the "participants") in the
+Linux kernel with the understanding that the participants will use CCIX's
+name and trademark only when this patch is used in association with the
+Linux kernel and associated user space.
 
+CCIX is also distributing this patch to these participants with the
+understanding that if any portion of the CCIX specification will be
+used or referenced in the Linux kernel, the participants will not modify
+the cited portion of the CCIX specification and will give CCIX propery
+copyright attribution by including the following copyright notice with
+the cited part of the CCIX specification:
+"© 2019 CCIX CONSORTIUM, INC. ALL RIGHTS RESERVED."
+
+Jonathan Cameron (6):
+  efi / ras: CCIX Memory error reporting
+  efi / ras: CCIX Cache error reporting
+  efi / ras: CCIX Address Translation Cache error reporting
+  efi / ras: CCIX Port error reporting
+  efi / ras: CCIX Link error reporting
+  efi / ras: CCIX Agent internal error reporting
+
+ drivers/acpi/apei/Kconfig        |   8 +
+ drivers/acpi/apei/ghes.c         |  59 ++
+ drivers/firmware/efi/Kconfig     |   5 +
+ drivers/firmware/efi/Makefile    |   1 +
+ drivers/firmware/efi/cper-ccix.c | 916 +++++++++++++++++++++++++++++++
+ drivers/firmware/efi/cper.c      |   6 +
+ include/linux/cper.h             | 333 +++++++++++
+ include/ras/ras_event.h          | 405 ++++++++++++++
+ 8 files changed, 1733 insertions(+)
+ create mode 100644 drivers/firmware/efi/cper-ccix.c
+
+-- 
+2.20.1
 
