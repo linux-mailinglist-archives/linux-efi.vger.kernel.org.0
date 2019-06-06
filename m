@@ -2,126 +2,120 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B394836F42
-	for <lists+linux-efi@lfdr.de>; Thu,  6 Jun 2019 10:59:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F03236F58
+	for <lists+linux-efi@lfdr.de>; Thu,  6 Jun 2019 11:01:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727549AbfFFI7A (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 6 Jun 2019 04:59:00 -0400
-Received: from mail-it1-f193.google.com ([209.85.166.193]:35368 "EHLO
+        id S1727669AbfFFJBk (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 6 Jun 2019 05:01:40 -0400
+Received: from mail-it1-f193.google.com ([209.85.166.193]:54200 "EHLO
         mail-it1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727509AbfFFI7A (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 6 Jun 2019 04:59:00 -0400
-Received: by mail-it1-f193.google.com with SMTP id n189so1950807itd.0
-        for <linux-efi@vger.kernel.org>; Thu, 06 Jun 2019 01:59:00 -0700 (PDT)
+        with ESMTP id S1727538AbfFFJBk (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 6 Jun 2019 05:01:40 -0400
+Received: by mail-it1-f193.google.com with SMTP id m187so2000481ite.3
+        for <linux-efi@vger.kernel.org>; Thu, 06 Jun 2019 02:01:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=k5G77k0j63/1dHq8s2sfTu2vMdGLfH/hNCHXcpdGXNs=;
-        b=ZivuuU5W7ouwon2oensR1KO0lnkteogDIK19A1X47Zoe4snPwL4k8a1t5bMf+dLWtT
-         VOolVZmdsbxr315riQpfgCTO9M+BvJkRcvx5Auo/80TgV0IhCbWvFr4sFhIGt5pUCR7p
-         i87b/pz4u4Yr9UP4seBZ2JGEhaw0pLTuN8ocfr/jIWeSd8lpqqKt2h1mjpI1Ynfp2UNC
-         VzR74ww2NeTIOGWs/UfvQLSaHJqdZ/zTI/r8bMHgyGx+cy9FxUNYzVH01iD8Idkz84l3
-         /CRfUU2sfdy/GaQ2TCjNTb/MicRZ9JXaVGcI2tM9o7JlFVeYo7uhrw3d0WAbGh1nRi/7
-         ODlQ==
+        bh=dv2WG1P4LjGl9htxi8ki1M85cFA09s4aSi2ztouswF0=;
+        b=zzYruU5/yv3X3MlFghh/z+xye0n/tQWAIaEqAwbUGoDidiM9qML6aHBOgqhV64UbjT
+         RPSYJHLYgx82k45AhD85pqDyd/wsfRBQQGaqe6jJqGAKjdnRiidIdTB8+n7ZRLnpp6Cb
+         004JCYY+4uRtsRlkJClJ+DmEhhfgLjT2NpaD3bxEM54y2NB1NEpwCx/z4igTkr8cOHdZ
+         aCynjpFrCtSVugnDA6MKNsWNgQ8WB9b/w27bzJtgkf75OY8NnK0vPhxTeK2YoYRuqPJj
+         7CW4QZL7KTco3/9La0nnjcaQMuDNIylHUVsg+XqO3xwuMhlQk+H0D8CAdMG05y4FrzRl
+         d2dA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=k5G77k0j63/1dHq8s2sfTu2vMdGLfH/hNCHXcpdGXNs=;
-        b=TVvEgQUVGAUq1VNm/Yc1V+VA9ULrX4WiHtYQH6h6g4dvv6Ft9w4symp8atSU4UYTSm
-         t+yg8x93gZV2I+VZmuCbFTjhdncB28pChouz5dYVeRXx78Z4p9pRTzkbeXb3LW8ahGtq
-         5/3a2uCbTfVt/IysE0wnZCbKBK4VpYAS1y0jMM/08Ca8PFUkfyaq5/c7HSrN/5Fw8ssi
-         Gu1Ss+d/ETwDd8rl98hF2R2jb5NmDE7WfukWTxc4lbKNHLN+8Nv9a9sFC3sf5cTriOqc
-         KOszuj1hmCi8qIedE/QWGFqcz9bH8daXCJ3qwzn5/hHAlk2u1sUCMT0JU4VB80ea2XAo
-         ZubQ==
-X-Gm-Message-State: APjAAAUaFp/MDIwEPRbzp1n90744DnvdaQVFPaqXaHRUH2okkVXSXOMY
-        P0yq65r7MpIppzlar5FypLZwhq+hLQlFKLK2456t/g==
-X-Google-Smtp-Source: APXvYqxs7hWigkDcMTot18j8lPuAqIP8AayWjmmUPBwKknx0qEOV19fRGwdZcJYlzoL4iJVt5cCwDol/sNN/lZCGalk=
-X-Received: by 2002:a24:740f:: with SMTP id o15mr14731071itc.76.1559811539672;
- Thu, 06 Jun 2019 01:58:59 -0700 (PDT)
+        bh=dv2WG1P4LjGl9htxi8ki1M85cFA09s4aSi2ztouswF0=;
+        b=hiXO6X/WiNQneY8Olagv+vRiFbkAT+88G4D6Po7glDjDxivOD0rH9BHuWP+SFupAY/
+         uJZJ5h7wpGOSkDDA5e0IDwXvPFrNkeo0MxyYuLZMWgdL0jcc0y4hmpC9LLgT1P1+Bamp
+         WgfqIaCKJZDc4bxypP2LJEbM/u5FgcucdVBrGc0lnx9sJ2voBVVpMTfCFm4l3hqEeGDs
+         VJUaU3ldxBfruu4d+xLl1qS22DZkxA+r3+5i799W2PfxvFneclgLQdpqe1tAqr209z/6
+         hns6oQ1INdqQB1nv61qHEB07ByMczTIB+YJfACaLiEIjj9bYn14Jr6c9q1g+dn4WjZOs
+         zcAA==
+X-Gm-Message-State: APjAAAWtk9VxliZoPwvMxjYLyXs4/O1cii0LmgVcBfiJb7l7BVhTF77d
+        50ioIlYBUzGq1b7ktA+/cMUfZG7daEmi1BBfhXB9DA==
+X-Google-Smtp-Source: APXvYqwToJWtoVVGRYuxXLAxq/qFM4S6nRzLQkRyaXZ8ORDXXXZqh/aB/0OMI7vljblumoE5aJmqEm+rvCIjADZ+owU=
+X-Received: by 2002:a05:660c:44a:: with SMTP id d10mr9193730itl.153.1559811699927;
+ Thu, 06 Jun 2019 02:01:39 -0700 (PDT)
 MIME-Version: 1.0
 References: <779905244.a0lJJiZRjM@devpool35> <20190605162626.GA31164@kroah.com>
- <CAKv+Gu9QkKwNVpfpQP7uDd2-66jU=qkeA7=0RAoO4TNaSbG+tg@mail.gmail.com>
- <CAKwvOdnPcjESFrQRR_=cCVag3ZSnC0nBqF7+LFHrcDArT_segA@mail.gmail.com>
- <CAKv+Gu9Leaq_s2kVNzHx+zkdKFXgQVkouN3M56u5nou5WX=cKg@mail.gmail.com> <20190606070807.GA17985@kroah.com>
-In-Reply-To: <20190606070807.GA17985@kroah.com>
+ <8696846.WsthzzWoxp@devpool35> <1993275.kHlTELq40E@devpool35>
+In-Reply-To: <1993275.kHlTELq40E@devpool35>
 From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Date:   Thu, 6 Jun 2019 10:58:45 +0200
-Message-ID: <CAKv+Gu_=aUmN76Wzy5kokgP6hcZPWAwW_7=ekqOawkfg7LPE3g@mail.gmail.com>
+Date:   Thu, 6 Jun 2019 11:01:26 +0200
+Message-ID: <CAKv+Gu9oq+LseNvB9h1u+Q7QVOJFJwm_RyE1dMRgeVuL6D9fNQ@mail.gmail.com>
 Subject: Re: Building arm64 EFI stub with -fpie breaks build of 4.9.x
  (undefined reference to `__efistub__GLOBAL_OFFSET_TABLE_')
-To:     Greg KH <gregkh@linuxfoundation.org>
-Cc:     Nick Desaulniers <ndesaulniers@google.com>,
-        Rolf Eike Beer <eb@emlix.com>,
+To:     Rolf Eike Beer <eb@emlix.com>
+Cc:     Greg KH <gregkh@linuxfoundation.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Matt Fleming <matt@codeblueprint.co.uk>,
         Peter Zijlstra <peterz@infradead.org>,
         Thomas Gleixner <tglx@linutronix.de>,
         linux-efi <linux-efi@vger.kernel.org>,
         Linux Kernel Developers List <linux-kernel@vger.kernel.org>,
-        stable <stable@vger.kernel.org>,
-        clang-built-linux <clang-built-linux@googlegroups.com>
+        stable <stable@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, 6 Jun 2019 at 09:08, Greg KH <gregkh@linuxfoundation.org> wrote:
+On Thu, 6 Jun 2019 at 09:50, Rolf Eike Beer <eb@emlix.com> wrote:
 >
-> On Thu, Jun 06, 2019 at 08:55:29AM +0200, Ard Biesheuvel wrote:
-> > On Wed, 5 Jun 2019 at 22:48, Nick Desaulniers <ndesaulniers@google.com> wrote:
+> Am Donnerstag, 6. Juni 2019, 09:38:41 CEST schrieb Rolf Eike Beer:
+> > Greg KH wrote:
+> > > On Wed, Jun 05, 2019 at 05:19:40PM +0200, Rolf Eike Beer wrote:
+> > > > I decided to dig out a toy project which uses a DragonBoard 410c. This
+> > > > has
+> > > > been "running" with kernel 4.9, which I would keep this way for
+> > > > unrelated
+> > > > reasons. The vanilla 4.9 kernel wasn't bootable back then, but it was
+> > > > buildable, which was good enough.
+> > > >
+> > > > Upgrading the kernel to 4.9.180 caused the boot to suddenly fail:
+> > > >
+> > > > aarch64-unknown-linux-gnueabi-ld:
+> > > > ./drivers/firmware/efi/libstub/lib.a(arm64- stub.stub.o): in function
+> > > > `handle_kernel_image':
+> > > > /tmp/e2/build/linux-4.9.139/drivers/firmware/efi/libstub/arm64-stub.c:63
+> > > > :
+> > > > undefined reference to `__efistub__GLOBAL_OFFSET_TABLE_'
+> > > > aarch64-unknown-linux-gnueabi-ld:
+> > > > ./drivers/firmware/efi/libstub/lib.a(arm64- stub.stub.o): relocation
+> > > > R_AARCH64_ADR_PREL_PG_HI21 against symbol
+> > > > `__efistub__GLOBAL_OFFSET_TABLE_' which may bind externally can not be
+> > > > used when making a shared object; recompile with -fPIC
+> > > > /tmp/e2/build/linux-4.9.139/drivers/firmware/efi/libstub/arm64-stub.c:63
+> > > > :
+> > > > (.init.text+0xc): dangerous relocation: unsupported relocation
+> > > > /tmp/e2/build/linux-4.9.139/Makefile:1001: recipe for target 'vmlinux'
+> > > > failed -make[1]: *** [vmlinux] Error 1
+> > > >
+> > > > This is caused by commit 27b5ebf61818749b3568354c64a8ec2d9cd5ecca from
+> > > > linux-4.9.y (which is 91ee5b21ee026c49e4e7483de69b55b8b47042be),
+> > > > reverting
+> > > > this commit fixes the build.
+> > > >
+> > > > This happens with vanilla binutils 2.32 and gcc 8.3.0 as well as 9.1.0.
+> > > > See
+> > > > the attached .config for reference.
+> > > >
+> > > > If you have questions or patches just ping me.
 > > >
-> > > On Wed, Jun 5, 2019 at 11:42 AM Ard Biesheuvel
-> > > <ard.biesheuvel@linaro.org> wrote:
-> > > > For the record, this is an example of why I think backporting those
-> > > > clang enablement patches is a bad idea.
-> > >
-> > > There's always a risk involved with backports of any kind; more CI
-> > > coverage can help us mitigate some of these risks in an automated
-> > > fashion before we get user reports like this.  I meet with the
-> > > KernelCI folks weekly, so I'll double check on the coverage of the
-> > > stable tree's branches.  The 0day folks are also very responsive and
-> > > I've spoken with them a few times, so I'll try to get to the bottom of
-> > > why this wasn't reported by either of those.
-> > >
-> > > Also, these patches help keep Android, CrOS, and Google internal
-> > > production kernels closer to their upstream sources.
-> > >
-> > > > We can't actually build those
-> > > > kernels with clang, can we? So what is the point? </grumpy>
-> > >
-> > > Here's last night's build:
-> > > https://travis-ci.com/ClangBuiltLinux/continuous-integration/builds/114388434
-> > >
+> > > Does Linus's latest tree also fail for you (or 5.1)?
 > >
-> > If you are saying that plain upstream 4.9-stable defconfig can be
-> > built with Clang, then I am pleasantly surprised.
+> > 5.1.7 with the same config as before and "make olddefconfig" builds for me.
 >
-> I know some specific configs can, there's no rule that I know of that
-> 'defconfig' support is required.  But then again, it might also work,
-> try it and see :)
+> Just for the fun of it: both 4.19 and 4.19.48 also work.
 >
 
-Well, it is the rule that the arm64 maintainers use.
+Thanks Rolf
 
-> > > Also, Android and CrOS have shipped X million devices w/ 4.9 kernels
-> > > built with Clang.  I think this number will grow at least one order of
-> > > magnitude imminently.
-> > >
-> >
-> > I know that (since you keep reminding me :-)), but obviously, Google
-> > does not care about changes that regress GCC support.
->
-> What are you talking about?  Bugs happen all the time, what specifically
-> did "Google" do to break gcc support?  If you are referring to this
-> patch, and it is a regression, of course I will revert it.  But note
-> that gcc and 4.9 works just fine for all of the other users right now,
-> remember we do do a lot of testing of these releases.
->
-
-Don't get me wrong: I am not blaming Google for this. But having
-strict Documented/ stable-rules, violating them by backporting patches
-that are clearly not bug fixes, and *then* saying 'bugs happen all the
-time' makes no sense to me at all.
+Could you please check whether patch
+60f38de7a8d4e816100ceafd1b382df52527bd50 applies cleanly, and whether
+it fixes the problem? Thanks.
