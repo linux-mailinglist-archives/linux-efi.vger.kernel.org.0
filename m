@@ -2,97 +2,102 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 62DC93731A
-	for <lists+linux-efi@lfdr.de>; Thu,  6 Jun 2019 13:39:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A5823733A
+	for <lists+linux-efi@lfdr.de>; Thu,  6 Jun 2019 13:44:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728036AbfFFLj5 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 6 Jun 2019 07:39:57 -0400
-Received: from mail-it1-f196.google.com ([209.85.166.196]:50642 "EHLO
-        mail-it1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727374AbfFFLj4 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 6 Jun 2019 07:39:56 -0400
-Received: by mail-it1-f196.google.com with SMTP id a186so2624514itg.0
-        for <linux-efi@vger.kernel.org>; Thu, 06 Jun 2019 04:39:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=ATDRXGLW3SKA+8BA2BRhqoFgRHFlcKJPGLmDOgbTpLM=;
-        b=qc3xzSNVRN2ZHqA4Qq9sWKCinZ+aPa2DZYWThtV6g6/Uz7PDYFtgR6Q/uvTwYjvJOb
-         lJth1g+Zr2l66cmPLixbsDsPqk2C+lJD+phVR6U3W8sprgD2QYkomWyg0Drd1GQZSPxs
-         iMbUP0D0nO/TZebwQznViSUKI2i9OieD/ERrZt5Z5kzLhEYN+JsvPW42tji4/WSxw6Ob
-         fWNwTZeiJtEkrjZN+Myd/6lf9Z/tLyLaOAEmFrE+2nnaCwt4vJzaoUhhI/0sSF6PVTPX
-         eoNnlkzZZ/0+o1Q5LShZiSFfje3jcYgu9XVwq04oOw/hel3VKkhiARqPSDou290tFVwS
-         ZKfw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=ATDRXGLW3SKA+8BA2BRhqoFgRHFlcKJPGLmDOgbTpLM=;
-        b=ok29IX9AFG4oZOu9Xn8wEZgLM86qkpieHhgzw51TBI6mIMMsdN93lLV9nrWee7T8kF
-         +aoKc8137Upvc+pbD7Ji/Sz99Rz6g/mRUbhU6uoQWYp3DFpsKaMrSedE33M8kBFhEXwO
-         6NehkyXHtBmN19TTTfheyITIQUR9Wvdu/bh14431sl0Q71qNSdDKAJGqH7+6Da0dxGPG
-         YLjZfPZETdUW8uqum/i1T5EVyG6NZGKMY7Gna+zfq91fVYgbG5QWaQ4azdre7+fkRkbI
-         lxta24LX0QhboFx7q6NAHryXC6mUXlM9T2YUBZBCNrdpOr5MrlUQeZ9FLUUWh2lfE9ow
-         ZKlA==
-X-Gm-Message-State: APjAAAVg6nDcgaE5cIbFawW7SUNYSlO6zA/E3ZgovFsXBLLDYx+XXQBU
-        ZsGqVe83VDhhfIYYhu1uXmCWUTKaRv5A/RX1WANqQwYR/pFkyQ==
-X-Google-Smtp-Source: APXvYqy6IXwtsRT+VSEpdO9w13CdBrJZ0n4wxgUAAHnpaBNtBcCAocBB2FoIBSv0vcIsKI8349N7F/zgspYe071lqco=
-X-Received: by 2002:a24:740f:: with SMTP id o15mr15249956itc.76.1559821196007;
- Thu, 06 Jun 2019 04:39:56 -0700 (PDT)
+        id S1727309AbfFFLoI (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 6 Jun 2019 07:44:08 -0400
+Received: from mx1.emlix.com ([188.40.240.192]:36596 "EHLO mx1.emlix.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727310AbfFFLoI (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Thu, 6 Jun 2019 07:44:08 -0400
+Received: from mailer.emlix.com (unknown [81.20.119.6])
+        (using TLSv1.2 with cipher ADH-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mx1.emlix.com (Postfix) with ESMTPS id B865560076;
+        Thu,  6 Jun 2019 13:44:06 +0200 (CEST)
+From:   Rolf Eike Beer <eb@emlix.com>
+To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Cc:     linux-efi@vger.kernel.org, gregkh@linuxfoundation.org,
+        stable@vger.kernel.org, ndesaulniers@google.com
+Subject: Re: [PATCH for-4.9-stable] efi/libstub: Unify command line param parsing
+Date:   Thu, 06 Jun 2019 13:44:06 +0200
+Message-ID: <2196650.4E46qPc46x@devpool35>
+Organization: emlix GmbH
+In-Reply-To: <20190606102513.16321-1-ard.biesheuvel@linaro.org>
+References: <20190606102513.16321-1-ard.biesheuvel@linaro.org>
 MIME-Version: 1.0
-References: <20190605181140.35559-1-matthewgarrett@google.com>
-In-Reply-To: <20190605181140.35559-1-matthewgarrett@google.com>
-From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Date:   Thu, 6 Jun 2019 13:39:42 +0200
-Message-ID: <CAKv+Gu_GxV1GySRz-xju6RsB0Qdra=nN=CL+M=jvQ1e2V6p_ig@mail.gmail.com>
-Subject: Re: [PATCH] efi: Fix TPM code build failure on ARM
-To:     Matthew Garrett <matthewgarrett@google.com>
-Cc:     linux-integrity <linux-integrity@vger.kernel.org>,
-        =?UTF-8?Q?Peter_H=C3=BCwe?= <peterhuewe@gmx.de>,
-        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Matthew Garrett <mjg59@google.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; boundary="nextPart31848172.T2U0eTky2d"; micalg="pgp-sha256"; protocol="application/pgp-signature"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, 5 Jun 2019 at 20:11, Matthew Garrett <matthewgarrett@google.com> wrote:
->
-> asm/early_ioremap.h needs to be #included before tpm_eventlog.h in order
-> to ensure that early_memremap is available.
->
+--nextPart31848172.T2U0eTky2d
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="UTF-8"
 
-Doesn't that make it tpm_eventlog.h's job to #include it?
-
-
-> Signed-off-by: Matthew Garrett <mjg59@google.com>
+Ard Biesheuvel wrote:
+> Commit 60f38de7a8d4e816100ceafd1b382df52527bd50 upstream.
+>=20
+> Merge the parsing of the command line carried out in arm-stub.c with
+> the handling in efi_parse_options(). Note that this also fixes the
+> missing handling of CONFIG_CMDLINE_FORCE=3Dy, in which case the builtin
+> command line should supersede the one passed by the firmware.
+>=20
+> Signed-off-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+> Cc: Linus Torvalds <torvalds@linux-foundation.org>
+> Cc: Matt Fleming <matt@codeblueprint.co.uk>
+> Cc: Peter Zijlstra <peterz@infradead.org>
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Cc: bhe@redhat.com
+> Cc: bhsharma@redhat.com
+> Cc: bp@alien8.de
+> Cc: eugene@hp.com
+> Cc: evgeny.kalugin@intel.com
+> Cc: jhugo@codeaurora.org
+> Cc: leif.lindholm@linaro.org
+> Cc: linux-efi@vger.kernel.org
+> Cc: mark.rutland@arm.com
+> Cc: roy.franz@cavium.com
+> Cc: rruigrok@codeaurora.org
+> Link:
+> http://lkml.kernel.org/r/20170404160910.28115-1-ard.biesheuvel@linaro.org
+> Signed-off-by: Ingo Molnar <mingo@kernel.org>
+> [ardb: fix up merge conflicts with 4.9.180]
+> Signed-off-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
 > ---
->  drivers/firmware/efi/tpm.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
->
-> diff --git a/drivers/firmware/efi/tpm.c b/drivers/firmware/efi/tpm.c
-> index 0bdceb5913aa..1d3f5ca3eaaf 100644
-> --- a/drivers/firmware/efi/tpm.c
-> +++ b/drivers/firmware/efi/tpm.c
-> @@ -7,13 +7,12 @@
->  #define TPM_MEMREMAP(start, size) early_memremap(start, size)
->  #define TPM_MEMUNMAP(start, size) early_memunmap(start, size)
->
-> +#include <asm/early_ioremap.h>
->  #include <linux/efi.h>
->  #include <linux/init.h>
->  #include <linux/memblock.h>
->  #include <linux/tpm_eventlog.h>
->
-> -#include <asm/early_ioremap.h>
-> -
->  int efi_tpm_final_log_size;
->  EXPORT_SYMBOL(efi_tpm_final_log_size);
->
-> --
-> 2.22.0.rc1.311.g5d7573a151-goog
->
+> This fixes the GCC build issue reported by Eike.
+>=20
+> Note that testing of arm64 stable kernels should cover
+> CONFIG_RANDOMIZE_BASE, since it has a profound impact on how the kernel
+> binary gets put together.
+
+Confirmed, this patch works for me on top of 4.9.180.
+=2D-=20
+Rolf Eike Beer, emlix GmbH, http://www.emlix.com
+=46on +49 551 30664-0, Fax +49 551 30664-11
+Gothaer Platz 3, 37083 G=C3=B6ttingen, Germany
+Sitz der Gesellschaft: G=C3=B6ttingen, Amtsgericht G=C3=B6ttingen HR B 3160
+Gesch=C3=A4ftsf=C3=BChrung: Heike Jordan, Dr. Uwe Kracke =E2=80=93 Ust-IdNr=
+=2E: DE 205 198 055
+
+emlix - smart embedded open source
+--nextPart31848172.T2U0eTky2d
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iLMEAAEIAB0WIQQ/Uctzh31xzAxFCLur5FH7Xu2t/AUCXPj8hgAKCRCr5FH7Xu2t
+/KqvBACxZ44yrgwXFYO5IWDP4c6Gj4rNZNK006TUmmaVB3n7KbmstKkpXivHCuvi
+7hTrt+dMHZhz2uGImeVtHai19TPD0cMTYJ5IvbCBpCCKzMXLSO8iznEGlzDDRhZm
+EGBsQ1AhxH0e65RKZ8cadPHdr10R193FNmW/xIVFnrYQcHKEHg==
+=L3Vj
+-----END PGP SIGNATURE-----
+
+--nextPart31848172.T2U0eTky2d--
+
+
+
