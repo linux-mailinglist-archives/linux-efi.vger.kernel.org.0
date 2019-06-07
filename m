@@ -2,118 +2,76 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 929FA39670
-	for <lists+linux-efi@lfdr.de>; Fri,  7 Jun 2019 22:07:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F1D45396BE
+	for <lists+linux-efi@lfdr.de>; Fri,  7 Jun 2019 22:23:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729675AbfFGUHl (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 7 Jun 2019 16:07:41 -0400
-Received: from mail-ot1-f68.google.com ([209.85.210.68]:35988 "EHLO
-        mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729640AbfFGUHl (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 7 Jun 2019 16:07:41 -0400
-Received: by mail-ot1-f68.google.com with SMTP id c3so3004362otr.3
-        for <linux-efi@vger.kernel.org>; Fri, 07 Jun 2019 13:07:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=eCiKEWFDcZP7j811fk8M8DkkVpOdsBHHGSCQGbcAqsM=;
-        b=cX5B/ybN+9E76C8vJtaIyiZ12P5fTDIXvvmXG0mOyMhb/Md40OxzeycYBwXFnWA0IJ
-         eHlbUUA10FvcMoJyZ8CTLDV9XHwhiUCX3OgHH81/Z7uy38VkIfuK665/O+t5F/pa0u8f
-         QgcsAPD0wM+v2RvkhElbUU6b+LR29R1dqNkyno4eRZhIDtlQF/cFlGPX6xi1pTmSenIR
-         RWyEjxRs88GDKPlo3xDEyPXchy6YBS7fEh0gh5qhe5t/i15+k6BZqVFzebLLrAceNQdc
-         KYQQxtBe2uLzxpejgnrt3bWzxDBrq8tYDPjhi92QfxXzxDjAwak55hrZX6LaF12G9aHE
-         srjQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=eCiKEWFDcZP7j811fk8M8DkkVpOdsBHHGSCQGbcAqsM=;
-        b=E4lotkWy3UfjksYI54tf7PtfZDimJpp4yeqwStHFTwEL6REHHwq+dLvQ3zX0wKMJi7
-         ndAt+dWeRRFM/mLTVCf5R2mQgbz6b4gJYCrcS1w9rKmbtzQW0h9RA2TKjIFOoyvP9dsX
-         q8CANsd74EEx/WWQ1rZjp3GnQQqam9P+MptKGOoBspSNwB7m0066MN+YgNbnxiSLlp7g
-         w+v0HbINpTbK2B+XiyMDxKRxgSZOwpO3xP+V4eVjEmbJKUujihbYkgPayHH8Oof/miZ9
-         uychydBuX0CuwCrYcJVnFJe3ZYIGxiJHmCr9sEZ6I/GQLyp3irNILIqJrAmgDuYUHq7o
-         1feA==
-X-Gm-Message-State: APjAAAWoQtpfHrMs3cTj2yBGT6yIgevH7BHLNCGxnfflJLvgREx95ahb
-        MjhMHjlyMr0kaHBKTkIZkumMEwOizB18llgn7tjmbw==
-X-Google-Smtp-Source: APXvYqz2rbY6yUyrAbyzCD+KOoV/chSruHULmHuQow0UVyDGQb5c3BZJ2KdwaL++9IlM9uuK2zqoXUgttHphpe1xf4A=
-X-Received: by 2002:a9d:7a9a:: with SMTP id l26mr15801599otn.71.1559938060915;
- Fri, 07 Jun 2019 13:07:40 -0700 (PDT)
-MIME-Version: 1.0
+        id S1729482AbfFGUXe (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 7 Jun 2019 16:23:34 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:51190 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729345AbfFGUXe (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 7 Jun 2019 16:23:34 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=29IHtlE/6a2OmsjukbA5ARdURIqIUHQIsBKMPglCt88=; b=euVUIRYYwirfKp1eF63MPhWtA
+        h65H/xfzayNNM0RK/crrmRly06xyRlwtDyji01aJeYiGVMptnaDAKUx9v3C+Tj9+gAuorKlIW4S82
+        d5CbwG/lfyaVEto7ZGvkHohrnf1BDq3S8TNorgQtXkHeOO6qeNxRcHtxWT70zbL09KPXIXLcOztpf
+        WPbsInwzqHPV5HeY/6U6DSshJLL2Euuq3AozPw2bsWLcfaArkkWmvnnj4yL9+n801n1I86FcCBnLM
+        CIYfFTKfY0lcDpIOXbzn/F6YLyZo/q8T9EN7vbD4EZn1M12pslE/PKEydQVfUEp9iW4P2VRlNvlpo
+        XJ8JVqfJA==;
+Received: from willy by bombadil.infradead.org with local (Exim 4.92 #3 (Red Hat Linux))
+        id 1hZLOe-0006dJ-IG; Fri, 07 Jun 2019 20:23:32 +0000
+Date:   Fri, 7 Jun 2019 13:23:32 -0700
+From:   Matthew Wilcox <willy@infradead.org>
+To:     Dan Williams <dan.j.williams@intel.com>
+Cc:     linux-kernel@vger.kernel.org, Keith Busch <keith.busch@intel.com>,
+        peterz@infradead.org, vishal.l.verma@intel.com,
+        dave.hansen@linux.intel.com, ard.biesheuvel@linaro.org,
+        linux-nvdimm@lists.01.org, x86@kernel.org,
+        linux-efi@vger.kernel.org
+Subject: Re: [PATCH v3 07/10] lib/memregion: Uplevel the pmem "region" ida to
+ a global allocator
+Message-ID: <20190607202332.GB32656@bombadil.infradead.org>
 References: <155993563277.3036719.17400338098057706494.stgit@dwillia2-desk3.amr.corp.intel.com>
- <155993567538.3036719.16306480832003017141.stgit@dwillia2-desk3.amr.corp.intel.com>
- <e2fd563a-1be4-b4dc-09fa-886f0319be5b@intel.com>
-In-Reply-To: <e2fd563a-1be4-b4dc-09fa-886f0319be5b@intel.com>
-From:   Dan Williams <dan.j.williams@intel.com>
-Date:   Fri, 7 Jun 2019 13:07:30 -0700
-Message-ID: <CAPcyv4jhoxDXUwv4vgDYo=aLAAOxZ-Yq0qcgi5kHF_ybGUd-gg@mail.gmail.com>
-Subject: Re: [PATCH v3 08/10] device-dax: Add a driver for "hmem" devices
-To:     Dave Hansen <dave.hansen@intel.com>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        Keith Busch <keith.busch@intel.com>,
-        Dave Jiang <dave.jiang@intel.com>,
-        kbuild test robot <lkp@intel.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        linux-nvdimm <linux-nvdimm@lists.01.org>,
-        X86 ML <x86@kernel.org>, linux-efi <linux-efi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+ <155993567002.3036719.5748845658364934737.stgit@dwillia2-desk3.amr.corp.intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <155993567002.3036719.5748845658364934737.stgit@dwillia2-desk3.amr.corp.intel.com>
+User-Agent: Mutt/1.9.2 (2017-12-15)
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, Jun 7, 2019 at 12:54 PM Dave Hansen <dave.hansen@intel.com> wrote:
->
-> On 6/7/19 12:27 PM, Dan Williams wrote:
-> > This consumes "hmem" devices the producer of "hmem" devices is saved for
-> > a follow-on patch so that it can reference the new CONFIG_DEV_DAX_HMEM
-> > symbol to gate performing the enumeration work.
->
-> Do these literally show up as /dev/hmemX?
+On Fri, Jun 07, 2019 at 12:27:50PM -0700, Dan Williams wrote:
+> diff --git a/lib/memregion.c b/lib/memregion.c
+> new file mode 100644
+> index 000000000000..f6c6a94c7921
+> --- /dev/null
+> +++ b/lib/memregion.c
+> @@ -0,0 +1,15 @@
+> +#include <linux/idr.h>
+> +
+> +static DEFINE_IDA(region_ids);
+> +
+> +int memregion_alloc(gfp_t gfp)
+> +{
+> +	return ida_alloc(&region_ids, gfp);
+> +}
+> +EXPORT_SYMBOL(memregion_alloc);
+> +
+> +void memregion_free(int id)
+> +{
+> +	ida_free(&region_ids, id);
+> +}
+> +EXPORT_SYMBOL(memregion_free);
 
-No, everything shows as daxX.Y character devices across hmem and pmem
-producers. For example:
-
-# daxctl list -RDu
-[
-  {
-    "path":"/platform/hmem.1",
-    "id":1,
-    "size":"4.00 GiB (4.29 GB)",
-    "align":2097152,
-    "devices":[
-      {
-        "chardev":"dax1.0",
-        "size":"4.00 GiB (4.29 GB)"
-      }
-    ]
-  },
-  {
-    "path":"/LNXSYSTM:00/LNXSYBUS:00/ACPI0012:00/ndbus0/region2/dax2.1",
-    "id":2,
-    "size":"125.01 GiB (134.23 GB)",
-    "align":2097152,
-    "devices":[
-      {
-        "chardev":"dax2.0",
-        "size":"125.01 GiB (134.23 GB)"
-      }
-    ]
-  },
-  {
-    "path":"/platform/hmem.0",
-    "id":0,
-    "size":"4.00 GiB (4.29 GB)",
-    "align":2097152,
-    "devices":[
-      {
-        "chardev":"dax0.0",
-        "size":"4.00 GiB (4.29 GB)"
-      }
-    ]
-  }
-]
+Does this trivial abstraction have to live in its own file?  I'd make
+memregion_alloc/free static inlines that live in a header file, then
+all you need do is find a suitable .c file to store memregion_ids in,
+and export that one symbol instead of two.
