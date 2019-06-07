@@ -2,76 +2,112 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F1D45396BE
-	for <lists+linux-efi@lfdr.de>; Fri,  7 Jun 2019 22:23:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 71248396E2
+	for <lists+linux-efi@lfdr.de>; Fri,  7 Jun 2019 22:37:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729482AbfFGUXe (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 7 Jun 2019 16:23:34 -0400
-Received: from bombadil.infradead.org ([198.137.202.133]:51190 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729345AbfFGUXe (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 7 Jun 2019 16:23:34 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
-        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=29IHtlE/6a2OmsjukbA5ARdURIqIUHQIsBKMPglCt88=; b=euVUIRYYwirfKp1eF63MPhWtA
-        h65H/xfzayNNM0RK/crrmRly06xyRlwtDyji01aJeYiGVMptnaDAKUx9v3C+Tj9+gAuorKlIW4S82
-        d5CbwG/lfyaVEto7ZGvkHohrnf1BDq3S8TNorgQtXkHeOO6qeNxRcHtxWT70zbL09KPXIXLcOztpf
-        WPbsInwzqHPV5HeY/6U6DSshJLL2Euuq3AozPw2bsWLcfaArkkWmvnnj4yL9+n801n1I86FcCBnLM
-        CIYfFTKfY0lcDpIOXbzn/F6YLyZo/q8T9EN7vbD4EZn1M12pslE/PKEydQVfUEp9iW4P2VRlNvlpo
-        XJ8JVqfJA==;
-Received: from willy by bombadil.infradead.org with local (Exim 4.92 #3 (Red Hat Linux))
-        id 1hZLOe-0006dJ-IG; Fri, 07 Jun 2019 20:23:32 +0000
-Date:   Fri, 7 Jun 2019 13:23:32 -0700
-From:   Matthew Wilcox <willy@infradead.org>
-To:     Dan Williams <dan.j.williams@intel.com>
-Cc:     linux-kernel@vger.kernel.org, Keith Busch <keith.busch@intel.com>,
-        peterz@infradead.org, vishal.l.verma@intel.com,
-        dave.hansen@linux.intel.com, ard.biesheuvel@linaro.org,
-        linux-nvdimm@lists.01.org, x86@kernel.org,
-        linux-efi@vger.kernel.org
-Subject: Re: [PATCH v3 07/10] lib/memregion: Uplevel the pmem "region" ida to
- a global allocator
-Message-ID: <20190607202332.GB32656@bombadil.infradead.org>
-References: <155993563277.3036719.17400338098057706494.stgit@dwillia2-desk3.amr.corp.intel.com>
- <155993567002.3036719.5748845658364934737.stgit@dwillia2-desk3.amr.corp.intel.com>
+        id S1729587AbfFGUhU (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 7 Jun 2019 16:37:20 -0400
+Received: from mail-ot1-f68.google.com ([209.85.210.68]:43206 "EHLO
+        mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729584AbfFGUhT (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 7 Jun 2019 16:37:19 -0400
+Received: by mail-ot1-f68.google.com with SMTP id i8so3047664oth.10
+        for <linux-efi@vger.kernel.org>; Fri, 07 Jun 2019 13:37:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=kwl/nkc+IszDeHT62sv1m6fGxfEAM5F5rJvu4oDhrCE=;
+        b=iXoOHs0qLQeKL146DhnpQRL8fyunWXkNhiyrEGM4mBSemtorkbJ+Lf69iPFQOJa/Gu
+         97Z7Zj9tM2EZGj/tnqFMuHcRbrtcN2P9edSdTzjrI3sY9MOfgAKH9+e5MjoUxeF5F0Zc
+         IX/4HIajFNa1uMMtHjO4jNtyaM9hw1AoHCA1upzHQMKDiK/kTjkfpyIOKdWYInDlC0xw
+         DtqXeQoz30yH3g9Wn1/6c59zn+kx7FaVaBGhD/G9is+lvNesOwwpvLWj6HO8+Iu7xKKt
+         UN3q3PaOMFG+sqdZ72Vns2NPyLuL+tkxywHgGlXD5VYzKAww7B5ovRTePAWDkz/oRYPV
+         OXiw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=kwl/nkc+IszDeHT62sv1m6fGxfEAM5F5rJvu4oDhrCE=;
+        b=U+1T0xr/cDxf+Ja8L2yq5c0hhVI+mi2lD969d92MbMNjdl3tLPwKP0FChBXtDsqKVv
+         tfOQIDbYOBcJEbWdS3/GGQJthwJvFNpXwapoMhGNRSu4yQVBU+83OoTtKdT1B2R4FZBg
+         nrbgNIiotlLj9GKWLIPoO/Kcd8aOmhczxC0yl3b93O9EjgZvFDMJc9aiILS8+ZF3pZzt
+         7TFHD8+AJThfeDAI4CkjNb0/FLr+9KJM5+eZlGpAYYIxFypnOueKSCYDP+90uXJfylKB
+         ofLwMMKE4NE/g8m6zUmG8RIGoOXebacPfMfXvHgf5T+Z6Nz9tWYb/ys74ypIJrYqYgy+
+         uJCw==
+X-Gm-Message-State: APjAAAUxUW9HTU9gi+DTMeGqYIhfvjQiurWBcStuvyUGomUMHJ98VB8m
+        WRLdm83CbG3GWneG33KUrhHVCHkswJIX7J2CCOmlZA==
+X-Google-Smtp-Source: APXvYqxyknLc/KKZrXUegoVoEchoENiE3uDTtvta1M+m/gEOhSX8p64QD9se390P/E5smOxnDXWM2sESCdMzk/VkmBs=
+X-Received: by 2002:a9d:470d:: with SMTP id a13mr5538455otf.126.1559939839164;
+ Fri, 07 Jun 2019 13:37:19 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <155993567002.3036719.5748845658364934737.stgit@dwillia2-desk3.amr.corp.intel.com>
-User-Agent: Mutt/1.9.2 (2017-12-15)
+References: <155993563277.3036719.17400338098057706494.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <86a49d1a-678e-5e86-180b-e48326d1bdb5@intel.com>
+In-Reply-To: <86a49d1a-678e-5e86-180b-e48326d1bdb5@intel.com>
+From:   Dan Williams <dan.j.williams@intel.com>
+Date:   Fri, 7 Jun 2019 13:37:08 -0700
+Message-ID: <CAPcyv4gvToqPXSy5MKXOX=HvFP2R0F_6DY3qUiagQEKk84BKpg@mail.gmail.com>
+Subject: Re: [PATCH v3 00/10] EFI Specific Purpose Memory Support
+To:     Dave Hansen <dave.hansen@intel.com>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Dave Jiang <dave.jiang@intel.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Keith Busch <keith.busch@intel.com>,
+        kbuild test robot <lkp@intel.com>,
+        Andy Shevchenko <andy@infradead.org>,
+        Borislav Petkov <bp@alien8.de>,
+        Vishal Verma <vishal.l.verma@intel.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, X86 ML <x86@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Matthew Wilcox <willy@infradead.org>,
+        Ingo Molnar <mingo@redhat.com>, Len Brown <lenb@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Andy Lutomirski <luto@kernel.org>,
+        Darren Hart <dvhart@infradead.org>,
+        linux-nvdimm <linux-nvdimm@lists.01.org>,
+        linux-efi <linux-efi@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, Jun 07, 2019 at 12:27:50PM -0700, Dan Williams wrote:
-> diff --git a/lib/memregion.c b/lib/memregion.c
-> new file mode 100644
-> index 000000000000..f6c6a94c7921
-> --- /dev/null
-> +++ b/lib/memregion.c
-> @@ -0,0 +1,15 @@
-> +#include <linux/idr.h>
-> +
-> +static DEFINE_IDA(region_ids);
-> +
-> +int memregion_alloc(gfp_t gfp)
-> +{
-> +	return ida_alloc(&region_ids, gfp);
-> +}
-> +EXPORT_SYMBOL(memregion_alloc);
-> +
-> +void memregion_free(int id)
-> +{
-> +	ida_free(&region_ids, id);
-> +}
-> +EXPORT_SYMBOL(memregion_free);
+On Fri, Jun 7, 2019 at 12:57 PM Dave Hansen <dave.hansen@intel.com> wrote:
+>
+> On 6/7/19 12:27 PM, Dan Williams wrote:
+> > In support of optionally allowing either application-exclusive and
+> > core-kernel-mm managed access to differentiated memory, claim
+> > EFI_MEMORY_SP ranges for exposure as device-dax instances by default.
+> > Such instances can be directly owned / mapped by a
+> > platform-topology-aware application. Alternatively, with the new kmem
+> > facility [4], the administrator has the option to instead designate that
+> > those memory ranges be hot-added to the core-kernel-mm as a unique
+> > memory numa-node. In short, allow for the decision about what software
+> > agent manages specific-purpose memory to be made at runtime.
+>
+> It's probably worth noting that the reason the memory lands into the
+> state of being controlled by device-dax by default is that device-dax is
+> nice.  It's actually willing and able to give up ownership of the memory
+> when we ask.  If we added to the core-mm, we'd almost certainly not be
+> able to get it back reliably.
+>
+> Anyway, thanks for doing these, and I really hope that the world's
+> BIOSes actually use this flag.
 
-Does this trivial abstraction have to live in its own file?  I'd make
-memregion_alloc/free static inlines that live in a header file, then
-all you need do is find a suitable .c file to store memregion_ids in,
-and export that one symbol instead of two.
+It should be noted that the flag is necessary, but not sufficient to
+route this memory range to device-dax. The BIOS must also publish ACPI
+HMAT performance data for the range so the OS has a chance of knowing
+*why* the memory is "reserved for a specific purpose", and delineate
+the boundaries of multiple performance differentiated memory ranges
+that might be combined into one shared / contiguous EFI memory
+descriptor.
+
+With no HMAT the memory will be reserved, but no dax-device will be
+surfaced. Perhaps this implementation also needs a WARN_TAINT(...,
+TAINT_FIRMWARE_WORKAROUND...) to scream about a BIOS that fails to
+publish the required HMAT entries, or perhaps even better a command
+line option to ignore the flag so that the core-mm can pick up the
+memory by default?
