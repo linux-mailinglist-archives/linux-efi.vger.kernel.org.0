@@ -2,59 +2,62 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E56E39663
-	for <lists+linux-efi@lfdr.de>; Fri,  7 Jun 2019 22:03:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 929FA39670
+	for <lists+linux-efi@lfdr.de>; Fri,  7 Jun 2019 22:07:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731398AbfFGUDi (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 7 Jun 2019 16:03:38 -0400
-Received: from mail-oi1-f195.google.com ([209.85.167.195]:34097 "EHLO
-        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728727AbfFGUDi (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 7 Jun 2019 16:03:38 -0400
-Received: by mail-oi1-f195.google.com with SMTP id u64so2302938oib.1
-        for <linux-efi@vger.kernel.org>; Fri, 07 Jun 2019 13:03:38 -0700 (PDT)
+        id S1729675AbfFGUHl (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 7 Jun 2019 16:07:41 -0400
+Received: from mail-ot1-f68.google.com ([209.85.210.68]:35988 "EHLO
+        mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729640AbfFGUHl (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 7 Jun 2019 16:07:41 -0400
+Received: by mail-ot1-f68.google.com with SMTP id c3so3004362otr.3
+        for <linux-efi@vger.kernel.org>; Fri, 07 Jun 2019 13:07:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=intel-com.20150623.gappssmtp.com; s=20150623;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=tNWHofgNaqy6pErzI2UDdlfPXYGdisLICCNigvI4kL0=;
-        b=u6rXT3Xk89E7qKZJuqet/kerwsW/8pbifYfbULG0Hl/9cqx/I2ZRAEyvBG62o4extZ
-         wAaIEjw3XjBv16xyVl1le/CrVWXfxtjbO+/oJacrZ7oKh3hvurUvbwDA/9HTSM20GBjn
-         w5BBygSxhP2JKc63CxyI3teYBc84w8qnOmwxMKIgAOtMMiuAcSIq4AtgY5fyAra+CJHI
-         oF4c/P4dsqTzwVfwmGRtz2IoT9hpxJhBJtN/CXH5nQ6lK38J+bgrm3NiRudTmRV4xr8B
-         w9zoN74jsv49+DgrTPWzcfpX7kTtx8FhE+9Qxspy8dgylv58d2b5qynGCr7A6rUP8kjG
-         xw1g==
+        bh=eCiKEWFDcZP7j811fk8M8DkkVpOdsBHHGSCQGbcAqsM=;
+        b=cX5B/ybN+9E76C8vJtaIyiZ12P5fTDIXvvmXG0mOyMhb/Md40OxzeycYBwXFnWA0IJ
+         eHlbUUA10FvcMoJyZ8CTLDV9XHwhiUCX3OgHH81/Z7uy38VkIfuK665/O+t5F/pa0u8f
+         QgcsAPD0wM+v2RvkhElbUU6b+LR29R1dqNkyno4eRZhIDtlQF/cFlGPX6xi1pTmSenIR
+         RWyEjxRs88GDKPlo3xDEyPXchy6YBS7fEh0gh5qhe5t/i15+k6BZqVFzebLLrAceNQdc
+         KYQQxtBe2uLzxpejgnrt3bWzxDBrq8tYDPjhi92QfxXzxDjAwak55hrZX6LaF12G9aHE
+         srjQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=tNWHofgNaqy6pErzI2UDdlfPXYGdisLICCNigvI4kL0=;
-        b=rIMfwrNVlL5I07/h5txImrrl3+Zm3cwb8kUgWGn0uG7dJFSXNkFnlZgG4y2z7jNFwX
-         XvrvimidCJ4N/HE3hEVwLQNl3pe7G1Mj2Tp53IQTXrrxaWWo3HcULHn0VGgKCz2SDm17
-         GVHM73POsV9aTDE4mgNDAS9ERf/FeEzaQZNJIb20PW1F15pFXxwFVv/DY5c24hFptZcp
-         09DjhbxyqoWpUn11WN2bXzgZZbbqgJxoLDUFjD8QOT4L4VnMD804qs49Ft0CXbmCP2pH
-         9FJ/zOaDmglClmyV0N5qbjYxUhpZDYItGW+NVJLNyBBSL/FL7PH8bbWXme3cmjU7vCvE
-         d3UQ==
-X-Gm-Message-State: APjAAAW0yw8xo+2v+NLpTjhHqOz2GvPl5TdKzPBlk2KwPkmGKktXYrLt
-        mGSFOYthD7vo3xIBfCszFNmzQidm7zU12pAgvb53gw==
-X-Google-Smtp-Source: APXvYqzjRw0XmHbFfB6N+LCDL02dSt9gHYEVSEZPCDUNI5M9/YAyKIO6lrQhDDoN+9fLMKTRkM2lsSceY96vks8ggTQ=
-X-Received: by 2002:aca:aa88:: with SMTP id t130mr2819351oie.70.1559937817614;
- Fri, 07 Jun 2019 13:03:37 -0700 (PDT)
+        bh=eCiKEWFDcZP7j811fk8M8DkkVpOdsBHHGSCQGbcAqsM=;
+        b=E4lotkWy3UfjksYI54tf7PtfZDimJpp4yeqwStHFTwEL6REHHwq+dLvQ3zX0wKMJi7
+         ndAt+dWeRRFM/mLTVCf5R2mQgbz6b4gJYCrcS1w9rKmbtzQW0h9RA2TKjIFOoyvP9dsX
+         q8CANsd74EEx/WWQ1rZjp3GnQQqam9P+MptKGOoBspSNwB7m0066MN+YgNbnxiSLlp7g
+         w+v0HbINpTbK2B+XiyMDxKRxgSZOwpO3xP+V4eVjEmbJKUujihbYkgPayHH8Oof/miZ9
+         uychydBuX0CuwCrYcJVnFJe3ZYIGxiJHmCr9sEZ6I/GQLyp3irNILIqJrAmgDuYUHq7o
+         1feA==
+X-Gm-Message-State: APjAAAWoQtpfHrMs3cTj2yBGT6yIgevH7BHLNCGxnfflJLvgREx95ahb
+        MjhMHjlyMr0kaHBKTkIZkumMEwOizB18llgn7tjmbw==
+X-Google-Smtp-Source: APXvYqz2rbY6yUyrAbyzCD+KOoV/chSruHULmHuQow0UVyDGQb5c3BZJ2KdwaL++9IlM9uuK2zqoXUgttHphpe1xf4A=
+X-Received: by 2002:a9d:7a9a:: with SMTP id l26mr15801599otn.71.1559938060915;
+ Fri, 07 Jun 2019 13:07:40 -0700 (PDT)
 MIME-Version: 1.0
 References: <155993563277.3036719.17400338098057706494.stgit@dwillia2-desk3.amr.corp.intel.com>
- <155993564854.3036719.3692507629721494555.stgit@dwillia2-desk3.amr.corp.intel.com>
- <f6c2d673-a202-4ad5-7055-5aaece9356e1@intel.com>
-In-Reply-To: <f6c2d673-a202-4ad5-7055-5aaece9356e1@intel.com>
+ <155993567538.3036719.16306480832003017141.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <e2fd563a-1be4-b4dc-09fa-886f0319be5b@intel.com>
+In-Reply-To: <e2fd563a-1be4-b4dc-09fa-886f0319be5b@intel.com>
 From:   Dan Williams <dan.j.williams@intel.com>
-Date:   Fri, 7 Jun 2019 13:03:26 -0700
-Message-ID: <CAPcyv4iFG3Z9xL9TSmqLVHxLZ6oiz-uWD6iKgJ8LF4f0n=m9=w@mail.gmail.com>
-Subject: Re: [PATCH v3 03/10] efi: Enumerate EFI_MEMORY_SP
+Date:   Fri, 7 Jun 2019 13:07:30 -0700
+Message-ID: <CAPcyv4jhoxDXUwv4vgDYo=aLAAOxZ-Yq0qcgi5kHF_ybGUd-gg@mail.gmail.com>
+Subject: Re: [PATCH v3 08/10] device-dax: Add a driver for "hmem" devices
 To:     Dave Hansen <dave.hansen@intel.com>
 Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Vishal Verma <vishal.l.verma@intel.com>,
+        Keith Busch <keith.busch@intel.com>,
+        Dave Jiang <dave.jiang@intel.com>,
+        kbuild test robot <lkp@intel.com>,
         Peter Zijlstra <peterz@infradead.org>,
-        Vishal L Verma <vishal.l.verma@intel.com>,
         Dave Hansen <dave.hansen@linux.intel.com>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
         linux-nvdimm <linux-nvdimm@lists.01.org>,
         X86 ML <x86@kernel.org>, linux-efi <linux-efi@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
@@ -66,34 +69,51 @@ X-Mailing-List: linux-efi@vger.kernel.org
 On Fri, Jun 7, 2019 at 12:54 PM Dave Hansen <dave.hansen@intel.com> wrote:
 >
 > On 6/7/19 12:27 PM, Dan Williams wrote:
-> > @@ -848,15 +848,16 @@ char * __init efi_md_typeattr_format(char *buf, size_t size,
-> >       if (attr & ~(EFI_MEMORY_UC | EFI_MEMORY_WC | EFI_MEMORY_WT |
-> >                    EFI_MEMORY_WB | EFI_MEMORY_UCE | EFI_MEMORY_RO |
-> >                    EFI_MEMORY_WP | EFI_MEMORY_RP | EFI_MEMORY_XP |
-> > -                  EFI_MEMORY_NV |
-> > +                  EFI_MEMORY_NV | EFI_MEMORY_SP |
-> >                    EFI_MEMORY_RUNTIME | EFI_MEMORY_MORE_RELIABLE))
-> >               snprintf(pos, size, "|attr=0x%016llx]",
-> >                        (unsigned long long)attr);
-> >       else
-> >               snprintf(pos, size,
-> > -                      "|%3s|%2s|%2s|%2s|%2s|%2s|%2s|%3s|%2s|%2s|%2s|%2s]",
-> > +                      "|%3s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%3s|%2s|%2s|%2s|%2s]",
-> >                        attr & EFI_MEMORY_RUNTIME ? "RUN" : "",
-> >                        attr & EFI_MEMORY_MORE_RELIABLE ? "MR" : "",
-> > +                      attr & EFI_MEMORY_SP      ? "SP"  : "",
-> >                        attr & EFI_MEMORY_NV      ? "NV"  : "",
-> >                        attr & EFI_MEMORY_XP      ? "XP"  : "",
-> >                        attr & EFI_MEMORY_RP      ? "RP"  : "",
+> > This consumes "hmem" devices the producer of "hmem" devices is saved for
+> > a follow-on patch so that it can reference the new CONFIG_DEV_DAX_HMEM
+> > symbol to gate performing the enumeration work.
 >
-> Haha, I went digging in sysfs to find out where this gets dumped out.
-> The joke was on me because it seems to only go to dmesg.
->
-> Separate from these patches, should we have a runtime file that dumps
-> out the same info?  dmesg isn't always available, and hotplug could
-> change this too, I'd imagine.
+> Do these literally show up as /dev/hmemX?
 
-Perhaps, but I thought /proc/iomem was that runtime file. Given that
-x86/Linux only seems to care about the the EFI to E820 translation of
-the map and the E820 map is directly reflected in /proc/iomem, do we
-need another file?
+No, everything shows as daxX.Y character devices across hmem and pmem
+producers. For example:
+
+# daxctl list -RDu
+[
+  {
+    "path":"/platform/hmem.1",
+    "id":1,
+    "size":"4.00 GiB (4.29 GB)",
+    "align":2097152,
+    "devices":[
+      {
+        "chardev":"dax1.0",
+        "size":"4.00 GiB (4.29 GB)"
+      }
+    ]
+  },
+  {
+    "path":"/LNXSYSTM:00/LNXSYBUS:00/ACPI0012:00/ndbus0/region2/dax2.1",
+    "id":2,
+    "size":"125.01 GiB (134.23 GB)",
+    "align":2097152,
+    "devices":[
+      {
+        "chardev":"dax2.0",
+        "size":"125.01 GiB (134.23 GB)"
+      }
+    ]
+  },
+  {
+    "path":"/platform/hmem.0",
+    "id":0,
+    "size":"4.00 GiB (4.29 GB)",
+    "align":2097152,
+    "devices":[
+      {
+        "chardev":"dax0.0",
+        "size":"4.00 GiB (4.29 GB)"
+      }
+    ]
+  }
+]
