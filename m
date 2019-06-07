@@ -2,33 +2,34 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B86EC39605
-	for <lists+linux-efi@lfdr.de>; Fri,  7 Jun 2019 21:42:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3091339609
+	for <lists+linux-efi@lfdr.de>; Fri,  7 Jun 2019 21:42:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730775AbfFGTmH (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 7 Jun 2019 15:42:07 -0400
-Received: from mga05.intel.com ([192.55.52.43]:59470 "EHLO mga05.intel.com"
+        id S1731028AbfFGTmN (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 7 Jun 2019 15:42:13 -0400
+Received: from mga17.intel.com ([192.55.52.151]:4979 "EHLO mga17.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729482AbfFGTmH (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Fri, 7 Jun 2019 15:42:07 -0400
+        id S1729482AbfFGTmN (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Fri, 7 Jun 2019 15:42:13 -0400
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 07 Jun 2019 12:42:06 -0700
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 07 Jun 2019 12:42:12 -0700
 X-ExtLoop1: 1
 Received: from dwillia2-desk3.jf.intel.com (HELO dwillia2-desk3.amr.corp.intel.com) ([10.54.39.16])
-  by fmsmga004.fm.intel.com with ESMTP; 07 Jun 2019 12:42:07 -0700
-Subject: [PATCH v3 07/10] lib/memregion: Uplevel the pmem "region" ida to a
- global allocator
+  by fmsmga001.fm.intel.com with ESMTP; 07 Jun 2019 12:42:12 -0700
+Subject: [PATCH v3 08/10] device-dax: Add a driver for "hmem" devices
 From:   Dan Williams <dan.j.williams@intel.com>
 To:     linux-kernel@vger.kernel.org
-Cc:     Keith Busch <keith.busch@intel.com>,
-        Matthew Wilcox <willy@infradead.org>, peterz@infradead.org,
-        vishal.l.verma@intel.com, dave.hansen@linux.intel.com,
-        ard.biesheuvel@linaro.org, linux-nvdimm@lists.01.org,
-        x86@kernel.org, linux-efi@vger.kernel.org
-Date:   Fri, 07 Jun 2019 12:27:50 -0700
-Message-ID: <155993567002.3036719.5748845658364934737.stgit@dwillia2-desk3.amr.corp.intel.com>
+Cc:     Vishal Verma <vishal.l.verma@intel.com>,
+        Keith Busch <keith.busch@intel.com>,
+        Dave Jiang <dave.jiang@intel.com>,
+        kbuild test robot <lkp@intel.com>, peterz@infradead.org,
+        dave.hansen@linux.intel.com, ard.biesheuvel@linaro.org,
+        linux-nvdimm@lists.01.org, x86@kernel.org,
+        linux-efi@vger.kernel.org
+Date:   Fri, 07 Jun 2019 12:27:55 -0700
+Message-ID: <155993567538.3036719.16306480832003017141.stgit@dwillia2-desk3.amr.corp.intel.com>
 In-Reply-To: <155993563277.3036719.17400338098057706494.stgit@dwillia2-desk3.amr.corp.intel.com>
 References: <155993563277.3036719.17400338098057706494.stgit@dwillia2-desk3.amr.corp.intel.com>
 User-Agent: StGit/0.18-2-gc94f
@@ -40,182 +41,170 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-In preparation for handling platform differentiated memory types beyond
-persistent memory, uplevel the "region" identifier to a global number
-space. This enables a device-dax instance to be registered to any memory
-type with guaranteed unique names.
+Platform firmware like EFI/ACPI may publish "hmem" platform devices.
+Such a device is a performance differentiated memory range likely
+reserved for an application specific use case. The driver gives access
+to 100% of the capacity via a device-dax mmap instance by default.
 
+However, if over-subscription and other kernel memory management is
+desired the resulting dax device can be assigned to the core-mm via the
+kmem driver.
+
+This consumes "hmem" devices the producer of "hmem" devices is saved for
+a follow-on patch so that it can reference the new CONFIG_DEV_DAX_HMEM
+symbol to gate performing the enumeration work.
+
+Cc: Vishal Verma <vishal.l.verma@intel.com>
 Cc: Keith Busch <keith.busch@intel.com>
-Cc: Matthew Wilcox <willy@infradead.org>
+Cc: Dave Jiang <dave.jiang@intel.com>
+Reported-by: kbuild test robot <lkp@intel.com>
 Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 ---
- drivers/nvdimm/Kconfig       |    1 +
- drivers/nvdimm/core.c        |    1 -
- drivers/nvdimm/nd-core.h     |    1 -
- drivers/nvdimm/region_devs.c |   13 ++++---------
- include/linux/memregion.h    |    8 ++++++++
- lib/Kconfig                  |    7 +++++++
- lib/Makefile                 |    1 +
- lib/memregion.c              |   15 +++++++++++++++
- 8 files changed, 36 insertions(+), 11 deletions(-)
- create mode 100644 include/linux/memregion.h
- create mode 100644 lib/memregion.c
+ drivers/dax/Kconfig       |   27 +++++++++++++++++----
+ drivers/dax/Makefile      |    2 ++
+ drivers/dax/hmem.c        |   58 +++++++++++++++++++++++++++++++++++++++++++++
+ include/linux/memregion.h |    3 ++
+ 4 files changed, 85 insertions(+), 5 deletions(-)
+ create mode 100644 drivers/dax/hmem.c
 
-diff --git a/drivers/nvdimm/Kconfig b/drivers/nvdimm/Kconfig
-index 54500798f23a..4b3e66fe61c1 100644
---- a/drivers/nvdimm/Kconfig
-+++ b/drivers/nvdimm/Kconfig
-@@ -4,6 +4,7 @@ menuconfig LIBNVDIMM
- 	depends on PHYS_ADDR_T_64BIT
- 	depends on HAS_IOMEM
- 	depends on BLK_DEV
-+	select MEMREGION
+diff --git a/drivers/dax/Kconfig b/drivers/dax/Kconfig
+index f33c73e4af41..1a59ef86f148 100644
+--- a/drivers/dax/Kconfig
++++ b/drivers/dax/Kconfig
+@@ -32,19 +32,36 @@ config DEV_DAX_PMEM
+ 
+ 	  Say M if unsure
+ 
++config DEV_DAX_HMEM
++	tristate "HMEM DAX: direct access to 'specific purpose' memory"
++	depends on EFI_APPLICATION_RESERVED
++	default DEV_DAX
++	help
++	  EFI 2.8 platforms, and others, may advertise 'specific purpose'
++	  memory.  For example, a high bandwidth memory pool. The
++	  indication from platform firmware is meant to reserve the
++	  memory from typical usage by default.  This driver creates
++	  device-dax instances for these memory ranges, and that also
++	  enables the possibility to assign them to the DEV_DAX_KMEM
++	  driver to override the reservation and add them to kernel
++	  "System RAM" pool.
++
++	  Say M if unsure.
++
+ config DEV_DAX_KMEM
+ 	tristate "KMEM DAX: volatile-use of persistent memory"
+ 	default DEV_DAX
+ 	depends on DEV_DAX
+ 	depends on MEMORY_HOTPLUG # for add_memory() and friends
  	help
- 	  Generic support for non-volatile memory devices including
- 	  ACPI-6-NFIT defined resources.  On platforms that define an
-diff --git a/drivers/nvdimm/core.c b/drivers/nvdimm/core.c
-index acce050856a8..75fe651d327d 100644
---- a/drivers/nvdimm/core.c
-+++ b/drivers/nvdimm/core.c
-@@ -463,7 +463,6 @@ static __exit void libnvdimm_exit(void)
- 	nd_region_exit();
- 	nvdimm_exit();
- 	nvdimm_bus_exit();
--	nd_region_devs_exit();
- 	nvdimm_devs_exit();
- }
+-	  Support access to persistent memory as if it were RAM.  This
+-	  allows easier use of persistent memory by unmodified
+-	  applications.
++	  Support access to persistent, or other performance
++	  differentiated memory as if it were System RAM. This allows
++	  easier use of persistent memory by unmodified applications, or
++	  adds core kernel memory services to heterogeneous memory types
++	  (HMEM) marked "reserved" by platform firmware.
  
-diff --git a/drivers/nvdimm/nd-core.h b/drivers/nvdimm/nd-core.h
-index e5ffd5733540..17561302dfec 100644
---- a/drivers/nvdimm/nd-core.h
-+++ b/drivers/nvdimm/nd-core.h
-@@ -133,7 +133,6 @@ struct nvdimm_bus *walk_to_nvdimm_bus(struct device *nd_dev);
- int __init nvdimm_bus_init(void);
- void nvdimm_bus_exit(void);
- void nvdimm_devs_exit(void);
--void nd_region_devs_exit(void);
- void nd_region_probe_success(struct nvdimm_bus *nvdimm_bus, struct device *dev);
- struct nd_region;
- void nd_region_create_ns_seed(struct nd_region *nd_region);
-diff --git a/drivers/nvdimm/region_devs.c b/drivers/nvdimm/region_devs.c
-index b4ef7d9ff22e..9e070363ff70 100644
---- a/drivers/nvdimm/region_devs.c
-+++ b/drivers/nvdimm/region_devs.c
-@@ -11,6 +11,7 @@
-  * General Public License for more details.
-  */
- #include <linux/scatterlist.h>
-+#include <linux/memregion.h>
- #include <linux/highmem.h>
- #include <linux/sched.h>
- #include <linux/slab.h>
-@@ -27,7 +28,6 @@
-  */
- #include <linux/io-64-nonatomic-hi-lo.h>
+ 	  To use this feature, a DAX device must be unbound from the
+-	  device_dax driver (PMEM DAX) and bound to this kmem driver
+-	  on each boot.
++	  device_dax driver and bound to this kmem driver on each boot.
  
--static DEFINE_IDA(region_ida);
- static DEFINE_PER_CPU(int, flush_idx);
+ 	  Say N if unsure.
  
- static int nvdimm_map_flush(struct device *dev, struct nvdimm *nvdimm, int dimm,
-@@ -141,7 +141,7 @@ static void nd_region_release(struct device *dev)
- 		put_device(&nvdimm->dev);
- 	}
- 	free_percpu(nd_region->lane);
--	ida_simple_remove(&region_ida, nd_region->id);
-+	memregion_free(nd_region->id);
- 	if (is_nd_blk(dev))
- 		kfree(to_nd_blk_region(dev));
- 	else
-@@ -1036,7 +1036,7 @@ static struct nd_region *nd_region_create(struct nvdimm_bus *nvdimm_bus,
+diff --git a/drivers/dax/Makefile b/drivers/dax/Makefile
+index 81f7d54dadfb..80065b38b3c4 100644
+--- a/drivers/dax/Makefile
++++ b/drivers/dax/Makefile
+@@ -2,9 +2,11 @@
+ obj-$(CONFIG_DAX) += dax.o
+ obj-$(CONFIG_DEV_DAX) += device_dax.o
+ obj-$(CONFIG_DEV_DAX_KMEM) += kmem.o
++obj-$(CONFIG_DEV_DAX_HMEM) += dax_hmem.o
  
- 	if (!region_buf)
- 		return NULL;
--	nd_region->id = ida_simple_get(&region_ida, 0, 0, GFP_KERNEL);
-+	nd_region->id = memregion_alloc(GFP_KERNEL);
- 	if (nd_region->id < 0)
- 		goto err_id;
+ dax-y := super.o
+ dax-y += bus.o
+ device_dax-y := device.o
++dax_hmem-y := hmem.o
  
-@@ -1090,7 +1090,7 @@ static struct nd_region *nd_region_create(struct nvdimm_bus *nvdimm_bus,
- 	return nd_region;
- 
-  err_percpu:
--	ida_simple_remove(&region_ida, nd_region->id);
-+	memregion_free(nd_region->id);
-  err_id:
- 	kfree(region_buf);
- 	return NULL;
-@@ -1237,8 +1237,3 @@ int nd_region_conflict(struct nd_region *nd_region, resource_size_t start,
- 
- 	return device_for_each_child(&nvdimm_bus->dev, &ctx, region_conflict);
- }
--
--void __exit nd_region_devs_exit(void)
--{
--	ida_destroy(&region_ida);
--}
-diff --git a/include/linux/memregion.h b/include/linux/memregion.h
+ obj-y += pmem/
+diff --git a/drivers/dax/hmem.c b/drivers/dax/hmem.c
 new file mode 100644
-index 000000000000..ba03c70f98d2
+index 000000000000..741f2c222271
 --- /dev/null
-+++ b/include/linux/memregion.h
-@@ -0,0 +1,8 @@
++++ b/drivers/dax/hmem.c
+@@ -0,0 +1,58 @@
 +// SPDX-License-Identifier: GPL-2.0
-+#ifndef _MEMREGION_H_
-+#define _MEMREGION_H_
-+#include <linux/types.h>
++#include <linux/platform_device.h>
++#include <linux/memregion.h>
++#include <linux/memremap.h>
++#include <linux/module.h>
++#include <linux/pfn_t.h>
++#include "bus.h"
 +
-+int memregion_alloc(gfp_t gfp);
-+void memregion_free(int id);
-+#endif /* _MEMREGION_H_ */
-diff --git a/lib/Kconfig b/lib/Kconfig
-index 90623a0e1942..68621a0505a6 100644
---- a/lib/Kconfig
-+++ b/lib/Kconfig
-@@ -335,6 +335,13 @@ config DECOMPRESS_LZ4
- config GENERIC_ALLOCATOR
- 	bool
- 
-+#
-+# Memory Region ID allocation for persistent memory and "specific
-+# purpose" / performance differentiated memory ranges.
-+#
-+config MEMREGION
-+	bool
-+
- #
- # reed solomon support is select'ed if needed
- #
-diff --git a/lib/Makefile b/lib/Makefile
-index fb7697031a79..58cf99f68f36 100644
---- a/lib/Makefile
-+++ b/lib/Makefile
-@@ -136,6 +136,7 @@ obj-$(CONFIG_LIBCRC32C)	+= libcrc32c.o
- obj-$(CONFIG_CRC8)	+= crc8.o
- obj-$(CONFIG_XXHASH)	+= xxhash.o
- obj-$(CONFIG_GENERIC_ALLOCATOR) += genalloc.o
-+obj-$(CONFIG_MEMREGION) += memregion.o
- 
- obj-$(CONFIG_842_COMPRESS) += 842/
- obj-$(CONFIG_842_DECOMPRESS) += 842/
-diff --git a/lib/memregion.c b/lib/memregion.c
-new file mode 100644
-index 000000000000..f6c6a94c7921
---- /dev/null
-+++ b/lib/memregion.c
-@@ -0,0 +1,15 @@
-+#include <linux/idr.h>
-+
-+static DEFINE_IDA(region_ids);
-+
-+int memregion_alloc(gfp_t gfp)
++static int dax_hmem_probe(struct platform_device *pdev)
 +{
-+	return ida_alloc(&region_ids, gfp);
-+}
-+EXPORT_SYMBOL(memregion_alloc);
++	struct dev_pagemap pgmap = { NULL };
++	struct device *dev = &pdev->dev;
++	struct dax_region *dax_region;
++	struct memregion_info *mri;
++	struct dev_dax *dev_dax;
++	struct resource *res;
 +
-+void memregion_free(int id)
-+{
-+	ida_free(&region_ids, id);
++	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	if (!res)
++		return -ENOMEM;
++
++	mri = dev->platform_data;
++	pgmap.dev = dev;
++	memcpy(&pgmap.res, res, sizeof(*res));
++
++	dax_region = alloc_dax_region(dev, pdev->id, res, mri->target_node,
++			PMD_SIZE, PFN_DEV|PFN_MAP);
++	if (!dax_region)
++		return -ENOMEM;
++
++	dev_dax = devm_create_dev_dax(dax_region, 0, &pgmap);
++	if (IS_ERR(dev_dax))
++		return PTR_ERR(dev_dax);
++
++	/* child dev_dax instances now own the lifetime of the dax_region */
++	dax_region_put(dax_region);
++	return 0;
 +}
-+EXPORT_SYMBOL(memregion_free);
++
++static int dax_hmem_remove(struct platform_device *pdev)
++{
++	/* devm handles teardown */
++	return 0;
++}
++
++static struct platform_driver dax_hmem_driver = {
++	.probe = dax_hmem_probe,
++	.remove = dax_hmem_remove,
++	.driver = {
++		.name = "hmem",
++	},
++};
++
++module_platform_driver(dax_hmem_driver);
++
++MODULE_ALIAS("platform:hmem*");
++MODULE_LICENSE("GPL v2");
++MODULE_AUTHOR("Intel Corporation");
+diff --git a/include/linux/memregion.h b/include/linux/memregion.h
+index ba03c70f98d2..920fb300a98b 100644
+--- a/include/linux/memregion.h
++++ b/include/linux/memregion.h
+@@ -3,6 +3,9 @@
+ #define _MEMREGION_H_
+ #include <linux/types.h>
+ 
++struct memregion_info {
++	int target_node;
++};
+ int memregion_alloc(gfp_t gfp);
+ void memregion_free(int id);
+ #endif /* _MEMREGION_H_ */
 
