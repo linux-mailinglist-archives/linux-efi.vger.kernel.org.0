@@ -2,27 +2,27 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C5A639F21
-	for <lists+linux-efi@lfdr.de>; Sat,  8 Jun 2019 13:54:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8AE3739DEF
+	for <lists+linux-efi@lfdr.de>; Sat,  8 Jun 2019 13:45:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728732AbfFHLyO (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sat, 8 Jun 2019 07:54:14 -0400
-Received: from mail.kernel.org ([198.145.29.99]:57784 "EHLO mail.kernel.org"
+        id S1728617AbfFHLpP (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 8 Jun 2019 07:45:15 -0400
+Received: from mail.kernel.org ([198.145.29.99]:60738 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727620AbfFHLkc (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Sat, 8 Jun 2019 07:40:32 -0400
+        id S1728725AbfFHLnY (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Sat, 8 Jun 2019 07:43:24 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C3D1421670;
-        Sat,  8 Jun 2019 11:40:29 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 971C1214C6;
+        Sat,  8 Jun 2019 11:43:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1559994030;
-        bh=AU78Glg8yGgI2HjvXfqR0mHx9gGz2oJZlxUmfeLBagU=;
+        s=default; t=1559994203;
+        bh=vj1gqrXMhgdJiOp320NoSZWXUh7AGhz5bqmQ5lyXcCs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Dp1+O9iGWfaarH1eTaXNdMbF9ahUpLSkf3gWjLMhIKFp/xBHkoEdlPQp80rSvzKJb
-         tLZvvPA8izILBElufyBjznNanhkhpYnqMaQdj5mZGXs8J1wkC8KjYTFRNZfwUuoo6X
-         VmYN/HMjLr2bxBtl6hebZXHRabkTjz4/7TDKWp54=
+        b=g2Dh1RUT8zklUr6XnngZSlTTdPVZSdLPwtziHlm6g8xBzHkAr7DQz+QExnfvi+l8v
+         VMHr7RK99pv61FupxoP6hqlZ2FYbPW13mfksBlIi/UJHtucQIwZAeADGgvU50e7V7Q
+         5KEUvgGybNW4xVJ1h2k68lzMbAWuFjy+N9lVefOU=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Gen Zhang <blackgod016574@gmail.com>,
@@ -34,12 +34,12 @@ Cc:     Gen Zhang <blackgod016574@gmail.com>,
         linux-efi@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
         Sasha Levin <sashal@kernel.org>,
         platform-driver-x86@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.1 25/70] efi/x86/Add missing error handling to old_memmap 1:1 mapping code
-Date:   Sat,  8 Jun 2019 07:39:04 -0400
-Message-Id: <20190608113950.8033-25-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 17/49] efi/x86/Add missing error handling to old_memmap 1:1 mapping code
+Date:   Sat,  8 Jun 2019 07:41:58 -0400
+Message-Id: <20190608114232.8731-17-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190608113950.8033-1-sashal@kernel.org>
-References: <20190608113950.8033-1-sashal@kernel.org>
+In-Reply-To: <20190608114232.8731-1-sashal@kernel.org>
+References: <20190608114232.8731-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -85,10 +85,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  2 files changed, 8 insertions(+), 3 deletions(-)
 
 diff --git a/arch/x86/platform/efi/efi.c b/arch/x86/platform/efi/efi.c
-index e1cb01a22fa8..a7189a3b4d70 100644
+index 9061babfbc83..353019d4e6c9 100644
 --- a/arch/x86/platform/efi/efi.c
 +++ b/arch/x86/platform/efi/efi.c
-@@ -85,6 +85,8 @@ static efi_status_t __init phys_efi_set_virtual_address_map(
+@@ -86,6 +86,8 @@ static efi_status_t __init phys_efi_set_virtual_address_map(
  	pgd_t *save_pgd;
  
  	save_pgd = efi_call_phys_prolog();
@@ -98,7 +98,7 @@ index e1cb01a22fa8..a7189a3b4d70 100644
  	/* Disable interrupts around EFI calls: */
  	local_irq_save(flags);
 diff --git a/arch/x86/platform/efi/efi_64.c b/arch/x86/platform/efi/efi_64.c
-index cf0347f61b21..08ce8177c3af 100644
+index ee5d08f25ce4..dfc809b31c7c 100644
 --- a/arch/x86/platform/efi/efi_64.c
 +++ b/arch/x86/platform/efi/efi_64.c
 @@ -84,13 +84,15 @@ pgd_t * __init efi_call_phys_prolog(void)
