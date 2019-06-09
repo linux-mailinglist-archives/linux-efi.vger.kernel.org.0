@@ -2,219 +2,161 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 343A33AA06
-	for <lists+linux-efi@lfdr.de>; Sun,  9 Jun 2019 19:15:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DFDAF3AB17
+	for <lists+linux-efi@lfdr.de>; Sun,  9 Jun 2019 20:14:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732703AbfFIQyv (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sun, 9 Jun 2019 12:54:51 -0400
-Received: from mail.kernel.org ([198.145.29.99]:56706 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1732702AbfFIQyu (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Sun, 9 Jun 2019 12:54:50 -0400
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 189C9204EC;
-        Sun,  9 Jun 2019 16:54:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1560099289;
-        bh=lAiU1RIanTfQNtNoN4gO/C1h84Mc1DG0kARE30guHgU=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fehB3Rf6aY2s5SGEf0lT+RxvO35xrlvGW57VEOjBYMLciWu8Rll4dLnit278QN6xt
-         90fpEraZORNFU4qqtDL7Vq87FUnI4fMdBa2NSzN7Jkldq/tOoKMT6+IWtLLznaD1n0
-         CVKt+UwYthTsqU5gdy9vj07JkhflVxIFw6PmjXyE=
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Matt Fleming <matt@codeblueprint.co.uk>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>, bhe@redhat.com,
-        bhsharma@redhat.com, bp@alien8.de, eugene@hp.com,
-        evgeny.kalugin@intel.com, jhugo@codeaurora.org,
-        leif.lindholm@linaro.org, linux-efi@vger.kernel.org,
-        mark.rutland@arm.com, roy.franz@cavium.com,
-        rruigrok@codeaurora.org, Ingo Molnar <mingo@kernel.org>
-Subject: [PATCH 4.9 60/83] efi/libstub: Unify command line param parsing
-Date:   Sun,  9 Jun 2019 18:42:30 +0200
-Message-Id: <20190609164132.986580103@linuxfoundation.org>
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <20190609164127.843327870@linuxfoundation.org>
-References: <20190609164127.843327870@linuxfoundation.org>
-User-Agent: quilt/0.66
+        id S1730149AbfFISOm (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sun, 9 Jun 2019 14:14:42 -0400
+Received: from mail-it1-f194.google.com ([209.85.166.194]:52187 "EHLO
+        mail-it1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729396AbfFISOm (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sun, 9 Jun 2019 14:14:42 -0400
+Received: by mail-it1-f194.google.com with SMTP id m3so10024236itl.1
+        for <linux-efi@vger.kernel.org>; Sun, 09 Jun 2019 11:14:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=QrmQgtot4PqjL1wSqJXodQ8ktBGYcHqGra4eQTyGZms=;
+        b=nh5GGNE9CurE7rgpy3Nl9hGwop7f2Ae1DmdxJrS+vTvyLlLzxwV2vu6FpBrshO1AlQ
+         B8MMMyYnTK+zdb+YytKX/FNRPgp3GkqrDj7KY0j2ifpJMeK+sxJ+UvLofcKMCysWrKh5
+         gERxQUjZgW/Yngk7i1UPiREMntaTUT97hBCmn+I1riD1yXsXcr63TGtPpTXpCxdxzA23
+         bilS+RoyIWu0YpdLiUqxqDtTLmkYH77PKVuUigpWP4WImdhXxbK9boLNkGrJA45FL9dS
+         SbuR+N+vHZFQHASBN6Kl6ZSQYqfFx8sxsdMIIHtoYwrN7EhMdb9/2W8hEZN6kmh91C4w
+         zyeA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=QrmQgtot4PqjL1wSqJXodQ8ktBGYcHqGra4eQTyGZms=;
+        b=Geuz5WO6bLifHhJ5O/x5a/GqX72Jlq+SI7ovlLpYThGWNTmR79mfkl1eHDadvUBlkW
+         VpM4oMqm8NP9v99+hvk8NNl+tfNZ+4A+VISfhHwOyEFrFfCvDPEhY3K+z94iDjEcIkyP
+         1op/4P7YA0uYD6mDjESFulojxjZtewZNX2Eh6UJ5bmVSDDXEA/SSj3dx6cP4nSNsbN43
+         0tSNXhqJ1Z3Y7u/0y5Z1Q4ayMtO5NZYNJBucbYkU1Kgm1bbXSjhW/mA2579HG/x7VezX
+         CFp1fRA8F1si1o7AHQCFlNSnHW87jWIVncmXai2dcc2xdIA8FFbTdp+1rUGQeztbRNq+
+         zBaA==
+X-Gm-Message-State: APjAAAVuX8i96uH96YrELA3H5FbG3H5UXB89nGtJFeYLKl9haPE0fEKh
+        SYubuH9ty8Ip2UIIcSNjLNWLJmUprXVNa4IJWI99UQ==
+X-Google-Smtp-Source: APXvYqyFGP0qOizcA9JeXKig2+nJD1y8SyNKskyZ+G1ya+nOEgNb+KQ+pVayfS4flXjeA98DrQnt9ingi8qkn41chyg=
+X-Received: by 2002:a02:ce37:: with SMTP id v23mr42380530jar.2.1560104081538;
+ Sun, 09 Jun 2019 11:14:41 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20190608114232.8731-1-sashal@kernel.org> <20190608114232.8731-17-sashal@kernel.org>
+In-Reply-To: <20190608114232.8731-17-sashal@kernel.org>
+From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Date:   Sun, 9 Jun 2019 20:14:29 +0200
+Message-ID: <CAKv+Gu9ZJ42=NJWDX4+DgkMWaSEakNw-yYiUtsUE48D-V6=7-w@mail.gmail.com>
+Subject: Re: [PATCH AUTOSEL 4.19 17/49] efi/x86/Add missing error handling to
+ old_memmap 1:1 mapping code
+To:     Sasha Levin <sashal@kernel.org>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        stable <stable@vger.kernel.org>,
+        Gen Zhang <blackgod016574@gmail.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Rob Bradford <robert.bradford@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        Ingo Molnar <mingo@kernel.org>,
+        platform-driver-x86@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-From: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+On Sat, 8 Jun 2019 at 13:43, Sasha Levin <sashal@kernel.org> wrote:
+>
+> From: Gen Zhang <blackgod016574@gmail.com>
+>
+> [ Upstream commit 4e78921ba4dd0aca1cc89168f45039add4183f8e ]
+>
+> The old_memmap flow in efi_call_phys_prolog() performs numerous memory
+> allocations, and either does not check for failure at all, or it does
+> but fails to propagate it back to the caller, which may end up calling
+> into the firmware with an incomplete 1:1 mapping.
+>
+> So let's fix this by returning NULL from efi_call_phys_prolog() on
+> memory allocation failures only, and by handling this condition in the
+> caller. Also, clean up any half baked sets of page tables that we may
+> have created before returning with a NULL return value.
+>
+> Note that any failure at this level will trigger a panic() two levels
+> up, so none of this makes a huge difference, but it is a nice cleanup
+> nonetheless.
+>
+> [ardb: update commit log, add efi_call_phys_epilog() call on error path]
+>
+> Signed-off-by: Gen Zhang <blackgod016574@gmail.com>
+> Signed-off-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+> Cc: Linus Torvalds <torvalds@linux-foundation.org>
+> Cc: Peter Zijlstra <peterz@infradead.org>
+> Cc: Rob Bradford <robert.bradford@intel.com>
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Cc: linux-efi@vger.kernel.org
+> Link: http://lkml.kernel.org/r/20190525112559.7917-2-ard.biesheuvel@linaro.org
+> Signed-off-by: Ingo Molnar <mingo@kernel.org>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
 
-commit 60f38de7a8d4e816100ceafd1b382df52527bd50 upstream.
-
-Merge the parsing of the command line carried out in arm-stub.c with
-the handling in efi_parse_options(). Note that this also fixes the
-missing handling of CONFIG_CMDLINE_FORCE=y, in which case the builtin
-command line should supersede the one passed by the firmware.
-
-Signed-off-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Matt Fleming <matt@codeblueprint.co.uk>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: bhe@redhat.com
-Cc: bhsharma@redhat.com
-Cc: bp@alien8.de
-Cc: eugene@hp.com
-Cc: evgeny.kalugin@intel.com
-Cc: jhugo@codeaurora.org
-Cc: leif.lindholm@linaro.org
-Cc: linux-efi@vger.kernel.org
-Cc: mark.rutland@arm.com
-Cc: roy.franz@cavium.com
-Cc: rruigrok@codeaurora.org
-Link: http://lkml.kernel.org/r/20170404160910.28115-1-ard.biesheuvel@linaro.org
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-[ardb: fix up merge conflicts with 4.9.180]
-Signed-off-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
----
- drivers/firmware/efi/libstub/arm-stub.c        |   23 +++++++----------------
- drivers/firmware/efi/libstub/arm64-stub.c      |    4 +---
- drivers/firmware/efi/libstub/efi-stub-helper.c |   19 +++++++++++--------
- drivers/firmware/efi/libstub/efistub.h         |    2 ++
- include/linux/efi.h                            |    2 +-
- 5 files changed, 22 insertions(+), 28 deletions(-)
-
---- a/drivers/firmware/efi/libstub/arm-stub.c
-+++ b/drivers/firmware/efi/libstub/arm-stub.c
-@@ -18,7 +18,6 @@
- 
- #include "efistub.h"
- 
--bool __nokaslr;
- 
- static int efi_get_secureboot(efi_system_table_t *sys_table_arg)
- {
-@@ -268,18 +267,6 @@ unsigned long efi_entry(void *handle, ef
- 		goto fail;
- 	}
- 
--	/* check whether 'nokaslr' was passed on the command line */
--	if (IS_ENABLED(CONFIG_RANDOMIZE_BASE)) {
--		static const u8 default_cmdline[] = CONFIG_CMDLINE;
--		const u8 *str, *cmdline = cmdline_ptr;
--
--		if (IS_ENABLED(CONFIG_CMDLINE_FORCE))
--			cmdline = default_cmdline;
--		str = strstr(cmdline, "nokaslr");
--		if (str == cmdline || (str > cmdline && *(str - 1) == ' '))
--			__nokaslr = true;
--	}
--
- 	si = setup_graphics(sys_table);
- 
- 	status = handle_kernel_image(sys_table, image_addr, &image_size,
-@@ -291,9 +278,13 @@ unsigned long efi_entry(void *handle, ef
- 		goto fail_free_cmdline;
- 	}
- 
--	status = efi_parse_options(cmdline_ptr);
--	if (status != EFI_SUCCESS)
--		pr_efi_err(sys_table, "Failed to parse EFI cmdline options\n");
-+	if (IS_ENABLED(CONFIG_CMDLINE_EXTEND) ||
-+	    IS_ENABLED(CONFIG_CMDLINE_FORCE) ||
-+	    cmdline_size == 0)
-+		efi_parse_options(CONFIG_CMDLINE);
-+
-+	if (!IS_ENABLED(CONFIG_CMDLINE_FORCE) && cmdline_size > 0)
-+		efi_parse_options(cmdline_ptr);
- 
- 	secure_boot = efi_get_secureboot(sys_table);
- 	if (secure_boot > 0)
---- a/drivers/firmware/efi/libstub/arm64-stub.c
-+++ b/drivers/firmware/efi/libstub/arm64-stub.c
-@@ -24,8 +24,6 @@
- 
- #include "efistub.h"
- 
--extern bool __nokaslr;
--
- efi_status_t check_platform_features(efi_system_table_t *sys_table_arg)
- {
- 	u64 tg;
-@@ -60,7 +58,7 @@ efi_status_t handle_kernel_image(efi_sys
- 	u64 phys_seed = 0;
- 
- 	if (IS_ENABLED(CONFIG_RANDOMIZE_BASE)) {
--		if (!__nokaslr) {
-+		if (!nokaslr()) {
- 			status = efi_get_random_bytes(sys_table_arg,
- 						      sizeof(phys_seed),
- 						      (u8 *)&phys_seed);
---- a/drivers/firmware/efi/libstub/efi-stub-helper.c
-+++ b/drivers/firmware/efi/libstub/efi-stub-helper.c
-@@ -32,6 +32,13 @@
- 
- static unsigned long __chunk_size = EFI_READ_CHUNK_SIZE;
- 
-+static int __section(.data) __nokaslr;
-+
-+int __pure nokaslr(void)
-+{
-+	return __nokaslr;
-+}
-+
- /*
-  * Allow the platform to override the allocation granularity: this allows
-  * systems that have the capability to run with a larger page size to deal
-@@ -351,17 +358,13 @@ void efi_free(efi_system_table_t *sys_ta
-  * environments, first in the early boot environment of the EFI boot
-  * stub, and subsequently during the kernel boot.
-  */
--efi_status_t efi_parse_options(char *cmdline)
-+efi_status_t efi_parse_options(char const *cmdline)
- {
- 	char *str;
- 
--	/*
--	 * Currently, the only efi= option we look for is 'nochunk', which
--	 * is intended to work around known issues on certain x86 UEFI
--	 * versions. So ignore for now on other architectures.
--	 */
--	if (!IS_ENABLED(CONFIG_X86))
--		return EFI_SUCCESS;
-+	str = strstr(cmdline, "nokaslr");
-+	if (str == cmdline || (str && str > cmdline && *(str - 1) == ' '))
-+		__nokaslr = 1;
- 
- 	/*
- 	 * If no EFI parameters were specified on the cmdline we've got
---- a/drivers/firmware/efi/libstub/efistub.h
-+++ b/drivers/firmware/efi/libstub/efistub.h
-@@ -15,6 +15,8 @@
-  */
- #undef __init
- 
-+extern int __pure nokaslr(void);
-+
- void efi_char16_printk(efi_system_table_t *, efi_char16_t *);
- 
- efi_status_t efi_open_volume(efi_system_table_t *sys_table_arg, void *__image,
---- a/include/linux/efi.h
-+++ b/include/linux/efi.h
-@@ -1427,7 +1427,7 @@ efi_status_t handle_cmdline_files(efi_sy
- 				  unsigned long *load_addr,
- 				  unsigned long *load_size);
- 
--efi_status_t efi_parse_options(char *cmdline);
-+efi_status_t efi_parse_options(char const *cmdline);
- 
- efi_status_t efi_setup_gop(efi_system_table_t *sys_table_arg,
- 			   struct screen_info *si, efi_guid_t *proto,
+This was already discussed in the thread that proposed this patch for
+stable: please don't queue this right now, the patches are more likely
+to harm than hurt, and they certainly don't fix a security
+vulnerability, as has been claimed.
 
 
+> ---
+>  arch/x86/platform/efi/efi.c    | 2 ++
+>  arch/x86/platform/efi/efi_64.c | 9 ++++++---
+>  2 files changed, 8 insertions(+), 3 deletions(-)
+>
+> diff --git a/arch/x86/platform/efi/efi.c b/arch/x86/platform/efi/efi.c
+> index 9061babfbc83..353019d4e6c9 100644
+> --- a/arch/x86/platform/efi/efi.c
+> +++ b/arch/x86/platform/efi/efi.c
+> @@ -86,6 +86,8 @@ static efi_status_t __init phys_efi_set_virtual_address_map(
+>         pgd_t *save_pgd;
+>
+>         save_pgd = efi_call_phys_prolog();
+> +       if (!save_pgd)
+> +               return EFI_ABORTED;
+>
+>         /* Disable interrupts around EFI calls: */
+>         local_irq_save(flags);
+> diff --git a/arch/x86/platform/efi/efi_64.c b/arch/x86/platform/efi/efi_64.c
+> index ee5d08f25ce4..dfc809b31c7c 100644
+> --- a/arch/x86/platform/efi/efi_64.c
+> +++ b/arch/x86/platform/efi/efi_64.c
+> @@ -84,13 +84,15 @@ pgd_t * __init efi_call_phys_prolog(void)
+>
+>         if (!efi_enabled(EFI_OLD_MEMMAP)) {
+>                 efi_switch_mm(&efi_mm);
+> -               return NULL;
+> +               return efi_mm.pgd;
+>         }
+>
+>         early_code_mapping_set_exec(1);
+>
+>         n_pgds = DIV_ROUND_UP((max_pfn << PAGE_SHIFT), PGDIR_SIZE);
+>         save_pgd = kmalloc_array(n_pgds, sizeof(*save_pgd), GFP_KERNEL);
+> +       if (!save_pgd)
+> +               return NULL;
+>
+>         /*
+>          * Build 1:1 identity mapping for efi=old_map usage. Note that
+> @@ -138,10 +140,11 @@ pgd_t * __init efi_call_phys_prolog(void)
+>                 pgd_offset_k(pgd * PGDIR_SIZE)->pgd &= ~_PAGE_NX;
+>         }
+>
+> -out:
+>         __flush_tlb_all();
+> -
+>         return save_pgd;
+> +out:
+> +       efi_call_phys_epilog(save_pgd);
+> +       return NULL;
+>  }
+>
+>  void __init efi_call_phys_epilog(pgd_t *save_pgd)
+> --
+> 2.20.1
+>
