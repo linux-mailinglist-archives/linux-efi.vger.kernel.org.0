@@ -2,99 +2,120 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 119493B81A
-	for <lists+linux-efi@lfdr.de>; Mon, 10 Jun 2019 17:12:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A9E093B99C
+	for <lists+linux-efi@lfdr.de>; Mon, 10 Jun 2019 18:36:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389693AbfFJPMu (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 10 Jun 2019 11:12:50 -0400
-Received: from mail-it1-f193.google.com ([209.85.166.193]:36936 "EHLO
-        mail-it1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389322AbfFJPMu (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 10 Jun 2019 11:12:50 -0400
-Received: by mail-it1-f193.google.com with SMTP id x22so13695775itl.2
-        for <linux-efi@vger.kernel.org>; Mon, 10 Jun 2019 08:12:50 -0700 (PDT)
+        id S1728317AbfFJQfv (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 10 Jun 2019 12:35:51 -0400
+Received: from mail-vk1-f194.google.com ([209.85.221.194]:41168 "EHLO
+        mail-vk1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726890AbfFJQfv (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 10 Jun 2019 12:35:51 -0400
+Received: by mail-vk1-f194.google.com with SMTP id l73so1797798vkl.8
+        for <linux-efi@vger.kernel.org>; Mon, 10 Jun 2019 09:35:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=iDSWhJFvFSpMRIQjv3sV2z7AOFrUltYdK5kocBGrXwg=;
-        b=GU+MWaZ2efR/e1wZuprMJhPrNYhcWneIGNvL/NAlNQYqm7aMnuF36yZdQD1EQgRIyq
-         T7KcjBuaeAZZRzqmZ/2tuSIDUCyCTR+66KLvrlOc+ItZKgdSiEmk6Zp1yWVPbmfthTZY
-         XIh0MQzWdBvSFEIKVt6ItUdd/cWwKfmW9xIsBgpvwbbW6p6Wp6CvrXY2w6qGOJBtXNYf
-         Eihg/XT98weEi0TtsWCZ3Hz7sPewcPSN2DfMUcCHeeFK7qy8Yx9x0yIYZFj1HT1U0MN6
-         diKIXV3oem+g7psOOI6nv5iKKGPKZPzWtVpZWZq8wQx+7LstwWpJOHXr4LQNCeqDr9sQ
-         O5Iw==
+        d=broadcom.com; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=rL21jzm4DEy1xDUiIII7jAF0C5px68rHf/bpk3oGjp4=;
+        b=S8kaOjTUfDdlO8OaUujI//RWD+C3cbVhauwBAfu8YDyUlFTQFQFYxhqFpy6eBlY+nY
+         Bdn3l5y35YylzY0lwR8myOdaKcN9xol6ZwXKUWN1/bnn/yTfDy8CG29E0FPHODWAGEnn
+         j9bNMMjkw7sM51UBzCZKMcXzQzyJNJ1v+SG+8=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=iDSWhJFvFSpMRIQjv3sV2z7AOFrUltYdK5kocBGrXwg=;
-        b=AnworvWAvSi2LZ40VIjNiZMT0d6CCQJmZgbR/5mDhm4FVSIs20uXPTpKzG9ZLJaODR
-         pm3cRsI8ZqX5Ox23Wv8ypOAq7juyBKfl1d1l8aD4Nn1QIoF3+tP/96arn4W4w/4HHy3S
-         Cl39TCVlKcRqkDa3im2xehZOBk37DucXdWOukGr7YuIQcTWubNlch1DBWeR1XVK54n2G
-         JfQ0V+voZsZfCqFNDA3yps55UdhBf9XiMqoxD3cFq2s0sGQLXlFgB/+uUhhZFPIbwQO2
-         j5p+mavf1T18tsLG1IhdBFf4TMdVFFtAZkBe2J8N8E74Jyq5oQCs3oudrmUfMhSQgmXd
-         S/3Q==
-X-Gm-Message-State: APjAAAUHHuNmKUXA5UHZNaw7C0BEY7OoOWcBh5oC/2jGUtYQ/us8tTkA
-        eUvyN09cbvBh27FLqZSF4d9xWNaD1rptK6WWKjqQDw==
-X-Google-Smtp-Source: APXvYqzBLvoymnSF+owavozveFKM8hqJFa6AZ7Uaq97rs/+7MNKLbvwxRoxDS/z5WedMnK5dJwe1jjMY2MUJc2N9kKU=
-X-Received: by 2002:a05:660c:44a:: with SMTP id d10mr13126351itl.153.1560179569891;
- Mon, 10 Jun 2019 08:12:49 -0700 (PDT)
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=rL21jzm4DEy1xDUiIII7jAF0C5px68rHf/bpk3oGjp4=;
+        b=eTc2ihcORZV2I6cOYOeCjdNetbfKx1cuQNzsH42SaEEU2wrBFocvMl4Bx4cfmAB66l
+         Yc097B7hzhj58CwzzNkFaIS5X7mFxyndKhtlxkIn09obtlm9WZt91a+JaeQLvuMTUpEV
+         jwlLxPeGDqexW4ILcGwOc8v7RX1EOX8IRZsfzXNqSQGXDGbLGH49nasHNjeTsWUYYZNP
+         1nfDmd7FHh8+QhJpYkwOpqa0DlEnFUid6sLi4GvjHFRRrvpPzE3pA0vrHBTqtgfB+nEh
+         qBl8GdrM3jn5CURKC5BTffvqn6N4ep6Y3tQFNaP12ZF4IbNhr/r/NaVjm1X3OkBXhg3G
+         e43A==
+X-Gm-Message-State: APjAAAUcRYlXQ/pmjdXPWmvpGteUdEOLWoYqJh8MnfKHfQVV3WkdRnty
+        cC981x6t9rMZ1aV0158LKQT4JtNxlHbZAQ==
+X-Google-Smtp-Source: APXvYqxt+PdkwJbUxDxYRnQSU6veQPQ2lMLu1XqZIDTkIOcAGtpZ5ul24t2buihpdmHON+nQ77dKfw==
+X-Received: by 2002:a63:e304:: with SMTP id f4mr16240248pgh.187.1560184079575;
+        Mon, 10 Jun 2019 09:27:59 -0700 (PDT)
+Received: from [10.136.8.252] ([192.19.228.250])
+        by smtp.gmail.com with ESMTPSA id p23sm2797pjo.4.2019.06.10.09.27.57
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 10 Jun 2019 09:27:58 -0700 (PDT)
+Subject: Re: [PATCH] efi/memreserve: deal with memreserve entries in unmapped
+ memory
+To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        linux-efi@vger.kernel.org
+Cc:     linux-arm-kernel@lists.infradead.org, marc.zyngier@arm.com,
+        bhsharma@redhat.com,
+        Jonathan Richardson <jonathan.richardson@broadcom.com>
+References: <20190610150530.10306-1-ard.biesheuvel@linaro.org>
+From:   Ray Jui <ray.jui@broadcom.com>
+Message-ID: <76a0336c-31b1-11fe-11d5-a7971a9e44f8@broadcom.com>
+Date:   Mon, 10 Jun 2019 09:27:55 -0700
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
 MIME-Version: 1.0
-References: <20190529154635.2659-1-hdegoede@redhat.com>
-In-Reply-To: <20190529154635.2659-1-hdegoede@redhat.com>
-From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Date:   Mon, 10 Jun 2019 17:12:37 +0200
-Message-ID: <CAKv+Gu8bLcDROFNFfqHaN1Z+EK5bnXMNDSJbBK-pCmq5XP_kBw@mail.gmail.com>
-Subject: Re: [PATCH] efifb: BGRT: Add check for new BGRT status field rotation bits
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        Peter Jones <pjones@redhat.com>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        "open list:EFIFB FRAMEBUFFER DRIVER" <linux-fbdev@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20190610150530.10306-1-ard.biesheuvel@linaro.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, 29 May 2019 at 17:46, Hans de Goede <hdegoede@redhat.com> wrote:
->
-> Starting with ACPI 6.2 bits 1 and 2 of the BGRT status field are no longer
-> reserved. These bits are now used to indicate if the image needs to be
-> rotated before being displayed.
->
-> The efifb code does not support rotating the image before copying it to
-> the screen.
->
-> This commit adds a check for these new bits and if they are set leaves the
-> fb contents as is instead of trying to use the un-rotated BGRT image.
->
-> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Hi Ard,
 
-Acked-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+On 6/10/2019 8:05 AM, Ard Biesheuvel wrote:
+> Ensure that the EFI memreserve entries can be accessed, even if they
+> are located in memory that the kernel (e.g., a crashkernel) omits from
+> the linear map.
+> 
+> Reported-by: Jonathan Richardson <jonathan.richardson@broadcom.com>
+> Signed-off-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+
+Does it make sense to add a Fixes tag?
 
 > ---
->  drivers/video/fbdev/efifb.c | 5 +++++
->  1 file changed, 5 insertions(+)
->
-> diff --git a/drivers/video/fbdev/efifb.c b/drivers/video/fbdev/efifb.c
-> index 9f39f0c360e0..dfa8dd47d19d 100644
-> --- a/drivers/video/fbdev/efifb.c
-> +++ b/drivers/video/fbdev/efifb.c
-> @@ -169,6 +169,11 @@ static void efifb_show_boot_graphics(struct fb_info *info)
->                 return;
->         }
->
-> +       if (bgrt_tab.status & 0x06) {
-> +               pr_info("efifb: BGRT rotation bits set, not showing boot graphics\n");
-> +               return;
-> +       }
-> +
->         /* Avoid flashing the logo if we're going to print std probe messages */
->         if (console_loglevel > CONSOLE_LOGLEVEL_QUIET)
->                 return;
-> --
-> 2.21.0
->
+>  drivers/firmware/efi/efi.c | 12 ++++++++++--
+>  1 file changed, 10 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
+> index 16b2137d117c..4b7cf7bc0ded 100644
+> --- a/drivers/firmware/efi/efi.c
+> +++ b/drivers/firmware/efi/efi.c
+> @@ -1009,14 +1009,16 @@ int __ref efi_mem_reserve_persistent(phys_addr_t addr, u64 size)
+>  
+>  	/* first try to find a slot in an existing linked list entry */
+>  	for (prsv = efi_memreserve_root->next; prsv; prsv = rsv->next) {
+> -		rsv = __va(prsv);
+> +		rsv = memremap(prsv, sizeof(*rsv), MEMREMAP_WB);
+>  		index = atomic_fetch_add_unless(&rsv->count, 1, rsv->size);
+>  		if (index < rsv->size) {
+>  			rsv->entry[index].base = addr;
+>  			rsv->entry[index].size = size;
+>  
+> +			memunmap(rsv);
+>  			return 0;
+>  		}
+> +		memunmap(rsv);
+>  	}
+>  
+>  	/* no slot found - allocate a new linked list entry */
+> @@ -1024,7 +1026,13 @@ int __ref efi_mem_reserve_persistent(phys_addr_t addr, u64 size)
+>  	if (!rsv)
+>  		return -ENOMEM;
+>  
+> -	rsv->size = EFI_MEMRESERVE_COUNT(PAGE_SIZE);
+> +	/*
+> +	 * The memremap() call above assumes that a linux_efi_memreserve entry
+> +	 * never crosses a page boundary, so let's ensure that this remains true
+> +	 * even when kexec'ing a 4k pages kernel from a >4k pages kernel, by
+> +	 * using SZ_4K explicitly in the size calculation below.
+> +	 */
+> +	rsv->size = EFI_MEMRESERVE_COUNT(SZ_4K);
+>  	atomic_set(&rsv->count, 1);
+>  	rsv->entry[0].base = addr;
+>  	rsv->entry[0].size = size;
+> 
