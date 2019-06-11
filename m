@@ -2,155 +2,239 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3FF4D3C31A
-	for <lists+linux-efi@lfdr.de>; Tue, 11 Jun 2019 06:50:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1DBBC3C360
+	for <lists+linux-efi@lfdr.de>; Tue, 11 Jun 2019 07:19:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390539AbfFKEuO (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 11 Jun 2019 00:50:14 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:46456 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389620AbfFKEuO (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 11 Jun 2019 00:50:14 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5B4hbtt159138;
-        Tue, 11 Jun 2019 04:49:06 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : from : to :
- cc : date : message-id : in-reply-to : references : mime-version :
- content-type : content-transfer-encoding; s=corp-2018-07-02;
- bh=w6B62XWgEySnIWZsve79cF+lTRasJpmyyQueK4g93UE=;
- b=xr/OkVp95W9CZa1qjVKbtngLN9J+a0uZavn2r3ArsGbLa3Idt+XiHAevESEnFd2Muawd
- IDeKByu9gQWLom5QvFu9SB6aGdiFJoCp0tz7vKlzNewkahhwnjXvO0YFc7SwTBUu/TXr
- 1JAzKRa/DZxlP4ZZpnIqV/L0X1JujwSoecEOGG343C3b9FaK4zuy1R0cRIGXh59pnwVC
- rgO1+qT0i60g5fCtoX0xlqOK/qTFrDgQsRkvoiZce/aNAuX3Lrp5ll2wDFoSsEQSMY+0
- xO05b6rP2HVkV4MLCu2gbQsaloZCyjVElf52i0un57IO4AUWcCHG2FJLiCzCFi61Ne0u iQ== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by userp2130.oracle.com with ESMTP id 2t04etjm38-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 11 Jun 2019 04:49:06 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5B4jGrX167613;
-        Tue, 11 Jun 2019 04:47:06 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-        by userp3030.oracle.com with ESMTP id 2t024u6kpg-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 11 Jun 2019 04:47:06 +0000
-Received: from userp3030.oracle.com (userp3030.oracle.com [127.0.0.1])
-        by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x5B4l5Gj171026;
-        Tue, 11 Jun 2019 04:47:06 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by userp3030.oracle.com with ESMTP id 2t024u6kpc-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 11 Jun 2019 04:47:05 +0000
-Received: from abhmp0016.oracle.com (abhmp0016.oracle.com [141.146.116.22])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x5B4l4Q5023284;
-        Tue, 11 Jun 2019 04:47:04 GMT
-Received: from localhost (/67.169.218.210)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 10 Jun 2019 21:47:04 -0700
-Subject: [PATCH 6/6] xfs: clean up xfs_merge_ioc_xflags
-From:   "Darrick J. Wong" <darrick.wong@oracle.com>
-To:     matthew.garrett@nebula.com, yuchao0@huawei.com, tytso@mit.edu,
-        darrick.wong@oracle.com, ard.biesheuvel@linaro.org,
-        josef@toxicpanda.com, clm@fb.com, adilger.kernel@dilger.ca,
-        viro@zeniv.linux.org.uk, jack@suse.com, dsterba@suse.com,
-        jaegeuk@kernel.org, jk@ozlabs.org
-Cc:     reiserfs-devel@vger.kernel.org, linux-efi@vger.kernel.org,
-        devel@lists.orangefs.org, linux-kernel@vger.kernel.org,
-        linux-f2fs-devel@lists.sourceforge.net, linux-xfs@vger.kernel.org,
-        linux-mm@kvack.org, linux-nilfs@vger.kernel.org,
-        linux-mtd@lists.infradead.org, ocfs2-devel@oss.oracle.com,
-        linux-fsdevel@vger.kernel.org, linux-ext4@vger.kernel.org,
-        linux-btrfs@vger.kernel.org
-Date:   Mon, 10 Jun 2019 21:47:01 -0700
-Message-ID: <156022842153.3227213.3285668171167534801.stgit@magnolia>
-In-Reply-To: <156022836912.3227213.13598042497272336695.stgit@magnolia>
-References: <156022836912.3227213.13598042497272336695.stgit@magnolia>
-User-Agent: StGit/0.17.1-dirty
+        id S2391091AbfFKFTz (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 11 Jun 2019 01:19:55 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:46044 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S2391074AbfFKFTz (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 11 Jun 2019 01:19:55 -0400
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x5B5CYfW066849
+        for <linux-efi@vger.kernel.org>; Tue, 11 Jun 2019 01:19:54 -0400
+Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 2t25xdg8tm-1
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <linux-efi@vger.kernel.org>; Tue, 11 Jun 2019 01:19:54 -0400
+Received: from localhost
+        by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <linux-efi@vger.kernel.org> from <sathnaga@linux.vnet.ibm.com>;
+        Tue, 11 Jun 2019 06:19:51 +0100
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
+        by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+        Tue, 11 Jun 2019 06:19:49 +0100
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+        by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x5B5Jlhw51839080
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 11 Jun 2019 05:19:47 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id BC463A405F;
+        Tue, 11 Jun 2019 05:19:47 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id A9125A4060;
+        Tue, 11 Jun 2019 05:19:45 +0000 (GMT)
+Received: from sathnaga86.in.ibm.com (unknown [9.122.211.230])
+        by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+        Tue, 11 Jun 2019 05:19:45 +0000 (GMT)
+Date:   Tue, 11 Jun 2019 10:49:43 +0530
+From:   Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>
+To:     Nayna Jain <nayna@linux.ibm.com>
+Cc:     linuxppc-dev@ozlabs.org, linux-efi@vger.kernel.org,
+        linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Claudio Carvalho <cclaudio@linux.ibm.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        Matthew Garret <matthew.garret@nebula.com>,
+        Paul Mackerras <paulus@samba.org>, Jeremy Kerr <jk@ozlabs.org>
+Subject: Re: [PATCH v3 3/3] powerpc: Add support to initialize ima policy
+ rules
+Reply-To: Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>
+References: <1560198837-18857-1-git-send-email-nayna@linux.ibm.com>
+ <1560198837-18857-4-git-send-email-nayna@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9284 signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=605 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
- definitions=main-1906110033
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1560198837-18857-4-git-send-email-nayna@linux.ibm.com>
+User-Agent: Mutt/1.11.4 (2019-03-13)
+X-TM-AS-GCONF: 00
+x-cbid: 19061105-0016-0000-0000-00000287EF6D
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19061105-0017-0000-0000-000032E51AC8
+Message-Id: <20190611051943.GA7516@sathnaga86.in.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-06-11_02:,,
+ signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1906110036
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-From: Darrick J. Wong <darrick.wong@oracle.com>
+On Mon, Jun 10, 2019 at 04:33:57PM -0400, Nayna Jain wrote:
+> PowerNV secure boot relies on the kernel IMA security subsystem to
+> perform the OS kernel image signature verification. Since each secure
+> boot mode has different IMA policy requirements, dynamic definition of
+> the policy rules based on the runtime secure boot mode of the system is
+> required. On systems that support secure boot, but have it disabled,
+> only measurement policy rules of the kernel image and modules are
+> defined.
+> 
+> This patch defines the arch-specific implementation to retrieve the
+> secure boot mode of the system and accordingly configures the IMA policy
+> rules.
+> 
+> This patch provides arch-specific IMA policies if PPC_SECURE_BOOT
+> config is enabled.
+> 
+> Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
+> ---
+>  arch/powerpc/Kconfig           | 14 +++++++++
+>  arch/powerpc/kernel/Makefile   |  1 +
+>  arch/powerpc/kernel/ima_arch.c | 54 ++++++++++++++++++++++++++++++++++
+>  include/linux/ima.h            |  3 +-
+>  4 files changed, 71 insertions(+), 1 deletion(-)
+>  create mode 100644 arch/powerpc/kernel/ima_arch.c
 
-Clean up the calling convention since we're editing the fsxattr struct
-anyway.
+Hi,
 
-Signed-off-by: Darrick J. Wong <darrick.wong@oracle.com>
----
- fs/xfs/xfs_ioctl.c |   32 ++++++++++++++------------------
- 1 file changed, 14 insertions(+), 18 deletions(-)
+This series failed to build against linuxppc/merge tree with `ppc64le_defconfig`,
 
+arch/powerpc/platforms/powernv/secboot.c:14:6: error: redefinition of 'get_powerpc_sb_mode'
+   14 | bool get_powerpc_sb_mode(void)
+      |      ^~~~~~~~~~~~~~~~~~~
+In file included from arch/powerpc/platforms/powernv/secboot.c:11:
+./arch/powerpc/include/asm/secboot.h:15:20: note: previous definition of 'get_powerpc_sb_mode' was here
+   15 | static inline bool get_powerpc_sb_mode(void)
+      |                    ^~~~~~~~~~~~~~~~~~~
+make[3]: *** [scripts/Makefile.build:278: arch/powerpc/platforms/powernv/secboot.o] Error 1
+make[3]: *** Waiting for unfinished jobs....
+make[2]: *** [scripts/Makefile.build:489: arch/powerpc/platforms/powernv] Error 2
+make[1]: *** [scripts/Makefile.build:489: arch/powerpc/platforms] Error 2
+make: *** [Makefile:1071: arch/powerpc] Error 2
+make: *** Waiting for unfinished jobs....
 
-diff --git a/fs/xfs/xfs_ioctl.c b/fs/xfs/xfs_ioctl.c
-index 7b19ba2956ad..a67bc9afdd0b 100644
---- a/fs/xfs/xfs_ioctl.c
-+++ b/fs/xfs/xfs_ioctl.c
-@@ -829,35 +829,31 @@ xfs_ioc_ag_geometry(
-  * Linux extended inode flags interface.
-  */
- 
--STATIC unsigned int
-+static inline void
- xfs_merge_ioc_xflags(
--	unsigned int	flags,
--	unsigned int	start)
-+	struct fsxattr	*fa,
-+	unsigned int	flags)
- {
--	unsigned int	xflags = start;
--
- 	if (flags & FS_IMMUTABLE_FL)
--		xflags |= FS_XFLAG_IMMUTABLE;
-+		fa->fsx_xflags |= FS_XFLAG_IMMUTABLE;
- 	else
--		xflags &= ~FS_XFLAG_IMMUTABLE;
-+		fa->fsx_xflags &= ~FS_XFLAG_IMMUTABLE;
- 	if (flags & FS_APPEND_FL)
--		xflags |= FS_XFLAG_APPEND;
-+		fa->fsx_xflags |= FS_XFLAG_APPEND;
- 	else
--		xflags &= ~FS_XFLAG_APPEND;
-+		fa->fsx_xflags &= ~FS_XFLAG_APPEND;
- 	if (flags & FS_SYNC_FL)
--		xflags |= FS_XFLAG_SYNC;
-+		fa->fsx_xflags |= FS_XFLAG_SYNC;
- 	else
--		xflags &= ~FS_XFLAG_SYNC;
-+		fa->fsx_xflags &= ~FS_XFLAG_SYNC;
- 	if (flags & FS_NOATIME_FL)
--		xflags |= FS_XFLAG_NOATIME;
-+		fa->fsx_xflags |= FS_XFLAG_NOATIME;
- 	else
--		xflags &= ~FS_XFLAG_NOATIME;
-+		fa->fsx_xflags &= ~FS_XFLAG_NOATIME;
- 	if (flags & FS_NODUMP_FL)
--		xflags |= FS_XFLAG_NODUMP;
-+		fa->fsx_xflags |= FS_XFLAG_NODUMP;
- 	else
--		xflags &= ~FS_XFLAG_NODUMP;
--
--	return xflags;
-+		fa->fsx_xflags &= ~FS_XFLAG_NODUMP;
- }
- 
- STATIC unsigned int
-@@ -1504,7 +1500,7 @@ xfs_ioc_setxflags(
- 		return -EOPNOTSUPP;
- 
- 	__xfs_ioc_fsgetxattr(ip, false, &fa);
--	fa.fsx_xflags = xfs_merge_ioc_xflags(flags, fa.fsx_xflags);
-+	xfs_merge_ioc_xflags(&fa, flags);
- 
- 	error = mnt_want_write_file(filp);
- 	if (error)
+Regards,
+-Satheesh
+
+> 
+> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+> index 8c1c636308c8..9de77bb14f54 100644
+> --- a/arch/powerpc/Kconfig
+> +++ b/arch/powerpc/Kconfig
+> @@ -902,6 +902,20 @@ config PPC_MEM_KEYS
+> 
+>  	  If unsure, say y.
+> 
+> +config PPC_SECURE_BOOT
+> +	prompt "Enable PowerPC Secure Boot"
+> +	bool
+> +	default n
+> +	depends on PPC64
+> +	depends on OPAL_SECVAR
+> +	depends on IMA
+> +	depends on IMA_ARCH_POLICY
+> +	help
+> +	  Linux on POWER with firmware secure boot enabled needs to define
+> +	  security policies to extend secure boot to the OS.This config
+> +	  allows user to enable OS Secure Boot on PowerPC systems that
+> +	  have firmware secure boot support.
+> +
+>  endmenu
+> 
+>  config ISA_DMA_API
+> diff --git a/arch/powerpc/kernel/Makefile b/arch/powerpc/kernel/Makefile
+> index 0ea6c4aa3a20..75c929b41341 100644
+> --- a/arch/powerpc/kernel/Makefile
+> +++ b/arch/powerpc/kernel/Makefile
+> @@ -131,6 +131,7 @@ ifdef CONFIG_IMA
+>  obj-y				+= ima_kexec.o
+>  endif
+>  endif
+> +obj-$(CONFIG_PPC_SECURE_BOOT)	+= ima_arch.o
+> 
+>  obj-$(CONFIG_AUDIT)		+= audit.o
+>  obj64-$(CONFIG_AUDIT)		+= compat_audit.o
+> diff --git a/arch/powerpc/kernel/ima_arch.c b/arch/powerpc/kernel/ima_arch.c
+> new file mode 100644
+> index 000000000000..1767bf6e6550
+> --- /dev/null
+> +++ b/arch/powerpc/kernel/ima_arch.c
+> @@ -0,0 +1,54 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Copyright (C) 2019 IBM Corporation
+> + * Author: Nayna Jain <nayna@linux.ibm.com>
+> + *
+> + * ima_arch.c
+> + *      - initialize ima policies for PowerPC Secure Boot
+> + */
+> +
+> +#include <linux/ima.h>
+> +#include <asm/secboot.h>
+> +
+> +bool arch_ima_get_secureboot(void)
+> +{
+> +	bool sb_mode;
+> +
+> +	sb_mode = get_powerpc_sb_mode();
+> +	if (sb_mode)
+> +		return true;
+> +	else
+> +		return false;
+> +}
+> +
+> +/*
+> + * File signature verification is not needed, include only measurements
+> + */
+> +static const char *const default_arch_rules[] = {
+> +	"measure func=KEXEC_KERNEL_CHECK template=ima-modsig",
+> +	"measure func=MODULE_CHECK template=ima-modsig",
+> +	NULL
+> +};
+> +
+> +/* Both file signature verification and measurements are needed */
+> +static const char *const sb_arch_rules[] = {
+> +	"measure func=KEXEC_KERNEL_CHECK template=ima-modsig",
+> +	"measure func=MODULE_CHECK template=ima-modsig",
+> +	"appraise func=KEXEC_KERNEL_CHECK appraise_type=imasig|modsig template=ima-modsig",
+> +#if !IS_ENABLED(CONFIG_MODULE_SIG)
+> +	"appraise func=MODULE_CHECK appraise_type=imasig|modsig template=ima-modsig",
+> +#endif
+> +	NULL
+> +};
+> +
+> +/*
+> + * On PowerPC, file measurements are to be added to the IMA measurement list
+> + * irrespective of the secure boot state of the system. Signature verification
+> + * is conditionally enabled based on the secure boot state.
+> + */
+> +const char *const *arch_get_ima_policy(void)
+> +{
+> +	if (IS_ENABLED(CONFIG_IMA_ARCH_POLICY) && arch_ima_get_secureboot())
+> +		return sb_arch_rules;
+> +	return default_arch_rules;
+> +}
+> diff --git a/include/linux/ima.h b/include/linux/ima.h
+> index fd9f7cf4cdf5..a01df076ecae 100644
+> --- a/include/linux/ima.h
+> +++ b/include/linux/ima.h
+> @@ -31,7 +31,8 @@ extern void ima_post_path_mknod(struct dentry *dentry);
+>  extern void ima_add_kexec_buffer(struct kimage *image);
+>  #endif
+> 
+> -#if (defined(CONFIG_X86) && defined(CONFIG_EFI)) || defined(CONFIG_S390)
+> +#if (defined(CONFIG_X86) && defined(CONFIG_EFI)) || defined(CONFIG_S390) \
+> +	|| defined(CONFIG_PPC_SECURE_BOOT)
+>  extern bool arch_ima_get_secureboot(void);
+>  extern const char * const *arch_get_ima_policy(void);
+>  #else
+> -- 
+> 2.20.1
+> 
 
