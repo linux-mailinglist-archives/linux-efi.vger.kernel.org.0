@@ -2,138 +2,125 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D8C4B3D382
-	for <lists+linux-efi@lfdr.de>; Tue, 11 Jun 2019 19:07:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1FBFA4198C
+	for <lists+linux-efi@lfdr.de>; Wed, 12 Jun 2019 02:38:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2405867AbfFKRHw (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 11 Jun 2019 13:07:52 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:34100 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S2405345AbfFKRHv (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 11 Jun 2019 13:07:51 -0400
-Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x5BH2jAv072072
-        for <linux-efi@vger.kernel.org>; Tue, 11 Jun 2019 13:07:51 -0400
-Received: from e14.ny.us.ibm.com (e14.ny.us.ibm.com [129.33.205.204])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 2t2em1x1q9-1
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <linux-efi@vger.kernel.org>; Tue, 11 Jun 2019 13:07:50 -0400
-Received: from localhost
-        by e14.ny.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <linux-efi@vger.kernel.org> from <nayna@linux.vnet.ibm.com>;
-        Tue, 11 Jun 2019 18:07:45 +0100
-Received: from b01cxnp22036.gho.pok.ibm.com (9.57.198.26)
-        by e14.ny.us.ibm.com (146.89.104.201) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-        Tue, 11 Jun 2019 18:07:42 +0100
-Received: from b01ledav001.gho.pok.ibm.com (b01ledav001.gho.pok.ibm.com [9.57.199.106])
-        by b01cxnp22036.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x5BH7fKg12583310
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 11 Jun 2019 17:07:41 GMT
-Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 2E9902805A;
-        Tue, 11 Jun 2019 17:07:41 +0000 (GMT)
-Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 6639C28059;
-        Tue, 11 Jun 2019 17:07:40 +0000 (GMT)
-Received: from swastik.ibm.com (unknown [9.80.199.191])
-        by b01ledav001.gho.pok.ibm.com (Postfix) with ESMTP;
-        Tue, 11 Jun 2019 17:07:40 +0000 (GMT)
-Subject: Re: [PATCH v3 3/3] powerpc: Add support to initialize ima policy
- rules
-To:     Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>,
-        Nayna Jain <nayna@linux.ibm.com>
-Cc:     linuxppc-dev@ozlabs.org, linux-efi@vger.kernel.org,
-        linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Claudio Carvalho <cclaudio@linux.ibm.com>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        Matthew Garret <matthew.garret@nebula.com>,
-        Paul Mackerras <paulus@samba.org>, Jeremy Kerr <jk@ozlabs.org>
-References: <1560198837-18857-1-git-send-email-nayna@linux.ibm.com>
- <1560198837-18857-4-git-send-email-nayna@linux.ibm.com>
- <20190611051943.GA7516@sathnaga86.in.ibm.com>
-From:   Nayna <nayna@linux.vnet.ibm.com>
-Date:   Tue, 11 Jun 2019 13:07:39 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
+        id S2392185AbfFLAgk (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 11 Jun 2019 20:36:40 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:51566 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2391522AbfFLAgk (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 11 Jun 2019 20:36:40 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5C0U2aL172563;
+        Wed, 12 Jun 2019 00:35:50 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2018-07-02;
+ bh=9gKawnpnm3eYTlbJSmpS31BgWCZu6yO6zvRDwLNExMc=;
+ b=vHQc7RiwFlRopnBcV6yXscL30ZNdwN/v/B17eINRtpQHvUvgM6epdVedyPbAKdmcBBV3
+ cpQKUJvANpmF9rest4EECBPlFj+c/6FFyA1MB+Y7QHfaviX1SgktsC/OuLuEeHTjfJfn
+ IHVrIivC0Er8GlXskbXJ6t5OZcUHTAMhyEJ0O8MOVdKDEgKTHfWtz59o9kiNq/kqTY6E
+ 4hAomBRtHJLX3EPEAvdgUe3wJJHguniVZBFYytUSwIeEiPqdsoMO2S6x/RCI4kCCEC8X
+ 5tzrNpCpeUTAjMu2i0Q0axAMVtIdwT/+kMGJyGR6ACAIOztQv/pzRx3K8FTZ+teYFImj 5Q== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2130.oracle.com with ESMTP id 2t04etrany-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 12 Jun 2019 00:35:50 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5C0YsTE041414;
+        Wed, 12 Jun 2019 00:35:50 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+        by userp3020.oracle.com with ESMTP id 2t1jphr047-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 12 Jun 2019 00:35:50 +0000
+Received: from userp3020.oracle.com (userp3020.oracle.com [127.0.0.1])
+        by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x5C0Zn8q043221;
+        Wed, 12 Jun 2019 00:35:49 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by userp3020.oracle.com with ESMTP id 2t1jphr042-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 12 Jun 2019 00:35:49 +0000
+Received: from abhmp0014.oracle.com (abhmp0014.oracle.com [141.146.116.20])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x5C0ZfCm005680;
+        Wed, 12 Jun 2019 00:35:41 GMT
+Received: from localhost (/10.145.179.81)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 11 Jun 2019 17:35:41 -0700
+Date:   Tue, 11 Jun 2019 17:35:38 -0700
+From:   "Darrick J. Wong" <darrick.wong@oracle.com>
+To:     Dave Kleikamp <dave.kleikamp@oracle.com>
+Cc:     matthew.garrett@nebula.com, yuchao0@huawei.com, tytso@mit.edu,
+        shaggy@kernel.org, ard.biesheuvel@linaro.org, josef@toxicpanda.com,
+        clm@fb.com, adilger.kernel@dilger.ca, jk@ozlabs.org, jack@suse.com,
+        dsterba@suse.com, jaegeuk@kernel.org, viro@zeniv.linux.org.uk,
+        linux-xfs@vger.kernel.org, jfs-discussion@lists.sourceforge.net,
+        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        reiserfs-devel@vger.kernel.org,
+        linux-f2fs-devel@lists.sourceforge.net, cluster-devel@redhat.com,
+        linux-nilfs@vger.kernel.org, linux-mtd@lists.infradead.org,
+        linux-btrfs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        linux-ext4@vger.kernel.org, ocfs2-devel@oss.oracle.com
+Subject: Re: [Jfs-discussion] [PATCH 1/4] vfs: create a generic checking
+ function for FS_IOC_SETFLAGS
+Message-ID: <20190612003538.GW1871505@magnolia>
+References: <156022833285.3227089.11990489625041926920.stgit@magnolia>
+ <156022834076.3227089.14763553158562888103.stgit@magnolia>
+ <fb974a33-2192-30ab-9f31-885c3796360b@oracle.com>
 MIME-Version: 1.0
-In-Reply-To: <20190611051943.GA7516@sathnaga86.in.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-TM-AS-GCONF: 00
-x-cbid: 19061117-0052-0000-0000-000003CE8E55
-X-IBM-SpamModules-Scores: 
-X-IBM-SpamModules-Versions: BY=3.00011247; HX=3.00000242; KW=3.00000007;
- PH=3.00000004; SC=3.00000286; SDB=6.01216515; UDB=6.00639636; IPR=6.00997614;
- MB=3.00027265; MTD=3.00000008; XFM=3.00000015; UTC=2019-06-11 17:07:44
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19061117-0053-0000-0000-00006148D898
-Message-Id: <d596d03f-7aaf-d0af-ee45-92a990292ad0@linux.vnet.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-06-11_08:,,
- signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=872 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1906110109
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <fb974a33-2192-30ab-9f31-885c3796360b@oracle.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9285 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
+ definitions=main-1906120001
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
+On Tue, Jun 11, 2019 at 08:41:06AM -0500, Dave Kleikamp wrote:
+> On 6/10/19 11:45 PM, Darrick J. Wong wrote:
+> > From: Darrick J. Wong <darrick.wong@oracle.com>
+> > 
+> > Create a generic checking function for the incoming FS_IOC_SETFLAGS flag
+> > values so that we can standardize the implementations that follow ext4's
+> > flag values.
+> > 
+> > Signed-off-by: Darrick J. Wong <darrick.wong@oracle.com>
+> 
+>  -- clip --
+> 
+> > diff --git a/fs/jfs/ioctl.c b/fs/jfs/ioctl.c
+> > index ba34dae8bd9f..c8446d2cd0c7 100644
+> > --- a/fs/jfs/ioctl.c
+> > +++ b/fs/jfs/ioctl.c
+> > @@ -98,6 +98,12 @@ long jfs_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
+> >  		/* Lock against other parallel changes of flags */
+> >  		inode_lock(inode);
+> >  
+> > +		oldflags = jfs_map_ext2(jfs_inode->mode2 & JFS_FL_USER_VISIBLE,
+> > +					0);
+> > +		err = vfs_ioc_setflags_check(inode, oldflags, flags);
+> > +		if (err)
+> > +			goto setflags_out;
+> 
+> inode_unlock(inode) is not called on the error path.
+> 
+> > +
+> >  		oldflags = jfs_inode->mode2;
+> >  
+> >  		/*
+> 
+> This patch leaves jfs's open-coded version of the same check.
 
+Heh, thanks for pointing that out.  I'll fix both of those things.
 
-On 06/11/2019 01:19 AM, Satheesh Rajendran wrote:
-> On Mon, Jun 10, 2019 at 04:33:57PM -0400, Nayna Jain wrote:
->> PowerNV secure boot relies on the kernel IMA security subsystem to
->> perform the OS kernel image signature verification. Since each secure
->> boot mode has different IMA policy requirements, dynamic definition of
->> the policy rules based on the runtime secure boot mode of the system is
->> required. On systems that support secure boot, but have it disabled,
->> only measurement policy rules of the kernel image and modules are
->> defined.
->>
->> This patch defines the arch-specific implementation to retrieve the
->> secure boot mode of the system and accordingly configures the IMA policy
->> rules.
->>
->> This patch provides arch-specific IMA policies if PPC_SECURE_BOOT
->> config is enabled.
->>
->> Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
->> ---
->>   arch/powerpc/Kconfig           | 14 +++++++++
->>   arch/powerpc/kernel/Makefile   |  1 +
->>   arch/powerpc/kernel/ima_arch.c | 54 ++++++++++++++++++++++++++++++++++
->>   include/linux/ima.h            |  3 +-
->>   4 files changed, 71 insertions(+), 1 deletion(-)
->>   create mode 100644 arch/powerpc/kernel/ima_arch.c
-> Hi,
->
-> This series failed to build against linuxppc/merge tree with `ppc64le_defconfig`,
->
-> arch/powerpc/platforms/powernv/secboot.c:14:6: error: redefinition of 'get_powerpc_sb_mode'
->     14 | bool get_powerpc_sb_mode(void)
->        |      ^~~~~~~~~~~~~~~~~~~
-> In file included from arch/powerpc/platforms/powernv/secboot.c:11:
-> ./arch/powerpc/include/asm/secboot.h:15:20: note: previous definition of 'get_powerpc_sb_mode' was here
->     15 | static inline bool get_powerpc_sb_mode(void)
->        |                    ^~~~~~~~~~~~~~~~~~~
-> make[3]: *** [scripts/Makefile.build:278: arch/powerpc/platforms/powernv/secboot.o] Error 1
-> make[3]: *** Waiting for unfinished jobs....
-> make[2]: *** [scripts/Makefile.build:489: arch/powerpc/platforms/powernv] Error 2
-> make[1]: *** [scripts/Makefile.build:489: arch/powerpc/platforms] Error 2
-> make: *** [Makefile:1071: arch/powerpc] Error 2
-> make: *** Waiting for unfinished jobs....
+--D
 
-
-Thanks for reporting. I have fixed it and reposted as v4.
-
-Please retry.
-
-Thanks & Regards,
-      - Nayna
-
-
+> Thanks,
+> Shaggy
