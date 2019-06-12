@@ -2,2453 +2,2129 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E50542E06
-	for <lists+linux-efi@lfdr.de>; Wed, 12 Jun 2019 19:56:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 01BEB42EE9
+	for <lists+linux-efi@lfdr.de>; Wed, 12 Jun 2019 20:40:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2403860AbfFLRzh (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 12 Jun 2019 13:55:37 -0400
-Received: from bombadil.infradead.org ([198.137.202.133]:40494 "EHLO
+        id S1727867AbfFLSin (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 12 Jun 2019 14:38:43 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:45698 "EHLO
         bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388785AbfFLRxP (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 12 Jun 2019 13:53:15 -0400
+        with ESMTP id S1727736AbfFLSim (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 12 Jun 2019 14:38:42 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=infradead.org; s=bombadil.20170209; h=Sender:Content-Transfer-Encoding:
-        Content-Type:MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:
-        To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+        MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+        Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
         Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
         List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=0KxoVoef7jUHxK7kVmlOGRwHRoucGKDZ/6xcLavKGUU=; b=p0e5zpuVpaZAfKUh5asBm5FNif
-        NqVdOQAMZsVe3dtGzd7PBnGGiBY1Q0NKVj0YdaxY/VtRetoOlJM40XzkLoAI73TGJ1iCmDzwcWVMb
-        ULrburRs2EeLKs9W22dn+yJgQhIrQHJkmFGymZVTNmpA3oh2HhRrswgJ9vM0QWae3hkv57kcwNvme
-        QekunssBKgidpBB46JRej91FTy/EFsgJf4WK/OdWi0roSWsOfKMFscn7DMXMGay4cCpD6kXxiv6E5
-        HVuKCrZiwg/zc/1RiTXl+mhTha1pXhI4x54VJtK+EPGwqGGGU592qfZP2vqAo+v3+mwSNApjFBkn3
-        6p4MYyag==;
+        bh=0jFbf4CsZxRGMAGEVdh4CfAW6Or9jokvwGq4/zFWi/Y=; b=YKMG5XQDUV4IPxKkUi2ssjmLF/
+        Gqgs2+VSrzIY7zektVEGbIiIgECcrGfoPABI+vfJtd0f2plPg8BjjjBzu2BDvBE0vjlO8dJeGcCb5
+        o+0svbiegOdmxPwhY+9x+uInRWHwGCSjTnJeYC90dfy9HUOnN7cTQUyHJAcEkSnnNLdfmXBhGlWdX
+        SHy1ZRDwmmCxqlwl1xCaY12PneE6TB8aolLg78BluWS9OtUpFTAZd6L51ouXsiF1bDqcDGK0v+447
+        Psc2le9uuET1Apffa1r9hAt7lRQOe2kmxSh4lYMfBZ+tkddjDg/1wDGJzovZCQU2QmT+1bmSJwXMI
+        W3s2lD2A==;
 Received: from 201.86.169.251.dynamic.adsl.gvt.net.br ([201.86.169.251] helo=bombadil.infradead.org)
         by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
-        id 1hb7Qt-0002Dc-2w; Wed, 12 Jun 2019 17:53:12 +0000
+        id 1hb88s-0006YX-Uy; Wed, 12 Jun 2019 18:38:40 +0000
 Received: from mchehab by bombadil.infradead.org with local (Exim 4.92)
         (envelope-from <mchehab@bombadil.infradead.org>)
-        id 1hb7Qp-0001fl-Vq; Wed, 12 Jun 2019 14:53:07 -0300
+        id 1hb88q-0002Bc-BM; Wed, 12 Jun 2019 15:38:36 -0300
 From:   Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
 To:     Linux Doc Mailing List <linux-doc@vger.kernel.org>
 Cc:     Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
         Mauro Carvalho Chehab <mchehab@infradead.org>,
         linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Harry Wei <harryxiyou@gmail.com>,
-        Alex Shi <alex.shi@linux.alibaba.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
+        Pat Gefre <pfg@sgi.com>,
         Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>, linux-ia64@vger.kernel.org,
         linux-efi@vger.kernel.org
-Subject: [PATCH v4 02/28] docs: arm64: convert docs to ReST and rename to .rst
-Date:   Wed, 12 Jun 2019 14:52:38 -0300
-Message-Id: <8320e8e871660bf9fc426bc688f4808a1a7aa031.1560361364.git.mchehab+samsung@kernel.org>
+Subject: [PATCH v1 21/31] docs: ia64: convert to ReST
+Date:   Wed, 12 Jun 2019 15:38:24 -0300
+Message-Id: <a07be841f9821eecb22d7bbee0e633b7399f0e1a.1560364494.git.mchehab+samsung@kernel.org>
 X-Mailer: git-send-email 2.21.0
-In-Reply-To: <cover.1560361364.git.mchehab+samsung@kernel.org>
-References: <cover.1560361364.git.mchehab+samsung@kernel.org>
+In-Reply-To: <cover.1560364493.git.mchehab+samsung@kernel.org>
+References: <cover.1560364493.git.mchehab+samsung@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The documentation is in a format that is very close to ReST format.
+Rename the ia64 documentation files to ReST, add an
+index for them and adjust in order to produce a nice html
+output via the Sphinx build system.
 
-The conversion is actually:
-  - add blank lines in order to identify paragraphs;
-  - fixing tables markups;
-  - adding some lists markups;
-  - marking literal blocks;
-  - adjust some title markups.
+There are two upper case file names. Rename them to
+lower case, as we're working to avoid upper case file
+names at Documentation.
 
 At its new index.rst, let's add a :orphan: while this is not linked to
 the main index.rst file, in order to avoid build warnings.
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
 ---
- ...object_usage.txt => acpi_object_usage.rst} | 288 ++++++++++++------
- .../arm64/{arm-acpi.txt => arm-acpi.rst}      | 155 +++++-----
- .../arm64/{booting.txt => booting.rst}        |  91 ++++--
- ...egisters.txt => cpu-feature-registers.rst} | 204 +++++++------
- .../arm64/{elf_hwcaps.txt => elf_hwcaps.rst}  |  56 +---
- .../{hugetlbpage.txt => hugetlbpage.rst}      |   7 +-
- Documentation/arm64/index.rst                 |  28 ++
- ...structions.txt => legacy_instructions.rst} |  43 ++-
- Documentation/arm64/memory.rst                |  98 ++++++
- Documentation/arm64/memory.txt                |  97 ------
- ...ication.txt => pointer-authentication.rst} |   2 +
- ...{silicon-errata.txt => silicon-errata.rst} |  65 +++-
- Documentation/arm64/{sve.txt => sve.rst}      |  12 +-
- ...agged-pointers.txt => tagged-pointers.rst} |   6 +-
- .../translations/zh_CN/arm64/booting.txt      |   4 +-
- .../zh_CN/arm64/legacy_instructions.txt       |   4 +-
- .../translations/zh_CN/arm64/memory.txt       |   4 +-
- .../zh_CN/arm64/silicon-errata.txt            |   4 +-
- .../zh_CN/arm64/tagged-pointers.txt           |   4 +-
- Documentation/virtual/kvm/api.txt             |   2 +-
- arch/arm64/include/asm/efi.h                  |   2 +-
- arch/arm64/include/asm/image.h                |   2 +-
- arch/arm64/include/uapi/asm/sigcontext.h      |   2 +-
- arch/arm64/kernel/kexec_image.c               |   2 +-
- 24 files changed, 703 insertions(+), 479 deletions(-)
- rename Documentation/arm64/{acpi_object_usage.txt => acpi_object_usage.rst} (84%)
- rename Documentation/arm64/{arm-acpi.txt => arm-acpi.rst} (86%)
- rename Documentation/arm64/{booting.txt => booting.rst} (86%)
- rename Documentation/arm64/{cpu-feature-registers.txt => cpu-feature-registers.rst} (65%)
- rename Documentation/arm64/{elf_hwcaps.txt => elf_hwcaps.rst} (92%)
- rename Documentation/arm64/{hugetlbpage.txt => hugetlbpage.rst} (86%)
- create mode 100644 Documentation/arm64/index.rst
- rename Documentation/arm64/{legacy_instructions.txt => legacy_instructions.rst} (73%)
- create mode 100644 Documentation/arm64/memory.rst
- delete mode 100644 Documentation/arm64/memory.txt
- rename Documentation/arm64/{pointer-authentication.txt => pointer-authentication.rst} (99%)
- rename Documentation/arm64/{silicon-errata.txt => silicon-errata.rst} (55%)
- rename Documentation/arm64/{sve.txt => sve.rst} (98%)
- rename Documentation/arm64/{tagged-pointers.txt => tagged-pointers.rst} (94%)
+ .../ia64/{aliasing.txt => aliasing.rst}       |  73 ++--
+ Documentation/ia64/{efirtc.txt => efirtc.rst} | 118 +++---
+ .../ia64/{err_inject.txt => err_inject.rst}   | 349 +++++++++---------
+ Documentation/ia64/{fsys.txt => fsys.rst}     | 127 ++++---
+ Documentation/ia64/{README => ia64.rst}       |  26 +-
+ Documentation/ia64/index.rst                  |  18 +
+ .../ia64/{IRQ-redir.txt => irq-redir.rst}     |  31 +-
+ Documentation/ia64/{mca.txt => mca.rst}       |  10 +-
+ Documentation/ia64/{serial.txt => serial.rst} |  36 +-
+ Documentation/ia64/xen.rst                    | 206 +++++++++++
+ Documentation/ia64/xen.txt                    | 183 ---------
+ MAINTAINERS                                   |   2 +-
+ arch/ia64/kernel/efi.c                        |   2 +-
+ arch/ia64/kernel/fsys.S                       |   2 +-
+ arch/ia64/mm/ioremap.c                        |   2 +-
+ arch/ia64/pci/pci.c                           |   2 +-
+ 16 files changed, 660 insertions(+), 527 deletions(-)
+ rename Documentation/ia64/{aliasing.txt => aliasing.rst} (83%)
+ rename Documentation/ia64/{efirtc.txt => efirtc.rst} (70%)
+ rename Documentation/ia64/{err_inject.txt => err_inject.rst} (82%)
+ rename Documentation/ia64/{fsys.txt => fsys.rst} (76%)
+ rename Documentation/ia64/{README => ia64.rst} (61%)
+ create mode 100644 Documentation/ia64/index.rst
+ rename Documentation/ia64/{IRQ-redir.txt => irq-redir.rst} (86%)
+ rename Documentation/ia64/{mca.txt => mca.rst} (96%)
+ rename Documentation/ia64/{serial.txt => serial.rst} (87%)
+ create mode 100644 Documentation/ia64/xen.rst
+ delete mode 100644 Documentation/ia64/xen.txt
 
-diff --git a/Documentation/arm64/acpi_object_usage.txt b/Documentation/arm64/acpi_object_usage.rst
-similarity index 84%
-rename from Documentation/arm64/acpi_object_usage.txt
-rename to Documentation/arm64/acpi_object_usage.rst
-index c77010c5c1f0..d51b69dc624d 100644
---- a/Documentation/arm64/acpi_object_usage.txt
-+++ b/Documentation/arm64/acpi_object_usage.rst
-@@ -1,5 +1,7 @@
-+===========
- ACPI Tables
-------------
-+===========
-+
- The expectations of individual ACPI tables are discussed in the list that
- follows.
- 
-@@ -11,54 +13,71 @@ outside of the UEFI Forum (see Section 5.2.6 of the specification).
- 
- For ACPI on arm64, tables also fall into the following categories:
- 
--       -- Required: DSDT, FADT, GTDT, MADT, MCFG, RSDP, SPCR, XSDT
-+       -  Required: DSDT, FADT, GTDT, MADT, MCFG, RSDP, SPCR, XSDT
- 
--       -- Recommended: BERT, EINJ, ERST, HEST, PCCT, SSDT
-+       -  Recommended: BERT, EINJ, ERST, HEST, PCCT, SSDT
- 
--       -- Optional: BGRT, CPEP, CSRT, DBG2, DRTM, ECDT, FACS, FPDT, IORT,
-+       -  Optional: BGRT, CPEP, CSRT, DBG2, DRTM, ECDT, FACS, FPDT, IORT,
-           MCHI, MPST, MSCT, NFIT, PMTT, RASF, SBST, SLIT, SPMI, SRAT, STAO,
- 	  TCPA, TPM2, UEFI, XENV
- 
--       -- Not supported: BOOT, DBGP, DMAR, ETDT, HPET, IBFT, IVRS, LPIT,
-+       -  Not supported: BOOT, DBGP, DMAR, ETDT, HPET, IBFT, IVRS, LPIT,
-           MSDM, OEMx, PSDT, RSDT, SLIC, WAET, WDAT, WDRT, WPBT
- 
-+====== ========================================================================
- Table  Usage for ARMv8 Linux
-------  ----------------------------------------------------------------
-+====== ========================================================================
- BERT   Section 18.3 (signature == "BERT")
--       == Boot Error Record Table ==
-+
-+       **Boot Error Record Table**
-+
-        Must be supplied if RAS support is provided by the platform.  It
-        is recommended this table be supplied.
- 
- BOOT   Signature Reserved (signature == "BOOT")
--       == simple BOOT flag table ==
-+
-+       **simple BOOT flag table**
-+
-        Microsoft only table, will not be supported.
- 
- BGRT   Section 5.2.22 (signature == "BGRT")
--       == Boot Graphics Resource Table ==
-+
-+       **Boot Graphics Resource Table**
-+
-        Optional, not currently supported, with no real use-case for an
-        ARM server.
- 
- CPEP   Section 5.2.18 (signature == "CPEP")
--       == Corrected Platform Error Polling table ==
-+
-+       **Corrected Platform Error Polling table**
-+
-        Optional, not currently supported, and not recommended until such
-        time as ARM-compatible hardware is available, and the specification
-        suitably modified.
- 
- CSRT   Signature Reserved (signature == "CSRT")
--       == Core System Resources Table ==
-+
-+       **Core System Resources Table**
-+
-        Optional, not currently supported.
- 
- DBG2   Signature Reserved (signature == "DBG2")
--       == DeBuG port table 2 ==
-+
-+       **DeBuG port table 2**
-+
-        License has changed and should be usable.  Optional if used instead
-        of earlycon=<device> on the command line.
- 
- DBGP   Signature Reserved (signature == "DBGP")
--       == DeBuG Port table ==
-+
-+       **DeBuG Port table**
-+
-        Microsoft only table, will not be supported.
- 
- DSDT   Section 5.2.11.1 (signature == "DSDT")
--       == Differentiated System Description Table ==
-+
-+       **Differentiated System Description Table**
-+
-        A DSDT is required; see also SSDT.
- 
-        ACPI tables contain only one DSDT but can contain one or more SSDTs,
-@@ -66,22 +85,30 @@ DSDT   Section 5.2.11.1 (signature == "DSDT")
-        but cannot modify or replace anything in the DSDT.
- 
- DMAR   Signature Reserved (signature == "DMAR")
--       == DMA Remapping table ==
-+
-+       **DMA Remapping table**
-+
-        x86 only table, will not be supported.
- 
- DRTM   Signature Reserved (signature == "DRTM")
--       == Dynamic Root of Trust for Measurement table ==
-+
-+       **Dynamic Root of Trust for Measurement table**
-+
-        Optional, not currently supported.
- 
- ECDT   Section 5.2.16 (signature == "ECDT")
--       == Embedded Controller Description Table ==
-+
-+       **Embedded Controller Description Table**
-+
-        Optional, not currently supported, but could be used on ARM if and
-        only if one uses the GPE_BIT field to represent an IRQ number, since
-        there are no GPE blocks defined in hardware reduced mode.  This would
-        need to be modified in the ACPI specification.
- 
- EINJ   Section 18.6 (signature == "EINJ")
--       == Error Injection table ==
-+
-+       **Error Injection table**
-+
-        This table is very useful for testing platform response to error
-        conditions; it allows one to inject an error into the system as
-        if it had actually occurred.  However, this table should not be
-@@ -89,27 +116,35 @@ EINJ   Section 18.6 (signature == "EINJ")
-        and executed with the ACPICA tools only during testing.
- 
- ERST   Section 18.5 (signature == "ERST")
--       == Error Record Serialization Table ==
-+
-+       **Error Record Serialization Table**
-+
-        On a platform supports RAS, this table must be supplied if it is not
-        UEFI-based; if it is UEFI-based, this table may be supplied. When this
-        table is not present, UEFI run time service will be utilized to save
-        and retrieve hardware error information to and from a persistent store.
- 
- ETDT   Signature Reserved (signature == "ETDT")
--       == Event Timer Description Table ==
-+
-+       **Event Timer Description Table**
-+
-        Obsolete table, will not be supported.
- 
- FACS   Section 5.2.10 (signature == "FACS")
--       == Firmware ACPI Control Structure ==
-+
-+       **Firmware ACPI Control Structure**
-+
-        It is unlikely that this table will be terribly useful.  If it is
-        provided, the Global Lock will NOT be used since it is not part of
-        the hardware reduced profile, and only 64-bit address fields will
-        be considered valid.
- 
- FADT   Section 5.2.9 (signature == "FACP")
--       == Fixed ACPI Description Table ==
-+
-+       **Fixed ACPI Description Table**
-        Required for arm64.
- 
-+
-        The HW_REDUCED_ACPI flag must be set.  All of the fields that are
-        to be ignored when HW_REDUCED_ACPI is set are expected to be set to
-        zero.
-@@ -118,22 +153,28 @@ FADT   Section 5.2.9 (signature == "FACP")
-        used, not FIRMWARE_CTRL.
- 
-        If PSCI is used (as is recommended), make sure that ARM_BOOT_ARCH is
--       filled in properly -- that the PSCI_COMPLIANT flag is set and that
-+       filled in properly - that the PSCI_COMPLIANT flag is set and that
-        PSCI_USE_HVC is set or unset as needed (see table 5-37).
- 
-        For the DSDT that is also required, the X_DSDT field is to be used,
-        not the DSDT field.
- 
- FPDT   Section 5.2.23 (signature == "FPDT")
--       == Firmware Performance Data Table ==
-+
-+       **Firmware Performance Data Table**
-+
-        Optional, not currently supported.
- 
- GTDT   Section 5.2.24 (signature == "GTDT")
--       == Generic Timer Description Table ==
-+
-+       **Generic Timer Description Table**
-+
-        Required for arm64.
- 
- HEST   Section 18.3.2 (signature == "HEST")
--       == Hardware Error Source Table ==
-+
-+       **Hardware Error Source Table**
-+
-        ARM-specific error sources have been defined; please use those or the
-        PCI types such as type 6 (AER Root Port), 7 (AER Endpoint), or 8 (AER
-        Bridge), or use type 9 (Generic Hardware Error Source).  Firmware first
-@@ -144,122 +185,174 @@ HEST   Section 18.3.2 (signature == "HEST")
-        is recommended this table be supplied.
- 
- HPET   Signature Reserved (signature == "HPET")
--       == High Precision Event timer Table ==
-+
-+       **High Precision Event timer Table**
-+
-        x86 only table, will not be supported.
- 
- IBFT   Signature Reserved (signature == "IBFT")
--       == iSCSI Boot Firmware Table ==
-+
-+       **iSCSI Boot Firmware Table**
-+
-        Microsoft defined table, support TBD.
- 
- IORT   Signature Reserved (signature == "IORT")
--       == Input Output Remapping Table ==
-+
-+       **Input Output Remapping Table**
-+
-        arm64 only table, required in order to describe IO topology, SMMUs,
-        and GIC ITSs, and how those various components are connected together,
-        such as identifying which components are behind which SMMUs/ITSs.
-        This table will only be required on certain SBSA platforms (e.g.,
--       when using GICv3-ITS and an SMMU); on SBSA Level 0 platforms, it 
-+       when using GICv3-ITS and an SMMU); on SBSA Level 0 platforms, it
-        remains optional.
- 
- IVRS   Signature Reserved (signature == "IVRS")
--       == I/O Virtualization Reporting Structure ==
-+
-+       **I/O Virtualization Reporting Structure**
-+
-        x86_64 (AMD) only table, will not be supported.
- 
- LPIT   Signature Reserved (signature == "LPIT")
--       == Low Power Idle Table ==
-+
-+       **Low Power Idle Table**
-+
-        x86 only table as of ACPI 5.1; starting with ACPI 6.0, processor
-        descriptions and power states on ARM platforms should use the DSDT
-        and define processor container devices (_HID ACPI0010, Section 8.4,
-        and more specifically 8.4.3 and and 8.4.4).
- 
- MADT   Section 5.2.12 (signature == "APIC")
--       == Multiple APIC Description Table ==
-+
-+       **Multiple APIC Description Table**
-+
-        Required for arm64.  Only the GIC interrupt controller structures
-        should be used (types 0xA - 0xF).
- 
- MCFG   Signature Reserved (signature == "MCFG")
--       == Memory-mapped ConFiGuration space ==
-+
-+       **Memory-mapped ConFiGuration space**
-+
-        If the platform supports PCI/PCIe, an MCFG table is required.
- 
- MCHI   Signature Reserved (signature == "MCHI")
--       == Management Controller Host Interface table ==
-+
-+       **Management Controller Host Interface table**
-+
-        Optional, not currently supported.
+diff --git a/Documentation/ia64/aliasing.txt b/Documentation/ia64/aliasing.rst
+similarity index 83%
+rename from Documentation/ia64/aliasing.txt
+rename to Documentation/ia64/aliasing.rst
+index 5a4dea6abebd..a08b36aba015 100644
+--- a/Documentation/ia64/aliasing.txt
++++ b/Documentation/ia64/aliasing.rst
+@@ -1,20 +1,25 @@
+-	         MEMORY ATTRIBUTE ALIASING ON IA-64
++==================================
++Memory Attribute Aliasing on IA-64
++==================================
+ 
+-			   Bjorn Helgaas
+-		       <bjorn.helgaas@hp.com>
+-			    May 4, 2006
++Bjorn Helgaas <bjorn.helgaas@hp.com>
+ 
++May 4, 2006
+ 
+-MEMORY ATTRIBUTES
++
++Memory Attributes
++=================
+ 
+     Itanium supports several attributes for virtual memory references.
+     The attribute is part of the virtual translation, i.e., it is
+     contained in the TLB entry.  The ones of most interest to the Linux
+     kernel are:
+ 
+-	WB		Write-back (cacheable)
++	==		======================
++        WB		Write-back (cacheable)
+ 	UC		Uncacheable
+ 	WC		Write-coalescing
++	==		======================
+ 
+     System memory typically uses the WB attribute.  The UC attribute is
+     used for memory-mapped I/O devices.  The WC attribute is uncacheable
+@@ -29,7 +34,8 @@ MEMORY ATTRIBUTES
+     support either WB or UC access to main memory, while others support
+     only WB access.
+ 
+-MEMORY MAP
++Memory Map
++==========
+ 
+     Platform firmware describes the physical memory map and the
+     supported attributes for each region.  At boot-time, the kernel uses
+@@ -55,7 +61,8 @@ MEMORY MAP
+     The efi_memmap table is preserved unmodified because the original
+     boot-time information is required for kexec.
+ 
+-KERNEL IDENTITY MAPPINGS
++Kernel Identify Mappings
++========================
+ 
+     Linux/ia64 identity mappings are done with large pages, currently
+     either 16MB or 64MB, referred to as "granules."  Cacheable mappings
+@@ -74,17 +81,20 @@ KERNEL IDENTITY MAPPINGS
+     are only partially populated, or populated with a combination of UC
+     and WB regions.
+ 
+-USER MAPPINGS
++User Mappings
++=============
+ 
+     User mappings are typically done with 16K or 64K pages.  The smaller
+     page size allows more flexibility because only 16K or 64K has to be
+     homogeneous with respect to memory attributes.
+ 
+-POTENTIAL ATTRIBUTE ALIASING CASES
++Potential Attribute Aliasing Cases
++==================================
+ 
+     There are several ways the kernel creates new mappings:
+ 
+-    mmap of /dev/mem
++mmap of /dev/mem
++----------------
+ 
+ 	This uses remap_pfn_range(), which creates user mappings.  These
+ 	mappings may be either WB or UC.  If the region being mapped
+@@ -98,7 +108,8 @@ POTENTIAL ATTRIBUTE ALIASING CASES
+ 	Since the EFI memory map does not describe MMIO on some
+ 	machines, this should use an uncacheable mapping as a fallback.
+ 
+-    mmap of /sys/class/pci_bus/.../legacy_mem
++mmap of /sys/class/pci_bus/.../legacy_mem
++-----------------------------------------
+ 
+ 	This is very similar to mmap of /dev/mem, except that legacy_mem
+ 	only allows mmap of the one megabyte "legacy MMIO" area for a
+@@ -112,9 +123,10 @@ POTENTIAL ATTRIBUTE ALIASING CASES
+ 
+ 	The /dev/mem mmap constraints apply.
+ 
+-    mmap of /proc/bus/pci/.../??.?
++mmap of /proc/bus/pci/.../??.?
++------------------------------
+ 
+-    	This is an MMIO mmap of PCI functions, which additionally may or
++	This is an MMIO mmap of PCI functions, which additionally may or
+ 	may not be requested as using the WC attribute.
  
- MPST   Section 5.2.21 (signature == "MPST")
--       == Memory Power State Table ==
-+
-+       **Memory Power State Table**
-+
-        Optional, not currently supported.
- 
- MSCT   Section 5.2.19 (signature == "MSCT")
--       == Maximum System Characteristic Table ==
-+
-+       **Maximum System Characteristic Table**
-+
-        Optional, not currently supported.
- 
- MSDM   Signature Reserved (signature == "MSDM")
--       == Microsoft Data Management table ==
-+
-+       **Microsoft Data Management table**
-+
-        Microsoft only table, will not be supported.
- 
- NFIT   Section 5.2.25 (signature == "NFIT")
--       == NVDIMM Firmware Interface Table ==
-+
-+       **NVDIMM Firmware Interface Table**
-+
-        Optional, not currently supported.
- 
- OEMx   Signature of "OEMx" only
--       == OEM Specific Tables ==
-+
-+       **OEM Specific Tables**
-+
-        All tables starting with a signature of "OEM" are reserved for OEM
-        use.  Since these are not meant to be of general use but are limited
-        to very specific end users, they are not recommended for use and are
-        not supported by the kernel for arm64.
- 
- PCCT   Section 14.1 (signature == "PCCT)
--       == Platform Communications Channel Table ==
-+
-+       **Platform Communications Channel Table**
-+
-        Recommend for use on arm64; use of PCC is recommended when using CPPC
-        to control performance and power for platform processors.
- 
- PMTT   Section 5.2.21.12 (signature == "PMTT")
--       == Platform Memory Topology Table ==
-+
-+       **Platform Memory Topology Table**
-+
-        Optional, not currently supported.
- 
- PSDT   Section 5.2.11.3 (signature == "PSDT")
--       == Persistent System Description Table ==
-+
-+       **Persistent System Description Table**
-+
-        Obsolete table, will not be supported.
- 
- RASF   Section 5.2.20 (signature == "RASF")
--       == RAS Feature table ==
-+
-+       **RAS Feature table**
-+
-        Optional, not currently supported.
- 
- RSDP   Section 5.2.5 (signature == "RSD PTR")
--       == Root System Description PoinTeR ==
-+
-+       **Root System Description PoinTeR**
-+
-        Required for arm64.
- 
- RSDT   Section 5.2.7 (signature == "RSDT")
--       == Root System Description Table ==
-+
-+       **Root System Description Table**
-+
-        Since this table can only provide 32-bit addresses, it is deprecated
-        on arm64, and will not be used.  If provided, it will be ignored.
- 
- SBST   Section 5.2.14 (signature == "SBST")
--       == Smart Battery Subsystem Table ==
-+
-+       **Smart Battery Subsystem Table**
-+
-        Optional, not currently supported.
- 
- SLIC   Signature Reserved (signature == "SLIC")
--       == Software LIcensing table ==
-+
-+       **Software LIcensing table**
-+
-        Microsoft only table, will not be supported.
- 
- SLIT   Section 5.2.17 (signature == "SLIT")
--       == System Locality distance Information Table ==
-+
-+       **System Locality distance Information Table**
-+
-        Optional in general, but required for NUMA systems.
- 
- SPCR   Signature Reserved (signature == "SPCR")
--       == Serial Port Console Redirection table ==
-+
-+       **Serial Port Console Redirection table**
-+
-        Required for arm64.
- 
- SPMI   Signature Reserved (signature == "SPMI")
--       == Server Platform Management Interface table ==
-+
-+       **Server Platform Management Interface table**
-+
-        Optional, not currently supported.
- 
- SRAT   Section 5.2.16 (signature == "SRAT")
--       == System Resource Affinity Table ==
-+
-+       **System Resource Affinity Table**
-+
-        Optional, but if used, only the GICC Affinity structures are read.
-        To support arm64 NUMA, this table is required.
- 
- SSDT   Section 5.2.11.2 (signature == "SSDT")
--       == Secondary System Description Table ==
-+
-+       **Secondary System Description Table**
-+
-        These tables are a continuation of the DSDT; these are recommended
-        for use with devices that can be added to a running system, but can
-        also serve the purpose of dividing up device descriptions into more
-@@ -272,49 +365,69 @@ SSDT   Section 5.2.11.2 (signature == "SSDT")
-        one DSDT but can contain many SSDTs.
- 
- STAO   Signature Reserved (signature == "STAO")
--       == _STA Override table ==
-+
-+       **_STA Override table**
-+
-        Optional, but only necessary in virtualized environments in order to
-        hide devices from guest OSs.
- 
- TCPA   Signature Reserved (signature == "TCPA")
--       == Trusted Computing Platform Alliance table ==
-+
-+       **Trusted Computing Platform Alliance table**
-+
-        Optional, not currently supported, and may need changes to fully
-        interoperate with arm64.
- 
- TPM2   Signature Reserved (signature == "TPM2")
--       == Trusted Platform Module 2 table ==
-+
-+       **Trusted Platform Module 2 table**
-+
-        Optional, not currently supported, and may need changes to fully
-        interoperate with arm64.
- 
- UEFI   Signature Reserved (signature == "UEFI")
--       == UEFI ACPI data table ==
-+
-+       **UEFI ACPI data table**
-+
-        Optional, not currently supported.  No known use case for arm64,
-        at present.
- 
- WAET   Signature Reserved (signature == "WAET")
--       == Windows ACPI Emulated devices Table ==
-+
-+       **Windows ACPI Emulated devices Table**
-+
-        Microsoft only table, will not be supported.
- 
- WDAT   Signature Reserved (signature == "WDAT")
--       == Watch Dog Action Table ==
-+
-+       **Watch Dog Action Table**
-+
-        Microsoft only table, will not be supported.
- 
- WDRT   Signature Reserved (signature == "WDRT")
--       == Watch Dog Resource Table ==
-+
-+       **Watch Dog Resource Table**
-+
-        Microsoft only table, will not be supported.
- 
- WPBT   Signature Reserved (signature == "WPBT")
--       == Windows Platform Binary Table ==
-+
-+       **Windows Platform Binary Table**
-+
-        Microsoft only table, will not be supported.
- 
- XENV   Signature Reserved (signature == "XENV")
--       == Xen project table ==
-+
-+       **Xen project table**
-+
-        Optional, used only by Xen at present.
- 
- XSDT   Section 5.2.8 (signature == "XSDT")
--       == eXtended System Description Table ==
-+
-+       **eXtended System Description Table**
-+
-        Required for arm64.
--
-+====== ========================================================================
- 
- ACPI Objects
- ------------
-@@ -323,10 +436,11 @@ shown in the list that follows; any object not explicitly mentioned below
- should be used as needed for a particular platform or particular subsystem,
- such as power management or PCI.
- 
-+===== ================ ========================================================
- Name   Section         Usage for ARMv8 Linux
------   ------------    -------------------------------------------------
-+===== ================ ========================================================
- _CCA   6.2.17          This method must be defined for all bus masters
--                       on arm64 -- there are no assumptions made about
-+                       on arm64 - there are no assumptions made about
-                        whether such devices are cache coherent or not.
-                        The _CCA value is inherited by all descendants of
-                        these devices so it does not need to be repeated.
-@@ -422,8 +536,8 @@ _OSC   6.2.11          This method can be a global method in ACPI (i.e.,
-                        by the kernel community, then register it with the
-                        UEFI Forum.
- 
--\_OSI  5.7.2           Deprecated on ARM64.  As far as ACPI firmware is 
--		       concerned, _OSI is not to be used to determine what 
-+\_OSI  5.7.2           Deprecated on ARM64.  As far as ACPI firmware is
-+		       concerned, _OSI is not to be used to determine what
- 		       sort of system is being used or what functionality
- 		       is provided.  The _OSC method is to be used instead.
- 
-@@ -447,7 +561,7 @@ _PSx   7.3.2-5         Use as needed; power management specific.  If _PS0 is
-                        usage, change them in these methods.
- 
- _RDI   8.4.4.4         Recommended for use with processor definitions (_HID
--		       ACPI0010) on arm64.  This should only be used in 
-+		       ACPI0010) on arm64.  This should only be used in
- 		       conjunction with _LPI.
- 
- \_REV  5.7.4           Always returns the latest version of ACPI supported.
-@@ -476,6 +590,7 @@ _SWS   7.4.3           Use as needed; power management specific; this may
- 
- _UID   6.1.12          Recommended for distinguishing devices of the same
-                        class; define it if at all possible.
-+===== ================ ========================================================
- 
- 
- 
-@@ -488,7 +603,7 @@ platforms, ACPI events must be signaled differently.
- 
- There are two options: GPIO-signaled interrupts (Section 5.6.5), and
- interrupt-signaled events (Section 5.6.9).  Interrupt-signaled events are a
--new feature in the ACPI 6.1 specification.  Either -- or both -- can be used
-+new feature in the ACPI 6.1 specification.  Either - or both - can be used
- on a given platform, and which to use may be dependent of limitations in any
- given SoC.  If possible, interrupt-signaled events are recommended.
- 
-@@ -564,39 +679,40 @@ supported.
- 
- The following classes of objects are not supported:
- 
--       -- Section 9.2: ambient light sensor devices
-+       -  Section 9.2: ambient light sensor devices
- 
--       -- Section 9.3: battery devices
-+       -  Section 9.3: battery devices
- 
--       -- Section 9.4: lids (e.g., laptop lids)
-+       -  Section 9.4: lids (e.g., laptop lids)
- 
--       -- Section 9.8.2: IDE controllers
-+       -  Section 9.8.2: IDE controllers
- 
--       -- Section 9.9: floppy controllers
-+       -  Section 9.9: floppy controllers
- 
--       -- Section 9.10: GPE block devices
-+       -  Section 9.10: GPE block devices
- 
--       -- Section 9.15: PC/AT RTC/CMOS devices
-+       -  Section 9.15: PC/AT RTC/CMOS devices
- 
--       -- Section 9.16: user presence detection devices
-+       -  Section 9.16: user presence detection devices
- 
--       -- Section 9.17: I/O APIC devices; all GICs must be enumerable via MADT
-+       -  Section 9.17: I/O APIC devices; all GICs must be enumerable via MADT
- 
--       -- Section 9.18: time and alarm devices (see 9.15)
-+       -  Section 9.18: time and alarm devices (see 9.15)
- 
--       -- Section 10: power source and power meter devices
-+       -  Section 10: power source and power meter devices
- 
--       -- Section 11: thermal management
-+       -  Section 11: thermal management
- 
--       -- Section 12: embedded controllers interface
-+       -  Section 12: embedded controllers interface
- 
--       -- Section 13: SMBus interfaces
-+       -  Section 13: SMBus interfaces
- 
- 
- This also means that there is no support for the following objects:
- 
-+====   =========================== ====   ==========
- Name   Section                     Name   Section
------   ------------                ----   ------------
-+====   =========================== ====   ==========
- _ALC   9.3.4                       _FDM   9.10.3
- _ALI   9.3.2                       _FIX   6.2.7
- _ALP   9.3.6                       _GAI   10.4.5
-@@ -619,4 +735,4 @@ _DCK   6.5.2                       _UPD   9.16.1
- _EC    12.12                       _UPP   9.16.2
- _FDE   9.10.1                      _WPC   10.5.2
- _FDI   9.10.2                      _WPP   10.5.3
--
-+====   =========================== ====   ==========
-diff --git a/Documentation/arm64/arm-acpi.txt b/Documentation/arm64/arm-acpi.rst
-similarity index 86%
-rename from Documentation/arm64/arm-acpi.txt
-rename to Documentation/arm64/arm-acpi.rst
-index 1a74a041a443..872dbbc73d4a 100644
---- a/Documentation/arm64/arm-acpi.txt
-+++ b/Documentation/arm64/arm-acpi.rst
-@@ -1,5 +1,7 @@
-+=====================
- ACPI on ARMv8 Servers
-----------------------
-+=====================
-+
- ACPI can be used for ARMv8 general purpose servers designed to follow
- the ARM SBSA (Server Base System Architecture) [0] and SBBR (Server
- Base Boot Requirements) [1] specifications.  Please note that the SBBR
-@@ -34,28 +36,28 @@ of the summary text almost directly, to be honest.
- 
- The short form of the rationale for ACPI on ARM is:
- 
---- ACPI’s byte code (AML) allows the platform to encode hardware behavior,
-+-  ACPI’s byte code (AML) allows the platform to encode hardware behavior,
-    while DT explicitly does not support this.  For hardware vendors, being
-    able to encode behavior is a key tool used in supporting operating
-    system releases on new hardware.
- 
---- ACPI’s OSPM defines a power management model that constrains what the
-+-  ACPI’s OSPM defines a power management model that constrains what the
-    platform is allowed to do into a specific model, while still providing
-    flexibility in hardware design.
- 
---- In the enterprise server environment, ACPI has established bindings (such
-+-  In the enterprise server environment, ACPI has established bindings (such
-    as for RAS) which are currently used in production systems.  DT does not.
-    Such bindings could be defined in DT at some point, but doing so means ARM
-    and x86 would end up using completely different code paths in both firmware
-    and the kernel.
- 
---- Choosing a single interface to describe the abstraction between a platform
-+-  Choosing a single interface to describe the abstraction between a platform
-    and an OS is important.  Hardware vendors would not be required to implement
-    both DT and ACPI if they want to support multiple operating systems.  And,
-    agreeing on a single interface instead of being fragmented into per OS
-    interfaces makes for better interoperability overall.
- 
---- The new ACPI governance process works well and Linux is now at the same
-+-  The new ACPI governance process works well and Linux is now at the same
-    table as hardware vendors and other OS vendors.  In fact, there is no
-    longer any reason to feel that ACPI only belongs to Windows or that
-    Linux is in any way secondary to Microsoft in this arena.  The move of
-@@ -169,31 +171,31 @@ For the ACPI core to operate properly, and in turn provide the information
- the kernel needs to configure devices, it expects to find the following
- tables (all section numbers refer to the ACPI 6.1 specification):
- 
--    -- RSDP (Root System Description Pointer), section 5.2.5
-+    -  RSDP (Root System Description Pointer), section 5.2.5
- 
--    -- XSDT (eXtended System Description Table), section 5.2.8
-+    -  XSDT (eXtended System Description Table), section 5.2.8
- 
--    -- FADT (Fixed ACPI Description Table), section 5.2.9
-+    -  FADT (Fixed ACPI Description Table), section 5.2.9
- 
--    -- DSDT (Differentiated System Description Table), section
-+    -  DSDT (Differentiated System Description Table), section
-        5.2.11.1
- 
--    -- MADT (Multiple APIC Description Table), section 5.2.12
-+    -  MADT (Multiple APIC Description Table), section 5.2.12
- 
--    -- GTDT (Generic Timer Description Table), section 5.2.24
-+    -  GTDT (Generic Timer Description Table), section 5.2.24
- 
--    -- If PCI is supported, the MCFG (Memory mapped ConFiGuration
-+    -  If PCI is supported, the MCFG (Memory mapped ConFiGuration
-        Table), section 5.2.6, specifically Table 5-31.
- 
--    -- If booting without a console=<device> kernel parameter is
-+    -  If booting without a console=<device> kernel parameter is
-        supported, the SPCR (Serial Port Console Redirection table),
-        section 5.2.6, specifically Table 5-31.
- 
--    -- If necessary to describe the I/O topology, SMMUs and GIC ITSs,
-+    -  If necessary to describe the I/O topology, SMMUs and GIC ITSs,
-        the IORT (Input Output Remapping Table, section 5.2.6, specifically
-        Table 5-31).
- 
--    -- If NUMA is supported, the SRAT (System Resource Affinity Table)
-+    -  If NUMA is supported, the SRAT (System Resource Affinity Table)
-        and SLIT (System Locality distance Information Table), sections
-        5.2.16 and 5.2.17, respectively.
- 
-@@ -269,9 +271,9 @@ describes how to define the structure of an object returned via _DSD, and
- how specific data structures are defined by specific UUIDs.  Linux should
- only use the _DSD Device Properties UUID [5]:
- 
--   -- UUID: daffd814-6eba-4d8c-8a91-bc9bbf4aa301
-+   - UUID: daffd814-6eba-4d8c-8a91-bc9bbf4aa301
- 
--   -- http://www.uefi.org/sites/default/files/resources/_DSD-device-properties-UUID.pdf
-+   - http://www.uefi.org/sites/default/files/resources/_DSD-device-properties-UUID.pdf
- 
- The UEFI Forum provides a mechanism for registering device properties [4]
- so that they may be used across all operating systems supporting ACPI.
-@@ -327,10 +329,10 @@ turning a device full off.
- 
- There are two options for using those Power Resources.  They can:
- 
--   -- be managed in a _PSx method which gets called on entry to power
-+   -  be managed in a _PSx method which gets called on entry to power
-       state Dx.
- 
--   -- be declared separately as power resources with their own _ON and _OFF
-+   -  be declared separately as power resources with their own _ON and _OFF
-       methods.  They are then tied back to D-states for a particular device
-       via _PRx which specifies which power resources a device needs to be on
-       while in Dx.  Kernel then tracks number of devices using a power resource
-@@ -339,16 +341,16 @@ There are two options for using those Power Resources.  They can:
- The kernel ACPI code will also assume that the _PSx methods follow the normal
- ACPI rules for such methods:
- 
--   -- If either _PS0 or _PS3 is implemented, then the other method must also
-+   -  If either _PS0 or _PS3 is implemented, then the other method must also
-       be implemented.
- 
--   -- If a device requires usage or setup of a power resource when on, the ASL
-+   -  If a device requires usage or setup of a power resource when on, the ASL
-       should organize that it is allocated/enabled using the _PS0 method.
- 
--   -- Resources allocated or enabled in the _PS0 method should be disabled
-+   -  Resources allocated or enabled in the _PS0 method should be disabled
-       or de-allocated in the _PS3 method.
- 
--   -- Firmware will leave the resources in a reasonable state before handing
-+   -  Firmware will leave the resources in a reasonable state before handing
-       over control to the kernel.
- 
- Such code in _PSx methods will of course be very platform specific.  But,
-@@ -394,52 +396,52 @@ else must be discovered by the driver probe function.  Then, have the rest
- of the driver operate off of the contents of that struct.  Doing so should
- allow most divergence between ACPI and DT functionality to be kept local to
- the probe function instead of being scattered throughout the driver.  For
--example:
-+example::
- 
--static int device_probe_dt(struct platform_device *pdev)
--{
--       /* DT specific functionality */
--       ...
--}
-+  static int device_probe_dt(struct platform_device *pdev)
-+  {
-+         /* DT specific functionality */
-+         ...
-+  }
- 
--static int device_probe_acpi(struct platform_device *pdev)
--{
--       /* ACPI specific functionality */
--       ...
--}
-+  static int device_probe_acpi(struct platform_device *pdev)
-+  {
-+         /* ACPI specific functionality */
-+         ...
-+  }
- 
--static int device_probe(struct platform_device *pdev)
--{
--       ...
--       struct device_node node = pdev->dev.of_node;
--       ...
-+  static int device_probe(struct platform_device *pdev)
-+  {
-+         ...
-+         struct device_node node = pdev->dev.of_node;
-+         ...
- 
--       if (node)
--               ret = device_probe_dt(pdev);
--       else if (ACPI_HANDLE(&pdev->dev))
--               ret = device_probe_acpi(pdev);
--       else
--               /* other initialization */
--               ...
--       /* Continue with any generic probe operations */
--       ...
--}
-+         if (node)
-+                 ret = device_probe_dt(pdev);
-+         else if (ACPI_HANDLE(&pdev->dev))
-+                 ret = device_probe_acpi(pdev);
-+         else
-+                 /* other initialization */
-+                 ...
-+         /* Continue with any generic probe operations */
-+         ...
-+  }
- 
- DO keep the MODULE_DEVICE_TABLE entries together in the driver to make it
- clear the different names the driver is probed for, both from DT and from
--ACPI:
-+ACPI::
- 
--static struct of_device_id virtio_mmio_match[] = {
--        { .compatible = "virtio,mmio", },
--        { }
+ 	If WC is requested, and the region in kern_memmap is either WC
+@@ -124,7 +136,8 @@ POTENTIAL ATTRIBUTE ALIASING CASES
+ 	Otherwise, the user mapping must use the same attribute as the
+ 	kernel mapping.
+ 
+-    read/write of /dev/mem
++read/write of /dev/mem
++----------------------
+ 
+ 	This uses copy_from_user(), which implicitly uses a kernel
+ 	identity mapping.  This is obviously safe for things in
+@@ -138,7 +151,8 @@ POTENTIAL ATTRIBUTE ALIASING CASES
+ 	eight-byte accesses, and the copy_from_user() path doesn't allow
+ 	any control over the access size, so this would be dangerous.
+ 
+-    ioremap()
++ioremap()
++---------
+ 
+ 	This returns a mapping for use inside the kernel.
+ 
+@@ -155,9 +169,11 @@ POTENTIAL ATTRIBUTE ALIASING CASES
+ 
+ 	Failing all of the above, we have to fall back to a UC mapping.
+ 
+-PAST PROBLEM CASES
++Past Problem Cases
++==================
+ 
+-    mmap of various MMIO regions from /dev/mem by "X" on Intel platforms
++mmap of various MMIO regions from /dev/mem by "X" on Intel platforms
++--------------------------------------------------------------------
+ 
+       The EFI memory map may not report these MMIO regions.
+ 
+@@ -166,12 +182,16 @@ PAST PROBLEM CASES
+       succeed.  It may create either WB or UC user mappings, depending
+       on whether the region is in kern_memmap or the EFI memory map.
+ 
+-    mmap of 0x0-0x9FFFF /dev/mem by "hwinfo" on HP sx1000 with VGA enabled
++mmap of 0x0-0x9FFFF /dev/mem by "hwinfo" on HP sx1000 with VGA enabled
++----------------------------------------------------------------------
+ 
+       The EFI memory map reports the following attributes:
++
++        =============== ======= ==================
+         0x00000-0x9FFFF WB only
+         0xA0000-0xBFFFF UC only (VGA frame buffer)
+         0xC0000-0xFFFFF WB only
++        =============== ======= ==================
+ 
+       This mmap is done with user pages, not kernel identity mappings,
+       so it is safe to use WB mappings.
+@@ -182,7 +202,8 @@ PAST PROBLEM CASES
+       never generate an uncacheable reference to the WB-only areas unless
+       the driver explicitly touches them.
+ 
+-    mmap of 0x0-0xFFFFF legacy_mem by "X"
++mmap of 0x0-0xFFFFF legacy_mem by "X"
++-------------------------------------
+ 
+       If the EFI memory map reports that the entire range supports the
+       same attributes, we can allow the mmap (and we will prefer WB if
+@@ -197,15 +218,18 @@ PAST PROBLEM CASES
+       that doesn't report the VGA frame buffer at all), we should fail the
+       mmap and force the user to map just the specific region of interest.
+ 
+-    mmap of 0xA0000-0xBFFFF legacy_mem by "X" on HP sx1000 with VGA disabled
++mmap of 0xA0000-0xBFFFF legacy_mem by "X" on HP sx1000 with VGA disabled
++------------------------------------------------------------------------
++
++      The EFI memory map reports the following attributes::
+ 
+-      The EFI memory map reports the following attributes:
+         0x00000-0xFFFFF WB only (no VGA MMIO hole)
+ 
+       This is a special case of the previous case, and the mmap should
+       fail for the same reason as above.
+ 
+-    read of /sys/devices/.../rom
++read of /sys/devices/.../rom
++----------------------------
+ 
+       For VGA devices, this may cause an ioremap() of 0xC0000.  This
+       used to be done with a UC mapping, because the VGA frame buffer
+@@ -215,7 +239,8 @@ PAST PROBLEM CASES
+       We should use WB page table mappings to avoid covering the VGA
+       frame buffer.
+ 
+-NOTES
++Notes
++=====
+ 
+     [1] SDM rev 2.2, vol 2, sec 4.4.1.
+     [2] SDM rev 2.2, vol 2, sec 4.4.6.
+diff --git a/Documentation/ia64/efirtc.txt b/Documentation/ia64/efirtc.rst
+similarity index 70%
+rename from Documentation/ia64/efirtc.txt
+rename to Documentation/ia64/efirtc.rst
+index 057e6bebda8f..2f7ff5026308 100644
+--- a/Documentation/ia64/efirtc.txt
++++ b/Documentation/ia64/efirtc.rst
+@@ -1,12 +1,16 @@
++==========================
+ EFI Real Time Clock driver
+--------------------------------
++==========================
++
+ S. Eranian <eranian@hpl.hp.com>
++
+ March 2000
+ 
+-I/ Introduction
++1. Introduction
++===============
+ 
+ This document describes the efirtc.c driver has provided for
+-the IA-64 platform. 
++the IA-64 platform.
+ 
+ The purpose of this driver is to supply an API for kernel and user applications
+ to get access to the Time Service offered by EFI version 0.92.
+@@ -16,112 +20,124 @@ SetTime(), GetWakeupTime(), SetWakeupTime() which are all supported by this
+ driver. We describe those calls as well the design of the driver in the
+ following sections.
+ 
+-II/ Design Decisions
++2. Design Decisions
++===================
+ 
+-The original ideas was to provide a very simple driver to get access to, 
+-at first, the time of day service. This is required in order to access, in a 
+-portable way, the CMOS clock. A program like /sbin/hwclock uses such a clock 
++The original ideas was to provide a very simple driver to get access to,
++at first, the time of day service. This is required in order to access, in a
++portable way, the CMOS clock. A program like /sbin/hwclock uses such a clock
+ to initialize the system view of the time during boot.
+ 
+ Because we wanted to minimize the impact on existing user-level apps using
+ the CMOS clock, we decided to expose an API that was very similar to the one
+-used today with the legacy RTC driver (driver/char/rtc.c). However, because 
++used today with the legacy RTC driver (driver/char/rtc.c). However, because
+ EFI provides a simpler services, not all ioctl() are available. Also
+-new ioctl()s have been introduced for things that EFI provides but not the 
++new ioctl()s have been introduced for things that EFI provides but not the
+ legacy.
+ 
+ EFI uses a slightly different way of representing the time, noticeably
+ the reference date is different. Year is the using the full 4-digit format.
+ The Epoch is January 1st 1998. For backward compatibility reasons we don't
+-expose this new way of representing time. Instead we use something very 
++expose this new way of representing time. Instead we use something very
+ similar to the struct tm, i.e. struct rtc_time, as used by hwclock.
+ One of the reasons for doing it this way is to allow for EFI to still evolve
+ without necessarily impacting any of the user applications. The decoupling
+ enables flexibility and permits writing wrapper code is ncase things change.
+ 
+ The driver exposes two interfaces, one via the device file and a set of
+-ioctl()s. The other is read-only via the /proc filesystem. 
++ioctl()s. The other is read-only via the /proc filesystem.
+ 
+ As of today we don't offer a /proc/sys interface.
+ 
+ To allow for a uniform interface between the legacy RTC and EFI time service,
+-we have created the include/linux/rtc.h header file to contain only the 
+-"public" API of the two drivers.  The specifics of the legacy RTC are still 
++we have created the include/linux/rtc.h header file to contain only the
++"public" API of the two drivers.  The specifics of the legacy RTC are still
+ in include/linux/mc146818rtc.h.
+ 
+- 
+-III/ Time of day service
++
++3. Time of day service
++======================
+ 
+ The part of the driver gives access to the time of day service of EFI.
+ Two ioctl()s, compatible with the legacy RTC calls:
+ 
+-	Read the CMOS clock: ioctl(d, RTC_RD_TIME, &rtc);
++	Read the CMOS clock::
+ 
+-	Write the CMOS clock: ioctl(d, RTC_SET_TIME, &rtc);
++		ioctl(d, RTC_RD_TIME, &rtc);
++
++	Write the CMOS clock::
++
++		ioctl(d, RTC_SET_TIME, &rtc);
+ 
+ The rtc is a pointer to a data structure defined in rtc.h which is close
+-to a struct tm:
++to a struct tm::
+ 
+-struct rtc_time {
+-        int tm_sec;
+-        int tm_min;
+-        int tm_hour;
+-        int tm_mday;
+-        int tm_mon;
+-        int tm_year;
+-        int tm_wday;
+-        int tm_yday;
+-        int tm_isdst;
 -};
--MODULE_DEVICE_TABLE(of, virtio_mmio_match);
-+  static struct of_device_id virtio_mmio_match[] = {
-+          { .compatible = "virtio,mmio", },
-+          { }
++  struct rtc_time {
++          int tm_sec;
++          int tm_min;
++          int tm_hour;
++          int tm_mday;
++          int tm_mon;
++          int tm_year;
++          int tm_wday;
++          int tm_yday;
++          int tm_isdst;
 +  };
-+  MODULE_DEVICE_TABLE(of, virtio_mmio_match);
  
--static const struct acpi_device_id virtio_mmio_acpi_match[] = {
--        { "LNRO0005", },
--        { }
--};
--MODULE_DEVICE_TABLE(acpi, virtio_mmio_acpi_match);
-+  static const struct acpi_device_id virtio_mmio_acpi_match[] = {
-+          { "LNRO0005", },
-+          { }
-+  };
-+  MODULE_DEVICE_TABLE(acpi, virtio_mmio_acpi_match);
+ The driver takes care of converting back an forth between the EFI time and
+ this format.
  
+ Those two ioctl()s can be exercised with the hwclock command:
  
- ASWG
-@@ -471,7 +473,8 @@ Linux Code
- Individual items specific to Linux on ARM, contained in the the Linux
- source code, are in the list that follows:
+-For reading:
+-# /sbin/hwclock --show
+-Mon Mar  6 15:32:32 2000  -0.910248 seconds
++For reading::
  
--ACPI_OS_NAME           This macro defines the string to be returned when
-+ACPI_OS_NAME
-+                       This macro defines the string to be returned when
-                        an ACPI method invokes the _OS method.  On ARM64
-                        systems, this macro will be "Linux" by default.
-                        The command line parameter acpi_os=<string>
-@@ -482,38 +485,44 @@ ACPI_OS_NAME           This macro defines the string to be returned when
- ACPI Objects
- ------------
- Detailed expectations for ACPI tables and object are listed in the file
--Documentation/arm64/acpi_object_usage.txt.
-+Documentation/arm64/acpi_object_usage.rst.
- 
- 
- References
- ----------
--[0] http://silver.arm.com -- document ARM-DEN-0029, or newer
-+[0] http://silver.arm.com
-+    document ARM-DEN-0029, or newer:
-     "Server Base System Architecture", version 2.3, dated 27 Mar 2014
- 
- [1] http://infocenter.arm.com/help/topic/com.arm.doc.den0044a/Server_Base_Boot_Requirements.pdf
-     Document ARM-DEN-0044A, or newer: "Server Base Boot Requirements, System
-     Software on ARM Platforms", dated 16 Aug 2014
- 
--[2] http://www.secretlab.ca/archives/151, 10 Jan 2015, Copyright (c) 2015,
-+[2] http://www.secretlab.ca/archives/151,
-+    10 Jan 2015, Copyright (c) 2015,
-     Linaro Ltd., written by Grant Likely.
- 
--[3] AMD ACPI for Seattle platform documentation:
-+[3] AMD ACPI for Seattle platform documentation
-     http://amd-dev.wpengine.netdna-cdn.com/wordpress/media/2012/10/Seattle_ACPI_Guide.pdf
- 
--[4] http://www.uefi.org/acpi -- please see the link for the "ACPI _DSD Device
+-For setting:
+-# /sbin/hwclock --systohc
++	# /sbin/hwclock --show
++	Mon Mar  6 15:32:32 2000  -0.910248 seconds
 +
-+[4] http://www.uefi.org/acpi
-+    please see the link for the "ACPI _DSD Device
-     Property Registry Instructions"
- 
--[5] http://www.uefi.org/acpi -- please see the link for the "_DSD (Device
-+[5] http://www.uefi.org/acpi
-+    please see the link for the "_DSD (Device
-     Specific Data) Implementation Guide"
- 
--[6] Kernel code for the unified device property interface can be found in
-+[6] Kernel code for the unified device
-+    property interface can be found in
-     include/linux/property.h and drivers/base/property.c.
- 
- 
- Authors
- -------
--Al Stone <al.stone@linaro.org>
--Graeme Gregory <graeme.gregory@linaro.org>
--Hanjun Guo <hanjun.guo@linaro.org>
-+- Al Stone <al.stone@linaro.org>
-+- Graeme Gregory <graeme.gregory@linaro.org>
-+- Hanjun Guo <hanjun.guo@linaro.org>
- 
--Grant Likely <grant.likely@linaro.org>, for the "Why ACPI on ARM?" section
-+- Grant Likely <grant.likely@linaro.org>, for the "Why ACPI on ARM?" section
-diff --git a/Documentation/arm64/booting.txt b/Documentation/arm64/booting.rst
-similarity index 86%
-rename from Documentation/arm64/booting.txt
-rename to Documentation/arm64/booting.rst
-index fbab7e21d116..3d041d0d16e8 100644
---- a/Documentation/arm64/booting.txt
-+++ b/Documentation/arm64/booting.rst
-@@ -1,7 +1,9 @@
--			Booting AArch64 Linux
--			=====================
-+=====================
-+Booting AArch64 Linux
-+=====================
- 
- Author: Will Deacon <will.deacon@arm.com>
++For setting::
 +
- Date  : 07 September 2012
++	# /sbin/hwclock --systohc
  
- This document is based on the ARM booting document by Russell King and
-@@ -12,7 +14,7 @@ The AArch64 exception model is made up of a number of exception levels
- counterpart.  EL2 is the hypervisor level and exists only in non-secure
- mode. EL3 is the highest priority level and exists only in secure mode.
+ Root privileges are required to be able to set the time of day.
  
--For the purposes of this document, we will use the term `boot loader'
-+For the purposes of this document, we will use the term `boot loader`
- simply to define all software that executes on the CPU(s) before control
- is passed to the Linux kernel.  This may include secure monitor and
- hypervisor code, or it may just be a handful of instructions for
-@@ -70,7 +72,7 @@ Image target is available instead.
+-IV/ Wakeup Alarm service
++4. Wakeup Alarm service
++=======================
  
- Requirement: MANDATORY
+ EFI provides an API by which one can program when a machine should wakeup,
+ i.e. reboot. This is very different from the alarm provided by the legacy
+ RTC which is some kind of interval timer alarm. For this reason we don't use
+ the same ioctl()s to get access to the service. Instead we have
+-introduced 2 news ioctl()s to the interface of an RTC. 
++introduced 2 news ioctl()s to the interface of an RTC.
  
--The decompressed kernel image contains a 64-byte header as follows:
-+The decompressed kernel image contains a 64-byte header as follows::
+ We have added 2 new ioctl()s that are specific to the EFI driver:
  
-   u32 code0;			/* Executable code */
-   u32 code1;			/* Executable code */
-@@ -103,19 +105,26 @@ Header notes:
+-	Read the current state of the alarm
+-	ioctl(d, RTC_WKLAM_RD, &wkt)
++	Read the current state of the alarm::
  
- - The flags field (introduced in v3.17) is a little-endian 64-bit field
-   composed as follows:
--  Bit 0:	Kernel endianness.  1 if BE, 0 if LE.
--  Bit 1-2:	Kernel Page size.
--			0 - Unspecified.
--			1 - 4K
--			2 - 16K
--			3 - 64K
--  Bit 3:	Kernel physical placement
--			0 - 2MB aligned base should be as close as possible
--			    to the base of DRAM, since memory below it is not
--			    accessible via the linear mapping
--			1 - 2MB aligned base may be anywhere in physical
--			    memory
--  Bits 4-63:	Reserved.
+-	Set the alarm or change its status
+-	ioctl(d, RTC_WKALM_SET, &wkt)
++		ioctl(d, RTC_WKLAM_RD, &wkt)
+ 
+-The wkt structure encapsulates a struct rtc_time + 2 extra fields to get 
+-status information:
+-	
+-struct rtc_wkalrm {
++	Set the alarm or change its status::
+ 
+-        unsigned char enabled; /* =1 if alarm is enabled */
+-        unsigned char pending; /* =1 if alarm is pending  */
++		ioctl(d, RTC_WKALM_SET, &wkt)
+ 
+-        struct rtc_time time;
+-} 
++The wkt structure encapsulates a struct rtc_time + 2 extra fields to get
++status information::
 +
-+  ============= ===============================================================
-+  Bit 0		Kernel endianness.  1 if BE, 0 if LE.
-+  Bit 1-2	Kernel Page size.
++  struct rtc_wkalrm {
 +
-+			* 0 - Unspecified.
-+			* 1 - 4K
-+			* 2 - 16K
-+			* 3 - 64K
-+  Bit 3		Kernel physical placement
++          unsigned char enabled; /* =1 if alarm is enabled */
++          unsigned char pending; /* =1 if alarm is pending  */
 +
-+			0
-+			  2MB aligned base should be as close as possible
-+			  to the base of DRAM, since memory below it is not
-+			  accessible via the linear mapping
-+			1
-+			  2MB aligned base may be anywhere in physical
-+			  memory
-+  Bits 4-63	Reserved.
-+  ============= ===============================================================
++          struct rtc_time time;
++  }
  
- - When image_size is zero, a bootloader should attempt to keep as much
-   memory as possible free for use by the kernel immediately after the
-@@ -147,19 +156,22 @@ Before jumping into the kernel, the following conditions must be met:
-   corrupted by bogus network packets or disk data.  This will save
-   you many hours of debug.
+ As of today, none of the existing user-level apps supports this feature.
+-However writing such a program should be hard by simply using those two 
+-ioctl(). 
++However writing such a program should be hard by simply using those two
++ioctl().
  
--- Primary CPU general-purpose register settings
--  x0 = physical address of device tree blob (dtb) in system RAM.
--  x1 = 0 (reserved for future use)
--  x2 = 0 (reserved for future use)
--  x3 = 0 (reserved for future use)
-+- Primary CPU general-purpose register settings:
-+
-+    - x0 = physical address of device tree blob (dtb) in system RAM.
-+    - x1 = 0 (reserved for future use)
-+    - x2 = 0 (reserved for future use)
-+    - x3 = 0 (reserved for future use)
+ Root privileges are required to be able to set the alarm.
  
- - CPU mode
-+
-   All forms of interrupts must be masked in PSTATE.DAIF (Debug, SError,
-   IRQ and FIQ).
-   The CPU must be in either EL2 (RECOMMENDED in order to have access to
-   the virtualisation extensions) or non-secure EL1.
+-V/ References.
++5. References
++=============
  
- - Caches, MMUs
-+
-   The MMU must be off.
-   Instruction cache may be on or off.
-   The address range corresponding to the loaded kernel image must be
-@@ -172,18 +184,21 @@ Before jumping into the kernel, the following conditions must be met:
-   operations (not recommended) must be configured and disabled.
+ Checkout the following Web site for more information on EFI:
  
- - Architected timers
-+
-   CNTFRQ must be programmed with the timer frequency and CNTVOFF must
-   be programmed with a consistent value on all CPUs.  If entering the
-   kernel at EL1, CNTHCTL_EL2 must have EL1PCTEN (bit 0) set where
-   available.
+diff --git a/Documentation/ia64/err_inject.txt b/Documentation/ia64/err_inject.rst
+similarity index 82%
+rename from Documentation/ia64/err_inject.txt
+rename to Documentation/ia64/err_inject.rst
+index 9f651c181429..900f71e93a29 100644
+--- a/Documentation/ia64/err_inject.txt
++++ b/Documentation/ia64/err_inject.rst
+@@ -1,4 +1,4 @@
+-
++========================================
+ IPF Machine Check (MC) error inject tool
+ ========================================
  
- - Coherency
-+
-   All CPUs to be booted by the kernel must be part of the same coherency
-   domain on entry to the kernel.  This may require IMPLEMENTATION DEFINED
-   initialisation to enable the receiving of maintenance operations on
-   each CPU.
+@@ -32,94 +32,94 @@ Errata: Itanium 2 Processors Specification Update lists some errata against
+ the pal_mc_error_inject PAL procedure. The following err.conf has been tested
+ on latest Montecito PAL.
  
- - System registers
-+
-   All writable architected system registers at the exception level where
-   the kernel image will be entered must be initialised by software at a
-   higher exception level to prevent execution in an UNKNOWN state.
-@@ -195,28 +210,40 @@ Before jumping into the kernel, the following conditions must be met:
+-err.conf:
++err.conf::
  
-   For systems with a GICv3 interrupt controller to be used in v3 mode:
-   - If EL3 is present:
--    ICC_SRE_EL3.Enable (bit 3) must be initialiased to 0b1.
--    ICC_SRE_EL3.SRE (bit 0) must be initialised to 0b1.
-+
-+      - ICC_SRE_EL3.Enable (bit 3) must be initialiased to 0b1.
-+      - ICC_SRE_EL3.SRE (bit 0) must be initialised to 0b1.
-+
-   - If the kernel is entered at EL1:
--    ICC.SRE_EL2.Enable (bit 3) must be initialised to 0b1
--    ICC_SRE_EL2.SRE (bit 0) must be initialised to 0b1.
-+
-+      - ICC.SRE_EL2.Enable (bit 3) must be initialised to 0b1
-+      - ICC_SRE_EL2.SRE (bit 0) must be initialised to 0b1.
-+
-   - The DT or ACPI tables must describe a GICv3 interrupt controller.
- 
-   For systems with a GICv3 interrupt controller to be used in
-   compatibility (v2) mode:
-+
-   - If EL3 is present:
--    ICC_SRE_EL3.SRE (bit 0) must be initialised to 0b0.
-+
-+      ICC_SRE_EL3.SRE (bit 0) must be initialised to 0b0.
-+
-   - If the kernel is entered at EL1:
--    ICC_SRE_EL2.SRE (bit 0) must be initialised to 0b0.
-+
-+      ICC_SRE_EL2.SRE (bit 0) must be initialised to 0b0.
-+
-   - The DT or ACPI tables must describe a GICv2 interrupt controller.
- 
-   For CPUs with pointer authentication functionality:
-   - If EL3 is present:
--    SCR_EL3.APK (bit 16) must be initialised to 0b1
--    SCR_EL3.API (bit 17) must be initialised to 0b1
-+
-+    - SCR_EL3.APK (bit 16) must be initialised to 0b1
-+    - SCR_EL3.API (bit 17) must be initialised to 0b1
-+
-   - If the kernel is entered at EL1:
--    HCR_EL2.APK (bit 40) must be initialised to 0b1
--    HCR_EL2.API (bit 41) must be initialised to 0b1
-+
-+    - HCR_EL2.APK (bit 40) must be initialised to 0b1
-+    - HCR_EL2.API (bit 41) must be initialised to 0b1
- 
- The requirements described above for CPU mode, caches, MMUs, architected
- timers, coherency and system registers apply to all CPUs.  All CPUs must
-diff --git a/Documentation/arm64/cpu-feature-registers.txt b/Documentation/arm64/cpu-feature-registers.rst
-similarity index 65%
-rename from Documentation/arm64/cpu-feature-registers.txt
-rename to Documentation/arm64/cpu-feature-registers.rst
-index 684a0da39378..2955287e9acc 100644
---- a/Documentation/arm64/cpu-feature-registers.txt
-+++ b/Documentation/arm64/cpu-feature-registers.rst
-@@ -1,5 +1,6 @@
--		ARM64 CPU Feature Registers
--		===========================
-+===========================
-+ARM64 CPU Feature Registers
-+===========================
- 
- Author: Suzuki K Poulose <suzuki.poulose@arm.com>
- 
-@@ -9,7 +10,7 @@ registers to userspace. The availability of this ABI is advertised
- via the HWCAP_CPUID in HWCAPs.
- 
- 1. Motivation
-----------------
-+-------------
- 
- The ARM architecture defines a set of feature registers, which describe
- the capabilities of the CPU/system. Access to these system registers is
-@@ -33,9 +34,10 @@ there are some issues with their usage.
+-#This is configuration file for err_inject_tool.
+-#The format of the each line is:
+-#cpu, loop, interval, err_type_info, err_struct_info, err_data_buffer
+-#where
+-#	cpu: logical cpu number the error will be inject in.
+-#	loop: times the error will be injected.
+-#	interval: In second. every so often one error is injected.
+-#	err_type_info, err_struct_info: PAL parameters.
+-#
+-#Note: All values are hex w/o or w/ 0x prefix.
++  #This is configuration file for err_inject_tool.
++  #The format of the each line is:
++  #cpu, loop, interval, err_type_info, err_struct_info, err_data_buffer
++  #where
++  #	cpu: logical cpu number the error will be inject in.
++  #	loop: times the error will be injected.
++  #	interval: In second. every so often one error is injected.
++  #	err_type_info, err_struct_info: PAL parameters.
++  #
++  #Note: All values are hex w/o or w/ 0x prefix.
  
  
- 2. Requirements
-------------------
-+---------------
-+
-+ a) Safety:
+-#On cpu2, inject only total 0x10 errors, interval 5 seconds
+-#corrected, data cache, hier-2, physical addr(assigned by tool code).
+-#working on Montecito latest PAL.
+-2, 10, 5, 4101, 95
++  #On cpu2, inject only total 0x10 errors, interval 5 seconds
++  #corrected, data cache, hier-2, physical addr(assigned by tool code).
++  #working on Montecito latest PAL.
++  2, 10, 5, 4101, 95
  
-- a) Safety :
-     Applications should be able to use the information provided by the
-     infrastructure to run safely across the system. This has greater
-     implications on a system with heterogeneous CPUs.
-@@ -47,7 +49,8 @@ there are some issues with their usage.
-     Otherwise an application could crash when scheduled on the CPU
-     which doesn't support CRC32.
+-#On cpu4, inject and consume total 0x10 errors, interval 5 seconds
+-#corrected, data cache, hier-2, physical addr(assigned by tool code).
+-#working on Montecito latest PAL.
+-4, 10, 5, 4109, 95
++  #On cpu4, inject and consume total 0x10 errors, interval 5 seconds
++  #corrected, data cache, hier-2, physical addr(assigned by tool code).
++  #working on Montecito latest PAL.
++  4, 10, 5, 4109, 95
  
-- b) Security :
-+ b) Security:
-+
-     Applications should only be able to receive information that is
-     relevant to the normal operation in userspace. Hence, some of the
-     fields are masked out(i.e, made invisible) and their values are set to
-@@ -58,10 +61,12 @@ there are some issues with their usage.
-     (even when the CPU provides it).
+-#On cpu15, inject and consume total 0x10 errors, interval 5 seconds
+-#recoverable, DTR0, hier-2.
+-#working on Montecito latest PAL.
+-0xf, 0x10, 5, 4249, 15
++  #On cpu15, inject and consume total 0x10 errors, interval 5 seconds
++  #recoverable, DTR0, hier-2.
++  #working on Montecito latest PAL.
++  0xf, 0x10, 5, 4249, 15
  
-  c) Implementation Defined Features
-+
-     The infrastructure doesn't expose any register which is
-     IMPLEMENTATION DEFINED as per ARMv8-A Architecture.
+ The sample application source code:
  
-- d) CPU Identification :
-+ d) CPU Identification:
-+
-     MIDR_EL1 is exposed to help identify the processor. On a
-     heterogeneous system, this could be racy (just like getcpu()). The
-     process could be migrated to another CPU by the time it uses the
-@@ -70,7 +75,7 @@ there are some issues with their usage.
-     currently executing on. The REVIDR is not exposed due to this
-     constraint, as REVIDR makes sense only in conjunction with the
-     MIDR. Alternately, MIDR_EL1 and REVIDR_EL1 are exposed via sysfs
--    at:
-+    at::
- 
- 	/sys/devices/system/cpu/cpu$ID/regs/identification/
- 	                                              \- midr
-@@ -85,7 +90,8 @@ exception and ends up in SIGILL being delivered to the process.
- The infrastructure hooks into the exception handler and emulates the
- operation if the source belongs to the supported system register space.
- 
--The infrastructure emulates only the following system register space:
-+The infrastructure emulates only the following system register space::
-+
- 	Op0=3, Op1=0, CRn=0, CRm=0,4,5,6,7
- 
- (See Table C5-6 'System instruction encodings for non-Debug System
-@@ -107,73 +113,76 @@ infrastructure:
- -------------------------------------------
- 
-   1) ID_AA64ISAR0_EL1 - Instruction Set Attribute Register 0
--     x--------------------------------------------------x
-+
-+     +------------------------------+---------+---------+
-      | Name                         |  bits   | visible |
--     |--------------------------------------------------|
-+     +------------------------------+---------+---------+
-      | TS                           | [55-52] |    y    |
--     |--------------------------------------------------|
-+     +------------------------------+---------+---------+
-      | FHM                          | [51-48] |    y    |
--     |--------------------------------------------------|
-+     +------------------------------+---------+---------+
-      | DP                           | [47-44] |    y    |
--     |--------------------------------------------------|
-+     +------------------------------+---------+---------+
-      | SM4                          | [43-40] |    y    |
--     |--------------------------------------------------|
-+     +------------------------------+---------+---------+
-      | SM3                          | [39-36] |    y    |
--     |--------------------------------------------------|
-+     +------------------------------+---------+---------+
-      | SHA3                         | [35-32] |    y    |
--     |--------------------------------------------------|
-+     +------------------------------+---------+---------+
-      | RDM                          | [31-28] |    y    |
--     |--------------------------------------------------|
-+     +------------------------------+---------+---------+
-      | ATOMICS                      | [23-20] |    y    |
--     |--------------------------------------------------|
-+     +------------------------------+---------+---------+
-      | CRC32                        | [19-16] |    y    |
--     |--------------------------------------------------|
-+     +------------------------------+---------+---------+
-      | SHA2                         | [15-12] |    y    |
--     |--------------------------------------------------|
-+     +------------------------------+---------+---------+
-      | SHA1                         | [11-8]  |    y    |
--     |--------------------------------------------------|
-+     +------------------------------+---------+---------+
-      | AES                          | [7-4]   |    y    |
--     x--------------------------------------------------x
-+     +------------------------------+---------+---------+
- 
- 
-   2) ID_AA64PFR0_EL1 - Processor Feature Register 0
--     x--------------------------------------------------x
-+
-+     +------------------------------+---------+---------+
-      | Name                         |  bits   | visible |
--     |--------------------------------------------------|
-+     +------------------------------+---------+---------+
-      | DIT                          | [51-48] |    y    |
--     |--------------------------------------------------|
-+     +------------------------------+---------+---------+
-      | SVE                          | [35-32] |    y    |
--     |--------------------------------------------------|
-+     +------------------------------+---------+---------+
-      | GIC                          | [27-24] |    n    |
--     |--------------------------------------------------|
-+     +------------------------------+---------+---------+
-      | AdvSIMD                      | [23-20] |    y    |
--     |--------------------------------------------------|
-+     +------------------------------+---------+---------+
-      | FP                           | [19-16] |    y    |
--     |--------------------------------------------------|
-+     +------------------------------+---------+---------+
-      | EL3                          | [15-12] |    n    |
--     |--------------------------------------------------|
-+     +------------------------------+---------+---------+
-      | EL2                          | [11-8]  |    n    |
--     |--------------------------------------------------|
-+     +------------------------------+---------+---------+
-      | EL1                          | [7-4]   |    n    |
--     |--------------------------------------------------|
-+     +------------------------------+---------+---------+
-      | EL0                          | [3-0]   |    n    |
--     x--------------------------------------------------x
-+     +------------------------------+---------+---------+
- 
- 
-   3) MIDR_EL1 - Main ID Register
--     x--------------------------------------------------x
-+
-+     +------------------------------+---------+---------+
-      | Name                         |  bits   | visible |
--     |--------------------------------------------------|
-+     +------------------------------+---------+---------+
-      | Implementer                  | [31-24] |    y    |
--     |--------------------------------------------------|
-+     +------------------------------+---------+---------+
-      | Variant                      | [23-20] |    y    |
--     |--------------------------------------------------|
-+     +------------------------------+---------+---------+
-      | Architecture                 | [19-16] |    y    |
--     |--------------------------------------------------|
-+     +------------------------------+---------+---------+
-      | PartNum                      | [15-4]  |    y    |
--     |--------------------------------------------------|
-+     +------------------------------+---------+---------+
-      | Revision                     | [3-0]   |    y    |
--     x--------------------------------------------------x
-+     +------------------------------+---------+---------+
- 
-    NOTE: The 'visible' fields of MIDR_EL1 will contain the value
-    as available on the CPU where it is fetched and is not a system
-@@ -181,90 +190,92 @@ infrastructure:
- 
-   4) ID_AA64ISAR1_EL1 - Instruction set attribute register 1
- 
--     x--------------------------------------------------x
-+     +------------------------------+---------+---------+
-      | Name                         |  bits   | visible |
--     |--------------------------------------------------|
-+     +------------------------------+---------+---------+
-      | GPI                          | [31-28] |    y    |
--     |--------------------------------------------------|
-+     +------------------------------+---------+---------+
-      | GPA                          | [27-24] |    y    |
--     |--------------------------------------------------|
-+     +------------------------------+---------+---------+
-      | LRCPC                        | [23-20] |    y    |
--     |--------------------------------------------------|
-+     +------------------------------+---------+---------+
-      | FCMA                         | [19-16] |    y    |
--     |--------------------------------------------------|
-+     +------------------------------+---------+---------+
-      | JSCVT                        | [15-12] |    y    |
--     |--------------------------------------------------|
-+     +------------------------------+---------+---------+
-      | API                          | [11-8]  |    y    |
--     |--------------------------------------------------|
-+     +------------------------------+---------+---------+
-      | APA                          | [7-4]   |    y    |
--     |--------------------------------------------------|
-+     +------------------------------+---------+---------+
-      | DPB                          | [3-0]   |    y    |
--     x--------------------------------------------------x
-+     +------------------------------+---------+---------+
- 
-   5) ID_AA64MMFR2_EL1 - Memory model feature register 2
- 
--     x--------------------------------------------------x
-+     +------------------------------+---------+---------+
-      | Name                         |  bits   | visible |
--     |--------------------------------------------------|
-+     +------------------------------+---------+---------+
-      | AT                           | [35-32] |    y    |
--     x--------------------------------------------------x
-+     +------------------------------+---------+---------+
- 
-   6) ID_AA64ZFR0_EL1 - SVE feature ID register 0
- 
--     x--------------------------------------------------x
-+     +------------------------------+---------+---------+
-      | Name                         |  bits   | visible |
--     |--------------------------------------------------|
-+     +------------------------------+---------+---------+
-      | SM4                          | [43-40] |    y    |
--     |--------------------------------------------------|
-+     +------------------------------+---------+---------+
-      | SHA3                         | [35-32] |    y    |
--     |--------------------------------------------------|
-+     +------------------------------+---------+---------+
-      | BitPerm                      | [19-16] |    y    |
--     |--------------------------------------------------|
-+     +------------------------------+---------+---------+
-      | AES                          | [7-4]   |    y    |
--     |--------------------------------------------------|
-+     +------------------------------+---------+---------+
-      | SVEVer                       | [3-0]   |    y    |
--     x--------------------------------------------------x
-+     +------------------------------+---------+---------+
- 
- Appendix I: Example
-----------------------------
-+-------------------
+-err_injection_tool.c:
++err_injection_tool.c::
  
 -/*
-- * Sample program to demonstrate the MRS emulation ABI.
-- *
-- * Copyright (C) 2015-2016, ARM Ltd
-- *
-- * Author: Suzuki K Poulose <suzuki.poulose@arm.com>
-- *
 - * This program is free software; you can redistribute it and/or modify
-- * it under the terms of the GNU General Public License version 2 as
-- * published by the Free Software Foundation.
+- * it under the terms of the GNU General Public License as published by
+- * the Free Software Foundation; either version 2 of the License, or
+- * (at your option) any later version.
 - *
-- * This program is distributed in the hope that it will be useful,
-- * but WITHOUT ANY WARRANTY; without even the implied warranty of
-- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-- * GNU General Public License for more details.
-- * This program is free software; you can redistribute it and/or modify
-- * it under the terms of the GNU General Public License version 2 as
-- * published by the Free Software Foundation.
+- * This program is distributed in the hope that it will be useful, but
+- * WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE, GOOD TITLE or
+- * NON INFRINGEMENT.  See the GNU General Public License for more
+- * details.
 - *
-- * This program is distributed in the hope that it will be useful,
-- * but WITHOUT ANY WARRANTY; without even the implied warranty of
-- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-- * GNU General Public License for more details.
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, write to the Free Software
+- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+- *
+- * Copyright (C) 2006 Intel Co
+- *	Fenghua Yu <fenghua.yu@intel.com>
+- *
 - */
-+::
- 
--#include <asm/hwcap.h>
+-#include <sys/types.h>
+-#include <sys/stat.h>
+-#include <fcntl.h>
 -#include <stdio.h>
--#include <sys/auxv.h>
+-#include <sched.h>
+-#include <unistd.h>
+-#include <stdlib.h>
+-#include <stdarg.h>
+-#include <string.h>
+-#include <errno.h>
+-#include <time.h>
+-#include <sys/ipc.h>
+-#include <sys/sem.h>
+-#include <sys/wait.h>
+-#include <sys/mman.h>
+-#include <sys/shm.h>
 +  /*
-+   * Sample program to demonstrate the MRS emulation ABI.
-+   *
-+   * Copyright (C) 2015-2016, ARM Ltd
-+   *
-+   * Author: Suzuki K Poulose <suzuki.poulose@arm.com>
-+   *
 +   * This program is free software; you can redistribute it and/or modify
-+   * it under the terms of the GNU General Public License version 2 as
-+   * published by the Free Software Foundation.
++   * it under the terms of the GNU General Public License as published by
++   * the Free Software Foundation; either version 2 of the License, or
++   * (at your option) any later version.
 +   *
-+   * This program is distributed in the hope that it will be useful,
-+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+   * GNU General Public License for more details.
-+   * This program is free software; you can redistribute it and/or modify
-+   * it under the terms of the GNU General Public License version 2 as
-+   * published by the Free Software Foundation.
++   * This program is distributed in the hope that it will be useful, but
++   * WITHOUT ANY WARRANTY; without even the implied warranty of
++   * MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE, GOOD TITLE or
++   * NON INFRINGEMENT.  See the GNU General Public License for more
++   * details.
 +   *
-+   * This program is distributed in the hope that it will be useful,
-+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+   * GNU General Public License for more details.
++   * You should have received a copy of the GNU General Public License
++   * along with this program; if not, write to the Free Software
++   * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
++   *
++   * Copyright (C) 2006 Intel Co
++   *	Fenghua Yu <fenghua.yu@intel.com>
++   *
 +   */
- 
--#define get_cpu_ftr(id) ({					\
-+  #include <asm/hwcap.h>
++  #include <sys/types.h>
++  #include <sys/stat.h>
++  #include <fcntl.h>
 +  #include <stdio.h>
-+  #include <sys/auxv.h>
-+
-+  #define get_cpu_ftr(id) ({					\
- 		unsigned long __val;				\
- 		asm("mrs %0, "#id : "=r" (__val));		\
- 		printf("%-20s: 0x%016lx\n", #id, __val);	\
- 	})
++  #include <sched.h>
++  #include <unistd.h>
++  #include <stdlib.h>
++  #include <stdarg.h>
++  #include <string.h>
++  #include <errno.h>
++  #include <time.h>
++  #include <sys/ipc.h>
++  #include <sys/sem.h>
++  #include <sys/wait.h>
++  #include <sys/mman.h>
++  #include <sys/shm.h>
  
--int main(void)
+-#define MAX_FN_SIZE 		256
+-#define MAX_BUF_SIZE 		256
+-#define DATA_BUF_SIZE 		256
+-#define NR_CPUS 		512
+-#define MAX_TASK_NUM		2048
+-#define MIN_INTERVAL		5	// seconds
+-#define	ERR_DATA_BUFFER_SIZE 	3	// Three 8-byte.
+-#define PARA_FIELD_NUM		5
+-#define MASK_SIZE		(NR_CPUS/64)
+-#define PATH_FORMAT "/sys/devices/system/cpu/cpu%d/err_inject/"
++  #define MAX_FN_SIZE 		256
++  #define MAX_BUF_SIZE 		256
++  #define DATA_BUF_SIZE 		256
++  #define NR_CPUS 		512
++  #define MAX_TASK_NUM		2048
++  #define MIN_INTERVAL		5	// seconds
++  #define	ERR_DATA_BUFFER_SIZE 	3	// Three 8-byte.
++  #define PARA_FIELD_NUM		5
++  #define MASK_SIZE		(NR_CPUS/64)
++  #define PATH_FORMAT "/sys/devices/system/cpu/cpu%d/err_inject/"
+ 
+-int sched_setaffinity(pid_t pid, unsigned int len, unsigned long *mask);
++  int sched_setaffinity(pid_t pid, unsigned int len, unsigned long *mask);
+ 
+-int verbose;
+-#define vbprintf if (verbose) printf
++  int verbose;
++  #define vbprintf if (verbose) printf
+ 
+-int log_info(int cpu, const char *fmt, ...)
 -{
-+  int main(void)
++  int log_info(int cpu, const char *fmt, ...)
 +  {
+ 	FILE *log;
+ 	char fn[MAX_FN_SIZE];
+ 	char buf[MAX_BUF_SIZE];
+@@ -142,12 +142,12 @@ int log_info(int cpu, const char *fmt, ...)
+ 	fclose(log);
  
- 	if (!(getauxval(AT_HWCAP) & HWCAP_CPUID)) {
- 		fputs("CPUID registers unavailable\n", stderr);
-@@ -284,13 +295,10 @@ int main(void)
- 	get_cpu_ftr(MPIDR_EL1);
- 	get_cpu_ftr(REVIDR_EL1);
+ 	return 0;
+-}
++  }
  
--#if 0
-+  #if 0
- 	/* Unexposed register access causes SIGILL */
- 	get_cpu_ftr(ID_MMFR0_EL1);
+-typedef unsigned long u64;
+-typedef unsigned int  u32;
++  typedef unsigned long u64;
++  typedef unsigned int  u32;
+ 
+-typedef union err_type_info_u {
++  typedef union err_type_info_u {
+ 	struct {
+ 		u64	mode		: 3,	/* 0-2 */
+ 			err_inj		: 3,	/* 3-5 */
+@@ -157,9 +157,9 @@ typedef union err_type_info_u {
+ 			reserved	: 48;	/* 16-63 */
+ 	} err_type_info_u;
+ 	u64	err_type_info;
+-} err_type_info_t;
++  } err_type_info_t;
+ 
+-typedef union err_struct_info_u {
++  typedef union err_struct_info_u {
+ 	struct {
+ 		u64	siv		: 1,	/* 0	 */
+ 			c_t		: 2,	/* 1-2	 */
+@@ -197,9 +197,9 @@ typedef union err_struct_info_u {
+ 		u64	reserved;
+ 	} err_struct_info_bus_processor_interconnect;
+ 	u64	err_struct_info;
+-} err_struct_info_t;
++  } err_struct_info_t;
+ 
+-typedef union err_data_buffer_u {
++  typedef union err_data_buffer_u {
+ 	struct {
+ 		u64	trigger_addr;		/* 0-63		*/
+ 		u64	inj_addr;		/* 64-127 	*/
+@@ -221,9 +221,9 @@ typedef union err_data_buffer_u {
+ 		u64	reserved;		/* 0-63		*/
+ 	} err_data_buffer_bus_processor_interconnect;
+ 	u64 err_data_buffer[ERR_DATA_BUFFER_SIZE];
+-} err_data_buffer_t;
++  } err_data_buffer_t;
+ 
+-typedef union capabilities_u {
++  typedef union capabilities_u {
+ 	struct {
+ 		u64	i		: 1,
+ 			d		: 1,
+@@ -276,9 +276,9 @@ typedef union capabilities_u {
+ 	struct {
+ 		u64	reserved;
+ 	} capabilities_bus_processor_interconnect;
+-} capabilities_t;
++  } capabilities_t;
+ 
+-typedef struct resources_s {
++  typedef struct resources_s {
+ 	u64	ibr0		: 1,
+ 		ibr2		: 1,
+ 		ibr4		: 1,
+@@ -288,24 +288,24 @@ typedef struct resources_s {
+ 		dbr4		: 1,
+ 		dbr6		: 1,
+ 		reserved	: 48;
+-} resources_t;
++  } resources_t;
+ 
+ 
+-long get_page_size(void)
+-{
++  long get_page_size(void)
++  {
+ 	long page_size=sysconf(_SC_PAGESIZE);
+ 	return page_size;
+-}
++  }
+ 
+-#define PAGE_SIZE (get_page_size()==-1?0x4000:get_page_size())
+-#define SHM_SIZE (2*PAGE_SIZE*NR_CPUS)
+-#define SHM_VA 0x2000000100000000
++  #define PAGE_SIZE (get_page_size()==-1?0x4000:get_page_size())
++  #define SHM_SIZE (2*PAGE_SIZE*NR_CPUS)
++  #define SHM_VA 0x2000000100000000
+ 
+-int shmid;
+-void *shmaddr;
++  int shmid;
++  void *shmaddr;
+ 
+-int create_shm(void)
+-{
++  int create_shm(void)
++  {
+ 	key_t key;
+ 	char fn[MAX_FN_SIZE];
+ 
+@@ -343,34 +343,34 @@ int create_shm(void)
+ 	mlock(shmaddr, SHM_SIZE);
+ 
+ 	return 0;
+-}
++  }
+ 
+-int free_shm()
+-{
++  int free_shm()
++  {
+ 	munlock(shmaddr, SHM_SIZE);
+-        shmdt(shmaddr);
++          shmdt(shmaddr);
+ 	semctl(shmid, 0, IPC_RMID);
+ 
+ 	return 0;
+-}
++  }
+ 
+-#ifdef _SEM_SEMUN_UNDEFINED
+-union semun
+-{
++  #ifdef _SEM_SEMUN_UNDEFINED
++  union semun
++  {
+ 	int val;
+ 	struct semid_ds *buf;
+ 	unsigned short int *array;
+ 	struct seminfo *__buf;
+-};
 -#endif
++  };
 +  #endif
+ 
+-u32 mode=1; /* 1: physical mode; 2: virtual mode. */
+-int one_lock=1;
+-key_t key[NR_CPUS];
+-int semid[NR_CPUS];
++  u32 mode=1; /* 1: physical mode; 2: virtual mode. */
++  int one_lock=1;
++  key_t key[NR_CPUS];
++  int semid[NR_CPUS];
+ 
+-int create_sem(int cpu)
+-{
++  int create_sem(int cpu)
++  {
+ 	union semun arg;
+ 	char fn[MAX_FN_SIZE];
+ 	int sid;
+@@ -407,37 +407,37 @@ int create_sem(int cpu)
+ 	}
+ 
+ 	return 0;
+-}
++  }
+ 
+-static int lock(int cpu)
+-{
++  static int lock(int cpu)
++  {
+ 	struct sembuf lock;
+ 
+ 	lock.sem_num = cpu;
+ 	lock.sem_op = 1;
+ 	semop(semid[cpu], &lock, 1);
+ 
+-        return 0;
+-}
++          return 0;
++  }
+ 
+-static int unlock(int cpu)
+-{
++  static int unlock(int cpu)
++  {
+ 	struct sembuf unlock;
+ 
+ 	unlock.sem_num = cpu;
+ 	unlock.sem_op = -1;
+ 	semop(semid[cpu], &unlock, 1);
+ 
+-        return 0;
+-}
++          return 0;
++  }
+ 
+-void free_sem(int cpu)
+-{
++  void free_sem(int cpu)
++  {
+ 	semctl(semid[cpu], 0, IPC_RMID);
+-}
++  }
+ 
+-int wr_multi(char *fn, unsigned long *data, int size)
+-{
++  int wr_multi(char *fn, unsigned long *data, int size)
++  {
+ 	int fd;
+ 	char buf[MAX_BUF_SIZE];
+ 	int ret;
+@@ -459,15 +459,15 @@ int wr_multi(char *fn, unsigned long *data, int size)
+ 	ret=write(fd, buf, sizeof(buf));
+ 	close(fd);
+ 	return ret;
+-}
++  }
+ 
+-int wr(char *fn, unsigned long data)
+-{
++  int wr(char *fn, unsigned long data)
++  {
+ 	return wr_multi(fn, &data, 1);
+-}
++  }
+ 
+-int rd(char *fn, unsigned long *data)
+-{
++  int rd(char *fn, unsigned long *data)
++  {
+ 	int fd;
+ 	char buf[MAX_BUF_SIZE];
+ 
+@@ -480,10 +480,10 @@ int rd(char *fn, unsigned long *data)
+ 	*data=strtoul(buf, NULL, 16);
+ 	close(fd);
+ 	return 0;
+-}
++  }
+ 
+-int rd_status(char *path, int *status)
+-{
++  int rd_status(char *path, int *status)
++  {
+ 	char fn[MAX_FN_SIZE];
+ 	sprintf(fn, "%s/status", path);
+ 	if (rd(fn, (u64*)status)<0) {
+@@ -492,10 +492,10 @@ int rd_status(char *path, int *status)
+ 	}
+ 
+ 	return 0;
+-}
++  }
+ 
+-int rd_capabilities(char *path, u64 *capabilities)
+-{
++  int rd_capabilities(char *path, u64 *capabilities)
++  {
+ 	char fn[MAX_FN_SIZE];
+ 	sprintf(fn, "%s/capabilities", path);
+ 	if (rd(fn, capabilities)<0) {
+@@ -504,10 +504,10 @@ int rd_capabilities(char *path, u64 *capabilities)
+ 	}
+ 
+ 	return 0;
+-}
++  }
+ 
+-int rd_all(char *path)
+-{
++  int rd_all(char *path)
++  {
+ 	unsigned long err_type_info, err_struct_info, err_data_buffer;
+ 	int status;
+ 	unsigned long capabilities, resources;
+@@ -556,11 +556,11 @@ int rd_all(char *path)
+ 	printf("resources=%lx\n", resources);
+ 
+ 	return 0;
+-}
++  }
+ 
+-int query_capabilities(char *path, err_type_info_t err_type_info,
++  int query_capabilities(char *path, err_type_info_t err_type_info,
+ 			u64 *capabilities)
+-{
++  {
+ 	char fn[MAX_FN_SIZE];
+ 	err_struct_info_t err_struct_info;
+ 	err_data_buffer_t err_data_buffer;
+@@ -583,10 +583,10 @@ int query_capabilities(char *path, err_type_info_t err_type_info,
+ 		return -1;
+ 
+ 	return 0;
+-}
++  }
+ 
+-int query_all_capabilities()
+-{
++  int query_all_capabilities()
++  {
+ 	int status;
+ 	err_type_info_t err_type_info;
+ 	int err_sev, err_struct, struct_hier;
+@@ -629,12 +629,12 @@ int query_all_capabilities()
+ 	}
+ 
+ 	return 0;
+-}
++  }
+ 
+-int err_inject(int cpu, char *path, err_type_info_t err_type_info,
++  int err_inject(int cpu, char *path, err_type_info_t err_type_info,
+ 		err_struct_info_t err_struct_info,
+ 		err_data_buffer_t err_data_buffer)
+-{
++  {
+ 	int status;
+ 	char fn[MAX_FN_SIZE];
+ 
+@@ -667,13 +667,13 @@ int err_inject(int cpu, char *path, err_type_info_t err_type_info,
+ 	}
+ 
+ 	return status;
+-}
++  }
+ 
+-static int construct_data_buf(char *path, err_type_info_t err_type_info,
++  static int construct_data_buf(char *path, err_type_info_t err_type_info,
+ 		err_struct_info_t err_struct_info,
+ 		err_data_buffer_t *err_data_buffer,
+ 		void *va1)
+-{
++  {
+ 	char fn[MAX_FN_SIZE];
+ 	u64 virt_addr=0, phys_addr=0;
+ 
+@@ -710,22 +710,22 @@ static int construct_data_buf(char *path, err_type_info_t err_type_info,
+ 	}
+ 
+ 	return 0;
+-}
++  }
+ 
+-typedef struct {
++  typedef struct {
+ 	u64 cpu;
+ 	u64 loop;
+ 	u64 interval;
+ 	u64 err_type_info;
+ 	u64 err_struct_info;
+ 	u64 err_data_buffer[ERR_DATA_BUFFER_SIZE];
+-} parameters_t;
++  } parameters_t;
+ 
+-parameters_t line_para;
+-int para;
++  parameters_t line_para;
++  int para;
+ 
+-static int empty_data_buffer(u64 *err_data_buffer)
+-{
++  static int empty_data_buffer(u64 *err_data_buffer)
++  {
+ 	int empty=1;
+ 	int i;
+ 
+@@ -734,10 +734,10 @@ static int empty_data_buffer(u64 *err_data_buffer)
+ 		empty=0;
+ 
+ 	return empty;
+-}
++  }
+ 
+-int err_inj()
+-{
++  int err_inj()
++  {
+ 	err_type_info_t err_type_info;
+ 	err_struct_info_t err_struct_info;
+ 	err_data_buffer_t err_data_buffer;
+@@ -951,10 +951,10 @@ int err_inj()
+ 	printf("All done.\n");
+ 
+ 	return 0;
+-}
++  }
+ 
+-void help()
+-{
++  void help()
++  {
+ 	printf("err_inject_tool:\n");
+ 	printf("\t-q: query all capabilities. default: off\n");
+ 	printf("\t-m: procedure mode. 1: physical 2: virtual. default: 1\n");
+@@ -977,10 +977,10 @@ void help()
+ 	printf("The tool will take err.conf file as ");
+ 	printf("input to inject single or multiple errors ");
+ 	printf("on one or multiple cpus in parallel.\n");
+-}
++  }
+ 
+-int main(int argc, char **argv)
+-{
++  int main(int argc, char **argv)
++  {
+ 	char c;
+ 	int do_err_inj=0;
+ 	int do_query_all=0;
+@@ -1031,7 +1031,7 @@ int main(int argc, char **argv)
+ 				if (count!=PARA_FIELD_NUM+3) {
+ 				    line_para.err_data_buffer[0]=-1,
+ 				    line_para.err_data_buffer[1]=-1,
+-			 	    line_para.err_data_buffer[2]=-1;
++				    line_para.err_data_buffer[2]=-1;
+ 				    count=sscanf(optarg, "%lx, %lx, %lx, %lx, %lx\n",
+ 						&line_para.cpu,
+ 						&line_para.loop,
+@@ -1064,5 +1064,4 @@ int main(int argc, char **argv)
+ 		help();
  
  	return 0;
 -}
 -
--
--
 +  }
-diff --git a/Documentation/arm64/elf_hwcaps.txt b/Documentation/arm64/elf_hwcaps.rst
-similarity index 92%
-rename from Documentation/arm64/elf_hwcaps.txt
-rename to Documentation/arm64/elf_hwcaps.rst
-index b73a2519ecf2..c7cbf4b571c0 100644
---- a/Documentation/arm64/elf_hwcaps.txt
-+++ b/Documentation/arm64/elf_hwcaps.rst
-@@ -1,3 +1,4 @@
-+================
- ARM64 ELF hwcaps
- ================
- 
-@@ -15,16 +16,16 @@ of flags called hwcaps, exposed in the auxilliary vector.
- 
- Userspace software can test for features by acquiring the AT_HWCAP or
- AT_HWCAP2 entry of the auxiliary vector, and testing whether the relevant
--flags are set, e.g.
-+flags are set, e.g.::
- 
--bool floating_point_is_present(void)
--{
--	unsigned long hwcaps = getauxval(AT_HWCAP);
--	if (hwcaps & HWCAP_FP)
--		return true;
-+	bool floating_point_is_present(void)
-+	{
-+		unsigned long hwcaps = getauxval(AT_HWCAP);
-+		if (hwcaps & HWCAP_FP)
-+			return true;
- 
--	return false;
--}
-+		return false;
-+	}
- 
- Where software relies on a feature described by a hwcap, it should check
- the relevant hwcap flag to verify that the feature is present before
-@@ -45,7 +46,7 @@ userspace code at EL0. These hwcaps are defined in terms of ID register
- fields, and should be interpreted with reference to the definition of
- these fields in the ARM Architecture Reference Manual (ARM ARM).
- 
--Such hwcaps are described below in the form:
-+Such hwcaps are described below in the form::
- 
-     Functionality implied by idreg.field == val.
- 
-@@ -64,75 +65,58 @@ reference to ID registers, and may refer to other documentation.
- ---------------------------------
- 
- HWCAP_FP
+diff --git a/Documentation/ia64/fsys.txt b/Documentation/ia64/fsys.rst
+similarity index 76%
+rename from Documentation/ia64/fsys.txt
+rename to Documentation/ia64/fsys.rst
+index 59dd689d9b86..a702d2cc94b6 100644
+--- a/Documentation/ia64/fsys.txt
++++ b/Documentation/ia64/fsys.rst
+@@ -1,9 +1,9 @@
+--*-Mode: outline-*-
 -
-     Functionality implied by ID_AA64PFR0_EL1.FP == 0b0000.
+-		Light-weight System Calls for IA-64
+-		-----------------------------------
++===================================
++Light-weight System Calls for IA-64
++===================================
  
- HWCAP_ASIMD
--
-     Functionality implied by ID_AA64PFR0_EL1.AdvSIMD == 0b0000.
+ 		        Started: 13-Jan-2003
++
+ 		    Last update: 27-Sep-2003
  
- HWCAP_EVTSTRM
--
-     The generic timer is configured to generate events at a frequency of
-     approximately 100KHz.
- 
- HWCAP_AES
--
-     Functionality implied by ID_AA64ISAR0_EL1.AES == 0b0001.
- 
- HWCAP_PMULL
--
-     Functionality implied by ID_AA64ISAR0_EL1.AES == 0b0010.
- 
- HWCAP_SHA1
--
-     Functionality implied by ID_AA64ISAR0_EL1.SHA1 == 0b0001.
- 
- HWCAP_SHA2
--
-     Functionality implied by ID_AA64ISAR0_EL1.SHA2 == 0b0001.
- 
- HWCAP_CRC32
--
-     Functionality implied by ID_AA64ISAR0_EL1.CRC32 == 0b0001.
- 
- HWCAP_ATOMICS
--
-     Functionality implied by ID_AA64ISAR0_EL1.Atomic == 0b0010.
- 
- HWCAP_FPHP
--
-     Functionality implied by ID_AA64PFR0_EL1.FP == 0b0001.
- 
- HWCAP_ASIMDHP
--
-     Functionality implied by ID_AA64PFR0_EL1.AdvSIMD == 0b0001.
- 
- HWCAP_CPUID
--
-     EL0 access to certain ID registers is available, to the extent
--    described by Documentation/arm64/cpu-feature-registers.txt.
-+    described by Documentation/arm64/cpu-feature-registers.rst.
- 
-     These ID registers may imply the availability of features.
- 
- HWCAP_ASIMDRDM
--
-     Functionality implied by ID_AA64ISAR0_EL1.RDM == 0b0001.
- 
- HWCAP_JSCVT
--
-     Functionality implied by ID_AA64ISAR1_EL1.JSCVT == 0b0001.
- 
- HWCAP_FCMA
--
-     Functionality implied by ID_AA64ISAR1_EL1.FCMA == 0b0001.
- 
- HWCAP_LRCPC
--
-     Functionality implied by ID_AA64ISAR1_EL1.LRCPC == 0b0001.
- 
- HWCAP_DCPOP
--
-     Functionality implied by ID_AA64ISAR1_EL1.DPB == 0b0001.
- 
- HWCAP2_DCPODP
-@@ -140,27 +124,21 @@ HWCAP2_DCPODP
-     Functionality implied by ID_AA64ISAR1_EL1.DPB == 0b0010.
- 
- HWCAP_SHA3
--
-     Functionality implied by ID_AA64ISAR0_EL1.SHA3 == 0b0001.
- 
- HWCAP_SM3
--
-     Functionality implied by ID_AA64ISAR0_EL1.SM3 == 0b0001.
- 
- HWCAP_SM4
--
-     Functionality implied by ID_AA64ISAR0_EL1.SM4 == 0b0001.
- 
- HWCAP_ASIMDDP
--
-     Functionality implied by ID_AA64ISAR0_EL1.DP == 0b0001.
- 
- HWCAP_SHA512
--
-     Functionality implied by ID_AA64ISAR0_EL1.SHA2 == 0b0010.
- 
- HWCAP_SVE
--
-     Functionality implied by ID_AA64PFR0_EL1.SVE == 0b0001.
- 
- HWCAP2_SVE2
-@@ -188,40 +166,32 @@ HWCAP2_SVESM4
-     Functionality implied by ID_AA64ZFR0_EL1.SM4 == 0b0001.
- 
- HWCAP_ASIMDFHM
--
-    Functionality implied by ID_AA64ISAR0_EL1.FHM == 0b0001.
- 
- HWCAP_DIT
--
-     Functionality implied by ID_AA64PFR0_EL1.DIT == 0b0001.
- 
- HWCAP_USCAT
--
-     Functionality implied by ID_AA64MMFR2_EL1.AT == 0b0001.
- 
- HWCAP_ILRCPC
--
-     Functionality implied by ID_AA64ISAR1_EL1.LRCPC == 0b0010.
- 
- HWCAP_FLAGM
--
-     Functionality implied by ID_AA64ISAR0_EL1.TS == 0b0001.
- 
- HWCAP_SSBS
--
-     Functionality implied by ID_AA64PFR1_EL1.SSBS == 0b0010.
- 
- HWCAP_PACA
--
-     Functionality implied by ID_AA64ISAR1_EL1.APA == 0b0001 or
-     ID_AA64ISAR1_EL1.API == 0b0001, as described by
--    Documentation/arm64/pointer-authentication.txt.
-+    Documentation/arm64/pointer-authentication.rst.
- 
- HWCAP_PACG
--
-     Functionality implied by ID_AA64ISAR1_EL1.GPA == 0b0001 or
-     ID_AA64ISAR1_EL1.GPI == 0b0001, as described by
--    Documentation/arm64/pointer-authentication.txt.
-+    Documentation/arm64/pointer-authentication.rst.
+ 	              David Mosberger-Tang
+@@ -52,12 +52,13 @@ privilege level is at level 0, this means that fsys-mode requires some
+ care (see below).
  
  
- 4. Unused AT_HWCAP bits
-diff --git a/Documentation/arm64/hugetlbpage.txt b/Documentation/arm64/hugetlbpage.rst
-similarity index 86%
-rename from Documentation/arm64/hugetlbpage.txt
-rename to Documentation/arm64/hugetlbpage.rst
-index cfae87dc653b..b44f939e5210 100644
---- a/Documentation/arm64/hugetlbpage.txt
-+++ b/Documentation/arm64/hugetlbpage.rst
-@@ -1,3 +1,4 @@
-+====================
- HugeTLBpage on ARM64
- ====================
+-* How to tell fsys-mode
++How to tell fsys-mode
++=====================
  
-@@ -31,8 +32,10 @@ and level of the page table.
+ Linux operates in fsys-mode when (a) the privilege level is 0 (most
+ privileged) and (b) the stacks have NOT been switched to kernel memory
+ yet.  For convenience, the header file <asm-ia64/ptrace.h> provides
+-three macros:
++three macros::
  
- The following hugepage sizes are supported -
+ 	user_mode(regs)
+ 	user_stack(task,regs)
+@@ -70,11 +71,12 @@ to by "regs" was executing in user mode (privilege level 3).
+ user_stack() returns TRUE if the state pointed to by "regs" was
+ executing on the user-level stack(s).  Finally, fsys_mode() returns
+ TRUE if the CPU state pointed to by "regs" was executing in fsys-mode.
+-The fsys_mode() macro is equivalent to the expression:
++The fsys_mode() macro is equivalent to the expression::
  
--         CONT PTE    PMD    CONT PMD    PUD
--         --------    ---    --------    ---
-+  ====== ========   ====    ========    ===
-+  -      CONT PTE    PMD    CONT PMD    PUD
-+  ====== ========   ====    ========    ===
-   4K:         64K     2M         32M     1G
-   16K:         2M    32M          1G
-   64K:         2M   512M         16G
-+  ====== ========   ====    ========    ===
-diff --git a/Documentation/arm64/index.rst b/Documentation/arm64/index.rst
+ 	!user_mode(regs) && user_stack(task,regs)
+ 
+-* How to write an fsyscall handler
++How to write an fsyscall handler
++================================
+ 
+ The file arch/ia64/kernel/fsys.S contains a table of fsyscall-handlers
+ (fsyscall_table).  This table contains one entry for each system call.
+@@ -87,66 +89,72 @@ of the getpid() system call.
+ 
+ The entry and exit-state of an fsyscall handler is as follows:
+ 
+-** Machine state on entry to fsyscall handler:
++Machine state on entry to fsyscall handler
++------------------------------------------
+ 
+- - r10	  = 0
+- - r11	  = saved ar.pfs (a user-level value)
+- - r15	  = system call number
+- - r16	  = "current" task pointer (in normal kernel-mode, this is in r13)
+- - r32-r39 = system call arguments
+- - b6	  = return address (a user-level value)
+- - ar.pfs = previous frame-state (a user-level value)
+- - PSR.be = cleared to zero (i.e., little-endian byte order is in effect)
+- - all other registers may contain values passed in from user-mode
++  ========= ===============================================================
++  r10	    0
++  r11	    saved ar.pfs (a user-level value)
++  r15	    system call number
++  r16	    "current" task pointer (in normal kernel-mode, this is in r13)
++  r32-r39   system call arguments
++  b6	    return address (a user-level value)
++  ar.pfs    previous frame-state (a user-level value)
++  PSR.be    cleared to zero (i.e., little-endian byte order is in effect)
++  -         all other registers may contain values passed in from user-mode
++  ========= ===============================================================
+ 
+-** Required machine state on exit to fsyscall handler:
++Required machine state on exit to fsyscall handler
++--------------------------------------------------
+ 
+- - r11	  = saved ar.pfs (as passed into the fsyscall handler)
+- - r15	  = system call number (as passed into the fsyscall handler)
+- - r32-r39 = system call arguments (as passed into the fsyscall handler)
+- - b6	  = return address (as passed into the fsyscall handler)
+- - ar.pfs = previous frame-state (as passed into the fsyscall handler)
++  ========= ===========================================================
++  r11	    saved ar.pfs (as passed into the fsyscall handler)
++  r15	    system call number (as passed into the fsyscall handler)
++  r32-r39   system call arguments (as passed into the fsyscall handler)
++  b6	    return address (as passed into the fsyscall handler)
++  ar.pfs    previous frame-state (as passed into the fsyscall handler)
++  ========= ===========================================================
+ 
+ Fsyscall handlers can execute with very little overhead, but with that
+ speed comes a set of restrictions:
+ 
+- o Fsyscall-handlers MUST check for any pending work in the flags
++ * Fsyscall-handlers MUST check for any pending work in the flags
+    member of the thread-info structure and if any of the
+    TIF_ALLWORK_MASK flags are set, the handler needs to fall back on
+    doing a full system call (by calling fsys_fallback_syscall).
+ 
+- o Fsyscall-handlers MUST preserve incoming arguments (r32-r39, r11,
++ * Fsyscall-handlers MUST preserve incoming arguments (r32-r39, r11,
+    r15, b6, and ar.pfs) because they will be needed in case of a
+    system call restart.  Of course, all "preserved" registers also
+    must be preserved, in accordance to the normal calling conventions.
+ 
+- o Fsyscall-handlers MUST check argument registers for containing a
++ * Fsyscall-handlers MUST check argument registers for containing a
+    NaT value before using them in any way that could trigger a
+    NaT-consumption fault.  If a system call argument is found to
+    contain a NaT value, an fsyscall-handler may return immediately
+    with r8=EINVAL, r10=-1.
+ 
+- o Fsyscall-handlers MUST NOT use the "alloc" instruction or perform
++ * Fsyscall-handlers MUST NOT use the "alloc" instruction or perform
+    any other operation that would trigger mandatory RSE
+    (register-stack engine) traffic.
+ 
+- o Fsyscall-handlers MUST NOT write to any stacked registers because
++ * Fsyscall-handlers MUST NOT write to any stacked registers because
+    it is not safe to assume that user-level called a handler with the
+    proper number of arguments.
+ 
+- o Fsyscall-handlers need to be careful when accessing per-CPU variables:
++ * Fsyscall-handlers need to be careful when accessing per-CPU variables:
+    unless proper safe-guards are taken (e.g., interruptions are avoided),
+    execution may be pre-empted and resumed on another CPU at any given
+    time.
+ 
+- o Fsyscall-handlers must be careful not to leak sensitive kernel'
++ * Fsyscall-handlers must be careful not to leak sensitive kernel'
+    information back to user-level.  In particular, before returning to
+    user-level, care needs to be taken to clear any scratch registers
+    that could contain sensitive information (note that the current
+    task pointer is not considered sensitive: it's already exposed
+    through ar.k6).
+ 
+- o Fsyscall-handlers MUST NOT access user-memory without first
++ * Fsyscall-handlers MUST NOT access user-memory without first
+    validating access-permission (this can be done typically via
+    probe.r.fault and/or probe.w.fault) and without guarding against
+    memory access exceptions (this can be done with the EX() macros
+@@ -162,7 +170,8 @@ fast system call execution (while fully preserving system call
+ semantics), but there is also a lot of flexibility in handling more
+ complicated cases.
+ 
+-* Signal handling
++Signal handling
++===============
+ 
+ The delivery of (asynchronous) signals must be delayed until fsys-mode
+ is exited.  This is accomplished with the help of the lower-privilege
+@@ -173,7 +182,8 @@ PSR.lp and returns immediately.  When fsys-mode is exited via the
+ occur.  The trap handler clears PSR.lp again and returns immediately.
+ The kernel exit path then checks for and delivers any pending signals.
+ 
+-* PSR Handling
++PSR Handling
++============
+ 
+ The "epc" instruction doesn't change the contents of PSR at all.  This
+ is in contrast to a regular interruption, which clears almost all
+@@ -181,6 +191,7 @@ bits.  Because of that, some care needs to be taken to ensure things
+ work as expected.  The following discussion describes how each PSR bit
+ is handled.
+ 
++======= =======================================================================
+ PSR.be	Cleared when entering fsys-mode.  A srlz.d instruction is used
+ 	to ensure the CPU is in little-endian mode before the first
+ 	load/store instruction is executed.  PSR.be is normally NOT
+@@ -202,7 +213,8 @@ PSR.pp	Unchanged.
+ PSR.di	Unchanged.
+ PSR.si	Unchanged.
+ PSR.db	Unchanged.  The kernel prevents user-level from setting a hardware
+-	breakpoint that triggers at any privilege level other than 3 (user-mode).
++	breakpoint that triggers at any privilege level other than
++	3 (user-mode).
+ PSR.lp	Unchanged.
+ PSR.tb	Lazy redirect.  If a taken-branch trap occurs while in
+ 	fsys-mode, the trap-handler modifies the saved machine state
+@@ -235,47 +247,52 @@ PSR.ed	Unchanged.  Note: This bit could only have an effect if an fsys-mode
+ PSR.bn	Unchanged.  Note: fsys-mode handlers may clear the bit, if needed.
+ 	Doing so requires clearing PSR.i and PSR.ic as well.
+ PSR.ia	Unchanged.  Note: the ia64 linux kernel never sets this bit.
++======= =======================================================================
+ 
+-* Using fast system calls
++Using fast system calls
++=======================
+ 
+ To use fast system calls, userspace applications need simply call
+ __kernel_syscall_via_epc().  For example
+ 
+ -- example fgettimeofday() call --
++
+ -- fgettimeofday.S --
+ 
+-#include <asm/asmmacro.h>
++::
+ 
+-GLOBAL_ENTRY(fgettimeofday)
+-.prologue
+-.save ar.pfs, r11
+-mov r11 = ar.pfs
+-.body 
++  #include <asm/asmmacro.h>
+ 
+-mov r2 = 0xa000000000020660;;  // gate address 
+-			       // found by inspection of System.map for the 
++  GLOBAL_ENTRY(fgettimeofday)
++  .prologue
++  .save ar.pfs, r11
++  mov r11 = ar.pfs
++  .body
++
++  mov r2 = 0xa000000000020660;;  // gate address
++			       // found by inspection of System.map for the
+ 			       // __kernel_syscall_via_epc() function.  See
+ 			       // below for how to do this for real.
+ 
+-mov b7 = r2
+-mov r15 = 1087		       // gettimeofday syscall
+-;;
+-br.call.sptk.many b6 = b7
+-;;
++  mov b7 = r2
++  mov r15 = 1087		       // gettimeofday syscall
++  ;;
++  br.call.sptk.many b6 = b7
++  ;;
+ 
+-.restore sp
++  .restore sp
+ 
+-mov ar.pfs = r11
+-br.ret.sptk.many rp;;	      // return to caller
+-END(fgettimeofday)
++  mov ar.pfs = r11
++  br.ret.sptk.many rp;;	      // return to caller
++  END(fgettimeofday)
+ 
+ -- end fgettimeofday.S --
+ 
+ In reality, getting the gate address is accomplished by two extra
+ values passed via the ELF auxiliary vector (include/asm-ia64/elf.h)
+ 
+- o AT_SYSINFO : is the address of __kernel_syscall_via_epc()
+- o AT_SYSINFO_EHDR : is the address of the kernel gate ELF DSO
++ * AT_SYSINFO : is the address of __kernel_syscall_via_epc()
++ * AT_SYSINFO_EHDR : is the address of the kernel gate ELF DSO
+ 
+ The ELF DSO is a pre-linked library that is mapped in by the kernel at
+ the gate page.  It is a proper ELF shared object so, with a dynamic
+diff --git a/Documentation/ia64/README b/Documentation/ia64/ia64.rst
+similarity index 61%
+rename from Documentation/ia64/README
+rename to Documentation/ia64/ia64.rst
+index aa17f2154cba..b725019a9492 100644
+--- a/Documentation/ia64/README
++++ b/Documentation/ia64/ia64.rst
+@@ -1,43 +1,49 @@
+-        Linux kernel release 2.4.xx for the IA-64 Platform
++===========================================
++Linux kernel release for the IA-64 Platform
++===========================================
+ 
+-   These are the release notes for Linux version 2.4 for IA-64
++   These are the release notes for Linux since version 2.4 for IA-64
+    platform.  This document provides information specific to IA-64
+    ONLY, to get additional information about the Linux kernel also
+    read the original Linux README provided with the kernel.
+ 
+-INSTALLING the kernel:
++Installing the Kernel
++=====================
+ 
+  - IA-64 kernel installation is the same as the other platforms, see
+    original README for details.
+ 
+ 
+-SOFTWARE REQUIREMENTS
++Software Requirements
++=====================
+ 
+    Compiling and running this kernel requires an IA-64 compliant GCC
+    compiler.  And various software packages also compiled with an
+    IA-64 compliant GCC compiler.
+ 
+ 
+-CONFIGURING the kernel:
++Configuring the Kernel
++======================
+ 
+    Configuration is the same, see original README for details.
+ 
+ 
+-COMPILING the kernel:
++Compiling the Kernel:
+ 
+  - Compiling this kernel doesn't differ from other platform so read
+    the original README for details BUT make sure you have an IA-64
+    compliant GCC compiler.
+ 
+-IA-64 SPECIFICS
++IA-64 Specifics
++===============
+ 
+  - General issues:
+ 
+-    o Hardly any performance tuning has been done. Obvious targets
++    * Hardly any performance tuning has been done. Obvious targets
+       include the library routines (IP checksum, etc.). Less
+       obvious targets include making sure we don't flush the TLB
+       needlessly, etc.
+ 
+-    o SMP locks cleanup/optimization
++    * SMP locks cleanup/optimization
+ 
+-    o IA32 support.  Currently experimental.  It mostly works.
++    * IA32 support.  Currently experimental.  It mostly works.
+diff --git a/Documentation/ia64/index.rst b/Documentation/ia64/index.rst
 new file mode 100644
-index 000000000000..018b7836ecb7
+index 000000000000..a3e3052ad6e2
 --- /dev/null
-+++ b/Documentation/arm64/index.rst
-@@ -0,0 +1,28 @@
++++ b/Documentation/ia64/index.rst
+@@ -0,0 +1,18 @@
 +:orphan:
 +
 +==================
-+ARM64 Architecture
++IA-64 Architecture
 +==================
 +
 +.. toctree::
-+    :maxdepth: 1
++   :maxdepth: 1
 +
-+    acpi_object_usage
-+    arm-acpi
-+    booting
-+    cpu-feature-registers
-+    elf_hwcaps
-+    hugetlbpage
-+    legacy_instructions
-+    memory
-+    pointer-authentication
-+    silicon-errata
-+    sve
-+    tagged-pointers
++   ia64
++   aliasing
++   efirtc
++   err_inject
++   fsys
++   irq-redir
++   mca
++   serial
++   xen
+diff --git a/Documentation/ia64/IRQ-redir.txt b/Documentation/ia64/irq-redir.rst
+similarity index 86%
+rename from Documentation/ia64/IRQ-redir.txt
+rename to Documentation/ia64/irq-redir.rst
+index f7bd72261283..39bf94484a15 100644
+--- a/Documentation/ia64/IRQ-redir.txt
++++ b/Documentation/ia64/irq-redir.rst
+@@ -1,6 +1,8 @@
++==============================
+ IRQ affinity on IA64 platforms
+-------------------------------
+-                           07.01.2002, Erich Focht <efocht@ess.nec.de>
++==============================
 +
-+.. only::  subproject and html
-+
-+   Indices
-+   =======
-+
-+   * :ref:`genindex`
-diff --git a/Documentation/arm64/legacy_instructions.txt b/Documentation/arm64/legacy_instructions.rst
-similarity index 73%
-rename from Documentation/arm64/legacy_instructions.txt
-rename to Documentation/arm64/legacy_instructions.rst
-index 01bf3d9fac85..54401b22cb8f 100644
---- a/Documentation/arm64/legacy_instructions.txt
-+++ b/Documentation/arm64/legacy_instructions.rst
-@@ -1,3 +1,7 @@
-+===================
-+Legacy instructions
-+===================
-+
- The arm64 port of the Linux kernel provides infrastructure to support
- emulation of instructions which have been deprecated, or obsoleted in
- the architecture. The infrastructure code uses undefined instruction
-@@ -9,19 +13,22 @@ The emulation mode can be controlled by writing to sysctl nodes
- behaviours and the corresponding values of the sysctl nodes -
++07.01.2002, Erich Focht <efocht@ess.nec.de>
  
- * Undef
--  Value: 0
-+    Value: 0
-+
-   Generates undefined instruction abort. Default for instructions that
-   have been obsoleted in the architecture, e.g., SWP
  
- * Emulate
--  Value: 1
-+    Value: 1
-+
-   Uses software emulation. To aid migration of software, in this mode
-   usage of emulated instruction is traced as well as rate limited
-   warnings are issued. This is the default for deprecated
-   instructions, .e.g., CP15 barriers
+ By writing to /proc/irq/IRQ#/smp_affinity the interrupt routing can be
+@@ -12,22 +14,27 @@ IRQ target is one particular CPU and cannot be a mask of several
+ CPUs. Only the first non-zero bit is taken into account.
  
- * Hardware Execution
--  Value: 2
-+    Value: 2
-+
-   Although marked as deprecated, some implementations may support the
-   enabling/disabling of hardware support for the execution of these
-   instructions. Using hardware execution generally provides better
-@@ -38,20 +45,24 @@ individual instruction notes for further information.
- Supported legacy instructions
- -----------------------------
- * SWP{B}
--Node: /proc/sys/abi/swp
--Status: Obsolete
--Default: Undef (0)
-+
-+:Node: /proc/sys/abi/swp
-+:Status: Obsolete
-+:Default: Undef (0)
  
- * CP15 Barriers
--Node: /proc/sys/abi/cp15_barrier
--Status: Deprecated
--Default: Emulate (1)
-+
-+:Node: /proc/sys/abi/cp15_barrier
-+:Status: Deprecated
-+:Default: Emulate (1)
+-Usage examples:
++Usage examples
++==============
  
- * SETEND
--Node: /proc/sys/abi/setend
--Status: Deprecated
--Default: Emulate (1)*
--Note: All the cpus on the system must have mixed endian support at EL0
--for this feature to be enabled. If a new CPU - which doesn't support mixed
--endian - is hotplugged in after this feature has been enabled, there could
--be unexpected results in the application.
+ The target CPU has to be specified as a hexadecimal CPU mask. The
+ first non-zero bit is the selected CPU. This format has been kept for
+ compatibility reasons with i386.
+ 
+ Set the delivery mode of interrupt 41 to fixed and route the
+-interrupts to CPU #3 (logical CPU number) (2^3=0x08):
++interrupts to CPU #3 (logical CPU number) (2^3=0x08)::
 +
-+:Node: /proc/sys/abi/setend
-+:Status: Deprecated
-+:Default: Emulate (1)*
+      echo "8" >/proc/irq/41/smp_affinity
+ 
+ Set the default route for IRQ number 41 to CPU 6 in lowest priority
+-delivery mode (redirectable):
++delivery mode (redirectable)::
 +
-+  Note: All the cpus on the system must have mixed endian support at EL0
-+  for this feature to be enabled. If a new CPU - which doesn't support mixed
-+  endian - is hotplugged in after this feature has been enabled, there could
-+  be unexpected results in the application.
-diff --git a/Documentation/arm64/memory.rst b/Documentation/arm64/memory.rst
+      echo "r 40" >/proc/irq/41/smp_affinity
+ 
+-The output of the command
++The output of the command::
++
+      cat /proc/irq/IRQ#/smp_affinity
++
+ gives the target CPU mask for the specified interrupt vector. If the CPU
+ mask is preceded by the character "r", the interrupt is redirectable
+ (i.e. lowest priority mode routing is used), otherwise its route is
+@@ -35,7 +42,8 @@ fixed.
+ 
+ 
+ 
+-Initialization and default behavior:
++Initialization and default behavior
++===================================
+ 
+ If the platform features IRQ redirection (info provided by SAL) all
+ IO-SAPIC interrupts are initialized with CPU#0 as their default target
+@@ -43,9 +51,11 @@ and the routing is the so called "lowest priority mode" (actually
+ fixed SAPIC mode with hint). The XTP chipset registers are used as hints
+ for the IRQ routing. Currently in Linux XTP registers can have three
+ values:
++
+ 	- minimal for an idle task,
+ 	- normal if any other task runs,
+ 	- maximal if the CPU is going to be switched off.
++
+ The IRQ is routed to the CPU with lowest XTP register value, the
+ search begins at the default CPU. Therefore most of the interrupts
+ will be handled by CPU #0.
+@@ -53,12 +63,14 @@ will be handled by CPU #0.
+ If the platform doesn't feature interrupt redirection IOSAPIC fixed
+ routing is used. The target CPUs are distributed in a round robin
+ manner. IRQs will be routed only to the selected target CPUs. Check
+-with
++with::
++
+         cat /proc/interrupts
+ 
+ 
+ 
+-Comments:
++Comments
++========
+ 
+ On large (multi-node) systems it is recommended to route the IRQs to
+ the node to which the corresponding device is connected.
+@@ -66,4 +78,3 @@ For systems like the NEC AzusA we get IRQ node-affinity for free. This
+ is because usually the chipsets on each node redirect the interrupts
+ only to their own CPUs (as they cannot see the XTP registers on the
+ other nodes).
+-
+diff --git a/Documentation/ia64/mca.txt b/Documentation/ia64/mca.rst
+similarity index 96%
+rename from Documentation/ia64/mca.txt
+rename to Documentation/ia64/mca.rst
+index f097c60cba1b..08270bba44a4 100644
+--- a/Documentation/ia64/mca.txt
++++ b/Documentation/ia64/mca.rst
+@@ -1,5 +1,8 @@
+-An ad-hoc collection of notes on IA64 MCA and INIT processing.  Feel
+-free to update it with notes about any area that is not clear.
++=============================================================
++An ad-hoc collection of notes on IA64 MCA and INIT processing
++=============================================================
++
++Feel free to update it with notes about any area that is not clear.
+ 
+ ---
+ 
+@@ -82,7 +85,8 @@ if we have a choice here.
+   own stack as running on that cpu.  Then a recursive error gets a
+   trace of the failing handler's "task".
+ 
+-[1] My (Keith Owens) original design called for ia64 to separate its
++[1]
++    My (Keith Owens) original design called for ia64 to separate its
+     struct task and the kernel stacks.  Then the MCA/INIT data would be
+     chained stacks like i386 interrupt stacks.  But that required
+     radical surgery on the rest of ia64, plus extra hard wired TLB
+diff --git a/Documentation/ia64/serial.txt b/Documentation/ia64/serial.rst
+similarity index 87%
+rename from Documentation/ia64/serial.txt
+rename to Documentation/ia64/serial.rst
+index a63d2c54329b..1de70c305a79 100644
+--- a/Documentation/ia64/serial.txt
++++ b/Documentation/ia64/serial.rst
+@@ -1,4 +1,9 @@
+-SERIAL DEVICE NAMING
++==============
++Serial Devices
++==============
++
++Serial Device Naming
++====================
+ 
+     As of 2.6.10, serial devices on ia64 are named based on the
+     order of ACPI and PCI enumeration.  The first device in the
+@@ -30,17 +35,21 @@ SERIAL DEVICE NAMING
+     (described in the ACPI namespace) plus an MP[2] (a PCI device) has
+     these ports:
+ 
+-                                  pre-2.6.10      pre-2.6.10
+-                    MMIO         (EFI console    (EFI console
+-                   address        on builtin)     on MP port)    2.6.10
+-                  ==========      ==========      ==========     ======
++      ==========  ==========     ============    ============   =======
++      Type        MMIO           pre-2.6.10      pre-2.6.10     2.6.10+
++		  address
++				 (EFI console    (EFI console
++                                 on builtin)     on MP port)
++      ==========  ==========     ============    ============   =======
+       builtin     0xff5e0000        ttyS0           ttyS1         ttyS0
+       MP UPS      0xf8031000        ttyS1           ttyS2         ttyS1
+       MP Console  0xf8030000        ttyS2           ttyS0         ttyS2
+       MP 2        0xf8030010        ttyS3           ttyS3         ttyS3
+       MP 3        0xf8030038        ttyS4           ttyS4         ttyS4
++      ==========  ==========     ============    ============   =======
+ 
+-CONSOLE SELECTION
++Console Selection
++=================
+ 
+     EFI knows what your console devices are, but it doesn't tell the
+     kernel quite enough to actually locate them.  The DIG64 HCDP
+@@ -67,7 +76,8 @@ CONSOLE SELECTION
+     entries in /etc/inittab (for getty) and /etc/securetty (to allow
+     root login).
+ 
+-EARLY SERIAL CONSOLE
++Early Serial Console
++====================
+ 
+     The kernel can't start using a serial console until it knows where
+     the device lives.  Normally this happens when the driver enumerates
+@@ -80,7 +90,8 @@ EARLY SERIAL CONSOLE
+     or if the EFI console path contains only a UART device and the
+     firmware supplies an HCDP.
+ 
+-TROUBLESHOOTING SERIAL CONSOLE PROBLEMS
++Troubleshooting Serial Console Problems
++=======================================
+ 
+     No kernel output after elilo prints "Uncompressing Linux... done":
+ 
+@@ -133,19 +144,22 @@ TROUBLESHOOTING SERIAL CONSOLE PROBLEMS
+ 
+ 
+ 
+-[1] http://www.dig64.org/specifications/agreement 
++[1]
++    http://www.dig64.org/specifications/agreement
+     The table was originally defined as the "HCDP" for "Headless
+     Console/Debug Port."  The current version is the "PCDP" for
+     "Primary Console and Debug Port Devices."
+ 
+-[2] The HP MP (management processor) is a PCI device that provides
++[2]
++    The HP MP (management processor) is a PCI device that provides
+     several UARTs.  One of the UARTs is often used as a console; the
+     EFI Boot Manager identifies it as "Acpi(HWP0002,700)/Pci(...)/Uart".
+     The external connection is usually a 25-pin connector, and a
+     special dongle converts that to three 9-pin connectors, one of
+     which is labelled "Console."
+ 
+-[3] EFI console devices are configured using the EFI Boot Manager
++[3]
++    EFI console devices are configured using the EFI Boot Manager
+     "Boot option maintenance" menu.  You may have to interrupt the
+     boot sequence to use this menu, and you will have to reset the
+     box after changing console configuration.
+diff --git a/Documentation/ia64/xen.rst b/Documentation/ia64/xen.rst
 new file mode 100644
-index 000000000000..464b880fc4b7
+index 000000000000..831339c74441
 --- /dev/null
-+++ b/Documentation/arm64/memory.rst
-@@ -0,0 +1,98 @@
-+==============================
-+Memory Layout on AArch64 Linux
-+==============================
++++ b/Documentation/ia64/xen.rst
+@@ -0,0 +1,206 @@
++********************************************************
++Recipe for getting/building/running Xen/ia64 with pv_ops
++********************************************************
++This recipe describes how to get xen-ia64 source and build it,
++and run domU with pv_ops.
 +
-+Author: Catalin Marinas <catalin.marinas@arm.com>
++Requirements
++============
 +
-+This document describes the virtual memory layout used by the AArch64
-+Linux kernel. The architecture allows up to 4 levels of translation
-+tables with a 4KB page size and up to 3 levels with a 64KB page size.
++  - python
++  - mercurial
++    it (aka "hg") is an open-source source code
++    management software. See the below.
++    http://www.selenic.com/mercurial/wiki/
++  - git
++  - bridge-utils
 +
-+AArch64 Linux uses either 3 levels or 4 levels of translation tables
-+with the 4KB page configuration, allowing 39-bit (512GB) or 48-bit
-+(256TB) virtual addresses, respectively, for both user and kernel. With
-+64KB pages, only 2 levels of translation tables, allowing 42-bit (4TB)
-+virtual address, are used but the memory layout is the same.
++Getting and Building Xen and Dom0
++=================================
 +
-+User addresses have bits 63:48 set to 0 while the kernel addresses have
-+the same bits set to 1. TTBRx selection is given by bit 63 of the
-+virtual address. The swapper_pg_dir contains only kernel (global)
-+mappings while the user pgd contains only user (non-global) mappings.
-+The swapper_pg_dir address is written to TTBR1 and never written to
-+TTBR0.
++  My environment is:
 +
++    - Machine  : Tiger4
++    - Domain0 OS  : RHEL5
++    - DomainU OS  : RHEL5
 +
-+AArch64 Linux memory layout with 4KB pages + 3 levels::
++ 1. Download source::
 +
-+  Start			End			Size		Use
-+  -----------------------------------------------------------------------
-+  0000000000000000	0000007fffffffff	 512GB		user
-+  ffffff8000000000	ffffffffffffffff	 512GB		kernel
++	# hg clone http://xenbits.xensource.com/ext/ia64/xen-unstable.hg
++	# cd xen-unstable.hg
++	# hg clone http://xenbits.xensource.com/ext/ia64/linux-2.6.18-xen.hg
 +
++ 2. # make world
 +
-+AArch64 Linux memory layout with 4KB pages + 4 levels::
++ 3. # make install-tools
 +
-+  Start			End			Size		Use
-+  -----------------------------------------------------------------------
-+  0000000000000000	0000ffffffffffff	 256TB		user
-+  ffff000000000000	ffffffffffffffff	 256TB		kernel
++ 4. copy kernels and xen::
 +
++	# cp xen/xen.gz /boot/efi/efi/redhat/
++	# cp build-linux-2.6.18-xen_ia64/vmlinux.gz \
++	/boot/efi/efi/redhat/vmlinuz-2.6.18.8-xen
 +
-+AArch64 Linux memory layout with 64KB pages + 2 levels::
++ 5. make initrd for Dom0/DomU::
 +
-+  Start			End			Size		Use
-+  -----------------------------------------------------------------------
-+  0000000000000000	000003ffffffffff	   4TB		user
-+  fffffc0000000000	ffffffffffffffff	   4TB		kernel
++	# make -C linux-2.6.18-xen.hg ARCH=ia64 modules_install \
++          O=$(pwd)/build-linux-2.6.18-xen_ia64
++	# mkinitrd -f /boot/efi/efi/redhat/initrd-2.6.18.8-xen.img \
++	  2.6.18.8-xen --builtin mptspi --builtin mptbase \
++	  --builtin mptscsih --builtin uhci-hcd --builtin ohci-hcd \
++	  --builtin ehci-hcd
 +
++Making a disk image for guest OS
++================================
 +
-+AArch64 Linux memory layout with 64KB pages + 3 levels::
++ 1. make file::
 +
-+  Start			End			Size		Use
-+  -----------------------------------------------------------------------
-+  0000000000000000	0000ffffffffffff	 256TB		user
-+  ffff000000000000	ffffffffffffffff	 256TB		kernel
++      # dd if=/dev/zero of=/root/rhel5.img bs=1M seek=4096 count=0
++      # mke2fs -F -j /root/rhel5.img
++      # mount -o loop /root/rhel5.img /mnt
++      # cp -ax /{dev,var,etc,usr,bin,sbin,lib} /mnt
++      # mkdir /mnt/{root,proc,sys,home,tmp}
 +
++      Note: You may miss some device files. If so, please create them
++      with mknod. Or you can use tar instead of cp.
 +
-+For details of the virtual kernel memory layout please see the kernel
-+booting log.
++ 2. modify DomU's fstab::
 +
++      # vi /mnt/etc/fstab
++         /dev/xvda1  /            ext3    defaults        1 1
++         none        /dev/pts     devpts  gid=5,mode=620  0 0
++         none        /dev/shm     tmpfs   defaults        0 0
++         none        /proc        proc    defaults        0 0
++         none        /sys         sysfs   defaults        0 0
 +
-+Translation table lookup with 4KB pages::
++ 3. modify inittab
 +
-+  +--------+--------+--------+--------+--------+--------+--------+--------+
-+  |63    56|55    48|47    40|39    32|31    24|23    16|15     8|7      0|
-+  +--------+--------+--------+--------+--------+--------+--------+--------+
-+   |                 |         |         |         |         |
-+   |                 |         |         |         |         v
-+   |                 |         |         |         |   [11:0]  in-page offset
-+   |                 |         |         |         +-> [20:12] L3 index
-+   |                 |         |         +-----------> [29:21] L2 index
-+   |                 |         +---------------------> [38:30] L1 index
-+   |                 +-------------------------------> [47:39] L0 index
-+   +-------------------------------------------------> [63] TTBR0/1
++    set runlevel to 3 to avoid X trying to start::
 +
++      # vi /mnt/etc/inittab
++         id:3:initdefault:
 +
-+Translation table lookup with 64KB pages::
++    Start a getty on the hvc0 console::
 +
-+  +--------+--------+--------+--------+--------+--------+--------+--------+
-+  |63    56|55    48|47    40|39    32|31    24|23    16|15     8|7      0|
-+  +--------+--------+--------+--------+--------+--------+--------+--------+
-+   |                 |    |               |              |
-+   |                 |    |               |              v
-+   |                 |    |               |            [15:0]  in-page offset
-+   |                 |    |               +----------> [28:16] L3 index
-+   |                 |    +--------------------------> [41:29] L2 index
-+   |                 +-------------------------------> [47:42] L1 index
-+   +-------------------------------------------------> [63] TTBR0/1
++       X0:2345:respawn:/sbin/mingetty hvc0
 +
++    tty1-6 mingetty can be commented out
 +
-+When using KVM without the Virtualization Host Extensions, the
-+hypervisor maps kernel pages in EL2 at a fixed (and potentially
-+random) offset from the linear mapping. See the kern_hyp_va macro and
-+kvm_update_va_mask function for more details. MMIO devices such as
-+GICv2 gets mapped next to the HYP idmap page, as do vectors when
-+ARM64_HARDEN_EL2_VECTORS is selected for particular CPUs.
++ 4. add hvc0 into /etc/securetty::
 +
-+When using KVM with the Virtualization Host Extensions, no additional
-+mappings are created, since the host kernel runs directly in EL2.
-diff --git a/Documentation/arm64/memory.txt b/Documentation/arm64/memory.txt
++      # vi /mnt/etc/securetty (add hvc0)
++
++ 5. umount::
++
++      # umount /mnt
++
++FYI, virt-manager can also make a disk image for guest OS.
++It's GUI tools and easy to make it.
++
++Boot Xen & Domain0
++==================
++
++ 1. replace elilo
++    elilo of RHEL5 can boot Xen and Dom0.
++    If you use old elilo (e.g RHEL4), please download from the below
++    http://elilo.sourceforge.net/cgi-bin/blosxom
++    and copy into /boot/efi/efi/redhat/::
++
++      # cp elilo-3.6-ia64.efi /boot/efi/efi/redhat/elilo.efi
++
++ 2. modify elilo.conf (like the below)::
++
++      # vi /boot/efi/efi/redhat/elilo.conf
++      prompt
++      timeout=20
++      default=xen
++      relocatable
++
++      image=vmlinuz-2.6.18.8-xen
++             label=xen
++             vmm=xen.gz
++             initrd=initrd-2.6.18.8-xen.img
++             read-only
++             append=" -- rhgb root=/dev/sda2"
++
++The append options before "--" are for xen hypervisor,
++the options after "--" are for dom0.
++
++FYI, your machine may need console options like
++"com1=19200,8n1 console=vga,com1". For example,
++append="com1=19200,8n1 console=vga,com1 -- rhgb console=tty0 \
++console=ttyS0 root=/dev/sda2"
++
++Getting and Building domU with pv_ops
++=====================================
++
++ 1. get pv_ops tree::
++
++      # git clone http://people.valinux.co.jp/~yamahata/xen-ia64/linux-2.6-xen-ia64.git/
++
++ 2. git branch (if necessary)::
++
++      # cd linux-2.6-xen-ia64/
++      # git checkout -b your_branch origin/xen-ia64-domu-minimal-2008may19
++
++   Note:
++     The current branch is xen-ia64-domu-minimal-2008may19.
++     But you would find the new branch. You can see with
++     "git branch -r" to get the branch lists.
++
++       http://people.valinux.co.jp/~yamahata/xen-ia64/for_eagl/linux-2.6-ia64-pv-ops.git/
++
++     is also available.
++
++     The tree is based on
++
++      git://git.kernel.org/pub/scm/linux/kernel/git/aegl/linux-2.6 test)
++
++ 3. copy .config for pv_ops of domU::
++
++      # cp arch/ia64/configs/xen_domu_wip_defconfig .config
++
++ 4. make kernel with pv_ops::
++
++      # make oldconfig
++      # make
++
++ 5. install the kernel and initrd::
++
++      # cp vmlinux.gz /boot/efi/efi/redhat/vmlinuz-2.6-pv_ops-xenU
++      # make modules_install
++      # mkinitrd -f /boot/efi/efi/redhat/initrd-2.6-pv_ops-xenU.img \
++        2.6.26-rc3xen-ia64-08941-g1b12161 --builtin mptspi \
++        --builtin mptbase --builtin mptscsih --builtin uhci-hcd \
++        --builtin ohci-hcd --builtin ehci-hcd
++
++Boot DomainU with pv_ops
++========================
++
++ 1. make config of DomU::
++
++     # vi /etc/xen/rhel5
++       kernel = "/boot/efi/efi/redhat/vmlinuz-2.6-pv_ops-xenU"
++       ramdisk = "/boot/efi/efi/redhat/initrd-2.6-pv_ops-xenU.img"
++       vcpus = 1
++       memory = 512
++       name = "rhel5"
++       disk = [ 'file:/root/rhel5.img,xvda1,w' ]
++       root = "/dev/xvda1 ro"
++       extra= "rhgb console=hvc0"
++
++ 2. After boot xen and dom0, start xend::
++
++	# /etc/init.d/xend start
++
++   ( In the debugging case, `# XEND_DEBUG=1 xend trace_start` )
++
++ 3. start domU::
++
++	# xm create -c rhel5
++
++Reference
++=========
++- Wiki of Xen/IA64 upstream merge
++  http://wiki.xensource.com/xenwiki/XenIA64/UpstreamMerge
++
++Written by Akio Takebe <takebe_akio@jp.fujitsu.com> on 28 May 2008
+diff --git a/Documentation/ia64/xen.txt b/Documentation/ia64/xen.txt
 deleted file mode 100644
-index c5dab30d3389..000000000000
---- a/Documentation/arm64/memory.txt
+index a12c74ce2773..000000000000
+--- a/Documentation/ia64/xen.txt
 +++ /dev/null
-@@ -1,97 +0,0 @@
--		     Memory Layout on AArch64 Linux
--		     ==============================
+@@ -1,183 +0,0 @@
+-       Recipe for getting/building/running Xen/ia64 with pv_ops
+-       --------------------------------------------------------
 -
--Author: Catalin Marinas <catalin.marinas@arm.com>
+-This recipe describes how to get xen-ia64 source and build it,
+-and run domU with pv_ops.
 -
--This document describes the virtual memory layout used by the AArch64
--Linux kernel. The architecture allows up to 4 levels of translation
--tables with a 4KB page size and up to 3 levels with a 64KB page size.
+-============
+-Requirements
+-============
 -
--AArch64 Linux uses either 3 levels or 4 levels of translation tables
--with the 4KB page configuration, allowing 39-bit (512GB) or 48-bit
--(256TB) virtual addresses, respectively, for both user and kernel. With
--64KB pages, only 2 levels of translation tables, allowing 42-bit (4TB)
--virtual address, are used but the memory layout is the same.
+-  - python
+-  - mercurial
+-    it (aka "hg") is an open-source source code
+-    management software. See the below.
+-    http://www.selenic.com/mercurial/wiki/
+-  - git
+-  - bridge-utils
 -
--User addresses have bits 63:48 set to 0 while the kernel addresses have
--the same bits set to 1. TTBRx selection is given by bit 63 of the
--virtual address. The swapper_pg_dir contains only kernel (global)
--mappings while the user pgd contains only user (non-global) mappings.
--The swapper_pg_dir address is written to TTBR1 and never written to
--TTBR0.
+-=================================
+-Getting and Building Xen and Dom0
+-=================================
+-
+-  My environment is;
+-    Machine  : Tiger4
+-    Domain0 OS  : RHEL5
+-    DomainU OS  : RHEL5
+-
+- 1. Download source
+-    # hg clone http://xenbits.xensource.com/ext/ia64/xen-unstable.hg
+-    # cd xen-unstable.hg
+-    # hg clone http://xenbits.xensource.com/ext/ia64/linux-2.6.18-xen.hg
+-
+- 2. # make world
+-
+- 3. # make install-tools
+-
+- 4. copy kernels and xen
+-    # cp xen/xen.gz /boot/efi/efi/redhat/
+-    # cp build-linux-2.6.18-xen_ia64/vmlinux.gz \
+-      /boot/efi/efi/redhat/vmlinuz-2.6.18.8-xen
+-
+- 5. make initrd for Dom0/DomU
+-    # make -C linux-2.6.18-xen.hg ARCH=ia64 modules_install \
+-      O=$(pwd)/build-linux-2.6.18-xen_ia64
+-    # mkinitrd -f /boot/efi/efi/redhat/initrd-2.6.18.8-xen.img \
+-      2.6.18.8-xen --builtin mptspi --builtin mptbase \
+-      --builtin mptscsih --builtin uhci-hcd --builtin ohci-hcd \
+-      --builtin ehci-hcd
+-
+-================================
+-Making a disk image for guest OS
+-================================
+-
+- 1. make file
+-    # dd if=/dev/zero of=/root/rhel5.img bs=1M seek=4096 count=0
+-    # mke2fs -F -j /root/rhel5.img
+-    # mount -o loop /root/rhel5.img /mnt
+-    # cp -ax /{dev,var,etc,usr,bin,sbin,lib} /mnt
+-    # mkdir /mnt/{root,proc,sys,home,tmp}
+-
+-    Note: You may miss some device files. If so, please create them
+-    with mknod. Or you can use tar instead of cp.
+-
+- 2. modify DomU's fstab
+-    # vi /mnt/etc/fstab
+-       /dev/xvda1  /            ext3    defaults        1 1
+-       none        /dev/pts     devpts  gid=5,mode=620  0 0
+-       none        /dev/shm     tmpfs   defaults        0 0
+-       none        /proc        proc    defaults        0 0
+-       none        /sys         sysfs   defaults        0 0
+-
+- 3. modify inittab
+-    set runlevel to 3 to avoid X trying to start
+-    # vi /mnt/etc/inittab
+-       id:3:initdefault:
+-    Start a getty on the hvc0 console
+-       X0:2345:respawn:/sbin/mingetty hvc0
+-    tty1-6 mingetty can be commented out
+-
+- 4. add hvc0 into /etc/securetty
+-    # vi /mnt/etc/securetty (add hvc0)
+-
+- 5. umount
+-    # umount /mnt
+-
+-FYI, virt-manager can also make a disk image for guest OS.
+-It's GUI tools and easy to make it.
+-
+-==================
+-Boot Xen & Domain0
+-==================
+-
+- 1. replace elilo
+-    elilo of RHEL5 can boot Xen and Dom0.
+-    If you use old elilo (e.g RHEL4), please download from the below
+-    http://elilo.sourceforge.net/cgi-bin/blosxom
+-    and copy into /boot/efi/efi/redhat/
+-    # cp elilo-3.6-ia64.efi /boot/efi/efi/redhat/elilo.efi
+-
+- 2. modify elilo.conf (like the below)
+-    # vi /boot/efi/efi/redhat/elilo.conf
+-     prompt
+-     timeout=20
+-     default=xen
+-     relocatable
+-
+-     image=vmlinuz-2.6.18.8-xen
+-             label=xen
+-             vmm=xen.gz
+-             initrd=initrd-2.6.18.8-xen.img
+-             read-only
+-             append=" -- rhgb root=/dev/sda2"
+-
+-The append options before "--" are for xen hypervisor,
+-the options after "--" are for dom0.
+-
+-FYI, your machine may need console options like
+-"com1=19200,8n1 console=vga,com1". For example,
+-append="com1=19200,8n1 console=vga,com1 -- rhgb console=tty0 \
+-console=ttyS0 root=/dev/sda2"
+-
+-=====================================
+-Getting and Building domU with pv_ops
+-=====================================
+-
+- 1. get pv_ops tree
+-    # git clone http://people.valinux.co.jp/~yamahata/xen-ia64/linux-2.6-xen-ia64.git/
+-
+- 2. git branch (if necessary)
+-    # cd linux-2.6-xen-ia64/
+-    # git checkout -b your_branch origin/xen-ia64-domu-minimal-2008may19
+-    (Note: The current branch is xen-ia64-domu-minimal-2008may19.
+-    But you would find the new branch. You can see with
+-    "git branch -r" to get the branch lists.
+-    http://people.valinux.co.jp/~yamahata/xen-ia64/for_eagl/linux-2.6-ia64-pv-ops.git/
+-    is also available. The tree is based on
+-    git://git.kernel.org/pub/scm/linux/kernel/git/aegl/linux-2.6 test)
 -
 -
--AArch64 Linux memory layout with 4KB pages + 3 levels:
+- 3. copy .config for pv_ops of domU
+-    # cp arch/ia64/configs/xen_domu_wip_defconfig .config
 -
--Start			End			Size		Use
-------------------------------------------------------------------------
--0000000000000000	0000007fffffffff	 512GB		user
--ffffff8000000000	ffffffffffffffff	 512GB		kernel
+- 4. make kernel with pv_ops
+-    # make oldconfig
+-    # make
 -
+- 5. install the kernel and initrd
+-    # cp vmlinux.gz /boot/efi/efi/redhat/vmlinuz-2.6-pv_ops-xenU
+-    # make modules_install
+-    # mkinitrd -f /boot/efi/efi/redhat/initrd-2.6-pv_ops-xenU.img \
+-      2.6.26-rc3xen-ia64-08941-g1b12161 --builtin mptspi \
+-      --builtin mptbase --builtin mptscsih --builtin uhci-hcd \
+-      --builtin ohci-hcd --builtin ehci-hcd
 -
--AArch64 Linux memory layout with 4KB pages + 4 levels:
+-========================
+-Boot DomainU with pv_ops
+-========================
 -
--Start			End			Size		Use
-------------------------------------------------------------------------
--0000000000000000	0000ffffffffffff	 256TB		user
--ffff000000000000	ffffffffffffffff	 256TB		kernel
+- 1. make config of DomU
+-   # vi /etc/xen/rhel5
+-     kernel = "/boot/efi/efi/redhat/vmlinuz-2.6-pv_ops-xenU"
+-     ramdisk = "/boot/efi/efi/redhat/initrd-2.6-pv_ops-xenU.img"
+-     vcpus = 1
+-     memory = 512
+-     name = "rhel5"
+-     disk = [ 'file:/root/rhel5.img,xvda1,w' ]
+-     root = "/dev/xvda1 ro"
+-     extra= "rhgb console=hvc0"
 -
+- 2. After boot xen and dom0, start xend
+-   # /etc/init.d/xend start
+-   ( In the debugging case, # XEND_DEBUG=1 xend trace_start )
 -
--AArch64 Linux memory layout with 64KB pages + 2 levels:
+- 3. start domU
+-   # xm create -c rhel5
 -
--Start			End			Size		Use
-------------------------------------------------------------------------
--0000000000000000	000003ffffffffff	   4TB		user
--fffffc0000000000	ffffffffffffffff	   4TB		kernel
+-=========
+-Reference
+-=========
+-- Wiki of Xen/IA64 upstream merge
+-  http://wiki.xensource.com/xenwiki/XenIA64/UpstreamMerge
 -
--
--AArch64 Linux memory layout with 64KB pages + 3 levels:
--
--Start			End			Size		Use
-------------------------------------------------------------------------
--0000000000000000	0000ffffffffffff	 256TB		user
--ffff000000000000	ffffffffffffffff	 256TB		kernel
--
--
--For details of the virtual kernel memory layout please see the kernel
--booting log.
--
--
--Translation table lookup with 4KB pages:
--
--+--------+--------+--------+--------+--------+--------+--------+--------+
--|63    56|55    48|47    40|39    32|31    24|23    16|15     8|7      0|
--+--------+--------+--------+--------+--------+--------+--------+--------+
-- |                 |         |         |         |         |
-- |                 |         |         |         |         v
-- |                 |         |         |         |   [11:0]  in-page offset
-- |                 |         |         |         +-> [20:12] L3 index
-- |                 |         |         +-----------> [29:21] L2 index
-- |                 |         +---------------------> [38:30] L1 index
-- |                 +-------------------------------> [47:39] L0 index
-- +-------------------------------------------------> [63] TTBR0/1
--
--
--Translation table lookup with 64KB pages:
--
--+--------+--------+--------+--------+--------+--------+--------+--------+
--|63    56|55    48|47    40|39    32|31    24|23    16|15     8|7      0|
--+--------+--------+--------+--------+--------+--------+--------+--------+
-- |                 |    |               |              |
-- |                 |    |               |              v
-- |                 |    |               |            [15:0]  in-page offset
-- |                 |    |               +----------> [28:16] L3 index
-- |                 |    +--------------------------> [41:29] L2 index
-- |                 +-------------------------------> [47:42] L1 index
-- +-------------------------------------------------> [63] TTBR0/1
--
--
--When using KVM without the Virtualization Host Extensions, the
--hypervisor maps kernel pages in EL2 at a fixed (and potentially
--random) offset from the linear mapping. See the kern_hyp_va macro and
--kvm_update_va_mask function for more details. MMIO devices such as
--GICv2 gets mapped next to the HYP idmap page, as do vectors when
--ARM64_HARDEN_EL2_VECTORS is selected for particular CPUs.
--
--When using KVM with the Virtualization Host Extensions, no additional
--mappings are created, since the host kernel runs directly in EL2.
-diff --git a/Documentation/arm64/pointer-authentication.txt b/Documentation/arm64/pointer-authentication.rst
-similarity index 99%
-rename from Documentation/arm64/pointer-authentication.txt
-rename to Documentation/arm64/pointer-authentication.rst
-index fc71b33de87e..30b2ab06526b 100644
---- a/Documentation/arm64/pointer-authentication.txt
-+++ b/Documentation/arm64/pointer-authentication.rst
-@@ -1,7 +1,9 @@
-+=======================================
- Pointer authentication in AArch64 Linux
- =======================================
+-Written by Akio Takebe <takebe_akio@jp.fujitsu.com> on 28 May 2008
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 969225e6bfce..f8f2394f9e84 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -14263,7 +14263,7 @@ SGI SN-IA64 (Altix) SERIAL CONSOLE DRIVER
+ M:	Pat Gefre <pfg@sgi.com>
+ L:	linux-ia64@vger.kernel.org
+ S:	Supported
+-F:	Documentation/ia64/serial.txt
++F:	Documentation/ia64/serial.rst
+ F:	drivers/tty/serial/ioc?_serial.c
+ F:	include/linux/ioc?.h
  
- Author: Mark Rutland <mark.rutland@arm.com>
-+
- Date: 2017-07-19
- 
- This document briefly describes the provision of pointer authentication
-diff --git a/Documentation/arm64/silicon-errata.txt b/Documentation/arm64/silicon-errata.rst
-similarity index 55%
-rename from Documentation/arm64/silicon-errata.txt
-rename to Documentation/arm64/silicon-errata.rst
-index 2735462d5958..c792774be59e 100644
---- a/Documentation/arm64/silicon-errata.txt
-+++ b/Documentation/arm64/silicon-errata.rst
-@@ -1,7 +1,9 @@
--                Silicon Errata and Software Workarounds
--                =======================================
-+=======================================
-+Silicon Errata and Software Workarounds
-+=======================================
- 
- Author: Will Deacon <will.deacon@arm.com>
-+
- Date  : 27 November 2015
- 
- It is an unfortunate fact of life that hardware is often produced with
-@@ -9,11 +11,13 @@ so-called "errata", which can cause it to deviate from the architecture
- under specific circumstances.  For hardware produced by ARM, these
- errata are broadly classified into the following categories:
- 
--  Category A: A critical error without a viable workaround.
--  Category B: A significant or critical error with an acceptable
-+  ==========  ========================================================
-+  Category A  A critical error without a viable workaround.
-+  Category B  A significant or critical error with an acceptable
-               workaround.
--  Category C: A minor error that is not expected to occur under normal
-+  Category C  A minor error that is not expected to occur under normal
-               operation.
-+  ==========  ========================================================
- 
- For more information, consult one of the "Software Developers Errata
- Notice" documents available on infocenter.arm.com (registration
-@@ -42,47 +46,86 @@ file acts as a registry of software workarounds in the Linux Kernel and
- will be updated when new workarounds are committed and backported to
- stable kernels.
- 
-++----------------+-----------------+-----------------+-----------------------------+
- | Implementor    | Component       | Erratum ID      | Kconfig                     |
--+----------------+-----------------+-----------------+-----------------------------+
-++================+=================+=================+=============================+
- | Allwinner      | A64/R18         | UNKNOWN1        | SUN50I_ERRATUM_UNKNOWN1     |
--|                |                 |                 |                             |
-++----------------+-----------------+-----------------+-----------------------------+
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-A53      | #826319         | ARM64_ERRATUM_826319        |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-A53      | #827319         | ARM64_ERRATUM_827319        |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-A53      | #824069         | ARM64_ERRATUM_824069        |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-A53      | #819472         | ARM64_ERRATUM_819472        |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-A53      | #845719         | ARM64_ERRATUM_845719        |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-A53      | #843419         | ARM64_ERRATUM_843419        |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-A57      | #832075         | ARM64_ERRATUM_832075        |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-A57      | #852523         | N/A                         |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-A57      | #834220         | ARM64_ERRATUM_834220        |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-A72      | #853709         | N/A                         |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-A73      | #858921         | ARM64_ERRATUM_858921        |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-A55      | #1024718        | ARM64_ERRATUM_1024718       |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-A76      | #1188873,1418040| ARM64_ERRATUM_1418040       |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-A76      | #1165522        | ARM64_ERRATUM_1165522       |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-A76      | #1286807        | ARM64_ERRATUM_1286807       |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-A76      | #1463225        | ARM64_ERRATUM_1463225       |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Neoverse-N1     | #1188873,1418040| ARM64_ERRATUM_1418040       |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | MMU-500         | #841119,826419  | N/A                         |
--|                |                 |                 |                             |
-++----------------+-----------------+-----------------+-----------------------------+
-++----------------+-----------------+-----------------+-----------------------------+
- | Cavium         | ThunderX ITS    | #22375,24313    | CAVIUM_ERRATUM_22375        |
-++----------------+-----------------+-----------------+-----------------------------+
- | Cavium         | ThunderX ITS    | #23144          | CAVIUM_ERRATUM_23144        |
-++----------------+-----------------+-----------------+-----------------------------+
- | Cavium         | ThunderX GICv3  | #23154          | CAVIUM_ERRATUM_23154        |
-++----------------+-----------------+-----------------+-----------------------------+
- | Cavium         | ThunderX Core   | #27456          | CAVIUM_ERRATUM_27456        |
-++----------------+-----------------+-----------------+-----------------------------+
- | Cavium         | ThunderX Core   | #30115          | CAVIUM_ERRATUM_30115        |
-++----------------+-----------------+-----------------+-----------------------------+
- | Cavium         | ThunderX SMMUv2 | #27704          | N/A                         |
-++----------------+-----------------+-----------------+-----------------------------+
- | Cavium         | ThunderX2 SMMUv3| #74             | N/A                         |
-++----------------+-----------------+-----------------+-----------------------------+
- | Cavium         | ThunderX2 SMMUv3| #126            | N/A                         |
--|                |                 |                 |                             |
-++----------------+-----------------+-----------------+-----------------------------+
-++----------------+-----------------+-----------------+-----------------------------+
- | Freescale/NXP  | LS2080A/LS1043A | A-008585        | FSL_ERRATUM_A008585         |
--|                |                 |                 |                             |
-++----------------+-----------------+-----------------+-----------------------------+
-++----------------+-----------------+-----------------+-----------------------------+
- | Hisilicon      | Hip0{5,6,7}     | #161010101      | HISILICON_ERRATUM_161010101 |
-++----------------+-----------------+-----------------+-----------------------------+
- | Hisilicon      | Hip0{6,7}       | #161010701      | N/A                         |
-++----------------+-----------------+-----------------+-----------------------------+
- | Hisilicon      | Hip07           | #161600802      | HISILICON_ERRATUM_161600802 |
-++----------------+-----------------+-----------------+-----------------------------+
- | Hisilicon      | Hip08 SMMU PMCG | #162001800      | N/A                         |
--|                |                 |                 |                             |
-++----------------+-----------------+-----------------+-----------------------------+
-++----------------+-----------------+-----------------+-----------------------------+
- | Qualcomm Tech. | Kryo/Falkor v1  | E1003           | QCOM_FALKOR_ERRATUM_1003    |
-++----------------+-----------------+-----------------+-----------------------------+
- | Qualcomm Tech. | Falkor v1       | E1009           | QCOM_FALKOR_ERRATUM_1009    |
-++----------------+-----------------+-----------------+-----------------------------+
- | Qualcomm Tech. | QDF2400 ITS     | E0065           | QCOM_QDF2400_ERRATUM_0065   |
-++----------------+-----------------+-----------------+-----------------------------+
- | Qualcomm Tech. | Falkor v{1,2}   | E1041           | QCOM_FALKOR_ERRATUM_1041    |
-++----------------+-----------------+-----------------+-----------------------------+
-++----------------+-----------------+-----------------+-----------------------------+
- | Fujitsu        | A64FX           | E#010001        | FUJITSU_ERRATUM_010001      |
-++----------------+-----------------+-----------------+-----------------------------+
-diff --git a/Documentation/arm64/sve.txt b/Documentation/arm64/sve.rst
-similarity index 98%
-rename from Documentation/arm64/sve.txt
-rename to Documentation/arm64/sve.rst
-index 9940e924a47e..38422ab249dd 100644
---- a/Documentation/arm64/sve.txt
-+++ b/Documentation/arm64/sve.rst
-@@ -1,7 +1,9 @@
--            Scalable Vector Extension support for AArch64 Linux
--            ===================================================
-+===================================================
-+Scalable Vector Extension support for AArch64 Linux
-+===================================================
- 
- Author: Dave Martin <Dave.Martin@arm.com>
-+
- Date:   4 August 2017
- 
- This document outlines briefly the interface provided to userspace by Linux in
-@@ -426,7 +428,7 @@ In A64 state, SVE adds the following:
- 
- * FPSR and FPCR are retained from ARMv8-A, and interact with SVE floating-point
-   operations in a similar way to the way in which they interact with ARMv8
--  floating-point operations.
-+  floating-point operations::
- 
-          8VL-1                       128               0  bit index
-         +----          ////            -----------------+
-@@ -483,6 +485,8 @@ ARMv8-A defines the following floating-point / SIMD register state:
- * 32 128-bit vector registers V0..V31
- * 2 32-bit status/control registers FPSR, FPCR
- 
-+::
-+
-          127           0  bit index
-         +---------------+
-      V0 |               |
-@@ -517,7 +521,7 @@ References
- [2] arch/arm64/include/uapi/asm/ptrace.h
-     AArch64 Linux ptrace ABI definitions
- 
--[3] Documentation/arm64/cpu-feature-registers.txt
-+[3] Documentation/arm64/cpu-feature-registers.rst
- 
- [4] ARM IHI0055C
-     http://infocenter.arm.com/help/topic/com.arm.doc.ihi0055c/IHI0055C_beta_aapcs64.pdf
-diff --git a/Documentation/arm64/tagged-pointers.txt b/Documentation/arm64/tagged-pointers.rst
-similarity index 94%
-rename from Documentation/arm64/tagged-pointers.txt
-rename to Documentation/arm64/tagged-pointers.rst
-index a25a99e82bb1..2acdec3ebbeb 100644
---- a/Documentation/arm64/tagged-pointers.txt
-+++ b/Documentation/arm64/tagged-pointers.rst
-@@ -1,7 +1,9 @@
--		Tagged virtual addresses in AArch64 Linux
--		=========================================
-+=========================================
-+Tagged virtual addresses in AArch64 Linux
-+=========================================
- 
- Author: Will Deacon <will.deacon@arm.com>
-+
- Date  : 12 June 2013
- 
- This document briefly describes the provision of tagged virtual
-diff --git a/Documentation/translations/zh_CN/arm64/booting.txt b/Documentation/translations/zh_CN/arm64/booting.txt
-index c1dd968c5ee9..3bfbf66e5a5e 100644
---- a/Documentation/translations/zh_CN/arm64/booting.txt
-+++ b/Documentation/translations/zh_CN/arm64/booting.txt
-@@ -1,4 +1,4 @@
--Chinese translated version of Documentation/arm64/booting.txt
-+Chinese translated version of Documentation/arm64/booting.rst
- 
- If you have any comment or update to the content, please contact the
- original document maintainer directly.  However, if you have a problem
-@@ -10,7 +10,7 @@ M:	Will Deacon <will.deacon@arm.com>
- zh_CN:	Fu Wei <wefu@redhat.com>
- C:	55f058e7574c3615dea4615573a19bdb258696c6
- ---------------------------------------------------------------------
--Documentation/arm64/booting.txt 的中文翻译
-+Documentation/arm64/booting.rst 的中文翻译
- 
- 如果想评论或更新本文的内容，请直接联系原文档的维护者。如果你使用英文
- 交流有困难的话，也可以向中文版维护者求助。如果本翻译更新不及时或者翻
-diff --git a/Documentation/translations/zh_CN/arm64/legacy_instructions.txt b/Documentation/translations/zh_CN/arm64/legacy_instructions.txt
-index 68362a1ab717..e295cf75f606 100644
---- a/Documentation/translations/zh_CN/arm64/legacy_instructions.txt
-+++ b/Documentation/translations/zh_CN/arm64/legacy_instructions.txt
-@@ -1,4 +1,4 @@
--Chinese translated version of Documentation/arm64/legacy_instructions.txt
-+Chinese translated version of Documentation/arm64/legacy_instructions.rst
- 
- If you have any comment or update to the content, please contact the
- original document maintainer directly.  However, if you have a problem
-@@ -10,7 +10,7 @@ Maintainer: Punit Agrawal <punit.agrawal@arm.com>
-             Suzuki K. Poulose <suzuki.poulose@arm.com>
- Chinese maintainer: Fu Wei <wefu@redhat.com>
- ---------------------------------------------------------------------
--Documentation/arm64/legacy_instructions.txt 的中文翻译
-+Documentation/arm64/legacy_instructions.rst 的中文翻译
- 
- 如果想评论或更新本文的内容，请直接联系原文档的维护者。如果你使用英文
- 交流有困难的话，也可以向中文版维护者求助。如果本翻译更新不及时或者翻
-diff --git a/Documentation/translations/zh_CN/arm64/memory.txt b/Documentation/translations/zh_CN/arm64/memory.txt
-index 19b3a52d5d94..be20f8228b91 100644
---- a/Documentation/translations/zh_CN/arm64/memory.txt
-+++ b/Documentation/translations/zh_CN/arm64/memory.txt
-@@ -1,4 +1,4 @@
--Chinese translated version of Documentation/arm64/memory.txt
-+Chinese translated version of Documentation/arm64/memory.rst
- 
- If you have any comment or update to the content, please contact the
- original document maintainer directly.  However, if you have a problem
-@@ -9,7 +9,7 @@ or if there is a problem with the translation.
- Maintainer: Catalin Marinas <catalin.marinas@arm.com>
- Chinese maintainer: Fu Wei <wefu@redhat.com>
- ---------------------------------------------------------------------
--Documentation/arm64/memory.txt 的中文翻译
-+Documentation/arm64/memory.rst 的中文翻译
- 
- 如果想评论或更新本文的内容，请直接联系原文档的维护者。如果你使用英文
- 交流有困难的话，也可以向中文版维护者求助。如果本翻译更新不及时或者翻
-diff --git a/Documentation/translations/zh_CN/arm64/silicon-errata.txt b/Documentation/translations/zh_CN/arm64/silicon-errata.txt
-index 39477c75c4a4..440c59ac7dce 100644
---- a/Documentation/translations/zh_CN/arm64/silicon-errata.txt
-+++ b/Documentation/translations/zh_CN/arm64/silicon-errata.txt
-@@ -1,4 +1,4 @@
--Chinese translated version of Documentation/arm64/silicon-errata.txt
-+Chinese translated version of Documentation/arm64/silicon-errata.rst
- 
- If you have any comment or update to the content, please contact the
- original document maintainer directly.  However, if you have a problem
-@@ -10,7 +10,7 @@ M:	Will Deacon <will.deacon@arm.com>
- zh_CN:	Fu Wei <wefu@redhat.com>
- C:	1926e54f115725a9248d0c4c65c22acaf94de4c4
- ---------------------------------------------------------------------
--Documentation/arm64/silicon-errata.txt 的中文翻译
-+Documentation/arm64/silicon-errata.rst 的中文翻译
- 
- 如果想评论或更新本文的内容，请直接联系原文档的维护者。如果你使用英文
- 交流有困难的话，也可以向中文版维护者求助。如果本翻译更新不及时或者翻
-diff --git a/Documentation/translations/zh_CN/arm64/tagged-pointers.txt b/Documentation/translations/zh_CN/arm64/tagged-pointers.txt
-index 2664d1bd5a1c..77ac3548a16d 100644
---- a/Documentation/translations/zh_CN/arm64/tagged-pointers.txt
-+++ b/Documentation/translations/zh_CN/arm64/tagged-pointers.txt
-@@ -1,4 +1,4 @@
--Chinese translated version of Documentation/arm64/tagged-pointers.txt
-+Chinese translated version of Documentation/arm64/tagged-pointers.rst
- 
- If you have any comment or update to the content, please contact the
- original document maintainer directly.  However, if you have a problem
-@@ -9,7 +9,7 @@ or if there is a problem with the translation.
- Maintainer: Will Deacon <will.deacon@arm.com>
- Chinese maintainer: Fu Wei <wefu@redhat.com>
- ---------------------------------------------------------------------
--Documentation/arm64/tagged-pointers.txt 的中文翻译
-+Documentation/arm64/tagged-pointers.rst 的中文翻译
- 
- 如果想评论或更新本文的内容，请直接联系原文档的维护者。如果你使用英文
- 交流有困难的话，也可以向中文版维护者求助。如果本翻译更新不及时或者翻
-diff --git a/Documentation/virtual/kvm/api.txt b/Documentation/virtual/kvm/api.txt
-index ba6c42c576dd..68984c284c40 100644
---- a/Documentation/virtual/kvm/api.txt
-+++ b/Documentation/virtual/kvm/api.txt
-@@ -2205,7 +2205,7 @@ max_vq.  This is the maximum vector length available to the guest on
- this vcpu, and determines which register slices are visible through
- this ioctl interface.
- 
--(See Documentation/arm64/sve.txt for an explanation of the "vq"
-+(See Documentation/arm64/sve.rst for an explanation of the "vq"
- nomenclature.)
- 
- KVM_REG_ARM64_SVE_VLS is only accessible after KVM_ARM_VCPU_INIT.
-diff --git a/arch/arm64/include/asm/efi.h b/arch/arm64/include/asm/efi.h
-index c9e9a6978e73..8e79ce9c3f5c 100644
---- a/arch/arm64/include/asm/efi.h
-+++ b/arch/arm64/include/asm/efi.h
-@@ -83,7 +83,7 @@ static inline unsigned long efi_get_max_fdt_addr(unsigned long dram_base)
-  * guaranteed to cover the kernel Image.
-  *
-  * Since the EFI stub is part of the kernel Image, we can relax the
-- * usual requirements in Documentation/arm64/booting.txt, which still
-+ * usual requirements in Documentation/arm64/booting.rst, which still
-  * apply to other bootloaders, and are required for some kernel
-  * configurations.
-  */
-diff --git a/arch/arm64/include/asm/image.h b/arch/arm64/include/asm/image.h
-index e2c27a2278e9..c2b13213c720 100644
---- a/arch/arm64/include/asm/image.h
-+++ b/arch/arm64/include/asm/image.h
-@@ -27,7 +27,7 @@
+diff --git a/arch/ia64/kernel/efi.c b/arch/ia64/kernel/efi.c
+index 8f106638913c..3795d18276c4 100644
+--- a/arch/ia64/kernel/efi.c
++++ b/arch/ia64/kernel/efi.c
+@@ -852,7 +852,7 @@ valid_phys_addr_range (phys_addr_t phys_addr, unsigned long size)
+ 	 * /dev/mem reads and writes use copy_to_user(), which implicitly
+ 	 * uses a granule-sized kernel identity mapping.  It's really
+ 	 * only safe to do this for regions in kern_memmap.  For more
+-	 * details, see Documentation/ia64/aliasing.txt.
++	 * details, see Documentation/ia64/aliasing.rst.
+ 	 */
+ 	attr = kern_mem_attribute(phys_addr, size);
+ 	if (attr & EFI_MEMORY_WB || attr & EFI_MEMORY_UC)
+diff --git a/arch/ia64/kernel/fsys.S b/arch/ia64/kernel/fsys.S
+index d80c99a5f55d..0750a716adc7 100644
+--- a/arch/ia64/kernel/fsys.S
++++ b/arch/ia64/kernel/fsys.S
+@@ -28,7 +28,7 @@
+ #include <asm/native/inst.h>
  
  /*
-  * struct arm64_image_header - arm64 kernel image header
-- * See Documentation/arm64/booting.txt for details
-+ * See Documentation/arm64/booting.rst for details
+- * See Documentation/ia64/fsys.txt for details on fsyscalls.
++ * See Documentation/ia64/fsys.rst for details on fsyscalls.
   *
-  * @code0:		Executable code, or
-  *   @mz_header		  alternatively used for part of MZ header
-diff --git a/arch/arm64/include/uapi/asm/sigcontext.h b/arch/arm64/include/uapi/asm/sigcontext.h
-index 5f3c0cec5af9..a61f89ddbf34 100644
---- a/arch/arm64/include/uapi/asm/sigcontext.h
-+++ b/arch/arm64/include/uapi/asm/sigcontext.h
-@@ -137,7 +137,7 @@ struct sve_context {
-  * vector length beyond its initial architectural limit of 2048 bits
-  * (16 quadwords).
-  *
-- * See linux/Documentation/arm64/sve.txt for a description of the VL/VQ
-+ * See linux/Documentation/arm64/sve.rst for a description of the VL/VQ
-  * terminology.
-  */
- #define SVE_VQ_BYTES		__SVE_VQ_BYTES	/* bytes per quadword */
-diff --git a/arch/arm64/kernel/kexec_image.c b/arch/arm64/kernel/kexec_image.c
-index 31cc2f423aa8..2514fd6f12cb 100644
---- a/arch/arm64/kernel/kexec_image.c
-+++ b/arch/arm64/kernel/kexec_image.c
-@@ -53,7 +53,7 @@ static void *image_load(struct kimage *image,
+  * On entry to an fsyscall handler:
+  *   r10	= 0 (i.e., defaults to "successful syscall return")
+diff --git a/arch/ia64/mm/ioremap.c b/arch/ia64/mm/ioremap.c
+index 43964cde6214..c7da3376b6f8 100644
+--- a/arch/ia64/mm/ioremap.c
++++ b/arch/ia64/mm/ioremap.c
+@@ -45,7 +45,7 @@ ioremap (unsigned long phys_addr, unsigned long size)
+ 	/*
+ 	 * For things in kern_memmap, we must use the same attribute
+ 	 * as the rest of the kernel.  For more details, see
+-	 * Documentation/ia64/aliasing.txt.
++	 * Documentation/ia64/aliasing.rst.
+ 	 */
+ 	attr = kern_mem_attribute(phys_addr, size);
+ 	if (attr & EFI_MEMORY_WB)
+diff --git a/arch/ia64/pci/pci.c b/arch/ia64/pci/pci.c
+index e308196c2229..165e561dc81a 100644
+--- a/arch/ia64/pci/pci.c
++++ b/arch/ia64/pci/pci.c
+@@ -450,7 +450,7 @@ pci_mmap_legacy_page_range(struct pci_bus *bus, struct vm_area_struct *vma,
+ 		return -ENOSYS;
  
  	/*
- 	 * We require a kernel with an unambiguous Image header. Per
--	 * Documentation/arm64/booting.txt, this is the case when image_size
-+	 * Documentation/arm64/booting.rst, this is the case when image_size
- 	 * is non-zero (practically speaking, since v3.17).
+-	 * Avoid attribute aliasing.  See Documentation/ia64/aliasing.txt
++	 * Avoid attribute aliasing.  See Documentation/ia64/aliasing.rst
+ 	 * for more details.
  	 */
- 	h = (struct arm64_image_header *)kernel;
+ 	if (!valid_mmap_phys_addr_range(vma->vm_pgoff, size))
 -- 
 2.21.0
 
