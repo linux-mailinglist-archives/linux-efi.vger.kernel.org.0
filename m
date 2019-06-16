@@ -2,88 +2,92 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 53D0346E0E
-	for <lists+linux-efi@lfdr.de>; Sat, 15 Jun 2019 06:02:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C7E824776C
+	for <lists+linux-efi@lfdr.de>; Mon, 17 Jun 2019 01:56:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726417AbfFOECQ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sat, 15 Jun 2019 00:02:16 -0400
-Received: from mail-pg1-f196.google.com ([209.85.215.196]:42448 "EHLO
-        mail-pg1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726451AbfFOECQ (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sat, 15 Jun 2019 00:02:16 -0400
-Received: by mail-pg1-f196.google.com with SMTP id l19so2608497pgh.9;
-        Fri, 14 Jun 2019 21:02:15 -0700 (PDT)
+        id S1727322AbfFPX4L (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sun, 16 Jun 2019 19:56:11 -0400
+Received: from mail-pg1-f193.google.com ([209.85.215.193]:36111 "EHLO
+        mail-pg1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726069AbfFPX4L (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sun, 16 Jun 2019 19:56:11 -0400
+Received: by mail-pg1-f193.google.com with SMTP id f21so4728617pgi.3
+        for <linux-efi@vger.kernel.org>; Sun, 16 Jun 2019 16:56:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:subject:message-id:mime-version:content-disposition
-         :content-transfer-encoding:user-agent;
-        bh=u1ZcG1Sp0JvhKEi3rEpRDEedkqqLBcdvyquQGonVQRw=;
-        b=GzCnkIla8t/CAZwgluyHn46xdqBub+xym2+1pTfmLv7K5C5y691nCtPwbWqiAGwSwK
-         WDyrJVMv+CaURgfh0yM31SgMFDZ0mxU9kzcLlrX4Ap5YdQPDtAynNZPh06brqIWlQUr3
-         1FpXmpo/LbmuU+c5Z0WWjfMzFk2xQ8osf9Zzih9oBdY9MTjv/BHJw+YufUEQb2W9Moeu
-         M+BbcjPTjbu5SM80EnekimCviunjNUJ3c5pjJTQORg2Cvhw9W8Cpv+FUQw2VdqKxW3zD
-         yu2qoZGp+x6xOk7uV+N6rp0VvGC3i+Gl7HDcfWMX7aIWRMForIlRH2Taj06y3vqyCBnh
-         BV6g==
+        d=axtens.net; s=google;
+        h=from:to:cc:subject:in-reply-to:references:date:message-id
+         :mime-version:content-transfer-encoding;
+        bh=eKbpzEiJylVko/AqUmYGdm35tR1kAF8kyTrOQOn/LZY=;
+        b=mjFgfEh9DpnUyYJnmm10xCAA44rjQ5vM3POmL21L1yxtntOM4gCLmgenR1CUMVLdRK
+         bKJ5vWJRNlNGEcrq4IdxzCEHcpIe7vlLMfhuxhzjrr57rEblFOm2QshpZwxJlJUsK8FS
+         r9C0ItB6L+JRovFIxzCuNpKzuioK88/Kll0kA=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:subject:message-id:mime-version
-         :content-disposition:content-transfer-encoding:user-agent;
-        bh=u1ZcG1Sp0JvhKEi3rEpRDEedkqqLBcdvyquQGonVQRw=;
-        b=Lh/up5ZsrUwbJwTFTS0tAe1P0DIx+4dnWcVZpPUgVKPPgBvTnh7rLqkpfyADyjNqoN
-         vWgJpR9N2XJqpZkQFH+4LQ7/KU8OnX3TBFnjuxhcJleckYMSiw43zCkiaTwEFXTyCTub
-         AJYnQPCU0wrLvVL2alzDSWo7ZoXfg83F8+DHK5Dsax1N9HmvIfkRFBQdQYgD4ykViyUI
-         YNVnS1BPXYb/1yiyEIRwKuoEas1BAukspK8Irr5u5XH8B1sCO9DNjhVlk52Bwfb7fXkX
-         suS31bEfwvliDFi6qPyFomLBAVpeE8VJ6Fm1qnsEitpALjUGFYA+S4ZO+5v7k1bd/G/e
-         Myfg==
-X-Gm-Message-State: APjAAAX1Et3JYpktUPy/2aNckBELHqs8aNAi0/h9SXRJcZVV7ZyEYLye
-        Zmx5f/lVMe9j3HmYJ6FrbNo=
-X-Google-Smtp-Source: APXvYqwudYW3SlUwNYhcsJjD2f8LUUTsZK63ADPGAZf93vIUia8LG6mRDg88vi/jG9tXTki6OS1H0Q==
-X-Received: by 2002:aa7:8d98:: with SMTP id i24mr34349227pfr.199.1560571335596;
-        Fri, 14 Jun 2019 21:02:15 -0700 (PDT)
-Received: from hari-Inspiron-1545 ([183.83.89.153])
-        by smtp.gmail.com with ESMTPSA id m1sm3857242pjv.22.2019.06.14.21.02.13
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 14 Jun 2019 21:02:14 -0700 (PDT)
-Date:   Sat, 15 Jun 2019 09:32:10 +0530
-From:   Hariprasad Kelam <hariprasad.kelam@gmail.com>
-To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] drivers: firmware: efi: fix gcc warning -Wint-conversion
-Message-ID: <20190615040210.GA9112@hari-Inspiron-1545>
+        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
+         :message-id:mime-version:content-transfer-encoding;
+        bh=eKbpzEiJylVko/AqUmYGdm35tR1kAF8kyTrOQOn/LZY=;
+        b=eYE5yCeZ/NpqWMlLXuD1OoYZZLBWoH8YQxBjwC9F6pHAW8VMt45TNSsbqOYjgH3LYa
+         /I7lsAz5S4pEZWioxi/lJJfVEVncld112Ezx0ZoisjGbZhmUYyrUZ86yfQs5DgyALMCD
+         uu766hha0J8OiCBGJJ4m3SQ9o4lF3PahY2ha8EznevJzK07ddtCNdE6ARV5u3Etx4CUS
+         v1t3fcWz2gCg/nKJSmvqUNgfusKqUm+3fGMbvYRTY42fsTeXZvdRd5zPuyZEMtDz+PsJ
+         CSwjVDNPbEDDOU8boU4RcKRFVx/DkRjkRys94T8ZoHtCFgcN94YpixDF8oXOGiUHeUC2
+         HFHA==
+X-Gm-Message-State: APjAAAWypnnvjdT6/PJLVN2gT/o8pYDHlkke3303Fa5vYl/lpVYOdrmK
+        2+Ke1zmvMIxFGZ0AcXqLZHtvh2u7nj4=
+X-Google-Smtp-Source: APXvYqzVFXwvbw+h8Vy5oNuVgOROK+vJF9NO7ccBNAEWTkL02XdJ05Npe6ZqjRHegh2kVzPtwd85kA==
+X-Received: by 2002:a63:6981:: with SMTP id e123mr22346754pgc.136.1560729370570;
+        Sun, 16 Jun 2019 16:56:10 -0700 (PDT)
+Received: from localhost (ppp167-251-205.static.internode.on.net. [59.167.251.205])
+        by smtp.gmail.com with ESMTPSA id v4sm9131345pfb.14.2019.06.16.16.56.08
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Sun, 16 Jun 2019 16:56:09 -0700 (PDT)
+From:   Daniel Axtens <dja@axtens.net>
+To:     Nayna <nayna@linux.vnet.ibm.com>
+Cc:     Nayna Jain <nayna@linux.ibm.com>, linuxppc-dev@ozlabs.org,
+        linux-efi@vger.kernel.org, linux-integrity@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Paul Mackerras <paulus@samba.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Jeremy Kerr <jk@ozlabs.org>,
+        Matthew Garret <matthew.garret@nebula.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        Claudio Carvalho <cclaudio@linux.ibm.com>,
+        Eric Richter <erichte@linux.ibm.com>
+Subject: Re: [PATCH v3 1/3] powerpc/powernv: Add OPAL API interface to get secureboot state
+In-Reply-To: <b2cedb05-6373-b357-f35c-bc112c78a6fc@linux.vnet.ibm.com>
+References: <1560198837-18857-1-git-send-email-nayna@linux.ibm.com> <1560198837-18857-2-git-send-email-nayna@linux.ibm.com> <87ftofpbth.fsf@dja-thinkpad.axtens.net> <eaa37bd0-a77d-d70a-feb5-c0e73ce231bf@linux.vnet.ibm.com> <87d0jipfr9.fsf@dja-thinkpad.axtens.net> <b2cedb05-6373-b357-f35c-bc112c78a6fc@linux.vnet.ibm.com>
+Date:   Mon, 17 Jun 2019 09:56:05 +1000
+Message-ID: <87tvcp2iga.fsf@dja-thinkpad.axtens.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-User-Agent: Mutt/1.5.24 (2015-08-30)
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-This patch fixes below warning
+Hi Nayna,
 
-drivers/firmware/efi/tpm.c:78:38: warning: passing argument 1 of
-‘tpm2_calc_event_log_size’ makes pointer from integer without a cast
-[-Wint-conversion]
+>> I guess I also somewhat object to calling it a 'backend' if we're using
+>> it as a version scheme. I think the skiboot storage backends are true
+>> backends - they provide different implementations of the same
+>> functionality with the same API, but this seems like you're using it to
+>> indicate different functionality. It seems like we're using it as if it
+>> were called OPAL_SECVAR_VERSION.
+>
+> We are changing how we are exposing the version to the kernel. The=20
+> version will be exposed as device-tree entry rather than a OPAL runtime=20
+> service. We are not tied to the name "backend", we can switch to calling=
+=20
+> it as "scheme" unless there is a better name.
 
-Signed-off-by: Hariprasad Kelam <hariprasad.kelam@gmail.com>
----
- drivers/firmware/efi/tpm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+This sounds like a good approach to me.
 
-diff --git a/drivers/firmware/efi/tpm.c b/drivers/firmware/efi/tpm.c
-index 74d0cd1..1d3f5ca 100644
---- a/drivers/firmware/efi/tpm.c
-+++ b/drivers/firmware/efi/tpm.c
-@@ -75,7 +75,7 @@ int __init efi_tpm_eventlog_init(void)
- 		goto out;
- 	}
- 
--	tbl_size = tpm2_calc_event_log_size(efi.tpm_final_log
-+	tbl_size = tpm2_calc_event_log_size((void *)efi.tpm_final_log
- 					    + sizeof(final_tbl->version)
- 					    + sizeof(final_tbl->nr_events),
- 					    final_tbl->nr_events,
--- 
-2.7.4
+Kind regards,
+Daniel
 
+>
+> Thanks & Regards,
+>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 - Nayna
