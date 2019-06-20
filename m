@@ -2,83 +2,106 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id ADEDA4C3D9
-	for <lists+linux-efi@lfdr.de>; Thu, 20 Jun 2019 00:48:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0383A4C494
+	for <lists+linux-efi@lfdr.de>; Thu, 20 Jun 2019 02:45:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726496AbfFSWsg (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 19 Jun 2019 18:48:36 -0400
-Received: from mail-io1-f68.google.com ([209.85.166.68]:44235 "EHLO
-        mail-io1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726251AbfFSWsg (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 19 Jun 2019 18:48:36 -0400
-Received: by mail-io1-f68.google.com with SMTP id s7so322414iob.11
-        for <linux-efi@vger.kernel.org>; Wed, 19 Jun 2019 15:48:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=YKJaoMjaF4vCZqPi8dwckcEgHtOWdNYvU090tpibj0w=;
-        b=d6WWNTDf8BwpcDeLK3CHrloIi8s3+6D20pkxtkx0tfHOzYzHxUI6l1c1+/LNMs30sM
-         BMoSj2tz2++N/8yJG1frilcp+5jbpEvCMOhUNiSdjIaB9yxbr+UO33vHSgypay0UfOhi
-         Akil9xVSqel1xTCQ4z11nvl3JpSCjY2nZZtKPRabomxyQWdVOczgB+u+evqwqvTekzlT
-         7CcmYKsjG5BewmhtbtVRS1jKryf4TZHc8v0FmbPQ9rAXmEuK8zjbvTCi+lB6n2kUt45z
-         0I6TQbCHrUNoR5C3o5YvtxgW4P36jHKWnGvCb01DQFWtUWUI/YyQyNWXVuYoliIbAWgw
-         8zEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=YKJaoMjaF4vCZqPi8dwckcEgHtOWdNYvU090tpibj0w=;
-        b=nfJ0KczSiKpWOrtymiY4IpDTOxdmAChjDnMSjcjmMXopuGHIOmSs36Q8L7fsaSm5hd
-         vSa2wCvKzw7SMAbD4ASRQyfowKrWMMKZRLUYum4rqjbxZF3C/WNzUmJt28r7ENcNRpS9
-         P0O/XlCCCvkJAZjp3hwxw1AMRU+GevHcyzx6jSFEoPQgSDNgLRbFNoeKorK9B7D/13rS
-         p8m4g9lDR8ds7DzzbpanfXFmG3nNukiU1pQZVn/YN6S+Y0vcK4Oqcg+NO41Yk9KgKCDW
-         RxlgrblB1DbajEsfe1IfqK4itot9MeYTe4azsIHQuwdFSHDVwEGitj1taE/PoP2zt8cL
-         OkfQ==
-X-Gm-Message-State: APjAAAV4+Q+kFlnhco+ZkSiJyeuJrKR4V5uoov+qP2K5o11rSwBJ2FXW
-        y124txFrQ42q5dEXWGC9FV9nvw00L6bssfR1luKb14d2Q0iVng==
-X-Google-Smtp-Source: APXvYqw4FrufMrwsWG20g5Vc8KSbXAfu2/rJlkScfVMpc4fL31bGQq9hagdM9w9y1ld98AaKyaZC78IP96NTZbSLwSY=
-X-Received: by 2002:a02:cc6c:: with SMTP id j12mr12111505jaq.102.1560984514733;
- Wed, 19 Jun 2019 15:48:34 -0700 (PDT)
+        id S1726072AbfFTApU (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 19 Jun 2019 20:45:20 -0400
+Received: from mga01.intel.com ([192.55.52.88]:57779 "EHLO mga01.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726096AbfFTApU (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Wed, 19 Jun 2019 20:45:20 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 19 Jun 2019 17:45:19 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.63,394,1557212400"; 
+   d="scan'208";a="160515150"
+Received: from fmsmsx108.amr.corp.intel.com ([10.18.124.206])
+  by fmsmga008.fm.intel.com with ESMTP; 19 Jun 2019 17:45:19 -0700
+Received: from fmsmsx156.amr.corp.intel.com (10.18.116.74) by
+ FMSMSX108.amr.corp.intel.com (10.18.124.206) with Microsoft SMTP Server (TLS)
+ id 14.3.439.0; Wed, 19 Jun 2019 17:45:19 -0700
+Received: from shsmsx154.ccr.corp.intel.com (10.239.6.54) by
+ fmsmsx156.amr.corp.intel.com (10.18.116.74) with Microsoft SMTP Server (TLS)
+ id 14.3.439.0; Wed, 19 Jun 2019 17:45:19 -0700
+Received: from shsmsx102.ccr.corp.intel.com ([169.254.2.33]) by
+ SHSMSX154.ccr.corp.intel.com ([169.254.7.156]) with mapi id 14.03.0439.000;
+ Thu, 20 Jun 2019 08:45:16 +0800
+From:   "Tian, Baofeng" <baofeng.tian@intel.com>
+To:     "ard.biesheuvel@linaro.org" <ard.biesheuvel@linaro.org>,
+        "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
+        "Compostella, Jeremy" <jeremy.compostella@intel.com>,
+        "Tan, Ming" <ming.tan@intel.com>,
+        "Zhuang, Qihua" <qihua.zhuang@intel.com>
+Subject: RE: [[efi boot control]] efibc: Replace variable set function in
+ notifier call
+Thread-Topic: [[efi boot control]] efibc: Replace variable set function in
+ notifier call
+Thread-Index: AQHVIPfA5NojxdavdEGXvLko2SSf76ajwJOA
+Date:   Thu, 20 Jun 2019 00:45:15 +0000
+Message-ID: <EEBA739CCF11FE49B73E1FB4690F5EE64E598E83@shsmsx102.ccr.corp.intel.com>
+References: <20190612081810.26526-1-baofeng.tian@intel.com>
+In-Reply-To: <20190612081810.26526-1-baofeng.tian@intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-titus-metadata-40: eyJDYXRlZ29yeUxhYmVscyI6IiIsIk1ldGFkYXRhIjp7Im5zIjoiaHR0cDpcL1wvd3d3LnRpdHVzLmNvbVwvbnNcL0ludGVsMyIsImlkIjoiNDQ5NDc2OGQtMTQwNi00ZTBjLThiODgtMzUxNjIzNTcyNzI1IiwicHJvcHMiOlt7Im4iOiJDVFBDbGFzc2lmaWNhdGlvbiIsInZhbHMiOlt7InZhbHVlIjoiQ1RQX05UIn1dfV19LCJTdWJqZWN0TGFiZWxzIjpbXSwiVE1DVmVyc2lvbiI6IjE3LjEwLjE4MDQuNDkiLCJUcnVzdGVkTGFiZWxIYXNoIjoiZ0x4bGluaDVJV2tVUXNEMXF3enZ1RGJRK1VoRTN5NldHaHlSbmtXdDMzNHVHK1J3MklZZU5XUldGWmNEazkrRSJ9
+x-ctpclassification: CTP_NT
+dlp-product: dlpe-windows
+dlp-version: 11.0.600.7
+dlp-reaction: no-action
+x-originating-ip: [10.239.127.40]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-References: <20190615040210.GA9112@hari-Inspiron-1545> <CAKv+Gu9-wiJNxPsVn06dBSU8Gchg8LjV=mi0cThZUWywmt2xzQ@mail.gmail.com>
-In-Reply-To: <CAKv+Gu9-wiJNxPsVn06dBSU8Gchg8LjV=mi0cThZUWywmt2xzQ@mail.gmail.com>
-From:   Matthew Garrett <mjg59@google.com>
-Date:   Wed, 19 Jun 2019 15:48:23 -0700
-Message-ID: <CACdnJuudmE-MNuO7z87Mm65VaXbRzhOrBEpU5F=yC67uSLytGQ@mail.gmail.com>
-Subject: Re: [PATCH] drivers: firmware: efi: fix gcc warning -Wint-conversion
-To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Cc:     Hariprasad Kelam <hariprasad.kelam@gmail.com>,
-        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        tpmdd-devel@lists.sourceforge.net,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, Jun 19, 2019 at 2:55 AM Ard Biesheuvel
-<ard.biesheuvel@linaro.org> wrote:
->
-> (+ Jarkko, tpmdd, Matthew)
->
-> On Sat, 15 Jun 2019 at 06:02, Hariprasad Kelam
-> <hariprasad.kelam@gmail.com> wrote:
-> >
-> > This patch fixes below warning
-> >
-> > drivers/firmware/efi/tpm.c:78:38: warning: passing argument 1 of
-> > =E2=80=98tpm2_calc_event_log_size=E2=80=99 makes pointer from integer w=
-ithout a cast
-> > [-Wint-conversion]
-> >
-> > Signed-off-by: Hariprasad Kelam <hariprasad.kelam@gmail.com>
->
-> I think we already have a fix queued for this, no?
-
-It looks like I fixed this in "Don't duplicate events from the final
-event log in the TCG2 log" rather than a separate patch - I'm fine
-merging this, based on Jarkko's preferences.
+SGksIFJldmlld2VycyBhbmQgYWxsDQoNCkNvdWxkIHlvdSBoZWxwIHJldmlldyBiZWxvdyBjaGFu
+Z2VzPyBhbmQgbGV0IG1lIGtub3cgeW91ciBvcGluaW9uLg0KDQpKZXJlbXksIGNvdWxkIHlvdSBo
+ZWxwIGFkZCBNYXR0IEZsZW1pbmcgaW50byB0aGUgbG9vcCB0byByZXZpZXcgdGhpcyBjaGFuZ2U/
+DQoNClRoYW5rcw0KVGltDQoNCi0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQpGcm9tOiBUaWFu
+LCBCYW9mZW5nIA0KU2VudDogV2VkbmVzZGF5LCBKdW5lIDEyLCAyMDE5IDQ6MTggUE0NClRvOiBh
+cmQuYmllc2hldXZlbEBsaW5hcm8ub3JnOyBsaW51eC1lZmlAdmdlci5rZXJuZWwub3JnOyBDb21w
+b3N0ZWxsYSwgSmVyZW15IDxqZXJlbXkuY29tcG9zdGVsbGFAaW50ZWwuY29tPjsgVGFuLCBNaW5n
+IDxtaW5nLnRhbkBpbnRlbC5jb20+OyBaaHVhbmcsIFFpaHVhIDxxaWh1YS56aHVhbmdAaW50ZWwu
+Y29tPg0KQ2M6IFRpYW4sIEJhb2ZlbmcgPGJhb2ZlbmcudGlhbkBpbnRlbC5jb20+OyBMdW8sIFhp
+bmFuWCA8eGluYW54Lmx1b0BpbnRlbC5jb20+DQpTdWJqZWN0OiBbW2VmaSBib290IGNvbnRyb2xd
+XSBlZmliYzogUmVwbGFjZSB2YXJpYWJsZSBzZXQgZnVuY3Rpb24gaW4gbm90aWZpZXIgY2FsbA0K
+DQpGcm9tOiBUaWFuIEJhb2ZlbmcgPGJhb2ZlbmcudGlhbkBpbnRlbC5jb20+DQoNClJlcGxhY2Ug
+dGhlIHZhcmlhYmxlIHNldCBmdW5jdGlvbiBmcm9tICJlZml2YXJfZW50cnlfc2V0IiB0byAiZWZp
+dmFyX2VudHJ5X3NldF9zYWZlIiBpbiBlZmliYyBwYW5pYyBub3RpZmllci4NCkluIHNhZmUgZnVu
+Y3Rpb24gcGFyYW1ldGVyICJibG9jayIgd2lsbCBzZXQgdG8gZmFsc2UgYW5kIHdpbGwgY2FsbCAi
+ZWZpdmFyX2VudHJ5X3NldF9ub25ibG9ja2luZyJ0byBzZXQgZWZpIHZhcmlhYmxlcy4NCmVmaXZh
+cl9lbnRyeV9zZXRfbm9uYmxvY2tpbmcgaXMgZ3VhcmFudGVlZCB0byBub3QgYmxvY2sgYW5kIGlz
+IHN1aXRhYmxlIGZvciBjYWxsaW5nIGZyb20gY3Jhc2gvcGFuaWMgaGFuZGxlcnMuDQpJbiBVRUZJ
+IGFuZHJvaWQgcGxhdGZvcm0sIHdoZW4gd2FybSByZXNldCBoYXBwZW5zLCB3aXRoIHRoaXMgY2hh
+bmdlLCBlZmliYyB3aWxsIG5vdCBibG9jayB0aGUgcmVib290IHByb2Nlc3MuDQpPdGhlcndpc2Us
+IHNldCB2YXJpYWJsZSB3aWxsIGNhbGwgcXVldWUgd29yayBhbmQgc2VuZCB0byBvdGhlciBvZmZs
+aW5lZCBjcHVzIHRoZW4gY2F1c2UgYW5vdGhlciBwYW5pYywgZmluYWxseSB3aWxsIGNhdXNlIHJl
+Ym9vdCBmYWlsdXJlLg0KDQpTaWduZWQtb2ZmLWJ5OiBUaWFuIEJhb2ZlbmcgPGJhb2ZlbmcudGlh
+bkBpbnRlbC5jb20+DQpTaWduZWQtb2ZmLWJ5OiBMdW8gWGluYW5YIDx4aW5hbngubHVvQGludGVs
+LmNvbT4NCi0tLQ0KIGRyaXZlcnMvZmlybXdhcmUvZWZpL2VmaWJjLmMgfCAxMiArKysrKysrLS0t
+LS0NCiAxIGZpbGUgY2hhbmdlZCwgNyBpbnNlcnRpb25zKCspLCA1IGRlbGV0aW9ucygtKQ0KDQpk
+aWZmIC0tZ2l0IGEvZHJpdmVycy9maXJtd2FyZS9lZmkvZWZpYmMuYyBiL2RyaXZlcnMvZmlybXdh
+cmUvZWZpL2VmaWJjLmMgaW5kZXggNjFlMDk5ODI2Y2JiLi4zNWRjY2M4OGFjMGEgMTAwNjQ0DQot
+LS0gYS9kcml2ZXJzL2Zpcm13YXJlL2VmaS9lZmliYy5jDQorKysgYi9kcml2ZXJzL2Zpcm13YXJl
+L2VmaS9lZmliYy5jDQpAQCAtNDMsMTEgKzQzLDEzIEBAIHN0YXRpYyBpbnQgZWZpYmNfc2V0X3Zh
+cmlhYmxlKGNvbnN0IGNoYXIgKm5hbWUsIGNvbnN0IGNoYXIgKnZhbHVlKQ0KIAllZmliY19zdHJf
+dG9fc3RyMTYodmFsdWUsIChlZmlfY2hhcjE2X3QgKillbnRyeS0+dmFyLkRhdGEpOw0KIAltZW1j
+cHkoJmVudHJ5LT52YXIuVmVuZG9yR3VpZCwgJmd1aWQsIHNpemVvZihndWlkKSk7DQogDQotCXJl
+dCA9IGVmaXZhcl9lbnRyeV9zZXQoZW50cnksDQotCQkJICAgICAgIEVGSV9WQVJJQUJMRV9OT05f
+Vk9MQVRJTEUNCi0JCQkgICAgICAgfCBFRklfVkFSSUFCTEVfQk9PVFNFUlZJQ0VfQUNDRVNTDQot
+CQkJICAgICAgIHwgRUZJX1ZBUklBQkxFX1JVTlRJTUVfQUNDRVNTLA0KLQkJCSAgICAgICBzaXpl
+LCBlbnRyeS0+dmFyLkRhdGEsIE5VTEwpOw0KKwlyZXQgPSBlZml2YXJfZW50cnlfc2V0X3NhZmUo
+ZW50cnktPnZhci5WYXJpYWJsZU5hbWUsDQorCQkJCSAgICBlbnRyeS0+dmFyLlZlbmRvckd1aWQs
+DQorCQkJCSAgICBFRklfVkFSSUFCTEVfTk9OX1ZPTEFUSUxFDQorCQkJCSAgICB8IEVGSV9WQVJJ
+QUJMRV9CT09UU0VSVklDRV9BQ0NFU1MNCisJCQkJICAgIHwgRUZJX1ZBUklBQkxFX1JVTlRJTUVf
+QUNDRVNTLA0KKwkJCQkgICAgZmFsc2UsIHNpemUsIGVudHJ5LT52YXIuRGF0YSk7DQorDQogCWlm
+IChyZXQpDQogCQlwcl9lcnIoImZhaWxlZCB0byBzZXQgJXMgRUZJIHZhcmlhYmxlOiAweCV4XG4i
+LA0KIAkJICAgICAgIG5hbWUsIHJldCk7DQotLQ0KMi4yMS4wDQoNCg==
