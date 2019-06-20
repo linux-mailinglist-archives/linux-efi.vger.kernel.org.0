@@ -2,78 +2,100 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B5184DCA9
-	for <lists+linux-efi@lfdr.de>; Thu, 20 Jun 2019 23:37:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F0134DD0E
+	for <lists+linux-efi@lfdr.de>; Thu, 20 Jun 2019 23:53:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726067AbfFTVhx (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 20 Jun 2019 17:37:53 -0400
-Received: from mga18.intel.com ([134.134.136.126]:34601 "EHLO mga18.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725815AbfFTVhx (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Thu, 20 Jun 2019 17:37:53 -0400
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orsmga106.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 20 Jun 2019 14:37:52 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.63,398,1557212400"; 
-   d="scan'208";a="162491010"
-Received: from mudigirx-mobl1.gar.corp.intel.com (HELO localhost) ([10.252.61.12])
-  by fmsmga007.fm.intel.com with ESMTP; 20 Jun 2019 14:37:48 -0700
-Date:   Fri, 21 Jun 2019 00:37:46 +0300
-From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-To:     Matthew Garrett <mjg59@google.com>
-Cc:     Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Hariprasad Kelam <hariprasad.kelam@gmail.com>,
-        tpmdd-devel@lists.sourceforge.net,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] drivers: firmware: efi: fix gcc warning -Wint-conversion
-Message-ID: <20190620213722.GA17841@linux.intel.com>
-References: <20190615040210.GA9112@hari-Inspiron-1545>
- <CAKv+Gu9-wiJNxPsVn06dBSU8Gchg8LjV=mi0cThZUWywmt2xzQ@mail.gmail.com>
- <CACdnJuudmE-MNuO7z87Mm65VaXbRzhOrBEpU5F=yC67uSLytGQ@mail.gmail.com>
+        id S1726219AbfFTVxn (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 20 Jun 2019 17:53:43 -0400
+Received: from outgoing-auth-1.mit.edu ([18.9.28.11]:58782 "EHLO
+        outgoing.mit.edu" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1725905AbfFTVxn (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 20 Jun 2019 17:53:43 -0400
+Received: from callcc.thunk.org (guestnat-104-133-0-109.corp.google.com [104.133.0.109] (may be forged))
+        (authenticated bits=0)
+        (User authenticated as tytso@ATHENA.MIT.EDU)
+        by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id x5KLqDCc014930
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 20 Jun 2019 17:52:14 -0400
+Received: by callcc.thunk.org (Postfix, from userid 15806)
+        id EC0F4420484; Thu, 20 Jun 2019 17:52:12 -0400 (EDT)
+Date:   Thu, 20 Jun 2019 17:52:12 -0400
+From:   "Theodore Ts'o" <tytso@mit.edu>
+To:     "Darrick J. Wong" <darrick.wong@oracle.com>
+Cc:     matthew.garrett@nebula.com, yuchao0@huawei.com,
+        ard.biesheuvel@linaro.org, josef@toxicpanda.com, clm@fb.com,
+        adilger.kernel@dilger.ca, viro@zeniv.linux.org.uk, jack@suse.com,
+        dsterba@suse.com, jaegeuk@kernel.org, jk@ozlabs.org,
+        reiserfs-devel@vger.kernel.org, linux-efi@vger.kernel.org,
+        devel@lists.orangefs.org, linux-kernel@vger.kernel.org,
+        linux-f2fs-devel@lists.sourceforge.net, linux-xfs@vger.kernel.org,
+        linux-mm@kvack.org, linux-nilfs@vger.kernel.org,
+        linux-mtd@lists.infradead.org, ocfs2-devel@oss.oracle.com,
+        linux-fsdevel@vger.kernel.org, linux-ext4@vger.kernel.org,
+        linux-btrfs@vger.kernel.org
+Subject: Re: [PATCH 1/6] mm/fs: don't allow writes to immutable files
+Message-ID: <20190620215212.GG4650@mit.edu>
+Mail-Followup-To: Theodore Ts'o <tytso@mit.edu>,
+        "Darrick J. Wong" <darrick.wong@oracle.com>,
+        matthew.garrett@nebula.com, yuchao0@huawei.com,
+        ard.biesheuvel@linaro.org, josef@toxicpanda.com, clm@fb.com,
+        adilger.kernel@dilger.ca, viro@zeniv.linux.org.uk, jack@suse.com,
+        dsterba@suse.com, jaegeuk@kernel.org, jk@ozlabs.org,
+        reiserfs-devel@vger.kernel.org, linux-efi@vger.kernel.org,
+        devel@lists.orangefs.org, linux-kernel@vger.kernel.org,
+        linux-f2fs-devel@lists.sourceforge.net, linux-xfs@vger.kernel.org,
+        linux-mm@kvack.org, linux-nilfs@vger.kernel.org,
+        linux-mtd@lists.infradead.org, ocfs2-devel@oss.oracle.com,
+        linux-fsdevel@vger.kernel.org, linux-ext4@vger.kernel.org,
+        linux-btrfs@vger.kernel.org
+References: <156022836912.3227213.13598042497272336695.stgit@magnolia>
+ <156022837711.3227213.11787906519006016743.stgit@magnolia>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CACdnJuudmE-MNuO7z87Mm65VaXbRzhOrBEpU5F=yC67uSLytGQ@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+In-Reply-To: <156022837711.3227213.11787906519006016743.stgit@magnolia>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, Jun 19, 2019 at 03:48:23PM -0700, Matthew Garrett wrote:
-> On Wed, Jun 19, 2019 at 2:55 AM Ard Biesheuvel
-> <ard.biesheuvel@linaro.org> wrote:
-> >
-> > (+ Jarkko, tpmdd, Matthew)
-> >
-> > On Sat, 15 Jun 2019 at 06:02, Hariprasad Kelam
-> > <hariprasad.kelam@gmail.com> wrote:
-> > >
-> > > This patch fixes below warning
-> > >
-> > > drivers/firmware/efi/tpm.c:78:38: warning: passing argument 1 of
-> > > ‘tpm2_calc_event_log_size’ makes pointer from integer without a cast
-> > > [-Wint-conversion]
-> > >
-> > > Signed-off-by: Hariprasad Kelam <hariprasad.kelam@gmail.com>
-> >
-> > I think we already have a fix queued for this, no?
+On Mon, Jun 10, 2019 at 09:46:17PM -0700, Darrick J. Wong wrote:
+> From: Darrick J. Wong <darrick.wong@oracle.com>
 > 
-> It looks like I fixed this in "Don't duplicate events from the final
-> event log in the TCG2 log" rather than a separate patch - I'm fine
-> merging this, based on Jarkko's preferences.
+> The chattr manpage has this to say about immutable files:
+> 
+> "A file with the 'i' attribute cannot be modified: it cannot be deleted
+> or renamed, no link can be created to this file, most of the file's
+> metadata can not be modified, and the file can not be opened in write
+> mode."
+> 
+> Once the flag is set, it is enforced for quite a few file operations,
+> such as fallocate, fpunch, fzero, rm, touch, open, etc.  However, we
+> don't check for immutability when doing a write(), a PROT_WRITE mmap(),
+> a truncate(), or a write to a previously established mmap.
+> 
+> If a program has an open write fd to a file that the administrator
+> subsequently marks immutable, the program still can change the file
+> contents.  Weird!
+> 
+> The ability to write to an immutable file does not follow the manpage
+> promise that immutable files cannot be modified.  Worse yet it's
+> inconsistent with the behavior of other syscalls which don't allow
+> modifications of immutable files.
+> 
+> Therefore, add the necessary checks to make the write, mmap, and
+> truncate behavior consistent with what the manpage says and consistent
+> with other syscalls on filesystems which support IMMUTABLE.
+> 
+> Signed-off-by: Darrick J. Wong <darrick.wong@oracle.com>
 
-Right! OK, I squashed just the fix to the earlier patch. Master and
-next are updated. Can you take a peek of [1] and see if it looks
-legit given all the fuzz around these changes? Then I'm confident
-enough to do the 5.3 PR.
+I note that this patch doesn't allow writes to swap files.  So Amir's
+generic/554 test will still fail for those file systems that don't use
+copy_file_range.
 
-[1] git://git.infradead.org/users/jjs/linux-tpmdd.git
+I'm indifferent as to whether you add a new patch, or include that
+change in this patch, but perhaps we should fix this while we're
+making changes in these code paths?
 
-/Jarkko
+				- Ted
