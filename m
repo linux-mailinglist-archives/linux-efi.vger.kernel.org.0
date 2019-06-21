@@ -2,89 +2,99 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AB3054DE38
-	for <lists+linux-efi@lfdr.de>; Fri, 21 Jun 2019 02:56:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CA45A4DE95
+	for <lists+linux-efi@lfdr.de>; Fri, 21 Jun 2019 03:23:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725911AbfFUA4E (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 20 Jun 2019 20:56:04 -0400
-Received: from outgoing-auth-1.mit.edu ([18.9.28.11]:59656 "EHLO
-        outgoing.mit.edu" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1725906AbfFUA4E (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 20 Jun 2019 20:56:04 -0400
-Received: from callcc.thunk.org (guestnat-104-133-0-109.corp.google.com [104.133.0.109] (may be forged))
-        (authenticated bits=0)
-        (User authenticated as tytso@ATHENA.MIT.EDU)
-        by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id x5L0sK0h000800
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 20 Jun 2019 20:54:21 -0400
-Received: by callcc.thunk.org (Postfix, from userid 15806)
-        id 28403420484; Thu, 20 Jun 2019 20:54:20 -0400 (EDT)
-Date:   Thu, 20 Jun 2019 20:54:20 -0400
-From:   "Theodore Ts'o" <tytso@mit.edu>
-To:     "Darrick J. Wong" <darrick.wong@oracle.com>
-Cc:     matthew.garrett@nebula.com, yuchao0@huawei.com,
-        ard.biesheuvel@linaro.org, josef@toxicpanda.com, clm@fb.com,
-        adilger.kernel@dilger.ca, viro@zeniv.linux.org.uk, jack@suse.com,
-        dsterba@suse.com, jaegeuk@kernel.org, jk@ozlabs.org,
-        reiserfs-devel@vger.kernel.org, linux-efi@vger.kernel.org,
-        devel@lists.orangefs.org, linux-kernel@vger.kernel.org,
-        linux-f2fs-devel@lists.sourceforge.net, linux-xfs@vger.kernel.org,
-        linux-mm@kvack.org, linux-nilfs@vger.kernel.org,
-        linux-mtd@lists.infradead.org, ocfs2-devel@oss.oracle.com,
-        linux-fsdevel@vger.kernel.org, linux-ext4@vger.kernel.org,
-        linux-btrfs@vger.kernel.org
-Subject: Re: [PATCH 1/6] mm/fs: don't allow writes to immutable files
-Message-ID: <20190621005420.GH4650@mit.edu>
-Mail-Followup-To: Theodore Ts'o <tytso@mit.edu>,
-        "Darrick J. Wong" <darrick.wong@oracle.com>,
-        matthew.garrett@nebula.com, yuchao0@huawei.com,
-        ard.biesheuvel@linaro.org, josef@toxicpanda.com, clm@fb.com,
-        adilger.kernel@dilger.ca, viro@zeniv.linux.org.uk, jack@suse.com,
-        dsterba@suse.com, jaegeuk@kernel.org, jk@ozlabs.org,
-        reiserfs-devel@vger.kernel.org, linux-efi@vger.kernel.org,
-        devel@lists.orangefs.org, linux-kernel@vger.kernel.org,
-        linux-f2fs-devel@lists.sourceforge.net, linux-xfs@vger.kernel.org,
-        linux-mm@kvack.org, linux-nilfs@vger.kernel.org,
-        linux-mtd@lists.infradead.org, ocfs2-devel@oss.oracle.com,
-        linux-fsdevel@vger.kernel.org, linux-ext4@vger.kernel.org,
-        linux-btrfs@vger.kernel.org
-References: <156022836912.3227213.13598042497272336695.stgit@magnolia>
- <156022837711.3227213.11787906519006016743.stgit@magnolia>
- <20190620215212.GG4650@mit.edu>
- <20190620221306.GD5375@magnolia>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190620221306.GD5375@magnolia>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+        id S1726934AbfFUBVF (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 20 Jun 2019 21:21:05 -0400
+Received: from mail-yb1-f201.google.com ([209.85.219.201]:49061 "EHLO
+        mail-yb1-f201.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726931AbfFUBVD (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 20 Jun 2019 21:21:03 -0400
+Received: by mail-yb1-f201.google.com with SMTP id z124so4296020ybz.15
+        for <linux-efi@vger.kernel.org>; Thu, 20 Jun 2019 18:21:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=date:in-reply-to:message-id:mime-version:references:subject:from:to
+         :cc;
+        bh=knoEDxerDamiS2udwBAyDKB2ttd1lX+80CF4AC/SyM0=;
+        b=ICMNVRkNz9HnJz3EvoIc4iF32ARr2jxl8GgTxe7lk2BN+XJU+KaLeMD/xZw/RUgzBj
+         2IL4z04wtDp23HqSdMnyrxoaA16Rk6s7u8X92iR3qnSMgGiAALWsSPXk8Rbm5iZf1HFJ
+         AKcA2cV/jHmxmTRZu1LPNcYoeYkmR1BjKdhDUXgEAN2OyQgMW1krbjk+tbEoV/1+MYP5
+         /Uq42xpHhwGYRr2fefqC2TK7cE5w8u6XMt4GStffGhwP6FZ2bof1USBItw3kW7Kd7giP
+         GHViyL8q45sG3E0i5Do1T6WQHdYVQaRRGdkUud8BrJPUj45c8qJIwU9nXrpeons+BrZ/
+         k/PQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:in-reply-to:message-id:mime-version
+         :references:subject:from:to:cc;
+        bh=knoEDxerDamiS2udwBAyDKB2ttd1lX+80CF4AC/SyM0=;
+        b=UcMCWOxputDtsvYD2cZ1nF4TExz15oGbOtLs3n0T63topK3sCIypgFYaLOZ7OljmHi
+         UBuAmkiCbuKufzG7dhe1jMGdE/a/6+6GpZX7DhvIBrKbEEh/Bq5t9loprd9v83VrqzN2
+         u/Vj7eSiFxsC1jzezaJwsfse9SWvslVhzsoe8/0rCfBZ8UJRNf5ymhKbRBq3iTpbDYab
+         xauCWSxFwVHw5OR7OG0fWzZJCPsC+6In8cU3BtN9aYxI6WfVZOgOWTVgOouqw9jLxLB6
+         tw+x+VGB4Zqa6+XH3V9FjiGvLIpTP/tPcDxr+vQvqsH6V5yauvtFjFTdeLwnsPpQ35L+
+         Tx2A==
+X-Gm-Message-State: APjAAAUNHvv5KFHZcDgqA7gvu43s5rcSoICinuM8QP2sFCJTXKyBZLIF
+        MS7F4SiyX7Sl9iLFD/VEz4Bd79aYgxDnar0xNL/Cag==
+X-Google-Smtp-Source: APXvYqzXtKc4q/eOrcelOahjOBOrBEBeNLXGOpYukdIfoX1WsAoG+47EYNVhHraiGgoP/Z3FQm4pLmztSWSJawWS+XNZAw==
+X-Received: by 2002:a81:590a:: with SMTP id n10mr7812986ywb.187.1561080063114;
+ Thu, 20 Jun 2019 18:21:03 -0700 (PDT)
+Date:   Thu, 20 Jun 2019 18:19:41 -0700
+In-Reply-To: <20190621011941.186255-1-matthewgarrett@google.com>
+Message-Id: <20190621011941.186255-31-matthewgarrett@google.com>
+Mime-Version: 1.0
+References: <20190621011941.186255-1-matthewgarrett@google.com>
+X-Mailer: git-send-email 2.22.0.410.gd8fdbe21b5-goog
+Subject: [PATCH V33 30/30] efi: Restrict efivar_ssdt_load when the kernel is
+ locked down
+From:   Matthew Garrett <matthewgarrett@google.com>
+To:     jmorris@namei.org
+Cc:     linux-security@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-api@vger.kernel.org,
+        Matthew Garrett <matthewgarrett@google.com>,
+        Matthew Garrett <mjg59@google.com>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        linux-efi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, Jun 20, 2019 at 03:13:06PM -0700, Darrick J. Wong wrote:
-> > I note that this patch doesn't allow writes to swap files.  So Amir's
-> > generic/554 test will still fail for those file systems that don't use
-> > copy_file_range.
-> 
-> I didn't add any IS_SWAPFILE checks here, so I'm not sure to what you're
-> referring?
+efivar_ssdt_load allows the kernel to import arbitrary ACPI code from an
+EFI variable, which gives arbitrary code execution in ring 0. Prevent
+that when the kernel is locked down.
 
-Sorry, my bad; I mistyped.  What I should have said is this patch
-doesn't *prohibit* writes to swap files....
+Signed-off-by: Matthew Garrett <mjg59@google.com>
+Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Cc: linux-efi@vger.kernel.org
+---
+ drivers/firmware/efi/efi.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-(And so Amir's generic/554 test, even modified so it allow reads from
-swapfiles, but not writes, when using copy_file_range, is still
-failing for ext4.  I was looking to see if I could remove it from my
-exclude list, but not yet.  :-)
+diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
+index 55b77c576c42..a9ea649e0512 100644
+--- a/drivers/firmware/efi/efi.c
++++ b/drivers/firmware/efi/efi.c
+@@ -31,6 +31,7 @@
+ #include <linux/acpi.h>
+ #include <linux/ucs2_string.h>
+ #include <linux/memblock.h>
++#include <linux/security.h>
+ 
+ #include <asm/early_ioremap.h>
+ 
+@@ -242,6 +243,9 @@ static void generic_ops_unregister(void)
+ static char efivar_ssdt[EFIVAR_SSDT_NAME_MAX] __initdata;
+ static int __init efivar_ssdt_setup(char *str)
+ {
++	if (security_is_locked_down(LOCKDOWN_ACPI_TABLES))
++		return -EPERM;
++
+ 	if (strlen(str) < sizeof(efivar_ssdt))
+ 		memcpy(efivar_ssdt, str, strlen(str));
+ 	else
+-- 
+2.22.0.410.gd8fdbe21b5-goog
 
-> > I'm indifferent as to whether you add a new patch, or include that
-> > change in this patch, but perhaps we should fix this while we're
-> > making changes in these code paths?
-> 
-> The swapfile patches should be in a separate patch, which I was planning
-> to work on but hadn't really gotten around to it.
-
-Ok, great, thanks!!
-
-				- Ted
