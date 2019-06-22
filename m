@@ -2,48 +2,48 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B16364F484
-	for <lists+linux-efi@lfdr.de>; Sat, 22 Jun 2019 10:51:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CB0D14F47D
+	for <lists+linux-efi@lfdr.de>; Sat, 22 Jun 2019 10:51:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726404AbfFVIvP (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sat, 22 Jun 2019 04:51:15 -0400
-Received: from mail-wm1-f66.google.com ([209.85.128.66]:39987 "EHLO
-        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726310AbfFVIvP (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sat, 22 Jun 2019 04:51:15 -0400
-Received: by mail-wm1-f66.google.com with SMTP id v19so8655875wmj.5
-        for <linux-efi@vger.kernel.org>; Sat, 22 Jun 2019 01:51:13 -0700 (PDT)
+        id S1726308AbfFVIvR (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 22 Jun 2019 04:51:17 -0400
+Received: from mail-wr1-f67.google.com ([209.85.221.67]:43000 "EHLO
+        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726397AbfFVIvQ (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sat, 22 Jun 2019 04:51:16 -0400
+Received: by mail-wr1-f67.google.com with SMTP id x17so8710018wrl.9
+        for <linux-efi@vger.kernel.org>; Sat, 22 Jun 2019 01:51:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=HO4NlEgMlVr7RQNzUTkiZe3whDgA7iGbSEYeXfsjzfo=;
-        b=iz2Wh5lKIKrtIT+GilYCiOborf/BB+0KAnXOBgcowZHsTrFSpVUgXEsP8RADKbgcjA
-         AiNEbMFDsQHqYVnWhYpACbjywEFmgTQHxJbOZh0qTYuoixUa9GwiPPPJ7c9Pohwgpt+k
-         usZtN0O+w4JAQj2x3sfCJefE7RL8k9GJwvaw6Q4C065/h9Z0VFvC/r/CllXb4R5ZPrDV
-         +a49/gi4z3nP3UUHtSONU1xhrt+djS34PKGvVpsc4yihqBsw7ULFsoBJS4VNLegoUAqE
-         kYjdwP3jxhffTl7ROUZHCgTdMj8VgCtkkMDZcwxIueXwu5dCXzu3BIFp6fCTwkKb+fym
-         LquA==
+        bh=OT8SPNHWk4z4I8Pp+icjCJXudD3ZuOCKF+jmfrUNbnE=;
+        b=XDAd1wO7ZXP/gkz9tP6VaxixOwMxJNdn94LT+0YFDWEbbHwXz3J0qni/pdrkNShwW+
+         iX6TbIyyRSWGcNxHBi7Rf30Oi2htKV3CxWTHG72+lG2m+eYRMeqoOF3yWEetK3cRtcH/
+         JILOcF6hfHOM0geAh1PJ7P1jeMzDra6B9baC6Wn3+5/YQ77gSqHUr4+vXObVUxZUyt6t
+         SzwC0XKnD5ycOhRK1hduOSRi/XLrQ8QQBgFiF19fp4ANigZM3AkbsCsgdGdgtIARiL8x
+         k3ANoZz06BRD3MCxcjYdLQNoLmcwGFx8k23M/J+lCMqCN/+F0K8+1gGkz8PCFLa3va0K
+         Mz8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=HO4NlEgMlVr7RQNzUTkiZe3whDgA7iGbSEYeXfsjzfo=;
-        b=bdoVWWFoyKEkWJQIEvudR7lh78Eb9YdoB6RV4cItg2jpmNvmj4qBzdl8aX2u/YC7KL
-         h6LzqZX5Wv7ZUwAtcU0mejNDDeq5Wvci8IoRDqZmOgAmK+zapCrn94loJCz7uwyYTYFe
-         qiXmF15QzJhvFeNtGzlB/MrLslG9ZK3QwvTblAozVAk3duln62Vyy+ZmfhjCU/dJC0U9
-         vNiIwTJZLdkmH26kwu6arFObfjF9jlDjmLeieR9HiPk3T7ZEJHrleZ7/iMXxP1X0qQfM
-         XL7uWExmLrkR2r+NsLMIEBeDrbLXrurElJGIf2bmG17VZY7vD/+c73HAR3YYhNS2xSmK
-         ZNzw==
-X-Gm-Message-State: APjAAAVhEaLId6vwuX+NHcWjqurbDLUtwSCmhWwGduu4XCFJxoRaokyT
-        5Hxb3lLDCrO2jDaC0RaGUXUTlX0vCFlVSjhH
-X-Google-Smtp-Source: APXvYqzFnpgqxmtOy6/8NHQqNbTQ+elWE4WF/mHbUz0J17z0cEJj/TLZyZd5RkNkH5JI9MXqXsFM5A==
-X-Received: by 2002:a7b:c450:: with SMTP id l16mr7720525wmi.0.1561193472725;
-        Sat, 22 Jun 2019 01:51:12 -0700 (PDT)
+        bh=OT8SPNHWk4z4I8Pp+icjCJXudD3ZuOCKF+jmfrUNbnE=;
+        b=WBZ5sSGihI/HH+Cwj3axIXxzuv36WvbF8FQoirkn6Ku9onZuaWODTImGdC/UyxGPLC
+         RukI3sW5OnBMEUcZEuVtn0fljgWYd+ftkmL9ltHQ6RvapdgKgmkgdrc31+pfRambZzNM
+         cD2PBH6uW98iIkKtkq6szkyMZoN3tzqtIOVbMI/daQWslZNVAFJqz9yvJke/R7pqqFrF
+         g54TQ5PWUXe+Pg+mAQAzxYEbvknd5IMPgcBTfn3CH0MlBu02wF1c96EasOdu7+ftWIDn
+         jPQv2+1tTg2omvlufG9zsszdkyB+83L39JO15xgQe5rLznH12dikPw9+tAoBGsA3RYE8
+         qd+A==
+X-Gm-Message-State: APjAAAUYcU2p9bwevsqBRB9kxyqaVBWUcdm6M/k0can7EHgOrLDCCsej
+        tE6RVVZvnVUkI9/P2Xf0IbLgtxaeu2Md5t0z
+X-Google-Smtp-Source: APXvYqxuk4LvffOaJ8GkE3qYxtS7zZb3EEA/mB/jdVnyU1h0V18ENYI/mpS0guMTT8+y06baPY/I/g==
+X-Received: by 2002:adf:f3cc:: with SMTP id g12mr95195242wrp.149.1561193474094;
+        Sat, 22 Jun 2019 01:51:14 -0700 (PDT)
 Received: from sudo.home ([2a01:cb1d:112:6f00:4bd:3f91:4ef8:ae7e])
-        by smtp.gmail.com with ESMTPSA id v15sm4863589wrt.25.2019.06.22.01.51.11
+        by smtp.gmail.com with ESMTPSA id v15sm4863589wrt.25.2019.06.22.01.51.12
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Sat, 22 Jun 2019 01:51:12 -0700 (PDT)
+        Sat, 22 Jun 2019 01:51:13 -0700 (PDT)
 From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
 To:     linux-efi@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
         Thomas Gleixner <tglx@linutronix.de>
@@ -53,9 +53,9 @@ Cc:     Ard Biesheuvel <ard.biesheuvel@linaro.org>,
         Luo XinanX <xinanx.luo@intel.com>,
         "Prakhya, Sai Praneeth" <sai.praneeth.prakhya@intel.com>,
         Qian Cai <cai@lca.pw>, Tian Baofeng <baofeng.tian@intel.com>
-Subject: [PATCH 1/4] efi/memreserve: deal with memreserve entries in unmapped memory
-Date:   Sat, 22 Jun 2019 10:51:03 +0200
-Message-Id: <20190622085106.24859-2-ard.biesheuvel@linaro.org>
+Subject: [PATCH 2/4] efi/bgrt: Drop BGRT status field reserved bits check
+Date:   Sat, 22 Jun 2019 10:51:04 +0200
+Message-Id: <20190622085106.24859-3-ard.biesheuvel@linaro.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190622085106.24859-1-ard.biesheuvel@linaro.org>
 References: <20190622085106.24859-1-ard.biesheuvel@linaro.org>
@@ -66,57 +66,42 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Ensure that the EFI memreserve entries can be accessed, even if they
-are located in memory that the kernel (e.g., a crashkernel) omits from
-the linear map.
+From: Hans de Goede <hdegoede@redhat.com>
 
-Fixes: 80424b02d42b ("efi: Reduce the amount of memblock reservations ...")
-Cc: <stable@vger.kernel.org> # 5.0+
-Reported-by: Jonathan Richardson <jonathan.richardson@broadcom.com>
-Reviewed-by: Jonathan Richardson <jonathan.richardson@broadcom.com>
-Tested-by: Jonathan Richardson <jonathan.richardson@broadcom.com>
+Starting with ACPI 6.2 bits 1 and 2 of the BGRT status field are no longer
+reserved. These bits are now used to indicate if the image needs to be
+rotated before being displayed.
+
+The first device using these bits has now shown up (the GPD MicroPC) and
+the reserved bits check causes us to reject the valid BGRT table on this
+device.
+
+Rather then changing the reserved bits check, allowing only the 2 new bits,
+instead just completely remove it so that we do not end up with a similar
+problem when more bits are added in the future.
+
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
 ---
- drivers/firmware/efi/efi.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ drivers/firmware/efi/efi-bgrt.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
-index 16b2137d117c..4b7cf7bc0ded 100644
---- a/drivers/firmware/efi/efi.c
-+++ b/drivers/firmware/efi/efi.c
-@@ -1009,14 +1009,16 @@ int __ref efi_mem_reserve_persistent(phys_addr_t addr, u64 size)
- 
- 	/* first try to find a slot in an existing linked list entry */
- 	for (prsv = efi_memreserve_root->next; prsv; prsv = rsv->next) {
--		rsv = __va(prsv);
-+		rsv = memremap(prsv, sizeof(*rsv), MEMREMAP_WB);
- 		index = atomic_fetch_add_unless(&rsv->count, 1, rsv->size);
- 		if (index < rsv->size) {
- 			rsv->entry[index].base = addr;
- 			rsv->entry[index].size = size;
- 
-+			memunmap(rsv);
- 			return 0;
- 		}
-+		memunmap(rsv);
+diff --git a/drivers/firmware/efi/efi-bgrt.c b/drivers/firmware/efi/efi-bgrt.c
+index a2384184a7de..b07c17643210 100644
+--- a/drivers/firmware/efi/efi-bgrt.c
++++ b/drivers/firmware/efi/efi-bgrt.c
+@@ -47,11 +47,6 @@ void __init efi_bgrt_init(struct acpi_table_header *table)
+ 		       bgrt->version);
+ 		goto out;
  	}
- 
- 	/* no slot found - allocate a new linked list entry */
-@@ -1024,7 +1026,13 @@ int __ref efi_mem_reserve_persistent(phys_addr_t addr, u64 size)
- 	if (!rsv)
- 		return -ENOMEM;
- 
--	rsv->size = EFI_MEMRESERVE_COUNT(PAGE_SIZE);
-+	/*
-+	 * The memremap() call above assumes that a linux_efi_memreserve entry
-+	 * never crosses a page boundary, so let's ensure that this remains true
-+	 * even when kexec'ing a 4k pages kernel from a >4k pages kernel, by
-+	 * using SZ_4K explicitly in the size calculation below.
-+	 */
-+	rsv->size = EFI_MEMRESERVE_COUNT(SZ_4K);
- 	atomic_set(&rsv->count, 1);
- 	rsv->entry[0].base = addr;
- 	rsv->entry[0].size = size;
+-	if (bgrt->status & 0xfe) {
+-		pr_notice("Ignoring BGRT: reserved status bits are non-zero %u\n",
+-		       bgrt->status);
+-		goto out;
+-	}
+ 	if (bgrt->image_type != 0) {
+ 		pr_notice("Ignoring BGRT: invalid image type %u (expected 0)\n",
+ 		       bgrt->image_type);
 -- 
 2.20.1
 
