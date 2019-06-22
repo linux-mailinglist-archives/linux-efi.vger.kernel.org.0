@@ -2,48 +2,48 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 45FFD4F47E
-	for <lists+linux-efi@lfdr.de>; Sat, 22 Jun 2019 10:51:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D9614F482
+	for <lists+linux-efi@lfdr.de>; Sat, 22 Jun 2019 10:51:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726424AbfFVIvS (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sat, 22 Jun 2019 04:51:18 -0400
-Received: from mail-wr1-f65.google.com ([209.85.221.65]:40443 "EHLO
-        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726417AbfFVIvR (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sat, 22 Jun 2019 04:51:17 -0400
-Received: by mail-wr1-f65.google.com with SMTP id p11so8718057wre.7
-        for <linux-efi@vger.kernel.org>; Sat, 22 Jun 2019 01:51:16 -0700 (PDT)
+        id S1726432AbfFVIvT (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 22 Jun 2019 04:51:19 -0400
+Received: from mail-wr1-f68.google.com ([209.85.221.68]:36301 "EHLO
+        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726397AbfFVIvS (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sat, 22 Jun 2019 04:51:18 -0400
+Received: by mail-wr1-f68.google.com with SMTP id n4so7530597wrs.3
+        for <linux-efi@vger.kernel.org>; Sat, 22 Jun 2019 01:51:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=u9crTsB/UrpUqqHUWXJKG+JkHwY6C6DtrEmHZcdZhy8=;
-        b=Aw5AY8LxmwqzQm5h+un10GlowGYa2zi9DKB9ANx/rA9mkgDgc08z6KR4kCiOEtTISn
-         M65JF8S/jPwJY8MDUGqlujppgDB46RZlKKvQEUxw4lXogAnaup8P13uMbys8QN8cIpUD
-         bFR/ggkFZZWluEem+8XG1X5wamCkMtO5mnzi6pgorB3QSjrGQ6hmhU5BWrtCU1phnJk/
-         p+ZFw5RFgn8yjr9YLuptDXmZzT+N7rDcnG0wuDwq+TOq7dXZ8hEXvEr6xVExV9lbTqll
-         VAQdhSWWRA0h3ZVVVpNMzMTEc/MPGkiUHl3xYLkFoY9sSSE+ZVHHXCFHoUS2IMNG1hc/
-         pKyw==
+        bh=qiN85MY5YnTwB3nQ80pJ/FSY8JMCGoluMGY1yE5pzt8=;
+        b=H/p1qP5UKrqbgx62rex5GvcEiP0tumRfLfdHFtTeGXRVnhy+Bc0wSAjxZkpJI2kT6U
+         vQUfAVCPe9SfCqgFiRYWiEmlDFWx07zJylvpNpmMiWu8esFrF0nsSylVV71EWkolD9xQ
+         S6t6QfIx1p643HMzcCMzaomCgLCtYVoT4th99SnrRo5wcclGgqXgD2Mkx7M81nBh7D8c
+         FHSNPRsklt3XRZV1fmkYW6h+38Z1j8NhVaQ1GreT6T/aI81iqlGF30NUrqPj0xQozNpg
+         HEyFXAK7Eufqhn0jAVrL7bYli/+XrGKo5PABFeIFVThkD2OuAz7cbiOlxuXxWaFMaFBO
+         ZJyA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=u9crTsB/UrpUqqHUWXJKG+JkHwY6C6DtrEmHZcdZhy8=;
-        b=Z70M1ix5sfv87kht44LwGexDWL19WYyH9D9pyaCLb/Mt9XkTMrXE8AdAwW8DwNJH7A
-         1c01oKw5DKF4ZxJlLK3+J64oJ7L6D9J2ryBzG814L5F84PDuqCbMnGRh1Q0QIEbiHEBM
-         MhAvSkk4kDifcGSq0JgvN8RiLJjTUKVJy90IwUti+d3fyMrA6P2WMpALsVmLr3uN0Q//
-         ubyYgf0XQgDUSgafjpqNWAYeULFcFbdvfgJ6oLhxGa6Dx/8v3h19oT2BAutRwCGoWGKE
-         uz/eA2vRCMizl8vNtIEnWNyoEDvrgZHzysUBira5j2W4hneiLJAc9NZyCucskS6FiGLD
-         GydA==
-X-Gm-Message-State: APjAAAVmlTpyzin9dVCgM13nyYLUqsGiCUfXLw8PTlyqwIGCq4sHckGj
-        VQmg3sgLHbsCAMFigMrOqLN5w/sFGBuwXf2H
-X-Google-Smtp-Source: APXvYqwH/CLs+EGMzrd6HS4ZNLOsS6c0V+PJiCiWd+89bWRoTykVxApPgfA0S1jzs9RyCHafQBkGng==
-X-Received: by 2002:adf:c506:: with SMTP id q6mr85043928wrf.219.1561193475344;
-        Sat, 22 Jun 2019 01:51:15 -0700 (PDT)
+        bh=qiN85MY5YnTwB3nQ80pJ/FSY8JMCGoluMGY1yE5pzt8=;
+        b=qonbOWqOYU1X4/MySs+indRIJSI1wBZLVrKrFRer++kN38MtJGGLzi5VZqhFBNMz1n
+         4LR8evqzQf8BqOjOHa5wBC7D/+ai9Q/17HUMrftuJmFBZMNUeEg1Mtx86wcOLWZKpNvf
+         PZIT0FRDspB2UmxVDZzfjH+OfVzNhecdEkRbQhLBnSAtJVcIavlVHuy+HIETahIMtHhq
+         1VnJjQMVWhJ7C/roJ333o1fp/jb44EkbLXA40WvfnpNoYQj2HVO8zKqMKHQsrx2dxG7V
+         l2LpuN8O/gCxwyuPU2R0fCC9yDm/m9rV/ZzAZG/nOKWo/pJeiZuCweKEc8fMy6m8Tk8p
+         8osA==
+X-Gm-Message-State: APjAAAXz83gj3PrQm3smtehUciVX7XqxkzByEdz4r40EPWIvJr1E1cSB
+        /7W3mfDySvxh0kPdBFhpaiUJPTeAYzVpmoI5
+X-Google-Smtp-Source: APXvYqy5fzhYOJSXvdtzGuYRxNq7/S9xCwSYJ5Zg3y0zdEQUs8+GkbOXHTnlZaj2JbCGjTxK/8Hdzg==
+X-Received: by 2002:adf:f591:: with SMTP id f17mr2519691wro.119.1561193476680;
+        Sat, 22 Jun 2019 01:51:16 -0700 (PDT)
 Received: from sudo.home ([2a01:cb1d:112:6f00:4bd:3f91:4ef8:ae7e])
-        by smtp.gmail.com with ESMTPSA id v15sm4863589wrt.25.2019.06.22.01.51.14
+        by smtp.gmail.com with ESMTPSA id v15sm4863589wrt.25.2019.06.22.01.51.15
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Sat, 22 Jun 2019 01:51:14 -0700 (PDT)
+        Sat, 22 Jun 2019 01:51:16 -0700 (PDT)
 From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
 To:     linux-efi@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
         Thomas Gleixner <tglx@linutronix.de>
@@ -53,9 +53,9 @@ Cc:     Ard Biesheuvel <ard.biesheuvel@linaro.org>,
         Luo XinanX <xinanx.luo@intel.com>,
         "Prakhya, Sai Praneeth" <sai.praneeth.prakhya@intel.com>,
         Qian Cai <cai@lca.pw>, Tian Baofeng <baofeng.tian@intel.com>
-Subject: [PATCH 3/4] x86/efi: fix a -Wtype-limits compilation warning
-Date:   Sat, 22 Jun 2019 10:51:05 +0200
-Message-Id: <20190622085106.24859-4-ard.biesheuvel@linaro.org>
+Subject: [PATCH 4/4] efibc: Replace variable set function in notifier call
+Date:   Sat, 22 Jun 2019 10:51:06 +0200
+Message-Id: <20190622085106.24859-5-ard.biesheuvel@linaro.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190622085106.24859-1-ard.biesheuvel@linaro.org>
 References: <20190622085106.24859-1-ard.biesheuvel@linaro.org>
@@ -66,34 +66,49 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-From: Qian Cai <cai@lca.pw>
+From: Tian Baofeng <baofeng.tian@intel.com>
 
-Compiling a kernel with W=1 generates this warning,
+Replace the variable set function from "efivar_entry_set" to
+"efivar_entry_set_safe" in efibc panic notifier.
+In safe function parameter "block" will set to false
+and will call "efivar_entry_set_nonblocking"to set efi variables.
+efivar_entry_set_nonblocking is guaranteed to
+not block and is suitable for calling from crash/panic handlers.
+In UEFI android platform, when warm reset happens,
+with this change, efibc will not block the reboot process.
+Otherwise, set variable will call queue work and send to other offlined
+cpus then cause another panic, finally will cause reboot failure.
 
-arch/x86/platform/efi/quirks.c:731:16: warning: comparison of unsigned
-expression >= 0 is always true [-Wtype-limits]
-
-Fixes: 3425d934fc03 ("efi/x86: Handle page faults occurring while running ...")
-Signed-off-by: Qian Cai <cai@lca.pw>
-Acked-by: "Prakhya, Sai Praneeth" <sai.praneeth.prakhya@intel.com>
+Signed-off-by: Tian Baofeng <baofeng.tian@intel.com>
+Signed-off-by: Luo XinanX <xinanx.luo@intel.com>
 Signed-off-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
 ---
- arch/x86/platform/efi/quirks.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/firmware/efi/efibc.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/arch/x86/platform/efi/quirks.c b/arch/x86/platform/efi/quirks.c
-index 632b83885867..3b9fd679cea9 100644
---- a/arch/x86/platform/efi/quirks.c
-+++ b/arch/x86/platform/efi/quirks.c
-@@ -728,7 +728,7 @@ void efi_recover_from_page_fault(unsigned long phys_addr)
- 	 * Address range 0x0000 - 0x0fff is always mapped in the efi_pgd, so
- 	 * page faulting on these addresses isn't expected.
- 	 */
--	if (phys_addr >= 0x0000 && phys_addr <= 0x0fff)
-+	if (phys_addr <= 0x0fff)
- 		return;
+diff --git a/drivers/firmware/efi/efibc.c b/drivers/firmware/efi/efibc.c
+index 61e099826cbb..35dccc88ac0a 100644
+--- a/drivers/firmware/efi/efibc.c
++++ b/drivers/firmware/efi/efibc.c
+@@ -43,11 +43,13 @@ static int efibc_set_variable(const char *name, const char *value)
+ 	efibc_str_to_str16(value, (efi_char16_t *)entry->var.Data);
+ 	memcpy(&entry->var.VendorGuid, &guid, sizeof(guid));
  
- 	/*
+-	ret = efivar_entry_set(entry,
+-			       EFI_VARIABLE_NON_VOLATILE
+-			       | EFI_VARIABLE_BOOTSERVICE_ACCESS
+-			       | EFI_VARIABLE_RUNTIME_ACCESS,
+-			       size, entry->var.Data, NULL);
++	ret = efivar_entry_set_safe(entry->var.VariableName,
++				    entry->var.VendorGuid,
++				    EFI_VARIABLE_NON_VOLATILE
++				    | EFI_VARIABLE_BOOTSERVICE_ACCESS
++				    | EFI_VARIABLE_RUNTIME_ACCESS,
++				    false, size, entry->var.Data);
++
+ 	if (ret)
+ 		pr_err("failed to set %s EFI variable: 0x%x\n",
+ 		       name, ret);
 -- 
 2.20.1
 
