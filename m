@@ -2,111 +2,172 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D52A14F95D
-	for <lists+linux-efi@lfdr.de>; Sun, 23 Jun 2019 02:14:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9402850988
+	for <lists+linux-efi@lfdr.de>; Mon, 24 Jun 2019 13:14:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726516AbfFWAOt (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sat, 22 Jun 2019 20:14:49 -0400
-Received: from mail-pl1-f196.google.com ([209.85.214.196]:39999 "EHLO
-        mail-pl1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726410AbfFWAOs (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sat, 22 Jun 2019 20:14:48 -0400
-Received: by mail-pl1-f196.google.com with SMTP id a93so4818659pla.7
-        for <linux-efi@vger.kernel.org>; Sat, 22 Jun 2019 17:14:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=btG6avAzDAyvn5JxuzcdJRsv07F3W0fAi+zvzELLu4g=;
-        b=G10ix/75gAlaiLGUlBh565tLQ8+aylPU/RQBBsKWCCMUORUSsygtn+q15t9tr59J2A
-         cUiEQyECiFsC4UExccIv11GBw77rxdlv0rlsUUNpDdl5FmjAPK3GAviiQ1EbJBhyAJCJ
-         C48HUkgUK3dqaC+1Ih76fePbjemx7QzQ6cHf8=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=btG6avAzDAyvn5JxuzcdJRsv07F3W0fAi+zvzELLu4g=;
-        b=SyjiiAV7re2yHsKjiRon7TKA0zq/18e73ZzMZxmldKD+TFGUNfxnjceTLiVV/VbmMZ
-         g+yJeTTAZ7A0W5vsliluJqvp9u6uW/kp3lQ646m0Ce2sQq5AHdIhG8iog7YZvj4IpAxs
-         mE43g9JRBO9TXztN0YYmtK9sJsBRVJEiwLy18rwejUjBujfLKmMXY5KRPgHMeVPQf3JL
-         lGKHDDyzNa3HwjTzXhb+BddJ0VGY8HfgSmRYXMplLJtZUu7RYisti8HuGB8/OnBYnbCY
-         uxuLmsYWL35XnouXLYqbrzcSQIZBqhlnlwIGgBxH0JxQ71RHK+F7tF8IpG+GOH1hWHtM
-         MB5g==
-X-Gm-Message-State: APjAAAXODe+MFELHeg2s8PDQPPF9tIEdMXJnNAMLw5s9hJg+ry7p+64C
-        0m84zWrc9lT6OJh8lxaw38O1Lw==
-X-Google-Smtp-Source: APXvYqxcvat/DBQ6Sbeb3rN2qxDjuCbNFZLf7vlqSfx2l0aGYSWcasg0xVthOBBHvZpowm2Cy1Uu7w==
-X-Received: by 2002:a17:902:7443:: with SMTP id e3mr3104455plt.176.1561248887361;
-        Sat, 22 Jun 2019 17:14:47 -0700 (PDT)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id q10sm6534267pgg.35.2019.06.22.17.14.46
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Sat, 22 Jun 2019 17:14:46 -0700 (PDT)
-Date:   Sat, 22 Jun 2019 17:14:45 -0700
-From:   Kees Cook <keescook@chromium.org>
-To:     Matthew Garrett <matthewgarrett@google.com>
-Cc:     jmorris@namei.org, linux-security-module@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-api@vger.kernel.org,
-        Matthew Garrett <mjg59@google.com>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        linux-efi@vger.kernel.org
-Subject: Re: [PATCH V34 28/29] efi: Restrict efivar_ssdt_load when the kernel
- is locked down
-Message-ID: <201906221714.CDECCAEDA6@keescook>
-References: <20190622000358.19895-1-matthewgarrett@google.com>
- <20190622000358.19895-29-matthewgarrett@google.com>
+        id S1728815AbfFXLNz (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 24 Jun 2019 07:13:55 -0400
+Received: from mx2.suse.de ([195.135.220.15]:50242 "EHLO mx1.suse.de"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1727103AbfFXLNz (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Mon, 24 Jun 2019 07:13:55 -0400
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx1.suse.de (Postfix) with ESMTP id EE700AC20;
+        Mon, 24 Jun 2019 11:13:51 +0000 (UTC)
+Received: by quack2.suse.cz (Postfix, from userid 1000)
+        id 6211D1E2F23; Mon, 24 Jun 2019 13:13:49 +0200 (CEST)
+Date:   Mon, 24 Jun 2019 13:13:49 +0200
+From:   Jan Kara <jack@suse.cz>
+To:     "Darrick J. Wong" <darrick.wong@oracle.com>
+Cc:     matthew.garrett@nebula.com, yuchao0@huawei.com, tytso@mit.edu,
+        ard.biesheuvel@linaro.org, josef@toxicpanda.com, clm@fb.com,
+        adilger.kernel@dilger.ca, viro@zeniv.linux.org.uk, jack@suse.com,
+        dsterba@suse.com, jaegeuk@kernel.org, jk@ozlabs.org,
+        reiserfs-devel@vger.kernel.org, linux-efi@vger.kernel.org,
+        devel@lists.orangefs.org, linux-kernel@vger.kernel.org,
+        linux-f2fs-devel@lists.sourceforge.net, linux-xfs@vger.kernel.org,
+        linux-mm@kvack.org, linux-nilfs@vger.kernel.org,
+        linux-mtd@lists.infradead.org, ocfs2-devel@oss.oracle.com,
+        linux-fsdevel@vger.kernel.org, linux-ext4@vger.kernel.org,
+        linux-btrfs@vger.kernel.org
+Subject: Re: [PATCH 1/7] mm/fs: don't allow writes to immutable files
+Message-ID: <20190624111349.GF32376@quack2.suse.cz>
+References: <156116141046.1664939.11424021489724835645.stgit@magnolia>
+ <156116141836.1664939.12249697737780481978.stgit@magnolia>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190622000358.19895-29-matthewgarrett@google.com>
+In-Reply-To: <156116141836.1664939.12249697737780481978.stgit@magnolia>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, Jun 21, 2019 at 05:03:57PM -0700, Matthew Garrett wrote:
-> efivar_ssdt_load allows the kernel to import arbitrary ACPI code from an
-> EFI variable, which gives arbitrary code execution in ring 0. Prevent
-> that when the kernel is locked down.
+On Fri 21-06-19 16:56:58, Darrick J. Wong wrote:
+> From: Darrick J. Wong <darrick.wong@oracle.com>
 > 
-> Signed-off-by: Matthew Garrett <mjg59@google.com>
+> The chattr manpage has this to say about immutable files:
+> 
+> "A file with the 'i' attribute cannot be modified: it cannot be deleted
+> or renamed, no link can be created to this file, most of the file's
+> metadata can not be modified, and the file can not be opened in write
+> mode."
+> 
+> Once the flag is set, it is enforced for quite a few file operations,
+> such as fallocate, fpunch, fzero, rm, touch, open, etc.  However, we
+> don't check for immutability when doing a write(), a PROT_WRITE mmap(),
+> a truncate(), or a write to a previously established mmap.
+> 
+> If a program has an open write fd to a file that the administrator
+> subsequently marks immutable, the program still can change the file
+> contents.  Weird!
+> 
+> The ability to write to an immutable file does not follow the manpage
+> promise that immutable files cannot be modified.  Worse yet it's
+> inconsistent with the behavior of other syscalls which don't allow
+> modifications of immutable files.
+> 
+> Therefore, add the necessary checks to make the write, mmap, and
+> truncate behavior consistent with what the manpage says and consistent
+> with other syscalls on filesystems which support IMMUTABLE.
+> 
+> Signed-off-by: Darrick J. Wong <darrick.wong@oracle.com>
 
-Reviewed-by: Kees Cook <keescook@chromium.org>
+Looks good to me. You can add:
 
--Kees
+Reviewed-by: Jan Kara <jack@suse.cz>
 
-> Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>
-> Cc: linux-efi@vger.kernel.org
+								Honza
+
 > ---
->  drivers/firmware/efi/efi.c | 6 ++++++
->  1 file changed, 6 insertions(+)
+>  fs/attr.c    |   13 ++++++-------
+>  mm/filemap.c |    3 +++
+>  mm/memory.c  |    3 +++
+>  mm/mmap.c    |    8 ++++++--
+>  4 files changed, 18 insertions(+), 9 deletions(-)
 > 
-> diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
-> index 55b77c576c42..9f92a013ab27 100644
-> --- a/drivers/firmware/efi/efi.c
-> +++ b/drivers/firmware/efi/efi.c
-> @@ -31,6 +31,7 @@
->  #include <linux/acpi.h>
->  #include <linux/ucs2_string.h>
->  #include <linux/memblock.h>
-> +#include <linux/security.h>
->  
->  #include <asm/early_ioremap.h>
->  
-> @@ -242,6 +243,11 @@ static void generic_ops_unregister(void)
->  static char efivar_ssdt[EFIVAR_SSDT_NAME_MAX] __initdata;
->  static int __init efivar_ssdt_setup(char *str)
->  {
-> +	int ret = security_locked_down(LOCKDOWN_ACPI_TABLES);
-> +
-> +	if (ret)
-> +		return ret;
-> +
->  	if (strlen(str) < sizeof(efivar_ssdt))
->  		memcpy(efivar_ssdt, str, strlen(str));
->  	else
-> -- 
-> 2.22.0.410.gd8fdbe21b5-goog
 > 
-
+> diff --git a/fs/attr.c b/fs/attr.c
+> index d22e8187477f..1fcfdcc5b367 100644
+> --- a/fs/attr.c
+> +++ b/fs/attr.c
+> @@ -233,19 +233,18 @@ int notify_change(struct dentry * dentry, struct iattr * attr, struct inode **de
+>  
+>  	WARN_ON_ONCE(!inode_is_locked(inode));
+>  
+> -	if (ia_valid & (ATTR_MODE | ATTR_UID | ATTR_GID | ATTR_TIMES_SET)) {
+> -		if (IS_IMMUTABLE(inode) || IS_APPEND(inode))
+> -			return -EPERM;
+> -	}
+> +	if (IS_IMMUTABLE(inode))
+> +		return -EPERM;
+> +
+> +	if ((ia_valid & (ATTR_MODE | ATTR_UID | ATTR_GID | ATTR_TIMES_SET)) &&
+> +	    IS_APPEND(inode))
+> +		return -EPERM;
+>  
+>  	/*
+>  	 * If utimes(2) and friends are called with times == NULL (or both
+>  	 * times are UTIME_NOW), then we need to check for write permission
+>  	 */
+>  	if (ia_valid & ATTR_TOUCH) {
+> -		if (IS_IMMUTABLE(inode))
+> -			return -EPERM;
+> -
+>  		if (!inode_owner_or_capable(inode)) {
+>  			error = inode_permission(inode, MAY_WRITE);
+>  			if (error)
+> diff --git a/mm/filemap.c b/mm/filemap.c
+> index aac71aef4c61..dad85e10f5f8 100644
+> --- a/mm/filemap.c
+> +++ b/mm/filemap.c
+> @@ -2935,6 +2935,9 @@ inline ssize_t generic_write_checks(struct kiocb *iocb, struct iov_iter *from)
+>  	loff_t count;
+>  	int ret;
+>  
+> +	if (IS_IMMUTABLE(inode))
+> +		return -EPERM;
+> +
+>  	if (!iov_iter_count(from))
+>  		return 0;
+>  
+> diff --git a/mm/memory.c b/mm/memory.c
+> index ddf20bd0c317..4311cfdade90 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -2235,6 +2235,9 @@ static vm_fault_t do_page_mkwrite(struct vm_fault *vmf)
+>  
+>  	vmf->flags = FAULT_FLAG_WRITE|FAULT_FLAG_MKWRITE;
+>  
+> +	if (vmf->vma->vm_file && IS_IMMUTABLE(file_inode(vmf->vma->vm_file)))
+> +		return VM_FAULT_SIGBUS;
+> +
+>  	ret = vmf->vma->vm_ops->page_mkwrite(vmf);
+>  	/* Restore original flags so that caller is not surprised */
+>  	vmf->flags = old_flags;
+> diff --git a/mm/mmap.c b/mm/mmap.c
+> index 7e8c3e8ae75f..ac1e32205237 100644
+> --- a/mm/mmap.c
+> +++ b/mm/mmap.c
+> @@ -1483,8 +1483,12 @@ unsigned long do_mmap(struct file *file, unsigned long addr,
+>  		case MAP_SHARED_VALIDATE:
+>  			if (flags & ~flags_mask)
+>  				return -EOPNOTSUPP;
+> -			if ((prot&PROT_WRITE) && !(file->f_mode&FMODE_WRITE))
+> -				return -EACCES;
+> +			if (prot & PROT_WRITE) {
+> +				if (!(file->f_mode & FMODE_WRITE))
+> +					return -EACCES;
+> +				if (IS_IMMUTABLE(file_inode(file)))
+> +					return -EPERM;
+> +			}
+>  
+>  			/*
+>  			 * Make sure we don't allow writing to an append-only
+> 
+> 
 -- 
-Kees Cook
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
