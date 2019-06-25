@@ -2,120 +2,126 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 06AB4555F4
-	for <lists+linux-efi@lfdr.de>; Tue, 25 Jun 2019 19:32:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 69BA8556C2
+	for <lists+linux-efi@lfdr.de>; Tue, 25 Jun 2019 20:05:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731855AbfFYRcf (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 25 Jun 2019 13:32:35 -0400
-Received: from mx2.suse.de ([195.135.220.15]:34810 "EHLO mx1.suse.de"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727652AbfFYRcf (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Tue, 25 Jun 2019 13:32:35 -0400
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx1.suse.de (Postfix) with ESMTP id 0E8FBAD8A;
-        Tue, 25 Jun 2019 17:32:32 +0000 (UTC)
-Received: by ds.suse.cz (Postfix, from userid 10065)
-        id 2D2B6DA8F6; Tue, 25 Jun 2019 19:33:16 +0200 (CEST)
-Date:   Tue, 25 Jun 2019 19:33:16 +0200
-From:   David Sterba <dsterba@suse.cz>
-To:     "Darrick J. Wong" <darrick.wong@oracle.com>
-Cc:     dsterba@suse.cz, Christoph Hellwig <hch@infradead.org>,
-        matthew.garrett@nebula.com, yuchao0@huawei.com, tytso@mit.edu,
-        shaggy@kernel.org, ard.biesheuvel@linaro.org, josef@toxicpanda.com,
-        clm@fb.com, adilger.kernel@dilger.ca, jk@ozlabs.org, jack@suse.com,
-        dsterba@suse.com, jaegeuk@kernel.org, viro@zeniv.linux.org.uk,
-        cluster-devel@redhat.com, jfs-discussion@lists.sourceforge.net,
-        linux-efi@vger.kernel.org, Jan Kara <jack@suse.cz>,
-        reiserfs-devel@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-f2fs-devel@lists.sourceforge.net, linux-xfs@vger.kernel.org,
-        linux-nilfs@vger.kernel.org, linux-mtd@lists.infradead.org,
-        ocfs2-devel@oss.oracle.com, linux-fsdevel@vger.kernel.org,
-        linux-ext4@vger.kernel.org, linux-btrfs@vger.kernel.org
-Subject: Re: [PATCH 2/4] vfs: create a generic checking function for
- FS_IOC_FSSETXATTR
-Message-ID: <20190625173316.GU8917@twin.jikos.cz>
-Reply-To: dsterba@suse.cz
-Mail-Followup-To: dsterba@suse.cz,
-        "Darrick J. Wong" <darrick.wong@oracle.com>,
-        Christoph Hellwig <hch@infradead.org>, matthew.garrett@nebula.com,
-        yuchao0@huawei.com, tytso@mit.edu, shaggy@kernel.org,
+        id S1729855AbfFYSFM (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 25 Jun 2019 14:05:12 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:52486 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726761AbfFYSFM (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 25 Jun 2019 14:05:12 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5PHwd8B149230;
+        Tue, 25 Jun 2019 18:03:42 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2018-07-02;
+ bh=q3PQ3FdT4Cu9ZFxkmPMEB5w+ChSGz6mW1jtUBkoDAvw=;
+ b=ksyT2XyNq/sBFuNf0kcEOahW5dSfpRm2xoyvLHIl5Mejyeb4JLMflOsVy5quxvpN67j2
+ IsKXQAf1HGSoM5FioAjK6ozKyUInygd/ml7l4zpRXtxh/UWz20oKY/FTMlcYaDZBA7N9
+ MY/zMgGVdosxoetsazUmPfKqNstqSPWvasVhjypJJqeFcHhDaP62mxpCpMaNSfCtaBX3
+ JdFoGt472fc1h8ZFinUmpgHsBMZcZBqagXk/T9NnnQ5VQ3pfbtpwxQaYR4yLbxZKG58n
+ MOx1qf1doyupoPytNdwt2e/QYdozJOX4KCvtmdKWmiW/VFWoTbAzfyslOGA2S3jKu5TS Qg== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by userp2130.oracle.com with ESMTP id 2t9brt61nv-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 25 Jun 2019 18:03:42 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5PI2jR6140649;
+        Tue, 25 Jun 2019 18:03:41 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+        by aserp3020.oracle.com with ESMTP id 2t9p6ub7ds-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 25 Jun 2019 18:03:41 +0000
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [127.0.0.1])
+        by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x5PI3fsX143158;
+        Tue, 25 Jun 2019 18:03:41 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by aserp3020.oracle.com with ESMTP id 2t9p6ub7dj-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 25 Jun 2019 18:03:41 +0000
+Received: from abhmp0002.oracle.com (abhmp0002.oracle.com [141.146.116.8])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x5PI3VCg025882;
+        Tue, 25 Jun 2019 18:03:31 GMT
+Received: from localhost (/67.169.218.210)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 25 Jun 2019 11:03:31 -0700
+Date:   Tue, 25 Jun 2019 11:03:26 -0700
+From:   "Darrick J. Wong" <darrick.wong@oracle.com>
+To:     Christoph Hellwig <hch@infradead.org>
+Cc:     matthew.garrett@nebula.com, yuchao0@huawei.com, tytso@mit.edu,
         ard.biesheuvel@linaro.org, josef@toxicpanda.com, clm@fb.com,
-        adilger.kernel@dilger.ca, jk@ozlabs.org, jack@suse.com,
-        dsterba@suse.com, jaegeuk@kernel.org, viro@zeniv.linux.org.uk,
-        cluster-devel@redhat.com, jfs-discussion@lists.sourceforge.net,
-        linux-efi@vger.kernel.org, Jan Kara <jack@suse.cz>,
-        reiserfs-devel@vger.kernel.org, linux-kernel@vger.kernel.org,
+        adilger.kernel@dilger.ca, viro@zeniv.linux.org.uk, jack@suse.com,
+        dsterba@suse.com, jaegeuk@kernel.org, jk@ozlabs.org,
+        reiserfs-devel@vger.kernel.org, linux-efi@vger.kernel.org,
+        devel@lists.orangefs.org, linux-kernel@vger.kernel.org,
         linux-f2fs-devel@lists.sourceforge.net, linux-xfs@vger.kernel.org,
-        linux-nilfs@vger.kernel.org, linux-mtd@lists.infradead.org,
-        ocfs2-devel@oss.oracle.com, linux-fsdevel@vger.kernel.org,
-        linux-ext4@vger.kernel.org, linux-btrfs@vger.kernel.org
-References: <156116136742.1664814.17093419199766834123.stgit@magnolia>
- <156116138952.1664814.16552129914959122837.stgit@magnolia>
- <20190625105725.GB26085@infradead.org>
- <20190625170248.GS8917@twin.jikos.cz>
- <20190625171616.GB2230847@magnolia>
+        linux-mm@kvack.org, linux-nilfs@vger.kernel.org,
+        linux-mtd@lists.infradead.org, ocfs2-devel@oss.oracle.com,
+        linux-fsdevel@vger.kernel.org, linux-ext4@vger.kernel.org,
+        linux-btrfs@vger.kernel.org
+Subject: Re: [PATCH v4 0/7] vfs: make immutable files actually immutable
+Message-ID: <20190625180326.GC2230847@magnolia>
+References: <156116141046.1664939.11424021489724835645.stgit@magnolia>
+ <20190625103631.GB30156@infradead.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190625171616.GB2230847@magnolia>
-User-Agent: Mutt/1.5.23.1 (2014-03-12)
+In-Reply-To: <20190625103631.GB30156@infradead.org>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9299 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=904 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
+ definitions=main-1906250136
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, Jun 25, 2019 at 10:16:16AM -0700, Darrick J. Wong wrote:
-> On Tue, Jun 25, 2019 at 07:02:48PM +0200, David Sterba wrote:
-> > On Tue, Jun 25, 2019 at 03:57:25AM -0700, Christoph Hellwig wrote:
-> > > On Fri, Jun 21, 2019 at 04:56:29PM -0700, Darrick J. Wong wrote:
-> > > > From: Darrick J. Wong <darrick.wong@oracle.com>
-> > > > 
-> > > > Create a generic checking function for the incoming FS_IOC_FSSETXATTR
-> > > > fsxattr values so that we can standardize some of the implementation
-> > > > behaviors.
-> > > > 
-> > > > Signed-off-by: Darrick J. Wong <darrick.wong@oracle.com>
-> > > > Reviewed-by: Jan Kara <jack@suse.cz>
-> > > > ---
-> > > >  fs/btrfs/ioctl.c   |   21 +++++++++-------
-> > > >  fs/ext4/ioctl.c    |   27 ++++++++++++++------
-> > > >  fs/f2fs/file.c     |   26 ++++++++++++++-----
-> > > >  fs/inode.c         |   17 +++++++++++++
-> > > >  fs/xfs/xfs_ioctl.c |   70 ++++++++++++++++++++++++++++++----------------------
-> > > >  include/linux/fs.h |    3 ++
-> > > >  6 files changed, 111 insertions(+), 53 deletions(-)
-> > > > 
-> > > > 
-> > > > diff --git a/fs/btrfs/ioctl.c b/fs/btrfs/ioctl.c
-> > > > index f408aa93b0cf..7ddda5b4b6a6 100644
-> > > > --- a/fs/btrfs/ioctl.c
-> > > > +++ b/fs/btrfs/ioctl.c
-> > > > @@ -366,6 +366,13 @@ static int check_xflags(unsigned int flags)
-> > > >  	return 0;
-> > > >  }
-> > > >  
-> > > > +static void __btrfs_ioctl_fsgetxattr(struct btrfs_inode *binode,
-> > > > +				     struct fsxattr *fa)
-> > > > +{
-> > > > +	memset(fa, 0, sizeof(*fa));
-> > > > +	fa->fsx_xflags = btrfs_inode_flags_to_xflags(binode->flags);
-> > > 
-> > > Is there really much of a point in this helper? Epeciall as
-> > > the zeroing could easily be done in the variable declaration
-> > > line using
-> > > 
-> > > 	struct fsxattr fa = { };
+On Tue, Jun 25, 2019 at 03:36:31AM -0700, Christoph Hellwig wrote:
+> On Fri, Jun 21, 2019 at 04:56:50PM -0700, Darrick J. Wong wrote:
+> > Hi all,
 > > 
-> > Agreed, not counting the initialization the wrapper is merely another
-> > name for btrfs_inode_flags_to_xflags. I also find it slightly confusing
-> > that __btrfs_ioctl_fsgetxattr name is too close to the ioctl callback
-> > implementation btrfs_ioctl_fsgetxattr but only does some initialization.
+> > The chattr(1) manpage has this to say about the immutable bit that
+> > system administrators can set on files:
+> > 
+> > "A file with the 'i' attribute cannot be modified: it cannot be deleted
+> > or renamed, no link can be created to this file, most of the file's
+> > metadata can not be modified, and the file can not be opened in write
+> > mode."
+> > 
+> > Given the clause about how the file 'cannot be modified', it is
+> > surprising that programs holding writable file descriptors can continue
+> > to write to and truncate files after the immutable flag has been set,
+> > but they cannot call other things such as utimes, fallocate, unlink,
+> > link, setxattr, or reflink.
 > 
-> Ok; it's easily enough changed to:
-> 
-> 	struct fsxattr old_fa = {
-> 		.fsx_xflags = btrfs_inode_flags_to_xflags(binode->flags),
-> 	};
+> I still think living code beats documentation.  And as far as I can
+> tell the immutable bit never behaved as documented or implemented
+> in this series on Linux, and it originated on Linux.
 
-Works for me, thanks.
+The behavior has never been consistent -- since the beginning you can
+keep write()ing to a fd after the file becomes immutable, but you can't
+ftruncate() it.  I would really like to make the behavior consistent.
+Since the authors of nearly every new system call and ioctl since the
+late 1990s have interpreted S_IMMUTABLE to mean "immutable takes effect
+everywhere immediately" I resolved the inconsistency in favor of that
+interpretation.
+
+I asked Ted what he thought that that userspace having the ability to
+continue writing to an immutable file, and he thought it was an
+implementation bug that had been there for 25 years.  Even he thought
+that immutable should take effect immediately everywhere.
+
+> If you want  hard cut off style immutable flag it should really be a
+> new API, but I don't really see the point.  It isn't like the usual
+> workload is to set the flag on a file actively in use.
+
+FWIW Ted also thought that since it's rare for admins to set +i on a
+file actively in use we could just change it without forcing everyone
+onto a new api.
+
+--D
