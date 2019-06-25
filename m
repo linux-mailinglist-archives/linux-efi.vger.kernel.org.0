@@ -2,67 +2,140 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 25A5154D04
-	for <lists+linux-efi@lfdr.de>; Tue, 25 Jun 2019 12:59:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7509154DC4
+	for <lists+linux-efi@lfdr.de>; Tue, 25 Jun 2019 13:35:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732413AbfFYK7R (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 25 Jun 2019 06:59:17 -0400
-Received: from bombadil.infradead.org ([198.137.202.133]:36820 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729618AbfFYK7R (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 25 Jun 2019 06:59:17 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
-        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=Wwjd99RoXuSnHJKoAHqWgUdarmES3VQyay6SQK/R1Zo=; b=UwU0highZEA/FGERbHhOX+NGj
-        wbOEOfYCrykn4i/NMFvP0XQWLaO76P5pTHVLBqJkG76euT9OEwHgRthOqNy2+bpGfoQffYe+VSjUn
-        QLbNyICQ73+5wpZ67NnuWDRQEVMjMQ9n+ScMYd+VXjhbz8KGNZJ7arzmVhIfPVZ6AqQzv7e6MuDSa
-        aGu3nC2IVp/W+ZNu5JgLyHLadtwk9OKFT74gLui/zAk4qpMo1UK4kcsXrMvY0K5yWKTJkGWyq3w6u
-        d68URRrxr9HRoeZ3xU0m2oIIkykZy8SnVCCE4rPDUJESqTKtzeQYumA5/zO5K0UZUKNm4pEvUaMY8
-        Hwh6CeXHA==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.92 #3 (Red Hat Linux))
-        id 1hfjA7-0000tm-GM; Tue, 25 Jun 2019 10:58:55 +0000
-Date:   Tue, 25 Jun 2019 03:58:55 -0700
-From:   Christoph Hellwig <hch@infradead.org>
-To:     "Darrick J. Wong" <darrick.wong@oracle.com>
-Cc:     matthew.garrett@nebula.com, yuchao0@huawei.com, tytso@mit.edu,
-        shaggy@kernel.org, ard.biesheuvel@linaro.org, josef@toxicpanda.com,
-        clm@fb.com, adilger.kernel@dilger.ca, jk@ozlabs.org, jack@suse.com,
-        dsterba@suse.com, jaegeuk@kernel.org, viro@zeniv.linux.org.uk,
-        cluster-devel@redhat.com, jfs-discussion@lists.sourceforge.net,
-        linux-efi@vger.kernel.org, Jan Kara <jack@suse.cz>,
-        reiserfs-devel@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-f2fs-devel@lists.sourceforge.net, linux-xfs@vger.kernel.org,
-        linux-nilfs@vger.kernel.org, linux-mtd@lists.infradead.org,
-        ocfs2-devel@oss.oracle.com, linux-fsdevel@vger.kernel.org,
-        linux-ext4@vger.kernel.org, linux-btrfs@vger.kernel.org
-Subject: Re: [PATCH 4/4] vfs: teach vfs_ioc_fssetxattr_check to check extent
- size hints
-Message-ID: <20190625105855.GD26085@infradead.org>
-References: <156116136742.1664814.17093419199766834123.stgit@magnolia>
- <156116140570.1664814.4607468365269898575.stgit@magnolia>
+        id S1732000AbfFYLfN convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-efi@lfdr.de>); Tue, 25 Jun 2019 07:35:13 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:19107 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1730694AbfFYLfA (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Tue, 25 Jun 2019 07:35:00 -0400
+Received: from DGGEMS414-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id A38EFC9436F1CFDD5FDA;
+        Tue, 25 Jun 2019 19:34:54 +0800 (CST)
+Received: from localhost (10.202.226.61) by DGGEMS414-HUB.china.huawei.com
+ (10.3.19.214) with Microsoft SMTP Server id 14.3.439.0; Tue, 25 Jun 2019
+ 19:34:44 +0800
+Date:   Tue, 25 Jun 2019 12:34:34 +0100
+From:   Jonathan Cameron <jonathan.cameron@huawei.com>
+To:     <linux-edac@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+        <linux-efi@vger.kernel.org>
+CC:     <linuxarm@huawei.com>, <rjw@rjwysocki.net>, <tony.luck@intel.com>,
+        <bp@alien8.de>, <james.morse@arm.com>, <ard.beisheuvel@linaro.org>,
+        <nariman.poushin@linaro.org>
+Subject: Re: [RFC PATCH 0/6] CCIX Protocol Error reporting
+Message-ID: <20190625123434.00005d50@huawei.com>
+In-Reply-To: <20190606123654.78973-1-Jonathan.Cameron@huawei.com>
+References: <20190606123654.78973-1-Jonathan.Cameron@huawei.com>
+Organization: Huawei
+X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; i686-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <156116140570.1664814.4607468365269898575.stgit@magnolia>
-User-Agent: Mutt/1.11.4 (2019-03-13)
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: 8BIT
+X-Originating-IP: [10.202.226.61]
+X-CFilter-Loop: Reflected
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, Jun 21, 2019 at 04:56:45PM -0700, Darrick J. Wong wrote:
-> From: Darrick J. Wong <darrick.wong@oracle.com>
-> 
-> Move the extent size hint checks that aren't xfs-specific to the vfs.
-> 
-> Signed-off-by: Darrick J. Wong <darrick.wong@oracle.com>
-> Reviewed-by: Jan Kara <jack@suse.cz>
+On Thu, 6 Jun 2019 20:36:48 +0800
+Jonathan Cameron <Jonathan.Cameron@huawei.com> wrote:
 
-Looks good,
+Hi All,
 
-Reviewed-by: Christoph Hellwig <hch@lst.de>
+I'm looking for some reviews on this series if anyone has time to take
+a look.  Rasdaemon patches to match with this are on linux-edac but
+are waiting on the tracepoints merging.
+
+I'm not currently planning to upstream the qemu injection patches
+used to test this but anyone would like those I can certainly put
+a public branch up somewhere.
+
+Thanks,
+
+Jonathan
+
+> UEFI 2.8 defines a new CPER record Appendix N for CCIX Protocol Error Records
+> (PER). www.uefi.org
+> 
+> These include Protocol Error Record logs which are defined in the
+> CCIX 1.0 Base Specification www.ccixconsortium.com.
+> 
+> Handling of coherency protocol errors is complex and how Linux does this
+> will take some time to evolve.  For now, fatal errors are handled via the
+> usual means and everything else is reported.
+> 
+> There are 6 types of error defined, covering:
+> * Memory errors
+> * Cache errors
+> * Address translation unit errors
+> * CCIX port errors 
+> * CCIX link errors
+> * Agent internal errors.
+> 
+> The set includes tracepoints to report the errors to RAS Daemon and a patch
+> set for RAS Daemon will follow shortly.
+> 
+> There are several open questions for this RFC.
+> 1. Reporting of vendor data.  We have little choice but to do this via a
+>    dynamic array as these blocks can take arbitrary size. I had hoped
+>    no one would actually use these given the odd mismatch between a
+>    standard error structure and non standard element, but there are
+>    already designs out there that do use it.
+> 2. The trade off between explicit tracepoint fields, on which we might
+>    want to filter, and the simplicity of a blob. I have gone for having
+>    the whole of the block specific to the PER error type in an opaque blob.
+>    Perhaps this is not the right balance?
+> 3. Whether defining 6 new tracepoints is sensible. I think it is:
+>    * They are all defined by the CCIX specification as independant error
+>      classes.
+>    * Many of them can only be generated by particular types of agent.
+>    * The handling required will vary widely depending on types.
+>      In the kernel some map cleanly onto existing handling. Keeping the
+>      whole flow separate will aide this. They vary by a similar amount
+>      in scope to the RAS errors found on an existing system which have
+>      independent tracepoints.
+>    * Separating them out allows for filtering on the tracepoints by
+>      elements that are not shared between them.
+>    * Muxing the lot into one record type can lead to ugly code both in
+>      kernel and in userspace.
+> 
+> Rasdaemon patches will follow shortly.
+> 
+> This patch is being distributed by the CCIX Consortium, Inc. (CCIX) to
+> you and other parties that are paticipating (the "participants") in the
+> Linux kernel with the understanding that the participants will use CCIX's
+> name and trademark only when this patch is used in association with the
+> Linux kernel and associated user space.
+> 
+> CCIX is also distributing this patch to these participants with the
+> understanding that if any portion of the CCIX specification will be
+> used or referenced in the Linux kernel, the participants will not modify
+> the cited portion of the CCIX specification and will give CCIX propery
+> copyright attribution by including the following copyright notice with
+> the cited part of the CCIX specification:
+> "© 2019 CCIX CONSORTIUM, INC. ALL RIGHTS RESERVED."
+> 
+> Jonathan Cameron (6):
+>   efi / ras: CCIX Memory error reporting
+>   efi / ras: CCIX Cache error reporting
+>   efi / ras: CCIX Address Translation Cache error reporting
+>   efi / ras: CCIX Port error reporting
+>   efi / ras: CCIX Link error reporting
+>   efi / ras: CCIX Agent internal error reporting
+> 
+>  drivers/acpi/apei/Kconfig        |   8 +
+>  drivers/acpi/apei/ghes.c         |  59 ++
+>  drivers/firmware/efi/Kconfig     |   5 +
+>  drivers/firmware/efi/Makefile    |   1 +
+>  drivers/firmware/efi/cper-ccix.c | 916 +++++++++++++++++++++++++++++++
+>  drivers/firmware/efi/cper.c      |   6 +
+>  include/linux/cper.h             | 333 +++++++++++
+>  include/ras/ras_event.h          | 405 ++++++++++++++
+>  8 files changed, 1733 insertions(+)
+>  create mode 100644 drivers/firmware/efi/cper-ccix.c
+> 
+
+
