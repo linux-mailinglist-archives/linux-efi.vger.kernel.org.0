@@ -2,182 +2,103 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F0038558F5
-	for <lists+linux-efi@lfdr.de>; Tue, 25 Jun 2019 22:37:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C42255E6A
+	for <lists+linux-efi@lfdr.de>; Wed, 26 Jun 2019 04:33:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726761AbfFYUhn (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 25 Jun 2019 16:37:43 -0400
-Received: from mail-pl1-f195.google.com ([209.85.214.195]:43818 "EHLO
-        mail-pl1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726393AbfFYUhn (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 25 Jun 2019 16:37:43 -0400
-Received: by mail-pl1-f195.google.com with SMTP id cl9so67179plb.10
-        for <linux-efi@vger.kernel.org>; Tue, 25 Jun 2019 13:37:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dilger-ca.20150623.gappssmtp.com; s=20150623;
-        h=from:message-id:mime-version:subject:date:in-reply-to:cc:to
-         :references;
-        bh=k9wVBI3MNSxJVQhODLuSRbOf+SmT1l1K5RRF5+DdhGM=;
-        b=i0tlux+8FNEu0ugkEvUUlD4zKy+jo4LmPTngoA6r4KZwHDBk4l5v9aHPUQEnX49/5g
-         z/5lU03hiGUesQ1zP/lPDO/M9fU515Y8oNEl0EKjwdC7dNyZmZQEQEJzGU548pSrAizw
-         AlBCGdOUNg8gVK9FeesIiFWJzJ6YbgT5nrsBvzAUmh99yf7q8hQlgwIm8HPdOmToZugA
-         nEmrM6blVwgyo7dN5eFPje1f1HwAtA+5XwodCP1ntkD5mvR/FwjSqB5AJn7YMTtfEeor
-         5bhYLcubsCaGOlgF0onarHD40ER7JyKcO4a/eslTTHQKCN3GB1Tra4WgBV7T6KYa0chE
-         ps9Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:message-id:mime-version:subject:date
-         :in-reply-to:cc:to:references;
-        bh=k9wVBI3MNSxJVQhODLuSRbOf+SmT1l1K5RRF5+DdhGM=;
-        b=bxSHaqrsbgsJ5UMAPcd9k5/DBM/nBt+rJZHQoKmTmgSNtiVQY+p+EmPfhglZWEubFX
-         WO/Y5fw0mL9ppYX5l9yLBtEctYiOFcEzWDlVpR7d8IR5TG9CF8wUbt//T/1Uh5XaGcGV
-         ECBH7ZY4UwgsuxGUcAPJVu3HIJI1FKnhaJQvydWdS6rwrYyG9Fm90PaCwrqifcMlE11c
-         PhGb8Nia+CldKhuYoznCjkg+C45LVBZJ21vUzKN2gCG56ly8G1ZTM7jNM4oaYOJTGAxW
-         HGTpLmqAcDVKBPh1BlQ6tKknZgmvRzmavS3lTtknf9/YIbdXvbI+dRp0Sp8hF3zKYnuG
-         iNLw==
-X-Gm-Message-State: APjAAAVwkUC1iWl3DTXWFdGSMafUiVRaDkiC2p7DIp7j/JfWVxgprEQI
-        DeReDTafpjp2sI6KbnYDNMIlxA==
-X-Google-Smtp-Source: APXvYqxrr/uL0yeWv0l0AFEkJ0fiuFxZszwvIRMBTgsPNJXwasc7ZXW/q9+Il/kiADkCo486i0NA9w==
-X-Received: by 2002:a17:902:f216:: with SMTP id gn22mr690564plb.118.1561495062448;
-        Tue, 25 Jun 2019 13:37:42 -0700 (PDT)
-Received: from cabot.adilger.ext (S0106a84e3fe4b223.cg.shawcable.net. [70.77.216.213])
-        by smtp.gmail.com with ESMTPSA id m4sm4145961pff.108.2019.06.25.13.37.40
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 25 Jun 2019 13:37:41 -0700 (PDT)
-From:   Andreas Dilger <adilger@dilger.ca>
-Message-Id: <E84C8EBC-8341-49E5-8EED-0980D158CD50@dilger.ca>
-Content-Type: multipart/signed;
- boundary="Apple-Mail=_D22B91A1-39DB-42F5-937D-A1034700DAE0";
- protocol="application/pgp-signature"; micalg=pgp-sha256
-Mime-Version: 1.0 (Mac OS X Mail 10.3 \(3273\))
-Subject: Re: [PATCH v4 0/7] vfs: make immutable files actually immutable
-Date:   Tue, 25 Jun 2019 14:37:37 -0600
-In-Reply-To: <20190625180326.GC2230847@magnolia>
-Cc:     Christoph Hellwig <hch@infradead.org>, matthew.garrett@nebula.com,
-        yuchao0@huawei.com, Theodore Ts'o <tytso@mit.edu>,
-        ard.biesheuvel@linaro.org, Josef Bacik <josef@toxicpanda.com>,
-        Chris Mason <clm@fb.com>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        Jan Kara <jack@suse.com>, dsterba@suse.com,
-        Jaegeuk Kim <jaegeuk@kernel.org>, jk@ozlabs.org,
-        reiserfs-devel@vger.kernel.org, linux-efi@vger.kernel.org,
-        devel@lists.orangefs.org,
-        Linux List Kernel Mailing <linux-kernel@vger.kernel.org>,
-        linux-f2fs-devel@lists.sourceforge.net,
-        linux-xfs <linux-xfs@vger.kernel.org>,
-        linux-mm <linux-mm@kvack.org>, linux-nilfs@vger.kernel.org,
-        linux-mtd@lists.infradead.org, ocfs2-devel@oss.oracle.com,
-        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
-        Ext4 Developers List <linux-ext4@vger.kernel.org>,
-        linux-btrfs <linux-btrfs@vger.kernel.org>
-To:     "Darrick J. Wong" <darrick.wong@oracle.com>
-References: <156116141046.1664939.11424021489724835645.stgit@magnolia>
- <20190625103631.GB30156@infradead.org> <20190625180326.GC2230847@magnolia>
-X-Mailer: Apple Mail (2.3273)
+        id S1726331AbfFZCdJ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 25 Jun 2019 22:33:09 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:57720 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726077AbfFZCdJ (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 25 Jun 2019 22:33:09 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5Q2T27N116704;
+        Wed, 26 Jun 2019 02:32:14 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : from : to :
+ cc : date : message-id : mime-version : content-type :
+ content-transfer-encoding; s=corp-2018-07-02;
+ bh=cAdDQjLmw3paRsCYayAMtBFRH59fRNc4vYLBHuqjsSA=;
+ b=fhD2ePrRwz/tNVnG2b1N2SxWwBCi3qxAJ9ScLeOvuVkLhycNeHtLXg/o3eL41275woj8
+ ae1pnoc9gndxX+yPAgYKkLzMLpobHgcGQ7u78YZOh1Ap4HyoVxmhrN6K2mnHKlN0MyOd
+ OhBevmeNR6hVZ8huHdvp8I/MYGLascpA2Nj3UglocjM5tT8AyX8aGLlXg9ilLp8JGPs/
+ BuVhOxq4datwVQrCjXZzkXwLRSy9DeWUHsvP4OQepO7T/089VH31yaMyMT5TpZ60nQhL
+ 1SkoakCcrrCOOp8D6xl2gCyf9HGardzMlnRRr/ecDAzrAgD4E1/UxtQCn7f5gt8MOlS/ Pw== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by userp2130.oracle.com with ESMTP id 2t9brt7mhc-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 26 Jun 2019 02:32:14 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5Q2VdiA148291;
+        Wed, 26 Jun 2019 02:32:13 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+        by aserp3030.oracle.com with ESMTP id 2t9acceh35-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 26 Jun 2019 02:32:13 +0000
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [127.0.0.1])
+        by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x5Q2WDPn149893;
+        Wed, 26 Jun 2019 02:32:13 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by aserp3030.oracle.com with ESMTP id 2t9acceh32-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 26 Jun 2019 02:32:13 +0000
+Received: from abhmp0006.oracle.com (abhmp0006.oracle.com [141.146.116.12])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x5Q2W500019982;
+        Wed, 26 Jun 2019 02:32:05 GMT
+Received: from localhost (/10.159.230.235)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 25 Jun 2019 19:32:04 -0700
+Subject: [PATCH v3 0/5] vfs: clean up SETFLAGS and FSSETXATTR option
+ processing
+From:   "Darrick J. Wong" <darrick.wong@oracle.com>
+To:     matthew.garrett@nebula.com, yuchao0@huawei.com, tytso@mit.edu,
+        darrick.wong@oracle.com, shaggy@kernel.org,
+        ard.biesheuvel@linaro.org, josef@toxicpanda.com, hch@infradead.org,
+        clm@fb.com, adilger.kernel@dilger.ca, jk@ozlabs.org, jack@suse.com,
+        dsterba@suse.com, jaegeuk@kernel.org, viro@zeniv.linux.org.uk
+Cc:     cluster-devel@redhat.com, jfs-discussion@lists.sourceforge.net,
+        linux-efi@vger.kernel.org, reiserfs-devel@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        linux-f2fs-devel@lists.sourceforge.net, linux-xfs@vger.kernel.org,
+        linux-nilfs@vger.kernel.org, linux-mtd@lists.infradead.org,
+        ocfs2-devel@oss.oracle.com, linux-fsdevel@vger.kernel.org,
+        linux-ext4@vger.kernel.org, linux-btrfs@vger.kernel.org
+Date:   Tue, 25 Jun 2019 19:32:02 -0700
+Message-ID: <156151632209.2283456.3592379873620132456.stgit@magnolia>
+User-Agent: StGit/0.17.1-dirty
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9299 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=863 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
+ definitions=main-1906260027
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
+Hi all,
 
---Apple-Mail=_D22B91A1-39DB-42F5-937D-A1034700DAE0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain;
-	charset=us-ascii
+The FS_IOC_SETFLAGS and FS_IOC_FSSETXATTR ioctls were promoted from ext4
+and XFS, respectively, into the VFS.  However, we didn't promote any of
+the parameter checking code from those filesystems, which lead to a mess
+where each filesystem open-codes whatever parameter checks they want and
+the behavior across filesystems is no longer consistent.
 
-On Jun 25, 2019, at 12:03 PM, Darrick J. Wong <darrick.wong@oracle.com> =
-wrote:
->=20
-> On Tue, Jun 25, 2019 at 03:36:31AM -0700, Christoph Hellwig wrote:
->> On Fri, Jun 21, 2019 at 04:56:50PM -0700, Darrick J. Wong wrote:
->>> Hi all,
->>>=20
->>> The chattr(1) manpage has this to say about the immutable bit that
->>> system administrators can set on files:
->>>=20
->>> "A file with the 'i' attribute cannot be modified: it cannot be =
-deleted
->>> or renamed, no link can be created to this file, most of the file's
->>> metadata can not be modified, and the file can not be opened in =
-write
->>> mode."
->>>=20
->>> Given the clause about how the file 'cannot be modified', it is
->>> surprising that programs holding writable file descriptors can =
-continue
->>> to write to and truncate files after the immutable flag has been =
-set,
->>> but they cannot call other things such as utimes, fallocate, unlink,
->>> link, setxattr, or reflink.
->>=20
->> I still think living code beats documentation.  And as far as I can
->> tell the immutable bit never behaved as documented or implemented
->> in this series on Linux, and it originated on Linux.
->=20
-> The behavior has never been consistent -- since the beginning you can
-> keep write()ing to a fd after the file becomes immutable, but you =
-can't
-> ftruncate() it.  I would really like to make the behavior consistent.
-> Since the authors of nearly every new system call and ioctl since the
-> late 1990s have interpreted S_IMMUTABLE to mean "immutable takes =
-effect
-> everywhere immediately" I resolved the inconsistency in favor of that
-> interpretation.
->=20
-> I asked Ted what he thought that that userspace having the ability to
-> continue writing to an immutable file, and he thought it was an
-> implementation bug that had been there for 25 years.  Even he thought
-> that immutable should take effect immediately everywhere.
->=20
->> If you want  hard cut off style immutable flag it should really be a
->> new API, but I don't really see the point.  It isn't like the usual
->> workload is to set the flag on a file actively in use.
->=20
-> FWIW Ted also thought that since it's rare for admins to set +i on a
-> file actively in use we could just change it without forcing everyone
-> onto a new api.
+Therefore, create some generic checking functions in the VFS and remove
+all the open-coded pieces in each filesystem.  This preserves the
+current behavior where a filesystem can choose to ignore fields it
+doesn't understand.
 
-On the flip side, it is possible to continue to write to an open fd
-after removing the write permission, and this is a problem we've hit
-in the real world with NFS export, so real applications do this.
+If you're going to start using this mess, you probably ought to just
+pull from my git trees, which are linked below.
 
-It may be the same case with immutable files, where an application sets
-the immutable flag immediately after creation, but continues to write
-until it closes the file, so that the file can't be modified by other
-processes, and there isn't a risk that the file is missing the immutable
-flag if the writing process dies before setting it at the end.
+This has been lightly tested with fstests.  Enjoy!
+Comments and questions are, as always, welcome.
 
-Cheers, Andreas
+--D
 
-
-
-
-
-
---Apple-Mail=_D22B91A1-39DB-42F5-937D-A1034700DAE0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: attachment;
-	filename=signature.asc
-Content-Type: application/pgp-signature;
-	name=signature.asc
-Content-Description: Message signed with OpenPGP
-
------BEGIN PGP SIGNATURE-----
-Comment: GPGTools - http://gpgtools.org
-
-iQIzBAEBCAAdFiEEDb73u6ZejP5ZMprvcqXauRfMH+AFAl0ShhEACgkQcqXauRfM
-H+CbrRAAps35LK3poNlahSXPmgZ5tD+3nAlaeG8JU1XTggnEeHdAHY7wdK713thT
-OumdwU7nj1s+0ngxeUxPU/ZVWyuL2LjugpWEfw8lf0N/16hoTIUPBAe7kXce3jb+
-eg72QT36y1srscGQ/95rv/DPfelxzC7WiVYV7ZHIIF2Cq31B34cZ7GF0zpi6oZSH
-RKioHBOX1Qez1CksvAevhtSGf9e0dF1hNx7gyoVFnGb5V72P7WGGQqWSW4nSJvMe
-xhzkT0wLU28MioHsIcnqwnZJdvCb66Z1FGvAwsNItELe2tch4JzZjVR5sbq/g0+Q
-CpDZk350WiKaFzo9m1TO2Eiiog2vS1bqO+hZuwf7jPqcfIa6Tu9BdCx9U/bKp/rN
-sEtDj+p4qnjTCX2ggozPxye92wzhbF2o25jjoofBh9x9ShQ3GAc/gaTxcR9fpuWJ
-UmMwXwKMVXP/kvBaclrbz/zxaeo3ga7z3mFGgzxU6we9M5x1Lo+ppFxRpEPMIVkW
-LUEIQ4emE6yqzOWLWH6iPnxly9Jtzye3jsiq6s7RPPUGHn1/SCdhVZG130vKEpkC
-IcSmmJGlhPcI8wJ5/gwhAoxm9yLa+t0oH/Y6HUoNc722A3sCVRV5JWoHuK9MKBDK
-IPKKud+iKoNON0zr28k4iNyK1XAO+7yAqjfBAmdm0grbW/nItxg=
-=YBbV
------END PGP SIGNATURE-----
-
---Apple-Mail=_D22B91A1-39DB-42F5-937D-A1034700DAE0--
+kernel git tree:
+https://git.kernel.org/cgit/linux/kernel/git/djwong/xfs-linux.git/log/?h=file-ioctl-cleanups
