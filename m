@@ -2,49 +2,74 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 86EED59AA6
-	for <lists+linux-efi@lfdr.de>; Fri, 28 Jun 2019 14:22:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 03BA059B14
+	for <lists+linux-efi@lfdr.de>; Fri, 28 Jun 2019 14:31:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727242AbfF1MWM (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 28 Jun 2019 08:22:12 -0400
-Received: from bombadil.infradead.org ([198.137.202.133]:58860 "EHLO
+        id S1727314AbfF1MbH (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 28 Jun 2019 08:31:07 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:39816 "EHLO
         bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726836AbfF1MUs (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 28 Jun 2019 08:20:48 -0400
+        with ESMTP id S1727180AbfF1Mas (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 28 Jun 2019 08:30:48 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=infradead.org; s=bombadil.20170209; h=Sender:Content-Transfer-Encoding:
         MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
         Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
         Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
         List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=Gs2TPZ5LyCoK9cznp5FnMnVxvJtTMl0IOakC6Uw9Cqc=; b=I9CeEF4ILO3fssiI+Qaco9MsTB
-        iXlPArX0qMlXBXxwCn1UnXlyK/UaRO5fHOcVwj7rw2F/tu9Jmpm7Scc4qq9rqL4P3qZi4oVIVczUG
-        cDv72vlGUv6p4ZraV+ePbxD+06fRtdEW4GWPvonUiwJdlXAnohIH+7f/rNW8/PPylgQLlQKhHxS03
-        xlKCBihc0mjLu83vetrywoOtpbMrFkFMDKbPmhaxbg2f0jlyxgovRbBCLLuCv1B9f9y689Wd5Co9U
-        ed3Gwt7sEbMP4VAKzaHNfVFAz8vJ28oqU4hO8t9FDJGlbQHl11dSn/xL8d5HqKbBqEOYETOBq9FmK
-        w2svzz3w==;
+        bh=t2SlvlYO6vN68ooBWcFQh21aLIzOtka8Klr/M76soBU=; b=GPcFupf5dzfyT165XdM5l7atm7
+        NpunVR4RVyW430xRFKelq2/bs7dtPeXB4qL/NAe4wUu90z3hkDS/UIfIGdcLRgNR2UNHiStAIHDWk
+        b5ipZ/rh5zP1MANqlxnbENYD/fVy7fINuTz8hI/7Xxd5uRjSAc/v12+G6v77fOA6pvH51AXLu2qLr
+        m1H6iZl3askKHReK+jify63bqpxZ2aZmSjKnEi33cR7epWYwKUNyxM6iw0XhbwlMf1Q1R8eIlnGAY
+        g2vrko1I5YdrDNVcbwUdqvarlbeC++auL6Ldh/LGX2VSxCdN+UgvNr4MOiHvRW17Y0Xbs+VJlMxkY
+        FFszEwYQ==;
 Received: from [186.213.242.156] (helo=bombadil.infradead.org)
         by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
-        id 1hgprv-0000AB-JG; Fri, 28 Jun 2019 12:20:44 +0000
+        id 1hgq1U-00055h-OB; Fri, 28 Jun 2019 12:30:37 +0000
 Received: from mchehab by bombadil.infradead.org with local (Exim 4.92)
         (envelope-from <mchehab@bombadil.infradead.org>)
-        id 1hgprt-00058f-LP; Fri, 28 Jun 2019 09:20:41 -0300
+        id 1hgq1S-0005TB-Lz; Fri, 28 Jun 2019 09:30:34 -0300
 From:   Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
 To:     Linux Doc Mailing List <linux-doc@vger.kernel.org>
 Cc:     Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
         Mauro Carvalho Chehab <mchehab@infradead.org>,
         linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
-        Pat Gefre <pfg@sgi.com>,
+        Alasdair Kergon <agk@redhat.com>,
+        Mike Snitzer <snitzer@redhat.com>, dm-devel@redhat.com,
         Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>, linux-ia64@vger.kernel.org,
-        linux-efi@vger.kernel.org
-Subject: [PATCH 23/43] docs: ia64: convert to ReST
-Date:   Fri, 28 Jun 2019 09:20:19 -0300
-Message-Id: <1d387ca34d01f7115d346d92959fdea67c7feb71.1561723980.git.mchehab+samsung@kernel.org>
+        Matt Mackall <mpm@selenic.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        Willy Tarreau <willy@haproxy.com>,
+        Ksenija Stanojevic <ksenija.stanojevic@gmail.com>,
+        "Richard Russon (FlatCap)" <ldm@flatcap.org>,
+        Alessandro Zummo <a.zummo@towertech.it>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Martin Mares <mj@ucw.cz>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
+        Russell King <linux@armlinux.org.uk>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jens Axboe <axboe@kernel.dk>, Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-efi@vger.kernel.org, linux-crypto@vger.kernel.org,
+        linux-ntfs-dev@lists.sourceforge.net, linux-rtc@vger.kernel.org,
+        linux-video@atrey.karlin.mff.cuni.cz,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-block@vger.kernel.org
+Subject: [PATCH 28/39] docs: admin-guide: add a series of orphaned documents
+Date:   Fri, 28 Jun 2019 09:30:21 -0300
+Message-Id: <7ee0e33575633f689203f582259c2cbdce477176.1561724493.git.mchehab+samsung@kernel.org>
 X-Mailer: git-send-email 2.21.0
-In-Reply-To: <cover.1561723979.git.mchehab+samsung@kernel.org>
-References: <cover.1561723979.git.mchehab+samsung@kernel.org>
+In-Reply-To: <cover.1561724493.git.mchehab+samsung@kernel.org>
+References: <cover.1561724493.git.mchehab+samsung@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-efi-owner@vger.kernel.org
@@ -52,2079 +77,543 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Rename the ia64 documentation files to ReST, add an
-index for them and adjust in order to produce a nice html
-output via the Sphinx build system.
+There are lots of documents that belong to the admin-guide but
+are on random places (most under Documentation root dir).
 
-There are two upper case file names. Rename them to
-lower case, as we're working to avoid upper case file
-names at Documentation.
-
-At its new index.rst, let's add a :orphan: while this is not linked to
-the main index.rst file, in order to avoid build warnings.
+Move them to the admin guide.
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
 ---
- .../ia64/{aliasing.txt => aliasing.rst}       |  73 ++--
- Documentation/ia64/{efirtc.txt => efirtc.rst} | 118 +++---
- .../ia64/{err_inject.txt => err_inject.rst}   | 349 +++++++++---------
- Documentation/ia64/{fsys.txt => fsys.rst}     | 127 ++++---
- Documentation/ia64/{README => ia64.rst}       |  26 +-
- Documentation/ia64/index.rst                  |  18 +
- .../ia64/{IRQ-redir.txt => irq-redir.rst}     |  31 +-
- Documentation/ia64/{mca.txt => mca.rst}       |  10 +-
- Documentation/ia64/{serial.txt => serial.rst} |  36 +-
- Documentation/ia64/xen.rst                    | 206 +++++++++++
- Documentation/ia64/xen.txt                    | 183 ---------
- MAINTAINERS                                   |   2 +-
- arch/ia64/kernel/efi.c                        |   2 +-
- arch/ia64/kernel/fsys.S                       |   2 +-
- arch/ia64/mm/ioremap.c                        |   2 +-
- arch/ia64/pci/pci.c                           |   2 +-
- 16 files changed, 660 insertions(+), 527 deletions(-)
- rename Documentation/ia64/{aliasing.txt => aliasing.rst} (83%)
- rename Documentation/ia64/{efirtc.txt => efirtc.rst} (70%)
- rename Documentation/ia64/{err_inject.txt => err_inject.rst} (82%)
- rename Documentation/ia64/{fsys.txt => fsys.rst} (76%)
- rename Documentation/ia64/{README => ia64.rst} (61%)
- create mode 100644 Documentation/ia64/index.rst
- rename Documentation/ia64/{IRQ-redir.txt => irq-redir.rst} (86%)
- rename Documentation/ia64/{mca.txt => mca.rst} (96%)
- rename Documentation/ia64/{serial.txt => serial.rst} (87%)
- create mode 100644 Documentation/ia64/xen.rst
- delete mode 100644 Documentation/ia64/xen.txt
+ Documentation/ABI/stable/sysfs-devices-node     |  2 +-
+ Documentation/ABI/testing/procfs-diskstats      |  2 +-
+ Documentation/ABI/testing/sysfs-block           |  2 +-
+ .../ABI/testing/sysfs-devices-system-cpu        |  4 ++--
+ .../{btmrvl.txt => admin-guide/btmrvl.rst}      |  0
+ .../clearing-warn-once.rst}                     |  0
+ .../{cpu-load.txt => admin-guide/cpu-load.rst}  |  0
+ .../cputopology.rst}                            |  0
+ .../admin-guide/device-mapper/statistics.rst    |  4 ++--
+ .../{efi-stub.txt => admin-guide/efi-stub.rst}  |  0
+ .../{highuid.txt => admin-guide/highuid.rst}    |  0
+ Documentation/admin-guide/hw-vuln/l1tf.rst      |  2 +-
+ .../hw_random.rst}                              |  0
+ Documentation/admin-guide/index.rst             | 17 +++++++++++++++++
+ .../{iostats.txt => admin-guide/iostats.rst}    |  0
+ Documentation/admin-guide/kernel-parameters.txt |  2 +-
+ .../kernel-per-CPU-kthreads.rst}                |  0
+ .../lcd-panel-cgram.rst                         |  2 --
+ Documentation/{ldm.txt => admin-guide/ldm.rst}  |  0
+ .../lockup-watchdogs.rst}                       |  0
+ .../mm/cma_debugfs.rst}                         |  2 --
+ Documentation/admin-guide/mm/index.rst          |  1 +
+ .../{numastat.txt => admin-guide/numastat.rst}  |  0
+ Documentation/{pnp.txt => admin-guide/pnp.rst}  |  0
+ Documentation/{rtc.txt => admin-guide/rtc.rst}  |  0
+ .../{svga.txt => admin-guide/svga.rst}          |  0
+ Documentation/admin-guide/sysctl/kernel.rst     |  2 +-
+ .../video-output.rst}                           |  0
+ Documentation/fb/vesafb.rst                     |  2 +-
+ Documentation/x86/topology.rst                  |  2 +-
+ MAINTAINERS                                     | 12 ++++++------
+ arch/arm/Kconfig                                |  2 +-
+ arch/parisc/Kconfig                             |  2 +-
+ arch/sh/Kconfig                                 |  2 +-
+ arch/sparc/Kconfig                              |  2 +-
+ arch/x86/Kconfig                                |  4 ++--
+ block/partitions/Kconfig                        |  2 +-
+ drivers/char/Kconfig                            |  4 ++--
+ drivers/char/hw_random/core.c                   |  2 +-
+ include/linux/hw_random.h                       |  2 +-
+ 40 files changed, 47 insertions(+), 33 deletions(-)
+ rename Documentation/{btmrvl.txt => admin-guide/btmrvl.rst} (100%)
+ rename Documentation/{clearing-warn-once.txt => admin-guide/clearing-warn-once.rst} (100%)
+ rename Documentation/{cpu-load.txt => admin-guide/cpu-load.rst} (100%)
+ rename Documentation/{cputopology.txt => admin-guide/cputopology.rst} (100%)
+ rename Documentation/{efi-stub.txt => admin-guide/efi-stub.rst} (100%)
+ rename Documentation/{highuid.txt => admin-guide/highuid.rst} (100%)
+ rename Documentation/{hw_random.txt => admin-guide/hw_random.rst} (100%)
+ rename Documentation/{iostats.txt => admin-guide/iostats.rst} (100%)
+ rename Documentation/{kernel-per-CPU-kthreads.txt => admin-guide/kernel-per-CPU-kthreads.rst} (100%)
+ rename Documentation/{auxdisplay => admin-guide}/lcd-panel-cgram.rst (99%)
+ rename Documentation/{ldm.txt => admin-guide/ldm.rst} (100%)
+ rename Documentation/{lockup-watchdogs.txt => admin-guide/lockup-watchdogs.rst} (100%)
+ rename Documentation/{cma/debugfs.rst => admin-guide/mm/cma_debugfs.rst} (98%)
+ rename Documentation/{numastat.txt => admin-guide/numastat.rst} (100%)
+ rename Documentation/{pnp.txt => admin-guide/pnp.rst} (100%)
+ rename Documentation/{rtc.txt => admin-guide/rtc.rst} (100%)
+ rename Documentation/{svga.txt => admin-guide/svga.rst} (100%)
+ rename Documentation/{video-output.txt => admin-guide/video-output.rst} (100%)
 
-diff --git a/Documentation/ia64/aliasing.txt b/Documentation/ia64/aliasing.rst
-similarity index 83%
-rename from Documentation/ia64/aliasing.txt
-rename to Documentation/ia64/aliasing.rst
-index 5a4dea6abebd..a08b36aba015 100644
---- a/Documentation/ia64/aliasing.txt
-+++ b/Documentation/ia64/aliasing.rst
-@@ -1,20 +1,25 @@
--	         MEMORY ATTRIBUTE ALIASING ON IA-64
-+==================================
-+Memory Attribute Aliasing on IA-64
-+==================================
- 
--			   Bjorn Helgaas
--		       <bjorn.helgaas@hp.com>
--			    May 4, 2006
-+Bjorn Helgaas <bjorn.helgaas@hp.com>
- 
-+May 4, 2006
- 
--MEMORY ATTRIBUTES
-+
-+Memory Attributes
-+=================
- 
-     Itanium supports several attributes for virtual memory references.
-     The attribute is part of the virtual translation, i.e., it is
-     contained in the TLB entry.  The ones of most interest to the Linux
-     kernel are:
- 
--	WB		Write-back (cacheable)
-+	==		======================
-+        WB		Write-back (cacheable)
- 	UC		Uncacheable
- 	WC		Write-coalescing
-+	==		======================
- 
-     System memory typically uses the WB attribute.  The UC attribute is
-     used for memory-mapped I/O devices.  The WC attribute is uncacheable
-@@ -29,7 +34,8 @@ MEMORY ATTRIBUTES
-     support either WB or UC access to main memory, while others support
-     only WB access.
- 
--MEMORY MAP
-+Memory Map
-+==========
- 
-     Platform firmware describes the physical memory map and the
-     supported attributes for each region.  At boot-time, the kernel uses
-@@ -55,7 +61,8 @@ MEMORY MAP
-     The efi_memmap table is preserved unmodified because the original
-     boot-time information is required for kexec.
- 
--KERNEL IDENTITY MAPPINGS
-+Kernel Identify Mappings
-+========================
- 
-     Linux/ia64 identity mappings are done with large pages, currently
-     either 16MB or 64MB, referred to as "granules."  Cacheable mappings
-@@ -74,17 +81,20 @@ KERNEL IDENTITY MAPPINGS
-     are only partially populated, or populated with a combination of UC
-     and WB regions.
- 
--USER MAPPINGS
-+User Mappings
-+=============
- 
-     User mappings are typically done with 16K or 64K pages.  The smaller
-     page size allows more flexibility because only 16K or 64K has to be
-     homogeneous with respect to memory attributes.
- 
--POTENTIAL ATTRIBUTE ALIASING CASES
-+Potential Attribute Aliasing Cases
-+==================================
- 
-     There are several ways the kernel creates new mappings:
- 
--    mmap of /dev/mem
-+mmap of /dev/mem
-+----------------
- 
- 	This uses remap_pfn_range(), which creates user mappings.  These
- 	mappings may be either WB or UC.  If the region being mapped
-@@ -98,7 +108,8 @@ POTENTIAL ATTRIBUTE ALIASING CASES
- 	Since the EFI memory map does not describe MMIO on some
- 	machines, this should use an uncacheable mapping as a fallback.
- 
--    mmap of /sys/class/pci_bus/.../legacy_mem
-+mmap of /sys/class/pci_bus/.../legacy_mem
-+-----------------------------------------
- 
- 	This is very similar to mmap of /dev/mem, except that legacy_mem
- 	only allows mmap of the one megabyte "legacy MMIO" area for a
-@@ -112,9 +123,10 @@ POTENTIAL ATTRIBUTE ALIASING CASES
- 
- 	The /dev/mem mmap constraints apply.
- 
--    mmap of /proc/bus/pci/.../??.?
-+mmap of /proc/bus/pci/.../??.?
-+------------------------------
- 
--    	This is an MMIO mmap of PCI functions, which additionally may or
-+	This is an MMIO mmap of PCI functions, which additionally may or
- 	may not be requested as using the WC attribute.
- 
- 	If WC is requested, and the region in kern_memmap is either WC
-@@ -124,7 +136,8 @@ POTENTIAL ATTRIBUTE ALIASING CASES
- 	Otherwise, the user mapping must use the same attribute as the
- 	kernel mapping.
- 
--    read/write of /dev/mem
-+read/write of /dev/mem
-+----------------------
- 
- 	This uses copy_from_user(), which implicitly uses a kernel
- 	identity mapping.  This is obviously safe for things in
-@@ -138,7 +151,8 @@ POTENTIAL ATTRIBUTE ALIASING CASES
- 	eight-byte accesses, and the copy_from_user() path doesn't allow
- 	any control over the access size, so this would be dangerous.
- 
--    ioremap()
-+ioremap()
-+---------
- 
- 	This returns a mapping for use inside the kernel.
- 
-@@ -155,9 +169,11 @@ POTENTIAL ATTRIBUTE ALIASING CASES
- 
- 	Failing all of the above, we have to fall back to a UC mapping.
- 
--PAST PROBLEM CASES
-+Past Problem Cases
-+==================
- 
--    mmap of various MMIO regions from /dev/mem by "X" on Intel platforms
-+mmap of various MMIO regions from /dev/mem by "X" on Intel platforms
-+--------------------------------------------------------------------
- 
-       The EFI memory map may not report these MMIO regions.
- 
-@@ -166,12 +182,16 @@ PAST PROBLEM CASES
-       succeed.  It may create either WB or UC user mappings, depending
-       on whether the region is in kern_memmap or the EFI memory map.
- 
--    mmap of 0x0-0x9FFFF /dev/mem by "hwinfo" on HP sx1000 with VGA enabled
-+mmap of 0x0-0x9FFFF /dev/mem by "hwinfo" on HP sx1000 with VGA enabled
-+----------------------------------------------------------------------
- 
-       The EFI memory map reports the following attributes:
-+
-+        =============== ======= ==================
-         0x00000-0x9FFFF WB only
-         0xA0000-0xBFFFF UC only (VGA frame buffer)
-         0xC0000-0xFFFFF WB only
-+        =============== ======= ==================
- 
-       This mmap is done with user pages, not kernel identity mappings,
-       so it is safe to use WB mappings.
-@@ -182,7 +202,8 @@ PAST PROBLEM CASES
-       never generate an uncacheable reference to the WB-only areas unless
-       the driver explicitly touches them.
- 
--    mmap of 0x0-0xFFFFF legacy_mem by "X"
-+mmap of 0x0-0xFFFFF legacy_mem by "X"
-+-------------------------------------
- 
-       If the EFI memory map reports that the entire range supports the
-       same attributes, we can allow the mmap (and we will prefer WB if
-@@ -197,15 +218,18 @@ PAST PROBLEM CASES
-       that doesn't report the VGA frame buffer at all), we should fail the
-       mmap and force the user to map just the specific region of interest.
- 
--    mmap of 0xA0000-0xBFFFF legacy_mem by "X" on HP sx1000 with VGA disabled
-+mmap of 0xA0000-0xBFFFF legacy_mem by "X" on HP sx1000 with VGA disabled
-+------------------------------------------------------------------------
-+
-+      The EFI memory map reports the following attributes::
- 
--      The EFI memory map reports the following attributes:
-         0x00000-0xFFFFF WB only (no VGA MMIO hole)
- 
-       This is a special case of the previous case, and the mmap should
-       fail for the same reason as above.
- 
--    read of /sys/devices/.../rom
-+read of /sys/devices/.../rom
-+----------------------------
- 
-       For VGA devices, this may cause an ioremap() of 0xC0000.  This
-       used to be done with a UC mapping, because the VGA frame buffer
-@@ -215,7 +239,8 @@ PAST PROBLEM CASES
-       We should use WB page table mappings to avoid covering the VGA
-       frame buffer.
- 
--NOTES
-+Notes
-+=====
- 
-     [1] SDM rev 2.2, vol 2, sec 4.4.1.
-     [2] SDM rev 2.2, vol 2, sec 4.4.6.
-diff --git a/Documentation/ia64/efirtc.txt b/Documentation/ia64/efirtc.rst
-similarity index 70%
-rename from Documentation/ia64/efirtc.txt
-rename to Documentation/ia64/efirtc.rst
-index 057e6bebda8f..2f7ff5026308 100644
---- a/Documentation/ia64/efirtc.txt
-+++ b/Documentation/ia64/efirtc.rst
-@@ -1,12 +1,16 @@
-+==========================
- EFI Real Time Clock driver
---------------------------------
-+==========================
-+
- S. Eranian <eranian@hpl.hp.com>
-+
- March 2000
- 
--I/ Introduction
-+1. Introduction
-+===============
- 
- This document describes the efirtc.c driver has provided for
--the IA-64 platform. 
-+the IA-64 platform.
- 
- The purpose of this driver is to supply an API for kernel and user applications
- to get access to the Time Service offered by EFI version 0.92.
-@@ -16,112 +20,124 @@ SetTime(), GetWakeupTime(), SetWakeupTime() which are all supported by this
- driver. We describe those calls as well the design of the driver in the
- following sections.
- 
--II/ Design Decisions
-+2. Design Decisions
-+===================
- 
--The original ideas was to provide a very simple driver to get access to, 
--at first, the time of day service. This is required in order to access, in a 
--portable way, the CMOS clock. A program like /sbin/hwclock uses such a clock 
-+The original ideas was to provide a very simple driver to get access to,
-+at first, the time of day service. This is required in order to access, in a
-+portable way, the CMOS clock. A program like /sbin/hwclock uses such a clock
- to initialize the system view of the time during boot.
- 
- Because we wanted to minimize the impact on existing user-level apps using
- the CMOS clock, we decided to expose an API that was very similar to the one
--used today with the legacy RTC driver (driver/char/rtc.c). However, because 
-+used today with the legacy RTC driver (driver/char/rtc.c). However, because
- EFI provides a simpler services, not all ioctl() are available. Also
--new ioctl()s have been introduced for things that EFI provides but not the 
-+new ioctl()s have been introduced for things that EFI provides but not the
- legacy.
- 
- EFI uses a slightly different way of representing the time, noticeably
- the reference date is different. Year is the using the full 4-digit format.
- The Epoch is January 1st 1998. For backward compatibility reasons we don't
--expose this new way of representing time. Instead we use something very 
-+expose this new way of representing time. Instead we use something very
- similar to the struct tm, i.e. struct rtc_time, as used by hwclock.
- One of the reasons for doing it this way is to allow for EFI to still evolve
- without necessarily impacting any of the user applications. The decoupling
- enables flexibility and permits writing wrapper code is ncase things change.
- 
- The driver exposes two interfaces, one via the device file and a set of
--ioctl()s. The other is read-only via the /proc filesystem. 
-+ioctl()s. The other is read-only via the /proc filesystem.
- 
- As of today we don't offer a /proc/sys interface.
- 
- To allow for a uniform interface between the legacy RTC and EFI time service,
--we have created the include/linux/rtc.h header file to contain only the 
--"public" API of the two drivers.  The specifics of the legacy RTC are still 
-+we have created the include/linux/rtc.h header file to contain only the
-+"public" API of the two drivers.  The specifics of the legacy RTC are still
- in include/linux/mc146818rtc.h.
- 
-- 
--III/ Time of day service
-+
-+3. Time of day service
-+======================
- 
- The part of the driver gives access to the time of day service of EFI.
- Two ioctl()s, compatible with the legacy RTC calls:
- 
--	Read the CMOS clock: ioctl(d, RTC_RD_TIME, &rtc);
-+	Read the CMOS clock::
- 
--	Write the CMOS clock: ioctl(d, RTC_SET_TIME, &rtc);
-+		ioctl(d, RTC_RD_TIME, &rtc);
-+
-+	Write the CMOS clock::
-+
-+		ioctl(d, RTC_SET_TIME, &rtc);
- 
- The rtc is a pointer to a data structure defined in rtc.h which is close
--to a struct tm:
-+to a struct tm::
- 
--struct rtc_time {
--        int tm_sec;
--        int tm_min;
--        int tm_hour;
--        int tm_mday;
--        int tm_mon;
--        int tm_year;
--        int tm_wday;
--        int tm_yday;
--        int tm_isdst;
--};
-+  struct rtc_time {
-+          int tm_sec;
-+          int tm_min;
-+          int tm_hour;
-+          int tm_mday;
-+          int tm_mon;
-+          int tm_year;
-+          int tm_wday;
-+          int tm_yday;
-+          int tm_isdst;
-+  };
- 
- The driver takes care of converting back an forth between the EFI time and
- this format.
- 
- Those two ioctl()s can be exercised with the hwclock command:
- 
--For reading:
--# /sbin/hwclock --show
--Mon Mar  6 15:32:32 2000  -0.910248 seconds
-+For reading::
- 
--For setting:
--# /sbin/hwclock --systohc
-+	# /sbin/hwclock --show
-+	Mon Mar  6 15:32:32 2000  -0.910248 seconds
-+
-+For setting::
-+
-+	# /sbin/hwclock --systohc
- 
- Root privileges are required to be able to set the time of day.
- 
--IV/ Wakeup Alarm service
-+4. Wakeup Alarm service
-+=======================
- 
- EFI provides an API by which one can program when a machine should wakeup,
- i.e. reboot. This is very different from the alarm provided by the legacy
- RTC which is some kind of interval timer alarm. For this reason we don't use
- the same ioctl()s to get access to the service. Instead we have
--introduced 2 news ioctl()s to the interface of an RTC. 
-+introduced 2 news ioctl()s to the interface of an RTC.
- 
- We have added 2 new ioctl()s that are specific to the EFI driver:
- 
--	Read the current state of the alarm
--	ioctl(d, RTC_WKLAM_RD, &wkt)
-+	Read the current state of the alarm::
- 
--	Set the alarm or change its status
--	ioctl(d, RTC_WKALM_SET, &wkt)
-+		ioctl(d, RTC_WKLAM_RD, &wkt)
- 
--The wkt structure encapsulates a struct rtc_time + 2 extra fields to get 
--status information:
--	
--struct rtc_wkalrm {
-+	Set the alarm or change its status::
- 
--        unsigned char enabled; /* =1 if alarm is enabled */
--        unsigned char pending; /* =1 if alarm is pending  */
-+		ioctl(d, RTC_WKALM_SET, &wkt)
- 
--        struct rtc_time time;
--} 
-+The wkt structure encapsulates a struct rtc_time + 2 extra fields to get
-+status information::
-+
-+  struct rtc_wkalrm {
-+
-+          unsigned char enabled; /* =1 if alarm is enabled */
-+          unsigned char pending; /* =1 if alarm is pending  */
-+
-+          struct rtc_time time;
-+  }
- 
- As of today, none of the existing user-level apps supports this feature.
--However writing such a program should be hard by simply using those two 
--ioctl(). 
-+However writing such a program should be hard by simply using those two
-+ioctl().
- 
- Root privileges are required to be able to set the alarm.
- 
--V/ References.
-+5. References
-+=============
- 
- Checkout the following Web site for more information on EFI:
- 
-diff --git a/Documentation/ia64/err_inject.txt b/Documentation/ia64/err_inject.rst
-similarity index 82%
-rename from Documentation/ia64/err_inject.txt
-rename to Documentation/ia64/err_inject.rst
-index 9f651c181429..900f71e93a29 100644
---- a/Documentation/ia64/err_inject.txt
-+++ b/Documentation/ia64/err_inject.rst
-@@ -1,4 +1,4 @@
+diff --git a/Documentation/ABI/stable/sysfs-devices-node b/Documentation/ABI/stable/sysfs-devices-node
+index f7ce68fbd4b9..df8413cf1468 100644
+--- a/Documentation/ABI/stable/sysfs-devices-node
++++ b/Documentation/ABI/stable/sysfs-devices-node
+@@ -61,7 +61,7 @@ Date:		October 2002
+ Contact:	Linux Memory Management list <linux-mm@kvack.org>
+ Description:
+ 		The node's hit/miss statistics, in units of pages.
+-		See Documentation/numastat.txt
++		See Documentation/admin-guide/numastat.rst
+ 
+ What:		/sys/devices/system/node/nodeX/distance
+ Date:		October 2002
+diff --git a/Documentation/ABI/testing/procfs-diskstats b/Documentation/ABI/testing/procfs-diskstats
+index abac31d216de..2c44b4f1b060 100644
+--- a/Documentation/ABI/testing/procfs-diskstats
++++ b/Documentation/ABI/testing/procfs-diskstats
+@@ -29,4 +29,4 @@ Description:
+ 		17 - sectors discarded
+ 		18 - time spent discarding
+ 
+-		For more details refer to Documentation/iostats.txt
++		For more details refer to Documentation/admin-guide/iostats.rst
+diff --git a/Documentation/ABI/testing/sysfs-block b/Documentation/ABI/testing/sysfs-block
+index dfad7427817c..f8c7c7126bb1 100644
+--- a/Documentation/ABI/testing/sysfs-block
++++ b/Documentation/ABI/testing/sysfs-block
+@@ -15,7 +15,7 @@ Description:
+ 		 9 - I/Os currently in progress
+ 		10 - time spent doing I/Os (ms)
+ 		11 - weighted time spent doing I/Os (ms)
+-		For more details refer Documentation/iostats.txt
++		For more details refer Documentation/admin-guide/iostats.rst
+ 
+ 
+ What:		/sys/block/<disk>/<part>/stat
+diff --git a/Documentation/ABI/testing/sysfs-devices-system-cpu b/Documentation/ABI/testing/sysfs-devices-system-cpu
+index d404603c6b52..5f7d7b14fa44 100644
+--- a/Documentation/ABI/testing/sysfs-devices-system-cpu
++++ b/Documentation/ABI/testing/sysfs-devices-system-cpu
+@@ -34,7 +34,7 @@ Description:	CPU topology files that describe kernel limits related to
+ 		present: cpus that have been identified as being present in
+ 		the system.
+ 
+-		See Documentation/cputopology.txt for more information.
++		See Documentation/admin-guide/cputopology.rst for more information.
+ 
+ 
+ What:		/sys/devices/system/cpu/probe
+@@ -103,7 +103,7 @@ Description:	CPU topology files that describe a logical CPU's relationship
+ 		thread_siblings_list: human-readable list of cpu#'s hardware
+ 		threads within the same core as cpu#
+ 
+-		See Documentation/cputopology.txt for more information.
++		See Documentation/admin-guide/cputopology.rst for more information.
+ 
+ 
+ What:		/sys/devices/system/cpu/cpuidle/current_driver
+diff --git a/Documentation/btmrvl.txt b/Documentation/admin-guide/btmrvl.rst
+similarity index 100%
+rename from Documentation/btmrvl.txt
+rename to Documentation/admin-guide/btmrvl.rst
+diff --git a/Documentation/clearing-warn-once.txt b/Documentation/admin-guide/clearing-warn-once.rst
+similarity index 100%
+rename from Documentation/clearing-warn-once.txt
+rename to Documentation/admin-guide/clearing-warn-once.rst
+diff --git a/Documentation/cpu-load.txt b/Documentation/admin-guide/cpu-load.rst
+similarity index 100%
+rename from Documentation/cpu-load.txt
+rename to Documentation/admin-guide/cpu-load.rst
+diff --git a/Documentation/cputopology.txt b/Documentation/admin-guide/cputopology.rst
+similarity index 100%
+rename from Documentation/cputopology.txt
+rename to Documentation/admin-guide/cputopology.rst
+diff --git a/Documentation/admin-guide/device-mapper/statistics.rst b/Documentation/admin-guide/device-mapper/statistics.rst
+index 3d80a9f850cc..41ded0bc5933 100644
+--- a/Documentation/admin-guide/device-mapper/statistics.rst
++++ b/Documentation/admin-guide/device-mapper/statistics.rst
+@@ -13,7 +13,7 @@ the range specified.
+ 
+ The I/O statistics counters for each step-sized area of a region are
+ in the same format as `/sys/block/*/stat` or `/proc/diskstats` (see:
+-Documentation/iostats.txt).  But two extra counters (12 and 13) are
++Documentation/admin-guide/iostats.rst).  But two extra counters (12 and 13) are
+ provided: total time spent reading and writing.  When the histogram
+ argument is used, the 14th parameter is reported that represents the
+ histogram of latencies.  All these counters may be accessed by sending
+@@ -151,7 +151,7 @@ Messages
+ 	  The first 11 counters have the same meaning as
+ 	  `/sys/block/*/stat or /proc/diskstats`.
+ 
+-	  Please refer to Documentation/iostats.txt for details.
++	  Please refer to Documentation/admin-guide/iostats.rst for details.
+ 
+ 	  1. the number of reads completed
+ 	  2. the number of reads merged
+diff --git a/Documentation/efi-stub.txt b/Documentation/admin-guide/efi-stub.rst
+similarity index 100%
+rename from Documentation/efi-stub.txt
+rename to Documentation/admin-guide/efi-stub.rst
+diff --git a/Documentation/highuid.txt b/Documentation/admin-guide/highuid.rst
+similarity index 100%
+rename from Documentation/highuid.txt
+rename to Documentation/admin-guide/highuid.rst
+diff --git a/Documentation/admin-guide/hw-vuln/l1tf.rst b/Documentation/admin-guide/hw-vuln/l1tf.rst
+index 656aee262e23..f83212fae4d5 100644
+--- a/Documentation/admin-guide/hw-vuln/l1tf.rst
++++ b/Documentation/admin-guide/hw-vuln/l1tf.rst
+@@ -241,7 +241,7 @@ Guest mitigation mechanisms
+    For further information about confining guests to a single or to a group
+    of cores consult the cpusets documentation:
+ 
+-   https://www.kernel.org/doc/Documentation/cgroup-v1/cpusets.rst
++   https://www.kernel.org/doc/Documentation/admin-guide/cgroup-v1/cpusets.rst
+ 
+ .. _interrupt_isolation:
+ 
+diff --git a/Documentation/hw_random.txt b/Documentation/admin-guide/hw_random.rst
+similarity index 100%
+rename from Documentation/hw_random.txt
+rename to Documentation/admin-guide/hw_random.rst
+diff --git a/Documentation/admin-guide/index.rst b/Documentation/admin-guide/index.rst
+index d5064f1802c1..2c20607e90cd 100644
+--- a/Documentation/admin-guide/index.rst
++++ b/Documentation/admin-guide/index.rst
+@@ -84,8 +84,25 @@ configure specific aspects of kernel behavior to your liking.
+    perf-security
+    acpi/index
+    aoe/index
++   btmrvl
++   clearing-warn-once
++   cpu-load
++   cputopology
+    device-mapper/index
++   efi-stub
++   highuid
++   hw_random
++   iostats
++   kernel-per-CPU-kthreads
+    laptops/index
++   lcd-panel-cgram
++   ldm
++   lockup-watchdogs
++   numastat
++   pnp
++   rtc
++   svga
++   video-output
+ 
+ .. only::  subproject and html
+ 
+diff --git a/Documentation/iostats.txt b/Documentation/admin-guide/iostats.rst
+similarity index 100%
+rename from Documentation/iostats.txt
+rename to Documentation/admin-guide/iostats.rst
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index e833133c8897..713d6f378fbe 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -5092,7 +5092,7 @@
+ 
+ 	vga=		[BOOT,X86-32] Select a particular video mode
+ 			See Documentation/x86/boot.rst and
+-			Documentation/svga.txt.
++			Documentation/admin-guide/svga.rst.
+ 			Use vga=ask for menu.
+ 			This is actually a boot loader parameter; the value is
+ 			passed to the kernel using a special protocol.
+diff --git a/Documentation/kernel-per-CPU-kthreads.txt b/Documentation/admin-guide/kernel-per-CPU-kthreads.rst
+similarity index 100%
+rename from Documentation/kernel-per-CPU-kthreads.txt
+rename to Documentation/admin-guide/kernel-per-CPU-kthreads.rst
+diff --git a/Documentation/auxdisplay/lcd-panel-cgram.rst b/Documentation/admin-guide/lcd-panel-cgram.rst
+similarity index 99%
+rename from Documentation/auxdisplay/lcd-panel-cgram.rst
+rename to Documentation/admin-guide/lcd-panel-cgram.rst
+index dfef50286018..a3eb00c62f53 100644
+--- a/Documentation/auxdisplay/lcd-panel-cgram.rst
++++ b/Documentation/admin-guide/lcd-panel-cgram.rst
+@@ -1,5 +1,3 @@
+-:orphan:
 -
-+========================================
- IPF Machine Check (MC) error inject tool
- ========================================
- 
-@@ -32,94 +32,94 @@ Errata: Itanium 2 Processors Specification Update lists some errata against
- the pal_mc_error_inject PAL procedure. The following err.conf has been tested
- on latest Montecito PAL.
- 
--err.conf:
-+err.conf::
- 
--#This is configuration file for err_inject_tool.
--#The format of the each line is:
--#cpu, loop, interval, err_type_info, err_struct_info, err_data_buffer
--#where
--#	cpu: logical cpu number the error will be inject in.
--#	loop: times the error will be injected.
--#	interval: In second. every so often one error is injected.
--#	err_type_info, err_struct_info: PAL parameters.
--#
--#Note: All values are hex w/o or w/ 0x prefix.
-+  #This is configuration file for err_inject_tool.
-+  #The format of the each line is:
-+  #cpu, loop, interval, err_type_info, err_struct_info, err_data_buffer
-+  #where
-+  #	cpu: logical cpu number the error will be inject in.
-+  #	loop: times the error will be injected.
-+  #	interval: In second. every so often one error is injected.
-+  #	err_type_info, err_struct_info: PAL parameters.
-+  #
-+  #Note: All values are hex w/o or w/ 0x prefix.
- 
- 
--#On cpu2, inject only total 0x10 errors, interval 5 seconds
--#corrected, data cache, hier-2, physical addr(assigned by tool code).
--#working on Montecito latest PAL.
--2, 10, 5, 4101, 95
-+  #On cpu2, inject only total 0x10 errors, interval 5 seconds
-+  #corrected, data cache, hier-2, physical addr(assigned by tool code).
-+  #working on Montecito latest PAL.
-+  2, 10, 5, 4101, 95
- 
--#On cpu4, inject and consume total 0x10 errors, interval 5 seconds
--#corrected, data cache, hier-2, physical addr(assigned by tool code).
--#working on Montecito latest PAL.
--4, 10, 5, 4109, 95
-+  #On cpu4, inject and consume total 0x10 errors, interval 5 seconds
-+  #corrected, data cache, hier-2, physical addr(assigned by tool code).
-+  #working on Montecito latest PAL.
-+  4, 10, 5, 4109, 95
- 
--#On cpu15, inject and consume total 0x10 errors, interval 5 seconds
--#recoverable, DTR0, hier-2.
--#working on Montecito latest PAL.
--0xf, 0x10, 5, 4249, 15
-+  #On cpu15, inject and consume total 0x10 errors, interval 5 seconds
-+  #recoverable, DTR0, hier-2.
-+  #working on Montecito latest PAL.
-+  0xf, 0x10, 5, 4249, 15
- 
- The sample application source code:
- 
--err_injection_tool.c:
-+err_injection_tool.c::
- 
--/*
-- * This program is free software; you can redistribute it and/or modify
-- * it under the terms of the GNU General Public License as published by
-- * the Free Software Foundation; either version 2 of the License, or
-- * (at your option) any later version.
-- *
-- * This program is distributed in the hope that it will be useful, but
-- * WITHOUT ANY WARRANTY; without even the implied warranty of
-- * MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE, GOOD TITLE or
-- * NON INFRINGEMENT.  See the GNU General Public License for more
-- * details.
-- *
-- * You should have received a copy of the GNU General Public License
-- * along with this program; if not, write to the Free Software
-- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-- *
-- * Copyright (C) 2006 Intel Co
-- *	Fenghua Yu <fenghua.yu@intel.com>
-- *
-- */
--#include <sys/types.h>
--#include <sys/stat.h>
--#include <fcntl.h>
--#include <stdio.h>
--#include <sched.h>
--#include <unistd.h>
--#include <stdlib.h>
--#include <stdarg.h>
--#include <string.h>
--#include <errno.h>
--#include <time.h>
--#include <sys/ipc.h>
--#include <sys/sem.h>
--#include <sys/wait.h>
--#include <sys/mman.h>
--#include <sys/shm.h>
-+  /*
-+   * This program is free software; you can redistribute it and/or modify
-+   * it under the terms of the GNU General Public License as published by
-+   * the Free Software Foundation; either version 2 of the License, or
-+   * (at your option) any later version.
-+   *
-+   * This program is distributed in the hope that it will be useful, but
-+   * WITHOUT ANY WARRANTY; without even the implied warranty of
-+   * MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE, GOOD TITLE or
-+   * NON INFRINGEMENT.  See the GNU General Public License for more
-+   * details.
-+   *
-+   * You should have received a copy of the GNU General Public License
-+   * along with this program; if not, write to the Free Software
-+   * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-+   *
-+   * Copyright (C) 2006 Intel Co
-+   *	Fenghua Yu <fenghua.yu@intel.com>
-+   *
-+   */
-+  #include <sys/types.h>
-+  #include <sys/stat.h>
-+  #include <fcntl.h>
-+  #include <stdio.h>
-+  #include <sched.h>
-+  #include <unistd.h>
-+  #include <stdlib.h>
-+  #include <stdarg.h>
-+  #include <string.h>
-+  #include <errno.h>
-+  #include <time.h>
-+  #include <sys/ipc.h>
-+  #include <sys/sem.h>
-+  #include <sys/wait.h>
-+  #include <sys/mman.h>
-+  #include <sys/shm.h>
- 
--#define MAX_FN_SIZE 		256
--#define MAX_BUF_SIZE 		256
--#define DATA_BUF_SIZE 		256
--#define NR_CPUS 		512
--#define MAX_TASK_NUM		2048
--#define MIN_INTERVAL		5	// seconds
--#define	ERR_DATA_BUFFER_SIZE 	3	// Three 8-byte.
--#define PARA_FIELD_NUM		5
--#define MASK_SIZE		(NR_CPUS/64)
--#define PATH_FORMAT "/sys/devices/system/cpu/cpu%d/err_inject/"
-+  #define MAX_FN_SIZE 		256
-+  #define MAX_BUF_SIZE 		256
-+  #define DATA_BUF_SIZE 		256
-+  #define NR_CPUS 		512
-+  #define MAX_TASK_NUM		2048
-+  #define MIN_INTERVAL		5	// seconds
-+  #define	ERR_DATA_BUFFER_SIZE 	3	// Three 8-byte.
-+  #define PARA_FIELD_NUM		5
-+  #define MASK_SIZE		(NR_CPUS/64)
-+  #define PATH_FORMAT "/sys/devices/system/cpu/cpu%d/err_inject/"
- 
--int sched_setaffinity(pid_t pid, unsigned int len, unsigned long *mask);
-+  int sched_setaffinity(pid_t pid, unsigned int len, unsigned long *mask);
- 
--int verbose;
--#define vbprintf if (verbose) printf
-+  int verbose;
-+  #define vbprintf if (verbose) printf
- 
--int log_info(int cpu, const char *fmt, ...)
--{
-+  int log_info(int cpu, const char *fmt, ...)
-+  {
- 	FILE *log;
- 	char fn[MAX_FN_SIZE];
- 	char buf[MAX_BUF_SIZE];
-@@ -142,12 +142,12 @@ int log_info(int cpu, const char *fmt, ...)
- 	fclose(log);
- 
- 	return 0;
--}
-+  }
- 
--typedef unsigned long u64;
--typedef unsigned int  u32;
-+  typedef unsigned long u64;
-+  typedef unsigned int  u32;
- 
--typedef union err_type_info_u {
-+  typedef union err_type_info_u {
- 	struct {
- 		u64	mode		: 3,	/* 0-2 */
- 			err_inj		: 3,	/* 3-5 */
-@@ -157,9 +157,9 @@ typedef union err_type_info_u {
- 			reserved	: 48;	/* 16-63 */
- 	} err_type_info_u;
- 	u64	err_type_info;
--} err_type_info_t;
-+  } err_type_info_t;
- 
--typedef union err_struct_info_u {
-+  typedef union err_struct_info_u {
- 	struct {
- 		u64	siv		: 1,	/* 0	 */
- 			c_t		: 2,	/* 1-2	 */
-@@ -197,9 +197,9 @@ typedef union err_struct_info_u {
- 		u64	reserved;
- 	} err_struct_info_bus_processor_interconnect;
- 	u64	err_struct_info;
--} err_struct_info_t;
-+  } err_struct_info_t;
- 
--typedef union err_data_buffer_u {
-+  typedef union err_data_buffer_u {
- 	struct {
- 		u64	trigger_addr;		/* 0-63		*/
- 		u64	inj_addr;		/* 64-127 	*/
-@@ -221,9 +221,9 @@ typedef union err_data_buffer_u {
- 		u64	reserved;		/* 0-63		*/
- 	} err_data_buffer_bus_processor_interconnect;
- 	u64 err_data_buffer[ERR_DATA_BUFFER_SIZE];
--} err_data_buffer_t;
-+  } err_data_buffer_t;
- 
--typedef union capabilities_u {
-+  typedef union capabilities_u {
- 	struct {
- 		u64	i		: 1,
- 			d		: 1,
-@@ -276,9 +276,9 @@ typedef union capabilities_u {
- 	struct {
- 		u64	reserved;
- 	} capabilities_bus_processor_interconnect;
--} capabilities_t;
-+  } capabilities_t;
- 
--typedef struct resources_s {
-+  typedef struct resources_s {
- 	u64	ibr0		: 1,
- 		ibr2		: 1,
- 		ibr4		: 1,
-@@ -288,24 +288,24 @@ typedef struct resources_s {
- 		dbr4		: 1,
- 		dbr6		: 1,
- 		reserved	: 48;
--} resources_t;
-+  } resources_t;
- 
- 
--long get_page_size(void)
--{
-+  long get_page_size(void)
-+  {
- 	long page_size=sysconf(_SC_PAGESIZE);
- 	return page_size;
--}
-+  }
- 
--#define PAGE_SIZE (get_page_size()==-1?0x4000:get_page_size())
--#define SHM_SIZE (2*PAGE_SIZE*NR_CPUS)
--#define SHM_VA 0x2000000100000000
-+  #define PAGE_SIZE (get_page_size()==-1?0x4000:get_page_size())
-+  #define SHM_SIZE (2*PAGE_SIZE*NR_CPUS)
-+  #define SHM_VA 0x2000000100000000
- 
--int shmid;
--void *shmaddr;
-+  int shmid;
-+  void *shmaddr;
- 
--int create_shm(void)
--{
-+  int create_shm(void)
-+  {
- 	key_t key;
- 	char fn[MAX_FN_SIZE];
- 
-@@ -343,34 +343,34 @@ int create_shm(void)
- 	mlock(shmaddr, SHM_SIZE);
- 
- 	return 0;
--}
-+  }
- 
--int free_shm()
--{
-+  int free_shm()
-+  {
- 	munlock(shmaddr, SHM_SIZE);
--        shmdt(shmaddr);
-+          shmdt(shmaddr);
- 	semctl(shmid, 0, IPC_RMID);
- 
- 	return 0;
--}
-+  }
- 
--#ifdef _SEM_SEMUN_UNDEFINED
--union semun
--{
-+  #ifdef _SEM_SEMUN_UNDEFINED
-+  union semun
-+  {
- 	int val;
- 	struct semid_ds *buf;
- 	unsigned short int *array;
- 	struct seminfo *__buf;
--};
--#endif
-+  };
-+  #endif
- 
--u32 mode=1; /* 1: physical mode; 2: virtual mode. */
--int one_lock=1;
--key_t key[NR_CPUS];
--int semid[NR_CPUS];
-+  u32 mode=1; /* 1: physical mode; 2: virtual mode. */
-+  int one_lock=1;
-+  key_t key[NR_CPUS];
-+  int semid[NR_CPUS];
- 
--int create_sem(int cpu)
--{
-+  int create_sem(int cpu)
-+  {
- 	union semun arg;
- 	char fn[MAX_FN_SIZE];
- 	int sid;
-@@ -407,37 +407,37 @@ int create_sem(int cpu)
- 	}
- 
- 	return 0;
--}
-+  }
- 
--static int lock(int cpu)
--{
-+  static int lock(int cpu)
-+  {
- 	struct sembuf lock;
- 
- 	lock.sem_num = cpu;
- 	lock.sem_op = 1;
- 	semop(semid[cpu], &lock, 1);
- 
--        return 0;
--}
-+          return 0;
-+  }
- 
--static int unlock(int cpu)
--{
-+  static int unlock(int cpu)
-+  {
- 	struct sembuf unlock;
- 
- 	unlock.sem_num = cpu;
- 	unlock.sem_op = -1;
- 	semop(semid[cpu], &unlock, 1);
- 
--        return 0;
--}
-+          return 0;
-+  }
- 
--void free_sem(int cpu)
--{
-+  void free_sem(int cpu)
-+  {
- 	semctl(semid[cpu], 0, IPC_RMID);
--}
-+  }
- 
--int wr_multi(char *fn, unsigned long *data, int size)
--{
-+  int wr_multi(char *fn, unsigned long *data, int size)
-+  {
- 	int fd;
- 	char buf[MAX_BUF_SIZE];
- 	int ret;
-@@ -459,15 +459,15 @@ int wr_multi(char *fn, unsigned long *data, int size)
- 	ret=write(fd, buf, sizeof(buf));
- 	close(fd);
- 	return ret;
--}
-+  }
- 
--int wr(char *fn, unsigned long data)
--{
-+  int wr(char *fn, unsigned long data)
-+  {
- 	return wr_multi(fn, &data, 1);
--}
-+  }
- 
--int rd(char *fn, unsigned long *data)
--{
-+  int rd(char *fn, unsigned long *data)
-+  {
- 	int fd;
- 	char buf[MAX_BUF_SIZE];
- 
-@@ -480,10 +480,10 @@ int rd(char *fn, unsigned long *data)
- 	*data=strtoul(buf, NULL, 16);
- 	close(fd);
- 	return 0;
--}
-+  }
- 
--int rd_status(char *path, int *status)
--{
-+  int rd_status(char *path, int *status)
-+  {
- 	char fn[MAX_FN_SIZE];
- 	sprintf(fn, "%s/status", path);
- 	if (rd(fn, (u64*)status)<0) {
-@@ -492,10 +492,10 @@ int rd_status(char *path, int *status)
- 	}
- 
- 	return 0;
--}
-+  }
- 
--int rd_capabilities(char *path, u64 *capabilities)
--{
-+  int rd_capabilities(char *path, u64 *capabilities)
-+  {
- 	char fn[MAX_FN_SIZE];
- 	sprintf(fn, "%s/capabilities", path);
- 	if (rd(fn, capabilities)<0) {
-@@ -504,10 +504,10 @@ int rd_capabilities(char *path, u64 *capabilities)
- 	}
- 
- 	return 0;
--}
-+  }
- 
--int rd_all(char *path)
--{
-+  int rd_all(char *path)
-+  {
- 	unsigned long err_type_info, err_struct_info, err_data_buffer;
- 	int status;
- 	unsigned long capabilities, resources;
-@@ -556,11 +556,11 @@ int rd_all(char *path)
- 	printf("resources=%lx\n", resources);
- 
- 	return 0;
--}
-+  }
- 
--int query_capabilities(char *path, err_type_info_t err_type_info,
-+  int query_capabilities(char *path, err_type_info_t err_type_info,
- 			u64 *capabilities)
--{
-+  {
- 	char fn[MAX_FN_SIZE];
- 	err_struct_info_t err_struct_info;
- 	err_data_buffer_t err_data_buffer;
-@@ -583,10 +583,10 @@ int query_capabilities(char *path, err_type_info_t err_type_info,
- 		return -1;
- 
- 	return 0;
--}
-+  }
- 
--int query_all_capabilities()
--{
-+  int query_all_capabilities()
-+  {
- 	int status;
- 	err_type_info_t err_type_info;
- 	int err_sev, err_struct, struct_hier;
-@@ -629,12 +629,12 @@ int query_all_capabilities()
- 	}
- 
- 	return 0;
--}
-+  }
- 
--int err_inject(int cpu, char *path, err_type_info_t err_type_info,
-+  int err_inject(int cpu, char *path, err_type_info_t err_type_info,
- 		err_struct_info_t err_struct_info,
- 		err_data_buffer_t err_data_buffer)
--{
-+  {
- 	int status;
- 	char fn[MAX_FN_SIZE];
- 
-@@ -667,13 +667,13 @@ int err_inject(int cpu, char *path, err_type_info_t err_type_info,
- 	}
- 
- 	return status;
--}
-+  }
- 
--static int construct_data_buf(char *path, err_type_info_t err_type_info,
-+  static int construct_data_buf(char *path, err_type_info_t err_type_info,
- 		err_struct_info_t err_struct_info,
- 		err_data_buffer_t *err_data_buffer,
- 		void *va1)
--{
-+  {
- 	char fn[MAX_FN_SIZE];
- 	u64 virt_addr=0, phys_addr=0;
- 
-@@ -710,22 +710,22 @@ static int construct_data_buf(char *path, err_type_info_t err_type_info,
- 	}
- 
- 	return 0;
--}
-+  }
- 
--typedef struct {
-+  typedef struct {
- 	u64 cpu;
- 	u64 loop;
- 	u64 interval;
- 	u64 err_type_info;
- 	u64 err_struct_info;
- 	u64 err_data_buffer[ERR_DATA_BUFFER_SIZE];
--} parameters_t;
-+  } parameters_t;
- 
--parameters_t line_para;
--int para;
-+  parameters_t line_para;
-+  int para;
- 
--static int empty_data_buffer(u64 *err_data_buffer)
--{
-+  static int empty_data_buffer(u64 *err_data_buffer)
-+  {
- 	int empty=1;
- 	int i;
- 
-@@ -734,10 +734,10 @@ static int empty_data_buffer(u64 *err_data_buffer)
- 		empty=0;
- 
- 	return empty;
--}
-+  }
- 
--int err_inj()
--{
-+  int err_inj()
-+  {
- 	err_type_info_t err_type_info;
- 	err_struct_info_t err_struct_info;
- 	err_data_buffer_t err_data_buffer;
-@@ -951,10 +951,10 @@ int err_inj()
- 	printf("All done.\n");
- 
- 	return 0;
--}
-+  }
- 
--void help()
--{
-+  void help()
-+  {
- 	printf("err_inject_tool:\n");
- 	printf("\t-q: query all capabilities. default: off\n");
- 	printf("\t-m: procedure mode. 1: physical 2: virtual. default: 1\n");
-@@ -977,10 +977,10 @@ void help()
- 	printf("The tool will take err.conf file as ");
- 	printf("input to inject single or multiple errors ");
- 	printf("on one or multiple cpus in parallel.\n");
--}
-+  }
- 
--int main(int argc, char **argv)
--{
-+  int main(int argc, char **argv)
-+  {
- 	char c;
- 	int do_err_inj=0;
- 	int do_query_all=0;
-@@ -1031,7 +1031,7 @@ int main(int argc, char **argv)
- 				if (count!=PARA_FIELD_NUM+3) {
- 				    line_para.err_data_buffer[0]=-1,
- 				    line_para.err_data_buffer[1]=-1,
--			 	    line_para.err_data_buffer[2]=-1;
-+				    line_para.err_data_buffer[2]=-1;
- 				    count=sscanf(optarg, "%lx, %lx, %lx, %lx, %lx\n",
- 						&line_para.cpu,
- 						&line_para.loop,
-@@ -1064,5 +1064,4 @@ int main(int argc, char **argv)
- 		help();
- 
- 	return 0;
--}
+ ======================================
+ Parallel port LCD/Keypad Panel support
+ ======================================
+diff --git a/Documentation/ldm.txt b/Documentation/admin-guide/ldm.rst
+similarity index 100%
+rename from Documentation/ldm.txt
+rename to Documentation/admin-guide/ldm.rst
+diff --git a/Documentation/lockup-watchdogs.txt b/Documentation/admin-guide/lockup-watchdogs.rst
+similarity index 100%
+rename from Documentation/lockup-watchdogs.txt
+rename to Documentation/admin-guide/lockup-watchdogs.rst
+diff --git a/Documentation/cma/debugfs.rst b/Documentation/admin-guide/mm/cma_debugfs.rst
+similarity index 98%
+rename from Documentation/cma/debugfs.rst
+rename to Documentation/admin-guide/mm/cma_debugfs.rst
+index 518fe401b5ee..4e06ffabd78a 100644
+--- a/Documentation/cma/debugfs.rst
++++ b/Documentation/admin-guide/mm/cma_debugfs.rst
+@@ -1,5 +1,3 @@
+-:orphan:
 -
-+  }
-diff --git a/Documentation/ia64/fsys.txt b/Documentation/ia64/fsys.rst
-similarity index 76%
-rename from Documentation/ia64/fsys.txt
-rename to Documentation/ia64/fsys.rst
-index 59dd689d9b86..a702d2cc94b6 100644
---- a/Documentation/ia64/fsys.txt
-+++ b/Documentation/ia64/fsys.rst
-@@ -1,9 +1,9 @@
---*-Mode: outline-*-
--
--		Light-weight System Calls for IA-64
--		-----------------------------------
-+===================================
-+Light-weight System Calls for IA-64
-+===================================
- 
- 		        Started: 13-Jan-2003
-+
- 		    Last update: 27-Sep-2003
- 
- 	              David Mosberger-Tang
-@@ -52,12 +52,13 @@ privilege level is at level 0, this means that fsys-mode requires some
- care (see below).
- 
- 
--* How to tell fsys-mode
-+How to tell fsys-mode
-+=====================
- 
- Linux operates in fsys-mode when (a) the privilege level is 0 (most
- privileged) and (b) the stacks have NOT been switched to kernel memory
- yet.  For convenience, the header file <asm-ia64/ptrace.h> provides
--three macros:
-+three macros::
- 
- 	user_mode(regs)
- 	user_stack(task,regs)
-@@ -70,11 +71,12 @@ to by "regs" was executing in user mode (privilege level 3).
- user_stack() returns TRUE if the state pointed to by "regs" was
- executing on the user-level stack(s).  Finally, fsys_mode() returns
- TRUE if the CPU state pointed to by "regs" was executing in fsys-mode.
--The fsys_mode() macro is equivalent to the expression:
-+The fsys_mode() macro is equivalent to the expression::
- 
- 	!user_mode(regs) && user_stack(task,regs)
- 
--* How to write an fsyscall handler
-+How to write an fsyscall handler
-+================================
- 
- The file arch/ia64/kernel/fsys.S contains a table of fsyscall-handlers
- (fsyscall_table).  This table contains one entry for each system call.
-@@ -87,66 +89,72 @@ of the getpid() system call.
- 
- The entry and exit-state of an fsyscall handler is as follows:
- 
--** Machine state on entry to fsyscall handler:
-+Machine state on entry to fsyscall handler
-+------------------------------------------
- 
-- - r10	  = 0
-- - r11	  = saved ar.pfs (a user-level value)
-- - r15	  = system call number
-- - r16	  = "current" task pointer (in normal kernel-mode, this is in r13)
-- - r32-r39 = system call arguments
-- - b6	  = return address (a user-level value)
-- - ar.pfs = previous frame-state (a user-level value)
-- - PSR.be = cleared to zero (i.e., little-endian byte order is in effect)
-- - all other registers may contain values passed in from user-mode
-+  ========= ===============================================================
-+  r10	    0
-+  r11	    saved ar.pfs (a user-level value)
-+  r15	    system call number
-+  r16	    "current" task pointer (in normal kernel-mode, this is in r13)
-+  r32-r39   system call arguments
-+  b6	    return address (a user-level value)
-+  ar.pfs    previous frame-state (a user-level value)
-+  PSR.be    cleared to zero (i.e., little-endian byte order is in effect)
-+  -         all other registers may contain values passed in from user-mode
-+  ========= ===============================================================
- 
--** Required machine state on exit to fsyscall handler:
-+Required machine state on exit to fsyscall handler
-+--------------------------------------------------
- 
-- - r11	  = saved ar.pfs (as passed into the fsyscall handler)
-- - r15	  = system call number (as passed into the fsyscall handler)
-- - r32-r39 = system call arguments (as passed into the fsyscall handler)
-- - b6	  = return address (as passed into the fsyscall handler)
-- - ar.pfs = previous frame-state (as passed into the fsyscall handler)
-+  ========= ===========================================================
-+  r11	    saved ar.pfs (as passed into the fsyscall handler)
-+  r15	    system call number (as passed into the fsyscall handler)
-+  r32-r39   system call arguments (as passed into the fsyscall handler)
-+  b6	    return address (as passed into the fsyscall handler)
-+  ar.pfs    previous frame-state (as passed into the fsyscall handler)
-+  ========= ===========================================================
- 
- Fsyscall handlers can execute with very little overhead, but with that
- speed comes a set of restrictions:
- 
-- o Fsyscall-handlers MUST check for any pending work in the flags
-+ * Fsyscall-handlers MUST check for any pending work in the flags
-    member of the thread-info structure and if any of the
-    TIF_ALLWORK_MASK flags are set, the handler needs to fall back on
-    doing a full system call (by calling fsys_fallback_syscall).
- 
-- o Fsyscall-handlers MUST preserve incoming arguments (r32-r39, r11,
-+ * Fsyscall-handlers MUST preserve incoming arguments (r32-r39, r11,
-    r15, b6, and ar.pfs) because they will be needed in case of a
-    system call restart.  Of course, all "preserved" registers also
-    must be preserved, in accordance to the normal calling conventions.
- 
-- o Fsyscall-handlers MUST check argument registers for containing a
-+ * Fsyscall-handlers MUST check argument registers for containing a
-    NaT value before using them in any way that could trigger a
-    NaT-consumption fault.  If a system call argument is found to
-    contain a NaT value, an fsyscall-handler may return immediately
-    with r8=EINVAL, r10=-1.
- 
-- o Fsyscall-handlers MUST NOT use the "alloc" instruction or perform
-+ * Fsyscall-handlers MUST NOT use the "alloc" instruction or perform
-    any other operation that would trigger mandatory RSE
-    (register-stack engine) traffic.
- 
-- o Fsyscall-handlers MUST NOT write to any stacked registers because
-+ * Fsyscall-handlers MUST NOT write to any stacked registers because
-    it is not safe to assume that user-level called a handler with the
-    proper number of arguments.
- 
-- o Fsyscall-handlers need to be careful when accessing per-CPU variables:
-+ * Fsyscall-handlers need to be careful when accessing per-CPU variables:
-    unless proper safe-guards are taken (e.g., interruptions are avoided),
-    execution may be pre-empted and resumed on another CPU at any given
-    time.
- 
-- o Fsyscall-handlers must be careful not to leak sensitive kernel'
-+ * Fsyscall-handlers must be careful not to leak sensitive kernel'
-    information back to user-level.  In particular, before returning to
-    user-level, care needs to be taken to clear any scratch registers
-    that could contain sensitive information (note that the current
-    task pointer is not considered sensitive: it's already exposed
-    through ar.k6).
- 
-- o Fsyscall-handlers MUST NOT access user-memory without first
-+ * Fsyscall-handlers MUST NOT access user-memory without first
-    validating access-permission (this can be done typically via
-    probe.r.fault and/or probe.w.fault) and without guarding against
-    memory access exceptions (this can be done with the EX() macros
-@@ -162,7 +170,8 @@ fast system call execution (while fully preserving system call
- semantics), but there is also a lot of flexibility in handling more
- complicated cases.
- 
--* Signal handling
-+Signal handling
-+===============
- 
- The delivery of (asynchronous) signals must be delayed until fsys-mode
- is exited.  This is accomplished with the help of the lower-privilege
-@@ -173,7 +182,8 @@ PSR.lp and returns immediately.  When fsys-mode is exited via the
- occur.  The trap handler clears PSR.lp again and returns immediately.
- The kernel exit path then checks for and delivers any pending signals.
- 
--* PSR Handling
-+PSR Handling
-+============
- 
- The "epc" instruction doesn't change the contents of PSR at all.  This
- is in contrast to a regular interruption, which clears almost all
-@@ -181,6 +191,7 @@ bits.  Because of that, some care needs to be taken to ensure things
- work as expected.  The following discussion describes how each PSR bit
- is handled.
- 
-+======= =======================================================================
- PSR.be	Cleared when entering fsys-mode.  A srlz.d instruction is used
- 	to ensure the CPU is in little-endian mode before the first
- 	load/store instruction is executed.  PSR.be is normally NOT
-@@ -202,7 +213,8 @@ PSR.pp	Unchanged.
- PSR.di	Unchanged.
- PSR.si	Unchanged.
- PSR.db	Unchanged.  The kernel prevents user-level from setting a hardware
--	breakpoint that triggers at any privilege level other than 3 (user-mode).
-+	breakpoint that triggers at any privilege level other than
-+	3 (user-mode).
- PSR.lp	Unchanged.
- PSR.tb	Lazy redirect.  If a taken-branch trap occurs while in
- 	fsys-mode, the trap-handler modifies the saved machine state
-@@ -235,47 +247,52 @@ PSR.ed	Unchanged.  Note: This bit could only have an effect if an fsys-mode
- PSR.bn	Unchanged.  Note: fsys-mode handlers may clear the bit, if needed.
- 	Doing so requires clearing PSR.i and PSR.ic as well.
- PSR.ia	Unchanged.  Note: the ia64 linux kernel never sets this bit.
-+======= =======================================================================
- 
--* Using fast system calls
-+Using fast system calls
-+=======================
- 
- To use fast system calls, userspace applications need simply call
- __kernel_syscall_via_epc().  For example
- 
- -- example fgettimeofday() call --
-+
- -- fgettimeofday.S --
- 
--#include <asm/asmmacro.h>
-+::
- 
--GLOBAL_ENTRY(fgettimeofday)
--.prologue
--.save ar.pfs, r11
--mov r11 = ar.pfs
--.body 
-+  #include <asm/asmmacro.h>
- 
--mov r2 = 0xa000000000020660;;  // gate address 
--			       // found by inspection of System.map for the 
-+  GLOBAL_ENTRY(fgettimeofday)
-+  .prologue
-+  .save ar.pfs, r11
-+  mov r11 = ar.pfs
-+  .body
-+
-+  mov r2 = 0xa000000000020660;;  // gate address
-+			       // found by inspection of System.map for the
- 			       // __kernel_syscall_via_epc() function.  See
- 			       // below for how to do this for real.
- 
--mov b7 = r2
--mov r15 = 1087		       // gettimeofday syscall
--;;
--br.call.sptk.many b6 = b7
--;;
-+  mov b7 = r2
-+  mov r15 = 1087		       // gettimeofday syscall
-+  ;;
-+  br.call.sptk.many b6 = b7
-+  ;;
- 
--.restore sp
-+  .restore sp
- 
--mov ar.pfs = r11
--br.ret.sptk.many rp;;	      // return to caller
--END(fgettimeofday)
-+  mov ar.pfs = r11
-+  br.ret.sptk.many rp;;	      // return to caller
-+  END(fgettimeofday)
- 
- -- end fgettimeofday.S --
- 
- In reality, getting the gate address is accomplished by two extra
- values passed via the ELF auxiliary vector (include/asm-ia64/elf.h)
- 
-- o AT_SYSINFO : is the address of __kernel_syscall_via_epc()
-- o AT_SYSINFO_EHDR : is the address of the kernel gate ELF DSO
-+ * AT_SYSINFO : is the address of __kernel_syscall_via_epc()
-+ * AT_SYSINFO_EHDR : is the address of the kernel gate ELF DSO
- 
- The ELF DSO is a pre-linked library that is mapped in by the kernel at
- the gate page.  It is a proper ELF shared object so, with a dynamic
-diff --git a/Documentation/ia64/README b/Documentation/ia64/ia64.rst
-similarity index 61%
-rename from Documentation/ia64/README
-rename to Documentation/ia64/ia64.rst
-index aa17f2154cba..b725019a9492 100644
---- a/Documentation/ia64/README
-+++ b/Documentation/ia64/ia64.rst
-@@ -1,43 +1,49 @@
--        Linux kernel release 2.4.xx for the IA-64 Platform
-+===========================================
-+Linux kernel release for the IA-64 Platform
-+===========================================
- 
--   These are the release notes for Linux version 2.4 for IA-64
-+   These are the release notes for Linux since version 2.4 for IA-64
-    platform.  This document provides information specific to IA-64
-    ONLY, to get additional information about the Linux kernel also
-    read the original Linux README provided with the kernel.
- 
--INSTALLING the kernel:
-+Installing the Kernel
-+=====================
- 
-  - IA-64 kernel installation is the same as the other platforms, see
-    original README for details.
- 
- 
--SOFTWARE REQUIREMENTS
-+Software Requirements
-+=====================
- 
-    Compiling and running this kernel requires an IA-64 compliant GCC
-    compiler.  And various software packages also compiled with an
-    IA-64 compliant GCC compiler.
- 
- 
--CONFIGURING the kernel:
-+Configuring the Kernel
-+======================
- 
-    Configuration is the same, see original README for details.
- 
- 
--COMPILING the kernel:
-+Compiling the Kernel:
- 
-  - Compiling this kernel doesn't differ from other platform so read
-    the original README for details BUT make sure you have an IA-64
-    compliant GCC compiler.
- 
--IA-64 SPECIFICS
-+IA-64 Specifics
-+===============
- 
-  - General issues:
- 
--    o Hardly any performance tuning has been done. Obvious targets
-+    * Hardly any performance tuning has been done. Obvious targets
-       include the library routines (IP checksum, etc.). Less
-       obvious targets include making sure we don't flush the TLB
-       needlessly, etc.
- 
--    o SMP locks cleanup/optimization
-+    * SMP locks cleanup/optimization
- 
--    o IA32 support.  Currently experimental.  It mostly works.
-+    * IA32 support.  Currently experimental.  It mostly works.
-diff --git a/Documentation/ia64/index.rst b/Documentation/ia64/index.rst
-new file mode 100644
-index 000000000000..a3e3052ad6e2
---- /dev/null
-+++ b/Documentation/ia64/index.rst
-@@ -0,0 +1,18 @@
-+:orphan:
-+
-+==================
-+IA-64 Architecture
-+==================
-+
-+.. toctree::
-+   :maxdepth: 1
-+
-+   ia64
-+   aliasing
-+   efirtc
-+   err_inject
-+   fsys
-+   irq-redir
-+   mca
-+   serial
-+   xen
-diff --git a/Documentation/ia64/IRQ-redir.txt b/Documentation/ia64/irq-redir.rst
-similarity index 86%
-rename from Documentation/ia64/IRQ-redir.txt
-rename to Documentation/ia64/irq-redir.rst
-index f7bd72261283..39bf94484a15 100644
---- a/Documentation/ia64/IRQ-redir.txt
-+++ b/Documentation/ia64/irq-redir.rst
-@@ -1,6 +1,8 @@
-+==============================
- IRQ affinity on IA64 platforms
--------------------------------
--                           07.01.2002, Erich Focht <efocht@ess.nec.de>
-+==============================
-+
-+07.01.2002, Erich Focht <efocht@ess.nec.de>
- 
- 
- By writing to /proc/irq/IRQ#/smp_affinity the interrupt routing can be
-@@ -12,22 +14,27 @@ IRQ target is one particular CPU and cannot be a mask of several
- CPUs. Only the first non-zero bit is taken into account.
- 
- 
--Usage examples:
-+Usage examples
-+==============
- 
- The target CPU has to be specified as a hexadecimal CPU mask. The
- first non-zero bit is the selected CPU. This format has been kept for
- compatibility reasons with i386.
- 
- Set the delivery mode of interrupt 41 to fixed and route the
--interrupts to CPU #3 (logical CPU number) (2^3=0x08):
-+interrupts to CPU #3 (logical CPU number) (2^3=0x08)::
-+
-      echo "8" >/proc/irq/41/smp_affinity
- 
- Set the default route for IRQ number 41 to CPU 6 in lowest priority
--delivery mode (redirectable):
-+delivery mode (redirectable)::
-+
-      echo "r 40" >/proc/irq/41/smp_affinity
- 
--The output of the command
-+The output of the command::
-+
-      cat /proc/irq/IRQ#/smp_affinity
-+
- gives the target CPU mask for the specified interrupt vector. If the CPU
- mask is preceded by the character "r", the interrupt is redirectable
- (i.e. lowest priority mode routing is used), otherwise its route is
-@@ -35,7 +42,8 @@ fixed.
- 
- 
- 
--Initialization and default behavior:
-+Initialization and default behavior
-+===================================
- 
- If the platform features IRQ redirection (info provided by SAL) all
- IO-SAPIC interrupts are initialized with CPU#0 as their default target
-@@ -43,9 +51,11 @@ and the routing is the so called "lowest priority mode" (actually
- fixed SAPIC mode with hint). The XTP chipset registers are used as hints
- for the IRQ routing. Currently in Linux XTP registers can have three
- values:
-+
- 	- minimal for an idle task,
- 	- normal if any other task runs,
- 	- maximal if the CPU is going to be switched off.
-+
- The IRQ is routed to the CPU with lowest XTP register value, the
- search begins at the default CPU. Therefore most of the interrupts
- will be handled by CPU #0.
-@@ -53,12 +63,14 @@ will be handled by CPU #0.
- If the platform doesn't feature interrupt redirection IOSAPIC fixed
- routing is used. The target CPUs are distributed in a round robin
- manner. IRQs will be routed only to the selected target CPUs. Check
--with
-+with::
-+
-         cat /proc/interrupts
- 
- 
- 
--Comments:
-+Comments
-+========
- 
- On large (multi-node) systems it is recommended to route the IRQs to
- the node to which the corresponding device is connected.
-@@ -66,4 +78,3 @@ For systems like the NEC AzusA we get IRQ node-affinity for free. This
- is because usually the chipsets on each node redirect the interrupts
- only to their own CPUs (as they cannot see the XTP registers on the
- other nodes).
--
-diff --git a/Documentation/ia64/mca.txt b/Documentation/ia64/mca.rst
-similarity index 96%
-rename from Documentation/ia64/mca.txt
-rename to Documentation/ia64/mca.rst
-index f097c60cba1b..08270bba44a4 100644
---- a/Documentation/ia64/mca.txt
-+++ b/Documentation/ia64/mca.rst
-@@ -1,5 +1,8 @@
--An ad-hoc collection of notes on IA64 MCA and INIT processing.  Feel
--free to update it with notes about any area that is not clear.
-+=============================================================
-+An ad-hoc collection of notes on IA64 MCA and INIT processing
-+=============================================================
-+
-+Feel free to update it with notes about any area that is not clear.
- 
- ---
- 
-@@ -82,7 +85,8 @@ if we have a choice here.
-   own stack as running on that cpu.  Then a recursive error gets a
-   trace of the failing handler's "task".
- 
--[1] My (Keith Owens) original design called for ia64 to separate its
-+[1]
-+    My (Keith Owens) original design called for ia64 to separate its
-     struct task and the kernel stacks.  Then the MCA/INIT data would be
-     chained stacks like i386 interrupt stacks.  But that required
-     radical surgery on the rest of ia64, plus extra hard wired TLB
-diff --git a/Documentation/ia64/serial.txt b/Documentation/ia64/serial.rst
-similarity index 87%
-rename from Documentation/ia64/serial.txt
-rename to Documentation/ia64/serial.rst
-index a63d2c54329b..1de70c305a79 100644
---- a/Documentation/ia64/serial.txt
-+++ b/Documentation/ia64/serial.rst
-@@ -1,4 +1,9 @@
--SERIAL DEVICE NAMING
-+==============
-+Serial Devices
-+==============
-+
-+Serial Device Naming
-+====================
- 
-     As of 2.6.10, serial devices on ia64 are named based on the
-     order of ACPI and PCI enumeration.  The first device in the
-@@ -30,17 +35,21 @@ SERIAL DEVICE NAMING
-     (described in the ACPI namespace) plus an MP[2] (a PCI device) has
-     these ports:
- 
--                                  pre-2.6.10      pre-2.6.10
--                    MMIO         (EFI console    (EFI console
--                   address        on builtin)     on MP port)    2.6.10
--                  ==========      ==========      ==========     ======
-+      ==========  ==========     ============    ============   =======
-+      Type        MMIO           pre-2.6.10      pre-2.6.10     2.6.10+
-+		  address
-+				 (EFI console    (EFI console
-+                                 on builtin)     on MP port)
-+      ==========  ==========     ============    ============   =======
-       builtin     0xff5e0000        ttyS0           ttyS1         ttyS0
-       MP UPS      0xf8031000        ttyS1           ttyS2         ttyS1
-       MP Console  0xf8030000        ttyS2           ttyS0         ttyS2
-       MP 2        0xf8030010        ttyS3           ttyS3         ttyS3
-       MP 3        0xf8030038        ttyS4           ttyS4         ttyS4
-+      ==========  ==========     ============    ============   =======
- 
--CONSOLE SELECTION
-+Console Selection
-+=================
- 
-     EFI knows what your console devices are, but it doesn't tell the
-     kernel quite enough to actually locate them.  The DIG64 HCDP
-@@ -67,7 +76,8 @@ CONSOLE SELECTION
-     entries in /etc/inittab (for getty) and /etc/securetty (to allow
-     root login).
- 
--EARLY SERIAL CONSOLE
-+Early Serial Console
-+====================
- 
-     The kernel can't start using a serial console until it knows where
-     the device lives.  Normally this happens when the driver enumerates
-@@ -80,7 +90,8 @@ EARLY SERIAL CONSOLE
-     or if the EFI console path contains only a UART device and the
-     firmware supplies an HCDP.
- 
--TROUBLESHOOTING SERIAL CONSOLE PROBLEMS
-+Troubleshooting Serial Console Problems
-+=======================================
- 
-     No kernel output after elilo prints "Uncompressing Linux... done":
- 
-@@ -133,19 +144,22 @@ TROUBLESHOOTING SERIAL CONSOLE PROBLEMS
- 
- 
- 
--[1] http://www.dig64.org/specifications/agreement 
-+[1]
-+    http://www.dig64.org/specifications/agreement
-     The table was originally defined as the "HCDP" for "Headless
-     Console/Debug Port."  The current version is the "PCDP" for
-     "Primary Console and Debug Port Devices."
- 
--[2] The HP MP (management processor) is a PCI device that provides
-+[2]
-+    The HP MP (management processor) is a PCI device that provides
-     several UARTs.  One of the UARTs is often used as a console; the
-     EFI Boot Manager identifies it as "Acpi(HWP0002,700)/Pci(...)/Uart".
-     The external connection is usually a 25-pin connector, and a
-     special dongle converts that to three 9-pin connectors, one of
-     which is labelled "Console."
- 
--[3] EFI console devices are configured using the EFI Boot Manager
-+[3]
-+    EFI console devices are configured using the EFI Boot Manager
-     "Boot option maintenance" menu.  You may have to interrupt the
-     boot sequence to use this menu, and you will have to reset the
-     box after changing console configuration.
-diff --git a/Documentation/ia64/xen.rst b/Documentation/ia64/xen.rst
-new file mode 100644
-index 000000000000..831339c74441
---- /dev/null
-+++ b/Documentation/ia64/xen.rst
-@@ -0,0 +1,206 @@
-+********************************************************
-+Recipe for getting/building/running Xen/ia64 with pv_ops
-+********************************************************
-+This recipe describes how to get xen-ia64 source and build it,
-+and run domU with pv_ops.
-+
-+Requirements
-+============
-+
-+  - python
-+  - mercurial
-+    it (aka "hg") is an open-source source code
-+    management software. See the below.
-+    http://www.selenic.com/mercurial/wiki/
-+  - git
-+  - bridge-utils
-+
-+Getting and Building Xen and Dom0
-+=================================
-+
-+  My environment is:
-+
-+    - Machine  : Tiger4
-+    - Domain0 OS  : RHEL5
-+    - DomainU OS  : RHEL5
-+
-+ 1. Download source::
-+
-+	# hg clone http://xenbits.xensource.com/ext/ia64/xen-unstable.hg
-+	# cd xen-unstable.hg
-+	# hg clone http://xenbits.xensource.com/ext/ia64/linux-2.6.18-xen.hg
-+
-+ 2. # make world
-+
-+ 3. # make install-tools
-+
-+ 4. copy kernels and xen::
-+
-+	# cp xen/xen.gz /boot/efi/efi/redhat/
-+	# cp build-linux-2.6.18-xen_ia64/vmlinux.gz \
-+	/boot/efi/efi/redhat/vmlinuz-2.6.18.8-xen
-+
-+ 5. make initrd for Dom0/DomU::
-+
-+	# make -C linux-2.6.18-xen.hg ARCH=ia64 modules_install \
-+          O=$(pwd)/build-linux-2.6.18-xen_ia64
-+	# mkinitrd -f /boot/efi/efi/redhat/initrd-2.6.18.8-xen.img \
-+	  2.6.18.8-xen --builtin mptspi --builtin mptbase \
-+	  --builtin mptscsih --builtin uhci-hcd --builtin ohci-hcd \
-+	  --builtin ehci-hcd
-+
-+Making a disk image for guest OS
-+================================
-+
-+ 1. make file::
-+
-+      # dd if=/dev/zero of=/root/rhel5.img bs=1M seek=4096 count=0
-+      # mke2fs -F -j /root/rhel5.img
-+      # mount -o loop /root/rhel5.img /mnt
-+      # cp -ax /{dev,var,etc,usr,bin,sbin,lib} /mnt
-+      # mkdir /mnt/{root,proc,sys,home,tmp}
-+
-+      Note: You may miss some device files. If so, please create them
-+      with mknod. Or you can use tar instead of cp.
-+
-+ 2. modify DomU's fstab::
-+
-+      # vi /mnt/etc/fstab
-+         /dev/xvda1  /            ext3    defaults        1 1
-+         none        /dev/pts     devpts  gid=5,mode=620  0 0
-+         none        /dev/shm     tmpfs   defaults        0 0
-+         none        /proc        proc    defaults        0 0
-+         none        /sys         sysfs   defaults        0 0
-+
-+ 3. modify inittab
-+
-+    set runlevel to 3 to avoid X trying to start::
-+
-+      # vi /mnt/etc/inittab
-+         id:3:initdefault:
-+
-+    Start a getty on the hvc0 console::
-+
-+       X0:2345:respawn:/sbin/mingetty hvc0
-+
-+    tty1-6 mingetty can be commented out
-+
-+ 4. add hvc0 into /etc/securetty::
-+
-+      # vi /mnt/etc/securetty (add hvc0)
-+
-+ 5. umount::
-+
-+      # umount /mnt
-+
-+FYI, virt-manager can also make a disk image for guest OS.
-+It's GUI tools and easy to make it.
-+
-+Boot Xen & Domain0
-+==================
-+
-+ 1. replace elilo
-+    elilo of RHEL5 can boot Xen and Dom0.
-+    If you use old elilo (e.g RHEL4), please download from the below
-+    http://elilo.sourceforge.net/cgi-bin/blosxom
-+    and copy into /boot/efi/efi/redhat/::
-+
-+      # cp elilo-3.6-ia64.efi /boot/efi/efi/redhat/elilo.efi
-+
-+ 2. modify elilo.conf (like the below)::
-+
-+      # vi /boot/efi/efi/redhat/elilo.conf
-+      prompt
-+      timeout=20
-+      default=xen
-+      relocatable
-+
-+      image=vmlinuz-2.6.18.8-xen
-+             label=xen
-+             vmm=xen.gz
-+             initrd=initrd-2.6.18.8-xen.img
-+             read-only
-+             append=" -- rhgb root=/dev/sda2"
-+
-+The append options before "--" are for xen hypervisor,
-+the options after "--" are for dom0.
-+
-+FYI, your machine may need console options like
-+"com1=19200,8n1 console=vga,com1". For example,
-+append="com1=19200,8n1 console=vga,com1 -- rhgb console=tty0 \
-+console=ttyS0 root=/dev/sda2"
-+
-+Getting and Building domU with pv_ops
-+=====================================
-+
-+ 1. get pv_ops tree::
-+
-+      # git clone http://people.valinux.co.jp/~yamahata/xen-ia64/linux-2.6-xen-ia64.git/
-+
-+ 2. git branch (if necessary)::
-+
-+      # cd linux-2.6-xen-ia64/
-+      # git checkout -b your_branch origin/xen-ia64-domu-minimal-2008may19
-+
-+   Note:
-+     The current branch is xen-ia64-domu-minimal-2008may19.
-+     But you would find the new branch. You can see with
-+     "git branch -r" to get the branch lists.
-+
-+       http://people.valinux.co.jp/~yamahata/xen-ia64/for_eagl/linux-2.6-ia64-pv-ops.git/
-+
-+     is also available.
-+
-+     The tree is based on
-+
-+      git://git.kernel.org/pub/scm/linux/kernel/git/aegl/linux-2.6 test)
-+
-+ 3. copy .config for pv_ops of domU::
-+
-+      # cp arch/ia64/configs/xen_domu_wip_defconfig .config
-+
-+ 4. make kernel with pv_ops::
-+
-+      # make oldconfig
-+      # make
-+
-+ 5. install the kernel and initrd::
-+
-+      # cp vmlinux.gz /boot/efi/efi/redhat/vmlinuz-2.6-pv_ops-xenU
-+      # make modules_install
-+      # mkinitrd -f /boot/efi/efi/redhat/initrd-2.6-pv_ops-xenU.img \
-+        2.6.26-rc3xen-ia64-08941-g1b12161 --builtin mptspi \
-+        --builtin mptbase --builtin mptscsih --builtin uhci-hcd \
-+        --builtin ohci-hcd --builtin ehci-hcd
-+
-+Boot DomainU with pv_ops
-+========================
-+
-+ 1. make config of DomU::
-+
-+     # vi /etc/xen/rhel5
-+       kernel = "/boot/efi/efi/redhat/vmlinuz-2.6-pv_ops-xenU"
-+       ramdisk = "/boot/efi/efi/redhat/initrd-2.6-pv_ops-xenU.img"
-+       vcpus = 1
-+       memory = 512
-+       name = "rhel5"
-+       disk = [ 'file:/root/rhel5.img,xvda1,w' ]
-+       root = "/dev/xvda1 ro"
-+       extra= "rhgb console=hvc0"
-+
-+ 2. After boot xen and dom0, start xend::
-+
-+	# /etc/init.d/xend start
-+
-+   ( In the debugging case, `# XEND_DEBUG=1 xend trace_start` )
-+
-+ 3. start domU::
-+
-+	# xm create -c rhel5
-+
-+Reference
-+=========
-+- Wiki of Xen/IA64 upstream merge
-+  http://wiki.xensource.com/xenwiki/XenIA64/UpstreamMerge
-+
-+Written by Akio Takebe <takebe_akio@jp.fujitsu.com> on 28 May 2008
-diff --git a/Documentation/ia64/xen.txt b/Documentation/ia64/xen.txt
-deleted file mode 100644
-index a12c74ce2773..000000000000
---- a/Documentation/ia64/xen.txt
-+++ /dev/null
-@@ -1,183 +0,0 @@
--       Recipe for getting/building/running Xen/ia64 with pv_ops
--       --------------------------------------------------------
--
--This recipe describes how to get xen-ia64 source and build it,
--and run domU with pv_ops.
--
--============
--Requirements
--============
--
--  - python
--  - mercurial
--    it (aka "hg") is an open-source source code
--    management software. See the below.
--    http://www.selenic.com/mercurial/wiki/
--  - git
--  - bridge-utils
--
--=================================
--Getting and Building Xen and Dom0
--=================================
--
--  My environment is;
--    Machine  : Tiger4
--    Domain0 OS  : RHEL5
--    DomainU OS  : RHEL5
--
-- 1. Download source
--    # hg clone http://xenbits.xensource.com/ext/ia64/xen-unstable.hg
--    # cd xen-unstable.hg
--    # hg clone http://xenbits.xensource.com/ext/ia64/linux-2.6.18-xen.hg
--
-- 2. # make world
--
-- 3. # make install-tools
--
-- 4. copy kernels and xen
--    # cp xen/xen.gz /boot/efi/efi/redhat/
--    # cp build-linux-2.6.18-xen_ia64/vmlinux.gz \
--      /boot/efi/efi/redhat/vmlinuz-2.6.18.8-xen
--
-- 5. make initrd for Dom0/DomU
--    # make -C linux-2.6.18-xen.hg ARCH=ia64 modules_install \
--      O=$(pwd)/build-linux-2.6.18-xen_ia64
--    # mkinitrd -f /boot/efi/efi/redhat/initrd-2.6.18.8-xen.img \
--      2.6.18.8-xen --builtin mptspi --builtin mptbase \
--      --builtin mptscsih --builtin uhci-hcd --builtin ohci-hcd \
--      --builtin ehci-hcd
--
--================================
--Making a disk image for guest OS
--================================
--
-- 1. make file
--    # dd if=/dev/zero of=/root/rhel5.img bs=1M seek=4096 count=0
--    # mke2fs -F -j /root/rhel5.img
--    # mount -o loop /root/rhel5.img /mnt
--    # cp -ax /{dev,var,etc,usr,bin,sbin,lib} /mnt
--    # mkdir /mnt/{root,proc,sys,home,tmp}
--
--    Note: You may miss some device files. If so, please create them
--    with mknod. Or you can use tar instead of cp.
--
-- 2. modify DomU's fstab
--    # vi /mnt/etc/fstab
--       /dev/xvda1  /            ext3    defaults        1 1
--       none        /dev/pts     devpts  gid=5,mode=620  0 0
--       none        /dev/shm     tmpfs   defaults        0 0
--       none        /proc        proc    defaults        0 0
--       none        /sys         sysfs   defaults        0 0
--
-- 3. modify inittab
--    set runlevel to 3 to avoid X trying to start
--    # vi /mnt/etc/inittab
--       id:3:initdefault:
--    Start a getty on the hvc0 console
--       X0:2345:respawn:/sbin/mingetty hvc0
--    tty1-6 mingetty can be commented out
--
-- 4. add hvc0 into /etc/securetty
--    # vi /mnt/etc/securetty (add hvc0)
--
-- 5. umount
--    # umount /mnt
--
--FYI, virt-manager can also make a disk image for guest OS.
--It's GUI tools and easy to make it.
--
--==================
--Boot Xen & Domain0
--==================
--
-- 1. replace elilo
--    elilo of RHEL5 can boot Xen and Dom0.
--    If you use old elilo (e.g RHEL4), please download from the below
--    http://elilo.sourceforge.net/cgi-bin/blosxom
--    and copy into /boot/efi/efi/redhat/
--    # cp elilo-3.6-ia64.efi /boot/efi/efi/redhat/elilo.efi
--
-- 2. modify elilo.conf (like the below)
--    # vi /boot/efi/efi/redhat/elilo.conf
--     prompt
--     timeout=20
--     default=xen
--     relocatable
--
--     image=vmlinuz-2.6.18.8-xen
--             label=xen
--             vmm=xen.gz
--             initrd=initrd-2.6.18.8-xen.img
--             read-only
--             append=" -- rhgb root=/dev/sda2"
--
--The append options before "--" are for xen hypervisor,
--the options after "--" are for dom0.
--
--FYI, your machine may need console options like
--"com1=19200,8n1 console=vga,com1". For example,
--append="com1=19200,8n1 console=vga,com1 -- rhgb console=tty0 \
--console=ttyS0 root=/dev/sda2"
--
--=====================================
--Getting and Building domU with pv_ops
--=====================================
--
-- 1. get pv_ops tree
--    # git clone http://people.valinux.co.jp/~yamahata/xen-ia64/linux-2.6-xen-ia64.git/
--
-- 2. git branch (if necessary)
--    # cd linux-2.6-xen-ia64/
--    # git checkout -b your_branch origin/xen-ia64-domu-minimal-2008may19
--    (Note: The current branch is xen-ia64-domu-minimal-2008may19.
--    But you would find the new branch. You can see with
--    "git branch -r" to get the branch lists.
--    http://people.valinux.co.jp/~yamahata/xen-ia64/for_eagl/linux-2.6-ia64-pv-ops.git/
--    is also available. The tree is based on
--    git://git.kernel.org/pub/scm/linux/kernel/git/aegl/linux-2.6 test)
--
--
-- 3. copy .config for pv_ops of domU
--    # cp arch/ia64/configs/xen_domu_wip_defconfig .config
--
-- 4. make kernel with pv_ops
--    # make oldconfig
--    # make
--
-- 5. install the kernel and initrd
--    # cp vmlinux.gz /boot/efi/efi/redhat/vmlinuz-2.6-pv_ops-xenU
--    # make modules_install
--    # mkinitrd -f /boot/efi/efi/redhat/initrd-2.6-pv_ops-xenU.img \
--      2.6.26-rc3xen-ia64-08941-g1b12161 --builtin mptspi \
--      --builtin mptbase --builtin mptscsih --builtin uhci-hcd \
--      --builtin ohci-hcd --builtin ehci-hcd
--
--========================
--Boot DomainU with pv_ops
--========================
--
-- 1. make config of DomU
--   # vi /etc/xen/rhel5
--     kernel = "/boot/efi/efi/redhat/vmlinuz-2.6-pv_ops-xenU"
--     ramdisk = "/boot/efi/efi/redhat/initrd-2.6-pv_ops-xenU.img"
--     vcpus = 1
--     memory = 512
--     name = "rhel5"
--     disk = [ 'file:/root/rhel5.img,xvda1,w' ]
--     root = "/dev/xvda1 ro"
--     extra= "rhgb console=hvc0"
--
-- 2. After boot xen and dom0, start xend
--   # /etc/init.d/xend start
--   ( In the debugging case, # XEND_DEBUG=1 xend trace_start )
--
-- 3. start domU
--   # xm create -c rhel5
--
--=========
--Reference
--=========
--- Wiki of Xen/IA64 upstream merge
--  http://wiki.xensource.com/xenwiki/XenIA64/UpstreamMerge
--
--Written by Akio Takebe <takebe_akio@jp.fujitsu.com> on 28 May 2008
+ =====================
+ CMA Debugfs Interface
+ =====================
+diff --git a/Documentation/admin-guide/mm/index.rst b/Documentation/admin-guide/mm/index.rst
+index 5f61a6c429e0..11db46448354 100644
+--- a/Documentation/admin-guide/mm/index.rst
++++ b/Documentation/admin-guide/mm/index.rst
+@@ -26,6 +26,7 @@ the Linux memory management.
+    :maxdepth: 1
+ 
+    concepts
++   cma_debugfs
+    hugetlbpage
+    idle_page_tracking
+    ksm
+diff --git a/Documentation/numastat.txt b/Documentation/admin-guide/numastat.rst
+similarity index 100%
+rename from Documentation/numastat.txt
+rename to Documentation/admin-guide/numastat.rst
+diff --git a/Documentation/pnp.txt b/Documentation/admin-guide/pnp.rst
+similarity index 100%
+rename from Documentation/pnp.txt
+rename to Documentation/admin-guide/pnp.rst
+diff --git a/Documentation/rtc.txt b/Documentation/admin-guide/rtc.rst
+similarity index 100%
+rename from Documentation/rtc.txt
+rename to Documentation/admin-guide/rtc.rst
+diff --git a/Documentation/svga.txt b/Documentation/admin-guide/svga.rst
+similarity index 100%
+rename from Documentation/svga.txt
+rename to Documentation/admin-guide/svga.rst
+diff --git a/Documentation/admin-guide/sysctl/kernel.rst b/Documentation/admin-guide/sysctl/kernel.rst
+index a0c1d4ce403a..032c7cd3cede 100644
+--- a/Documentation/admin-guide/sysctl/kernel.rst
++++ b/Documentation/admin-guide/sysctl/kernel.rst
+@@ -327,7 +327,7 @@ when a hard lockup is detected.
+    0 - don't panic on hard lockup
+    1 - panic on hard lockup
+ 
+-See Documentation/lockup-watchdogs.txt for more information.  This can
++See Documentation/admin-guide/lockup-watchdogs.rst for more information.  This can
+ also be set using the nmi_watchdog kernel parameter.
+ 
+ 
+diff --git a/Documentation/video-output.txt b/Documentation/admin-guide/video-output.rst
+similarity index 100%
+rename from Documentation/video-output.txt
+rename to Documentation/admin-guide/video-output.rst
+diff --git a/Documentation/fb/vesafb.rst b/Documentation/fb/vesafb.rst
+index 2ed0dfb661cf..6821c87b7893 100644
+--- a/Documentation/fb/vesafb.rst
++++ b/Documentation/fb/vesafb.rst
+@@ -30,7 +30,7 @@ How to use it?
+ ==============
+ 
+ Switching modes is done using the vga=... boot parameter.  Read
+-Documentation/svga.txt for details.
++Documentation/admin-guide/svga.rst for details.
+ 
+ You should compile in both vgacon (for text mode) and vesafb (for
+ graphics mode). Which of them takes over the console depends on
+diff --git a/Documentation/x86/topology.rst b/Documentation/x86/topology.rst
+index 8e9704f61017..e29739904e37 100644
+--- a/Documentation/x86/topology.rst
++++ b/Documentation/x86/topology.rst
+@@ -9,7 +9,7 @@ representation in the kernel. Update/change when doing changes to the
+ respective code.
+ 
+ The architecture-agnostic topology definitions are in
+-Documentation/cputopology.txt. This file holds x86-specific
++Documentation/admin-guide/cputopology.rst. This file holds x86-specific
+ differences/specialities which must not necessarily apply to the generic
+ definitions. Thus, the way to read up on Linux topology on x86 is to start
+ with the generic one and look at this one in parallel for the x86 specifics.
 diff --git a/MAINTAINERS b/MAINTAINERS
-index f738b413914e..f4f24d0e7954 100644
+index 82222aa618c5..76b52a20663e 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -14331,7 +14331,7 @@ SGI SN-IA64 (Altix) SERIAL CONSOLE DRIVER
- M:	Pat Gefre <pfg@sgi.com>
- L:	linux-ia64@vger.kernel.org
- S:	Supported
--F:	Documentation/ia64/serial.txt
-+F:	Documentation/ia64/serial.rst
- F:	drivers/tty/serial/ioc?_serial.c
- F:	include/linux/ioc?.h
+@@ -6054,7 +6054,7 @@ M:	Ard Biesheuvel <ard.biesheuvel@linaro.org>
+ L:	linux-efi@vger.kernel.org
+ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git
+ S:	Maintained
+-F:	Documentation/efi-stub.txt
++F:	Documentation/admin-guide/efi-stub.rst
+ F:	arch/*/kernel/efi.c
+ F:	arch/x86/boot/compressed/eboot.[ch]
+ F:	arch/*/include/asm/efi.h
+@@ -7033,7 +7033,7 @@ M:	Herbert Xu <herbert@gondor.apana.org.au>
+ L:	linux-crypto@vger.kernel.org
+ S:	Odd fixes
+ F:	Documentation/devicetree/bindings/rng/
+-F:	Documentation/hw_random.txt
++F:	Documentation/admin-guide/hw_random.rst
+ F:	drivers/char/hw_random/
+ F:	include/linux/hw_random.h
  
-diff --git a/arch/ia64/kernel/efi.c b/arch/ia64/kernel/efi.c
-index 8f106638913c..3795d18276c4 100644
---- a/arch/ia64/kernel/efi.c
-+++ b/arch/ia64/kernel/efi.c
-@@ -852,7 +852,7 @@ valid_phys_addr_range (phys_addr_t phys_addr, unsigned long size)
- 	 * /dev/mem reads and writes use copy_to_user(), which implicitly
- 	 * uses a granule-sized kernel identity mapping.  It's really
- 	 * only safe to do this for regions in kern_memmap.  For more
--	 * details, see Documentation/ia64/aliasing.txt.
-+	 * details, see Documentation/ia64/aliasing.rst.
- 	 */
- 	attr = kern_mem_attribute(phys_addr, size);
- 	if (attr & EFI_MEMORY_WB || attr & EFI_MEMORY_UC)
-diff --git a/arch/ia64/kernel/fsys.S b/arch/ia64/kernel/fsys.S
-index d80c99a5f55d..0750a716adc7 100644
---- a/arch/ia64/kernel/fsys.S
-+++ b/arch/ia64/kernel/fsys.S
-@@ -28,7 +28,7 @@
- #include <asm/native/inst.h>
+@@ -9347,7 +9347,7 @@ M:	"Richard Russon (FlatCap)" <ldm@flatcap.org>
+ L:	linux-ntfs-dev@lists.sourceforge.net
+ W:	http://www.linux-ntfs.org/content/view/19/37/
+ S:	Maintained
+-F:	Documentation/ldm.txt
++F:	Documentation/admin-guide/ldm.rst
+ F:	block/partitions/ldm.*
  
- /*
-- * See Documentation/ia64/fsys.txt for details on fsyscalls.
-+ * See Documentation/ia64/fsys.rst for details on fsyscalls.
+ LSILOGIC MPT FUSION DRIVERS (FC/SAS/SPI)
+@@ -12000,7 +12000,7 @@ PARALLEL LCD/KEYPAD PANEL DRIVER
+ M:	Willy Tarreau <willy@haproxy.com>
+ M:	Ksenija Stanojevic <ksenija.stanojevic@gmail.com>
+ S:	Odd Fixes
+-F:	Documentation/auxdisplay/lcd-panel-cgram.rst
++F:	Documentation/admin-guide/lcd-panel-cgram.rst
+ F:	drivers/auxdisplay/panel.c
+ 
+ PARALLEL PORT SUBSYSTEM
+@@ -13419,7 +13419,7 @@ Q:	http://patchwork.ozlabs.org/project/rtc-linux/list/
+ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/abelloni/linux.git
+ S:	Maintained
+ F:	Documentation/devicetree/bindings/rtc/
+-F:	Documentation/rtc.txt
++F:	Documentation/admin-guide/rtc.rst
+ F:	drivers/rtc/
+ F:	include/linux/rtc.h
+ F:	include/uapi/linux/rtc.h
+@@ -15248,7 +15248,7 @@ SVGA HANDLING
+ M:	Martin Mares <mj@ucw.cz>
+ L:	linux-video@atrey.karlin.mff.cuni.cz
+ S:	Maintained
+-F:	Documentation/svga.txt
++F:	Documentation/admin-guide/svga.rst
+ F:	arch/x86/boot/video*
+ 
+ SWIOTLB SUBSYSTEM
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index d5bd4350fcbd..b1ab350b9d60 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -1286,7 +1286,7 @@ config SMP
+ 	  will run faster if you say N here.
+ 
+ 	  See also <file:Documentation/x86/i386/IO-APIC.rst>,
+-	  <file:Documentation/lockup-watchdogs.txt> and the SMP-HOWTO available at
++	  <file:Documentation/admin-guide/lockup-watchdogs.rst> and the SMP-HOWTO available at
+ 	  <http://tldp.org/HOWTO/SMP-HOWTO.html>.
+ 
+ 	  If you don't know what to do here, say N.
+diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
+index 42875ff15671..6d732e451071 100644
+--- a/arch/parisc/Kconfig
++++ b/arch/parisc/Kconfig
+@@ -277,7 +277,7 @@ config SMP
+ 	  machines, but will use only one CPU of a multiprocessor machine.
+ 	  On a uniprocessor machine, the kernel will run faster if you say N.
+ 
+-	  See also <file:Documentation/lockup-watchdogs.txt> and the SMP-HOWTO
++	  See also <file:Documentation/admin-guide/lockup-watchdogs.rst> and the SMP-HOWTO
+ 	  available at <http://www.tldp.org/docs.html#howto>.
+ 
+ 	  If you don't know what to do here, say N.
+diff --git a/arch/sh/Kconfig b/arch/sh/Kconfig
+index c2858ac6a46a..6b1b5941b618 100644
+--- a/arch/sh/Kconfig
++++ b/arch/sh/Kconfig
+@@ -679,7 +679,7 @@ config SMP
+ 	  People using multiprocessor machines who say Y here should also say
+ 	  Y to "Enhanced Real Time Clock Support", below.
+ 
+-	  See also <file:Documentation/lockup-watchdogs.txt> and the SMP-HOWTO
++	  See also <file:Documentation/admin-guide/lockup-watchdogs.rst> and the SMP-HOWTO
+ 	  available at <http://www.tldp.org/docs.html#howto>.
+ 
+ 	  If you don't know what to do here, say N.
+diff --git a/arch/sparc/Kconfig b/arch/sparc/Kconfig
+index e9f5d62e9817..7926a2e11bdc 100644
+--- a/arch/sparc/Kconfig
++++ b/arch/sparc/Kconfig
+@@ -180,7 +180,7 @@ config SMP
+ 	  Y to "Enhanced Real Time Clock Support", below. The "Advanced Power
+ 	  Management" code will be disabled if you say Y here.
+ 
+-	  See also <file:Documentation/lockup-watchdogs.txt> and the SMP-HOWTO
++	  See also <file:Documentation/admin-guide/lockup-watchdogs.rst> and the SMP-HOWTO
+ 	  available at <http://www.tldp.org/docs.html#howto>.
+ 
+ 	  If you don't know what to do here, say N.
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index 489fd833b980..2ca471ae6756 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -402,7 +402,7 @@ config SMP
+ 	  Management" code will be disabled if you say Y here.
+ 
+ 	  See also <file:Documentation/x86/i386/IO-APIC.rst>,
+-	  <file:Documentation/lockup-watchdogs.txt> and the SMP-HOWTO available at
++	  <file:Documentation/admin-guide/lockup-watchdogs.rst> and the SMP-HOWTO available at
+ 	  <http://www.tldp.org/docs.html#howto>.
+ 
+ 	  If you don't know what to do here, say N.
+@@ -1959,7 +1959,7 @@ config EFI_STUB
+           This kernel feature allows a bzImage to be loaded directly
+ 	  by EFI firmware without the use of a bootloader.
+ 
+-	  See Documentation/efi-stub.txt for more information.
++	  See Documentation/admin-guide/efi-stub.rst for more information.
+ 
+ config EFI_MIXED
+ 	bool "EFI mixed-mode support"
+diff --git a/block/partitions/Kconfig b/block/partitions/Kconfig
+index 37b9710cc80a..702689a628f0 100644
+--- a/block/partitions/Kconfig
++++ b/block/partitions/Kconfig
+@@ -194,7 +194,7 @@ config LDM_PARTITION
+ 	  Normal partitions are now called Basic Disks under Windows 2000, XP,
+ 	  and Vista.
+ 
+-	  For a fuller description read <file:Documentation/ldm.txt>.
++	  For a fuller description read <file:Documentation/admin-guide/ldm.rst>.
+ 
+ 	  If unsure, say N.
+ 
+diff --git a/drivers/char/Kconfig b/drivers/char/Kconfig
+index 442403abd73a..3e866885a405 100644
+--- a/drivers/char/Kconfig
++++ b/drivers/char/Kconfig
+@@ -291,7 +291,7 @@ config RTC
+ 	  and set the RTC in an SMP compatible fashion.
+ 
+ 	  If you think you have a use for such a device (such as periodic data
+-	  sampling), then say Y here, and read <file:Documentation/rtc.txt>
++	  sampling), then say Y here, and read <file:Documentation/admin-guide/rtc.rst>
+ 	  for details.
+ 
+ 	  To compile this driver as a module, choose M here: the
+@@ -313,7 +313,7 @@ config JS_RTC
+ 	  /dev/rtc.
+ 
+ 	  If you think you have a use for such a device (such as periodic data
+-	  sampling), then say Y here, and read <file:Documentation/rtc.txt>
++	  sampling), then say Y here, and read <file:Documentation/admin-guide/rtc.rst>
+ 	  for details.
+ 
+ 	  To compile this driver as a module, choose M here: the
+diff --git a/drivers/char/hw_random/core.c b/drivers/char/hw_random/core.c
+index 95be7228f327..9044d31ab1a1 100644
+--- a/drivers/char/hw_random/core.c
++++ b/drivers/char/hw_random/core.c
+@@ -4,7 +4,7 @@
+  * Copyright 2006 Michael Buesch <m@bues.ch>
+  * Copyright 2005 (c) MontaVista Software, Inc.
   *
-  * On entry to an fsyscall handler:
-  *   r10	= 0 (i.e., defaults to "successful syscall return")
-diff --git a/arch/ia64/mm/ioremap.c b/arch/ia64/mm/ioremap.c
-index 5e3e7b1fdac5..0c0de2c4ec69 100644
---- a/arch/ia64/mm/ioremap.c
-+++ b/arch/ia64/mm/ioremap.c
-@@ -42,7 +42,7 @@ ioremap (unsigned long phys_addr, unsigned long size)
- 	/*
- 	 * For things in kern_memmap, we must use the same attribute
- 	 * as the rest of the kernel.  For more details, see
--	 * Documentation/ia64/aliasing.txt.
-+	 * Documentation/ia64/aliasing.rst.
- 	 */
- 	attr = kern_mem_attribute(phys_addr, size);
- 	if (attr & EFI_MEMORY_WB)
-diff --git a/arch/ia64/pci/pci.c b/arch/ia64/pci/pci.c
-index e308196c2229..165e561dc81a 100644
---- a/arch/ia64/pci/pci.c
-+++ b/arch/ia64/pci/pci.c
-@@ -450,7 +450,7 @@ pci_mmap_legacy_page_range(struct pci_bus *bus, struct vm_area_struct *vma,
- 		return -ENOSYS;
+- * Please read Documentation/hw_random.txt for details on use.
++ * Please read Documentation/admin-guide/hw_random.rst for details on use.
+  *
+  * This software may be used and distributed according to the terms
+  * of the GNU General Public License, incorporated herein by reference.
+diff --git a/include/linux/hw_random.h b/include/linux/hw_random.h
+index c0b93e0ff0c0..8e6dd908da21 100644
+--- a/include/linux/hw_random.h
++++ b/include/linux/hw_random.h
+@@ -1,7 +1,7 @@
+ /*
+ 	Hardware Random Number Generator
  
- 	/*
--	 * Avoid attribute aliasing.  See Documentation/ia64/aliasing.txt
-+	 * Avoid attribute aliasing.  See Documentation/ia64/aliasing.rst
- 	 * for more details.
- 	 */
- 	if (!valid_mmap_phys_addr_range(vma->vm_pgoff, size))
+-	Please read Documentation/hw_random.txt for details on use.
++	Please read Documentation/admin-guide/hw_random.rst for details on use.
+ 
+ 	----------------------------------------------------------
+ 	This software may be used and distributed according to the terms
 -- 
 2.21.0
 
