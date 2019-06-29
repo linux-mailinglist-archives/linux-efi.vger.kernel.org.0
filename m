@@ -2,76 +2,158 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BFCC05A951
-	for <lists+linux-efi@lfdr.de>; Sat, 29 Jun 2019 08:57:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E1F45A95A
+	for <lists+linux-efi@lfdr.de>; Sat, 29 Jun 2019 09:05:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726719AbfF2G5Z (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sat, 29 Jun 2019 02:57:25 -0400
-Received: from mail.kernel.org ([198.145.29.99]:58720 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726156AbfF2G5Y (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Sat, 29 Jun 2019 02:57:24 -0400
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id EE550214AF;
-        Sat, 29 Jun 2019 06:57:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1561791443;
-        bh=Gu4JAKcSxvOi5Rs+wAZ3IANqigEmo57v9By1mLH/Uds=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=OYmvJ9tl+KIX9/77wdvv0Z0z3Ow03xbW0f1+Bqe7ElRMezdXzivqtOgALQLmyQ+jW
-         QhBV1AJbS8Z2iNNBm6cyHBSpmZ8QYbM7U6AxFMFOLRFAE+ZdQPZZcXZeSAW32O/XoP
-         hO3Ikrb9LVPSyeiZpsH4fxnoyjiEgh9qDv3ovQvY=
-Date:   Sat, 29 Jun 2019 08:57:21 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     "Srivatsa S. Bhat" <srivatsa@csail.mit.edu>
-Cc:     stable@vger.kernel.org, Gen Zhang <blackgod016574@gmail.com>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Rob Bradford <robert.bradford@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-efi@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
-        akaher@vmware.com, srinidhir@vmware.com, bvikas@vmware.com,
-        amakhalov@vmware.com, srivatsab@vmware.com
-Subject: Re: [4.19.y PATCH 1/3] efi/x86/Add missing error handling to
- old_memmap 1:1 mapping code
-Message-ID: <20190629065721.GA365@kroah.com>
-References: <156174726746.34985.1890238158382638220.stgit@srivatsa-ubuntu>
- <156174732219.34985.6679541271840078416.stgit@srivatsa-ubuntu>
+        id S1726527AbfF2HFD (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 29 Jun 2019 03:05:03 -0400
+Received: from mail-yb1-f193.google.com ([209.85.219.193]:39144 "EHLO
+        mail-yb1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726156AbfF2HFD (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sat, 29 Jun 2019 03:05:03 -0400
+Received: by mail-yb1-f193.google.com with SMTP id k4so6253324ybo.6;
+        Sat, 29 Jun 2019 00:05:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=xM/xcvkzohmQdtVDVPIgTFxuHjb4HOBVLFjrfhylohA=;
+        b=Gfu5Pz78tLVKvI8Q9WtRwxoZiso9oqghADUZOQqtlF6a4PF4ZC24i4bhdxEFOWT9mb
+         ogpxVnV34CUKT9Hp3X/zqMkMMajHb+ZB117iqrYsimXsLjh5l46Ev8rT8yc8cIX3yIvp
+         pPvNValE4fvXkmuBjtLVOlUXgnPgouNfZrFrcwZJP2fDEoyBu6UDZfe0+vDH3DvWwhm2
+         zDFMbFYJkqZlfRqwPcIjOiXLiRHvuGtOYey5wWMnlJCELzFsocHIwB5e56zebm7P/vZi
+         S6f79kvT8PuUPJTo2r7gwPTQl2Z6a4vDBem6y6JYpyyoLzjF+dqkakkpoHJf+XnufEOL
+         I8qA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=xM/xcvkzohmQdtVDVPIgTFxuHjb4HOBVLFjrfhylohA=;
+        b=fGTYzuL+oud727aBlwsLu8xlR47mCfqDSocu+JWOhrYD2fHsRWOtTibjFpG8h+mVmc
+         LtLngKxWk47XmZ/oa/3K+HkWSveSf/fb2Ma9xhmx+aVgZHISopq/ncJ/T6X9WzbpkcG3
+         dH9EKfZuD+w+FsHAfxetAUTkotnokSJGFD9VpbPqMjWz/peR6pe32b9aXzVdIq+RRJ77
+         /YUo0m+e1Fm396bGZKB6HUm7IUde/BxIrtlTkAWwftTDEFXzD2CUHwacQnoagOvALwfX
+         NMz19469BVNfR+LGzqXfF6dNKepBthCmGhaLuPvbz4x78llROCFXnmc5D1YfkQQT1lZ+
+         MMNg==
+X-Gm-Message-State: APjAAAXwKeIIADgcELt2dsFQUJIT/iHki71NzdiXHp7+ZbW3+Bb2Buaz
+        7+5dq0/1ux2psCOMQQ12p1t5yjmNHaA+WJvfpEc=
+X-Google-Smtp-Source: APXvYqxU4FPLSq/gM1nVlP+fbK0BmSrMY2hESytnxCDMdjqY3j5BqEk3eirFdcbLmu5rTiIZzzGPOTH2wPbd9PuZuhY=
+X-Received: by 2002:a25:8489:: with SMTP id v9mr8918225ybk.144.1561791901221;
+ Sat, 29 Jun 2019 00:05:01 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <156174732219.34985.6679541271840078416.stgit@srivatsa-ubuntu>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+References: <156174687561.1557469.7505651950825460767.stgit@magnolia> <156174690758.1557469.9258105121276292687.stgit@magnolia>
+In-Reply-To: <156174690758.1557469.9258105121276292687.stgit@magnolia>
+From:   Amir Goldstein <amir73il@gmail.com>
+Date:   Sat, 29 Jun 2019 10:04:50 +0300
+Message-ID: <CAOQ4uxgG5Kijx=nzFRB0uFPMghJXDfCqxKEWQoePwKZTGO+NMg@mail.gmail.com>
+Subject: Re: [PATCH 4/4] vfs: don't allow most setxattr to immutable files
+To:     "Darrick J. Wong" <darrick.wong@oracle.com>
+Cc:     matthew.garrett@nebula.com, Chao Yu <yuchao0@huawei.com>,
+        Theodore Tso <tytso@mit.edu>, ard.biesheuvel@linaro.org,
+        Josef Bacik <josef@toxicpanda.com>,
+        Christoph Hellwig <hch@infradead.org>,
+        Chris Mason <clm@fb.com>,
+        Andreas Dilger <adilger.kernel@dilger.ca>,
+        Al Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.com>,
+        David Sterba <dsterba@suse.com>,
+        Jaegeuk Kim <jaegeuk@kernel.org>, jk@ozlabs.org,
+        reiserfs-devel@vger.kernel.org, linux-efi@vger.kernel.org,
+        devel@lists.orangefs.org,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        linux-f2fs-devel@lists.sourceforge.net,
+        linux-xfs <linux-xfs@vger.kernel.org>,
+        Linux MM <linux-mm@kvack.org>, linux-nilfs@vger.kernel.org,
+        linux-mtd@lists.infradead.org, ocfs2-devel@oss.oracle.com,
+        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+        Ext4 <linux-ext4@vger.kernel.org>,
+        Linux Btrfs <linux-btrfs@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, Jun 28, 2019 at 11:42:13AM -0700, Srivatsa S. Bhat wrote:
-> From: Gen Zhang <blackgod016574@gmail.com>
-> 
-> commit 4e78921ba4dd0aca1cc89168f45039add4183f8e upstream.
-> 
-> The old_memmap flow in efi_call_phys_prolog() performs numerous memory
-> allocations, and either does not check for failure at all, or it does
-> but fails to propagate it back to the caller, which may end up calling
-> into the firmware with an incomplete 1:1 mapping.
-> 
-> So let's fix this by returning NULL from efi_call_phys_prolog() on
-> memory allocation failures only, and by handling this condition in the
-> caller. Also, clean up any half baked sets of page tables that we may
-> have created before returning with a NULL return value.
-> 
-> Note that any failure at this level will trigger a panic() two levels
-> up, so none of this makes a huge difference, but it is a nice cleanup
-> nonetheless.
+On Fri, Jun 28, 2019 at 9:37 PM Darrick J. Wong <darrick.wong@oracle.com> wrote:
+>
+> From: Darrick J. Wong <darrick.wong@oracle.com>
+>
+> The chattr manpage has this to say about immutable files:
+>
+> "A file with the 'i' attribute cannot be modified: it cannot be deleted
+> or renamed, no link can be created to this file, most of the file's
+> metadata can not be modified, and the file can not be opened in write
+> mode."
+>
+> However, we don't actually check the immutable flag in the setattr code,
+> which means that we can update inode flags and project ids and extent
+> size hints on supposedly immutable files.  Therefore, reject setflags
+> and fssetxattr calls on an immutable file if the file is immutable and
+> will remain that way.
+>
+> Signed-off-by: Darrick J. Wong <darrick.wong@oracle.com>
+> ---
+>  fs/inode.c |   27 +++++++++++++++++++++++++++
+>  1 file changed, 27 insertions(+)
+>
+>
+> diff --git a/fs/inode.c b/fs/inode.c
+> index cf07378e5731..4261c709e50e 100644
+> --- a/fs/inode.c
+> +++ b/fs/inode.c
+> @@ -2214,6 +2214,14 @@ int vfs_ioc_setflags_prepare(struct inode *inode, unsigned int oldflags,
+>             !capable(CAP_LINUX_IMMUTABLE))
+>                 return -EPERM;
+>
+> +       /*
+> +        * We aren't allowed to change any other flags if the immutable flag is
+> +        * already set and is not being unset.
+> +        */
+> +       if ((oldflags & FS_IMMUTABLE_FL) && (flags & FS_IMMUTABLE_FL) &&
+> +           oldflags != flags)
+> +               return -EPERM;
+> +
+>         /*
+>          * Now that we're done checking the new flags, flush all pending IO and
+>          * dirty mappings before setting S_IMMUTABLE on an inode via
+> @@ -2284,6 +2292,25 @@ int vfs_ioc_fssetxattr_check(struct inode *inode, const struct fsxattr *old_fa,
+>             !(S_ISREG(inode->i_mode) || S_ISDIR(inode->i_mode)))
+>                 return -EINVAL;
+>
+> +       /*
+> +        * We aren't allowed to change any fields if the immutable flag is
+> +        * already set and is not being unset.
+> +        */
+> +       if ((old_fa->fsx_xflags & FS_XFLAG_IMMUTABLE) &&
+> +           (fa->fsx_xflags & FS_XFLAG_IMMUTABLE)) {
+> +               if (old_fa->fsx_xflags != fa->fsx_xflags)
+> +                       return -EPERM;
+> +               if (old_fa->fsx_projid != fa->fsx_projid)
+> +                       return -EPERM;
+> +               if ((fa->fsx_xflags & (FS_XFLAG_EXTSIZE |
+> +                                      FS_XFLAG_EXTSZINHERIT)) &&
+> +                   old_fa->fsx_extsize != fa->fsx_extsize)
+> +                       return -EPERM;
+> +               if ((old_fa->fsx_xflags & FS_XFLAG_COWEXTSIZE) &&
+> +                   old_fa->fsx_cowextsize != fa->fsx_cowextsize)
+> +                       return -EPERM;
+> +       }
+> +
 
-With a description like this, why is this needed in a stable kernel if
-it does not really fix anything useful?
+I would like to reject this for the sheer effort on my eyes, but
+I'll try harder to rationalize.
 
-thanks,
+How about memcmp(fa, old_fa, offsetof(struct fsxattr, fsx_pad))?
 
-greg k-h
+Would be more robust to future struct fsxattr changes and generally
+more easy on the eyes.
+
+Sure, there is the possibility of userspace passing uninitialized
+fsx_extsize/fsx_cowextsize without setting the flag, but is that
+a real concern for the very few tools that are used to chattr?
+Those tools, when asked to set an attribute, will first get
+struct fsxattr from fs, then change the requested attr and set the
+fsxattr struct. So IMO the chances of this causing any regression
+or unexpected behavior are ridiculously low.
+
+Thanks,
+Amir.
