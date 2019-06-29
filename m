@@ -2,56 +2,93 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 998845AA90
-	for <lists+linux-efi@lfdr.de>; Sat, 29 Jun 2019 13:45:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6DA0D5AD4E
+	for <lists+linux-efi@lfdr.de>; Sat, 29 Jun 2019 22:09:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727041AbfF2LpG (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sat, 29 Jun 2019 07:45:06 -0400
-Received: from mail.kernel.org ([198.145.29.99]:50302 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726874AbfF2LpF (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Sat, 29 Jun 2019 07:45:05 -0400
-Subject: Re: [GIT PULL] EFI fixes
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1561808705;
-        bh=WhH3syw+6GV0de9bgChvhW9Fh1oXAWMn37HedkAWaQY=;
-        h=From:In-Reply-To:References:Date:To:Cc:From;
-        b=QyG54Kd0Pa16mpxjvYF6OKhlO4Sdzw5qUjTLA7iHDkCVuuVKSVLFlzCo0VEMHqrcO
-         b736MQilXG1GguIYBneMQUgakIG8SRrcc7cvVNjRAG/XDaIyd4X+pYc6yzlvprM+JO
-         2quU57P0dJU/hV22sThOoiN84QNu//0Z/tFJ5Ysc=
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <20190629082354.GA128031@gmail.com>
-References: <20190629082354.GA128031@gmail.com>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <20190629082354.GA128031@gmail.com>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git
- efi-urgent-for-linus
-X-PR-Tracked-Commit-Id: 48c7d73b2362ce61503551ad70052617b3e8857d
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: a7211bc9f3d50d77efe77c332b269458a94fcfd2
-Message-Id: <156180870500.30344.16122232121586033322.pr-tracker-bot@kernel.org>
-Date:   Sat, 29 Jun 2019 11:45:05 +0000
-To:     Ingo Molnar <mingo@kernel.org>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-kernel@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-        Borislav Petkov <bp@alien8.de>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        linux-efi@vger.kernel.org
+        id S1726909AbfF2UJG (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 29 Jun 2019 16:09:06 -0400
+Received: from mx2.suse.de ([195.135.220.15]:52216 "EHLO mx1.suse.de"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726906AbfF2UJF (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Sat, 29 Jun 2019 16:09:05 -0400
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx1.suse.de (Postfix) with ESMTP id 20195AD70;
+        Sat, 29 Jun 2019 20:09:03 +0000 (UTC)
+Received: by quack2.suse.cz (Postfix, from userid 1000)
+        id AA7D51E3F56; Sat, 29 Jun 2019 22:09:01 +0200 (CEST)
+Date:   Sat, 29 Jun 2019 22:09:01 +0200
+From:   Jan Kara <jack@suse.cz>
+To:     " Darrick J. Wong " <darrick.wong@oracle.com>
+Cc:     adilger.kernel@dilger.ca, clm@fb.com, yuchao0@huawei.com,
+        hch@infradead.org, jaegeuk@kernel.org, shaggy@kernel.org,
+        ard.biesheuvel@linaro.org, tytso@mit.edu,
+        matthew.garrett@nebula.com, jk@ozlabs.org,
+        David Sterba <dsterba@suse.com>, Jan Kara <jack@suse.com>,
+        josef@toxicpanda.com, viro@zeniv.linux.org.uk,
+        linux-mtd@lists.infradead.org,
+        jfs-discussion@lists.sourceforge.net,
+        linux-f2fs-devel@lists.sourceforge.net, ocfs2-devel@oss.oracle.com,
+        cluster-devel@redhat.com, linux-btrfs@vger.kernel.org,
+        linux-efi@vger.kernel.org, linux-ext4@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-nilfs@vger.kernel.org, linux-xfs@vger.kernel.org,
+        reiserfs-devel@vger.kernel.org
+Subject: Re: [PATCH 5/5] vfs: only allow FSSETXATTR to set DAX flag on files
+ and dirs
+Message-ID: <20190629200901.GA18642@quack2.suse.cz>
+References: <156174682897.1557318.14418894077683701275.stgit@magnolia>
+ <156174687185.1557318.13703922197244050336.stgit@magnolia>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <156174687185.1557318.13703922197244050336.stgit@magnolia>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The pull request you sent on Sat, 29 Jun 2019 10:23:54 +0200:
+On Fri 28-06-19 11:34:31,  Darrick J. Wong  wrote:
+> From: Darrick J. Wong <darrick.wong@oracle.com>
+> 
+> The DAX flag only applies to files and directories, so don't let it get
+> set for other types of files.
+> 
+> Signed-off-by: Darrick J. Wong <darrick.wong@oracle.com>
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git efi-urgent-for-linus
+Looks good to me. You can add:
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/a7211bc9f3d50d77efe77c332b269458a94fcfd2
+Reviewed-by: Jan Kara <jack@suse.cz>
 
-Thank you!
+								Honza
 
+> ---
+>  fs/inode.c |    8 ++++++++
+>  1 file changed, 8 insertions(+)
+> 
+> 
+> diff --git a/fs/inode.c b/fs/inode.c
+> index 670d5408d022..f08711b34341 100644
+> --- a/fs/inode.c
+> +++ b/fs/inode.c
+> @@ -2259,6 +2259,14 @@ int vfs_ioc_fssetxattr_check(struct inode *inode, const struct fsxattr *old_fa,
+>  	    !S_ISREG(inode->i_mode) && !S_ISDIR(inode->i_mode))
+>  		return -EINVAL;
+>  
+> +	/*
+> +	 * It is only valid to set the DAX flag on regular files and
+> +	 * directories on filesystems.
+> +	 */
+> +	if ((fa->fsx_xflags & FS_XFLAG_DAX) &&
+> +	    !(S_ISREG(inode->i_mode) || S_ISDIR(inode->i_mode)))
+> +		return -EINVAL;
+> +
+>  	/* Extent size hints of zero turn off the flags. */
+>  	if (fa->fsx_extsize == 0)
+>  		fa->fsx_xflags &= ~(FS_XFLAG_EXTSIZE | FS_XFLAG_EXTSZINHERIT);
+> 
+> 
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.wiki.kernel.org/userdoc/prtracker
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
