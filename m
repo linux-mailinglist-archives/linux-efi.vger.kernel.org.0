@@ -2,142 +2,224 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 152845CDCC
-	for <lists+linux-efi@lfdr.de>; Tue,  2 Jul 2019 12:45:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1212D5CFC7
+	for <lists+linux-efi@lfdr.de>; Tue,  2 Jul 2019 14:51:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726167AbfGBKpp (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 2 Jul 2019 06:45:45 -0400
-Received: from mail-yb1-f193.google.com ([209.85.219.193]:41634 "EHLO
-        mail-yb1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725780AbfGBKpp (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 2 Jul 2019 06:45:45 -0400
-Received: by mail-yb1-f193.google.com with SMTP id y67so1127843yba.8;
-        Tue, 02 Jul 2019 03:45:44 -0700 (PDT)
+        id S1726733AbfGBMuz (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 2 Jul 2019 08:50:55 -0400
+Received: from mail-ed1-f65.google.com ([209.85.208.65]:42666 "EHLO
+        mail-ed1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725922AbfGBMuz (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 2 Jul 2019 08:50:55 -0400
+Received: by mail-ed1-f65.google.com with SMTP id z25so27154945edq.9;
+        Tue, 02 Jul 2019 05:50:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=vlidC+hQ/gD/8v9eleM4nXtfiap8zhCG0j5qbLCVw18=;
-        b=kdVby+/PzZu5i6Y9UcQYatHEHHsEPhAQY+mjVHF6xlggt8o+nszbdHXCHfEBil5H5H
-         UL+/28eYKfUAOv8AvNzRMQHWK/y4MABFSamQhRwNZH1hpEc5BUQCjqITvhev6DLWRzG3
-         uOgpinFcBt7pSePpbwiWspS3cbj7dBXMod+4Z94YngJ+nIPc3qdhbsYftXAC3oBGhakE
-         Bt+6iCjbrfqQEg0SzB1WdrzlyuHEb0JfhuYdop7KFU8fbo4QPvOCj4+Z+NVkWFYsg5RT
-         IRHHoit1jxeDZWaJHULPmpdSPTutxwczS9nSE3h7MYk2MPhM/kHniCv9ovLGXWy3LfTv
-         lmfQ==
+        bh=ulgxsWYV0nRrSUUXQ81nMXkgbPlxNsLtNUXfKf0CzW0=;
+        b=PGU4kucx1w6t8Ox8ljAkdvrxOgUTPzE/S0MVdvgINUOYMysVco2JNbgT5tERMLSo2g
+         OgPPtEAqHYzRuTuPBcC/k/TLysjg8dY5B62NOZ9xct4buKZ5vhlwfDSypMuQA1GTu5Eo
+         kqLMe+vENyooNGCRqiy57KK66QMzCRce3dlLulnTVZwDbk015cp7KMcsUi6pSR9vFWqX
+         OsqhtKgcU8eAkeeyvIQwLRzAGd9Omwgv6yMZmlq3nZANX54VJKju91mECkopi1oxjH76
+         zDyOLpsq9pp/PQib0G5hDvMvcPYZucwHCaOAGDYNeVdAGZkrHAnzZQmD0L1DUc/YiVT9
+         +TyQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=vlidC+hQ/gD/8v9eleM4nXtfiap8zhCG0j5qbLCVw18=;
-        b=kOQko23Rc0IeST7t53H2gjWohdZk/9tmrCy9j0Rme3aK0mIIU5LjQKBiS+ejJnCJLr
-         eXv3MY5B5zssNxt6ivw3b3ZBvK1ZL89h6U4Y+3AIy7lCyyPMsPb/G6izNdRCpd06xd6E
-         pLh/ruAZmfaEUtviP+xATCFMGfeg5ePmN+63xu/FldL9ljRQfqyluhxF2LBRFjCNOzmg
-         NH1VOREpBkgGMKCPlQ1BVPd3q1TOF4cF+KqV12p2Ladm8UDSa0rsfY1id/BS+Xr1YQRm
-         UvHTCY97g7hTBu2cu7OTDhNjAo9ZikyO8JHLd7mxjGRiEsZr/AWbSs/fESX06x1R833k
-         KGPw==
-X-Gm-Message-State: APjAAAV+qRNH++e6+G9m8S/OV+UlGtYWnV7DHAfM2HUbmIWLZUzkYUAg
-        YebvmfFBvHMYW+g+t12VT1xBFQeakkjTeDO9KTg=
-X-Google-Smtp-Source: APXvYqzMdrjXgWGhi/zPaZxEj+t8DhHrW56qP/YMhmryxOT2o02rqdhc3hQ5y4gjPvsnd8KwypjTK3Tgmn2Zfydvxjo=
-X-Received: by 2002:a25:8109:: with SMTP id o9mr16913558ybk.132.1562064343920;
- Tue, 02 Jul 2019 03:45:43 -0700 (PDT)
+        bh=ulgxsWYV0nRrSUUXQ81nMXkgbPlxNsLtNUXfKf0CzW0=;
+        b=fGPImvYbiat6g0+iVVSFF9K8LpI8+xjUXG5WIfDBeFZIfQEbYc1FSVWniyt32l+Hek
+         Z3T5zbJRvDJabJMIVRdJsmFRovZuwGJ85nYcz84Ir3YncJic0qc6/88KZQWpIcLOv6IS
+         NJGOIV3DxVL/SCQ4r20oiScVReTvSSqkKGSshnvW4/S/RoxibQPWcxPd3mE/cmSK5ydq
+         w8BfflCMP9FkN2+LeWFgrzlqtuJ1qk4bNPWLUk7wa73ksEjHV2940JWslAV8gS4MFAG9
+         ApYttNSd7ssfSTnMmZlSbzMEuPK3TkK0/5K6piEPh2XLo3/hxPO1I/7HMklvH/DvtsRf
+         ovjA==
+X-Gm-Message-State: APjAAAVNBLtw58jR3ErlLgFrVFF+Er+7mCzzGwMWLF02W1sX/G+ZwUNJ
+        Jw6tojBYj8LmIG28Ph6+Q9TFCfOezaoMKEsMIVw=
+X-Google-Smtp-Source: APXvYqzkF+v7ZHn3YweY8uh0aG6jvfG865tKiirrQBWYXNuB/WA54ejTgSuxnWSEab0XYlhvVgeDpY68t3sALVFaa/A=
+X-Received: by 2002:a17:906:3612:: with SMTP id q18mr29032681ejb.278.1562071852310;
+ Tue, 02 Jul 2019 05:50:52 -0700 (PDT)
 MIME-Version: 1.0
-References: <156174687561.1557469.7505651950825460767.stgit@magnolia>
- <156174690758.1557469.9258105121276292687.stgit@magnolia> <20190701154200.GK1404256@magnolia>
-In-Reply-To: <20190701154200.GK1404256@magnolia>
-From:   Amir Goldstein <amir73il@gmail.com>
-Date:   Tue, 2 Jul 2019 13:45:32 +0300
-Message-ID: <CAOQ4uxizFXgSa4KzkwxmoPAvpiENg=y0=fsxEC1PkCX5J1ybag@mail.gmail.com>
-Subject: Re: [PATCH v2 4/4] vfs: don't allow most setxattr to immutable files
-To:     "Darrick J. Wong" <darrick.wong@oracle.com>
-Cc:     matthew.garrett@nebula.com, Chao Yu <yuchao0@huawei.com>,
-        Theodore Tso <tytso@mit.edu>,
+References: <20190630203614.5290-1-robdclark@gmail.com>
+In-Reply-To: <20190630203614.5290-1-robdclark@gmail.com>
+From:   Rob Clark <robdclark@gmail.com>
+Date:   Tue, 2 Jul 2019 05:50:36 -0700
+Message-ID: <CAF6AEGv8EJPmje_8bpK8LmLdLFkOSQVJOg_CTS7C_HwVB6i9eQ@mail.gmail.com>
+Subject: Re: [PATCH 0/4] drm+dt+efi: support devices with multiple possible panels
+To:     dri-devel <dri-devel@lists.freedesktop.org>,
+        linux-arm-msm <linux-arm-msm@vger.kernel.org>
+Cc:     freedreno <freedreno@lists.freedesktop.org>,
+        aarch64-laptops@lists.linaro.org,
+        Rob Clark <robdclark@chromium.org>,
         Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Josef Bacik <josef@toxicpanda.com>,
-        Christoph Hellwig <hch@infradead.org>,
-        Chris Mason <clm@fb.com>,
-        Andreas Dilger <adilger.kernel@dilger.ca>,
-        Al Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.com>,
-        David Sterba <dsterba@suse.com>,
-        Jaegeuk Kim <jaegeuk@kernel.org>, jk@ozlabs.org,
-        reiserfs-devel@vger.kernel.org, linux-efi@vger.kernel.org,
-        devel@lists.orangefs.org,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        linux-f2fs-devel@lists.sourceforge.net,
-        linux-xfs <linux-xfs@vger.kernel.org>,
-        Linux MM <linux-mm@kvack.org>, linux-nilfs@vger.kernel.org,
-        linux-mtd@lists.infradead.org, ocfs2-devel@oss.oracle.com,
-        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
-        Ext4 <linux-ext4@vger.kernel.org>,
-        Linux Btrfs <linux-btrfs@vger.kernel.org>
+        Catalin Marinas <catalin.marinas@arm.com>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>, Ingo Molnar <mingo@kernel.org>,
+        Julien Thierry <julien.thierry@arm.com>,
+        Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+        "open list:EXTENSIBLE FIRMWARE INTERFACE (EFI)" 
+        <linux-efi@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>,
+        Lukas Wunner <lukas@wunner.de>,
+        Steve Capper <steve.capper@arm.com>,
+        Will Deacon <will@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Mon, Jul 1, 2019 at 7:31 PM Darrick J. Wong <darrick.wong@oracle.com> wrote:
+On Sun, Jun 30, 2019 at 1:36 PM Rob Clark <robdclark@gmail.com> wrote:
 >
-> From: Darrick J. Wong <darrick.wong@oracle.com>
+> From: Rob Clark <robdclark@chromium.org>
 >
-> The chattr manpage has this to say about immutable files:
+> Now that we can deal gracefully with bootloader (firmware) initialized
+> display on aarch64 laptops[1], the next step is to deal with the fact
+> that the same model of laptop can have one of multiple different panels.
+> (For the yoga c630 that I have, I know of at least two possible panels,
+> there might be a third.)
 >
-> "A file with the 'i' attribute cannot be modified: it cannot be deleted
-> or renamed, no link can be created to this file, most of the file's
-> metadata can not be modified, and the file can not be opened in write
-> mode."
+> This is actually a scenario that comes up frequently in phones and
+> tablets as well, so it is useful to have an upstream solution for this.
 >
-> However, we don't actually check the immutable flag in the setattr code,
-> which means that we can update inode flags and project ids and extent
-> size hints on supposedly immutable files.  Therefore, reject setflags
-> and fssetxattr calls on an immutable file if the file is immutable and
-> will remain that way.
+> The basic idea is to add a 'panel-id' property in dt chosen node, and
+> use that to pick the endpoint we look at when loading the panel driver,
+> e.g.
 >
-> Signed-off-by: Darrick J. Wong <darrick.wong@oracle.com>
-> ---
-> v2: use memcmp instead of open coding a bunch of checks
+> / {
+>         chosen {
+>                 panel-id = <0xc4>;
+>         };
+>
+>         ivo_panel {
+>                 compatible = "ivo,m133nwf4-r0";
+>                 power-supply = <&vlcm_3v3>;
+>                 no-hpd;
+>
+>                 ports {
+>                         port {
+>                                 ivo_panel_in_edp: endpoint {
+>                                         remote-endpoint = <&sn65dsi86_out_ivo>;
+>                                 };
+>                         };
+>                 };
+>         };
+>
+>         boe_panel {
+>                 compatible = "boe,nv133fhm-n61";
+>                 power-supply = <&vlcm_3v3>;
+>                 no-hpd;
+>
+>                 ports {
+>                         port {
+>                                 boe_panel_in_edp: endpoint {
+>                                         remote-endpoint = <&sn65dsi86_out_boe>;
+>                                 };
+>                         };
+>                 };
+>         };
+>
+>         sn65dsi86: bridge@2c {
+>                 compatible = "ti,sn65dsi86";
+>
+>                 ...
+>
+>                 ports {
+>                         #address-cells = <1>;
+>                         #size-cells = <0>;
+>
+>                         ...
+>
+>                         port@1 {
+>                                 #address-cells = <1>;
+>                                 #size-cells = <0>;
+>                                 reg = <1>;
+>
+>                                 endpoint@c4 {
+>                                         reg = <0xc4>;
+>                                         remote-endpoint = <&boe_panel_in_edp>;
+>                                 };
+>
+>                                 endpoint@c5 {
+>                                         reg = <0xc5>;
+>                                         remote-endpoint = <&ivo_panel_in_edp>;
+>                                 };
+>                         };
+>                 };
+>         }
+> };
+>
+
+Just to put out an alternative idea for how to handle this in DT
+(since Laurent seemed unhappy with the idea of using endpoints to
+describe multiple connections between ports that *might* exist.
+
+This approach would require of_drm_find_panel() to check the
+device_node to see if it is a special "panel-select" thing.  (I think
+we could use device_node::data to recover the actual selected panel.)
+
+On the plus side, it would work for cases that aren't using of_graph
+to connect display/bridge to panel, so it would be pretty much
+transparent to drivers and bridges.
+
+And I guess it could be extended to cases where gpio's are used to
+detect which panel is attached..  not sure how far down that road I
+want to go, as jhugo mentioned elsewhere on this patchset, in some
+cases dsi is used to select (which could be problematic to do from
+kernel if display is already active in video mode scanout), or efuses
+which aren't accessible from kernel.
 
 
-Thanks,
+    chosen {
+        panel-id = <0xc4>;
+    };
 
-Reviewed-by: Amir Goldstein <amir73il@gmail.com>
+    panel_select {
+        compatible = "linux,panel-select";
+        #address-cells = <1>;
+        #size-cells = <0>;
 
+        boe_panel {
+            compatible = "boe,nv133fhm-n61";
+            reg = <0xc4>;
+            power-supply = <&vlcm_3v3>;
+            no-hpd;
+        };
 
-> ---
->  fs/inode.c |   17 +++++++++++++++++
->  1 file changed, 17 insertions(+)
->
-> diff --git a/fs/inode.c b/fs/inode.c
-> index cf07378e5731..31f694e405fe 100644
-> --- a/fs/inode.c
-> +++ b/fs/inode.c
-> @@ -2214,6 +2214,14 @@ int vfs_ioc_setflags_prepare(struct inode *inode, unsigned int oldflags,
->             !capable(CAP_LINUX_IMMUTABLE))
->                 return -EPERM;
->
-> +       /*
-> +        * We aren't allowed to change any other flags if the immutable flag is
-> +        * already set and is not being unset.
-> +        */
-> +       if ((oldflags & FS_IMMUTABLE_FL) && (flags & FS_IMMUTABLE_FL) &&
-> +           oldflags != flags)
-> +               return -EPERM;
-> +
->         /*
->          * Now that we're done checking the new flags, flush all pending IO and
->          * dirty mappings before setting S_IMMUTABLE on an inode via
-> @@ -2284,6 +2292,15 @@ int vfs_ioc_fssetxattr_check(struct inode *inode, const struct fsxattr *old_fa,
->             !(S_ISREG(inode->i_mode) || S_ISDIR(inode->i_mode)))
->                 return -EINVAL;
->
-> +       /*
-> +        * We aren't allowed to change any fields if the immutable flag is
-> +        * already set and is not being unset.
-> +        */
-> +       if ((old_fa->fsx_xflags & FS_XFLAG_IMMUTABLE) &&
-> +           (fa->fsx_xflags & FS_XFLAG_IMMUTABLE) &&
-> +           memcmp(fa, old_fa, offsetof(struct fsxattr, fsx_pad)))
-> +               return -EPERM;
-> +
->         /* Extent size hints of zero turn off the flags. */
->         if (fa->fsx_extsize == 0)
->                 fa->fsx_xflags &= ~(FS_XFLAG_EXTSIZE | FS_XFLAG_EXTSZINHERIT);
+        ivo_panel {
+            compatible = "ivo,m133nwf4-r0";
+            reg = <0xc5>;
+            power-supply = <&vlcm_3v3>;
+            no-hpd;
+        };
+
+        ports {
+            port {
+                panel_in_edp: endpoint {
+                    remote-endpoint = <&sn65dsi86_out>;
+                };
+            };
+        };
+    };
+
+    dsi_controller_or_bridge {
+        ...
+        ports {
+            ...
+            port@1 {
+                reg = <1>;
+                sn65dsi86_out: endpoint {
+                    remote-endpoint = <&panel_in_edp>;
+                };
+            };
+        };
+    };
+
+Personally I find my original proposal more natural (which is why I
+went with it, this second idea is more similar to what I initially had
+in mind before looking at of_graph).  And it seems to be a bit weird
+to have a panel_select thing which isn't really hardware.
+
+BR,
+-R
