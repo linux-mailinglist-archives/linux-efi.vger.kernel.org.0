@@ -2,62 +2,63 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 363C75D89E
-	for <lists+linux-efi@lfdr.de>; Wed,  3 Jul 2019 02:26:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F65F5D8EC
+	for <lists+linux-efi@lfdr.de>; Wed,  3 Jul 2019 02:31:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726652AbfGCA0h (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 2 Jul 2019 20:26:37 -0400
-Received: from mail-ed1-f66.google.com ([209.85.208.66]:36364 "EHLO
-        mail-ed1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726150AbfGCA0h (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 2 Jul 2019 20:26:37 -0400
-Received: by mail-ed1-f66.google.com with SMTP id k21so309917edq.3;
-        Tue, 02 Jul 2019 17:26:35 -0700 (PDT)
+        id S1727108AbfGCAax (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 2 Jul 2019 20:30:53 -0400
+Received: from mail-ed1-f65.google.com ([209.85.208.65]:42467 "EHLO
+        mail-ed1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726963AbfGCAaw (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 2 Jul 2019 20:30:52 -0400
+Received: by mail-ed1-f65.google.com with SMTP id z25so289911edq.9;
+        Tue, 02 Jul 2019 17:30:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=VZAFhtlOp5m5IcdkT0M3zeWqXJjIkrtR0IvKZYA1K+M=;
-        b=RNTyqH/ceLcT+PerwCHJqQxAqAbl3I/4n9nfUD1rbqCMHjkJ1yjJKXPlhHVTm0/3PL
-         GDDdjZpqLUCcBNL0fbqRqFHVIBYL3dg1iPSRIVfMivH59l0C4Q43EWRjv5swOEkCWxS7
-         XBg2EvsYn6GdfkIr52RA4wislpKD0gWQuqT/z8u/oke+PwuozA88rKogHM4x6rQexUei
-         WKtlhaufWxo2iOfuPZrxA9BpY2Qsok8UP2uyDobE4mWGuCvZ2WsoIuHu1XKm7EQY/iJ5
-         uXdpSBj4pA4vd+0E6GyUmy4q45LBnFnFvioaja3bL7wS1Tf6iliwK6NKn2Jk9aBRGqS2
-         FuRQ==
+        bh=SUMBHjqHxfFISJ4tsGh6gHnVJafzY5uBObk9/M1SI6Y=;
+        b=p4QfsUpxZBUPSNbm9a2ya6+yOVBLb06CncvEKO0qxtLknZ9dc5s45n/yCCCk8pVAGr
+         kTtuJCFsVLSmNXI13tt/3c+qkzMeuAESDbdCbiFxU8ZGu73hjgvAB7S/EKz0qJg50PM0
+         mggd9oJOp7fMPe31Y0DXLnsbQg44FXj8SGYjCyvHT1W/uN6YXAprbpsjvRGAUJjnYqRY
+         UbDxAZ046ar2qRfBKMqC0yk+pCMu82zzkmqLwb0ooQKB2mTZVaIkovBFit3MwyXI7wOa
+         w8KYcr5NOXHJ2fqa9bjhrPr+UG3CdQ92BH7V+3eVd900MzHNSuuuaZW55wl9e7h6e4PB
+         vpLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=VZAFhtlOp5m5IcdkT0M3zeWqXJjIkrtR0IvKZYA1K+M=;
-        b=j6E6dtJF/+f/sISn+FIJEubMaOBOc6J/fM1q6n2pLmFjGyYerweb4eKO9ZP9w0tyNY
-         boxY9YrH2TbtgkItY6oZ1KSahSVpkfxasDMmVfqPHMPbZi3eSROOE4V9EhPRmOkcr+Hx
-         t08GB6C3LXOJgjF3sUSiJIbjNlJLOZ1XccA3jdajcfMNoY6hrnsmrMfDDnTPmYxxIull
-         xTLU12C1uhUe2lAhr14oKP/eTyqh4MW1R+nx8JrVQGAtBQJdaoV8rQdYT1/DY+UR8tP2
-         IOVo9U1+6eBtIqeA/VSMzW+lVNMjIcjIJF1J2DBFcXgfAQw2GF9t2okrNGgTYydgdiBF
-         VpWA==
-X-Gm-Message-State: APjAAAVgl93QGe+Jv9q8IGB1kgFOAkgnDmgBuXPLExBPIPnfzI4Rk8fL
-        va3HGQ5ykzqYzwyV/PSweYVV1AF5pUPyeM9YrG3eayTFv3M=
-X-Google-Smtp-Source: APXvYqwCaZ62YgXGr6Wefiah678BTMIgXWNniNpMylBAQqop4o300YsLoRAst/FDjF5RPt9iVWwNrtIHGTFPlYJxpS4=
-X-Received: by 2002:a17:906:6802:: with SMTP id k2mr5942794ejr.174.1562107010010;
- Tue, 02 Jul 2019 15:36:50 -0700 (PDT)
+        bh=SUMBHjqHxfFISJ4tsGh6gHnVJafzY5uBObk9/M1SI6Y=;
+        b=aVNjQ3aZKn5OZO6na5MU7plZ2bIrRI4uKGXUdogHKc83QwSguIIWojeTQ6a98RJsoY
+         seUCji2cu6dDrRoai6omiLtnJNGl9aCP8lokwtBo0iHvcEfeNNaiMRwxbf55M1jjmjZ/
+         wKrZ6vd7qOi5YS9fXauI1ZGNUoypzd5cKYVawj1/qa79TGAndm5st5RctIA83j4tKex6
+         +MCqM1iFMMjZAkvGK1dUYUsmZMJVbMMK4xsR5ToS6E9fcO5s1uYN7YjgOj+SkJwI1gi8
+         mRqrLXCigMVnFiSPCjeyNPoc4qB7TUtCz/AuF7TFimruNZhHteLUdS7r1yW5KT6uKT7G
+         sR0Q==
+X-Gm-Message-State: APjAAAUEb3xclV+iEMHuPIodvsXJzHwrFrAskdb9Mv29M+8tmv8+1g1g
+        TVlQIbeBrkovOrG7/E0htTtfVmNDeORQGsqLuL+4aToXaVs=
+X-Google-Smtp-Source: APXvYqx4j4OCiYpTjzpwx7oNckBn+SqKRP14iTHp1P6MaiYoDQDLUnA3ecoEITujxJ6YGjIOt/liDhVugoLpxJ8Knu0=
+X-Received: by 2002:a50:9468:: with SMTP id q37mr38323779eda.163.1562107743736;
+ Tue, 02 Jul 2019 15:49:03 -0700 (PDT)
 MIME-Version: 1.0
 References: <20190630203614.5290-1-robdclark@gmail.com> <20190630203614.5290-3-robdclark@gmail.com>
  <CAKv+Gu_8BOt+f8RTspHo+se-=igZba1zL0+jWLV2HuuUXCKYpA@mail.gmail.com>
  <CAKv+Gu-KhPJxxJA3+J813OPcnoAD4nHq6MhiRTJSd_5y1dPNnw@mail.gmail.com>
- <CAF6AEGv+uAXVV6Q78n=jP0YRDjYn9OS=Xec9MU0+_7EBirxF5w@mail.gmail.com> <CAKv+Gu9pH9=AnNee7B-z0sP3rGJ-0Qnpziyx445M30KWC=Vq+w@mail.gmail.com>
-In-Reply-To: <CAKv+Gu9pH9=AnNee7B-z0sP3rGJ-0Qnpziyx445M30KWC=Vq+w@mail.gmail.com>
+ <CAF6AEGv+uAXVV6Q78n=jP0YRDjYn9OS=Xec9MU0+_7EBirxF5w@mail.gmail.com> <20190702215953.wdqges66hx3ge4jr@bivouac.eciton.net>
+In-Reply-To: <20190702215953.wdqges66hx3ge4jr@bivouac.eciton.net>
 From:   Rob Clark <robdclark@gmail.com>
-Date:   Tue, 2 Jul 2019 15:36:34 -0700
-Message-ID: <CAF6AEGtN0LXY9wBkh+JVPgUgBMUU1NPrtn1F4y78w3z-gXspvQ@mail.gmail.com>
+Date:   Tue, 2 Jul 2019 15:48:48 -0700
+Message-ID: <CAF6AEGvm62rcm4Lp4a+QmqFweVQ0QWXLDoN2CP8=40BdwiiVbQ@mail.gmail.com>
 Subject: Re: [PATCH 2/4] efi/libstub: detect panel-id
-To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Cc:     dri-devel <dri-devel@lists.freedesktop.org>,
+To:     Leif Lindholm <leif.lindholm@linaro.org>
+Cc:     Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
         linux-arm-msm <linux-arm-msm@vger.kernel.org>,
         freedreno <freedreno@lists.freedesktop.org>,
         aarch64-laptops@lists.linaro.org,
         Rob Clark <robdclark@chromium.org>,
         Ingo Molnar <mingo@kernel.org>, Will Deacon <will@kernel.org>,
-        Leif Lindholm <leif.lindholm@linaro.org>,
+        Alexander Graf <agraf@suse.de>,
         Steve Capper <steve.capper@arm.com>,
         Lukas Wunner <lukas@wunner.de>,
         Julien Thierry <julien.thierry@arm.com>,
@@ -69,34 +70,12 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, Jul 2, 2019 at 2:53 PM Ard Biesheuvel <ard.biesheuvel@linaro.org> wrote:
+On Tue, Jul 2, 2019 at 2:59 PM Leif Lindholm <leif.lindholm@linaro.org> wrote:
 >
-> On Tue, 2 Jul 2019 at 23:02, Rob Clark <robdclark@gmail.com> wrote:
-> >
-> > On Tue, Jul 2, 2019 at 1:35 PM Ard Biesheuvel <ard.biesheuvel@linaro.org> wrote:
-> > >
-> > > On Tue, 2 Jul 2019 at 22:26, Ard Biesheuvel <ard.biesheuvel@linaro.org> wrote:
-> > > >
-> > > > On Sun, 30 Jun 2019 at 22:36, Rob Clark <robdclark@gmail.com> wrote:
-> > > > >
-> > > > > From: Rob Clark <robdclark@chromium.org>
-> > > > >
-> > > > > On snapdragon aarch64 laptops, a 'UEFIDisplayInfo' variable is provided
-> > > > > to communicate some information about the display.  Crutially it has the
-> > > > > panel-id, so the appropriate panel driver can be selected.  Read this
-> > > > > out and stash in /chosen/panel-id so that display driver can use it to
-> > > > > pick the appropriate panel.
-> > > > >
-> > > > > Signed-off-by: Rob Clark <robdclark@chromium.org>
-> > > >
-> > > > Hi Rob,
-> > > >
-> > > > I understand why you are doing this, but this *really* belongs elsewhere.
-> > > >
+> On Tue, Jul 02, 2019 at 02:01:49PM -0700, Rob Clark wrote:
 > > > > So we are dealing with a platform that violates the UEFI spec, since
 > > > > it does not bother to implement variable services at runtime (because
 > > > > MS let the vendor get away with this).
-> > > >
 > > >
 > > > To clarify, the above remark applies to populating the DT from the OS
 > > > rather than from the firmware.
@@ -104,41 +83,24 @@ On Tue, Jul 2, 2019 at 2:53 PM Ard Biesheuvel <ard.biesheuvel@linaro.org> wrote:
 > > yeah, it isn't pretty, but there *are* some other similar cases where
 > > efi-stub is populating DT.. (like update_fdt_memmap() and
 > > kaslr-seed)..
-> >
 >
-> True, but those don't describe the hardware.
+> The problem isn't with the stub updating the DT, the problem is what
+> it updates it with.
 >
-> > it would be kinda nice to have an early-quirks mechanism where this
-> > could fit, but I thought that might be equally unpopular ;-)
-> >
+> update_fdt_memmap() is the stub filling in the information it
+> communicates to the main kernel.
 >
-> Very :-)
+> kaslr-seed sets a standard property using a standard interface if that
+> interface is available to it at the point of execution.
 >
-> > >
-> > > > First of all, to pass data between the EFI stub and the OS proper, we
-> > > > should use a configuration table rather than a DT property, since the
-> > > > former is ACPI/DT agnostic. Also, I'd like the consumer of the data to
-> > > > actually interpret it, i.e., just dump the whole opaque thing into a
-> > > > config table in the stub, and do the parsing in the OS proper.
-> > > >
-> > > > However, I am not thrilled at adding code to the stub that
-> > > > unconditionally looks for some variable with some magic name on all
-> > > > ARM/arm64 EFI systems, so this will need to live under a Kconfig
-> > > > option that depends on ARM64 (and does not default to y)
-> >
-> > I defn can add this under kconfig.. is it ok if that option is
-> > select'd by ARCH_QCOM?
-> >
+> Since what we're doing here is dressing up an ACPI platform to make it
+> look like it was a DT platform, and since we have the ability to tweak
+> the DT before ever passing it to the kernel, let's just do that.
 >
-> I guess some mobile SOC/snapdragon symbol would be more appropriate,
-> but given that qcom left the server business, I guess it hardly
-> matters, so default y if ARM64 && ARCH_QCOM is fine with me
+> Yes, I know I said I'd rather not, but it's way nicer than sticking
+> platform-specific hacks into the EFI stub.
 >
-> > (Just trying to minimize the things that can go wrong and the "I get a
-> > blank screen at boot" bug reports I get ;-))
-> >
->
-> Sure
+> (If adding it as a DT property is indeed the thing to do.)
 >
 > > > ... but saving variables at boot time for consumption at runtime is
 > > > something that we will likely see more of in the future.
@@ -146,28 +108,38 @@ On Tue, Jul 2, 2019 at 2:53 PM Ard Biesheuvel <ard.biesheuvel@linaro.org> wrote:
 > > I think this will be nice, but it also doesn't address the need for a
 > > quirk to get this into /chosen..  I guess we *could* use a shim or
 > > something that runs before the kernel to do this.  But that just seems
-> > like a logistical/support nightmare.  There is one kernel, and there
+> > like a logistical/support nightmare.
+> >
+> > There is one kernel, and there
 > > are N distro's, so debugging a users "I don't get a screen at boot"
 > > problem because their distro missed some shim patch really just
 > > doesn't seem like a headache I want to have.
-> >
 >
-> I'd argue that this does not belong in /chosen in the first place,
-> i.e., it doesn't belong in the DT at all if the OS can access the
-> config table (and therefore the variable) directly.
+> The distros should not need to be aware *at all* of the hacks required
+> to disguise these platforms as DT platforms.
+>
+> If they do, they're already device-specific installers and have
+> already accepted the logistical/support nightmare.
+>
 
-admittedly I'm trying to solve two different problems here.. we also
-have the problem of knowing which panel is installed for the "pure DT"
-case.. where /chosen is (IMO) the right thing (alternatives involve a
-shim that knows far too much about the device)..
+I guess I'm not *against* a DT loader shim populating the panel-id
+over into /chosen.. I had it in mind as a backup plan.  Ofc still need
+to get dt folks to buy into /chosen/panel-id but for DT boot I think
+that is the best option.  (At least the /chosen/panel-id approach
+doesn't require the shim to be aware of how the panel is wired up to
+dsi controller and whether their is a bridge in between, and that
+short of thing, so the panel-id approach seems more maintainable that
+other options.)
 
-I guess for ACPI boot case, we do anyways want some sort of
-configuration table.  I suppose the drm code could look for both
-/chosen/panel-id and configuration table and use either.  Although it
-would be nice if somehow the config table info ended up in /chosen
-when we are not using ACPI, since then at least code paths are more
-similar to how we want future android devices to solve this without a
-pile of downstream hacks..
+I am a bit fearful of problems arising from different distros and
+users using different versions of shim, and how to manage that.  I
+guess if somehow "shim thing" was part of the kernel, there would by
+one less moving part... I'd know if user had kernel vX.Y.Z they'd be
+good to go vs not.  But *also* depending on a new-enough version of a
+shim, where the version # is probably not easily apparent to the end
+user, sounds a bit scary from the "all the things that can go wrong"
+point of view.  Maybe I'm paranoid, but I'm a bit worried about how to
+manage that.
 
 BR,
 -R
