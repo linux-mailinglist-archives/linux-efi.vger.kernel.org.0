@@ -2,121 +2,106 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D92FB5C1E1
-	for <lists+linux-efi@lfdr.de>; Mon,  1 Jul 2019 19:21:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D9165C992
+	for <lists+linux-efi@lfdr.de>; Tue,  2 Jul 2019 08:51:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729133AbfGARU7 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 1 Jul 2019 13:20:59 -0400
-Received: from mail-wm1-f67.google.com ([209.85.128.67]:35232 "EHLO
-        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727578AbfGARU6 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 1 Jul 2019 13:20:58 -0400
-Received: by mail-wm1-f67.google.com with SMTP id c6so359276wml.0
-        for <linux-efi@vger.kernel.org>; Mon, 01 Jul 2019 10:20:57 -0700 (PDT)
+        id S1725868AbfGBGva (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 2 Jul 2019 02:51:30 -0400
+Received: from mail-eopbgr1320048.outbound.protection.outlook.com ([40.107.132.48]:58848
+        "EHLO APC01-PU1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725822AbfGBGva (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Tue, 2 Jul 2019 02:51:30 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=plexistor-com.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=RMtO9zTMwULPwpFiTkeooNGzR9zKo/UB7YgL+t4fgzA=;
-        b=1wUdmopYsOTGEBPctCCQBJNp/Weny3U0OdMAgIX7XMpDLNjX7yi2BQKVOeIOZfgf1b
-         I2dQPvs1YcMd4MKfGasxoR1vUF57n1uWvGfOwCBn+dFFXqdtzk7+nDTMfgxaIC1cMqAd
-         CyXSD5wWJrsSE7f66iNNQpS8suPAgj9SNlBFoRgvaYPLl2O9hulyvjxbO8s6Guhj4y1S
-         Nf6nnLqhsslQUJQ8lQjHCR002MedRLPvKNFje/NywIlwBVxr1dbYLS/Ag6d45MoLEFLA
-         TB43Jl9ECXn6C3ClznsgSlBckfDR8AQM1se/327D0FreZlmY9S9DkHpcHai8gVFUiAbk
-         jAnQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=RMtO9zTMwULPwpFiTkeooNGzR9zKo/UB7YgL+t4fgzA=;
-        b=oy5HpiMEauPhmGjSGap7jrFcOUb9gXCLtrIwdHFj7vy4oBiR5UGBH31QgLBXWnzBDl
-         8Bd7VhNpgAUVK2+kJ5OlHLxtmMb2UWsotBhF3eUqIL5msrKd83e0VIXrBbNXUI7eaFeo
-         u7JjXVmEDL8IjoM/a4tc4jau57m0OoYf7YSvpb93pHsTH10lbtMNBElB+Tt58hPnWBv4
-         BzRt1FJTin5LadOHaBWWzeMm+IVqQL4wArt/vnEUWzIR4NeFvR+dUQnmTw4/XsugyJZM
-         IUr0IAWqQG6GHzjNhS562cWYBPnry8dnuYtBARR56uNDgHjX0CeXsm0Ucge7ClaGOdWA
-         7n4g==
-X-Gm-Message-State: APjAAAVIDchmMZAuMyXwaBRaC/tuRGV0u93N5VuBnQRZN2sHF18FMucJ
-        EdeFX2s/aWHKogxXQ2mc2xoT1Q==
-X-Google-Smtp-Source: APXvYqyJIZEjZ99B+K6R50DPm7lq0IHr/E/1lfJMHdrHDPCDWuYMn1JV6lQAB5xdWdZjMaq23hnwbA==
-X-Received: by 2002:a1c:f009:: with SMTP id a9mr234245wmb.32.1562001657000;
-        Mon, 01 Jul 2019 10:20:57 -0700 (PDT)
-Received: from [10.68.217.182] ([217.70.211.18])
-        by smtp.googlemail.com with ESMTPSA id q193sm269299wme.8.2019.07.01.10.20.53
-        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
-        Mon, 01 Jul 2019 10:20:56 -0700 (PDT)
-Subject: Re: [PATCH v6 0/4] vfs: make immutable files actually immutable
-To:     "Darrick J. Wong" <darrick.wong@oracle.com>,
-        matthew.garrett@nebula.com, yuchao0@huawei.com, tytso@mit.edu,
-        ard.biesheuvel@linaro.org, josef@toxicpanda.com, hch@infradead.org,
-        clm@fb.com, adilger.kernel@dilger.ca, viro@zeniv.linux.org.uk,
-        jack@suse.com, dsterba@suse.com, jaegeuk@kernel.org, jk@ozlabs.org
-Cc:     reiserfs-devel@vger.kernel.org, linux-efi@vger.kernel.org,
-        devel@lists.orangefs.org, linux-kernel@vger.kernel.org,
-        linux-f2fs-devel@lists.sourceforge.net, linux-xfs@vger.kernel.org,
-        linux-mm@kvack.org, linux-nilfs@vger.kernel.org,
-        linux-mtd@lists.infradead.org, ocfs2-devel@oss.oracle.com,
-        linux-fsdevel@vger.kernel.org, linux-ext4@vger.kernel.org,
-        linux-btrfs@vger.kernel.org
-References: <156174687561.1557469.7505651950825460767.stgit@magnolia>
-From:   Boaz Harrosh <boaz@plexistor.com>
-Message-ID: <72f01c73-a1eb-efde-58fa-7667221255c7@plexistor.com>
-Date:   Mon, 1 Jul 2019 20:20:51 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+ d=teoenmingcorp.onmicrosoft.com; s=selector1-teoenmingcorp-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=IdNCTY/Hr4WWtmrCAeQWVAldCoWunuweT4tTzFFVzAM=;
+ b=BkF4IFQ7T3s4AmwhuL193GOPZbGq4YWgl+ePnJtBJ1plFbNrNldabF5rsPrYz+AUr/wsRMLqPjVMTxfEG23GpYhJclcTP9ORLC+xntZUbxGl+jTpce7lwrViOD5QNFJzj6A0GsrwKy4IkZg5esXPbsgoj2H2fqiA+wK/ZsPB76c=
+Received: from SG2PR01MB2141.apcprd01.prod.exchangelabs.com (10.170.143.19) by
+ SG2PR01MB3469.apcprd01.prod.exchangelabs.com (52.132.233.17) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2032.18; Tue, 2 Jul 2019 06:51:24 +0000
+Received: from SG2PR01MB2141.apcprd01.prod.exchangelabs.com
+ ([fe80::d503:3d71:ce06:19d2]) by SG2PR01MB2141.apcprd01.prod.exchangelabs.com
+ ([fe80::d503:3d71:ce06:19d2%6]) with mapi id 15.20.2032.019; Tue, 2 Jul 2019
+ 06:51:24 +0000
+From:   Turritopsis Dohrnii Teo En Ming <ceo@teo-en-ming-corp.com>
+To:     "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>
+CC:     Turritopsis Dohrnii Teo En Ming <ceo@teo-en-ming-corp.com>
+Subject: Linux on UEFI: A Quick Installation Guide
+Thread-Topic: Linux on UEFI: A Quick Installation Guide
+Thread-Index: AdUwomNM8c0pO3yFRlegeKWsBxCwBA==
+Date:   Tue, 2 Jul 2019 06:51:24 +0000
+Message-ID: <SG2PR01MB21414474595BCCAB3AD1B07F87F80@SG2PR01MB2141.apcprd01.prod.exchangelabs.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=ceo@teo-en-ming-corp.com; 
+x-originating-ip: [118.189.211.120]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 1eff94a5-c0cc-4bbc-5cc3-08d6feb9b305
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(7021145)(8989299)(4534185)(7022145)(4603075)(4627221)(201702281549075)(8990200)(7048125)(7024125)(7027125)(7023125)(5600148)(711020)(4605104)(1401327)(2017052603328)(7193020);SRVR:SG2PR01MB3469;
+x-ms-traffictypediagnostic: SG2PR01MB3469:
+x-ms-exchange-purlcount: 5
+x-microsoft-antispam-prvs: <SG2PR01MB3469192F483E15D2583BA86387F80@SG2PR01MB3469.apcprd01.prod.exchangelabs.com>
+x-ms-oob-tlc-oobclassifiers: OLM:4125;
+x-forefront-prvs: 008663486A
+x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(376002)(136003)(366004)(39830400003)(396003)(346002)(199004)(189003)(99286004)(508600001)(6116002)(2351001)(66446008)(66476007)(66556008)(3846002)(66066001)(64756008)(76116006)(73956011)(66946007)(102836004)(256004)(68736007)(74316002)(305945005)(26005)(71200400001)(71190400001)(486006)(7696005)(6506007)(25786009)(2501003)(86362001)(4326008)(6436002)(53936002)(476003)(316002)(81166006)(81156014)(8676002)(966005)(33656002)(2906002)(14454004)(107886003)(52536014)(5660300002)(4744005)(5640700003)(6916009)(55016002)(186003)(6306002)(9686003)(7736002)(8936002);DIR:OUT;SFP:1101;SCL:1;SRVR:SG2PR01MB3469;H:SG2PR01MB2141.apcprd01.prod.exchangelabs.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+received-spf: None (protection.outlook.com: teo-en-ming-corp.com does not
+ designate permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: XUP5tIZxJ0rVEz/TN5RCYbVRmYZth+FxjbtqjE/CrKRZYJzy9NAlYGa/68LN8BTKH2LFSDXxOtzEitPU04nzMi+wUd6pi8A4zf7UwbXbN9b3B0zoACTqopI8b1zxA2P3PSsz4Xa8LoOoeOfC8DRlMuoSX6Js8jMueTxWmx5aX/egDG38/7mQy4cY4odLP08pvvZog8N5M7ti9+rY6auA5/ejj1MAsWiWSswy/FHgdRqqqo0ULqdlewNY1MBMnKr7JTWOACnYdRAR2L0wqI38icXcUcZt105YJaDZUXU1eFrWsmNontW8W5NLvO/1Yhd8NqErL7YijJjp9EU3urRhdz1Lq5nkfgnavkWfchwmfMM4IDaUyNr8iYx7Uz7SblBuruhyNlFBhVcapuVkLZrdua27aroSEg8ypzabx+8GQXI=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-In-Reply-To: <156174687561.1557469.7505651950825460767.stgit@magnolia>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-MW
-Content-Transfer-Encoding: 7bit
+X-OriginatorOrg: teo-en-ming-corp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1eff94a5-c0cc-4bbc-5cc3-08d6feb9b305
+X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Jul 2019 06:51:24.4542
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 23b3f6ae-c453-4b93-aec9-f17508e5885c
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: ceo@teo-en-ming-corp.com
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SG2PR01MB3469
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 28/06/2019 21:34, Darrick J. Wong wrote:
-> Hi all,
-> 
-> The chattr(1) manpage has this to say about the immutable bit that
-> system administrators can set on files:
-> 
-> "A file with the 'i' attribute cannot be modified: it cannot be deleted
-> or renamed, no link can be created to this file, most of the file's
-> metadata can not be modified, and the file can not be opened in write
-> mode."
-> 
-> Given the clause about how the file 'cannot be modified', it is
-> surprising that programs holding writable file descriptors can continue
-> to write to and truncate files after the immutable flag has been set,
-> but they cannot call other things such as utimes, fallocate, unlink,
-> link, setxattr, or reflink.
-> 
-> Since the immutable flag is only settable by administrators, resolve
-> this inconsistent behavior in favor of the documented behavior -- once
-> the flag is set, the file cannot be modified, period.  We presume that
-> administrators must be trusted to know what they're doing, and that
-> cutting off programs with writable fds will probably break them.
-> 
+Good afternoon from Singapore,
 
-This effort sounds very logical to me and sound. But are we allowed to
-do it? IE: Is it not breaking ABI. I do agree previous ABI was evil but
-are we allowed to break it?
+Article: Linux on UEFI: A Quick Installation Guide
+Author: Roderick W. Smith, rodsmith@rodsbooks.com
+Link: http://www.rodsbooks.com/linux-uefi/
 
-I would not mind breaking it if %99.99 of the time the immutable bit
-was actually set manually by a human administrator. But what if there
-are automated systems that set it relying on the current behaviour?
+Thank you.
 
-For example I have a very distant and vague recollection of a massive
-camera capture system, that was DMAing directly to file (splice). And setting
-the immutable bit right away on start. Then once the capture is done
-(capture file recycled) the file becomes immutable. Such program is now
-broken. Who's fault is it?
 
-I'm totally not sure and maybe you are right. But have you made a
-survey of the majority of immutable uses, and are positive that
-the guys are not broken after this change?
 
-For me this is kind of scary. Yes I am known to be a SW coward ;-)
 
-Thanks
-Boaz
+-----BEGIN EMAIL SIGNATURE-----
+
+The Gospel for all Targeted Individuals (TIs):
+
+[The New York Times] Microwave Weapons Are Prime Suspect in Ills of
+U.S. Embassy Workers
+
+Link: https://www.nytimes.com/2018/09/01/science/sonic-attack-cuba-microwav=
+e.html
+
+***************************************************************************=
+*****************
+
+Singaporean Mr. Turritopsis Dohrnii Teo En Ming's Academic
+Qualifications as at 14 Feb 2019
+
+[1] https://tdtemcerts.wordpress.com/
+
+[2] https://tdtemcerts.blogspot.sg/
+
+[3] https://www.scribd.com/user/270125049/Teo-En-Ming
+
+-----END EMAIL SIGNATURE-----
+
