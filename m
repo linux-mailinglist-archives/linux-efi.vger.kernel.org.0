@@ -2,38 +2,38 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D4E35DC2F
-	for <lists+linux-efi@lfdr.de>; Wed,  3 Jul 2019 04:21:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 08E615DC11
+	for <lists+linux-efi@lfdr.de>; Wed,  3 Jul 2019 04:20:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727729AbfGCCVB (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 2 Jul 2019 22:21:01 -0400
-Received: from mail.kernel.org ([198.145.29.99]:54824 "EHLO mail.kernel.org"
+        id S1728228AbfGCCSS (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 2 Jul 2019 22:18:18 -0400
+Received: from mail.kernel.org ([198.145.29.99]:56222 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727939AbfGCCQa (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Tue, 2 Jul 2019 22:16:30 -0400
+        id S1728004AbfGCCSS (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Tue, 2 Jul 2019 22:18:18 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id DB6882187F;
-        Wed,  3 Jul 2019 02:16:28 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id A509821874;
+        Wed,  3 Jul 2019 02:18:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1562120189;
-        bh=Q9xGE9S4674mQZc11CtxVVU6MEbdl6REXUoTXVQ4/KM=;
+        s=default; t=1562120297;
+        bh=5H906uRkLsp9h23SbnZEAf41XmBJLvnlTnIbGpZBXMc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lz6S4g2Bsgz1eXuoCWXHo9o/tasHKowCyCJN1IGfg1/s7w/9iKQ1jgHpSyquB7WWI
-         fJdS5G/0le5IouoDnMQyBecFkCnHkeux/YS2m+NTC1eb3f6qYaCx9SdjOTUczYCT8+
-         epnDE/BO3nVrkliIc8sLQuVgDnLyEA5i+oV0XOXI=
+        b=hphMU/1GtREF6aQTSsxZiwPF1HT2m3CVD7O7nKhi+Vq0Uqur+QU37CptIYWnqmxBH
+         Gs5qY03NMbI2RQUWj0gFa1QbbfT2MMcp3WEcgkme3ldxR0ropi/3lXWlv12QBVZqBZ
+         jUNrlUrh19YonwIO/sQtLYe3OfK4NwA6cPQ6CXSs=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Hans de Goede <hdegoede@redhat.com>,
         Ard Biesheuvel <ard.biesheuvel@linaro.org>,
         Sasha Levin <sashal@kernel.org>, linux-efi@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 03/26] efi/bgrt: Drop BGRT status field reserved bits check
-Date:   Tue,  2 Jul 2019 22:16:02 -0400
-Message-Id: <20190703021625.18116-3-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 02/13] efi/bgrt: Drop BGRT status field reserved bits check
+Date:   Tue,  2 Jul 2019 22:18:03 -0400
+Message-Id: <20190703021814.18385-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190703021625.18116-1-sashal@kernel.org>
-References: <20190703021625.18116-1-sashal@kernel.org>
+In-Reply-To: <20190703021814.18385-1-sashal@kernel.org>
+References: <20190703021814.18385-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -67,7 +67,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 5 deletions(-)
 
 diff --git a/drivers/firmware/efi/efi-bgrt.c b/drivers/firmware/efi/efi-bgrt.c
-index b22ccfb0c991..2bf4d31f4967 100644
+index 50793fda7819..e3d86aa1ad5d 100644
 --- a/drivers/firmware/efi/efi-bgrt.c
 +++ b/drivers/firmware/efi/efi-bgrt.c
 @@ -50,11 +50,6 @@ void __init efi_bgrt_init(struct acpi_table_header *table)
