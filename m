@@ -2,157 +2,524 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 01BA75EDEE
-	for <lists+linux-efi@lfdr.de>; Wed,  3 Jul 2019 22:55:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8DBB1600C2
+	for <lists+linux-efi@lfdr.de>; Fri,  5 Jul 2019 08:05:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726955AbfGCUz5 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 3 Jul 2019 16:55:57 -0400
-Received: from mout.kundenserver.de ([212.227.126.134]:37581 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726678AbfGCUz5 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 3 Jul 2019 16:55:57 -0400
-Received: from threadripper.lan ([149.172.19.189]) by mrelayeu.kundenserver.de
- (mreue010 [212.227.15.129]) with ESMTPA (Nemesis) id
- 1M27Bp-1hgJRq2Gin-002TZ9; Wed, 03 Jul 2019 22:55:31 +0200
-From:   Arnd Bergmann <arnd@arndb.de>
-To:     Florian Fainelli <f.fainelli@gmail.com>
-Cc:     Andrey Ryabinin <aryabinin@virtuozzo.com>,
-        Abbott Liu <liuwenliang@huawei.com>,
-        linux-arm-kernel@lists.infradead.org, kasan-dev@googlegroups.com,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Arnd Bergmann <arnd@arndb.de>,
+        id S1725681AbfGEGFN (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 5 Jul 2019 02:05:13 -0400
+Received: from bilbo.ozlabs.org ([203.11.71.1]:57653 "EHLO ozlabs.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725772AbfGEGFN (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Fri, 5 Jul 2019 02:05:13 -0400
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mail.ozlabs.org (Postfix) with ESMTPSA id 45g47m1vd1z9sNp;
+        Fri,  5 Jul 2019 16:05:08 +1000 (AEST)
+From:   Michael Ellerman <mpe@ellerman.id.au>
+To:     Nayna Jain <nayna@linux.ibm.com>, linuxppc-dev@ozlabs.org,
+        linux-efi@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, linux-integrity@vger.kernel.org,
+        Paul Mackerras <paulus@samba.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
         Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Nicolas Pitre <nico@fluxnic.net>,
-        Stefan Agner <stefan@agner.ch>,
-        Nathan Chancellor <natechancellor@gmail.com>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org
-Subject: [PATCH 1/3] ARM: fix kasan link failures
-Date:   Wed,  3 Jul 2019 22:54:36 +0200
-Message-Id: <20190703205527.955320-1-arnd@arndb.de>
-X-Mailer: git-send-email 2.20.0
+        Jeremy Kerr <jk@ozlabs.org>,
+        Matthew Garret <matthew.garret@nebula.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Claudio Carvalho <cclaudio@linux.ibm.com>,
+        Nayna Jain <nayna@linux.ibm.com>,
+        George Wilson <gcwilson@linux.ibm.com>,
+        Elaine Palmer <erpalmer@us.ibm.com>,
+        Eric Ricther <erichte@linux.ibm.com>
+Subject: Re: [PATCH 2/2] powerpc: expose secure variables via sysfs
+In-Reply-To: <1560459027-5248-3-git-send-email-nayna@linux.ibm.com>
+References: <1560459027-5248-1-git-send-email-nayna@linux.ibm.com> <1560459027-5248-3-git-send-email-nayna@linux.ibm.com>
+Date:   Fri, 05 Jul 2019 16:05:07 +1000
+Message-ID: <87o92910fg.fsf@concordia.ellerman.id.au>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:N0nhNH56c4bAPUvE+lb81hmqvGKzvYovB1gWPnLR0wVZb6l2Cus
- VlcxdC8pK77LU32vdSY3Hh7JVCF2Dn86C7mE5dWcn3mW4hOXnlPLCso1Cp9anA4gdrDrzo5
- Ut7QKtxvDcquKr7d9Bv/USwELBGTW65u6iuQdfFdQsgx+VYAxaDSI2S8DskzTjruoWUa2ES
- iWji7SQpVNS6kv9tSkXzg==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:kkc3pKM7JBI=:7SfM19cEIrMeD+akm/v6F2
- a7GlFineaNLRR0bDHAg64d4H8VDDp7Z9+1z0wPu6ycgl2veXYMIYLK3ymKqKG4KsWypouYG9r
- mtCXBQ4VLnNmtTGxxFuxJdpI3h2zw4v1U8tAUn4YrVtxSPTXfdIvp75IvfpBXX/UvFQyZ1dp3
- U/VKYT/72+IpBEt1wioAoWf3LlbQGf9SBTdADJK+a4xjGSe3fKWyWBteSoLXu6ryzobEgrfT/
- H00WLhhVLscWXXo5mo/pjrrFTjO/7XZo+uTlJcuSiqSfdPcxYtMHz12+C9S/Z+2HGLOq5uVEg
- DQhJ/O0i8wws7dtN346JYXJBuU/miXvgasyL26bSAp6kAWdEvGPuQv4kdmfMsj2Rw9lg5Y0t7
- R3R01XUVVi1aq89YlWjRoLzbt5hAlFIAd9ilTc+/+QVxtDzzPpenqcaqMjFQubTYDYkRT5SOm
- 2tnPirJJacaRkDbQ5bTGJ3Ul32o6ej09+cOCaH0aWrQYPlKKbkU5SGLBNU7s4LARIsVt2Hw4s
- Ii7qWkUVDiwx+d52CbaSbjqmAtNjS+r0w7ri4LGuUhZvHPf08gKYO/WCR80f/kRyUbqfwxENo
- IhhjA/hQkMP7YWhi+VCHHS49JyodFnSForBRio4snDdEmhFwCJpwTHCqNH15yPzgwWJt5lz3z
- AZS6ncqMjqWtz5QOMSnp3u12Dp15VIpniGDr/zVGGmfL/6EJFRba+9xAe2ivD9P0FL/W7RCuG
- awSwZR/Uu8glWMOfQlXU3FQt8a2h94oDitdTGg==
+Content-Type: text/plain
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Getting the redirects for memcpy/memmove/memset functions right
-in the decompressor and the efi stub is a bit tricky. Originally
-these were meant to prevent the kasan code from calling itself
-recursively. The decompressor is built without kasan but uses
-the same redirects when CONFIG_KASAN is enabled, except in a few
-cases that now cause link failures:
+Hi Nayna,
 
-arch/arm/boot/compressed/fdt_rw.o: In function `fdt_set_name':
-fdt_rw.c:(.text+0x3d4): undefined reference to `memcpy'
-arch/arm/boot/compressed/fdt_rw.o: In function `fdt_add_property_':
-fdt_rw.c:(.text+0x121c): undefined reference to `memmove'
-arch/arm/boot/compressed/fdt_rw.o: In function `fdt_splice_':
-fdt_rw.c:(.text+0x1460): undefined reference to `memmove'
-arch/arm/boot/compressed/fdt_ro.o: In function `fdt_get_path':
-fdt_ro.c:(.text+0x1384): undefined reference to `memcpy'
-arch/arm/boot/compressed/fdt_wip.o: In function `fdt_setprop_inplace_namelen_partial':
-fdt_wip.c:(.text+0x48): undefined reference to `memcpy'
-arch/arm/boot/compressed/fdt_wip.o: In function `fdt_setprop_inplace':
-fdt_wip.c:(.text+0x100): undefined reference to `memcpy'
-arch/arm/boot/compressed/fdt.o: In function `fdt_move':
-fdt.c:(.text+0xa04): undefined reference to `memmove'
-arch/arm/boot/compressed/atags_to_fdt.o: In function `atags_to_fdt':
-atags_to_fdt.c:(.text+0x404): undefined reference to `memcpy'
-atags_to_fdt.c:(.text+0x450): undefined reference to `memcpy'
+Nayna Jain <nayna@linux.ibm.com> writes:
+> As part of PowerNV secure boot support, OS verification keys are stored
+> and controlled by OPAL as secure variables. These need to be exposed to
+> the userspace so that sysadmins can perform key management tasks.
+>
+> This patch adds the support to expose secure variables via a sysfs
+> interface It reuses the the existing efi defined hooks and backend in
+> order to maintain the compatibility with the userspace tools.
 
-I tried to make everything use them, but ran into other problems:
+Which tools? Can you include a log demonstrating how they're used, ie.
+so that I can test the sequence of commands.
 
-drivers/firmware/efi/libstub/lib-fdt_sw.stub.o: In function `fdt_create_with_flags':
-fdt_sw.c:(.text+0x34): undefined reference to `__memset'
-arch/arm/boot/compressed/decompress.o: In function `lzo1x_decompress_safe':
-decompress.c:(.text+0x290): undefined reference to `__memset'
+> Though it reuses a great deal of efi, POWER platforms do not use EFI.
+> A new config, POWER_SECVAR_SYSFS, is defined to enable this new sysfs
+> interface.
 
-This makes all the early boot code not use the redirects, which
-works because we don't sanitize that code.
+Sorry I haven't been able to keep up with all the discussions, but I
+thought the consensus was that pretending to be EFI-like was a bad idea,
+because we don't have actual EFI and we're not implementing an entirely
+compatible scheme to EFI anyway.
 
-Setting -D__SANITIZE_ADDRESS__ is a bit confusing here, but it
-does the trick.
+Greg suggested just putting the variables in sysfs, why does that not
+work? Matthew mentioned "complex semantics around variable deletion and
+immutability" but do we have to emulate those semantics on powerpc?
 
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
- arch/arm/boot/compressed/Makefile     | 1 +
- arch/arm/boot/compressed/decompress.c | 2 --
- arch/arm/boot/compressed/libfdt_env.h | 2 --
- drivers/firmware/efi/libstub/Makefile | 3 ++-
- 4 files changed, 3 insertions(+), 5 deletions(-)
+cheers
 
-diff --git a/arch/arm/boot/compressed/Makefile b/arch/arm/boot/compressed/Makefile
-index dcc27fb24fbb..d91c2ded0e3d 100644
---- a/arch/arm/boot/compressed/Makefile
-+++ b/arch/arm/boot/compressed/Makefile
-@@ -25,6 +25,7 @@ endif
- 
- GCOV_PROFILE		:= n
- KASAN_SANITIZE		:= n
-+CFLAGS_KERNEL += -D__SANITIZE_ADDRESS__
- 
- # Prevents link failures: __sanitizer_cov_trace_pc() is not linked in.
- KCOV_INSTRUMENT		:= n
-diff --git a/arch/arm/boot/compressed/decompress.c b/arch/arm/boot/compressed/decompress.c
-index 3794fae5f818..aa075d8372ea 100644
---- a/arch/arm/boot/compressed/decompress.c
-+++ b/arch/arm/boot/compressed/decompress.c
-@@ -47,10 +47,8 @@ extern char * strchrnul(const char *, int);
- #endif
- 
- #ifdef CONFIG_KERNEL_XZ
--#ifndef CONFIG_KASAN
- #define memmove memmove
- #define memcpy memcpy
--#endif
- #include "../../../../lib/decompress_unxz.c"
- #endif
- 
-diff --git a/arch/arm/boot/compressed/libfdt_env.h b/arch/arm/boot/compressed/libfdt_env.h
-index 8091efc21407..b36c0289a308 100644
---- a/arch/arm/boot/compressed/libfdt_env.h
-+++ b/arch/arm/boot/compressed/libfdt_env.h
-@@ -19,6 +19,4 @@ typedef __be64 fdt64_t;
- #define fdt64_to_cpu(x)		be64_to_cpu(x)
- #define cpu_to_fdt64(x)		cpu_to_be64(x)
- 
--#undef memset
--
- #endif
-diff --git a/drivers/firmware/efi/libstub/Makefile b/drivers/firmware/efi/libstub/Makefile
-index 0460c7581220..fd1d72ea04dd 100644
---- a/drivers/firmware/efi/libstub/Makefile
-+++ b/drivers/firmware/efi/libstub/Makefile
-@@ -20,7 +20,8 @@ cflags-$(CONFIG_ARM64)		:= $(subst $(CC_FLAGS_FTRACE),,$(KBUILD_CFLAGS)) \
- 				   -fpie $(DISABLE_STACKLEAK_PLUGIN)
- cflags-$(CONFIG_ARM)		:= $(subst $(CC_FLAGS_FTRACE),,$(KBUILD_CFLAGS)) \
- 				   -fno-builtin -fpic \
--				   $(call cc-option,-mno-single-pic-base)
-+				   $(call cc-option,-mno-single-pic-base) \
-+				   -D__SANITIZE_ADDRESS__
- 
- cflags-$(CONFIG_EFI_ARMSTUB)	+= -I$(srctree)/scripts/dtc/libfdt
- 
--- 
-2.20.0
 
+> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+> index 9de77bb14f54..1548dd8cf1a0 100644
+> --- a/arch/powerpc/Kconfig
+> +++ b/arch/powerpc/Kconfig
+> @@ -916,6 +916,8 @@ config PPC_SECURE_BOOT
+>  	  allows user to enable OS Secure Boot on PowerPC systems that
+>  	  have firmware secure boot support.
+>  
+> +source "drivers/firmware/powerpc/Kconfig"
+> +
+>  endmenu
+>  
+>  config ISA_DMA_API
+> diff --git a/drivers/firmware/Makefile b/drivers/firmware/Makefile
+> index 3fa0b34eb72f..8cfaf7e6769d 100644
+> --- a/drivers/firmware/Makefile
+> +++ b/drivers/firmware/Makefile
+> @@ -33,3 +33,4 @@ obj-$(CONFIG_UEFI_CPER)		+= efi/
+>  obj-y				+= imx/
+>  obj-y				+= tegra/
+>  obj-y				+= xilinx/
+> +obj-$(CONFIG_POWER_SECVAR_SYSFS) += powerpc/
+> diff --git a/drivers/firmware/efi/efivars.c b/drivers/firmware/efi/efivars.c
+> index 7576450c8254..30ef53003c24 100644
+> --- a/drivers/firmware/efi/efivars.c
+> +++ b/drivers/firmware/efi/efivars.c
+> @@ -664,7 +664,7 @@ int efivars_sysfs_init(void)
+>  	struct kobject *parent_kobj = efivars_kobject();
+>  	int error = 0;
+>  
+> -	if (!efi_enabled(EFI_RUNTIME_SERVICES))
+> +	if (IS_ENABLED(CONFIG_EFI) && !efi_enabled(EFI_RUNTIME_SERVICES))
+>  		return -ENODEV;
+>  
+>  	/* No efivars has been registered yet */
+> diff --git a/drivers/firmware/powerpc/Kconfig b/drivers/firmware/powerpc/Kconfig
+> new file mode 100644
+> index 000000000000..e0303fc517d5
+> --- /dev/null
+> +++ b/drivers/firmware/powerpc/Kconfig
+> @@ -0,0 +1,12 @@
+> +config POWER_SECVAR_SYSFS
+> +	tristate "Enable sysfs interface for POWER secure variables"
+> +	default n
+> +	depends on PPC_SECURE_BOOT
+> +	select UCS2_STRING
+> +	help
+> +	  POWER secure variables are managed and controlled by OPAL.
+> +	  These variables are exposed to userspace via sysfs to allow
+> +	  user to read/write these variables. Say Y if you have secure
+> +	  boot enabled and want to expose variables to userspace.
+> +
+> +source "drivers/firmware/efi/Kconfig"
+> diff --git a/drivers/firmware/powerpc/Makefile b/drivers/firmware/powerpc/Makefile
+> new file mode 100644
+> index 000000000000..d5fa3b007315
+> --- /dev/null
+> +++ b/drivers/firmware/powerpc/Makefile
+> @@ -0,0 +1,3 @@
+> +# SPDX-License-Identifier: GPL-2.0
+> +
+> +obj-$(CONFIG_POWER_SECVAR_SYSFS) += ../efi/efivars.o efi_error.o ../efi/vars.o secvar.o
+> diff --git a/drivers/firmware/powerpc/efi_error.c b/drivers/firmware/powerpc/efi_error.c
+> new file mode 100644
+> index 000000000000..b5cabd52e6b4
+> --- /dev/null
+> +++ b/drivers/firmware/powerpc/efi_error.c
+> @@ -0,0 +1,46 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Copyright (C) 2019 IBM Corporation
+> + * Author: Nayna Jain <nayna@linux.ibm.com>
+> + *
+> + * efi_error.c
+> + *      - Error codes as understood by efi based tools
+> + *      Taken from drivers/firmware/efi/efi.c
+> + */
+> +#include<linux/efi.h>
+> +
+> +int efi_status_to_err(efi_status_t status)
+> +{
+> +	int err;
+> +
+> +	switch (status) {
+> +	case EFI_SUCCESS:
+> +		err = 0;
+> +		break;
+> +	case EFI_INVALID_PARAMETER:
+> +		err = -EINVAL;
+> +		break;
+> +	case EFI_OUT_OF_RESOURCES:
+> +		err = -ENOSPC;
+> +		break;
+> +	case EFI_DEVICE_ERROR:
+> +		err = -EIO;
+> +		break;
+> +	case EFI_WRITE_PROTECTED:
+> +		err = -EROFS;
+> +		break;
+> +	case EFI_SECURITY_VIOLATION:
+> +		err = -EACCES;
+> +		break;
+> +	case EFI_NOT_FOUND:
+> +		err = -ENOENT;
+> +		break;
+> +	case EFI_ABORTED:
+> +		err = -EINTR;
+> +		break;
+> +	default:
+> +		err = -EINVAL;
+> +	}
+> +
+> +	return err;
+> +}
+> diff --git a/drivers/firmware/powerpc/secvar.c b/drivers/firmware/powerpc/secvar.c
+> new file mode 100644
+> index 000000000000..f1f134a0bb7c
+> --- /dev/null
+> +++ b/drivers/firmware/powerpc/secvar.c
+> @@ -0,0 +1,326 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Copyright (C) 2019 IBM Corporation
+> + * Author: Nayna Jain <nayna@linux.ibm.com>
+> + *
+> + * secvar.c
+> + * - wrappers to expose secure variables to userspace
+> + */
+> +#include <linux/kernel.h>
+> +#include <linux/init.h>
+> +#include <linux/types.h>
+> +#include <linux/errno.h>
+> +#include <linux/string.h>
+> +#include <linux/spinlock.h>
+> +#include <linux/fs.h>
+> +#include <linux/slab.h>
+> +#include <linux/ioctl.h>
+> +#include <linux/uaccess.h>
+> +#include <linux/kdebug.h>
+> +#include <linux/efi.h>
+> +#include <linux/module.h>
+> +#include <linux/ucs2_string.h>
+> +#include <asm/opal-secvar.h>
+> +#include <asm/opal.h>
+> +
+> +static struct efivars efivars;
+> +struct kobject *powerpc_kobj;
+> +
+> +efi_status_t opal_to_efi_status_log(int rc, const char *func_name)
+> +{
+> +	efi_status_t status;
+> +
+> +	switch (rc) {
+> +	case OPAL_EMPTY:
+> +		status = EFI_NOT_FOUND;
+> +		break;
+> +	case OPAL_HARDWARE:
+> +		status = EFI_DEVICE_ERROR;
+> +		break;
+> +	case OPAL_NO_MEM:
+> +		pr_err("%s: No space in the volatile storage\n", func_name);
+> +		status = EFI_OUT_OF_RESOURCES;
+> +		break;
+> +	case OPAL_PARAMETER:
+> +		status = EFI_INVALID_PARAMETER;
+> +		break;
+> +	case OPAL_PARTIAL:
+> +		status = EFI_BUFFER_TOO_SMALL;
+> +		break;
+> +	case OPAL_PERMISSION:
+> +		status = EFI_WRITE_PROTECTED;
+> +		break;
+> +	case OPAL_RESOURCE:
+> +		pr_err("%s: No space in the non-volatile storage\n", func_name);
+> +		status = EFI_OUT_OF_RESOURCES;
+> +		break;
+> +	case OPAL_SUCCESS:
+> +		status = EFI_SUCCESS;
+> +		break;
+> +	default:
+> +		pr_err("%s: Unknown OPAL error %d\n", func_name, rc);
+> +		status = EFI_DEVICE_ERROR;
+> +		break;
+> +	}
+> +
+> +	return status;
+> +}
+> +
+> +#define opal_to_efi_status(rc) opal_to_efi_status_log(rc, __func__)
+> +
+> +static void createkey(efi_char16_t *name, u8 **key, unsigned long *keylen)
+> +{
+> +	*keylen = ucs2_utf8size(name) + 1;
+> +
+> +	*key = kzalloc(*keylen, GFP_KERNEL);
+> +	if (!*key) {
+> +		*keylen = 0;
+> +		*key = NULL;
+> +		return;
+> +	}
+> +
+> +	ucs2_as_utf8(*key, name, *keylen);
+> +}
+> +
+> +static void createmetadata(efi_char16_t *name, efi_guid_t *vendor, u32 *attr,
+> +			   u8 **mdata, unsigned long *mdsize)
+> +{
+> +	int size = 0;
+> +
+> +	*mdsize = ucs2_strsize(name, 1024) + sizeof(efi_guid_t) + sizeof(u32);
+> +	*mdata = kzalloc(*mdsize, GFP_KERNEL);
+> +
+> +	memcpy(*mdata, name, ucs2_strsize(name, 1024));
+> +	size = ucs2_strsize(name, 1024);
+> +
+> +	memcpy(*mdata + size, vendor, sizeof(efi_guid_t));
+> +	size += sizeof(efi_guid_t);
+> +
+> +	if (attr != NULL)
+> +		memcpy(*mdata + size, attr, sizeof(u32));
+> +	else
+> +		memset(*mdata + size, 0, sizeof(u32));
+> +}
+> +
+> +static int convert_buffer_to_efi_guid(u8 *buffer, efi_guid_t *guid)
+> +{
+> +	u32 *a1;
+> +	u16 *a2;
+> +	u16 *a3;
+> +
+> +	a1 = kzalloc(4, GFP_KERNEL);
+> +	memcpy(a1, buffer, 4);
+> +	*a1 = be32_to_cpu(*a1);
+> +
+> +	a2 = kzalloc(2, GFP_KERNEL);
+> +	memcpy(a2, buffer+4, 2);
+> +	*a2 = be16_to_cpu(*a2);
+> +
+> +	a3 = kzalloc(2, GFP_KERNEL);
+> +	memcpy(a3, buffer+6, 2);
+> +	*a3 = be16_to_cpu(*a3);
+> +
+> +	*guid = EFI_GUID(*a1, *a2, *a3, *(buffer + 8),
+> +			*(buffer + 9),
+> +			*(buffer + 10),
+> +			*(buffer + 11),
+> +			*(buffer + 12),
+> +			*(buffer + 13),
+> +			*(buffer + 14),
+> +			*(buffer + 15));
+> +
+> +	kfree(a1);
+> +	kfree(a2);
+> +	kfree(a3);
+> +	return 0;
+> +}
+> +
+> +static efi_status_t powerpc_get_variable(efi_char16_t *name, efi_guid_t *vendor,
+> +					 u32 *attr, unsigned long *data_size,
+> +					 void *data)
+> +{
+> +	int rc;
+> +	u8 *key;
+> +	unsigned long keylen;
+> +	u8 *metadata;
+> +	unsigned long mdsize;
+> +	unsigned long dsize;
+> +	unsigned long namesize;
+> +
+> +	if (!name)
+> +		return EFI_INVALID_PARAMETER;
+> +
+> +	if (!vendor)
+> +		return EFI_INVALID_PARAMETER;
+> +
+> +	if (*data_size == 0) {
+> +		/* If *data_size is zero, it implies data size is being asked */
+> +		createkey(name, &key, &keylen);
+> +		rc = opal_get_variable_size(key, keylen, &mdsize, &dsize);
+> +		*data_size = dsize;
+> +		kfree(key);
+> +		return opal_to_efi_status(rc);
+> +	}
+> +
+> +	createkey(name, &key, &keylen);
+> +	createmetadata(name, vendor, attr, &metadata, &mdsize);
+> +
+> +	rc = opal_get_variable(key, keylen, metadata, &mdsize, data, data_size);
+> +
+> +	if (rc)
+> +		return opal_to_efi_status(rc);
+> +
+> +	if (mdsize > 0) {
+> +		namesize = mdsize - sizeof(efi_guid_t) - sizeof(u32);
+> +		if (!attr)
+> +			return opal_to_efi_status(rc);
+> +		memset(attr, 0, sizeof(u32));
+> +		memcpy(attr, metadata + namesize + sizeof(efi_guid_t),
+> +		       sizeof(u32));
+> +		*attr = be32_to_cpu(*attr);
+> +	}
+> +
+> +	kfree(key);
+> +	kfree(metadata);
+> +
+> +	return opal_to_efi_status(rc);
+> +}
+> +
+> +
+> +static efi_status_t powerpc_get_next_variable(unsigned long *name_size,
+> +					      efi_char16_t *name,
+> +					      efi_guid_t *vendor)
+> +{
+> +	int rc;
+> +	u8 *key;
+> +	int namesize;
+> +	unsigned long keylen;
+> +	unsigned long keysize = 1024;
+> +	unsigned long *mdsize;
+> +	u8 *mdata = NULL;
+> +	efi_guid_t guid;
+> +
+> +	if (ucs2_strnlen(name, 1024) > 0) {
+> +		createkey(name, &key, &keylen);
+> +	} else {
+> +		keylen = 0;
+> +		key = kzalloc(1024, GFP_KERNEL);
+> +	}
+> +
+> +	pr_info("%s: powerpc get next variable, key is %s\n", __func__, key);
+> +
+> +	rc = opal_get_next_variable(key, &keylen, keysize);
+> +	if (rc) {
+> +		kfree(key);
+> +		return opal_to_efi_status(rc);
+> +	}
+> +
+> +	mdsize = kzalloc(sizeof(unsigned long), GFP_KERNEL);
+> +	rc = opal_get_variable_size(key, keylen, mdsize, NULL);
+> +	if (rc)
+> +		goto out;
+> +
+> +	if (*mdsize <= 0)
+> +		goto out;
+> +
+> +	mdata = kzalloc(*mdsize, GFP_KERNEL);
+> +
+> +	rc = opal_get_variable(key, keylen, mdata, mdsize, NULL, NULL);
+> +	if (rc)
+> +		goto out;
+> +
+> +	if (*mdsize > 0) {
+> +		namesize = *mdsize - sizeof(efi_guid_t) - sizeof(u32);
+> +		if (namesize > 0) {
+> +			memset(&guid, 0, sizeof(efi_guid_t));
+> +			convert_buffer_to_efi_guid(mdata + namesize, &guid);
+> +			memcpy(vendor, &guid, sizeof(efi_guid_t));
+> +			memset(name, 0, namesize + 2);
+> +			memcpy(name, mdata, namesize);
+> +			*name_size = namesize + 2;
+> +			name[namesize++] = 0;
+> +			name[namesize] = 0;
+> +		}
+> +	}
+> +
+> +out:
+> +	kfree(mdsize);
+> +	kfree(mdata);
+> +
+> +	return opal_to_efi_status(rc);
+> +}
+> +
+> +static efi_status_t powerpc_set_variable(efi_char16_t *name, efi_guid_t *vendor,
+> +					 u32 attr, unsigned long data_size,
+> +					 void *data)
+> +{
+> +	int rc;
+> +	u8 *key;
+> +	unsigned long keylen;
+> +	u8 *metadata;
+> +	unsigned long mdsize;
+> +
+> +	if (!name)
+> +		return EFI_INVALID_PARAMETER;
+> +
+> +	if (!vendor)
+> +		return EFI_INVALID_PARAMETER;
+> +
+> +	createkey(name, &key, &keylen);
+> +	pr_info("%s: nayna key is %s\n", __func__, key);
+> +
+> +	createmetadata(name, vendor, &attr, &metadata, &mdsize);
+> +
+> +	rc = opal_set_variable(key, keylen, metadata, mdsize, data, data_size);
+> +
+> +	return opal_to_efi_status(rc);
+> +}
+> +
+> +
+> +static const struct efivar_operations efivar_ops = {
+> +	.get_variable = powerpc_get_variable,
+> +	.set_variable = powerpc_set_variable,
+> +	.get_next_variable = powerpc_get_next_variable,
+> +};
+> +
+> +
+> +static __init int power_secvar_init(void)
+> +{
+> +	int rc = 0;
+> +	unsigned long ver = 0;
+> +
+> +	rc = opal_variable_version(&ver);
+> +	if (ver != BACKEND_TC_COMPAT_V1) {
+> +		pr_info("Compatible backend unsupported\n");
+> +		return -1;
+> +	}
+> +
+> +	powerpc_kobj = kobject_create_and_add("secvar", firmware_kobj);
+> +	if (!powerpc_kobj) {
+> +		pr_info("secvar: Failed to create firmware kobj\n");
+> +		goto out_err;
+> +	}
+> +
+> +	rc = efivars_register(&efivars, &efivar_ops, powerpc_kobj);
+> +	if (rc) {
+> +		pr_info("powerpc: Failed to register efivars\n");
+> +		return rc;
+> +	}
+> +
+> +	return 0;
+> +out_err:
+> +	kobject_put(powerpc_kobj);
+> +	pr_info("powerpc: failed to load: %d\n", rc);
+> +	return rc;
+> +}
+> +arch_initcall(power_secvar_init);
+> +
+> +static void __exit power_secvar_exit(void)
+> +{
+> +	efivars_unregister(&efivars);
+> +	kobject_put(powerpc_kobj);
+> +}
+> +module_exit(power_secvar_exit);
+> +
+> +MODULE_AUTHOR("Nayna Jain");
+> +MODULE_LICENSE("GPL");
+> -- 
+> 2.20.1
