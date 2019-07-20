@@ -2,103 +2,87 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0BEBE6D538
-	for <lists+linux-efi@lfdr.de>; Thu, 18 Jul 2019 21:47:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 093A96F0F9
+	for <lists+linux-efi@lfdr.de>; Sun, 21 Jul 2019 00:54:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404133AbfGRTpc (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 18 Jul 2019 15:45:32 -0400
-Received: from mail-pf1-f201.google.com ([209.85.210.201]:40733 "EHLO
-        mail-pf1-f201.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2404121AbfGRTpc (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 18 Jul 2019 15:45:32 -0400
-Received: by mail-pf1-f201.google.com with SMTP id z1so17184202pfb.7
-        for <linux-efi@vger.kernel.org>; Thu, 18 Jul 2019 12:45:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=date:in-reply-to:message-id:mime-version:references:subject:from:to
-         :cc;
-        bh=1gkPgS/LUQWYTDhNcm4n5VtrDpueDO81OkRBGTKoxwg=;
-        b=pXA0X1WYESnUxeTUYFiBCooMuuh4vW22b03ZXSm5zMUF8YBE6F9xjLpiSkz32ut3dV
-         sVCzdtElGnDxQykLV1WTTmAb4YgbqMhw/hJhKNId5sf+lP1WkFe0DHEDbRiM4z2hfhLJ
-         iK6U7KPrBHEEp8izpgpV6X73LDyuvV6V+9ToWMovS4380QxL1/U7mzutzATNB8OaZYHm
-         Kh4FpkPv0Fv9auWT8s+aCImHbJyjCZGGXPxuA7yH/Mz+sBDaleVUmj4UhNsPTyHTjynY
-         rYOMdVuEtQROB+t1c2KOrP0kx5v/9LJmd1xN+mRHEQjwWOj18vFW99Kt5KEGb6PYfMR2
-         S60g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:in-reply-to:message-id:mime-version
-         :references:subject:from:to:cc;
-        bh=1gkPgS/LUQWYTDhNcm4n5VtrDpueDO81OkRBGTKoxwg=;
-        b=ecesEKAHOBAVJ48BHv9SDXcR752m2DBDR364pqa7Ke7eziINBB5no6aoJR3rsqSoqW
-         Ol2eyNo/aOQENf4uvGO9jYGCiSlB5q68B6nuxZt6H+xWRH8MWdOdhYmpuTbwCXmP8kBe
-         YGonx0LDwrVqu6I4QJbpsPzTspF5kEc1BD8MqswN6HIz8j8IR0S6KWbdhLLc5CtTW0SW
-         84Jkj+ku6r+MbeNq2B+aWxNzgV1o6J03xA+ng4Rro8HQpGTpF9E97FhrA35A83hmgJNd
-         1zR5fEzxSrqA74toJt1d9NNHOgZpx8A9L6ecCdF5oT9CwO3aY89X9o+5xt65VRJJNzPk
-         2ZQA==
-X-Gm-Message-State: APjAAAUPrJCC6/9pVPPiC41kVHDc1P6k6sH5Ht2PgXjFB+TwVUsfnLeD
-        9bEiWtoF04DAAzgTf2yezKyks0OlY4BAzIZqRs2aZw==
-X-Google-Smtp-Source: APXvYqxwqkDrXVnqXgFX8V2quFdORdqeEDNkSG6F+hbmam7qsgt7IU5OHfo3gKWFROaZ4LnpcXcAdTeF5PDp8QS5kQDg+Q==
-X-Received: by 2002:a63:24a:: with SMTP id 71mr24650403pgc.273.1563479131021;
- Thu, 18 Jul 2019 12:45:31 -0700 (PDT)
-Date:   Thu, 18 Jul 2019 12:44:14 -0700
-In-Reply-To: <20190718194415.108476-1-matthewgarrett@google.com>
-Message-Id: <20190718194415.108476-29-matthewgarrett@google.com>
-Mime-Version: 1.0
-References: <20190718194415.108476-1-matthewgarrett@google.com>
-X-Mailer: git-send-email 2.22.0.510.g264f2c817a-goog
-Subject: [PATCH V36 28/29] efi: Restrict efivar_ssdt_load when the kernel is
- locked down
-From:   Matthew Garrett <matthewgarrett@google.com>
-To:     jmorris@namei.org
-Cc:     linux-security-module@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-api@vger.kernel.org,
-        Matthew Garrett <matthewgarrett@google.com>,
-        Matthew Garrett <mjg59@google.com>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Kees Cook <keescook@chromium.org>, linux-efi@vger.kernel.org
+        id S1725899AbfGTWyo (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 20 Jul 2019 18:54:44 -0400
+Received: from mga05.intel.com ([192.55.52.43]:2970 "EHLO mga05.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725812AbfGTWyo (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Sat, 20 Jul 2019 18:54:44 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 20 Jul 2019 15:54:43 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.64,288,1559545200"; 
+   d="scan'208";a="367626781"
+Received: from sai-dev-mach.sc.intel.com ([143.183.140.153])
+  by fmsmga005.fm.intel.com with ESMTP; 20 Jul 2019 15:54:43 -0700
+Message-ID: <cfee410c5dd4b359ee395ad075f31133387def70.camel@intel.com>
+Subject: Why does memblock only refer to E820 table and not EFI Memory Map?
+From:   Sai Praneeth Prakhya <sai.praneeth.prakhya@intel.com>
+To:     linux-mm@kvack.org, linux-efi@vger.kernel.org
+Cc:     mingo@kernel.org, bp@alien8.de, peterz@infradead.org,
+        ard.biesheuvel@linaro.org, rppt@linux.ibm.com, pj@sgi.com
+Date:   Sat, 20 Jul 2019 15:52:04 -0700
 Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.30.5-0ubuntu0.18.10.1 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-efivar_ssdt_load allows the kernel to import arbitrary ACPI code from an
-EFI variable, which gives arbitrary code execution in ring 0. Prevent
-that when the kernel is locked down.
+Hi All,
 
-Signed-off-by: Matthew Garrett <mjg59@google.com>
-Acked-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Cc: linux-efi@vger.kernel.org
----
- drivers/firmware/efi/efi.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+Disclaimer:
+1. Please note that this discussion is x86 specific
+2. Below stated things are my understanding about kernel and I could have
+missed somethings, so please let me know if I understood something wrong.
+3. I have focused only on memblock here because if I understand correctly,
+memblock is the base that feeds other memory management subsystems in kernel
+(like the buddy allocator).
 
-diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
-index ad3b1f4866b3..776f479e5499 100644
---- a/drivers/firmware/efi/efi.c
-+++ b/drivers/firmware/efi/efi.c
-@@ -30,6 +30,7 @@
- #include <linux/acpi.h>
- #include <linux/ucs2_string.h>
- #include <linux/memblock.h>
-+#include <linux/security.h>
- 
- #include <asm/early_ioremap.h>
- 
-@@ -242,6 +243,11 @@ static void generic_ops_unregister(void)
- static char efivar_ssdt[EFIVAR_SSDT_NAME_MAX] __initdata;
- static int __init efivar_ssdt_setup(char *str)
- {
-+	int ret = security_locked_down(LOCKDOWN_ACPI_TABLES);
-+
-+	if (ret)
-+		return ret;
-+
- 	if (strlen(str) < sizeof(efivar_ssdt))
- 		memcpy(efivar_ssdt, str, strlen(str));
- 	else
--- 
-2.22.0.510.g264f2c817a-goog
+On x86 platforms, there are two sources through which kernel learns about
+physical memory in the system namely E820 table and EFI Memory Map. Each table
+describes which regions of system memory is usable by kernel and which regions
+should be preserved (i.e. reserved regions that typically have BIOS code/data)
+so that no other component in the system could read/write to these regions. I
+think they are duplicating the information and hence I have couple of
+questions regarding these
+
+1. I see that only E820 table is being consumed by kernel [1] (i.e. memblock
+subsystem in kernel) to distinguish between "usable" vs "reserved" regions.
+Assume someone has called memblock_alloc(), the memblock subsystem would
+service the caller by allocating memory from "usable" regions and it knows
+this *only* from E820 table [2] (it does not check if EFI Memory Map also says
+that this region is usable as well). So, why isn't the kernel taking EFI
+Memory Map into consideration? (I see that it does happen only when
+"add_efi_memmap" kernel command line arg is passed i.e. passing this argument
+updates E820 table based on EFI Memory Map) [3]. The problem I see with
+memblock not taking EFI Memory Map into consideration is that, we are ignoring
+the main purpose for which EFI Memory Map exists.
+
+2. Why doesn't the kernel have "add_efi_memmap" by default? From the commit
+"200001eb140e: x86 boot: only pick up additional EFI memmap if add_efi_memmap
+flag", I didn't understand why the decision was made so. Shouldn't we give
+more preference to EFI Memory map rather than E820 table as it's the latest
+and E820 is legacy?
+
+3. Why isn't kernel checking that both the tables E820 table and EFI Memory
+Map are in sync i.e. is there any *possibility* that a buggy BIOS could report
+a region as usable in E820 table and as reserved in EFI Memory Map?
+
+[1] 
+https://elixir.bootlin.com/linux/latest/source/arch/x86/kernel/setup.c#L1106
+[2] 
+https://elixir.bootlin.com/linux/latest/source/arch/x86/kernel/e820.c#L1265
+[3] 
+https://elixir.bootlin.com/linux/latest/source/arch/x86/platform/efi/efi.c#L129
+
+Regards,
+Sai
 
