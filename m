@@ -2,87 +2,123 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 093A96F0F9
-	for <lists+linux-efi@lfdr.de>; Sun, 21 Jul 2019 00:54:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 908036F3EC
+	for <lists+linux-efi@lfdr.de>; Sun, 21 Jul 2019 17:24:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725899AbfGTWyo (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sat, 20 Jul 2019 18:54:44 -0400
-Received: from mga05.intel.com ([192.55.52.43]:2970 "EHLO mga05.intel.com"
+        id S1726635AbfGUPYY (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sun, 21 Jul 2019 11:24:24 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:40098 "EHLO mx1.redhat.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725812AbfGTWyo (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Sat, 20 Jul 2019 18:54:44 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 20 Jul 2019 15:54:43 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,288,1559545200"; 
-   d="scan'208";a="367626781"
-Received: from sai-dev-mach.sc.intel.com ([143.183.140.153])
-  by fmsmga005.fm.intel.com with ESMTP; 20 Jul 2019 15:54:43 -0700
-Message-ID: <cfee410c5dd4b359ee395ad075f31133387def70.camel@intel.com>
-Subject: Why does memblock only refer to E820 table and not EFI Memory Map?
-From:   Sai Praneeth Prakhya <sai.praneeth.prakhya@intel.com>
-To:     linux-mm@kvack.org, linux-efi@vger.kernel.org
-Cc:     mingo@kernel.org, bp@alien8.de, peterz@infradead.org,
-        ard.biesheuvel@linaro.org, rppt@linux.ibm.com, pj@sgi.com
-Date:   Sat, 20 Jul 2019 15:52:04 -0700
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.30.5-0ubuntu0.18.10.1 
+        id S1726555AbfGUPYY (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Sun, 21 Jul 2019 11:24:24 -0400
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id C6FC230842B5;
+        Sun, 21 Jul 2019 15:24:22 +0000 (UTC)
+Received: from shalem.localdomain.com (ovpn-116-49.ams2.redhat.com [10.36.116.49])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 0079360C64;
+        Sun, 21 Jul 2019 15:24:19 +0000 (UTC)
+From:   Hans de Goede <hdegoede@redhat.com>
+To:     Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "H . Peter Anvin" <hpa@zytor.com>
+Cc:     Hans de Goede <hdegoede@redhat.com>, x86@kernel.org,
+        linux-efi@vger.kernel.org, Peter Jones <pjones@redhat.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        stable@vger.kernel.org
+Subject: [PATCH] x86/sysfb_efi: Add quirks for some devices with swapped width and height
+Date:   Sun, 21 Jul 2019 17:24:18 +0200
+Message-Id: <20190721152418.11644-1-hdegoede@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.40]); Sun, 21 Jul 2019 15:24:23 +0000 (UTC)
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hi All,
+Some Lenovo 2-in-1s with a detachable keyboard have a portrait screen
+but advertise a landscape resolution and pitch, resulting in a messed
+up display if we try to show anything on the efifb (because of the wrong
+pitch).
 
-Disclaimer:
-1. Please note that this discussion is x86 specific
-2. Below stated things are my understanding about kernel and I could have
-missed somethings, so please let me know if I understood something wrong.
-3. I have focused only on memblock here because if I understand correctly,
-memblock is the base that feeds other memory management subsystems in kernel
-(like the buddy allocator).
+This commit fixes this by adding a new DMI match table for devices which
+need to have their width and height swapped.
 
-On x86 platforms, there are two sources through which kernel learns about
-physical memory in the system namely E820 table and EFI Memory Map. Each table
-describes which regions of system memory is usable by kernel and which regions
-should be preserved (i.e. reserved regions that typically have BIOS code/data)
-so that no other component in the system could read/write to these regions. I
-think they are duplicating the information and hence I have couple of
-questions regarding these
+At first I tried to use the existing table for overriding some of the
+efifb parameters, but some of the affected devices have variants with
+different LCD resolutions which will not work with hardcoded override
+values.
 
-1. I see that only E820 table is being consumed by kernel [1] (i.e. memblock
-subsystem in kernel) to distinguish between "usable" vs "reserved" regions.
-Assume someone has called memblock_alloc(), the memblock subsystem would
-service the caller by allocating memory from "usable" regions and it knows
-this *only* from E820 table [2] (it does not check if EFI Memory Map also says
-that this region is usable as well). So, why isn't the kernel taking EFI
-Memory Map into consideration? (I see that it does happen only when
-"add_efi_memmap" kernel command line arg is passed i.e. passing this argument
-updates E820 table based on EFI Memory Map) [3]. The problem I see with
-memblock not taking EFI Memory Map into consideration is that, we are ignoring
-the main purpose for which EFI Memory Map exists.
+BugLink: https://bugzilla.redhat.com/show_bug.cgi?id=1730783
+Cc: stable@vger.kernel.org
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+---
+ arch/x86/kernel/sysfb_efi.c | 45 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 45 insertions(+)
 
-2. Why doesn't the kernel have "add_efi_memmap" by default? From the commit
-"200001eb140e: x86 boot: only pick up additional EFI memmap if add_efi_memmap
-flag", I didn't understand why the decision was made so. Shouldn't we give
-more preference to EFI Memory map rather than E820 table as it's the latest
-and E820 is legacy?
-
-3. Why isn't kernel checking that both the tables E820 table and EFI Memory
-Map are in sync i.e. is there any *possibility* that a buggy BIOS could report
-a region as usable in E820 table and as reserved in EFI Memory Map?
-
-[1] 
-https://elixir.bootlin.com/linux/latest/source/arch/x86/kernel/setup.c#L1106
-[2] 
-https://elixir.bootlin.com/linux/latest/source/arch/x86/kernel/e820.c#L1265
-[3] 
-https://elixir.bootlin.com/linux/latest/source/arch/x86/platform/efi/efi.c#L129
-
-Regards,
-Sai
+diff --git a/arch/x86/kernel/sysfb_efi.c b/arch/x86/kernel/sysfb_efi.c
+index 8eb67a670b10..80d5b6720a87 100644
+--- a/arch/x86/kernel/sysfb_efi.c
++++ b/arch/x86/kernel/sysfb_efi.c
+@@ -230,9 +230,54 @@ static const struct dmi_system_id efifb_dmi_system_table[] __initconst = {
+ 	{},
+ };
+ 
++/*
++ * Some devices have a portrait LCD but advertise a landscape resolution (and
++ * pitch). We simply swap width and height for these devices so that we can
++ * correctly deal with some of them coming with multiple resolutions.
++ */
++static const struct dmi_system_id efifb_dmi_swap_width_height[] __initconst = {
++	{
++		/*
++		 * Lenovo MIIX310-10ICR, only some batches have the troublesome
++		 * 800x1280 portrait screen. Luckily the portrait version has
++		 * its own BIOS version, so we match on that.
++		 */
++		.matches = {
++			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "LENOVO"),
++			DMI_EXACT_MATCH(DMI_PRODUCT_VERSION, "MIIX 310-10ICR"),
++			DMI_EXACT_MATCH(DMI_BIOS_VERSION, "1HCN44WW"),
++		},
++	},
++	{
++		/* Lenovo MIIX 320-10ICR with 800x1280 portrait screen */
++		.matches = {
++			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "LENOVO"),
++			DMI_EXACT_MATCH(DMI_PRODUCT_VERSION,
++					"Lenovo MIIX 320-10ICR"),
++		},
++	},
++	{
++		/* Lenovo D330 with 800x1280 or 1200x1920 portrait screen */
++		.matches = {
++			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "LENOVO"),
++			DMI_EXACT_MATCH(DMI_PRODUCT_VERSION,
++					"Lenovo ideapad D330-10IGM"),
++		},
++	},
++	{},
++};
++
+ __init void sysfb_apply_efi_quirks(void)
+ {
+ 	if (screen_info.orig_video_isVGA != VIDEO_TYPE_EFI ||
+ 	    !(screen_info.capabilities & VIDEO_CAPABILITY_SKIP_QUIRKS))
+ 		dmi_check_system(efifb_dmi_system_table);
++
++	if (screen_info.orig_video_isVGA == VIDEO_TYPE_EFI &&
++	    dmi_check_system(efifb_dmi_swap_width_height)) {
++		u16 temp = screen_info.lfb_width;
++		screen_info.lfb_width = screen_info.lfb_height;
++		screen_info.lfb_height = temp;
++		screen_info.lfb_linelength = 4 * screen_info.lfb_width;
++	}
+ }
+-- 
+2.21.0
 
