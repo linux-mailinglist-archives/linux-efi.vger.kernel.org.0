@@ -2,115 +2,162 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 94246721F3
-	for <lists+linux-efi@lfdr.de>; Wed, 24 Jul 2019 00:05:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C14572BBD
+	for <lists+linux-efi@lfdr.de>; Wed, 24 Jul 2019 11:52:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731283AbfGWWF1 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 23 Jul 2019 18:05:27 -0400
-Received: from mga06.intel.com ([134.134.136.31]:51476 "EHLO mga06.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731276AbfGWWF1 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Tue, 23 Jul 2019 18:05:27 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by orsmga104.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 23 Jul 2019 15:05:26 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,300,1559545200"; 
-   d="scan'208";a="369056989"
-Received: from sai-dev-mach.sc.intel.com ([143.183.140.153])
-  by fmsmga006.fm.intel.com with ESMTP; 23 Jul 2019 15:05:26 -0700
-Message-ID: <180ae7c8af18d7a73cd8ba18e8fe2aa7ef562fd3.camel@intel.com>
-Subject: Re: Why does memblock only refer to E820 table and not EFI Memory
- Map?
-From:   Sai Praneeth Prakhya <sai.praneeth.prakhya@intel.com>
-To:     Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
-Cc:     linux-mm@kvack.org, linux-efi@vger.kernel.org, mingo@kernel.org,
-        bp@alien8.de, peterz@infradead.org, ard.biesheuvel@linaro.org,
-        rppt@linux.ibm.com, pj@sgi.com
-Date:   Tue, 23 Jul 2019 15:01:57 -0700
-In-Reply-To: <20190723213821.GA3311@ranerica-svr.sc.intel.com>
-References: <cfee410c5dd4b359ee395ad075f31133387def70.camel@intel.com>
-         <20190723213821.GA3311@ranerica-svr.sc.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.30.5-0ubuntu0.18.10.1 
+        id S1726211AbfGXJwk (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 24 Jul 2019 05:52:40 -0400
+Received: from mail-io1-f65.google.com ([209.85.166.65]:37151 "EHLO
+        mail-io1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725776AbfGXJwk (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 24 Jul 2019 05:52:40 -0400
+Received: by mail-io1-f65.google.com with SMTP id q22so88246114iog.4;
+        Wed, 24 Jul 2019 02:52:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=DhDzbuvFs0yJ/WUz3ukdt8uO4k/3AKV8qsjWlE0aKEw=;
+        b=SGvqCL4O1tDMyTtUF8VzsVIaleRAOFgk1B28yr96Tc5DkoDBmOCfKpb+8DoWOK/MrX
+         2D3N8WoY7chRvw1ox0YQgUQqnONnS6yXFvZAdnPH8u3VnvSIbpzzJWjXzHKMfgCzGy90
+         Ikf3cqKH73hhRrRiXIlELX/hkzMl6g8ZyiraOiMiFY1ELoTqUl6cQObs2IC8PxxVkObK
+         aWQF7OxsUJrsYaSNx4NsIbUmrMO0Z5iz6Yan+Wsf7OjG4e87Tlz+wka5UxTeg/6hajeb
+         Vt/ISV+jdgor/H1Sg1FLW5SZ9D6Q5TXu4MG5mHRGgirz3QzqaPNgRt7teGd54t14d4E/
+         ruvA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=DhDzbuvFs0yJ/WUz3ukdt8uO4k/3AKV8qsjWlE0aKEw=;
+        b=PxL1axhm0kNunLYTIZlaGGBHUnsufHcIjotDOoUKAGssa1SlxcxLpOxJsFlkiBCNiY
+         pe6b5ZcN30uuryD6AzAngeG5rAt7tD/bl2DJaZHph1yO2o2u2CENleULT7ebPkHmCz5Y
+         mg9c6wcW7RQ9oSDmPDyZCi02wV7ye5pzPiDcqoqzgBCzZXeF+T6NaNCn/C2hr/nb8zZC
+         EGDgdtfOxnIjyrhfUlaK+L6KAD3jtGkvoKLgs56Ro6HdWEQU/6jy3DTQIjhrkB62BPLg
+         qD9bQhVwhMdXx12Igm7e/Zdq0rAZ5qu018BayxihfN4vfMA3geGZ19XDJiEFktq2G0Ti
+         l/2g==
+X-Gm-Message-State: APjAAAWhg0EIT7KOU8RrxSEUSpvKNXrFQ9PmQfm4wx3ugkBZxBLBMIuH
+        iNTUGblqxgNs7twT7RQ7dKTKlvOqlerFTfwo7Bs=
+X-Google-Smtp-Source: APXvYqzWo9lCX65m/qQJPiWc2w2e8N/+FLhFIZ0DpQbgEIju2e27m5KvrfTquDsr7BpwzrPpgtrGq0LH0Cy0lwpS2eI=
+X-Received: by 2002:a5d:8497:: with SMTP id t23mr50409358iom.298.1563961959018;
+ Wed, 24 Jul 2019 02:52:39 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+References: <1560459027-5248-1-git-send-email-nayna@linux.ibm.com>
+ <1560459027-5248-3-git-send-email-nayna@linux.ibm.com> <87o92910fg.fsf@concordia.ellerman.id.au>
+ <6d2988c1-9b89-448b-4537-c3c6673b6dd1@linux.vnet.ibm.com>
+In-Reply-To: <6d2988c1-9b89-448b-4537-c3c6673b6dd1@linux.vnet.ibm.com>
+From:   "Oliver O'Halloran" <oohall@gmail.com>
+Date:   Wed, 24 Jul 2019 19:52:28 +1000
+Message-ID: <CAOSf1CFHYv5VsBMEnNAqa7v7WakPfdpGpbENmG8chusm=hW21g@mail.gmail.com>
+Subject: Re: [PATCH 2/2] powerpc: expose secure variables via sysfs
+To:     Nayna <nayna@linux.vnet.ibm.com>
+Cc:     Michael Ellerman <mpe@ellerman.id.au>,
+        linuxppc-dev <linuxppc-dev@ozlabs.org>,
+        linux-efi@vger.kernel.org, Nayna Jain <nayna@linux.ibm.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-integrity@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Jeremy Kerr <jk@ozlabs.org>,
+        Matthew Garret <matthew.garret@nebula.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Claudio Carvalho <cclaudio@linux.ibm.com>,
+        George Wilson <gcwilson@linux.ibm.com>,
+        Elaine Palmer <erpalmer@us.ibm.com>,
+        Eric Ricther <erichte@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
+On Wed, Jul 24, 2019 at 12:35 AM Nayna <nayna@linux.vnet.ibm.com> wrote:
+>
+> On 07/05/2019 02:05 AM, Michael Ellerman wrote:
+> > Hi Nayna,
+>
+> Hi Michael, Oliver,
+>
+> > Nayna Jain <nayna@linux.ibm.com> writes:
+> >> As part of PowerNV secure boot support, OS verification keys are stored
+> >> and controlled by OPAL as secure variables. These need to be exposed to
+> >> the userspace so that sysadmins can perform key management tasks.
+> >>
+> >> This patch adds the support to expose secure variables via a sysfs
+> >> interface It reuses the the existing efi defined hooks and backend in
+> >> order to maintain the compatibility with the userspace tools.
+> > Which tools? Can you include a log demonstrating how they're used, ie.
+> > so that I can test the sequence of commands.
+> >
+> >> Though it reuses a great deal of efi, POWER platforms do not use EFI.
+> >> A new config, POWER_SECVAR_SYSFS, is defined to enable this new sysfs
+> >> interface.
+> > Sorry I haven't been able to keep up with all the discussions, but I
+> > thought the consensus was that pretending to be EFI-like was a bad idea,
+> > because we don't have actual EFI and we're not implementing an entirely
+> > compatible scheme to EFI anyway.
 
-> > On x86 platforms, there are two sources through which kernel learns about
-> > physical memory in the system namely E820 table and EFI Memory Map. Each
-> > table
-> > describes which regions of system memory is usable by kernel and which
-> > regions
-> > should be preserved (i.e. reserved regions that typically have BIOS
-> > code/data)
-> > so that no other component in the system could read/write to these
-> > regions. I
-> > think they are duplicating the information and hence I have couple of
-> > questions regarding these
-> 
-> But isn't it true that in x86 systems the E820 table is populated from the
-> EFI memory map?
+My read is the consensus was that pretending to be EFI is a bad idea
+unless we're going to behave like EFI.
 
-I don't know that it happens.. :(
+> > Greg suggested just putting the variables in sysfs, why does that not
+> > work? Matthew mentioned "complex semantics around variable deletion and
+> > immutability" but do we have to emulate those semantics on powerpc?
+>
+> Sorry for the delay in the response.
+>
+> Yes, I agree. The purpose of the v2 version of the patchset was to try
+> and quickly address Matthew's concerns. This version of the patchset:
 
-> At least in systems with EFI firmware and a Linux which understands
-> EFI. If booting from the EFI stub, the stub will take the EFI memory map and
-> assemble the E820 table passed as part of the boot params [4]. It also
-> considers the case when there are more than 128 entries in the table [5].
-> Thus, if booting as an EFI application it will definitely use the EFI memory
-> map. If Linux' EFI entry point is not used the bootloader should to the
-> same. For instance, grub also reads the EFI memory map to assemble the E820
-> memory map [6], [7], [8].
+> * is based on Greg's suggestion to use sysfs
 
-Thanks a lot! for the pointers Ricardo :)
-I haven't looked at EFI stub and Grub code and hence didn't knew this was
-happening. It does make me feel better that EFI Memory Map is indeed being
-used to generate e820 in EFI stub case, so at-least it's getting consumed
-indirectly.
+As far as I can tell Greg made that suggestion here:
 
-> > 1. I see that only E820 table is being consumed by kernel [1] (i.e.
-> > memblock
-> > subsystem in kernel) to distinguish between "usable" vs "reserved"
-> > regions.
-> > Assume someone has called memblock_alloc(), the memblock subsystem would
-> > service the caller by allocating memory from "usable" regions and it knows
-> > this *only* from E820 table [2] (it does not check if EFI Memory Map also
-> > says
-> > that this region is usable as well). So, why isn't the kernel taking EFI
-> > Memory Map into consideration? (I see that it does happen only when
-> > "add_efi_memmap" kernel command line arg is passed i.e. passing this
-> > argument
-> > updates E820 table based on EFI Memory Map) [3]. The problem I see with
-> > memblock not taking EFI Memory Map into consideration is that, we are
-> > ignoring
-> > the main purpose for which EFI Memory Map exists.
-> > 
-> > 2. Why doesn't the kernel have "add_efi_memmap" by default? From the
-> > commit
-> > "200001eb140e: x86 boot: only pick up additional EFI memmap if
-> > add_efi_memmap
-> > flag", I didn't understand why the decision was made so. Shouldn't we give
-> > more preference to EFI Memory map rather than E820 table as it's the
-> > latest
-> > and E820 is legacy?
-> 
-> I did a a quick experiment with and without add_efi_memmmap. the e820
-> table looked exactly the same. I guess this shows that what I wrote
-> above makes sense ;) . Have you observed difference?
+https://lwn.net/ml/linux-fsdevel/20190603072916.GA7545@kroah.com/
 
-When I did a quick test, I didn't notice any difference (with and without
-add_efi_memap) because both e820 and EFI Memory Map were reporting regions in
-sync. So, "add_efi_memmap" didn't have to add any new regions into e820. Hence
-my last question, what if both the tables (EFI Memory Map and e820) are out of
-sync? Shouldn't happen in Grub and EFI stub because they generate e820 from
-EFI Memory Map, as pointed by you.
+Then walked back on that suggestion after Matthew pointed out that
+efivars is separate because of the immutability requirement and the
+odd update semantics:
 
-Regards,
-Sai
+https://lwn.net/ml/linux-fsdevel/20190605081301.GA23180@kroah.com/
 
+Considering the whole point of this is to present the same user-facing
+interface so shouldn't you be dealing with all the problems that
+interface creates?
+
+> * is not using any EFI configs
+That's true, but...
+
+> * is not exposing secure variables via efivarfs
+> * is STILL using some of the existing EFI code, that is used by EFI to
+> expose its variables via sysfs, to avoid code duplication.
+
+We avoid some of the potential problems of selecting CONFIG_EFI and we
+gain a bunch of other potential problems since you've hacked the
+makefiles to build code that's normally CONFIG_EFI only.
+
+> * is using efivar hooks to expose secure variables for tool compatibility
+
+Here's the real problem. For compatibility with the existing userspace
+tooling, which expects UEFI,  you need to present the same interface
+with the same semantics. Trying to not use efivarfs means you've
+already lost since you no longer have the same interface. So how is
+this an improvement? I think the options here are to either:
+
+1) Come up with a new interface, implement it, and adapt the user
+tooling to deal with the new API.
+
+*or*
+
+2) Use efivarsfs and fix the based i-cant-believe-its-not-efi variable
+backend so it behaves *exactly* like the UEFI get/setVariable APIs.
+This means that you need to validate the update certificates at
+runtime. I don't think this is a huge strech since you're already
+implementing the validator.
+
+1) gives you the flexibility to change the key hierarchy and whatnot,
+while 2) means we've got less weird powerpc crap for users to deal
+with. I have no strong opinions about which you choose to do, but
+don't do this.
+
+Oliver
