@@ -2,162 +2,132 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C14572BBD
-	for <lists+linux-efi@lfdr.de>; Wed, 24 Jul 2019 11:52:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 741AF74E62
+	for <lists+linux-efi@lfdr.de>; Thu, 25 Jul 2019 14:44:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726211AbfGXJwk (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 24 Jul 2019 05:52:40 -0400
-Received: from mail-io1-f65.google.com ([209.85.166.65]:37151 "EHLO
-        mail-io1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725776AbfGXJwk (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 24 Jul 2019 05:52:40 -0400
-Received: by mail-io1-f65.google.com with SMTP id q22so88246114iog.4;
-        Wed, 24 Jul 2019 02:52:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=DhDzbuvFs0yJ/WUz3ukdt8uO4k/3AKV8qsjWlE0aKEw=;
-        b=SGvqCL4O1tDMyTtUF8VzsVIaleRAOFgk1B28yr96Tc5DkoDBmOCfKpb+8DoWOK/MrX
-         2D3N8WoY7chRvw1ox0YQgUQqnONnS6yXFvZAdnPH8u3VnvSIbpzzJWjXzHKMfgCzGy90
-         Ikf3cqKH73hhRrRiXIlELX/hkzMl6g8ZyiraOiMiFY1ELoTqUl6cQObs2IC8PxxVkObK
-         aWQF7OxsUJrsYaSNx4NsIbUmrMO0Z5iz6Yan+Wsf7OjG4e87Tlz+wka5UxTeg/6hajeb
-         Vt/ISV+jdgor/H1Sg1FLW5SZ9D6Q5TXu4MG5mHRGgirz3QzqaPNgRt7teGd54t14d4E/
-         ruvA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=DhDzbuvFs0yJ/WUz3ukdt8uO4k/3AKV8qsjWlE0aKEw=;
-        b=PxL1axhm0kNunLYTIZlaGGBHUnsufHcIjotDOoUKAGssa1SlxcxLpOxJsFlkiBCNiY
-         pe6b5ZcN30uuryD6AzAngeG5rAt7tD/bl2DJaZHph1yO2o2u2CENleULT7ebPkHmCz5Y
-         mg9c6wcW7RQ9oSDmPDyZCi02wV7ye5pzPiDcqoqzgBCzZXeF+T6NaNCn/C2hr/nb8zZC
-         EGDgdtfOxnIjyrhfUlaK+L6KAD3jtGkvoKLgs56Ro6HdWEQU/6jy3DTQIjhrkB62BPLg
-         qD9bQhVwhMdXx12Igm7e/Zdq0rAZ5qu018BayxihfN4vfMA3geGZ19XDJiEFktq2G0Ti
-         l/2g==
-X-Gm-Message-State: APjAAAWhg0EIT7KOU8RrxSEUSpvKNXrFQ9PmQfm4wx3ugkBZxBLBMIuH
-        iNTUGblqxgNs7twT7RQ7dKTKlvOqlerFTfwo7Bs=
-X-Google-Smtp-Source: APXvYqzWo9lCX65m/qQJPiWc2w2e8N/+FLhFIZ0DpQbgEIju2e27m5KvrfTquDsr7BpwzrPpgtrGq0LH0Cy0lwpS2eI=
-X-Received: by 2002:a5d:8497:: with SMTP id t23mr50409358iom.298.1563961959018;
- Wed, 24 Jul 2019 02:52:39 -0700 (PDT)
+        id S2388910AbfGYMoP (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 25 Jul 2019 08:44:15 -0400
+Received: from foss.arm.com ([217.140.110.172]:56502 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2387824AbfGYMoP (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Thu, 25 Jul 2019 08:44:15 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7ACC728;
+        Thu, 25 Jul 2019 05:44:14 -0700 (PDT)
+Received: from [10.1.196.105] (eglon.cambridge.arm.com [10.1.196.105])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BAE2E3F71F;
+        Thu, 25 Jul 2019 05:44:12 -0700 (PDT)
+Subject: Re: [PATCH 1/1] efi: cper: print AER info of PCIe fatal error
+To:     Xiaofei Tan <tanxiaofei@huawei.com>
+Cc:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-efi@vger.kernel.org, rjw@rjwysocki.net, lenb@kernel.org,
+        tony.luck@intel.com, bp@alien8.de, ying.huang@intel.com,
+        ross.lagerwall@citrix.com, ard.biesheuvel@linaro.org,
+        lance.ortiz@hp.com
+References: <1562898017-27166-1-git-send-email-tanxiaofei@huawei.com>
+From:   James Morse <james.morse@arm.com>
+Message-ID: <e596aec8-1239-0a46-39cf-e682fada9945@arm.com>
+Date:   Thu, 25 Jul 2019 13:44:10 +0100
+User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
 MIME-Version: 1.0
-References: <1560459027-5248-1-git-send-email-nayna@linux.ibm.com>
- <1560459027-5248-3-git-send-email-nayna@linux.ibm.com> <87o92910fg.fsf@concordia.ellerman.id.au>
- <6d2988c1-9b89-448b-4537-c3c6673b6dd1@linux.vnet.ibm.com>
-In-Reply-To: <6d2988c1-9b89-448b-4537-c3c6673b6dd1@linux.vnet.ibm.com>
-From:   "Oliver O'Halloran" <oohall@gmail.com>
-Date:   Wed, 24 Jul 2019 19:52:28 +1000
-Message-ID: <CAOSf1CFHYv5VsBMEnNAqa7v7WakPfdpGpbENmG8chusm=hW21g@mail.gmail.com>
-Subject: Re: [PATCH 2/2] powerpc: expose secure variables via sysfs
-To:     Nayna <nayna@linux.vnet.ibm.com>
-Cc:     Michael Ellerman <mpe@ellerman.id.au>,
-        linuxppc-dev <linuxppc-dev@ozlabs.org>,
-        linux-efi@vger.kernel.org, Nayna Jain <nayna@linux.ibm.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-integrity@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Jeremy Kerr <jk@ozlabs.org>,
-        Matthew Garret <matthew.garret@nebula.com>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Claudio Carvalho <cclaudio@linux.ibm.com>,
-        George Wilson <gcwilson@linux.ibm.com>,
-        Elaine Palmer <erpalmer@us.ibm.com>,
-        Eric Ricther <erichte@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <1562898017-27166-1-git-send-email-tanxiaofei@huawei.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, Jul 24, 2019 at 12:35 AM Nayna <nayna@linux.vnet.ibm.com> wrote:
->
-> On 07/05/2019 02:05 AM, Michael Ellerman wrote:
-> > Hi Nayna,
->
-> Hi Michael, Oliver,
->
-> > Nayna Jain <nayna@linux.ibm.com> writes:
-> >> As part of PowerNV secure boot support, OS verification keys are stored
-> >> and controlled by OPAL as secure variables. These need to be exposed to
-> >> the userspace so that sysadmins can perform key management tasks.
-> >>
-> >> This patch adds the support to expose secure variables via a sysfs
-> >> interface It reuses the the existing efi defined hooks and backend in
-> >> order to maintain the compatibility with the userspace tools.
-> > Which tools? Can you include a log demonstrating how they're used, ie.
-> > so that I can test the sequence of commands.
-> >
-> >> Though it reuses a great deal of efi, POWER platforms do not use EFI.
-> >> A new config, POWER_SECVAR_SYSFS, is defined to enable this new sysfs
-> >> interface.
-> > Sorry I haven't been able to keep up with all the discussions, but I
-> > thought the consensus was that pretending to be EFI-like was a bad idea,
-> > because we don't have actual EFI and we're not implementing an entirely
-> > compatible scheme to EFI anyway.
+Hi,
 
-My read is the consensus was that pretending to be EFI is a bad idea
-unless we're going to behave like EFI.
+On 12/07/2019 03:20, Xiaofei Tan wrote:
+> AER info of PCIe fatal error is not printed in the current driver.
+> Because APEI driver will panic directly for fatal error, and can't
+> run to the place of printing AER info.
+> 
+> An example log is as following:
+> [ 3157.655028] {763}[Hardware Error]: Hardware error from APEI Generic Hardware Error Source: 11
+> [ 3157.663610] {763}[Hardware Error]: event severity: fatal
+> [ 3157.663612] {763}[Hardware Error]:  Error 0, type: fatal
+> [ 3157.663614] {763}[Hardware Error]:   section_type: PCIe error
+> [ 3157.680328] {763}[Hardware Error]:   port_type: 0, PCIe end point
+> [ 3157.680329] {763}[Hardware Error]:   version: 4.0
+> [ 3157.680332] {763}[Hardware Error]:   command: 0x0000, status: 0x0010
+> [ 3157.698757] {763}[Hardware Error]:   device_id: 0000:82:00.0
+> [ 3157.698758] {763}[Hardware Error]:   slot: 0
+> [ 3157.698759] {763}[Hardware Error]:   secondary_bus: 0x00
+> [ 3157.698760] {763}[Hardware Error]:   vendor_id: 0x8086, device_id: 0x10fb
+> [ 3157.698761] {763}[Hardware Error]:   class_code: 000002
+> [ 3157.698825] Kernel panic - not syncing: Fatal hardware error!
+> 
+> This issue was imported by the patch, '37448adfc7ce ("aerdrv: Move
+> cper_print_aer() call out of interrupt context")'. To fix this issue,
+> this patch adds print of AER info in cper_print_pcie() for fatal error.
+> 
+> Here is the example log after this patch applied:
+> [ 7032.893566] {24}[Hardware Error]: Hardware error from APEI Generic Hardware Error Source: 10
+> [ 7032.901965] {24}[Hardware Error]: event severity: fatal
+> [ 7032.907166] {24}[Hardware Error]:  Error 0, type: fatal
+> [ 7032.912366] {24}[Hardware Error]:   section_type: PCIe error
+> [ 7032.917998] {24}[Hardware Error]:   port_type: 0, PCIe end point
+> [ 7032.923974] {24}[Hardware Error]:   version: 4.0
+> [ 7032.928569] {24}[Hardware Error]:   command: 0x0546, status: 0x4010
+> [ 7032.934806] {24}[Hardware Error]:   device_id: 0000:01:00.0
+> [ 7032.940352] {24}[Hardware Error]:   slot: 0
+> [ 7032.944514] {24}[Hardware Error]:   secondary_bus: 0x00
+> [ 7032.949714] {24}[Hardware Error]:   vendor_id: 0x15b3, device_id: 0x1019
+> [ 7032.956381] {24}[Hardware Error]:   class_code: 000002
+> [ 7032.961495] {24}[Hardware Error]:   aer_uncor_status: 0x00040000, aer_uncor_mask: 0x00000000
+> [ 7032.969891] {24}[Hardware Error]:   aer_uncor_severity: 0x00062010
+> [ 7032.976042] {24}[Hardware Error]:   TLP Header: 000000c0 01010000 00000001 00000000
+> [ 7032.983663] Kernel panic - not syncing: Fatal hardware error!
 
-> > Greg suggested just putting the variables in sysfs, why does that not
-> > work? Matthew mentioned "complex semantics around variable deletion and
-> > immutability" but do we have to emulate those semantics on powerpc?
->
-> Sorry for the delay in the response.
->
-> Yes, I agree. The purpose of the v2 version of the patchset was to try
-> and quickly address Matthew's concerns. This version of the patchset:
+> Fixes: 37448adfc7ce ("aerdrv: Move cper_print_aer() call out of
+> interrupt context")
 
-> * is based on Greg's suggestion to use sysfs
+(Please put this all on one line)
 
-As far as I can tell Greg made that suggestion here:
 
-https://lwn.net/ml/linux-fsdevel/20190603072916.GA7545@kroah.com/
+> diff --git a/drivers/firmware/efi/cper.c b/drivers/firmware/efi/cper.c
+> index 8fa977c..bf8600d 100644
+> --- a/drivers/firmware/efi/cper.c
+> +++ b/drivers/firmware/efi/cper.c
+> @@ -390,6 +390,19 @@ static void cper_print_pcie(const char *pfx, const struct cper_sec_pcie *pcie,
+>  		printk(
+>  	"%s""bridge: secondary_status: 0x%04x, control: 0x%04x\n",
+>  	pfx, pcie->bridge.secondary_status, pcie->bridge.control);
 
-Then walked back on that suggestion after Matthew pointed out that
-efivars is separate because of the immutability requirement and the
-odd update semantics:
+It may be worth a comment explaining why we only do this for fatal errors. Something like:
+| /* Fatal errors call __ghes_panic() before the AER handler gets to print this */
 
-https://lwn.net/ml/linux-fsdevel/20190605081301.GA23180@kroah.com/
 
-Considering the whole point of this is to present the same user-facing
-interface so shouldn't you be dealing with all the problems that
-interface creates?
+> +	if (pcie->validation_bits & CPER_PCIE_VALID_AER_INFO &&
+> +	    gdata->error_severity & CPER_SEV_FATAL) {
+> +		struct aer_capability_regs *aer;
+> +
+> +		aer = (struct aer_capability_regs *)pcie->aer_info;
+> +		printk("%saer_uncor_status: 0x%08x, aer_uncor_mask: 0x%08x\n",
 
-> * is not using any EFI configs
-That's true, but...
+The convention in the rest of the file is for the prefix format string to be separate. i.e:
+| "%s""aer_uncor_status: ..."
 
-> * is not exposing secure variables via efivarfs
-> * is STILL using some of the existing EFI code, that is used by EFI to
-> expose its variables via sysfs, to avoid code duplication.
+Could it be the same for consistency?
 
-We avoid some of the potential problems of selecting CONFIG_EFI and we
-gain a bunch of other potential problems since you've hacked the
-makefiles to build code that's normally CONFIG_EFI only.
+> +		       pfx, aer->uncor_status, aer->uncor_mask);
+> +		printk("%saer_uncor_severity: 0x%08x\n",
+> +		       pfx, aer->uncor_severity);
+> +		printk("%sTLP Header: %08x %08x %08x %08x\n", pfx,
+> +		       aer->header_log.dw0, aer->header_log.dw1,
+> +		       aer->header_log.dw2, aer->header_log.dw3);
+> +	}
+>  }
 
-> * is using efivar hooks to expose secure variables for tool compatibility
+Regardless,
+Reviewed-by; James Morse <james.morse@arm.com>
 
-Here's the real problem. For compatibility with the existing userspace
-tooling, which expects UEFI,  you need to present the same interface
-with the same semantics. Trying to not use efivarfs means you've
-already lost since you no longer have the same interface. So how is
-this an improvement? I think the options here are to either:
 
-1) Come up with a new interface, implement it, and adapt the user
-tooling to deal with the new API.
+Thanks,
 
-*or*
-
-2) Use efivarsfs and fix the based i-cant-believe-its-not-efi variable
-backend so it behaves *exactly* like the UEFI get/setVariable APIs.
-This means that you need to validate the update certificates at
-runtime. I don't think this is a huge strech since you're already
-implementing the validator.
-
-1) gives you the flexibility to change the key hierarchy and whatnot,
-while 2) means we've got less weird powerpc crap for users to deal
-with. I have no strong opinions about which you choose to do, but
-don't do this.
-
-Oliver
+James
