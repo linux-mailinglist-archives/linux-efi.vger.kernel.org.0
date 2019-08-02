@@ -2,242 +2,131 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9AA387EC2A
-	for <lists+linux-efi@lfdr.de>; Fri,  2 Aug 2019 07:40:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BA88A7EE26
+	for <lists+linux-efi@lfdr.de>; Fri,  2 Aug 2019 09:57:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387629AbfHBFk3 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-efi@lfdr.de>); Fri, 2 Aug 2019 01:40:29 -0400
-Received: from m9a0002g.houston.softwaregrp.com ([15.124.64.67]:40443 "EHLO
-        m9a0002g.houston.softwaregrp.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S2387606AbfHBFk3 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 2 Aug 2019 01:40:29 -0400
-Received: FROM m9a0002g.houston.softwaregrp.com (15.121.0.191) BY m9a0002g.houston.softwaregrp.com WITH ESMTP;
- Fri,  2 Aug 2019 05:40:26 +0000
-Received: from M4W0334.microfocus.com (2002:f78:1192::f78:1192) by
- M9W0068.microfocus.com (2002:f79:bf::f79:bf) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.1591.10; Fri, 2 Aug 2019 05:38:57 +0000
-Received: from NAM05-BY2-obe.outbound.protection.outlook.com (15.124.8.12) by
- M4W0334.microfocus.com (15.120.17.146) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.1591.10 via Frontend Transport; Fri, 2 Aug 2019 05:38:58 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=nPwSaWkb89TnldbJzamri34EfJ2flnipu86YVpLH4Kc6pvsb2xYHPlkRhYbGNIfuYkhaIlWG6XHvAVLia7gO4pD7mV2QCyEbYBBAEGI9Q1ocVkuUhZfhQIk9LdTMXqKRC89SV8Mmouieg+9TbQGQD0Gpbr90bW1ZCztYQNrf2i4GIis4uhGqWbE+uXBk0rFPjWRpJD0OMIp0i5ikLGzCFaRuHGUfOnwKq5iGrIWmIfC7FmTQn6opcIPkv+vSbXAr6a7WMFNnEXSHDIDDQkzOT55XxSFNOOO08wPTwGqhM1NSbGsirGxhZIkOHnf+1vkLCcwUawN4RPN+9WLljO7iSQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Si4+r8o+rP+N8BbH3mwBlBHg1ApzRq7/AOUl2iP1IBU=;
- b=Js1UWA+LwzosYwtsLYTBWpDVAhtum2ejWsPGmNGpaB4GSZ17KZGJ1xAxwGTNnNv4gbZh33o6K6cD/HjQiw57IHxMFv8Jz/VRENFb9cVmXZhCJhbvozs7CYTfMO1saoNipqNxgcEGnSVFslH1tEHp7tZHDTpo7KeuK2jVfPuntr/qlfNWcog39adgsMLVdjYNnGiRzm4t5cawW1b6oY0XMFsMhAxKuua5i/1sZHT8f7U8lc98I94C8XEN0qjPqgtLAv59jJ8JcdK9FKp8ZuSjV3WsDLAu6XyDcsTsw/h4RpbqJnW+MO0wMcUl2jbhGeGWqOPW35Bg5ClJG6f4l3lXUw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1;spf=pass
- smtp.mailfrom=suse.com;dmarc=pass action=none header.from=suse.com;dkim=pass
- header.d=suse.com;arc=none
-Received: from BY5PR18MB3283.namprd18.prod.outlook.com (10.255.139.203) by
- BY5PR18MB3348.namprd18.prod.outlook.com (10.255.136.15) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2136.12; Fri, 2 Aug 2019 05:38:55 +0000
-Received: from BY5PR18MB3283.namprd18.prod.outlook.com
- ([fe80::b587:8197:fcb2:bcd8]) by BY5PR18MB3283.namprd18.prod.outlook.com
- ([fe80::b587:8197:fcb2:bcd8%6]) with mapi id 15.20.2136.010; Fri, 2 Aug 2019
- 05:38:54 +0000
-From:   Chester Lin <clin@suse.com>
-To:     "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
-        "ard.biesheuvel@linaro.org" <ard.biesheuvel@linaro.org>,
-        "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-        "rppt@linux.ibm.com" <rppt@linux.ibm.com>,
-        "ren_guo@c-sky.com" <ren_guo@c-sky.com>,
-        Juergen Gross <JGross@suse.com>,
-        "geert@linux-m68k.org" <geert@linux-m68k.org>,
-        "mingo@kernel.org" <mingo@kernel.org>
-CC:     "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
-        "guillaume.gardet@arm.com" <guillaume.gardet@arm.com>,
-        Chester Lin <clin@suse.com>, Joey Lee <JLee@suse.com>,
-        Gary Lin <GLin@suse.com>
-Subject: [PATCH] efi/arm: fix allocation failure when reserving the kernel
- base
-Thread-Topic: [PATCH] efi/arm: fix allocation failure when reserving the
- kernel base
-Thread-Index: AQHVSPSS9nx4lee000qskpi0lgLxmA==
-Date:   Fri, 2 Aug 2019 05:38:54 +0000
-Message-ID: <20190802053744.5519-1-clin@suse.com>
-Accept-Language: zh-TW, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-clientproxiedby: DB6PR1001CA0016.EURPRD10.PROD.OUTLOOK.COM
- (2603:10a6:4:b7::26) To BY5PR18MB3283.namprd18.prod.outlook.com
- (2603:10b6:a03:196::11)
-authentication-results: spf=none (sender IP is ) smtp.mailfrom=clin@suse.com; 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-mailer: git-send-email 2.22.0
-x-originating-ip: [202.47.205.198]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 2c4329d6-772e-40f8-00ab-08d7170bb4f0
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(1401327)(2017052603328)(7193020);SRVR:BY5PR18MB3348;
-x-ms-traffictypediagnostic: BY5PR18MB3348:
-x-microsoft-antispam-prvs: <BY5PR18MB3348CA15D936C66D68C653C3ADD90@BY5PR18MB3348.namprd18.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:10000;
-x-forefront-prvs: 011787B9DD
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(4636009)(376002)(396003)(136003)(366004)(39860400002)(346002)(199004)(189003)(1076003)(110136005)(316002)(54906003)(71200400001)(71190400001)(14444005)(256004)(7416002)(2616005)(476003)(486006)(2501003)(99286004)(107886003)(52116002)(6116002)(3846002)(2201001)(53936002)(5660300002)(6436002)(6512007)(66946007)(66476007)(66446008)(2906002)(26005)(64756008)(386003)(4326008)(6506007)(25786009)(102836004)(68736007)(66556008)(6486002)(66066001)(186003)(8936002)(14454004)(8676002)(81166006)(36756003)(81156014)(478600001)(86362001)(305945005)(7736002)(50226002);DIR:OUT;SFP:1102;SCL:1;SRVR:BY5PR18MB3348;H:BY5PR18MB3283.namprd18.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
-received-spf: None (protection.outlook.com: suse.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: 0fZkyP2e/qQuskWnLqlulfMsrGtMbYBdpe9c5aA1IOKBmwuZSXQManj7afFaIkT8D4NyAfG4zmKCtuDId/tSgqJBXbABrVC+sCQ8tAYhA0rK4D2vTW7VISG2G3nPqet8HSXB4T2Zc/Gb6LM5QOyHsVpF4bZABoAwmDyYbbzmxGtsauod0R6DdirIOu+ie6Kw6NbuJgNXDrRCQI0bxT1iLQIKbxal75LK7c0OwKiIAoPq95P5/Im6ij2wkvgYAgwB6SZvCMv4tGajASHpCNrUq+obnuIQO4Jj2m5BisfCurnQ/6D/YuOt1DmEdzBcq99A8sGaNPex3kZ2RE6fEvO0Y/ZY0FlNcm2xl4GNZ/6TB03Kd6nHrg9sDM+zwkUSJwzCzQfenuL4BLdUYsaexmsCL12YOj9h+uM34NW3Xmzup1w=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: 8BIT
+        id S1733079AbfHBH5t (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 2 Aug 2019 03:57:49 -0400
+Received: from mail.kernel.org ([198.145.29.99]:48638 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728268AbfHBH5s (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Fri, 2 Aug 2019 03:57:48 -0400
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 7164420449;
+        Fri,  2 Aug 2019 07:57:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1564732667;
+        bh=IIi+crYPKCJNVS372QYWXk3lsDIqeTJGHnU5i0PSoCU=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=kzySmlyiI9BnzS87TcDSD9/hn7oqFaFfxPRU+Mj9dH7NiFCtK7BdJESYT+k9eioU0
+         lS+wNSbPuS1lbt9kKqwuKKhsHVPutNrrI10F4BngRW7Y1dmiZIvCyOOXujO31RlCa3
+         e7ksgVRHuHS6FqrHHJxTyBS1FMh3kw4eS2zjcTG0=
+Date:   Fri, 2 Aug 2019 09:57:45 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Rolf Eike Beer <eb@emlix.com>
+Cc:     Nick Desaulniers <ndesaulniers@google.com>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Matt Fleming <matt@codeblueprint.co.uk>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-efi@vger.kernel.org,
+        Linux Kernel Developers List <linux-kernel@vger.kernel.org>,
+        stable@vger.kernel.org, Matthias Kaehlcke <mka@google.com>,
+        clang-built-linux <clang-built-linux@googlegroups.com>
+Subject: Re: Building arm64 EFI stub with -fpie breaks build of 4.9.x
+ (undefined reference to `__efistub__GLOBAL_OFFSET_TABLE_')
+Message-ID: <20190802075745.GI26174@kroah.com>
+References: <779905244.a0lJJiZRjM@devpool35>
+ <CAKwvOdnegLvkAa+-2uc-GM63HLcucWZtN5OoFvocLs50iLNJLg@mail.gmail.com>
+ <CAKwvOdn9g2Z=G_qz84S5xmn2GBNK7T-MWOGYT5C52sP0R=M_-Q@mail.gmail.com>
+ <2102708.6BiaULqomI@devpool35>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2c4329d6-772e-40f8-00ab-08d7170bb4f0
-X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Aug 2019 05:38:54.8378
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 856b813c-16e5-49a5-85ec-6f081e13b527
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: clin@suse.com
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR18MB3348
-X-OriginatorOrg: suse.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2102708.6BiaULqomI@devpool35>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-In some cases the arm32 efistub could fail to allocate memory for
-uncompressed kernel. For example, we got the following error message when
-verifying EFI stub on Raspberry Pi-2 [kernel-5.2.1 + grub-2.04] :
+On Thu, Jun 06, 2019 at 09:11:00AM +0200, Rolf Eike Beer wrote:
+> Nick Desaulniers wrote:
+> > On Wed, Jun 5, 2019 at 10:27 AM Nick Desaulniers
+> > 
+> > <ndesaulniers@google.com> wrote:
+> > > On Wed, Jun 5, 2019 at 9:26 AM Greg KH <gregkh@linuxfoundation.org> wrote:
+> > > > On Wed, Jun 05, 2019 at 05:19:40PM +0200, Rolf Eike Beer wrote:
+> > > > > I decided to dig out a toy project which uses a DragonBoard 410c. This
+> > > > > has
+> > > > > been "running" with kernel 4.9, which I would keep this way for
+> > > > > unrelated
+> > > > > reasons. The vanilla 4.9 kernel wasn't bootable back then, but it was
+> > > > > buildable, which was good enough.
+> > > > > 
+> > > > > Upgrading the kernel to 4.9.180 caused the boot to suddenly fail:
+> > > > > 
+> > > > > aarch64-unknown-linux-gnueabi-ld:
+> > > > > ./drivers/firmware/efi/libstub/lib.a(arm64- stub.stub.o): in function
+> > > > > `handle_kernel_image':
+> > > > > /tmp/e2/build/linux-4.9.139/drivers/firmware/efi/libstub/arm64-stub.c:
+> > > > > 63:
+> > > > > undefined reference to `__efistub__GLOBAL_OFFSET_TABLE_'
+> > > > > aarch64-unknown-linux-gnueabi-ld:
+> > > > > ./drivers/firmware/efi/libstub/lib.a(arm64- stub.stub.o): relocation
+> > > > > R_AARCH64_ADR_PREL_PG_HI21 against symbol
+> > > > > `__efistub__GLOBAL_OFFSET_TABLE_' which may bind externally can not
+> > > > > be used when making a shared object; recompile with -fPIC
+> > > > > /tmp/e2/build/linux-4.9.139/drivers/firmware/efi/libstub/arm64-stub.c:
+> > > > > 63:
+> > > > > (.init.text+0xc): dangerous relocation: unsupported relocation
+> > > > > /tmp/e2/build/linux-4.9.139/Makefile:1001: recipe for target 'vmlinux'
+> > > > > failed -make[1]: *** [vmlinux] Error 1
+> > > > > 
+> > > > > This is caused by commit 27b5ebf61818749b3568354c64a8ec2d9cd5ecca from
+> > > > > linux-4.9.y (which is 91ee5b21ee026c49e4e7483de69b55b8b47042be),
+> > > > > reverting
+> > > > > this commit fixes the build.
+> > > > > 
+> > > > > This happens with vanilla binutils 2.32 and gcc 8.3.0 as well as
+> > > > > 9.1.0. See
+> > > > > the attached .config for reference.
+> > > > > 
+> > > > > If you have questions or patches just ping me.
+> > > > 
+> > > > Does Linus's latest tree also fail for you (or 5.1)?
+> > > > 
+> > > > Nick, do we need to add another fix that is in mainline for this to work
+> > > > properly?
+> > > > 
+> > > > thanks,
+> > > > 
+> > > > greg k-h
+> > > 
+> > > Doesn't immediately ring any bells for me.
+> > 
+> > Upstream commits:
+> > dd6846d77469 ("arm64: drop linker script hack to hide __efistub_ symbols")
+> > 1212f7a16af4 ("scripts/kallsyms: filter arm64's __efistub_ symbols")
+> > 
+> > Look related to __efistub__ prefixes on symbols and aren't in stable
+> > 4.9 (maybe Rolf can try cherry picks of those).
+> 
+> I now have cherry-picked these commits:
+> 
+> dd6846d77469
+> fdfb69a72522e97f9105a6d39a5be0a465951ed8
+> 1212f7a16af4
+> 56067812d5b0e737ac2063e94a50f76b810d6ca3
+> 
+> The 2 additional ones were needed as dependencies of the others. Nothing of 
+> this has helped.
 
-  EFI stub: Booting Linux Kernel...
-  EFI stub: ERROR: Unable to allocate memory for uncompressed kernel.
-  EFI stub: ERROR: Failed to relocate kernel
+Did this ever get resolved, or is it still an issue?
 
-After checking the EFI memory map we found that the first page [0 - 0xfff]
-had been reserved by Raspberry Pi-2's firmware, and the efistub tried to
-set the dram base at 0, which was actually in a reserved region.
+thanks,
 
-  grub> lsefimmap
-  Type      Physical start  - end             #Pages        Size Attributes
-  reserved  0000000000000000-0000000000000fff 00000001      4KiB WB
-  conv-mem  0000000000001000-0000000007ef5fff 00007ef5 130004KiB WB
-  RT-data   0000000007ef6000-0000000007f09fff 00000014     80KiB RT WB
-  conv-mem  0000000007f0a000-000000002d871fff 00025968 615840KiB WB
-  .....
-
-To avoid a reserved address, we have to ignore the memory regions which are
-marked as EFI_RESERVED_TYPE, and only conventional memory regions can be
-chosen. If the region before the kernel base is unaligned, it will be
-marked as EFI_RESERVED_TYPE and let kernel ignore it so that memblock_limit
-will not be sticked with a very low address such as 0x1000.
-
-Signed-off-by: Chester Lin <clin@suse.com>
----
- arch/arm/mm/mmu.c                         |  3 ++
- drivers/firmware/efi/libstub/arm32-stub.c | 43 ++++++++++++++++++-----
- 2 files changed, 37 insertions(+), 9 deletions(-)
-
-diff --git a/arch/arm/mm/mmu.c b/arch/arm/mm/mmu.c
-index f3ce34113f89..909b11ba48d8 100644
---- a/arch/arm/mm/mmu.c
-+++ b/arch/arm/mm/mmu.c
-@@ -1184,6 +1184,9 @@ void __init adjust_lowmem_bounds(void)
- 		phys_addr_t block_start = reg->base;
- 		phys_addr_t block_end = reg->base + reg->size;
- 
-+		if (memblock_is_nomap(reg))
-+			continue;
-+
- 		if (reg->base < vmalloc_limit) {
- 			if (block_end > lowmem_limit)
- 				/*
-diff --git a/drivers/firmware/efi/libstub/arm32-stub.c b/drivers/firmware/efi/libstub/arm32-stub.c
-index e8f7aefb6813..10d33d36df00 100644
---- a/drivers/firmware/efi/libstub/arm32-stub.c
-+++ b/drivers/firmware/efi/libstub/arm32-stub.c
-@@ -128,7 +128,7 @@ static efi_status_t reserve_kernel_base(efi_system_table_t *sys_table_arg,
- 
- 	for (l = 0; l < map_size; l += desc_size) {
- 		efi_memory_desc_t *desc;
--		u64 start, end;
-+		u64 start, end, spare, kernel_base;
- 
- 		desc = (void *)memory_map + l;
- 		start = desc->phys_addr;
-@@ -144,27 +144,52 @@ static efi_status_t reserve_kernel_base(efi_system_table_t *sys_table_arg,
- 		case EFI_BOOT_SERVICES_DATA:
- 			/* Ignore types that are released to the OS anyway */
- 			continue;
--
-+		case EFI_RESERVED_TYPE:
-+			/* Ignore reserved regions */
-+			continue;
- 		case EFI_CONVENTIONAL_MEMORY:
- 			/*
- 			 * Reserve the intersection between this entry and the
- 			 * region.
- 			 */
- 			start = max(start, (u64)dram_base);
--			end = min(end, (u64)dram_base + MAX_UNCOMP_KERNEL_SIZE);
-+			kernel_base = round_up(start, PMD_SIZE);
-+			spare = kernel_base - start;
-+			end = min(end, kernel_base + MAX_UNCOMP_KERNEL_SIZE);
-+
-+			status = efi_call_early(allocate_pages,
-+					EFI_ALLOCATE_ADDRESS,
-+					EFI_LOADER_DATA,
-+					MAX_UNCOMP_KERNEL_SIZE / EFI_PAGE_SIZE,
-+					&kernel_base);
-+			if (status != EFI_SUCCESS) {
-+				pr_efi_err(sys_table_arg,
-+					"reserve_kernel_base: alloc failed.\n");
-+				goto out;
-+			}
-+			*reserve_addr = kernel_base;
- 
-+			if (!spare)
-+				break;
-+			/*
-+			 * If there's a gap between start and kernel_base,
-+			 * it needs be reserved so that the memblock_limit
-+			 * will not fall on a very low address when running
-+			 * adjust_lowmem_bounds(), wchich could eventually
-+			 * cause CMA reservation issue.
-+			 */
- 			status = efi_call_early(allocate_pages,
- 						EFI_ALLOCATE_ADDRESS,
--						EFI_LOADER_DATA,
--						(end - start) / EFI_PAGE_SIZE,
-+						EFI_RESERVED_TYPE,
-+						spare / EFI_PAGE_SIZE,
- 						&start);
- 			if (status != EFI_SUCCESS) {
- 				pr_efi_err(sys_table_arg,
--					"reserve_kernel_base(): alloc failed.\n");
-+					"reserve spare-region failed\n");
- 				goto out;
- 			}
--			break;
- 
-+			break;
- 		case EFI_LOADER_CODE:
- 		case EFI_LOADER_DATA:
- 			/*
-@@ -220,7 +245,7 @@ efi_status_t handle_kernel_image(efi_system_table_t *sys_table,
- 	*image_size = image->image_size;
- 	status = efi_relocate_kernel(sys_table, image_addr, *image_size,
- 				     *image_size,
--				     dram_base + MAX_UNCOMP_KERNEL_SIZE, 0);
-+				     *reserve_addr + MAX_UNCOMP_KERNEL_SIZE, 0);
- 	if (status != EFI_SUCCESS) {
- 		pr_efi_err(sys_table, "Failed to relocate kernel.\n");
- 		efi_free(sys_table, *reserve_size, *reserve_addr);
-@@ -233,7 +258,7 @@ efi_status_t handle_kernel_image(efi_system_table_t *sys_table,
- 	 * in memory. The kernel determines the base of DRAM from the
- 	 * address at which the zImage is loaded.
- 	 */
--	if (*image_addr + *image_size > dram_base + ZIMAGE_OFFSET_LIMIT) {
-+	if (*image_addr + *image_size > *reserve_addr + ZIMAGE_OFFSET_LIMIT) {
- 		pr_efi_err(sys_table, "Failed to relocate kernel, no low memory available.\n");
- 		efi_free(sys_table, *reserve_size, *reserve_addr);
- 		*reserve_size = 0;
--- 
-2.22.0
-
+greg k-h
