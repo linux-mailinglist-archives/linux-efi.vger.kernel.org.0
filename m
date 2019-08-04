@@ -2,226 +2,106 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DDC32809E4
-	for <lists+linux-efi@lfdr.de>; Sun,  4 Aug 2019 09:57:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E813180A42
+	for <lists+linux-efi@lfdr.de>; Sun,  4 Aug 2019 12:00:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725939AbfHDH5P (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sun, 4 Aug 2019 03:57:15 -0400
-Received: from mail-wr1-f67.google.com ([209.85.221.67]:46051 "EHLO
-        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725924AbfHDH5O (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sun, 4 Aug 2019 03:57:14 -0400
-Received: by mail-wr1-f67.google.com with SMTP id f9so2380285wre.12
-        for <linux-efi@vger.kernel.org>; Sun, 04 Aug 2019 00:57:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=uS/tyRA1HhQtO4ADL8hEZuizK1iCv9RoDdaac2v1yH4=;
-        b=wfn1Gu3adFwv/Pk2kRj3UTJmJZciTaF/YOPEy8jffyJ6C8rni4AR9s/45gTYPa4Fgo
-         c8HCaV0w2SCcZyRvZa3q/QVk2/nJwpH/EMR8g2OE0FuxOI7E5y56XQ6ON1bTeSw5BJtx
-         6KecsUH3eriYLDSv8Ha2NnjtI28lVLTItqw4qi8LhEyXkYkMmEsTuxQjHvN1bbD1t6/T
-         R0pIgH80JovPWuRwxvL9IK361aQRfKdyQ7IJI0G8ROdKufqa2rhSlx5COllc21RZ3wuX
-         rpJ4LbJega5ppVLH5z0p9pDsobiqao0LkFTOc5WQDc0n43xWmyUdg1lprdEzvBW4Dl6i
-         6N2g==
+        id S1726016AbfHDKAh (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sun, 4 Aug 2019 06:00:37 -0400
+Received: from mail-ed1-f53.google.com ([209.85.208.53]:37632 "EHLO
+        mail-ed1-f53.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726030AbfHDKAh (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sun, 4 Aug 2019 06:00:37 -0400
+Received: by mail-ed1-f53.google.com with SMTP id w13so76178657eds.4
+        for <linux-efi@vger.kernel.org>; Sun, 04 Aug 2019 03:00:36 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=uS/tyRA1HhQtO4ADL8hEZuizK1iCv9RoDdaac2v1yH4=;
-        b=lb+DDAmeK0hklS9x/Gr9E1LHWjzKTJZI9Kyyd7e2SjwvPR2oy+Wv+dKfo+xnSZs/rJ
-         TsTDhNk8o4RcTDvLwfQIlmbEZW34p9+KnXWq+PNsYVdizpF6UK9HSIGt7+4jm96XoMDG
-         lfBjclcqyyGwqM78Y6qhx+0ldidBLAi52WoF8xT9viG8xphR9EXbQPVXb+Koj4sR+NiJ
-         7ibXBdCvnm2zpLg/YNE1tNrAB+5PwRGsbOX+WDrE8HYOK/hOk2oum+blKqWQPqvZZbYd
-         X+k4vONwX2IdvDkpDG4RPO1ZeZOiZA7l9Abms+qtvdP2SbmGCznp+bko95ehw9q9qt9Z
-         oDKw==
-X-Gm-Message-State: APjAAAWwKucOvT3iBFr9ja3DUNnv0H74FrPSNM74lgpAC9DszdGyMWPH
-        NG473dpvHLKcKEkx7inY4uMy9k8MZLkwHi1db5aV+rwId2M=
-X-Google-Smtp-Source: APXvYqzORxDgrgKNb+/sBjejLMdg1ru++3B89ONmSHwqHruiVTgPaefLyZbe4UzVKnJbIfAwYhqwt58DVddwGi0AKks=
-X-Received: by 2002:adf:9ccf:: with SMTP id h15mr14389399wre.241.1564905431661;
- Sun, 04 Aug 2019 00:57:11 -0700 (PDT)
+        h=x-gm-message-state:to:cc:from:subject:message-id:date:user-agent
+         :mime-version:content-language:content-transfer-encoding;
+        bh=g8BNhH388Zl1p3dVfMhGaT2LfsXGUWfNYbaxd1kMPnI=;
+        b=QCHtdw3gjrV0vIfVIlMqkPpQbOBun6Dvze9O1PXu1HLBpD18w73lD+kv1b1ds+vmqs
+         XVJWZtc3qzLlKnHy++eiD+YST535N68Ac2SJXTJbVgahup4JICzCqrkkYqQqbOKIReaY
+         Za+XJ90JBmzywjlJbf9tiHRkP7C+DLMGZMY2jIccA4+Twft/s3kjGruoY1fNpazFMIRk
+         H228g6IgLttIy2Pwa98z28sMePZi0bh8uoV6WJmWWkuBOwBy6w78FPMc4EmEzsdayHsr
+         jwGlrnAibruno3b8hFJqDzPdXvav7TMDkFHrWXdfLt0PTXzpvXGs8i1hG5mAfYmUmSdP
+         UGBw==
+X-Gm-Message-State: APjAAAWMFEJtHYIIsHsF5djVJ104vK3HleqocF+8SQIXs+NipDSNhy1U
+        noW2jEn9m0L+EU+SaiIJtWv295JPX5k=
+X-Google-Smtp-Source: APXvYqxcdHXaH1ybwLvBcHI1ZrUwq0G3kPIENozSUqwM6NF7eNBaHwAsijTgHh2cbiC4dVp3SDWkpA==
+X-Received: by 2002:a17:906:5399:: with SMTP id g25mr111945424ejo.247.1564912835174;
+        Sun, 04 Aug 2019 03:00:35 -0700 (PDT)
+Received: from shalem.localdomain (84-106-84-65.cable.dynamic.v4.ziggo.nl. [84.106.84.65])
+        by smtp.gmail.com with ESMTPSA id k51sm19583123edb.7.2019.08.04.03.00.34
+        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
+        Sun, 04 Aug 2019 03:00:34 -0700 (PDT)
+To:     Matthew Garrett <mjg59@google.com>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        Peter Huewe <peterhuewe@gmx.de>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@kernel.org>,
+        linux-integrity@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-efi@vger.kernel.org
+From:   Hans de Goede <hdegoede@redhat.com>
+Subject: 5.3 boot regression caused by 5.3 TPM changes
+Message-ID: <b20dd437-790a-aad9-0515-061751d46e53@redhat.com>
+Date:   Sun, 4 Aug 2019 12:00:33 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-References: <20190802053744.5519-1-clin@suse.com>
-In-Reply-To: <20190802053744.5519-1-clin@suse.com>
-From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Date:   Sun, 4 Aug 2019 10:57:00 +0300
-Message-ID: <CAKv+Gu-yaNYsLQOOcr8srW91-nt-w0e+RBqxXGOagiGGT69n1Q@mail.gmail.com>
-Subject: Re: [PATCH] efi/arm: fix allocation failure when reserving the kernel base
-To:     Chester Lin <clin@suse.com>,
-        "linux@armlinux.org.uk" <linux@armlinux.org.uk>
-Cc:     "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-        "rppt@linux.ibm.com" <rppt@linux.ibm.com>,
-        "ren_guo@c-sky.com" <ren_guo@c-sky.com>,
-        Juergen Gross <JGross@suse.com>,
-        "geert@linux-m68k.org" <geert@linux-m68k.org>,
-        "mingo@kernel.org" <mingo@kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
-        "guillaume.gardet@arm.com" <guillaume.gardet@arm.com>,
-        Joey Lee <JLee@suse.com>, Gary Lin <GLin@suse.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hello Chester,
+Hi All,
 
-On Fri, 2 Aug 2019 at 08:40, Chester Lin <clin@suse.com> wrote:
->
-> In some cases the arm32 efistub could fail to allocate memory for
-> uncompressed kernel. For example, we got the following error message when
-> verifying EFI stub on Raspberry Pi-2 [kernel-5.2.1 + grub-2.04] :
->
->   EFI stub: Booting Linux Kernel...
->   EFI stub: ERROR: Unable to allocate memory for uncompressed kernel.
->   EFI stub: ERROR: Failed to relocate kernel
->
-> After checking the EFI memory map we found that the first page [0 - 0xfff]
-> had been reserved by Raspberry Pi-2's firmware, and the efistub tried to
-> set the dram base at 0, which was actually in a reserved region.
->
+While testing 5.3-rc2 on an Irbis TW90 Intel Cherry Trail based
+tablet I noticed that it does not boot on this device.
 
-This by itself is a violation of the Linux boot protocol for 32-bit
-ARM when using the decompressor. The decompressor rounds down its own
-base address to a multiple of 128 MB, and assumes the whole area is
-available for the decompressed kernel and related data structures.
-(The first TEXT_OFFSET bytes are no longer used in practice, which is
-why putting a reserved region of 4 KB bytes works at the moment, but
-this is fragile). Note that the decompressor does not look at any DT
-or EFI provided memory maps *at all*.
+A git bisect points to commit 166a2809d65b ("tpm: Don't duplicate
+events from the final event log in the TCG2 log")
 
-So unfortunately, this is not something we can fix in the kernel, but
-we should fix it in the bootloader or in GRUB, so it does not put any
-reserved regions in the first 128 MB of memory,
+And I can confirm that reverting just that single commit makes
+the TW90 boot again.
 
+This machine uses AptIO firmware with base component versions
+of: UEFI 2.4 PI 1.3. I've tried to reproduce the problem on
+a Teclast X80 Pro which is also CHT based and also uses AptIO
+firmware with the same base components. But it does not reproduce
+there. Neither does the problem reproduce on a CHT tablet using
+InsideH20 based firmware.
 
->   grub> lsefimmap
->   Type      Physical start  - end             #Pages        Size Attributes
->   reserved  0000000000000000-0000000000000fff 00000001      4KiB WB
->   conv-mem  0000000000001000-0000000007ef5fff 00007ef5 130004KiB WB
->   RT-data   0000000007ef6000-0000000007f09fff 00000014     80KiB RT WB
->   conv-mem  0000000007f0a000-000000002d871fff 00025968 615840KiB WB
->   .....
->
-> To avoid a reserved address, we have to ignore the memory regions which are
-> marked as EFI_RESERVED_TYPE, and only conventional memory regions can be
-> chosen. If the region before the kernel base is unaligned, it will be
-> marked as EFI_RESERVED_TYPE and let kernel ignore it so that memblock_limit
-> will not be sticked with a very low address such as 0x1000.
->
-> Signed-off-by: Chester Lin <clin@suse.com>
-> ---
->  arch/arm/mm/mmu.c                         |  3 ++
->  drivers/firmware/efi/libstub/arm32-stub.c | 43 ++++++++++++++++++-----
->  2 files changed, 37 insertions(+), 9 deletions(-)
->
-> diff --git a/arch/arm/mm/mmu.c b/arch/arm/mm/mmu.c
-> index f3ce34113f89..909b11ba48d8 100644
-> --- a/arch/arm/mm/mmu.c
-> +++ b/arch/arm/mm/mmu.c
-> @@ -1184,6 +1184,9 @@ void __init adjust_lowmem_bounds(void)
->                 phys_addr_t block_start = reg->base;
->                 phys_addr_t block_end = reg->base + reg->size;
->
-> +               if (memblock_is_nomap(reg))
-> +                       continue;
-> +
->                 if (reg->base < vmalloc_limit) {
->                         if (block_end > lowmem_limit)
->                                 /*
-> diff --git a/drivers/firmware/efi/libstub/arm32-stub.c b/drivers/firmware/efi/libstub/arm32-stub.c
-> index e8f7aefb6813..10d33d36df00 100644
-> --- a/drivers/firmware/efi/libstub/arm32-stub.c
-> +++ b/drivers/firmware/efi/libstub/arm32-stub.c
-> @@ -128,7 +128,7 @@ static efi_status_t reserve_kernel_base(efi_system_table_t *sys_table_arg,
->
->         for (l = 0; l < map_size; l += desc_size) {
->                 efi_memory_desc_t *desc;
-> -               u64 start, end;
-> +               u64 start, end, spare, kernel_base;
->
->                 desc = (void *)memory_map + l;
->                 start = desc->phys_addr;
-> @@ -144,27 +144,52 @@ static efi_status_t reserve_kernel_base(efi_system_table_t *sys_table_arg,
->                 case EFI_BOOT_SERVICES_DATA:
->                         /* Ignore types that are released to the OS anyway */
->                         continue;
-> -
-> +               case EFI_RESERVED_TYPE:
-> +                       /* Ignore reserved regions */
-> +                       continue;
->                 case EFI_CONVENTIONAL_MEMORY:
->                         /*
->                          * Reserve the intersection between this entry and the
->                          * region.
->                          */
->                         start = max(start, (u64)dram_base);
-> -                       end = min(end, (u64)dram_base + MAX_UNCOMP_KERNEL_SIZE);
-> +                       kernel_base = round_up(start, PMD_SIZE);
-> +                       spare = kernel_base - start;
-> +                       end = min(end, kernel_base + MAX_UNCOMP_KERNEL_SIZE);
-> +
-> +                       status = efi_call_early(allocate_pages,
-> +                                       EFI_ALLOCATE_ADDRESS,
-> +                                       EFI_LOADER_DATA,
-> +                                       MAX_UNCOMP_KERNEL_SIZE / EFI_PAGE_SIZE,
-> +                                       &kernel_base);
-> +                       if (status != EFI_SUCCESS) {
-> +                               pr_efi_err(sys_table_arg,
-> +                                       "reserve_kernel_base: alloc failed.\n");
-> +                               goto out;
-> +                       }
-> +                       *reserve_addr = kernel_base;
->
-> +                       if (!spare)
-> +                               break;
-> +                       /*
-> +                        * If there's a gap between start and kernel_base,
-> +                        * it needs be reserved so that the memblock_limit
-> +                        * will not fall on a very low address when running
-> +                        * adjust_lowmem_bounds(), wchich could eventually
-> +                        * cause CMA reservation issue.
-> +                        */
->                         status = efi_call_early(allocate_pages,
->                                                 EFI_ALLOCATE_ADDRESS,
-> -                                               EFI_LOADER_DATA,
-> -                                               (end - start) / EFI_PAGE_SIZE,
-> +                                               EFI_RESERVED_TYPE,
-> +                                               spare / EFI_PAGE_SIZE,
->                                                 &start);
->                         if (status != EFI_SUCCESS) {
->                                 pr_efi_err(sys_table_arg,
-> -                                       "reserve_kernel_base(): alloc failed.\n");
-> +                                       "reserve spare-region failed\n");
->                                 goto out;
->                         }
-> -                       break;
->
-> +                       break;
->                 case EFI_LOADER_CODE:
->                 case EFI_LOADER_DATA:
->                         /*
-> @@ -220,7 +245,7 @@ efi_status_t handle_kernel_image(efi_system_table_t *sys_table,
->         *image_size = image->image_size;
->         status = efi_relocate_kernel(sys_table, image_addr, *image_size,
->                                      *image_size,
-> -                                    dram_base + MAX_UNCOMP_KERNEL_SIZE, 0);
-> +                                    *reserve_addr + MAX_UNCOMP_KERNEL_SIZE, 0);
->         if (status != EFI_SUCCESS) {
->                 pr_efi_err(sys_table, "Failed to relocate kernel.\n");
->                 efi_free(sys_table, *reserve_size, *reserve_addr);
-> @@ -233,7 +258,7 @@ efi_status_t handle_kernel_image(efi_system_table_t *sys_table,
->          * in memory. The kernel determines the base of DRAM from the
->          * address at which the zImage is loaded.
->          */
-> -       if (*image_addr + *image_size > dram_base + ZIMAGE_OFFSET_LIMIT) {
-> +       if (*image_addr + *image_size > *reserve_addr + ZIMAGE_OFFSET_LIMIT) {
->                 pr_efi_err(sys_table, "Failed to relocate kernel, no low memory available.\n");
->                 efi_free(sys_table, *reserve_size, *reserve_addr);
->                 *reserve_size = 0;
-> --
-> 2.22.0
->
+Note that these devices have a software/firmware TPM-2.0
+implementation, they do not have an actual TPM chip.
+
+Comparing TPM firmware setting between the 2 AptIO based
+tablets the settings are identical, but the troublesome
+TW90 does have some more setting then the X80, it has
+the following settings which are not shown on the X80:
+
+Active PCR banks:           SHA-1         (read only)
+Available PCR banks:        SHA-1,SHA256  (read only)
+TPM2.0 UEFI SPEC version:   TCG_2         (other possible setting: TCG_1_2
+Physical Presence SPEC ver: 1.2           (other possible setting: 1.3)
+
+I have the feeling that at least the first 2 indicate that
+the previous win10 installation has actually used the
+TPM, where as on the X80 the TPM is uninitialized.
+Note this is just a hunch I could be completely wrong.
+
+I would be happy to run any commands to try and debug this
+or to build a kernel with some patches to gather more info.
+
+Note any kernel patches to printk some debug stuff need
+to be based on 5.3 with 166a2809d65b reverted, without that
+reverted the device will not boot, and thus I cannot collect
+logs without it reverted.
+
+Regards,
+
+Hans
