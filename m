@@ -2,329 +2,127 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A8778306A
-	for <lists+linux-efi@lfdr.de>; Tue,  6 Aug 2019 13:15:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B6F08839AB
+	for <lists+linux-efi@lfdr.de>; Tue,  6 Aug 2019 21:27:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732732AbfHFLPH convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-efi@lfdr.de>); Tue, 6 Aug 2019 07:15:07 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:37660 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1730071AbfHFLPH (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Tue, 6 Aug 2019 07:15:07 -0400
-Received: from DGGEMS403-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id 18099CFF7B89D876E46A;
-        Tue,  6 Aug 2019 19:15:05 +0800 (CST)
-Received: from localhost (10.202.226.61) by DGGEMS403-HUB.china.huawei.com
- (10.3.19.203) with Microsoft SMTP Server id 14.3.439.0; Tue, 6 Aug 2019
- 19:14:55 +0800
-Date:   Tue, 6 Aug 2019 12:14:43 +0100
-From:   Jonathan Cameron <jonathan.cameron@huawei.com>
-To:     James Morse <james.morse@arm.com>
-CC:     <linux-edac@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
-        <linux-efi@vger.kernel.org>, <linuxarm@huawei.com>,
-        <rjw@rjwysocki.net>, <tony.luck@intel.com>, <bp@alien8.de>,
-        <ard.beisheuvel@arm.com>, <nariman.poushin@linaro.org>,
-        <jcm@redhat.com>,
-        Charles Garcia-Tobin <Charles.Garcia-Tobin@arm.com>
-Subject: Re: [RFC PATCH 0/6] CCIX Protocol Error reporting
-Message-ID: <20190806121443.00006211@huawei.com>
-In-Reply-To: <20190703140849.000018d6@huawei.com>
-References: <20190606123654.78973-1-Jonathan.Cameron@huawei.com>
-        <728c7959-b5b3-5b59-fe79-e774c3b89465@arm.com>
-        <20190703140849.000018d6@huawei.com>
-Organization: Huawei
-X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; i686-w64-mingw32)
+        id S1726334AbfHFT1W (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 6 Aug 2019 15:27:22 -0400
+Received: from mail-ed1-f65.google.com ([209.85.208.65]:34089 "EHLO
+        mail-ed1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726375AbfHFT1W (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 6 Aug 2019 15:27:22 -0400
+Received: by mail-ed1-f65.google.com with SMTP id s49so48542368edb.1
+        for <linux-efi@vger.kernel.org>; Tue, 06 Aug 2019 12:27:21 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=1LHxYcL996sKOby6eEjWVTx69NkSzcDYDpH2jDk93e8=;
+        b=sB63Gh2IxmB93+DnZDik9S059stnK7dnfXopkU4fuQDABSlh2m+a6S0kmDgR0qCopC
+         YH22Sk8zFyDmVMxm4LmoT2Mg/wEC6HA8H0qhhiZVxN32cAwmSGv2GiAwvizlZL8BAoF2
+         o0vFkyfHtKfiFNsRCnRlC2nSoUovjnlAWCdDmMTuPc67tb0WaFnKbOcdHribdrOyR+B0
+         9z9RTie/ZlKYUM/RW6oClJK4Vj1PwcIewUvjiFQh+d8rcgrx9X7BwA3knXjixpKrctnS
+         lZNggzL2lriI7xobp0pMcDKVJRAT089iKgpsJnHQSFZzWhWfKhDIUsQrM+9wsIA/gQUL
+         Sglw==
+X-Gm-Message-State: APjAAAWmlPw5DpQqWS5d50TUMNu42cth66TbfPQFXjqr7Jls7jTkLclH
+        az1U9OY1CUbNtCnDtZqRtY/H5t9FIVY=
+X-Google-Smtp-Source: APXvYqz/Tszk0I/Ku+EjS80ijEzX6q7wYNUEgtRBwizetzwIBl+06H1dvevfmqcRDGWBdASl7Q6VeQ==
+X-Received: by 2002:a50:b875:: with SMTP id k50mr5715639ede.232.1565119640579;
+        Tue, 06 Aug 2019 12:27:20 -0700 (PDT)
+Received: from shalem.localdomain (84-106-84-65.cable.dynamic.v4.ziggo.nl. [84.106.84.65])
+        by smtp.gmail.com with ESMTPSA id w27sm21228102edw.63.2019.08.06.12.27.19
+        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
+        Tue, 06 Aug 2019 12:27:19 -0700 (PDT)
+Subject: Re: 5.3 boot regression caused by 5.3 TPM changes
+To:     Chris Coulson <chris.coulson@canonical.com>,
+        Matthew Garrett <mjg59@google.com>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        Peter Huewe <peterhuewe@gmx.de>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@kernel.org>,
+        linux-integrity@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-efi@vger.kernel.org
+References: <b20dd437-790a-aad9-0515-061751d46e53@redhat.com>
+ <0d5bbfe6-a95e-987e-b436-83f754d044ac@canonical.com>
+From:   Hans de Goede <hdegoede@redhat.com>
+Message-ID: <4df2fd32-4b64-4cba-4211-d1008ec01da4@redhat.com>
+Date:   Tue, 6 Aug 2019 21:27:17 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: 8BIT
-X-Originating-IP: [10.202.226.61]
-X-CFilter-Loop: Reflected
+In-Reply-To: <0d5bbfe6-a95e-987e-b436-83f754d044ac@canonical.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, 3 Jul 2019 14:08:49 +0100
-Jonathan Cameron <jonathan.cameron@huawei.com> wrote:
+Hi,
 
-> On Wed, 3 Jul 2019 10:28:08 +0100
-> James Morse <james.morse@arm.com> wrote:
+On 06-08-19 17:53, Chris Coulson wrote:
+> Hi,
 > 
-> > Hi Jonathan,
-> > 
-> > (Beware: this CCIX thing is new to me, some of this will be questions on the scope of CCIX)  
-> 
-> Sure and welcome to our crazy world.
-> 
-> > 
-> > On 06/06/2019 13:36, Jonathan Cameron wrote:  
-> > > UEFI 2.8 defines a new CPER record Appendix N for CCIX Protocol Error Records
-> > > (PER). www.uefi.org    
-> >   
-> > > These include Protocol Error Record logs which are defined in the
-> > > CCIX 1.0 Base Specification www.ccixconsortium.com.    
-> > 
-> > I can't find a public version of this spec, and I don't have an account to look at the
-> > private one. (It looks like I could get one but I'm guessing there is an NDA between me
-> > and the document text!)
-> > 
-> > Will it ever be public?  
-> 
-> +cc A few people who might be able to help.
+> On 04/08/2019 11:00, Hans de Goede wrote:
+>> Hi All,
+>>
+>> While testing 5.3-rc2 on an Irbis TW90 Intel Cherry Trail based
+>> tablet I noticed that it does not boot on this device.
+>>
+>> A git bisect points to commit 166a2809d65b ("tpm: Don't duplicate
+>> events from the final event log in the TCG2 log")
+>>
+>> And I can confirm that reverting just that single commit makes
+>> the TW90 boot again.
+>>
+>> This machine uses AptIO firmware with base component versions
+>> of: UEFI 2.4 PI 1.3. I've tried to reproduce the problem on
+>> a Teclast X80 Pro which is also CHT based and also uses AptIO
+>> firmware with the same base components. But it does not reproduce
+>> there. Neither does the problem reproduce on a CHT tablet using
+>> InsideH20 based firmware.
+>>
+>> Note that these devices have a software/firmware TPM-2.0
+>> implementation, they do not have an actual TPM chip.
+>>
+>> Comparing TPM firmware setting between the 2 AptIO based
+>> tablets the settings are identical, but the troublesome
+>> TW90 does have some more setting then the X80, it has
+>> the following settings which are not shown on the X80:
+>>
+>> Active PCR banks:           SHA-1         (read only)
+>> Available PCR banks:        SHA-1,SHA256  (read only)
+>> TPM2.0 UEFI SPEC version:   TCG_2         (other possible setting: TCG_1_2
+>> Physical Presence SPEC ver: 1.2           (other possible setting: 1.3)
+>>
+>> I have the feeling that at least the first 2 indicate that
+>> the previous win10 installation has actually used the
+>> TPM, where as on the X80 the TPM is uninitialized.
+>> Note this is just a hunch I could be completely wrong.
+>>
+>> I would be happy to run any commands to try and debug this
+>> or to build a kernel with some patches to gather more info.
+>>
+>> Note any kernel patches to printk some debug stuff need
+>> to be based on 5.3 with 166a2809d65b reverted, without that
+>> reverted the device will not boot, and thus I cannot collect
+>> logs without it reverted.
+>>
+>> Regards,
+>>
+>> Hans
+> Do you think this might be the same issue as https://marc.info/?l=linux-integrity&m=155968949020639 <https://marc.info/?l=linux-integrity&m=155968949020639&w=2>?
 
-Evaluation version of the CCIX 1.0a base specification now available,
-(though there is a form to complete and license agreement)..
+I was hoping it would be the same issue, so I tested a 5.3 kernel
+with that patch added, but unfortunately it still crashes on
+the Irbis TW90.
 
-https://www.ccixconsortium.com/ccix-library/download-form/
+Regards,
 
-
-> 
-> > 
-> >   
-> > > Handling of coherency protocol errors is complex and how Linux does this
-> > > will take some time to evolve.  For now, fatal errors are handled via the
-> > > usual means and everything else is reported.    
-> >   
-> > > There are 6 types of error defined, covering:
-> > > * Memory errors    
-> > 
-> > How does this interact with the vanilla Memory-Error CPER records? Do we always get them
-> > as a pair? (that struct definition looks familiar...)  
-> 
-> The snag is that the standard memory error doesn't provide quite enough information to
-> actually identify a component once you have buses involved.
-> The actual memory specific bit is nearly identical, but the header section isn't
-> as it gives the CCIX agent ID (see below given you asked a more specific question
-> on that).
-> 
-> We did discuss this in a lot of detail and currently the answer is that the
-> UEFI spec + ccix allows you to report only the ccix error if you want to.
-> 
-> Note that I believe there is an OSC bit that I'm not currently setting so
-> right now no firmware compliant with the CCIX SW Guide (information available
-> from your local Charles) should actually be generating these anyway because
-> the OS hasn't said it can handle them.  I took the view I wanted to get
-> round 2 which actually hooks up handling rather than just reporting before
-> setting that bit.
-> 
-> > Is memory described like this never present in the UEFI memory map? (so we never
-> > accidentally use it as host memory, for processes etc)  
-> Yes it definitely can.  If you want to you can have all your RAM attached by CCIX.
-> (probably not a good idea performance wise :)
-> 
-> More likely in the short term is SCM using something like the hmem patches
-> to hotplug it as if it were RAM.
-> https://patchwork.kernel.org/cover/10982677/
-> 
-> In order to support legacy OS, it wouldn't be unusual to have a bios switch
-> to make SCM on CCIX just appear as normal memory in the first place
-> (if that was true though it is highly unlikely you'd use the CCIX
-> PER messages.)
-> 
-> > 
-> > ~
-> > 
-> > include/linux/memremap.h has:
-> > |  * Device memory that is cache coherent from device and CPU point of view. This
-> > |  * is use on platform that have an advance system bus (like CAPI or CCIX). A
-> > |  * driver can hotplug the device memory using ZONE_DEVICE and with that memory
-> > |  * type. Any page of a process can be migrated to such memory. However no one
-> > |  * should be allow to pin such memory so that it can always be evicted.
-> > 
-> > Is this the same CCIX?  
-> 
-> Not always, but sometimes.  Typically if it's on an accelerator (GPU etc) then
-> one software model is to do that.  There are others though. Until we have
-> more devices out there, its not even clear that model with dominate.
-> 
-> It's a much argued about topic. My personal thoughts are you either have:
-> 1. An accelerator that was designed from the ground up assuming that it had
->    tight control of its own memory layout etc - someone bolted on coherency
->    later.  This is the current GPU model and fits with ZONE_DEVICE etc. GPUs
->    can and do require shuffling memory.
-> 
-> 2. An accelerator designed to run without it's own memory.  We just decided
->    to move some of the host memory to it's end of the bus for size or
->    efficiency reasons.  As it's reasonably happy with fragmentation and
->    the assumption that someone else is doing it's memory management for it
->    (the OS) you can run in an SVM type mode, with a bit of hinting by
->    a userspace app on where it would prefer the accelerator accessed memory
->    comes from.  Those have no more constraints than any other memory.  If
->    you want to pin for RDMA for example, its fine.
-> 
-> More importantly, it can just be normal DDR on a card with no extra functions.
-> In those cases it's just a memory only NUMA node.
-> 
-> > 
-> > If process memory can be migrated onto this stuff we need to kick off memory_failure() in
-> > response to memory errors, otherwise we don't mark the pages as poison, signal user-space etc.  
-> 
-> Agreed.  That was in the follow up patch set (which I haven't written yet)
-> that actually does some error handling.  I need to do some work on the
-> emulation side to actually be able to generate sensible errors of that type.
-> 
-> I'll stick some mention of that in the v2 cover letter.
-> > 
-> >   
-> > > * Cache errors
-> > > * Address translation unit errors    
-> >   
-> > > * CCIX port errors 
-> > > * CCIX link errors    
-> > 
-> > It looks like this stuff operates 'over' PCIe[0]. How does this interact with AER?
-> > Will we always get a vanilla PCIE-AER CPER in addition to these two?  
-> 
-> Nope. You'll get an AER for PCIe protocol, transport and data link layers and
-> PER error for CCIX protocol layer.  We'll ignore the horrible abuse of
-> Internal Error in AER that people do (pointing no fingers but the spec makes
-> it clear what this is for and it's not what most people use it for).
-> 
-> So depends on what went wrong.  Some types of error (ripping out a board perhaps)
-> might cause a cascade but in general they are independent systems.  For extra
-> fun they aren't even routed over the same physical links in some topologies.
-> CCIX per is CCIX ID routed (and we have meshes), AER has to follow the PCIe
-> tree.  In theory the CCIX Error Agent doesn't actually to be in the host,
-> and it certainly doesn't have to be via the same root port.
-> 
-> > 
-> > (I see 'CHECK THE AER EQUIVALENT' comments in your series, are these TODO:?)  
-> Oops.  That was a formatting question that I'd forgotten about.
-> 
-> Both PCIe AER and CCIX PER have error cases in which part of the TLP
-> (at different layers) is captured in the error record.  I just wanted
-> to sanity check if I'd used similar formatting.
-> 
-> In some CCIX errors you get 32 bytes of the message that was in flight
-> when the problem occurred.
-> 
-> I'll actually check the formatting and scrub the comment or adjust it for v2.
-> Sorry about that - these were kicking around internally for far too long
-> so they have gone in out of my head several times.
-> 
-> >
-> >   
-> > > * Agent internal errors.
-> > > 
-> > > The set includes tracepoints to report the errors to RAS Daemon and a patch
-> > > set for RAS Daemon will follow shortly.
-> > > 
-> > > There are several open questions for this RFC.
-> > > 1. Reporting of vendor data.  We have little choice but to do this via a
-> > >    dynamic array as these blocks can take arbitrary size. I had hoped
-> > >    no one would actually use these given the odd mismatch between a
-> > >    standard error structure and non standard element, but there are
-> > >    already designs out there that do use it.    
-> > 
-> > I think its okay to spit these blobs out of the trace points, but could we avoid printing
-> > them in the kernel log?  
-> 
-> Seems like a reasonable compromise.  Leave them in the tp_printk
-> and if anyone really wants to fill their kernel logs then they can.
-> 
-> > 
-> >   
-> > > 2. The trade off between explicit tracepoint fields, on which we might
-> > >    want to filter, and the simplicity of a blob. I have gone for having
-> > >    the whole of the block specific to the PER error type in an opaque blob.
-> > >    Perhaps this is not the right balance?    
-> > 
-> > (I suspect I don't understand this).
-> > 
-> > The filtering can be done by user-space. Isn't that enough?  
-> 
-> It can, but then you have already logged them.  As I understand it you can
-> apply the filters at the logging stage. Will take another look at this.
-> Still I'm happy with the current balance, and there it'll be done in
-> userspace anyway.
-> 
-> > 
-> > I see the memory-error event format file has 'pa', which is all anyone is likely to care
-> > about.
-> > Do 'source/component' indicate the device? (what do I pull out of the machine to stop
-> > these happening?)  
-> 
-> The answer to that is a qualified yes.  If you know the source ID and
-> the configuration then it gets you to the actual device.
-> For the various 'agents' Request Agent, Home Agent and Slave Agent,
-> the sourceID is the globally unique (per type of agent) ID assigned during
-> the topology configuration bit of firmware enumeration (it ends up as a field
-> you can read from PCI config space).  For other things sourceID is the device ID
-> which is assigned at an earlier phase of enumeration.  You may then need the
-> portID to figure out exactly where it's broken (those are fixed for a given
-> device).
-> 
-> Ultimately you use these to find out what the BDF is and hopefully figure out
-> which board to pull and throw out of the window.
-> 
-> > 
-> >   
-> > > 3. Whether defining 6 new tracepoints is sensible. I think it is:
-> > >    * They are all defined by the CCIX specification as independant error
-> > >      classes.
-> > >    * Many of them can only be generated by particular types of agent.
-> > >    * The handling required will vary widely depending on types.
-> > >      In the kernel some map cleanly onto existing handling. Keeping the
-> > >      whole flow separate will aide this. They vary by a similar amount
-> > >      in scope to the RAS errors found on an existing system which have
-> > >      independent tracepoints.
-> > >    * Separating them out allows for filtering on the tracepoints by
-> > >      elements that are not shared between them.
-> > >    * Muxing the lot into one record type can lead to ugly code both in
-> > >      kernel and in userspace.    
-> > 
-> > Sold!
-> > 
-> >   
-> > > This patch is being distributed by the CCIX Consortium, Inc. (CCIX) to
-> > > you and other parties that are paticipating (the "participants") in the
-> > > Linux kernel with the understanding that the participants will use CCIX's
-> > > name and trademark only when this patch is used in association with the
-> > > Linux kernel and associated user space.
-> > > 
-> > > CCIX is also distributing this patch to these participants with the
-> > > understanding that if any portion of the CCIX specification will be
-> > > used or referenced in the Linux kernel, the participants will not modify
-> > > the cited portion of the CCIX specification and will give CCIX propery
-> > > copyright attribution by including the following copyright notice with
-> > > the cited part of the CCIX specification:
-> > > "� 2019 CCIX CONSORTIUM, INC. ALL RIGHTS RESERVED."    
-> > 
-> > Is this text permission from the CCIX-Consortium to reproduce bits of their spec in the
-> > kernel?  
-> <standard I'm not a lawyer disclaimer>
-> 
-> Hmm. The answer to that is 'sort of'.  It technically says anything in this
-> patch is fine if it used that statement.  I believe it is kind of a catch all
-> that just says quote under fair use terms, but as normal give clear copyright
-> acknowledgment.  Some of the answers that others are hopefully going to give
-> to earlier questions should clarify why this matters.
-> 
-> The main point of the whole statement being there at all is to give an explicit
-> trademark grant to the kernel so that we can use CCIX(tm) without worrying about it.
-> If you want to get scared, google the PCI-SIG(tm) trademark policy and think where
-> we might be pushing the limits.
-> 
-> We asked the CCIX legal advisors to come up with a clear statement
-> that meant open source projects could get in trouble for sensible trademark use.
-> This grant is apparently the best way to do it.
->  
-> > 
-> > I'm guessing any one who can hold of the spec is also prevented from publishing it.
-> > 
-> > (Nits: participating, proper)  
-> Yup. I copy typed this from my windows laptop to the linux machine because
-> I was too lazy to navigate Huawei security zones and did a really bad job.
-> Sorry Frank! (hope Frank never see this)
-> 
-> > 
-> > 
-> > Thanks,
-> > 
-> > James
-> > 
-> > [0] https://en.wikichip.org/wiki/ccix  
-> 
-> 
-
+Hans
 
