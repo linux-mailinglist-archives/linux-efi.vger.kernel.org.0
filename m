@@ -2,94 +2,119 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 46AA685BA8
-	for <lists+linux-efi@lfdr.de>; Thu,  8 Aug 2019 09:34:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2BABB85BFF
+	for <lists+linux-efi@lfdr.de>; Thu,  8 Aug 2019 09:49:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725796AbfHHHem (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 8 Aug 2019 03:34:42 -0400
-Received: from mail-wm1-f67.google.com ([209.85.128.67]:50676 "EHLO
-        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730887AbfHHHem (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 8 Aug 2019 03:34:42 -0400
-Received: by mail-wm1-f67.google.com with SMTP id v15so1348853wml.0
-        for <linux-efi@vger.kernel.org>; Thu, 08 Aug 2019 00:34:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=ZztMG/WId919jTnSWPqaQ8ngVSTTsg3rnCihyAUBLYU=;
-        b=WAECOLkuMEfFxjEgAS5aX8oEuBbe48s/RTMiAhVUwtDpqAo1G3eTD+2PH9Cpxgnlsq
-         qG3htzG9oql+xOstQRPZWloPAR1Mn68yvpgWbfgqQc0s3YYPop0JXM3nqIBgRs9rSpRS
-         EceAsn+y/9V7CN8PHMu1MCEWUerTqoLbg6DazSNK1/pu7LJw/OWCXyoCgx14ded9RbI+
-         r0r1ML4L0kkZgqRa+/nVk/A1Pmu5EfvLFvYyJY3qoXZKqdj0ARnDPmlx8SQbtoIzA5Ke
-         a/du7Yc18ou/Cf3Mq5uoWj07v3x9Myd8crOYIAWz+R3MKVRQhdyZFRPTXuZNGg3RiIi9
-         BvDA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=ZztMG/WId919jTnSWPqaQ8ngVSTTsg3rnCihyAUBLYU=;
-        b=WtvcqpicIdc1ErGw4lq583jvvWa3+OnldcMNIDkNfNb2cOSgny23B+qiicCAfACN+B
-         Zu94ojFirntqIIuAYgbyecV13W3Zv0uD9Il3sTZnSxfrsu+B9Y4wRvO4x9PXMkK/v2F+
-         2KCpLWiALWp3AMVjZ33q50ZOFdiISuuL3quGWSCfpOJZu/VLTNIqvTFObNN5L9dkdP4r
-         ohXRThbWyOtGyvT2xfHzavoiUMvMpBXxHH8Qs/rI0dgh3R2YsN2DWc7kI8YDXd1Lyo8V
-         U3JZ1deDWiNevd5iR3A38tQA12Yu0Gzshvky+5OQ982KhCDyLBZ/hmzVTZ6LuQ02O4QU
-         qJaQ==
-X-Gm-Message-State: APjAAAW2/tOYAC/nn5+Y9CZhjBdgCuhnWiRLngP8MjAXKGQvsIWkndoE
-        oHtBjkQ0kJXVzx0ZImqXpLPUP75G270cKSVpI6Ss0g==
-X-Google-Smtp-Source: APXvYqzeFUvts7/3WbfdjAqqfoqhyv1GU8TT929yDSLQeSOKiitCyuGWbC/q1hDjEvj4GjWhfhmruBny/4Radz51eeE=
-X-Received: by 2002:a1c:f511:: with SMTP id t17mr2606801wmh.53.1565249679957;
- Thu, 08 Aug 2019 00:34:39 -0700 (PDT)
+        id S1731226AbfHHHtL (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 8 Aug 2019 03:49:11 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:35600 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726721AbfHHHtL (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Thu, 8 Aug 2019 03:49:11 -0400
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id E4D0B30EA180;
+        Thu,  8 Aug 2019 07:49:10 +0000 (UTC)
+Received: from dhcp-128-65.nay.redhat.com (ovpn-12-94.pek2.redhat.com [10.72.12.94])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id 484B95D70D;
+        Thu,  8 Aug 2019 07:49:08 +0000 (UTC)
+Date:   Thu, 8 Aug 2019 15:49:04 +0800
+From:   Dave Young <dyoung@redhat.com>
+To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Cc:     linux-efi <linux-efi@vger.kernel.org>,
+        Kexec Mailing List <kexec@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Matthew Garrett <matthewgarrett@google.com>,
+        Bhupesh Sharma <bhsharma@redhat.com>
+Subject: Re: [PATCH] do not clean dummy variable in kexec path
+Message-ID: <20190808074904.GA5300@dhcp-128-65.nay.redhat.com>
+References: <20190805083553.GA27708@dhcp-128-65.nay.redhat.com>
+ <CAKv+Gu-my6EpLfxBnbMn21be62oHrF6PKFu2rt-4Pqk9wG9SXA@mail.gmail.com>
 MIME-Version: 1.0
-References: <20190807215903.24990-1-hdegoede@redhat.com> <CACdnJutiu0kUreyECpNok=D1hPqCW-JDw1aEzMU9cMuTSiMTxw@mail.gmail.com>
-In-Reply-To: <CACdnJutiu0kUreyECpNok=D1hPqCW-JDw1aEzMU9cMuTSiMTxw@mail.gmail.com>
-From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Date:   Thu, 8 Aug 2019 10:34:29 +0300
-Message-ID: <CAKv+Gu94yQea2kTohvACj107ia=RUGkk94Zj2Es4198GK=wK=Q@mail.gmail.com>
-Subject: Re: [PATCH 5.3 regression fix] efi-stub: Fix get_efi_config_table on
- mixed-mode setups
-To:     Matthew Garrett <mjg59@google.com>
-Cc:     Hans de Goede <hdegoede@redhat.com>,
-        Peter Huewe <peterhuewe@gmx.de>,
-        "the arch/x86 maintainers" <x86@kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        linux-integrity <linux-integrity@vger.kernel.org>,
-        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAKv+Gu-my6EpLfxBnbMn21be62oHrF6PKFu2rt-4Pqk9wG9SXA@mail.gmail.com>
+User-Agent: Mutt/1.11.3 (2019-02-01)
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.40]); Thu, 08 Aug 2019 07:49:11 +0000 (UTC)
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, 8 Aug 2019 at 02:03, Matthew Garrett <mjg59@google.com> wrote:
->
-> On Wed, Aug 7, 2019 at 2:59 PM Hans de Goede <hdegoede@redhat.com> wrote:
+On 08/05/19 at 06:55pm, Ard Biesheuvel wrote:
+> On Mon, 5 Aug 2019 at 11:36, Dave Young <dyoung@redhat.com> wrote:
 > >
-> > Fix get_efi_config_table using the wrong structs when booting a
-> > 64 bit kernel on 32 bit firmware.
+> > kexec reboot fails randomly in UEFI based kvm guest.  The firmware
+> > just reset while calling efi_delete_dummy_variable();  Unfortunately
+> > I don't know how to debug the firmware, it is also possible a potential
+> > problem on real hardware as well although nobody reproduced it.
 > >
-> > Cc: Matthew Garrett <mjg59@google.com>
-> > Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>
-> > Cc: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-> > Fixes: 82d736ac56d7 ("Abstract out support for locating an EFI config table")
-> > Signed-off-by: Hans de Goede <hdegoede@redhat.com>
->
-> Acked-By: Matthew Garrett <mjg59@google.com>
->
+> > The intention of efi_delete_dummy_variable is to trigger garbage collection
+> > when entering virtual mode.  But SetVirtualAddressMap can only run once
+> > for each physical reboot, thus kexec_enter_virtual_mode is not necessarily
+> > a good place to clean dummy object.
+> >
+> 
+> I would argue that this means it is not a good place to *create* the
+> dummy variable, and if we don't create it, we don't have to delete it
+> either.
+> 
+> > Drop efi_delete_dummy_variable so that kexec reboot can work.
+> >
+> 
+> Creating it and not deleting it is bad, so please try and see if we
+> can omit the creation on this code path instead.
+> 
 
-Thanks for fixing this, Hans.
+Check the code for the dummy var, it is created only in below chunk:
+arch/x86/platform/efi/quirks.c:
+efi_query_variable_store():
+[snip]
+	/*
+	 * We account for that by refusing the write if permitting it would
+	 * reduce the available space to under 5KB. This figure was provided by
+	 * Samsung, so should be safe.
+	 */
+	if ((remaining_size - size < EFI_MIN_RESERVE) &&
+		!efi_no_storage_paranoia) {
 
-Reviewed-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+		/*
+		 * Triggering garbage collection may require that the firmware
+		 * generate a real EFI_OUT_OF_RESOURCES error. We can force
+		 * that by attempting to use more space than is available.
+		 */
+		unsigned long dummy_size = remaining_size + 1024;
+		void *dummy = kzalloc(dummy_size, GFP_KERNEL);
 
-> Good catch. I think fixing this is preferable to reverting - the
-> duplicate events are visible to userland, so there's a risk that apps
-> will end up depending on them if there's a release that behaves that
-> way.
+		if (!dummy)
+			return EFI_OUT_OF_RESOURCES;
 
-Agreed, I will send this out as a fix.
+		status = efi.set_variable((efi_char16_t *)efi_dummy_name,
+					  &EFI_DUMMY_GUID,
+					  EFI_VARIABLE_NON_VOLATILE |
+					  EFI_VARIABLE_BOOTSERVICE_ACCESS |
+					  EFI_VARIABLE_RUNTIME_ACCESS,
+					  dummy_size, dummy);
 
-> Presumably mixed mode isn't a thing on ARM?
+		if (status == EFI_SUCCESS) {
+			/*
+			 * This should have failed, so if it didn't make sure
+			 * that we delete it...
+			 */
+			efi_delete_dummy_variable();
+		}
 
-Nope. I should have realised this when we made this routine generic,
-but I failed to spot it. ARM is either strictly 32-bit or strictly
-64-bit.
+[snip]
+
+So the dummy var only be created when the if condition matched, also
+once creating succeeded it is deleted.  The deleting while entering
+virtual mode is always deleting a non exist efi var.  Please correct me
+if I miss something. 
+
+If above is true, then at least in the kexec path can be dropped because
+we have a real bug which resets machine.
+
+Thanks
+Dave
