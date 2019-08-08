@@ -2,119 +2,136 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2BABB85BFF
-	for <lists+linux-efi@lfdr.de>; Thu,  8 Aug 2019 09:49:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CC72585C9D
+	for <lists+linux-efi@lfdr.de>; Thu,  8 Aug 2019 10:17:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731226AbfHHHtL (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 8 Aug 2019 03:49:11 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:35600 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726721AbfHHHtL (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Thu, 8 Aug 2019 03:49:11 -0400
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id E4D0B30EA180;
-        Thu,  8 Aug 2019 07:49:10 +0000 (UTC)
-Received: from dhcp-128-65.nay.redhat.com (ovpn-12-94.pek2.redhat.com [10.72.12.94])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id 484B95D70D;
-        Thu,  8 Aug 2019 07:49:08 +0000 (UTC)
-Date:   Thu, 8 Aug 2019 15:49:04 +0800
-From:   Dave Young <dyoung@redhat.com>
-To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Cc:     linux-efi <linux-efi@vger.kernel.org>,
-        Kexec Mailing List <kexec@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Matthew Garrett <matthewgarrett@google.com>,
-        Bhupesh Sharma <bhsharma@redhat.com>
-Subject: Re: [PATCH] do not clean dummy variable in kexec path
-Message-ID: <20190808074904.GA5300@dhcp-128-65.nay.redhat.com>
-References: <20190805083553.GA27708@dhcp-128-65.nay.redhat.com>
- <CAKv+Gu-my6EpLfxBnbMn21be62oHrF6PKFu2rt-4Pqk9wG9SXA@mail.gmail.com>
+        id S1731753AbfHHIRJ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 8 Aug 2019 04:17:09 -0400
+Received: from mail-wr1-f65.google.com ([209.85.221.65]:41442 "EHLO
+        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731642AbfHHIRI (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 8 Aug 2019 04:17:08 -0400
+Received: by mail-wr1-f65.google.com with SMTP id c2so90742079wrm.8
+        for <linux-efi@vger.kernel.org>; Thu, 08 Aug 2019 01:17:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=38ju4Gl4Grvf533Kz32OKqL5q5T3Vt8AuXew6FwiqWw=;
+        b=rUCQUYUxtfEuD8UrKfSYCrf7QT2/AK44Wv0N87w/ZViL9ThDxkKLyk9W96EPTSZnH+
+         d/40POXp+QGbaV3Oa0gMKkjAN+wWUZLB/bZcOftPUPp6fQNSj/tLK13kFNxU2c22QB22
+         6wO6grLd/Me1wdnmZJkzcWaZzsg4bdtVNheNDhsi8YC0VlxA4mwAH9dPQBUbYOQVYYvK
+         A9GCvcRUkibF0gwnjA6haXFRH3Gj7dv3W4r31wGZansDQsSlfSfM+Fh3hL5rpR4gPuFT
+         DIPTJeb1OHX3hZ8cqTYr/kigu0h4sZjuI7JtYbQZjQQI6XAP7XyphYAfZ00r4yRzB4on
+         RUTQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=38ju4Gl4Grvf533Kz32OKqL5q5T3Vt8AuXew6FwiqWw=;
+        b=A338dhd+FX+4XpKS2f0+9DrQ7M/b9NkKS+fDUTWl+q3Y0lhkP4tfbktZAJieqqjUly
+         6jRcJoyNko5shkh/2QeiFFN1+4bomxx9fpdprebe1AxMoVZs4X8TY3TQ0Cfzl/GSYg5J
+         +2bk8hfBRl8qz7VM6I3QagI4UjEl5ZGF6m6V03CSs8D03U7Zr5nGAPMeDQssFN4IQ0Fh
+         v7+xSQwx5W+xYw9BzyXNHTluLcuslWtvxmTpdblH9CRUwvKI9SYv26yPjDXqboJnXo3t
+         PiPKiXwCtGSVGpyUrrQOWKBdDwleyytjM05aOywN18vsHCoUAiRN4UZLr7SKaBlry7W+
+         K/aw==
+X-Gm-Message-State: APjAAAXkgywK17jITF5gvzb9opHdHut/6C3tesvXX/LwxGhVw6rBQkGD
+        KLRujTdKHD2vC1PiWgohfkMcXiyNJ2375fn/TQUjPQ==
+X-Google-Smtp-Source: APXvYqywnrTIIufTFkkEGfDV2mri5pljOv015D6gGy76sUh+KFPu74K+P8t6zpFPuYqvh7aI5ZaRpUvuazh5+ayxwQ0=
+X-Received: by 2002:a5d:46cf:: with SMTP id g15mr15990808wrs.93.1565252226737;
+ Thu, 08 Aug 2019 01:17:06 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAKv+Gu-my6EpLfxBnbMn21be62oHrF6PKFu2rt-4Pqk9wG9SXA@mail.gmail.com>
-User-Agent: Mutt/1.11.3 (2019-02-01)
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.40]); Thu, 08 Aug 2019 07:49:11 +0000 (UTC)
+References: <20190710185853.GA2645@localhost.localdomain> <3b26bccb3caa4360a552f1dc57b9ac24@AUSX13MPC105.AMER.DELL.COM>
+ <20190807130840.GA2147@localhost.localdomain>
+In-Reply-To: <20190807130840.GA2147@localhost.localdomain>
+From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Date:   Thu, 8 Aug 2019 11:16:55 +0300
+Message-ID: <CAKv+Gu8-BTwpFz0dyNDoAP9xhrDQH4Qm0m73uAi2T0ckVrR5tw@mail.gmail.com>
+Subject: Re: [PATCH v1] Export Runtime Configuration Interface table to sysfs
+To:     Narendra.K@dell.com
+Cc:     Mario.Limonciello@dell.com, linux-efi <linux-efi@vger.kernel.org>,
+        Peter Jones <pjones@redhat.com>, Stuart.Hayes@dell.com
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 08/05/19 at 06:55pm, Ard Biesheuvel wrote:
-> On Mon, 5 Aug 2019 at 11:36, Dave Young <dyoung@redhat.com> wrote:
+On Wed, 7 Aug 2019 at 16:09, <Narendra.K@dell.com> wrote:
+>
+> On Thu, Jul 11, 2019 at 11:00:37PM +0000, Limonciello, Mario wrote:
+> > > -----Original Message-----
+> > > From: K, Narendra
+> > > Sent: Wednesday, July 10, 2019 11:59 AM
+> > > To: linux-efi@vger.kernel.org; ard.biesheuvel@linaro.org; pjones@redhat.com
+> > > Cc: K, Narendra; Hayes, Stuart; Limonciello, Mario
+> > > Subject: [PATCH v1] Export Runtime Configuration Interface table to sysfs
+> > >
+> > > From: Narendra K <Narendra.K@dell.com>
+> > >
+> > > System firmware advertises the address of the 'Runtime Configuration Interface
+> > > table version 2 (RCI2)' via an EFI Configuration Table entry. This code retrieves
+> > > the RCI2 table from the address and exports it to sysfs as a binary attribute 'rci2'
+> > > under /sys/firmware/efi/tables directory.
+> > > The approach adopted is similar to the attribute 'DMI' under
+> > > /sys/firmware/dmi/tables.
+> > >
+> > > RCI2 table contains BIOS HII in XML format and is used to populate BIOS setup
+> > > page in Dell EMC OpenManage Server Administrator tool.
+> > > The BIOS setup page contains BIOS tokens which can be configured.
+> > >
+> > > Signed-off-by: Narendra K <Narendra.K@dell.com>
 > >
-> > kexec reboot fails randomly in UEFI based kvm guest.  The firmware
-> > just reset while calling efi_delete_dummy_variable();  Unfortunately
-> > I don't know how to debug the firmware, it is also possible a potential
-> > problem on real hardware as well although nobody reproduced it.
+> > Reviewed-by: Mario Limonciello <mario.limonciello@dell.com>
+>
+> Hi Ard,
+>
+> Does the version 1 of the patch look good ? Please share your thoughts.
+>
+
+Thanks Narendra,
+
+The patch looks mostly fine. I have pushed it to my efi/next branch,
+and I will let you know if the autobuilders find any problems.
+
+One possible enhancement would be to defer the second memremap() call
+until the first call to raw_table_read(), so the mapping only exists
+if you are actually interested in the contents of the table. If you do
+decide to make any followup changes, please send them as delta patches
+against https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git/log/?h=next
+
+Thanks,
+Ard.
+
+
+
+
 > >
-> > The intention of efi_delete_dummy_variable is to trigger garbage collection
-> > when entering virtual mode.  But SetVirtualAddressMap can only run once
-> > for each physical reboot, thus kexec_enter_virtual_mode is not necessarily
-> > a good place to clean dummy object.
-> >
-> 
-> I would argue that this means it is not a good place to *create* the
-> dummy variable, and if we don't create it, we don't have to delete it
-> either.
-> 
-> > Drop efi_delete_dummy_variable so that kexec reboot can work.
-> >
-> 
-> Creating it and not deleting it is bad, so please try and see if we
-> can omit the creation on this code path instead.
-> 
-
-Check the code for the dummy var, it is created only in below chunk:
-arch/x86/platform/efi/quirks.c:
-efi_query_variable_store():
-[snip]
-	/*
-	 * We account for that by refusing the write if permitting it would
-	 * reduce the available space to under 5KB. This figure was provided by
-	 * Samsung, so should be safe.
-	 */
-	if ((remaining_size - size < EFI_MIN_RESERVE) &&
-		!efi_no_storage_paranoia) {
-
-		/*
-		 * Triggering garbage collection may require that the firmware
-		 * generate a real EFI_OUT_OF_RESOURCES error. We can force
-		 * that by attempting to use more space than is available.
-		 */
-		unsigned long dummy_size = remaining_size + 1024;
-		void *dummy = kzalloc(dummy_size, GFP_KERNEL);
-
-		if (!dummy)
-			return EFI_OUT_OF_RESOURCES;
-
-		status = efi.set_variable((efi_char16_t *)efi_dummy_name,
-					  &EFI_DUMMY_GUID,
-					  EFI_VARIABLE_NON_VOLATILE |
-					  EFI_VARIABLE_BOOTSERVICE_ACCESS |
-					  EFI_VARIABLE_RUNTIME_ACCESS,
-					  dummy_size, dummy);
-
-		if (status == EFI_SUCCESS) {
-			/*
-			 * This should have failed, so if it didn't make sure
-			 * that we delete it...
-			 */
-			efi_delete_dummy_variable();
-		}
-
-[snip]
-
-So the dummy var only be created when the if condition matched, also
-once creating succeeded it is deleted.  The deleting while entering
-virtual mode is always deleting a non exist efi var.  Please correct me
-if I miss something. 
-
-If above is true, then at least in the kexec path can be dropped because
-we have a real bug which resets machine.
-
-Thanks
-Dave
+> > > ---
+> > > Hi Ard, the review comment in the v0 version of the patch suggested that the
+> > > kconfig symbol be set to Y for X86. I made a change to the suggestion.
+> > > In the v1 version, I have set the symbol to N by default and added a note to the
+> > > help section to make it Y for Dell EMC PowerEdge systems. If it needs to be
+> > > changed, I will resubmit the patch after changing it to implement the suggestion.
+> > >
+> > > The patch is created on 'next' branch of efi tree.
+> > >
+> > > v0 -> v1:
+> > > - Introduced a new Kconfig symbol CONFIG_EFI_RCI2_TABLE and compile
+> > > RCI2 table support if it is set. Set the symbol to N by default.
+> > > - Removed calling 'efi_rci2_sysfs_init' from drivers/firmware/efi/efi.c and made
+> > > it a 'late_initcall' in drivers/firmware/efi/rci2_table.c.
+> > > Removed the function declaration from include/linux/efi.h.
+> > >
+> > > RFC -> v0:
+> > > - Removed rci2 table from struct efi and defined it in rci2_table.c similar to the
+> > > way uv_systab_phys is defined in arch/x86/platform/uv/bios_uv.c
+> > > - Removed the oem_tables array and added rci2 to common_tables array
+> > > - Removed the string 'rci2' from the common_tables array so that it is not
+> > > printed in dmesg.
+> > > - Merged function 'efi_rci2_table_init' into 'efi_rci2_sysfs_init' function to avoid
+> > > calling early_memremap/unmap functions.
+>
+> --
+> With regards,
+> Narendra K
