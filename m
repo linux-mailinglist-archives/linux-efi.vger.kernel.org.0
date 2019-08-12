@@ -2,128 +2,108 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 84ABB89943
-	for <lists+linux-efi@lfdr.de>; Mon, 12 Aug 2019 11:04:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C608A8A1E0
+	for <lists+linux-efi@lfdr.de>; Mon, 12 Aug 2019 17:06:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727154AbfHLJEF (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 12 Aug 2019 05:04:05 -0400
-Received: from mail-wr1-f66.google.com ([209.85.221.66]:41647 "EHLO
-        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727391AbfHLJED (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 12 Aug 2019 05:04:03 -0400
-Received: by mail-wr1-f66.google.com with SMTP id j16so1621570wrr.8
-        for <linux-efi@vger.kernel.org>; Mon, 12 Aug 2019 02:04:02 -0700 (PDT)
+        id S1727385AbfHLPFI (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 12 Aug 2019 11:05:08 -0400
+Received: from mail-wm1-f66.google.com ([209.85.128.66]:50605 "EHLO
+        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727068AbfHLPFI (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 12 Aug 2019 11:05:08 -0400
+Received: by mail-wm1-f66.google.com with SMTP id v15so12496002wml.0
+        for <linux-efi@vger.kernel.org>; Mon, 12 Aug 2019 08:05:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=HTyv9Eu4MQrwpFFMyFc0gzzbaLMGelJD9u6D8BaDhyY=;
-        b=FKkXSTB6J3Wyhrt3YpvN4go0vMK3H2f/AjafIFMoWKbvi5NmbLoPHI/SviaY0ggJWd
-         ivRSdbb68Ub9njLyGKjH4NXf+EKjezD95C7dx9AWypa9mI5U/2m/wt/LwxpQSaYkARLk
-         j7lBHY4hWjPoX4wN9RsKdPaTQ+pzWRMkCHUMBNn62Hk+qv1B4bCF286L3OmkNzbENfqC
-         IOWJ0uObar1T5pOpzeFoRJHK8YhrsbLr9D27TBtBZuSculw41BkPqrsFAvcrSz8LegYP
-         I91N6FAdwOcwoRrU+RDRHkKtaM9vOeYR+6bPaqq/3ksOHAcZ6UK7cPDEzWlLmEQBE+NL
-         txZQ==
+        h=from:to:cc:subject:date:message-id;
+        bh=0F14BMpIdBrIwMf7OjjkwazZeUP2fIGMTLlIBF/IWMI=;
+        b=hcUxkiLMAl/dOL9yDehEtGU40JS15/VaEJX7cLv7kSyabMcS76nD4k9opnYkQI5gcJ
+         2XQpSltFueRPr5Uv3n7XKjJvkNQxge8xqaWkLq3fh9Ub1HBWm+3JYhYtGUqXd+XH8NKU
+         sRHzVgZ5QdEIy1LUOeutX20teYv35UfEOKCkOirih34BcteeFXYVybJnbGsB471APt0e
+         lKP0K/u6nmxlXefO7Erc05fD5IIj04PBY6YDERiJ+hDhYhI4GPVAIY7BVskFSOjIYe4I
+         5yH34TVBNH19zLAlC9cFyuHKEYUe4SRTZk/AxKv3Z8qzM4kqRc8JLfUF0+ip2KQW3xvX
+         OFBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=HTyv9Eu4MQrwpFFMyFc0gzzbaLMGelJD9u6D8BaDhyY=;
-        b=lnK9p1CG3ZaytSKJZcSNo96oqX0rXNRSufTymy/lLuuQPBf3X3US7fYBz5DJndFNWq
-         jFO2tz+1IZuJ1wBp85Fi84FFT4Z4GadnWeCtOZGMax/de51baaQdthNHcb2UMxDmiKhB
-         B2A5Bzgzjmdv1nOyOWs5Y1q0tneJqinEJGLTIEgVlxbejmV1yeyung15QGGCszyS3FvH
-         M+DtZcOuv7+p90V8Bo8ta2d80REgvB+7cIqiqjGCdO2tiokfUt4OIduNQnPJy5FaWZxw
-         wcutN14JP0Al5Sy6KmCRGvszqL7YXltLvvQLY0W2KfVHFi+vReWHhufrp6nArBBlw1o9
-         qAwQ==
-X-Gm-Message-State: APjAAAW4S8yVyHteYTyNSGN0RmuErX3zHyQn6fxNOOCsVfbQjRER6ySq
-        A4/IjJYPpYbmeony8TvmUVvpGmdE+s/5/Q==
-X-Google-Smtp-Source: APXvYqzqQZZVOihXfXhwihfRXR1iEKQK14Amy2esHmd0ZqbK3Zz5FlD5Iy2Mp4cqkW5NpZpqGI3cHA==
-X-Received: by 2002:adf:f204:: with SMTP id p4mr41060825wro.317.1565600641516;
-        Mon, 12 Aug 2019 02:04:01 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=0F14BMpIdBrIwMf7OjjkwazZeUP2fIGMTLlIBF/IWMI=;
+        b=LXPMS/UNsZuO+C62XlFhwyiXZChX5PN8xSAan4s9glCf2ZeHyQGYro7gUW74NgCL0M
+         W3Ky0a6xdDhdV5rj8rr/WxvffRHTXViBFA7oEz0leIRfLMJlOUAYvnyTHpNhVJLzpbHe
+         vHmF+uMVNGLHq8oqXLHlrK40uzpGbNkBNv/vm78hYEhB7mLjMYg7WNmYmp/84cWG+t+E
+         YOjtoXyjpmtcbTxD/yyAR9lnr1L4g03VPN5LPjpKOcJI6TksLc/kPKFOXAISSkLHV6fx
+         7JNAgZ17CNeD5/ozmEMz/vkkftBymjUj+9unXdexrHyLPj8qJCyWg+c3ShbZc4CTmanQ
+         yqKw==
+X-Gm-Message-State: APjAAAX6cqhX2mihyVsODjjsvxH6Qdm4OAXH0jeKw6N+tCTEZyfHA+cK
+        95rW3N+KCBaDulTtJfqnFUfqLIvsnaG43w==
+X-Google-Smtp-Source: APXvYqxVoum+LOqtIzp50rwSLvG9uIS5/obLJMti4ktZt9A0ZS170CA9sAsz2ehuh+K1j+tQns7n/Q==
+X-Received: by 2002:a1c:be11:: with SMTP id o17mr27956868wmf.115.1565622306575;
+        Mon, 12 Aug 2019 08:05:06 -0700 (PDT)
 Received: from localhost.localdomain ([2a02:587:a407:da00:1c0e:f938:89a1:8e17])
-        by smtp.gmail.com with ESMTPSA id g8sm12659927wmf.17.2019.08.12.02.03.56
+        by smtp.gmail.com with ESMTPSA id h97sm31027269wrh.74.2019.08.12.08.05.03
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 12 Aug 2019 02:04:00 -0700 (PDT)
+        Mon, 12 Aug 2019 08:05:05 -0700 (PDT)
 From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
 To:     linux-efi@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
         Thomas Gleixner <tglx@linutronix.de>
 Cc:     Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        linux-kernel@vger.kernel.org, Hans de Goede <hdegoede@redhat.com>,
-        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-Subject: [PATCH 1/1] efi-stub: Fix get_efi_config_table on mixed-mode setups
-Date:   Mon, 12 Aug 2019 12:03:30 +0300
-Message-Id: <20190812090330.5779-2-ard.biesheuvel@linaro.org>
+        linux-kernel@vger.kernel.org, James Morse <james.morse@arm.com>,
+        Mario Limonciello <mario.limonciello@dell.com>,
+        Narendra K <Narendra.K@dell.com>,
+        Xiaofei Tan <tanxiaofei@huawei.com>
+Subject: [GIT PULL 0/5] EFI updates for v5.4
+Date:   Mon, 12 Aug 2019 18:04:47 +0300
+Message-Id: <20190812150452.27983-1-ard.biesheuvel@linaro.org>
 X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20190812090330.5779-1-ard.biesheuvel@linaro.org>
-References: <20190812090330.5779-1-ard.biesheuvel@linaro.org>
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-From: Hans de Goede <hdegoede@redhat.com>
+The following changes since commit 5f9e832c137075045d15cd6899ab0505cfb2ca4b:
 
-Fix get_efi_config_table using the wrong structs when booting a
-64 bit kernel on 32 bit firmware.
+  Linus 5.3-rc1 (2019-07-21 14:05:38 -0700)
 
-Fixes: 82d736ac56d7 ("Abstract out support for locating an EFI config table")
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Acked-By: Matthew Garrett <mjg59@google.com>
-Reviewed-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Acked-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-Signed-off-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
----
- .../firmware/efi/libstub/efi-stub-helper.c    | 38 +++++++++++++------
- 1 file changed, 27 insertions(+), 11 deletions(-)
+are available in the Git repository at:
 
-diff --git a/drivers/firmware/efi/libstub/efi-stub-helper.c b/drivers/firmware/efi/libstub/efi-stub-helper.c
-index 1db780c0f07b..3caae7f2cf56 100644
---- a/drivers/firmware/efi/libstub/efi-stub-helper.c
-+++ b/drivers/firmware/efi/libstub/efi-stub-helper.c
-@@ -927,17 +927,33 @@ efi_status_t efi_exit_boot_services(efi_system_table_t *sys_table_arg,
- 	return status;
- }
- 
-+#define GET_EFI_CONFIG_TABLE(bits)					\
-+static void *get_efi_config_table##bits(efi_system_table_t *_sys_table,	\
-+					efi_guid_t guid)		\
-+{									\
-+	efi_system_table_##bits##_t *sys_table;				\
-+	efi_config_table_##bits##_t *tables;				\
-+	int i;								\
-+									\
-+	sys_table = (typeof(sys_table))_sys_table;			\
-+	tables = (typeof(tables))(unsigned long)sys_table->tables;	\
-+									\
-+	for (i = 0; i < sys_table->nr_tables; i++) {			\
-+		if (efi_guidcmp(tables[i].guid, guid) != 0)		\
-+			continue;					\
-+									\
-+		return (void *)(unsigned long)tables[i].table;		\
-+	}								\
-+									\
-+	return NULL;							\
-+}
-+GET_EFI_CONFIG_TABLE(32)
-+GET_EFI_CONFIG_TABLE(64)
-+
- void *get_efi_config_table(efi_system_table_t *sys_table, efi_guid_t guid)
- {
--	efi_config_table_t *tables = (efi_config_table_t *)sys_table->tables;
--	int i;
--
--	for (i = 0; i < sys_table->nr_tables; i++) {
--		if (efi_guidcmp(tables[i].guid, guid) != 0)
--			continue;
--
--		return (void *)tables[i].table;
--	}
--
--	return NULL;
-+	if (efi_is_64bit())
-+		return get_efi_config_table64(sys_table, guid);
-+	else
-+		return get_efi_config_table32(sys_table, guid);
- }
--- 
-2.17.1
+  git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git tags/efi-next
 
+for you to fetch changes up to b194a77fcc4001dc40aecdd15d249648e8a436d1:
+
+  efi: cper: print AER info of PCIe fatal error (2019-08-12 12:06:23 +0300)
+
+----------------------------------------------------------------
+EFI changes for v5.4:
+- Some refactoring of the EFI config table handling across architectures.
+- Add support for the Dell EMC OEM config table.
+- Include AER diagnostic output to CPER handling of fatal PCIe errors.
+
+----------------------------------------------------------------
+Ard Biesheuvel (3):
+      efi: x86: move efi_is_table_address() into arch/x86
+      efi/x86: move UV_SYSTAB handling into arch/x86
+      efi: ia64: move SAL systab handling out of generic EFI code
+
+Narendra K (1):
+      efi: Export Runtime Configuration Interface table to sysfs
+
+Xiaofei Tan (1):
+      efi: cper: print AER info of PCIe fatal error
+
+ Documentation/ABI/testing/sysfs-firmware-efi |   8 ++
+ arch/ia64/include/asm/sal.h                  |   1 +
+ arch/ia64/include/asm/sn/sn_sal.h            |   2 +-
+ arch/ia64/kernel/efi.c                       |   3 +
+ arch/ia64/kernel/setup.c                     |   2 +-
+ arch/x86/include/asm/efi.h                   |   5 +
+ arch/x86/include/asm/uv/uv.h                 |   4 +-
+ arch/x86/mm/ioremap.c                        |   1 +
+ arch/x86/platform/efi/efi.c                  |  39 ++++++-
+ arch/x86/platform/uv/bios_uv.c               |  10 +-
+ drivers/firmware/efi/Kconfig                 |  13 +++
+ drivers/firmware/efi/Makefile                |   1 +
+ drivers/firmware/efi/cper.c                  |  15 +++
+ drivers/firmware/efi/efi.c                   |  39 +------
+ drivers/firmware/efi/rci2-table.c            | 147 +++++++++++++++++++++++++++
+ include/linux/efi.h                          |  14 +--
+ 16 files changed, 251 insertions(+), 53 deletions(-)
+ create mode 100644 drivers/firmware/efi/rci2-table.c
