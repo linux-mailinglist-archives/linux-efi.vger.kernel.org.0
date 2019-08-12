@@ -2,116 +2,126 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 99D1986946
-	for <lists+linux-efi@lfdr.de>; Thu,  8 Aug 2019 21:03:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E4F189757
+	for <lists+linux-efi@lfdr.de>; Mon, 12 Aug 2019 08:52:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2403901AbfHHTDN (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 8 Aug 2019 15:03:13 -0400
-Received: from mx0b-00154904.pphosted.com ([148.163.137.20]:43762 "EHLO
-        mx0b-00154904.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S2390280AbfHHTDN (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 8 Aug 2019 15:03:13 -0400
-Received: from pps.filterd (m0170395.ppops.net [127.0.0.1])
-        by mx0b-00154904.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x78J0Gb9016277
-        for <linux-efi@vger.kernel.org>; Thu, 8 Aug 2019 15:03:11 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dell.com; h=from : to : cc :
- subject : date : message-id : references : in-reply-to : content-type :
- content-id : content-transfer-encoding : mime-version; s=smtpout1;
- bh=Lv8UdoveyIJ8Sakg6VifFqbQiw/C2udDJNIslUb/aM0=;
- b=Z4nwOmOC4ubSyojkacZo/lSgBXe+EngQu05DR6kXWmA5kUgwmurFpdOa7hZ+7L3PXPAj
- XGDg9rVRFOKm6RwUfcnbz4z+U5MLu2hHI6B9njbZcjzwrDbL62QQDIvpwdKY50nOpFOZ
- VuNVFwA981J7D0v6PtE1U0nRyBdLzVCy/fu9GmfKJMvvRiFKgMbaPF5SsUrB5+qTWZK8
- Ua3lcrQgFpRp6kKQWj8XrhqrX8PxsmAa4QWyp1OPfc6qy8Ynt1ByyBCqL9ZTsTEN5Emj
- nlVaQ932m+qWZa9kiR2lKeQ8kh7EKtk/O94jhc284kcMXLVBcV3TJKmtkPGEKYxwenvB yQ== 
-Received: from mx0b-00154901.pphosted.com (mx0b-00154901.pphosted.com [67.231.157.37])
-        by mx0b-00154904.pphosted.com with ESMTP id 2u83vcnfwq-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <linux-efi@vger.kernel.org>; Thu, 08 Aug 2019 15:03:11 -0400
-Received: from pps.filterd (m0134318.ppops.net [127.0.0.1])
-        by mx0a-00154901.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x78J32OE072176
-        for <linux-efi@vger.kernel.org>; Thu, 8 Aug 2019 15:03:10 -0400
-Received: from ausc60pc101.us.dell.com (ausc60pc101.us.dell.com [143.166.85.206])
-        by mx0a-00154901.pphosted.com with ESMTP id 2u54whmc63-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-        for <linux-efi@vger.kernel.org>; Thu, 08 Aug 2019 15:03:10 -0400
-X-LoopCount0: from 10.166.132.129
-X-PREM-Routing: D-Outbound
-X-IronPort-AV: E=Sophos;i="5.60,349,1549951200"; 
-   d="scan'208";a="1451371318"
-From:   <Narendra.K@dell.com>
-To:     <ard.biesheuvel@linaro.org>
-CC:     <Mario.Limonciello@dell.com>, <linux-efi@vger.kernel.org>,
-        <pjones@redhat.com>, <Stuart.Hayes@dell.com>
-Subject: Re: [PATCH v1] Export Runtime Configuration Interface table to sysfs
-Thread-Topic: [PATCH v1] Export Runtime Configuration Interface table to sysfs
-Thread-Index: AQHVN1GRuuFZ1FIGT0iRonG1BybW8KbGCe0ggCltsgCAAUDSgIAAtHGA
-Date:   Thu, 8 Aug 2019 19:03:03 +0000
-Message-ID: <20190808190245.GA2270@localhost.localdomain>
-References: <20190710185853.GA2645@localhost.localdomain>
- <3b26bccb3caa4360a552f1dc57b9ac24@AUSX13MPC105.AMER.DELL.COM>
- <20190807130840.GA2147@localhost.localdomain>
- <CAKv+Gu8-BTwpFz0dyNDoAP9xhrDQH4Qm0m73uAi2T0ckVrR5tw@mail.gmail.com>
-In-Reply-To: <CAKv+Gu8-BTwpFz0dyNDoAP9xhrDQH4Qm0m73uAi2T0ckVrR5tw@mail.gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mutt/1.10.1 (2018-07-13)
-x-ms-exchange-messagesentrepresentingtype: 1
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.143.18.86]
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <9C8C04D83AF90947BA86CC23959FC7DD@dell.com>
-Content-Transfer-Encoding: quoted-printable
+        id S1725887AbfHLGv7 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 12 Aug 2019 02:51:59 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:4231 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725843AbfHLGv6 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Mon, 12 Aug 2019 02:51:58 -0400
+Received: from DGGEMS413-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id 5D421518EAA4334DA815;
+        Mon, 12 Aug 2019 14:51:54 +0800 (CST)
+Received: from [127.0.0.1] (10.74.184.86) by DGGEMS413-HUB.china.huawei.com
+ (10.3.19.213) with Microsoft SMTP Server id 14.3.439.0; Mon, 12 Aug 2019
+ 14:51:50 +0800
+Subject: Re: [PATCH v2 1/1] efi: cper: print AER info of PCIe fatal error
+To:     <linux-kernel@vger.kernel.org>
+References: <1564105417-232048-1-git-send-email-tanxiaofei@huawei.com>
+CC:     <linux-acpi@vger.kernel.org>, <linux-efi@vger.kernel.org>,
+        <rjw@rjwysocki.net>, <lenb@kernel.org>, <tony.luck@intel.com>,
+        <bp@alien8.de>, <ying.huang@intel.com>,
+        <ross.lagerwall@citrix.com>, <ard.biesheuvel@linaro.org>,
+        <james.morse@arm.com>
+From:   tanxiaofei <tanxiaofei@huawei.com>
+Message-ID: <5D510C86.5040000@huawei.com>
+Date:   Mon, 12 Aug 2019 14:51:50 +0800
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:38.0) Gecko/20100101
+ Thunderbird/38.5.1
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-08-08_07:,,
- signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1906280000 definitions=main-1908080171
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1906280000
- definitions=main-1908080171
+In-Reply-To: <1564105417-232048-1-git-send-email-tanxiaofei@huawei.com>
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.74.184.86]
+X-CFilter-Loop: Reflected
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, Aug 08, 2019 at 11:16:55AM +0300, Ard Biesheuvel wrote:
->=20
-> On Wed, 7 Aug 2019 at 16:09, <Narendra.K@dell.com> wrote:
-> > On Thu, Jul 11, 2019 at 11:00:37PM +0000, Limonciello, Mario wrote:
-[...]
-> > Hi Ard,
-> >
-> > Does the version 1 of the patch look good ? Please share your thoughts.
-> >
->=20
-> Thanks Narendra,
->=20
-> The patch looks mostly fine. I have pushed it to my efi/next branch,
 
-Ard, thank you for the review comments and applying the patch.
+ping...
 
-> and I will let you know if the autobuilders find any problems.
+On 2019/7/26 9:43, Xiaofei Tan wrote:
+> AER info of PCIe fatal error is not printed in the current driver.
+> Because APEI driver will panic directly for fatal error, and can't
+> run to the place of printing AER info.
+> 
+> An example log is as following:
+> {763}[Hardware Error]: Hardware error from APEI Generic Hardware Error Source: 11
+> {763}[Hardware Error]: event severity: fatal
+> {763}[Hardware Error]:  Error 0, type: fatal
+> {763}[Hardware Error]:   section_type: PCIe error
+> {763}[Hardware Error]:   port_type: 0, PCIe end point
+> {763}[Hardware Error]:   version: 4.0
+> {763}[Hardware Error]:   command: 0x0000, status: 0x0010
+> {763}[Hardware Error]:   device_id: 0000:82:00.0
+> {763}[Hardware Error]:   slot: 0
+> {763}[Hardware Error]:   secondary_bus: 0x00
+> {763}[Hardware Error]:   vendor_id: 0x8086, device_id: 0x10fb
+> {763}[Hardware Error]:   class_code: 000002
+> Kernel panic - not syncing: Fatal hardware error!
+> 
+> This issue was imported by the patch, '37448adfc7ce ("aerdrv: Move
+> cper_print_aer() call out of interrupt context")'. To fix this issue,
+> this patch adds print of AER info in cper_print_pcie() for fatal error.
+> 
+> Here is the example log after this patch applied:
+> {24}[Hardware Error]: Hardware error from APEI Generic Hardware Error Source: 10
+> {24}[Hardware Error]: event severity: fatal
+> {24}[Hardware Error]:  Error 0, type: fatal
+> {24}[Hardware Error]:   section_type: PCIe error
+> {24}[Hardware Error]:   port_type: 0, PCIe end point
+> {24}[Hardware Error]:   version: 4.0
+> {24}[Hardware Error]:   command: 0x0546, status: 0x4010
+> {24}[Hardware Error]:   device_id: 0000:01:00.0
+> {24}[Hardware Error]:   slot: 0
+> {24}[Hardware Error]:   secondary_bus: 0x00
+> {24}[Hardware Error]:   vendor_id: 0x15b3, device_id: 0x1019
+> {24}[Hardware Error]:   class_code: 000002
+> {24}[Hardware Error]:   aer_uncor_status: 0x00040000, aer_uncor_mask: 0x00000000
+> {24}[Hardware Error]:   aer_uncor_severity: 0x00062010
+> {24}[Hardware Error]:   TLP Header: 000000c0 01010000 00000001 00000000
+> Kernel panic - not syncing: Fatal hardware error!
+> 
+> Fixes: 37448adfc7ce ("aerdrv: Move cper_print_aer() call out of interrupt context")
+> Signed-off-by: Xiaofei Tan <tanxiaofei@huawei.com>
+> Reviewed-by: James Morse <james.morse@arm.com>
+> ---
+>  drivers/firmware/efi/cper.c | 15 +++++++++++++++
+>  1 file changed, 15 insertions(+)
+> 
+> diff --git a/drivers/firmware/efi/cper.c b/drivers/firmware/efi/cper.c
+> index 8fa977c..78b8922 100644
+> --- a/drivers/firmware/efi/cper.c
+> +++ b/drivers/firmware/efi/cper.c
+> @@ -390,6 +390,21 @@ static void cper_print_pcie(const char *pfx, const struct cper_sec_pcie *pcie,
+>  		printk(
+>  	"%s""bridge: secondary_status: 0x%04x, control: 0x%04x\n",
+>  	pfx, pcie->bridge.secondary_status, pcie->bridge.control);
+> +
+> +	/* Fatal errors call __ghes_panic() before AER handler prints this */
+> +	if (pcie->validation_bits & CPER_PCIE_VALID_AER_INFO &&
+> +	    gdata->error_severity & CPER_SEV_FATAL) {
+> +		struct aer_capability_regs *aer;
+> +
+> +		aer = (struct aer_capability_regs *)pcie->aer_info;
+> +		printk("%saer_uncor_status: 0x%08x, aer_uncor_mask: 0x%08x\n",
+> +		       pfx, aer->uncor_status, aer->uncor_mask);
+> +		printk("%saer_uncor_severity: 0x%08x\n",
+> +		       pfx, aer->uncor_severity);
+> +		printk("%sTLP Header: %08x %08x %08x %08x\n", pfx,
+> +		       aer->header_log.dw0, aer->header_log.dw1,
+> +		       aer->header_log.dw2, aer->header_log.dw3);
+> +	}
+>  }
+>  
+>  static void cper_print_tstamp(const char *pfx,
+> 
 
-Ok.
+-- 
+ thanks
+tanxiaofei
 
->=20
-> One possible enhancement would be to defer the second memremap() call
-> until the first call to raw_table_read(), so the mapping only exists
-> if you are actually interested in the contents of the table. If you do
-> decide to make any followup changes, please send them as delta patches
-> against https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git/log/?=
-h=3Dnext
-
-Ok. I will work on the enhancement suggestion. Thank you for the
-suggestion.=20
-
---=20
-With regards,
-Narendra K=
