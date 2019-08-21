@@ -2,117 +2,184 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D47897658
-	for <lists+linux-efi@lfdr.de>; Wed, 21 Aug 2019 11:43:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3BFB197E23
+	for <lists+linux-efi@lfdr.de>; Wed, 21 Aug 2019 17:09:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726635AbfHUJnK (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 21 Aug 2019 05:43:10 -0400
-Received: from mail-wr1-f67.google.com ([209.85.221.67]:32889 "EHLO
-        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726617AbfHUJnK (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 21 Aug 2019 05:43:10 -0400
-Received: by mail-wr1-f67.google.com with SMTP id u16so1402069wrr.0
-        for <linux-efi@vger.kernel.org>; Wed, 21 Aug 2019 02:43:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=yhh05Lx1Wiyqwc4CFdoUHwTxVsPR0zakJwfwav/HC18=;
-        b=PVj+qa4NJnbMWOZAIx9AAkNEG1Iyewb7tu5yt41xycqGFxGRF/KX2EdJ/JIMt2leC0
-         1p3aNbchhOtqTj/x+g6Cl2hRsTJUOHVLXriQ4dwCM/RUs/qHip/w6b+E77BnytnFDc0Z
-         19J9nubVPao7e85KC72Y+R3kBJOfQq6DVgrlhoNwpjerPNZh1HiRZx4AxRoYN2Kh2vHU
-         VQK2F3nYhu5dCJ8vRwOiQ8AnmUzk+qwJZBdjJsWrIepI8jzIUOhULXD8wiSQOKERyK8D
-         IJKJSQoIOvU/a/iP5cLohN82Uc+pfTj05bz5ma/MyknX60t3Lkp8+8LuG1uw24UbfDTl
-         cSnA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=yhh05Lx1Wiyqwc4CFdoUHwTxVsPR0zakJwfwav/HC18=;
-        b=Dwt9ZO/S8CKIdbrpel9jQbC63gppu4FbK/Orm84QKsBQTU39Sfr1vG1ZKzs9I+74Uy
-         z5/hB4o8zasPfXf7vComiS7rJORMxFXtvpW6AoF+2iWnUr9pfOSuEuzA1Xd4qJFZmAm/
-         9Axk3SosRKt6LYtE/sSNM7TRdBPZFNVQpzThhhY9+5hmBwjHO/G6TgKJAEt4C0Cb9ccj
-         DcQzxs7qSVa50QhXM9FKIqr+zDQDWlix+6kiDuclcIshx0jaLOx3fO4hNNyMHw7FRtsn
-         7pT9KjJ6i+MChOHmY8U1/lEGv57ffWgeswhCxB0Pbz3WDAu9MuuLxX8HFSeLHKzmz7LN
-         ZiUQ==
-X-Gm-Message-State: APjAAAVpuQkvtINq+fSrolWUgk1N4nOHMu+m5ZvPAz0SAmF2NfuApKAH
-        uDgMXjZ4bfBZI8wSUKJFrR285bSKrF8Ino8E8Xs3ww==
-X-Google-Smtp-Source: APXvYqzgLiqDBoUMfrN5PU/uJb8XTsDfE3cVqCi/aYLhYzZuK+GnS16Vxrx3MfmlOp214llXnxta9V24a17Yg3La7Gw=
-X-Received: by 2002:adf:9e09:: with SMTP id u9mr7516435wre.169.1566380588039;
- Wed, 21 Aug 2019 02:43:08 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190802053744.5519-1-clin@suse.com> <20190820115645.GP13294@shell.armlinux.org.uk>
- <CAKv+Gu_0wFw5Mjpdw7BEY7ewgetNgU=Ff1uvAsn0iHmJouyKqw@mail.gmail.com>
- <20190821061027.GA2828@linux-8mug> <CAKv+Gu8Yny8cVPck3rPwCPvJBvcZKMHti_9bkCTM4H4cZ_43fg@mail.gmail.com>
- <20190821071100.GA26713@rapoport-lnx> <CAKv+Gu99z3V1B68CU8qhNwwffqDxNBOM6t3Q8-V7qpbDkf-Cwg@mail.gmail.com>
- <20190821082927.GC26713@rapoport-lnx>
-In-Reply-To: <20190821082927.GC26713@rapoport-lnx>
-From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Date:   Wed, 21 Aug 2019 12:42:56 +0300
-Message-ID: <CAKv+Gu91d3NrcEGsz6yapVnf3NV=F-cGeftdPo=H-cNTXCC2EA@mail.gmail.com>
-Subject: Re: [PATCH] efi/arm: fix allocation failure when reserving the kernel base
-To:     Mike Rapoport <rppt@linux.ibm.com>
-Cc:     Chester Lin <clin@suse.com>, Juergen Gross <JGross@suse.com>,
-        Joey Lee <JLee@suse.com>,
-        "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
-        "guillaume.gardet@arm.com" <guillaume.gardet@arm.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Russell King - ARM Linux admin <linux@armlinux.org.uk>,
-        "geert@linux-m68k.org" <geert@linux-m68k.org>,
-        "ren_guo@c-sky.com" <ren_guo@c-sky.com>, Gary Lin <GLin@suse.com>,
-        "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-        "mingo@kernel.org" <mingo@kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
+        id S1729781AbfHUPIr (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 21 Aug 2019 11:08:47 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:11930 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1729779AbfHUPIr (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 21 Aug 2019 11:08:47 -0400
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x7LF191k089520
+        for <linux-efi@vger.kernel.org>; Wed, 21 Aug 2019 11:08:46 -0400
+Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 2uh85fgpsv-1
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <linux-efi@vger.kernel.org>; Wed, 21 Aug 2019 11:08:45 -0400
+Received: from localhost
+        by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <linux-efi@vger.kernel.org> from <nayna@linux.ibm.com>;
+        Wed, 21 Aug 2019 16:08:44 +0100
+Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
+        by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+        Wed, 21 Aug 2019 16:08:34 +0100
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com [9.149.105.59])
+        by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x7LF8CWh35521010
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 21 Aug 2019 15:08:12 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 76275A4040;
+        Wed, 21 Aug 2019 15:08:32 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 6E20BA4069;
+        Wed, 21 Aug 2019 15:08:29 +0000 (GMT)
+Received: from swastik.ibm.com (unknown [9.85.158.102])
+        by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Wed, 21 Aug 2019 15:08:29 +0000 (GMT)
+From:   Nayna Jain <nayna@linux.ibm.com>
+To:     linuxppc-dev@ozlabs.org, linux-efi@vger.kernel.org,
+        linux-integrity@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Jeremy Kerr <jk@ozlabs.org>,
+        Matthew Garret <matthew.garret@nebula.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Claudio Carvalho <cclaudio@linux.ibm.com>,
+        George Wilson <gcwilson@linux.ibm.com>,
+        Elaine Palmer <erpalmer@us.ibm.com>,
+        Eric Ricther <erichte@linux.ibm.com>,
+        "Oliver O'Halloran" <oohall@gmail.com>,
+        Nayna Jain <nayna@linux.ibm.com>
+Subject: [PATCH v2 0/4] powerpc: expose secure variables to the kernel and userspace 
+Date:   Wed, 21 Aug 2019 11:08:19 -0400
+X-Mailer: git-send-email 1.8.3.1
+X-TM-AS-GCONF: 00
+x-cbid: 19082115-0008-0000-0000-0000030B7F05
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19082115-0009-0000-0000-00004A29AA99
+Message-Id: <1566400103-18201-1-git-send-email-nayna@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-08-21_05:,,
+ signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1906280000 definitions=main-1908210160
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, 21 Aug 2019 at 11:29, Mike Rapoport <rppt@linux.ibm.com> wrote:
->
-> On Wed, Aug 21, 2019 at 10:29:37AM +0300, Ard Biesheuvel wrote:
-> > On Wed, 21 Aug 2019 at 10:11, Mike Rapoport <rppt@linux.ibm.com> wrote:
-> > >
-...
-> > > I think the only missing part here is to ensure that non-reserved memory in
-> > > bank 0 starts from a PMD-aligned address. I believe this could be done if
-> > > EFI stub, but I'm not really familiar with it so this just a semi-educated
-> > > guess :)
-> > >
-> >
-> > Given that it is the ARM arch code that imposes this requirement, how
-> > about adding something like this to adjust_lowmem_bounds():
-> >
-> > if (memblock_start_of_DRAM() % PMD_SIZE)
-> >     memblock_mark_nomap(memblock_start_of_DRAM(),
-> >         PMD_SIZE - (memblock_start_of_DRAM() % PMD_SIZE));
->
-> memblock_start_of_DRAM() won't work here, as it returns the actual start of
-> the DRAM including NOMAP regions. Moreover, as we cannot mark a region
-> NOMAP inside for_each_memblock() this should be done beforehand.
->
-> I think something like this could work:
->
-> diff --git a/arch/arm/mm/mmu.c b/arch/arm/mm/mmu.c
-> index 2f0f07e..f2b635b 100644
-> --- a/arch/arm/mm/mmu.c
-> +++ b/arch/arm/mm/mmu.c
-> @@ -1178,6 +1178,19 @@ void __init adjust_lowmem_bounds(void)
->          */
->         vmalloc_limit = (u64)(uintptr_t)vmalloc_min - PAGE_OFFSET + PHYS_OFFSET;
->
-> +       /*
-> +        * The first usable region must be PMD aligned. Mark its start
-> +        * as MEMBLOCK_NOMAP if it isn't
-> +        */
-> +       for_each_memblock(memory, reg) {
-> +               if (!memblock_is_nomap(reg) && (reg->base % PMD_SIZE)) {
-> +                       phys_addr_t size = PMD_SIZE - (reg->base % PMD_SIZE);
-> +
-> +                       memblock_mark_nomap(reg->base, size);
-> +                       break;
+In order to verify the OS kernel on PowerNV systems, secure boot requires
+X.509 certificates trusted by the platform. These are stored in secure
+variables controlled by OPAL, called OPAL secure variables. In order to
+enable users to manage the keys, the secure variables need to be exposed
+to userspace.
 
-We should break on the first !NOMAP memblock, even if it is already
-PMD aligned, but beyond that, this looks ok to me.
+OPAL provides the runtime services for the kernel to be able to access the
+secure variables[1]. This patchset defines the kernel interface for the
+OPAL APIs. These APIs are used by the hooks, which load these variables
+to the keyring and expose them to the userspace for reading/writing.
+
+The previous version[2] of the patchset added support only for the sysfs
+interface. This patch adds two more patches that involves loading of
+the firmware trusted keys to the kernel keyring. This patchset is
+dependent on the base CONFIG PPC_SECURE_BOOT added by ima arch specific
+patches for POWER[3]
+
+Overall, this patchset adds the following support:
+
+* expose secure variables to the kernel via OPAL Runtime API interface
+* expose secure variables to the userspace via kernel sysfs interface
+* load kernel verification and revocation keys to .platform and
+.blacklist keyring respectively.
+
+The secure variables can be read/written using simple linux utilities
+cat/hexdump.
+
+For example:
+Path to the secure variables is:
+/sys/firmware/secvar/vars
+
+Each secure variable is listed as directory. 
+$ ls -l
+total 0
+drwxr-xr-x. 2 root root 0 Aug 20 21:20 db
+drwxr-xr-x. 2 root root 0 Aug 20 21:20 KEK
+drwxr-xr-x. 2 root root 0 Aug 20 21:20 PK
+
+The attributes of each of the secure variables are(for example: PK):
+[PK]$ ls -l
+total 0
+-r--r--r--. 1 root root 32000 Aug 21 08:28 data
+-r--r--r--. 1 root root 65536 Aug 21 08:28 name
+-r--r--r--. 1 root root 65536 Aug 21 08:28 size
+--w-------. 1 root root 32000 Aug 21 08:28 update
+
+The "data" is used to read the existing variable value using hexdump. The
+data is stored in ESL format.
+The "update" is used to write a new value using cat. The update is
+to be submitted as AUTH file.
+
+[1] Depends on skiboot OPAL API changes which removes metadata from
+the API. The new version with the changes are going to be posted soon.
+[2] https://lkml.org/lkml/2019/6/13/1644
+[3] https://lkml.org/lkml/2019/8/19/402
+
+Changelog:
+
+v2:
+* removes complete efi-sms from the sysfs implementation and is simplified
+* includes Greg's and Oliver's feedbacks:
+ * adds sysfs documentation
+ * moves sysfs code to arch/powerpc
+ * other code related feedbacks.
+* adds two new patches to load keys to .platform and .blacklist keyring.
+These patches are added to this series as they are also dependent on
+OPAL APIs.
+
+Nayna Jain (4):
+  powerpc/powernv: Add OPAL API interface to access secure variable
+  powerpc: expose secure variables to userspace via sysfs
+  x86/efi: move common keyring handler functions to new file
+  powerpc: load firmware trusted keys into kernel keyring
+
+ Documentation/ABI/testing/sysfs-secvar        |  27 +++
+ arch/powerpc/Kconfig                          |   9 +
+ arch/powerpc/include/asm/opal-api.h           |   5 +-
+ arch/powerpc/include/asm/opal.h               |   6 +
+ arch/powerpc/include/asm/secvar.h             |  55 +++++
+ arch/powerpc/kernel/Makefile                  |   3 +-
+ arch/powerpc/kernel/secvar-ops.c              |  25 +++
+ arch/powerpc/kernel/secvar-sysfs.c            | 210 ++++++++++++++++++
+ arch/powerpc/platforms/powernv/Kconfig        |   6 +
+ arch/powerpc/platforms/powernv/Makefile       |   1 +
+ arch/powerpc/platforms/powernv/opal-call.c    |   3 +
+ arch/powerpc/platforms/powernv/opal-secvar.c  | 102 +++++++++
+ arch/powerpc/platforms/powernv/opal.c         |   5 +
+ security/integrity/Kconfig                    |   9 +
+ security/integrity/Makefile                   |   6 +-
+ .../platform_certs/keyring_handler.c          |  80 +++++++
+ .../platform_certs/keyring_handler.h          |  35 +++
+ .../integrity/platform_certs/load_powerpc.c   |  94 ++++++++
+ security/integrity/platform_certs/load_uefi.c |  67 +-----
+ 19 files changed, 679 insertions(+), 69 deletions(-)
+ create mode 100644 Documentation/ABI/testing/sysfs-secvar
+ create mode 100644 arch/powerpc/include/asm/secvar.h
+ create mode 100644 arch/powerpc/kernel/secvar-ops.c
+ create mode 100644 arch/powerpc/kernel/secvar-sysfs.c
+ create mode 100644 arch/powerpc/platforms/powernv/opal-secvar.c
+ create mode 100644 security/integrity/platform_certs/keyring_handler.c
+ create mode 100644 security/integrity/platform_certs/keyring_handler.h
+ create mode 100644 security/integrity/platform_certs/load_powerpc.c
+
+-- 
+2.20.1
+
