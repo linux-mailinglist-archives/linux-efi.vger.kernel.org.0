@@ -2,69 +2,77 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 995F49C25F
-	for <lists+linux-efi@lfdr.de>; Sun, 25 Aug 2019 09:09:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 142059C578
+	for <lists+linux-efi@lfdr.de>; Sun, 25 Aug 2019 20:18:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725780AbfHYHJr (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sun, 25 Aug 2019 03:09:47 -0400
-Received: from mailout1.hostsharing.net ([83.223.95.204]:54567 "EHLO
-        mailout1.hostsharing.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725767AbfHYHJr (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sun, 25 Aug 2019 03:09:47 -0400
-X-Greylist: delayed 306 seconds by postgrey-1.27 at vger.kernel.org; Sun, 25 Aug 2019 03:09:46 EDT
-Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (Client CN "*.hostsharing.net", Issuer "COMODO RSA Domain Validation Secure Server CA" (not verified))
-        by mailout1.hostsharing.net (Postfix) with ESMTPS id 79D3710192620;
-        Sun, 25 Aug 2019 09:04:39 +0200 (CEST)
-Received: from localhost (unknown [89.246.108.87])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+        id S1729014AbfHYSSr (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sun, 25 Aug 2019 14:18:47 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:43790 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728727AbfHYSSq (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Sun, 25 Aug 2019 14:18:46 -0400
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by h08.hostsharing.net (Postfix) with ESMTPSA id 153FA603DAE0;
-        Sun, 25 Aug 2019 09:04:39 +0200 (CEST)
-X-Mailbox-Line: From e632fb385b5e3409cf6ebc9c0100dca5b3d35ea3 Mon Sep 17 00:00:00 2001
-Message-Id: <e632fb385b5e3409cf6ebc9c0100dca5b3d35ea3.1566716456.git.lukas@wunner.de>
-From:   Lukas Wunner <lukas@wunner.de>
-Date:   Sun, 25 Aug 2019 09:04:38 +0200
-Subject: [PATCH] efi: cper: Fix endianness of PCIe class code
-To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Cc:     linux-efi@vger.kernel.org
+        by mx1.redhat.com (Postfix) with ESMTPS id 8A02AA28883;
+        Sun, 25 Aug 2019 18:18:46 +0000 (UTC)
+Received: from shalem.localdomain.com (ovpn-116-52.ams2.redhat.com [10.36.116.52])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 2DD6E5D6A3;
+        Sun, 25 Aug 2019 18:18:42 +0000 (UTC)
+From:   Hans de Goede <hdegoede@redhat.com>
+To:     Herbert Xu <herbert@gondor.apana.org.au>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "H . Peter Anvin" <hpa@zytor.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@de.ibm.com>
+Cc:     Hans de Goede <hdegoede@redhat.com>,
+        Marc Zyngier <marc.zyngier@arm.com>,
+        Eric Biggers <ebiggers@kernel.org>,
+        Andy Lutomirski <luto@kernel.org>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        linux-crypto@vger.kernel.org, x86@kernel.org,
+        linux-s390@vger.kernel.org, linux-efi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] crypto: sha256 - Add missing MODULE_LICENSE() to lib/crypto/sha256.c
+Date:   Sun, 25 Aug 2019 20:18:41 +0200
+Message-Id: <20190825181841.2494-1-hdegoede@redhat.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.2 (mx1.redhat.com [10.5.110.68]); Sun, 25 Aug 2019 18:18:46 +0000 (UTC)
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The CPER parser assumes that the class code is big endian, but at least
-on this edk2-derived Intel Purley platform it's little endian:
+lib/crypto/sha256.c / lib/crypto/libsha256.o may end up being a module,
+so it needs a MODULE_LICENSE() line, add this.
 
-    efi: EFI v2.50 by EDK II BIOS ID:PLYDCRB1.86B.0119.R05.1701181843
-    DMI: Intel Corporation PURLEY/PURLEY, BIOS PLYDCRB1.86B.0119.R05.1701181843 01/18/2017
-
-    {1}[Hardware Error]:   device_id: 0000:5d:00.0
-    {1}[Hardware Error]:   slot: 0
-    {1}[Hardware Error]:   secondary_bus: 0x5e
-    {1}[Hardware Error]:   vendor_id: 0x8086, device_id: 0x2030
-    {1}[Hardware Error]:   class_code: 000406
-                                       ^^^^^^ (should be 060400)
-
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 ---
- drivers/firmware/efi/cper.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ lib/crypto/sha256.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/firmware/efi/cper.c b/drivers/firmware/efi/cper.c
-index addf0749dd8b..b1af0de2e100 100644
---- a/drivers/firmware/efi/cper.c
-+++ b/drivers/firmware/efi/cper.c
-@@ -381,7 +381,7 @@ static void cper_print_pcie(const char *pfx, const struct cper_sec_pcie *pcie,
- 		printk("%s""vendor_id: 0x%04x, device_id: 0x%04x\n", pfx,
- 		       pcie->device_id.vendor_id, pcie->device_id.device_id);
- 		p = pcie->device_id.class_code;
--		printk("%s""class_code: %02x%02x%02x\n", pfx, p[0], p[1], p[2]);
-+		printk("%s""class_code: %02x%02x%02x\n", pfx, p[2], p[1], p[0]);
- 	}
- 	if (pcie->validation_bits & CPER_PCIE_VALID_SERIAL_NUMBER)
- 		printk("%s""serial number: 0x%04x, 0x%04x\n", pfx,
+diff --git a/lib/crypto/sha256.c b/lib/crypto/sha256.c
+index 45ad87520769..42d75e490a97 100644
+--- a/lib/crypto/sha256.c
++++ b/lib/crypto/sha256.c
+@@ -13,6 +13,7 @@
+ 
+ #include <linux/bitops.h>
+ #include <linux/export.h>
++#include <linux/module.h>
+ #include <linux/string.h>
+ #include <crypto/sha256.h>
+ #include <asm/unaligned.h>
+@@ -314,3 +315,5 @@ int sha224_final(struct sha256_state *sctx, u8 *out)
+ 	return __sha256_final(sctx, out, 7);
+ }
+ EXPORT_SYMBOL(sha224_final);
++
++MODULE_LICENSE("GPL");
 -- 
-2.20.1
+2.23.0
 
