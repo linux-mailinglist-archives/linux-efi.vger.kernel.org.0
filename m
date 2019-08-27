@@ -2,65 +2,92 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AF94B9E9B1
-	for <lists+linux-efi@lfdr.de>; Tue, 27 Aug 2019 15:41:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4FB709E9C8
+	for <lists+linux-efi@lfdr.de>; Tue, 27 Aug 2019 15:45:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726134AbfH0Nl7 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 27 Aug 2019 09:41:59 -0400
-Received: from mga01.intel.com ([192.55.52.88]:64187 "EHLO mga01.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725811AbfH0Nl6 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Tue, 27 Aug 2019 09:41:58 -0400
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 27 Aug 2019 06:41:57 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,437,1559545200"; 
-   d="scan'208";a="204973364"
-Received: from jsakkine-mobl1.fi.intel.com (HELO localhost) ([10.237.66.169])
-  by fmsmga004.fm.intel.com with ESMTP; 27 Aug 2019 06:41:55 -0700
-Date:   Tue, 27 Aug 2019 16:41:55 +0300
-From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-To:     Matthew Garrett <mjg59@google.com>, ard.biesheuvel@linaro.org
-Cc:     Peter Jones <pjones@redhat.com>,
-        Roberto Sassu <roberto.sassu@huawei.com>,
-        Bartosz Szczepanek <bsz@semihalf.com>,
-        Lyude Paul <lyude@redhat.com>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 1/2] efi+tpm: Don't access event->count when it isn't
- mapped.
-Message-ID: <20190827134155.otm6ekeb53siy6lb@linux.intel.com>
-References: <20190826153028.32639-1-pjones@redhat.com>
- <20190826162823.4mxkwhd7mbtro3zy@linux.intel.com>
- <CACdnJuuB_ExhOOtA8Uh7WO42TSNfRHuGaK4Xo=5SbdfWDKr7wA@mail.gmail.com>
- <20190827110344.4uvjppmkkaeex3mk@linux.intel.com>
+        id S1729896AbfH0NpN (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 27 Aug 2019 09:45:13 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:43753 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725825AbfH0NpN (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 27 Aug 2019 09:45:13 -0400
+Received: from p5de0b6c5.dip0.t-ipconnect.de ([93.224.182.197] helo=nanos)
+        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
+        (Exim 4.80)
+        (envelope-from <tglx@linutronix.de>)
+        id 1i2bmC-0006fx-GB; Tue, 27 Aug 2019 15:44:48 +0200
+Date:   Tue, 27 Aug 2019 15:44:47 +0200 (CEST)
+From:   Thomas Gleixner <tglx@linutronix.de>
+To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
+cc:     linux-edac@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-efi@vger.kernel.org, Borislav Petkov <bp@alien8.de>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        james.morse@arm.com, rjw@rjwysocki.net,
+        Tony Luck <tony.luck@intel.com>, linuxarm@huawei.com,
+        ard.biesheuvel@linaro.org, nariman.poushin@linaro.org,
+        Jon Masters <jcm@redhat.com>,
+        LKML <linux-kernel@vger.kernel.org>, peter.maydell@linaro.org,
+        linux-spdx@vger.kernel.org, Greg KH <gregkh@linuxfoundation.org>
+Subject: Re: [PATCH 0/6 V2] CCIX Protocol error reporting.
+In-Reply-To: <20190820144732.2370-1-Jonathan.Cameron@huawei.com>
+Message-ID: <alpine.DEB.2.21.1908271539590.1939@nanos.tec.linutronix.de>
+References: <20190820144732.2370-1-Jonathan.Cameron@huawei.com>
+User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190827110344.4uvjppmkkaeex3mk@linux.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-User-Agent: NeoMutt/20180716
+Content-Type: multipart/mixed; boundary="8323329-891169229-1566913488=:1939"
+X-Linutronix-Spam-Score: -1.0
+X-Linutronix-Spam-Level: -
+X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, Aug 27, 2019 at 02:03:44PM +0300, Jarkko Sakkinen wrote:
-> > Jarkko, these two should probably go to 5.3 if possible - I
-> > independently had a report of a system hitting this issue last week
-> > (Intel apparently put a surprising amount of data in the event logs on
-> > the NUCs).
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
+
+--8323329-891169229-1566913488=:1939
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+
+Jonathan,
+
+On Tue, 20 Aug 2019, Jonathan Cameron wrote:
+
+Cc+ linux-spdx@vger.kernel.org
+
+> The following boilerplate is granting rights to the kernel.
+> Note that I haven't applied the CCIX copyright notice anywhere in this
+> series because we aren't quoting from the specification.  That is
+> much more likely to happen in documentation patches than in code.
 > 
-> OK, I can try to push them. I'll do PR today.
+> Like anything else in this series it is open to comment.
+> 
+> This patch is being distributed by the CCIX Consortium, Inc. (CCIX) to
+> you and other parties that are participating (the "participants") in the
+> Linux kernel with the understanding that the participants will use CCIX's
+> name and trademark only when this patch is used in association with the
+> Linux kernel and associated user space.
 
-Ard, how do you wish these to be managed?
+The code is licensed under GPLV2, so what precludes any other GPLV2 project
+to import that code?
 
-I'm asking this because:
+If there is a mentioning of CCIX Consortium in the imported code then you
+cannot impose that this needs to be removed because it ends up in something
+which is neither Linux kernel nor associated user space. And that's
+especially true when this ends up being a copyright notice.
+ 
+> CCIX is also distributing this patch to these participants with the
+> understanding that if any portion of the CCIX specification will be
+> used or referenced in the Linux kernel, the participants will not modify
+> the cited portion of the CCIX specification and will give CCIX proper
+> copyright attribution by including the following copyright notice with
+> the cited part of the CCIX specification:
+> "© 2019 CCIX CONSORTIUM, INC. ALL RIGHTS RESERVED."
 
-1. Neither patch was CC'd to linux-integrity.
-2. Neither patch has your tags ATM.
+Just to prove the point.
 
-/Jarkko
+Thanks,
+
+	tglx
+--8323329-891169229-1566913488=:1939--
