@@ -2,105 +2,100 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A0EF29D528
-	for <lists+linux-efi@lfdr.de>; Mon, 26 Aug 2019 19:45:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4508A9DD4C
+	for <lists+linux-efi@lfdr.de>; Tue, 27 Aug 2019 07:49:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387460AbfHZRpr (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 26 Aug 2019 13:45:47 -0400
-Received: from mail-io1-f67.google.com ([209.85.166.67]:40540 "EHLO
-        mail-io1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387459AbfHZRpr (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 26 Aug 2019 13:45:47 -0400
-Received: by mail-io1-f67.google.com with SMTP id t6so39368112ios.7
-        for <linux-efi@vger.kernel.org>; Mon, 26 Aug 2019 10:45:47 -0700 (PDT)
+        id S1729151AbfH0FtC (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 27 Aug 2019 01:49:02 -0400
+Received: from mail-ot1-f65.google.com ([209.85.210.65]:34348 "EHLO
+        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728546AbfH0FtC (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 27 Aug 2019 01:49:02 -0400
+Received: by mail-ot1-f65.google.com with SMTP id c7so17599495otp.1
+        for <linux-efi@vger.kernel.org>; Mon, 26 Aug 2019 22:49:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=pU42gGw1gVlVUlF/wW/uAiCaAt/FVvOc/4u8XYPtZ6Q=;
-        b=m/a0mTn8JIle2t4XwbClGaKckf9LvOCHpdQOtGkzUU0rgUZ8S22KXFW8g1bzXRTigd
-         LRdxz5zugcj/G1i+OuzEkIRhO17zMitYulMruQy5JkXpHCG89RN1LywMhCPsUGuVD/rf
-         0tUvUnBlKrwHT+X2zmLr3/8lQaz7tJQwVrjgZhGdJ36x8/MvvefYoliDLf3Memx7VrkB
-         TyVgQnHkRw5PAIlEsUU8ds+God+tLcZl29vHHkKyDVjspcuYQG6bwL0xGUFNpRy9E+dg
-         PW5adaRX7JBso0vpertu9Oi9ZrkqAkUo6QmK67BhqPOMrN+eg/S5CPh7mMH7o3c0e2G7
-         XTyg==
+        bh=7RBGb3OLJpAQau2j2snbl6ZXBD+gjXfBLYIYixGrB0c=;
+        b=n7XMRyf/Ux88Ml8xjGhdXA9Q3iFgJtT0BpZPsWc98cEcFJ6TQiYB0p3+BFgdYbK0ks
+         Eu6G39nq/TPJjUAhyfj0u+5OUinp0KQQSzJb09SUoRMsiIXwOyxTb5qs0uc/7EP8YyrJ
+         W0wpqtSvCeW+9p6v4bb2bvW6uJsUMRjVaHF1W+6kItySBxerIkc2Qt5F8b8CAxBSG8f6
+         beq5q5PWSa66mvnAnFGcQ60seo1+/Fc4DBSkpO6xcYSrysoRPzNKuhGk/92p3SlULFnL
+         VitTGP0DJ0qVGff0ycBHaSWfSQ5vpt3KcbNH2fMIMCskHaD0I0YeRxiE1UqwrywY3q4F
+         x3Bg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=pU42gGw1gVlVUlF/wW/uAiCaAt/FVvOc/4u8XYPtZ6Q=;
-        b=L9VbI6URnr0jeaMJegb2CTXhv2R4CrI/dmeZ0hF6AzhZvQJKC/CodOEtQPeo1lm41i
-         O+3mh7QqcDesThFTSrHXTDS9w64VgRJD8HgvV7iROH6+Ss3iiuvQLnmQoI8T5NgMeewW
-         dUM94muUDGimDSWLa+JIlpscDA/ov385/1wDizcsHI+to7lEJsotEym8BbABJqML/3fP
-         3IQGuj0VJvYtbKy/E6dsRYJvXMjypcmvDBHGXjLnC+r1TlNA0GE4PZAxCi1p+A0vBI7z
-         5dMAAHy88ZvoNgQ1AafUf3b14GPTsbMLmTBNmUm0MB3G8W4/FV3n5LJCyAWf4iyBE/Uo
-         at5A==
-X-Gm-Message-State: APjAAAXbTVrn6VXuNMngj7frqpT37GpEDkdWq1uBJlYaCvU7q+YJRhQI
-        hMTQixX4PTeBG65j6WgpAmzIlyPqBPHTi7obQeBogg==
-X-Google-Smtp-Source: APXvYqwOqTkOFbPFSsSZbOULUPv8P8IBKF6ZVFOE7qI6tsIsvWnFBKuVEdlXRjTQSOHCljAxWZogDhucBGlwtm4ztH0=
-X-Received: by 2002:a6b:c94c:: with SMTP id z73mr27054283iof.84.1566841546578;
- Mon, 26 Aug 2019 10:45:46 -0700 (PDT)
+        bh=7RBGb3OLJpAQau2j2snbl6ZXBD+gjXfBLYIYixGrB0c=;
+        b=sUjO3PSuy2Ki+nCyVrXLYWy7Nzzsh+Jbw80D0d8reja6t2cFxyi8f3e5U+tHSA9tN6
+         s89xalVMOR5SuvJAFgZwz/dOCrrqerFGW0xlLoloObF3ewSI8r7MhT/ygYNVAIlFRufv
+         pSRyxdgalBgiPBWk4CSFyYPDnavVl4E1uvfqpPhhGZsJYy4TqZgtcE0GxLfD6GeTBO+4
+         J7fXVV/5we3Ps49nv2qOKSR8PiGXN555c53EDahLsWTzVDiNmUJMpC3UpqQFUCRbp57o
+         X+XT5TuSAI63hSzKyj5Er8cgQZCrvrW40SVvkMN5l+7xkGo4t+/qYhJlknjkGR2wjDYm
+         eYvQ==
+X-Gm-Message-State: APjAAAWx3QuXpBaSxLBdoVJIaSjobMMFYTcmYc70AQJ87aWIF1d8+3zM
+        PvcLQ8CO4cPGlp+Ovp0cuYUWrQb5yNGUHIy5BqePwg==
+X-Google-Smtp-Source: APXvYqyHt3ylRYIOT6ImiUvFQ/SX/9gr7Aon0ozM+XiDQ3ga7QMUZtYdtrQMwzADy4l4V7UM7IwD4lDixKw+wDlCjEs=
+X-Received: by 2002:a05:6830:458:: with SMTP id d24mr12220534otc.126.1566884941281;
+ Mon, 26 Aug 2019 22:49:01 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190826153028.32639-1-pjones@redhat.com> <20190826153028.32639-2-pjones@redhat.com>
- <20190826163020.e7sahr3irqwwneey@linux.intel.com>
-In-Reply-To: <20190826163020.e7sahr3irqwwneey@linux.intel.com>
-From:   Matthew Garrett <mjg59@google.com>
-Date:   Mon, 26 Aug 2019 10:45:35 -0700
-Message-ID: <CACdnJuu7Sernq__mU-t0e9MYs35szCGZHxn-qYfz--fkm59i6Q@mail.gmail.com>
-Subject: Re: [PATCH 2/2] efi+tpm: don't traverse an event log with no events
-To:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-Cc:     Peter Jones <pjones@redhat.com>,
+References: <155993563277.3036719.17400338098057706494.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <155993567002.3036719.5748845658364934737.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <20190607202332.GB32656@bombadil.infradead.org>
+In-Reply-To: <20190607202332.GB32656@bombadil.infradead.org>
+From:   Dan Williams <dan.j.williams@intel.com>
+Date:   Mon, 26 Aug 2019 22:48:50 -0700
+Message-ID: <CAPcyv4gU_AfUoh7certr31f+7eZWfkEVqmNLtY2v7H54BxZK1w@mail.gmail.com>
+Subject: Re: [PATCH v3 07/10] lib/memregion: Uplevel the pmem "region" ida to
+ a global allocator
+To:     Matthew Wilcox <willy@infradead.org>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Keith Busch <keith.busch@intel.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Vishal L Verma <vishal.l.verma@intel.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
         Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Roberto Sassu <roberto.sassu@huawei.com>,
-        Bartosz Szczepanek <bsz@semihalf.com>,
-        Lyude Paul <lyude@redhat.com>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+        linux-nvdimm <linux-nvdimm@lists.01.org>,
+        X86 ML <x86@kernel.org>, linux-efi <linux-efi@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Mon, Aug 26, 2019 at 9:30 AM Jarkko Sakkinen
-<jarkko.sakkinen@linux.intel.com> wrote:
+On Fri, Jun 7, 2019 at 1:23 PM Matthew Wilcox <willy@infradead.org> wrote:
 >
-> On Mon, Aug 26, 2019 at 11:30:28AM -0400, Peter Jones wrote:
-> > When there are no entries to put into the final event log, some machines
-> > will return the template they would have populated anyway.  In this case
-> > the nr_events field is 0, but the rest of the log is just garbage.
-> >
-> > This patch stops us from trying to iterate the table with
-> > __calc_tpm2_event_size() when the number of events in the table is 0.
-> >
-> > Signed-off-by: Peter Jones <pjones@redhat.com>
-> > Tested-by: Lyude Paul <lyude@redhat.com>
-> > ---
-> >  drivers/firmware/efi/tpm.c | 14 +++++++++-----
-> >  1 file changed, 9 insertions(+), 5 deletions(-)
-> >
-> > diff --git a/drivers/firmware/efi/tpm.c b/drivers/firmware/efi/tpm.c
-> > index 1d3f5ca3eaa..be51ed17c6e 100644
-> > --- a/drivers/firmware/efi/tpm.c
-> > +++ b/drivers/firmware/efi/tpm.c
-> > @@ -75,11 +75,15 @@ int __init efi_tpm_eventlog_init(void)
-> >               goto out;
-> >       }
-> >
-> > -     tbl_size = tpm2_calc_event_log_size((void *)efi.tpm_final_log
-> > -                                         + sizeof(final_tbl->version)
-> > -                                         + sizeof(final_tbl->nr_events),
-> > -                                         final_tbl->nr_events,
-> > -                                         log_tbl->log);
-> > +     tbl_size = 0;
-> > +     if (final_tbl->nr_events != 0) {
-> > +             void *events = (void *)efi.tpm_final_log
-> > +                             + sizeof(final_tbl->version)
-> > +                             + sizeof(final_tbl->nr_events);
-> > +             tbl_size = tpm2_calc_event_log_size(events,
-> > +                                                 final_tbl->nr_events,
-> > +                                                 log_tbl->log);
-> > +     }
+> On Fri, Jun 07, 2019 at 12:27:50PM -0700, Dan Williams wrote:
+> > diff --git a/lib/memregion.c b/lib/memregion.c
+> > new file mode 100644
+> > index 000000000000..f6c6a94c7921
+> > --- /dev/null
+> > +++ b/lib/memregion.c
+> > @@ -0,0 +1,15 @@
+> > +#include <linux/idr.h>
+> > +
+> > +static DEFINE_IDA(region_ids);
+> > +
+> > +int memregion_alloc(gfp_t gfp)
+> > +{
+> > +     return ida_alloc(&region_ids, gfp);
+> > +}
+> > +EXPORT_SYMBOL(memregion_alloc);
+> > +
+> > +void memregion_free(int id)
+> > +{
+> > +     ida_free(&region_ids, id);
+> > +}
+> > +EXPORT_SYMBOL(memregion_free);
 >
-> Reviewed-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-Acked-by: Matthew Garrett <mjg59@google.com>
+> Does this trivial abstraction have to live in its own file?  I'd make
+> memregion_alloc/free static inlines that live in a header file, then
+> all you need do is find a suitable .c file to store memregion_ids in,
+> and export that one symbol instead of two.
+
+It turns out yes, this needs to live in its own file. It's an optional
+library that does not fit anywhere else, everywhere I've thought to
+stash it has either triggered obscure build errors based on idr.h
+include dependencies or does not fit due to build dependencies.
