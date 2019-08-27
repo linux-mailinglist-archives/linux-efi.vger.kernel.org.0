@@ -2,92 +2,83 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4FB709E9C8
-	for <lists+linux-efi@lfdr.de>; Tue, 27 Aug 2019 15:45:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B16479EF94
+	for <lists+linux-efi@lfdr.de>; Tue, 27 Aug 2019 18:00:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729896AbfH0NpN (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 27 Aug 2019 09:45:13 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:43753 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725825AbfH0NpN (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 27 Aug 2019 09:45:13 -0400
-Received: from p5de0b6c5.dip0.t-ipconnect.de ([93.224.182.197] helo=nanos)
-        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
-        (Exim 4.80)
-        (envelope-from <tglx@linutronix.de>)
-        id 1i2bmC-0006fx-GB; Tue, 27 Aug 2019 15:44:48 +0200
-Date:   Tue, 27 Aug 2019 15:44:47 +0200 (CEST)
-From:   Thomas Gleixner <tglx@linutronix.de>
-To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
-cc:     linux-edac@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-efi@vger.kernel.org, Borislav Petkov <bp@alien8.de>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        james.morse@arm.com, rjw@rjwysocki.net,
-        Tony Luck <tony.luck@intel.com>, linuxarm@huawei.com,
-        ard.biesheuvel@linaro.org, nariman.poushin@linaro.org,
-        Jon Masters <jcm@redhat.com>,
-        LKML <linux-kernel@vger.kernel.org>, peter.maydell@linaro.org,
-        linux-spdx@vger.kernel.org, Greg KH <gregkh@linuxfoundation.org>
-Subject: Re: [PATCH 0/6 V2] CCIX Protocol error reporting.
-In-Reply-To: <20190820144732.2370-1-Jonathan.Cameron@huawei.com>
-Message-ID: <alpine.DEB.2.21.1908271539590.1939@nanos.tec.linutronix.de>
-References: <20190820144732.2370-1-Jonathan.Cameron@huawei.com>
-User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
+        id S1730142AbfH0QAn (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 27 Aug 2019 12:00:43 -0400
+Received: from mail-io1-f66.google.com ([209.85.166.66]:46526 "EHLO
+        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725804AbfH0QAm (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 27 Aug 2019 12:00:42 -0400
+Received: by mail-io1-f66.google.com with SMTP id x4so47360481iog.13
+        for <linux-efi@vger.kernel.org>; Tue, 27 Aug 2019 09:00:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=q9NZa6AK/DpvSoe8HSmYQoMCNusIgNDIT6bHwZKttzI=;
+        b=CapEaCCX83Vumd24d3W4ndk3MW0VfeuJYr+ixbeMxDcmrviI+wQ5tdcqrOQI66p6Oy
+         7uZPqa8igSYgAmeQIh8KNqwifhIw2WtDKg83sPNNauc4VAee9cleXh6DIPxsmKAOzdL6
+         aPhjZqbRhSN1E5tFu51cjgPDlSfLMCB3U8ipU5gUB8zKkhMg2z7ylAYs522JSQXC68FP
+         HesgE/2VRCs0+KMmjjwx9tFGuj77504cJmfqOUjK5jXZe2GvlFawkFd1WGdgixHhIKcE
+         u6oaGE4I30g3wNpqYbxVx11jVfHJP7sC5lDhNmw2ZOUpaEHIZ3wLv6t1fgeqYftq+2Yz
+         li7A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=q9NZa6AK/DpvSoe8HSmYQoMCNusIgNDIT6bHwZKttzI=;
+        b=QF6I4VSxCxNpOEHNct0lZvI3g8JsDlSM64VZzk0HgCExX+U6IuUF5t2u8gc9WUny13
+         L70XG2mJM/5EijO7S9WxCeRhsK8FXgsl+3vUPN+L7+5W36ecYbQU3W0WBXzMseGeXBXf
+         vaP8TNM5L1spzG4cWchMRExAJdGLzpdyPUpYR4AM2cCD3jvS9UxPIYIYV0tv5/Z5hEUz
+         Xr0LS/lYR0afmsLESTLsBD+oWdnntw5jCa3OzP/Pe8qkZgIn8NzPOmNTzYv7PYkECI8c
+         uXSeII9vwg5Yx82AJZK1NbBfpPn7kIwLO+LGglNKifoZq7p6inT/iwzDe3fzIx7DdCr0
+         Gkug==
+X-Gm-Message-State: APjAAAWU2mctjv9gsB0Xmb9+N3gyex97/oihojSEVtHf8IaHIdX9DidL
+        9DwZlgAvu4ex3NDG95aMkS3qK+LAU0KZ2xHaQ1beaQ==
+X-Google-Smtp-Source: APXvYqx8juL3iVgGAhOFUnJM7xRiBzWyHUrAKS9dlKfG73enRdCxa/L5pg9aUomXcKrmQQkllOZgkxTpLabtoHkLNHA=
+X-Received: by 2002:a02:487:: with SMTP id 129mr22862441jab.113.1566921641477;
+ Tue, 27 Aug 2019 09:00:41 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="8323329-891169229-1566913488=:1939"
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+References: <20190826153028.32639-1-pjones@redhat.com> <20190826162823.4mxkwhd7mbtro3zy@linux.intel.com>
+ <CACdnJuuB_ExhOOtA8Uh7WO42TSNfRHuGaK4Xo=5SbdfWDKr7wA@mail.gmail.com>
+ <20190827110344.4uvjppmkkaeex3mk@linux.intel.com> <20190827134155.otm6ekeb53siy6lb@linux.intel.com>
+In-Reply-To: <20190827134155.otm6ekeb53siy6lb@linux.intel.com>
+From:   Matthew Garrett <mjg59@google.com>
+Date:   Tue, 27 Aug 2019 09:00:29 -0700
+Message-ID: <CACdnJuszFbXONm2e9Wckuk-3VwD0hdGB9NqL-BNimX2yfaavsQ@mail.gmail.com>
+Subject: Re: [PATCH 1/2] efi+tpm: Don't access event->count when it isn't mapped.
+To:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+Cc:     Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Peter Jones <pjones@redhat.com>,
+        Roberto Sassu <roberto.sassu@huawei.com>,
+        Bartosz Szczepanek <bsz@semihalf.com>,
+        Lyude Paul <lyude@redhat.com>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+On Tue, Aug 27, 2019 at 6:42 AM Jarkko Sakkinen
+<jarkko.sakkinen@linux.intel.com> wrote:
+>
+> On Tue, Aug 27, 2019 at 02:03:44PM +0300, Jarkko Sakkinen wrote:
+> > > Jarkko, these two should probably go to 5.3 if possible - I
+> > > independently had a report of a system hitting this issue last week
+> > > (Intel apparently put a surprising amount of data in the event logs on
+> > > the NUCs).
+> >
+> > OK, I can try to push them. I'll do PR today.
+>
+> Ard, how do you wish these to be managed?
+>
+> I'm asking this because:
+>
+> 1. Neither patch was CC'd to linux-integrity.
+> 2. Neither patch has your tags ATM.
 
---8323329-891169229-1566913488=:1939
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-
-Jonathan,
-
-On Tue, 20 Aug 2019, Jonathan Cameron wrote:
-
-Cc+ linux-spdx@vger.kernel.org
-
-> The following boilerplate is granting rights to the kernel.
-> Note that I haven't applied the CCIX copyright notice anywhere in this
-> series because we aren't quoting from the specification.  That is
-> much more likely to happen in documentation patches than in code.
-> 
-> Like anything else in this series it is open to comment.
-> 
-> This patch is being distributed by the CCIX Consortium, Inc. (CCIX) to
-> you and other parties that are participating (the "participants") in the
-> Linux kernel with the understanding that the participants will use CCIX's
-> name and trademark only when this patch is used in association with the
-> Linux kernel and associated user space.
-
-The code is licensed under GPLV2, so what precludes any other GPLV2 project
-to import that code?
-
-If there is a mentioning of CCIX Consortium in the imported code then you
-cannot impose that this needs to be removed because it ends up in something
-which is neither Linux kernel nor associated user space. And that's
-especially true when this ends up being a copyright notice.
- 
-> CCIX is also distributing this patch to these participants with the
-> understanding that if any portion of the CCIX specification will be
-> used or referenced in the Linux kernel, the participants will not modify
-> the cited portion of the CCIX specification and will give CCIX proper
-> copyright attribution by including the following copyright notice with
-> the cited part of the CCIX specification:
-> "© 2019 CCIX CONSORTIUM, INC. ALL RIGHTS RESERVED."
-
-Just to prove the point.
-
-Thanks,
-
-	tglx
---8323329-891169229-1566913488=:1939--
+Feel free to add my tags, but I don't think it's important.
