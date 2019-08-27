@@ -2,85 +2,75 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4CC239DDA6
-	for <lists+linux-efi@lfdr.de>; Tue, 27 Aug 2019 08:23:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D0EDA9E66A
+	for <lists+linux-efi@lfdr.de>; Tue, 27 Aug 2019 13:03:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727578AbfH0GXv (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 27 Aug 2019 02:23:51 -0400
-Received: from mail-qk1-f174.google.com ([209.85.222.174]:39981 "EHLO
-        mail-qk1-f174.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725879AbfH0GXv (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 27 Aug 2019 02:23:51 -0400
-Received: by mail-qk1-f174.google.com with SMTP id f10so1604300qkg.7
-        for <linux-efi@vger.kernel.org>; Mon, 26 Aug 2019 23:23:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=endlessm-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=0/hxD6Hr7ptf3a0nm0wbNiKDwCnbC2CQ3RkjlONhTig=;
-        b=KArX4XqmEObsHnaBm4GjJXAaKYPwjDKAogelYpBiv9dFe6ZsED4vHJZhoudhagRq1W
-         5r8RB28TQGkYfHmdt6aypcTB6kGnkxs9+5gsCwlowKkBHWVzytbsTCdfOsBOh8FpJT4f
-         rh4pKTU95hwocUpqRKimsgOR3E9G+xBFPhlB3iezYeBu/UUO+CG7ODlXN5iESTcbLA0A
-         /QUuUdbjBhrRTXqKkdyy7ndpbSbV1YJyzrfA8ELJPe8zfv7BqKktY+EDY9tdoWHfQYjC
-         2wcyoOrtbMiP23RnT+T2kIxtSIdgd7H+fZm+oscWtJ5ECPFMfY/YSJm/tHiLoemwmppJ
-         dToQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=0/hxD6Hr7ptf3a0nm0wbNiKDwCnbC2CQ3RkjlONhTig=;
-        b=S65AfhrSkp7zgO8XZLcbAbH9FpQcGxMWhG+1xI6COdZX8QpdtDA7Ea9PoBSMtavmOA
-         TrwU0HdEFodzZW7x+R8pkiCX5mn9vGHnAlH3AX6P2kldPyNOSuOmcVYQKlitUCe3MDbg
-         RN0LqT2lO11ZjmhxB5f0cfHdTx0IIf7QvWdVxUqWW5xtL4c7sOvsM1jjDvfzG5D6M4T7
-         wMI1tRGKppQihyvl56R0cW09BPEuaNxqGGxktDJmtP1QfDAwm9qBiTPGezYsaQxe9ECM
-         c6I1bJ37vdrpebziXhQiIKYU2oHaDXakkdEMBa7321753y8A4c4gUePdk4Je4l7WwnDT
-         HPqg==
-X-Gm-Message-State: APjAAAVnJX57jakjXP2mR4/rd9DOpzkg/m1uEF4dFcRsDkAl/H3AszXY
-        gsjJI/yx9jWeoaypPmztaL6u5PCKTCmif4MsP1VXG8nsGDc=
-X-Google-Smtp-Source: APXvYqym5CmRL8vHwAZrqeyLTETMdDqFYUYLDO9U8NmrNR74AAMhTnAm/keGm3idiJ+yi5+UHPn6k+e3XVxzLhF0Mxc=
-X-Received: by 2002:a37:4ed3:: with SMTP id c202mr20171340qkb.457.1566887030069;
- Mon, 26 Aug 2019 23:23:50 -0700 (PDT)
+        id S1727048AbfH0LDt (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 27 Aug 2019 07:03:49 -0400
+Received: from mga03.intel.com ([134.134.136.65]:7587 "EHLO mga03.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726190AbfH0LDt (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Tue, 27 Aug 2019 07:03:49 -0400
+X-Amp-Result: UNSCANNABLE
+X-Amp-File-Uploaded: False
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by orsmga103.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 27 Aug 2019 04:03:48 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.64,436,1559545200"; 
+   d="scan'208";a="180194738"
+Received: from jsakkine-mobl1.fi.intel.com (HELO localhost) ([10.237.66.169])
+  by fmsmga008.fm.intel.com with ESMTP; 27 Aug 2019 04:03:45 -0700
+Date:   Tue, 27 Aug 2019 14:03:44 +0300
+From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+To:     Matthew Garrett <mjg59@google.com>
+Cc:     Peter Jones <pjones@redhat.com>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Roberto Sassu <roberto.sassu@huawei.com>,
+        Bartosz Szczepanek <bsz@semihalf.com>,
+        Lyude Paul <lyude@redhat.com>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 1/2] efi+tpm: Don't access event->count when it isn't
+ mapped.
+Message-ID: <20190827110344.4uvjppmkkaeex3mk@linux.intel.com>
+References: <20190826153028.32639-1-pjones@redhat.com>
+ <20190826162823.4mxkwhd7mbtro3zy@linux.intel.com>
+ <CACdnJuuB_ExhOOtA8Uh7WO42TSNfRHuGaK4Xo=5SbdfWDKr7wA@mail.gmail.com>
 MIME-Version: 1.0
-References: <CAD8Lp47V5G+3UfEzt9wNRr7U-RdLAdCO7JFLQ+QF1JbkuhCcPg@mail.gmail.com>
-In-Reply-To: <CAD8Lp47V5G+3UfEzt9wNRr7U-RdLAdCO7JFLQ+QF1JbkuhCcPg@mail.gmail.com>
-From:   Daniel Drake <drake@endlessm.com>
-Date:   Tue, 27 Aug 2019 14:23:39 +0800
-Message-ID: <CAD8Lp44Z8ZsPoxTrsXkvRg80FNyMfGH7jN-pdWjjVTdHWXcB5A@mail.gmail.com>
-Subject: Re: Early EFI-related boot freeze in parse_setup_data()
-To:     linux-efi@vger.kernel.org,
-        Linux Kernel <linux-kernel@vger.kernel.org>, x86@kernel.org
-Cc:     Linux Upstreaming Team <linux@endlessm.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CACdnJuuB_ExhOOtA8Uh7WO42TSNfRHuGaK4Xo=5SbdfWDKr7wA@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: NeoMutt/20180716
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, Aug 16, 2019 at 2:14 PM Daniel Drake <drake@endlessm.com> wrote:
-> Anyway, the system freeze occurs in parse_setup_data(), specifically:
->
->         data = early_memremap(pa_data, sizeof(*data));
->         data_len = data->len + sizeof(struct setup_data);
->
-> Dereferencing data->len causes the system to hang. I presume it
-> triggers an exception handler due to some kind of invalid memory
-> access.
->
-> By returning early in that function, boot continues basically fine. So
-> I could then log the details: pa_data has value 0x892bb018 and
-> early_memremap returns address 0xffffffffff200018. Accessing just a
-> single byte at that address causes the system hang.
+On Mon, Aug 26, 2019 at 10:44:31AM -0700, Matthew Garrett wrote:
+> On Mon, Aug 26, 2019 at 9:28 AM Jarkko Sakkinen
+> <jarkko.sakkinen@linux.intel.com> wrote:
+> >
+> > On Mon, Aug 26, 2019 at 11:30:27AM -0400, Peter Jones wrote:
+> > > Some machines generate a lot of event log entries.  When we're
+> > > iterating over them, the code removes the old mapping and adds a
+> > > new one, so once we cross the page boundary we're unmapping the page
+> > > with the count on it.  Hilarity ensues.
+> > >
+> > > This patch keeps the info from the header in local variables so we don't
+> > > need to access that page again or keep track of if it's mapped.
+> > >
+> > > Signed-off-by: Peter Jones <pjones@redhat.com>
+> > > Tested-by: Lyude Paul <lyude@redhat.com>
+> >
+> > Reviewed-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+> Acked-by: Matthew Garrett <mjg59@google.com>
+> 
+> Jarkko, these two should probably go to 5.3 if possible - I
+> independently had a report of a system hitting this issue last week
+> (Intel apparently put a surprising amount of data in the event logs on
+> the NUCs).
 
-I noticed a complaint about NX in the logs, right where it does the
-early_memremap of this data (which is now at address 0x893c0018):
+OK, I can try to push them. I'll do PR today.
 
- Notice: NX (Execute Disable) protection missing in CPU!
- e820: update [mem 0x893c0018-0x893cec57] usable ==> usable
- e820: update [mem 0x893c0018-0x893cec57] usable ==> usable
- e820: update [mem 0x893b3018-0x893bf057] usable ==> usable
- e820: update [mem 0x893b3018-0x893bf057] usable ==> usable
-
-Indeed, in the BIOS setup menu, "NX Mode" was Disabled.
-Setting it to Enabled avoids the hang and Linux boots as normal. Weird!
-
-Daniel
+/Jarkko
