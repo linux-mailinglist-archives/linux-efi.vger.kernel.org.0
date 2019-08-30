@@ -2,33 +2,36 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 21BF3A2C94
-	for <lists+linux-efi@lfdr.de>; Fri, 30 Aug 2019 04:06:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E80AA2C96
+	for <lists+linux-efi@lfdr.de>; Fri, 30 Aug 2019 04:06:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727718AbfH3CGq (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 29 Aug 2019 22:06:46 -0400
-Received: from mga06.intel.com ([134.134.136.31]:31694 "EHLO mga06.intel.com"
+        id S1727770AbfH3CGw (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 29 Aug 2019 22:06:52 -0400
+Received: from mga14.intel.com ([192.55.52.115]:43639 "EHLO mga14.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727717AbfH3CGq (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Thu, 29 Aug 2019 22:06:46 -0400
+        id S1727717AbfH3CGw (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Thu, 29 Aug 2019 22:06:52 -0400
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga104.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 29 Aug 2019 19:06:46 -0700
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 29 Aug 2019 19:06:51 -0700
 X-IronPort-AV: E=Sophos;i="5.64,445,1559545200"; 
-   d="scan'208";a="356641367"
+   d="scan'208";a="332713892"
 Received: from dwillia2-desk3.jf.intel.com (HELO dwillia2-desk3.amr.corp.intel.com) ([10.54.39.16])
-  by orsmga005-auth.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 29 Aug 2019 19:06:45 -0700
-Subject: [PATCH v5 02/10] efi: Enumerate EFI_MEMORY_SP
+  by orsmga004-auth.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 29 Aug 2019 19:06:51 -0700
+Subject: [PATCH v5 03/10] x86, efi: Push EFI_MEMMAP check into leaf routines
 From:   Dan Williams <dan.j.williams@intel.com>
 To:     tglx@linutronix.de, rafael.j.wysocki@intel.com
-Cc:     Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+Cc:     x86@kernel.org, Ingo Molnar <mingo@redhat.com>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
         Dave Hansen <dave.hansen@linux.intel.com>,
-        peterz@infradead.org, vishal.l.verma@intel.com,
+        vishal.l.verma@intel.com, ard.biesheuvel@linaro.org,
         linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
         x86@kernel.org
-Date:   Thu, 29 Aug 2019 18:52:28 -0700
-Message-ID: <156712994859.1616117.15085206590367158743.stgit@dwillia2-desk3.amr.corp.intel.com>
+Date:   Thu, 29 Aug 2019 18:52:33 -0700
+Message-ID: <156712995374.1616117.8463747608355533922.stgit@dwillia2-desk3.amr.corp.intel.com>
 In-Reply-To: <156712993795.1616117.3781864460118989466.stgit@dwillia2-desk3.amr.corp.intel.com>
 References: <156712993795.1616117.3781864460118989466.stgit@dwillia2-desk3.amr.corp.intel.com>
 User-Agent: StGit/0.18-2-gc94f
@@ -40,77 +43,165 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-UEFI 2.8 defines an EFI_MEMORY_SP attribute bit to augment the
-interpretation of the EFI Memory Types as "reserved for a specific
-purpose". The intent of this bit is to allow the OS to identify precious
-or scarce memory resources and optionally manage it separately from
-EfiConventionalMemory. As defined older OSes that do not know about this
-attribute are permitted to ignore it and the memory will be handled
-according to the OS default policy for the given memory type.
+In preparation for adding another EFI_MEMMAP dependent call that needs
+to occur before e820__memblock_setup() fixup the existing efi calls to
+check for EFI_MEMMAP internally. This ends up being cleaner than the
+alternative of checking EFI_MEMMAP multiple times in setup_arch().
 
-In other words, this "specific purpose" hint is deliberately weaker than
-EfiReservedMemoryType in that the system continues to operate if the OS
-takes no action on the attribute. The risk of taking no action is
-potentially unwanted / unmovable kernel allocations from the designated
-resource that prevent the full realization of the "specific purpose".
-For example, consider a system with a high-bandwidth memory pool. Older
-kernels are permitted to boot and consume that memory as conventional
-"System-RAM" newer kernels may arrange for that memory to be set aside
-(soft reserved) by the system administrator for a dedicated
-high-bandwidth memory aware application to consume.
-
-Specifically, this mechanism allows for the elimination of scenarios
-where platform firmware tries to game OS policy by lying about ACPI SLIT
-values, i.e. claiming that a precious memory resource has a high
-distance to trigger the OS to avoid it by default. This reservation hint
-allows platform-firmware to instead tell the truth about performance
-characteristics by indicate to OS memory management to put immovable
-allocations elsewhere.
-
-Implement simple detection of the bit for EFI memory table dumps and
-save the kernel policy for a follow-on change.
-
-Reviewed-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Cc: <x86@kernel.org>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Peter Zijlstra <peterz@infradead.org>
 Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
 Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 ---
- drivers/firmware/efi/efi.c |    5 +++--
- include/linux/efi.h        |    1 +
- 2 files changed, 4 insertions(+), 2 deletions(-)
+ arch/x86/include/asm/efi.h      |    9 ++++++++-
+ arch/x86/kernel/setup.c         |   19 +++++++++----------
+ arch/x86/platform/efi/efi.c     |    3 +++
+ arch/x86/platform/efi/quirks.c  |    3 +++
+ drivers/firmware/efi/esrt.c     |    3 +++
+ drivers/firmware/efi/fake_mem.c |    2 +-
+ include/linux/efi.h             |    2 --
+ 7 files changed, 27 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
-index 8f1ab04f6743..363bb9d00fa5 100644
---- a/drivers/firmware/efi/efi.c
-+++ b/drivers/firmware/efi/efi.c
-@@ -833,15 +833,16 @@ char * __init efi_md_typeattr_format(char *buf, size_t size,
- 	if (attr & ~(EFI_MEMORY_UC | EFI_MEMORY_WC | EFI_MEMORY_WT |
- 		     EFI_MEMORY_WB | EFI_MEMORY_UCE | EFI_MEMORY_RO |
- 		     EFI_MEMORY_WP | EFI_MEMORY_RP | EFI_MEMORY_XP |
--		     EFI_MEMORY_NV |
-+		     EFI_MEMORY_NV | EFI_MEMORY_SP |
- 		     EFI_MEMORY_RUNTIME | EFI_MEMORY_MORE_RELIABLE))
- 		snprintf(pos, size, "|attr=0x%016llx]",
- 			 (unsigned long long)attr);
- 	else
- 		snprintf(pos, size,
--			 "|%3s|%2s|%2s|%2s|%2s|%2s|%2s|%3s|%2s|%2s|%2s|%2s]",
-+			 "|%3s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%3s|%2s|%2s|%2s|%2s]",
- 			 attr & EFI_MEMORY_RUNTIME ? "RUN" : "",
- 			 attr & EFI_MEMORY_MORE_RELIABLE ? "MR" : "",
-+			 attr & EFI_MEMORY_SP      ? "SP"  : "",
- 			 attr & EFI_MEMORY_NV      ? "NV"  : "",
- 			 attr & EFI_MEMORY_XP      ? "XP"  : "",
- 			 attr & EFI_MEMORY_RP      ? "RP"  : "",
+diff --git a/arch/x86/include/asm/efi.h b/arch/x86/include/asm/efi.h
+index 43a82e59c59d..45f853bce869 100644
+--- a/arch/x86/include/asm/efi.h
++++ b/arch/x86/include/asm/efi.h
+@@ -140,7 +140,6 @@ extern void efi_delete_dummy_variable(void);
+ extern void efi_switch_mm(struct mm_struct *mm);
+ extern void efi_recover_from_page_fault(unsigned long phys_addr);
+ extern void efi_free_boot_services(void);
+-extern void efi_reserve_boot_services(void);
+ 
+ struct efi_setup_data {
+ 	u64 fw_vendor;
+@@ -244,6 +243,8 @@ static inline bool efi_is_64bit(void)
+ extern bool efi_reboot_required(void);
+ extern bool efi_is_table_address(unsigned long phys_addr);
+ 
++extern void efi_find_mirror(void);
++extern void efi_reserve_boot_services(void);
+ #else
+ static inline void parse_efi_setup(u64 phys_addr, u32 data_len) {}
+ static inline bool efi_reboot_required(void)
+@@ -254,6 +255,12 @@ static inline  bool efi_is_table_address(unsigned long phys_addr)
+ {
+ 	return false;
+ }
++static inline void efi_find_mirror(void)
++{
++}
++static inline void efi_reserve_boot_services(void)
++{
++}
+ #endif /* CONFIG_EFI */
+ 
+ #endif /* _ASM_X86_EFI_H */
+diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
+index bbe35bf879f5..9bfecb542440 100644
+--- a/arch/x86/kernel/setup.c
++++ b/arch/x86/kernel/setup.c
+@@ -1118,21 +1118,20 @@ void __init setup_arch(char **cmdline_p)
+ 	cleanup_highmap();
+ 
+ 	memblock_set_current_limit(ISA_END_ADDRESS);
++
+ 	e820__memblock_setup();
+ 
+ 	reserve_bios_regions();
+ 
+-	if (efi_enabled(EFI_MEMMAP)) {
+-		efi_fake_memmap();
+-		efi_find_mirror();
+-		efi_esrt_init();
++	efi_fake_memmap();
++	efi_find_mirror();
++	efi_esrt_init();
+ 
+-		/*
+-		 * The EFI specification says that boot service code won't be
+-		 * called after ExitBootServices(). This is, in fact, a lie.
+-		 */
+-		efi_reserve_boot_services();
+-	}
++	/*
++	 * The EFI specification says that boot service code won't be
++	 * called after ExitBootServices(). This is, in fact, a lie.
++	 */
++	efi_reserve_boot_services();
+ 
+ 	/* preallocate 4k for mptable mpc */
+ 	e820__memblock_alloc_reserved_mpc_new();
+diff --git a/arch/x86/platform/efi/efi.c b/arch/x86/platform/efi/efi.c
+index c202e1b07e29..0bb58eb33ca0 100644
+--- a/arch/x86/platform/efi/efi.c
++++ b/arch/x86/platform/efi/efi.c
+@@ -128,6 +128,9 @@ void __init efi_find_mirror(void)
+ 	efi_memory_desc_t *md;
+ 	u64 mirror_size = 0, total_size = 0;
+ 
++	if (!efi_enabled(EFI_MEMMAP))
++		return;
++
+ 	for_each_efi_memory_desc(md) {
+ 		unsigned long long start = md->phys_addr;
+ 		unsigned long long size = md->num_pages << EFI_PAGE_SHIFT;
+diff --git a/arch/x86/platform/efi/quirks.c b/arch/x86/platform/efi/quirks.c
+index 3b9fd679cea9..7675cf754d90 100644
+--- a/arch/x86/platform/efi/quirks.c
++++ b/arch/x86/platform/efi/quirks.c
+@@ -320,6 +320,9 @@ void __init efi_reserve_boot_services(void)
+ {
+ 	efi_memory_desc_t *md;
+ 
++	if (!efi_enabled(EFI_MEMMAP))
++		return;
++
+ 	for_each_efi_memory_desc(md) {
+ 		u64 start = md->phys_addr;
+ 		u64 size = md->num_pages << EFI_PAGE_SHIFT;
+diff --git a/drivers/firmware/efi/esrt.c b/drivers/firmware/efi/esrt.c
+index d6dd5f503fa2..2762e0662bf4 100644
+--- a/drivers/firmware/efi/esrt.c
++++ b/drivers/firmware/efi/esrt.c
+@@ -246,6 +246,9 @@ void __init efi_esrt_init(void)
+ 	int rc;
+ 	phys_addr_t end;
+ 
++	if (!efi_enabled(EFI_MEMMAP))
++		return;
++
+ 	pr_debug("esrt-init: loading.\n");
+ 	if (!esrt_table_exists())
+ 		return;
+diff --git a/drivers/firmware/efi/fake_mem.c b/drivers/firmware/efi/fake_mem.c
+index 9501edc0fcfb..526b45331d96 100644
+--- a/drivers/firmware/efi/fake_mem.c
++++ b/drivers/firmware/efi/fake_mem.c
+@@ -44,7 +44,7 @@ void __init efi_fake_memmap(void)
+ 	void *new_memmap;
+ 	int i;
+ 
+-	if (!nr_fake_mem)
++	if (!efi_enabled(EFI_MEMMAP) || !nr_fake_mem)
+ 		return;
+ 
+ 	/* count up the number of EFI memory descriptor */
 diff --git a/include/linux/efi.h b/include/linux/efi.h
-index bd3837022307..5c1dd0221384 100644
+index 5c1dd0221384..acc2b8982ed2 100644
 --- a/include/linux/efi.h
 +++ b/include/linux/efi.h
-@@ -112,6 +112,7 @@ typedef	struct {
- #define EFI_MEMORY_MORE_RELIABLE \
- 				((u64)0x0000000000010000ULL)	/* higher reliability */
- #define EFI_MEMORY_RO		((u64)0x0000000000020000ULL)	/* read-only */
-+#define EFI_MEMORY_SP		((u64)0x0000000000040000ULL)	/* soft reserved */
- #define EFI_MEMORY_RUNTIME	((u64)0x8000000000000000ULL)	/* range requires runtime mapping */
- #define EFI_MEMORY_DESCRIPTOR_VERSION	1
- 
+@@ -1045,9 +1045,7 @@ extern void efi_enter_virtual_mode (void);	/* switch EFI to virtual mode, if pos
+ extern efi_status_t efi_query_variable_store(u32 attributes,
+ 					     unsigned long size,
+ 					     bool nonblocking);
+-extern void efi_find_mirror(void);
+ #else
+-
+ static inline efi_status_t efi_query_variable_store(u32 attributes,
+ 						    unsigned long size,
+ 						    bool nonblocking)
 
