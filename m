@@ -2,129 +2,137 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2EB31A4167
-	for <lists+linux-efi@lfdr.de>; Sat, 31 Aug 2019 02:43:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E279A4536
+	for <lists+linux-efi@lfdr.de>; Sat, 31 Aug 2019 18:11:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728267AbfHaAnR (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 30 Aug 2019 20:43:17 -0400
-Received: from mail-yb1-f178.google.com ([209.85.219.178]:45712 "EHLO
-        mail-yb1-f178.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728251AbfHaAnR (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 30 Aug 2019 20:43:17 -0400
-Received: by mail-yb1-f178.google.com with SMTP id u32so3094769ybi.12
-        for <linux-efi@vger.kernel.org>; Fri, 30 Aug 2019 17:43:16 -0700 (PDT)
+        id S1727905AbfHaQLk (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 31 Aug 2019 12:11:40 -0400
+Received: from mail-qk1-f193.google.com ([209.85.222.193]:41654 "EHLO
+        mail-qk1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726354AbfHaQLk (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sat, 31 Aug 2019 12:11:40 -0400
+Received: by mail-qk1-f193.google.com with SMTP id g17so8896900qkk.8
+        for <linux-efi@vger.kernel.org>; Sat, 31 Aug 2019 09:11:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to:cc;
-        bh=vXQNyIVwxl8vIvPk12N2828MamZVgSLMDk2FHuj+gM0=;
-        b=d2YROn/zBRMes8S3ExFz/ctFvY/IAqrEp+g/JNf1QhO4Fe2WmsUQVYGuclsxaj51+d
-         qsPy0901BnHYmRdwS/v4si5e2NVZG+6gi3BCCS/BeKgbKzTAtFpdMExzVQMhYOSi8sax
-         eajjHoet2B5jxg89CB5WHL4fVTfjNrzmkmkOCMaIBCIyCaQ/vipls0bAAxXeMGNsSvpH
-         5glOTSSZwzrq5KEvtnOZ0HjXzeupSBZCxcfukucOe26hXEVBXcldk+ey+clTw5B1K1Rr
-         cka3nPglCtFRUZxWNP+uF+gh4Y9J08YBUGOnzVxgHCC6xSfrP0jHZUkffNU/fDLJrULO
-         8Rdg==
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=Pe83f1owssXbd1TvMfyX2xKZ3JkailJMx6JMRxathC4=;
+        b=TIU+H/yOMnpGn4f4v+24auU9sX4hy0gWjCT/iynH+zgD+GPtnT6SE9ny570T0gLRMk
+         0ml9pEKDRRo2eZ2kG+5HTT0fV9htzXIkkiRbR6w1A7ugt2+AjdkWnYGC7gWrJKJXdGI4
+         fz0BWSH9c49yRtsw1IRL3kLXAOKsTxfSVLmDXdOPHw84f2BwHfkO+p1mshuc4QDhQ8W6
+         vngdXu21W6T5lFm5g4qWua78SIU1rki4+Yyirrw42M1zT6sO0WTJM5wjkRLSfKddnzK8
+         W72g3waK569Vj28dNoaKGxZhB0RbN8FFOr2fyS5OV2krkeyT41M8aotUi+vzA3pBVugm
+         I08w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
-        bh=vXQNyIVwxl8vIvPk12N2828MamZVgSLMDk2FHuj+gM0=;
-        b=agkvkiZGxsUSJknVPhAXI7g9P+s9b6NNdUAm/ZZ2iD918fTwdIgjbZPTXpuOil9Pyy
-         0HX3IU3OUXXFmerwL5//A8FkCGGA1CpPhjqzRwnJgbSiAomu6op0C6PL8s2lc1Hz23fn
-         w4yEm+4ez0OgkxwCbuSNKH67RjP4IoGMmGe2ItYmWxReJQST4sPrbENXeF5Dsp0JDN5f
-         XymzXPYhWdzb9vBT/RWqJCLB16Aah+5QX5Df5ld/ghnCpmyCUIIoU25/1eP2lBUY8y/4
-         F4OfVvKDieNnGtMT3ZyoqaN4RRoNP8YJJyPHCoi/MISULAFEPJbB8mS2LjNu3VleJ92C
-         f3Jw==
-X-Gm-Message-State: APjAAAXMHDChoZD0Tfu8FG/WzYDfgOgWS1OZwMcCBJ9LtjzQ3BbL1eco
-        kNYJ3t3ehuC8ZI63O1ui1x9kFkUb1jilkfhBOvrWRCc=
-X-Google-Smtp-Source: APXvYqwZBSai5Qc45Hj0WWGBfdD1SzIBUW7vgZ8wA7fmGhxhyAQydWvB2ztN3n3Htu66S4Wn1/a+uqWWLD6K3zG+0vI=
-X-Received: by 2002:a25:dc50:: with SMTP id y77mr13560008ybe.217.1567212195815;
- Fri, 30 Aug 2019 17:43:15 -0700 (PDT)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Pe83f1owssXbd1TvMfyX2xKZ3JkailJMx6JMRxathC4=;
+        b=mMWTMzP1tBB/Z1KVullAWPz7DESIdX/cR/6L5gLXGXsaBW5Z9O2cLAtMNiUNsgMYhh
+         Av9waiyGnQxtITCk9TVDH0vpt/P/cU0zZzwzJh9Y4FfwMYpXNCVhe0tew2cjhUI5+zzc
+         iTHo9BXn6kOx+F6PpFUVH+EkYKqC4TjocclHqCxwTiv3FPgX2rKCsJp8UkQ4sfOuUKlg
+         f6QFfarx+7FWa+QcQY4+O0Z7WFA70gd8loRiPW/a/EsHXeahWzlprDIwpQN7yG6u6SYL
+         6OJxVK3vBcVpMZjzVXPSS+TDWLZ4JvFeaG3kE0j7mpwOyNAzmz5A9CMn+uFICQD2Ye+f
+         6ICQ==
+X-Gm-Message-State: APjAAAWS6pNDcapr+gRZzOZ5Szd7hMyNo2OPcyZ1330YiNwozjuStHi6
+        QIKdWdC/prhanHfsKY0OErXiKKeUWcICnXbTEjwajg==
+X-Google-Smtp-Source: APXvYqxAQuJTy3tPDbVD0p9WMAUf9PV2yWyEY08GGHsce85dO2Y5kZoWOCzQdEqZySjprOclYCKijLT1bxvXd0aDnhg=
+X-Received: by 2002:a37:c403:: with SMTP id d3mr14148483qki.212.1567267899073;
+ Sat, 31 Aug 2019 09:11:39 -0700 (PDT)
 MIME-Version: 1.0
-From:   Turritopsis Dohrnii Teo En Ming <tdteoenming@gmail.com>
-Date:   Sat, 31 Aug 2019 08:43:02 +0800
-Message-ID: <CANnei0Fh+=7p7M+0spheSjZ0Dr1DqsR2wM95YscUJx+JObTSiA@mail.gmail.com>
-Subject: Singaporean Mr. Teo En Ming's Refugee Seeking Attempts, In The Search
- of a Substantially Better Life
-To:     linux-efi@vger.kernel.org
-Cc:     Turritopsis Dohrnii Teo En Ming <tdteoenming@gmail.com>
+References: <20190826153028.32639-1-pjones@redhat.com>
+In-Reply-To: <20190826153028.32639-1-pjones@redhat.com>
+From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Date:   Sat, 31 Aug 2019 19:11:27 +0300
+Message-ID: <CAKv+Gu-JQMaFdfSAVzqskC143roHvw2OrMvuUMikYHoReNiDoA@mail.gmail.com>
+Subject: Re: [PATCH 1/2] efi+tpm: Don't access event->count when it isn't mapped.
+To:     Peter Jones <pjones@redhat.com>
+Cc:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        Roberto Sassu <roberto.sassu@huawei.com>,
+        Matthew Garrett <mjg59@google.com>,
+        Bartosz Szczepanek <bsz@semihalf.com>,
+        Lyude Paul <lyude@redhat.com>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Subject: Singaporean Mr. Teo En Ming's Refugee Seeking Attempts, In
-The Search of a Substantially Better Life
+On Mon, 26 Aug 2019 at 18:30, Peter Jones <pjones@redhat.com> wrote:
+>
+> Some machines generate a lot of event log entries.  When we're
+> iterating over them, the code removes the old mapping and adds a
+> new one, so once we cross the page boundary we're unmapping the page
+> with the count on it.  Hilarity ensues.
+>
+> This patch keeps the info from the header in local variables so we don't
+> need to access that page again or keep track of if it's mapped.
+>
+> Signed-off-by: Peter Jones <pjones@redhat.com>
+> Tested-by: Lyude Paul <lyude@redhat.com>
+> ---
+>  include/linux/tpm_eventlog.h | 14 +++++++++++---
+>  1 file changed, 11 insertions(+), 3 deletions(-)
+>
+> diff --git a/include/linux/tpm_eventlog.h b/include/linux/tpm_eventlog.h
+> index 63238c84dc0..549dab0b56b 100644
+> --- a/include/linux/tpm_eventlog.h
+> +++ b/include/linux/tpm_eventlog.h
+> @@ -170,6 +170,7 @@ static inline int __calc_tpm2_event_size(struct tcg_pcr_event2_head *event,
+>         u16 halg;
+>         int i;
+>         int j;
+> +       u32 count, event_type;
+>
+>         marker = event;
+>         marker_start = marker;
+> @@ -190,16 +191,22 @@ static inline int __calc_tpm2_event_size(struct tcg_pcr_event2_head *event,
+>         }
+>
+>         event = (struct tcg_pcr_event2_head *)mapping;
+> +       /*
+> +        * the loop below will unmap these fields if the log is larger than
+> +        * one page, so save them here for reference.
+> +        */
+> +       count = event->count;
+> +       event_type = event->event_type;
+>
 
-In reverse chronological order:
+These assignments should be using READ_ONCE(), since otherwise, the
+compiler may reload these quantities from memory anyway.
 
-[1] Petition to the Government of Taiwan for Refugee Status, 5th
-August 2019 Monday
+With that fixed,
 
-Photo #1: At the building of the National Immigration Agency, Ministry
-of the Interior, Taipei, Taiwan, 5th August 2019
+Acked-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
 
-Photo #2: Queue ticket no. 515 at the National Immigration Agency,
-Ministry of the Interior, Taipei, Taiwan, 5th August 2019
-
-Photo #3: Submission of documents/petition to the National Immigration
-Agency, Ministry of the Interior, Taipei, Taiwan, 5th August 2019
-
-Photos #4 and #5: Acknowledgement of Receipt (no. 03142) for the
-submission of documents/petition from the National Immigration Agency,
-Ministry of the Interior, Taipei, Taiwan, 5th August 2019, 10:00 AM
-
-References:
-
-(a) Petition to the Government of Taiwan for Refugee Status, 5th
-August 2019 Monday (Blogspot blog)
-
-Link: https://tdtemcerts.blogspot.sg/2019/08/petition-to-government-of-taiwan-for.html
-
-(b) Petition to the Government of Taiwan for Refugee Status, 5th
-August 2019 Monday (Wordpress blog)
-
-Link: https://tdtemcerts.wordpress.com/2019/08/23/petition-to-the-government-of-taiwan-for-refugee-status/
-
-[2] Application for Refugee Status at the United Nations Refugee
-Agency, Bangkok, Thailand, 21st March 2017 Tuesday
-
-References:
-
-(a) [YOUTUBE] Vlog: The Road to Application for Refugee Status at the
-United Nations High Commissioner for Refugees, Bangkok
-
-Link: https://www.youtube.com/watch?v=utpuAa1eUNI
-
-YouTube video Published on March 22nd, 2017
-
-Views as at 31st August 2019: 593
-
-YouTube Channel: Turritopsis Dohrnii Teo En Ming
-Subscribers as at 31st August 2019: 2815
-Link: https://www.youtube.com/channel/UC__F2hzlqNEEGx-IXxQi3hA
-
-
-
-
-
------BEGIN EMAIL SIGNATURE-----
-
-The Gospel for all Targeted Individuals (TIs):
-
-[The New York Times] Microwave Weapons Are Prime Suspect in Ills of
-U.S. Embassy Workers
-
-Link: https://www.nytimes.com/2018/09/01/science/sonic-attack-cuba-microwave.html
-
-********************************************************************************************
-
-Singaporean Mr. Turritopsis Dohrnii Teo En Ming's Academic
-Qualifications as at 14 Feb 2019
-
-[1] https://tdtemcerts.wordpress.com/
-
-[2] https://tdtemcerts.blogspot.sg/
-
-[3] https://www.scribd.com/user/270125049/Teo-En-Ming
-
------END EMAIL SIGNATURE-----
+>         efispecid = (struct tcg_efi_specid_event_head *)event_header->event;
+>
+>         /* Check if event is malformed. */
+> -       if (event->count > efispecid->num_algs) {
+> +       if (count > efispecid->num_algs) {
+>                 size = 0;
+>                 goto out;
+>         }
+>
+> -       for (i = 0; i < event->count; i++) {
+> +       for (i = 0; i < count; i++) {
+>                 halg_size = sizeof(event->digests[i].alg_id);
+>
+>                 /* Map the digest's algorithm identifier */
+> @@ -256,8 +263,9 @@ static inline int __calc_tpm2_event_size(struct tcg_pcr_event2_head *event,
+>                 + event_field->event_size;
+>         size = marker - marker_start;
+>
+> -       if ((event->event_type == 0) && (event_field->event_size == 0))
+> +       if (event_type == 0 && event_field->event_size == 0)
+>                 size = 0;
+> +
+>  out:
+>         if (do_mapping)
+>                 TPM_MEMUNMAP(mapping, mapping_size);
+> --
+> 2.23.0.rc2
+>
