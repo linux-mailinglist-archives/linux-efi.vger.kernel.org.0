@@ -2,51 +2,51 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E279A4536
-	for <lists+linux-efi@lfdr.de>; Sat, 31 Aug 2019 18:11:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6E9A7A456C
+	for <lists+linux-efi@lfdr.de>; Sat, 31 Aug 2019 18:48:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727905AbfHaQLk (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sat, 31 Aug 2019 12:11:40 -0400
-Received: from mail-qk1-f193.google.com ([209.85.222.193]:41654 "EHLO
-        mail-qk1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726354AbfHaQLk (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sat, 31 Aug 2019 12:11:40 -0400
-Received: by mail-qk1-f193.google.com with SMTP id g17so8896900qkk.8
-        for <linux-efi@vger.kernel.org>; Sat, 31 Aug 2019 09:11:39 -0700 (PDT)
+        id S1728189AbfHaQqO (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 31 Aug 2019 12:46:14 -0400
+Received: from mail-wm1-f66.google.com ([209.85.128.66]:56140 "EHLO
+        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726705AbfHaQqO (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sat, 31 Aug 2019 12:46:14 -0400
+Received: by mail-wm1-f66.google.com with SMTP id g207so6444155wmg.5
+        for <linux-efi@vger.kernel.org>; Sat, 31 Aug 2019 09:46:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=Pe83f1owssXbd1TvMfyX2xKZ3JkailJMx6JMRxathC4=;
-        b=TIU+H/yOMnpGn4f4v+24auU9sX4hy0gWjCT/iynH+zgD+GPtnT6SE9ny570T0gLRMk
-         0ml9pEKDRRo2eZ2kG+5HTT0fV9htzXIkkiRbR6w1A7ugt2+AjdkWnYGC7gWrJKJXdGI4
-         fz0BWSH9c49yRtsw1IRL3kLXAOKsTxfSVLmDXdOPHw84f2BwHfkO+p1mshuc4QDhQ8W6
-         vngdXu21W6T5lFm5g4qWua78SIU1rki4+Yyirrw42M1zT6sO0WTJM5wjkRLSfKddnzK8
-         W72g3waK569Vj28dNoaKGxZhB0RbN8FFOr2fyS5OV2krkeyT41M8aotUi+vzA3pBVugm
-         I08w==
+        bh=bWNyzY6frPd9AVvoBYLqQl+upEDUNdJLOAMB1R+T9tw=;
+        b=fS+2dRlMhE+Nq5glJysLmAuytzq9t4tg0oXMrARfiKlHHK7ICA88SF8nlV23LyVver
+         dZ7iD91N78LuBLyx36/IgB3mzS7pCjbMu0Burnkf9y8qaVzliT7X6jKR8Mkps5/hhljF
+         coeveC5lriwf0g1b01PlY3yav3r33RPaCOgRS7wd/DMXs+mIxBj/wk5zu7+sT7wxjGTr
+         fTHxhUPECasNXgXz79az5b4ChhtUd6Q2wxz6iuDKEqo+jjJiLwc9xdDZSusSWlvBgeJT
+         la19MgY9UhYxuhZ5wIeIVhMH0u3Loaw13hgns8mk//FxDYwBUuP/T2oWBLYXdu4kzfr5
+         c/rA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=Pe83f1owssXbd1TvMfyX2xKZ3JkailJMx6JMRxathC4=;
-        b=mMWTMzP1tBB/Z1KVullAWPz7DESIdX/cR/6L5gLXGXsaBW5Z9O2cLAtMNiUNsgMYhh
-         Av9waiyGnQxtITCk9TVDH0vpt/P/cU0zZzwzJh9Y4FfwMYpXNCVhe0tew2cjhUI5+zzc
-         iTHo9BXn6kOx+F6PpFUVH+EkYKqC4TjocclHqCxwTiv3FPgX2rKCsJp8UkQ4sfOuUKlg
-         f6QFfarx+7FWa+QcQY4+O0Z7WFA70gd8loRiPW/a/EsHXeahWzlprDIwpQN7yG6u6SYL
-         6OJxVK3vBcVpMZjzVXPSS+TDWLZ4JvFeaG3kE0j7mpwOyNAzmz5A9CMn+uFICQD2Ye+f
-         6ICQ==
-X-Gm-Message-State: APjAAAWS6pNDcapr+gRZzOZ5Szd7hMyNo2OPcyZ1330YiNwozjuStHi6
-        QIKdWdC/prhanHfsKY0OErXiKKeUWcICnXbTEjwajg==
-X-Google-Smtp-Source: APXvYqxAQuJTy3tPDbVD0p9WMAUf9PV2yWyEY08GGHsce85dO2Y5kZoWOCzQdEqZySjprOclYCKijLT1bxvXd0aDnhg=
-X-Received: by 2002:a37:c403:: with SMTP id d3mr14148483qki.212.1567267899073;
- Sat, 31 Aug 2019 09:11:39 -0700 (PDT)
+        bh=bWNyzY6frPd9AVvoBYLqQl+upEDUNdJLOAMB1R+T9tw=;
+        b=owPmhN7F3o+7HW6hlf3jgYgDg7MMEYoj+4C5ckeheaMp7mLSZYYqhNixMIQ/4qI2qN
+         6vE+8CAy6+IBqB8yif2fFUGcaRW/mdprkH8nkF/yl2hkXSAai3cGO6zgMcE0hbvh1SsF
+         qv9o3dhNilpyeLBn0dHjnVxNNmtjQmdQVQcJgdYE5/yTjuK9W4MpqfMuD9AxdffZHgcH
+         +Hb7Lm6R16R3bzuKPD89chLDtakBjLys+suUFE/c18cJEm13VHe+tRV6dnH0mJ97Mycy
+         kXbSVdUUnPbPHqUru6eyEQcHINKH+X3kFzxBSNjBiqeQ4kd86xrsr+D2gsG0sfrlatw+
+         +hwQ==
+X-Gm-Message-State: APjAAAW0XRtCgXpBF6YHQD3145MCs+299GYnylih+Y0P1tyvsxkrNlKY
+        R40o3dnTbObx3GWD8+H/GX16R+dLrk43dZUn2QNR9g==
+X-Google-Smtp-Source: APXvYqw73e47gqPAFZzq9Fl8OhY84mjlhLrpWKD4cPQ2bmwO8nm9bJP4z3WDbiTuRuxz5sygO3s2fj/kXPbJhsfJbJY=
+X-Received: by 2002:a7b:cb8e:: with SMTP id m14mr26387918wmi.10.1567269971792;
+ Sat, 31 Aug 2019 09:46:11 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190826153028.32639-1-pjones@redhat.com>
-In-Reply-To: <20190826153028.32639-1-pjones@redhat.com>
+References: <20190826153028.32639-1-pjones@redhat.com> <20190826153028.32639-2-pjones@redhat.com>
+In-Reply-To: <20190826153028.32639-2-pjones@redhat.com>
 From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Date:   Sat, 31 Aug 2019 19:11:27 +0300
-Message-ID: <CAKv+Gu-JQMaFdfSAVzqskC143roHvw2OrMvuUMikYHoReNiDoA@mail.gmail.com>
-Subject: Re: [PATCH 1/2] efi+tpm: Don't access event->count when it isn't mapped.
+Date:   Sat, 31 Aug 2019 19:46:00 +0300
+Message-ID: <CAKv+Gu-MvRyq5ODkkMcT500iw6Di4CDWEfWh9-7pLkj425rPFA@mail.gmail.com>
+Subject: Re: [PATCH 2/2] efi+tpm: don't traverse an event log with no events
 To:     Peter Jones <pjones@redhat.com>
 Cc:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
         Roberto Sassu <roberto.sassu@huawei.com>,
@@ -63,76 +63,51 @@ X-Mailing-List: linux-efi@vger.kernel.org
 
 On Mon, 26 Aug 2019 at 18:30, Peter Jones <pjones@redhat.com> wrote:
 >
-> Some machines generate a lot of event log entries.  When we're
-> iterating over them, the code removes the old mapping and adds a
-> new one, so once we cross the page boundary we're unmapping the page
-> with the count on it.  Hilarity ensues.
+> When there are no entries to put into the final event log, some machines
+> will return the template they would have populated anyway.  In this case
+> the nr_events field is 0, but the rest of the log is just garbage.
 >
-> This patch keeps the info from the header in local variables so we don't
-> need to access that page again or keep track of if it's mapped.
+> This patch stops us from trying to iterate the table with
+> __calc_tpm2_event_size() when the number of events in the table is 0.
 >
 > Signed-off-by: Peter Jones <pjones@redhat.com>
 > Tested-by: Lyude Paul <lyude@redhat.com>
 > ---
->  include/linux/tpm_eventlog.h | 14 +++++++++++---
->  1 file changed, 11 insertions(+), 3 deletions(-)
+>  drivers/firmware/efi/tpm.c | 14 +++++++++-----
+>  1 file changed, 9 insertions(+), 5 deletions(-)
 >
-> diff --git a/include/linux/tpm_eventlog.h b/include/linux/tpm_eventlog.h
-> index 63238c84dc0..549dab0b56b 100644
-> --- a/include/linux/tpm_eventlog.h
-> +++ b/include/linux/tpm_eventlog.h
-> @@ -170,6 +170,7 @@ static inline int __calc_tpm2_event_size(struct tcg_pcr_event2_head *event,
->         u16 halg;
->         int i;
->         int j;
-> +       u32 count, event_type;
->
->         marker = event;
->         marker_start = marker;
-> @@ -190,16 +191,22 @@ static inline int __calc_tpm2_event_size(struct tcg_pcr_event2_head *event,
+> diff --git a/drivers/firmware/efi/tpm.c b/drivers/firmware/efi/tpm.c
+> index 1d3f5ca3eaa..be51ed17c6e 100644
+> --- a/drivers/firmware/efi/tpm.c
+> +++ b/drivers/firmware/efi/tpm.c
+> @@ -75,11 +75,15 @@ int __init efi_tpm_eventlog_init(void)
+>                 goto out;
 >         }
 >
->         event = (struct tcg_pcr_event2_head *)mapping;
-> +       /*
-> +        * the loop below will unmap these fields if the log is larger than
-> +        * one page, so save them here for reference.
-> +        */
-> +       count = event->count;
-> +       event_type = event->event_type;
->
+> -       tbl_size = tpm2_calc_event_log_size((void *)efi.tpm_final_log
+> -                                           + sizeof(final_tbl->version)
+> -                                           + sizeof(final_tbl->nr_events),
+> -                                           final_tbl->nr_events,
+> -                                           log_tbl->log);
+> +       tbl_size = 0;
+> +       if (final_tbl->nr_events != 0) {
+> +               void *events = (void *)efi.tpm_final_log
+> +                               + sizeof(final_tbl->version)
+> +                               + sizeof(final_tbl->nr_events);
 
-These assignments should be using READ_ONCE(), since otherwise, the
-compiler may reload these quantities from memory anyway.
+Please put a newline here
 
 With that fixed,
 
 Acked-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
 
->         efispecid = (struct tcg_efi_specid_event_head *)event_header->event;
->
->         /* Check if event is malformed. */
-> -       if (event->count > efispecid->num_algs) {
-> +       if (count > efispecid->num_algs) {
->                 size = 0;
->                 goto out;
->         }
->
-> -       for (i = 0; i < event->count; i++) {
-> +       for (i = 0; i < count; i++) {
->                 halg_size = sizeof(event->digests[i].alg_id);
->
->                 /* Map the digest's algorithm identifier */
-> @@ -256,8 +263,9 @@ static inline int __calc_tpm2_event_size(struct tcg_pcr_event2_head *event,
->                 + event_field->event_size;
->         size = marker - marker_start;
->
-> -       if ((event->event_type == 0) && (event_field->event_size == 0))
-> +       if (event_type == 0 && event_field->event_size == 0)
->                 size = 0;
-> +
->  out:
->         if (do_mapping)
->                 TPM_MEMUNMAP(mapping, mapping_size);
+> +               tbl_size = tpm2_calc_event_log_size(events,
+> +                                                   final_tbl->nr_events,
+> +                                                   log_tbl->log);
+> +       }
+>         memblock_reserve((unsigned long)final_tbl,
+>                          tbl_size + sizeof(*final_tbl));
+>         early_memunmap(final_tbl, sizeof(*final_tbl));
 > --
 > 2.23.0.rc2
 >
