@@ -2,97 +2,78 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B3945A486F
-	for <lists+linux-efi@lfdr.de>; Sun,  1 Sep 2019 10:51:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 10389A4BC9
+	for <lists+linux-efi@lfdr.de>; Sun,  1 Sep 2019 22:35:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728617AbfIAIvd (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sun, 1 Sep 2019 04:51:33 -0400
-Received: from mail-wr1-f66.google.com ([209.85.221.66]:42127 "EHLO
-        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728390AbfIAIvd (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sun, 1 Sep 2019 04:51:33 -0400
-Received: by mail-wr1-f66.google.com with SMTP id b16so10923682wrq.9
-        for <linux-efi@vger.kernel.org>; Sun, 01 Sep 2019 01:51:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=9CcariPg/+pDc3vARuAr459XfHnqxJ7ylPDFK3t1SRU=;
-        b=l4Zdc5a5T3uC+7NbT7VCV2TWjLCp1CPk3FOlePIK5R3AmazUAiU3ADWY1M6U+LKeK7
-         eCE/5uz7HjeYqU2egXkzmsb3n3dkG5ofv5wGtM+vP48tmwfeQDZLCbTKqvwfZ5Qx9WYC
-         i7kH8OXP/pNvK0Luc8uxaN0krQEQimRocMiDDo1tKgj8t8f+ybCzuEdYdMqpKcJK+iCM
-         KBDTmrNQ+2jRfkHFpyTTjgBC/l5AmFR4Cql7T7teWDAUmyw8VJ4o8FhAg5eRN/N+MeJe
-         qskUycWwUw3TG7iUHXO5ITTiql8UfBqbx3LRmOgaypVBRg1du5+jnb1VrL2u1A9SPknv
-         vLAw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=9CcariPg/+pDc3vARuAr459XfHnqxJ7ylPDFK3t1SRU=;
-        b=BA8RYyMvqNxbFPoJ9tBr6Tcs9+OXAYM1LAfPkHnGTYl/9nvLhfu2/hYw0GYZI8Y4hd
-         bDU7apgsntfKmcwdq0n8pwi6p6RL1GRjGJKEROAMr44myiuNWI6HYbWJhvSzLL7SIJc3
-         VmP6ftKk5BytnAmQ6KXcYFjUVddZcPtlWmrpQhrzt2lFTk2DrGaI5ErH8YpVCmR2Vblq
-         Bbh+1utjO+on1t02tKzrY+MWBELIDwz4xl9unWYuOdJRYR9kFvxPlUDasJyWuF6XA0OU
-         RXGBYE49JJFKmNZHbN/olRnKOQiHrXpx1SBTR9p/zwi/+sPFXuTLK8YuEJeQYzUC3d2C
-         DhIw==
-X-Gm-Message-State: APjAAAW/Yu8Us3CmAIpuCYPkdiRKgoQKAGHMKHVWl7W7p9+cjlTZzE/Z
-        aOQUDPJqip44DW4VwcPT4OKs7/M5vyRefQOx+9uYFlp/llaESA==
-X-Google-Smtp-Source: APXvYqwy7WAV3EWICz/BU96pWHIp8rvjQUiZeHP1jCD5ai6ePvwvM1LYs2A/meGTAaMlGiBLno/qe/RVnQ0+SVTcdeA=
-X-Received: by 2002:adf:ee50:: with SMTP id w16mr10843191wro.93.1567327890949;
- Sun, 01 Sep 2019 01:51:30 -0700 (PDT)
+        id S1728973AbfIAUfk (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sun, 1 Sep 2019 16:35:40 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:46386 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725955AbfIAUfk (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Sun, 1 Sep 2019 16:35:40 -0400
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id 70E7D4ACA5;
+        Sun,  1 Sep 2019 20:35:39 +0000 (UTC)
+Received: from shalem.localdomain.com (ovpn-116-36.ams2.redhat.com [10.36.116.36])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 954FD608C1;
+        Sun,  1 Sep 2019 20:35:34 +0000 (UTC)
+From:   Hans de Goede <hdegoede@redhat.com>
+To:     Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S . Miller" <davem@davemloft.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "H . Peter Anvin" <hpa@zytor.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Gilad Ben-Yossef <gilad@benyossef.com>,
+        Atul Gupta <atul.gupta@chelsio.com>
+Cc:     Hans de Goede <hdegoede@redhat.com>,
+        Marc Zyngier <marc.zyngier@arm.com>,
+        Eric Biggers <ebiggers@kernel.org>,
+        Andy Lutomirski <luto@kernel.org>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        linux-crypto@vger.kernel.org, x86@kernel.org,
+        linux-s390@vger.kernel.org, linux-efi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Subject: [PATCH 0/9] crypto: sha256 - Merge crypto/sha256.h into crypto/sha.h
+Date:   Sun,  1 Sep 2019 22:35:23 +0200
+Message-Id: <20190901203532.2615-1-hdegoede@redhat.com>
 MIME-Version: 1.0
-References: <e632fb385b5e3409cf6ebc9c0100dca5b3d35ea3.1566716456.git.lukas@wunner.de>
-In-Reply-To: <e632fb385b5e3409cf6ebc9c0100dca5b3d35ea3.1566716456.git.lukas@wunner.de>
-From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Date:   Sun, 1 Sep 2019 11:51:19 +0300
-Message-ID: <CAKv+Gu-YhAzBne6S1FHuV53sSZAa=EXXY7Fu2jSg9kNsWQghfA@mail.gmail.com>
-Subject: Re: [PATCH] efi: cper: Fix endianness of PCIe class code
-To:     Lukas Wunner <lukas@wunner.de>
-Cc:     linux-efi <linux-efi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.38]); Sun, 01 Sep 2019 20:35:40 +0000 (UTC)
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Sun, 25 Aug 2019 at 10:04, Lukas Wunner <lukas@wunner.de> wrote:
->
-> The CPER parser assumes that the class code is big endian, but at least
-> on this edk2-derived Intel Purley platform it's little endian:
->
->     efi: EFI v2.50 by EDK II BIOS ID:PLYDCRB1.86B.0119.R05.1701181843
->     DMI: Intel Corporation PURLEY/PURLEY, BIOS PLYDCRB1.86B.0119.R05.1701181843 01/18/2017
->
->     {1}[Hardware Error]:   device_id: 0000:5d:00.0
->     {1}[Hardware Error]:   slot: 0
->     {1}[Hardware Error]:   secondary_bus: 0x5e
->     {1}[Hardware Error]:   vendor_id: 0x8086, device_id: 0x2030
->     {1}[Hardware Error]:   class_code: 000406
->                                        ^^^^^^ (should be 060400)
->
-> Signed-off-by: Lukas Wunner <lukas@wunner.de>
-> ---
->  drivers/firmware/efi/cper.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/firmware/efi/cper.c b/drivers/firmware/efi/cper.c
-> index addf0749dd8b..b1af0de2e100 100644
-> --- a/drivers/firmware/efi/cper.c
-> +++ b/drivers/firmware/efi/cper.c
-> @@ -381,7 +381,7 @@ static void cper_print_pcie(const char *pfx, const struct cper_sec_pcie *pcie,
->                 printk("%s""vendor_id: 0x%04x, device_id: 0x%04x\n", pfx,
->                        pcie->device_id.vendor_id, pcie->device_id.device_id);
->                 p = pcie->device_id.class_code;
-> -               printk("%s""class_code: %02x%02x%02x\n", pfx, p[0], p[1], p[2]);
-> +               printk("%s""class_code: %02x%02x%02x\n", pfx, p[2], p[1], p[0]);
->         }
->         if (pcie->validation_bits & CPER_PCIE_VALID_SERIAL_NUMBER)
->                 printk("%s""serial number: 0x%04x, 0x%04x\n", pfx,
+Hi All,
 
-Class codes are always in that order, so the original code is simply wrong.
+As promised here is a follow-up series to my earlier sha256 series.
 
-Acked-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Note I have only compiled and tested this series on x86_64 !! 
 
-I'll get this queued shortly.
+All changes to architecture specific code on other archs have not even
+been tested to compile! With that said most of these changes were done
+using my editors search - replace function so things should be fine...
+(and FWIW I did do a Kconfig hack to compile test the ccree change).
 
-Thanks,
+The first patch in this series rename various file local functions /
+arrays to avoid conflicts with the new include/crypto/sha256.h, followed
+by a patch merging include/crypto/sha256.h into include/crypto/sha.h.
+
+The last patch makes use of this merging to remove a bit more code
+duplication, making sha256_generic use sha256_init and sha224_init from
+lib/crypto/sha256.c. An added advantage of this, is that this gives these
+2 functions coverage by the crypto selftests.
+
+Regards,
+
+Hans
+
