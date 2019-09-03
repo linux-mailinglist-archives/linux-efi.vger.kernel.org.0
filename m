@@ -2,49 +2,53 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 94A55A6312
-	for <lists+linux-efi@lfdr.de>; Tue,  3 Sep 2019 09:51:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7529BA633E
+	for <lists+linux-efi@lfdr.de>; Tue,  3 Sep 2019 09:59:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726840AbfICHvQ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 3 Sep 2019 03:51:16 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:39154 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726557AbfICHvQ (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Tue, 3 Sep 2019 03:51:16 -0400
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com [209.85.208.69])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 3C68185543
-        for <linux-efi@vger.kernel.org>; Tue,  3 Sep 2019 07:51:16 +0000 (UTC)
-Received: by mail-ed1-f69.google.com with SMTP id ca13so6308476edb.10
-        for <linux-efi@vger.kernel.org>; Tue, 03 Sep 2019 00:51:16 -0700 (PDT)
+        id S1725878AbfICH7X (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 3 Sep 2019 03:59:23 -0400
+Received: from mail-vs1-f68.google.com ([209.85.217.68]:36692 "EHLO
+        mail-vs1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726452AbfICH7W (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 3 Sep 2019 03:59:22 -0400
+Received: by mail-vs1-f68.google.com with SMTP id r1so7885834vsq.3
+        for <linux-efi@vger.kernel.org>; Tue, 03 Sep 2019 00:59:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=benyossef-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=0EIbhIJ7hKKOu+M281PD3WDdpKkR/xA5QEVwHRycTR0=;
+        b=Lz8LMQhaTxdacgyadkkNlBcEe9tBTF6g2Stqiw+ggeQ7ZvzWzCXwwFaRgbu9gGjYIl
+         lgs+jWRb+B//qn14IUPCm+BKxLLp6MDvUFnr48zd67gqoulkvMMMO7QSPs3Qkbd7v8P2
+         JzYL1VGYv+8pWnDDfFUDPiWQQkJiYEnRnCJaSBagiDgg9QOVn4SMhr8aBCHZIfuaqxsA
+         CNJLraj+UCdJwt91JZNtqo7j1SepslMoRtYWz4L1i680RXznMVpqYXudJKJl0rieosxa
+         hHtqI/xZz2533ni8GMtVguyDb49VMP0btKTr1dDiPWMatQC9ufxj7i/+rXCJRzbDPl7G
+         McwA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=w8HIPoxJeKQ6uWeXwaqzJnrwZeqZuyXyHwG4+Nh5f8I=;
-        b=pCcLRKzlpHPtbemIS7h+eKcYOZLgAsCynCfwDKFuBgkW649S5H6rjLL6EidYg6tDva
-         vXvGng0pLCGsitNGZbSLyHsABSkBshec7QQRgRDncp74F3GWVeSBmiGXtlwntuqTeNWd
-         HJbjuqvG/PyT+lWgG4i7DpQsoTUHSb533v3FebQ1BRoTdJlHEHnR9YlZHghE+0bQwbts
-         9Pn6MbOV6nCEPx6tFv9lTg+/NgFlJGPHIfbncZSmwJ9724LFRpoMJ4T9caaNIU9zbYpr
-         6rswPXRcd/ibK20hAWiPeA417SIXIzLeZ5CwxO1vcXu01mh5V2wPYHZSEYRckLvKWot5
-         BEDQ==
-X-Gm-Message-State: APjAAAXS37tSsXOi5vcC350BgAizd5t4YZv/7CJjXp6hQFH1sj2iP3c+
-        Rn0qsqedblU9Qj1d0jpK8IDWJSDI8j6iQ+EA+CQ17YNBSNWbH5k4ARdxsLSQ/U9jw65cSGZ5dXX
-        5GHXrDMP1Kd9L9CIyHL+5
-X-Received: by 2002:a17:906:d7a3:: with SMTP id pk3mr13383205ejb.97.1567497075046;
-        Tue, 03 Sep 2019 00:51:15 -0700 (PDT)
-X-Google-Smtp-Source: APXvYqxcWpjWCgHm7od0lS3pQcg6L6ajmTNeMv46O7wYLrV4SdnJWrI2Vv4mBF3X9ZIiqJr2V6QZKg==
-X-Received: by 2002:a17:906:d7a3:: with SMTP id pk3mr13383184ejb.97.1567497074920;
-        Tue, 03 Sep 2019 00:51:14 -0700 (PDT)
-Received: from shalem.localdomain (84-106-84-65.cable.dynamic.v4.ziggo.nl. [84.106.84.65])
-        by smtp.gmail.com with ESMTPSA id c1sm3244417edr.37.2019.09.03.00.51.13
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 03 Sep 2019 00:51:14 -0700 (PDT)
-Subject: Re: [PATCH 5/9] crypto: ccree - Rename arrays to avoid conflict with
- crypto/sha256.h
-To:     Gilad Ben-Yossef <gilad@benyossef.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=0EIbhIJ7hKKOu+M281PD3WDdpKkR/xA5QEVwHRycTR0=;
+        b=WQe6Ix2rMkcXl3diC8PcKmpHJ0wqFnxRgIhBe6Vj3s9RxKYS2iESFoRtbguvHSIioR
+         rKJoCrT3ON+WxC8IvPDMEGpsWprYzFD0rgQnavEnzxyHkLG17csqdWiRPw2yKHoS2snZ
+         yZGABA7OPrUCFux8iblURwwmym69/g3lZsn9+9Y/pez8o55tkJV3xCAe1zs5fEsPuC2L
+         3IDt45dwhK8siB+LTaOKFnZmpgwGWTXbgHzrSusriGwBenByWBXXrzC+WqG8sPMDt+Ee
+         WQ/8+IWRPn978MqxfVYIuhkYVBPE7u06rU967baUdKtDX/Ifl10OZR2idzb7vkLjYpOG
+         pk0g==
+X-Gm-Message-State: APjAAAVy1wXCOqqzLSuWMbwQ1/hMcYTxuwCaR8ncddDsWnbYL4fAZiBY
+        xzXn2W9Zb690ormyP/3ugmweW2U2epDTe6yjs6TDpA==
+X-Google-Smtp-Source: APXvYqzLbfk+7QC7rLnbvGPNJsbo//EE9HrvhMXGdOD64gG+wjNiviukUFKpbMwLXQphsPJJIcfQjKXRlkCVUjoLzNE=
+X-Received: by 2002:a67:f546:: with SMTP id z6mr17083944vsn.136.1567497561775;
+ Tue, 03 Sep 2019 00:59:21 -0700 (PDT)
+MIME-Version: 1.0
+References: <20190901203532.2615-1-hdegoede@redhat.com> <20190901203532.2615-6-hdegoede@redhat.com>
+ <CAOtvUMdd+V5pesw+O-kk9_JB5YpxUM+hU+Uu=kiMvOL9d0AziQ@mail.gmail.com> <0d55a6a7-9cca-38cb-97a2-558280fdc122@redhat.com>
+In-Reply-To: <0d55a6a7-9cca-38cb-97a2-558280fdc122@redhat.com>
+From:   Gilad Ben-Yossef <gilad@benyossef.com>
+Date:   Tue, 3 Sep 2019 10:59:10 +0300
+Message-ID: <CAOtvUMeK2+29PJBm6L1S0dqM8JXEZYUy1qKiP9H=xDEJjnO7mA@mail.gmail.com>
+Subject: Re: [PATCH 5/9] crypto: ccree - Rename arrays to avoid conflict with crypto/sha256.h
+To:     Hans de Goede <hdegoede@redhat.com>
 Cc:     Herbert Xu <herbert@gondor.apana.org.au>,
         "David S . Miller" <davem@davemloft.net>,
         Thomas Gleixner <tglx@linutronix.de>,
@@ -66,43 +70,47 @@ Cc:     Herbert Xu <herbert@gondor.apana.org.au>,
         linux-efi@vger.kernel.org,
         Linux kernel mailing list <linux-kernel@vger.kernel.org>,
         Linux ARM <linux-arm-kernel@lists.infradead.org>
-References: <20190901203532.2615-1-hdegoede@redhat.com>
- <20190901203532.2615-6-hdegoede@redhat.com>
- <CAOtvUMdd+V5pesw+O-kk9_JB5YpxUM+hU+Uu=kiMvOL9d0AziQ@mail.gmail.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-Message-ID: <0d55a6a7-9cca-38cb-97a2-558280fdc122@redhat.com>
-Date:   Tue, 3 Sep 2019 09:51:12 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
-MIME-Version: 1.0
-In-Reply-To: <CAOtvUMdd+V5pesw+O-kk9_JB5YpxUM+hU+Uu=kiMvOL9d0AziQ@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hi,
+On Tue, Sep 3, 2019 at 10:51 AM Hans de Goede <hdegoede@redhat.com> wrote:
+>
+> Hi,
+>
+> On 03-09-19 09:45, Gilad Ben-Yossef wrote:
+> > On Sun, Sep 1, 2019 at 11:36 PM Hans de Goede <hdegoede@redhat.com> wro=
+te:
+> >>
+> >> Rename the algo_init arrays to cc_algo_init so that they do not confli=
+ct
+> >> with the functions declared in crypto/sha256.h.
+> >>
+> >> This is a preparation patch for folding crypto/sha256.h into crypto/sh=
+a.h.
+> >
+> > I'm fine with the renaming.
+> >
+> > Signed-off-by: Gilad Ben-Yossef <gilad@benyossef.com>
+>
+> Your Signed-off-by is only used when the patches passes through your hand=
+s,
+> since Herbert will likely apply this directly that is not the case.
+>
+> You want either Acked-by or Reviewed-by to signal that you are ok with th=
+is patch.
+>
 
-On 03-09-19 09:45, Gilad Ben-Yossef wrote:
-> On Sun, Sep 1, 2019 at 11:36 PM Hans de Goede <hdegoede@redhat.com> wrote:
->>
->> Rename the algo_init arrays to cc_algo_init so that they do not conflict
->> with the functions declared in crypto/sha256.h.
->>
->> This is a preparation patch for folding crypto/sha256.h into crypto/sha.h.
-> 
-> I'm fine with the renaming.
-> 
-> Signed-off-by: Gilad Ben-Yossef <gilad@benyossef.com>
+Yes, you are right of course. Wrong macro... sorry about that.
 
-Your Signed-off-by is only used when the patches passes through your hands,
-since Herbert will likely apply this directly that is not the case.
+Acked-by: Gilad Ben-Yossef <gilad@benyossef.com>
 
-You want either Acked-by or Reviewed-by to signal that you are ok with this patch.
 
-Regards,
+--=20
+Gilad Ben-Yossef
+Chief Coffee Drinker
 
-Hans
+values of =CE=B2 will give rise to dom!
