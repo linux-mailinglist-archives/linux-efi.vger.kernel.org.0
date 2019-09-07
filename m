@@ -2,104 +2,98 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 059E4AC008
-	for <lists+linux-efi@lfdr.de>; Fri,  6 Sep 2019 21:00:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F70EAC3E3
+	for <lists+linux-efi@lfdr.de>; Sat,  7 Sep 2019 03:34:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2405198AbfIFTAo (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 6 Sep 2019 15:00:44 -0400
-Received: from mga11.intel.com ([192.55.52.93]:19366 "EHLO mga11.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2405197AbfIFTAo (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Fri, 6 Sep 2019 15:00:44 -0400
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 06 Sep 2019 12:00:42 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,474,1559545200"; 
-   d="scan'208";a="384313381"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by fmsmga006.fm.intel.com with ESMTP; 06 Sep 2019 12:00:41 -0700
-Received: from andy by smile with local (Exim 4.92.1)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1i6JTM-0004KJ-BX; Fri, 06 Sep 2019 22:00:40 +0300
-Date:   Fri, 6 Sep 2019 22:00:40 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Dave Young <dyoung@redhat.com>
-Cc:     Jean Delvare <jdelvare@suse.de>, kexec@lists.infradead.org,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Eric Biederman <ebiederm@xmission.com>,
-        linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
-        matt@codeblueprint.co.uk, ard.biesheuvel@linaro.org
-Subject: Re: [PATCH v1 2/2] firmware: dmi_scan: Pass dmi_entry_point to
- kexec'ed kernel
-Message-ID: <20190906190040.GA16211@smile.fi.intel.com>
-References: <20161202195416.58953-1-andriy.shevchenko@linux.intel.com>
- <20161202195416.58953-3-andriy.shevchenko@linux.intel.com>
- <20161215122856.7d24b7a8@endymion>
- <20161216023213.GA4505@dhcp-128-65.nay.redhat.com>
- <1481890738.9552.70.camel@linux.intel.com>
- <20161216143330.69e9c8ee@endymion>
- <20161217105721.GB6922@dhcp-128-65.nay.redhat.com>
+        id S2406389AbfIGBeE (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 6 Sep 2019 21:34:04 -0400
+Received: from mail-vs1-f65.google.com ([209.85.217.65]:44346 "EHLO
+        mail-vs1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2405697AbfIGBeE (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 6 Sep 2019 21:34:04 -0400
+Received: by mail-vs1-f65.google.com with SMTP id w195so5269509vsw.11
+        for <linux-efi@vger.kernel.org>; Fri, 06 Sep 2019 18:34:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=uc1hOrF9ibmJNqiYIobP0plOzk8mhKfiXUc7Z1z1lko=;
+        b=n6Ithw0jNyS2fiM9jzhRn8PdvbLxs57sVT7jxWXJlv8K+qrEpitv849lMBpgflDuSF
+         Q3J0lMTl2talLlNckWz0Ev8RDGsJqJ2DgFr0WjxXc88WmUtsXuEX3zExoL8X46zrUvaz
+         jxpHeKU0Zx/teSqkpW0u/N4cq3wacvLmpKneNEOw01qNPmDR3PsnateXSvwWPOLgeCPg
+         LrrZgIdSNCAX24s/Ky3G7W1UkjG6/33Og1F83e2oOMhStojIHgCtm8X61sjIpITWPwKF
+         BupAJ4I/pVEAJ9FXeWY9K4U77k9cnuRM63Jor8EcQmySgxGKMcfePyVV7mtk1c9mTcNl
+         l3GQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=uc1hOrF9ibmJNqiYIobP0plOzk8mhKfiXUc7Z1z1lko=;
+        b=rLrpx2ygvO/7tR9q5uPV9qq+I5j8fye4p8k1pO4w19RMsHUJst1NwpgLuixKhzIyGF
+         IAv9Pd+u7QxxGuyMJE4IAE9/KxyrGSBO7RaEI/mxAMS4Kjms/3QysqNdazznOEXYBaDi
+         M6vOVZfxzK2BO6HKHztKlFt6o8QVrIOsTt8BU6wP9TnPSsX1KY5Ptu3oTfrJcf24qsQ8
+         bklWl4gnSg2eMh2q6magMvZmjAP2E8eyfkeucnfypR+yDIL9DPHZUKKNPMJFVSYqbCc9
+         ngkfEOs/y8cvDlel4hm2rQVCaL4bVFCw4oEHzeDWA0aQsvFdCWvuX8yc9neRVEsHJwY9
+         vYZw==
+X-Gm-Message-State: APjAAAVoiFkhVOWSl3zIAdteQyuT+B6NKNycxHgPYP7FdYQEFNDa61as
+        ne1A35Jk3kQiuoY+TyoPYFqJ0gWsNTEpjOFzpPE=
+X-Google-Smtp-Source: APXvYqwppDTyTsRtDCok5ZWaLpcUCsb5zmuSF5QAQV9oRs2Oep8MEvcF+/EelXqCioRufi5T8RJBBbHcDma12+xdMcM=
+X-Received: by 2002:a67:fbc8:: with SMTP id o8mr3817349vsr.173.1567820043354;
+ Fri, 06 Sep 2019 18:34:03 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20161217105721.GB6922@dhcp-128-65.nay.redhat.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Received: by 2002:a1f:c545:0:0:0:0:0 with HTTP; Fri, 6 Sep 2019 18:34:02 -0700 (PDT)
+Reply-To: waltonalice41@gmail.com
+From:   Alice Walton <saraharmony501@gmail.com>
+Date:   Sat, 7 Sep 2019 02:34:02 +0100
+Message-ID: <CAHoQAbVdw6EB8B7rjg4UG=gmhj6E4z8sX3RAD7V5D1V4Dt3jFg@mail.gmail.com>
+Subject: Please forgive me
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Sat, Dec 17, 2016 at 06:57:21PM +0800, Dave Young wrote:
-> On 12/16/16 at 02:33pm, Jean Delvare wrote:
-> > On Fri, 16 Dec 2016 14:18:58 +0200, Andy Shevchenko wrote:
-> > > On Fri, 2016-12-16 at 10:32 +0800, Dave Young wrote:
-> > > > On 12/15/16 at 12:28pm, Jean Delvare wrote:
-> > > > > I am no kexec expert but this confuses me. Shouldn't the second
-> > > > > kernel have access to the EFI systab as the first kernel does? It
-> > > > > includes many more pointers than just ACPI and DMI tables, and it
-> > > > > would seem inconvenient to have to pass all these addresses
-> > > > > individually explicitly.
-> > > > 
-> > > > Yes, in modern linux kernel, kexec has the support for EFI, I think it
-> > > > should work naturally at least in x86_64.
-> > > 
-> > > Thanks for this good news!
-> > > 
-> > > Unfortunately Intel Galileo is 32-bit platform.
-> > 
-> > If it was done for X86_64 then maybe it can be generalized to X86?
-> 
-> For X86_64, we have a new way for efi runtime memmory mapping, in i386
-> code it still use old ioremap way. It is impossible to use same way as
-> the X86_64 since the virtual address space is limited.
-> 
-> But maybe for 32bit, kexec kernel can run in physical mode, but I'm not
-> sure, I would suggest Andy to do a test first with efi=noruntime for
-> kexec 2nd kernel.
-
-Sorry for a delay.
-Eventually I found time to check this.
-
-Unfortunately the efi=noruntime didn't help:
-
-# uname -a
-Linux buildroot 5.3.0-rc7+ #17 Thu Sep 5 16:08:22 EEST 2019 i586 GNU/Linux
-# dmidecode
-# dmidecode 4.2
-Scanning /dev/mem for entry point.
-# No SMBIOS nor DMI entry point found, sorry.
-#
-# cat /proc/cmdline
-... ignore_loglevel efi=noruntime earlycon=efifb acpi_rsdp=0xf01e014
-
-So, I am all ears to anything else to try.
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+TXnCoERlYXJlc3QsDQoNClBsZWFzZcKgZm9yZ2l2ZcKgbWXCoGZvcsKgc3RyZXNzaW5nwqB5b3XC
+oHdpdGjCoG15wqBwcmVkaWNhbWVudHPCoGFzwqBJwqBrbm93DQp0aGF0wqB0aGlzwqBsZXR0ZXLC
+oG1hecKgY29tZcKgdG/CoHlvdcKgYXPCoGHCoGJpZ8Kgc3VycHJpc2UuDQoNCkFjdHVhbGx5LMKg
+ScKgY2FtZcKgYWNyb3NzwqB5b3VywqBFLW1haWzCoGZyb23CoG15wqBwZXJzb25hbMKgc2VhcmNo
+wqBhZnRlcndhcmQNCknCoGRlY2lkZWTCoHRvwqBlbWFpbMKgeW91wqBkaXJlY3RsecKgYmVsaWV2
+aW5nwqB0aGF0wqB5b3XCoHdpbGzCoGJlwqBob25lc3TCoHRvDQpmdWxmaWzCoG15wqBmaW5hbMKg
+d2lzaMKgYmVmb3JlwqBhbnl0aGluZ8KgaGFwcGVuc8KgdG/CoG1lLsKgTWVhbndoaWxlLMKgScKg
+YW0NCk1hZGFtwqBBbGljZcKgV2FsdG9uLMKgNzHCoHllYXJzwqBvbGTCoGNoaWxkbGVzc8Kgd2lk
+b3fCoGZyb23CoEZyYW5jZcKgYnV0wqBpDQpyZXNpZGXCoGFuZMKgZG9pbmfCoEdvbGTCoG1pbmlu
+Z8KgYnVzaW5lc3PCoGluwqBBZnJpY2HCoGJlZm9yZcKgacKgZmFsbMKgc2ljay4NCg0KScKgYW3C
+oHN1ZmZlcmluZ8KgZnJvbcKgQWRlbm9jYXJjaW5vbWHCoENhbmNlcsKgb2bCoHRoZcKgbHVuZ3PC
+oGZvcsKgdGhlwqBwYXN0wqA4DQp5ZWFyc8KgYW5kwqBmcm9twqBhbGzCoGluZGljYXRpb27CoG15
+wqBjb25kaXRpb27CoGlzwqByZWFsbHnCoGRldGVyaW9yYXRpbmfCoGFzDQptecKgZG9jdG9yc8Kg
+aGF2ZcKgY29uZmlybWVkwqBhbmTCoGNvdXJhZ2VvdXNsecKgYWR2aXNlZMKgbWXCoHRoYXTCoEnC
+oG1hecKgbm90DQpsaXZlwqBiZXlvbmTCoDPCoHdlZWtzwqBmcm9twqBub3fCoGZvcsKgdGhlwqBy
+ZWFzb27CoHRoYXTCoG15wqB0dW1vcsKgaGFzwqByZWFjaGVkDQphwqBjcml0aWNhbMKgc3RhZ2XC
+oHdoaWNowqBoYXPCoGRlZmlsZWTCoGFsbMKgZm9ybXPCoG9mwqBtZWRpY2FswqB0cmVhdG1lbnQu
+DQoNClNpbmNlwqBtecKgZGF5c8KgYXJlwqBudW1iZXJlZCzCoEnigJl2ZcKgZGVjaWRlZMKgd2ls
+bGluZ2x5wqB0b8KgZnVsZmlswqBteQ0KbG9uZy10aW1lwqB2b3fCoHRvwqBkb25hdGXCoHRvwqB0
+aGXCoGxlc3PCoHByaXZpbGVnZXPCoHRoZcKgc3VtwqBvZigkMTguNQ0KbWlsbGlvbsKgZG9sbGFy
+cynCoEnCoGRlcG9zaXRlZMKgaW7CoG15wqBvZmZzaG9yZcKgYWNjb3VudMKgb3ZlcsKgN8KgeWVh
+cnPCoG5vdw0KYmVjYXVzZcKgScKgaGF2ZcKgdHJpZWTCoHRvwqBoYW5kbGXCoHRoaXPCoHByb2pl
+Y3TCoGJ5wqBteXNlbGbCoGJ1dMKgScKgaGF2ZcKgc2Vlbg0KdGhhdMKgbXnCoGhlYWx0aMKgY291
+bGTCoG5vdMKgYWxsb3fCoG1lwqB0b8KgZG/CoHNvwqBhbnltb3JlLg0KDQpNecKgcHJvbWlzZcKg
+dG/CoEdvZMKgaW5jbHVkZXPCoGJ1aWxkaW5nwqBvZsKgd2VsbC1lcXVpcHBlZMKgY2hhcml0eQ0K
+Zm91bmRhdGlvbi9ob3NwaXRhbMKgYW5kwqBhwqB0ZWNobmljYWzCoHNjaG9vbMKgZm9ywqB0aGXC
+oG9ycGhhbnPCoGFuZMKgbGVzcw0KcHJpdmlsZWdlcy4NCg0KU2luY2XCoGnCoGFtwqBub3TCoGNh
+cGFibGXCoHRvwqBoYW5kbGXCoHRoaXPCoGFnYWluwqBteXNlbGbCoGR1ZcKgdG/CoG15wqBjcml0
+aWNhbA0KaGVhbHRowqBjb25kaXRpb24scGxlYXNlwqBpwqBuZWVkwqB5b3VywqBjb25zZW50wqB0
+b8KgaGVscMKgbWXCoHJlY2VpdmXCoG15DQptb25lecKgZnJvbcKgdGhlwqBiYW5rwqBhbmTCoHVz
+ZcKgaXTCoHRvwqBkb8KgdGhpc8KgZGl2aW5lwqB3b3Jrc8Kgb2bCoEdvZMKgaW7CoHlvdXINCmNv
+dW50cnnCoGluwqBtecKgbmFtZcKgc2/CoHRoYXTCoG15wqBzb3VswqBjYW7CoGJlwqBhdMKgcmVz
+dMKgaWbCoGFueXRoaW5nwqBoYXBwZW5zDQp0b8KgbWUuDQoNCklmwqB5b3XCoHdpbGzCoGJlwqBo
+b25lc3QswqBraW5kwqBhbmTCoHdpbGxpbmfCoHRvwqBhc3Npc3TCoG1lwqBoYW5kbGXCoHRoaXMN
+CmNoYXJpdHnCoHByb2plY3TCoGFzwqBJ4oCZdmXCoG1lbnRpb25lZMKgaGVyZSzCoEnCoHdpbGzC
+oGxpa2XCoHlvdcKgdG/CoHByb3ZpZGXCoG1lDQp5b3VywqBwZXJzb25hbMKgZGF0YcKgbGlrZSwN
+Cg0KKDEpwqBZb3VywqBmdWxswqBuYW1lOg0KKDIpwqBjb3VudHJ5Og0KKDMpwqBPY2N1cGF0aW9u
+Og0KKDQpwqBwaG9uZcKgbnVtYmVyOg0KKDUpwqBBZ2U6DQoNCkxldMKgbWXCoGhhdmXCoHRoaXPC
+oGRhdGHCoHNvwqB0aGF0wqBpwqBjYW7CoGxpbmvCoHlvdcKgdXDCoHdpdGjCoG15wqBiYW5rwqBh
+c8KgbXkNCnJlcHJlc2VudGF0aXZlwqBhbmTCoHJlY2VpdmVywqBvZsKgdGhlwqBmdW5kc8Kgbm93
+wqB0aGF0wqBpwqBhbcKgc3RpbGzCoGFsaXZlLg0KDQpXYXJtZXN0wqBSZWdhcmRzIQ0KTXJzLsKg
+QWxpY2XCoFdhbHRvbg0K
