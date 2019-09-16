@@ -2,104 +2,113 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 40ADAB26C9
-	for <lists+linux-efi@lfdr.de>; Fri, 13 Sep 2019 22:43:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9FEBEB3978
+	for <lists+linux-efi@lfdr.de>; Mon, 16 Sep 2019 13:35:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388871AbfIMUnz (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 13 Sep 2019 16:43:55 -0400
-Received: from mail-oi1-f194.google.com ([209.85.167.194]:41822 "EHLO
-        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388262AbfIMUnz (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 13 Sep 2019 16:43:55 -0400
-Received: by mail-oi1-f194.google.com with SMTP id w17so3757925oiw.8
-        for <linux-efi@vger.kernel.org>; Fri, 13 Sep 2019 13:43:54 -0700 (PDT)
+        id S1731387AbfIPLfz (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 16 Sep 2019 07:35:55 -0400
+Received: from mail-wr1-f67.google.com ([209.85.221.67]:42511 "EHLO
+        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727479AbfIPLfz (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 16 Sep 2019 07:35:55 -0400
+Received: by mail-wr1-f67.google.com with SMTP id q14so38456331wrm.9;
+        Mon, 16 Sep 2019 04:35:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=yOAUX4OdLpvo9WBZDLLsREmtWOFwmYmLGnIHP0wTxJg=;
-        b=FNPVEbbUgChfq2Et92FLukPrI0Ko5FIwjYGbGaIthuaUp6cj/KZh1K5INM6fmarDAF
-         2j81KsIy5HT6vJ8wcaMBkthk28s4y3RUf8LNFioYxMSqVUYSQIySzLUJwTi7davloXPF
-         ieSg5/GlYQMurJUp//hCHmVB7pAs6oYAHSMn2vEQ7NPw4oyZXnScEe+36+k3T6TtXUh/
-         KzArSqNeHx+ZfkPWBtW8NBcBkyRAH2ZlsXIQbZJaH2ZoUK+rFJ2pnQY9eTEZRBtzv3wW
-         VHA5CdViLIHcDBhXGmPpwVXv90woHPdEdahns75QbRuWc8eB79aIjaYXOVKjytYqcbhZ
-         mJTw==
+        d=gmail.com; s=20161025;
+        h=sender:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition:user-agent;
+        bh=Mv491UnCKS4JNd7z2SOkwV0dvUpBxBoTZTqacB4oBDQ=;
+        b=QlNxlAIQbvJb3OhnUhYCbkS2E2cmf2D/kPuUxGHT2UDqE/PX6Q+oUl305tVKtFn4Ht
+         zIK+pTyv1hzrnV2DLspJUU8QUSzIXviK30cKnUvMtXqkVcES+MtKtJaRYXSNqV9W1fGU
+         CegCxpAUaejap0b/1ehh1oZewOU1lyOYkZy5UhULLRSE+3LAyMCGBnX2Vx7QZ1r6+2Vk
+         Pc+1vW9DOpMnTthcU93e4Hg+6L5idXIbDwBuuGTSr6nH6f3AibmiRBBiEQH3yE5oEWQh
+         Zf40Kum8dKBkdOv4XNbMywvSDrrsCBYqeySGTwyXcQdtbPRWE2zkgjTtcV7kX7pfJJaP
+         NWzA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=yOAUX4OdLpvo9WBZDLLsREmtWOFwmYmLGnIHP0wTxJg=;
-        b=Hl01gkS3h1L+QImjQdn8vOHd/DGL2K8KVRDUiCyNLK7ETDdk0Uzk4Vwfr+BUB4IQlp
-         dvfyDrigx79a6Qiml/MU91djieqx9BeglfL+WbAlzIkzLfJWrteQEnJGkpUJzrEC1Cls
-         bH/ETkVLJdeFV/Q6smXzYxo73KKgUPISPWcto/1dr8ZsYdKEEpJt4tifwAplMS4HLUMI
-         kd9JMBNLzYlbyctS5EGBuNDljvOFPEavXgiBy/PYjq+k0d0ityOEECxtLMjJkDv2a3S6
-         9PTVSPHG7mjuj+vvy0Gus625eC+OVrZpl82onbFmHebB+Sl1gTh7DBbPvuvc6saC2iMR
-         I/4Q==
-X-Gm-Message-State: APjAAAXZLZsn02x1X4fcih6hN00T58vhVquMCWN6IEVTQpHUhb1lCWwS
-        1r/ZT/SmsHciaNlqGNfSLF4cIcrhYJiDn1UiJL13nQ==
-X-Google-Smtp-Source: APXvYqxUiyLctoyFRhF21T9ndQ4dGulfc4iDnHPJOrxuNoKnHrPQPdxE8GNpAd5B0JU02LHWbT6/iFfR6ZReTjR9HcI=
-X-Received: by 2002:aca:4b05:: with SMTP id y5mr4055623oia.70.1568407434384;
- Fri, 13 Sep 2019 13:43:54 -0700 (PDT)
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :mime-version:content-disposition:user-agent;
+        bh=Mv491UnCKS4JNd7z2SOkwV0dvUpBxBoTZTqacB4oBDQ=;
+        b=SneGaGof9GNMahPws/mDELkkizRrBXevERSjf7p7U1qX1zDYG6JCKWmuBH+bphLgm3
+         O7OOwHdrJV9DsFZ+A1BHsb6mba2rMdfO5J7O34mS54M0/VQzIDe7U+QijyJB8Ls6hr+X
+         VjSFacuR5jjHACcUFImBYyDfLOzQxf53gkYFfsVMKk4CfUhVLLi0WFxICeVt47xSOdGT
+         Ql8tKR0gpLbkO1tZAVVKYdxawh9VPeW5EVOJueZnJj9b7hfBg8I5ajn8iTC8TD+MbZVx
+         BtjejpzuboZqDZgNgTPOS4gXeFL2zBn4f8s32BSk7AiHmuQO7+j7Kbm/VADCxVqSiU5q
+         wJjw==
+X-Gm-Message-State: APjAAAVSkyqD9yiC4Fuc+5d59+KtIgThxqvS5gEwihfj7DQl4R4pSBT2
+        Nes9Twyq0OqVdci/kW8fssYJir4d
+X-Google-Smtp-Source: APXvYqzFvF/jO3IjT5ZQsh3FJ2YQUpXu8iu759xLt+TfBC7t0w52DcNJOukvVWSAoosXgI55ZsTjIQ==
+X-Received: by 2002:a05:6000:162e:: with SMTP id v14mr1456582wrb.112.1568633752298;
+        Mon, 16 Sep 2019 04:35:52 -0700 (PDT)
+Received: from gmail.com (2E8B0CD5.catv.pool.telekom.hu. [46.139.12.213])
+        by smtp.gmail.com with ESMTPSA id y13sm74527067wrg.8.2019.09.16.04.35.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 16 Sep 2019 04:35:51 -0700 (PDT)
+Date:   Mon, 16 Sep 2019 13:35:49 +0200
+From:   Ingo Molnar <mingo@kernel.org>
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     linux-kernel@vger.kernel.org,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        James Morse <james.morse@arm.com>, linux-efi@vger.kernel.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Borislav Petkov <bp@alien8.de>
+Subject: [GIT PULL] EFI changes for v5.4
+Message-ID: <20190916113549.GA76922@gmail.com>
 MIME-Version: 1.0
-References: <156712993795.1616117.3781864460118989466.stgit@dwillia2-desk3.amr.corp.intel.com>
- <156712996407.1616117.11409311856083390862.stgit@dwillia2-desk3.amr.corp.intel.com>
- <CAKv+Gu_Bg-siUDodOu26GQO2L0xEJXxPZehPJtd0FRhD=-ubJw@mail.gmail.com>
-In-Reply-To: <CAKv+Gu_Bg-siUDodOu26GQO2L0xEJXxPZehPJtd0FRhD=-ubJw@mail.gmail.com>
-From:   Dan Williams <dan.j.williams@intel.com>
-Date:   Fri, 13 Sep 2019 13:43:42 -0700
-Message-ID: <CAPcyv4jPsLNVNm4mAbhZe07eWX+ztrovHEmT=Wt2pBxOCe14aQ@mail.gmail.com>
-Subject: Re: [PATCH v5 05/10] x86, efi: Add efi_fake_mem support for EFI_MEMORY_SP
-To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        "the arch/x86 maintainers" <x86@kernel.org>,
-        Borislav Petkov <bp@alien8.de>, Ingo Molnar <mingo@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Vishal L Verma <vishal.l.verma@intel.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, Sep 13, 2019 at 12:49 PM Ard Biesheuvel
-<ard.biesheuvel@linaro.org> wrote:
->
-> On Fri, 30 Aug 2019 at 03:07, Dan Williams <dan.j.williams@intel.com> wrote:
-> >
-> ...
-> > diff --git a/drivers/firmware/efi/Makefile b/drivers/firmware/efi/Makefile
-> > index 4ac2de4dfa72..d7a6db03ea79 100644
-> > --- a/drivers/firmware/efi/Makefile
-> > +++ b/drivers/firmware/efi/Makefile
-> > @@ -20,13 +20,16 @@ obj-$(CONFIG_UEFI_CPER)                     += cper.o
-> >  obj-$(CONFIG_EFI_RUNTIME_MAP)          += runtime-map.o
-> >  obj-$(CONFIG_EFI_RUNTIME_WRAPPERS)     += runtime-wrappers.o
-> >  obj-$(CONFIG_EFI_STUB)                 += libstub/
-> > -obj-$(CONFIG_EFI_FAKE_MEMMAP)          += fake_mem.o
-> > +obj-$(CONFIG_EFI_FAKE_MEMMAP)          += fake_map.o
-> >  obj-$(CONFIG_EFI_BOOTLOADER_CONTROL)   += efibc.o
-> >  obj-$(CONFIG_EFI_TEST)                 += test/
-> >  obj-$(CONFIG_EFI_DEV_PATH_PARSER)      += dev-path-parser.o
-> >  obj-$(CONFIG_APPLE_PROPERTIES)         += apple-properties.o
-> >  obj-$(CONFIG_EFI_RCI2_TABLE)           += rci2-table.o
-> >
-> > +fake_map-y                             += fake_mem.o
-> > +fake_map-$(CONFIG_X86)                 += x86-fake_mem.o
-> > +
->
-> Please use
->
-> fake-mem-$(CONFIG_X86) := x86-fake_mem.o
-> obj-$(CONFIG_EFI_FAKE_MEMMAP) += fake_mem.o $(fake-mem-y)
+Linus,
 
-Ok, looks good.
+Please pull the latest efi-core-for-linus git tree from:
 
->
-> instead, and please use either - or _ in filenames, not both.
+   git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git efi-core-for-linus
 
-Fair enough.
+   # HEAD: d3dc0168e93233ba4d4ed9a2c506c9d2b8d8cd33 Merge tag 'efi-next' of git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi into efi/core
+
+The changes in this cycle were:
+
+ - Refactoring of the EFI config table handling across architectures.
+ - Add support for the Dell EMC OEM config table.
+ - Include AER diagnostic output to CPER handling of fatal PCIe errors.
+
+ Thanks,
+
+	Ingo
+
+------------------>
+Ard Biesheuvel (3):
+      efi: x86: move efi_is_table_address() into arch/x86
+      efi/x86: move UV_SYSTAB handling into arch/x86
+      efi: ia64: move SAL systab handling out of generic EFI code
+
+Narendra K (1):
+      efi: Export Runtime Configuration Interface table to sysfs
+
+Xiaofei Tan (1):
+      efi: cper: print AER info of PCIe fatal error
+
+
+ Documentation/ABI/testing/sysfs-firmware-efi |   8 ++
+ arch/ia64/include/asm/sal.h                  |   1 +
+ arch/ia64/include/asm/sn/sn_sal.h            |   2 +-
+ arch/ia64/kernel/efi.c                       |   3 +
+ arch/ia64/kernel/setup.c                     |   2 +-
+ arch/x86/include/asm/efi.h                   |   5 +
+ arch/x86/include/asm/uv/uv.h                 |   4 +-
+ arch/x86/mm/ioremap.c                        |   1 +
+ arch/x86/platform/efi/efi.c                  |  39 ++++++-
+ arch/x86/platform/uv/bios_uv.c               |  10 +-
+ drivers/firmware/efi/Kconfig                 |  13 +++
+ drivers/firmware/efi/Makefile                |   1 +
+ drivers/firmware/efi/cper.c                  |  15 +++
+ drivers/firmware/efi/efi.c                   |  39 +------
+ drivers/firmware/efi/rci2-table.c            | 147 +++++++++++++++++++++++++++
+ include/linux/efi.h                          |  14 +--
+ 16 files changed, 251 insertions(+), 53 deletions(-)
+ create mode 100644 drivers/firmware/efi/rci2-table.c
