@@ -2,113 +2,56 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9FEBEB3978
-	for <lists+linux-efi@lfdr.de>; Mon, 16 Sep 2019 13:35:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 06DFAB4509
+	for <lists+linux-efi@lfdr.de>; Tue, 17 Sep 2019 03:00:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731387AbfIPLfz (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 16 Sep 2019 07:35:55 -0400
-Received: from mail-wr1-f67.google.com ([209.85.221.67]:42511 "EHLO
-        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727479AbfIPLfz (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 16 Sep 2019 07:35:55 -0400
-Received: by mail-wr1-f67.google.com with SMTP id q14so38456331wrm.9;
-        Mon, 16 Sep 2019 04:35:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:date:from:to:cc:subject:message-id:mime-version
-         :content-disposition:user-agent;
-        bh=Mv491UnCKS4JNd7z2SOkwV0dvUpBxBoTZTqacB4oBDQ=;
-        b=QlNxlAIQbvJb3OhnUhYCbkS2E2cmf2D/kPuUxGHT2UDqE/PX6Q+oUl305tVKtFn4Ht
-         zIK+pTyv1hzrnV2DLspJUU8QUSzIXviK30cKnUvMtXqkVcES+MtKtJaRYXSNqV9W1fGU
-         CegCxpAUaejap0b/1ehh1oZewOU1lyOYkZy5UhULLRSE+3LAyMCGBnX2Vx7QZ1r6+2Vk
-         Pc+1vW9DOpMnTthcU93e4Hg+6L5idXIbDwBuuGTSr6nH6f3AibmiRBBiEQH3yE5oEWQh
-         Zf40Kum8dKBkdOv4XNbMywvSDrrsCBYqeySGTwyXcQdtbPRWE2zkgjTtcV7kX7pfJJaP
-         NWzA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
-         :mime-version:content-disposition:user-agent;
-        bh=Mv491UnCKS4JNd7z2SOkwV0dvUpBxBoTZTqacB4oBDQ=;
-        b=SneGaGof9GNMahPws/mDELkkizRrBXevERSjf7p7U1qX1zDYG6JCKWmuBH+bphLgm3
-         O7OOwHdrJV9DsFZ+A1BHsb6mba2rMdfO5J7O34mS54M0/VQzIDe7U+QijyJB8Ls6hr+X
-         VjSFacuR5jjHACcUFImBYyDfLOzQxf53gkYFfsVMKk4CfUhVLLi0WFxICeVt47xSOdGT
-         Ql8tKR0gpLbkO1tZAVVKYdxawh9VPeW5EVOJueZnJj9b7hfBg8I5ajn8iTC8TD+MbZVx
-         BtjejpzuboZqDZgNgTPOS4gXeFL2zBn4f8s32BSk7AiHmuQO7+j7Kbm/VADCxVqSiU5q
-         wJjw==
-X-Gm-Message-State: APjAAAVSkyqD9yiC4Fuc+5d59+KtIgThxqvS5gEwihfj7DQl4R4pSBT2
-        Nes9Twyq0OqVdci/kW8fssYJir4d
-X-Google-Smtp-Source: APXvYqzFvF/jO3IjT5ZQsh3FJ2YQUpXu8iu759xLt+TfBC7t0w52DcNJOukvVWSAoosXgI55ZsTjIQ==
-X-Received: by 2002:a05:6000:162e:: with SMTP id v14mr1456582wrb.112.1568633752298;
-        Mon, 16 Sep 2019 04:35:52 -0700 (PDT)
-Received: from gmail.com (2E8B0CD5.catv.pool.telekom.hu. [46.139.12.213])
-        by smtp.gmail.com with ESMTPSA id y13sm74527067wrg.8.2019.09.16.04.35.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Sep 2019 04:35:51 -0700 (PDT)
-Date:   Mon, 16 Sep 2019 13:35:49 +0200
-From:   Ingo Molnar <mingo@kernel.org>
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     linux-kernel@vger.kernel.org,
+        id S2388368AbfIQBAW (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 16 Sep 2019 21:00:22 -0400
+Received: from mail.kernel.org ([198.145.29.99]:60502 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2388338AbfIQBAW (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Mon, 16 Sep 2019 21:00:22 -0400
+Subject: Re: [GIT PULL] EFI changes for v5.4
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1568682021;
+        bh=xh7OMPh/XeA91mjrPGOfWB+Ju+MvKdz9jJIN7Zmaviw=;
+        h=From:In-Reply-To:References:Date:To:Cc:From;
+        b=e8XQbaYPNhI7P7p6W5fwo/0mRBnrxn2xL515q3gLq+4IMx7B+3jtqFV/aTQwJzxuT
+         UuoTODEPSep5L+0YYKT6JP7GMzxYkxBbfEanLh8lrzJpe+/zg2OfDjjZgkdDLgPO8w
+         J2ZX7hd2FwNmLjZcdTrCvT8g1OZ6MGqGB6D7tavE=
+From:   pr-tracker-bot@kernel.org
+In-Reply-To: <20190916113549.GA76922@gmail.com>
+References: <20190916113549.GA76922@gmail.com>
+X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
+X-PR-Tracked-Message-Id: <20190916113549.GA76922@gmail.com>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git efi-core-for-linus
+X-PR-Tracked-Commit-Id: d3dc0168e93233ba4d4ed9a2c506c9d2b8d8cd33
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: cc9b499a1f71696054a2771aae504c53eecff31d
+Message-Id: <156868202161.3683.5524767636770902438.pr-tracker-bot@kernel.org>
+Date:   Tue, 17 Sep 2019 01:00:21 +0000
+To:     Ingo Molnar <mingo@kernel.org>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        linux-kernel@vger.kernel.org,
         Ard Biesheuvel <ard.biesheuvel@linaro.org>,
         James Morse <james.morse@arm.com>, linux-efi@vger.kernel.org,
         Thomas Gleixner <tglx@linutronix.de>,
         Borislav Petkov <bp@alien8.de>
-Subject: [GIT PULL] EFI changes for v5.4
-Message-ID: <20190916113549.GA76922@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Linus,
+The pull request you sent on Mon, 16 Sep 2019 13:35:49 +0200:
 
-Please pull the latest efi-core-for-linus git tree from:
+> git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git efi-core-for-linus
 
-   git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git efi-core-for-linus
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/cc9b499a1f71696054a2771aae504c53eecff31d
 
-   # HEAD: d3dc0168e93233ba4d4ed9a2c506c9d2b8d8cd33 Merge tag 'efi-next' of git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi into efi/core
+Thank you!
 
-The changes in this cycle were:
-
- - Refactoring of the EFI config table handling across architectures.
- - Add support for the Dell EMC OEM config table.
- - Include AER diagnostic output to CPER handling of fatal PCIe errors.
-
- Thanks,
-
-	Ingo
-
------------------->
-Ard Biesheuvel (3):
-      efi: x86: move efi_is_table_address() into arch/x86
-      efi/x86: move UV_SYSTAB handling into arch/x86
-      efi: ia64: move SAL systab handling out of generic EFI code
-
-Narendra K (1):
-      efi: Export Runtime Configuration Interface table to sysfs
-
-Xiaofei Tan (1):
-      efi: cper: print AER info of PCIe fatal error
-
-
- Documentation/ABI/testing/sysfs-firmware-efi |   8 ++
- arch/ia64/include/asm/sal.h                  |   1 +
- arch/ia64/include/asm/sn/sn_sal.h            |   2 +-
- arch/ia64/kernel/efi.c                       |   3 +
- arch/ia64/kernel/setup.c                     |   2 +-
- arch/x86/include/asm/efi.h                   |   5 +
- arch/x86/include/asm/uv/uv.h                 |   4 +-
- arch/x86/mm/ioremap.c                        |   1 +
- arch/x86/platform/efi/efi.c                  |  39 ++++++-
- arch/x86/platform/uv/bios_uv.c               |  10 +-
- drivers/firmware/efi/Kconfig                 |  13 +++
- drivers/firmware/efi/Makefile                |   1 +
- drivers/firmware/efi/cper.c                  |  15 +++
- drivers/firmware/efi/efi.c                   |  39 +------
- drivers/firmware/efi/rci2-table.c            | 147 +++++++++++++++++++++++++++
- include/linux/efi.h                          |  14 +--
- 16 files changed, 251 insertions(+), 53 deletions(-)
- create mode 100644 drivers/firmware/efi/rci2-table.c
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.wiki.kernel.org/userdoc/prtracker
