@@ -2,56 +2,60 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 06DFAB4509
-	for <lists+linux-efi@lfdr.de>; Tue, 17 Sep 2019 03:00:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 06D3FB46E1
+	for <lists+linux-efi@lfdr.de>; Tue, 17 Sep 2019 07:33:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388368AbfIQBAW (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 16 Sep 2019 21:00:22 -0400
-Received: from mail.kernel.org ([198.145.29.99]:60502 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2388338AbfIQBAW (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Mon, 16 Sep 2019 21:00:22 -0400
-Subject: Re: [GIT PULL] EFI changes for v5.4
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1568682021;
-        bh=xh7OMPh/XeA91mjrPGOfWB+Ju+MvKdz9jJIN7Zmaviw=;
-        h=From:In-Reply-To:References:Date:To:Cc:From;
-        b=e8XQbaYPNhI7P7p6W5fwo/0mRBnrxn2xL515q3gLq+4IMx7B+3jtqFV/aTQwJzxuT
-         UuoTODEPSep5L+0YYKT6JP7GMzxYkxBbfEanLh8lrzJpe+/zg2OfDjjZgkdDLgPO8w
-         J2ZX7hd2FwNmLjZcdTrCvT8g1OZ6MGqGB6D7tavE=
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <20190916113549.GA76922@gmail.com>
-References: <20190916113549.GA76922@gmail.com>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <20190916113549.GA76922@gmail.com>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git efi-core-for-linus
-X-PR-Tracked-Commit-Id: d3dc0168e93233ba4d4ed9a2c506c9d2b8d8cd33
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: cc9b499a1f71696054a2771aae504c53eecff31d
-Message-Id: <156868202161.3683.5524767636770902438.pr-tracker-bot@kernel.org>
-Date:   Tue, 17 Sep 2019 01:00:21 +0000
-To:     Ingo Molnar <mingo@kernel.org>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-kernel@vger.kernel.org,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        James Morse <james.morse@arm.com>, linux-efi@vger.kernel.org,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Borislav Petkov <bp@alien8.de>
+        id S2392408AbfIQFd1 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-efi@lfdr.de>); Tue, 17 Sep 2019 01:33:27 -0400
+Received: from mail.11d03.mspz7.gob.ec ([190.214.23.250]:44294 "EHLO
+        mail.11d03.mspz7.gob.ec" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732971AbfIQFd1 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 17 Sep 2019 01:33:27 -0400
+X-Greylist: delayed 4343 seconds by postgrey-1.27 at vger.kernel.org; Tue, 17 Sep 2019 01:33:26 EDT
+Received: from localhost (localhost [127.0.0.1])
+        by mail.11d03.mspz7.gob.ec (Postfix) with ESMTP id 0F15340515DC2;
+        Mon, 16 Sep 2019 23:08:53 -0500 (-05)
+Received: from mail.11d03.mspz7.gob.ec ([127.0.0.1])
+        by localhost (mail.11d03.mspz7.gob.ec [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id 1lKx1Ye-443H; Mon, 16 Sep 2019 23:08:52 -0500 (-05)
+Received: from localhost (localhost [127.0.0.1])
+        by mail.11d03.mspz7.gob.ec (Postfix) with ESMTP id 9FF4C4051D828;
+        Mon, 16 Sep 2019 23:08:52 -0500 (-05)
+X-Virus-Scanned: amavisd-new at 11d03.mspz7.gob.ec
+Received: from mail.11d03.mspz7.gob.ec ([127.0.0.1])
+        by localhost (mail.11d03.mspz7.gob.ec [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id fwqMiCxJGDFv; Mon, 16 Sep 2019 23:08:52 -0500 (-05)
+Received: from [10.33.79.142] (unknown [105.4.0.133])
+        by mail.11d03.mspz7.gob.ec (Postfix) with ESMTPSA id C6C1D4051D846;
+        Mon, 16 Sep 2019 23:08:43 -0500 (-05)
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: =?utf-8?q?Wohlt=C3=A4tigkeitsspende_von_2=2E000=2E000_Millionen_Euro?=
+To:     Recipients <vicenta.sinche@11d03.mspz7.gob.ec>
+From:   ''Tayeb souami'' <vicenta.sinche@11d03.mspz7.gob.ec>
+Date:   Tue, 17 Sep 2019 06:08:34 +0200
+Reply-To: Tayebsouam.spende@gmail.com
+Message-Id: <20190917040843.C6C1D4051D846@mail.11d03.mspz7.gob.ec>
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The pull request you sent on Mon, 16 Sep 2019 13:35:49 +0200:
+Lieber Freund,
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git efi-core-for-linus
+Ich bin Herr Tayeb Souami, New Jersey, Vereinigte Staaten von Amerika, der Mega-Gewinner von $ 315million In Mega Millions Jackpot, spende ich an 5 zufällige Personen, wenn Sie diese E-Mail erhalten, dann wurde Ihre E-Mail nach einem Spinball ausgewählt.Ich habe den größten Teil meines Vermögens auf eine Reihe von Wohltätigkeitsorganisationen und Organisationen verteilt.Ich habe mich freiwillig dazu entschieden, die Summe von € 2.000.000,00 an Sie als eine der ausgewählten 5 zu spenden, um meine Gewinne zu überprüfen, sehen Sie bitte meine You Tube Seite unten.
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/cc9b499a1f71696054a2771aae504c53eecff31d
+UHR MICH HIER: https://www.youtube.com/watch?v=Z6ui8ZDQ6Ks
 
-Thank you!
+Das ist dein Spendencode: [TS530342018]
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.wiki.kernel.org/userdoc/prtracker
+Antworten Sie mit dem SPENDE-CODE an diese 
+
+E-Mail:Tayebsouam.spende@gmail.com
+
+Ich hoffe, Sie und Ihre Familie glücklich zu machen.
+
+Grüße
+Herr Tayeb Souami
