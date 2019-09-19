@@ -2,227 +2,91 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BBE06B7EBB
-	for <lists+linux-efi@lfdr.de>; Thu, 19 Sep 2019 18:06:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DFAFCB8087
+	for <lists+linux-efi@lfdr.de>; Thu, 19 Sep 2019 20:01:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388444AbfISQG3 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 19 Sep 2019 12:06:29 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:48320 "EHLO mx1.redhat.com"
+        id S2391241AbfISSBx (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 19 Sep 2019 14:01:53 -0400
+Received: from bear.techie.net ([205.134.185.202]:38512 "EHLO bear.techie.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2387433AbfISQG2 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Thu, 19 Sep 2019 12:06:28 -0400
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 126BC307D971;
-        Thu, 19 Sep 2019 16:06:28 +0000 (UTC)
-Received: from localhost.localdomain.com (ovpn-12-80.pek2.redhat.com [10.72.12.80])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 259D06013A;
-        Thu, 19 Sep 2019 16:06:10 +0000 (UTC)
-From:   Kairui Song <kasong@redhat.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Matthew Garrett <matthewgarrett@google.com>,
-        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        Baoquan He <bhe@redhat.com>, Dave Young <dyoung@redhat.com>,
-        x86@kernel.org, linux-efi@vger.kernel.org,
-        Kairui Song <kasong@redhat.com>
-Subject: [PATCH v2] x86, efi: never relocate kernel below lowest acceptable address
-Date:   Fri, 20 Sep 2019 00:05:21 +0800
-Message-Id: <20190919160521.13820-1-kasong@redhat.com>
+        id S2389114AbfISSBx (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Thu, 19 Sep 2019 14:01:53 -0400
+Received: by bear.techie.net (Postfix, from userid 545)
+        id 4DF7E22A0951; Thu, 19 Sep 2019 14:01:52 -0400 (EDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=techie.net; s=default;
+        t=1568916112; bh=Ij82XtQInROv8wfez7eqNzdkFhje3hpYfIIEz2dPhBs=;
+        h=Date:From:To:cc:Subject:In-Reply-To:References:From;
+        b=zeOTARKa6AY45YPFtLflBUFm7lJQtKmSo0Nn8snL13N3n7lffuYAJIiPWl1wIzBqJ
+         DePbaO0xUlbWpHFNFFmQY3JzG1Coc7qzoqmVpC8PVAbVfodqSahRzM5E7U+TocB4ON
+         MkcwgMXhYVlNBVuM34wRxp2x0PPSUtBBE01m2xpg=
+Received: from localhost (localhost [127.0.0.1])
+        by bear.techie.net (Postfix) with ESMTP id 31DBC22A094B;
+        Thu, 19 Sep 2019 14:01:52 -0400 (EDT)
+Date:   Thu, 19 Sep 2019 14:01:52 -0400 (EDT)
+From:   Scott Talbert <swt@techie.net>
+X-X-Sender: talbert@bear.techie.net
+To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>
+cc:     linux-efi <linux-efi@vger.kernel.org>
+Subject: Re: [PATCH] efi: don't iterate over EFI vars pointlessly if no SSDT
+ override was specified
+In-Reply-To: <CAKv+Gu95wtjPXRUF=wK3-Y6+zNcvaqpr+T4Z4-wV3OJH+oNgVg@mail.gmail.com>
+Message-ID: <alpine.DEB.2.21.1909191400240.3069@bear.techie.net>
+References: <20190911233239.5916-1-ard.biesheuvel@linaro.org> <alpine.DEB.2.21.1909121533270.30174@bear.techie.net> <CAKv+Gu95wtjPXRUF=wK3-Y6+zNcvaqpr+T4Z4-wV3OJH+oNgVg@mail.gmail.com>
+User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.48]); Thu, 19 Sep 2019 16:06:28 +0000 (UTC)
+Content-Type: text/plain; charset=US-ASCII; format=flowed
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Currently, kernel fails to boot on some HyperV VMs when using EFI.
-And it's a potential issue on all platforms.
+On Thu, 12 Sep 2019, Ard Biesheuvel wrote:
 
-It's caused a broken kernel relocation on EFI systems, when below three
-conditions are met:
+>>> The kernel command line option efivar_ssdt= allows a EFI variable name
+>>> to be specified which contains an ACPI SSDT table that will be loaded
+>>> into memory by the OS.
+>>>
+>>> Currently, that code will always iterate over the EFI variables and
+>>> compare each name with the provided name, even if the command line
+>>> option wasn't set to begin with.
+>>>
+>>> So bail early when no variable name was provided.
+>>>
+>>> Cc: Scott Talbert <swt@techie.net>
+>>> Signed-off-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+>>> ---
+>>> drivers/firmware/efi/efi.c | 3 +++
+>>> 1 file changed, 3 insertions(+)
+>>>
+>>> diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
+>>> index ad3b1f4866b3..8f020827cdd3 100644
+>>> --- a/drivers/firmware/efi/efi.c
+>>> +++ b/drivers/firmware/efi/efi.c
+>>> @@ -282,6 +282,9 @@ static __init int efivar_ssdt_load(void)
+>>>       void *data;
+>>>       int ret;
+>>>
+>>> +     if (!efivar_ssdt[0])
+>>> +             return 0;
+>>> +
+>>>       ret = efivar_init(efivar_ssdt_iter, &entries, true, &entries);
+>>>
+>>>       list_for_each_entry_safe(entry, aux, &entries, list) {
+>>
+>> Thanks for the quick fix!
+>>
+>> I can confirm this fixes booting on my Mac Pro 2012 system when applied to
+>> 5.3-rc7.
+>>
+>> Whenever this makes it in, if it could be targeted for the stable kernels
+>> as well, that would be appreciated.
+>>
+>
+> I'll send it out as a fix with a cc to -stable.
 
-1. Kernel image is not loaded to the default address (LOAD_PHYSICAL_ADDR)
-   by the loader.
-2. There isn't enough room to contain the kernel, starting from the
-   default load address (eg. something else occupied part the region).
-3. In the memmap provided by EFI firmware, there is a memory region
-   starts below LOAD_PHYSICAL_ADDR, and suitable for containing the
-   kernel.
+Hi - just a quick reminder on this as I don't see it in Linus' tree yet. 
+Not that I need it urgently, but just want to make sure it isn't 
+forgotten.
 
-Efi stub will perform a kernel relocation when condition 1 is met. But
-due to condition 2, efi stub can't relocate kernel to the preferred
-address, so it fallback to query and alloc from EFI firmware for lowest
-usable memory region.
-
-It's incorrect to use the lowest memory address. In later stage, kernel
-will assume LOAD_PHYSICAL_ADDR as the minimal acceptable relocate address,
-but efi stub will end up relocating kernel below it.
-
-Then before the kernel decompressing. Kernel will do another relocation
-to address not lower than LOAD_PHYSICAL_ADDR, this time the relocate will
-over write the blockage at the default load address, which efi stub tried
-to avoid, and lead to unexpected behavior. Beside, the memory region it
-writes to is not allocated from EFI firmware, which is also wrong.
-
-To fix it, just don't let efi stub relocate the kernel to any address
-lower than lowest acceptable address.
-
-Signed-off-by: Kairui Song <kasong@redhat.com>
-
----
-
-Update from V1:
- - Redo the commit message.
-
- arch/x86/boot/compressed/eboot.c               |  8 +++++---
- drivers/firmware/efi/libstub/arm32-stub.c      |  2 +-
- drivers/firmware/efi/libstub/arm64-stub.c      |  2 +-
- drivers/firmware/efi/libstub/efi-stub-helper.c | 12 ++++++++----
- include/linux/efi.h                            |  5 +++--
- 5 files changed, 18 insertions(+), 11 deletions(-)
-
-diff --git a/arch/x86/boot/compressed/eboot.c b/arch/x86/boot/compressed/eboot.c
-index 936bdb924ec2..8207e8aa297e 100644
---- a/arch/x86/boot/compressed/eboot.c
-+++ b/arch/x86/boot/compressed/eboot.c
-@@ -13,6 +13,7 @@
- #include <asm/e820/types.h>
- #include <asm/setup.h>
- #include <asm/desc.h>
-+#include <asm/boot.h>
- 
- #include "../string.h"
- #include "eboot.h"
-@@ -432,7 +433,7 @@ struct boot_params *make_boot_params(struct efi_config *c)
- 	}
- 
- 	status = efi_low_alloc(sys_table, 0x4000, 1,
--			       (unsigned long *)&boot_params);
-+			       (unsigned long *)&boot_params, 0);
- 	if (status != EFI_SUCCESS) {
- 		efi_printk(sys_table, "Failed to allocate lowmem for boot params\n");
- 		return NULL;
-@@ -817,7 +818,7 @@ efi_main(struct efi_config *c, struct boot_params *boot_params)
- 
- 	gdt->size = 0x800;
- 	status = efi_low_alloc(sys_table, gdt->size, 8,
--			   (unsigned long *)&gdt->address);
-+			       (unsigned long *)&gdt->address, 0);
- 	if (status != EFI_SUCCESS) {
- 		efi_printk(sys_table, "Failed to allocate memory for 'gdt'\n");
- 		goto fail;
-@@ -842,7 +843,8 @@ efi_main(struct efi_config *c, struct boot_params *boot_params)
- 		status = efi_relocate_kernel(sys_table, &bzimage_addr,
- 					     hdr->init_size, hdr->init_size,
- 					     hdr->pref_address,
--					     hdr->kernel_alignment);
-+					     hdr->kernel_alignment,
-+					     LOAD_PHYSICAL_ADDR);
- 		if (status != EFI_SUCCESS) {
- 			efi_printk(sys_table, "efi_relocate_kernel() failed!\n");
- 			goto fail;
-diff --git a/drivers/firmware/efi/libstub/arm32-stub.c b/drivers/firmware/efi/libstub/arm32-stub.c
-index e8f7aefb6813..bf6f954d6afe 100644
---- a/drivers/firmware/efi/libstub/arm32-stub.c
-+++ b/drivers/firmware/efi/libstub/arm32-stub.c
-@@ -220,7 +220,7 @@ efi_status_t handle_kernel_image(efi_system_table_t *sys_table,
- 	*image_size = image->image_size;
- 	status = efi_relocate_kernel(sys_table, image_addr, *image_size,
- 				     *image_size,
--				     dram_base + MAX_UNCOMP_KERNEL_SIZE, 0);
-+				     dram_base + MAX_UNCOMP_KERNEL_SIZE, 0, 0);
- 	if (status != EFI_SUCCESS) {
- 		pr_efi_err(sys_table, "Failed to relocate kernel.\n");
- 		efi_free(sys_table, *reserve_size, *reserve_addr);
-diff --git a/drivers/firmware/efi/libstub/arm64-stub.c b/drivers/firmware/efi/libstub/arm64-stub.c
-index 1550d244e996..3d2e517e10f4 100644
---- a/drivers/firmware/efi/libstub/arm64-stub.c
-+++ b/drivers/firmware/efi/libstub/arm64-stub.c
-@@ -140,7 +140,7 @@ efi_status_t handle_kernel_image(efi_system_table_t *sys_table_arg,
- 	if (status != EFI_SUCCESS) {
- 		*reserve_size = kernel_memsize + TEXT_OFFSET;
- 		status = efi_low_alloc(sys_table_arg, *reserve_size,
--				       MIN_KIMG_ALIGN, reserve_addr);
-+				       MIN_KIMG_ALIGN, reserve_addr, 0);
- 
- 		if (status != EFI_SUCCESS) {
- 			pr_efi_err(sys_table_arg, "Failed to relocate kernel\n");
-diff --git a/drivers/firmware/efi/libstub/efi-stub-helper.c b/drivers/firmware/efi/libstub/efi-stub-helper.c
-index 3caae7f2cf56..00b00a2562aa 100644
---- a/drivers/firmware/efi/libstub/efi-stub-helper.c
-+++ b/drivers/firmware/efi/libstub/efi-stub-helper.c
-@@ -260,11 +260,11 @@ efi_status_t efi_high_alloc(efi_system_table_t *sys_table_arg,
- }
- 
- /*
-- * Allocate at the lowest possible address.
-+ * Allocate at the lowest possible address that is not below 'min'.
-  */
- efi_status_t efi_low_alloc(efi_system_table_t *sys_table_arg,
- 			   unsigned long size, unsigned long align,
--			   unsigned long *addr)
-+			   unsigned long *addr, unsigned long min)
- {
- 	unsigned long map_size, desc_size, buff_size;
- 	efi_memory_desc_t *map;
-@@ -311,6 +311,9 @@ efi_status_t efi_low_alloc(efi_system_table_t *sys_table_arg,
- 		start = desc->phys_addr;
- 		end = start + desc->num_pages * EFI_PAGE_SIZE;
- 
-+		if (start < min)
-+			start = min;
-+
- 		/*
- 		 * Don't allocate at 0x0. It will confuse code that
- 		 * checks pointers against NULL. Skip the first 8
-@@ -698,7 +701,8 @@ efi_status_t efi_relocate_kernel(efi_system_table_t *sys_table_arg,
- 				 unsigned long image_size,
- 				 unsigned long alloc_size,
- 				 unsigned long preferred_addr,
--				 unsigned long alignment)
-+				 unsigned long alignment,
-+				 unsigned long min_addr)
- {
- 	unsigned long cur_image_addr;
- 	unsigned long new_addr = 0;
-@@ -732,7 +736,7 @@ efi_status_t efi_relocate_kernel(efi_system_table_t *sys_table_arg,
- 	 */
- 	if (status != EFI_SUCCESS) {
- 		status = efi_low_alloc(sys_table_arg, alloc_size, alignment,
--				       &new_addr);
-+				       &new_addr, min_addr);
- 	}
- 	if (status != EFI_SUCCESS) {
- 		pr_efi_err(sys_table_arg, "Failed to allocate usable memory for kernel.\n");
-diff --git a/include/linux/efi.h b/include/linux/efi.h
-index f87fabea4a85..cc947c0f3e06 100644
---- a/include/linux/efi.h
-+++ b/include/linux/efi.h
-@@ -1587,7 +1587,7 @@ efi_status_t efi_get_memory_map(efi_system_table_t *sys_table_arg,
- 
- efi_status_t efi_low_alloc(efi_system_table_t *sys_table_arg,
- 			   unsigned long size, unsigned long align,
--			   unsigned long *addr);
-+			   unsigned long *addr, unsigned long min);
- 
- efi_status_t efi_high_alloc(efi_system_table_t *sys_table_arg,
- 			    unsigned long size, unsigned long align,
-@@ -1598,7 +1598,8 @@ efi_status_t efi_relocate_kernel(efi_system_table_t *sys_table_arg,
- 				 unsigned long image_size,
- 				 unsigned long alloc_size,
- 				 unsigned long preferred_addr,
--				 unsigned long alignment);
-+				 unsigned long alignment,
-+				 unsigned long min_addr);
- 
- efi_status_t handle_cmdline_files(efi_system_table_t *sys_table_arg,
- 				  efi_loaded_image_t *image,
--- 
-2.21.0
-
+Thanks,
+Scott
