@@ -2,39 +2,39 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 18DC9BA3ED
-	for <lists+linux-efi@lfdr.de>; Sun, 22 Sep 2019 20:46:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 70039BA681
+	for <lists+linux-efi@lfdr.de>; Sun, 22 Sep 2019 21:46:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389747AbfIVSqA (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sun, 22 Sep 2019 14:46:00 -0400
-Received: from mail.kernel.org ([198.145.29.99]:41812 "EHLO mail.kernel.org"
+        id S1729185AbfIVSvH (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sun, 22 Sep 2019 14:51:07 -0400
+Received: from mail.kernel.org ([198.145.29.99]:48656 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2389708AbfIVSp7 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Sun, 22 Sep 2019 14:45:59 -0400
+        id S1729176AbfIVSvH (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Sun, 22 Sep 2019 14:51:07 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 370C9206B6;
-        Sun, 22 Sep 2019 18:45:57 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 376B22190F;
+        Sun, 22 Sep 2019 18:51:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1569177957;
+        s=default; t=1569178266;
         bh=QfMwwp7k4LX8qa7VmAQXWyOp4djjbtF2k0Y/KYrJ/lo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bhCIviT2CLMlXiJrdUoj82ykiucHaCPjfz0CaqHOKQi9dUvhx+Zkopw+sDYhR4y4M
-         pq1eYpcpqfDJcV4Yn7yQKyW17vQhn1iuFhyqMEEQMdleL8KA3d2L6zNscWzksET7D2
-         y29Riszm2+eAsNP1yWCV3Xf487UIOa343Abb89gI=
+        b=rLWa4xfH6ANW5T9puqIwT32Boi65BJH7BPoM17J8EJKzTIWYdlYROOZk9NtqeWOtM
+         L/yGALH24TyeOUVk0Bhm/P5exiQX6iEskY2+6tqZiK6NRiB3hLKplMzf89arCS1/BE
+         ijXHuUpnsPq/jeUBv0/Mf79TpTRx/pRRnRphUAJc=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Xiaofei Tan <tanxiaofei@huawei.com>,
         James Morse <james.morse@arm.com>,
         Ard Biesheuvel <ard.biesheuvel@linaro.org>,
         Sasha Levin <sashal@kernel.org>, linux-efi@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.3 062/203] efi: cper: print AER info of PCIe fatal error
-Date:   Sun, 22 Sep 2019 14:41:28 -0400
-Message-Id: <20190922184350.30563-62-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.2 053/185] efi: cper: print AER info of PCIe fatal error
+Date:   Sun, 22 Sep 2019 14:47:11 -0400
+Message-Id: <20190922184924.32534-53-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190922184350.30563-1-sashal@kernel.org>
-References: <20190922184350.30563-1-sashal@kernel.org>
+In-Reply-To: <20190922184924.32534-1-sashal@kernel.org>
+References: <20190922184924.32534-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
