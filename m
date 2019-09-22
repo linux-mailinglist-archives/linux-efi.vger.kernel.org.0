@@ -2,91 +2,129 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DFAFCB8087
-	for <lists+linux-efi@lfdr.de>; Thu, 19 Sep 2019 20:01:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 18DC9BA3ED
+	for <lists+linux-efi@lfdr.de>; Sun, 22 Sep 2019 20:46:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391241AbfISSBx (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 19 Sep 2019 14:01:53 -0400
-Received: from bear.techie.net ([205.134.185.202]:38512 "EHLO bear.techie.net"
+        id S2389747AbfIVSqA (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sun, 22 Sep 2019 14:46:00 -0400
+Received: from mail.kernel.org ([198.145.29.99]:41812 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2389114AbfISSBx (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Thu, 19 Sep 2019 14:01:53 -0400
-Received: by bear.techie.net (Postfix, from userid 545)
-        id 4DF7E22A0951; Thu, 19 Sep 2019 14:01:52 -0400 (EDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=techie.net; s=default;
-        t=1568916112; bh=Ij82XtQInROv8wfez7eqNzdkFhje3hpYfIIEz2dPhBs=;
-        h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-        b=zeOTARKa6AY45YPFtLflBUFm7lJQtKmSo0Nn8snL13N3n7lffuYAJIiPWl1wIzBqJ
-         DePbaO0xUlbWpHFNFFmQY3JzG1Coc7qzoqmVpC8PVAbVfodqSahRzM5E7U+TocB4ON
-         MkcwgMXhYVlNBVuM34wRxp2x0PPSUtBBE01m2xpg=
-Received: from localhost (localhost [127.0.0.1])
-        by bear.techie.net (Postfix) with ESMTP id 31DBC22A094B;
-        Thu, 19 Sep 2019 14:01:52 -0400 (EDT)
-Date:   Thu, 19 Sep 2019 14:01:52 -0400 (EDT)
-From:   Scott Talbert <swt@techie.net>
-X-X-Sender: talbert@bear.techie.net
-To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>
-cc:     linux-efi <linux-efi@vger.kernel.org>
-Subject: Re: [PATCH] efi: don't iterate over EFI vars pointlessly if no SSDT
- override was specified
-In-Reply-To: <CAKv+Gu95wtjPXRUF=wK3-Y6+zNcvaqpr+T4Z4-wV3OJH+oNgVg@mail.gmail.com>
-Message-ID: <alpine.DEB.2.21.1909191400240.3069@bear.techie.net>
-References: <20190911233239.5916-1-ard.biesheuvel@linaro.org> <alpine.DEB.2.21.1909121533270.30174@bear.techie.net> <CAKv+Gu95wtjPXRUF=wK3-Y6+zNcvaqpr+T4Z4-wV3OJH+oNgVg@mail.gmail.com>
-User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
+        id S2389708AbfIVSp7 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Sun, 22 Sep 2019 14:45:59 -0400
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 370C9206B6;
+        Sun, 22 Sep 2019 18:45:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1569177957;
+        bh=QfMwwp7k4LX8qa7VmAQXWyOp4djjbtF2k0Y/KYrJ/lo=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=bhCIviT2CLMlXiJrdUoj82ykiucHaCPjfz0CaqHOKQi9dUvhx+Zkopw+sDYhR4y4M
+         pq1eYpcpqfDJcV4Yn7yQKyW17vQhn1iuFhyqMEEQMdleL8KA3d2L6zNscWzksET7D2
+         y29Riszm2+eAsNP1yWCV3Xf487UIOa343Abb89gI=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Xiaofei Tan <tanxiaofei@huawei.com>,
+        James Morse <james.morse@arm.com>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Sasha Levin <sashal@kernel.org>, linux-efi@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.3 062/203] efi: cper: print AER info of PCIe fatal error
+Date:   Sun, 22 Sep 2019 14:41:28 -0400
+Message-Id: <20190922184350.30563-62-sashal@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20190922184350.30563-1-sashal@kernel.org>
+References: <20190922184350.30563-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII; format=flowed
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, 12 Sep 2019, Ard Biesheuvel wrote:
+From: Xiaofei Tan <tanxiaofei@huawei.com>
 
->>> The kernel command line option efivar_ssdt= allows a EFI variable name
->>> to be specified which contains an ACPI SSDT table that will be loaded
->>> into memory by the OS.
->>>
->>> Currently, that code will always iterate over the EFI variables and
->>> compare each name with the provided name, even if the command line
->>> option wasn't set to begin with.
->>>
->>> So bail early when no variable name was provided.
->>>
->>> Cc: Scott Talbert <swt@techie.net>
->>> Signed-off-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
->>> ---
->>> drivers/firmware/efi/efi.c | 3 +++
->>> 1 file changed, 3 insertions(+)
->>>
->>> diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
->>> index ad3b1f4866b3..8f020827cdd3 100644
->>> --- a/drivers/firmware/efi/efi.c
->>> +++ b/drivers/firmware/efi/efi.c
->>> @@ -282,6 +282,9 @@ static __init int efivar_ssdt_load(void)
->>>       void *data;
->>>       int ret;
->>>
->>> +     if (!efivar_ssdt[0])
->>> +             return 0;
->>> +
->>>       ret = efivar_init(efivar_ssdt_iter, &entries, true, &entries);
->>>
->>>       list_for_each_entry_safe(entry, aux, &entries, list) {
->>
->> Thanks for the quick fix!
->>
->> I can confirm this fixes booting on my Mac Pro 2012 system when applied to
->> 5.3-rc7.
->>
->> Whenever this makes it in, if it could be targeted for the stable kernels
->> as well, that would be appreciated.
->>
->
-> I'll send it out as a fix with a cc to -stable.
+[ Upstream commit b194a77fcc4001dc40aecdd15d249648e8a436d1 ]
 
-Hi - just a quick reminder on this as I don't see it in Linus' tree yet. 
-Not that I need it urgently, but just want to make sure it isn't 
-forgotten.
+AER info of PCIe fatal error is not printed in the current driver.
+Because APEI driver will panic directly for fatal error, and can't
+run to the place of printing AER info.
 
-Thanks,
-Scott
+An example log is as following:
+{763}[Hardware Error]: Hardware error from APEI Generic Hardware Error Source: 11
+{763}[Hardware Error]: event severity: fatal
+{763}[Hardware Error]:  Error 0, type: fatal
+{763}[Hardware Error]:   section_type: PCIe error
+{763}[Hardware Error]:   port_type: 0, PCIe end point
+{763}[Hardware Error]:   version: 4.0
+{763}[Hardware Error]:   command: 0x0000, status: 0x0010
+{763}[Hardware Error]:   device_id: 0000:82:00.0
+{763}[Hardware Error]:   slot: 0
+{763}[Hardware Error]:   secondary_bus: 0x00
+{763}[Hardware Error]:   vendor_id: 0x8086, device_id: 0x10fb
+{763}[Hardware Error]:   class_code: 000002
+Kernel panic - not syncing: Fatal hardware error!
+
+This issue was imported by the patch, '37448adfc7ce ("aerdrv: Move
+cper_print_aer() call out of interrupt context")'. To fix this issue,
+this patch adds print of AER info in cper_print_pcie() for fatal error.
+
+Here is the example log after this patch applied:
+{24}[Hardware Error]: Hardware error from APEI Generic Hardware Error Source: 10
+{24}[Hardware Error]: event severity: fatal
+{24}[Hardware Error]:  Error 0, type: fatal
+{24}[Hardware Error]:   section_type: PCIe error
+{24}[Hardware Error]:   port_type: 0, PCIe end point
+{24}[Hardware Error]:   version: 4.0
+{24}[Hardware Error]:   command: 0x0546, status: 0x4010
+{24}[Hardware Error]:   device_id: 0000:01:00.0
+{24}[Hardware Error]:   slot: 0
+{24}[Hardware Error]:   secondary_bus: 0x00
+{24}[Hardware Error]:   vendor_id: 0x15b3, device_id: 0x1019
+{24}[Hardware Error]:   class_code: 000002
+{24}[Hardware Error]:   aer_uncor_status: 0x00040000, aer_uncor_mask: 0x00000000
+{24}[Hardware Error]:   aer_uncor_severity: 0x00062010
+{24}[Hardware Error]:   TLP Header: 000000c0 01010000 00000001 00000000
+Kernel panic - not syncing: Fatal hardware error!
+
+Fixes: 37448adfc7ce ("aerdrv: Move cper_print_aer() call out of interrupt context")
+Signed-off-by: Xiaofei Tan <tanxiaofei@huawei.com>
+Reviewed-by: James Morse <james.morse@arm.com>
+[ardb: put parens around terms of && operator]
+Signed-off-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/firmware/efi/cper.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
+
+diff --git a/drivers/firmware/efi/cper.c b/drivers/firmware/efi/cper.c
+index 8fa977c7861f9..addf0749dd8b6 100644
+--- a/drivers/firmware/efi/cper.c
++++ b/drivers/firmware/efi/cper.c
+@@ -390,6 +390,21 @@ static void cper_print_pcie(const char *pfx, const struct cper_sec_pcie *pcie,
+ 		printk(
+ 	"%s""bridge: secondary_status: 0x%04x, control: 0x%04x\n",
+ 	pfx, pcie->bridge.secondary_status, pcie->bridge.control);
++
++	/* Fatal errors call __ghes_panic() before AER handler prints this */
++	if ((pcie->validation_bits & CPER_PCIE_VALID_AER_INFO) &&
++	    (gdata->error_severity & CPER_SEV_FATAL)) {
++		struct aer_capability_regs *aer;
++
++		aer = (struct aer_capability_regs *)pcie->aer_info;
++		printk("%saer_uncor_status: 0x%08x, aer_uncor_mask: 0x%08x\n",
++		       pfx, aer->uncor_status, aer->uncor_mask);
++		printk("%saer_uncor_severity: 0x%08x\n",
++		       pfx, aer->uncor_severity);
++		printk("%sTLP Header: %08x %08x %08x %08x\n", pfx,
++		       aer->header_log.dw0, aer->header_log.dw1,
++		       aer->header_log.dw2, aer->header_log.dw3);
++	}
+ }
+ 
+ static void cper_print_tstamp(const char *pfx,
+-- 
+2.20.1
+
