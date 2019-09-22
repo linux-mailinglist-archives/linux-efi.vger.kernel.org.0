@@ -2,39 +2,39 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4ADEEBA700
-	for <lists+linux-efi@lfdr.de>; Sun, 22 Sep 2019 21:47:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 095E1BA828
+	for <lists+linux-efi@lfdr.de>; Sun, 22 Sep 2019 21:49:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2408066AbfIVSzJ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sun, 22 Sep 2019 14:55:09 -0400
-Received: from mail.kernel.org ([198.145.29.99]:56060 "EHLO mail.kernel.org"
+        id S2438535AbfIVTBb (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sun, 22 Sep 2019 15:01:31 -0400
+Received: from mail.kernel.org ([198.145.29.99]:37730 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2404658AbfIVSzJ (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Sun, 22 Sep 2019 14:55:09 -0400
+        id S1729449AbfIVTBa (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Sun, 22 Sep 2019 15:01:30 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id EFE2121479;
-        Sun, 22 Sep 2019 18:55:06 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id E5D2D2070C;
+        Sun, 22 Sep 2019 19:01:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1569178507;
-        bh=UDD8sBr9Lf8VkPIkqzpY18KqMnR+dQy/Zhx49ox6gEE=;
+        s=default; t=1569178889;
+        bh=nbgbhwOlk/LuTh2Jiw/PsDh+mAGYreruz68vM9Rfhvw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tFkLk2Wz6qw6HldBCawSYDPOiBm2ZxjWAg3kAiyzN8v+Y+1M0bE0/1XIvN92a9cwK
-         7yMhGscTbWdX4/wMN2eLyc76ia+/AVZCYSE2GG0ejispXYl/Ba6PWsmASYL/uQYiYF
-         qfa2A53lRbFq8FZ6d+U8Kvgp2CbxtHPjxYx+DOJY=
+        b=Y+KRBw8oIml4YqZMM758XATI7Hpn602wk069zzZOEC4uP5YwvAuQgW3UY+e3mOCDY
+         w03A93JeYkh9hnhSg34P4s+PUx8dfSIZ5Gp/3TaNLIUTDDdSAuoYYwA7c/5740CXiN
+         xWyIUe4y4Z4MI4b4MRCZpv0oUkajkNHLaHjHncq8=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Xiaofei Tan <tanxiaofei@huawei.com>,
         James Morse <james.morse@arm.com>,
         Ard Biesheuvel <ard.biesheuvel@linaro.org>,
         Sasha Levin <sashal@kernel.org>, linux-efi@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 039/128] efi: cper: print AER info of PCIe fatal error
-Date:   Sun, 22 Sep 2019 14:52:49 -0400
-Message-Id: <20190922185418.2158-39-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.4 19/44] efi: cper: print AER info of PCIe fatal error
+Date:   Sun, 22 Sep 2019 15:00:37 -0400
+Message-Id: <20190922190103.4906-19-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190922185418.2158-1-sashal@kernel.org>
-References: <20190922185418.2158-1-sashal@kernel.org>
+In-Reply-To: <20190922190103.4906-1-sashal@kernel.org>
+References: <20190922190103.4906-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -100,10 +100,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 15 insertions(+)
 
 diff --git a/drivers/firmware/efi/cper.c b/drivers/firmware/efi/cper.c
-index 6090d25dce85e..4045098ddb860 100644
+index d425374254384..f40f7df4b7344 100644
 --- a/drivers/firmware/efi/cper.c
 +++ b/drivers/firmware/efi/cper.c
-@@ -402,6 +402,21 @@ static void cper_print_pcie(const char *pfx, const struct cper_sec_pcie *pcie,
+@@ -384,6 +384,21 @@ static void cper_print_pcie(const char *pfx, const struct cper_sec_pcie *pcie,
  		printk(
  	"%s""bridge: secondary_status: 0x%04x, control: 0x%04x\n",
  	pfx, pcie->bridge.secondary_status, pcie->bridge.control);
@@ -124,7 +124,7 @@ index 6090d25dce85e..4045098ddb860 100644
 +	}
  }
  
- static void cper_print_tstamp(const char *pfx,
+ static void cper_estatus_print_section(
 -- 
 2.20.1
 
