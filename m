@@ -2,127 +2,177 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CCA1EBE2AF
-	for <lists+linux-efi@lfdr.de>; Wed, 25 Sep 2019 18:41:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE7FABE359
+	for <lists+linux-efi@lfdr.de>; Wed, 25 Sep 2019 19:27:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391884AbfIYQl4 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 25 Sep 2019 12:41:56 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:46184 "EHLO mx1.redhat.com"
+        id S2634104AbfIYR1J (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 25 Sep 2019 13:27:09 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:41496 "EHLO mx1.redhat.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2388566AbfIYQlw (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Wed, 25 Sep 2019 12:41:52 -0400
-Received: from mail-io1-f71.google.com (mail-io1-f71.google.com [209.85.166.71])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        id S2505170AbfIYR1J (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Wed, 25 Sep 2019 13:27:09 -0400
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 71CDFC04D312
-        for <linux-efi@vger.kernel.org>; Wed, 25 Sep 2019 16:41:51 +0000 (UTC)
-Received: by mail-io1-f71.google.com with SMTP id w8so336372iod.21
-        for <linux-efi@vger.kernel.org>; Wed, 25 Sep 2019 09:41:51 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:subject:message-id:reply-to
-         :mail-followup-to:references:mime-version:content-disposition
-         :in-reply-to:user-agent;
-        bh=zugf//ewV+Jw24YzObP86wfqOVJcB6V6OI1o/yrHlEY=;
-        b=JxJ05gB2Gs/wK/DI8EoOWO9Zpoh9SRzrgnXLLiIapFMGCvtgcKZV7UfA204YtSmYCT
-         xONTumOBsRx2wyLrrkyUBW7C42Z8KLJe10/hDxBJoohHJJjkviMqEz0P0rUejZt8qxgq
-         0HE+T/JAc9eIOVLnHgK9HF9wT/Rmyha7idrj8LhX5xJzwySwG1YB2W2gQxTHBoXb1lid
-         E7WAWutJ/nylvrIrNPT90Lbj+UJFc61sk8iADRAyTG1X1f9PhrzgcB+9AX0cchDjhGj3
-         xT6QBVIgsN5M/oVoPxmQBibY07JQunFF31tQ0IiPqA9GZE4KYVrUHW3wTPEt6Q0oprmc
-         S2wA==
-X-Gm-Message-State: APjAAAUXbiC/Op/ejMipRbGcYMc2Q58hA7Y8tSdUHo3QRMDx1Y7v5tzx
-        JGJmqLLM9URgs5rlMNgtxlbW2h/OJPYL1Fc8UK/S5Ok4Z8vOnPxnKkI4szPT92yeZlTqIaQYWFO
-        YrzMVa3TritU1hCzogTCy
-X-Received: by 2002:a92:4648:: with SMTP id t69mr1134266ila.282.1569429710837;
-        Wed, 25 Sep 2019 09:41:50 -0700 (PDT)
-X-Google-Smtp-Source: APXvYqz3k+VJoIZBpJcMr4uiRsUW3+00NWKVfMoehoDepoQvH5UxKHKV1XUTS9DES9bMTghkTTPc5Q==
-X-Received: by 2002:a92:4648:: with SMTP id t69mr1134255ila.282.1569429710588;
-        Wed, 25 Sep 2019 09:41:50 -0700 (PDT)
-Received: from localhost (ip70-163-223-149.ph.ph.cox.net. [70.163.223.149])
-        by smtp.gmail.com with ESMTPSA id c6sm52396iom.34.2019.09.25.09.41.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Sep 2019 09:41:49 -0700 (PDT)
-Date:   Wed, 25 Sep 2019 09:41:33 -0700
+        by mx1.redhat.com (Postfix) with ESMTPS id 4CE7C1056FB1;
+        Wed, 25 Sep 2019 17:27:08 +0000 (UTC)
+Received: from cantor.redhat.com (ovpn-117-191.phx2.redhat.com [10.3.117.191])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id D081B1001B12;
+        Wed, 25 Sep 2019 17:27:07 +0000 (UTC)
 From:   Jerry Snitselaar <jsnitsel@redhat.com>
-To:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+To:     linux-efi@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, linux-integrity@vger.kernel.org,
+        stable@vger.kernel.org, Matthew Garrett <mjg59@google.com>,
         Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        linux-integrity <linux-integrity@vger.kernel.org>,
-        Peter Jones <pjones@redhat.com>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        stable <stable@vger.kernel.org>, Lyude Paul <lyude@redhat.com>,
-        Matthew Garrett <mjg59@google.com>,
-        Roberto Sassu <roberto.sassu@huawei.com>,
-        Bartosz Szczepanek <bsz@semihalf.com>,
-        open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 1/2] efi+tpm: Don't access event->count when it isn't
- mapped.
-Message-ID: <20190925164133.nmzzhwgagpqvwclu@cantor>
-Reply-To: Jerry Snitselaar <jsnitsel@redhat.com>
-Mail-Followup-To: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        linux-integrity <linux-integrity@vger.kernel.org>,
-        Peter Jones <pjones@redhat.com>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        stable <stable@vger.kernel.org>, Lyude Paul <lyude@redhat.com>,
-        Matthew Garrett <mjg59@google.com>,
-        Roberto Sassu <roberto.sassu@huawei.com>,
-        Bartosz Szczepanek <bsz@semihalf.com>,
-        open list <linux-kernel@vger.kernel.org>
-References: <20190925101622.31457-1-jarkko.sakkinen@linux.intel.com>
- <CAKv+Gu9xLXWj8e70rs6Oy3aT_+qvemMJqtOETQG+7z==Nf_RcQ@mail.gmail.com>
- <20190925145011.GC23867@linux.intel.com>
- <20190925151616.3glkehdrmuwtosn3@cantor>
+        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+Subject: [PATCH v3] tpm: only set efi_tpm_final_log_size after successful event log parsing
+Date:   Wed, 25 Sep 2019 10:27:05 -0700
+Message-Id: <20190925172705.17358-1-jsnitsel@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20190925151616.3glkehdrmuwtosn3@cantor>
-User-Agent: NeoMutt/20180716
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.2 (mx1.redhat.com [10.5.110.64]); Wed, 25 Sep 2019 17:27:08 +0000 (UTC)
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed Sep 25 19, Jerry Snitselaar wrote:
->On Wed Sep 25 19, Jarkko Sakkinen wrote:
->>On Wed, Sep 25, 2019 at 12:25:05PM +0200, Ard Biesheuvel wrote:
->>>On Wed, 25 Sep 2019 at 12:16, Jarkko Sakkinen
->>><jarkko.sakkinen@linux.intel.com> wrote:
->>>>
->>>> From: Peter Jones <pjones@redhat.com>
->>>>
->>>> Some machines generate a lot of event log entries.  When we're
->>>> iterating over them, the code removes the old mapping and adds a
->>>> new one, so once we cross the page boundary we're unmapping the page
->>>> with the count on it.  Hilarity ensues.
->>>>
->>>> This patch keeps the info from the header in local variables so we don't
->>>> need to access that page again or keep track of if it's mapped.
->>>>
->>>> Fixes: 44038bc514a2 ("tpm: Abstract crypto agile event size calculations")
->>>> Cc: linux-efi@vger.kernel.org
->>>> Cc: linux-integrity@vger.kernel.org
->>>> Cc: stable@vger.kernel.org
->>>> Signed-off-by: Peter Jones <pjones@redhat.com>
->>>> Tested-by: Lyude Paul <lyude@redhat.com>
->>>> Reviewed-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
->>>> Acked-by: Matthew Garrett <mjg59@google.com>
->>>> Acked-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
->>>> Signed-off-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
->>>
->>>Thanks Jarkko.
->>>
->>>Shall I take these through the EFI tree?
->>
->>Would be great, if you could because I already sent one PR with fixes for
->>v5.4-rc1 yesterday.
->>
->>/Jarkko
->
->My patch collides with this, so I will submit a v3 that applies on top of
->these once I've run a test with all 3 applied on this t480s.
+If __calc_tpm2_event_size fails to parse an event it will return 0,
+resulting tpm2_calc_event_log_size returning -1. Currently there is
+no check of this return value, and efi_tpm_final_log_size can end up
+being set to this negative value resulting in a panic like the
+the one given below.
 
-Tested with Peter's patches, and that was the root cause on this 480s.
+Also __calc_tpm2_event_size returns a size of 0 when it fails
+to parse an event, so update function documentation to reflect this.
 
-I think there should still be a check for tbl_size to make sure we
-aren't sticking -1 into efi_tpm_final_log_size though, which will be
-the case right now if it fails to parse an event.
+[    0.774340] BUG: unable to handle page fault for address: ffffbc8fc00866ad
+[    0.774788] #PF: supervisor read access in kernel mode
+[    0.774788] #PF: error_code(0x0000) - not-present page
+[    0.774788] PGD 107d36067 P4D 107d36067 PUD 107d37067 PMD 107d38067 PTE 0
+[    0.774788] Oops: 0000 [#1] SMP PTI
+[    0.774788] CPU: 0 PID: 1 Comm: swapper/0 Not tainted 5.3.0-0.rc2.1.elrdy.x86_64 #1
+[    0.774788] Hardware name: LENOVO 20HGS22D0W/20HGS22D0W, BIOS N1WET51W (1.30 ) 09/14/2018
+[    0.774788] RIP: 0010:memcpy_erms+0x6/0x10
+[    0.774788] Code: 90 90 90 90 eb 1e 0f 1f 00 48 89 f8 48 89 d1 48 c1 e9 03 83 e2 07 f3 48 a5 89 d1 f3 a4 c3 66 0f 1f 44 00 00 48 89 f8 48 89 d1 <f3> a4 c3 0f 1f 80 00 00 00 00 48 89 f8 48 83 fa 20 72 7e 40 38 fe
+[    0.774788] RSP: 0000:ffffbc8fc0073b30 EFLAGS: 00010286
+[    0.774788] RAX: ffff9b1fc7c5b367 RBX: ffff9b1fc8390000 RCX: ffffffffffffe962
+[    0.774788] RDX: ffffffffffffe962 RSI: ffffbc8fc00866ad RDI: ffff9b1fc7c5b367
+[    0.774788] RBP: ffff9b1c10ca7018 R08: ffffbc8fc0085fff R09: 8000000000000063
+[    0.774788] R10: 0000000000001000 R11: 000fffffffe00000 R12: 0000000000003367
+[    0.774788] R13: ffff9b1fcc47c010 R14: ffffbc8fc0085000 R15: 0000000000000002
+[    0.774788] FS:  0000000000000000(0000) GS:ffff9b1fce200000(0000) knlGS:0000000000000000
+[    0.774788] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[    0.774788] CR2: ffffbc8fc00866ad CR3: 000000029f60a001 CR4: 00000000003606f0
+[    0.774788] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+[    0.774788] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+[    0.774788] Call Trace:
+[    0.774788]  tpm_read_log_efi+0x156/0x1a0
+[    0.774788]  tpm_bios_log_setup+0xc8/0x190
+[    0.774788]  tpm_chip_register+0x50/0x1c0
+[    0.774788]  tpm_tis_core_init.cold.9+0x28c/0x466
+[    0.774788]  tpm_tis_plat_probe+0xcc/0xea
+[    0.774788]  platform_drv_probe+0x35/0x80
+[    0.774788]  really_probe+0xef/0x390
+[    0.774788]  driver_probe_device+0xb4/0x100
+[    0.774788]  device_driver_attach+0x4f/0x60
+[    0.774788]  __driver_attach+0x86/0x140
+[    0.774788]  ? device_driver_attach+0x60/0x60
+[    0.774788]  bus_for_each_dev+0x76/0xc0
+[    0.774788]  ? klist_add_tail+0x3b/0x70
+[    0.774788]  bus_add_driver+0x14a/0x1e0
+[    0.774788]  ? tpm_init+0xea/0xea
+[    0.774788]  ? do_early_param+0x8e/0x8e
+[    0.774788]  driver_register+0x6b/0xb0
+[    0.774788]  ? tpm_init+0xea/0xea
+[    0.774788]  init_tis+0x86/0xd8
+[    0.774788]  ? do_early_param+0x8e/0x8e
+[    0.774788]  ? driver_register+0x94/0xb0
+[    0.774788]  do_one_initcall+0x46/0x1e4
+[    0.774788]  ? do_early_param+0x8e/0x8e
+[    0.774788]  kernel_init_freeable+0x199/0x242
+[    0.774788]  ? rest_init+0xaa/0xaa
+[    0.774788]  kernel_init+0xa/0x106
+[    0.774788]  ret_from_fork+0x35/0x40
+[    0.774788] Modules linked in:
+[    0.774788] CR2: ffffbc8fc00866ad
+[    0.774788] ---[ end trace 42930799f8d6eaea ]---
+[    0.774788] RIP: 0010:memcpy_erms+0x6/0x10
+[    0.774788] Code: 90 90 90 90 eb 1e 0f 1f 00 48 89 f8 48 89 d1 48 c1 e9 03 83 e2 07 f3 48 a5 89 d1 f3 a4 c3 66 0f 1f 44 00 00 48 89 f8 48 89 d1 <f3> a4 c3 0f 1f 80 00 00 00 00 48 89 f8 48 83 fa 20 72 7e 40 38 fe
+[    0.774788] RSP: 0000:ffffbc8fc0073b30 EFLAGS: 00010286
+[    0.774788] RAX: ffff9b1fc7c5b367 RBX: ffff9b1fc8390000 RCX: ffffffffffffe962
+[    0.774788] RDX: ffffffffffffe962 RSI: ffffbc8fc00866ad RDI: ffff9b1fc7c5b367
+[    0.774788] RBP: ffff9b1c10ca7018 R08: ffffbc8fc0085fff R09: 8000000000000063
+[    0.774788] R10: 0000000000001000 R11: 000fffffffe00000 R12: 0000000000003367
+[    0.774788] R13: ffff9b1fcc47c010 R14: ffffbc8fc0085000 R15: 0000000000000002
+[    0.774788] FS:  0000000000000000(0000) GS:ffff9b1fce200000(0000) knlGS:0000000000000000
+[    0.774788] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[    0.774788] CR2: ffffbc8fc00866ad CR3: 000000029f60a001 CR4: 00000000003606f0
+[    0.774788] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+[    0.774788] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+[    0.774788] Kernel panic - not syncing: Fatal exception
+[    0.774788] Kernel Offset: 0x1d000000 from 0xffffffff81000000 (relocation range: 0xffffffff80000000-0xffffffffbfffffff)
+[    0.774788] ---[ end Kernel panic - not syncing: Fatal exception ]---
+
+The root cause of the issue that caused the failure of event parsing
+in this case is resolved by Peter Jone's patchset dealing with large
+event logs where crossing over a page boundary causes the page with
+the event count to be unmapped.
+
+Fixes: c46f3405692de ("tpm: Reserve the TPM final events table")
+Cc: linux-efi@vger.kernel.org
+Cc: linux-integrity@vger.kernel.org
+Cc: stable@vger.kernel.org
+Cc: Matthew Garrett <mjg59@google.com>
+Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Cc: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+Signed-off-by: Jerry Snitselaar <jsnitsel@redhat.com>
+---
+v3: rebase on top of Peter Jone's patchset
+v2: added FW_BUG to pr_err, and renamed label to out_calc.
+    Updated doc comment for __calc_tpm2_event_size.
+
+ drivers/firmware/efi/tpm.c   | 9 ++++++++-
+ include/linux/tpm_eventlog.h | 2 +-
+ 2 files changed, 9 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/firmware/efi/tpm.c b/drivers/firmware/efi/tpm.c
+index b9ae5c6f9b9c..703469c1ab8e 100644
+--- a/drivers/firmware/efi/tpm.c
++++ b/drivers/firmware/efi/tpm.c
+@@ -85,11 +85,18 @@ int __init efi_tpm_eventlog_init(void)
+ 						    final_tbl->nr_events,
+ 						    log_tbl->log);
+ 	}
++
++	if (tbl_size < 0) {
++		pr_err(FW_BUG "Failed to parse event in TPM Final Events Log\n");
++		goto out_calc;
++	}
++
+ 	memblock_reserve((unsigned long)final_tbl,
+ 			 tbl_size + sizeof(*final_tbl));
+-	early_memunmap(final_tbl, sizeof(*final_tbl));
+ 	efi_tpm_final_log_size = tbl_size;
+ 
++out_calc:
++	early_memunmap(final_tbl, sizeof(*final_tbl));
+ out:
+ 	early_memunmap(log_tbl, sizeof(*log_tbl));
+ 	return ret;
+diff --git a/include/linux/tpm_eventlog.h b/include/linux/tpm_eventlog.h
+index 12584b69a3f3..2dfdd63ac034 100644
+--- a/include/linux/tpm_eventlog.h
++++ b/include/linux/tpm_eventlog.h
+@@ -152,7 +152,7 @@ struct tcg_algorithm_info {
+  * total. Once we've done this we know the offset of the data length field,
+  * and can calculate the total size of the event.
+  *
+- * Return: size of the event on success, <0 on failure
++ * Return: size of the event on success, 0 on failure
+  */
+ 
+ static inline int __calc_tpm2_event_size(struct tcg_pcr_event2_head *event,
+-- 
+2.23.0
+
