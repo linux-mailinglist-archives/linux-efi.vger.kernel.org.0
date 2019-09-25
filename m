@@ -2,115 +2,127 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C9BABE1CF
-	for <lists+linux-efi@lfdr.de>; Wed, 25 Sep 2019 17:58:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CCA1EBE2AF
+	for <lists+linux-efi@lfdr.de>; Wed, 25 Sep 2019 18:41:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725966AbfIYP6J (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 25 Sep 2019 11:58:09 -0400
-Received: from mail-wr1-f67.google.com ([209.85.221.67]:36909 "EHLO
-        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725851AbfIYP6J (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 25 Sep 2019 11:58:09 -0400
-Received: by mail-wr1-f67.google.com with SMTP id i1so7586652wro.4
-        for <linux-efi@vger.kernel.org>; Wed, 25 Sep 2019 08:58:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=GAYyX9uJkmy+PaSSr6Il6bqlp+qNEw3PUkHkNhAWLds=;
-        b=wBXX9oCDMbDwDMuaTuCAPEWzYOVn4VrAj2w+YlfPfZbkcei/NtOKUITEBg61VECw6m
-         +4SLsYkLE9/ojQK1bghkqXgOs8p7Zu82WFPYWel+VEkoRKHvfJfoexuy8ND3+L6cm0wI
-         cI77ojQYs6UkzwS6a6U7BnFbrlFLXksxQAETiJcykdFdBQMj6aq38TpM3joNlvkCDqUw
-         SG3D931RoEXrxeKA5qwBDI3wN6/qtQHBckqGT3o71n7g1//2DrDVgerHIasTFwppfeL3
-         pY8Ikc0dAoMgHpirhfOWqs0Al/RwMADwxs12uoowyIic3FX8dw6QHpX+DvWGYxusn2kZ
-         8gnA==
+        id S2391884AbfIYQl4 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 25 Sep 2019 12:41:56 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:46184 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2388566AbfIYQlw (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Wed, 25 Sep 2019 12:41:52 -0400
+Received: from mail-io1-f71.google.com (mail-io1-f71.google.com [209.85.166.71])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id 71CDFC04D312
+        for <linux-efi@vger.kernel.org>; Wed, 25 Sep 2019 16:41:51 +0000 (UTC)
+Received: by mail-io1-f71.google.com with SMTP id w8so336372iod.21
+        for <linux-efi@vger.kernel.org>; Wed, 25 Sep 2019 09:41:51 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=GAYyX9uJkmy+PaSSr6Il6bqlp+qNEw3PUkHkNhAWLds=;
-        b=JZ6JRCV1ydj4b717vimmYb8qD7dI5aBPaUQj6H/2Sz9AQvPL+lLUakNjSZx/aqorB7
-         +3SxQwd+5WWx3lpo1vwDjatafjkSblMyGszz47/L7xzbkwBxCS3D4UOXja3P5na4orgh
-         ZI2cRXKIbDzIun6d87ZMURktnNG+SB/uAmKfSZo3BimlIlH/BXnkljSm9+weYEmCv25W
-         WjbSuAOmv4qOx+Q5z4hDs4A37JsXkcjaElBJGK7UJUz7bf++EA2zHA79w8iVBTR3pKC6
-         PWezUgR0CJvfXMvjXcjIxPpmrHsoRLbNdU2QXVsVzh5/InajEPhN64qKvP4il+SDWXON
-         3DHQ==
-X-Gm-Message-State: APjAAAXhhclZQjp+Zlvp43wKOZpJNkZcOB5aYivXKd/egoeGpcd4Uiq9
-        oUJ+wdX8zkdBjpLTcd38c4J8RqWVosw+SM0tAv3wfmgWyug=
-X-Google-Smtp-Source: APXvYqzjtR7RYasIPX2oWQL73hyxN/m0FS6mtJrgC3T8vNZaFDJOt9HQNeTie1ulXGIfLlofnsfGgbNhWl2T0qhjZvQ=
-X-Received: by 2002:adf:f406:: with SMTP id g6mr9627266wro.325.1569427087366;
- Wed, 25 Sep 2019 08:58:07 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:subject:message-id:reply-to
+         :mail-followup-to:references:mime-version:content-disposition
+         :in-reply-to:user-agent;
+        bh=zugf//ewV+Jw24YzObP86wfqOVJcB6V6OI1o/yrHlEY=;
+        b=JxJ05gB2Gs/wK/DI8EoOWO9Zpoh9SRzrgnXLLiIapFMGCvtgcKZV7UfA204YtSmYCT
+         xONTumOBsRx2wyLrrkyUBW7C42Z8KLJe10/hDxBJoohHJJjkviMqEz0P0rUejZt8qxgq
+         0HE+T/JAc9eIOVLnHgK9HF9wT/Rmyha7idrj8LhX5xJzwySwG1YB2W2gQxTHBoXb1lid
+         E7WAWutJ/nylvrIrNPT90Lbj+UJFc61sk8iADRAyTG1X1f9PhrzgcB+9AX0cchDjhGj3
+         xT6QBVIgsN5M/oVoPxmQBibY07JQunFF31tQ0IiPqA9GZE4KYVrUHW3wTPEt6Q0oprmc
+         S2wA==
+X-Gm-Message-State: APjAAAUXbiC/Op/ejMipRbGcYMc2Q58hA7Y8tSdUHo3QRMDx1Y7v5tzx
+        JGJmqLLM9URgs5rlMNgtxlbW2h/OJPYL1Fc8UK/S5Ok4Z8vOnPxnKkI4szPT92yeZlTqIaQYWFO
+        YrzMVa3TritU1hCzogTCy
+X-Received: by 2002:a92:4648:: with SMTP id t69mr1134266ila.282.1569429710837;
+        Wed, 25 Sep 2019 09:41:50 -0700 (PDT)
+X-Google-Smtp-Source: APXvYqz3k+VJoIZBpJcMr4uiRsUW3+00NWKVfMoehoDepoQvH5UxKHKV1XUTS9DES9bMTghkTTPc5Q==
+X-Received: by 2002:a92:4648:: with SMTP id t69mr1134255ila.282.1569429710588;
+        Wed, 25 Sep 2019 09:41:50 -0700 (PDT)
+Received: from localhost (ip70-163-223-149.ph.ph.cox.net. [70.163.223.149])
+        by smtp.gmail.com with ESMTPSA id c6sm52396iom.34.2019.09.25.09.41.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 25 Sep 2019 09:41:49 -0700 (PDT)
+Date:   Wed, 25 Sep 2019 09:41:33 -0700
+From:   Jerry Snitselaar <jsnitsel@redhat.com>
+To:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        linux-integrity <linux-integrity@vger.kernel.org>,
+        Peter Jones <pjones@redhat.com>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        stable <stable@vger.kernel.org>, Lyude Paul <lyude@redhat.com>,
+        Matthew Garrett <mjg59@google.com>,
+        Roberto Sassu <roberto.sassu@huawei.com>,
+        Bartosz Szczepanek <bsz@semihalf.com>,
+        open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 1/2] efi+tpm: Don't access event->count when it isn't
+ mapped.
+Message-ID: <20190925164133.nmzzhwgagpqvwclu@cantor>
+Reply-To: Jerry Snitselaar <jsnitsel@redhat.com>
+Mail-Followup-To: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        linux-integrity <linux-integrity@vger.kernel.org>,
+        Peter Jones <pjones@redhat.com>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        stable <stable@vger.kernel.org>, Lyude Paul <lyude@redhat.com>,
+        Matthew Garrett <mjg59@google.com>,
+        Roberto Sassu <roberto.sassu@huawei.com>,
+        Bartosz Szczepanek <bsz@semihalf.com>,
+        open list <linux-kernel@vger.kernel.org>
+References: <20190925101622.31457-1-jarkko.sakkinen@linux.intel.com>
+ <CAKv+Gu9xLXWj8e70rs6Oy3aT_+qvemMJqtOETQG+7z==Nf_RcQ@mail.gmail.com>
+ <20190925145011.GC23867@linux.intel.com>
+ <20190925151616.3glkehdrmuwtosn3@cantor>
 MIME-Version: 1.0
-References: <20190911233239.5916-1-ard.biesheuvel@linaro.org>
- <alpine.DEB.2.21.1909121533270.30174@bear.techie.net> <CAKv+Gu95wtjPXRUF=wK3-Y6+zNcvaqpr+T4Z4-wV3OJH+oNgVg@mail.gmail.com>
- <alpine.DEB.2.21.1909191400240.3069@bear.techie.net>
-In-Reply-To: <alpine.DEB.2.21.1909191400240.3069@bear.techie.net>
-From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Date:   Wed, 25 Sep 2019 17:57:55 +0200
-Message-ID: <CAKv+Gu_evq+B1=eHQyy1-+3PhA3fMKhRULTTZW4S=nR8FHs2zg@mail.gmail.com>
-Subject: Re: [PATCH] efi: don't iterate over EFI vars pointlessly if no SSDT
- override was specified
-To:     Scott Talbert <swt@techie.net>
-Cc:     linux-efi <linux-efi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20190925151616.3glkehdrmuwtosn3@cantor>
+User-Agent: NeoMutt/20180716
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, 19 Sep 2019 at 20:01, Scott Talbert <swt@techie.net> wrote:
+On Wed Sep 25 19, Jerry Snitselaar wrote:
+>On Wed Sep 25 19, Jarkko Sakkinen wrote:
+>>On Wed, Sep 25, 2019 at 12:25:05PM +0200, Ard Biesheuvel wrote:
+>>>On Wed, 25 Sep 2019 at 12:16, Jarkko Sakkinen
+>>><jarkko.sakkinen@linux.intel.com> wrote:
+>>>>
+>>>> From: Peter Jones <pjones@redhat.com>
+>>>>
+>>>> Some machines generate a lot of event log entries.  When we're
+>>>> iterating over them, the code removes the old mapping and adds a
+>>>> new one, so once we cross the page boundary we're unmapping the page
+>>>> with the count on it.  Hilarity ensues.
+>>>>
+>>>> This patch keeps the info from the header in local variables so we don't
+>>>> need to access that page again or keep track of if it's mapped.
+>>>>
+>>>> Fixes: 44038bc514a2 ("tpm: Abstract crypto agile event size calculations")
+>>>> Cc: linux-efi@vger.kernel.org
+>>>> Cc: linux-integrity@vger.kernel.org
+>>>> Cc: stable@vger.kernel.org
+>>>> Signed-off-by: Peter Jones <pjones@redhat.com>
+>>>> Tested-by: Lyude Paul <lyude@redhat.com>
+>>>> Reviewed-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+>>>> Acked-by: Matthew Garrett <mjg59@google.com>
+>>>> Acked-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+>>>> Signed-off-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+>>>
+>>>Thanks Jarkko.
+>>>
+>>>Shall I take these through the EFI tree?
+>>
+>>Would be great, if you could because I already sent one PR with fixes for
+>>v5.4-rc1 yesterday.
+>>
+>>/Jarkko
 >
-> On Thu, 12 Sep 2019, Ard Biesheuvel wrote:
->
-> >>> The kernel command line option efivar_ssdt= allows a EFI variable name
-> >>> to be specified which contains an ACPI SSDT table that will be loaded
-> >>> into memory by the OS.
-> >>>
-> >>> Currently, that code will always iterate over the EFI variables and
-> >>> compare each name with the provided name, even if the command line
-> >>> option wasn't set to begin with.
-> >>>
-> >>> So bail early when no variable name was provided.
-> >>>
-> >>> Cc: Scott Talbert <swt@techie.net>
-> >>> Signed-off-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
-> >>> ---
-> >>> drivers/firmware/efi/efi.c | 3 +++
-> >>> 1 file changed, 3 insertions(+)
-> >>>
-> >>> diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
-> >>> index ad3b1f4866b3..8f020827cdd3 100644
-> >>> --- a/drivers/firmware/efi/efi.c
-> >>> +++ b/drivers/firmware/efi/efi.c
-> >>> @@ -282,6 +282,9 @@ static __init int efivar_ssdt_load(void)
-> >>>       void *data;
-> >>>       int ret;
-> >>>
-> >>> +     if (!efivar_ssdt[0])
-> >>> +             return 0;
-> >>> +
-> >>>       ret = efivar_init(efivar_ssdt_iter, &entries, true, &entries);
-> >>>
-> >>>       list_for_each_entry_safe(entry, aux, &entries, list) {
-> >>
-> >> Thanks for the quick fix!
-> >>
-> >> I can confirm this fixes booting on my Mac Pro 2012 system when applied to
-> >> 5.3-rc7.
-> >>
-> >> Whenever this makes it in, if it could be targeted for the stable kernels
-> >> as well, that would be appreciated.
-> >>
-> >
-> > I'll send it out as a fix with a cc to -stable.
->
-> Hi - just a quick reminder on this as I don't see it in Linus' tree yet.
-> Not that I need it urgently, but just want to make sure it isn't
-> forgotten.
->
+>My patch collides with this, so I will submit a v3 that applies on top of
+>these once I've run a test with all 3 applied on this t480s.
 
-Hi Scott,
+Tested with Peter's patches, and that was the root cause on this 480s.
 
-This should get sent out in the next couple of day. It usually takes
-another week or so after that for changes to make it into Linus's
-tree.
+I think there should still be a check for tbl_size to make sure we
+aren't sticking -1 into efi_tpm_final_log_size though, which will be
+the case right now if it fails to parse an event.
