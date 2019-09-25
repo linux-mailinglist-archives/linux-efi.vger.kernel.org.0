@@ -2,259 +2,172 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EDECBBE136
-	for <lists+linux-efi@lfdr.de>; Wed, 25 Sep 2019 17:25:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0DFDFBE14F
+	for <lists+linux-efi@lfdr.de>; Wed, 25 Sep 2019 17:29:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727138AbfIYPZ1 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 25 Sep 2019 11:25:27 -0400
-Received: from mail-wm1-f67.google.com ([209.85.128.67]:38210 "EHLO
-        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725992AbfIYPZ0 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 25 Sep 2019 11:25:26 -0400
-Received: by mail-wm1-f67.google.com with SMTP id 3so5432759wmi.3
-        for <linux-efi@vger.kernel.org>; Wed, 25 Sep 2019 08:25:22 -0700 (PDT)
+        id S2439713AbfIYP3X (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 25 Sep 2019 11:29:23 -0400
+Received: from mail-wr1-f68.google.com ([209.85.221.68]:46586 "EHLO
+        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2439704AbfIYP3W (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 25 Sep 2019 11:29:22 -0400
+Received: by mail-wr1-f68.google.com with SMTP id o18so7460978wrv.13
+        for <linux-efi@vger.kernel.org>; Wed, 25 Sep 2019 08:29:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=73pxrGADl05fvIhxtHyUr33GKnX1reVZ0Z0sd/GO+CE=;
-        b=b5DW4/OTOul5dUZMfkjjRTjZrOLu7AQrCCelc+d2uQTcbcHVco8B5FW0l+5nCj2pz2
-         tsNA9MHTncjXEkJXoWhMJe5tPYs2luUtwlmAZZp8METBjdXV9F6R01sIMOnFYGpkRV3W
-         RbyLFdjBbZD03zoXwMeako+5VIPEkWDk6a6khCEOBOaDPbDVlu+ax4Jwv3N4sAWn+aVW
-         QZwhY5N1grTygBhpXYJydN9vBqGGzAeBa0gGRp6t9aTD7A/sUmhkzgIp+NifNmuxBuw2
-         g/VZJN1EcrhBp5AXrx3Cyx07vGOXQh/0UnFPjXaMOL+PhC1KnzuhzI3g2iT+byH7jQbP
-         S0DQ==
+        bh=LbH1JRsE5gNzk5r+HOai2FAWFvIqOQyEdzFA3kJ7aIM=;
+        b=oHS3VjAECmGmMqMZ3iEEidrVarDdrXO6OQ9B7/lbkNCoLhAtpnb1Yk/NTBHjx+kTPJ
+         P32IgqhLdOTctj8lS60GThdHB4sZlozMGmTKJMFC37QVH2QOMP7QYMqIxa4vucJO6Dio
+         8iascMWvSwkXYVF2LYTiIPq6zSOUMljmzKaZyylnlc8fbWRGODlHQgYQa0PaSQwtKtN1
+         QM0/HSEeH8R3YJO4jNj/QOfrtMTrzjwlALTFY3FyOiCvE+eeYLkylRKW+G804eKFFXTY
+         M1Deq29dgXgl05zKwgTGMJ5rvZzb/KUtf+WACyL4JRVq8T5iHvl+TqtPI0rA0nNZpsrR
+         cmfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=73pxrGADl05fvIhxtHyUr33GKnX1reVZ0Z0sd/GO+CE=;
-        b=qbsKMYR5/SioB7NOYNC0kshonMrUanxj5JLy9n3pnJb7jB0/cI+rfF3FizxL3w7G8o
-         nchdUF8IpuY68tLMFnkHS45Ny+jEhTGaAJquPaBy/I1JiT/UUptj0kdbzToDrR+iG8Md
-         fsQVAl+zOFbCxPiknxvtL36iQ4AsDx/zMo6zH3kDpEZoWQRzM9X/bOcsYbsP9xDfbcfl
-         BXLj1J5zWRwcIG6nh6xH8iCZzqG329JacowSWtBzr159wDHj4hBm8elFxlYfUpvYkFBo
-         +xh42yoN6TcIsyeR5NMbE1ew5gSw0e/YYJV2BQ0AVsulLDEx8kQt7iVhtEKi0FkoS9ZO
-         z4JA==
-X-Gm-Message-State: APjAAAXcF0w4ZQpIytjJAoQ2yo1etgkZPwuEx3JgxkObIkdEdenaxoup
-        BdG43gxxGDEhm8Os8EAL7oGVL/BBiQwKCeeOIwvTrg==
-X-Google-Smtp-Source: APXvYqy0tY+BzqhxLnEuXiL5jipzRnTerZer8xE1mmYCciMwhFV3LF+qARnXaB54MYSeTXTi37zD6cjtf5K56y1SlmI=
-X-Received: by 2002:a7b:c451:: with SMTP id l17mr7792934wmi.61.1569425121379;
- Wed, 25 Sep 2019 08:25:21 -0700 (PDT)
+        bh=LbH1JRsE5gNzk5r+HOai2FAWFvIqOQyEdzFA3kJ7aIM=;
+        b=qJtJXq4Q2dWNvR5Xz4eKMBn1EqvuqkIHpdjwjt6CL/jFZVGMRy7vude3NdHS3yfr8H
+         +fpYPBKGb2d67Ks5a7L9bAmR6hX0r3bmIPbUOb5goTTwjfwXpNpO9YbNXqsBvfoPJhUQ
+         WCD17OsmM8SK+I2GfjosEM0x7VLZEY+kD8W82dydzfM7079nhdDwSPgAy/VVuhLwdD8u
+         8vit/BlaMO5b2cHozlNHad1yCZvSPs0vdrIXUa/PUnnaCAWNrbarEOmUV+uvyWweLGkW
+         DMEpQVZu0/ECzDK4HOf1HkNy8jVxsbLiwVSrHtIpjhHI3QmEKdyfyZY6t1rBRNXXfwjR
+         LBZQ==
+X-Gm-Message-State: APjAAAW/Rgz5vkKjKkasV5mpPCuLR/27pVYMpeFpaCR04ZjlUg4VdcTD
+        XNwqTgkLlnAJxegNCZndgwVBXFbbm+L7DxwAHddTSA==
+X-Google-Smtp-Source: APXvYqyYWffK09yJ7cnY0gJYYdcBl2WjFnmEgGos4uhahh/oCQSf21nPqCg5cjdbAff0Y+/eZcRAh8goLL+TeDOlrbY=
+X-Received: by 2002:adf:fe88:: with SMTP id l8mr9484640wrr.32.1569425359779;
+ Wed, 25 Sep 2019 08:29:19 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190919160521.13820-1-kasong@redhat.com>
-In-Reply-To: <20190919160521.13820-1-kasong@redhat.com>
+References: <775bcf46-0f4e-a1a9-5a40-05f833cd7a1a@huawei.com>
+In-Reply-To: <775bcf46-0f4e-a1a9-5a40-05f833cd7a1a@huawei.com>
 From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Date:   Wed, 25 Sep 2019 17:25:09 +0200
-Message-ID: <CAKv+Gu95NGPF7m9_K-0MDmti7XN++cfyYWRj6WEXqpYzDM9Btg@mail.gmail.com>
-Subject: Re: [PATCH v2] x86, efi: never relocate kernel below lowest
- acceptable address
-To:     Kairui Song <kasong@redhat.com>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
+Date:   Wed, 25 Sep 2019 17:29:08 +0200
+Message-ID: <CAKv+Gu-dd5=TJ62GtCvZ5iPTRjqjSpPwx-oNQJ2dv9ZBHB0c8Q@mail.gmail.com>
+Subject: Re: [PATCH 1/2] efi: Add efi_memmap_free() to free EFI memory map
+To:     Yunfeng Ye <yeyunfeng@huawei.com>
+Cc:     Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        "tglx@linutronix.de" <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Matthew Garrett <matthewgarrett@google.com>,
-        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        Baoquan He <bhe@redhat.com>, Dave Young <dyoung@redhat.com>,
+        "H. Peter Anvin" <hpa@zytor.com>,
         "the arch/x86 maintainers" <x86@kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>
+        linux-efi <linux-efi@vger.kernel.org>,
+        platform-driver-x86@vger.kernel.org,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, 19 Sep 2019 at 18:06, Kairui Song <kasong@redhat.com> wrote:
+On Wed, 25 Sep 2019 at 11:17, Yunfeng Ye <yeyunfeng@huawei.com> wrote:
 >
-> Currently, kernel fails to boot on some HyperV VMs when using EFI.
-> And it's a potential issue on all platforms.
+> In efi_fake_memmap(), the commit 20b1e22d01a4 ("x86/efi: Don't allocate
+> memmap through memblock after mm_init()") replace memblock_alloc() with
+> efi_memmap_alloc(), but there is no matching modification of
+> memblock_free() when early_memremap() fail.
 >
-> It's caused a broken kernel relocation on EFI systems, when below three
-> conditions are met:
+> Fix this by adding efi_memmap_free() to instead of memblock_free().
 >
-> 1. Kernel image is not loaded to the default address (LOAD_PHYSICAL_ADDR)
->    by the loader.
-> 2. There isn't enough room to contain the kernel, starting from the
->    default load address (eg. something else occupied part the region).
-> 3. In the memmap provided by EFI firmware, there is a memory region
->    starts below LOAD_PHYSICAL_ADDR, and suitable for containing the
->    kernel.
->
-> Efi stub will perform a kernel relocation when condition 1 is met. But
-> due to condition 2, efi stub can't relocate kernel to the preferred
-> address, so it fallback to query and alloc from EFI firmware for lowest
-> usable memory region.
->
-> It's incorrect to use the lowest memory address. In later stage, kernel
-> will assume LOAD_PHYSICAL_ADDR as the minimal acceptable relocate address,
-> but efi stub will end up relocating kernel below it.
->
-> Then before the kernel decompressing. Kernel will do another relocation
-> to address not lower than LOAD_PHYSICAL_ADDR, this time the relocate will
-> over write the blockage at the default load address, which efi stub tried
-> to avoid, and lead to unexpected behavior. Beside, the memory region it
-> writes to is not allocated from EFI firmware, which is also wrong.
->
-> To fix it, just don't let efi stub relocate the kernel to any address
-> lower than lowest acceptable address.
->
-> Signed-off-by: Kairui Song <kasong@redhat.com>
->
+> Fixes: 20b1e22d01a4 ("x86/efi: Don't allocate memmap through memblock after mm_init()")
+> Signed-off-by: Yunfeng Ye <yeyunfeng@huawei.com>
 
-Hello Kairui,
-
-This patch looks correct to me, but it needs an ack from the x86
-maintainers, since the rules around LOAD_PHYSICAL_ADDR are specific to
-the x86 architecture.
-
+What happens if you try to call efi_memmap_free() /after/ slab has
+become available on an allocation that was created before?
 
 > ---
+>  drivers/firmware/efi/fake_mem.c |  2 +-
+>  drivers/firmware/efi/memmap.c   | 34 ++++++++++++++++++++++++++++++++++
+>  include/linux/efi.h             |  1 +
+>  3 files changed, 36 insertions(+), 1 deletion(-)
 >
-> Update from V1:
->  - Redo the commit message.
->
->  arch/x86/boot/compressed/eboot.c               |  8 +++++---
->  drivers/firmware/efi/libstub/arm32-stub.c      |  2 +-
->  drivers/firmware/efi/libstub/arm64-stub.c      |  2 +-
->  drivers/firmware/efi/libstub/efi-stub-helper.c | 12 ++++++++----
->  include/linux/efi.h                            |  5 +++--
->  5 files changed, 18 insertions(+), 11 deletions(-)
->
-> diff --git a/arch/x86/boot/compressed/eboot.c b/arch/x86/boot/compressed/eboot.c
-> index 936bdb924ec2..8207e8aa297e 100644
-> --- a/arch/x86/boot/compressed/eboot.c
-> +++ b/arch/x86/boot/compressed/eboot.c
-> @@ -13,6 +13,7 @@
->  #include <asm/e820/types.h>
->  #include <asm/setup.h>
->  #include <asm/desc.h>
-> +#include <asm/boot.h>
->
->  #include "../string.h"
->  #include "eboot.h"
-> @@ -432,7 +433,7 @@ struct boot_params *make_boot_params(struct efi_config *c)
+> diff --git a/drivers/firmware/efi/fake_mem.c b/drivers/firmware/efi/fake_mem.c
+> index 9501edc..c2f69f6 100644
+> --- a/drivers/firmware/efi/fake_mem.c
+> +++ b/drivers/firmware/efi/fake_mem.c
+> @@ -65,7 +65,7 @@ void __init efi_fake_memmap(void)
+>         new_memmap = early_memremap(new_memmap_phy,
+>                                     efi.memmap.desc_size * new_nr_map);
+>         if (!new_memmap) {
+> -               memblock_free(new_memmap_phy, efi.memmap.desc_size * new_nr_map);
+> +               efi_memmap_free(new_memmap_phy, new_nr_map);
+>                 return;
 >         }
 >
->         status = efi_low_alloc(sys_table, 0x4000, 1,
-> -                              (unsigned long *)&boot_params);
-> +                              (unsigned long *)&boot_params, 0);
->         if (status != EFI_SUCCESS) {
->                 efi_printk(sys_table, "Failed to allocate lowmem for boot params\n");
->                 return NULL;
-> @@ -817,7 +818,7 @@ efi_main(struct efi_config *c, struct boot_params *boot_params)
->
->         gdt->size = 0x800;
->         status = efi_low_alloc(sys_table, gdt->size, 8,
-> -                          (unsigned long *)&gdt->address);
-> +                              (unsigned long *)&gdt->address, 0);
->         if (status != EFI_SUCCESS) {
->                 efi_printk(sys_table, "Failed to allocate memory for 'gdt'\n");
->                 goto fail;
-> @@ -842,7 +843,8 @@ efi_main(struct efi_config *c, struct boot_params *boot_params)
->                 status = efi_relocate_kernel(sys_table, &bzimage_addr,
->                                              hdr->init_size, hdr->init_size,
->                                              hdr->pref_address,
-> -                                            hdr->kernel_alignment);
-> +                                            hdr->kernel_alignment,
-> +                                            LOAD_PHYSICAL_ADDR);
->                 if (status != EFI_SUCCESS) {
->                         efi_printk(sys_table, "efi_relocate_kernel() failed!\n");
->                         goto fail;
-> diff --git a/drivers/firmware/efi/libstub/arm32-stub.c b/drivers/firmware/efi/libstub/arm32-stub.c
-> index e8f7aefb6813..bf6f954d6afe 100644
-> --- a/drivers/firmware/efi/libstub/arm32-stub.c
-> +++ b/drivers/firmware/efi/libstub/arm32-stub.c
-> @@ -220,7 +220,7 @@ efi_status_t handle_kernel_image(efi_system_table_t *sys_table,
->         *image_size = image->image_size;
->         status = efi_relocate_kernel(sys_table, image_addr, *image_size,
->                                      *image_size,
-> -                                    dram_base + MAX_UNCOMP_KERNEL_SIZE, 0);
-> +                                    dram_base + MAX_UNCOMP_KERNEL_SIZE, 0, 0);
->         if (status != EFI_SUCCESS) {
->                 pr_efi_err(sys_table, "Failed to relocate kernel.\n");
->                 efi_free(sys_table, *reserve_size, *reserve_addr);
-> diff --git a/drivers/firmware/efi/libstub/arm64-stub.c b/drivers/firmware/efi/libstub/arm64-stub.c
-> index 1550d244e996..3d2e517e10f4 100644
-> --- a/drivers/firmware/efi/libstub/arm64-stub.c
-> +++ b/drivers/firmware/efi/libstub/arm64-stub.c
-> @@ -140,7 +140,7 @@ efi_status_t handle_kernel_image(efi_system_table_t *sys_table_arg,
->         if (status != EFI_SUCCESS) {
->                 *reserve_size = kernel_memsize + TEXT_OFFSET;
->                 status = efi_low_alloc(sys_table_arg, *reserve_size,
-> -                                      MIN_KIMG_ALIGN, reserve_addr);
-> +                                      MIN_KIMG_ALIGN, reserve_addr, 0);
->
->                 if (status != EFI_SUCCESS) {
->                         pr_efi_err(sys_table_arg, "Failed to relocate kernel\n");
-> diff --git a/drivers/firmware/efi/libstub/efi-stub-helper.c b/drivers/firmware/efi/libstub/efi-stub-helper.c
-> index 3caae7f2cf56..00b00a2562aa 100644
-> --- a/drivers/firmware/efi/libstub/efi-stub-helper.c
-> +++ b/drivers/firmware/efi/libstub/efi-stub-helper.c
-> @@ -260,11 +260,11 @@ efi_status_t efi_high_alloc(efi_system_table_t *sys_table_arg,
+> diff --git a/drivers/firmware/efi/memmap.c b/drivers/firmware/efi/memmap.c
+> index 38b686c..35dc189 100644
+> --- a/drivers/firmware/efi/memmap.c
+> +++ b/drivers/firmware/efi/memmap.c
+> @@ -18,6 +18,11 @@ static phys_addr_t __init __efi_memmap_alloc_early(unsigned long size)
+>         return memblock_phys_alloc(size, SMP_CACHE_BYTES);
 >  }
 >
->  /*
-> - * Allocate at the lowest possible address.
-> + * Allocate at the lowest possible address that is not below 'min'.
->   */
->  efi_status_t efi_low_alloc(efi_system_table_t *sys_table_arg,
->                            unsigned long size, unsigned long align,
-> -                          unsigned long *addr)
-> +                          unsigned long *addr, unsigned long min)
->  {
->         unsigned long map_size, desc_size, buff_size;
->         efi_memory_desc_t *map;
-> @@ -311,6 +311,9 @@ efi_status_t efi_low_alloc(efi_system_table_t *sys_table_arg,
->                 start = desc->phys_addr;
->                 end = start + desc->num_pages * EFI_PAGE_SIZE;
->
-> +               if (start < min)
-> +                       start = min;
+> +static void __init __efi_memmap_free_early(phys_addr_t addr, unsigned long size)
+> +{
+> +       memblock_free(addr, size);
+> +}
 > +
->                 /*
->                  * Don't allocate at 0x0. It will confuse code that
->                  * checks pointers against NULL. Skip the first 8
-> @@ -698,7 +701,8 @@ efi_status_t efi_relocate_kernel(efi_system_table_t *sys_table_arg,
->                                  unsigned long image_size,
->                                  unsigned long alloc_size,
->                                  unsigned long preferred_addr,
-> -                                unsigned long alignment)
-> +                                unsigned long alignment,
-> +                                unsigned long min_addr)
+>  static phys_addr_t __init __efi_memmap_alloc_late(unsigned long size)
 >  {
->         unsigned long cur_image_addr;
->         unsigned long new_addr = 0;
-> @@ -732,7 +736,7 @@ efi_status_t efi_relocate_kernel(efi_system_table_t *sys_table_arg,
->          */
->         if (status != EFI_SUCCESS) {
->                 status = efi_low_alloc(sys_table_arg, alloc_size, alignment,
-> -                                      &new_addr);
-> +                                      &new_addr, min_addr);
->         }
->         if (status != EFI_SUCCESS) {
->                 pr_efi_err(sys_table_arg, "Failed to allocate usable memory for kernel.\n");
+>         unsigned int order = get_order(size);
+> @@ -29,6 +34,15 @@ static phys_addr_t __init __efi_memmap_alloc_late(unsigned long size)
+>         return PFN_PHYS(page_to_pfn(p));
+>  }
+>
+> +static void __init __efi_memmap_free_late(phys_addr_t addr, unsigned long size)
+> +{
+> +       unsigned int order = get_order(size);
+> +       struct page *p = pfn_to_page(PHYS_PFN(addr));
+> +
+> +       if (p)
+> +               __free_pages(p, order);
+> +}
+> +
+>  /**
+>   * efi_memmap_alloc - Allocate memory for the EFI memory map
+>   * @num_entries: Number of entries in the allocated map.
+> @@ -50,6 +64,26 @@ phys_addr_t __init efi_memmap_alloc(unsigned int num_entries)
+>  }
+>
+>  /**
+> + * efi_memmap_free - Free memory for the EFI memory map
+> + * @addr: Physical address of the EFI memory map to be freed.
+> + * @num_entries: Number of the EFI memory map entries.
+> + *
+> + * Depending on whether mm_init() has already been invoked or not,
+> + * either memblock or "normal" page free is used.
+> + */
+> +void __init efi_memmap_free(phys_addr_t addr, unsigned int num_entries)
+> +{
+> +       unsigned long size = num_entries * efi.memmap.desc_size;
+> +
+> +       if (slab_is_available()) {
+> +               __efi_memmap_free_late(addr, size);
+> +
+> +               return;
+> +       }
+> +       __efi_memmap_free_early(addr, size);
+> +}
+> +
+> +/**
+>   * __efi_memmap_init - Common code for mapping the EFI memory map
+>   * @data: EFI memory map data
+>   * @late: Use early or late mapping function?
 > diff --git a/include/linux/efi.h b/include/linux/efi.h
-> index f87fabea4a85..cc947c0f3e06 100644
+> index bd38370..8bb741a 100644
 > --- a/include/linux/efi.h
 > +++ b/include/linux/efi.h
-> @@ -1587,7 +1587,7 @@ efi_status_t efi_get_memory_map(efi_system_table_t *sys_table_arg,
+> @@ -1057,6 +1057,7 @@ static inline efi_status_t efi_query_variable_store(u32 attributes,
+>  extern void __iomem *efi_lookup_mapped_addr(u64 phys_addr);
 >
->  efi_status_t efi_low_alloc(efi_system_table_t *sys_table_arg,
->                            unsigned long size, unsigned long align,
-> -                          unsigned long *addr);
-> +                          unsigned long *addr, unsigned long min);
->
->  efi_status_t efi_high_alloc(efi_system_table_t *sys_table_arg,
->                             unsigned long size, unsigned long align,
-> @@ -1598,7 +1598,8 @@ efi_status_t efi_relocate_kernel(efi_system_table_t *sys_table_arg,
->                                  unsigned long image_size,
->                                  unsigned long alloc_size,
->                                  unsigned long preferred_addr,
-> -                                unsigned long alignment);
-> +                                unsigned long alignment,
-> +                                unsigned long min_addr);
->
->  efi_status_t handle_cmdline_files(efi_system_table_t *sys_table_arg,
->                                   efi_loaded_image_t *image,
+>  extern phys_addr_t __init efi_memmap_alloc(unsigned int num_entries);
+> +extern void __init efi_memmap_free(phys_addr_t addr, unsigned int num_entries);
+>  extern int __init efi_memmap_init_early(struct efi_memory_map_data *data);
+>  extern int __init efi_memmap_init_late(phys_addr_t addr, unsigned long size);
+>  extern void __init efi_memmap_unmap(void);
 > --
-> 2.21.0
+> 1.8.3.1
 >
