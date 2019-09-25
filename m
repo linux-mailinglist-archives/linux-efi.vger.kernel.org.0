@@ -2,92 +2,143 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E78CBBA2C
-	for <lists+linux-efi@lfdr.de>; Mon, 23 Sep 2019 19:10:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 18935BDACA
+	for <lists+linux-efi@lfdr.de>; Wed, 25 Sep 2019 11:18:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387922AbfIWRKP (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 23 Sep 2019 13:10:15 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:58121 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1732920AbfIWRKP (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 23 Sep 2019 13:10:15 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1569258614;
-        h=from:from:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=brtnUNEATJxaiEmZJMG7ZyzZu+Ldb+R0Iih2eWtZNa8=;
-        b=CvIurzkUgXXwWaeRZFHy9j301sh+XRjQ129axRbcz3vxYFAltnTcG+DS10099kKtvNAnWm
-        hyAZ0mDMFjBhAqdZoio/LZFJNydHiaBpDSKBNHQiHt3PEbZOizDET2hG4HOPPjkOXrVTiB
-        ZeymYIv3TDz4WM1/u9bTNwcvWatQKUI=
-Received: from mail-io1-f69.google.com (mail-io1-f69.google.com
- [209.85.166.69]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-239-7vgDJzRbPbWdQf5wWLQbSQ-1; Mon, 23 Sep 2019 13:10:13 -0400
-Received: by mail-io1-f69.google.com with SMTP id k14so15624336iot.14
-        for <linux-efi@vger.kernel.org>; Mon, 23 Sep 2019 10:10:13 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:reply-to
-         :mail-followup-to:references:mime-version:content-disposition
-         :in-reply-to:user-agent;
-        bh=rh1uvaNsooagBW4WOK11wp/OzNbWIxJmJoNftck7Ang=;
-        b=Qt48L5gaeq7bi20i6rnmsltk6lkSDaxqC0RpckfzYWcMqGUywJW4PtVbPDpV8sNRWO
-         rCG6rl9F9pwOSbpW2Jas2dXqMbusc9XIy8u4jHZftFkz9Cpu2CHqohBqtogPayeWph6B
-         odSZhFBoVmNrt7SX/12R1Xqc2bsJrM/KqB512N6b0JQu3Nx0WCrtcLjJ9dUYFgTjaeSZ
-         glV6eyqJ7IsuRLBOFS6vsxVhRgXvag58Khv0qBwTyyJdyfORcpDIRVq9eXEn8sSBVmYK
-         KT+5PWE1L1HPrHGJMTfw7XGoa28mqspysyeqdvUO3kTppe7oezbEZvZWx/MFWXBglDSF
-         w5fw==
-X-Gm-Message-State: APjAAAUk2yWMiLI7Baby9eKrO2eE4yjTq+XNaBRNmX6nmt1JZi4TPHGY
-        Apv5LwbEflbrhFe5IldF/d+oo0L6//lTcgvUryd1zYUFgiKQRieAl2xrJTC/P2eA5Ed3nTOYt8S
-        gd//lkg/dRTs14iT6QhcL
-X-Received: by 2002:a5e:9917:: with SMTP id t23mr308426ioj.141.1569258612799;
-        Mon, 23 Sep 2019 10:10:12 -0700 (PDT)
-X-Google-Smtp-Source: APXvYqxXT9PS2Bv55kiYnVhChrkQQVSNPJh291rae4rfNmJB3BZ6AEfm4CLIiEf4j7x0kpdjPLYidA==
-X-Received: by 2002:a5e:9917:: with SMTP id t23mr308405ioj.141.1569258612538;
-        Mon, 23 Sep 2019 10:10:12 -0700 (PDT)
-Received: from localhost (ip70-163-223-149.ph.ph.cox.net. [70.163.223.149])
-        by smtp.gmail.com with ESMTPSA id w7sm11707131iob.17.2019.09.23.10.10.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Sep 2019 10:10:11 -0700 (PDT)
-Date:   Mon, 23 Sep 2019 10:10:10 -0700
-From:   Jerry Snitselaar <jsnitsel@redhat.com>
-To:     linux-efi@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org, linux-integrity@vger.kernel.org,
-        Matthew Garrett <mjg59@google.com>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-Subject: Re: [RFC PATCH] tpm: only set efi_tpm_final_log_size after
- successful event log parsing
-Message-ID: <20190923171010.csz4js3xs2mixmpq@cantor>
-Reply-To: Jerry Snitselaar <jsnitsel@redhat.com>
-Mail-Followup-To: linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-integrity@vger.kernel.org, Matthew Garrett <mjg59@google.com>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-References: <20190918191626.5741-1-jsnitsel@redhat.com>
+        id S1726185AbfIYJSL (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 25 Sep 2019 05:18:11 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:2780 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726690AbfIYJSC (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Wed, 25 Sep 2019 05:18:02 -0400
+Received: from DGGEMS410-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id BDA5A25F422E5C2CE8A7;
+        Wed, 25 Sep 2019 17:17:55 +0800 (CST)
+Received: from [127.0.0.1] (10.177.251.225) by DGGEMS410-HUB.china.huawei.com
+ (10.3.19.210) with Microsoft SMTP Server id 14.3.439.0; Wed, 25 Sep 2019
+ 17:17:50 +0800
+To:     "ard.biesheuvel@linaro.org" <ard.biesheuvel@linaro.org>,
+        <dvhart@infradead.org>, <andy@infradead.org>,
+        "tglx@linutronix.de" <tglx@linutronix.de>, <mingo@redhat.com>,
+        <bp@alien8.de>, <hpa@zytor.com>, <x86@kernel.org>
+From:   Yunfeng Ye <yeyunfeng@huawei.com>
+Subject: [PATCH 1/2] efi: Add efi_memmap_free() to free EFI memory map
+CC:     <linux-efi@vger.kernel.org>, <platform-driver-x86@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Message-ID: <775bcf46-0f4e-a1a9-5a40-05f833cd7a1a@huawei.com>
+Date:   Wed, 25 Sep 2019 17:17:34 +0800
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-In-Reply-To: <20190918191626.5741-1-jsnitsel@redhat.com>
-User-Agent: NeoMutt/20180716
-X-MC-Unique: 7vgDJzRbPbWdQf5wWLQbSQ-1
-X-Mimecast-Spam-Score: 0
-Content-Type: text/plain; charset=WINDOWS-1252; format=flowed
-Content-Transfer-Encoding: quoted-printable
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.177.251.225]
+X-CFilter-Loop: Reflected
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Any thoughts on this? I know of at least 2 Lenovo models that are
-running into this problem.
+In efi_fake_memmap(), the commit 20b1e22d01a4 ("x86/efi: Don't allocate
+memmap through memblock after mm_init()") replace memblock_alloc() with
+efi_memmap_alloc(), but there is no matching modification of
+memblock_free() when early_memremap() fail.
 
-In the case of the one I have currently have access to the problem is
-that the hash algorithm id for an event isn't one that is currently in
-the TCG registry, and it fails to find a match when walking the
-digest_sizes array. That seems like an issue for the vendor to fix in the b=
-ios,
-but we should look at the return value of tpm2_calc_event_log_size and not
-stick a negative value in efi_tpm_final_log_size.
+Fix this by adding efi_memmap_free() to instead of memblock_free().
+
+Fixes: 20b1e22d01a4 ("x86/efi: Don't allocate memmap through memblock after mm_init()")
+Signed-off-by: Yunfeng Ye <yeyunfeng@huawei.com>
+---
+ drivers/firmware/efi/fake_mem.c |  2 +-
+ drivers/firmware/efi/memmap.c   | 34 ++++++++++++++++++++++++++++++++++
+ include/linux/efi.h             |  1 +
+ 3 files changed, 36 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/firmware/efi/fake_mem.c b/drivers/firmware/efi/fake_mem.c
+index 9501edc..c2f69f6 100644
+--- a/drivers/firmware/efi/fake_mem.c
++++ b/drivers/firmware/efi/fake_mem.c
+@@ -65,7 +65,7 @@ void __init efi_fake_memmap(void)
+ 	new_memmap = early_memremap(new_memmap_phy,
+ 				    efi.memmap.desc_size * new_nr_map);
+ 	if (!new_memmap) {
+-		memblock_free(new_memmap_phy, efi.memmap.desc_size * new_nr_map);
++		efi_memmap_free(new_memmap_phy, new_nr_map);
+ 		return;
+ 	}
+
+diff --git a/drivers/firmware/efi/memmap.c b/drivers/firmware/efi/memmap.c
+index 38b686c..35dc189 100644
+--- a/drivers/firmware/efi/memmap.c
++++ b/drivers/firmware/efi/memmap.c
+@@ -18,6 +18,11 @@ static phys_addr_t __init __efi_memmap_alloc_early(unsigned long size)
+ 	return memblock_phys_alloc(size, SMP_CACHE_BYTES);
+ }
+
++static void __init __efi_memmap_free_early(phys_addr_t addr, unsigned long size)
++{
++	memblock_free(addr, size);
++}
++
+ static phys_addr_t __init __efi_memmap_alloc_late(unsigned long size)
+ {
+ 	unsigned int order = get_order(size);
+@@ -29,6 +34,15 @@ static phys_addr_t __init __efi_memmap_alloc_late(unsigned long size)
+ 	return PFN_PHYS(page_to_pfn(p));
+ }
+
++static void __init __efi_memmap_free_late(phys_addr_t addr, unsigned long size)
++{
++	unsigned int order = get_order(size);
++	struct page *p = pfn_to_page(PHYS_PFN(addr));
++
++	if (p)
++		__free_pages(p, order);
++}
++
+ /**
+  * efi_memmap_alloc - Allocate memory for the EFI memory map
+  * @num_entries: Number of entries in the allocated map.
+@@ -50,6 +64,26 @@ phys_addr_t __init efi_memmap_alloc(unsigned int num_entries)
+ }
+
+ /**
++ * efi_memmap_free - Free memory for the EFI memory map
++ * @addr: Physical address of the EFI memory map to be freed.
++ * @num_entries: Number of the EFI memory map entries.
++ *
++ * Depending on whether mm_init() has already been invoked or not,
++ * either memblock or "normal" page free is used.
++ */
++void __init efi_memmap_free(phys_addr_t addr, unsigned int num_entries)
++{
++	unsigned long size = num_entries * efi.memmap.desc_size;
++
++	if (slab_is_available()) {
++		__efi_memmap_free_late(addr, size);
++
++		return;
++	}
++	__efi_memmap_free_early(addr, size);
++}
++
++/**
+  * __efi_memmap_init - Common code for mapping the EFI memory map
+  * @data: EFI memory map data
+  * @late: Use early or late mapping function?
+diff --git a/include/linux/efi.h b/include/linux/efi.h
+index bd38370..8bb741a 100644
+--- a/include/linux/efi.h
++++ b/include/linux/efi.h
+@@ -1057,6 +1057,7 @@ static inline efi_status_t efi_query_variable_store(u32 attributes,
+ extern void __iomem *efi_lookup_mapped_addr(u64 phys_addr);
+
+ extern phys_addr_t __init efi_memmap_alloc(unsigned int num_entries);
++extern void __init efi_memmap_free(phys_addr_t addr, unsigned int num_entries);
+ extern int __init efi_memmap_init_early(struct efi_memory_map_data *data);
+ extern int __init efi_memmap_init_late(phys_addr_t addr, unsigned long size);
+ extern void __init efi_memmap_unmap(void);
+-- 
+1.8.3.1
 
