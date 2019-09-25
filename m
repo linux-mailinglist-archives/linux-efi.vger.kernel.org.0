@@ -2,85 +2,117 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B1F8BDB6C
-	for <lists+linux-efi@lfdr.de>; Wed, 25 Sep 2019 11:51:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 57B1CBDBFB
+	for <lists+linux-efi@lfdr.de>; Wed, 25 Sep 2019 12:16:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729069AbfIYJvX (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 25 Sep 2019 05:51:23 -0400
-Received: from mga12.intel.com ([192.55.52.136]:32918 "EHLO mga12.intel.com"
+        id S2389034AbfIYKQe (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 25 Sep 2019 06:16:34 -0400
+Received: from mga06.intel.com ([134.134.136.31]:40402 "EHLO mga06.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726363AbfIYJvX (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Wed, 25 Sep 2019 05:51:23 -0400
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
+        id S1727141AbfIYKQe (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Wed, 25 Sep 2019 06:16:34 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 25 Sep 2019 02:51:22 -0700
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by orsmga104.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 25 Sep 2019 03:16:33 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.64,547,1559545200"; 
-   d="scan'208";a="191290854"
+   d="scan'208";a="193723106"
 Received: from dariusvo-mobl.ger.corp.intel.com (HELO localhost) ([10.249.39.150])
-  by orsmga003.jf.intel.com with ESMTP; 25 Sep 2019 02:51:17 -0700
-Date:   Wed, 25 Sep 2019 12:51:14 +0300
+  by orsmga006.jf.intel.com with ESMTP; 25 Sep 2019 03:16:27 -0700
 From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-To:     Kairui Song <kasong@redhat.com>
-Cc:     linux-kernel@vger.kernel.org,
+To:     linux-integrity@vger.kernel.org
+Cc:     Peter Jones <pjones@redhat.com>, linux-efi@vger.kernel.org,
+        stable@vger.kernel.org, Lyude Paul <lyude@redhat.com>,
+        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        Matthew Garrett <mjg59@google.com>,
         Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Matthew Garrett <matthewgarrett@google.com>,
-        Baoquan He <bhe@redhat.com>, Dave Young <dyoung@redhat.com>,
-        x86@kernel.org, linux-efi@vger.kernel.org
-Subject: Re: [PATCH v2] x86, efi: never relocate kernel below lowest
- acceptable address
-Message-ID: <20190925095114.GB5173@linux.intel.com>
-References: <20190919160521.13820-1-kasong@redhat.com>
+        Roberto Sassu <roberto.sassu@huawei.com>,
+        Bartosz Szczepanek <bsz@semihalf.com>,
+        linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH v2 1/2] efi+tpm: Don't access event->count when it isn't mapped.
+Date:   Wed, 25 Sep 2019 13:16:18 +0300
+Message-Id: <20190925101622.31457-1-jarkko.sakkinen@linux.intel.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190919160521.13820-1-kasong@redhat.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, Sep 20, 2019 at 12:05:21AM +0800, Kairui Song wrote:
-> Currently, kernel fails to boot on some HyperV VMs when using EFI.
-> And it's a potential issue on all platforms.
-> 
-> It's caused a broken kernel relocation on EFI systems, when below three
-> conditions are met:
-> 
-> 1. Kernel image is not loaded to the default address (LOAD_PHYSICAL_ADDR)
->    by the loader.
-> 2. There isn't enough room to contain the kernel, starting from the
->    default load address (eg. something else occupied part the region).
-> 3. In the memmap provided by EFI firmware, there is a memory region
->    starts below LOAD_PHYSICAL_ADDR, and suitable for containing the
->    kernel.
-> 
-> Efi stub will perform a kernel relocation when condition 1 is met. But
-> due to condition 2, efi stub can't relocate kernel to the preferred
-> address, so it fallback to query and alloc from EFI firmware for lowest
-> usable memory region.
-> 
-> It's incorrect to use the lowest memory address. In later stage, kernel
-> will assume LOAD_PHYSICAL_ADDR as the minimal acceptable relocate address,
-> but efi stub will end up relocating kernel below it.
-> 
-> Then before the kernel decompressing. Kernel will do another relocation
-> to address not lower than LOAD_PHYSICAL_ADDR, this time the relocate will
-> over write the blockage at the default load address, which efi stub tried
-> to avoid, and lead to unexpected behavior. Beside, the memory region it
-> writes to is not allocated from EFI firmware, which is also wrong.
-> 
-> To fix it, just don't let efi stub relocate the kernel to any address
-> lower than lowest acceptable address.
-> 
-> Signed-off-by: Kairui Song <kasong@redhat.com>
+From: Peter Jones <pjones@redhat.com>
 
-Acked-by:  <jarkko.sakkinen@linux.intel.com>
+Some machines generate a lot of event log entries.  When we're
+iterating over them, the code removes the old mapping and adds a
+new one, so once we cross the page boundary we're unmapping the page
+with the count on it.  Hilarity ensues.
 
-/Jarkko
+This patch keeps the info from the header in local variables so we don't
+need to access that page again or keep track of if it's mapped.
+
+Fixes: 44038bc514a2 ("tpm: Abstract crypto agile event size calculations")
+Cc: linux-efi@vger.kernel.org
+Cc: linux-integrity@vger.kernel.org
+Cc: stable@vger.kernel.org
+Signed-off-by: Peter Jones <pjones@redhat.com>
+Tested-by: Lyude Paul <lyude@redhat.com>
+Reviewed-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+Acked-by: Matthew Garrett <mjg59@google.com>
+Acked-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Signed-off-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+---
+ include/linux/tpm_eventlog.h | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
+
+diff --git a/include/linux/tpm_eventlog.h b/include/linux/tpm_eventlog.h
+index 63238c84dc0b..12584b69a3f3 100644
+--- a/include/linux/tpm_eventlog.h
++++ b/include/linux/tpm_eventlog.h
+@@ -170,6 +170,7 @@ static inline int __calc_tpm2_event_size(struct tcg_pcr_event2_head *event,
+ 	u16 halg;
+ 	int i;
+ 	int j;
++	u32 count, event_type;
+ 
+ 	marker = event;
+ 	marker_start = marker;
+@@ -190,16 +191,22 @@ static inline int __calc_tpm2_event_size(struct tcg_pcr_event2_head *event,
+ 	}
+ 
+ 	event = (struct tcg_pcr_event2_head *)mapping;
++	/*
++	 * the loop below will unmap these fields if the log is larger than
++	 * one page, so save them here for reference.
++	 */
++	count = READ_ONCE(event->count);
++	event_type = READ_ONCE(event->event_type);
+ 
+ 	efispecid = (struct tcg_efi_specid_event_head *)event_header->event;
+ 
+ 	/* Check if event is malformed. */
+-	if (event->count > efispecid->num_algs) {
++	if (count > efispecid->num_algs) {
+ 		size = 0;
+ 		goto out;
+ 	}
+ 
+-	for (i = 0; i < event->count; i++) {
++	for (i = 0; i < count; i++) {
+ 		halg_size = sizeof(event->digests[i].alg_id);
+ 
+ 		/* Map the digest's algorithm identifier */
+@@ -256,8 +263,9 @@ static inline int __calc_tpm2_event_size(struct tcg_pcr_event2_head *event,
+ 		+ event_field->event_size;
+ 	size = marker - marker_start;
+ 
+-	if ((event->event_type == 0) && (event_field->event_size == 0))
++	if (event_type == 0 && event_field->event_size == 0)
+ 		size = 0;
++
+ out:
+ 	if (do_mapping)
+ 		TPM_MEMUNMAP(mapping, mapping_size);
+-- 
+2.20.1
+
