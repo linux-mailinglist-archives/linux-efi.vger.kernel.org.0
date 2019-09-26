@@ -2,141 +2,173 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2AA1DBE3BB
-	for <lists+linux-efi@lfdr.de>; Wed, 25 Sep 2019 19:48:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 279B8BEFA7
+	for <lists+linux-efi@lfdr.de>; Thu, 26 Sep 2019 12:33:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730698AbfIYRsx (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 25 Sep 2019 13:48:53 -0400
-Received: from mail-wm1-f67.google.com ([209.85.128.67]:50548 "EHLO
-        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729611AbfIYRsx (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 25 Sep 2019 13:48:53 -0400
-Received: by mail-wm1-f67.google.com with SMTP id 5so6746935wmg.0
-        for <linux-efi@vger.kernel.org>; Wed, 25 Sep 2019 10:48:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=ebxFzT8nIL71E7fF2H7syY8mxEeNW0UnVZfk5obr57o=;
-        b=JVxVCrFTteo7kL3Q/6uyAeAdJ5jibVhsw2TEqNk0TzTj7auWG4Uf/aH7smqWnJomfc
-         CDUNJeF3M/kpeGdQ6+fXkLc+U4vMPNnvbqkqmh6LnYrNv6lWFWKmiLVVYNXuEuf2+uXl
-         a6zz/NmbMAVwYmW3jzHqode7PLKNYs5XKkRETfTpDOo2O80oX2FOG33GuM6dbmFiT5rv
-         GyaQeDrwN2ZF8uIWv7BmSlh4T/Hf75s6pWNAGiSZ6JpQMrhdGLN/VrNb2wyYQxKmmXib
-         tDH3xMzpJrJ4PL9uKf4CaYu3aPY6khfDev+4zGDMqpkfFJWuN+Wvw6qZk1rmB8TcfyNT
-         lsLg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=ebxFzT8nIL71E7fF2H7syY8mxEeNW0UnVZfk5obr57o=;
-        b=RJYgYL4qjajIQKi/kvaMSGssfEQ000DuH6YNQp+KFYMbsW2sirvGXT14Dmjod9DwgK
-         doLEkFmSjr+bSMnvApmsiCDiPItOVO5uLJAtgdAHQ5LCWx0FYODfD5l9LROKuUa9HvQZ
-         2541rD+svmJvgonW2/d2rA/wCmhVMb0PAb0jHpehFYpbVR9qb1veJZiyWKcO7pW72xNo
-         nKep5k+62UJP1+OuTmpX+mltJD1Cse5+KsX4RiQi+Cv6SSNd7djnFD+PAqIOXUHGp6CQ
-         g2X9dyzMF9XyNNy5pAJiQrLHmJerXjh+21GS9GXu+3HohuYGKIAaOuqwyZ58ikEC714T
-         31Tg==
-X-Gm-Message-State: APjAAAWJ69vfpaXg3VPneG7ZSecrNqQ/5VPAFauqYQmQRZbkVCs0I+/i
-        WFtn+3u4bsEg8jYwA3nLchogCypnaQvQErjMMBia3g==
-X-Google-Smtp-Source: APXvYqyYALcK3m8CRmcocOzbXY3zrK/sT/SQ3+NBoFRSexJRHY7hSdwcSYHlmvCBBRp0Pb5Org/v//mZkMMDTp+qqFk=
-X-Received: by 2002:a1c:2546:: with SMTP id l67mr9183119wml.10.1569433731493;
- Wed, 25 Sep 2019 10:48:51 -0700 (PDT)
+        id S1726185AbfIZKc7 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 26 Sep 2019 06:32:59 -0400
+Received: from szxga06-in.huawei.com ([45.249.212.32]:41494 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726151AbfIZKc6 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Thu, 26 Sep 2019 06:32:58 -0400
+Received: from DGGEMS409-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id 4E49F23C0CE6DBC92132;
+        Thu, 26 Sep 2019 18:32:56 +0800 (CST)
+Received: from [127.0.0.1] (10.177.251.225) by DGGEMS409-HUB.china.huawei.com
+ (10.3.19.209) with Microsoft SMTP Server id 14.3.439.0; Thu, 26 Sep 2019
+ 18:32:54 +0800
+Subject: Re: [PATCH 1/2] efi: Add efi_memmap_free() to free EFI memory map
+To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>
+CC:     Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        "tglx@linutronix.de" <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        "the arch/x86 maintainers" <x86@kernel.org>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        <platform-driver-x86@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <775bcf46-0f4e-a1a9-5a40-05f833cd7a1a@huawei.com>
+ <CAKv+Gu-dd5=TJ62GtCvZ5iPTRjqjSpPwx-oNQJ2dv9ZBHB0c8Q@mail.gmail.com>
+From:   Yunfeng Ye <yeyunfeng@huawei.com>
+Message-ID: <b2ab5f36-b747-8671-4c5f-92b603b6be3b@huawei.com>
+Date:   Thu, 26 Sep 2019 18:31:35 +0800
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-References: <20190925172705.17358-1-jsnitsel@redhat.com>
-In-Reply-To: <20190925172705.17358-1-jsnitsel@redhat.com>
-From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Date:   Wed, 25 Sep 2019 19:48:39 +0200
-Message-ID: <CAKv+Gu_yq_9ZZCy5d3yfV5onyoc_qc-rvdVJ2_iyYvdFS5iCOw@mail.gmail.com>
-Subject: Re: [PATCH v3] tpm: only set efi_tpm_final_log_size after successful
- event log parsing
-To:     Jerry Snitselaar <jsnitsel@redhat.com>
-Cc:     linux-efi <linux-efi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-integrity <linux-integrity@vger.kernel.org>,
-        stable <stable@vger.kernel.org>,
-        Matthew Garrett <mjg59@google.com>,
-        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <CAKv+Gu-dd5=TJ62GtCvZ5iPTRjqjSpPwx-oNQJ2dv9ZBHB0c8Q@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.177.251.225]
+X-CFilter-Loop: Reflected
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, 25 Sep 2019 at 19:27, Jerry Snitselaar <jsnitsel@redhat.com> wrote:
->
-> If __calc_tpm2_event_size fails to parse an event it will return 0,
-> resulting tpm2_calc_event_log_size returning -1. Currently there is
-> no check of this return value, and efi_tpm_final_log_size can end up
-> being set to this negative value resulting in a panic like the
-> the one given below.
->
-> Also __calc_tpm2_event_size returns a size of 0 when it fails
-> to parse an event, so update function documentation to reflect this.
->
-...
->
-> The root cause of the issue that caused the failure of event parsing
-> in this case is resolved by Peter Jone's patchset dealing with large
-> event logs where crossing over a page boundary causes the page with
-> the event count to be unmapped.
->
-> Fixes: c46f3405692de ("tpm: Reserve the TPM final events table")
-> Cc: linux-efi@vger.kernel.org
-> Cc: linux-integrity@vger.kernel.org
-> Cc: stable@vger.kernel.org
-> Cc: Matthew Garrett <mjg59@google.com>
-> Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>
-> Cc: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-> Signed-off-by: Jerry Snitselaar <jsnitsel@redhat.com>
-
-Thanks Jerry, I have queued this in the efi/urgent branch.
 
 
-> ---
-> v3: rebase on top of Peter Jone's patchset
-> v2: added FW_BUG to pr_err, and renamed label to out_calc.
->     Updated doc comment for __calc_tpm2_event_size.
->
->  drivers/firmware/efi/tpm.c   | 9 ++++++++-
->  include/linux/tpm_eventlog.h | 2 +-
->  2 files changed, 9 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/firmware/efi/tpm.c b/drivers/firmware/efi/tpm.c
-> index b9ae5c6f9b9c..703469c1ab8e 100644
-> --- a/drivers/firmware/efi/tpm.c
-> +++ b/drivers/firmware/efi/tpm.c
-> @@ -85,11 +85,18 @@ int __init efi_tpm_eventlog_init(void)
->                                                     final_tbl->nr_events,
->                                                     log_tbl->log);
->         }
-> +
-> +       if (tbl_size < 0) {
-> +               pr_err(FW_BUG "Failed to parse event in TPM Final Events Log\n");
-> +               goto out_calc;
-> +       }
-> +
->         memblock_reserve((unsigned long)final_tbl,
->                          tbl_size + sizeof(*final_tbl));
-> -       early_memunmap(final_tbl, sizeof(*final_tbl));
->         efi_tpm_final_log_size = tbl_size;
->
-> +out_calc:
-> +       early_memunmap(final_tbl, sizeof(*final_tbl));
->  out:
->         early_memunmap(log_tbl, sizeof(*log_tbl));
->         return ret;
-> diff --git a/include/linux/tpm_eventlog.h b/include/linux/tpm_eventlog.h
-> index 12584b69a3f3..2dfdd63ac034 100644
-> --- a/include/linux/tpm_eventlog.h
-> +++ b/include/linux/tpm_eventlog.h
-> @@ -152,7 +152,7 @@ struct tcg_algorithm_info {
->   * total. Once we've done this we know the offset of the data length field,
->   * and can calculate the total size of the event.
->   *
-> - * Return: size of the event on success, <0 on failure
-> + * Return: size of the event on success, 0 on failure
->   */
->
->  static inline int __calc_tpm2_event_size(struct tcg_pcr_event2_head *event,
-> --
-> 2.23.0
->
+On 2019/9/25 23:29, Ard Biesheuvel wrote:
+> On Wed, 25 Sep 2019 at 11:17, Yunfeng Ye <yeyunfeng@huawei.com> wrote:
+>>
+>> In efi_fake_memmap(), the commit 20b1e22d01a4 ("x86/efi: Don't allocate
+>> memmap through memblock after mm_init()") replace memblock_alloc() with
+>> efi_memmap_alloc(), but there is no matching modification of
+>> memblock_free() when early_memremap() fail.
+>>
+>> Fix this by adding efi_memmap_free() to instead of memblock_free().
+>>
+>> Fixes: 20b1e22d01a4 ("x86/efi: Don't allocate memmap through memblock after mm_init()")
+>> Signed-off-by: Yunfeng Ye <yeyunfeng@huawei.com>
+> 
+> What happens if you try to call efi_memmap_free() /after/ slab has
+> become available on an allocation that was created before?
+> 
+I didn't met the failure path in efi_fake_memmap(), just looked at the code and
+found that the memory allocation using efi_memmap_free(), but free memory using
+memblock_free(), I think it's not correct.
+
+Also another series patch "[PATCH 2/2] x86/efi: Fix memory leak for EFI memmap
+reservations", using efi_memmap_free() for fixing the memory leak in the failure
+path.
+
+thanks.
+
+>> ---
+>>  drivers/firmware/efi/fake_mem.c |  2 +-
+>>  drivers/firmware/efi/memmap.c   | 34 ++++++++++++++++++++++++++++++++++
+>>  include/linux/efi.h             |  1 +
+>>  3 files changed, 36 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/firmware/efi/fake_mem.c b/drivers/firmware/efi/fake_mem.c
+>> index 9501edc..c2f69f6 100644
+>> --- a/drivers/firmware/efi/fake_mem.c
+>> +++ b/drivers/firmware/efi/fake_mem.c
+>> @@ -65,7 +65,7 @@ void __init efi_fake_memmap(void)
+>>         new_memmap = early_memremap(new_memmap_phy,
+>>                                     efi.memmap.desc_size * new_nr_map);
+>>         if (!new_memmap) {
+>> -               memblock_free(new_memmap_phy, efi.memmap.desc_size * new_nr_map);
+>> +               efi_memmap_free(new_memmap_phy, new_nr_map);
+>>                 return;
+>>         }
+>>
+>> diff --git a/drivers/firmware/efi/memmap.c b/drivers/firmware/efi/memmap.c
+>> index 38b686c..35dc189 100644
+>> --- a/drivers/firmware/efi/memmap.c
+>> +++ b/drivers/firmware/efi/memmap.c
+>> @@ -18,6 +18,11 @@ static phys_addr_t __init __efi_memmap_alloc_early(unsigned long size)
+>>         return memblock_phys_alloc(size, SMP_CACHE_BYTES);
+>>  }
+>>
+>> +static void __init __efi_memmap_free_early(phys_addr_t addr, unsigned long size)
+>> +{
+>> +       memblock_free(addr, size);
+>> +}
+>> +
+>>  static phys_addr_t __init __efi_memmap_alloc_late(unsigned long size)
+>>  {
+>>         unsigned int order = get_order(size);
+>> @@ -29,6 +34,15 @@ static phys_addr_t __init __efi_memmap_alloc_late(unsigned long size)
+>>         return PFN_PHYS(page_to_pfn(p));
+>>  }
+>>
+>> +static void __init __efi_memmap_free_late(phys_addr_t addr, unsigned long size)
+>> +{
+>> +       unsigned int order = get_order(size);
+>> +       struct page *p = pfn_to_page(PHYS_PFN(addr));
+>> +
+>> +       if (p)
+>> +               __free_pages(p, order);
+>> +}
+>> +
+>>  /**
+>>   * efi_memmap_alloc - Allocate memory for the EFI memory map
+>>   * @num_entries: Number of entries in the allocated map.
+>> @@ -50,6 +64,26 @@ phys_addr_t __init efi_memmap_alloc(unsigned int num_entries)
+>>  }
+>>
+>>  /**
+>> + * efi_memmap_free - Free memory for the EFI memory map
+>> + * @addr: Physical address of the EFI memory map to be freed.
+>> + * @num_entries: Number of the EFI memory map entries.
+>> + *
+>> + * Depending on whether mm_init() has already been invoked or not,
+>> + * either memblock or "normal" page free is used.
+>> + */
+>> +void __init efi_memmap_free(phys_addr_t addr, unsigned int num_entries)
+>> +{
+>> +       unsigned long size = num_entries * efi.memmap.desc_size;
+>> +
+>> +       if (slab_is_available()) {
+>> +               __efi_memmap_free_late(addr, size);
+>> +
+>> +               return;
+>> +       }
+>> +       __efi_memmap_free_early(addr, size);
+>> +}
+>> +
+>> +/**
+>>   * __efi_memmap_init - Common code for mapping the EFI memory map
+>>   * @data: EFI memory map data
+>>   * @late: Use early or late mapping function?
+>> diff --git a/include/linux/efi.h b/include/linux/efi.h
+>> index bd38370..8bb741a 100644
+>> --- a/include/linux/efi.h
+>> +++ b/include/linux/efi.h
+>> @@ -1057,6 +1057,7 @@ static inline efi_status_t efi_query_variable_store(u32 attributes,
+>>  extern void __iomem *efi_lookup_mapped_addr(u64 phys_addr);
+>>
+>>  extern phys_addr_t __init efi_memmap_alloc(unsigned int num_entries);
+>> +extern void __init efi_memmap_free(phys_addr_t addr, unsigned int num_entries);
+>>  extern int __init efi_memmap_init_early(struct efi_memory_map_data *data);
+>>  extern int __init efi_memmap_init_late(phys_addr_t addr, unsigned long size);
+>>  extern void __init efi_memmap_unmap(void);
+>> --
+>> 1.8.3.1
+>>
+> 
+> .
+> 
+
