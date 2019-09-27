@@ -2,104 +2,193 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D5862BF62F
-	for <lists+linux-efi@lfdr.de>; Thu, 26 Sep 2019 17:48:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1CB55C074B
+	for <lists+linux-efi@lfdr.de>; Fri, 27 Sep 2019 16:26:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727287AbfIZPsC (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 26 Sep 2019 11:48:02 -0400
-Received: from mail-wm1-f66.google.com ([209.85.128.66]:50770 "EHLO
-        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727147AbfIZPsC (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 26 Sep 2019 11:48:02 -0400
-Received: by mail-wm1-f66.google.com with SMTP id 5so3375243wmg.0
-        for <linux-efi@vger.kernel.org>; Thu, 26 Sep 2019 08:48:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=c/3rZGyZ8wo8IAcGiILpVEqgSPsTH+XHREiJwrwJZ0c=;
-        b=U88hSCSVdES0JklNpygW7AUNISvDUWxqvq4/RSOySBI5RzuSv+bpqM+wTTWfEgN470
-         gpWs4NWRtg1KSgUlo1WODgHYlyEzsJCwy2XgdvfzaGF7tyj8UG3Cy33jvIZNQ9756JvX
-         1LeIfEYrSH2efSPIn9ouNdEhhcFvJsuyAipddSXiF9WT9a9mopnxOIST9ZA+6sO3tZAK
-         AVPMuSa/OpgLP+yEGoxFMsCHt46w6mASVKwB1PexFBAeghG4VYEHVzI5C4WLILW6AM27
-         kwNcJaxbNdYrbcX4EdTYGMlowktBAefXRD8GaHicfkXcwspN7u5wR5AnDdvGdeEemsVO
-         2hzg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=c/3rZGyZ8wo8IAcGiILpVEqgSPsTH+XHREiJwrwJZ0c=;
-        b=YKVhEFG+5chumQbvz30HBq0oFV3GWKvdQHj8BBSaxKxav1UJM/9VwEV8lCJDHsABgg
-         CxNR92WKMypoYzsuCeEzXtGXvhM1WMvYRvhrjEqbMTx7zvDw5tK65d45i8ubvkFirV7j
-         PHUnzNl41YzJ7Z0G7TMV8wTNn5VV3zPz0Z+mdD1ZvMykw1WrQTi4qCYvS65IW7DxkfRV
-         QBEZLUZSIxbANzY5B5qRtHUFytvfP68JHe0bCM0SQCzIcA5+ZGueBlrjYLIqg7MWbswX
-         PtbIlNTm0435SSPwquZptN+2dwMImLj+yw+KdnfdDxUi65ByJm3TM9Z2DD5UJcvK2US4
-         1wdw==
-X-Gm-Message-State: APjAAAUM38PdXfjkdfNYnyfptEdZuP24oK9XkTafI0UaX2PWWmM/zdT/
-        gVcbGJ8WMAtsmXHyrKe0K107IaJOncrLh1MyGSowUA==
-X-Google-Smtp-Source: APXvYqwg/Q6oCeFIWzSC1GJg9f91HyLzsXgfBri1ybbR91Ec6CKH3zjayo1IQXAKjEjd8xJkw8PBdgzNIcv/LyEcR7M=
-X-Received: by 2002:a1c:3cc3:: with SMTP id j186mr3407725wma.119.1569512879378;
- Thu, 26 Sep 2019 08:47:59 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190926141234.8271-1-ross.lagerwall@citrix.com>
- <CAKv+Gu8ok=v6WaKWW1AmhPgf1-n7p=4h8Tkno9YNW6H8p4fg8w@mail.gmail.com> <be816ae1-b802-f477-20d0-16e5be15a2b8@citrix.com>
-In-Reply-To: <be816ae1-b802-f477-20d0-16e5be15a2b8@citrix.com>
-From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Date:   Thu, 26 Sep 2019 17:47:47 +0200
-Message-ID: <CAKv+Gu_j=Nb_Q92vVcqyE_FBos76ZG0=hGZwSNuG2sL1ZYsxXw@mail.gmail.com>
-Subject: Re: [PATCH] x86/efi: Don't require non-blocking EFI callbacks
-To:     Ross Lagerwall <ross.lagerwall@citrix.com>
-Cc:     linux-efi <linux-efi@vger.kernel.org>,
-        Darren Hart <dvhart@infradead.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        "the arch/x86 maintainers" <x86@kernel.org>,
-        platform-driver-x86@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Sai Praneeth <sai.praneeth.prakhya@intel.com>
-Content-Type: text/plain; charset="UTF-8"
+        id S1727230AbfI0O0V (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 27 Sep 2019 10:26:21 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:53780 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726251AbfI0O0V (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 27 Sep 2019 10:26:21 -0400
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x8REMxxh128532
+        for <linux-efi@vger.kernel.org>; Fri, 27 Sep 2019 10:26:19 -0400
+Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 2v9jr0kqgk-1
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <linux-efi@vger.kernel.org>; Fri, 27 Sep 2019 10:26:19 -0400
+Received: from localhost
+        by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <linux-efi@vger.kernel.org> from <nayna@linux.ibm.com>;
+        Fri, 27 Sep 2019 15:26:17 +0100
+Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
+        by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+        Fri, 27 Sep 2019 15:26:11 +0100
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+        by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x8REQ9mQ56033366
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 27 Sep 2019 14:26:09 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 6769BA4064;
+        Fri, 27 Sep 2019 14:26:09 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 7F861A405C;
+        Fri, 27 Sep 2019 14:26:05 +0000 (GMT)
+Received: from swastik.ibm.com (unknown [9.80.207.173])
+        by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Fri, 27 Sep 2019 14:26:05 +0000 (GMT)
+From:   Nayna Jain <nayna@linux.ibm.com>
+To:     linuxppc-dev@ozlabs.org, linux-efi@vger.kernel.org,
+        linux-integrity@vger.kernel.org, devicetree@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Jeremy Kerr <jk@ozlabs.org>,
+        Matthew Garret <matthew.garret@nebula.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Claudio Carvalho <cclaudio@linux.ibm.com>,
+        George Wilson <gcwilson@linux.ibm.com>,
+        Elaine Palmer <erpalmer@us.ibm.com>,
+        Eric Ricther <erichte@linux.ibm.com>,
+        "Oliver O'Halloran" <oohall@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Nayna Jain <nayna@linux.ibm.com>
+Subject: [PATCH v6 0/9] powerpc: Enabling IMA arch specific secure boot policies
+Date:   Fri, 27 Sep 2019 10:25:51 -0400
+X-Mailer: git-send-email 1.8.3.1
+X-TM-AS-GCONF: 00
+x-cbid: 19092714-0028-0000-0000-000003A3417A
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19092714-0029-0000-0000-0000246563D4
+Message-Id: <1569594360-7141-1-git-send-email-nayna@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-09-27_06:,,
+ signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1908290000 definitions=main-1909270134
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, 26 Sep 2019 at 17:47, Ross Lagerwall <ross.lagerwall@citrix.com> wrote:
->
-> On 9/26/19 4:29 PM, Ard Biesheuvel wrote:
-> > On Thu, 26 Sep 2019 at 16:12, Ross Lagerwall <ross.lagerwall@citrix.com> wrote:
-> >>
-> >> If a backend does not implement non-blocking EFI operations, it implies
-> >> that the normal operations are non-blocking.
-> >
-> > Is that documented anywhere?
->
-> Sort of. From commit 6d80dba1c9fe "efi: Provide a non-blocking
-> SetVariable() operation"
->
-> """
-> Introduce ->set_variable_nonblocking() for this use case. It is an
-> optional EFI backend operation, and need only be implemented by those
-> backends that usually acquire locks to serialize access to EFI
-> variables, as is the case for virt_efi_set_variable() where we now grab
-> the EFI runtime spinlock.
-> """
->
-> >
-> >> Instead of crashing
-> >> dereferencing a NULL pointer, fallback to the normal operations since it
-> >> is safe to do so.
-> >>
-> >
-> > I agree that crashing is never the right thing to do, but I wonder
-> > whether we shouldn't just bail instead. If the provided default
-> > operation is non-blocking, the platform can populate the function
-> > pointer with a reference to the default implementation.
->
-> If you would prefer it that platforms are always required to implement
-> the non-blocking functions, then I will just send a simple patch fixing
-> up the Xen implementation.
->
+This patchset extends the previous version of the patchset[1] by adding
+the support for checking against the binary blacklisted hashes.
 
-Yes, please, that sounds like a safer option to me.
+IMA subsystem supports custom, built-in, arch-specific policies to define
+the files to be measured and appraised. These policies are honored based
+on the priority where arch-specific policies is the highest and custom
+is the lowest.
+
+PowerNV systems uses the linux based bootloader and kexec the Host OS.
+It rely on IMA for signature verification of the kernel before doing the
+kexec. This patchset adds support for powerpc arch specific ima policies
+that are defined based on system's OS secureboot and trustedboot state.
+The OS secureboot and trustedboot state are determined via device-tree
+properties.
+
+The verification needs to be done only for the binaries which are not
+blacklisted. The kernel currently checks against the blacklisted keys.
+However that results in blacklisting all the binaries that are signed by
+that key. In order to prevent single binary from loading, it is required
+to support checking against blacklisting of the binary hash. This patchset
+adds the support in IMA to check against blacklisted hashes for the files
+signed by appended signature.
+
+[1] http://patchwork.ozlabs.org/cover/1149262/ 
+
+Changelog:
+v6:
+* includes feedbacks from Michael Ellerman on the patchset v5
+  * removed email ids from comments
+  * add the doc for the device-tree
+  * renames the secboot.c to secure_boot.c and secboot.h to secure_boot.h
+  * other code specific fixes
+* split the patches to differentiate between secureboot and trustedboot
+state of the system
+* adds the patches to support the blacklisting of the binary hash.
+
+v5:
+* secureboot state is now read via device tree entry rather than OPAL
+secure variables
+* ima arch policies are updated to use policy based template for
+measurement rules
+
+v4:
+* Fixed the build issue as reported by Satheesh Rajendran.
+
+v3:
+* OPAL APIs in Patch 1 are updated to provide generic interface based on
+key/keylen. This patchset updates kernel OPAL APIs to be compatible with
+generic interface.
+* Patch 2 is cleaned up to use new OPAL APIs.
+* Since OPAL can support different types of backend which can vary in the
+variable interpretation, the Patch 2 is updated to add a check for the
+backend version
+* OPAL API now expects consumer to first check the supported backend version
+before calling other secvar OPAL APIs. This check is now added in patch 2.
+* IMA policies in Patch 3 is updated to specify appended signature and
+per policy template.
+* The patches now are free of any EFIisms.
+
+v2:
+
+* Removed Patch 1: powerpc/include: Override unneeded early ioremap
+functions
+* Updated Subject line and patch description of the Patch 1 of this series
+* Removed dependency of OPAL_SECVAR on EFI, CPU_BIG_ENDIAN and UCS2_STRING
+* Changed OPAL APIs from static to non-static. Added opal-secvar.h for the
+same
+* Removed EFI hooks from opal_secvar.c
+* Removed opal_secvar_get_next(), opal_secvar_enqueue() and
+opal_query_variable_info() function
+* get_powerpc_sb_mode() in secboot.c now directly calls OPAL Runtime API
+rather than via EFI hooks.
+* Fixed log messages in get_powerpc_sb_mode() function.
+* Added dependency for PPC_SECURE_BOOT on configs PPC64 and OPAL_SECVAR
+* Replaced obj-$(CONFIG_IMA) with obj-$(CONFIG_PPC_SECURE_BOOT) in
+arch/powerpc/kernel/Makefile
+
+Nayna Jain (9):
+  dt-bindings: ibm,secureboot: secure boot specific properties for
+    PowerNV
+  powerpc: detect the secure boot mode of the system
+  powerpc: add support to initialize ima policy rules
+  powerpc: detect the trusted boot state of the system
+  powerpc/ima: add measurement rules to ima arch specific policy
+  ima: make process_buffer_measurement() non-static
+  ima: check against blacklisted hashes for files with modsig
+  ima: deprecate permit_directio, instead use appraise_flag
+  powerpc/ima: update ima arch policy to check for blacklist
+
+ Documentation/ABI/testing/ima_policy          |  3 +-
+ .../bindings/powerpc/ibm,secureboot.rst       | 76 +++++++++++++++
+ .../devicetree/bindings/powerpc/secvar.rst    | 89 +++++++++++++++++
+ arch/powerpc/Kconfig                          | 12 +++
+ arch/powerpc/include/asm/secure_boot.h        | 37 +++++++
+ arch/powerpc/kernel/Makefile                  |  2 +
+ arch/powerpc/kernel/ima_arch.c                | 71 ++++++++++++++
+ arch/powerpc/kernel/secure_boot.c             | 96 +++++++++++++++++++
+ include/linux/ima.h                           |  3 +-
+ security/integrity/ima/ima.h                  | 15 +++
+ security/integrity/ima/ima_appraise.c         | 35 +++++++
+ security/integrity/ima/ima_main.c             | 37 +++----
+ security/integrity/ima/ima_policy.c           | 12 ++-
+ security/integrity/integrity.h                |  1 +
+ 14 files changed, 468 insertions(+), 21 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/powerpc/ibm,secureboot.rst
+ create mode 100644 Documentation/devicetree/bindings/powerpc/secvar.rst
+ create mode 100644 arch/powerpc/include/asm/secure_boot.h
+ create mode 100644 arch/powerpc/kernel/ima_arch.c
+ create mode 100644 arch/powerpc/kernel/secure_boot.c
+
+-- 
+2.20.1
+
