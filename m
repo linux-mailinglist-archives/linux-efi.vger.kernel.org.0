@@ -2,72 +2,66 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B6D42C1FD2
-	for <lists+linux-efi@lfdr.de>; Mon, 30 Sep 2019 13:12:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4DD3DC2041
+	for <lists+linux-efi@lfdr.de>; Mon, 30 Sep 2019 13:57:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729415AbfI3LLo (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 30 Sep 2019 07:11:44 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:33387 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1729898AbfI3LLn (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 30 Sep 2019 07:11:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1569841902;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=QlumoVOzIdYLDp6+Vo+umOHfpwvjOI5RrcNU/6Q1HEU=;
-        b=URAqQQkjrG6k1yOvrgGZVqBSaniMjwL1YQhG/TNGOawDGDJlShdcohD9gQ1MI9mz+RGRE4
-        zdgvYPDlgVA08T+pWnN1pJB71VT6ygyR6c+5HMGW4abvyEZNObVNKrhNGDVIfJegtt2aPz
-        37/dXPtl/HaQyQqlZAZ4gqTl1wEvaQ4=
-Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
- [209.85.208.199]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-204-Hg_HBfQaMwe_P9_NCO5V4g-1; Mon, 30 Sep 2019 07:11:39 -0400
-Received: by mail-lj1-f199.google.com with SMTP id l15so2901481lje.17
-        for <linux-efi@vger.kernel.org>; Mon, 30 Sep 2019 04:11:38 -0700 (PDT)
+        id S1729686AbfI3L5X (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 30 Sep 2019 07:57:23 -0400
+Received: from mail-wm1-f68.google.com ([209.85.128.68]:34948 "EHLO
+        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729636AbfI3L5U (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 30 Sep 2019 07:57:20 -0400
+Received: by mail-wm1-f68.google.com with SMTP id y21so12413338wmi.0
+        for <linux-efi@vger.kernel.org>; Mon, 30 Sep 2019 04:57:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=/zv5NPFffUTFWq+5VT+kNlcF7WPDHuJF4ydktGZ/WsY=;
+        b=gHB7DbQZToFeCjqdQb9B/zhfxNXQtVeZx4efkZ9xl4iyC3EefN0QLg4S7JDcSdfwNE
+         73M6UDITA0Cv9adQfTZIcXcE79Y4OeCsROVAVoyJbRv9vEpIDImPA7WxKXs++9aQcFxD
+         NEC3RhtXV2/IDtq8BsCZUazqjoBVOBgzJpqpu38PPIZ4mUFiRfF0BAi9TdalNdFEba/7
+         Dzn/Z9OcxYuowjqPJDOz4aEK44P/xUd4IKbQo1fiVUixN/Ydxnqb2BUJnTDd3qlBFnDX
+         uuBUvpQNZp2w0rm+zQ94UlhJgbn+PgAI7aJtaYj8EwfhFjq5gPoH7c3TEhOnGc3J/gUB
+         hG4g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=HJt8HAO0DFL0fynknBXiN2/8HO0H09tDjTGGULs1KX0=;
-        b=biK57BFiZ+DhuM7M9xxdbDc4InBS/Najb481gM4X5aPtW8YDQ/sqrkz3xgXKzYSQCN
-         RiRMmGqivBv2PFcqFo+ojSJA7+RRyydFb6bK62qF7F/FOTA6eFR730sWGDXiCUMU45O3
-         MDxIRmrwBZFuen3JNXQHQz+29A5fPCEZSXQM/XrosWd10Nn589IQIgoUHZGDZDFY6vfk
-         0GWKYMTRa0+IwxrJhA510xu8mk2bxrBfcLfPcXbyNp9uDpqgqsBCvgasSTY+ogCmBVs3
-         5ynsrIAl5N+PkYSOkbNyQtIgEKnWu78gVI6IgJGxVtf681aft43Xz8RqRN/vI8AK2ntp
-         dWcA==
-X-Gm-Message-State: APjAAAW4lqMfK4J+Fdffq/tLuhgbwYiMIqtIhkZ0WPL0dSq08mw7BBKM
-        3CGu/PomEjKN2kJoWzjjX1NH8IbUTfUTiIBsu1LIynfSjXZpOda1EQHzQNDKqya+IP1KELMC0Dz
-        00IAQTGW/8SwAF6dcCymf+muEhY5x7Qh2+Cre
-X-Received: by 2002:a19:428f:: with SMTP id p137mr11196434lfa.149.1569841897598;
-        Mon, 30 Sep 2019 04:11:37 -0700 (PDT)
-X-Google-Smtp-Source: APXvYqz38ZJm+DSgCqke02/fY9q09FlSBMIV7g9ErLRRWK0GDo7iJQI5Kn+IQAtRkNWrytP/wPV4N1+puInI7pesTCQ=
-X-Received: by 2002:a19:428f:: with SMTP id p137mr11196424lfa.149.1569841897386;
- Mon, 30 Sep 2019 04:11:37 -0700 (PDT)
+        bh=/zv5NPFffUTFWq+5VT+kNlcF7WPDHuJF4ydktGZ/WsY=;
+        b=mn3S/rLGVxWD7aIMuQXocwP/3qx6KlNnKCX0bHssbAvVpD1ZFG9I5Y8FP16J18KxdW
+         jkex3awRiunu5o0jhEebwKbh4NgguYU5EdYReMBWfD2mh0oZGYZaS98grmb6edEYtr4z
+         i/TD7YPi/FFK0cLWa+kUvaqsSuqHVtbpjzuwJm7l1V79LaRoWfg1ltOEIA97vFm8EGua
+         zj1YKz8NqOL3olzfckEYKgYjbPRejnPi4z80F/ayYNPE8mXLwHUlQ0LTiff5iRA4LDsz
+         x6E9x0kgPhA4B0WVkBeMvxoWOvlW/Y1Glu+JRqaNI4XGBhTXAG+CA+3OtmzhVbLocfIO
+         X0cA==
+X-Gm-Message-State: APjAAAVAq1hLQMSrMzKdTHH5Al0i6eRf3hDSoOjqaKanG2xtnz0gxOt/
+        1brweIZjAEHxaLN+sNwejIfA4SIZZxA5jyXoeIgPPg==
+X-Google-Smtp-Source: APXvYqzSjZCzq7vEPClkh//Q7yqVfPQznFE9UwH9Dy4nGFTtlSk7ZP8Mfm+itcx9CqEjryk0wJGf5vg9EJJpSWD3VFU=
+X-Received: by 2002:a7b:cb55:: with SMTP id v21mr17070227wmj.53.1569844638206;
+ Mon, 30 Sep 2019 04:57:18 -0700 (PDT)
 MIME-Version: 1.0
 References: <20190928101428.GA222453@light.dominikbrodowski.net>
 In-Reply-To: <20190928101428.GA222453@light.dominikbrodowski.net>
-From:   Bhupesh Sharma <bhsharma@redhat.com>
-Date:   Mon, 30 Sep 2019 16:41:24 +0530
-Message-ID: <CACi5LpMR4VLrg3SvbQ2_DJb9TgpurhGm5iQuKxQgWUwm4Z3Kjw@mail.gmail.com>
+From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Date:   Mon, 30 Sep 2019 13:57:06 +0200
+Message-ID: <CAKv+Gu9dqjZHfCHcHprh32eHTVinwPar1zOYopyMVfp=zPqELg@mail.gmail.com>
 Subject: Re: [RFC] random: UEFI RNG input is bootloader randomness
 To:     Dominik Brodowski <linux@dominikbrodowski.net>
-Cc:     Ard Biesheuvel <ard.biesheuvel@linaro.org>, hsinyi@chromium.org,
-        swboyd@chromium.org, robh@kernel.org, tytso@mit.edu,
-        Kees Cook <keescook@chromium.org>, joeyli.kernel@gmail.com,
+Cc:     Hsin-Yi Wang <hsinyi@chromium.org>,
+        Stephen Boyd <swboyd@chromium.org>,
+        Rob Herring <robh@kernel.org>, "Theodore Ts'o" <tytso@mit.edu>,
+        Kees Cook <keescook@chromium.org>,
+        "Lee, Chun-Yi" <joeyli.kernel@gmail.com>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-efi@vger.kernel.org
-X-MC-Unique: Hg_HBfQaMwe_P9_NCO5V4g-1
-X-Mimecast-Spam-Score: 0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+        linux-efi <linux-efi@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Sat, Sep 28, 2019 at 3:54 PM Dominik Brodowski
+On Sat, 28 Sep 2019 at 12:14, Dominik Brodowski
 <linux@dominikbrodowski.net> wrote:
 >
 > Depending on RANDOM_TRUST_BOOTLOADER, bootloader-provided randomness
@@ -99,26 +93,14 @@ On Sat, Sep 28, 2019 at 3:54 PM Dominik Brodowski
 > index 8f1ab04f6743..db0bffce754e 100644
 > --- a/drivers/firmware/efi/efi.c
 > +++ b/drivers/firmware/efi/efi.c
-> @@ -545,7 +545,7 @@ int __init efi_config_parse_tables(void *config_table=
-s, int count, int sz,
+> @@ -545,7 +545,7 @@ int __init efi_config_parse_tables(void *config_tables, int count, int sz,
 >                                               sizeof(*seed) + size);
->                         if (seed !=3D NULL) {
+>                         if (seed != NULL) {
 >                                 pr_notice("seeding entropy pool\n");
-> -                               add_device_randomness(seed->bits, seed->s=
-ize);
-> +                               add_bootloader_randomness(seed->bits, see=
-d->size);
->                                 early_memunmap(seed, sizeof(*seed) + size=
-);
+> -                               add_device_randomness(seed->bits, seed->size);
+> +                               add_bootloader_randomness(seed->bits, seed->size);
+>                                 early_memunmap(seed, sizeof(*seed) + size);
 >                         } else {
->                                 pr_err("Could not map UEFI random seed!\n=
-");
+>                                 pr_err("Could not map UEFI random seed!\n");
 
-Tested the patch on my arm64 board which support EFI_RNG_PROTOCOL
-(i.e. EFI firmware acts as the entropy source) and has
-'CONFIG_RANDOM_TRUST_BOOTLOADER=3Dy', so:
-
-Tested-by: Bhupesh Sharma <bhsharma@redhat.com>
-
-Thanks.
-
+Thanks, I like this change. I'll get it queued up in efi/next.
