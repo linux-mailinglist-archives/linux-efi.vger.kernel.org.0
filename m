@@ -2,43 +2,43 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 46F0AC447E
-	for <lists+linux-efi@lfdr.de>; Wed,  2 Oct 2019 01:43:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 69EDCC4483
+	for <lists+linux-efi@lfdr.de>; Wed,  2 Oct 2019 01:43:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729301AbfJAXmP (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 1 Oct 2019 19:42:15 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:24878 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1729294AbfJAXmP (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 1 Oct 2019 19:42:15 -0400
-Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x91NgBLs093605
-        for <linux-efi@vger.kernel.org>; Tue, 1 Oct 2019 19:42:14 -0400
-Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 2vcdfxwb4d-1
+        id S1729325AbfJAXmW (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 1 Oct 2019 19:42:22 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:23904 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726960AbfJAXmS (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 1 Oct 2019 19:42:18 -0400
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x91Ng55C069854
+        for <linux-efi@vger.kernel.org>; Tue, 1 Oct 2019 19:42:16 -0400
+Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 2vcc4eywee-1
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <linux-efi@vger.kernel.org>; Tue, 01 Oct 2019 19:42:13 -0400
+        for <linux-efi@vger.kernel.org>; Tue, 01 Oct 2019 19:42:16 -0400
 Received: from localhost
-        by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
         for <linux-efi@vger.kernel.org> from <nayna@linux.ibm.com>;
-        Wed, 2 Oct 2019 00:42:11 +0100
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
-        by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        Wed, 2 Oct 2019 00:42:14 +0100
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
+        by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
         (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-        Wed, 2 Oct 2019 00:42:06 +0100
+        Wed, 2 Oct 2019 00:42:10 +0100
 Received: from b06wcsmtp001.portsmouth.uk.ibm.com (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
-        by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x91Ng5eD38142134
+        by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x91Ng8CQ49741880
         (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 1 Oct 2019 23:42:05 GMT
+        Tue, 1 Oct 2019 23:42:08 GMT
 Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 1483BA4054;
-        Tue,  1 Oct 2019 23:42:05 +0000 (GMT)
+        by IMSVA (Postfix) with ESMTP id B22BEA405C;
+        Tue,  1 Oct 2019 23:42:08 +0000 (GMT)
 Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 76CC3A405B;
-        Tue,  1 Oct 2019 23:42:02 +0000 (GMT)
+        by IMSVA (Postfix) with ESMTP id 266DCA405B;
+        Tue,  1 Oct 2019 23:42:06 +0000 (GMT)
 Received: from swastik.ibm.com (unknown [9.80.224.222])
         by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-        Tue,  1 Oct 2019 23:42:02 +0000 (GMT)
+        Tue,  1 Oct 2019 23:42:05 +0000 (GMT)
 From:   Nayna Jain <nayna@linux.ibm.com>
 To:     linuxppc-dev@ozlabs.org, linux-efi@vger.kernel.org,
         linux-integrity@vger.kernel.org
@@ -57,16 +57,16 @@ Cc:     linux-kernel@vger.kernel.org,
         Eric Ricther <erichte@linux.ibm.com>,
         "Oliver O'Halloran" <oohall@gmail.com>,
         Nayna Jain <nayna@linux.ibm.com>
-Subject: [PATCH v4 1/4] powerpc/powernv: Add OPAL API interface to access secure variable
-Date:   Tue,  1 Oct 2019 19:41:48 -0400
+Subject: [PATCH v4 2/4] powerpc: expose secure variables to userspace via sysfs
+Date:   Tue,  1 Oct 2019 19:41:49 -0400
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1569973311-3047-1-git-send-email-nayna@linux.ibm.com>
 References: <1569973311-3047-1-git-send-email-nayna@linux.ibm.com>
 X-TM-AS-GCONF: 00
-x-cbid: 19100123-0012-0000-0000-000003532603
+x-cbid: 19100123-0016-0000-0000-000002B324AD
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19100123-0013-0000-0000-0000218E2708
-Message-Id: <1569973311-3047-2-git-send-email-nayna@linux.ibm.com>
+x-cbparentid: 19100123-0017-0000-0000-000033142628
+Message-Id: <1569973311-3047-3-git-send-email-nayna@linux.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-10-01_10:,,
  signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
@@ -79,372 +79,305 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The X.509 certificates trusted by the platform and required to secure boot
-the OS kernel are wrapped in secure variables, which are controlled by
-OPAL.
+PowerNV secure variables, which store the keys used for OS kernel
+verification, are managed by the firmware. These secure variables need to
+be accessed by the userspace for addition/deletion of the certificates.
 
-This patch adds firmware/kernel interface to read and write OPAL secure
-variables based on the unique key.
+This patch adds the sysfs interface to expose secure variables for PowerNV
+secureboot. The users shall use this interface for manipulating
+the keys stored in the secure variables.
 
-This support can be enabled using CONFIG_OPAL_SECVAR.
-
-Signed-off-by: Claudio Carvalho <cclaudio@linux.ibm.com>
 Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/include/asm/opal-api.h          |   5 +-
- arch/powerpc/include/asm/opal.h              |   8 ++
- arch/powerpc/include/asm/powernv.h           |   2 +
- arch/powerpc/include/asm/secvar.h            |  35 +++++
- arch/powerpc/kernel/Makefile                 |   2 +-
- arch/powerpc/kernel/secvar-ops.c             |  19 +++
- arch/powerpc/platforms/powernv/Kconfig       |   6 +
- arch/powerpc/platforms/powernv/Makefile      |   1 +
- arch/powerpc/platforms/powernv/opal-call.c   |   3 +
- arch/powerpc/platforms/powernv/opal-secvar.c | 137 +++++++++++++++++++
- arch/powerpc/platforms/powernv/opal.c        |   5 +
- 11 files changed, 221 insertions(+), 2 deletions(-)
- create mode 100644 arch/powerpc/include/asm/secvar.h
- create mode 100644 arch/powerpc/kernel/secvar-ops.c
- create mode 100644 arch/powerpc/platforms/powernv/opal-secvar.c
+ Documentation/ABI/testing/sysfs-secvar |  37 +++++
+ arch/powerpc/Kconfig                   |  10 ++
+ arch/powerpc/kernel/Makefile           |   1 +
+ arch/powerpc/kernel/secvar-sysfs.c     | 198 +++++++++++++++++++++++++
+ 4 files changed, 246 insertions(+)
+ create mode 100644 Documentation/ABI/testing/sysfs-secvar
+ create mode 100644 arch/powerpc/kernel/secvar-sysfs.c
 
-diff --git a/arch/powerpc/include/asm/opal-api.h b/arch/powerpc/include/asm/opal-api.h
-index 378e3997845a..c1f25a760eb1 100644
---- a/arch/powerpc/include/asm/opal-api.h
-+++ b/arch/powerpc/include/asm/opal-api.h
-@@ -211,7 +211,10 @@
- #define OPAL_MPIPL_UPDATE			173
- #define OPAL_MPIPL_REGISTER_TAG			174
- #define OPAL_MPIPL_QUERY_TAG			175
--#define OPAL_LAST				175
-+#define OPAL_SECVAR_GET				176
-+#define OPAL_SECVAR_GET_NEXT			177
-+#define OPAL_SECVAR_ENQUEUE_UPDATE		178
-+#define OPAL_LAST				178
- 
- #define QUIESCE_HOLD			1 /* Spin all calls at entry */
- #define QUIESCE_REJECT			2 /* Fail all calls with OPAL_BUSY */
-diff --git a/arch/powerpc/include/asm/opal.h b/arch/powerpc/include/asm/opal.h
-index a0cf8fba4d12..03392dc3f5e2 100644
---- a/arch/powerpc/include/asm/opal.h
-+++ b/arch/powerpc/include/asm/opal.h
-@@ -298,6 +298,13 @@ int opal_sensor_group_clear(u32 group_hndl, int token);
- int opal_sensor_group_enable(u32 group_hndl, int token, bool enable);
- int opal_nx_coproc_init(uint32_t chip_id, uint32_t ct);
- 
-+int opal_secvar_get(const char *key, uint64_t key_len, u8 *data,
-+		    uint64_t *data_size);
-+int opal_secvar_get_next(const char *key, uint64_t *key_len,
-+			 uint64_t key_buf_size);
-+int opal_secvar_enqueue_update(const char *key, uint64_t key_len, u8 *data,
-+			       uint64_t data_size);
-+
- s64 opal_mpipl_update(enum opal_mpipl_ops op, u64 src, u64 dest, u64 size);
- s64 opal_mpipl_register_tag(enum opal_mpipl_tags tag, u64 addr);
- s64 opal_mpipl_query_tag(enum opal_mpipl_tags tag, u64 *addr);
-@@ -392,6 +399,7 @@ void opal_wake_poller(void);
- void opal_powercap_init(void);
- void opal_psr_init(void);
- void opal_sensor_groups_init(void);
-+void opal_secvar_init(void);
- 
- #endif /* __ASSEMBLY__ */
- 
-diff --git a/arch/powerpc/include/asm/powernv.h b/arch/powerpc/include/asm/powernv.h
-index e1a858718716..cff980a85dd2 100644
---- a/arch/powerpc/include/asm/powernv.h
-+++ b/arch/powerpc/include/asm/powernv.h
-@@ -12,10 +12,12 @@ extern void powernv_set_nmmu_ptcr(unsigned long ptcr);
- void pnv_program_cpu_hotplug_lpcr(unsigned int cpu, u64 lpcr_val);
- 
- void pnv_tm_init(void);
-+
- #else
- static inline void powernv_set_nmmu_ptcr(unsigned long ptcr) { }
- 
- static inline void pnv_tm_init(void) { }
-+
- #endif
- 
- #endif /* _ASM_POWERNV_H */
-diff --git a/arch/powerpc/include/asm/secvar.h b/arch/powerpc/include/asm/secvar.h
+diff --git a/Documentation/ABI/testing/sysfs-secvar b/Documentation/ABI/testing/sysfs-secvar
 new file mode 100644
-index 000000000000..4cc35b58b986
+index 000000000000..815bd8ec4d5e
 --- /dev/null
-+++ b/arch/powerpc/include/asm/secvar.h
-@@ -0,0 +1,35 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * Copyright (C) 2019 IBM Corporation
-+ * Author: Nayna Jain
-+ *
-+ * PowerPC secure variable operations.
-+ */
-+#ifndef SECVAR_OPS_H
-+#define SECVAR_OPS_H
++++ b/Documentation/ABI/testing/sysfs-secvar
+@@ -0,0 +1,37 @@
++What:		/sys/firmware/secvar
++Date:		August 2019
++Contact:	Nayna Jain <nayna@linux.ibm.com>
++Description:	This directory is created if the POWER firmware supports OS
++		secureboot, thereby secure variables. It exposes interface
++		for reading/writing the secure variables
 +
-+#include <linux/types.h>
-+#include <linux/errno.h>
++What:		/sys/firmware/secvar/vars
++Date:		August 2019
++Contact:	Nayna Jain <nayna@linux.ibm.com>
++Description:	This directory lists all the secure variables that are supported
++		by the firmware.
 +
-+extern const struct secvar_operations *secvar_ops;
++What:		/sys/firmware/secvar/vars/<variable name>
++Date:		August 2019
++Contact:	Nayna Jain <nayna@linux.ibm.com>
++Description:	Each secure variable is represented as a directory named as
++		<variable_name>. The variable name is unique and is in ASCII
++		representation. The data and size can be determined by reading
++		their respective attribute files.
 +
-+struct secvar_operations {
-+	int (*get)(const char *key, uint64_t key_len, u8 *data,
-+		   uint64_t *data_size);
-+	int (*get_next)(const char *key, uint64_t *key_len,
-+			uint64_t keybufsize);
-+	int (*set)(const char *key, uint64_t key_len, u8 *data,
-+		   uint64_t data_size);
-+};
++What:		/sys/firmware/secvar/vars/<variable_name>/size
++Date:		August 2019
++Contact:	Nayna Jain <nayna@linux.ibm.com>
++Description:	An integer representation of the size of the content of the
++		variable. In other words, it represents the size of the data.
 +
-+#ifdef CONFIG_PPC_SECURE_BOOT
++What:		/sys/firmware/secvar/vars/<variable_name>/data
++Date:		August 2019
++Contact:	Nayna Jain <nayna@linux.ibm.com>
++Description:	A read-only file containing the value of the variable
 +
-+extern void set_secvar_ops(const struct secvar_operations *ops);
++What:		/sys/firmware/secvar/vars/<variable_name>/update
++Date:		August 2019
++Contact:	Nayna Jain <nayna@linux.ibm.com>
++Description:	A write-only file that is used to submit the new value for the
++		variable.
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index deb19ec6ba3d..89084e4e5054 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -946,6 +946,16 @@ config PPC_SECURE_BOOT
+ 	  to enable OS secure boot on systems that have firmware support for
+ 	  it. If in doubt say N.
+ 
++config SECVAR_SYSFS
++	tristate "Enable sysfs interface for POWER secure variables"
++	depends on PPC_SECURE_BOOT
++	depends on SYSFS
++	help
++	  POWER secure variables are managed and controlled by firmware.
++	  These variables are exposed to userspace via sysfs to enable
++	  read/write operations on these variables. Say Y if you have
++	  secure boot enabled and want to expose variables to userspace.
 +
-+#else
-+
-+static inline void set_secvar_ops(const struct secvar_operations *ops) { }
-+
-+#endif
-+
-+#endif
+ endmenu
+ 
+ config ISA_DMA_API
 diff --git a/arch/powerpc/kernel/Makefile b/arch/powerpc/kernel/Makefile
-index e8eb2955b7d5..3cf26427334f 100644
+index 3cf26427334f..116a3a5c0557 100644
 --- a/arch/powerpc/kernel/Makefile
 +++ b/arch/powerpc/kernel/Makefile
-@@ -161,7 +161,7 @@ ifneq ($(CONFIG_PPC_POWERNV)$(CONFIG_PPC_SVM),)
- obj-y				+= ucall.o
+@@ -162,6 +162,7 @@ obj-y				+= ucall.o
  endif
  
--obj-$(CONFIG_PPC_SECURE_BOOT)	+= secure_boot.o ima_arch.o
-+obj-$(CONFIG_PPC_SECURE_BOOT)	+= secure_boot.o ima_arch.o secvar-ops.o
+ obj-$(CONFIG_PPC_SECURE_BOOT)	+= secure_boot.o ima_arch.o secvar-ops.o
++obj-$(CONFIG_SECVAR_SYSFS)	+= secvar-sysfs.o
  
  # Disable GCOV, KCOV & sanitizers in odd or sensitive code
  GCOV_PROFILE_prom_init.o := n
-diff --git a/arch/powerpc/kernel/secvar-ops.c b/arch/powerpc/kernel/secvar-ops.c
+diff --git a/arch/powerpc/kernel/secvar-sysfs.c b/arch/powerpc/kernel/secvar-sysfs.c
 new file mode 100644
-index 000000000000..4331a5b66ec0
+index 000000000000..87a7cea41523
 --- /dev/null
-+++ b/arch/powerpc/kernel/secvar-ops.c
-@@ -0,0 +1,19 @@
-+// SPDX-License-Identifier: GPL-2.0
++++ b/arch/powerpc/kernel/secvar-sysfs.c
+@@ -0,0 +1,198 @@
++// SPDX-License-Identifier: GPL-2.0+
 +/*
-+ * Copyright (C) 2019 IBM Corporation
-+ * Author: Nayna Jain
++ * Copyright (C) 2019 IBM Corporation <nayna@linux.ibm.com>
 + *
-+ * This file initializes secvar operations for PowerPC Secureboot
++ * This code exposes secure variables to user via sysfs
 + */
 +
-+#include <stddef.h>
++#include <linux/module.h>
++#include <linux/slab.h>
++#include <linux/compat.h>
++#include <linux/string.h>
 +#include <asm/secvar.h>
 +
-+const struct secvar_operations *secvar_ops;
-+
-+void set_secvar_ops(const struct secvar_operations *ops)
-+{
-+	if (!ops)
-+		secvar_ops = NULL;
-+	secvar_ops = ops;
-+}
-diff --git a/arch/powerpc/platforms/powernv/Kconfig b/arch/powerpc/platforms/powernv/Kconfig
-index 938803eab0ad..a1c7c8e2e683 100644
---- a/arch/powerpc/platforms/powernv/Kconfig
-+++ b/arch/powerpc/platforms/powernv/Kconfig
-@@ -50,3 +50,9 @@ config PPC_VAS
- config SCOM_DEBUGFS
- 	bool "Expose SCOM controllers via debugfs"
- 	depends on DEBUG_FS
-+
-+config OPAL_SECVAR
-+	bool "OPAL Secure Variables"
-+	depends on PPC_POWERNV
-+	help
-+	  This enables the kernel to access OPAL secure variables.
-diff --git a/arch/powerpc/platforms/powernv/Makefile b/arch/powerpc/platforms/powernv/Makefile
-index a3ac9646119d..0ae688bde9b7 100644
---- a/arch/powerpc/platforms/powernv/Makefile
-+++ b/arch/powerpc/platforms/powernv/Makefile
-@@ -20,3 +20,4 @@ obj-$(CONFIG_PPC_MEMTRACE)	+= memtrace.o
- obj-$(CONFIG_PPC_VAS)	+= vas.o vas-window.o vas-debug.o
- obj-$(CONFIG_OCXL_BASE)	+= ocxl.o
- obj-$(CONFIG_SCOM_DEBUGFS) += opal-xscom.o
-+obj-$(CONFIG_OPAL_SECVAR) += opal-secvar.o
-diff --git a/arch/powerpc/platforms/powernv/opal-call.c b/arch/powerpc/platforms/powernv/opal-call.c
-index a2aa5e433ac8..5cd0f52d258f 100644
---- a/arch/powerpc/platforms/powernv/opal-call.c
-+++ b/arch/powerpc/platforms/powernv/opal-call.c
-@@ -290,3 +290,6 @@ OPAL_CALL(opal_nx_coproc_init,			OPAL_NX_COPROC_INIT);
- OPAL_CALL(opal_mpipl_update,			OPAL_MPIPL_UPDATE);
- OPAL_CALL(opal_mpipl_register_tag,		OPAL_MPIPL_REGISTER_TAG);
- OPAL_CALL(opal_mpipl_query_tag,			OPAL_MPIPL_QUERY_TAG);
-+OPAL_CALL(opal_secvar_get,			OPAL_SECVAR_GET);
-+OPAL_CALL(opal_secvar_get_next,			OPAL_SECVAR_GET_NEXT);
-+OPAL_CALL(opal_secvar_enqueue_update,		OPAL_SECVAR_ENQUEUE_UPDATE);
-diff --git a/arch/powerpc/platforms/powernv/opal-secvar.c b/arch/powerpc/platforms/powernv/opal-secvar.c
-new file mode 100644
-index 000000000000..ad5c6b8019dd
---- /dev/null
-+++ b/arch/powerpc/platforms/powernv/opal-secvar.c
-@@ -0,0 +1,137 @@
-+// SPDX-License-Identifier: GPL-2.0
 +/*
-+ * PowerNV code for secure variables
-+ *
-+ * Copyright (C) 2019 IBM Corporation
-+ * Author: Claudio Carvalho
-+ *         Nayna Jain
-+ *
-+ * APIs to access secure variables managed by OPAL.
++ * Since firmware checks the maximum allowed size, currently, it is default to
++ * 0. In future, it will be read from the device tree.
 + */
++#define VARIABLE_MAX_SIZE  0
++/* Approximate value */
++#define NAME_MAX_SIZE	   1024
 +
-+#define pr_fmt(fmt) "secvar: "fmt
++static struct kobject *secvar_kobj;
++static struct kset *secvar_kset;
 +
-+#include <linux/types.h>
-+#include <asm/opal.h>
-+#include <asm/secvar.h>
-+#include <asm/secure_boot.h>
-+
-+static int opal_status_to_err(int rc)
++static ssize_t size_show(struct kobject *kobj, struct kobj_attribute *attr,
++			 char *buf)
 +{
-+	int err;
++	uint64_t dsize;
++	int rc;
 +
-+	switch (rc) {
-+	case OPAL_SUCCESS:
-+		err = 0;
-+		break;
-+	case OPAL_UNSUPPORTED:
-+		err = -ENXIO;
-+		break;
-+	case OPAL_PARAMETER:
-+		err = -EINVAL;
-+		break;
-+	case OPAL_RESOURCE:
-+		err = -ENOSPC;
-+		break;
-+	case OPAL_HARDWARE:
-+		err = -EIO;
-+		break;
-+	case OPAL_NO_MEM:
-+		err = -ENOMEM;
-+		break;
-+	case OPAL_EMPTY:
-+		err = -ENOENT;
-+		break;
-+	case OPAL_PARTIAL:
-+		err = -EFBIG;
-+		break;
-+	default:
-+		err = -EINVAL;
++	rc = secvar_ops->get(kobj->name, strlen(kobj->name) + 1, NULL, &dsize);
++	if (rc) {
++		pr_err("Error retrieving variable size %d\n", rc);
++		return rc;
 +	}
 +
-+	return err;
++	rc = sprintf(buf, "%llu\n", dsize);
++
++	return rc;
 +}
 +
-+static bool is_opal_secvar_supported(void)
++static ssize_t data_read(struct file *filep, struct kobject *kobj,
++			 struct bin_attribute *attr, char *buf, loff_t off,
++			 size_t count)
 +{
-+	static bool opal_secvar_supported;
-+	static bool initialized;
++	uint64_t dsize;
++	int rc;
++	char *data;
 +
-+	if (initialized)
-+		return opal_secvar_supported;
++	rc = secvar_ops->get(kobj->name, strlen(kobj->name) + 1, NULL, &dsize);
++	if (rc) {
++		pr_err("Error getting variable size %d\n", rc);
++		return rc;
++	}
++	pr_debug("dsize is %llu\n", dsize);
 +
-+	if (!is_powerpc_os_sb_supported()) {
-+		opal_secvar_supported = false;
-+		goto out;
++	data = kzalloc(dsize, GFP_KERNEL);
++	if (!data)
++		return -ENOMEM;
++
++	rc = secvar_ops->get(kobj->name, strlen(kobj->name)+1, data, &dsize);
++	if (rc) {
++		pr_err("Error getting variable %d\n", rc);
++		goto data_fail;
 +	}
 +
-+	if (!opal_check_token(OPAL_SECVAR_GET)
-+			|| !opal_check_token(OPAL_SECVAR_GET_NEXT)
-+			|| !opal_check_token(OPAL_SECVAR_ENQUEUE_UPDATE)) {
-+		pr_err("OPAL doesn't support secure variables\n");
-+		opal_secvar_supported = false;
-+	} else {
-+		opal_secvar_supported = true;
-+	}
++	rc = memory_read_from_buffer(buf, count, &off, data, dsize);
 +
-+out:
-+	initialized = true;
-+
-+	return opal_secvar_supported;
++data_fail:
++	kfree(data);
++	return rc;
 +}
 +
-+static int opal_get_variable(const char *key, uint64_t ksize,
-+			     u8 *data, uint64_t *dsize)
++static ssize_t update_write(struct file *filep, struct kobject *kobj,
++			    struct bin_attribute *attr, char *buf, loff_t off,
++			    size_t count)
 +{
 +	int rc;
 +
-+	if (dsize)
-+		*dsize = cpu_to_be64(*dsize);
++	pr_debug("count is %ld\n", count);
++	rc = secvar_ops->set(kobj->name, strlen(kobj->name)+1, buf, count);
++	if (rc) {
++		pr_err("Error setting the variable %s\n", kobj->name);
++		return rc;
++	}
 +
-+	rc = opal_secvar_get(key, ksize, data, dsize);
-+
-+	if (dsize)
-+		*dsize = be64_to_cpu(*dsize);
-+
-+	return opal_status_to_err(rc);
++	return count;
 +}
 +
-+static int opal_get_next_variable(const char *key, uint64_t *keylen,
-+				  uint64_t keybufsize)
-+{
-+	int rc;
++static struct kobj_attribute size_attr = __ATTR_RO(size);
 +
-+	if (keylen)
-+		*keylen = cpu_to_be64(*keylen);
++static struct bin_attribute data_attr = __BIN_ATTR_RO(data, VARIABLE_MAX_SIZE);
 +
-+	rc = opal_secvar_get_next(key, keylen, keybufsize);
++static struct bin_attribute update_attr = __BIN_ATTR_WO(update,
++							VARIABLE_MAX_SIZE);
 +
-+	if (keylen)
-+		*keylen = be64_to_cpu(*keylen);
-+
-+	return opal_status_to_err(rc);
-+}
-+
-+static int opal_set_variable(const char *key, uint64_t ksize, u8 *data,
-+			     uint64_t dsize)
-+{
-+	int rc;
-+
-+	rc = opal_secvar_enqueue_update(key, ksize, data, dsize);
-+
-+	return opal_status_to_err(rc);
-+}
-+
-+static const struct secvar_operations opal_secvar_ops = {
-+	.get = opal_get_variable,
-+	.get_next = opal_get_next_variable,
-+	.set = opal_set_variable,
++static struct bin_attribute  *secvar_bin_attrs[] = {
++	&data_attr,
++	&update_attr,
++	NULL,
 +};
 +
-+void opal_secvar_init(void)
++static struct attribute *secvar_attrs[] = {
++	&size_attr.attr,
++	NULL,
++};
++
++static const struct attribute_group secvar_attr_group = {
++	.attrs = secvar_attrs,
++	.bin_attrs = secvar_bin_attrs,
++};
++__ATTRIBUTE_GROUPS(secvar_attr);
++
++static struct kobj_type secvar_ktype = {
++	.sysfs_ops	= &kobj_sysfs_ops,
++	.default_groups = secvar_attr_groups,
++};
++
++static int secvar_sysfs_load(void)
 +{
-+	if (!is_opal_secvar_supported())
-+		set_secvar_ops(NULL);
++	char *name;
++	uint64_t namesize = 0;
++	struct kobject *kobj;
++	int rc;
 +
-+	set_secvar_ops(&opal_secvar_ops);
++	name = kzalloc(NAME_MAX_SIZE, GFP_KERNEL);
++	if (!name)
++		return -ENOMEM;
++
++	do {
++		rc = secvar_ops->get_next(name, &namesize, NAME_MAX_SIZE);
++		if (rc) {
++			if (rc != -ENOENT)
++				pr_err("error getting secvar from firmware %d\n",
++					rc);
++			break;
++		}
++
++		kobj = kzalloc(sizeof(*kobj), GFP_KERNEL);
++		if (!kobj)
++			return -ENOMEM;
++
++		kobject_init(kobj, &secvar_ktype);
++
++		rc = kobject_add(kobj, &secvar_kset->kobj, "%s", name);
++		if (rc) {
++			pr_warn("kobject_add error %d for attribute: %s\n", rc,
++				name);
++			kobject_put(kobj);
++			kobj = NULL;
++		}
++
++		if (kobj)
++			kobject_uevent(kobj, KOBJ_ADD);
++
++	} while (!rc);
++
++	kfree(name);
++	return rc;
 +}
-diff --git a/arch/powerpc/platforms/powernv/opal.c b/arch/powerpc/platforms/powernv/opal.c
-index 38e90270280b..8e654d3735c1 100644
---- a/arch/powerpc/platforms/powernv/opal.c
-+++ b/arch/powerpc/platforms/powernv/opal.c
-@@ -32,6 +32,8 @@
- #include <asm/mce.h>
- #include <asm/imc-pmu.h>
- #include <asm/bug.h>
-+#include <asm/secvar.h>
-+#include <asm/secure_boot.h>
- 
- #include "powernv.h"
- 
-@@ -1002,6 +1004,9 @@ static int __init opal_init(void)
- 	/* Initialise OPAL Power control interface */
- 	opal_power_control_init();
- 
-+	/* Initialize OPAL secure variables */
-+	opal_secvar_init();
 +
- 	return 0;
- }
- machine_subsys_initcall(powernv, opal_init);
++static int secvar_sysfs_init(void)
++{
++	if (!secvar_ops) {
++		pr_warn("secvar: failed to retrieve secvar operations.\n");
++		return -ENODEV;
++	}
++
++	secvar_kobj = kobject_create_and_add("secvar", firmware_kobj);
++	if (!secvar_kobj) {
++		pr_err("secvar: Failed to create firmware kobj\n");
++		return -ENOMEM;
++	}
++
++	secvar_kset = kset_create_and_add("vars", NULL, secvar_kobj);
++	if (!secvar_kset) {
++		pr_err("secvar: sysfs kobject registration failed.\n");
++		kobject_put(secvar_kobj);
++		return -ENOMEM;
++	}
++
++	secvar_sysfs_load();
++
++	return 0;
++}
++
++static void secvar_sysfs_exit(void)
++{
++	kset_unregister(secvar_kset);
++	kobject_put(secvar_kobj);
++}
++
++module_init(secvar_sysfs_init);
++module_exit(secvar_sysfs_exit);
++
++MODULE_AUTHOR("Nayna Jain <nayna@linux.ibm.com>");
++MODULE_DESCRIPTION("sysfs interface to POWER secure variables");
++MODULE_LICENSE("GPL");
 -- 
 2.20.1
 
