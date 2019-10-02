@@ -2,79 +2,168 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 52942C48EE
-	for <lists+linux-efi@lfdr.de>; Wed,  2 Oct 2019 09:57:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6407FC4B64
+	for <lists+linux-efi@lfdr.de>; Wed,  2 Oct 2019 12:27:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726283AbfJBH5a (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 2 Oct 2019 03:57:30 -0400
-Received: from mail-wr1-f67.google.com ([209.85.221.67]:40591 "EHLO
-        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726178AbfJBH5a (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 2 Oct 2019 03:57:30 -0400
-Received: by mail-wr1-f67.google.com with SMTP id l3so18421462wru.7
-        for <linux-efi@vger.kernel.org>; Wed, 02 Oct 2019 00:57:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=NvsUcL/p4vIyxeM7cuuM7NxzFG4ZxETWErIwO2hhQ0Y=;
-        b=rMC6EQ/swdSjAn7aSqT6GGmPXyX+fv/SA9KWhOvooZUPiugGOxmUwKOw1FWJ80gGHd
-         6xI4NL+hT8bkUeEwoJQVIpDxm0GtGYdpG5vaP+9mfF3/VDzqpQmyPoIXrZbSf8QDdloy
-         L+NgFTDQyVBunEAXNmoVnZT0PH2f4mLHik/wRvbsxieEyAJh2D+PIE6XGhHNI1/R/sDF
-         ib8MVhCd5Neft8zmsN8d6ocjxFbWwHiUhDhpHE+8OIOwwFCwiakP/Wb45HwQI2z0A+1+
-         Z0f6bqz+t1CbZ7c3wywwvNP7RJyYhI4ckcY0lO1aIdD4X5UE0JBJzfa5y57CTQ6N4t+E
-         NEcA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=NvsUcL/p4vIyxeM7cuuM7NxzFG4ZxETWErIwO2hhQ0Y=;
-        b=ZOYB8i9U4KMKEEfNQt/mVvnJb3PtLUsjJrL0NljNE5UNsda3+9ZpLumUhYrlQd8qtZ
-         b2ytbPBoFKj0fX80UzyEqcfA6gkAAFK58XpLt9y16EN/HrU7djXjVj2VLRgy5zBZBVYt
-         S5QUSZXKt5i7k44EVHx6dkOJYJPJ9S/FEfL+bwxJA3CLMR4bOjJ9rJKF/X28HCXUxjP0
-         wftwuiDIcdT9qjpqnc7pb+RFgRrzPLnIW+cExtni/ma6Bd768kSf2mOl7lY+lWvkjv5B
-         Kf4P7MnUxhUCMY71/ggsQXfy1/kB7VV0y5Zaw7L+KI+M/GkyN6NCDSwrovWiHIOlO69v
-         uNPg==
-X-Gm-Message-State: APjAAAWfRA4AXAotzP6OU4jIIDxRDnBJxZzvYYyVBiatJGDHJHTOHVKf
-        dhMjP8e8eVUai/BjIYAsrfmhQyd4B1MrXm28OWxcu2Lr1jE=
-X-Google-Smtp-Source: APXvYqx8GyA6vwt10WUeF6QM6u4wFBtFe/mLTgUjHQTsWiM3rSDe+Lqv+r1oL1UmmpZNfQq45XNfdO3cOv2AzTTdJXI=
-X-Received: by 2002:adf:fe88:: with SMTP id l8mr1448415wrr.32.1570003047271;
- Wed, 02 Oct 2019 00:57:27 -0700 (PDT)
+        id S1727851AbfJBK1P (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 2 Oct 2019 06:27:15 -0400
+Received: from mx0a-00154904.pphosted.com ([148.163.133.20]:7012 "EHLO
+        mx0a-00154904.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727807AbfJBK1P (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 2 Oct 2019 06:27:15 -0400
+Received: from pps.filterd (m0170392.ppops.net [127.0.0.1])
+        by mx0a-00154904.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id x92AJp6s030547;
+        Wed, 2 Oct 2019 06:27:14 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dell.com; h=from : to : cc :
+ subject : date : message-id : references : in-reply-to : content-type :
+ content-id : content-transfer-encoding : mime-version; s=smtpout1;
+ bh=ntR22ytiVGn5A9fSHOxPwnmg9Y4gCQnz9sNO26eQOV4=;
+ b=mxhRwDHuLrYio4yRpn3ddZVSDO8TxVtDz0+D4fNUUydpmTZMQFVfyX6RgmEk4uE6+q1Q
+ 7tjiechjtKjcVtBs+pSltB5o1hRozTZEzFYwQveiXZ5soya3gsOsVpOlerXCADU7cHtt
+ A6ijKEVTMr8s+Y03kWJ1ebomL/H2XUIfakR0Y/zHfzQZwop4HWGAxnvk0CMva1j8caBI
+ L8KEaReK+9DMxmWMdk7TecRxbUeS5xudr525hzcz458yXtTfu2Wd+ykHfxVqG3BiNZID
+ W4sYD3bfg8cbvnSZ2zo+Ykcwq2AVpnUth69s7ISBHA7LYfiWWFiKgb7yI6UrVXSoW2bw 1A== 
+Received: from mx0b-00154901.pphosted.com (mx0a-00154901.pphosted.com [67.231.149.39])
+        by mx0a-00154904.pphosted.com with ESMTP id 2va2pet5gn-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 02 Oct 2019 06:27:14 -0400
+Received: from pps.filterd (m0090350.ppops.net [127.0.0.1])
+        by mx0b-00154901.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id x92AMrro050573;
+        Wed, 2 Oct 2019 06:27:14 -0400
+Received: from ausxipps306.us.dell.com (AUSXIPPS306.us.dell.com [143.166.148.156])
+        by mx0b-00154901.pphosted.com with ESMTP id 2vca1w5psb-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 02 Oct 2019 06:27:14 -0400
+X-LoopCount0: from 10.166.134.84
+X-PREM-Routing: D-Outbound
+X-IronPort-AV: E=Sophos;i="5.60,349,1549951200"; 
+   d="scan'208";a="382383860"
+From:   <Narendra.K@dell.com>
+To:     <geert@linux-m68k.org>
+CC:     <Mario.Limonciello@dell.com>, <ard.biesheuvel@linaro.org>,
+        <linux-efi@vger.kernel.org>, <mingo@kernel.org>,
+        <tglx@linutronix.de>, <linux-kernel@vger.kernel.org>,
+        <james.morse@arm.com>, <tanxiaofei@huawei.com>,
+        <Narendra.K@dell.com>
+Subject: Re: [PATCH 4/5] efi: Export Runtime Configuration Interface table to
+ sysfs
+Thread-Topic: [PATCH 4/5] efi: Export Runtime Configuration Interface table to
+ sysfs
+Thread-Index: AQHVUR9fTJBv0Z/1EU2zTW0DTQ5+k6dFbG6AgAAA2ACAAAKAgIAACpuAgAA9PgCAAE5zgIAABjuAgAELs4A=
+Date:   Wed, 2 Oct 2019 10:22:10 +0000
+Message-ID: <20191002102159.GA2109@localhost.localdomain>
+References: <20190812150452.27983-1-ard.biesheuvel@linaro.org>
+ <20190812150452.27983-5-ard.biesheuvel@linaro.org>
+ <CAMuHMdXY5UH4KhcaNVuxa8-+GN-4bjyvCd0wzPYuFBY5Ch=fNA@mail.gmail.com>
+ <CAKv+Gu-KPypju6roQaVKP0DHE3aZijVVqLGwNyhiRSNqn1r6-w@mail.gmail.com>
+ <CAMuHMdV9m+Dbch46cVNqtn4cyB74qgHa18Qcm=HQv7Wx1rk==w@mail.gmail.com>
+ <CAKv+Gu9iLxkJgmxZR+1yvCTj6GiCDuyfN_QiGXEWBHS7uYUbfQ@mail.gmail.com>
+ <8446d19dd197447a88eed580601f3c4c@AUSX13MPC105.AMER.DELL.COM>
+ <20191001180133.GA2279@localhost.localdomain>
+ <CAMuHMdUMh4mCczCOxFtLn3E0Wu84ixFBsFuXk0p9QVXtg4dmoQ@mail.gmail.com>
+In-Reply-To: <CAMuHMdUMh4mCczCOxFtLn3E0Wu84ixFBsFuXk0p9QVXtg4dmoQ@mail.gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Mutt/1.10.1 (2018-07-13)
+x-ms-exchange-messagesentrepresentingtype: 1
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.143.242.75]
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <609E97DE5EAE6D4AB612FBFE021B3135@dell.com>
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-References: <D6FD0BFD-0934-4D9B-986C-89ED5CF13FE5@m3y3r.de>
-In-Reply-To: <D6FD0BFD-0934-4D9B-986C-89ED5CF13FE5@m3y3r.de>
-From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Date:   Wed, 2 Oct 2019 09:57:15 +0200
-Message-ID: <CAKv+Gu9MbOzYKBOOWppXBb7XQX=ra2cyVTDTNBdj6GBFuBXXBw@mail.gmail.com>
-Subject: Re: 5.3.1: x86: efi stub seems to fail to load initrd file
-To:     Thomas Meyer <thomas@m3y3r.de>
-Cc:     linux-efi <linux-efi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,1.0.8
+ definitions=2019-10-02_06:2019-10-01,2019-10-02 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 phishscore=0
+ mlxscore=0 malwarescore=0 priorityscore=1501 lowpriorityscore=0
+ clxscore=1015 spamscore=0 mlxlogscore=999 bulkscore=0 impostorscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-1908290000 definitions=main-1910020097
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 mlxscore=0 phishscore=0
+ malwarescore=0 bulkscore=0 impostorscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxlogscore=999 priorityscore=1501 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-1908290000
+ definitions=main-1910020097
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, 2 Oct 2019 at 00:42, Thomas Meyer <thomas@m3y3r.de> wrote:
->
-> Hi,
->
-> I've got this old x86 MacBookPro1,1 and I wanted to switch to systemd-boot.
->
-> systemd-boot works fine but the Linux efistub somehow fails to load the initrd, sadly the monitor seems to be switched off/no backlight after systemd-boot menu selection and Linux kernel starting efifb.
->
-> Any ideas what could be the culprit?
-> I tried to boot with efi=nochunk but same result.
->
-> I tried to understand what systemd boot does for file loading and what libefistub does, it looks very similar.
->
-> So any ideas and hints are welcome what is maybe wrong in my setup.
->
-> When I embedded the initramfs in the kernel, boot of Linux and system works correctly.
->
-> Ps: all efi_printk seems to be lost in the kernel. Is there a way to transfer this into the kernel somehow?
->
+On Tue, Oct 01, 2019 at 08:23:51PM +0200, Geert Uytterhoeven wrote:
+[...]
+> > > > > > > > +config EFI_RCI2_TABLE
+> > > > > > > > +       bool "EFI Runtime Configuration Interface Table Ver=
+sion 2 Support"
+[...]
+> > > Is it really a problem to just say n?
+> > >
+> > > I think this seems like a needless change that would slow down adopti=
+on of
+> > > !x86 if Dell EMC PowerEdge systems did start going that route, especi=
+ally
+> > > when it comes to distributions that move glacially slow with picking =
+up new
+> > > kernel code.
+> >
+> > Hi Ard/Geert,
+> >
+> > Any additional thoughts here ?
+>=20
+> Sure ;-)
+>=20
+> A typical platform-specific sarm/arm64 .config file has almost 3000
+> config options
+> disabled.  Hence that means I have to say "n" almost 3000 times.
+> Fortunately I started doing this several years ago, so I can do this
+> incrementally ;-)
+>=20
+> Perhaps someone should try to remove all lines like "depends on ... ||
+> COMPILE_TEST", run "make oldconfig", read all help texts before saying "n=
+",
+> and time the whole operation...
+>=20
+> I hope I managed to convince you of the benefits.
 
-Unfortunately not. Do you actually see the output? (which may require
-removing 'quiet' from the command line) If so, can you capture it with
-your phone camera perhaps?
+Thank you Geert. The description is helpful. I am working on it.=20
+As I understand, the issue is 'make oldconfig' provides a prompt to the use=
+r=20
+and user is expecting that a prompt is not needed as the option is not
+relevant.
+
+I cloned upstream kernel 5.3.2 as it does not have EFI_RCI2_TABLE option
+and generated a .config by calling 'make defconfig'. The .config has
+COMPILE_TEST set to n. I copied it to 5.4-rc1 and added 'depends on COMPILE=
+_TEST'=20
+to drivers/firmware/efi/Kconfig (did not add CONFIG_X86 because it is
+set to y by the defconfig from 5.3.2). 'make oldconfig' still provides a
+prompt for CONFIG_EFI_RCI2_TABLE.=20
+
+I removed 'depends on COMPILE_TEST' from Kconfig and modified it to
+include the below change -
+
+
+config EFI_RCI2_TABLE
+	bool=20
+	prompt "EFI Runtime Configuration Interface Table Version 2 Support" if CO=
+MPILE_TEST
+	default n
+	help
+
+Adding the condition to the 'prompt' section seems to have desired
+result. With this change, 'make oldconfig' did not provide a prompt.=20
+
+It seems like 'make oldconfig' will provide a prompt to the user if the
+CONFIG option is new and providing the prompt does not depend on the
+'depends on' section. It seems to be dependent on the 'prompt' section.
+
+Any thoughts ? If the above understanding is correct, I will work to
+submit a patch with 'prompt' section modified to contain
+
+prompt "EFI Runtime Configuration Interface Table Version 2 Support" if X86=
+ || COMPILE_TEST
+
+--=20
+With regards,
+Narendra K=
