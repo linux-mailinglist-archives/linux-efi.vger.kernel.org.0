@@ -2,48 +2,48 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3CD37C8F49
-	for <lists+linux-efi@lfdr.de>; Wed,  2 Oct 2019 19:05:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 06690C8F55
+	for <lists+linux-efi@lfdr.de>; Wed,  2 Oct 2019 19:05:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728706AbfJBRD5 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 2 Oct 2019 13:03:57 -0400
-Received: from mail-wr1-f68.google.com ([209.85.221.68]:39963 "EHLO
-        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728662AbfJBRD4 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 2 Oct 2019 13:03:56 -0400
-Received: by mail-wr1-f68.google.com with SMTP id l3so20517630wru.7
-        for <linux-efi@vger.kernel.org>; Wed, 02 Oct 2019 10:03:55 -0700 (PDT)
+        id S1728322AbfJBREO (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 2 Oct 2019 13:04:14 -0400
+Received: from mail-wr1-f65.google.com ([209.85.221.65]:36606 "EHLO
+        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728186AbfJBRD6 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 2 Oct 2019 13:03:58 -0400
+Received: by mail-wr1-f65.google.com with SMTP id y19so20539553wrd.3
+        for <linux-efi@vger.kernel.org>; Wed, 02 Oct 2019 10:03:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=4a/CPg2xqZ+b/NZpx616PMtohSxll231qGMOuYzcxWE=;
-        b=tdnoIcnmIker0lvF0KY3CO60+cNs1URBTEXXNXeUHW2fshCRDEH9xmYdis8pb1fbyb
-         vNRpKz04Fu+yWrCMZl4FUbI/pJEuRCInVKToqfVtof3VoXvgmrFZtNwmeBWMGXrl00xF
-         FqVum7Wmu5DH4DDvKIL3nYWX00HsxNPaIzDN5jDm0hi91BB0lXTB58XpG5EYQ6fIvWns
-         3YVbuJarZaqE5M9XLA0CmxLCQ7htEsQld6/RrO2fbgf84bF3w1DL/ozhBDdgqWWWOwyz
-         NsAL2C7i/UyXnd35g6XPDzPh2xyrhVXOtrhyCG/WpIOwdMbI5nzYR9ztd3wtLNA46vQj
-         HAUA==
+        bh=WvNNDWNhX2Fb3QLVftkYDMZhyGKIzxVRGVz9KnZzIlA=;
+        b=HGQ3gNIggfEXj7AYkwnJT9Qjz0IwaBjNifqvg2AUMkYBpkURvXrJ3mFFLx8YmRM01s
+         MQFAu94mNsU0c82mxdT74zHcr8NAMDdqG/CQgoyxhTzvckbEFrY8NEfFHOxXy2DBxiIL
+         kAVVbEoN5qr+o+totHIOgapck7eivCrc047FPvxseQattsch16J4/BhPLidznQjuCZQ2
+         BaSOlYPJ3RSY0Ld4a15n0DWzM7NP4SgsUIp/U4lobd0ucRCYxUu+oLRYZwofmZYXR+b9
+         j2G1/EkIlxdKPW9ZKbQEPAt369KCTEIqTm0hb3O7o8te55yL4yFi4c+TeWxwznbJtmLM
+         TFJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=4a/CPg2xqZ+b/NZpx616PMtohSxll231qGMOuYzcxWE=;
-        b=GXrzt9sA4hHawaA8PIg5YUYikBdsD+KRDqCgNd52x58wEXudYGBjgdNnKf1c+q71Fu
-         Hw1HBvgrHMBczol+G7ciVM4lpqHjWIT6iB+r7a4E7SPVAUvOtoshBS6cdhGQx69j9tsK
-         xZfUD2WZ0GYNR+a5VtX5MAfw//lR9bCnOJXF5tczt60kVy6rpbSIxNiNc8sTBKNLPLqD
-         bGCvh3sZ7OtYF5MXQvEc/BMTP39QcL0zDOU/7q5OoJADx1ZPlj6I4DyWiA5J53K54vS7
-         nCQoU1mgHeetMNxP/qXYQinai4LtG+tKkY0h6A6j9rQAGr+KlVwwim7U3UmP9qrjUt2a
-         SnuQ==
-X-Gm-Message-State: APjAAAXVoknTgsw9kCIVElVc6nstPiIteW1GjuSnwmlnxGA7QA+i96Q2
-        xFLjFQ325r6Sz0Z9JaqWSJUsHjEODik6WFhy
-X-Google-Smtp-Source: APXvYqzYraTwzohAp1cOr3JZijdPGRhdWNVm7YqHKQHJV7nNyafLy7wTF+k2v7yiQ67qhfcMavJB8Q==
-X-Received: by 2002:adf:e849:: with SMTP id d9mr3616348wrn.358.1570035834376;
-        Wed, 02 Oct 2019 10:03:54 -0700 (PDT)
+        bh=WvNNDWNhX2Fb3QLVftkYDMZhyGKIzxVRGVz9KnZzIlA=;
+        b=OKuG2pD0C+sA2UJGrWIjM/aCdqRDPF8DQBNpQ/tD2hZpYLrpm7W7PBAwWZUny6//ct
+         6gJLa1Ew1mDWRBdNXvLvIwOjTu+Re4QCLLIccGX5i8jylFWjnJUnT7gvcmd3R4eQgHVC
+         JjJtZ659Fkj44EN4xjPX/MZlo1QHw22+4onj+rVf4BMj2FDOfEUW5XOI1df+GPPvFtQo
+         iV2Fr1Idqp2zKrbJiZPc8tibe4wpK5DC3X+HnqryYfpA7GPk4hesEJE8HZ5dxgEVi8/G
+         2IS6ETBKva028Zhomt0rKhmNNNScJEJKL8t2PTKg8FI/it8KCc2CgY5xR9kHo0LrrUwn
+         m0VA==
+X-Gm-Message-State: APjAAAXpy7Q0NYMzl+lmPn+igTSveMsihhfx09J5/KHK2TFpIM8t77MB
+        j7gxXaicyu+5frpBYKNhlRRLYfbMhG/Cy2Id
+X-Google-Smtp-Source: APXvYqwrQBO8A3rwHTnKPxIeVjz0IPXL0H/YrWpwVQJZXWaJcoQXydKEl0dLpN5PIdPS798Wpk78qA==
+X-Received: by 2002:a5d:490f:: with SMTP id x15mr3410913wrq.375.1570035835970;
+        Wed, 02 Oct 2019 10:03:55 -0700 (PDT)
 Received: from sudo.home ([2a01:cb1d:112:6f00:f145:3252:fc29:76c9])
-        by smtp.gmail.com with ESMTPSA id f18sm7085459wmh.43.2019.10.02.10.03.53
+        by smtp.gmail.com with ESMTPSA id f18sm7085459wmh.43.2019.10.02.10.03.54
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 02 Oct 2019 10:03:53 -0700 (PDT)
+        Wed, 02 Oct 2019 10:03:55 -0700 (PDT)
 From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
 To:     linux-efi@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
         Thomas Gleixner <tglx@linutronix.de>
@@ -58,9 +58,9 @@ Cc:     Ard Biesheuvel <ard.biesheuvel@linaro.org>,
         Matthew Garrett <mjg59@google.com>,
         Octavian Purdila <octavian.purdila@intel.com>,
         Peter Jones <pjones@redhat.com>, Scott Talbert <swt@techie.net>
-Subject: [PATCH 4/7] efi/tpm: don't traverse an event log with no events
-Date:   Wed,  2 Oct 2019 18:59:01 +0200
-Message-Id: <20191002165904.8819-5-ard.biesheuvel@linaro.org>
+Subject: [PATCH 5/7] efi/tpm: only set efi_tpm_final_log_size after successful event log parsing
+Date:   Wed,  2 Oct 2019 18:59:02 +0200
+Message-Id: <20191002165904.8819-6-ard.biesheuvel@linaro.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20191002165904.8819-1-ard.biesheuvel@linaro.org>
 References: <20191002165904.8819-1-ard.biesheuvel@linaro.org>
@@ -71,56 +71,141 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-From: Peter Jones <pjones@redhat.com>
+From: Jerry Snitselaar <jsnitsel@redhat.com>
 
-When there are no entries to put into the final event log, some machines
-will return the template they would have populated anyway.  In this case
-the nr_events field is 0, but the rest of the log is just garbage.
+If __calc_tpm2_event_size fails to parse an event it will return 0,
+resulting tpm2_calc_event_log_size returning -1. Currently there is
+no check of this return value, and efi_tpm_final_log_size can end up
+being set to this negative value resulting in a panic like the
+the one given below.
 
-This patch stops us from trying to iterate the table with
-__calc_tpm2_event_size() when the number of events in the table is 0.
+Also __calc_tpm2_event_size returns a size of 0 when it fails
+to parse an event, so update function documentation to reflect this.
 
-Fixes: c46f3405692d ("tpm: Reserve the TPM final events table")
+[    0.774340] BUG: unable to handle page fault for address: ffffbc8fc00866ad
+[    0.774788] #PF: supervisor read access in kernel mode
+[    0.774788] #PF: error_code(0x0000) - not-present page
+[    0.774788] PGD 107d36067 P4D 107d36067 PUD 107d37067 PMD 107d38067 PTE 0
+[    0.774788] Oops: 0000 [#1] SMP PTI
+[    0.774788] CPU: 0 PID: 1 Comm: swapper/0 Not tainted 5.3.0-0.rc2.1.elrdy.x86_64 #1
+[    0.774788] Hardware name: LENOVO 20HGS22D0W/20HGS22D0W, BIOS N1WET51W (1.30 ) 09/14/2018
+[    0.774788] RIP: 0010:memcpy_erms+0x6/0x10
+[    0.774788] Code: 90 90 90 90 eb 1e 0f 1f 00 48 89 f8 48 89 d1 48 c1 e9 03 83 e2 07 f3 48 a5 89 d1 f3 a4 c3 66 0f 1f 44 00 00 48 89 f8 48 89 d1 <f3> a4 c3 0f 1f 80 00 00 00 00 48 89 f8 48 83 fa 20 72 7e 40 38 fe
+[    0.774788] RSP: 0000:ffffbc8fc0073b30 EFLAGS: 00010286
+[    0.774788] RAX: ffff9b1fc7c5b367 RBX: ffff9b1fc8390000 RCX: ffffffffffffe962
+[    0.774788] RDX: ffffffffffffe962 RSI: ffffbc8fc00866ad RDI: ffff9b1fc7c5b367
+[    0.774788] RBP: ffff9b1c10ca7018 R08: ffffbc8fc0085fff R09: 8000000000000063
+[    0.774788] R10: 0000000000001000 R11: 000fffffffe00000 R12: 0000000000003367
+[    0.774788] R13: ffff9b1fcc47c010 R14: ffffbc8fc0085000 R15: 0000000000000002
+[    0.774788] FS:  0000000000000000(0000) GS:ffff9b1fce200000(0000) knlGS:0000000000000000
+[    0.774788] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[    0.774788] CR2: ffffbc8fc00866ad CR3: 000000029f60a001 CR4: 00000000003606f0
+[    0.774788] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+[    0.774788] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+[    0.774788] Call Trace:
+[    0.774788]  tpm_read_log_efi+0x156/0x1a0
+[    0.774788]  tpm_bios_log_setup+0xc8/0x190
+[    0.774788]  tpm_chip_register+0x50/0x1c0
+[    0.774788]  tpm_tis_core_init.cold.9+0x28c/0x466
+[    0.774788]  tpm_tis_plat_probe+0xcc/0xea
+[    0.774788]  platform_drv_probe+0x35/0x80
+[    0.774788]  really_probe+0xef/0x390
+[    0.774788]  driver_probe_device+0xb4/0x100
+[    0.774788]  device_driver_attach+0x4f/0x60
+[    0.774788]  __driver_attach+0x86/0x140
+[    0.774788]  ? device_driver_attach+0x60/0x60
+[    0.774788]  bus_for_each_dev+0x76/0xc0
+[    0.774788]  ? klist_add_tail+0x3b/0x70
+[    0.774788]  bus_add_driver+0x14a/0x1e0
+[    0.774788]  ? tpm_init+0xea/0xea
+[    0.774788]  ? do_early_param+0x8e/0x8e
+[    0.774788]  driver_register+0x6b/0xb0
+[    0.774788]  ? tpm_init+0xea/0xea
+[    0.774788]  init_tis+0x86/0xd8
+[    0.774788]  ? do_early_param+0x8e/0x8e
+[    0.774788]  ? driver_register+0x94/0xb0
+[    0.774788]  do_one_initcall+0x46/0x1e4
+[    0.774788]  ? do_early_param+0x8e/0x8e
+[    0.774788]  kernel_init_freeable+0x199/0x242
+[    0.774788]  ? rest_init+0xaa/0xaa
+[    0.774788]  kernel_init+0xa/0x106
+[    0.774788]  ret_from_fork+0x35/0x40
+[    0.774788] Modules linked in:
+[    0.774788] CR2: ffffbc8fc00866ad
+[    0.774788] ---[ end trace 42930799f8d6eaea ]---
+[    0.774788] RIP: 0010:memcpy_erms+0x6/0x10
+[    0.774788] Code: 90 90 90 90 eb 1e 0f 1f 00 48 89 f8 48 89 d1 48 c1 e9 03 83 e2 07 f3 48 a5 89 d1 f3 a4 c3 66 0f 1f 44 00 00 48 89 f8 48 89 d1 <f3> a4 c3 0f 1f 80 00 00 00 00 48 89 f8 48 83 fa 20 72 7e 40 38 fe
+[    0.774788] RSP: 0000:ffffbc8fc0073b30 EFLAGS: 00010286
+[    0.774788] RAX: ffff9b1fc7c5b367 RBX: ffff9b1fc8390000 RCX: ffffffffffffe962
+[    0.774788] RDX: ffffffffffffe962 RSI: ffffbc8fc00866ad RDI: ffff9b1fc7c5b367
+[    0.774788] RBP: ffff9b1c10ca7018 R08: ffffbc8fc0085fff R09: 8000000000000063
+[    0.774788] R10: 0000000000001000 R11: 000fffffffe00000 R12: 0000000000003367
+[    0.774788] R13: ffff9b1fcc47c010 R14: ffffbc8fc0085000 R15: 0000000000000002
+[    0.774788] FS:  0000000000000000(0000) GS:ffff9b1fce200000(0000) knlGS:0000000000000000
+[    0.774788] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[    0.774788] CR2: ffffbc8fc00866ad CR3: 000000029f60a001 CR4: 00000000003606f0
+[    0.774788] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+[    0.774788] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+[    0.774788] Kernel panic - not syncing: Fatal exception
+[    0.774788] Kernel Offset: 0x1d000000 from 0xffffffff81000000 (relocation range: 0xffffffff80000000-0xffffffffbfffffff)
+[    0.774788] ---[ end Kernel panic - not syncing: Fatal exception ]---
+
+The root cause of the issue that caused the failure of event parsing
+in this case is resolved by Peter Jone's patchset dealing with large
+event logs where crossing over a page boundary causes the page with
+the event count to be unmapped.
+
+Fixes: c46f3405692de ("tpm: Reserve the TPM final events table")
 Cc: linux-efi@vger.kernel.org
 Cc: linux-integrity@vger.kernel.org
 Cc: stable@vger.kernel.org
-Signed-off-by: Peter Jones <pjones@redhat.com>
-Tested-by: Lyude Paul <lyude@redhat.com>
-Reviewed-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-Acked-by: Matthew Garrett <mjg59@google.com>
-Acked-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Signed-off-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+Cc: Matthew Garrett <mjg59@google.com>
+Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Cc: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+Signed-off-by: Jerry Snitselaar <jsnitsel@redhat.com>
 Signed-off-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
 ---
- drivers/firmware/efi/tpm.c | 15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
+ drivers/firmware/efi/tpm.c   | 9 ++++++++-
+ include/linux/tpm_eventlog.h | 2 +-
+ 2 files changed, 9 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/firmware/efi/tpm.c b/drivers/firmware/efi/tpm.c
-index 1d3f5ca3eaaf..b9ae5c6f9b9c 100644
+index b9ae5c6f9b9c..703469c1ab8e 100644
 --- a/drivers/firmware/efi/tpm.c
 +++ b/drivers/firmware/efi/tpm.c
-@@ -75,11 +75,16 @@ int __init efi_tpm_eventlog_init(void)
- 		goto out;
+@@ -85,11 +85,18 @@ int __init efi_tpm_eventlog_init(void)
+ 						    final_tbl->nr_events,
+ 						    log_tbl->log);
  	}
- 
--	tbl_size = tpm2_calc_event_log_size((void *)efi.tpm_final_log
--					    + sizeof(final_tbl->version)
--					    + sizeof(final_tbl->nr_events),
--					    final_tbl->nr_events,
--					    log_tbl->log);
-+	tbl_size = 0;
-+	if (final_tbl->nr_events != 0) {
-+		void *events = (void *)efi.tpm_final_log
-+				+ sizeof(final_tbl->version)
-+				+ sizeof(final_tbl->nr_events);
 +
-+		tbl_size = tpm2_calc_event_log_size(events,
-+						    final_tbl->nr_events,
-+						    log_tbl->log);
++	if (tbl_size < 0) {
++		pr_err(FW_BUG "Failed to parse event in TPM Final Events Log\n");
++		goto out_calc;
 +	}
++
  	memblock_reserve((unsigned long)final_tbl,
  			 tbl_size + sizeof(*final_tbl));
- 	early_memunmap(final_tbl, sizeof(*final_tbl));
+-	early_memunmap(final_tbl, sizeof(*final_tbl));
+ 	efi_tpm_final_log_size = tbl_size;
+ 
++out_calc:
++	early_memunmap(final_tbl, sizeof(*final_tbl));
+ out:
+ 	early_memunmap(log_tbl, sizeof(*log_tbl));
+ 	return ret;
+diff --git a/include/linux/tpm_eventlog.h b/include/linux/tpm_eventlog.h
+index 12584b69a3f3..2dfdd63ac034 100644
+--- a/include/linux/tpm_eventlog.h
++++ b/include/linux/tpm_eventlog.h
+@@ -152,7 +152,7 @@ struct tcg_algorithm_info {
+  * total. Once we've done this we know the offset of the data length field,
+  * and can calculate the total size of the event.
+  *
+- * Return: size of the event on success, <0 on failure
++ * Return: size of the event on success, 0 on failure
+  */
+ 
+ static inline int __calc_tpm2_event_size(struct tcg_pcr_event2_head *event,
 -- 
 2.20.1
 
