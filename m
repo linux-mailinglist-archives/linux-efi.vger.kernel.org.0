@@ -2,127 +2,156 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 650E6CC931
-	for <lists+linux-efi@lfdr.de>; Sat,  5 Oct 2019 11:53:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 01EA5CC9A7
+	for <lists+linux-efi@lfdr.de>; Sat,  5 Oct 2019 13:38:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727603AbfJEJxk (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sat, 5 Oct 2019 05:53:40 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:54648 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726446AbfJEJxi (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Sat, 5 Oct 2019 05:53:38 -0400
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com [209.85.208.69])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 9AE71882FB
-        for <linux-efi@vger.kernel.org>; Sat,  5 Oct 2019 09:53:37 +0000 (UTC)
-Received: by mail-ed1-f69.google.com with SMTP id w12so5686056eda.6
-        for <linux-efi@vger.kernel.org>; Sat, 05 Oct 2019 02:53:37 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=2TT+gPwEwmW+zFxrJh0O9g568TTXNfZtDWLTnBvu+Q0=;
-        b=k9VXg7qrxwaXrsODKmqH2fLuAPMos6/o6gRHgzbFJtDdxvtuWROQY0vdCBWKnX/aV5
-         a6TtF9FKlfvnufLxU0wl+GbaR6t5PMQLN+NL320AgQvN7GnZyTH1Rm/wcJVbO922wq2P
-         Tgiw2ae5p1xt0MGtzLmAK8YhKZRkQF9FiEI6t2Ch7oQsMXePiH6RPNXjTBjFqlEml9Bb
-         B/UKFljTxOEj9OfUDlW1te6v5qkaQ3azO/Nki09uAzI5xbT5p6lfUTZVRSnPCAnIpMO/
-         KtMVDf+5Yblf2nKTFWmaiQyRZSK4Pij9t3aOfN1V0Q6DOe5iQQ5noFTtQ6JYvaQF0lEG
-         6DYg==
-X-Gm-Message-State: APjAAAXhrGIBSZz9vpgzz1bRtKcvSgnKHkrZoKuw8ukeAZEcYnK70VZf
-        ZJXx2RfXEY3iFse2zanLIFBtRK8ajFDnE2Sip7KjdS64PuuZDTFlt0cVstLXQvZD337oGQApU0Z
-        wlhyE1GMNfuRPoMvhEZwb
-X-Received: by 2002:a50:ac0d:: with SMTP id v13mr19492077edc.189.1570269216371;
-        Sat, 05 Oct 2019 02:53:36 -0700 (PDT)
-X-Google-Smtp-Source: APXvYqyZOxlWwMcBg7l7MOzB/AEriI2yXyATuHMn4uTP960+sqT3K43d/RA7nIyKJE/vnMnlvyaS+g==
-X-Received: by 2002:a50:ac0d:: with SMTP id v13mr19492050edc.189.1570269216115;
-        Sat, 05 Oct 2019 02:53:36 -0700 (PDT)
-Received: from shalem.localdomain (2001-1c00-0c14-2800-ec23-a060-24d5-2453.cable.dynamic.v6.ziggo.nl. [2001:1c00:c14:2800:ec23:a060:24d5:2453])
-        by smtp.gmail.com with ESMTPSA id ba28sm1752166edb.4.2019.10.05.02.53.34
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 05 Oct 2019 02:53:35 -0700 (PDT)
-Subject: Re: [PATCH v7 4/8] firmware: Add new platform fallback mechanism and
- firmware_request_platform()
-To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Cc:     Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Darren Hart <dvhart@infradead.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        Luis Chamberlain <mcgrof@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
+        id S1728031AbfJELiF (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 5 Oct 2019 07:38:05 -0400
+Received: from isilmar-4.linta.de ([136.243.71.142]:54898 "EHLO
+        isilmar-4.linta.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726902AbfJELiF (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sat, 5 Oct 2019 07:38:05 -0400
+X-isilmar-external: YES
+X-isilmar-external: YES
+X-isilmar-external: YES
+X-isilmar-external: YES
+X-isilmar-external: YES
+X-isilmar-external: YES
+X-isilmar-external: YES
+X-isilmar-external: YES
+X-isilmar-external: YES
+X-isilmar-external: YES
+X-isilmar-external: YES
+X-isilmar-external: YES
+X-isilmar-external: YES
+Received: from light.dominikbrodowski.net (brodo.linta [10.1.0.102])
+        by isilmar-4.linta.de (Postfix) with ESMTPSA id A23B020070A;
+        Sat,  5 Oct 2019 11:38:02 +0000 (UTC)
+Received: by light.dominikbrodowski.net (Postfix, from userid 1000)
+        id 515AB207FA; Sat,  5 Oct 2019 13:37:53 +0200 (CEST)
+Date:   Sat, 5 Oct 2019 13:37:53 +0200
+From:   Dominik Brodowski <linux@dominikbrodowski.net>
+To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Hsin-Yi Wang <hsinyi@chromium.org>,
+        Stephen Boyd <swboyd@chromium.org>,
+        Rob Herring <robh@kernel.org>, Theodore Ts'o <tytso@mit.edu>,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        "H . Peter Anvin" <hpa@zytor.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Peter Jones <pjones@redhat.com>,
-        Dave Olsthoorn <dave@bewaar.me>, x86@kernel.org,
-        platform-driver-x86@vger.kernel.org, linux-efi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-input@vger.kernel.org
-References: <20191004145056.43267-1-hdegoede@redhat.com>
- <20191004145056.43267-5-hdegoede@redhat.com> <20191004231733.GF22365@dtor-ws>
-From:   Hans de Goede <hdegoede@redhat.com>
-Message-ID: <c75ceb3a-799a-378a-dbff-c4c4f57575b4@redhat.com>
-Date:   Sat, 5 Oct 2019 11:53:34 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.1.1
+        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
+        torvalds@linux-foundation.org
+Cc:     linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org
+Subject: [RFC PATCH] arch/x86: efistub: Invoke EFI_RNG_PROTOCOL to seed the
+ UEFI RNG table
+Message-ID: <20191005113753.GA77634@light.dominikbrodowski.net>
 MIME-Version: 1.0
-In-Reply-To: <20191004231733.GF22365@dtor-ws>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.12.2 (2019-09-21)
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hi Dmitry,
+Implement the same mechanism for x86 efistub as introduced by commit
+568bc4e87033 ("efi/arm*/libstub: Invoke EFI_RNG_PROTOCOL to seed the
+UEFI RNG table") for efi/arm*/libstub, and best described here and there
+as:
 
-On 05-10-2019 01:17, Dmitry Torokhov wrote:
-> Hi Hans,
-> 
-> On Fri, Oct 04, 2019 at 04:50:52PM +0200, Hans de Goede wrote:
->> In some cases the platform's main firmware (e.g. the UEFI fw) may contain
->> an embedded copy of device firmware which needs to be (re)loaded into the
->> peripheral. Normally such firmware would be part of linux-firmware, but in
->> some cases this is not feasible, for 2 reasons:
->>
->> 1) The firmware is customized for a specific use-case of the chipset / use
->> with a specific hardware model, so we cannot have a single firmware file
->> for the chipset. E.g. touchscreen controller firmwares are compiled
->> specifically for the hardware model they are used with, as they are
->> calibrated for a specific model digitizer.
->>
->> 2) Despite repeated attempts we have failed to get permission to
->> redistribute the firmware. This is especially a problem with customized
->> firmwares, these get created by the chip vendor for a specific ODM and the
->> copyright may partially belong with the ODM, so the chip vendor cannot
->> give a blanket permission to distribute these.
->>
->> This commit adds a new platform fallback mechanism to the firmware loader
->> which will try to lookup a device fw copy embedded in the platform's main
->> firmware if direct filesystem lookup fails.
->>
->> Drivers which need such embedded fw copies can enable this fallback
->> mechanism by using the new firmware_request_platform() function.
-> 
-> Why would drivers not want to fetch firmware from system firmware if it
-> is not present on disk? I would say let driver to opt-out of this
-> fallback, but default request_firmware() should do it by default.
+    Invoke the EFI_RNG_PROTOCOL protocol in the context of the stub and
+    install the Linux-specific RNG seed UEFI config table. This will be
+    picked up by the EFI routines in the core kernel to seed the kernel
+    entropy pool.
 
-Only few devices / device-drivers have / need firmware which is
-embedded in the system-fw. Checking for this introduces an extra call
-in the firmware-loader path and the firmware-loader maintainer have
-requested to make this opt-in, rather then opt-out, so that these changes
-do not impact the many many other drivers which do not need this.
+Signed-off-by: Dominik Brodowski <linux@dominikbrodowski.net>
+Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Cc: Hsin-Yi Wang <hsinyi@chromium.org>
+Cc: Stephen Boyd <swboyd@chromium.org>
+Cc: Rob Herring <robh@kernel.org>
+Cc: Theodore Ts'o <tytso@mit.edu>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: <x86@kernel.org>
 
-To be precise so far only the 2 touchscreen drivers for which patches
-are in this series are known to benefit from this approach. So since this
-is somewhat of a special case opt-in makes more sense then opt-out.
+---
 
-Regards,
+As far as I can see, we do not yet make use of the UEFI RNG on x86 at all,
+but only on arm. Note that this works only when Linux is booted as an EFI
+stub, and that the EFI-provided randomness is not credited as entropy
+unless RANDOM_TRUST_BOOTLOADER is set _and_ another patch (on its way
+upstream; thanks Ard!) is applied, see
+	https://lore.kernel.org/lkml/20190928101428.GA222453@light.dominikbrodowski.net/
 
-Hans
+Further note that this patch is untested, as the firmware on my old x86
+laptop only has UEFI v2.31. If you want to test it, you may wish to apply
+	https://lore.kernel.org/lkml/20191005113632.GA74715@light.dominikbrodowski.net/T/#u
+first to get a clear indication in dmesg.
+
+Thanks,
+	Dominik
 
 
+diff --git a/arch/x86/boot/compressed/eboot.c b/arch/x86/boot/compressed/eboot.c
+index d6662fdef300..4b909e5ab857 100644
+--- a/arch/x86/boot/compressed/eboot.c
++++ b/arch/x86/boot/compressed/eboot.c
+@@ -781,6 +781,9 @@ efi_main(struct efi_config *c, struct boot_params *boot_params)
+ 
+ 	/* Ask the firmware to clear memory on unclean shutdown */
+ 	efi_enable_reset_attack_mitigation(sys_table);
++
++	efi_random_get_seed(sys_table);
++
+ 	efi_retrieve_tpm2_eventlog(sys_table);
+ 
+ 	setup_graphics(boot_params);
+diff --git a/drivers/firmware/efi/libstub/Makefile b/drivers/firmware/efi/libstub/Makefile
+index 0460c7581220..ece24c60fc2c 100644
+--- a/drivers/firmware/efi/libstub/Makefile
++++ b/drivers/firmware/efi/libstub/Makefile
+@@ -38,7 +38,8 @@ OBJECT_FILES_NON_STANDARD	:= y
+ # Prevents link failures: __sanitizer_cov_trace_pc() is not linked in.
+ KCOV_INSTRUMENT			:= n
+ 
+-lib-y				:= efi-stub-helper.o gop.o secureboot.o tpm.o
++lib-y				:= efi-stub-helper.o gop.o secureboot.o tpm.o \
++				   random.o
+ 
+ # include the stub's generic dependencies from lib/ when building for ARM/arm64
+ arm-deps-y := fdt_rw.c fdt_ro.c fdt_wip.c fdt.c fdt_empty_tree.c fdt_sw.c
+@@ -47,7 +48,7 @@ arm-deps-$(CONFIG_ARM64) += sort.c
+ $(obj)/lib-%.o: $(srctree)/lib/%.c FORCE
+ 	$(call if_changed_rule,cc_o_c)
+ 
+-lib-$(CONFIG_EFI_ARMSTUB)	+= arm-stub.o fdt.o string.o random.o \
++lib-$(CONFIG_EFI_ARMSTUB)	+= arm-stub.o fdt.o string.o \
+ 				   $(patsubst %.c,lib-%.o,$(arm-deps-y))
+ 
+ lib-$(CONFIG_ARM)		+= arm32-stub.o
+diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
+index 7f1556fd867d..05739ae013c8 100644
+--- a/drivers/firmware/efi/libstub/efistub.h
++++ b/drivers/firmware/efi/libstub/efistub.h
+@@ -63,8 +63,6 @@ efi_status_t efi_random_alloc(efi_system_table_t *sys_table_arg,
+ 
+ efi_status_t check_platform_features(efi_system_table_t *sys_table_arg);
+ 
+-efi_status_t efi_random_get_seed(efi_system_table_t *sys_table_arg);
+-
+ void *get_efi_config_table(efi_system_table_t *sys_table, efi_guid_t guid);
+ 
+ /* Helper macros for the usual case of using simple C variables: */
+diff --git a/include/linux/efi.h b/include/linux/efi.h
+index bd3837022307..a17cc5841668 100644
+--- a/include/linux/efi.h
++++ b/include/linux/efi.h
+@@ -1631,6 +1631,8 @@ static inline void
+ efi_enable_reset_attack_mitigation(efi_system_table_t *sys_table_arg) { }
+ #endif
+ 
++efi_status_t efi_random_get_seed(efi_system_table_t *sys_table_arg);
++
+ void efi_retrieve_tpm2_eventlog(efi_system_table_t *sys_table);
+ 
+ /*
