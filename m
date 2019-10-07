@@ -2,48 +2,49 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B857CE5E6
-	for <lists+linux-efi@lfdr.de>; Mon,  7 Oct 2019 16:51:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 342EECE610
+	for <lists+linux-efi@lfdr.de>; Mon,  7 Oct 2019 16:52:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728546AbfJGOvJ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 7 Oct 2019 10:51:09 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:44442 "EHLO
+        id S1727912AbfJGOwA (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 7 Oct 2019 10:52:00 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:44247 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728516AbfJGOth (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 7 Oct 2019 10:49:37 -0400
+        with ESMTP id S1728019AbfJGOt0 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 7 Oct 2019 10:49:26 -0400
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1iHUJy-0005pZ-KG; Mon, 07 Oct 2019 16:49:10 +0200
+        id 1iHUJz-0005pe-PH; Mon, 07 Oct 2019 16:49:11 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id F07241C08B3;
-        Mon,  7 Oct 2019 16:49:09 +0200 (CEST)
-Date:   Mon, 07 Oct 2019 14:49:09 -0000
-From:   "tip-bot2 for Peter Jones" <tip-bot2@linutronix.de>
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 3A4A61C032F;
+        Mon,  7 Oct 2019 16:49:10 +0200 (CEST)
+Date:   Mon, 07 Oct 2019 14:49:10 -0000
+From:   "tip-bot2 for Lukas Wunner" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: efi/urgent] efi/tpm: Don't access event->count when it isn't mapped
-Cc:     Lyude Paul <lyude@redhat.com>, Peter Jones <pjones@redhat.com>,
-        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+Subject: [tip: efi/urgent] efi/cper: Fix endianness of PCIe class code
+Cc:     Lukas Wunner <lukas@wunner.de>,
         Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Matthew Garrett <mjg59@google.com>,
         Ben Dooks <ben.dooks@codethink.co.uk>,
         Dave Young <dyoung@redhat.com>,
+        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
         Jerry Snitselaar <jsnitsel@redhat.com>,
         Linus Torvalds <torvalds@linux-foundation.org>,
-        Lukas Wunner <lukas@wunner.de>,
+        Lyude Paul <lyude@redhat.com>,
+        Matthew Garrett <mjg59@google.com>,
         Octavian Purdila <octavian.purdila@intel.com>,
+        Peter Jones <pjones@redhat.com>,
         Peter Zijlstra <peterz@infradead.org>,
         Scott Talbert <swt@techie.net>,
         Thomas Gleixner <tglx@linutronix.de>,
         linux-efi@vger.kernel.org, linux-integrity@vger.kernel.org,
-        stable@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
-        Borislav Petkov <bp@alien8.de>, linux-kernel@vger.kernel.org
-In-Reply-To: <20191002165904.8819-4-ard.biesheuvel@linaro.org>
-References: <20191002165904.8819-4-ard.biesheuvel@linaro.org>
+        Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20191002165904.8819-2-ard.biesheuvel@linaro.org>
+References: <20191002165904.8819-2-ard.biesheuvel@linaro.org>
 MIME-Version: 1.0
-Message-ID: <157045974993.9978.18070605431254154051.tip-bot2@tip-bot2>
+Message-ID: <157045975018.9978.3816747773596306843.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -59,95 +60,60 @@ X-Mailing-List: linux-efi@vger.kernel.org
 
 The following commit has been merged into the efi/urgent branch of tip:
 
-Commit-ID:     047d50aee341d940350897c85799e56ae57c3849
-Gitweb:        https://git.kernel.org/tip/047d50aee341d940350897c85799e56ae57c3849
-Author:        Peter Jones <pjones@redhat.com>
-AuthorDate:    Wed, 02 Oct 2019 18:59:00 +02:00
+Commit-ID:     6fb9367a15d1a126d222d738b2702c7958594a5f
+Gitweb:        https://git.kernel.org/tip/6fb9367a15d1a126d222d738b2702c7958594a5f
+Author:        Lukas Wunner <lukas@wunner.de>
+AuthorDate:    Wed, 02 Oct 2019 18:58:58 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Mon, 07 Oct 2019 15:24:35 +02:00
 
-efi/tpm: Don't access event->count when it isn't mapped
+efi/cper: Fix endianness of PCIe class code
 
-Some machines generate a lot of event log entries.  When we're
-iterating over them, the code removes the old mapping and adds a
-new one, so once we cross the page boundary we're unmapping the page
-with the count on it.  Hilarity ensues.
+The CPER parser assumes that the class code is big endian, but at least
+on this edk2-derived Intel Purley platform it's little endian:
 
-This patch keeps the info from the header in local variables so we don't
-need to access that page again or keep track of if it's mapped.
+    efi: EFI v2.50 by EDK II BIOS ID:PLYDCRB1.86B.0119.R05.1701181843
+    DMI: Intel Corporation PURLEY/PURLEY, BIOS PLYDCRB1.86B.0119.R05.1701181843 01/18/2017
 
-Tested-by: Lyude Paul <lyude@redhat.com>
-Signed-off-by: Peter Jones <pjones@redhat.com>
-Signed-off-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+    {1}[Hardware Error]:   device_id: 0000:5d:00.0
+    {1}[Hardware Error]:   slot: 0
+    {1}[Hardware Error]:   secondary_bus: 0x5e
+    {1}[Hardware Error]:   vendor_id: 0x8086, device_id: 0x2030
+    {1}[Hardware Error]:   class_code: 000406
+                                       ^^^^^^ (should be 060400)
+
+Signed-off-by: Lukas Wunner <lukas@wunner.de>
 Signed-off-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Reviewed-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-Acked-by: Matthew Garrett <mjg59@google.com>
-Acked-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
 Cc: Ben Dooks <ben.dooks@codethink.co.uk>
 Cc: Dave Young <dyoung@redhat.com>
+Cc: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
 Cc: Jerry Snitselaar <jsnitsel@redhat.com>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Lukas Wunner <lukas@wunner.de>
+Cc: Lyude Paul <lyude@redhat.com>
+Cc: Matthew Garrett <mjg59@google.com>
 Cc: Octavian Purdila <octavian.purdila@intel.com>
+Cc: Peter Jones <pjones@redhat.com>
 Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: Scott Talbert <swt@techie.net>
 Cc: Thomas Gleixner <tglx@linutronix.de>
 Cc: linux-efi@vger.kernel.org
 Cc: linux-integrity@vger.kernel.org
-Cc: stable@vger.kernel.org
-Fixes: 44038bc514a2 ("tpm: Abstract crypto agile event size calculations")
-Link: https://lkml.kernel.org/r/20191002165904.8819-4-ard.biesheuvel@linaro.org
-[ Minor edits. ]
+Link: https://lkml.kernel.org/r/20191002165904.8819-2-ard.biesheuvel@linaro.org
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- include/linux/tpm_eventlog.h | 14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ drivers/firmware/efi/cper.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/tpm_eventlog.h b/include/linux/tpm_eventlog.h
-index 63238c8..b50cc3a 100644
---- a/include/linux/tpm_eventlog.h
-+++ b/include/linux/tpm_eventlog.h
-@@ -170,6 +170,7 @@ static inline int __calc_tpm2_event_size(struct tcg_pcr_event2_head *event,
- 	u16 halg;
- 	int i;
- 	int j;
-+	u32 count, event_type;
- 
- 	marker = event;
- 	marker_start = marker;
-@@ -190,16 +191,22 @@ static inline int __calc_tpm2_event_size(struct tcg_pcr_event2_head *event,
+diff --git a/drivers/firmware/efi/cper.c b/drivers/firmware/efi/cper.c
+index addf074..b1af0de 100644
+--- a/drivers/firmware/efi/cper.c
++++ b/drivers/firmware/efi/cper.c
+@@ -381,7 +381,7 @@ static void cper_print_pcie(const char *pfx, const struct cper_sec_pcie *pcie,
+ 		printk("%s""vendor_id: 0x%04x, device_id: 0x%04x\n", pfx,
+ 		       pcie->device_id.vendor_id, pcie->device_id.device_id);
+ 		p = pcie->device_id.class_code;
+-		printk("%s""class_code: %02x%02x%02x\n", pfx, p[0], p[1], p[2]);
++		printk("%s""class_code: %02x%02x%02x\n", pfx, p[2], p[1], p[0]);
  	}
- 
- 	event = (struct tcg_pcr_event2_head *)mapping;
-+	/*
-+	 * The loop below will unmap these fields if the log is larger than
-+	 * one page, so save them here for reference:
-+	 */
-+	count = READ_ONCE(event->count);
-+	event_type = READ_ONCE(event->event_type);
- 
- 	efispecid = (struct tcg_efi_specid_event_head *)event_header->event;
- 
- 	/* Check if event is malformed. */
--	if (event->count > efispecid->num_algs) {
-+	if (count > efispecid->num_algs) {
- 		size = 0;
- 		goto out;
- 	}
- 
--	for (i = 0; i < event->count; i++) {
-+	for (i = 0; i < count; i++) {
- 		halg_size = sizeof(event->digests[i].alg_id);
- 
- 		/* Map the digest's algorithm identifier */
-@@ -256,8 +263,9 @@ static inline int __calc_tpm2_event_size(struct tcg_pcr_event2_head *event,
- 		+ event_field->event_size;
- 	size = marker - marker_start;
- 
--	if ((event->event_type == 0) && (event_field->event_size == 0))
-+	if (event_type == 0 && event_field->event_size == 0)
- 		size = 0;
-+
- out:
- 	if (do_mapping)
- 		TPM_MEMUNMAP(mapping, mapping_size);
+ 	if (pcie->validation_bits & CPER_PCIE_VALID_SERIAL_NUMBER)
+ 		printk("%s""serial number: 0x%04x, 0x%04x\n", pfx,
