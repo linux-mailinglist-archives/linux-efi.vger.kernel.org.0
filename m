@@ -2,74 +2,77 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AEC6CCFE0E
-	for <lists+linux-efi@lfdr.de>; Tue,  8 Oct 2019 17:48:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D7207CFEC0
+	for <lists+linux-efi@lfdr.de>; Tue,  8 Oct 2019 18:16:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728083AbfJHPrv (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 8 Oct 2019 11:47:51 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:31403 "EHLO
+        id S1729015AbfJHQQE (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 8 Oct 2019 12:16:04 -0400
+Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:41716 "EHLO
         us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726439AbfJHPrv (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 8 Oct 2019 11:47:51 -0400
+        with ESMTP id S1727514AbfJHQQD (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 8 Oct 2019 12:16:03 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1570549670;
+        s=mimecast20190719; t=1570551362;
         h=from:from:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=rBGvZIF571HTn35++5kc9Le27q5+H0WDHt3Pl1cs/as=;
-        b=Q73LJbA9Re3Ma7n37SM2TcFzS3TagfnqVizO4++oVy4Ic5nGn6G70hErZDUyYJDKuGXXeQ
-        jtDEbx2paahJFgkJ+z5f5zAkPO9rO53p9xa0KSq9URCz3V4usqgNjSZeJS6WQ6Ou5qUJXE
-        Wc3+W9w0UXe73AJMXVu3GXlVC0wOaPA=
-Received: from mail-io1-f70.google.com (mail-io1-f70.google.com
- [209.85.166.70]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-234-vWRI35EENY6AWk4mTNiwTw-1; Tue, 08 Oct 2019 11:47:47 -0400
-Received: by mail-io1-f70.google.com with SMTP id f9so33626084ioh.6
-        for <linux-efi@vger.kernel.org>; Tue, 08 Oct 2019 08:47:47 -0700 (PDT)
+        bh=LMCrrylCRmBl2ci0sro7S3+VKpru5MCXIR/yx7hpz7Q=;
+        b=G+p3glVeC+O+Wq3kLSGvwkpX0REj+c8XsxKFE/7H1DVJNrhkTmZKUsRAFQ+KC3/cGAwtSX
+        QJ4R1Qn8vDLqcEbjvuXB9YEvoDC3p6pYDhOpZGnOH2Sswjj6wwDTwD3Q4mQ0B0voAY8vNu
+        B0AP31JpHyLSl4rMGvdps3CIzpqDZlA=
+Received: from mail-io1-f72.google.com (mail-io1-f72.google.com
+ [209.85.166.72]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-109-7D4QC2VyMzW4cHnUStAKTQ-1; Tue, 08 Oct 2019 12:15:56 -0400
+Received: by mail-io1-f72.google.com with SMTP id u18so33820234ioc.4
+        for <linux-efi@vger.kernel.org>; Tue, 08 Oct 2019 09:15:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:reply-to
          :mail-followup-to:references:mime-version:content-disposition
          :in-reply-to:user-agent;
-        bh=numh0AsMF/f6J8tPWFvYvdNcl71ucF4WJz8Q0cwIn1c=;
-        b=lst53RylvZv+MyBoRzZR+MvLZNbCPp55fJDSMZV44G35A9RraAGUnX6dVdUu9qKXNe
-         B1JNnw7oKOyaJ687XE+c74CSGJB6y/jznGK6Proxn9ZP3mH5ec/HkTVKUo+m/Ee3s7qP
-         /Z6rtwoziMm18CEQ9kx7BztKI5beDLJGGK3iN1n8zX3JOwwdgTI7DSythSBdrjHxpb+u
-         QZV1cAlqfmoX2QCGGvVblhSn8hz6ftD1AqGkf1uQVd+uuEmX8M3wewmq4K/7pDkjoj4T
-         IYphODgXdpFhMVyyduayt8dqBEm1SD43fgBfFF+mbk+6WdOpbHPcH2ug9Uxnx2xPCZEr
-         flcg==
-X-Gm-Message-State: APjAAAX0xiH2CAYYSTjcH5e6cKiogeDAqp7OSss8u0c7y9+rO/RZBr9D
-        vo85ISQbGIHi7cK1+nLhpXeS04bSsloaCqHt5b7JHS/FyXM+bfHkq9el0KYh6d+RIme1RDUO2zJ
-        AnSTn6FxbgJMu6SZ0gZ2+
-X-Received: by 2002:a92:d952:: with SMTP id l18mr37425755ilq.114.1570549666760;
-        Tue, 08 Oct 2019 08:47:46 -0700 (PDT)
-X-Google-Smtp-Source: APXvYqwR4ZSdz58d23xVxIvLtsUUAjcUQrAZZO2o0ImYt67YaZe8YDlXpEc0cdZFhuDDzD96j/KSYg==
-X-Received: by 2002:a92:d952:: with SMTP id l18mr37425730ilq.114.1570549666524;
-        Tue, 08 Oct 2019 08:47:46 -0700 (PDT)
+        bh=ou0tS7RrxGwJYbkv5P7tqtmWszS5GQLWwcSoY8Uzr/4=;
+        b=b5RgKDkNPXxfp4cqINBnl6xiEiV3Cb9qGGPUkO4FJi2Li8p3vwv0ujnmQCGx6nFEiL
+         YMCy2xToOvn9qoWW/76GuBxYO0XsCuA1aeiq1svE1fysRAf6qD8p8jFqAU10LMOSLYpt
+         u55UmAKjMAqVpwIxZ65XkCTnhDW2tWkadsERw557W5HI+GsMISNc04UefVkZ9aOm+UKp
+         xtsdsjC0hpVOgi8ybcRbXp+nAA0CmKrYrPX5dU356JuZcSKovJJPgy1qb3+S9lyw2iWP
+         oG2Tc/zUsgbFbsv5xli215MFbYUQLWOPc5iN9+WUue3rvzqWrdUrrjSFrmW225DITqX5
+         2fOA==
+X-Gm-Message-State: APjAAAUhiutTmw/kTog+va6HdqEw0xjLw9Y8Cla7RCmHEwHV8NGJn8U8
+        lUPlsqKQKXAVoeT7Wm/9PHfLaiT5101YT6XvUt+aZmzgxq9llOgqhZ9bEmqcuTLPzOIV0BttRkW
+        36P+9zQBBwr9/ZOuR222Q
+X-Received: by 2002:a5d:8ac4:: with SMTP id e4mr5793639iot.185.1570551355515;
+        Tue, 08 Oct 2019 09:15:55 -0700 (PDT)
+X-Google-Smtp-Source: APXvYqx0+hoB1v72LiMOycxhZcE17wVcnSgjBHNmFhBxaa0wEB6Fdy7656PMyUlh6rq7awUIB1D8Bg==
+X-Received: by 2002:a5d:8ac4:: with SMTP id e4mr5793615iot.185.1570551355314;
+        Tue, 08 Oct 2019 09:15:55 -0700 (PDT)
 Received: from localhost (ip70-163-223-149.ph.ph.cox.net. [70.163.223.149])
-        by smtp.gmail.com with ESMTPSA id d6sm6549608iop.34.2019.10.08.08.47.45
+        by smtp.gmail.com with ESMTPSA id c8sm9338443ile.9.2019.10.08.09.15.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Oct 2019 08:47:45 -0700 (PDT)
-Date:   Tue, 8 Oct 2019 08:47:44 -0700
+        Tue, 08 Oct 2019 09:15:54 -0700 (PDT)
+Date:   Tue, 8 Oct 2019 09:15:53 -0700
 From:   Jerry Snitselaar <jsnitsel@redhat.com>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Colin King <colin.king@canonical.com>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
         Ingo Molnar <mingo@kernel.org>, linux-efi@vger.kernel.org,
         kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
 Subject: Re: [PATCH][next] efi/tpm: fix sanity check of unsigned tbl_size
  being less than zero
-Message-ID: <20191008154744.c3ppu63cbhg5kr7q@cantor>
+Message-ID: <20191008161553.qls5lbyaxlasw25v@cantor>
 Reply-To: Jerry Snitselaar <jsnitsel@redhat.com>
-Mail-Followup-To: Colin King <colin.king@canonical.com>,
+Mail-Followup-To: Dan Carpenter <dan.carpenter@oracle.com>,
+        Colin King <colin.king@canonical.com>,
         Ard Biesheuvel <ard.biesheuvel@linaro.org>,
         Ingo Molnar <mingo@kernel.org>, linux-efi@vger.kernel.org,
         kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <20191008100153.8499-1-colin.king@canonical.com>
+ <20191008114559.GD25098@kadam>
 MIME-Version: 1.0
-In-Reply-To: <20191008100153.8499-1-colin.king@canonical.com>
+In-Reply-To: <20191008114559.GD25098@kadam>
 User-Agent: NeoMutt/20180716
-X-MC-Unique: vWRI35EENY6AWk4mTNiwTw-1
+X-MC-Unique: 7D4QC2VyMzW4cHnUStAKTQ-1
 X-Mimecast-Spam-Score: 0
 Content-Type: text/plain; charset=WINDOWS-1252; format=flowed
 Content-Transfer-Encoding: quoted-printable
@@ -79,36 +82,42 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue Oct 08 19, Colin King wrote:
->From: Colin Ian King <colin.king@canonical.com>
+On Tue Oct 08 19, Dan Carpenter wrote:
+>On Tue, Oct 08, 2019 at 11:01:53AM +0100, Colin King wrote:
+>> From: Colin Ian King <colin.king@canonical.com>
+>>
+>> Currently the check for tbl_size being less than zero is always false
+>> because tbl_size is unsigned. Fix this by making it a signed int.
+>>
+>> Addresses-Coverity: ("Unsigned compared against 0")
+>> Fixes: e658c82be556 ("efi/tpm: Only set 'efi_tpm_final_log_size' after s=
+uccessful event log parsing")
+>> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+>> ---
+>>  drivers/firmware/efi/tpm.c | 2 +-
+>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/firmware/efi/tpm.c b/drivers/firmware/efi/tpm.c
+>> index 703469c1ab8e..ebd7977653a8 100644
+>> --- a/drivers/firmware/efi/tpm.c
+>> +++ b/drivers/firmware/efi/tpm.c
+>> @@ -40,7 +40,7 @@ int __init efi_tpm_eventlog_init(void)
+>>  {
+>>  =09struct linux_efi_tpm_eventlog *log_tbl;
+>>  =09struct efi_tcg2_final_events_table *final_tbl;
+>> -=09unsigned int tbl_size;
+>> +=09int tbl_size;
+>>  =09int ret =3D 0;
 >
->Currently the check for tbl_size being less than zero is always false
->because tbl_size is unsigned. Fix this by making it a signed int.
 >
->Addresses-Coverity: ("Unsigned compared against 0")
->Fixes: e658c82be556 ("efi/tpm: Only set 'efi_tpm_final_log_size' after suc=
-cessful event log parsing")
->Signed-off-by: Colin Ian King <colin.king@canonical.com>
->---
-> drivers/firmware/efi/tpm.c | 2 +-
-> 1 file changed, 1 insertion(+), 1 deletion(-)
+>Do we need to do a "ret =3D tbl_size;"?  Currently we return success.
+>It's a pitty that tpm2_calc_event_log_size() returns a -1 instead of
+>-EINVAL.
 >
->diff --git a/drivers/firmware/efi/tpm.c b/drivers/firmware/efi/tpm.c
->index 703469c1ab8e..ebd7977653a8 100644
->--- a/drivers/firmware/efi/tpm.c
->+++ b/drivers/firmware/efi/tpm.c
->@@ -40,7 +40,7 @@ int __init efi_tpm_eventlog_init(void)
-> {
-> =09struct linux_efi_tpm_eventlog *log_tbl;
-> =09struct efi_tcg2_final_events_table *final_tbl;
->-=09unsigned int tbl_size;
->+=09int tbl_size;
-> =09int ret =3D 0;
->
-> =09if (efi.tpm_log =3D=3D EFI_INVALID_TABLE_ADDR) {
->--=20
->2.20.1
+>regards,
+>dan carpenter
 >
 
-Thanks for catching that. Somehow I dropped it from v2 to v3.
+perhaps "ret =3D -EINVAL;"? Currently nothing checks the return value of ef=
+i_tpm_eventlog_init though.
 
