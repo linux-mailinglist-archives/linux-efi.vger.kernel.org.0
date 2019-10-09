@@ -2,36 +2,37 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 11A31D1CB9
+	by mail.lfdr.de (Postfix) with ESMTP id E5AEED1CBB
 	for <lists+linux-efi@lfdr.de>; Thu, 10 Oct 2019 01:20:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732680AbfJIXTu (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 9 Oct 2019 19:19:50 -0400
-Received: from mga07.intel.com ([134.134.136.100]:59994 "EHLO mga07.intel.com"
+        id S1732698AbfJIXT4 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 9 Oct 2019 19:19:56 -0400
+Received: from mga14.intel.com ([192.55.52.115]:11953 "EHLO mga14.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1732665AbfJIXTs (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Wed, 9 Oct 2019 19:19:48 -0400
+        id S1732665AbfJIXTy (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Wed, 9 Oct 2019 19:19:54 -0400
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 09 Oct 2019 16:19:47 -0700
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 09 Oct 2019 16:19:53 -0700
 X-IronPort-AV: E=Sophos;i="5.67,277,1566889200"; 
-   d="scan'208";a="345518305"
+   d="scan'208";a="197061019"
 Received: from dwillia2-desk3.jf.intel.com (HELO dwillia2-desk3.amr.corp.intel.com) ([10.54.39.16])
-  by orsmga004-auth.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 09 Oct 2019 16:19:47 -0700
-Subject: [PATCH v6 10/12] device-dax: Add a driver for "hmem" devices
+  by orsmga003-auth.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 09 Oct 2019 16:19:52 -0700
+Subject: [PATCH v6 11/12] acpi/numa/hmat: Register HMAT at device_initcall
+ level
 From:   Dan Williams <dan.j.williams@intel.com>
 To:     mingo@redhat.com
-Cc:     Vishal Verma <vishal.l.verma@intel.com>,
-        Keith Busch <kbusch@kernel.org>,
-        Dave Jiang <dave.jiang@intel.com>,
-        kbuild test robot <lkp@intel.com>,
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>, Keith Busch <kbusch@kernel.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         Dave Hansen <dave.hansen@linux.intel.com>,
-        peterz@infradead.org, ard.biesheuvel@linaro.org, x86@kernel.org,
+        peterz@infradead.org, vishal.l.verma@intel.com,
+        ard.biesheuvel@linaro.org, x86@kernel.org,
         linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-acpi@vger.kernel.org
-Date:   Wed, 09 Oct 2019 16:05:29 -0700
-Message-ID: <157066232989.1059972.17944824166396672432.stgit@dwillia2-desk3.amr.corp.intel.com>
+Date:   Wed, 09 Oct 2019 16:05:35 -0700
+Message-ID: <157066233505.1059972.3013958013543503325.stgit@dwillia2-desk3.amr.corp.intel.com>
 In-Reply-To: <157066227329.1059972.5659620631541203458.stgit@dwillia2-desk3.amr.corp.intel.com>
 References: <157066227329.1059972.5659620631541203458.stgit@dwillia2-desk3.amr.corp.intel.com>
 User-Agent: StGit/0.18-2-gc94f
@@ -43,170 +44,32 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Platform firmware like EFI/ACPI may publish "hmem" platform devices.
-Such a device is a performance differentiated memory range likely
-reserved for an application specific use case. The driver gives access
-to 100% of the capacity via a device-dax mmap instance by default.
+In preparation for registering device-dax instances for accessing EFI
+specific-purpose memory, arrange for the HMAT registration to occur
+later in the init process. Critically HMAT initialization needs to occur
+after e820__reserve_resources_late() which is the point at which the
+iomem resource tree is populated with "Application Reserved"
+(IORES_DESC_APPLICATION_RESERVED). e820__reserve_resources_late()
+happens at subsys_initcall time.
 
-However, if over-subscription and other kernel memory management is
-desired the resulting dax device can be assigned to the core-mm via the
-kmem driver.
-
-This consumes "hmem" devices the producer of "hmem" devices is saved for
-a follow-on patch so that it can reference the new CONFIG_DEV_DAX_HMEM
-symbol to gate performing the enumeration work.
-
-Cc: Vishal Verma <vishal.l.verma@intel.com>
+Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc: Len Brown <lenb@kernel.org>
 Cc: Keith Busch <kbusch@kernel.org>
-Cc: Dave Jiang <dave.jiang@intel.com>
-Reported-by: kbuild test robot <lkp@intel.com>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
 Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 ---
- drivers/dax/Kconfig       |   27 ++++++++++++++++++----
- drivers/dax/Makefile      |    2 ++
- drivers/dax/hmem.c        |   56 +++++++++++++++++++++++++++++++++++++++++++++
- include/linux/memregion.h |    4 +++
- 4 files changed, 84 insertions(+), 5 deletions(-)
- create mode 100644 drivers/dax/hmem.c
+ drivers/acpi/numa/hmat.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/dax/Kconfig b/drivers/dax/Kconfig
-index f33c73e4af41..3b6c06f07326 100644
---- a/drivers/dax/Kconfig
-+++ b/drivers/dax/Kconfig
-@@ -32,19 +32,36 @@ config DEV_DAX_PMEM
- 
- 	  Say M if unsure
- 
-+config DEV_DAX_HMEM
-+	tristate "HMEM DAX: direct access to 'specific purpose' memory"
-+	depends on EFI_SOFT_RESERVE
-+	default DEV_DAX
-+	help
-+	  EFI 2.8 platforms, and others, may advertise 'specific purpose'
-+	  memory. For example, a high bandwidth memory pool. The
-+	  indication from platform firmware is meant to reserve the
-+	  memory from typical usage by default. This driver creates
-+	  device-dax instances for these memory ranges, and that also
-+	  enables the possibility to assign them to the DEV_DAX_KMEM
-+	  driver to override the reservation and add them to kernel
-+	  "System RAM" pool.
-+
-+	  Say M if unsure.
-+
- config DEV_DAX_KMEM
- 	tristate "KMEM DAX: volatile-use of persistent memory"
- 	default DEV_DAX
- 	depends on DEV_DAX
- 	depends on MEMORY_HOTPLUG # for add_memory() and friends
- 	help
--	  Support access to persistent memory as if it were RAM.  This
--	  allows easier use of persistent memory by unmodified
--	  applications.
-+	  Support access to persistent, or other performance
-+	  differentiated memory as if it were System RAM. This allows
-+	  easier use of persistent memory by unmodified applications, or
-+	  adds core kernel memory services to heterogeneous memory types
-+	  (HMEM) marked "reserved" by platform firmware.
- 
- 	  To use this feature, a DAX device must be unbound from the
--	  device_dax driver (PMEM DAX) and bound to this kmem driver
--	  on each boot.
-+	  device_dax driver and bound to this kmem driver on each boot.
- 
- 	  Say N if unsure.
- 
-diff --git a/drivers/dax/Makefile b/drivers/dax/Makefile
-index 81f7d54dadfb..80065b38b3c4 100644
---- a/drivers/dax/Makefile
-+++ b/drivers/dax/Makefile
-@@ -2,9 +2,11 @@
- obj-$(CONFIG_DAX) += dax.o
- obj-$(CONFIG_DEV_DAX) += device_dax.o
- obj-$(CONFIG_DEV_DAX_KMEM) += kmem.o
-+obj-$(CONFIG_DEV_DAX_HMEM) += dax_hmem.o
- 
- dax-y := super.o
- dax-y += bus.o
- device_dax-y := device.o
-+dax_hmem-y := hmem.o
- 
- obj-y += pmem/
-diff --git a/drivers/dax/hmem.c b/drivers/dax/hmem.c
-new file mode 100644
-index 000000000000..fe7214daf62e
---- /dev/null
-+++ b/drivers/dax/hmem.c
-@@ -0,0 +1,56 @@
-+// SPDX-License-Identifier: GPL-2.0
-+#include <linux/platform_device.h>
-+#include <linux/memregion.h>
-+#include <linux/module.h>
-+#include <linux/pfn_t.h>
-+#include "bus.h"
-+
-+static int dax_hmem_probe(struct platform_device *pdev)
-+{
-+	struct device *dev = &pdev->dev;
-+	struct dev_pagemap pgmap = { };
-+	struct dax_region *dax_region;
-+	struct memregion_info *mri;
-+	struct dev_dax *dev_dax;
-+	struct resource *res;
-+
-+	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+	if (!res)
-+		return -ENOMEM;
-+
-+	mri = dev->platform_data;
-+	memcpy(&pgmap.res, res, sizeof(*res));
-+
-+	dax_region = alloc_dax_region(dev, pdev->id, res, mri->target_node,
-+			PMD_SIZE, PFN_DEV|PFN_MAP);
-+	if (!dax_region)
-+		return -ENOMEM;
-+
-+	dev_dax = devm_create_dev_dax(dax_region, 0, &pgmap);
-+	if (IS_ERR(dev_dax))
-+		return PTR_ERR(dev_dax);
-+
-+	/* child dev_dax instances now own the lifetime of the dax_region */
-+	dax_region_put(dax_region);
-+	return 0;
-+}
-+
-+static int dax_hmem_remove(struct platform_device *pdev)
-+{
-+	/* devm handles teardown */
-+	return 0;
-+}
-+
-+static struct platform_driver dax_hmem_driver = {
-+	.probe = dax_hmem_probe,
-+	.remove = dax_hmem_remove,
-+	.driver = {
-+		.name = "hmem",
-+	},
-+};
-+
-+module_platform_driver(dax_hmem_driver);
-+
-+MODULE_ALIAS("platform:hmem*");
-+MODULE_LICENSE("GPL v2");
-+MODULE_AUTHOR("Intel Corporation");
-diff --git a/include/linux/memregion.h b/include/linux/memregion.h
-index 7de7c0a1444e..e11595256cac 100644
---- a/include/linux/memregion.h
-+++ b/include/linux/memregion.h
-@@ -4,6 +4,10 @@
- #include <linux/types.h>
- #include <linux/errno.h>
- 
-+struct memregion_info {
-+	int target_node;
-+};
-+
- #ifdef CONFIG_MEMREGION
- int memregion_alloc(gfp_t gfp);
- void memregion_free(int id);
+diff --git a/drivers/acpi/numa/hmat.c b/drivers/acpi/numa/hmat.c
+index 8f9a28a870b0..4707eb9dd07b 100644
+--- a/drivers/acpi/numa/hmat.c
++++ b/drivers/acpi/numa/hmat.c
+@@ -748,4 +748,4 @@ static __init int hmat_init(void)
+ 	acpi_put_table(tbl);
+ 	return 0;
+ }
+-subsys_initcall(hmat_init);
++device_initcall(hmat_init);
 
