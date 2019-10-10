@@ -2,445 +2,232 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D82D1D2148
-	for <lists+linux-efi@lfdr.de>; Thu, 10 Oct 2019 09:02:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DE3CBD26A0
+	for <lists+linux-efi@lfdr.de>; Thu, 10 Oct 2019 11:48:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732932AbfJJHCF (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 10 Oct 2019 03:02:05 -0400
-Received: from mail-wm1-f67.google.com ([209.85.128.67]:36401 "EHLO
-        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727130AbfJJHCF (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 10 Oct 2019 03:02:05 -0400
-Received: by mail-wm1-f67.google.com with SMTP id m18so5482418wmc.1
-        for <linux-efi@vger.kernel.org>; Thu, 10 Oct 2019 00:02:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=4dwWpB0VeJDrUWncAO9XEt6CLkOt4d9BmzYibkejxqc=;
-        b=zw8zvAH2poJI6y12d3PeAgePxG0yoDdunggoXWMUfC9djEzUfir7TO1FutGwVesrGs
-         P1iUt2IPbYIDooCrHVlMU3+cr/4LvV+qpcnsXChtAShVxlIYGbC5GNmPVKkPdHCt3PEQ
-         JyJzfUDBVwoJLfE8sTXoPkuWDCsqaeJ86PKESmL7vxWiGmQ9Xt92s9Yllz+vFEND0pJ5
-         e84tUXSCJ800zC5LEpfZkMpTEBMRZicDDymChe7zRKv/psuA+t9uEHPjN0tn/9HtZ4Hf
-         tPH0nI1DP3Rl+64pq9dfdSvPhm3C7cNbgiLtnI9t03/3Y8ZzOHfD7D7KHF+gIDAJlQNt
-         3row==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=4dwWpB0VeJDrUWncAO9XEt6CLkOt4d9BmzYibkejxqc=;
-        b=XiFkiAPbvjk6nHzyDtiXgZz+QPU59gZ4+4uUBnaHVvbSsCVaPW6LnLyjLzW8k0/z3A
-         963TsDR7NnIqmS+xT85hBsPMqlf1NlT/6L1YVuRk3fNcWyTVYCJMrSpdaIvUyQqyOgrX
-         rWCP++dY/Mt1o9h4IcGA5A5iX0F/Psv+S5ubICPRiY5E8azmFJDgEZF6I+osUIH3l0W1
-         TBVqbvE4u23EDRK27UgwAKU5zKSlwUtCk7f3tm1Ypa4/xqudLGcFP4ihQy/PdqnjIRXe
-         BosJoXpcQeYS/nGsimjJzLtonGAjFKe147tWdhML68H2fdUmGxa0tcfbTJ9CySGNlWn6
-         ANSg==
-X-Gm-Message-State: APjAAAWH3rxKVOdoEfUVvg+/kR3FpIFMTaO72QH2sZKtwwh/C1oZ28f3
-        CBAU9+PrRSCJrSqvEDb23uOVpsd+GTHN78NAyeYVAQ==
-X-Google-Smtp-Source: APXvYqxbnlzXpnNtKe4bbifDs/bBZqGhmlWfl63btw+8LmVpIG+xwIXkYkd8JCwB48fGJYWJHedMyN21jQb69RRBXTA=
-X-Received: by 2002:a05:600c:2214:: with SMTP id z20mr6424648wml.10.1570690921445;
- Thu, 10 Oct 2019 00:02:01 -0700 (PDT)
+        id S1733257AbfJJJs3 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 10 Oct 2019 05:48:29 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:54030 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725901AbfJJJs3 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 10 Oct 2019 05:48:29 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x9A9htUu184427;
+        Thu, 10 Oct 2019 09:47:57 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2019-08-05;
+ bh=HWgDA3usn6LIiHd+pkq34eP7DWLFpFV868jyT595gos=;
+ b=J4OskXRbJ9YmGjse57CZuMTMLVj7FBSMl8RrxK4D6nmkb4q+M68EKYB6uY7gtYm0NigD
+ +YE3320PDCFYNGjmAc6LmtZ4+hKttvSTTIRYMwwueoYpxDzVPCUx8PgMTg3TElc5mu56
+ DKN9Gnx9GqolaCvacE3+ih09uPUMNw6S69KBsdEKGOveEQzKD9gneVQ0xI+WAXx7UbO8
+ d7Lo8MnyEDfggZxWkMnEZMyxuC7y324y6CdUBJTxmhqzLZc3ykB80zU85gp5uin36G0B
+ NA7cY1XHZwYdTUDPjp5sKB6UFUu4BQYUqA87BujVLMQ+j5Ww+UzNYbp86FG/9JgOJxPG Yg== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by aserp2120.oracle.com with ESMTP id 2vek4qt0hs-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 10 Oct 2019 09:47:56 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x9A9hESJ162338;
+        Thu, 10 Oct 2019 09:47:56 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by userp3020.oracle.com with ESMTP id 2vh5ccu4ec-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 10 Oct 2019 09:47:55 +0000
+Received: from abhmp0005.oracle.com (abhmp0005.oracle.com [141.146.116.11])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x9A9lpL5004016;
+        Thu, 10 Oct 2019 09:47:51 GMT
+Received: from tomti.i.net-space.pl (/10.175.215.43)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Thu, 10 Oct 2019 02:47:50 -0700
+Date:   Thu, 10 Oct 2019 11:43:49 +0200
+From:   Daniel Kiper <daniel.kiper@oracle.com>
+To:     Randy Dunlap <rdunlap@infradead.org>
+Cc:     linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        x86@kernel.org, xen-devel@lists.xenproject.org,
+        ard.biesheuvel@linaro.org, boris.ostrovsky@oracle.com,
+        bp@alien8.de, corbet@lwn.net, dave.hansen@linux.intel.com,
+        luto@kernel.org, peterz@infradead.org, eric.snowberg@oracle.com,
+        hpa@zytor.com, jgross@suse.com, konrad.wilk@oracle.com,
+        mingo@redhat.com, ross.philipson@oracle.com, tglx@linutronix.de
+Subject: Re: [PATCH v3 1/3] x86/boot: Introduce the kernel_info
+Message-ID: <20191010094349.la3sjiuiikmegjck@tomti.i.net-space.pl>
+References: <20191009105358.32256-1-daniel.kiper@oracle.com>
+ <20191009105358.32256-2-daniel.kiper@oracle.com>
+ <181249b6-5833-6f29-7d38-6dacc3f8ee62@infradead.org>
 MIME-Version: 1.0
-References: <157066227329.1059972.5659620631541203458.stgit@dwillia2-desk3.amr.corp.intel.com>
- <157066231436.1059972.14633230333322624569.stgit@dwillia2-desk3.amr.corp.intel.com>
-In-Reply-To: <157066231436.1059972.14633230333322624569.stgit@dwillia2-desk3.amr.corp.intel.com>
-From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Date:   Thu, 10 Oct 2019 09:01:48 +0200
-Message-ID: <CAKv+Gu-yM+QfzUjcVNe1UzW7w2A_nEazPkWRYJ93jEepGx36Cg@mail.gmail.com>
-Subject: Re: [PATCH v6 07/12] x86/efi: Add efi_fake_mem support for EFI_MEMORY_SP
-To:     Dan Williams <dan.j.williams@intel.com>
-Cc:     Ingo Molnar <mingo@redhat.com>,
-        "the arch/x86 maintainers" <x86@kernel.org>,
-        Borislav Petkov <bp@alien8.de>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Vishal L Verma <vishal.l.verma@intel.com>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <181249b6-5833-6f29-7d38-6dacc3f8ee62@infradead.org>
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9405 signatures=668684
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1908290000 definitions=main-1910100087
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9405 signatures=668684
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1908290000
+ definitions=main-1910100087
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, 10 Oct 2019 at 01:19, Dan Williams <dan.j.williams@intel.com> wrote:
+On Wed, Oct 09, 2019 at 05:43:31PM -0700, Randy Dunlap wrote:
+> Hi,
 >
-> Given that EFI_MEMORY_SP is platform BIOS policy decision for marking
-> memory ranges as "reserved for a specific purpose" there will inevitably
-> be scenarios where the BIOS omits the attribute in situations where it
-> is desired. Unlike other attributes if the OS wants to reserve this
-> memory from the kernel the reservation needs to happen early in init. So
-> early, in fact, that it needs to happen before e820__memblock_setup()
-> which is a pre-requisite for efi_fake_memmap() that wants to allocate
-> memory for the updated table.
+> Questions and comments below...
+> Thanks.
 >
-> Introduce an x86 specific efi_fake_memmap_early() that can search for
-> attempts to set EFI_MEMORY_SP via efi_fake_mem and update the e820 table
-> accordingly.
+> On 10/9/19 3:53 AM, Daniel Kiper wrote:
 >
-> The KASLR code that scans the command line looking for user-directed
-> memory reservations also needs to be updated to consider
-> "efi_fake_mem=nn@ss:0x40000" requests.
+> > Suggested-by: H. Peter Anvin <hpa@zytor.com>
+> > Signed-off-by: Daniel Kiper <daniel.kiper@oracle.com>
+> > Reviewed-by: Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
+> > Reviewed-by: Ross Philipson <ross.philipson@oracle.com>
+> > ---
 >
-> Cc: <x86@kernel.org>
-> Cc: Borislav Petkov <bp@alien8.de>
-> Cc: Ingo Molnar <mingo@redhat.com>
-> Cc: "H. Peter Anvin" <hpa@zytor.com>
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>
-> Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
-> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+> > ---
+> >  Documentation/x86/boot.rst             | 121 +++++++++++++++++++++++++++++++++
+> >  arch/x86/boot/Makefile                 |   2 +-
+> >  arch/x86/boot/compressed/Makefile      |   4 +-
+> >  arch/x86/boot/compressed/kernel_info.S |  17 +++++
+> >  arch/x86/boot/header.S                 |   1 +
+> >  arch/x86/boot/tools/build.c            |   5 ++
+> >  arch/x86/include/uapi/asm/bootparam.h  |   1 +
+> >  7 files changed, 148 insertions(+), 3 deletions(-)
+> >  create mode 100644 arch/x86/boot/compressed/kernel_info.S
+> >
+> > diff --git a/Documentation/x86/boot.rst b/Documentation/x86/boot.rst
+> > index 08a2f100c0e6..d5323a39f5e3 100644
+> > --- a/Documentation/x86/boot.rst
+> > +++ b/Documentation/x86/boot.rst
+> > @@ -68,8 +68,25 @@ Protocol 2.12	(Kernel 3.8) Added the xloadflags field and extension fields
+> >  Protocol 2.13	(Kernel 3.14) Support 32- and 64-bit flags being set in
+> >  		xloadflags to support booting a 64-bit kernel from 32-bit
+> >  		EFI
+> > +
+> > +Protocol 2.14:	BURNT BY INCORRECT COMMIT ae7e1238e68f2a472a125673ab506d49158c1889
+> > +		(x86/boot: Add ACPI RSDP address to setup_header)
+> > +		DO NOT USE!!! ASSUME SAME AS 2.13.
+> > +
+> > +Protocol 2.15:	(Kernel 5.5) Added the kernel_info.
+> >  =============	============================================================
+> >
+> > +.. note::
+> > +     The protocol version number should be changed only if the setup header
+> > +     is changed. There is no need to update the version number if boot_params
+> > +     or kernel_info are changed. Additionally, it is recommended to use
+> > +     xloadflags (in this case the protocol version number should not be
+> > +     updated either) or kernel_info to communicate supported Linux kernel
+> > +     features to the boot loader. Due to very limited space available in
+> > +     the original setup header every update to it should be considered
+> > +     with great care. Starting from the protocol 2.15 the primary way to
+> > +     communicate things to the boot loader is the kernel_info.
+> > +
+> >
+> >  Memory Layout
+> >  =============
+> > @@ -207,6 +224,7 @@ Offset/Size	Proto		Name			Meaning
+> >  0258/8		2.10+		pref_address		Preferred loading address
+> >  0260/4		2.10+		init_size		Linear memory required during initialization
+> >  0264/4		2.11+		handover_offset		Offset of handover entry point
+> > +0268/4		2.15+		kernel_info_offset	Offset of the kernel_info
+> >  ===========	========	=====================	============================================
+> >
+> >  .. note::
+> > @@ -855,6 +873,109 @@ Offset/size:	0x264/4
+> >
+> >    See EFI HANDOVER PROTOCOL below for more details.
+> >
+> > +============	==================
+> > +Field name:	kernel_info_offset
+> > +Type:		read
+> > +Offset/size:	0x268/4
+> > +Protocol:	2.15+
+> > +============	==================
+> > +
+> > +  This field is the offset from the beginning of the kernel image to the
+> > +  kernel_info. It is embedded in the Linux image in the uncompressed
+>                   ^^
+>    What does      It   refer to, please?
 
-Acked-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+s/It/The kernel_info structure/ Is it better?
 
-> ---
->  Documentation/admin-guide/kernel-parameters.txt |   10 +++
->  arch/x86/boot/compressed/kaslr.c                |   42 ++++++++++++--
->  arch/x86/include/asm/efi.h                      |    8 +++
->  arch/x86/platform/efi/efi.c                     |    2 +
->  drivers/firmware/efi/Makefile                   |    5 +-
->  drivers/firmware/efi/fake_mem.c                 |   24 ++++----
->  drivers/firmware/efi/fake_mem.h                 |   10 +++
->  drivers/firmware/efi/x86_fake_mem.c             |   69 +++++++++++++++++++++++
->  8 files changed, 147 insertions(+), 23 deletions(-)
->  create mode 100644 drivers/firmware/efi/fake_mem.h
->  create mode 100644 drivers/firmware/efi/x86_fake_mem.c
+> > +  protected mode region.
+> > +
+> > +
+> > +The kernel_info
+> > +===============
+> > +
+> > +The relationships between the headers are analogous to the various data
+> > +sections:
+> > +
+> > +  setup_header = .data
+> > +  boot_params/setup_data = .bss
+> > +
+> > +What is missing from the above list? That's right:
+> > +
+> > +  kernel_info = .rodata
+> > +
+> > +We have been (ab)using .data for things that could go into .rodata or .bss for
+> > +a long time, for lack of alternatives and -- especially early on -- inertia.
+> > +Also, the BIOS stub is responsible for creating boot_params, so it isn't
+> > +available to a BIOS-based loader (setup_data is, though).
+> > +
+> > +setup_header is permanently limited to 144 bytes due to the reach of the
+> > +2-byte jump field, which doubles as a length field for the structure, combined
+> > +with the size of the "hole" in struct boot_params that a protected-mode loader
+> > +or the BIOS stub has to copy it into. It is currently 119 bytes long, which
+> > +leaves us with 25 very precious bytes. This isn't something that can be fixed
+> > +without revising the boot protocol entirely, breaking backwards compatibility.
+> > +
+> > +boot_params proper is limited to 4096 bytes, but can be arbitrarily extended
+> > +by adding setup_data entries. It cannot be used to communicate properties of
+> > +the kernel image, because it is .bss and has no image-provided content.
+> > +
+> > +kernel_info solves this by providing an extensible place for information about
+> > +the kernel image. It is readonly, because the kernel cannot rely on a
+> > +bootloader copying its contents anywhere, but that is OK; if it becomes
+> > +necessary it can still contain data items that an enabled bootloader would be
+> > +expected to copy into a setup_data chunk.
+> > +
+> > +All kernel_info data should be part of this structure. Fixed size data have to
+> > +be put before kernel_info_var_len_data label. Variable size data have to be put
+> > +behind kernel_info_var_len_data label. Each chunk of variable size data has to
 >
-> diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-> index 47478a730011..9489d76b0e9f 100644
-> --- a/Documentation/admin-guide/kernel-parameters.txt
-> +++ b/Documentation/admin-guide/kernel-parameters.txt
-> @@ -1196,15 +1196,21 @@
->                         updating original EFI memory map.
->                         Region of memory which aa attribute is added to is
->                         from ss to ss+nn.
-> +
->                         If efi_fake_mem=2G@4G:0x10000,2G@0x10a0000000:0x10000
->                         is specified, EFI_MEMORY_MORE_RELIABLE(0x10000)
->                         attribute is added to range 0x100000000-0x180000000 and
->                         0x10a0000000-0x1120000000.
+>    s/behind/after/
+
+OK.
+
+> > +be prefixed with header/magic and its size, e.g.:
+> > +
+> > +  kernel_info:
+> > +          .ascii  "LToP"          /* Header, Linux top (structure). */
+> > +          .long   kernel_info_var_len_data - kernel_info
+> > +          .long   kernel_info_end - kernel_info
+> > +          .long   0x01234567      /* Some fixed size data for the bootloaders. */
+> > +  kernel_info_var_len_data:
+> > +  example_struct:                 /* Some variable size data for the bootloaders. */
+> > +          .ascii  "EsTT"          /* Header/Magic. */
+> > +          .long   example_struct_end - example_struct
+> > +          .ascii  "Struct"
+> > +          .long   0x89012345
+> > +  example_struct_end:
+> > +  example_strings:                /* Some variable size data for the bootloaders. */
+> > +          .ascii  "EsTs"          /* Header/Magic. */
 >
-> +                       If efi_fake_mem=8G@9G:0x40000 is specified, the
-> +                       EFI_MEMORY_SP(0x40000) attribute is added to
-> +                       range 0x240000000-0x43fffffff.
-> +
->                         Using this parameter you can do debugging of EFI memmap
-> -                       related feature. For example, you can do debugging of
-> +                       related features. For example, you can do debugging of
->                         Address Range Mirroring feature even if your box
-> -                       doesn't support it.
-> +                       doesn't support it, or mark specific memory as
-> +                       "soft reserved".
->
->         efivar_ssdt=    [EFI; X86] Name of an EFI variable that contains an SSDT
->                         that is to be dynamically loaded by Linux. If there are
-> diff --git a/arch/x86/boot/compressed/kaslr.c b/arch/x86/boot/compressed/kaslr.c
-> index ff6fa81949cd..da0eedd5635d 100644
-> --- a/arch/x86/boot/compressed/kaslr.c
-> +++ b/arch/x86/boot/compressed/kaslr.c
-> @@ -132,8 +132,14 @@ char *skip_spaces(const char *str)
->  #include "../../../../lib/ctype.c"
->  #include "../../../../lib/cmdline.c"
->
-> +enum parse_mode {
-> +       PARSE_MEMMAP,
-> +       PARSE_EFI,
-> +};
-> +
->  static int
-> -parse_memmap(char *p, unsigned long long *start, unsigned long long *size)
-> +parse_memmap(char *p, unsigned long long *start, unsigned long long *size,
-> +               enum parse_mode mode)
->  {
->         char *oldp;
->
-> @@ -156,8 +162,29 @@ parse_memmap(char *p, unsigned long long *start, unsigned long long *size)
->                 *start = memparse(p + 1, &p);
->                 return 0;
->         case '@':
-> -               /* memmap=nn@ss specifies usable region, should be skipped */
-> -               *size = 0;
-> +               if (mode == PARSE_MEMMAP) {
-> +                       /*
-> +                        * memmap=nn@ss specifies usable region, should
-> +                        * be skipped
-> +                        */
-> +                       *size = 0;
-> +               } else {
-> +                       unsigned long long flags;
-> +
-> +                       /*
-> +                        * efi_fake_mem=nn@ss:attr the attr specifies
-> +                        * flags that might imply a soft-reservation.
-> +                        */
-> +                       *start = memparse(p + 1, &p);
-> +                       if (p && *p == ':') {
-> +                               p++;
-> +                               if (kstrtoull(p, 0, &flags) < 0)
-> +                                       *size = 0;
-> +                               else if (flags & EFI_MEMORY_SP)
-> +                                       return 0;
-> +                       }
-> +                       *size = 0;
-> +               }
->                 /* Fall through */
->         default:
->                 /*
-> @@ -172,7 +199,7 @@ parse_memmap(char *p, unsigned long long *start, unsigned long long *size)
->         return -EINVAL;
->  }
->
-> -static void mem_avoid_memmap(char *str)
-> +static void mem_avoid_memmap(enum parse_mode mode, char *str)
->  {
->         static int i;
->
-> @@ -187,7 +214,7 @@ static void mem_avoid_memmap(char *str)
->                 if (k)
->                         *k++ = 0;
->
-> -               rc = parse_memmap(str, &start, &size);
-> +               rc = parse_memmap(str, &start, &size, mode);
->                 if (rc < 0)
->                         break;
->                 str = k;
-> @@ -238,7 +265,6 @@ static void parse_gb_huge_pages(char *param, char *val)
->         }
->  }
->
-> -
->  static void handle_mem_options(void)
->  {
->         char *args = (char *)get_cmd_line_ptr();
-> @@ -271,7 +297,7 @@ static void handle_mem_options(void)
->                 }
->
->                 if (!strcmp(param, "memmap")) {
-> -                       mem_avoid_memmap(val);
-> +                       mem_avoid_memmap(PARSE_MEMMAP, val);
->                 } else if (strstr(param, "hugepages")) {
->                         parse_gb_huge_pages(param, val);
->                 } else if (!strcmp(param, "mem")) {
-> @@ -284,6 +310,8 @@ static void handle_mem_options(void)
->                                 goto out;
->
->                         mem_limit = mem_size;
-> +               } else if (!strcmp(param, "efi_fake_mem")) {
-> +                       mem_avoid_memmap(PARSE_EFI, val);
->                 }
->         }
->
-> diff --git a/arch/x86/include/asm/efi.h b/arch/x86/include/asm/efi.h
-> index 45f853bce869..d028e9acdf1c 100644
-> --- a/arch/x86/include/asm/efi.h
-> +++ b/arch/x86/include/asm/efi.h
-> @@ -263,4 +263,12 @@ static inline void efi_reserve_boot_services(void)
->  }
->  #endif /* CONFIG_EFI */
->
-> +#ifdef CONFIG_EFI_FAKE_MEMMAP
-> +extern void __init efi_fake_memmap_early(void);
-> +#else
-> +static inline void efi_fake_memmap_early(void)
-> +{
-> +}
-> +#endif
-> +
->  #endif /* _ASM_X86_EFI_H */
-> diff --git a/arch/x86/platform/efi/efi.c b/arch/x86/platform/efi/efi.c
-> index c96657993167..188cd73cd7d6 100644
-> --- a/arch/x86/platform/efi/efi.c
-> +++ b/arch/x86/platform/efi/efi.c
-> @@ -259,6 +259,8 @@ int __init efi_memblock_x86_reserve_range(void)
->                 do_add_efi_memmap(ADD_EFI_SOFT_RESERVED);
->         }
->
-> +       efi_fake_memmap_early();
-> +
->         WARN(efi.memmap.desc_version != 1,
->              "Unexpected EFI_MEMORY_DESCRIPTOR version %ld",
->              efi.memmap.desc_version);
-> diff --git a/drivers/firmware/efi/Makefile b/drivers/firmware/efi/Makefile
-> index 4ac2de4dfa72..554d795270d9 100644
-> --- a/drivers/firmware/efi/Makefile
-> +++ b/drivers/firmware/efi/Makefile
-> @@ -20,13 +20,16 @@ obj-$(CONFIG_UEFI_CPER)                     += cper.o
->  obj-$(CONFIG_EFI_RUNTIME_MAP)          += runtime-map.o
->  obj-$(CONFIG_EFI_RUNTIME_WRAPPERS)     += runtime-wrappers.o
->  obj-$(CONFIG_EFI_STUB)                 += libstub/
-> -obj-$(CONFIG_EFI_FAKE_MEMMAP)          += fake_mem.o
-> +obj-$(CONFIG_EFI_FAKE_MEMMAP)          += fake_map.o
->  obj-$(CONFIG_EFI_BOOTLOADER_CONTROL)   += efibc.o
->  obj-$(CONFIG_EFI_TEST)                 += test/
->  obj-$(CONFIG_EFI_DEV_PATH_PARSER)      += dev-path-parser.o
->  obj-$(CONFIG_APPLE_PROPERTIES)         += apple-properties.o
->  obj-$(CONFIG_EFI_RCI2_TABLE)           += rci2-table.o
->
-> +fake_map-y                             += fake_mem.o
-> +fake_map-$(CONFIG_X86)                 += x86_fake_mem.o
-> +
->  arm-obj-$(CONFIG_EFI)                  := arm-init.o arm-runtime.o
->  obj-$(CONFIG_ARM)                      += $(arm-obj-y)
->  obj-$(CONFIG_ARM64)                    += $(arm-obj-y)
-> diff --git a/drivers/firmware/efi/fake_mem.c b/drivers/firmware/efi/fake_mem.c
-> index 526b45331d96..bb9fc70d0cfa 100644
-> --- a/drivers/firmware/efi/fake_mem.c
-> +++ b/drivers/firmware/efi/fake_mem.c
-> @@ -17,12 +17,10 @@
->  #include <linux/memblock.h>
->  #include <linux/types.h>
->  #include <linux/sort.h>
-> -#include <asm/efi.h>
-> +#include "fake_mem.h"
->
-> -#define EFI_MAX_FAKEMEM CONFIG_EFI_MAX_FAKE_MEM
-> -
-> -static struct efi_mem_range fake_mems[EFI_MAX_FAKEMEM];
-> -static int nr_fake_mem;
-> +struct efi_mem_range efi_fake_mems[EFI_MAX_FAKEMEM];
-> +int nr_fake_mem;
->
->  static int __init cmp_fake_mem(const void *x1, const void *x2)
->  {
-> @@ -50,7 +48,7 @@ void __init efi_fake_memmap(void)
->         /* count up the number of EFI memory descriptor */
->         for (i = 0; i < nr_fake_mem; i++) {
->                 for_each_efi_memory_desc(md) {
-> -                       struct range *r = &fake_mems[i].range;
-> +                       struct range *r = &efi_fake_mems[i].range;
->
->                         new_nr_map += efi_memmap_split_count(md, r);
->                 }
-> @@ -70,7 +68,7 @@ void __init efi_fake_memmap(void)
->         }
->
->         for (i = 0; i < nr_fake_mem; i++)
-> -               efi_memmap_insert(&efi.memmap, new_memmap, &fake_mems[i]);
-> +               efi_memmap_insert(&efi.memmap, new_memmap, &efi_fake_mems[i]);
->
->         /* swap into new EFI memmap */
->         early_memunmap(new_memmap, efi.memmap.desc_size * new_nr_map);
-> @@ -104,22 +102,22 @@ static int __init setup_fake_mem(char *p)
->                 if (nr_fake_mem >= EFI_MAX_FAKEMEM)
->                         break;
->
-> -               fake_mems[nr_fake_mem].range.start = start;
-> -               fake_mems[nr_fake_mem].range.end = start + mem_size - 1;
-> -               fake_mems[nr_fake_mem].attribute = attribute;
-> +               efi_fake_mems[nr_fake_mem].range.start = start;
-> +               efi_fake_mems[nr_fake_mem].range.end = start + mem_size - 1;
-> +               efi_fake_mems[nr_fake_mem].attribute = attribute;
->                 nr_fake_mem++;
->
->                 if (*p == ',')
->                         p++;
->         }
->
-> -       sort(fake_mems, nr_fake_mem, sizeof(struct efi_mem_range),
-> +       sort(efi_fake_mems, nr_fake_mem, sizeof(struct efi_mem_range),
->              cmp_fake_mem, NULL);
->
->         for (i = 0; i < nr_fake_mem; i++)
->                 pr_info("efi_fake_mem: add attr=0x%016llx to [mem 0x%016llx-0x%016llx]",
-> -                       fake_mems[i].attribute, fake_mems[i].range.start,
-> -                       fake_mems[i].range.end);
-> +                       efi_fake_mems[i].attribute, efi_fake_mems[i].range.start,
-> +                       efi_fake_mems[i].range.end);
->
->         return *p == '\0' ? 0 : -EINVAL;
->  }
-> diff --git a/drivers/firmware/efi/fake_mem.h b/drivers/firmware/efi/fake_mem.h
-> new file mode 100644
-> index 000000000000..d52791af4b18
-> --- /dev/null
-> +++ b/drivers/firmware/efi/fake_mem.h
-> @@ -0,0 +1,10 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +#ifndef __EFI_FAKE_MEM_H__
-> +#define __EFI_FAKE_MEM_H__
-> +#include <asm/efi.h>
-> +
-> +#define EFI_MAX_FAKEMEM CONFIG_EFI_MAX_FAKE_MEM
-> +
-> +extern struct efi_mem_range efi_fake_mems[EFI_MAX_FAKEMEM];
-> +extern int nr_fake_mem;
-> +#endif /* __EFI_FAKE_MEM_H__ */
-> diff --git a/drivers/firmware/efi/x86_fake_mem.c b/drivers/firmware/efi/x86_fake_mem.c
-> new file mode 100644
-> index 000000000000..e5d6d5a1b240
-> --- /dev/null
-> +++ b/drivers/firmware/efi/x86_fake_mem.c
-> @@ -0,0 +1,69 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/* Copyright(c) 2019 Intel Corporation. All rights reserved. */
-> +#include <linux/efi.h>
-> +#include <asm/e820/api.h>
-> +#include "fake_mem.h"
-> +
-> +void __init efi_fake_memmap_early(void)
-> +{
-> +       int i;
-> +
-> +       /*
-> +        * The late efi_fake_mem() call can handle all requests if
-> +        * EFI_MEMORY_SP support is disabled.
-> +        */
-> +       if (!efi_soft_reserve_enabled())
-> +               return;
-> +
-> +       if (!efi_enabled(EFI_MEMMAP) || !nr_fake_mem)
-> +               return;
-> +
-> +       /*
-> +        * Given that efi_fake_memmap() needs to perform memblock
-> +        * allocations it needs to run after e820__memblock_setup().
-> +        * However, if efi_fake_mem specifies EFI_MEMORY_SP for a given
-> +        * address range that potentially needs to mark the memory as
-> +        * reserved prior to e820__memblock_setup(). Update e820
-> +        * directly if EFI_MEMORY_SP is specified for an
-> +        * EFI_CONVENTIONAL_MEMORY descriptor.
-> +        */
-> +       for (i = 0; i < nr_fake_mem; i++) {
-> +               struct efi_mem_range *mem = &efi_fake_mems[i];
-> +               efi_memory_desc_t *md;
-> +               u64 m_start, m_end;
-> +
-> +               if ((mem->attribute & EFI_MEMORY_SP) == 0)
-> +                       continue;
-> +
-> +               m_start = mem->range.start;
-> +               m_end = mem->range.end;
-> +               for_each_efi_memory_desc(md) {
-> +                       u64 start, end;
-> +
-> +                       if (md->type != EFI_CONVENTIONAL_MEMORY)
-> +                               continue;
-> +
-> +                       start = md->phys_addr;
-> +                       end = md->phys_addr + (md->num_pages << EFI_PAGE_SHIFT) - 1;
-> +
-> +                       if (m_start <= end && m_end >= start)
-> +                               /* fake range overlaps descriptor */;
-> +                       else
-> +                               continue;
-> +
-> +                       /*
-> +                        * Trim the boundary of the e820 update to the
-> +                        * descriptor in case the fake range overlaps
-> +                        * !EFI_CONVENTIONAL_MEMORY
-> +                        */
-> +                       start = max(start, m_start);
-> +                       end = min(end, m_end);
-> +
-> +                       if (end <= start)
-> +                               continue;
-> +                       e820__range_update(start, end - start + 1, E820_TYPE_RAM,
-> +                                       E820_TYPE_SOFT_RESERVED);
-> +                       e820__update_table(e820_table);
-> +               }
-> +       }
-> +}
->
+> Where do the Magic values "EsTT" and "EsTs" come from?
+> where are they defined?
+
+EsTT == Example STrucT
+EsTs == Example STringS
+
+Anyway, it can be anything which does not collide with existing variable
+length data magics. There are none right now. So, it can be anything.
+Maybe I should add something saying that.
+
+Daniel
