@@ -2,151 +2,147 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 98BAED2FC2
-	for <lists+linux-efi@lfdr.de>; Thu, 10 Oct 2019 19:47:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AFB1BD306A
+	for <lists+linux-efi@lfdr.de>; Thu, 10 Oct 2019 20:31:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726182AbfJJRrm (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 10 Oct 2019 13:47:42 -0400
-Received: from mx0b-00154904.pphosted.com ([148.163.137.20]:33892 "EHLO
-        mx0b-00154904.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726091AbfJJRrm (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 10 Oct 2019 13:47:42 -0400
-Received: from pps.filterd (m0170397.ppops.net [127.0.0.1])
-        by mx0b-00154904.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id x9AHZd5Y007859;
-        Thu, 10 Oct 2019 13:47:37 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dell.com; h=from : to : cc :
- subject : date : message-id : references : in-reply-to : content-type :
- content-id : content-transfer-encoding : mime-version; s=smtpout1;
- bh=L5GXx3mox0EzVbNJGhVgnlBj3HadmPIkaxN59aZroN4=;
- b=LK3c4rVQkg3CJXSFZZxvhAyiBoT0FHlcOxrKUXhSlFfVE0B8Q3UCdPlz2vLBgsAwfo6Q
- DdWAsDrvwB+JKss4T9iLAgaApwIZpEhns1LLYBEnTJ7gfXHqqFB4VUtU63IsPjJ4uelV
- iVIHmsstcUxEtbGpdUR93VFglQ6Vt7OQVRdbAWRqWlwkSCmgT7Tw4v2vgIIe2NGbIJ34
- MvfGSo1uzUXloODPAKItCljn+xqbLk4jkWsLfA2JHOhHAzyg+ALet3V2Z+TrZmD33w9U
- ODMS7YH9bHjKyeAi5CCqKE6LLRlusP2WYKZ4XbUzbq6B1dTU8ysbO+eQpTPzF47xEaeX MQ== 
-Received: from mx0a-00154901.pphosted.com (mx0a-00154901.pphosted.com [67.231.149.39])
-        by mx0b-00154904.pphosted.com with ESMTP id 2vj8kwg8hy-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 10 Oct 2019 13:47:37 -0400
-Received: from pps.filterd (m0142699.ppops.net [127.0.0.1])
-        by mx0a-00154901.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id x9AHcUBp028792;
-        Thu, 10 Oct 2019 13:47:36 -0400
-Received: from ausxippc106.us.dell.com (AUSXIPPC106.us.dell.com [143.166.85.156])
-        by mx0a-00154901.pphosted.com with ESMTP id 2vj7m7t5m8-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 10 Oct 2019 13:47:36 -0400
-X-LoopCount0: from 10.166.132.133
-X-PREM-Routing: D-Outbound
-X-IronPort-AV: E=Sophos;i="5.60,349,1549951200"; 
-   d="scan'208";a="472812424"
-From:   <Narendra.K@dell.com>
-To:     <ard.biesheuvel@linaro.org>
-CC:     <linux-efi@vger.kernel.org>, <Mario.Limonciello@dell.com>,
-        <geert@linux-m68k.org>, <tglx@linutronix.de>,
-        <linux-kernel@vger.kernel.org>, <james.morse@arm.com>,
-        <mingo@kernel.org>
-Subject: Re: [PATCH] Ask user input only when CONFIG_X86 or
- CONFIG_COMPILE_TEST is set to y
-Thread-Topic: [PATCH] Ask user input only when CONFIG_X86 or
- CONFIG_COMPILE_TEST is set to y
-Thread-Index: AQHVeVm8hd3/NfhPNEW1ErxPMn2a1adSB94AgAHOtgA=
-Date:   Thu, 10 Oct 2019 17:47:30 +0000
-Message-ID: <20191010174710.GA2405@localhost.localdomain>
-References: <20191002194346.GA3792@localhost.localdomain>
- <CAKv+Gu9_xX3RgDNGB=T83vhg_snMKe0F2YPKp1S2o2toNHHZZQ@mail.gmail.com>
-In-Reply-To: <CAKv+Gu9_xX3RgDNGB=T83vhg_snMKe0F2YPKp1S2o2toNHHZZQ@mail.gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mutt/1.10.1 (2018-07-13)
-x-ms-exchange-messagesentrepresentingtype: 1
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.143.242.75]
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <CDDA16D306AADF4A96E170322B65887B@dell.com>
-Content-Transfer-Encoding: quoted-printable
+        id S1726836AbfJJSba (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 10 Oct 2019 14:31:30 -0400
+Received: from mail-oi1-f194.google.com ([209.85.167.194]:33639 "EHLO
+        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726336AbfJJSba (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 10 Oct 2019 14:31:30 -0400
+Received: by mail-oi1-f194.google.com with SMTP id a15so5814815oic.0
+        for <linux-efi@vger.kernel.org>; Thu, 10 Oct 2019 11:31:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=NlpMtJuEn229jdoiy4a5lSiNwCR7W2uBuMkIb+tS29o=;
+        b=ITKQdXgp39L1atnLKS6bIayQ9Oqf6ZZELR9iAOK+L6XNZQ850R0k4Wq+C591V98Nfl
+         eOoLYUEr529lnsG7t+CJqDOS5QKMvY3XrF/SK6+tXNJNg9BD4lbBMGkxTzS4SKyjAfE0
+         xn569nIeqCMhNH4Y4rymaQEIHqH3V4m13e6nSsG5/FZXD9RZfFwMJB/hw6j/PKD3ZN/T
+         djeRQXbH/RMf0D99jQQukYrMlxitWBZJXoV4zOuD12m3Dx19MOOY6ReMOh+CphTJycow
+         Kw4sFaD4DJMEw5ZE07VFRdG2QdsYJ/yuG3REItWbHzEMRGeorpswB7PBjNsPdMSJLG68
+         yf0w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=NlpMtJuEn229jdoiy4a5lSiNwCR7W2uBuMkIb+tS29o=;
+        b=YEIZxrBgSRv/HfBYVBhrUnezU4ldEKKIhp62C5yu2TvYpmSN8vJSA+K3OZ8Pz+kaVg
+         c+8CYNGTlEQhOK+LNooDAqA45TgubNStDi5Xik9KwQpuEEQE1/vKIHlZGgiNtXzALa16
+         PMMtj65EoTL5KMOwjulVfGnFsIaN4c9dQkPq9t0v29ByCR/kvHjYjMbSV9crZVlrooZB
+         9Rwk9TzpzTpCXFoOP0pN4UyW7U/YUTo+e3fBT/l/4eAXe8oTygQRf7oIrDcwOnHIexaL
+         HbvrZ/TNDaC0sOa9G3Dyso6MqgQ/pM/LxlJ5YO87b6tG79Fg9MZTIIPnfIzg+1/K8Ajd
+         uD/A==
+X-Gm-Message-State: APjAAAXYQPnvc4TQrSDzEzn96ZnaRog0aBzdxLLr2Qhk8gnYDCFxt/o9
+        7ddQCSLIzyousp3gRncmoZlVHx3qpV16F6GdChRehQ==
+X-Google-Smtp-Source: APXvYqwfCh4W4PaSkjW/YpvNKY4Zzd3H20YtYmvM1Mygk9eFcMO2ybDevOXVp5f75aYzxtnTqkn5gtQosFy/farxU40=
+X-Received: by 2002:aca:620a:: with SMTP id w10mr9068177oib.0.1570732289023;
+ Thu, 10 Oct 2019 11:31:29 -0700 (PDT)
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,1.0.8
- definitions=2019-10-10_06:2019-10-10,2019-10-10 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0 mlxscore=0
- suspectscore=0 bulkscore=0 phishscore=0 mlxlogscore=999 priorityscore=1501
- adultscore=0 clxscore=1015 malwarescore=0 spamscore=0 impostorscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-1908290000
- definitions=main-1910100155
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 lowpriorityscore=0 impostorscore=0
- suspectscore=0 phishscore=0 priorityscore=1501 bulkscore=0 mlxscore=0
- malwarescore=0 adultscore=0 spamscore=0 mlxlogscore=999 clxscore=1015
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-1908290000
- definitions=main-1910100155
+References: <157066227329.1059972.5659620631541203458.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <157066230358.1059972.1736585303527133478.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <CAKv+Gu8ih2RffZHdwAnHZicL_v8CxV9WnCy+uA1jSSyh58xapA@mail.gmail.com>
+In-Reply-To: <CAKv+Gu8ih2RffZHdwAnHZicL_v8CxV9WnCy+uA1jSSyh58xapA@mail.gmail.com>
+From:   Dan Williams <dan.j.williams@intel.com>
+Date:   Thu, 10 Oct 2019 11:31:18 -0700
+Message-ID: <CAPcyv4iQ5Np3dDH=-a_7gPnWKBCHXGit2PN-h=Jw_eqj7Lb2BQ@mail.gmail.com>
+Subject: Re: [PATCH v6 05/12] x86/efi: EFI soft reservation to E820 enumeration
+To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Cc:     Ingo Molnar <mingo@redhat.com>,
+        "the arch/x86 maintainers" <x86@kernel.org>,
+        Borislav Petkov <bp@alien8.de>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Andy Lutomirski <luto@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        kbuild test robot <lkp@intel.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Vishal L Verma <vishal.l.verma@intel.com>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hi Ard,
+On Wed, Oct 9, 2019 at 11:45 PM Ard Biesheuvel
+<ard.biesheuvel@linaro.org> wrote:
+>
+> On Thu, 10 Oct 2019 at 01:19, Dan Williams <dan.j.williams@intel.com> wrote:
+> >
+> > UEFI 2.8 defines an EFI_MEMORY_SP attribute bit to augment the
+> > interpretation of the EFI Memory Types as "reserved for a specific
+> > purpose".
+> >
+> > The proposed Linux behavior for specific purpose memory is that it is
+> > reserved for direct-access (device-dax) by default and not available for
+> > any kernel usage, not even as an OOM fallback.  Later, through udev
+> > scripts or another init mechanism, these device-dax claimed ranges can
+> > be reconfigured and hot-added to the available System-RAM with a unique
+> > node identifier. This device-dax management scheme implements "soft" in
+> > the "soft reserved" designation by allowing some or all of the
+> > reservation to be recovered as typical memory. This policy can be
+> > disabled at compile-time with CONFIG_EFI_SOFT_RESERVE=n, or runtime with
+> > efi=nosoftreserve.
+> >
+> > This patch introduces 2 new concepts at once given the entanglement
+> > between early boot enumeration relative to memory that can optionally be
+> > reserved from the kernel page allocator by default. The new concepts
+> > are:
+> >
+> > - E820_TYPE_SOFT_RESERVED: Upon detecting the EFI_MEMORY_SP
+> >   attribute on EFI_CONVENTIONAL memory, update the E820 map with this
+> >   new type. Only perform this classification if the
+> >   CONFIG_EFI_SOFT_RESERVE=y policy is enabled, otherwise treat it as
+> >   typical ram.
+> >
+> > - IORES_DESC_SOFT_RESERVED: Add a new I/O resource descriptor for
+> >   a device driver to search iomem resources for application specific
+> >   memory. Teach the iomem code to identify such ranges as "Soft Reserved".
+> >
+> > A follow-on change integrates parsing of the ACPI HMAT to identify the
+> > node and sub-range boundaries of EFI_MEMORY_SP designated memory. For
+> > now, just identify and reserve memory of this type.
+> >
+> > Cc: <x86@kernel.org>
+> > Cc: Borislav Petkov <bp@alien8.de>
+> > Cc: Ingo Molnar <mingo@redhat.com>
+> > Cc: "H. Peter Anvin" <hpa@zytor.com>
+> > Cc: Darren Hart <dvhart@infradead.org>
+> > Cc: Andy Shevchenko <andy@infradead.org>
+> > Cc: Andy Lutomirski <luto@kernel.org>
+> > Cc: Peter Zijlstra <peterz@infradead.org>
+> > Cc: Thomas Gleixner <tglx@linutronix.de>
+> > Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+> > Reported-by: kbuild test robot <lkp@intel.com>
+> > Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
+> > Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+>
+> For the EFI changes
+>
+> Acked-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+>
+> although I must admit I don't follow the enum add_efi_mode logic 100%
 
-Thank you for the review comments.=20
+I'm open to suggestions as I'm not sure it's the best possible
+organization. The do_add_efi_memmap() routine has the logic to
+translate EFI to E820, but unless "add_efi_memmap" is specified on the
+kernel command line the EFI memory map is ignored. For
+soft-reservation support I want to reuse do_add_efi_memmap(), but
+otherwise avoid any other side effects of considering the EFI map.
+What I'm missing is the rationale for why "add_efi_memmap" is required
+before considering the EFI memory map.
 
-On Wed, Oct 09, 2019 at 04:11:04PM +0200, Ard Biesheuvel wrote:
-> On Wed, 2 Oct 2019 at 21:44, <Narendra.K@dell.com> wrote:
-> >
-> > From: Narendra K <Narendra.K@dell.com>
-> >
-> > For the EFI_RCI2_TABLE kconfig option, 'make oldconfig' asks the user
-> > for input as it is a new kconfig option in kernel version 5.4. This pat=
-ch
-> > modifies the kconfig option to ask the user for input only when CONFIG_=
-X86
-> > or CONFIG_COMPILE_TEST is set to y.
-> >
-> > The patch also makes EFI_RCI2_TABLE kconfig option depend on CONFIG_EFI=
-.
-> >
-> > Signed-off-by: Narendra K <Narendra.K@dell.com>
-> > ---
-> > The patch is created on kernel version 5.4-rc1.
-> >
-> > Hi Ard, I have made following changes -
-> >
-> > - changed the prompt string from "EFI Runtime Configuration
-> > Interface Table Version 2 Support" to "EFI RCI Table Version 2 Support"
-> > as the string crossed 80 char limit.
-> >
-> > - added "depends on EFI" so that code builds only when CONFIG_EFI is
-> > set to y.
-> >
-> > - added 'default n' for ease of understanding though default is set to =
-n.
-> >
->=20
-> None of these changes are necessary, tbh. 'depends on EFI' is implied
-> by the placement of the option, and default n is indeed the default.
+If there is a negative side effect to always using the EFI map then
+the new "add_efi_mode" designation constrains it to just the
+soft-reservation case.
 
-I will drop the changes in the next version of the patch.
+It seems for historical reasons the full EFI memmap requires explicit opt-in:
 
->=20
->=20
-> >  drivers/firmware/efi/Kconfig | 5 ++++-
-> >  1 file changed, 4 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/firmware/efi/Kconfig b/drivers/firmware/efi/Kconfi=
-g
-> > index 178ee8106828..6e4c46e8a954 100644
-> > --- a/drivers/firmware/efi/Kconfig
-> > +++ b/drivers/firmware/efi/Kconfig
-> > @@ -181,7 +181,10 @@ config RESET_ATTACK_MITIGATION
-> >           reboots.
-> >
-> >  config EFI_RCI2_TABLE
-> > -       bool "EFI Runtime Configuration Interface Table Version 2 Suppo=
-rt"
-> > +       bool
-> > +       prompt "EFI RCI Table Version 2 Support" if X86 || COMPILE_TEST
->=20
-> You can drop the || COMPILE_TEST as well.
-
-I will drop this part of the change in the next version of the patch.=20
-
---=20
-With regards,
-Narendra K=
+200001eb140e x86 boot: only pick up additional EFI memmap if add_efi_memmap flag
