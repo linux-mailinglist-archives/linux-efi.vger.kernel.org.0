@@ -2,65 +2,59 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A310ED20EC
-	for <lists+linux-efi@lfdr.de>; Thu, 10 Oct 2019 08:44:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 67255D20ED
+	for <lists+linux-efi@lfdr.de>; Thu, 10 Oct 2019 08:46:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726840AbfJJGo4 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 10 Oct 2019 02:44:56 -0400
-Received: from mail-wr1-f65.google.com ([209.85.221.65]:37993 "EHLO
-        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727218AbfJJGoz (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 10 Oct 2019 02:44:55 -0400
-Received: by mail-wr1-f65.google.com with SMTP id w12so6293117wro.5
-        for <linux-efi@vger.kernel.org>; Wed, 09 Oct 2019 23:44:51 -0700 (PDT)
+        id S1732792AbfJJGqP (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 10 Oct 2019 02:46:15 -0400
+Received: from mail-wm1-f66.google.com ([209.85.128.66]:39843 "EHLO
+        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727218AbfJJGqP (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 10 Oct 2019 02:46:15 -0400
+Received: by mail-wm1-f66.google.com with SMTP id v17so5423269wml.4
+        for <linux-efi@vger.kernel.org>; Wed, 09 Oct 2019 23:46:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=hBnvpPtiriRmjXEbUWwFcMd/j3RNITh3zBD7b/tJiqE=;
-        b=yGHsbdWAtvNIvwR1e8vZVOv9s9BXT7ZGWYqVypBZLblozW6hexBZ3yEppXk4YXhjoe
-         TAoJNPrvFSItENE8czPaD7JB4/2twXNDvd1W/tan3Pxz3Yrr11np9QWXbWOlh5dgukxa
-         rYHZJbPJuA6CTaoD6HRqtNplryy3j7KC81XOgFdxgC1G/yQCDF7UP+/3v8EqSkyKtf0T
-         CL5DLDUF/D9iql6di292hKgiDtUMLMTMAkTl62qMBi3Zf3MDXPEkax8pCsAqFpEYNA3b
-         hv2wTabXRlDl9eDfBP1iQNNuFguioh/UvHQITHRujpvwupbGbzB3DQJDIkwgWsOPtyYy
-         K+zQ==
+        bh=wQ0pOkrTugUN+MRdoYob0IQtm246jU1zJx3wIxD5k2g=;
+        b=FtzY8BH9zAP0+byU2mxad4nsqp/wZ3frTSnldB3oAJWIVF8RSmveuG/8yQYaWFRKn0
+         M49AIhcEmJESVMT9laQn37RP6IzHNONwpUapImAnSBJlz69v09DAlYb1neHfgo3tVEyo
+         mHoU4T7qBN9HMvVtn8NGblABHXNFaEnXt61hd7xtcwHTKEd7qVQA7VjOnomZ0q/AJWp3
+         2KFMA7p26wMMYDbyDHzQNP+MOXUvK0cIrOWm92jWe2l+x1vkYpTrp7NuwUgEI/ZhvYZH
+         1qI3rhfYBRt3/vHz7zPt9xMPNYf8ZFjRfJ6VjWm17MpDA3Iibq2glD1MjAMMPnP/Ea2/
+         NvTw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=hBnvpPtiriRmjXEbUWwFcMd/j3RNITh3zBD7b/tJiqE=;
-        b=E34roPTi1cEULgc1h3KZRcQNIiMZMc2hO7c3ThASZupesMkCWwfL48deR2zWdUetO1
-         /YcHrhKVmdtRLifKIG9vmdkmO+8hyF0HP/+k3w54ZJAZEQWGi2/vUaFFjDlEPMe7Q3QR
-         h/N1YWyaOL6qQ9IpHelocGeTRJFiNXMqX2jTwYoWrjyXGIrUTFt9DKk/cNlawTPjg52e
-         8dHiUJBHImkBAn4oTeSfDYzksGxMldRcTJ13YbATIR+9CGz2EeEOiVc2rzfbR3xySAb6
-         XG0cYJQ+bEWThpMaWC7t+vjcFlGEyQF8orvomXflfDPhHI2KWlbC/xx1CX/TEXGrwCQJ
-         RE6w==
-X-Gm-Message-State: APjAAAWAcUJHMdeE8GyHZ6TLPOm/elNODSr2/BNniuFwXOTEQJedyxWU
-        HhpeKkltql8jVptaAInurvABwItfirYRK1c1hszN5Q==
-X-Google-Smtp-Source: APXvYqzHYmU5ww+pyjFSoEdFV5KFjQJcu7f3O1cbi1yIhMMEn7zDl3srtVjjrNPJgypImZ1AMMWUAxybYkA6F8IABhw=
-X-Received: by 2002:adf:9f08:: with SMTP id l8mr6498960wrf.325.1570689891000;
- Wed, 09 Oct 2019 23:44:51 -0700 (PDT)
+        bh=wQ0pOkrTugUN+MRdoYob0IQtm246jU1zJx3wIxD5k2g=;
+        b=Dr1HY+eOYU8sbhh6ajEWMquXlhqzKxNLM+wDGQg6Z095ZL7PGdqtsNweEJgwvYThD0
+         2aUs1PAT3CnUnUxUaJnkaDv2uBesy1PURG/cALss548/bgUn9+93WPwlUGxKGULTcbU8
+         TlgidUQfo22NjqDSYtsnzZwHowCdKv3XoZPn7EC6dGizNWbACcwVzx3daUh3o42l6hYf
+         lNE5B2n+JqFaAF0zAerc5lccwBBpsnLB+3/N6olqCjcj7vMIkwu5Rcp49YlsaVAE/dSQ
+         KbOJybXWnQag/a5p0Acwp8af40owJmP21f7F4vzn4lmDx2pVe09/Ll2ViAut7gCA1lYq
+         sIbA==
+X-Gm-Message-State: APjAAAUl76kUG5HpCTyB4VtsvOzoU7bsj0st4zKN5M5dgHU/j8Hyahw5
+        7CKxqQjH/lPq8KAh+wzUGpUsnSgP7nPNmJclmdoUPQ==
+X-Google-Smtp-Source: APXvYqzwxj0Itvjoz7lAZd3VLuqGV7ufNrUftdD6JbEeV/KK874YPrNX4z5myyCPlFxm5qg4kG8fbWFDTyifVRJc3NM=
+X-Received: by 2002:a7b:cb54:: with SMTP id v20mr5817995wmj.119.1570689972510;
+ Wed, 09 Oct 2019 23:46:12 -0700 (PDT)
 MIME-Version: 1.0
 References: <157066227329.1059972.5659620631541203458.stgit@dwillia2-desk3.amr.corp.intel.com>
- <157066230358.1059972.1736585303527133478.stgit@dwillia2-desk3.amr.corp.intel.com>
-In-Reply-To: <157066230358.1059972.1736585303527133478.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <157066230919.1059972.9000449870543851830.stgit@dwillia2-desk3.amr.corp.intel.com>
+In-Reply-To: <157066230919.1059972.9000449870543851830.stgit@dwillia2-desk3.amr.corp.intel.com>
 From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Date:   Thu, 10 Oct 2019 08:44:38 +0200
-Message-ID: <CAKv+Gu8ih2RffZHdwAnHZicL_v8CxV9WnCy+uA1jSSyh58xapA@mail.gmail.com>
-Subject: Re: [PATCH v6 05/12] x86/efi: EFI soft reservation to E820 enumeration
+Date:   Thu, 10 Oct 2019 08:46:00 +0200
+Message-ID: <CAKv+Gu9X2B1e56DwGw=MDfwgkMmGoNnHM7BZ3dV8LVKOJbZrSA@mail.gmail.com>
+Subject: Re: [PATCH v6 06/12] arm/efi: EFI soft reservation to memblock
 To:     Dan Williams <dan.j.williams@intel.com>
-Cc:     Ingo Molnar <mingo@redhat.com>,
-        "the arch/x86 maintainers" <x86@kernel.org>,
-        Borislav Petkov <bp@alien8.de>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Darren Hart <dvhart@infradead.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        Andy Lutomirski <luto@kernel.org>,
+Cc:     Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
         Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        kbuild test robot <lkp@intel.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
         Vishal L Verma <vishal.l.verma@intel.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "the arch/x86 maintainers" <x86@kernel.org>,
         linux-efi <linux-efi@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>
@@ -87,269 +81,125 @@ On Thu, 10 Oct 2019 at 01:19, Dan Williams <dan.j.williams@intel.com> wrote:
 > disabled at compile-time with CONFIG_EFI_SOFT_RESERVE=n, or runtime with
 > efi=nosoftreserve.
 >
-> This patch introduces 2 new concepts at once given the entanglement
-> between early boot enumeration relative to memory that can optionally be
-> reserved from the kernel page allocator by default. The new concepts
-> are:
+> For this patch, update the ARM paths that consider
+> EFI_CONVENTIONAL_MEMORY to optionally take the EFI_MEMORY_SP attribute
+> into account as a reservation indicator. Publish the soft reservation as
+> IORES_DESC_SOFT_RESERVED memory, similar to x86.
 >
-> - E820_TYPE_SOFT_RESERVED: Upon detecting the EFI_MEMORY_SP
->   attribute on EFI_CONVENTIONAL memory, update the E820 map with this
->   new type. Only perform this classification if the
->   CONFIG_EFI_SOFT_RESERVE=y policy is enabled, otherwise treat it as
->   typical ram.
+> (Based on an original patch by Ard)
 >
-> - IORES_DESC_SOFT_RESERVED: Add a new I/O resource descriptor for
->   a device driver to search iomem resources for application specific
->   memory. Teach the iomem code to identify such ranges as "Soft Reserved".
->
-> A follow-on change integrates parsing of the ACPI HMAT to identify the
-> node and sub-range boundaries of EFI_MEMORY_SP designated memory. For
-> now, just identify and reserve memory of this type.
->
-> Cc: <x86@kernel.org>
-> Cc: Borislav Petkov <bp@alien8.de>
-> Cc: Ingo Molnar <mingo@redhat.com>
-> Cc: "H. Peter Anvin" <hpa@zytor.com>
-> Cc: Darren Hart <dvhart@infradead.org>
-> Cc: Andy Shevchenko <andy@infradead.org>
-> Cc: Andy Lutomirski <luto@kernel.org>
-> Cc: Peter Zijlstra <peterz@infradead.org>
-> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Will Deacon <will@kernel.org>
+> Cc: Catalin Marinas <catalin.marinas@arm.com>
 > Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>
-> Reported-by: kbuild test robot <lkp@intel.com>
-> Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
 > Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 
-For the EFI changes
-
-Acked-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
-
-although I must admit I don't follow the enum add_efi_mode logic 100%
-
+Reviewed-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
 
 > ---
->  arch/x86/boot/compressed/eboot.c  |    6 ++++-
->  arch/x86/boot/compressed/kaslr.c  |    4 +++
->  arch/x86/include/asm/e820/types.h |    8 ++++++
->  arch/x86/kernel/e820.c            |   12 ++++++++-
->  arch/x86/platform/efi/efi.c       |   48 +++++++++++++++++++++++++++++++++----
->  include/linux/ioport.h            |    1 +
->  6 files changed, 71 insertions(+), 8 deletions(-)
+>  arch/arm64/mm/mmu.c                       |    2 ++
+>  drivers/firmware/efi/arm-init.c           |    9 +++++++++
+>  drivers/firmware/efi/arm-runtime.c        |   24 ++++++++++++++++++++++++
+>  drivers/firmware/efi/libstub/arm32-stub.c |    5 +++++
+>  drivers/firmware/efi/libstub/random.c     |    4 ++++
+>  5 files changed, 44 insertions(+)
 >
-> diff --git a/arch/x86/boot/compressed/eboot.c b/arch/x86/boot/compressed/eboot.c
-> index d6662fdef300..f3b03229c44c 100644
-> --- a/arch/x86/boot/compressed/eboot.c
-> +++ b/arch/x86/boot/compressed/eboot.c
-> @@ -553,7 +553,11 @@ setup_e820(struct boot_params *params, struct setup_data *e820ext, u32 e820ext_s
->                 case EFI_BOOT_SERVICES_CODE:
->                 case EFI_BOOT_SERVICES_DATA:
->                 case EFI_CONVENTIONAL_MEMORY:
-> -                       e820_type = E820_TYPE_RAM;
-> +                       if (efi_soft_reserve_enabled() &&
-> +                           (d->attribute & EFI_MEMORY_SP))
-> +                               e820_type = E820_TYPE_SOFT_RESERVED;
-> +                       else
-> +                               e820_type = E820_TYPE_RAM;
->                         break;
+> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+> index 60c929f3683b..2c385fe05fde 100644
+> --- a/arch/arm64/mm/mmu.c
+> +++ b/arch/arm64/mm/mmu.c
+> @@ -1061,6 +1061,8 @@ int arch_add_memory(int nid, u64 start, u64 size,
+>         __create_pgd_mapping(swapper_pg_dir, start, __phys_to_virt(start),
+>                              size, PAGE_KERNEL, __pgd_pgtable_alloc, flags);
 >
->                 case EFI_ACPI_MEMORY_NVS:
-> diff --git a/arch/x86/boot/compressed/kaslr.c b/arch/x86/boot/compressed/kaslr.c
-> index 2e53c056ba20..ff6fa81949cd 100644
-> --- a/arch/x86/boot/compressed/kaslr.c
-> +++ b/arch/x86/boot/compressed/kaslr.c
-> @@ -760,6 +760,10 @@ process_efi_entries(unsigned long minimum, unsigned long image_size)
->                 if (md->type != EFI_CONVENTIONAL_MEMORY)
->                         continue;
->
+> +       memblock_clear_nomap(start, size);
+> +
+>         return __add_pages(nid, start >> PAGE_SHIFT, size >> PAGE_SHIFT,
+>                            restrictions);
+>  }
+> diff --git a/drivers/firmware/efi/arm-init.c b/drivers/firmware/efi/arm-init.c
+> index 311cd349a862..904fa09e6a6b 100644
+> --- a/drivers/firmware/efi/arm-init.c
+> +++ b/drivers/firmware/efi/arm-init.c
+> @@ -163,6 +163,15 @@ static __init int is_usable_memory(efi_memory_desc_t *md)
+>         case EFI_BOOT_SERVICES_DATA:
+>         case EFI_CONVENTIONAL_MEMORY:
+>         case EFI_PERSISTENT_MEMORY:
+> +               /*
+> +                * Special purpose memory is 'soft reserved', which means it
+> +                * is set aside initially, but can be hotplugged back in or
+> +                * be assigned to the dax driver after boot.
+> +                */
 > +               if (efi_soft_reserve_enabled() &&
 > +                   (md->attribute & EFI_MEMORY_SP))
-> +                       continue;
+> +                       return false;
 > +
->                 if (efi_mirror_found &&
->                     !(md->attribute & EFI_MEMORY_MORE_RELIABLE))
->                         continue;
-> diff --git a/arch/x86/include/asm/e820/types.h b/arch/x86/include/asm/e820/types.h
-> index c3aa4b5e49e2..314f75d886d0 100644
-> --- a/arch/x86/include/asm/e820/types.h
-> +++ b/arch/x86/include/asm/e820/types.h
-> @@ -28,6 +28,14 @@ enum e820_type {
->          */
->         E820_TYPE_PRAM          = 12,
->
-> +       /*
-> +        * Special-purpose memory is indicated to the system via the
-> +        * EFI_MEMORY_SP attribute. Define an e820 translation of this
-> +        * memory type for the purpose of reserving this range and
-> +        * marking it with the IORES_DESC_SOFT_RESERVED designation.
-> +        */
-> +       E820_TYPE_SOFT_RESERVED = 0xefffffff,
-> +
->         /*
->          * Reserved RAM used by the kernel itself if
->          * CONFIG_INTEL_TXT=y is enabled, memory of this type
-> diff --git a/arch/x86/kernel/e820.c b/arch/x86/kernel/e820.c
-> index 7da2bcd2b8eb..9976106b57ec 100644
-> --- a/arch/x86/kernel/e820.c
-> +++ b/arch/x86/kernel/e820.c
-> @@ -190,6 +190,7 @@ static void __init e820_print_type(enum e820_type type)
->         case E820_TYPE_RAM:             /* Fall through: */
->         case E820_TYPE_RESERVED_KERN:   pr_cont("usable");                      break;
->         case E820_TYPE_RESERVED:        pr_cont("reserved");                    break;
-> +       case E820_TYPE_SOFT_RESERVED:   pr_cont("soft reserved");               break;
->         case E820_TYPE_ACPI:            pr_cont("ACPI data");                   break;
->         case E820_TYPE_NVS:             pr_cont("ACPI NVS");                    break;
->         case E820_TYPE_UNUSABLE:        pr_cont("unusable");                    break;
-> @@ -1037,6 +1038,7 @@ static const char *__init e820_type_to_string(struct e820_entry *entry)
->         case E820_TYPE_PRAM:            return "Persistent Memory (legacy)";
->         case E820_TYPE_PMEM:            return "Persistent Memory";
->         case E820_TYPE_RESERVED:        return "Reserved";
-> +       case E820_TYPE_SOFT_RESERVED:   return "Soft Reserved";
->         default:                        return "Unknown E820 type";
+>                 /*
+>                  * According to the spec, these regions are no longer reserved
+>                  * after calling ExitBootServices(). However, we can only use
+> diff --git a/drivers/firmware/efi/arm-runtime.c b/drivers/firmware/efi/arm-runtime.c
+> index e2ac5fa5531b..899b803842bb 100644
+> --- a/drivers/firmware/efi/arm-runtime.c
+> +++ b/drivers/firmware/efi/arm-runtime.c
+> @@ -121,6 +121,30 @@ static int __init arm_enable_runtime_services(void)
+>                 return 0;
 >         }
->  }
-> @@ -1052,6 +1054,7 @@ static unsigned long __init e820_type_to_iomem_type(struct e820_entry *entry)
->         case E820_TYPE_PRAM:            /* Fall-through: */
->         case E820_TYPE_PMEM:            /* Fall-through: */
->         case E820_TYPE_RESERVED:        /* Fall-through: */
-> +       case E820_TYPE_SOFT_RESERVED:   /* Fall-through: */
->         default:                        return IORESOURCE_MEM;
->         }
->  }
-> @@ -1064,6 +1067,7 @@ static unsigned long __init e820_type_to_iores_desc(struct e820_entry *entry)
->         case E820_TYPE_PMEM:            return IORES_DESC_PERSISTENT_MEMORY;
->         case E820_TYPE_PRAM:            return IORES_DESC_PERSISTENT_MEMORY_LEGACY;
->         case E820_TYPE_RESERVED:        return IORES_DESC_RESERVED;
-> +       case E820_TYPE_SOFT_RESERVED:   return IORES_DESC_SOFT_RESERVED;
->         case E820_TYPE_RESERVED_KERN:   /* Fall-through: */
->         case E820_TYPE_RAM:             /* Fall-through: */
->         case E820_TYPE_UNUSABLE:        /* Fall-through: */
-> @@ -1078,11 +1082,12 @@ static bool __init do_mark_busy(enum e820_type type, struct resource *res)
->                 return true;
 >
->         /*
-> -        * Treat persistent memory like device memory, i.e. reserve it
-> -        * for exclusive use of a driver
-> +        * Treat persistent memory and other special memory ranges like
-> +        * device memory, i.e. reserve it for exclusive use of a driver
->          */
->         switch (type) {
->         case E820_TYPE_RESERVED:
-> +       case E820_TYPE_SOFT_RESERVED:
->         case E820_TYPE_PRAM:
->         case E820_TYPE_PMEM:
->                 return false;
-> @@ -1285,6 +1290,9 @@ void __init e820__memblock_setup(void)
->                 if (end != (resource_size_t)end)
->                         continue;
->
-> +               if (entry->type == E820_TYPE_SOFT_RESERVED)
-> +                       memblock_reserve(entry->addr, entry->size);
+> +       if (efi_soft_reserve_enabled()) {
+> +               efi_memory_desc_t *md;
 > +
->                 if (entry->type != E820_TYPE_RAM && entry->type != E820_TYPE_RESERVED_KERN)
->                         continue;
->
-> diff --git a/arch/x86/platform/efi/efi.c b/arch/x86/platform/efi/efi.c
-> index 0bb58eb33ca0..c96657993167 100644
-> --- a/arch/x86/platform/efi/efi.c
-> +++ b/arch/x86/platform/efi/efi.c
-> @@ -151,10 +151,18 @@ void __init efi_find_mirror(void)
->   * more than the max 128 entries that can fit in the e820 legacy
->   * (zeropage) memory map.
->   */
-> +enum add_efi_mode {
-> +       ADD_EFI_ALL,
-> +       ADD_EFI_SOFT_RESERVED,
-> +};
->
-> -static void __init do_add_efi_memmap(void)
-> +static void __init do_add_efi_memmap(enum add_efi_mode mode)
->  {
->         efi_memory_desc_t *md;
-> +       int add = 0;
+> +               for_each_efi_memory_desc(md) {
+> +                       int md_size = md->num_pages << EFI_PAGE_SHIFT;
+> +                       struct resource *res;
 > +
-> +       if (!efi_enabled(EFI_MEMMAP))
-> +               return;
->
->         for_each_efi_memory_desc(md) {
->                 unsigned long long start = md->phys_addr;
-> @@ -167,7 +175,10 @@ static void __init do_add_efi_memmap(void)
->                 case EFI_BOOT_SERVICES_CODE:
->                 case EFI_BOOT_SERVICES_DATA:
->                 case EFI_CONVENTIONAL_MEMORY:
-> -                       if (md->attribute & EFI_MEMORY_WB)
-> +                       if (efi_soft_reserve_enabled()
-> +                           && (md->attribute & EFI_MEMORY_SP))
-> +                               e820_type = E820_TYPE_SOFT_RESERVED;
-> +                       else if (md->attribute & EFI_MEMORY_WB)
->                                 e820_type = E820_TYPE_RAM;
->                         else
->                                 e820_type = E820_TYPE_RESERVED;
-> @@ -193,9 +204,17 @@ static void __init do_add_efi_memmap(void)
->                         e820_type = E820_TYPE_RESERVED;
->                         break;
->                 }
+> +                       if (!(md->attribute & EFI_MEMORY_SP))
+> +                               continue;
 > +
-> +               if (e820_type == E820_TYPE_SOFT_RESERVED)
-> +                       /* always add E820_TYPE_SOFT_RESERVED */;
-> +               else if (mode == ADD_EFI_SOFT_RESERVED)
-> +                       continue;
+> +                       res = kzalloc(sizeof(*res), GFP_KERNEL);
+> +                       if (WARN_ON(!res))
+> +                               break;
 > +
-> +               add++;
->                 e820__range_add(start, size, e820_type);
->         }
-> -       e820__update_table(e820_table);
-> +       if (add)
-> +               e820__update_table(e820_table);
->  }
->
->  int __init efi_memblock_x86_reserve_range(void)
-> @@ -227,8 +246,18 @@ int __init efi_memblock_x86_reserve_range(void)
->         if (rv)
->                 return rv;
->
-> -       if (add_efi_memmap)
-> -               do_add_efi_memmap();
-> +       if (add_efi_memmap) {
-> +               do_add_efi_memmap(ADD_EFI_ALL);
-> +       } else {
-> +               /*
-> +                * Given add_efi_memmap defaults to 0 and there there is no e820
-> +                * mechanism for soft-reserved memory. Explicitly scan for
-> +                * soft-reserved memory. Otherwise, the mechanism to disable the
-> +                * kernel's consideration of EFI_MEMORY_SP is the
-> +                * efi=nosoftreserve option.
-> +                */
-> +               do_add_efi_memmap(ADD_EFI_SOFT_RESERVED);
+> +                       res->start      = md->phys_addr;
+> +                       res->end        = md->phys_addr + md_size - 1;
+> +                       res->name       = "Soft Reserved";
+> +                       res->flags      = IORESOURCE_MEM;
+> +                       res->desc       = IORES_DESC_SOFT_RESERVED;
+> +
+> +                       insert_resource(&iomem_resource, res);
+> +               }
 > +       }
->
->         WARN(efi.memmap.desc_version != 1,
->              "Unexpected EFI_MEMORY_DESCRIPTOR version %ld",
-> @@ -781,6 +810,15 @@ static bool should_map_region(efi_memory_desc_t *md)
->         if (IS_ENABLED(CONFIG_X86_32))
->                 return false;
->
-> +       /*
-> +        * EFI specific purpose memory may be reserved by default
-> +        * depending on kernel config and boot options.
-> +        */
-> +       if (md->type == EFI_CONVENTIONAL_MEMORY &&
-> +           efi_soft_reserve_enabled() &&
-> +           (md->attribute & EFI_MEMORY_SP))
-> +               return false;
 > +
->         /*
->          * Map all of RAM so that we can access arguments in the 1:1
->          * mapping when making EFI runtime calls.
-> diff --git a/include/linux/ioport.h b/include/linux/ioport.h
-> index 7bddddfc76d6..a9b9170b5dd2 100644
-> --- a/include/linux/ioport.h
-> +++ b/include/linux/ioport.h
-> @@ -134,6 +134,7 @@ enum {
->         IORES_DESC_PERSISTENT_MEMORY_LEGACY     = 5,
->         IORES_DESC_DEVICE_PRIVATE_MEMORY        = 6,
->         IORES_DESC_RESERVED                     = 7,
-> +       IORES_DESC_SOFT_RESERVED                = 8,
->  };
+>         if (efi_runtime_disabled()) {
+>                 pr_info("EFI runtime services will be disabled.\n");
+>                 return 0;
+> diff --git a/drivers/firmware/efi/libstub/arm32-stub.c b/drivers/firmware/efi/libstub/arm32-stub.c
+> index e8f7aefb6813..3cd54d2096c6 100644
+> --- a/drivers/firmware/efi/libstub/arm32-stub.c
+> +++ b/drivers/firmware/efi/libstub/arm32-stub.c
+> @@ -146,6 +146,11 @@ static efi_status_t reserve_kernel_base(efi_system_table_t *sys_table_arg,
+>                         continue;
 >
->  /*
+>                 case EFI_CONVENTIONAL_MEMORY:
+> +                       /* Skip soft reserved conventional memory */
+> +                       if (efi_soft_reserve_enabled() &&
+> +                           (desc->attribute & EFI_MEMORY_SP))
+> +                               continue;
+> +
+>                         /*
+>                          * Reserve the intersection between this entry and the
+>                          * region.
+> diff --git a/drivers/firmware/efi/libstub/random.c b/drivers/firmware/efi/libstub/random.c
+> index b4b1d1dcb5fd..6c188695e730 100644
+> --- a/drivers/firmware/efi/libstub/random.c
+> +++ b/drivers/firmware/efi/libstub/random.c
+> @@ -46,6 +46,10 @@ static unsigned long get_entry_num_slots(efi_memory_desc_t *md,
+>         if (md->type != EFI_CONVENTIONAL_MEMORY)
+>                 return 0;
+>
+> +       if (efi_soft_reserve_enabled() &&
+> +           (md->attribute & EFI_MEMORY_SP))
+> +               return 0;
+> +
+>         region_end = min((u64)ULONG_MAX, md->phys_addr + md->num_pages*EFI_PAGE_SIZE - 1);
+>
+>         first_slot = round_up(md->phys_addr, align);
 >
