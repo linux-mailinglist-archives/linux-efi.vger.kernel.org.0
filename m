@@ -2,217 +2,151 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C9681D2CBC
-	for <lists+linux-efi@lfdr.de>; Thu, 10 Oct 2019 16:43:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 98BAED2FC2
+	for <lists+linux-efi@lfdr.de>; Thu, 10 Oct 2019 19:47:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726244AbfJJOn5 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 10 Oct 2019 10:43:57 -0400
-Received: from bombadil.infradead.org ([198.137.202.133]:43758 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726237AbfJJOn4 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 10 Oct 2019 10:43:56 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
-        Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:
-        Subject:Sender:Reply-To:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=QNsH8RqTKQDFBl/DTY+j/4M+yf8y1CDtO+6Gmm9dx4Y=; b=rsm+y2rI3REufv4ArB+mOZLHI
-        1ylpq9w5+Z/+6SmoWDt3yKcOqzZhF4/idm21+GPpI2a8RCNuZJWunoftYi7fh7xq6cu44n3zpsKDa
-        IHqwV2uYQBUWTbrBPfSMxm4sI5cCF6lIssRdWQkDk2wm56nx3K+7RhyPYW1zzqPUOjFlmHfQSJLP9
-        GRqijrUeEpjItjmUHUpiZzLcraaEDdQ0Yr4I7yYi/EIq2QeFlcFJsjyKbqKtCtHoBxu6q2tgr6hvo
-        RskmdplSqSXqOD0nlcschglvH9QbYloL/QKZxG0e0UBSrKsg5HIOHoVUiASMceCVCMAT8Tkd7Gqjj
-        PyELZ1QOQ==;
-Received: from [2601:1c0:6280:3f0::9ef4]
-        by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1iIZfA-0004wv-A3; Thu, 10 Oct 2019 14:43:32 +0000
-Subject: Re: [PATCH v3 1/3] x86/boot: Introduce the kernel_info
-To:     Daniel Kiper <daniel.kiper@oracle.com>
-Cc:     linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        x86@kernel.org, xen-devel@lists.xenproject.org,
-        ard.biesheuvel@linaro.org, boris.ostrovsky@oracle.com,
-        bp@alien8.de, corbet@lwn.net, dave.hansen@linux.intel.com,
-        luto@kernel.org, peterz@infradead.org, eric.snowberg@oracle.com,
-        hpa@zytor.com, jgross@suse.com, konrad.wilk@oracle.com,
-        mingo@redhat.com, ross.philipson@oracle.com, tglx@linutronix.de
-References: <20191009105358.32256-1-daniel.kiper@oracle.com>
- <20191009105358.32256-2-daniel.kiper@oracle.com>
- <181249b6-5833-6f29-7d38-6dacc3f8ee62@infradead.org>
- <20191010094349.la3sjiuiikmegjck@tomti.i.net-space.pl>
-From:   Randy Dunlap <rdunlap@infradead.org>
-Message-ID: <cb5bcff5-e787-82c4-790d-71695291d552@infradead.org>
-Date:   Thu, 10 Oct 2019 07:43:29 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.1.1
-MIME-Version: 1.0
-In-Reply-To: <20191010094349.la3sjiuiikmegjck@tomti.i.net-space.pl>
-Content-Type: text/plain; charset=utf-8
+        id S1726182AbfJJRrm (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 10 Oct 2019 13:47:42 -0400
+Received: from mx0b-00154904.pphosted.com ([148.163.137.20]:33892 "EHLO
+        mx0b-00154904.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726091AbfJJRrm (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 10 Oct 2019 13:47:42 -0400
+Received: from pps.filterd (m0170397.ppops.net [127.0.0.1])
+        by mx0b-00154904.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id x9AHZd5Y007859;
+        Thu, 10 Oct 2019 13:47:37 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dell.com; h=from : to : cc :
+ subject : date : message-id : references : in-reply-to : content-type :
+ content-id : content-transfer-encoding : mime-version; s=smtpout1;
+ bh=L5GXx3mox0EzVbNJGhVgnlBj3HadmPIkaxN59aZroN4=;
+ b=LK3c4rVQkg3CJXSFZZxvhAyiBoT0FHlcOxrKUXhSlFfVE0B8Q3UCdPlz2vLBgsAwfo6Q
+ DdWAsDrvwB+JKss4T9iLAgaApwIZpEhns1LLYBEnTJ7gfXHqqFB4VUtU63IsPjJ4uelV
+ iVIHmsstcUxEtbGpdUR93VFglQ6Vt7OQVRdbAWRqWlwkSCmgT7Tw4v2vgIIe2NGbIJ34
+ MvfGSo1uzUXloODPAKItCljn+xqbLk4jkWsLfA2JHOhHAzyg+ALet3V2Z+TrZmD33w9U
+ ODMS7YH9bHjKyeAi5CCqKE6LLRlusP2WYKZ4XbUzbq6B1dTU8ysbO+eQpTPzF47xEaeX MQ== 
+Received: from mx0a-00154901.pphosted.com (mx0a-00154901.pphosted.com [67.231.149.39])
+        by mx0b-00154904.pphosted.com with ESMTP id 2vj8kwg8hy-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 10 Oct 2019 13:47:37 -0400
+Received: from pps.filterd (m0142699.ppops.net [127.0.0.1])
+        by mx0a-00154901.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id x9AHcUBp028792;
+        Thu, 10 Oct 2019 13:47:36 -0400
+Received: from ausxippc106.us.dell.com (AUSXIPPC106.us.dell.com [143.166.85.156])
+        by mx0a-00154901.pphosted.com with ESMTP id 2vj7m7t5m8-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 10 Oct 2019 13:47:36 -0400
+X-LoopCount0: from 10.166.132.133
+X-PREM-Routing: D-Outbound
+X-IronPort-AV: E=Sophos;i="5.60,349,1549951200"; 
+   d="scan'208";a="472812424"
+From:   <Narendra.K@dell.com>
+To:     <ard.biesheuvel@linaro.org>
+CC:     <linux-efi@vger.kernel.org>, <Mario.Limonciello@dell.com>,
+        <geert@linux-m68k.org>, <tglx@linutronix.de>,
+        <linux-kernel@vger.kernel.org>, <james.morse@arm.com>,
+        <mingo@kernel.org>
+Subject: Re: [PATCH] Ask user input only when CONFIG_X86 or
+ CONFIG_COMPILE_TEST is set to y
+Thread-Topic: [PATCH] Ask user input only when CONFIG_X86 or
+ CONFIG_COMPILE_TEST is set to y
+Thread-Index: AQHVeVm8hd3/NfhPNEW1ErxPMn2a1adSB94AgAHOtgA=
+Date:   Thu, 10 Oct 2019 17:47:30 +0000
+Message-ID: <20191010174710.GA2405@localhost.localdomain>
+References: <20191002194346.GA3792@localhost.localdomain>
+ <CAKv+Gu9_xX3RgDNGB=T83vhg_snMKe0F2YPKp1S2o2toNHHZZQ@mail.gmail.com>
+In-Reply-To: <CAKv+Gu9_xX3RgDNGB=T83vhg_snMKe0F2YPKp1S2o2toNHHZZQ@mail.gmail.com>
+Accept-Language: en-US
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Mutt/1.10.1 (2018-07-13)
+x-ms-exchange-messagesentrepresentingtype: 1
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.143.242.75]
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <CDDA16D306AADF4A96E170322B65887B@dell.com>
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,1.0.8
+ definitions=2019-10-10_06:2019-10-10,2019-10-10 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0 mlxscore=0
+ suspectscore=0 bulkscore=0 phishscore=0 mlxlogscore=999 priorityscore=1501
+ adultscore=0 clxscore=1015 malwarescore=0 spamscore=0 impostorscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-1908290000
+ definitions=main-1910100155
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 lowpriorityscore=0 impostorscore=0
+ suspectscore=0 phishscore=0 priorityscore=1501 bulkscore=0 mlxscore=0
+ malwarescore=0 adultscore=0 spamscore=0 mlxlogscore=999 clxscore=1015
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-1908290000
+ definitions=main-1910100155
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 10/10/19 2:43 AM, Daniel Kiper wrote:
-> On Wed, Oct 09, 2019 at 05:43:31PM -0700, Randy Dunlap wrote:
->> Hi,
->>
->> Questions and comments below...
->> Thanks.
->>
->> On 10/9/19 3:53 AM, Daniel Kiper wrote:
->>
->>> Suggested-by: H. Peter Anvin <hpa@zytor.com>
->>> Signed-off-by: Daniel Kiper <daniel.kiper@oracle.com>
->>> Reviewed-by: Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
->>> Reviewed-by: Ross Philipson <ross.philipson@oracle.com>
->>> ---
->>
->>> ---
->>>  Documentation/x86/boot.rst             | 121 +++++++++++++++++++++++++++++++++
->>>  arch/x86/boot/Makefile                 |   2 +-
->>>  arch/x86/boot/compressed/Makefile      |   4 +-
->>>  arch/x86/boot/compressed/kernel_info.S |  17 +++++
->>>  arch/x86/boot/header.S                 |   1 +
->>>  arch/x86/boot/tools/build.c            |   5 ++
->>>  arch/x86/include/uapi/asm/bootparam.h  |   1 +
->>>  7 files changed, 148 insertions(+), 3 deletions(-)
->>>  create mode 100644 arch/x86/boot/compressed/kernel_info.S
->>>
->>> diff --git a/Documentation/x86/boot.rst b/Documentation/x86/boot.rst
->>> index 08a2f100c0e6..d5323a39f5e3 100644
->>> --- a/Documentation/x86/boot.rst
->>> +++ b/Documentation/x86/boot.rst
->>> @@ -68,8 +68,25 @@ Protocol 2.12	(Kernel 3.8) Added the xloadflags field and extension fields
->>>  Protocol 2.13	(Kernel 3.14) Support 32- and 64-bit flags being set in
->>>  		xloadflags to support booting a 64-bit kernel from 32-bit
->>>  		EFI
->>> +
->>> +Protocol 2.14:	BURNT BY INCORRECT COMMIT ae7e1238e68f2a472a125673ab506d49158c1889
->>> +		(x86/boot: Add ACPI RSDP address to setup_header)
->>> +		DO NOT USE!!! ASSUME SAME AS 2.13.
->>> +
->>> +Protocol 2.15:	(Kernel 5.5) Added the kernel_info.
->>>  =============	============================================================
->>>
->>> +.. note::
->>> +     The protocol version number should be changed only if the setup header
->>> +     is changed. There is no need to update the version number if boot_params
->>> +     or kernel_info are changed. Additionally, it is recommended to use
->>> +     xloadflags (in this case the protocol version number should not be
->>> +     updated either) or kernel_info to communicate supported Linux kernel
->>> +     features to the boot loader. Due to very limited space available in
->>> +     the original setup header every update to it should be considered
->>> +     with great care. Starting from the protocol 2.15 the primary way to
->>> +     communicate things to the boot loader is the kernel_info.
->>> +
->>>
->>>  Memory Layout
->>>  =============
->>> @@ -207,6 +224,7 @@ Offset/Size	Proto		Name			Meaning
->>>  0258/8		2.10+		pref_address		Preferred loading address
->>>  0260/4		2.10+		init_size		Linear memory required during initialization
->>>  0264/4		2.11+		handover_offset		Offset of handover entry point
->>> +0268/4		2.15+		kernel_info_offset	Offset of the kernel_info
->>>  ===========	========	=====================	============================================
->>>
->>>  .. note::
->>> @@ -855,6 +873,109 @@ Offset/size:	0x264/4
->>>
->>>    See EFI HANDOVER PROTOCOL below for more details.
->>>
->>> +============	==================
->>> +Field name:	kernel_info_offset
->>> +Type:		read
->>> +Offset/size:	0x268/4
->>> +Protocol:	2.15+
->>> +============	==================
->>> +
->>> +  This field is the offset from the beginning of the kernel image to the
->>> +  kernel_info. It is embedded in the Linux image in the uncompressed
->>                   ^^
->>    What does      It   refer to, please?
-> 
-> s/It/The kernel_info structure/ Is it better?
+Hi Ard,
 
-Yes.
+Thank you for the review comments.=20
 
->>> +  protected mode region.
->>> +
->>> +
->>> +The kernel_info
->>> +===============
->>> +
->>> +The relationships between the headers are analogous to the various data
->>> +sections:
->>> +
->>> +  setup_header = .data
->>> +  boot_params/setup_data = .bss
->>> +
->>> +What is missing from the above list? That's right:
->>> +
->>> +  kernel_info = .rodata
->>> +
->>> +We have been (ab)using .data for things that could go into .rodata or .bss for
->>> +a long time, for lack of alternatives and -- especially early on -- inertia.
->>> +Also, the BIOS stub is responsible for creating boot_params, so it isn't
->>> +available to a BIOS-based loader (setup_data is, though).
->>> +
->>> +setup_header is permanently limited to 144 bytes due to the reach of the
->>> +2-byte jump field, which doubles as a length field for the structure, combined
->>> +with the size of the "hole" in struct boot_params that a protected-mode loader
->>> +or the BIOS stub has to copy it into. It is currently 119 bytes long, which
->>> +leaves us with 25 very precious bytes. This isn't something that can be fixed
->>> +without revising the boot protocol entirely, breaking backwards compatibility.
->>> +
->>> +boot_params proper is limited to 4096 bytes, but can be arbitrarily extended
->>> +by adding setup_data entries. It cannot be used to communicate properties of
->>> +the kernel image, because it is .bss and has no image-provided content.
->>> +
->>> +kernel_info solves this by providing an extensible place for information about
->>> +the kernel image. It is readonly, because the kernel cannot rely on a
->>> +bootloader copying its contents anywhere, but that is OK; if it becomes
->>> +necessary it can still contain data items that an enabled bootloader would be
->>> +expected to copy into a setup_data chunk.
->>> +
->>> +All kernel_info data should be part of this structure. Fixed size data have to
->>> +be put before kernel_info_var_len_data label. Variable size data have to be put
->>> +behind kernel_info_var_len_data label. Each chunk of variable size data has to
->>
->>    s/behind/after/
-> 
-> OK.
-> 
->>> +be prefixed with header/magic and its size, e.g.:
->>> +
->>> +  kernel_info:
->>> +          .ascii  "LToP"          /* Header, Linux top (structure). */
->>> +          .long   kernel_info_var_len_data - kernel_info
->>> +          .long   kernel_info_end - kernel_info
->>> +          .long   0x01234567      /* Some fixed size data for the bootloaders. */
->>> +  kernel_info_var_len_data:
->>> +  example_struct:                 /* Some variable size data for the bootloaders. */
->>> +          .ascii  "EsTT"          /* Header/Magic. */
->>> +          .long   example_struct_end - example_struct
->>> +          .ascii  "Struct"
->>> +          .long   0x89012345
->>> +  example_struct_end:
->>> +  example_strings:                /* Some variable size data for the bootloaders. */
->>> +          .ascii  "EsTs"          /* Header/Magic. */
->>
->> Where do the Magic values "EsTT" and "EsTs" come from?
->> where are they defined?
-> 
-> EsTT == Example STrucT
-> EsTs == Example STringS
-> 
-> Anyway, it can be anything which does not collide with existing variable
-> length data magics. There are none right now. So, it can be anything.
-> Maybe I should add something saying that.
+On Wed, Oct 09, 2019 at 04:11:04PM +0200, Ard Biesheuvel wrote:
+> On Wed, 2 Oct 2019 at 21:44, <Narendra.K@dell.com> wrote:
+> >
+> > From: Narendra K <Narendra.K@dell.com>
+> >
+> > For the EFI_RCI2_TABLE kconfig option, 'make oldconfig' asks the user
+> > for input as it is a new kconfig option in kernel version 5.4. This pat=
+ch
+> > modifies the kconfig option to ask the user for input only when CONFIG_=
+X86
+> > or CONFIG_COMPILE_TEST is set to y.
+> >
+> > The patch also makes EFI_RCI2_TABLE kconfig option depend on CONFIG_EFI=
+.
+> >
+> > Signed-off-by: Narendra K <Narendra.K@dell.com>
+> > ---
+> > The patch is created on kernel version 5.4-rc1.
+> >
+> > Hi Ard, I have made following changes -
+> >
+> > - changed the prompt string from "EFI Runtime Configuration
+> > Interface Table Version 2 Support" to "EFI RCI Table Version 2 Support"
+> > as the string crossed 80 char limit.
+> >
+> > - added "depends on EFI" so that code builds only when CONFIG_EFI is
+> > set to y.
+> >
+> > - added 'default n' for ease of understanding though default is set to =
+n.
+> >
+>=20
+> None of these changes are necessary, tbh. 'depends on EFI' is implied
+> by the placement of the option, and default n is indeed the default.
 
-Yes, please.
+I will drop the changes in the next version of the patch.
 
-thanks.
--- 
-~Randy
+>=20
+>=20
+> >  drivers/firmware/efi/Kconfig | 5 ++++-
+> >  1 file changed, 4 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/firmware/efi/Kconfig b/drivers/firmware/efi/Kconfi=
+g
+> > index 178ee8106828..6e4c46e8a954 100644
+> > --- a/drivers/firmware/efi/Kconfig
+> > +++ b/drivers/firmware/efi/Kconfig
+> > @@ -181,7 +181,10 @@ config RESET_ATTACK_MITIGATION
+> >           reboots.
+> >
+> >  config EFI_RCI2_TABLE
+> > -       bool "EFI Runtime Configuration Interface Table Version 2 Suppo=
+rt"
+> > +       bool
+> > +       prompt "EFI RCI Table Version 2 Support" if X86 || COMPILE_TEST
+>=20
+> You can drop the || COMPILE_TEST as well.
+
+I will drop this part of the change in the next version of the patch.=20
+
+--=20
+With regards,
+Narendra K=
