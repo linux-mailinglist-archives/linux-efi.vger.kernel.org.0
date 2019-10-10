@@ -2,368 +2,240 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F88CD1CC0
-	for <lists+linux-efi@lfdr.de>; Thu, 10 Oct 2019 01:20:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2598FD1D91
+	for <lists+linux-efi@lfdr.de>; Thu, 10 Oct 2019 02:44:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732716AbfJIXUA (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 9 Oct 2019 19:20:00 -0400
-Received: from mga04.intel.com ([192.55.52.120]:52591 "EHLO mga04.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1732715AbfJIXT7 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Wed, 9 Oct 2019 19:19:59 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 09 Oct 2019 16:19:58 -0700
-X-IronPort-AV: E=Sophos;i="5.67,277,1566889200"; 
-   d="scan'208";a="205905207"
-Received: from dwillia2-desk3.jf.intel.com (HELO dwillia2-desk3.amr.corp.intel.com) ([10.54.39.16])
-  by orsmga002-auth.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 09 Oct 2019 16:19:57 -0700
-Subject: [PATCH v6 12/12] acpi/numa/hmat: Register "soft reserved" memory as
- an "hmem" device
-From:   Dan Williams <dan.j.williams@intel.com>
-To:     mingo@redhat.com
-Cc:     Len Brown <lenb@kernel.org>, Keith Busch <kbusch@kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        peterz@infradead.org, ard.biesheuvel@linaro.org, x86@kernel.org,
-        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org
-Date:   Wed, 09 Oct 2019 16:05:40 -0700
-Message-ID: <157066234020.1059972.12129030288710665734.stgit@dwillia2-desk3.amr.corp.intel.com>
-In-Reply-To: <157066227329.1059972.5659620631541203458.stgit@dwillia2-desk3.amr.corp.intel.com>
-References: <157066227329.1059972.5659620631541203458.stgit@dwillia2-desk3.amr.corp.intel.com>
-User-Agent: StGit/0.18-2-gc94f
+        id S1732292AbfJJAoI (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 9 Oct 2019 20:44:08 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:50502 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731553AbfJJAoI (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 9 Oct 2019 20:44:08 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
+        Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:
+        Subject:Sender:Reply-To:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=50od/B3PK0CJO1ZT1qu05XYWV3Ldcc+kIxtp//OtB+E=; b=l8g4s4edagE05Kh3Sqcy98sH/
+        gqt8BJzo0AvezCil0cCxfu/nx/SPgwTNbirqwkXY8R3Bytw6iwSB/OnGeJ+wqIUm/KRszl5rreync
+        a1pTNC/xuTjMuDTU1PjRRP5L2zheXEFBeTJ222Rm3U4uVaTMTziHaI3cvZkeNekDOMam+0au0EcCp
+        pAwJFZEqGuZlrFqxUSVPJ9eD3Zqtsh4qAsIe6tyYul6B8holW4Q+Y4xEGStBngYYpw3SsQnKYpACI
+        PpHpLMRnvH530lUGesEr3FJg5n45i/MHelHXF3oTJtvD0yPbhkLZziAkkA2SVcNwRYAEi0wj29cFX
+        i1TviFx+Q==;
+Received: from [2601:1c0:6280:3f0::9ef4]
+        by bombadil.infradead.org with esmtpsa (Exim 4.92.2 #3 (Red Hat Linux))
+        id 1iIMYG-0002Wz-Q9; Thu, 10 Oct 2019 00:43:32 +0000
+Subject: Re: [PATCH v3 1/3] x86/boot: Introduce the kernel_info
+To:     Daniel Kiper <daniel.kiper@oracle.com>, linux-efi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, x86@kernel.org,
+        xen-devel@lists.xenproject.org
+Cc:     ard.biesheuvel@linaro.org, boris.ostrovsky@oracle.com,
+        bp@alien8.de, corbet@lwn.net, dave.hansen@linux.intel.com,
+        luto@kernel.org, peterz@infradead.org, eric.snowberg@oracle.com,
+        hpa@zytor.com, jgross@suse.com, konrad.wilk@oracle.com,
+        mingo@redhat.com, ross.philipson@oracle.com, tglx@linutronix.de
+References: <20191009105358.32256-1-daniel.kiper@oracle.com>
+ <20191009105358.32256-2-daniel.kiper@oracle.com>
+From:   Randy Dunlap <rdunlap@infradead.org>
+Message-ID: <181249b6-5833-6f29-7d38-6dacc3f8ee62@infradead.org>
+Date:   Wed, 9 Oct 2019 17:43:31 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.1.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <20191009105358.32256-2-daniel.kiper@oracle.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Memory that has been tagged EFI_MEMORY_SP, and has performance
-properties described by the ACPI HMAT is expected to have an application
-specific consumer.
+Hi,
 
-Those consumers may want 100% of the memory capacity to be reserved from
-any usage by the kernel. By default, with this enabling, a platform
-device is created to represent this differentiated resource.
+Questions and comments below...
+Thanks.
 
-The device-dax "hmem" driver claims these devices by default and
-provides an mmap interface for the target application.  If the
-administrator prefers, the hmem resource range can be made available to
-the core-mm via the device-dax hotplug facility, kmem, to online the
-memory with its own numa node.
 
-This was tested with an emulated HMAT produced by qemu (with the pending
-HMAT enabling patches), and "efi_fake_mem=8G@9G:0x40000" on the kernel
-command line to mark the memory ranges associated with node2 and node3
-as EFI_MEMORY_SP.
+On 10/9/19 3:53 AM, Daniel Kiper wrote:
 
-qemu numa configuration options:
+> Suggested-by: H. Peter Anvin <hpa@zytor.com>
+> Signed-off-by: Daniel Kiper <daniel.kiper@oracle.com>
+> Reviewed-by: Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
+> Reviewed-by: Ross Philipson <ross.philipson@oracle.com>
+> ---
 
--numa node,mem=4G,cpus=0-19,nodeid=0
--numa node,mem=4G,cpus=20-39,nodeid=1
--numa node,mem=4G,nodeid=2
--numa node,mem=4G,nodeid=3
--numa dist,src=0,dst=0,val=10
--numa dist,src=0,dst=1,val=21
--numa dist,src=0,dst=2,val=21
--numa dist,src=0,dst=3,val=21
--numa dist,src=1,dst=0,val=21
--numa dist,src=1,dst=1,val=10
--numa dist,src=1,dst=2,val=21
--numa dist,src=1,dst=3,val=21
--numa dist,src=2,dst=0,val=21
--numa dist,src=2,dst=1,val=21
--numa dist,src=2,dst=2,val=10
--numa dist,src=2,dst=3,val=21
--numa dist,src=3,dst=0,val=21
--numa dist,src=3,dst=1,val=21
--numa dist,src=3,dst=2,val=21
--numa dist,src=3,dst=3,val=10
--numa hmat-lb,initiator=0,target=0,hierarchy=memory,data-type=access-latency,base-lat=10,latency=5
--numa hmat-lb,initiator=0,target=0,hierarchy=memory,data-type=access-bandwidth,base-bw=20,bandwidth=5
--numa hmat-lb,initiator=0,target=1,hierarchy=memory,data-type=access-latency,base-lat=10,latency=10
--numa hmat-lb,initiator=0,target=1,hierarchy=memory,data-type=access-bandwidth,base-bw=20,bandwidth=10
--numa hmat-lb,initiator=0,target=2,hierarchy=memory,data-type=access-latency,base-lat=10,latency=15
--numa hmat-lb,initiator=0,target=2,hierarchy=memory,data-type=access-bandwidth,base-bw=20,bandwidth=15
--numa hmat-lb,initiator=0,target=3,hierarchy=memory,data-type=access-latency,base-lat=10,latency=20
--numa hmat-lb,initiator=0,target=3,hierarchy=memory,data-type=access-bandwidth,base-bw=20,bandwidth=20
--numa hmat-lb,initiator=1,target=0,hierarchy=memory,data-type=access-latency,base-lat=10,latency=10
--numa hmat-lb,initiator=1,target=0,hierarchy=memory,data-type=access-bandwidth,base-bw=20,bandwidth=10
--numa hmat-lb,initiator=1,target=1,hierarchy=memory,data-type=access-latency,base-lat=10,latency=5
--numa hmat-lb,initiator=1,target=1,hierarchy=memory,data-type=access-bandwidth,base-bw=20,bandwidth=5
--numa hmat-lb,initiator=1,target=2,hierarchy=memory,data-type=access-latency,base-lat=10,latency=15
--numa hmat-lb,initiator=1,target=2,hierarchy=memory,data-type=access-bandwidth,base-bw=20,bandwidth=15
--numa hmat-lb,initiator=1,target=3,hierarchy=memory,data-type=access-latency,base-lat=10,latency=20
--numa hmat-lb,initiator=1,target=3,hierarchy=memory,data-type=access-bandwidth,base-bw=20,bandwidth=20
+> ---
+>  Documentation/x86/boot.rst             | 121 +++++++++++++++++++++++++++++++++
+>  arch/x86/boot/Makefile                 |   2 +-
+>  arch/x86/boot/compressed/Makefile      |   4 +-
+>  arch/x86/boot/compressed/kernel_info.S |  17 +++++
+>  arch/x86/boot/header.S                 |   1 +
+>  arch/x86/boot/tools/build.c            |   5 ++
+>  arch/x86/include/uapi/asm/bootparam.h  |   1 +
+>  7 files changed, 148 insertions(+), 3 deletions(-)
+>  create mode 100644 arch/x86/boot/compressed/kernel_info.S
+> 
+> diff --git a/Documentation/x86/boot.rst b/Documentation/x86/boot.rst
+> index 08a2f100c0e6..d5323a39f5e3 100644
+> --- a/Documentation/x86/boot.rst
+> +++ b/Documentation/x86/boot.rst
+> @@ -68,8 +68,25 @@ Protocol 2.12	(Kernel 3.8) Added the xloadflags field and extension fields
+>  Protocol 2.13	(Kernel 3.14) Support 32- and 64-bit flags being set in
+>  		xloadflags to support booting a 64-bit kernel from 32-bit
+>  		EFI
+> +
+> +Protocol 2.14:	BURNT BY INCORRECT COMMIT ae7e1238e68f2a472a125673ab506d49158c1889
+> +		(x86/boot: Add ACPI RSDP address to setup_header)
+> +		DO NOT USE!!! ASSUME SAME AS 2.13.
+> +
+> +Protocol 2.15:	(Kernel 5.5) Added the kernel_info.
+>  =============	============================================================
+>  
+> +.. note::
+> +     The protocol version number should be changed only if the setup header
+> +     is changed. There is no need to update the version number if boot_params
+> +     or kernel_info are changed. Additionally, it is recommended to use
+> +     xloadflags (in this case the protocol version number should not be
+> +     updated either) or kernel_info to communicate supported Linux kernel
+> +     features to the boot loader. Due to very limited space available in
+> +     the original setup header every update to it should be considered
+> +     with great care. Starting from the protocol 2.15 the primary way to
+> +     communicate things to the boot loader is the kernel_info.
+> +
+>  
+>  Memory Layout
+>  =============
+> @@ -207,6 +224,7 @@ Offset/Size	Proto		Name			Meaning
+>  0258/8		2.10+		pref_address		Preferred loading address
+>  0260/4		2.10+		init_size		Linear memory required during initialization
+>  0264/4		2.11+		handover_offset		Offset of handover entry point
+> +0268/4		2.15+		kernel_info_offset	Offset of the kernel_info
+>  ===========	========	=====================	============================================
+>  
+>  .. note::
+> @@ -855,6 +873,109 @@ Offset/size:	0x264/4
+>  
+>    See EFI HANDOVER PROTOCOL below for more details.
+>  
+> +============	==================
+> +Field name:	kernel_info_offset
+> +Type:		read
+> +Offset/size:	0x268/4
+> +Protocol:	2.15+
+> +============	==================
+> +
+> +  This field is the offset from the beginning of the kernel image to the
+> +  kernel_info. It is embedded in the Linux image in the uncompressed
+                  ^^
+   What does      It   refer to, please?
 
-Result:
+> +  protected mode region.
+> +
+> +
+> +The kernel_info
+> +===============
+> +
+> +The relationships between the headers are analogous to the various data
+> +sections:
+> +
+> +  setup_header = .data
+> +  boot_params/setup_data = .bss
+> +
+> +What is missing from the above list? That's right:
+> +
+> +  kernel_info = .rodata
+> +
+> +We have been (ab)using .data for things that could go into .rodata or .bss for
+> +a long time, for lack of alternatives and -- especially early on -- inertia.
+> +Also, the BIOS stub is responsible for creating boot_params, so it isn't
+> +available to a BIOS-based loader (setup_data is, though).
+> +
+> +setup_header is permanently limited to 144 bytes due to the reach of the
+> +2-byte jump field, which doubles as a length field for the structure, combined
+> +with the size of the "hole" in struct boot_params that a protected-mode loader
+> +or the BIOS stub has to copy it into. It is currently 119 bytes long, which
+> +leaves us with 25 very precious bytes. This isn't something that can be fixed
+> +without revising the boot protocol entirely, breaking backwards compatibility.
+> +
+> +boot_params proper is limited to 4096 bytes, but can be arbitrarily extended
+> +by adding setup_data entries. It cannot be used to communicate properties of
+> +the kernel image, because it is .bss and has no image-provided content.
+> +
+> +kernel_info solves this by providing an extensible place for information about
+> +the kernel image. It is readonly, because the kernel cannot rely on a
+> +bootloader copying its contents anywhere, but that is OK; if it becomes
+> +necessary it can still contain data items that an enabled bootloader would be
+> +expected to copy into a setup_data chunk.
+> +
+> +All kernel_info data should be part of this structure. Fixed size data have to
+> +be put before kernel_info_var_len_data label. Variable size data have to be put
+> +behind kernel_info_var_len_data label. Each chunk of variable size data has to
 
-# daxctl list -RDu
-[
-  {
-    "path":"\/platform\/hmem.1",
-    "id":1,
-    "size":"4.00 GiB (4.29 GB)",
-    "align":2097152,
-    "devices":[
-      {
-        "chardev":"dax1.0",
-        "size":"4.00 GiB (4.29 GB)"
-      }
-    ]
-  },
-  {
-    "path":"\/platform\/hmem.0",
-    "id":0,
-    "size":"4.00 GiB (4.29 GB)",
-    "align":2097152,
-    "devices":[
-      {
-        "chardev":"dax0.0",
-        "size":"4.00 GiB (4.29 GB)"
-      }
-    ]
-  }
-]
+   s/behind/after/
 
-# cat /proc/iomem
-[..]
-240000000-43fffffff : Soft Reserved
-  240000000-33fffffff : hmem.0
-    240000000-33fffffff : dax0.0
-  340000000-43fffffff : hmem.1
-    340000000-43fffffff : dax1.0
+> +be prefixed with header/magic and its size, e.g.:
+> +
+> +  kernel_info:
+> +          .ascii  "LToP"          /* Header, Linux top (structure). */
+> +          .long   kernel_info_var_len_data - kernel_info
+> +          .long   kernel_info_end - kernel_info
+> +          .long   0x01234567      /* Some fixed size data for the bootloaders. */
+> +  kernel_info_var_len_data:
+> +  example_struct:                 /* Some variable size data for the bootloaders. */
+> +          .ascii  "EsTT"          /* Header/Magic. */
+> +          .long   example_struct_end - example_struct
+> +          .ascii  "Struct"
+> +          .long   0x89012345
+> +  example_struct_end:
+> +  example_strings:                /* Some variable size data for the bootloaders. */
+> +          .ascii  "EsTs"          /* Header/Magic. */
 
-Cc: Len Brown <lenb@kernel.org>
-Cc: Keith Busch <kbusch@kernel.org>
-Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: Vishal Verma <vishal.l.verma@intel.com>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
----
- drivers/acpi/numa/Kconfig |    1 
- drivers/acpi/numa/hmat.c  |  136 +++++++++++++++++++++++++++++++++++++++++----
- 2 files changed, 125 insertions(+), 12 deletions(-)
+Where do the Magic values "EsTT" and "EsTs" come from?
+where are they defined?
 
-diff --git a/drivers/acpi/numa/Kconfig b/drivers/acpi/numa/Kconfig
-index acbd5aa76e40..fcf2e556d69d 100644
---- a/drivers/acpi/numa/Kconfig
-+++ b/drivers/acpi/numa/Kconfig
-@@ -9,6 +9,7 @@ config ACPI_HMAT
- 	bool "ACPI Heterogeneous Memory Attribute Table Support"
- 	depends on ACPI_NUMA
- 	select HMEM_REPORTING
-+	select MEMREGION
- 	help
- 	 If set, this option has the kernel parse and report the
- 	 platform's ACPI HMAT (Heterogeneous Memory Attributes Table),
-diff --git a/drivers/acpi/numa/hmat.c b/drivers/acpi/numa/hmat.c
-index 4707eb9dd07b..eaa5a0f93dec 100644
---- a/drivers/acpi/numa/hmat.c
-+++ b/drivers/acpi/numa/hmat.c
-@@ -8,12 +8,18 @@
-  * the applicable attributes with the node's interfaces.
-  */
- 
-+#define pr_fmt(fmt) "acpi/hmat: " fmt
-+#define dev_fmt(fmt) "acpi/hmat: " fmt
-+
- #include <linux/acpi.h>
- #include <linux/bitops.h>
- #include <linux/device.h>
- #include <linux/init.h>
- #include <linux/list.h>
-+#include <linux/mm.h>
-+#include <linux/platform_device.h>
- #include <linux/list_sort.h>
-+#include <linux/memregion.h>
- #include <linux/memory.h>
- #include <linux/mutex.h>
- #include <linux/node.h>
-@@ -49,6 +55,7 @@ struct memory_target {
- 	struct list_head node;
- 	unsigned int memory_pxm;
- 	unsigned int processor_pxm;
-+	struct resource memregions;
- 	struct node_hmem_attrs hmem_attrs;
- 	struct list_head caches;
- 	struct node_cache_attrs cache_attrs;
-@@ -104,22 +111,36 @@ static __init void alloc_memory_initiator(unsigned int cpu_pxm)
- 	list_add_tail(&initiator->node, &initiators);
- }
- 
--static __init void alloc_memory_target(unsigned int mem_pxm)
-+static __init void alloc_memory_target(unsigned int mem_pxm,
-+		resource_size_t start, resource_size_t len)
- {
- 	struct memory_target *target;
- 
- 	target = find_mem_target(mem_pxm);
--	if (target)
--		return;
--
--	target = kzalloc(sizeof(*target), GFP_KERNEL);
--	if (!target)
--		return;
-+	if (!target) {
-+		target = kzalloc(sizeof(*target), GFP_KERNEL);
-+		if (!target)
-+			return;
-+		target->memory_pxm = mem_pxm;
-+		target->processor_pxm = PXM_INVAL;
-+		target->memregions = (struct resource) {
-+			.name	= "ACPI mem",
-+			.start	= 0,
-+			.end	= -1,
-+			.flags	= IORESOURCE_MEM,
-+		};
-+		list_add_tail(&target->node, &targets);
-+		INIT_LIST_HEAD(&target->caches);
-+	}
- 
--	target->memory_pxm = mem_pxm;
--	target->processor_pxm = PXM_INVAL;
--	list_add_tail(&target->node, &targets);
--	INIT_LIST_HEAD(&target->caches);
-+	/*
-+	 * There are potentially multiple ranges per PXM, so record each
-+	 * in the per-target memregions resource tree.
-+	 */
-+	if (!__request_region(&target->memregions, start, len, "memory target",
-+				IORESOURCE_MEM))
-+		pr_warn("failed to reserve %#llx - %#llx in pxm: %d\n",
-+				start, start + len, mem_pxm);
- }
- 
- static __init const char *hmat_data_type(u8 type)
-@@ -452,7 +473,7 @@ static __init int srat_parse_mem_affinity(union acpi_subtable_headers *header,
- 		return -EINVAL;
- 	if (!(ma->flags & ACPI_SRAT_MEM_ENABLED))
- 		return 0;
--	alloc_memory_target(ma->proximity_domain);
-+	alloc_memory_target(ma->proximity_domain, ma->base_address, ma->length);
- 	return 0;
- }
- 
-@@ -613,10 +634,91 @@ static void hmat_register_target_perf(struct memory_target *target)
- 	node_set_perf_attrs(mem_nid, &target->hmem_attrs, 0);
- }
- 
-+static void hmat_register_target_device(struct memory_target *target,
-+		struct resource *r)
-+{
-+	/* define a clean / non-busy resource for the platform device */
-+	struct resource res = {
-+		.start = r->start,
-+		.end = r->end,
-+		.flags = IORESOURCE_MEM,
-+	};
-+	struct platform_device *pdev;
-+	struct memregion_info info;
-+	int rc, id;
-+
-+	rc = region_intersects(res.start, resource_size(&res), IORESOURCE_MEM,
-+			IORES_DESC_SOFT_RESERVED);
-+	if (rc != REGION_INTERSECTS)
-+		return;
-+
-+	id = memregion_alloc(GFP_KERNEL);
-+	if (id < 0) {
-+		pr_err("memregion allocation failure for %pr\n", &res);
-+		return;
-+	}
-+
-+	pdev = platform_device_alloc("hmem", id);
-+	if (!pdev) {
-+		pr_err("hmem device allocation failure for %pr\n", &res);
-+		goto out_pdev;
-+	}
-+
-+	pdev->dev.numa_node = acpi_map_pxm_to_online_node(target->memory_pxm);
-+	info = (struct memregion_info) {
-+		.target_node = acpi_map_pxm_to_node(target->memory_pxm),
-+	};
-+	rc = platform_device_add_data(pdev, &info, sizeof(info));
-+	if (rc < 0) {
-+		pr_err("hmem memregion_info allocation failure for %pr\n", &res);
-+		goto out_pdev;
-+	}
-+
-+	rc = platform_device_add_resources(pdev, &res, 1);
-+	if (rc < 0) {
-+		pr_err("hmem resource allocation failure for %pr\n", &res);
-+		goto out_resource;
-+	}
-+
-+	rc = platform_device_add(pdev);
-+	if (rc < 0) {
-+		dev_err(&pdev->dev, "device add failed for %pr\n", &res);
-+		goto out_resource;
-+	}
-+
-+	return;
-+
-+out_resource:
-+	put_device(&pdev->dev);
-+out_pdev:
-+	memregion_free(id);
-+}
-+
-+static __init void hmat_register_target_devices(struct memory_target *target)
-+{
-+	struct resource *res;
-+
-+	/*
-+	 * Do not bother creating devices if no driver is available to
-+	 * consume them.
-+	 */
-+	if (!IS_ENABLED(CONFIG_DEV_DAX_HMEM))
-+		return;
-+
-+	for (res = target->memregions.child; res; res = res->sibling)
-+		hmat_register_target_device(target, res);
-+}
-+
- static void hmat_register_target(struct memory_target *target)
- {
- 	int nid = pxm_to_node(target->memory_pxm);
- 
-+	/*
-+	 * Devices may belong to either an offline or online
-+	 * node, so unconditionally add them.
-+	 */
-+	hmat_register_target_devices(target);
-+
- 	/*
- 	 * Skip offline nodes. This can happen when memory
- 	 * marked EFI_MEMORY_SP, "specific purpose", is applied
-@@ -677,11 +779,21 @@ static __init void hmat_free_structures(void)
- 	struct target_cache *tcache, *cnext;
- 
- 	list_for_each_entry_safe(target, tnext, &targets, node) {
-+		struct resource *res, *res_next;
-+
- 		list_for_each_entry_safe(tcache, cnext, &target->caches, node) {
- 			list_del(&tcache->node);
- 			kfree(tcache);
- 		}
-+
- 		list_del(&target->node);
-+		res = target->memregions.child;
-+		while (res) {
-+			res_next = res->sibling;
-+			__release_region(&target->memregions, res->start,
-+					resource_size(res));
-+			res = res_next;
-+		}
- 		kfree(target);
- 	}
- 
+> +          .long   example_strings_end - example_strings
+> +          .asciz  "String_0"
+> +          .asciz  "String_1"
+> +  example_strings_end:
+> +  kernel_info_end:
+> +
+> +This way the kernel_info is self-contained blob.
+> +
+> +
+> +Details of the kernel_info Fields
+> +=================================
+> +
+> +============	========
+> +Field name:	header
+> +Offset/size:	0x0000/4
+> +============	========
+> +
+> +  Contains the magic number "LToP" (0x506f544c).
+> +
+> +============	========
+> +Field name:	size
+> +Offset/size:	0x0004/4
+> +============	========
+> +
+> +  This field contains the size of the kernel_info including kernel_info.header.
+> +  It does not count kernel_info.kernel_info_var_len_data size. This field should be
+> +  used by the bootloaders to detect supported fixed size fields in the kernel_info
+> +  and beginning of kernel_info.kernel_info_var_len_data.
+> +
+> +============	========
+> +Field name:	size_total
+> +Offset/size:	0x0008/4
+> +============	========
+> +
+> +  This field contains the size of the kernel_info including kernel_info.header
+> +  and kernel_info.kernel_info_var_len_data.
+> +
+>  
+>  The Image Checksum
+>  ==================
 
+
+-- 
+~Randy
