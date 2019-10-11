@@ -2,167 +2,127 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C0010D3FFF
-	for <lists+linux-efi@lfdr.de>; Fri, 11 Oct 2019 14:55:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 00FC4D40BD
+	for <lists+linux-efi@lfdr.de>; Fri, 11 Oct 2019 15:13:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728109AbfJKMzV (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 11 Oct 2019 08:55:21 -0400
-Received: from mx0a-00154904.pphosted.com ([148.163.133.20]:47890 "EHLO
-        mx0a-00154904.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728033AbfJKMzU (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 11 Oct 2019 08:55:20 -0400
-Received: from pps.filterd (m0170392.ppops.net [127.0.0.1])
-        by mx0a-00154904.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id x9BCt9vU008412;
-        Fri, 11 Oct 2019 08:55:19 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dell.com; h=from : to : cc :
- subject : date : message-id : references : in-reply-to : content-type :
- content-id : content-transfer-encoding : mime-version; s=smtpout1;
- bh=k1tI6exljFfm3+StUh8XvsNFdSkCQrGl3UGrix+7rYc=;
- b=omjJpoXBv0h9tBUhbv8PJnkk6XtfYFMLONfojF2T1or5BUu2drUyesw3i9u6oOO9yVCA
- 0XOez+s2h2mDW1HembV9D46FuLvBtdUAHoFQIaC3AQQkVPdDYS+JNubvIdWPuWJXjVwV
- 32N0eN9+CfSQudqhaSfixaD+aT0oj1mboowiMM0cXbBrAPUQFz2s+N2yGlsXjHvFXBvz
- Cg72lDeh+2qWUFdBNiGyH25trKtheGuvzQGlIT6j5c4fjjsJ5xr8rlb8t9eT5LXWnQ0e
- fw1pDrhYSnpyX4TlVCZ4Kpgwp0J4PSsveMQzEufCne95wQOfjcSlQYa6iD6QgpicFdWs JQ== 
-Received: from mx0b-00154901.pphosted.com (mx0b-00154901.pphosted.com [67.231.157.37])
-        by mx0a-00154904.pphosted.com with ESMTP id 2vepbfpd38-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 11 Oct 2019 08:55:19 -0400
-Received: from pps.filterd (m0144103.ppops.net [127.0.0.1])
-        by mx0b-00154901.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id x9BCrBdw024395;
-        Fri, 11 Oct 2019 08:55:18 -0400
-Received: from ausxippc101.us.dell.com (ausxippc101.us.dell.com [143.166.85.207])
-        by mx0b-00154901.pphosted.com with ESMTP id 2vjj02f0vq-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 11 Oct 2019 08:55:18 -0400
-X-LoopCount0: from 10.166.132.130
-X-PREM-Routing: D-Outbound
-X-IronPort-AV: E=Sophos;i="5.60,346,1549951200"; 
-   d="scan'208";a="1310933796"
-From:   <Narendra.K@dell.com>
-To:     <geert@linux-m68k.org>
-CC:     <ard.biesheuvel@linaro.org>, <linux-efi@vger.kernel.org>,
-        <Mario.Limonciello@dell.com>, <tglx@linutronix.de>,
-        <linux-kernel@vger.kernel.org>, <james.morse@arm.com>,
-        <mingo@kernel.org>
-Subject: Re: [PATCH] Ask user input only when CONFIG_X86 or
- CONFIG_COMPILE_TEST is set to y
-Thread-Topic: [PATCH] Ask user input only when CONFIG_X86 or
- CONFIG_COMPILE_TEST is set to y
-Thread-Index: AQHVeVm8hd3/NfhPNEW1ErxPMn2a1adSB94AgAHOtgCAABHEgIAA+WUAgAAFC4CAADBvAA==
-Date:   Fri, 11 Oct 2019 12:55:12 +0000
-Message-ID: <20191011125446.GA2170@localhost.localdomain>
-References: <20191002194346.GA3792@localhost.localdomain>
- <CAKv+Gu9_xX3RgDNGB=T83vhg_snMKe0F2YPKp1S2o2toNHHZZQ@mail.gmail.com>
- <20191010174710.GA2405@localhost.localdomain>
- <CAMuHMdVriPMVWdNOD4ytZQFPmad7CvD_4utbw1PxMJBua1TSfQ@mail.gmail.com>
- <20191011094322.GA3065@localhost.localdomain>
- <CAMuHMdUMkyyCZACyJ7dvd4SaicpN77g5pFd0aGEzQW_q7m3Q0g@mail.gmail.com>
-In-Reply-To: <CAMuHMdUMkyyCZACyJ7dvd4SaicpN77g5pFd0aGEzQW_q7m3Q0g@mail.gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mutt/1.10.1 (2018-07-13)
-x-ms-exchange-messagesentrepresentingtype: 1
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.143.18.86]
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <A2717FECB6566849A28C4AB7B68DDB68@dell.com>
-Content-Transfer-Encoding: quoted-printable
-MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,1.0.8
- definitions=2019-10-11_08:2019-10-10,2019-10-11 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- adultscore=0 mlxlogscore=999 impostorscore=0 bulkscore=0 clxscore=1015
- spamscore=0 mlxscore=0 priorityscore=1501 suspectscore=0 phishscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-1908290000 definitions=main-1910110122
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 malwarescore=0 spamscore=0
- impostorscore=0 priorityscore=1501 suspectscore=0 bulkscore=0 phishscore=0
- mlxlogscore=999 lowpriorityscore=0 mlxscore=0 clxscore=1015
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-1908290000
- definitions=main-1910110123
+        id S1728204AbfJKNNM (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 11 Oct 2019 09:13:12 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:21266 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1728404AbfJKNNL (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 11 Oct 2019 09:13:11 -0400
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x9BD8Y0Q094757
+        for <linux-efi@vger.kernel.org>; Fri, 11 Oct 2019 09:13:10 -0400
+Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 2vjqj97c3e-1
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <linux-efi@vger.kernel.org>; Fri, 11 Oct 2019 09:13:10 -0400
+Received: from localhost
+        by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <linux-efi@vger.kernel.org> from <zohar@linux.ibm.com>;
+        Fri, 11 Oct 2019 14:13:08 +0100
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
+        by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+        Fri, 11 Oct 2019 14:13:04 +0100
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com [9.149.105.59])
+        by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x9BDD2OD50135232
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 11 Oct 2019 13:13:02 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 54091A4053;
+        Fri, 11 Oct 2019 13:13:02 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id C7CF1A4040;
+        Fri, 11 Oct 2019 13:12:59 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.85.178.57])
+        by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Fri, 11 Oct 2019 13:12:59 +0000 (GMT)
+Subject: Re: [PATCH v7 2/8] powerpc: add support to initialize ima policy
+ rules
+From:   Mimi Zohar <zohar@linux.ibm.com>
+To:     Nayna Jain <nayna@linux.ibm.com>, linuxppc-dev@ozlabs.org,
+        linux-efi@vger.kernel.org, linux-integrity@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Jeremy Kerr <jk@ozlabs.org>,
+        Matthew Garret <matthew.garret@nebula.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Claudio Carvalho <cclaudio@linux.ibm.com>,
+        George Wilson <gcwilson@linux.ibm.com>,
+        Elaine Palmer <erpalmer@us.ibm.com>,
+        Eric Ricther <erichte@linux.ibm.com>,
+        "Oliver O'Halloran" <oohall@gmail.com>
+Date:   Fri, 11 Oct 2019 09:12:59 -0400
+In-Reply-To: <1570497267-13672-3-git-send-email-nayna@linux.ibm.com>
+References: <1570497267-13672-1-git-send-email-nayna@linux.ibm.com>
+         <1570497267-13672-3-git-send-email-nayna@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.20.5 (3.20.5-1.fc24) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+x-cbid: 19101113-0008-0000-0000-000003212EDE
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19101113-0009-0000-0000-00004A403B8F
+Message-Id: <1570799579.5250.72.camel@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-10-11_08:,,
+ signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=919 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1908290000 definitions=main-1910110124
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, Oct 11, 2019 at 12:01:25PM +0200, Geert Uytterhoeven wrote:
-> > > > > > -       bool "EFI Runtime Configuration Interface Table Version=
- 2 Support"
-> > > > > > +       bool
-> > > > > > +       prompt "EFI RCI Table Version 2 Support" if X86 || COMP=
-ILE_TEST
-> > >
-> > > Why the split of bool and prompt?
-> > > Why not simply add a single line "depends on X86 || COMPILE_TEST"?
-> >
-> > It is because of the findings shared in [1]. Please let me know your
-> > thoughts on the findings.
->=20
-> So you want to prevent the user from seeing a prompt for an option he may
-> or may not need to enable, when running "make oldconfig"?
+On Mon, 2019-10-07 at 21:14 -0400, Nayna Jain wrote:
+> PowerNV systems uses kernel based bootloader, thus its secure boot
+> implementation uses kernel IMA security subsystem to verify the kernel
+> before kexec. 
 
-Geert,
+^use a Linux based bootloader, which rely on the IMA subsystem to
+enforce different secure boot modes.
 
-> The code in question is entirely architecture agnostic, and defaults
-> to 'n', so I am not convinced this is needed. (It came up in the
-> review as well)
+> Since the verification policy might differ based on the
+> secure boot mode of the system, the policies are defined at runtime.
 
->> "make oldconfig" still asks me the question on e.g. arm64, where it is
->> irrelevant, until arm64 variants of the hardware show up.
+^the policies need to be defined at runtime.
+> 
+> This patch implements the arch-specific support to define the IMA policy
+> rules based on the runtime secure boot mode of the system.
+> 
+> This patch provides arch-specific IMA policies if PPC_SECURE_BOOT
+> config is enabled.
+> 
+> Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
+> ---
+>  arch/powerpc/Kconfig           |  2 ++
+>  arch/powerpc/kernel/Makefile   |  2 +-
+>  arch/powerpc/kernel/ima_arch.c | 33 +++++++++++++++++++++++++++++++++
+>  include/linux/ima.h            |  3 ++-
+>  4 files changed, 38 insertions(+), 2 deletions(-)
+>  create mode 100644 arch/powerpc/kernel/ima_arch.c
+> 
+> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+> index b4a221886fcf..deb19ec6ba3d 100644
+> --- a/arch/powerpc/Kconfig
+> +++ b/arch/powerpc/Kconfig
+> @@ -938,6 +938,8 @@ config PPC_SECURE_BOOT
+>  	prompt "Enable secure boot support"
+>  	bool
+>  	depends on PPC_POWERNV
+> +	depends on IMA
+> +	depends on IMA_ARCH_POLICY
 
->> So IMHO it should have "depends on X86 || COMPILE_TEST".
+As IMA_ARCH_POLICY is dependent on IMA, I don't see a need for
+depending on both IMA and IMA_ARCH_POLICY.
 
-From the discussion in [1] and [2](pasted a part of it above), my understan=
-ding
-of the issue you reported is that 'make oldconfig' asks the user a question=
- for arm64
-though the EFI_RCI2_TABLE is not relevant for arm64. From the tests,
-it seemed like adding "depends on X86 || COMPILE_TEST" does not fix the
-issue, splitting bool into bool + prompt fixes it.
+Mimi
 
-Please let me know if I am missing any detail in the issue you reported. =20
-
-With the way EFI_RCI2_TABLE is currently defined, my understanding is
-that 'make oldconfig' does not set the EFI_RCI2_TABLE to 'y' by default
-on arm64, but it asks the user the question. User has to say 'y' if he
-wants it to be set to 'y', else by default 'n' is set. This behavior is
-as expected.=20
-
->=20
-> One common approach is to let the Kconfig symbol for the platform (not fo=
-r
-> all of X86!) select EFI_RCI2_TABLE.
-> That way it will be enabled automatically when needed.
-
-We did not intend to enable EFI_RCI2_TABLE option by default even on all
-X86 systems from the begining. As a result, we chose to set it to 'n' by
-default and added the guidance in 'help' section to say 'y' for Dell EMC
-PowerEdge systems.=20
-
->=20
-> Another approach is to not force the option on, but guide the user toward=
-s
-> enabling it, by adding "default y if <platform_symbol>".
-
-As mentioned above, we want to keep the default to n.
-
-> Without the "|| COMPILE_TEST", you cannot enable compile-testing of
-> the driver on non-x86 platforms with EFI.
-
-Ok. We could keep the check. Could we make it independent of platforms
-by adding 'defbool y if COMPILE_TEST' ?=20
-
-[1] Re: [PATCH 4/5] efi: Export Runtime Configuration Interface table to sy=
-sfs
-https://lore.kernel.org/linux-efi/20190812150452.27983-5-ard.biesheuvel@lin=
-aro.org/T/#m0d73b4fa0dd7ece5038e4c9580dcc4e2ce5bd63c
-
-[2] Re: [PATCH 4/5] efi: Export Runtime Configuration Interface table to sy=
-sfs
-https://lore.kernel.org/linux-efi/20190812150452.27983-5-ard.biesheuvel@lin=
-aro.org/T/#mf45a9bc1861c71f110c800a53c60f0be65c68ec7
---=20
-With regards,
-Narendra K=
