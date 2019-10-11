@@ -2,60 +2,61 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C396D5316
-	for <lists+linux-efi@lfdr.de>; Sun, 13 Oct 2019 00:35:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 02E04D54FC
+	for <lists+linux-efi@lfdr.de>; Sun, 13 Oct 2019 09:36:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728022AbfJLWfF (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sat, 12 Oct 2019 18:35:05 -0400
-Received: from mail.kernel.org ([198.145.29.99]:45502 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727262AbfJLWfF (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Sat, 12 Oct 2019 18:35:05 -0400
-Subject: Re: [GIT PULL] EFI fixes
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1570919705;
-        bh=/7o2qmc54YKDZd9/+fl9cBiJguaPlhmAXlQAccqkwlM=;
-        h=From:In-Reply-To:References:Date:To:Cc:From;
-        b=WGIhG9bkzaR+ZjH45oHcnnaYlxqgEhDBXshqH/27N6N5uoB4G4kyuerCUP8C3wlGe
-         TGtbcz7fOPxFWmVzvxuyDpeBf6Imnx9K0u1N2J3Yczjq8XM70wLkJFM7H3Z26MjJOr
-         S/12jmpu7j8x5h9LwOePSYbPaR6ggHqFA5Myfkak=
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <20191012130139.GA10386@gmail.com>
-References: <20191012130139.GA10386@gmail.com>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <20191012130139.GA10386@gmail.com>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git
- efi-urgent-for-linus
-X-PR-Tracked-Commit-Id: be59d57f98065af0b8472f66a0a969207b168680
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 9b4e40c8fe1e120fef93985de7ff6a97fe9e7dd3
-Message-Id: <157091970525.17047.18085630474579119447.pr-tracker-bot@kernel.org>
-Date:   Sat, 12 Oct 2019 22:35:05 +0000
-To:     Ingo Molnar <mingo@kernel.org>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-kernel@vger.kernel.org,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        James Morse <james.morse@arm.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Peter Zijlstra <a.p.zijlstra@chello.nl>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linux-efi@vger.kernel.org
+        id S1728653AbfJMHgC (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sun, 13 Oct 2019 03:36:02 -0400
+Received: from [206.81.8.171] ([206.81.8.171]:56546 "EHLO varon.localdomain"
+        rhost-flags-FAIL-FAIL-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1728198AbfJMHgB (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Sun, 13 Oct 2019 03:36:01 -0400
+Received: from 127.0.0.1 (varon [127.0.0.1])
+        by varon.localdomain (Postfix) with SMTP id 290C355D635;
+        Fri, 11 Oct 2019 10:21:17 +0000 (UTC)
+Received: from (HELO 1iqb) [176.71.184.19] by 127.0.0.1 for <linhao63@jlonline.com>; Fri, 11 Oct 2019 03:19:21 -0700
+Message-ID: <4-806$5o5$$r$as6q109r731c@hkg.so2qo8>
+From:   "Mr Barrister Hans Erich" <dave@dbsoundfactory.com>
+Reply-To: "Mr Barrister Hans Erich" <dave@dbsoundfactory.com>
+To:     linhao63@jlonline.com
+Subject: RE:PERSONAL LETTER FROM MRS RASHIA AMIRA ??
+Date:   Fri, 11 Oct 19 03:19:21 GMT
+X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+        boundary="C.F387.BA..3D"
+X-Priority: 3
+X-MSMail-Priority: Normal
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The pull request you sent on Sat, 12 Oct 2019 15:01:39 +0200:
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git efi-urgent-for-linus
+--C.F387.BA..3D
+Content-Type: text/plain;
+Content-Transfer-Encoding: quoted-printable
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/9b4e40c8fe1e120fef93985de7ff6a97fe9e7dd3
+Greetings
 
-Thank you!
+My name is Barrister Hans Erich.
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.wiki.kernel.org/userdoc/prtracker
+I have a client who is interested to invest in your country, she is a well=
+ known politician in her country and deserve a lucrative investment partne=
+rship with you outside her country without any delay   Please can you mana=
+ge such investment please Kindly reply for further details.
+
+Your full nameS -----------
+
+
+Your urgent response will be appreciated
+
+Thank you and God bless you.
+
+Barrister Hans Erich
+
+Yours sincerely,
+Barrister Hans Erich
+
+--C.F387.BA..3D--
+
