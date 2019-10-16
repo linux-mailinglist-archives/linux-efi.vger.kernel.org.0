@@ -2,85 +2,130 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EAB1AD95AA
-	for <lists+linux-efi@lfdr.de>; Wed, 16 Oct 2019 17:33:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EB3E2D95AD
+	for <lists+linux-efi@lfdr.de>; Wed, 16 Oct 2019 17:34:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730523AbfJPPd1 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 16 Oct 2019 11:33:27 -0400
-Received: from smtprelay0040.hostedemail.com ([216.40.44.40]:58453 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726332AbfJPPd1 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 16 Oct 2019 11:33:27 -0400
-X-Greylist: delayed 565 seconds by postgrey-1.27 at vger.kernel.org; Wed, 16 Oct 2019 11:33:26 EDT
-Received: from smtprelay.hostedemail.com (10.5.19.251.rfc1918.com [10.5.19.251])
-        by smtpgrave07.hostedemail.com (Postfix) with ESMTP id 39A8D180865AF
-        for <linux-efi@vger.kernel.org>; Wed, 16 Oct 2019 15:24:02 +0000 (UTC)
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay08.hostedemail.com (Postfix) with ESMTP id 5FF50182CF408;
-        Wed, 16 Oct 2019 15:24:00 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 10,1,0,,d41d8cd98f00b204,joe@perches.com,:::::::::::::::::::::::::,RULES_HIT:41:355:379:599:973:982:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1541:1593:1594:1711:1730:1747:1777:1792:2393:2553:2559:2562:2828:3138:3139:3140:3141:3142:3167:3353:3622:3865:3866:3867:3868:3870:3871:3872:4250:4321:5007:6119:6248:6742:7903:10007:10226:10400:10450:10455:10848:11232:11658:11914:12297:12663:12740:12760:12895:13069:13311:13357:13439:14181:14659:14777:19904:19999:21080:21324:21433:21627:30003:30054:30083:30090:30091,0,RBL:47.151.152.152:@perches.com:.lbl8.mailshell.net-62.8.0.100 64.201.201.201,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:fn,MSBL:0,DNSBL:neutral,Custom_rules:0:1:0,LFtime:25,LUA_SUMMARY:none
-X-HE-Tag: paste39_3fc0e2c85714f
-X-Filterd-Recvd-Size: 2548
-Received: from XPS-9350.home (unknown [47.151.152.152])
-        (Authenticated sender: joe@perches.com)
-        by omf18.hostedemail.com (Postfix) with ESMTPA;
-        Wed, 16 Oct 2019 15:23:57 +0000 (UTC)
-Message-ID: <fb0e7c13da405970d5cbd59c10005daaf970b8da.camel@perches.com>
-Subject: Re: [PATCH v3] x86, efi: never relocate kernel below lowest
- acceptable address
-From:   Joe Perches <joe@perches.com>
-To:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        Borislav Petkov <bp@alien8.de>
-Cc:     Kairui Song <kasong@redhat.com>, linux-kernel@vger.kernel.org,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        Matthew Garrett <matthewgarrett@google.com>,
-        Baoquan He <bhe@redhat.com>, Dave Young <dyoung@redhat.com>,
-        x86@kernel.org, linux-efi@vger.kernel.org,
-        linux-integrity@vger.kernel.org
-Date:   Wed, 16 Oct 2019 08:23:56 -0700
-In-Reply-To: <20191016152014.GC4261@linux.intel.com>
-References: <20191012034421.25027-1-kasong@redhat.com>
-         <20191014101419.GA4715@zn.tnic> <20191014202111.GP15552@linux.intel.com>
-         <20191014211825.GJ4715@zn.tnic> <20191016152014.GC4261@linux.intel.com>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.32.1-2 
+        id S2405014AbfJPPeJ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 16 Oct 2019 11:34:09 -0400
+Received: from mail-oi1-f195.google.com ([209.85.167.195]:45658 "EHLO
+        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2405019AbfJPPeJ (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 16 Oct 2019 11:34:09 -0400
+Received: by mail-oi1-f195.google.com with SMTP id o205so20390425oib.12
+        for <linux-efi@vger.kernel.org>; Wed, 16 Oct 2019 08:34:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=G90VE6Bb79yrLS89Bw4MQZLt0drlBNa3zWUFgpxEWOI=;
+        b=uzHk9dGFu+BAuJu/jtkKm6PdKsAv0v77ftSf7INtWEGZjbXW3nuTCxWxyYcqXcc55N
+         jn0j3vZlbS1hafkC3P6q2PLJjZ+cBv7yG02yXBzE4o/EpvIP+rWjtbzCBmHxQklSqVW6
+         w8cOvr8XhtpNmSUh9hJqRfAadi7PWIZlUCGPCzpzhwQ/TXEDz/BxmYVjIrBKajenkdig
+         8nMWV6tB+HL8OjfWIixlDMG2FWnnWQNzSdshV4/OskfzQZwxlWGzkhEjFDC4AGd7lvNs
+         KhFF7eBo0szAAqTn0GyTNc3kb/1ZjJYNU5joeqawzfyRL5e08lkXX85BPwhn07w7DeYA
+         jlaA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=G90VE6Bb79yrLS89Bw4MQZLt0drlBNa3zWUFgpxEWOI=;
+        b=p15eKK0uYaLvc6wvB54EQHsbvH21SZ5WsJhqxuCzGA9DDJtYaCw0EkQnNNolqa8x9e
+         PlTp1j9F9KUsexQZKJjJNmS4OrxF+IpHzDE3k7mf33gqf5P75yUfB153AbNQ0sCuvJxo
+         xkyTd894E4Onkd+Axz2m+wm3gH9KtBDsw4guL+R29X78kedHUD9Cm8kT4apuHaqjc3ak
+         EmjDSF91a5Xkr3nuVqAQlIpwPXxPaCnoWURsd7hhcMI3zH1tPabGomOlY8ph4+odLtrO
+         XCJX/Ai9PorDGCFsW4odiqH7wSOWN6dFTyjZ7taIuf501StJ6c4ZRAKShpL2/BLwkFqi
+         a7dg==
+X-Gm-Message-State: APjAAAXyp25fMe1fW97b8ucJLkBfhHCW88CoKsjVwMsL2TkBF3HhWEG8
+        j/fdRXrChECksYt/6xEyyWIexAag7fEutnN5VNMPBA==
+X-Google-Smtp-Source: APXvYqygwnr+NecDP1fO//HKzbSWX/belmW/bO18EhsuZZpxpYur8ANa264H/buC7850NnONeKoGNuvCNmNeaHqB1sA=
+X-Received: by 2002:aca:6087:: with SMTP id u129mr4144470oib.149.1571240048086;
+ Wed, 16 Oct 2019 08:34:08 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+References: <157118756627.2063440.9878062995925617180.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <CAKv+Gu-dxRjANWfDGAaxCtGr_UxVt=c1Byb3zKRM9EuudpqNEQ@mail.gmail.com>
+In-Reply-To: <CAKv+Gu-dxRjANWfDGAaxCtGr_UxVt=c1Byb3zKRM9EuudpqNEQ@mail.gmail.com>
+From:   Dan Williams <dan.j.williams@intel.com>
+Date:   Wed, 16 Oct 2019 08:33:56 -0700
+Message-ID: <CAPcyv4gBSX58CWH4HZ28w0_cZRzJrhgdEFHa2g8KDqyv8aFqZQ@mail.gmail.com>
+Subject: Re: [PATCH v7 00/12] EFI Specific Purpose Memory Support
+To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Cc:     Ingo Molnar <mingo@redhat.com>,
+        Andy Shevchenko <andy@infradead.org>,
+        Borislav Petkov <bp@alien8.de>,
+        Vishal Verma <vishal.l.verma@intel.com>,
+        Keith Busch <kbusch@kernel.org>, Len Brown <lenb@kernel.org>,
+        Will Deacon <will@kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Darren Hart <dvhart@infradead.org>,
+        Dave Jiang <dave.jiang@intel.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        kbuild test robot <lkp@intel.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "the arch/x86 maintainers" <x86@kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Andy Lutomirski <luto@kernel.org>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, 2019-10-16 at 18:20 +0300, Jarkko Sakkinen wrote:
-> On Mon, Oct 14, 2019 at 11:18:25PM +0200, Borislav Petkov wrote:
-> > On Mon, Oct 14, 2019 at 11:21:11PM +0300, Jarkko Sakkinen wrote:
-> > > Was there a section in the patch submission documentation to point out
-> > > when people send patches with all the possible twists for an acronym?
-> > 
-> > I don't think so.
-> > 
-> > > This is giving me constantly gray hairs with TPM patches.
-> > 
-> > Well, I'm slowly getting tired of repeating the same crap over and over
-> > again about how important it is to document one's changes and to write
-> > good commit messages. The most repeated answers I'm simply putting into
-> > canned reply templates because, well, saying it once or twice is not
-> > enough anymore. :-\
-> > 
-> > And yeah, I see your pain. Same here, actually.
-> > 
-> > In the acronym case, I'd probably add a regex to my patch massaging
-> > script and convert those typos automatically and be done with it.
-> 
-> Wonder if checkpatch.pl could be extended to know acronyms e.g. have a
-> db of known acronyms.
+On Tue, Oct 15, 2019 at 11:55 PM Ard Biesheuvel
+<ard.biesheuvel@linaro.org> wrote:
+>
+> On Wed, 16 Oct 2019 at 03:13, Dan Williams <dan.j.williams@intel.com> wrote:
+> >
+> > Changes since v6 [1]:
+> > - Collect Ard's ack / review on patches 5-7, but not on patch 4 since it
+> >   needed a non-trivial rework for linker error reported by the 0day robot.
+> >
+> > - Fixup "efi: Common enable/disable infrastructure for EFI soft
+> >   reservation" with a new dependency on CONFIG_EFI_STUB for
+> >   CONFIG_EFI_SOFT_RESERVE since the efi_soft_reserve_enabled() helper is
+> >   only built with EFI_STUB=y and the support depends on early reservations
+> >   to keep the kernel text from landing in the reservation.
+>
+> As far as I know, GRUB on x86 still boots without the EFI stub by
+> default (i.e., using the 'linux' command instead of the 'linuxefi'
+> command), so even if you build the stub, it is not going to be called
+> in many cases. Is that going to be a problem?
 
-?  examples please.
+It only becomes a problem if kaslr decides to land the kernel on top
+of the soft-reservation. However, I think it's ok to say that if you
+need the reservation to be honored in all circumstances, arrange to
+boot in EFI mode.
 
-checkpatch has a db for misspellings, I supposed another for
-acronyms could be added, but how would false positives be avoided?
+>
+> > This also
+> >   moved the IS_ENABLED(CONFIG_EFI_SOFT_RESERVE) check into the header so
+> >   that the stub does not try to link to __efi_soft_reserve_enabled() in
+> >   the EFI_STUB=n case.
+> >
+> > - Rework "x86/efi: EFI soft reservation to E820 enumeration" to always
+> >   add the full EFI memory map when EFI_MEMORY_SP ranges are found. This
+> >   simplifies the logic to just add the full EFI map rather than try to
+> >   tease out just the EFI_MEMORY_SP ranges. (Ard)
+> >
+> > [1]: https://lore.kernel.org/lkml/157066227329.1059972.5659620631541203458.stgit@dwillia2-desk3.amr.corp.intel.com/
+> >
+> > ---
+> > Merge notes:
+> >
+> > Hi Ingo,
+> >
+> > I'm still looking for Ard's ack on the revised patch 4, but otherwise
+> > feel like this is ready for your consideration.
+> >
+>
+> Patch 4 looks fine to me,
+>
+> Reviewed-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
 
-
+Thanks for the help.
