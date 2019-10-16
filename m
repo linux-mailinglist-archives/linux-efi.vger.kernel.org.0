@@ -2,142 +2,161 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9CACDD8915
-	for <lists+linux-efi@lfdr.de>; Wed, 16 Oct 2019 09:12:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 67373D8B41
+	for <lists+linux-efi@lfdr.de>; Wed, 16 Oct 2019 10:41:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726845AbfJPHMk (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 16 Oct 2019 03:12:40 -0400
-Received: from mail.skyhub.de ([5.9.137.197]:34946 "EHLO mail.skyhub.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726405AbfJPHMk (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Wed, 16 Oct 2019 03:12:40 -0400
-Received: from zn.tnic (p200300EC2F093900E460E23B12F7A6AE.dip0.t-ipconnect.de [IPv6:2003:ec:2f09:3900:e460:e23b:12f7:a6ae])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id A47CF1EC0CA8;
-        Wed, 16 Oct 2019 09:12:38 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1571209958;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=hCMIEpQo2zZVtw+c7T27PQGWxK9R4yH4oLgjyYmdmEs=;
-        b=jBjaAwnWbMtQO5KJkx8Ds4V597Vk3RcnpH9z7AXPZBtVtzOME4gu6KPFZ3LOB+4xl79+Lj
-        8kPodzuqb3NA7rSD0JFdUgz7ajO/9BH8XZe+Q1k900RYstacd4xK+1KOE2EULuWK9npP7U
-        hYwBeygUc058xRGplSLnZm1PpMuZkH8=
-Date:   Wed, 16 Oct 2019 09:12:30 +0200
-From:   Borislav Petkov <bp@alien8.de>
-To:     Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>
-Cc:     Jiri Slaby <jslaby@suse.cz>, tglx@linutronix.de, mingo@redhat.com,
-        hpa@zytor.com, x86@kernel.org, linux-arch@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <len.brown@intel.com>, Pavel Machek <pavel@ucw.cz>,
-        Matt Fleming <matt@codeblueprint.co.uk>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Juergen Gross <jgross@suse.com>, linux-crypto@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-efi@vger.kernel.org,
-        xen-devel@lists.xenproject.org
-Subject: Re: [PATCH v9 24/28] x86_64/asm: Change all ENTRY+ENDPROC to
- SYM_FUNC_*
-Message-ID: <20191016071230.GD1138@zn.tnic>
-References: <20191011115108.12392-1-jslaby@suse.cz>
- <20191011115108.12392-25-jslaby@suse.cz>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20191011115108.12392-25-jslaby@suse.cz>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+        id S2391726AbfJPIlL (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 16 Oct 2019 04:41:11 -0400
+Received: from mail-wr1-f74.google.com ([209.85.221.74]:53144 "EHLO
+        mail-wr1-f74.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2389917AbfJPIlK (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 16 Oct 2019 04:41:10 -0400
+Received: by mail-wr1-f74.google.com with SMTP id j2so2409952wrg.19
+        for <linux-efi@vger.kernel.org>; Wed, 16 Oct 2019 01:41:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=date:message-id:mime-version:subject:from:to:cc;
+        bh=IToO3TxaVYb6aPcdpP1nSr/83vwykcAUYMHrIbrPyZM=;
+        b=bvnoMqX1QbYIiaLaOnBf6P75OThWz1ivuMxMGEARq3NxCSJ+Fp5ovc8mUyctAKbV9+
+         0x8JxgVhIZcPWzSzL/8lez8bUvcQNX+Md4BUsE5TCxh7+0/3+YWfLBTxilKHr3DpUTOk
+         mnMo0kiOJ48QAUSnHtn1K1gwA1BSeUcSVbWp1N5IMUZBbhD9h8eCgrrZ3inqJQdwJQMC
+         KaUhLKPYbNdY0ooUMhr9GO67DbIY2AAiFnPVjxIKqAnkI9x0aqOWdR/PA2UWef+HriwL
+         W68dazCkLZGO2SveHpLXcUgd1K2ZnTD5yBWVpy2KyEBd3QzX5XwHoF4fVaD/Oj19FTLG
+         stmQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:message-id:mime-version:subject:from:to:cc;
+        bh=IToO3TxaVYb6aPcdpP1nSr/83vwykcAUYMHrIbrPyZM=;
+        b=kvQNwUf1olcWswXiH4oZUW6Wjg2aXW/6UzufwC2ZMg0beegpTY3JqzQn+6xC4FFHQQ
+         cNdycFZwrwj34OT7s0awKJr9N5Gm198Y8/j/KczhnddntqMCyaDg3GFAMhTR6mGgseo+
+         fROjYAEZd7VuOeEql9naGyeSRmQIGuwFu8hC2hhBKVfjx/NXUYcS3FXSQjdauF/As6Jv
+         IxPF6FIjKg7ml8M1vLQJwkkc1XMvHVLHoRueMPaCGy3JjORSVSIOecWsYwyJ34AAufK6
+         s34H4mu2uqrugyAQLpSh4U36OrKfOtqYyV1tQDCDMOsfuC8clQWXOnnqqQgxdAYE5NS0
+         M86w==
+X-Gm-Message-State: APjAAAVjqChWEmgrfyqpBy0EuHv/V+IGL3TJhXx5TOnWGgFHd5psGSbO
+        tEF99fae0sJNnBcJ157+PqOBCpZQCQ==
+X-Google-Smtp-Source: APXvYqyHvNTWgTxnCfClLrRto+zRyduNXbF6pzVpkyeF2JLNkWZbGCgN7GAHVojZ1Q6RPv4fAVI5ilkURw==
+X-Received: by 2002:adf:fecd:: with SMTP id q13mr1712303wrs.224.1571215267988;
+ Wed, 16 Oct 2019 01:41:07 -0700 (PDT)
+Date:   Wed, 16 Oct 2019 10:39:51 +0200
+Message-Id: <20191016083959.186860-1-elver@google.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.23.0.700.g56cf767bdb-goog
+Subject: [PATCH 0/8] Add Kernel Concurrency Sanitizer (KCSAN)
+From:   Marco Elver <elver@google.com>
+To:     elver@google.com
+Cc:     akiyks@gmail.com, stern@rowland.harvard.edu, glider@google.com,
+        parri.andrea@gmail.com, andreyknvl@google.com, luto@kernel.org,
+        ard.biesheuvel@linaro.org, arnd@arndb.de, boqun.feng@gmail.com,
+        bp@alien8.de, dja@axtens.net, dlustig@nvidia.com,
+        dave.hansen@linux.intel.com, dhowells@redhat.com,
+        dvyukov@google.com, hpa@zytor.com, mingo@redhat.com,
+        j.alglave@ucl.ac.uk, joel@joelfernandes.org, corbet@lwn.net,
+        jpoimboe@redhat.com, luc.maranget@inria.fr, mark.rutland@arm.com,
+        npiggin@gmail.com, paulmck@linux.ibm.com, peterz@infradead.org,
+        tglx@linutronix.de, will@kernel.org, kasan-dev@googlegroups.com,
+        linux-arch@vger.kernel.org, linux-doc@vger.kernel.org,
+        linux-efi@vger.kernel.org, linux-kbuild@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mm@kvack.org, x86@kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hi,
+This is the patch-series for the Kernel Concurrency Sanitizer (KCSAN).
+KCSAN is a sampling watchpoint-based data-race detector. More details
+are included in Documentation/dev-tools/kcsan.rst. This patch-series
+only enables KCSAN for x86, but we expect adding support for other
+architectures is relatively straightforward (we are aware of
+experimental ARM64 and POWER support).
 
-On Fri, Oct 11, 2019 at 01:51:04PM +0200, Jiri Slaby wrote:
-> These are all functions which are invoked from elsewhere, so annotate
-> them as global using the new SYM_FUNC_START. And their ENDPROC's by
-> SYM_FUNC_END.
-> 
-> And make sure ENTRY/ENDPROC is not defined on X86_64, given these were
-> the last users.
-> 
-> Signed-off-by: Jiri Slaby <jslaby@suse.cz>
-> Reviewed-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com> [hibernate]
-> Reviewed-by: Boris Ostrovsky <boris.ostrovsky@oracle.com> [xen bits]
-> Cc: "H. Peter Anvin" <hpa@zytor.com>
-> Cc: Borislav Petkov <bp@alien8.de>
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Ingo Molnar <mingo@redhat.com>
-> Cc: x86@kernel.org
-> Cc: Herbert Xu <herbert@gondor.apana.org.au>
-> Cc: "David S. Miller" <davem@davemloft.net>
-> Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-> Cc: Len Brown <len.brown@intel.com>
-> Cc: Pavel Machek <pavel@ucw.cz>
-> Cc: Matt Fleming <matt@codeblueprint.co.uk>
-> Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>
-> Cc: Boris Ostrovsky <boris.ostrovsky@oracle.com>
-> Cc: Juergen Gross <jgross@suse.com>
-> Cc: linux-crypto@vger.kernel.org
-> Cc: linux-pm@vger.kernel.org
-> Cc: linux-efi@vger.kernel.org
-> Cc: xen-devel@lists.xenproject.org
-> ---
->  arch/x86/boot/compressed/efi_thunk_64.S      |  4 +-
->  arch/x86/boot/compressed/head_64.S           | 16 +++---
->  arch/x86/boot/compressed/mem_encrypt.S       |  8 +--
->  arch/x86/crypto/aegis128-aesni-asm.S         | 28 ++++-----
->  arch/x86/crypto/aes_ctrby8_avx-x86_64.S      | 12 ++--
->  arch/x86/crypto/aesni-intel_asm.S            | 60 ++++++++++----------
->  arch/x86/crypto/aesni-intel_avx-x86_64.S     | 32 +++++------
->  arch/x86/crypto/blowfish-x86_64-asm_64.S     | 16 +++---
->  arch/x86/crypto/camellia-aesni-avx-asm_64.S  | 24 ++++----
->  arch/x86/crypto/camellia-aesni-avx2-asm_64.S | 24 ++++----
->  arch/x86/crypto/camellia-x86_64-asm_64.S     | 16 +++---
->  arch/x86/crypto/cast5-avx-x86_64-asm_64.S    | 16 +++---
->  arch/x86/crypto/cast6-avx-x86_64-asm_64.S    | 24 ++++----
->  arch/x86/crypto/chacha-avx2-x86_64.S         | 12 ++--
->  arch/x86/crypto/chacha-avx512vl-x86_64.S     | 12 ++--
->  arch/x86/crypto/chacha-ssse3-x86_64.S        | 12 ++--
->  arch/x86/crypto/crc32-pclmul_asm.S           |  4 +-
->  arch/x86/crypto/crc32c-pcl-intel-asm_64.S    |  4 +-
->  arch/x86/crypto/crct10dif-pcl-asm_64.S       |  4 +-
->  arch/x86/crypto/des3_ede-asm_64.S            |  8 +--
->  arch/x86/crypto/ghash-clmulni-intel_asm.S    |  8 +--
->  arch/x86/crypto/nh-avx2-x86_64.S             |  4 +-
->  arch/x86/crypto/nh-sse2-x86_64.S             |  4 +-
->  arch/x86/crypto/poly1305-avx2-x86_64.S       |  4 +-
->  arch/x86/crypto/poly1305-sse2-x86_64.S       |  8 +--
->  arch/x86/crypto/serpent-avx-x86_64-asm_64.S  | 24 ++++----
->  arch/x86/crypto/serpent-avx2-asm_64.S        | 24 ++++----
->  arch/x86/crypto/serpent-sse2-x86_64-asm_64.S |  8 +--
->  arch/x86/crypto/sha1_avx2_x86_64_asm.S       |  4 +-
->  arch/x86/crypto/sha1_ni_asm.S                |  4 +-
->  arch/x86/crypto/sha1_ssse3_asm.S             |  4 +-
->  arch/x86/crypto/sha256-avx-asm.S             |  4 +-
->  arch/x86/crypto/sha256-avx2-asm.S            |  4 +-
->  arch/x86/crypto/sha256-ssse3-asm.S           |  4 +-
->  arch/x86/crypto/sha256_ni_asm.S              |  4 +-
->  arch/x86/crypto/sha512-avx-asm.S             |  4 +-
->  arch/x86/crypto/sha512-avx2-asm.S            |  4 +-
->  arch/x86/crypto/sha512-ssse3-asm.S           |  4 +-
->  arch/x86/crypto/twofish-avx-x86_64-asm_64.S  | 24 ++++----
->  arch/x86/crypto/twofish-x86_64-asm_64-3way.S |  8 +--
->  arch/x86/crypto/twofish-x86_64-asm_64.S      |  8 +--
+To gather early feedback, we announced KCSAN back in September, and
+have integrated the feedback where possible:
+http://lkml.kernel.org/r/CANpmjNPJ_bHjfLZCAPV23AXFfiPiyXXqqu72n6TgWzb2Gnu1eA@mail.gmail.com
 
-I could use an ACK for the crypto bits...
+We want to point out and acknowledge the work surrounding the LKMM,
+including several articles that motivate why data-races are dangerous
+[1, 2], justifying a data-race detector such as KCSAN.
+[1] https://lwn.net/Articles/793253/
+[2] https://lwn.net/Articles/799218/
 
-Thx.
+The current list of known upstream fixes for data-races found by KCSAN
+can be found here:
+https://github.com/google/ktsan/wiki/KCSAN#upstream-fixes-of-data-races-found-by-kcsan
+
+Marco Elver (8):
+  kcsan: Add Kernel Concurrency Sanitizer infrastructure
+  objtool, kcsan: Add KCSAN runtime functions to whitelist
+  build, kcsan: Add KCSAN build exceptions
+  seqlock, kcsan: Add annotations for KCSAN
+  seqlock: Require WRITE_ONCE surrounding raw_seqcount_barrier
+  asm-generic, kcsan: Add KCSAN instrumentation for bitops
+  locking/atomics, kcsan: Add KCSAN instrumentation
+  x86, kcsan: Enable KCSAN for x86
+
+ Documentation/dev-tools/kcsan.rst         | 202 ++++++++++
+ MAINTAINERS                               |  11 +
+ Makefile                                  |   3 +-
+ arch/x86/Kconfig                          |   1 +
+ arch/x86/boot/Makefile                    |   1 +
+ arch/x86/boot/compressed/Makefile         |   1 +
+ arch/x86/entry/vdso/Makefile              |   1 +
+ arch/x86/include/asm/bitops.h             |   2 +-
+ arch/x86/kernel/Makefile                  |   6 +
+ arch/x86/kernel/cpu/Makefile              |   3 +
+ arch/x86/lib/Makefile                     |   2 +
+ arch/x86/mm/Makefile                      |   3 +
+ arch/x86/purgatory/Makefile               |   1 +
+ arch/x86/realmode/Makefile                |   1 +
+ arch/x86/realmode/rm/Makefile             |   1 +
+ drivers/firmware/efi/libstub/Makefile     |   1 +
+ include/asm-generic/atomic-instrumented.h | 192 ++++++++-
+ include/asm-generic/bitops-instrumented.h |  18 +
+ include/linux/compiler-clang.h            |   9 +
+ include/linux/compiler-gcc.h              |   7 +
+ include/linux/compiler.h                  |  35 +-
+ include/linux/kcsan-checks.h              | 116 ++++++
+ include/linux/kcsan.h                     |  85 ++++
+ include/linux/sched.h                     |   7 +
+ include/linux/seqlock.h                   |  51 ++-
+ init/init_task.c                          |   6 +
+ init/main.c                               |   2 +
+ kernel/Makefile                           |   6 +
+ kernel/kcsan/Makefile                     |  14 +
+ kernel/kcsan/atomic.c                     |  21 +
+ kernel/kcsan/core.c                       | 458 ++++++++++++++++++++++
+ kernel/kcsan/debugfs.c                    | 225 +++++++++++
+ kernel/kcsan/encoding.h                   |  94 +++++
+ kernel/kcsan/kcsan.c                      |  81 ++++
+ kernel/kcsan/kcsan.h                      | 140 +++++++
+ kernel/kcsan/report.c                     | 307 +++++++++++++++
+ kernel/kcsan/test.c                       | 117 ++++++
+ kernel/sched/Makefile                     |   6 +
+ lib/Kconfig.debug                         |   2 +
+ lib/Kconfig.kcsan                         |  88 +++++
+ lib/Makefile                              |   3 +
+ mm/Makefile                               |   8 +
+ scripts/Makefile.kcsan                    |   6 +
+ scripts/Makefile.lib                      |  10 +
+ scripts/atomic/gen-atomic-instrumented.sh |   9 +-
+ tools/objtool/check.c                     |  17 +
+ 46 files changed, 2364 insertions(+), 16 deletions(-)
+ create mode 100644 Documentation/dev-tools/kcsan.rst
+ create mode 100644 include/linux/kcsan-checks.h
+ create mode 100644 include/linux/kcsan.h
+ create mode 100644 kernel/kcsan/Makefile
+ create mode 100644 kernel/kcsan/atomic.c
+ create mode 100644 kernel/kcsan/core.c
+ create mode 100644 kernel/kcsan/debugfs.c
+ create mode 100644 kernel/kcsan/encoding.h
+ create mode 100644 kernel/kcsan/kcsan.c
+ create mode 100644 kernel/kcsan/kcsan.h
+ create mode 100644 kernel/kcsan/report.c
+ create mode 100644 kernel/kcsan/test.c
+ create mode 100644 lib/Kconfig.kcsan
+ create mode 100644 scripts/Makefile.kcsan
 
 -- 
-Regards/Gruss,
-    Boris.
+2.23.0.700.g56cf767bdb-goog
 
-https://people.kernel.org/tglx/notes-about-netiquette
