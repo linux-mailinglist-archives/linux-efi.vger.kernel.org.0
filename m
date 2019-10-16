@@ -2,36 +2,33 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CA2A5D8542
-	for <lists+linux-efi@lfdr.de>; Wed, 16 Oct 2019 03:13:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 04D9ED8545
+	for <lists+linux-efi@lfdr.de>; Wed, 16 Oct 2019 03:14:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390541AbfJPBNu (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 15 Oct 2019 21:13:50 -0400
-Received: from mga04.intel.com ([192.55.52.120]:44354 "EHLO mga04.intel.com"
+        id S1727169AbfJPBNz (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 15 Oct 2019 21:13:55 -0400
+Received: from mga18.intel.com ([134.134.136.126]:4233 "EHLO mga18.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2390538AbfJPBNu (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Tue, 15 Oct 2019 21:13:50 -0400
+        id S2390538AbfJPBNz (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Tue, 15 Oct 2019 21:13:55 -0400
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 15 Oct 2019 18:13:49 -0700
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by orsmga106.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 15 Oct 2019 18:13:54 -0700
 X-IronPort-AV: E=Sophos;i="5.67,301,1566889200"; 
-   d="scan'208";a="186000879"
+   d="scan'208";a="199903469"
 Received: from dwillia2-desk3.jf.intel.com (HELO dwillia2-desk3.amr.corp.intel.com) ([10.54.39.16])
-  by orsmga007-auth.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 15 Oct 2019 18:13:49 -0700
-Subject: [PATCH v7 01/12] acpi/numa: Establish a new drivers/acpi/numa/
- directory
+  by orsmga006-auth.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 15 Oct 2019 18:13:54 -0700
+Subject: [PATCH v7 02/12] efi: Enumerate EFI_MEMORY_SP
 From:   Dan Williams <dan.j.williams@intel.com>
 To:     mingo@redhat.com
-Cc:     Len Brown <lenb@kernel.org>, Keith Busch <kbusch@kernel.org>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+Cc:     Ard Biesheuvel <ard.biesheuvel@linaro.org>,
         Dave Hansen <dave.hansen@linux.intel.com>,
-        peterz@infradead.org, vishal.l.verma@intel.com,
-        ard.biesheuvel@linaro.org, x86@kernel.org,
+        peterz@infradead.org, vishal.l.verma@intel.com, x86@kernel.org,
         linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-acpi@vger.kernel.org
-Date:   Tue, 15 Oct 2019 17:59:31 -0700
-Message-ID: <157118757175.2063440.9248947575330904096.stgit@dwillia2-desk3.amr.corp.intel.com>
+Date:   Tue, 15 Oct 2019 17:59:36 -0700
+Message-ID: <157118757690.2063440.10362378797818353669.stgit@dwillia2-desk3.amr.corp.intel.com>
 In-Reply-To: <157118756627.2063440.9878062995925617180.stgit@dwillia2-desk3.amr.corp.intel.com>
 References: <157118756627.2063440.9878062995925617180.stgit@dwillia2-desk3.amr.corp.intel.com>
 User-Agent: StGit/0.18-2-gc94f
@@ -43,128 +40,77 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Currently hmat.c lives under an "hmat" directory which does not enhance
-the description of the file. The initial motivation for giving hmat.c
-its own directory was to delineate it as mm functionality in contrast to
-ACPI device driver functionality.
+UEFI 2.8 defines an EFI_MEMORY_SP attribute bit to augment the
+interpretation of the EFI Memory Types as "reserved for a specific
+purpose". The intent of this bit is to allow the OS to identify precious
+or scarce memory resources and optionally manage it separately from
+EfiConventionalMemory. As defined older OSes that do not know about this
+attribute are permitted to ignore it and the memory will be handled
+according to the OS default policy for the given memory type.
 
-As ACPI continues to play an increasing role in conveying
-memory location and performance topology information to the OS take the
-opportunity to co-locate these NUMA relevant tables in a combined
-directory.
+In other words, this "specific purpose" hint is deliberately weaker than
+EfiReservedMemoryType in that the system continues to operate if the OS
+takes no action on the attribute. The risk of taking no action is
+potentially unwanted / unmovable kernel allocations from the designated
+resource that prevent the full realization of the "specific purpose".
+For example, consider a system with a high-bandwidth memory pool. Older
+kernels are permitted to boot and consume that memory as conventional
+"System-RAM" newer kernels may arrange for that memory to be set aside
+(soft reserved) by the system administrator for a dedicated
+high-bandwidth memory aware application to consume.
 
-numa.c is renamed to srat.c and moved to drivers/acpi/numa/ along with
-hmat.c.
+Specifically, this mechanism allows for the elimination of scenarios
+where platform firmware tries to game OS policy by lying about ACPI SLIT
+values, i.e. claiming that a precious memory resource has a high
+distance to trigger the OS to avoid it by default. This reservation hint
+allows platform-firmware to instead tell the truth about performance
+characteristics by indicate to OS memory management to put immovable
+allocations elsewhere.
 
-Cc: Len Brown <lenb@kernel.org>
-Cc: Keith Busch <kbusch@kernel.org>
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Implement simple detection of the bit for EFI memory table dumps and
+save the kernel policy for a follow-on change.
+
+Reviewed-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
 Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
 Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 ---
- drivers/acpi/Kconfig       |    9 +--------
- drivers/acpi/Makefile      |    3 +--
- drivers/acpi/hmat/Makefile |    2 --
- drivers/acpi/numa/Kconfig  |    6 ++++++
- drivers/acpi/numa/Makefile |    3 +++
- drivers/acpi/numa/hmat.c   |    0 
- drivers/acpi/numa/srat.c   |    0 
- 7 files changed, 11 insertions(+), 12 deletions(-)
- delete mode 100644 drivers/acpi/hmat/Makefile
- rename drivers/acpi/{hmat/Kconfig => numa/Kconfig} (77%)
- create mode 100644 drivers/acpi/numa/Makefile
- rename drivers/acpi/{hmat/hmat.c => numa/hmat.c} (100%)
- rename drivers/acpi/{numa.c => numa/srat.c} (100%)
+ drivers/firmware/efi/efi.c |    5 +++--
+ include/linux/efi.h        |    1 +
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
-index ebe1e9e5fd81..8c7c46065e9d 100644
---- a/drivers/acpi/Kconfig
-+++ b/drivers/acpi/Kconfig
-@@ -319,12 +319,6 @@ config ACPI_THERMAL
- 	  To compile this driver as a module, choose M here:
- 	  the module will be called thermal.
+diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
+index 8d3e778e988b..68a4ec24b823 100644
+--- a/drivers/firmware/efi/efi.c
++++ b/drivers/firmware/efi/efi.c
+@@ -839,15 +839,16 @@ char * __init efi_md_typeattr_format(char *buf, size_t size,
+ 	if (attr & ~(EFI_MEMORY_UC | EFI_MEMORY_WC | EFI_MEMORY_WT |
+ 		     EFI_MEMORY_WB | EFI_MEMORY_UCE | EFI_MEMORY_RO |
+ 		     EFI_MEMORY_WP | EFI_MEMORY_RP | EFI_MEMORY_XP |
+-		     EFI_MEMORY_NV |
++		     EFI_MEMORY_NV | EFI_MEMORY_SP |
+ 		     EFI_MEMORY_RUNTIME | EFI_MEMORY_MORE_RELIABLE))
+ 		snprintf(pos, size, "|attr=0x%016llx]",
+ 			 (unsigned long long)attr);
+ 	else
+ 		snprintf(pos, size,
+-			 "|%3s|%2s|%2s|%2s|%2s|%2s|%2s|%3s|%2s|%2s|%2s|%2s]",
++			 "|%3s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%3s|%2s|%2s|%2s|%2s]",
+ 			 attr & EFI_MEMORY_RUNTIME ? "RUN" : "",
+ 			 attr & EFI_MEMORY_MORE_RELIABLE ? "MR" : "",
++			 attr & EFI_MEMORY_SP      ? "SP"  : "",
+ 			 attr & EFI_MEMORY_NV      ? "NV"  : "",
+ 			 attr & EFI_MEMORY_XP      ? "XP"  : "",
+ 			 attr & EFI_MEMORY_RP      ? "RP"  : "",
+diff --git a/include/linux/efi.h b/include/linux/efi.h
+index bd3837022307..5c1dd0221384 100644
+--- a/include/linux/efi.h
++++ b/include/linux/efi.h
+@@ -112,6 +112,7 @@ typedef	struct {
+ #define EFI_MEMORY_MORE_RELIABLE \
+ 				((u64)0x0000000000010000ULL)	/* higher reliability */
+ #define EFI_MEMORY_RO		((u64)0x0000000000020000ULL)	/* read-only */
++#define EFI_MEMORY_SP		((u64)0x0000000000040000ULL)	/* soft reserved */
+ #define EFI_MEMORY_RUNTIME	((u64)0x8000000000000000ULL)	/* range requires runtime mapping */
+ #define EFI_MEMORY_DESCRIPTOR_VERSION	1
  
--config ACPI_NUMA
--	bool "NUMA support"
--	depends on NUMA
--	depends on (X86 || IA64 || ARM64)
--	default y if IA64 || ARM64
--
- config ACPI_CUSTOM_DSDT_FILE
- 	string "Custom DSDT Table file to include"
- 	default ""
-@@ -473,8 +467,7 @@ config ACPI_REDUCED_HARDWARE_ONLY
- 	  If you are unsure what to do, do not enable this option.
- 
- source "drivers/acpi/nfit/Kconfig"
--source "drivers/acpi/hmat/Kconfig"
--
-+source "drivers/acpi/numa/Kconfig"
- source "drivers/acpi/apei/Kconfig"
- source "drivers/acpi/dptf/Kconfig"
- 
-diff --git a/drivers/acpi/Makefile b/drivers/acpi/Makefile
-index 5d361e4e3405..f08a661274e8 100644
---- a/drivers/acpi/Makefile
-+++ b/drivers/acpi/Makefile
-@@ -55,7 +55,6 @@ acpi-$(CONFIG_X86)		+= acpi_cmos_rtc.o
- acpi-$(CONFIG_X86)		+= x86/apple.o
- acpi-$(CONFIG_X86)		+= x86/utils.o
- acpi-$(CONFIG_DEBUG_FS)		+= debugfs.o
--acpi-$(CONFIG_ACPI_NUMA)	+= numa.o
- acpi-$(CONFIG_ACPI_PROCFS_POWER) += cm_sbs.o
- acpi-y				+= acpi_lpat.o
- acpi-$(CONFIG_ACPI_LPIT)	+= acpi_lpit.o
-@@ -80,7 +79,7 @@ obj-$(CONFIG_ACPI_PROCESSOR)	+= processor.o
- obj-$(CONFIG_ACPI)		+= container.o
- obj-$(CONFIG_ACPI_THERMAL)	+= thermal.o
- obj-$(CONFIG_ACPI_NFIT)		+= nfit/
--obj-$(CONFIG_ACPI_HMAT)		+= hmat/
-+obj-$(CONFIG_ACPI_NUMA)		+= numa/
- obj-$(CONFIG_ACPI)		+= acpi_memhotplug.o
- obj-$(CONFIG_ACPI_HOTPLUG_IOAPIC) += ioapic.o
- obj-$(CONFIG_ACPI_BATTERY)	+= battery.o
-diff --git a/drivers/acpi/hmat/Makefile b/drivers/acpi/hmat/Makefile
-deleted file mode 100644
-index 1c20ef36a385..000000000000
---- a/drivers/acpi/hmat/Makefile
-+++ /dev/null
-@@ -1,2 +0,0 @@
--# SPDX-License-Identifier: GPL-2.0-only
--obj-$(CONFIG_ACPI_HMAT) := hmat.o
-diff --git a/drivers/acpi/hmat/Kconfig b/drivers/acpi/numa/Kconfig
-similarity index 77%
-rename from drivers/acpi/hmat/Kconfig
-rename to drivers/acpi/numa/Kconfig
-index 95a29964dbea..acbd5aa76e40 100644
---- a/drivers/acpi/hmat/Kconfig
-+++ b/drivers/acpi/numa/Kconfig
-@@ -1,4 +1,10 @@
- # SPDX-License-Identifier: GPL-2.0
-+config ACPI_NUMA
-+	bool "NUMA support"
-+	depends on NUMA
-+	depends on (X86 || IA64 || ARM64)
-+	default y if IA64 || ARM64
-+
- config ACPI_HMAT
- 	bool "ACPI Heterogeneous Memory Attribute Table Support"
- 	depends on ACPI_NUMA
-diff --git a/drivers/acpi/numa/Makefile b/drivers/acpi/numa/Makefile
-new file mode 100644
-index 000000000000..517a6c689a94
---- /dev/null
-+++ b/drivers/acpi/numa/Makefile
-@@ -0,0 +1,3 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+obj-$(CONFIG_ACPI_NUMA) += srat.o
-+obj-$(CONFIG_ACPI_HMAT) += hmat.o
-diff --git a/drivers/acpi/hmat/hmat.c b/drivers/acpi/numa/hmat.c
-similarity index 100%
-rename from drivers/acpi/hmat/hmat.c
-rename to drivers/acpi/numa/hmat.c
-diff --git a/drivers/acpi/numa.c b/drivers/acpi/numa/srat.c
-similarity index 100%
-rename from drivers/acpi/numa.c
-rename to drivers/acpi/numa/srat.c
 
