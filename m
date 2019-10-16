@@ -2,27 +2,27 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B432AD9F70
-	for <lists+linux-efi@lfdr.de>; Thu, 17 Oct 2019 00:23:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B7153D9F9D
+	for <lists+linux-efi@lfdr.de>; Thu, 17 Oct 2019 00:23:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2437752AbfJPVzR (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 16 Oct 2019 17:55:17 -0400
-Received: from mail.kernel.org ([198.145.29.99]:45762 "EHLO mail.kernel.org"
+        id S2395425AbfJPV4o (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 16 Oct 2019 17:56:44 -0400
+Received: from mail.kernel.org ([198.145.29.99]:48668 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2437748AbfJPVzR (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Wed, 16 Oct 2019 17:55:17 -0400
+        id S2395417AbfJPV4o (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Wed, 16 Oct 2019 17:56:44 -0400
 Received: from localhost (unknown [192.55.54.58])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 4C7D1218DE;
-        Wed, 16 Oct 2019 21:55:16 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id C1E8A21D7D;
+        Wed, 16 Oct 2019 21:56:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1571262916;
-        bh=61zl7DkTaWrXCdCD6qktASwL8w1xwvcJ3Y+nDn38yoY=;
+        s=default; t=1571263003;
+        bh=8Em2bsmIAcI/tf3Ihod02Uq15PYbjOQsMAOdNwSUvTk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=aVhWrnaswqTQjQsdIPP8LDcoErM56dPS7JJVgIaJe6Lruq7znAHVpleEF+Ym3Q1Tm
-         ANX13YnlPo9gQJsCylwxGolX1gQDUSYme47GcXNEHuukGCr2lKpBukq2gZQafzH+wk
-         EXWWEiCbqjPjoOKYOFAOb/mhJqntphH50K4bxtXI=
+        b=HcPXBAAKzTiqlPdXsQ6seV/3ICMFLT4Qpban1IyigTKtBzCfgt5P65YO37F3O3v7L
+         115jhdnO1eOvCapNQ9BaQqyro7pZpDiSZHsimnEjBD2DlbvkVt3NAF4Lug3PEgGRwn
+         a/Nxgs84SkUIknWDgtafhvNOTO2ig+7SHUOFlD0s=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -41,12 +41,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Thomas Gleixner <tglx@linutronix.de>,
         linux-efi@vger.kernel.org, linux-integrity@vger.kernel.org,
         Ingo Molnar <mingo@kernel.org>
-Subject: [PATCH 4.9 76/92] efivar/ssdt: Dont iterate over EFI vars if no SSDT override was specified
-Date:   Wed, 16 Oct 2019 14:50:49 -0700
-Message-Id: <20191016214845.951472119@linuxfoundation.org>
+Subject: [PATCH 4.14 43/65] efivar/ssdt: Dont iterate over EFI vars if no SSDT override was specified
+Date:   Wed, 16 Oct 2019 14:50:57 -0700
+Message-Id: <20191016214832.914076532@linuxfoundation.org>
 X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20191016214759.600329427@linuxfoundation.org>
-References: <20191016214759.600329427@linuxfoundation.org>
+In-Reply-To: <20191016214756.457746573@linuxfoundation.org>
+References: <20191016214756.457746573@linuxfoundation.org>
 User-Agent: quilt/0.66
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -100,7 +100,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/drivers/firmware/efi/efi.c
 +++ b/drivers/firmware/efi/efi.c
-@@ -243,6 +243,9 @@ static __init int efivar_ssdt_load(void)
+@@ -266,6 +266,9 @@ static __init int efivar_ssdt_load(void)
  	void *data;
  	int ret;
  
