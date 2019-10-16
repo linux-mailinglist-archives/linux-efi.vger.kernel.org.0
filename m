@@ -2,84 +2,312 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5873FD95EA
-	for <lists+linux-efi@lfdr.de>; Wed, 16 Oct 2019 17:48:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6CEB7D9607
+	for <lists+linux-efi@lfdr.de>; Wed, 16 Oct 2019 17:54:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389734AbfJPPsx (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 16 Oct 2019 11:48:53 -0400
-Received: from mail.skyhub.de ([5.9.137.197]:35514 "EHLO mail.skyhub.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726985AbfJPPsx (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Wed, 16 Oct 2019 11:48:53 -0400
-Received: from zn.tnic (p200300EC2F093900C973EA3B8BE79A94.dip0.t-ipconnect.de [IPv6:2003:ec:2f09:3900:c973:ea3b:8be7:9a94])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 7C6C21EC0CB7;
-        Wed, 16 Oct 2019 17:48:51 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1571240931;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=jmX8/r1x/roPBxPzVwV80iSi0MvvPRQDzQnr23dp5ns=;
-        b=W73TA2+QOLdkRyLbrczLc/7ptPoKfR2iKpdxfN9wQvwcqbD5amGSiTp9g72BGPqIaBrCEL
-        YISTB2/yxFpw1S/wAwsXzKsZnuI3+Ftc6wgcbsCnkmLHr4rGjcfXsCRoFq+iL/jORuisIr
-        z0EwpletbOM2Z0/1fE1o4Vrt63QCesk=
-Date:   Wed, 16 Oct 2019 17:48:42 +0200
-From:   Borislav Petkov <bp@alien8.de>
-To:     Joe Perches <joe@perches.com>
-Cc:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        Kairui Song <kasong@redhat.com>, linux-kernel@vger.kernel.org,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        Matthew Garrett <matthewgarrett@google.com>,
-        Baoquan He <bhe@redhat.com>, Dave Young <dyoung@redhat.com>,
-        x86@kernel.org, linux-efi@vger.kernel.org,
-        linux-integrity@vger.kernel.org
-Subject: Re: [PATCH v3] x86, efi: never relocate kernel below lowest
- acceptable address
-Message-ID: <20191016154842.GJ1138@zn.tnic>
-References: <20191012034421.25027-1-kasong@redhat.com>
- <20191014101419.GA4715@zn.tnic>
- <20191014202111.GP15552@linux.intel.com>
- <20191014211825.GJ4715@zn.tnic>
- <20191016152014.GC4261@linux.intel.com>
- <fb0e7c13da405970d5cbd59c10005daaf970b8da.camel@perches.com>
+        id S2405895AbfJPPx7 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 16 Oct 2019 11:53:59 -0400
+Received: from mail-ot1-f65.google.com ([209.85.210.65]:41223 "EHLO
+        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726985AbfJPPx7 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 16 Oct 2019 11:53:59 -0400
+Received: by mail-ot1-f65.google.com with SMTP id g13so20573228otp.8
+        for <linux-efi@vger.kernel.org>; Wed, 16 Oct 2019 08:53:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=ES8PPxqISv6le2aU+Na1jJhECeSWLsXBsBUpCljFmNc=;
+        b=oO69GKlEUEmZWfog28/tduGmrNxTECrWedf44ep3BiJWADibe3BtF/qSPOt+lHQnrd
+         HMZ/O6vy/oZ1Mn29CFgrBvva1cxYf0fsP2Iv2I85mFP+PSSHxMWS5bWwvJtAkW4KeQ4X
+         zHsZ4zn4Ud3sy3FtVlyWWHfups+bSfs5dcKPEQoYxyP86YUHE43Ssz5B42ovDjgprbuJ
+         QoImASQ3r2C39DI1HTT9w7MtYoLRwjzHESnKd/q21EZ4qeAz9arZ/6uRGqW264QE2D9u
+         M4kZpDAKBF3fk3pugbmFA+dNIL07VCSKkOnXhdXNc50ltBiqs8ufauu0rzHnctKYwyTf
+         J+zg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=ES8PPxqISv6le2aU+Na1jJhECeSWLsXBsBUpCljFmNc=;
+        b=rNpIiRAgyOXltFJpb+et7FwuyKIGBapCZhkANZy8SKJ5fC8jeL8U2WFLnaLAIoQtRk
+         fHLEJtjTImuUiTiFpZH4Z9wUvChUFWUowRKXhbOxLHwzAYD4Qod5W1CE9v5xAApiVJFo
+         5sQDHX5UdXIYRGekz2O3dNhbdLywd2FkCewozmGBxtaZku4VHxWgrVpJ3I/rPHA3t5A4
+         LeFCtz7df6rBW4pVhl9NfkTu+22rCGBb8eDZ320PU0jVGL2H8t95mM9qRjy5AZe7cf7c
+         csBSAARDY5XSATTzWDaju6mYjwxJUpMLjbRystMPSAnR2kNZKMZD2PIuHys7au0lhKr1
+         9/qg==
+X-Gm-Message-State: APjAAAV6f9E/0LFKhmeDjrDsTad/V4Vez1egTuvh0+uSPZU2hEJ/jVr9
+        MrbRdJ68wC2JiEy5ISMERFbyzRx0Oa6N2N3Z3K1Aiw==
+X-Google-Smtp-Source: APXvYqy/bEpTtLLHRnuZTAKQyMKjVxdlLHEt24tIzExwmKRAvwqnmZoQehyCbZB5w1Ds0iSmKpp3CZhKegjg3ge7PUQ=
+X-Received: by 2002:a9d:7590:: with SMTP id s16mr8514934otk.2.1571241237486;
+ Wed, 16 Oct 2019 08:53:57 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <fb0e7c13da405970d5cbd59c10005daaf970b8da.camel@perches.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+References: <20191016083959.186860-1-elver@google.com> <20191016083959.186860-2-elver@google.com>
+ <20191016151643.GC46264@lakrids.cambridge.arm.com>
+In-Reply-To: <20191016151643.GC46264@lakrids.cambridge.arm.com>
+From:   Marco Elver <elver@google.com>
+Date:   Wed, 16 Oct 2019 17:53:45 +0200
+Message-ID: <CANpmjNNctoVsUc+VbJ_RAMgLxcbvjq55gK1NdE0G0muMdv1+Ng@mail.gmail.com>
+Subject: Re: [PATCH 1/8] kcsan: Add Kernel Concurrency Sanitizer infrastructure
+To:     Mark Rutland <mark.rutland@arm.com>
+Cc:     LKMM Maintainers -- Akira Yokosawa <akiyks@gmail.com>,
+        Alan Stern <stern@rowland.harvard.edu>,
+        Alexander Potapenko <glider@google.com>,
+        Andrea Parri <parri.andrea@gmail.com>,
+        Andrey Konovalov <andreyknvl@google.com>,
+        Andy Lutomirski <luto@kernel.org>, ard.biesheuvel@linaro.org,
+        Arnd Bergmann <arnd@arndb.de>,
+        Boqun Feng <boqun.feng@gmail.com>,
+        Borislav Petkov <bp@alien8.de>, Daniel Axtens <dja@axtens.net>,
+        Daniel Lustig <dlustig@nvidia.com>,
+        dave.hansen@linux.intel.com, dhowells@redhat.com,
+        Dmitry Vyukov <dvyukov@google.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+        Jade Alglave <j.alglave@ucl.ac.uk>,
+        Joel Fernandes <joel@joelfernandes.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Josh Poimboeuf <jpoimboe@redhat.com>,
+        Luc Maranget <luc.maranget@inria.fr>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        "Paul E. McKenney" <paulmck@linux.ibm.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Will Deacon <will@kernel.org>,
+        kasan-dev <kasan-dev@googlegroups.com>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
+        linux-efi@vger.kernel.org, linux-kbuild@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>,
+        Linux Memory Management List <linux-mm@kvack.org>,
+        "the arch/x86 maintainers" <x86@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, Oct 16, 2019 at 08:23:56AM -0700, Joe Perches wrote:
-> ?  examples please.
+On Wed, 16 Oct 2019 at 17:16, Mark Rutland <mark.rutland@arm.com> wrote:
+>
+> On Wed, Oct 16, 2019 at 10:39:52AM +0200, Marco Elver wrote:
+> > diff --git a/include/linux/sched.h b/include/linux/sched.h
+> > index 2c2e56bd8913..34a1d9310304 100644
+> > --- a/include/linux/sched.h
+> > +++ b/include/linux/sched.h
+> > @@ -1171,6 +1171,13 @@ struct task_struct {
+> >  #ifdef CONFIG_KASAN
+> >       unsigned int                    kasan_depth;
+> >  #endif
+> > +#ifdef CONFIG_KCSAN
+> > +     /* See comments at kernel/kcsan/core.c: struct cpu_state. */
+> > +     int                             kcsan_disable;
+> > +     int                             kcsan_atomic_next;
+> > +     int                             kcsan_atomic_region;
+> > +     bool                            kcsan_atomic_region_flat;
+> > +#endif
+>
+> Should these be unsigned?
 
-From this very thread:
+I prefer to keep them int, as they can become negative (rather than
+underflow with unsigned), if we e.g. have unbalanced
+kcsan_enable_current etc. Since we do not need the full unsigned range
+(these values should stay relatively small), int is more than enough.
 
-\sEfi\s, \sefi\s, \seFI\s etc should be "EFI"
+> > +/*
+> > + * Per-CPU state that should be used instead of 'current' if we are not in a
+> > + * task.
+> > + */
+> > +struct cpu_state {
+> > +     int disable; /* disable counter */
+> > +     int atomic_next; /* number of following atomic ops */
+> > +
+> > +     /*
+> > +      * We use separate variables to store if we are in a nestable or flat
+> > +      * atomic region. This helps make sure that an atomic region with
+> > +      * nesting support is not suddenly aborted when a flat region is
+> > +      * contained within. Effectively this allows supporting nesting flat
+> > +      * atomic regions within an outer nestable atomic region. Support for
+> > +      * this is required as there are cases where a seqlock reader critical
+> > +      * section (flat atomic region) is contained within a seqlock writer
+> > +      * critical section (nestable atomic region), and the "mismatching
+> > +      * kcsan_end_atomic()" warning would trigger otherwise.
+> > +      */
+> > +     int atomic_region;
+> > +     bool atomic_region_flat;
+> > +};
+> > +static DEFINE_PER_CPU(struct cpu_state, this_state) = {
+> > +     .disable = 0,
+> > +     .atomic_next = 0,
+> > +     .atomic_region = 0,
+> > +     .atomic_region_flat = 0,
+> > +};
+>
+> These are the same as in task_struct, so I think it probably makes sense
+> to have a common structure for these, e.g.
+>
+> | struct kcsan_ctx {
+> |       int     disable;
+> |       int     atomic_next;
+> |       int     atomic_region;
+> |       bool    atomic_region_flat;
+> | };
+>
+> ... which you then place within task_struct, e.g.
+>
+> | #ifdef CONFIG_KCSAN
+> |       struct kcsan_ctx        kcsan_ctx;
+> | #endif
+>
+> ... and here, e.g.
+>
+> | static DEFINE_PER_CPU(struct kcsan_ctx, kcsan_cpu_ctx);
+>
+> That would simplify a number of cases below where you have to choose one
+> or the other, as you can choose the pointer, then handle the rest in a
+> common way.
+>
+> e.g. for:
+>
+> > +static inline bool is_atomic(const volatile void *ptr)
+> > +{
+> > +     if (in_task()) {
+> > +             if (unlikely(current->kcsan_atomic_next > 0)) {
+> > +                     --current->kcsan_atomic_next;
+> > +                     return true;
+> > +             }
+> > +             if (unlikely(current->kcsan_atomic_region > 0 ||
+> > +                          current->kcsan_atomic_region_flat))
+> > +                     return true;
+> > +     } else { /* interrupt */
+> > +             if (unlikely(this_cpu_read(this_state.atomic_next) > 0)) {
+> > +                     this_cpu_dec(this_state.atomic_next);
+> > +                     return true;
+> > +             }
+> > +             if (unlikely(this_cpu_read(this_state.atomic_region) > 0 ||
+> > +                          this_cpu_read(this_state.atomic_region_flat)))
+> > +                     return true;
+> > +     }
+> > +
+> > +     return kcsan_is_atomic(ptr);
+> > +}
+>
+> ... you could have something like:
+>
+> | struct kcsan_ctx *kcsan_get_ctx(void)
+> | {
+> |       return in_task() ? &current->kcsan_ctx : this_cpu_ptr(kcsan_cpu_ctx);
+> | }
+> |
+> | static inline bool is_atomic(const volatile void *ptr)
+> | {
+> |       struct kcsan_ctx *ctx = kcsan_get_ctx();
+> |       if (unlikely(ctx->atomic_next > 0) {
+> |               --ctx->atomic_next;
+> |               return true;
+> |       }
+> |       if (unlikely(ctx->atomic_region > 0 || ctx->atomic_region_flat))
+> |               return true;
+> |
+> |       return kcsan_is_atomic(ptr);
+> | }
+>
+> ... avoiding duplicating the checks for task/irq contexts.
+>
+> It's not clear to me how either that or the original code works if a
+> softirq is interrupted by a hardirq. IIUC most of the fields should
+> remain stable over that window, since the hardirq should balance most
+> changes it makes before returning, but I don't think that's true for
+> atomic_next. Can't that be corrupted from the PoV of the softirq
+> handler?
 
-I'm thinking perhaps start conservatively and catch the most often
-misspelled ones in commit messages or comments. "CPU", "SMT", "MCE",
-"MCA", "PCI" etc come to mind.
+As you say, these fields should balance. So far I have not observed
+any issues. For atomic_next I'm not concerned as it is an
+approximation either way (see seqlock patch), and it's fine if there
+is a small error.
 
-> checkpatch has a db for misspellings, I supposed another for
-> acronyms could be added,
+> [...]
+>
+> > +void kcsan_begin_atomic(bool nest)
+> > +{
+> > +     if (nest) {
+> > +             if (in_task())
+> > +                     ++current->kcsan_atomic_region;
+> > +             else
+> > +                     this_cpu_inc(this_state.atomic_region);
+> > +     } else {
+> > +             if (in_task())
+> > +                     current->kcsan_atomic_region_flat = true;
+> > +             else
+> > +                     this_cpu_write(this_state.atomic_region_flat, true);
+> > +     }
+> > +}
+>
+> Assuming my suggestion above wasn't bogus, this can be:
+>
+> | void kcsan_begin_atomic(boot nest)
+> | {
+> |       struct kcsan_ctx *ctx = kcsan_get_ctx();
+> |       if (nest)
+> |               ctx->atomic_region++;
+> |       else
+> |               ctx->atomic_region_flat = true;
+> | }
+>
+> > +void kcsan_end_atomic(bool nest)
+> > +{
+> > +     if (nest) {
+> > +             int prev =
+> > +                     in_task() ?
+> > +                             current->kcsan_atomic_region-- :
+> > +                             (this_cpu_dec_return(this_state.atomic_region) +
+> > +                              1);
+> > +             if (prev == 0) {
+> > +                     kcsan_begin_atomic(true); /* restore to 0 */
+> > +                     kcsan_disable_current();
+> > +                     WARN(1, "mismatching %s", __func__);
+> > +                     kcsan_enable_current();
+> > +             }
+> > +     } else {
+> > +             if (in_task())
+> > +                     current->kcsan_atomic_region_flat = false;
+> > +             else
+> > +                     this_cpu_write(this_state.atomic_region_flat, false);
+> > +     }
+> > +}
+>
+> ... similarly:
+>
+> | void kcsan_end_atomic(bool nest)
+> | {
+> |       struct kcsan_ctx *ctx = kcsan_get_ctx();
+> |
+> |       if (nest)
+> |               if (ctx->kcsan_atomic_region--) {
+> |                       kcsan_begin_atomic(true); /* restore to 0 */
+> |                       kcsan_disable_current();
+> |                       WARN(1, "mismatching %s"\ __func__);
+> |                       kcsan_enable_current();
+> |               }
+> |       } else {
+> |               ctx->atomic_region_flat = true;
+> |       }
+> | }
+>
+> > +void kcsan_atomic_next(int n)
+> > +{
+> > +     if (in_task())
+> > +             current->kcsan_atomic_next = n;
+> > +     else
+> > +             this_cpu_write(this_state.atomic_next, n);
+> > +}
+>
+> ... and:
+>
+> | void kcsan_atomic_nextint n)
+> | {
+> |       kcsan_get_ctx()->atomic_next = n;
+> | }
 
-Doesn't have to be another one - established acronyms are part of the
-dictionary too.
+Otherwise, yes, this makes much more sense and I will just introduce
+the struct and integrate the above suggestions for v2.
 
-> but how would false positives be avoided?
-
-Perhaps delimited with spaces or non-word chars (\W) and when they're
-part of a comment or the commit message...
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Many thanks,
+-- Marco
