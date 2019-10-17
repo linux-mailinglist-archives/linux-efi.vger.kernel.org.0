@@ -2,159 +2,182 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E5403DADAB
-	for <lists+linux-efi@lfdr.de>; Thu, 17 Oct 2019 14:59:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1CB49DAF53
+	for <lists+linux-efi@lfdr.de>; Thu, 17 Oct 2019 16:13:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727487AbfJQM7Y (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 17 Oct 2019 08:59:24 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:58018 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726534AbfJQM7X (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 17 Oct 2019 08:59:23 -0400
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x9HCqajx130707;
-        Thu, 17 Oct 2019 08:58:57 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 2vprdx92pf-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 17 Oct 2019 08:58:56 -0400
-Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
-        by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x9HCqeNS131031;
-        Thu, 17 Oct 2019 08:58:56 -0400
-Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.10])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 2vprdx92nx-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 17 Oct 2019 08:58:56 -0400
-Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
-        by ppma02dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x9HCuGTX003724;
-        Thu, 17 Oct 2019 12:58:55 GMT
-Received: from b03cxnp08026.gho.boulder.ibm.com (b03cxnp08026.gho.boulder.ibm.com [9.17.130.18])
-        by ppma02dal.us.ibm.com with ESMTP id 2vk6f815ts-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 17 Oct 2019 12:58:55 +0000
-Received: from b03ledav002.gho.boulder.ibm.com (b03ledav002.gho.boulder.ibm.com [9.17.130.233])
-        by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x9HCwroP31457722
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 17 Oct 2019 12:58:53 GMT
-Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 390AF13605E;
-        Thu, 17 Oct 2019 12:58:53 +0000 (GMT)
-Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id DAA4013605D;
-        Thu, 17 Oct 2019 12:58:50 +0000 (GMT)
-Received: from swastik.ibm.com (unknown [9.85.165.227])
-        by b03ledav002.gho.boulder.ibm.com (Postfix) with ESMTP;
-        Thu, 17 Oct 2019 12:58:50 +0000 (GMT)
-Subject: Re: [PATCH v7 2/8] powerpc: add support to initialize ima policy
- rules
-To:     Michael Ellerman <mpe@ellerman.id.au>,
-        Nayna Jain <nayna@linux.ibm.com>, linuxppc-dev@ozlabs.org,
-        linux-efi@vger.kernel.org, linux-integrity@vger.kernel.org
-Cc:     Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Eric Ricther <erichte@linux.ibm.com>,
-        linux-kernel@vger.kernel.org, Mimi Zohar <zohar@linux.ibm.com>,
-        Claudio Carvalho <cclaudio@linux.ibm.com>,
-        Matthew Garret <matthew.garret@nebula.com>,
-        Paul Mackerras <paulus@samba.org>, Jeremy Kerr <jk@ozlabs.org>,
-        Elaine Palmer <erpalmer@us.ibm.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Oliver O'Halloran" <oohall@gmail.com>,
-        George Wilson <gcwilson@linux.ibm.com>
-References: <1570497267-13672-1-git-send-email-nayna@linux.ibm.com>
- <1570497267-13672-3-git-send-email-nayna@linux.ibm.com>
- <871rveuu0i.fsf@mpe.ellerman.id.au>
-From:   Nayna <nayna@linux.vnet.ibm.com>
-Message-ID: <fbd8ca54-19ff-b77b-9e15-d900168bbdb3@linux.vnet.ibm.com>
-Date:   Thu, 17 Oct 2019 08:58:50 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
-MIME-Version: 1.0
-In-Reply-To: <871rveuu0i.fsf@mpe.ellerman.id.au>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-10-17_04:,,
- signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1908290000 definitions=main-1910170119
+        id S2439878AbfJQON3 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 17 Oct 2019 10:13:29 -0400
+Received: from mail-qk1-f201.google.com ([209.85.222.201]:56361 "EHLO
+        mail-qk1-f201.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2439877AbfJQON2 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 17 Oct 2019 10:13:28 -0400
+Received: by mail-qk1-f201.google.com with SMTP id b29so2183371qka.23
+        for <linux-efi@vger.kernel.org>; Thu, 17 Oct 2019 07:13:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=date:message-id:mime-version:subject:from:to:cc;
+        bh=ahMy3naCKZUNeyQrUsfvkWdO2IwHI3ehg2cI/CL0H68=;
+        b=E3NOAAWoSp5dTlcTqruPb+cH4PFuBjXLsewnlVjecfeBooxgaCsyFAL8vBl4YeNT20
+         YoLFJaTQQjJxVpax9nNayHjSAHQWsOgddwQzwVv9JYC2Au2zuxFrCmfiSl9eCwPUjiB/
+         pk3jnb5D0FkO31sy7aMLhRtuJadpGsEwRytCDgR6jcXDBDOxJjFs0dwm0FdaDrDknV8x
+         iZ4CEs9UkGQdbcr+x9W6pe8+HRjM1yuiBP8veMvjpf/zMPwj8nV1oMSQ5FPQT9RSoE+Q
+         ZKOXMtWQzET90Ll9U8y/HRyW7pSXTSbMg792SlUvduaz7O4I5Ec1BPXkNa7CJ+bB12Z9
+         42Sw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:message-id:mime-version:subject:from:to:cc;
+        bh=ahMy3naCKZUNeyQrUsfvkWdO2IwHI3ehg2cI/CL0H68=;
+        b=LCZZrwPnb38au9OPPa799GOAi7WiUoPRM70BxSIwsqfCiu+tnPF/JvsrfeNQHfJeKQ
+         Ic2Vzb0NWGcUVLnkeg9e1ouDIZ6j3vqffl6O4eEF+n8iA9z0FXJu1l9vobL6OCbJscg7
+         dW42VsaTp90IDKNTYsCw/l9KVC4OcCFCrNN7dBfFciYH+NU8Xq3STX4/6gdDZwDZQJkm
+         3tVVkK3u5vjOxSJHfStT3n9lhKL/RPX6O4JWwapqfGtZuLF8QdYZUJd9SGuGth4ZSziO
+         bQ1W2hkLS5xqdZHQ/RDoY6cRM/mfE5335Llx1IZ6FwbwvzmmsydgOLjbOtdJ/OLCJ048
+         moxw==
+X-Gm-Message-State: APjAAAW7eIEIztnZYs4FD2XCGJ1OW30iPp3JA6bsvDM0h7ZlcFbobhlJ
+        VG1N0NMQGH+zAQzuQrkEeKmqDS/HSw==
+X-Google-Smtp-Source: APXvYqxtX9ypXjB03uUDF7iJQHTkx8t43nT/o1OPlwEgu5Pcb4Oyr25eGL9asgyz9sNtX0vCtLKQRCysMg==
+X-Received: by 2002:ac8:1903:: with SMTP id t3mr4137772qtj.344.1571321605784;
+ Thu, 17 Oct 2019 07:13:25 -0700 (PDT)
+Date:   Thu, 17 Oct 2019 16:12:57 +0200
+Message-Id: <20191017141305.146193-1-elver@google.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.23.0.866.gb869b98d4c-goog
+Subject: [PATCH v2 0/8] Add Kernel Concurrency Sanitizer (KCSAN)
+From:   Marco Elver <elver@google.com>
+To:     elver@google.com
+Cc:     akiyks@gmail.com, stern@rowland.harvard.edu, glider@google.com,
+        parri.andrea@gmail.com, andreyknvl@google.com, luto@kernel.org,
+        ard.biesheuvel@linaro.org, arnd@arndb.de, boqun.feng@gmail.com,
+        bp@alien8.de, dja@axtens.net, dlustig@nvidia.com,
+        dave.hansen@linux.intel.com, dhowells@redhat.com,
+        dvyukov@google.com, hpa@zytor.com, mingo@redhat.com,
+        j.alglave@ucl.ac.uk, joel@joelfernandes.org, corbet@lwn.net,
+        jpoimboe@redhat.com, luc.maranget@inria.fr, mark.rutland@arm.com,
+        npiggin@gmail.com, paulmck@linux.ibm.com, peterz@infradead.org,
+        tglx@linutronix.de, will@kernel.org, kasan-dev@googlegroups.com,
+        linux-arch@vger.kernel.org, linux-doc@vger.kernel.org,
+        linux-efi@vger.kernel.org, linux-kbuild@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mm@kvack.org, x86@kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
+This is the patch-series for the Kernel Concurrency Sanitizer (KCSAN).
+KCSAN is a sampling watchpoint-based data-race detector. More details
+are included in Documentation/dev-tools/kcsan.rst. This patch-series
+only enables KCSAN for x86, but we expect adding support for other
+architectures is relatively straightforward (we are aware of
+experimental ARM64 and POWER support).
+
+To gather early feedback, we announced KCSAN back in September, and
+have integrated the feedback where possible:
+http://lkml.kernel.org/r/CANpmjNPJ_bHjfLZCAPV23AXFfiPiyXXqqu72n6TgWzb2Gnu1eA@mail.gmail.com
+
+We want to point out and acknowledge the work surrounding the LKMM,
+including several articles that motivate why data-races are dangerous
+[1, 2], justifying a data-race detector such as KCSAN.
+[1] https://lwn.net/Articles/793253/
+[2] https://lwn.net/Articles/799218/
+
+The current list of known upstream fixes for data-races found by KCSAN
+can be found here:
+https://github.com/google/ktsan/wiki/KCSAN#upstream-fixes-of-data-races-found-by-kcsan
+
+Changelog
+---------
+v2:
+* Elaborate comment about instrumentation calls emitted by compilers.
+* Replace kcsan_check_access(.., {true, false}) with
+  kcsan_check_{read,write} for improved readability.
+* Introduce __atomic_check_{read,write} in atomic-instrumented.h [Suggested by
+  Mark Rutland].
+* Change bug title of race of unknown origin to just say "data-race in".
+* Refine "Key Properties" in kcsan.rst, and mention observed slow-down.
+* Add comment about safety of find_watchpoint without user_access_save.
+* Remove unnecessary preempt_disable/enable and elaborate on comment why
+  we want to disable interrupts and preemptions.
+* Use common struct kcsan_ctx in task_struct and for per-CPU interrupt
+  contexts [Suggested by Mark Rutland].
+* Document x86 build exceptions where no previous above comment
+  explained why we cannot instrument.
+
+v1: http://lkml.kernel.org/r/20191016083959.186860-1-elver@google.com
 
 
-On 10/15/2019 07:29 AM, Michael Ellerman wrote:
-> Nayna Jain <nayna@linux.ibm.com> writes:
->> PowerNV systems uses kernel based bootloader, thus its secure boot
->> implementation uses kernel IMA security subsystem to verify the kernel
->> before kexec. Since the verification policy might differ based on the
->> secure boot mode of the system, the policies are defined at runtime.
->>
->> This patch implements the arch-specific support to define the IMA policy
->> rules based on the runtime secure boot mode of the system.
->>
->> This patch provides arch-specific IMA policies if PPC_SECURE_BOOT
->> config is enabled.
-> ...
->> diff --git a/arch/powerpc/kernel/ima_arch.c b/arch/powerpc/kernel/ima_arch.c
->> new file mode 100644
->> index 000000000000..c22d82965eb4
->> --- /dev/null
->> +++ b/arch/powerpc/kernel/ima_arch.c
->> @@ -0,0 +1,33 @@
->> +// SPDX-License-Identifier: GPL-2.0
->> +/*
->> + * Copyright (C) 2019 IBM Corporation
->> + * Author: Nayna Jain
->> + */
->> +
->> +#include <linux/ima.h>
->> +#include <asm/secure_boot.h>
->> +
->> +bool arch_ima_get_secureboot(void)
->> +{
->> +	return is_powerpc_os_secureboot_enabled();
->> +}
->> +
->> +/* Defines IMA appraise rules for secureboot */
->> +static const char *const arch_rules[] = {
->> +	"appraise func=KEXEC_KERNEL_CHECK appraise_type=imasig|modsig",
->> +#if !IS_ENABLED(CONFIG_MODULE_SIG_FORCE)
->> +	"appraise func=MODULE_CHECK appraise_type=imasig|modsig",
->> +#endif
-> This confuses me.
->
-> If I spell it out we get:
->
-> #if IS_ENABLED(CONFIG_MODULE_SIG_FORCE)
-> 	// nothing
-> #else
-> 	"appraise func=MODULE_CHECK appraise_type=imasig|modsig",
-> #endif
->
-> Which is just:
->
-> #ifdef CONFIG_MODULE_SIG_FORCE
-> 	// nothing
-> #else
-> 	"appraise func=MODULE_CHECK appraise_type=imasig|modsig",
-> #endif
->
-> But CONFIG_MODULE_SIG_FORCE enabled says that we *do* require modules to
-> have a valid signature. Isn't that the inverse of what the rules say?
->
-> Presumably I'm misunderstanding something :)
+Marco Elver (8):
+  kcsan: Add Kernel Concurrency Sanitizer infrastructure
+  objtool, kcsan: Add KCSAN runtime functions to whitelist
+  build, kcsan: Add KCSAN build exceptions
+  seqlock, kcsan: Add annotations for KCSAN
+  seqlock: Require WRITE_ONCE surrounding raw_seqcount_barrier
+  asm-generic, kcsan: Add KCSAN instrumentation for bitops
+  locking/atomics, kcsan: Add KCSAN instrumentation
+  x86, kcsan: Enable KCSAN for x86
 
-To avoid duplicate signature verification as much as possible, the IMA 
-policy rule is added only if CONFIG_MODULE_SIG_FORCE is not enabled. 
-CONFIG_MODULE_SIG_FORCE is part of modules support. IMA signature 
-verification is based on policy.
+ Documentation/dev-tools/kcsan.rst         | 203 ++++++++++
+ MAINTAINERS                               |  11 +
+ Makefile                                  |   3 +-
+ arch/x86/Kconfig                          |   1 +
+ arch/x86/boot/Makefile                    |   2 +
+ arch/x86/boot/compressed/Makefile         |   2 +
+ arch/x86/entry/vdso/Makefile              |   3 +
+ arch/x86/include/asm/bitops.h             |   6 +-
+ arch/x86/kernel/Makefile                  |   7 +
+ arch/x86/kernel/cpu/Makefile              |   3 +
+ arch/x86/lib/Makefile                     |   4 +
+ arch/x86/mm/Makefile                      |   3 +
+ arch/x86/purgatory/Makefile               |   2 +
+ arch/x86/realmode/Makefile                |   3 +
+ arch/x86/realmode/rm/Makefile             |   3 +
+ drivers/firmware/efi/libstub/Makefile     |   2 +
+ include/asm-generic/atomic-instrumented.h | 393 ++++++++++----------
+ include/asm-generic/bitops-instrumented.h |  18 +
+ include/linux/compiler-clang.h            |   9 +
+ include/linux/compiler-gcc.h              |   7 +
+ include/linux/compiler.h                  |  35 +-
+ include/linux/kcsan-checks.h              | 147 ++++++++
+ include/linux/kcsan.h                     | 108 ++++++
+ include/linux/sched.h                     |   4 +
+ include/linux/seqlock.h                   |  51 ++-
+ init/init_task.c                          |   8 +
+ init/main.c                               |   2 +
+ kernel/Makefile                           |   6 +
+ kernel/kcsan/Makefile                     |  14 +
+ kernel/kcsan/atomic.c                     |  21 ++
+ kernel/kcsan/core.c                       | 428 ++++++++++++++++++++++
+ kernel/kcsan/debugfs.c                    | 225 ++++++++++++
+ kernel/kcsan/encoding.h                   |  94 +++++
+ kernel/kcsan/kcsan.c                      |  86 +++++
+ kernel/kcsan/kcsan.h                      | 140 +++++++
+ kernel/kcsan/report.c                     | 306 ++++++++++++++++
+ kernel/kcsan/test.c                       | 117 ++++++
+ kernel/sched/Makefile                     |   6 +
+ lib/Kconfig.debug                         |   2 +
+ lib/Kconfig.kcsan                         |  88 +++++
+ lib/Makefile                              |   3 +
+ mm/Makefile                               |   8 +
+ scripts/Makefile.kcsan                    |   6 +
+ scripts/Makefile.lib                      |  10 +
+ scripts/atomic/gen-atomic-instrumented.sh |  17 +-
+ tools/objtool/check.c                     |  17 +
+ 46 files changed, 2428 insertions(+), 206 deletions(-)
+ create mode 100644 Documentation/dev-tools/kcsan.rst
+ create mode 100644 include/linux/kcsan-checks.h
+ create mode 100644 include/linux/kcsan.h
+ create mode 100644 kernel/kcsan/Makefile
+ create mode 100644 kernel/kcsan/atomic.c
+ create mode 100644 kernel/kcsan/core.c
+ create mode 100644 kernel/kcsan/debugfs.c
+ create mode 100644 kernel/kcsan/encoding.h
+ create mode 100644 kernel/kcsan/kcsan.c
+ create mode 100644 kernel/kcsan/kcsan.h
+ create mode 100644 kernel/kcsan/report.c
+ create mode 100644 kernel/kcsan/test.c
+ create mode 100644 lib/Kconfig.kcsan
+ create mode 100644 scripts/Makefile.kcsan
 
-Thanks & Regards,
-      - Nayna
+-- 
+2.23.0.866.gb869b98d4c-goog
 
