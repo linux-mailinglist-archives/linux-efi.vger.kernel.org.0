@@ -2,132 +2,74 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EC7AEDBE81
-	for <lists+linux-efi@lfdr.de>; Fri, 18 Oct 2019 09:37:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 325F9DBEEC
+	for <lists+linux-efi@lfdr.de>; Fri, 18 Oct 2019 09:52:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391209AbfJRHhk (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 18 Oct 2019 03:37:40 -0400
-Received: from helcar.hmeau.com ([216.24.177.18]:37236 "EHLO fornost.hmeau.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728302AbfJRHhk (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Fri, 18 Oct 2019 03:37:40 -0400
-Received: from gwarestrin.arnor.me.apana.org.au ([192.168.0.7])
-        by fornost.hmeau.com with smtp (Exim 4.89 #2 (Debian))
-        id 1iLMoG-0004PG-JE; Fri, 18 Oct 2019 18:36:29 +1100
-Received: by gwarestrin.arnor.me.apana.org.au (sSMTP sendmail emulation); Fri, 18 Oct 2019 18:36:16 +1100
-Date:   Fri, 18 Oct 2019 17:56:23 +1100
-From:   Herbert Xu <herbert@gondor.apana.org.au>
-To:     Borislav Petkov <bp@alien8.de>
-Cc:     "David S. Miller" <davem@davemloft.net>,
-        Jiri Slaby <jslaby@suse.cz>, tglx@linutronix.de,
-        mingo@redhat.com, hpa@zytor.com, x86@kernel.org,
-        linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <len.brown@intel.com>, Pavel Machek <pavel@ucw.cz>,
-        Matt Fleming <matt@codeblueprint.co.uk>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Juergen Gross <jgross@suse.com>, linux-crypto@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-efi@vger.kernel.org,
-        xen-devel@lists.xenproject.org
-Subject: Re: [PATCH v9 24/28] x86_64/asm: Change all ENTRY+ENDPROC to
- SYM_FUNC_*
-Message-ID: <20191018065623.GA15199@gondor.apana.org.au>
-References: <20191011115108.12392-1-jslaby@suse.cz>
- <20191011115108.12392-25-jslaby@suse.cz>
- <20191016071230.GD1138@zn.tnic>
+        id S2504885AbfJRHwU (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 18 Oct 2019 03:52:20 -0400
+Received: from zaovasilisa.ru ([88.200.194.99]:46823 "EHLO usrv.lan"
+        rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org with ESMTP
+        id S2504820AbfJRHwP (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Fri, 18 Oct 2019 03:52:15 -0400
+X-Greylist: delayed 39671 seconds by postgrey-1.27 at vger.kernel.org; Fri, 18 Oct 2019 03:51:51 EDT
+Received: from 127.0.0.1 (localhost [127.0.0.1])
+        by usrv.lan (Postfix) with SMTP id CC3F818647F;
+        Thu, 17 Oct 2019 17:04:03 +0400 (MSD)
+Received: from [72.215.151.127] by 127.0.0.1 with ESMTP id 72A686FDC7F; Thu, 17 Oct 2019 18:59:02 +0600
+Message-ID: <735ui-$$-55e3--c$i$-l0-18w85$-6@8d6h1006syk>
+From:   "Mr Ekrem Bayraktar" <dave@dbsoundfactory.com>
+Reply-To: "Mr Ekrem Bayraktar" <dave@dbsoundfactory.com>
+To:     links@q.vu
+Subject: MOTHERLESS CHILDREN IN YOUR CITY !!
+Date:   Thu, 17 Oct 19 18:59:02 GMT
+X-Mailer: AOL 7.0 for Windows US sub 118
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191016071230.GD1138@zn.tnic>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: multipart/alternative;
+        boundary="EFA7_FB09FAD2"
+X-Priority: 3
+X-MSMail-Priority: Normal
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, Oct 16, 2019 at 09:12:30AM +0200, Borislav Petkov wrote:
-> Hi,
-> 
-> On Fri, Oct 11, 2019 at 01:51:04PM +0200, Jiri Slaby wrote:
-> > These are all functions which are invoked from elsewhere, so annotate
-> > them as global using the new SYM_FUNC_START. And their ENDPROC's by
-> > SYM_FUNC_END.
-> > 
-> > And make sure ENTRY/ENDPROC is not defined on X86_64, given these were
-> > the last users.
-> > 
-> > Signed-off-by: Jiri Slaby <jslaby@suse.cz>
-> > Reviewed-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com> [hibernate]
-> > Reviewed-by: Boris Ostrovsky <boris.ostrovsky@oracle.com> [xen bits]
-> > Cc: "H. Peter Anvin" <hpa@zytor.com>
-> > Cc: Borislav Petkov <bp@alien8.de>
-> > Cc: Thomas Gleixner <tglx@linutronix.de>
-> > Cc: Ingo Molnar <mingo@redhat.com>
-> > Cc: x86@kernel.org
-> > Cc: Herbert Xu <herbert@gondor.apana.org.au>
-> > Cc: "David S. Miller" <davem@davemloft.net>
-> > Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-> > Cc: Len Brown <len.brown@intel.com>
-> > Cc: Pavel Machek <pavel@ucw.cz>
-> > Cc: Matt Fleming <matt@codeblueprint.co.uk>
-> > Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>
-> > Cc: Boris Ostrovsky <boris.ostrovsky@oracle.com>
-> > Cc: Juergen Gross <jgross@suse.com>
-> > Cc: linux-crypto@vger.kernel.org
-> > Cc: linux-pm@vger.kernel.org
-> > Cc: linux-efi@vger.kernel.org
-> > Cc: xen-devel@lists.xenproject.org
-> > ---
-> >  arch/x86/boot/compressed/efi_thunk_64.S      |  4 +-
-> >  arch/x86/boot/compressed/head_64.S           | 16 +++---
-> >  arch/x86/boot/compressed/mem_encrypt.S       |  8 +--
-> >  arch/x86/crypto/aegis128-aesni-asm.S         | 28 ++++-----
-> >  arch/x86/crypto/aes_ctrby8_avx-x86_64.S      | 12 ++--
-> >  arch/x86/crypto/aesni-intel_asm.S            | 60 ++++++++++----------
-> >  arch/x86/crypto/aesni-intel_avx-x86_64.S     | 32 +++++------
-> >  arch/x86/crypto/blowfish-x86_64-asm_64.S     | 16 +++---
-> >  arch/x86/crypto/camellia-aesni-avx-asm_64.S  | 24 ++++----
-> >  arch/x86/crypto/camellia-aesni-avx2-asm_64.S | 24 ++++----
-> >  arch/x86/crypto/camellia-x86_64-asm_64.S     | 16 +++---
-> >  arch/x86/crypto/cast5-avx-x86_64-asm_64.S    | 16 +++---
-> >  arch/x86/crypto/cast6-avx-x86_64-asm_64.S    | 24 ++++----
-> >  arch/x86/crypto/chacha-avx2-x86_64.S         | 12 ++--
-> >  arch/x86/crypto/chacha-avx512vl-x86_64.S     | 12 ++--
-> >  arch/x86/crypto/chacha-ssse3-x86_64.S        | 12 ++--
-> >  arch/x86/crypto/crc32-pclmul_asm.S           |  4 +-
-> >  arch/x86/crypto/crc32c-pcl-intel-asm_64.S    |  4 +-
-> >  arch/x86/crypto/crct10dif-pcl-asm_64.S       |  4 +-
-> >  arch/x86/crypto/des3_ede-asm_64.S            |  8 +--
-> >  arch/x86/crypto/ghash-clmulni-intel_asm.S    |  8 +--
-> >  arch/x86/crypto/nh-avx2-x86_64.S             |  4 +-
-> >  arch/x86/crypto/nh-sse2-x86_64.S             |  4 +-
-> >  arch/x86/crypto/poly1305-avx2-x86_64.S       |  4 +-
-> >  arch/x86/crypto/poly1305-sse2-x86_64.S       |  8 +--
-> >  arch/x86/crypto/serpent-avx-x86_64-asm_64.S  | 24 ++++----
-> >  arch/x86/crypto/serpent-avx2-asm_64.S        | 24 ++++----
-> >  arch/x86/crypto/serpent-sse2-x86_64-asm_64.S |  8 +--
-> >  arch/x86/crypto/sha1_avx2_x86_64_asm.S       |  4 +-
-> >  arch/x86/crypto/sha1_ni_asm.S                |  4 +-
-> >  arch/x86/crypto/sha1_ssse3_asm.S             |  4 +-
-> >  arch/x86/crypto/sha256-avx-asm.S             |  4 +-
-> >  arch/x86/crypto/sha256-avx2-asm.S            |  4 +-
-> >  arch/x86/crypto/sha256-ssse3-asm.S           |  4 +-
-> >  arch/x86/crypto/sha256_ni_asm.S              |  4 +-
-> >  arch/x86/crypto/sha512-avx-asm.S             |  4 +-
-> >  arch/x86/crypto/sha512-avx2-asm.S            |  4 +-
-> >  arch/x86/crypto/sha512-ssse3-asm.S           |  4 +-
-> >  arch/x86/crypto/twofish-avx-x86_64-asm_64.S  | 24 ++++----
-> >  arch/x86/crypto/twofish-x86_64-asm_64-3way.S |  8 +--
-> >  arch/x86/crypto/twofish-x86_64-asm_64.S      |  8 +--
-> 
-> I could use an ACK for the crypto bits...
 
-Acked-by: Herbert Xu <herbert@gondor.apana.org.au>
+--EFA7_FB09FAD2
+Content-Type: text/plain;
+Content-Transfer-Encoding: quoted-printable
 
-Cheers,
--- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+Dear Sir / Madam
+
+
+
+Since ever we left your country back to Canada , we have gotten Government=
+ approval and we have been busying planning for the less privilege Childre=
+n projects.
+
+We are planning to release first batch of the funds $2,990,000.00 within 1=
+4 days for building an estate for motherless children in your city.
+
+I want you to use my mother;s company name to register this charity projec=
+t in your country after receiving the project funds.
+
+It must be registered as { Bayraktar Group Homeless Children Ltd }.
+
+
+Can you handle and supervise this big project ?
+Can you manager all the workers as a senior supervisor ?
+We want to be sure you can handle it before we proceed with this project.
+
+
+Please call me if you want to hear from us + 1-917 580 4919.
+Please can you manage such project please Kindly reply for further details=
+.
+
+Your full names-----------
+
+
+
+Ekrem Bayraktar.
+Bayraktar Shipping Group
+
+--EFA7_FB09FAD2--
+
