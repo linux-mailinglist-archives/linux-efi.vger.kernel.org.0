@@ -2,233 +2,159 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E57C4DA853
-	for <lists+linux-efi@lfdr.de>; Thu, 17 Oct 2019 11:30:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E5403DADAB
+	for <lists+linux-efi@lfdr.de>; Thu, 17 Oct 2019 14:59:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2408515AbfJQJa4 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 17 Oct 2019 05:30:56 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:58238 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2393479AbfJQJaz (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Thu, 17 Oct 2019 05:30:55 -0400
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id D4B2820F2;
-        Thu, 17 Oct 2019 09:30:54 +0000 (UTC)
-Received: from localhost.localdomain.com (ovpn-12-118.pek2.redhat.com [10.72.12.118])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 7F56760872;
-        Thu, 17 Oct 2019 09:30:48 +0000 (UTC)
-From:   Kairui Song <kasong@redhat.com>
-To:     linux-kernel@vger.kernel.org
+        id S1727487AbfJQM7Y (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 17 Oct 2019 08:59:24 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:58018 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726534AbfJQM7X (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 17 Oct 2019 08:59:23 -0400
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x9HCqajx130707;
+        Thu, 17 Oct 2019 08:58:57 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 2vprdx92pf-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 17 Oct 2019 08:58:56 -0400
+Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x9HCqeNS131031;
+        Thu, 17 Oct 2019 08:58:56 -0400
+Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.10])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 2vprdx92nx-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 17 Oct 2019 08:58:56 -0400
+Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
+        by ppma02dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x9HCuGTX003724;
+        Thu, 17 Oct 2019 12:58:55 GMT
+Received: from b03cxnp08026.gho.boulder.ibm.com (b03cxnp08026.gho.boulder.ibm.com [9.17.130.18])
+        by ppma02dal.us.ibm.com with ESMTP id 2vk6f815ts-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 17 Oct 2019 12:58:55 +0000
+Received: from b03ledav002.gho.boulder.ibm.com (b03ledav002.gho.boulder.ibm.com [9.17.130.233])
+        by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x9HCwroP31457722
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 17 Oct 2019 12:58:53 GMT
+Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 390AF13605E;
+        Thu, 17 Oct 2019 12:58:53 +0000 (GMT)
+Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id DAA4013605D;
+        Thu, 17 Oct 2019 12:58:50 +0000 (GMT)
+Received: from swastik.ibm.com (unknown [9.85.165.227])
+        by b03ledav002.gho.boulder.ibm.com (Postfix) with ESMTP;
+        Thu, 17 Oct 2019 12:58:50 +0000 (GMT)
+Subject: Re: [PATCH v7 2/8] powerpc: add support to initialize ima policy
+ rules
+To:     Michael Ellerman <mpe@ellerman.id.au>,
+        Nayna Jain <nayna@linux.ibm.com>, linuxppc-dev@ozlabs.org,
+        linux-efi@vger.kernel.org, linux-integrity@vger.kernel.org
 Cc:     Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Matthew Garrett <matthewgarrett@google.com>,
-        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        Baoquan He <bhe@redhat.com>, Dave Young <dyoung@redhat.com>,
-        x86@kernel.org, linux-efi@vger.kernel.org,
-        Kairui Song <kasong@redhat.com>
-Subject: [PATCH v4] x86, efi: never relocate kernel below lowest acceptable address
-Date:   Thu, 17 Oct 2019 17:30:20 +0800
-Message-Id: <20191017093020.28658-1-kasong@redhat.com>
+        Eric Ricther <erichte@linux.ibm.com>,
+        linux-kernel@vger.kernel.org, Mimi Zohar <zohar@linux.ibm.com>,
+        Claudio Carvalho <cclaudio@linux.ibm.com>,
+        Matthew Garret <matthew.garret@nebula.com>,
+        Paul Mackerras <paulus@samba.org>, Jeremy Kerr <jk@ozlabs.org>,
+        Elaine Palmer <erpalmer@us.ibm.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Oliver O'Halloran" <oohall@gmail.com>,
+        George Wilson <gcwilson@linux.ibm.com>
+References: <1570497267-13672-1-git-send-email-nayna@linux.ibm.com>
+ <1570497267-13672-3-git-send-email-nayna@linux.ibm.com>
+ <871rveuu0i.fsf@mpe.ellerman.id.au>
+From:   Nayna <nayna@linux.vnet.ibm.com>
+Message-ID: <fbd8ca54-19ff-b77b-9e15-d900168bbdb3@linux.vnet.ibm.com>
+Date:   Thu, 17 Oct 2019 08:58:50 -0400
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
 MIME-Version: 1.0
+In-Reply-To: <871rveuu0i.fsf@mpe.ellerman.id.au>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.2 (mx1.redhat.com [10.5.110.71]); Thu, 17 Oct 2019 09:30:54 +0000 (UTC)
+Content-Language: en-US
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-10-17_04:,,
+ signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1908290000 definitions=main-1910170119
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Currently, kernel fails to boot on some HyperV VMs when using EFI.
-And it's a potential issue on all platforms.
 
-It's caused by broken kernel relocation on EFI systems, when below three
-conditions are met:
 
-1. Kernel image is not loaded to the default address (LOAD_PHYSICAL_ADDR)
-   by the loader.
-2. There isn't enough room to contain the kernel, starting from the
-   default load address (eg. something else occupied part the region).
-3. In the memmap provided by EFI firmware, there is a memory region
-   starts below LOAD_PHYSICAL_ADDR, and suitable for containing the
-   kernel.
+On 10/15/2019 07:29 AM, Michael Ellerman wrote:
+> Nayna Jain <nayna@linux.ibm.com> writes:
+>> PowerNV systems uses kernel based bootloader, thus its secure boot
+>> implementation uses kernel IMA security subsystem to verify the kernel
+>> before kexec. Since the verification policy might differ based on the
+>> secure boot mode of the system, the policies are defined at runtime.
+>>
+>> This patch implements the arch-specific support to define the IMA policy
+>> rules based on the runtime secure boot mode of the system.
+>>
+>> This patch provides arch-specific IMA policies if PPC_SECURE_BOOT
+>> config is enabled.
+> ...
+>> diff --git a/arch/powerpc/kernel/ima_arch.c b/arch/powerpc/kernel/ima_arch.c
+>> new file mode 100644
+>> index 000000000000..c22d82965eb4
+>> --- /dev/null
+>> +++ b/arch/powerpc/kernel/ima_arch.c
+>> @@ -0,0 +1,33 @@
+>> +// SPDX-License-Identifier: GPL-2.0
+>> +/*
+>> + * Copyright (C) 2019 IBM Corporation
+>> + * Author: Nayna Jain
+>> + */
+>> +
+>> +#include <linux/ima.h>
+>> +#include <asm/secure_boot.h>
+>> +
+>> +bool arch_ima_get_secureboot(void)
+>> +{
+>> +	return is_powerpc_os_secureboot_enabled();
+>> +}
+>> +
+>> +/* Defines IMA appraise rules for secureboot */
+>> +static const char *const arch_rules[] = {
+>> +	"appraise func=KEXEC_KERNEL_CHECK appraise_type=imasig|modsig",
+>> +#if !IS_ENABLED(CONFIG_MODULE_SIG_FORCE)
+>> +	"appraise func=MODULE_CHECK appraise_type=imasig|modsig",
+>> +#endif
+> This confuses me.
+>
+> If I spell it out we get:
+>
+> #if IS_ENABLED(CONFIG_MODULE_SIG_FORCE)
+> 	// nothing
+> #else
+> 	"appraise func=MODULE_CHECK appraise_type=imasig|modsig",
+> #endif
+>
+> Which is just:
+>
+> #ifdef CONFIG_MODULE_SIG_FORCE
+> 	// nothing
+> #else
+> 	"appraise func=MODULE_CHECK appraise_type=imasig|modsig",
+> #endif
+>
+> But CONFIG_MODULE_SIG_FORCE enabled says that we *do* require modules to
+> have a valid signature. Isn't that the inverse of what the rules say?
+>
+> Presumably I'm misunderstanding something :)
 
-EFI stub will perform a kernel relocation when condition 1 is met. But
-due to condition 2, EFI stub can't relocate kernel to the preferred
-address, so it fallback to ask EFI firmware to alloc lowest usable memory
-region, got the low region mentioned in condition 3, and relocated
-kernel there.
+To avoid duplicate signature verification as much as possible, the IMA 
+policy rule is added only if CONFIG_MODULE_SIG_FORCE is not enabled. 
+CONFIG_MODULE_SIG_FORCE is part of modules support. IMA signature 
+verification is based on policy.
 
-It's incorrect to relocate the kernel below LOAD_PHYSICAL_ADDR. This
-is the lowest acceptable kernel relocation address.
-
-The first thing goes wrong is in arch/x86/boot/compressed/head_64.S.
-Kernel decompression will force use LOAD_PHYSICAL_ADDR as the output
-address if kernel is located below it. Then the relocation before
-decompression, which move kernel to the end of the decompression buffer,
-will overwrite other memory region, as there is no enough memory there.
-
-To fix it, just don't let EFI stub relocate the kernel to any address
-lower than lowest acceptable address.
-
-Signed-off-by: Kairui Song <kasong@redhat.com>
-Acked-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-
----
-Update from V3:
- - Update commit message.
-
-Update from V2:
- - Update part of the commit message.
-
-Update from V1:
- - Redo the commit message.
-
- arch/x86/boot/compressed/eboot.c               |  8 +++++---
- drivers/firmware/efi/libstub/arm32-stub.c      |  2 +-
- drivers/firmware/efi/libstub/arm64-stub.c      |  2 +-
- drivers/firmware/efi/libstub/efi-stub-helper.c | 12 ++++++++----
- include/linux/efi.h                            |  5 +++--
- 5 files changed, 18 insertions(+), 11 deletions(-)
-
-diff --git a/arch/x86/boot/compressed/eboot.c b/arch/x86/boot/compressed/eboot.c
-index d6662fdef300..e89e84b66527 100644
---- a/arch/x86/boot/compressed/eboot.c
-+++ b/arch/x86/boot/compressed/eboot.c
-@@ -13,6 +13,7 @@
- #include <asm/e820/types.h>
- #include <asm/setup.h>
- #include <asm/desc.h>
-+#include <asm/boot.h>
- 
- #include "../string.h"
- #include "eboot.h"
-@@ -413,7 +414,7 @@ struct boot_params *make_boot_params(struct efi_config *c)
- 	}
- 
- 	status = efi_low_alloc(sys_table, 0x4000, 1,
--			       (unsigned long *)&boot_params);
-+			       (unsigned long *)&boot_params, 0);
- 	if (status != EFI_SUCCESS) {
- 		efi_printk(sys_table, "Failed to allocate lowmem for boot params\n");
- 		return NULL;
-@@ -798,7 +799,7 @@ efi_main(struct efi_config *c, struct boot_params *boot_params)
- 
- 	gdt->size = 0x800;
- 	status = efi_low_alloc(sys_table, gdt->size, 8,
--			   (unsigned long *)&gdt->address);
-+			       (unsigned long *)&gdt->address, 0);
- 	if (status != EFI_SUCCESS) {
- 		efi_printk(sys_table, "Failed to allocate memory for 'gdt'\n");
- 		goto fail;
-@@ -813,7 +814,8 @@ efi_main(struct efi_config *c, struct boot_params *boot_params)
- 		status = efi_relocate_kernel(sys_table, &bzimage_addr,
- 					     hdr->init_size, hdr->init_size,
- 					     hdr->pref_address,
--					     hdr->kernel_alignment);
-+					     hdr->kernel_alignment,
-+					     LOAD_PHYSICAL_ADDR);
- 		if (status != EFI_SUCCESS) {
- 			efi_printk(sys_table, "efi_relocate_kernel() failed!\n");
- 			goto fail;
-diff --git a/drivers/firmware/efi/libstub/arm32-stub.c b/drivers/firmware/efi/libstub/arm32-stub.c
-index e8f7aefb6813..bf6f954d6afe 100644
---- a/drivers/firmware/efi/libstub/arm32-stub.c
-+++ b/drivers/firmware/efi/libstub/arm32-stub.c
-@@ -220,7 +220,7 @@ efi_status_t handle_kernel_image(efi_system_table_t *sys_table,
- 	*image_size = image->image_size;
- 	status = efi_relocate_kernel(sys_table, image_addr, *image_size,
- 				     *image_size,
--				     dram_base + MAX_UNCOMP_KERNEL_SIZE, 0);
-+				     dram_base + MAX_UNCOMP_KERNEL_SIZE, 0, 0);
- 	if (status != EFI_SUCCESS) {
- 		pr_efi_err(sys_table, "Failed to relocate kernel.\n");
- 		efi_free(sys_table, *reserve_size, *reserve_addr);
-diff --git a/drivers/firmware/efi/libstub/arm64-stub.c b/drivers/firmware/efi/libstub/arm64-stub.c
-index 1550d244e996..3d2e517e10f4 100644
---- a/drivers/firmware/efi/libstub/arm64-stub.c
-+++ b/drivers/firmware/efi/libstub/arm64-stub.c
-@@ -140,7 +140,7 @@ efi_status_t handle_kernel_image(efi_system_table_t *sys_table_arg,
- 	if (status != EFI_SUCCESS) {
- 		*reserve_size = kernel_memsize + TEXT_OFFSET;
- 		status = efi_low_alloc(sys_table_arg, *reserve_size,
--				       MIN_KIMG_ALIGN, reserve_addr);
-+				       MIN_KIMG_ALIGN, reserve_addr, 0);
- 
- 		if (status != EFI_SUCCESS) {
- 			pr_efi_err(sys_table_arg, "Failed to relocate kernel\n");
-diff --git a/drivers/firmware/efi/libstub/efi-stub-helper.c b/drivers/firmware/efi/libstub/efi-stub-helper.c
-index 3caae7f2cf56..00b00a2562aa 100644
---- a/drivers/firmware/efi/libstub/efi-stub-helper.c
-+++ b/drivers/firmware/efi/libstub/efi-stub-helper.c
-@@ -260,11 +260,11 @@ efi_status_t efi_high_alloc(efi_system_table_t *sys_table_arg,
- }
- 
- /*
-- * Allocate at the lowest possible address.
-+ * Allocate at the lowest possible address that is not below 'min'.
-  */
- efi_status_t efi_low_alloc(efi_system_table_t *sys_table_arg,
- 			   unsigned long size, unsigned long align,
--			   unsigned long *addr)
-+			   unsigned long *addr, unsigned long min)
- {
- 	unsigned long map_size, desc_size, buff_size;
- 	efi_memory_desc_t *map;
-@@ -311,6 +311,9 @@ efi_status_t efi_low_alloc(efi_system_table_t *sys_table_arg,
- 		start = desc->phys_addr;
- 		end = start + desc->num_pages * EFI_PAGE_SIZE;
- 
-+		if (start < min)
-+			start = min;
-+
- 		/*
- 		 * Don't allocate at 0x0. It will confuse code that
- 		 * checks pointers against NULL. Skip the first 8
-@@ -698,7 +701,8 @@ efi_status_t efi_relocate_kernel(efi_system_table_t *sys_table_arg,
- 				 unsigned long image_size,
- 				 unsigned long alloc_size,
- 				 unsigned long preferred_addr,
--				 unsigned long alignment)
-+				 unsigned long alignment,
-+				 unsigned long min_addr)
- {
- 	unsigned long cur_image_addr;
- 	unsigned long new_addr = 0;
-@@ -732,7 +736,7 @@ efi_status_t efi_relocate_kernel(efi_system_table_t *sys_table_arg,
- 	 */
- 	if (status != EFI_SUCCESS) {
- 		status = efi_low_alloc(sys_table_arg, alloc_size, alignment,
--				       &new_addr);
-+				       &new_addr, min_addr);
- 	}
- 	if (status != EFI_SUCCESS) {
- 		pr_efi_err(sys_table_arg, "Failed to allocate usable memory for kernel.\n");
-diff --git a/include/linux/efi.h b/include/linux/efi.h
-index bd3837022307..a5144cc44e54 100644
---- a/include/linux/efi.h
-+++ b/include/linux/efi.h
-@@ -1581,7 +1581,7 @@ efi_status_t efi_get_memory_map(efi_system_table_t *sys_table_arg,
- 
- efi_status_t efi_low_alloc(efi_system_table_t *sys_table_arg,
- 			   unsigned long size, unsigned long align,
--			   unsigned long *addr);
-+			   unsigned long *addr, unsigned long min);
- 
- efi_status_t efi_high_alloc(efi_system_table_t *sys_table_arg,
- 			    unsigned long size, unsigned long align,
-@@ -1592,7 +1592,8 @@ efi_status_t efi_relocate_kernel(efi_system_table_t *sys_table_arg,
- 				 unsigned long image_size,
- 				 unsigned long alloc_size,
- 				 unsigned long preferred_addr,
--				 unsigned long alignment);
-+				 unsigned long alignment,
-+				 unsigned long min_addr);
- 
- efi_status_t handle_cmdline_files(efi_system_table_t *sys_table_arg,
- 				  efi_loaded_image_t *image,
--- 
-2.21.0
+Thanks & Regards,
+      - Nayna
 
