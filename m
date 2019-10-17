@@ -2,51 +2,51 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A36E1DAF77
-	for <lists+linux-efi@lfdr.de>; Thu, 17 Oct 2019 16:14:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 64AF7DAF80
+	for <lists+linux-efi@lfdr.de>; Thu, 17 Oct 2019 16:14:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2439948AbfJQONq (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 17 Oct 2019 10:13:46 -0400
-Received: from mail-wr1-f73.google.com ([209.85.221.73]:54254 "EHLO
-        mail-wr1-f73.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2439942AbfJQONp (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 17 Oct 2019 10:13:45 -0400
-Received: by mail-wr1-f73.google.com with SMTP id i10so1022192wrb.20
-        for <linux-efi@vger.kernel.org>; Thu, 17 Oct 2019 07:13:42 -0700 (PDT)
+        id S2439998AbfJQOOF (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 17 Oct 2019 10:14:05 -0400
+Received: from mail-vs1-f74.google.com ([209.85.217.74]:44425 "EHLO
+        mail-vs1-f74.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2439927AbfJQONq (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 17 Oct 2019 10:13:46 -0400
+Received: by mail-vs1-f74.google.com with SMTP id y14so483102vsj.11
+        for <linux-efi@vger.kernel.org>; Thu, 17 Oct 2019 07:13:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20161025;
         h=date:in-reply-to:message-id:mime-version:references:subject:from:to
          :cc;
-        bh=3gVtAYjAise6qkpXvJpnBc4+Dg01VPHxIztWXKyEDrs=;
-        b=nw1HzU4YhpADMRj5UcTtHVLYN5BYzkEigcx4qq8GgANxDr1oa7wwp9eBrai6SevU3L
-         j6+eBoMTDTLr4MfHhPgQAfCVxbs/TDtYH3dM34nHE9GwrKvxMVkIM8SKmzOVCgyNsl1J
-         8JCWp8E1/V2C5sPtkhe+9qZtMe1Jlqj/tGsabkTzYwAXrhNRPPV61Krj4j7eL33dzCRo
-         vi3iEmj/yoEDHZlTklvYDdAo2+pPavz2RxydqsIaxQBoN62eHioWvJMGflKNnvf3DEvQ
-         uH0PCgQuc9bA4n/QMMwlzKF0xDJkVO6Esd8Thk2Un4lhRcJMfpw6KYrPCMgh7QspQH3M
-         /3Qg==
+        bh=WK0XW0pj3angQDA5Q/f2RR4InnLdQcXEOv/B1XGqGcA=;
+        b=q2AICOUXfZaGMFSuns+PWDFv7IviEfOJbKopMZtW33QU+VemQtbnLj4qpxHAn5TXP2
+         nzER+TG3nGC/4BnHcTJZtqhT+ftdIDAxWqODmlYmcCyXiCbqVrjWQBjoDghwO4JYBVtZ
+         TyDiMUNobY0cwPOJOBL6+gK8l+10whP9H8NgHsQACC0UZksdSB+unHQrq7KWLfsb6Htl
+         UhaBI8tbBbOVj/p+mV54y6z6FRRqMBaTZKt5+pJJNUFZtpNVLYAamhnmxLhVB0B6Kdzm
+         ehKQd2N9TZJmncuM+e17E05VElF0VQrVLgOt/JhaNy2obM/ZBAaeQNn+R2HBaFJxy2K/
+         +yGw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:in-reply-to:message-id:mime-version
          :references:subject:from:to:cc;
-        bh=3gVtAYjAise6qkpXvJpnBc4+Dg01VPHxIztWXKyEDrs=;
-        b=iv7v1Ow9ji5OSGhMQUbSLOGNBt8Qth08nOE9E4+/XNlS9Hzc4sCGCKWi07ITU+xU02
-         MMjjpQAri+02Uku4YdwlZ27aFWzIXwxWvRiIXf6VcTHe2w8nxS+sc3gW13YHs60bFEWU
-         ODK/WgqaH8qBKdCZixrLnzC8JCQQoRKuEMJOyXv4YQoAKiGWDS3RQim0u/aE67E8IQej
-         b/hiYgqk/aAf6UD3uy9+eWpYZ8rq+ivPnlKuFUo/yjg1j+BEG1tLZYrxhg4v+/FlS9CP
-         2AGQiWO5PfAJ4fvZZ6AZbllvaS0pwTclURu3j3c+OycMF6dPPKRUTd31dPW/EfCV/4FZ
-         ov4Q==
-X-Gm-Message-State: APjAAAU9ISJRedITnfbBpphmaWLvZlA7KIbxCbTubgbwxwITf/dpz3tg
-        okMGRMsWq9+KQmntCNuS03PwpTVFiA==
-X-Google-Smtp-Source: APXvYqwm5MBAQfwag+rUQZPLBD5lU8Dcy9D4qbG5eYoF6kbjjpG7UAv0Jr3LBxiSV8B2Gx4Vpx/JXFdfwA==
-X-Received: by 2002:adf:b102:: with SMTP id l2mr3493651wra.269.1571321621593;
- Thu, 17 Oct 2019 07:13:41 -0700 (PDT)
-Date:   Thu, 17 Oct 2019 16:13:02 +0200
+        bh=WK0XW0pj3angQDA5Q/f2RR4InnLdQcXEOv/B1XGqGcA=;
+        b=NzsvmEdfy+AG+ZFyXietr1M5aiT5M8VYpYk7iTQS3OuuGMvw9H4NWoDvA8dQ+qLquL
+         bpl46XNeqtVaVdc3Ef8O3mfxvtQHgamcV3qxghb4ekfRwdkykYBc3XHLjc+BHABpI42d
+         9VhaGcgJzpVNswPAuY1iEhrwpxLxysUnYJUnnXnOwLGAEuf8xMdD8eq0d9I2UNw/6Pgq
+         8lJZiYD+HS2JBPYI7NhxflTItzmlgc/6xJxc9GtXB4km+Qxs3FFMChAqzSbgVY/K9qYb
+         KF6u0KP1yT/3bzbXMufrcQ9KrjiSzE890IVS6oldEnVbpccV2bAm5M7X3WXQR9Hkkyfg
+         MuHg==
+X-Gm-Message-State: APjAAAUDZiOC6/o4js8KKXSw+cpOqrwyL9nkaP6CP5kAcHxzItmrBQLd
+        JZLheFltJWzwM3YDOrAX+Zw+XClvNg==
+X-Google-Smtp-Source: APXvYqzc1xz+/8MP7Z8NguqZ/3K5mUNbYma5HtKap1F1LGuqAoshK2iVor1wVZteZ3LMcdUMczzv5cYnww==
+X-Received: by 2002:a1f:9e8e:: with SMTP id h136mr2074941vke.8.1571321624934;
+ Thu, 17 Oct 2019 07:13:44 -0700 (PDT)
+Date:   Thu, 17 Oct 2019 16:13:03 +0200
 In-Reply-To: <20191017141305.146193-1-elver@google.com>
-Message-Id: <20191017141305.146193-6-elver@google.com>
+Message-Id: <20191017141305.146193-7-elver@google.com>
 Mime-Version: 1.0
 References: <20191017141305.146193-1-elver@google.com>
 X-Mailer: git-send-email 2.23.0.866.gb869b98d4c-goog
-Subject: [PATCH v2 5/8] seqlock: Require WRITE_ONCE surrounding raw_seqcount_barrier
+Subject: [PATCH v2 6/8] asm-generic, kcsan: Add KCSAN instrumentation for bitops
 From:   Marco Elver <elver@google.com>
 To:     elver@google.com
 Cc:     akiyks@gmail.com, stern@rowland.harvard.edu, glider@google.com,
@@ -68,44 +68,165 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-This patch proposes to require marked atomic accesses surrounding
-raw_write_seqcount_barrier. We reason that otherwise there is no way to
-guarantee propagation nor atomicity of writes before/after the barrier
-[1]. For example, consider the compiler tears stores either before or
-after the barrier; in this case, readers may observe a partial value,
-and because readers are unaware that writes are going on (writes are not
-in a seq-writer critical section), will complete the seq-reader critical
-section while having observed some partial state.
-[1] https://lwn.net/Articles/793253/
-
-This came up when designing and implementing KCSAN, because KCSAN would
-flag these accesses as data-races. After careful analysis, our reasoning
-as above led us to conclude that the best thing to do is to propose an
-amendment to the raw_seqcount_barrier usage.
+Add explicit KCSAN checks for bitops.
 
 Signed-off-by: Marco Elver <elver@google.com>
 ---
- include/linux/seqlock.h | 7 +++++++
- 1 file changed, 7 insertions(+)
+v2:
+* Use kcsan_check{,_atomic}_{read,write} instead of
+  kcsan_check_{access,atomic}.
+---
+ include/asm-generic/bitops-instrumented.h | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-diff --git a/include/linux/seqlock.h b/include/linux/seqlock.h
-index 1e425831a7ed..5d50aad53b47 100644
---- a/include/linux/seqlock.h
-+++ b/include/linux/seqlock.h
-@@ -265,6 +265,13 @@ static inline void raw_write_seqcount_end(seqcount_t *s)
-  * usual consistency guarantee. It is one wmb cheaper, because we can
-  * collapse the two back-to-back wmb()s.
-  *
-+ * Note that, writes surrounding the barrier should be declared atomic (e.g.
-+ * via WRITE_ONCE): a) to ensure the writes become visible to other threads
-+ * atomically, avoiding compiler optimizations; b) to document which writes are
-+ * meant to propagate to the reader critical section. This is necessary because
-+ * neither writes before and after the barrier are enclosed in a seq-writer
-+ * critical section that would ensure readers are aware of ongoing writes.
-+ *
-  *      seqcount_t seq;
-  *      bool X = true, Y = false;
-  *
+diff --git a/include/asm-generic/bitops-instrumented.h b/include/asm-generic/bitops-instrumented.h
+index ddd1c6d9d8db..864d707cdb87 100644
+--- a/include/asm-generic/bitops-instrumented.h
++++ b/include/asm-generic/bitops-instrumented.h
+@@ -12,6 +12,7 @@
+ #define _ASM_GENERIC_BITOPS_INSTRUMENTED_H
+ 
+ #include <linux/kasan-checks.h>
++#include <linux/kcsan-checks.h>
+ 
+ /**
+  * set_bit - Atomically set a bit in memory
+@@ -26,6 +27,7 @@
+ static inline void set_bit(long nr, volatile unsigned long *addr)
+ {
+ 	kasan_check_write(addr + BIT_WORD(nr), sizeof(long));
++	kcsan_check_atomic_write(addr + BIT_WORD(nr), sizeof(long));
+ 	arch_set_bit(nr, addr);
+ }
+ 
+@@ -41,6 +43,7 @@ static inline void set_bit(long nr, volatile unsigned long *addr)
+ static inline void __set_bit(long nr, volatile unsigned long *addr)
+ {
+ 	kasan_check_write(addr + BIT_WORD(nr), sizeof(long));
++	kcsan_check_write(addr + BIT_WORD(nr), sizeof(long));
+ 	arch___set_bit(nr, addr);
+ }
+ 
+@@ -54,6 +57,7 @@ static inline void __set_bit(long nr, volatile unsigned long *addr)
+ static inline void clear_bit(long nr, volatile unsigned long *addr)
+ {
+ 	kasan_check_write(addr + BIT_WORD(nr), sizeof(long));
++	kcsan_check_atomic_write(addr + BIT_WORD(nr), sizeof(long));
+ 	arch_clear_bit(nr, addr);
+ }
+ 
+@@ -69,6 +73,7 @@ static inline void clear_bit(long nr, volatile unsigned long *addr)
+ static inline void __clear_bit(long nr, volatile unsigned long *addr)
+ {
+ 	kasan_check_write(addr + BIT_WORD(nr), sizeof(long));
++	kcsan_check_write(addr + BIT_WORD(nr), sizeof(long));
+ 	arch___clear_bit(nr, addr);
+ }
+ 
+@@ -82,6 +87,7 @@ static inline void __clear_bit(long nr, volatile unsigned long *addr)
+ static inline void clear_bit_unlock(long nr, volatile unsigned long *addr)
+ {
+ 	kasan_check_write(addr + BIT_WORD(nr), sizeof(long));
++	kcsan_check_atomic_write(addr + BIT_WORD(nr), sizeof(long));
+ 	arch_clear_bit_unlock(nr, addr);
+ }
+ 
+@@ -97,6 +103,7 @@ static inline void clear_bit_unlock(long nr, volatile unsigned long *addr)
+ static inline void __clear_bit_unlock(long nr, volatile unsigned long *addr)
+ {
+ 	kasan_check_write(addr + BIT_WORD(nr), sizeof(long));
++	kcsan_check_write(addr + BIT_WORD(nr), sizeof(long));
+ 	arch___clear_bit_unlock(nr, addr);
+ }
+ 
+@@ -113,6 +120,7 @@ static inline void __clear_bit_unlock(long nr, volatile unsigned long *addr)
+ static inline void change_bit(long nr, volatile unsigned long *addr)
+ {
+ 	kasan_check_write(addr + BIT_WORD(nr), sizeof(long));
++	kcsan_check_atomic_write(addr + BIT_WORD(nr), sizeof(long));
+ 	arch_change_bit(nr, addr);
+ }
+ 
+@@ -128,6 +136,7 @@ static inline void change_bit(long nr, volatile unsigned long *addr)
+ static inline void __change_bit(long nr, volatile unsigned long *addr)
+ {
+ 	kasan_check_write(addr + BIT_WORD(nr), sizeof(long));
++	kcsan_check_write(addr + BIT_WORD(nr), sizeof(long));
+ 	arch___change_bit(nr, addr);
+ }
+ 
+@@ -141,6 +150,7 @@ static inline void __change_bit(long nr, volatile unsigned long *addr)
+ static inline bool test_and_set_bit(long nr, volatile unsigned long *addr)
+ {
+ 	kasan_check_write(addr + BIT_WORD(nr), sizeof(long));
++	kcsan_check_atomic_write(addr + BIT_WORD(nr), sizeof(long));
+ 	return arch_test_and_set_bit(nr, addr);
+ }
+ 
+@@ -155,6 +165,7 @@ static inline bool test_and_set_bit(long nr, volatile unsigned long *addr)
+ static inline bool __test_and_set_bit(long nr, volatile unsigned long *addr)
+ {
+ 	kasan_check_write(addr + BIT_WORD(nr), sizeof(long));
++	kcsan_check_write(addr + BIT_WORD(nr), sizeof(long));
+ 	return arch___test_and_set_bit(nr, addr);
+ }
+ 
+@@ -170,6 +181,7 @@ static inline bool __test_and_set_bit(long nr, volatile unsigned long *addr)
+ static inline bool test_and_set_bit_lock(long nr, volatile unsigned long *addr)
+ {
+ 	kasan_check_write(addr + BIT_WORD(nr), sizeof(long));
++	kcsan_check_atomic_write(addr + BIT_WORD(nr), sizeof(long));
+ 	return arch_test_and_set_bit_lock(nr, addr);
+ }
+ 
+@@ -183,6 +195,7 @@ static inline bool test_and_set_bit_lock(long nr, volatile unsigned long *addr)
+ static inline bool test_and_clear_bit(long nr, volatile unsigned long *addr)
+ {
+ 	kasan_check_write(addr + BIT_WORD(nr), sizeof(long));
++	kcsan_check_atomic_write(addr + BIT_WORD(nr), sizeof(long));
+ 	return arch_test_and_clear_bit(nr, addr);
+ }
+ 
+@@ -197,6 +210,7 @@ static inline bool test_and_clear_bit(long nr, volatile unsigned long *addr)
+ static inline bool __test_and_clear_bit(long nr, volatile unsigned long *addr)
+ {
+ 	kasan_check_write(addr + BIT_WORD(nr), sizeof(long));
++	kcsan_check_write(addr + BIT_WORD(nr), sizeof(long));
+ 	return arch___test_and_clear_bit(nr, addr);
+ }
+ 
+@@ -210,6 +224,7 @@ static inline bool __test_and_clear_bit(long nr, volatile unsigned long *addr)
+ static inline bool test_and_change_bit(long nr, volatile unsigned long *addr)
+ {
+ 	kasan_check_write(addr + BIT_WORD(nr), sizeof(long));
++	kcsan_check_atomic_write(addr + BIT_WORD(nr), sizeof(long));
+ 	return arch_test_and_change_bit(nr, addr);
+ }
+ 
+@@ -224,6 +239,7 @@ static inline bool test_and_change_bit(long nr, volatile unsigned long *addr)
+ static inline bool __test_and_change_bit(long nr, volatile unsigned long *addr)
+ {
+ 	kasan_check_write(addr + BIT_WORD(nr), sizeof(long));
++	kcsan_check_write(addr + BIT_WORD(nr), sizeof(long));
+ 	return arch___test_and_change_bit(nr, addr);
+ }
+ 
+@@ -235,6 +251,7 @@ static inline bool __test_and_change_bit(long nr, volatile unsigned long *addr)
+ static inline bool test_bit(long nr, const volatile unsigned long *addr)
+ {
+ 	kasan_check_read(addr + BIT_WORD(nr), sizeof(long));
++	kcsan_check_atomic_read(addr + BIT_WORD(nr), sizeof(long));
+ 	return arch_test_bit(nr, addr);
+ }
+ 
+@@ -254,6 +271,7 @@ static inline bool
+ clear_bit_unlock_is_negative_byte(long nr, volatile unsigned long *addr)
+ {
+ 	kasan_check_write(addr + BIT_WORD(nr), sizeof(long));
++	kcsan_check_atomic_write(addr + BIT_WORD(nr), sizeof(long));
+ 	return arch_clear_bit_unlock_is_negative_byte(nr, addr);
+ }
+ /* Let everybody know we have it. */
 -- 
 2.23.0.866.gb869b98d4c-goog
 
