@@ -2,191 +2,91 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 76998DAF94
-	for <lists+linux-efi@lfdr.de>; Thu, 17 Oct 2019 16:15:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A627DB94D
+	for <lists+linux-efi@lfdr.de>; Thu, 17 Oct 2019 23:51:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729876AbfJQOPe (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 17 Oct 2019 10:15:34 -0400
-Received: from mail-oi1-f196.google.com ([209.85.167.196]:41941 "EHLO
-        mail-oi1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2394833AbfJQOPe (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 17 Oct 2019 10:15:34 -0400
-Received: by mail-oi1-f196.google.com with SMTP id g81so2262394oib.8
-        for <linux-efi@vger.kernel.org>; Thu, 17 Oct 2019 07:15:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=gNom0VFlbRYX78r4OKfXRzBJyj1ZzMem6+U6GRAPZGs=;
-        b=Kv2dqE7DBOjguEO+g1W15SDaL2UD4S+vcY1QNPVx8SnJ2E5T2gdGww8rE+GRAhGYAF
-         ILBKEBvVHXtMZ3BmzKphs7G2RPP27C2X9+3swp8cGF2i/u/m66J9i9veo+ceI3Bj3osq
-         MWlFe3gqzbgrf9H5LWLUoOvE3Mg2Hr3oEmfWcYTbw5kZC11hxu6xajsIp6aP88N8Ct22
-         ZTltpyBZZS0029i8Cfhdn6iROub4bj69y7h+zPK6we8swLKJcmbnUZt3w2D0PXT19Z7X
-         n98Y+SLmGCkEjEMCpEuotp9DxZ2U01vOh+RKvP1EMnD5m2ntbhD2ntvxfPt1+/6e0XPl
-         W8yw==
+        id S2406312AbfJQVvf (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 17 Oct 2019 17:51:35 -0400
+Received: from mail-oi1-f195.google.com ([209.85.167.195]:39245 "EHLO
+        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2391375AbfJQVvf (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 17 Oct 2019 17:51:35 -0400
+Received: by mail-oi1-f195.google.com with SMTP id w144so3506707oia.6;
+        Thu, 17 Oct 2019 14:51:34 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=gNom0VFlbRYX78r4OKfXRzBJyj1ZzMem6+U6GRAPZGs=;
-        b=KyzYdr60Zvhk/69Fx1C4t5A+CRQOoO9OXL6XvbcGF/AV8boMREl/Z5NLO/KbV1xedo
-         ZkrR56TOBIrgKwWRVUbz2hlJVipHZ4phoAVKANn85OlkTCutNGpoiE+Fx636ct5w7hru
-         sOxJsKahIw4eautBmhVzPeO4b9WvaZAJoXZ1dG0bhVdR7ibQnwIhIcXxO0QyiLRY7aF4
-         s0zFN4XnhfK2m2wqyTruMLvJbAk3z2GFO7neDbR9riaFcVDdHZvBfZQm/4HZRhCliesf
-         Ff7fJwncW+9KGEethLRQdbhgszNvcw8MF1LRYTH646ZiIGPoiEwcRbNvzNvQH718xfne
-         QT5g==
-X-Gm-Message-State: APjAAAWvUTrRfYs9IJREg1xWv/OhBbxnHOhKCaWCjtfVyeBO19ayOytW
-        Xj00S8QR12T0Ct50DV1XClpO01DdloNJ85Lp4Tr65w==
-X-Google-Smtp-Source: APXvYqyuauWsvEE+jliJ5S7S3Gh0NvhZGewq3BAb0qQ2dVeR8Gj7daShagq5yO57tbCuu+twdnA3Uh6Z3wF+KW7VHrc=
-X-Received: by 2002:aca:5015:: with SMTP id e21mr3502104oib.121.1571321732803;
- Thu, 17 Oct 2019 07:15:32 -0700 (PDT)
+        bh=+J2DBkNb5KYxlKMZS6vCmoqrW/aI/+plqzZy42kR2vY=;
+        b=RmjpNHiuaqUQ/FB9rhh0PFeY0Mhw62WfYpKXAATVDCdRh428XNHyZRH0Qh0zSB/b1l
+         gCQL+2g2pmBc/I6YauK0Y/UgMvg4z8U55h9p9fXmm7I03m2/JqaBWmct3UPBdR/Hotzk
+         JNp/JAMzkEFOBoPZlIgXqYZGjYw8iVtkjPdZhiF6ByoLNEAKqWHBM6McpvXFnjNWYPFO
+         ZcSHIkNmqAutcOFouyiA+yN52YKTLrhG1W3sPzENjb19r4AeaB1F+vwVnKe6ZoFFESI9
+         n9DOIeI/z8ybS+ABA4bABfSP1I1LB71bJX/9n1sIREYNQn+iJh5d59pbunj+lr2WVC/0
+         3Amw==
+X-Gm-Message-State: APjAAAX5+mUU0sVpYI5kpMzKnWZ6IyiDxAJz2kHgsf1x6oEobVzBj1OU
+        AipQ7Z66goINbnjomtkTCF26sytdd7w5g4J+5i4=
+X-Google-Smtp-Source: APXvYqztVvkd2YtllgVC6HXiuMHbmE00RJ4CoT12f9VOgIWI442lqMSocDdFiqwMxrKQA4iPe16ChL0BdMMlhG50NrQ=
+X-Received: by 2002:a05:6808:917:: with SMTP id w23mr4924079oih.68.1571349094483;
+ Thu, 17 Oct 2019 14:51:34 -0700 (PDT)
 MIME-Version: 1.0
-References: <20191016083959.186860-1-elver@google.com>
-In-Reply-To: <20191016083959.186860-1-elver@google.com>
-From:   Marco Elver <elver@google.com>
-Date:   Thu, 17 Oct 2019 16:15:20 +0200
-Message-ID: <CANpmjNPB8mFso7=WpUQ8Nbxon3kKTEGRUFMCVhjLNkfzey+TJg@mail.gmail.com>
-Subject: Re: [PATCH 0/8] Add Kernel Concurrency Sanitizer (KCSAN)
-To:     Marco Elver <elver@google.com>
-Cc:     LKMM Maintainers -- Akira Yokosawa <akiyks@gmail.com>,
-        Alan Stern <stern@rowland.harvard.edu>,
-        Alexander Potapenko <glider@google.com>,
-        Andrea Parri <parri.andrea@gmail.com>,
-        Andrey Konovalov <andreyknvl@google.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Boqun Feng <boqun.feng@gmail.com>,
-        Borislav Petkov <bp@alien8.de>, Daniel Axtens <dja@axtens.net>,
-        Daniel Lustig <dlustig@nvidia.com>,
-        dave.hansen@linux.intel.com, David Howells <dhowells@redhat.com>,
-        Dmitry Vyukov <dvyukov@google.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
-        Jade Alglave <j.alglave@ucl.ac.uk>,
-        Joel Fernandes <joel@joelfernandes.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Josh Poimboeuf <jpoimboe@redhat.com>,
-        Luc Maranget <luc.maranget@inria.fr>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        "Paul E. McKenney" <paulmck@linux.ibm.com>,
+References: <157118756627.2063440.9878062995925617180.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <157118762585.2063440.11707736302358197199.stgit@dwillia2-desk3.amr.corp.intel.com>
+In-Reply-To: <157118762585.2063440.11707736302358197199.stgit@dwillia2-desk3.amr.corp.intel.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Thu, 17 Oct 2019 23:51:23 +0200
+Message-ID: <CAJZ5v0ij_8++vuBZ8xSD6HJYcdM8r_+wxbO-M-iHkNJyvVdB1g@mail.gmail.com>
+Subject: Re: [PATCH v7 11/12] acpi/numa/hmat: Register HMAT at device_initcall level
+To:     Dan Williams <dan.j.williams@intel.com>
+Cc:     Ingo Molnar <mingo@redhat.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>, Keith Busch <kbusch@kernel.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
         Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Will Deacon <will@kernel.org>,
-        kasan-dev <kasan-dev@googlegroups.com>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
-        linux-efi@vger.kernel.org,
-        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Linux Memory Management List <linux-mm@kvack.org>,
-        "the arch/x86 maintainers" <x86@kernel.org>
+        Vishal Verma <vishal.l.verma@intel.com>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        "the arch/x86 maintainers" <x86@kernel.org>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, 16 Oct 2019 at 10:41, Marco Elver <elver@google.com> wrote:
+On Wed, Oct 16, 2019 at 3:14 AM Dan Williams <dan.j.williams@intel.com> wrote:
 >
-> This is the patch-series for the Kernel Concurrency Sanitizer (KCSAN).
-> KCSAN is a sampling watchpoint-based data-race detector. More details
-> are included in Documentation/dev-tools/kcsan.rst. This patch-series
-> only enables KCSAN for x86, but we expect adding support for other
-> architectures is relatively straightforward (we are aware of
-> experimental ARM64 and POWER support).
+> In preparation for registering device-dax instances for accessing EFI
+> specific-purpose memory, arrange for the HMAT registration to occur
+> later in the init process. Critically HMAT initialization needs to occur
+> after e820__reserve_resources_late() which is the point at which the
+> iomem resource tree is populated with "Application Reserved"
+> (IORES_DESC_APPLICATION_RESERVED). e820__reserve_resources_late()
+> happens at subsys_initcall time.
 >
-> To gather early feedback, we announced KCSAN back in September, and
-> have integrated the feedback where possible:
-> http://lkml.kernel.org/r/CANpmjNPJ_bHjfLZCAPV23AXFfiPiyXXqqu72n6TgWzb2Gnu1eA@mail.gmail.com
->
-> We want to point out and acknowledge the work surrounding the LKMM,
-> including several articles that motivate why data-races are dangerous
-> [1, 2], justifying a data-race detector such as KCSAN.
-> [1] https://lwn.net/Articles/793253/
-> [2] https://lwn.net/Articles/799218/
->
-> The current list of known upstream fixes for data-races found by KCSAN
-> can be found here:
-> https://github.com/google/ktsan/wiki/KCSAN#upstream-fixes-of-data-races-found-by-kcsan
+> Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+> Cc: Len Brown <lenb@kernel.org>
+> Cc: Keith Busch <kbusch@kernel.org>
+> Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
+> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 
-Sent v2: http://lkml.kernel.org/r/20191017141305.146193-1-elver@google.com
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-Many thanks,
--- Marco
-
-> Marco Elver (8):
->   kcsan: Add Kernel Concurrency Sanitizer infrastructure
->   objtool, kcsan: Add KCSAN runtime functions to whitelist
->   build, kcsan: Add KCSAN build exceptions
->   seqlock, kcsan: Add annotations for KCSAN
->   seqlock: Require WRITE_ONCE surrounding raw_seqcount_barrier
->   asm-generic, kcsan: Add KCSAN instrumentation for bitops
->   locking/atomics, kcsan: Add KCSAN instrumentation
->   x86, kcsan: Enable KCSAN for x86
+> ---
+>  drivers/acpi/numa/hmat.c |    2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
->  Documentation/dev-tools/kcsan.rst         | 202 ++++++++++
->  MAINTAINERS                               |  11 +
->  Makefile                                  |   3 +-
->  arch/x86/Kconfig                          |   1 +
->  arch/x86/boot/Makefile                    |   1 +
->  arch/x86/boot/compressed/Makefile         |   1 +
->  arch/x86/entry/vdso/Makefile              |   1 +
->  arch/x86/include/asm/bitops.h             |   2 +-
->  arch/x86/kernel/Makefile                  |   6 +
->  arch/x86/kernel/cpu/Makefile              |   3 +
->  arch/x86/lib/Makefile                     |   2 +
->  arch/x86/mm/Makefile                      |   3 +
->  arch/x86/purgatory/Makefile               |   1 +
->  arch/x86/realmode/Makefile                |   1 +
->  arch/x86/realmode/rm/Makefile             |   1 +
->  drivers/firmware/efi/libstub/Makefile     |   1 +
->  include/asm-generic/atomic-instrumented.h | 192 ++++++++-
->  include/asm-generic/bitops-instrumented.h |  18 +
->  include/linux/compiler-clang.h            |   9 +
->  include/linux/compiler-gcc.h              |   7 +
->  include/linux/compiler.h                  |  35 +-
->  include/linux/kcsan-checks.h              | 116 ++++++
->  include/linux/kcsan.h                     |  85 ++++
->  include/linux/sched.h                     |   7 +
->  include/linux/seqlock.h                   |  51 ++-
->  init/init_task.c                          |   6 +
->  init/main.c                               |   2 +
->  kernel/Makefile                           |   6 +
->  kernel/kcsan/Makefile                     |  14 +
->  kernel/kcsan/atomic.c                     |  21 +
->  kernel/kcsan/core.c                       | 458 ++++++++++++++++++++++
->  kernel/kcsan/debugfs.c                    | 225 +++++++++++
->  kernel/kcsan/encoding.h                   |  94 +++++
->  kernel/kcsan/kcsan.c                      |  81 ++++
->  kernel/kcsan/kcsan.h                      | 140 +++++++
->  kernel/kcsan/report.c                     | 307 +++++++++++++++
->  kernel/kcsan/test.c                       | 117 ++++++
->  kernel/sched/Makefile                     |   6 +
->  lib/Kconfig.debug                         |   2 +
->  lib/Kconfig.kcsan                         |  88 +++++
->  lib/Makefile                              |   3 +
->  mm/Makefile                               |   8 +
->  scripts/Makefile.kcsan                    |   6 +
->  scripts/Makefile.lib                      |  10 +
->  scripts/atomic/gen-atomic-instrumented.sh |   9 +-
->  tools/objtool/check.c                     |  17 +
->  46 files changed, 2364 insertions(+), 16 deletions(-)
->  create mode 100644 Documentation/dev-tools/kcsan.rst
->  create mode 100644 include/linux/kcsan-checks.h
->  create mode 100644 include/linux/kcsan.h
->  create mode 100644 kernel/kcsan/Makefile
->  create mode 100644 kernel/kcsan/atomic.c
->  create mode 100644 kernel/kcsan/core.c
->  create mode 100644 kernel/kcsan/debugfs.c
->  create mode 100644 kernel/kcsan/encoding.h
->  create mode 100644 kernel/kcsan/kcsan.c
->  create mode 100644 kernel/kcsan/kcsan.h
->  create mode 100644 kernel/kcsan/report.c
->  create mode 100644 kernel/kcsan/test.c
->  create mode 100644 lib/Kconfig.kcsan
->  create mode 100644 scripts/Makefile.kcsan
->
-> --
-> 2.23.0.700.g56cf767bdb-goog
+> diff --git a/drivers/acpi/numa/hmat.c b/drivers/acpi/numa/hmat.c
+> index 8f9a28a870b0..4707eb9dd07b 100644
+> --- a/drivers/acpi/numa/hmat.c
+> +++ b/drivers/acpi/numa/hmat.c
+> @@ -748,4 +748,4 @@ static __init int hmat_init(void)
+>         acpi_put_table(tbl);
+>         return 0;
+>  }
+> -subsys_initcall(hmat_init);
+> +device_initcall(hmat_init);
 >
