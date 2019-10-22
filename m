@@ -2,95 +2,116 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BF313E0173
-	for <lists+linux-efi@lfdr.de>; Tue, 22 Oct 2019 12:01:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E862E01CF
+	for <lists+linux-efi@lfdr.de>; Tue, 22 Oct 2019 12:15:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729838AbfJVKBy (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 22 Oct 2019 06:01:54 -0400
-Received: from mail-oi1-f196.google.com ([209.85.167.196]:39759 "EHLO
-        mail-oi1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727101AbfJVKBx (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 22 Oct 2019 06:01:53 -0400
-Received: by mail-oi1-f196.google.com with SMTP id w144so13656852oia.6;
-        Tue, 22 Oct 2019 03:01:53 -0700 (PDT)
+        id S1731780AbfJVKPU (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 22 Oct 2019 06:15:20 -0400
+Received: from mail-wm1-f67.google.com ([209.85.128.67]:40211 "EHLO
+        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731779AbfJVKPU (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 22 Oct 2019 06:15:20 -0400
+Received: by mail-wm1-f67.google.com with SMTP id b24so15556479wmj.5
+        for <linux-efi@vger.kernel.org>; Tue, 22 Oct 2019 03:15:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=bs4FuisA7tS9+U8xJf8/W529cyeyrvU2aBJyOthDVWw=;
+        b=PN5rfyxjT7AapqUMB+Y7mgH5VSyCVdj5Jn9Slj8OyW8taLbYV2jYyrTmViNLP9cC03
+         tVgLKPkNPWkehyPE26++c9DZRVajd6Us3QrOAH2+GJqXd5vVSL7TTct/qBS13QHEw0LS
+         Pkp6lpvnqugLw3cBBics6hufuqH/xur5gqhK3ijhqwGTp0pGjDbbzDI4R9mdKyINFLOA
+         2DDa0c0U3RGF2UhrLeUICJa9i5o0BEvM+AnH2fCHQw6B7beSrg+peyiwvtLZDirbwZlK
+         EPN/oSUG2rTIYSyOpo8xuv8x8DGvmP7bcBK7m8OJXtM40TDw6JckyeJWCMfmhDY1DwIq
+         eKbg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=QymUh+Fku1vQVHvu/DETUtAo+Qu6b8CnaBuQss7KKWQ=;
-        b=h2iFRY8kvTIp3uSv1xdak5KNpDhBffU8tz5cQttN6wCNauPnlPr4C5ZPCzDK5CEjVa
-         Jxoa41P5dwq9bKhkzqx0Lhpe3IpS9iFh9cyJ3exTdWgUzJ6R+9ID9etOk3itNUlrar2D
-         XYT0qtXndeRj9xZtnfwNHPtyn0MofhuSzR1VX+og2nVBKLSnEFyMwBpZeIHjZ8WPEg5K
-         TRHJZ9fOqANYXYSxnM2D98uyiYJbtjOwM5X9RI90k+PrtRht3xEJJhiPmQx7AT9si9UM
-         hA1O2FwqFUJUiCozB/kw6xe9MWnkXAuC990fm+qCTFujfjkbLRyGorM16gj6rzx+yPZA
-         07tw==
-X-Gm-Message-State: APjAAAWTo+kUSUZW11FBs6JEIIRg89XQoX2SG8iweGe3VcITONwczN4m
-        pCbAufSGXt3fuEq6mWhOJ1bXI0QjGhu5O60Zt6M=
-X-Google-Smtp-Source: APXvYqwN0bxJxdIvFNnaNORZKQBNabY4ldLgTUIlNjE1Z7rAnNoVLH34CBEzb2jBIdbGQUA6pt46njyJIVaN1WsCNSA=
-X-Received: by 2002:aca:d405:: with SMTP id l5mr2047939oig.115.1571738512905;
- Tue, 22 Oct 2019 03:01:52 -0700 (PDT)
+        bh=bs4FuisA7tS9+U8xJf8/W529cyeyrvU2aBJyOthDVWw=;
+        b=fRjCVjMMQDyPl+biOm4hT+aR7EYTYYLSCK3Fu0wAMsyrJJpuWNdUCLD554w6xAK+pA
+         S+8t9mZCZqLvcC6wqy3nnMVQnwOQF3IrUB8MNzYbc1aS/Le7yOYsz5AeV3l9bjsEZD8k
+         98NH0nYPW/9MvC+G/T7BNez7s7ncwGtgdgHXrroQlGpzBRld5toS+MJJW/tXiuR6LAYT
+         NgghsozgNuxDmYW/SVCCSuSqA/xOhaLqylhEPzmkQQLilRC2jB9mkoSuAzF/OO/C/T5U
+         ptliUeFgjo9ZXiQ4hUoAoDw1zaOCFoeoFpFq4b5XzRVVz4Z1VI3I7EkblZYa2ReJBtPy
+         wqRg==
+X-Gm-Message-State: APjAAAVRP7mSAGprHFQELGB3sxocQPuK1FEelpj3pIaRJn+F1Yu9RsCI
+        gpOImBUlkd3t5Md81w/tzPBnFWrjIL9lWebMXWjDmg==
+X-Google-Smtp-Source: APXvYqzASurI4j7z0wMJJau3KlGT38dQAA5aGGhbhkHPR/X3cn+65+QRDlPiVrWQ7I94OJmtZ/ghi2t5pjMzNjCQikA=
+X-Received: by 2002:a7b:c925:: with SMTP id h5mr2062160wml.61.1571739318364;
+ Tue, 22 Oct 2019 03:15:18 -0700 (PDT)
 MIME-Version: 1.0
-References: <157118756627.2063440.9878062995925617180.stgit@dwillia2-desk3.amr.corp.intel.com>
- <157118757175.2063440.9248947575330904096.stgit@dwillia2-desk3.amr.corp.intel.com>
- <CAJZ5v0i-hhasNCD6Ur8VLfrkc+4GOeNXXX_ZNFZjcY6F51ciSQ@mail.gmail.com>
-In-Reply-To: <CAJZ5v0i-hhasNCD6Ur8VLfrkc+4GOeNXXX_ZNFZjcY6F51ciSQ@mail.gmail.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 22 Oct 2019 12:01:42 +0200
-Message-ID: <CAJZ5v0j_-iSqiysZiW=J8Y5FCAjnPC7ZvevrLsYhngWr6mT6GQ@mail.gmail.com>
-Subject: Re: [PATCH v7 01/12] acpi/numa: Establish a new drivers/acpi/numa/ directory
-To:     Dan Williams <dan.j.williams@intel.com>
-Cc:     Ingo Molnar <mingo@redhat.com>, Len Brown <lenb@kernel.org>,
-        Keith Busch <kbusch@kernel.org>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        "the arch/x86 maintainers" <x86@kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
+References: <20191017093020.28658-1-kasong@redhat.com> <CAKv+Gu8nJ0uDn0G9s5N1ZM=FE4JB5c2Kjs=mKpatTFkwF0WaaQ@mail.gmail.com>
+ <20191022074422.GA31700@zn.tnic>
+In-Reply-To: <20191022074422.GA31700@zn.tnic>
+From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Date:   Tue, 22 Oct 2019 12:15:12 +0200
+Message-ID: <CAKv+Gu_GxP+83D0cOT=0UgDrxunm2CuKpAfK1SnVkVqV=E0Ozw@mail.gmail.com>
+Subject: Re: [PATCH v4] x86, efi: never relocate kernel below lowest
+ acceptable address
+To:     Borislav Petkov <bp@alien8.de>
+Cc:     Kairui Song <kasong@redhat.com>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        Matthew Garrett <matthewgarrett@google.com>,
+        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        Baoquan He <bhe@redhat.com>, Dave Young <dyoung@redhat.com>,
+        "the arch/x86 maintainers" <x86@kernel.org>,
+        linux-efi <linux-efi@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, Oct 18, 2019 at 11:25 AM Rafael J. Wysocki <rafael@kernel.org> wrote:
+On Tue, 22 Oct 2019 at 09:45, Borislav Petkov <bp@alien8.de> wrote:
 >
->  On Wed, Oct 16, 2019 at 3:13 AM Dan Williams <dan.j.williams@intel.com> wrote:
+> On Tue, Oct 22, 2019 at 08:13:56AM +0200, Ard Biesheuvel wrote:
+> > On Thu, 17 Oct 2019 at 11:30, Kairui Song <kasong@redhat.com> wrote:
+> > >
+> > > Currently, kernel fails to boot on some HyperV VMs when using EFI.
+> > > And it's a potential issue on all platforms.
+> > >
+> > > It's caused by broken kernel relocation on EFI systems, when below three
+> > > conditions are met:
+> > >
+> > > 1. Kernel image is not loaded to the default address (LOAD_PHYSICAL_ADDR)
+> > >    by the loader.
+> > > 2. There isn't enough room to contain the kernel, starting from the
+> > >    default load address (eg. something else occupied part the region).
+> > > 3. In the memmap provided by EFI firmware, there is a memory region
+> > >    starts below LOAD_PHYSICAL_ADDR, and suitable for containing the
+> > >    kernel.
+> > >
+> > > EFI stub will perform a kernel relocation when condition 1 is met. But
+> > > due to condition 2, EFI stub can't relocate kernel to the preferred
+> > > address, so it fallback to ask EFI firmware to alloc lowest usable memory
+> > > region, got the low region mentioned in condition 3, and relocated
+> > > kernel there.
+> > >
+> > > It's incorrect to relocate the kernel below LOAD_PHYSICAL_ADDR. This
+> > > is the lowest acceptable kernel relocation address.
+> > >
+> > > The first thing goes wrong is in arch/x86/boot/compressed/head_64.S.
+> > > Kernel decompression will force use LOAD_PHYSICAL_ADDR as the output
+> > > address if kernel is located below it. Then the relocation before
+> > > decompression, which move kernel to the end of the decompression buffer,
+> > > will overwrite other memory region, as there is no enough memory there.
+> > >
+> > > To fix it, just don't let EFI stub relocate the kernel to any address
+> > > lower than lowest acceptable address.
+> > >
+> > > Signed-off-by: Kairui Song <kasong@redhat.com>
+> > > Acked-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+> > >
 > >
-> > Currently hmat.c lives under an "hmat" directory which does not enhance
-> > the description of the file. The initial motivation for giving hmat.c
-> > its own directory was to delineate it as mm functionality in contrast to
-> > ACPI device driver functionality.
-> >
-> > As ACPI continues to play an increasing role in conveying
-> > memory location and performance topology information to the OS take the
-> > opportunity to co-locate these NUMA relevant tables in a combined
-> > directory.
-> >
-> > numa.c is renamed to srat.c and moved to drivers/acpi/numa/ along with
-> > hmat.c.
-> >
-> > Cc: Len Brown <lenb@kernel.org>
-> > Cc: Keith Busch <kbusch@kernel.org>
-> > Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
-> > Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+> > Ingo, Boris, could you please comment on this?
 >
-> Please note that https://patchwork.kernel.org/patch/11078171/ is being
-> pushed to Linus (it is overdue anyway), so if it is pulled, there will
-> be a merge conflict with this patch.
+> Yah, the commit message makes more sense now.
 >
-> Respin maybe?
 
-Actually, would you mind it if I took this one into the ACPI tree right away?
 
-There's https://patchwork.kernel.org/patch/11198373/ queued up that,
-again, will clash with it.
+Thanks Boris.
 
-Also, there is the generic Initiator proximity domains series from
-Jonathan depending on it and I would like to move forward with that
-one if there are no objections.
+Kairui, I will apply the requested changes myself - no need to spin a v5
