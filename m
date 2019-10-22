@@ -2,116 +2,114 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E862E01CF
-	for <lists+linux-efi@lfdr.de>; Tue, 22 Oct 2019 12:15:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9AE5FE03EC
+	for <lists+linux-efi@lfdr.de>; Tue, 22 Oct 2019 14:34:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731780AbfJVKPU (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 22 Oct 2019 06:15:20 -0400
-Received: from mail-wm1-f67.google.com ([209.85.128.67]:40211 "EHLO
-        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731779AbfJVKPU (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 22 Oct 2019 06:15:20 -0400
-Received: by mail-wm1-f67.google.com with SMTP id b24so15556479wmj.5
-        for <linux-efi@vger.kernel.org>; Tue, 22 Oct 2019 03:15:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=bs4FuisA7tS9+U8xJf8/W529cyeyrvU2aBJyOthDVWw=;
-        b=PN5rfyxjT7AapqUMB+Y7mgH5VSyCVdj5Jn9Slj8OyW8taLbYV2jYyrTmViNLP9cC03
-         tVgLKPkNPWkehyPE26++c9DZRVajd6Us3QrOAH2+GJqXd5vVSL7TTct/qBS13QHEw0LS
-         Pkp6lpvnqugLw3cBBics6hufuqH/xur5gqhK3ijhqwGTp0pGjDbbzDI4R9mdKyINFLOA
-         2DDa0c0U3RGF2UhrLeUICJa9i5o0BEvM+AnH2fCHQw6B7beSrg+peyiwvtLZDirbwZlK
-         EPN/oSUG2rTIYSyOpo8xuv8x8DGvmP7bcBK7m8OJXtM40TDw6JckyeJWCMfmhDY1DwIq
-         eKbg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=bs4FuisA7tS9+U8xJf8/W529cyeyrvU2aBJyOthDVWw=;
-        b=fRjCVjMMQDyPl+biOm4hT+aR7EYTYYLSCK3Fu0wAMsyrJJpuWNdUCLD554w6xAK+pA
-         S+8t9mZCZqLvcC6wqy3nnMVQnwOQF3IrUB8MNzYbc1aS/Le7yOYsz5AeV3l9bjsEZD8k
-         98NH0nYPW/9MvC+G/T7BNez7s7ncwGtgdgHXrroQlGpzBRld5toS+MJJW/tXiuR6LAYT
-         NgghsozgNuxDmYW/SVCCSuSqA/xOhaLqylhEPzmkQQLilRC2jB9mkoSuAzF/OO/C/T5U
-         ptliUeFgjo9ZXiQ4hUoAoDw1zaOCFoeoFpFq4b5XzRVVz4Z1VI3I7EkblZYa2ReJBtPy
-         wqRg==
-X-Gm-Message-State: APjAAAVRP7mSAGprHFQELGB3sxocQPuK1FEelpj3pIaRJn+F1Yu9RsCI
-        gpOImBUlkd3t5Md81w/tzPBnFWrjIL9lWebMXWjDmg==
-X-Google-Smtp-Source: APXvYqzASurI4j7z0wMJJau3KlGT38dQAA5aGGhbhkHPR/X3cn+65+QRDlPiVrWQ7I94OJmtZ/ghi2t5pjMzNjCQikA=
-X-Received: by 2002:a7b:c925:: with SMTP id h5mr2062160wml.61.1571739318364;
- Tue, 22 Oct 2019 03:15:18 -0700 (PDT)
+        id S2389110AbfJVMd6 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 22 Oct 2019 08:33:58 -0400
+Received: from [217.140.110.172] ([217.140.110.172]:51226 "EHLO foss.arm.com"
+        rhost-flags-FAIL-FAIL-OK-OK) by vger.kernel.org with ESMTP
+        id S2388512AbfJVMd6 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Tue, 22 Oct 2019 08:33:58 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D49D215BF;
+        Tue, 22 Oct 2019 05:33:36 -0700 (PDT)
+Received: from lakrids.cambridge.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5A5DA3F71F;
+        Tue, 22 Oct 2019 05:33:32 -0700 (PDT)
+Date:   Tue, 22 Oct 2019 13:33:30 +0100
+From:   Mark Rutland <mark.rutland@arm.com>
+To:     Marco Elver <elver@google.com>
+Cc:     akiyks@gmail.com, stern@rowland.harvard.edu, glider@google.com,
+        parri.andrea@gmail.com, andreyknvl@google.com, luto@kernel.org,
+        ard.biesheuvel@linaro.org, arnd@arndb.de, boqun.feng@gmail.com,
+        bp@alien8.de, dja@axtens.net, dlustig@nvidia.com,
+        dave.hansen@linux.intel.com, dhowells@redhat.com,
+        dvyukov@google.com, hpa@zytor.com, mingo@redhat.com,
+        j.alglave@ucl.ac.uk, joel@joelfernandes.org, corbet@lwn.net,
+        jpoimboe@redhat.com, luc.maranget@inria.fr, npiggin@gmail.com,
+        paulmck@linux.ibm.com, peterz@infradead.org, tglx@linutronix.de,
+        will@kernel.org, kasan-dev@googlegroups.com,
+        linux-arch@vger.kernel.org, linux-doc@vger.kernel.org,
+        linux-efi@vger.kernel.org, linux-kbuild@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mm@kvack.org, x86@kernel.org
+Subject: Re: [PATCH v2 7/8] locking/atomics, kcsan: Add KCSAN instrumentation
+Message-ID: <20191022123329.GC11583@lakrids.cambridge.arm.com>
+References: <20191017141305.146193-1-elver@google.com>
+ <20191017141305.146193-8-elver@google.com>
 MIME-Version: 1.0
-References: <20191017093020.28658-1-kasong@redhat.com> <CAKv+Gu8nJ0uDn0G9s5N1ZM=FE4JB5c2Kjs=mKpatTFkwF0WaaQ@mail.gmail.com>
- <20191022074422.GA31700@zn.tnic>
-In-Reply-To: <20191022074422.GA31700@zn.tnic>
-From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Date:   Tue, 22 Oct 2019 12:15:12 +0200
-Message-ID: <CAKv+Gu_GxP+83D0cOT=0UgDrxunm2CuKpAfK1SnVkVqV=E0Ozw@mail.gmail.com>
-Subject: Re: [PATCH v4] x86, efi: never relocate kernel below lowest
- acceptable address
-To:     Borislav Petkov <bp@alien8.de>
-Cc:     Kairui Song <kasong@redhat.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        Matthew Garrett <matthewgarrett@google.com>,
-        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        Baoquan He <bhe@redhat.com>, Dave Young <dyoung@redhat.com>,
-        "the arch/x86 maintainers" <x86@kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191017141305.146193-8-elver@google.com>
+User-Agent: Mutt/1.11.1+11 (2f07cb52) (2018-12-01)
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, 22 Oct 2019 at 09:45, Borislav Petkov <bp@alien8.de> wrote:
->
-> On Tue, Oct 22, 2019 at 08:13:56AM +0200, Ard Biesheuvel wrote:
-> > On Thu, 17 Oct 2019 at 11:30, Kairui Song <kasong@redhat.com> wrote:
-> > >
-> > > Currently, kernel fails to boot on some HyperV VMs when using EFI.
-> > > And it's a potential issue on all platforms.
-> > >
-> > > It's caused by broken kernel relocation on EFI systems, when below three
-> > > conditions are met:
-> > >
-> > > 1. Kernel image is not loaded to the default address (LOAD_PHYSICAL_ADDR)
-> > >    by the loader.
-> > > 2. There isn't enough room to contain the kernel, starting from the
-> > >    default load address (eg. something else occupied part the region).
-> > > 3. In the memmap provided by EFI firmware, there is a memory region
-> > >    starts below LOAD_PHYSICAL_ADDR, and suitable for containing the
-> > >    kernel.
-> > >
-> > > EFI stub will perform a kernel relocation when condition 1 is met. But
-> > > due to condition 2, EFI stub can't relocate kernel to the preferred
-> > > address, so it fallback to ask EFI firmware to alloc lowest usable memory
-> > > region, got the low region mentioned in condition 3, and relocated
-> > > kernel there.
-> > >
-> > > It's incorrect to relocate the kernel below LOAD_PHYSICAL_ADDR. This
-> > > is the lowest acceptable kernel relocation address.
-> > >
-> > > The first thing goes wrong is in arch/x86/boot/compressed/head_64.S.
-> > > Kernel decompression will force use LOAD_PHYSICAL_ADDR as the output
-> > > address if kernel is located below it. Then the relocation before
-> > > decompression, which move kernel to the end of the decompression buffer,
-> > > will overwrite other memory region, as there is no enough memory there.
-> > >
-> > > To fix it, just don't let EFI stub relocate the kernel to any address
-> > > lower than lowest acceptable address.
-> > >
-> > > Signed-off-by: Kairui Song <kasong@redhat.com>
-> > > Acked-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-> > >
-> >
-> > Ingo, Boris, could you please comment on this?
->
-> Yah, the commit message makes more sense now.
->
+On Thu, Oct 17, 2019 at 04:13:04PM +0200, Marco Elver wrote:
+> This adds KCSAN instrumentation to atomic-instrumented.h.
+> 
+> Signed-off-by: Marco Elver <elver@google.com>
+> ---
+> v2:
+> * Use kcsan_check{,_atomic}_{read,write} instead of
+>   kcsan_check_{access,atomic}.
+> * Introduce __atomic_check_{read,write} [Suggested by Mark Rutland].
+> ---
+>  include/asm-generic/atomic-instrumented.h | 393 +++++++++++-----------
+>  scripts/atomic/gen-atomic-instrumented.sh |  17 +-
+>  2 files changed, 218 insertions(+), 192 deletions(-)
 
+The script changes and generated code look fine to me, so FWIW:
 
-Thanks Boris.
+Reviewed-by: Mark Rutland <mark.rutland@arm.com>
 
-Kairui, I will apply the requested changes myself - no need to spin a v5
+Thanks,
+Mark.
+
+> diff --git a/scripts/atomic/gen-atomic-instrumented.sh b/scripts/atomic/gen-atomic-instrumented.sh
+> index e09812372b17..8b8b2a6f8d68 100755
+> --- a/scripts/atomic/gen-atomic-instrumented.sh
+> +++ b/scripts/atomic/gen-atomic-instrumented.sh
+> @@ -20,7 +20,7 @@ gen_param_check()
+>  	# We don't write to constant parameters
+>  	[ ${type#c} != ${type} ] && rw="read"
+>  
+> -	printf "\tkasan_check_${rw}(${name}, sizeof(*${name}));\n"
+> +	printf "\t__atomic_check_${rw}(${name}, sizeof(*${name}));\n"
+>  }
+>  
+>  #gen_param_check(arg...)
+> @@ -107,7 +107,7 @@ cat <<EOF
+>  #define ${xchg}(ptr, ...)						\\
+>  ({									\\
+>  	typeof(ptr) __ai_ptr = (ptr);					\\
+> -	kasan_check_write(__ai_ptr, ${mult}sizeof(*__ai_ptr));		\\
+> +	__atomic_check_write(__ai_ptr, ${mult}sizeof(*__ai_ptr));		\\
+>  	arch_${xchg}(__ai_ptr, __VA_ARGS__);				\\
+>  })
+>  EOF
+> @@ -148,6 +148,19 @@ cat << EOF
+>  
+>  #include <linux/build_bug.h>
+>  #include <linux/kasan-checks.h>
+> +#include <linux/kcsan-checks.h>
+> +
+> +static inline void __atomic_check_read(const volatile void *v, size_t size)
+> +{
+> +	kasan_check_read(v, size);
+> +	kcsan_check_atomic_read(v, size);
+> +}
+> +
+> +static inline void __atomic_check_write(const volatile void *v, size_t size)
+> +{
+> +	kasan_check_write(v, size);
+> +	kcsan_check_atomic_write(v, size);
+> +}
+>  
+>  EOF
+>  
+> -- 
+> 2.23.0.866.gb869b98d4c-goog
+> 
