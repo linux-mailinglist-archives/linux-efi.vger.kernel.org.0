@@ -2,159 +2,108 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 28B01E0B4F
-	for <lists+linux-efi@lfdr.de>; Tue, 22 Oct 2019 20:17:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D18D1E0E94
+	for <lists+linux-efi@lfdr.de>; Wed, 23 Oct 2019 01:37:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732342AbfJVSR4 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 22 Oct 2019 14:17:56 -0400
-Received: from mail-oi1-f196.google.com ([209.85.167.196]:39722 "EHLO
-        mail-oi1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732331AbfJVSR4 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 22 Oct 2019 14:17:56 -0400
-Received: by mail-oi1-f196.google.com with SMTP id w144so15043701oia.6
-        for <linux-efi@vger.kernel.org>; Tue, 22 Oct 2019 11:17:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=WOpu0OseuiXc08mdI69tOPOopIwWTdbk8nIc2lokKaQ=;
-        b=XJgdWmt1Fb01rtimxVs7UGUgg2nNjFELzvqXbKwOR2N0+RlvYp+1STsURqwktcTbn2
-         CYNMx5zkYFWeJy9Pp1crLJpMWkAa9lnFUFosfymwVkAw2Zg93wYs5IZnlIcSzzVhtZF0
-         FUS8z+oUFT8cShOthSahN28+4Ofg9kOnVmr4aZbNmLi3ccowGggxISCVpdu0yGs+4dht
-         HEvSGx4jDzphsM83UtxMqUGmYRC24HTm+icekjZvloyRwMHGGcP1JG6vcTt90amPncwd
-         0BBPZwnc6ueQxoqkD5kc4oeuKHk0+UEm4XXoClIYHx9pYHlHK6zhE2OqzSStqn3lR46/
-         b6Yw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=WOpu0OseuiXc08mdI69tOPOopIwWTdbk8nIc2lokKaQ=;
-        b=U53elXS8nHJAtO9QG2AGpK115qSrIcxFWaq/s6/NXIAkqRnI+6pF+TpUMvk5/3pCbj
-         yQ6Bumwi+RypWghIn1jQ8GEnra5VJMpyQ9p91bOnMl2DOErASogKzZutqyxeprMs+Q/z
-         1Xpw0AHba/TeA4RVi2/zlU0NSaJcVaiporNDrFTnnwqcsG92//cEM+qcajP5T/58nTTc
-         pKNuLqN9HoVoB750Ab87OdHsAUgDj/sD5BMqprzOvVt7QTsxLJ1HA9Mzhba7oCbMtM4d
-         K4/TERJJz1RU9ts9kfpLQOWnB0UlzugAf4etkR2Iskf2rN2hCMI1Hs8rSw3Y1LuGnWUt
-         jAgw==
-X-Gm-Message-State: APjAAAV6N5B4SQdzBmv8HEMBEt2yhv3YJGP0UdBITahD8nQHVALGdRhL
-        484IgX4DSZyAvwNxizXk73f661nyDjz87X+YJi8ouQ==
-X-Google-Smtp-Source: APXvYqzX+UBLuSqSX7xu+0iFpX/BMy6QMySPZgTjJ3NU0aDX6ipn2ST8I/CCQJ5VPBJ/kifUvNY+rliR1JaUu8riJKw=
-X-Received: by 2002:a05:6808:4b:: with SMTP id v11mr4195346oic.70.1571768274619;
- Tue, 22 Oct 2019 11:17:54 -0700 (PDT)
-MIME-Version: 1.0
-References: <20191017141305.146193-1-elver@google.com> <20191017141305.146193-8-elver@google.com>
- <20191022123329.GC11583@lakrids.cambridge.arm.com>
-In-Reply-To: <20191022123329.GC11583@lakrids.cambridge.arm.com>
-From:   Marco Elver <elver@google.com>
-Date:   Tue, 22 Oct 2019 20:17:43 +0200
-Message-ID: <CANpmjNOhoyDMFMUz6by3hLtX7aBFk4pXTmzjmWYiq2+z+R5fAQ@mail.gmail.com>
-Subject: Re: [PATCH v2 7/8] locking/atomics, kcsan: Add KCSAN instrumentation
-To:     Mark Rutland <mark.rutland@arm.com>
-Cc:     LKMM Maintainers -- Akira Yokosawa <akiyks@gmail.com>,
-        Alan Stern <stern@rowland.harvard.edu>,
-        Alexander Potapenko <glider@google.com>,
-        Andrea Parri <parri.andrea@gmail.com>,
-        Andrey Konovalov <andreyknvl@google.com>,
-        Andy Lutomirski <luto@kernel.org>,
+        id S1732805AbfJVXhe (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 22 Oct 2019 19:37:34 -0400
+Received: from ozlabs.org ([203.11.71.1]:50863 "EHLO ozlabs.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1731847AbfJVXhe (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Tue, 22 Oct 2019 19:37:34 -0400
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mail.ozlabs.org (Postfix) with ESMTPSA id 46yVKk41tlz9sP3;
+        Wed, 23 Oct 2019 10:37:30 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+        s=201909; t=1571787451;
+        bh=bix38GBS8ziIG4D3rYTWk0p86PfmiZSj/wSR65+5FO4=;
+        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+        b=UGBdAfxatgCtF86fvylV99/QFpSVym95XuNMX9oU9VJ/vdOXEBZnaKPrE+RU4NoEa
+         LF4vXTA63Y1NCPpdUeNamISsqi58pKjanBzbMC5w+mv6Tf55QMI+2wCFqXK2Syjo0T
+         NQRBGiuxA5ZKAKARmotaog3inA58Mk1hdtXTzKoRfpM4ptLFMTepUmJaIz6VGujCMr
+         JvoS89CZDSyjig9lE0RuwgLNyYRbrS4GtsUYs+PjySDB7MIt+fV+Zb0KTe5Bs9Rj1X
+         k04YauMfnuq75MflrBRrXCE6uOEpH6Hg+o/k4rkuDybV3a0E+QhbYmFBBHmGJtAzBC
+         spPt9ZtqKX6Bw==
+From:   Michael Ellerman <mpe@ellerman.id.au>
+To:     Nayna Jain <nayna@linux.ibm.com>, linuxppc-dev@ozlabs.org,
+        linux-efi@vger.kernel.org, linux-integrity@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
         Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Boqun Feng <boqun.feng@gmail.com>,
-        Borislav Petkov <bp@alien8.de>, Daniel Axtens <dja@axtens.net>,
-        Daniel Lustig <dlustig@nvidia.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        David Howells <dhowells@redhat.com>,
-        Dmitry Vyukov <dvyukov@google.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
-        Jade Alglave <j.alglave@ucl.ac.uk>,
-        Joel Fernandes <joel@joelfernandes.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Josh Poimboeuf <jpoimboe@redhat.com>,
-        Luc Maranget <luc.maranget@inria.fr>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        "Paul E. McKenney" <paulmck@linux.ibm.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Will Deacon <will@kernel.org>,
-        kasan-dev <kasan-dev@googlegroups.com>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
-        linux-efi@vger.kernel.org,
-        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Linux Memory Management List <linux-mm@kvack.org>,
-        "the arch/x86 maintainers" <x86@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        Jeremy Kerr <jk@ozlabs.org>,
+        Matthew Garret <matthew.garret@nebula.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Claudio Carvalho <cclaudio@linux.ibm.com>,
+        George Wilson <gcwilson@linux.ibm.com>,
+        Elaine Palmer <erpalmer@us.ibm.com>,
+        Eric Ricther <erichte@linux.ibm.com>,
+        Oliver O'Halloran <oohall@gmail.com>,
+        Nayna Jain <nayna@linux.ibm.com>,
+        Prakhar Srivastava <prsriva02@gmail.com>,
+        Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
+Subject: Re: [PATCH v8 1/8] powerpc: detect the secure boot mode of the system
+In-Reply-To: <1571508377-23603-2-git-send-email-nayna@linux.ibm.com>
+References: <1571508377-23603-1-git-send-email-nayna@linux.ibm.com> <1571508377-23603-2-git-send-email-nayna@linux.ibm.com>
+Date:   Wed, 23 Oct 2019 10:37:30 +1100
+Message-ID: <87zhhs5p39.fsf@mpe.ellerman.id.au>
+MIME-Version: 1.0
+Content-Type: text/plain
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, 22 Oct 2019 at 14:33, Mark Rutland <mark.rutland@arm.com> wrote:
->
-> On Thu, Oct 17, 2019 at 04:13:04PM +0200, Marco Elver wrote:
-> > This adds KCSAN instrumentation to atomic-instrumented.h.
-> >
-> > Signed-off-by: Marco Elver <elver@google.com>
-> > ---
-> > v2:
-> > * Use kcsan_check{,_atomic}_{read,write} instead of
-> >   kcsan_check_{access,atomic}.
-> > * Introduce __atomic_check_{read,write} [Suggested by Mark Rutland].
-> > ---
-> >  include/asm-generic/atomic-instrumented.h | 393 +++++++++++-----------
-> >  scripts/atomic/gen-atomic-instrumented.sh |  17 +-
-> >  2 files changed, 218 insertions(+), 192 deletions(-)
->
-> The script changes and generated code look fine to me, so FWIW:
->
-> Reviewed-by: Mark Rutland <mark.rutland@arm.com>
+Nayna Jain <nayna@linux.ibm.com> writes:
+> diff --git a/arch/powerpc/kernel/secure_boot.c b/arch/powerpc/kernel/secure_boot.c
+> new file mode 100644
+> index 000000000000..99bba7915629
+> --- /dev/null
+> +++ b/arch/powerpc/kernel/secure_boot.c
+> @@ -0,0 +1,30 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Copyright (C) 2019 IBM Corporation
+> + * Author: Nayna Jain
+> + */
+> +#include <linux/types.h>
+> +#include <linux/of.h>
+> +#include <asm/secure_boot.h>
+> +
+> +bool is_ppc_secureboot_enabled(void)
+> +{
+> +	struct device_node *node;
+> +	bool enabled = false;
+> +
+> +	node = of_find_compatible_node(NULL, NULL, "ibm,secvar-v1");
 
-Great, thank you Mark!
+If this found a node then you have a node with an elevated refcount
+which you need to drop on the way out.
 
-> Thanks,
-> Mark.
->
-> > diff --git a/scripts/atomic/gen-atomic-instrumented.sh b/scripts/atomic/gen-atomic-instrumented.sh
-> > index e09812372b17..8b8b2a6f8d68 100755
-> > --- a/scripts/atomic/gen-atomic-instrumented.sh
-> > +++ b/scripts/atomic/gen-atomic-instrumented.sh
-> > @@ -20,7 +20,7 @@ gen_param_check()
-> >       # We don't write to constant parameters
-> >       [ ${type#c} != ${type} ] && rw="read"
-> >
-> > -     printf "\tkasan_check_${rw}(${name}, sizeof(*${name}));\n"
-> > +     printf "\t__atomic_check_${rw}(${name}, sizeof(*${name}));\n"
-> >  }
-> >
-> >  #gen_param_check(arg...)
-> > @@ -107,7 +107,7 @@ cat <<EOF
-> >  #define ${xchg}(ptr, ...)                                            \\
-> >  ({                                                                   \\
-> >       typeof(ptr) __ai_ptr = (ptr);                                   \\
-> > -     kasan_check_write(__ai_ptr, ${mult}sizeof(*__ai_ptr));          \\
-> > +     __atomic_check_write(__ai_ptr, ${mult}sizeof(*__ai_ptr));               \\
-> >       arch_${xchg}(__ai_ptr, __VA_ARGS__);                            \\
-> >  })
-> >  EOF
-> > @@ -148,6 +148,19 @@ cat << EOF
-> >
-> >  #include <linux/build_bug.h>
-> >  #include <linux/kasan-checks.h>
-> > +#include <linux/kcsan-checks.h>
-> > +
-> > +static inline void __atomic_check_read(const volatile void *v, size_t size)
-> > +{
-> > +     kasan_check_read(v, size);
-> > +     kcsan_check_atomic_read(v, size);
-> > +}
-> > +
-> > +static inline void __atomic_check_write(const volatile void *v, size_t size)
-> > +{
-> > +     kasan_check_write(v, size);
-> > +     kcsan_check_atomic_write(v, size);
-> > +}
-> >
-> >  EOF
-> >
-> > --
-> > 2.23.0.866.gb869b98d4c-goog
-> >
+> +	if (!of_device_is_available(node)) {
+> +		pr_err("Cannot find secure variable node in device tree; failing to secure state\n");
+> +		goto out;
+> +	}
+> +
+> +	/*
+> +	 * secureboot is enabled if os-secure-enforcing property exists,
+> +	 * else disabled.
+> +	 */
+> +	enabled = of_property_read_bool(node, "os-secure-enforcing");
+> +
+> +out:
+
+So here you need:
+
+	of_node_put(node);
+
+
+> +	pr_info("Secure boot mode %s\n", enabled ? "enabled" : "disabled");
+> +	return enabled;
+> +}
+
+cheers
