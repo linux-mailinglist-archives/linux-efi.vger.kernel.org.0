@@ -2,113 +2,400 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 60045E099C
-	for <lists+linux-efi@lfdr.de>; Tue, 22 Oct 2019 18:48:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A8A36E09B6
+	for <lists+linux-efi@lfdr.de>; Tue, 22 Oct 2019 18:52:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732072AbfJVQsZ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 22 Oct 2019 12:48:25 -0400
-Received: from mail-ot1-f65.google.com ([209.85.210.65]:39687 "EHLO
-        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731707AbfJVQsZ (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 22 Oct 2019 12:48:25 -0400
-Received: by mail-ot1-f65.google.com with SMTP id s22so14776904otr.6
-        for <linux-efi@vger.kernel.org>; Tue, 22 Oct 2019 09:48:25 -0700 (PDT)
+        id S1732894AbfJVQwS (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 22 Oct 2019 12:52:18 -0400
+Received: from mail-oi1-f196.google.com ([209.85.167.196]:37959 "EHLO
+        mail-oi1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726142AbfJVQwS (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 22 Oct 2019 12:52:18 -0400
+Received: by mail-oi1-f196.google.com with SMTP id v186so1987088oie.5
+        for <linux-efi@vger.kernel.org>; Tue, 22 Oct 2019 09:52:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        d=google.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=0+6No+BxgIjHWFQl8mEre5geCrP8fi/EeYgiUXvYmaQ=;
-        b=s6UgbS4ygkuYPcJAAz3pNE7NObfVgWrxILYPPMZ64u/k26Tlh6VILXVknF/EVXamYW
-         JfGqLPtKv0uhIS82q3cjRbmSV68r0gXlRmOSju0sYhJbF19LHXbbiaJ1L9AhhaKRTiKP
-         7Nmc/i7KXYTM75gzn8DB3Ffy4pCr6Gj5U2IhXd6VogFuoho9HkbeTx34hgnfHaDpxJ6R
-         F2vb0qYVbMjW7271kotp9FaczmghmLyL0qHzn7+ppM77aAE1H8W4VMzOgeKAVFZVDeIY
-         ZTJYmyN1FW5YCH4xLwCspopHQI0elv9i01FAWMh92jB+mTr1bnUOm41F0QAuqBnvll+T
-         N/Rw==
+        bh=C8Rn6LDgQaZ0OS/R+WSy3tEdJu49xR/zZV4L+3dNvaA=;
+        b=W7dwyFSZVu8yC7VntjhH7f+bvOgcVzUIFQJTimr/e2vdkoNTB4b4TV1tHQC3GptALs
+         EGHVCMDEu64pHr9fmlnJUXtPFowqEgc4OgoY/hZjAue4EXKmiyQYEBeOE7YnrB4iZ5Ha
+         gjRVTPnxhOAaPNUCp++okpMjL8ZNp5mqstPExFRn6vnZ4Cogtg87ahZnxBZnpgQjkOvv
+         2IgoOWwwgTU2huJjNAMxhS5VV6bsVm19OoMdDgL5q+RFEWXLjlP9W8MtJJG18EtFYnql
+         LTWfh6LxYbGRME0Oy3lCNSrJ6RBg4v31WlKp8jM/H4zNyJEADfVFLlnLGHeRyhaDOlhL
+         EQeQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=0+6No+BxgIjHWFQl8mEre5geCrP8fi/EeYgiUXvYmaQ=;
-        b=cVeqYEqUSu/wPUbNutQ+MU29u2+hjyArPORiOzA+YGLC9WoKIHFV6Ty0h2XVatMZpf
-         Yc+r0X0CU7JNsXwDVdvSormxD5fA5TSS9O3Z7gu9FnvjNbqwwAnicMspidi2/aiL9CF2
-         aF9C6elqWztXQlnZpIwouXk7M5ENPHejBseHlKscV9WEWiUIk/POdagBaLJ3NI1a4RDG
-         +R2XSy2gtAifw0ihfIlC5wUbK6CNf2HmQc0BIP2KCEEHnBABOR+G0ncQZykuKsOYmncV
-         C5VNU7iXpzzo6d6/RhzVvEDQaEOLuRUFsOLsJ07tBznq2SVY/91X0QYYHRcd5DwjhFur
-         kPMA==
-X-Gm-Message-State: APjAAAXbxxr9EQN4EnGNWzRvUUcPr8fnLWZf1qaweKIq3A9UYeUl2OvE
-        3Ny0MpcxRjASweQBx7F6U/eEtQ73kLo6ICNqPlv37A==
-X-Google-Smtp-Source: APXvYqwtw7FLGKUJW5VN/z168Ax4kCyZdkZTBUWqQLVn8w1bS74nzE4bXxhqmn24Xtn3tFVuwIDJyV6Rl48d61eRmdU=
-X-Received: by 2002:a9d:2d89:: with SMTP id g9mr3564630otb.126.1571762904646;
- Tue, 22 Oct 2019 09:48:24 -0700 (PDT)
+        bh=C8Rn6LDgQaZ0OS/R+WSy3tEdJu49xR/zZV4L+3dNvaA=;
+        b=VSfZ1OGwvZbfRCxe9e8XAquvTJ/mGU3ewGmDH2sHPDNGgtvf5Wkn3dcZJgN8JMvrOv
+         S2NfZKQHyz7w2nU140cCCoemj2Gbki4Pg8QryMarIQgbhgNg9j49LooT0oynvG/iHiql
+         7vNfGSLQ/8Y1S6qI0Yig163IQhA93ieZKlNJ/YxMNt8Wnr7qm6c13PYEyCIYdtXYoswM
+         sqebd3rPya0lpQxHP4OBgpcdl/0nkSW2GSDFrHsrxM/0RYfnv2SqL7XSrDsn6iLTmk5R
+         n4CjbSuRvugrweahVACJtXt5m4KrDO7vDNg6Sx3/26hlEsMuieJj/KXUAOBE2pBAFuUy
+         fs9g==
+X-Gm-Message-State: APjAAAVjMQT5EWm7d8wbmH17/vOupkMkc4EXR5NsERvxvu5tGYviYMuI
+        z8+Z9itqIh9y1LtMEjR0DT3Ulj0DKNlbkhXPfUbK6Q==
+X-Google-Smtp-Source: APXvYqyOVCQ9sCAZETp1G21mLGdp/8W0OgIy9soZn3oqpfo20H7Lgt1BMtqqJoDNfPrlMde1y3eBMeQkA5SNZoL8b8A=
+X-Received: by 2002:aca:f1a:: with SMTP id 26mr3773484oip.172.1571763136488;
+ Tue, 22 Oct 2019 09:52:16 -0700 (PDT)
 MIME-Version: 1.0
-References: <157118756627.2063440.9878062995925617180.stgit@dwillia2-desk3.amr.corp.intel.com>
- <157118757175.2063440.9248947575330904096.stgit@dwillia2-desk3.amr.corp.intel.com>
- <CAJZ5v0i-hhasNCD6Ur8VLfrkc+4GOeNXXX_ZNFZjcY6F51ciSQ@mail.gmail.com> <CAJZ5v0j_-iSqiysZiW=J8Y5FCAjnPC7ZvevrLsYhngWr6mT6GQ@mail.gmail.com>
-In-Reply-To: <CAJZ5v0j_-iSqiysZiW=J8Y5FCAjnPC7ZvevrLsYhngWr6mT6GQ@mail.gmail.com>
-From:   Dan Williams <dan.j.williams@intel.com>
-Date:   Tue, 22 Oct 2019 09:48:12 -0700
-Message-ID: <CAPcyv4js1XqSe1kNeWob=ftscYFKQF+04PrKj7XDiEWUWvnMvQ@mail.gmail.com>
-Subject: Re: [PATCH v7 01/12] acpi/numa: Establish a new drivers/acpi/numa/ directory
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Ingo Molnar <mingo@redhat.com>, Len Brown <lenb@kernel.org>,
-        Keith Busch <kbusch@kernel.org>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Vishal Verma <vishal.l.verma@intel.com>,
+References: <20191017141305.146193-1-elver@google.com> <20191017141305.146193-2-elver@google.com>
+ <20191022141103.GE11583@lakrids.cambridge.arm.com>
+In-Reply-To: <20191022141103.GE11583@lakrids.cambridge.arm.com>
+From:   Marco Elver <elver@google.com>
+Date:   Tue, 22 Oct 2019 18:52:03 +0200
+Message-ID: <CANpmjNPO7hn6cEQp9BXZByvE6WVkUVUEjO6AKpDPYYcwtbhBwQ@mail.gmail.com>
+Subject: Re: [PATCH v2 1/8] kcsan: Add Kernel Concurrency Sanitizer infrastructure
+To:     Mark Rutland <mark.rutland@arm.com>
+Cc:     LKMM Maintainers -- Akira Yokosawa <akiyks@gmail.com>,
+        Alan Stern <stern@rowland.harvard.edu>,
+        Alexander Potapenko <glider@google.com>,
+        Andrea Parri <parri.andrea@gmail.com>,
+        Andrey Konovalov <andreyknvl@google.com>,
+        Andy Lutomirski <luto@kernel.org>,
         Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        "the arch/x86 maintainers" <x86@kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Thomas Gleixner <tglx@linutronix.de>
+        Arnd Bergmann <arnd@arndb.de>,
+        Boqun Feng <boqun.feng@gmail.com>,
+        Borislav Petkov <bp@alien8.de>, Daniel Axtens <dja@axtens.net>,
+        Daniel Lustig <dlustig@nvidia.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        David Howells <dhowells@redhat.com>,
+        Dmitry Vyukov <dvyukov@google.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+        Jade Alglave <j.alglave@ucl.ac.uk>,
+        Joel Fernandes <joel@joelfernandes.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Josh Poimboeuf <jpoimboe@redhat.com>,
+        Luc Maranget <luc.maranget@inria.fr>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        "Paul E. McKenney" <paulmck@linux.ibm.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Will Deacon <will@kernel.org>,
+        kasan-dev <kasan-dev@googlegroups.com>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
+        linux-efi@vger.kernel.org,
+        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Linux Memory Management List <linux-mm@kvack.org>,
+        "the arch/x86 maintainers" <x86@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, Oct 22, 2019 at 3:02 AM Rafael J. Wysocki <rafael@kernel.org> wrote:
->
-> On Fri, Oct 18, 2019 at 11:25 AM Rafael J. Wysocki <rafael@kernel.org> wrote:
-> >
-> >  On Wed, Oct 16, 2019 at 3:13 AM Dan Williams <dan.j.williams@intel.com> wrote:
-> > >
-> > > Currently hmat.c lives under an "hmat" directory which does not enhance
-> > > the description of the file. The initial motivation for giving hmat.c
-> > > its own directory was to delineate it as mm functionality in contrast to
-> > > ACPI device driver functionality.
-> > >
-> > > As ACPI continues to play an increasing role in conveying
-> > > memory location and performance topology information to the OS take the
-> > > opportunity to co-locate these NUMA relevant tables in a combined
-> > > directory.
-> > >
-> > > numa.c is renamed to srat.c and moved to drivers/acpi/numa/ along with
-> > > hmat.c.
-> > >
-> > > Cc: Len Brown <lenb@kernel.org>
-> > > Cc: Keith Busch <kbusch@kernel.org>
-> > > Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > > Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
-> > > Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-> >
-> > Please note that https://patchwork.kernel.org/patch/11078171/ is being
-> > pushed to Linus (it is overdue anyway), so if it is pulled, there will
-> > be a merge conflict with this patch.
-> >
-> > Respin maybe?
->
-> Actually, would you mind it if I took this one into the ACPI tree right away?
->
-> There's https://patchwork.kernel.org/patch/11198373/ queued up that,
-> again, will clash with it.
->
-> Also, there is the generic Initiator proximity domains series from
-> Jonathan depending on it and I would like to move forward with that
-> one if there are no objections.
+Hi Mark,
 
-Given Ard has acked all the EFI core and ARM changes can we proceed
-with merging the EFI Specific Purpose Memory series through Rafael's
-tree? It would need acks from x86 maintainers.
+Thanks for you comments; see inline comments below.
+
+On Tue, 22 Oct 2019 at 16:11, Mark Rutland <mark.rutland@arm.com> wrote:
+>
+> Hi Marco,
+>
+> On Thu, Oct 17, 2019 at 04:12:58PM +0200, Marco Elver wrote:
+> > Kernel Concurrency Sanitizer (KCSAN) is a dynamic data-race detector for
+> > kernel space. KCSAN is a sampling watchpoint-based data-race detector.
+> > See the included Documentation/dev-tools/kcsan.rst for more details.
+> >
+> > This patch adds basic infrastructure, but does not yet enable KCSAN for
+> > any architecture.
+> >
+> > Signed-off-by: Marco Elver <elver@google.com>
+> > ---
+> > v2:
+> > * Elaborate comment about instrumentation calls emitted by compilers.
+> > * Replace kcsan_check_access(.., {true, false}) with
+> >   kcsan_check_{read,write} for improved readability.
+> > * Change bug title of race of unknown origin to just say "data-race in".
+> > * Refine "Key Properties" in kcsan.rst, and mention observed slow-down.
+> > * Add comment about safety of find_watchpoint without user_access_save.
+> > * Remove unnecessary preempt_disable/enable and elaborate on comment why
+> >   we want to disable interrupts and preemptions.
+> > * Use common struct kcsan_ctx in task_struct and for per-CPU interrupt
+> >   contexts [Suggested by Mark Rutland].
+>
+> This is generally looking good to me.
+>
+> I have a few comments below. Those are mostly style and naming things to
+> minimize surprise, though I also have a couple of queries (nested vs
+> flat atomic regions and the number of watchpoints).
+>
+> [...]
+>
+> > diff --git a/include/linux/kcsan.h b/include/linux/kcsan.h
+> > new file mode 100644
+> > index 000000000000..fd5de2ba3a16
+> > --- /dev/null
+> > +++ b/include/linux/kcsan.h
+> > @@ -0,0 +1,108 @@
+> > +/* SPDX-License-Identifier: GPL-2.0 */
+> > +
+> > +#ifndef _LINUX_KCSAN_H
+> > +#define _LINUX_KCSAN_H
+> > +
+> > +#include <linux/types.h>
+> > +#include <linux/kcsan-checks.h>
+> > +
+> > +#ifdef CONFIG_KCSAN
+> > +
+> > +/*
+> > + * Context for each thread of execution: for tasks, this is stored in
+> > + * task_struct, and interrupts access internal per-CPU storage.
+> > + */
+> > +struct kcsan_ctx {
+> > +     int disable; /* disable counter */
+>
+> Can we call this disable_count? That would match the convention used for
+> preempt_count, and make it clear this isn't a boolean.
+
+Done for v3.
+
+> > +     int atomic_next; /* number of following atomic ops */
+>
+> I'm a little unclear on why we need this given the begin ... end
+> helpers -- isn't knowing that we're in an atomic region sufficient?
+
+Sadly no, this is all due to seqlock usage. See seqlock patch for explanation.
+
+> > +
+> > +     /*
+> > +      * We use separate variables to store if we are in a nestable or flat
+> > +      * atomic region. This helps make sure that an atomic region with
+> > +      * nesting support is not suddenly aborted when a flat region is
+> > +      * contained within. Effectively this allows supporting nesting flat
+> > +      * atomic regions within an outer nestable atomic region. Support for
+> > +      * this is required as there are cases where a seqlock reader critical
+> > +      * section (flat atomic region) is contained within a seqlock writer
+> > +      * critical section (nestable atomic region), and the "mismatching
+> > +      * kcsan_end_atomic()" warning would trigger otherwise.
+> > +      */
+> > +     int atomic_region;
+> > +     bool atomic_region_flat;
+> > +};
+>
+> I think we need to introduce nestability and flatness first. How about:
+
+Thanks, updated wording to read better hopefully.
+
+>         /*
+>          * Some atomic sequences are flat, and cannot contain another
+>          * atomic sequence. Other atomic sequences are nestable, and may
+>          * contain other flat and/or nestable sequences.
+>          *
+>          * For example, a seqlock writer critical section is nestable
+>          * and may contain a seqlock reader critical section, which is
+>          * flat.
+>          *
+>          * To support this we track the depth of nesting, and whether
+>          * the leaf level is flat.
+>          */
+>         int atomic_nest_count;
+>         bool in_flat_atomic;
+>
+> That said, I'm not entirely clear on the distinction. Why would nesting
+> a reader within another reader not be legitimate?
+
+It is legitimate, however, seqlock reader critical sections do not
+always have a balance begin/end. I ran into trouble initially when
+readers were still nestable, as e.g. read_seqcount_retry can be called
+multiple times. See seqlock patch for more explanations.
+
+> > +
+> > +/**
+> > + * kcsan_init - initialize KCSAN runtime
+> > + */
+> > +void kcsan_init(void);
+> > +
+> > +/**
+> > + * kcsan_disable_current - disable KCSAN for the current context
+> > + *
+> > + * Supports nesting.
+> > + */
+> > +void kcsan_disable_current(void);
+> > +
+> > +/**
+> > + * kcsan_enable_current - re-enable KCSAN for the current context
+> > + *
+> > + * Supports nesting.
+> > + */
+> > +void kcsan_enable_current(void);
+> > +
+> > +/**
+> > + * kcsan_begin_atomic - use to denote an atomic region
+> > + *
+> > + * Accesses within the atomic region may appear to race with other accesses but
+> > + * should be considered atomic.
+> > + *
+> > + * @nest true if regions may be nested, or false for flat region
+> > + */
+> > +void kcsan_begin_atomic(bool nest);
+> > +
+> > +/**
+> > + * kcsan_end_atomic - end atomic region
+> > + *
+> > + * @nest must match argument to kcsan_begin_atomic().
+> > + */
+> > +void kcsan_end_atomic(bool nest);
+> > +
+>
+> Similarly to the check_{read,write}() naming, could we get rid of the
+> bool argument and split this into separate nestable and flat functions?
+>
+> That makes it easier to read in-context, e.g.
+>
+>         kcsan_nestable_atomic_begin();
+>         ...
+>         kcsan_nestable_atomic_end();
+>
+> ... has a more obvious meaning than:
+>
+>         kcsan_begin_atomic(true);
+>         ...
+>         kcsan_end_atomic(true);
+>
+> ... and putting the begin/end at the end of the name makes it easier to
+> spot the matching pair.
+
+Thanks, done for v3.
+
+> [...]
+>
+> > +static inline bool is_enabled(void)
+> > +{
+> > +     return READ_ONCE(kcsan_enabled) && get_ctx()->disable == 0;
+> > +}
+>
+> Can we please make this kcsan_is_enabled(), to avoid confusion with
+> IS_ENABLED()?
+
+Done for v3.
+
+> > +static inline unsigned int get_delay(void)
+> > +{
+> > +     unsigned int max_delay = in_task() ? CONFIG_KCSAN_UDELAY_MAX_TASK :
+> > +                                          CONFIG_KCSAN_UDELAY_MAX_INTERRUPT;
+> > +     return IS_ENABLED(CONFIG_KCSAN_DELAY_RANDOMIZE) ?
+> > +                    ((prandom_u32() % max_delay) + 1) :
+> > +                    max_delay;
+> > +}
+> > +
+> > +/* === Public interface ===================================================== */
+> > +
+> > +void __init kcsan_init(void)
+> > +{
+> > +     BUG_ON(!in_task());
+> > +
+> > +     kcsan_debugfs_init();
+> > +     kcsan_enable_current();
+> > +#ifdef CONFIG_KCSAN_EARLY_ENABLE
+> > +     /*
+> > +      * We are in the init task, and no other tasks should be running.
+> > +      */
+> > +     WRITE_ONCE(kcsan_enabled, true);
+> > +#endif
+>
+> Where possible, please use IS_ENABLED() rather than ifdeffery for
+> portions of functions like this, e.g.
+>
+>         /*
+>          * We are in the init task, and no other tasks should be running.
+>          */
+>         if (IS_ENABLED(CONFIG_KCSAN_EARLY_ENABLE))
+>                 WRITE_ONCE(kcsan_enabled, true);
+>
+> That makes code a bit easier to read, and ensures that the code always
+> gets build coverage, so it's less likely that code changes will
+> introduce a build failure when the option is enabled.
+
+Thanks, done for v3.
+
+> [...]
+>
+> > +#ifdef CONFIG_KCSAN_DEBUG
+> > +     kcsan_disable_current();
+> > +     pr_err("KCSAN: watching %s, size: %zu, addr: %px [slot: %d, encoded: %lx]\n",
+> > +            is_write ? "write" : "read", size, ptr,
+> > +            watchpoint_slot((unsigned long)ptr),
+> > +            encode_watchpoint((unsigned long)ptr, size, is_write));
+> > +     kcsan_enable_current();
+> > +#endif
+>
+> This can use IS_ENABLED(), e.g.
+>
+>         if (IS_ENABLED(CONFIG_KCSAN_DEBUG)) {
+>                 kcsan_disable_current();
+>                 pr_err("KCSAN: watching %s, size: %zu, addr: %px [slot: %d, encoded: %lx]\n",
+>                        is_write ? "write" : "read", size, ptr,
+>                        watchpoint_slot((unsigned long)ptr),
+>                        encode_watchpoint((unsigned long)ptr, size, is_write));
+>                 kcsan_enable_current();
+>         }
+>
+> [...]
+> > +#ifdef CONFIG_KCSAN_REPORT_RACE_UNKNOWN_ORIGIN
+> > +             kcsan_report(ptr, size, is_write, smp_processor_id(),
+> > +                          kcsan_report_race_unknown_origin);
+> > +#endif
+>
+> This can also use IS_ENABLED().
+
+Done for v3.
+
+> [...]
+>
+> > diff --git a/kernel/kcsan/kcsan.h b/kernel/kcsan/kcsan.h
+> > new file mode 100644
+> > index 000000000000..429479b3041d
+> > --- /dev/null
+> > +++ b/kernel/kcsan/kcsan.h
+> > @@ -0,0 +1,140 @@
+> > +/* SPDX-License-Identifier: GPL-2.0 */
+> > +
+> > +#ifndef _MM_KCSAN_KCSAN_H
+> > +#define _MM_KCSAN_KCSAN_H
+> > +
+> > +#include <linux/kcsan.h>
+> > +
+> > +/*
+> > + * Total number of watchpoints. An address range maps into a specific slot as
+> > + * specified in `encoding.h`. Although larger number of watchpoints may not even
+> > + * be usable due to limited thread count, a larger value will improve
+> > + * performance due to reducing cache-line contention.
+> > + */
+> > +#define KCSAN_NUM_WATCHPOINTS 64
+>
+> Is there any documentation as to how 64 was chosen? It's fine if it's
+> arbitrary, but it would be good to know either way.
+
+It was arbitrary in the sense that I chose the largest value that I
+think is an acceptable overhead in terms of storage, i.e. on 64-bit
+watchpoints consume 512 bytes. It should always be large enough so
+that "no_capacity" counter does not increase frequently.
+
+> I wonder if this is something that might need to scale with NR_CPUS (or
+> nr_cpus).
+
+I think this is hard to say. I've decided to make it configurable in
+v3, with a BUILD_BUG_ON to ensure its value is within expected bounds.
+
+> > +enum kcsan_counter_id {
+> > +     /*
+> > +      * Number of watchpoints currently in use.
+> > +      */
+> > +     kcsan_counter_used_watchpoints,
+>
+> Nit: typically enum values are capitalized (as coding-style.rst says).
+> That helps to make it clear each value is a constant rather than a
+> variable. Likewise for the other enums here.
+
+Done for v3.
+
+Thanks,
+-- Marco
+
+> Thanks,
+> Mark.
