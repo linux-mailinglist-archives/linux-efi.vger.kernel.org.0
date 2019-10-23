@@ -2,129 +2,133 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B83B3E1A69
-	for <lists+linux-efi@lfdr.de>; Wed, 23 Oct 2019 14:33:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 450B4E1FA1
+	for <lists+linux-efi@lfdr.de>; Wed, 23 Oct 2019 17:42:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391590AbfJWMce (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 23 Oct 2019 08:32:34 -0400
-Received: from mail-qk1-f195.google.com ([209.85.222.195]:35732 "EHLO
-        mail-qk1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389839AbfJWMce (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 23 Oct 2019 08:32:34 -0400
-Received: by mail-qk1-f195.google.com with SMTP id w2so19553004qkf.2
-        for <linux-efi@vger.kernel.org>; Wed, 23 Oct 2019 05:32:33 -0700 (PDT)
+        id S2406867AbfJWPlD (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 23 Oct 2019 11:41:03 -0400
+Received: from mail-pg1-f195.google.com ([209.85.215.195]:34948 "EHLO
+        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2406859AbfJWPlC (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 23 Oct 2019 11:41:02 -0400
+Received: by mail-pg1-f195.google.com with SMTP id c8so7564478pgb.2
+        for <linux-efi@vger.kernel.org>; Wed, 23 Oct 2019 08:41:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=B49NIMe9Qp45m4n7j4yBsM/w0U/Y5dSRw5y61/jmg/U=;
-        b=C5bfrMkMZwSNBuaqGvLHQGLvu+WkV3TTh3kdpyy/ob6oFoN9VqPr039NiJ7r8PbBbp
-         i0Ndg1H1PKsVMYNLuBizaGICaR2zwIKJFqesGKj+GHlL+Yo7/uZxSHFBqJi57C5+6WAI
-         yLSx35vCO8IkEpJmYZU0KyQ+UhKSimD8bpgLouFa3SPiviAOlFtIK3olMU0e4mYzxTR6
-         ri4W3JAkTNY7BOh/AjMrLXlT8nx0TKh2nckATUVkPDUkUMcBXJfpfUlMUYgruercaW4W
-         n/Sm5BbGsBp0U3XPBitQSLz/RMcCyWyqI4R/8ctXEjE0kHygx5YEq/GvmIVT0pEhi0Wm
-         Wq5A==
+        d=android.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding:content-language;
+        bh=TI9rW32nt+i6GyURUSN10bGjthP0EG+xScjnb+pkqac=;
+        b=KBoKx5yOJdWGZz7I1M810keaJ1ZlEuvnt+HTZJAS0UmK0LTUpPmdFTkklfgcGdi73r
+         feMTzV569J5UceysOEInvWeJdRd/ZzonW6Aa3VYlqczCqXy+PY9ipoJvzLD+NWbnZ5rP
+         mW2vwJLR0Vq7sY9XP/QBVZSb/GxJx9fS5CE5Yo07sdXhMNQdYvScXxROVKhe4Esy5Cvd
+         e50H85g6521yumbQVB+PGX8SW/L7QzMUvgyanXK1Toe52me2wt2CIUN9qyd4f938PFQ7
+         rthEsivMBKI4ftQ33yVLiM1NHSBLjKlHtZVEVP38OG7iyjy4z/skVUexYga7/45kjz+T
+         6+ug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=B49NIMe9Qp45m4n7j4yBsM/w0U/Y5dSRw5y61/jmg/U=;
-        b=Lm4T2Gy7itILSWmG3JzYOPwzvs/e00BTwvxY3qpCoVLAYv3cyiHGqaKXJxSC5bM0MK
-         Li/f80rJQpDe8zLoQLQN9Yy+TZyNE941Gm62+ipfbv8/1RehLC8GcIqTb6HbBD+z6NdX
-         A4ECP4FyDmEH5G2rT1r9YDCkT1E0yTIWpS9BvwTjGW1irn/ZgsM45dWPyVIQLynGPrXr
-         MZ9JoCmELF91op54UVe534ZfWggJBX/yqMSWxEBByyWDp0CnE81teg0bT5NQqr29KeR3
-         YBNZzwrvJaHKfkJOYRwNScQIuGLUURt3R0Oa8NSVqb5uxpbQB1Rk2ERjKudBdBNGRrrn
-         wmfQ==
-X-Gm-Message-State: APjAAAVIqYUm26/Y1PS7jOqdHETBPfhFMfvx9H9A8AhGVEi9k31kfxQ5
-        HvmYwP/xRHi3l4siaazItKpfrvIeFgZl8u1Lj19u0A==
-X-Google-Smtp-Source: APXvYqyFsU3H6xRYNHrGvBpnk/VOnsx+BN6kQrGuH12Dr1Igjr36aWMR0sDz8pvAXcYyvaIX66eDRdizKnR8UEqoIeQ=
-X-Received: by 2002:a37:4a87:: with SMTP id x129mr7970246qka.43.1571833952687;
- Wed, 23 Oct 2019 05:32:32 -0700 (PDT)
-MIME-Version: 1.0
-References: <20191017141305.146193-1-elver@google.com> <20191017141305.146193-2-elver@google.com>
-In-Reply-To: <20191017141305.146193-2-elver@google.com>
-From:   Dmitry Vyukov <dvyukov@google.com>
-Date:   Wed, 23 Oct 2019 14:32:20 +0200
-Message-ID: <CACT4Y+bfVpu4017p64rc-BBAevs2Ok2otxUYpbwJGYkCbUNYVA@mail.gmail.com>
-Subject: Re: [PATCH v2 1/8] kcsan: Add Kernel Concurrency Sanitizer infrastructure
-To:     Marco Elver <elver@google.com>
-Cc:     LKMM Maintainers -- Akira Yokosawa <akiyks@gmail.com>,
-        Alan Stern <stern@rowland.harvard.edu>,
-        Alexander Potapenko <glider@google.com>,
-        Andrea Parri <parri.andrea@gmail.com>,
-        Andrey Konovalov <andreyknvl@google.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Boqun Feng <boqun.feng@gmail.com>,
-        Borislav Petkov <bp@alien8.de>, Daniel Axtens <dja@axtens.net>,
-        Daniel Lustig <dlustig@nvidia.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        David Howells <dhowells@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
-        Jade Alglave <j.alglave@ucl.ac.uk>,
-        Joel Fernandes <joel@joelfernandes.org>,
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding
+         :content-language;
+        bh=TI9rW32nt+i6GyURUSN10bGjthP0EG+xScjnb+pkqac=;
+        b=ZkPKY4t9HGMGMRGZJvFQ6BaLxcUEaB7DVZPdfzcamgMSCjoKU3XGZYlZFXQIC8V+Na
+         KCTDuEyqSupiDoTglohbec+gAPDTnAxwLAGI2OyCuY87YL6/TeGNLzF0Zb15aoDS1uED
+         iPVWmpxenczeW8VaCZDpSf1ljOnW9JAiP86yC+n989sZB1F63oNVAUeEdLvA6Owf4n28
+         ma8AVTQZcOzMJNBR8FTwuaMAbq+7Xx32Yy1PCUBOHQJLCfaAZcQprjI5PxhV/LPzbJLe
+         FMa4mAafZQWlBMwR75sK9oW2QxOmm+2IW3JqeSZUR6wB9dP4I7ky5PDFEXgf4yPoPiFZ
+         ztOg==
+X-Gm-Message-State: APjAAAVUI4mCMyuZOPMGVN+eaFO45Eo6Hhlfqwbtr67PG4aAI1krxFyf
+        3EEvkUVqfau3pN3bRJrUgmigSw==
+X-Google-Smtp-Source: APXvYqxpUg0BJf6IgZEek+Avbtx6SaPZVRb4CoPCBRhASaoQxSh7v/tZYoAbFxDTBg5wYPAauGUeIw==
+X-Received: by 2002:a17:90a:e987:: with SMTP id v7mr765373pjy.86.1571845261541;
+        Wed, 23 Oct 2019 08:41:01 -0700 (PDT)
+Received: from nebulus.mtv.corp.google.com ([2620:15c:211:200:5404:91ba:59dc:9400])
+        by smtp.googlemail.com with ESMTPSA id r18sm28682272pfc.3.2019.10.23.08.40.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 23 Oct 2019 08:41:01 -0700 (PDT)
+Subject: Re: [PATCH] Cleanup: replace prefered with preferred
+To:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+Cc:     linux-kernel@vger.kernel.org, kernel-team@android.com,
+        "David S. Miller" <davem@davemloft.net>,
         Jonathan Corbet <corbet@lwn.net>,
-        Josh Poimboeuf <jpoimboe@redhat.com>,
-        Luc Maranget <luc.maranget@inria.fr>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        "Paul E. McKenney" <paulmck@linux.ibm.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Will Deacon <will@kernel.org>,
-        kasan-dev <kasan-dev@googlegroups.com>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
-        linux-efi@vger.kernel.org,
-        "open list:KERNEL BUILD + fi..." <linux-kbuild@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Linux-MM <linux-mm@kvack.org>,
-        "the arch/x86 maintainers" <x86@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Harry Wentland <harry.wentland@amd.com>,
+        Leo Li <sunpeng.li@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>,
+        "David (ChunMing) Zhou" <David1.Zhou@amd.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        VMware Graphics <linux-graphics-maintainer@vmware.com>,
+        Thomas Hellstrom <thellstrom@vmware.com>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Trond Myklebust <trond.myklebust@hammerspace.com>,
+        Anna Schumaker <anna.schumaker@netapp.com>,
+        Alexander Aring <alex.aring@gmail.com>,
+        Jukka Rissanen <jukka.rissanen@linux.intel.com>,
+        Alexey Kuznetsov <kuznet@ms2.inr.ac.ru>,
+        Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
+        Ingo Molnar <mingo@kernel.org>,
+        Matthew Garrett <matthewgarrett@google.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        hersen wu <hersenxs.wu@amd.com>, Roman Li <Roman.Li@amd.com>,
+        Maxim Martynov <maxim@arista.com>,
+        David Ahern <dsahern@gmail.com>,
+        Francesco Ruggeri <fruggeri@arista.com>,
+        =?UTF-8?Q?Linus_L=c3=bcssing?= <linus.luessing@c0d3.blue>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Feng Tang <feng.tang@intel.com>,
+        "Steven Rostedt (VMware)" <rostedt@goodmis.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Rafael Aquini <aquini@redhat.com>, netdev@vger.kernel.org,
+        linux-doc@vger.kernel.org, linux-efi@vger.kernel.org,
+        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+        linux-media@vger.kernel.org, linux-nfs@vger.kernel.org,
+        linux-bluetooth@vger.kernel.org, linux-wpan@vger.kernel.org
+References: <20191022214208.211448-1-salyzyn@android.com>
+ <20191023115637.GA23733@linux.intel.com>
+From:   Mark Salyzyn <salyzyn@android.com>
+Message-ID: <fa12cb96-7a93-bf85-214d-a7bfaf8b8b0a@android.com>
+Date:   Wed, 23 Oct 2019 08:40:59 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
+MIME-Version: 1.0
+In-Reply-To: <20191023115637.GA23733@linux.intel.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-GB
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, Oct 17, 2019 at 4:13 PM Marco Elver <elver@google.com> wrote:
+On 10/23/19 4:56 AM, Jarkko Sakkinen wrote:
+> On Tue, Oct 22, 2019 at 02:41:45PM -0700, Mark Salyzyn wrote:
+>> Replace all occurrences of prefered with preferred to make future
+>> checkpatch.pl's happy.  A few places the incorrect spelling is
+>> matched with the correct spelling to preserve existing user space API.
+>>
+>> Signed-off-by: Mark Salyzyn <salyzyn@android.com>
+> I'd fix such things when the code is otherwise change and scope this
+> patch only to Documentation/. There is no pragmatic benefit of doing
+> this for the code.
 >
-> Kernel Concurrency Sanitizer (KCSAN) is a dynamic data-race detector for
-> kernel space. KCSAN is a sampling watchpoint-based data-race detector.
-> See the included Documentation/dev-tools/kcsan.rst for more details.
+> /Jarkko
 
-I think there is some significant potential for improving performance.
-Currently we have __tsan_read8 do 2 function calls, push/pop, the
-second call is on unpredicted slow path.
-Then __kcsan_check_watchpoint and __kcsan_setup_watchpoint do full
-load of spills and lots of loads and checks that are not strictly
-necessary or can be avoided. Additionally __kcsan_setup_watchpoint
-calls non-inlined kcsan_is_atomic.
-I think we need to try to structure it around the fast path as follows:
-__tsan_read8 does no function calls and no spills on fast path for
-both checking existing watchpoints and checking if a new watchpoint
-need to be setup. If it discovers a race with existing watchpoint or
-needs to setup a new one, that should be non-inlined tail calls to the
-corresponding slow paths.
-In particular, global enable/disable can be replaced with
-occupying/freeing all watchpoints.
-Per cpu disabled check should be removed from fast path somehow, it's
-only used around debugging checks or during reporting. There should be
-a way to check it on a slower path.
-user_access_save should be removed from fast path, we needed it only
-if we setup a watchpoint. But I am not sure why we need it at all, we
-should not be reading any user addresses.
-should_watch should be restructured to decrement kcsan_skip first, if
-it hits zero (with unlikely hint), we go to slow path. The slow path
-resets kcsan_skip to something random. The comment mentions
-prandom_u32 is too expensive, do I understand it correctly that you
-tried to call it on the fast path? I would expect it is fine for slow
-path and will give us better randomness.
-At this point we should return from __tsan_read8.
+The pragmatic benefit comes with the use of an ABI/API checker (which is 
+a 'distro' thing, not a top of tree kernel thing) produces its map which 
+is typically required to be co-located in the same tree as the kernel 
+repository. Quite a few ABI/API update checkins result in a 
+checkpatch.pl complaint about the misspelled elements being 
+(re-)recorded due to proximity. We have a separate task to improve how 
+it is tracked in Android to reduce milepost marker changes that result 
+in sweeping changes to the database which would reduce the occurrences.
 
-To measure performance we could either do some synthetic in-kernel
-benchmarks (e.g. writing something to the debugfs file, which will do
-a number of memory accesses in a loop). Or you may try these
-user-space benchmarks:
-https://github.com/google/sanitizers/blob/master/address-sanitizer/kernel_buildbot/slave/bench_readv.c
-https://github.com/google/sanitizers/blob/master/address-sanitizer/kernel_buildbot/slave/bench_pipes.c
+I will split this between pure and inert documentation/comments for now, 
+with a followup later for the code portion which understandably is more 
+controversial.
+
+Cleanup is the least appreciated part of kernel maintenance ;-}.
+
+Sincerely -- Mark Salyzyn
+
