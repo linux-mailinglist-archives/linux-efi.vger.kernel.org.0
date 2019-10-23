@@ -2,130 +2,111 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E6F2DE207F
-	for <lists+linux-efi@lfdr.de>; Wed, 23 Oct 2019 18:24:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3FFB7E21C4
+	for <lists+linux-efi@lfdr.de>; Wed, 23 Oct 2019 19:32:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2407251AbfJWQYs (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 23 Oct 2019 12:24:48 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:45256 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S2407206AbfJWQYs (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 23 Oct 2019 12:24:48 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1571847887;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=eanOm+wc4jMiTMvGZZMqtnxXgjKabvAJwYAPnub5fDU=;
-        b=aRXrGlK6nW9STh26MP1i9tGRoLNhbL30i8GgsZ0Pgs/oDlSj0BkDp/Qtp+j0YrkI1HzF0B
-        YYbH4l+8L85mJKH3kxw4CZWJv9mro3Ez9rDokap2RUHnxcyoUhjoMlfGkSo49RM/YWAZhP
-        NteRVnptFFYq9zOy78qDHJjTgI5cAv4=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-361-nn_WxBf4PueDGKR47J5rTQ-1; Wed, 23 Oct 2019 12:24:43 -0400
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id EB51780183D;
-        Wed, 23 Oct 2019 16:24:39 +0000 (UTC)
-Received: from dhcp-27-174.brq.redhat.com (unknown [10.43.17.44])
-        by smtp.corp.redhat.com (Postfix) with SMTP id 364AE6362F;
-        Wed, 23 Oct 2019 16:24:33 +0000 (UTC)
-Received: by dhcp-27-174.brq.redhat.com (nbSMTP-1.00) for uid 1000
-        oleg@redhat.com; Wed, 23 Oct 2019 18:24:39 +0200 (CEST)
-Date:   Wed, 23 Oct 2019 18:24:32 +0200
-From:   Oleg Nesterov <oleg@redhat.com>
-To:     Marco Elver <elver@google.com>
-Cc:     LKMM Maintainers -- Akira Yokosawa <akiyks@gmail.com>,
-        Alan Stern <stern@rowland.harvard.edu>,
-        Alexander Potapenko <glider@google.com>,
-        Andrea Parri <parri.andrea@gmail.com>,
-        Andrey Konovalov <andreyknvl@google.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Boqun Feng <boqun.feng@gmail.com>,
-        Borislav Petkov <bp@alien8.de>, Daniel Axtens <dja@axtens.net>,
-        Daniel Lustig <dlustig@nvidia.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        David Howells <dhowells@redhat.com>,
-        Dmitry Vyukov <dvyukov@google.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
-        Jade Alglave <j.alglave@ucl.ac.uk>,
-        Joel Fernandes <joel@joelfernandes.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Josh Poimboeuf <jpoimboe@redhat.com>,
-        Luc Maranget <luc.maranget@inria.fr>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        "Paul E. McKenney" <paulmck@linux.ibm.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Will Deacon <will@kernel.org>,
-        kasan-dev <kasan-dev@googlegroups.com>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
-        linux-efi@vger.kernel.org,
-        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Linux Memory Management List <linux-mm@kvack.org>,
-        the arch/x86 maintainers <x86@kernel.org>
-Subject: Re: [PATCH v2 1/8] kcsan: Add Kernel Concurrency Sanitizer
- infrastructure
-Message-ID: <20191023162432.GC14327@redhat.com>
-References: <20191017141305.146193-1-elver@google.com>
- <20191017141305.146193-2-elver@google.com>
- <20191022154858.GA13700@redhat.com>
- <CANpmjNPUT2B3rWaa=5Ee2Xs3HHDaUiBGpG09Q4h9Gemhsp9KFw@mail.gmail.com>
-MIME-Version: 1.0
-In-Reply-To: <CANpmjNPUT2B3rWaa=5Ee2Xs3HHDaUiBGpG09Q4h9Gemhsp9KFw@mail.gmail.com>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
-X-MC-Unique: nn_WxBf4PueDGKR47J5rTQ-1
-X-Mimecast-Spam-Score: 0
-Content-Type: text/plain; charset=WINDOWS-1252
-Content-Transfer-Encoding: quoted-printable
-Content-Disposition: inline
+        id S1728719AbfJWRcD (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 23 Oct 2019 13:32:03 -0400
+Received: from mail-wm1-f66.google.com ([209.85.128.66]:38173 "EHLO
+        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727079AbfJWRcD (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 23 Oct 2019 13:32:03 -0400
+Received: by mail-wm1-f66.google.com with SMTP id 3so20476696wmi.3
+        for <linux-efi@vger.kernel.org>; Wed, 23 Oct 2019 10:32:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id;
+        bh=dmtFsSUBWA54jB5wbZR7TL/ePVjER+sBaUCUBdLRxXM=;
+        b=x6ROYP7fQnUWXi7GomAjmzViOaiRf4rEu2CVqKuswbfpWXqv40LiLqN/Eg94rawgyb
+         zfXZ5hSKFTk2Up6JdnCD1FYkuKwTL32r+TbfVH6AmSgoOGG5sBM0Rnm+k14ieZ3qhJOO
+         JWZlSgfcBVsyOhb5kG2YnCjItfXoSU7aIM+8DABOW0XbziSqB86q2LnPaoQ1bKqhgIH8
+         akwKAcbwQl69DKFd9/sRxkTd99DsVW5XMglsRSyJSl2OR3OklDESQOUDdlNA1IvavfwF
+         cet7YlMT3pjXyHyXx6AIQVTnxkFoE00naoHSTo98s8dAKlz+ZDvA0A/KN0esS8cKuHp1
+         067Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=dmtFsSUBWA54jB5wbZR7TL/ePVjER+sBaUCUBdLRxXM=;
+        b=PORerK9N7B6s1KBTOjxpPumxKDFLnKF7UsMngOGh9qxy7wlDFr8RkqfML+rSNtrMTH
+         FZw/x5r47yqAPhpqeKCWhXHDK0E7oxVvJdtEjO9cSH7prSbqC//2qlXiw6BhglwjKKMS
+         X2pBbm/QftyUPg66zG9swJAKS0xPgsHm3+oDnDyqzzIRkhWldjNn5iroNz6PFWhXE2kG
+         s2AtvcBP1xK3Jru3Z9CauHuDfQNRcCJD0KLAQFW8GKiddKkMbujX/5IzIKvCXZ5p1ngu
+         czjK6nUJAYNaCs0m9ERX53DpbigC25Tz8mOWdel1h/ewAswG/JmYIMU5H4wxbF6MIXyP
+         /c4A==
+X-Gm-Message-State: APjAAAUeQrTLQO/j+76L0J6xGxqzJEBkWeHsFjb8QjiCJ2TwgqwpqklM
+        Cygi/7x//tlxz9oMmQIUtcw44xLVVc0K2Y4q
+X-Google-Smtp-Source: APXvYqwpg48qOMHAuNtyyvSmuZgoDwb0BYtWY3fWDcD0ur3NTmDRxKFO5PFgey3pimscOkk/uSduog==
+X-Received: by 2002:a1c:2cc4:: with SMTP id s187mr985909wms.166.1571851920625;
+        Wed, 23 Oct 2019 10:32:00 -0700 (PDT)
+Received: from e123331-lin.home (lfbn-mar-1-643-104.w90-118.abo.wanadoo.fr. [90.118.215.104])
+        by smtp.gmail.com with ESMTPSA id f7sm14900374wre.68.2019.10.23.10.31.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 23 Oct 2019 10:31:59 -0700 (PDT)
+From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
+To:     linux-efi@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>
+Cc:     Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        linux-kernel@vger.kernel.org, Chester Lin <clin@suse.com>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        Dominik Brodowski <linux@dominikbrodowski.net>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Guillaume Gardet <Guillaume.Gardet@arm.com>,
+        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        Jerry Snitselaar <jsnitsel@redhat.com>,
+        Kairui Song <kasong@redhat.com>,
+        Narendra K <Narendra.K@dell.com>
+Subject: [GIT PULL 0/5] EFI fixes for v5.4
+Date:   Wed, 23 Oct 2019 19:31:56 +0200
+Message-Id: <20191023173201.6607-1-ard.biesheuvel@linaro.org>
+X-Mailer: git-send-email 2.17.1
+X-ARM-No-Footer: FoSSMail
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 10/22, Marco Elver wrote:
->
-> On Tue, 22 Oct 2019 at 17:49, Oleg Nesterov <oleg@redhat.com> wrote:
-> >
-> > Just for example. Suppose that task->state =3D TASK_UNINTERRUPTIBLE, th=
-is task
-> > does __set_current_state(TASK_RUNNING), another CPU does wake_up_proces=
-s(task)
-> > which does the same UNINTERRUPTIBLE -> RUNNING transition.
-> >
-> > Looks like, this is the "data race" according to kcsan?
->
-> Yes, they are "data races". They are probably not "race conditions" thoug=
-h.
->
-> This is a fair distinction to make, and we never claimed to find "race
-> conditions" only
+The following changes since commit 7d194c2100ad2a6dded545887d02754948ca5241:
 
-I see, thanks, just wanted to be sure...
+  Linux 5.4-rc4 (2019-10-20 15:56:22 -0400)
 
-> KCSAN's goal is to find *data races* according to the LKMM.  Some data
-> races are race conditions (usually the more interesting bugs) -- but
-> not *all* data races are race conditions. Those are what are usually
-> referred to as "benign", but they can still become bugs on the wrong
-> arch/compiler combination. Hence, the need to annotate these accesses
-> with READ_ONCE, WRITE_ONCE or use atomic_t:
+are available in the Git repository at:
 
-Well, if I see READ_ONCE() in the code I want to understand why it was
-used. Is it really needed for correctness or we want to shut up kcsan?
-Say, why should wait_event(wq, *ptr) use READ_ONCE()? Nevermind, please
-forget.
+  git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git efi-urgent
 
-Btw, why __kcsan_check_watchpoint() does user_access_save() before
-try_consume_watchpoint() ?
+for you to fetch changes up to 0d0013109c849cccb16560df213b5d6115a2d206:
 
-Oleg.
+  x86, efi: never relocate kernel below lowest acceptable address (2019-10-23 09:00:10 +0200)
 
+----------------------------------------------------------------
+Some more fixes for the EFI subsystem:
+- Prevent boot problems on HyperV due to incorrect placement of the kernel
+- Classify UEFI randomness as bootloader randomness
+- Fix EFI boot for the Raspberry Pi2 running U-boot
+- Some more odd fixes.
+
+----------------------------------------------------------------
+Ard Biesheuvel (1):
+      efi: libstub/arm: account for firmware reserved memory at the base of RAM
+
+Dominik Brodowski (1):
+      efi/random: treat EFI_RNG_PROTOCOL output as bootloader randomness
+
+Jerry Snitselaar (1):
+      efi/tpm: return -EINVAL when determining tpm final events log size fails
+
+Kairui Song (1):
+      x86, efi: never relocate kernel below lowest acceptable address
+
+Narendra K (1):
+      efi: Make CONFIG_EFI_RCI2_TABLE selectable on x86 only
+
+ arch/x86/boot/compressed/eboot.c               |  4 +++-
+ drivers/firmware/efi/Kconfig                   |  1 +
+ drivers/firmware/efi/efi.c                     |  2 +-
+ drivers/firmware/efi/libstub/Makefile          |  1 +
+ drivers/firmware/efi/libstub/arm32-stub.c      | 16 +++++++++++++---
+ drivers/firmware/efi/libstub/efi-stub-helper.c | 24 ++++++++++--------------
+ drivers/firmware/efi/tpm.c                     |  1 +
+ include/linux/efi.h                            | 18 ++++++++++++++++--
+ 8 files changed, 46 insertions(+), 21 deletions(-)
