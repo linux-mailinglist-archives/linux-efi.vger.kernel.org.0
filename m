@@ -2,133 +2,130 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 450B4E1FA1
-	for <lists+linux-efi@lfdr.de>; Wed, 23 Oct 2019 17:42:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E6F2DE207F
+	for <lists+linux-efi@lfdr.de>; Wed, 23 Oct 2019 18:24:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2406867AbfJWPlD (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 23 Oct 2019 11:41:03 -0400
-Received: from mail-pg1-f195.google.com ([209.85.215.195]:34948 "EHLO
-        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2406859AbfJWPlC (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 23 Oct 2019 11:41:02 -0400
-Received: by mail-pg1-f195.google.com with SMTP id c8so7564478pgb.2
-        for <linux-efi@vger.kernel.org>; Wed, 23 Oct 2019 08:41:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=android.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding:content-language;
-        bh=TI9rW32nt+i6GyURUSN10bGjthP0EG+xScjnb+pkqac=;
-        b=KBoKx5yOJdWGZz7I1M810keaJ1ZlEuvnt+HTZJAS0UmK0LTUpPmdFTkklfgcGdi73r
-         feMTzV569J5UceysOEInvWeJdRd/ZzonW6Aa3VYlqczCqXy+PY9ipoJvzLD+NWbnZ5rP
-         mW2vwJLR0Vq7sY9XP/QBVZSb/GxJx9fS5CE5Yo07sdXhMNQdYvScXxROVKhe4Esy5Cvd
-         e50H85g6521yumbQVB+PGX8SW/L7QzMUvgyanXK1Toe52me2wt2CIUN9qyd4f938PFQ7
-         rthEsivMBKI4ftQ33yVLiM1NHSBLjKlHtZVEVP38OG7iyjy4z/skVUexYga7/45kjz+T
-         6+ug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding
-         :content-language;
-        bh=TI9rW32nt+i6GyURUSN10bGjthP0EG+xScjnb+pkqac=;
-        b=ZkPKY4t9HGMGMRGZJvFQ6BaLxcUEaB7DVZPdfzcamgMSCjoKU3XGZYlZFXQIC8V+Na
-         KCTDuEyqSupiDoTglohbec+gAPDTnAxwLAGI2OyCuY87YL6/TeGNLzF0Zb15aoDS1uED
-         iPVWmpxenczeW8VaCZDpSf1ljOnW9JAiP86yC+n989sZB1F63oNVAUeEdLvA6Owf4n28
-         ma8AVTQZcOzMJNBR8FTwuaMAbq+7Xx32Yy1PCUBOHQJLCfaAZcQprjI5PxhV/LPzbJLe
-         FMa4mAafZQWlBMwR75sK9oW2QxOmm+2IW3JqeSZUR6wB9dP4I7ky5PDFEXgf4yPoPiFZ
-         ztOg==
-X-Gm-Message-State: APjAAAVUI4mCMyuZOPMGVN+eaFO45Eo6Hhlfqwbtr67PG4aAI1krxFyf
-        3EEvkUVqfau3pN3bRJrUgmigSw==
-X-Google-Smtp-Source: APXvYqxpUg0BJf6IgZEek+Avbtx6SaPZVRb4CoPCBRhASaoQxSh7v/tZYoAbFxDTBg5wYPAauGUeIw==
-X-Received: by 2002:a17:90a:e987:: with SMTP id v7mr765373pjy.86.1571845261541;
-        Wed, 23 Oct 2019 08:41:01 -0700 (PDT)
-Received: from nebulus.mtv.corp.google.com ([2620:15c:211:200:5404:91ba:59dc:9400])
-        by smtp.googlemail.com with ESMTPSA id r18sm28682272pfc.3.2019.10.23.08.40.59
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 23 Oct 2019 08:41:01 -0700 (PDT)
-Subject: Re: [PATCH] Cleanup: replace prefered with preferred
-To:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-Cc:     linux-kernel@vger.kernel.org, kernel-team@android.com,
-        "David S. Miller" <davem@davemloft.net>,
-        Jonathan Corbet <corbet@lwn.net>,
+        id S2407251AbfJWQYs (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 23 Oct 2019 12:24:48 -0400
+Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:45256 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S2407206AbfJWQYs (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 23 Oct 2019 12:24:48 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1571847887;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=eanOm+wc4jMiTMvGZZMqtnxXgjKabvAJwYAPnub5fDU=;
+        b=aRXrGlK6nW9STh26MP1i9tGRoLNhbL30i8GgsZ0Pgs/oDlSj0BkDp/Qtp+j0YrkI1HzF0B
+        YYbH4l+8L85mJKH3kxw4CZWJv9mro3Ez9rDokap2RUHnxcyoUhjoMlfGkSo49RM/YWAZhP
+        NteRVnptFFYq9zOy78qDHJjTgI5cAv4=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-361-nn_WxBf4PueDGKR47J5rTQ-1; Wed, 23 Oct 2019 12:24:43 -0400
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id EB51780183D;
+        Wed, 23 Oct 2019 16:24:39 +0000 (UTC)
+Received: from dhcp-27-174.brq.redhat.com (unknown [10.43.17.44])
+        by smtp.corp.redhat.com (Postfix) with SMTP id 364AE6362F;
+        Wed, 23 Oct 2019 16:24:33 +0000 (UTC)
+Received: by dhcp-27-174.brq.redhat.com (nbSMTP-1.00) for uid 1000
+        oleg@redhat.com; Wed, 23 Oct 2019 18:24:39 +0200 (CEST)
+Date:   Wed, 23 Oct 2019 18:24:32 +0200
+From:   Oleg Nesterov <oleg@redhat.com>
+To:     Marco Elver <elver@google.com>
+Cc:     LKMM Maintainers -- Akira Yokosawa <akiyks@gmail.com>,
+        Alan Stern <stern@rowland.harvard.edu>,
+        Alexander Potapenko <glider@google.com>,
+        Andrea Parri <parri.andrea@gmail.com>,
+        Andrey Konovalov <andreyknvl@google.com>,
+        Andy Lutomirski <luto@kernel.org>,
         Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Harry Wentland <harry.wentland@amd.com>,
-        Leo Li <sunpeng.li@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>,
-        "David (ChunMing) Zhou" <David1.Zhou@amd.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        VMware Graphics <linux-graphics-maintainer@vmware.com>,
-        Thomas Hellstrom <thellstrom@vmware.com>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Trond Myklebust <trond.myklebust@hammerspace.com>,
-        Anna Schumaker <anna.schumaker@netapp.com>,
-        Alexander Aring <alex.aring@gmail.com>,
-        Jukka Rissanen <jukka.rissanen@linux.intel.com>,
-        Alexey Kuznetsov <kuznet@ms2.inr.ac.ru>,
-        Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
-        Ingo Molnar <mingo@kernel.org>,
-        Matthew Garrett <matthewgarrett@google.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        hersen wu <hersenxs.wu@amd.com>, Roman Li <Roman.Li@amd.com>,
-        Maxim Martynov <maxim@arista.com>,
-        David Ahern <dsahern@gmail.com>,
-        Francesco Ruggeri <fruggeri@arista.com>,
-        =?UTF-8?Q?Linus_L=c3=bcssing?= <linus.luessing@c0d3.blue>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Feng Tang <feng.tang@intel.com>,
-        "Steven Rostedt (VMware)" <rostedt@goodmis.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Rafael Aquini <aquini@redhat.com>, netdev@vger.kernel.org,
-        linux-doc@vger.kernel.org, linux-efi@vger.kernel.org,
-        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-        linux-media@vger.kernel.org, linux-nfs@vger.kernel.org,
-        linux-bluetooth@vger.kernel.org, linux-wpan@vger.kernel.org
-References: <20191022214208.211448-1-salyzyn@android.com>
- <20191023115637.GA23733@linux.intel.com>
-From:   Mark Salyzyn <salyzyn@android.com>
-Message-ID: <fa12cb96-7a93-bf85-214d-a7bfaf8b8b0a@android.com>
-Date:   Wed, 23 Oct 2019 08:40:59 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+        Arnd Bergmann <arnd@arndb.de>,
+        Boqun Feng <boqun.feng@gmail.com>,
+        Borislav Petkov <bp@alien8.de>, Daniel Axtens <dja@axtens.net>,
+        Daniel Lustig <dlustig@nvidia.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        David Howells <dhowells@redhat.com>,
+        Dmitry Vyukov <dvyukov@google.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+        Jade Alglave <j.alglave@ucl.ac.uk>,
+        Joel Fernandes <joel@joelfernandes.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Josh Poimboeuf <jpoimboe@redhat.com>,
+        Luc Maranget <luc.maranget@inria.fr>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        "Paul E. McKenney" <paulmck@linux.ibm.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Will Deacon <will@kernel.org>,
+        kasan-dev <kasan-dev@googlegroups.com>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
+        linux-efi@vger.kernel.org,
+        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Linux Memory Management List <linux-mm@kvack.org>,
+        the arch/x86 maintainers <x86@kernel.org>
+Subject: Re: [PATCH v2 1/8] kcsan: Add Kernel Concurrency Sanitizer
+ infrastructure
+Message-ID: <20191023162432.GC14327@redhat.com>
+References: <20191017141305.146193-1-elver@google.com>
+ <20191017141305.146193-2-elver@google.com>
+ <20191022154858.GA13700@redhat.com>
+ <CANpmjNPUT2B3rWaa=5Ee2Xs3HHDaUiBGpG09Q4h9Gemhsp9KFw@mail.gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <20191023115637.GA23733@linux.intel.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-GB
+In-Reply-To: <CANpmjNPUT2B3rWaa=5Ee2Xs3HHDaUiBGpG09Q4h9Gemhsp9KFw@mail.gmail.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
+X-MC-Unique: nn_WxBf4PueDGKR47J5rTQ-1
+X-Mimecast-Spam-Score: 0
+Content-Type: text/plain; charset=WINDOWS-1252
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 10/23/19 4:56 AM, Jarkko Sakkinen wrote:
-> On Tue, Oct 22, 2019 at 02:41:45PM -0700, Mark Salyzyn wrote:
->> Replace all occurrences of prefered with preferred to make future
->> checkpatch.pl's happy.  A few places the incorrect spelling is
->> matched with the correct spelling to preserve existing user space API.
->>
->> Signed-off-by: Mark Salyzyn <salyzyn@android.com>
-> I'd fix such things when the code is otherwise change and scope this
-> patch only to Documentation/. There is no pragmatic benefit of doing
-> this for the code.
+On 10/22, Marco Elver wrote:
 >
-> /Jarkko
+> On Tue, 22 Oct 2019 at 17:49, Oleg Nesterov <oleg@redhat.com> wrote:
+> >
+> > Just for example. Suppose that task->state =3D TASK_UNINTERRUPTIBLE, th=
+is task
+> > does __set_current_state(TASK_RUNNING), another CPU does wake_up_proces=
+s(task)
+> > which does the same UNINTERRUPTIBLE -> RUNNING transition.
+> >
+> > Looks like, this is the "data race" according to kcsan?
+>
+> Yes, they are "data races". They are probably not "race conditions" thoug=
+h.
+>
+> This is a fair distinction to make, and we never claimed to find "race
+> conditions" only
 
-The pragmatic benefit comes with the use of an ABI/API checker (which is 
-a 'distro' thing, not a top of tree kernel thing) produces its map which 
-is typically required to be co-located in the same tree as the kernel 
-repository. Quite a few ABI/API update checkins result in a 
-checkpatch.pl complaint about the misspelled elements being 
-(re-)recorded due to proximity. We have a separate task to improve how 
-it is tracked in Android to reduce milepost marker changes that result 
-in sweeping changes to the database which would reduce the occurrences.
+I see, thanks, just wanted to be sure...
 
-I will split this between pure and inert documentation/comments for now, 
-with a followup later for the code portion which understandably is more 
-controversial.
+> KCSAN's goal is to find *data races* according to the LKMM.  Some data
+> races are race conditions (usually the more interesting bugs) -- but
+> not *all* data races are race conditions. Those are what are usually
+> referred to as "benign", but they can still become bugs on the wrong
+> arch/compiler combination. Hence, the need to annotate these accesses
+> with READ_ONCE, WRITE_ONCE or use atomic_t:
 
-Cleanup is the least appreciated part of kernel maintenance ;-}.
+Well, if I see READ_ONCE() in the code I want to understand why it was
+used. Is it really needed for correctness or we want to shut up kcsan?
+Say, why should wait_event(wq, *ptr) use READ_ONCE()? Nevermind, please
+forget.
 
-Sincerely -- Mark Salyzyn
+Btw, why __kcsan_check_watchpoint() does user_access_save() before
+try_consume_watchpoint() ?
+
+Oleg.
 
