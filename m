@@ -2,124 +2,63 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AA2CEE2918
-	for <lists+linux-efi@lfdr.de>; Thu, 24 Oct 2019 05:48:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 93F28E2F23
+	for <lists+linux-efi@lfdr.de>; Thu, 24 Oct 2019 12:33:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2437420AbfJXDsU (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 23 Oct 2019 23:48:20 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:43778 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S2437404AbfJXDsU (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 23 Oct 2019 23:48:20 -0400
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x9O3lExB003825
-        for <linux-efi@vger.kernel.org>; Wed, 23 Oct 2019 23:48:19 -0400
-Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 2vu13h5afc-1
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <linux-efi@vger.kernel.org>; Wed, 23 Oct 2019 23:48:18 -0400
-Received: from localhost
-        by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <linux-efi@vger.kernel.org> from <nayna@linux.ibm.com>;
-        Thu, 24 Oct 2019 04:48:17 +0100
-Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
-        by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-        Thu, 24 Oct 2019 04:48:11 +0100
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com [9.149.105.62])
-        by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x9O3m9L840042988
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 24 Oct 2019 03:48:09 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 7A420AE04D;
-        Thu, 24 Oct 2019 03:48:09 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id B17B9AE053;
-        Thu, 24 Oct 2019 03:48:06 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.40.192.65])
-        by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-        Thu, 24 Oct 2019 03:48:06 +0000 (GMT)
-From:   Nayna Jain <nayna@linux.ibm.com>
-To:     linuxppc-dev@ozlabs.org, linux-efi@vger.kernel.org,
-        linux-integrity@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Jeremy Kerr <jk@ozlabs.org>,
-        Matthew Garret <matthew.garret@nebula.com>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Claudio Carvalho <cclaudio@linux.ibm.com>,
-        George Wilson <gcwilson@linux.ibm.com>,
-        Elaine Palmer <erpalmer@us.ibm.com>,
-        Eric Ricther <erichte@linux.ibm.com>,
-        "Oliver O'Halloran" <oohall@gmail.com>,
-        Nayna Jain <nayna@linux.ibm.com>,
-        Prakhar Srivastava <prsriva02@gmail.com>,
-        Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
-Subject: [PATCH v9 8/8] powerpc/ima: update ima arch policy to check for blacklist
-Date:   Wed, 23 Oct 2019 22:47:17 -0500
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191024034717.70552-1-nayna@linux.ibm.com>
-References: <20191024034717.70552-1-nayna@linux.ibm.com>
+        id S2409112AbfJXKdj (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 24 Oct 2019 06:33:39 -0400
+Received: from mta147.atlashoster.net ([5.39.37.51]:37305 "EHLO rajiweb.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2407882AbfJXKdj (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Thu, 24 Oct 2019 06:33:39 -0400
+X-Greylist: delayed 3427 seconds by postgrey-1.27 at vger.kernel.org; Thu, 24 Oct 2019 06:33:38 EDT
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=noudeu.com;
+         s=default; h=Message-ID:Reply-To:Subject:To:From:Date:
+        Content-Transfer-Encoding:Content-Type:MIME-Version:Sender:Cc:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=eW4oia9U94AZzYr70xneAWl7LFkhnhsIxwR0Ug4GFC0=; b=O6AgD3qmgJppiUOR5hYh4et0bS
+        SFWAGw1EQ9S3BDvHhSt0peKy6Y8+KV0bXk70mkcSyUt+bdyWQIKTZg13K7FkN2XFMnRA5fVwsmjDt
+        Vs4kWs9EIhkR+vwSv4gzeozA+k5YaYH+wyDw3R0t2R3nILbsncVuf2cCRQYXG2be4UKFRb8V2KJi7
+        jnfGVz45r1uQJTBN+R/LYW9Do0lCQKmzUsRDl4HpgL/vxQqpMFByALe9E8V/TIPNOpUiXsDRT1zBL
+        E6j8ZHaQFj0YVEBe6CeGS3x8EtMpzuLyx3k3fCGC2Wi79ongVwEQNTtnW9/ITM2diEUrDvfR+agpd
+        z9Nn2TGQ==;
+Received: from [::1] (port=49738 helo=hosting.atlashoster.net)
+        by hosting.atlashoster.net with esmtpa (Exim 4.92)
+        (envelope-from <andrewkabore1@gmail.com>)
+        id 1iNZXZ-0007Om-NJ; Thu, 24 Oct 2019 11:36:21 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 19102403-0008-0000-0000-000003267A2E
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19102403-0009-0000-0000-00004A45AB93
-Message-Id: <20191024034717.70552-9-nayna@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-10-24_02:,,
- signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1908290000 definitions=main-1910240033
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Thu, 24 Oct 2019 11:36:21 +0200
+From:   Mr Andrew Kabore <andrewkabore1@gmail.com>
+To:     undisclosed-recipients:;
+Subject: Greetings
+Reply-To: mrandrewkabore@naver.com
+Mail-Reply-To: mrandrewkabore@naver.com
+Message-ID: <2d05a0def75ecdf459784ab460685740@gmail.com>
+X-Sender: andrewkabore1@gmail.com
+User-Agent: Roundcube Webmail/1.3.8
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - hosting.atlashoster.net
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - gmail.com
+X-Get-Message-Sender-Via: hosting.atlashoster.net: authenticated_id: contact@noudeu.com
+X-Authenticated-Sender: hosting.atlashoster.net: contact@noudeu.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-This patch updates the arch-specific policies for PowerNV system to make
-sure that the binary hash is not blacklisted.
 
-Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
-Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
----
- arch/powerpc/kernel/ima_arch.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/powerpc/kernel/ima_arch.c b/arch/powerpc/kernel/ima_arch.c
-index 0ef5956c9753..b9de0fb45bb9 100644
---- a/arch/powerpc/kernel/ima_arch.c
-+++ b/arch/powerpc/kernel/ima_arch.c
-@@ -23,9 +23,9 @@ bool arch_ima_get_secureboot(void)
-  * is not enabled.
-  */
- static const char *const secure_rules[] = {
--	"appraise func=KEXEC_KERNEL_CHECK appraise_type=imasig|modsig",
-+	"appraise func=KEXEC_KERNEL_CHECK appraise_flag=check_blacklist appraise_type=imasig|modsig",
- #ifndef CONFIG_MODULE_SIG_FORCE
--	"appraise func=MODULE_CHECK appraise_type=imasig|modsig",
-+	"appraise func=MODULE_CHECK appraise_flag=check_blacklist appraise_type=imasig|modsig",
- #endif
- 	NULL
- };
-@@ -49,9 +49,9 @@ static const char *const trusted_rules[] = {
- static const char *const secure_and_trusted_rules[] = {
- 	"measure func=KEXEC_KERNEL_CHECK template=ima-modsig",
- 	"measure func=MODULE_CHECK template=ima-modsig",
--	"appraise func=KEXEC_KERNEL_CHECK appraise_type=imasig|modsig",
-+	"appraise func=KEXEC_KERNEL_CHECK appraise_flag=check_blacklist appraise_type=imasig|modsig",
- #ifndef CONFIG_MODULE_SIG_FORCE
--	"appraise func=MODULE_CHECK appraise_type=imasig|modsig",
-+	"appraise func=MODULE_CHECK appraise_flag=check_blacklist appraise_type=imasig|modsig",
- #endif
- 	NULL
- };
 -- 
-2.20.1
-
+Hello dear, I need your assistance to transfer money sum of $usd35 
+million, Get back to me for more details.
+Mr. Andrew
