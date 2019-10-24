@@ -2,43 +2,43 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D30ADE2905
-	for <lists+linux-efi@lfdr.de>; Thu, 24 Oct 2019 05:47:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 01610E2907
+	for <lists+linux-efi@lfdr.de>; Thu, 24 Oct 2019 05:47:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2437348AbfJXDrn (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 23 Oct 2019 23:47:43 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:55048 "EHLO
+        id S2408354AbfJXDru (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 23 Oct 2019 23:47:50 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:42844 "EHLO
         mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S2437337AbfJXDrn (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 23 Oct 2019 23:47:43 -0400
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x9O3lAYM142752
-        for <linux-efi@vger.kernel.org>; Wed, 23 Oct 2019 23:47:42 -0400
-Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 2vu3dr9frt-1
+        by vger.kernel.org with ESMTP id S2408317AbfJXDru (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 23 Oct 2019 23:47:50 -0400
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x9O3l6Xm135759
+        for <linux-efi@vger.kernel.org>; Wed, 23 Oct 2019 23:47:49 -0400
+Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 2vu42xreq7-1
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <linux-efi@vger.kernel.org>; Wed, 23 Oct 2019 23:47:41 -0400
+        for <linux-efi@vger.kernel.org>; Wed, 23 Oct 2019 23:47:48 -0400
 Received: from localhost
-        by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
         for <linux-efi@vger.kernel.org> from <nayna@linux.ibm.com>;
-        Thu, 24 Oct 2019 04:47:39 +0100
+        Thu, 24 Oct 2019 04:47:46 +0100
 Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
-        by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
         (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-        Thu, 24 Oct 2019 04:47:35 +0100
+        Thu, 24 Oct 2019 04:47:42 +0100
 Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com [9.149.105.62])
-        by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x9O3lX4q45285438
+        by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x9O3legK42139724
         (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 24 Oct 2019 03:47:34 GMT
+        Thu, 24 Oct 2019 03:47:40 GMT
 Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id D1ECEAE04D;
-        Thu, 24 Oct 2019 03:47:33 +0000 (GMT)
+        by IMSVA (Postfix) with ESMTP id 92E69AE053;
+        Thu, 24 Oct 2019 03:47:40 +0000 (GMT)
 Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 12C32AE057;
-        Thu, 24 Oct 2019 03:47:31 +0000 (GMT)
+        by IMSVA (Postfix) with ESMTP id C9DB9AE051;
+        Thu, 24 Oct 2019 03:47:37 +0000 (GMT)
 Received: from localhost.localdomain (unknown [9.40.192.65])
         by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-        Thu, 24 Oct 2019 03:47:30 +0000 (GMT)
+        Thu, 24 Oct 2019 03:47:37 +0000 (GMT)
 From:   Nayna Jain <nayna@linux.ibm.com>
 To:     linuxppc-dev@ozlabs.org, linux-efi@vger.kernel.org,
         linux-integrity@vger.kernel.org
@@ -59,18 +59,18 @@ Cc:     linux-kernel@vger.kernel.org,
         Nayna Jain <nayna@linux.ibm.com>,
         Prakhar Srivastava <prsriva02@gmail.com>,
         Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
-Subject: [PATCH v9 1/8] powerpc: detect the secure boot mode of the system
-Date:   Wed, 23 Oct 2019 22:47:10 -0500
+Subject: [PATCH v9 2/8] powerpc/ima: add support to initialize ima policy rules
+Date:   Wed, 23 Oct 2019 22:47:11 -0500
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20191024034717.70552-1-nayna@linux.ibm.com>
 References: <20191024034717.70552-1-nayna@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-x-cbid: 19102403-0020-0000-0000-0000037D8109
+x-cbid: 19102403-0008-0000-0000-000003267A28
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19102403-0021-0000-0000-000021D3C529
-Message-Id: <20191024034717.70552-2-nayna@linux.ibm.com>
+x-cbparentid: 19102403-0009-0000-0000-00004A45AB8D
+Message-Id: <20191024034717.70552-3-nayna@linux.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-10-24_02:,,
  signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
@@ -83,123 +83,114 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-This patch defines a function to detect the secure boot state of a
-PowerNV system.
+PowerNV system use a Linux-based bootloader, which relies on the IMA
+subsystem to enforce different secure boot modes. Since the verification
+policy may differ based on the secure boot mode of the system, the
+policies must be defined at runtime.
 
-The PPC_SECURE_BOOT config represents the base enablement of secure boot
-for powerpc.
+This patch implements arch-specific support to define IMA policy
+rules based on the runtime secure boot mode of the system.
+
+This patch provides arch-specific IMA policies if PPC_SECURE_BOOT
+config is enabled.
 
 Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
 ---
- arch/powerpc/Kconfig                   | 10 ++++++++
- arch/powerpc/include/asm/secure_boot.h | 23 ++++++++++++++++++
- arch/powerpc/kernel/Makefile           |  2 ++
- arch/powerpc/kernel/secure_boot.c      | 32 ++++++++++++++++++++++++++
- 4 files changed, 67 insertions(+)
- create mode 100644 arch/powerpc/include/asm/secure_boot.h
- create mode 100644 arch/powerpc/kernel/secure_boot.c
+ arch/powerpc/Kconfig           |  1 +
+ arch/powerpc/kernel/Makefile   |  2 +-
+ arch/powerpc/kernel/ima_arch.c | 43 ++++++++++++++++++++++++++++++++++
+ include/linux/ima.h            |  3 ++-
+ 4 files changed, 47 insertions(+), 2 deletions(-)
+ create mode 100644 arch/powerpc/kernel/ima_arch.c
 
 diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 3e56c9c2f16e..56ea0019b616 100644
+index 56ea0019b616..c795039bdc73 100644
 --- a/arch/powerpc/Kconfig
 +++ b/arch/powerpc/Kconfig
-@@ -934,6 +934,16 @@ config PPC_MEM_KEYS
- 
- 	  If unsure, say y.
- 
-+config PPC_SECURE_BOOT
-+	prompt "Enable secure boot support"
-+	bool
-+	depends on PPC_POWERNV
-+	help
-+	  Systems with firmware secure boot enabled need to define security
-+	  policies to extend secure boot to the OS. This config allows a user
-+	  to enable OS secure boot on systems that have firmware support for
-+	  it. If in doubt say N.
-+
- endmenu
- 
- config ISA_DMA_API
-diff --git a/arch/powerpc/include/asm/secure_boot.h b/arch/powerpc/include/asm/secure_boot.h
-new file mode 100644
-index 000000000000..07d0fe0ca81f
---- /dev/null
-+++ b/arch/powerpc/include/asm/secure_boot.h
-@@ -0,0 +1,23 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * Secure boot definitions
-+ *
-+ * Copyright (C) 2019 IBM Corporation
-+ * Author: Nayna Jain
-+ */
-+#ifndef _ASM_POWER_SECURE_BOOT_H
-+#define _ASM_POWER_SECURE_BOOT_H
-+
-+#ifdef CONFIG_PPC_SECURE_BOOT
-+
-+bool is_ppc_secureboot_enabled(void);
-+
-+#else
-+
-+static inline bool is_ppc_secureboot_enabled(void)
-+{
-+	return false;
-+}
-+
-+#endif
-+#endif
+@@ -938,6 +938,7 @@ config PPC_SECURE_BOOT
+ 	prompt "Enable secure boot support"
+ 	bool
+ 	depends on PPC_POWERNV
++	depends on IMA_ARCH_POLICY
+ 	help
+ 	  Systems with firmware secure boot enabled need to define security
+ 	  policies to extend secure boot to the OS. This config allows a user
 diff --git a/arch/powerpc/kernel/Makefile b/arch/powerpc/kernel/Makefile
-index a7ca8fe62368..e2a54fa240ac 100644
+index e2a54fa240ac..e8eb2955b7d5 100644
 --- a/arch/powerpc/kernel/Makefile
 +++ b/arch/powerpc/kernel/Makefile
-@@ -161,6 +161,8 @@ ifneq ($(CONFIG_PPC_POWERNV)$(CONFIG_PPC_SVM),)
+@@ -161,7 +161,7 @@ ifneq ($(CONFIG_PPC_POWERNV)$(CONFIG_PPC_SVM),)
  obj-y				+= ucall.o
  endif
  
-+obj-$(CONFIG_PPC_SECURE_BOOT)	+= secure_boot.o
-+
+-obj-$(CONFIG_PPC_SECURE_BOOT)	+= secure_boot.o
++obj-$(CONFIG_PPC_SECURE_BOOT)	+= secure_boot.o ima_arch.o
+ 
  # Disable GCOV, KCOV & sanitizers in odd or sensitive code
  GCOV_PROFILE_prom_init.o := n
- KCOV_INSTRUMENT_prom_init.o := n
-diff --git a/arch/powerpc/kernel/secure_boot.c b/arch/powerpc/kernel/secure_boot.c
+diff --git a/arch/powerpc/kernel/ima_arch.c b/arch/powerpc/kernel/ima_arch.c
 new file mode 100644
-index 000000000000..63dc82c50862
+index 000000000000..d88913dc0da7
 --- /dev/null
-+++ b/arch/powerpc/kernel/secure_boot.c
-@@ -0,0 +1,32 @@
++++ b/arch/powerpc/kernel/ima_arch.c
+@@ -0,0 +1,43 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/*
 + * Copyright (C) 2019 IBM Corporation
 + * Author: Nayna Jain
 + */
-+#include <linux/types.h>
-+#include <linux/of.h>
++
++#include <linux/ima.h>
 +#include <asm/secure_boot.h>
 +
-+bool is_ppc_secureboot_enabled(void)
++bool arch_ima_get_secureboot(void)
 +{
-+	struct device_node *node;
-+	bool enabled = false;
-+
-+	node = of_find_compatible_node(NULL, NULL, "ibm,secvar-v1");
-+	if (!of_device_is_available(node)) {
-+		pr_err("Cannot find secure variable node in device tree; failing to secure state\n");
-+		goto out;
-+	}
-+
-+	/*
-+	 * secureboot is enabled if os-secure-enforcing property exists,
-+	 * else disabled.
-+	 */
-+	enabled = of_property_read_bool(node, "os-secure-enforcing");
-+
-+out:
-+	of_node_put(node);
-+
-+	pr_info("Secure boot mode %s\n", enabled ? "enabled" : "disabled");
-+	return enabled;
++	return is_ppc_secureboot_enabled();
 +}
++
++/*
++ * The "secure_rules" are enabled only on "secureboot" enabled systems.
++ * These rules verify the file signatures against known good values.
++ * The "appraise_type=imasig|modsig" option allows the known good signature
++ * to be stored as an xattr or as an appended signature.
++ *
++ * To avoid duplicate signature verification as much as possible, the IMA
++ * policy rule for module appraisal is added only if CONFIG_MODULE_SIG_FORCE
++ * is not enabled.
++ */
++static const char *const secure_rules[] = {
++	"appraise func=KEXEC_KERNEL_CHECK appraise_type=imasig|modsig",
++#ifndef CONFIG_MODULE_SIG_FORCE
++	"appraise func=MODULE_CHECK appraise_type=imasig|modsig",
++#endif
++	NULL
++};
++
++/*
++ * Returns the relevant IMA arch-specific policies based on the system secure
++ * boot state.
++ */
++const char *const *arch_get_ima_policy(void)
++{
++	if (is_ppc_secureboot_enabled())
++		return secure_rules;
++
++	return NULL;
++}
+diff --git a/include/linux/ima.h b/include/linux/ima.h
+index 1c37f17f7203..6d904754d858 100644
+--- a/include/linux/ima.h
++++ b/include/linux/ima.h
+@@ -29,7 +29,8 @@ extern void ima_kexec_cmdline(const void *buf, int size);
+ extern void ima_add_kexec_buffer(struct kimage *image);
+ #endif
+ 
+-#if (defined(CONFIG_X86) && defined(CONFIG_EFI)) || defined(CONFIG_S390)
++#if (defined(CONFIG_X86) && defined(CONFIG_EFI)) || defined(CONFIG_S390) \
++	|| defined(CONFIG_PPC_SECURE_BOOT)
+ extern bool arch_ima_get_secureboot(void);
+ extern const char * const *arch_get_ima_policy(void);
+ #else
 -- 
 2.20.1
 
