@@ -2,28 +2,27 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8BD20E3A32
-	for <lists+linux-efi@lfdr.de>; Thu, 24 Oct 2019 19:38:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F6B5E3A39
+	for <lists+linux-efi@lfdr.de>; Thu, 24 Oct 2019 19:40:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2503806AbfJXRim (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 24 Oct 2019 13:38:42 -0400
-Received: from linux.microsoft.com ([13.77.154.182]:59044 "EHLO
+        id S2503873AbfJXRkU (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 24 Oct 2019 13:40:20 -0400
+Received: from linux.microsoft.com ([13.77.154.182]:59618 "EHLO
         linux.microsoft.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729458AbfJXRim (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 24 Oct 2019 13:38:42 -0400
+        with ESMTP id S1729458AbfJXRkT (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 24 Oct 2019 13:40:19 -0400
 Received: from [10.137.112.111] (unknown [131.107.147.111])
-        by linux.microsoft.com (Postfix) with ESMTPSA id B1CC720F3BC1;
-        Thu, 24 Oct 2019 10:38:41 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com B1CC720F3BC1
+        by linux.microsoft.com (Postfix) with ESMTPSA id C0E872010AC3;
+        Thu, 24 Oct 2019 10:40:18 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com C0E872010AC3
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-        s=default; t=1571938721;
-        bh=jAzro5QgHA6OVAS90ZdpCnam0CrEJTVosK5szwE7n2M=;
+        s=default; t=1571938819;
+        bh=IDatuhvAIUC8shfzil97Wc2552dWcbQTynpu3KtnO84=;
         h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=HAKr74f1Pnx9P2V2H2BkmgTxZjOt5gAvytgB5Le7ZERFnMBkqlNi3+aE2tlopHu2o
-         krpKOkiXFKct7xn4poUOKA7ReFKVdM5B3EFPFge3MvteTnsq5mtwaKzp4vG//bbwCw
-         AwWin41kd2m6SnBRGcbiEhbML+3+4SHCH2WceUf4=
-Subject: Re: [PATCH v9 3/8] powerpc: detect the trusted boot state of the
- system
+        b=oq7uLOnCiIJzJwKl9UtoSEsELanj0SNiNpRNkf9QVKFoTu6UFAw3U0jslONs7uWcF
+         A+Pl8F79LgCQ4zHWSptkJGYeWpxb+b8VfxcAT/agpYuQRQJYOtZ5Q/F0REVjtsus4B
+         ynwZmDSY2ruTgnlJoEsiy8VF3xAHRuXX28ZWXfi4=
+Subject: Re: [PATCH v9 4/8] powerpc/ima: define trusted boot policy
 To:     Nayna Jain <nayna@linux.ibm.com>, linuxppc-dev@ozlabs.org,
         linux-efi@vger.kernel.org, linux-integrity@vger.kernel.org
 Cc:     linux-kernel@vger.kernel.org,
@@ -42,14 +41,14 @@ Cc:     linux-kernel@vger.kernel.org,
         Oliver O'Halloran <oohall@gmail.com>,
         Prakhar Srivastava <prsriva02@gmail.com>
 References: <20191024034717.70552-1-nayna@linux.ibm.com>
- <20191024034717.70552-4-nayna@linux.ibm.com>
+ <20191024034717.70552-5-nayna@linux.ibm.com>
 From:   Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
-Message-ID: <d713ae8c-7223-b3f3-999b-0c9076733c17@linux.microsoft.com>
-Date:   Thu, 24 Oct 2019 10:38:59 -0700
+Message-ID: <3e36c14f-d4bb-5da5-b188-ca84bc282f0d@linux.microsoft.com>
+Date:   Thu, 24 Oct 2019 10:40:36 -0700
 User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
  Thunderbird/68.1.2
 MIME-Version: 1.0
-In-Reply-To: <20191024034717.70552-4-nayna@linux.ibm.com>
+In-Reply-To: <20191024034717.70552-5-nayna@linux.ibm.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -60,15 +59,22 @@ X-Mailing-List: linux-efi@vger.kernel.org
 
 On 10/23/2019 8:47 PM, Nayna Jain wrote:
 
-> +bool is_ppc_trustedboot_enabled(void)
-> +{
-> +	struct device_node *node;
-> +	bool enabled = false;
-> +
-> +	node = get_ppc_fw_sb_node();
-> +	enabled = of_property_read_bool(node, "trusted-enabled");
+> +/*
+> + * The "secure_and_trusted_rules" contains rules for both the secure boot and
+> + * trusted boot. The "template=ima-modsig" option includes the appended
+> + * signature, when available, in the IMA measurement list.
+> + */
+> +static const char *const secure_and_trusted_rules[] = {
+> +	"measure func=KEXEC_KERNEL_CHECK template=ima-modsig",
+> +	"measure func=MODULE_CHECK template=ima-modsig",
+> +	"appraise func=KEXEC_KERNEL_CHECK appraise_type=imasig|modsig",
+> +#ifndef CONFIG_MODULE_SIG_FORCE
+> +	"appraise func=MODULE_CHECK appraise_type=imasig|modsig",
+> +#endif
+> +	NULL
+> +};
 
-Can get_ppc_fw_sb_node return NULL?
-Would of_property_read_bool handle the case when node is NULL?
+Same comment as earlier - any way to avoid using conditional compilation 
+in C file?
 
   -lakshmi
