@@ -2,24 +2,54 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E681FE3807
-	for <lists+linux-efi@lfdr.de>; Thu, 24 Oct 2019 18:36:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 90211E3963
+	for <lists+linux-efi@lfdr.de>; Thu, 24 Oct 2019 19:09:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2503457AbfJXQgN (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 24 Oct 2019 12:36:13 -0400
-Received: from foss.arm.com ([217.140.110.172]:56142 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2503452AbfJXQgI (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Thu, 24 Oct 2019 12:36:08 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7D418369;
-        Thu, 24 Oct 2019 09:35:52 -0700 (PDT)
-Received: from lakrids.cambridge.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 459D93F71F;
-        Thu, 24 Oct 2019 09:35:48 -0700 (PDT)
-Date:   Thu, 24 Oct 2019 17:35:46 +0100
-From:   Mark Rutland <mark.rutland@arm.com>
-To:     Marco Elver <elver@google.com>
+        id S2436668AbfJXRJ0 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 24 Oct 2019 13:09:26 -0400
+Received: from mail-ot1-f67.google.com ([209.85.210.67]:40338 "EHLO
+        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2410203AbfJXRJ0 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 24 Oct 2019 13:09:26 -0400
+Received: by mail-ot1-f67.google.com with SMTP id d8so10133735otc.7
+        for <linux-efi@vger.kernel.org>; Thu, 24 Oct 2019 10:09:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=LW4UeTeDzuNPqIV02zMQFN/K1Ur44NII9oOTDJRv/K0=;
+        b=NDkinmJayQUfSCbDiVgdoNMU1yBcKSDEhSv8y0cmmLvNtNg35oWgX0eqE0kPaGmXa7
+         OXF8Hgj/LImoVhjP9MDk/qjwL3PrB7ufk3qntJLS9q1BBtFFDVrNklS3ulNRioaG/bt+
+         hYWyWFoh0VqrlftiW+50Q4bRj946rm1MjOt/J1LOdM4B8Slbz02GkqsdGS+fnTGpDeRt
+         TCQWnaUisjsg/LSmxiyKwxR/y45jLAPWAnt7GhMJFhzXXnVLzl4VmQuU6/fFgjPvYX6w
+         6YZvf4rvNkFccuT6/XsXDBlLo+WoZqE/QJAXFjgt2p2QA0aeffVA0KXhtOHOgQq0scJY
+         Dueg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=LW4UeTeDzuNPqIV02zMQFN/K1Ur44NII9oOTDJRv/K0=;
+        b=FQBqvZpcb9MLUMODEUvHKsahCGTdX+iNaKEfKRm4sijetCB/4QD/lauCrzJYweIZDZ
+         fUwZw3kp3n93acfW4W9do129v2UpONgVg0f2Hzu0SvbTYri76VG9mdRq7X82mQfwaEyI
+         X8762+QEFeGKOb9hw9wsudyI7xYPyLH8farELDyghffaIqakAkGu/3noeheK6TDyPga/
+         NXrd5bjzkIBYk00hoHTLxQVScCTokvV0p3p2vAnypEkzzQrwYXqivTvwSf9SZ5BU+NUO
+         lEAjYKIeXUHbbsuFOaG6isi4RBBmHFvoAHCC4eJCGHadmXVGlQgb3YiMu4BCqGjalGWM
+         5uIg==
+X-Gm-Message-State: APjAAAVtjnmz3NQMCdLx7xj9dslegSdBwLcHbfNJkUXg9AKasuIhSOGO
+        r0EgIdUwo8u26Vys3ltf5YOo33pBmmc39ire8dsm0A==
+X-Google-Smtp-Source: APXvYqxSTwCL5fkShg1bnRE39/jq8VOLyg3rr+ufJxMetUClrNYquEzJIamome6gyOHHGkc4NQ4KND9V3edjNFM0B/4=
+X-Received: by 2002:a05:6830:1693:: with SMTP id k19mr12897876otr.233.1571936964760;
+ Thu, 24 Oct 2019 10:09:24 -0700 (PDT)
+MIME-Version: 1.0
+References: <20191017141305.146193-1-elver@google.com> <20191017141305.146193-5-elver@google.com>
+ <20191024122801.GD4300@lakrids.cambridge.arm.com> <CANpmjNPFkqOSEcEP475-NeeJnY5pZ44m+bEhtOs8E_xkRKr-TQ@mail.gmail.com>
+ <20191024163545.GI4300@lakrids.cambridge.arm.com>
+In-Reply-To: <20191024163545.GI4300@lakrids.cambridge.arm.com>
+From:   Marco Elver <elver@google.com>
+Date:   Thu, 24 Oct 2019 19:09:12 +0200
+Message-ID: <CANpmjNOg8wK71_PnQ03UhsY0H212bXWj+4keT0dDK18F4UNPHw@mail.gmail.com>
+Subject: Re: [PATCH v2 4/8] seqlock, kcsan: Add annotations for KCSAN
+To:     Mark Rutland <mark.rutland@arm.com>
 Cc:     LKMM Maintainers -- Akira Yokosawa <akiyks@gmail.com>,
         Alan Stern <stern@rowland.harvard.edu>,
         Alexander Potapenko <glider@google.com>,
@@ -52,72 +82,68 @@ Cc:     LKMM Maintainers -- Akira Yokosawa <akiyks@gmail.com>,
         Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
         LKML <linux-kernel@vger.kernel.org>,
         Linux Memory Management List <linux-mm@kvack.org>,
-        the arch/x86 maintainers <x86@kernel.org>
-Subject: Re: [PATCH v2 4/8] seqlock, kcsan: Add annotations for KCSAN
-Message-ID: <20191024163545.GI4300@lakrids.cambridge.arm.com>
-References: <20191017141305.146193-1-elver@google.com>
- <20191017141305.146193-5-elver@google.com>
- <20191024122801.GD4300@lakrids.cambridge.arm.com>
- <CANpmjNPFkqOSEcEP475-NeeJnY5pZ44m+bEhtOs8E_xkRKr-TQ@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CANpmjNPFkqOSEcEP475-NeeJnY5pZ44m+bEhtOs8E_xkRKr-TQ@mail.gmail.com>
-User-Agent: Mutt/1.11.1+11 (2f07cb52) (2018-12-01)
+        "the arch/x86 maintainers" <x86@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, Oct 24, 2019 at 04:17:11PM +0200, Marco Elver wrote:
-> On Thu, 24 Oct 2019 at 14:28, Mark Rutland <mark.rutland@arm.com> wrote:
-> >
-> > On Thu, Oct 17, 2019 at 04:13:01PM +0200, Marco Elver wrote:
-> > > Since seqlocks in the Linux kernel do not require the use of marked
-> > > atomic accesses in critical sections, we teach KCSAN to assume such
-> > > accesses are atomic. KCSAN currently also pretends that writes to
-> > > `sequence` are atomic, although currently plain writes are used (their
-> > > corresponding reads are READ_ONCE).
+On Thu, 24 Oct 2019 at 18:35, Mark Rutland <mark.rutland@arm.com> wrote:
+>
+> On Thu, Oct 24, 2019 at 04:17:11PM +0200, Marco Elver wrote:
+> > On Thu, 24 Oct 2019 at 14:28, Mark Rutland <mark.rutland@arm.com> wrote:
 > > >
-> > > Further, to avoid false positives in the absence of clear ending of a
-> > > seqlock reader critical section (only when using the raw interface),
-> > > KCSAN assumes a fixed number of accesses after start of a seqlock
-> > > critical section are atomic.
+> > > On Thu, Oct 17, 2019 at 04:13:01PM +0200, Marco Elver wrote:
+> > > > Since seqlocks in the Linux kernel do not require the use of marked
+> > > > atomic accesses in critical sections, we teach KCSAN to assume such
+> > > > accesses are atomic. KCSAN currently also pretends that writes to
+> > > > `sequence` are atomic, although currently plain writes are used (their
+> > > > corresponding reads are READ_ONCE).
+> > > >
+> > > > Further, to avoid false positives in the absence of clear ending of a
+> > > > seqlock reader critical section (only when using the raw interface),
+> > > > KCSAN assumes a fixed number of accesses after start of a seqlock
+> > > > critical section are atomic.
+> > >
+> > > Do we have many examples where there's not a clear end to a seqlock
+> > > sequence? Or are there just a handful?
+> > >
+> > > If there aren't that many, I wonder if we can make it mandatory to have
+> > > an explicit end, or to add some helper for those patterns so that we can
+> > > reliably hook them.
 > >
-> > Do we have many examples where there's not a clear end to a seqlock
-> > sequence? Or are there just a handful?
+> > In an ideal world, all usage of seqlocks would be via seqlock_t, which
+> > follows a somewhat saner usage, where we already do normal begin/end
+> > markings -- with subtle exception to readers needing to be flat atomic
+> > regions, e.g. because usage like this:
+> > - fs/namespace.c:__legitimize_mnt - unbalanced read_seqretry
+> > - fs/dcache.c:d_walk - unbalanced need_seqretry
 > >
-> > If there aren't that many, I wonder if we can make it mandatory to have
-> > an explicit end, or to add some helper for those patterns so that we can
-> > reliably hook them.
-> 
-> In an ideal world, all usage of seqlocks would be via seqlock_t, which
-> follows a somewhat saner usage, where we already do normal begin/end
-> markings -- with subtle exception to readers needing to be flat atomic
-> regions, e.g. because usage like this:
-> - fs/namespace.c:__legitimize_mnt - unbalanced read_seqretry
-> - fs/dcache.c:d_walk - unbalanced need_seqretry
-> 
-> But anything directly accessing seqcount_t seems to be unpredictable.
-> Filtering for usage of read_seqcount_retry not following 'do { .. }
-> while (read_seqcount_retry(..));' (although even the ones in while
-> loops aren't necessarily predictable):
-> 
-> $ git grep 'read_seqcount_retry' | grep -Ev 'seqlock.h|Doc|\* ' | grep
-> -v 'while ('
-> => about 1/3 of the total read_seqcount_retry usage.
-> 
-> Just looking at fs/namei.c, I would conclude that it'd be a pretty
-> daunting task to prescribe and migrate to an interface that forces
-> clear begin/end.
-> 
-> Which is why I concluded that for now, it is probably better to make
-> KCSAN play well with the existing code.
+> > But anything directly accessing seqcount_t seems to be unpredictable.
+> > Filtering for usage of read_seqcount_retry not following 'do { .. }
+> > while (read_seqcount_retry(..));' (although even the ones in while
+> > loops aren't necessarily predictable):
+> >
+> > $ git grep 'read_seqcount_retry' | grep -Ev 'seqlock.h|Doc|\* ' | grep
+> > -v 'while ('
+> > => about 1/3 of the total read_seqcount_retry usage.
+> >
+> > Just looking at fs/namei.c, I would conclude that it'd be a pretty
+> > daunting task to prescribe and migrate to an interface that forces
+> > clear begin/end.
+> >
+> > Which is why I concluded that for now, it is probably better to make
+> > KCSAN play well with the existing code.
+>
+> Thanks for the detailed explanation, it's very helpful.
+>
+> That all sounds reasonable to me -- could you fold some of that into the
+> commit message?
 
-Thanks for the detailed explanation, it's very helpful.
+Thanks, will do. (I hope to have v3 ready by some time next week.)
 
-That all sounds reasonable to me -- could you fold some of that into the
-commit message?
+-- Marco
 
-Thanks,
-Mark.
+> Thanks,
+> Mark.
