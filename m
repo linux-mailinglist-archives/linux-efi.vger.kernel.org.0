@@ -2,29 +2,48 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D9B3CE52F1
-	for <lists+linux-efi@lfdr.de>; Fri, 25 Oct 2019 20:02:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 08DF3E600B
+	for <lists+linux-efi@lfdr.de>; Sun, 27 Oct 2019 01:52:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731229AbfJYSCr (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 25 Oct 2019 14:02:47 -0400
-Received: from linux.microsoft.com ([13.77.154.182]:55672 "EHLO
-        linux.microsoft.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731197AbfJYSCr (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 25 Oct 2019 14:02:47 -0400
-Received: from [10.137.112.111] (unknown [131.107.147.111])
-        by linux.microsoft.com (Postfix) with ESMTPSA id 35AE72010AC6;
-        Fri, 25 Oct 2019 11:02:46 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 35AE72010AC6
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-        s=default; t=1572026566;
-        bh=7hGCl+P0baIDKMMzceGB2joTvpQFYOW1rsl65AwaESg=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=czTwe7iEXiYO6JkheRJPPNMnL5Cbg61vTN7/+dfgsvKoyQ7DzcAkTVmgEHaD44Y/h
-         jbDjF2ZBpVUKnbsyoUyslQapQJhi9p/QuR0SQXCtdREc4TW2b9zURqy/JaFZ00xmBr
-         UuMXyYCz38KvLS+eL4dyR4/GY0NDH+IiFMK2xe2E=
-Subject: Re: [PATCH v9 2/8] powerpc/ima: add support to initialize ima policy
- rules
+        id S1726533AbfJZXwS (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 26 Oct 2019 19:52:18 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:55132 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726505AbfJZXwS (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sat, 26 Oct 2019 19:52:18 -0400
+Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x9QNqGbN103290
+        for <linux-efi@vger.kernel.org>; Sat, 26 Oct 2019 19:52:17 -0400
+Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 2vvg9pv7er-1
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <linux-efi@vger.kernel.org>; Sat, 26 Oct 2019 19:52:16 -0400
+Received: from localhost
+        by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <linux-efi@vger.kernel.org> from <zohar@linux.ibm.com>;
+        Sun, 27 Oct 2019 00:52:13 +0100
+Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
+        by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+        Sun, 27 Oct 2019 00:52:08 +0100
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com [9.149.105.59])
+        by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x9QNpXdj32964864
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Sat, 26 Oct 2019 23:51:33 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id CD47CA404D;
+        Sat, 26 Oct 2019 23:52:06 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 6C60FA4040;
+        Sat, 26 Oct 2019 23:52:04 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.85.187.251])
+        by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Sat, 26 Oct 2019 23:52:04 +0000 (GMT)
+Subject: Re: [PATCH v9 2/8] powerpc/ima: add support to initialize ima
+ policy rules
+From:   Mimi Zohar <zohar@linux.ibm.com>
 To:     Nayna Jain <nayna@linux.vnet.ibm.com>,
+        Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
         Nayna Jain <nayna@linux.ibm.com>, linuxppc-dev@ozlabs.org,
         linux-efi@vger.kernel.org, linux-integrity@vger.kernel.org
 Cc:     linux-kernel@vger.kernel.org,
@@ -34,81 +53,72 @@ Cc:     linux-kernel@vger.kernel.org,
         Ard Biesheuvel <ard.biesheuvel@linaro.org>,
         Jeremy Kerr <jk@ozlabs.org>,
         Matthew Garret <matthew.garret@nebula.com>,
-        Mimi Zohar <zohar@linux.ibm.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Claudio Carvalho <cclaudio@linux.ibm.com>,
         George Wilson <gcwilson@linux.ibm.com>,
         Elaine Palmer <erpalmer@us.ibm.com>,
         Eric Ricther <erichte@linux.ibm.com>,
-        Oliver O'Halloran <oohall@gmail.com>,
+        "Oliver O'Halloran" <oohall@gmail.com>,
         Prakhar Srivastava <prsriva02@gmail.com>
-References: <20191024034717.70552-1-nayna@linux.ibm.com>
- <20191024034717.70552-3-nayna@linux.ibm.com>
- <dd7e04fc-25e8-280f-b565-bdb031939655@linux.microsoft.com>
- <27dbe08e-5473-4dd0-d2ad-2df591e23f5e@linux.vnet.ibm.com>
-From:   Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
-Message-ID: <482b2f08-f810-6ed0-4b32-0d5e64246ece@linux.microsoft.com>
-Date:   Fri, 25 Oct 2019 11:03:03 -0700
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.0
-MIME-Version: 1.0
+Date:   Sat, 26 Oct 2019 19:52:03 -0400
 In-Reply-To: <27dbe08e-5473-4dd0-d2ad-2df591e23f5e@linux.vnet.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <20191024034717.70552-1-nayna@linux.ibm.com>
+         <20191024034717.70552-3-nayna@linux.ibm.com>
+         <dd7e04fc-25e8-280f-b565-bdb031939655@linux.microsoft.com>
+         <27dbe08e-5473-4dd0-d2ad-2df591e23f5e@linux.vnet.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.20.5 (3.20.5-1.fc24) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+x-cbid: 19102623-0016-0000-0000-000002BDEF8C
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19102623-0017-0000-0000-0000331F3CD7
+Message-Id: <1572133923.4532.79.camel@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-10-26_07:,,
+ signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=948 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1908290000 definitions=main-1910260247
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 10/25/2019 10:02 AM, Nayna Jain wrote:
+On Fri, 2019-10-25 at 12:02 -0500, Nayna Jain wrote:
+> On 10/24/19 12:35 PM, Lakshmi Ramasubramanian wrote:
+> > On 10/23/2019 8:47 PM, Nayna Jain wrote:
+> >
+> >> +/*
+> >> + * The "secure_rules" are enabled only on "secureboot" enabled systems.
+> >> + * These rules verify the file signatures against known good values.
+> >> + * The "appraise_type=imasig|modsig" option allows the known good 
+> >> signature
+> >> + * to be stored as an xattr or as an appended signature.
+> >> + *
+> >> + * To avoid duplicate signature verification as much as possible, 
+> >> the IMA
+> >> + * policy rule for module appraisal is added only if 
+> >> CONFIG_MODULE_SIG_FORCE
+> >> + * is not enabled.
+> >> + */
+> >> +static const char *const secure_rules[] = {
+> >> +    "appraise func=KEXEC_KERNEL_CHECK appraise_type=imasig|modsig",
+> >> +#ifndef CONFIG_MODULE_SIG_FORCE
+> >> +    "appraise func=MODULE_CHECK appraise_type=imasig|modsig",
+> >> +#endif
+> >> +    NULL
+> >> +};
+> >
+> > Is there any way to not use conditional compilation in the above array 
+> > definition? Maybe define different functions to get "secure_rules" for 
+> > when CONFIG_MODULE_SIG_FORCE is defined and when it is not defined.
+> 
+> How will you decide which function to be called ?
 
- >> Is there any way to not use conditional compilation in
- >> the above array definition? Maybe define different functions to get
- >> "secure_rules" for when CONFIG_MODULE_SIG_FORCE is defined and when
- >> it is not defined.
- >
- > How will you decide which function to be called ?
+You could call "is_module_sig_enforced()".
 
-Define the array in the C file:
-
-const char *const secure_rules_kernel_check[] = {
-    "appraise func=KEXEC_KERNEL_CHECK appraise_type=imasig|modsig",
-    NULL
-};
-
-const char *const secure_rules_kernel_module_check[] = {
-    "appraise func=KEXEC_KERNEL_CHECK appraise_type=imasig|modsig",
-    "appraise func=MODULE_CHECK appraise_type=imasig|modsig",
-    NULL
-};
-
-And, in the header file :
-
-extern const char *const secure_rules_kernel_check;
-extern const char *const secure_rules_kernel_module_check;
-
-#ifdef CONFIG_MODULE_SIG_FORCE
-const char *secure_rules() { return secure_rules_kernel_check; }
-#else
-const char *secure_rules() { return secure_rules_kernel_module_check;}
-#endif // #ifdef CONFIG_MODULE_SIG_FORCE
-
-If you want to avoid duplication, secure_rules_kernel_check and 
-secure_rules_kernel_module_check could be defined in separate C files 
-and conditionally compiled (in Makefile).
-
-
-I was just trying to suggest the guidelines given in
-"Section 21) Conditional Compilation" in coding-style.rst.
-
-It says:
-Whenever possible don't use preprocessor conditionals (#ifdef, #if) in 
-.c files;...
-
-Feel free to do what you think is appropriate.
-
-thanks,
-  -lakshmi
-
+Mimi
 
