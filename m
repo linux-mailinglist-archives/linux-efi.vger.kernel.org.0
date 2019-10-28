@@ -2,236 +2,135 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 01B0EE70B7
-	for <lists+linux-efi@lfdr.de>; Mon, 28 Oct 2019 12:47:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E76DEE70D3
+	for <lists+linux-efi@lfdr.de>; Mon, 28 Oct 2019 12:55:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727134AbfJ1Lrz (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 28 Oct 2019 07:47:55 -0400
-Received: from isilmar-4.linta.de ([136.243.71.142]:45148 "EHLO
-        isilmar-4.linta.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726961AbfJ1Lrz (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 28 Oct 2019 07:47:55 -0400
-X-isilmar-external: YES
-X-isilmar-external: YES
-X-isilmar-external: YES
-Received: from owl.dominikbrodowski.net (owl-tcp.brodo.linta [10.1.0.111])
-        by isilmar-4.linta.de (Postfix) with ESMTPSA id EF88820096E;
-        Mon, 28 Oct 2019 11:47:52 +0000 (UTC)
-Received: by owl.dominikbrodowski.net (Postfix, from userid 1000)
-        id 5DDD6800D0; Mon, 28 Oct 2019 12:47:41 +0100 (CET)
-Date:   Mon, 28 Oct 2019 12:47:41 +0100
-From:   Dominik Brodowski <linux@dominikbrodowski.net>
-To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Cc:     Mario Limonciello <mario.limonciello@dell.com>,
-        linux-efi <linux-efi@vger.kernel.org>
-Subject: Re: efistub: EFI_RNG_PROTOCOL on Dell Inc. Latitude 7390
-Message-ID: <20191028114741.GA2343@owl.dominikbrodowski.net>
-References: <20191005113753.GA77634@light.dominikbrodowski.net>
- <20191028072036.GA113601@owl.dominikbrodowski.net>
- <CAKv+Gu-RcHfupXzZaK3UK1x+fkffGind8JP_4fZ95wBXuasJoQ@mail.gmail.com>
- <20191028084019.GA2392@owl.dominikbrodowski.net>
- <CAKv+Gu9gp+BUhf3KJMCTFuon9o1mUGv9UxWQ=A==-gLiAjRNNQ@mail.gmail.com>
- <CAKv+Gu-D4uvf5iyBKoRkantFVx4292da4BD8wuqC1uOZOhWegQ@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAKv+Gu-D4uvf5iyBKoRkantFVx4292da4BD8wuqC1uOZOhWegQ@mail.gmail.com>
-User-Agent: Mutt/1.12.2 (2019-09-21)
+        id S2388720AbfJ1LzK (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 28 Oct 2019 07:55:10 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:41108 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S2388718AbfJ1LzK (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 28 Oct 2019 07:55:10 -0400
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x9SBsV6h016141
+        for <linux-efi@vger.kernel.org>; Mon, 28 Oct 2019 07:55:08 -0400
+Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 2vwx3jbkhg-1
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <linux-efi@vger.kernel.org>; Mon, 28 Oct 2019 07:55:08 -0400
+Received: from localhost
+        by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <linux-efi@vger.kernel.org> from <zohar@linux.ibm.com>;
+        Mon, 28 Oct 2019 11:55:06 -0000
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
+        by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+        Mon, 28 Oct 2019 11:55:01 -0000
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com [9.149.105.61])
+        by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x9SBsxh127263030
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 28 Oct 2019 11:55:00 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id D430E11C050;
+        Mon, 28 Oct 2019 11:54:59 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 7AD1811C04A;
+        Mon, 28 Oct 2019 11:54:57 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.85.151.87])
+        by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Mon, 28 Oct 2019 11:54:57 +0000 (GMT)
+Subject: Re: [PATCH v9 2/8] powerpc/ima: add support to initialize ima
+ policy rules
+From:   Mimi Zohar <zohar@linux.ibm.com>
+To:     Nayna Jain <nayna@linux.vnet.ibm.com>,
+        Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
+        Nayna Jain <nayna@linux.ibm.com>, linuxppc-dev@ozlabs.org,
+        linux-efi@vger.kernel.org, linux-integrity@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Jeremy Kerr <jk@ozlabs.org>,
+        Matthew Garret <matthew.garret@nebula.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Claudio Carvalho <cclaudio@linux.ibm.com>,
+        George Wilson <gcwilson@linux.ibm.com>,
+        Elaine Palmer <erpalmer@us.ibm.com>,
+        Eric Ricther <erichte@linux.ibm.com>,
+        "Oliver O'Halloran" <oohall@gmail.com>,
+        Prakhar Srivastava <prsriva02@gmail.com>
+Date:   Mon, 28 Oct 2019 07:54:56 -0400
+In-Reply-To: <1572133923.4532.79.camel@linux.ibm.com>
+References: <20191024034717.70552-1-nayna@linux.ibm.com>
+         <20191024034717.70552-3-nayna@linux.ibm.com>
+         <dd7e04fc-25e8-280f-b565-bdb031939655@linux.microsoft.com>
+         <27dbe08e-5473-4dd0-d2ad-2df591e23f5e@linux.vnet.ibm.com>
+         <1572133923.4532.79.camel@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.20.5 (3.20.5-1.fc24) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+x-cbid: 19102811-0012-0000-0000-0000035E5E70
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19102811-0013-0000-0000-000021999B74
+Message-Id: <1572263696.4532.240.camel@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-10-28_05:,,
+ signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1908290000 definitions=main-1910280122
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Mon, Oct 28, 2019 at 11:51:01AM +0100, Ard Biesheuvel wrote:
-> > It might be an issue with the size of the output.
-> >
-> > The original RDRAND based driver in EDK2 contains an apparent
-> > misconception that, due to the fact that certain SP800-90-CTR-256
-> > DRBGs require 32 bytes of raw entropy as a seed, it is only valid for
-> > the RAW algorithm to be called with an output size of 32.
-> >
-> > So in this case, it might be that 32 is treated as a magic number too,
-> > and any other size is rejected by the RAW algorithm.
-> >
-> > Not sure why the other one fails, though, but the fact that RAW and
-> > SP800-90-CTR-256 are the only supported algorithms suggests that your
-> > implementation is at least similar to the RDRAND based RngDxe
-> > implementation in EDK2.
+On Sat, 2019-10-26 at 19:52 -0400, Mimi Zohar wrote:
+> On Fri, 2019-10-25 at 12:02 -0500, Nayna Jain wrote:
+> > On 10/24/19 12:35 PM, Lakshmi Ramasubramanian wrote:
+> > > On 10/23/2019 8:47 PM, Nayna Jain wrote:
+> > >
+> > >> +/*
+> > >> + * The "secure_rules" are enabled only on "secureboot" enabled systems.
+> > >> + * These rules verify the file signatures against known good values.
+> > >> + * The "appraise_type=imasig|modsig" option allows the known good 
+> > >> signature
+> > >> + * to be stored as an xattr or as an appended signature.
+> > >> + *
+> > >> + * To avoid duplicate signature verification as much as possible, 
+> > >> the IMA
+> > >> + * policy rule for module appraisal is added only if 
+> > >> CONFIG_MODULE_SIG_FORCE
+> > >> + * is not enabled.
+> > >> + */
+> > >> +static const char *const secure_rules[] = {
+> > >> +    "appraise func=KEXEC_KERNEL_CHECK appraise_type=imasig|modsig",
+> > >> +#ifndef CONFIG_MODULE_SIG_FORCE
+> > >> +    "appraise func=MODULE_CHECK appraise_type=imasig|modsig",
+> > >> +#endif
+> > >> +    NULL
+> > >> +};
+> > >
+> > > Is there any way to not use conditional compilation in the above array 
+> > > definition? Maybe define different functions to get "secure_rules" for 
+> > > when CONFIG_MODULE_SIG_FORCE is defined and when it is not defined.
+> > 
+> > How will you decide which function to be called ?
 > 
-> I've updated the RngTest-X64.efi binary with a version that invokes
-> both the RAW and the default algorithm twice with a request for 64
-> bytes of entropy, like we do in the kernel. It runs fine on my
-> Thinkpad, can you check whether it works on your Dell system as well?
+> You could call "is_module_sig_enforced()".
 
-RngTest-X64.efi seems to run through fine.[*] Additionally, if I modify the
-kernel code to request only 32 bytes, it returns EFI_INVALID_PARAMETER as
-well. So something else seems to be missing... Just to verify: does
-efi_random_get_seed() work on your Thinkpad, if called from efi_main()? Have
-you tested that, by chance?[**]
+Calling is_module_sig_enforce() would prevent verifying the same
+kernel module appended signature twice, when CONFIG_MODULE_SIG is
+enabled, but not CONFIG_MODULE_SIG_FORCE.  This comes at the expense
+of having to define additional policies.
 
-Thanks,
-	Dominik
+Unlike for the kernel image, there is no coordination between lockdown
+and IMA for kernel modules signature verification.  I suggest
+deferring defining additional policies to when the lockdown/IMA
+coordination is addressed.
 
+Mimi
 
-[*] As a sidenote: I say "seems" as the screen is immediately blanked
-once the RngTest-X64.efi binary has run through, so I have to capture the
-output with a camera. Maybe add a delay of some sort to the RngTest-X86.efi
-binary?
-
-[**] patch with additional debug outputs (on top of Linus' tree) here:
-
-
-diff --git a/arch/x86/boot/compressed/eboot.c b/arch/x86/boot/compressed/eboot.c
-index d6662fdef300..4b909e5ab857 100644
---- a/arch/x86/boot/compressed/eboot.c
-+++ b/arch/x86/boot/compressed/eboot.c
-@@ -781,6 +781,9 @@ efi_main(struct efi_config *c, struct boot_params *boot_params)
- 
- 	/* Ask the firmware to clear memory on unclean shutdown */
- 	efi_enable_reset_attack_mitigation(sys_table);
-+
-+	efi_random_get_seed(sys_table);
-+
- 	efi_retrieve_tpm2_eventlog(sys_table);
- 
- 	setup_graphics(boot_params);
-diff --git a/drivers/char/random.c b/drivers/char/random.c
-index de434feb873a..45572b7e0548 100644
---- a/drivers/char/random.c
-+++ b/drivers/char/random.c
-@@ -2515,6 +2515,14 @@ EXPORT_SYMBOL_GPL(add_hwgenerator_randomness);
-  */
- void add_bootloader_randomness(const void *buf, unsigned int size)
- {
-+	unsigned long *data = buf;
-+
-+	pr_notice("random: adding %u bits of %sbootloader-provided randomness",
-+		size * 8,
-+		IS_ENABLED(CONFIG_RANDOM_TRUST_BOOTLOADER) ? "trusted " : "");
-+
-+	pr_notice("random: is this random? %lx", *data);
-+
- 	if (IS_ENABLED(CONFIG_RANDOM_TRUST_BOOTLOADER))
- 		add_hwgenerator_randomness(buf, size, size * 8);
- 	else
-diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
-index 69f00f7453a3..e98bbf8e56d9 100644
---- a/drivers/firmware/efi/efi.c
-+++ b/drivers/firmware/efi/efi.c
-@@ -554,7 +554,7 @@ int __init efi_config_parse_tables(void *config_tables, int count, int sz,
- 					      sizeof(*seed) + size);
- 			if (seed != NULL) {
- 				pr_notice("seeding entropy pool\n");
--				add_device_randomness(seed->bits, seed->size);
-+				add_bootloader_randomness(seed->bits, seed->size);
- 				early_memunmap(seed, sizeof(*seed) + size);
- 			} else {
- 				pr_err("Could not map UEFI random seed!\n");
-diff --git a/drivers/firmware/efi/libstub/Makefile b/drivers/firmware/efi/libstub/Makefile
-index 0460c7581220..ece24c60fc2c 100644
---- a/drivers/firmware/efi/libstub/Makefile
-+++ b/drivers/firmware/efi/libstub/Makefile
-@@ -38,7 +38,8 @@ OBJECT_FILES_NON_STANDARD	:= y
- # Prevents link failures: __sanitizer_cov_trace_pc() is not linked in.
- KCOV_INSTRUMENT			:= n
- 
--lib-y				:= efi-stub-helper.o gop.o secureboot.o tpm.o
-+lib-y				:= efi-stub-helper.o gop.o secureboot.o tpm.o \
-+				   random.o
- 
- # include the stub's generic dependencies from lib/ when building for ARM/arm64
- arm-deps-y := fdt_rw.c fdt_ro.c fdt_wip.c fdt.c fdt_empty_tree.c fdt_sw.c
-@@ -47,7 +48,7 @@ arm-deps-$(CONFIG_ARM64) += sort.c
- $(obj)/lib-%.o: $(srctree)/lib/%.c FORCE
- 	$(call if_changed_rule,cc_o_c)
- 
--lib-$(CONFIG_EFI_ARMSTUB)	+= arm-stub.o fdt.o string.o random.o \
-+lib-$(CONFIG_EFI_ARMSTUB)	+= arm-stub.o fdt.o string.o \
- 				   $(patsubst %.c,lib-%.o,$(arm-deps-y))
- 
- lib-$(CONFIG_ARM)		+= arm32-stub.o
-diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
-index 7f1556fd867d..05739ae013c8 100644
---- a/drivers/firmware/efi/libstub/efistub.h
-+++ b/drivers/firmware/efi/libstub/efistub.h
-@@ -63,8 +63,6 @@ efi_status_t efi_random_alloc(efi_system_table_t *sys_table_arg,
- 
- efi_status_t check_platform_features(efi_system_table_t *sys_table_arg);
- 
--efi_status_t efi_random_get_seed(efi_system_table_t *sys_table_arg);
--
- void *get_efi_config_table(efi_system_table_t *sys_table, efi_guid_t guid);
- 
- /* Helper macros for the usual case of using simple C variables: */
-diff --git a/drivers/firmware/efi/libstub/random.c b/drivers/firmware/efi/libstub/random.c
-index b4b1d1dcb5fd..70612cdd62c8 100644
---- a/drivers/firmware/efi/libstub/random.c
-+++ b/drivers/firmware/efi/libstub/random.c
-@@ -152,33 +152,49 @@ efi_status_t efi_random_get_seed(efi_system_table_t *sys_table_arg)
- 
- 	status = efi_call_early(locate_protocol, &rng_proto, NULL,
- 				(void **)&rng);
--	if (status != EFI_SUCCESS)
-+	if (status != EFI_SUCCESS) {
-+		pr_efi_err(sys_table_arg, "random: no protocol");
- 		return status;
-+	}
- 
- 	status = efi_call_early(allocate_pool, EFI_RUNTIME_SERVICES_DATA,
- 				sizeof(*seed) + EFI_RANDOM_SEED_SIZE,
- 				(void **)&seed);
--	if (status != EFI_SUCCESS)
-+	if (status != EFI_SUCCESS){
-+		pr_efi_err(sys_table_arg, "random: no pool");
- 		return status;
-+	}
- 
- 	status = rng->get_rng(rng, &rng_algo_raw, EFI_RANDOM_SEED_SIZE,
- 			      seed->bits);
--	if (status == EFI_UNSUPPORTED)
-+	if (status == EFI_DEVICE_ERROR)
-+		pr_efi_err(sys_table_arg, "random: device error");
-+	if (status == EFI_NOT_READY)
-+		pr_efi_err(sys_table_arg, "random: not ready");
-+	if (status == EFI_INVALID_PARAMETER)
-+		pr_efi_err(sys_table_arg, "random: invalid parameter"); // that's the reason...
-+	if (status == EFI_UNSUPPORTED) {
- 		/*
- 		 * Use whatever algorithm we have available if the raw algorithm
- 		 * is not implemented.
- 		 */
-+
- 		status = rng->get_rng(rng, NULL, EFI_RANDOM_SEED_SIZE,
- 				      seed->bits);
-+	}
- 
--	if (status != EFI_SUCCESS)
-+	if (status != EFI_SUCCESS) {
-+		pr_efi_err(sys_table_arg, "random: no bytes");
- 		goto err_freepool;
-+	}
- 
- 	seed->size = EFI_RANDOM_SEED_SIZE;
- 	status = efi_call_early(install_configuration_table, &rng_table_guid,
- 				seed);
--	if (status != EFI_SUCCESS)
-+	if (status != EFI_SUCCESS) {
-+		pr_efi_err(sys_table_arg, "random: install_configuration_table");
- 		goto err_freepool;
-+	}
- 
- 	return EFI_SUCCESS;
- 
-diff --git a/include/linux/efi.h b/include/linux/efi.h
-index bd3837022307..a17cc5841668 100644
---- a/include/linux/efi.h
-+++ b/include/linux/efi.h
-@@ -1631,6 +1631,8 @@ static inline void
- efi_enable_reset_attack_mitigation(efi_system_table_t *sys_table_arg) { }
- #endif
- 
-+efi_status_t efi_random_get_seed(efi_system_table_t *sys_table_arg);
-+
- void efi_retrieve_tpm2_eventlog(efi_system_table_t *sys_table);
- 
- /*
