@@ -2,129 +2,221 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BC5F2E8FC0
-	for <lists+linux-efi@lfdr.de>; Tue, 29 Oct 2019 20:14:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 907BCE9D4F
+	for <lists+linux-efi@lfdr.de>; Wed, 30 Oct 2019 15:18:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731246AbfJ2TOc (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 29 Oct 2019 15:14:32 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:58556 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1730743AbfJ2TOc (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 29 Oct 2019 15:14:32 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1572376471;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=nxayejYSVXr47U447mSkKDwpy7jX9q8NIi6Fc4NbQBc=;
-        b=DO1hZp2rjjvGs0jb/saN3Upvu+3I57KcitSChkmaHYFCzWvmrMpmhjglL/wfI7B2FF/bwh
-        Q4ADd1EqsE0IKPHgmeZeqLippB+3uN9FjtnbxzKVKIyGhOHTIkEP8P17C2IyL+pycV2Csn
-        HmYA+tCZgpoeOFwz+723SuMVnUzaipA=
-Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
- [209.85.208.200]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-331-D66aXY2-Nw-SymNVYgXhfg-1; Tue, 29 Oct 2019 15:14:29 -0400
-Received: by mail-lj1-f200.google.com with SMTP id i27so2896733ljb.17
-        for <linux-efi@vger.kernel.org>; Tue, 29 Oct 2019 12:14:28 -0700 (PDT)
+        id S1726347AbfJ3OSR (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 30 Oct 2019 10:18:17 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:54266 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726332AbfJ3OSR (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Wed, 30 Oct 2019 10:18:17 -0400
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id D611781F18
+        for <linux-efi@vger.kernel.org>; Wed, 30 Oct 2019 14:18:15 +0000 (UTC)
+Received: by mail-qk1-f198.google.com with SMTP id m189so2189590qkc.7
+        for <linux-efi@vger.kernel.org>; Wed, 30 Oct 2019 07:18:15 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=pwzekU6FTVb4WJ1KYylvE2Fm3CGIkd3DwRcFLlZGbuw=;
-        b=g/H0C5KZa0PafAmE6t6Q/VSjY6afEj/JVltC3oVSaJa37UOA+LKILCyxzOamOtR5ph
-         FHk7Mww/BqUluZ7WB6noS+yYzUP/fvRbRf2FrM387Qid2Y3JhnPlsyXJ/kfiBtoi9nlT
-         5UsqCs77VJc7x7aLhedlTkVYC/eQIjxBOEtGuFGpBeExb6KF/Ha4MTADJy+tSgA9tLfW
-         zqdnlFz5IumljhORtHNUAXjXZr+cT8K2DnKzk9KuyxYliKnhECNw0CxGFyGkydlFlq86
-         3B4tpsZZkb3KtWq1Hgfrd1KhXW/tEYyeVavAc/lROYQJDegK8d3NghlAnq5iMNOeSYlj
-         sJlA==
-X-Gm-Message-State: APjAAAWAM+WB/3UY1EUJIilwAVchCSm6+tbGBFDPA1Koc4d3cfYQscmo
-        MHAc+icBemKraXUJZIKq6xxTP9QSXH1uj83L0ey95EXXA3ESTUe7M06LLj9JYP2IH/QcpxzrvDp
-        vzU75Ipy5xBAeBBZRRn/cRGug3NvsShgmBR0C
-X-Received: by 2002:a19:ac04:: with SMTP id g4mr3546577lfc.63.1572376467656;
-        Tue, 29 Oct 2019 12:14:27 -0700 (PDT)
-X-Google-Smtp-Source: APXvYqyB0C3Ii5OEJM05OMOUAAZ49o0SiI0p8Oyn3T8k9fDZCZX9ZMdZD7rNOLGdjhWiT4TOIpbqxNY+7kioHW7fcD4=
-X-Received: by 2002:a19:ac04:: with SMTP id g4mr3546566lfc.63.1572376467423;
- Tue, 29 Oct 2019 12:14:27 -0700 (PDT)
-MIME-Version: 1.0
-References: <20191029173755.27149-1-ardb@kernel.org> <20191029173755.27149-4-ardb@kernel.org>
-In-Reply-To: <20191029173755.27149-4-ardb@kernel.org>
-From:   Bhupesh Sharma <bhsharma@redhat.com>
-Date:   Wed, 30 Oct 2019 00:44:14 +0530
-Message-ID: <CACi5LpMAagnn_yEmqRBGfxJFZcAUzohU30NACeGvdXaHFZwAMA@mail.gmail.com>
-Subject: Re: [PATCH v2 3/6] efi/random: treat EFI_RNG_PROTOCOL output as
- bootloader randomness
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     linux-efi@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Dominik Brodowski <linux@dominikbrodowski.net>,
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=Rc+hqg4QNM/xF/NXGDnBB3/7yn+0eIIBqMg6gfG1Ddk=;
+        b=ThURYlr5mBsgHAOvIhxFYoPQJlFgkPDQUE/SLdmWM3vaBO61Z9Vw9E6S8hJh3BhfZ3
+         KhbsuvZk5z5IojuiuJTHM+BXZH8/4OxQpKSoSJ7w5t79pPoz1n/WOnUAlvxGss5102yT
+         w3OeXiP7wdpftN6vLOSl/FEc0DQu9Rl15/iDOQ1TrW7+6ztli0p4b+TLGOZL/fDlRDWL
+         IQpFK5safWCPRdXfJbIGCR87/1e8tITbezUFZ/YQhykiFkDMvHbz3B90Uih17IFIHOnH
+         8aOh978LNQiuzKumAItn2uWTEQEIip0wKwGKek23/xjAMNRDIcGmpoaQSpgAskatyz6V
+         ujxA==
+X-Gm-Message-State: APjAAAXwypsP+2nK3tNMCPLNChpKvEW64P0pWGkOy3Ju1w+dP5ueONYr
+        a3j3JYuCTx7Phayf9+PFmKvPKTnbKyjjYrF1iSUiNK+ZbTgu/6sM34ykmN1G4TJHMh4vazoujgI
+        TH1d5Bj0BdNw3VMzxihkS
+X-Received: by 2002:a05:620a:1038:: with SMTP id a24mr99450qkk.384.1572445094982;
+        Wed, 30 Oct 2019 07:18:14 -0700 (PDT)
+X-Google-Smtp-Source: APXvYqydPWle3pBnSBlNZtoDCpwa6qFtvVveymN7IvYOkvPp9QSHZ3mTgHr1EmQxsD6FYr+vILeB2Q==
+X-Received: by 2002:a05:620a:1038:: with SMTP id a24mr99416qkk.384.1572445094620;
+        Wed, 30 Oct 2019 07:18:14 -0700 (PDT)
+Received: from builder.jcline.org.com ([136.56.87.133])
+        by smtp.gmail.com with ESMTPSA id s123sm112317qke.31.2019.10.30.07.18.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 30 Oct 2019 07:18:14 -0700 (PDT)
+From:   Jeremy Cline <jcline@redhat.com>
+To:     rhkernel-list@redhat.com
+Cc:     Laura Abbott <labbott@redhat.com>, Don Zickus <dzickus@redhat.com>,
+        Lenny Szubowicz <lszubowi@redhat.com>,
+        David Howells <dhowells@redhat.com>,
+        Philipp Rudo <prudo@redhat.com>,
         Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-X-MC-Unique: D66aXY2-Nw-SymNVYgXhfg-1
-X-Mimecast-Spam-Score: 0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+        linux-efi@vger.kernel.org, Jeremy Cline <jcline@redhat.com>
+Subject: [ARK INTERNAL PATCHv2 2/5] efi: Add an EFI_SECURE_BOOT flag to indicate secure boot mode
+Date:   Wed, 30 Oct 2019 14:17:14 +0000
+Message-Id: <20191030141717.3134-3-jcline@redhat.com>
+X-Mailer: git-send-email 2.21.0
+In-Reply-To: <20191030141717.3134-1-jcline@redhat.com>
+References: <20191007190042.17934-1-jcline@redhat.com>
+ <20191030141717.3134-1-jcline@redhat.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hi Ard,
+From: David Howells <dhowells@redhat.com>
 
-On Tue, Oct 29, 2019 at 11:10 PM Ard Biesheuvel <ardb@kernel.org> wrote:
->
-> From: Dominik Brodowski <linux@dominikbrodowski.net>
->
-> Commit 428826f5358c ("fdt: add support for rng-seed") introduced
-> add_bootloader_randomness(), permitting randomness provided by the
-> bootloader or firmware to be credited as entropy. However, the fact
-> that the UEFI support code was already wired into the RNG subsystem
-> via a call to add_device_randomness() was overlooked, and so it was
-> not converted at the same time.
->
-> Note that this UEFI (v2.4 or newer) feature is currently only
-> implemented for EFI stub booting on ARM, and further note that
-> CONFIG_RANDOM_TRUST_BOOTLOADER must be enabled, and this should be
-> done only if there indeed is sufficient trust in the bootloader
-> _and_ its source of randomness.
->
-> Signed-off-by: Dominik Brodowski <linux@dominikbrodowski.net>
-> [ardb: update commit log]
-> Signed-off-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+UEFI machines can be booted in Secure Boot mode.  Add an EFI_SECURE_BOOT
+flag that can be passed to efi_enabled() to find out whether secure boot is
+enabled.
 
-Seems my Tested-by was dropped which I provide for the RFC version of
-this patch.
-See <https://www.mail-archive.com/linux-efi@vger.kernel.org/msg12281.html>
-for details.
+Move the switch-statement in x86's setup_arch() that inteprets the
+secure_boot boot parameter to generic code and set the bit there.
 
-I can provide a similar Tested-by for this version as well.
+Suggested-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Signed-off-by: David Howells <dhowells@redhat.com>
+Reviewed-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+cc: linux-efi@vger.kernel.org
+[Rebased for context; efi_is_table_address was moved to arch/x86]
+Signed-off-by: Jeremy Cline <jcline@redhat.com>
+---
+ arch/x86/kernel/setup.c           | 14 +-----------
+ drivers/firmware/efi/Makefile     |  1 +
+ drivers/firmware/efi/secureboot.c | 38 +++++++++++++++++++++++++++++++
+ include/linux/efi.h               | 18 ++++++++++-----
+ 4 files changed, 52 insertions(+), 19 deletions(-)
+ create mode 100644 drivers/firmware/efi/secureboot.c
 
-Thanks,
-Bhupesh
-
-
-> ---
->  drivers/firmware/efi/efi.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
-> index 69f00f7453a3..e98bbf8e56d9 100644
-> --- a/drivers/firmware/efi/efi.c
-> +++ b/drivers/firmware/efi/efi.c
-> @@ -554,7 +554,7 @@ int __init efi_config_parse_tables(void *config_table=
-s, int count, int sz,
->                                               sizeof(*seed) + size);
->                         if (seed !=3D NULL) {
->                                 pr_notice("seeding entropy pool\n");
-> -                               add_device_randomness(seed->bits, seed->s=
-ize);
-> +                               add_bootloader_randomness(seed->bits, see=
-d->size);
->                                 early_memunmap(seed, sizeof(*seed) + size=
-);
->                         } else {
->                                 pr_err("Could not map UEFI random seed!\n=
-");
-> --
-> 2.17.1
->
+diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
+index 77ea96b794bd..d10f42770190 100644
+--- a/arch/x86/kernel/setup.c
++++ b/arch/x86/kernel/setup.c
+@@ -1179,19 +1179,7 @@ void __init setup_arch(char **cmdline_p)
+ 	/* Allocate bigger log buffer */
+ 	setup_log_buf(1);
+ 
+-	if (efi_enabled(EFI_BOOT)) {
+-		switch (boot_params.secure_boot) {
+-		case efi_secureboot_mode_disabled:
+-			pr_info("Secure boot disabled\n");
+-			break;
+-		case efi_secureboot_mode_enabled:
+-			pr_info("Secure boot enabled\n");
+-			break;
+-		default:
+-			pr_info("Secure boot could not be determined\n");
+-			break;
+-		}
+-	}
++	efi_set_secure_boot(boot_params.secure_boot);
+ 
+ 	reserve_initrd();
+ 
+diff --git a/drivers/firmware/efi/Makefile b/drivers/firmware/efi/Makefile
+index 4ac2de4dfa72..195b078a423c 100644
+--- a/drivers/firmware/efi/Makefile
++++ b/drivers/firmware/efi/Makefile
+@@ -24,6 +24,7 @@ obj-$(CONFIG_EFI_FAKE_MEMMAP)		+= fake_mem.o
+ obj-$(CONFIG_EFI_BOOTLOADER_CONTROL)	+= efibc.o
+ obj-$(CONFIG_EFI_TEST)			+= test/
+ obj-$(CONFIG_EFI_DEV_PATH_PARSER)	+= dev-path-parser.o
++obj-$(CONFIG_EFI)			+= secureboot.o
+ obj-$(CONFIG_APPLE_PROPERTIES)		+= apple-properties.o
+ obj-$(CONFIG_EFI_RCI2_TABLE)		+= rci2-table.o
+ 
+diff --git a/drivers/firmware/efi/secureboot.c b/drivers/firmware/efi/secureboot.c
+new file mode 100644
+index 000000000000..9070055de0a1
+--- /dev/null
++++ b/drivers/firmware/efi/secureboot.c
+@@ -0,0 +1,38 @@
++/* Core kernel secure boot support.
++ *
++ * Copyright (C) 2017 Red Hat, Inc. All Rights Reserved.
++ * Written by David Howells (dhowells@redhat.com)
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public Licence
++ * as published by the Free Software Foundation; either version
++ * 2 of the Licence, or (at your option) any later version.
++ */
++
++#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
++
++#include <linux/efi.h>
++#include <linux/kernel.h>
++#include <linux/printk.h>
++
++/*
++ * Decide what to do when UEFI secure boot mode is enabled.
++ */
++void __init efi_set_secure_boot(enum efi_secureboot_mode mode)
++{
++	if (efi_enabled(EFI_BOOT)) {
++		switch (mode) {
++		case efi_secureboot_mode_disabled:
++			pr_info("Secure boot disabled\n");
++			break;
++		case efi_secureboot_mode_enabled:
++			set_bit(EFI_SECURE_BOOT, &efi.flags);
++			pr_info("Secure boot enabled\n");
++			break;
++		default:
++			pr_warning("Secure boot could not be determined (mode %u)\n",
++				   mode);
++			break;
++		}
++	}
++}
+diff --git a/include/linux/efi.h b/include/linux/efi.h
+index bd3837022307..b3b2a8107949 100644
+--- a/include/linux/efi.h
++++ b/include/linux/efi.h
+@@ -1202,6 +1202,14 @@ extern int __init efi_setup_pcdp_console(char *);
+ #define EFI_DBG			8	/* Print additional debug info at runtime */
+ #define EFI_NX_PE_DATA		9	/* Can runtime data regions be mapped non-executable? */
+ #define EFI_MEM_ATTR		10	/* Did firmware publish an EFI_MEMORY_ATTRIBUTES table? */
++#define EFI_SECURE_BOOT		11	/* Are we in Secure Boot mode? */
++
++enum efi_secureboot_mode {
++	efi_secureboot_mode_unset,
++	efi_secureboot_mode_unknown,
++	efi_secureboot_mode_disabled,
++	efi_secureboot_mode_enabled,
++};
+ 
+ #ifdef CONFIG_EFI
+ /*
+@@ -1212,6 +1220,8 @@ static inline bool efi_enabled(int feature)
+ 	return test_bit(feature, &efi.flags) != 0;
+ }
+ extern void efi_reboot(enum reboot_mode reboot_mode, const char *__unused);
++
++extern void __init efi_set_secure_boot(enum efi_secureboot_mode mode);
+ #else
+ static inline bool efi_enabled(int feature)
+ {
+@@ -1225,6 +1235,8 @@ efi_capsule_pending(int *reset_type)
+ {
+ 	return false;
+ }
++
++static inline void efi_set_secure_boot(enum efi_secureboot_mode mode) {}
+ #endif
+ 
+ extern int efi_status_to_err(efi_status_t status);
+@@ -1616,12 +1628,6 @@ static inline bool efi_runtime_disabled(void) { return true; }
+ extern void efi_call_virt_check_flags(unsigned long flags, const char *call);
+ extern unsigned long efi_call_virt_save_flags(void);
+ 
+-enum efi_secureboot_mode {
+-	efi_secureboot_mode_unset,
+-	efi_secureboot_mode_unknown,
+-	efi_secureboot_mode_disabled,
+-	efi_secureboot_mode_enabled,
+-};
+ enum efi_secureboot_mode efi_get_secureboot(efi_system_table_t *sys_table);
+ 
+ #ifdef CONFIG_RESET_ATTACK_MITIGATION
+-- 
+2.21.0
 
