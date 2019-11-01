@@ -2,56 +2,72 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 46E36EC8E6
-	for <lists+linux-efi@lfdr.de>; Fri,  1 Nov 2019 20:10:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A34DEC9FD
+	for <lists+linux-efi@lfdr.de>; Fri,  1 Nov 2019 21:57:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727671AbfKATKF (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 1 Nov 2019 15:10:05 -0400
-Received: from mail.kernel.org ([198.145.29.99]:37014 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727664AbfKATKF (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Fri, 1 Nov 2019 15:10:05 -0400
-Subject: Re: [GIT PULL] EFI fixes
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1572635404;
-        bh=LZMtYNx+7eyqin0/yeV/hoXlKA1+gz2jHT4i56tlWfs=;
-        h=From:In-Reply-To:References:Date:To:Cc:From;
-        b=JA8thxWu/SDpKoMS2OPD9M0E4YOAiTPFzdwXp3pLoZ8fGNMqghuXkcp1AD9MpmLLV
-         IRh31HOraMaI1LCHrT5RklClbIgunNBHv+2UB9yH949+C1ac4vM4xbIFjNTIN1Wnsw
-         2x+3MegqPByGLYDL3jX4q3IcvEGHuU/N6UR/p0jE=
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <20191101174300.GA33878@gmail.com>
-References: <20191101174300.GA33878@gmail.com>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <20191101174300.GA33878@gmail.com>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git
- efi-urgent-for-linus
-X-PR-Tracked-Commit-Id: 359efcc2c910117d2faf704ce154e91fc976d37f
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: b2a18c25c73f30316eb356e915f4c9cc58ec42fc
-Message-Id: <157263540467.17460.14925099456453241443.pr-tracker-bot@kernel.org>
-Date:   Fri, 01 Nov 2019 19:10:04 +0000
-To:     Ingo Molnar <mingo@kernel.org>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-kernel@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-        Borislav Petkov <bp@alien8.de>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        James Morse <james.morse@arm.com>, linux-efi@vger.kernel.org
+        id S1727268AbfKAU45 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 1 Nov 2019 16:56:57 -0400
+Received: from terminus.zytor.com ([198.137.202.136]:48997 "EHLO
+        mail.zytor.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726230AbfKAU45 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Fri, 1 Nov 2019 16:56:57 -0400
+Received: from hanvin-mobl2.amr.corp.intel.com ([192.55.55.45])
+        (authenticated bits=0)
+        by mail.zytor.com (8.15.2/8.15.2) with ESMTPSA id xA1Ku1Hi3597880
+        (version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
+        Fri, 1 Nov 2019 13:56:02 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com xA1Ku1Hi3597880
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+        s=2019091901; t=1572641763;
+        bh=3An007NMR3t5lhDsOPVJ9K0dkZrEaxbrM0ul5cfaPa4=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+        b=kC/rRorYzspNXKHbAH3qWGpvmB1CgN+djkae1LWKmc8pl5Ljhbbx+OZuXSlpKJreR
+         EtmIjUtI1/wXaD16smKcAatpd3ZUb8CuJ/ILid1PZ2Djqz0Qx0r6nOFq8dQOwkznxf
+         meW8aP0YNx/p8Q2yGS61OPbIZg9oM3EASsRzsoYDoHaVVnQRdA+c+cCtFu5850FuJR
+         D526P2FtSBEK7HnfjwYPQsBOcJrcpTFR7lxr9RQkbnCcQTcPgVXF6iTqho0EyR/+Sw
+         IHfFNPB1eD3Mt7/NSMPdZojleTYu7yXr2Ti9Qo4IPDL30WRUfLF98uXYQNLpUGPHjs
+         ePcOqSIqHfEDg==
+Subject: Re: [PATCH v4 2/3] x86/boot: Introduce the kernel_info.setup_type_max
+To:     Daniel Kiper <daniel.kiper@oracle.com>, linux-efi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, x86@kernel.org,
+        xen-devel@lists.xenproject.org
+Cc:     ard.biesheuvel@linaro.org, boris.ostrovsky@oracle.com,
+        bp@alien8.de, corbet@lwn.net, dave.hansen@linux.intel.com,
+        luto@kernel.org, peterz@infradead.org, eric.snowberg@oracle.com,
+        jgross@suse.com, kanth.ghatraju@oracle.com, konrad.wilk@oracle.com,
+        mingo@redhat.com, rdunlap@infradead.org, ross.philipson@oracle.com,
+        tglx@linutronix.de
+References: <20191024114814.6488-1-daniel.kiper@oracle.com>
+ <20191024114814.6488-3-daniel.kiper@oracle.com>
+From:   "H. Peter Anvin" <hpa@zytor.com>
+Message-ID: <e094a1cf-6bf2-1e8a-94c7-47767d66138e@zytor.com>
+Date:   Fri, 1 Nov 2019 13:55:57 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.1.1
+MIME-Version: 1.0
+In-Reply-To: <20191024114814.6488-3-daniel.kiper@oracle.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The pull request you sent on Fri, 1 Nov 2019 18:43:00 +0100:
+On 2019-10-24 04:48, Daniel Kiper wrote:
+> This field contains maximal allowed type for setup_data.
+> 
+> Now bump the setup_header version in arch/x86/boot/header.S.
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git efi-urgent-for-linus
+Please don't bump the protocol revision here, otherwise we would create
+a very odd pseudo-revision of the protocol: 2.15 without SETUP_INDIRECT
+support, should patch 3/3 end up getting reverted.
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/b2a18c25c73f30316eb356e915f4c9cc58ec42fc
+(It is possible to detect, of course, but I feel pretty sure in saying
+that bootloaders won't get it right.)
 
-Thank you!
+Other than that:
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.wiki.kernel.org/userdoc/prtracker
+Reviewed-by: H. Peter Anvin (Intel) <hpa@zytor.com>
+
+	-hpa
