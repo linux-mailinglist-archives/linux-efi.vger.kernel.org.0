@@ -2,72 +2,66 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A34DEC9FD
-	for <lists+linux-efi@lfdr.de>; Fri,  1 Nov 2019 21:57:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 63A4CECCDD
+	for <lists+linux-efi@lfdr.de>; Sat,  2 Nov 2019 03:23:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727268AbfKAU45 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 1 Nov 2019 16:56:57 -0400
-Received: from terminus.zytor.com ([198.137.202.136]:48997 "EHLO
-        mail.zytor.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726230AbfKAU45 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Fri, 1 Nov 2019 16:56:57 -0400
-Received: from hanvin-mobl2.amr.corp.intel.com ([192.55.55.45])
-        (authenticated bits=0)
-        by mail.zytor.com (8.15.2/8.15.2) with ESMTPSA id xA1Ku1Hi3597880
-        (version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-        Fri, 1 Nov 2019 13:56:02 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com xA1Ku1Hi3597880
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-        s=2019091901; t=1572641763;
-        bh=3An007NMR3t5lhDsOPVJ9K0dkZrEaxbrM0ul5cfaPa4=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=kC/rRorYzspNXKHbAH3qWGpvmB1CgN+djkae1LWKmc8pl5Ljhbbx+OZuXSlpKJreR
-         EtmIjUtI1/wXaD16smKcAatpd3ZUb8CuJ/ILid1PZ2Djqz0Qx0r6nOFq8dQOwkznxf
-         meW8aP0YNx/p8Q2yGS61OPbIZg9oM3EASsRzsoYDoHaVVnQRdA+c+cCtFu5850FuJR
-         D526P2FtSBEK7HnfjwYPQsBOcJrcpTFR7lxr9RQkbnCcQTcPgVXF6iTqho0EyR/+Sw
-         IHfFNPB1eD3Mt7/NSMPdZojleTYu7yXr2Ti9Qo4IPDL30WRUfLF98uXYQNLpUGPHjs
-         ePcOqSIqHfEDg==
-Subject: Re: [PATCH v4 2/3] x86/boot: Introduce the kernel_info.setup_type_max
-To:     Daniel Kiper <daniel.kiper@oracle.com>, linux-efi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, x86@kernel.org,
-        xen-devel@lists.xenproject.org
-Cc:     ard.biesheuvel@linaro.org, boris.ostrovsky@oracle.com,
-        bp@alien8.de, corbet@lwn.net, dave.hansen@linux.intel.com,
-        luto@kernel.org, peterz@infradead.org, eric.snowberg@oracle.com,
-        jgross@suse.com, kanth.ghatraju@oracle.com, konrad.wilk@oracle.com,
-        mingo@redhat.com, rdunlap@infradead.org, ross.philipson@oracle.com,
-        tglx@linutronix.de
-References: <20191024114814.6488-1-daniel.kiper@oracle.com>
- <20191024114814.6488-3-daniel.kiper@oracle.com>
-From:   "H. Peter Anvin" <hpa@zytor.com>
-Message-ID: <e094a1cf-6bf2-1e8a-94c7-47767d66138e@zytor.com>
-Date:   Fri, 1 Nov 2019 13:55:57 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.1.1
+        id S1726771AbfKBCX5 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 1 Nov 2019 22:23:57 -0400
+Received: from mail-io1-f52.google.com ([209.85.166.52]:41787 "EHLO
+        mail-io1-f52.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726229AbfKBCX5 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 1 Nov 2019 22:23:57 -0400
+Received: by mail-io1-f52.google.com with SMTP id r144so12854959iod.8;
+        Fri, 01 Nov 2019 19:23:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=O68DoQOs3i3Yso0XcaqTyteEVBiIQd30TmH5RmmBRxM=;
+        b=I9nhCs6tq1vc/kaQQk1pWmAemKkYkyS+Opsgpl3uNbj37iFTKBhMfAXkp0+r3QgSsh
+         PIhE1uw5dWbmmStGpY2Sr0pPywqq8/hetaw9aQAJw7l5FInh/6dgcDfNYm9RvQK/lKps
+         sceBb0QOx/bR6TGvQvDZupKb3Af9L5oRXZEYRL5PAWldX3p2leem6IAqtJiJspzZMpNw
+         ONMe3fXyfwYoaifdC5BQpVyhfds6YW+18KOPBL/Ir01fWSU5yiKlLsgB+VQYlYpPU8xy
+         U8W732/oZ0Na7SIfx5AS1nS65x38R0Ap42r7fXY8zFVII3AfKXThehhe0FtLXI3IfbIf
+         teWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:content-transfer-encoding;
+        bh=O68DoQOs3i3Yso0XcaqTyteEVBiIQd30TmH5RmmBRxM=;
+        b=ijGkj0NklzzkFYdnCOOzecTN+nz5CkoZPGlhUPxvu4e7QiH25rJWG5OrUfxeAd5QyR
+         wnXHa/LGkJ/mKNc6UtS+I6z4iARY1M+Zvm+tVdmbTO/4zpKhk28lgSH5RcdihlrDKlh2
+         NJJc0dcPXcc94sC1TGKDF4lk6DmpJUkeC+JXsXEBgA3b7J7Gy5tI/M6MvHONsnJM+rsg
+         7w6La0NQ8K+x2m8iWY5T6XEYq5EJIh+dcGwEGTb7PrPROL2/f6rsyDsWTUlaZ5R+ME1k
+         Y4pl0DhanqqLaKkjVMBaMowhL4G+8qNzzxYiIrNQ3rvdo8eCp/xlZOE6Lny9S7G/HSXY
+         BBZA==
+X-Gm-Message-State: APjAAAWl9ZbCIVMsi/KIz+piJt6zW5r89ZK2qWzZyBTcu5hN/bArlQUt
+        7oLQFWP6WN5DIdDwdk9DiHe1hMbeaXTbJZh/ttFAjeyx5Ss=
+X-Google-Smtp-Source: APXvYqxKtJYSmxLY3DeUDOXq5em1FoMXLX418MTJq33ld93stNrEA1owjG+0m2UxXWy1P4Oz/8o4sRBKZ3FniP1lnwY=
+X-Received: by 2002:a6b:7c09:: with SMTP id m9mr5697513iok.139.1572661434470;
+ Fri, 01 Nov 2019 19:23:54 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20191024114814.6488-3-daniel.kiper@oracle.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <CAOzgRdbjf7AkxXtgQ_ZxWU_QW2XqT+=CpSTBt0_T10+gynXtTw@mail.gmail.com>
+In-Reply-To: <CAOzgRdbjf7AkxXtgQ_ZxWU_QW2XqT+=CpSTBt0_T10+gynXtTw@mail.gmail.com>
+From:   youling 257 <youling257@gmail.com>
+Date:   Sat, 2 Nov 2019 10:23:40 +0800
+Message-ID: <CAOzgRdYLYB5eB2aNiGL7wuS5tvF7M8cEWiOqLFKcnMsWOe=zNA@mail.gmail.com>
+Subject: Re: x86/boot: add ramoops.mem_size=1048576 boot parameter cause can't boot
+To:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-efi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 2019-10-24 04:48, Daniel Kiper wrote:
-> This field contains maximal allowed type for setup_data.
-> 
-> Now bump the setup_header version in arch/x86/boot/header.S.
+only add ramoops.mem_size=3D1048576 boot parameter cause can't boot on
+my device, stop at booting command list, no anyting happen, no dmesg.
 
-Please don't bump the protocol revision here, otherwise we would create
-a very odd pseudo-revision of the protocol: 2.15 without SETUP_INDIRECT
-support, should patch 3/3 end up getting reverted.
 
-(It is possible to detect, of course, but I feel pretty sure in saying
-that bootloaders won't get it right.)
-
-Other than that:
-
-Reviewed-by: H. Peter Anvin (Intel) <hpa@zytor.com>
-
-	-hpa
+youling 257 <youling257@gmail.com> =E4=BA=8E2019=E5=B9=B411=E6=9C=882=E6=97=
+=A5=E5=91=A8=E5=85=AD =E4=B8=8A=E5=8D=8810:18=E5=86=99=E9=81=93=EF=BC=9A
+>
+> only add ramoops.mem_size=3D1048576 boot parameter cause can't boot on my=
+ device, stop at booting command list, no anyting happen, no dmesg.
