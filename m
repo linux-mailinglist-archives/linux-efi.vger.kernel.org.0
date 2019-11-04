@@ -2,27 +2,27 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 225D0EEB73
-	for <lists+linux-efi@lfdr.de>; Mon,  4 Nov 2019 22:48:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D9695EEE53
+	for <lists+linux-efi@lfdr.de>; Mon,  4 Nov 2019 23:14:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729661AbfKDVsD (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 4 Nov 2019 16:48:03 -0500
-Received: from mail.kernel.org ([198.145.29.99]:37868 "EHLO mail.kernel.org"
+        id S2389203AbfKDWIM (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 4 Nov 2019 17:08:12 -0500
+Received: from mail.kernel.org ([198.145.29.99]:40842 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729829AbfKDVsD (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Mon, 4 Nov 2019 16:48:03 -0500
+        id S2388489AbfKDWIJ (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Mon, 4 Nov 2019 17:08:09 -0500
 Received: from localhost (6.204-14-84.ripe.coltfrance.com [84.14.204.6])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 0431F20869;
-        Mon,  4 Nov 2019 21:48:02 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id DCDBE205C9;
+        Mon,  4 Nov 2019 22:08:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1572904082;
-        bh=7SOk7tiTVGhBb6vH7JX2MPjaoKS77atUxG4Pvnesje8=;
+        s=default; t=1572905286;
+        bh=FrzwZv6FVNvvAr07Vc1/1PA+4MPp/UssWIY/WONUOQo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PPRkre1W7gQfHRCB2PfJCa6+aZBHLShgmm6u6KBslI6w5ZdEcm2eS0fdIt/i9KMn8
-         94ck55qSZ6iaFFuiSWEUpHLAUfotn94S0J99CHyjYIcNtaVjgIN7hckWUFxhwA4LfY
-         8VD6vNRRY2daodl0Ji0U6ry9gEIE5N4Qi/Qpg2qo=
+        b=Lkl57Kl/3efiw8Rc3IKSlgdJQp4Dlv7Ag+KsByN21eHf+03HhZz3gE1TXCR65ZpQR
+         WTcsLEs32Py/PB5LUpFGaRRtO5e98rwNXSGyc/xJKMjoOai2mfqcILGNs55tcrlO3d
+         /WtDnkogd+4uEPzx29/KDUAyBXSDqHVTSVoMvIv0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -42,12 +42,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Thomas Gleixner <tglx@linutronix.de>,
         linux-efi@vger.kernel.org, linux-integrity@vger.kernel.org,
         Ingo Molnar <mingo@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.4 15/46] efi/cper: Fix endianness of PCIe class code
-Date:   Mon,  4 Nov 2019 22:44:46 +0100
-Message-Id: <20191104211844.447008458@linuxfoundation.org>
+Subject: [PATCH 5.3 051/163] efi/cper: Fix endianness of PCIe class code
+Date:   Mon,  4 Nov 2019 22:44:01 +0100
+Message-Id: <20191104212143.869392738@linuxfoundation.org>
 X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20191104211830.912265604@linuxfoundation.org>
-References: <20191104211830.912265604@linuxfoundation.org>
+In-Reply-To: <20191104212140.046021995@linuxfoundation.org>
+References: <20191104212140.046021995@linuxfoundation.org>
 User-Agent: quilt/0.66
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -98,10 +98,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/firmware/efi/cper.c b/drivers/firmware/efi/cper.c
-index f40f7df4b7344..c0e54396f2502 100644
+index addf0749dd8b6..b1af0de2e1008 100644
 --- a/drivers/firmware/efi/cper.c
 +++ b/drivers/firmware/efi/cper.c
-@@ -375,7 +375,7 @@ static void cper_print_pcie(const char *pfx, const struct cper_sec_pcie *pcie,
+@@ -381,7 +381,7 @@ static void cper_print_pcie(const char *pfx, const struct cper_sec_pcie *pcie,
  		printk("%s""vendor_id: 0x%04x, device_id: 0x%04x\n", pfx,
  		       pcie->device_id.vendor_id, pcie->device_id.device_id);
  		p = pcie->device_id.class_code;
