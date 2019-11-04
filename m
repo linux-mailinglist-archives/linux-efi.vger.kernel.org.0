@@ -2,27 +2,27 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C231EECCF
-	for <lists+linux-efi@lfdr.de>; Mon,  4 Nov 2019 23:00:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 46938EEFDE
+	for <lists+linux-efi@lfdr.de>; Mon,  4 Nov 2019 23:24:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388292AbfKDWAm (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 4 Nov 2019 17:00:42 -0500
-Received: from mail.kernel.org ([198.145.29.99]:58412 "EHLO mail.kernel.org"
+        id S2387662AbfKDVxv (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 4 Nov 2019 16:53:51 -0500
+Received: from mail.kernel.org ([198.145.29.99]:47980 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2388905AbfKDWAl (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Mon, 4 Nov 2019 17:00:41 -0500
+        id S2387588AbfKDVxu (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Mon, 4 Nov 2019 16:53:50 -0500
 Received: from localhost (6.204-14-84.ripe.coltfrance.com [84.14.204.6])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 9C36E22473;
-        Mon,  4 Nov 2019 22:00:39 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id ADE0321D81;
+        Mon,  4 Nov 2019 21:53:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1572904840;
+        s=default; t=1572904429;
         bh=BQznuFgVQfqp84u8/GPWmIUgThSN1012WBeQa99r7uE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mJHqgmsat+Gr916hLzfU8/cxAZjsyhIJtEY2B/0eGAqDhRoQfwTU1v63r9F8qIuxr
-         HVkmjein6OtnTrNiGL+x0XPhhZWHvHPP2JW7jme2UDmv2qkBDC4IRpFzZP/vEIcHZ7
-         1mbG/FpSiKAi8zATezmttAtlfJ1pnFoh7MXPdML4=
+        b=U1yKKV1YC6Gfe2u1DPFZIokSkBsXcVf3lFEhAdwcAgG1EwXAdbRX8O62HtY1pXKHo
+         /x4/h8+EeCzzG+eeoKd2R6FYx3P+jwpgSZ/kUYXnkU5fVqqNI+m30q43/mk88epzks
+         7GqG2T7wy8zP3TEoN9Z28V+UcIzDvak1KAHO9WZY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -41,12 +41,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Thomas Gleixner <tglx@linutronix.de>,
         linux-efi@vger.kernel.org, linux-integrity@vger.kernel.org,
         Ingo Molnar <mingo@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 082/149] efi/x86: Do not clean dummy variable in kexec path
-Date:   Mon,  4 Nov 2019 22:44:35 +0100
-Message-Id: <20191104212142.341008793@linuxfoundation.org>
+Subject: [PATCH 4.14 42/95] efi/x86: Do not clean dummy variable in kexec path
+Date:   Mon,  4 Nov 2019 22:44:40 +0100
+Message-Id: <20191104212101.999539577@linuxfoundation.org>
 X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20191104212126.090054740@linuxfoundation.org>
-References: <20191104212126.090054740@linuxfoundation.org>
+In-Reply-To: <20191104212038.056365853@linuxfoundation.org>
+References: <20191104212038.056365853@linuxfoundation.org>
 User-Agent: quilt/0.66
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
