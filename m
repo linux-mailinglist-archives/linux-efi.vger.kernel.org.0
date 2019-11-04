@@ -2,51 +2,51 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A49B7EE282
-	for <lists+linux-efi@lfdr.de>; Mon,  4 Nov 2019 15:29:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C312EE27F
+	for <lists+linux-efi@lfdr.de>; Mon,  4 Nov 2019 15:29:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728909AbfKDO3D (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 4 Nov 2019 09:29:03 -0500
-Received: from mail-wr1-f74.google.com ([209.85.221.74]:52264 "EHLO
-        mail-wr1-f74.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728701AbfKDO3B (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 4 Nov 2019 09:29:01 -0500
-Received: by mail-wr1-f74.google.com with SMTP id 4so10466303wrf.19
-        for <linux-efi@vger.kernel.org>; Mon, 04 Nov 2019 06:29:00 -0800 (PST)
+        id S1729055AbfKDO3d (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 4 Nov 2019 09:29:33 -0500
+Received: from mail-vs1-f74.google.com ([209.85.217.74]:36455 "EHLO
+        mail-vs1-f74.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728940AbfKDO3F (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 4 Nov 2019 09:29:05 -0500
+Received: by mail-vs1-f74.google.com with SMTP id x72so1917760vsx.3
+        for <linux-efi@vger.kernel.org>; Mon, 04 Nov 2019 06:29:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20161025;
         h=date:in-reply-to:message-id:mime-version:references:subject:from:to
          :cc;
-        bh=aW4SA83XYvfgMU7wkWAC5rLE2H9FWpbhI6EjHgaPF1Q=;
-        b=HjfM6Wvb5TrRvQXysjjhAZUXi13FWV60JFteS+oivUITalKiSIDLxLiGVgaE8rjZG2
-         +dQdZYZI/44MYCotEouoS6TbMnf92clOZmho26Nd1I6Nu5lVM2ZXoM41zy/iZdDffmvE
-         0SVYiC4IwhQQtpyGFTa+Eu8S4+F3Gfgfxez7s1FWzg825ZLstaiCvlaqstfovKj+O8gX
-         b6K6tBM13jfHVCA8L/MhVc7hwQbXU5lZSIo1Y5mLdyyQ8hbi2YaUotlskJZMMFjch2+1
-         PEswSISz5h08vomYHGFXbp/Kh9TrObHBabM8gKrGa2nGruMwk7cGij7fbNFqhyQAvADc
-         i+ig==
+        bh=pDhjw8llKKibkxwiEHjLwKfV0zoLrBjVR8XQZovar/g=;
+        b=LohiqOAcn6QB64L+xHNmTrNt1oKq4UZRkk4ZOhNrkaIxT1TltVDgpaprtEdibTc9pU
+         A3DldvhOSHYm9RKiNhv/6sRm2D1JbPCRDzgE3/c1GpAU2Jyv8tXRPLu2UNpc6Ukyiz51
+         SOtLkgj8OZ5YtevqEFEQ6iIBKMWD+3/xzWtyrdxl0scSH5KcQ6ctsCphAu7ip6gQBDL1
+         Knbbpb+HuMTblcij2UwwdOwlf2vvecyoBV8ZwKls56j6P+XNjjTsTjRq87vdKZE0Xb5r
+         LBfonj+OTaHHrtkacnJyj6KX3UQabQ3eWMCKP9kxDsoEJ4NXEn7JlCddkDBVEI/NHXRh
+         d44Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:in-reply-to:message-id:mime-version
          :references:subject:from:to:cc;
-        bh=aW4SA83XYvfgMU7wkWAC5rLE2H9FWpbhI6EjHgaPF1Q=;
-        b=L8lPXi9TWm0cipnKdSVO3/29uQ5PsRSwVALQlmQc6vi19Axup7NdOFdqSpT9awnRIg
-         l4hWTk0c10v+h9iMSgacbT9xmd+fTzbD7zr+DEptoncLmyHi8Vu0J3T1qLPmIOVUJr5d
-         CnUce7brbbo0IpylcTE4wHBRCTHds+hw8mzApQXENZfuiPlhCw52XZaYbEHf0z2PonLH
-         7ziSsd7aBEvuJ2i1u+eeNvQKxmCQyJlORlCj9KTUIIFdxCdVbfg2Lj0tALzoLjeugv6a
-         ru4R9Qw/LpE0+gYRyhNEYQL03N/80w76hKEJ5t3AVJbR+dy8NlNr2pL1b8C/g7g/69/X
-         0pVQ==
-X-Gm-Message-State: APjAAAWK5+xhKRPemMZSFKGgBbVG2eWlRNTlTceqYT3zJUMJPPpujwuJ
-        XFm+37qzpJMDpIEcRuST4jUTw0xfdA==
-X-Google-Smtp-Source: APXvYqwpc3TFOOZt+q3MIYWgPWVX1Lm/mb3Jd4l0c4dTAXD7v9VvchXmCDGlKWMT+LJc4C7ZgART+EynnQ==
-X-Received: by 2002:a05:6000:350:: with SMTP id e16mr25109889wre.276.1572877739417;
- Mon, 04 Nov 2019 06:28:59 -0800 (PST)
-Date:   Mon,  4 Nov 2019 15:27:39 +0100
+        bh=pDhjw8llKKibkxwiEHjLwKfV0zoLrBjVR8XQZovar/g=;
+        b=oeljX5TSd1DaiBw5IPAlpF+xBvISXnvS0Yz1NEjpG++roryAXN2YSxLZSf3amrVjYZ
+         qEW0zZ+YCQls4ioTyOlptgdBELPKYpMZYuB29N0gV8h2FkGDDZRLhxhav/o2Ah/80Zgg
+         C72CccPkOavb5nwo6Z7C1OLPd1cLzMzlL7K8klZDVEApYp1Py2KWXCMI6Hua72SvDklF
+         y/wd9UPq6NEoty/WP4V/khwFqbsJkL6nsA62oPMT1Uj9jSDXrkGuDE/k4ldVAkvVMObb
+         dMvI2bEQ42w+8WAMsR7PrqiWpNk9UEdUoviiBMoia3Yn0i4CNIYSnPxZdUf8TkDGeBZt
+         lPew==
+X-Gm-Message-State: APjAAAWuojM9CbHiu61fiWBglXtUK4unOARTc0b+tVwTqCNLTNhOduox
+        gdHdJ3+85bx/cT2j6cvY9G3mNz37Eg==
+X-Google-Smtp-Source: APXvYqzw3sxkDPv1YzCqpxSha4ijHDPuL+Rfk58iD5OOS4HLDTOu4FfiMAruziYhLL/nRX03UYWRc/epwg==
+X-Received: by 2002:a67:fd8b:: with SMTP id k11mr11860157vsq.43.1572877742637;
+ Mon, 04 Nov 2019 06:29:02 -0800 (PST)
+Date:   Mon,  4 Nov 2019 15:27:40 +0100
 In-Reply-To: <20191104142745.14722-1-elver@google.com>
-Message-Id: <20191104142745.14722-4-elver@google.com>
+Message-Id: <20191104142745.14722-5-elver@google.com>
 Mime-Version: 1.0
 References: <20191104142745.14722-1-elver@google.com>
 X-Mailer: git-send-email 2.24.0.rc1.363.gb1bccd3e3d-goog
-Subject: [PATCH v3 3/9] objtool, kcsan: Add KCSAN runtime functions to whitelist
+Subject: [PATCH v3 4/9] build, kcsan: Add KCSAN build exceptions
 From:   Marco Elver <elver@google.com>
 To:     elver@google.com
 Cc:     akiyks@gmail.com, stern@rowland.harvard.edu, glider@google.com,
@@ -68,46 +68,102 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-This patch adds KCSAN runtime functions to the objtool whitelist.
+This blacklists several compilation units from KCSAN. See the respective
+inline comments for the reasoning.
 
 Signed-off-by: Marco Elver <elver@google.com>
 ---
 v3:
-* Add missing instrumentation functions.
-* Use new function names of refactored core runtime.
+* Moved EFI stub build exception hunk from x86-specific patch, since
+  it's not x86-specific.
+* Spelling "data-race" -> "data race".
 ---
- tools/objtool/check.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ drivers/firmware/efi/libstub/Makefile | 2 ++
+ kernel/Makefile                       | 5 +++++
+ kernel/sched/Makefile                 | 6 ++++++
+ mm/Makefile                           | 8 ++++++++
+ 4 files changed, 21 insertions(+)
 
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index 044c9a3cb247..e022a9a00ca1 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -466,6 +466,24 @@ static const char *uaccess_safe_builtin[] = {
- 	"__asan_report_store4_noabort",
- 	"__asan_report_store8_noabort",
- 	"__asan_report_store16_noabort",
-+	/* KCSAN */
-+	"kcsan_found_watchpoint",
-+	"kcsan_setup_watchpoint",
-+	/* KCSAN/TSAN */
-+	"__tsan_func_entry",
-+	"__tsan_func_exit",
-+	"__tsan_read_range",
-+	"__tsan_write_range",
-+	"__tsan_read1",
-+	"__tsan_read2",
-+	"__tsan_read4",
-+	"__tsan_read8",
-+	"__tsan_read16",
-+	"__tsan_write1",
-+	"__tsan_write2",
-+	"__tsan_write4",
-+	"__tsan_write8",
-+	"__tsan_write16",
- 	/* KCOV */
- 	"write_comp_data",
- 	"__sanitizer_cov_trace_pc",
+diff --git a/drivers/firmware/efi/libstub/Makefile b/drivers/firmware/efi/libstub/Makefile
+index ee0661ddb25b..5d0a645c0de8 100644
+--- a/drivers/firmware/efi/libstub/Makefile
++++ b/drivers/firmware/efi/libstub/Makefile
+@@ -31,7 +31,9 @@ KBUILD_CFLAGS			:= $(cflags-y) -DDISABLE_BRANCH_PROFILING \
+ 				   -D__DISABLE_EXPORTS
+ 
+ GCOV_PROFILE			:= n
++# Sanitizer runtimes are unavailable and cannot be linked here.
+ KASAN_SANITIZE			:= n
++KCSAN_SANITIZE			:= n
+ UBSAN_SANITIZE			:= n
+ OBJECT_FILES_NON_STANDARD	:= y
+ 
+diff --git a/kernel/Makefile b/kernel/Makefile
+index 74ab46e2ebd1..cc53f7c25446 100644
+--- a/kernel/Makefile
++++ b/kernel/Makefile
+@@ -23,6 +23,9 @@ endif
+ # Prevents flicker of uninteresting __do_softirq()/__local_bh_disable_ip()
+ # in coverage traces.
+ KCOV_INSTRUMENT_softirq.o := n
++# Avoid KCSAN instrumentation in softirq ("No shared variables, all the data
++# are CPU local" => assume no data races), to reduce overhead in interrupts.
++KCSAN_SANITIZE_softirq.o = n
+ # These are called from save_stack_trace() on slub debug path,
+ # and produce insane amounts of uninteresting coverage.
+ KCOV_INSTRUMENT_module.o := n
+@@ -30,6 +33,7 @@ KCOV_INSTRUMENT_extable.o := n
+ # Don't self-instrument.
+ KCOV_INSTRUMENT_kcov.o := n
+ KASAN_SANITIZE_kcov.o := n
++KCSAN_SANITIZE_kcov.o := n
+ CFLAGS_kcov.o := $(call cc-option, -fno-conserve-stack -fno-stack-protector)
+ 
+ # cond_syscall is currently not LTO compatible
+@@ -118,6 +122,7 @@ obj-$(CONFIG_RSEQ) += rseq.o
+ 
+ obj-$(CONFIG_GCC_PLUGIN_STACKLEAK) += stackleak.o
+ KASAN_SANITIZE_stackleak.o := n
++KCSAN_SANITIZE_stackleak.o := n
+ KCOV_INSTRUMENT_stackleak.o := n
+ 
+ $(obj)/configs.o: $(obj)/config_data.gz
+diff --git a/kernel/sched/Makefile b/kernel/sched/Makefile
+index 21fb5a5662b5..e9307a9c54e7 100644
+--- a/kernel/sched/Makefile
++++ b/kernel/sched/Makefile
+@@ -7,6 +7,12 @@ endif
+ # that is not a function of syscall inputs. E.g. involuntary context switches.
+ KCOV_INSTRUMENT := n
+ 
++# There are numerous races here, however, most of them due to plain accesses.
++# This would make it even harder for syzbot to find reproducers, because these
++# bugs trigger without specific input. Disable by default, but should re-enable
++# eventually.
++KCSAN_SANITIZE := n
++
+ ifneq ($(CONFIG_SCHED_OMIT_FRAME_POINTER),y)
+ # According to Alan Modra <alan@linuxcare.com.au>, the -fno-omit-frame-pointer is
+ # needed for x86 only.  Why this used to be enabled for all architectures is beyond
+diff --git a/mm/Makefile b/mm/Makefile
+index d996846697ef..56c1964bb3a1 100644
+--- a/mm/Makefile
++++ b/mm/Makefile
+@@ -7,6 +7,14 @@ KASAN_SANITIZE_slab_common.o := n
+ KASAN_SANITIZE_slab.o := n
+ KASAN_SANITIZE_slub.o := n
+ 
++# These produce frequent data race reports: most of them are due to races on
++# the same word but accesses to different bits of that word. Re-enable KCSAN
++# for these when we have more consensus on what to do about them.
++KCSAN_SANITIZE_slab_common.o := n
++KCSAN_SANITIZE_slab.o := n
++KCSAN_SANITIZE_slub.o := n
++KCSAN_SANITIZE_page_alloc.o := n
++
+ # These files are disabled because they produce non-interesting and/or
+ # flaky coverage that is not a function of syscall inputs. E.g. slab is out of
+ # free pages, or a task is migrated between nodes.
 -- 
 2.24.0.rc1.363.gb1bccd3e3d-goog
 
