@@ -2,43 +2,43 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 10D0CEF737
-	for <lists+linux-efi@lfdr.de>; Tue,  5 Nov 2019 09:25:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DE1E8EF73D
+	for <lists+linux-efi@lfdr.de>; Tue,  5 Nov 2019 09:25:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387776AbfKEIZS (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 5 Nov 2019 03:25:18 -0500
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:32220 "EHLO
+        id S2388018AbfKEIZY (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 5 Nov 2019 03:25:24 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:19240 "EHLO
         mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S2388018AbfKEIZR (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 5 Nov 2019 03:25:17 -0500
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id xA58MFXe129575
-        for <linux-efi@vger.kernel.org>; Tue, 5 Nov 2019 03:25:17 -0500
-Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 2w355brwwy-1
+        by vger.kernel.org with ESMTP id S2388079AbfKEIZU (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 5 Nov 2019 03:25:20 -0500
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id xA58MHWW056219
+        for <linux-efi@vger.kernel.org>; Tue, 5 Nov 2019 03:25:20 -0500
+Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 2w35es06tm-1
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <linux-efi@vger.kernel.org>; Tue, 05 Nov 2019 03:25:17 -0500
+        for <linux-efi@vger.kernel.org>; Tue, 05 Nov 2019 03:25:20 -0500
 Received: from localhost
-        by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
         for <linux-efi@vger.kernel.org> from <erichte@linux.ibm.com>;
-        Tue, 5 Nov 2019 08:25:14 -0000
-Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
-        by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        Tue, 5 Nov 2019 08:25:17 -0000
+Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
+        by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
         (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-        Tue, 5 Nov 2019 08:25:10 -0000
+        Tue, 5 Nov 2019 08:25:13 -0000
 Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com [9.149.105.62])
-        by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id xA58P9qT26476970
+        by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id xA58PB2j48824332
         (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 5 Nov 2019 08:25:09 GMT
+        Tue, 5 Nov 2019 08:25:11 GMT
 Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 15EBAAE05A;
+        by IMSVA (Postfix) with ESMTP id C3A5CAE053;
+        Tue,  5 Nov 2019 08:25:11 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 51494AE045;
         Tue,  5 Nov 2019 08:25:09 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 95CD5AE04D;
-        Tue,  5 Nov 2019 08:25:06 +0000 (GMT)
 Received: from localhost.localdomain (unknown [9.40.192.65])
         by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-        Tue,  5 Nov 2019 08:25:06 +0000 (GMT)
+        Tue,  5 Nov 2019 08:25:09 +0000 (GMT)
 From:   Eric Richter <erichte@linux.ibm.com>
 To:     linuxppc-dev@ozlabs.org, linux-efi@vger.kernel.org,
         linux-integrity@vger.kernel.org
@@ -57,18 +57,18 @@ Cc:     linux-kernel@vger.kernel.org,
         Eric Richter <erichte@linux.ibm.com>,
         "Oliver O'Halloran" <oohall@gmail.com>,
         Nayna Jain <nayna@linux.ibm.com>
-Subject: [PATCH v6 2/4] powerpc: expose secure variables to userspace via sysfs
-Date:   Tue,  5 Nov 2019 02:24:48 -0600
+Subject: [PATCH v6 3/4] x86/efi: move common keyring handler functions to new file
+Date:   Tue,  5 Nov 2019 02:24:49 -0600
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20191105082450.14746-1-erichte@linux.ibm.com>
 References: <20191105082450.14746-1-erichte@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-x-cbid: 19110508-0028-0000-0000-000003B2CBA0
+x-cbid: 19110508-0020-0000-0000-00000382A9B6
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19110508-0029-0000-0000-000024752277
-Message-Id: <20191105082450.14746-3-erichte@linux.ibm.com>
+x-cbparentid: 19110508-0021-0000-0000-000021D8D19D
+Message-Id: <20191105082450.14746-4-erichte@linux.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-11-05_02:,,
  signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
@@ -83,370 +83,247 @@ X-Mailing-List: linux-efi@vger.kernel.org
 
 From: Nayna Jain <nayna@linux.ibm.com>
 
-PowerNV secure variables, which store the keys used for OS kernel
-verification, are managed by the firmware. These secure variables need to
-be accessed by the userspace for addition/deletion of the certificates.
+The handlers to add the keys to the .platform keyring and blacklisted
+hashes to the .blacklist keyring is common for both the uefi and powerpc
+mechanisms of loading the keys/hashes from the firmware.
 
-This patch adds the sysfs interface to expose secure variables for PowerNV
-secureboot. The users shall use this interface for manipulating
-the keys stored in the secure variables.
+This patch moves the common code from load_uefi.c to keyring_handler.c
 
 Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Acked-by: Mimi Zohar <zohar@linux.ibm.com>
 Signed-off-by: Eric Richter <erichte@linux.ibm.com>
 ---
- Documentation/ABI/testing/sysfs-secvar |  39 ++++
- arch/powerpc/Kconfig                   |  11 ++
- arch/powerpc/kernel/Makefile           |   1 +
- arch/powerpc/kernel/secvar-sysfs.c     | 259 +++++++++++++++++++++++++
- 4 files changed, 310 insertions(+)
- create mode 100644 Documentation/ABI/testing/sysfs-secvar
- create mode 100644 arch/powerpc/kernel/secvar-sysfs.c
+ security/integrity/Makefile                   |  3 +-
+ .../platform_certs/keyring_handler.c          | 80 +++++++++++++++++++
+ .../platform_certs/keyring_handler.h          | 32 ++++++++
+ security/integrity/platform_certs/load_uefi.c | 67 +---------------
+ 4 files changed, 115 insertions(+), 67 deletions(-)
+ create mode 100644 security/integrity/platform_certs/keyring_handler.c
+ create mode 100644 security/integrity/platform_certs/keyring_handler.h
 
-diff --git a/Documentation/ABI/testing/sysfs-secvar b/Documentation/ABI/testing/sysfs-secvar
+diff --git a/security/integrity/Makefile b/security/integrity/Makefile
+index 35e6ca773734..351c9662994b 100644
+--- a/security/integrity/Makefile
++++ b/security/integrity/Makefile
+@@ -11,7 +11,8 @@ integrity-$(CONFIG_INTEGRITY_SIGNATURE) += digsig.o
+ integrity-$(CONFIG_INTEGRITY_ASYMMETRIC_KEYS) += digsig_asymmetric.o
+ integrity-$(CONFIG_INTEGRITY_PLATFORM_KEYRING) += platform_certs/platform_keyring.o
+ integrity-$(CONFIG_LOAD_UEFI_KEYS) += platform_certs/efi_parser.o \
+-					platform_certs/load_uefi.o
++				      platform_certs/load_uefi.o \
++				      platform_certs/keyring_handler.o
+ integrity-$(CONFIG_LOAD_IPL_KEYS) += platform_certs/load_ipl_s390.o
+ 
+ obj-$(CONFIG_IMA)			+= ima/
+diff --git a/security/integrity/platform_certs/keyring_handler.c b/security/integrity/platform_certs/keyring_handler.c
 new file mode 100644
-index 000000000000..bc0bedf2b662
+index 000000000000..c5ba695c10e3
 --- /dev/null
-+++ b/Documentation/ABI/testing/sysfs-secvar
-@@ -0,0 +1,39 @@
-+What:		/sys/firmware/secvar
-+Date:		August 2019
-+Contact:	Nayna Jain <nayna@linux.ibm.com>
-+Description:	This directory is created if the POWER firmware supports OS
-+		secureboot, thereby secure variables. It exposes interface
-+		for reading/writing the secure variables
++++ b/security/integrity/platform_certs/keyring_handler.c
+@@ -0,0 +1,80 @@
++// SPDX-License-Identifier: GPL-2.0
 +
-+What:		/sys/firmware/secvar/vars
-+Date:		August 2019
-+Contact:	Nayna Jain <nayna@linux.ibm.com>
-+Description:	This directory lists all the secure variables that are supported
-+		by the firmware.
-+
-+What:		/sys/firmware/secvar/vars/<variable name>
-+Date:		August 2019
-+Contact:	Nayna Jain <nayna@linux.ibm.com>
-+Description:	Each secure variable is represented as a directory named as
-+		<variable_name>. The variable name is unique and is in ASCII
-+		representation. The data and size can be determined by reading
-+		their respective attribute files.
-+
-+What:		/sys/firmware/secvar/vars/<variable_name>/size
-+Date:		August 2019
-+Contact:	Nayna Jain <nayna@linux.ibm.com>
-+Description:	An integer representation of the size of the content of the
-+		variable. In other words, it represents the size of the data.
-+
-+What:		/sys/firmware/secvar/vars/<variable_name>/data
-+Date:		August 2019
-+Contact:	Nayna Jain h<nayna@linux.ibm.com>
-+Description:	A read-only file containing the value of the variable. The size
-+		of the file represents the maximum size of the variable data.
-+
-+What:		/sys/firmware/secvar/vars/<variable_name>/update
-+Date:		August 2019
-+Contact:	Nayna Jain <nayna@linux.ibm.com>
-+Description:	A write-only file that is used to submit the new value for the
-+		variable. The size of the file represents the maximum size of
-+		the variable data that can be written.
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index c795039bdc73..949e747bc8c2 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -945,6 +945,17 @@ config PPC_SECURE_BOOT
- 	  to enable OS secure boot on systems that have firmware support for
- 	  it. If in doubt say N.
- 
-+config PPC_SECVAR_SYSFS
-+	tristate "Enable sysfs interface for POWER secure variables"
-+	default y
-+	depends on PPC_SECURE_BOOT
-+	depends on SYSFS
-+	help
-+	  POWER secure variables are managed and controlled by firmware.
-+	  These variables are exposed to userspace via sysfs to enable
-+	  read/write operations on these variables. Say Y if you have
-+	  secure boot enabled and want to expose variables to userspace.
-+
- endmenu
- 
- config ISA_DMA_API
-diff --git a/arch/powerpc/kernel/Makefile b/arch/powerpc/kernel/Makefile
-index 3cf26427334f..b216e9f316ee 100644
---- a/arch/powerpc/kernel/Makefile
-+++ b/arch/powerpc/kernel/Makefile
-@@ -162,6 +162,7 @@ obj-y				+= ucall.o
- endif
- 
- obj-$(CONFIG_PPC_SECURE_BOOT)	+= secure_boot.o ima_arch.o secvar-ops.o
-+obj-$(CONFIG_PPC_SECVAR_SYSFS)	+= secvar-sysfs.o
- 
- # Disable GCOV, KCOV & sanitizers in odd or sensitive code
- GCOV_PROFILE_prom_init.o := n
-diff --git a/arch/powerpc/kernel/secvar-sysfs.c b/arch/powerpc/kernel/secvar-sysfs.c
-new file mode 100644
-index 000000000000..500a5feccd9a
---- /dev/null
-+++ b/arch/powerpc/kernel/secvar-sysfs.c
-@@ -0,0 +1,259 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+/*
-+ * Copyright (C) 2019 IBM Corporation <nayna@linux.ibm.com>
-+ *
-+ * This code exposes secure variables to user via sysfs
-+ */
-+
-+#define pr_fmt(fmt) "secvar-sysfs: "fmt
-+
-+#include <linux/module.h>
++#include <linux/kernel.h>
++#include <linux/sched.h>
++#include <linux/cred.h>
++#include <linux/err.h>
++#include <linux/efi.h>
 +#include <linux/slab.h>
-+#include <linux/compat.h>
-+#include <linux/string.h>
-+#include <linux/of.h>
-+#include <asm/secvar.h>
++#include <keys/asymmetric-type.h>
++#include <keys/system_keyring.h>
++#include "../integrity.h"
 +
-+#define NAME_MAX_SIZE	   1024
++static efi_guid_t efi_cert_x509_guid __initdata = EFI_CERT_X509_GUID;
++static efi_guid_t efi_cert_x509_sha256_guid __initdata =
++	EFI_CERT_X509_SHA256_GUID;
++static efi_guid_t efi_cert_sha256_guid __initdata = EFI_CERT_SHA256_GUID;
 +
-+static struct kobject *secvar_kobj;
-+static struct kset *secvar_kset;
-+
-+static ssize_t backend_show(struct kobject *kobj, struct kobj_attribute *attr,
-+			    char *buf)
++/*
++ * Blacklist a hash.
++ */
++static __init void uefi_blacklist_hash(const char *source, const void *data,
++				       size_t len, const char *type,
++				       size_t type_len)
 +{
-+	ssize_t ret = 0;
-+	struct device_node *node;
-+	const char *compatible;
++	char *hash, *p;
 +
-+	node = of_find_node_by_name(NULL, "secvar");
-+	if (!of_device_is_available(node))
-+		return -ENODEV;
++	hash = kmalloc(type_len + len * 2 + 1, GFP_KERNEL);
++	if (!hash)
++		return;
++	p = memcpy(hash, type, type_len);
++	p += type_len;
++	bin2hex(p, data, len);
++	p += len * 2;
++	*p = 0;
 +
-+	ret = of_property_read_string(node, "compatible", &compatible);
-+	if (ret)
-+		return ret;
-+
-+	ret = sprintf(buf, "%s\n", compatible);
-+
-+	of_node_put(node);
-+
-+	return ret;
++	mark_hash_blacklisted(hash);
++	kfree(hash);
 +}
 +
-+
-+static ssize_t size_show(struct kobject *kobj, struct kobj_attribute *attr,
-+			 char *buf)
++/*
++ * Blacklist an X509 TBS hash.
++ */
++static __init void uefi_blacklist_x509_tbs(const char *source,
++					   const void *data, size_t len)
 +{
-+	uint64_t dsize;
-+	int rc;
-+
-+	rc = secvar_ops->get(kobj->name, strlen(kobj->name) + 1, NULL, &dsize);
-+	if (rc) {
-+		pr_err("Error retrieving variable size %d\n", rc);
-+		return rc;
-+	}
-+
-+	return sprintf(buf, "%llu\n", dsize);
++	uefi_blacklist_hash(source, data, len, "tbs:", 4);
 +}
 +
-+static ssize_t data_read(struct file *filep, struct kobject *kobj,
-+			 struct bin_attribute *attr, char *buf, loff_t off,
-+			 size_t count)
++/*
++ * Blacklist the hash of an executable.
++ */
++static __init void uefi_blacklist_binary(const char *source,
++					 const void *data, size_t len)
 +{
-+	uint64_t dsize;
-+	char *data;
-+	int rc;
-+
-+	rc = secvar_ops->get(kobj->name, strlen(kobj->name) + 1, NULL, &dsize);
-+	if (rc) {
-+		pr_err("Error getting variable size %d\n", rc);
-+		return rc;
-+	}
-+	pr_debug("dsize is %llu\n", dsize);
-+
-+	data = kzalloc(dsize, GFP_KERNEL);
-+	if (!data)
-+		return -ENOMEM;
-+
-+	rc = secvar_ops->get(kobj->name, strlen(kobj->name)+1, data, &dsize);
-+	if (rc) {
-+		pr_err("Error getting variable %d\n", rc);
-+		goto data_fail;
-+	}
-+
-+	rc = memory_read_from_buffer(buf, count, &off, data, dsize);
-+
-+data_fail:
-+	kfree(data);
-+	return rc;
++	uefi_blacklist_hash(source, data, len, "bin:", 4);
 +}
 +
-+static ssize_t update_write(struct file *filep, struct kobject *kobj,
-+			    struct bin_attribute *attr, char *buf, loff_t off,
-+			    size_t count)
++/*
++ * Return the appropriate handler for particular signature list types found in
++ * the UEFI db and MokListRT tables.
++ */
++__init efi_element_handler_t get_handler_for_db(const efi_guid_t *sig_type)
 +{
-+	int rc;
-+
-+	pr_debug("count is %ld\n", count);
-+	rc = secvar_ops->set(kobj->name, strlen(kobj->name)+1, buf, count);
-+	if (rc) {
-+		pr_err("Error setting the variable %s\n", kobj->name);
-+		return rc;
-+	}
-+
-+	return count;
-+}
-+
-+static struct kobj_attribute backend_attr = __ATTR_RO(backend);
-+
-+static struct kobj_attribute size_attr = __ATTR_RO(size);
-+
-+static struct bin_attribute data_attr = __BIN_ATTR_RO(data, 0);
-+
-+static struct bin_attribute update_attr = __BIN_ATTR_WO(update, 0);
-+
-+static struct bin_attribute  *secvar_bin_attrs[] = {
-+	&data_attr,
-+	&update_attr,
-+	NULL,
-+};
-+
-+static struct attribute *secvar_attrs[] = {
-+	&size_attr.attr,
-+	NULL,
-+};
-+
-+static const struct attribute_group secvar_attr_group = {
-+	.attrs = secvar_attrs,
-+	.bin_attrs = secvar_bin_attrs,
-+};
-+__ATTRIBUTE_GROUPS(secvar_attr);
-+
-+static struct kobj_type secvar_ktype = {
-+	.sysfs_ops	= &kobj_sysfs_ops,
-+	.default_groups = secvar_attr_groups,
-+};
-+
-+static int update_kobj_size(void)
-+{
-+
-+	struct device_node *node;
-+	u64 varsize;
-+	int rc = 0;
-+
-+	node = of_find_compatible_node(NULL, NULL, "ibm,edk2-compat-v1");
-+	if (!of_device_is_available(node)) {
-+		rc = -ENODEV;
-+		goto out;
-+	}
-+
-+	rc = of_property_read_u64(node, "max-var-size", &varsize);
-+	if (rc)
-+		goto out;
-+
-+	data_attr.size = varsize;
-+	update_attr.size = varsize;
-+
-+out:
-+	of_node_put(node);
-+
-+	return rc;
-+}
-+
-+static int secvar_sysfs_load(void)
-+{
-+	char *name;
-+	uint64_t namesize = 0;
-+	struct kobject *kobj;
-+	int rc;
-+
-+	name = kzalloc(NAME_MAX_SIZE, GFP_KERNEL);
-+	if (!name)
-+		return -ENOMEM;
-+
-+	do {
-+		rc = secvar_ops->get_next(name, &namesize, NAME_MAX_SIZE);
-+		if (rc) {
-+			if (rc != -ENOENT)
-+				pr_err("error getting secvar from firmware %d\n",
-+					rc);
-+			break;
-+		}
-+
-+		kobj = kzalloc(sizeof(*kobj), GFP_KERNEL);
-+		if (!kobj) {
-+			rc = -ENOMEM;
-+			break;
-+		}
-+
-+		kobject_init(kobj, &secvar_ktype);
-+
-+		rc = kobject_add(kobj, &secvar_kset->kobj, "%s", name);
-+		if (rc) {
-+			pr_warn("kobject_add error %d for attribute: %s\n", rc,
-+				name);
-+			kobject_put(kobj);
-+			kobj = NULL;
-+		}
-+
-+		if (kobj)
-+			kobject_uevent(kobj, KOBJ_ADD);
-+
-+	} while (!rc);
-+
-+	kfree(name);
-+	return rc;
-+}
-+
-+static int secvar_sysfs_init(void)
-+{
-+	int rc;
-+
-+	if (!secvar_ops) {
-+		pr_warn("secvar: failed to retrieve secvar operations.\n");
-+		return -ENODEV;
-+	}
-+
-+	secvar_kobj = kobject_create_and_add("secvar", firmware_kobj);
-+	if (!secvar_kobj) {
-+		pr_err("secvar: Failed to create firmware kobj\n");
-+		return -ENOMEM;
-+	}
-+
-+	rc = sysfs_create_file(secvar_kobj, &backend_attr.attr);
-+	if (rc) {
-+		kobject_put(secvar_kobj);
-+		return -ENOMEM;
-+	}
-+
-+	secvar_kset = kset_create_and_add("vars", NULL, secvar_kobj);
-+	if (!secvar_kset) {
-+		pr_err("secvar: sysfs kobject registration failed.\n");
-+		kobject_put(secvar_kobj);
-+		return -ENOMEM;
-+	}
-+
-+	rc = update_kobj_size();
-+	if (rc) {
-+		pr_err("Cannot read the size of the attribute\n");
-+		return rc;
-+	}
-+
-+	secvar_sysfs_load();
-+
++	if (efi_guidcmp(*sig_type, efi_cert_x509_guid) == 0)
++		return add_to_platform_keyring;
 +	return 0;
 +}
 +
-+static void secvar_sysfs_exit(void)
++/*
++ * Return the appropriate handler for particular signature list types found in
++ * the UEFI dbx and MokListXRT tables.
++ */
++__init efi_element_handler_t get_handler_for_dbx(const efi_guid_t *sig_type)
 +{
-+	kset_unregister(secvar_kset);
-+	kobject_put(secvar_kobj);
++	if (efi_guidcmp(*sig_type, efi_cert_x509_sha256_guid) == 0)
++		return uefi_blacklist_x509_tbs;
++	if (efi_guidcmp(*sig_type, efi_cert_sha256_guid) == 0)
++		return uefi_blacklist_binary;
++	return 0;
 +}
+diff --git a/security/integrity/platform_certs/keyring_handler.h b/security/integrity/platform_certs/keyring_handler.h
+new file mode 100644
+index 000000000000..2462bfa08fe3
+--- /dev/null
++++ b/security/integrity/platform_certs/keyring_handler.h
+@@ -0,0 +1,32 @@
++/* SPDX-License-Identifier: GPL-2.0 */
 +
-+late_initcall(secvar_sysfs_init);
-+module_exit(secvar_sysfs_exit);
++#ifndef PLATFORM_CERTS_INTERNAL_H
++#define PLATFORM_CERTS_INTERNAL_H
 +
-+MODULE_AUTHOR("Nayna Jain <nayna@linux.ibm.com>");
-+MODULE_DESCRIPTION("sysfs interface to POWER secure variables");
-+MODULE_LICENSE("GPL");
++#include <linux/efi.h>
++
++void blacklist_hash(const char *source, const void *data,
++		    size_t len, const char *type,
++		    size_t type_len);
++
++/*
++ * Blacklist an X509 TBS hash.
++ */
++void blacklist_x509_tbs(const char *source, const void *data, size_t len);
++
++/*
++ * Blacklist the hash of an executable.
++ */
++void blacklist_binary(const char *source, const void *data, size_t len);
++
++/*
++ * Return the handler for particular signature list types found in the db.
++ */
++efi_element_handler_t get_handler_for_db(const efi_guid_t *sig_type);
++
++/*
++ * Return the handler for particular signature list types found in the dbx.
++ */
++efi_element_handler_t get_handler_for_dbx(const efi_guid_t *sig_type);
++
++#endif
+diff --git a/security/integrity/platform_certs/load_uefi.c b/security/integrity/platform_certs/load_uefi.c
+index 81b19c52832b..4369204a19cd 100644
+--- a/security/integrity/platform_certs/load_uefi.c
++++ b/security/integrity/platform_certs/load_uefi.c
+@@ -9,6 +9,7 @@
+ #include <keys/asymmetric-type.h>
+ #include <keys/system_keyring.h>
+ #include "../integrity.h"
++#include "keyring_handler.h"
+ 
+ static efi_guid_t efi_cert_x509_guid __initdata = EFI_CERT_X509_GUID;
+ static efi_guid_t efi_cert_x509_sha256_guid __initdata =
+@@ -67,72 +68,6 @@ static __init void *get_cert_list(efi_char16_t *name, efi_guid_t *guid,
+ 	return db;
+ }
+ 
+-/*
+- * Blacklist a hash.
+- */
+-static __init void uefi_blacklist_hash(const char *source, const void *data,
+-				       size_t len, const char *type,
+-				       size_t type_len)
+-{
+-	char *hash, *p;
+-
+-	hash = kmalloc(type_len + len * 2 + 1, GFP_KERNEL);
+-	if (!hash)
+-		return;
+-	p = memcpy(hash, type, type_len);
+-	p += type_len;
+-	bin2hex(p, data, len);
+-	p += len * 2;
+-	*p = 0;
+-
+-	mark_hash_blacklisted(hash);
+-	kfree(hash);
+-}
+-
+-/*
+- * Blacklist an X509 TBS hash.
+- */
+-static __init void uefi_blacklist_x509_tbs(const char *source,
+-					   const void *data, size_t len)
+-{
+-	uefi_blacklist_hash(source, data, len, "tbs:", 4);
+-}
+-
+-/*
+- * Blacklist the hash of an executable.
+- */
+-static __init void uefi_blacklist_binary(const char *source,
+-					 const void *data, size_t len)
+-{
+-	uefi_blacklist_hash(source, data, len, "bin:", 4);
+-}
+-
+-/*
+- * Return the appropriate handler for particular signature list types found in
+- * the UEFI db and MokListRT tables.
+- */
+-static __init efi_element_handler_t get_handler_for_db(const efi_guid_t *
+-						       sig_type)
+-{
+-	if (efi_guidcmp(*sig_type, efi_cert_x509_guid) == 0)
+-		return add_to_platform_keyring;
+-	return 0;
+-}
+-
+-/*
+- * Return the appropriate handler for particular signature list types found in
+- * the UEFI dbx and MokListXRT tables.
+- */
+-static __init efi_element_handler_t get_handler_for_dbx(const efi_guid_t *
+-							sig_type)
+-{
+-	if (efi_guidcmp(*sig_type, efi_cert_x509_sha256_guid) == 0)
+-		return uefi_blacklist_x509_tbs;
+-	if (efi_guidcmp(*sig_type, efi_cert_sha256_guid) == 0)
+-		return uefi_blacklist_binary;
+-	return 0;
+-}
+-
+ /*
+  * Load the certs contained in the UEFI databases into the platform trusted
+  * keyring and the UEFI blacklisted X.509 cert SHA256 hashes into the blacklist
 -- 
 2.20.1
 
