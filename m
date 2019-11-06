@@ -2,101 +2,95 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F9FFF193A
-	for <lists+linux-efi@lfdr.de>; Wed,  6 Nov 2019 15:59:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A2739F1BFE
+	for <lists+linux-efi@lfdr.de>; Wed,  6 Nov 2019 18:02:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727341AbfKFO7S (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 6 Nov 2019 09:59:18 -0500
-Received: from mail-wm1-f67.google.com ([209.85.128.67]:50785 "EHLO
+        id S1732384AbfKFRCI (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 6 Nov 2019 12:02:08 -0500
+Received: from mail-wm1-f67.google.com ([209.85.128.67]:54139 "EHLO
         mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726926AbfKFO7S (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 6 Nov 2019 09:59:18 -0500
-Received: by mail-wm1-f67.google.com with SMTP id 11so3851145wmk.0
-        for <linux-efi@vger.kernel.org>; Wed, 06 Nov 2019 06:59:17 -0800 (PST)
+        with ESMTP id S1729004AbfKFRCI (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 6 Nov 2019 12:02:08 -0500
+Received: by mail-wm1-f67.google.com with SMTP id x4so4445562wmi.3
+        for <linux-efi@vger.kernel.org>; Wed, 06 Nov 2019 09:02:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=AztCruFmGDbTmBcQ0023fAUHrEaxCmrC8iOrMdlCg2U=;
-        b=PlNMzzRRH/iayy6MI1T+y2CGJaF0DQx5hmkZUxE2okn7WcxLQWfroOkv+tkBh+S3xD
-         OCs0HLc+OtK3IRxRtzUQdd9zMb4dM3z9GoCeRATMZHUs8S6A85QimVLxAElX+jTLr797
-         OWdLyPE+jMReBhTqAldFeA6f8Yje4SmKJccarAJwVkJEOFmFyfG11CA7mI0tUTBFY4mB
-         47Iu7B4Sz/HUZfW66WARDF6N1FlaDAAmIn3KMb9nDZW6orTBbEHNtK81YNMxXmOBiRrW
-         o7uwXz3ia7M+FLX9BI0InntyWkwTdf7bRRV0/Cc5qXasT/SFPAH+F5SbFlPB+dNb2VlB
-         TtVg==
+        bh=Td99yEjooCTjs2/PvMjZI2+HMS/tAjDRA3GPrGeVtEI=;
+        b=jZSOsThWQQ2LwYctC8YcYPDbJ6oRY4DPiwyay5ZNoZNVDTtdmqyGYCfK7oviW4ZtcO
+         JAXJxC2ftHojYtacL6taI2khb2bB84OqQd4AY+cdZJ+FS+WhNMuH3U8C0QpojuMzYC8J
+         LCrBgAeDbCQrhM8h/6zogR/hXJ8oNqj8/mtlAAGRUoRzAhmaUxlAkmAqExkGpmzQ68fK
+         zI5ZnHDs7yLpqxZ8Zcihf7Fh1iW3sL+Uwjl0iILXIArIbhigbYyggOc8zB0fO1DRUC/3
+         0bwMkP2fDP2c+cJarcp3NwM2fagjkXnl4hCYx99vEIH+HrcpXAtN4CAWRqLjn+0bXOuo
+         bH6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=AztCruFmGDbTmBcQ0023fAUHrEaxCmrC8iOrMdlCg2U=;
-        b=nWJdNmSrdxDa2QjtOWFIsVODxhXPuOvvf3XINjhgupUMZ9SCSJRllb4C1N3nx8kPxF
-         qhtmjM71NqgWl27PQwPFtW/+NmmjQpUOLNdaemCRs//bs2CCr4vO3ygJS4VHxPPxJuzq
-         /LHrr73CUnWx7Q2uP1tHdO9OZckYF1SoeuA1iAzizA9HHi8pqVdm7iZnyfCGtBqrUcyI
-         lyYTkw8XACbed8s0r0Y3PgDR3Ri+qQAXIgNAAtFfdex3HIvuU8IRsByZ4OS3Bh8IRQwC
-         SJUY3Mpyx8yxnRfQhDOvGaw1bH0aixvMPx4eZANrshp1F5Xer1K+UsZdAsyk3BhD4a6j
-         OC3Q==
-X-Gm-Message-State: APjAAAWgYmvz390E77fyx3hDhVBXGM13QCaTQtMiDYFja+M26GMewUnh
-        R988MJUZFtZ9XNklbrokkuY0Ffs/2ww1kdnH5gkY0g==
-X-Google-Smtp-Source: APXvYqxdtojD2WI8ktRrMSUybjMyQJIG8WOkv8nzde3Eo6Yw91887HRCbdjg81bzeK/nMUXMLBGCLvx6qX9JEPG4eV4=
-X-Received: by 2002:a1c:9d07:: with SMTP id g7mr2916863wme.53.1573052356828;
- Wed, 06 Nov 2019 06:59:16 -0800 (PST)
+        bh=Td99yEjooCTjs2/PvMjZI2+HMS/tAjDRA3GPrGeVtEI=;
+        b=Xb0YaHjPzxE41y4jI2zVBW/oqYaU/KckgKWE6Q5drWbVRteoHh/k5ZwZayEsMS+3Wx
+         O/+fkLaGj7YXqhoWjMc4PsS+y3POQ6PShrCytGxwTjmFb/TqzrdziWjA6H08WZhBDR3W
+         KimpbSxZVom61i2QeElgwlBslzMQ4irq3s66hUCBJwn7gYiPOPnAEez9Q07D5pFK/Hzx
+         aqKbIbVYpa4yPELLX1ykRfpVmn1e4jziqsLSpNOBm2OlTJGPsTpuklyZFE11b+UbliVY
+         XVXh0kDStKU3HIcYLbXl0FYQJtoHRvajRXKusZvRGOmnGXBQFEPUi7WIxI9Ry3I3MUY0
+         jPgw==
+X-Gm-Message-State: APjAAAVVLeEUzRTJy+bgIxd6ko0PdPK9VK0M+e3BJRIUXUdC8Oi0LtoU
+        7Nid8XxPLZEhXmIYPbPvFqIHBbk4jme39K5koeezg7L3+Iv56Fyh
+X-Google-Smtp-Source: APXvYqwWWNQE9RlQ13ZOmh7HQWoRHEyqbaaMBYYVyKsS2AreAFalWLEQhhn/3Bmd7r7+YTDh7MBZtZ4hIFwtJyvXqIs=
+X-Received: by 2002:a1c:64d6:: with SMTP id y205mr3227761wmb.136.1573059726914;
+ Wed, 06 Nov 2019 09:02:06 -0800 (PST)
 MIME-Version: 1.0
-References: <20191105082924.289-1-kong.kongxinwei@hisilicon.com> <CAKv+Gu-V0S9EZeCjna5+P6v53evV-6uuG0rAShUA+uWb=NgH4g@mail.gmail.com>
-In-Reply-To: <CAKv+Gu-V0S9EZeCjna5+P6v53evV-6uuG0rAShUA+uWb=NgH4g@mail.gmail.com>
+References: <1572931429-487-1-git-send-email-anshuman.khandual@arm.com>
+In-Reply-To: <1572931429-487-1-git-send-email-anshuman.khandual@arm.com>
 From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Date:   Wed, 6 Nov 2019 15:59:04 +0100
-Message-ID: <CAKv+Gu9X4vCiS+BABs34t05MdF6GaFJr4jBTeaamngx3s=sPBg@mail.gmail.com>
-Subject: Re: [PATCH] EFI/stub: tpm: enable tpm eventlog function for ARM64 platform
-To:     Xinwei Kong <kong.kongxinwei@hisilicon.com>
-Cc:     Ingo Molnar <mingo@kernel.org>, Will Deacon <will@kernel.org>,
-        Kate Stewart <kstewart@linuxfoundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Steve Capper <steve.capper@arm.com>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linuxarm <linuxarm@huawei.com>, zoucao@linux.alibaba.com
+Date:   Wed, 6 Nov 2019 18:01:54 +0100
+Message-ID: <CAKv+Gu-q16Z=tyeb3b5NnjBkw9cRoeEM6OQaT6dGe1i+9iJa9w@mail.gmail.com>
+Subject: Re: [PATCH] efi: Return EFI_RESERVED_TYPE in efi_mem_type() for
+ absent addresses
+To:     Anshuman Khandual <anshuman.khandual@arm.com>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-efi <linux-efi@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, 6 Nov 2019 at 15:56, Ard Biesheuvel <ard.biesheuvel@linaro.org> wrote:
+On Tue, 5 Nov 2019 at 21:39, Anshuman Khandual
+<anshuman.khandual@arm.com> wrote:
 >
-> On Tue, 5 Nov 2019 at 09:29, Xinwei Kong <kong.kongxinwei@hisilicon.com> wrote:
-> >
-> > this patch gets tpm eventlog information such as device boot status,event guid
-> > and so on, which will be from bios stage. it use "efi_retrieve_tpm2_eventlog"
-> > functions to get it for ARM64 platorm.
-> >
-> > Signed-off-by: Xinwei Kong <kong.kongxinwei@hisilicon.com>
-> > Signed-off-by: Zou Cao <zoucao@linux.alibaba.com>
-> > ---
-> >  drivers/firmware/efi/libstub/arm-stub.c | 2 ++
-> >  1 file changed, 2 insertions(+)
-> >
-> > diff --git a/drivers/firmware/efi/libstub/arm-stub.c b/drivers/firmware/efi/libstub/arm-stub.c
-> > index c382a48..37c8f81 100644
-> > --- a/drivers/firmware/efi/libstub/arm-stub.c
-> > +++ b/drivers/firmware/efi/libstub/arm-stub.c
-> > @@ -139,6 +139,8 @@ unsigned long efi_entry(void *handle, efi_system_table_t *sys_table,
-> >         if (status != EFI_SUCCESS)
-> >                 goto fail;
-> >
-> > +       efi_retrieve_tpm2_eventlog(sys_table);
-> > +
+> The function efi_mem_type() is expected (per documentation above) to return
+> EFI_RESERVED_TYPE when a given physical address is not present in the EFI
+> memory map. Even though EFI_RESERVED_TYPE is not getting checked explicitly
+> anywhere in the callers, it is always better to return expected values.
 >
-> This function allocates memory, so calling it should be deferred until
-> after we relocate the kernel, to prevent these allocations from using
-> up space that we'd rather use for the kernel.
->
-> Does it work for you if we move this call further down, right before
-> the call to efi_enable_reset_attack_mitigation()? Please confirm.
->
+> Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+> Cc: linux-efi@vger.kernel.org
+> Cc: linux-kernel@vger.kernel.org
+> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
 
-Also, your S-o-b chain is incorrect. If Zou Cao provided you with the
-patch, please credit her/him as the author (using git --reset-author)
-and move your S-o-b last. If Zou Cao was a co-author [which seems
-unlikely for a single line patch], use Co-developed-by+Signed-off-by.
-In any case, the S-o-b of the person sending out the patch via email
-should come last.
+This reverts commit f99afd08a45fbbd9ce35a7624ffd1d850a1906c0.
+
+Could you explain why it is better to fix the code than fix the comment?
+
+> ---
+>  drivers/firmware/efi/efi.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
+> index 69f00f7453a3..bdda90a4601e 100644
+> --- a/drivers/firmware/efi/efi.c
+> +++ b/drivers/firmware/efi/efi.c
+> @@ -914,7 +914,7 @@ int efi_mem_type(unsigned long phys_addr)
+>                                   (md->num_pages << EFI_PAGE_SHIFT))))
+>                         return md->type;
+>         }
+> -       return -EINVAL;
+> +       return EFI_RESERVED_TYPE;
+>  }
+>  #endif
+>
+> --
+> 2.20.1
+>
