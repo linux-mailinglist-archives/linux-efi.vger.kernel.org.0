@@ -2,28 +2,28 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A074FF0C7E
-	for <lists+linux-efi@lfdr.de>; Wed,  6 Nov 2019 04:07:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2328BF0CF0
+	for <lists+linux-efi@lfdr.de>; Wed,  6 Nov 2019 04:22:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387919AbfKFDHg (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 5 Nov 2019 22:07:36 -0500
-Received: from linux.microsoft.com ([13.77.154.182]:41418 "EHLO
+        id S1730655AbfKFDWA (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 5 Nov 2019 22:22:00 -0500
+Received: from linux.microsoft.com ([13.77.154.182]:46526 "EHLO
         linux.microsoft.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387917AbfKFDHg (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 5 Nov 2019 22:07:36 -0500
+        with ESMTP id S1730585AbfKFDWA (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 5 Nov 2019 22:22:00 -0500
 Received: from [10.137.112.111] (unknown [131.107.147.111])
-        by linux.microsoft.com (Postfix) with ESMTPSA id 7FD8720B7192;
-        Tue,  5 Nov 2019 19:07:35 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 7FD8720B7192
+        by linux.microsoft.com (Postfix) with ESMTPSA id 188C720B7192;
+        Tue,  5 Nov 2019 19:21:59 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 188C720B7192
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-        s=default; t=1573009655;
-        bh=t+UX8ssq46MLjcIIguwgYQLFTqBQfN20laK/0LJnJMk=;
+        s=default; t=1573010519;
+        bh=btanoP8xvS9QFvuryL6LOBj/cR6eFnV38JO12TA+2Es=;
         h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=b5tCaED+1a14jU4yDtJu7DHZpYKeU9bgyFe7/6cyEQ9AMFm/YaUzZN3tW3ammEHen
-         3XQnptYEN3Xga6e/24SucJMjEQ/auFnVvUJ7eTfQW8LMG1nQVLpe/LyWzLc6mUNPRR
-         6zW1QXKCY3gFLNwPy+gFg1B+uGOBz9wacrmAJUWA=
-Subject: Re: [PATCH v6 1/4] powerpc/powernv: Add OPAL API interface to access
- secure variable
+        b=h8vE0YBTBFtolSdZJ6D5H4kGsI8Fe1ayeWlTmxyy2LPG/uxRdVa6pe1IYU77Gz2sB
+         MpYk0o1suZiadsaEDpVL2zwUf9LYYj5U9LsVUfyVmaJZR/iA5V9qV7g6pNWaeE+u31
+         Kxd8IkbeVsmeuXj0v3befYTEYuI4h0vOTVs25gNc=
+Subject: Re: [PATCH v6 2/4] powerpc: expose secure variables to userspace via
+ sysfs
 To:     Eric Richter <erichte@linux.ibm.com>, linuxppc-dev@ozlabs.org,
         linux-efi@vger.kernel.org, linux-integrity@vger.kernel.org
 Cc:     linux-kernel@vger.kernel.org,
@@ -41,14 +41,14 @@ Cc:     linux-kernel@vger.kernel.org,
         Oliver O'Halloran <oohall@gmail.com>,
         Nayna Jain <nayna@linux.ibm.com>
 References: <20191105082450.14746-1-erichte@linux.ibm.com>
- <20191105082450.14746-2-erichte@linux.ibm.com>
+ <20191105082450.14746-3-erichte@linux.ibm.com>
 From:   Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
-Message-ID: <3d2e3792-e78e-95a8-623e-1ddcf3ccf241@linux.microsoft.com>
-Date:   Tue, 5 Nov 2019 19:07:55 -0800
+Message-ID: <79a6a7de-360c-c5c9-04e9-807952098ae5@linux.microsoft.com>
+Date:   Tue, 5 Nov 2019 19:22:19 -0800
 User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
  Thunderbird/68.2.1
 MIME-Version: 1.0
-In-Reply-To: <20191105082450.14746-2-erichte@linux.ibm.com>
+In-Reply-To: <20191105082450.14746-3-erichte@linux.ibm.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -61,87 +61,60 @@ On 11/5/2019 12:24 AM, Eric Richter wrote:
 
 > From: Nayna Jain <nayna@linux.ibm.com>
 > 
-> The X.509 certificates trusted by the platform and required to secure boot
-> the OS kernel are wrapped in secure variables, which are controlled by
-> OPAL.
+> PowerNV secure variables, which store the keys used for OS kernel
+> verification, are managed by the firmware. These secure variables need to
+> be accessed by the userspace for addition/deletion of the certificates.
 > 
-> This patch adds firmware/kernel interface to read and write OPAL secure
-> variables based on the unique key.
+> This patch adds the sysfs interface to expose secure variables for PowerNV
+> secureboot. The users shall use this interface for manipulating
+> the keys stored in the secure variables.
 
-I feel splitting this patch into smaller set of changes would make it 
-easier to review. For instance roughly as below:
+Can this patch be split into smaller set of changes:
+1, Definitions of attribute functions like backend_show, size_show, etc.
+2, secvar_sysfs_load
+3, secvar_sysfs_init
+4, secvar_sysfs_exit
 
-  1, opal-api.h which adds the #defines  OPAL_SECVAR_ and the API signature.
-  2, secvar.h then adds secvar_operations struct
-  3, powerpc/kernel for the Interface definitions
-  4, powernv/opal-secvar.c for the API implementations
-  5, powernv/opal-call.c for the API calls
-  6, powernv/opal.c for the secvar init calls.
-
-> diff --git a/arch/powerpc/include/asm/opal-api.h b/arch/powerpc/include/asm/opal-api.h
-> index 378e3997845a..c1f25a760eb1 100644
-> --- a/arch/powerpc/include/asm/opal-api.h
-> +++ b/arch/powerpc/include/asm/opal-api.h
-> @@ -211,7 +211,10 @@
->   #define OPAL_MPIPL_UPDATE			173
->   #define OPAL_MPIPL_REGISTER_TAG			174
->   #define OPAL_MPIPL_QUERY_TAG			175
-> -#define OPAL_LAST				175
-> +#define OPAL_SECVAR_GET				176
-> +#define OPAL_SECVAR_GET_NEXT			177
-> +#define OPAL_SECVAR_ENQUEUE_UPDATE		178
-> +#define OPAL_LAST				178
-
-Please fix the indentation for the #defines
-
-
-> +static int opal_get_variable(const char *key, uint64_t ksize,
-> +			     u8 *data, uint64_t *dsize)
+> +static int secvar_sysfs_load(void)
 > +{
+> +	char *name;
+> +	uint64_t namesize = 0;
+> +	struct kobject *kobj;
 > +	int rc;
 > +
-> +	if (!key || !dsize)
-> +		return -EINVAL;
+> +	name = kzalloc(NAME_MAX_SIZE, GFP_KERNEL);
+> +	if (!name)
+> +		return -ENOMEM;
 > +
-> +	*dsize = cpu_to_be64(*dsize);
+> +	do {
+> +		rc = secvar_ops->get_next(name, &namesize, NAME_MAX_SIZE);
+> +		if (rc) {
+> +			if (rc != -ENOENT)
+> +				pr_err("error getting secvar from firmware %d\n",
+> +					rc);
+> +			break;
+> +		}
 > +
-> +	rc = opal_secvar_get(key, ksize, data, dsize);
+> +		kobj = kzalloc(sizeof(*kobj), GFP_KERNEL);
+> +		if (!kobj) {
+> +			rc = -ENOMEM;
+> +			break;
+> +		}
 > +
-> +	*dsize = be64_to_cpu(*dsize);
+> +		kobject_init(kobj, &secvar_ktype);
+> +
+> +		rc = kobject_add(kobj, &secvar_kset->kobj, "%s", name);
+> +		if (rc) {
+> +			pr_warn("kobject_add error %d for attribute: %s\n", rc,
+> +				name);
+> +			kobject_put(kobj);
+> +			kobj = NULL;
+> +		}
+> +
+> +		if (kobj)
+> +			kobject_uevent(kobj, KOBJ_ADD);
 
-Should the return status (rc) from opal_secvar_get be checked before 
-attempting to do the conversion (be64_to_cpu)?
-
-> +static int opal_get_next_variable(const char *key, uint64_t *keylen,
-> +				  uint64_t keybufsize)
-> +{
-> +	int rc;
-> +
-> +	if (!key || !keylen)
-> +		return -EINVAL;
-> +
-> +	*keylen = cpu_to_be64(*keylen);
-> +
-> +	rc = opal_secvar_get_next(key, keylen, keybufsize);
-> +
-> +	*keylen = be64_to_cpu(*keylen);
-
-Same comment as above - should rc be checke before attempting to convert?
-
-> +
-> +	return opal_status_to_err(rc);
-> +}
-> +
-> +static int opal_set_variable(const char *key, uint64_t ksize, u8 *data,
-> +			     uint64_t dsize)
-> +{
-> +	int rc;
-> +
-> +	if (!key || !data)
-> +		return -EINVAL;
-
-Is the key and data received here from a trusted caller? If not, should 
-there be some validation checks done here before enqueuing the data?
+kobject_event() will add kobj and free the memory when done using the 
+object?
 
   -lakshmi
-
