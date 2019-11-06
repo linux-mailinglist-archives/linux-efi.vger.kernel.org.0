@@ -2,204 +2,76 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3CD05F1E51
-	for <lists+linux-efi@lfdr.de>; Wed,  6 Nov 2019 20:12:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E3EDF1F25
+	for <lists+linux-efi@lfdr.de>; Wed,  6 Nov 2019 20:43:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732217AbfKFTMA (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 6 Nov 2019 14:12:00 -0500
-Received: from mail-wr1-f66.google.com ([209.85.221.66]:38530 "EHLO
-        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727538AbfKFTMA (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 6 Nov 2019 14:12:00 -0500
-Received: by mail-wr1-f66.google.com with SMTP id j15so6715663wrw.5
-        for <linux-efi@vger.kernel.org>; Wed, 06 Nov 2019 11:11:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=EcgRR3fhItj7MngTpAkKZQgz86ETXxndudb9oWnZwxg=;
-        b=rgRyO6x1nGDPENAhlTeX1XD1tL7bztL4f34POmMWurjqkhpHZRc6O0seKYBMbC9u2m
-         GiOBZXsbYzd2cMwQ7Un5XYdpqxCR88JdJYcGqZ+EIZn0tz+O/gh+0gVymXtnTh3x3e+Q
-         +vgQsiFQzsAF0f1SzF6rQeWosSl4KG7cSBO0cMeY/yFMtjaD3kOQUI7B0ybY2Mp1EYRj
-         XlqQzSr4fPATOqhHF3AqAEPw28SBvkbGqiOwb13fJHc3e8IJB/HGyF85obDx5SBHYEOt
-         r5PJ8CZ3wiWvJaTMjVlEH/zcloEiB3aDDbSMcFQnX/01veFTumtByBbnmVpbWkZ+fwuV
-         UtjQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=EcgRR3fhItj7MngTpAkKZQgz86ETXxndudb9oWnZwxg=;
-        b=BkwHRTgwXtSftVeZFgDeTyoHknnWzElp3oQAevO3Ew6ThrlV49Z7coo84jVdPZYW+5
-         TXU5nJG5oNLJre1/IRfPu1Gichll/dBZXccyJBBiS7nd5qObNw7sWWU0UZHmbmc5kVB3
-         yfWdNpPM7SmiDwKvZzkVSBNHf0Lg6ZBJxSjIE2KoGaM2Wj/NHP9h/F3n912vRyzCU/2z
-         gyI8Miuyd8wfohk2q2NfltZfogtgVmhlbu53LNtLYEsYeOExlKOGxjZg1J9RDnyTTDTq
-         F1CC6/lrvC9YfD2aXwxQBm1swYaxoBcGxmgizhatlKJRkWtQQX0ThB/sXkgsJccISdOQ
-         +gsg==
-X-Gm-Message-State: APjAAAVC7fCVTq1YLFujPj4V6ZuE9pLxPYsW1PHFiPqcKFU7oTq2W6xp
-        SxAtZGeZdxoVpA+51pssspZuKA==
-X-Google-Smtp-Source: APXvYqy2j8z4zrv6pixCYXtdwfDCHIPHcMSlZiyOi4PqRbOW14W0q0tt/ziIhir+mKB+jiKw5TxZRQ==
-X-Received: by 2002:adf:f743:: with SMTP id z3mr4041566wrp.200.1573067516685;
-        Wed, 06 Nov 2019 11:11:56 -0800 (PST)
-Received: from google.com ([100.105.32.75])
-        by smtp.gmail.com with ESMTPSA id p14sm16143410wrq.72.2019.11.06.11.11.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 06 Nov 2019 11:11:55 -0800 (PST)
-Date:   Wed, 6 Nov 2019 20:11:49 +0100
-From:   Marco Elver <elver@google.com>
-To:     Dmitry Vyukov <dvyukov@google.com>
-Cc:     LKMM Maintainers -- Akira Yokosawa <akiyks@gmail.com>,
-        Alan Stern <stern@rowland.harvard.edu>,
-        Alexander Potapenko <glider@google.com>,
-        Andrea Parri <parri.andrea@gmail.com>,
-        Andrey Konovalov <andreyknvl@google.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Boqun Feng <boqun.feng@gmail.com>,
-        Borislav Petkov <bp@alien8.de>, Daniel Axtens <dja@axtens.net>,
-        Daniel Lustig <dlustig@nvidia.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        David Howells <dhowells@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
-        Jade Alglave <j.alglave@ucl.ac.uk>,
-        Joel Fernandes <joel@joelfernandes.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Josh Poimboeuf <jpoimboe@redhat.com>,
-        Luc Maranget <luc.maranget@inria.fr>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Nicholas Piggin <npiggin@gmail.com>, paulmck@kernel.org,
-        Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Will Deacon <will@kernel.org>,
-        kasan-dev <kasan-dev@googlegroups.com>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
-        linux-efi@vger.kernel.org,
-        "open list:KERNEL BUILD + fi..." <linux-kbuild@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Linux-MM <linux-mm@kvack.org>,
-        the arch/x86 maintainers <x86@kernel.org>
-Subject: Re: [PATCH v3 1/9] kcsan: Add Kernel Concurrency Sanitizer
- infrastructure
-Message-ID: <20191106191149.GA126960@google.com>
-References: <20191104142745.14722-1-elver@google.com>
- <20191104142745.14722-2-elver@google.com>
- <CACT4Y+a+ftjHnRx9PD48hEVm98muooHwO0Y7i3cHetTJobRDxg@mail.gmail.com>
+        id S1727550AbfKFTnT (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 6 Nov 2019 14:43:19 -0500
+Received: from mail.skyhub.de ([5.9.137.197]:57382 "EHLO mail.skyhub.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726713AbfKFTnT (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Wed, 6 Nov 2019 14:43:19 -0500
+Received: from zn.tnic (p200300EC2F0E770015F12088A3A733FB.dip0.t-ipconnect.de [IPv6:2003:ec:2f0e:7700:15f1:2088:a3a7:33fb])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 476DB1EC0CCC;
+        Wed,  6 Nov 2019 20:43:17 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1573069397;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=ispzmoCNVnfldM6nKX7veRr0TPeyd0yKxE1spA1TaBc=;
+        b=YEKNuwnXhFvXTQKghtkDmqtoKBfr+3vCzK+52VXSmLJzHsUMi2Eszo+4Y3+CPZzZ6FR7Wr
+        Psetif/T1gU5xoavkZKEWuju6VydeqZkc4MLlwubc0Ojq+5x3OB7HoSoavN8i3HRs6/KPM
+        GUFBk8Z/klTXeVYa+6vDlVbXTmDuni4=
+Date:   Wed, 6 Nov 2019 20:43:10 +0100
+From:   Borislav Petkov <bp@alien8.de>
+To:     hpa@zytor.com
+Cc:     Daniel Kiper <daniel.kiper@oracle.com>, linux-efi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, x86@kernel.org,
+        xen-devel@lists.xenproject.org, ard.biesheuvel@linaro.org,
+        boris.ostrovsky@oracle.com, corbet@lwn.net,
+        dave.hansen@linux.intel.com, luto@kernel.org, peterz@infradead.org,
+        eric.snowberg@oracle.com, jgross@suse.com,
+        kanth.ghatraju@oracle.com, konrad.wilk@oracle.com,
+        mingo@redhat.com, rdunlap@infradead.org, ross.philipson@oracle.com,
+        tglx@linutronix.de
+Subject: Re: [PATCH v5 0/3] x86/boot: Introduce the kernel_info et consortes
+Message-ID: <20191106194310.GE28380@zn.tnic>
+References: <20191104151354.28145-1-daniel.kiper@oracle.com>
+ <20191106170333.GD28380@zn.tnic>
+ <3EABBAB2-5BEF-4FEE-8BB4-9EB4B0180B10@zytor.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <CACT4Y+a+ftjHnRx9PD48hEVm98muooHwO0Y7i3cHetTJobRDxg@mail.gmail.com>
+In-Reply-To: <3EABBAB2-5BEF-4FEE-8BB4-9EB4B0180B10@zytor.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
+On Wed, Nov 06, 2019 at 09:56:48AM -0800, hpa@zytor.com wrote:
+> For one thing, we already have people asking for more than 4 GiB
+> worth of initramfs, and especially with initramfs that huge it would
+> make a *lot* of sense to allow loading it in chunks without having to
+> concatenate them.
 
+Yeah, tglx gave me his use case on IRC where they have the rootfs in the
+initrd and how they would hit the limit when the rootfs has a bunch of
+debug libs etc tools, which would blow up its size.
 
-On Wed, 06 Nov 2019, Dmitry Vyukov wrote:
+> I have been asking for a long time for initramfs creators to split the
+> kernel-dependent and kernel independent parts into separate initramfs
+> modules.
 
-> On Mon, Nov 4, 2019 at 3:28 PM Marco Elver <elver@google.com> wrote:
-> >
-> > Kernel Concurrency Sanitizer (KCSAN) is a dynamic data-race detector for
-> > kernel space. KCSAN is a sampling watchpoint-based data-race detector.
-> > See the included Documentation/dev-tools/kcsan.rst for more details.
-> ...
-> > +static inline atomic_long_t *find_watchpoint(unsigned long addr, size_t size,
-> > +                                            bool expect_write,
-> > +                                            long *encoded_watchpoint)
-> > +{
-> > +       const int slot = watchpoint_slot(addr);
-> > +       const unsigned long addr_masked = addr & WATCHPOINT_ADDR_MASK;
-> > +       atomic_long_t *watchpoint;
-> > +       unsigned long wp_addr_masked;
-> > +       size_t wp_size;
-> > +       bool is_write;
-> > +       int i;
-> > +
-> > +       BUILD_BUG_ON(CONFIG_KCSAN_NUM_WATCHPOINTS < CHECK_NUM_SLOTS);
-> > +
-> > +       for (i = 0; i < CHECK_NUM_SLOTS; ++i) {
-> > +               watchpoint = &watchpoints[SLOT_IDX(slot, i)];
-> 
-> 
-> The fast path code become much nicer!
-> I did another pass looking at how we can optimize the fast path.
-> Currently we still have 2 push/pop pairs on the fast path because of
-> register pressure. The logic in SLOT_IDX seems to be the main culprit.
-> We discussed several options offline:
-> 1. Just check 1 slot and ignore all corner cases (we will miss racing
-> unaligned access to different addresses but overlapping and crossing
-> pages, which sounds pretty esoteric)
-> 2. Check 3 slots in order and without wraparound (watchpoints[slot +
-> i], where i=-1,0,1), this will require adding dummy slots around the
-> array
-> 3. An interesting option is to check just 2 slots (that's enough!), to
-> make this work we will need to slightly offset bucket number when
-> setting a watch point (namely, if an access goes to the very end of a
-> page, we set the watchpoint into the bucket corresponding to the
-> _next_ page)
-> All of these options remove push/pop in my experiments. Obviously
-> checking fewer slots will reduce dynamic overhead even more.
-> 
-> 
-> > +               *encoded_watchpoint = atomic_long_read(watchpoint);
-> > +               if (!decode_watchpoint(*encoded_watchpoint, &wp_addr_masked,
-> > +                                      &wp_size, &is_write))
-> > +                       continue;
-> > +
-> > +               if (expect_write && !is_write)
-> > +                       continue;
-> > +
-> > +               /* Check if the watchpoint matches the access. */
-> > +               if (matching_access(wp_addr_masked, wp_size, addr_masked, size))
-> > +                       return watchpoint;
-> > +       }
-> > +
-> > +       return NULL;
-> > +}
-> > +
-> > +static inline atomic_long_t *insert_watchpoint(unsigned long addr, size_t size,
-> > +                                              bool is_write)
-> > +{
-> > +       const int slot = watchpoint_slot(addr);
-> > +       const long encoded_watchpoint = encode_watchpoint(addr, size, is_write);
-> > +       atomic_long_t *watchpoint;
-> > +       int i;
-> > +
-> > +       for (i = 0; i < CHECK_NUM_SLOTS; ++i) {
-> > +               long expect_val = INVALID_WATCHPOINT;
-> > +
-> > +               /* Try to acquire this slot. */
-> > +               watchpoint = &watchpoints[SLOT_IDX(slot, i)];
-> 
-> If we do this SLOT_IDX trickery to catch unaligned accesses crossing
-> pages, then I think we should not use it insert_watchpoint at all and
-> only set the watchpoint to the exact index. Otherwise, we will
-> actually miss the corner cases which defeats the whole purpose of
-> SLOT_IDX and 3 iterations.
-> 
+Right.
 
-Just for the record, there are 2 reasons actually I decided to do this:
+Thx.
 
-1. the address slot is already occupied, check if any adjacent slots are
-   free;
-2. accesses that straddle a slot boundary due to size that exceeds a
-   slot's range may check adjacent slots if any watchpoint matches.
+-- 
+Regards/Gruss,
+    Boris.
 
-In /sys/kernel/debug/kcsan I can see no_capacity with the current version stays
-below 10 for kernel boot. When I just use 1 slot, no_capacity events exceed
-90000, because point (1) is no longer addressed. This is a problem that would
-impair our ability to detect races.  One reason this happens is due to
-locality: it is just much more likely that we have multiple accesses to the
-same pages during some phase of execution from multiple threads.
-
-To avoid blowing up no_capacity events, insert_watchpoint should not change. I
-will change the iteration order in the fast-path (avoiding the complicated
-logic), and add additional overflow entries to the watchpoint array.
-
-AFAIK this generates better code, while still addressing points (1) and
-(2) above. This should be the best trade-off between absolute
-performance and our ability to detect data races.
-
--- Marco
+https://people.kernel.org/tglx/notes-about-netiquette
