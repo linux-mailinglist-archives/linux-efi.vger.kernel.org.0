@@ -2,73 +2,214 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BA5D8F3253
-	for <lists+linux-efi@lfdr.de>; Thu,  7 Nov 2019 16:11:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 96C07F3773
+	for <lists+linux-efi@lfdr.de>; Thu,  7 Nov 2019 19:44:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389404AbfKGPLG (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 7 Nov 2019 10:11:06 -0500
-Received: from mail.kernel.org ([198.145.29.99]:35098 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2388215AbfKGPLF (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Thu, 7 Nov 2019 10:11:05 -0500
-Received: from e123331-lin.home (lfbn-mar-1-643-104.w90-118.abo.wanadoo.fr [90.118.215.104])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 5051221D7F;
-        Thu,  7 Nov 2019 15:11:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1573139465;
-        bh=ShhuQJKj95tf70E5sIDo1oCgv9TkTuvFMWJ3C79oc+A=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MARGOLWPTetCeNDq3mfDxXWifCDClaIzR9qEWhG4uCsHWtXuAz7X4MAYJllkjwUD1
-         kvkjlTmcLbmn90XZ+QTy+yy1X5tP6b7GKBdTOW1n65bnWY1mL3LK7ExQR55gHhUxwI
-         86cPvbcK3zmrw3ayaTCbpJmEsSyLyiLtZh4irQgE=
-From:   Ard Biesheuvel <ardb@kernel.org>
-To:     linux-efi@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>
-Cc:     Ard Biesheuvel <ardb@kernel.org>,
+        id S1726785AbfKGSoB (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 7 Nov 2019 13:44:01 -0500
+Received: from mail-ot1-f68.google.com ([209.85.210.68]:45110 "EHLO
+        mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726971AbfKGSn7 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 7 Nov 2019 13:43:59 -0500
+Received: by mail-ot1-f68.google.com with SMTP id r24so2879995otk.12
+        for <linux-efi@vger.kernel.org>; Thu, 07 Nov 2019 10:43:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=Np0FlikDqTmwL51OIp1+s+VGLrj6Eo2iSbS+rqBgcFU=;
+        b=X+s4tLRet1xj+dqvHmXEfS/YHLe9+sdvUDznD6OlUWI1efIcn7AG/F2h+d/MAYLkzE
+         RZAo2vYVy43hDiFbRXlMXoJJpsQgmQQStj+TuVAMQsuH8uyG1troWMTHxgRUkoaA2D0M
+         lX78jV+zpKCFZNmj7pCPrLLYtNjxrJOdz0gg63KPn5E1sBi6CN2r3YbiZ/l0EebGtLvZ
+         NtNYsP79rjcjCNmbUCeWEhAOfhSnRP/IZaWkcKtAJd6EriACLLGruAoJfWiVaoiu5qlN
+         6h+gGPib2+VjxvGXiD9ykfXsmY75IIvFAAhMpUzqeAR1f4jvFwGMm/A3rlvbZJ9CCx90
+         h7sg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Np0FlikDqTmwL51OIp1+s+VGLrj6Eo2iSbS+rqBgcFU=;
+        b=Cc9PE0DnR038VAqzd8haq/3JSF6uDBut/JgsN3i2rtow+Eg06fghUdBRcTWwDEYhh7
+         xYrZXoRxbWemOdvcoIJTlFVrrIyUD+ZnovmLzXINHO7Pp+LACDH76uEE5I3Obe+JDSEK
+         99jhmQMoIXj66bMvGzdY2HrIv2FA5eqPNzbnQn6W/SL1qNPrDrLMAV+O3/nWsYo8THQI
+         0I8rYriiR3JIF2OElP7qHB5oTDBA5yW2LnapYjlKt8cNNFu5+78LTu2iGTywWfjGPUoP
+         cFUJMSlkgjUraoaZOjfEt34O87fYlNAhQpsffTzFb5g81BrF01k4OqN8R5LIntx/m1oa
+         7qjA==
+X-Gm-Message-State: APjAAAX5wMlzj5Uux/33FOMfugN2a3G/OZhIXBTL422aMXuCos7Kgnj6
+        LbUGoRlIs8J6nQyhlV4yP9UhLXhQIGBMty6OS6JkmA==
+X-Google-Smtp-Source: APXvYqwO3UnGuF7d4Y2gfzVJSb7LPWecfAiiK/QIM9BoHDNRh9E7Srx5p/4cCr/YwL4Jvfd1ibRj9LkTbNN2VnuQejM=
+X-Received: by 2002:a05:6830:1e84:: with SMTP id n4mr4371298otr.233.1573152236918;
+ Thu, 07 Nov 2019 10:43:56 -0800 (PST)
+MIME-Version: 1.0
+References: <20191104142745.14722-2-elver@google.com> <201911070445.vRUSVUAX%lkp@intel.com>
+In-Reply-To: <201911070445.vRUSVUAX%lkp@intel.com>
+From:   Marco Elver <elver@google.com>
+Date:   Thu, 7 Nov 2019 19:43:45 +0100
+Message-ID: <CANpmjNNWeM91Jmoh8aujpBA9YVfL6LSqH-taQO-6BJQwUZfCkw@mail.gmail.com>
+Subject: Re: [PATCH v3 1/9] kcsan: Add Kernel Concurrency Sanitizer infrastructure
+To:     kbuild test robot <lkp@intel.com>
+Cc:     kbuild-all@lists.01.org,
+        LKMM Maintainers -- Akira Yokosawa <akiyks@gmail.com>,
+        Alan Stern <stern@rowland.harvard.edu>,
+        Alexander Potapenko <glider@google.com>,
+        Andrea Parri <parri.andrea@gmail.com>,
+        Andrey Konovalov <andreyknvl@google.com>,
+        Andy Lutomirski <luto@kernel.org>,
         Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        linux-kernel@vger.kernel.org,
-        Dominik Brodowski <linux@dominikbrodowski.net>,
-        Xinwei Kong <kong.kongxinwei@hisilicon.com>,
-        Zou Cao <zoucao@linux.alibaba.com>
-Subject: [PATCH 4/4] efi: libstub/tpm: enable tpm eventlog function for ARM platforms
-Date:   Thu,  7 Nov 2019 16:10:36 +0100
-Message-Id: <20191107151036.5586-5-ardb@kernel.org>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20191107151036.5586-1-ardb@kernel.org>
-References: <20191107151036.5586-1-ardb@kernel.org>
+        Arnd Bergmann <arnd@arndb.de>,
+        Boqun Feng <boqun.feng@gmail.com>,
+        Borislav Petkov <bp@alien8.de>, Daniel Axtens <dja@axtens.net>,
+        Daniel Lustig <dlustig@nvidia.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        David Howells <dhowells@redhat.com>,
+        Dmitry Vyukov <dvyukov@google.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+        Jade Alglave <j.alglave@ucl.ac.uk>,
+        Joel Fernandes <joel@joelfernandes.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Josh Poimboeuf <jpoimboe@redhat.com>,
+        Luc Maranget <luc.maranget@inria.fr>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        "Paul E. McKenney" <paulmck@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Will Deacon <will@kernel.org>,
+        kasan-dev <kasan-dev@googlegroups.com>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
+        linux-efi@vger.kernel.org,
+        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Linux Memory Management List <linux-mm@kvack.org>,
+        "the arch/x86 maintainers" <x86@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-From: Xinwei Kong <kong.kongxinwei@hisilicon.com>
+On Wed, 6 Nov 2019 at 21:35, kbuild test robot <lkp@intel.com> wrote:
+>
+> Hi Marco,
+>
+> I love your patch! Perhaps something to improve:
+>
+> [auto build test WARNING on linus/master]
+> [also build test WARNING on v5.4-rc6]
+> [cannot apply to next-20191106]
+> [if your patch is applied to the wrong git tree, please drop us a note to help
+> improve the system. BTW, we also suggest to use '--base' option to specify the
+> base tree in git format-patch, please see https://stackoverflow.com/a/37406982]
+>
+> url:    https://github.com/0day-ci/linux/commits/Marco-Elver/Add-Kernel-Concurrency-Sanitizer-KCSAN/20191105-002542
+> base:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git a99d8080aaf358d5d23581244e5da23b35e340b9
+> config: x86_64-randconfig-a004-201944 (attached as .config)
+> compiler: gcc-4.9 (Debian 4.9.2-10+deb8u1) 4.9.2
+> reproduce:
+>         # save the attached .config to linux build tree
+>         make ARCH=x86_64
+>
+> If you fix the issue, kindly add following tag
+> Reported-by: kbuild test robot <lkp@intel.com>
 
-Wire up the existing code for ARM that loads the TPM event log into
-OS accessible buffers while running the EFI stub so that the kernel
-proper can access it at runtime.
+Thanks! Will send v4 with a fix.
 
-Tested-by: Zou Cao <zoucao@linux.alibaba.com>
-Signed-off-by: Xinwei Kong <kong.kongxinwei@hisilicon.com>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
----
- drivers/firmware/efi/libstub/arm-stub.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/firmware/efi/libstub/arm-stub.c b/drivers/firmware/efi/libstub/arm-stub.c
-index c382a48c6678..817237ce2420 100644
---- a/drivers/firmware/efi/libstub/arm-stub.c
-+++ b/drivers/firmware/efi/libstub/arm-stub.c
-@@ -189,6 +189,8 @@ unsigned long efi_entry(void *handle, efi_system_table_t *sys_table,
- 		goto fail_free_cmdline;
- 	}
- 
-+	efi_retrieve_tpm2_eventlog(sys_table);
-+
- 	/* Ask the firmware to clear memory on unclean shutdown */
- 	efi_enable_reset_attack_mitigation(sys_table);
- 
--- 
-2.17.1
-
+> All warnings (new ones prefixed by >>):
+>
+>    In file included from include/linux/compiler_types.h:59:0,
+>                     from <command-line>:0:
+> >> include/linux/compiler_attributes.h:35:29: warning: "__GCC4_has_attribute___no_sanitize_thread__" is not defined [-Wundef]
+>     # define __has_attribute(x) __GCC4_has_attribute_##x
+>                                 ^
+> >> include/linux/compiler-gcc.h:148:5: note: in expansion of macro '__has_attribute'
+>     #if __has_attribute(__no_sanitize_thread__) && defined(__SANITIZE_THREAD__)
+>         ^
+> --
+>    In file included from include/linux/compiler_types.h:59:0,
+>                     from <command-line>:0:
+> >> include/linux/compiler_attributes.h:35:29: warning: "__GCC4_has_attribute___no_sanitize_thread__" is not defined [-Wundef]
+>     # define __has_attribute(x) __GCC4_has_attribute_##x
+>                                 ^
+> >> include/linux/compiler-gcc.h:148:5: note: in expansion of macro '__has_attribute'
+>     #if __has_attribute(__no_sanitize_thread__) && defined(__SANITIZE_THREAD__)
+>         ^
+>    fs/afs/dynroot.c: In function 'afs_dynroot_lookup':
+>    fs/afs/dynroot.c:117:6: warning: 'len' may be used uninitialized in this function [-Wmaybe-uninitialized]
+>      ret = lookup_one_len(name, dentry->d_parent, len);
+>          ^
+>    fs/afs/dynroot.c:91:6: note: 'len' was declared here
+>      int len;
+>          ^
+> --
+>    In file included from include/linux/compiler_types.h:59:0,
+>                     from <command-line>:0:
+> >> include/linux/compiler_attributes.h:35:29: warning: "__GCC4_has_attribute___no_sanitize_thread__" is not defined [-Wundef]
+>     # define __has_attribute(x) __GCC4_has_attribute_##x
+>                                 ^
+> >> include/linux/compiler-gcc.h:148:5: note: in expansion of macro '__has_attribute'
+>     #if __has_attribute(__no_sanitize_thread__) && defined(__SANITIZE_THREAD__)
+>         ^
+>    7 real  2 user  5 sys  107.26% cpu   make modules_prepare
+> --
+>    In file included from include/linux/compiler_types.h:59:0,
+>                     from <command-line>:0:
+> >> include/linux/compiler_attributes.h:35:29: warning: "__GCC4_has_attribute___no_sanitize_thread__" is not defined [-Wundef]
+>     # define __has_attribute(x) __GCC4_has_attribute_##x
+>                                 ^
+> >> include/linux/compiler-gcc.h:148:5: note: in expansion of macro '__has_attribute'
+>     #if __has_attribute(__no_sanitize_thread__) && defined(__SANITIZE_THREAD__)
+>         ^
+>    In file included from include/linux/compiler_types.h:59:0,
+>                     from <command-line>:0:
+> >> include/linux/compiler_attributes.h:35:29: warning: "__GCC4_has_attribute___no_sanitize_thread__" is not defined [-Wundef]
+>     # define __has_attribute(x) __GCC4_has_attribute_##x
+>                                 ^
+> >> include/linux/compiler-gcc.h:148:5: note: in expansion of macro '__has_attribute'
+>     #if __has_attribute(__no_sanitize_thread__) && defined(__SANITIZE_THREAD__)
+>         ^
+>    In file included from include/linux/compiler_types.h:59:0,
+>                     from <command-line>:0:
+> >> include/linux/compiler_attributes.h:35:29: warning: "__GCC4_has_attribute___no_sanitize_thread__" is not defined [-Wundef]
+>     # define __has_attribute(x) __GCC4_has_attribute_##x
+>                                 ^
+> >> include/linux/compiler-gcc.h:148:5: note: in expansion of macro '__has_attribute'
+>     #if __has_attribute(__no_sanitize_thread__) && defined(__SANITIZE_THREAD__)
+>         ^
+>    In file included from include/linux/compiler_types.h:59:0,
+>                     from <command-line>:0:
+> >> include/linux/compiler_attributes.h:35:29: warning: "__GCC4_has_attribute___no_sanitize_thread__" is not defined [-Wundef]
+>     # define __has_attribute(x) __GCC4_has_attribute_##x
+>                                 ^
+> >> include/linux/compiler-gcc.h:148:5: note: in expansion of macro '__has_attribute'
+>     #if __has_attribute(__no_sanitize_thread__) && defined(__SANITIZE_THREAD__)
+>         ^
+>    In file included from include/linux/compiler_types.h:59:0,
+>                     from <command-line>:0:
+> >> include/linux/compiler_attributes.h:35:29: warning: "__GCC4_has_attribute___no_sanitize_thread__" is not defined [-Wundef]
+>     # define __has_attribute(x) __GCC4_has_attribute_##x
+>                                 ^
+> >> include/linux/compiler-gcc.h:148:5: note: in expansion of macro '__has_attribute'
+>     #if __has_attribute(__no_sanitize_thread__) && defined(__SANITIZE_THREAD__)
+>         ^
+>    8 real  24 user  10 sys  405.87% cpu         make prepare
+>
+> vim +/__has_attribute +148 include/linux/compiler-gcc.h
+>
+>    147
+>  > 148  #if __has_attribute(__no_sanitize_thread__) && defined(__SANITIZE_THREAD__)
+>    149  #define __no_sanitize_thread                                                   \
+>    150          __attribute__((__noinline__)) __attribute__((no_sanitize_thread))
+>    151  #else
+>    152  #define __no_sanitize_thread
+>    153  #endif
+>    154
+>
+> ---
+> 0-DAY kernel test infrastructure                 Open Source Technology Center
+> https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org Intel Corporation
+>
+> --
+> You received this message because you are subscribed to the Google Groups "kasan-dev" group.
+> To unsubscribe from this group and stop receiving emails from it, send an email to kasan-dev+unsubscribe@googlegroups.com.
+> To view this discussion on the web visit https://groups.google.com/d/msgid/kasan-dev/201911070445.vRUSVUAX%25lkp%40intel.com.
