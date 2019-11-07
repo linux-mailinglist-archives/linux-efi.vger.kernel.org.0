@@ -2,27 +2,27 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D2582F3246
-	for <lists+linux-efi@lfdr.de>; Thu,  7 Nov 2019 16:10:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A64CCF3249
+	for <lists+linux-efi@lfdr.de>; Thu,  7 Nov 2019 16:11:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731064AbfKGPKz (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 7 Nov 2019 10:10:55 -0500
-Received: from mail.kernel.org ([198.145.29.99]:34822 "EHLO mail.kernel.org"
+        id S2388454AbfKGPK5 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 7 Nov 2019 10:10:57 -0500
+Received: from mail.kernel.org ([198.145.29.99]:34880 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2388215AbfKGPKy (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Thu, 7 Nov 2019 10:10:54 -0500
+        id S1729854AbfKGPK5 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Thu, 7 Nov 2019 10:10:57 -0500
 Received: from e123331-lin.home (lfbn-mar-1-643-104.w90-118.abo.wanadoo.fr [90.118.215.104])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D0F08207FA;
-        Thu,  7 Nov 2019 15:10:51 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id CA9ED21D79;
+        Thu,  7 Nov 2019 15:10:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1573139454;
-        bh=Qkglv5lZHVxnBcuUB4qmpT6t2JaTNwYPtliF7VcRcwI=;
-        h=From:To:Cc:Subject:Date:From;
-        b=YH6i2pz8mdC87AGoSELTm3qNQmdhv7s4badW59RvW9uVOCWXGU5Or8rhwvc7JKYIu
-         CwqzwmSLsYOwuwooogQv/RIiuGuGseendiUrjn2AXXfhkE9C9ee7N3NZJDHd4ioh/D
-         SQAMISj+G+InMRoiVxSneOdlXHbvuGCx92nUvE7M=
+        s=default; t=1573139457;
+        bh=zy8/oTWVp9pAU9Yw/5ShxGylu0BdMemczEEpuQoS5vQ=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=cMBab5NQhJpSiAGMJ5dr6OYJkfykMx1hkWEWZ5G1UY0yreVLHj7vBI1PsxSqlRr9D
+         nbGd1TVROvVhrmTH6QyLpaNUNRVVyLNEfbYHt4Ts6HVICpDJ6VakdP1DoPoIjPDxj2
+         fdal657TSMAD2JOVGMTJMgsTeP0EZLJY2HBKKSXE=
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-efi@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
         Thomas Gleixner <tglx@linutronix.de>
@@ -31,53 +31,78 @@ Cc:     Ard Biesheuvel <ardb@kernel.org>,
         linux-kernel@vger.kernel.org,
         Dominik Brodowski <linux@dominikbrodowski.net>,
         Xinwei Kong <kong.kongxinwei@hisilicon.com>,
-        Zou Cao <zoucao@linux.alibaba.com>
-Subject: [GIT PULL 0/4] EFI updates for v5.5
-Date:   Thu,  7 Nov 2019 16:10:32 +0100
-Message-Id: <20191107151036.5586-1-ardb@kernel.org>
+        Zou Cao <zoucao@linux.alibaba.com>,
+        Ard Biesheuvel <ard.biesheuvel@arm.com>
+Subject: [PATCH 1/4] MAINTAINERS: update Ard's email address to @kernel.org
+Date:   Thu,  7 Nov 2019 16:10:33 +0100
+Message-Id: <20191107151036.5586-2-ardb@kernel.org>
 X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20191107151036.5586-1-ardb@kernel.org>
+References: <20191107151036.5586-1-ardb@kernel.org>
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The following changes since commit a99d8080aaf358d5d23581244e5da23b35e340b9:
+Cc: Ard Biesheuvel <ard.biesheuvel@arm.com>
+Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+---
+ .mailmap    | 1 +
+ MAINTAINERS | 8 ++++----
+ 2 files changed, 5 insertions(+), 4 deletions(-)
 
-  Linux 5.4-rc6 (2019-11-03 14:07:26 -0800)
+diff --git a/.mailmap b/.mailmap
+index 83d7e750c2fc..5d3b741a3f95 100644
+--- a/.mailmap
++++ b/.mailmap
+@@ -32,6 +32,7 @@ Andy Adamson <andros@citi.umich.edu>
+ Antoine Tenart <antoine.tenart@free-electrons.com>
+ Antonio Ospite <ao2@ao2.it> <ao2@amarulasolutions.com>
+ Archit Taneja <archit@ti.com>
++Ard Biesheuvel <ardb@kernel.org> <ard.biesheuvel@linaro.org>
+ Arnaud Patard <arnaud.patard@rtp-net.org>
+ Arnd Bergmann <arnd@arndb.de>
+ Axel Dyks <xl@xlsigned.net>
+diff --git a/MAINTAINERS b/MAINTAINERS
+index cba1095547fd..cc9f02ab9316 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -6003,14 +6003,14 @@ F:	sound/usb/misc/ua101.c
+ EFI TEST DRIVER
+ L:	linux-efi@vger.kernel.org
+ M:	Ivan Hu <ivan.hu@canonical.com>
+-M:	Ard Biesheuvel <ard.biesheuvel@linaro.org>
++M:	Ard Biesheuvel <ardb@kernel.org>
+ S:	Maintained
+ F:	drivers/firmware/efi/test/
+ 
+ EFI VARIABLE FILESYSTEM
+ M:	Matthew Garrett <matthew.garrett@nebula.com>
+ M:	Jeremy Kerr <jk@ozlabs.org>
+-M:	Ard Biesheuvel <ard.biesheuvel@linaro.org>
++M:	Ard Biesheuvel <ardb@kernel.org>
+ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git
+ L:	linux-efi@vger.kernel.org
+ S:	Maintained
+@@ -6189,7 +6189,7 @@ S:	Supported
+ F:	security/integrity/evm/
+ 
+ EXTENSIBLE FIRMWARE INTERFACE (EFI)
+-M:	Ard Biesheuvel <ard.biesheuvel@linaro.org>
++M:	Ard Biesheuvel <ardb@kernel.org>
+ L:	linux-efi@vger.kernel.org
+ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git
+ S:	Maintained
+@@ -15006,7 +15006,7 @@ F:	include/media/soc_camera.h
+ F:	drivers/staging/media/soc_camera/
+ 
+ SOCIONEXT SYNQUACER I2C DRIVER
+-M:	Ard Biesheuvel <ard.biesheuvel@linaro.org>
++M:	Ard Biesheuvel <ardb@kernel.org>
+ L:	linux-i2c@vger.kernel.org
+ S:	Maintained
+ F:	drivers/i2c/busses/i2c-synquacer.c
+-- 
+2.17.1
 
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git tags/efi-next
-
-for you to fetch changes up to d99c1ba6a73b9e93e2884b7893fe19e3c082ba03:
-
-  efi: libstub/tpm: enable tpm eventlog function for ARM platforms (2019-11-07 10:18:45 +0100)
-
-----------------------------------------------------------------
-EFI changes for v5.5:
-- Change my email address to @kernel.org so I am no longer at the mercy of
-  useless corporate email infrastructure
-- Wire up the EFI RNG code for x86. This enables an additional source of
-  entropy during early boot.
-- Enable the TPM event log code on ARM platforms.
-
-----------------------------------------------------------------
-Ard Biesheuvel (1):
-      MAINTAINERS: update Ard's email address to @kernel.org
-
-Dominik Brodowski (2):
-      efi/random: use arch-independent efi_call_proto()
-      x86: efi/random: Invoke EFI_RNG_PROTOCOL to seed the UEFI RNG table
-
-Xinwei Kong (1):
-      efi: libstub/tpm: enable tpm eventlog function for ARM platforms
-
- .mailmap                                |  1 +
- MAINTAINERS                             |  8 ++++----
- arch/x86/boot/compressed/eboot.c        |  3 +++
- drivers/firmware/efi/libstub/Makefile   |  5 +++--
- drivers/firmware/efi/libstub/arm-stub.c |  2 ++
- drivers/firmware/efi/libstub/efistub.h  |  2 --
- drivers/firmware/efi/libstub/random.c   | 23 ++++++++++++++++++-----
- include/linux/efi.h                     |  2 ++
- 8 files changed, 33 insertions(+), 13 deletions(-)
