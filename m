@@ -2,93 +2,108 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A6B31F2A6D
-	for <lists+linux-efi@lfdr.de>; Thu,  7 Nov 2019 10:20:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C15DF2D7F
+	for <lists+linux-efi@lfdr.de>; Thu,  7 Nov 2019 12:34:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733238AbfKGJUc (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 7 Nov 2019 04:20:32 -0500
-Received: from mail-wm1-f65.google.com ([209.85.128.65]:54646 "EHLO
-        mail-wm1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727693AbfKGJUc (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 7 Nov 2019 04:20:32 -0500
-Received: by mail-wm1-f65.google.com with SMTP id z26so1610696wmi.4
-        for <linux-efi@vger.kernel.org>; Thu, 07 Nov 2019 01:20:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=fi6xzuBwDslqMBEvOoSJLgLZ2eKUNykAx5rVCyKwYkY=;
-        b=Xo1imTSWH2DPOskwLGJmaXoLtzlHHl5JVfqYQkKmOOa9uDLE5OHcZN7g4m5+oHdq5G
-         NwftkH7SGrFIUsp1I+fjikmM/gAy+uLeGZjOgK3VYvPI0EVCMPbwzom8M2Hnw2CdqbKM
-         AznMYDsGn3SuvaIA31VakGgLjitGJQgkhqHiEoey7wYyPlcsXyhjF4n1EbyMqem1jfBL
-         XqrejqJGde4OQ0Ydw+Omsh0Lq2+QRdMMLypJBfEft2IuI3m7eOWLzUUxP6O5efsqmLaj
-         6TvWo+C9Jm+XLS37rdrLO4sGFICqK3Sq2s+s/WWKfAwSiLgGf3PC3PHBanCDeM0ekp9R
-         21BQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=fi6xzuBwDslqMBEvOoSJLgLZ2eKUNykAx5rVCyKwYkY=;
-        b=WrAO3mRYDx75qwa/7QyAS7YrUed0KrAoX6bgSZoyIdcylrdqRmKm6RMjzGWBccJMw+
-         NHcfPnKCH1opzs/FmsBfWKgaTJRC6CKUO9v2aIZKqRwkrDobQtHZbJwqnUdmvsVUAkVg
-         c8gTtX6jg9r/uHcMxDem1+aqoNBQzVgeevG7M760lNXqp0t6dg0qz6FHl1JqM4NYyFET
-         t0VIED5Nz9kr3548bZ+jhqOgeP3lu5YTsHI6SsqnXZxslE+OCjLPKs69tjczXIuIikBw
-         XPUwr2xG+yUmIrZnFFMS863G9TMHtvDc/wJk2mGxVH4+7qSg/14nACJkQ4+U4hfX+JST
-         Wxuw==
-X-Gm-Message-State: APjAAAXESN/3OgY7+hFUQPokhzps4S4q7zKmLU5g1X+N16cGfMtqIocc
-        pyopHrjWlFGm3phfeghF3lP+0uhOwAkBkVWZagelIA==
-X-Google-Smtp-Source: APXvYqzviDjzjYdWIBVaJpSRjyKleEqm2u85x/m07Z2DV2q8u5GPTnMR/uRE5Kmk5P/uhgd17AisLoKNThhGARfz6qk=
-X-Received: by 2002:a1c:3d08:: with SMTP id k8mr1722499wma.119.1573118430458;
- Thu, 07 Nov 2019 01:20:30 -0800 (PST)
+        id S2387970AbfKGLd6 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 7 Nov 2019 06:33:58 -0500
+Received: from aserp2120.oracle.com ([141.146.126.78]:53722 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727278AbfKGLd5 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 7 Nov 2019 06:33:57 -0500
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xA7BOd77056436;
+        Thu, 7 Nov 2019 11:31:51 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2019-08-05;
+ bh=Czv8pVqfVxDd0LKsdSWLqwv2PVZZcgc54wLOCYMQZpI=;
+ b=IxmL8NC5gDs35jgU5KDXQWFaY6gRj6hkmvOc7nat9QD+kZvucJ3ra2JTVeHCHQJvyMTu
+ Ri92gGhFoDOdV+086QQZpBQR+85j3rFpn75uiBe+JJIt6eVElHh5g/GGdaAbeDTGSCB2
+ W/1C1jUXTTWhICSoHbN3IOswf8WRZ51u4Jilg8yCj8VDVzzpoAoqmGf5o2Ow6+85Bz0s
+ i+sUs3DyIF3avPnqOccY/C2KJ+c1RSp8WRROhlfDPFbH4mcCUkYMVlYAW/YkryitMg6j
+ o8zOc1fRM/wOYARIMsUDZcUdDhhNQR51q45jlMviezMw46e+DX30lFJ+Emx5SUQql0T/ Nw== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by aserp2120.oracle.com with ESMTP id 2w41w0wev6-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 07 Nov 2019 11:31:51 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xA7BSjdh171874;
+        Thu, 7 Nov 2019 11:31:50 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by aserp3030.oracle.com with ESMTP id 2w41wepmft-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 07 Nov 2019 11:31:50 +0000
+Received: from abhmp0002.oracle.com (abhmp0002.oracle.com [141.146.116.8])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id xA7BVfka020250;
+        Thu, 7 Nov 2019 11:31:46 GMT
+Received: from tomti.i.net-space.pl (/10.175.179.76)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Thu, 07 Nov 2019 03:31:40 -0800
+Date:   Thu, 7 Nov 2019 12:31:34 +0100
+From:   Daniel Kiper <daniel.kiper@oracle.com>
+To:     hpa@zytor.com
+Cc:     Borislav Petkov <bp@alien8.de>, linux-efi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, x86@kernel.org,
+        xen-devel@lists.xenproject.org, ard.biesheuvel@linaro.org,
+        boris.ostrovsky@oracle.com, corbet@lwn.net,
+        dave.hansen@linux.intel.com, luto@kernel.org, peterz@infradead.org,
+        eric.snowberg@oracle.com, jgross@suse.com,
+        kanth.ghatraju@oracle.com, konrad.wilk@oracle.com,
+        mingo@redhat.com, rdunlap@infradead.org, ross.philipson@oracle.com,
+        tglx@linutronix.de
+Subject: Re: [PATCH v5 0/3] x86/boot: Introduce the kernel_info et consortes
+Message-ID: <20191107113134.yl7e4rwxowr52tzf@tomti.i.net-space.pl>
+References: <20191104151354.28145-1-daniel.kiper@oracle.com>
+ <20191106170333.GD28380@zn.tnic>
+ <3EABBAB2-5BEF-4FEE-8BB4-9EB4B0180B10@zytor.com>
 MIME-Version: 1.0
-References: <1573115061-34791-1-git-send-email-kong.kongxinwei@hisilicon.com>
-In-Reply-To: <1573115061-34791-1-git-send-email-kong.kongxinwei@hisilicon.com>
-From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Date:   Thu, 7 Nov 2019 10:20:19 +0100
-Message-ID: <CAKv+Gu9vwDGeCrNYFEbQC0f6kLN1oEiKx9AjA9UpvHm1Q-0nSg@mail.gmail.com>
-Subject: Re: [PATCH V2] EFI/stub: tpm: enable tpm eventlog function for ARM64 platform
-To:     Xinwei Kong <kong.kongxinwei@hisilicon.com>
-Cc:     Ingo Molnar <mingo@kernel.org>, Will Deacon <will@kernel.org>,
-        Kate Stewart <kstewart@linuxfoundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Steve Capper <steve.capper@arm.com>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linuxarm <linuxarm@huawei.com>, zoucao@linux.alibaba.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3EABBAB2-5BEF-4FEE-8BB4-9EB4B0180B10@zytor.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9433 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=1 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=632
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1910280000 definitions=main-1911070117
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9433 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=1 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=717 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1910280000
+ definitions=main-1911070117
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, 7 Nov 2019 at 09:23, Xinwei Kong <kong.kongxinwei@hisilicon.com> wrote:
+On Wed, Nov 06, 2019 at 09:56:48AM -0800, hpa@zytor.com wrote:
+> On November 6, 2019 9:03:33 AM PST, Borislav Petkov <bp@alien8.de> wrote:
+> >On Mon, Nov 04, 2019 at 04:13:51PM +0100, Daniel Kiper wrote:
+> >> Hi,
+> >>
+> >> Due to very limited space in the setup_header this patch series introduces new
+> >> kernel_info struct which will be used to convey information from the kernel to
+> >> the bootloader. This way the boot protocol can be extended regardless of the
+> >> setup_header limitations. Additionally, the patch series introduces some
+> >> convenience features like the setup_indirect struct and the
+> >> kernel_info.setup_type_max field.
+> >
+> >That's all fine and dandy but I'm missing an example about what that'll
+> >be used for, in practice.
+> >
+> >Thx.
 >
-> this patch gets tpm eventlog information such as device boot status,event guid
-> and so on, which will be from bios stage. it use "efi_retrieve_tpm2_eventlog"
-> functions to get it for ARM64 platorm.
->
-> Tested-by: Zou Cao <zoucao@linux.alibaba.com>
-> Signed-off-by: Xinwei Kong <kong.kongxinwei@hisilicon.com>
+> For one thing, we already have people asking for more than 4 GiB worth
+> of initramfs, and especially with initramfs that huge it would make a
+> *lot* of sense to allow loading it in chunks without having to
+> concatenate them. I have been asking for a long time for initramfs
+> creators to split the kernel-dependent and kernel independent parts
+> into separate initramfs modules.
 
-Thanks. I'll queue this up.
+Another user of this patchset is the TrenchBoot project on which we are
+working on. We have to introduce separate entry point for Intel TXT MLE
+startup code. That is why we need the kernel_info struct.
 
-> ---
->  drivers/firmware/efi/libstub/arm-stub.c | 2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/drivers/firmware/efi/libstub/arm-stub.c b/drivers/firmware/efi/libstub/arm-stub.c
-> index c382a48..817237c 100644
-> --- a/drivers/firmware/efi/libstub/arm-stub.c
-> +++ b/drivers/firmware/efi/libstub/arm-stub.c
-> @@ -189,6 +189,8 @@ unsigned long efi_entry(void *handle, efi_system_table_t *sys_table,
->                 goto fail_free_cmdline;
->         }
->
-> +       efi_retrieve_tpm2_eventlog(sys_table);
-> +
->         /* Ask the firmware to clear memory on unclean shutdown */
->         efi_enable_reset_attack_mitigation(sys_table);
->
-> --
-> 2.7.4
->
+Daniel
