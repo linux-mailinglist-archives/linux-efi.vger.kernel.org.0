@@ -2,315 +2,94 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 674A3F67EA
-	for <lists+linux-efi@lfdr.de>; Sun, 10 Nov 2019 08:40:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6E1AAF691F
+	for <lists+linux-efi@lfdr.de>; Sun, 10 Nov 2019 14:27:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726582AbfKJHkw (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sun, 10 Nov 2019 02:40:52 -0500
-Received: from mail-wm1-f65.google.com ([209.85.128.65]:50554 "EHLO
-        mail-wm1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726594AbfKJHkw (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sun, 10 Nov 2019 02:40:52 -0500
-Received: by mail-wm1-f65.google.com with SMTP id l17so9372854wmh.0
-        for <linux-efi@vger.kernel.org>; Sat, 09 Nov 2019 23:40:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=HxpoD9KJAp6Pi8CWbh+1fjoBik+RNb6nY/kAwCZAIBo=;
-        b=ak7z8mufaryNbxBmjQI9L4qUHciMMWNx1rUw8DFj2w9UY8jYahalEgKTiiiKIbQNlx
-         NlaWGDZ8+NG21e+zrhT2Z2dKLEg4o3Wsswarr+c3xaJHB9s0g3x7g5P7zMhFhbdvo/0t
-         P+9m4yELZSD1QxPmrmsf8tDWZwdi+B8GRbFgKsVPKuDNx/5lXAI1BV+nFYDhKBUbFwJz
-         aUaHlxW7sjqO6BsxFvb7IS8n6mn3EHZ4u+RwCFoP70Q4YVqVLT/MOOj6Euv2z4WSs/4k
-         YKL9xYxBvZwoxAxAFxQ7TigM3ML6pvRqLDN8enV5tlRgaJ7CSIlV7Y26UDHGBgj2A2Ww
-         stXQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=HxpoD9KJAp6Pi8CWbh+1fjoBik+RNb6nY/kAwCZAIBo=;
-        b=eEItnxN5g58saczjRl5Qq6dSZPOL7MW9DPbWbOM7kbNd5G2/EdKllC2FlcdWNVP2e3
-         0j5lhkh+wVlvu1sBfKligvEtDtt/9e3H4a5iJqfaYzUKyxtQ5c/ucFncGoEOuuj7J8FS
-         oecX0ZuT+8PBn+rrcTcl7ZWcC8L2FFLptLTrPgSze4rqmG5q5KYTL5uULF4RqOIip291
-         9r1ZCBX2Ejq45Q0+DmqQY6AJkFgQ8joCKBtUh7PBCoQKT52DnNlFHSxqKYeNUNjNvGza
-         VsD9yENsPOEZ00fxixDD9TOUtAOdTuhvyxFXHMPR+qFvS5fFviYKhcA7FpTAH0wrW0no
-         yjsQ==
-X-Gm-Message-State: APjAAAUKo/4q97/XyWS9rjmMSJy3In7bM4aqelnwaXh3JAIcJDGF6f1V
-        hmX8E6SENGJLswU+JTniMzL6cZYLkRKdz70iwbyRoQ==
-X-Google-Smtp-Source: APXvYqzkp7enP7kYNXg3Uqa+0Fw6qJrSPbsMmaUl4mfUBUfsJEUT8ssxl/EkrCzpQV/lZmnzeC119RgBY+YhTy3R1vs=
-X-Received: by 2002:a1c:3d08:: with SMTP id k8mr14383712wma.119.1573371647420;
- Sat, 09 Nov 2019 23:40:47 -0800 (PST)
-MIME-Version: 1.0
-References: <20191110024013.29782-1-sashal@kernel.org> <20191110024013.29782-135-sashal@kernel.org>
-In-Reply-To: <20191110024013.29782-135-sashal@kernel.org>
-From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Date:   Sun, 10 Nov 2019 08:40:36 +0100
-Message-ID: <CAKv+Gu9yELrHDSvyX-2HnFuZfYS_46Y7hb0gE4fLqwMkDtkTfw@mail.gmail.com>
-Subject: Re: [PATCH AUTOSEL 4.19 135/191] efi/x86: Handle page faults
- occurring while running EFI runtime services
-To:     Sasha Levin <sashal@kernel.org>
+        id S1726778AbfKJN12 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sun, 10 Nov 2019 08:27:28 -0500
+Received: from mail.kernel.org ([198.145.29.99]:36692 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726301AbfKJN12 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Sun, 10 Nov 2019 08:27:28 -0500
+Received: from localhost (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 677D520842;
+        Sun, 10 Nov 2019 13:27:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1573392447;
+        bh=/aAS81CjOifeeNA7ZvXi+dQlY4r367Vx/Fui8g6nnew=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Q/r7veqmNQjQpaVc+WLTgjr2c63Q8DL1hSvU/TMHMleHzyEaVQhKfmxI3t56bhNNs
+         4eZOl0MFODsSVIn5sDEbYOYgwqPd7gVVrMa6BmWsCOFB/kw3E22HNhz6ppfvVgg/jR
+         xVBiu2JTKm3uari2Ta08NEXKeelqZVnVGZHCnINY=
+Date:   Sun, 10 Nov 2019 08:27:26 -0500
+From:   Sasha Levin <sashal@kernel.org>
+To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>
 Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         stable <stable@vger.kernel.org>,
-        Sai Praneeth <sai.praneeth.prakhya@intel.com>,
-        Bhupesh Sharma <bhsharma@redhat.com>,
-        Matt Fleming <matt@codeblueprint.co.uk>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        platform-driver-x86@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+        Jeremy Linton <jeremy.linton@arm.com>,
+        linux-efi <linux-efi@vger.kernel.org>
+Subject: Re: [PATCH AUTOSEL 4.19 133/191] efi: honour memory reservations
+ passed via a linux specific config table
+Message-ID: <20191110132726.GN4787@sasha-vm>
+References: <20191110024013.29782-1-sashal@kernel.org>
+ <20191110024013.29782-133-sashal@kernel.org>
+ <CAKv+Gu-PawCS_Wq3Hm+gm_f=6-ihXarkQqP9prkj4CLt=pAnvg@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <CAKv+Gu-PawCS_Wq3Hm+gm_f=6-ihXarkQqP9prkj4CLt=pAnvg@mail.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Sun, 10 Nov 2019 at 03:44, Sasha Levin <sashal@kernel.org> wrote:
+On Sun, Nov 10, 2019 at 08:33:47AM +0100, Ard Biesheuvel wrote:
+>On Sun, 10 Nov 2019 at 03:44, Sasha Levin <sashal@kernel.org> wrote:
+>>
+>> From: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+>>
+>> [ Upstream commit 71e0940d52e107748b270213a01d3b1546657d74 ]
+>>
+>> In order to allow the OS to reserve memory persistently across a
+>> kexec, introduce a Linux-specific UEFI configuration table that
+>> points to the head of a linked list in memory, allowing each kernel
+>> to add list items describing memory regions that the next kernel
+>> should treat as reserved.
+>>
+>> This is useful, e.g., for GICv3 based ARM systems that cannot disable
+>> DMA access to the LPI tables, forcing them to reuse the same memory
+>> region again after a kexec reboot.
+>>
+>> Tested-by: Jeremy Linton <jeremy.linton@arm.com>
+>> Signed-off-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+>> Signed-off-by: Sasha Levin <sashal@kernel.org>
 >
-> From: Sai Praneeth <sai.praneeth.prakhya@intel.com>
+>NAK
 >
-> [ Upstream commit 3425d934fc0312f62024163736a7afe4de20c10f ]
->
-> Memory accesses performed by UEFI runtime services should be limited to:
-> - reading/executing from EFI_RUNTIME_SERVICES_CODE memory regions
-> - reading/writing from/to EFI_RUNTIME_SERVICES_DATA memory regions
-> - reading/writing by-ref arguments
-> - reading/writing from/to the stack.
->
-> Accesses outside these regions may cause the kernel to hang because the
-> memory region requested by the firmware isn't mapped in efi_pgd, which
-> causes a page fault in ring 0 and the kernel fails to handle it, leading
-> to die(). To save kernel from hanging, add an EFI specific page fault
-> handler which recovers from such faults by
-> 1. If the efi runtime service is efi_reset_system(), reboot the machine
->    through BIOS.
-> 2. If the efi runtime service is _not_ efi_reset_system(), then freeze
->    efi_rts_wq and schedule a new process.
->
-> The EFI page fault handler offers us two advantages:
-> 1. Avoid potential hangs caused by buggy firmware.
-> 2. Shout loud that the firmware is buggy and hence is not a kernel bug.
->
-> Tested-by: Bhupesh Sharma <bhsharma@redhat.com>
-> Suggested-by: Matt Fleming <matt@codeblueprint.co.uk>
-> Based-on-code-from: Ricardo Neri <ricardo.neri@intel.com>
-> Signed-off-by: Sai Praneeth Prakhya <sai.praneeth.prakhya@intel.com>
-> Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
-> [ardb: clarify commit log]
-> Signed-off-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
+>This doesn't belong in -stable, and I'd be interested in understanding
+>how this got autoselected, and how I can prevent this from happening
+>again in the future.
 
-NAK
+It was selected because it's part of a fix for a real issue reported by
+users:
 
-This backports a patch to -stable that is *known* to be broken, given
-that the same series backports a patch that fixes it.
+https://bugs.launchpad.net/ubuntu/+source/linux/+bug/1806766
 
+Besides ubuntu, it is also carried by:
 
-> ---
->  arch/x86/include/asm/efi.h              |  1 +
->  arch/x86/mm/fault.c                     |  9 +++
->  arch/x86/platform/efi/quirks.c          | 78 +++++++++++++++++++++++++
->  drivers/firmware/efi/runtime-wrappers.c |  8 +++
->  include/linux/efi.h                     |  8 ++-
->  5 files changed, 103 insertions(+), 1 deletion(-)
->
-> diff --git a/arch/x86/include/asm/efi.h b/arch/x86/include/asm/efi.h
-> index baa549f8e9188..45864898f7e50 100644
-> --- a/arch/x86/include/asm/efi.h
-> +++ b/arch/x86/include/asm/efi.h
-> @@ -138,6 +138,7 @@ extern void __init efi_apply_memmap_quirks(void);
->  extern int __init efi_reuse_config(u64 tables, int nr_tables);
->  extern void efi_delete_dummy_variable(void);
->  extern void efi_switch_mm(struct mm_struct *mm);
-> +extern void efi_recover_from_page_fault(unsigned long phys_addr);
->
->  struct efi_setup_data {
->         u64 fw_vendor;
-> diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
-> index 1bcb7242ad79a..53e69c7c5cd18 100644
-> --- a/arch/x86/mm/fault.c
-> +++ b/arch/x86/mm/fault.c
-> @@ -16,6 +16,7 @@
->  #include <linux/prefetch.h>            /* prefetchw                    */
->  #include <linux/context_tracking.h>    /* exception_enter(), ...       */
->  #include <linux/uaccess.h>             /* faulthandler_disabled()      */
-> +#include <linux/efi.h>                 /* efi_recover_from_page_fault()*/
->  #include <linux/mm_types.h>
->
->  #include <asm/cpufeature.h>            /* boot_cpu_has, ...            */
-> @@ -25,6 +26,7 @@
->  #include <asm/vsyscall.h>              /* emulate_vsyscall             */
->  #include <asm/vm86.h>                  /* struct vm86                  */
->  #include <asm/mmu_context.h>           /* vma_pkey()                   */
-> +#include <asm/efi.h>                   /* efi_recover_from_page_fault()*/
->
->  #define CREATE_TRACE_POINTS
->  #include <asm/trace/exceptions.h>
-> @@ -783,6 +785,13 @@ no_context(struct pt_regs *regs, unsigned long error_code,
->         if (is_errata93(regs, address))
->                 return;
->
-> +       /*
-> +        * Buggy firmware could access regions which might page fault, try to
-> +        * recover from such faults.
-> +        */
-> +       if (IS_ENABLED(CONFIG_EFI))
-> +               efi_recover_from_page_fault(address);
-> +
->         /*
->          * Oops. The kernel tried to access some bad page. We'll have to
->          * terminate things with extreme prejudice:
-> diff --git a/arch/x86/platform/efi/quirks.c b/arch/x86/platform/efi/quirks.c
-> index 844d31cb8a0c7..669babcaf245a 100644
-> --- a/arch/x86/platform/efi/quirks.c
-> +++ b/arch/x86/platform/efi/quirks.c
-> @@ -16,6 +16,7 @@
->  #include <asm/efi.h>
->  #include <asm/uv/uv.h>
->  #include <asm/cpu_device_id.h>
-> +#include <asm/reboot.h>
->
->  #define EFI_MIN_RESERVE 5120
->
-> @@ -654,3 +655,80 @@ int efi_capsule_setup_info(struct capsule_info *cap_info, void *kbuff,
->  }
->
->  #endif
-> +
-> +/*
-> + * If any access by any efi runtime service causes a page fault, then,
-> + * 1. If it's efi_reset_system(), reboot through BIOS.
-> + * 2. If any other efi runtime service, then
-> + *    a. Return error status to the efi caller process.
-> + *    b. Disable EFI Runtime Services forever and
-> + *    c. Freeze efi_rts_wq and schedule new process.
-> + *
-> + * @return: Returns, if the page fault is not handled. This function
-> + * will never return if the page fault is handled successfully.
-> + */
-> +void efi_recover_from_page_fault(unsigned long phys_addr)
-> +{
-> +       if (!IS_ENABLED(CONFIG_X86_64))
-> +               return;
-> +
-> +       /*
-> +        * Make sure that an efi runtime service caused the page fault.
-> +        * "efi_mm" cannot be used to check if the page fault had occurred
-> +        * in the firmware context because efi=old_map doesn't use efi_pgd.
-> +        */
-> +       if (efi_rts_work.efi_rts_id == NONE)
-> +               return;
-> +
-> +       /*
-> +        * Address range 0x0000 - 0x0fff is always mapped in the efi_pgd, so
-> +        * page faulting on these addresses isn't expected.
-> +        */
-> +       if (phys_addr >= 0x0000 && phys_addr <= 0x0fff)
-> +               return;
-> +
-> +       /*
-> +        * Print stack trace as it might be useful to know which EFI Runtime
-> +        * Service is buggy.
-> +        */
-> +       WARN(1, FW_BUG "Page fault caused by firmware at PA: 0x%lx\n",
-> +            phys_addr);
-> +
-> +       /*
-> +        * Buggy efi_reset_system() is handled differently from other EFI
-> +        * Runtime Services as it doesn't use efi_rts_wq. Although,
-> +        * native_machine_emergency_restart() says that machine_real_restart()
-> +        * could fail, it's better not to compilcate this fault handler
-> +        * because this case occurs *very* rarely and hence could be improved
-> +        * on a need by basis.
-> +        */
-> +       if (efi_rts_work.efi_rts_id == RESET_SYSTEM) {
-> +               pr_info("efi_reset_system() buggy! Reboot through BIOS\n");
-> +               machine_real_restart(MRR_BIOS);
-> +               return;
-> +       }
-> +
-> +       /*
-> +        * Before calling EFI Runtime Service, the kernel has switched the
-> +        * calling process to efi_mm. Hence, switch back to task_mm.
-> +        */
-> +       arch_efi_call_virt_teardown();
-> +
-> +       /* Signal error status to the efi caller process */
-> +       efi_rts_work.status = EFI_ABORTED;
-> +       complete(&efi_rts_work.efi_rts_comp);
-> +
-> +       clear_bit(EFI_RUNTIME_SERVICES, &efi.flags);
-> +       pr_info("Froze efi_rts_wq and disabled EFI Runtime Services\n");
-> +
-> +       /*
-> +        * Call schedule() in an infinite loop, so that any spurious wake ups
-> +        * will never run efi_rts_wq again.
-> +        */
-> +       for (;;) {
-> +               set_current_state(TASK_IDLE);
-> +               schedule();
-> +       }
-> +
-> +       return;
-> +}
-> diff --git a/drivers/firmware/efi/runtime-wrappers.c b/drivers/firmware/efi/runtime-wrappers.c
-> index b31e3d3729a6d..e2abfdb5cee6a 100644
-> --- a/drivers/firmware/efi/runtime-wrappers.c
-> +++ b/drivers/firmware/efi/runtime-wrappers.c
-> @@ -61,6 +61,11 @@ struct efi_runtime_work efi_rts_work;
->  ({                                                                     \
->         efi_rts_work.status = EFI_ABORTED;                              \
->                                                                         \
-> +       if (!efi_enabled(EFI_RUNTIME_SERVICES)) {                       \
-> +               pr_warn_once("EFI Runtime Services are disabled!\n");   \
-> +               goto exit;                                              \
-> +       }                                                               \
-> +                                                                       \
->         init_completion(&efi_rts_work.efi_rts_comp);                    \
->         INIT_WORK(&efi_rts_work.work, efi_call_rts);                    \
->         efi_rts_work.arg1 = _arg1;                                      \
-> @@ -79,6 +84,8 @@ struct efi_runtime_work efi_rts_work;
->         else                                                            \
->                 pr_err("Failed to queue work to efi_rts_wq.\n");        \
->                                                                         \
-> +exit:                                                                  \
-> +       efi_rts_work.efi_rts_id = NONE;                                 \
->         efi_rts_work.status;                                            \
->  })
->
-> @@ -400,6 +407,7 @@ static void virt_efi_reset_system(int reset_type,
->                         "could not get exclusive access to the firmware\n");
->                 return;
->         }
-> +       efi_rts_work.efi_rts_id = RESET_SYSTEM;
->         __efi_call_virt(reset_system, reset_type, status, data_size, data);
->         up(&efi_runtime_lock);
->  }
-> diff --git a/include/linux/efi.h b/include/linux/efi.h
-> index 9d4c25090fd04..9a86f467b8911 100644
-> --- a/include/linux/efi.h
-> +++ b/include/linux/efi.h
-> @@ -1666,8 +1666,13 @@ struct linux_efi_tpm_eventlog {
->
->  extern int efi_tpm_eventlog_init(void);
->
-> -/* efi_runtime_service() function identifiers */
-> +/*
-> + * efi_runtime_service() function identifiers.
-> + * "NONE" is used by efi_recover_from_page_fault() to check if the page
-> + * fault happened while executing an efi runtime service.
-> + */
->  enum efi_rts_ids {
-> +       NONE,
->         GET_TIME,
->         SET_TIME,
->         GET_WAKEUP_TIME,
-> @@ -1677,6 +1682,7 @@ enum efi_rts_ids {
->         SET_VARIABLE,
->         QUERY_VARIABLE_INFO,
->         GET_NEXT_HIGH_MONO_COUNT,
-> +       RESET_SYSTEM,
->         UPDATE_CAPSULE,
->         QUERY_CAPSULE_CAPS,
->  };
-> --
-> 2.20.1
->
+SUSE: https://www.suse.com/support/update/announcement/2019/suse-su-20191530-1/
+CentOS: https://koji.mbox.centos.org/koji/buildinfo?buildID=4558
+
+As a way to resolve the reported bug.
+
+Any reason this *shouldn't* be in stable? I'm aware that there might be
+dependencies that are not obvious to me, but the solution here is to
+take those dependencies as well rather than ignore the process
+completely.
+
+-- 
+Thanks,
+Sasha
