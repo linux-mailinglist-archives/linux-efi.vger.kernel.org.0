@@ -2,86 +2,69 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D37DF803E
-	for <lists+linux-efi@lfdr.de>; Mon, 11 Nov 2019 20:37:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 05106F828A
+	for <lists+linux-efi@lfdr.de>; Mon, 11 Nov 2019 22:46:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727093AbfKKThO (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 11 Nov 2019 14:37:14 -0500
-Received: from mail-qt1-f196.google.com ([209.85.160.196]:37829 "EHLO
-        mail-qt1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727036AbfKKThO (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 11 Nov 2019 14:37:14 -0500
-Received: by mail-qt1-f196.google.com with SMTP id g50so16906775qtb.4
-        for <linux-efi@vger.kernel.org>; Mon, 11 Nov 2019 11:37:13 -0800 (PST)
+        id S1727750AbfKKVqg (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 11 Nov 2019 16:46:36 -0500
+Received: from mail-wr1-f67.google.com ([209.85.221.67]:34345 "EHLO
+        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727632AbfKKVqf (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 11 Nov 2019 16:46:35 -0500
+Received: by mail-wr1-f67.google.com with SMTP id e6so16359081wrw.1
+        for <linux-efi@vger.kernel.org>; Mon, 11 Nov 2019 13:46:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=GpNdYRES46RfzpVIgTMPzZ6u6WQI6KIHaSlhSlcg/+c=;
-        b=jWLH/Nb3ARoqt8//qTfxHjziKi4gpEwaRC39Uf6KF94uH8Kztm1t2pbE4WT++Kc1z6
-         UEp+9rVJEiletoL0fW8f85HB+YFdHO0b2dYZONCT8OkfM3AWMhutbHG316kizVCK4sWi
-         D/kdQgVfXSKTZCMmuUSS9+nJ5pW/kr2QCAeUa7/48DlPqpJC0r5rXbs2j+NLPeoim2uG
-         gXq5SoF0X32jc66gbMAIdmPnYsVI0DekLkScHJdWDAlHY8CsjSwCtCh7Chw2ry80UXB2
-         XZ6tX6l6Ir1Y2cod3+BDj+hVj2hmYDOSbjSsZVsPmXRRILggGtJDKJFFer/UD8QpcjmT
-         q/Uw==
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=z19yH60lspQOQpX3PTFyVmzAHxSqcnfoBNNeK2r9yWE=;
+        b=nV9YueSXoouxRoL8YbLIG6XT1i0a1/U8WGkeiWjPghCqzPViufj340DHozYi0mJczB
+         VVV2PQNUz0Dg90lCv+jwwp+e2Bmd302kQks0HKNJfZ6l5tpK8BTpHQihkxSoWK7dEJ1/
+         +Ssafs7zqNVAr1NWYgXjzP2m9Sg4KU3RQfnr2tcMEVT1uS+lczdaJ0hX4MVEEhlYjOOL
+         QejyLY/ZmiZ2viNLxGFE4IVYC75HAOdEx5kXt9fXbzk/hCHbzbiPTPe68YJ4BbjBFOCB
+         xxDhUBoM+hRBURFVYdfbAG7XRJ2qcpGdiwYCEPy/3DEb53REXjBuIC92Usxuut3asvOx
+         SNNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=GpNdYRES46RfzpVIgTMPzZ6u6WQI6KIHaSlhSlcg/+c=;
-        b=lPn+8PTyWVuBkhdBqNfw81qsICx02bXiXz+S6eblJCGl/F3laCHaS6jrzvG++0y/Bz
-         5ktTHvFo7hFTDSp332baM48uYN8WsfOWduX/ayyv0qMiLZ+qOnOPk49OUvoPkxaP9dhN
-         1rvHtgAu+pcsitmNjdgAZnt8lkek/SC7zHDCld2kocsnZUplr1ZmFTy2sEqFH29fxc6Q
-         cbaFZMw1xPkS1YJ/WTqVeto3xuEn5br6CmxxIcewZH2qtoiP8eG/QUOsYMC0Y4Apl+6n
-         OcjgwkZ9xR3gkdt2cTJxACuafIkt6wpI79cayTqfYnwF++pT43wLJYHUW+wdJs/ZW60i
-         1KFQ==
-X-Gm-Message-State: APjAAAViZrdyqNAVUcH0aZpPWP1I3lkLNI/JnFmqBLifEs+TbNBryh7M
-        s6OZNt+M/axi4P2bnXcqFRsCs/eCnkYgnE1WehQ=
-X-Google-Smtp-Source: APXvYqy21iD1Po3wMqif5UGdJBrZz47rRdKOcDm/4XbGRo93dQ7BRJ0zXZFE8JIazFD9kCYylKcYELLmm94JWF+Xwq4=
-X-Received: by 2002:ac8:53c5:: with SMTP id c5mr28295178qtq.55.1573501033473;
- Mon, 11 Nov 2019 11:37:13 -0800 (PST)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=z19yH60lspQOQpX3PTFyVmzAHxSqcnfoBNNeK2r9yWE=;
+        b=qqBY0CnRz6l3o+Memzm18zj56tcsuMS7Co2Hiti58udILgbVhLTvN8g5tWbeLBk+eu
+         GAbhQtApYBXMC7pWO7fakqI9nF+I97RVe2TbwcWUN+Em4hMhM1u7Gq39r+uRMbYjWJkD
+         IpRao3Kyv4IGjgJWDftO6WdpDivsZvAi+eEMTxh2AOKSiyJP5av81XUkwbNP+JJRK2Fi
+         K++O0Bp9zWA5F/F1cygM0Yla2u+lNRdpQXIAWCpXFrmPZ77olFEiUmu4xKrB2AMhXam2
+         7DAfTc7hMHOFjDM2Yn16rto7W9wfEYXwLHftNGSkse1oBsNoDSEqohlxJRB/yDKqzmgH
+         FiVg==
+X-Gm-Message-State: APjAAAXS9rJlf2ElFxxZzVGWNLXKMq3Rz5lQaHFXQEvQ09SFWhmWFa2W
+        x8sr5sHw7gAYarsGXQRD+eI33Li5fkZ8Mg+i4+7mnA==
+X-Google-Smtp-Source: APXvYqyCjdvPpxGWoMEuQTI+xfip9kJqo3D8X4t/W8OSXRPRKCrjLVbKRW/MMnI9aw+asqs97MeXAfxKoRUIZ+BG8I8=
+X-Received: by 2002:adf:ec42:: with SMTP id w2mr21288389wrn.32.1573508794043;
+ Mon, 11 Nov 2019 13:46:34 -0800 (PST)
 MIME-Version: 1.0
-Received: by 2002:ad4:4c45:0:0:0:0:0 with HTTP; Mon, 11 Nov 2019 11:37:13
- -0800 (PST)
-Reply-To: kylieelizabethwatson2019@gmail.com
-From:   "Sgt,Kylie Elizabeth Watson" <bilazagre2@gmail.com>
-Date:   Tue, 12 Nov 2019 00:07:13 +0430
-Message-ID: <CAGk+aha0MFLbBFfKQ9MaTG6PYpzxutvPhANX-XyTRkRp+uxzVw@mail.gmail.com>
-Subject: Assist Request From You
-To:     undisclosed-recipients:;
+References: <ac8c3a1d-e44a-4f89-8a58-fb3ef09659d4@gmail.com>
+In-Reply-To: <ac8c3a1d-e44a-4f89-8a58-fb3ef09659d4@gmail.com>
+From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Date:   Mon, 11 Nov 2019 21:46:22 +0000
+Message-ID: <CAKv+Gu-cPmnxtN_5Y_=kodF7KcKjK+vkPdd+9gDiR55Mh4CKhg@mail.gmail.com>
+Subject: Re: Linux 5.3.8: gsmi: failed to allocate name buffer. BUG: kernel
+ NULL pointer dereference
+To:     Kyle K <kylek389@gmail.com>
+Cc:     linux-efi <linux-efi@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
--- 
-Accept my greetings to you
+On Mon, 11 Nov 2019 at 19:05, Kyle K <kylek389@gmail.com> wrote:
+>
+> https://bugzilla.kernel.org/show_bug.cgi?id=205445
+>
+> Someone please take a look at this. There's is a regression in Linux
+> 5.3.8 related to google EFI code changes that is causing sideeffects on
+> Coreboot enabled laptops resulting in inability to suspend/wakeup and
+> WiFi troubles. There's is another person experiencing same issue when
+> upgrading to 5.3.8, so this bug is pretty much confirmed.
+>
 
-Assist Request From You
-
-I am 28 years old single an orphan my parents died when I am five
-years old nobody to help me,I send you my business proposal with tears
-and sorrow,Please let this not be a surprised message to you because I
-decided to contact you on this magnitude and lucrative transaction for
-our present and future survival in life. Moreover, I have laid all the
-solemn trust in you before i decided to disclose this successful and
-confidential transaction to you.
-
-I am  Kylie Elizabeth Watson ,I hope all is well with you? I am female
-soldier working as United Nations peace keeping troop in Afghanistan
-on war against terrorism. I have in my possession the sum of
-$3.5million USD Which I made here in Afghanistan 2014,I deposited this
-money with a Red Cross agent. I want you to stand as my beneficiary
-and receive the fund And keep it safe so that as soon as am through
-with my mission here in Afghanistan.
-
-You will assist me to invest it in a good profitable Venture or you
-keep it for me until I arrive your country, I will give You 40% of the
-total money for your assistance after you have receive The money.
-Please reply back to me if you are willing to work with me so that I
-can send you the information where the money is been deposited, your
-urgent reply is needed in my email address below
-(kylieelizabethwatson2019@gmail.com) so i can send you more details.
-
-Thank Yours
-Sgt,Kylie Elizabeth Watson
+Someone please bisect this on the affected hardware.
