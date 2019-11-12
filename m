@@ -2,131 +2,100 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D27E8F90B0
-	for <lists+linux-efi@lfdr.de>; Tue, 12 Nov 2019 14:31:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 28332F90FA
+	for <lists+linux-efi@lfdr.de>; Tue, 12 Nov 2019 14:48:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726979AbfKLNb1 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 12 Nov 2019 08:31:27 -0500
-Received: from mail-wm1-f66.google.com ([209.85.128.66]:39201 "EHLO
-        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725865AbfKLNb0 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 12 Nov 2019 08:31:26 -0500
-Received: by mail-wm1-f66.google.com with SMTP id t26so2956322wmi.4
-        for <linux-efi@vger.kernel.org>; Tue, 12 Nov 2019 05:31:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=hIfRT/bxy6U3hwAMr8bQiRC5zLG10vF3KKonDMr7m6Y=;
-        b=lmH6Gqk76m5NlHoaQaj0nRlS77eVs7HSUEFf4wZaM/bQjv9iu90Ig5o4gcdS8Jk9rU
-         GlLsgvZTom8LCEXl2hoewy/NWFzQFqsM+swV9RdBb6DIsE2vviakMffcW1wVQ+yRXrIS
-         lgJ09eWeY//F7myg8Zr8dwGehqJlNaT5yCRkIxqmpkwOW1IW30ggcjpp2IeIZdyT9cSn
-         hulhomTgujC6tcF2hvI4360vXd/fpti/uFh8jNbhbeLf5TmTygRuAgPypCRN2yXcxEed
-         /VyK4muxoEH6l5rHTFOC2uaWCB2wIxy2KAxsJ/dPml15HSV9I5WvEv+TXmFvhzlGZ4ut
-         Nllw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=hIfRT/bxy6U3hwAMr8bQiRC5zLG10vF3KKonDMr7m6Y=;
-        b=T6QA2uB984V7RddNcJIXebOsuWhniQPquymLBvxokI5/i7IJ9khP43ifSTmRmZ8CEx
-         yK9Pd73yD6FA+WVw1qWU3jvvygZbVPzE0bA8GoJbcsN6bBIwLFF7BrIiYm90I2kwggMa
-         uDUFLrA6Fh+5gWUqL2jVgQBUzlIA/YM4OOVzquiljh/dzfU3OXqnAk09QEz0rXQs6/ud
-         mibECYBve5XuHJCkrh/yz1AlzjPK02O0eg+hmJqJh8LKFSeFnUMjNuJQReYrLHLUV7/p
-         nE14cSMsMKux5aGuMWfE9a0W5gDVcah76ThY4kd/dCRVjh51NNyzC00CzQ3EtrvQrhHH
-         xf+Q==
-X-Gm-Message-State: APjAAAX4oRQ963iWNpbFzN0izRczVISSXvFvYtcUjSlAnd/dkUQpb753
-        OqGp7LqyjQPqTpofZi5YfoaCEqnQ/6+Z40ztbCTewg==
-X-Google-Smtp-Source: APXvYqwcQJzsO6e5D4y+7b8znbmrSTJcm34zqsnzDoXtss487ONpUPPkxZRU8yOcQdTid/hFg2a2D4xGnSAxHIRXi3k=
-X-Received: by 2002:a1c:64d6:: with SMTP id y205mr3680017wmb.136.1573565483107;
- Tue, 12 Nov 2019 05:31:23 -0800 (PST)
-MIME-Version: 1.0
-References: <20191111154413.1505-1-andriy.shevchenko@linux.intel.com>
- <CAKv+Gu_R1mprDnYUS0HWR2XOWysZnO6AnEt_XkfwzZZVcg64XQ@mail.gmail.com>
- <20191112125754.GS32742@smile.fi.intel.com> <20191112125920.GT32742@smile.fi.intel.com>
-In-Reply-To: <20191112125920.GT32742@smile.fi.intel.com>
-From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Date:   Tue, 12 Nov 2019 13:31:11 +0000
-Message-ID: <CAKv+Gu9opwMvtnOjw3kU0=xsBidrx4pp2B-JF-c_ij==LFnSEQ@mail.gmail.com>
-Subject: Re: [PATCH v1] efi/earlycon: Remap entire framebuffer after page initialization
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     linux-efi <linux-efi@vger.kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Alexander Graf <agraf@suse.de>,
-        Matt Fleming <matt@codeblueprint.co.uk>
-Content-Type: text/plain; charset="UTF-8"
+        id S1727241AbfKLNs5 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 12 Nov 2019 08:48:57 -0500
+Received: from userp2130.oracle.com ([156.151.31.86]:42184 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725919AbfKLNs4 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 12 Nov 2019 08:48:56 -0500
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xACDimK6003260;
+        Tue, 12 Nov 2019 13:47:05 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
+ subject : date : message-id; s=corp-2019-08-05;
+ bh=sMMKPgpww4smX1YXtV6wvZBBiRbV6FeG/gIOCQT+ds0=;
+ b=Bq6pJIEVs4RMpNnXnIBOggUpB4Pl+OJCfwsaO7OdULOY1eVaDRgmE4FttDhZAl2GFacg
+ Jc5xudY3smfglUuw/njbjej9AVjqLt2Y9N7TKzdzczNr6CW7EocX6h0e//J3Pj27Lm05
+ SbcaevEvvY1l5GUe796cnfT+9fhFKLKdUueVLLdw0ojx9iPLUJ2tum5VGUu5djZtUKrL
+ 9MupeomPWigh66UlhkInUrtyqKTUArrVvaC4BEbPfur+MfwYXWVuxbF+Ed7tU9wQy4vC
+ oHcCCQb7+V4v4C8C1aDl1Sy36cz9HSL9FhfUob7U0bo3Pb+mcXeLSCTCa4zhKO6qjY4y IQ== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2130.oracle.com with ESMTP id 2w5mvtmvda-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 12 Nov 2019 13:47:04 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xACDhMli076743;
+        Tue, 12 Nov 2019 13:47:04 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by userp3020.oracle.com with ESMTP id 2w7vbav1xw-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 12 Nov 2019 13:47:04 +0000
+Received: from abhmp0012.oracle.com (abhmp0012.oracle.com [141.146.116.18])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id xACDkuC7009057;
+        Tue, 12 Nov 2019 13:46:58 GMT
+Received: from tomti.i.net-space.pl (/10.175.202.33)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 12 Nov 2019 05:46:56 -0800
+From:   Daniel Kiper <daniel.kiper@oracle.com>
+To:     linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        x86@kernel.org, xen-devel@lists.xenproject.org
+Cc:     ard.biesheuvel@linaro.org, boris.ostrovsky@oracle.com,
+        bp@alien8.de, corbet@lwn.net, dave.hansen@linux.intel.com,
+        luto@kernel.org, peterz@infradead.org, eric.snowberg@oracle.com,
+        hpa@zytor.com, jgross@suse.com, kanth.ghatraju@oracle.com,
+        konrad.wilk@oracle.com, mingo@redhat.com, rdunlap@infradead.org,
+        ross.philipson@oracle.com, tglx@linutronix.de
+Subject: [PATCH v6 0/3] x86/boot: Introduce the kernel_info et consortes
+Date:   Tue, 12 Nov 2019 14:46:37 +0100
+Message-Id: <20191112134640.16035-1-daniel.kiper@oracle.com>
+X-Mailer: git-send-email 2.11.0
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9438 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=659
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1910280000 definitions=main-1911120124
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9438 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=725 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1910280000
+ definitions=main-1911120124
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, 12 Nov 2019 at 12:59, Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
->
-> On Tue, Nov 12, 2019 at 02:57:54PM +0200, Andy Shevchenko wrote:
-> > On Mon, Nov 11, 2019 at 05:59:42PM +0000, Ard Biesheuvel wrote:
-> > > On Mon, 11 Nov 2019 at 15:44, Andy Shevchenko
-> > > <andriy.shevchenko@linux.intel.com> wrote:
-> > > >
-> > > > When the commit 69c1f396f25b ("efi/x86: Convert x86 EFI earlyprintk
-> > > > into generic earlycon implementation") moved x86 specific EFI earlyprintk
-> > > > implementation to shared location it also tweaked the behaviour. In particular
-> > > > it dropped a trick with full framebuffer remapping after page initialization.
-> > > > This lead to two regressions:
-> > > > 1) very slow scrolling after page initialization;
-> > > > 2) kernel hang when keep_bootcon parameter is being provided.
-> > > >
-> > > > Returning the trick back fixes #2 and mitigates, i.e. reduces the window when
-> > > > slowness appears, #1 presumably due to eliminating heavy map()/unmap()
-> > > > operations per each pixel line on the screen.
-> >
-> > > Thanks for fixing this. One question below.
-> > >
-> > > > +static __init int early_efi_map_fb(void)
-> > > > +{
-> > > > +       u32 size;
-> > > > +
-> > > > +       size = screen_info.lfb_size;
-> > > > +       if (pgprot_val(fb_prot) == pgprot_val(PAGE_KERNEL))
-> > > > +               efi_fb = memremap(fb_base, size, MEMREMAP_WB);
-> > > > +       else
-> > > > +               efi_fb = memremap(fb_base, size, MEMREMAP_WC);
-> > > > +
-> > > > +       return efi_fb ? 0 : -ENOMEM;
-> > > > +}
-> > > > +early_initcall(early_efi_map_fb);
-> > > > +
-> > > > +static __exit void early_efi_unmap_fb(void)
-> > >
-> > > Will there be a user for this routine? If not, can we just drop it?
-> >
-> > The same question can be applied to the driver core part(s), e.g.
-> > deferred_probe_exit() in dd.c).
->
-> I noted that I missed __exitcall() here. But will wait for your answer.
->
+Hi,
 
-Ah ok, then it makes sense. Mind respinning with that added?
+Due to very limited space in the setup_header this patch series introduces new
+kernel_info struct which will be used to convey information from the kernel to
+the bootloader. This way the boot protocol can be extended regardless of the
+setup_header limitations. Additionally, the patch series introduces some
+convenience features like the setup_indirect struct and the
+kernel_info.setup_type_max field.
 
+Daniel
 
-> > The above basically what Greg KH told people to do. While it is partially cargo
-> > cult here I can imagine that in some environments (virtual or kexec) somebody
-> > would like to get a picture of (post-mortem?) analysis where it would be
-> > helpful. Also code looks symmetrical in order to resource management. So, if
-> > you insist, I'll remove it, although I personally like my variant.
-> >
-> > > > +{
-> > > > +       memunmap(efi_fb);
-> > > > +}
-> >
-> > --
-> > With Best Regards,
-> > Andy Shevchenko
-> >
-> >
->
-> --
-> With Best Regards,
-> Andy Shevchenko
->
->
+ Documentation/x86/boot.rst             | 174 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ arch/x86/boot/Makefile                 |   2 +-
+ arch/x86/boot/compressed/Makefile      |   4 +-
+ arch/x86/boot/compressed/kaslr.c       |  12 ++++++
+ arch/x86/boot/compressed/kernel_info.S |  22 ++++++++++
+ arch/x86/boot/header.S                 |   3 +-
+ arch/x86/boot/tools/build.c            |   5 +++
+ arch/x86/include/uapi/asm/bootparam.h  |  16 +++++++-
+ arch/x86/kernel/e820.c                 |  11 +++++
+ arch/x86/kernel/kdebugfs.c             |  21 ++++++++--
+ arch/x86/kernel/ksysfs.c               |  31 ++++++++++----
+ arch/x86/kernel/setup.c                |   6 +++
+ arch/x86/mm/ioremap.c                  |  11 +++++
+ 13 files changed, 302 insertions(+), 16 deletions(-)
+
+Daniel Kiper (3):
+      x86/boot: Introduce the kernel_info
+      x86/boot: Introduce the kernel_info.setup_type_max
+      x86/boot: Introduce the setup_indirect
+
