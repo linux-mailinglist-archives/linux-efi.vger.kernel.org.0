@@ -2,82 +2,147 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C401CF9545
-	for <lists+linux-efi@lfdr.de>; Tue, 12 Nov 2019 17:13:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 46EEEF9651
+	for <lists+linux-efi@lfdr.de>; Tue, 12 Nov 2019 17:56:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726896AbfKLQNX (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 12 Nov 2019 11:13:23 -0500
-Received: from mga01.intel.com ([192.55.52.88]:59626 "EHLO mga01.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726008AbfKLQNX (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Tue, 12 Nov 2019 11:13:23 -0500
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 12 Nov 2019 08:13:22 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.68,297,1569308400"; 
-   d="scan'208";a="229440427"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by fmsmga004.fm.intel.com with ESMTP; 12 Nov 2019 08:13:21 -0800
-Received: from andy by smile with local (Exim 4.93-RC1)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1iUYnA-0003wY-DX; Tue, 12 Nov 2019 18:13:20 +0200
-Date:   Tue, 12 Nov 2019 18:13:20 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Cc:     linux-efi <linux-efi@vger.kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Alexander Graf <agraf@suse.de>,
-        Matt Fleming <matt@codeblueprint.co.uk>
-Subject: Re: [PATCH v1] efi/earlycon: Remap entire framebuffer after page
- initialization
-Message-ID: <20191112161320.GW32742@smile.fi.intel.com>
-References: <20191111154413.1505-1-andriy.shevchenko@linux.intel.com>
- <CAKv+Gu_R1mprDnYUS0HWR2XOWysZnO6AnEt_XkfwzZZVcg64XQ@mail.gmail.com>
- <20191112125754.GS32742@smile.fi.intel.com>
- <20191112125920.GT32742@smile.fi.intel.com>
- <CAKv+Gu9opwMvtnOjw3kU0=xsBidrx4pp2B-JF-c_ij==LFnSEQ@mail.gmail.com>
+        id S1726008AbfKLQzh (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 12 Nov 2019 11:55:37 -0500
+Received: from szxga04-in.huawei.com ([45.249.212.190]:6644 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1727338AbfKLQxa (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Tue, 12 Nov 2019 11:53:30 -0500
+Received: from DGGEMS411-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id 5A0FB9FBD9FFCB61864F;
+        Wed, 13 Nov 2019 00:53:23 +0800 (CST)
+Received: from lhrphicprd00229.huawei.com (10.123.41.22) by
+ DGGEMS411-HUB.china.huawei.com (10.3.19.211) with Microsoft SMTP Server id
+ 14.3.439.0; Wed, 13 Nov 2019 00:53:14 +0800
+From:   Jonathan Cameron <Jonathan.Cameron@huawei.com>
+To:     <linux-edac@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+        <linux-efi@vger.kernel.org>, Borislav Petkov <bp@alien8.de>,
+        "Mauro Carvalho Chehab" <mchehab@kernel.org>, <james.morse@arm.com>
+CC:     <rjw@rjwysocki.net>, <tony.luck@intel.com>, <linuxarm@huawei.com>,
+        <ard.biesheuvel@linaro.org>, <nariman.poushin@linaro.org>,
+        Thanu Rangarajan <Thanu.Rangarajan@arm.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH v3 0/6]  CCIX Protocol error reporting.
+Date:   Wed, 13 Nov 2019 00:52:20 +0800
+Message-ID: <20191112165226.106107-1-Jonathan.Cameron@huawei.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAKv+Gu9opwMvtnOjw3kU0=xsBidrx4pp2B-JF-c_ij==LFnSEQ@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.123.41.22]
+X-CFilter-Loop: Reflected
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, Nov 12, 2019 at 01:31:11PM +0000, Ard Biesheuvel wrote:
-> On Tue, 12 Nov 2019 at 12:59, Andy Shevchenko
-> <andriy.shevchenko@linux.intel.com> wrote:
-> > On Tue, Nov 12, 2019 at 02:57:54PM +0200, Andy Shevchenko wrote:
-> > > On Mon, Nov 11, 2019 at 05:59:42PM +0000, Ard Biesheuvel wrote:
-> > > > On Mon, 11 Nov 2019 at 15:44, Andy Shevchenko
-> > > > <andriy.shevchenko@linux.intel.com> wrote:
+Changes since V2:
 
-> > > > Will there be a user for this routine? If not, can we just drop it?
-> > >
-> > > The same question can be applied to the driver core part(s), e.g.
-> > > deferred_probe_exit() in dd.c).
-> >
-> > I noted that I missed __exitcall() here. But will wait for your answer.
-> >
-> 
-> Ah ok, then it makes sense. Mind respinning with that added?
+Dropped the legal boiler plate from the cover letter. The CCIX consortium
+have agreed that a simple tradmark statement is sufficient which I have
+put in the cper-ccix.c file and here.
 
-Done!
+The CCIX® trademark and CCIX trade name are owned solely by
+CCIX CONSORTIUM, INC. and all rights are reserved therein.
 
-> > > The above basically what Greg KH told people to do. While it is partially cargo
-> > > cult here I can imagine that in some environments (virtual or kexec) somebody
-> > > would like to get a picture of (post-mortem?) analysis where it would be
-> > > helpful. Also code looks symmetrical in order to resource management. So, if
-> > > you insist, I'll remove it, although I personally like my variant.
+Changes since V1:
+
+Addressed comments from James Morse
+- Dropped kernel logging of vendor data. We just push it to the tracepoints.
+- Tidied up this cover letter and added information to address questions
+  raised. Includes removing questions where James and I agreed ;)
+
+Note, this initial series attempts no 'handling' of errors.
+That will follow later.
+
+EFI 2.8 defines a new CPER record Appendix N for CCIX Protocol Error Records
+(PER). www.uefi.org
+
+These include Protocol Error Record logs which are defined in the
+CCIX 1.0 Base Specification www.ccixconsortium.com.  A public evaluation
+version is now available.
+
+Handling of coherency protocol errors is complex and how Linux does this
+will take some time to evolve.  For now, fatal errors are handled via the
+usual means and everything else is reported.
+
+There are 6 types of error defined, covering:
+* Memory errors
+* Cache errors
+* Address translation unit errors
+* CCIX port errors
+* CCIX link errors
+* Agent internal errors.
+
+These errors are concerned (mostly) wth things happening in the CCIX
+protocol layer.  They are parallel to AER errors which should be only
+concerned with the PCIe layer (which is underneath CCIX).
+The ATS errors break this rule slightly. You may get an error
+occurring that results in problems at both layers of the protocol
+stack and hence have to handle AER and PER errors simultaneously.
+
+Some of these errors can 'almost' be mapped onto standard existing error
+types but only at the loss of information specific to CCIX such as
+where in the topology they occurred.
+
+The set includes tracepoints to report the errors to RAS Daemon and a patch
+set for RAS Daemon will follow shortly.
+
+Several design decisions that people may disagree with.
+1. Reporting of vendor data.  We have little choice but to do this via a
+   dynamic array as these blocks can take arbitrary size. I had hoped
+   no one would actually use these given the odd mismatch between a
+   standard error structure and non standard element, but there are
+   already designs out there that do use it. James suggested that
+   it made sense to put these in the tracepoints, but we shouldn't spam
+   the kernel log with them (done in V2).
+2. The trade off between explicit tracepoint fields, on which we might
+   want to filter in kernel, and the simplicity of a blob.
+   I have gone for having the whole of the block specific to the PER
+   error type in an opaque blob.
+   The key elements that may be filtered on are the physical address
+   and the source and component fields which allow you to identify
+   faulty devices. Note that you have to know how the devices were
+   enumerated to be able to do so.
+3. Defined 6 new tracepoints rather than cramming everything into one.
+   * They are all defined by the CCIX specification as independent error
+     classes.
+   * Many of them can only be generated by particular types of agent.
+   * The handling required will vary widely depending on types.
+     In the kernel some map cleanly onto existing handling. Keeping the
+     whole flow separate will aide this. They vary by a similar amount
+     in scope to the RAS errors found on an existing system which have
+     independent tracepoints.
+   * Separating them out allows for filtering on the tracepoints by
+     elements that are not shared between them.
+   * Muxing the lot into one record type can lead to ugly code both in
+     kernel and in userspace.
+
+Rasdaemon patches posted.
+https://patchwork.kernel.org/cover/11116735/
+
+Jonathan Cameron (6):
+  efi / ras: CCIX Memory error reporting
+  efi / ras: CCIX Cache error reporting
+  efi / ras: CCIX Address Translation Cache error reporting
+  efi / ras: CCIX Port error reporting
+  efi / ras: CCIX Link error reporting
+  efi / ras: CCIX Agent internal error reporting
+
+ drivers/acpi/apei/Kconfig        |   8 +
+ drivers/acpi/apei/ghes.c         |  59 ++
+ drivers/firmware/efi/Kconfig     |   5 +
+ drivers/firmware/efi/Makefile    |   1 +
+ drivers/firmware/efi/cper-ccix.c | 919 +++++++++++++++++++++++++++++++
+ drivers/firmware/efi/cper.c      |   6 +
+ include/linux/cper.h             | 333 +++++++++++
+ include/ras/ras_event.h          | 405 ++++++++++++++
+ 8 files changed, 1736 insertions(+)
+ create mode 100644 drivers/firmware/efi/cper-ccix.c
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.20.1
 
