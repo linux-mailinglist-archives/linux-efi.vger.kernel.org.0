@@ -2,29 +2,29 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5CB1AFABDF
-	for <lists+linux-efi@lfdr.de>; Wed, 13 Nov 2019 09:21:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F40F8FAC9E
+	for <lists+linux-efi@lfdr.de>; Wed, 13 Nov 2019 10:11:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726449AbfKMIVq (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 13 Nov 2019 03:21:46 -0500
-Received: from mga06.intel.com ([134.134.136.31]:38591 "EHLO mga06.intel.com"
+        id S1726173AbfKMJLu (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 13 Nov 2019 04:11:50 -0500
+Received: from mga07.intel.com ([134.134.136.100]:24659 "EHLO mga07.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725993AbfKMIVq (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Wed, 13 Nov 2019 03:21:46 -0500
+        id S1726086AbfKMJLu (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Wed, 13 Nov 2019 04:11:50 -0500
 X-Amp-Result: UNKNOWN
 X-Amp-Original-Verdict: FILE UNKNOWN
 X-Amp-File-Uploaded: False
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orsmga104.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 13 Nov 2019 00:21:44 -0800
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 13 Nov 2019 01:11:48 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.68,299,1569308400"; 
-   d="gz'50?scan'50,208,50";a="235190380"
+   d="gz'50?scan'50,208,50";a="379164488"
 Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
-  by fmsmga002.fm.intel.com with ESMTP; 13 Nov 2019 00:21:41 -0800
+  by orsmga005.jf.intel.com with ESMTP; 13 Nov 2019 01:11:45 -0800
 Received: from kbuild by lkp-server01 with local (Exim 4.89)
         (envelope-from <lkp@intel.com>)
-        id 1iUnuG-0009G3-V3; Wed, 13 Nov 2019 16:21:40 +0800
-Date:   Wed, 13 Nov 2019 16:20:46 +0800
+        id 1iUogi-00036Z-N9; Wed, 13 Nov 2019 17:11:44 +0800
+Date:   Wed, 13 Nov 2019 17:10:59 +0800
 From:   kbuild test robot <lkp@intel.com>
 To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Cc:     kbuild-all@lists.01.org, linux-edac@vger.kernel.org,
@@ -36,13 +36,13 @@ Cc:     kbuild-all@lists.01.org, linux-edac@vger.kernel.org,
         nariman.poushin@linaro.org,
         Thanu Rangarajan <Thanu.Rangarajan@arm.com>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH v3 1/6] efi / ras: CCIX Memory error reporting
-Message-ID: <201911131616.QdJDDZ7G%lkp@intel.com>
-References: <20191112165226.106107-2-Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH v3 2/6] efi / ras: CCIX Cache error reporting
+Message-ID: <201911131737.qrTrqe1q%lkp@intel.com>
+References: <20191112165226.106107-3-Jonathan.Cameron@huawei.com>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="xbfkq3s2n7ifojzu"
+Content-Type: multipart/mixed; boundary="hgwdoaupzjsqyeeo"
 Content-Disposition: inline
-In-Reply-To: <20191112165226.106107-2-Jonathan.Cameron@huawei.com>
+In-Reply-To: <20191112165226.106107-3-Jonathan.Cameron@huawei.com>
 X-Patchwork-Hint: ignore
 User-Agent: NeoMutt/20170113 (1.7.2)
 Sender: linux-efi-owner@vger.kernel.org
@@ -51,7 +51,7 @@ List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
 
---xbfkq3s2n7ifojzu
+--hgwdoaupzjsqyeeo
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
@@ -79,15 +79,23 @@ Reported-by: kbuild test robot <lkp@intel.com>
 All errors (new ones prefixed by >>):
 
    ld: drivers/ras/ras.o: in function `perf_trace_ccix_memory_error_event':
->> include/trace/../../include/ras/ras_event.h:352: undefined reference to `cper_ccix_mem_err_pack'
+   include/trace/../../include/ras/ras_event.h:352: undefined reference to `cper_ccix_mem_err_pack'
    ld: drivers/ras/ras.o: in function `trace_event_raw_event_ccix_memory_error_event':
->> include/trace/../../include/ras/ras_event.h:352: undefined reference to `cper_ccix_mem_err_pack'
+   include/trace/../../include/ras/ras_event.h:352: undefined reference to `cper_ccix_mem_err_pack'
    ld: drivers/ras/ras.o: in function `trace_raw_output_ccix_memory_error_event':
->> include/trace/../../include/ras/ras_event.h:352: undefined reference to `cper_ccix_mem_err_unpack'
->> ld: include/trace/../../include/ras/ras_event.h:352: undefined reference to `cper_ccix_comp_type_str'
->> ld: include/trace/../../include/ras/ras_event.h:352: undefined reference to `cper_severity_str'
+   include/trace/../../include/ras/ras_event.h:352: undefined reference to `cper_ccix_mem_err_unpack'
+   ld: include/trace/../../include/ras/ras_event.h:352: undefined reference to `cper_ccix_comp_type_str'
+   ld: include/trace/../../include/ras/ras_event.h:352: undefined reference to `cper_severity_str'
+   ld: drivers/ras/ras.o: in function `perf_trace_ccix_cache_error_event':
+>> include/trace/../../include/ras/ras_event.h:418: undefined reference to `cper_ccix_cache_err_pack'
+   ld: drivers/ras/ras.o: in function `trace_raw_output_ccix_cache_error_event':
+>> include/trace/../../include/ras/ras_event.h:418: undefined reference to `cper_ccix_cache_err_unpack'
+   ld: include/trace/../../include/ras/ras_event.h:418: undefined reference to `cper_ccix_comp_type_str'
+   ld: include/trace/../../include/ras/ras_event.h:418: undefined reference to `cper_severity_str'
+   ld: drivers/ras/ras.o: in function `trace_event_raw_event_ccix_cache_error_event':
+>> include/trace/../../include/ras/ras_event.h:418: undefined reference to `cper_ccix_cache_err_pack'
 
-vim +352 include/trace/../../include/ras/ras_event.h
+vim +418 include/trace/../../include/ras/ras_event.h
 
    341	
    342	/*
@@ -166,17 +174,91 @@ vim +352 include/trace/../../include/ras/ras_event.h
    415		)
    416	);
    417	
+ > 418	TRACE_EVENT(ccix_cache_error_event,
+   419		TP_PROTO(struct cper_ccix_cache_error *err,
+   420			 u32 err_seq,
+   421			 u8 sev,
+   422			 u16 ven_len),
+   423	
+   424		TP_ARGS(err, err_seq, sev, ven_len),
+   425	
+   426		TP_STRUCT__entry(
+   427			__field(u32, err_seq)
+   428			__field(u8, sev)
+   429			__field(u8, sevdetail)
+   430			__field(u8, source)
+   431			__field(u8, component)
+   432			__field(u64, pa)
+   433			__field(u8, pa_mask_lsb)
+   434			__field_struct(struct cper_ccix_cache_err_compact, data)
+   435			__field(u16, vendor_data_length)
+   436			__dynamic_array(u8, vendor_data, ven_len)
+   437		),
+   438	
+   439		TP_fast_assign(
+   440			__entry->err_seq = err_seq;
+   441	
+   442			__entry->sev = sev;
+   443			__entry->sevdetail = FIELD_GET(CCIX_PER_LOG_DW1_SEV_UE_M |
+   444				CCIX_PER_LOG_DW1_SEV_NO_COMM_M |
+   445				CCIX_PER_LOG_DW1_SEV_DEGRADED_M |
+   446				CCIX_PER_LOG_DW1_SEV_DEFFERABLE_M,
+   447				err->ccix_header[1]);
+   448			if (err->header.validation_bits & 0x1)
+   449				__entry->source = err->header.source_id;
+   450			else
+   451				__entry->source = ~0;
+   452			__entry->component = FIELD_GET(CCIX_PER_LOG_DW1_COMP_TYPE_M,
+   453						       err->ccix_header[1]);
+   454			if (err->ccix_header[1] & CCIX_PER_LOG_DW1_ADDR_VAL_M) {
+   455				__entry->pa = (u64)err->ccix_header[2] << 32 |
+   456					(err->ccix_header[3] & 0xfffffffc);
+   457				__entry->pa_mask_lsb = err->ccix_header[4] & 0xff;
+   458			} else {
+   459				__entry->pa = ~0ull;
+   460				__entry->pa_mask_lsb = ~0;
+   461			}
+   462	
+   463			__entry->vendor_data_length = ven_len ? ven_len - 4 : 0;
+   464			cper_ccix_cache_err_pack(&err->cache_record, &__entry->data,
+   465						 __entry->vendor_data_length,
+   466						 __get_dynamic_array(vendor_data));
+   467		),
+   468	
+   469		TP_printk("{%d} %s CCIX PER Cache Error in %s SevUE:%d SevNoComm:%d SevDegraded:%d SevDeferred:%d physical addr: %016llx (mask: %x) %s vendor:%s",
+   470			__entry->err_seq,
+   471			cper_severity_str(__entry->sev),
+   472			cper_ccix_comp_type_str(__entry->component),
+   473			__entry->sevdetail & BIT(0) ? 1 : 0,
+   474			__entry->sevdetail & BIT(1) ? 1 : 0,
+   475			__entry->sevdetail & BIT(2) ? 1 : 0,
+   476			__entry->sevdetail & BIT(3) ? 1 : 0,
+   477			__entry->pa,
+   478			__entry->pa_mask_lsb,
+   479			cper_ccix_cache_err_unpack(p, &__entry->data),
+   480			__print_hex(__get_dynamic_array(vendor_data),
+   481				    __entry->vendor_data_length)
+   482		)
+   483	);
+   484	/*
+   485	 * memory-failure recovery action result event
+   486	 *
+   487	 * unsigned long pfn -	Page Frame Number of the corrupted page
+   488	 * int type	-	Page types of the corrupted page
+   489	 * int result	-	Result of recovery action
+   490	 */
+   491	
 
 ---
 0-DAY kernel test infrastructure                 Open Source Technology Center
 https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org Intel Corporation
 
---xbfkq3s2n7ifojzu
+--hgwdoaupzjsqyeeo
 Content-Type: application/gzip
 Content-Disposition: attachment; filename=".config.gz"
 Content-Transfer-Encoding: base64
 
-H4sICGC2y10AAy5jb25maWcAlFxbc9w2sn7Pr5hyXpLaciI5ipI9p/QAkuAMMiTBAOBIoxeW
+H4sICPLCy10AAy5jb25maWcAlFxbc9w2sn7Pr5hyXpLaciI5ipI9p/QAkuAMMiTBAOBIoxeW
 Io8dVWzJq8sm/venGyBIAGyOfbZSaw26cW90f91o8Ntvvl2xl+eHjzfPd7c3Hz58Xr0/3B8e
 b54Pb1fv7j4c/ndVyFUjzYoXwvwAzNXd/cs/P/7z63l/frb6+YezH05eP96er7aHx/vDh1X+
 cP/u7v0L1L97uP/m22/gv2+h8OMnaOrxf1bvb29f/7L6rjj8cXdzv/rF1j49+979Bby5bEqx
@@ -777,4 +859,4 @@ mfLba5mrgScwg2GmAkNhudgdkOrkV51Ulv0C9IUUKlPTxxpy6NWNFIJN2hB7tMfOwFQw+KRE
 xn8Uf9X0ntn/+vqHXnhHYDgtNHmD8xOWs9hApojpzSbkQqV4FT0EYsjM4APuYdWYoo67tjle
 Pu8Tqa+hxWDnwwsmmyO/NaewdFcsBTne+jEqw+rb2U1JEl0s2sb56OwZ/wYPDPRPLwACAA==
 
---xbfkq3s2n7ifojzu--
+--hgwdoaupzjsqyeeo--
