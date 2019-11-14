@@ -2,178 +2,229 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A399FFCA94
-	for <lists+linux-efi@lfdr.de>; Thu, 14 Nov 2019 17:11:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D9CDFCCC0
+	for <lists+linux-efi@lfdr.de>; Thu, 14 Nov 2019 19:05:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726482AbfKNQLU (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 14 Nov 2019 11:11:20 -0500
-Received: from mail-qt1-f193.google.com ([209.85.160.193]:40833 "EHLO
-        mail-qt1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726516AbfKNQLU (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 14 Nov 2019 11:11:20 -0500
-Received: by mail-qt1-f193.google.com with SMTP id o49so7340737qta.7;
-        Thu, 14 Nov 2019 08:11:19 -0800 (PST)
+        id S1727118AbfKNSEy (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 14 Nov 2019 13:04:54 -0500
+Received: from mail-wm1-f73.google.com ([209.85.128.73]:36833 "EHLO
+        mail-wm1-f73.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726098AbfKNSEA (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 14 Nov 2019 13:04:00 -0500
+Received: by mail-wm1-f73.google.com with SMTP id z3so3756524wmk.1
+        for <linux-efi@vger.kernel.org>; Thu, 14 Nov 2019 10:03:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=BOPJip910ImC+qHUP+LwyRp/oWfN3GE0KkiS0ZFAdXY=;
-        b=JFqOShpAQwGsjh6wLpsyuqLJxoGdJccNiUfQnqYuCbgTheAXRifadAOEVww1bQ4WFB
-         Erdq8+2oNXLndOTe/OeBTEbh0ShhY1kPzAHMlFOnzNiadJXLpT8wWzETdpSNgQ0qRnnY
-         Gw7aCbLweyFmgA4TTogBVYIsBM0pO+yBwxfnkYhOb2cUZ9+uq/4+pYbicdzIDxNN+3ie
-         vA9w0m+NJT6iIekM9JH5EXsMckNwFqO9Hl0q3WwKx7bu/ri6fKVyKYdSPgkS+DKdsmy1
-         lKf1sCbGVJcgEILeZh/1OWGhomskzvhLjWhwgiP8DRIqta15Go/2/HKuHULlWcKYjCGm
-         MHqw==
+        d=google.com; s=20161025;
+        h=date:message-id:mime-version:subject:from:to:cc;
+        bh=1bg0Urry1BGwaxpDX8MHZFNgYP5IGRugkAlFUvPLa/I=;
+        b=lr7v9t/b/nWB+oAlbYHlnG9ii8vIW9kKStfj1dl2F+rlYORyMHGnNhsdqh03G2C0//
+         yZ5xgTbXsNNf3QwN0Qwga6q5nM/rxjeVaZ9U0zczdCT+0e79wzZS/U9XMus96cOP/QX/
+         k+CVWVti+mZkubWF9QrVTJw5SEehpsKf4hZ7DQ09LIv3oofslpgizYbK8l6+ycIKA89x
+         lJJ9GsqBG24Ur5vUOlwu59yaqPO0FZzn4qgShqmaoVE0Mt8y0BC4GS/WhwSSgu2zcAJI
+         XG0iaZB3EWiAvVB2PFnjG7HFSd/bTbpARaMvFNvmSCEtNF2A9luiODjbY2pxefIlmYv8
+         L4nQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=BOPJip910ImC+qHUP+LwyRp/oWfN3GE0KkiS0ZFAdXY=;
-        b=gtdcEENL83HFTrK5MkcQYQZHWFNP87+X0QoLCeTE4yWBVtIbkXODfApJ+t4RT+NAHd
-         1eA/hWsy0sEM6VOdCjWnvSRTDHFAm1TylpvB164A9goWPY1d/cxSVW/QNym7Qs7ci0oB
-         yr+ZjQ8xvJ+gmIPMgmPRx0FWHCvhQUrCgKimSlSBwM5XbWNxeAiXFWauVB/aq+CxerPm
-         /ugQdNqrXO0F5vswLJRaAHIn/RGhRuveTpWnpdg9D9zdyE3x7+4udr6BfMw9yxWXFc3u
-         if06QZgll9hxvZzzvSR0pHFUaPhfdeJFGUxFUpFIDaKgfDvPtRuMEqQ5blOdUi841EKb
-         A3Cw==
-X-Gm-Message-State: APjAAAXwFTH8M90X+iQsTXxSOEGnWofS7YgOB8KbtNEclppodDF5xHMU
-        E0npjCksdG1kp4hScFYKXA==
-X-Google-Smtp-Source: APXvYqw6Dq8NsnAZHxKC+SggPkyY6aakIFXBizI56tHuEt8ZVZViIZUPvxZNCEcDeeTEetmpkm5O+Q==
-X-Received: by 2002:ac8:60cc:: with SMTP id i12mr5729392qtm.103.1573747878621;
-        Thu, 14 Nov 2019 08:11:18 -0800 (PST)
-Received: from gabell.bos.redhat.com (nat-pool-bos-t.redhat.com. [66.187.233.206])
-        by smtp.gmail.com with ESMTPSA id n20sm2767705qkn.118.2019.11.14.08.11.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 Nov 2019 08:11:17 -0800 (PST)
-From:   Masayoshi Mizuma <msys.mizuma@gmail.com>
-To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        linux-arm-kernel@lists.infradead.org, linux-efi@vger.kernel.org
-Cc:     Masayoshi Mizuma <msys.mizuma@gmail.com>,
-        Masayoshi Mizuma <m.mizuma@jp.fujitsu.com>,
-        linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
-        d.hatayama@fujitsu.com
-Subject: [RFC PATCH v2] efi: arm64: Introduce /sys/firmware/efi/memreserve to tell the persistent pages
-Date:   Thu, 14 Nov 2019 11:10:19 -0500
-Message-Id: <20191114161019.8735-1-msys.mizuma@gmail.com>
-X-Mailer: git-send-email 2.17.1
+        h=x-gm-message-state:date:message-id:mime-version:subject:from:to:cc;
+        bh=1bg0Urry1BGwaxpDX8MHZFNgYP5IGRugkAlFUvPLa/I=;
+        b=UvfbcBI4khk76o8Wcw2RFV2n/snym/Ijt90tjgM668SraZQQR8TZLInHTkp+JXsWEB
+         Qrk5hTwo2pItgh3xCw/TaYbhB1LYYZ+XIX0ZBFyDIo4kXzDoi6AGGW5AogEaiiz90pwH
+         y92AwuRORFih8bLdJQjcrDxaqBEbBp6By2yeEQtltezriyM86bnB37w0gP9IPjwlI8LG
+         +ASHjVF611YM1R9IhC43KmyB8fOAA9H1MSuCtzI5Yb3pfS0SFM+7xvARMq+2YSuDoZJy
+         OFHqLKXizy0bJEu6HuP0g4gdtadjNbZctabN57i7bMinTLexpuuqSyv15/nt4NKWAtfH
+         y6ZQ==
+X-Gm-Message-State: APjAAAUB8pgzZGq5QlVRmtCXzbgjcBwwbQQcD4oP9Xvy7jIu27GIQrhF
+        xgRxExToQOxPs08NPI82at/OozkQXg==
+X-Google-Smtp-Source: APXvYqyCRLhzabKP15Hc3I8tuyq3pOVGFzSfCNQc1mA04B8Z4nfTDX8KQ8VJZaVdt16PEvULqCx0tNT5ug==
+X-Received: by 2002:a5d:4585:: with SMTP id p5mr9720266wrq.134.1573754637105;
+ Thu, 14 Nov 2019 10:03:57 -0800 (PST)
+Date:   Thu, 14 Nov 2019 19:02:53 +0100
+Message-Id: <20191114180303.66955-1-elver@google.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.24.0.rc1.363.gb1bccd3e3d-goog
+Subject: [PATCH v4 00/10] Add Kernel Concurrency Sanitizer (KCSAN)
+From:   Marco Elver <elver@google.com>
+To:     elver@google.com
+Cc:     akiyks@gmail.com, stern@rowland.harvard.edu, glider@google.com,
+        parri.andrea@gmail.com, andreyknvl@google.com, luto@kernel.org,
+        ard.biesheuvel@linaro.org, arnd@arndb.de, boqun.feng@gmail.com,
+        bp@alien8.de, dja@axtens.net, dlustig@nvidia.com,
+        dave.hansen@linux.intel.com, dhowells@redhat.com,
+        dvyukov@google.com, hpa@zytor.com, mingo@redhat.com,
+        j.alglave@ucl.ac.uk, joel@joelfernandes.org, corbet@lwn.net,
+        jpoimboe@redhat.com, luc.maranget@inria.fr, mark.rutland@arm.com,
+        npiggin@gmail.com, paulmck@kernel.org, peterz@infradead.org,
+        tglx@linutronix.de, will@kernel.org, edumazet@google.com,
+        kasan-dev@googlegroups.com, linux-arch@vger.kernel.org,
+        linux-doc@vger.kernel.org, linux-efi@vger.kernel.org,
+        linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mm@kvack.org, x86@kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-From: Masayoshi Mizuma <m.mizuma@jp.fujitsu.com>
+This is the patch-series for the Kernel Concurrency Sanitizer (KCSAN).
+KCSAN is a sampling watchpoint-based *data race detector*. More details
+are included in **Documentation/dev-tools/kcsan.rst**. This patch-series
+only enables KCSAN for x86, but we expect adding support for other
+architectures is relatively straightforward (we are aware of
+experimental ARM64 and POWER support).
 
-kexec reboot stops in early boot sequence because efi_config_parse_tables()
-refers garbage data. We can see the log with memblock=debug kernel option:
+To gather early feedback, we announced KCSAN back in September, and have
+integrated the feedback where possible:
+http://lkml.kernel.org/r/CANpmjNPJ_bHjfLZCAPV23AXFfiPiyXXqqu72n6TgWzb2Gnu1eA@mail.gmail.com
 
-  efi:  ACPI 2.0=0x9821790014  PROP=0x8757f5c0  SMBIOS 3.0=0x9820740000  MEMRESERVE=0x9820bfdc58
-  memblock_reserve: [0x0000009820bfdc58-0x0000009820bfdc67] efi_config_parse_tables+0x228/0x278
-  memblock_reserve: [0x0000000082760000-0x00000000324d07ff] efi_config_parse_tables+0x228/0x278
-  memblock_reserve: [0xcc4f84ecc0511670-0x5f6e5214a7fd91f9] efi_config_parse_tables+0x244/0x278
-  memblock_reserve: [0xd2fd4144b9af693d-0xad0c1db1086f40a2] efi_config_parse_tables+0x244/0x278
-  memblock_reserve: [0x0c719bb159b1fadc-0x5aa6e62a1417ce12] efi_config_parse_tables+0x244/0x278
-  ...
+The current list of known upstream fixes for data races found by KCSAN
+can be found here:
+https://github.com/google/ktsan/wiki/KCSAN#upstream-fixes-of-data-races-found-by-kcsan
 
-That happens because 0x82760000, struct linux_efi_memreserve, is destroyed.
-0x82760000 is pointed from efi.mem_reseve, and efi.mem_reserve points the
-head page of LPI pending table and LPI property table which are allocated by
-gic_reserve_range().
+We want to point out and acknowledge the work surrounding the LKMM,
+including several articles that motivate why data races are dangerous
+[1, 2], justifying a data race detector such as KCSAN.
 
-The destroyer is kexec. kexec locates the initrd to the area:
+[1] https://lwn.net/Articles/793253/
+[2] https://lwn.net/Articles/799218/
 
-  ]# kexec -d -l /boot/vmlinuz-5.4.0-rc7 /boot/initramfs-5.4.0-rc7.img --reuse-cmdline
-  ...
-  initrd: base 82290000, size 388dd8ah (59301258)
-  ...
+Race conditions vs. data races
+------------------------------
 
-From dynamic debug log. initrd is located in segment[1]:
-  machine_kexec_prepare:70:
-    kexec kimage info:
-      type:        0
-      start:       85b30680
-      head:        0
-      nr_segments: 4
-        segment[0]: 0000000080480000 - 0000000082290000, 0x1e10000 bytes, 481 pages
-        segment[1]: 0000000082290000 - 0000000085b20000, 0x3890000 bytes, 905 pages
-        segment[2]: 0000000085b20000 - 0000000085b30000, 0x10000 bytes, 1 pages
-        segment[3]: 0000000085b30000 - 0000000085b40000, 0x10000 bytes, 1 pages
+Race conditions are logic bugs, where unexpected interleaving of racing
+concurrent operations result in an erroneous state.
 
-kexec searches the memory region to locate initrd through
-"System RAM" in /proc/iomem. The pending tables are included in
-"System RAM" because they are allocated by alloc_pages(), so kexec
-destroys the LPI pending tables.
+Data races on the other hand are defined at the *memory model/language
+level*.  Many data races are also harmful race conditions, which a tool
+like KCSAN reports!  However, not all data races are race conditions and
+vice-versa.  KCSAN's intent is to report data races according to the
+LKMM. A data race detector can only work at the memory model/language
+level.
 
-Introduce /sys/firmware/efi/memreserve to tell the pages pointed by
-efi.mem_reserve so that kexec can avoid the area to locate initrd.
+Deeper analysis, to find high-level race conditions only, requires
+conveying the intended kernel logic to a tool. This requires (1) the
+developer writing a specification or model of their code, and then (2)
+the tool verifying that the implementation matches. This has been done
+for small bits of code using model checkers and other formal methods,
+but does not scale to the level of what can be covered with a dynamic
+analysis based data race detector such as KCSAN.
 
-Signed-off-by: Masayoshi Mizuma <m.mizuma@jp.fujitsu.com>
----
- drivers/firmware/efi/efi.c | 41 +++++++++++++++++++++++++++++++++++++-
- 1 file changed, 40 insertions(+), 1 deletion(-)
+For reasons outlined in [1, 2], data races can be much more subtle, but
+can cause no less harm than high-level race conditions.
 
-diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
-index 0b6b0c19a..07812d697 100644
---- a/drivers/firmware/efi/efi.c
-+++ b/drivers/firmware/efi/efi.c
-@@ -149,6 +149,45 @@ static ssize_t systab_show(struct kobject *kobj,
- 
- static struct kobj_attribute efi_attr_systab = __ATTR_RO_MODE(systab, 0400);
- 
-+static struct linux_efi_memreserve *efi_memreserve_root __ro_after_init;
-+static ssize_t memreserve_show(struct kobject *kobj,
-+			   struct kobj_attribute *attr, char *buf)
-+{
-+	struct linux_efi_memreserve *rsv;
-+	phys_addr_t start, end;
-+	unsigned long prsv;
-+	char *str = buf;
-+	int count, i;
-+
-+	if (!kobj || !buf)
-+		return -EINVAL;
-+
-+	if ((efi_memreserve_root == (void *)ULONG_MAX) ||
-+			(!efi_memreserve_root))
-+		return -ENODEV;
-+
-+	for (prsv = efi_memreserve_root->next; prsv; prsv = rsv->next) {
-+		rsv = memremap(prsv, sizeof(*rsv), MEMREMAP_WB);
-+		if (!rsv) {
-+			pr_err("Could not map efi_memreserve\n");
-+			return -ENOMEM;
-+		}
-+		count = atomic_read(&rsv->count);
-+		for (i = 0; i < count; i++) {
-+			start = rsv->entry[i].base;
-+			end = start + rsv->entry[i].size - 1;
-+
-+			str += sprintf(str, "%pa-%pa\n", &start, &end);
-+		}
-+		memunmap(rsv);
-+	}
-+
-+	return str - buf;
-+}
-+
-+static struct kobj_attribute efi_attr_memreserve =
-+			__ATTR_RO_MODE(memreserve, 0444);
-+
- #define EFI_FIELD(var) efi.var
- 
- #define EFI_ATTR_SHOW(name) \
-@@ -180,6 +219,7 @@ static struct attribute *efi_subsys_attrs[] = {
- 	&efi_attr_runtime.attr,
- 	&efi_attr_config_table.attr,
- 	&efi_attr_fw_platform_size.attr,
-+	&efi_attr_memreserve.attr,
- 	NULL,
- };
- 
-@@ -964,7 +1004,6 @@ int efi_status_to_err(efi_status_t status)
- }
- 
- static DEFINE_SPINLOCK(efi_mem_reserve_persistent_lock);
--static struct linux_efi_memreserve *efi_memreserve_root __ro_after_init;
- 
- static int __init efi_memreserve_map_root(void)
- {
+Changelog
+---------
+v4:
+* Major changes:
+ - Optimizations resulting in performance improvement of 33% (on
+   microbenchmark).
+ - Deal with nested interrupts for atomic_next.
+ - Simplify report.c (removing double-locking as well), in preparation
+   for KCSAN_REPORT_VALUE_CHANGE_ONLY.
+ - Add patch to introduce "data_race(expr)" macro.
+ - Introduce KCSAN_REPORT_VALUE_CHANGE_ONLY option for further filtering of data
+   races: if a conflicting write was observed via a watchpoint, only report the
+   data race if a value change was observed as well. The option will be enabled
+   by default on syzbot. (rcu-functions will be excluded from this filter at
+   request of Paul McKenney.) Context:
+   http://lkml.kernel.org/r/CANpmjNOepvb6+zJmDePxj21n2rctM4Sp4rJ66x_J-L1UmNK54A@mail.gmail.com
+
+v3: http://lkml.kernel.org/r/20191104142745.14722-1-elver@google.com
+* Major changes:
+ - Add microbenchmark.
+ - Add instruction watchpoint skip randomization.
+ - Refactor API and core runtime fast-path and slow-path. Compared to
+   the previous version, with a default config and benchmarked using the
+   added microbenchmark, this version is 3.8x faster.
+ - Make __tsan_unaligned __alias of generic accesses.
+ - Rename kcsan_{begin,end}_atomic ->
+   kcsan_{nestable,flat}_atomic_{begin,end}
+ - For filter list in debugfs.c use kmalloc+krealloc instead of
+   kvmalloc.
+ - Split Documentation into separate patch.
+
+v2: http://lkml.kernel.org/r/20191017141305.146193-1-elver@google.com
+* Major changes:
+ - Replace kcsan_check_access(.., {true, false}) with
+   kcsan_check_{read,write}.
+ - Change atomic-instrumented.h to use __atomic_check_{read,write}.
+ - Use common struct kcsan_ctx in task_struct and for per-CPU interrupt
+   contexts.
+
+v1: http://lkml.kernel.org/r/20191016083959.186860-1-elver@google.com
+
+Marco Elver (10):
+  kcsan: Add Kernel Concurrency Sanitizer infrastructure
+  include/linux/compiler.h: Introduce data_race(expr) macro
+  kcsan: Add Documentation entry in dev-tools
+  objtool, kcsan: Add KCSAN runtime functions to whitelist
+  build, kcsan: Add KCSAN build exceptions
+  seqlock, kcsan: Add annotations for KCSAN
+  seqlock: Require WRITE_ONCE surrounding raw_seqcount_barrier
+  asm-generic, kcsan: Add KCSAN instrumentation for bitops
+  locking/atomics, kcsan: Add KCSAN instrumentation
+  x86, kcsan: Enable KCSAN for x86
+
+ Documentation/dev-tools/index.rst         |   1 +
+ Documentation/dev-tools/kcsan.rst         | 256 +++++++++
+ MAINTAINERS                               |  11 +
+ Makefile                                  |   3 +-
+ arch/x86/Kconfig                          |   1 +
+ arch/x86/boot/Makefile                    |   2 +
+ arch/x86/boot/compressed/Makefile         |   2 +
+ arch/x86/entry/vdso/Makefile              |   3 +
+ arch/x86/include/asm/bitops.h             |   6 +-
+ arch/x86/kernel/Makefile                  |   4 +
+ arch/x86/kernel/cpu/Makefile              |   3 +
+ arch/x86/lib/Makefile                     |   4 +
+ arch/x86/mm/Makefile                      |   4 +
+ arch/x86/purgatory/Makefile               |   2 +
+ arch/x86/realmode/Makefile                |   3 +
+ arch/x86/realmode/rm/Makefile             |   3 +
+ drivers/firmware/efi/libstub/Makefile     |   2 +
+ include/asm-generic/atomic-instrumented.h | 393 +++++++-------
+ include/asm-generic/bitops-instrumented.h |  18 +
+ include/linux/compiler-clang.h            |   9 +
+ include/linux/compiler-gcc.h              |   7 +
+ include/linux/compiler.h                  |  57 +-
+ include/linux/kcsan-checks.h              |  97 ++++
+ include/linux/kcsan.h                     | 115 ++++
+ include/linux/sched.h                     |   4 +
+ include/linux/seqlock.h                   |  51 +-
+ init/init_task.c                          |   8 +
+ init/main.c                               |   2 +
+ kernel/Makefile                           |   6 +
+ kernel/kcsan/Makefile                     |  11 +
+ kernel/kcsan/atomic.h                     |  27 +
+ kernel/kcsan/core.c                       | 626 ++++++++++++++++++++++
+ kernel/kcsan/debugfs.c                    | 275 ++++++++++
+ kernel/kcsan/encoding.h                   |  94 ++++
+ kernel/kcsan/kcsan.h                      | 108 ++++
+ kernel/kcsan/report.c                     | 320 +++++++++++
+ kernel/kcsan/test.c                       | 121 +++++
+ kernel/sched/Makefile                     |   6 +
+ lib/Kconfig.debug                         |   2 +
+ lib/Kconfig.kcsan                         | 118 ++++
+ lib/Makefile                              |   3 +
+ mm/Makefile                               |   8 +
+ scripts/Makefile.kcsan                    |   6 +
+ scripts/Makefile.lib                      |  10 +
+ scripts/atomic/gen-atomic-instrumented.sh |  17 +-
+ tools/objtool/check.c                     |  18 +
+ 46 files changed, 2641 insertions(+), 206 deletions(-)
+ create mode 100644 Documentation/dev-tools/kcsan.rst
+ create mode 100644 include/linux/kcsan-checks.h
+ create mode 100644 include/linux/kcsan.h
+ create mode 100644 kernel/kcsan/Makefile
+ create mode 100644 kernel/kcsan/atomic.h
+ create mode 100644 kernel/kcsan/core.c
+ create mode 100644 kernel/kcsan/debugfs.c
+ create mode 100644 kernel/kcsan/encoding.h
+ create mode 100644 kernel/kcsan/kcsan.h
+ create mode 100644 kernel/kcsan/report.c
+ create mode 100644 kernel/kcsan/test.c
+ create mode 100644 lib/Kconfig.kcsan
+ create mode 100644 scripts/Makefile.kcsan
+
 -- 
-2.21.0
+2.24.0.rc1.363.gb1bccd3e3d-goog
 
