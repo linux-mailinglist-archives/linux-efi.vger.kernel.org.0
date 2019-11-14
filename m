@@ -2,51 +2,56 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C203AFC253
-	for <lists+linux-efi@lfdr.de>; Thu, 14 Nov 2019 10:09:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D771FFC224
+	for <lists+linux-efi@lfdr.de>; Thu, 14 Nov 2019 10:08:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726894AbfKNJHx (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 14 Nov 2019 04:07:53 -0500
-Received: from bilbo.ozlabs.org ([203.11.71.1]:60617 "EHLO ozlabs.org"
+        id S1727056AbfKNJIG (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 14 Nov 2019 04:08:06 -0500
+Received: from bilbo.ozlabs.org ([203.11.71.1]:48675 "EHLO ozlabs.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726786AbfKNJHw (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Thu, 14 Nov 2019 04:07:52 -0500
+        id S1726185AbfKNJIG (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Thu, 14 Nov 2019 04:08:06 -0500
 Received: by ozlabs.org (Postfix, from userid 1034)
-        id 47DFxf2Pscz9s7T; Thu, 14 Nov 2019 20:07:49 +1100 (AEDT)
+        id 47DFxv2Jjpz9sRs; Thu, 14 Nov 2019 20:08:02 +1100 (AEDT)
 X-powerpc-patch-notification: thanks
-X-powerpc-patch-commit: 39a963b457b5c6cbbdc70441c9d496e39d151582
-In-Reply-To: <1569973038-2710-1-git-send-email-nayna@linux.ibm.com>
-To:     Nayna Jain <nayna@linux.ibm.com>, linuxppc-dev@ozlabs.org,
+X-powerpc-patch-commit: 4238fad366a660cbc6499ca1ea4be42bd4d1ac5b
+In-Reply-To: <1572492694-6520-3-git-send-email-zohar@linux.ibm.com>
+To:     Mimi Zohar <zohar@linux.ibm.com>, linuxppc-dev@ozlabs.org,
         linux-efi@vger.kernel.org, linux-integrity@vger.kernel.org
 From:   Michael Ellerman <patch-notifications@ellerman.id.au>
 Cc:     Ard Biesheuvel <ard.biesheuvel@linaro.org>,
         Eric Ricther <erichte@linux.ibm.com>,
         Nayna Jain <nayna@linux.ibm.com>, linux-kernel@vger.kernel.org,
         Mimi Zohar <zohar@linux.ibm.com>,
-        Claudio Carvalho <cclaudio@linux.ibm.com>,
-        Matthew Garret <matthew.garret@nebula.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Paul Mackerras <paulus@samba.org>, Jeremy Kerr <jk@ozlabs.org>,
-        Elaine Palmer <erpalmer@us.ibm.com>,
-        Oliver O'Halloran <oohall@gmail.com>,
-        George Wilson <gcwilson@linux.ibm.com>
-Subject: Re: [PATCH] sysfs: Fixes __BIN_ATTR_WO() macro
-Message-Id: <47DFxf2Pscz9s7T@ozlabs.org>
-Date:   Thu, 14 Nov 2019 20:07:49 +1100 (AEDT)
+        Oliver O'Halloran <oohall@gmail.com>
+Subject: Re: [PATCH v10 2/9] powerpc/ima: add support to initialize ima policy rules
+Message-Id: <47DFxv2Jjpz9sRs@ozlabs.org>
+Date:   Thu, 14 Nov 2019 20:08:02 +1100 (AEDT)
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, 2019-10-01 at 23:37:18 UTC, Nayna Jain wrote:
-> This patch fixes the size and write parameter for the macro
-> __BIN_ATTR_WO().
+On Thu, 2019-10-31 at 03:31:27 UTC, Mimi Zohar wrote:
+> From: Nayna Jain <nayna@linux.ibm.com>
 > 
-> Fixes: 7f905761e15a8 ("sysfs: add BIN_ATTR_WO() macro")
+> PowerNV systems use a Linux-based bootloader, which rely on the IMA
+> subsystem to enforce different secure boot modes.  Since the verification
+> policy may differ based on the secure boot mode of the system, the
+> policies must be defined at runtime.
+> 
+> This patch implements arch-specific support to define IMA policy
+> rules based on the runtime secure boot mode of the system.
+> 
+> This patch provides arch-specific IMA policies if PPC_SECURE_BOOT
+> config is enabled.
+> 
 > Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
+> Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
 
 Applied to powerpc next, thanks.
 
-https://git.kernel.org/powerpc/c/39a963b457b5c6cbbdc70441c9d496e39d151582
+https://git.kernel.org/powerpc/c/4238fad366a660cbc6499ca1ea4be42bd4d1ac5b
 
 cheers
