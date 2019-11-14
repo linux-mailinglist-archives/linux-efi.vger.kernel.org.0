@@ -2,225 +2,156 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 55E7AFCEF3
-	for <lists+linux-efi@lfdr.de>; Thu, 14 Nov 2019 20:50:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7AB70FCF60
+	for <lists+linux-efi@lfdr.de>; Thu, 14 Nov 2019 21:13:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726567AbfKNTus (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 14 Nov 2019 14:50:48 -0500
-Received: from mail.kernel.org ([198.145.29.99]:35666 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726474AbfKNTus (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Thu, 14 Nov 2019 14:50:48 -0500
-Received: from paulmck-ThinkPad-P72.home (unknown [199.201.64.141])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C8BF420724;
-        Thu, 14 Nov 2019 19:50:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1573761046;
-        bh=1ABanbOYD26kBQVaeu/qDUnt6KJkNmJdkzCHmVzodI0=;
-        h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
-        b=C2AGRCgtrKhkBetGWdjch+Z2IAWrzYfQtwzSHwSB5PbCo4q5pZvpBZXKWgF50aqUx
-         6Y5oHq06CBkAJs5x9D0Cd3hGqsP3+V1MLT/TNw57PZNDa5z1AFnkWyoJbOscWKyGBe
-         kzO3uPGadX5naLrFF1gJZKemzgqia7+1a+hDPB/Y=
-Received: by paulmck-ThinkPad-P72.home (Postfix, from userid 1000)
-        id 7365535227FC; Thu, 14 Nov 2019 11:50:46 -0800 (PST)
-Date:   Thu, 14 Nov 2019 11:50:46 -0800
-From:   "Paul E. McKenney" <paulmck@kernel.org>
-To:     Marco Elver <elver@google.com>
-Cc:     akiyks@gmail.com, stern@rowland.harvard.edu, glider@google.com,
-        parri.andrea@gmail.com, andreyknvl@google.com, luto@kernel.org,
-        ard.biesheuvel@linaro.org, arnd@arndb.de, boqun.feng@gmail.com,
-        bp@alien8.de, dja@axtens.net, dlustig@nvidia.com,
-        dave.hansen@linux.intel.com, dhowells@redhat.com,
-        dvyukov@google.com, hpa@zytor.com, mingo@redhat.com,
-        j.alglave@ucl.ac.uk, joel@joelfernandes.org, corbet@lwn.net,
-        jpoimboe@redhat.com, luc.maranget@inria.fr, mark.rutland@arm.com,
-        npiggin@gmail.com, peterz@infradead.org, tglx@linutronix.de,
-        will@kernel.org, edumazet@google.com, kasan-dev@googlegroups.com,
-        linux-arch@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-efi@vger.kernel.org, linux-kbuild@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org, x86@kernel.org
-Subject: Re: [PATCH v4 00/10] Add Kernel Concurrency Sanitizer (KCSAN)
-Message-ID: <20191114195046.GP2865@paulmck-ThinkPad-P72>
-Reply-To: paulmck@kernel.org
-References: <20191114180303.66955-1-elver@google.com>
+        id S1726969AbfKNUN3 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 14 Nov 2019 15:13:29 -0500
+Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:41277 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726640AbfKNUN3 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 14 Nov 2019 15:13:29 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1573762408;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=zeOvreoiDJiJznC6pgddXng3TgtdBC/uHEqj3GGY24g=;
+        b=dnah7DTRX3WQ722iH7Lin11WmvDlwizkzOHW1kM/tioSR9OC2yDoEHBrmWatp1DLep+MJs
+        UCSO09nrZZfpF0kb70KOz8JCpV/MG8LtHQgOJI4+t/7XkVeomcn3FRbBAQzsXrlTj1ZAVM
+        27/lYfxTHgPYZPoy/1t2jtT25hh7/Qo=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-21-PkUKXjfbOLuEA8M5BFa27Q-1; Thu, 14 Nov 2019 15:13:26 -0500
+Received: by mail-wm1-f70.google.com with SMTP id x16so4799669wmk.2
+        for <linux-efi@vger.kernel.org>; Thu, 14 Nov 2019 12:13:25 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=Kwk2SObMZHFa0y+X6pAt/3dq8Wi+ovXi2eZNEpP7b1o=;
+        b=oPvVwSRc/EtGjCh9Kv7fcofcg9MZNsRatTn1WQmNGZ2tN1QyhEkF38ZXAz7FSWCgeV
+         5h8WIYsg5Fd2kik9GwcOjbvL+iLpbQDer7duoRLdFvdWKMznnnJwGrR8Ud1jlw+sKk6v
+         egl+WanzVybp4BCJT4o2PbSCoKVDRXk2nfYRvqhIJNOv2WliJG/m0donm/uAxAFB1Uxp
+         Ou1UhaJApEWoYZ0lAUrI3HA6N9bVyw0qPw27Ll6GVHNbvSXuybvFowcl8ZF4R2X9fynp
+         9UzDvWhoXEQsLN0Chsx6Ao3Jwf7aBq8bHFAWU85apCNoUB7au9sZWpNwuWJYxmAYu/DJ
+         Mrhw==
+X-Gm-Message-State: APjAAAVEPvWQS65bM1dfHBzmDdRv/Xu5r1nM49e5RXvWIoao+lJBobaL
+        0GpyOsnEEOC1Ee5SJMmqbO3Ib6Jd30DfoncsU+JqXcd58iGGHr/0foLs0l7CPN88vSL8I5qDPGD
+        z8qb9XI9hPCByIRRegc+b
+X-Received: by 2002:a1c:a9cb:: with SMTP id s194mr10653846wme.92.1573762404991;
+        Thu, 14 Nov 2019 12:13:24 -0800 (PST)
+X-Google-Smtp-Source: APXvYqxYg+h1HBpJaDU9hPX/MpQYH0wFtF669+nHobvHa152/M/2ldKc/DiHPX6bUeLLg5ZnBKKPdg==
+X-Received: by 2002:a1c:a9cb:: with SMTP id s194mr10653824wme.92.1573762404762;
+        Thu, 14 Nov 2019 12:13:24 -0800 (PST)
+Received: from shalem.localdomain (84-106-84-65.cable.dynamic.v4.ziggo.nl. [84.106.84.65])
+        by smtp.gmail.com with ESMTPSA id 19sm10336706wrc.47.2019.11.14.12.13.23
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 14 Nov 2019 12:13:23 -0800 (PST)
+Subject: Re: [PATCH v7 2/8] efi: Add embedded peripheral firmware support
+To:     Luis Chamberlain <mcgrof@kernel.org>
+Cc:     Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "H . Peter Anvin" <hpa@zytor.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Peter Jones <pjones@redhat.com>,
+        Dave Olsthoorn <dave@bewaar.me>, x86@kernel.org,
+        platform-driver-x86@vger.kernel.org, linux-efi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+        linux-input@vger.kernel.org
+References: <20191004145056.43267-1-hdegoede@redhat.com>
+ <20191004145056.43267-3-hdegoede@redhat.com>
+ <20191011144834.GL16384@42.do-not-panic.com>
+ <e7bd40ff-20d1-3aed-8516-9fffd4c3a207@redhat.com>
+ <20191114194233.GE11244@42.do-not-panic.com>
+From:   Hans de Goede <hdegoede@redhat.com>
+Message-ID: <f00804ae-e556-35e4-d0a3-cd9201fdd2d0@redhat.com>
+Date:   Thu, 14 Nov 2019 21:13:22 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191114180303.66955-1-elver@google.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <20191114194233.GE11244@42.do-not-panic.com>
+Content-Language: en-US
+X-MC-Unique: PkUKXjfbOLuEA8M5BFa27Q-1
+X-Mimecast-Spam-Score: 0
+Content-Type: text/plain; charset=WINDOWS-1252; format=flowed
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, Nov 14, 2019 at 07:02:53PM +0100, Marco Elver wrote:
-> This is the patch-series for the Kernel Concurrency Sanitizer (KCSAN).
-> KCSAN is a sampling watchpoint-based *data race detector*. More details
-> are included in **Documentation/dev-tools/kcsan.rst**. This patch-series
-> only enables KCSAN for x86, but we expect adding support for other
-> architectures is relatively straightforward (we are aware of
-> experimental ARM64 and POWER support).
-> 
-> To gather early feedback, we announced KCSAN back in September, and have
-> integrated the feedback where possible:
-> http://lkml.kernel.org/r/CANpmjNPJ_bHjfLZCAPV23AXFfiPiyXXqqu72n6TgWzb2Gnu1eA@mail.gmail.com
-> 
-> The current list of known upstream fixes for data races found by KCSAN
-> can be found here:
-> https://github.com/google/ktsan/wiki/KCSAN#upstream-fixes-of-data-races-found-by-kcsan
-> 
-> We want to point out and acknowledge the work surrounding the LKMM,
-> including several articles that motivate why data races are dangerous
-> [1, 2], justifying a data race detector such as KCSAN.
-> 
-> [1] https://lwn.net/Articles/793253/
-> [2] https://lwn.net/Articles/799218/
+Hi,
 
-I queued this and ran a quick rcutorture on it, which completed
-successfully with quite a few reports.
+On 14-11-2019 20:42, Luis Chamberlain wrote:
+> On Thu, Nov 14, 2019 at 12:27:01PM +0100, Hans de Goede wrote:
+>> Hi Luis,
+>>
+>> Thank you for the reviews and sorry for being a bit slow to respind.
+>>
+>> On 11-10-2019 16:48, Luis Chamberlain wrote:
+>>> On Fri, Oct 04, 2019 at 04:50:50PM +0200, Hans de Goede wrote:
+>>>> +static int __init efi_check_md_for_embedded_firmware(
+>>>> +=09efi_memory_desc_t *md, const struct efi_embedded_fw_desc *desc)
+>>>> +{
+>>>> +=09const u64 prefix =3D *((u64 *)desc->prefix);
+>>>> +=09struct sha256_state sctx;
+>>>> +=09struct embedded_fw *fw;
+>>>> +=09u8 sha256[32];
+>>>> +=09u64 i, size;
+>>>> +=09void *map;
+>>>> +
+>>>> +=09size =3D md->num_pages << EFI_PAGE_SHIFT;
+>>>> +=09map =3D memremap(md->phys_addr, size, MEMREMAP_WB);
+>>>
+>>> Since our limitaiton is the init process must have mostly finished,
+>>> it implies early x86 boot code cannot use this, what measures can we
+>>> take to prevent / check for such conditions to be detected and
+>>> gracefully errored out?
+>>
+>> As with all (EFI) early boot code, there simply is a certain order
+>> in which things need to be done. This needs to happen after the basic
+>> mm is setup, but before efi_free_boot_services() gets called, there
+>> isn't really a way to check for all these conditions. As with all
+>> early boot code, people making changes need to be careful to not
+>> break stuff.
+>=20
+> I rather we take a proactive measure here and add whatever it is we need
+> to ensure the API works only when its supposed to, rather than try and
+> fail, and then expect the user to know these things.
+>=20
+> I'd prefer if we at least try to address this.
 
-							Thanx, Paul
+This is purely internal x86/EFI API it is not intended for drivers
+or anything like that. It has only one caller under arch/x86 and it is
+not supposed to get any other callers outside of arch/* ever.
 
-> Race conditions vs. data races
-> ------------------------------
-> 
-> Race conditions are logic bugs, where unexpected interleaving of racing
-> concurrent operations result in an erroneous state.
-> 
-> Data races on the other hand are defined at the *memory model/language
-> level*.  Many data races are also harmful race conditions, which a tool
-> like KCSAN reports!  However, not all data races are race conditions and
-> vice-versa.  KCSAN's intent is to report data races according to the
-> LKMM. A data race detector can only work at the memory model/language
-> level.
-> 
-> Deeper analysis, to find high-level race conditions only, requires
-> conveying the intended kernel logic to a tool. This requires (1) the
-> developer writing a specification or model of their code, and then (2)
-> the tool verifying that the implementation matches. This has been done
-> for small bits of code using model checkers and other formal methods,
-> but does not scale to the level of what can be covered with a dynamic
-> analysis based data race detector such as KCSAN.
-> 
-> For reasons outlined in [1, 2], data races can be much more subtle, but
-> can cause no less harm than high-level race conditions.
-> 
-> Changelog
-> ---------
-> v4:
-> * Major changes:
->  - Optimizations resulting in performance improvement of 33% (on
->    microbenchmark).
->  - Deal with nested interrupts for atomic_next.
->  - Simplify report.c (removing double-locking as well), in preparation
->    for KCSAN_REPORT_VALUE_CHANGE_ONLY.
->  - Add patch to introduce "data_race(expr)" macro.
->  - Introduce KCSAN_REPORT_VALUE_CHANGE_ONLY option for further filtering of data
->    races: if a conflicting write was observed via a watchpoint, only report the
->    data race if a value change was observed as well. The option will be enabled
->    by default on syzbot. (rcu-functions will be excluded from this filter at
->    request of Paul McKenney.) Context:
->    http://lkml.kernel.org/r/CANpmjNOepvb6+zJmDePxj21n2rctM4Sp4rJ66x_J-L1UmNK54A@mail.gmail.com
-> 
-> v3: http://lkml.kernel.org/r/20191104142745.14722-1-elver@google.com
-> * Major changes:
->  - Add microbenchmark.
->  - Add instruction watchpoint skip randomization.
->  - Refactor API and core runtime fast-path and slow-path. Compared to
->    the previous version, with a default config and benchmarked using the
->    added microbenchmark, this version is 3.8x faster.
->  - Make __tsan_unaligned __alias of generic accesses.
->  - Rename kcsan_{begin,end}_atomic ->
->    kcsan_{nestable,flat}_atomic_{begin,end}
->  - For filter list in debugfs.c use kmalloc+krealloc instead of
->    kvmalloc.
->  - Split Documentation into separate patch.
-> 
-> v2: http://lkml.kernel.org/r/20191017141305.146193-1-elver@google.com
-> * Major changes:
->  - Replace kcsan_check_access(.., {true, false}) with
->    kcsan_check_{read,write}.
->  - Change atomic-instrumented.h to use __atomic_check_{read,write}.
->  - Use common struct kcsan_ctx in task_struct and for per-CPU interrupt
->    contexts.
-> 
-> v1: http://lkml.kernel.org/r/20191016083959.186860-1-elver@google.com
-> 
-> Marco Elver (10):
->   kcsan: Add Kernel Concurrency Sanitizer infrastructure
->   include/linux/compiler.h: Introduce data_race(expr) macro
->   kcsan: Add Documentation entry in dev-tools
->   objtool, kcsan: Add KCSAN runtime functions to whitelist
->   build, kcsan: Add KCSAN build exceptions
->   seqlock, kcsan: Add annotations for KCSAN
->   seqlock: Require WRITE_ONCE surrounding raw_seqcount_barrier
->   asm-generic, kcsan: Add KCSAN instrumentation for bitops
->   locking/atomics, kcsan: Add KCSAN instrumentation
->   x86, kcsan: Enable KCSAN for x86
-> 
->  Documentation/dev-tools/index.rst         |   1 +
->  Documentation/dev-tools/kcsan.rst         | 256 +++++++++
->  MAINTAINERS                               |  11 +
->  Makefile                                  |   3 +-
->  arch/x86/Kconfig                          |   1 +
->  arch/x86/boot/Makefile                    |   2 +
->  arch/x86/boot/compressed/Makefile         |   2 +
->  arch/x86/entry/vdso/Makefile              |   3 +
->  arch/x86/include/asm/bitops.h             |   6 +-
->  arch/x86/kernel/Makefile                  |   4 +
->  arch/x86/kernel/cpu/Makefile              |   3 +
->  arch/x86/lib/Makefile                     |   4 +
->  arch/x86/mm/Makefile                      |   4 +
->  arch/x86/purgatory/Makefile               |   2 +
->  arch/x86/realmode/Makefile                |   3 +
->  arch/x86/realmode/rm/Makefile             |   3 +
->  drivers/firmware/efi/libstub/Makefile     |   2 +
->  include/asm-generic/atomic-instrumented.h | 393 +++++++-------
->  include/asm-generic/bitops-instrumented.h |  18 +
->  include/linux/compiler-clang.h            |   9 +
->  include/linux/compiler-gcc.h              |   7 +
->  include/linux/compiler.h                  |  57 +-
->  include/linux/kcsan-checks.h              |  97 ++++
->  include/linux/kcsan.h                     | 115 ++++
->  include/linux/sched.h                     |   4 +
->  include/linux/seqlock.h                   |  51 +-
->  init/init_task.c                          |   8 +
->  init/main.c                               |   2 +
->  kernel/Makefile                           |   6 +
->  kernel/kcsan/Makefile                     |  11 +
->  kernel/kcsan/atomic.h                     |  27 +
->  kernel/kcsan/core.c                       | 626 ++++++++++++++++++++++
->  kernel/kcsan/debugfs.c                    | 275 ++++++++++
->  kernel/kcsan/encoding.h                   |  94 ++++
->  kernel/kcsan/kcsan.h                      | 108 ++++
->  kernel/kcsan/report.c                     | 320 +++++++++++
->  kernel/kcsan/test.c                       | 121 +++++
->  kernel/sched/Makefile                     |   6 +
->  lib/Kconfig.debug                         |   2 +
->  lib/Kconfig.kcsan                         | 118 ++++
->  lib/Makefile                              |   3 +
->  mm/Makefile                               |   8 +
->  scripts/Makefile.kcsan                    |   6 +
->  scripts/Makefile.lib                      |  10 +
->  scripts/atomic/gen-atomic-instrumented.sh |  17 +-
->  tools/objtool/check.c                     |  18 +
->  46 files changed, 2641 insertions(+), 206 deletions(-)
->  create mode 100644 Documentation/dev-tools/kcsan.rst
->  create mode 100644 include/linux/kcsan-checks.h
->  create mode 100644 include/linux/kcsan.h
->  create mode 100644 kernel/kcsan/Makefile
->  create mode 100644 kernel/kcsan/atomic.h
->  create mode 100644 kernel/kcsan/core.c
->  create mode 100644 kernel/kcsan/debugfs.c
->  create mode 100644 kernel/kcsan/encoding.h
->  create mode 100644 kernel/kcsan/kcsan.h
->  create mode 100644 kernel/kcsan/report.c
->  create mode 100644 kernel/kcsan/test.c
->  create mode 100644 lib/Kconfig.kcsan
->  create mode 100644 scripts/Makefile.kcsan
-> 
-> -- 
-> 2.24.0.rc1.363.gb1bccd3e3d-goog
-> 
+Note that this all runs before even core_initcall-s get run, none
+if the code which runs before then has any sort of ordering checks
+and I don't see how this bit is special and thus does need ordering
+checks; and there really is no mechanism for such checks so early
+during boot.
+
+The drivers/firmware/efi/embedded-firmware.c file does add some API
+which can be used normally, specifically the efi_get_embedded_fw()
+but that has no special ordering constrains and it does not directly
+use the function we are discussing now. It reads back data stored
+by the earlier functions; and if somehow called before those functions
+run (*), then it will simply return -ENOENT.
+
+Regards,
+
+Hans
+
+
+
+*)  which would mean before core_initcalls run so really really early
+
