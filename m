@@ -2,37 +2,37 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7DB53FC673
-	for <lists+linux-efi@lfdr.de>; Thu, 14 Nov 2019 13:43:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 35C81FC72B
+	for <lists+linux-efi@lfdr.de>; Thu, 14 Nov 2019 14:17:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726179AbfKNMnn (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 14 Nov 2019 07:43:43 -0500
-Received: from szxga04-in.huawei.com ([45.249.212.190]:6663 "EHLO huawei.com"
+        id S1726374AbfKNNRw (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 14 Nov 2019 08:17:52 -0500
+Received: from szxga06-in.huawei.com ([45.249.212.32]:48360 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726139AbfKNMnn (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Thu, 14 Nov 2019 07:43:43 -0500
-Received: from DGGEMS413-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id 0796D822D3BCB512EE4B;
-        Thu, 14 Nov 2019 20:43:40 +0800 (CST)
-Received: from localhost (10.202.226.61) by DGGEMS413-HUB.china.huawei.com
- (10.3.19.213) with Microsoft SMTP Server id 14.3.439.0; Thu, 14 Nov 2019
- 20:43:34 +0800
-Date:   Thu, 14 Nov 2019 12:43:26 +0000
+        id S1726139AbfKNNRw (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Thu, 14 Nov 2019 08:17:52 -0500
+Received: from DGGEMS403-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id A7D26E956CBB72AF48A9;
+        Thu, 14 Nov 2019 21:17:49 +0800 (CST)
+Received: from localhost (10.202.226.61) by DGGEMS403-HUB.china.huawei.com
+ (10.3.19.203) with Microsoft SMTP Server id 14.3.439.0; Thu, 14 Nov 2019
+ 21:17:39 +0800
+Date:   Thu, 14 Nov 2019 13:17:31 +0000
 From:   Jonathan Cameron <jonathan.cameron@huawei.com>
-To:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        <nariman.poushin@linaro.org>
 CC:     <linux-edac@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
         <linux-efi@vger.kernel.org>, Borislav Petkov <bp@alien8.de>,
         "Mauro Carvalho Chehab" <mchehab@kernel.org>,
         <james.morse@arm.com>, <rjw@rjwysocki.net>, <tony.luck@intel.com>,
         <linuxarm@huawei.com>, <ard.biesheuvel@linaro.org>,
-        <nariman.poushin@linaro.org>,
         Thanu Rangarajan <Thanu.Rangarajan@arm.com>
-Subject: Re: [PATCH v4 1/6] efi / ras: CCIX Memory error reporting
-Message-ID: <20191114124326.0000158c@huawei.com>
-In-Reply-To: <20191114062227.46d6c60e@kernel.org>
+Subject: Re: [PATCH v4 2/6] efi / ras: CCIX Cache error reporting
+Message-ID: <20191114131731.000011f0@huawei.com>
+In-Reply-To: <20191114063846.60dd8090@kernel.org>
 References: <20191113151627.7950-1-Jonathan.Cameron@huawei.com>
-        <20191113151627.7950-2-Jonathan.Cameron@huawei.com>
-        <20191114062227.46d6c60e@kernel.org>
+        <20191113151627.7950-3-Jonathan.Cameron@huawei.com>
+        <20191114063846.60dd8090@kernel.org>
 Organization: Huawei
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
 MIME-Version: 1.0
@@ -45,147 +45,105 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, 14 Nov 2019 06:22:27 +0100
+On Thu, 14 Nov 2019 06:38:46 +0100
 Mauro Carvalho Chehab <mchehab+huawei@kernel.org> wrote:
 
-> Em Wed, 13 Nov 2019 23:16:22 +0800
+> Em Wed, 13 Nov 2019 23:16:23 +0800
 > Jonathan Cameron <Jonathan.Cameron@huawei.com> escreveu:
 > 
-> > CCIX defines a number of different error types
-> > (See CCIX spec 1.0) and UEFI 2.8 defines a CPER record to allow
-> > for them to be reported when firmware first handling is in use.
-> > The last part of that record is a copy of the CCIX protocol
-> > error record which can provide very detailed information.
+> > As CCIX Request Agents have fully cache coherent caches,
+> > the CCIX 1.0 Base Specification defines detailed error
+> > reporting for these caches.
 > > 
-> > This patch introduces infrastructure and support for one of those
-> > error types, CCIX Memory Errors.  Later patches will supply
-> > equivalent support for the other error types.
+> > A CCIX cache error is reported via a CPER record as defined in the
+> > UEFI 2.8 specification. The PER log section is defined in the
+> > CCIX 1.0 Base Specification.
 > > 
-> > The variable length and content of the different messages makes
-> > a single tracepoint impractical.  As such the current RAS
-> > tracepoint only covers the memory error. Additional trace points
-> > will be introduced for other error types along with their
-> > cper handling in a follow up series.  
-> 
-> I want to see the entire series before reviewing the tracepoint
-> stuff.
-
-Sorry, that's stray text left from an earlier version which only had
-this patch.  The whole set are in this series.  This is the full set
-of error recorded defined in the relevant specs.  I'll clear that
-out in v5.
-
-> 
-> For now, I'm pointing just some issues I found at the code.
-> 
-> > 
-> > RAS daemon support to follow shortly.  
-> 
-> That's ok. I probably will review RAS daemon patchsets only after we merge 
-> the Kernel patchset.
-
-This bit of the message is out of date as well.  Cover letter has link
-to last posted version of RAS daemon patches.  I'll rebase those and
-drop the legal boilerplate as done here.
-
-> 
-> > qemu injection patches
-> > also available but not currently planing to upstream those.
-> > 
+> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > ---
 ...
 
-> > +static int cper_ccix_err_location(struct cper_ccix_mem_err_compact *cmem_err,
-> > +				  char *msg)
+> > +static int cper_ccix_cache_err_details(const char *pfx,
+> > +				     struct acpi_hest_generic_data *gdata)
 > > +{
-> > +	u32 len = CPER_REC_LEN - 1;  
-> 
-> I don't like much the code here... I mean, based on the code below, the
-> msg to be passed here should have CPER_REC_LEN, but the function  prototype
-> doesn't reflect that. I would  instead, either pass len as a function parameter
-> or change the above to something like:
-> 
-> 	static int cper_ccix_err_location(struct cper_ccix_mem_err_compact *cmem_err,
-> 					  char msg[CPER_REC_LEN])
-> 	{
-> 		u32 len = sizeof(msg) - 1;
-
-Annoyingly can't do this last part.  
-warning: 'sizeof' on array function parameter 'msg' wil return size of 'char *'.
-
-> 
-> With that, gcc should be able to generate a warning if someone passes a
-> buffer with a different size.
-
-Agreed :) I may have taken copying local style a bit too far
-here. Taken directly from cper.c cper_mem_err_location.
-
-> 
-> > +	u32 n = 0;
+> > +	struct cper_ccix_cache_error *full_cache_err;
+> > +	struct cper_sec_ccix_cache_error *cache_err;
+> > +	u16 vendor_data_len;
+> > +	int i;
 > > +
-> > +	if (!msg)
-> > +		return 0;
+> > +	if (gdata->error_data_length < sizeof(*full_cache_err))
+> > +		return -ENOSPC;
 > > +
-> > +	if (cmem_err->validation_bits & CCIX_MEM_ERR_GENERIC_MEM_VALID)
-> > +		n += snprintf(msg + n, len, "Pool Generic Type: %s ",
-> > +			      cper_ccix_mem_err_generic_type_str(cmem_err->pool_generic_type));  
-> 
-> Here, n will always be 0, so no need of doing msg + n.
-and can use
-
-n = sprintf(...) One we have change the first one to not stylistically math
-the others might as well go the whole way.
-
-> 
+> > +	full_cache_err = acpi_hest_get_payload(gdata);
 > > +
-> > +	if (cmem_err->validation_bits & CCIX_MEM_ERR_MEM_ERR_TYPE_VALID)
-> > +		n += snprintf(msg + n, len, "Err Type: %s ",
-> > +			      cper_ccix_mem_err_type_str(cmem_err->mem_err_type));  
-> 
-> Well, as the msg buffer size is given by len, and you have already
-> n characters there, you need to decrement the size at snprintf, in order
-> to avoid going past of len, e. g., starting from here, all snprintf()
-> statements should be, instead:
-> 
-> 		n += snprintf(msg + n, len - n, ...);
-
-Gah. That's embarrassing.  Fixed.
-
-> 
-> 
-> > +	if (cmem_err->validation_bits & CCIX_MEM_ERR_OP_VALID)
-> > +		n += snprintf(msg + n, len, "Operation: %s ",
-> > +			     cper_ccix_mem_err_op_str(cmem_err->op_type));
+> > +	cache_err = &full_cache_err->cache_record;
 > > +
-> > +	if (cmem_err->validation_bits & CCIX_MEM_ERR_CARD_VALID)
-> > +		n += snprintf(msg + n, len, "Card: %d ", cmem_err->card);
-> > +	if (cmem_err->validation_bits & CCIX_MEM_ERR_MOD_VALID)
-> > +		n += snprintf(msg + n, len, "Mod: %d ", cmem_err->module);
-> > +	if (cmem_err->validation_bits & CCIX_MEM_ERR_BANK_VALID)
-> > +		n += snprintf(msg + n, len, "Bank: %d ", cmem_err->bank);
-> > +	if (cmem_err->validation_bits & CCIX_MEM_ERR_DEVICE_VALID)
-> > +		n += snprintf(msg + n, len, "Device: %d ", cmem_err->device);
-> > +	if (cmem_err->validation_bits & CCIX_MEM_ERR_ROW_VALID)
-> > +		n += snprintf(msg + n, len, "Row: %d ", cmem_err->row);
-> > +	if (cmem_err->validation_bits & CCIX_MEM_ERR_COL_VALID)
-> > +		n += snprintf(msg + n, len, "Col: %d ", cmem_err->column);
-> > +	if (cmem_err->validation_bits & CCIX_MEM_ERR_RANK_VALID)
-> > +		n += snprintf(msg + n, len, "Rank: %d ", cmem_err->rank);
-> > +	if (cmem_err->validation_bits & CCIX_MEM_ERR_BIT_POS_VALID)
-> > +		n += snprintf(msg + n, len, "BitPos: %d ", cmem_err->bit_pos);
-> > +	if (cmem_err->validation_bits & CCIX_MEM_ERR_CHIP_ID_VALID)
-> > +		n += snprintf(msg + n, len, "ChipID: %d ", cmem_err->chip_id);
-> > +	if (cmem_err->validation_bits & CCIX_MEM_ERR_SPEC_TYPE_VALID)
-> > +		n += snprintf(msg + n, len, "Pool Specific Type: %s ",
-> > +			      cper_ccix_mem_err_spec_type_str(cmem_err->pool_specific_type));
-> > +	n += snprintf(msg + n, len, "FRU: %d ", cmem_err->fru);
+> > +	if (cache_err->validation_bits & CCIX_CACHE_ERR_TYPE_VALID)
+> > +		printk("%s""Cache Type: %s\n", pfx,
+> > +		       cper_ccix_cache_type_str(cache_err->cache_type));
 > > +
-> > +	return n;
+> > +	if (cache_err->validation_bits & CCIX_CACHE_ERR_OP_VALID)
+> > +		printk("%s""Operation: %s\n", pfx,
+> > +		       cper_ccix_cache_err_op_str(cache_err->op_type));
+> > +
+> > +	if (cache_err->validation_bits & CCIX_CACHE_ERR_CACHE_ERR_TYPE_VALID)
+> > +		printk("%s""Cache Error Type: %s\n", pfx,
+> > +		       cper_ccix_cache_err_type_str(cache_err->cache_error_type));
+> > +
+> > +	if (cache_err->validation_bits & CCIX_CACHE_ERR_LEVEL_VALID)
+> > +		printk("%s""Level: %d\n", pfx, cache_err->cache_level);
+> > +
+> > +	if (cache_err->validation_bits & CCIX_CACHE_ERR_SET_VALID)
+> > +		printk("%s""Set: %d\n", pfx, cache_err->set);
+> > +
+> > +	if (cache_err->validation_bits & CCIX_CACHE_ERR_WAY_VALID)
+> > +		printk("%s""Way: %d\n", pfx, cache_err->way);
+> > +
+> > +	if (cache_err->validation_bits & CCIX_CACHE_ERR_INSTANCE_ID_VALID)
+> > +		printk("%s""Instance ID: %d\n", pfx, cache_err->instance);
+> > +
+> > +	if (cache_err->validation_bits & CCIX_CACHE_ERR_VENDOR_DATA_VALID) {
+> > +		if (gdata->error_data_length < sizeof(*full_cache_err) + 4)
+> > +			return -ENOSPC;
+> > +
+> > +		vendor_data_len = cache_err->vendor_data[0] & GENMASK(15, 0);
+> > +		if (gdata->error_data_length <
+> > +		    sizeof(*full_cache_err) + vendor_data_len)
+> > +			return -ENOSPC;
+> > +
+> > +		for (i = 0; i < vendor_data_len / 4 - 1; i++)
+> > +			printk("%s""Vendor%d: 0x%08x\n", pfx, i,
+> > +			       cache_err->vendor_data[i + 1]);  
+> 
+> I forgot to comment this at patch 1/6, as this is more a reflection
+> than asking for a change...
+> 
+> Not sure what's the value of also printing events to the Kernel logs.
+> 
+> I mean, we do that for existent RAS drivers, mainly because the RAS report
+> mechanism came after the printks, and someone could be relying at the
+> kernel logs instead of using rasdaemon (or some other alternative software
+> someone might write).
+> 
+> For new report mechanisms, perhaps we could be smarter - at least offering
+> ways to disable the printks if a daemon is listening to the trace events.
+> 
+> Boris/Tony: what do you think?
+> 
+
+Indeed, seems like a sensible time to make such a change if people agree
+it makes sense to do so.
+I'll leave this for now and get a v5 out with the fixes you mention.
+
+> > +	}
+> > +
+> > +	return 0;
 > > +}
-
-...
-
-Thanks, v5 to follow shortly with this stuff fixed across all patches,
-
-Jonathan
+> > +
+....
+> 
+> 
+> Cheers,
+> Mauro
 
 
