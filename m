@@ -2,159 +2,139 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9BDB3FCCC5
-	for <lists+linux-efi@lfdr.de>; Thu, 14 Nov 2019 19:05:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CD36FFCEDB
+	for <lists+linux-efi@lfdr.de>; Thu, 14 Nov 2019 20:42:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726818AbfKNSFs (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 14 Nov 2019 13:05:48 -0500
-Received: from mail-ot1-f65.google.com ([209.85.210.65]:33535 "EHLO
-        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726655AbfKNSFs (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 14 Nov 2019 13:05:48 -0500
-Received: by mail-ot1-f65.google.com with SMTP id u13so5670003ote.0
-        for <linux-efi@vger.kernel.org>; Thu, 14 Nov 2019 10:05:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=IlVs0WMHnCQFEwWjunTfC44Tofp8nrm/CewGUjfwrsU=;
-        b=NxgoVXfsH4wel3QVkkMLnOxu9JC7ON4vtSJql9sqJ8/pzCk3Ue1E6FMlLn04ekudFP
-         vZ91g5G+l4kGRlyK2nKyXNa1FGv8WgCHAEgqNnsmriR5MLL1DIMIanCpIl8hGAVonjhE
-         hJ47JMnL+KoThN0MFvkMRVWWvAiE05r9kT5Xvg/q2IVv8awDabTwEsbydPk6140Z7bRi
-         cciGCtiSumLOKoV1fP9IohCkb8Iw/PqV0C5Ri3QhzFrji2izlr52aXHqElI1kUISXEkB
-         Pk2DZrxvzrShTZGyE+ynD4UmjuDg3kMT2lLxI5PfpK6cVjZpNwcCjQEsM5qvKfkXNWsw
-         2a5Q==
+        id S1726852AbfKNTmi (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 14 Nov 2019 14:42:38 -0500
+Received: from mail-pg1-f195.google.com ([209.85.215.195]:36048 "EHLO
+        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726474AbfKNTmi (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 14 Nov 2019 14:42:38 -0500
+Received: by mail-pg1-f195.google.com with SMTP id k13so4450013pgh.3;
+        Thu, 14 Nov 2019 11:42:36 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=IlVs0WMHnCQFEwWjunTfC44Tofp8nrm/CewGUjfwrsU=;
-        b=tf95WYAEdUUhNOV5b5awVRnVAvmjiaAD2NYKsyyBQjEzbHyXSjeUYrzWOhZjHZoajL
-         zH5QapZEBIpj8Xnq99EPOSXnDUR5DH9F9p4iiesCK2kTWyi/9fxHRJXIJidCE2azAKjf
-         /QJwZjFaDviiRHshk61x68I+doTmVSxjOOwcRh2mB8yBN99wkrg6/4vqsNFTN365Jd7b
-         gJjlyE91Hhz6JvvsIvqbzRxa4NuTe7IA5SsCBGKUL5e7AoY7wZQAbEWwRI5Rg+HPGtXP
-         rRdvdwzBDt0DQ3+FN8wyMZPT0tN818We0um5um78TaJ3sZV7DIDFhGITxclt3xAOb3MY
-         vMUA==
-X-Gm-Message-State: APjAAAUd/w1D3UQJYmwVkNK1UCLPW9i569YKqWzULZjtA5IQR5mhJGA0
-        w/YVsacWNAcTzDqiIEcXaBkdpGfW/qAzcX+O7WVkkQ==
-X-Google-Smtp-Source: APXvYqyrMskQ+7J9UNUfcxyz6lEJ6aAXmbhC4Ojnbhf0sdFxVcKFNY9laSVYQSl4irBOMAgWImdPxQ38GiVQD2cHbmw=
-X-Received: by 2002:a9d:8d2:: with SMTP id 76mr8943242otf.17.1573754746598;
- Thu, 14 Nov 2019 10:05:46 -0800 (PST)
-MIME-Version: 1.0
-References: <20191104142745.14722-1-elver@google.com> <20191104164717.GE20975@paulmck-ThinkPad-P72>
- <CANpmjNOtR6NEsXGo=M1o26d8vUyF7gwj=gew+LAeE_D+qfbEmQ@mail.gmail.com>
- <20191104194658.GK20975@paulmck-ThinkPad-P72> <CANpmjNPpVCRhgVgfaApZJCnMKHsGxVUno+o-Fe+7OYKmPvCboQ@mail.gmail.com>
- <20191105142035.GR20975@paulmck-ThinkPad-P72> <CANpmjNPEukbQtD5BGpHdxqMvnq7Uyqr9o3QCByjCKxtPboEJtA@mail.gmail.com>
-In-Reply-To: <CANpmjNPEukbQtD5BGpHdxqMvnq7Uyqr9o3QCByjCKxtPboEJtA@mail.gmail.com>
-From:   Marco Elver <elver@google.com>
-Date:   Thu, 14 Nov 2019 19:05:34 +0100
-Message-ID: <CANpmjNPTMjx4TSr+LEwV-xm8jFtATOym=h416j5rLK1V4kOYCg@mail.gmail.com>
-Subject: Re: [PATCH v3 0/9] Add Kernel Concurrency Sanitizer (KCSAN)
-To:     "Paul E. McKenney" <paulmck@kernel.org>
-Cc:     LKMM Maintainers -- Akira Yokosawa <akiyks@gmail.com>,
-        Alan Stern <stern@rowland.harvard.edu>,
-        Alexander Potapenko <glider@google.com>,
-        Andrea Parri <parri.andrea@gmail.com>,
-        Andrey Konovalov <andreyknvl@google.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Boqun Feng <boqun.feng@gmail.com>,
-        Borislav Petkov <bp@alien8.de>, Daniel Axtens <dja@axtens.net>,
-        Daniel Lustig <dlustig@nvidia.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        David Howells <dhowells@redhat.com>,
-        Dmitry Vyukov <dvyukov@google.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
-        Jade Alglave <j.alglave@ucl.ac.uk>,
-        Joel Fernandes <joel@joelfernandes.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Josh Poimboeuf <jpoimboe@redhat.com>,
-        Luc Maranget <luc.maranget@inria.fr>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Peter Zijlstra <peterz@infradead.org>,
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=xREiFSWcPI1chhBi4DLb96WHUmNYxgUaObZlX9ct32s=;
+        b=RqQ1/TaigRFRI/T+wCoz5yQ/SAOH68FOaVXZGcIlLVoRQGNR2qjXJpy+qkqSag12GQ
+         TvKjacB8VJfHwyddFEts3dNAhavwJj4aXdn1yTlr6HykjbM6+tw7b2JE1RQsF/wRnzd1
+         poyIPDTdKn35ixj3J75x0OpLcP95KtFJknfADoa4gsngqjy2PxpH+jVasTSu9iIgVhQU
+         0vYvAHQ/lmQ8l/05JuoMpZLGaznBS8fWi3WT0tB1x3Gb1KkKu3VnhQQYxoGuKZCJWpWA
+         EAXN24vuziaCvLgLepTlzoTokFTIDXpmIs0yi7DcsF744HuVA2peF55r/P9McEp391Pj
+         l4+Q==
+X-Gm-Message-State: APjAAAXYnO0m7n9cxbuV4p2Dgp8RTGNQn6e7GWTShQMjrfz+/e4M173w
+        enSVQFoeFD0HoydIm6SdxoI=
+X-Google-Smtp-Source: APXvYqzHzrMhVUuOmrOcvLurwFjLtxHMm3bi+6VC0x6/lYAs2TDGf9BuvH95YORH/zvzQl05Qrz/4g==
+X-Received: by 2002:a17:90a:aa8f:: with SMTP id l15mr14680183pjq.52.1573760555946;
+        Thu, 14 Nov 2019 11:42:35 -0800 (PST)
+Received: from 42.do-not-panic.com (42.do-not-panic.com. [157.230.128.187])
+        by smtp.gmail.com with ESMTPSA id o15sm12166006pgf.2.2019.11.14.11.42.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 14 Nov 2019 11:42:34 -0800 (PST)
+Received: by 42.do-not-panic.com (Postfix, from userid 1000)
+        id BBC3D403DC; Thu, 14 Nov 2019 19:42:33 +0000 (UTC)
+Date:   Thu, 14 Nov 2019 19:42:33 +0000
+From:   Luis Chamberlain <mcgrof@kernel.org>
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Will Deacon <will@kernel.org>,
-        kasan-dev <kasan-dev@googlegroups.com>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
-        linux-efi@vger.kernel.org,
-        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Linux Memory Management List <linux-mm@kvack.org>,
-        "the arch/x86 maintainers" <x86@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "H . Peter Anvin" <hpa@zytor.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Peter Jones <pjones@redhat.com>,
+        Dave Olsthoorn <dave@bewaar.me>, x86@kernel.org,
+        platform-driver-x86@vger.kernel.org, linux-efi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+        linux-input@vger.kernel.org
+Subject: Re: [PATCH v7 2/8] efi: Add embedded peripheral firmware support
+Message-ID: <20191114194233.GE11244@42.do-not-panic.com>
+References: <20191004145056.43267-1-hdegoede@redhat.com>
+ <20191004145056.43267-3-hdegoede@redhat.com>
+ <20191011144834.GL16384@42.do-not-panic.com>
+ <e7bd40ff-20d1-3aed-8516-9fffd4c3a207@redhat.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e7bd40ff-20d1-3aed-8516-9fffd4c3a207@redhat.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, 5 Nov 2019 at 16:25, Marco Elver <elver@google.com> wrote:
->
-> On Tue, 5 Nov 2019 at 15:20, Paul E. McKenney <paulmck@kernel.org> wrote:
-> >
-> > On Tue, Nov 05, 2019 at 12:10:56PM +0100, Marco Elver wrote:
-> > > On Mon, 4 Nov 2019 at 20:47, Paul E. McKenney <paulmck@kernel.org> wrote:
-> > > >
-> > > > On Mon, Nov 04, 2019 at 07:41:30PM +0100, Marco Elver wrote:
-> > > > > On Mon, 4 Nov 2019 at 17:47, Paul E. McKenney <paulmck@kernel.org> wrote:
-> > > > > >
-> > > > > > On Mon, Nov 04, 2019 at 03:27:36PM +0100, Marco Elver wrote:
-> > > > > > > This is the patch-series for the Kernel Concurrency Sanitizer (KCSAN).
-> > > > > > > KCSAN is a sampling watchpoint-based data-race detector. More details
-> > > > > > > are included in Documentation/dev-tools/kcsan.rst. This patch-series
-> > > > > > > only enables KCSAN for x86, but we expect adding support for other
-> > > > > > > architectures is relatively straightforward (we are aware of
-> > > > > > > experimental ARM64 and POWER support).
-> > > > > > >
-> > > > > > > To gather early feedback, we announced KCSAN back in September, and
-> > > > > > > have integrated the feedback where possible:
-> > > > > > > http://lkml.kernel.org/r/CANpmjNPJ_bHjfLZCAPV23AXFfiPiyXXqqu72n6TgWzb2Gnu1eA@mail.gmail.com
-> > > > > > >
-> > > > > > > We want to point out and acknowledge the work surrounding the LKMM,
-> > > > > > > including several articles that motivate why data-races are dangerous
-> > > > > > > [1, 2], justifying a data-race detector such as KCSAN.
-> > > > > > > [1] https://lwn.net/Articles/793253/
-> > > > > > > [2] https://lwn.net/Articles/799218/
-> > > > > > >
-> > > > > > > The current list of known upstream fixes for data-races found by KCSAN
-> > > > > > > can be found here:
-> > > > > > > https://github.com/google/ktsan/wiki/KCSAN#upstream-fixes-of-data-races-found-by-kcsan
-> > > > > >
-> > > > > > Making this more accessible to more people seems like a good thing.
-> > > > > > So, for the series:
-> > > > > >
-> > > > > > Acked-by: Paul E. McKenney <paulmck@kernel.org>
-> > > > >
-> > > > > Much appreciated. Thanks, Paul!
-> > > > >
-> > > > > Any suggestions which tree this could eventually land in?
-> > > >
-> > > > I would guess that Dmitry might have some suggestions.
-> > >
-> > > I checked and we're both unclear what the most obvious tree to land in
-> > > is (the other sanitizers are mm related, which KCSAN is not).
-> > >
-> > > One suggestion that comes to my mind is for KCSAN to go through the
-> > > same tree (rcu?) as the LKMM due to their inherent relationship. Would
-> > > that make most sense?
-> >
-> > It works for me, though you guys have to continue to be the main
-> > developers.  ;-)
->
-> Great, thanks. We did add an entry to MAINTAINERS, so yes of course. :-)
->
-> > I will go through the patches more carefully, and please look into the
-> > kbuild test robot complaint.
->
-> I just responded to that, it seems to be a sparse problem.
->
-> Thanks,
-> -- Marco
+On Thu, Nov 14, 2019 at 12:27:01PM +0100, Hans de Goede wrote:
+> Hi Luis,
+> 
+> Thank you for the reviews and sorry for being a bit slow to respind.
+> 
+> On 11-10-2019 16:48, Luis Chamberlain wrote:
+> > On Fri, Oct 04, 2019 at 04:50:50PM +0200, Hans de Goede wrote:
+> > > +static int __init efi_check_md_for_embedded_firmware(
+> > > +	efi_memory_desc_t *md, const struct efi_embedded_fw_desc *desc)
+> > > +{
+> > > +	const u64 prefix = *((u64 *)desc->prefix);
+> > > +	struct sha256_state sctx;
+> > > +	struct embedded_fw *fw;
+> > > +	u8 sha256[32];
+> > > +	u64 i, size;
+> > > +	void *map;
+> > > +
+> > > +	size = md->num_pages << EFI_PAGE_SHIFT;
+> > > +	map = memremap(md->phys_addr, size, MEMREMAP_WB);
+> > 
+> > Since our limitaiton is the init process must have mostly finished,
+> > it implies early x86 boot code cannot use this, what measures can we
+> > take to prevent / check for such conditions to be detected and
+> > gracefully errored out?
+> 
+> As with all (EFI) early boot code, there simply is a certain order
+> in which things need to be done. This needs to happen after the basic
+> mm is setup, but before efi_free_boot_services() gets called, there
+> isn't really a way to check for all these conditions. As with all
+> early boot code, people making changes need to be careful to not
+> break stuff.
 
-v4 was sent out:
-http://lkml.kernel.org/r/20191114180303.66955-1-elver@google.com
+I rather we take a proactive measure here and add whatever it is we need
+to ensure the API works only when its supposed to, rather than try and
+fail, and then expect the user to know these things.
 
-Thanks,
--- Marco
+I'd prefer if we at least try to address this.
+
+> > > +	if (!map) {
+> > > +		pr_err("Error mapping EFI mem at %#llx\n", md->phys_addr);
+> > > +		return -ENOMEM;
+> > > +	}
+> > > +
+> > > +	size -= desc->length;
+> > 
+> > Remind me again, why we decrement the size here?
+> 
+> Basically this is another way of writing:
+> 
+> 	for (i = 0; (i + desc->length) < size; i += 8) {
+> 
+> > I was going to ask if we didn't need a:
+> > 
+> > if (desc->length > size) {
+> > 	memunmap(map);
+> > 	return -EINVAL;
+> > }
+> 
+> That is a good point, unlikely but still a good point,
+> so I guess that writing:
+> 
+> 	for (i = 0; (i + desc->length) < size; i += 8) {
+> 
+> Instead would better as that avoids the need for that check.
+> I will fix this for the next version.
+
+Great thanks.
+
+  Luis
