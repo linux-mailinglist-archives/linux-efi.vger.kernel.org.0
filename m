@@ -2,36 +2,36 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F78EFE16E
-	for <lists+linux-efi@lfdr.de>; Fri, 15 Nov 2019 16:35:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 91986FE173
+	for <lists+linux-efi@lfdr.de>; Fri, 15 Nov 2019 16:36:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727680AbfKOPfv (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 15 Nov 2019 10:35:51 -0500
-Received: from us-smtp-2.mimecast.com ([205.139.110.61]:50235 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1727742AbfKOPfv (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 15 Nov 2019 10:35:51 -0500
+        id S1727787AbfKOPf6 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 15 Nov 2019 10:35:58 -0500
+Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:43364 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1727761AbfKOPfy (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 15 Nov 2019 10:35:54 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1573832149;
+        s=mimecast20190719; t=1573832152;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=AjWWhXayAkn+BS/jsiPT2sN9cc3skljAXsUmX0pMIGA=;
-        b=DhGWeZhchhe2fBtVaZlhd+1lFDGC3wNnA3pCjJF9GDEkEJCzSQPZGhcHQyCgcadUUi/vSd
-        EwzuSmrvGCY/ABnYzOX4E9VU/muBOWE7V1o0fpmFiML9OQhJ+iDcBT3ov1ZnK1RY6iGfO9
-        ST1fn1vUPm5Wi3Ou14npnguj9q3Oh3M=
+        bh=uhTYzxlKq1TRodram0injMqqf17YnVnhHRImUmBga/g=;
+        b=N5uE2oI4nbJuuQKchh5AUSGtu9r5tI7mv/PRcfpRNlhdk8SMAfHDtFChehs1Xv1iSrkW0o
+        2TKS6Vhc1X8UiNRZYW6Nsf6Pbwmfttfx4MdWEtw8LkPb3G4i6vKaUUVXoOj7x4hHkbZsPh
+        mjzwMqG3lXsVv7k+r4XxZN1UEOslnS8=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-392-bgXMoYOVPpCIyKm0lOWpOw-1; Fri, 15 Nov 2019 10:35:45 -0500
+ us-mta-192-VYYjpS0BMGe5162JbiyvCw-1; Fri, 15 Nov 2019 10:35:49 -0500
 Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 21C8410C0C05;
-        Fri, 15 Nov 2019 15:35:43 +0000 (UTC)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 0BC8DDB88;
+        Fri, 15 Nov 2019 15:35:47 +0000 (UTC)
 Received: from shalem.localdomain.com (ovpn-116-154.ams2.redhat.com [10.36.116.154])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 7D1756106C;
-        Fri, 15 Nov 2019 15:35:39 +0000 (UTC)
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 6A0526117E;
+        Fri, 15 Nov 2019 15:35:43 +0000 (UTC)
 From:   Hans de Goede <hdegoede@redhat.com>
 To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>,
         Darren Hart <dvhart@infradead.org>,
@@ -50,14 +50,14 @@ Cc:     Hans de Goede <hdegoede@redhat.com>,
         platform-driver-x86@vger.kernel.org, linux-efi@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
         linux-input@vger.kernel.org
-Subject: [PATCH v8 2/8] efi: Add embedded peripheral firmware support
-Date:   Fri, 15 Nov 2019 16:35:23 +0100
-Message-Id: <20191115153529.215244-3-hdegoede@redhat.com>
+Subject: [PATCH v8 3/8] firmware: Rename FW_OPT_NOFALLBACK to FW_OPT_NOFALLBACK_SYSFS
+Date:   Fri, 15 Nov 2019 16:35:24 +0100
+Message-Id: <20191115153529.215244-4-hdegoede@redhat.com>
 In-Reply-To: <20191115153529.215244-1-hdegoede@redhat.com>
 References: <20191115153529.215244-1-hdegoede@redhat.com>
 MIME-Version: 1.0
 X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
-X-MC-Unique: bgXMoYOVPpCIyKm0lOWpOw-1
+X-MC-Unique: VYYjpS0BMGe5162JbiyvCw-1
 X-Mimecast-Spam-Score: 0
 Content-Type: text/plain; charset=WINDOWS-1252
 Content-Transfer-Encoding: quoted-printable
@@ -66,367 +66,105 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Just like with PCI options ROMs, which we save in the setup_efi_pci*
-functions from arch/x86/boot/compressed/eboot.c, the EFI code / ROM itself
-sometimes may contain data which is useful/necessary for peripheral drivers
-to have access to.
+This is a preparation patch for adding a new platform fallback mechanism,
+which will have its own enable/disable FW_OPT_xxx option.
 
-Specifically the EFI code may contain an embedded copy of firmware which
-needs to be (re)loaded into the peripheral. Normally such firmware would be
-part of linux-firmware, but in some cases this is not feasible, for 2
-reasons:
+Note this also fixes a typo in one of the re-wordwrapped comments:
+enfoce -> enforce.
 
-1) The firmware is customized for a specific use-case of the chipset / use
-with a specific hardware model, so we cannot have a single firmware file
-for the chipset. E.g. touchscreen controller firmwares are compiled
-specifically for the hardware model they are used with, as they are
-calibrated for a specific model digitizer.
-
-2) Despite repeated attempts we have failed to get permission to
-redistribute the firmware. This is especially a problem with customized
-firmwares, these get created by the chip vendor for a specific ODM and the
-copyright may partially belong with the ODM, so the chip vendor cannot
-give a blanket permission to distribute these.
-
-This commit adds support for finding peripheral firmware embedded in the
-EFI code and makes the found firmware available through the new
-efi_get_embedded_fw() function.
-
-Support for loading these firmwares through the standard firmware loading
-mechanism is added in a follow-up commit in this patch-series.
-
-Note we check the EFI_BOOT_SERVICES_CODE for embedded firmware near the end
-of start_kernel(), just before calling rest_init(), this is on purpose
-because the typical EFI_BOOT_SERVICES_CODE memory-segment is too large for
-early_memremap(), so the check must be done after mm_init(). This relies
-on EFI_BOOT_SERVICES_CODE not being free-ed until efi_free_boot_services()
-is called, which means that this will only work on x86 for now.
-
-Reported-by: Dave Olsthoorn <dave@bewaar.me>
-Suggested-by: Peter Jones <pjones@redhat.com>
-Acked-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
 Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 ---
-Changes in v8:
-- Properly deal with the (theoretical?) case of an EFI segment being
-  smaller then the fw we are looking for
-- Log a warning when efi_get_embedded_fw get called while we did not (yet)
-  check for embedded firmwares
+ drivers/base/firmware_loader/fallback.c | 11 ++++++-----
+ drivers/base/firmware_loader/firmware.h | 16 ++++++++--------
+ drivers/base/firmware_loader/main.c     |  2 +-
+ 3 files changed, 15 insertions(+), 14 deletions(-)
 
-Changes in v7:
-- Split drivers/firmware/efi and drivers/base/firmware_loader changes into
-  2 patches
-- Use new, standalone, lib/crypto/sha256.c code
-
-Changes in v6:
-- Rework code to remove casts from if (prefix =3D=3D mem) comparison
-- Use SHA256 hashes instead of crc32 sums
-- Add new READING_FIRMWARE_EFI_EMBEDDED read_file_id and use it
-- Call security_kernel_read_file(NULL, READING_FIRMWARE_EFI_EMBEDDED)
-  to check if this is allowed before looking at EFI embedded fw
-- Document why we are not using the UEFI PI Firmware Volume protocol
-
-Changes in v5:
-- Rename the EFI_BOOT_SERVICES flag to EFI_PRESERVE_BS_REGIONS
-
-Changes in v4:
-- Drop note in docs about EFI_FIRMWARE_VOLUME_PROTOCOL, it is not part of
-  UEFI proper, so the EFI maintainers don't want us referring people to it
-- Use new EFI_BOOT_SERVICES flag
-- Put the new fw_get_efi_embedded_fw() function in its own fallback_efi.c
-  file which only gets built when EFI_EMBEDDED_FIRMWARE is selected
-- Define an empty stub for fw_get_efi_embedded_fw() in fallback.h hwen
-  EFI_EMBEDDED_FIRMWARE is not selected, to avoid the need for #ifdefs
-  in firmware_loader/main.c
-- Properly call security_kernel_post_read_file() on the firmware returned
-  by efi_get_embedded_fw() to make sure that we are allowed to use it
-
-Changes in v3:
-- Fix the docs using "efi-embedded-fw" as property name instead of
-  "efi-embedded-firmware"
-
-Changes in v2:
-- Rebased on driver-core/driver-core-next
-- Add documentation describing the EFI embedded firmware mechanism to:
-  Documentation/driver-api/firmware/request_firmware.rst
-- Add a new EFI_EMBEDDED_FIRMWARE Kconfig bool and only build the embedded
-  fw support if this is set. This is an invisible option which should be
-  selected by drivers which need this
-- Remove the efi_embedded_fw_desc and dmi_system_id-s for known devices
-  from the efi-embedded-fw code, instead drivers using this are expected to
-  export a dmi_system_id array, with each entries' driver_data pointing to =
-a
-  efi_embedded_fw_desc struct and register this with the efi-embedded-fw co=
-de
-- Use kmemdup to make a copy instead of efi_mem_reserve()-ing the firmware,
-  this avoids us messing with the EFI memmap and avoids the need to make
-  changes to efi_mem_desc_lookup()
-- Make the firmware-loader code only fallback to efi_get_embedded_fw() if t=
-he
-  passed in device has the "efi-embedded-firmware" device-property bool set
-- Skip usermodehelper fallback when "efi-embedded-firmware" device-property
-  is set
----
- arch/x86/platform/efi/efi.c              |   1 +
- drivers/firmware/efi/Kconfig             |   4 +
- drivers/firmware/efi/Makefile            |   1 +
- drivers/firmware/efi/embedded-firmware.c | 151 +++++++++++++++++++++++
- include/linux/efi.h                      |   6 +
- include/linux/efi_embedded_fw.h          |  25 ++++
- 6 files changed, 188 insertions(+)
- create mode 100644 drivers/firmware/efi/embedded-firmware.c
- create mode 100644 include/linux/efi_embedded_fw.h
-
-diff --git a/arch/x86/platform/efi/efi.c b/arch/x86/platform/efi/efi.c
-index f8a9f5230aaf..4e4b5ac3ce65 100644
---- a/arch/x86/platform/efi/efi.c
-+++ b/arch/x86/platform/efi/efi.c
-@@ -1016,6 +1016,7 @@ static void __init __efi_enter_virtual_mode(void)
- =09=09panic("EFI call to SetVirtualAddressMap() failed!");
+diff --git a/drivers/base/firmware_loader/fallback.c b/drivers/base/firmwar=
+e_loader/fallback.c
+index 62ee90b4db56..8704e1bae175 100644
+--- a/drivers/base/firmware_loader/fallback.c
++++ b/drivers/base/firmware_loader/fallback.c
+@@ -606,7 +606,7 @@ static bool fw_run_sysfs_fallback(enum fw_opt opt_flags=
+)
+ =09=09return false;
  =09}
 =20
-+=09efi_check_for_embedded_firmwares();
- =09efi_free_boot_services();
+-=09if ((opt_flags & FW_OPT_NOFALLBACK))
++=09if ((opt_flags & FW_OPT_NOFALLBACK_SYSFS))
+ =09=09return false;
 =20
- =09/*
-diff --git a/drivers/firmware/efi/Kconfig b/drivers/firmware/efi/Kconfig
-index b248870a9806..657f958365ee 100644
---- a/drivers/firmware/efi/Kconfig
-+++ b/drivers/firmware/efi/Kconfig
-@@ -194,6 +194,10 @@ config EFI_RCI2_TABLE
+ =09/* Also permit LSMs and IMA to fail firmware sysfs fallback */
+@@ -630,10 +630,11 @@ static bool fw_run_sysfs_fallback(enum fw_opt opt_fla=
+gs)
+  * interface. Userspace is in charge of loading the firmware through the s=
+ysfs
+  * loading interface. This sysfs fallback mechanism may be disabled comple=
+tely
+  * on a system by setting the proc sysctl value ignore_sysfs_fallback to t=
+rue.
+- * If this false we check if the internal API caller set the @FW_OPT_NOFAL=
+LBACK
+- * flag, if so it would also disable the fallback mechanism. A system may =
+want
+- * to enfoce the sysfs fallback mechanism at all times, it can do this by
+- * setting ignore_sysfs_fallback to false and force_sysfs_fallback to true=
+.
++ * If this is false we check if the internal API caller set the
++ * @FW_OPT_NOFALLBACK_SYSFS flag, if so it would also disable the fallback
++ * mechanism. A system may want to enforce the sysfs fallback mechanism at=
+ all
++ * times, it can do this by setting ignore_sysfs_fallback to false and
++ * force_sysfs_fallback to true.
+  * Enabling force_sysfs_fallback is functionally equivalent to build a ker=
+nel
+  * with CONFIG_FW_LOADER_USER_HELPER_FALLBACK.
+  **/
+diff --git a/drivers/base/firmware_loader/firmware.h b/drivers/base/firmwar=
+e_loader/firmware.h
+index 7ecd590e67fe..8656e5239a80 100644
+--- a/drivers/base/firmware_loader/firmware.h
++++ b/drivers/base/firmware_loader/firmware.h
+@@ -27,16 +27,16 @@
+  *=09firmware file lookup on storage is avoided. Used for calls where the
+  *=09file may be too big, or where the driver takes charge of its own
+  *=09firmware caching mechanism.
+- * @FW_OPT_NOFALLBACK: Disable the fallback mechanism. Takes precedence ov=
+er
+- *=09&FW_OPT_UEVENT and &FW_OPT_USERHELPER.
++ * @FW_OPT_NOFALLBACK_SYSFS: Disable the sysfs fallback mechanism. Takes
++ *=09precedence over &FW_OPT_UEVENT and &FW_OPT_USERHELPER.
+  */
+ enum fw_opt {
+-=09FW_OPT_UEVENT =3D         BIT(0),
+-=09FW_OPT_NOWAIT =3D         BIT(1),
+-=09FW_OPT_USERHELPER =3D     BIT(2),
+-=09FW_OPT_NO_WARN =3D        BIT(3),
+-=09FW_OPT_NOCACHE =3D        BIT(4),
+-=09FW_OPT_NOFALLBACK =3D     BIT(5),
++=09FW_OPT_UEVENT=09=09=09=3D BIT(0),
++=09FW_OPT_NOWAIT=09=09=09=3D BIT(1),
++=09FW_OPT_USERHELPER=09=09=3D BIT(2),
++=09FW_OPT_NO_WARN=09=09=09=3D BIT(3),
++=09FW_OPT_NOCACHE=09=09=09=3D BIT(4),
++=09FW_OPT_NOFALLBACK_SYSFS=09=09=3D BIT(5),
+ };
 =20
- =09  Say Y here for Dell EMC PowerEdge systems.
-=20
-+config EFI_EMBEDDED_FIRMWARE
-+=09bool
-+=09select CRYPTO_LIB_SHA256
-+
- endmenu
-=20
- config UEFI_CPER
-diff --git a/drivers/firmware/efi/Makefile b/drivers/firmware/efi/Makefile
-index 4ac2de4dfa72..42bd310657f4 100644
---- a/drivers/firmware/efi/Makefile
-+++ b/drivers/firmware/efi/Makefile
-@@ -26,6 +26,7 @@ obj-$(CONFIG_EFI_TEST)=09=09=09+=3D test/
- obj-$(CONFIG_EFI_DEV_PATH_PARSER)=09+=3D dev-path-parser.o
- obj-$(CONFIG_APPLE_PROPERTIES)=09=09+=3D apple-properties.o
- obj-$(CONFIG_EFI_RCI2_TABLE)=09=09+=3D rci2-table.o
-+obj-$(CONFIG_EFI_EMBEDDED_FIRMWARE)=09+=3D embedded-firmware.o
-=20
- arm-obj-$(CONFIG_EFI)=09=09=09:=3D arm-init.o arm-runtime.o
- obj-$(CONFIG_ARM)=09=09=09+=3D $(arm-obj-y)
-diff --git a/drivers/firmware/efi/embedded-firmware.c b/drivers/firmware/ef=
-i/embedded-firmware.c
-new file mode 100644
-index 000000000000..7fa18b6bf354
---- /dev/null
-+++ b/drivers/firmware/efi/embedded-firmware.c
-@@ -0,0 +1,151 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Support for extracting embedded firmware for peripherals from EFI code,
-+ *
-+ * Copyright (c) 2018 Hans de Goede <hdegoede@redhat.com>
-+ */
-+
-+#include <linux/dmi.h>
-+#include <linux/efi.h>
-+#include <linux/efi_embedded_fw.h>
-+#include <linux/io.h>
-+#include <linux/slab.h>
-+#include <linux/types.h>
-+#include <linux/vmalloc.h>
-+#include <crypto/sha.h>
-+
-+struct embedded_fw {
-+=09struct list_head list;
-+=09const char *name;
-+=09void *data;
-+=09size_t length;
-+};
-+
-+static bool checked_for_fw;
-+static LIST_HEAD(found_fw_list);
-+
-+static const struct dmi_system_id * const embedded_fw_table[] =3D {
-+=09NULL
-+};
-+
-+/*
-+ * Note the efi_check_for_embedded_firmwares() code currently makes the
-+ * following 2 assumptions. This may needs to be revisited if embedded fir=
-mware
-+ * is found where this is not true:
-+ * 1) The firmware is only found in EFI_BOOT_SERVICES_CODE memory segments
-+ * 2) The firmware always starts at an offset which is a multiple of 8 byt=
-es
-+ */
-+static int __init efi_check_md_for_embedded_firmware(
-+=09efi_memory_desc_t *md, const struct efi_embedded_fw_desc *desc)
-+{
-+=09const u64 prefix =3D *((u64 *)desc->prefix);
-+=09struct sha256_state sctx;
-+=09struct embedded_fw *fw;
-+=09u8 sha256[32];
-+=09u64 i, size;
-+=09void *map;
-+
-+=09size =3D md->num_pages << EFI_PAGE_SHIFT;
-+=09map =3D memremap(md->phys_addr, size, MEMREMAP_WB);
-+=09if (!map) {
-+=09=09pr_err("Error mapping EFI mem at %#llx\n", md->phys_addr);
-+=09=09return -ENOMEM;
-+=09}
-+
-+=09for (i =3D 0; (i + desc->length) <=3D size; i +=3D 8) {
-+=09=09u64 *mem =3D map + i;
-+
-+=09=09if (*mem !=3D prefix)
-+=09=09=09continue;
-+
-+=09=09sha256_init(&sctx);
-+=09=09sha256_update(&sctx, map + i, desc->length);
-+=09=09sha256_final(&sctx, sha256);
-+=09=09if (memcmp(sha256, desc->sha256, 32) =3D=3D 0)
-+=09=09=09break;
-+=09}
-+=09if ((i + desc->length) > size) {
-+=09=09memunmap(map);
-+=09=09return -ENOENT;
-+=09}
-+
-+=09pr_info("Found EFI embedded fw '%s'\n", desc->name);
-+
-+=09fw =3D kmalloc(sizeof(*fw), GFP_KERNEL);
-+=09if (!fw) {
-+=09=09memunmap(map);
-+=09=09return -ENOMEM;
-+=09}
-+
-+=09fw->data =3D kmemdup(map + i, desc->length, GFP_KERNEL);
-+=09memunmap(map);
-+=09if (!fw->data) {
-+=09=09kfree(fw);
-+=09=09return -ENOMEM;
-+=09}
-+
-+=09fw->name =3D desc->name;
-+=09fw->length =3D desc->length;
-+=09list_add(&fw->list, &found_fw_list);
-+
-+=09return 0;
-+}
-+
-+void __init efi_check_for_embedded_firmwares(void)
-+{
-+=09const struct efi_embedded_fw_desc *fw_desc;
-+=09const struct dmi_system_id *dmi_id;
-+=09efi_memory_desc_t *md;
-+=09int i, r;
-+
-+=09for (i =3D 0; embedded_fw_table[i]; i++) {
-+=09=09dmi_id =3D dmi_first_match(embedded_fw_table[i]);
-+=09=09if (!dmi_id)
-+=09=09=09continue;
-+
-+=09=09fw_desc =3D dmi_id->driver_data;
-+=09=09for_each_efi_memory_desc(md) {
-+=09=09=09if (md->type !=3D EFI_BOOT_SERVICES_CODE)
-+=09=09=09=09continue;
-+
-+=09=09=09r =3D efi_check_md_for_embedded_firmware(md, fw_desc);
-+=09=09=09if (r =3D=3D 0)
-+=09=09=09=09break;
-+=09=09}
-+=09}
-+
-+=09checked_for_fw =3D true;
-+}
-+
-+int efi_get_embedded_fw(const char *name, void **data, size_t *size)
-+{
-+=09struct embedded_fw *iter, *fw =3D NULL;
-+=09void *buf =3D *data;
-+
-+=09if (!checked_for_fw) {
-+=09=09pr_warn("Warning %s called while we did not check for embedded fw\n"=
-,
-+=09=09=09__func__);
-+=09=09return -ENOENT;
-+=09}
-+
-+=09list_for_each_entry(iter, &found_fw_list, list) {
-+=09=09if (strcmp(name, iter->name) =3D=3D 0) {
-+=09=09=09fw =3D iter;
-+=09=09=09break;
-+=09=09}
-+=09}
-+
-+=09if (!fw)
-+=09=09return -ENOENT;
-+
-+=09buf =3D vmalloc(fw->length);
-+=09if (!buf)
-+=09=09return -ENOMEM;
-+
-+=09memcpy(buf, fw->data, fw->length);
-+=09*size =3D fw->length;
-+=09*data =3D buf;
-+
-+=09return 0;
-+}
-+EXPORT_SYMBOL_GPL(efi_get_embedded_fw);
-diff --git a/include/linux/efi.h b/include/linux/efi.h
-index 2929abb1e3c0..d5d4caf44f2a 100644
---- a/include/linux/efi.h
-+++ b/include/linux/efi.h
-@@ -1646,6 +1646,12 @@ static inline void
- efi_enable_reset_attack_mitigation(efi_system_table_t *sys_table_arg) { }
- #endif
-=20
-+#ifdef CONFIG_EFI_EMBEDDED_FIRMWARE
-+void efi_check_for_embedded_firmwares(void);
-+#else
-+static inline void efi_check_for_embedded_firmwares(void) { }
-+#endif
-+
- void efi_retrieve_tpm2_eventlog(efi_system_table_t *sys_table);
-=20
- /*
-diff --git a/include/linux/efi_embedded_fw.h b/include/linux/efi_embedded_f=
-w.h
-new file mode 100644
-index 000000000000..ac70ff146d58
---- /dev/null
-+++ b/include/linux/efi_embedded_fw.h
-@@ -0,0 +1,25 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef _LINUX_EFI_EMBEDDED_FW_H
-+#define _LINUX_EFI_EMBEDDED_FW_H
-+
-+#include <linux/mod_devicetable.h>
-+
-+/**
-+ * struct efi_embedded_fw_desc - This struct is used by the EFI embedded-f=
-w
-+ *                               code to search for embedded firmwares.
-+ *
-+ * @name:   Name to register the firmware with if found
-+ * @prefix: First 8 bytes of the firmware
-+ * @length: Length of the firmware in bytes including prefix
-+ * @sha256: SHA256 of the firmware
-+ */
-+struct efi_embedded_fw_desc {
-+=09const char *name;
-+=09u8 prefix[8];
-+=09u32 length;
-+=09u8 sha256[32];
-+};
-+
-+int efi_get_embedded_fw(const char *name, void **dat, size_t *sz);
-+
-+#endif
+ enum fw_status {
+diff --git a/drivers/base/firmware_loader/main.c b/drivers/base/firmware_lo=
+ader/main.c
+index bf44c79beae9..08f8995a530a 100644
+--- a/drivers/base/firmware_loader/main.c
++++ b/drivers/base/firmware_loader/main.c
+@@ -876,7 +876,7 @@ int request_firmware_direct(const struct firmware **fir=
+mware_p,
+ =09__module_get(THIS_MODULE);
+ =09ret =3D _request_firmware(firmware_p, name, device, NULL, 0,
+ =09=09=09=09FW_OPT_UEVENT | FW_OPT_NO_WARN |
+-=09=09=09=09FW_OPT_NOFALLBACK);
++=09=09=09=09FW_OPT_NOFALLBACK_SYSFS);
+ =09module_put(THIS_MODULE);
+ =09return ret;
+ }
 --=20
 2.23.0
 
