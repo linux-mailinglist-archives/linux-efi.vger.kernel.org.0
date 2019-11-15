@@ -2,109 +2,204 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D172FD0CF
-	for <lists+linux-efi@lfdr.de>; Thu, 14 Nov 2019 23:16:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F069FFDA25
+	for <lists+linux-efi@lfdr.de>; Fri, 15 Nov 2019 10:58:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726881AbfKNWQD (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 14 Nov 2019 17:16:03 -0500
-Received: from mail.kernel.org ([198.145.29.99]:52494 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726613AbfKNWQD (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Thu, 14 Nov 2019 17:16:03 -0500
-Received: from paulmck-ThinkPad-P72.home (unknown [199.201.64.141])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B271420709;
-        Thu, 14 Nov 2019 22:16:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1573769762;
-        bh=LDvzI/ip5iI4UIoBSOL32SYOqpndu86kZkkikom9zAQ=;
-        h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
-        b=evw1x+V8DbAMm1Q56y0Dl8nBXH4RuSVwxeqMsDfteUCdnCAMqUInQ8/2NhtcogIZ+
-         xon7nkORRkUbI4++x7nww4haJsBSqgHMLJ4ZzVmMjc54kDTtedT8QMdT/6hOh7Oex2
-         5vtVN19MYBPsP0sLIPE24mpdYfNsH0MiSEQ8OF60=
-Received: by paulmck-ThinkPad-P72.home (Postfix, from userid 1000)
-        id 87E8835227FC; Thu, 14 Nov 2019 14:15:59 -0800 (PST)
-Date:   Thu, 14 Nov 2019 14:15:59 -0800
-From:   "Paul E. McKenney" <paulmck@kernel.org>
-To:     Marco Elver <elver@google.com>
-Cc:     akiyks@gmail.com, stern@rowland.harvard.edu, glider@google.com,
-        parri.andrea@gmail.com, andreyknvl@google.com, luto@kernel.org,
-        ard.biesheuvel@linaro.org, arnd@arndb.de, boqun.feng@gmail.com,
-        bp@alien8.de, dja@axtens.net, dlustig@nvidia.com,
-        dave.hansen@linux.intel.com, dhowells@redhat.com,
-        dvyukov@google.com, hpa@zytor.com, mingo@redhat.com,
-        j.alglave@ucl.ac.uk, joel@joelfernandes.org, corbet@lwn.net,
-        jpoimboe@redhat.com, luc.maranget@inria.fr, mark.rutland@arm.com,
-        npiggin@gmail.com, peterz@infradead.org, tglx@linutronix.de,
-        will@kernel.org, edumazet@google.com, kasan-dev@googlegroups.com,
-        linux-arch@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-efi@vger.kernel.org, linux-kbuild@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org, x86@kernel.org
-Subject: Re: [PATCH v4 00/10] Add Kernel Concurrency Sanitizer (KCSAN)
-Message-ID: <20191114221559.GS2865@paulmck-ThinkPad-P72>
-Reply-To: paulmck@kernel.org
-References: <20191114180303.66955-1-elver@google.com>
- <20191114195046.GP2865@paulmck-ThinkPad-P72>
- <20191114213303.GA237245@google.com>
+        id S1727135AbfKOJ6E (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 15 Nov 2019 04:58:04 -0500
+Received: from lhrrgout.huawei.com ([185.176.76.210]:2100 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1727065AbfKOJ6E (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Fri, 15 Nov 2019 04:58:04 -0500
+Received: from lhreml701-cah.china.huawei.com (unknown [172.18.7.108])
+        by Forcepoint Email with ESMTP id 19CF5FEBA85D1F90A173;
+        Fri, 15 Nov 2019 09:58:02 +0000 (GMT)
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ lhreml701-cah.china.huawei.com (10.201.108.42) with Microsoft SMTP Server
+ (TLS) id 14.3.408.0; Fri, 15 Nov 2019 09:58:01 +0000
+Received: from localhost (10.202.226.57) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1713.5; Fri, 15 Nov
+ 2019 09:58:01 +0000
+Date:   Fri, 15 Nov 2019 09:58:00 +0000
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        <nariman.poushin@linaro.org>
+CC:     Thanu Rangarajan <Thanu.Rangarajan@arm.com>,
+        <linux-efi@vger.kernel.org>, <ard.biesheuvel@linaro.org>,
+        <rjw@rjwysocki.net>, <linuxarm@huawei.com>,
+        <linux-acpi@vger.kernel.org>, <tony.luck@intel.com>,
+        Borislav Petkov <bp@alien8.de>, <james.morse@arm.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        <linux-edac@vger.kernel.org>
+Subject: Re: [PATCH v4 2/6] efi / ras: CCIX Cache error reporting
+Message-ID: <20191115095800.00006ce8@Huawei.com>
+In-Reply-To: <20191114131731.000011f0@huawei.com>
+References: <20191113151627.7950-1-Jonathan.Cameron@huawei.com>
+        <20191113151627.7950-3-Jonathan.Cameron@huawei.com>
+        <20191114063846.60dd8090@kernel.org>
+        <20191114131731.000011f0@huawei.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191114213303.GA237245@google.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.226.57]
+X-ClientProxiedBy: lhreml718-chm.china.huawei.com (10.201.108.69) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, Nov 14, 2019 at 10:33:03PM +0100, Marco Elver wrote:
-> On Thu, 14 Nov 2019, Paul E. McKenney wrote:
+On Thu, 14 Nov 2019 13:17:31 +0000
+Jonathan Cameron <jonathan.cameron@huawei.com> wrote:
+
+> On Thu, 14 Nov 2019 06:38:46 +0100
+> Mauro Carvalho Chehab <mchehab+huawei@kernel.org> wrote:
 > 
-> > On Thu, Nov 14, 2019 at 07:02:53PM +0100, Marco Elver wrote:
-> > > This is the patch-series for the Kernel Concurrency Sanitizer (KCSAN).
-> > > KCSAN is a sampling watchpoint-based *data race detector*. More details
-> > > are included in **Documentation/dev-tools/kcsan.rst**. This patch-series
-> > > only enables KCSAN for x86, but we expect adding support for other
-> > > architectures is relatively straightforward (we are aware of
-> > > experimental ARM64 and POWER support).
+> > Em Wed, 13 Nov 2019 23:16:23 +0800
+> > Jonathan Cameron <Jonathan.Cameron@huawei.com> escreveu:
+> >   
+> > > As CCIX Request Agents have fully cache coherent caches,
+> > > the CCIX 1.0 Base Specification defines detailed error
+> > > reporting for these caches.
 > > > 
-> > > To gather early feedback, we announced KCSAN back in September, and have
-> > > integrated the feedback where possible:
-> > > http://lkml.kernel.org/r/CANpmjNPJ_bHjfLZCAPV23AXFfiPiyXXqqu72n6TgWzb2Gnu1eA@mail.gmail.com
+> > > A CCIX cache error is reported via a CPER record as defined in the
+> > > UEFI 2.8 specification. The PER log section is defined in the
+> > > CCIX 1.0 Base Specification.
 > > > 
-> > > The current list of known upstream fixes for data races found by KCSAN
-> > > can be found here:
-> > > https://github.com/google/ktsan/wiki/KCSAN#upstream-fixes-of-data-races-found-by-kcsan
-> > > 
-> > > We want to point out and acknowledge the work surrounding the LKMM,
-> > > including several articles that motivate why data races are dangerous
-> > > [1, 2], justifying a data race detector such as KCSAN.
-> > > 
-> > > [1] https://lwn.net/Articles/793253/
-> > > [2] https://lwn.net/Articles/799218/
+> > > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > > ---  
+> ...
+> 
+> > > +static int cper_ccix_cache_err_details(const char *pfx,
+> > > +				     struct
+> > > acpi_hest_generic_data *gdata) +{
+> > > +	struct cper_ccix_cache_error *full_cache_err;
+> > > +	struct cper_sec_ccix_cache_error *cache_err;
+> > > +	u16 vendor_data_len;
+> > > +	int i;
+> > > +
+> > > +	if (gdata->error_data_length < sizeof(*full_cache_err))
+> > > +		return -ENOSPC;
+> > > +
+> > > +	full_cache_err = acpi_hest_get_payload(gdata);
+> > > +
+> > > +	cache_err = &full_cache_err->cache_record;
+> > > +
+> > > +	if (cache_err->validation_bits &
+> > > CCIX_CACHE_ERR_TYPE_VALID)
+> > > +		printk("%s""Cache Type: %s\n", pfx,
+> > > +
+> > > cper_ccix_cache_type_str(cache_err->cache_type)); +
+> > > +	if (cache_err->validation_bits & CCIX_CACHE_ERR_OP_VALID)
+> > > +		printk("%s""Operation: %s\n", pfx,
+> > > +
+> > > cper_ccix_cache_err_op_str(cache_err->op_type)); +
+> > > +	if (cache_err->validation_bits &
+> > > CCIX_CACHE_ERR_CACHE_ERR_TYPE_VALID)
+> > > +		printk("%s""Cache Error Type: %s\n", pfx,
+> > > +
+> > > cper_ccix_cache_err_type_str(cache_err->cache_error_type)); +
+> > > +	if (cache_err->validation_bits &
+> > > CCIX_CACHE_ERR_LEVEL_VALID)
+> > > +		printk("%s""Level: %d\n", pfx,
+> > > cache_err->cache_level); +
+> > > +	if (cache_err->validation_bits &
+> > > CCIX_CACHE_ERR_SET_VALID)
+> > > +		printk("%s""Set: %d\n", pfx, cache_err->set);
+> > > +
+> > > +	if (cache_err->validation_bits &
+> > > CCIX_CACHE_ERR_WAY_VALID)
+> > > +		printk("%s""Way: %d\n", pfx, cache_err->way);
+> > > +
+> > > +	if (cache_err->validation_bits &
+> > > CCIX_CACHE_ERR_INSTANCE_ID_VALID)
+> > > +		printk("%s""Instance ID: %d\n", pfx,
+> > > cache_err->instance); +
+> > > +	if (cache_err->validation_bits &
+> > > CCIX_CACHE_ERR_VENDOR_DATA_VALID) {
+> > > +		if (gdata->error_data_length <
+> > > sizeof(*full_cache_err) + 4)
+> > > +			return -ENOSPC;
+> > > +
+> > > +		vendor_data_len = cache_err->vendor_data[0] &
+> > > GENMASK(15, 0);
+> > > +		if (gdata->error_data_length <
+> > > +		    sizeof(*full_cache_err) + vendor_data_len)
+> > > +			return -ENOSPC;
+> > > +
+> > > +		for (i = 0; i < vendor_data_len / 4 - 1; i++)
+> > > +			printk("%s""Vendor%d: 0x%08x\n", pfx, i,
+> > > +			       cache_err->vendor_data[i + 1]);
+> > >  
 > > 
-> > I queued this and ran a quick rcutorture on it, which completed
-> > successfully with quite a few reports.
+> > I forgot to comment this at patch 1/6, as this is more a reflection
+> > than asking for a change...
+> > 
+> > Not sure what's the value of also printing events to the Kernel
+> > logs.
+> > 
+> > I mean, we do that for existent RAS drivers, mainly because the RAS
+> > report mechanism came after the printks, and someone could be
+> > relying at the kernel logs instead of using rasdaemon (or some
+> > other alternative software someone might write).
+> > 
+> > For new report mechanisms, perhaps we could be smarter - at least
+> > offering ways to disable the printks if a daemon is listening to
+> > the trace events.
+> > 
+> > Boris/Tony: what do you think?
+> >   
 > 
-> Great. Many thanks for queuing this in -rcu. And regarding merge window
-> you mentioned, we're fine with your assumption to targeting the next
-> (v5.6) merge window.
-> 
-> I've just had a look at linux-next to check what a future rebase
-> requires:
-> 
-> - There is a change in lib/Kconfig.debug and moving KCSAN to the
->   "Generic Kernel Debugging Instruments" section seems appropriate.
-> - bitops-instrumented.h was removed and split into 3 files, and needs
->   re-inserting the instrumentation into the right places.
-> 
-> Otherwise there are no issues. Let me know what you recommend.
+> Indeed, seems like a sensible time to make such a change if people
+> agree it makes sense to do so.
+> I'll leave this for now and get a v5 out with the fixes you mention.
 
-Sounds good!
+We did some experiments on using whether the tracepoint is
+enabled or not to control the printing.   It's easy to use
+if (static_key_false(&__tracepoint_ccix_memory_error_event.key)) etc
+to block kernel log output if someone is has enabled the tracepoint.
+However, this only stops the parts that occur after we have identified
+the cper record type and that we actually have enough info to
+identify which tracepoint to use.
 
-I will be rebasing onto v5.5-rc1 shortly after it comes out.  My usual
-approach is to fix any conflicts during that rebasing operation.
-Does that make sense, or would you prefer to send me a rebased stack at
-that point?  Either way is fine for me.
+So without some slightly nasty code that either:
+1. Parses the record twice, once to figure out whether it will end up
+   at an enabled tracepoint, second time to do printing etc if not.
+2. Stores up the stuff that will be printed and passes it forwards to
+   be dumped to the log once we know we don't have an open tracepoint.
 
-							Thanx, Paul
+we get the first few lines from the generic cper header.
+
+So can be done but either only partly effective or ugly code flow
+required.
+
+It will need to be done separately for each possible tracepoint to
+avoid losing errors if the rasdaemon version doesn't support all
+the events the current kernel produces.
+
+Thanks,
+
+Jonathan
+
+> > > +	}
+> > > +
+> > > +	return 0;
+> > > +}
+> > > +  
+> ....
+> > 
+> > 
+> > Cheers,
+> > Mauro  
+> 
+> 
+> _______________________________________________
+> Linuxarm mailing list
+> Linuxarm@huawei.com
+> http://hulk.huawei.com/mailman/listinfo/linuxarm
+
+
