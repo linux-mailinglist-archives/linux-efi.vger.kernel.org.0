@@ -2,131 +2,170 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 50F0DFE143
-	for <lists+linux-efi@lfdr.de>; Fri, 15 Nov 2019 16:31:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F3359FE165
+	for <lists+linux-efi@lfdr.de>; Fri, 15 Nov 2019 16:35:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727627AbfKOPbH (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 15 Nov 2019 10:31:07 -0500
-Received: from mga03.intel.com ([134.134.136.65]:22089 "EHLO mga03.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727443AbfKOPbH (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Fri, 15 Nov 2019 10:31:07 -0500
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orsmga103.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 15 Nov 2019 07:31:06 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.68,308,1569308400"; 
-   d="scan'208";a="203609015"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga007.fm.intel.com with ESMTP; 15 Nov 2019 07:31:04 -0800
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id 70EDDEB; Fri, 15 Nov 2019 17:31:03 +0200 (EET)
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     linux-efi@vger.kernel.org, mika.westerberg@linux.intel.com
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Alexander Graf <agraf@suse.de>,
-        Matt Fleming <matt@codeblueprint.co.uk>
-Subject: [PATCH v3] efi/earlycon: Remap entire framebuffer after page initialization
-Date:   Fri, 15 Nov 2019 17:31:02 +0200
-Message-Id: <20191115153102.51921-1-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.24.0
+        id S1727560AbfKOPfn (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 15 Nov 2019 10:35:43 -0500
+Received: from us-smtp-1.mimecast.com ([205.139.110.61]:59539 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1727561AbfKOPfn (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 15 Nov 2019 10:35:43 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1573832141;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=xqcdBBD6i/yTJlbJJBJWml3mpntL2Br9E0z7m9Zrr7Y=;
+        b=El5rwegE/PQNyJEL3cblkZZebmu/tsX1pGCCZM0gqHiFZ0MGXM+Byxezq8HlxccKDVHHgc
+        nltv958SW88XcDvIRdykPTtTSpPz8wZbbjjb9MXnGKkKtinnb0jZqUo7fHnG6c+pcoz0FX
+        M8oHsufALzqs5flX8MZuF5l7mKuQ4LE=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-118-JumWuZpGNrS_4N71YYFAcw-1; Fri, 15 Nov 2019 10:35:37 -0500
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 461C3DB6F;
+        Fri, 15 Nov 2019 15:35:35 +0000 (UTC)
+Received: from shalem.localdomain.com (ovpn-116-154.ams2.redhat.com [10.36.116.154])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 6A9426106C;
+        Fri, 15 Nov 2019 15:35:31 +0000 (UTC)
+From:   Hans de Goede <hdegoede@redhat.com>
+To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Luis Chamberlain <mcgrof@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "H . Peter Anvin" <hpa@zytor.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc:     Hans de Goede <hdegoede@redhat.com>,
+        Peter Jones <pjones@redhat.com>,
+        Dave Olsthoorn <dave@bewaar.me>, x86@kernel.org,
+        platform-driver-x86@vger.kernel.org, linux-efi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+        linux-input@vger.kernel.org
+Subject: [PATCH v8 0/8] efi/firmware/platform-x86: Add EFI embedded fw support
+Date:   Fri, 15 Nov 2019 16:35:21 +0100
+Message-Id: <20191115153529.215244-1-hdegoede@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
+X-MC-Unique: JumWuZpGNrS_4N71YYFAcw-1
+X-Mimecast-Spam-Score: 0
+Content-Type: text/plain; charset=WINDOWS-1252
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-When the commit 69c1f396f25b ("efi/x86: Convert x86 EFI earlyprintk
-into generic earlycon implementation") moved x86 specific EFI earlyprintk
-implementation to shared location it also tweaked the behaviour. In particular
-it dropped a trick with full framebuffer remapping after page initialization.
-This lead to two regressions:
-1) very slow scrolling after page initialization;
-2) kernel hang when keep_bootcon parameter is being provided.
+Here is v8 of my patch-set to add support for EFI embedded fw to the kernel=
+.
+This new version should address the few small remarks Luis had for v7,
+see below for the full changelog.
 
-Returning the trick back fixes #2 and mitigates, i.e. reduces the window when
-slowness appears, #1 presumably due to eliminating heavy map()/unmap()
-operations per each pixel line on the screen.
+I believe that this patch-set is ready for merging now. I believe it
+would be best to merge patches 1-6 through Greg's driver-core tree
+where firmware-loader changes go. Dmitry already gave his Acked-by
+for doing this with patches 5 and 6.
 
-Fixes: 69c1f396f25b ("efi/x86: Convert x86 EFI earlyprintk into generic earlycon implementation")
-Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Cc: Alexander Graf <agraf@suse.de>
-Cc: Matt Fleming <matt@codeblueprint.co.uk>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
-v3:
-- assign size in efi_earlycon_setup()
-- check base and size before mapping in early_efi_map_fb()
- drivers/firmware/efi/earlycon.c | 37 +++++++++++++++++++++++++++++++++
- 1 file changed, 37 insertions(+)
+Ard, you already gave your Acked-by for the changes in patches 1-2
+to indicate you are ok with the changes in general, are you also ok
+with merging these changes through Greg's driver-core tree?
 
-diff --git a/drivers/firmware/efi/earlycon.c b/drivers/firmware/efi/earlycon.c
-index c9a0efca17b0..60b5350c6105 100644
---- a/drivers/firmware/efi/earlycon.c
-+++ b/drivers/firmware/efi/earlycon.c
-@@ -16,15 +16,50 @@
- static const struct font_desc *font;
- static u32 efi_x, efi_y;
- static u64 fb_base;
-+static u32 fb_size;
- static pgprot_t fb_prot;
-+static void *efi_fb;
-+
-+/*
-+ * efi earlycon needs to use early_memremap() to map the framebuffer.
-+ * But early_memremap() is not usable for 'earlycon=efifb keep_bootcon',
-+ * memremap() should be used instead. memremap() will be available after
-+ * paging_init() which is earlier than initcall callbacks. Thus adding this
-+ * early initcall function early_efi_map_fb() to map the whole efi framebuffer.
-+ */
-+static int __init early_efi_map_fb(void)
-+{
-+	if (!fb_base || !fb_size)
-+		return NULL;
-+
-+	if (pgprot_val(fb_prot) == pgprot_val(PAGE_KERNEL))
-+		efi_fb = memremap(fb_base, fb_size, MEMREMAP_WB);
-+	else
-+		efi_fb = memremap(fb_base, fb_size, MEMREMAP_WC);
-+
-+	return efi_fb ? 0 : -ENOMEM;
-+}
-+early_initcall(early_efi_map_fb);
-+
-+static void __exit early_efi_unmap_fb(void)
-+{
-+	memunmap(efi_fb);
-+}
-+__exitcall(early_efi_unmap_fb);
- 
- static __ref void *efi_earlycon_map(unsigned long start, unsigned long len)
- {
-+	if (efi_fb)
-+		return efi_fb + start;
-+
- 	return early_memremap_prot(fb_base + start, len, pgprot_val(fb_prot));
- }
- 
- static __ref void efi_earlycon_unmap(void *addr, unsigned long len)
- {
-+	if (efi_fb)
-+		return;
-+
- 	early_memunmap(addr, len);
- }
- 
-@@ -176,6 +211,8 @@ static int __init efi_earlycon_setup(struct earlycon_device *device,
- 	if (screen_info.capabilities & VIDEO_CAPABILITY_64BIT_BASE)
- 		fb_base |= (u64)screen_info.ext_lfb_base << 32;
- 
-+	fb_size = screen_info.lfb_size;
-+
- 	if (opt && !strcmp(opt, "ram"))
- 		fb_prot = PAGE_KERNEL;
- 	else
--- 
-2.24.0
+Patches 7-8 touch a quirks file under drivers/platform/x86 which sees
+multipe updates each cycle. So my proposal is that once 1-6 has landed
+Greg creates an immutable branch with those changes and then
+Andy and/or Darren can merge in that branch and then apply 7 and 8.
+
+Regards,
+
+Hans
+
+
+Changes in v8:
+- Add pr_warn if there are mode then EFI_DEBUGFS_MAX_BLOBS boot service seg=
+ments
+- Document how the EFI debugfs boot_service_code? files can be used to chec=
+k for
+  embedded firmware
+- Properly deal with the case of an EFI segment being smaller then the fw w=
+e
+  are looking for
+- Log a warning when efi_get_embedded_fw get called while we did not (yet)
+  check for embedded firmwares
+- Only build fallback_platform.c if CONFIG_EFI_EMBEDDED_FIRMWARE is defined=
+,
+  otherwise make firmware_fallback_platform() a static inline stub
+
+Changes in v7:
+- Split drivers/firmware/efi and drivers/base/firmware_loader changes into
+  2 patches
+- Use new, standalone, lib/crypto/sha256.c code
+- Address kdoc comments from Randy Dunlap
+- Add new FW_OPT_FALLBACK_PLATFORM flag and firmware_request_platform()
+  _request_firmware() wrapper, as requested by Luis R. Rodriguez
+- Stop using "efi-embedded-firmware" device-property, now that drivers need=
+ to
+  use the new firmware_request_platform() to enable fallback to a device fw
+  copy embedded in the platform's main firmware, we no longer need a proper=
+ty
+  on the device to trigger this behavior
+- Use security_kernel_load_data instead of calling
+  security_kernel_read_file with a NULL file pointer argument
+- Move the docs to Documentation/driver-api/firmware/fallback-mechanisms.rs=
+t
+- Document the new firmware_request_platform() function in
+  Documentation/driver-api/firmware/request_firmware.rst
+- Add 2 new patches for the silead and chipone-icn8505 touchscreen drivers
+  to use the new firmware_request_platform() method
+- Rebased on top of 5.4-rc1
+
+Changes in v6:
+-Rework code to remove casts from if (prefix =3D=3D mem) comparison
+-Use SHA256 hashes instead of crc32 sums
+-Add new READING_FIRMWARE_EFI_EMBEDDED read_file_id and use it
+-Call security_kernel_read_file(NULL, READING_FIRMWARE_EFI_EMBEDDED)
+ to check if this is allowed before looking at EFI embedded fw
+-Document why we are not using the PI Firmware Volume protocol
+
+Changes in v5:
+-Rename the EFI_BOOT_SERVICES flag to EFI_PRESERVE_BS_REGIONS
+
+Changes in v4:
+-Drop note in docs about EFI_FIRMWARE_VOLUME_PROTOCOL, it is not part of
+ UEFI proper, so the EFI maintainers don't want us referring people to it
+-Use new EFI_BOOT_SERVICES flag
+-Put the new fw_get_efi_embedded_fw() function in its own fallback_efi.c
+ file which only gets built when EFI_EMBEDDED_FIRMWARE is selected
+-Define an empty stub for fw_get_efi_embedded_fw() in fallback.h hwen
+ EFI_EMBEDDED_FIRMWARE is not selected, to avoid the need for #ifdefs
+ in firmware_loader/main.c
+-Properly call security_kernel_post_read_file() on the firmware returned
+ by efi_get_embedded_fw() to make sure that we are allowed to use it
+
+Changes in v2:
+-Rebased on driver-core/driver-core-next
+-Add documentation describing the EFI embedded firmware mechanism to:
+ Documentation/driver-api/firmware/request_firmware.rst
+-Add a new EFI_EMBEDDED_FIRMWARE Kconfig bool and only build the embedded
+ fw support if this is set. This is an invisible option which should be
+ selected by drivers which need this
+-Remove the efi_embedded_fw_desc and dmi_system_id-s for known devices
+ from the efi-embedded-fw code, instead drivers using this are expected to
+ export a dmi_system_id array, with each entries' driver_data pointing to a
+ efi_embedded_fw_desc struct and register this with the efi-embedded-fw cod=
+e
+-Use kmemdup to make a copy instead of efi_mem_reserve()-ing the firmware,
+ this avoids us messing with the EFI memmap and avoids the need to make
+ changes to efi_mem_desc_lookup()
+-Make the firmware-loader code only fallback to efi_get_embedded_fw() if th=
+e
+ passed in device has the "efi-embedded-firmware" device-property bool set
+-Skip usermodehelper fallback when "efi-embedded-firmware" device-property
+ is set
 
