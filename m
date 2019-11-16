@@ -2,73 +2,216 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E47F9FE6B4
-	for <lists+linux-efi@lfdr.de>; Fri, 15 Nov 2019 21:59:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D02E4FEB40
+	for <lists+linux-efi@lfdr.de>; Sat, 16 Nov 2019 09:21:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726717AbfKOU7X (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 15 Nov 2019 15:59:23 -0500
-Received: from bombadil.infradead.org ([198.137.202.133]:44396 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726704AbfKOU7X (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 15 Nov 2019 15:59:23 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
-        Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:
-        Subject:Sender:Reply-To:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=4av0+SBD1vMrf5zA32ZYJgLjHtl85+9kbIX+2Olyi+I=; b=fU56JVprSEQyoiHJfIPWJd2oA
-        wsFe+b0oNyR5hGs8sNcp+91MJE6ol/f/iom/RdVYHTyCVvRbViLkSvFkdCmUMcAw6A7ugagRkcw4F
-        PhYENfIikdQIUk2D6TA1kZPKpSUGs7dGmdOwTZSJZEw8tVE7HATvLZkhZZtQc9cuKF376i+nj98nL
-        /jwSFQMjJS2bJ6HSDvhIt+HvOLH+9mnhO6rmwRsFY4Vyg7sb9ZhS1NE5lcECAG3sowFPfwwgP7itk
-        fbnRaNK//Rsi2pOOOnMuCNY5z4DbacKmQjfPXf9NjHbSBOT2VeMr6BneCQPcQtN6cJF4y/+mWvcwv
-        x+EF4AJXw==;
-Received: from [2601:1c0:6280:3f0::5a22]
-        by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1iViga-0002KT-7S; Fri, 15 Nov 2019 20:59:20 +0000
-Subject: Re: PROBLEM: error and warning from 5.4.0-rc7
-To:     Jeffrin Jose <jeffrin@rajagiritech.edu.in>,
-        linux-kernel@vger.kernel.org
-Cc:     stable@vger.kernel.org, linux-efi <linux-efi@vger.kernel.org>,
-        Josh Boyer <jwboyer@fedoraproject.org>
-References: <20191115202559.GA160812@debian>
-From:   Randy Dunlap <rdunlap@infradead.org>
-Message-ID: <fe379dcc-5a43-4300-0ab6-458c493db888@infradead.org>
-Date:   Fri, 15 Nov 2019 12:59:19 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.1.1
+        id S1726814AbfKPIVI (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 16 Nov 2019 03:21:08 -0500
+Received: from mail-ot1-f65.google.com ([209.85.210.65]:33062 "EHLO
+        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726342AbfKPIVI (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sat, 16 Nov 2019 03:21:08 -0500
+Received: by mail-ot1-f65.google.com with SMTP id u13so10126186ote.0
+        for <linux-efi@vger.kernel.org>; Sat, 16 Nov 2019 00:21:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=IAbPck/tyWYpcH6q1DqU0wF9VrcqMWHjsvfsasMdJQ8=;
+        b=XWnuclkqZMItq+/ksJ8Y1qa9/9oIF2fdvK7zku42Z8ODKYKzpWGUzZ/8O3BaVjf7Ag
+         P71ZJ18PYDh/S+GcXJv7JbUHBfrVxcoQ8Tvy3/rDGiRsih1j0Zfw3p0aX5sUwbDmnNzp
+         UJbeoNYdVfNU8lrJD/bixaoQ7gvdzCi0y77rY6eMix67aCD4LLAxKMFtrjIBZplbOSLa
+         whiths2ljXaRVaJ66Ty6f/l0eqANuJrB5x+g554vTxKefToWIvkl2VMJofQLrWCYVNFN
+         uMyJ4CtcCuhbdCcrnripCXXi0U9CRkogJhOh3chGjPKJVPuRp3IpvYuKiS5dSot+QvZ1
+         UFSg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=IAbPck/tyWYpcH6q1DqU0wF9VrcqMWHjsvfsasMdJQ8=;
+        b=BxMp32yA4S9BUSOa9Xfn03ALuGbY97+9tqejrtnzEZLeQdenZSfbrbLjWY66RMCwZM
+         l42rksV+H6iSVyInQU/ePoRmn1SyKVKsEGSO3FuwVefsz7y0Nua720NSzAyCTRGwhHt2
+         lVtfUEmou/oW8UdQ8dqBrJGFXs4jayKR5+9Ombcz+OKvQXY7WyQikpQE3IFdOISstBx2
+         /cRTP2AcBj3Weh38ph8PkXNm2GHGbk8ewLl10J2Hw2cLGvLYGTPPO5wE3w/DpdcRMYqR
+         ukooGdx6tt3NnDFZA3pk+itjq7eGIKUYodwfZfe3e3KTSlSvB14QYTm26aGrMkbg8LMY
+         LoBw==
+X-Gm-Message-State: APjAAAVkHD0Z6jL3BPK2Mh+X0SB7jlWWVGrrAQ0HexpM86G8GLSB25wd
+        E6BUUv21jz0xTv3vD9L3iQWE3TqnhUJPXTPzW2DoWQ==
+X-Google-Smtp-Source: APXvYqyFoD1MoXKYzcJ0ETjr8RD5raPWnHWPSZdYf70aViyP/iAqqE28rDX/p+nlWotCJAjaCdGBcwat07yGzdHKecY=
+X-Received: by 2002:a9d:3d76:: with SMTP id a109mr14975357otc.233.1573892466111;
+ Sat, 16 Nov 2019 00:21:06 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <20191115202559.GA160812@debian>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <20191114180303.66955-1-elver@google.com> <20191114195046.GP2865@paulmck-ThinkPad-P72>
+ <20191114213303.GA237245@google.com> <20191114221559.GS2865@paulmck-ThinkPad-P72>
+ <CANpmjNPxAOUAxXHd9tka5gCjR_rNKmBk+k5UzRsXT0a0CtNorw@mail.gmail.com>
+ <20191115164159.GU2865@paulmck-ThinkPad-P72> <CANpmjNPy2RDBUhV-j-APzwYr-_x2V9QwgPTYZph36rCpEVqZSQ@mail.gmail.com>
+ <20191115204321.GX2865@paulmck-ThinkPad-P72>
+In-Reply-To: <20191115204321.GX2865@paulmck-ThinkPad-P72>
+From:   Marco Elver <elver@google.com>
+Date:   Sat, 16 Nov 2019 09:20:54 +0100
+Message-ID: <CANpmjNN0JCgEOC=AhKN7pH9OpmzbNB94mioP0FN9ueCQUfKzBQ@mail.gmail.com>
+Subject: Re: [PATCH v4 00/10] Add Kernel Concurrency Sanitizer (KCSAN)
+To:     "Paul E. McKenney" <paulmck@kernel.org>
+Cc:     LKMM Maintainers -- Akira Yokosawa <akiyks@gmail.com>,
+        Alan Stern <stern@rowland.harvard.edu>,
+        Alexander Potapenko <glider@google.com>,
+        Andrea Parri <parri.andrea@gmail.com>,
+        Andrey Konovalov <andreyknvl@google.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Boqun Feng <boqun.feng@gmail.com>,
+        Borislav Petkov <bp@alien8.de>, Daniel Axtens <dja@axtens.net>,
+        Daniel Lustig <dlustig@nvidia.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        David Howells <dhowells@redhat.com>,
+        Dmitry Vyukov <dvyukov@google.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+        Jade Alglave <j.alglave@ucl.ac.uk>,
+        Joel Fernandes <joel@joelfernandes.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Josh Poimboeuf <jpoimboe@redhat.com>,
+        Luc Maranget <luc.maranget@inria.fr>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Will Deacon <will@kernel.org>,
+        Eric Dumazet <edumazet@google.com>,
+        kasan-dev <kasan-dev@googlegroups.com>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
+        linux-efi@vger.kernel.org,
+        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Linux Memory Management List <linux-mm@kvack.org>,
+        "the arch/x86 maintainers" <x86@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 11/15/19 12:25 PM, Jeffrin Jose wrote:
-> hello all
-> 
-> i get error and warning from a typical 5.4.0-rc7.
-> 
-> ------x--------x--error---x---------------x----
-> 
-> $cat 5.4.0-rc7-error.txt 
-> [    2.064029] Couldn't get size: 0x800000000000000e
-> [   12.906185] tpm_tis MSFT0101:00: IRQ index 0 not found
+On Fri, 15 Nov 2019 at 21:43, Paul E. McKenney <paulmck@kernel.org> wrote:
+>
+> On Fri, Nov 15, 2019 at 06:14:46PM +0100, Marco Elver wrote:
+> > On Fri, 15 Nov 2019 at 17:42, Paul E. McKenney <paulmck@kernel.org> wrote:
+> > >
+> > > On Fri, Nov 15, 2019 at 01:02:08PM +0100, Marco Elver wrote:
+> > > > On Thu, 14 Nov 2019 at 23:16, Paul E. McKenney <paulmck@kernel.org> wrote:
+> > > > >
+> > > > > On Thu, Nov 14, 2019 at 10:33:03PM +0100, Marco Elver wrote:
+> > > > > > On Thu, 14 Nov 2019, Paul E. McKenney wrote:
+> > > > > >
+> > > > > > > On Thu, Nov 14, 2019 at 07:02:53PM +0100, Marco Elver wrote:
+> > > > > > > > This is the patch-series for the Kernel Concurrency Sanitizer (KCSAN).
+> > > > > > > > KCSAN is a sampling watchpoint-based *data race detector*. More details
+> > > > > > > > are included in **Documentation/dev-tools/kcsan.rst**. This patch-series
+> > > > > > > > only enables KCSAN for x86, but we expect adding support for other
+> > > > > > > > architectures is relatively straightforward (we are aware of
+> > > > > > > > experimental ARM64 and POWER support).
+> > > > > > > >
+> > > > > > > > To gather early feedback, we announced KCSAN back in September, and have
+> > > > > > > > integrated the feedback where possible:
+> > > > > > > > http://lkml.kernel.org/r/CANpmjNPJ_bHjfLZCAPV23AXFfiPiyXXqqu72n6TgWzb2Gnu1eA@mail.gmail.com
+> > > > > > > >
+> > > > > > > > The current list of known upstream fixes for data races found by KCSAN
+> > > > > > > > can be found here:
+> > > > > > > > https://github.com/google/ktsan/wiki/KCSAN#upstream-fixes-of-data-races-found-by-kcsan
+> > > > > > > >
+> > > > > > > > We want to point out and acknowledge the work surrounding the LKMM,
+> > > > > > > > including several articles that motivate why data races are dangerous
+> > > > > > > > [1, 2], justifying a data race detector such as KCSAN.
+> > > > > > > >
+> > > > > > > > [1] https://lwn.net/Articles/793253/
+> > > > > > > > [2] https://lwn.net/Articles/799218/
+> > > > > > >
+> > > > > > > I queued this and ran a quick rcutorture on it, which completed
+> > > > > > > successfully with quite a few reports.
+> > > > > >
+> > > > > > Great. Many thanks for queuing this in -rcu. And regarding merge window
+> > > > > > you mentioned, we're fine with your assumption to targeting the next
+> > > > > > (v5.6) merge window.
+> > > > > >
+> > > > > > I've just had a look at linux-next to check what a future rebase
+> > > > > > requires:
+> > > > > >
+> > > > > > - There is a change in lib/Kconfig.debug and moving KCSAN to the
+> > > > > >   "Generic Kernel Debugging Instruments" section seems appropriate.
+> > > > > > - bitops-instrumented.h was removed and split into 3 files, and needs
+> > > > > >   re-inserting the instrumentation into the right places.
+> > > > > >
+> > > > > > Otherwise there are no issues. Let me know what you recommend.
+> > > > >
+> > > > > Sounds good!
+> > > > >
+> > > > > I will be rebasing onto v5.5-rc1 shortly after it comes out.  My usual
+> > > > > approach is to fix any conflicts during that rebasing operation.
+> > > > > Does that make sense, or would you prefer to send me a rebased stack at
+> > > > > that point?  Either way is fine for me.
+> > > >
+> > > > That's fine with me, thanks!  To avoid too much additional churn on
+> > > > your end, I just replied to the bitops patch with a version that will
+> > > > apply with the change to bitops-instrumented infrastructure.
+> > >
+> > > My first thought was to replace 8/10 of the previous version of your
+> > > patch in -rcu (047ca266cfab "asm-generic, kcsan: Add KCSAN instrumentation
+> > > for bitops"), but this does not apply.  So I am guessing that I instead
+> > > do this substitution when a rebase onto -rc1..
+> > >
+> > > Except...
+> > >
+> > > > Also considering the merge window, we had a discussion and there are
+> > > > some arguments for targeting the v5.5 merge window:
+> > > > - we'd unblock ARM and POWER ports;
+> > > > - we'd unblock people wanting to use the data_race macro;
+> > > > - we'd unblock syzbot just tracking upstream;
+> > > > Unless there are strong reasons to not target v5.5, I leave it to you
+> > > > if you think it's appropriate.
+> > >
+> > > My normal process is to send the pull request shortly after -rc5 comes
+> > > out, but you do call out some benefits of getting it in sooner, so...
+> > >
+> > > What I will do is to rebase your series onto (say) -rc7, test it, and
+> > > see about an RFC pull request.
+> > >
+> > > One possible complication is the new 8/10 patch.  But maybe it will
+> > > apply against -rc7?
+> > >
+> > > Another possible complication is this:
+> > >
+> > > scripts/kconfig/conf  --syncconfig Kconfig
+> > > *
+> > > * Restart config...
+> > > *
+> > > *
+> > > * KCSAN: watchpoint-based dynamic data race detector
+> > > *
+> > > KCSAN: watchpoint-based dynamic data race detector (KCSAN) [N/y/?] (NEW)
+> > >
+> > > Might be OK in this case because it is quite obvious what it is doing.
+> > > (Avoiding pain from this is the reason that CONFIG_RCU_EXPERT exists.)
+> > >
+> > > But I will just mention this in the pull request.
+> > >
+> > > If there is a -rc8, there is of course a higher probability of making it
+> > > into the next merge window.
+> > >
+> > > Fair enough?
+> >
+> > Totally fine with that, sounds like a good plan, thanks!
+> >
+> > If it helps, in theory we can also drop and delay the bitops
+> > instrumentation patch until the new bitops instrumentation
+> > infrastructure is in 5.5-rc1. There won't be any false positives if
+> > this is missing, we might just miss a few data races until we have it.
+>
+> That sounds advisable for an attempt to hit this coming merge window.
+>
+> So just to make sure I understand, I drop 8/10 and keep the rest during
+> a rebase to 5.4-rc7, correct?
 
-Hi,
-Missing a lot of context here.
+Yes, that's right.
 
-"Couldn't get size:" is from security/integrity/platform_certs/load_uefi.c.
-The "size" that is printed appears to be EFI_NOT_FOUND, so it seems that
-some error handling is not happening.
-
-#define EFI_NOT_FOUND		(14 | (1UL << (BITS_PER_LONG-1)))
-
-Adding a few cc:s.
-
--- 
-~Randy
-
+Many thanks,
+-- Marco
