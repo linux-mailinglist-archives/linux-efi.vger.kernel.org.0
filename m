@@ -2,142 +2,81 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E0F7100C56
-	for <lists+linux-efi@lfdr.de>; Mon, 18 Nov 2019 20:41:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E598C100DB2
+	for <lists+linux-efi@lfdr.de>; Mon, 18 Nov 2019 22:30:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726568AbfKRTl2 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 18 Nov 2019 14:41:28 -0500
-Received: from mail-wr1-f66.google.com ([209.85.221.66]:39432 "EHLO
-        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726536AbfKRTl2 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 18 Nov 2019 14:41:28 -0500
-Received: by mail-wr1-f66.google.com with SMTP id l7so20946890wrp.6
-        for <linux-efi@vger.kernel.org>; Mon, 18 Nov 2019 11:41:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=AD3x9jN3xsof2GwxSlCFy8WYifvuVlDWDqTCKMUSGXg=;
-        b=FNwXxUZxej1/G8zd/Q6xsPST5jonWp0LqsPae6brHqPI1sf0Cva5Gi85gMc0emUUV8
-         Iq7qkbwgZF9PWHUXY7GgGvD8xUwY11V6Vzfq2oyyiMfqTkl8hfbbBpJppmUuYxzoSMyX
-         ZuoO8I3Y5QGHwu5XNMjHg22oEkN0P9PLHiBO2yJKX+heIBTc7lyeN1DJ21pdWkH/ASll
-         REaQmeEyyDY8BDaJw05rUYzjhFpEZyAu+aocYMZrtbgjwr881nKFp5VvE0QFOGy3d2sC
-         jTXyKc4XXZY/uNeRtOhrhOyLTpDf7m5f5Uar6vHUJwsAwZg9gCl/sGHEhc2kgUbqs+WG
-         OAgg==
+        id S1726698AbfKRVa0 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 18 Nov 2019 16:30:26 -0500
+Received: from mail-qv1-f68.google.com ([209.85.219.68]:42885 "EHLO
+        mail-qv1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726272AbfKRVa0 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 18 Nov 2019 16:30:26 -0500
+Received: by mail-qv1-f68.google.com with SMTP id n4so4108273qvq.9;
+        Mon, 18 Nov 2019 13:30:25 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=AD3x9jN3xsof2GwxSlCFy8WYifvuVlDWDqTCKMUSGXg=;
-        b=DUKmJ0m2PxDxGGWsXCHhkkjnPojzr1kUHV5xrc8jBQZFPW8Jz775Wk/PxA3YpblQwh
-         ynW0RmW+PZJXWXbQ3KxpiWB+HaSGdVQnvfVerzGX5LB2L5pj+5MjVoxh+P4lYLLyHMQT
-         BL7SvfAJbExYCxqG6X+Agjo4kWRyxSQeENjKDzbDqr5ZUp//JfPxXi1m+xMbLiRlnKrZ
-         0L45ZMg+2Q+Q8gFnAj17ZLBSe2LTHbWxDzGrNSUtXXKS6RbqoHH67XRs6yOo9yS2HwST
-         Cz3lpQ6KLE6o1q3y9pdBNwQYeOntwsDwPXaBxlfUaayE4S3KnchOFYo3qhgj6CSIrcWV
-         0MVQ==
-X-Gm-Message-State: APjAAAXfnM+dCg1ub7ZWoOAYol+MZaFgh6RbHLXE3QfD4E5GPLNRFRJ9
-        iwmC94qU42E6D6bdCK4e1DL7hQ/DxUNGXbfDotiaGQ==
-X-Google-Smtp-Source: APXvYqwukT9ieockNnNB8vDzs1PI+dwjQoAUxTETaTfv47cvIELyAYO2cprwJExg9A+mA19uX91G/KdoqDPim3+iZ1g=
-X-Received: by 2002:adf:ec42:: with SMTP id w2mr19089472wrn.32.1574106086065;
- Mon, 18 Nov 2019 11:41:26 -0800 (PST)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=LbsJsPA/M9c8jyXlIJ6RFJqXLIPPmiIR0pywnPS5lrg=;
+        b=YADiuJP2Bd7UWyIwWjxEG25hpZCGrSkXRvRh2FR2sL57R5Z6aVXaONG2niViPPIFYN
+         GBieZp5yA4IrKbbaGpfXkch7C1grB0Gkbyyp0tZwisrShXxbpOyrGPfHRTJsudVUnHCy
+         gyRt33zpp4zr1TuP8wFmn6xp084bkgJWaepf6RjLpxIeGPLQdExww6msMttyTLnG68vK
+         w9NbFwYRu46uBdK0lK5DqXX1bfZPV1cB/fopxPcvKB0sO3Pw6SoDFPIngUCt9usUeeIS
+         37Kh8+DnI5izfmbrYeiiWeRXX2AN2ayHqIo8YKpfpczhZTW5feOBq/7m9SEAXRfN9NYH
+         edpQ==
+X-Gm-Message-State: APjAAAWn4RHUlp45e/p9CV76SB6D37XrKDq/KWHx9+Z8rZ+H6uTqWPSP
+        IOi3lVLZOgZnsRwtpubAN3o=
+X-Google-Smtp-Source: APXvYqy/fZCPC24xRSzUWCH7JlKe2bWZMI2UsAiceAttN9T/hERdNGQMTcSAQma/5iD26J4R1zxRUg==
+X-Received: by 2002:a0c:edaa:: with SMTP id h10mr14479334qvr.245.1574112625257;
+        Mon, 18 Nov 2019 13:30:25 -0800 (PST)
+Received: from 42.do-not-panic.com (42.do-not-panic.com. [157.230.128.187])
+        by smtp.gmail.com with ESMTPSA id t65sm9191918qkh.99.2019.11.18.13.30.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 18 Nov 2019 13:30:23 -0800 (PST)
+Received: by 42.do-not-panic.com (Postfix, from userid 1000)
+        id 56299401EA; Mon, 18 Nov 2019 21:30:20 +0000 (UTC)
+Date:   Mon, 18 Nov 2019 21:30:20 +0000
+From:   Luis Chamberlain <mcgrof@kernel.org>
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "H . Peter Anvin" <hpa@zytor.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Peter Jones <pjones@redhat.com>,
+        Dave Olsthoorn <dave@bewaar.me>, x86@kernel.org,
+        platform-driver-x86@vger.kernel.org, linux-efi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+        linux-input@vger.kernel.org
+Subject: Re: [PATCH v8 3/8] firmware: Rename FW_OPT_NOFALLBACK to
+ FW_OPT_NOFALLBACK_SYSFS
+Message-ID: <20191118213020.GH11244@42.do-not-panic.com>
+References: <20191115153529.215244-1-hdegoede@redhat.com>
+ <20191115153529.215244-4-hdegoede@redhat.com>
 MIME-Version: 1.0
-References: <20191118174252.26758-1-cristian.ciocaltea@gmail.com>
- <20191118181020.GA17031@lakrids.cambridge.arm.com> <CAKv+Gu_Ob5T6FfDo7dHnC+eF09_89HW2uYZv2J9A6+7jn65w0w@mail.gmail.com>
- <20191118185116.GB17031@lakrids.cambridge.arm.com>
-In-Reply-To: <20191118185116.GB17031@lakrids.cambridge.arm.com>
-From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Date:   Mon, 18 Nov 2019 19:41:21 +0000
-Message-ID: <CAKv+Gu8KGQ_+sLL01yGhr5m4YbH2a7tDS9F33=oe=b_3Z5tyLQ@mail.gmail.com>
-Subject: Re: [PATCH 0/1] Temporary fix for data abort on armv6z EFI boot
-To:     Mark Rutland <mark.rutland@arm.com>,
-        Heinrich Schuchardt <xypron.glpk@gmx.de>,
-        Guillaume GARDET <guillaume.gardet@arm.com>
-Cc:     Cristian Ciocaltea <cristian.ciocaltea@gmail.com>,
-        Ingo Molnar <mingo@kernel.org>,
-        Kairui Song <kasong@redhat.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Matthew Garrett <matthewgarrett@google.com>,
-        linux-efi <linux-efi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191115153529.215244-4-hdegoede@redhat.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-(adding Heinrich and Guillaume again)
+On Fri, Nov 15, 2019 at 04:35:24PM +0100, Hans de Goede wrote:
+> This is a preparation patch for adding a new platform fallback mechanism,
+> which will have its own enable/disable FW_OPT_xxx option.
+> 
+> Note this also fixes a typo in one of the re-wordwrapped comments:
+> enfoce -> enforce.
+> 
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 
-On Mon, 18 Nov 2019 at 19:51, Mark Rutland <mark.rutland@arm.com> wrote:
->
-> On Mon, Nov 18, 2019 at 07:15:04PM +0100, Ard Biesheuvel wrote:
-> > On Mon, 18 Nov 2019 at 19:10, Mark Rutland <mark.rutland@arm.com> wrote:
-> > >
-> > > On Mon, Nov 18, 2019 at 07:42:51PM +0200, Cristian Ciocaltea wrote:
-> > > > I'm trying to boot the Linux kernel on RaspberryPi Zero via GRUB2,
-> > > > which in turn is executed by U-Boot as an UEFI binary.
-> > > >
-> > > > However, I'm facing data abort issues in efi_get_memory_map()
-> > > > that seem to be related to some ldrd instructions generated by the
-> > > > compiler.
-> > > >
-> > > > To simplify the investigation, I temporarily gave up on GRUB2 and
-> > > > started directly the Linux kernel via U-Boot bootefi command.
-> > > > The result is an immediate crash at PC 0x92c8:
-> > > >
-> > > > data abort
-> > > > pc : [<1c6b12c8>]          lr : [<1c6b1558>]
-> > > > reloc pc : [<fe76a2c8>]    lr : [<fe76a558>]
-> > > > sp : 1db43b30  ip : 00000000     fp : 1db43cc0
-> > > > r10: 20494249  r9 : ffffffff     r8 : 00000000
-> > > > r7 : 1db43b3c  r6 : 00000000     r5 : 1db43bfa  r4 : 1db43bb0
-> > > > r3 : 1db43b9c  r2 : 00000028     r1 : 00000000  r0 : 1df4f828
-> > > > Flags: nZCv  IRQs off  FIQs off  Mode SVC_32
-> > > > Code: e3a02028 e3a01000 e527100c e5832000 (e1c420d4)
-> > > > UEFI image [0x1c6a8000:0x1cb2ffff] pc=0x92c8 '/boot\zImage'
-> > > > Resetting CPU ...
-> > > >
-> > > > The related disassembled section shows the *ldrd* instruction
-> > > > in the context of the following statement:
-> > > > *map->map_size =      *map->desc_size * 32;
-> > > >
-> > > > drivers/firmware/efi/libstub/efi-stub-helper.c:90
-> > > >       *map->desc_size =       sizeof(*m);
-> > > >     92ac:     e5913008        ldr     r3, [r1, #8]
-> > > > drivers/firmware/efi/libstub/efi-stub-helper.c:84
-> > > > {
-> > > >     92b0:     e1a04001        mov     r4, r1
-> > > > drivers/firmware/efi/libstub/efi-stub-helper.c:85
-> > > >       efi_memory_desc_t *m = NULL;
-> > > >     92b4:     e28d7018        add     r7, sp, #24
-> > > > linux/drivers/firmware/efi/libstub/efi-stub-helper.c:90
-> > > >       *map->desc_size =       sizeof(*m);
-> > > >     92b8:     e3a02028        mov     r2, #40 ; 0x28
-> > > >     92c4:     e5832000        str     r2, [r3]
-> > > > linux/drivers/firmware/efi/libstub/efi-stub-helper.c:91
-> > > >       *map->map_size =        *map->desc_size * 32;
-> > > >     92c8:     e1c420d4        ldrd    r2, [r4, #4]
-> > >
-> > > At this point, r4 is 16-byte aligned, so that's a misaligned LDRD.
-> > >
-> > > Looking at version 2.8of the UEFI spec, in section 2.3.5 "AArch32
-> > > Platforms", it states that SCTLR should be configured:
-> > >
-> > > | A=0, U=1 on ARMv6 and ARMv7
-> > >
-> > > ... which IIUC should permit a misaligned LDRD. Is U-Boot definitely
-> > > configuring SCTLR that way? Or has it perhaps set A=1, U=0?
-> >
-> > LDRD requires word alignment only, no?
->
-> Looking at the ARMv6 ARM ARM, I see mention of modulo-8 alignemnt
-> checking (specifically for LDRD/STRD) when A=1, U=0. Unless I've
-> misunder
->
-> See A2.7.3 "Endian configuration and control" in ARM DDI 0100I. Table
-> A2-6 and A2-8 both suggest that, with A2-8 saying that a Data Abort
-> would result.
->
+Acked-by: Luis Chamberlain <mcgrof@kernel.org>
 
-You are right.
-
-I have added Heinrich to cc [again] - perhaps he knows whether u-boot
-always adheres to this UEFI requirement?
+  Luis
