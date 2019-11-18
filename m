@@ -2,127 +2,104 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AF2DE100A9F
-	for <lists+linux-efi@lfdr.de>; Mon, 18 Nov 2019 18:42:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E7ED4100AA2
+	for <lists+linux-efi@lfdr.de>; Mon, 18 Nov 2019 18:43:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726336AbfKRRm4 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 18 Nov 2019 12:42:56 -0500
-Received: from mail-wm1-f65.google.com ([209.85.128.65]:55157 "EHLO
-        mail-wm1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727088AbfKRRm4 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 18 Nov 2019 12:42:56 -0500
-Received: by mail-wm1-f65.google.com with SMTP id z26so167995wmi.4
-        for <linux-efi@vger.kernel.org>; Mon, 18 Nov 2019 09:42:55 -0800 (PST)
+        id S1727092AbfKRRm5 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 18 Nov 2019 12:42:57 -0500
+Received: from mail-wm1-f66.google.com ([209.85.128.66]:38437 "EHLO
+        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727080AbfKRRm5 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 18 Nov 2019 12:42:57 -0500
+Received: by mail-wm1-f66.google.com with SMTP id z19so205202wmk.3
+        for <linux-efi@vger.kernel.org>; Mon, 18 Nov 2019 09:42:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:subject:date:message-id;
-        bh=Iu/BAUq4FXml3nbiF+fFEOptFj5ZHDj51Dcbb6JbVKA=;
-        b=gkLRXoXDxXKOcdl7ohhuQQ7Si8V6aVPFPHA/t1Z9Igx0fxtJjfsOqPtwa3BxC+3egy
-         YHmx6AKoXs+tUduIpamv7WBG1cHKUyjE2RvlzeJoZboueIMP4E6Pgv5LJ1wg3kRjtZzc
-         pzu/+4Rfb9P143/VKMZvVzCMKPmLhGJgHxJGllHdc9r01ZDLtr1NTtjFchuCQA/pgs3R
-         U7qRXrgxYuC+hiAsIjWmpPUo1sJFEo0rufCiDE6TasWB//A6fT5rTP6ZIXNVJoBA88RV
-         qmaEKczChljZ6Cz1Nl2SSVA5mMZSzEAH9UP7f2sn7Jv1Od3ritiATWqmUA/e9q8YBLj1
-         sF3A==
+        h=from:to:subject:date:message-id:in-reply-to:references;
+        bh=hvD75NY8BGYGJ9zuzt5ynrizPkcMUgtR+96pDOAx2Uc=;
+        b=PxKA1vx696llhJa4pBEiNxFMI+bTJR1EPKQk1RXzdOy4n74RGaZDLIXX8nvWZgfkf8
+         1vVASG72qCG/xwt6YsxFukKG7BrzKBbYlKz/SU+yI9cXUpvF4Ccq3aHWsa97qqv1JvWu
+         Mpad7PCze+QuZG+FGxZf86s2m6AQv6GksJ9GhQZgziDUNDOzXtQQ4RYDXGDA5EqKdTvh
+         /1ZK3LN5p0+N6GAV2/o7gTwrb+US5No+3Y9r1fAtnXwcgZ+3v2DnLvueLCMg64/LtOSP
+         cjZbRExPeCmJEYy3yDjyI9X2aq6b1zjOiX++YwtCUWFlDH7dmXau/Cx8097tvTb7OrB8
+         QByA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:subject:date:message-id;
-        bh=Iu/BAUq4FXml3nbiF+fFEOptFj5ZHDj51Dcbb6JbVKA=;
-        b=nJRCDOBEtlr4U1qWVxcCUhLC3htGj/OTIpGtABq91fIB5uT9yZNvPpZGIgJGVYAp3O
-         BIxgyPk5KWqRDVgpYq3Bk1NNJaC/5c98V5ed1uNzBR7s7E7IWbXsOHrH+u3UnQ2rwN5x
-         IIdFZR5sP4OSY7Zk1Zi8uY+aBdmRxCd61CDIU8Bb/jJCbskeCOhkWnZPh2sDK97LdTEN
-         tFXeXmnbygG6f+8bw/bMApTkYd4PhyBxoZo0gOw2m5f86v47BbnLG+OXJgKaNoe/Xxi8
-         wNP99Ve4jm0mfzbl785CMjWGpd42TX6SWArcPuKNFSMRh5n6NNNP/1eILqxllUCyC2VF
-         k2Xw==
-X-Gm-Message-State: APjAAAXVOWru51dAEohyZUx4UZY0oDn3zZP+zSyECmUoyIWUBOicgUCP
-        AZpjKTdckmZZG93X4g7+wD01YVa3nqE=
-X-Google-Smtp-Source: APXvYqwvlJevUrdXI2bEvCw9sJJHVLsV1G38ATVj78G+iYJ1s0ZvHWYphzeh4Az60TQ2+aSCBRPIgA==
-X-Received: by 2002:a05:600c:2253:: with SMTP id a19mr211029wmm.97.1574098974325;
-        Mon, 18 Nov 2019 09:42:54 -0800 (PST)
+        h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
+         :references;
+        bh=hvD75NY8BGYGJ9zuzt5ynrizPkcMUgtR+96pDOAx2Uc=;
+        b=h16rQr3UJSZJfbby7RWxQQ9/CMIG5ICZir/DI5KHWTst7sX7DBo0VGOvuUMngr5LzS
+         XD3MBPepzmIHb3pZagBBHSagBzLdNcwoUDTVgkGw/oA/60dwrqiwxVsxyj0qTg2OlMUu
+         DrlRMtnbz9FMGsqnQT626VVBUcBfNT7n9XaorydW3GlPkIVER5L6/Mciw3CqOMCoGe0L
+         KG4W8vm+k/0tmhHsBoMauuLGX6KVrqERi1muHCH3z6auw2cyOJTPSLWhL9mCqRVMoE+K
+         yB81oljrVFlR4J/d0IrQj9cnifIbCjXmilc2A5G+gtgXTHOzvdspAqZsElB6mUOD8fN3
+         lhlA==
+X-Gm-Message-State: APjAAAWWqGgpxQYdDHYY6PTfSY4LnSxsMAbLBRXUyAnFQvCka0lo8ObW
+        43Ocdimlwnb2pMEpicEGzjQ=
+X-Google-Smtp-Source: APXvYqz6PBaZzG57uNzX6aAB+X4l3gH15W3tuLcRLAmz8RnE5FrTN6TBaPOLL6ubPnRwWUOao64NqQ==
+X-Received: by 2002:a7b:c307:: with SMTP id k7mr247312wmj.134.1574098975302;
+        Mon, 18 Nov 2019 09:42:55 -0800 (PST)
 Received: from localhost.localdomain ([79.116.233.68])
-        by smtp.gmail.com with ESMTPSA id c10sm71198wml.37.2019.11.18.09.42.53
+        by smtp.gmail.com with ESMTPSA id c10sm71198wml.37.2019.11.18.09.42.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 Nov 2019 09:42:53 -0800 (PST)
+        Mon, 18 Nov 2019 09:42:54 -0800 (PST)
 From:   Cristian Ciocaltea <cristian.ciocaltea@gmail.com>
 To:     ard.biesheuvel@linaro.org, mingo@kernel.org, kasong@redhat.com,
         hdegoede@redhat.com, matthewgarrett@google.com,
         linux-efi@vger.kernel.org
-Subject: [PATCH 0/1] Temporary fix for data abort on armv6z EFI boot
-Date:   Mon, 18 Nov 2019 19:42:51 +0200
-Message-Id: <20191118174252.26758-1-cristian.ciocaltea@gmail.com>
+Subject: [PATCH 1/1] efi/libstub: Workaround for data abort on armv6z architecture
+Date:   Mon, 18 Nov 2019 19:42:52 +0200
+Message-Id: <20191118174252.26758-2-cristian.ciocaltea@gmail.com>
 X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20191118174252.26758-1-cristian.ciocaltea@gmail.com>
+References: <20191118174252.26758-1-cristian.ciocaltea@gmail.com>
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-I'm trying to boot the Linux kernel on RaspberryPi Zero via GRUB2,
-which in turn is executed by U-Boot as an UEFI binary.
+The armv6-eabihf toolchains generate some ldrd instructions
+that trigger data abort on RaspberryPi Zero (ARM1176JZF-S CPU):
 
-However, I'm facing data abort issues in efi_get_memory_map()
-that seem to be related to some ldrd instructions generated by the
-compiler.
-
-To simplify the investigation, I temporarily gave up on GRUB2 and
-started directly the Linux kernel via U-Boot bootefi command.
-The result is an immediate crash at PC 0x92c8:
-
-data abort
-pc : [<1c6b12c8>]          lr : [<1c6b1558>]
-reloc pc : [<fe76a2c8>]    lr : [<fe76a558>]
-sp : 1db43b30  ip : 00000000     fp : 1db43cc0
-r10: 20494249  r9 : ffffffff     r8 : 00000000
-r7 : 1db43b3c  r6 : 00000000     r5 : 1db43bfa  r4 : 1db43bb0
-r3 : 1db43b9c  r2 : 00000028     r1 : 00000000  r0 : 1df4f828
-Flags: nZCv  IRQs off  FIQs off  Mode SVC_32
-Code: e3a02028 e3a01000 e527100c e5832000 (e1c420d4)
-UEFI image [0x1c6a8000:0x1cb2ffff] pc=0x92c8 '/boot\zImage'
-Resetting CPU ...
-
-The related disassembled section shows the *ldrd* instruction
-in the context of the following statement:
-*map->map_size =	*map->desc_size * 32;
-
-drivers/firmware/efi/libstub/efi-stub-helper.c:90
-	*map->desc_size =	sizeof(*m);
-    92ac:	e5913008 	ldr	r3, [r1, #8]
-drivers/firmware/efi/libstub/efi-stub-helper.c:84
-{
-    92b0:	e1a04001 	mov	r4, r1
-drivers/firmware/efi/libstub/efi-stub-helper.c:85
-	efi_memory_desc_t *m = NULL;
-    92b4:	e28d7018 	add	r7, sp, #24
-linux/drivers/firmware/efi/libstub/efi-stub-helper.c:90
-	*map->desc_size =	sizeof(*m);
-    92b8:	e3a02028 	mov	r2, #40	; 0x28
-    92c4:	e5832000 	str	r2, [r3]
-linux/drivers/firmware/efi/libstub/efi-stub-helper.c:91
+drivers/firmware/efi/libstub/efi-stub-helper.c:91
 	*map->map_size =	*map->desc_size * 32;
     92c8:	e1c420d4 	ldrd	r2, [r4, #4]
 
-I changed the code to avoid the memory access and eventually get
-rid of the ldrd instruction:
-*map->map_size =	sizeof(*m) * 32;
+This patch is a hack to instruct the compiler to avoid
+using the problematic ldrd instructions.
 
-A subsequent data abort was caused by a similar ldrd instruction
-generated in the context of the statement:
-*map->map_size += *map->desc_size * EFI_MMAP_NR_SLACK_SLOTS;
+Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@gmail.com>
+---
+ drivers/firmware/efi/libstub/efi-stub-helper.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-The workaround to avoid the ldrd instruction was trickier in that case,
-as you may see in the patch, but eventually the kernel was able to boot
-successfully, with or without GRUB2 chain-loading. The system looks
-stable for the moment, but most probably there are many other similar
-statements which were not enabled for this particular use case and still
-have the potential to trigger data aborts.
-
-Unfortunately I'm not sure how to further investigate this issue and,
-therefore, I would kindly ask for some feedback or suggestions.
-
-Some additional notes:
- - Used GCC 7.3.0 and GCC 8.2.0 based armv6-eabihf toolchains:
-   https://toolchains.bootlin.com/releases_armv6-eabihf.html
- - Kernel and root filesystem build process handled by buildroot
- - Tested with kernels: 4.2, 4.3, 4.4
-
+diff --git a/drivers/firmware/efi/libstub/efi-stub-helper.c b/drivers/firmware/efi/libstub/efi-stub-helper.c
+index 35dbc2791c97..8d7d27b8b9c2 100644
+--- a/drivers/firmware/efi/libstub/efi-stub-helper.c
++++ b/drivers/firmware/efi/libstub/efi-stub-helper.c
+@@ -86,9 +86,10 @@ efi_status_t efi_get_memory_map(efi_system_table_t *sys_table_arg,
+ 	efi_status_t status;
+ 	unsigned long key;
+ 	u32 desc_version;
++	unsigned long hack;
+ 
+ 	*map->desc_size =	sizeof(*m);
+-	*map->map_size =	*map->desc_size * 32;
++	*map->map_size =	sizeof(*m) * 32;
+ 	*map->buff_size =	*map->map_size;
+ again:
+ 	status = efi_call_early(allocate_pool, EFI_LOADER_DATA,
+@@ -111,7 +112,9 @@ efi_status_t efi_get_memory_map(efi_system_table_t *sys_table_arg,
+ 		 * exceed this headroom once we are ready to trigger
+ 		 * ExitBootServices()
+ 		 */
+-		*map->map_size += *map->desc_size * EFI_MMAP_NR_SLACK_SLOTS;
++		hack = *map->desc_size * EFI_MMAP_NR_SLACK_SLOTS + 1;
++		*map->map_size += hack;
++		--(*map->map_size);
+ 		*map->buff_size = *map->map_size;
+ 		goto again;
+ 	}
 -- 
 2.17.1
 
