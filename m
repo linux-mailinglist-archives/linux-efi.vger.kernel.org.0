@@ -2,78 +2,52 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B088100B09
-	for <lists+linux-efi@lfdr.de>; Mon, 18 Nov 2019 19:03:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 91426100B25
+	for <lists+linux-efi@lfdr.de>; Mon, 18 Nov 2019 19:10:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726435AbfKRSDK (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 18 Nov 2019 13:03:10 -0500
-Received: from mail-wm1-f66.google.com ([209.85.128.66]:50444 "EHLO
-        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726317AbfKRSDK (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 18 Nov 2019 13:03:10 -0500
-Received: by mail-wm1-f66.google.com with SMTP id l17so261553wmh.0
-        for <linux-efi@vger.kernel.org>; Mon, 18 Nov 2019 10:03:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=cCTt3cwuzxK5WEvk18ErkdchXWMeXENgDTYUlo/RrsY=;
-        b=H6+5A/D32qfswwyrAIbEDS5whNPLWNmokSQ22aP95k+2zPJirdItyCbu3zYQBgffe6
-         G46KCrLM+aAOJeu0tJ9GouOqsFSnC9ruOOXZNpB/aeC+tYHVRvIrlwNgcJFqLjug5Fc6
-         Hb8a0ZVI5kRjwP3VS0juN5A6eBEG4OrSOZCwzzgviMaifsdAk56rlMYb+dhHJ6mqLguH
-         OgM/F1f6DTLbEMaE1dsl/RS0SuD+etkI5qxs9E/pAEbKF5JsFNg8670Rrc4477bAJFum
-         BXmZwpXafOJmYSH0e3bNzRDDj/EEehUHao2/kMi0Brf/PLmTL9ncf5JFzHA6Wq1zlNbH
-         ZZyQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=cCTt3cwuzxK5WEvk18ErkdchXWMeXENgDTYUlo/RrsY=;
-        b=W3y6f4WijFGHFLyAq8d7khWOWdmBkjvu0cSaMmSiPSmfzMRFH/FLGPVYATwbjoRsi3
-         c7PHKIi44iYvEUNNNag/QTrhC4M7Vb9O3hfw9K4goL2pnOGANLVOq9+UL2mBzzbL3xqF
-         1iBvu1/VNdvlYXPlbv37VWh2xA9vlHa8dntipUPhP6w2FGKgIhigmo59naNxI9XyI+jc
-         BFOva7cyDFxoGD9nXiiIW3cPlgftGktb6HemTTjnqCFIwAO3VyH9OvnP8K5gVa78w4ES
-         YfV4naiR/H0wzvec+D84dNgbwt6DEgTKIFxavgRnWFdE2rGVVBQd3fcGETLOUt5Pm6kF
-         ATMA==
-X-Gm-Message-State: APjAAAUEdba9fTJ+Vf5BnL9rgMuHCZkV6l4efOjvOXBBTkRZAc1XdjSX
-        wfETPdkC97fkeyG1RMEwJpj9BFqguVO5eNq793q0Lw==
-X-Google-Smtp-Source: APXvYqzn8rYNEukrayhb9GCnNnhbDK4wOzBXUptbNiS/jljCvoy4VJlnVZocjRwvEp4t2HDV1k4bmCgilheYYrAj1I8=
-X-Received: by 2002:a1c:64d6:: with SMTP id y205mr364132wmb.136.1574100187876;
- Mon, 18 Nov 2019 10:03:07 -0800 (PST)
-MIME-Version: 1.0
-References: <20191118174252.26758-1-cristian.ciocaltea@gmail.com>
-In-Reply-To: <20191118174252.26758-1-cristian.ciocaltea@gmail.com>
-From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Date:   Mon, 18 Nov 2019 19:02:56 +0100
-Message-ID: <CAKv+Gu-EdbnECitBT1e3AxthzgOa+_m4r8hfu78m6-fEHtZrFg@mail.gmail.com>
+        id S1726317AbfKRSK2 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 18 Nov 2019 13:10:28 -0500
+Received: from foss.arm.com ([217.140.110.172]:38218 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726216AbfKRSK2 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Mon, 18 Nov 2019 13:10:28 -0500
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B719A1FB;
+        Mon, 18 Nov 2019 10:10:27 -0800 (PST)
+Received: from lakrids.cambridge.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 96F833F703;
+        Mon, 18 Nov 2019 10:10:26 -0800 (PST)
+Date:   Mon, 18 Nov 2019 18:10:20 +0000
+From:   Mark Rutland <mark.rutland@arm.com>
+To:     Cristian Ciocaltea <cristian.ciocaltea@gmail.com>
+Cc:     ard.biesheuvel@linaro.org, mingo@kernel.org, kasong@redhat.com,
+        hdegoede@redhat.com, matthewgarrett@google.com,
+        linux-efi@vger.kernel.org
 Subject: Re: [PATCH 0/1] Temporary fix for data abort on armv6z EFI boot
-To:     Cristian Ciocaltea <cristian.ciocaltea@gmail.com>,
-        Heinrich Schuchardt <xypron.glpk@gmx.de>,
-        Guillaume GARDET <guillaume.gardet@arm.com>
-Cc:     Kairui Song <kasong@redhat.com>,
-        linux-efi <linux-efi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Message-ID: <20191118181020.GA17031@lakrids.cambridge.arm.com>
+References: <20191118174252.26758-1-cristian.ciocaltea@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191118174252.26758-1-cristian.ciocaltea@gmail.com>
+User-Agent: Mutt/1.11.1+11 (2f07cb52) (2018-12-01)
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-(adding some people that may be able to help, and removing some others)
-
-On Mon, 18 Nov 2019 at 18:42, Cristian Ciocaltea
-<cristian.ciocaltea@gmail.com> wrote:
->
+On Mon, Nov 18, 2019 at 07:42:51PM +0200, Cristian Ciocaltea wrote:
 > I'm trying to boot the Linux kernel on RaspberryPi Zero via GRUB2,
 > which in turn is executed by U-Boot as an UEFI binary.
->
+> 
 > However, I'm facing data abort issues in efi_get_memory_map()
 > that seem to be related to some ldrd instructions generated by the
 > compiler.
->
+> 
 > To simplify the investigation, I temporarily gave up on GRUB2 and
 > started directly the Linux kernel via U-Boot bootefi command.
 > The result is an immediate crash at PC 0x92c8:
->
+> 
 > data abort
 > pc : [<1c6b12c8>]          lr : [<1c6b1558>]
 > reloc pc : [<fe76a2c8>]    lr : [<fe76a558>]
@@ -85,58 +59,38 @@ On Mon, 18 Nov 2019 at 18:42, Cristian Ciocaltea
 > Code: e3a02028 e3a01000 e527100c e5832000 (e1c420d4)
 > UEFI image [0x1c6a8000:0x1cb2ffff] pc=0x92c8 '/boot\zImage'
 > Resetting CPU ...
->
+> 
 > The related disassembled section shows the *ldrd* instruction
 > in the context of the following statement:
-> *map->map_size =        *map->desc_size * 32;
->
+> *map->map_size =	*map->desc_size * 32;
+> 
 > drivers/firmware/efi/libstub/efi-stub-helper.c:90
->         *map->desc_size =       sizeof(*m);
->     92ac:       e5913008        ldr     r3, [r1, #8]
+> 	*map->desc_size =	sizeof(*m);
+>     92ac:	e5913008 	ldr	r3, [r1, #8]
 > drivers/firmware/efi/libstub/efi-stub-helper.c:84
 > {
->     92b0:       e1a04001        mov     r4, r1
+>     92b0:	e1a04001 	mov	r4, r1
 > drivers/firmware/efi/libstub/efi-stub-helper.c:85
->         efi_memory_desc_t *m = NULL;
->     92b4:       e28d7018        add     r7, sp, #24
+> 	efi_memory_desc_t *m = NULL;
+>     92b4:	e28d7018 	add	r7, sp, #24
 > linux/drivers/firmware/efi/libstub/efi-stub-helper.c:90
->         *map->desc_size =       sizeof(*m);
->     92b8:       e3a02028        mov     r2, #40 ; 0x28
->     92c4:       e5832000        str     r2, [r3]
+> 	*map->desc_size =	sizeof(*m);
+>     92b8:	e3a02028 	mov	r2, #40	; 0x28
+>     92c4:	e5832000 	str	r2, [r3]
 > linux/drivers/firmware/efi/libstub/efi-stub-helper.c:91
->         *map->map_size =        *map->desc_size * 32;
->     92c8:       e1c420d4        ldrd    r2, [r4, #4]
->
+> 	*map->map_size =	*map->desc_size * 32;
+>     92c8:	e1c420d4 	ldrd	r2, [r4, #4]
 
-This instruction looks absolutely fine, so I don't know why this is aborting.
-0x1db43bb0+4 is word aligned, as required, and the address seems to be mapped.
+At this point, r4 is 16-byte aligned, so that's a misaligned LDRD.
 
+Looking at version 2.8of the UEFI spec, in section 2.3.5 "AArch32
+Platforms", it states that SCTLR should be configured:
 
+| A=0, U=1 on ARMv6 and ARMv7
 
-> I changed the code to avoid the memory access and eventually get
-> rid of the ldrd instruction:
-> *map->map_size =        sizeof(*m) * 32;
->
-> A subsequent data abort was caused by a similar ldrd instruction
-> generated in the context of the statement:
-> *map->map_size += *map->desc_size * EFI_MMAP_NR_SLACK_SLOTS;
->
-> The workaround to avoid the ldrd instruction was trickier in that case,
-> as you may see in the patch, but eventually the kernel was able to boot
-> successfully, with or without GRUB2 chain-loading. The system looks
-> stable for the moment, but most probably there are many other similar
-> statements which were not enabled for this particular use case and still
-> have the potential to trigger data aborts.
->
-> Unfortunately I'm not sure how to further investigate this issue and,
-> therefore, I would kindly ask for some feedback or suggestions.
->
-> Some additional notes:
->  - Used GCC 7.3.0 and GCC 8.2.0 based armv6-eabihf toolchains:
->    https://toolchains.bootlin.com/releases_armv6-eabihf.html
->  - Kernel and root filesystem build process handled by buildroot
->  - Tested with kernels: 4.2, 4.3, 4.4
->
-> --
-> 2.17.1
->
+... which IIUC should permit a misaligned LDRD. Is U-Boot definitely
+configuring SCTLR that way? Or has it perhaps set A=1, U=0?
+
+Thanks,
+Mark.
+
