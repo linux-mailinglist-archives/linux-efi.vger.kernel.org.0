@@ -2,125 +2,127 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DD8211007E9
-	for <lists+linux-efi@lfdr.de>; Mon, 18 Nov 2019 16:11:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AF2DE100A9F
+	for <lists+linux-efi@lfdr.de>; Mon, 18 Nov 2019 18:42:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726970AbfKRPLy (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 18 Nov 2019 10:11:54 -0500
-Received: from mail-wm1-f68.google.com ([209.85.128.68]:51123 "EHLO
-        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726654AbfKRPLy (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 18 Nov 2019 10:11:54 -0500
-Received: by mail-wm1-f68.google.com with SMTP id l17so17761822wmh.0
-        for <linux-efi@vger.kernel.org>; Mon, 18 Nov 2019 07:11:53 -0800 (PST)
+        id S1726336AbfKRRm4 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 18 Nov 2019 12:42:56 -0500
+Received: from mail-wm1-f65.google.com ([209.85.128.65]:55157 "EHLO
+        mail-wm1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727088AbfKRRm4 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 18 Nov 2019 12:42:56 -0500
+Received: by mail-wm1-f65.google.com with SMTP id z26so167995wmi.4
+        for <linux-efi@vger.kernel.org>; Mon, 18 Nov 2019 09:42:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=z6qzPhno5GOM9cR7mVrv3JXyymVY2p28oe+Xin4J+zk=;
-        b=PVb5uOW1edT+nVdjln8k95Ry0rubEefyPlH/HwoDB7ljIamYW98ts2QL4BIn5GRw9l
-         0b48QzG6zAxyYG6E3Gax4pR4ZI2CPxLEqHLEbseCVBH9xs0txRyIIfzV+Ws/LgoZEvkX
-         cX3hIYVX66qTdYSHTPbqwQCs9tgozOHsr3IMfcryasYYnlO40Xo+qDYyMaSYNK/sYREh
-         OkR2IfHRSRCIIn8PTisCBmR916/FERQRxL9DPog/q33n4IbBFMawZ3lkQA00hsci+Nzb
-         pzud2C1zC0QiJ8Gg3BFobomE5wn/AR9iaGqIlC+qJzkp/ofNo4BgOl/e0WDlgzHWumhB
-         M12g==
+        d=gmail.com; s=20161025;
+        h=from:to:subject:date:message-id;
+        bh=Iu/BAUq4FXml3nbiF+fFEOptFj5ZHDj51Dcbb6JbVKA=;
+        b=gkLRXoXDxXKOcdl7ohhuQQ7Si8V6aVPFPHA/t1Z9Igx0fxtJjfsOqPtwa3BxC+3egy
+         YHmx6AKoXs+tUduIpamv7WBG1cHKUyjE2RvlzeJoZboueIMP4E6Pgv5LJ1wg3kRjtZzc
+         pzu/+4Rfb9P143/VKMZvVzCMKPmLhGJgHxJGllHdc9r01ZDLtr1NTtjFchuCQA/pgs3R
+         U7qRXrgxYuC+hiAsIjWmpPUo1sJFEo0rufCiDE6TasWB//A6fT5rTP6ZIXNVJoBA88RV
+         qmaEKczChljZ6Cz1Nl2SSVA5mMZSzEAH9UP7f2sn7Jv1Od3ritiATWqmUA/e9q8YBLj1
+         sF3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=z6qzPhno5GOM9cR7mVrv3JXyymVY2p28oe+Xin4J+zk=;
-        b=QBFRuMrP39v51xpW9lCvZ1DOeKB7HlCEKhj47z8IFPEB6dj9MNcAfLrs6jkYQAYISF
-         V3/GFnVFJjkxUMCRo0+NidUF0wEZfmCi0ny6iSftL4fyqgRp7+0FMOzi9e2CthsPt1Ik
-         k1zKsgL0l49DmowaBLhBNGHx1TrYHgXsZlHSnxH9CvM4j8n8YC+NIYeZZGhVaem58QpZ
-         QA/XP6ynYOOUC/P3//Cni0THVAEF7GM58i+B3XTMDGfNEUHd8KY42d/ywRC6A4BE7lCK
-         8H7o1s30MVNW6JdRxooKdN3VLdAZHYZ24DwlrqVuZSgyvo6HMOnLrw9eYziQvX8Zzm19
-         I4eg==
-X-Gm-Message-State: APjAAAWPaW2rgzj8jc4S6tL5UboIoUqe6bo7wXU+BgDrhZZuVRzXkOyu
-        5Yc0O5rUc+c7FqPI5/M94wfDCh2FJzduN9Y2nzBu32vwVKo=
-X-Google-Smtp-Source: APXvYqwsEXHuQO6s4tIe5bUa3Dt7u69hQ0Lj1r1rmaNJG7317ohDNK3MWJoeJzkqgBHZ3q2dYXa3odXobEbtEpQ6hbQ=
-X-Received: by 2002:a1c:64d6:: with SMTP id y205mr27611463wmb.136.1574089912283;
- Mon, 18 Nov 2019 07:11:52 -0800 (PST)
-MIME-Version: 1.0
-References: <20191115153102.51921-1-andriy.shevchenko@linux.intel.com>
- <CAKv+Gu9wKQ_yXjfkB6-6f8Tfu+cfpSNnxn04ZqExYxuPSQS-ww@mail.gmail.com> <20191118114538.GV32742@smile.fi.intel.com>
-In-Reply-To: <20191118114538.GV32742@smile.fi.intel.com>
-From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Date:   Mon, 18 Nov 2019 16:11:40 +0100
-Message-ID: <CAKv+Gu8sL3nVgozM3VnMLSLzHST1SLFvX0q2LCoWuAkKBjafeg@mail.gmail.com>
-Subject: Re: [PATCH v3] efi/earlycon: Remap entire framebuffer after page initialization
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     linux-efi <linux-efi@vger.kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Alexander Graf <agraf@suse.de>,
-        Matt Fleming <matt@codeblueprint.co.uk>
-Content-Type: text/plain; charset="UTF-8"
+        h=x-gm-message-state:from:to:subject:date:message-id;
+        bh=Iu/BAUq4FXml3nbiF+fFEOptFj5ZHDj51Dcbb6JbVKA=;
+        b=nJRCDOBEtlr4U1qWVxcCUhLC3htGj/OTIpGtABq91fIB5uT9yZNvPpZGIgJGVYAp3O
+         BIxgyPk5KWqRDVgpYq3Bk1NNJaC/5c98V5ed1uNzBR7s7E7IWbXsOHrH+u3UnQ2rwN5x
+         IIdFZR5sP4OSY7Zk1Zi8uY+aBdmRxCd61CDIU8Bb/jJCbskeCOhkWnZPh2sDK97LdTEN
+         tFXeXmnbygG6f+8bw/bMApTkYd4PhyBxoZo0gOw2m5f86v47BbnLG+OXJgKaNoe/Xxi8
+         wNP99Ve4jm0mfzbl785CMjWGpd42TX6SWArcPuKNFSMRh5n6NNNP/1eILqxllUCyC2VF
+         k2Xw==
+X-Gm-Message-State: APjAAAXVOWru51dAEohyZUx4UZY0oDn3zZP+zSyECmUoyIWUBOicgUCP
+        AZpjKTdckmZZG93X4g7+wD01YVa3nqE=
+X-Google-Smtp-Source: APXvYqwvlJevUrdXI2bEvCw9sJJHVLsV1G38ATVj78G+iYJ1s0ZvHWYphzeh4Az60TQ2+aSCBRPIgA==
+X-Received: by 2002:a05:600c:2253:: with SMTP id a19mr211029wmm.97.1574098974325;
+        Mon, 18 Nov 2019 09:42:54 -0800 (PST)
+Received: from localhost.localdomain ([79.116.233.68])
+        by smtp.gmail.com with ESMTPSA id c10sm71198wml.37.2019.11.18.09.42.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 18 Nov 2019 09:42:53 -0800 (PST)
+From:   Cristian Ciocaltea <cristian.ciocaltea@gmail.com>
+To:     ard.biesheuvel@linaro.org, mingo@kernel.org, kasong@redhat.com,
+        hdegoede@redhat.com, matthewgarrett@google.com,
+        linux-efi@vger.kernel.org
+Subject: [PATCH 0/1] Temporary fix for data abort on armv6z EFI boot
+Date:   Mon, 18 Nov 2019 19:42:51 +0200
+Message-Id: <20191118174252.26758-1-cristian.ciocaltea@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Mon, 18 Nov 2019 at 12:45, Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
->
-> On Fri, Nov 15, 2019 at 04:28:10PM +0000, Ard Biesheuvel wrote:
-> > On Fri, 15 Nov 2019 at 15:31, Andy Shevchenko
-> > <andriy.shevchenko@linux.intel.com> wrote:
-> > >
-> > > When the commit 69c1f396f25b ("efi/x86: Convert x86 EFI earlyprintk
-> > > into generic earlycon implementation") moved x86 specific EFI earlyprintk
-> > > implementation to shared location it also tweaked the behaviour. In particular
-> > > it dropped a trick with full framebuffer remapping after page initialization.
-> > > This lead to two regressions:
-> > > 1) very slow scrolling after page initialization;
-> > > 2) kernel hang when keep_bootcon parameter is being provided.
-> > >
-> > > Returning the trick back fixes #2 and mitigates, i.e. reduces the window when
-> > > slowness appears, #1 presumably due to eliminating heavy map()/unmap()
-> > > operations per each pixel line on the screen.
->
-> > > +/*
-> > > + * efi earlycon needs to use early_memremap() to map the framebuffer.
-> > > + * But early_memremap() is not usable for 'earlycon=efifb keep_bootcon',
-> > > + * memremap() should be used instead. memremap() will be available after
-> > > + * paging_init() which is earlier than initcall callbacks. Thus adding this
-> > > + * early initcall function early_efi_map_fb() to map the whole efi framebuffer.
-> > > + */
-> > > +static int __init early_efi_map_fb(void)
-> > > +{
-> > > +       if (!fb_base || !fb_size)
-> > > +               return NULL;
-> > > +
-> >
-> > 'return 0' please.
->
-> Ah, sorry. Though I think we rather return -ENOVEV here.
->
+I'm trying to boot the Linux kernel on RaspberryPi Zero via GRUB2,
+which in turn is executed by U-Boot as an UEFI binary.
 
-fb_base and fb_size will only be set if earlycon=efifb is passed, so
-this is not an error condition, and so returning an error is
-incorrect.
+However, I'm facing data abort issues in efi_get_memory_map()
+that seem to be related to some ldrd instructions generated by the
+compiler.
 
-> > I'll test this on actual arm64 hardware somewhere next week, and queue
-> > it if it doesn't break anything (no need to resend for the above)
->
-> Thanks!
->
+To simplify the investigation, I temporarily gave up on GRUB2 and
+started directly the Linux kernel via U-Boot bootefi command.
+The result is an immediate crash at PC 0x92c8:
 
-Works fine for me
+data abort
+pc : [<1c6b12c8>]          lr : [<1c6b1558>]
+reloc pc : [<fe76a2c8>]    lr : [<fe76a558>]
+sp : 1db43b30  ip : 00000000     fp : 1db43cc0
+r10: 20494249  r9 : ffffffff     r8 : 00000000
+r7 : 1db43b3c  r6 : 00000000     r5 : 1db43bfa  r4 : 1db43bb0
+r3 : 1db43b9c  r2 : 00000028     r1 : 00000000  r0 : 1df4f828
+Flags: nZCv  IRQs off  FIQs off  Mode SVC_32
+Code: e3a02028 e3a01000 e527100c e5832000 (e1c420d4)
+UEFI image [0x1c6a8000:0x1cb2ffff] pc=0x92c8 '/boot\zImage'
+Resetting CPU ...
 
-Tested-by: Ard Biesheuvel <ardb@kernel.org> # arm64
+The related disassembled section shows the *ldrd* instruction
+in the context of the following statement:
+*map->map_size =	*map->desc_size * 32;
 
-> > > +       if (pgprot_val(fb_prot) == pgprot_val(PAGE_KERNEL))
-> > > +               efi_fb = memremap(fb_base, fb_size, MEMREMAP_WB);
-> > > +       else
-> > > +               efi_fb = memremap(fb_base, fb_size, MEMREMAP_WC);
-> > > +
-> > > +       return efi_fb ? 0 : -ENOMEM;
-> > > +}
-> > > +early_initcall(early_efi_map_fb);
->
-> --
-> With Best Regards,
-> Andy Shevchenko
->
->
+drivers/firmware/efi/libstub/efi-stub-helper.c:90
+	*map->desc_size =	sizeof(*m);
+    92ac:	e5913008 	ldr	r3, [r1, #8]
+drivers/firmware/efi/libstub/efi-stub-helper.c:84
+{
+    92b0:	e1a04001 	mov	r4, r1
+drivers/firmware/efi/libstub/efi-stub-helper.c:85
+	efi_memory_desc_t *m = NULL;
+    92b4:	e28d7018 	add	r7, sp, #24
+linux/drivers/firmware/efi/libstub/efi-stub-helper.c:90
+	*map->desc_size =	sizeof(*m);
+    92b8:	e3a02028 	mov	r2, #40	; 0x28
+    92c4:	e5832000 	str	r2, [r3]
+linux/drivers/firmware/efi/libstub/efi-stub-helper.c:91
+	*map->map_size =	*map->desc_size * 32;
+    92c8:	e1c420d4 	ldrd	r2, [r4, #4]
+
+I changed the code to avoid the memory access and eventually get
+rid of the ldrd instruction:
+*map->map_size =	sizeof(*m) * 32;
+
+A subsequent data abort was caused by a similar ldrd instruction
+generated in the context of the statement:
+*map->map_size += *map->desc_size * EFI_MMAP_NR_SLACK_SLOTS;
+
+The workaround to avoid the ldrd instruction was trickier in that case,
+as you may see in the patch, but eventually the kernel was able to boot
+successfully, with or without GRUB2 chain-loading. The system looks
+stable for the moment, but most probably there are many other similar
+statements which were not enabled for this particular use case and still
+have the potential to trigger data aborts.
+
+Unfortunately I'm not sure how to further investigate this issue and,
+therefore, I would kindly ask for some feedback or suggestions.
+
+Some additional notes:
+ - Used GCC 7.3.0 and GCC 8.2.0 based armv6-eabihf toolchains:
+   https://toolchains.bootlin.com/releases_armv6-eabihf.html
+ - Kernel and root filesystem build process handled by buildroot
+ - Tested with kernels: 4.2, 4.3, 4.4
+
+-- 
+2.17.1
+
