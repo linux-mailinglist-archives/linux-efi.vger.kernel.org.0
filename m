@@ -2,24 +2,24 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8FA78101017
-	for <lists+linux-efi@lfdr.de>; Tue, 19 Nov 2019 01:22:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BFAF2101013
+	for <lists+linux-efi@lfdr.de>; Tue, 19 Nov 2019 01:22:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727216AbfKSAVl (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 18 Nov 2019 19:21:41 -0500
+        id S1727253AbfKSAVm (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 18 Nov 2019 19:21:42 -0500
 Received: from mga18.intel.com ([134.134.136.126]:64622 "EHLO mga18.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726911AbfKSAVk (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Mon, 18 Nov 2019 19:21:40 -0500
+        id S1727224AbfKSAVm (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Mon, 18 Nov 2019 19:21:42 -0500
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
 Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga106.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 18 Nov 2019 16:21:40 -0800
+  by orsmga106.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 18 Nov 2019 16:21:41 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.68,321,1569308400"; 
-   d="scan'208";a="215412021"
+   d="scan'208";a="215412025"
 Received: from sjchrist-coffee.jf.intel.com ([10.54.74.41])
-  by fmsmga001.fm.intel.com with ESMTP; 18 Nov 2019 16:21:38 -0800
+  by fmsmga001.fm.intel.com with ESMTP; 18 Nov 2019 16:21:40 -0800
 From:   Sean Christopherson <sean.j.christopherson@intel.com>
 To:     Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
@@ -52,9 +52,9 @@ Cc:     Tony Luck <tony.luck@intel.com>, Fenghua Yu <fenghua.yu@intel.com>,
         linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
         linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
         linux-acpi@vger.kernel.org, alsa-devel@alsa-project.org
-Subject: [PATCH 02/12] x86/boot: Explicitly include realmode.h to handle RM reservations
-Date:   Mon, 18 Nov 2019 16:21:11 -0800
-Message-Id: <20191119002121.4107-3-sean.j.christopherson@intel.com>
+Subject: [PATCH 03/12] x86/ftrace: Explicitly include vmalloc.h for set_vm_flush_reset_perms()
+Date:   Mon, 18 Nov 2019 16:21:12 -0800
+Message-Id: <20191119002121.4107-4-sean.j.christopherson@intel.com>
 X-Mailer: git-send-email 2.24.0
 In-Reply-To: <20191119002121.4107-1-sean.j.christopherson@intel.com>
 References: <20191119002121.4107-1-sean.j.christopherson@intel.com>
@@ -65,29 +65,30 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Explicitly include asm/realmode.h, which provides reserve_real_mode(),
-instead of picking it up by an indirect include of asm/acpi.h.  acpi.h
-will soon stop including realmode.h so that changing realmode.h doesn't
-require a full kernel rebuild.
+The inclusion of linux/vmalloc.h, which is required for its definition
+of set_vm_flush_reset_perms(), is somehow dependent on asm/realmode.h
+being included by asm/acpi.h.  Explicitly include linux/vmalloc.h so
+that a future patch can drop the realmode.h include from asm/acpi.h
+without breaking the build.
 
-Fixes: c1877650f3c9 ("x86/setup: Clean up the header portion of setup.c")
+Fixes: 7fdfe1e40b225 ("x86/ftrace: Use vmalloc special flag")
 Signed-off-by: Sean Christopherson <sean.j.christopherson@intel.com>
 ---
- arch/x86/kernel/setup.c | 1 +
+ arch/x86/kernel/ftrace.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
-index 559764a4af5f..b6d7301b1037 100644
---- a/arch/x86/kernel/setup.c
-+++ b/arch/x86/kernel/setup.c
-@@ -33,6 +33,7 @@
- #include <asm/kaslr.h>
- #include <asm/mce.h>
- #include <asm/mtrr.h>
-+#include <asm/realmode.h>
- #include <asm/olpc_ofw.h>
- #include <asm/pci-direct.h>
- #include <asm/prom.h>
+diff --git a/arch/x86/kernel/ftrace.c b/arch/x86/kernel/ftrace.c
+index 2a179fb35cd1..681eae0fb64d 100644
+--- a/arch/x86/kernel/ftrace.c
++++ b/arch/x86/kernel/ftrace.c
+@@ -23,6 +23,7 @@
+ #include <linux/list.h>
+ #include <linux/module.h>
+ #include <linux/memory.h>
++#include <linux/vmalloc.h>
+ 
+ #include <trace/syscall.h>
+ 
 -- 
 2.24.0
 
