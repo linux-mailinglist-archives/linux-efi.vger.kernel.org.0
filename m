@@ -2,58 +2,58 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E6704102473
-	for <lists+linux-efi@lfdr.de>; Tue, 19 Nov 2019 13:33:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C0871024A2
+	for <lists+linux-efi@lfdr.de>; Tue, 19 Nov 2019 13:39:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727880AbfKSMdX (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 19 Nov 2019 07:33:23 -0500
-Received: from mail-wr1-f65.google.com ([209.85.221.65]:42653 "EHLO
-        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726548AbfKSMdX (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 19 Nov 2019 07:33:23 -0500
-Received: by mail-wr1-f65.google.com with SMTP id a15so23614590wrf.9
-        for <linux-efi@vger.kernel.org>; Tue, 19 Nov 2019 04:33:21 -0800 (PST)
+        id S1727890AbfKSMjD (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 19 Nov 2019 07:39:03 -0500
+Received: from mail-pl1-f195.google.com ([209.85.214.195]:42252 "EHLO
+        mail-pl1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726548AbfKSMjD (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 19 Nov 2019 07:39:03 -0500
+Received: by mail-pl1-f195.google.com with SMTP id j12so11699039plt.9;
+        Tue, 19 Nov 2019 04:39:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
+        d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=HngwhcG+KAeo6DGQH+bLMw2e39IjD09GILs4tcsEDqg=;
-        b=JfHJ2oYzP/jkKhX5GW5kTZtPmbfxMsuJ44mQ/jjOV7p96tO8MLii2xYgvvecU87jbf
-         xDCCdr2WOehZ/M97knEEzzZIB2yWzTBKx3/BANq1IkzomqaCBDwfd8OyFpoFvEHRvHAI
-         /Ih7Ji/6Drt+nGgFcgmZyIelBqpjx/nBFB+jcwv8vpurYruXv+eovEAT9Gvibap3vW8p
-         D1HHGnn6VxZZe42T+R4tUOpu5RCcZqMyr8kvIKAkwt0v9BjdFCoFP5F2ZcjHKeOAXd9x
-         +cBOy+jeecmTLnGU7RL1AEtLZZOvHE7IDnKukkr5C+QGK3yVjWyYDu6FXXjdyP9JsrS5
-         u/jA==
+        bh=qpwNQdLDEKp3mHj6bhdJa/Rq4oFAWkNqox9VT/5kxaE=;
+        b=ltSecJN5dv6Eibo6pRLuD+iAe9yVQaHC4TL5a/T/Hp7KM4+GTbSEzMBUlRBFPT3Lpa
+         6HYEE3iYly2QjLrr/CEW/l0f+qZaxMuhIRvTMR6xK28UW2aWNnS0Bp1Drdj1WMQR5t5T
+         OKMkdRURBZ1z4kOSxCPt8gkW2qo0vnUbLQzLNq8rRdnTgYbprZkfUOOOnm2p2A7EF6wE
+         sHfG/BAOBc1uz9plhJm+pw3/GvLUKfu4zB4N6QB5+TmJKbRicc4psQtOVStnO7KxXFAt
+         nHQUFoj3buSHslm/eRzFaHvhxZVMyZVwFhBhO0tfGl449RToViaFGi1gGPr0v20curZJ
+         yTWA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=HngwhcG+KAeo6DGQH+bLMw2e39IjD09GILs4tcsEDqg=;
-        b=DbcbPNeysElmHgJ6Dcy7Sx42DUr31J2pfXnpB4f0xC/u+s8LjE7mvef7YiVE87E+Q1
-         NxE3glPlpkdNis02OwTEXy1A6xbRmDUksAr6xK4FQNIKPohmRKBaP6j4h16FF4dFGwXG
-         DQdZ8U13gnUsKSu0bMwaxbA1A/JxvieygvYsXqGFB0NLg09jusJTWGECrtUXsxBV03el
-         9lVTrj0JzOUb6qynQIh1LPY3Izxk1tCzFhnz6/teuzhhv3joP8gUewqn3aS3n9Y13p9s
-         XRwqgwNh1Vu7KpdHokbFKPjYWcmrJt9ZDvG1NYJriQgk8fzIv1nny3YHDPnUxFJh07Gl
-         1Heg==
-X-Gm-Message-State: APjAAAUDysNUQ+8z8AveQxe6ZSinmI7InCEX/J3IXGNwQ81IJo15i4ey
-        aL+TFdeuYtBwjO5sZkWO7SlwPD5kRrAOQxHPCkKubQ==
-X-Google-Smtp-Source: APXvYqxrn8CEslDFVxIy0Jl0Mrkp/wAIi6Is+3GFHp4aP52W1APv4nRsysG2XV46LuEQeEZpL+dKjixAXooja/JuLNw=
-X-Received: by 2002:adf:b1cb:: with SMTP id r11mr545384wra.246.1574166800364;
- Tue, 19 Nov 2019 04:33:20 -0800 (PST)
+        bh=qpwNQdLDEKp3mHj6bhdJa/Rq4oFAWkNqox9VT/5kxaE=;
+        b=alWbt0rzY0dv4gh11HzgUIuf7BlbDlww27faFJN9spvrLNBjHe761N9oyTqH7SPgaJ
+         mlo4BnPImIJKLHfwmlY4BjW2HbLNCKL1Oh2i936AsUKgCGSkRMOsOpgdMn4luxDJGDB0
+         u4TuDz30LV39xw7/hWHuyW2h7zTnOSDigpPDYxB4G61iVi9RV9pdrv/xBNNsNMKNqIb/
+         qUu2D5Bwk3rasghVh43TP5yIqyLJCXxAH42oPj+BmrcOLc5pORv0CefVzFR27kladYAr
+         t3osYsXLd5Bn8MbTEemZl/rBmAdPdhMaPly73BsuJOi2vhkTT3GohKnXm8PaKC3vIycW
+         q7/A==
+X-Gm-Message-State: APjAAAVv6E4kc4CVL2T8YOTThV57KkXdkEe1y55TlcygngtTwX4Ur5ts
+        OUDQx68/I//Q+YG1UxBwF5ns7F6WyaVRAkCY4MU=
+X-Google-Smtp-Source: APXvYqwbCUL/eximB8mpj2VKlrZgFfSMeoldq7a7WGfu5alkQzf/cM2q5535Tqgna1MJCwUak2duJRDsdSgol0JrIKM=
+X-Received: by 2002:a17:90a:c68f:: with SMTP id n15mr6302731pjt.20.1574167142073;
+ Tue, 19 Nov 2019 04:39:02 -0800 (PST)
 MIME-Version: 1.0
 References: <20191119002121.4107-1-sean.j.christopherson@intel.com>
- <20191119111012.GA109842@gmail.com> <CAKv+Gu9C132peF9_j2rRwRh4s+aWZBY82rgjqmwaE_X=_6y4Zw@mail.gmail.com>
- <20191119122217.GA24878@gmail.com>
-In-Reply-To: <20191119122217.GA24878@gmail.com>
-From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Date:   Tue, 19 Nov 2019 13:33:09 +0100
-Message-ID: <CAKv+Gu8XY_VCyi0bRqf2E7g_PXyHU83w-e+JvzeCBc+X1Xcrbg@mail.gmail.com>
-Subject: Re: [PATCH 00/12] treewide: break dependencies on x86's RM header
+ <20191119111012.GA109842@gmail.com> <20191119120655.GA31444@gmail.com>
+In-Reply-To: <20191119120655.GA31444@gmail.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Tue, 19 Nov 2019 14:38:51 +0200
+Message-ID: <CAHp75VeYXonBT9eYhqvS9qyOogdaCu8ERv0XMg12hrVBYt6hnw@mail.gmail.com>
+Subject: Re: [PATCH] x86/platform/intel/quark: Explicitly include linux/io.h
+ for virt_to_phys()
 To:     Ingo Molnar <mingo@kernel.org>
 Cc:     Sean Christopherson <sean.j.christopherson@intel.com>,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        "the arch/x86 maintainers" <x86@kernel.org>,
+        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
         "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         Len Brown <len.brown@intel.com>, Pavel Machek <pavel@ucw.cz>,
         Tony Luck <tony.luck@intel.com>,
@@ -82,86 +82,91 @@ Cc:     Sean Christopherson <sean.j.christopherson@intel.com>,
         Jaroslav Kysela <perex@perex.cz>,
         Takashi Iwai <tiwai@suse.com>, linux-ia64@vger.kernel.org,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-pm <linux-pm@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
         linux-efi <linux-efi@vger.kernel.org>,
-        platform-driver-x86@vger.kernel.org,
+        Platform Driver <platform-driver-x86@vger.kernel.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        alsa-devel@alsa-project.org
+        ALSA Development Mailing List <alsa-devel@alsa-project.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, 19 Nov 2019 at 13:22, Ingo Molnar <mingo@kernel.org> wrote:
+On Tue, Nov 19, 2019 at 2:07 PM Ingo Molnar <mingo@kernel.org> wrote:
 >
 >
-> * Ard Biesheuvel <ard.biesheuvel@linaro.org> wrote:
+> * Ingo Molnar <mingo@kernel.org> wrote:
 >
-> > On Tue, 19 Nov 2019 at 12:10, Ingo Molnar <mingo@kernel.org> wrote:
-> > >
-> > >
-> > > * Sean Christopherson <sean.j.christopherson@intel.com> wrote:
-> > >
-> > > > x86's asm/realmode.h, which defines low level structures, variables and
-> > > > helpers used to bring up APs during SMP boot, ends up getting included in
-> > > > practically every nook and cranny of the kernel because the address used
-> > > > by ACPI for resuming from S3 also happens to be stored in the real mode
-> > > > header, and ACPI bleeds the dependency into its widely included headers.
-> > > >
-> > > > As a result, modifying realmode.h for even the most trivial change to the
-> > > > boot code triggers a full kernel rebuild, which is frustrating to say the
-> > > > least as it some of the most difficult code to get exactly right *and* is
-> > > > also some of the most functionally isolated code in the kernel.
-> > > >
-> > > > To break the kernel's widespread dependency on realmode.h, add a wrapper
-> > > > in the aforementioned ACPI S3 code to access the real mode header instead
-> > > > of derefencing the header directly in asm/acpi.h and thereby exposing it
-> > > > to the world via linux/acpi.h.
-> > > >
-> > > > Build tested on x86 with allyesconfig and allmodconfig, so hopefully there
-> > > > aren't more build issues lurking, but at this point it wouldn't surprise
-> > > > me in the least if this somehow manages to break the build.
-> > > >
-> > > > Based on tip/master, commit ceceaf1f12ba ("Merge branch 'WIP.x86/cleanups'").
-> > > >
-> > > > Patch Synopsis:
-> > > >   - Patches 01-09 fix a variety of build errors that arise when patch 12
-> > > >     drops realmode.h from asm/acpi.h.  Most of the errors are quite absurb
-> > > >     as they have no relation whatsoever to x86's RM boot code, but occur
-> > > >     because realmode.h happens to include asm/io.h.
-> > >
-> > > Yeah, these kind of parasitic header dependencies are the main driving
-> > > force behind kernel header spaghetti hell: it's super easy to add a new
-> > > header, but very hard to remove them...
-> > >
-> > > Hence they practically only accumulate.
-> > >
-> > > As a result header removal patches get priority, from me at least. :-)
-> > >
-> > > >   - Patch 10 removes a spurious include of realmode.h from an ACPI header.
-> > > >
-> > > >   - Patches 11 and 12 implement the wrapper and move it out of acpi.h.
-> > >
-> > > So if the ACPI maintainers are fine with -tip carrying patches #11 and #12
-> > > then I'd be glad to route these patches upstream.
-> > >
-> > > I've applied them to tip:WIP.core/headers as a work-in-progress tree, and
-> > > I'm testing them on randconfigs to make sure there's no broken
-> > > dependencies. I'll wait for the ACPI acks.
-> > >
-> > > I edited the title of patch 12 slightly, to:
-> > >
-> > >    c8bceb321209: x86/ACPI/sleep: Move acpi_wakeup_address() definition into sleep.c, remove <asm/realmode.h> from <asm/acpi.h>
-> > >
-> > > to make sure the big header dependency change is obvious at first sight.
-> > >
-> >
-> > I'm fine with the patches but can we drop the fixes headers please?
-> > This doesn't actually fix anything, and touching early boot stuff for
-> > no good reason should be avoided imo.
+> > I've applied them to tip:WIP.core/headers as a work-in-progress tree,
+> > and I'm testing them on randconfigs to make sure there's no broken
+> > dependencies. I'll wait for the ACPI acks.
 >
-> Agreed and done.
+> One more fix was needed, for the intel-quark driver that is only built on
+> 32-bit configs:
+>
+> ==================>
+> From: Ingo Molnar <mingo@kernel.org>
+> Date: Tue, 19 Nov 2019 12:51:56 +0100
+> Subject: [PATCH] x86/platform/intel/quark: Explicitly include linux/io.h for virt_to_phys()
+>
+> Similarly to the previous patches by Sean Christopherson:
+>
+>  "Through a labyrinthian sequence of includes, usage of virt_to_phys() is
+>   dependent on the include of asm/io.h in x86's asm/realmode.h, which is
+>   included in x86's asm/acpi.h and thus by linux/acpi.h.  Explicitly
+>   include linux/io.h to break the dependency on realmode.h so that a
+>   future patch can remove the realmode.h include from acpi.h without
+>   breaking the build."
 >
 
-Thanks Ingo
+LGTM,
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+
+> Cc: linux-kernel@vger.kernel.org
+> Cc: Sean Christopherson <sean.j.christopherson@intel.com>
+> Cc: Borislav Petkov <bp@alien8.de>
+> Cc: Linus Torvalds <torvalds@linux-foundation.org>
+> Cc: Peter Zijlstra <peterz@infradead.org>
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Signed-off-by: Ingo Molnar <mingo@kernel.org>
+> ---
+>  arch/x86/platform/intel-quark/imr.c          | 2 ++
+>  arch/x86/platform/intel-quark/imr_selftest.c | 2 ++
+>  2 files changed, 4 insertions(+)
+>
+> diff --git a/arch/x86/platform/intel-quark/imr.c b/arch/x86/platform/intel-quark/imr.c
+> index 6dd25dc5f027..e9d97d52475e 100644
+> --- a/arch/x86/platform/intel-quark/imr.c
+> +++ b/arch/x86/platform/intel-quark/imr.c
+> @@ -29,6 +29,8 @@
+>  #include <asm/cpu_device_id.h>
+>  #include <asm/imr.h>
+>  #include <asm/iosf_mbi.h>
+> +#include <asm/io.h>
+
+A nit: perhaps put it after imr.h.
+
+> +
+>  #include <linux/debugfs.h>
+>  #include <linux/init.h>
+>  #include <linux/mm.h>
+> diff --git a/arch/x86/platform/intel-quark/imr_selftest.c b/arch/x86/platform/intel-quark/imr_selftest.c
+> index 42f879b75f9b..4307830e1b6f 100644
+> --- a/arch/x86/platform/intel-quark/imr_selftest.c
+> +++ b/arch/x86/platform/intel-quark/imr_selftest.c
+> @@ -14,6 +14,8 @@
+>  #include <asm-generic/sections.h>
+>  #include <asm/cpu_device_id.h>
+>  #include <asm/imr.h>
+> +#include <asm/io.h>
+> +
+>  #include <linux/init.h>
+>  #include <linux/mm.h>
+>  #include <linux/types.h>
+>
+
+
+-- 
+With Best Regards,
+Andy Shevchenko
