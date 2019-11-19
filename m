@@ -2,50 +2,23 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 450C11022A6
-	for <lists+linux-efi@lfdr.de>; Tue, 19 Nov 2019 12:10:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 165B01023C4
+	for <lists+linux-efi@lfdr.de>; Tue, 19 Nov 2019 13:01:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727016AbfKSLKV (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 19 Nov 2019 06:10:21 -0500
-Received: from mail-wm1-f67.google.com ([209.85.128.67]:39805 "EHLO
-        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726000AbfKSLKU (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 19 Nov 2019 06:10:20 -0500
-Received: by mail-wm1-f67.google.com with SMTP id t26so3051969wmi.4;
-        Tue, 19 Nov 2019 03:10:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=NYWeXLuQGLvOPwK8pHNuzurveHjA/E4XL3deYT2CQ6Q=;
-        b=skdJ1UEHu5PJl89Mkk9VRRqLagIUdwLLzIvfE7qxc79DduSNiquwoFXzoJXVUbZ9zw
-         g1cNgucakgJrNBfc9PtJPQUQH7hiPIbQNdvm4HfPAxaPqEE5yDoU/Fm0WZrr770x6z9Z
-         1mV4N6EIFIO+H5heFTgopWe3ElCwZHNDP6TrB6ZxXDF+BVJoJCgzBj9WZ81yUaCLfyGK
-         QBfOV9xXA4+nU1SmqoIng5FZDcMYQif9wRQNWBuakBreDAgwkdsGdC6lPo7bjUeRutEb
-         FqwSvcrmf/LrgaSpoIWvYSkunbCfPVklaj+EQbJw7jUcxpmgoRV0aJoU4yUuzBudNnyu
-         7iYQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to:user-agent;
-        bh=NYWeXLuQGLvOPwK8pHNuzurveHjA/E4XL3deYT2CQ6Q=;
-        b=hZmXTyiyx7aVpTe+a8ydQ0G4XT+90owkQ5cxH1ixfdTTwdvTgb0r4PkMJeqhvjlpV5
-         vZWknw9yZOszz1sQUHUC/AzaE74Vwxy9ZhC1/zSmm2vinDq19hphlDcM4QQCshQe6CU+
-         HJXBERLE6vh7N0to9kNRNm/mr1mYY47a0dJ+LE2uwVZCltntBE2ZVUjDA55HdUVxlONc
-         JnKUEqVZUxEZ5DsRLjLe5yLoSHBIh8umj3Rgk58xywo86ikHpsoBkyQza/nD/LFsYnZH
-         k/YAIO/ro2U8w205N0idlkMnzyDb5qGSlou/o67wPxA1ItWynr5d6ProFXaSuYhB4WiW
-         nwSw==
-X-Gm-Message-State: APjAAAURyIdLbu0gCAqW4G/EW90ZQ3Rrmta4rIEKzEu/L9lVmkJfbXdL
-        aQYaC6TW1B09T3/3NR/mxoA=
-X-Google-Smtp-Source: APXvYqxkMDs2asP+vgJXKZTaN6ik3+6S/o6ZGiHDU8XukZ5zzOg6DqoFabjwqzDackICD1Kv7aubiw==
-X-Received: by 2002:a7b:cb4a:: with SMTP id v10mr4628412wmj.106.1574161816817;
-        Tue, 19 Nov 2019 03:10:16 -0800 (PST)
-Received: from gmail.com (54033286.catv.pool.telekom.hu. [84.3.50.134])
-        by smtp.gmail.com with ESMTPSA id z4sm2754237wmf.36.2019.11.19.03.10.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 Nov 2019 03:10:15 -0800 (PST)
-Date:   Tue, 19 Nov 2019 12:10:12 +0100
-From:   Ingo Molnar <mingo@kernel.org>
+        id S1725798AbfKSMA5 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 19 Nov 2019 07:00:57 -0500
+Received: from foss.arm.com ([217.140.110.172]:51472 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726351AbfKSMA4 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Tue, 19 Nov 2019 07:00:56 -0500
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E8F8D30E;
+        Tue, 19 Nov 2019 04:00:55 -0800 (PST)
+Received: from localhost (unknown [10.37.6.21])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 37AE63F703;
+        Tue, 19 Nov 2019 04:00:55 -0800 (PST)
+Date:   Tue, 19 Nov 2019 12:00:53 +0000
+From:   Mark Brown <broonie@kernel.org>
 To:     Sean Christopherson <sean.j.christopherson@intel.com>
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
@@ -73,19 +46,22 @@ Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
         Liam Girdwood <liam.r.girdwood@linux.intel.com>,
         Jie Yang <yang.jie@linux.intel.com>,
-        Mark Brown <broonie@kernel.org>,
         Jaroslav Kysela <perex@perex.cz>,
         Takashi Iwai <tiwai@suse.com>, linux-ia64@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
         linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
         linux-acpi@vger.kernel.org, alsa-devel@alsa-project.org
-Subject: Re: [PATCH 00/12] treewide: break dependencies on x86's RM header
-Message-ID: <20191119111012.GA109842@gmail.com>
+Subject: Re: [PATCH 09/12] ASoC: Intel: Skylake: Explicitly include
+ linux/io.h for virt_to_phys()
+Message-ID: <20191119120053.GA3634@sirena.org.uk>
 References: <20191119002121.4107-1-sean.j.christopherson@intel.com>
+ <20191119002121.4107-10-sean.j.christopherson@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="4Ckj6UjgE2iN1+kY"
 Content-Disposition: inline
-In-Reply-To: <20191119002121.4107-1-sean.j.christopherson@intel.com>
+In-Reply-To: <20191119002121.4107-10-sean.j.christopherson@intel.com>
+X-Cookie: Beam me up, Scotty!  It ate my phaser!
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
@@ -93,61 +69,33 @@ List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
 
-* Sean Christopherson <sean.j.christopherson@intel.com> wrote:
+--4Ckj6UjgE2iN1+kY
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-> x86's asm/realmode.h, which defines low level structures, variables and
-> helpers used to bring up APs during SMP boot, ends up getting included in
-> practically every nook and cranny of the kernel because the address used
-> by ACPI for resuming from S3 also happens to be stored in the real mode
-> header, and ACPI bleeds the dependency into its widely included headers.
-> 
-> As a result, modifying realmode.h for even the most trivial change to the
-> boot code triggers a full kernel rebuild, which is frustrating to say the
-> least as it some of the most difficult code to get exactly right *and* is
-> also some of the most functionally isolated code in the kernel.
-> 
-> To break the kernel's widespread dependency on realmode.h, add a wrapper
-> in the aforementioned ACPI S3 code to access the real mode header instead
-> of derefencing the header directly in asm/acpi.h and thereby exposing it
-> to the world via linux/acpi.h.
-> 
-> Build tested on x86 with allyesconfig and allmodconfig, so hopefully there
-> aren't more build issues lurking, but at this point it wouldn't surprise
-> me in the least if this somehow manages to break the build.
-> 
-> Based on tip/master, commit ceceaf1f12ba ("Merge branch 'WIP.x86/cleanups'").
-> 
-> Patch Synopsis:
->   - Patches 01-09 fix a variety of build errors that arise when patch 12
->     drops realmode.h from asm/acpi.h.  Most of the errors are quite absurb
->     as they have no relation whatsoever to x86's RM boot code, but occur
->     because realmode.h happens to include asm/io.h.
+On Mon, Nov 18, 2019 at 04:21:18PM -0800, Sean Christopherson wrote:
+> Through a labyrinthian sequence of includes, usage of virt_to_phys() is
+> dependent on the include of asm/io.h in x86's asm/realmode.h, which is
+> included in x86's asm/acpi.h and thus by linux/acpi.h.  Explicitly
+> include linux/io.h to break the dependency on realmode.h so that a
+> future patch can remove the realmode.h include from acpi.h without
+> breaking the build.
 
-Yeah, these kind of parasitic header dependencies are the main driving 
-force behind kernel header spaghetti hell: it's super easy to add a new 
-header, but very hard to remove them...
+Acked-by: Mark Brown <broonie@kernel.org>
 
-Hence they practically only accumulate.
+--4Ckj6UjgE2iN1+kY
+Content-Type: application/pgp-signature; name="signature.asc"
 
-As a result header removal patches get priority, from me at least. :-)
+-----BEGIN PGP SIGNATURE-----
 
->   - Patch 10 removes a spurious include of realmode.h from an ACPI header.
-> 
->   - Patches 11 and 12 implement the wrapper and move it out of acpi.h.
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl3T2XIACgkQJNaLcl1U
+h9Ag5gf8CXRFNxgU/ospZfWpWqo31BrJS3TLJbiQogFQrYt6MzUt/rehd+5DN1bH
+rRAsHldAHpkPGu0ZDj4QRiH29Oc0G1xQAPyMbMnG3afcORJp9DkaBs8mLBd4Xh4r
+S4bPP4Lr+GeOJepjK6LOz948KigmvpZVDzgGiwqaRZfxT36f92BS3dXnTUoe3Khx
+q1z6+agCYbpIS9NtBzVBpuJ1b4opTj4/7G8POfaPbYyGxaI0Mr8mwkwMdwvtXz4V
+04C5nyfw5qQmjWqpMQuolxXEPW7DvIpobAYnFHL/qrf5DzSd9Yc5bPUx3Y61swla
+VoEhYM6CbdD6hpBeVhY8lbGgINd/1g==
+=zPtj
+-----END PGP SIGNATURE-----
 
-So if the ACPI maintainers are fine with -tip carrying patches #11 and #12
-then I'd be glad to route these patches upstream.
-
-I've applied them to tip:WIP.core/headers as a work-in-progress tree, and 
-I'm testing them on randconfigs to make sure there's no broken 
-dependencies. I'll wait for the ACPI acks.
-
-I edited the title of patch 12 slightly, to:
-
-   c8bceb321209: x86/ACPI/sleep: Move acpi_wakeup_address() definition into sleep.c, remove <asm/realmode.h> from <asm/acpi.h>
-
-to make sure the big header dependency change is obvious at first sight.
-
-Thanks,
-
-	Ingo
+--4Ckj6UjgE2iN1+kY--
