@@ -2,157 +2,198 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7FA2E10401D
-	for <lists+linux-efi@lfdr.de>; Wed, 20 Nov 2019 16:55:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 04875105798
+	for <lists+linux-efi@lfdr.de>; Thu, 21 Nov 2019 17:55:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728646AbfKTPzA (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 20 Nov 2019 10:55:00 -0500
-Received: from mail-wm1-f65.google.com ([209.85.128.65]:34395 "EHLO
-        mail-wm1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731560AbfKTPy7 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 20 Nov 2019 10:54:59 -0500
-Received: by mail-wm1-f65.google.com with SMTP id j18so5460287wmk.1
-        for <linux-efi@vger.kernel.org>; Wed, 20 Nov 2019 07:54:56 -0800 (PST)
+        id S1726554AbfKUQzA (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 21 Nov 2019 11:55:00 -0500
+Received: from mail-qt1-f196.google.com ([209.85.160.196]:34269 "EHLO
+        mail-qt1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726279AbfKUQzA (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 21 Nov 2019 11:55:00 -0500
+Received: by mail-qt1-f196.google.com with SMTP id i17so4460725qtq.1;
+        Thu, 21 Nov 2019 08:54:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
+        d=gmail.com; s=20161025;
         h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=Pc/B5s8Op7DZcUpCkoozM2pKb7wkORn3PJUzQ+3VJls=;
-        b=jtMhRC6Pk0HadowGTjQERXbTA9SrlkgA6uoK4GrRBBSya5IrU9FKwc5sKWuazC7hWY
-         91aODgBraKSoG3+eK4B2Za6Q/SMrQiR5aWNtuyZaBsUjHqSN2Zi+JRcOllkgpeTVuzp8
-         KDT853LwBilN+sUKYomYUcWf/qSSmZVkW+82quasRshDxUIO+1hR/nIVZmRvxQmr68TG
-         JuuUYYKg35fGImgfsm/WZdIhy6TJt7Bd0SxC2TXYB82TjG7g7WhD7Xc4n2MJVs5c58xj
-         OsGpyLKVVbGaZmacdh697dBEAEP6D0PtBat1Xcjiao3BpaFQFCZ1O7xp2tWnSqIW3UyD
-         DLNQ==
+         :content-disposition:in-reply-to;
+        bh=FTi7Dvg/d0dXm7xuFygWnPv5XbbIL8YDOlUOqtHAZRA=;
+        b=WkEf5jcqS8zxRM9xUmSno444pUXfkVM6nWtzbblogn4kR7zBQ11SzgjmNfk6Xyk4Kh
+         AzZZ5sRpze5v2FtJw8Zd5phltv2mzwd4dH2Oa0IRMVLfwylXfP3HVlA0SIcHA32/Wxai
+         7JIP8+kswZRVSjf8EIIStfboZYf/JpdBk9HAE/+Lwftshy1+Kvg7n/s3k2MCaydU1zny
+         tTwqmHTmAhVcKzIbpbzkBmlkIe7gsDD0xmRVFqy6MrzSNtajvgBRLOEC0qGjd5uzmmXE
+         o7RaeBzWJxHkUKVx4Cibwrrg7jgORmZvwTtCb1VYojsnjgEXuBCjaf99dfAyufhx0jEW
+         1+sA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=Pc/B5s8Op7DZcUpCkoozM2pKb7wkORn3PJUzQ+3VJls=;
-        b=ZWWJ7TnaFQzSMAXsspE1Dv8fmQKYDfayOtBacuzxlt7KCFHezM+xopFbxF3AJbWztA
-         eCgjMjceXxGzVnJwmwGH1wMC7f6yIDDPuV6aPm+16fL7x4Floz3anu9lxzC2LZ8h0KTv
-         PhhjaiFajO9h0P9PToH/2lUQaPafHInapiM0DLKQsR92NgL5rajNLod4Ps0npYgfrWHI
-         FSPGtS0zKBOWf5ZEKKDytz7KV9Mhvn2/8IHOH+40XU29Lt5d0e/lqCzRD2UW6bq430tM
-         tNkNcH8Bseq0QMidMq9GFUf51qYm7/wQbmcBQ3Shcc2VPs9pm5Ch4+ERwYLpA4IkJtCy
-         4Cew==
-X-Gm-Message-State: APjAAAXDCycjBYOxS8KOCoKpztCcWX3llzhGlzGdsYMrty367h+d87IX
-        otu/bHPMGLVW6Q5H7BACkJy0iA==
-X-Google-Smtp-Source: APXvYqygyv2epnPyQ8ZUCWpvIvDmkk1mlhM7bZ2yAb9gUjZi3pn0UqvfOAVs0g05UGhLYqygkKm6GA==
-X-Received: by 2002:a1c:38c3:: with SMTP id f186mr4147629wma.58.1574265294776;
-        Wed, 20 Nov 2019 07:54:54 -0800 (PST)
-Received: from google.com ([100.105.32.75])
-        by smtp.gmail.com with ESMTPSA id z6sm33020710wro.18.2019.11.20.07.54.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 Nov 2019 07:54:53 -0800 (PST)
-Date:   Wed, 20 Nov 2019 16:54:48 +0100
-From:   Marco Elver <elver@google.com>
-To:     Qian Cai <cai@lca.pw>
-Cc:     LKMM Maintainers -- Akira Yokosawa <akiyks@gmail.com>,
-        Alan Stern <stern@rowland.harvard.edu>,
-        Alexander Potapenko <glider@google.com>,
-        Andrea Parri <parri.andrea@gmail.com>,
-        Andrey Konovalov <andreyknvl@google.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Boqun Feng <boqun.feng@gmail.com>,
-        Borislav Petkov <bp@alien8.de>, Daniel Axtens <dja@axtens.net>,
-        Daniel Lustig <dlustig@nvidia.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        David Howells <dhowells@redhat.com>,
-        Dmitry Vyukov <dvyukov@google.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
-        Jade Alglave <j.alglave@ucl.ac.uk>,
-        Joel Fernandes <joel@joelfernandes.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Josh Poimboeuf <jpoimboe@redhat.com>,
-        Luc Maranget <luc.maranget@inria.fr>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Will Deacon <will@kernel.org>,
-        Eric Dumazet <edumazet@google.com>,
-        kasan-dev <kasan-dev@googlegroups.com>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
-        linux-efi@vger.kernel.org,
-        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Linux Memory Management List <linux-mm@kvack.org>,
-        the arch/x86 maintainers <x86@kernel.org>
-Subject: Re: [PATCH v4 00/10] Add Kernel Concurrency Sanitizer (KCSAN)
-Message-ID: <20191120155448.GA21320@google.com>
-References: <20191114180303.66955-1-elver@google.com>
- <1574194379.9585.10.camel@lca.pw>
- <CANpmjNPynCwYc8-GKTreJ8HF81k14JAHZXLt0jQJr_d+ukL=6A@mail.gmail.com>
+         :mime-version:content-disposition:in-reply-to;
+        bh=FTi7Dvg/d0dXm7xuFygWnPv5XbbIL8YDOlUOqtHAZRA=;
+        b=kbYrkSu62svS41A9t8C/EAw7MAMg9Z1jFh7OdKkNBFKZxcM/YIWsT0yQ9kdXOItx6S
+         Mx7V4Dw4zaw/EkSXdCJNArnsaftQ/APkUEwaom2hXBvYzwnCoQZKToPthd/e7s2LxUbP
+         fSAdw/hrTtYxKuVQrqbBVjONpFTNCcNvJTZmU7jW+gQ8+3HhbLC5ydm1/aGVHrSLXx4F
+         fEW0VT+FAXw2xPSgGgZHuAEilYfEb1JSlX6zdQunPnz05ybCnceW7NOGP8nq1iuEJL4d
+         q8Ct/PS9BsYi40bXb0ITdqwGHteqdgP3bQe+pEyj4MBYrW43R+yQ4CG/tuJxnl91Xnrz
+         QDlA==
+X-Gm-Message-State: APjAAAXmLCOeCAAvIcAg7gXaF5uN5T+r3fZ6S/sHX4sXiJlH67s9AaUc
+        6QP3hYPTqmnpLIY26DkT4Q==
+X-Google-Smtp-Source: APXvYqy7G4H3+ldsE0l+ou4E9ikRKJclTXReeBsg5pGLjWBFRTaj+kYv7bzCYzaQTbN5DU1QZLeZBQ==
+X-Received: by 2002:aed:248e:: with SMTP id t14mr9953119qtc.264.1574355298616;
+        Thu, 21 Nov 2019 08:54:58 -0800 (PST)
+Received: from gabell (nat-pool-bos-t.redhat.com. [66.187.233.206])
+        by smtp.gmail.com with ESMTPSA id d145sm1616978qkc.120.2019.11.21.08.54.57
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Thu, 21 Nov 2019 08:54:57 -0800 (PST)
+Date:   Thu, 21 Nov 2019 11:54:51 -0500
+From:   Masayoshi Mizuma <msys.mizuma@gmail.com>
+To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        linux-arm-kernel@lists.infradead.org, linux-efi@vger.kernel.org
+Cc:     Masayoshi Mizuma <m.mizuma@jp.fujitsu.com>,
+        linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
+        d.hatayama@fujitsu.com
+Subject: Re: [RFC PATCH v2] efi: arm64: Introduce
+ /sys/firmware/efi/memreserve to tell the persistent pages
+Message-ID: <20191121165451.ddc4e7rz5swvoirc@gabell>
+References: <20191114161019.8735-1-msys.mizuma@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CANpmjNPynCwYc8-GKTreJ8HF81k14JAHZXLt0jQJr_d+ukL=6A@mail.gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20191114161019.8735-1-msys.mizuma@gmail.com>
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, 19 Nov 2019, Marco Elver wrote:
-
-> On Tue, 19 Nov 2019 at 21:13, Qian Cai <cai@lca.pw> wrote:
-> >
-> > On Thu, 2019-11-14 at 19:02 +0100, 'Marco Elver' via kasan-dev wrote:
-> > > This is the patch-series for the Kernel Concurrency Sanitizer (KCSAN).
-> > > KCSAN is a sampling watchpoint-based *data race detector*. More details
-> > > are included in **Documentation/dev-tools/kcsan.rst**. This patch-series
-> > > only enables KCSAN for x86, but we expect adding support for other
-> > > architectures is relatively straightforward (we are aware of
-> > > experimental ARM64 and POWER support).
-> >
-> > This does not allow the system to boot. Just hang forever at the end.
-> >
-> > https://cailca.github.io/files/dmesg.txt
-> >
-> > the config (dselect KASAN and select KCSAN with default options):
-> >
-> > https://raw.githubusercontent.com/cailca/linux-mm/master/x86.config
+On Thu, Nov 14, 2019 at 11:10:19AM -0500, Masayoshi Mizuma wrote:
+> From: Masayoshi Mizuma <m.mizuma@jp.fujitsu.com>
 > 
-> Thanks! That config enables lots of other debug code. I could
-> reproduce the hang. It's related to CONFIG_PROVE_LOCKING etc.
+> kexec reboot stops in early boot sequence because efi_config_parse_tables()
+> refers garbage data. We can see the log with memblock=debug kernel option:
 > 
-> The problem is definitely not the fact that kcsan_setup_watchpoint
-> disables interrupts (tested by removing that code). Although lockdep
-> still complains here, and looking at the code in kcsan/core.c, I just
-> can't see how local_irq_restore cannot be called before returning (in
-> the stacktrace you provided, there is no kcsan function), and
-> interrupts should always be re-enabled. (Interrupts are only disabled
-> during delay in kcsan_setup_watchpoint.)
+>   efi:  ACPI 2.0=0x9821790014  PROP=0x8757f5c0  SMBIOS 3.0=0x9820740000  MEMRESERVE=0x9820bfdc58
+>   memblock_reserve: [0x0000009820bfdc58-0x0000009820bfdc67] efi_config_parse_tables+0x228/0x278
+>   memblock_reserve: [0x0000000082760000-0x00000000324d07ff] efi_config_parse_tables+0x228/0x278
+>   memblock_reserve: [0xcc4f84ecc0511670-0x5f6e5214a7fd91f9] efi_config_parse_tables+0x244/0x278
+>   memblock_reserve: [0xd2fd4144b9af693d-0xad0c1db1086f40a2] efi_config_parse_tables+0x244/0x278
+>   memblock_reserve: [0x0c719bb159b1fadc-0x5aa6e62a1417ce12] efi_config_parse_tables+0x244/0x278
+>   ...
 > 
-> What I also notice is that this happens when the console starts
-> getting spammed with data-race reports (presumably because some extra
-> debug code has lots of data races according to KCSAN).
+> That happens because 0x82760000, struct linux_efi_memreserve, is destroyed.
+> 0x82760000 is pointed from efi.mem_reseve, and efi.mem_reserve points the
+> head page of LPI pending table and LPI property table which are allocated by
+> gic_reserve_range().
 > 
-> My guess is that some of the extra debug logic enabled in that config
-> is incompatible with KCSAN. However, so far I cannot tell where
-> exactly the problem is. For now the work-around would be not using
-> KCSAN with these extra debug options.  I will investigate more, but
-> nothing obviously wrong stands out..
+> The destroyer is kexec. kexec locates the initrd to the area:
+> 
+>   ]# kexec -d -l /boot/vmlinuz-5.4.0-rc7 /boot/initramfs-5.4.0-rc7.img --reuse-cmdline
+>   ...
+>   initrd: base 82290000, size 388dd8ah (59301258)
+>   ...
+> 
+> From dynamic debug log. initrd is located in segment[1]:
+>   machine_kexec_prepare:70:
+>     kexec kimage info:
+>       type:        0
+>       start:       85b30680
+>       head:        0
+>       nr_segments: 4
+>         segment[0]: 0000000080480000 - 0000000082290000, 0x1e10000 bytes, 481 pages
+>         segment[1]: 0000000082290000 - 0000000085b20000, 0x3890000 bytes, 905 pages
+>         segment[2]: 0000000085b20000 - 0000000085b30000, 0x10000 bytes, 1 pages
+>         segment[3]: 0000000085b30000 - 0000000085b40000, 0x10000 bytes, 1 pages
+> 
+> kexec searches the memory region to locate initrd through
+> "System RAM" in /proc/iomem. The pending tables are included in
+> "System RAM" because they are allocated by alloc_pages(), so kexec
+> destroys the LPI pending tables.
+> 
+> Introduce /sys/firmware/efi/memreserve to tell the pages pointed by
+> efi.mem_reserve so that kexec can avoid the area to locate initrd.
+> 
+> Signed-off-by: Masayoshi Mizuma <m.mizuma@jp.fujitsu.com>
+> ---
+>  drivers/firmware/efi/efi.c | 41 +++++++++++++++++++++++++++++++++++++-
+>  1 file changed, 40 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
+> index 0b6b0c19a..07812d697 100644
+> --- a/drivers/firmware/efi/efi.c
+> +++ b/drivers/firmware/efi/efi.c
+> @@ -149,6 +149,45 @@ static ssize_t systab_show(struct kobject *kobj,
+>  
+>  static struct kobj_attribute efi_attr_systab = __ATTR_RO_MODE(systab, 0400);
+>  
+> +static struct linux_efi_memreserve *efi_memreserve_root __ro_after_init;
 
-It seems that due to spinlock_debug.c containing data races, the console
-gets spammed with reports. However, it's also possible to encounter
-deadlock, e.g.  printk lock -> spinlock_debug -> KCSAN detects data race
--> kcsan_print_report() -> printk lock -> deadlock.
+> +static ssize_t memreserve_show(struct kobject *kobj,
+> +			   struct kobj_attribute *attr, char *buf)
+> +{
+> +	struct linux_efi_memreserve *rsv;
+> +	phys_addr_t start, end;
+> +	unsigned long prsv;
+> +	char *str = buf;
+> +	int count, i;
+> +
+> +	if (!kobj || !buf)
+> +		return -EINVAL;
+> +
+> +	if ((efi_memreserve_root == (void *)ULONG_MAX) ||
+> +			(!efi_memreserve_root))
+> +		return -ENODEV;
+> +
+> +	for (prsv = efi_memreserve_root->next; prsv; prsv = rsv->next) {
+> +		rsv = memremap(prsv, sizeof(*rsv), MEMREMAP_WB);
+> +		if (!rsv) {
+> +			pr_err("Could not map efi_memreserve\n");
+> +			return -ENOMEM;
+> +		}
+> +		count = atomic_read(&rsv->count);
+> +		for (i = 0; i < count; i++) {
+> +			start = rsv->entry[i].base;
+> +			end = start + rsv->entry[i].size - 1;
+> +
+> +			str += sprintf(str, "%pa-%pa\n", &start, &end);
+> +		}
+> +		memunmap(rsv);
+> +	}
+> +
+> +	return str - buf;
+> +}
+> +
+> +static struct kobj_attribute efi_attr_memreserve =
+> +			__ATTR_RO_MODE(memreserve, 0444);
+> +
 
-So the best thing is to fix the data races in spinlock_debug. I will
-send a patch separately for you to test.
+I think it's better to put above between #ifdef CONFIG_KEXEC and #endif
+because it's useful for only kexec...
 
-The issue that lockdep still reports inconsistency in IRQ flags tracing
-I cannot yet say what the problem is. It seems that lockdep IRQ flags
-tracing may have an issue with KCSAN for numerous reasons: let's say
-lockdep and IRQ flags tracing code is instrumented, which then calls
-into KCSAN, which disables/enables interrupts, but due to tracing calls
-back into lockdep code. In other words, there may be some recursion
-which corrupts hardirqs_enabled.
+>  #define EFI_FIELD(var) efi.var
+>  
+>  #define EFI_ATTR_SHOW(name) \
+> @@ -180,6 +219,7 @@ static struct attribute *efi_subsys_attrs[] = {
+>  	&efi_attr_runtime.attr,
+>  	&efi_attr_config_table.attr,
+>  	&efi_attr_fw_platform_size.attr,
+
+> +	&efi_attr_memreserve.attr,
+
+Same as.
+I'll post the patch to change above and will remove the RFC.
 
 Thanks,
--- Marco
+Masa
+
+>  	NULL,
+>  };
+>  
+> @@ -964,7 +1004,6 @@ int efi_status_to_err(efi_status_t status)
+>  }
+>  
+>  static DEFINE_SPINLOCK(efi_mem_reserve_persistent_lock);
+> -static struct linux_efi_memreserve *efi_memreserve_root __ro_after_init;
+>  
+>  static int __init efi_memreserve_map_root(void)
+>  {
+> -- 
+> 2.21.0
+> 
