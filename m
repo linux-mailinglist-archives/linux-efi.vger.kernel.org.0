@@ -2,198 +2,98 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 04875105798
-	for <lists+linux-efi@lfdr.de>; Thu, 21 Nov 2019 17:55:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F61F105E7D
+	for <lists+linux-efi@lfdr.de>; Fri, 22 Nov 2019 03:11:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726554AbfKUQzA (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 21 Nov 2019 11:55:00 -0500
-Received: from mail-qt1-f196.google.com ([209.85.160.196]:34269 "EHLO
-        mail-qt1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726279AbfKUQzA (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 21 Nov 2019 11:55:00 -0500
-Received: by mail-qt1-f196.google.com with SMTP id i17so4460725qtq.1;
-        Thu, 21 Nov 2019 08:54:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=FTi7Dvg/d0dXm7xuFygWnPv5XbbIL8YDOlUOqtHAZRA=;
-        b=WkEf5jcqS8zxRM9xUmSno444pUXfkVM6nWtzbblogn4kR7zBQ11SzgjmNfk6Xyk4Kh
-         AzZZ5sRpze5v2FtJw8Zd5phltv2mzwd4dH2Oa0IRMVLfwylXfP3HVlA0SIcHA32/Wxai
-         7JIP8+kswZRVSjf8EIIStfboZYf/JpdBk9HAE/+Lwftshy1+Kvg7n/s3k2MCaydU1zny
-         tTwqmHTmAhVcKzIbpbzkBmlkIe7gsDD0xmRVFqy6MrzSNtajvgBRLOEC0qGjd5uzmmXE
-         o7RaeBzWJxHkUKVx4Cibwrrg7jgORmZvwTtCb1VYojsnjgEXuBCjaf99dfAyufhx0jEW
-         1+sA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=FTi7Dvg/d0dXm7xuFygWnPv5XbbIL8YDOlUOqtHAZRA=;
-        b=kbYrkSu62svS41A9t8C/EAw7MAMg9Z1jFh7OdKkNBFKZxcM/YIWsT0yQ9kdXOItx6S
-         Mx7V4Dw4zaw/EkSXdCJNArnsaftQ/APkUEwaom2hXBvYzwnCoQZKToPthd/e7s2LxUbP
-         fSAdw/hrTtYxKuVQrqbBVjONpFTNCcNvJTZmU7jW+gQ8+3HhbLC5ydm1/aGVHrSLXx4F
-         fEW0VT+FAXw2xPSgGgZHuAEilYfEb1JSlX6zdQunPnz05ybCnceW7NOGP8nq1iuEJL4d
-         q8Ct/PS9BsYi40bXb0ITdqwGHteqdgP3bQe+pEyj4MBYrW43R+yQ4CG/tuJxnl91Xnrz
-         QDlA==
-X-Gm-Message-State: APjAAAXmLCOeCAAvIcAg7gXaF5uN5T+r3fZ6S/sHX4sXiJlH67s9AaUc
-        6QP3hYPTqmnpLIY26DkT4Q==
-X-Google-Smtp-Source: APXvYqy7G4H3+ldsE0l+ou4E9ikRKJclTXReeBsg5pGLjWBFRTaj+kYv7bzCYzaQTbN5DU1QZLeZBQ==
-X-Received: by 2002:aed:248e:: with SMTP id t14mr9953119qtc.264.1574355298616;
-        Thu, 21 Nov 2019 08:54:58 -0800 (PST)
-Received: from gabell (nat-pool-bos-t.redhat.com. [66.187.233.206])
-        by smtp.gmail.com with ESMTPSA id d145sm1616978qkc.120.2019.11.21.08.54.57
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 21 Nov 2019 08:54:57 -0800 (PST)
-Date:   Thu, 21 Nov 2019 11:54:51 -0500
-From:   Masayoshi Mizuma <msys.mizuma@gmail.com>
-To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        linux-arm-kernel@lists.infradead.org, linux-efi@vger.kernel.org
-Cc:     Masayoshi Mizuma <m.mizuma@jp.fujitsu.com>,
-        linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
-        d.hatayama@fujitsu.com
-Subject: Re: [RFC PATCH v2] efi: arm64: Introduce
- /sys/firmware/efi/memreserve to tell the persistent pages
-Message-ID: <20191121165451.ddc4e7rz5swvoirc@gabell>
-References: <20191114161019.8735-1-msys.mizuma@gmail.com>
+        id S1726495AbfKVCLi (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 21 Nov 2019 21:11:38 -0500
+Received: from mail.kernel.org ([198.145.29.99]:42816 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726329AbfKVCLi (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Thu, 21 Nov 2019 21:11:38 -0500
+Received: from oasis.local.home (unknown [66.170.99.95])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 160052068F;
+        Fri, 22 Nov 2019 02:11:36 +0000 (UTC)
+Date:   Thu, 21 Nov 2019 21:11:34 -0500
+From:   Steven Rostedt <rostedt@goodmis.org>
+To:     Sean Christopherson <sean.j.christopherson@intel.com>
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        x86@kernel.org, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <len.brown@intel.com>, Pavel Machek <pavel@ucw.cz>,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Jiri Olsa <jolsa@redhat.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Nadav Amit <namit@vmware.com>,
+        "VMware, Inc." <pv-drivers@vmware.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Cezary Rojewski <cezary.rojewski@intel.com>,
+        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+        Liam Girdwood <liam.r.girdwood@linux.intel.com>,
+        Jie Yang <yang.jie@linux.intel.com>,
+        Mark Brown <broonie@kernel.org>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>, linux-ia64@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        linux-acpi@vger.kernel.org, alsa-devel@alsa-project.org
+Subject: Re: [PATCH 03/12] x86/ftrace: Explicitly include vmalloc.h for
+ set_vm_flush_reset_perms()
+Message-ID: <20191121211134.5938b2d9@oasis.local.home>
+In-Reply-To: <20191119002121.4107-4-sean.j.christopherson@intel.com>
+References: <20191119002121.4107-1-sean.j.christopherson@intel.com>
+        <20191119002121.4107-4-sean.j.christopherson@intel.com>
+X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191114161019.8735-1-msys.mizuma@gmail.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, Nov 14, 2019 at 11:10:19AM -0500, Masayoshi Mizuma wrote:
-> From: Masayoshi Mizuma <m.mizuma@jp.fujitsu.com>
+On Mon, 18 Nov 2019 16:21:12 -0800
+Sean Christopherson <sean.j.christopherson@intel.com> wrote:
+
+> The inclusion of linux/vmalloc.h, which is required for its definition
+> of set_vm_flush_reset_perms(), is somehow dependent on asm/realmode.h
+> being included by asm/acpi.h.  Explicitly include linux/vmalloc.h so
+> that a future patch can drop the realmode.h include from asm/acpi.h
+> without breaking the build.
 > 
-> kexec reboot stops in early boot sequence because efi_config_parse_tables()
-> refers garbage data. We can see the log with memblock=debug kernel option:
-> 
->   efi:  ACPI 2.0=0x9821790014  PROP=0x8757f5c0  SMBIOS 3.0=0x9820740000  MEMRESERVE=0x9820bfdc58
->   memblock_reserve: [0x0000009820bfdc58-0x0000009820bfdc67] efi_config_parse_tables+0x228/0x278
->   memblock_reserve: [0x0000000082760000-0x00000000324d07ff] efi_config_parse_tables+0x228/0x278
->   memblock_reserve: [0xcc4f84ecc0511670-0x5f6e5214a7fd91f9] efi_config_parse_tables+0x244/0x278
->   memblock_reserve: [0xd2fd4144b9af693d-0xad0c1db1086f40a2] efi_config_parse_tables+0x244/0x278
->   memblock_reserve: [0x0c719bb159b1fadc-0x5aa6e62a1417ce12] efi_config_parse_tables+0x244/0x278
->   ...
-> 
-> That happens because 0x82760000, struct linux_efi_memreserve, is destroyed.
-> 0x82760000 is pointed from efi.mem_reseve, and efi.mem_reserve points the
-> head page of LPI pending table and LPI property table which are allocated by
-> gic_reserve_range().
-> 
-> The destroyer is kexec. kexec locates the initrd to the area:
-> 
->   ]# kexec -d -l /boot/vmlinuz-5.4.0-rc7 /boot/initramfs-5.4.0-rc7.img --reuse-cmdline
->   ...
->   initrd: base 82290000, size 388dd8ah (59301258)
->   ...
-> 
-> From dynamic debug log. initrd is located in segment[1]:
->   machine_kexec_prepare:70:
->     kexec kimage info:
->       type:        0
->       start:       85b30680
->       head:        0
->       nr_segments: 4
->         segment[0]: 0000000080480000 - 0000000082290000, 0x1e10000 bytes, 481 pages
->         segment[1]: 0000000082290000 - 0000000085b20000, 0x3890000 bytes, 905 pages
->         segment[2]: 0000000085b20000 - 0000000085b30000, 0x10000 bytes, 1 pages
->         segment[3]: 0000000085b30000 - 0000000085b40000, 0x10000 bytes, 1 pages
-> 
-> kexec searches the memory region to locate initrd through
-> "System RAM" in /proc/iomem. The pending tables are included in
-> "System RAM" because they are allocated by alloc_pages(), so kexec
-> destroys the LPI pending tables.
-> 
-> Introduce /sys/firmware/efi/memreserve to tell the pages pointed by
-> efi.mem_reserve so that kexec can avoid the area to locate initrd.
-> 
-> Signed-off-by: Masayoshi Mizuma <m.mizuma@jp.fujitsu.com>
+> Fixes: 7fdfe1e40b225 ("x86/ftrace: Use vmalloc special flag")
+> Signed-off-by: Sean Christopherson <sean.j.christopherson@intel.com>
+
+Acked-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
+
+-- Steve
+
 > ---
->  drivers/firmware/efi/efi.c | 41 +++++++++++++++++++++++++++++++++++++-
->  1 file changed, 40 insertions(+), 1 deletion(-)
+>  arch/x86/kernel/ftrace.c | 1 +
+>  1 file changed, 1 insertion(+)
 > 
-> diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
-> index 0b6b0c19a..07812d697 100644
-> --- a/drivers/firmware/efi/efi.c
-> +++ b/drivers/firmware/efi/efi.c
-> @@ -149,6 +149,45 @@ static ssize_t systab_show(struct kobject *kobj,
+> diff --git a/arch/x86/kernel/ftrace.c b/arch/x86/kernel/ftrace.c
+> index 2a179fb35cd1..681eae0fb64d 100644
+> --- a/arch/x86/kernel/ftrace.c
+> +++ b/arch/x86/kernel/ftrace.c
+> @@ -23,6 +23,7 @@
+>  #include <linux/list.h>
+>  #include <linux/module.h>
+>  #include <linux/memory.h>
+> +#include <linux/vmalloc.h>
 >  
->  static struct kobj_attribute efi_attr_systab = __ATTR_RO_MODE(systab, 0400);
+>  #include <trace/syscall.h>
 >  
-> +static struct linux_efi_memreserve *efi_memreserve_root __ro_after_init;
 
-> +static ssize_t memreserve_show(struct kobject *kobj,
-> +			   struct kobj_attribute *attr, char *buf)
-> +{
-> +	struct linux_efi_memreserve *rsv;
-> +	phys_addr_t start, end;
-> +	unsigned long prsv;
-> +	char *str = buf;
-> +	int count, i;
-> +
-> +	if (!kobj || !buf)
-> +		return -EINVAL;
-> +
-> +	if ((efi_memreserve_root == (void *)ULONG_MAX) ||
-> +			(!efi_memreserve_root))
-> +		return -ENODEV;
-> +
-> +	for (prsv = efi_memreserve_root->next; prsv; prsv = rsv->next) {
-> +		rsv = memremap(prsv, sizeof(*rsv), MEMREMAP_WB);
-> +		if (!rsv) {
-> +			pr_err("Could not map efi_memreserve\n");
-> +			return -ENOMEM;
-> +		}
-> +		count = atomic_read(&rsv->count);
-> +		for (i = 0; i < count; i++) {
-> +			start = rsv->entry[i].base;
-> +			end = start + rsv->entry[i].size - 1;
-> +
-> +			str += sprintf(str, "%pa-%pa\n", &start, &end);
-> +		}
-> +		memunmap(rsv);
-> +	}
-> +
-> +	return str - buf;
-> +}
-> +
-> +static struct kobj_attribute efi_attr_memreserve =
-> +			__ATTR_RO_MODE(memreserve, 0444);
-> +
-
-I think it's better to put above between #ifdef CONFIG_KEXEC and #endif
-because it's useful for only kexec...
-
->  #define EFI_FIELD(var) efi.var
->  
->  #define EFI_ATTR_SHOW(name) \
-> @@ -180,6 +219,7 @@ static struct attribute *efi_subsys_attrs[] = {
->  	&efi_attr_runtime.attr,
->  	&efi_attr_config_table.attr,
->  	&efi_attr_fw_platform_size.attr,
-
-> +	&efi_attr_memreserve.attr,
-
-Same as.
-I'll post the patch to change above and will remove the RFC.
-
-Thanks,
-Masa
-
->  	NULL,
->  };
->  
-> @@ -964,7 +1004,6 @@ int efi_status_to_err(efi_status_t status)
->  }
->  
->  static DEFINE_SPINLOCK(efi_mem_reserve_persistent_lock);
-> -static struct linux_efi_memreserve *efi_memreserve_root __ro_after_init;
->  
->  static int __init efi_memreserve_map_root(void)
->  {
-> -- 
-> 2.21.0
-> 
