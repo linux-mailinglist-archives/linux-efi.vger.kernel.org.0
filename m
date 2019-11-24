@@ -2,103 +2,78 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9327F1079E3
-	for <lists+linux-efi@lfdr.de>; Fri, 22 Nov 2019 22:17:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 85472108372
+	for <lists+linux-efi@lfdr.de>; Sun, 24 Nov 2019 14:31:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726568AbfKVVRp (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 22 Nov 2019 16:17:45 -0500
-Received: from heinz.dinsnail.net ([81.169.187.250]:41016 "EHLO
-        heinz.dinsnail.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726089AbfKVVRp (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 22 Nov 2019 16:17:45 -0500
-Received: from heinz.dinsnail.net ([IPv6:0:0:0:0:0:0:0:1])
-        by heinz.dinsnail.net (8.15.2/8.15.2) with ESMTP id xAMLEhOU026814;
-        Fri, 22 Nov 2019 22:14:43 +0100
-Received: from eldalonde.UUCP (uucp@localhost)
-        by heinz.dinsnail.net (8.15.2/8.15.2/Submit) with bsmtp id xAMLEhvV026813;
-        Fri, 22 Nov 2019 22:14:43 +0100
-Received: from eldalonde.weiser.dinsnail.net (localhost [IPv6:0:0:0:0:0:0:0:1])
-        by eldalonde.weiser.dinsnail.net (8.15.2/8.15.2) with ESMTP id xAML72hT000413;
-        Fri, 22 Nov 2019 22:07:02 +0100
-Received: (from michael@localhost)
-        by eldalonde.weiser.dinsnail.net (8.15.2/8.15.2/Submit) id xAML725G000412;
-        Fri, 22 Nov 2019 22:07:02 +0100
-Date:   Fri, 22 Nov 2019 22:07:02 +0100
-From:   Michael Weiser <michael@weiser.dinsnail.net>
-To:     "Eric W. Biederman" <ebiederm@xmission.com>
-Cc:     Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        linux-efi@vger.kernel.org, kexec@lists.infradead.org
-Subject: Re: kexec_file overwrites reserved EFI ESRT memory
-Message-ID: <20191122210702.GE32104@weiser.dinsnail.net>
-References: <20191122180552.GA32104@weiser.dinsnail.net>
- <87blt3y949.fsf@x220.int.ebiederm.org>
+        id S1726779AbfKXNbA (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sun, 24 Nov 2019 08:31:00 -0500
+Received: from mail-il1-f193.google.com ([209.85.166.193]:46179 "EHLO
+        mail-il1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726744AbfKXNbA (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sun, 24 Nov 2019 08:31:00 -0500
+Received: by mail-il1-f193.google.com with SMTP id q1so11639671ile.13
+        for <linux-efi@vger.kernel.org>; Sun, 24 Nov 2019 05:30:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=pI7cV3FDgc1XH+A619u5I2fUvKpFMBjQiQlWPO2Scvc=;
+        b=LsBCzFjzvw0H983u8O0q0C4JVdRpT/cAqUx1KLKeS1lMJrfoZp2Bg7tAbQhaAlrIzh
+         HpVqSov2i49CW5CsbqR8Y69UWtFdHGA/5VVrJK8uIU8VeF8yb8//cKMIoXlvmal+iYL9
+         ge942+QIaV4qU88IToTwFHdsfsWOGDZ+GCat/hCCyiDdu1rT7hDlWdT59Ugr9r75btTS
+         rSy/2x0LyJzOheuHqHv35UUBn3vgpf+nmv1q+bG7Bb/IMEMLaAR8hipMRMJ4kzn49+sX
+         30TG78mtfC6r9OLVV4H3L4byQpf8a8m5t4KfYzIRa/VrW99GHtskHFpo+iEj6PdzaPEu
+         gAgw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=pI7cV3FDgc1XH+A619u5I2fUvKpFMBjQiQlWPO2Scvc=;
+        b=bER+ioe8erV8IoBYoqJn50PVdWfh68jg+2KIBLKjuP848Yg8Mq+tACE1mclCeG3Koa
+         NsyTTCqi5yU7jUW8xQMOLm3QwJuzXToriVt/m4oiHRmsX9LLdUNN/77QWyOjDXC8LKKG
+         5CAv04hD6TY7He/6EdZILFMS8jZ18QB9RyM1w67xVKbEM9rJgHeawMqjkgnGe7YGunvz
+         hRnxy0bAjqX4ChNnogJ7Uv1CYYuhutTr/0+bVG1JIN5Ae/sz7mn134tTN9a+N373hNb/
+         W35ZFBBR4icqkelNdNQwgeCSk1Aa0Vhx64xX8VGk7iBBmHBfaZgRlj906wCI1bXsywdG
+         wabA==
+X-Gm-Message-State: APjAAAXicRqJ035qdeUL7eQ6CfhW1xHwfUT6ZK4U6ePKEW4Ph8J+BqNQ
+        4CD11DVDK85pGApK6yVIm4JfBOGtWMvmHVwiueo=
+X-Google-Smtp-Source: APXvYqyLKVHdGclu30IkpArV9msFHuqu0M2RIXAukS6lgHqsp9eYW/yu7QIPbNK/yqnx5CUsJYD0AKHY3jhQ84wUZJ4=
+X-Received: by 2002:a92:ce41:: with SMTP id a1mr28333359ilr.196.1574602259177;
+ Sun, 24 Nov 2019 05:30:59 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87blt3y949.fsf@x220.int.ebiederm.org>
-User-Agent: Mutt/1.12.2 (2019-09-21)
-X-dinsnail-net-MailScanner-Information: Please contact the ISP for more information
-X-dinsnail-net-MailScanner-ID: xAMLEhOU026814
-X-dinsnail-net-MailScanner: Found to be clean
-X-dinsnail-net-MailScanner-From: michael@weiser.dinsnail.net
-X-Spam-Status: No
+Received: by 2002:a4f:4fd0:0:0:0:0:0 with HTTP; Sun, 24 Nov 2019 05:30:58
+ -0800 (PST)
+Reply-To: afginvestmentbrokers@al-faisaliah.org
+From:   "Mr. Joon-Kyu Lin" <johnpfox60@gmail.com>
+Date:   Sun, 24 Nov 2019 05:30:58 -0800
+Message-ID: <CAHLmmYMwSyv6SDSHReuUby=AiHjbvdPDkDOkJjF8FDgfuYV8gg@mail.gmail.com>
+Subject: Venture Capital & Private Investors
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hi Eric,
+Attention:
 
-On Fri, Nov 22, 2019 at 02:00:22PM -0600, Eric W. Biederman wrote:
+I am an investor that can provide funding for any viable business idea or
+venture.
 
-> > esrt: Unsupported ESRT version 2904149718861218184.
-> >
-> > (The image is rather large at 18MiB as it has a built-in initrd.)
-> When did x86_64 get support for ARCH_KEEP_MEMBLOCK?  I can't find it
-> anywhere.
+Please do let me know if you have fund management abilities, credible
+projects in need of funding or advanced stage projects requiring Bank
+Guarantees, Loans or Partnership, Joint Venture, Equity, we would be
+delighted to work with you.
 
-No, is hasn't. I temporarily hacked that in to see if it'd change
-anything and it did. Sorry to not be more clear about that.
 
-> Fundamentally when deciding where to place a new kernel kexec (either
-> user space or the in kernel kexec_file implementation) needs to be able
-> to ask the question which memory ares are reserved.
-> What the buddy
-> allocator does is unimportant as kexec copies memory from all over
-> the place and places it in the destined memory addresses at the
-> time of the kexec operation.
+Best Regards,
+Mr. Joon-Kyu Lim
+Al Faisaliah Group (AFG)
+Venture Capital & Private Investors
 
-> So my question is why doesn't the ESRT reservation wind up in
-> /proc/iomem?
-
-My guess is that the focus was that some EFI structures need to be kept
-around accross the life cycle of *one* running kernel and
-memblock_reserve() was enough for that. Marking them so they survive
-kexecing another kernel might just never have cropped up thus far. Ard
-or Matt would know.
-
-> Are you dealing with an embedded port that is being clever?
-
-I'm not an expert but think it's rather the opposite: It's just a memory
-area provided by EFI containing some potentially interesting information
-about the EFI firmware structure itself. The aim is to aid firmware
-upgrades. This information needs to survive kexec so the user would be
-able to use that information (e.g. for upgrades) after a kexec.
-
-So apart from leaving that memory untouched, I guess it could also be
-copied over to a staging area by kexec explicitly to be preserved across
-the kexec. Or it could be blanked out in such a way that the esrt driver
-would not find it after kexec and just be unavailable, if it's decided
-that you should only use data about a firmware for upgrades that you
-really just used to boot. I guess a bigger question could be asked
-whether it would actually be useful and safe for esrt to be available
-after kexec.
-
-> Or is there some subtle breakage now that x86 has memblock support that
-> /proc/iomem is no longer being properly maintained?
-
-Uuuh, let me backpaddle very hard here: x86 has not gained memblock
-preserve support. That was just me mucking about. Sorry.
--- 
-Thanks,
-Michael
+--
+*This email and any attachments are intended for the named recipients only
+and contain confidential materials. Any unauthorized copying, reviewing,
+dissemination or other use by anyone other than the named recipients of
+this communication is strictly prohibited. If you received this email in
+error and/or are not a named recipient, please notify the sender (Al
+Faisaliah Group) and delete all copies of this email. Thank you.
