@@ -2,38 +2,60 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F54310A219
-	for <lists+linux-efi@lfdr.de>; Tue, 26 Nov 2019 17:30:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 017CD10A2C9
+	for <lists+linux-efi@lfdr.de>; Tue, 26 Nov 2019 17:56:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726101AbfKZQ37 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 26 Nov 2019 11:29:59 -0500
-Received: from mail.kernel.org ([198.145.29.99]:44620 "EHLO mail.kernel.org"
+        id S1728525AbfKZQyn (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 26 Nov 2019 11:54:43 -0500
+Received: from mga17.intel.com ([192.55.52.151]:10925 "EHLO mga17.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725972AbfKZQ37 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Tue, 26 Nov 2019 11:29:59 -0500
-Received: from localhost.localdomain (91-167-84-221.subs.proxad.net [91.167.84.221])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 184572071A;
-        Tue, 26 Nov 2019 16:29:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1574785798;
-        bh=qrvXuMHKCoQOdORxNJ+YbqsB49FLPqu3p1fW/+eSpZo=;
-        h=From:To:Cc:Subject:Date:From;
-        b=rNwTJiwpENG4ilu/hr3qpPAyWcnzAGOtNgVJBrxsMrEgkzWe0Ng+15ivaad2xTIvx
-         yMTwWWetijnvVdKWKUlrh5QdY8wiellk32/tA6dpP1AjdcTEAoL2qjvN//Fb8u6qal
-         YuLRlvReTloPuw1Grmkb393LOg6lU11gvYBcBctQ=
-From:   Ard Biesheuvel <ardb@kernel.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     linux-arm-kernel@lists.infradead.org, linux-efi@vger.kernel.org,
-        will@kernel.org, bhelgaas@google.com,
-        Ard Biesheuvel <ardb@kernel.org>,
+        id S1727756AbfKZQym (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Tue, 26 Nov 2019 11:54:42 -0500
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 26 Nov 2019 08:54:42 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.69,246,1571727600"; 
+   d="scan'208";a="217197185"
+Received: from sjchrist-coffee.jf.intel.com ([10.54.74.41])
+  by fmsmga001.fm.intel.com with ESMTP; 26 Nov 2019 08:54:41 -0800
+From:   Sean Christopherson <sean.j.christopherson@intel.com>
+To:     Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        x86@kernel.org, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <len.brown@intel.com>, Pavel Machek <pavel@ucw.cz>
+Cc:     Tony Luck <tony.luck@intel.com>, Fenghua Yu <fenghua.yu@intel.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Jiri Olsa <jolsa@redhat.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Nadav Amit <nadav.amit@gmail.com>,
+        "VMware, Inc." <pv-drivers@vmware.com>,
+        Arnd Bergmann <arnd@arndb.de>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Saravana Kannan <saravanak@google.com>
-Subject: [PATCH] efi: arm: defer probe of PCIe backed efifb on DT systems
-Date:   Tue, 26 Nov 2019 17:29:02 +0100
-Message-Id: <20191126162902.16788-1-ardb@kernel.org>
-X-Mailer: git-send-email 2.20.1
+        Hans de Goede <hdegoede@redhat.com>,
+        Cezary Rojewski <cezary.rojewski@intel.com>,
+        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+        Liam Girdwood <liam.r.girdwood@linux.intel.com>,
+        Jie Yang <yang.jie@linux.intel.com>,
+        Mark Brown <broonie@kernel.org>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>, linux-ia64@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        linux-acpi@vger.kernel.org, alsa-devel@alsa-project.org
+Subject: [PATCH v2 00/12] treewide: break dependencies on x86's RM header
+Date:   Tue, 26 Nov 2019 08:54:05 -0800
+Message-Id: <20191126165417.22423-1-sean.j.christopherson@intel.com>
+X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-efi-owner@vger.kernel.org
@@ -41,112 +63,79 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The new of_devlink support breaks PCIe probing on ARM platforms booting
-via UEFI if the firmware exposes a EFI framebuffer that is backed by a
-PCI device. The reason is that the probing order gets reversed,
-resulting in a resource conflict on the framebuffer memory window when
-the PCIe probes last, causing it to give up entirely.
+x86's asm/realmode.h, which defines low level structures, variables and
+helpers used to bring up APs during SMP boot, ends up getting included in
+practically every nook and cranny of the kernel because the address used
+by ACPI for resuming from S3 also happens to be stored in the real mode
+header, and ACPI bleeds the dependency into its widely included headers.
 
-Given that we rely on PCI quirks to deal with EFI framebuffers that get
-moved around in memory, we cannot simply drop the memory reservation, so
-instead, let's use the device link infrastructure to register this
-dependency, and force the probing to occur in the expected order.
+As a result, modifying realmode.h for even the most trivial change to the
+boot code triggers a full kernel rebuild, which is frustrating to say the
+least as it some of the most difficult code to get exactly right *and* is
+also some of the most functionally isolated code in the kernel.
 
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Saravana Kannan <saravanak@google.com>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
----
- drivers/firmware/efi/arm-init.c | 66 ++++++++++++++++++--
- 1 file changed, 61 insertions(+), 5 deletions(-)
+To break the kernel's widespread dependency on realmode.h, add a wrapper
+in the aforementioned ACPI S3 code to access the real mode header instead
+of derefencing the header directly in asm/acpi.h and thereby exposing it
+to the world via linux/acpi.h.
 
-diff --git a/drivers/firmware/efi/arm-init.c b/drivers/firmware/efi/arm-init.c
-index 311cd349a862..617226d50774 100644
---- a/drivers/firmware/efi/arm-init.c
-+++ b/drivers/firmware/efi/arm-init.c
-@@ -14,6 +14,7 @@
- #include <linux/memblock.h>
- #include <linux/mm_types.h>
- #include <linux/of.h>
-+#include <linux/of_address.h>
- #include <linux/of_fdt.h>
- #include <linux/platform_device.h>
- #include <linux/screen_info.h>
-@@ -267,15 +268,70 @@ void __init efi_init(void)
- 		efi_memmap_unmap();
- }
- 
-+static bool __init efifb_overlaps_pci_range(const struct of_pci_range *range)
-+{
-+	u64 fb_base = screen_info.lfb_base;
-+
-+	if (screen_info.capabilities & VIDEO_CAPABILITY_64BIT_BASE)
-+		fb_base |= (u64)(unsigned long)screen_info.ext_lfb_base << 32;
-+
-+	return fb_base >= range->cpu_addr &&
-+	       fb_base < (range->cpu_addr + range->size);
-+}
-+
- static int __init register_gop_device(void)
- {
--	void *pd;
-+	struct platform_device *pd;
-+	struct device_node *np;
-+	bool found = false;
-+	int err;
- 
- 	if (screen_info.orig_video_isVGA != VIDEO_TYPE_EFI)
- 		return 0;
- 
--	pd = platform_device_register_data(NULL, "efi-framebuffer", 0,
--					   &screen_info, sizeof(screen_info));
--	return PTR_ERR_OR_ZERO(pd);
-+	pd = platform_device_alloc("efi-framebuffer", 0);
-+	if (!pd)
-+		return -ENOMEM;
-+
-+	err = platform_device_add_data(pd, &screen_info, sizeof(screen_info));
-+	if (err)
-+		return err;
-+
-+	/*
-+	 * If the efifb framebuffer is backed by a PCI graphics controller, we
-+	 * have to ensure that this relation is expressed using a device link
-+	 * when running in DT mode, or the probe order may be reversed,
-+	 * resulting in a resource reservation conflict on the memory window
-+	 * that the efifb framebuffer steals from the PCIe host bridge.
-+	 */
-+	for_each_node_by_type(np, "pci") {
-+		struct of_pci_range_parser parser;
-+		struct of_pci_range range;
-+		struct device *sup_dev;
-+
-+		if (found) {
-+			of_node_put(np);
-+			break;
-+		}
-+
-+		err = of_pci_range_parser_init(&parser, np);
-+		if (err) {
-+			pr_warn("of_pci_range_parser_init() failed: %d\n", err);
-+			continue;
-+		}
-+
-+		sup_dev = get_dev_from_fwnode(&np->fwnode);
-+
-+		for_each_of_pci_range(&parser, &range) {
-+			if (efifb_overlaps_pci_range(&range)) {
-+				found = true;
-+				if (!device_link_add(&pd->dev, sup_dev, 0))
-+					pr_warn("device_link_add() failed\n");
-+				break;
-+			}
-+		}
-+		put_device(sup_dev);
-+	}
-+	return platform_device_add(pd);
- }
--subsys_initcall(register_gop_device);
-+device_initcall(register_gop_device);
+v2:
+  - Rebased on tip/x86/cleanups, commit b74374fef924 ("x86/setup: Enhance
+    the comments").
+  - Use acpi_get_wakeup_address() as new function name. [Boris and Pavel]
+  - Capture acpi_get_wakeup_address() in a local address. [Pavel]
+  - Collect acks.  I didn't add Rafael's acks on patches 11 and 12 due to
+    the above changes.
+  - Explicitly call out the removal of <asm/realmode.h> from <asm/acpi.h>
+    in patch 12. [Ingo]
+  - Remove superfluous Fixes: tags. [Ard]
+
+Patch Synopsis:
+  - Patches 01-09 fix a variety of build errors that arise when patch 12
+    drops realmode.h from asm/acpi.h.  Most of the errors are quite absurb
+    as they have no relation whatsoever to x86's RM boot code, but occur
+    because realmode.h happens to include asm/io.h.
+
+  - Patch 10 removes a spurious include of realmode.h from an ACPI header.
+
+  - Patches 11 and 12 implement the wrapper and move it out of acpi.h.
+
+
+Sean Christopherson (12):
+  x86/efi: Explicitly include realmode.h to handle RM trampoline quirk
+  x86/boot: Explicitly include realmode.h to handle RM reservations
+  x86/ftrace: Explicitly include vmalloc.h for
+    set_vm_flush_reset_perms()
+  x86/kprobes: Explicitly include vmalloc.h for
+    set_vm_flush_reset_perms()
+  perf/x86/intel: Explicitly include asm/io.h to use virt_to_phys()
+  efi/capsule-loader: Explicitly include linux/io.h for page_to_phys()
+  virt: vbox: Explicitly include linux/io.h to pick up various defs
+  vmw_balloon: Explicitly include linux/io.h for virt_to_phys()
+  ASoC: Intel: Skylake: Explicitly include linux/io.h for virt_to_phys()
+  x86/ACPI/sleep: Remove an unnecessary include of asm/realmode.h
+  ACPI/sleep: Convert acpi_wakeup_address into a function
+  x86/ACPI/sleep: Move acpi_get_wakeup_address() into sleep.c, remove
+    <asm/realmode.h> from <asm/acpi.h>
+
+ arch/ia64/include/asm/acpi.h             |  5 ++++-
+ arch/ia64/kernel/acpi.c                  |  2 --
+ arch/x86/events/intel/ds.c               |  1 +
+ arch/x86/include/asm/acpi.h              |  3 +--
+ arch/x86/kernel/acpi/sleep.c             | 11 +++++++++++
+ arch/x86/kernel/acpi/sleep.h             |  2 +-
+ arch/x86/kernel/ftrace.c                 |  1 +
+ arch/x86/kernel/kprobes/core.c           |  1 +
+ arch/x86/kernel/setup.c                  |  1 +
+ arch/x86/platform/efi/quirks.c           |  1 +
+ drivers/acpi/sleep.c                     |  3 +++
+ drivers/firmware/efi/capsule-loader.c    |  1 +
+ drivers/misc/vmw_balloon.c               |  1 +
+ drivers/virt/vboxguest/vboxguest_core.c  |  1 +
+ drivers/virt/vboxguest/vboxguest_utils.c |  1 +
+ sound/soc/intel/skylake/skl-sst-cldma.c  |  1 +
+ 16 files changed, 30 insertions(+), 6 deletions(-)
+
 -- 
-2.20.1
+2.24.0
 
