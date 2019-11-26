@@ -2,24 +2,24 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 66AE910A2A7
-	for <lists+linux-efi@lfdr.de>; Tue, 26 Nov 2019 17:55:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6681110A293
+	for <lists+linux-efi@lfdr.de>; Tue, 26 Nov 2019 17:54:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728788AbfKZQzO (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 26 Nov 2019 11:55:14 -0500
-Received: from mga17.intel.com ([192.55.52.151]:10925 "EHLO mga17.intel.com"
+        id S1728737AbfKZQy5 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 26 Nov 2019 11:54:57 -0500
+Received: from mga17.intel.com ([192.55.52.151]:10935 "EHLO mga17.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728715AbfKZQyz (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Tue, 26 Nov 2019 11:54:55 -0500
+        id S1728721AbfKZQy4 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Tue, 26 Nov 2019 11:54:56 -0500
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
 Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 26 Nov 2019 08:54:54 -0800
+  by fmsmga107.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 26 Nov 2019 08:54:55 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.69,246,1571727600"; 
-   d="scan'208";a="217197247"
+   d="scan'208";a="217197251"
 Received: from sjchrist-coffee.jf.intel.com ([10.54.74.41])
-  by fmsmga001.fm.intel.com with ESMTP; 26 Nov 2019 08:54:53 -0800
+  by fmsmga001.fm.intel.com with ESMTP; 26 Nov 2019 08:54:54 -0800
 From:   Sean Christopherson <sean.j.christopherson@intel.com>
 To:     Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
@@ -52,9 +52,9 @@ Cc:     Tony Luck <tony.luck@intel.com>, Fenghua Yu <fenghua.yu@intel.com>,
         linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
         linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
         linux-acpi@vger.kernel.org, alsa-devel@alsa-project.org
-Subject: [PATCH v2 10/12] x86/ACPI/sleep: Remove an unnecessary include of asm/realmode.h
-Date:   Tue, 26 Nov 2019 08:54:15 -0800
-Message-Id: <20191126165417.22423-11-sean.j.christopherson@intel.com>
+Subject: [PATCH v2 11/12] ACPI/sleep: Convert acpi_wakeup_address into a function
+Date:   Tue, 26 Nov 2019 08:54:16 -0800
+Message-Id: <20191126165417.22423-12-sean.j.christopherson@intel.com>
 X-Mailer: git-send-email 2.24.0
 In-Reply-To: <20191126165417.22423-1-sean.j.christopherson@intel.com>
 References: <20191126165417.22423-1-sean.j.christopherson@intel.com>
@@ -65,30 +65,84 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-None of the declarations in x86's acpi/sleep.h are in any way dependent
-on the real mode boot code.  Remove sleep.h's include of asm/realmode.h
-to limit the dependencies on realmode.h to code that actually interacts
-with the boot code.
+Convert acpi_wakeup_address from a raw variable into a function so that
+x86 can wrap its dereference of the real mode boot header in a function
+instead of broadcasting it to the world via a #define.  This sets the
+stage for a future patch to move x86's definition of the new function,
+acpi_get_wakeup_address(), out of asm/acpi.h and thus break acpi.h's
+dependency on asm/realmode.h.
 
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+No functional change intended.
+
 Signed-off-by: Sean Christopherson <sean.j.christopherson@intel.com>
 ---
- arch/x86/kernel/acpi/sleep.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/ia64/include/asm/acpi.h | 5 ++++-
+ arch/ia64/kernel/acpi.c      | 2 --
+ arch/x86/include/asm/acpi.h  | 5 ++++-
+ drivers/acpi/sleep.c         | 3 +++
+ 4 files changed, 11 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/kernel/acpi/sleep.h b/arch/x86/kernel/acpi/sleep.h
-index fbb60ca4255c..d06c2079b6c1 100644
---- a/arch/x86/kernel/acpi/sleep.h
-+++ b/arch/x86/kernel/acpi/sleep.h
-@@ -3,7 +3,7 @@
-  *	Variables and functions used by the code in sleep.c
-  */
+diff --git a/arch/ia64/include/asm/acpi.h b/arch/ia64/include/asm/acpi.h
+index f886d4dc9d55..b66ba907019c 100644
+--- a/arch/ia64/include/asm/acpi.h
++++ b/arch/ia64/include/asm/acpi.h
+@@ -38,7 +38,10 @@ int acpi_gsi_to_irq (u32 gsi, unsigned int *irq);
+ /* Low-level suspend routine. */
+ extern int acpi_suspend_lowlevel(void);
  
--#include <asm/realmode.h>
-+#include <linux/linkage.h>
+-extern unsigned long acpi_wakeup_address;
++static inline unsigned long acpi_get_wakeup_address(void)
++{
++	return 0;
++}
  
- extern unsigned long saved_video_mode;
- extern long saved_magic;
+ /*
+  * Record the cpei override flag and current logical cpu. This is
+diff --git a/arch/ia64/kernel/acpi.c b/arch/ia64/kernel/acpi.c
+index 70d1587ddcd4..a5636524af76 100644
+--- a/arch/ia64/kernel/acpi.c
++++ b/arch/ia64/kernel/acpi.c
+@@ -42,8 +42,6 @@ int acpi_lapic;
+ unsigned int acpi_cpei_override;
+ unsigned int acpi_cpei_phys_cpuid;
+ 
+-unsigned long acpi_wakeup_address = 0;
+-
+ #define ACPI_MAX_PLATFORM_INTERRUPTS	256
+ 
+ /* Array to record platform interrupt vectors for generic interrupt routing. */
+diff --git a/arch/x86/include/asm/acpi.h b/arch/x86/include/asm/acpi.h
+index bc9693c9107e..23ffafd927a1 100644
+--- a/arch/x86/include/asm/acpi.h
++++ b/arch/x86/include/asm/acpi.h
+@@ -62,7 +62,10 @@ static inline void acpi_disable_pci(void)
+ extern int (*acpi_suspend_lowlevel)(void);
+ 
+ /* Physical address to resume after wakeup */
+-#define acpi_wakeup_address ((unsigned long)(real_mode_header->wakeup_start))
++static inline unsigned long acpi_get_wakeup_address(void)
++{
++	return ((unsigned long)(real_mode_header->wakeup_start));
++}
+ 
+ /*
+  * Check if the CPU can handle C2 and deeper
+diff --git a/drivers/acpi/sleep.c b/drivers/acpi/sleep.c
+index 9fa77d72ef27..2e87ccf17ff6 100644
+--- a/drivers/acpi/sleep.c
++++ b/drivers/acpi/sleep.c
+@@ -61,8 +61,11 @@ static struct notifier_block tts_notifier = {
+ static int acpi_sleep_prepare(u32 acpi_state)
+ {
+ #ifdef CONFIG_ACPI_SLEEP
++	unsigned long acpi_wakeup_address;
++
+ 	/* do we have a wakeup address for S2 and S3? */
+ 	if (acpi_state == ACPI_STATE_S3) {
++		acpi_wakeup_address = acpi_get_wakeup_address();
+ 		if (!acpi_wakeup_address)
+ 			return -EFAULT;
+ 		acpi_set_waking_vector(acpi_wakeup_address);
 -- 
 2.24.0
 
