@@ -2,24 +2,24 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 40B3F10A2CE
-	for <lists+linux-efi@lfdr.de>; Tue, 26 Nov 2019 17:56:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1326210A2D2
+	for <lists+linux-efi@lfdr.de>; Tue, 26 Nov 2019 17:56:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728562AbfKZQyo (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 26 Nov 2019 11:54:44 -0500
+        id S1728585AbfKZQyp (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 26 Nov 2019 11:54:45 -0500
 Received: from mga17.intel.com ([192.55.52.151]:10925 "EHLO mga17.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727756AbfKZQyo (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Tue, 26 Nov 2019 11:54:44 -0500
+        id S1728547AbfKZQyp (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Tue, 26 Nov 2019 11:54:45 -0500
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
 Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 26 Nov 2019 08:54:43 -0800
+  by fmsmga107.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 26 Nov 2019 08:54:44 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.69,246,1571727600"; 
-   d="scan'208";a="217197198"
+   d="scan'208";a="217197203"
 Received: from sjchrist-coffee.jf.intel.com ([10.54.74.41])
-  by fmsmga001.fm.intel.com with ESMTP; 26 Nov 2019 08:54:42 -0800
+  by fmsmga001.fm.intel.com with ESMTP; 26 Nov 2019 08:54:43 -0800
 From:   Sean Christopherson <sean.j.christopherson@intel.com>
 To:     Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
@@ -52,9 +52,9 @@ Cc:     Tony Luck <tony.luck@intel.com>, Fenghua Yu <fenghua.yu@intel.com>,
         linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
         linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
         linux-acpi@vger.kernel.org, alsa-devel@alsa-project.org
-Subject: [PATCH v2 01/12] x86/efi: Explicitly include realmode.h to handle RM trampoline quirk
-Date:   Tue, 26 Nov 2019 08:54:06 -0800
-Message-Id: <20191126165417.22423-2-sean.j.christopherson@intel.com>
+Subject: [PATCH v2 02/12] x86/boot: Explicitly include realmode.h to handle RM reservations
+Date:   Tue, 26 Nov 2019 08:54:07 -0800
+Message-Id: <20191126165417.22423-3-sean.j.christopherson@intel.com>
 X-Mailer: git-send-email 2.24.0
 In-Reply-To: <20191126165417.22423-1-sean.j.christopherson@intel.com>
 References: <20191126165417.22423-1-sean.j.christopherson@intel.com>
@@ -65,28 +65,28 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Explicitly include asm/realmode.h, which is needed to handle a real mode
-trampoline quirk in efi_free_boot_services(), instead of picking it up
-by way of linux/acpi.h.  acpi.h will soon stop including realmode.h so
-that changing realmode.h doesn't require a full kernel rebuild.
+Explicitly include asm/realmode.h, which provides reserve_real_mode(),
+instead of picking it up by an indirect include of asm/acpi.h.  acpi.h
+will soon stop including realmode.h so that changing realmode.h doesn't
+require a full kernel rebuild.
 
 Signed-off-by: Sean Christopherson <sean.j.christopherson@intel.com>
 ---
- arch/x86/platform/efi/quirks.c | 1 +
+ arch/x86/kernel/setup.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/arch/x86/platform/efi/quirks.c b/arch/x86/platform/efi/quirks.c
-index 3b9fd679cea9..f9ef5c5346ca 100644
---- a/arch/x86/platform/efi/quirks.c
-+++ b/arch/x86/platform/efi/quirks.c
-@@ -16,6 +16,7 @@
- #include <asm/efi.h>
- #include <asm/uv/uv.h>
- #include <asm/cpu_device_id.h>
+diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
+index a87138186724..38dfb61cacb8 100644
+--- a/arch/x86/kernel/setup.c
++++ b/arch/x86/kernel/setup.c
+@@ -35,6 +35,7 @@
+ #include <asm/kaslr.h>
+ #include <asm/mce.h>
+ #include <asm/mtrr.h>
 +#include <asm/realmode.h>
- #include <asm/reboot.h>
- 
- #define EFI_MIN_RESERVE 5120
+ #include <asm/olpc_ofw.h>
+ #include <asm/pci-direct.h>
+ #include <asm/prom.h>
 -- 
 2.24.0
 
