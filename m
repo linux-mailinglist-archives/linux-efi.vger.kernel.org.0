@@ -2,170 +2,117 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CFD1610FD5F
-	for <lists+linux-efi@lfdr.de>; Tue,  3 Dec 2019 13:09:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7EDB710FD82
+	for <lists+linux-efi@lfdr.de>; Tue,  3 Dec 2019 13:21:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726318AbfLCMJo (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 3 Dec 2019 07:09:44 -0500
-Received: from mail.kernel.org ([198.145.29.99]:43824 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725954AbfLCMJo (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Tue, 3 Dec 2019 07:09:44 -0500
-Received: from e123331-lin.cambridge.arm.com (fw-tnat-cam5.arm.com [217.140.106.53])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B276C2073C;
-        Tue,  3 Dec 2019 12:09:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1575374983;
-        bh=copjafRuSpR3VqMDvYW+aYmE1dOaRIgJtRncgMnwbKo=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=P1OzBsD81YMr4+KqvtFjTVgVKLjymWBk3279dOtTKen0vYxVr07texzrl98g7qPd8
-         lR4Qx6t3KYVaBl9BCnDyfu+2Z62bOPIMgumW7aio1ZUiQfFIll41R8g+8Bs7Enx8Ag
-         yD/sK12Jg2/Ve85H3mZVY0rFde97OmLRL4qixZOM=
-From:   Ard Biesheuvel <ardb@kernel.org>
-To:     linux-efi@vger.kernel.org
-Cc:     linux-arm-kernel@lists.infradead.org, mark.rutland@arm.com,
-        james.morse@arm.com, Ard Biesheuvel <ardb@kernel.org>
-Subject: [PATCH 2/2] efi: move handling of properties table to x86 specific code
-Date:   Tue,  3 Dec 2019 12:09:17 +0000
-Message-Id: <20191203120917.25981-3-ardb@kernel.org>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20191203120917.25981-1-ardb@kernel.org>
-References: <20191203120917.25981-1-ardb@kernel.org>
+        id S1725838AbfLCMVg (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 3 Dec 2019 07:21:36 -0500
+Received: from mail-wm1-f67.google.com ([209.85.128.67]:36696 "EHLO
+        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725907AbfLCMVg (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 3 Dec 2019 07:21:36 -0500
+Received: by mail-wm1-f67.google.com with SMTP id p17so3249148wma.1
+        for <linux-efi@vger.kernel.org>; Tue, 03 Dec 2019 04:21:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=agHyjTjbofzuW8SIwTIdiL9YenKtJD2wlWpQCg4YmqM=;
+        b=IyoeuQiIyAeqePQ/Vfu8MwxYbFJ/qMit3p/kgl+cVH3Y0T/ldi6h5YuHv5B6msXy6V
+         ygU3o+ojfitdMSzBiaqOHWI+r9Lhfi1jOYRFnNpxlv5Y9jc/OpbjW/tdedyKpMlQBd1w
+         D0O8+C/8mol0whKUwVJT95qG1FIjFD8on2XpXWN7TgAr3jVRTjTrOvKoP4RKrsQ206pi
+         xn9ggtomHDs2RNJOnbQpNPJqtjyF6jpeo+cquZouJG7hvULGK445GCBrAtFh7iTKv2sE
+         UDaQUCOdYbTGodVkYcjD47Al1JhBqdQxCV+zYRlp4oj9qzcueI4djRNdQTcGj1MBHGYz
+         s3hg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=agHyjTjbofzuW8SIwTIdiL9YenKtJD2wlWpQCg4YmqM=;
+        b=HQfNmbt4R/yhGhoBM0A7MDek1VAkEqa88T5S6LXS1ixkio3fVUJJHQqlNdEX1818qa
+         XDHTu8fPJ9GIMAs75D5CIhcdylARJ6i4hyzD08TpX7iUTR/ZYfrYApAmof9aE3ua20Km
+         aKLKUE1xd2sX168kLmmTBfKvJxLzzsNX7zXwmlm0Dm6h3+ZU4ghmg+hKgz73kIBSncCq
+         hhmK9TEGYO8Ix/7rseNRPS4ylbxHgIrUDGmbGfMiRA3G+aAw4d2UNZ2GEtqB3CL40dzK
+         D/FiBHNvCJOQC6sO0ADIUyvBnXlKHi8o1p19zFE4p521rpf/qZ2PiR++wmPSd/qWCK5W
+         +SxA==
+X-Gm-Message-State: APjAAAVs1BHtHbd6nJF4msyApIgzLW/JVEJADZ3eVoR6cM4u4o0MVM7y
+        4LvloCKEaCeT7XEZ116nKPkz4S5HGJA34DBk70GZTOeUqSesjA==
+X-Google-Smtp-Source: APXvYqy0cPGOP724txYz8qFtRgOzBhqL+Hsj7n+zraMo2AmPX8FGijMgotqh3LQ+y8ZRGJC/E9J31XgdwKwgCeQP9V8=
+X-Received: by 2002:a1c:b1c3:: with SMTP id a186mr34766041wmf.10.1575375694173;
+ Tue, 03 Dec 2019 04:21:34 -0800 (PST)
+MIME-Version: 1.0
+References: <20191201221058.831985-1-nivedita@alum.mit.edu>
+In-Reply-To: <20191201221058.831985-1-nivedita@alum.mit.edu>
+From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Date:   Tue, 3 Dec 2019 12:21:29 +0000
+Message-ID: <CAKv+Gu8Lih6q7yVJ0Mbz8a0DoxdPdqBpue+Vh7b4aMgn9kZ=AA@mail.gmail.com>
+Subject: Re: [PATCH] efi: fix type of unload field in efi_loaded_image_t
+To:     Arvind Sankar <nivedita@alum.mit.edu>
+Cc:     Ard Biesheuvel <ardb@kernel.org>,
+        linux-efi <linux-efi@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The EFI properties table defines only a single property called
-EFI_PROPERTIES_RUNTIME_MEMORY_PROTECTION_NON_EXECUTABLE_PE_DATA which
-was deprecated almost immediately after it was defined, given that
-splitting EFI runtime code regions into code and data segments is not
-generally possible because the OS may apply a virtual mapping that
-corrupts relative references between those segments. Instead, a new
-memory attributes table has been defined that supersedes this feature.
+On Sun, 1 Dec 2019 at 22:11, Arvind Sankar <nivedita@alum.mit.edu> wrote:
+>
+> The unload field is a function pointer, so it should be u32 for 32-bit,
+> u64 for 64-bit. Add a prototype for it in the native efi_loaded_image_t
+> type. Also change type of parent_handle and device_handle from void* to
+> efi_handle_t for documentation purposes.
+>
+> The unload method is not used, so no functional change.
 
-Some x86 implementations of this property are known to exist in the field,
-and the x86 EFI support code actually takes this property into account if
-no memory attributes table is provided, but on other architectures, the
-property is ignored entirely. So let's move the code that supports this
-feature into the arch/x86 tree.
+Please resend this patch with a signed-off-by line, and I will queue
+it for the next merge window.
 
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
----
- arch/x86/platform/efi/efi.c | 22 +++++++++++++++++++-
- drivers/firmware/efi/efi.c  | 19 -----------------
- include/linux/efi.h         |  1 -
- 3 files changed, 21 insertions(+), 21 deletions(-)
 
-diff --git a/arch/x86/platform/efi/efi.c b/arch/x86/platform/efi/efi.c
-index 38d44f36d5ed..dda52770d78a 100644
---- a/arch/x86/platform/efi/efi.c
-+++ b/arch/x86/platform/efi/efi.c
-@@ -57,10 +57,13 @@
- static struct efi efi_phys __initdata;
- static efi_system_table_t efi_systab __initdata;
- 
-+static unsigned long properties_table = EFI_INVALID_TABLE_ADDR;
-+
- static efi_config_table_type_t arch_tables[] __initdata = {
- #ifdef CONFIG_X86_UV
- 	{UV_SYSTEM_TABLE_GUID, "UVsystab", &uv_systab_phys},
- #endif
-+	{EFI_PROPERTIES_TABLE_GUID, "PROP", &properties_table},
- 	{NULL_GUID, NULL, NULL},
- };
- 
-@@ -80,7 +83,7 @@ static const unsigned long * const efi_tables[] = {
- 	&efi.runtime,
- 	&efi.config_table,
- 	&efi.esrt,
--	&efi.properties_table,
-+	&properties_table,
- 	&efi.mem_attr_table,
- #ifdef CONFIG_EFI_RCI2_TABLE
- 	&rci2_table_phys,
-@@ -585,6 +588,23 @@ void __init efi_init(void)
- 	if (efi_config_init(arch_tables))
- 		return;
- 
-+	/* Parse the EFI Properties table if it exists */
-+	if (properties_table != EFI_INVALID_TABLE_ADDR) {
-+		efi_properties_table_t *tbl;
-+
-+		tbl = early_memremap(properties_table, sizeof(*tbl));
-+		if (tbl == NULL) {
-+			pr_err("Could not map Properties table!\n");
-+			return -ENOMEM;
-+		}
-+
-+		if (tbl->memory_protection_attribute &
-+		    EFI_PROPERTIES_RUNTIME_MEMORY_PROTECTION_NON_EXECUTABLE_PE_DATA)
-+			set_bit(EFI_NX_PE_DATA, &efi.flags);
-+
-+		early_memunmap(tbl, sizeof(*tbl));
-+	}
-+
- 	/*
- 	 * Note: We currently don't support runtime services on an EFI
- 	 * that doesn't match the kernel 32/64-bit mode.
-diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
-index d101f072c8f8..ff35c5533581 100644
---- a/drivers/firmware/efi/efi.c
-+++ b/drivers/firmware/efi/efi.c
-@@ -47,7 +47,6 @@ struct efi __read_mostly efi = {
- 	.runtime		= EFI_INVALID_TABLE_ADDR,
- 	.config_table		= EFI_INVALID_TABLE_ADDR,
- 	.esrt			= EFI_INVALID_TABLE_ADDR,
--	.properties_table	= EFI_INVALID_TABLE_ADDR,
- 	.mem_attr_table		= EFI_INVALID_TABLE_ADDR,
- 	.rng_seed		= EFI_INVALID_TABLE_ADDR,
- 	.tpm_log		= EFI_INVALID_TABLE_ADDR,
-@@ -476,7 +475,6 @@ static __initdata efi_config_table_type_t common_tables[] = {
- 	{SMBIOS3_TABLE_GUID, "SMBIOS 3.0", &efi.smbios3},
- 	{UGA_IO_PROTOCOL_GUID, "UGA", &efi.uga},
- 	{EFI_SYSTEM_RESOURCE_TABLE_GUID, "ESRT", &efi.esrt},
--	{EFI_PROPERTIES_TABLE_GUID, "PROP", &efi.properties_table},
- 	{EFI_MEMORY_ATTRIBUTES_TABLE_GUID, "MEMATTR", &efi.mem_attr_table},
- 	{LINUX_EFI_RANDOM_SEED_TABLE_GUID, "RNG", &efi.rng_seed},
- 	{LINUX_EFI_TPM_EVENT_LOG_GUID, "TPMEventLog", &efi.tpm_log},
-@@ -575,23 +573,6 @@ int __init efi_config_parse_tables(void *config_tables, int count, int sz,
- 
- 	efi_tpm_eventlog_init();
- 
--	/* Parse the EFI Properties table if it exists */
--	if (efi.properties_table != EFI_INVALID_TABLE_ADDR) {
--		efi_properties_table_t *tbl;
--
--		tbl = early_memremap(efi.properties_table, sizeof(*tbl));
--		if (tbl == NULL) {
--			pr_err("Could not map Properties table!\n");
--			return -ENOMEM;
--		}
--
--		if (tbl->memory_protection_attribute &
--		    EFI_PROPERTIES_RUNTIME_MEMORY_PROTECTION_NON_EXECUTABLE_PE_DATA)
--			set_bit(EFI_NX_PE_DATA, &efi.flags);
--
--		early_memunmap(tbl, sizeof(*tbl));
--	}
--
- 	if (efi.mem_reserve != EFI_INVALID_TABLE_ADDR) {
- 		unsigned long prsv = efi.mem_reserve;
- 
-diff --git a/include/linux/efi.h b/include/linux/efi.h
-index 99dfea595c8c..a6a7698a6ad1 100644
---- a/include/linux/efi.h
-+++ b/include/linux/efi.h
-@@ -995,7 +995,6 @@ extern struct efi {
- 	unsigned long runtime;		/* runtime table */
- 	unsigned long config_table;	/* config tables */
- 	unsigned long esrt;		/* ESRT table */
--	unsigned long properties_table;	/* properties table */
- 	unsigned long mem_attr_table;	/* memory attributes table */
- 	unsigned long rng_seed;		/* UEFI firmware random seed */
- 	unsigned long tpm_log;		/* TPM2 Event Log table */
--- 
-2.17.1
-
+> ---
+>  include/linux/efi.h | 10 +++++-----
+>  1 file changed, 5 insertions(+), 5 deletions(-)
+>
+> diff --git a/include/linux/efi.h b/include/linux/efi.h
+> index 99dfea595c8c..aa54586db7a5 100644
+> --- a/include/linux/efi.h
+> +++ b/include/linux/efi.h
+> @@ -824,7 +824,7 @@ typedef struct {
+>         __aligned_u64 image_size;
+>         unsigned int image_code_type;
+>         unsigned int image_data_type;
+> -       unsigned long unload;
+> +       u32 unload;
+>  } efi_loaded_image_32_t;
+>
+>  typedef struct {
+> @@ -840,14 +840,14 @@ typedef struct {
+>         __aligned_u64 image_size;
+>         unsigned int image_code_type;
+>         unsigned int image_data_type;
+> -       unsigned long unload;
+> +       u64 unload;
+>  } efi_loaded_image_64_t;
+>
+>  typedef struct {
+>         u32 revision;
+> -       void *parent_handle;
+> +       efi_handle_t parent_handle;
+>         efi_system_table_t *system_table;
+> -       void *device_handle;
+> +       efi_handle_t device_handle;
+>         void *file_path;
+>         void *reserved;
+>         u32 load_options_size;
+> @@ -856,7 +856,7 @@ typedef struct {
+>         __aligned_u64 image_size;
+>         unsigned int image_code_type;
+>         unsigned int image_data_type;
+> -       unsigned long unload;
+> +       efi_status_t (*unload)(efi_handle_t image_handle);
+>  } efi_loaded_image_t;
+>
+>
+> --
+> 2.23.0
+>
