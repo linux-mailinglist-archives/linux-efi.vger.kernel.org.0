@@ -2,93 +2,68 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8106F110550
-	for <lists+linux-efi@lfdr.de>; Tue,  3 Dec 2019 20:40:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C262110556
+	for <lists+linux-efi@lfdr.de>; Tue,  3 Dec 2019 20:41:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726923AbfLCTkg (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 3 Dec 2019 14:40:36 -0500
-Received: from mail-io1-f65.google.com ([209.85.166.65]:34645 "EHLO
-        mail-io1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726567AbfLCTkf (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 3 Dec 2019 14:40:35 -0500
-Received: by mail-io1-f65.google.com with SMTP id z193so5156183iof.1
-        for <linux-efi@vger.kernel.org>; Tue, 03 Dec 2019 11:40:35 -0800 (PST)
+        id S1726766AbfLCTlp (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 3 Dec 2019 14:41:45 -0500
+Received: from mail-io1-f46.google.com ([209.85.166.46]:33170 "EHLO
+        mail-io1-f46.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726640AbfLCTlp (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 3 Dec 2019 14:41:45 -0500
+Received: by mail-io1-f46.google.com with SMTP id j13so5198371ioe.0
+        for <linux-efi@vger.kernel.org>; Tue, 03 Dec 2019 11:41:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=8ch+WNijaY6AsPxm0+XePiTtapq06gZNm+FnTtW+Yvk=;
-        b=cUiQ2WxJYfgxGRtIYYrBFgideFa64zwJVC0xM+vPn1heDbtP8PS8yhn2SslWuKeDcv
-         qhLffbJ3Uo+Xo+PBrM9d1srYRC+HpClcuPS7jDcp7nCHYvNKj3tAiPHBPOeKB6nyEJgr
-         hAziOs01GF/Nm9RN1Ac/APBu0vvoX7TLuXjbEo16RDF+snyauxsyRnPMV36z/iiP3SDn
-         hKDznvFTSRzqAqz2WkQLpDHNKsS+cvsRHjWorCY9fY2HMWbBfkQv7Akz/++xiyUkfxYF
-         soTgico8aclq+HXraOhqfo7I5eaUa1BR59m74mMTlpG6jLAnZo16mBg2DDLjOz1EzXtX
-         1Nwg==
+        bh=FBemf5DffbM9H45GJNpf6XQTgytqS7SHwtWxDozwP2k=;
+        b=Zn6/mtS46CfYNTBvL+G3gsuGdj1yDZoKrME2Cm0wMQCY5fjcoWvefbN1CLMGjmOJA1
+         9WC2PCtFU8/4Vfd86+YWCUQIvD9IOjXz34uyx/oizThOidMc1Rr0u0foU+ENh1eWzRRd
+         6l8ow8Ls2e3YVJifDJ0mtA6n/3ev0jFO8JJ+Tetw55fE3BZW/65tDfu58DYHWpL900Hb
+         z5JrdoFih7F7WjFZ6OB4c0Tm/Qbd8PQ3GaRoIQa9kfq1Db5dV1NprGktZwf6GGHsNcmE
+         YGHLmKd1Je58e3wvoMtiPxTd4xKzZD57TXT4CL0ZVrlbTrU3JZaYltoYxGOJIFmjwp54
+         a48g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=8ch+WNijaY6AsPxm0+XePiTtapq06gZNm+FnTtW+Yvk=;
-        b=en4r+oHynQJ4eL60/cFbDYAUEUuWANiFY+kIzV9MGKdjpyQ1WoTE1z/aX8nvIFaed1
-         2a5rJIP6LhcEh3PM2K/n58SrxiGMnKa3nsTZkgZeuJ/NpoZDHpfnrNl5lEfsavZPD3Wx
-         jkQo9kHRGhKQIUB2lHgCQ9QpvuaH8yxoMrD1ZuAMnA4Wj/s9kVrrmj8Xs7JFte5zw69J
-         EPERfLivnKQTRfWiGlsoQyu0ByfaN1C3mZCuD5WV2h7pAV9i502P8NDxoP9tKxf8ia+K
-         aOc4kGzPLqHmyL/Zlsu8DicYUHsIH/FM5dr3oqGO4NRMsDIwrLR5S+FUeE1kuLgQ4A5E
-         axFQ==
-X-Gm-Message-State: APjAAAXeRnDql2tKfY/JHrMCRxKvbbjUIzImNOGP/LHLeC8j3vaW5Wr4
-        ZKZ0wUL+yWfmntbUqbqTOHUp6Ezl6S0z9TF6vmzg0g==
-X-Google-Smtp-Source: APXvYqycuBVBV4ixbORLjq5bU2odtfEntOXSTXVTJDzP7mv/SVY3vXetQWjJOUPobARr4NVuoGg3ywXDKlHjyRak6ng=
-X-Received: by 2002:a5e:df06:: with SMTP id f6mr3715528ioq.84.1575402034437;
- Tue, 03 Dec 2019 11:40:34 -0800 (PST)
+        bh=FBemf5DffbM9H45GJNpf6XQTgytqS7SHwtWxDozwP2k=;
+        b=JE4nRyVVltZAWsNXQbvFh3W8dumy1/KsFriWIhHQz75NU5C+UXChVl7CgXc0Sc+jfr
+         ZeJAyv4LfWHbKQU2nQevcp7t7lKFuC1mE1ZxjE01KZ9/fYqi9TWhZ6Iswch0l83wfG/0
+         DdWvI19wBZXf+PyraL012JAJjIKCtYFaQ202496IJArfF2YPNB2OvvbsJKyhkR9WiLeD
+         Day+cfdsNTRV5DBprq6mpLfZlGCBXmmePNWHdXWTYgbhPpv+cbr402cCIhlVJSNwzWwv
+         y9shFTWKI7awVI6s3vq3D8zVdDa+8gsbeeAK+MDVl6dmCJJFrbsgJpN/pxrYAGb9D6/m
+         8MXw==
+X-Gm-Message-State: APjAAAWkHQH5FpQ5fphkqulB2Um9LZO9HaHx23zfSLX/eAYu3ICdPKNJ
+        YKS6Fx4dju855yrSUMQHbLhqo/z12yw9NIRGC7nqJAI/D6Q=
+X-Google-Smtp-Source: APXvYqwxkVJgS3InUv5/LmPbRiof3P9j+j9W7/spqafHaIbJnIhprxg1ULJPZZFP78UueZBNHl/exmw8VSDIniSdL/k=
+X-Received: by 2002:a5d:9913:: with SMTP id x19mr3905793iol.46.1575402104183;
+ Tue, 03 Dec 2019 11:41:44 -0800 (PST)
 MIME-Version: 1.0
-References: <20191203004043.174977-1-matthewgarrett@google.com>
- <CACdnJus7nHdr4p4H1j5as9eB=FG-uX+wy_tjvTQ5ObErDJHdow@mail.gmail.com> <CAKv+Gu8emrf7WbTyGc8QDykX_hZbrVtxJKkRVbGFhd8rd13yww@mail.gmail.com>
-In-Reply-To: <CAKv+Gu8emrf7WbTyGc8QDykX_hZbrVtxJKkRVbGFhd8rd13yww@mail.gmail.com>
+References: <20191203004043.174977-1-matthewgarrett@google.com> <CALCETrWUYapn=vTbKnKFVQ3Y4vG0qHwux0ym_To2NWKPew+vrw@mail.gmail.com>
+In-Reply-To: <CALCETrWUYapn=vTbKnKFVQ3Y4vG0qHwux0ym_To2NWKPew+vrw@mail.gmail.com>
 From:   Matthew Garrett <mjg59@google.com>
-Date:   Tue, 3 Dec 2019 11:40:23 -0800
-Message-ID: <CACdnJusMeC+G3wq_oDGTYi1CBMWDiuq4NdANTBmhNBTDu5zCug@mail.gmail.com>
+Date:   Tue, 3 Dec 2019 11:41:32 -0800
+Message-ID: <CACdnJuv50s61WPMpHtrF6_=q3sCXD_Tm=30mtLnR_apjV=gjQg@mail.gmail.com>
 Subject: Re: [PATCH] [EFI,PCI] Allow disabling PCI busmastering on bridges
  during boot
-To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Cc:     Laszlo Ersek <lersek@redhat.com>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        "the arch/x86 maintainers" <x86@kernel.org>,
-        linux-pci <linux-pci@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+To:     Andy Lutomirski <luto@amacapital.net>
+Cc:     linux-efi <linux-efi@vger.kernel.org>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        X86 ML <x86@kernel.org>, linux-pci <linux-pci@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, Dec 3, 2019 at 3:54 AM Ard Biesheuvel <ard.biesheuvel@linaro.org> wrote:
+On Tue, Dec 3, 2019 at 7:30 AM Andy Lutomirski <luto@amacapital.net> wrote:
 
-> There is no reason this shouldn't apply to ARM, but disabling bus
-> mastering like that before the drivers themselves get a chance to do
-> so is likely to cause trouble. Network devices or storage controllers
-> that are still running and have live descriptor rings in DMA memory
-> shouldn't get the rug pulled from under their feet like that by
-> blindly disabling the BM attribute on all root ports before their
-> drivers have had the opportunity to do this cleanly.
+> Would a similar patch apply to non-EFI boot?  That is, in a BIOS boot,
+> is busmastering on when the kernel is loaded?
 
-Yes, whether this causes problems is going to be influenced by the
-behaviour of the hardware on the system. That's why I'm not defaulting
-it to being enabled :)
-
-> One trick we implemented in EDK2 for memory encryption was to do the
-> following (Laszlo, mind correcting me here if I am remembering this
-> wrong?)
-> - create an event X
-> - register an AtExitBootServices event that signals event X in its handler
-> - in the handler of event X, iterate over all PPBs to clear the bus
-> master attribute
-> - for bonus points, do the same for the PCIe devices themselves,
-> because root ports are known to exist that entirely ignore the BM
-> attribute
->
-> This way, event X should get handled after all the drivers' EBS event
-> handlers have been called.
-
-Can we guarantee that this happens before IOMMU state teardown? I
-don't think there's a benefit to clearing the bit on endpoint devices,
-if they're malicious they're just going to turn it back on anyway.
+It's only relevant where firmware configures the IOMMU but then
+removes that configuration before handing control to the OS. I'm not
+aware of that happening anywhere other than EFI.
