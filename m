@@ -2,103 +2,96 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 700C5112873
-	for <lists+linux-efi@lfdr.de>; Wed,  4 Dec 2019 10:51:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DD67F1128E5
+	for <lists+linux-efi@lfdr.de>; Wed,  4 Dec 2019 11:09:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727268AbfLDJvT (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 4 Dec 2019 04:51:19 -0500
-Received: from mail-wm1-f68.google.com ([209.85.128.68]:55403 "EHLO
-        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726632AbfLDJvT (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 4 Dec 2019 04:51:19 -0500
-Received: by mail-wm1-f68.google.com with SMTP id q9so5218100wmj.5
-        for <linux-efi@vger.kernel.org>; Wed, 04 Dec 2019 01:51:17 -0800 (PST)
+        id S1727447AbfLDKJX (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 4 Dec 2019 05:09:23 -0500
+Received: from mail-wr1-f66.google.com ([209.85.221.66]:40760 "EHLO
+        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727273AbfLDKJW (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 4 Dec 2019 05:09:22 -0500
+Received: by mail-wr1-f66.google.com with SMTP id c14so7779502wrn.7;
+        Wed, 04 Dec 2019 02:09:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=U+MqMdaqYA9wxrEDifn792XFhLysGc8RSGDMrug+w3U=;
-        b=Przb2Mp6fXtj52PQek5CbvK0m72zcxvl/tkEZHPbnWSa++nCWSJZZmS9++pPkRXrHG
-         BmP235WX29P6BS93AZhlst2RD7hH2WoH2RVk3T/9HoyC4AgEsDCHcd1EHI0AlYUuXjJe
-         dI3x/0u7OgFjrMrvJ6WcKeOUmYgR0U1yn16Yy5SlGY6ZJDeX94v6WUG23ht7i1IPjrMw
-         okf5mTcha9+T7jwil9n90t9RCeixq59sYXp9pI34nZ9pevxFrWCHHd0Suk3OvMD0bdvY
-         NyMXQL9g/QB8vKBbvg2D257IjR/amd+XQRUdX4R+nQbtGGP3uveM6gu9gV1MrkTo+DW+
-         pA8A==
+        d=gmail.com; s=20161025;
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=raeCtC+dljo0qv32p8D/VuYe95bGrREsFJM19wAQqc8=;
+        b=KNNpisM7QR9D0AXGY6S7UtWvFsgqwnLg/z6E+LyY7Z/PFWc7kGnrlFu6LchmdcXtYB
+         aGFWUf0fW3q2g4j/4SBrKGBNBUhWnrbisCgGNU+O/SwpJUczZTtjNty4T25ydIG98Gu0
+         9tjFel3etp4TbLMLYVAJvGJ/BCaQguKU3Q3dh1z+kJlCkHV35WqyjNshFNyMS9cS0Ycj
+         6tjRA7/DKcSkDXS+IXLd/FUf4vTKPti5MP+kI0gqdrTwTDhcsKKQVajzp5h4/DqqfJzf
+         wy5VqBQLFm7a2H9Tj5EmLjZ+SXc0gFVn8MlNI8+nmozpPRfnwMOu53xH3mUvHFM6ToJJ
+         VfOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=U+MqMdaqYA9wxrEDifn792XFhLysGc8RSGDMrug+w3U=;
-        b=RUGc+7peZDyi/BlMI9LSUNMswFPUvOa1R5u/zOegvSlZjG0qDK66VBYO8xKNow83Ow
-         NtYRWqlX2klGiLJL+mTv68k/hKVYTq45jzJ879bwe44tN8Y2aAI58um1ISDVJmTiTFkI
-         6V++TMXB5DU1gMwNsK7cX1/wEm92JNBRPs5YZhE0RxTz9z+0BXny1X84uxGcpg88ZTYn
-         MbZD6zq4ZN5QAyiy4/AoY18QbvnK/+xHH0u+rfS7ENo6i4Nv7DSR6j7KSJHtYSSNlu2t
-         VvbLPjzHUtadrgvo+RPoOe3XGQ4bZARlSkLNyz0bNfXEoFlOGpXPYwsO1epD7kCaNQ/8
-         IxOA==
-X-Gm-Message-State: APjAAAVIUjyNYt3v69jW4HfChFtl34abD6GjRZDcReduVMdz+Jn6cZxf
-        MLbgriYY3UMVE+GDtzHlV1eQiGT1momvrazgonvZGQ==
-X-Google-Smtp-Source: APXvYqzLvQuJFDKa5YEtxpmabNfV3tNQmNC8LrgshglGnlL4aV86T/kP4WSpVw03YPNpB05E/92NdOuel+uj0rhMQXU=
-X-Received: by 2002:a05:600c:141:: with SMTP id w1mr18577201wmm.61.1575453077074;
- Wed, 04 Dec 2019 01:51:17 -0800 (PST)
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to:user-agent;
+        bh=raeCtC+dljo0qv32p8D/VuYe95bGrREsFJM19wAQqc8=;
+        b=m9P0nEAY+LH079XRoTxkiUt2k0fxCDFz5WK0DVZhGkNJXI4Ca16HHd2lQqOHv7bc/h
+         Gogdv4WNob5rUcBnVDNQfK1dCEjoL2xpdN6i0OxvOZLJpySCWTdvBLUVtkxkeIi/nvy3
+         6jjBjKKMoxlE0qpNuh20jy1sj/odrQII2BLmoFqw7IHz2Z4tsH2x88u1h93TjPwth5lT
+         aihHEod4EioxEjPOCpc1D+iqJFHDN1slT126681LeNSavtR+L4QUuRffjfFNtDesqor1
+         stNvH2WHxOy7t5cBR1oPnPgQj8LJgV+vNLDVT955cJDfzQOh+7BAHOR4S9T1Os+HhvS4
+         PEXg==
+X-Gm-Message-State: APjAAAUBrzPK8PwhsW3dtcfYIFxjQQSuXXqRZIi7E30adN+y7c4XEaA8
+        ILkIsgO6oPQJtEaWCjJxdvZ4weoF
+X-Google-Smtp-Source: APXvYqx/rwFl+MtYvoLLcqkK+aNtlxTL2ZxgvfhoeTj9iJCmEq1E6xWqdoYOZqa5c48gZrbUu0/hyA==
+X-Received: by 2002:adf:f78d:: with SMTP id q13mr3059791wrp.365.1575454160662;
+        Wed, 04 Dec 2019 02:09:20 -0800 (PST)
+Received: from gmail.com (54033286.catv.pool.telekom.hu. [84.3.50.134])
+        by smtp.gmail.com with ESMTPSA id h17sm7904846wrs.18.2019.12.04.02.09.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Dec 2019 02:09:19 -0800 (PST)
+Date:   Wed, 4 Dec 2019 11:09:17 +0100
+From:   Ingo Molnar <mingo@kernel.org>
+To:     Dave Young <dyoung@redhat.com>
+Cc:     linux-efi@vger.kernel.org, x86@kernel.org,
+        linux-kernel@vger.kernel.org,
+        Michael Weiser <michael@weiser.dinsnail.net>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        kexec@lists.infradead.org, Ingo Molnar <mingo@redhat.com>,
+        Borislav Petkov <bp@alien8.de>,
+        "Eric W. Biederman" <ebiederm@xmission.com>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Thomas Gleixner <tglx@linutronix.de>
+Subject: Re: [PATCH] x86/efi: update e820 about reserved EFI boot services
+ data to fix kexec breakage
+Message-ID: <20191204100917.GC114697@gmail.com>
+References: <20191204075233.GA10520@dhcp-128-65.nay.redhat.com>
+ <20191204075917.GA10587@dhcp-128-65.nay.redhat.com>
 MIME-Version: 1.0
-References: <20191203201410.28045-1-msys.mizuma@gmail.com>
-In-Reply-To: <20191203201410.28045-1-msys.mizuma@gmail.com>
-From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Date:   Wed, 4 Dec 2019 09:51:13 +0000
-Message-ID: <CAKv+Gu-teb+3a29cZVc0cxZrXonQeO-EtPugPaQ1QFbeBYjGTw@mail.gmail.com>
-Subject: Re: [PATCH v2 0/2] efi: arm64: Introduce /proc/efi/memreserve to tell
- the persistent pages
-To:     Masayoshi Mizuma <msys.mizuma@gmail.com>,
-        James Morse <james.morse@arm.com>
-Cc:     linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Masayoshi Mizuma <m.mizuma@jp.fujitsu.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Kexec Mailing List <kexec@lists.infradead.org>,
-        d.hatayama@fujitsu.com, Eric Biederman <ebiederm@xmission.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191204075917.GA10587@dhcp-128-65.nay.redhat.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, 3 Dec 2019 at 20:14, Masayoshi Mizuma <msys.mizuma@gmail.com> wrote:
->
-> From: Masayoshi Mizuma <m.mizuma@jp.fujitsu.com>
->
-> kexec reboot sometime fails in early boot sequence on aarch64 machine.
-> That is because kexec overwrites the LPI property tables and pending
-> tables with the initrd.
->
-> To avoid the overwrite, introduce /proc/efi/memreserve to tell the
-> tables region to kexec so that kexec can avoid the memory region to
-> locate initrd.
->
-> kexec also needs a patch to handle /proc/efi/memreserve. I'm preparing
-> the patch for kexec.
->
-> Changelog
->     v2: - Change memreserve file location from sysfs to procfs.
->           memreserve may exceed the PAGE_SIZE in case efi_memreserve_root
->           has a lot of entries. So we cannot use sysfs_kf_seq_show().
->           Use seq_printf() in procfs instead.
->
-> Masayoshi Mizuma (2):
->   efi: add /proc/efi directory
->   efi: arm64: Introduce /proc/efi/memreserve to tell the persistent
->     pages
->
 
-Apologies for the tardy response.
+* Dave Young <dyoung@redhat.com> wrote:
 
-Adding /proc/efi is really out of the question. *If* we add any
-special files to expose this information, it should be under sysfs.
+> On 12/04/19 at 03:52pm, Dave Young wrote:
+> > Michael Weiser reported he got below error during a kexec rebooting:
+> > esrt: Unsupported ESRT version 2904149718861218184.
+> > 
+> > The ESRT memory stays in EFI boot services data, and it was reserved
+> > in kernel via efi_mem_reserve().  The initial purpose of the reservation
+> > is to reuse the EFI boot services data across kexec reboot. For example
+> > the BGRT image data and some ESRT memory like Michael reported. 
+> > 
+> > But although the memory is reserved it is not updated in X86 e820 table.
+> > And kexec_file_load iterate system ram in io resource list to find places
+> > for kernel, initramfs and other stuff. In Michael's case the kexec loaded
+> > initramfs overwritten the ESRT memory and then the failure happened.
+> 
+> s/overwritten/overwrote :)  If need a repost please let me know..
 
-However, this is still only a partial solution, since it only solves
-the problem for userspace based kexec, and we need something for
-kexec_file_load() as well.
+No need, I've edited the typo. :)
 
-The fundamental issue here is that /proc/iomem apparently lacks the
-entries that describe these regions as 'reserved', so we should try to
-address that instead.
+Thanks,
+
+	Ingo
