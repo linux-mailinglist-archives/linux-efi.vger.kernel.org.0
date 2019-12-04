@@ -2,161 +2,144 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3EA48111B21
-	for <lists+linux-efi@lfdr.de>; Tue,  3 Dec 2019 22:47:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 62415112258
+	for <lists+linux-efi@lfdr.de>; Wed,  4 Dec 2019 06:22:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727457AbfLCVrb (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 3 Dec 2019 16:47:31 -0500
-Received: from mail-qk1-f193.google.com ([209.85.222.193]:44469 "EHLO
-        mail-qk1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727480AbfLCVrb (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 3 Dec 2019 16:47:31 -0500
-Received: by mail-qk1-f193.google.com with SMTP id i18so5037260qkl.11
-        for <linux-efi@vger.kernel.org>; Tue, 03 Dec 2019 13:47:30 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=45fsQqQAC5RlmUOhoqqjnShpX/3637BMGiCpvCQp00Q=;
-        b=bNSPB80NlABWs4NCIH0ZlRfGGh3vsu8XY5HBR4Pnqz8duEuCc25ftvISu6FTuqD+ax
-         uy0MdNsuPJbEOl2bKlwt94vG/GhO7pDMhGop1rNTqakA9E3nktkoWWiqtKPOsKZtFjga
-         vpLT7iL7nDgqIvTuxQXveeQqrEUWvqXYxIJ+5z6JbT1f0+9r3wOWv8X/9hfWbBcCKvpi
-         wOdPzlGM2/U5ntf+0qoH/j052xr6nuJ0Kw6bV8dQ/4Ff8MLWhZZ4UusHq/g3ectWjL1r
-         +XjK3I8u4pCl0LLr7i7vPZ861osiRPO3lGrnpQEr4SWNgMKfkV5xOEOsMGtSdsBkiVti
-         zuvQ==
-X-Gm-Message-State: APjAAAVQREypYHIjYegGu+oJs+kJMaqGhJCLVIFEdVlAgotA+oEgIie5
-        qdMx+3+3TLoAaVpJ9xepLLAeJgf/lME=
-X-Google-Smtp-Source: APXvYqzM7CY37gjeCNiJ3pUf0qBP4wV7cE1XHWLaq9a6SuF7iGiJEmdPliHYZ0eidjKqzsKFoDe5zQ==
-X-Received: by 2002:ae9:e30e:: with SMTP id v14mr7398358qkf.344.1575409650160;
-        Tue, 03 Dec 2019 13:47:30 -0800 (PST)
-Received: from rani.riverdale.lan ([2001:470:1f07:5f3::b55f])
-        by smtp.gmail.com with ESMTPSA id j89sm2491188qte.72.2019.12.03.13.47.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Dec 2019 13:47:29 -0800 (PST)
-From:   Arvind Sankar <nivedita@alum.mit.edu>
-To:     Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org
-Subject: [PATCH 2/2] efi/gop: Fix memory leak in __gop_query32/64
-Date:   Tue,  3 Dec 2019 16:47:28 -0500
-Message-Id: <20191203214728.19264-2-nivedita@alum.mit.edu>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20191203214728.19264-1-nivedita@alum.mit.edu>
-References: <20191203214728.19264-1-nivedita@alum.mit.edu>
+        id S1725922AbfLDFWS (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 4 Dec 2019 00:22:18 -0500
+Received: from us-smtp-2.mimecast.com ([205.139.110.61]:49691 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1725879AbfLDFWR (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 4 Dec 2019 00:22:17 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1575436936;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=92CBU2Ty+dwDpFTMX4aM10Q30OyEhz7K16TwsMGdXwM=;
+        b=h0Oslm1dIh27aAGIdrBD0zDKYRezmbD7gAL0dj1yucGwV2MTsm1zAt/kHRxjIyFGisQvRs
+        FUqC4TrIhl/M9H4RTnqUGv+v1IjGBw7w6CgAgaHcZIGvXtorPxU6/ehqnpDLmevO5kmT7I
+        bPGSHNSkBFMyvJmSm9agdRS6l4dkXXI=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-78-SATqPsZZOmSjNgVSUFE58g-1; Wed, 04 Dec 2019 00:22:12 -0500
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 955B810054E3;
+        Wed,  4 Dec 2019 05:22:10 +0000 (UTC)
+Received: from dhcp-128-65.nay.redhat.com (ovpn-12-34.pek2.redhat.com [10.72.12.34])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id C083319C69;
+        Wed,  4 Dec 2019 05:22:05 +0000 (UTC)
+Date:   Wed, 4 Dec 2019 13:22:01 +0800
+From:   Dave Young <dyoung@redhat.com>
+To:     Michael Weiser <michael@weiser.dinsnail.net>
+Cc:     linux-efi@vger.kernel.org,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>, x86@kernel.org,
+        kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "Eric W. Biederman" <ebiederm@xmission.com>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Linus Torvalds <torvalds@linux-foundation.org>
+Subject: Re: kexec_file overwrites reserved EFI ESRT memory
+Message-ID: <20191204052201.GA2665@dhcp-128-65.nay.redhat.com>
+References: <20191122180552.GA32104@weiser.dinsnail.net>
+ <87blt3y949.fsf@x220.int.ebiederm.org>
+ <20191122210702.GE32104@weiser.dinsnail.net>
+ <20191125055201.GA6569@dhcp-128-65.nay.redhat.com>
+ <20191129152700.GA8286@weiser.dinsnail.net>
+ <20191202085829.GA15808@dhcp-128-65.nay.redhat.com>
+ <20191202090520.GA15874@dhcp-128-65.nay.redhat.com>
+ <20191202234541.GA27567@weiser.dinsnail.net>
+ <20191203115435.GA2606@dhcp-128-65.nay.redhat.com>
+ <20191203211146.GA536@weiser.dinsnail.net>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20191203211146.GA536@weiser.dinsnail.net>
+User-Agent: Mutt/1.12.1 (2019-06-15)
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
+X-MC-Unique: SATqPsZZOmSjNgVSUFE58g-1
+X-Mimecast-Spam-Score: 0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-gop->query_mode returns info in callee-allocated memory which must be
-freed by the caller.
+On 12/03/19 at 10:11pm, Michael Weiser wrote:
+> Hi Dave,
+>=20
+> On Tue, Dec 03, 2019 at 07:54:35PM +0800, Dave Young wrote:
+>=20
+> > > Neither adding add_efi_memmap nor adding your patch and setting that =
+option
+> > > does make the ESRT memory region appear in /proc/iomem. kexec_file st=
+ill
+> > > loads the kernel across the ESRT region.
+> > Hmm, sorry, my bad, actuall add_efi_memmap does not consider the
+> > EFI_MEMORY_RUNTIME attribute, it only reads the memory descriptor types=
+.
+>=20
+> > Will read your replied information later, did not get time today, but
+> > probably below chunk can help?
+>=20
+> > diff --git a/arch/x86/platform/efi/quirks.c b/arch/x86/platform/efi/qui=
+rks.c
+> > index 3b9fd679cea9..516307617621 100644
+> > --- a/arch/x86/platform/efi/quirks.c
+> > +++ b/arch/x86/platform/efi/quirks.c
+> > @@ -293,6 +293,8 @@ void __init efi_arch_mem_reserve(phys_addr_t addr, =
+u64 size)
+> >  =09early_memunmap(new, new_size);
+>=20
+> >  =09efi_memmap_install(new_phys, num_entries);
+> > +=09e820__range_update(addr, size, E820_TYPE_RAM, E820_TYPE_RESERVED);
+> > +=09e820__update_table(e820_table);
+> >  }
+>=20
+> >  /*
+>=20
+> Yes, that did it:
+>=20
+> 00000000-00000fff : Reserved
+> 00001000-0009efff : System RAM
+> 0009f000-000fffff : Reserved
+>   000a0000-000bffff : PCI Bus 0000:00
+>   000e0000-000e3fff : PCI Bus 0000:00
+>   000e4000-000e7fff : PCI Bus 0000:00
+>   000e8000-000ebfff : PCI Bus 0000:00
+>   000ec000-000effff : PCI Bus 0000:00
+>   000f0000-000fffff : PCI Bus 0000:00
+>     000f0000-000fffff : System ROM
+> 00100000-74dd1fff : System RAM
+>   65000000-6affffff : Crash kernel
+> 74dd2000-74dd2fff : Reserved                   <----- ESRT
+> 74dd3000-763f5fff : System RAM
+> 763f6000-79974fff : Reserved
+> 79975000-799f1fff : ACPI Tables
+> 799f2000-79aa6fff : ACPI Non-volatile Storage
+>   79a17000-79a17fff : USBC000:00
 
-We don't actually need to call it in order to obtain the info for the
-current graphics mode, which is already there in gop->mode->info, so
-just access it directly.
+Ok, good to know it works.  I will think about it and file a patch
+later.  There are more things to consider, eg. kexec reboot multiple
+times, userspace kexec loader etc.
 
-Also nothing uses the size of the info structure, so remove the
-argument.
+If we choose to fix it in kexec_file path to avoid those region then we
+need to do same in userspace, there will be compatibility issues so I
+would still prefer to go with this way you tested.
 
-Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
----
- drivers/firmware/efi/libstub/gop.c | 48 ++++++++----------------------
- 1 file changed, 12 insertions(+), 36 deletions(-)
+BTW, on my laptop the ESRT stays in EFI runtime area so I do not see the
+problem.  This should be machine/firmware specific.
 
-diff --git a/drivers/firmware/efi/libstub/gop.c b/drivers/firmware/efi/libstub/gop.c
-index 235a98797105..c8a39cd89b47 100644
---- a/drivers/firmware/efi/libstub/gop.c
-+++ b/drivers/firmware/efi/libstub/gop.c
-@@ -83,28 +83,17 @@ setup_pixel_info(struct screen_info *si, u32 pixels_per_scan_line,
- 	}
- }
- 
--static efi_status_t
-+static void
- __gop_query32(efi_system_table_t *sys_table_arg,
- 	      struct efi_graphics_output_protocol_32 *gop32,
- 	      struct efi_graphics_output_mode_info **info,
--	      unsigned long *size, u64 *fb_base)
-+	      u64 *fb_base)
- {
- 	struct efi_graphics_output_protocol_mode_32 *mode;
--	efi_graphics_output_protocol_query_mode query_mode;
--	efi_status_t status;
--	unsigned long m;
--
--	m = gop32->mode;
--	mode = (struct efi_graphics_output_protocol_mode_32 *)m;
--	query_mode = (void *)(unsigned long)gop32->query_mode;
--
--	status = __efi_call_early(query_mode, (void *)gop32, mode->mode, size,
--				  info);
--	if (status != EFI_SUCCESS)
--		return status;
- 
-+	mode = (void *)(unsigned long)gop32->mode;
-+	*info = (void *)(unsigned long)mode->info;
- 	*fb_base = mode->frame_buffer_base;
--	return status;
- }
- 
- static efi_status_t
-@@ -145,9 +134,8 @@ setup_gop32(efi_system_table_t *sys_table_arg, struct screen_info *si,
- 		if (status == EFI_SUCCESS)
- 			conout_found = true;
- 
--		status = __gop_query32(sys_table_arg, gop32, &info, &size,
--				       &current_fb_base);
--		if (status == EFI_SUCCESS && (!first_gop || conout_found) &&
-+		__gop_query32(sys_table_arg, gop32, &info, &current_fb_base);
-+		if ((!first_gop || conout_found) &&
- 		    info->pixel_format != PIXEL_BLT_ONLY) {
- 			/*
- 			 * Systems that use the UEFI Console Splitter may
-@@ -201,28 +189,17 @@ setup_gop32(efi_system_table_t *sys_table_arg, struct screen_info *si,
- 	return EFI_SUCCESS;
- }
- 
--static efi_status_t
-+static void
- __gop_query64(efi_system_table_t *sys_table_arg,
- 	      struct efi_graphics_output_protocol_64 *gop64,
- 	      struct efi_graphics_output_mode_info **info,
--	      unsigned long *size, u64 *fb_base)
-+	      u64 *fb_base)
- {
- 	struct efi_graphics_output_protocol_mode_64 *mode;
--	efi_graphics_output_protocol_query_mode query_mode;
--	efi_status_t status;
--	unsigned long m;
--
--	m = gop64->mode;
--	mode = (struct efi_graphics_output_protocol_mode_64 *)m;
--	query_mode = (void *)(unsigned long)gop64->query_mode;
--
--	status = __efi_call_early(query_mode, (void *)gop64, mode->mode, size,
--				  info);
--	if (status != EFI_SUCCESS)
--		return status;
- 
-+	mode = (void *)(unsigned long)gop64->mode;
-+	*info = (void *)(unsigned long)mode->info;
- 	*fb_base = mode->frame_buffer_base;
--	return status;
- }
- 
- static efi_status_t
-@@ -263,9 +240,8 @@ setup_gop64(efi_system_table_t *sys_table_arg, struct screen_info *si,
- 		if (status == EFI_SUCCESS)
- 			conout_found = true;
- 
--		status = __gop_query64(sys_table_arg, gop64, &info, &size,
--				       &current_fb_base);
--		if (status == EFI_SUCCESS && (!first_gop || conout_found) &&
-+		__gop_query64(sys_table_arg, gop64, &info, &current_fb_base);
-+		if ((!first_gop || conout_found) &&
- 		    info->pixel_format != PIXEL_BLT_ONLY) {
- 			/*
- 			 * Systems that use the UEFI Console Splitter may
--- 
-2.23.0
+Here is the info on my laptop:
+[    0.000000] efi: mem34: [Runtime Data       |RUN|  |  |  |  |  |  |   |W=
+B|WT|WC|UC] range=3D[0x000000007a4b0000-0x000000007a676fff] (1MB)
+[    0.020670] esrt: Reserving ESRT space from 0x000000007a4ec000 to 0x0000=
+00007a4ec088.
+
+Thanks
+Dave
 
