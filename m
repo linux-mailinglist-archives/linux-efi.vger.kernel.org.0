@@ -2,136 +2,83 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 391B211353C
-	for <lists+linux-efi@lfdr.de>; Wed,  4 Dec 2019 19:57:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9DDA31135B7
+	for <lists+linux-efi@lfdr.de>; Wed,  4 Dec 2019 20:30:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728042AbfLDS5P (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 4 Dec 2019 13:57:15 -0500
-Received: from mail-qk1-f196.google.com ([209.85.222.196]:44616 "EHLO
-        mail-qk1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727989AbfLDS5P (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 4 Dec 2019 13:57:15 -0500
-Received: by mail-qk1-f196.google.com with SMTP id i18so949024qkl.11
-        for <linux-efi@vger.kernel.org>; Wed, 04 Dec 2019 10:57:14 -0800 (PST)
+        id S1728042AbfLDTaD (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 4 Dec 2019 14:30:03 -0500
+Received: from mail-io1-f52.google.com ([209.85.166.52]:35110 "EHLO
+        mail-io1-f52.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728011AbfLDTaC (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 4 Dec 2019 14:30:02 -0500
+Received: by mail-io1-f52.google.com with SMTP id v18so906277iol.2
+        for <linux-efi@vger.kernel.org>; Wed, 04 Dec 2019 11:30:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=pl+QectoOe2tlORL4kSqxLKnGi0kFMFcWUCFict5CFQ=;
-        b=ullNBA7Tpj02XN/Ij9O6vGSCk/DfijrMPOZMVt2khXUbZesUBx2zrIUnwg1Zz45WhT
-         k2+5aGY5dQAOiVkigEfzER3/W2UYWoaelfWyAevJbWebvGrW5EIrAR5u68lZbzlJKLDb
-         D2mJ0V89ms3tRgt3hcNPB7HKJPi+32trg65QLldmEPfEzqByOpuk7ow5r219lrJxKp54
-         Iz2Z7N2rfT1qsmhIqiUv/lKNK0At9ESQoFuU3RVsbg3g2vvXWQO79ipl9HirR8xbi21i
-         5ssWSufP+oyX+h1hQITaR0vWkN3KORomOwGlRKCfpfBFc23utoMh4pdRAkE3gHzcMFrS
-         hJLA==
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=eHZxpeTMFmIGKyX/u6Ck5ynkwqdqFqF88hy62xK7Ow0=;
+        b=OfTsMSijIx5iDrE4MnefnhvZ+b7PAIFi7aycruSOY+czu8tdUMowgRXwWw4/bF8H5O
+         Ms852QSI76/0YKXmx47+KdTOx6C70xf1FcZhmXAgIZjbQdvzpTHrK+SqRlyuXh5iJedZ
+         sIl5S0NraNkCvtwIC7Sr/K9sh9nGezYjl6U7gv+gPoWX8ozE5fKwF9wBZeff3fW+WbbR
+         WlK7F/sIQQX6xWIDYdQ72y0FPyoL8vLIc+6ZiGf/4SCkqw0rSX8wxPq/3MyHTE/BPlbb
+         xdjsB8IPxpfwl3xYWudiWVcbzntzTrcPC84Jx9nLvv+1X66yHwTzJqn01NI4dlkniZ0J
+         m63A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=pl+QectoOe2tlORL4kSqxLKnGi0kFMFcWUCFict5CFQ=;
-        b=F/9VSABcauJAAiT8OIeL65M/ZsaE+9a/o0oOsu53okm+jwTi5kakrZmaQLw66b5imN
-         PVgERkGb+5tUd2ye5CML7OisIl+0wyIkd2zyrBwLaciiSKC1opIzex24FuYZTInF81y/
-         CjmT73WY3NzaHGAIU8EfW7Tgw/1VEIGnVGW410CYEmPGphPSiOp7OT8ZgLPubL+Quycd
-         2urt58jYmbZhDkaJxFpx5uhmArnV6Ywkvkwpl+UxD0crGnek0990140bj3JJekZVP+C+
-         irB+KTIqC+xhFf83yx24DwFeokTe22KCSNqBhCgPVF1JYg3qqisu3ST2YYlYfyONAtkV
-         RXXw==
-X-Gm-Message-State: APjAAAUx+Lg5GNO/B9SVSwPUWdLoWIJ5tAVZMzTlC67+LSMo5wqxaLdJ
-        o2v2bfO/FeIQE0iVTJtY5GAh3cE=
-X-Google-Smtp-Source: APXvYqzYagbf+8MKmRfPhkRrCdTYGu+PIANnuXLrboBBQV1O8E/AeMAjY5ftbN/PiqxDsPfKJtBlMg==
-X-Received: by 2002:a37:4841:: with SMTP id v62mr4408966qka.444.1575485834425;
-        Wed, 04 Dec 2019 10:57:14 -0800 (PST)
-Received: from gabell (209-6-122-159.s2973.c3-0.arl-cbr1.sbo-arl.ma.cable.rcncustomer.com. [209.6.122.159])
-        by smtp.gmail.com with ESMTPSA id 62sm4113910qkm.121.2019.12.04.10.57.13
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 04 Dec 2019 10:57:13 -0800 (PST)
-Date:   Wed, 4 Dec 2019 13:57:08 -0500
-From:   Masayoshi Mizuma <msys.mizuma@gmail.com>
-To:     James Morse <james.morse@arm.com>
-Cc:     Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org,
-        mark.rutland@arm.com, Masayoshi Mizuma <m.mizuma@jp.fujitsu.com>,
-        d.hatayama@fujitsu.com, kexec@lists.infradead.org
-Subject: Re: [PATCH] efi/memreserve: register reservations as 'reserved' in
- /proc/iomem
-Message-ID: <20191204185708.hdoa5gzmfr547q53@gabell>
-References: <20191204145233.11962-1-ardb@kernel.org>
- <20191204171744.o3ijdspnelqn5fgd@gabell>
- <08f05b18-12b2-0ba4-b819-b95ba27d1862@arm.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=eHZxpeTMFmIGKyX/u6Ck5ynkwqdqFqF88hy62xK7Ow0=;
+        b=K/YolGps0kaMuVF6GpmAz5gz2yK/0iCbhBj6PsQuG9keLP1kzwujwFQRKt6WvrRzZ+
+         CW0OYpEJ/JnbPMNxDoHnaFhuhIpS0aZ9d9TFRAq3GLU+L9PR8D8Mfr4o+2dIjv0qjMeG
+         8f1RbSbx0jNxvSHSRGA9XBBtcNHDcgepZsv6BUgiHQgVvdkqfzEBGZP61KPtFThLLN9Y
+         Z3Xt+phNSuLwXV2s76yU4lPUjqSLW8iJ7pBGKGueit/FFj62AZmL6m+8ABbBHSiXSMbb
+         psZLLP1gncG9sdWV5Xd4OWeFFJ+XIMH0cswQSeKgVbW7ydxkw+rpsSu2QDirHMT++aMN
+         VQbQ==
+X-Gm-Message-State: APjAAAXcuxQxNtjgxYSvZOGuRw9bLZKvV4wTzZQFPmjFQDuEr8PXNVCw
+        n2bTS9e35lvD/wYGgtNIV9kBd4NnU3dRMdkO4mZjBg==
+X-Google-Smtp-Source: APXvYqzrM6NiXcvbWHGmW+JQbnsF7zJDXp/ejaF1clWOLxX3z66xb2R736KZxc6Wf6gbbFELvGSztwLpl1blxyS/v5U=
+X-Received: by 2002:a5e:880a:: with SMTP id l10mr3349954ioj.64.1575487801709;
+ Wed, 04 Dec 2019 11:30:01 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <08f05b18-12b2-0ba4-b819-b95ba27d1862@arm.com>
+References: <20191203004043.174977-1-matthewgarrett@google.com>
+ <CACdnJus7nHdr4p4H1j5as9eB=FG-uX+wy_tjvTQ5ObErDJHdow@mail.gmail.com>
+ <CAKv+Gu8emrf7WbTyGc8QDykX_hZbrVtxJKkRVbGFhd8rd13yww@mail.gmail.com>
+ <CACdnJusMeC+G3wq_oDGTYi1CBMWDiuq4NdANTBmhNBTDu5zCug@mail.gmail.com> <41cecdd8-f411-00c4-be82-be5d4d13fcb1@redhat.com>
+In-Reply-To: <41cecdd8-f411-00c4-be82-be5d4d13fcb1@redhat.com>
+From:   Matthew Garrett <mjg59@google.com>
+Date:   Wed, 4 Dec 2019 11:29:48 -0800
+Message-ID: <CACdnJuum5as_U1exNUOBqvXMq-cT_6vzYh7XvW-CteG5AqueqA@mail.gmail.com>
+Subject: Re: [PATCH] [EFI,PCI] Allow disabling PCI busmastering on bridges
+ during boot
+To:     Laszlo Ersek <lersek@redhat.com>
+Cc:     Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        "the arch/x86 maintainers" <x86@kernel.org>,
+        linux-pci <linux-pci@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, Dec 04, 2019 at 06:17:59PM +0000, James Morse wrote:
-> Hi Masa,
-> 
-> On 04/12/2019 17:17, Masayoshi Mizuma wrote:
-> > Thank you for sending the patch, but unfortunately it doesn't work for the issue...
-> > 
-> > After applied your patch, the LPI tables are marked as reserved in
-> > /proc/iomem like as:
-> > 
-> > 80300000-a1fdffff : System RAM
-> >   80480000-8134ffff : Kernel code
-> >   81350000-817bffff : reserved
-> >   817c0000-82acffff : Kernel data
-> >   830f0000-830fffff : reserved # Property table
-> >   83480000-83480fff : reserved # Pending table
-> >   83490000-8349ffff : reserved # Pending table
-> > 
-> > However, kexec tries to allocate memory from System RAM, it doesn't care
-> > the reserved in System RAM.
-> 
-> > I'm not sure why kexec doesn't care the reserved in System RAM, however,
-> 
-> Hmm, we added these to fix a problem with the UEFI memory map, and more recently ACPI
-> tables being overwritten by kexec.
-> 
-> Which version of kexec-tools are you using? Could you try:
-> https://git.linaro.org/people/takahiro.akashi/kexec-tools.git/commit/?h=arm64/resv_mem
+On Tue, Dec 3, 2019 at 11:11 PM Laszlo Ersek <lersek@redhat.com> wrote:
+> But in this case, we'd have to insert the PPB clearing *before* the
+> (platform's) IOMMU driver's EBS handler (because the latter is going to
+> deny, not permit, everything); and we can't modify the IOMMU driver.
+>
+> I guess we could install an EBS handler with TPL_NOTIFY (PciIo usage
+> appears permitted at TPL_NOTIFY, from "Table 27. TPL Restrictions"). But:
+> - if the IOMMU driver's EBS handler is also to be enqueued at
+> TPL_NOTIFY, then the order will be unspecified
+> - if a PCI driver sets up an EBS handler at TPL_CALLBACK, then in our
+> handler we could shut down a PPB in front of a device bound by that
+> driver too early.
 
-Thanks a lot! It worked and the issue is gone with Ard's patch and
-the linaro kexec (arm64/resv_mem branch).
-
-Ard, please feel free to add:
-
-	Tested-by: Masayoshi Mizuma <m.mizuma@jp.fujitsu.com>
-
-> 
-> 
-> > if the kexec behaivor is right, the LPI tables should not belong to
-> > System RAM.
-> 
-> > Like as:
-> > 
-> > 80300000-830effff : System RAM
-> >   80480000-8134ffff : Kernel code
-> >   81350000-817bffff : reserved
-> >   817c0000-82acffff : Kernel data
-> > 830f0000-830fffff : reserved # Property table
-> > 83480000-83480fff : reserved # Pending table
-> > 83490000-8349ffff : reserved # Pending table
-> > 834a0000-a1fdffff : System RAM
-> > 
-> > I don't have ideas to separete LPI tables from System RAM... so I tried
-> > to add a new file to inform the LPI tables to userspace.
-> 
-> This is how 'nomap' memory appears, we carve it out of System RAM. A side effect of this
-> is kdump can't touch it, as you've told it this isn't memory.
-> 
-> As these tables are memory, mapped by the linear map, I think Ard's patch is the right
-> thing to do ... I suspect your kexec-tools doesn't have those patches from Akashi to make
-> it honour all second level entries.
- 
-I used the kexec on the top of master branch:
-git://git.kernel.org/pub/scm/utils/kernel/kexec/kexec-tools.git
-
-Should we use the linaro kexec for aarch64 machine?
-Or will the arm64/resv_mem branch be merged to the kexec on
-git.kernel.org...?
-
-Thanks!
-Masa
+Yeah, that's my concern - doing this more correctly seems to leave us
+in a situation where we're no longer able to make guarantees about the
+security properties of the feature. I think I prefer going with
+something that's guaranteed to give us the properties we want, even at
+the expense of some compatibility - users who want this can validate
+it against their platform.
