@@ -2,164 +2,155 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BF987113DF3
-	for <lists+linux-efi@lfdr.de>; Thu,  5 Dec 2019 10:28:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2CB1F113FBF
+	for <lists+linux-efi@lfdr.de>; Thu,  5 Dec 2019 11:56:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729054AbfLEJ2g (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 5 Dec 2019 04:28:36 -0500
-Received: from mail-wm1-f65.google.com ([209.85.128.65]:35636 "EHLO
-        mail-wm1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728629AbfLEJ2g (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 5 Dec 2019 04:28:36 -0500
-Received: by mail-wm1-f65.google.com with SMTP id c20so1361839wmb.0
-        for <linux-efi@vger.kernel.org>; Thu, 05 Dec 2019 01:28:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=r2SNB3l19ozRDzHNGQD+HCGVJCYcshprqr+6bK6lq4Y=;
-        b=vKLV4WmFBt862M5lqvg3dMm3zH/ZV2vtcnk0l9au5fmUB5PO0Uf0xoOD1+fo9uvmvK
-         CIWZ2X5OP4KXfwIni59ZZaGKIGn7pBlttdB09oPWdZWxmHVQF2q/7USsT6XKNLENg+tc
-         GSerzVyuVQKycn8mtKlLKxNBXdEFzJjNrdfQrFV03pr7HLEC5yGod+JCxjgcvBWldxHL
-         NRW6HcnNCA59J7Q9eefRkrurMQqr6osX8LUtZrZLaRYi7e0p13tfAv2TjjLrC8WiZJwQ
-         BxPlo1Az1u12+cfyCVW6ObB+2047pCTP+Okxb56spJxm0jU6jWL5mrKz4lt86loloIWY
-         ++2Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=r2SNB3l19ozRDzHNGQD+HCGVJCYcshprqr+6bK6lq4Y=;
-        b=GqDHtACa7Hu1WkNChFtFLixvALBOPNWipCw8haSnNQ8Crieab6QpetPgX/lYxaDEcM
-         SyCEu8S49R3dfm+RfBhZggZzz+nfjoHs+kNK7hu5jIEV9M/EyCAapjg8JO6YINertnys
-         eQj/8T2fIPgrYhAJLvfrppqf93QMO7Qb0ArLEhIIC484i2SP0U2b5/Mbt875Qx4HSEO/
-         tDy41mUJJmFvu0pnuYonc0bZYyydY7lWInEtiFVJGNKHF9Rr/q6bliWN6DkijygLRKuX
-         oMvZzrw8M3AKRFsbNWDQQqb8nNk+4gAx1qQs9x+fs9SmcxkOTDBBcnpIb5kvE+09mvnP
-         iiTQ==
-X-Gm-Message-State: APjAAAVP8SxkH6tJy7+XOGR+d2pddg61SUzELIjd3Pd+BgMZJ5Yjcmdw
-        g2C6zZffy38liHgQ75GvlcsH4bDx4lTYllYAyjTSrg==
-X-Google-Smtp-Source: APXvYqyGFuPgx5/Vf1TDlqbpy8l+PU91mXIP8Q6Yx96k9y/h7397xdAVP2YG1BdZjxMHNQaC6hIoee3BwvSl+QqhnJs=
-X-Received: by 2002:a1c:7205:: with SMTP id n5mr4202075wmc.9.1575538113040;
- Thu, 05 Dec 2019 01:28:33 -0800 (PST)
+        id S1729017AbfLEK4B (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 5 Dec 2019 05:56:01 -0500
+Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:45022 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1728735AbfLEK4B (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 5 Dec 2019 05:56:01 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1575543359;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=dcSvDAAQF2KhEEObz4gP9gUoPID8X22sgxJqtYom4vk=;
+        b=dHIxLFOpBSaGAJ2NjmbrnSpu6bHEaAut6OiTOEnGrnGH9QZYqBcX19oRdVr2I/A+xWcoDc
+        dlG3UV1JD1isgYsEeumv0oYR+RfrP1LSbI0mMFqE7Lkdbczxv8vohG6FfNZnUFE3C4qYly
+        URdMXn7/l+AygeMyeWfjjoson7OQa4g=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-274-3ho80iwfOzeRYyNYyHkmRA-1; Thu, 05 Dec 2019 05:55:56 -0500
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 357A2800D41;
+        Thu,  5 Dec 2019 10:55:54 +0000 (UTC)
+Received: from dhcp-128-65.nay.redhat.com (ovpn-12-23.pek2.redhat.com [10.72.12.23])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id 813305D9C5;
+        Thu,  5 Dec 2019 10:55:49 +0000 (UTC)
+Date:   Thu, 5 Dec 2019 18:55:45 +0800
+From:   Dave Young <dyoung@redhat.com>
+To:     Ingo Molnar <mingo@kernel.org>
+Cc:     linux-efi@vger.kernel.org, x86@kernel.org,
+        linux-kernel@vger.kernel.org,
+        Michael Weiser <michael@weiser.dinsnail.net>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        kexec@lists.infradead.org, Ingo Molnar <mingo@redhat.com>,
+        Borislav Petkov <bp@alien8.de>,
+        "Eric W. Biederman" <ebiederm@xmission.com>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Thomas Gleixner <tglx@linutronix.de>
+Subject: Re: [PATCH] x86/efi: update e820 about reserved EFI boot services
+ data to fix kexec breakage
+Message-ID: <20191205105545.GA6710@dhcp-128-65.nay.redhat.com>
+References: <20191204075233.GA10520@dhcp-128-65.nay.redhat.com>
+ <20191204075917.GA10587@dhcp-128-65.nay.redhat.com>
+ <20191204101412.GD114697@gmail.com>
 MIME-Version: 1.0
-References: <20191204145233.11962-1-ardb@kernel.org> <20191204171744.o3ijdspnelqn5fgd@gabell>
- <08f05b18-12b2-0ba4-b819-b95ba27d1862@arm.com> <20191204185708.hdoa5gzmfr547q53@gabell>
- <CAFTCetTTgJRN+3+vqS+XbMMrra3xKqrEXzqEKpLsMn=G8peUjw@mail.gmail.com>
-In-Reply-To: <CAFTCetTTgJRN+3+vqS+XbMMrra3xKqrEXzqEKpLsMn=G8peUjw@mail.gmail.com>
-From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Date:   Thu, 5 Dec 2019 09:28:29 +0000
-Message-ID: <CAKv+Gu8tOho+5DDQ-N4vkgLENEsLzgmNO9A+Vgf_G2sSCRuNNQ@mail.gmail.com>
-Subject: Re: [PATCH] efi/memreserve: register reservations as 'reserved' in /proc/iomem
-To:     Bhupesh SHARMA <bhupesh.linux@gmail.com>
-Cc:     Masayoshi Mizuma <msys.mizuma@gmail.com>,
-        James Morse <james.morse@arm.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Masayoshi Mizuma <m.mizuma@jp.fujitsu.com>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Kexec Mailing List <kexec@lists.infradead.org>,
-        d.hatayama@fujitsu.com, Ard Biesheuvel <ardb@kernel.org>,
-        Simon Horman <horms@verge.net.au>,
-        Bhupesh Sharma <bhsharma@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20191204101412.GD114697@gmail.com>
+User-Agent: Mutt/1.12.1 (2019-06-15)
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
+X-MC-Unique: 3ho80iwfOzeRYyNYyHkmRA-1
+X-Mimecast-Spam-Score: 0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, 4 Dec 2019 at 20:13, Bhupesh SHARMA <bhupesh.linux@gmail.com> wrote:
->
-> Hello Masa,
->
-> (+Cc Simon)
->
-> On Thu, Dec 5, 2019 at 12:27 AM Masayoshi Mizuma <msys.mizuma@gmail.com> wrote:
-> >
-> > On Wed, Dec 04, 2019 at 06:17:59PM +0000, James Morse wrote:
-> > > Hi Masa,
-> > >
-> > > On 04/12/2019 17:17, Masayoshi Mizuma wrote:
-> > > > Thank you for sending the patch, but unfortunately it doesn't work for the issue...
-> > > >
-> > > > After applied your patch, the LPI tables are marked as reserved in
-> > > > /proc/iomem like as:
-> > > >
-> > > > 80300000-a1fdffff : System RAM
-> > > >   80480000-8134ffff : Kernel code
-> > > >   81350000-817bffff : reserved
-> > > >   817c0000-82acffff : Kernel data
-> > > >   830f0000-830fffff : reserved # Property table
-> > > >   83480000-83480fff : reserved # Pending table
-> > > >   83490000-8349ffff : reserved # Pending table
-> > > >
-> > > > However, kexec tries to allocate memory from System RAM, it doesn't care
-> > > > the reserved in System RAM.
-> > >
-> > > > I'm not sure why kexec doesn't care the reserved in System RAM, however,
-> > >
-> > > Hmm, we added these to fix a problem with the UEFI memory map, and more recently ACPI
-> > > tables being overwritten by kexec.
-> > >
-> > > Which version of kexec-tools are you using? Could you try:
-> > > https://git.linaro.org/people/takahiro.akashi/kexec-tools.git/commit/?h=arm64/resv_mem
-> >
-> > Thanks a lot! It worked and the issue is gone with Ard's patch and
-> > the linaro kexec (arm64/resv_mem branch).
-> >
-> > Ard, please feel free to add:
-> >
-> >         Tested-by: Masayoshi Mizuma <m.mizuma@jp.fujitsu.com>
->
-> Same results at my side, so:
-> Tested-and-Reviewed-by: Bhipesh Sharma <bhsharma@redhat.com>
->
+On 12/04/19 at 11:14am, Ingo Molnar wrote:
+>=20
+> * Dave Young <dyoung@redhat.com> wrote:
+>=20
+> > On 12/04/19 at 03:52pm, Dave Young wrote:
+> > > Michael Weiser reported he got below error during a kexec rebooting:
+> > > esrt: Unsupported ESRT version 2904149718861218184.
+> > >=20
+> > > The ESRT memory stays in EFI boot services data, and it was reserved
+> > > in kernel via efi_mem_reserve().  The initial purpose of the reservat=
+ion
+> > > is to reuse the EFI boot services data across kexec reboot. For examp=
+le
+> > > the BGRT image data and some ESRT memory like Michael reported.=20
+> > >=20
+> > > But although the memory is reserved it is not updated in X86 e820 tab=
+le.
+> > > And kexec_file_load iterate system ram in io resource list to find pl=
+aces
+> > > for kernel, initramfs and other stuff. In Michael's case the kexec lo=
+aded
+> > > initramfs overwritten the ESRT memory and then the failure happened.
+> >=20
+> > s/overwritten/overwrote :)  If need a repost please let me know..
+> >=20
+> > >=20
+> > > Since kexec_file_load depends on the e820 to be updated, just fix thi=
+s
+> > > by updating the reserved EFI boot services memory as reserved type in=
+ e820.
+> > >=20
+> > > Originally any memory descriptors with EFI_MEMORY_RUNTIME attribute a=
+re
+> > > bypassed in the reservation code path because they are assumed as res=
+erved.
+> > > But the reservation is still needed for multiple kexec reboot.
+> > > And it is the only possible case we come here thus just drop the code
+> > > chunk then everything works without side effects.=20
+> > >=20
+> > > On my machine the ESRT memory sits in an EFI runtime data range, it d=
+oes
+> > > not trigger the problem, but I successfully tested with BGRT instead.
+> > > both kexec_load and kexec_file_load work and kdump works as well.
+> > >=20
+> > > Signed-off-by: Dave Young <dyoung@redhat.com>
+>=20
+>=20
+> So I edited this to:
+>=20
+>  From: Dave Young <dyoung@redhat.com>
+>=20
+>  Michael Weiser reported he got this error during a kexec rebooting:
+>=20
+>    esrt: Unsupported ESRT version 2904149718861218184.
+>=20
+>  The ESRT memory stays in EFI boot services data, and it was reserved
+>  in kernel via efi_mem_reserve().  The initial purpose of the reservation
+>  is to reuse the EFI boot services data across kexec reboot. For example
+>  the BGRT image data and some ESRT memory like Michael reported.
+>=20
+>  But although the memory is reserved it is not updated in the X86 E820 ta=
+ble,
+>  and kexec_file_load() iterates system RAM in the IO resource list to fin=
+d places
+>  for kernel, initramfs and other stuff. In Michael's case the kexec loade=
+d
+>  initramfs overwrote the ESRT memory and then the failure happened.
+>=20
+>  Since kexec_file_load() depends on the E820 table being updated, just fi=
+x this
+>  by updating the reserved EFI boot services memory as reserved type in E8=
+20.
+>=20
+>  Originally any memory descriptors with EFI_MEMORY_RUNTIME attribute are
+>  bypassed in the reservation code path because they are assumed as reserv=
+ed.
+>=20
+>  But the reservation is still needed for multiple kexec reboots,
+>  and it is the only possible case we come here thus just drop the code
+>  chunk, then everything works without side effects.
+>=20
+>  On my machine the ESRT memory sits in an EFI runtime data range, it does
+>  not trigger the problem, but I successfully tested with BGRT instead.
+>  both kexec_load() and kexec_file_load() work and kdump works as well.
+>=20
 
-Thank you all. I'll get this queued as a fix with cc:stable for v5.4
+Thanks for the amending, also thank all for the review and test.
 
+Dave
 
-> > >
-> > > > if the kexec behaivor is right, the LPI tables should not belong to
-> > > > System RAM.
-> > >
-> > > > Like as:
-> > > >
-> > > > 80300000-830effff : System RAM
-> > > >   80480000-8134ffff : Kernel code
-> > > >   81350000-817bffff : reserved
-> > > >   817c0000-82acffff : Kernel data
-> > > > 830f0000-830fffff : reserved # Property table
-> > > > 83480000-83480fff : reserved # Pending table
-> > > > 83490000-8349ffff : reserved # Pending table
-> > > > 834a0000-a1fdffff : System RAM
-> > > >
-> > > > I don't have ideas to separete LPI tables from System RAM... so I tried
-> > > > to add a new file to inform the LPI tables to userspace.
-> > >
-> > > This is how 'nomap' memory appears, we carve it out of System RAM. A side effect of this
-> > > is kdump can't touch it, as you've told it this isn't memory.
-> > >
-> > > As these tables are memory, mapped by the linear map, I think Ard's patch is the right
-> > > thing to do ... I suspect your kexec-tools doesn't have those patches from Akashi to make
-> > > it honour all second level entries.
-> >
-> > I used the kexec on the top of master branch:
-> > git://git.kernel.org/pub/scm/utils/kernel/kexec/kexec-tools.git
-> >
-> > Should we use the linaro kexec for aarch64 machine?
-> > Or will the arm64/resv_mem branch be merged to the kexec on
-> > git.kernel.org...?
->
-> Glad that Ard's patch fixes the issue for you.
-> Regarding Akashi's patch, I think it was sent to upstream kexec-tools
-> some time ago (see [0}) but  seems not integrated in upstream
-> kexec-tools (now I noticed my Tested-by email for the same got bounced
-> off due to some gmail msmtp setting issues at my end - sorry for
-> that). I have added Simon in Cc list.
->
-> Hi Simon,
->
-> Can you please help pick [0] in upstream kexec-tools with Tested-by
-> from Masa and myself? Thanks a lot for your help.
->
-> [0]. http://lists.infradead.org/pipermail/kexec/2019-January/022201.html
->
-> Thanks,
-> Bhupesh
