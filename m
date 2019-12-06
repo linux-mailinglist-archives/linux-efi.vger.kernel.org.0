@@ -2,27 +2,27 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3419D1155D8
-	for <lists+linux-efi@lfdr.de>; Fri,  6 Dec 2019 17:56:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 68C0F1155E9
+	for <lists+linux-efi@lfdr.de>; Fri,  6 Dec 2019 17:56:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726423AbfLFQ4E (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 6 Dec 2019 11:56:04 -0500
-Received: from mail.kernel.org ([198.145.29.99]:50756 "EHLO mail.kernel.org"
+        id S1726479AbfLFQ4G (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 6 Dec 2019 11:56:06 -0500
+Received: from mail.kernel.org ([198.145.29.99]:50826 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726261AbfLFQ4E (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Fri, 6 Dec 2019 11:56:04 -0500
+        id S1726460AbfLFQ4F (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Fri, 6 Dec 2019 11:56:05 -0500
 Received: from e123331-lin.cambridge.arm.com (fw-tnat-cam5.arm.com [217.140.106.53])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 99E522464E;
-        Fri,  6 Dec 2019 16:56:01 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 7339E2466E;
+        Fri,  6 Dec 2019 16:56:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1575651363;
-        bh=IVLdhYRWY5tYVVwLJ4OV2x+arjj3+DxKN+oVeExsJ6w=;
+        s=default; t=1575651364;
+        bh=PReHa2l/5slFJUHYxmKO7wTlOyr/DkZ+YiOdHmPh9es=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wFzY0gVExciXHZItBHvEX68e1G9KixiDq0uedyXFBTHNJIN0p+mlcB+dvE4ggLB0K
-         De1UD0d4YHZxZlaqQi2afjihkfzITku9DBji9PN0Nqy6xwaVVDLaSBs7MdB8WxhsYc
-         VMB4/DGO1DVNbS/xZ99gvWmJ2isXli8Cxis3Bd4c=
+        b=hEdhvXn3PgBXlWSIWEla/gAFvEI56jbplkOPFOg0YvHeYiGIbiC3q349DLy0sEnpJ
+         osvzYoq9mQBnpFvu9TvAJwVgutKoeBDzxQPO41rWPIsmKp+8nUsNsXrHfoMUpbNFaR
+         6lfyF10R/kQPjy31yRvk7R538W7E9mp6NoSTFi6A=
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-efi@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
         Thomas Gleixner <tglx@linutronix.de>
@@ -31,9 +31,9 @@ Cc:     Ard Biesheuvel <ardb@kernel.org>, linux-kernel@vger.kernel.org,
         Arvind Sankar <nivedita@alum.mit.edu>,
         Bhupesh Sharma <bhsharma@redhat.com>,
         Masayoshi Mizuma <m.mizuma@jp.fujitsu.com>
-Subject: [PATCH 1/6] efi/memreserve: register reservations as 'reserved' in /proc/iomem
-Date:   Fri,  6 Dec 2019 16:55:37 +0000
-Message-Id: <20191206165542.31469-2-ardb@kernel.org>
+Subject: [PATCH 2/6] efi/gop: Return EFI_NOT_FOUND if there are no usable GOPs
+Date:   Fri,  6 Dec 2019 16:55:38 +0000
+Message-Id: <20191206165542.31469-3-ardb@kernel.org>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20191206165542.31469-1-ardb@kernel.org>
 References: <20191206165542.31469-1-ardb@kernel.org>
@@ -42,88 +42,80 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Memory regions that are reserved using efi_mem_reserve_persistent()
-are recorded in a special EFI config table which survives kexec,
-allowing the incoming kernel to honour them as well. However,
-such reservations are not visible in /proc/iomem, and so the kexec
-tools that load the incoming kernel and its initrd into memory may
-overwrite these reserved regions before the incoming kernel has a
-chance to reserve them from further use.
+From: Arvind Sankar <nivedita@alum.mit.edu>
 
-Address this problem by adding these reservations to /proc/iomem as
-they are created. Note that reservations that are inherited from a
-previous kernel are memblock_reserve()'d early on, so they are already
-visible in /proc/iomem.
+If we don't find a usable instance of the Graphics Output Protocol
+(GOP) because none of them have a framebuffer (i.e. they were all
+PIXEL_BLT_ONLY), but all the efi calls succeeded, we will return
+EFI_SUCCESS even though we didn't find a usable GOP.
 
-Tested-by: Masayoshi Mizuma <m.mizuma@jp.fujitsu.com>
-Tested-by: Bhupesh Sharma <bhsharma@redhat.com>
-Reviewed-by: Bhupesh Sharma <bhsharma@redhat.com>
-Cc: <stable@vger.kernel.org> # v5.4+
+Fix this by explicitly returning EFI_NOT_FOUND if no usable GOPs are
+found, allowing the caller to probe for UGA instead.
+
+Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- drivers/firmware/efi/efi.c | 28 ++++++++++++++++++++++++++--
- 1 file changed, 26 insertions(+), 2 deletions(-)
+ drivers/firmware/efi/libstub/gop.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
-index d101f072c8f8..b0961950d918 100644
---- a/drivers/firmware/efi/efi.c
-+++ b/drivers/firmware/efi/efi.c
-@@ -979,6 +979,24 @@ static int __init efi_memreserve_map_root(void)
- 	return 0;
+diff --git a/drivers/firmware/efi/libstub/gop.c b/drivers/firmware/efi/libstub/gop.c
+index 0101ca4c13b1..08f3c1a2fb48 100644
+--- a/drivers/firmware/efi/libstub/gop.c
++++ b/drivers/firmware/efi/libstub/gop.c
+@@ -119,7 +119,7 @@ setup_gop32(efi_system_table_t *sys_table_arg, struct screen_info *si,
+ 	u64 fb_base;
+ 	struct efi_pixel_bitmask pixel_info;
+ 	int pixel_format;
+-	efi_status_t status = EFI_NOT_FOUND;
++	efi_status_t status;
+ 	u32 *handles = (u32 *)(unsigned long)gop_handle;
+ 	int i;
+ 
+@@ -175,7 +175,7 @@ setup_gop32(efi_system_table_t *sys_table_arg, struct screen_info *si,
+ 
+ 	/* Did we find any GOPs? */
+ 	if (!first_gop)
+-		goto out;
++		return EFI_NOT_FOUND;
+ 
+ 	/* EFI framebuffer */
+ 	si->orig_video_isVGA = VIDEO_TYPE_EFI;
+@@ -197,7 +197,7 @@ setup_gop32(efi_system_table_t *sys_table_arg, struct screen_info *si,
+ 	si->lfb_size = si->lfb_linelength * si->lfb_height;
+ 
+ 	si->capabilities |= VIDEO_CAPABILITY_SKIP_QUIRKS;
+-out:
++
+ 	return status;
  }
  
-+static int efi_mem_reserve_iomem(phys_addr_t addr, u64 size)
-+{
-+	struct resource *res, *parent;
-+
-+	res = kzalloc(sizeof(struct resource), GFP_ATOMIC);
-+	if (!res)
-+		return -ENOMEM;
-+
-+	res->name	= "reserved";
-+	res->flags	= IORESOURCE_MEM;
-+	res->start	= addr;
-+	res->end	= addr + size - 1;
-+
-+	/* we expect a conflict with a 'System RAM' region */
-+	parent = request_resource_conflict(&iomem_resource, res);
-+	return parent ? request_resource(parent, res) : 0;
-+}
-+
- int __ref efi_mem_reserve_persistent(phys_addr_t addr, u64 size)
- {
- 	struct linux_efi_memreserve *rsv;
-@@ -1003,7 +1021,7 @@ int __ref efi_mem_reserve_persistent(phys_addr_t addr, u64 size)
- 			rsv->entry[index].size = size;
+@@ -237,7 +237,7 @@ setup_gop64(efi_system_table_t *sys_table_arg, struct screen_info *si,
+ 	u64 fb_base;
+ 	struct efi_pixel_bitmask pixel_info;
+ 	int pixel_format;
+-	efi_status_t status = EFI_NOT_FOUND;
++	efi_status_t status;
+ 	u64 *handles = (u64 *)(unsigned long)gop_handle;
+ 	int i;
  
- 			memunmap(rsv);
--			return 0;
-+			return efi_mem_reserve_iomem(addr, size);
- 		}
- 		memunmap(rsv);
- 	}
-@@ -1013,6 +1031,12 @@ int __ref efi_mem_reserve_persistent(phys_addr_t addr, u64 size)
- 	if (!rsv)
- 		return -ENOMEM;
+@@ -293,7 +293,7 @@ setup_gop64(efi_system_table_t *sys_table_arg, struct screen_info *si,
  
-+	rc = efi_mem_reserve_iomem(__pa(rsv), SZ_4K);
-+	if (rc) {
-+		free_page((unsigned long)rsv);
-+		return rc;
-+	}
+ 	/* Did we find any GOPs? */
+ 	if (!first_gop)
+-		goto out;
++		return EFI_NOT_FOUND;
+ 
+ 	/* EFI framebuffer */
+ 	si->orig_video_isVGA = VIDEO_TYPE_EFI;
+@@ -315,7 +315,7 @@ setup_gop64(efi_system_table_t *sys_table_arg, struct screen_info *si,
+ 	si->lfb_size = si->lfb_linelength * si->lfb_height;
+ 
+ 	si->capabilities |= VIDEO_CAPABILITY_SKIP_QUIRKS;
+-out:
 +
- 	/*
- 	 * The memremap() call above assumes that a linux_efi_memreserve entry
- 	 * never crosses a page boundary, so let's ensure that this remains true
-@@ -1029,7 +1053,7 @@ int __ref efi_mem_reserve_persistent(phys_addr_t addr, u64 size)
- 	efi_memreserve_root->next = __pa(rsv);
- 	spin_unlock(&efi_mem_reserve_persistent_lock);
- 
--	return 0;
-+	return efi_mem_reserve_iomem(addr, size);
+ 	return status;
  }
  
- static int __init efi_memreserve_root_init(void)
 -- 
 2.17.1
 
