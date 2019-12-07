@@ -2,37 +2,37 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DAED0115D34
-	for <lists+linux-efi@lfdr.de>; Sat,  7 Dec 2019 15:39:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C82E115D3C
+	for <lists+linux-efi@lfdr.de>; Sat,  7 Dec 2019 15:53:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726400AbfLGOjy (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sat, 7 Dec 2019 09:39:54 -0500
-Received: from mga09.intel.com ([134.134.136.24]:31461 "EHLO mga09.intel.com"
+        id S1726409AbfLGOw7 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 7 Dec 2019 09:52:59 -0500
+Received: from mga07.intel.com ([134.134.136.100]:10325 "EHLO mga07.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726399AbfLGOjy (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Sat, 7 Dec 2019 09:39:54 -0500
+        id S1726400AbfLGOw7 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Sat, 7 Dec 2019 09:52:59 -0500
 X-Amp-Result: UNKNOWN
 X-Amp-Original-Verdict: FILE UNKNOWN
 X-Amp-File-Uploaded: False
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by orsmga102.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 07 Dec 2019 06:39:50 -0800
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 07 Dec 2019 06:52:52 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.69,288,1571727600"; 
-   d="gz'50?scan'50,208,50";a="224311061"
+   d="gz'50?scan'50,208,50";a="413634325"
 Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
-  by orsmga002.jf.intel.com with ESMTP; 07 Dec 2019 06:39:47 -0800
+  by fmsmga006.fm.intel.com with ESMTP; 07 Dec 2019 06:52:50 -0800
 Received: from kbuild by lkp-server01 with local (Exim 4.89)
         (envelope-from <lkp@intel.com>)
-        id 1idbFL-0000ff-8j; Sat, 07 Dec 2019 22:39:47 +0800
-Date:   Sat, 7 Dec 2019 22:39:38 +0800
+        id 1idbRy-000Dwo-DW; Sat, 07 Dec 2019 22:52:50 +0800
+Date:   Sat, 7 Dec 2019 22:52:44 +0800
 From:   kbuild test robot <lkp@intel.com>
 To:     Ard Biesheuvel <ardb@kernel.org>
 Cc:     kbuild-all@lists.01.org, linux-efi@vger.kernel.org
-Subject: [efi:next 1/4] drivers/firmware//efi/libstub/tpm.c:23:0: warning:
- "get_efi_var" redefined
-Message-ID: <201912072229.jKo60e6e%lkp@intel.com>
+Subject: [efi:next 4/4] arch/x86//platform/efi/efi.c:598:11: warning:
+ 'return' with a value, in function returning void
+Message-ID: <201912072242.dfLkYMvr%lkp@intel.com>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="re6we75ek4kkqjid"
+Content-Type: multipart/mixed; boundary="t7epw323m3d7pqb6"
 Content-Disposition: inline
 User-Agent: NeoMutt/20170113 (1.7.2)
 Sender: linux-efi-owner@vger.kernel.org
@@ -41,17 +41,17 @@ List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
 
---re6we75ek4kkqjid
+--t7epw323m3d7pqb6
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
 tree:   https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git next
 head:   7a771207bf8bc02fc34ea1a86b7547408753fee8
-commit: 7c298ef71800baab36fc3aa0df6c1b41f07ac139 [1/4] efi/libstub: read RuntimeServicesSupported EFI variable at boot
+commit: 7a771207bf8bc02fc34ea1a86b7547408753fee8 [4/4] efi: move handling of properties table to x86 specific code
 config: x86_64-allyesconfig (attached as .config)
 compiler: gcc-7 (Debian 7.5.0-1) 7.5.0
 reproduce:
-        git checkout 7c298ef71800baab36fc3aa0df6c1b41f07ac139
+        git checkout 7a771207bf8bc02fc34ea1a86b7547408753fee8
         # save the attached .config to linux build tree
         make ARCH=x86_64 
 
@@ -60,46 +60,94 @@ Reported-by: kbuild test robot <lkp@intel.com>
 
 All warnings (new ones prefixed by >>):
 
->> drivers/firmware//efi/libstub/tpm.c:23:0: warning: "get_efi_var" redefined
-    #define get_efi_var(name, vendor, ...) \
-    
-   In file included from drivers/firmware//efi/libstub/tpm.c:14:0:
-   drivers/firmware//efi/libstub/efistub.h:79:0: note: this is the location of the previous definition
-    #define get_efi_var(name, vendor, ...)      \
-    
+   arch/x86//platform/efi/efi.c: In function 'efi_init':
+>> arch/x86//platform/efi/efi.c:598:11: warning: 'return' with a value, in function returning void
+       return -ENOMEM;
+              ^
+   arch/x86//platform/efi/efi.c:542:13: note: declared here
+    void __init efi_init(void)
+                ^~~~~~~~
 
-vim +/get_efi_var +23 drivers/firmware//efi/libstub/tpm.c
+vim +/return +598 arch/x86//platform/efi/efi.c
 
-ccc829ba3624be Matthew Garrett   2017-08-25  15  
-33b6d03469b220 Thiebaud Weksteen 2017-09-20  16  #ifdef CONFIG_RESET_ATTACK_MITIGATION
-36b649760e9496 Ard Biesheuvel    2018-03-12  17  static const efi_char16_t efi_MemoryOverWriteRequest_name[] =
-36b649760e9496 Ard Biesheuvel    2018-03-12  18  	L"MemoryOverwriteRequestControl";
-ccc829ba3624be Matthew Garrett   2017-08-25  19  
-ccc829ba3624be Matthew Garrett   2017-08-25  20  #define MEMORY_ONLY_RESET_CONTROL_GUID \
-ccc829ba3624be Matthew Garrett   2017-08-25  21  	EFI_GUID(0xe20939be, 0x32d4, 0x41be, 0xa1, 0x50, 0x89, 0x7f, 0x85, 0xd4, 0x98, 0x29)
-ccc829ba3624be Matthew Garrett   2017-08-25  22  
-ccc829ba3624be Matthew Garrett   2017-08-25 @23  #define get_efi_var(name, vendor, ...) \
-ccc829ba3624be Matthew Garrett   2017-08-25  24  	efi_call_runtime(get_variable, \
-ccc829ba3624be Matthew Garrett   2017-08-25  25  			 (efi_char16_t *)(name), (efi_guid_t *)(vendor), \
-ccc829ba3624be Matthew Garrett   2017-08-25  26  			 __VA_ARGS__)
-ccc829ba3624be Matthew Garrett   2017-08-25  27  
-
-:::::: The code at line 23 was first introduced by commit
-:::::: ccc829ba3624beb9a703fc995d016b836d9eead8 efi/libstub: Enable reset attack mitigation
-
-:::::: TO: Matthew Garrett <mjg59@google.com>
-:::::: CC: Ingo Molnar <mingo@kernel.org>
+   561	
+   562		if (efi_systab_init(efi_phys.systab))
+   563			return;
+   564	
+   565		efi.config_table = (unsigned long)efi.systab->tables;
+   566		efi.fw_vendor	 = (unsigned long)efi.systab->fw_vendor;
+   567		efi.runtime	 = (unsigned long)efi.systab->runtime;
+   568	
+   569		/*
+   570		 * Show what we know for posterity
+   571		 */
+   572		c16 = tmp = early_memremap(efi.systab->fw_vendor, 2);
+   573		if (c16) {
+   574			for (i = 0; i < sizeof(vendor) - 1 && *c16; ++i)
+   575				vendor[i] = *c16++;
+   576			vendor[i] = '\0';
+   577		} else
+   578			pr_err("Could not map the firmware vendor!\n");
+   579		early_memunmap(tmp, 2);
+   580	
+   581		pr_info("EFI v%u.%.02u by %s\n",
+   582			efi.systab->hdr.revision >> 16,
+   583			efi.systab->hdr.revision & 0xffff, vendor);
+   584	
+   585		if (efi_reuse_config(efi.systab->tables, efi.systab->nr_tables))
+   586			return;
+   587	
+   588		if (efi_config_init(arch_tables))
+   589			return;
+   590	
+   591		/* Parse the EFI Properties table if it exists */
+   592		if (properties_table != EFI_INVALID_TABLE_ADDR) {
+   593			efi_properties_table_t *tbl;
+   594	
+   595			tbl = early_memremap(properties_table, sizeof(*tbl));
+   596			if (tbl == NULL) {
+   597				pr_err("Could not map Properties table!\n");
+ > 598				return -ENOMEM;
+   599			}
+   600	
+   601			if (tbl->memory_protection_attribute &
+   602			    EFI_PROPERTIES_RUNTIME_MEMORY_PROTECTION_NON_EXECUTABLE_PE_DATA)
+   603				set_bit(EFI_NX_PE_DATA, &efi.flags);
+   604	
+   605			early_memunmap(tbl, sizeof(*tbl));
+   606		}
+   607	
+   608		/*
+   609		 * Note: We currently don't support runtime services on an EFI
+   610		 * that doesn't match the kernel 32/64-bit mode.
+   611		 */
+   612	
+   613		if (!efi_runtime_supported())
+   614			pr_info("No EFI runtime due to 32/64-bit mismatch with kernel\n");
+   615		else {
+   616			if (efi_runtime_disabled() || efi_runtime_init()) {
+   617				efi_memmap_unmap();
+   618				return;
+   619			}
+   620		}
+   621	
+   622		efi_clean_memmap();
+   623	
+   624		if (efi_enabled(EFI_DBG))
+   625			efi_print_memmap();
+   626	}
+   627	
 
 ---
 0-DAY kernel test infrastructure                 Open Source Technology Center
 https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org Intel Corporation
 
---re6we75ek4kkqjid
+--t7epw323m3d7pqb6
 Content-Type: application/gzip
 Content-Disposition: attachment; filename=".config.gz"
 Content-Transfer-Encoding: base64
 
-H4sICLm3610AAy5jb25maWcAlDzbcty2ku/5iqnkJXmII8my7N0tP4AkOAMPSTAAOJrxC0uR
+H4sICL66610AAy5jb25maWcAlDzbcty2ku/5iqnkJXmII8my7N0tP4AkOAMPSTAAOJrxC0uR
 x45qbcmryzn23283wEvjQsUnlUrE7sa90XfMLz/9smJPj3dfrh5vrq8+f/6++nS8Pd5fPR4/
 rD7efD7+z6qQq0aaFS+EeQHE1c3t07c/vr256C/OV69enL84WW2P97fHz6v87vbjzacnaHtz
 d/vTLz/Bv78A8MtX6Ob+v1efrq9/f736tTj+dXN1u3r94tWLk99Pf3N/AGkum1Ks+zzvhe7X
@@ -1416,4 +1464,4 @@ HNgaDqKTlz4KP21yNwzK+eJw79011O7v4rw3x0Oqg6gfUZrKk1e0WHoSYDH9LqJOJbCsqlVO
 qpQURhXDLqErthhvtO7LOqStMeLafEFpv6LDstU16BGbQQP8SA7aLMuTIYE6M1XBZ9HbUxmq
 CyBshv8Dj2rBhXaHBAA=
 
---re6we75ek4kkqjid--
+--t7epw323m3d7pqb6--
