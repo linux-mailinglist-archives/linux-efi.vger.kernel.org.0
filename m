@@ -2,39 +2,40 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CFA571161B1
-	for <lists+linux-efi@lfdr.de>; Sun,  8 Dec 2019 14:34:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F3C531161AB
+	for <lists+linux-efi@lfdr.de>; Sun,  8 Dec 2019 14:34:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726642AbfLHNeH (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sun, 8 Dec 2019 08:34:07 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:36598 "EHLO
+        id S1726460AbfLHNdu (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sun, 8 Dec 2019 08:33:50 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:36605 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726378AbfLHNdu (ORCPT
+        with ESMTP id S1726406AbfLHNdu (ORCPT
         <rfc822;linux-efi@vger.kernel.org>); Sun, 8 Dec 2019 08:33:50 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1idwgo-0007gO-Fq; Sun, 08 Dec 2019 14:33:34 +0100
+        id 1idwgr-0007gM-6O; Sun, 08 Dec 2019 14:33:37 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id C22561C2880;
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 62C3D1C269D;
         Sun,  8 Dec 2019 14:33:33 +0100 (CET)
 Date:   Sun, 08 Dec 2019 13:33:33 -0000
-From:   "tip-bot2 for Arvind Sankar" <tip-bot2@linutronix.de>
+From:   "tip-bot2 for Andy Shevchenko" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: efi/urgent] efi/gop: Fix memory leak in __gop_query32/64()
-Cc:     Arvind Sankar <nivedita@alum.mit.edu>,
+Subject: [tip: efi/urgent] efi/earlycon: Remap entire framebuffer after page
+ initialization
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Ard Biesheuvel <ardb@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Arvind Sankar <nivedita@alum.mit.edu>,
         Bhupesh Sharma <bhsharma@redhat.com>,
         Masayoshi Mizuma <m.mizuma@jp.fujitsu.com>,
         linux-efi@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20191206165542.31469-5-ardb@kernel.org>
-References: <20191206165542.31469-5-ardb@kernel.org>
+In-Reply-To: <20191206165542.31469-7-ardb@kernel.org>
+References: <20191206165542.31469-7-ardb@kernel.org>
 MIME-Version: 1.0
-Message-ID: <157581201369.21853.10246677238795985040.tip-bot2@tip-bot2>
+Message-ID: <157581201321.21853.9033877797032028086.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -50,149 +51,113 @@ X-Mailing-List: linux-efi@vger.kernel.org
 
 The following commit has been merged into the efi/urgent branch of tip:
 
-Commit-ID:     ff397be685e410a59c34b21ce0c55d4daa466bb7
-Gitweb:        https://git.kernel.org/tip/ff397be685e410a59c34b21ce0c55d4daa466bb7
-Author:        Arvind Sankar <nivedita@alum.mit.edu>
-AuthorDate:    Fri, 06 Dec 2019 16:55:40 
+Commit-ID:     b418d660bb9798d2249ac6a46c844389ef50b6a5
+Gitweb:        https://git.kernel.org/tip/b418d660bb9798d2249ac6a46c844389ef50b6a5
+Author:        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+AuthorDate:    Fri, 06 Dec 2019 16:55:42 
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Sun, 08 Dec 2019 12:42:18 +01:00
+CommitterDate: Sun, 08 Dec 2019 12:42:19 +01:00
 
-efi/gop: Fix memory leak in __gop_query32/64()
+efi/earlycon: Remap entire framebuffer after page initialization
 
-efi_graphics_output_protocol::query_mode() returns info in
-callee-allocated memory which must be freed by the caller, which
-we aren't doing.
+When commit:
 
-We don't actually need to call query_mode() in order to obtain the
-info for the current graphics mode, which is already there in
-gop->mode->info, so just access it directly in the setup_gop32/64()
-functions.
+  69c1f396f25b ("efi/x86: Convert x86 EFI earlyprintk into generic earlycon implementation")
 
-Also nothing uses the size of the info structure, so don't update the
-passed-in size (which is the size of the gop_handle table in bytes)
-unnecessarily.
+moved the x86 specific EFI earlyprintk implementation to a shared location,
+it also tweaked the behaviour. In particular, it dropped a trick with full
+framebuffer remapping after page initialization, leading to two regressions:
 
-Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
+  1) very slow scrolling after page initialization,
+  2) kernel hang when the 'keep_bootcon' command line argument is passed.
+
+Putting the tweak back fixes #2 and mitigates #1, i.e., it limits the slow
+behavior to the early boot stages, presumably due to eliminating heavy
+map()/unmap() operations per each pixel line on the screen.
+
+ [ ardb: ensure efifb is unmapped again unless keep_bootcon is in effect. ]
+ [ mingo: speling fixes. ]
+
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Arvind Sankar <nivedita@alum.mit.edu>
 Cc: Bhupesh Sharma <bhsharma@redhat.com>
 Cc: Masayoshi Mizuma <m.mizuma@jp.fujitsu.com>
 Cc: linux-efi@vger.kernel.org
-Link: https://lkml.kernel.org/r/20191206165542.31469-5-ardb@kernel.org
+Fixes: 69c1f396f25b ("efi/x86: Convert x86 EFI earlyprintk into generic earlycon implementation")
+Link: https://lkml.kernel.org/r/20191206165542.31469-7-ardb@kernel.org
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- drivers/firmware/efi/libstub/gop.c | 66 +++++------------------------
- 1 file changed, 12 insertions(+), 54 deletions(-)
+ drivers/firmware/efi/earlycon.c | 40 ++++++++++++++++++++++++++++++++-
+ 1 file changed, 40 insertions(+)
 
-diff --git a/drivers/firmware/efi/libstub/gop.c b/drivers/firmware/efi/libstub/gop.c
-index 69b2b01..b7bf1e9 100644
---- a/drivers/firmware/efi/libstub/gop.c
-+++ b/drivers/firmware/efi/libstub/gop.c
-@@ -84,30 +84,6 @@ setup_pixel_info(struct screen_info *si, u32 pixels_per_scan_line,
+diff --git a/drivers/firmware/efi/earlycon.c b/drivers/firmware/efi/earlycon.c
+index c9a0efc..d4077db 100644
+--- a/drivers/firmware/efi/earlycon.c
++++ b/drivers/firmware/efi/earlycon.c
+@@ -13,18 +13,57 @@
+ 
+ #include <asm/early_ioremap.h>
+ 
++static const struct console *earlycon_console __initdata;
+ static const struct font_desc *font;
+ static u32 efi_x, efi_y;
+ static u64 fb_base;
+ static pgprot_t fb_prot;
++static void *efi_fb;
++
++/*
++ * EFI earlycon needs to use early_memremap() to map the framebuffer.
++ * But early_memremap() is not usable for 'earlycon=efifb keep_bootcon',
++ * memremap() should be used instead. memremap() will be available after
++ * paging_init() which is earlier than initcall callbacks. Thus adding this
++ * early initcall function early_efi_map_fb() to map the whole EFI framebuffer.
++ */
++static int __init efi_earlycon_remap_fb(void)
++{
++	/* bail if there is no bootconsole or it has been disabled already */
++	if (!earlycon_console || !(earlycon_console->flags & CON_ENABLED))
++		return 0;
++
++	if (pgprot_val(fb_prot) == pgprot_val(PAGE_KERNEL))
++		efi_fb = memremap(fb_base, screen_info.lfb_size, MEMREMAP_WB);
++	else
++		efi_fb = memremap(fb_base, screen_info.lfb_size, MEMREMAP_WC);
++
++	return efi_fb ? 0 : -ENOMEM;
++}
++early_initcall(efi_earlycon_remap_fb);
++
++static int __init efi_earlycon_unmap_fb(void)
++{
++	/* unmap the bootconsole fb unless keep_bootcon has left it enabled */
++	if (efi_fb && !(earlycon_console->flags & CON_ENABLED))
++		memunmap(efi_fb);
++	return 0;
++}
++late_initcall(efi_earlycon_unmap_fb);
+ 
+ static __ref void *efi_earlycon_map(unsigned long start, unsigned long len)
+ {
++	if (efi_fb)
++		return efi_fb + start;
++
+ 	return early_memremap_prot(fb_base + start, len, pgprot_val(fb_prot));
  }
  
- static efi_status_t
--__gop_query32(efi_system_table_t *sys_table_arg,
--	      struct efi_graphics_output_protocol_32 *gop32,
--	      struct efi_graphics_output_mode_info **info,
--	      unsigned long *size, u64 *fb_base)
--{
--	struct efi_graphics_output_protocol_mode_32 *mode;
--	efi_graphics_output_protocol_query_mode query_mode;
--	efi_status_t status;
--	unsigned long m;
--
--	m = gop32->mode;
--	mode = (struct efi_graphics_output_protocol_mode_32 *)m;
--	query_mode = (void *)(unsigned long)gop32->query_mode;
--
--	status = __efi_call_early(query_mode, (void *)gop32, mode->mode, size,
--				  info);
--	if (status != EFI_SUCCESS)
--		return status;
--
--	*fb_base = mode->frame_buffer_base;
--	return status;
--}
--
--static efi_status_t
- setup_gop32(efi_system_table_t *sys_table_arg, struct screen_info *si,
-             efi_guid_t *proto, unsigned long size, void **gop_handle)
+ static __ref void efi_earlycon_unmap(void *addr, unsigned long len)
  {
-@@ -128,6 +104,7 @@ setup_gop32(efi_system_table_t *sys_table_arg, struct screen_info *si,
- 
- 	nr_gops = size / sizeof(u32);
- 	for (i = 0; i < nr_gops; i++) {
-+		struct efi_graphics_output_protocol_mode_32 *mode;
- 		struct efi_graphics_output_mode_info *info = NULL;
- 		efi_guid_t conout_proto = EFI_CONSOLE_OUT_DEVICE_GUID;
- 		bool conout_found = false;
-@@ -145,9 +122,11 @@ setup_gop32(efi_system_table_t *sys_table_arg, struct screen_info *si,
- 		if (status == EFI_SUCCESS)
- 			conout_found = true;
- 
--		status = __gop_query32(sys_table_arg, gop32, &info, &size,
--				       &current_fb_base);
--		if (status == EFI_SUCCESS && (!first_gop || conout_found) &&
-+		mode = (void *)(unsigned long)gop32->mode;
-+		info = (void *)(unsigned long)mode->info;
-+		current_fb_base = mode->frame_buffer_base;
++	if (efi_fb)
++		return;
 +
-+		if ((!first_gop || conout_found) &&
- 		    info->pixel_format != PIXEL_BLT_ONLY) {
- 			/*
- 			 * Systems that use the UEFI Console Splitter may
-@@ -202,30 +181,6 @@ setup_gop32(efi_system_table_t *sys_table_arg, struct screen_info *si,
+ 	early_memunmap(addr, len);
  }
  
- static efi_status_t
--__gop_query64(efi_system_table_t *sys_table_arg,
--	      struct efi_graphics_output_protocol_64 *gop64,
--	      struct efi_graphics_output_mode_info **info,
--	      unsigned long *size, u64 *fb_base)
--{
--	struct efi_graphics_output_protocol_mode_64 *mode;
--	efi_graphics_output_protocol_query_mode query_mode;
--	efi_status_t status;
--	unsigned long m;
--
--	m = gop64->mode;
--	mode = (struct efi_graphics_output_protocol_mode_64 *)m;
--	query_mode = (void *)(unsigned long)gop64->query_mode;
--
--	status = __efi_call_early(query_mode, (void *)gop64, mode->mode, size,
--				  info);
--	if (status != EFI_SUCCESS)
--		return status;
--
--	*fb_base = mode->frame_buffer_base;
--	return status;
--}
--
--static efi_status_t
- setup_gop64(efi_system_table_t *sys_table_arg, struct screen_info *si,
- 	    efi_guid_t *proto, unsigned long size, void **gop_handle)
- {
-@@ -246,6 +201,7 @@ setup_gop64(efi_system_table_t *sys_table_arg, struct screen_info *si,
+@@ -201,6 +240,7 @@ static int __init efi_earlycon_setup(struct earlycon_device *device,
+ 		efi_earlycon_scroll_up();
  
- 	nr_gops = size / sizeof(u64);
- 	for (i = 0; i < nr_gops; i++) {
-+		struct efi_graphics_output_protocol_mode_64 *mode;
- 		struct efi_graphics_output_mode_info *info = NULL;
- 		efi_guid_t conout_proto = EFI_CONSOLE_OUT_DEVICE_GUID;
- 		bool conout_found = false;
-@@ -263,9 +219,11 @@ setup_gop64(efi_system_table_t *sys_table_arg, struct screen_info *si,
- 		if (status == EFI_SUCCESS)
- 			conout_found = true;
- 
--		status = __gop_query64(sys_table_arg, gop64, &info, &size,
--				       &current_fb_base);
--		if (status == EFI_SUCCESS && (!first_gop || conout_found) &&
-+		mode = (void *)(unsigned long)gop64->mode;
-+		info = (void *)(unsigned long)mode->info;
-+		current_fb_base = mode->frame_buffer_base;
-+
-+		if ((!first_gop || conout_found) &&
- 		    info->pixel_format != PIXEL_BLT_ONLY) {
- 			/*
- 			 * Systems that use the UEFI Console Splitter may
+ 	device->con->write = efi_earlycon_write;
++	earlycon_console = device->con;
+ 	return 0;
+ }
+ EARLYCON_DECLARE(efifb, efi_earlycon_setup);
