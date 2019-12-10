@@ -2,35 +2,36 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CA804118725
-	for <lists+linux-efi@lfdr.de>; Tue, 10 Dec 2019 12:52:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0ACAC11872C
+	for <lists+linux-efi@lfdr.de>; Tue, 10 Dec 2019 12:52:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727431AbfLJLvc (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 10 Dec 2019 06:51:32 -0500
-Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:45297 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1727419AbfLJLvb (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 10 Dec 2019 06:51:31 -0500
+        id S1727500AbfLJLvh (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 10 Dec 2019 06:51:37 -0500
+Received: from us-smtp-2.mimecast.com ([207.211.31.81]:47198 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1727223AbfLJLvf (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 10 Dec 2019 06:51:35 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1575978690;
+        s=mimecast20190719; t=1575978694;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=bwaQi+22G1RQuMWOfXV/Ab6nGpIMmUXmK6Qhicz5k78=;
-        b=d6ml7CIL724nbf7bVbrIVrGyofsxqM2FXAH3fWjL6DeegmzSC1m4EubSn1eaP4Anvt8VyP
-        Nq3uA6N4w4WKtyG6CAaVGfqTYJCYq+v5v4vrbS7fwD4Bl67+F+CH7ZLzxBLMYLWbFzV/71
-        9WZX+MzpQLc+B62l7GfvDX6C3BoPh7w=
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=x85HLpSVXUpESKASgozyJonASmyTtrZ6tatnJUlwI+Y=;
+        b=fwmY4RUNHgViFDe6a6kLc0HjP9yzFkJFhlXnEYEewwhe7XZoqUHx5EQK0hivqgoZxw+HQV
+        KuGc2WkkoDfaMgArapt0zOabg2cbCAJ3umEPKYqOlX0KNse8hyZdmTedNfqr740C9d4L/O
+        zPY8YyXflpdIS+nKImyMkcRSuZqxk6o=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-127-N3aFnNSYPpC2h3oQ9fY4YA-1; Tue, 10 Dec 2019 06:51:27 -0500
+ us-mta-415-gpWyPKUJNL-J9E7vhKGKIA-1; Tue, 10 Dec 2019 06:51:30 -0500
 Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 5F945802564;
-        Tue, 10 Dec 2019 11:51:24 +0000 (UTC)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 3C78580440F;
+        Tue, 10 Dec 2019 11:51:28 +0000 (UTC)
 Received: from shalem.localdomain.com (unknown [10.36.118.144])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id CEE0A5DA2C;
-        Tue, 10 Dec 2019 11:51:18 +0000 (UTC)
+        by smtp.corp.redhat.com (Postfix) with ESMTP id A23065DA60;
+        Tue, 10 Dec 2019 11:51:24 +0000 (UTC)
 From:   Hans de Goede <hdegoede@redhat.com>
 To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>,
         Darren Hart <dvhart@infradead.org>,
@@ -49,12 +50,14 @@ Cc:     Hans de Goede <hdegoede@redhat.com>,
         platform-driver-x86@vger.kernel.org, linux-efi@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
         linux-input@vger.kernel.org
-Subject: [PATCH v10 00/10]  efi/firmware/platform-x86: Add EFI embedded fw support
-Date:   Tue, 10 Dec 2019 12:51:07 +0100
-Message-Id: <20191210115117.303935-1-hdegoede@redhat.com>
+Subject: [PATCH v10 01/10] efi: Export boot-services code and data as debugfs-blobs
+Date:   Tue, 10 Dec 2019 12:51:08 +0100
+Message-Id: <20191210115117.303935-2-hdegoede@redhat.com>
+In-Reply-To: <20191210115117.303935-1-hdegoede@redhat.com>
+References: <20191210115117.303935-1-hdegoede@redhat.com>
 MIME-Version: 1.0
 X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
-X-MC-Unique: N3aFnNSYPpC2h3oQ9fY4YA-1
+X-MC-Unique: gpWyPKUJNL-J9E7vhKGKIA-1
 X-Mimecast-Spam-Score: 0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: quoted-printable
@@ -63,140 +66,170 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hi All,
+Sometimes it is useful to be able to dump the efi boot-services code and
+data. This commit adds these as debugfs-blobs to /sys/kernel/debug/efi,
+but only if efi=3Ddebug is passed on the kernel-commandline as this require=
+s
+not freeing those memory-regions, which costs 20+ MB of RAM.
 
-Here is v10 of my patch-set to add support for EFI embedded fw to the
-kernel. This version has been rebased on top 5.5-rc1 to fix 2 conflicts
-with the first 2 (efi) patches in the series. There are no changes
-versus v9 other then the rebase.
-
-Below is the cover-letter of v9:
-
-The main new feature in this version is the addition of some selftests for
-the new firmware_request_platform api (patch 5 and 6, both new). My plan
-was to send the patches adding the selftests out as a follow up series.
-
-But during unrelated testing of my personal tree I found a small but nasty
-bug in the "efi: Add embedded peripheral firmware support" patch, the minor
-refactoring done in v8 exposed a bug which causes a hard crash on boot for
-devices which have a DMI match in the touchscreen_dmi_table but do not use
-EFI-embedded fw, this is fixed in this new version.
-
-Assuming the 2 new patches adding the selftests are ok, I believe that
-this series is ready for merging now.  I believe it would be best to merge
-patches 1-8 through Greg's driver-core tree where firmware-loader changes g=
-o.
-The non firmware patches already have Acked-by-s from the maintainers of
-the EFI/input trees.
-
-Patches 9-10 touch a quirks file under drivers/platform/x86 which sees
-multipe updates each cycle. So my proposal is that once 1-8 has landed
-Greg creates an immutable branch with those changes and then
-Andy and/or Darren can merge in that branch and then apply 9 and 10.
-
-Regards,
-
-Hans
-
-
-Changes in v10:
-- Rebase on top of 5.5-rc1
-
-Changes in v9:
-- Add 2 new patches adding selftests
-- At least touchscreen_dmi.c uses the same dmi_table for its own private
-  data and the fw_desc structs, putting the fw_desc struct first in the
-  data driver_data points to so that the dmi_table can be shared with
-  efi_check_for_embedded_firmwares(). But not all entries there have
-  embedded-fw so in some cases the fw_desc is empty (zero-ed out).
-  This can lead to a possible crash because fw_desc->length now is
-  less then 8, so if the segment size is close enough to a multiple of the
-  page_size, then the memcmp to check the prefix my segfault. Crashing the
-  machine. v9 checks for and skips these empty fw_desc entries avoiding thi=
-s.
-- Add static inline wrapper for firmware_request_platform() to firmware.h,
-  for when CONFIG_FW_LOADER is not set
-
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Acked-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+---
 Changes in v8:
-- Add pr_warn if there are mode then EFI_DEBUGFS_MAX_BLOBS boot service seg=
-ments
-- Document how the EFI debugfs boot_service_code? files can be used to chec=
-k for
-  embedded firmware
-- Properly deal with the case of an EFI segment being smaller then the fw w=
-e
-  are looking for
-- Log a warning when efi_get_embedded_fw get called while we did not (yet)
-  check for embedded firmwares
-- Only build fallback_platform.c if CONFIG_EFI_EMBEDDED_FIRMWARE is defined=
-,
-  otherwise make firmware_fallback_platform() a static inline stub
-
-Changes in v7:
-- Split drivers/firmware/efi and drivers/base/firmware_loader changes into
-  2 patches
-- Use new, standalone, lib/crypto/sha256.c code
-- Address kdoc comments from Randy Dunlap
-- Add new FW_OPT_FALLBACK_PLATFORM flag and firmware_request_platform()
-  _request_firmware() wrapper, as requested by Luis R. Rodriguez
-- Stop using "efi-embedded-firmware" device-property, now that drivers need=
- to
-  use the new firmware_request_platform() to enable fallback to a device fw
-  copy embedded in the platform's main firmware, we no longer need a proper=
-ty
-  on the device to trigger this behavior
-- Use security_kernel_load_data instead of calling
-  security_kernel_read_file with a NULL file pointer argument
-- Move the docs to Documentation/driver-api/firmware/fallback-mechanisms.rs=
-t
-- Document the new firmware_request_platform() function in
-  Documentation/driver-api/firmware/request_firmware.rst
-- Add 2 new patches for the silead and chipone-icn8505 touchscreen drivers
-  to use the new firmware_request_platform() method
-- Rebased on top of 5.4-rc1
-
-Changes in v6:
--Rework code to remove casts from if (prefix =3D=3D mem) comparison
--Use SHA256 hashes instead of crc32 sums
--Add new READING_FIRMWARE_EFI_EMBEDDED read_file_id and use it
--Call security_kernel_read_file(NULL, READING_FIRMWARE_EFI_EMBEDDED)
- to check if this is allowed before looking at EFI embedded fw
--Document why we are not using the PI Firmware Volume protocol
+-Add pr_warn if there are mode then EFI_DEBUGFS_MAX_BLOBS boot service segm=
+ents
+-Document how the boot_service_code? files can be used to check for embedde=
+d
+ firmware. Note since this is related to the firmware EFI embedded fw suppo=
+rt,
+ these docs are added in the 4th patch of this patch-set, not in this one.
 
 Changes in v5:
 -Rename the EFI_BOOT_SERVICES flag to EFI_PRESERVE_BS_REGIONS
 
 Changes in v4:
--Drop note in docs about EFI_FIRMWARE_VOLUME_PROTOCOL, it is not part of
- UEFI proper, so the EFI maintainers don't want us referring people to it
--Use new EFI_BOOT_SERVICES flag
--Put the new fw_get_efi_embedded_fw() function in its own fallback_efi.c
- file which only gets built when EFI_EMBEDDED_FIRMWARE is selected
--Define an empty stub for fw_get_efi_embedded_fw() in fallback.h hwen
- EFI_EMBEDDED_FIRMWARE is not selected, to avoid the need for #ifdefs
- in firmware_loader/main.c
--Properly call security_kernel_post_read_file() on the firmware returned
- by efi_get_embedded_fw() to make sure that we are allowed to use it
+-Add new EFI_BOOT_SERVICES flag and use it to determine if the boot-service=
+s
+ memory segments are available (and thus if it makes sense to register the
+ debugfs bits for them)
 
 Changes in v2:
--Rebased on driver-core/driver-core-next
--Add documentation describing the EFI embedded firmware mechanism to:
- Documentation/driver-api/firmware/request_firmware.rst
--Add a new EFI_EMBEDDED_FIRMWARE Kconfig bool and only build the embedded
- fw support if this is set. This is an invisible option which should be
- selected by drivers which need this
--Remove the efi_embedded_fw_desc and dmi_system_id-s for known devices
- from the efi-embedded-fw code, instead drivers using this are expected to
- export a dmi_system_id array, with each entries' driver_data pointing to a
- efi_embedded_fw_desc struct and register this with the efi-embedded-fw cod=
-e
--Use kmemdup to make a copy instead of efi_mem_reserve()-ing the firmware,
- this avoids us messing with the EFI memmap and avoids the need to make
- changes to efi_mem_desc_lookup()
--Make the firmware-loader code only fallback to efi_get_embedded_fw() if th=
-e
- passed in device has the "efi-embedded-firmware" device-property bool set
--Skip usermodehelper fallback when "efi-embedded-firmware" device-property
- is set
+-Do not call pr_err on debugfs call failures
+---
+ arch/x86/platform/efi/efi.c    |  1 +
+ arch/x86/platform/efi/quirks.c |  4 +++
+ drivers/firmware/efi/efi.c     | 57 ++++++++++++++++++++++++++++++++++
+ include/linux/efi.h            |  1 +
+ 4 files changed, 63 insertions(+)
 
+diff --git a/arch/x86/platform/efi/efi.c b/arch/x86/platform/efi/efi.c
+index 38d44f36d5ed..3e5375ee53a0 100644
+--- a/arch/x86/platform/efi/efi.c
++++ b/arch/x86/platform/efi/efi.c
+@@ -269,6 +269,7 @@ int __init efi_memblock_x86_reserve_range(void)
+ =09     efi.memmap.desc_version);
+=20
+ =09memblock_reserve(pmap, efi.memmap.nr_map * efi.memmap.desc_size);
++=09set_bit(EFI_PRESERVE_BS_REGIONS, &efi.flags);
+=20
+ =09return 0;
+ }
+diff --git a/arch/x86/platform/efi/quirks.c b/arch/x86/platform/efi/quirks.=
+c
+index 7675cf754d90..84a9de64e8e1 100644
+--- a/arch/x86/platform/efi/quirks.c
++++ b/arch/x86/platform/efi/quirks.c
+@@ -414,6 +414,10 @@ void __init efi_free_boot_services(void)
+ =09int num_entries =3D 0;
+ =09void *new, *new_md;
+=20
++=09/* Keep all regions for /sys/kernel/debug/efi */
++=09if (efi_enabled(EFI_DBG))
++=09=09return;
++
+ =09for_each_efi_memory_desc(md) {
+ =09=09unsigned long long start =3D md->phys_addr;
+ =09=09unsigned long long size =3D md->num_pages << EFI_PAGE_SHIFT;
+diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
+index d101f072c8f8..7575401e6ea6 100644
+--- a/drivers/firmware/efi/efi.c
++++ b/drivers/firmware/efi/efi.c
+@@ -17,6 +17,7 @@
+ #include <linux/kobject.h>
+ #include <linux/module.h>
+ #include <linux/init.h>
++#include <linux/debugfs.h>
+ #include <linux/device.h>
+ #include <linux/efi.h>
+ #include <linux/of.h>
+@@ -325,6 +326,59 @@ static __init int efivar_ssdt_load(void)
+ static inline int efivar_ssdt_load(void) { return 0; }
+ #endif
+=20
++#ifdef CONFIG_DEBUG_FS
++
++#define EFI_DEBUGFS_MAX_BLOBS 32
++
++static struct debugfs_blob_wrapper debugfs_blob[EFI_DEBUGFS_MAX_BLOBS];
++
++static void __init efi_debugfs_init(void)
++{
++=09struct dentry *efi_debugfs;
++=09efi_memory_desc_t *md;
++=09char name[32];
++=09int type_count[EFI_BOOT_SERVICES_DATA + 1] =3D {};
++=09int i =3D 0;
++
++=09efi_debugfs =3D debugfs_create_dir("efi", NULL);
++=09if (IS_ERR_OR_NULL(efi_debugfs))
++=09=09return;
++
++=09for_each_efi_memory_desc(md) {
++=09=09switch (md->type) {
++=09=09case EFI_BOOT_SERVICES_CODE:
++=09=09=09snprintf(name, sizeof(name), "boot_services_code%d",
++=09=09=09=09 type_count[md->type]++);
++=09=09=09break;
++=09=09case EFI_BOOT_SERVICES_DATA:
++=09=09=09snprintf(name, sizeof(name), "boot_services_data%d",
++=09=09=09=09 type_count[md->type]++);
++=09=09=09break;
++=09=09default:
++=09=09=09continue;
++=09=09}
++
++=09=09if (i >=3D EFI_DEBUGFS_MAX_BLOBS) {
++=09=09=09pr_warn("More then %d EFI boot service segments, only showing fir=
+st %d in debugfs\n",
++=09=09=09=09EFI_DEBUGFS_MAX_BLOBS, EFI_DEBUGFS_MAX_BLOBS);
++=09=09=09break;
++=09=09}
++
++=09=09debugfs_blob[i].size =3D md->num_pages << EFI_PAGE_SHIFT;
++=09=09debugfs_blob[i].data =3D memremap(md->phys_addr,
++=09=09=09=09=09=09debugfs_blob[i].size,
++=09=09=09=09=09=09MEMREMAP_WB);
++=09=09if (!debugfs_blob[i].data)
++=09=09=09continue;
++
++=09=09debugfs_create_blob(name, 0400, efi_debugfs, &debugfs_blob[i]);
++=09=09i++;
++=09}
++}
++#else
++static inline void efi_debugfs_init(void) {}
++#endif
++
+ /*
+  * We register the efi subsystem with the firmware subsystem and the
+  * efivars subsystem with the efi subsystem, if the system was booted with
+@@ -381,6 +435,9 @@ static int __init efisubsys_init(void)
+ =09=09goto err_remove_group;
+ =09}
+=20
++=09if (efi_enabled(EFI_DBG) && efi_enabled(EFI_PRESERVE_BS_REGIONS))
++=09=09efi_debugfs_init();
++
+ =09return 0;
+=20
+ err_remove_group:
+diff --git a/include/linux/efi.h b/include/linux/efi.h
+index 99dfea595c8c..c364106250e9 100644
+--- a/include/linux/efi.h
++++ b/include/linux/efi.h
+@@ -1203,6 +1203,7 @@ extern int __init efi_setup_pcdp_console(char *);
+ #define EFI_NX_PE_DATA=09=099=09/* Can runtime data regions be mapped non-=
+executable? */
+ #define EFI_MEM_ATTR=09=0910=09/* Did firmware publish an EFI_MEMORY_ATTRI=
+BUTES table? */
+ #define EFI_MEM_NO_SOFT_RESERVE=0911=09/* Is the kernel configured to igno=
+re soft reservations? */
++#define EFI_PRESERVE_BS_REGIONS=0912=09/* Are EFI boot-services memory seg=
+ments available? */
+=20
+ #ifdef CONFIG_EFI
+ /*
+--=20
+2.23.0
 
