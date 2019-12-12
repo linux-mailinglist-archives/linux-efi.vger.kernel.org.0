@@ -2,98 +2,125 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 859B111D8A1
-	for <lists+linux-efi@lfdr.de>; Thu, 12 Dec 2019 22:34:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EFCA311D8D6
+	for <lists+linux-efi@lfdr.de>; Thu, 12 Dec 2019 22:55:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731124AbfLLVet (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 12 Dec 2019 16:34:49 -0500
-Received: from mail-qk1-f194.google.com ([209.85.222.194]:45823 "EHLO
-        mail-qk1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731086AbfLLVet (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 12 Dec 2019 16:34:49 -0500
-Received: by mail-qk1-f194.google.com with SMTP id x1so13653qkl.12
-        for <linux-efi@vger.kernel.org>; Thu, 12 Dec 2019 13:34:49 -0800 (PST)
+        id S1731190AbfLLVx4 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 12 Dec 2019 16:53:56 -0500
+Received: from mail-wr1-f67.google.com ([209.85.221.67]:37640 "EHLO
+        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730784AbfLLVx4 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 12 Dec 2019 16:53:56 -0500
+Received: by mail-wr1-f67.google.com with SMTP id w15so4430400wru.4
+        for <linux-efi@vger.kernel.org>; Thu, 12 Dec 2019 13:53:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=25CqBgMwE1hC+JnjyLfvp+a67jgnLgm8ZEuA0+GMmIA=;
+        b=y938Vrg0IGKlbIljBTRS8skySxpRL+Mry1Wwsv7fGoiItJub+5gPWfuj5uwc3vv2d/
+         NuOWHwpLZpUUne4SUbwsA0h9NDlRSDv4rdzAH+30pdx9XWBpBnHk5T3udmWJBOJ6O84U
+         STATO6pTfTVlyMkxMlLTpyNE2bm0hOOQqRvBpROH6O91Uu5XGo6dswWGwl5jChETde37
+         o73oL9xBp4UC0pSG57DPZDGFkZGPyqMkecps4Wor0tMvKrXgCP1/ApTVTz3NCH3/HT01
+         lOXnB4N30F8/4wngzqktOXwSjrKgLUn1s3UBR6FwEbt+AarnAbk3cbbr872zyiegDSjB
+         kAlQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=c3tkn42XWsicwXT+a84kLRsm8bcBCKmboTtzST1zPs8=;
-        b=SPk7JCJrWQYMotuwnT7emQTpIoOcjaqWx06djKZtCGLgqNY/PM+ykeEfL50APGo5Ss
-         pQaZpIC2dHo8gKDGc/Kft49hq3ajzRU0Xc0HtjCancTx6Rj4IqXAHMyq8T4T26tFt9+x
-         bpewu1nRv4UCIzd5tMGnCOrEhfHAWJKR3tCIvo2qBPr3Ydh4wLUZUMPYoY0XT3y2HNAD
-         1w5hbMbtHiAqYI6WIw8Bg4hZPJN5Yhy4iIGiBgs4472oS1tFD8u0CYhAIiQ54vqABvkT
-         HkmaHZnayfFku1UB1g6fE35BCBz/FKCVYC3Ek5aenVi0SIGYbiVTaXqJ5eNafaySJIVm
-         8zNA==
-X-Gm-Message-State: APjAAAWYr0Ek+aGB42eH8x94XclAzCzEbLbkwmZZDymCvOuR22ER1GHk
-        AYKJ5UTs8ifMkf3Hw9SBu2y6BmYD
-X-Google-Smtp-Source: APXvYqzr+8hWfV+AwWnryKdiQwmU56Xr7R+zdeNSnv/lp4HD5rMZK/Nn9Fw7+zaocAzSgq/Mm2q5Wg==
-X-Received: by 2002:ae9:f016:: with SMTP id l22mr10443751qkg.101.1576186488715;
-        Thu, 12 Dec 2019 13:34:48 -0800 (PST)
-Received: from rani.riverdale.lan ([2001:470:1f07:5f3::b55f])
-        by smtp.gmail.com with ESMTPSA id r5sm2116467qkf.44.2019.12.12.13.34.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Dec 2019 13:34:48 -0800 (PST)
-From:   Arvind Sankar <nivedita@alum.mit.edu>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     linux-efi@vger.kernel.org
-Subject: [RFC PATCH 5/5] efi/gop: Check that the framebuffer will be accessible
-Date:   Thu, 12 Dec 2019 16:34:43 -0500
-Message-Id: <20191212213443.24128-6-nivedita@alum.mit.edu>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20191212213443.24128-1-nivedita@alum.mit.edu>
-References: <20191212213443.24128-1-nivedita@alum.mit.edu>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=25CqBgMwE1hC+JnjyLfvp+a67jgnLgm8ZEuA0+GMmIA=;
+        b=E8xufMJdt1G+mIZVtu/5BCdX8Gsc0sXna6rbWSbLuKNcpdGiz/bFwtD+01c/P3jyja
+         omg4naH4kU5p36im5Y0TxpccIH2RfmHRrleSY5B4WfOx6R7hBdHVdj0o+x+bUTLVnQmT
+         YJRIJqvDl7QrbwnBLXlbf1v1XiCL2CrU8JZmcunwGWO9tznBbVjjLIc+YjVE3P1+2zWX
+         QMofXJIRdZuoUPmcRxgKvbNCqP8CRLIXCDr+6zmsaQgPI56/5eyDOlCGUSWWtplAWyfT
+         BkXx+0TvGkNRhlh/cX1+QsHDBGp7p1rIbE/rFkcVpeAcjfFswMasKAtAqDBgeNEuJMAk
+         X9cg==
+X-Gm-Message-State: APjAAAW2SROUS5nnia0NZ2vjb+0mPWcKtQmVjnJmpvxpl5HqE1TyzHR8
+        d81lEDyD0doj9aLkYsT8TVUzADDZ0/mFstfl8gc53g==
+X-Google-Smtp-Source: APXvYqxZpUAzi+7PZNdAUoJeWIBLmpn6NSb4r5g4XPu6DddtQi3mTZBjUHdLi0cdCjkj7x6AqkqlEIe+tRaeJMVj1G0=
+X-Received: by 2002:a5d:46c1:: with SMTP id g1mr8532038wrs.200.1576187634024;
+ Thu, 12 Dec 2019 13:53:54 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20191212213443.24128-1-nivedita@alum.mit.edu> <20191212213443.24128-2-nivedita@alum.mit.edu>
+In-Reply-To: <20191212213443.24128-2-nivedita@alum.mit.edu>
+From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Date:   Thu, 12 Dec 2019 21:53:52 +0000
+Message-ID: <CAKv+Gu-EyfeNDB1NbQiOEJAvWpkFc7KrHvDjtKrFyOC8y-cd0g@mail.gmail.com>
+Subject: Re: [RFC PATCH 1/5] efi/gop: Remove bogus packed attribute from GOP structures
+To:     Arvind Sankar <nivedita@alum.mit.edu>
+Cc:     Ard Biesheuvel <ardb@kernel.org>,
+        linux-efi <linux-efi@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-If phys_addr_t is only 32 bits, but we somehow have a framebuffer above
-4G, we can't access it, and if we let it through, the address will get
-silently truncated later. So check to make sure the framebuffer base
-fits in phys_addr_t.
+On Thu, 12 Dec 2019 at 22:34, Arvind Sankar <nivedita@alum.mit.edu> wrote:
+>
+> EFI structures are not packed, they follow natural alignment.
+>
+> The packed attribute doesn't have any effect on the structure layout due
+> to the types and order of the members, and we only ever get these
+> structures as output from the EFI firmware so alignment issues have not
+> come up.
+>
 
-Also remove the unnecessary cast of fb_base to u64, as it is already a
-64-bit type, and all the cast could have done was truncate it on a
-32-bit system.
+__packed may also affect the size of a struct, given that it won't be
+rounded up to its alignment. This broke the config table array at some
+point when we used the alignment for EFI_GUIDs that is actually
+mentioned in the spec.
 
-Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
----
- drivers/firmware/efi/libstub/gop.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+In this particular case, I think your analysis is correct wrt the
+types in question, just be aware that padding is not the complete
+picture.
 
-diff --git a/drivers/firmware/efi/libstub/gop.c b/drivers/firmware/efi/libstub/gop.c
-index 94045ab7dd3d..8cce20ff4437 100644
---- a/drivers/firmware/efi/libstub/gop.c
-+++ b/drivers/firmware/efi/libstub/gop.c
-@@ -7,6 +7,7 @@
- 
- #include <linux/efi.h>
- #include <linux/screen_info.h>
-+#include <linux/types.h>
- #include <asm/efi.h>
- #include <asm/setup.h>
- 
-@@ -132,7 +133,8 @@ setup_gop(efi_system_table_t *sys_table_arg, struct screen_info *si,
- 		current_fb_base = efi_gop_attr(_mode, frame_buffer_base, mode);
- 
- 		if ((!first_gop || conout_found) &&
--		    info->pixel_format != PIXEL_BLT_ONLY) {
-+		    info->pixel_format != PIXEL_BLT_ONLY &&
-+		    (phys_addr_t)current_fb_base == current_fb_base) {
- 			/*
- 			 * Systems that use the UEFI Console Splitter may
- 			 * provide multiple GOP devices, not all of which are
-@@ -168,7 +170,7 @@ setup_gop(efi_system_table_t *sys_table_arg, struct screen_info *si,
- 	si->lfb_height = height;
- 	si->lfb_base = fb_base;
- 
--	ext_lfb_base = (u64)(unsigned long)fb_base >> 32;
-+	ext_lfb_base = fb_base >> 32;
- 	if (ext_lfb_base) {
- 		si->capabilities |= VIDEO_CAPABILITY_64BIT_BASE;
- 		si->ext_lfb_base = ext_lfb_base;
--- 
-2.23.0
 
+> Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
+> ---
+>  include/linux/efi.h | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+>
+> diff --git a/include/linux/efi.h b/include/linux/efi.h
+> index 99dfea595c8c..bffe6e0a9b53 100644
+> --- a/include/linux/efi.h
+> +++ b/include/linux/efi.h
+> @@ -1429,7 +1429,7 @@ struct efi_graphics_output_mode_info {
+>         int pixel_format;
+>         struct efi_pixel_bitmask pixel_information;
+>         u32 pixels_per_scan_line;
+> -} __packed;
+> +};
+>
+>  struct efi_graphics_output_protocol_mode_32 {
+>         u32 max_mode;
+> @@ -1438,7 +1438,7 @@ struct efi_graphics_output_protocol_mode_32 {
+>         u32 size_of_info;
+>         u64 frame_buffer_base;
+>         u32 frame_buffer_size;
+> -} __packed;
+> +};
+>
+>  struct efi_graphics_output_protocol_mode_64 {
+>         u32 max_mode;
+> @@ -1447,7 +1447,7 @@ struct efi_graphics_output_protocol_mode_64 {
+>         u64 size_of_info;
+>         u64 frame_buffer_base;
+>         u64 frame_buffer_size;
+> -} __packed;
+> +};
+>
+>  struct efi_graphics_output_protocol_mode {
+>         u32 max_mode;
+> @@ -1456,7 +1456,7 @@ struct efi_graphics_output_protocol_mode {
+>         unsigned long size_of_info;
+>         u64 frame_buffer_base;
+>         unsigned long frame_buffer_size;
+> -} __packed;
+> +};
+>
+>  struct efi_graphics_output_protocol_32 {
+>         u32 query_mode;
+> --
+> 2.23.0
+>
