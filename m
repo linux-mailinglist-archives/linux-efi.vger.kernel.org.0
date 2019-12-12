@@ -2,102 +2,123 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C04A11CACE
-	for <lists+linux-efi@lfdr.de>; Thu, 12 Dec 2019 11:32:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EB96A11CB11
+	for <lists+linux-efi@lfdr.de>; Thu, 12 Dec 2019 11:38:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728697AbfLLKcK (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 12 Dec 2019 05:32:10 -0500
-Received: from us-smtp-2.mimecast.com ([207.211.31.81]:53179 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1728693AbfLLKcJ (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 12 Dec 2019 05:32:09 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1576146728;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=P9Dh2S27/TULqQS9Vj4g94fO/JhD3/K1HM2qzjZTtcQ=;
-        b=HX9e1VGyirxJhOr09nS765e6eJZ3lN3nJDInHF5mGRHe7ueKf0QBBzYrJ2aMwHGVYYGUi0
-        sokECCVOrbBGMyeAMyuk9+s4ym1yTNmRh4PLcPdbpoYx/aWya4sx4UBQJFNYgvA3w08rDn
-        aVMsHpZswptS3SLwPceyTTG1K0T6osw=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-261-SYkBUYFRM5ey7kpHtb5voA-1; Thu, 12 Dec 2019 05:32:07 -0500
-X-MC-Unique: SYkBUYFRM5ey7kpHtb5voA-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id D59651005502;
-        Thu, 12 Dec 2019 10:32:05 +0000 (UTC)
-Received: from shalem.localdomain.com (unknown [10.36.118.130])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 4E5A918779;
-        Thu, 12 Dec 2019 10:32:04 +0000 (UTC)
-From:   Hans de Goede <hdegoede@redhat.com>
-To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Thomas Gleixner <tglx@linutronix.de>
-Cc:     Hans de Goede <hdegoede@redhat.com>,
-        Dominik Brodowski <linux@dominikbrodowski.net>, x86@kernel.org,
-        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: [PATCH 5.5 regression fix 2/2] efi/libstub/helper: Initialize pointer variables to zero for mixed mode
-Date:   Thu, 12 Dec 2019 11:31:58 +0100
-Message-Id: <20191212103158.4958-3-hdegoede@redhat.com>
-In-Reply-To: <20191212103158.4958-1-hdegoede@redhat.com>
-References: <20191212103158.4958-1-hdegoede@redhat.com>
+        id S1728693AbfLLKiB (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 12 Dec 2019 05:38:01 -0500
+Received: from mail-wm1-f68.google.com ([209.85.128.68]:36584 "EHLO
+        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728561AbfLLKiB (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 12 Dec 2019 05:38:01 -0500
+Received: by mail-wm1-f68.google.com with SMTP id p17so1922437wma.1
+        for <linux-efi@vger.kernel.org>; Thu, 12 Dec 2019 02:38:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=9LEkUr58WGziT8fxYk1Ew3kC9fjqbADWx2DYTMjRwGQ=;
+        b=W0uTSigXUFE2xdm3NywrWLAehtiY1nqq3KXNKgVWsPsHs4FYM7q82PekauW43zhU+y
+         NbZNb/8+kXW7sH0tuPsGgM7Z/mdI1Txr44glAgZlrLb9ELa+Zqyujf83VLh9NAdvk5B4
+         tf1F7jjHyPYEZMeCJyGT7iiHVvZtajUKDYKWtpbJrvwcrJMDgbrXgG3WPSdQdQlOR/mg
+         eeeQequvLO1FvKN3dDyiWpbOsCqi2VlEt0ZkYZxAJ2q2xOj0TnU8WGJwwL8aQ6xZGhQ8
+         SUTF4f8yUUwsE5FeB1fXYHmU/DtsjoLrhV7OB90gbZKWyvbt2Uqa/W2v0Els2KLIdHXV
+         sP9A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=9LEkUr58WGziT8fxYk1Ew3kC9fjqbADWx2DYTMjRwGQ=;
+        b=KgnrKyYdJ25lGhKfjSw12IxoLgrC3pctadE3B/5qjdYmORO0GO1kYl2GkHAeK8S2Rk
+         g98u4NngMtKIpFkp4GRTnH/qedPtxnHJbMZ/N4xN1gozTUS/3xPF1YS6paOo08F89c3N
+         OYwaeYqyRCqpMXd9LZ1TZTwb3j7emiH0152qkqq+OhOY4DryyDvcPoAoygfRIq+MXtO8
+         xx7DYTA1f/U1E5bmY+7VNJHsph+8Wy+jO2WPKUHWcnZ2I1OoYjydNDzjeDvXacZBMdzd
+         GgnWDSgC7Dkctqs4bN5Nbbvf4VGqkklTXtikm9tCN3XzEAzkDsbZ8wx7u45/zdmi5t7p
+         Lkbw==
+X-Gm-Message-State: APjAAAULui6rwYdHbZmx4NzGARtFGJmTUe5sBUO+ayb0Du7SUQ03JoGQ
+        kPPA3VsnKr7vW0eYM+RlST+mOkeRgza9h0rbp6zHsA==
+X-Google-Smtp-Source: APXvYqxr3fWC//jtQ4389G0t+wE4iStFTkxw+AcnJfeuE7/RxMxYE2FNqp3gvUBnlv+YKbpTnsdFT2YVgd4NFGhuVAs=
+X-Received: by 2002:a1c:a795:: with SMTP id q143mr5503441wme.52.1576147080146;
+ Thu, 12 Dec 2019 02:38:00 -0800 (PST)
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
-Content-Transfer-Encoding: quoted-printable
+References: <20191212103158.4958-1-hdegoede@redhat.com> <20191212103158.4958-2-hdegoede@redhat.com>
+In-Reply-To: <20191212103158.4958-2-hdegoede@redhat.com>
+From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Date:   Thu, 12 Dec 2019 10:37:58 +0000
+Message-ID: <CAKv+Gu9Fa=ccEyGW=hyZya0y-ujL27twKVX5JwcqWRMQ=yfQzg@mail.gmail.com>
+Subject: Re: [PATCH 5.5 regression fix 1/2] efi/libstub/random: Initialize
+ pointer variables to zero for mixed mode
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Dominik Brodowski <linux@dominikbrodowski.net>,
+        "the arch/x86 maintainers" <x86@kernel.org>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-When running in EFI mixed mode (running a 64 bit kernel on 32 bit EFI
-firmware), we _must_ initialize any pointers which are returned by
-reference by an EFI call to NULL before making the EFI call.
+On Thu, 12 Dec 2019 at 11:32, Hans de Goede <hdegoede@redhat.com> wrote:
+>
+> Commit 0d95981438c3 ("x86: efi/random: Invoke EFI_RNG_PROTOCOL to seed the
+> UEFI RNG table"), causes the drivers/efi/libstub/random.c code to get used
+> on x86 for the first time.
+>
+> But this code was not written with EFI mixed mode in mind (running a 64
+> bit kernel on 32 bit EFI firmware), this causes the kernel to crash during
+> early boot when running in mixed mode.
+>
+> The problem is that in mixed mode pointers are 64 bit, but when running on
+> a 32 bit firmware, EFI calls which return a pointer value by reference only
+> fill the lower 32 bits of the passed pointer, leaving the upper 32 bits
+> uninitialized which leads to crashes.
+>
+> This commit fixes this by initializing pointers which are passed by
+> reference to EFI calls to NULL before passing them, so that the upper 32
+> bits are initialized to 0.
+>
+> Fixes: 0d95981438c3 ("x86: efi/random: Invoke EFI_RNG_PROTOCOL to seed the UEFI RNG table")
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 
-In mixed mode pointers are 64 bit, but when running on a 32 bit firmware,
-EFI calls which return a pointer value by reference only fill the lower
-32 bits of the passed pointer, leaving the upper 32 bits uninitialized
-unless we explicitly set them to 0 before the call.
+Thanks Hans.
 
-We have had this bug in the efi-stub-helper.c file reading code for
-a while now, but this has likely not been noticed sofar because
-this code only gets triggered when LILO style file=3D... arguments are
-present on the kernel cmdline.
+I'm a bit annoyed with myself since I should have been able to catch
+this in my QEMU tests and I didn't
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
----
- drivers/firmware/efi/libstub/efi-stub-helper.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+I'll queue this (and the next patch) as a fix
 
-diff --git a/drivers/firmware/efi/libstub/efi-stub-helper.c b/drivers/fir=
-mware/efi/libstub/efi-stub-helper.c
-index e02579907f2e..6ca7d86743af 100644
---- a/drivers/firmware/efi/libstub/efi-stub-helper.c
-+++ b/drivers/firmware/efi/libstub/efi-stub-helper.c
-@@ -365,7 +365,7 @@ static efi_status_t efi_file_size(efi_system_table_t =
-*sys_table_arg, void *__fh,
- 				  u64 *file_sz)
- {
- 	efi_file_handle_t *h, *fh =3D __fh;
--	efi_file_info_t *info;
-+	efi_file_info_t *info =3D NULL;
- 	efi_status_t status;
- 	efi_guid_t info_guid =3D EFI_FILE_INFO_ID;
- 	unsigned long info_sz;
-@@ -527,7 +527,7 @@ efi_status_t handle_cmdline_files(efi_system_table_t =
-*sys_table_arg,
- 				  unsigned long *load_addr,
- 				  unsigned long *load_size)
- {
--	struct file_info *files;
-+	struct file_info *files =3D NULL;
- 	unsigned long file_addr;
- 	u64 file_size_total;
- 	efi_file_handle_t *fh =3D NULL;
---=20
-2.23.0
 
+
+> ---
+>  drivers/firmware/efi/libstub/random.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+>
+> diff --git a/drivers/firmware/efi/libstub/random.c b/drivers/firmware/efi/libstub/random.c
+> index 35edd7cfb6a1..97378cf96a2e 100644
+> --- a/drivers/firmware/efi/libstub/random.c
+> +++ b/drivers/firmware/efi/libstub/random.c
+> @@ -33,7 +33,7 @@ efi_status_t efi_get_random_bytes(efi_system_table_t *sys_table_arg,
+>  {
+>         efi_guid_t rng_proto = EFI_RNG_PROTOCOL_GUID;
+>         efi_status_t status;
+> -       struct efi_rng_protocol *rng;
+> +       struct efi_rng_protocol *rng = NULL;
+>
+>         status = efi_call_early(locate_protocol, &rng_proto, NULL,
+>                                 (void **)&rng);
+> @@ -162,8 +162,8 @@ efi_status_t efi_random_get_seed(efi_system_table_t *sys_table_arg)
+>         efi_guid_t rng_proto = EFI_RNG_PROTOCOL_GUID;
+>         efi_guid_t rng_algo_raw = EFI_RNG_ALGORITHM_RAW;
+>         efi_guid_t rng_table_guid = LINUX_EFI_RANDOM_SEED_TABLE_GUID;
+> -       struct efi_rng_protocol *rng;
+> -       struct linux_efi_random_seed *seed;
+> +       struct efi_rng_protocol *rng = NULL;
+> +       struct linux_efi_random_seed *seed = NULL;
+>         efi_status_t status;
+>
+>         status = efi_call_early(locate_protocol, &rng_proto, NULL,
+> --
+> 2.23.0
+>
