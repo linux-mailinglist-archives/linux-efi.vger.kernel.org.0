@@ -2,96 +2,93 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B4C8911D2E8
-	for <lists+linux-efi@lfdr.de>; Thu, 12 Dec 2019 17:57:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 24A7111D89C
+	for <lists+linux-efi@lfdr.de>; Thu, 12 Dec 2019 22:34:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729791AbfLLQ56 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 12 Dec 2019 11:57:58 -0500
-Received: from mail-wm1-f66.google.com ([209.85.128.66]:39453 "EHLO
-        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729247AbfLLQ55 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 12 Dec 2019 11:57:57 -0500
-Received: by mail-wm1-f66.google.com with SMTP id d5so3333189wmb.4
-        for <linux-efi@vger.kernel.org>; Thu, 12 Dec 2019 08:57:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=nrhHmmWG6ZTX5+x4X3+AWEGGcmY8Wfs7R6zkQJKl2zU=;
-        b=E+EayL/MsCj4TQDokvtlsT1HcSU5y8CAf3mu0ps6Uluh8/XlBca9HWCwWAVTGDKEj0
-         01GvR0UP+/dthtjCR6xhAT+zgjTgjK1SwX9FiT96gDTamngl8F1TVKM+lf6LKqjot+0J
-         s85xNeI598vNuv6rY41/zwnu3H/sA7Kykz8mYvLiEq18tOargex2fwOFSblLiZaXVD6N
-         qG8UE2QC1K17eK5UmjDyW57Sl2JEmunPmycuu1mJGzXodi3C4HOMiWfi75t9yZTkQA6u
-         o+CodHj+ZqQavZNfW/ny4KSiVDBIv50184VjB5cQCrv4Sd4uMxNQ2Gqo9IRQ2Eoobw4P
-         OyGQ==
+        id S1731112AbfLLVeq (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 12 Dec 2019 16:34:46 -0500
+Received: from mail-qk1-f193.google.com ([209.85.222.193]:37688 "EHLO
+        mail-qk1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730902AbfLLVeq (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 12 Dec 2019 16:34:46 -0500
+Received: by mail-qk1-f193.google.com with SMTP id m188so49832qkc.4
+        for <linux-efi@vger.kernel.org>; Thu, 12 Dec 2019 13:34:45 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=nrhHmmWG6ZTX5+x4X3+AWEGGcmY8Wfs7R6zkQJKl2zU=;
-        b=lBFhutY3sf3lUgjZyzImDjQCjOzPWujLJsQ0EyIxuXHsFGdGsoPscwKWGsDT5i2qGY
-         tpQtMKVL5eJXZIHJJ8BTIwqXpotKUVFsWGCLlc2a89eF3YHfLD4Mw7maSeCt5Zw9afBy
-         FYjpdRh8hrxMWOe5ZugmgASSsTzKWm0ERuZUrV24TXx7GxBHyet63aSAKCyjHjQfssin
-         6AuoiMwkbDTjEM7zf71eU63mM+VUBjDtRIytZrait/XEnmquITycGLtHsIum5P8mVunI
-         PlnWmdYVU1Cish7PzHIsyOF3LrOYZTpvwlbpgTD5oRmAsQpjnm8WgFZ+QoJuHWojgbmV
-         PQeA==
-X-Gm-Message-State: APjAAAWh4lqzB9XDKbpehAQIJLNvIPYo4vyf5rVgPtY+2sbp32qeVuNX
-        dl71FNXw+ExbdpWowCCWqHmHAF7AHH3mdLwzqth2Ow==
-X-Google-Smtp-Source: APXvYqzc8FhDkJnVj/eoIPyG6FAyooTk4A4Ejx1+nyQc5vqwcwknY/JGRtN8uvGVgf/wC2xA0tRs/fpxWHlwbik2KS4=
-X-Received: by 2002:a1c:7205:: with SMTP id n5mr8015316wmc.9.1576169875370;
- Thu, 12 Dec 2019 08:57:55 -0800 (PST)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=H2nKgCZNFFEBZCU2Z37qQNI7htkAaxmvPk6e+dzcsRQ=;
+        b=RqjJiEMCaJHl5clxBnYh9arA8mG5J+lAD+1CKvq/z7EMSF/hMB6bfgbiYHefe7Mnuq
+         LFndLw/EtxnMcK/UqTjitDJeiJr99wq464mtycRqXvi2Z5q5wpx16BCvCyk0DPRFElmz
+         OilJWhRO2NLsBKL7NMdgzK+b/sZTIYgPAPN4mqJAgHXgvy5QzoM/VqmXfO/8uk9oDD9w
+         NCorlk7iLYwJ1gfyO+0P6uxaNwaeMtAVuwQJ3fi1XH97tMUZbxdJW2lnENo643MRO3hG
+         k15PaHJVGLJLqSWLZGT/AExEvNerveRkyNkT5vz2nduGNSftBXqyP6pFH2rTuWe3GgKJ
+         ItYQ==
+X-Gm-Message-State: APjAAAWlTXnmHj6g58dh4Ul2d4H0yDJTDoJ3jIKzXhu7yooxmR/h2U0c
+        46C/qtbYAp/x07HeCamDbTw=
+X-Google-Smtp-Source: APXvYqwhQ4XJzhsiagpvaP2+F4kfTWMUjE45USEiP4I9crh1lg6tuQRBbJE5uxUoH2Hd+ZkDMXkDvg==
+X-Received: by 2002:ae9:f709:: with SMTP id s9mr10196255qkg.463.1576186485085;
+        Thu, 12 Dec 2019 13:34:45 -0800 (PST)
+Received: from rani.riverdale.lan ([2001:470:1f07:5f3::b55f])
+        by smtp.gmail.com with ESMTPSA id r5sm2116467qkf.44.2019.12.12.13.34.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Dec 2019 13:34:44 -0800 (PST)
+From:   Arvind Sankar <nivedita@alum.mit.edu>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-efi@vger.kernel.org
+Subject: [RFC PATCH 0/5] efi/gop: Merge 32/64-bit code
+Date:   Thu, 12 Dec 2019 16:34:38 -0500
+Message-Id: <20191212213443.24128-1-nivedita@alum.mit.edu>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-References: <20191210232410.17890-1-nivedita@alum.mit.edu> <CAKv+Gu8s=kT_21WasEsTRh+6COQYD0mpzOT5n0qhD1Y+YdR3JQ@mail.gmail.com>
- <20191211110435.GP32742@smile.fi.intel.com> <20191211173746.GA220404@rani.riverdale.lan>
- <20191211180330.GZ32742@smile.fi.intel.com> <CAKv+Gu8TbPg_SGZvTc+ZHgTnAq9zYtei7ZgqpdHv=5nNpW4j1Q@mail.gmail.com>
- <20191211200007.GB32742@smile.fi.intel.com> <20191212165649.GA117958@rani.riverdale.lan>
-In-Reply-To: <20191212165649.GA117958@rani.riverdale.lan>
-From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Date:   Thu, 12 Dec 2019 17:57:44 +0100
-Message-ID: <CAKv+Gu9v=oSyQL6hmxDBVgZb9tEq+LTtWaUDN7vRyViEKAxEgA@mail.gmail.com>
-Subject: Re: [PATCH] efi/earlycon: Fix write-combine mapping on x86
-To:     Arvind Sankar <nivedita@alum.mit.edu>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, 12 Dec 2019 at 17:56, Arvind Sankar <nivedita@alum.mit.edu> wrote:
->
-> On Wed, Dec 11, 2019 at 10:00:07PM +0200, Andy Shevchenko wrote:
-> > On Wed, Dec 11, 2019 at 06:06:28PM +0000, Ard Biesheuvel wrote:
-> > > On Wed, 11 Dec 2019 at 19:03, Andy Shevchenko
-> > > <andriy.shevchenko@linux.intel.com> wrote:
-> > > > On Wed, Dec 11, 2019 at 12:37:46PM -0500, Arvind Sankar wrote:
-> >
-> > > > Perhaps comment near to if can explain this.
-> >
-> > > I'm fine with the ternary, actually. What do you feel is wrong with it?
-> >
-> > I don't like ternary when it takes more than one line. I found them hard to
-> > follow.
-> >
-> > It's anyway style, so, go ahead with it.
-> >
-> > --
-> > With Best Regards,
-> > Andy Shevchenko
-> >
-> >
-> Thanks.
-> > > Can't we just set a global flag to MEMREMAP_WB or MEMREMAP_WC in the
-> > > init code, and use that directly?
-> > We can't use it directly in efi_earlycon_map though, so we still need to
-> > translate there, and we'd need an if/else in the init code, so this
-> > would just move the if/else from here to the init code.
->
-> Ard, re your comment, does that cover it and the patch is ok as it
-> stands then?
+This series unifies the 32-bit and 64-bit firmware functions in gop.c.
 
-Yes.
+Patches 1, 2 and 5 are bugfix/cleanup. The merge is in patches 3/4.
 
-I have queued it up and will send it out shortly.
+Patch 1 removes __packed from the GOP structures, which is wrong but
+didn't impact their layout.
+
+The UEFI spec differs from the standard gcc layout for 32-bit systems,
+in that it specifies 64-bit alignment for 64-bit members. We have a bit
+of a mix in the type definitions currently, with different types doing
+one of the below:
+	(a) nothing, if a 64-bit member happens to fall naturally on a
+	    64-bit boundary
+	(b) explicit padding fields
+	(c) use of __aligned_u64
+The last method is the only one that gets the alignment requirement of
+the structure itself correct as well as the internal layout -- is it
+worth fixing everything to use it?
+
+Patch 5 is to make sure that we don't wind up with a >4G framebuffer on
+a 32-bit kernel that can only address 4G. I'm not sure if this can
+practically happen on anything that we can run a 32-bit kernel on, but
+UEFI specs the framebuffer physical address to be 64-bit even on 32-bit
+systems, so I figured we might as well cover this edge case.
+
+For the code merge, formatting is a bit annoying as the types are named
+"graphics_output_protocol", which is overly long to let code fit nicely
+into 80 columns. I've used an intermediate macro to address that
+somewhat. Alternatively, would renaming the types to use just "gop" be
+acceptable?
+
+Arvind Sankar (5):
+  efi/gop: Remove bogus packed attribute from GOP structures
+  efi/gop: Remove unused typedef
+  efi/gop: Convert GOP structures to typedef and cleanup some types
+  efi/gop: Unify 32/64-bit functions
+  efi/gop: Check that the framebuffer will be accessible
+
+ drivers/firmware/efi/libstub/gop.c | 150 ++++++-----------------------
+ include/linux/efi.h                |  50 +++++-----
+ 2 files changed, 50 insertions(+), 150 deletions(-)
+
+-- 
+2.23.0
+
