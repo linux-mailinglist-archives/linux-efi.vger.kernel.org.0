@@ -2,285 +2,257 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8591411E5DE
-	for <lists+linux-efi@lfdr.de>; Fri, 13 Dec 2019 15:53:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A575711EA10
+	for <lists+linux-efi@lfdr.de>; Fri, 13 Dec 2019 19:17:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727809AbfLMOx2 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 13 Dec 2019 09:53:28 -0500
-Received: from bombadil.infradead.org ([198.137.202.133]:45464 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727690AbfLMOx2 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 13 Dec 2019 09:53:28 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
-        Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Subject:Cc:To:
-        From:Date:Sender:Reply-To:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=O1lTvrez9BfqDz6dWwHlTUzsfr1CMMJPuBwlVLCUrpY=; b=XsQHpqQxQW2ILsutxdZLcnLSd
-        4cwnd5sfVKneDo57XKkndHcoVvjgr5bXbE6DcQJwPDJa6SFQLWWLNquwix487jz+PLq8k9oVoQcdG
-        Y07wnkcg2NoplPDDHTqN6wV4qXFphxKY2a/DcHXZePae515KrKNoMn71LhO0igmDvltjHV5DjfWYa
-        lZc2RuHKhjzmrC4aokHRVTCLBsIprju5IkT4JG8yXn1dWlfHxx4zuIQKaF04zB2ChAdltZ0HfHDc/
-        31xtUTGufuHePLzdEUNxYVCFhmgWLWWVhlIthQ2IAu2Js4Kj/ZnirY72kYIyjb+RQl1IjWRLNsBfm
-        cC8nZmQKQ==;
-Received: from tmo-101-54.customers.d1-online.com ([80.187.101.54] helo=localhost)
-        by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1ifmJr-00008e-JE; Fri, 13 Dec 2019 14:53:28 +0000
-Date:   Fri, 13 Dec 2019 15:53:22 +0100
-From:   Mauro Carvalho Chehab <mchehab@kernel.org>
+        id S1728804AbfLMSQl (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 13 Dec 2019 13:16:41 -0500
+Received: from mail.skyhub.de ([5.9.137.197]:49236 "EHLO mail.skyhub.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728784AbfLMSQl (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Fri, 13 Dec 2019 13:16:41 -0500
+Received: from zn.tnic (p200300EC2F0A5A00F0A2BADA183BEA41.dip0.t-ipconnect.de [IPv6:2003:ec:2f0a:5a00:f0a2:bada:183b:ea41])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 590A91EC0D0E;
+        Fri, 13 Dec 2019 19:16:39 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1576260999;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=pQrlGebVtQdUG0Cu8fh4rdDJnYScv2XeFoXbzttbuWI=;
+        b=Xk41lKxfwsJ9iMbjooMDUi5YTAIRyTqoEsh19Rud34sWM2+XzgIGWcUUkfz7yPLJmOQ03u
+        Cu9CZUGtNziiIPpzhCUS4njUOKKzgiLxtTx32l89wELjBdvCGWg5U0vFGbbIMhAc6YWnYN
+        9EFq/QWkbBv2ljtgtxwwKfB/I9Zm3Ao=
+Date:   Fri, 13 Dec 2019 19:16:33 +0100
+From:   Borislav Petkov <bp@alien8.de>
 To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc:     <linux-edac@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
-        <linux-efi@vger.kernel.org>, Borislav Petkov <bp@alien8.de>,
-        <james.morse@arm.com>, <rjw@rjwysocki.net>, <tony.luck@intel.com>,
-        <linuxarm@huawei.com>, <ard.biesheuvel@linaro.org>,
-        <nariman.poushin@linaro.org>,
+Cc:     linux-edac@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-efi@vger.kernel.org,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        james.morse@arm.com, rjw@rjwysocki.net, tony.luck@intel.com,
+        linuxarm@huawei.com, ard.biesheuvel@linaro.org,
+        nariman.poushin@linaro.org,
         Thanu Rangarajan <Thanu.Rangarajan@arm.com>
-Subject: Re: [PATCH v5 6/6] efi / ras: CCIX Agent internal error reporting
-Message-ID: <20191213155322.2f169ed0@kernel.org>
-In-Reply-To: <20191114133919.32290-7-Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH v5 1/6] efi / ras: CCIX Memory error reporting
+Message-ID: <20191213181633.GC25899@zn.tnic>
 References: <20191114133919.32290-1-Jonathan.Cameron@huawei.com>
-        <20191114133919.32290-7-Jonathan.Cameron@huawei.com>
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
+ <20191114133919.32290-2-Jonathan.Cameron@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20191114133919.32290-2-Jonathan.Cameron@huawei.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Em Thu, 14 Nov 2019 21:39:19 +0800
-Jonathan Cameron <Jonathan.Cameron@huawei.com> escreveu:
-
-> The CCIX 1.0 Base specification defines an internal agent error,
-> for which the specific data present afte the header is vendor
-> defined.
+On Thu, Nov 14, 2019 at 09:39:14PM +0800, Jonathan Cameron wrote:
+> CCIX defines a number of different error types
+> (See CCIX spec 1.0) and UEFI 2.8 defines a CPER record to allow
+> for them to be reported when firmware first handling is in use.
+> The last part of that record is a copy of the CCIX protocol
+> error record which can provide very detailed information.
 > 
-
-Patches 3 to 6 just repeats the same things I mentioned already on
-patch 1.
-
-Except for that, the series look ready for merging on my PoV.
-
-Regards,
-Mauro
-
+> This patch introduces infrastructure and support for one of those
+> error types, CCIX Memory Errors.  Later patches will supply
+> equivalent support for the other error types.
+> 
+> The variable length and content of the different messages makes
+> a single tracepoint impractical.  As such the RAS tracepoint introduced
+> in this patch only covers the memory error. Additional trace points
+> will be introduced for other error types along with their
+> cper handling in the rest of this series.
+> 
+> Updated RAS daemon support to be posted shortly.
+> qemu injection patches also available but not currently planing
+> to upstream those.
+> 
 > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > ---
+> 
 > Changes since v4
-> * none
+> * Fixed length array parameters
+> * Take advantage of being first print to string and simplify code.
+> * Fix buffer overflow risk in snprintf calls.
 > 
->  drivers/acpi/apei/ghes.c         |  4 ++
->  drivers/firmware/efi/cper-ccix.c | 43 +++++++++++++++++++++
->  include/linux/cper.h             | 29 +++++++++++++++
->  include/ras/ras_event.h          | 64 ++++++++++++++++++++++++++++++++
->  4 files changed, 140 insertions(+)
+>  drivers/acpi/apei/Kconfig        |   8 +
+>  drivers/acpi/apei/ghes.c         |  39 ++++
+>  drivers/firmware/efi/Kconfig     |   5 +
+>  drivers/firmware/efi/Makefile    |   1 +
+>  drivers/firmware/efi/cper-ccix.c | 362 +++++++++++++++++++++++++++++++
+>  drivers/firmware/efi/cper.c      |   6 +
+>  include/linux/cper.h             | 118 ++++++++++
+>  include/ras/ras_event.h          |  79 +++++++
+>  8 files changed, 618 insertions(+)
 > 
+> diff --git a/drivers/acpi/apei/Kconfig b/drivers/acpi/apei/Kconfig
+> index 6b18f8bc7be3..e687b18dee34 100644
+> --- a/drivers/acpi/apei/Kconfig
+> +++ b/drivers/acpi/apei/Kconfig
+> @@ -68,3 +68,11 @@ config ACPI_APEI_ERST_DEBUG
+>  	  error information to and from a persistent store. Enable this
+>  	  if you want to debugging and testing the ERST kernel support
+>  	  and firmware implementation.
+> +
+> +config ACPI_APEI_CCIX
+> +       bool "APEI CCIX error recovery support"
+> +       depends on ACPI_APEI && MEMORY_FAILURE
+> +       help
+> +	 CCIX has a number of defined error types. This option enables
+
+Write out that "CCIX" acronym at least in the help here. I had to go
+visit wikipedia to find out what it is.
+
+> +	 the handling of CPER records generated by a firmware performing
+> +	 firmware first error handling of these CCIX errors.
 > diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-> index 22df8c14ec13..5a75fb0374dd 100644
+> index 777f6f7122b4..75a177ae9de3 100644
 > --- a/drivers/acpi/apei/ghes.c
 > +++ b/drivers/acpi/apei/ghes.c
-> @@ -533,6 +533,10 @@ static void ghes_handle_ccix_per(struct acpi_hest_generic_data *gdata, int sev)
->  		trace_ccix_link_error_event(payload, err_seq, sev,
->  					    ccix_link_err_ven_len_get(payload));
->  		break;
-> +	case CCIX_AGENT_INTERNAL_ERROR:
-> +		trace_ccix_agent_error_event(payload, err_seq, sev,
-> +					     ccix_agent_err_ven_len_get(payload));
+> @@ -490,6 +490,42 @@ static void ghes_handle_aer(struct acpi_hest_generic_data *gdata)
+>  #endif
+>  }
+>  
+> +static void ghes_handle_ccix_per(struct acpi_hest_generic_data *gdata, int sev)
+> +{
+> +#ifdef CONFIG_ACPI_APEI_CCIX
+> +	struct cper_sec_ccix_header *header = acpi_hest_get_payload(gdata);
+> +	__u32 *dw;
+> +	enum ccix_per_type per_type;
+> +	static u32 err_seq;
+> +	void *payload;
+
+Please sort function local variables declaration in a reverse christmas
+tree order:
+
+	<type A> longest_variable_name;
+	<type B> shorter_var_name;
+	<type C> even_shorter;
+	<type D> i;
+
+and check that for all your functions.
+
+> +	/* Check if space for CCIX CPER header and 8 DW of a PER log header */
+> +	if (gdata->error_data_length <
+> +	    sizeof(*header) + CCIX_PER_LOG_HEADER_DWS * sizeof(__u32))
+
+Put that size in a local variable so that the if-statement is more readable.
+
+> +		return;
+> +
+> +	if ((header->validation_bits & CPER_CCIX_VALID_PER_LOG) == 0)
+
+	if (!( ...
+
+> +		return;
+> +
+> +	dw = (__u32 *)(header + 1);
+> +
+> +	per_type = FIELD_GET(CCIX_PER_LOG_DW1_PER_TYPE_M, dw[1]);
+> +	payload = acpi_hest_get_payload(gdata);
+> +
+> +	switch (per_type) {
+> +	case CCIX_MEMORY_ERROR:
+> +		trace_ccix_memory_error_event(payload, err_seq, sev,
+> +					      ccix_mem_err_ven_len_get(payload));
 > +		break;
->  	default:
->  		/* Unknown error type */
->  		pr_info("CCIX error of unknown or vendor defined type\n");
-> diff --git a/drivers/firmware/efi/cper-ccix.c b/drivers/firmware/efi/cper-ccix.c
-> index ea17fb9140f9..d95fddf17bd3 100644
-> --- a/drivers/firmware/efi/cper-ccix.c
-> +++ b/drivers/firmware/efi/cper-ccix.c
-> @@ -587,6 +587,38 @@ static int cper_ccix_link_err_details(const char *pfx,
->  	return 0;
->  }
->  
-> +static int cper_ccix_agent_err_details(const char *pfx,
-> +				       struct acpi_hest_generic_data *gdata)
-> +{
-> +	struct cper_ccix_agent_err *full_agent_err;
-> +	struct cper_sec_ccix_agent_err *agent_err;
-> +	u16 vendor_data_len;
-> +	int i;
-> +
-> +	if (gdata->error_data_length < sizeof(*full_agent_err))
-> +		return -ENOSPC;
-> +
-> +	full_agent_err = acpi_hest_get_payload(gdata);
-> +
-> +	agent_err = &full_agent_err->agent_record;
-> +
-> +	if (agent_err->validation_bits & CCIX_AGENT_INTERNAL_ERR_VENDOR_DATA_VALID) {
-> +		if (gdata->error_data_length < sizeof(*full_agent_err) + 4)
-> +			return -ENOSPC;
-> +
-> +		vendor_data_len = agent_err->vendor_data[0] & GENMASK(15, 0);
-> +		if (gdata->error_data_length <
-> +		    sizeof(*full_agent_err) + vendor_data_len)
-> +			return -ENOSPC;
-> +
-> +		for (i = 0; i < vendor_data_len/4 - 1; i++)
-> +			printk("%s""Vendor%d: 0x%08x\n", pfx, i,
-> +			       agent_err->vendor_data[i + 1]);
+> +	default:
+> +		/* Unknown error type */
+> +		pr_info("CCIX error of unknown or vendor defined type\n");
+> +		break;
 > +	}
-> +
-> +	return 0;
+> +	err_seq++;
+> +#endif
 > +}
 > +
->  int cper_print_ccix_per(const char *pfx, struct acpi_hest_generic_data *gdata)
+>  static void ghes_do_proc(struct ghes *ghes,
+>  			 const struct acpi_hest_generic_status *estatus)
 >  {
->  	struct cper_sec_ccix_header *header = acpi_hest_get_payload(gdata);
-> @@ -656,6 +688,8 @@ int cper_print_ccix_per(const char *pfx, struct acpi_hest_generic_data *gdata)
->  		return cper_ccix_port_err_details(pfx, gdata);
->  	case CCIX_LINK_ERROR:
->  		return cper_ccix_link_err_details(pfx, gdata);
-> +	case CCIX_AGENT_INTERNAL_ERROR:
-> +		return cper_ccix_agent_err_details(pfx, gdata);
->  	default:
->  		/* Vendor defined so no formatting be done */
->  		break;
-> @@ -878,3 +912,12 @@ const char *cper_ccix_link_err_unpack(struct trace_seq *p,
+> @@ -520,6 +556,9 @@ static void ghes_do_proc(struct ghes *ghes,
+>  		else if (guid_equal(sec_type, &CPER_SEC_PCIE)) {
+>  			ghes_handle_aer(gdata);
+>  		}
+> +		else if (guid_equal(sec_type, &CPER_SEC_CCIX)) {
+> +			ghes_handle_ccix_per(gdata, estatus->error_severity);
+> +		}
+>  		else if (guid_equal(sec_type, &CPER_SEC_PROC_ARM)) {
+>  			struct cper_sec_proc_arm *err = acpi_hest_get_payload(gdata);
 >  
->  	return ret;
->  }
-> +
-> +void cper_ccix_agent_err_pack(const struct cper_sec_ccix_agent_err *agent_record,
-> +			      struct cper_ccix_agent_err_compact *cagent_err,
-> +			      const u16 vendor_data_len,
-> +			      u8 *vendor_data)
-> +{
-> +	cagent_err->validation_bits = agent_record->validation_bits;
-> +	memcpy(vendor_data, &agent_record->vendor_data[1], vendor_data_len);
-> +}
-> diff --git a/include/linux/cper.h b/include/linux/cper.h
-> index d35be55351e3..373c1d387a70 100644
-> --- a/include/linux/cper.h
-> +++ b/include/linux/cper.h
-> @@ -783,6 +783,30 @@ struct cper_ccix_link_err_compact {
->  	__u8	credit_type;
->  };
+> diff --git a/drivers/firmware/efi/Kconfig b/drivers/firmware/efi/Kconfig
+> index b248870a9806..096e693a9522 100644
+> --- a/drivers/firmware/efi/Kconfig
+> +++ b/drivers/firmware/efi/Kconfig
+> @@ -209,6 +209,11 @@ config UEFI_CPER_X86
+>  	depends on UEFI_CPER && X86
+>  	default y
 >  
-> +struct cper_sec_ccix_agent_err {
-> +	__u32	validation_bits;
-> +#define CCIX_AGENT_INTERNAL_ERR_VENDOR_DATA_VALID	BIT(0)
-> +	__u32	vendor_data[];
-> +};
-> +
-> +struct cper_ccix_agent_err {
-> +	struct cper_sec_ccix_header header;
-> +	__u32 ccix_header[CCIX_PER_LOG_HEADER_DWS];
-> +	struct cper_sec_ccix_agent_err agent_record;
-> +};
-> +
-> +static inline u16 ccix_agent_err_ven_len_get(struct cper_ccix_agent_err *agent_err)
-> +{
-> +	if (agent_err->agent_record.validation_bits & CCIX_AGENT_INTERNAL_ERR_VENDOR_DATA_VALID)
-> +		return agent_err->agent_record.vendor_data[0] & 0xFFFF;
-> +	else
-> +		return 0;
-> +}
-> +
-> +struct cper_ccix_agent_err_compact {
-> +	__u32	validation_bits;
-> +};
-> +
->  /* Reset to default packing */
->  #pragma pack()
->  
-> @@ -835,6 +859,11 @@ void cper_ccix_link_err_pack(const struct cper_sec_ccix_link_error *link_record,
->  const char *cper_ccix_link_err_unpack(struct trace_seq *p,
->  				      struct cper_ccix_link_err_compact *clink_err);
->  
-> +void cper_ccix_agent_err_pack(const struct cper_sec_ccix_agent_err *agent_record,
-> +			      struct cper_ccix_agent_err_compact *cagent_err,
-> +			      const u16 vendor_data_len,
-> +			      u8 *vendor_data);
-> +
->  struct acpi_hest_generic_data;
->  int cper_print_ccix_per(const char *pfx,
->  			struct acpi_hest_generic_data *gdata);
+> +config UEFI_CPER_CCIX
+> +       bool
+> +       depends on UEFI_CPER
+> +       default y
+
+Err, this whole CCIX gunk will get built on all systems now which
+wanna enable UEFI_CPER but how many of those do *actually* have those
+accelerators and use CCIX?
+
+If not the majority, then this needs to be user-configurable so that
+most people who don't have it, do not have to enable it and bloat their
+kernels unnecessarily.
+
+And all that code should be surrounded with ifdefs so that it is not
+even there on the majority of the systems.
+
+...
+
 > diff --git a/include/ras/ras_event.h b/include/ras/ras_event.h
-> index 7cecfadb0b15..59b62d5cd8cf 100644
+> index 36c5c5e38c1d..560e55958561 100644
 > --- a/include/ras/ras_event.h
 > +++ b/include/ras/ras_event.h
-> @@ -679,6 +679,70 @@ TRACE_EVENT(ccix_link_error_event,
->  		__print_hex(__get_dynamic_array(vendor_data), __entry->vendor_data_length)
->  	)
->  );
-> +
-> +TRACE_EVENT(ccix_agent_error_event,
-> +	TP_PROTO(struct cper_ccix_agent_err *err,
-> +		 u32 err_seq,
-> +		 u8 sev, u16 ven_len),
-> +
-> +	TP_ARGS(err, err_seq, sev, ven_len),
-> +
-> +	TP_STRUCT__entry(
-> +		__field(u32, err_seq)
-> +		__field(u8, sev)
-> +		__field(u8, sevdetail)
-> +		__field(u8, source)
-> +		__field(u8, component)
-> +		__field(u64, pa)
-> +		__field(u8, pa_mask_lsb)
-> +		__field(u16, vendor_data_length)
-> +		__field_struct(struct cper_ccix_agent_err_compact, data)
-> +		__dynamic_array(u8, vendor_data, ven_len)
-> +	),
-> +
-> +	TP_fast_assign(
-> +		__entry->err_seq = err_seq;
-> +
-> +		__entry->sev = sev;
-> +		__entry->sevdetail = FIELD_GET(CCIX_PER_LOG_DW1_SEV_UE_M |
-> +			CCIX_PER_LOG_DW1_SEV_NO_COMM_M |
-> +			CCIX_PER_LOG_DW1_SEV_DEGRADED_M |
-> +			CCIX_PER_LOG_DW1_SEV_DEFFERABLE_M,
-> +			err->ccix_header[1]);
-> +		if (err->header.validation_bits & 0x1)
-> +			__entry->source = err->header.source_id;
-> +		else
-> +			__entry->source = ~0;
-> +		__entry->component = FIELD_GET(CCIX_PER_LOG_DW1_COMP_TYPE_M,
-> +						   err->ccix_header[1]);
-> +		if (err->ccix_header[1] & CCIX_PER_LOG_DW1_ADDR_VAL_M) {
-> +			__entry->pa = (u64)err->ccix_header[2] << 32 |
-> +				(err->ccix_header[3] & 0xfffffffc);
-> +			__entry->pa_mask_lsb = err->ccix_header[4] & 0xff;
-> +		} else {
-> +			__entry->pa = ~0ull;
-> +			__entry->pa_mask_lsb = ~0;
-> +		}
-> +		/* Do not store the vendor data header length */
-> +		__entry->vendor_data_length = ven_len ? ven_len - 4 : 0;
-> +		cper_ccix_agent_err_pack(&err->agent_record, &__entry->data,
-> +					__entry->vendor_data_length,
-> +					__get_dynamic_array(vendor_data));
-> +	),
-> +
-> +	TP_printk("{%d} %s CCIX PER Agent Internal Error in %s SevUE:%d SevNoComm:%d SevDegraded:%d SevDeferred:%d physical addr: %016llx (mask: %x) vendor:%s",
-> +		__entry->err_seq,
-> +		cper_severity_str(__entry->sev),
-> +		cper_ccix_comp_type_str(__entry->component),
-> +		__entry->sevdetail & BIT(0) ? 1 : 0,
-> +		__entry->sevdetail & BIT(1) ? 1 : 0,
-> +		__entry->sevdetail & BIT(2) ? 1 : 0,
-> +		__entry->sevdetail & BIT(3) ? 1 : 0,
-> +		__entry->pa,
-> +		__entry->pa_mask_lsb,
-> +		__print_hex(__get_dynamic_array(vendor_data), __entry->vendor_data_length)
-> +	)
-> +);
->  #endif
+> @@ -14,6 +14,7 @@
+>  #include <linux/cper.h>
+>  #include <linux/mm.h>
 >  
+> +#include <linux/bitfield.h>
 >  /*
+>   * MCE Extended Error Log trace event
+>   *
+> @@ -338,6 +339,84 @@ TRACE_EVENT(aer_event,
+>  			"Not available")
+>  );
+>  
+> +#if defined(CONFIG_ACPI_APEI_CCIX)
 
+#ifdef doesn't work here?
 
+> +/*
+> + * CCIX PER log memory error trace event
+> + *
+> + * These events are generated when hardware detects a corrected or
+> + * uncorrected event.
+> + *
+> + * Some elements of the record are not included
+> + * - PER version (tracepoint should remain compatible across versions)
+> + * - Multiple Error
+> + */
+> +TRACE_EVENT(ccix_memory_error_event,
+> +	TP_PROTO(struct cper_ccix_mem_error *mem,
+> +		 u32 err_seq,
+> +		 u8 sev,
+> +		 u16 ven_len),
 
+In any case, you have a lot of duplication between all those tracepoints
+and I'm wondering why can't you have a *single* TRACE_EVENT() definition
+which can deal with all the possible CCIX events?
 
-Cheers,
-Mauro
+Or have a TRACE_EVENT_CLASS()?
+
+Thx.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
