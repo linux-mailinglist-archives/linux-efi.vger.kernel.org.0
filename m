@@ -2,147 +2,111 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 593BC11EBC1
-	for <lists+linux-efi@lfdr.de>; Fri, 13 Dec 2019 21:18:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5DC0E11ECD5
+	for <lists+linux-efi@lfdr.de>; Fri, 13 Dec 2019 22:26:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728932AbfLMUQw (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 13 Dec 2019 15:16:52 -0500
-Received: from mail-wm1-f65.google.com ([209.85.128.65]:54759 "EHLO
-        mail-wm1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728578AbfLMUQw (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 13 Dec 2019 15:16:52 -0500
-Received: by mail-wm1-f65.google.com with SMTP id b19so73360wmj.4
-        for <linux-efi@vger.kernel.org>; Fri, 13 Dec 2019 12:16:49 -0800 (PST)
+        id S1726687AbfLMVYs (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 13 Dec 2019 16:24:48 -0500
+Received: from mail-il1-f194.google.com ([209.85.166.194]:36399 "EHLO
+        mail-il1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725747AbfLMVYs (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 13 Dec 2019 16:24:48 -0500
+Received: by mail-il1-f194.google.com with SMTP id b15so631478iln.3
+        for <linux-efi@vger.kernel.org>; Fri, 13 Dec 2019 13:24:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to;
-        bh=A+jyCI430TlszbsB8SpVgZEyoxncE+axZ3B8T5+dQAw=;
-        b=bXVIOCN+UJq13mxaAw1cXYpNicm3ec28BfiCIzBCm1PUZE5KC0ZuQ4GTic8RTQxiZR
-         6ALsd0BsoJtX0LttPQ1X2SjY7Fx9ow8w3t47K7FK8+VETRMXcRQZP6BzWkMBpsaXL6R7
-         hHZqpSbmSin+eucjda89g9PBMUbyv91ldFZJVEGv2qlBwzGEtkpuU4rBPgPb1ogCfRgB
-         K2NnWlL98eXniJ2/mHxCafjpe4u2RQ7FT0Kp3PiNUepK/27joVqcle9Y5PiEL3DN3I+V
-         rI1SdrzzfV7qAxVIAnG/6H8rgXtTRjmXLBt8W9iZNXxga3pZp7xNarhYhLkvezBTLS3z
-         Qn3w==
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=VWRSxey7el74QZ+Ei/DzotdKJzpYoB0015GuoC7vpOI=;
+        b=ACUakujhnGW2MtAPIdsq2dzxITzFJAyUw4n1m3wvSShsTuvSKj9O0/gmzx3CgPtOwJ
+         /eSBPWw/gKFFBq3gV59Y2CnL9oIMb+Qy8DQEF/evgpiCnhodb+DWZhYu9YoZWCtfaJfM
+         Unlrkn4OCs3BQ9uXhVmzB7oePCKL2PI8t38qnQX1vwmogdlGEYVYpLLs9oJH+HNpNewa
+         sXu6oO8tje/uQ2WAgXBQcCzI9PYrsgkF3Tp6NHdg1/JmUieGZ+k4gLTixIGhGZkvuXQM
+         AUkAWstF8CZ9+uj0Onthy4T6UgUgqMxnv3uVM8/RAJBFUrPdrdr24+6KZqnZS6CBhe18
+         Xc/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to;
-        bh=A+jyCI430TlszbsB8SpVgZEyoxncE+axZ3B8T5+dQAw=;
-        b=aaImG6PkXDOMX7O2N5gmGi7fY6BHlOWr1FOt8Wu2N//CqVj6I8fv1df+ZX3bf76jIe
-         A20FJV+BSyumoP05QU3AZ7Z/8yhvtT84nYqirJIVRQIbuOQwWzhje4IqYPx81D1khXLY
-         dRrU5w8ejr78EWgalbmusXXLOT6Zbm81po6je5SccOybPKHQ0D5FzY7jcvn8QYKgBcud
-         pgdMeGLFNPiF51jw5rI8pOBm3lZyilBVovY5HU6x7tkNYEiAm1ofk/ABLfRKpkuO4maL
-         Q0qUy/ZA3SJTKfhbA7xdf6HPSDaXzAzbAky0NwH/YtvaW739UVfF90/ZTjTuhzqDv3fv
-         hRDQ==
-X-Gm-Message-State: APjAAAXzJpRz3hadJZDJB6dQ7paz+dmga3Tv650EBDcT1C00tbSSDukU
-        CZAAJJZ6vAVIw0QM/8kH4wi1dxebN7VEc6euipYruw==
-X-Google-Smtp-Source: APXvYqwSHBR1KbkViEhxeNuFdQctfETYI850gBRnD8XNV2A+O9R9itLZrpkUD63gNCMSxLewFqft5O+tQ9fYG04lWEg=
-X-Received: by 2002:a1c:9d52:: with SMTP id g79mr6751839wme.148.1576268209088;
- Fri, 13 Dec 2019 12:16:49 -0800 (PST)
+         :message-id:subject:to:cc;
+        bh=VWRSxey7el74QZ+Ei/DzotdKJzpYoB0015GuoC7vpOI=;
+        b=WnEWvhh3IHaTSz+z//gLBVLL9xK4KP3p5u7nzgiVT/rtbYSlq+up7cIUeKClBNzgxV
+         72KMq0P5QKGDtg5Wl7lgdc30EkAquEkR29gBWbqABAZ0aEbQ+hR29b5voZbYPU3Cg1fs
+         NEglETVtzM69rKFhnHdVHwMfrwxviXlr2BXyXfffpMmrztb5I3cYD+W3CYbW8ai9b+nK
+         1AL+RjKLKVAYiu+5Mr83qlXCdGyYxU9sEOPXsms/7qkhM8YXTGUIHAvT84w1HOomg9nR
+         J0nAxH7O5IBBDPYREHKCcodbjlBRO+lqMulu/T5Kl8x+vGzZ7Lu4oC5qZY+PMoNrGjxb
+         WK1w==
+X-Gm-Message-State: APjAAAVx+D+1BHZOVdxz66i9gPS2H+o75sjgPcYIsZc/CxaWY6lAXndm
+        CSQs6fFd+0PzjFpw+oiGJJYm1rCBnpU9PPtVvtTMdSXM
+X-Google-Smtp-Source: APXvYqwIzVeukD8LzwUl8iMfZRpFwMOjy7QmLdnsIausShWO+cioF/FIl85yMZH7DvrWp85eraNEnoTLGmn7uA9aBs4=
+X-Received: by 2002:a92:3bc7:: with SMTP id n68mr1443685ilh.84.1576272287148;
+ Fri, 13 Dec 2019 13:24:47 -0800 (PST)
 MIME-Version: 1.0
-References: <20191213091115.567-1-ardb@kernel.org> <69f21816-6dab-5abc-25f1-b2f5faf6f9e4@redhat.com>
- <CAKv+Gu9yFqtcbKa5RO_m=t2JQEaVyscBruQYSYMJpKE1JcAieA@mail.gmail.com>
- <d5917bef-929b-ee36-58b6-a8309d52f5bf@redhat.com> <CAKv+Gu8vWem-jTv_K3KEqkqOVDDte9QOXco2pLA999u7hxH_Yg@mail.gmail.com>
- <f276df9f-83b4-e404-bcfc-91f0212a5fc0@redhat.com>
-In-Reply-To: <f276df9f-83b4-e404-bcfc-91f0212a5fc0@redhat.com>
-From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Date:   Fri, 13 Dec 2019 20:16:47 +0000
-Message-ID: <CAKv+Gu_cyf5AssySDmrzKjWDN+Wa0JMnyQocKJrqj3uZKO6jQQ@mail.gmail.com>
-Subject: Re: [PATCH] efi/libstub: disable file loading and page deallocation
- in mixed mode
-To:     Hans de Goede <hdegoede@redhat.com>,
-        linux-efi <linux-efi@vger.kernel.org>
+References: <20191203004043.174977-1-matthewgarrett@google.com>
+ <CALCETrWUYapn=vTbKnKFVQ3Y4vG0qHwux0ym_To2NWKPew+vrw@mail.gmail.com>
+ <CACdnJuv50s61WPMpHtrF6_=q3sCXD_Tm=30mtLnR_apjV=gjQg@mail.gmail.com>
+ <CALCETrWZwN-R=He2s1DLet8iOxB_AbuSGOJ3y7zW=qUmx33C=A@mail.gmail.com>
+ <CACdnJuvTR2r_myJX2bQ8XTDw_HxM-EgqhVLaUJVCa+VQS+6Qrg@mail.gmail.com> <CAKv+Gu-7H7AmMGk8_safU83KZZiJJpQ4X+o7V9Pv24AOh3g5ug@mail.gmail.com>
+In-Reply-To: <CAKv+Gu-7H7AmMGk8_safU83KZZiJJpQ4X+o7V9Pv24AOh3g5ug@mail.gmail.com>
+From:   Matthew Garrett <mjg59@google.com>
+Date:   Fri, 13 Dec 2019 13:24:35 -0800
+Message-ID: <CACdnJusMV4k0mjQ=gtdgFHR82tr2QBomoSa6Ca3LoMHzD3r7iQ@mail.gmail.com>
+Subject: Re: [PATCH] [EFI,PCI] Allow disabling PCI busmastering on bridges
+ during boot
+To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Cc:     Andy Lutomirski <luto@amacapital.net>,
+        linux-efi <linux-efi@vger.kernel.org>, X86 ML <x86@kernel.org>,
+        linux-pci <linux-pci@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, 13 Dec 2019 at 21:12, Hans de Goede <hdegoede@redhat.com> wrote:
+On Thu, Dec 12, 2019 at 7:46 AM Ard Biesheuvel
+<ard.biesheuvel@linaro.org> wrote:
 >
-> Hi,
+> On Wed, 4 Dec 2019 at 20:56, Matthew Garrett <mjg59@google.com> wrote:
+> > We already handle this case - the kernel doesn't activate busmastering
+> > until after it does IOMMU setup.
 >
-> On 12/13/19 9:08 PM, Ard Biesheuvel wrote:
-> > On Fri, 13 Dec 2019 at 20:56, Hans de Goede <hdegoede@redhat.com> wrote:
-> >>
-> >> Hi,
-> >>
-> >> On 12/13/19 7:49 PM, Ard Biesheuvel wrote:
-> >>> On Fri, 13 Dec 2019 at 13:29, Hans de Goede <hdegoede@redhat.com> wrote:
-> >>>>
-> >>>> Hi,
-> >>>>
-> >>>> On 13-12-2019 10:11, Ard Biesheuvel wrote:
-> >>>>> EFI mixed mode is a nice hack, since it allows us to run 64-bit Linux
-> >>>>> on low end x86_64 machines that shipped with 32-bit UEFI as they were
-> >>>>> built to run 32-bit Windows only.
-> >>>>>
-> >>>>> Mixed mode relies on the ability to convert calls made using the
-> >>>>> 64-bit calling convention into calls using the 32-bit one. This
-> >>>>> involves pushing a 32-bit word onto the stack for each argument
-> >>>>> passed in a 64-bit register, relying on the fact that all quantities
-> >>>>> that are the native size or smaller (including pointers) can be safely
-> >>>>> truncated to 32 bits. (In the pointer case, we rely on the fact that
-> >>>>> we are still executing in the firmware context, which uses a 1:1
-> >>>>> mapping that can only access the lower 4 GB of the address space)
-> >>>>>
-> >>>>> For types that are explicitly 64 bits wide, such as EFI_PHYSICAL_ADDRESS
-> >>>>> or UINT64, this assumption doesn't hold. The correct way to marshall
-> >>>>> such a call would be to push two consecutive 32-bit words onto the
-> >>>>> stack, but given that the naive thunking code has no knowledge
-> >>>>> whatsoever of the prototype of the function it is invoking, all we can
-> >>>>> do is avoid calling such functions altogether.
-> >>>>>
-> >>>>> The FreePages() boot service is affected by this, so we should not call
-> >>>>> that at all in mixed mode. In practice, this doesn't change much, since
-> >>>>> in the past, these calls would have been made with a bogus address, and
-> >>>>> so we were leaking this memory already. Note that the scope of this leak
-> >>>>> is the EFI execution context only, so it makes no difference for Linux.
-> >>>>>
-> >>>>> The other piece of functionality that we need to disable is loading files
-> >>>>> passed via file=xxxx on the command line, given that the Open() method
-> >>>>> takes two UINT64s as well.
-> >>>>>
-> >>>>> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> >>>>
-> >>>> Just ignoring the file= arguments is fine with me, as you say this has
-> >>>> been broken on mixed-mode since forever so likely no-one is using it:
-> >>>>
-> >>>> Acked-by: Hans de Goede <hdegoede@redhat.com>
-> >>>>
-> >>>
-> >>> Thanks.
-> >>>
-> >>> Do you have any recommendations on how to test this? Are you using GRUB to boot?
-> >>>
-> >>> I am trying to test the random.c failure using QEMU+OVMF, which
-> >>> implements the EFI_RNG_PROTOCOL on top of virtio-rng-pci, but I cannot
-> >>> reproduce the failure.
-> >>
-> >> I hit the random.c issue when testing a 5.5-rc1 x86_64 kernel on a Bay Trail
-> >> tablet. Almost any Bay Trail hw will come with 32 bit uefi because when Bay
-> >> Trail tablets (and 2-in-1s) first hit the market the 64 bit Windows drivers
-> >> were not ready yet and running 32 bit Windows requires a 32 bit UEFI
-> >> (Bay Trail devices do not have a classic bios mode / CSM).
-> >>
-> >> A popular model example machine of such a setup is The Asus T100TA 2-in-1.
-> >>
-> >> I'm using a standard Fedora install on these machines which goes:
-> >> UEFI -> 32-bit-secureboot-shim -> 32-bit-uefi-grub -> 64 bit kernel
-> >>
-> >
-> > And after applying the fix, do you now get a RNG=0x.... on the line
-> > that has ACPI, SMBIOS etc?
->
-> No I get:
->
-> [    0.000000] efi:  ACPI=0x3b71f000  ACPI 2.0=0x3b71f014  ESRT=0x3b6ed000  SMBIOS=0x3baa8310  TPMEventLog=0x37e95010
->
-> No RNG there. Note this is on a slightly different Bay Trail device.
->
+> Build issues aside (which we already handled off list), I think we
+> should consider the following concerns I have about this patch:
+> - make it work on ARM (already done)
+> - make the cmdline option an efi=xxx one, this makes it obvious which
+> context this is active in
 
-It is slightly surprising that this mixed mode bug gets tickled even
-though the protocol in question doesn't even exist.
+Ok.
 
-efi_random_get_seed() should give up as soon as it notices that the
-protocol cannot be found.
+> - I would prefer it if we could make it more obvious that this affects
+> PCI DMA only, other masters are unaffected by any of this.
+
+Ok - in terms of naming, or in terms of documentation?
+
+> - What about integrated masters? On the systems I have access to,
+> there are a lot of DMA capable endpoints that sit on bus 0 without any
+> root port or PCI bridge in between
+
+There's not really anything we can do about those. My gut feeling is
+that if you're in a situation where you can't trust your integrated
+chipset then you're going to have trouble building any real trust in
+the platform.
+
+> - Should we treat GOP producers differently? Or perhaps only if the
+> efifb address is known to be carved out of system memory?
+
+Hm, good question. Video cards are one of the most complicated devices
+on the system, so I'd prefer not to leave us vulnerable to them. Maybe
+try this as an opt-in thing for a while and see whether people find
+graphics-related breakage?
+
+> If we come up with a good story here in terms of policy, we may be
+> able to enable this by default, which would be a win imo.
+
+I'm pretty sure we're going to have some hardware that this just
+breaks on, unfortunately - Apple's EFI driver for Broadcom wifi used
+to continue DMAing over ExitBootServices(), and the "easy" fix of
+disabling BME on it beforehand resulted in the card wedging on driver
+load, so I think we'll see other devices that have similar behaviour.
+
+(We "fixed" the Apple case by putting the card into S3)
