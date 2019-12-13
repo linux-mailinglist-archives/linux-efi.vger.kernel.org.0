@@ -2,256 +2,161 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8BF2111E214
-	for <lists+linux-efi@lfdr.de>; Fri, 13 Dec 2019 11:37:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A2EB211E392
+	for <lists+linux-efi@lfdr.de>; Fri, 13 Dec 2019 13:29:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726004AbfLMKgx convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-efi@lfdr.de>); Fri, 13 Dec 2019 05:36:53 -0500
-Received: from m4a0073g.houston.softwaregrp.com ([15.124.2.131]:42101 "EHLO
-        m4a0073g.houston.softwaregrp.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725747AbfLMKgw (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 13 Dec 2019 05:36:52 -0500
-Received: FROM m4a0073g.houston.softwaregrp.com (15.120.17.147) BY m4a0073g.houston.softwaregrp.com WITH ESMTP;
- Fri, 13 Dec 2019 10:34:46 +0000
-Received: from M4W0334.microfocus.com (2002:f78:1192::f78:1192) by
- M4W0335.microfocus.com (2002:f78:1193::f78:1193) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.1591.10; Fri, 13 Dec 2019 10:35:03 +0000
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (15.124.8.14) by
- M4W0334.microfocus.com (15.120.17.146) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.1591.10 via Frontend Transport; Fri, 13 Dec 2019 10:35:02 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Lla6KRrLUBafguKdhhiyEfjRuSWXqHnarY1bdOqOuugc1FIc7kltrGzOfe9AhODNKybPiMBE89DGklZx6qsZMzhme31qkQieTL2MSz9rD3r++M6iSKWI+7+ODR36+4CE4enjaVb9BUpcxmHSyEUL1Sdabwtt6yr2pMRqA/OgstFOyt/U866eq5bv8xw04VoFL877wSIioIkVxlLOi6pE769lcQGqIvi3KpcgjhuRRxnHgecJXwpRhlOUAH1yGxflEp02uKKZLD8/khgTsrj3p3fsTPnJMxsaZBbmpVpgZUvbJoXsOZvss2VRzqnMyFewA4OTXiLnvKPsAmWNLdok+Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jdkR3e3gS9wOAYhqvSivnmiO4uc5uIqt6bDyuVI0X44=;
- b=mwFwU3r21dKzQJlC2VvLWKBsF4Ee2CQJM8JRJpin7slMllV+IthQyN3nVZoCe8SUchxzjHUJ1kYCpEtvQdGe4oPTdZJ7SlIY8LghLpOQm3Vk891mzC69wOnAKjdR6G/Oq9pjg3wbHdWXnWbOug84SYQCZP/8tat47iZ3ICXnfQxF7kpkO+7wKWQm0yzWK9m6MWFxLUK13pJSfmM5208CTBwXu2auoIKy2362U0phbIROs0RT4Akz1IZmEnID7k5IgKIWd1nIYt4I39tExO+a8ZmwarUz8Tz66pRTOJA+4wk1bX+Xp0EpaSuoBpZvwFnUtBPlofaqKus22if2JNEirA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=suse.com; dmarc=pass action=none header.from=suse.com;
- dkim=pass header.d=suse.com; arc=none
-Received: from MWHPR1801MB1919.namprd18.prod.outlook.com (10.164.204.162) by
- MWHPR1801MB1917.namprd18.prod.outlook.com (10.164.204.160) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2538.16; Fri, 13 Dec 2019 10:35:01 +0000
-Received: from MWHPR1801MB1919.namprd18.prod.outlook.com
- ([fe80::1c16:ffc:c341:ebbc]) by MWHPR1801MB1919.namprd18.prod.outlook.com
- ([fe80::1c16:ffc:c341:ebbc%6]) with mapi id 15.20.2538.016; Fri, 13 Dec 2019
- 10:35:01 +0000
-From:   Joey Lee <JLee@suse.com>
-To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>
-CC:     Chun-Yi Lee <joeyli.kernel@gmail.com>,
-        Josh Boyer <jwboyer@fedoraproject.org>,
-        "Serge E . Hallyn" <serge@hallyn.com>,
-        "Nayna Jain" <nayna@linux.ibm.com>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        James Morris <jmorris@namei.org>,
-        David Howells <dhowells@redhat.com>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-security-module <linux-security-module@vger.kernel.org>
-Subject: Re: [PATCH 2/2] efi: show error messages only when loading
- certificates is failed
-Thread-Topic: [PATCH 2/2] efi: show error messages only when loading
- certificates is failed
-Thread-Index: AQHVsZU0Eap8mezu6UCH9Ab36BcR6ae3ygyAgAAMIgCAAAiJgA==
-Date:   Fri, 13 Dec 2019 10:35:01 +0000
-Message-ID: <20191213103447.GA22409@linux-l9pv.suse>
-References: <20191213090646.12329-1-jlee@suse.com>
- <20191213090646.12329-3-jlee@suse.com>
- <CAKv+Gu_2GTqKJNVpMEg4ic_3ACb5GJKAkgfFWoEdWqMN7pmwiA@mail.gmail.com>
- <20191213092049.GW22409@linux-l9pv.suse>
- <CAKv+Gu8-Ay2R9wU-wwz2w+Q9jZOduXYigmFJL8Rmppnm1CSpHg@mail.gmail.com>
-In-Reply-To: <CAKv+Gu8-Ay2R9wU-wwz2w+Q9jZOduXYigmFJL8Rmppnm1CSpHg@mail.gmail.com>
-Accept-Language: zh-TW, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-clientproxiedby: HK2P15301CA0024.APCP153.PROD.OUTLOOK.COM
- (2603:1096:202:1::34) To MWHPR1801MB1919.namprd18.prod.outlook.com
- (2603:10b6:301:68::34)
-authentication-results: spf=none (sender IP is ) smtp.mailfrom=JLee@suse.com; 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-originating-ip: [60.251.47.115]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 77ac7a76-33df-4d8f-152f-08d77fb81be2
-x-ms-traffictypediagnostic: MWHPR1801MB1917:
-x-microsoft-antispam-prvs: <MWHPR1801MB19175EC49A1DAED5F4DBAEDCA3540@MWHPR1801MB1917.namprd18.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:83;
-x-forefront-prvs: 0250B840C1
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(4636009)(136003)(346002)(396003)(39860400002)(376002)(366004)(199004)(189003)(8676002)(4326008)(54906003)(81156014)(36756003)(81166006)(316002)(7416002)(86362001)(2906002)(8936002)(6916009)(52116002)(71200400001)(478600001)(6486002)(5660300002)(15650500001)(66446008)(186003)(33656002)(64756008)(66946007)(26005)(1076003)(6506007)(66476007)(55236004)(6512007)(66556008)(9686003);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR1801MB1917;H:MWHPR1801MB1919.namprd18.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
-received-spf: None (protection.outlook.com: suse.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: E/6/e4Moywqpd0jWfZJgN50R42NDRXGusET3YDQeZ9iSePglTAGFM5FbQe32DOoGZourenrYKdMtOY3Fe0msNqTgvMMy+p0K5K0SSdMzjSDjyVBdbFiZJxnJqpSRThL0GKFJ+VVWsjk01k9DygW8FXPLgcbJSxCzYLnNazafJ9dcs/EdFVUMnDXj3vt1lwoAuhUxlUJ8P45W+xObI009D2Kv8grp3zFFTE5lnIzbICHdfqfYZsglvPTzzp9gXHZS34GJ28iYFcRjN/GMWMVDgUWAapc3gNvucMO4fIiyKnpaxyw0yxjE+eXiUBcNbCVUo7UM/r2OCfA5wz8Zto91oEi19ehMsss87HbGpe/MveIGC0Dd1C4rfHomWOAIvcuk0ViQrl19suKY1ilRXDIunSM6gFVqNAJ1WLosu3ldpXmRWMGMlIwgCe/L0hsrpc5x
-x-ms-exchange-transport-forked: True
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <38B02C5CBD33F7479AEDCA36FDB26E30@namprd18.prod.outlook.com>
-Content-Transfer-Encoding: 8BIT
+        id S1726897AbfLMM31 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 13 Dec 2019 07:29:27 -0500
+Received: from us-smtp-2.mimecast.com ([205.139.110.61]:49050 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726421AbfLMM30 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 13 Dec 2019 07:29:26 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1576240165;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=lqVLMg58AWM0FHkQWIy9RvlTKD3WIjyT+jsbkRT2D/Y=;
+        b=BQgsaIImfL3JU3nusNIrNCIKKcqYwJI8ITtwixb4DHnDhtoU3w2w9nd10P7ANaYzOHQxi3
+        OoLbXe36TqToNA1RYABTER5gTH3JKihc1J3h16+tjEuopbDihlQHRysXnH4SIvSAokcmzg
+        wikPpTZMlBc4IPAzee6Q7A4lnCPswuA=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-144-UFUnV0XENxGU86b0T0damQ-1; Fri, 13 Dec 2019 07:29:21 -0500
+X-MC-Unique: UFUnV0XENxGU86b0T0damQ-1
+Received: by mail-wr1-f70.google.com with SMTP id y7so2538352wrm.3
+        for <linux-efi@vger.kernel.org>; Fri, 13 Dec 2019 04:29:21 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=lqVLMg58AWM0FHkQWIy9RvlTKD3WIjyT+jsbkRT2D/Y=;
+        b=a3ibWy6rJlHojyQD3vbZX4QvvEc3LWyw0o0P5mPYpV6fQ2SwiiuBsyQ5XlUYQX3uJb
+         sY28bYVpbMx+iZ5QAh8ARhK+BGIp8WIS8Be6njRlFe5vVZ1+bPmd4EE4Joi1UGw7h08A
+         Me81ENCy8V7joGJvkuuoTm5DUhN1jfkId/195XcmdWj6agXfGPgoQfFrOkkAht45HBoU
+         1raWEtXUL7noR2fVKN6LVzVAAc8lru2i+OjvOPzlJGz/drk2nE/TOxXmkM4OKYzaaFdd
+         4LbP9U175s0z1ZU7qFh6ifhaG6/0ohhoFGS9rmQL9nx+IcMN7ryZhzq5gX5dBEhqnZCf
+         VpfQ==
+X-Gm-Message-State: APjAAAUXrUEpV9pGSaG5bBA4m9Mkvz0614iIUYVBBuTb/erTRhv2XNIw
+        CwBW3tGFkk7hlDbOVXRqbocV3lvpguP5kBiZ7SLnZSXJqiJyjCP5KjLxs0gXRCdABbNAK3Pesrm
+        N4e2u5L3uGmPuA4KjDOgF
+X-Received: by 2002:a1c:984f:: with SMTP id a76mr12603640wme.64.1576240160049;
+        Fri, 13 Dec 2019 04:29:20 -0800 (PST)
+X-Google-Smtp-Source: APXvYqzcJpG5oJR2r9q5vsB1cCcLPkRXWQctUaiOR9s1SZlGyNj4gQUHCmMv72sDjQQNoM1xnjatgw==
+X-Received: by 2002:a1c:984f:: with SMTP id a76mr12603625wme.64.1576240159805;
+        Fri, 13 Dec 2019 04:29:19 -0800 (PST)
+Received: from shalem.localdomain (2001-1c00-0c0c-fe00-7e79-4dac-39d0-9c14.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:7e79:4dac:39d0:9c14])
+        by smtp.gmail.com with ESMTPSA id z6sm9286036wmz.12.2019.12.13.04.29.18
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 13 Dec 2019 04:29:19 -0800 (PST)
+Subject: Re: [PATCH] efi/libstub: disable file loading and page deallocation
+ in mixed mode
+To:     Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org
+Cc:     matthewgarrett@google.com
+References: <20191213091115.567-1-ardb@kernel.org>
+From:   Hans de Goede <hdegoede@redhat.com>
+Message-ID: <69f21816-6dab-5abc-25f1-b2f5faf6f9e4@redhat.com>
+Date:   Fri, 13 Dec 2019 13:29:18 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.2
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-Network-Message-Id: 77ac7a76-33df-4d8f-152f-08d77fb81be2
-X-MS-Exchange-CrossTenant-originalarrivaltime: 13 Dec 2019 10:35:01.5645
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 856b813c-16e5-49a5-85ec-6f081e13b527
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: JGnCUGMyyz7tpq3ZSoEVMPR8JobOFY5HZpckqZZysHXB39C4b3CWXimPJLRwwEu6
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR1801MB1917
-X-OriginatorOrg: suse.com
+In-Reply-To: <20191213091115.567-1-ardb@kernel.org>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hi Ard,
+Hi,
 
-On Fri, Dec 13, 2019 at 10:04:14AM +0000, Ard Biesheuvel wrote:
-> On Fri, 13 Dec 2019 at 10:21, Joey Lee <JLee@suse.com> wrote:
-> >
-> > Hi Ard,
-> >
-> > On Fri, Dec 13, 2019 at 09:10:12AM +0000, Ard Biesheuvel wrote:
-> > > On Fri, 13 Dec 2019 at 10:07, Lee, Chun-Yi <joeyli.kernel@gmail.com> wrote:
-> > > >
-> > > > When loading certificates list from EFI variables, the error
-> > > > message and efi status code always be emitted to dmesg. It looks
-> > > > ugly:
-> > > >
-> > > > [    2.335031] Couldn't get size: 0x800000000000000e
-> > > > [    2.335032] Couldn't get UEFI MokListRT
-> > > > [    2.339985] Couldn't get size: 0x800000000000000e
-> > > > [    2.339987] Couldn't get UEFI dbx list
-> > > >
-> > > > This cosmetic patch moved the messages to the error handling code
-> > > > path. And, it also shows the corresponding status string of status
-> > > > code.
-> > > >
-> > >
-> > > So what output do we get after applying this patch when those
-> > > variables don't exist?
-> > >
-> >
-> > A "UEFI:xxxx list was not found" message will be exposed in dmesg
-> > when kernel loglevel be set to debug. Otherwise there have no messages.
-> >
+On 13-12-2019 10:11, Ard Biesheuvel wrote:
+> EFI mixed mode is a nice hack, since it allows us to run 64-bit Linux
+> on low end x86_64 machines that shipped with 32-bit UEFI as they were
+> built to run 32-bit Windows only.
 > 
-> OK, that works for me.
+> Mixed mode relies on the ability to convert calls made using the
+> 64-bit calling convention into calls using the 32-bit one. This
+> involves pushing a 32-bit word onto the stack for each argument
+> passed in a 64-bit register, relying on the fact that all quantities
+> that are the native size or smaller (including pointers) can be safely
+> truncated to 32 bits. (In the pointer case, we rely on the fact that
+> we are still executing in the firmware context, which uses a 1:1
+> mapping that can only access the lower 4 GB of the address space)
 > 
-> I take it this will go via the linux-security tree along with 1/2?
->
+> For types that are explicitly 64 bits wide, such as EFI_PHYSICAL_ADDRESS
+> or UINT64, this assumption doesn't hold. The correct way to marshall
+> such a call would be to push two consecutive 32-bit words onto the
+> stack, but given that the naive thunking code has no knowledge
+> whatsoever of the prototype of the function it is invoking, all we can
+> do is avoid calling such functions altogether.
+> 
+> The FreePages() boot service is affected by this, so we should not call
+> that at all in mixed mode. In practice, this doesn't change much, since
+> in the past, these calls would have been made with a bogus address, and
+> so we were leaking this memory already. Note that the scope of this leak
+> is the EFI execution context only, so it makes no difference for Linux.
+> 
+> The other piece of functionality that we need to disable is loading files
+> passed via file=xxxx on the command line, given that the Open() method
+> takes two UINT64s as well.
+> 
+> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 
-Yes, this patch must go with 1/2 patch. 
- 
-> Acked-by: Ard Biesheuvel <ardb@kernel.org>
+Just ignoring the file= arguments is fine with me, as you say this has
+been broken on mixed-mode since forever so likely no-one is using it:
+
+Acked-by: Hans de Goede <hdegoede@redhat.com>
+
+Regards,
+
+Hans
+
+
+
+> ---
+>   .../firmware/efi/libstub/efi-stub-helper.c    | 19 ++++++++++++++++++-
+>   1 file changed, 18 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/firmware/efi/libstub/efi-stub-helper.c b/drivers/firmware/efi/libstub/efi-stub-helper.c
+> index 0f3dbfed6306..f1f316e96819 100644
+> --- a/drivers/firmware/efi/libstub/efi-stub-helper.c
+> +++ b/drivers/firmware/efi/libstub/efi-stub-helper.c
+> @@ -353,7 +353,12 @@ void efi_free(efi_system_table_t *sys_table_arg, unsigned long size,
+>   {
+>   	unsigned long nr_pages;
+>   
+> -	if (!size)
+> +	/*
+> +	 * Mixed mode does not support calling firmware routines that take
+> +	 * explicit 64-bit wide arguments. So all we can do is leak the
+> +	 * allocation.
+> +	 */
+> +	if (!size || (IS_ENABLED(CONFIG_EFI_MIXED) && !efi_is_64bit()))
+>   		return;
+>   
+>   	nr_pages = round_up(size, EFI_ALLOC_ALIGN) / EFI_PAGE_SIZE;
+> @@ -536,6 +541,18 @@ efi_status_t handle_cmdline_files(efi_system_table_t *sys_table_arg,
+>   	char *str;
+>   	int i, j, k;
+>   
+> +	/*
+> +	 * Using firmware services to load files is not supported in mixed mode
+> +	 * systems, because it involves calling functions that have 64-bit wide
+> +	 * parameters in their prototypes, which are not marshalled correctly
+> +	 * by the thunking code.
+> +	 */
+> +	if (IS_ENABLED(CONFIG_EFI_MIXED) && !efi_is_64bit()) {
+> +		pr_efi(sys_table_arg,
+> +		       "Ignoring file= arguments on mixed mode system\n");
+> +		return EFI_SUCCESS;
+> +	}
+> +
+>   	file_addr = 0;
+>   	file_size_total = 0;
+>   
 > 
 
-Thanks for your review!
-
-Joey Lee
-> 
-> 
-> > > > Signed-off-by: "Lee, Chun-Yi" <jlee@suse.com>
-> > > > ---
-> > > >  security/integrity/platform_certs/load_uefi.c | 40 ++++++++++++++-------------
-> > > >  1 file changed, 21 insertions(+), 19 deletions(-)
-> > > >
-> > > > diff --git a/security/integrity/platform_certs/load_uefi.c b/security/integrity/platform_certs/load_uefi.c
-> > > > index 81b19c52832b..b6c60fb3fb6c 100644
-> > > > --- a/security/integrity/platform_certs/load_uefi.c
-> > > > +++ b/security/integrity/platform_certs/load_uefi.c
-> > > > @@ -1,4 +1,5 @@
-> > > >  // SPDX-License-Identifier: GPL-2.0
-> > > > +#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
-> > > >
-> > > >  #include <linux/kernel.h>
-> > > >  #include <linux/sched.h>
-> > > > @@ -39,7 +40,7 @@ static __init bool uefi_check_ignore_db(void)
-> > > >   * Get a certificate list blob from the named EFI variable.
-> > > >   */
-> > > >  static __init void *get_cert_list(efi_char16_t *name, efi_guid_t *guid,
-> > > > -                                 unsigned long *size)
-> > > > +                                 unsigned long *size, const char *source)
-> > > >  {
-> > > >         efi_status_t status;
-> > > >         unsigned long lsize = 4;
-> > > > @@ -48,23 +49,30 @@ static __init void *get_cert_list(efi_char16_t *name, efi_guid_t *guid,
-> > > >
-> > > >         status = efi.get_variable(name, guid, NULL, &lsize, &tmpdb);
-> > > >         if (status != EFI_BUFFER_TOO_SMALL) {
-> > > > -               pr_err("Couldn't get size: 0x%lx\n", status);
-> > > > -               return NULL;
-> > > > +               if (status == EFI_NOT_FOUND) {
-> > > > +                       pr_debug("%s list was not found\n", source);
-> > > > +                       return NULL;
-> > > > +               }
-> > > > +               goto err;
-> > > >         }
-> > > >
-> > > >         db = kmalloc(lsize, GFP_KERNEL);
-> > > > -       if (!db)
-> > > > -               return NULL;
-> > > > +       if (!db) {
-> > > > +               status = EFI_OUT_OF_RESOURCES;
-> > > > +               goto err;
-> > > > +       }
-> > > >
-> > > >         status = efi.get_variable(name, guid, NULL, &lsize, db);
-> > > >         if (status != EFI_SUCCESS) {
-> > > >                 kfree(db);
-> > > > -               pr_err("Error reading db var: 0x%lx\n", status);
-> > > > -               return NULL;
-> > > > +               goto err;
-> > > >         }
-> > > >
-> > > >         *size = lsize;
-> > > >         return db;
-> > > > +err:
-> > > > +       pr_err("Couldn't get %s list: %s\n", source, efi_status_to_str(status));
-> > > > +       return NULL;
-> > > >  }
-> > > >
-> > > >  /*
-> > > > @@ -153,10 +161,8 @@ static int __init load_uefi_certs(void)
-> > > >          * an error if we can't get them.
-> > > >          */
-> > > >         if (!uefi_check_ignore_db()) {
-> > > > -               db = get_cert_list(L"db", &secure_var, &dbsize);
-> > > > -               if (!db) {
-> > > > -                       pr_err("MODSIGN: Couldn't get UEFI db list\n");
-> > > > -               } else {
-> > > > +               db = get_cert_list(L"db", &secure_var, &dbsize, "UEFI:db");
-> > > > +               if (db) {
-> > > >                         rc = parse_efi_signature_list("UEFI:db",
-> > > >                                         db, dbsize, get_handler_for_db);
-> > > >                         if (rc)
-> > > > @@ -166,10 +172,8 @@ static int __init load_uefi_certs(void)
-> > > >                 }
-> > > >         }
-> > > >
-> > > > -       mok = get_cert_list(L"MokListRT", &mok_var, &moksize);
-> > > > -       if (!mok) {
-> > > > -               pr_info("Couldn't get UEFI MokListRT\n");
-> > > > -       } else {
-> > > > +       mok = get_cert_list(L"MokListRT", &mok_var, &moksize, "UEFI:MokListRT");
-> > > > +       if (mok) {
-> > > >                 rc = parse_efi_signature_list("UEFI:MokListRT",
-> > > >                                               mok, moksize, get_handler_for_db);
-> > > >                 if (rc)
-> > > > @@ -177,10 +181,8 @@ static int __init load_uefi_certs(void)
-> > > >                 kfree(mok);
-> > > >         }
-> > > >
-> > > > -       dbx = get_cert_list(L"dbx", &secure_var, &dbxsize);
-> > > > -       if (!dbx) {
-> > > > -               pr_info("Couldn't get UEFI dbx list\n");
-> > > > -       } else {
-> > > > +       dbx = get_cert_list(L"dbx", &secure_var, &dbxsize, "UEFI:dbx");
-> > > > +       if (dbx) {
-> > > >                 rc = parse_efi_signature_list("UEFI:dbx",
-> > > >                                               dbx, dbxsize,
-> > > >                                               get_handler_for_dbx);
-> > > > --
-> > > > 2.16.4
-> > > >
