@@ -2,131 +2,92 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B41911DFA3
-	for <lists+linux-efi@lfdr.de>; Fri, 13 Dec 2019 09:46:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C96C11E041
+	for <lists+linux-efi@lfdr.de>; Fri, 13 Dec 2019 10:07:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725989AbfLMIqL (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 13 Dec 2019 03:46:11 -0500
-Received: from mail-wm1-f67.google.com ([209.85.128.67]:39138 "EHLO
-        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725928AbfLMIqL (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 13 Dec 2019 03:46:11 -0500
-Received: by mail-wm1-f67.google.com with SMTP id d5so5628128wmb.4
-        for <linux-efi@vger.kernel.org>; Fri, 13 Dec 2019 00:46:09 -0800 (PST)
+        id S1726494AbfLMJHC (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 13 Dec 2019 04:07:02 -0500
+Received: from mail-wr1-f65.google.com ([209.85.221.65]:36496 "EHLO
+        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725906AbfLMJHC (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 13 Dec 2019 04:07:02 -0500
+Received: by mail-wr1-f65.google.com with SMTP id z3so5797933wru.3;
+        Fri, 13 Dec 2019 01:07:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=JQX7IoRzayvPcwiznKH/C/tA7zz363CN9vLxnqOgif4=;
-        b=RtuBqCypClYu4hSNRut649Y51ufh+CnNakb7XqMkMFIN45kBOypKcc0SrEPZapbUbZ
-         eGg52U92PP1gqW1CoH4n51jEblXko9+57A6YbpfFOJcICyD581ZbJqNd0VEuQT0nAX5B
-         cn7crY7bStV7Saiewszg6Ep4d0SDj18MngTI0bsygFQzD0jAKc8C5XixQy36gHQJV/3E
-         76jPf8YHLHgIJlBNDA4l11qbN2nyVcCxCwU8uu5pmbKeoOL5Zyk6LgfwlXBAerKgcKk3
-         RUB59+7PjnyMB2peBy4GD9vZjdp6Bzir/FSPvwZteLuhBtr0NE5Y3HvOESE5mRW1SLsL
-         nFaA==
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=zgE7H652OqyN4nqOaV860HJ7ZzQUNg5TLy0QsJ2RWEM=;
+        b=J1oVLkla8WreiTlDRa8LXhCUU3+ujH95oXC6BB78EC0TlSd6fLuE2GRl+0xU9wkgF/
+         pyiyXOPC1BtTsJaHcINVAVDo++Wm383E4Q9i5piBTTXn49Pj2ALqb7sMcSUNkIbfT+yS
+         K41HTu/Fh6XO7jD1+BHEfutnY8DvE7/4h4QCqP/EGosQaxJRTuErqsXGNXZaIUKlgS/M
+         ttQvUX5dQv/Dn31A6dLorPNkKNvVw5Xm93i3BrnH0CEukc26UZp3qzPUX9Hafr0dM8Qn
+         zwGBiZvLc/9JryUUTIAfiKJy58fNZtfm5fGzi2nfQ8YT7b2vnHRrELju7cV9nRB0jdkh
+         dpCQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=JQX7IoRzayvPcwiznKH/C/tA7zz363CN9vLxnqOgif4=;
-        b=IAe9aFAdnefOyG/Y4jnb5a/NW8YEogJ4cmumlK7U0ldEQmoiMxtxWjJNxD37ZTORi6
-         eh6zAGJyJwoQKVI5XgkFul0EKn/fOI49oYBCUf2MhitYz9dU4lYlcZh41MNzhGszzL1u
-         OduumZGS+7d9BOvhLnhudGCBvYDumUESyTif8iI4H1eHhznSSQcbb5BkP8xwDZjDQgYn
-         oW/xUub+bW0sgYo8UtfpVvoznlc19KXeLru0670f8l8662oBbMcWLTGmG42tySLGzuvK
-         nHVvBOUsto1HMG4IrqB9C/V4acSSu26Wts+sJDe+Kxv+FoXqlWnAQMjN/NrXUVoULehW
-         ozpw==
-X-Gm-Message-State: APjAAAVcu8IWKI7kGiBrD9CzlbOspOJ2ZgkMRLG/hcmgjMGAAkCJZndK
-        RTpH2yUju7/AQ4K06sKUitxQTZpp6iw2yRbB6Dq9JCRzjVT/OdNc
-X-Google-Smtp-Source: APXvYqzVK+sD9PVDSQiL44xPU80qjBmQ9NCFE47b46tkM0il75eFivEkftfSrJz/xM3MOjuAMjye6IiNhlm60k4K7L4=
-X-Received: by 2002:a1c:7205:: with SMTP id n5mr12309700wmc.9.1576226768892;
- Fri, 13 Dec 2019 00:46:08 -0800 (PST)
-MIME-Version: 1.0
-References: <20191212103158.4958-1-hdegoede@redhat.com> <20191212103158.4958-3-hdegoede@redhat.com>
- <CAKv+Gu9AjYVvLot9+enuwSWfyfzqgCWSuW3ioccm3FJ7KFA8eA@mail.gmail.com>
- <82c65f05-1140-e10e-ba2f-0c4c5c85bbc8@redhat.com> <CAKv+Gu9StgwBs=y6KU2Pb_P499SfH8po978gHoAbXVL8mB722A@mail.gmail.com>
-In-Reply-To: <CAKv+Gu9StgwBs=y6KU2Pb_P499SfH8po978gHoAbXVL8mB722A@mail.gmail.com>
-From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Date:   Fri, 13 Dec 2019 08:46:07 +0000
-Message-ID: <CAKv+Gu8UjvLO=Y9LDTOTzx+xt9xJZJBw+4wt8m49FAvzC8iB8A@mail.gmail.com>
-Subject: Re: [PATCH 5.5 regression fix 2/2] efi/libstub/helper: Initialize
- pointer variables to zero for mixed mode
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Dominik Brodowski <linux@dominikbrodowski.net>,
-        "the arch/x86 maintainers" <x86@kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        stable <stable@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=zgE7H652OqyN4nqOaV860HJ7ZzQUNg5TLy0QsJ2RWEM=;
+        b=jZIOmZtAsEKd7kimOxV0IrEYPz/QqRV1JYPzJNLd7iHHnP2DFHN3zZyAArxDGnlZ50
+         EdUuMVoBfyqLA2sX/7jKf/PEfVbjtbgdLO8eWzJW8P0H8yWRDkAHUbMevnSReTmGtVQa
+         hszGdgyairpDkCY+r7eQvtsOuZsz5APwAdPZ1DRtNNPJNfNBRDnPsHfu8YvIMJDZW3FZ
+         9Ze8bQK0anUjYogz4GRKsFa7KVDIaqYTjIAOasL7PpfXn5oD032hEDlp/jZjbESa2c55
+         YuiOGJ2FUM93UKz1BgAUzTerrsvCUrRG0J01Q9jm+q9SPVA2iVrIHTJO8riFPv6rdwHA
+         y58Q==
+X-Gm-Message-State: APjAAAU4nNoysGG4j54NdB9MLCNxPAlLmk5DJsSi8VvP5QDh68ZkZdL7
+        XJbEhYsZvi7bSCdvncVvAtQ=
+X-Google-Smtp-Source: APXvYqwctuSRjAyVEEe/pDJj7009/7T6jQBFBpEvZyv0JWbqyBLun6a0bGKtliRCpDHSmpSNK3YUkA==
+X-Received: by 2002:adf:ebc6:: with SMTP id v6mr11423586wrn.75.1576228019639;
+        Fri, 13 Dec 2019 01:06:59 -0800 (PST)
+Received: from linux-691t.suse.de ([124.11.22.254])
+        by smtp.gmail.com with ESMTPSA id y6sm9079094wrl.17.2019.12.13.01.06.53
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 13 Dec 2019 01:06:58 -0800 (PST)
+From:   "Lee, Chun-Yi" <joeyli.kernel@gmail.com>
+X-Google-Original-From: "Lee, Chun-Yi" <jlee@suse.com>
+To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        James Morris <jmorris@namei.org>,
+        "Serge E . Hallyn" <serge@hallyn.com>,
+        David Howells <dhowells@redhat.com>,
+        Josh Boyer <jwboyer@fedoraproject.org>,
+        Nayna Jain <nayna@linux.ibm.com>,
+        Mimi Zohar <zohar@linux.ibm.com>
+Cc:     linux-efi@vger.kernel.org, linux-security-module@vger.kernel.org,
+        linux-kernel@vger.kernel.org, "Lee, Chun-Yi" <jlee@suse.com>
+Subject: [PATCH 0/2 v2] efi: cosmetic patches for the error messages when
+Date:   Fri, 13 Dec 2019 17:06:44 +0800
+Message-Id: <20191213090646.12329-1-jlee@suse.com>
+X-Mailer: git-send-email 2.16.4
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, 12 Dec 2019 at 15:02, Ard Biesheuvel <ard.biesheuvel@linaro.org> wrote:
->
-> On Thu, 12 Dec 2019 at 13:45, Hans de Goede <hdegoede@redhat.com> wrote:
-> >
-> > Hi,
-> >
-> > On 12-12-2019 12:29, Ard Biesheuvel wrote:
-> > > On Thu, 12 Dec 2019 at 11:32, Hans de Goede <hdegoede@redhat.com> wrote:
-> > >>
-> > >> When running in EFI mixed mode (running a 64 bit kernel on 32 bit EFI
-> > >> firmware), we _must_ initialize any pointers which are returned by
-> > >> reference by an EFI call to NULL before making the EFI call.
-> > >>
-> > >> In mixed mode pointers are 64 bit, but when running on a 32 bit firmware,
-> > >> EFI calls which return a pointer value by reference only fill the lower
-> > >> 32 bits of the passed pointer, leaving the upper 32 bits uninitialized
-> > >> unless we explicitly set them to 0 before the call.
-> > >>
-> > >> We have had this bug in the efi-stub-helper.c file reading code for
-> > >> a while now, but this has likely not been noticed sofar because
-> > >> this code only gets triggered when LILO style file=... arguments are
-> > >> present on the kernel cmdline.
-> > >>
-> > >> Cc: stable@vger.kernel.org
-> > >> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-> > >> ---
-> > >>   drivers/firmware/efi/libstub/efi-stub-helper.c | 4 ++--
-> > >>   1 file changed, 2 insertions(+), 2 deletions(-)
-> > >>
-> > >> diff --git a/drivers/firmware/efi/libstub/efi-stub-helper.c b/drivers/firmware/efi/libstub/efi-stub-helper.c
-> > >> index e02579907f2e..6ca7d86743af 100644
-> > >> --- a/drivers/firmware/efi/libstub/efi-stub-helper.c
-> > >> +++ b/drivers/firmware/efi/libstub/efi-stub-helper.c
-> > >> @@ -365,7 +365,7 @@ static efi_status_t efi_file_size(efi_system_table_t *sys_table_arg, void *__fh,
-> > >>                                    u64 *file_sz)
-> > >>   {
-> > >>          efi_file_handle_t *h, *fh = __fh;
-> > >
-> > > What about h? Doesn't it suffer from the same problem?
-> > >
-> > >> -       efi_file_info_t *info;
-> > >> +       efi_file_info_t *info = NULL;
-> > >>          efi_status_t status;
-> > >>          efi_guid_t info_guid = EFI_FILE_INFO_ID;
-> > >>          unsigned long info_sz;
-> > >
-> > > And info_sz?
-> >
-> > And "efi_file_io_interface_t *io" and "efi_file_handle_t *fh"
-> > in efi_open_volume().
-> >
-> > I think that is all of them.
-> >
->
-> OK.
->
-> I'll fix it up locally.
+When loading certificates list from EFI variables, the error
+messages and efi status codes always be emitted to dmesg. It looks
+ugly:
 
-Actually, I am going to drop this patch, and disable file loading
-entirely for mixed mode. Your findings here prove it is unlikely that
-it works on mixed mode systems today, and the
-efi_file_handle_t::open() prototype is actually incompatible with
-mixed mode, since it takes u64 arguments, which are marshalled
-incorrectly by the thunking code (each function arg gets a 32-bit
-stack slot for the 32-bit calling convention, which works fine for
-pointers and smaller types, but it breaks for u64 since they require
-two stack slots)
+[    2.335031] Couldn't get size: 0x800000000000000e
+[    2.335032] Couldn't get UEFI MokListRT 
+[    2.339985] Couldn't get size: 0x800000000000000e
+[    2.339987] Couldn't get UEFI dbx list
+
+This cosmetic patch set moved the above messages to the error
+handling code path. And, it adds a function to convert EFI status
+code to a string for improving the readability of debug log. The function
+can also be used in other EFI logs.
+
+v2:
+The convert function be moved to efi.c
+
+Lee, Chun-Yi (2):
+  efi: add a function to convert the status code to a string
+  efi: show error messages only when loading certificates is failed
+
+ drivers/firmware/efi/efi.c                    | 32 +++++++++++++++++++++
+ include/linux/efi.h                           |  1 +
+ security/integrity/platform_certs/load_uefi.c | 41 ++++++++++++++-------------
+ 3 files changed, 55 insertions(+), 19 deletions(-)
+
+-- 
+2.16.4
+
