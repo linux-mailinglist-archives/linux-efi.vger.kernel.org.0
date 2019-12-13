@@ -2,46 +2,47 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C96C11E041
+	by mail.lfdr.de (Postfix) with ESMTP id 951BA11E042
 	for <lists+linux-efi@lfdr.de>; Fri, 13 Dec 2019 10:07:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726494AbfLMJHC (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 13 Dec 2019 04:07:02 -0500
-Received: from mail-wr1-f65.google.com ([209.85.221.65]:36496 "EHLO
-        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725906AbfLMJHC (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 13 Dec 2019 04:07:02 -0500
-Received: by mail-wr1-f65.google.com with SMTP id z3so5797933wru.3;
-        Fri, 13 Dec 2019 01:07:00 -0800 (PST)
+        id S1725906AbfLMJHK (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 13 Dec 2019 04:07:10 -0500
+Received: from mail-wm1-f67.google.com ([209.85.128.67]:50300 "EHLO
+        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725810AbfLMJHJ (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 13 Dec 2019 04:07:09 -0500
+Received: by mail-wm1-f67.google.com with SMTP id a5so5471104wmb.0;
+        Fri, 13 Dec 2019 01:07:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=zgE7H652OqyN4nqOaV860HJ7ZzQUNg5TLy0QsJ2RWEM=;
-        b=J1oVLkla8WreiTlDRa8LXhCUU3+ujH95oXC6BB78EC0TlSd6fLuE2GRl+0xU9wkgF/
-         pyiyXOPC1BtTsJaHcINVAVDo++Wm383E4Q9i5piBTTXn49Pj2ALqb7sMcSUNkIbfT+yS
-         K41HTu/Fh6XO7jD1+BHEfutnY8DvE7/4h4QCqP/EGosQaxJRTuErqsXGNXZaIUKlgS/M
-         ttQvUX5dQv/Dn31A6dLorPNkKNvVw5Xm93i3BrnH0CEukc26UZp3qzPUX9Hafr0dM8Qn
-         zwGBiZvLc/9JryUUTIAfiKJy58fNZtfm5fGzi2nfQ8YT7b2vnHRrELju7cV9nRB0jdkh
-         dpCQ==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references;
+        bh=5zlnMRG2Xz8RVeE2jai5rgez52Z3RsSPyyE68+eN4M4=;
+        b=FpL1UGCwvEiOCsz+c7RFhxWtSzMBv+O/EQ81ael7dZAihC0LRXthtOryETlweTiAkS
+         DH2aJw/ZvXNL4qhZmMxzfTBgObvJekBi3YDiIepwzU6L/YSdP78qIRASJV93Q569Pzox
+         sRmgew4RFWJZX/6xX2VLd/Xz4a9uLYs6K68wxhwD1AkY7GvMiK1iUl6uf6JfyhLhum2k
+         cGtqOsyybEjvYG0A/ykwpXYir9j2dETQAhS4wQs88Uxdo9GYd51JEUL6VGm0nnYQIjSC
+         D1udu7FcFSBC+2nZmg5t8zCFd92ZDVY2kkX2C9Kry5o0yUdiOhXkka0e/goc2V5ZwZJk
+         t/Wg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=zgE7H652OqyN4nqOaV860HJ7ZzQUNg5TLy0QsJ2RWEM=;
-        b=jZIOmZtAsEKd7kimOxV0IrEYPz/QqRV1JYPzJNLd7iHHnP2DFHN3zZyAArxDGnlZ50
-         EdUuMVoBfyqLA2sX/7jKf/PEfVbjtbgdLO8eWzJW8P0H8yWRDkAHUbMevnSReTmGtVQa
-         hszGdgyairpDkCY+r7eQvtsOuZsz5APwAdPZ1DRtNNPJNfNBRDnPsHfu8YvIMJDZW3FZ
-         9Ze8bQK0anUjYogz4GRKsFa7KVDIaqYTjIAOasL7PpfXn5oD032hEDlp/jZjbESa2c55
-         YuiOGJ2FUM93UKz1BgAUzTerrsvCUrRG0J01Q9jm+q9SPVA2iVrIHTJO8riFPv6rdwHA
-         y58Q==
-X-Gm-Message-State: APjAAAU4nNoysGG4j54NdB9MLCNxPAlLmk5DJsSi8VvP5QDh68ZkZdL7
-        XJbEhYsZvi7bSCdvncVvAtQ=
-X-Google-Smtp-Source: APXvYqwctuSRjAyVEEe/pDJj7009/7T6jQBFBpEvZyv0JWbqyBLun6a0bGKtliRCpDHSmpSNK3YUkA==
-X-Received: by 2002:adf:ebc6:: with SMTP id v6mr11423586wrn.75.1576228019639;
-        Fri, 13 Dec 2019 01:06:59 -0800 (PST)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references;
+        bh=5zlnMRG2Xz8RVeE2jai5rgez52Z3RsSPyyE68+eN4M4=;
+        b=eYioruwFzhF5rLWnsYZWZCibf2pDGba/xnWFzfsLsKsyGYlQHpvfD6LU9MdRFqSNYI
+         3MhIvu65nsqjW74uEJbpqdKFNgmAl5HhxwaG+d7nmCzvOz2Gw3p3AhYmbleRwXCVCrg7
+         hGfS/Hqr/RC80t1WSIQ4xtNLy+/yrIWUP/txVmkWdP63yQxYvpw2KMb+qv2bWLkvQc5s
+         9NQNRGa6DHtV5FKH2Q3nYYjB8vI49cQ+VU4LdWQNNk+DUux3TOWZoFShOUgMOCNuTg+l
+         x6w/SyqVZRE2HQQBYmWGgAGk9bHWoMEbjJk8OTS4w08DaNNnCis+Qm4uzCgqI+xBfsZN
+         o6dQ==
+X-Gm-Message-State: APjAAAV1j918OLz/o9lZuH9cZgVJTIl873tKbrhJWL/QqziZKfyWm+Jk
+        MdBuUs/5P0E128343vmr+fM=
+X-Google-Smtp-Source: APXvYqxD5N6/KhAaiuHz+hL1cauToq0sw4RNDQAmbtbfZaCITXDv6iRnX3D7y+b0Q1sn6Z0id+p4jw==
+X-Received: by 2002:a1c:1dd7:: with SMTP id d206mr11688067wmd.5.1576228027062;
+        Fri, 13 Dec 2019 01:07:07 -0800 (PST)
 Received: from linux-691t.suse.de ([124.11.22.254])
-        by smtp.gmail.com with ESMTPSA id y6sm9079094wrl.17.2019.12.13.01.06.53
+        by smtp.gmail.com with ESMTPSA id y6sm9079094wrl.17.2019.12.13.01.06.59
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 13 Dec 2019 01:06:58 -0800 (PST)
+        Fri, 13 Dec 2019 01:07:06 -0800 (PST)
 From:   "Lee, Chun-Yi" <joeyli.kernel@gmail.com>
 X-Google-Original-From: "Lee, Chun-Yi" <jlee@suse.com>
 To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>,
@@ -53,41 +54,84 @@ To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>,
         Mimi Zohar <zohar@linux.ibm.com>
 Cc:     linux-efi@vger.kernel.org, linux-security-module@vger.kernel.org,
         linux-kernel@vger.kernel.org, "Lee, Chun-Yi" <jlee@suse.com>
-Subject: [PATCH 0/2 v2] efi: cosmetic patches for the error messages when
-Date:   Fri, 13 Dec 2019 17:06:44 +0800
-Message-Id: <20191213090646.12329-1-jlee@suse.com>
+Subject: [PATCH 1/2 v2] efi: add a function to convert the status code to a string
+Date:   Fri, 13 Dec 2019 17:06:45 +0800
+Message-Id: <20191213090646.12329-2-jlee@suse.com>
 X-Mailer: git-send-email 2.16.4
+In-Reply-To: <20191213090646.12329-1-jlee@suse.com>
+References: <20191213090646.12329-1-jlee@suse.com>
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-When loading certificates list from EFI variables, the error
-messages and efi status codes always be emitted to dmesg. It looks
-ugly:
-
-[    2.335031] Couldn't get size: 0x800000000000000e
-[    2.335032] Couldn't get UEFI MokListRT 
-[    2.339985] Couldn't get size: 0x800000000000000e
-[    2.339987] Couldn't get UEFI dbx list
-
-This cosmetic patch set moved the above messages to the error
-handling code path. And, it adds a function to convert EFI status
-code to a string for improving the readability of debug log. The function
-can also be used in other EFI logs.
+This function can be used to convert EFI status code to a string
+to improve the readability of log.
 
 v2:
-The convert function be moved to efi.c
+Moved the convert function to efi.c
 
-Lee, Chun-Yi (2):
-  efi: add a function to convert the status code to a string
-  efi: show error messages only when loading certificates is failed
+Signed-off-by: "Lee, Chun-Yi" <jlee@suse.com>
+---
+ drivers/firmware/efi/efi.c | 32 ++++++++++++++++++++++++++++++++
+ include/linux/efi.h        |  1 +
+ 2 files changed, 33 insertions(+)
 
- drivers/firmware/efi/efi.c                    | 32 +++++++++++++++++++++
- include/linux/efi.h                           |  1 +
- security/integrity/platform_certs/load_uefi.c | 41 ++++++++++++++-------------
- 3 files changed, 55 insertions(+), 19 deletions(-)
-
+diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
+index e98bbf8e56d9..8bdc1c17eb5d 100644
+--- a/drivers/firmware/efi/efi.c
++++ b/drivers/firmware/efi/efi.c
+@@ -954,6 +954,38 @@ int efi_status_to_err(efi_status_t status)
+ 	return err;
+ }
+ 
++#define EFI_STATUS_STR(_status) \
++	EFI_##_status : return "EFI_" __stringify(_status)
++
++const char *efi_status_to_str(efi_status_t status)
++{
++	switch (status) {
++	case EFI_STATUS_STR(SUCCESS);
++	case EFI_STATUS_STR(LOAD_ERROR);
++	case EFI_STATUS_STR(INVALID_PARAMETER);
++	case EFI_STATUS_STR(UNSUPPORTED);
++	case EFI_STATUS_STR(BAD_BUFFER_SIZE);
++	case EFI_STATUS_STR(BUFFER_TOO_SMALL);
++	case EFI_STATUS_STR(NOT_READY);
++	case EFI_STATUS_STR(DEVICE_ERROR);
++	case EFI_STATUS_STR(WRITE_PROTECTED);
++	case EFI_STATUS_STR(OUT_OF_RESOURCES);
++	case EFI_STATUS_STR(NOT_FOUND);
++	case EFI_STATUS_STR(ABORTED);
++	case EFI_STATUS_STR(SECURITY_VIOLATION);
++	}
++	/*
++	 * There are two possibilities for this message to be exposed:
++	 * - Caller feeds a unknown status code from firmware.
++	 * - A new status code be defined in efi.h but we forgot to update
++	 *   this function.
++	 */
++	pr_warn("Unknown efi status: 0x%lx\n", status);
++
++	return "Unknown efi status";
++}
++EXPORT_SYMBOL(efi_status_to_str);
++
+ static DEFINE_SPINLOCK(efi_mem_reserve_persistent_lock);
+ static struct linux_efi_memreserve *efi_memreserve_root __ro_after_init;
+ 
+diff --git a/include/linux/efi.h b/include/linux/efi.h
+index d87acf62958e..2c6848d2b112 100644
+--- a/include/linux/efi.h
++++ b/include/linux/efi.h
+@@ -1228,6 +1228,7 @@ efi_capsule_pending(int *reset_type)
+ #endif
+ 
+ extern int efi_status_to_err(efi_status_t status);
++extern const char *efi_status_to_str(efi_status_t status);
+ 
+ /*
+  * Variable Attributes
 -- 
 2.16.4
 
