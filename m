@@ -2,27 +2,27 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A50B611F343
-	for <lists+linux-efi@lfdr.de>; Sat, 14 Dec 2019 18:58:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8EF2611F345
+	for <lists+linux-efi@lfdr.de>; Sat, 14 Dec 2019 18:58:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725943AbfLNR6A (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sat, 14 Dec 2019 12:58:00 -0500
-Received: from mail.kernel.org ([198.145.29.99]:44470 "EHLO mail.kernel.org"
+        id S1726798AbfLNR6E (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 14 Dec 2019 12:58:04 -0500
+Received: from mail.kernel.org ([198.145.29.99]:44546 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727239AbfLNR6A (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Sat, 14 Dec 2019 12:58:00 -0500
+        id S1727283AbfLNR6D (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Sat, 14 Dec 2019 12:58:03 -0500
 Received: from cam-smtp0.cambridge.arm.com (fw-tnat.cambridge.arm.com [217.140.96.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 3966124658;
-        Sat, 14 Dec 2019 17:57:57 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id E09752465E;
+        Sat, 14 Dec 2019 17:57:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1576346279;
-        bh=6awMQrnn/YcG7l5/azaUfXfvGt+NWeRcwn9GxvDrhyc=;
+        s=default; t=1576346282;
+        bh=E+ODH1tNA1H+uHw7SgnE3Ikf13/PXAVJ/8fDpFKDCn4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1VOI/DNOow7/rCYBCzgXR1G1SsGADYwfEl152X6AgOWSGSHwDyrWI760WdGx22FNQ
-         02CM8MRViFL0ZRNi9IqsdmoK6E49DebsG/yM/BgstmEScY7TkG/p8L1A6AkqgtsORJ
-         hTj07KIDq2NzPDQgih7GT73FpzESXvOxQTsqHZJQ=
+        b=Z7j8yHeKTWdQV8f0vFafQihw/FRbDfB7ppGlmC9bogxoGq2wZGIXp5dP8LU1Mr0Qq
+         Canx398/WbuGT3Y8QynhNEEvIUe5079GCB8DT+1NoFRKfbNRBRCst/KQkvCOtPWV+c
+         IAwebkrI8y5y3YcDnYYKfxrrqc36wa6rkhh6kbss=
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     linux-efi@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
@@ -32,9 +32,9 @@ Cc:     linux-efi@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
         Andy Lutomirski <luto@kernel.org>,
         Thomas Gleixner <tglx@linutronix.de>,
         Arvind Sankar <nivedita@alum.mit.edu>
-Subject: [PATCH 07/10] efi/libstub: drop explicit 64-bit protocol definitions
-Date:   Sat, 14 Dec 2019 18:57:32 +0100
-Message-Id: <20191214175735.22518-8-ardb@kernel.org>
+Subject: [PATCH 08/10] efi/libstub: use stricter typing for firmware function pointers
+Date:   Sat, 14 Dec 2019 18:57:33 +0100
+Message-Id: <20191214175735.22518-9-ardb@kernel.org>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20191214175735.22518-1-ardb@kernel.org>
 References: <20191214175735.22518-1-ardb@kernel.org>
@@ -43,267 +43,125 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Mixed mode involves casting 64-bit native calls to 32-bit EFI calls,
-which requires explicit 32-bit protocol definitions. Native calls
-are always done using the protocol definitions that use native types,
-and so the explicit 64-bit ones are redundant. Remove them.
+We will soon remove another level of pointer casting, so let's make
+sure all type handling involving firmware calls at boot time is correct.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/x86/boot/compressed/eboot.h      |   6 -
- drivers/firmware/efi/libstub/random.c |   5 -
- include/linux/efi.h                   | 142 --------------------
- 3 files changed, 153 deletions(-)
+ arch/x86/boot/compressed/eboot.c               | 10 ++++++----
+ arch/x86/boot/compressed/eboot.h               |  5 +++--
+ drivers/firmware/efi/libstub/efi-stub-helper.c |  5 +++--
+ drivers/firmware/efi/libstub/tpm.c             |  4 ++--
+ include/linux/efi.h                            |  6 +++++-
+ 5 files changed, 19 insertions(+), 11 deletions(-)
 
+diff --git a/arch/x86/boot/compressed/eboot.c b/arch/x86/boot/compressed/eboot.c
+index 6d833f93a878..052852eaa076 100644
+--- a/arch/x86/boot/compressed/eboot.c
++++ b/arch/x86/boot/compressed/eboot.c
+@@ -64,7 +64,8 @@ preserve_pci_rom_image(efi_pci_io_protocol_t *pci, struct pci_setup_rom **__rom)
+ 
+ 	size = romsize + sizeof(*rom);
+ 
+-	status = efi_call_early(allocate_pool, EFI_LOADER_DATA, size, &rom);
++	status = efi_call_early(allocate_pool, EFI_LOADER_DATA, size,
++				(void **)&rom);
+ 	if (status != EFI_SUCCESS) {
+ 		efi_printk(sys_table, "Failed to allocate memory for 'rom'\n");
+ 		return status;
+@@ -191,9 +192,9 @@ static void retrieve_apple_device_properties(struct boot_params *boot_params)
+ 	struct setup_data *data, *new;
+ 	efi_status_t status;
+ 	u32 size = 0;
+-	void *p;
++	apple_properties_protocol_t *p;
+ 
+-	status = efi_call_early(locate_protocol, &guid, NULL, &p);
++	status = efi_call_early(locate_protocol, &guid, NULL, (void **)&p);
+ 	if (status != EFI_SUCCESS)
+ 		return;
+ 
+@@ -208,7 +209,8 @@ static void retrieve_apple_device_properties(struct boot_params *boot_params)
+ 
+ 	do {
+ 		status = efi_call_early(allocate_pool, EFI_LOADER_DATA,
+-					size + sizeof(struct setup_data), &new);
++					size + sizeof(struct setup_data),
++					(void **)&new);
+ 		if (status != EFI_SUCCESS) {
+ 			efi_printk(sys_table, "Failed to allocate memory for 'properties'\n");
+ 			return;
 diff --git a/arch/x86/boot/compressed/eboot.h b/arch/x86/boot/compressed/eboot.h
-index 8297387c4676..1cf384ba1b0e 100644
+index 1cf384ba1b0e..318531f128c2 100644
 --- a/arch/x86/boot/compressed/eboot.h
 +++ b/arch/x86/boot/compressed/eboot.h
-@@ -18,12 +18,6 @@ typedef struct {
+@@ -18,8 +18,9 @@ typedef struct {
  	u32 blt;
  } efi_uga_draw_protocol_32_t;
  
 -typedef struct {
--	u64 get_mode;
--	u64 set_mode;
--	u64 blt;
--} efi_uga_draw_protocol_64_t;
--
- typedef struct {
- 	void *get_mode;
+-	void *get_mode;
++typedef struct efi_uga_draw_protocol {
++	efi_status_t (*get_mode)(struct efi_uga_draw_protocol *,
++				 u32*, u32*, u32*, u32*);
  	void *set_mode;
-diff --git a/drivers/firmware/efi/libstub/random.c b/drivers/firmware/efi/libstub/random.c
-index 97378cf96a2e..3b85883fb312 100644
---- a/drivers/firmware/efi/libstub/random.c
-+++ b/drivers/firmware/efi/libstub/random.c
-@@ -16,11 +16,6 @@ typedef struct {
- 	u32 get_rng;
- } efi_rng_protocol_32_t;
+ 	void *blt;
+ } efi_uga_draw_protocol_t;
+diff --git a/drivers/firmware/efi/libstub/efi-stub-helper.c b/drivers/firmware/efi/libstub/efi-stub-helper.c
+index ff3266b9f673..5bb1715cb154 100644
+--- a/drivers/firmware/efi/libstub/efi-stub-helper.c
++++ b/drivers/firmware/efi/libstub/efi-stub-helper.c
+@@ -423,12 +423,13 @@ static efi_status_t efi_file_size(efi_system_table_t *sys_table_arg, void *__fh,
+ 	return status;
+ }
  
--typedef struct {
--	u64 get_info;
--	u64 get_rng;
--} efi_rng_protocol_64_t;
--
- struct efi_rng_protocol {
- 	efi_status_t (*get_info)(struct efi_rng_protocol *,
- 				 unsigned long *, efi_guid_t *);
+-static efi_status_t efi_file_read(void *handle, unsigned long *size, void *addr)
++static efi_status_t efi_file_read(efi_file_handle_t *handle,
++				  unsigned long *size, void *addr)
+ {
+ 	return efi_call_proto(efi_file_handle, read, handle, size, addr);
+ }
+ 
+-static efi_status_t efi_file_close(void *handle)
++static efi_status_t efi_file_close(efi_file_handle_t *handle)
+ {
+ 	return efi_call_proto(efi_file_handle, close, handle);
+ }
+diff --git a/drivers/firmware/efi/libstub/tpm.c b/drivers/firmware/efi/libstub/tpm.c
+index 0354d35ebaa7..83cf204bfe8f 100644
+--- a/drivers/firmware/efi/libstub/tpm.c
++++ b/drivers/firmware/efi/libstub/tpm.c
+@@ -59,11 +59,11 @@ void efi_retrieve_tpm2_eventlog(efi_system_table_t *sys_table_arg)
+ 	size_t log_size, last_entry_size;
+ 	efi_bool_t truncated;
+ 	int version = EFI_TCG2_EVENT_LOG_FORMAT_TCG_2;
+-	void *tcg2_protocol = NULL;
++	efi_tcg2_protocol_t *tcg2_protocol = NULL;
+ 	int final_events_size = 0;
+ 
+ 	status = efi_call_early(locate_protocol, &tcg2_guid, NULL,
+-				&tcg2_protocol);
++				(void **)&tcg2_protocol);
+ 	if (status != EFI_SUCCESS)
+ 		return;
+ 
 diff --git a/include/linux/efi.h b/include/linux/efi.h
-index e17c16d8d523..87c2537b4543 100644
+index 87c2537b4543..7f1a99bd2c05 100644
 --- a/include/linux/efi.h
 +++ b/include/linux/efi.h
-@@ -259,54 +259,6 @@ typedef struct {
- 	u32 create_event_ex;
- } __packed efi_boot_services_32_t;
- 
--typedef struct {
--	efi_table_hdr_t hdr;
--	u64 raise_tpl;
--	u64 restore_tpl;
--	u64 allocate_pages;
--	u64 free_pages;
--	u64 get_memory_map;
--	u64 allocate_pool;
--	u64 free_pool;
--	u64 create_event;
--	u64 set_timer;
--	u64 wait_for_event;
--	u64 signal_event;
--	u64 close_event;
--	u64 check_event;
--	u64 install_protocol_interface;
--	u64 reinstall_protocol_interface;
--	u64 uninstall_protocol_interface;
--	u64 handle_protocol;
--	u64 __reserved;
--	u64 register_protocol_notify;
--	u64 locate_handle;
--	u64 locate_device_path;
--	u64 install_configuration_table;
--	u64 load_image;
--	u64 start_image;
--	u64 exit;
--	u64 unload_image;
--	u64 exit_boot_services;
--	u64 get_next_monotonic_count;
--	u64 stall;
--	u64 set_watchdog_timer;
--	u64 connect_controller;
--	u64 disconnect_controller;
--	u64 open_protocol;
--	u64 close_protocol;
--	u64 open_protocol_information;
--	u64 protocols_per_handle;
--	u64 locate_handle_buffer;
--	u64 locate_protocol;
--	u64 install_multiple_protocol_interfaces;
--	u64 uninstall_multiple_protocol_interfaces;
--	u64 calculate_crc32;
--	u64 copy_mem;
--	u64 set_mem;
--	u64 create_event_ex;
--} __packed efi_boot_services_64_t;
--
- /*
-  * EFI Boot Services table
-  */
-@@ -391,11 +343,6 @@ typedef struct {
- 	u32 write;
- } efi_pci_io_protocol_access_32_t;
- 
--typedef struct {
--	u64 read;
--	u64 write;
--} efi_pci_io_protocol_access_64_t;
--
- typedef struct efi_pci_io_protocol efi_pci_io_protocol_t;
- 
- typedef
-@@ -440,26 +387,6 @@ typedef struct {
- 	u32 romimage;
- } efi_pci_io_protocol_32_t;
- 
--typedef struct {
--	u64 poll_mem;
--	u64 poll_io;
--	efi_pci_io_protocol_access_64_t mem;
--	efi_pci_io_protocol_access_64_t io;
--	efi_pci_io_protocol_access_64_t pci;
--	u64 copy_mem;
--	u64 map;
--	u64 unmap;
--	u64 allocate_buffer;
--	u64 free_buffer;
--	u64 flush;
--	u64 get_location;
--	u64 attributes;
--	u64 get_bar_attributes;
--	u64 set_bar_attributes;
--	u64 romsize;
--	u64 romimage;
--} efi_pci_io_protocol_64_t;
--
- struct efi_pci_io_protocol {
- 	void *poll_mem;
- 	void *poll_io;
-@@ -508,14 +435,6 @@ typedef struct {
- 	u32 get_all;
- } apple_properties_protocol_32_t;
- 
--typedef struct {
--	u64 version;
--	u64 get;
--	u64 set;
--	u64 del;
--	u64 get_all;
--} apple_properties_protocol_64_t;
--
- struct efi_dev_path;
- 
- typedef struct apple_properties_protocol {
-@@ -542,16 +461,6 @@ typedef struct {
- 	u32 get_result_of_set_active_pcr_banks;
- } efi_tcg2_protocol_32_t;
- 
--typedef struct {
--	u64 get_capability;
--	u64 get_event_log;
--	u64 hash_log_extend_event;
--	u64 submit_command;
--	u64 get_active_pcr_banks;
--	u64 set_active_pcr_banks;
--	u64 get_result_of_set_active_pcr_banks;
--} efi_tcg2_protocol_64_t;
--
- typedef u32 efi_tcg2_event_log_format;
- 
- typedef struct {
-@@ -870,22 +779,6 @@ typedef struct {
- 	u32 unload;
- } efi_loaded_image_32_t;
- 
--typedef struct {
--	u32 revision;
--	u64 parent_handle;
--	u64 system_table;
--	u64 device_handle;
--	u64 file_path;
--	u64 reserved;
--	u32 load_options_size;
--	u64 load_options;
--	u64 image_base;
--	__aligned_u64 image_size;
--	unsigned int image_code_type;
--	unsigned int image_data_type;
--	u64 unload;
--} efi_loaded_image_64_t;
--
- typedef struct {
- 	u32 revision;
- 	efi_handle_t parent_handle;
-@@ -928,20 +821,6 @@ typedef struct {
- 	u32 flush;
- } efi_file_handle_32_t;
- 
--typedef struct {
--	u64 revision;
--	u64 open;
--	u64 close;
--	u64 delete;
--	u64 read;
--	u64 write;
--	u64 get_position;
--	u64 set_position;
--	u64 get_info;
--	u64 set_info;
--	u64 flush;
--} efi_file_handle_64_t;
--
- typedef struct _efi_file_handle {
- 	u64 revision;
- 	efi_status_t (*open)(struct _efi_file_handle *,
-@@ -965,11 +844,6 @@ typedef struct {
- 	u32 open_volume;
- } efi_file_io_interface_32_t;
- 
--typedef struct {
--	u64 revision;
--	u64 open_volume;
--} efi_file_io_interface_64_t;
--
- typedef struct _efi_file_io_interface {
- 	u64 revision;
- 	int (*open_volume)(struct _efi_file_io_interface *,
-@@ -1482,15 +1356,6 @@ typedef struct {
- 	u32 frame_buffer_size;
- } efi_graphics_output_protocol_mode_32_t;
- 
--typedef struct {
--	u32 max_mode;
--	u32 mode;
--	u64 info;
--	u64 size_of_info;
--	u64 frame_buffer_base;
--	u64 frame_buffer_size;
--} efi_graphics_output_protocol_mode_64_t;
--
- typedef struct {
- 	u32 max_mode;
- 	u32 mode;
-@@ -1507,13 +1372,6 @@ typedef struct {
- 	u32 mode;
- } efi_graphics_output_protocol_32_t;
- 
--typedef struct {
--	u64 query_mode;
--	u64 set_mode;
--	u64 blt;
--	u64 mode;
--} efi_graphics_output_protocol_64_t;
--
- typedef struct {
- 	void *query_mode;
- 	void *set_mode;
+@@ -399,7 +399,11 @@ struct efi_pci_io_protocol {
+ 	void *allocate_buffer;
+ 	void *free_buffer;
+ 	void *flush;
+-	void *get_location;
++	efi_status_t (*get_location)(struct efi_pci_io_protocol *,
++				     unsigned long *segment_nr,
++				     unsigned long *bus_nr,
++				     unsigned long *device_nr,
++				     unsigned long *function_nr);
+ 	void *attributes;
+ 	void *get_bar_attributes;
+ 	void *set_bar_attributes;
 -- 
 2.17.1
 
