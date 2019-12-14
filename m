@@ -2,180 +2,117 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 83CA211F2E7
-	for <lists+linux-efi@lfdr.de>; Sat, 14 Dec 2019 18:07:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2528711F335
+	for <lists+linux-efi@lfdr.de>; Sat, 14 Dec 2019 18:58:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725975AbfLNRHp (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sat, 14 Dec 2019 12:07:45 -0500
-Received: from mail-wr1-f66.google.com ([209.85.221.66]:40401 "EHLO
-        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725972AbfLNRHp (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sat, 14 Dec 2019 12:07:45 -0500
-Received: by mail-wr1-f66.google.com with SMTP id c14so2158275wrn.7
-        for <linux-efi@vger.kernel.org>; Sat, 14 Dec 2019 09:07:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=rk4GjxPYF8SVR1jcvPnUrKGFUR5lCEHGS1xJPS1KlI0=;
-        b=UQiU75OSVtVcHYbGtN/tp5rcTioHonHg7A+6ny5G3hZf1S7CPFHDCmMop02ZwzZQ5e
-         +cB16Q7r4b2ZUvNmFhZd9A8CUi4MEJSqVq7qJ1/sADyeSRKGBT/cvPlpFwy3No0eo2Nm
-         6KObk1OCfx9lYeYMbidWcactTnv3pCn2vww3NwpdkQo6d8f4GbUauK3dEt56kqpSEY57
-         rthrdeqs0g4+n+TA1PpdxJcAFoWVOZIo4hoNBLsEbq+VRNn3WI2sMhtQhXHOZ8Esrg80
-         uyV2eEEjoeuWpBDdx5T7WloZIvqsShcLaodhYxFQ1m7o4NTuUrw6qFokLe3czs/2Vv6V
-         IdVw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=rk4GjxPYF8SVR1jcvPnUrKGFUR5lCEHGS1xJPS1KlI0=;
-        b=Vc1R/+JNUgPC5rzsO+TXwxMIkSXq9S4LIjPvPODUm839+Iq9PdCY7krEhqkdplC4oa
-         y3pcD11UL6cbK/5R6i8u37Wyi8RLbnVNQN497hQSx5sVGqTasl0k4bVrd+uOU8nCz6W1
-         UAjyvVoU8H/dfVCPebEVFouzkxWStaIBYhpjeDarOJftRH88yhphJ5AFrbYQU+d8E0Xv
-         AMvO/gBSeE9XEM2HbbUkWtTOMYO+deRwsMVoqQaW2Uv/M4Uj7UHptYbDLrLQXBFIbdLw
-         RB+H76Q3eWqOyTnSqJba2j4fQR72+k8YevE3gtEmoF/QSyCZm6cgx+nyIm0D9JEZnMWh
-         4ZeQ==
-X-Gm-Message-State: APjAAAW0hgW3Uej7fB1pSBPatki0JKxkGGiE+afXrSWuEalqN4hFogUk
-        5i7Mpi6qpRrojvb1WClfxyDuXNy6iQpbDGAvk+3Y0w==
-X-Google-Smtp-Source: APXvYqxubyZ9qK5azYNR+O+1vf5Exj02G1s1sHlXgkUo0m5SPkIi/EkvIPUjxGYH0xrDM89iWp15VdGOMSbRNXzQ0Lg=
-X-Received: by 2002:adf:cf0a:: with SMTP id o10mr18957932wrj.325.1576343262102;
- Sat, 14 Dec 2019 09:07:42 -0800 (PST)
-MIME-Version: 1.0
-References: <20191213091115.567-1-ardb@kernel.org> <69f21816-6dab-5abc-25f1-b2f5faf6f9e4@redhat.com>
- <CAKv+Gu9yFqtcbKa5RO_m=t2JQEaVyscBruQYSYMJpKE1JcAieA@mail.gmail.com>
- <d5917bef-929b-ee36-58b6-a8309d52f5bf@redhat.com> <CAKv+Gu8vWem-jTv_K3KEqkqOVDDte9QOXco2pLA999u7hxH_Yg@mail.gmail.com>
- <f276df9f-83b4-e404-bcfc-91f0212a5fc0@redhat.com> <CAKv+Gu_cyf5AssySDmrzKjWDN+Wa0JMnyQocKJrqj3uZKO6jQQ@mail.gmail.com>
- <e216a9bd-6e37-c87a-5b14-d0cea31bfc60@redhat.com>
-In-Reply-To: <e216a9bd-6e37-c87a-5b14-d0cea31bfc60@redhat.com>
-From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Date:   Sat, 14 Dec 2019 17:07:40 +0000
-Message-ID: <CAKv+Gu_Fm9+mhKOeU3Gqgp_mDPUp0d3Gd4_E3KFSC+kDeu8mBQ@mail.gmail.com>
-Subject: Re: [PATCH] efi/libstub: disable file loading and page deallocation
- in mixed mode
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     linux-efi <linux-efi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        id S1726411AbfLNR5l (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 14 Dec 2019 12:57:41 -0500
+Received: from mail.kernel.org ([198.145.29.99]:43968 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725975AbfLNR5l (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Sat, 14 Dec 2019 12:57:41 -0500
+Received: from cam-smtp0.cambridge.arm.com (fw-tnat.cambridge.arm.com [217.140.96.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 6BF4E20724;
+        Sat, 14 Dec 2019 17:57:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1576346260;
+        bh=jus25Rf83MkRqCWDILe7u65yRwf/8zffQBj/3myz95U=;
+        h=From:To:Cc:Subject:Date:From;
+        b=ZwGNNAC6xsTjiBfR8qFIEbdr7xISdVWktqPbQ8YST3u/j+ECDuWmbEAcydJoL5y6H
+         OYrh27gaarC4FKpX95+6J6qufqT0Qkkfq+aF20YGQ4UF0nmSIld/8FcUq3mesidFTN
+         4JxAfA4cm0hXjY93walqagFGf7sQw+zQr9Rl1YDI=
+From:   Ard Biesheuvel <ardb@kernel.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     linux-efi@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Matthew Garrett <matthewgarrett@google.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        Andy Lutomirski <luto@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Arvind Sankar <nivedita@alum.mit.edu>
+Subject: [PATCH 00/10] efi/x86: confine type unsafe casting to mixed mode
+Date:   Sat, 14 Dec 2019 18:57:25 +0100
+Message-Id: <20191214175735.22518-1-ardb@kernel.org>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Sat, 14 Dec 2019 at 16:21, Hans de Goede <hdegoede@redhat.com> wrote:
->
-> HI,
->
-> On 13-12-2019 21:16, Ard Biesheuvel wrote:
-> > On Fri, 13 Dec 2019 at 21:12, Hans de Goede <hdegoede@redhat.com> wrote:
-> >>
-> >> Hi,
-> >>
-> >> On 12/13/19 9:08 PM, Ard Biesheuvel wrote:
-> >>> On Fri, 13 Dec 2019 at 20:56, Hans de Goede <hdegoede@redhat.com> wrote:
-> >>>>
-> >>>> Hi,
-> >>>>
-> >>>> On 12/13/19 7:49 PM, Ard Biesheuvel wrote:
-> >>>>> On Fri, 13 Dec 2019 at 13:29, Hans de Goede <hdegoede@redhat.com> wrote:
-> >>>>>>
-> >>>>>> Hi,
-> >>>>>>
-> >>>>>> On 13-12-2019 10:11, Ard Biesheuvel wrote:
-> >>>>>>> EFI mixed mode is a nice hack, since it allows us to run 64-bit Linux
-> >>>>>>> on low end x86_64 machines that shipped with 32-bit UEFI as they were
-> >>>>>>> built to run 32-bit Windows only.
-> >>>>>>>
-> >>>>>>> Mixed mode relies on the ability to convert calls made using the
-> >>>>>>> 64-bit calling convention into calls using the 32-bit one. This
-> >>>>>>> involves pushing a 32-bit word onto the stack for each argument
-> >>>>>>> passed in a 64-bit register, relying on the fact that all quantities
-> >>>>>>> that are the native size or smaller (including pointers) can be safely
-> >>>>>>> truncated to 32 bits. (In the pointer case, we rely on the fact that
-> >>>>>>> we are still executing in the firmware context, which uses a 1:1
-> >>>>>>> mapping that can only access the lower 4 GB of the address space)
-> >>>>>>>
-> >>>>>>> For types that are explicitly 64 bits wide, such as EFI_PHYSICAL_ADDRESS
-> >>>>>>> or UINT64, this assumption doesn't hold. The correct way to marshall
-> >>>>>>> such a call would be to push two consecutive 32-bit words onto the
-> >>>>>>> stack, but given that the naive thunking code has no knowledge
-> >>>>>>> whatsoever of the prototype of the function it is invoking, all we can
-> >>>>>>> do is avoid calling such functions altogether.
-> >>>>>>>
-> >>>>>>> The FreePages() boot service is affected by this, so we should not call
-> >>>>>>> that at all in mixed mode. In practice, this doesn't change much, since
-> >>>>>>> in the past, these calls would have been made with a bogus address, and
-> >>>>>>> so we were leaking this memory already. Note that the scope of this leak
-> >>>>>>> is the EFI execution context only, so it makes no difference for Linux.
-> >>>>>>>
-> >>>>>>> The other piece of functionality that we need to disable is loading files
-> >>>>>>> passed via file=xxxx on the command line, given that the Open() method
-> >>>>>>> takes two UINT64s as well.
-> >>>>>>>
-> >>>>>>> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> >>>>>>
-> >>>>>> Just ignoring the file= arguments is fine with me, as you say this has
-> >>>>>> been broken on mixed-mode since forever so likely no-one is using it:
-> >>>>>>
-> >>>>>> Acked-by: Hans de Goede <hdegoede@redhat.com>
-> >>>>>>
-> >>>>>
-> >>>>> Thanks.
-> >>>>>
-> >>>>> Do you have any recommendations on how to test this? Are you using GRUB to boot?
-> >>>>>
-> >>>>> I am trying to test the random.c failure using QEMU+OVMF, which
-> >>>>> implements the EFI_RNG_PROTOCOL on top of virtio-rng-pci, but I cannot
-> >>>>> reproduce the failure.
-> >>>>
-> >>>> I hit the random.c issue when testing a 5.5-rc1 x86_64 kernel on a Bay Trail
-> >>>> tablet. Almost any Bay Trail hw will come with 32 bit uefi because when Bay
-> >>>> Trail tablets (and 2-in-1s) first hit the market the 64 bit Windows drivers
-> >>>> were not ready yet and running 32 bit Windows requires a 32 bit UEFI
-> >>>> (Bay Trail devices do not have a classic bios mode / CSM).
-> >>>>
-> >>>> A popular model example machine of such a setup is The Asus T100TA 2-in-1.
-> >>>>
-> >>>> I'm using a standard Fedora install on these machines which goes:
-> >>>> UEFI -> 32-bit-secureboot-shim -> 32-bit-uefi-grub -> 64 bit kernel
-> >>>>
-> >>>
-> >>> And after applying the fix, do you now get a RNG=0x.... on the line
-> >>> that has ACPI, SMBIOS etc?
-> >>
-> >> No I get:
-> >>
-> >> [    0.000000] efi:  ACPI=0x3b71f000  ACPI 2.0=0x3b71f014  ESRT=0x3b6ed000  SMBIOS=0x3baa8310  TPMEventLog=0x37e95010
-> >>
-> >> No RNG there. Note this is on a slightly different Bay Trail device.
-> >>
-> >
-> > It is slightly surprising that this mixed mode bug gets tickled even
-> > though the protocol in question doesn't even exist.
->
-> As mentioned I was testing on a differtent model mixed mode Bay Trail tablet
-> as I did not have the tablet where I originally hit this at hand.
->
-> I've just tested this on the tablet where I originally hit this; and the RNG=
-> bit is there:
->
-> [    0.000000] efi:  ACPI=0x39178000  ACPI 2.0=0x39178014  ESRT=0x3914f000  SMBI
-> OS=0x39b79290  RNG=0x39b79190  TPMEventLog=0x31847010
->
-> I've added some debugging pr_efi_error calls and on the tablet I was testing with
-> yesterday the locate_protocol call indeed fails on that one.
->
-> I've done quick comparison of the FW versions, both use AMI AptIO as a BIOS,
-> With identical core versions; and on the model *without* the RNG support the TXE FW
-> version is newer:
->
-> Model without RNG proto support:
-> TXE FW Version  01.01.00.1115
->
-> Model with RNG proto support:
-> TXE FW Version  01.00.04.1090
->
-> So no idea why some of these devices have RNG support and others do not,
-> anyways the good news is that between these 2 devices both paths have now
-> been tested in mixed-mode and with my fix in place both paths work.
->
+Currently, we support mixed mode (64-bit Linux running on 32-bit firmware)
+by explicitly reasoning about pointer sizes for every call into the
+firmware: on x86, there are 32-bit and 64-bit versions of each protocol
+interface, and each call gets routed via one of the two, depending on the
+native size of the firmware.
 
-Thanks for testing. That explains the boot hang, indeed.
+There is a lot of casting and pointer mangling involved in this, and as
+a result, we end up with much less coverage in terms of type checking by
+the compiler, due to the indirection via an anonymous, variadic thunking
+routine.
+
+This peculiarity of x86 is also leaking into generic EFI code, which is
+shared with ia64, arm64, ARM and likely RiscV in the future. So let's
+try to clean this up a bit.
+
+The approach taken by this series is to replace the 32/64 bit distinction
+with a distinction between native calls and mixed mode calls, where the
+former can be either 32 or 64 bit [depending on the platform] and use
+the ordinary native protocol definitions, while mixed mode calls retain
+the existing casting/thunking approach based on the 32-bit protocol
+definitions.
+
+Given that GCC now supports emitting function calls using the MS calling
+convention, we can get rid of all the wrapping and casting, and emit the
+indirect calls directly.
+
+Code can be found here
+https://git.kernel.org/pub/scm/linux/kernel/git/ardb/linux.git/log/?h=efistub-x86-cleanup
+
+Cc: Hans de Goede <hdegoede@redhat.com>
+Cc: Matthew Garrett <matthewgarrett@google.com>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Arvind Sankar <nivedita@alum.mit.edu>
+
+Ard Biesheuvel (10):
+  efi/libstub: remove unused __efi_call_early() macro
+  efi/x86: rename efi_is_native() to efi_is_mixed()
+  efi/libstub: use a helper to iterate over a EFI handle array
+  efi/libstub: add missing apple_properties_protocol_t definition
+  efi/libstub: distinguish between native/mixed not 32/64 bit
+  efi/libstub/x86: use mixed mode helpers to populate efi_config
+  efi/libstub: drop explicit 64-bit protocol definitions
+  efi/libstub: use stricter typing for firmware function pointers
+  efi/libstub: annotate firmware routines as __efiapi
+  efi/libstub/x86: avoid thunking for native firmware calls
+
+ arch/arm/include/asm/efi.h                    |   3 +-
+ arch/arm64/include/asm/efi.h                  |   3 +-
+ arch/x86/Kconfig                              |   1 +
+ arch/x86/boot/compressed/Makefile             |   2 +-
+ arch/x86/boot/compressed/eboot.c              |  51 ++--
+ arch/x86/boot/compressed/eboot.h              |  11 +-
+ arch/x86/boot/compressed/efi_stub_32.S        |  87 ------
+ arch/x86/boot/compressed/efi_stub_64.S        |   5 -
+ arch/x86/boot/compressed/head_32.S            |   8 +-
+ arch/x86/boot/compressed/head_64.S            |  12 -
+ arch/x86/include/asm/efi.h                    |  64 ++--
+ arch/x86/platform/efi/efi.c                   |  12 +-
+ arch/x86/platform/efi/efi_64.c                |   6 +-
+ arch/x86/platform/efi/quirks.c                |   2 +-
+ .../firmware/efi/libstub/efi-stub-helper.c    |  46 ++-
+ drivers/firmware/efi/libstub/gop.c            |   9 +-
+ drivers/firmware/efi/libstub/pci.c            |   9 +-
+ drivers/firmware/efi/libstub/random.c         |  13 +-
+ drivers/firmware/efi/libstub/tpm.c            |   4 +-
+ include/linux/efi.h                           | 278 ++++++------------
+ 20 files changed, 195 insertions(+), 431 deletions(-)
+ delete mode 100644 arch/x86/boot/compressed/efi_stub_32.S
+ delete mode 100644 arch/x86/boot/compressed/efi_stub_64.S
+
+-- 
+2.17.1
+
