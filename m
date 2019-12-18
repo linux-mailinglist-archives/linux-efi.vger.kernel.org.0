@@ -2,93 +2,150 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C6F12124B44
-	for <lists+linux-efi@lfdr.de>; Wed, 18 Dec 2019 16:14:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D88A124E9C
+	for <lists+linux-efi@lfdr.de>; Wed, 18 Dec 2019 18:02:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727096AbfLRPOT (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 18 Dec 2019 10:14:19 -0500
-Received: from mail-il1-f194.google.com ([209.85.166.194]:37251 "EHLO
-        mail-il1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727180AbfLRPNx (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 18 Dec 2019 10:13:53 -0500
-Received: by mail-il1-f194.google.com with SMTP id t8so1987448iln.4
-        for <linux-efi@vger.kernel.org>; Wed, 18 Dec 2019 07:13:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=R9l9mbjTMtC+3agOxuj88vgGSGUSi1shzIvbtHPQHDA=;
-        b=Q3vp2fJ40VWpq9rX2ikiWTUrhuiQJXzCeUu43e1oIIOk8rzGCPMljco+W3g3Sdt7mK
-         0zMp27lNXT81ott0dYeyE6wCdI4c1wfi5qCqRmoGIMvdtgle/6NMWI0GJrkD30CBojRq
-         hZbdgtbn9F/6uhvfSLkMdN7NhUpQoMVScRn9uDFKZJxofy0MWDF6kZw53YXeVt8sjWjA
-         Dd9TBzj4Ogplv/txGap2r0I252pQP7l7XSY4YOVhZ7qL539zlqhtO9W4mad505PIZ9Xp
-         yYy+XyL34oyC2pvEIWTDP8EMj+Gj6Cu0eHyc7GTPTD7Enq1rjLHU3JyAyX8LQzaLW/WP
-         +a+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=R9l9mbjTMtC+3agOxuj88vgGSGUSi1shzIvbtHPQHDA=;
-        b=tPeRrn/qzMMm6svD3DekBBfC+VR0ueerF5Pl+WpQ/HDfIvTizF6kqVTBHZ/FHrcJX3
-         0IXzwq1E+PsdLvRW4kazuwYMRijoe2PxhmHANlWw5yESkWQ//H4SOgIQqDuKBQDKf14q
-         5lDsyploz+MvdwbF+Qikle+/nJVMWTSNXLzicB9G6ifKT5FpfXGjvHIMhVrf246Xbk4V
-         4x3VVh8gc8I5mpq75zqadk3Dsp2Y3CjF7FhOMOy1Ag9LwOnxlAOIuY08g2lVFltwGHg/
-         a32hcsJx+rthQm5Gzmhb8sAESeMQHfycezOlWu+KkqsBrJYIHcbMK5WP6unJgwf0A2XY
-         lhLA==
-X-Gm-Message-State: APjAAAWqzFI5qDxeB5mdxJHBojhyk9YPdMofKNodgGeV/nKsMRZGY32u
-        28whNxGS2aY4XnXKYgYfcdmBFMSX9Ap/G1I04w==
-X-Google-Smtp-Source: APXvYqzpDMY1kfzvQTGFYFDuSf5Wkv4RFsY3uCP+mpqq6wLn7kqjCTzLCYufYBbbmMCBsVo5PHwr9dpQEEDI7K8RY00=
-X-Received: by 2002:a92:cc90:: with SMTP id x16mr2363556ilo.269.1576682033220;
- Wed, 18 Dec 2019 07:13:53 -0800 (PST)
-MIME-Version: 1.0
-Received: by 2002:a02:6603:0:0:0:0:0 with HTTP; Wed, 18 Dec 2019 07:13:52
- -0800 (PST)
-Reply-To: dhl.expresscourier102156@outlook.fr
-From:   "MS. MARYANNA B. THOMASON" <info.zennitbankplcnigerian@gmail.com>
-Date:   Wed, 18 Dec 2019 16:13:52 +0100
-Message-ID: <CABHzvrnY8Lhdw4Y2q97jvAVrRpM9CVLFkw=Ved7y1GhGqHiAdw@mail.gmail.com>
-Subject: I WANT TO YOU TO TREAT THIS EMAIL VERY URGENT
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        id S1727334AbfLRRCK (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 18 Dec 2019 12:02:10 -0500
+Received: from mail.kernel.org ([198.145.29.99]:53158 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727184AbfLRRCK (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Wed, 18 Dec 2019 12:02:10 -0500
+Received: from cam-smtp0.cambridge.arm.com (fw-tnat.cambridge.arm.com [217.140.96.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 58DE82176D;
+        Wed, 18 Dec 2019 17:02:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1576688529;
+        bh=oh8ljtWNbV991SHuP9aRXiwPJLuBX5D4nflfaOj7CrA=;
+        h=From:To:Cc:Subject:Date:From;
+        b=I/oJwmHihrlxH3KJeTSTldI6VwwQYQCaxMGW7a3jNkejAVOCqmZF/v5mfD+j9161f
+         VEb2yj6m4zl3WN9EGVWiZV34ICJJg+ScikXD34i2/AjdQkLwPCID5O7FeSrIUAANm0
+         QAmu6UnNOKrubfppf6vpbwPGNB8iiUV9cMcCod9Y=
+From:   Ard Biesheuvel <ardb@kernel.org>
+To:     linux-efi@vger.kernel.org
+Cc:     Ard Biesheuvel <ardb@kernel.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Matthew Garrett <matthewgarrett@google.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        Andy Lutomirski <luto@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Arvind Sankar <nivedita@alum.mit.edu>
+Subject: [PATCH v2 00/21] efi/x86: confine type unsafe casting to mixed mode
+Date:   Wed, 18 Dec 2019 19:01:18 +0200
+Message-Id: <20191218170139.9468-1-ardb@kernel.org>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Attn Dear.
+Currently, we support mixed mode (64-bit Linux running on 32-bit firmware)
+by explicitly reasoning about pointer sizes for every call into the
+firmware: on x86, there are 32-bit and 64-bit versions of each protocol
+interface, and each call gets routed via one of the two, depending on the
+native size of the firmware.
 
-Urgent delivery Notification of your ATM MASTER CARD, Dhl-Benin is
-ready for delivery of your ATM Master card worth $15.800=E2=80=99000=E2=80=
-=9900, as
-approved this morning, Date, 18/12/2019. Through the Intruction from
-INTERNATIONAL MONETARY FUNDS, I.M.F official Directors.
+There is a lot of casting and pointer mangling involved in this, and as
+a result, we end up with much less coverage in terms of type checking by
+the compiler, due to the indirection via an anonymous, variadic thunking
+routine.
 
-REGISTRATION NO :EG58945
-PARCEL NUMBER: 140479
-Delivery Schuleded now,
-Finally all we required from you is your ATM Card Proccessing Delivery
-fees $19.00 only which you must send to this DHL service to enable us
-dispatch the parcel to your destination today.
+This peculiarity of x86 is also leaking into generic EFI code, which is
+shared with ia64, arm64, ARM and likely RiscV in the future. So let's
+try to clean this up a bit.
 
-Here is our receiving payment details.
-You are advised to send it Via Money Gram Service.
+The approach taken by this series is to replace the 32/64 bit distinction
+with a distinction between native calls and mixed mode calls, where the
+former can be either 32 or 64 bit [depending on the platform] and use
+the ordinary native protocol definitions, while mixed mode calls retain
+the existing casting/thunking approach based on the 32-bit protocol
+definitions.
 
-Receiver's Name--------Alan Ude
-Country-------Benin Republic.
-City/ Address--------Cotonou
-Test Question--------In God
-Answer-------We Trust
-Amount------------$US19.00 only
-Mtcn-------------
-Sender's Name-------
+Given that GCC now supports emitting function calls using the MS calling
+convention, we can get rid of all the wrapping and casting, and emit the
+indirect calls directly.
 
-Your delivery  ATM card worth $15.800=E2=80=99000=E2=80=9900,
-Is Due for delivery to your address today upon confirmation of
-required fee from you asap.
+Changes since v1:
+- Substantially more cleanup work to simplify and hide the mixed mode handling
+  in generic EFI code.
+- Get rid of all the pointless passing around of sys_table_arg
+- Incorporate an updated version of Matthew's PCI DMA disable patch using EFI
+  events to defer poking the busmaster bits until after all the ordinary
+  ExitBootServices() callbacks have executed.
 
-Call us on this phone number for any inquiry. +229 62819378
-Awaiting your urgent response.
+Code can be found here
+https://git.kernel.org/pub/scm/linux/kernel/git/ardb/linux.git/log/?h=efistub-x86-cleanup-v2
 
-MS. MARYANNA B. THOMASON, Shipment director, DHL Express
-Courier Company-Benin
+Cc: Hans de Goede <hdegoede@redhat.com>
+Cc: Matthew Garrett <matthewgarrett@google.com>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Arvind Sankar <nivedita@alum.mit.edu>
+
+Ard Biesheuvel (20):
+  efi/libstub: remove unused __efi_call_early() macro
+  efi/x86: rename efi_is_native() to efi_is_mixed()
+  efi/libstub: use a helper to iterate over a EFI handle array
+  efi/libstub: extend native protocol definitions with mixed_mode
+    aliases
+  efi/libstub: distinguish between native/mixed not 32/64 bit
+  efi/libstub/x86: use mixed mode helpers to populate efi_config
+  efi/libstub: drop explicit 32/64-bit protocol definitions
+  efi/libstub: use stricter typing for firmware function pointers
+  efi/libstub: annotate firmware routines as __efiapi
+  efi/libstub/x86: avoid thunking for native firmware calls
+  efi/libstub: get rid of 'sys_table_arg' macro parameter
+  efi/libstub: unify the efi_char16_printk implementations
+  efi/libstub/x86: drop __efi_early() export of efi_config struct
+  efi/libstub: drop sys_table_arg from printk routines
+  efi/libstub: remove 'sys_table_arg' from all function prototypes
+  efi/libstub: drop protocol argument from efi_call_proto() macro
+  efi/libstub: drop 'table' argument from efi_table_attr() macro
+  efi/libstub: use 'func' not 'f' as macro parameter
+  efi/libstub: tidy up types and names of global cmdline variables
+  efi/libstub: import type definitions for creating and signalling
+    events
+
+Matthew Garrett (1):
+  efi: Allow disabling PCI busmastering on bridges during boot
+
+ .../admin-guide/kernel-parameters.txt         |   4 +
+ arch/arm/include/asm/efi.h                    |  17 +-
+ arch/arm64/include/asm/efi.h                  |  16 +-
+ arch/x86/Kconfig                              |   1 +
+ arch/x86/boot/compressed/Makefile             |   2 +-
+ arch/x86/boot/compressed/eboot.c              | 180 ++--
+ arch/x86/boot/compressed/eboot.h              |  30 +-
+ arch/x86/boot/compressed/efi_stub_32.S        |  87 --
+ arch/x86/boot/compressed/efi_stub_64.S        |   5 -
+ arch/x86/boot/compressed/head_32.S            |   8 +-
+ arch/x86/boot/compressed/head_64.S            |  16 +-
+ arch/x86/include/asm/efi.h                    |  76 +-
+ arch/x86/platform/efi/efi.c                   |  12 +-
+ arch/x86/platform/efi/efi_64.c                |   6 +-
+ arch/x86/platform/efi/quirks.c                |   2 +-
+ drivers/firmware/efi/Kconfig                  |  22 +
+ drivers/firmware/efi/libstub/Makefile         |   2 +-
+ drivers/firmware/efi/libstub/arm-stub.c       |  98 ++-
+ drivers/firmware/efi/libstub/arm32-stub.c     |  40 +-
+ drivers/firmware/efi/libstub/arm64-stub.c     |  24 +-
+ .../firmware/efi/libstub/efi-stub-helper.c    | 226 +++--
+ drivers/firmware/efi/libstub/efistub.h        |  35 +-
+ drivers/firmware/efi/libstub/fdt.c            |  53 +-
+ drivers/firmware/efi/libstub/gop.c            |  30 +-
+ drivers/firmware/efi/libstub/pci.c            | 116 +++
+ drivers/firmware/efi/libstub/random.c         |  54 +-
+ drivers/firmware/efi/libstub/secureboot.c     |   6 +-
+ drivers/firmware/efi/libstub/tpm.c            |  23 +-
+ include/linux/efi.h                           | 816 +++++++++---------
+ 29 files changed, 980 insertions(+), 1027 deletions(-)
+ delete mode 100644 arch/x86/boot/compressed/efi_stub_32.S
+ delete mode 100644 arch/x86/boot/compressed/efi_stub_64.S
+ create mode 100644 drivers/firmware/efi/libstub/pci.c
+
+-- 
+2.17.1
+
