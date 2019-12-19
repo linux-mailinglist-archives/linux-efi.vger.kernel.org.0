@@ -2,59 +2,57 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 51C09126E54
-	for <lists+linux-efi@lfdr.de>; Thu, 19 Dec 2019 21:04:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 37D99126E56
+	for <lists+linux-efi@lfdr.de>; Thu, 19 Dec 2019 21:05:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726908AbfLSUET (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 19 Dec 2019 15:04:19 -0500
-Received: from mail-il1-f193.google.com ([209.85.166.193]:36527 "EHLO
-        mail-il1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726907AbfLSUET (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 19 Dec 2019 15:04:19 -0500
-Received: by mail-il1-f193.google.com with SMTP id b15so5923481iln.3
-        for <linux-efi@vger.kernel.org>; Thu, 19 Dec 2019 12:04:17 -0800 (PST)
+        id S1726836AbfLSUFY (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 19 Dec 2019 15:05:24 -0500
+Received: from mail-il1-f196.google.com ([209.85.166.196]:36606 "EHLO
+        mail-il1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726869AbfLSUFX (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 19 Dec 2019 15:05:23 -0500
+Received: by mail-il1-f196.google.com with SMTP id b15so5925604iln.3
+        for <linux-efi@vger.kernel.org>; Thu, 19 Dec 2019 12:05:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=QtWy4/0bANwEOBCguslY/V6rlnrjgMzA5x9nUZ80g7E=;
-        b=fSgFdW+rC3Ei84vA+fxxdcGtnHOhdHd7Munr+1TcXh0oZsPxyZkjmXhcho55+hi78C
-         b57GahOGoU2qPWy/IEv+b/9gqho5WqCWXGcifzJQ3+ajfLY0Fux2K1eQ7t2FAJGTY1G/
-         vknAf0ROmYf8HtC6JuBEwR/hnw1htTiHPI5q44Q+wDrWufovJsJj5SZzsuh+req+jvO7
-         MbFdVLYKAfwK2iU1n0kvQkUjTHWEvANc7dMpmd/mYzfyqsbQVp3KO/lwlBRHu3aZHsSW
-         cGTR51u1546rQYOslhZJvqaJvH3Nqk5Yw+EdMd/gTIlE1YWZl3SBLD3Q97y+u3fXNa2U
-         3j8g==
+        bh=1dBWAUxAaj0iyeB33Wyu9GZhn/lVyf3MeksH3Ml/afg=;
+        b=DhsrlN7CEukhujI6e8oVqLBBRJx1Ob6JXX4REOPMI9+kYnFZNRjdSMefQyO04+RPOw
+         e7ii3syCb9rTRfGMsKQ9VF5drxdWkqmGT6b/d8ofGD9oPLz4Uxlh+9VYg7ghCheJfpqy
+         zXd1QjI65ip9czfUIs3JywouLZuZx5jqjiTUO7OXeLFdR/sPQHJwwg0Yt2Nfyu3YFXMe
+         qBB78wIJheqS19tCnaYWzWX1UJS/qyGDHmE4x1Jabn204uXOPD1UpZ45d6b34iOaeJPa
+         62YUUg7CR7VxgANxFKPH+J273V3UlaqWBzIJFUpSGrwiNxH4lLtm3L588VfWh6qYgLkP
+         LaVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=QtWy4/0bANwEOBCguslY/V6rlnrjgMzA5x9nUZ80g7E=;
-        b=PRsYe88s5r/CgKkpxA2LaqjAXnheGt58OqavJ8aqZqBOWAcSZIcOZpZvJ3hlTZCABw
-         iiVvr1r0Q8MByRIy3kjskoaxTTbYp3oh4rH2D6syk3ihyz9PjsPlmELJk5qUhcsxknyj
-         0QNwo27YRSAiKH5pfb1FCT1DY8/uufWY++48sXnKoW8lDnls8rL0JDR+FBWDBaA++RGe
-         3tT9A4BQyzDbIAkERMDZVzHmo8KT510+Gl4aljCmA9A0P7bH9gKSn+QG9m8mjxUkzg4H
-         IRvODbar1xCz7+4ixBzN1AIhul4LUm06aLGNkSRzOegD3CtZmtTDhOmYDjAvJAncvsU/
-         Z6kg==
-X-Gm-Message-State: APjAAAUIdkTRvjiI7/wVAP4n3GnUtmpt11G0cJRVPKz/pgbRAR9djiEQ
-        O72Jarx3U9XCdVaH8VLBsqhJ99EmspRsTF5DqVztJv7h
-X-Google-Smtp-Source: APXvYqwFiFv0TIk01BJBaEP0ITAwltbUwLp7yTk0fV8Ja7Jun9cf0049TzEatDon5Gv+eVyZ+XEkcvbMNWIjnO33z4s=
-X-Received: by 2002:a92:d609:: with SMTP id w9mr9221718ilm.46.1576785857195;
- Thu, 19 Dec 2019 12:04:17 -0800 (PST)
+        bh=1dBWAUxAaj0iyeB33Wyu9GZhn/lVyf3MeksH3Ml/afg=;
+        b=EcflXOKRmAEuUpLHgZwqnENIV960cFl2LqpWm5n89musxx4TusUkrVj/vgp4RiRsQV
+         1CJCn+RL4lGhyYbtdtcp0aIPHF1Erz6tGXToHyMI8U1nIXdSs66if/G14HDTxnZ1IN+n
+         mG3UBSDThOjeCDCGf/C/hg3EUNtophz0a7wVGBu5IGJmJDpcb+5jP28FJ5v+yl+Rn5n1
+         PpAnzZ9SQ//pHFz4xz7jfJ3XHCY95KvGWrx3w0avkcIhmsiY1Ij7Q2gQxajkjDkMritw
+         UxXuRBKQCet0xoUjq84lsnbxnXxrwx8SBAFpdVVPpmr1ZscAbXBX31X3+azNV8+HPC6S
+         v/DQ==
+X-Gm-Message-State: APjAAAWkXqEk9w4ss9ij0kufwnpo+vvlN4dorS2Ei8Yu22bHks9XnHyX
+        KLBr5ThqULzMiUDnD/2sp8js0Q8oDw3eoy3WyQOVQgl2
+X-Google-Smtp-Source: APXvYqybSM1QLN1UQ8Ok67Exczq3mKfSbwSlrH0Omb2sCd+ntcDUlXytYAXP6628uG1RIw403lRzW7NUh3E0PJVEL2o=
+X-Received: by 2002:a92:d642:: with SMTP id x2mr8711405ilp.169.1576785908006;
+ Thu, 19 Dec 2019 12:05:08 -0800 (PST)
 MIME-Version: 1.0
 References: <20191218170139.9468-1-ardb@kernel.org> <20191218170139.9468-22-ardb@kernel.org>
- <CALCETrWLMeSbmL_ff=AOmuswxWgvRu75cpNPz9SZgeNwex+ygg@mail.gmail.com> <CAKv+Gu-BNNmix9vcR6y1UQZSH5BDOcqeWj=2XM75OvxDwQ8DoQ@mail.gmail.com>
-In-Reply-To: <CAKv+Gu-BNNmix9vcR6y1UQZSH5BDOcqeWj=2XM75OvxDwQ8DoQ@mail.gmail.com>
+In-Reply-To: <20191218170139.9468-22-ardb@kernel.org>
 From:   Matthew Garrett <mjg59@google.com>
-Date:   Thu, 19 Dec 2019 12:04:06 -0800
-Message-ID: <CACdnJuuBpwiLMV7M8WYvkUf3cZP1tEsFz1Ot=qTk00KBsRC54Q@mail.gmail.com>
+Date:   Thu, 19 Dec 2019 12:04:56 -0800
+Message-ID: <CACdnJusxs_vAMvE_tOX12ZJiEc3__1NimT3aD3r-Oabvx62FtA@mail.gmail.com>
 Subject: Re: [PATCH v2 21/21] efi: Allow disabling PCI busmastering on bridges
  during boot
-To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Cc:     Andy Lutomirski <luto@kernel.org>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-efi <linux-efi@vger.kernel.org>,
         Hans de Goede <hdegoede@redhat.com>,
         Ingo Molnar <mingo@kernel.org>,
+        Andy Lutomirski <luto@kernel.org>,
         Thomas Gleixner <tglx@linutronix.de>,
         Arvind Sankar <nivedita@alum.mit.edu>
 Content-Type: text/plain; charset="UTF-8"
@@ -63,10 +61,15 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, Dec 19, 2019 at 5:17 AM Ard Biesheuvel
-<ard.biesheuvel@linaro.org> wrote:
+On Wed, Dec 18, 2019 at 9:03 AM Ard Biesheuvel <ardb@kernel.org> wrote:
+> +       status = efi_call_early(create_event, EVT_SIGNAL_EXIT_BOOT_SERVICES,
+> +                               TPL_CALLBACK, handle_exit_boot_services_event,
+> +                               NULL, &exit_boot_services_event);
+> +       if (status != EFI_SUCCESS) {
+> +               pr_efi_err("Failed to register for EBS() event\n");
+> +               goto free_handle;
+> +       }
 
-> Fair enough. I'll change this to [no_]disable_early_pci_dma (assuming
-> Matthew doesn't object to the exact shade of this bikeshed)
-
-I'm fine with that.
+OVMF's SEV implementation appears to tear down AMD's IOMMU mappings at
+EVT_SIGNAL_EXIT_BOOT_SERVICES. How are we ensuring that this happens
+first?
