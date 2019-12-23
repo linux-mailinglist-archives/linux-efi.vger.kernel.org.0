@@ -2,99 +2,81 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2CF6E129899
-	for <lists+linux-efi@lfdr.de>; Mon, 23 Dec 2019 17:12:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 20527129AEB
+	for <lists+linux-efi@lfdr.de>; Mon, 23 Dec 2019 21:57:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726749AbfLWQM1 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 23 Dec 2019 11:12:27 -0500
-Received: from mail-qv1-f65.google.com ([209.85.219.65]:45773 "EHLO
-        mail-qv1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726744AbfLWQM1 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 23 Dec 2019 11:12:27 -0500
-Received: by mail-qv1-f65.google.com with SMTP id l14so6504393qvu.12
-        for <linux-efi@vger.kernel.org>; Mon, 23 Dec 2019 08:12:27 -0800 (PST)
+        id S1726817AbfLWU5V (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 23 Dec 2019 15:57:21 -0500
+Received: from mail-io1-f68.google.com ([209.85.166.68]:40554 "EHLO
+        mail-io1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726805AbfLWU5V (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 23 Dec 2019 15:57:21 -0500
+Received: by mail-io1-f68.google.com with SMTP id x1so17343498iop.7
+        for <linux-efi@vger.kernel.org>; Mon, 23 Dec 2019 12:57:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:from:date:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=tk71JQngaMAIzNPkkgd8t13g13HLGutomGGTzi0KCmU=;
-        b=fTifpCmR/0kiTE0DX0JcrhlxcjX7GkJaT5UOwXNYvut0G+6HBUhMlmVEKZiLbAVB/F
-         DvOfvVH6uQ+lgN2MhHHRHqMgwTxFAHIEafB6dFw0aXIU2a2DOQMgfAKwMGCkRX07GxDJ
-         TS4m/h5xOFM1i5kmORJ4Gn1NrBbT3m7QFMrUN9Smfte84mU/6ly85mfYcBuvClCjkKPv
-         zdxEa/96OX9vn/wDikhSKOg01rGxlCPo1SK+5lrbTv3HKG/MOtEhzvaIjkG3N1HOLTZ+
-         LRi3ZW40xDbGOuB/IFjEwTLYpMpy09oSr2MrEEHmRmm8VdKLkOb4LN88u9cWYoRdlP/t
-         Cjsg==
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=LiMlIYDZgVwerUaTZ6obhkMnj0f8HmgcG1JFPzTHF9c=;
+        b=HttetAeD/bPa++sR2aYSy7ret5VLsSn8HCubPt+49oisC6gx7J0+HzQWOVIqheOI3E
+         rCWOtnfOnaNCMQdimdQJK4HP0yiyEpIjq6UN8WU1EmeU/u9eNJNgR90gmFOtbGezhRLw
+         fsaHuc2fdi7UCF7bWccg+sBRgj/IMEoOW554cn8qCtGieCn/M/WCIxqSIrGMctyzhqht
+         iga0b+D5UI1xTV1G3+X+NnqV0GNp2mvMdjwM2M4eOr6fEfID+i+gLejEpJ/xQuVuKWCS
+         C0wGD8DnLD4/fHRV0v3COAO/mNzpVHSd0lZIst2ufPOImKAqY8LrkyEk7eQkVwhKg008
+         VXtA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:from:date:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to:user-agent;
-        bh=tk71JQngaMAIzNPkkgd8t13g13HLGutomGGTzi0KCmU=;
-        b=qsBh9AmXwHGrRmKidmiRipYaye7cxJNQvasSAl9AUntTgABHI7QR698zavUaLqC0Fx
-         zMAfEKwiRi5aggxpjn3KdTNdkgxooWh+eW4lRF16dl5oUPBn2SD8ADB+ukXF9ZHrZ2g4
-         Ca5uAu6GJ+i+0uN/T4aVNdcs00DAwNOQSDNr4RsE9GG17HbUTatl7f0cPy75cQs8OFDT
-         dj/QxRDPHglv23RETUnewiS5vwYg3Gr8yzD6b2W30uAm5LyWcYLnhbrDqL+SujB1Hvyy
-         aNclFXiTcVvGAc2lWeDGmrDbCJmxVyvhRQbeOq9lGvqdztaohJNq2b486KEILUrAny18
-         QXrg==
-X-Gm-Message-State: APjAAAXgcW4qQgYokBiVVEw/cRJerW0W7TZALxpWgUeMGwHYqWu9GQqo
-        onjxdyo/0PkKOaZlb1nEMPM=
-X-Google-Smtp-Source: APXvYqzoRSp64k3I7G4OoMaGh6YgsieIyKC9J7Dp/4atnlJk4Hm2q+ycKFNTktrM0i57jqOeOKr5kQ==
-X-Received: by 2002:a05:6214:bc6:: with SMTP id ff6mr24116765qvb.133.1577117546254;
-        Mon, 23 Dec 2019 08:12:26 -0800 (PST)
-Received: from rani.riverdale.lan ([2001:470:1f07:5f3::b55f])
-        by smtp.gmail.com with ESMTPSA id 2sm5901419qkv.98.2019.12.23.08.12.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Dec 2019 08:12:26 -0800 (PST)
-From:   Arvind Sankar <nivedita@alum.mit.edu>
-X-Google-Original-From: Arvind Sankar <arvind@rani.riverdale.lan>
-Date:   Mon, 23 Dec 2019 11:12:24 -0500
-To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Cc:     Arvind Sankar <nivedita@alum.mit.edu>,
-        Matthew Garrett <mjg59@google.com>,
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=LiMlIYDZgVwerUaTZ6obhkMnj0f8HmgcG1JFPzTHF9c=;
+        b=kPxSSNbr9TDjOf7koyzHBSNSNiQZqmwxb2Cuu7F5Le/t9QgnkU124rtgF5vi1+fWIE
+         1sjPm+O7qwTaYtGHn06eQncb5Z+wwxxLVTFRiaD1NP4xsN2tpPqujvjWVOnM1VKfOrV7
+         P+4Fx7rQlXWqg/u4w12BMShaCGV148J8aPTPOVkgmtfL2ee1J8kMgem/tsL2Z3m6Oaso
+         lL9qAy4gmlDzqR/NaG8dZj8GHSG4k0Sj76GMAUyydJcw979g204b3ZTtSnKMtEtzYT7n
+         iqBmTre3Gd4D0O9EEpE1+cJqUfvAFHk+87YAVO7s1aj6fL0a2T5GM37xIVnPBcbYjeCh
+         Xfkg==
+X-Gm-Message-State: APjAAAUXGdqB4F4MgOhiHbKgHnx0c/ztV1XUodKmBeXi3Gkhb7dxdIIp
+        g8370InREhnqzbc30MAAIFpYsjopFJgKYh9fhHITeA==
+X-Google-Smtp-Source: APXvYqzu9TOeaCMm5KWoTbrrwoGEebKS9W2Za/yEiix2R3am1eB5Cqo0kBZaSA11WVf+SFsEKV6TYT/Yev1R8Z4OM9M=
+X-Received: by 2002:a02:40e:: with SMTP id 14mr24641133jab.102.1577134640172;
+ Mon, 23 Dec 2019 12:57:20 -0800 (PST)
+MIME-Version: 1.0
+References: <20191218170139.9468-1-ardb@kernel.org> <20191218170139.9468-22-ardb@kernel.org>
+ <CACdnJusxs_vAMvE_tOX12ZJiEc3__1NimT3aD3r-Oabvx62FtA@mail.gmail.com>
+ <CAKv+Gu9-pcUGmpMVrYd+q+DJNU_737fpqwm5O2-yJJbS5KuGeg@mail.gmail.com>
+ <CACdnJuucz5CC=LVA5589t0SByH6NHfxbjqm1ONv1nArnUEaHoA@mail.gmail.com>
+ <CAKv+Gu_ofVxDKBoe8cRFCRfwHtxN1UNYtYjb0AggXOSTOegtPA@mail.gmail.com>
+ <CACdnJutegX4Yo2=VY+MgUt_oqKSetvDrO2dRdB++=sf2gAisHQ@mail.gmail.com>
+ <20191221225426.GA6970@rani.riverdale.lan> <CAKv+Gu-PmOo6mvaBELjxj=9hbLynidt4Yf_qyr6m9db=6SS7vw@mail.gmail.com>
+ <20191223154648.GA10522@rani.riverdale.lan>
+In-Reply-To: <20191223154648.GA10522@rani.riverdale.lan>
+From:   Matthew Garrett <mjg59@google.com>
+Date:   Mon, 23 Dec 2019 12:57:09 -0800
+Message-ID: <CACdnJuuzNPBktKxk9wFMKJCay4hd+uVBRf4YXN47SxOk2Br63A@mail.gmail.com>
+Subject: Re: [PATCH v2 21/21] efi: Allow disabling PCI busmastering on bridges
+ during boot
+To:     Arvind Sankar <nivedita@alum.mit.edu>
+Cc:     Ard Biesheuvel <ard.biesheuvel@linaro.org>,
         Ard Biesheuvel <ardb@kernel.org>,
         linux-efi <linux-efi@vger.kernel.org>,
         Hans de Goede <hdegoede@redhat.com>,
         Ingo Molnar <mingo@kernel.org>,
         Andy Lutomirski <luto@kernel.org>,
         Thomas Gleixner <tglx@linutronix.de>
-Subject: Re: [PATCH v2 21/21] efi: Allow disabling PCI busmastering on
- bridges during boot
-Message-ID: <20191223161224.GA18630@rani.riverdale.lan>
-References: <20191218170139.9468-22-ardb@kernel.org>
- <CACdnJusxs_vAMvE_tOX12ZJiEc3__1NimT3aD3r-Oabvx62FtA@mail.gmail.com>
- <CAKv+Gu9-pcUGmpMVrYd+q+DJNU_737fpqwm5O2-yJJbS5KuGeg@mail.gmail.com>
- <CACdnJuucz5CC=LVA5589t0SByH6NHfxbjqm1ONv1nArnUEaHoA@mail.gmail.com>
- <CAKv+Gu_ofVxDKBoe8cRFCRfwHtxN1UNYtYjb0AggXOSTOegtPA@mail.gmail.com>
- <CACdnJutegX4Yo2=VY+MgUt_oqKSetvDrO2dRdB++=sf2gAisHQ@mail.gmail.com>
- <20191221225426.GA6970@rani.riverdale.lan>
- <CAKv+Gu-PmOo6mvaBELjxj=9hbLynidt4Yf_qyr6m9db=6SS7vw@mail.gmail.com>
- <20191223154648.GA10522@rani.riverdale.lan>
- <CAKv+Gu9kFVFdkaOGP2EYACa7eo4pTTKFif9ZgQ+uKnoKcsrmgQ@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CAKv+Gu9kFVFdkaOGP2EYACa7eo4pTTKFif9ZgQ+uKnoKcsrmgQ@mail.gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Mon, Dec 23, 2019 at 04:58:26PM +0100, Ard Biesheuvel wrote:
-> On Mon, 23 Dec 2019 at 16:46, Arvind Sankar <nivedita@alum.mit.edu> wrote:
-> >
-> > On Mon, Dec 23, 2019 at 03:02:40PM +0100, Ard Biesheuvel wrote:
-> > >
-> > > Practically, on PCIe systems, PCI/PCI bridges are the only thing we
-> > > need to care about, since that is how PCIe root ports are modelled.
-> >
-> > If I'm interpreting my lspci output correctly, I have a PCI/ISA bridge
-> > on bus 0 that's not behind a PCI/PCI bridge. Device 1f.0 below is the
-> > PCI/ISA bridge.
-> 
-> Yeah, this is the LPC controller, right? What devices are actually on
-> that bus that are not closely tied to the chipset?
-> 
+On Mon, Dec 23, 2019 at 7:46 AM Arvind Sankar <nivedita@alum.mit.edu> wrote:
+> Also, what about for eg, the USB or SATA controllers? I know that
+> someone had said earlier that disabling BM on endpoints is pointless as
+> malicious endpoints could just re-enable it, but is it not possible for
+> malicious USB devices/SATA devices to try to use DMA through those
+> controllers? ie if we trust the controllers since they're on-board, but
+> not necessarily the devices behind them, wouldn't it still be worth it
+> to disable BM on the controllers too?
 
-AFAICT it's my BMC's IPMI interface and some sort of watchdog I think --
-don't have drivers but there are three other ACPI PNP* nodes under there
-as well.
+The concern is DMA initiated by a hostile device. SATA and USB don't
+permit the devices themselves to initiate DMA, whereas PCI does.
