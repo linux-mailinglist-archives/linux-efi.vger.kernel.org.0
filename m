@@ -2,35 +2,35 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4BE4712A2CB
-	for <lists+linux-efi@lfdr.de>; Tue, 24 Dec 2019 16:11:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 981AE12A2C2
+	for <lists+linux-efi@lfdr.de>; Tue, 24 Dec 2019 16:11:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727359AbfLXPLj (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 24 Dec 2019 10:11:39 -0500
-Received: from mail.kernel.org ([198.145.29.99]:51304 "EHLO mail.kernel.org"
+        id S1727331AbfLXPLY (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 24 Dec 2019 10:11:24 -0500
+Received: from mail.kernel.org ([198.145.29.99]:51334 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727274AbfLXPLT (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Tue, 24 Dec 2019 10:11:19 -0500
+        id S1727297AbfLXPLV (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Tue, 24 Dec 2019 10:11:21 -0500
 Received: from localhost.localdomain (aaubervilliers-681-1-7-6.w90-88.abo.wanadoo.fr [90.88.129.6])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 7E9EE206D3;
-        Tue, 24 Dec 2019 15:11:17 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 0F8F920706;
+        Tue, 24 Dec 2019 15:11:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1577200278;
-        bh=vp4tPUJrPl7NR6sJEfPN8YgDSPqhs4AhjEo0AZjIFiQ=;
+        s=default; t=1577200280;
+        bh=lU3wbNRnxJSjaN1Fj0CStvzmViQE35LF9RQXbonPEj0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BB+CLt8eTfHwejokBwGemcuSggP7MUmPecC/591G0Zwu8TuHU7dRgeQ2mX/H1MXf3
-         MOvp2qzR2tkmYP+ZvK6HR7p21X97GBO25hZeWA2kYu7JquUPERBbRpJEqOYQv+MqYw
-         N1iVSWjPXwTl6X/O6Un55vFIy8QFgND5qlgTX8a0=
+        b=xq3gx+uqRCmMw5+yPB9TykVfqAuHZcdHsQogmkCG0YVl3g9p2VNkPJ+utJrDD8OmX
+         sIv1f1VdOxRFL/Z7W7Cksi6pBigIeJCzPybcJE/Qt3xAtcU2xYu7LYjG5ioLgmf7W9
+         +d3vwVkeBdxpFhhHjo8n0XlQp6CMY/DB09I4tbwU=
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-efi@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
         Thomas Gleixner <tglx@linutronix.de>
 Cc:     Ard Biesheuvel <ardb@kernel.org>, linux-kernel@vger.kernel.org,
         Arvind Sankar <nivedita@alum.mit.edu>
-Subject: [PATCH 21/25] efi/libstub: drop protocol argument from efi_call_proto() macro
-Date:   Tue, 24 Dec 2019 16:10:21 +0100
-Message-Id: <20191224151025.32482-22-ardb@kernel.org>
+Subject: [PATCH 22/25] efi/libstub: drop 'table' argument from efi_table_attr() macro
+Date:   Tue, 24 Dec 2019 16:10:22 +0100
+Message-Id: <20191224151025.32482-23-ardb@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20191224151025.32482-1-ardb@kernel.org>
 References: <20191224151025.32482-1-ardb@kernel.org>
@@ -41,208 +41,188 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-After refactoring the mixed mode support code, efi_call_proto()
-no longer uses its protocol argument in any of its implementation,
-so let's remove it altogether.
+None of the definitions of the efi_table_attr() still refer to
+their 'table' argument so let's get rid of it entirely.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
  arch/arm/include/asm/efi.h                    |  3 +--
  arch/arm64/include/asm/efi.h                  |  3 +--
- arch/x86/boot/compressed/eboot.c              | 23 ++++++++-----------
- arch/x86/include/asm/efi.h                    |  6 ++---
- .../firmware/efi/libstub/efi-stub-helper.c    |  6 ++---
- drivers/firmware/efi/libstub/random.c         |  8 +++----
- drivers/firmware/efi/libstub/tpm.c            | 11 ++++-----
- 7 files changed, 25 insertions(+), 35 deletions(-)
+ arch/x86/boot/compressed/eboot.c              |  8 +++---
+ arch/x86/include/asm/efi.h                    | 25 +++++++------------
+ .../firmware/efi/libstub/efi-stub-helper.c    | 11 +++-----
+ drivers/firmware/efi/libstub/gop.c            |  9 +++----
+ 6 files changed, 22 insertions(+), 37 deletions(-)
 
 diff --git a/arch/arm/include/asm/efi.h b/arch/arm/include/asm/efi.h
-index 58e5acc424a0..bdc5288cc643 100644
+index bdc5288cc643..bc720024a260 100644
 --- a/arch/arm/include/asm/efi.h
 +++ b/arch/arm/include/asm/efi.h
-@@ -57,8 +57,7 @@ void efi_virtmap_unload(void);
- #define efi_table_attr(table, attr, instance)				\
- 	instance->attr
+@@ -54,8 +54,7 @@ void efi_virtmap_unload(void);
+ #define efi_call_runtime(f, ...)	efi_system_table()->runtime->f(__VA_ARGS__)
+ #define efi_is_native()			(true)
  
--#define efi_call_proto(protocol, f, instance, ...)			\
--	instance->f(instance, ##__VA_ARGS__)
-+#define efi_call_proto(inst, func, ...) inst->func(inst, ##__VA_ARGS__)
+-#define efi_table_attr(table, attr, instance)				\
+-	instance->attr
++#define efi_table_attr(inst, attr)	(inst->attr)
  
- struct screen_info *alloc_screen_info(void);
- void free_screen_info(struct screen_info *si);
+ #define efi_call_proto(inst, func, ...) inst->func(inst, ##__VA_ARGS__)
+ 
 diff --git a/arch/arm64/include/asm/efi.h b/arch/arm64/include/asm/efi.h
-index d73693177f31..4bc1e89671ab 100644
+index 4bc1e89671ab..6f041ae446d2 100644
 --- a/arch/arm64/include/asm/efi.h
 +++ b/arch/arm64/include/asm/efi.h
-@@ -100,8 +100,7 @@ static inline unsigned long efi_get_max_initrd_addr(unsigned long dram_base,
- #define efi_table_attr(table, attr, instance)				\
- 	instance->attr
+@@ -97,8 +97,7 @@ static inline unsigned long efi_get_max_initrd_addr(unsigned long dram_base,
+ #define efi_call_runtime(f, ...)	efi_system_table()->runtime->f(__VA_ARGS__)
+ #define efi_is_native()			(true)
  
--#define efi_call_proto(protocol, f, instance, ...)			\
--	instance->f(instance, ##__VA_ARGS__)
-+#define efi_call_proto(inst, func, ...) inst->func(inst, ##__VA_ARGS__)
+-#define efi_table_attr(table, attr, instance)				\
+-	instance->attr
++#define efi_table_attr(inst, attr)	(inst->attr)
  
- #define alloc_screen_info(x...)		&screen_info
+ #define efi_call_proto(inst, func, ...) inst->func(inst, ##__VA_ARGS__)
  
 diff --git a/arch/x86/boot/compressed/eboot.c b/arch/x86/boot/compressed/eboot.c
-index ec92c4decc86..751fd5fc3367 100644
+index 751fd5fc3367..cccd9e16b329 100644
 --- a/arch/x86/boot/compressed/eboot.c
 +++ b/arch/x86/boot/compressed/eboot.c
-@@ -69,27 +69,24 @@ preserve_pci_rom_image(efi_pci_io_protocol_t *pci, struct pci_setup_rom **__rom)
- 	rom->pcilen	= pci->romsize;
- 	*__rom = rom;
+@@ -47,8 +47,8 @@ preserve_pci_rom_image(efi_pci_io_protocol_t *pci, struct pci_setup_rom **__rom)
+ 	 * large romsize. The UEFI spec limits the size of option ROMs to 16
+ 	 * MiB so we reject any ROMs over 16 MiB in size to catch this.
+ 	 */
+-	romimage = efi_table_attr(efi_pci_io_protocol, romimage, pci);
+-	romsize = efi_table_attr(efi_pci_io_protocol, romsize, pci);
++	romimage = efi_table_attr(pci, romimage);
++	romsize = efi_table_attr(pci, romsize);
+ 	if (!romimage || !romsize || romsize > SZ_16M)
+ 		return EFI_INVALID_PARAMETER;
  
--	status = efi_call_proto(efi_pci_io_protocol, pci.read, pci,
--				EfiPciIoWidthUint16, PCI_VENDOR_ID, 1,
--				&rom->vendor);
-+	status = efi_call_proto(pci, pci.read, EfiPciIoWidthUint16,
-+				PCI_VENDOR_ID, 1, &rom->vendor);
- 
- 	if (status != EFI_SUCCESS) {
- 		efi_printk("Failed to read rom->vendor\n");
- 		goto free_struct;
- 	}
- 
--	status = efi_call_proto(efi_pci_io_protocol, pci.read, pci,
--				EfiPciIoWidthUint16, PCI_DEVICE_ID, 1,
--				&rom->devid);
-+	status = efi_call_proto(pci, pci.read, EfiPciIoWidthUint16,
-+				PCI_DEVICE_ID, 1, &rom->devid);
- 
- 	if (status != EFI_SUCCESS) {
- 		efi_printk("Failed to read rom->devid\n");
- 		goto free_struct;
- 	}
- 
--	status = efi_call_proto(efi_pci_io_protocol, get_location, pci,
--				&rom->segment, &rom->bus, &rom->device,
--				&rom->function);
-+	status = efi_call_proto(pci, get_location, &rom->segment, &rom->bus,
-+				&rom->device, &rom->function);
- 
+@@ -183,7 +183,7 @@ static void retrieve_apple_device_properties(struct boot_params *boot_params)
  	if (status != EFI_SUCCESS)
- 		goto free_struct;
-@@ -191,7 +188,7 @@ static void retrieve_apple_device_properties(struct boot_params *boot_params)
+ 		return;
+ 
+-	if (efi_table_attr(apple_properties_protocol, version, p) != 0x10000) {
++	if (efi_table_attr(p, version) != 0x10000) {
+ 		efi_printk("Unsupported properties proto version\n");
  		return;
  	}
+@@ -226,7 +226,7 @@ static const efi_char16_t apple[] = L"Apple";
+ static void setup_quirks(struct boot_params *boot_params)
+ {
+ 	efi_char16_t *fw_vendor = (efi_char16_t *)(unsigned long)
+-		efi_table_attr(efi_system_table, fw_vendor, sys_table);
++		efi_table_attr(efi_system_table(), fw_vendor);
  
--	efi_call_proto(apple_properties_protocol, get_all, p, NULL, &size);
-+	efi_call_proto(p, get_all, NULL, &size);
- 	if (!size)
- 		return;
- 
-@@ -204,8 +201,7 @@ static void retrieve_apple_device_properties(struct boot_params *boot_params)
- 			return;
- 		}
- 
--		status = efi_call_proto(apple_properties_protocol, get_all, p,
--					new->data, &size);
-+		status = efi_call_proto(p, get_all, new->data, &size);
- 
- 		if (status == EFI_BUFFER_TOO_SMALL)
- 			efi_call_early(free_pool, new);
-@@ -280,8 +276,7 @@ setup_uga(struct screen_info *si, efi_guid_t *uga_proto, unsigned long size)
- 		pciio = NULL;
- 		efi_call_early(handle_protocol, handle, &pciio_proto, &pciio);
- 
--		status = efi_call_proto(efi_uga_draw_protocol, get_mode, uga,
--					&w, &h, &depth, &refresh);
-+		status = efi_call_proto(uga, get_mode, &w, &h, &depth, &refresh);
- 		if (status == EFI_SUCCESS && (!first_uga || pciio)) {
- 			width = w;
- 			height = h;
+ 	if (!memcmp(fw_vendor, apple, sizeof(apple))) {
+ 		if (IS_ENABLED(CONFIG_APPLE_PROPERTIES))
 diff --git a/arch/x86/include/asm/efi.h b/arch/x86/include/asm/efi.h
-index 1817f350618e..b7cd14e3a634 100644
+index b7cd14e3a634..39814a0a92f7 100644
 --- a/arch/x86/include/asm/efi.h
 +++ b/arch/x86/include/asm/efi.h
-@@ -227,10 +227,10 @@ static inline bool efi_is_native(void)
- 	__ret;								\
- })
+@@ -216,16 +216,11 @@ static inline bool efi_is_native(void)
+ 		__builtin_types_compatible_p(u32, __typeof__(attr)),	\
+ 			(unsigned long)(attr), (attr))
  
--#define efi_call_proto(protocol, f, instance, ...)			\
-+#define efi_call_proto(inst, func, ...)					\
+-#define efi_table_attr(table, attr, instance) ({			\
+-	__typeof__(instance->attr) __ret;				\
+-	if (efi_is_native()) {						\
+-		__ret = instance->attr;					\
+-	} else {							\
+-		__ret = (__typeof__(__ret))				\
+-			efi_mixed_mode_cast(instance->mixed_mode.attr);	\
+-	}								\
+-	__ret;								\
+-})
++#define efi_table_attr(inst, attr)					\
++	(efi_is_native()						\
++		? inst->attr						\
++		: (__typeof__(inst->attr))				\
++			efi_mixed_mode_cast(inst->mixed_mode.attr))
+ 
+ #define efi_call_proto(inst, func, ...)					\
  	(efi_is_native()						\
--		? instance->f(instance, ##__VA_ARGS__)			\
--		: efi64_thunk(instance->mixed_mode.f, instance,	##__VA_ARGS__))
-+		? inst->func(inst, ##__VA_ARGS__)			\
-+		: efi64_thunk(inst->mixed_mode.func, inst, ##__VA_ARGS__))
- 
+@@ -235,16 +230,14 @@ static inline bool efi_is_native(void)
  #define efi_call_early(f, ...)						\
  	(efi_is_native()						\
+ 		? efi_system_table()->boottime->f(__VA_ARGS__)		\
+-		: efi64_thunk(efi_table_attr(efi_boot_services,		\
+-			boottime, efi_system_table())->mixed_mode.f,	\
+-			__VA_ARGS__))
++		: efi64_thunk(efi_table_attr(efi_system_table(),	\
++				boottime)->mixed_mode.f, __VA_ARGS__))
+ 
+ #define efi_call_runtime(f, ...)					\
+ 	(efi_is_native()						\
+ 		? efi_system_table()->runtime->f(__VA_ARGS__)		\
+-		: efi64_thunk(efi_table_attr(efi_runtime_services,	\
+-			runtime, efi_system_table())->mixed_mode.f,	\
+-			__VA_ARGS__))
++		: efi64_thunk(efi_table_attr(efi_system_table(),	\
++				runtime)->mixed_mode.f, __VA_ARGS__))
+ 
+ extern bool efi_reboot_required(void);
+ extern bool efi_is_table_address(unsigned long phys_addr);
 diff --git a/drivers/firmware/efi/libstub/efi-stub-helper.c b/drivers/firmware/efi/libstub/efi-stub-helper.c
-index b715ac6a0c94..48eab7b9d066 100644
+index 48eab7b9d066..8754ec04788b 100644
 --- a/drivers/firmware/efi/libstub/efi-stub-helper.c
 +++ b/drivers/firmware/efi/libstub/efi-stub-helper.c
-@@ -953,9 +953,7 @@ void *get_efi_config_table(efi_guid_t guid)
+@@ -933,17 +933,15 @@ efi_status_t efi_exit_boot_services(void *handle,
+ 
+ void *get_efi_config_table(efi_guid_t guid)
+ {
+-	unsigned long tables = efi_table_attr(efi_system_table, tables,
+-					      efi_system_table());
+-	int nr_tables = efi_table_attr(efi_system_table, nr_tables,
+-				       efi_system_table());
++	unsigned long tables = efi_table_attr(efi_system_table(), tables);
++	int nr_tables = efi_table_attr(efi_system_table(), nr_tables);
+ 	int i;
+ 
+ 	for (i = 0; i < nr_tables; i++) {
+ 		efi_config_table_t *t = (void *)tables;
+ 
+ 		if (efi_guidcmp(t->guid, guid) == 0)
+-			return efi_table_attr(efi_config_table, table, t);
++			return efi_table_attr(t, table);
+ 
+ 		tables += efi_is_native() ? sizeof(efi_config_table_t)
+ 					  : sizeof(efi_config_table_32_t);
+@@ -953,7 +951,6 @@ void *get_efi_config_table(efi_guid_t guid)
  
  void efi_char16_printk(efi_char16_t *str)
  {
--	efi_call_proto(efi_simple_text_output_protocol,
--		       output_string,
--		       efi_table_attr(efi_system_table, con_out,
-+	efi_call_proto(efi_table_attr(efi_system_table, con_out,
- 				      efi_system_table()),
--		       str);
-+		       output_string, str);
+-	efi_call_proto(efi_table_attr(efi_system_table, con_out,
+-				      efi_system_table()),
++	efi_call_proto(efi_table_attr(efi_system_table(), con_out),
+ 		       output_string, str);
  }
-diff --git a/drivers/firmware/efi/libstub/random.c b/drivers/firmware/efi/libstub/random.c
-index 9b30d953d13b..fbd5b5724b19 100644
---- a/drivers/firmware/efi/libstub/random.c
-+++ b/drivers/firmware/efi/libstub/random.c
-@@ -37,7 +37,7 @@ efi_status_t efi_get_random_bytes(unsigned long size, u8 *out)
- 	if (status != EFI_SUCCESS)
- 		return status;
- 
--	return efi_call_proto(efi_rng_protocol, get_rng, rng, NULL, size, out);
-+	return efi_call_proto(rng, get_rng, NULL, size, out);
+diff --git a/drivers/firmware/efi/libstub/gop.c b/drivers/firmware/efi/libstub/gop.c
+index c3afe8d4a688..8f746282c219 100644
+--- a/drivers/firmware/efi/libstub/gop.c
++++ b/drivers/firmware/efi/libstub/gop.c
+@@ -85,9 +85,6 @@ setup_pixel_info(struct screen_info *si, u32 pixels_per_scan_line,
+ 	}
  }
  
- /*
-@@ -173,7 +173,7 @@ efi_status_t efi_random_get_seed(void)
- 	if (status != EFI_SUCCESS)
- 		return status;
+-#define efi_gop_attr(table, attr, instance) \
+-	(efi_table_attr(efi_graphics_output_protocol##table, attr, instance))
+-
+ static efi_status_t setup_gop(struct screen_info *si, efi_guid_t *proto,
+ 			      unsigned long size, void **handles)
+ {
+@@ -123,9 +120,9 @@ static efi_status_t setup_gop(struct screen_info *si, efi_guid_t *proto,
+ 		if (status == EFI_SUCCESS)
+ 			conout_found = true;
  
--	status = efi_call_proto(efi_rng_protocol, get_rng, rng, &rng_algo_raw,
-+	status = efi_call_proto(rng, get_rng, &rng_algo_raw,
- 				 EFI_RANDOM_SEED_SIZE, seed->bits);
+-		mode = (void *)(unsigned long)efi_gop_attr(, mode, gop);
+-		info = (void *)(unsigned long)efi_gop_attr(_mode, info, mode);
+-		current_fb_base = efi_gop_attr(_mode, frame_buffer_base, mode);
++		mode = efi_table_attr(gop, mode);
++		info = efi_table_attr(mode, info);
++		current_fb_base = efi_table_attr(mode, frame_buffer_base);
  
- 	if (status == EFI_UNSUPPORTED)
-@@ -181,8 +181,8 @@ efi_status_t efi_random_get_seed(void)
- 		 * Use whatever algorithm we have available if the raw algorithm
- 		 * is not implemented.
- 		 */
--		status = efi_call_proto(efi_rng_protocol, get_rng, rng, NULL,
--					 EFI_RANDOM_SEED_SIZE, seed->bits);
-+		status = efi_call_proto(rng, get_rng, NULL,
-+					EFI_RANDOM_SEED_SIZE, seed->bits);
- 
- 	if (status != EFI_SUCCESS)
- 		goto err_freepool;
-diff --git a/drivers/firmware/efi/libstub/tpm.c b/drivers/firmware/efi/libstub/tpm.c
-index f6fa1c9de77c..4a0017a181bf 100644
---- a/drivers/firmware/efi/libstub/tpm.c
-+++ b/drivers/firmware/efi/libstub/tpm.c
-@@ -77,15 +77,14 @@ void efi_retrieve_tpm2_eventlog(void)
- 	if (status != EFI_SUCCESS)
- 		return;
- 
--	status = efi_call_proto(efi_tcg2_protocol, get_event_log,
--				tcg2_protocol, version, &log_location,
--				&log_last_entry, &truncated);
-+	status = efi_call_proto(tcg2_protocol, get_event_log, version,
-+				&log_location, &log_last_entry, &truncated);
- 
- 	if (status != EFI_SUCCESS || !log_location) {
- 		version = EFI_TCG2_EVENT_LOG_FORMAT_TCG_1_2;
--		status = efi_call_proto(efi_tcg2_protocol, get_event_log,
--					tcg2_protocol, version, &log_location,
--					&log_last_entry, &truncated);
-+		status = efi_call_proto(tcg2_protocol, get_event_log, version,
-+					&log_location, &log_last_entry,
-+					&truncated);
- 		if (status != EFI_SUCCESS || !log_location)
- 			return;
- 
+ 		if ((!first_gop || conout_found) &&
+ 		    info->pixel_format != PIXEL_BLT_ONLY) {
 -- 
 2.20.1
 
