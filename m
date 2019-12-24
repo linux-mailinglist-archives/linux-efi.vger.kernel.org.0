@@ -2,35 +2,35 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D4A1D12A2DC
-	for <lists+linux-efi@lfdr.de>; Tue, 24 Dec 2019 16:12:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E79212A2D1
+	for <lists+linux-efi@lfdr.de>; Tue, 24 Dec 2019 16:11:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727180AbfLXPLK (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 24 Dec 2019 10:11:10 -0500
-Received: from mail.kernel.org ([198.145.29.99]:51106 "EHLO mail.kernel.org"
+        id S1727188AbfLXPLL (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 24 Dec 2019 10:11:11 -0500
+Received: from mail.kernel.org ([198.145.29.99]:51132 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727156AbfLXPLI (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Tue, 24 Dec 2019 10:11:08 -0500
+        id S1727171AbfLXPLK (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Tue, 24 Dec 2019 10:11:10 -0500
 Received: from localhost.localdomain (aaubervilliers-681-1-7-6.w90-88.abo.wanadoo.fr [90.88.129.6])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 82ADE2071E;
-        Tue, 24 Dec 2019 15:11:06 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 1448E20882;
+        Tue, 24 Dec 2019 15:11:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1577200267;
-        bh=OZpCklLPne7g1i5x7e1Z2ZKguigGZtO5Aw8mBZEF+2c=;
+        s=default; t=1577200269;
+        bh=SEVYh40YlpQ9Qe6vz2B4Qc02/tfzHXq+AJUuwSqS7YI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=sTBlgmT7jaKABPeLJUUeVtb3/rUruPHBvSvnB1vg2ou9gV/vemhxWM95q3kyIuYpQ
-         igjeDraxk/3FZryhmBJrRfLvuGYwwWIRjFyCVfS4JbgHbvqx7iqvuQgiWhmz3Bqed8
-         Vhr3QEJkuEC1l2YylX2eVZufNkn3CUDdA+ZDJmEM=
+        b=DWN2yc3SKx7rOCDWdIp/7TB6mnxm4oMwBxdCh/ztEMGYd6vE+PpXDqUzEB7nPMVUG
+         iSa9W+JZORvrPuGqspm2+tUNCHTC1nFypWZBMCJz6ZlQjim7OFqXeC1nj9ZS51wCJw
+         QnTtG0O1fLcdtTVGFnKAb2Bbfz0YKid2z8/MbeR0=
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-efi@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
         Thomas Gleixner <tglx@linutronix.de>
 Cc:     Ard Biesheuvel <ardb@kernel.org>, linux-kernel@vger.kernel.org,
         Arvind Sankar <nivedita@alum.mit.edu>
-Subject: [PATCH 14/25] efi/libstub: avoid protocol wrapper for file I/O routines
-Date:   Tue, 24 Dec 2019 16:10:14 +0100
-Message-Id: <20191224151025.32482-15-ardb@kernel.org>
+Subject: [PATCH 15/25] efi/libstub: get rid of 'sys_table_arg' macro parameter
+Date:   Tue, 24 Dec 2019 16:10:15 +0100
+Message-Id: <20191224151025.32482-16-ardb@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20191224151025.32482-1-ardb@kernel.org>
 References: <20191224151025.32482-1-ardb@kernel.org>
@@ -41,227 +41,154 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The EFI file I/O routines built on top of the file I/O firmware
-services are incompatible with mixed mode, so there is no need
-to obfuscate them by using protocol wrappers whose only purpose
-is to hide the mixed mode handling. So let's switch to plain
-indirect calls instead.
+The efi_call macros on ARM have a dependency on a variable 'sys_table_arg'
+existing in the scope of the macro instantiation. Since this variable
+always points to the same data structure, let's create a global getter
+for it and use that instead.
 
-This also means we can drop the mixed_mode aliases from the various
-types involved.
+Note that the use of a global variable with external linkage is avoided,
+given the problems we had in the past with early processing of the GOT
+tables.
+
+While at it, drop the redundant casts in the efi_table_attr and
+efi_call_proto macros.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- .../firmware/efi/libstub/efi-stub-helper.c    |  17 ++-
- include/linux/efi.h                           | 118 ++++++------------
- 2 files changed, 46 insertions(+), 89 deletions(-)
+ arch/arm/include/asm/efi.h              |  8 ++++----
+ arch/arm64/include/asm/efi.h            |  8 ++++----
+ arch/x86/boot/compressed/eboot.c        |  5 +++++
+ drivers/firmware/efi/libstub/arm-stub.c | 11 ++++++++++-
+ drivers/firmware/efi/libstub/efistub.h  |  2 ++
+ drivers/firmware/efi/libstub/gop.c      |  2 ++
+ 6 files changed, 27 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/firmware/efi/libstub/efi-stub-helper.c b/drivers/firmware/efi/libstub/efi-stub-helper.c
-index f91f4fdbe553..9bb74ad4b7fe 100644
---- a/drivers/firmware/efi/libstub/efi-stub-helper.c
-+++ b/drivers/firmware/efi/libstub/efi-stub-helper.c
-@@ -370,8 +370,7 @@ static efi_status_t efi_file_size(efi_system_table_t *sys_table_arg, void *__fh,
- 	efi_guid_t info_guid = EFI_FILE_INFO_ID;
- 	unsigned long info_sz;
+diff --git a/arch/arm/include/asm/efi.h b/arch/arm/include/asm/efi.h
+index 9b0c64c28bff..555364b7bd2a 100644
+--- a/arch/arm/include/asm/efi.h
++++ b/arch/arm/include/asm/efi.h
+@@ -50,15 +50,15 @@ void efi_virtmap_unload(void);
  
--	status = efi_call_proto(efi_file_handle, open, fh, &h, filename_16,
--				EFI_FILE_MODE_READ, (u64)0);
-+	status = fh->open(fh, &h, filename_16, EFI_FILE_MODE_READ, 0);
- 	if (status != EFI_SUCCESS) {
- 		efi_printk(sys_table_arg, "Failed to open file: ");
- 		efi_char16_printk(sys_table_arg, filename_16);
-@@ -382,8 +381,7 @@ static efi_status_t efi_file_size(efi_system_table_t *sys_table_arg, void *__fh,
- 	*handle = h;
+ /* arch specific definitions used by the stub code */
  
- 	info_sz = 0;
--	status = efi_call_proto(efi_file_handle, get_info, h, &info_guid,
--				&info_sz, NULL);
-+	status = h->get_info(h, &info_guid, &info_sz, NULL);
- 	if (status != EFI_BUFFER_TOO_SMALL) {
- 		efi_printk(sys_table_arg, "Failed to get file info size\n");
- 		return status;
-@@ -397,8 +395,7 @@ static efi_status_t efi_file_size(efi_system_table_t *sys_table_arg, void *__fh,
- 		return status;
- 	}
+-#define efi_call_early(f, ...)		sys_table_arg->boottime->f(__VA_ARGS__)
+-#define efi_call_runtime(f, ...)	sys_table_arg->runtime->f(__VA_ARGS__)
++#define efi_call_early(f, ...)		efi_system_table()->boottime->f(__VA_ARGS__)
++#define efi_call_runtime(f, ...)	efi_system_table()->runtime->f(__VA_ARGS__)
+ #define efi_is_native()			(true)
  
--	status = efi_call_proto(efi_file_handle, get_info, h, &info_guid,
--				&info_sz, info);
-+	status = h->get_info(h, &info_guid, &info_sz, info);
- 	if (status == EFI_BUFFER_TOO_SMALL) {
- 		efi_call_early(free_pool, info);
- 		goto grow;
-@@ -416,12 +413,12 @@ static efi_status_t efi_file_size(efi_system_table_t *sys_table_arg, void *__fh,
- static efi_status_t efi_file_read(efi_file_handle_t *handle,
- 				  unsigned long *size, void *addr)
- {
--	return efi_call_proto(efi_file_handle, read, handle, size, addr);
-+	return handle->read(handle, size, addr);
+ #define efi_table_attr(table, attr, instance)				\
+-	((table##_t *)instance)->attr
++	instance->attr
+ 
+ #define efi_call_proto(protocol, f, instance, ...)			\
+-	((protocol##_t *)instance)->f(instance, ##__VA_ARGS__)
++	instance->f(instance, ##__VA_ARGS__)
+ 
+ struct screen_info *alloc_screen_info(efi_system_table_t *sys_table_arg);
+ void free_screen_info(efi_system_table_t *sys_table, struct screen_info *si);
+diff --git a/arch/arm64/include/asm/efi.h b/arch/arm64/include/asm/efi.h
+index 189082c44c28..9aa518d67588 100644
+--- a/arch/arm64/include/asm/efi.h
++++ b/arch/arm64/include/asm/efi.h
+@@ -93,15 +93,15 @@ static inline unsigned long efi_get_max_initrd_addr(unsigned long dram_base,
+ 	return (image_addr & ~(SZ_1G - 1UL)) + (1UL << (VA_BITS_MIN - 1));
  }
  
- static efi_status_t efi_file_close(efi_file_handle_t *handle)
- {
--	return efi_call_proto(efi_file_handle, close, handle);
-+	return handle->close(handle);
+-#define efi_call_early(f, ...)		sys_table_arg->boottime->f(__VA_ARGS__)
+-#define efi_call_runtime(f, ...)	sys_table_arg->runtime->f(__VA_ARGS__)
++#define efi_call_early(f, ...)		efi_system_table()->boottime->f(__VA_ARGS__)
++#define efi_call_runtime(f, ...)	efi_system_table()->runtime->f(__VA_ARGS__)
+ #define efi_is_native()			(true)
+ 
+ #define efi_table_attr(table, attr, instance)				\
+-	((table##_t *)instance)->attr
++	instance->attr
+ 
+ #define efi_call_proto(protocol, f, instance, ...)			\
+-	((protocol##_t *)instance)->f(instance, ##__VA_ARGS__)
++	instance->f(instance, ##__VA_ARGS__)
+ 
+ #define alloc_screen_info(x...)		&screen_info
+ 
+diff --git a/arch/x86/boot/compressed/eboot.c b/arch/x86/boot/compressed/eboot.c
+index 36a26d6e2af0..3a7c900b9c66 100644
+--- a/arch/x86/boot/compressed/eboot.c
++++ b/arch/x86/boot/compressed/eboot.c
+@@ -27,6 +27,11 @@ __pure const struct efi_config *__efi_early(void)
+ 	return efi_early;
  }
  
- static efi_status_t efi_open_volume(efi_system_table_t *sys_table_arg,
-@@ -432,7 +429,7 @@ static efi_status_t efi_open_volume(efi_system_table_t *sys_table_arg,
- 	efi_file_handle_t *fh;
- 	efi_guid_t fs_proto = EFI_FILE_SYSTEM_GUID;
- 	efi_status_t status;
--	void *handle = efi_table_attr(efi_loaded_image, device_handle, image);
-+	efi_handle_t handle = image->device_handle;
- 
- 	status = efi_call_early(handle_protocol, handle,
- 				&fs_proto, (void **)&io);
-@@ -441,7 +438,7 @@ static efi_status_t efi_open_volume(efi_system_table_t *sys_table_arg,
- 		return status;
- 	}
- 
--	status = efi_call_proto(efi_file_io_interface, open_volume, io, &fh);
-+	status = io->open_volume(io, &fh);
- 	if (status != EFI_SUCCESS)
- 		efi_printk(sys_table_arg, "Failed to open volume\n");
- 	else
-diff --git a/include/linux/efi.h b/include/linux/efi.h
-index 2074b737aa17..14dd08ecf8a7 100644
---- a/include/linux/efi.h
-+++ b/include/linux/efi.h
-@@ -806,40 +806,21 @@ struct efi_fdt_params {
- 	u32 desc_ver;
- };
- 
--typedef union efi_loaded_image efi_loaded_image_t;
--
--union efi_loaded_image {
--	struct {
--		u32 revision;
--		efi_handle_t parent_handle;
--		efi_system_table_t *system_table;
--		efi_handle_t device_handle;
--		void *file_path;
--		void *reserved;
--		u32 load_options_size;
--		void *load_options;
--		void *image_base;
--		__aligned_u64 image_size;
--		unsigned int image_code_type;
--		unsigned int image_data_type;
--		efi_status_t ( __efiapi *unload)(efi_handle_t image_handle);
--	};
--	struct {
--		u32 revision;
--		u32 parent_handle;
--		u32 system_table;
--		u32 device_handle;
--		u32 file_path;
--		u32 reserved;
--		u32 load_options_size;
--		u32 load_options;
--		u32 image_base;
--		__aligned_u64 image_size;
--		unsigned int image_code_type;
--		unsigned int image_data_type;
--		u32 unload;
--	} mixed_mode;
--};
-+typedef struct {
-+	u32 revision;
-+	efi_handle_t parent_handle;
-+	efi_system_table_t *system_table;
-+	efi_handle_t device_handle;
-+	void *file_path;
-+	void *reserved;
-+	u32 load_options_size;
-+	void *load_options;
-+	void *image_base;
-+	__aligned_u64 image_size;
-+	unsigned int image_code_type;
-+	unsigned int image_data_type;
-+	efi_status_t ( __efiapi *unload)(efi_handle_t image_handle);
-+} efi_loaded_image_t;
- 
- typedef struct {
- 	u64 size;
-@@ -852,54 +833,33 @@ typedef struct {
- 	efi_char16_t filename[1];
- } efi_file_info_t;
- 
--typedef union efi_file_handle efi_file_handle_t;
--
--union efi_file_handle {
--	struct {
--		u64 revision;
--		efi_status_t (__efiapi *open)(efi_file_handle_t *,
--					      efi_file_handle_t **,
--					      efi_char16_t *, u64, u64);
--		efi_status_t (__efiapi *close)(efi_file_handle_t *);
--		void *delete;
--		efi_status_t (__efiapi *read)(efi_file_handle_t *,
--					      unsigned long *, void *);
--		void *write;
--		void *get_position;
--		void *set_position;
--		efi_status_t (__efiapi *get_info)(efi_file_handle_t *,
--						  efi_guid_t *, unsigned long *,
--						  void *);
--		void *set_info;
--		void *flush;
--	};
--	struct {
--		u64 revision;
--		u32 open;
--		u32 close;
--		u32 delete;
--		u32 read;
--		u32 write;
--		u32 get_position;
--		u32 set_position;
--		u32 get_info;
--		u32 set_info;
--		u32 flush;
--	} mixed_mode;
-+typedef struct efi_file_handle efi_file_handle_t;
++__pure efi_system_table_t *efi_system_table(void)
++{
++	return sys_table;
++}
 +
-+struct efi_file_handle {
-+	u64 revision;
-+	efi_status_t (__efiapi *open)(efi_file_handle_t *,
-+				      efi_file_handle_t **,
-+				      efi_char16_t *, u64, u64);
-+	efi_status_t (__efiapi *close)(efi_file_handle_t *);
-+	void *delete;
-+	efi_status_t (__efiapi *read)(efi_file_handle_t *,
-+				      unsigned long *, void *);
-+	void *write;
-+	void *get_position;
-+	void *set_position;
-+	efi_status_t (__efiapi *get_info)(efi_file_handle_t *,
-+					  efi_guid_t *, unsigned long *,
-+					  void *);
-+	void *set_info;
-+	void *flush;
- };
+ #define BOOT_SERVICES(bits)						\
+ static void setup_boot_services##bits(struct efi_config *c)		\
+ {									\
+diff --git a/drivers/firmware/efi/libstub/arm-stub.c b/drivers/firmware/efi/libstub/arm-stub.c
+index 60a301e1c072..47f072ac3f30 100644
+--- a/drivers/firmware/efi/libstub/arm-stub.c
++++ b/drivers/firmware/efi/libstub/arm-stub.c
+@@ -37,6 +37,13 @@
  
--typedef union efi_file_io_interface efi_file_io_interface_t;
-+typedef struct efi_file_io_interface efi_file_io_interface_t;
+ static u64 virtmap_base = EFI_RT_VIRTUAL_BASE;
  
--union efi_file_io_interface {
--	struct {
--		u64 revision;
--		int (__efiapi *open_volume)(efi_file_io_interface_t *,
--					    efi_file_handle_t **);
--	};
--	struct {
--		u64 revision;
--		u32 open_volume;
--	} mixed_mode;
-+struct efi_file_io_interface {
-+	u64 revision;
-+	int (__efiapi *open_volume)(efi_file_io_interface_t *,
-+				    efi_file_handle_t **);
- };
++static efi_system_table_t *__section(.data) sys_table;
++
++__pure efi_system_table_t *efi_system_table(void)
++{
++	return sys_table;
++}
++
+ void efi_char16_printk(efi_system_table_t *sys_table_arg,
+ 			      efi_char16_t *str)
+ {
+@@ -110,7 +117,7 @@ efi_status_t handle_kernel_image(efi_system_table_t *sys_table,
+  * for both archictectures, with the arch-specific code provided in the
+  * handle_kernel_image() function.
+  */
+-unsigned long efi_entry(void *handle, efi_system_table_t *sys_table,
++unsigned long efi_entry(void *handle, efi_system_table_t *sys_table_arg,
+ 			       unsigned long *image_addr)
+ {
+ 	efi_loaded_image_t *image;
+@@ -131,6 +138,8 @@ unsigned long efi_entry(void *handle, efi_system_table_t *sys_table,
+ 	enum efi_secureboot_mode secure_boot;
+ 	struct screen_info *si;
  
- #define EFI_FILE_MODE_READ	0x0000000000000001
++	sys_table = sys_table_arg;
++
+ 	/* Check if we were booted by the EFI firmware */
+ 	if (sys_table->hdr.signature != EFI_SYSTEM_TABLE_SIGNATURE)
+ 		goto fail;
+diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
+index 05739ae013c8..e6775c16a97d 100644
+--- a/drivers/firmware/efi/libstub/efistub.h
++++ b/drivers/firmware/efi/libstub/efistub.h
+@@ -29,6 +29,8 @@ extern int __pure nokaslr(void);
+ extern int __pure is_quiet(void);
+ extern int __pure novamap(void);
+ 
++extern __pure efi_system_table_t  *efi_system_table(void);
++
+ #define pr_efi(sys_table, msg)		do {				\
+ 	if (!is_quiet()) efi_printk(sys_table, "EFI stub: "msg);	\
+ } while (0)
+diff --git a/drivers/firmware/efi/libstub/gop.c b/drivers/firmware/efi/libstub/gop.c
+index 5f4fbc2ac687..6c49d0a9aa3f 100644
+--- a/drivers/firmware/efi/libstub/gop.c
++++ b/drivers/firmware/efi/libstub/gop.c
+@@ -10,6 +10,8 @@
+ #include <asm/efi.h>
+ #include <asm/setup.h>
+ 
++#include "efistub.h"
++
+ static void find_bits(unsigned long mask, u8 *pos, u8 *size)
+ {
+ 	u8 first, len;
 -- 
 2.20.1
 
