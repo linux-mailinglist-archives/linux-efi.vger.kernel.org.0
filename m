@@ -2,143 +2,105 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 58B83129FAD
-	for <lists+linux-efi@lfdr.de>; Tue, 24 Dec 2019 10:29:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9DE77129FD5
+	for <lists+linux-efi@lfdr.de>; Tue, 24 Dec 2019 10:51:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726195AbfLXJ3K (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 24 Dec 2019 04:29:10 -0500
-Received: from mail-pj1-f66.google.com ([209.85.216.66]:55809 "EHLO
-        mail-pj1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726084AbfLXJ3K (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 24 Dec 2019 04:29:10 -0500
-Received: by mail-pj1-f66.google.com with SMTP id d5so953923pjz.5
-        for <linux-efi@vger.kernel.org>; Tue, 24 Dec 2019 01:29:10 -0800 (PST)
+        id S1726128AbfLXJvX (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 24 Dec 2019 04:51:23 -0500
+Received: from mail-wr1-f66.google.com ([209.85.221.66]:40627 "EHLO
+        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726124AbfLXJvX (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 24 Dec 2019 04:51:23 -0500
+Received: by mail-wr1-f66.google.com with SMTP id c14so19335601wrn.7
+        for <linux-efi@vger.kernel.org>; Tue, 24 Dec 2019 01:51:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amacapital-net.20150623.gappssmtp.com; s=20150623;
-        h=content-transfer-encoding:from:mime-version:subject:date:message-id
-         :references:cc:in-reply-to:to;
-        bh=czDSzqRLBl5n27fwGhJOgwg3DRE7XOzxOBSe9aRwXXU=;
-        b=vtOXVmNlTAUtjBpp6zjS6adZhPsvc/Ggndc6rb2Sokir8uFUUmPmWnQ1rUGtXNATvf
-         ulOBc1VMA/hhzrXURLhHZjrClavBpphnDKAx6zED3ukA5DhtslQGPcVPL6ehEoe8k/J5
-         Kcw2f0OGj+DYW80M93ZEXEhnxDbRtgrcd1Lh366mTDZ2cWkar4zDq/ckpNgDVKh2Ifse
-         yILVzImDoSOq60jkjBjnvbQ6ydkD8n6PqGYmQ43oMCAYRVpkKyRNcZ2R5Wq+bJHa4dbA
-         YoFMSji6Q7tUSbOLgoKWuvInl1T6ccd6lHPbYK173M3rAh5l1HI8PJ/DCy1Zz0SCzFM5
-         vaFQ==
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=lDQYVJqwKy9VrlC0fN44xu7g3oqePLWya4mj982q/t4=;
+        b=Mvr4fmpiYrB+0nQxpkrmFTOnyzLDm840DZitghmn7r7y7CSSt7X1vRiUo5L2xBup/6
+         +EyhBuGG6GLwXTdN3CiDjOktiOf78SK0fEUhKSO8l7/JDkdleUySM72uJph3VC2cJMuw
+         PgSWE+B0Sn8oNhssbI5Ap2ToUa7Hq9zdKNVlBkZxTsKQ4Xc/pwAavtDBYNPq+FE9nvTf
+         Tv2+NVLe9D459gaDmlO30F9cB1am0spqDov+c0rs79iaRpzZQ3nClKjyF0xdXCyyOyab
+         SlaYHUg1jl3MyPim8SsrzIRMTXN40WDNcyysvb8LzTitvBMgSxIdaqYA/OZOuXcW2NTy
+         vYBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:content-transfer-encoding:from:mime-version
-         :subject:date:message-id:references:cc:in-reply-to:to;
-        bh=czDSzqRLBl5n27fwGhJOgwg3DRE7XOzxOBSe9aRwXXU=;
-        b=OfJ6h4h0iY8ucLT9j0GPs1ik9HLCW5HSJS6ZVAndlGDisz1uHtBL99XzbmSJ55yTbo
-         yWjaVIeNk9VOwdzkhDxbjuqvF6dnerljwnxRLB0oSAii67kf2/S1AE5VNb/QpMtztxMg
-         Yp58KQ27hSpJ/qFM1UxmgUdspljv7c7DGyjqW3nWGfSI28D7CX4r4dY1f6V+FzyTwxTb
-         6C5TqAhTaL0hxdiH1kUlnnsKTapujYnsCHsF0i9nJhzmzt/9+BKjjSn1/xIzOXctZ1oB
-         +EHShr21ZoLcPh8sCm3ST5UXcms79ADrLJrBWQB0BEm0gE1wJZlbIJQo5w40Xuqg7YCT
-         ifKw==
-X-Gm-Message-State: APjAAAUPZqlAIbo0DVDSsF7tudOAYdZ//aOkrKvMZxsXxjnoYMxSAQyZ
-        cnsXCLyB1lu+QSGQrPmz7mPODQ==
-X-Google-Smtp-Source: APXvYqzeVMR04c83xjEk0INwIcKZ7LC5zSzIHoqTUhvXOzbbNz4jVdhoaJ8/lMoq1ZdDYKlzuIN1Lw==
-X-Received: by 2002:a17:90a:d783:: with SMTP id z3mr4519562pju.3.1577179749639;
-        Tue, 24 Dec 2019 01:29:09 -0800 (PST)
-Received: from [25.170.196.173] ([172.58.27.144])
-        by smtp.gmail.com with ESMTPSA id g9sm28318857pfm.150.2019.12.24.01.29.08
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 24 Dec 2019 01:29:08 -0800 (PST)
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-From:   Andy Lutomirski <luto@amacapital.net>
-Mime-Version: 1.0 (1.0)
-Subject: Re: [PATCH] x86/efistub: disable paging at mixed mode entry
-Date:   Tue, 24 Dec 2019 17:29:04 +0800
-Message-Id: <61D1B491-EB08-40CA-9967-8A4F8DFE2826@amacapital.net>
-References: <CAKv+Gu-v5jbD+62FKGXojU2ERp0tOpE6MSvUH+zpMu5rX-TJMw@mail.gmail.com>
-Cc:     Ard Biesheuvel <ardb@kernel.org>,
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=lDQYVJqwKy9VrlC0fN44xu7g3oqePLWya4mj982q/t4=;
+        b=LnhgvKgERp6D2TJhe2dB9dqAiSSfaaoQxgKAVVkLWqA5PjCyBNrjYm74IvcDaVeeKb
+         oz7SvQA4wMGs9LtNQZNAn7BK0Rl69Wo7SAakCqn+Hi3X33vK9yCJW+j6FG6uwaWrBT9I
+         S0wXwr5uAhuWig6J1ScbX6CALbZFOaThNtKWMqsk8hzAqxK7Dow3pxh/E1nKz8EFqgcr
+         9yhx3M+X3VKjvQB4YFPhmqzIIdl9uhMXNb2n++ZBbzSbb1K0FnTqGV9iiriN2m1aOKdv
+         VGy3J4sAuCBAZ5qFVeFcMqySI5z9EkVek8O/kxSnZaKmNS/Ik6U2r7+SdXGGE0qhTwVc
+         oRRA==
+X-Gm-Message-State: APjAAAVwQ2VeMii4kVuaxgNGwRy2sFKa9285bOfL5OxaDyzC/nf6yrz/
+        8x3aBbpVpIdDBUV9XADtI3Q5XUxRH0NXriveNYcULw==
+X-Google-Smtp-Source: APXvYqxwVWMpONljWnw5EGgAx/SITMEkK8kI+qNjb4UjMbNV3rRBVY5jpt3EBnJ8E32ORKOp8R4zVpp/fkJ0PumOA5U=
+X-Received: by 2002:a5d:43c7:: with SMTP id v7mr32288671wrr.32.1577181080636;
+ Tue, 24 Dec 2019 01:51:20 -0800 (PST)
+MIME-Version: 1.0
+References: <20181124162123.21300-1-n.merinov@inango-systems.com> <20191224092119.4581-1-n.merinov@inango-systems.com>
+In-Reply-To: <20191224092119.4581-1-n.merinov@inango-systems.com>
+From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Date:   Tue, 24 Dec 2019 10:51:19 +0100
+Message-ID: <CAKv+Gu98Gi5Uvz7AZw4ky_-sxOZxJ4687jxyQsJU6d3TGkem1g@mail.gmail.com>
+Subject: Re: [PATCH v2] partitions/efi: Fix partition name parsing in GUID
+ partition entry
+To:     Nikolai Merinov <n.merinov@inango-systems.com>
+Cc:     Davidlohr Bueso <dave@stgolabs.net>, Jens Axboe <axboe@kernel.dk>,
         linux-efi <linux-efi@vger.kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>, X86 ML <x86@kernel.org>,
-        Arvind Sankar <nivedita@alum.mit.edu>
-In-Reply-To: <CAKv+Gu-v5jbD+62FKGXojU2ERp0tOpE6MSvUH+zpMu5rX-TJMw@mail.gmail.com>
-To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>
-X-Mailer: iPhone Mail (17C54)
+        linux-block@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
+On Tue, 24 Dec 2019 at 10:29, Nikolai Merinov
+<n.merinov@inango-systems.com> wrote:
+>
+> GUID partition entry defined to have a partition name as 36 UTF-16LE
+> code units. This means that on big-endian platforms ASCII symbols
+> would be read with 0xXX00 efi_char16_t character code. In order to
+> correctly extract ASCII characters from a partition name field we
+> should be converted from 16LE to CPU architecture.
+>
+> The problem exists on all big endian platforms.
+>
+> Signed-off-by: Nikolai Merinov <n.merinov@inango-systems.com>
+>
 
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
 
-> On Dec 24, 2019, at 3:50 PM, Ard Biesheuvel <ard.biesheuvel@linaro.org> wr=
-ote:
->=20
-> =EF=BB=BFOn Tue, 24 Dec 2019 at 08:47, Andy Lutomirski <luto@amacapital.ne=
-t> wrote:
->>=20
->>=20
->>=20
->>>> On Dec 24, 2019, at 3:38 PM, Ard Biesheuvel <ard.biesheuvel@linaro.org>=
- wrote:
->>>=20
->>> =EF=BB=BFOn Tue, 24 Dec 2019 at 03:15, Andy Lutomirski <luto@amacapital.=
-net> wrote:
->>>>=20
->>>>> On Mon, Dec 23, 2019 at 7:23 AM Ard Biesheuvel <ardb@kernel.org> wrote=
-:
->>>>>=20
->>>>> The EFI mixed mode entry code goes through the ordinary startup_32()
->>>>> routine before jumping into the kernel's EFI boot code in 64-bit
->>>>> mode. The 32-bit startup code must be entered with paging disabled,
->>>>> but this is not documented as a requirement for the EFI handover
->>>>> protocol, and so we should disable paging explicitly when entering
->>>>> the kernel from 32-bit EFI firmware.
->>>>=20
->>>> Does this mean that EFI is allowed to call the kernel with paging on
->>>> but the text identity-mapped?
->>>=20
->>> Yes. This is explicitly mentioned in the spec. Paging may be on or
->>> off, but all memory must be mapped 1:1
->>>=20
->>>> Have you seen this happen in practice?
->>>>=20
->>>=20
->>> Yes. GRUB and OVMF both implement the EFI handover protocol, but OVMF
->>> doesn't disable paging before calling the 32-bit entry point, and so
->>> it explodes in startup_32(). GRUB calls the EFI handover entrypoint
->>> with paging disabled, and so then everything works fine.
->>>=20
->>>> If the kernel is entered with paging on and the text not
->>>> identity-mapped, this is going to blow up badly.
->>>>=20
->>>=20
->>> Not just text: all of system memory is guaranteed to be 1:1 mapped if
->>> paging is on when entering the kernel from EFI, so this should be
->>> safe.
->>> Note that this change only affects mixed mode configurations that use
->>> OVMF instead of GRUB.
->>>=20
->>> We are using OVMF/qemu in kernelCI for test coverage of the EFI stub
->>> for all architectures, and this is the missing puzzle piece to get it
->>> working in x86 mixed mode as well.
->>=20
->> Sounds good to me, then.
->>=20
->> I admit to being a bit confused, since I would have sworn that I=E2=80=99=
-ve personally tested mixed mode with OVMF.
->=20
-> Interesting that you should say that. I thought exactly the same, but
-> after noticing that it didn't work, I went back years testing old
-> kernels and old builds of OVMF, and no combination that I tried would
-> actually work without a change like the one in this patch. This is
-> using both KVM and emulation, so it doesn't seem likely that this is
-> caused by a change in QEMU.
-
-It would have been a build from Red Hat or Fedora, possibly a prerelease I g=
-ot from Peter Jones. And I reproduced a severe bug in the kernel that I had f=
-ound by inspection, so it wasn=E2=80=99t totally my imagination. Maybe I act=
-ually had OVMF chaining to GRUB?
-
-The bug in question was that an NMI hitting EFI code would explode back when=
- EFI mixed mode worked by fiddling with EFER to exit long mode. I think I te=
-sted by running perf while reading efivars.
-
-I probably passed -kernel to QEMU while also telling QEMU to use OVMF.
-
-Anyway, it=E2=80=99s okay if this mystery doesn=E2=80=99t get solved.=
+> diff --git a/block/partitions/efi.c b/block/partitions/efi.c
+> index db2fef7dfc47..51287a8a3bea 100644
+> --- a/block/partitions/efi.c
+> +++ b/block/partitions/efi.c
+> @@ -715,7 +715,7 @@ int efi_partition(struct parsed_partitions *state)
+>                                 ARRAY_SIZE(ptes[i].partition_name));
+>                 info->volname[label_max] = 0;
+>                 while (label_count < label_max) {
+> -                       u8 c = ptes[i].partition_name[label_count] & 0xff;
+> +                       u8 c = le16_to_cpu(ptes[i].partition_name[label_count]) & 0xff;
+>                         if (c && !isprint(c))
+>                                 c = '!';
+>                         info->volname[label_count] = c;
+> diff --git a/block/partitions/efi.h b/block/partitions/efi.h
+> index 3e8576157575..0b6d5b7be111 100644
+> --- a/block/partitions/efi.h
+> +++ b/block/partitions/efi.h
+> @@ -88,7 +88,7 @@ typedef struct _gpt_entry {
+>         __le64 starting_lba;
+>         __le64 ending_lba;
+>         gpt_entry_attributes attributes;
+> -       efi_char16_t partition_name[72 / sizeof (efi_char16_t)];
+> +       __le16 partition_name[72 / sizeof (__le16)];
+>  } __packed gpt_entry;
+>
+>  typedef struct _gpt_mbr_record {
+> --
+> 2.17.1
+>
