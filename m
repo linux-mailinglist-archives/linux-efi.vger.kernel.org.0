@@ -2,37 +2,39 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 79A5012A1BC
-	for <lists+linux-efi@lfdr.de>; Tue, 24 Dec 2019 14:29:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5624012A1C0
+	for <lists+linux-efi@lfdr.de>; Tue, 24 Dec 2019 14:29:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726157AbfLXN3o (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 24 Dec 2019 08:29:44 -0500
-Received: from mail.kernel.org ([198.145.29.99]:58476 "EHLO mail.kernel.org"
+        id S1726237AbfLXN3q (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 24 Dec 2019 08:29:46 -0500
+Received: from mail.kernel.org ([198.145.29.99]:58538 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726124AbfLXN3o (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Tue, 24 Dec 2019 08:29:44 -0500
+        id S1726124AbfLXN3q (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Tue, 24 Dec 2019 08:29:46 -0500
 Received: from localhost.localdomain (91-167-84-221.subs.proxad.net [91.167.84.221])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 5FDD720643;
-        Tue, 24 Dec 2019 13:29:42 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 40B582071E;
+        Tue, 24 Dec 2019 13:29:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1577194183;
-        bh=KZGSUwHmGeohaS5c+JhndSQNyEP4Qj6gg5SvZS25hXE=;
-        h=From:To:Cc:Subject:Date:From;
-        b=1QC00Am48MJBZXQSWkj+/5MWCdVeOfvI2y7VuGjue3DbRm8qPqjD9MTpZecJvOiyZ
-         IbkamCbhlaKEzWcpeiww9Hi6wHzB8oOuB5xr5sdvFDtDiV0yZcrvXVGftJvK8wWBHY
-         5VJD+prImRPlLYuako6WKWX2oS9Sukpy7X97Q0bU=
+        s=default; t=1577194185;
+        bh=GazPSS+c6B9Kt3+UlWZWQ/BY8A3l+UHzfQLW+rSPTWk=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=CfPfLMO3jmt87QgxhMjBz86DUJKBk4WOZWfR9x/voHeXFtnK+LJ+HgQhEDo1n1X3J
+         FuSRv3enqdSIk8xtvFSZDtvnUwfdJOEyh6GideQstDaQsSRZc8CgCT2bZIPU8wK5wU
+         exTAzBmNjH+NrglLSwxYGIdHet4USIJChsV6Vz+g=
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-efi@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
         Thomas Gleixner <tglx@linutronix.de>
 Cc:     Ard Biesheuvel <ardb@kernel.org>, linux-kernel@vger.kernel.org,
         Arvind Sankar <nivedita@alum.mit.edu>,
         Hans de Goede <hdegoede@redhat.com>
-Subject: [GIT PULL 0/3] EFI fixes for v5.5
-Date:   Tue, 24 Dec 2019 14:29:06 +0100
-Message-Id: <20191224132909.102540-1-ardb@kernel.org>
+Subject: [PATCH 1/3] efi/earlycon: Fix write-combine mapping on x86
+Date:   Tue, 24 Dec 2019 14:29:07 +0100
+Message-Id: <20191224132909.102540-2-ardb@kernel.org>
 X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20191224132909.102540-1-ardb@kernel.org>
+References: <20191224132909.102540-1-ardb@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-efi-owner@vger.kernel.org
@@ -40,35 +42,76 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The following changes since commit a470552ee8965da0fe6fd4df0aa39c4cda652c7c:
+From: Arvind Sankar <nivedita@alum.mit.edu>
 
-  efi: Don't attempt to map RCI2 config table if it doesn't exist (2019-12-10 12:13:02 +0100)
+On x86, until PAT is initialized, WC translates into UC-. Since we
+calculate and store pgprot_writecombine(PAGE_KERNEL) when earlycon is
+initialized, this means we actually use UC- mappings instead of WC
+mappings, which makes scrolling very slow.
 
-are available in the Git repository at:
+Instead store a boolean flag to indicate whether we want to use
+writeback or write-combine mappings, and recalculate the actual pgprot_t
+we need on every mapping. Once PAT is initialized, we will start using
+write-combine mappings, which speeds up the scrolling considerably.
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git tags/efi-urgent
+Fixes: 69c1f396f25b ("efi/x86: Convert x86 EFI earlyprintk into generic earlycon implementation")
+Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+---
+ drivers/firmware/efi/earlycon.c | 16 +++++++---------
+ 1 file changed, 7 insertions(+), 9 deletions(-)
 
-for you to fetch changes up to 77217fcc8e04f27127b32825376ed508705fd946:
+diff --git a/drivers/firmware/efi/earlycon.c b/drivers/firmware/efi/earlycon.c
+index d4077db6dc97..5d4f84781aa0 100644
+--- a/drivers/firmware/efi/earlycon.c
++++ b/drivers/firmware/efi/earlycon.c
+@@ -17,7 +17,7 @@ static const struct console *earlycon_console __initdata;
+ static const struct font_desc *font;
+ static u32 efi_x, efi_y;
+ static u64 fb_base;
+-static pgprot_t fb_prot;
++static bool fb_wb;
+ static void *efi_fb;
+ 
+ /*
+@@ -33,10 +33,8 @@ static int __init efi_earlycon_remap_fb(void)
+ 	if (!earlycon_console || !(earlycon_console->flags & CON_ENABLED))
+ 		return 0;
+ 
+-	if (pgprot_val(fb_prot) == pgprot_val(PAGE_KERNEL))
+-		efi_fb = memremap(fb_base, screen_info.lfb_size, MEMREMAP_WB);
+-	else
+-		efi_fb = memremap(fb_base, screen_info.lfb_size, MEMREMAP_WC);
++	efi_fb = memremap(fb_base, screen_info.lfb_size,
++			  fb_wb ? MEMREMAP_WB : MEMREMAP_WC);
+ 
+ 	return efi_fb ? 0 : -ENOMEM;
+ }
+@@ -53,9 +51,12 @@ late_initcall(efi_earlycon_unmap_fb);
+ 
+ static __ref void *efi_earlycon_map(unsigned long start, unsigned long len)
+ {
++	pgprot_t fb_prot;
++
+ 	if (efi_fb)
+ 		return efi_fb + start;
+ 
++	fb_prot = fb_wb ? PAGE_KERNEL : pgprot_writecombine(PAGE_KERNEL);
+ 	return early_memremap_prot(fb_base + start, len, pgprot_val(fb_prot));
+ }
+ 
+@@ -215,10 +216,7 @@ static int __init efi_earlycon_setup(struct earlycon_device *device,
+ 	if (screen_info.capabilities & VIDEO_CAPABILITY_64BIT_BASE)
+ 		fb_base |= (u64)screen_info.ext_lfb_base << 32;
+ 
+-	if (opt && !strcmp(opt, "ram"))
+-		fb_prot = PAGE_KERNEL;
+-	else
+-		fb_prot = pgprot_writecombine(PAGE_KERNEL);
++	fb_wb = opt && !strcmp(opt, "ram");
+ 
+ 	si = &screen_info;
+ 	xres = si->lfb_width;
+-- 
+2.20.1
 
-  x86/efistub: disable paging at mixed mode entry (2019-12-23 16:25:21 +0100)
-
-----------------------------------------------------------------
-Some more fixes for the EFI subsystem:
-- Ensure that the EFI framebuffer earlycon uses WC attributes on x86 (Arvind)
-- Another mixed mode fix from Hans, for the RNG code this time.
-- Fix mixed mode boot from OVMF, by disabling paging at entry.
-
-----------------------------------------------------------------
-Ard Biesheuvel (1):
-      x86/efistub: disable paging at mixed mode entry
-
-Arvind Sankar (1):
-      efi/earlycon: Fix write-combine mapping on x86
-
-Hans de Goede (1):
-      efi/libstub/random: Initialize pointer variables to zero for mixed mode
-
- arch/x86/boot/compressed/head_64.S    |  5 +++++
- drivers/firmware/efi/earlycon.c       | 16 +++++++---------
- drivers/firmware/efi/libstub/random.c |  6 +++---
- 3 files changed, 15 insertions(+), 12 deletions(-)
