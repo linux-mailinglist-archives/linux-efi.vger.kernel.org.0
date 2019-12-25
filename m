@@ -2,119 +2,93 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 877CA12A76A
-	for <lists+linux-efi@lfdr.de>; Wed, 25 Dec 2019 11:39:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A9B5B12A857
+	for <lists+linux-efi@lfdr.de>; Wed, 25 Dec 2019 15:42:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726866AbfLYKjD (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 25 Dec 2019 05:39:03 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:40560 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726289AbfLYKjD (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 25 Dec 2019 05:39:03 -0500
-Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
-        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
-        (Exim 4.80)
-        (envelope-from <tip-bot2@linutronix.de>)
-        id 1ik446-000865-TP; Wed, 25 Dec 2019 11:38:55 +0100
-Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 8B2AC1C2B24;
-        Wed, 25 Dec 2019 11:38:54 +0100 (CET)
-Date:   Wed, 25 Dec 2019 10:38:54 -0000
-From:   "tip-bot2 for Hans de Goede" <tip-bot2@linutronix.de>
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: efi/urgent] efi/libstub/random: Initialize pointer variables to
- zero for mixed mode
-Cc:     Hans de Goede <hdegoede@redhat.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Arvind Sankar <nivedita@alum.mit.edu>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-efi@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20191224132909.102540-3-ardb@kernel.org>
-References: <20191224132909.102540-3-ardb@kernel.org>
+        id S1726397AbfLYOmp (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 25 Dec 2019 09:42:45 -0500
+Received: from mail-wm1-f67.google.com ([209.85.128.67]:34031 "EHLO
+        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726353AbfLYOmp (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 25 Dec 2019 09:42:45 -0500
+Received: by mail-wm1-f67.google.com with SMTP id c127so3641687wme.1
+        for <linux-efi@vger.kernel.org>; Wed, 25 Dec 2019 06:42:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=PlOZrS/zV7/3xmf3ZkRzcqveBiOROyYvCQZXZ1HuBxE=;
+        b=eE+aEZe7Pf65Cq0zuZadRae+/2XtFDHq+EeOdYZamjDFckdNefoEqLJ2XrJxuRj1Q4
+         x+1mrOPPA8ojZT4LIij98aRAWyXFQIyM6DfcG33lW00HcRNajWzY3W75GASeiGzaFBmk
+         5y/Me0ubysn4LYWviGOlTeDhM156AttYL8+ioHlSNP5c/N49DNANlfXzZ51+Ur+1dya2
+         kvNhCsAntYOucVBscl5OSvj6eWMfSdjMGBNGNJNafLeOVGbIWsf/V6RxRXg30UvMgBit
+         y5G28S8y+YC8T5FRWlzpTsb+4xrvCh20CIVaoRyf42sZ0qK1twFVPsgycj2zttFNIFXe
+         YM8Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=PlOZrS/zV7/3xmf3ZkRzcqveBiOROyYvCQZXZ1HuBxE=;
+        b=d3JYG+P7X4j3ex+OJREHWsOEXddYNZYCD4p3nM69JaeG6PBGg9nvNejVaTrFUxX/Hu
+         Rer+Qze7450hwPQt1FvE+3m5lA1rVeHL8CuHOu/LM9OkqsGDHE1t/DT57F2lGEGMQ2A0
+         QEFXwcpwxnjQ4KE252fNPZz63vWm7NBKusFD787hYciDOWKN92ce7dwmG7hlZCJDUZ5M
+         1Hz7jOzHIWdocLJJz7S1nq7aMwZSW7DgaPoaDzFm0cirw+vVWYeN/0MQgpQQYoqPlUCc
+         n2Rg8izbGh61rfKveguGDUDvE44BX1nrXm/kBWGBjlLUZbhMaTawoGL6z/GwjGwCfgKw
+         Lfnw==
+X-Gm-Message-State: APjAAAUTaISbMRwLrR5ICHr24Oixfs0Gpcw2ePYnDepxtxvB/m56zNfM
+        fk7wFyyGY8h0FZAAxEe2ySAuSHvaPa/58BJAolm/wQ==
+X-Google-Smtp-Source: APXvYqxxOf9pygDePkH/YKZFKBc3JmwjvwPCySo9MiHNKc6daOGSpX/a50AFwz7sMYCYLbZMq7wxJft0WdJuke1TyIw=
+X-Received: by 2002:a1c:7901:: with SMTP id l1mr9518562wme.67.1577284964492;
+ Wed, 25 Dec 2019 06:42:44 -0800 (PST)
 MIME-Version: 1.0
-Message-ID: <157727033445.30329.1314683422943763379.tip-bot2@tip-bot2>
-X-Mailer: tip-git-log-daemon
-Robot-ID: <tip-bot2.linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+References: <20191218170139.9468-1-ardb@kernel.org> <20191218170139.9468-14-ardb@kernel.org>
+ <463b0b17-3be7-697e-1227-5d3df52996d6@redhat.com>
+In-Reply-To: <463b0b17-3be7-697e-1227-5d3df52996d6@redhat.com>
+From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Date:   Wed, 25 Dec 2019 15:42:44 +0100
+Message-ID: <CAKv+Gu-wk5qBOGuoLx6v7Zo41dOZ5oNL3oBCnyT858DY7JCuhw@mail.gmail.com>
+Subject: Re: [PATCH v2 13/21] efi/libstub/x86: drop __efi_early() export of
+ efi_config struct
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     Ard Biesheuvel <ardb@kernel.org>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        Matthew Garrett <matthewgarrett@google.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        Andy Lutomirski <luto@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Arvind Sankar <nivedita@alum.mit.edu>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The following commit has been merged into the efi/urgent branch of tip:
+On Tue, 24 Dec 2019 at 20:34, Hans de Goede <hdegoede@redhat.com> wrote:
+>
+> Hi Ard,
+>
+> On 12/18/19 6:01 PM, Ard Biesheuvel wrote:
+> > The various pointers we stash in the efi_config struct which we
+> > retrieve using __efi_early() are simply copies of the ones in
+> > the EFI system table, which we have started accessing directly
+> > in the previous patch. So drop all the __efi_early() related
+> > plumbing, except for the access to a boolean which tells us
+> > whether the firmware is 64-bit or not.
+> >
+> > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+>
+> I synced my personal tree yesterday to 5.5-rc3 + the most
+> recent version (as of yesterday afternoon) of your
+> efistub-x86-cleanup-v3 branch on top.
+>
+> This has been working fine on a bunch of devices, but it fails
+> on a Teclast X89 Bay Trail (mixed mode) device. When reverting all
+> the commits from your efistub-x86-cleanup-v3 branch one by one, things
+> start working again after reverting this one.
+>
 
-Commit-ID:     818c7ce724770fbcdcd43725c81f2b3535f82b76
-Gitweb:        https://git.kernel.org/tip/818c7ce724770fbcdcd43725c81f2b3535f82b76
-Author:        Hans de Goede <hdegoede@redhat.com>
-AuthorDate:    Tue, 24 Dec 2019 14:29:08 +01:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 25 Dec 2019 10:46:06 +01:00
+Oops again. And thanks again for taking the time to test this stuff.
 
-efi/libstub/random: Initialize pointer variables to zero for mixed mode
+Could you please try the branch below and check whether it fixes it?
 
-Commit:
-
-  0d95981438c3 ("x86: efi/random: Invoke EFI_RNG_PROTOCOL to seed the UEFI RNG table")
-
-causes the drivers/efi/libstub/random.c code to get used on x86 for the first time.
-
-But this code was not written with EFI mixed mode in mind (running a 64
-bit kernel on 32 bit EFI firmware), this causes the kernel to crash during
-early boot when running in mixed mode.
-
-The problem is that in mixed mode pointers are 64 bit, but when running on
-a 32 bit firmware, EFI calls which return a pointer value by reference only
-fill the lower 32 bits of the passed pointer, leaving the upper 32 bits
-uninitialized which leads to crashes.
-
-This commit fixes this by initializing pointers which are passed by
-reference to EFI calls to NULL before passing them, so that the upper 32
-bits are initialized to 0.
-
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Cc: Arvind Sankar <nivedita@alum.mit.edu>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: linux-efi@vger.kernel.org
-Fixes: 0d95981438c3 ("x86: efi/random: Invoke EFI_RNG_PROTOCOL to seed the UEFI RNG table")
-Link: https://lkml.kernel.org/r/20191224132909.102540-3-ardb@kernel.org
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
----
- drivers/firmware/efi/libstub/random.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/firmware/efi/libstub/random.c b/drivers/firmware/efi/libstub/random.c
-index 35edd7c..97378cf 100644
---- a/drivers/firmware/efi/libstub/random.c
-+++ b/drivers/firmware/efi/libstub/random.c
-@@ -33,7 +33,7 @@ efi_status_t efi_get_random_bytes(efi_system_table_t *sys_table_arg,
- {
- 	efi_guid_t rng_proto = EFI_RNG_PROTOCOL_GUID;
- 	efi_status_t status;
--	struct efi_rng_protocol *rng;
-+	struct efi_rng_protocol *rng = NULL;
- 
- 	status = efi_call_early(locate_protocol, &rng_proto, NULL,
- 				(void **)&rng);
-@@ -162,8 +162,8 @@ efi_status_t efi_random_get_seed(efi_system_table_t *sys_table_arg)
- 	efi_guid_t rng_proto = EFI_RNG_PROTOCOL_GUID;
- 	efi_guid_t rng_algo_raw = EFI_RNG_ALGORITHM_RAW;
- 	efi_guid_t rng_table_guid = LINUX_EFI_RANDOM_SEED_TABLE_GUID;
--	struct efi_rng_protocol *rng;
--	struct linux_efi_random_seed *seed;
-+	struct efi_rng_protocol *rng = NULL;
-+	struct linux_efi_random_seed *seed = NULL;
- 	efi_status_t status;
- 
- 	status = efi_call_early(locate_protocol, &rng_proto, NULL,
+https://git.kernel.org/pub/scm/linux/kernel/git/ardb/linux.git/log/?h=efi-core-mm-fix
