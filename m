@@ -2,60 +2,74 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AF00A12B0C5
-	for <lists+linux-efi@lfdr.de>; Fri, 27 Dec 2019 03:56:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E31612B0F4
+	for <lists+linux-efi@lfdr.de>; Fri, 27 Dec 2019 05:34:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727145AbfL0C4y (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 26 Dec 2019 21:56:54 -0500
-Received: from mail.kernel.org ([198.145.29.99]:53104 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726115AbfL0C4x (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Thu, 26 Dec 2019 21:56:53 -0500
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D8AAB21775
-        for <linux-efi@vger.kernel.org>; Fri, 27 Dec 2019 02:56:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1577415413;
-        bh=payQN/HRBVM+DSEMfWKg08oS9Vd+YiSH+0/rF/7x2MY=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=tY22BCGXN3qfL4K5s9JQV5HD5iUoN6sHUByOGEbx2L3RbFoDOTXzhM+Pw/4VZRhcq
-         r380YE5+ATGP3prc9WnQNoZ5gvNdXoTyyuZ2dgb+/g7MJYNvHgvUbIXfTsS30zxLMt
-         QqtZ60G1VcfXZPOBjfS7uDc8E6QsHaqeXsuvZCbE=
-Received: by mail-wm1-f43.google.com with SMTP id u2so7289727wmc.3
-        for <linux-efi@vger.kernel.org>; Thu, 26 Dec 2019 18:56:52 -0800 (PST)
-X-Gm-Message-State: APjAAAUbF8HBBESKuGsfzOoqHJs3oMoC24XQzYHTAX2DD6OtCrqXf1Xa
-        o47t99t8lwJrfFVT92tXd++jF3od8ww63GNapNn8SA==
-X-Google-Smtp-Source: APXvYqyr5irnMNB5SuhxKHMIuJfzM40LH38Akir3sc/NyQXbP4oqVvBOoGCx069ySq7GdwZDkpI6bsbSSCTsRpvWMCI=
-X-Received: by 2002:a1c:20d6:: with SMTP id g205mr16803175wmg.38.1577415411215;
- Thu, 26 Dec 2019 18:56:51 -0800 (PST)
-MIME-Version: 1.0
-References: <20191226151407.29716-1-ardb@kernel.org> <20191226151407.29716-4-ardb@kernel.org>
-In-Reply-To: <20191226151407.29716-4-ardb@kernel.org>
-From:   Andy Lutomirski <luto@kernel.org>
-Date:   Thu, 26 Dec 2019 18:56:37 -0800
-X-Gmail-Original-Message-ID: <CALCETrWUv57ry+oy-65DSAOA62YM5okKMomFXHWgm_-5hUqTYg@mail.gmail.com>
-Message-ID: <CALCETrWUv57ry+oy-65DSAOA62YM5okKMomFXHWgm_-5hUqTYg@mail.gmail.com>
-Subject: Re: [PATCH 3/3] efi/x86: simplify mixed mode call wrapper
+        id S1727016AbfL0Ee1 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 26 Dec 2019 23:34:27 -0500
+Received: from mail-qk1-f194.google.com ([209.85.222.194]:33799 "EHLO
+        mail-qk1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726946AbfL0Ee1 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 26 Dec 2019 23:34:27 -0500
+Received: by mail-qk1-f194.google.com with SMTP id j9so21173218qkk.1
+        for <linux-efi@vger.kernel.org>; Thu, 26 Dec 2019 20:34:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:from:date:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=FGlKaSIsM5g+WNthc3yLX6/h2FMgGyGswG8U+fI5z0s=;
+        b=nKsj91T3xNRxTmCnZIqswxG5ie8YVKrBrxku5tofISjbRl4Dp5Lff5+Fzmi1G/ftHf
+         PXWwGRlWpAqfvbqaQvpY1+9i9pn1V6m/G0PrUgyKcFqJY01+nJ4TWPiXD/m8q2a14CkK
+         Paqzr0rmSNuv6TJEeoY+yRm42cN9FbLVmLT0Ednq2aG6/OgN5/Ys6zG61AG3J9OdS8Sq
+         IS4338WcfL2e93tsId9AEmZQJrGaWstX8ktVcqlRPiYCA3UZs5HBMuFAXFA7z41qR27p
+         rqXFegrSg9y1I7b/7C7BdP2a2xIYeMQWKl/n6GSzW0m7yHNCwJbni8BHypD4EW21cmSV
+         1oew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:from:date:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to:user-agent;
+        bh=FGlKaSIsM5g+WNthc3yLX6/h2FMgGyGswG8U+fI5z0s=;
+        b=TxAohEkj5D5uVgHiunA6BQF9XrWhkkMUnw2/vxpnW8+W6pEoILp1ttG4UYnMVyffuE
+         40DbsMRZiMUHxhslYuoibsFDnA8Nm7+s1bzRMhWqkr4uB96kcPLc+3y5CJOWahL0a6T5
+         maU3hA3lvzT0VP/fNctjMRJHJZCYy5l+MWubY4C22OOHIng46P52mMi+da+mttwIZsiY
+         UJ/jdA5AYUXa+iNFfmOaH3harRuYemHPIFOJTqwa1BSpKkKfe3PPwk+3XbDyiqH7AIkc
+         u6BBXUVWf1MCHcaYnWc8D+qRGQjwuViJB7igtUx4eMGQf4KibH5isTfjhRHfLhNXX+D6
+         Lw5g==
+X-Gm-Message-State: APjAAAVYI+3z+MC98EIW0pZXb23/bqL7MTdEyyGHmT+plNyJdHGp2lUK
+        bKJ5ckbal5OoDmDJSrceUMNy3xI3
+X-Google-Smtp-Source: APXvYqwF6Gd4HC7lGt0t4OxFIl0eW7jxivlc71iSaf7UlKB37G6dM7sw66CuFdxQYLgkfkBAzyQcEg==
+X-Received: by 2002:ae9:f502:: with SMTP id o2mr39739650qkg.89.1577421266534;
+        Thu, 26 Dec 2019 20:34:26 -0800 (PST)
+Received: from rani.riverdale.lan ([2001:470:1f07:5f3::b55f])
+        by smtp.gmail.com with ESMTPSA id t42sm10406600qtt.84.2019.12.26.20.34.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 26 Dec 2019 20:34:26 -0800 (PST)
+From:   Arvind Sankar <nivedita@alum.mit.edu>
+X-Google-Original-From: Arvind Sankar <arvind@rani.riverdale.lan>
+Date:   Thu, 26 Dec 2019 23:34:24 -0500
 To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     linux-efi <linux-efi@vger.kernel.org>,
-        Arvind Sankar <nivedita@alum.mit.edu>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Andy Lutomirski <luto@kernel.org>,
+Cc:     linux-efi@vger.kernel.org, nivedita@alum.mit.edu,
+        hdegoede@redhat.com, Andy Lutomirski <luto@kernel.org>,
         Ingo Molnar <mingo@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [PATCH 3/3] efi/x86: simplify mixed mode call wrapper
+Message-ID: <20191227043424.GA435594@rani.riverdale.lan>
+References: <20191226151407.29716-1-ardb@kernel.org>
+ <20191226151407.29716-4-ardb@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20191226151407.29716-4-ardb@kernel.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, Dec 26, 2019 at 7:16 AM Ard Biesheuvel <ardb@kernel.org> wrote:
->
+On Thu, Dec 26, 2019 at 04:14:07PM +0100, Ard Biesheuvel wrote:
 > Calling 32-bit EFI runtime services from a 64-bit OS involves
 > switching back to the flat mapping with a stack carved out of
 > memory that is 32-bit addressable.
->
+> 
 > There is no need to actually execute the 64-bit part of this
 > routine from the flat mapping as well, as long as the entry
 > and return address fit in 32 bits. There is also no need to
@@ -63,57 +77,52 @@ On Thu, Dec 26, 2019 at 7:16 AM Ard Biesheuvel <ardb@kernel.org> wrote:
 > can simply preserve the old stack pointer in %r11 across the
 > call into 32-bit firmware, and use either stack to preserve
 > other values.
-
-The %r11 trick makes me a little bit nervous.  I can imagine a 32-bit
-firmware implementation clobbering r11 by one of a few means: SMM bugs
-(unlikely -- this would probably kill the system even outside of an
-EFI call) or, more likely, if some code module is actualy 64-bit.
-Maybe we shouldn't be worried about this.  More comments below.
-
+> 
+> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> ---
+>  arch/x86/platform/efi/efi_thunk_64.S | 106 ++++++--------------
+>  1 file changed, 29 insertions(+), 77 deletions(-)
+> 
 > diff --git a/arch/x86/platform/efi/efi_thunk_64.S b/arch/x86/platform/efi/efi_thunk_64.S
 > index 3189f1394701..7357808d3ae8 100644
 > --- a/arch/x86/platform/efi/efi_thunk_64.S
 > +++ b/arch/x86/platform/efi/efi_thunk_64.S
-> @@ -28,11 +28,17 @@
->  SYM_FUNC_START(efi64_thunk)
->         push    %rbp
->         push    %rbx
-> +       movl    %ds, %ebx
-> +       push    %rbx
-> +       movl    %es, %ebx
-> +       push    %rbx
-> +       movl    %ss, %ebx
-> +       push    %rbx
+> +	/*
+> +	 * Convert 32-bit status code into 64-bit.
+> +	 */
+> +1:	btrl	$31, %eax
+> +	jb	3f
+> +2:	mov	%r11, %rsp
+>  	pop	%rbx
+>  	movl	%ebx, %ss
+>  	pop	%rbx
+>  	movl	%ebx, %es
+>  	pop	%rbx
+>  	movl	%ebx, %ds
+> -
+> -	/*
+> -	 * Convert 32-bit status code into 64-bit.
+> -	 */
+> -	test	%rax, %rax
+> -	jz	1f
+> -	movl	%eax, %ecx
+> -	andl	$0x0fffffff, %ecx
+> -	andl	$0xf0000000, %eax
+> -	shl	$32, %rax
+> -	or	%rcx, %rax
+> -1:
 
-I realize that you haven't actually changed any of the below, but this
-code has issues.
+Is it worth optimizing the conversion? The entire high nibble is
+significant according to the spec. It probably doesn't matter except in
+one potential case: according to the spec, transitioning secure boot
+status to setup mode by deleting the platform key is allowed to return
+EFI_WARN_RESET_REQUIRED and AFAICT this can take place after
+ExitBootServices?
 
-You don't actually need to save %ss.  Loading KERNEL_DS is fine.  0
-would almost be fine, except that AMD CPUs have some oddities and the
-fallout would be subtle and annoying to debug.
-
-The kernel does not strictly guarantee that the selectors in DS and ES
-are always valid.  They're fairly likely to be valid when running
-syscalls, but code like this should not bet on it.  And the EFI thunk
-is missing exception handlers when it reloads them.  So the right
-thing to do is probably to get rid of all the segment handling in the
-asm for everything except CS and to move it into C, like:
-
-unsigned short ds, es;
-
-/* DS and ES contain user values.  We need to save them. */
-savesegment(ds, ds);
-savesegment(es, es);
-
-/* The 32-bit EFI code needs a valid DS, ES, and SS.  There's no need
-to save the old SS: __KERNEL_DS is always acceptable.  */
-loadsegment(ss, __KERNEL_DS);
-loadsegment(ds, __KERNEL_DS);
-loadsegment(es, __KERNEL_DS);
-
-__s = efi64_thunk(...);
-
-loadsegment(ds, ds);
-loadsegment(es, es);
-
-Want to make that change?
+Separately, it might be worth considering moving the status translation
+into C instead of asm for the version in
+arch/x86/boot/compressed/efi_thunk_64.S -- there are (at least) three
+protocols that have methods that don't return efi_status_t:
+DEVICE_PATH_UTILITIES, DEVICE_PATH_TO_TEXT and DEVICE_PATH_FROM_TEXT. If
+we ever want to use them (eg for debugging), it might be worth having a
+thunk that doesn't mangle the return value.
