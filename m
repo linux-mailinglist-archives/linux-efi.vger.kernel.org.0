@@ -2,125 +2,134 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0914412B7E1
-	for <lists+linux-efi@lfdr.de>; Fri, 27 Dec 2019 18:52:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3937E12B9BA
+	for <lists+linux-efi@lfdr.de>; Fri, 27 Dec 2019 19:07:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727708AbfL0RwE (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 27 Dec 2019 12:52:04 -0500
-Received: from mail-qv1-f68.google.com ([209.85.219.68]:36972 "EHLO
-        mail-qv1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728328AbfL0Rv7 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 27 Dec 2019 12:51:59 -0500
-Received: by mail-qv1-f68.google.com with SMTP id f16so10286751qvi.4
-        for <linux-efi@vger.kernel.org>; Fri, 27 Dec 2019 09:51:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:from:date:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=AK8DzOWOdzcoZ7pM2nuZC9y/mHOeL2mRGUY2fabmWsM=;
-        b=VKlVIW4WBOh4onxGL9DrocCHtNAsYMT4LKb3k+vo6EToUDcYYtdzZt4rusx2p1indd
-         zOnW5RCoDxe9Sq7DX30lSt6CZN6xKnPXiJvw6J/wCjwJZaWWvquY0GUNcpgynBGjZrKQ
-         i9k6Xi1MPI7t+T8MmA6VkLinJgC8WQ8x9EHSknh4HlM1gjVmNUdzo9RfM53T1OvkNJkk
-         wvdAukK+7YoCwcceJiLSLHhZVPd8XXLSVJvV/8d0XryjgVTS4KI22raEOvGOUrYLkU78
-         Np00dD4jNivWCGbS13FB3aUwkZmg4F2S9+UWZFyBMaHXFHGH4HtBjA7Sbfom+78bQXlh
-         BB4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:from:date:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to:user-agent;
-        bh=AK8DzOWOdzcoZ7pM2nuZC9y/mHOeL2mRGUY2fabmWsM=;
-        b=jaCh2JzopTDyJR8jH3gWnx+XdM6GUB0WSdEOpYPCY2GEEcvDsbR4VG0zTI3KbDxXsv
-         4Ox+IY8oRtDiEjix7Tr2YnUlAHsKHy1JmEb6pbzGX8jUQzOChswDKdhXgUy64csx2bne
-         3AfZc9BaqqEasZgtmuShqg22v9Vg+UynRmCbuHTh/RKQ0AKmvI+vjgiqHmWYYPq99y7e
-         OxmnDcHuofl3JxpKlsCLDMmAPlOh1W1KnlsVnpjeTljv2nJ2prDRVn7s3c83TxqTE4fR
-         pFG+1f0eGrW+k9EmVFRaE9EHmOSfDNqub4t2CZ0wmd0zNFZbcs0eLKnFh2AWcdVdarEa
-         qLxA==
-X-Gm-Message-State: APjAAAUMUmkA8kIj5N1MhadIt/uzjAXpuigxOKMPglpAaE7qkGy/pi1w
-        rupZyeMzHqXHT/DpEXAFZwY=
-X-Google-Smtp-Source: APXvYqygqtTP9dpCs0+rzVl5dtmxP42kEe6Lfj+K+PAab9KMquWEq1APsY8/vRSSIySBGz6zQFU0oQ==
-X-Received: by 2002:a0c:fa43:: with SMTP id k3mr40194895qvo.229.1577469118363;
-        Fri, 27 Dec 2019 09:51:58 -0800 (PST)
-Received: from rani.riverdale.lan ([2001:470:1f07:5f3::b55f])
-        by smtp.gmail.com with ESMTPSA id o55sm10966786qtf.46.2019.12.27.09.51.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Dec 2019 09:51:57 -0800 (PST)
-From:   Arvind Sankar <nivedita@alum.mit.edu>
-X-Google-Original-From: Arvind Sankar <arvind@rani.riverdale.lan>
-Date:   Fri, 27 Dec 2019 12:51:56 -0500
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     linux-efi@vger.kernel.org, nivedita@alum.mit.edu,
-        hdegoede@redhat.com, Andy Lutomirski <luto@kernel.org>,
-        Ingo Molnar <mingo@redhat.com>
-Subject: Re: [PATCH 1/3] efi/x86: simplify 64-bit EFI firmware call wrapper
-Message-ID: <20191227175155.GA584323@rani.riverdale.lan>
-References: <20191226151407.29716-1-ardb@kernel.org>
- <20191226151407.29716-2-ardb@kernel.org>
+        id S1727524AbfL0SCd (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 27 Dec 2019 13:02:33 -0500
+Received: from mail.kernel.org ([198.145.29.99]:59358 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727510AbfL0SCc (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Fri, 27 Dec 2019 13:02:32 -0500
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id A1C5922B48;
+        Fri, 27 Dec 2019 18:02:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1577469751;
+        bh=GKYrCZ9/aDSL9Px/0Qf08dFJn+ZicSl101ldxGOtSH8=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=lUfjiCc1qpxm0wILDcimGRolnWgX/DtzfXSWl70PCM3lqK2YpAQpXHaBGk5lTSalt
+         g/+pwWyWlFGuxA2ngo7dI0ERGR8sbgj9Zw1Hcnnd8hoc2T1vkXWoI2Vc4sEfvwOYlG
+         Smq7b9pfMXK/qmlIlYBBCLW0s8FD2HgBBxAyKTX8=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Dave Young <dyoung@redhat.com>,
+        Michael Weiser <michael@weiser.dinsnail.net>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Borislav Petkov <bp@alien8.de>,
+        "Eric W . Biederman" <ebiederm@xmission.com>,
+        "H . Peter Anvin" <hpa@zytor.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        kexec@lists.infradead.org, linux-efi@vger.kernel.org,
+        Ingo Molnar <mingo@kernel.org>,
+        Sasha Levin <sashal@kernel.org>,
+        platform-driver-x86@vger.kernel.org, x86@kernel.org
+Subject: [PATCH AUTOSEL 4.14 06/57] x86/efi: Update e820 with reserved EFI boot services data to fix kexec breakage
+Date:   Fri, 27 Dec 2019 13:01:31 -0500
+Message-Id: <20191227180222.7076-6-sashal@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20191227180222.7076-1-sashal@kernel.org>
+References: <20191227180222.7076-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20191226151407.29716-2-ardb@kernel.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, Dec 26, 2019 at 04:14:05PM +0100, Ard Biesheuvel wrote:
-> The efi_call() wrapper used to invoke EFI runtime services serves
-> a number of purposes:
-> - realign the stack to 16 bytes
-> - preserve FP register state
-> - translate from SysV to MS calling convention.
-> 
-> Preserving the FP register state is redundant in most cases, since
-> efi_call() is almost always used from within the scope of a pair of
-> kernel_fpu_begin()/_end() calls, with the exception of the early
-> call to SetVirtualAddressMap() and the SGI UV support code. So let's
-> add a pair of kernel_fpu_begin()/_end() calls there as well, and
-> remove the unnecessary code from the assembly implementation of
-> efi_call(), and only keep the pieces that deal with the stack
-> alignment and the ABI translation.
-> 
-> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> ---
->  arch/x86/platform/efi/efi_64.c      |  4 +++
->  arch/x86/platform/efi/efi_stub_64.S | 36 ++------------------
->  arch/x86/platform/uv/bios_uv.c      |  7 ++--
->  3 files changed, 11 insertions(+), 36 deletions(-)
-> 
-> diff --git a/arch/x86/platform/efi/efi_64.c b/arch/x86/platform/efi/efi_64.c
-> index 03c2ed3c645c..3690df1d31c6 100644
-> --- a/arch/x86/platform/efi/efi_64.c
-> +++ b/arch/x86/platform/efi/efi_64.c
-> @@ -84,6 +84,7 @@ pgd_t * __init efi_call_phys_prolog(void)
->  
->  	if (!efi_enabled(EFI_OLD_MEMMAP)) {
->  		efi_switch_mm(&efi_mm);
-> +		kernel_fpu_begin();
->  		return efi_mm.pgd;
->  	}
->  
-> @@ -141,6 +142,7 @@ pgd_t * __init efi_call_phys_prolog(void)
->  	}
->  
->  	__flush_tlb_all();
-> +	kernel_fpu_begin();
->  	return save_pgd;
->  out:
->  	efi_call_phys_epilog(save_pgd);
-> @@ -158,6 +160,8 @@ void __init efi_call_phys_epilog(pgd_t *save_pgd)
->  	p4d_t *p4d;
->  	pud_t *pud;
->  
-> +	kernel_fpu_end();
-> +
->  	if (!efi_enabled(EFI_OLD_MEMMAP)) {
->  		efi_switch_mm(efi_scratch.prev_mm);
->  		return;
+From: Dave Young <dyoung@redhat.com>
 
-Does kernel_fpu_begin/kernel_fpu_end need to be outside the efi_switch_mm?
+[ Upstream commit af164898482817a1d487964b68f3c21bae7a1beb ]
 
-If there's an error in efi_call_phys_prolog during the old memmap code,
-it will call efi_call_phys_epilog without having called
-kernel_fpu_begin, which will cause an unbalanced kernel_fpu_end. Looks
-like the next step will be a panic anyway though.
+Michael Weiser reported that he got this error during a kexec rebooting:
+
+  esrt: Unsupported ESRT version 2904149718861218184.
+
+The ESRT memory stays in EFI boot services data, and it was reserved
+in kernel via efi_mem_reserve().  The initial purpose of the reservation
+is to reuse the EFI boot services data across kexec reboot. For example
+the BGRT image data and some ESRT memory like Michael reported.
+
+But although the memory is reserved it is not updated in the X86 E820 table,
+and kexec_file_load() iterates system RAM in the IO resource list to find places
+for kernel, initramfs and other stuff. In Michael's case the kexec loaded
+initramfs overwrote the ESRT memory and then the failure happened.
+
+Since kexec_file_load() depends on the E820 table being updated, just fix this
+by updating the reserved EFI boot services memory as reserved type in E820.
+
+Originally any memory descriptors with EFI_MEMORY_RUNTIME attribute are
+bypassed in the reservation code path because they are assumed as reserved.
+
+But the reservation is still needed for multiple kexec reboots,
+and it is the only possible case we come here thus just drop the code
+chunk, then everything works without side effects.
+
+On my machine the ESRT memory sits in an EFI runtime data range, it does
+not trigger the problem, but I successfully tested with BGRT instead.
+both kexec_load() and kexec_file_load() work and kdump works as well.
+
+[ mingo: Edited the changelog. ]
+
+Reported-by: Michael Weiser <michael@weiser.dinsnail.net>
+Tested-by: Michael Weiser <michael@weiser.dinsnail.net>
+Signed-off-by: Dave Young <dyoung@redhat.com>
+Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: Eric W. Biederman <ebiederm@xmission.com>
+Cc: H. Peter Anvin <hpa@zytor.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: kexec@lists.infradead.org
+Cc: linux-efi@vger.kernel.org
+Link: https://lkml.kernel.org/r/20191204075233.GA10520@dhcp-128-65.nay.redhat.com
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/x86/platform/efi/quirks.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
+
+diff --git a/arch/x86/platform/efi/quirks.c b/arch/x86/platform/efi/quirks.c
+index 5b513ccffde4..cadd7fd290fa 100644
+--- a/arch/x86/platform/efi/quirks.c
++++ b/arch/x86/platform/efi/quirks.c
+@@ -257,10 +257,6 @@ void __init efi_arch_mem_reserve(phys_addr_t addr, u64 size)
+ 		return;
+ 	}
+ 
+-	/* No need to reserve regions that will never be freed. */
+-	if (md.attribute & EFI_MEMORY_RUNTIME)
+-		return;
+-
+ 	size += addr % EFI_PAGE_SIZE;
+ 	size = round_up(size, EFI_PAGE_SIZE);
+ 	addr = round_down(addr, EFI_PAGE_SIZE);
+@@ -290,6 +286,8 @@ void __init efi_arch_mem_reserve(phys_addr_t addr, u64 size)
+ 	early_memunmap(new, new_size);
+ 
+ 	efi_memmap_install(new_phys, num_entries);
++	e820__range_update(addr, size, E820_TYPE_RAM, E820_TYPE_RESERVED);
++	e820__update_table(e820_table);
+ }
+ 
+ /*
+-- 
+2.20.1
+
