@@ -2,36 +2,36 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A8F212B5DB
-	for <lists+linux-efi@lfdr.de>; Fri, 27 Dec 2019 17:34:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A750B12B5DC
+	for <lists+linux-efi@lfdr.de>; Fri, 27 Dec 2019 17:34:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726602AbfL0QeQ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 27 Dec 2019 11:34:16 -0500
-Received: from mail.kernel.org ([198.145.29.99]:46562 "EHLO mail.kernel.org"
+        id S1726874AbfL0QeS (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 27 Dec 2019 11:34:18 -0500
+Received: from mail.kernel.org ([198.145.29.99]:46588 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726379AbfL0QeQ (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Fri, 27 Dec 2019 11:34:16 -0500
+        id S1726379AbfL0QeS (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Fri, 27 Dec 2019 11:34:18 -0500
 Received: from e123331-lin.home (amontpellier-657-1-18-247.w109-210.abo.wanadoo.fr [109.210.65.247])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 4B69A2173E;
-        Fri, 27 Dec 2019 16:34:14 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 571A020CC7;
+        Fri, 27 Dec 2019 16:34:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1577464455;
-        bh=/ce2ChLDw0QLOYk5XALfZjodb4g3teQx58NEvyAvA88=;
+        s=default; t=1577464457;
+        bh=6nSUzSgrpfankKJ5wIiQWPhA/Ug4dMl2yJTJv9+a3BI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Cn7oT7Fv+pSN16jfqC2ChE2cGsRJpggMf8O5vSCs6LVtg89SmB/vEF3uTPeK9cvpg
-         DBgHc6nTBeJBTa52W48Kr+oflyEjUHr3XFkZdqX6n49WxOOX3HG9r0J613EYTLzyGf
-         vZ/J/u70f9YW1XN1Jtx+fnIkxyX27MiPVMIpR+zI=
+        b=IL9a3t2Q1yGElpZxUs2g0MvfBNmjgs5ViH3pR9HE+E2qaP9l+mdYmWiv+wlBgG70W
+         hZnjXENgDsLb2o0d7ZYp+fyeRf6qAX9mCejijbGba8dJ+TrsHvgcZaPlr0pWg+GOVi
+         tCiJ25VckLOwBlBH0JX8t2ppdKd4lAQf2OFYkpBQ=
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-efi@vger.kernel.org
 Cc:     nivedita@alum.mit.edu, hdegoede@redhat.com,
         Ard Biesheuvel <ardb@kernel.org>,
         Andy Lutomirski <luto@kernel.org>,
         Ingo Molnar <mingo@redhat.com>
-Subject: [PATCH 1/3] x86/mm: fix NX bit clearing issue in kernel_map_pages_in_pgd
-Date:   Fri, 27 Dec 2019 17:34:16 +0100
-Message-Id: <20191227163418.16139-2-ardb@kernel.org>
+Subject: [PATCH 2/3] efi/x86: don't map the entire kernel text RW for mixed mode
+Date:   Fri, 27 Dec 2019 17:34:17 +0100
+Message-Id: <20191227163418.16139-3-ardb@kernel.org>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20191227163418.16139-1-ardb@kernel.org>
 References: <20191227163418.16139-1-ardb@kernel.org>
@@ -40,50 +40,41 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Commit 15f003d20782 ("x86/mm/pat: Don't implicitly allow _PAGE_RW in
-kernel_map_pages_in_pgd()") modified kernel_map_pages_in_pgd() to
-manage writable permissions of memory mappings in the EFI page
-table in a different way, but in the process, it removed the
-ability to clear NX attributes from read-only mappings, by
-clobbering the clear mask if _PAGE_RW is not being requested.
+The mixed mode thunking routine requires a part of it to be
+mapped 1:1, and for this reason, we currently map the entire
+kernel .text read/write in the EFI page tables, which is bad.
 
-Failure to remove the NX attribute from read-only mappings is
-unlikely to be a security issue, but it does prevent us from
-tightening the permissions in the EFI page tables going forward,
-so let's fix it now.
+In fact, the kernel_map_pages_in_pgd() invocation that installs
+this mapping is entirely redundant, since all of DRAM is already
+1:1 mapped read/write in the EFI page tables when we reach this
+point, which means that .rodata is mapped read-write as well.
 
-Fixes: 15f003d20782 ("x86/mm/pat: Don't implicitly allow _PAGE_RW in kernel_map_pages_in_pgd()
+So let's remap both .text and .rodata read-only in the EFI
+page tables.
+
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/x86/mm/pageattr.c | 8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+ arch/x86/platform/efi/efi_64.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/mm/pageattr.c b/arch/x86/mm/pageattr.c
-index 1b99ad05b117..f42780ba0893 100644
---- a/arch/x86/mm/pageattr.c
-+++ b/arch/x86/mm/pageattr.c
-@@ -2215,7 +2215,7 @@ int __init kernel_map_pages_in_pgd(pgd_t *pgd, u64 pfn, unsigned long address,
- 		.pgd = pgd,
- 		.numpages = numpages,
- 		.mask_set = __pgprot(0),
--		.mask_clr = __pgprot(0),
-+		.mask_clr = __pgprot(~page_flags & (_PAGE_NX|_PAGE_RW)),
- 		.flags = 0,
- 	};
+diff --git a/arch/x86/platform/efi/efi_64.c b/arch/x86/platform/efi/efi_64.c
+index 5cb081107d10..9e9a4b31f74b 100644
+--- a/arch/x86/platform/efi/efi_64.c
++++ b/arch/x86/platform/efi/efi_64.c
+@@ -402,11 +402,11 @@ int __init efi_setup_page_tables(unsigned long pa_memmap, unsigned num_pages)
+ 	efi_scratch.phys_stack = virt_to_phys(page_address(page));
+ 	efi_scratch.phys_stack += PAGE_SIZE; /* stack grows down */
  
-@@ -2224,12 +2224,6 @@ int __init kernel_map_pages_in_pgd(pgd_t *pgd, u64 pfn, unsigned long address,
- 	if (!(__supported_pte_mask & _PAGE_NX))
- 		goto out;
+-	npages = (_etext - _text) >> PAGE_SHIFT;
++	npages = (__end_rodata_aligned - _text) >> PAGE_SHIFT;
+ 	text = __pa(_text);
+ 	pfn = text >> PAGE_SHIFT;
  
--	if (!(page_flags & _PAGE_NX))
--		cpa.mask_clr = __pgprot(_PAGE_NX);
--
--	if (!(page_flags & _PAGE_RW))
--		cpa.mask_clr = __pgprot(_PAGE_RW);
--
- 	if (!(page_flags & _PAGE_ENC))
- 		cpa.mask_clr = pgprot_encrypted(cpa.mask_clr);
- 
+-	pf = _PAGE_RW | _PAGE_ENC;
++	pf = _PAGE_ENC;
+ 	if (kernel_map_pages_in_pgd(pgd, pfn, text, npages, pf)) {
+ 		pr_err("Failed to map kernel text 1:1\n");
+ 		return 1;
 -- 
 2.17.1
 
