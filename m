@@ -2,45 +2,39 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9CE4512B79F
-	for <lists+linux-efi@lfdr.de>; Fri, 27 Dec 2019 18:51:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8873212B7A6
+	for <lists+linux-efi@lfdr.de>; Fri, 27 Dec 2019 18:51:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727923AbfL0RoH (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 27 Dec 2019 12:44:07 -0500
-Received: from mail.kernel.org ([198.145.29.99]:41996 "EHLO mail.kernel.org"
+        id S1728367AbfL0RoL (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 27 Dec 2019 12:44:11 -0500
+Received: from mail.kernel.org ([198.145.29.99]:42128 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727892AbfL0RoG (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Fri, 27 Dec 2019 12:44:06 -0500
+        id S1728357AbfL0RoK (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Fri, 27 Dec 2019 12:44:10 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 2D30621582;
-        Fri, 27 Dec 2019 17:44:04 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id A6E84222C4;
+        Fri, 27 Dec 2019 17:44:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1577468645;
-        bh=GO7tGw4PWBWDUud0LUtRlKZcxaeqxivaTtMUKSsvUI8=;
+        s=default; t=1577468649;
+        bh=dSpqFK6i710jE4XItym/hIRAQU51Rs8DQiINUBZ5nGk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YVELbQLvNvUEp1wqOI4Qr/JqArQ2PX8cDD+EbR02A33JwppmSvntUFNtKdSguWEdH
-         bSygsd8U75u2IyBEEVa5LUbGkRO/EcUgejwMB8xLVqxXbd+PbGEDgwFNfPDofXRbLm
-         Hmn135iH5kDBvDPSvb955NJDECzjhfndOmWpWz/A=
+        b=dj3oI/AWo5Bq52XDgXEz5l8YCX5PVFZji/zgyIUWE0VHK4c4Iu+vxsE6r/G7HK2YL
+         emjPDetdt3/MvB+mTxIAGN5RcxyBt+r9qmMhnHy9j6GFN+t0u1CxvTNq0dCEF/3NG7
+         Ce9BhgjaX37TqJVO4ja9GxU9RI0BZmuD/RvQP4z4=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Dave Young <dyoung@redhat.com>,
-        Michael Weiser <michael@weiser.dinsnail.net>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Borislav Petkov <bp@alien8.de>,
-        "Eric W . Biederman" <ebiederm@xmission.com>,
-        "H . Peter Anvin" <hpa@zytor.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        kexec@lists.infradead.org, linux-efi@vger.kernel.org,
-        Ingo Molnar <mingo@kernel.org>,
-        Sasha Levin <sashal@kernel.org>,
-        platform-driver-x86@vger.kernel.org, x86@kernel.org
-Subject: [PATCH AUTOSEL 4.19 10/84] x86/efi: Update e820 with reserved EFI boot services data to fix kexec breakage
-Date:   Fri, 27 Dec 2019 12:42:38 -0500
-Message-Id: <20191227174352.6264-10-sashal@kernel.org>
+Cc:     Arvind Sankar <nivedita@alum.mit.edu>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Bhupesh Sharma <bhsharma@redhat.com>,
+        Masayoshi Mizuma <m.mizuma@jp.fujitsu.com>,
+        linux-efi@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 13/84] efi/gop: Return EFI_NOT_FOUND if there are no usable GOPs
+Date:   Fri, 27 Dec 2019 12:42:41 -0500
+Message-Id: <20191227174352.6264-13-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20191227174352.6264-1-sashal@kernel.org>
 References: <20191227174352.6264-1-sashal@kernel.org>
@@ -53,83 +47,89 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-From: Dave Young <dyoung@redhat.com>
+From: Arvind Sankar <nivedita@alum.mit.edu>
 
-[ Upstream commit af164898482817a1d487964b68f3c21bae7a1beb ]
+[ Upstream commit 6fc3cec30dfeee7d3c5db8154016aff9d65503c5 ]
 
-Michael Weiser reported that he got this error during a kexec rebooting:
+If we don't find a usable instance of the Graphics Output Protocol
+(GOP) because none of them have a framebuffer (i.e. they were all
+PIXEL_BLT_ONLY), but all the EFI calls succeeded, we will return
+EFI_SUCCESS even though we didn't find a usable GOP.
 
-  esrt: Unsupported ESRT version 2904149718861218184.
+Fix this by explicitly returning EFI_NOT_FOUND if no usable GOPs are
+found, allowing the caller to probe for UGA instead.
 
-The ESRT memory stays in EFI boot services data, and it was reserved
-in kernel via efi_mem_reserve().  The initial purpose of the reservation
-is to reuse the EFI boot services data across kexec reboot. For example
-the BGRT image data and some ESRT memory like Michael reported.
-
-But although the memory is reserved it is not updated in the X86 E820 table,
-and kexec_file_load() iterates system RAM in the IO resource list to find places
-for kernel, initramfs and other stuff. In Michael's case the kexec loaded
-initramfs overwrote the ESRT memory and then the failure happened.
-
-Since kexec_file_load() depends on the E820 table being updated, just fix this
-by updating the reserved EFI boot services memory as reserved type in E820.
-
-Originally any memory descriptors with EFI_MEMORY_RUNTIME attribute are
-bypassed in the reservation code path because they are assumed as reserved.
-
-But the reservation is still needed for multiple kexec reboots,
-and it is the only possible case we come here thus just drop the code
-chunk, then everything works without side effects.
-
-On my machine the ESRT memory sits in an EFI runtime data range, it does
-not trigger the problem, but I successfully tested with BGRT instead.
-both kexec_load() and kexec_file_load() work and kdump works as well.
-
-[ mingo: Edited the changelog. ]
-
-Reported-by: Michael Weiser <michael@weiser.dinsnail.net>
-Tested-by: Michael Weiser <michael@weiser.dinsnail.net>
-Signed-off-by: Dave Young <dyoung@redhat.com>
-Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: Eric W. Biederman <ebiederm@xmission.com>
-Cc: H. Peter Anvin <hpa@zytor.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: kexec@lists.infradead.org
+Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Bhupesh Sharma <bhsharma@redhat.com>
+Cc: Masayoshi Mizuma <m.mizuma@jp.fujitsu.com>
 Cc: linux-efi@vger.kernel.org
-Link: https://lkml.kernel.org/r/20191204075233.GA10520@dhcp-128-65.nay.redhat.com
+Link: https://lkml.kernel.org/r/20191206165542.31469-3-ardb@kernel.org
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/platform/efi/quirks.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/firmware/efi/libstub/gop.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/arch/x86/platform/efi/quirks.c b/arch/x86/platform/efi/quirks.c
-index 844d31cb8a0c..c9873c9168ad 100644
---- a/arch/x86/platform/efi/quirks.c
-+++ b/arch/x86/platform/efi/quirks.c
-@@ -259,10 +259,6 @@ void __init efi_arch_mem_reserve(phys_addr_t addr, u64 size)
- 		return;
- 	}
+diff --git a/drivers/firmware/efi/libstub/gop.c b/drivers/firmware/efi/libstub/gop.c
+index 24c461dea7af..16ed61c023e8 100644
+--- a/drivers/firmware/efi/libstub/gop.c
++++ b/drivers/firmware/efi/libstub/gop.c
+@@ -121,7 +121,7 @@ setup_gop32(efi_system_table_t *sys_table_arg, struct screen_info *si,
+ 	u64 fb_base;
+ 	struct efi_pixel_bitmask pixel_info;
+ 	int pixel_format;
+-	efi_status_t status = EFI_NOT_FOUND;
++	efi_status_t status;
+ 	u32 *handles = (u32 *)(unsigned long)gop_handle;
+ 	int i;
  
--	/* No need to reserve regions that will never be freed. */
--	if (md.attribute & EFI_MEMORY_RUNTIME)
--		return;
--
- 	size += addr % EFI_PAGE_SIZE;
- 	size = round_up(size, EFI_PAGE_SIZE);
- 	addr = round_down(addr, EFI_PAGE_SIZE);
-@@ -292,6 +288,8 @@ void __init efi_arch_mem_reserve(phys_addr_t addr, u64 size)
- 	early_memunmap(new, new_size);
+@@ -177,7 +177,7 @@ setup_gop32(efi_system_table_t *sys_table_arg, struct screen_info *si,
  
- 	efi_memmap_install(new_phys, num_entries);
-+	e820__range_update(addr, size, E820_TYPE_RAM, E820_TYPE_RESERVED);
-+	e820__update_table(e820_table);
+ 	/* Did we find any GOPs? */
+ 	if (!first_gop)
+-		goto out;
++		return EFI_NOT_FOUND;
+ 
+ 	/* EFI framebuffer */
+ 	si->orig_video_isVGA = VIDEO_TYPE_EFI;
+@@ -199,7 +199,7 @@ setup_gop32(efi_system_table_t *sys_table_arg, struct screen_info *si,
+ 	si->lfb_size = si->lfb_linelength * si->lfb_height;
+ 
+ 	si->capabilities |= VIDEO_CAPABILITY_SKIP_QUIRKS;
+-out:
++
+ 	return status;
  }
  
- /*
+@@ -239,7 +239,7 @@ setup_gop64(efi_system_table_t *sys_table_arg, struct screen_info *si,
+ 	u64 fb_base;
+ 	struct efi_pixel_bitmask pixel_info;
+ 	int pixel_format;
+-	efi_status_t status = EFI_NOT_FOUND;
++	efi_status_t status;
+ 	u64 *handles = (u64 *)(unsigned long)gop_handle;
+ 	int i;
+ 
+@@ -295,7 +295,7 @@ setup_gop64(efi_system_table_t *sys_table_arg, struct screen_info *si,
+ 
+ 	/* Did we find any GOPs? */
+ 	if (!first_gop)
+-		goto out;
++		return EFI_NOT_FOUND;
+ 
+ 	/* EFI framebuffer */
+ 	si->orig_video_isVGA = VIDEO_TYPE_EFI;
+@@ -317,7 +317,7 @@ setup_gop64(efi_system_table_t *sys_table_arg, struct screen_info *si,
+ 	si->lfb_size = si->lfb_linelength * si->lfb_height;
+ 
+ 	si->capabilities |= VIDEO_CAPABILITY_SKIP_QUIRKS;
+-out:
++
+ 	return status;
+ }
+ 
 -- 
 2.20.1
 
