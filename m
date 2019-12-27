@@ -2,39 +2,48 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 00F2812B876
-	for <lists+linux-efi@lfdr.de>; Fri, 27 Dec 2019 18:56:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9CE4512B79F
+	for <lists+linux-efi@lfdr.de>; Fri, 27 Dec 2019 18:51:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727435AbfL0Rzz (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 27 Dec 2019 12:55:55 -0500
-Received: from mail.kernel.org ([198.145.29.99]:38840 "EHLO mail.kernel.org"
+        id S1727923AbfL0RoH (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 27 Dec 2019 12:44:07 -0500
+Received: from mail.kernel.org ([198.145.29.99]:41996 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727752AbfL0RmJ (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Fri, 27 Dec 2019 12:42:09 -0500
+        id S1727892AbfL0RoG (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Fri, 27 Dec 2019 12:44:06 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D2DD4218AC;
-        Fri, 27 Dec 2019 17:42:07 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 2D30621582;
+        Fri, 27 Dec 2019 17:44:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1577468528;
-        bh=qw+nnA4BJ0MRDlYO03FDH+s5K6CRzbmFiiJjv7eTQwM=;
+        s=default; t=1577468645;
+        bh=GO7tGw4PWBWDUud0LUtRlKZcxaeqxivaTtMUKSsvUI8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OIHj5DafearWrabVdoIuCPKQZDIZcRS66VgsXr1o8lKCcmj0lZnszLAlzXfGDRih6
-         XBwLbYNy2eu7HGV0ILFN+JUKy/i7cOzzxlAKfSJxaF6uGMxpoHBZC/bBpy+iaB18/n
-         rdZtmxSBsuwF/MpPRREF4mIJGaWWD7f8+AjVkz2A=
+        b=YVELbQLvNvUEp1wqOI4Qr/JqArQ2PX8cDD+EbR02A33JwppmSvntUFNtKdSguWEdH
+         bSygsd8U75u2IyBEEVa5LUbGkRO/EcUgejwMB8xLVqxXbd+PbGEDgwFNfPDofXRbLm
+         Hmn135iH5kDBvDPSvb955NJDECzjhfndOmWpWz/A=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Ard Biesheuvel <ardb@kernel.org>,
-        Richard Narron <comet.berkeley@gmail.com>,
-        linux-efi@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 5.4 059/187] efi: Don't attempt to map RCI2 config table if it doesn't exist
-Date:   Fri, 27 Dec 2019 12:38:47 -0500
-Message-Id: <20191227174055.4923-59-sashal@kernel.org>
+Cc:     Dave Young <dyoung@redhat.com>,
+        Michael Weiser <michael@weiser.dinsnail.net>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Borislav Petkov <bp@alien8.de>,
+        "Eric W . Biederman" <ebiederm@xmission.com>,
+        "H . Peter Anvin" <hpa@zytor.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        kexec@lists.infradead.org, linux-efi@vger.kernel.org,
+        Ingo Molnar <mingo@kernel.org>,
+        Sasha Levin <sashal@kernel.org>,
+        platform-driver-x86@vger.kernel.org, x86@kernel.org
+Subject: [PATCH AUTOSEL 4.19 10/84] x86/efi: Update e820 with reserved EFI boot services data to fix kexec breakage
+Date:   Fri, 27 Dec 2019 12:42:38 -0500
+Message-Id: <20191227174352.6264-10-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191227174055.4923-1-sashal@kernel.org>
-References: <20191227174055.4923-1-sashal@kernel.org>
+In-Reply-To: <20191227174352.6264-1-sashal@kernel.org>
+References: <20191227174352.6264-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -44,70 +53,83 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Dave Young <dyoung@redhat.com>
 
-[ Upstream commit a470552ee8965da0fe6fd4df0aa39c4cda652c7c ]
+[ Upstream commit af164898482817a1d487964b68f3c21bae7a1beb ]
 
-Commit:
+Michael Weiser reported that he got this error during a kexec rebooting:
 
-  1c5fecb61255aa12 ("efi: Export Runtime Configuration Interface table to sysfs")
+  esrt: Unsupported ESRT version 2904149718861218184.
 
-... added support for a Dell specific UEFI configuration table, but
-failed to take into account that mapping the table should not be
-attempted unless the table actually exists. If it doesn't exist,
-the code usually fails silently unless pr_debug() prints are
-enabled. However, on 32-bit PAE x86, the splat below is produced due
-to the attempt to map the placeholder value EFI_INVALID_TABLE_ADDR
-which we use for non-existing UEFI configuration tables, and which
-equals ULONG_MAX.
+The ESRT memory stays in EFI boot services data, and it was reserved
+in kernel via efi_mem_reserve().  The initial purpose of the reservation
+is to reuse the EFI boot services data across kexec reboot. For example
+the BGRT image data and some ESRT memory like Michael reported.
 
-   memremap attempted on mixed range 0x00000000ffffffff size: 0x1e
-   WARNING: CPU: 1 PID: 1 at kernel/iomem.c:81 memremap+0x1a3/0x1c0
-   Modules linked in:
-   CPU: 1 PID: 1 Comm: swapper/0 Not tainted 5.4.2-smp-mine #1
-   Hardware name: Hewlett-Packard HP Z400 Workstation/0B4Ch, BIOS 786G3 v03.61 03/05/2018
-   EIP: memremap+0x1a3/0x1c0
-  ...
-   Call Trace:
-    ? map_properties+0x473/0x473
-    ? efi_rci2_sysfs_init+0x2c/0x154
-    ? map_properties+0x473/0x473
-    ? do_one_initcall+0x49/0x1d4
-    ? parse_args+0x1e8/0x2a0
-    ? do_early_param+0x7a/0x7a
-    ? kernel_init_freeable+0x139/0x1c2
-    ? rest_init+0x8e/0x8e
-    ? kernel_init+0xd/0xf2
-    ? ret_from_fork+0x2e/0x38
+But although the memory is reserved it is not updated in the X86 E820 table,
+and kexec_file_load() iterates system RAM in the IO resource list to find places
+for kernel, initramfs and other stuff. In Michael's case the kexec loaded
+initramfs overwrote the ESRT memory and then the failure happened.
 
-Fix this by checking whether the table exists before attempting to map it.
+Since kexec_file_load() depends on the E820 table being updated, just fix this
+by updating the reserved EFI boot services memory as reserved type in E820.
 
-Reported-by: Richard Narron <comet.berkeley@gmail.com>
-Tested-by: Richard Narron <comet.berkeley@gmail.com>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Originally any memory descriptors with EFI_MEMORY_RUNTIME attribute are
+bypassed in the reservation code path because they are assumed as reserved.
+
+But the reservation is still needed for multiple kexec reboots,
+and it is the only possible case we come here thus just drop the code
+chunk, then everything works without side effects.
+
+On my machine the ESRT memory sits in an EFI runtime data range, it does
+not trigger the problem, but I successfully tested with BGRT instead.
+both kexec_load() and kexec_file_load() work and kdump works as well.
+
+[ mingo: Edited the changelog. ]
+
+Reported-by: Michael Weiser <michael@weiser.dinsnail.net>
+Tested-by: Michael Weiser <michael@weiser.dinsnail.net>
+Signed-off-by: Dave Young <dyoung@redhat.com>
+Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: Eric W. Biederman <ebiederm@xmission.com>
+Cc: H. Peter Anvin <hpa@zytor.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: kexec@lists.infradead.org
 Cc: linux-efi@vger.kernel.org
-Fixes: 1c5fecb61255aa12 ("efi: Export Runtime Configuration Interface table to sysfs")
-Link: https://lkml.kernel.org/r/20191210090945.11501-2-ardb@kernel.org
+Link: https://lkml.kernel.org/r/20191204075233.GA10520@dhcp-128-65.nay.redhat.com
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/efi/rci2-table.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/x86/platform/efi/quirks.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/firmware/efi/rci2-table.c b/drivers/firmware/efi/rci2-table.c
-index 76b0c354a027..de1a9a1f9f14 100644
---- a/drivers/firmware/efi/rci2-table.c
-+++ b/drivers/firmware/efi/rci2-table.c
-@@ -81,6 +81,9 @@ static int __init efi_rci2_sysfs_init(void)
- 	struct kobject *tables_kobj;
- 	int ret = -ENOMEM;
+diff --git a/arch/x86/platform/efi/quirks.c b/arch/x86/platform/efi/quirks.c
+index 844d31cb8a0c..c9873c9168ad 100644
+--- a/arch/x86/platform/efi/quirks.c
++++ b/arch/x86/platform/efi/quirks.c
+@@ -259,10 +259,6 @@ void __init efi_arch_mem_reserve(phys_addr_t addr, u64 size)
+ 		return;
+ 	}
  
-+	if (rci2_table_phys == EFI_INVALID_TABLE_ADDR)
-+		return 0;
-+
- 	rci2_base = memremap(rci2_table_phys,
- 			     sizeof(struct rci2_table_global_hdr),
- 			     MEMREMAP_WB);
+-	/* No need to reserve regions that will never be freed. */
+-	if (md.attribute & EFI_MEMORY_RUNTIME)
+-		return;
+-
+ 	size += addr % EFI_PAGE_SIZE;
+ 	size = round_up(size, EFI_PAGE_SIZE);
+ 	addr = round_down(addr, EFI_PAGE_SIZE);
+@@ -292,6 +288,8 @@ void __init efi_arch_mem_reserve(phys_addr_t addr, u64 size)
+ 	early_memunmap(new, new_size);
+ 
+ 	efi_memmap_install(new_phys, num_entries);
++	e820__range_update(addr, size, E820_TYPE_RAM, E820_TYPE_RESERVED);
++	e820__update_table(e820_table);
+ }
+ 
+ /*
 -- 
 2.20.1
 
