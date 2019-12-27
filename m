@@ -2,134 +2,134 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E8F2112B9D2
-	for <lists+linux-efi@lfdr.de>; Fri, 27 Dec 2019 19:13:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E875512BA90
+	for <lists+linux-efi@lfdr.de>; Fri, 27 Dec 2019 19:20:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726999AbfL0SN2 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 27 Dec 2019 13:13:28 -0500
-Received: from mail-wm1-f65.google.com ([209.85.128.65]:37675 "EHLO
-        mail-wm1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726495AbfL0SN2 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 27 Dec 2019 13:13:28 -0500
-Received: by mail-wm1-f65.google.com with SMTP id f129so8852201wmf.2
-        for <linux-efi@vger.kernel.org>; Fri, 27 Dec 2019 10:13:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=qlBgU5bOhYWiNQgHz4lAqhmQ8GRjYhNhLw+Jcq2XTQk=;
-        b=qQyYKvv7c4A3D4Oo7vZhjiuoh8b/ZLUBU8gMkmm0JHMctjBGQemrEmscvWBdMPRPF3
-         RsunjA3oxeJC2BLpzVBu0CpsWCEhKFpsENmPTUH4o01JIvdp0PNrXuGMnkdmOvveGtZs
-         +B8WKTWVAjj77mHvYFWG6O2Fdt0WGiaz8CI1wlLnSHiBO5hKiOynwBZxvX+HejXQ4XUX
-         8edrAp7MhnPy3s/fUkX0+coNHfhY7vmPDlXJiAtIShXJxqsKLujPfVq6SjvxSvbH6BPh
-         721Qpa27AmfAfVO6stn86Epef2VLw7m491JkFkEHA0bGLd5Cxu7XuDKUHBPUWXFGUqCM
-         0Enw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=qlBgU5bOhYWiNQgHz4lAqhmQ8GRjYhNhLw+Jcq2XTQk=;
-        b=tsFjOYWwuKcuNcLi1hWSLK+eTRVk1P18G8TR6JWiatdy3o/yqC6GUvZ0hJxJ0MrIvI
-         Sy8yAH+ERVqyHLDZRAEUHkaUhvKxExe3vHD+nzPl9wHtn1KWFP3PQJDiPjxnveMErcKX
-         UNQPbsB7YBdzGGAC7rXzokC5k1q7gy9qQToo83EKbvKblohnu0R4ONwtGlNa5mLtP+bc
-         HwkqHDsX0BSUbGizuyrYOAovjLRHjEKHNnwY3v0F+8QPopL4NkcgfQB/T+EIYU4nCgej
-         EJLfpUm4Ldk2NGFsm7v7ZB946Ggyri2OudgQs69FL6Bbv3MtZKVCSwNEWRaSvyEPWBec
-         lslA==
-X-Gm-Message-State: APjAAAVzMR4G17ewUR3/37Mes2/n0rIOgHCGpWIFAJloJ73YwFX94XND
-        sv3ICoB37t2ewhx3nWZhBvj/PuvmuTfOPGTi7cyc1kdXsEk=
-X-Google-Smtp-Source: APXvYqw2hDwlMV14spbKc6uQ+fMI5Fxl8HyXZutuhAQ6oyavw5UGnBMMVSmDLfVkzOHcVtHE6hyrHZuGaetisN3VFdw=
-X-Received: by 2002:a1c:7901:: with SMTP id l1mr19897144wme.67.1577470406338;
- Fri, 27 Dec 2019 10:13:26 -0800 (PST)
+        id S1727234AbfL0SOn (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 27 Dec 2019 13:14:43 -0500
+Received: from mail.kernel.org ([198.145.29.99]:38928 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727232AbfL0SOm (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Fri, 27 Dec 2019 13:14:42 -0500
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id B5753208C4;
+        Fri, 27 Dec 2019 18:14:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1577470481;
+        bh=dSpqFK6i710jE4XItym/hIRAQU51Rs8DQiINUBZ5nGk=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=rxFYj1jJG2WQ2/uyuZ+AxMHnD3u0yfH5ZXEyiq5eTf0j4Acvw0yBndsR/cR6GOMME
+         Ixp3dfL2Bh7wtWgHQSJxrF2hdV0PI1nRjtyAQU0gJUS164l2g9xYhCUP6IDiA3OqYS
+         1+J3+aQBGbvO2n4ZM1IQOaiR+AdhwxebNTOVIW+Y=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Arvind Sankar <nivedita@alum.mit.edu>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Bhupesh Sharma <bhsharma@redhat.com>,
+        Masayoshi Mizuma <m.mizuma@jp.fujitsu.com>,
+        linux-efi@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.9 04/38] efi/gop: Return EFI_NOT_FOUND if there are no usable GOPs
+Date:   Fri, 27 Dec 2019 13:14:01 -0500
+Message-Id: <20191227181435.7644-4-sashal@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20191227181435.7644-1-sashal@kernel.org>
+References: <20191227181435.7644-1-sashal@kernel.org>
 MIME-Version: 1.0
-References: <20191226151407.29716-1-ardb@kernel.org> <20191226151407.29716-2-ardb@kernel.org>
- <20191227175155.GA584323@rani.riverdale.lan> <20191227180855.GB584323@rani.riverdale.lan>
-In-Reply-To: <20191227180855.GB584323@rani.riverdale.lan>
-From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Date:   Fri, 27 Dec 2019 19:13:28 +0100
-Message-ID: <CAKv+Gu-LeDgMFU-Hfuc7wDgNRmq2n0goJTuK6f8oahB_MGCc-g@mail.gmail.com>
-Subject: Re: [PATCH 1/3] efi/x86: simplify 64-bit EFI firmware call wrapper
-To:     Arvind Sankar <nivedita@alum.mit.edu>,
-        Andy Lutomirski <luto@kernel.org>,
-        Ingo Molnar <mingo@redhat.com>
-Cc:     Ard Biesheuvel <ardb@kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, 27 Dec 2019 at 19:08, Arvind Sankar <nivedita@alum.mit.edu> wrote:
->
-> On Fri, Dec 27, 2019 at 12:51:56PM -0500, Arvind Sankar wrote:
-> > On Thu, Dec 26, 2019 at 04:14:05PM +0100, Ard Biesheuvel wrote:
-> > > The efi_call() wrapper used to invoke EFI runtime services serves
-> > > a number of purposes:
-> > > - realign the stack to 16 bytes
-> > > - preserve FP register state
-> > > - translate from SysV to MS calling convention.
-> > >
-> > > Preserving the FP register state is redundant in most cases, since
-> > > efi_call() is almost always used from within the scope of a pair of
-> > > kernel_fpu_begin()/_end() calls, with the exception of the early
-> > > call to SetVirtualAddressMap() and the SGI UV support code. So let's
-> > > add a pair of kernel_fpu_begin()/_end() calls there as well, and
-> > > remove the unnecessary code from the assembly implementation of
-> > > efi_call(), and only keep the pieces that deal with the stack
-> > > alignment and the ABI translation.
-> > >
-> > > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> > > ---
-> > >  arch/x86/platform/efi/efi_64.c      |  4 +++
-> > >  arch/x86/platform/efi/efi_stub_64.S | 36 ++------------------
-> > >  arch/x86/platform/uv/bios_uv.c      |  7 ++--
-> > >  3 files changed, 11 insertions(+), 36 deletions(-)
-> > >
-> > > diff --git a/arch/x86/platform/efi/efi_64.c b/arch/x86/platform/efi/efi_64.c
-> > > index 03c2ed3c645c..3690df1d31c6 100644
-> > > --- a/arch/x86/platform/efi/efi_64.c
-> > > +++ b/arch/x86/platform/efi/efi_64.c
-> > > @@ -84,6 +84,7 @@ pgd_t * __init efi_call_phys_prolog(void)
-> > >
-> > >     if (!efi_enabled(EFI_OLD_MEMMAP)) {
-> > >             efi_switch_mm(&efi_mm);
-> > > +           kernel_fpu_begin();
-> > >             return efi_mm.pgd;
-> > >     }
-> > >
-> > > @@ -141,6 +142,7 @@ pgd_t * __init efi_call_phys_prolog(void)
-> > >     }
-> > >
-> > >     __flush_tlb_all();
-> > > +   kernel_fpu_begin();
-> > >     return save_pgd;
-> > >  out:
-> > >     efi_call_phys_epilog(save_pgd);
-> > > @@ -158,6 +160,8 @@ void __init efi_call_phys_epilog(pgd_t *save_pgd)
-> > >     p4d_t *p4d;
-> > >     pud_t *pud;
-> > >
-> > > +   kernel_fpu_end();
-> > > +
-> > >     if (!efi_enabled(EFI_OLD_MEMMAP)) {
-> > >             efi_switch_mm(efi_scratch.prev_mm);
-> > >             return;
-> >
-> > Does kernel_fpu_begin/kernel_fpu_end need to be outside the efi_switch_mm?
-> >
-> > If there's an error in efi_call_phys_prolog during the old memmap code,
-> > it will call efi_call_phys_epilog without having called
-> > kernel_fpu_begin, which will cause an unbalanced kernel_fpu_end. Looks
-> > like the next step will be a panic anyway though.
->
-> Do we even need to save/restore the fpu state at this point in boot? The
-> mixed-mode code path doesn't appear to be saving/restoring the XMM
-> registers during SetVirtualAddressMap.
+From: Arvind Sankar <nivedita@alum.mit.edu>
 
-That is an excellent question, and I was hoping Andy or Ingo could
-shed some light on that.
+[ Upstream commit 6fc3cec30dfeee7d3c5db8154016aff9d65503c5 ]
 
-I tested without and it booted fine, and it does seem to me that there
-should be very little to preserve given how early this call happens
-(from efi_enter_virtual_mode() which gets called from start_kernel())
+If we don't find a usable instance of the Graphics Output Protocol
+(GOP) because none of them have a framebuffer (i.e. they were all
+PIXEL_BLT_ONLY), but all the EFI calls succeeded, we will return
+EFI_SUCCESS even though we didn't find a usable GOP.
+
+Fix this by explicitly returning EFI_NOT_FOUND if no usable GOPs are
+found, allowing the caller to probe for UGA instead.
+
+Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Bhupesh Sharma <bhsharma@redhat.com>
+Cc: Masayoshi Mizuma <m.mizuma@jp.fujitsu.com>
+Cc: linux-efi@vger.kernel.org
+Link: https://lkml.kernel.org/r/20191206165542.31469-3-ardb@kernel.org
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/firmware/efi/libstub/gop.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/firmware/efi/libstub/gop.c b/drivers/firmware/efi/libstub/gop.c
+index 24c461dea7af..16ed61c023e8 100644
+--- a/drivers/firmware/efi/libstub/gop.c
++++ b/drivers/firmware/efi/libstub/gop.c
+@@ -121,7 +121,7 @@ setup_gop32(efi_system_table_t *sys_table_arg, struct screen_info *si,
+ 	u64 fb_base;
+ 	struct efi_pixel_bitmask pixel_info;
+ 	int pixel_format;
+-	efi_status_t status = EFI_NOT_FOUND;
++	efi_status_t status;
+ 	u32 *handles = (u32 *)(unsigned long)gop_handle;
+ 	int i;
+ 
+@@ -177,7 +177,7 @@ setup_gop32(efi_system_table_t *sys_table_arg, struct screen_info *si,
+ 
+ 	/* Did we find any GOPs? */
+ 	if (!first_gop)
+-		goto out;
++		return EFI_NOT_FOUND;
+ 
+ 	/* EFI framebuffer */
+ 	si->orig_video_isVGA = VIDEO_TYPE_EFI;
+@@ -199,7 +199,7 @@ setup_gop32(efi_system_table_t *sys_table_arg, struct screen_info *si,
+ 	si->lfb_size = si->lfb_linelength * si->lfb_height;
+ 
+ 	si->capabilities |= VIDEO_CAPABILITY_SKIP_QUIRKS;
+-out:
++
+ 	return status;
+ }
+ 
+@@ -239,7 +239,7 @@ setup_gop64(efi_system_table_t *sys_table_arg, struct screen_info *si,
+ 	u64 fb_base;
+ 	struct efi_pixel_bitmask pixel_info;
+ 	int pixel_format;
+-	efi_status_t status = EFI_NOT_FOUND;
++	efi_status_t status;
+ 	u64 *handles = (u64 *)(unsigned long)gop_handle;
+ 	int i;
+ 
+@@ -295,7 +295,7 @@ setup_gop64(efi_system_table_t *sys_table_arg, struct screen_info *si,
+ 
+ 	/* Did we find any GOPs? */
+ 	if (!first_gop)
+-		goto out;
++		return EFI_NOT_FOUND;
+ 
+ 	/* EFI framebuffer */
+ 	si->orig_video_isVGA = VIDEO_TYPE_EFI;
+@@ -317,7 +317,7 @@ setup_gop64(efi_system_table_t *sys_table_arg, struct screen_info *si,
+ 	si->lfb_size = si->lfb_linelength * si->lfb_height;
+ 
+ 	si->capabilities |= VIDEO_CAPABILITY_SKIP_QUIRKS;
+-out:
++
+ 	return status;
+ }
+ 
+-- 
+2.20.1
+
