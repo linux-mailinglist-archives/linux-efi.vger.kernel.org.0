@@ -2,193 +2,125 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E157012B7AB
-	for <lists+linux-efi@lfdr.de>; Fri, 27 Dec 2019 18:51:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0914412B7E1
+	for <lists+linux-efi@lfdr.de>; Fri, 27 Dec 2019 18:52:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727011AbfL0Rua (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 27 Dec 2019 12:50:30 -0500
-Received: from mail.kernel.org ([198.145.29.99]:42230 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727943AbfL0RoN (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Fri, 27 Dec 2019 12:44:13 -0500
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 75DE620740;
-        Fri, 27 Dec 2019 17:44:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1577468652;
-        bh=Dpq8wuZ0aaFZMU+WnK22+ipxpSbe3i1U4BrVYFSNTiM=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=n/jQp1Oyxdf9hmb3+uur5gpzfQ3XdoTRgf4hteRJC7lEqaGntJijP1+l8dqkiZRI0
-         uuWzByuP8aXZVyibQswUdK692Bjs2wVDvESmFIEzJkF0fJ2vO9C3h2iuqoh4rdsurn
-         YhRDmNDc6guZMLn0lP+m9iTjX3q0ani0nJsEqM7w=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Arvind Sankar <nivedita@alum.mit.edu>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Bhupesh Sharma <bhsharma@redhat.com>,
-        Masayoshi Mizuma <m.mizuma@jp.fujitsu.com>,
-        linux-efi@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 4.19 15/84] efi/gop: Fix memory leak in __gop_query32/64()
-Date:   Fri, 27 Dec 2019 12:42:43 -0500
-Message-Id: <20191227174352.6264-15-sashal@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191227174352.6264-1-sashal@kernel.org>
-References: <20191227174352.6264-1-sashal@kernel.org>
+        id S1727708AbfL0RwE (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 27 Dec 2019 12:52:04 -0500
+Received: from mail-qv1-f68.google.com ([209.85.219.68]:36972 "EHLO
+        mail-qv1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728328AbfL0Rv7 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 27 Dec 2019 12:51:59 -0500
+Received: by mail-qv1-f68.google.com with SMTP id f16so10286751qvi.4
+        for <linux-efi@vger.kernel.org>; Fri, 27 Dec 2019 09:51:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:from:date:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=AK8DzOWOdzcoZ7pM2nuZC9y/mHOeL2mRGUY2fabmWsM=;
+        b=VKlVIW4WBOh4onxGL9DrocCHtNAsYMT4LKb3k+vo6EToUDcYYtdzZt4rusx2p1indd
+         zOnW5RCoDxe9Sq7DX30lSt6CZN6xKnPXiJvw6J/wCjwJZaWWvquY0GUNcpgynBGjZrKQ
+         i9k6Xi1MPI7t+T8MmA6VkLinJgC8WQ8x9EHSknh4HlM1gjVmNUdzo9RfM53T1OvkNJkk
+         wvdAukK+7YoCwcceJiLSLHhZVPd8XXLSVJvV/8d0XryjgVTS4KI22raEOvGOUrYLkU78
+         Np00dD4jNivWCGbS13FB3aUwkZmg4F2S9+UWZFyBMaHXFHGH4HtBjA7Sbfom+78bQXlh
+         BB4w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:from:date:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to:user-agent;
+        bh=AK8DzOWOdzcoZ7pM2nuZC9y/mHOeL2mRGUY2fabmWsM=;
+        b=jaCh2JzopTDyJR8jH3gWnx+XdM6GUB0WSdEOpYPCY2GEEcvDsbR4VG0zTI3KbDxXsv
+         4Ox+IY8oRtDiEjix7Tr2YnUlAHsKHy1JmEb6pbzGX8jUQzOChswDKdhXgUy64csx2bne
+         3AfZc9BaqqEasZgtmuShqg22v9Vg+UynRmCbuHTh/RKQ0AKmvI+vjgiqHmWYYPq99y7e
+         OxmnDcHuofl3JxpKlsCLDMmAPlOh1W1KnlsVnpjeTljv2nJ2prDRVn7s3c83TxqTE4fR
+         pFG+1f0eGrW+k9EmVFRaE9EHmOSfDNqub4t2CZ0wmd0zNFZbcs0eLKnFh2AWcdVdarEa
+         qLxA==
+X-Gm-Message-State: APjAAAUMUmkA8kIj5N1MhadIt/uzjAXpuigxOKMPglpAaE7qkGy/pi1w
+        rupZyeMzHqXHT/DpEXAFZwY=
+X-Google-Smtp-Source: APXvYqygqtTP9dpCs0+rzVl5dtmxP42kEe6Lfj+K+PAab9KMquWEq1APsY8/vRSSIySBGz6zQFU0oQ==
+X-Received: by 2002:a0c:fa43:: with SMTP id k3mr40194895qvo.229.1577469118363;
+        Fri, 27 Dec 2019 09:51:58 -0800 (PST)
+Received: from rani.riverdale.lan ([2001:470:1f07:5f3::b55f])
+        by smtp.gmail.com with ESMTPSA id o55sm10966786qtf.46.2019.12.27.09.51.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 27 Dec 2019 09:51:57 -0800 (PST)
+From:   Arvind Sankar <nivedita@alum.mit.edu>
+X-Google-Original-From: Arvind Sankar <arvind@rani.riverdale.lan>
+Date:   Fri, 27 Dec 2019 12:51:56 -0500
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-efi@vger.kernel.org, nivedita@alum.mit.edu,
+        hdegoede@redhat.com, Andy Lutomirski <luto@kernel.org>,
+        Ingo Molnar <mingo@redhat.com>
+Subject: Re: [PATCH 1/3] efi/x86: simplify 64-bit EFI firmware call wrapper
+Message-ID: <20191227175155.GA584323@rani.riverdale.lan>
+References: <20191226151407.29716-1-ardb@kernel.org>
+ <20191226151407.29716-2-ardb@kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20191226151407.29716-2-ardb@kernel.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-From: Arvind Sankar <nivedita@alum.mit.edu>
+On Thu, Dec 26, 2019 at 04:14:05PM +0100, Ard Biesheuvel wrote:
+> The efi_call() wrapper used to invoke EFI runtime services serves
+> a number of purposes:
+> - realign the stack to 16 bytes
+> - preserve FP register state
+> - translate from SysV to MS calling convention.
+> 
+> Preserving the FP register state is redundant in most cases, since
+> efi_call() is almost always used from within the scope of a pair of
+> kernel_fpu_begin()/_end() calls, with the exception of the early
+> call to SetVirtualAddressMap() and the SGI UV support code. So let's
+> add a pair of kernel_fpu_begin()/_end() calls there as well, and
+> remove the unnecessary code from the assembly implementation of
+> efi_call(), and only keep the pieces that deal with the stack
+> alignment and the ABI translation.
+> 
+> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> ---
+>  arch/x86/platform/efi/efi_64.c      |  4 +++
+>  arch/x86/platform/efi/efi_stub_64.S | 36 ++------------------
+>  arch/x86/platform/uv/bios_uv.c      |  7 ++--
+>  3 files changed, 11 insertions(+), 36 deletions(-)
+> 
+> diff --git a/arch/x86/platform/efi/efi_64.c b/arch/x86/platform/efi/efi_64.c
+> index 03c2ed3c645c..3690df1d31c6 100644
+> --- a/arch/x86/platform/efi/efi_64.c
+> +++ b/arch/x86/platform/efi/efi_64.c
+> @@ -84,6 +84,7 @@ pgd_t * __init efi_call_phys_prolog(void)
+>  
+>  	if (!efi_enabled(EFI_OLD_MEMMAP)) {
+>  		efi_switch_mm(&efi_mm);
+> +		kernel_fpu_begin();
+>  		return efi_mm.pgd;
+>  	}
+>  
+> @@ -141,6 +142,7 @@ pgd_t * __init efi_call_phys_prolog(void)
+>  	}
+>  
+>  	__flush_tlb_all();
+> +	kernel_fpu_begin();
+>  	return save_pgd;
+>  out:
+>  	efi_call_phys_epilog(save_pgd);
+> @@ -158,6 +160,8 @@ void __init efi_call_phys_epilog(pgd_t *save_pgd)
+>  	p4d_t *p4d;
+>  	pud_t *pud;
+>  
+> +	kernel_fpu_end();
+> +
+>  	if (!efi_enabled(EFI_OLD_MEMMAP)) {
+>  		efi_switch_mm(efi_scratch.prev_mm);
+>  		return;
 
-[ Upstream commit ff397be685e410a59c34b21ce0c55d4daa466bb7 ]
+Does kernel_fpu_begin/kernel_fpu_end need to be outside the efi_switch_mm?
 
-efi_graphics_output_protocol::query_mode() returns info in
-callee-allocated memory which must be freed by the caller, which
-we aren't doing.
-
-We don't actually need to call query_mode() in order to obtain the
-info for the current graphics mode, which is already there in
-gop->mode->info, so just access it directly in the setup_gop32/64()
-functions.
-
-Also nothing uses the size of the info structure, so don't update the
-passed-in size (which is the size of the gop_handle table in bytes)
-unnecessarily.
-
-Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Bhupesh Sharma <bhsharma@redhat.com>
-Cc: Masayoshi Mizuma <m.mizuma@jp.fujitsu.com>
-Cc: linux-efi@vger.kernel.org
-Link: https://lkml.kernel.org/r/20191206165542.31469-5-ardb@kernel.org
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/firmware/efi/libstub/gop.c | 66 ++++++------------------------
- 1 file changed, 12 insertions(+), 54 deletions(-)
-
-diff --git a/drivers/firmware/efi/libstub/gop.c b/drivers/firmware/efi/libstub/gop.c
-index 81ffda5d1e48..fd8053f9556e 100644
---- a/drivers/firmware/efi/libstub/gop.c
-+++ b/drivers/firmware/efi/libstub/gop.c
-@@ -85,30 +85,6 @@ setup_pixel_info(struct screen_info *si, u32 pixels_per_scan_line,
- 	}
- }
- 
--static efi_status_t
--__gop_query32(efi_system_table_t *sys_table_arg,
--	      struct efi_graphics_output_protocol_32 *gop32,
--	      struct efi_graphics_output_mode_info **info,
--	      unsigned long *size, u64 *fb_base)
--{
--	struct efi_graphics_output_protocol_mode_32 *mode;
--	efi_graphics_output_protocol_query_mode query_mode;
--	efi_status_t status;
--	unsigned long m;
--
--	m = gop32->mode;
--	mode = (struct efi_graphics_output_protocol_mode_32 *)m;
--	query_mode = (void *)(unsigned long)gop32->query_mode;
--
--	status = __efi_call_early(query_mode, (void *)gop32, mode->mode, size,
--				  info);
--	if (status != EFI_SUCCESS)
--		return status;
--
--	*fb_base = mode->frame_buffer_base;
--	return status;
--}
--
- static efi_status_t
- setup_gop32(efi_system_table_t *sys_table_arg, struct screen_info *si,
-             efi_guid_t *proto, unsigned long size, void **gop_handle)
-@@ -130,6 +106,7 @@ setup_gop32(efi_system_table_t *sys_table_arg, struct screen_info *si,
- 
- 	nr_gops = size / sizeof(u32);
- 	for (i = 0; i < nr_gops; i++) {
-+		struct efi_graphics_output_protocol_mode_32 *mode;
- 		struct efi_graphics_output_mode_info *info = NULL;
- 		efi_guid_t conout_proto = EFI_CONSOLE_OUT_DEVICE_GUID;
- 		bool conout_found = false;
-@@ -147,9 +124,11 @@ setup_gop32(efi_system_table_t *sys_table_arg, struct screen_info *si,
- 		if (status == EFI_SUCCESS)
- 			conout_found = true;
- 
--		status = __gop_query32(sys_table_arg, gop32, &info, &size,
--				       &current_fb_base);
--		if (status == EFI_SUCCESS && (!first_gop || conout_found) &&
-+		mode = (void *)(unsigned long)gop32->mode;
-+		info = (void *)(unsigned long)mode->info;
-+		current_fb_base = mode->frame_buffer_base;
-+
-+		if ((!first_gop || conout_found) &&
- 		    info->pixel_format != PIXEL_BLT_ONLY) {
- 			/*
- 			 * Systems that use the UEFI Console Splitter may
-@@ -203,30 +182,6 @@ setup_gop32(efi_system_table_t *sys_table_arg, struct screen_info *si,
- 	return EFI_SUCCESS;
- }
- 
--static efi_status_t
--__gop_query64(efi_system_table_t *sys_table_arg,
--	      struct efi_graphics_output_protocol_64 *gop64,
--	      struct efi_graphics_output_mode_info **info,
--	      unsigned long *size, u64 *fb_base)
--{
--	struct efi_graphics_output_protocol_mode_64 *mode;
--	efi_graphics_output_protocol_query_mode query_mode;
--	efi_status_t status;
--	unsigned long m;
--
--	m = gop64->mode;
--	mode = (struct efi_graphics_output_protocol_mode_64 *)m;
--	query_mode = (void *)(unsigned long)gop64->query_mode;
--
--	status = __efi_call_early(query_mode, (void *)gop64, mode->mode, size,
--				  info);
--	if (status != EFI_SUCCESS)
--		return status;
--
--	*fb_base = mode->frame_buffer_base;
--	return status;
--}
--
- static efi_status_t
- setup_gop64(efi_system_table_t *sys_table_arg, struct screen_info *si,
- 	    efi_guid_t *proto, unsigned long size, void **gop_handle)
-@@ -248,6 +203,7 @@ setup_gop64(efi_system_table_t *sys_table_arg, struct screen_info *si,
- 
- 	nr_gops = size / sizeof(u64);
- 	for (i = 0; i < nr_gops; i++) {
-+		struct efi_graphics_output_protocol_mode_64 *mode;
- 		struct efi_graphics_output_mode_info *info = NULL;
- 		efi_guid_t conout_proto = EFI_CONSOLE_OUT_DEVICE_GUID;
- 		bool conout_found = false;
-@@ -265,9 +221,11 @@ setup_gop64(efi_system_table_t *sys_table_arg, struct screen_info *si,
- 		if (status == EFI_SUCCESS)
- 			conout_found = true;
- 
--		status = __gop_query64(sys_table_arg, gop64, &info, &size,
--				       &current_fb_base);
--		if (status == EFI_SUCCESS && (!first_gop || conout_found) &&
-+		mode = (void *)(unsigned long)gop64->mode;
-+		info = (void *)(unsigned long)mode->info;
-+		current_fb_base = mode->frame_buffer_base;
-+
-+		if ((!first_gop || conout_found) &&
- 		    info->pixel_format != PIXEL_BLT_ONLY) {
- 			/*
- 			 * Systems that use the UEFI Console Splitter may
--- 
-2.20.1
-
+If there's an error in efi_call_phys_prolog during the old memmap code,
+it will call efi_call_phys_epilog without having called
+kernel_fpu_begin, which will cause an unbalanced kernel_fpu_end. Looks
+like the next step will be a panic anyway though.
