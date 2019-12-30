@@ -2,64 +2,75 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BCBAD12D44A
-	for <lists+linux-efi@lfdr.de>; Mon, 30 Dec 2019 21:10:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F1EEB12D462
+	for <lists+linux-efi@lfdr.de>; Mon, 30 Dec 2019 21:17:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727680AbfL3UKm (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 30 Dec 2019 15:10:42 -0500
-Received: from mail-qk1-f194.google.com ([209.85.222.194]:42872 "EHLO
-        mail-qk1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727667AbfL3UKl (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 30 Dec 2019 15:10:41 -0500
-Received: by mail-qk1-f194.google.com with SMTP id z14so25773882qkg.9
-        for <linux-efi@vger.kernel.org>; Mon, 30 Dec 2019 12:10:41 -0800 (PST)
+        id S1727715AbfL3UQv (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 30 Dec 2019 15:16:51 -0500
+Received: from mail-oi1-f196.google.com ([209.85.167.196]:39757 "EHLO
+        mail-oi1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727698AbfL3UQv (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 30 Dec 2019 15:16:51 -0500
+Received: by mail-oi1-f196.google.com with SMTP id a67so11455210oib.6
+        for <linux-efi@vger.kernel.org>; Mon, 30 Dec 2019 12:16:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:from:date:to:cc:subject:message-id:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=0rL8ME0bpAcMgOofRgvyKSa7hNalbG6Q1Lmlac5MZko=;
-        b=HSFHc4Z/kraJK5C2yFbeRyWMZJD5Jfh7h+YNllbgK/v+IgtMmhX5tCBUZZS34HsiN7
-         oT1lWAqx2gdGVkSm6D5iX5z8z1AeTsv3TOhRiUmRIjoXfr6yCxd7EY/JA92vI/GHP+Wz
-         Rmpk36LwfsCjXDwieNixoxiKc23Yll1aNgj4P1vnovPd9mtcqqX+gTX3FAFO24S0qWZq
-         yqBDqaI1apGdqZn98m52WFVyKq8AaxYtXfhyVZlFlSL3EjoNK0gWNhwKIubVner5Ldri
-         i47k2inDoDJaG5LVttDmVUdI1dOk3jSBp95mQ2Etnqn7CPOo9kVd5ohKlonnHfc44Otr
-         XeTg==
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=vGoYHJkV2sBuC/EabEMn2jT6G42n0LQcEtNTThbzJvo=;
+        b=LOFA+mxlmd5oV8l+Ly2ITiGE7quCUFquXLsCfnDW9MllcsxJM+xgnpfdFKisb8BlW1
+         GsO5VONykMGvsC/iRi6Eid6vExDoXX/AGXk3RgaQSaV/KJstjudxFNuYhLaX/O/sRVgI
+         fCl75NApfe3sM2ibIn7p9xCxDkpU9lBZeIiHUmzhr+s8RGLjZMMlrnEOtoVPjzn7bz+8
+         qAXlEZ4WIdspGkErzVHHtXGP+qBfG7Ig0sNFiB5LEExIhOb0uo+rkIgNuo/eDxEcTcVA
+         mHuU2UpXe/KNqH19ffb+XBrtbUJmugSY6caSLnbRawTieig0KcwDS3330Y27EYSFO6nG
+         GO5A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:from:date:to:cc:subject:message-id
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=0rL8ME0bpAcMgOofRgvyKSa7hNalbG6Q1Lmlac5MZko=;
-        b=fOACWb02xFPlLxrSEaBMqwIprqQraPUCVZ80fcWG/dI7Ll2BvoUn0epPjHid321L5J
-         Dm/JE/RAXPKmcv0pD8VGfQDKxwZ1Hoxwb87MU7XTFW+yCPHjp+N2JhHSqt5Pc+STVsg8
-         XjFGYjz7hGzxdNNKJaJedyrFxL9xpZnmS/H3CrkIv/d4bwxm14B40oAnVP2SzKK1OuAn
-         StHZf73SHRl2TqXQ3v+54b25P6sAO6yApkk+mepJ9vpziTTWg+NeUV3SgioE+/uTht55
-         Kgw77kpVfRNJec4iLAA5O1WLwlOBy5m1wQ9hns8hDXPOXEQSue/ZPSENEmm/Cri2UTvR
-         l1wA==
-X-Gm-Message-State: APjAAAUFW6zYZAvBwoFlRzd1kqFMiUTfW6uy2TG0e8OGcR6j/3bnwByL
-        0v5aXRNMOaojUWj9eVMXvzqhoMbL
-X-Google-Smtp-Source: APXvYqxeOoCCKudh7Lb3TRmQGPsCHFyvxlJw54TdRJTsdY3lUs0s5XeI3mr1K1fWRuHtaV5Vf+se+A==
-X-Received: by 2002:a37:454d:: with SMTP id s74mr56494934qka.104.1577736640925;
-        Mon, 30 Dec 2019 12:10:40 -0800 (PST)
-Received: from rani.riverdale.lan ([2001:470:1f07:5f3::b55f])
-        by smtp.gmail.com with ESMTPSA id 184sm12711860qke.73.2019.12.30.12.10.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Dec 2019 12:10:40 -0800 (PST)
-From:   Arvind Sankar <nivedita@alum.mit.edu>
-X-Google-Original-From: Arvind Sankar <arvind@rani.riverdale.lan>
-Date:   Mon, 30 Dec 2019 15:10:39 -0500
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     linux-efi@vger.kernel.org
-Subject: Re: [RFC PATCH 1/2] efi/x86: Check number of arguments to variadic
- functions
-Message-ID: <20191230201038.GA2593547@rani.riverdale.lan>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=vGoYHJkV2sBuC/EabEMn2jT6G42n0LQcEtNTThbzJvo=;
+        b=U+UzU0yaw4G/q5mRROsM0B/cu73z6e0k766XJ/SZrQyc45MZhgPIEP/GQKq0p3Eux6
+         i4ZAez26cUdo8cVwpi3QlvAkflilTInSCn7lCbkyO0epHeu9mThnUbbG4b7an+mtyqQM
+         TbRxtC6/Bs6iDnjk7ScsQn7uDnaQRqw0c32dyPsAzx//rM6KFl553IIZEiBfluBU32bN
+         XYr/hpHaJER+C3A0B9kECwNUWc1ZpbO3AYkN7/LxoltsgXF6d0NqcnjtcM/vh96NP0mA
+         qO3wh+YltvVR1CZwSiwJQnK+pwzJShw8h4bLcxs1BiEoeOTWZzpl1QDkvwnl34/ASJ18
+         D0vw==
+X-Gm-Message-State: APjAAAWyu7yjf60UnYmcja50Iqsz5jFwF0nOEvQx6A69CUQgG9XFC20d
+        Nv+3sO0S9IAkC0S7x2v6ArC3JVel47WFOJ+d8D0ZHg==
+X-Google-Smtp-Source: APXvYqx3ceamtmJUChp1TLuDkDv4af0iLI+bwyDSS+upKsqsk+U0Ob0XHRDXqZ29dmIwB0CA1zn0kxN2oJlTNMRltC0=
+X-Received: by 2002:aca:3f54:: with SMTP id m81mr333228oia.73.1577737010159;
+ Mon, 30 Dec 2019 12:16:50 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20191230200011.2589934-1-nivedita@alum.mit.edu>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+References: <20191204075233.GA10520@dhcp-128-65.nay.redhat.com>
+ <CANTgghnsdijH90qnm24qat70T7FA5qOwmnXXt+NYVxHYa4SLJA@mail.gmail.com>
+ <CAPcyv4iRdJO6xrCaN=vrSvYFLZanLazmJLArT5YMfdJ6rc-PEQ@mail.gmail.com> <CAPcyv4hT9HXN2CqZw96zqgdNaapc=9oqSYvGrnEbeqSmx0t5xw@mail.gmail.com>
+In-Reply-To: <CAPcyv4hT9HXN2CqZw96zqgdNaapc=9oqSYvGrnEbeqSmx0t5xw@mail.gmail.com>
+From:   Dan Williams <dan.j.williams@intel.com>
+Date:   Mon, 30 Dec 2019 12:16:39 -0800
+Message-ID: <CAPcyv4jLxqPaB22Ao9oV31Gm=b0+Phty+Uz33Snex4QchOUb0Q@mail.gmail.com>
+Subject: Re: [PATCH] x86/efi: update e820 about reserved EFI boot services
+ data to fix kexec breakage
+To:     Dan Williams <dan.j.williams.korg@gmail.com>
+Cc:     Dave Young <dyoung@redhat.com>,
+        linux-efi <linux-efi@vger.kernel.org>, X86 ML <x86@kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Michael Weiser <michael@weiser.dinsnail.net>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        kexec@lists.infradead.org, Ingo Molnar <mingo@redhat.com>,
+        Borislav Petkov <bp@alien8.de>,
+        "Eric W. Biederman" <ebiederm@xmission.com>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Thomas Gleixner <tglx@linutronix.de>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-This is on top of https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git/log/?h=next
+On Mon, Dec 30, 2019 at 1:42 AM Dan Williams <dan.j.williams@intel.com> wrote:
+[..]
+> I'll send a patch to fix up efi_fake_memmap().
+
+For others following this thread, that patch is here:
+
+http://lore.kernel.org/r/157773590338.4153451.5898675419563883883.stgit@dwillia2-desk3.amr.corp.intel.com
