@@ -2,44 +2,46 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9933B12D43B
-	for <lists+linux-efi@lfdr.de>; Mon, 30 Dec 2019 21:00:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 18AE812D43C
+	for <lists+linux-efi@lfdr.de>; Mon, 30 Dec 2019 21:00:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727670AbfL3UAN (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 30 Dec 2019 15:00:13 -0500
-Received: from mail-qk1-f195.google.com ([209.85.222.195]:37769 "EHLO
-        mail-qk1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727654AbfL3UAN (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 30 Dec 2019 15:00:13 -0500
-Received: by mail-qk1-f195.google.com with SMTP id 21so27043894qky.4
+        id S1727654AbfL3UAO (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 30 Dec 2019 15:00:14 -0500
+Received: from mail-qk1-f193.google.com ([209.85.222.193]:44287 "EHLO
+        mail-qk1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727680AbfL3UAO (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 30 Dec 2019 15:00:14 -0500
+Received: by mail-qk1-f193.google.com with SMTP id w127so26988182qkb.11
         for <linux-efi@vger.kernel.org>; Mon, 30 Dec 2019 12:00:13 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=oe07ZCehM3769XL2X3799NFp2AgKvDGdC/EONV29CPA=;
-        b=rSwU/RsFOO0KV83Dxr6vrUcBtGj5q06daE9FeRY4Mj4/lNl/XXHNPz72+eyHo88zi0
-         +knBY2O+JCRb8YLBccj/7sEHLvr4RS08IMEhe41psviS8vr3+VDBVP6DxpuHQJz8WkzC
-         uh4SfRT7l77fXXk95grAf+lHssBoc5CwCDiELMKGkveSlUIEZHs/1/TfPIO04wGF7pxL
-         RtQPcNavoIWOrz1IxmnsjIywjLaKBgsjqenL9UPP9KvILa8Ls4+VlbrmxA6b/XA8n7Fe
-         CuIhBDZakwKBlsgGN32e/IT9Fm6KYiZZeLIt2njTwRj3CE+koOvSawxmC2Q2DRLyttM2
-         910A==
-X-Gm-Message-State: APjAAAVUW+fed0bitE6fw8/EFd15sFpBNYMXLU5MXuvUfNFy+crQU6Fu
-        pum0EzhSDl7RnOeUqJ18sDa4QakM
-X-Google-Smtp-Source: APXvYqy1/ZZYsyB6lwXRIkkrjrY5MYwnI/t0q8lrwT7pNrXdmlQudXqRG76u2mhm8PVUXEgNRbdwww==
-X-Received: by 2002:a37:bcc7:: with SMTP id m190mr21881207qkf.103.1577736012633;
-        Mon, 30 Dec 2019 12:00:12 -0800 (PST)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=JrhY9woIaTkGOL2rgrk093k4KuJtcE/LflbaJEnb+no=;
+        b=NGwhDCNS0w9m5QnI8ckxuzBDZi4Z3AYSn6bvMVnW4WLDDBLrfV2tJm2+3j/+Qo+mgc
+         /F71KhPj/uIHLJ1oQ7JVj0407Dd7DB0QsTsq4k40Wycqbo4CYEmkNAHGAio8PbSRPbjO
+         4nOvDRLU/j7muMHM4bI0o2p0b5ZczKLxfdjvR0G6OP4YS6Pdz3TlgdYV9rjindM5bimp
+         G2hK9mOvLZzEKYeI+mt+4dvzMw8jZ0ovYNYZoISHel05BMrMpy9y7csHJZV8xUPLWrII
+         1L2UDdBnnb/m7SdjaScoSaLI/RkIPHsPRZXcm1bYhPj9M55YStOdWu2Au9lEKvIfHkck
+         R/SA==
+X-Gm-Message-State: APjAAAVcbbA8n4e3lUvBxvI9XEYoHUVSo+8HnU9+nUlV5AHzixZLPD3i
+        DHpalUt6wocvOWy57OaL9nKlWZ62
+X-Google-Smtp-Source: APXvYqwVgvbbSG6CqpiJEje4sXRU2JSahbGWKEQ5wxvFE1teMhTzHF3H6Ed8JtldeYJIkJH/xQNi3A==
+X-Received: by 2002:a37:6706:: with SMTP id b6mr53285241qkc.461.1577736013139;
+        Mon, 30 Dec 2019 12:00:13 -0800 (PST)
 Received: from rani.riverdale.lan ([2001:470:1f07:5f3::b55f])
-        by smtp.gmail.com with ESMTPSA id z141sm12701168qkb.63.2019.12.30.12.00.11
+        by smtp.gmail.com with ESMTPSA id z141sm12701168qkb.63.2019.12.30.12.00.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Dec 2019 12:00:11 -0800 (PST)
+        Mon, 30 Dec 2019 12:00:12 -0800 (PST)
 From:   Arvind Sankar <nivedita@alum.mit.edu>
 To:     Ard Biesheuvel <ardb@kernel.org>
 Cc:     linux-efi@vger.kernel.org
-Subject: [RFC PATCH 1/2] efi/x86: Check number of arguments to variadic functions
-Date:   Mon, 30 Dec 2019 15:00:10 -0500
-Message-Id: <20191230200011.2589934-1-nivedita@alum.mit.edu>
+Subject: [RFC PATCH 2/2] efi/x86: Allow translating 64-bit arguments for mixed mode calls
+Date:   Mon, 30 Dec 2019 15:00:11 -0500
+Message-Id: <20191230200011.2589934-2-nivedita@alum.mit.edu>
 X-Mailer: git-send-email 2.24.1
+In-Reply-To: <20191230200011.2589934-1-nivedita@alum.mit.edu>
+References: <20191230200011.2589934-1-nivedita@alum.mit.edu>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-efi-owner@vger.kernel.org
@@ -47,100 +49,116 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On x86 we need to thunk through assembler stubs to call the EFI services
-in many cases. The assembler stub has limits on how many arguments it
-handles. Introduce a few macros to check that we do not try to pass too
-many arguments to the stubs.
+When an EFI call takes 64-bit arguments, the mixed-mode call must push
+the two 32-bit halves as separate arguments onto the stack.
+
+Introduce the ability to define macros to perform this translation for
+the calls that need it, and use it for free_pages.
 
 Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
 ---
- arch/x86/include/asm/efi.h | 52 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 52 insertions(+)
+ arch/x86/boot/compressed/eboot.c              | 17 ------------
+ arch/x86/include/asm/efi.h                    | 27 +++++++++++++++----
+ .../firmware/efi/libstub/efi-stub-helper.c    |  5 +---
+ 3 files changed, 23 insertions(+), 26 deletions(-)
 
+diff --git a/arch/x86/boot/compressed/eboot.c b/arch/x86/boot/compressed/eboot.c
+index 98477f3529f6..4884483ec093 100644
+--- a/arch/x86/boot/compressed/eboot.c
++++ b/arch/x86/boot/compressed/eboot.c
+@@ -889,20 +889,3 @@ struct boot_params *efi_main(efi_handle_t handle,
+ 	for (;;)
+ 		asm("hlt");
+ }
+-
+-#ifdef CONFIG_EFI_MIXED
+-void efi_free_native(unsigned long size, unsigned long addr);
+-
+-void efi_free(unsigned long size, unsigned long addr)
+-{
+-	if (!size)
+-		return;
+-
+-	if (efi_is_native())
+-		efi_free_native(size, addr);
+-	else
+-		efi64_thunk(efi_table_attr(efi_system_table(),
+-					   boottime)->mixed_mode.free_pages,
+-			    addr, 0, DIV_ROUND_UP(size, EFI_PAGE_SIZE));
+-}
+-#endif
 diff --git a/arch/x86/include/asm/efi.h b/arch/x86/include/asm/efi.h
-index c49619a28be8..c9800802894f 100644
+index c9800802894f..5f70499803a1 100644
 --- a/arch/x86/include/asm/efi.h
 +++ b/arch/x86/include/asm/efi.h
-@@ -8,6 +8,7 @@
- #include <asm/tlb.h>
- #include <asm/nospec-branch.h>
- #include <asm/mmu_context.h>
-+#include <linux/build_bug.h>
+@@ -258,22 +258,39 @@ static inline bool efi_is_native(void)
+ 		: (__typeof__(inst->attr))				\
+ 			efi_mixed_mode_cast(inst->mixed_mode.attr))
  
- /*
-  * We map the EFI regions needed for runtime services non-contiguously,
-@@ -34,6 +35,47 @@
- 
- #define ARCH_EFI_IRQ_FLAGS_MASK	X86_EFLAGS_IF
- 
-+/*
-+ * The EFI services are called through variadic functions in many cases. These
-+ * functions are implemented in assembler and support only a fixed number of
-+ * arguments. The macros below allows us to check at build time that we don't
-+ * try to call them with too many arguments.
-+ */
++#define __efi64_thunk(inst, func, ...)					\
++	efi64_thunk(inst->mixed_mode.func,				\
++		__efi64_argmap(__efi64_argmap_ ## func, __VA_ARGS__))
 +
-+/*
-+ * __efi_nargs() will return the number of arguments if it is 7 or less, and
-+ * cause a BUILD_BUG otherwise. The limitations of the C preprocessor make it
-+ * impossible to calculate the exact number of arguments beyond some
-+ * pre-defined limit. The maximum number of arguments currently supported by
-+ * any of the thunks is 7, so this is good enough for now and can be extended
-+ * in the obvious way if we ever need more.
-+ */
++#define __efi64_argmap(map, ...)					\
++	__PASTE(__efi64_argmap__,					\
++		__efi64_argmap_def_p(map(__VA_ARGS__)))(map, __VA_ARGS__)
 +
-+#define __efi_nargs(...) __efi_nargs_(0, ##__VA_ARGS__)
-+#define __efi_nargs_(...) __efi_nargs__(__VA_ARGS__,		\
-+	__efi_arg_sentinel(7), __efi_arg_sentinel(6),		\
-+	__efi_arg_sentinel(5), __efi_arg_sentinel(4),		\
-+	__efi_arg_sentinel(3), __efi_arg_sentinel(2),		\
-+	__efi_arg_sentinel(1), __efi_arg_sentinel(0))
-+#define __efi_nargs__(_0, _1, _2, _3, _4, _5, _6, _7, n, ...)	\
-+	__take_second_arg(n,					\
-+		({ BUILD_BUG_ON_MSG(1, "__efi_nargs limit exceeded"); 8; }))
-+#define __efi_arg_sentinel(n) , n
++#define __efi64_argmap__undef(map, ...) __VA_ARGS__
++#define __efi64_argmap__def(map, ...) map(__VA_ARGS__)
 +
-+/*
-+ * __efi_nargs_check(f, n, ...) will cause a BUILD_BUG if the ellipsis
-+ * represents more than n arguments.
-+ */
++#define __efi64_argmap_def_p(...)					\
++	__efi64_argmap_def_p_(__VA_ARGS__, __efi_arg_sentinel(undef))
++#define __efi64_argmap_def_p_(_0, n, ...) __take_second_arg(n, def)
 +
-+#define __efi_nargs_check(f, n, ...) \
-+	__efi_nargs_check_(f, __efi_nargs(__VA_ARGS__), n, ##__VA_ARGS__)
-+#define __efi_nargs_check_(...) __efi_nargs_check__(__VA_ARGS__)
-+#define __efi_nargs_check__(f, p, n, ...) ({				\
-+	BUILD_BUG_ON_MSG(						\
-+		(p) > (n),						\
-+		#f " called with too many arguments (" #p ">" #n ")");	\
-+})
-+
- #ifdef CONFIG_X86_32
+ #define efi_call_proto(inst, func, ...)					\
+ 	(efi_is_native()						\
+ 		? inst->func(inst, ##__VA_ARGS__)			\
+-		: efi64_thunk(inst->mixed_mode.func, inst, ##__VA_ARGS__))
++		: __efi64_thunk(inst, func, inst, ##__VA_ARGS__))
  
- extern asmlinkage
-@@ -62,6 +104,11 @@ unsigned long efi_call_phys(void *, unsigned long, unsigned long, u32, void *);
+ #define efi_bs_call(func, ...)						\
+ 	(efi_is_native()						\
+ 		? efi_system_table()->boottime->func(__VA_ARGS__)	\
+-		: efi64_thunk(efi_table_attr(efi_system_table(),	\
+-				boottime)->mixed_mode.func, __VA_ARGS__))
++		: __efi64_thunk(efi_table_attr(efi_system_table(),	\
++				boottime), func, __VA_ARGS__))
  
- extern asmlinkage u64 efi_call(void *fp, ...);
- 
-+#define efi_call(...) ({						\
-+	__efi_nargs_check(efi_call, 7, __VA_ARGS__);			\
-+	efi_call(__VA_ARGS__);						\
-+})
+ #define efi_rt_call(func, ...)						\
+ 	(efi_is_native()						\
+ 		? efi_system_table()->runtime->func(__VA_ARGS__)	\
+-		: efi64_thunk(efi_table_attr(efi_system_table(),	\
+-				runtime)->mixed_mode.func, __VA_ARGS__))
++		: __efi64_thunk(efi_table_attr(efi_system_table(),	\
++				runtime), func, __VA_ARGS__))
 +
- #define efi_call_phys(f, args...)		efi_call((f), args)
++#define __efi64_argmap_free_pages(addr, size) (addr), 0, (size)
  
- /*
-@@ -149,6 +196,11 @@ extern u64 efi_setup;
- #ifdef CONFIG_EFI
- extern efi_status_t efi64_thunk(u32, ...);
+ extern bool efi_reboot_required(void);
+ extern bool efi_is_table_address(unsigned long phys_addr);
+diff --git a/drivers/firmware/efi/libstub/efi-stub-helper.c b/drivers/firmware/efi/libstub/efi-stub-helper.c
+index f1b9c36934e9..fcc45ee94e02 100644
+--- a/drivers/firmware/efi/libstub/efi-stub-helper.c
++++ b/drivers/firmware/efi/libstub/efi-stub-helper.c
+@@ -344,9 +344,6 @@ efi_status_t efi_low_alloc_above(unsigned long size, unsigned long align,
+ }
  
-+#define efi64_thunk(...) ({						\
-+	__efi_nargs_check(efi64_thunk, 6, __VA_ARGS__);			\
-+	efi64_thunk(__VA_ARGS__);					\
-+})
-+
- static inline bool efi_is_mixed(void)
+ void efi_free(unsigned long size, unsigned long addr)
+-	__weak __alias(efi_free_native);
+-
+-void efi_free_native(unsigned long size, unsigned long addr)
  {
- 	if (!IS_ENABLED(CONFIG_EFI_MIXED))
+ 	unsigned long nr_pages;
+ 
+@@ -354,7 +351,7 @@ void efi_free_native(unsigned long size, unsigned long addr)
+ 		return;
+ 
+ 	nr_pages = round_up(size, EFI_ALLOC_ALIGN) / EFI_PAGE_SIZE;
+-	efi_system_table()->boottime->free_pages(addr, nr_pages);
++	efi_bs_call(free_pages, addr, nr_pages);
+ }
+ 
+ static efi_status_t efi_file_size(void *__fh, efi_char16_t *filename_16,
 -- 
 2.24.1
 
