@@ -2,32 +2,32 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3624F12DC0D
-	for <lists+linux-efi@lfdr.de>; Tue, 31 Dec 2019 23:20:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C6C512DC10
+	for <lists+linux-efi@lfdr.de>; Tue, 31 Dec 2019 23:20:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727114AbfLaWU0 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 31 Dec 2019 17:20:26 -0500
-Received: from mga12.intel.com ([192.55.52.136]:61101 "EHLO mga12.intel.com"
+        id S1727139AbfLaWUb (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 31 Dec 2019 17:20:31 -0500
+Received: from mga18.intel.com ([134.134.136.126]:19283 "EHLO mga18.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727054AbfLaWU0 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Tue, 31 Dec 2019 17:20:26 -0500
+        id S1727054AbfLaWUa (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Tue, 31 Dec 2019 17:20:30 -0500
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 31 Dec 2019 14:20:25 -0800
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by orsmga106.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 31 Dec 2019 14:20:30 -0800
 X-IronPort-AV: E=Sophos;i="5.69,380,1571727600"; 
-   d="scan'208";a="368974398"
+   d="scan'208";a="221518225"
 Received: from dwillia2-desk3.jf.intel.com (HELO dwillia2-desk3.amr.corp.intel.com) ([10.54.39.16])
-  by orsmga004-auth.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 31 Dec 2019 14:20:25 -0800
-Subject: [PATCH v2 1/4] efi: Add a flags parameter to efi_memory_map
+  by orsmga003-auth.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 31 Dec 2019 14:20:30 -0800
+Subject: [PATCH v2 2/4] efi: Add tracking for dynamically allocated memmaps
 From:   Dan Williams <dan.j.williams@intel.com>
 To:     mingo@redhat.com
 Cc:     Taku Izumi <izumi.taku@jp.fujitsu.com>,
         Ard Biesheuvel <ard.biesheuvel@linaro.org>,
         linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
         kexec@lists.infradead.org, x86@kernel.org
-Date:   Tue, 31 Dec 2019 14:04:23 -0800
-Message-ID: <157782986309.367056.18234587970434659175.stgit@dwillia2-desk3.amr.corp.intel.com>
+Date:   Tue, 31 Dec 2019 14:04:28 -0800
+Message-ID: <157782986828.367056.12411146199853107797.stgit@dwillia2-desk3.amr.corp.intel.com>
 In-Reply-To: <157782985777.367056.14741265874314204783.stgit@dwillia2-desk3.amr.corp.intel.com>
 References: <157782985777.367056.14741265874314204783.stgit@dwillia2-desk3.amr.corp.intel.com>
 User-Agent: StGit/0.18-3-g996c
@@ -39,131 +39,209 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-In preparation for garbage collecting dynamically allocated efi memory
-maps, where the allocation method of memblock vs slab needs to be
-recalled, convert the existing 'late' flag into a 'flags' bitmask.
+In preparation for fixing efi_memmap_alloc() leaks, add support for
+recording whether the memmap was dynamically allocated from slab,
+memblock, or is the original physical memmap provided by the platform.
 
 Cc: Taku Izumi <izumi.taku@jp.fujitsu.com>
 Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>
 Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 ---
- drivers/firmware/efi/memmap.c |   24 +++++++++++++-----------
- include/linux/efi.h           |    3 ++-
- 2 files changed, 15 insertions(+), 12 deletions(-)
+ arch/x86/platform/efi/efi.c     |    2 +-
+ arch/x86/platform/efi/quirks.c  |   11 ++++++-----
+ drivers/firmware/efi/fake_mem.c |    5 +++--
+ drivers/firmware/efi/memmap.c   |   16 ++++++++++------
+ include/linux/efi.h             |    8 ++++++--
+ 5 files changed, 26 insertions(+), 16 deletions(-)
 
+diff --git a/arch/x86/platform/efi/efi.c b/arch/x86/platform/efi/efi.c
+index 38d44f36d5ed..7086afbb84fd 100644
+--- a/arch/x86/platform/efi/efi.c
++++ b/arch/x86/platform/efi/efi.c
+@@ -333,7 +333,7 @@ static void __init efi_clean_memmap(void)
+ 		u64 size = efi.memmap.nr_map - n_removal;
+ 
+ 		pr_warn("Removing %d invalid memory map entries.\n", n_removal);
+-		efi_memmap_install(efi.memmap.phys_map, size);
++		efi_memmap_install(efi.memmap.phys_map, size, 0);
+ 	}
+ }
+ 
+diff --git a/arch/x86/platform/efi/quirks.c b/arch/x86/platform/efi/quirks.c
+index f8f0220b6a66..4a71c790f9c3 100644
+--- a/arch/x86/platform/efi/quirks.c
++++ b/arch/x86/platform/efi/quirks.c
+@@ -244,6 +244,7 @@ EXPORT_SYMBOL_GPL(efi_query_variable_store);
+ void __init efi_arch_mem_reserve(phys_addr_t addr, u64 size)
+ {
+ 	phys_addr_t new_phys, new_size;
++	unsigned long flags = 0;
+ 	struct efi_mem_range mr;
+ 	efi_memory_desc_t md;
+ 	int num_entries;
+@@ -272,8 +273,7 @@ void __init efi_arch_mem_reserve(phys_addr_t addr, u64 size)
+ 	num_entries += efi.memmap.nr_map;
+ 
+ 	new_size = efi.memmap.desc_size * num_entries;
+-
+-	new_phys = efi_memmap_alloc(num_entries);
++	new_phys = efi_memmap_alloc(num_entries, &flags);
+ 	if (!new_phys) {
+ 		pr_err("Could not allocate boot services memmap\n");
+ 		return;
+@@ -288,7 +288,7 @@ void __init efi_arch_mem_reserve(phys_addr_t addr, u64 size)
+ 	efi_memmap_insert(&efi.memmap, new, &mr);
+ 	early_memunmap(new, new_size);
+ 
+-	efi_memmap_install(new_phys, num_entries);
++	efi_memmap_install(new_phys, num_entries, flags);
+ 	e820__range_update(addr, size, E820_TYPE_RAM, E820_TYPE_RESERVED);
+ 	e820__update_table(e820_table);
+ }
+@@ -408,6 +408,7 @@ static void __init efi_unmap_pages(efi_memory_desc_t *md)
+ void __init efi_free_boot_services(void)
+ {
+ 	phys_addr_t new_phys, new_size;
++	unsigned long flags = 0;
+ 	efi_memory_desc_t *md;
+ 	int num_entries = 0;
+ 	void *new, *new_md;
+@@ -463,7 +464,7 @@ void __init efi_free_boot_services(void)
+ 		return;
+ 
+ 	new_size = efi.memmap.desc_size * num_entries;
+-	new_phys = efi_memmap_alloc(num_entries);
++	new_phys = efi_memmap_alloc(num_entries, &flags);
+ 	if (!new_phys) {
+ 		pr_err("Failed to allocate new EFI memmap\n");
+ 		return;
+@@ -493,7 +494,7 @@ void __init efi_free_boot_services(void)
+ 
+ 	memunmap(new);
+ 
+-	if (efi_memmap_install(new_phys, num_entries)) {
++	if (efi_memmap_install(new_phys, num_entries, flags)) {
+ 		pr_err("Could not install new EFI memmap\n");
+ 		return;
+ 	}
+diff --git a/drivers/firmware/efi/fake_mem.c b/drivers/firmware/efi/fake_mem.c
+index bb9fc70d0cfa..7e53e5520548 100644
+--- a/drivers/firmware/efi/fake_mem.c
++++ b/drivers/firmware/efi/fake_mem.c
+@@ -39,6 +39,7 @@ void __init efi_fake_memmap(void)
+ 	int new_nr_map = efi.memmap.nr_map;
+ 	efi_memory_desc_t *md;
+ 	phys_addr_t new_memmap_phy;
++	unsigned long flags = 0;
+ 	void *new_memmap;
+ 	int i;
+ 
+@@ -55,7 +56,7 @@ void __init efi_fake_memmap(void)
+ 	}
+ 
+ 	/* allocate memory for new EFI memmap */
+-	new_memmap_phy = efi_memmap_alloc(new_nr_map);
++	new_memmap_phy = efi_memmap_alloc(new_nr_map, &flags);
+ 	if (!new_memmap_phy)
+ 		return;
+ 
+@@ -73,7 +74,7 @@ void __init efi_fake_memmap(void)
+ 	/* swap into new EFI memmap */
+ 	early_memunmap(new_memmap, efi.memmap.desc_size * new_nr_map);
+ 
+-	efi_memmap_install(new_memmap_phy, new_nr_map);
++	efi_memmap_install(new_memmap_phy, new_nr_map, flags);
+ 
+ 	/* print new EFI memmap */
+ 	efi_print_memmap();
 diff --git a/drivers/firmware/efi/memmap.c b/drivers/firmware/efi/memmap.c
-index 38b686c67b17..813674ef9000 100644
+index 813674ef9000..2b81ee6858a9 100644
 --- a/drivers/firmware/efi/memmap.c
 +++ b/drivers/firmware/efi/memmap.c
-@@ -52,7 +52,7 @@ phys_addr_t __init efi_memmap_alloc(unsigned int num_entries)
+@@ -32,6 +32,7 @@ static phys_addr_t __init __efi_memmap_alloc_late(unsigned long size)
+ /**
+  * efi_memmap_alloc - Allocate memory for the EFI memory map
+  * @num_entries: Number of entries in the allocated map.
++ * @flags: Late map, memblock alloc, slab alloc flags
+  *
+  * Depending on whether mm_init() has already been invoked or not,
+  * either memblock or "normal" page allocation is used.
+@@ -39,20 +40,23 @@ static phys_addr_t __init __efi_memmap_alloc_late(unsigned long size)
+  * Returns the physical address of the allocated memory map on
+  * success, zero on failure.
+  */
+-phys_addr_t __init efi_memmap_alloc(unsigned int num_entries)
++phys_addr_t __init efi_memmap_alloc(unsigned int num_entries, unsigned long *flags)
+ {
+ 	unsigned long size = num_entries * efi.memmap.desc_size;
+ 
+-	if (slab_is_available())
++	if (slab_is_available()) {
++		*flags |= EFI_MEMMAP_SLAB;
+ 		return __efi_memmap_alloc_late(size);
++	}
+ 
++	*flags |= EFI_MEMMAP_MEMBLOCK;
+ 	return __efi_memmap_alloc_early(size);
+ }
+ 
  /**
   * __efi_memmap_init - Common code for mapping the EFI memory map
   * @data: EFI memory map data
-- * @late: Use early or late mapping function?
-+ * @flags: Use early or late mapping function?
+- * @flags: Use early or late mapping function?
++ * @flags: Use early or late mapping function, and allocator
   *
   * This function takes care of figuring out which function to use to
   * map the EFI memory map in efi.memmap based on how far into the boot
-@@ -66,9 +66,9 @@ phys_addr_t __init efi_memmap_alloc(unsigned int num_entries)
+@@ -192,10 +196,10 @@ int __init efi_memmap_init_late(phys_addr_t addr, unsigned long size)
+  *
   * Returns zero on success, a negative error code on failure.
   */
- static int __init
--__efi_memmap_init(struct efi_memory_map_data *data, bool late)
-+__efi_memmap_init(struct efi_memory_map_data *data, unsigned long flags)
- {
--	struct efi_memory_map map;
-+	struct efi_memory_map map = { 0 };
- 	phys_addr_t phys_map;
- 
- 	if (efi_enabled(EFI_PARAVIRT))
-@@ -76,7 +76,7 @@ __efi_memmap_init(struct efi_memory_map_data *data, bool late)
- 
- 	phys_map = data->phys_map;
- 
--	if (late)
-+	if (flags & EFI_MEMMAP_LATE)
- 		map.map = memremap(phys_map, data->size, MEMREMAP_WB);
- 	else
- 		map.map = early_memremap(phys_map, data->size);
-@@ -92,7 +92,7 @@ __efi_memmap_init(struct efi_memory_map_data *data, bool late)
- 
- 	map.desc_version = data->desc_version;
- 	map.desc_size = data->desc_size;
--	map.late = late;
-+	map.flags |= flags;
- 
- 	set_bit(EFI_MEMMAP, &efi.flags);
- 
-@@ -111,9 +111,9 @@ __efi_memmap_init(struct efi_memory_map_data *data, bool late)
- int __init efi_memmap_init_early(struct efi_memory_map_data *data)
- {
- 	/* Cannot go backwards */
--	WARN_ON(efi.memmap.late);
-+	WARN_ON(efi.memmap.flags & EFI_MEMMAP_LATE);
- 
--	return __efi_memmap_init(data, false);
-+	return __efi_memmap_init(data, 0);
- }
- 
- void __init efi_memmap_unmap(void)
-@@ -121,7 +121,7 @@ void __init efi_memmap_unmap(void)
- 	if (!efi_enabled(EFI_MEMMAP))
- 		return;
- 
--	if (!efi.memmap.late) {
-+	if (!(efi.memmap.flags & EFI_MEMMAP_LATE)) {
- 		unsigned long size;
- 
- 		size = efi.memmap.desc_size * efi.memmap.nr_map;
-@@ -168,7 +168,7 @@ int __init efi_memmap_init_late(phys_addr_t addr, unsigned long size)
- 	WARN_ON(efi.memmap.map);
- 
- 	/* Were we already called? */
--	WARN_ON(efi.memmap.late);
-+	WARN_ON(efi.memmap.flags & EFI_MEMMAP_LATE);
- 
- 	/*
- 	 * It makes no sense to allow callers to register different
-@@ -178,7 +178,7 @@ int __init efi_memmap_init_late(phys_addr_t addr, unsigned long size)
- 	data.desc_version = efi.memmap.desc_version;
- 	data.desc_size = efi.memmap.desc_size;
- 
--	return __efi_memmap_init(&data, true);
-+	return __efi_memmap_init(&data, EFI_MEMMAP_LATE);
- }
- 
- /**
-@@ -195,6 +195,7 @@ int __init efi_memmap_init_late(phys_addr_t addr, unsigned long size)
- int __init efi_memmap_install(phys_addr_t addr, unsigned int nr_map)
+-int __init efi_memmap_install(phys_addr_t addr, unsigned int nr_map)
++int __init efi_memmap_install(phys_addr_t addr, unsigned int nr_map,
++		unsigned long flags)
  {
  	struct efi_memory_map_data data;
-+	unsigned long flags;
+-	unsigned long flags;
  
  	efi_memmap_unmap();
  
-@@ -202,8 +203,9 @@ int __init efi_memmap_install(phys_addr_t addr, unsigned int nr_map)
+@@ -203,7 +207,7 @@ int __init efi_memmap_install(phys_addr_t addr, unsigned int nr_map)
  	data.size = efi.memmap.desc_size * nr_map;
  	data.desc_version = efi.memmap.desc_version;
  	data.desc_size = efi.memmap.desc_size;
-+	flags = efi.memmap.flags & EFI_MEMMAP_LATE;
+-	flags = efi.memmap.flags & EFI_MEMMAP_LATE;
++	flags |= efi.memmap.flags & EFI_MEMMAP_LATE;
  
--	return __efi_memmap_init(&data, efi.memmap.late);
-+	return __efi_memmap_init(&data, flags);
+ 	return __efi_memmap_init(&data, flags);
  }
- 
- /**
 diff --git a/include/linux/efi.h b/include/linux/efi.h
-index aa54586db7a5..b8e930f5ff77 100644
+index b8e930f5ff77..fa2668a992ae 100644
 --- a/include/linux/efi.h
 +++ b/include/linux/efi.h
-@@ -795,7 +795,8 @@ struct efi_memory_map {
- 	int nr_map;
+@@ -796,6 +796,8 @@ struct efi_memory_map {
  	unsigned long desc_version;
  	unsigned long desc_size;
--	bool late;
-+#define EFI_MEMMAP_LATE (1UL << 0)
-+	unsigned long flags;
+ #define EFI_MEMMAP_LATE (1UL << 0)
++#define EFI_MEMMAP_MEMBLOCK (1UL << 1)
++#define EFI_MEMMAP_SLAB (1UL << 2)
+ 	unsigned long flags;
  };
  
- struct efi_mem_range {
+@@ -1057,11 +1059,13 @@ static inline efi_status_t efi_query_variable_store(u32 attributes,
+ #endif
+ extern void __iomem *efi_lookup_mapped_addr(u64 phys_addr);
+ 
+-extern phys_addr_t __init efi_memmap_alloc(unsigned int num_entries);
++extern phys_addr_t __init efi_memmap_alloc(unsigned int num_entries,
++		unsigned long *flags);
+ extern int __init efi_memmap_init_early(struct efi_memory_map_data *data);
+ extern int __init efi_memmap_init_late(phys_addr_t addr, unsigned long size);
+ extern void __init efi_memmap_unmap(void);
+-extern int __init efi_memmap_install(phys_addr_t addr, unsigned int nr_map);
++extern int __init efi_memmap_install(phys_addr_t addr, unsigned int nr_map,
++		unsigned long flags);
+ extern int __init efi_memmap_split_count(efi_memory_desc_t *md,
+ 					 struct range *range);
+ extern void __init efi_memmap_insert(struct efi_memory_map *old_memmap,
 
