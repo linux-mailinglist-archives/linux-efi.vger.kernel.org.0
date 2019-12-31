@@ -2,73 +2,68 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1854812DC1B
-	for <lists+linux-efi@lfdr.de>; Tue, 31 Dec 2019 23:22:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4558612DC32
+	for <lists+linux-efi@lfdr.de>; Tue, 31 Dec 2019 23:51:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727109AbfLaWWA (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 31 Dec 2019 17:22:00 -0500
-Received: from mail-ot1-f67.google.com ([209.85.210.67]:38127 "EHLO
-        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727054AbfLaWWA (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 31 Dec 2019 17:22:00 -0500
-Received: by mail-ot1-f67.google.com with SMTP id d7so47335724otf.5
-        for <linux-efi@vger.kernel.org>; Tue, 31 Dec 2019 14:21:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=KlT2jnj7z1iFkAKUNQWbQsSo+TR/YWaOOgSod0k7w7Q=;
-        b=SDs1XLSXb/UhPFICpRz+QEz2jdxJ6mnD5z1RgiUjXl2kSN/SRjY9qdkxJyPAomSFTo
-         4W9MT/Op5DGfy6j89Y0CN+wSoO62llB4hEsqZe/GklaDrEVyBKPBfqdEaWhDU8nIxLmJ
-         9G0L5DxAM6OUB020gwJZmEOLfI2umTuE8DSX41pN9b6WJW23421YpX2Wkr4V9QE/5XC1
-         TzPh49oF7f8lsyZ4X7hp8T26FyBOWgQZPAGfV5pzgheLaoIKmuE6AU6YHebo+rk5XUYQ
-         tjdS2jb/XLEk3L/6NONnK54wVAI1n0emlo3so96l7qP/07/oL/REYGzpBJAAD9H4Sk7W
-         lbSg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=KlT2jnj7z1iFkAKUNQWbQsSo+TR/YWaOOgSod0k7w7Q=;
-        b=bzOFQibQfAxH8ylE6HMe42aYOqdpwVv45qINqXtEirhozmOp0ec/qjWJ3xT0P5zZx8
-         ZZU/ExA9lVDNtBEfSDVbEhVGIuVat0P7opO6M0epGEFATQWKIgci1BqEPQJAJ3lwU0am
-         rOilZYlm4MWrnSYNMD+Ixqhf4N7lC+xuTu5rrpar9TqrZLRS6K8pgcVKsvMTdeReA5KP
-         EhIJR0K7on+7jbmsebG8KDQAZj+fZ7/Rg04Rk69c8SF8irJu/XOO1eyRbmkFtaY2h6kZ
-         JoF2OOqTBq1tZD+id3AZeF3DPOY/pcDrY+nxEhLjsfx11pxfEVjaI5fYza1+rb7oZEmN
-         KuIA==
-X-Gm-Message-State: APjAAAXyPqDy8b6Se9tWpHK/aPScOugfchngju/wWIhTaIMAOVjqrLdM
-        upk38dLXbMdd4DgIQ8XEdu6Nwy3o2wklD8wHJJCfAQ==
-X-Google-Smtp-Source: APXvYqy1Nlu/1GbgH0I6iq3zMFnAaxwd8ZFUXv3pxT0OCb9TlTQPfJLMpeN7TKNH/fK7w1/i3uKBuqDIMtTj0BVo/Zw=
-X-Received: by 2002:a9d:4e99:: with SMTP id v25mr84887327otk.363.1577830919298;
- Tue, 31 Dec 2019 14:21:59 -0800 (PST)
+        id S1727071AbfLaWvh (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 31 Dec 2019 17:51:37 -0500
+Received: from cavan.codon.org.uk ([93.93.128.6]:51798 "EHLO
+        cavan.codon.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727054AbfLaWvh (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 31 Dec 2019 17:51:37 -0500
+X-Greylist: delayed 1372 seconds by postgrey-1.27 at vger.kernel.org; Tue, 31 Dec 2019 17:51:36 EST
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=codon.org.uk; s=63138784; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=XKOHTo6zu2DfekeXpI2v+Dec+QqJwXCPmaBxyuFPC/8=; b=udZOn1AuqL9LkDFm3v1QhVmkS
+        QGabZ01W1wplNbrtmr1BOmdsQm0BcR2YbQc8mw2TuQ7f7qNr7r2kSgHrdTHiVwF3AoELX5q9z4ptl
+        cagxaIN7/BxkWjhfbw7vEwjPlinTNYryMumox5bGe3BUdNVeCJw6z52AQnaIoL4LqImHI=;
+Received: from mjg59 by cavan.codon.org.uk with local (Exim 4.89)
+        (envelope-from <mjg59@cavan.codon.org.uk>)
+        id 1imQ0D-0003lT-Fx; Tue, 31 Dec 2019 22:28:37 +0000
+Date:   Tue, 31 Dec 2019 22:28:37 +0000
+From:   Matthew Garrett <mjg59@srcf.ucam.org>
+To:     Borislav Petkov <bp@alien8.de>
+Cc:     Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Matt Fleming <matt@codeblueprint.co.uk>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Dave Young <dyoung@redhat.com>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        the arch/x86 maintainers <x86@kernel.org>,
+        Dimitri Sivanich <dimitri.sivanich@hpe.com>,
+        Mike Travis <mike.travis@hpe.com>,
+        Hedi Berriche <hedi.berriche@hpe.com>
+Subject: Re: [RFC PATCH] efi/x86: limit EFI old memory map to SGI UV1 machines
+Message-ID: <20191231222837.wpardrndvnukpgfp@srcf.ucam.org>
+References: <CAKv+Gu82ZCk3Wy6NHHyRs0CAFXJDMfDu2KpH3PZ-Le1SjsQLLQ@mail.gmail.com>
+ <20191231160547.GB13549@zn.tnic>
 MIME-Version: 1.0
-References: <157773590338.4153451.5898675419563883883.stgit@dwillia2-desk3.amr.corp.intel.com>
- <20191231014630.GA24942@dhcp-128-65.nay.redhat.com> <CAPcyv4heY1CKAWo1AKKifYUtXdKjoUt45dZbCNhB2o59hkXY6g@mail.gmail.com>
-In-Reply-To: <CAPcyv4heY1CKAWo1AKKifYUtXdKjoUt45dZbCNhB2o59hkXY6g@mail.gmail.com>
-From:   Dan Williams <dan.j.williams@intel.com>
-Date:   Tue, 31 Dec 2019 14:21:48 -0800
-Message-ID: <CAPcyv4idLx58iH0tA08vrVdvornd-jAwSwHQ6Eha+Z_UQUDDAQ@mail.gmail.com>
-Subject: Re: [PATCH] efi: Fix handling of multiple contiguous efi_fake_mem= entries
-To:     Dave Young <dyoung@redhat.com>
-Cc:     Ingo Molnar <mingo@redhat.com>,
-        Taku Izumi <izumi.taku@jp.fujitsu.com>,
-        Michael Weiser <michael@weiser.dinsnail.net>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>, kexec@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191231160547.GB13549@zn.tnic>
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-SA-Exim-Connect-IP: <locally generated>
+X-SA-Exim-Mail-From: mjg59@cavan.codon.org.uk
+X-SA-Exim-Scanned: No (on cavan.codon.org.uk); SAEximRunCond expanded to false
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, Dec 31, 2019 at 1:11 PM Dan Williams <dan.j.williams@intel.com> wrote:
-> Perhaps a prettier way to do this is to push the handling of each
-> efi_fake_mem entry into a subroutine. However, I notice when a memmap
-> allocated by efi_memmap_alloc() is replaced by another dynamically
-> allocated memmap the previous one isn't released. I have a series that
-> fixes that up as well.
+On Tue, Dec 31, 2019 at 05:05:47PM +0100, Borislav Petkov wrote:
 
-Available here:
-http://lore.kernel.org/r/157782985777.367056.14741265874314204783.stgit@dwillia2-desk3.amr.corp.intel.com
+> looks like mfleming meant the opposite: some apple laptops don't like
+> the 1:1 runtime mapping. But there might be more and I believe mjg59 had
+> some use case at the time but I could be remembering it wrong.
+
+I've lost most of the context for this over the years, I'm afraid. The 
+case I remember was that the EFI reboot code on some hardware would 
+attempt to access physical addresses and we wanted some form of 1:1 
+mapping to handle that, but I really don't remember what the larger 
+details were.
+
+-- 
+Matthew Garrett | mjg59@srcf.ucam.org
