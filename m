@@ -2,131 +2,94 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6060612DA76
-	for <lists+linux-efi@lfdr.de>; Tue, 31 Dec 2019 18:06:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F14E812DAA7
+	for <lists+linux-efi@lfdr.de>; Tue, 31 Dec 2019 18:37:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727054AbfLaRGq (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 31 Dec 2019 12:06:46 -0500
-Received: from mail-wm1-f68.google.com ([209.85.128.68]:52249 "EHLO
-        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726720AbfLaRGq (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 31 Dec 2019 12:06:46 -0500
-Received: by mail-wm1-f68.google.com with SMTP id p9so2269313wmc.2
-        for <linux-efi@vger.kernel.org>; Tue, 31 Dec 2019 09:06:45 -0800 (PST)
+        id S1727093AbfLaRhB (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 31 Dec 2019 12:37:01 -0500
+Received: from mail-qt1-f194.google.com ([209.85.160.194]:38764 "EHLO
+        mail-qt1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727070AbfLaRhB (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 31 Dec 2019 12:37:01 -0500
+Received: by mail-qt1-f194.google.com with SMTP id n15so31986115qtp.5
+        for <linux-efi@vger.kernel.org>; Tue, 31 Dec 2019 09:37:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=ZKOHD8y9R9a1x5ChuJOvrpNF1cfLEKY5jZtgibsYCQg=;
-        b=AdVQIQf164mMRsfRZgGSMWZPaBg3zcc+4+Qb/owWfPGB7jSi3zxrqhBjycrwt9cz5e
-         +JxxkfNHUGivgrxpY2t/BmmPGcQ7zGLNrD8gIbIz0tg5njfN8/LMGMQ4Bd0o90k0wX1X
-         5QAvZLUItqDS4oDOgpqs+QZblQI7JJ/pd8kjdjhnZU2oPJuX8y26zixRmIibfpR/Fif8
-         AXWWORa/LfVRzuSmoqEnr0dh8X6PIFfHJAHOQgNerkAIokbyKCzbStyn5EyTtLxbjg5F
-         OWcOUmRKAYgJUmxnnyoGPEYJ/QsjjInhhL0LVSesYXyu4g4n/d8AiVTOtlt1UQPtoRGY
-         CLVQ==
+        d=gmail.com; s=20161025;
+        h=sender:from:date:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=ebdaOQNf66wazXwQzzj1gKYhsFmOlMY5l10phxJBtEc=;
+        b=JP5NQk98rjvAwve04+WEDBZqcMXA+ha+R0yZic4CFir3I9dTsQj4GTXVZ79qE614tb
+         agRiIXSK2ToWYGPqWDA75KOg13e4U7YVSeA+nvTgsQOaqGosiJb/o0Inl3nDNChqW4KV
+         eatEVKEegpwJRpl/4bFNPHnjZS/ZlkS9P7oa/jE+5lslRyonasJ4BacZVNY9dnj7/YDI
+         glyyb9AWP06US9HX0JScWvlnigNEUmPqsNAPXtFkr+xgx226EWuoKwqrjoC//8qSzqRY
+         k73PO400cWKGEXQWpvVAtAqktMQtTFZlbueL0Hr46q3rMJidSKUbrSdITH0ALHH2JvP1
+         FcuQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=ZKOHD8y9R9a1x5ChuJOvrpNF1cfLEKY5jZtgibsYCQg=;
-        b=sVnj3bkPYENzQ9N0pHL87gbiRu+1rMYl2dXpM7JYR3Bz7VkwasgH0IUV44yjvniwXD
-         M0HvsDgdj/vUmrKsDvFc8YFbO0ci19lQlncIqXvDD673RibuOeHIwBz1fmnj6q9hVMis
-         TdiAAjVpV76UqYJjUd3nZ3F1dBqBG88aiAMfbXOCuaBchnl4+60UPLRH2oZFDvW/3H7R
-         jq6FgW+E8gcRL4nu9cGYipzxXnErZDH4e62SoU8V6owA2boa/IOOdMG2Ak8cKS0s84eN
-         oKrC0m5q23U9MtH2Umb3XC1wRx5msSWCAY3c6LWLnVIahYeH7YTJbMFDPzHMqeAoJ5Mq
-         nwcA==
-X-Gm-Message-State: APjAAAXnLeIc1UGNCuHpVn1t5ZOPAFwv7MpfrF2ElAfXHmHRMAHo+pmz
-        74hKLM2INre8tbo9BAbIqjqwW470tVecptscOSVOhQ==
-X-Google-Smtp-Source: APXvYqxSxA0mpJNvKFYjjff0rh2MCikVAmqNK27/B9rBbJHjSqt58yrE62yjsS9VHAXJV4WLA5ypi1Al5rAfLOD98Ys=
-X-Received: by 2002:a1c:a795:: with SMTP id q143mr4993081wme.52.1577812004361;
- Tue, 31 Dec 2019 09:06:44 -0800 (PST)
-MIME-Version: 1.0
-References: <20191218170139.9468-1-ardb@kernel.org> <20191218170139.9468-19-ardb@kernel.org>
- <20191231165136.GA3978784@rani.riverdale.lan>
-In-Reply-To: <20191231165136.GA3978784@rani.riverdale.lan>
-From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Date:   Tue, 31 Dec 2019 18:06:33 +0100
-Message-ID: <CAKv+Gu9yd83-gRp8zGx5A1AcXPMyteRd6oyqgMYv=h5zJjnAaw@mail.gmail.com>
-Subject: Re: [PATCH v2 18/21] efi/libstub: use 'func' not 'f' as macro parameter
-To:     Arvind Sankar <nivedita@alum.mit.edu>
-Cc:     Ard Biesheuvel <ardb@kernel.org>,
+        h=x-gm-message-state:sender:from:date:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to:user-agent;
+        bh=ebdaOQNf66wazXwQzzj1gKYhsFmOlMY5l10phxJBtEc=;
+        b=gHO5RIJXXetLZ25CZ4lLZiJor7w6h/kAN529WicSOnR7BlMu23+Y5tyrhR4qFv26mN
+         uubg3VdgpEDJsKxhs3aPymg6DN6WnNLVMG5uuSeR2EpybKA4sqfFQn/Iq2ivrWJYRXC7
+         2iCoZfKx5wv43dq7FCtm9JSwpOTxyPAzw2QeGLWhydopRP13i1Oj5Wwedt8c00CGiKPy
+         VrtmxY9px9HA16MUFwzqub3+BkIevof0fqXpKhN841shSxzUhtdXMF0MC3rj5evF+N9w
+         s0au41vpdg5JN4r1CP4GYPaDXKURV2+hd1CNgAzXs/RN0rlRFc3s/6KgxwCibobguVms
+         AC5A==
+X-Gm-Message-State: APjAAAWlmczA5eQAjFNJDKX5RFrJ3W4hLDQ3ZaJIa3X+42ox9dziQVL+
+        Mq849WITXqSOOZ7SOMIxxAw=
+X-Google-Smtp-Source: APXvYqwLikBVshz/Cbtke+k0oz0A2ZFXxyfJyU3z0prN7QHBNiYW5tnwjGyuC3wIH9+F4wfgs/qu4Q==
+X-Received: by 2002:ac8:540d:: with SMTP id b13mr51451487qtq.244.1577813819920;
+        Tue, 31 Dec 2019 09:36:59 -0800 (PST)
+Received: from rani.riverdale.lan ([2001:470:1f07:5f3::b55f])
+        by smtp.gmail.com with ESMTPSA id z8sm15109528qth.16.2019.12.31.09.36.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 31 Dec 2019 09:36:59 -0800 (PST)
+From:   Arvind Sankar <nivedita@alum.mit.edu>
+X-Google-Original-From: Arvind Sankar <arvind@rani.riverdale.lan>
+Date:   Tue, 31 Dec 2019 12:36:57 -0500
+To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Cc:     Arvind Sankar <nivedita@alum.mit.edu>,
+        Ard Biesheuvel <ardb@kernel.org>,
         linux-efi <linux-efi@vger.kernel.org>,
         Hans de Goede <hdegoede@redhat.com>,
         Matthew Garrett <matthewgarrett@google.com>,
         Ingo Molnar <mingo@kernel.org>,
         Andy Lutomirski <luto@kernel.org>,
         Thomas Gleixner <tglx@linutronix.de>
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [PATCH v2 18/21] efi/libstub: use 'func' not 'f' as macro
+ parameter
+Message-ID: <20191231173657.GA4031539@rani.riverdale.lan>
+References: <20191218170139.9468-1-ardb@kernel.org>
+ <20191218170139.9468-19-ardb@kernel.org>
+ <20191231165136.GA3978784@rani.riverdale.lan>
+ <CAKv+Gu9yd83-gRp8zGx5A1AcXPMyteRd6oyqgMYv=h5zJjnAaw@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAKv+Gu9yd83-gRp8zGx5A1AcXPMyteRd6oyqgMYv=h5zJjnAaw@mail.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, 31 Dec 2019 at 17:51, Arvind Sankar <nivedita@alum.mit.edu> wrote:
->
-> On Wed, Dec 18, 2019 at 07:01:36PM +0200, Ard Biesheuvel wrote:
-> > Use 'func' as the macro parameter name for the efi_call() macros
-> > which is less likely to collide and cause weird build errors.
+On Tue, Dec 31, 2019 at 06:06:33PM +0100, Ard Biesheuvel wrote:
+> On Tue, 31 Dec 2019 at 17:51, Arvind Sankar <nivedita@alum.mit.edu> wrote:
 > >
->
-> For my education, what are the possible collisions/build errors that might happen?
->
+> > On Wed, Dec 18, 2019 at 07:01:36PM +0200, Ard Biesheuvel wrote:
+> > > Use 'func' as the macro parameter name for the efi_call() macros
+> > > which is less likely to collide and cause weird build errors.
+> > >
+> >
+> > For my education, what are the possible collisions/build errors that might happen?
+> >
+> 
+> I was concerned about variables called 'f' being passed as one of the
+> arguments, but now that I think of it, I'm not sure how that could
+> break.
+> 
+> In any case, I'd like to keep this patch since it also increases legibility.
+> 
 
-I was concerned about variables called 'f' being passed as one of the
-arguments, but now that I think of it, I'm not sure how that could
-break.
-
-In any case, I'd like to keep this patch since it also increases legibility.
-
-> > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> > ---
-> >  arch/arm64/include/asm/efi.h |  4 ++--
-> >  arch/x86/include/asm/efi.h   | 12 ++++++------
-> >  2 files changed, 8 insertions(+), 8 deletions(-)
-> >
-> > diff --git a/arch/arm64/include/asm/efi.h b/arch/arm64/include/asm/efi.h
-> > index 6f041ae446d2..d06305590ac5 100644
-> > --- a/arch/arm64/include/asm/efi.h
-> > +++ b/arch/arm64/include/asm/efi.h
-> > @@ -93,8 +93,8 @@ static inline unsigned long efi_get_max_initrd_addr(unsigned long dram_base,
-> >       return (image_addr & ~(SZ_1G - 1UL)) + (1UL << (VA_BITS_MIN - 1));
-> >  }
-> >
-> > -#define efi_call_early(f, ...)               efi_system_table()->boottime->f(__VA_ARGS__)
-> > -#define efi_call_runtime(f, ...)     efi_system_table()->runtime->f(__VA_ARGS__)
-> > +#define efi_call_early(func, ...)    efi_system_table()->boottime->func(__VA_ARGS__)
-> > +#define efi_call_runtime(func, ...)  efi_system_table()->runtime->func(__VA_ARGS__)
-> >  #define efi_is_native()                      (true)
-> >
-> >  #define efi_table_attr(inst, attr)   (inst->attr)
-> > diff --git a/arch/x86/include/asm/efi.h b/arch/x86/include/asm/efi.h
-> > index 593a8cda8361..ba3f8a98e156 100644
-> > --- a/arch/x86/include/asm/efi.h
-> > +++ b/arch/x86/include/asm/efi.h
-> > @@ -236,17 +236,17 @@ static inline bool efi_is_native(void)
-> >               ? inst->func(inst, ##__VA_ARGS__)                       \
-> >               : efi64_thunk(inst->mixed_mode.func, inst, ##__VA_ARGS__))
-> >
-> > -#define efi_call_early(f, ...)                                               \
-> > +#define efi_call_early(func, ...)                                    \
-> >       (efi_is_native()                                                \
-> > -             ? efi_system_table()->boottime->f(__VA_ARGS__)          \
-> > +             ? efi_system_table()->boottime->func(__VA_ARGS__)       \
-> >               : efi64_thunk(efi_table_attr(efi_system_table(),        \
-> > -                             boottime)->mixed_mode.f, __VA_ARGS__))
-> > +                             boottime)->mixed_mode.func, __VA_ARGS__))
-> >
-> > -#define efi_call_runtime(f, ...)                                     \
-> > +#define efi_call_runtime(func, ...)                                  \
-> >       (efi_is_native()                                                \
-> > -             ? efi_system_table()->runtime->f(__VA_ARGS__)           \
-> > +             ? efi_system_table()->runtime->func(__VA_ARGS__)        \
-> >               : efi64_thunk(efi_table_attr(efi_system_table(),        \
-> > -                             runtime)->mixed_mode.f, __VA_ARGS__))
-> > +                             runtime)->mixed_mode.func, __VA_ARGS__))
-> >
-> >  extern bool efi_reboot_required(void);
-> >  extern bool efi_is_table_address(unsigned long phys_addr);
-> > --
-> > 2.17.1
-> >
+No objections to the patch, I just wanted to check if I was missing
+something. Probably update the commit message though.
