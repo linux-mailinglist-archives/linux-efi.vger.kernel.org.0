@@ -2,73 +2,84 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 339EE12E905
-	for <lists+linux-efi@lfdr.de>; Thu,  2 Jan 2020 17:59:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 00CE312E904
+	for <lists+linux-efi@lfdr.de>; Thu,  2 Jan 2020 17:59:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728886AbgABQ7k (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 2 Jan 2020 11:59:40 -0500
-Received: from mail-wm1-f67.google.com ([209.85.128.67]:35719 "EHLO
-        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728847AbgABQ7k (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 2 Jan 2020 11:59:40 -0500
-Received: by mail-wm1-f67.google.com with SMTP id p17so6272247wmb.0
-        for <linux-efi@vger.kernel.org>; Thu, 02 Jan 2020 08:59:39 -0800 (PST)
+        id S1728868AbgABQ7c (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 2 Jan 2020 11:59:32 -0500
+Received: from mail-qk1-f194.google.com ([209.85.222.194]:37410 "EHLO
+        mail-qk1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728847AbgABQ7b (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 2 Jan 2020 11:59:31 -0500
+Received: by mail-qk1-f194.google.com with SMTP id 21so31842815qky.4
+        for <linux-efi@vger.kernel.org>; Thu, 02 Jan 2020 08:59:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=OWDwwabhRykEDCu4IoDL2Og/kggCgOeRE8YaN1aWEYU=;
-        b=ozH5w3E+2NgHN5mfjcKtcPMwoHRL+X/0g5XwFRiK7QXDPeUSLHeVcj3clUcdONJh9O
-         YFOoRL+HpaLWYPW0owTmK6RVdIfI2kxim8KsdY4wFDBSeOqM7EV3hbl9vd04sp7U3AZY
-         Ba/xUhKOWJhbiW5dHEFo9x9FnFTNNH+sht5VSR+fqRBSZuASGhatqQT/2kjQi2VI01a/
-         ImyUoaOvmoP541IPMXd0GCPY2ibRk86/7FImEd+LldcfoabURbOb4tE7mC3YJk2PmDu2
-         ZlIMdwgjO2Km90qcJ0Eiaq2h94GyM4wau9rZ4AOZ9u/60wuv2BYtGbil4EGOb0nnJjqr
-         MbnQ==
+        d=gmail.com; s=20161025;
+        h=sender:from:date:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=eKbihdamlXJStYWHlZHqPPZncw09Cy49HJTe3aNM2ds=;
+        b=iPMVnlCyahpRCuP+cx5FRWfzSAK1+bCnLU3luwxZdl+U0Yd2xl9eR7fz/jDYd9q4B6
+         LN+I7RMWpzmuklCCZ+fMuJach/1p55nuczbXzNCo9vJTBMuKI3kQm8FcGipaEd5kT0UM
+         FLWGPUabsxgwlML9NodazifyAPMqvdsJOCxWdurrn9qOIzhwp7puky1R//tG3gD626UO
+         UqAC3Jf5JLvYyPPff1YZexrGIX2AND4T9JfePyqIteF2LGIM339HipogFpm4Lb+qp0nl
+         bpMFHE7JgB41Hmu2FSoSl60XJIyI6sOkiMBZg61murHmRNkO6IZBGmVXsLQl3Ch8E28M
+         LmkQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=OWDwwabhRykEDCu4IoDL2Og/kggCgOeRE8YaN1aWEYU=;
-        b=NnoyfMo5AcXxP/oGsKUa2bqt0vWrK3JAERzndIt6TYrooTqF6Dk6ocz5OLVxdd8FXk
-         suNvMaSCaaG+DqbBOdOuH+/oN09faByUFzjfucy7IrpAwJyzgP3Xw/Gb+nYVGwMPxiQt
-         52bpUS09ZwgMSX7R5E/hskrydlwtaZXrV418PmthmVi/P4zqHixtuYVWO5KcRsZ4a2v1
-         Qw1nCzEQBlZpJvaiH2U7y2AV33L23y55hVMKSXVuduKQRXozaoJxI8M/Ed0b1QsBAz9v
-         NOoJBMXApmO29Lcx3Wfz+XftQRHVEkXDmxBx831pBa/ewHzHKYPJzyo5ibeXFvcoB538
-         Zf+A==
-X-Gm-Message-State: APjAAAU3JbeUXLuDZT5ys/xy8/5qklpx3ajnc7hmg6oah2izbtyyIRCa
-        xqb/I2Kd5jTwFW+AuNt9//yM+oxG7G+93s6FMohDoA==
-X-Google-Smtp-Source: APXvYqzJXxl8DnjaE+P1JDyx1JuVSKzGV/ak8ugO+/KxK5PkfnyQEEYanoQpfwW7cOY61onRS//UJ6xz+62h72c5e6c=
-X-Received: by 2002:a1c:a795:: with SMTP id q143mr14466901wme.52.1577984378591;
- Thu, 02 Jan 2020 08:59:38 -0800 (PST)
-MIME-Version: 1.0
-References: <20191218170139.9468-1-ardb@kernel.org> <20191218170139.9468-14-ardb@kernel.org>
- <20191231230436.GA78532@rani.riverdale.lan> <CAKv+Gu_6zKX9vtvJ9r_CMfufh9-0yOJikYH-Z2xtVcn5i8qwsw@mail.gmail.com>
- <20200101190844.GA208136@rani.riverdale.lan> <CAKv+Gu-XRgRXgiuDEe+DXdcEzOuUWG6fWMO_oa41f2Ugki5kCA@mail.gmail.com>
- <20200102140653.GA626673@rani.riverdale.lan> <CAKv+Gu_Ca4nBORcy8JzUhE5svxZ9nZosuif7EtToYxqiBZfEQA@mail.gmail.com>
- <20200102155129.GA668939@rani.riverdale.lan> <CAKv+Gu9Ne6HT1csRE4r-LZnZ9vUEOqnzHHjoj+a=NU=Tnj6o4w@mail.gmail.com>
- <CAKv+Gu_ksPvVpD=GxBNcJNhqak_k0-HZaK0jM10mKN==7k83xA@mail.gmail.com>
-In-Reply-To: <CAKv+Gu_ksPvVpD=GxBNcJNhqak_k0-HZaK0jM10mKN==7k83xA@mail.gmail.com>
-From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Date:   Thu, 2 Jan 2020 17:59:27 +0100
-Message-ID: <CAKv+Gu8m5vtJ6_TUgqy-Aa_7FNyhYBx=gsh1c62_impS2G99AQ@mail.gmail.com>
-Subject: Re: [PATCH v2 13/21] efi/libstub/x86: drop __efi_early() export of
- efi_config struct
-To:     Arvind Sankar <nivedita@alum.mit.edu>
-Cc:     Ard Biesheuvel <ardb@kernel.org>,
+        h=x-gm-message-state:sender:from:date:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to:user-agent;
+        bh=eKbihdamlXJStYWHlZHqPPZncw09Cy49HJTe3aNM2ds=;
+        b=KWu+kHah/a6dhU4UjA9JLz4oWeo5RNJjGlEhhGU8dv33SZ8J+DBn/NUUYQuY968ojh
+         n5g/ub8CoGHBnbgEbVmWZ110rtnSKg3waZunEPvax8FBIXpJLUY8vw9jQoIgImUdWDww
+         ET6MNIXA2/JRg/9do/op9NUonAm2xbvvlTWMaq4Ks6eFkN83rLFkyLSbLSC5Lpoemr1b
+         Gk8eY/K0+m9QIPnb06blTVU4wOENR8/M48zbZAyxKTumYbTzJwDFh4Q0344+q+wMQgL4
+         Fvz0ZowKDIi/eLR4mjapp7UNwT1Nc6Ti27OARSji/X4vix6G2ng79KNMnCA0oo6HA3kh
+         Qk+A==
+X-Gm-Message-State: APjAAAWMcF8SjqGeKLPdGi2WZtQQw3F8kacex1eJ6j03kWlETnw7b2lg
+        Cds7DXLFLGtn+DDkP6+cUBU=
+X-Google-Smtp-Source: APXvYqx6PEMh2mhtz6sxBu9+YBB3D7/f35+RjNhmezH/023TVLejQI8+GRXNeeSCWPNJrmvNU4ADjw==
+X-Received: by 2002:a37:a642:: with SMTP id p63mr60033870qke.85.1577984370634;
+        Thu, 02 Jan 2020 08:59:30 -0800 (PST)
+Received: from rani.riverdale.lan ([2001:470:1f07:5f3::b55f])
+        by smtp.gmail.com with ESMTPSA id w20sm17239405qtj.4.2020.01.02.08.59.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 02 Jan 2020 08:59:30 -0800 (PST)
+From:   Arvind Sankar <nivedita@alum.mit.edu>
+X-Google-Original-From: Arvind Sankar <arvind@rani.riverdale.lan>
+Date:   Thu, 2 Jan 2020 11:59:28 -0500
+To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Cc:     Arvind Sankar <nivedita@alum.mit.edu>,
+        Ard Biesheuvel <ardb@kernel.org>,
         linux-efi <linux-efi@vger.kernel.org>,
         Hans de Goede <hdegoede@redhat.com>,
         Matthew Garrett <matthewgarrett@google.com>,
         Ingo Molnar <mingo@kernel.org>,
         Andy Lutomirski <luto@kernel.org>,
         Thomas Gleixner <tglx@linutronix.de>
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [PATCH v2 13/21] efi/libstub/x86: drop __efi_early() export of
+ efi_config struct
+Message-ID: <20200102165927.GA683588@rani.riverdale.lan>
+References: <20191218170139.9468-14-ardb@kernel.org>
+ <20191231230436.GA78532@rani.riverdale.lan>
+ <CAKv+Gu_6zKX9vtvJ9r_CMfufh9-0yOJikYH-Z2xtVcn5i8qwsw@mail.gmail.com>
+ <20200101190844.GA208136@rani.riverdale.lan>
+ <CAKv+Gu-XRgRXgiuDEe+DXdcEzOuUWG6fWMO_oa41f2Ugki5kCA@mail.gmail.com>
+ <20200102140653.GA626673@rani.riverdale.lan>
+ <CAKv+Gu_Ca4nBORcy8JzUhE5svxZ9nZosuif7EtToYxqiBZfEQA@mail.gmail.com>
+ <20200102155129.GA668939@rani.riverdale.lan>
+ <CAKv+Gu9Ne6HT1csRE4r-LZnZ9vUEOqnzHHjoj+a=NU=Tnj6o4w@mail.gmail.com>
+ <CAKv+Gu_ksPvVpD=GxBNcJNhqak_k0-HZaK0jM10mKN==7k83xA@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAKv+Gu_ksPvVpD=GxBNcJNhqak_k0-HZaK0jM10mKN==7k83xA@mail.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, 2 Jan 2020 at 17:28, Ard Biesheuvel <ard.biesheuvel@linaro.org> wrote:
->
+On Thu, Jan 02, 2020 at 05:28:16PM +0100, Ard Biesheuvel wrote:
 > On Thu, 2 Jan 2020 at 16:58, Ard Biesheuvel <ard.biesheuvel@linaro.org> wrote:
 > >
 > > On Thu, 2 Jan 2020 at 16:51, Arvind Sankar <nivedita@alum.mit.edu> wrote:
@@ -88,23 +99,11 @@ On Thu, 2 Jan 2020 at 17:28, Ard Biesheuvel <ard.biesheuvel@linaro.org> wrote:
 > > It doesn't. The trick is to add __attribute__((visibility("hidden")))
 > > to the extern declaration of efi_is64, but I am having trouble to
 > > reproduce the original issue.
->
+> 
 > Some background:
->
+> 
 > https://lore.kernel.org/lkml/5405E186.2080406@canonical.com/
 > https://lore.kernel.org/lkml/20140919104021.GA11552@gmail.com/
 
-OK, I have done a bit more digging, and it seems like recent
-toolchains can optimize away GOT indirections using R_386_GOT32X
-relocations, which can be converted into R_386_GOTOFF relocations by
-the linker if it is building a fully linked binary, making the actual
-contents of the GOT entries irrelevant.
-
-Note that even if the GOT entries are not fixed up, assigning a global
-variable and then using it again may work by accident if the memory it
-points to is writable, which is why it is not easy to reproduce
-reliably.
-
-efi_is64 only exists on 64-bit, so annotating that as 'hidden' should
-work. But efi_system_table() is also used on 32-bit, so I'll leave
-that one alone for now.
+I wonder if commit 6d92bc9d483a ("x86/build: Build compressed x86
+kernels as PIE") resolved this.
