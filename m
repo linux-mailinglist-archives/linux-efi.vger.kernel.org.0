@@ -2,27 +2,27 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 284D512F791
-	for <lists+linux-efi@lfdr.de>; Fri,  3 Jan 2020 12:41:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D1B012F775
+	for <lists+linux-efi@lfdr.de>; Fri,  3 Jan 2020 12:40:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727726AbgACLkc (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 3 Jan 2020 06:40:32 -0500
-Received: from mail.kernel.org ([198.145.29.99]:39964 "EHLO mail.kernel.org"
+        id S1727797AbgACLkf (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 3 Jan 2020 06:40:35 -0500
+Received: from mail.kernel.org ([198.145.29.99]:40056 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727777AbgACLkb (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Fri, 3 Jan 2020 06:40:31 -0500
+        id S1727791AbgACLkd (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Fri, 3 Jan 2020 06:40:33 -0500
 Received: from localhost.localdomain (amontpellier-657-1-18-247.w109-210.abo.wanadoo.fr [109.210.65.247])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id BA09524650;
-        Fri,  3 Jan 2020 11:40:28 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id C967622522;
+        Fri,  3 Jan 2020 11:40:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1578051630;
-        bh=lYUfQEsb2sfLYHb6SW9R5l7XM17hhCTRql1Wy9aMfxE=;
+        s=default; t=1578051632;
+        bh=P4/SvgcHgqZLvC1nEjpUC1Mz8hU30o1pck40SQUQvSE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ibY/VsxGSoe0krM3fpAyKrhSGOTZa/kF7b5THb1suLXA0SQtnV2pnAXpF3zWPCDCw
-         HQ20uN/VmKy1yOOJzAUqE+J8NSIh9Nuxwe0KAfqdz4naeNB2gmZrIwceYeHI1/DiY8
-         QAsq4XbUSXbddbnORP0+IuJCWbPraAdXWXIypunY=
+        b=rpWYqRHADnvrK8ur8OzYPq60L+5b61YX/r7bQ23z4G/gKGYviUKZS10EzRaj/huV0
+         JjR9t9rM2X4E3sttYEMwP8eDyiIDSUdFnJCSan5adsnysowkx4wSdYi4+qhDMt+V6n
+         LT2Pa8Zlm3/BUqvIFkCBoouTQ2wUyMywaFif+exI=
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-efi@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
         Thomas Gleixner <tglx@linutronix.de>
@@ -31,9 +31,9 @@ Cc:     Ard Biesheuvel <ardb@kernel.org>,
         linux-kernel@vger.kernel.org, Andy Lutomirski <luto@kernel.org>,
         Arvind Sankar <nivedita@alum.mit.edu>,
         Matthew Garrett <mjg59@google.com>
-Subject: [PATCH 07/20] efi/x86: split SetVirtualAddresMap() wrappers into 32 and 64 bit versions
-Date:   Fri,  3 Jan 2020 12:39:40 +0100
-Message-Id: <20200103113953.9571-8-ardb@kernel.org>
+Subject: [PATCH 08/20] efi/x86: simplify i386 efi_call_phys() firmware call wrapper
+Date:   Fri,  3 Jan 2020 12:39:41 +0100
+Message-Id: <20200103113953.9571-9-ardb@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20200103113953.9571-1-ardb@kernel.org>
 References: <20200103113953.9571-1-ardb@kernel.org>
@@ -44,241 +44,204 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Split the phys_efi_set_virtual_address_map() routine into 32 and 64 bit
-versions, so we can simplify them individually in subsequent patches.
+The variadic efi_call_phys() wrapper that exists on i386 was
+originally created to call into any EFI firmware runtime service,
+but in practice, we only use it once, to call SetVirtualAddressMap()
+during early boot.
+The flexibility provided by the variadic nature also makes it
+type unsafe, and makes the assembler code more complicated than
+needed, since it has to deal with an unknown number of arguments
+living on the stack.
 
-There is very little overlap between the logic anyway, and this has
-already been factored out in prolog/epilog routines which are completely
-different between 32 bit and 64 bit. So let's take it one step further,
-and get rid of the overlap completely.
+So clean this up, by renaming the helper to efi_call_svam(), and
+dropping the unneeded complexity. Let's also drop the reference
+to the efi_phys struct and grab the address from the EFI system
+table directly.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/x86/include/asm/efi.h     |  8 ++---
- arch/x86/platform/efi/efi.c    | 30 ++----------------
- arch/x86/platform/efi/efi_32.c | 21 ++++++++++---
- arch/x86/platform/efi/efi_64.c | 56 ++++++++++++++++++++++------------
- 4 files changed, 58 insertions(+), 57 deletions(-)
+ arch/x86/include/asm/efi.h          |   3 -
+ arch/x86/platform/efi/efi_32.c      |   5 +-
+ arch/x86/platform/efi/efi_stub_32.S | 109 +++++-----------------------
+ 3 files changed, 20 insertions(+), 97 deletions(-)
 
 diff --git a/arch/x86/include/asm/efi.h b/arch/x86/include/asm/efi.h
-index 09c3fc468793..e29e5dc0b750 100644
+index e29e5dc0b750..cb08035b89a0 100644
 --- a/arch/x86/include/asm/efi.h
 +++ b/arch/x86/include/asm/efi.h
-@@ -61,8 +61,6 @@ extern asmlinkage unsigned long efi_call_phys(void *, ...);
+@@ -35,9 +35,6 @@
+ #define ARCH_EFI_IRQ_FLAGS_MASK	X86_EFLAGS_IF
  
- extern asmlinkage u64 efi_call(void *fp, ...);
- 
--#define efi_call_phys(f, args...)		efi_call((f), args)
+ #ifdef CONFIG_X86_32
 -
- /*
-  * struct efi_scratch - Scratch space used while switching to/from efi_mm
-  * @phys_stack: stack used during EFI Mixed Mode
-@@ -115,8 +113,6 @@ extern void __iomem *__init efi_ioremap(unsigned long addr, unsigned long size,
- extern struct efi_scratch efi_scratch;
- extern void __init efi_set_executable(efi_memory_desc_t *md, bool executable);
- extern int __init efi_memblock_x86_reserve_range(void);
--extern pgd_t * __init efi_call_phys_prolog(void);
--extern void __init efi_call_phys_epilog(pgd_t *save_pgd);
- extern void __init efi_print_memmap(void);
- extern void __init efi_memory_uc(u64 addr, unsigned long size);
- extern void __init efi_map_region(efi_memory_desc_t *md);
-@@ -177,6 +173,10 @@ extern efi_status_t efi_thunk_set_virtual_address_map(
- 	unsigned long descriptor_size,
- 	u32 descriptor_version,
- 	efi_memory_desc_t *virtual_map);
-+efi_status_t efi_set_virtual_address_map(unsigned long memory_map_size,
-+					 unsigned long descriptor_size,
-+					 u32 descriptor_version,
-+					 efi_memory_desc_t *virtual_map);
- 
- /* arch specific definitions used by the stub code */
- 
-diff --git a/arch/x86/platform/efi/efi.c b/arch/x86/platform/efi/efi.c
-index 3ce32c31bb61..50f8123e658a 100644
---- a/arch/x86/platform/efi/efi.c
-+++ b/arch/x86/platform/efi/efi.c
-@@ -54,7 +54,7 @@
- #include <asm/x86_init.h>
- #include <asm/uv/uv.h>
- 
--static struct efi efi_phys __initdata;
-+struct efi efi_phys __initdata;
- static efi_system_table_t efi_systab __initdata;
- 
- static efi_config_table_type_t arch_tables[] __initdata = {
-@@ -97,32 +97,6 @@ static int __init setup_add_efi_memmap(char *arg)
- }
- early_param("add_efi_memmap", setup_add_efi_memmap);
- 
--static efi_status_t __init phys_efi_set_virtual_address_map(
--	unsigned long memory_map_size,
--	unsigned long descriptor_size,
--	u32 descriptor_version,
--	efi_memory_desc_t *virtual_map)
--{
--	efi_status_t status;
--	unsigned long flags;
--	pgd_t *save_pgd;
+-extern asmlinkage unsigned long efi_call_phys(void *, ...);
 -
--	save_pgd = efi_call_phys_prolog();
--	if (!save_pgd)
--		return EFI_ABORTED;
--
--	/* Disable interrupts around EFI calls: */
--	local_irq_save(flags);
--	status = efi_call_phys(efi_phys.set_virtual_address_map,
--			       memory_map_size, descriptor_size,
--			       descriptor_version, virtual_map);
--	local_irq_restore(flags);
--
--	efi_call_phys_epilog(save_pgd);
--
--	return status;
--}
--
- void __init efi_find_mirror(void)
- {
- 	efi_memory_desc_t *md;
-@@ -1042,7 +1016,7 @@ static void __init __efi_enter_virtual_mode(void)
- 	efi_sync_low_kernel_mappings();
- 
- 	if (!efi_is_mixed()) {
--		status = phys_efi_set_virtual_address_map(
-+		status = efi_set_virtual_address_map(
- 				efi.memmap.desc_size * count,
- 				efi.memmap.desc_size,
- 				efi.memmap.desc_version,
+ #define arch_efi_call_virt_setup()					\
+ ({									\
+ 	kernel_fpu_begin();						\
 diff --git a/arch/x86/platform/efi/efi_32.c b/arch/x86/platform/efi/efi_32.c
-index 9959657127f4..185950ade0e9 100644
+index 185950ade0e9..71dddd1620f9 100644
 --- a/arch/x86/platform/efi/efi_32.c
 +++ b/arch/x86/platform/efi/efi_32.c
-@@ -66,9 +66,16 @@ void __init efi_map_region(efi_memory_desc_t *md)
+@@ -66,7 +66,8 @@ void __init efi_map_region(efi_memory_desc_t *md)
  void __init efi_map_region_fixed(efi_memory_desc_t *md) {}
  void __init parse_efi_setup(u64 phys_addr, u32 data_len) {}
  
--pgd_t * __init efi_call_phys_prolog(void)
-+extern struct efi efi_phys;
-+
-+efi_status_t __init efi_set_virtual_address_map(unsigned long memory_map_size,
-+						unsigned long descriptor_size,
-+						u32 descriptor_version,
-+						efi_memory_desc_t *virtual_map)
- {
- 	struct desc_ptr gdt_descr;
-+	efi_status_t status;
-+	unsigned long flags;
- 	pgd_t *save_pgd;
+-extern struct efi efi_phys;
++efi_status_t efi_call_svam(efi_set_virtual_address_map_t *__efiapi *,
++			   u32, u32, u32, void *);
  
- 	/* Current pgd is swapper_pg_dir, we'll restore it later: */
-@@ -80,14 +87,18 @@ pgd_t * __init efi_call_phys_prolog(void)
- 	gdt_descr.size = GDT_SIZE - 1;
- 	load_gdt(&gdt_descr);
+ efi_status_t __init efi_set_virtual_address_map(unsigned long memory_map_size,
+ 						unsigned long descriptor_size,
+@@ -89,7 +90,7 @@ efi_status_t __init efi_set_virtual_address_map(unsigned long memory_map_size,
  
--	return save_pgd;
--}
-+	/* Disable interrupts around EFI calls: */
-+	local_irq_save(flags);
-+	status = efi_call_phys(efi_phys.set_virtual_address_map,
-+			       memory_map_size, descriptor_size,
-+			       descriptor_version, virtual_map);
-+	local_irq_restore(flags);
+ 	/* Disable interrupts around EFI calls: */
+ 	local_irq_save(flags);
+-	status = efi_call_phys(efi_phys.set_virtual_address_map,
++	status = efi_call_svam(&efi.systab->runtime->set_virtual_address_map,
+ 			       memory_map_size, descriptor_size,
+ 			       descriptor_version, virtual_map);
+ 	local_irq_restore(flags);
+diff --git a/arch/x86/platform/efi/efi_stub_32.S b/arch/x86/platform/efi/efi_stub_32.S
+index eed8b5b441f8..75c46e7a809f 100644
+--- a/arch/x86/platform/efi/efi_stub_32.S
++++ b/arch/x86/platform/efi/efi_stub_32.S
+@@ -7,118 +7,43 @@
+  */
  
--void __init efi_call_phys_epilog(pgd_t *save_pgd)
--{
- 	load_fixmap_gdt(0);
- 	load_cr3(save_pgd);
- 	__flush_tlb_all();
-+
-+	return status;
- }
+ #include <linux/linkage.h>
++#include <linux/init.h>
+ #include <asm/page_types.h>
  
- void __init efi_runtime_update_mappings(void)
-diff --git a/arch/x86/platform/efi/efi_64.c b/arch/x86/platform/efi/efi_64.c
-index a72bbabbc595..a7f11d1ff7c4 100644
---- a/arch/x86/platform/efi/efi_64.c
-+++ b/arch/x86/platform/efi/efi_64.c
-@@ -72,9 +72,9 @@ static void __init early_code_mapping_set_exec(int executable)
- 	}
- }
+-/*
+- * efi_call_phys(void *, ...) is a function with variable parameters.
+- * All the callers of this function assure that all the parameters are 4-bytes.
+- */
+-
+-/*
+- * In gcc calling convention, EBX, ESP, EBP, ESI and EDI are all callee save.
+- * So we'd better save all of them at the beginning of this function and restore
+- * at the end no matter how many we use, because we can not assure EFI runtime
+- * service functions will comply with gcc calling convention, too.
+- */
++	__INIT
++SYM_FUNC_START(efi_call_svam)
++	push	8(%esp)
++	push	8(%esp)
++	push	%ecx
++	push	%edx
  
--void __init efi_old_memmap_phys_epilog(pgd_t *save_pgd);
-+static void __init efi_old_memmap_phys_epilog(pgd_t *save_pgd);
- 
--pgd_t * __init efi_old_memmap_phys_prolog(void)
-+static pgd_t * __init efi_old_memmap_phys_prolog(void)
- {
- 	unsigned long vaddr, addr_pgd, addr_p4d, addr_pud;
- 	pgd_t *save_pgd, *pgd_k, *pgd_efi;
-@@ -144,7 +144,7 @@ pgd_t * __init efi_old_memmap_phys_prolog(void)
- 	return NULL;
- }
- 
--void __init efi_old_memmap_phys_epilog(pgd_t *save_pgd)
-+static void __init efi_old_memmap_phys_epilog(pgd_t *save_pgd)
- {
+-.text
+-SYM_FUNC_START(efi_call_phys)
  	/*
- 	 * After the lock is released, the original page table is restored.
-@@ -185,23 +185,6 @@ void __init efi_old_memmap_phys_epilog(pgd_t *save_pgd)
- 	early_code_mapping_set_exec(0);
- }
+-	 * 0. The function can only be called in Linux kernel. So CS has been
+-	 * set to 0x0010, DS and SS have been set to 0x0018. In EFI, I found
+-	 * the values of these registers are the same. And, the corresponding
+-	 * GDT entries are identical. So I will do nothing about segment reg
+-	 * and GDT, but change GDT base register in prolog and epilog.
+-	 */
+-
+-	/*
+-	 * 1. Now I am running with EIP = <physical address> + PAGE_OFFSET.
+-	 * But to make it smoothly switch from virtual mode to flat mode.
+-	 * The mapping of lower virtual memory has been created in prolog and
+-	 * epilog.
++	 * Switch to the flat mapped alias of this routine, by jumping to the
++	 * address of label '1' after subtracting PAGE_OFFSET from it.
+ 	 */
+ 	movl	$1f, %edx
+ 	subl	$__PAGE_OFFSET, %edx
+ 	jmp	*%edx
+ 1:
  
--pgd_t * __init efi_call_phys_prolog(void)
--{
--	if (efi_enabled(EFI_OLD_MEMMAP))
--		return efi_old_memmap_phys_prolog();
+-	/*
+-	 * 2. Now on the top of stack is the return
+-	 * address in the caller of efi_call_phys(), then parameter 1,
+-	 * parameter 2, ..., param n. To make things easy, we save the return
+-	 * address of efi_call_phys in a global variable.
+-	 */
+-	popl	%edx
+-	movl	%edx, saved_return_addr
+-	/* get the function pointer into ECX*/
+-	popl	%ecx
+-	movl	%ecx, efi_rt_function_ptr
+-	movl	$2f, %edx
+-	subl	$__PAGE_OFFSET, %edx
+-	pushl	%edx
 -
--	efi_switch_mm(&efi_mm);
--	return efi_mm.pgd;
--}
--
--void __init efi_call_phys_epilog(pgd_t *save_pgd)
--{
--	if (efi_enabled(EFI_OLD_MEMMAP))
--		efi_old_memmap_phys_epilog(save_pgd);
--	else
--		efi_switch_mm(efi_scratch.prev_mm);
--}
--
- EXPORT_SYMBOL_GPL(efi_mm);
+-	/*
+-	 * 3. Clear PG bit in %CR0.
+-	 */
++	/* disable paging */
+ 	movl	%cr0, %edx
+ 	andl	$0x7fffffff, %edx
+ 	movl	%edx, %cr0
+-	jmp	1f
+-1:
  
- /*
-@@ -1018,3 +1001,36 @@ void efi_thunk_runtime_setup(void)
- 	efi.query_capsule_caps = efi_thunk_query_capsule_caps;
- }
- #endif /* CONFIG_EFI_MIXED */
-+
-+efi_status_t __init efi_set_virtual_address_map(unsigned long memory_map_size,
-+						unsigned long descriptor_size,
-+						u32 descriptor_version,
-+						efi_memory_desc_t *virtual_map)
-+{
-+	efi_status_t status;
-+	unsigned long flags;
-+	pgd_t *save_pgd = NULL;
-+
-+	if (efi_enabled(EFI_OLD_MEMMAP)) {
-+		save_pgd = efi_old_memmap_phys_prolog();
-+		if (!save_pgd)
-+			return EFI_ABORTED;
-+	} else {
-+		efi_switch_mm(&efi_mm);
-+	}
-+
-+	/* Disable interrupts around EFI calls: */
-+	local_irq_save(flags);
-+	status = efi_call(efi.systab->runtime->set_virtual_address_map,
-+			  memory_map_size, descriptor_size,
-+			  descriptor_version, virtual_map);
-+	local_irq_restore(flags);
-+
-+
-+	if (save_pgd)
-+		efi_old_memmap_phys_epilog(save_pgd);
-+	else
-+		efi_switch_mm(efi_scratch.prev_mm);
-+
-+	return status;
-+}
+-	/*
+-	 * 4. Adjust stack pointer.
+-	 */
++	/* convert the stack pointer to a flat mapped address */
+ 	subl	$__PAGE_OFFSET, %esp
+ 
+-	/*
+-	 * 5. Call the physical function.
+-	 */
+-	jmp	*%ecx
++	/* call the EFI routine */
++	call	*(%eax)
+ 
+-2:
+-	/*
+-	 * 6. After EFI runtime service returns, control will return to
+-	 * following instruction. We'd better readjust stack pointer first.
+-	 */
+-	addl	$__PAGE_OFFSET, %esp
++	/* convert ESP back to a kernel VA, and pop the outgoing args */
++	addl	$__PAGE_OFFSET + 16, %esp
+ 
+-	/*
+-	 * 7. Restore PG bit
+-	 */
++	/* re-enable paging */
+ 	movl	%cr0, %edx
+ 	orl	$0x80000000, %edx
+ 	movl	%edx, %cr0
+-	jmp	1f
+-1:
+-	/*
+-	 * 8. Now restore the virtual mode from flat mode by
+-	 * adding EIP with PAGE_OFFSET.
+-	 */
+-	movl	$1f, %edx
+-	jmp	*%edx
+-1:
+-
+-	/*
+-	 * 9. Balance the stack. And because EAX contain the return value,
+-	 * we'd better not clobber it.
+-	 */
+-	leal	efi_rt_function_ptr, %edx
+-	movl	(%edx), %ecx
+-	pushl	%ecx
+ 
+-	/*
+-	 * 10. Push the saved return address onto the stack and return.
+-	 */
+-	leal	saved_return_addr, %edx
+-	movl	(%edx), %ecx
+-	pushl	%ecx
+ 	ret
+-SYM_FUNC_END(efi_call_phys)
+-.previous
+-
+-.data
+-saved_return_addr:
+-	.long 0
+-efi_rt_function_ptr:
+-	.long 0
++SYM_FUNC_END(efi_call_svam)
 -- 
 2.20.1
 
