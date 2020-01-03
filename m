@@ -2,27 +2,27 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A1D112F786
-	for <lists+linux-efi@lfdr.de>; Fri,  3 Jan 2020 12:41:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E5F6A12F77E
+	for <lists+linux-efi@lfdr.de>; Fri,  3 Jan 2020 12:41:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727870AbgACLks (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 3 Jan 2020 06:40:48 -0500
-Received: from mail.kernel.org ([198.145.29.99]:40564 "EHLO mail.kernel.org"
+        id S1727867AbgACLku (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 3 Jan 2020 06:40:50 -0500
+Received: from mail.kernel.org ([198.145.29.99]:40644 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727867AbgACLkr (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Fri, 3 Jan 2020 06:40:47 -0500
+        id S1727876AbgACLku (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Fri, 3 Jan 2020 06:40:50 -0500
 Received: from localhost.localdomain (amontpellier-657-1-18-247.w109-210.abo.wanadoo.fr [109.210.65.247])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 477BC24655;
-        Fri,  3 Jan 2020 11:40:45 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 5758C2464E;
+        Fri,  3 Jan 2020 11:40:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1578051646;
-        bh=Lz3g1HD3Aatv1rI/ib8wH2Clkm6CnbIojyw9mtMeti4=;
+        s=default; t=1578051649;
+        bh=WzvkVJw16gcw6hemFqW6TdkXxe+wQNU4zcPETDM7LaI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=d6z0GCcVk2Vv6RGIoMQRWBW/RMkR4arL3K5ql1kLHMVXzbYbyDc7tO7WfV6DADQ8n
-         H4XTTHl/iK8ECE48KlecGzv77+BzxhbqLgQmE5UVrjnin8CyRI+6QwHHfR27nRFJEY
-         8wJC2NPumB+10o/6ZojCc4InSREVuW2XOoLY/YGk=
+        b=dZ2yUKhucLq1wHv0KO4hMuVe57X/etT+PrLRVUWI0WxTrLidCBlzzNe6FhIScy9Nd
+         AwjdNjldZQenDB1Qc8e6M7B3CrJQwFCzAbZUMzbwAxJ9yZNkQLUnTPoNsg+PftJ9xu
+         hldK26SVZmmS+rjzpNMo+CoLnBhAxWc/hZLFB++4=
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-efi@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
         Thomas Gleixner <tglx@linutronix.de>
@@ -31,9 +31,9 @@ Cc:     Ard Biesheuvel <ardb@kernel.org>,
         linux-kernel@vger.kernel.org, Andy Lutomirski <luto@kernel.org>,
         Arvind Sankar <nivedita@alum.mit.edu>,
         Matthew Garrett <mjg59@google.com>
-Subject: [PATCH 15/20] efi/x86: Check number of arguments to variadic functions
-Date:   Fri,  3 Jan 2020 12:39:48 +0100
-Message-Id: <20200103113953.9571-16-ardb@kernel.org>
+Subject: [PATCH 16/20] efi/x86: Allow translating 64-bit arguments for mixed mode calls
+Date:   Fri,  3 Jan 2020 12:39:49 +0100
+Message-Id: <20200103113953.9571-17-ardb@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20200103113953.9571-1-ardb@kernel.org>
 References: <20200103113953.9571-1-ardb@kernel.org>
@@ -46,167 +46,171 @@ X-Mailing-List: linux-efi@vger.kernel.org
 
 From: Arvind Sankar <nivedita@alum.mit.edu>
 
-On x86 we need to thunk through assembler stubs to call the EFI services
-for mixed mode, and for runtime services in 64-bit mode. The assembler
-stubs have limits on how many arguments it handles. Introduce a few
-macros to check that we do not try to pass too many arguments to the
-stubs.
+Introduce the ability to define macros to perform argument translation
+for the calls that need it, and define them for the boot services that
+we currently use.
+
+When calling 32-bit firmware methods in mixed mode, all output
+parameters that are 32-bit according to the firmware, but 64-bit in the
+kernel (ie OUT UINTN * or OUT VOID **) must be initialized in the
+kernel, or the upper 32 bits may contain garbage. Define macros that
+zero out the upper 32 bits of the output before invoking the firmware
+method.
+
+When a 32-bit EFI call takes 64-bit arguments, the mixed-mode call must
+push the two 32-bit halves as separate arguments onto the stack. This
+can be achieved by splitting the argument into its two halves when
+calling the assembler thunk. Define a macro to do this for the
+free_pages boot service.
 
 Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/x86/boot/compressed/efi_thunk_64.S |  4 +-
- arch/x86/include/asm/efi.h              | 54 ++++++++++++++++++++++++-
- arch/x86/platform/efi/efi_stub_64.S     |  4 +-
- arch/x86/platform/efi/efi_thunk_64.S    |  4 +-
- 4 files changed, 58 insertions(+), 8 deletions(-)
+ arch/x86/boot/compressed/eboot.c              | 16 -----
+ arch/x86/include/asm/efi.h                    | 71 +++++++++++++++++--
+ .../firmware/efi/libstub/efi-stub-helper.c    |  5 +-
+ 3 files changed, 67 insertions(+), 25 deletions(-)
 
-diff --git a/arch/x86/boot/compressed/efi_thunk_64.S b/arch/x86/boot/compressed/efi_thunk_64.S
-index 6d95eb6b8912..d040ff5458e5 100644
---- a/arch/x86/boot/compressed/efi_thunk_64.S
-+++ b/arch/x86/boot/compressed/efi_thunk_64.S
-@@ -23,7 +23,7 @@
- 
- 	.code64
- 	.text
--SYM_FUNC_START(efi64_thunk)
-+SYM_FUNC_START(__efi64_thunk)
- 	push	%rbp
- 	push	%rbx
- 
-@@ -95,7 +95,7 @@ SYM_FUNC_START(efi64_thunk)
- 	pop	%rbx
- 	pop	%rbp
- 	ret
--SYM_FUNC_END(efi64_thunk)
-+SYM_FUNC_END(__efi64_thunk)
- 
- 	.code32
- /*
+diff --git a/arch/x86/boot/compressed/eboot.c b/arch/x86/boot/compressed/eboot.c
+index 565ee4733579..4afd29eb5b34 100644
+--- a/arch/x86/boot/compressed/eboot.c
++++ b/arch/x86/boot/compressed/eboot.c
+@@ -891,19 +891,3 @@ struct boot_params *efi_main(efi_handle_t handle,
+ 	for (;;)
+ 		asm("hlt");
+ }
+-
+-#ifdef CONFIG_EFI_MIXED
+-void efi_free_native(unsigned long size, unsigned long addr);
+-
+-void efi_free(unsigned long size, unsigned long addr)
+-{
+-	if (!size)
+-		return;
+-
+-	if (efi_is_native())
+-		efi_free_native(size, addr);
+-	else
+-		efi64_thunk(efi_system_table()->boottime->mixed_mode.free_pages,
+-			    addr, 0, DIV_ROUND_UP(size, EFI_PAGE_SIZE));
+-}
+-#endif
 diff --git a/arch/x86/include/asm/efi.h b/arch/x86/include/asm/efi.h
-index e7e9c6e057f9..cfc450085584 100644
+index cfc450085584..166f0386719e 100644
 --- a/arch/x86/include/asm/efi.h
 +++ b/arch/x86/include/asm/efi.h
-@@ -8,6 +8,7 @@
- #include <asm/tlb.h>
- #include <asm/nospec-branch.h>
- #include <asm/mmu_context.h>
-+#include <linux/build_bug.h>
- 
- /*
-  * We map the EFI regions needed for runtime services non-contiguously,
-@@ -34,6 +35,45 @@
- 
- #define ARCH_EFI_IRQ_FLAGS_MASK	X86_EFLAGS_IF
+@@ -243,22 +243,83 @@ static inline bool efi_is_native(void)
+ 		: (__typeof__(inst->attr))				\
+ 			efi_mixed_mode_cast(inst->mixed_mode.attr))
  
 +/*
-+ * The EFI services are called through variadic functions in many cases. These
-+ * functions are implemented in assembler and support only a fixed number of
-+ * arguments. The macros below allows us to check at build time that we don't
-+ * try to call them with too many arguments.
++ * The following macros allow translating arguments if necessary from native to
++ * mixed mode. The use case for this is to initialize the upper 32 bits of
++ * output parameters, and where the 32-bit method requires a 64-bit argument,
++ * which must be split up into two arguments to be thunked properly.
 + *
-+ * __efi_nargs() will return the number of arguments if it is 7 or less, and
-+ * cause a BUILD_BUG otherwise. The limitations of the C preprocessor make it
-+ * impossible to calculate the exact number of arguments beyond some
-+ * pre-defined limit. The maximum number of arguments currently supported by
-+ * any of the thunks is 7, so this is good enough for now and can be extended
-+ * in the obvious way if we ever need more.
++ * As examples, the AllocatePool boot service returns the address of the
++ * allocation, but it will not set the high 32 bits of the address. To ensure
++ * that the full 64-bit address is initialized, we zero-init the address before
++ * calling the thunk.
++ *
++ * The FreePages boot service takes a 64-bit physical address even in 32-bit
++ * mode. For the thunk to work correctly, a native 64-bit call of
++ * 	free_pages(addr, size)
++ * must be translated to
++ * 	efi64_thunk(free_pages, addr & U32_MAX, addr >> 32, size)
++ * so that the two 32-bit halves of addr get pushed onto the stack separately.
 + */
 +
-+#define __efi_nargs(...) __efi_nargs_(__VA_ARGS__)
-+#define __efi_nargs_(...) __efi_nargs__(0, ##__VA_ARGS__,	\
-+	__efi_arg_sentinel(7), __efi_arg_sentinel(6),		\
-+	__efi_arg_sentinel(5), __efi_arg_sentinel(4),		\
-+	__efi_arg_sentinel(3), __efi_arg_sentinel(2),		\
-+	__efi_arg_sentinel(1), __efi_arg_sentinel(0))
-+#define __efi_nargs__(_0, _1, _2, _3, _4, _5, _6, _7, n, ...)	\
-+	__take_second_arg(n,					\
-+		({ BUILD_BUG_ON_MSG(1, "__efi_nargs limit exceeded"); 8; }))
-+#define __efi_arg_sentinel(n) , n
++static inline void *efi64_zero_upper(void *p)
++{
++	((u32 *)p)[1] = 0;
++	return p;
++}
++
++#define __efi64_argmap_free_pages(addr, size)				\
++	((addr), 0, (size))
++
++#define __efi64_argmap_get_memory_map(mm_size, mm, key, size, ver)	\
++	((mm_size), (mm), efi64_zero_upper(key), efi64_zero_upper(size), (ver))
++
++#define __efi64_argmap_allocate_pool(type, size, buffer)		\
++	((type), (size), efi64_zero_upper(buffer))
++
++#define __efi64_argmap_handle_protocol(handle, protocol, interface)	\
++	((handle), (protocol), efi64_zero_upper(interface))
++
++#define __efi64_argmap_locate_protocol(protocol, reg, interface)	\
++	((protocol), (reg), efi64_zero_upper(interface))
 +
 +/*
-+ * __efi_nargs_check(f, n, ...) will cause a BUILD_BUG if the ellipsis
-+ * represents more than n arguments.
++ * The macros below handle the plumbing for the argument mapping. To add a
++ * mapping for a specific EFI method, simply define a macro
++ * __efi64_argmap_<method name>, following the examples above.
 + */
 +
-+#define __efi_nargs_check(f, n, ...)					\
-+	__efi_nargs_check_(f, __efi_nargs(__VA_ARGS__), n)
-+#define __efi_nargs_check_(f, p, n) __efi_nargs_check__(f, p, n)
-+#define __efi_nargs_check__(f, p, n) ({					\
-+	BUILD_BUG_ON_MSG(						\
-+		(p) > (n),						\
-+		#f " called with too many arguments (" #p ">" #n ")");	\
-+})
++#define __efi64_thunk_map(inst, func, ...)				\
++	efi64_thunk(inst->mixed_mode.func,				\
++		__efi64_argmap(__efi64_argmap_ ## func(__VA_ARGS__),	\
++			       (__VA_ARGS__)))
 +
- #ifdef CONFIG_X86_32
- #define arch_efi_call_virt_setup()					\
- ({									\
-@@ -56,7 +96,12 @@
- 
- #define EFI_LOADER_SIGNATURE	"EL64"
- 
--extern asmlinkage u64 efi_call(void *fp, ...);
-+extern asmlinkage u64 __efi_call(void *fp, ...);
++#define __efi64_argmap(mapped, args)					\
++	__PASTE(__efi64_argmap__, __efi_nargs(__efi_eat mapped))(mapped, args)
++#define __efi64_argmap__0(mapped, args) __efi_eval mapped
++#define __efi64_argmap__1(mapped, args) __efi_eval args
 +
-+#define efi_call(...) ({						\
-+	__efi_nargs_check(efi_call, 7, __VA_ARGS__);			\
-+	__efi_call(__VA_ARGS__);					\
-+})
- 
- /*
-  * struct efi_scratch - Scratch space used while switching to/from efi_mm
-@@ -139,7 +184,12 @@ struct efi_setup_data {
- extern u64 efi_setup;
- 
- #ifdef CONFIG_EFI
--extern efi_status_t efi64_thunk(u32, ...);
-+extern efi_status_t __efi64_thunk(u32, ...);
++#define __efi_eat(...)
++#define __efi_eval(...) __VA_ARGS__
 +
-+#define efi64_thunk(...) ({						\
-+	__efi_nargs_check(efi64_thunk, 6, __VA_ARGS__);			\
-+	__efi64_thunk(__VA_ARGS__);					\
-+})
++/* The three macros below handle dispatching via the thunk if needed */
++
+ #define efi_call_proto(inst, func, ...)					\
+ 	(efi_is_native()						\
+ 		? inst->func(inst, ##__VA_ARGS__)			\
+-		: efi64_thunk(inst->mixed_mode.func, inst, ##__VA_ARGS__))
++		: __efi64_thunk_map(inst, func, inst, ##__VA_ARGS__))
  
- static inline bool efi_is_mixed(void)
+ #define efi_bs_call(func, ...)						\
+ 	(efi_is_native()						\
+ 		? efi_system_table()->boottime->func(__VA_ARGS__)	\
+-		: efi64_thunk(efi_table_attr(efi_system_table(),	\
+-				boottime)->mixed_mode.func, __VA_ARGS__))
++		: __efi64_thunk_map(efi_table_attr(efi_system_table(),	\
++				boottime), func, __VA_ARGS__))
+ 
+ #define efi_rt_call(func, ...)						\
+ 	(efi_is_native()						\
+ 		? efi_system_table()->runtime->func(__VA_ARGS__)	\
+-		: efi64_thunk(efi_table_attr(efi_system_table(),	\
+-				runtime)->mixed_mode.func, __VA_ARGS__))
++		: __efi64_thunk_map(efi_table_attr(efi_system_table(),	\
++				runtime), func, __VA_ARGS__))
+ 
+ extern bool efi_reboot_required(void);
+ extern bool efi_is_table_address(unsigned long phys_addr);
+diff --git a/drivers/firmware/efi/libstub/efi-stub-helper.c b/drivers/firmware/efi/libstub/efi-stub-helper.c
+index f1b9c36934e9..fcc45ee94e02 100644
+--- a/drivers/firmware/efi/libstub/efi-stub-helper.c
++++ b/drivers/firmware/efi/libstub/efi-stub-helper.c
+@@ -344,9 +344,6 @@ efi_status_t efi_low_alloc_above(unsigned long size, unsigned long align,
+ }
+ 
+ void efi_free(unsigned long size, unsigned long addr)
+-	__weak __alias(efi_free_native);
+-
+-void efi_free_native(unsigned long size, unsigned long addr)
  {
-diff --git a/arch/x86/platform/efi/efi_stub_64.S b/arch/x86/platform/efi/efi_stub_64.S
-index e7e1020f4ccb..15da118f04f0 100644
---- a/arch/x86/platform/efi/efi_stub_64.S
-+++ b/arch/x86/platform/efi/efi_stub_64.S
-@@ -10,7 +10,7 @@
- #include <linux/linkage.h>
- #include <asm/nospec-branch.h>
+ 	unsigned long nr_pages;
  
--SYM_FUNC_START(efi_call)
-+SYM_FUNC_START(__efi_call)
- 	pushq %rbp
- 	movq %rsp, %rbp
- 	and $~0xf, %rsp
-@@ -24,4 +24,4 @@ SYM_FUNC_START(efi_call)
- 	CALL_NOSPEC %rdi
- 	leave
- 	ret
--SYM_FUNC_END(efi_call)
-+SYM_FUNC_END(__efi_call)
-diff --git a/arch/x86/platform/efi/efi_thunk_64.S b/arch/x86/platform/efi/efi_thunk_64.S
-index 162b35729633..26f0da238c1c 100644
---- a/arch/x86/platform/efi/efi_thunk_64.S
-+++ b/arch/x86/platform/efi/efi_thunk_64.S
-@@ -25,7 +25,7 @@
+@@ -354,7 +351,7 @@ void efi_free_native(unsigned long size, unsigned long addr)
+ 		return;
  
- 	.text
- 	.code64
--SYM_CODE_START(efi64_thunk)
-+SYM_CODE_START(__efi64_thunk)
- 	push	%rbp
- 	push	%rbx
+ 	nr_pages = round_up(size, EFI_ALLOC_ALIGN) / EFI_PAGE_SIZE;
+-	efi_system_table()->boottime->free_pages(addr, nr_pages);
++	efi_bs_call(free_pages, addr, nr_pages);
+ }
  
-@@ -69,4 +69,4 @@ SYM_CODE_START(efi64_thunk)
- 2:	pushl	$__KERNEL_CS
- 	pushl	%ebp
- 	lret
--SYM_CODE_END(efi64_thunk)
-+SYM_CODE_END(__efi64_thunk)
+ static efi_status_t efi_file_size(void *__fh, efi_char16_t *filename_16,
 -- 
 2.20.1
 
