@@ -2,87 +2,59 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D4373131247
-	for <lists+linux-efi@lfdr.de>; Mon,  6 Jan 2020 13:47:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C1526131843
+	for <lists+linux-efi@lfdr.de>; Mon,  6 Jan 2020 20:06:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726526AbgAFMrL (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 6 Jan 2020 07:47:11 -0500
-Received: from mail-ot1-f66.google.com ([209.85.210.66]:38041 "EHLO
-        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726508AbgAFMrK (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 6 Jan 2020 07:47:10 -0500
-Received: by mail-ot1-f66.google.com with SMTP id d7so67155225otf.5
-        for <linux-efi@vger.kernel.org>; Mon, 06 Jan 2020 04:47:09 -0800 (PST)
+        id S1726690AbgAFTFg (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 6 Jan 2020 14:05:36 -0500
+Received: from mail-oi1-f194.google.com ([209.85.167.194]:40402 "EHLO
+        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726657AbgAFTFg (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 6 Jan 2020 14:05:36 -0500
+Received: by mail-oi1-f194.google.com with SMTP id c77so16181484oib.7
+        for <linux-efi@vger.kernel.org>; Mon, 06 Jan 2020 11:05:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=0cokz+TzxrpaxvG5nOS6eF++kPejXpiqRHh7qCMSQec=;
-        b=VSPR1kNh7jcvbYeM40HUkgvv2juwOOJPMTYyKKYC5vhjpIsMb2xhi15fRuQgOvTPL5
-         V1a7AS8J87afZ4yaptjdIoKtaI2Br/pox8NJ+XTBZ1VIx66jhfSBr4w2B+82VTr4ZpF8
-         mTSLujM1kuGSTfnTqjV/UFcERGeFaLCLh7Dbp1EDXvkanPImgReiGuBkDcz2vOfcb5kZ
-         bj59nBD2Z7qiiBxv+jZn/e4k7BNy1/AZgBVpHXrf5FZAAPPQ96r5YQp5z6EuxPbiwCRk
-         UYOKLLzjTmm1R4heMg8ILqzLXpcvyspEAyZYqkGEo7fLDfqGiZxdo5WvSLSMgYK+HlN9
-         AWLw==
+        bh=alX9B07HokhP3ECivMm8pGprXZuv/KIuu13Y0Jtq3rg=;
+        b=BLpK3J9bEkd6Wg2RItLkAFU/N5U4jsc764hHw3yBcw3+usDirwaNCn/42kqfH64cV+
+         oKl6ogYaLW4hZg2GMAIQY0ho7+sKRVlxpCnOWd1sfmjIQDCC//p1wTsMNI01AdG3w0xU
+         SyowTtxuWicITn6hSIbggt9P5IFTn59TBd546vxUCqVjqcNCGSOAmZc30Q/KzmimdxjZ
+         wGae8x99zXO3rnxaXWswDTOYTWFvuwsMAgFJ/HGB1gy5RLdic16ylAV8tyxK3WaFz8l2
+         oBor7VmJvgBEg4hKcfLxI8gGUqp4cpQcVFxeLFLoRfWqHyWAj3JKgU57vYi0ksVjST35
+         rJEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=0cokz+TzxrpaxvG5nOS6eF++kPejXpiqRHh7qCMSQec=;
-        b=NSgO6wIATS49gnmFcTgu/bdJPeWSGtEPniRxiO6TJitJfZvGdwF/ubt+ruR79R0Bgv
-         3l5kbiu6KAR05Y1q1COowlx81nDPNCDeTrc1L7p9R2frB1o2EeH3cGLPWr7w0mNYO9wt
-         j2io3KSsnz4IypzbV5oThaodTzQhE5CONbzQTTtycZ8jCCKOzyvMbgyLlciksO5TIMsg
-         e2gYrzOAKWCCauZFZr7o1lnHGO7c8ePL94zGHNNoBDg9bespQDsYmon08MFiwmATX+7s
-         8XZurIX3P8nJuKGpL3WVpQihj6pmq8e9MqwvgRVEoVLXpwbxI8fUgBaqeA+/zEXbc5j+
-         ttCQ==
-X-Gm-Message-State: APjAAAXSMfkH+cNwycUh+WBWcc26pPaqn0rVNf7GxEq8mjZF8jo5HrJf
-        4iAQAVyCbRnG7E7ShuuqxPjcP6Tug0jHOt/CWYpPMA==
-X-Google-Smtp-Source: APXvYqxJirJ4tMUUigFwZuoGjSzrBh2H8+dLoDP3tFn248r//UtiG0zaVOpxu+0owZBKVVOZDGrCSsyTsAsTyUSybWE=
-X-Received: by 2002:a9d:7410:: with SMTP id n16mr103842622otk.23.1578314829026;
- Mon, 06 Jan 2020 04:47:09 -0800 (PST)
+        bh=alX9B07HokhP3ECivMm8pGprXZuv/KIuu13Y0Jtq3rg=;
+        b=NR6Dzox89Q2AXdQy7TSv92M5qiFG85R2JdSYb+B27G5lqp024CJNxNQaj4uOH4DoWd
+         Fu8mP8E1AzDqhPPVhDsHj+G8XM7BlmUtaEDxggU3pzINJGvbAlNR+bzpu4f9Z1UizdFh
+         gR7MI2H4oDI0e4HsB0EXi7xvM0gh8coLHQyTnk3VOXGog34OZD1lj+WKp4eDNd/nTOVd
+         P9ZwHkoabu3eyyl+nbN/V2C+WAb0odNNqqX/HW05Te1E7tz0CGInQR2AwS4NGI4gFBbJ
+         fSgsp+OlAcI3g8yMxBESGtXkN9WzgWeu6rUjAB6xwiuzEC2JFHxqGWgMoeb7B5pv0sEA
+         IMXw==
+X-Gm-Message-State: APjAAAWwNbzl5wLaFxcyvOhrfoCZNhNumhRDlfkP80gMzIEGUttbV3Y+
+        Q1U5v8qfrCzl0eFa95zqdT+YqylRyxxqu/7XTSkKtg==
+X-Google-Smtp-Source: APXvYqwq2F38iwC/q1v5HcOMi4czC/1PUV5A5pBl22QCQ8iuB1wjy6FX5YvmNx5+uzxdNN5E951SvkRKr6IFVGHaryg=
+X-Received: by 2002:aca:3f54:: with SMTP id m81mr5940073oia.73.1578337535501;
+ Mon, 06 Jan 2020 11:05:35 -0800 (PST)
 MIME-Version: 1.0
-References: <20191114180303.66955-1-elver@google.com> <20191114180303.66955-2-elver@google.com>
- <BAB5F853-95FA-4623-A067-4E62B90721D3@lca.pw>
-In-Reply-To: <BAB5F853-95FA-4623-A067-4E62B90721D3@lca.pw>
-From:   Marco Elver <elver@google.com>
-Date:   Mon, 6 Jan 2020 13:46:57 +0100
-Message-ID: <CANpmjNOC2PYFsE_TK2SYmKcHxyG+2arWc8x_fmeWPOMi0+ot8g@mail.gmail.com>
-Subject: Re: [PATCH v4 01/10] kcsan: Add Kernel Concurrency Sanitizer infrastructure
-To:     Qian Cai <cai@lca.pw>
-Cc:     LKMM Maintainers -- Akira Yokosawa <akiyks@gmail.com>,
-        Alan Stern <stern@rowland.harvard.edu>,
-        Alexander Potapenko <glider@google.com>,
-        Andrea Parri <parri.andrea@gmail.com>,
-        Andrey Konovalov <andreyknvl@google.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Boqun Feng <boqun.feng@gmail.com>,
-        Borislav Petkov <bp@alien8.de>, Daniel Axtens <dja@axtens.net>,
-        Daniel Lustig <dlustig@nvidia.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        David Howells <dhowells@redhat.com>,
-        Dmitry Vyukov <dvyukov@google.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
-        Jade Alglave <j.alglave@ucl.ac.uk>,
-        Joel Fernandes <joel@joelfernandes.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Josh Poimboeuf <jpoimboe@redhat.com>,
-        Luc Maranget <luc.maranget@inria.fr>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Will Deacon <will@kernel.org>,
-        Eric Dumazet <edumazet@google.com>,
-        kasan-dev <kasan-dev@googlegroups.com>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
-        linux-efi@vger.kernel.org,
-        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Linux Memory Management List <linux-mm@kvack.org>,
+References: <157793839827.977550.7845382457971215205.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <157793840865.977550.1385745645244916944.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <CAKv+Gu8JTha-Os6uzg_ghxodEKgjnkgLwJYFkXZiTbqqdKU6_Q@mail.gmail.com>
+In-Reply-To: <CAKv+Gu8JTha-Os6uzg_ghxodEKgjnkgLwJYFkXZiTbqqdKU6_Q@mail.gmail.com>
+From:   Dan Williams <dan.j.williams@intel.com>
+Date:   Mon, 6 Jan 2020 11:05:24 -0800
+Message-ID: <CAPcyv4jqqJwxk8-dZxhZQX0PqNpdsAUVJBG+QufsJx+fhPzmug@mail.gmail.com>
+Subject: Re: [PATCH v3 2/4] efi: Add tracking for dynamically allocated memmaps
+To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Cc:     Ingo Molnar <mingo@redhat.com>,
+        Taku Izumi <izumi.taku@jp.fujitsu.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        Kexec Mailing List <kexec@lists.infradead.org>,
         "the arch/x86 maintainers" <x86@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
@@ -90,170 +62,173 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, 3 Jan 2020 at 06:13, Qian Cai <cai@lca.pw> wrote:
+On Thu, Jan 2, 2020 at 1:02 AM Ard Biesheuvel <ard.biesheuvel@linaro.org> wrote:
 >
+> Hi Dan,
 >
+> Thanks for taking the time to really fix this properly.
 >
-> > On Nov 14, 2019, at 1:02 PM, 'Marco Elver' via kasan-dev <kasan-dev@googlegroups.com> wrote:
-> > +static noinline void kcsan_setup_watchpoint(const volatile void *ptr,
-> > +                                         size_t size, bool is_write)
-> > +{
-> > +     atomic_long_t *watchpoint;
-> > +     union {
-> > +             u8 _1;
-> > +             u16 _2;
-> > +             u32 _4;
-> > +             u64 _8;
-> > +     } expect_value;
-> > +     bool value_change = false;
-> > +     unsigned long ua_flags = user_access_save();
-> > +     unsigned long irq_flags;
-> > +
-> > +     /*
-> > +      * Always reset kcsan_skip counter in slow-path to avoid underflow; see
-> > +      * should_watch().
-> > +      */
-> > +     reset_kcsan_skip();
-> > +
-> > +     if (!kcsan_is_enabled())
-> > +             goto out;
-> > +
-> > +     if (!check_encodable((unsigned long)ptr, size)) {
-> > +             kcsan_counter_inc(KCSAN_COUNTER_UNENCODABLE_ACCESSES);
-> > +             goto out;
-> > +     }
-> > +
-> > +     /*
-> > +      * Disable interrupts & preemptions to avoid another thread on the same
-> > +      * CPU accessing memory locations for the set up watchpoint; this is to
-> > +      * avoid reporting races to e.g. CPU-local data.
-> > +      *
-> > +      * An alternative would be adding the source CPU to the watchpoint
-> > +      * encoding, and checking that watchpoint-CPU != this-CPU. There are
-> > +      * several problems with this:
-> > +      *   1. we should avoid stealing more bits from the watchpoint encoding
-> > +      *      as it would affect accuracy, as well as increase performance
-> > +      *      overhead in the fast-path;
-> > +      *   2. if we are preempted, but there *is* a genuine data race, we
-> > +      *      would *not* report it -- since this is the common case (vs.
-> > +      *      CPU-local data accesses), it makes more sense (from a data race
-> > +      *      detection point of view) to simply disable preemptions to ensure
-> > +      *      as many tasks as possible run on other CPUs.
-> > +      */
-> > +     local_irq_save(irq_flags);
+> Comments/questions below.
 >
-> Enabling KCSAN will now generate a warning during boot here.
+> On Thu, 2 Jan 2020 at 05:29, Dan Williams <dan.j.williams@intel.com> wrote:
+> >
+> > In preparation for fixing efi_memmap_alloc() leaks, add support for
+> > recording whether the memmap was dynamically allocated from slab,
+> > memblock, or is the original physical memmap provided by the platform.
+> >
+> > Cc: Taku Izumi <izumi.taku@jp.fujitsu.com>
+> > Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+> > Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+> > ---
+> >  arch/x86/platform/efi/efi.c     |    2 +-
+> >  arch/x86/platform/efi/quirks.c  |   11 ++++++-----
+> >  drivers/firmware/efi/fake_mem.c |    5 +++--
+> >  drivers/firmware/efi/memmap.c   |   16 ++++++++++------
+> >  include/linux/efi.h             |    8 ++++++--
+> >  5 files changed, 26 insertions(+), 16 deletions(-)
+> >
+> > diff --git a/arch/x86/platform/efi/efi.c b/arch/x86/platform/efi/efi.c
+> > index 38d44f36d5ed..7086afbb84fd 100644
+> > --- a/arch/x86/platform/efi/efi.c
+> > +++ b/arch/x86/platform/efi/efi.c
+> > @@ -333,7 +333,7 @@ static void __init efi_clean_memmap(void)
+> >                 u64 size = efi.memmap.nr_map - n_removal;
+> >
+> >                 pr_warn("Removing %d invalid memory map entries.\n", n_removal);
+> > -               efi_memmap_install(efi.memmap.phys_map, size);
+> > +               efi_memmap_install(efi.memmap.phys_map, size, 0);
+> >         }
+> >  }
+> >
+> > diff --git a/arch/x86/platform/efi/quirks.c b/arch/x86/platform/efi/quirks.c
+> > index f8f0220b6a66..4a71c790f9c3 100644
+> > --- a/arch/x86/platform/efi/quirks.c
+> > +++ b/arch/x86/platform/efi/quirks.c
+> > @@ -244,6 +244,7 @@ EXPORT_SYMBOL_GPL(efi_query_variable_store);
+> >  void __init efi_arch_mem_reserve(phys_addr_t addr, u64 size)
+> >  {
+> >         phys_addr_t new_phys, new_size;
+> > +       unsigned long flags = 0;
+> >         struct efi_mem_range mr;
+> >         efi_memory_desc_t md;
+> >         int num_entries;
+> > @@ -272,8 +273,7 @@ void __init efi_arch_mem_reserve(phys_addr_t addr, u64 size)
+> >         num_entries += efi.memmap.nr_map;
+> >
+> >         new_size = efi.memmap.desc_size * num_entries;
+> > -
+> > -       new_phys = efi_memmap_alloc(num_entries);
+> > +       new_phys = efi_memmap_alloc(num_entries, &flags);
+> >         if (!new_phys) {
+> >                 pr_err("Could not allocate boot services memmap\n");
+> >                 return;
+> > @@ -288,7 +288,7 @@ void __init efi_arch_mem_reserve(phys_addr_t addr, u64 size)
+> >         efi_memmap_insert(&efi.memmap, new, &mr);
+> >         early_memunmap(new, new_size);
+> >
+> > -       efi_memmap_install(new_phys, num_entries);
+> > +       efi_memmap_install(new_phys, num_entries, flags);
+> >         e820__range_update(addr, size, E820_TYPE_RAM, E820_TYPE_RESERVED);
+> >         e820__update_table(e820_table);
+> >  }
+> > @@ -408,6 +408,7 @@ static void __init efi_unmap_pages(efi_memory_desc_t *md)
+> >  void __init efi_free_boot_services(void)
+> >  {
+> >         phys_addr_t new_phys, new_size;
+> > +       unsigned long flags = 0;
+> >         efi_memory_desc_t *md;
+> >         int num_entries = 0;
+> >         void *new, *new_md;
+> > @@ -463,7 +464,7 @@ void __init efi_free_boot_services(void)
+> >                 return;
+> >
+> >         new_size = efi.memmap.desc_size * num_entries;
+> > -       new_phys = efi_memmap_alloc(num_entries);
+> > +       new_phys = efi_memmap_alloc(num_entries, &flags);
+> >         if (!new_phys) {
+> >                 pr_err("Failed to allocate new EFI memmap\n");
+> >                 return;
+> > @@ -493,7 +494,7 @@ void __init efi_free_boot_services(void)
+> >
+> >         memunmap(new);
+> >
+> > -       if (efi_memmap_install(new_phys, num_entries)) {
+> > +       if (efi_memmap_install(new_phys, num_entries, flags)) {
+> >                 pr_err("Could not install new EFI memmap\n");
+> >                 return;
+> >         }
+> > diff --git a/drivers/firmware/efi/fake_mem.c b/drivers/firmware/efi/fake_mem.c
+> > index bb9fc70d0cfa..7e53e5520548 100644
+> > --- a/drivers/firmware/efi/fake_mem.c
+> > +++ b/drivers/firmware/efi/fake_mem.c
+> > @@ -39,6 +39,7 @@ void __init efi_fake_memmap(void)
+> >         int new_nr_map = efi.memmap.nr_map;
+> >         efi_memory_desc_t *md;
+> >         phys_addr_t new_memmap_phy;
+> > +       unsigned long flags = 0;
+> >         void *new_memmap;
+> >         int i;
+> >
+> > @@ -55,7 +56,7 @@ void __init efi_fake_memmap(void)
+> >         }
+> >
+> >         /* allocate memory for new EFI memmap */
+> > -       new_memmap_phy = efi_memmap_alloc(new_nr_map);
+> > +       new_memmap_phy = efi_memmap_alloc(new_nr_map, &flags);
+> >         if (!new_memmap_phy)
+> >                 return;
+> >
+> > @@ -73,7 +74,7 @@ void __init efi_fake_memmap(void)
+> >         /* swap into new EFI memmap */
+> >         early_memunmap(new_memmap, efi.memmap.desc_size * new_nr_map);
+> >
+> > -       efi_memmap_install(new_memmap_phy, new_nr_map);
+> > +       efi_memmap_install(new_memmap_phy, new_nr_map, flags);
+> >
 >
-> Config (need to deselect KASAN and select KCSAN):
->
-> https://raw.githubusercontent.com/cailca/linux-mm/master/x86.config
+> So it is the caller's responsibility to record the flags returned by
+> efi_memmap_alloc() and pass them into efi_memmap_install(), right?
+> Given that we are now passing three pieces of info that need to be in
+> sync between the two, could we use a dedicated data structure instead,
+> a reference to which is taken by both?
 
-Thanks, I'll look into KCSAN + lockdep compatibility. It's probably
-missing some KCSAN_SANITIZE := n in some Makefile.
+Sounds good, looks like I can mostly reuse 'struct
+efi_memory_map_data' for this purpose.
 
-> [   13.358813][    T0] Spectre V2 : Spectre v2 / SpectreRSB mitigation: Filling RSB on context switch
-> [   13.361606][    T0] Speculative Store Bypass: Vulnerable
-> [   13.363254][    T0] TAA: Vulnerable: Clear CPU buffers attempted, no microcode
-> [   13.366836][    T0] MDS: Vulnerable: Clear CPU buffers attempted, no microcode
-> [   13.369877][    T0] debug: unmapping init [mem 0xffffffff8dd83000-0xffffffff8dd87fff]
-> [   13.415028][    T1] ------------[ cut here ]------------
-> [   13.416814][    T1] DEBUG_LOCKS_WARN_ON(!current->hardirqs_enabled)
-> [   13.416814][    T1] WARNING: CPU: 0 PID: 1 at kernel/locking/lockdep.c:4406 check_flags.part.26+0x102/0x240
-> [   13.416814][    T1] Modules linked in:
-> [   13.416814][    T1] CPU: 0 PID: 1 Comm: swapper/0 Not tainted 5.5.0-rc2-next-20191220+ #4
-> [   13.416814][    T1] Hardware name: HP ProLiant DL580 Gen9/ProLiant DL580 Gen9, BIOS U17 07/21/2016
-> [   13.416814][    T1] RIP: 0010:check_flags.part.26+0x102/0x240
-> [   13.416814][    T1] Code: bc 8d e8 51 a1 15 00 44 8b 05 2a a0 46 01 45 85 c0 0f 85 57 76 00 00 48 c7 c6 5d fa 7b 8d 48 c7 c7 b1 54 7b 8d e8 10 91 f5 ff <0f> 0b e9 3d 76 00 00 65 48 8b 3c 25 40 7f 01 00 e8 89 f0 ff ff e8
-> [   13.416814][    T1] RSP: 0000:ffff9d3206287ce8 EFLAGS: 00010082
-> [   13.416814][    T1] RAX: 0000000000000000 RBX: ffff8e5b8541e040 RCX: 0000000000000000
-> [   13.416814][    T1] RDX: 0000000000000000 RSI: 0000000000000001 RDI: 0000000000000000
-> [   13.416814][    T1] RBP: ffff9d3206287cf0 R08: 0000000000000000 R09: 0000ffff8dbcc254
-> [   13.416814][    T1] R10: 0000ffffffffffff R11: 0000ffff8dbcc257 R12: 0000000000000235
-> [   13.416814][    T1] R13: 0000000000000000 R14: 0000000000000246 R15: 000000000000001b
-> [   13.416814][    T1] FS:  0000000000000000(0000) GS:ffff8e61e3200000(0000) knlGS:0000000000000000
-> [   13.416814][    T1] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> [   13.416814][    T1] CR2: ffff8e79f07ff000 CR3: 0000001284c0e001 CR4: 00000000003606f0
-> [   13.416814][    T1] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-> [   13.416814][    T1] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-> [   13.416814][    T1] Call Trace:
-> [   13.416814][    T1]  lock_is_held_type+0x66/0x160
-> [   13.416814][    T1]  ___might_sleep+0xc1/0x1d0
-> [   13.416814][    T1]  __might_sleep+0x5b/0xa0
-> [   13.416814][    T1]  slab_pre_alloc_hook+0x7b/0xa0
-> [   13.416814][    T1]  __kmalloc_node+0x60/0x300
-> [   13.416814   T1]  ? alloc_cpumask_var_node+0x44/0x70
-> [   13.416814][    T1]  ? topology_phys_to_logical_die+0x7e/0x180
-> [   13.416814][    T1]  alloc_cpumask_var_node+0x44/0x70
-> [   13.416814][    T1]  zalloc_cpumask_var+0x2a/0x40
-> [   13.416814][    T1]  native_smp_prepare_cpus+0x246/0x425
-> [   13.416814][    T1]  kernel_init_freeable+0x1b8/0x496
-> [   13.416814][    T1]  ? rest_init+0x381/0x381
-> [   13.416814][    T1]  kernel_init+0x18/0x17f
-> [   13.416814][    T1]  ? rest_init+0x381/0x381
-> [   13.416814][    T1]  ret_from_fork+0x3a/0x50
-> [   13.416814][    T1] irq event stamp: 910
-> [   13.416814][    T1] hardirqs last  enabled at (909): [<ffffffff8d1240f3>] _raw_write_unlock_irqrestore+0x53/0x57
-> [   13.416814][    T1] hardirqs last disabled at (910): [<ffffffff8c8bba76>] kcsan_setup_watchpoint+0x96/0x460
-> [   13.416814][    T1] softirqs last  enabled at (0): [<ffffffff8c6b697a>] copy_process+0x11fa/0x34f0
-> [   13.416814][    T1] softirqs last disabled at (0): [<0000000000000000>] 0x0
-> [   13.416814][    T1] ---[ end trace 7d1df66da055aa92 ]---
-> [   13.416814][    T1] possible reason: unannotated irqs-on.
-> [   13.416814][ent stamp: 910
-> [   13.416814][    T1] hardirqs last  enabled at (909): [<ffffffff8d1240f3>] _raw_write_unlock_irqrestore+0x53/0x57
-> [   13.416814][    T1] hardirqs last disabled at (910): [<ffffffff8c8bba76>] kcsan_setup_watchpoint+0x96/0x460
-> [   13.416814][    T1] softirqs last  enabled at (0): [<ffffffff8c6b697a>] copy_process+0x11fa/0x34f0
-> [   13.416814][    T1] softirqs last disabled at (0): [<0000000000000000>] 0x0
 >
 >
-> The other issue is that the system is unable to boot due to endless of those messages.
-
-Apart from fixing the data races, I can add a feature to KCSAN to
-limit reporting too often (will send patch).
-
-> [   17.976814][  T578] Reported by Kernel Concurrency Sanitizer on:
-> [   17.976814][  T578] CPU: 12 PID: 578 Comm: pgdatinit1 Tainted: G        W         5.5.0-rc2-next-20191220+ #4
-> [   17.976814][  T578] Hardware name: HP ProLiant DL580 Gen9/ProLiant DL580 Gen9, BIOS U17 07/21/2016
-> [   17.976814][  T578] ==================================================================
-> [   17.976814][  T578] ==================================================================
-> [   17.976814][  T578] BUG: KCSAN: data-race in __change_page_attr / __change_page_attr
-> [   17.976814][  T578]
-> [   17.976814][  T578] write to 0xffffffff8dda0de0 of 8 bytes by task 577 on cpu 2:
-> [   17.976814][  T578]  __change_page_attr+0xef7/0x16a0
-> [   17.976814][  T578]  __change_page_attr_set_clr+0xec/0x4f0
-> [   17.97681pages_np+0xcc/0x100
-> [   17.976814][  T578]  __kernel_map_pages+0xd6/0xdb
-> [   17.976814][  T578]  __free_pages_ok+0x1a8/0x730
-> [   17.976814][  T578]  __free_pages+0x51/0x90
-> [   17.976814][  T578]  __free_pages_core+0x1c7/0x2c0
-> [   17.976814][  T578]  deferred_free_range+0x59/0x8f
-> [   17.976814][  T578]  deferred_init_maxorder+0x1d6/0x21d
-> [   17.976814][  T578]  deferred_init_memmap+0x14a/0x1c1
-> [   17.976814][  T578]  kthread+0x1e0/0x200
-> [   17.976814][  T578]  ret_from_fork+0x3a/0x50
-> [   17.976814][  T578]
-> [   17.976814][  T578] read to 0xffffffff8dda0de0 of 8 bytes by task 578 on cpu 12:
-> [   17.976814][  T578]  __change_page_attr+0xed1/0x16a0
-> [   17.976814][  T578]  __change_page_attr_set_clr+0xec/0x4f0
-> [   17.976814][  T578]  __set_pages_np+0xcc/0x100
-> [   17.976814][  T578]  __kernel_map_pages+0xd6/0xdb
-> [   17.976814][  T578]  __free_pages_ok+0x1a8/0x730
-> [   17.976814][  T578]  __free_pages+0x51/0x90
-> [   17.976814][  T578]  __free_pages_core+0x1c7/0x2c0
-> [   17.976814][  T578]  deferred_free_range+0x59/0x8f
-> [   17.976814][  T578]  deferred_init_maxorder+0x1aa/0x21d
-> [   17.976814][  T578]  deferred_init_memmap+0x14a/0x1c1
-> [   17.976814][  T578]  kthread+0x1e0/0x200
-> [   17.976814][  T578]  ret_from_fork+0x3a/0x50
+> >         /* print new EFI memmap */
+> >         efi_print_memmap();
+> > diff --git a/drivers/firmware/efi/memmap.c b/drivers/firmware/efi/memmap.c
+> > index 813674ef9000..2b81ee6858a9 100644
+> > --- a/drivers/firmware/efi/memmap.c
+> > +++ b/drivers/firmware/efi/memmap.c
+> > @@ -32,6 +32,7 @@ static phys_addr_t __init __efi_memmap_alloc_late(unsigned long size)
+> >  /**
+> >   * efi_memmap_alloc - Allocate memory for the EFI memory map
+> >   * @num_entries: Number of entries in the allocated map.
+> > + * @flags: Late map, memblock alloc, slab alloc flags
+> >   *
+> >   * Depending on whether mm_init() has already been invoked or not,
+> >   * either memblock or "normal" page allocation is used.
+> > @@ -39,20 +40,23 @@ static phys_addr_t __init __efi_memmap_alloc_late(unsigned long size)
+> >   * Returns the physical address of the allocated memory map on
+> >   * success, zero on failure.
+> >   */
+> > -phys_addr_t __init efi_memmap_alloc(unsigned int num_entries)
+> > +phys_addr_t __init efi_memmap_alloc(unsigned int num_entries, unsigned long *flags)
+> >  {
+> >         unsigned long size = num_entries * efi.memmap.desc_size;
+> >
+> > -       if (slab_is_available())
+> > +       if (slab_is_available()) {
+> > +               *flags |= EFI_MEMMAP_SLAB;
+> >                 return __efi_memmap_alloc_late(size);
+> > +       }
+> >
+> > +       *flags |= EFI_MEMMAP_MEMBLOCK;
 >
-> # ./scripts/faddr2line vmlinux __change_page_attr+0xef7/0x16a0
-> __change_page_attr+0xef7/0x16a0:
-> static_protections at arch/x86/mm/pat/set_memory.c:528
-> (inlined by) __change_page_attr at arch/x86/mm/pat/set_memory.c:1516
->
-> # ./scripts/faddr2line vmlinux __change_page_attr+0xed1/0x16a0
-> __change_page_attr+0xed1/0x16a0:
-> cpa_inc_4k_install at arch/x86/mm/pat/set_memory.c:131
-> (inlined by) __change_page_attr at arch/x86/mm/pat/set_memory.c:1514
+> This assumes flags has neither bit set, but perhaps we should at least
+> clear the memblock one if we set the slab one?
 
-Thanks,
--- Marco
+Ok.
