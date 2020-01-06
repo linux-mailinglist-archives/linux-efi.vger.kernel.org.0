@@ -2,100 +2,127 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3339B12FD9E
-	for <lists+linux-efi@lfdr.de>; Fri,  3 Jan 2020 21:19:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BB288130CD5
+	for <lists+linux-efi@lfdr.de>; Mon,  6 Jan 2020 06:02:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728687AbgACUTr (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 3 Jan 2020 15:19:47 -0500
-Received: from mail-qv1-f65.google.com ([209.85.219.65]:43164 "EHLO
-        mail-qv1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727974AbgACUTq (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 3 Jan 2020 15:19:46 -0500
-Received: by mail-qv1-f65.google.com with SMTP id p2so16666604qvo.10
-        for <linux-efi@vger.kernel.org>; Fri, 03 Jan 2020 12:19:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=40ACnQIUnpge54Cj+EODMXbGQ2AM0yGbootCDBdgIh0=;
-        b=AWCc/ylFmQ91zZEJrbKovcmODhKduqUVkKGxHK8uCtVvWppAnjCzAVhlqtuTB6Zv3H
-         fwGfadWPG5OWx3vtouAanI9rAb4+nCSTS9ougZHH94RmFVRXusGOhSeq6LcZbXUbpYke
-         LecHuReAxOHZIAlNr0puF8IN10taJseJbu/8dZmgE65qy44VHc90CsjCbMPz9YIW56uc
-         KAocddCq9fbTe+4eLEe4ukQAx3KuF/S8Bs/5ss0PU18bAsmodPObJCziaNGvW+fW97nj
-         vqPpR6NvW2UHqccwDYrcuioTdRRCTX8F5vGOe97A6Uj5iUQG4sbm5c76feOsNIPb/J8O
-         nOKQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=40ACnQIUnpge54Cj+EODMXbGQ2AM0yGbootCDBdgIh0=;
-        b=fRpiWMQxgSlTVnk5SKRhzC3s6i/XJk4hQQqF9E0BEblak6HGOjVK50pXRyerBDdQPl
-         dj7h7sqFg0W1oohYPYLZJdImCxwBBWnSqWT0jtl/G702zyvaYgwrhCgZncC2tIrPlAd4
-         i/A5oao4l3QUdMn6X2Sc8WRSqUzwSbkF9PFcqIN2qKVJju4OabJjUc+a1AUYlhugIYDp
-         7sGAP0KD/hp3lCzAYjEZXVYoyL34kzGvVxEaAsRNpxNFunb/nFWfVCfNBN3I+h+uHizq
-         3TofBVDhGJdbiXqYWAjDW7007RE2tgLKTNSybIh6Q8SVLFo2FEnYaYg6bPYWekmjkvWx
-         EiKg==
-X-Gm-Message-State: APjAAAVszjtgCaXj66PjiXObjdFOyiuGTL6rzkRWc6VzIfVENSr9lklu
-        4QdR76jdcn2WzbL9va4J0GW93jESUw9FyajsCMA=
-X-Google-Smtp-Source: APXvYqwTD0MzQRfSqMjBdpNUeZAJzfDvhrEGhXGCrMyvXGb//+N8M9ASxsqTbkQfP5NbaV7n6hKI5gEfY+hOjDS6Fyg=
-X-Received: by 2002:ad4:478b:: with SMTP id z11mr69635758qvy.185.1578082785331;
- Fri, 03 Jan 2020 12:19:45 -0800 (PST)
+        id S1726300AbgAFFCS (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 6 Jan 2020 00:02:18 -0500
+Received: from mx0a-002e3701.pphosted.com ([148.163.147.86]:7336 "EHLO
+        mx0a-002e3701.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725446AbgAFFCR (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 6 Jan 2020 00:02:17 -0500
+Received: from pps.filterd (m0134421.ppops.net [127.0.0.1])
+        by mx0b-002e3701.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 00651PGO032355;
+        Mon, 6 Jan 2020 05:01:59 GMT
+Received: from g2t2354.austin.hpe.com (g2t2354.austin.hpe.com [15.233.44.27])
+        by mx0b-002e3701.pphosted.com with ESMTP id 2xb4ahw497-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 06 Jan 2020 05:01:59 +0000
+Received: from g2t2360.austin.hpecorp.net (g2t2360.austin.hpecorp.net [16.196.225.135])
+        by g2t2354.austin.hpe.com (Postfix) with ESMTP id 78DF983;
+        Mon,  6 Jan 2020 05:01:58 +0000 (UTC)
+Received: from hpe.com (ben.americas.hpqcorp.net [10.33.153.7])
+        by g2t2360.austin.hpecorp.net (Postfix) with ESMTP id 60CDD4C;
+        Mon,  6 Jan 2020 05:01:57 +0000 (UTC)
+Date:   Sun, 5 Jan 2020 23:01:57 -0600
+From:   Russ Anderson <rja@hpe.com>
+To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Cc:     Borislav Petkov <bp@alien8.de>,
+        Matthew Garrett <mjg59@srcf.ucam.org>,
+        Matt Fleming <matt@codeblueprint.co.uk>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Dave Young <dyoung@redhat.com>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        the arch/x86 maintainers <x86@kernel.org>,
+        Dimitri Sivanich <dimitri.sivanich@hpe.com>,
+        Mike Travis <mike.travis@hpe.com>,
+        Hedi Berriche <hedi.berriche@hpe.com>
+Subject: Re: [RFC PATCH] efi/x86: limit EFI old memory map to SGI UV1 machines
+Message-ID: <20200106050157.5htrc4nw7lhixlyy@hpe.com>
+Reply-To: Russ Anderson <rja@hpe.com>
+References: <CAKv+Gu82ZCk3Wy6NHHyRs0CAFXJDMfDu2KpH3PZ-Le1SjsQLLQ@mail.gmail.com>
+ <20191231160547.GB13549@zn.tnic>
+ <20200102143757.tqhvff32ksc2rpvh@hpe.com>
+ <CAKv+Gu9y9yA+4cnii6QvJ3CjxqmxPmEc333cKezzxwrPCKvKGQ@mail.gmail.com>
+ <20200102164536.ks5dmtrbtl4i7rnt@hpe.com>
+ <CAKv+Gu86SaU+D8x2ScRXbTvR8aK23CfhAL=mkUNcn=9vrbgznw@mail.gmail.com>
+ <20200102231317.yoj2xdplqp42lmcq@hpe.com>
+ <CAKv+Gu9VDxWZXKr3nZ1igP-u5q=jo_Z5UPROh+NhkTHdes8CLA@mail.gmail.com>
 MIME-Version: 1.0
-Received: by 2002:ac8:4410:0:0:0:0:0 with HTTP; Fri, 3 Jan 2020 12:19:45 -0800 (PST)
-From:   "Rev.Dr Emmanuel Okoye CEO Ecobank-benin" 
-        <westernunion.benin982@gmail.com>
-Date:   Fri, 3 Jan 2020 21:19:45 +0100
-Message-ID: <CAP=nHBKxfmbdRg7q4-1jdSUL6+zok9agasMSrXV5CsEJEmZz3A@mail.gmail.com>
-Subject: I promise you must be happy today, God has uplifted you and your
- family ok
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAKv+Gu9VDxWZXKr3nZ1igP-u5q=jo_Z5UPROh+NhkTHdes8CLA@mail.gmail.com>
+User-Agent: NeoMutt/20170421 (1.8.2)
+X-HPE-SCL: -1
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
+ definitions=2020-01-06_01:2020-01-06,2020-01-05 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 malwarescore=0
+ mlxlogscore=881 adultscore=0 impostorscore=0 bulkscore=0 clxscore=1015
+ phishscore=0 lowpriorityscore=0 priorityscore=1501 spamscore=0
+ suspectscore=2 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-1910280000 definitions=main-2001060045
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Dear Friend
+On Fri, Jan 03, 2020 at 09:14:14AM +0100, Ard Biesheuvel wrote:
+> On Fri, 3 Jan 2020 at 00:13, Russ Anderson <rja@hpe.com> wrote:
+> > been used to work around issues.
+> >
+> > One was when KASLR was added (as part of the Spectre/Meldown
+> > mitigation).  The initial implementation broke with new
+> > map so efi=old_map was used as a workaround.  I don't know
+> > if this was a distro specific breakage or upstream, but the
+> > workaround limited the impact and the breakage was quickly
+> > fixed.
+> >
+> > Another time was the EFI locking issue mentioned earlier
+> > in this thread.
+> >
+> 
+> So are you saying the distros updated their kernels which subsequently
+> broke your platforms, and you needed to use efi=old_map in production
+> to work around this? This sounds like something that should have been
+> caught in testing before the release was made.
 
-i hope all is well with you,if so, glory be to God almighty. I'm very
-happy to inform you, about my success in getting payment funds under
-the cooperation of a new partner from United States of
-America.Presently I am in uk for investment projects with my own share
-of the total sum. I didn't forget your past efforts. IMF finally
-approved your compensation payment funds this morning by prepaid (ATM)
-Debit card of US$12,500.000.00Million Dollars, Since you not received
-this payment yet, I was not certified
-but it is not your fault and not my fault, I hold nothing against
-you.than bank official whom has been detaining the transfer in the
-bank, trying to claim your funds by themselves.
+The Spectre/Meldown change was rushed through, without proper
+testing.  The lesson was that even security fixes need full testing.
+All involved (that I am aware of) do not want to repeat releasing
+code that has not been fully tested.
 
-Therefore, in appreciation of your effort I have raised an
-International prepaid (ATM) Debit card of US$12,500.000.00 in your
-favor as compensation to you.
+The EFI locking issue was caught by the HPE BRT (Basic Regression Test)
+team, but after it had been released by distros.  It was a small
+timing hole that ALMOST always worked, which is why it was not detected
+immediately.
 
-Now, i want you to contact my Diplomatic Agent, His name is Mike Benz
-on His  e-mail Address (mikebenz550@aol.com
+> Is there any way you could make one of these systems
+> available/accessible for testing new kernels? Also, was the breakage
+> related specifically to the use of the UV runtime services?
 
-ask Him to send the Prepaid (ATM) Debit card to you. Bear in mind that
-the money is in Prepaid (ATM) Debit card, not cash, so you need to
-send to him,
-your full name
-address  where the prepaid (ATM) Debit card will be delivered to you,
-including your cell phone number. Finally, I left explicit
-instructions with him, on how to send the (ATM CARD) to you.
+HPE does have systems at Red Hat and SUSE (part of the distro test
+environments), along with internal test systems.  HPE does have access
+to pre-release distro (RHEL, SLES, Oracle Linux) kernels, including
+nightly development builds.  I have a kernel engineer on-site at Red Hat
+with access to RH kernel engineers and git trees.  We do test upstream
+kernels and have fixed regressions.  That said, we do have limited
+resources (test systems, people, time) and do as much as we can with
+what we have, so it is not perfect.  But we try our best to be perfect.
 
-The Prepaid (ATM) Debit card, will be send to you through my
-Diplomatic Agent Mr. Mike Benz immediately you contact him. So contact
-my Diplomatic Agent Mr. Mike Benz immediately you receive this letter.
-Below is his contact information:
+> > Is there a compelling reason to put efi=old_map quirk
+> > under CONFIG_X86_UV=y?  The original patch description assumed
+> > only old SGI UV1 used efi=old_map, that it had not been
+> > used on newer hardware, but that isn't the case.  It has been
+> > used on newer currently shipping hardware.  Given that
+> > new information is there a compelling reason for the change?
+> 
+> Every feature like this doubles the size of the validation matrix, and
+> so restricting efi=old_map to a single target helps to keep the
+> maintenance effort manageable.
 
-NAME : MIKE BENZ
-EMAIL ADDRESS: mikebenz550@aol.com
-Text Him, (256) 284-4886
+Understood.  
 
-Request for Delivery of the Prepaid (ATM) Debit card  to you today.
-Note, please I have paid for the whole service fees for you, so the
-only money you will send to my Diplomatic Agent Mr. Mike Benz is
-$50.00 for your prepaid (ATM) Debit card DELIVERY FEE to your address
-ok.
-Let me know once you receive this Card at your address.
-Best regards,
-Rev.Dr, George Adadar
+Thanks.
+-- 
+Russ Anderson,  SuperDome Flex Linux Kernel Group Manager
+HPE - Hewlett Packard Enterprise (formerly SGI)  rja@hpe.com
