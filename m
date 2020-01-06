@@ -2,233 +2,177 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C1526131843
-	for <lists+linux-efi@lfdr.de>; Mon,  6 Jan 2020 20:06:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0611B131A7F
+	for <lists+linux-efi@lfdr.de>; Mon,  6 Jan 2020 22:34:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726690AbgAFTFg (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 6 Jan 2020 14:05:36 -0500
-Received: from mail-oi1-f194.google.com ([209.85.167.194]:40402 "EHLO
-        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726657AbgAFTFg (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 6 Jan 2020 14:05:36 -0500
-Received: by mail-oi1-f194.google.com with SMTP id c77so16181484oib.7
-        for <linux-efi@vger.kernel.org>; Mon, 06 Jan 2020 11:05:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=alX9B07HokhP3ECivMm8pGprXZuv/KIuu13Y0Jtq3rg=;
-        b=BLpK3J9bEkd6Wg2RItLkAFU/N5U4jsc764hHw3yBcw3+usDirwaNCn/42kqfH64cV+
-         oKl6ogYaLW4hZg2GMAIQY0ho7+sKRVlxpCnOWd1sfmjIQDCC//p1wTsMNI01AdG3w0xU
-         SyowTtxuWicITn6hSIbggt9P5IFTn59TBd546vxUCqVjqcNCGSOAmZc30Q/KzmimdxjZ
-         wGae8x99zXO3rnxaXWswDTOYTWFvuwsMAgFJ/HGB1gy5RLdic16ylAV8tyxK3WaFz8l2
-         oBor7VmJvgBEg4hKcfLxI8gGUqp4cpQcVFxeLFLoRfWqHyWAj3JKgU57vYi0ksVjST35
-         rJEA==
+        id S1727154AbgAFVdt (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 6 Jan 2020 16:33:49 -0500
+Received: from mail-pg1-f196.google.com ([209.85.215.196]:44470 "EHLO
+        mail-pg1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727132AbgAFVdp (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 6 Jan 2020 16:33:45 -0500
+Received: by mail-pg1-f196.google.com with SMTP id x7so27438011pgl.11;
+        Mon, 06 Jan 2020 13:33:45 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=alX9B07HokhP3ECivMm8pGprXZuv/KIuu13Y0Jtq3rg=;
-        b=NR6Dzox89Q2AXdQy7TSv92M5qiFG85R2JdSYb+B27G5lqp024CJNxNQaj4uOH4DoWd
-         Fu8mP8E1AzDqhPPVhDsHj+G8XM7BlmUtaEDxggU3pzINJGvbAlNR+bzpu4f9Z1UizdFh
-         gR7MI2H4oDI0e4HsB0EXi7xvM0gh8coLHQyTnk3VOXGog34OZD1lj+WKp4eDNd/nTOVd
-         P9ZwHkoabu3eyyl+nbN/V2C+WAb0odNNqqX/HW05Te1E7tz0CGInQR2AwS4NGI4gFBbJ
-         fSgsp+OlAcI3g8yMxBESGtXkN9WzgWeu6rUjAB6xwiuzEC2JFHxqGWgMoeb7B5pv0sEA
-         IMXw==
-X-Gm-Message-State: APjAAAWwNbzl5wLaFxcyvOhrfoCZNhNumhRDlfkP80gMzIEGUttbV3Y+
-        Q1U5v8qfrCzl0eFa95zqdT+YqylRyxxqu/7XTSkKtg==
-X-Google-Smtp-Source: APXvYqwq2F38iwC/q1v5HcOMi4czC/1PUV5A5pBl22QCQ8iuB1wjy6FX5YvmNx5+uzxdNN5E951SvkRKr6IFVGHaryg=
-X-Received: by 2002:aca:3f54:: with SMTP id m81mr5940073oia.73.1578337535501;
- Mon, 06 Jan 2020 11:05:35 -0800 (PST)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=/YlYKPHpunNCuwNpgLXYWk+P5gDqWSvQ71BDe2+/jE4=;
+        b=N4j72bn0hNdQItfQfGkUaTpmwnyqrKkNrlAvj+xLTnxu0NQOeTbQBdk8DD0BDQ2yoQ
+         VzpltOJInN7hJSuF+ZgbeDJDcsQOidcI2NRZxXd4AMMikmHn5WyqmrBhkSS+1q/7eRSS
+         m+N3VndZbyQWIuZk5fogbxkxQj4XsUtQPYbSMBDG6PmuXf3yRB1gkPINkLw7Fu2t8jzd
+         NO/LvfCrSHlO7z6cKEDHSwTqZw4n4wT0CYaH/P7qqOEQbCPa3MYJ/SvHDPAAtggE3Sy7
+         cx4oAL0/SUKjwFomEwttomNiBm49+LNnJTI4S7UVOljDpB5/CB8OO6noiiPr2laRgR+M
+         Ry0A==
+X-Gm-Message-State: APjAAAUKzidBXOlevtkaqHg50aeyzIxbWL5KwbG0V9ZZf3A4Wtjg5C+W
+        qNir5xZQuw24l/uXO3Hj0Rk=
+X-Google-Smtp-Source: APXvYqwGiPQYAYwL9vWqDpJIl1HKxVMoDt4Ev4E/5klzEl3TNuNV/EZy4Blrnh13RzpOm/I800S+Nw==
+X-Received: by 2002:aa7:8e13:: with SMTP id c19mr76663440pfr.227.1578346424985;
+        Mon, 06 Jan 2020 13:33:44 -0800 (PST)
+Received: from 42.do-not-panic.com (42.do-not-panic.com. [157.230.128.187])
+        by smtp.gmail.com with ESMTPSA id 11sm81070528pfz.25.2020.01.06.13.33.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 06 Jan 2020 13:33:43 -0800 (PST)
+Received: by 42.do-not-panic.com (Postfix, from userid 1000)
+        id 1E46040321; Mon,  6 Jan 2020 21:33:43 +0000 (UTC)
+Date:   Mon, 6 Jan 2020 21:33:43 +0000
+From:   Luis Chamberlain <mcgrof@kernel.org>
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "H . Peter Anvin" <hpa@zytor.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Peter Jones <pjones@redhat.com>,
+        Dave Olsthoorn <dave@bewaar.me>, x86@kernel.org,
+        platform-driver-x86@vger.kernel.org, linux-efi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+        linux-input@vger.kernel.org
+Subject: Re: [PATCH v10 05/10] test_firmware: add support for
+ firmware_request_platform
+Message-ID: <20200106213343.GV11244@42.do-not-panic.com>
+References: <20191210115117.303935-1-hdegoede@redhat.com>
+ <20191210115117.303935-6-hdegoede@redhat.com>
 MIME-Version: 1.0
-References: <157793839827.977550.7845382457971215205.stgit@dwillia2-desk3.amr.corp.intel.com>
- <157793840865.977550.1385745645244916944.stgit@dwillia2-desk3.amr.corp.intel.com>
- <CAKv+Gu8JTha-Os6uzg_ghxodEKgjnkgLwJYFkXZiTbqqdKU6_Q@mail.gmail.com>
-In-Reply-To: <CAKv+Gu8JTha-Os6uzg_ghxodEKgjnkgLwJYFkXZiTbqqdKU6_Q@mail.gmail.com>
-From:   Dan Williams <dan.j.williams@intel.com>
-Date:   Mon, 6 Jan 2020 11:05:24 -0800
-Message-ID: <CAPcyv4jqqJwxk8-dZxhZQX0PqNpdsAUVJBG+QufsJx+fhPzmug@mail.gmail.com>
-Subject: Re: [PATCH v3 2/4] efi: Add tracking for dynamically allocated memmaps
-To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Cc:     Ingo Molnar <mingo@redhat.com>,
-        Taku Izumi <izumi.taku@jp.fujitsu.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Kexec Mailing List <kexec@lists.infradead.org>,
-        "the arch/x86 maintainers" <x86@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191210115117.303935-6-hdegoede@redhat.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, Jan 2, 2020 at 1:02 AM Ard Biesheuvel <ard.biesheuvel@linaro.org> wrote:
->
-> Hi Dan,
->
-> Thanks for taking the time to really fix this properly.
->
-> Comments/questions below.
->
-> On Thu, 2 Jan 2020 at 05:29, Dan Williams <dan.j.williams@intel.com> wrote:
-> >
-> > In preparation for fixing efi_memmap_alloc() leaks, add support for
-> > recording whether the memmap was dynamically allocated from slab,
-> > memblock, or is the original physical memmap provided by the platform.
-> >
-> > Cc: Taku Izumi <izumi.taku@jp.fujitsu.com>
-> > Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>
-> > Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-> > ---
-> >  arch/x86/platform/efi/efi.c     |    2 +-
-> >  arch/x86/platform/efi/quirks.c  |   11 ++++++-----
-> >  drivers/firmware/efi/fake_mem.c |    5 +++--
-> >  drivers/firmware/efi/memmap.c   |   16 ++++++++++------
-> >  include/linux/efi.h             |    8 ++++++--
-> >  5 files changed, 26 insertions(+), 16 deletions(-)
-> >
-> > diff --git a/arch/x86/platform/efi/efi.c b/arch/x86/platform/efi/efi.c
-> > index 38d44f36d5ed..7086afbb84fd 100644
-> > --- a/arch/x86/platform/efi/efi.c
-> > +++ b/arch/x86/platform/efi/efi.c
-> > @@ -333,7 +333,7 @@ static void __init efi_clean_memmap(void)
-> >                 u64 size = efi.memmap.nr_map - n_removal;
-> >
-> >                 pr_warn("Removing %d invalid memory map entries.\n", n_removal);
-> > -               efi_memmap_install(efi.memmap.phys_map, size);
-> > +               efi_memmap_install(efi.memmap.phys_map, size, 0);
-> >         }
-> >  }
-> >
-> > diff --git a/arch/x86/platform/efi/quirks.c b/arch/x86/platform/efi/quirks.c
-> > index f8f0220b6a66..4a71c790f9c3 100644
-> > --- a/arch/x86/platform/efi/quirks.c
-> > +++ b/arch/x86/platform/efi/quirks.c
-> > @@ -244,6 +244,7 @@ EXPORT_SYMBOL_GPL(efi_query_variable_store);
-> >  void __init efi_arch_mem_reserve(phys_addr_t addr, u64 size)
-> >  {
-> >         phys_addr_t new_phys, new_size;
-> > +       unsigned long flags = 0;
-> >         struct efi_mem_range mr;
-> >         efi_memory_desc_t md;
-> >         int num_entries;
-> > @@ -272,8 +273,7 @@ void __init efi_arch_mem_reserve(phys_addr_t addr, u64 size)
-> >         num_entries += efi.memmap.nr_map;
-> >
-> >         new_size = efi.memmap.desc_size * num_entries;
-> > -
-> > -       new_phys = efi_memmap_alloc(num_entries);
-> > +       new_phys = efi_memmap_alloc(num_entries, &flags);
-> >         if (!new_phys) {
-> >                 pr_err("Could not allocate boot services memmap\n");
-> >                 return;
-> > @@ -288,7 +288,7 @@ void __init efi_arch_mem_reserve(phys_addr_t addr, u64 size)
-> >         efi_memmap_insert(&efi.memmap, new, &mr);
-> >         early_memunmap(new, new_size);
-> >
-> > -       efi_memmap_install(new_phys, num_entries);
-> > +       efi_memmap_install(new_phys, num_entries, flags);
-> >         e820__range_update(addr, size, E820_TYPE_RAM, E820_TYPE_RESERVED);
-> >         e820__update_table(e820_table);
-> >  }
-> > @@ -408,6 +408,7 @@ static void __init efi_unmap_pages(efi_memory_desc_t *md)
-> >  void __init efi_free_boot_services(void)
-> >  {
-> >         phys_addr_t new_phys, new_size;
-> > +       unsigned long flags = 0;
-> >         efi_memory_desc_t *md;
-> >         int num_entries = 0;
-> >         void *new, *new_md;
-> > @@ -463,7 +464,7 @@ void __init efi_free_boot_services(void)
-> >                 return;
-> >
-> >         new_size = efi.memmap.desc_size * num_entries;
-> > -       new_phys = efi_memmap_alloc(num_entries);
-> > +       new_phys = efi_memmap_alloc(num_entries, &flags);
-> >         if (!new_phys) {
-> >                 pr_err("Failed to allocate new EFI memmap\n");
-> >                 return;
-> > @@ -493,7 +494,7 @@ void __init efi_free_boot_services(void)
-> >
-> >         memunmap(new);
-> >
-> > -       if (efi_memmap_install(new_phys, num_entries)) {
-> > +       if (efi_memmap_install(new_phys, num_entries, flags)) {
-> >                 pr_err("Could not install new EFI memmap\n");
-> >                 return;
-> >         }
-> > diff --git a/drivers/firmware/efi/fake_mem.c b/drivers/firmware/efi/fake_mem.c
-> > index bb9fc70d0cfa..7e53e5520548 100644
-> > --- a/drivers/firmware/efi/fake_mem.c
-> > +++ b/drivers/firmware/efi/fake_mem.c
-> > @@ -39,6 +39,7 @@ void __init efi_fake_memmap(void)
-> >         int new_nr_map = efi.memmap.nr_map;
-> >         efi_memory_desc_t *md;
-> >         phys_addr_t new_memmap_phy;
-> > +       unsigned long flags = 0;
-> >         void *new_memmap;
-> >         int i;
-> >
-> > @@ -55,7 +56,7 @@ void __init efi_fake_memmap(void)
-> >         }
-> >
-> >         /* allocate memory for new EFI memmap */
-> > -       new_memmap_phy = efi_memmap_alloc(new_nr_map);
-> > +       new_memmap_phy = efi_memmap_alloc(new_nr_map, &flags);
-> >         if (!new_memmap_phy)
-> >                 return;
-> >
-> > @@ -73,7 +74,7 @@ void __init efi_fake_memmap(void)
-> >         /* swap into new EFI memmap */
-> >         early_memunmap(new_memmap, efi.memmap.desc_size * new_nr_map);
-> >
-> > -       efi_memmap_install(new_memmap_phy, new_nr_map);
-> > +       efi_memmap_install(new_memmap_phy, new_nr_map, flags);
-> >
->
-> So it is the caller's responsibility to record the flags returned by
-> efi_memmap_alloc() and pass them into efi_memmap_install(), right?
-> Given that we are now passing three pieces of info that need to be in
-> sync between the two, could we use a dedicated data structure instead,
-> a reference to which is taken by both?
+On Tue, Dec 10, 2019 at 12:51:12PM +0100, Hans de Goede wrote:
+> Add support for testing firmware_request_platform through a new
+> trigger_request_platform trigger.
+> 
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+> ---
+>  lib/test_firmware.c | 68 +++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 68 insertions(+)
+> 
+> diff --git a/lib/test_firmware.c b/lib/test_firmware.c
+> index 251213c872b5..9af00cfc8979 100644
+> --- a/lib/test_firmware.c
+> +++ b/lib/test_firmware.c
+> @@ -24,6 +24,7 @@
+>  #include <linux/delay.h>
+>  #include <linux/kthread.h>
+>  #include <linux/vmalloc.h>
+> +#include <linux/efi_embedded_fw.h>
+>  
+>  #define TEST_FIRMWARE_NAME	"test-firmware.bin"
+>  #define TEST_FIRMWARE_NUM_REQS	4
+> @@ -507,12 +508,76 @@ static ssize_t trigger_request_store(struct device *dev,
+>  }
+>  static DEVICE_ATTR_WO(trigger_request);
+>  
+> +#ifdef CONFIG_EFI_EMBEDDED_FIRMWARE
+> +static ssize_t trigger_request_platform_store(struct device *dev,
+> +					      struct device_attribute *attr,
+> +					      const char *buf, size_t count)
+> +{
+> +	static const u8 test_data[] = {
+> +		0x55, 0xaa, 0x55, 0xaa, 0x01, 0x02, 0x03, 0x04,
+> +		0x55, 0xaa, 0x55, 0xaa, 0x05, 0x06, 0x07, 0x08,
+> +		0x55, 0xaa, 0x55, 0xaa, 0x10, 0x20, 0x30, 0x40,
+> +		0x55, 0xaa, 0x55, 0xaa, 0x50, 0x60, 0x70, 0x80
+> +	};
+> +	struct efi_embedded_fw fw;
+> +	int rc;
+> +	char *name;
+> +
+> +	name = kstrndup(buf, count, GFP_KERNEL);
+> +	if (!name)
+> +		return -ENOSPC;
+> +
+> +	pr_info("inserting test platform fw '%s'\n", name);
+> +	fw.name = name;
+> +	fw.data = (void *)test_data;
+> +	fw.length = sizeof(test_data);
+> +	list_add(&fw.list, &efi_embedded_fw_list);
+> +
+> +	pr_info("loading '%s'\n", name);
+> +
+> +	mutex_lock(&test_fw_mutex);
+> +	release_firmware(test_firmware);
+> +	test_firmware = NULL;
 
-Sounds good, looks like I can mostly reuse 'struct
-efi_memory_map_data' for this purpose.
+Seems odd to have the above two lines here before the request, why not
+after as noted below.
 
->
->
-> >         /* print new EFI memmap */
-> >         efi_print_memmap();
-> > diff --git a/drivers/firmware/efi/memmap.c b/drivers/firmware/efi/memmap.c
-> > index 813674ef9000..2b81ee6858a9 100644
-> > --- a/drivers/firmware/efi/memmap.c
-> > +++ b/drivers/firmware/efi/memmap.c
-> > @@ -32,6 +32,7 @@ static phys_addr_t __init __efi_memmap_alloc_late(unsigned long size)
-> >  /**
-> >   * efi_memmap_alloc - Allocate memory for the EFI memory map
-> >   * @num_entries: Number of entries in the allocated map.
-> > + * @flags: Late map, memblock alloc, slab alloc flags
-> >   *
-> >   * Depending on whether mm_init() has already been invoked or not,
-> >   * either memblock or "normal" page allocation is used.
-> > @@ -39,20 +40,23 @@ static phys_addr_t __init __efi_memmap_alloc_late(unsigned long size)
-> >   * Returns the physical address of the allocated memory map on
-> >   * success, zero on failure.
-> >   */
-> > -phys_addr_t __init efi_memmap_alloc(unsigned int num_entries)
-> > +phys_addr_t __init efi_memmap_alloc(unsigned int num_entries, unsigned long *flags)
-> >  {
-> >         unsigned long size = num_entries * efi.memmap.desc_size;
-> >
-> > -       if (slab_is_available())
-> > +       if (slab_is_available()) {
-> > +               *flags |= EFI_MEMMAP_SLAB;
-> >                 return __efi_memmap_alloc_late(size);
-> > +       }
-> >
-> > +       *flags |= EFI_MEMMAP_MEMBLOCK;
->
-> This assumes flags has neither bit set, but perhaps we should at least
-> clear the memblock one if we set the slab one?
+> +	rc = firmware_request_platform(&test_firmware, name, dev);
+> +	if (rc) {
+> +		pr_info("load of '%s' failed: %d\n", name, rc);
+> +		goto out;
+> +	}
+> +	if (test_firmware->size != sizeof(test_data) ||
+> +	    memcmp(test_firmware->data, test_data, sizeof(test_data)) != 0) {
+> +		pr_info("firmware contents mismatch for '%s'\n", name);
+> +		rc = -EINVAL;
+> +		goto out;
+> +	}
+> +	pr_info("loaded: %zu\n", test_firmware->size);
+> +	rc = count;
 
-Ok.
+Here.
+
+> +
+> +out:
+> +	mutex_unlock(&test_fw_mutex);
+> +
+> +	list_del(&fw.list);
+> +	kfree(name);
+> +
+> +	return rc;
+> +}
+> +static DEVICE_ATTR_WO(trigger_request_platform);
+> +#endif
+> +
+>  static DECLARE_COMPLETION(async_fw_done);
+>  
+>  static void trigger_async_request_cb(const struct firmware *fw, void *context)
+>  {
+>  	test_firmware = fw;
+>  	complete(&async_fw_done);
+> +
+> +
+> +
+> +
+> +
+> +
+> +
+> +
+> +
+>  }
+
+Ummm, new empty lines without any code added... did you forget
+something?  Please address this.
+
+  Luis
