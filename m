@@ -2,125 +2,156 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 105FE1328E2
-	for <lists+linux-efi@lfdr.de>; Tue,  7 Jan 2020 15:28:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 30BEB132D87
+	for <lists+linux-efi@lfdr.de>; Tue,  7 Jan 2020 18:50:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728048AbgAGO2o (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 7 Jan 2020 09:28:44 -0500
-Received: from mail-wm1-f66.google.com ([209.85.128.66]:50388 "EHLO
-        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728129AbgAGO2o (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 7 Jan 2020 09:28:44 -0500
-Received: by mail-wm1-f66.google.com with SMTP id a5so19193051wmb.0
-        for <linux-efi@vger.kernel.org>; Tue, 07 Jan 2020 06:28:43 -0800 (PST)
+        id S1728391AbgAGRth (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 7 Jan 2020 12:49:37 -0500
+Received: from mail-wr1-f66.google.com ([209.85.221.66]:41874 "EHLO
+        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728266AbgAGRth (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 7 Jan 2020 12:49:37 -0500
+Received: by mail-wr1-f66.google.com with SMTP id c9so378383wrw.8
+        for <linux-efi@vger.kernel.org>; Tue, 07 Jan 2020 09:49:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=9fM0Y99fzoh1sWdNrGSXKq5Ut8HHLPX/Xb2R4iMZIVo=;
-        b=onsrFG03OCUWJUquMKAWv/FfZ65pB1yv69irtoceNF+4Ki8cx2YjWwPUojSnbOwmhY
-         YQ4aBDeJnlazAteYLaaYw3hLciBjOKjSSiZvoR2zz93EhhCQofPdJy+2O09YYZT4FKxI
-         AL40ApowCfK1q5n3DJkwbFziGXyFgyIAMnt+WxISH45IzQZlB+9P9P0m7kWmdAvWaEcn
-         RsPbbKsHfY5IXysQHcb89IPypcHXXLK4RBMl7jSg1Za/vqg507nswMHas2nXmEvTdqC/
-         zLFgtIzMHIcJHEnsd/DP2ywmg7hQGGnoul8w2gp8tJ40ufPF9/nBrE5UgW1mpx0skwsJ
-         m3hw==
+        bh=uyvuS2G9MB9Tvq9pni2gKNsuJduIchYAcY94iemGDHk=;
+        b=C3P65o55D+SQxxN6mGKZo2HFJ4tjidCXpgNJDyVr+teyCUgHLA/oplEcHIvlFBb7Se
+         GJYJOEPFDLCZpCThR12FScKuecIuQ5bHwfgVDwdIZsF2pB/TLPpqFCH3gm1hJ+Dt3u4Z
+         rNOH1aRZvB+2wrLM/4TuQzAS8xfGkkRDqWOQ305+FYFU8ckBrQt5jRV8s+var7Bh6e+n
+         0LCwOZYmzj7QNEJw7wyGJSeyXrz7sh0qABAGVmyFDUjkuPkJOocS78vu+NVHD32dRRbO
+         kiVYDdRYm68fFOAehcFimn9Ia23jgmYcV51F7qCCdVuW99cjr3OQd0hEyc5WdRpmw1/r
+         /L8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=9fM0Y99fzoh1sWdNrGSXKq5Ut8HHLPX/Xb2R4iMZIVo=;
-        b=tx2o9ZTaUZBM2tn3HMHhRCCX5XwXHtq9I02SY0NHUShszexlsV5an+En4D7LuRg+gO
-         j3KX9iO98iiKaTzf6cXS4feHBENKvUM83CCImGWBPGgWfI9TsB3M2lPWBo11yI1zqG0y
-         w2g8Hf1Zu1dbGjeH0HqZbIfF/qC9bYdJq4k06s6lfNcQ68omVigrpYaXE1h86gtpCLHK
-         ka1RMsNl/iunNqZjuvZfAdVI/ZTeLqf9fEooEajrcW4akTUOFTbCaaiQReLDKZY3obMQ
-         iuDF/is05nDVUfZLk8NytTavQfWXRkZEhF+7s9BTkjCh5BtwtXVetTUDrcpIIBAaI8Ho
-         Rf7Q==
-X-Gm-Message-State: APjAAAWX+iKXShSbk6Vgm5qqX1opoe+QKjWSWnX4JThu7MUqAZNyTfKJ
-        zSZwE22/m7dJ3iaDjfKjMP+x70lCTx21z00ic5n09g==
-X-Google-Smtp-Source: APXvYqxbr/RgNesoMBegxeDY1PHKOsU9CKoyFy97IjNEaa3Ltyjwdib34VmytAPVCbUlg8YyvwRhzFoIOBkA6a/16BA=
-X-Received: by 2002:a1c:9d52:: with SMTP id g79mr40901001wme.148.1578407322563;
- Tue, 07 Jan 2020 06:28:42 -0800 (PST)
+        bh=uyvuS2G9MB9Tvq9pni2gKNsuJduIchYAcY94iemGDHk=;
+        b=pUwJOio047uPavhbIOT/ymieAYGUlbCrWuFL1Esdt7P2uNO1Bf3wo5jHGUN4iqQXwd
+         c7yV2dCeSQpH0QOay2ATktWb6lGQSg9jd6GoDhXdqVWx34vfnwvDI+h/OAPcdQ/1M4Jp
+         ZsqjCSNhl6r8U+ud26hcujW5uQgtp+MzH03i2UR7Zx7//46kt3pI3+/DxmkZdPn58F05
+         er74xTwoqBSRhaebz7WFITvghZQNNv9BYnR+hzOkD0Qaj1oj8KWJsWRH4MFcyhf3GsCy
+         Mk8AeyS0xqpigy30fG6PJ50tQallPgnv80uWOhA+xm14wYroOPbo6od4r5P5rv4tWd1X
+         XhGA==
+X-Gm-Message-State: APjAAAVMRB14fX71dq3yyeyNIHrD/Rby2NpIyLbL3E2v9Knn5Wu1BXkR
+        jvFI0qTBqrnlDrEIePgRxPtDiasyLq0OJ8xQPrzGGFOyLGg=
+X-Google-Smtp-Source: APXvYqzEg4Y9DhPujMpKhGLLLqlbDKR8EPZU2K7/XBHana0VXM+EZ4387AqIUMuB3nsMMom8jmSfjK00QqU5fLyPh4w=
+X-Received: by 2002:a5d:6652:: with SMTP id f18mr275382wrw.246.1578419375184;
+ Tue, 07 Jan 2020 09:49:35 -0800 (PST)
 MIME-Version: 1.0
-References: <20200107135500.644618-1-nivedita@alum.mit.edu>
- <CAKv+Gu8HE-QJBpo=S_uUbqkO8BfbKyrp2+nCTxWhPVNMU1E37g@mail.gmail.com>
- <CAKv+Gu_+a4igmTHhMgg17B2oH5f=KRM2g2CBGy+LnF5wYsarng@mail.gmail.com>
- <20200107142125.GA652888@rani.riverdale.lan> <CAKv+Gu-xDaTBVKJ=9ya74giBZ=LdX2r-8-LiFJWzcUofthGv7w@mail.gmail.com>
- <20200107142732.GB652888@rani.riverdale.lan>
-In-Reply-To: <20200107142732.GB652888@rani.riverdale.lan>
+References: <157835762222.1456824.290100196815539830.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <157835763783.1456824.4013634516855823659.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <20200107035824.GA19080@dhcp-128-65.nay.redhat.com> <CAPcyv4jbf2WR2ZU55564fORxKLf8tGH1XbYBpRfTvPouGWk2mg@mail.gmail.com>
+ <20200107051822.GB19080@dhcp-128-65.nay.redhat.com>
+In-Reply-To: <20200107051822.GB19080@dhcp-128-65.nay.redhat.com>
 From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Date:   Tue, 7 Jan 2020 15:28:31 +0100
-Message-ID: <CAKv+Gu8v-5DXWh5ZaY0omrVNh46TEourpcf2Hv3TrsbCUtLFng@mail.gmail.com>
-Subject: Re: [PATCH 0/3] Relocate GOT before calling EFI stub
-To:     Arvind Sankar <nivedita@alum.mit.edu>
-Cc:     Ard Biesheuvel <ardb@kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>
+Date:   Tue, 7 Jan 2020 18:49:24 +0100
+Message-ID: <CAKv+Gu8hO5mTbFaqwh9OZOEm9r_e1_ob-pfq4yhH4wJG7yV8MQ@mail.gmail.com>
+Subject: Re: [PATCH v4 3/4] efi: Fix efi_memmap_alloc() leaks
+To:     Dave Young <dyoung@redhat.com>
+Cc:     Dan Williams <dan.j.williams@intel.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Taku Izumi <izumi.taku@jp.fujitsu.com>,
+        linux-efi <linux-efi@vger.kernel.org>, X86 ML <x86@kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Kexec Mailing List <kexec@lists.infradead.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, 7 Jan 2020 at 15:27, Arvind Sankar <nivedita@alum.mit.edu> wrote:
+On Tue, 7 Jan 2020 at 06:18, Dave Young <dyoung@redhat.com> wrote:
 >
-> On Tue, Jan 07, 2020 at 03:24:18PM +0100, Ard Biesheuvel wrote:
-> > On Tue, 7 Jan 2020 at 15:21, Arvind Sankar <nivedita@alum.mit.edu> wrote:
+> On 01/06/20 at 08:24pm, Dan Williams wrote:
+> > On Mon, Jan 6, 2020 at 7:58 PM Dave Young <dyoung@redhat.com> wrote:
 > > >
-> > > On Tue, Jan 07, 2020 at 03:13:46PM +0100, Ard Biesheuvel wrote:
-> > > > On Tue, 7 Jan 2020 at 15:01, Ard Biesheuvel <ard.biesheuvel@linaro.org> wrote:
-> > > > >
-> > > > > On Tue, 7 Jan 2020 at 14:55, Arvind Sankar <nivedita@alum.mit.edu> wrote:
-> > > > > >
-> > > > > > This series performs GOT relocation before calling into C code for the
-> > > > > > EFI stub. While the stub does not currently require GOT relocation, it's
-> > > > > > quite easy to introduce code that will use the GOT on old toolchains,
-> > > > > > but not recent ones, which can lead to unexpected issues.
-> > > > > >
-> > > > > > This is based on
-> > > > > > https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git/log/?h=next
-> > > > > >
-> > > > > > with commit 4169bb99cd70 ("efi/libstub/x86: use mandatory 16-byte stack
-> > > > > > alignment in mixed mode") reverted, as it caused a crash in mixed mode.
-> > > > > >
-> > > > >
-> > > > > Hi Arvind,
-> > > > >
-> > > > > I appreciate the effort, but I really don't think this is a good idea.
-> > > > >
-> > > > > A GOT is completely pointless in bare metal code, and fortunately,
-> > > > > modern toolchains make it easier to suppress GOT entries from being
-> > > > > emitted. So instead of adding back asm code that I just removed, I
-> > > > > think it would be better to investigate whether we can get rid of the
-> > > > > GOT entirely.
-> > > > >
+> > > On 01/06/20 at 04:40pm, Dan Williams wrote:
+> > > > With efi_fake_memmap() and efi_arch_mem_reserve() the efi table may be
+> > > > updated and replaced multiple times. When that happens a previous
+> > > > dynamically allocated efi memory map can be garbage collected. Use the
+> > > > new EFI_MEMMAP_{SLAB,MEMBLOCK} flags to detect when a dynamically
+> > > > allocated memory map is being replaced.
 > > > >
-> > > > With the following added to arch/x86/boot/compressed/vmlinux.lds.S,
-> > > > the 64-bit kernel already links without error.
+> > > > Debug statements in efi_memmap_free() reveal:
 > > > >
-> > > > ASSERT (_got == _egot, "GOT entries detected");
+> > > >  efi: __efi_memmap_free:37: phys: 0x23ffdd580 size: 2688 flags: 0x2
+> > > >  efi: __efi_memmap_free:37: phys: 0x9db00 size: 2640 flags: 0x2
+> > > >  efi: __efi_memmap_free:37: phys: 0x9e580 size: 2640 flags: 0x2
 > > > >
-> > > > The 32-bit kernel produces a GOT with 3 entries: I'm trying to narrow
-> > > > down where they come from.
+> > > > ...a savings of 7968 bytes on a qemu boot with 2 entries specified to
+> > > > efi_fake_mem=.
 > > > >
+> > > > Cc: Taku Izumi <izumi.taku@jp.fujitsu.com>
+> > > > Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+> > > > Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+> > > > ---
+> > > >  drivers/firmware/efi/memmap.c |   24 ++++++++++++++++++++++++
+> > > >  1 file changed, 24 insertions(+)
 > > > >
+> > > > diff --git a/drivers/firmware/efi/memmap.c b/drivers/firmware/efi/memmap.c
+> > > > index 04dfa56b994b..bffa320d2f9a 100644
+> > > > --- a/drivers/firmware/efi/memmap.c
+> > > > +++ b/drivers/firmware/efi/memmap.c
+> > > > @@ -29,6 +29,28 @@ static phys_addr_t __init __efi_memmap_alloc_late(unsigned long size)
+> > > >       return PFN_PHYS(page_to_pfn(p));
+> > > >  }
+> > > >
+> > > > +static void __init __efi_memmap_free(u64 phys, unsigned long size, unsigned long flags)
+> > > > +{
+> > > > +     if (flags & EFI_MEMMAP_MEMBLOCK) {
+> > > > +             if (slab_is_available())
+> > > > +                     memblock_free_late(phys, size);
+> > > > +             else
+> > > > +                     memblock_free(phys, size);
+> > > > +     } else if (flags & EFI_MEMMAP_SLAB) {
+> > > > +             struct page *p = pfn_to_page(PHYS_PFN(phys));
+> > > > +             unsigned int order = get_order(size);
+> > > > +
+> > > > +             free_pages((unsigned long) page_address(p), order);
+> > > > +     }
+> > > > +}
+> > > > +
+> > > > +static void __init efi_memmap_free(void)
+> > > > +{
+> > > > +     __efi_memmap_free(efi.memmap.phys_map,
+> > > > +                     efi.memmap.desc_size * efi.memmap.nr_map,
+> > > > +                     efi.memmap.flags);
+> > > > +}
+> > > > +
+> > > >  /**
+> > > >   * efi_memmap_alloc - Allocate memory for the EFI memory map
+> > > >   * @num_entries: Number of entries in the allocated map.
+> > > > @@ -100,6 +122,8 @@ static int __init __efi_memmap_init(struct efi_memory_map_data *data)
+> > > >               return -ENOMEM;
+> > > >       }
+> > > >
+> > > > +     efi_memmap_free();
+> > > > +
 > > >
-> > > With modern toolchain, 32-bit compressed kernel doesn't actually use the
-> > > GOT, however unlike 64-bit, the linker still emits a GOT with the three
-> > > reserved entries.
-> > >
-> > > The rest of the early boot code (after EFI stub) does generate
-> > > R_386_GOT32(X) relocations, so we need to use a GOT anyway to cater for
-> > > older linkers. Having a build-time check that the EFI stub code does not
-> > > have any such relocations might be possible, but it seems easier to just
-> > > do the GOT processing for it as well.
+> > > This seems still not safe,  see below function:
+> > > arch/x86/platform/efi/efi.c:
+> > > static void __init efi_clean_memmap(void)
+> > > It use same memmap for both old and new, and filter out those invalid
+> > > ranges in place, if the memory is freed then ..
 > >
-> > Not necessarily. My tests with binutils 2.24 building 32-bit suggest
-> > that using 'hidden' visibility is often sufficient to get rid of them.
+> > In the efi_clean_memmap() case flags are 0, so efi_memmap_free() is a nop.
+> >
+> > Would you feel better with an explicit?
+> >
+> > WARN_ON(efi.memmap.phys_map == data->phys_map && (data->flags &
+> > (EFI_MEMMAP_SLAB | EFI_MEMMAP_MEMBLOCK))
+> >
+> > ...not sure it's worth it.
 >
-> Ah. Could we just add -fvisibility=hidden to the boot/compressed cflags?
-> If that works with old toolchain, we could just get rid of the whole
-> adjust_got thing.
+> Ah, yes, sorry I did not see the flags, although it is not very obvious.
+> Maybe add some code comment for efi_mem_alloc and efi_mem_init.
+>
+> Let's defer the suggestion to Ard.
+>
 
-Unfortunately, the command line option implements a weaker form of
-visibility than the pragma, so it probably comes down to setting the
-pragma in a .h file that gets -include'd via the command line so it is
-guaranteed to be seen first.
+A one line comment to remind our future selves of this discussion
+would probably be helpful, but beyond that, I don't think we need to
+do much here.
