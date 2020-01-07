@@ -2,112 +2,118 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 39FB7131A8C
-	for <lists+linux-efi@lfdr.de>; Mon,  6 Jan 2020 22:35:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 31788131CDE
+	for <lists+linux-efi@lfdr.de>; Tue,  7 Jan 2020 01:56:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726937AbgAFVfI (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 6 Jan 2020 16:35:08 -0500
-Received: from mail-pg1-f196.google.com ([209.85.215.196]:44558 "EHLO
-        mail-pg1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726731AbgAFVfH (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 6 Jan 2020 16:35:07 -0500
-Received: by mail-pg1-f196.google.com with SMTP id x7so27439383pgl.11;
-        Mon, 06 Jan 2020 13:35:07 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=m5JbUZHGVS7KhF/eteOGbVRmf/p5dDdWHItMOmdV+PY=;
-        b=KXEBFPr7uLQ4erGLtuIgSp+jERI4sICam+LtekOisclwM/7Qx2N3YufOUEUvR5OLLO
-         XdTzdU8wj6aTXkVgZQghUWNKX8HHrujLuUn7U/6QdzzfigQDunDmhBZPk7pTbg4HAn09
-         8ux3h6/ue1ptdVg7cPXq2UwMXsxX3J3i0cCAbZXn4HTwJig05+Ff2b8/ARSw65Au3Z4c
-         WDfXSfvuEh9BNLMKuAY1hTMyoLvov63knvGkpmFO2OaYyzPQivH3SevLolpROMrsxRba
-         mpsaWA5DwVT6nUFBEWYEFJ7GnNTFP0nIBGlGku150zrhA4iZjYHmjachj/FdlaSVvnle
-         omPg==
-X-Gm-Message-State: APjAAAUaDyzvedV6CbNNLujbyp3HLCfwfxN1tinkfl0NdZXKzsJpBi6I
-        DUjEMlCNofyeOBCdPVIJ0v8=
-X-Google-Smtp-Source: APXvYqw182QJjFmapUgFthZkzGtp0VoNIvjQLkmo3FZplcl6V6fewGd0Km+oD9FveLcEgGfjcf+wSw==
-X-Received: by 2002:a62:486:: with SMTP id 128mr111783695pfe.236.1578346506948;
-        Mon, 06 Jan 2020 13:35:06 -0800 (PST)
-Received: from 42.do-not-panic.com (42.do-not-panic.com. [157.230.128.187])
-        by smtp.gmail.com with ESMTPSA id g22sm74464874pgk.85.2020.01.06.13.35.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Jan 2020 13:35:05 -0800 (PST)
-Received: by 42.do-not-panic.com (Postfix, from userid 1000)
-        id 2F19740321; Mon,  6 Jan 2020 21:35:05 +0000 (UTC)
-Date:   Mon, 6 Jan 2020 21:35:05 +0000
-From:   Luis Chamberlain <mcgrof@kernel.org>
-To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Cc:     Hans de Goede <hdegoede@redhat.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Darren Hart <dvhart@infradead.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
+        id S1727273AbgAGA4Z (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 6 Jan 2020 19:56:25 -0500
+Received: from mga12.intel.com ([192.55.52.136]:59613 "EHLO mga12.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727233AbgAGA4Z (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Mon, 6 Jan 2020 19:56:25 -0500
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 06 Jan 2020 16:56:24 -0800
+X-IronPort-AV: E=Sophos;i="5.69,404,1571727600"; 
+   d="scan'208";a="233001479"
+Received: from dwillia2-desk3.jf.intel.com (HELO dwillia2-desk3.amr.corp.intel.com) ([10.54.39.16])
+  by orsmga002-auth.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 06 Jan 2020 16:56:24 -0800
+Subject: [PATCH v4 0/4] efi: Fix handling of multiple efi_fake_mem= entries
+From:   Dan Williams <dan.j.williams@intel.com>
+To:     mingo@redhat.com
+Cc:     Taku Izumi <izumi.taku@jp.fujitsu.com>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Borislav Petkov <bp@alien8.de>,
-        "H . Peter Anvin" <hpa@zytor.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Peter Jones <pjones@redhat.com>,
-        Dave Olsthoorn <dave@bewaar.me>,
-        the arch/x86 maintainers <x86@kernel.org>,
-        platform-driver-x86@vger.kernel.org,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        linux-input@vger.kernel.org
-Subject: Re: [PATCH v10 00/10] efi/firmware/platform-x86: Add EFI embedded fw
- support
-Message-ID: <20200106213505.GW11244@42.do-not-panic.com>
-References: <20191210115117.303935-1-hdegoede@redhat.com>
- <66f45932-756d-0bb0-d7a8-330d61785663@redhat.com>
- <CAKv+Gu_X+UM95MJJMjT69upL9zN3H9BnUkv8s9TjcpevANbYEw@mail.gmail.com>
+        Dave Young <dyoung@redhat.com>, Ingo Molnar <mingo@kernel.org>,
+        Michael Weiser <michael@weiser.dinsnail.net>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        linux-efi@vger.kernel.org, x86@kernel.org,
+        linux-kernel@vger.kernel.org, kexec@lists.infradead.org
+Date:   Mon, 06 Jan 2020 16:40:22 -0800
+Message-ID: <157835762222.1456824.290100196815539830.stgit@dwillia2-desk3.amr.corp.intel.com>
+User-Agent: StGit/0.18-3-g996c
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAKv+Gu_X+UM95MJJMjT69upL9zN3H9BnUkv8s9TjcpevANbYEw@mail.gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, Jan 03, 2020 at 12:36:04PM +0100, Ard Biesheuvel wrote:
-> On Fri, 3 Jan 2020 at 12:27, Hans de Goede <hdegoede@redhat.com> wrote:
-> >
-> > Hi All,
-> >
-> > Since I send this out, efi-next has seen some changes causing the first
-> > 2 patches to no longer cleanly apply. So it looks like we need to
-> > merge this one bit at a time with immutable branches.
-> >
-> > Ard, the first 2 patches in this series should be merged through your
-> > efi tree. AFAIK everyone is happy with them in their current state
-> > so they are ready for merging. Can you create an immutable branch
-> > with these 2 patches and merge that into your efi-next branch?
-> >
-> > Note if you do the immutable branch on 5.5-rc1 + just these 2 patches,
-> > there will be a conflict when you merge this into efi-next, but it is
-> > trivial to resolve.
-> >
-> 
-> I will need to defer to Ingo here, as he usually applies the EFI
-> changes piecemeal rather than merging my branches directly.
-> 
-> I'd be fine with just annotating the conflict in the pull request if
-> it is trivial, though, but it is really up to Luis and Ingo to align
-> here.
+Changes since v3 [1]:
+- Rather than pass a reference to a new flags argument, pass a common
+  data structure ('struct efi_memory_map_data'), between
+  efi_memmap_alloc() and efi_memmap_install(). (Ard)
 
-I don't have a tree, and firmware goes Greg's driver core tree so
-actually its up to Greg and Ingo on how this gets merged. But it seems
-you just have one issue to fix:
+- Arrange for EFI_MEMMAP_SLAB to be clear if EFI_MEMMAP_MEMBLOCK was set
+  and vice versa (Ard).
 
-[PATCH v10 05/10] test_firmware: add support for firmware_request_platform
+[1]: http://lore.kernel.org/r/157793839827.977550.7845382457971215205.stgit@dwillia2-desk3.amr.corp.intel.com
+---
 
-There is a few set of empty lines added and I had one comment on the
-release of the firmware.
+While testing an upcoming patchset to enhance the "soft reservation"
+implementation it started crashing when rebased on v5.5-rc3. This
+uncovered a few bugs in the efi_fake_mem= handling and
+efi_memmap_alloc() leaks.
 
-Other than this, I agree this seems ready to be merged.
+---
 
-  Luis
+Copied from patch4:
+
+Dave noticed that when specifying multiple efi_fake_mem= entries only
+the last entry was successfully being reflected in the efi memory map.
+This is due to the fact that the efi_memmap_insert() is being called
+multiple times, but on successive invocations the insertion should be
+applied to the last new memmap rather than the original map at
+efi_fake_memmap() entry.
+
+Rework efi_fake_memmap() to install the new memory map after each
+efi_fake_mem= entry is parsed.
+
+This also fixes an issue in efi_fake_memmap() that caused it to litter
+emtpy entries into the end of the efi memory map. An empty entry causes
+efi_memmap_insert() to attempt more memmap splits / copies than
+efi_memmap_split_count() accounted for when sizing the new map. When
+that happens efi_memmap_insert() may overrun its allocation, and if you
+are lucky will spill over to an unmapped page leading to crash
+signature like the following rather than silent corruption:
+
+    BUG: unable to handle page fault for address: ffffffffff281000
+    [..]
+    RIP: 0010:efi_memmap_insert+0x11d/0x191
+    [..]
+    Call Trace:
+     ? bgrt_init+0xbe/0xbe
+     ? efi_arch_mem_reserve+0x1cb/0x228
+     ? acpi_parse_bgrt+0xa/0xd
+     ? acpi_table_parse+0x86/0xb8
+     ? acpi_boot_init+0x494/0x4e3
+     ? acpi_parse_x2apic+0x87/0x87
+     ? setup_acpi_sci+0xa2/0xa2
+     ? setup_arch+0x8db/0x9e1
+     ? start_kernel+0x6a/0x547
+     ? secondary_startup_64+0xb6/0xc0
+
+Commit af1648984828 "x86/efi: Update e820 with reserved EFI boot
+services data to fix kexec breakage" is listed in Fixes: since it
+introduces more occurrences where efi_memmap_insert() is invoked after
+an efi_fake_mem= configuration has been parsed. Previously the side
+effects of vestigial empty entries were benign, but with commit
+af1648984828 that follow-on efi_memmap_insert() invocation triggers
+efi_memmap_insert() overruns.
+
+---
+
+Dan Williams (4):
+      efi: Add a flags parameter to efi_memory_map
+      efi: Add tracking for dynamically allocated memmaps
+      efi: Fix efi_memmap_alloc() leaks
+      efi: Fix handling of multiple efi_fake_mem= entries
+
+
+ arch/x86/platform/efi/efi.c     |   10 +++-
+ arch/x86/platform/efi/quirks.c  |   23 ++++------
+ drivers/firmware/efi/fake_mem.c |   43 +++++++++---------
+ drivers/firmware/efi/memmap.c   |   94 ++++++++++++++++++++++++++-------------
+ include/linux/efi.h             |   17 +++++--
+ 5 files changed, 113 insertions(+), 74 deletions(-)
