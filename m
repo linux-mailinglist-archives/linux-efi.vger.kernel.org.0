@@ -2,89 +2,87 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5866E1346C3
-	for <lists+linux-efi@lfdr.de>; Wed,  8 Jan 2020 16:57:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7006D134867
+	for <lists+linux-efi@lfdr.de>; Wed,  8 Jan 2020 17:48:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728138AbgAHP5D (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 8 Jan 2020 10:57:03 -0500
-Received: from mail-qv1-f67.google.com ([209.85.219.67]:34316 "EHLO
-        mail-qv1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727090AbgAHP5D (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 8 Jan 2020 10:57:03 -0500
-Received: by mail-qv1-f67.google.com with SMTP id o18so1616531qvf.1;
-        Wed, 08 Jan 2020 07:57:02 -0800 (PST)
+        id S1728767AbgAHQsK (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 8 Jan 2020 11:48:10 -0500
+Received: from mail-wr1-f67.google.com ([209.85.221.67]:33900 "EHLO
+        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727606AbgAHQsK (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 8 Jan 2020 11:48:10 -0500
+Received: by mail-wr1-f67.google.com with SMTP id t2so4173035wrr.1
+        for <linux-efi@vger.kernel.org>; Wed, 08 Jan 2020 08:48:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:from:date:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=t/UXz8NG4xnRGEkWWnp+LB0XowepG1LsOEgscvBtqw8=;
-        b=EJQ8FtDdQTBPrXUSXKgmb8BW+YZGbW61mtfANUOLXYLpyPfxP7A5P6KGEEVbiK94zy
-         zVUGP6LIc1FrZGIpJ4S/ZXeje0VekEh9yGO1+VLakKafWLryI4oKB2ik1LwGv0yhF1I5
-         ceGl7SC8KzxmjQyJh+2o/NqAKpFhheFQbEjakKMqgATx3TxkYm8yQ/5NBSMVsxRpBpkp
-         +HQXhPkeR+P+nNMKgP2JTnal6g0Byi3PWtQNyD+SJt/F4bdhMv8czTX8TtQa7qFLlrum
-         mSUgT6hjnM9ul24SDZ1UlQFOktqMhSi0pS7TKbHBr9hcXloyUvKRjuNzauhJQVSyVWSf
-         ea9w==
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=oThwVOSRghlMQrtGPJX+ACmEzpakZ7+aStYbwUOl/sQ=;
+        b=KJ8VyuDbKf/CPrDOdmCtRVxpPCX/7Bw2aLcUSgFdoCjxTyv2qSBWu4ufbzJFir/k3d
+         y3fNIDlz6I1cgxg6GcWbamUyAFo5XarJYOMqCqgWxWGFC8/ozip7Kdd2Dz2GBbR1y7Gd
+         w6IGiT/m172BO9/zrnfDaW2THDf8WhTBmx0Vh4F3WFBce1UUSebyzVN38MIhOG6d3O6M
+         dUrrq7OlsDBXdhZ5DQWdUdQ6rpHgvpWe6kvJM+kKRK6oA5Hlxb0SUULePRnvyIflSrAY
+         YacENCL515yBuZFJKvrQ8jMHHERmGLu5nuWHeBhd4w70PcOJ3grnKyX8gfc9V4a7/ZLk
+         DLEw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:from:date:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to:user-agent;
-        bh=t/UXz8NG4xnRGEkWWnp+LB0XowepG1LsOEgscvBtqw8=;
-        b=lpfhR3euWxU2GJStxFb5USxWl++4JNaPLjAERwCkJC+nn3NlQ+2vdn6zFBaiDuj2ZF
-         3zcPY7ufcHeUd8SJE6TodfIVPSXULfTweM2Ak6yK0Rrcue39NbeeIlyRqyCRY0SPTtbW
-         ifR9IP1sHGtnQxHuew4BlQpp/z8vkvMhGBUzmqQlOQAzdhjyTbMsecs6raU0imgqiHbu
-         wQTEAmQZYQQ2dLUbLu2iUl/A57HjiUdP7T5VbwF4FyBwYfGOSToItMKarA82Ne6DBPga
-         sQx4teJIRUWvXJ/8AGnHEdnkuD/tguMtdMNl2fe1NZ0SDAWuIasfmRFYUhh+Gkx+w+iQ
-         uSWg==
-X-Gm-Message-State: APjAAAV7TE3ZeM4Hy3WOnmRho7+H87aOXbdDBCssb1d+rEZOzciFysTX
-        NK9PzCZPQKDUPfuNs5z6t3o=
-X-Google-Smtp-Source: APXvYqy/KEWQlsH9ih86XYm09pFRk+5mRemhYPCGqdvP3frNrtbfAPBfs4zSROyXjiJQeYF8B8GgrA==
-X-Received: by 2002:a0c:da08:: with SMTP id x8mr4712828qvj.166.1578499022473;
-        Wed, 08 Jan 2020 07:57:02 -0800 (PST)
-Received: from rani.riverdale.lan ([2001:470:1f07:5f3::b55f])
-        by smtp.gmail.com with ESMTPSA id f19sm1534040qkk.69.2020.01.08.07.57.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Jan 2020 07:57:02 -0800 (PST)
-From:   Arvind Sankar <nivedita@alum.mit.edu>
-X-Google-Original-From: Arvind Sankar <arvind@rani.riverdale.lan>
-Date:   Wed, 8 Jan 2020 10:57:00 -0500
-To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Cc:     Arvind Sankar <nivedita@alum.mit.edu>,
-        Ard Biesheuvel <ardb@kernel.org>,
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=oThwVOSRghlMQrtGPJX+ACmEzpakZ7+aStYbwUOl/sQ=;
+        b=I3tcAkBbPlAvR1A3zIZcc8WXpdR+bGCGROh7DxGD9I0GHn4LLcJCmTOHKgSSFMErMQ
+         /odGFiyFlGHcm0QFsDZuq0FdAkxcNBoa/4Rq2BKn0RF7qeRPUxDVXWvpP3l5/WZu+LYI
+         1148dSv/2G4sr1kHpfpR4XbEQThOc+6El7CNB6qGLNVCd0QJogI/bc4Ooa51mdYjgxTG
+         1mJ5Bs4Y1873eZVqGHjmwiag48abJr/iAj7Zhz9qgLW4hJEed8upIvtWIlXq9P7a0cmz
+         E6vIMD8eIYRFAmiDPtE2bjcuLEind7+D8Xg8no6PCcIOEDDWuJ8xsXrZ0iMOOVre4pZz
+         u84w==
+X-Gm-Message-State: APjAAAWCcL6/o6yU8hy2qWCa0WH964G53S7gHRoLbd0bh95vS6CxuqtX
+        lR5UZrQ+uD01jZMXPvrxPdrfZRE9eCAXqNGatkAd8w==
+X-Google-Smtp-Source: APXvYqxld4/J+48jZWMZsKYas2V8hJ6QfYzgpwPJfWXcagD63FIKHzy4jZc/YPSKMusV0C4z/jLQo+8YZf5zhAIJeoE=
+X-Received: by 2002:a5d:43c7:: with SMTP id v7mr5359077wrr.32.1578502088604;
+ Wed, 08 Jan 2020 08:48:08 -0800 (PST)
+MIME-Version: 1.0
+References: <20200108102304.25800-1-ardb@kernel.org> <20200108102304.25800-3-ardb@kernel.org>
+ <20200108154031.GA2512498@rani.riverdale.lan> <CAKv+Gu8AOukQL3qokt+Rz3PKBRWWnSULGUr=+yxg_HPM8-uodw@mail.gmail.com>
+ <20200108155700.GA2602122@rani.riverdale.lan>
+In-Reply-To: <20200108155700.GA2602122@rani.riverdale.lan>
+From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Date:   Wed, 8 Jan 2020 17:47:57 +0100
+Message-ID: <CAKv+Gu_EVuX1nktX6Ueyot7XFgtq+AG9SqRHvN91r9oG5GL_wQ@mail.gmail.com>
+Subject: Re: [RFC PATCH 2/3] x86/boot/compressed: force hidden visibility for
+ all symbol references
+To:     Arvind Sankar <nivedita@alum.mit.edu>
+Cc:     Ard Biesheuvel <ardb@kernel.org>,
         linux-efi <linux-efi@vger.kernel.org>,
-        the arch/x86 maintainers <x86@kernel.org>,
+        "the arch/x86 maintainers" <x86@kernel.org>,
         Andy Lutomirski <luto@kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
         Linus Torvalds <torvalds@linux-foundation.org>
-Subject: Re: [RFC PATCH 2/3] x86/boot/compressed: force hidden visibility for
- all symbol references
-Message-ID: <20200108155700.GA2602122@rani.riverdale.lan>
-References: <20200108102304.25800-1-ardb@kernel.org>
- <20200108102304.25800-3-ardb@kernel.org>
- <20200108154031.GA2512498@rani.riverdale.lan>
- <CAKv+Gu8AOukQL3qokt+Rz3PKBRWWnSULGUr=+yxg_HPM8-uodw@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CAKv+Gu8AOukQL3qokt+Rz3PKBRWWnSULGUr=+yxg_HPM8-uodw@mail.gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, Jan 08, 2020 at 04:47:51PM +0100, Ard Biesheuvel wrote:
-> The EFI stub already sets the hidden visibility attribute for the few
-> external symbol references that it contains, so it is not needed in
-> the context of this series.
-> 
-> In the future, we can revisit this if we want to get rid of the
-> various __pure getter functions, but that requires thorough testing on
-> other architectures and toolchains, so I'd prefer to leave that for
-> later.
+On Wed, 8 Jan 2020 at 16:57, Arvind Sankar <nivedita@alum.mit.edu> wrote:
+>
+> On Wed, Jan 08, 2020 at 04:47:51PM +0100, Ard Biesheuvel wrote:
+> > The EFI stub already sets the hidden visibility attribute for the few
+> > external symbol references that it contains, so it is not needed in
+> > the context of this series.
+> >
+> > In the future, we can revisit this if we want to get rid of the
+> > various __pure getter functions, but that requires thorough testing on
+> > other architectures and toolchains, so I'd prefer to leave that for
+> > later.
+>
+> We don't need it for the stub right now, but then this bit in the cover
+> letter is not yet true, we still need to be careful about libstub code.
+>
+> > ...we can start using ordinary external symbol references in the EFI
+> > stub without running the risk of boot regressions.
 
-We don't need it for the stub right now, but then this bit in the cover
-letter is not yet true, we still need to be careful about libstub code.
-
-> ...we can start using ordinary external symbol references in the EFI
-> stub without running the risk of boot regressions.
+Spurious GOT entries will now be caught by the ASSERT() in the linker
+script and fail the build instead of causing hard to debug boot
+regressions, so it is not entirely untrue either. But I take your
+point.
