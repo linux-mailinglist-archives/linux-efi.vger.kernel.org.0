@@ -2,117 +2,95 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BA13A134483
-	for <lists+linux-efi@lfdr.de>; Wed,  8 Jan 2020 15:04:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7AC9E134609
+	for <lists+linux-efi@lfdr.de>; Wed,  8 Jan 2020 16:23:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728640AbgAHOEh (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 8 Jan 2020 09:04:37 -0500
-Received: from mail-wr1-f66.google.com ([209.85.221.66]:42453 "EHLO
-        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727158AbgAHOEg (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 8 Jan 2020 09:04:36 -0500
-Received: by mail-wr1-f66.google.com with SMTP id q6so3470145wro.9
-        for <linux-efi@vger.kernel.org>; Wed, 08 Jan 2020 06:04:36 -0800 (PST)
+        id S1728253AbgAHPX3 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 8 Jan 2020 10:23:29 -0500
+Received: from mail-qv1-f68.google.com ([209.85.219.68]:40100 "EHLO
+        mail-qv1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726556AbgAHPX3 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 8 Jan 2020 10:23:29 -0500
+Received: by mail-qv1-f68.google.com with SMTP id dp13so1543752qvb.7
+        for <linux-efi@vger.kernel.org>; Wed, 08 Jan 2020 07:23:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=03ZZgrfPnlkzJOCPCuPI2OwL5hhKIYzrgORdTh/AQQQ=;
-        b=RAlYwQngU5ReSTTuJCCgB0RIAcBw4FPN0oB43AEzMOWiCzagQrcsSwi71v7HM5awI2
-         P1vorIJoujEz3W8rHzFltQfSjSo4Y/nm/ELB7syJM/3b4cfYES/F9FRqdWwhf6Y8bK2H
-         3woVzKsNYAgXndTGCDItMhE/GNiSQPlLiPcpM6Em937sRsaLoICEQJHd85W2tQpmX+4R
-         kOcOCyKnDfV2rkhWXZXkCUgIYlD7wBPDkZe997cN1VZqbFbVuuoRI6S14aQryU82V5OQ
-         qDC6NybJFiQKT0dH5HJilZgl2xcdWv2iaQezOzrMYbSbf+aPqngfKGkeQgAQyTTDTTj0
-         8H2Q==
+        d=gmail.com; s=20161025;
+        h=sender:from:date:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=eKjsa4gTkbrivv0yK3FYeN120OuQ0ajMqme/DGdEw2A=;
+        b=LPlHRoeXnyCOxITgEt+7vVm1df/Mrtx7YB6ynTEdpphT90gOF3Zqr0Fcw/4XuvG06y
+         qD/ndY/MaAhcRsaArBMbQ+3hUUqUTmO8CqtLEtqMSCgOGL4/VFigUzVt63p0oj1VXaV/
+         XwlKm+AWgk4ozkVmX8C0F1qOPwH9gNdwR9mRnQu5qAGAcnViosgFU9GRHorXSA4YwZpJ
+         WBB/M9cTKwSYNyFTEPJJeGrEj6+GG6wiSxsZgzmvgtItBBkVIEQ7Zg6PNVgpmr6Z1dgj
+         oqJYhljdJ2FGkczO2/V28bnonsxtKR6OlVslullHUX/tVgZLyUJWAiaZbTn91K7YgKCZ
+         0IRQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=03ZZgrfPnlkzJOCPCuPI2OwL5hhKIYzrgORdTh/AQQQ=;
-        b=GKob2etXKOeGJ1oabu7c8C2HfhZ2D0UW6d1DbyUMqCw7o5ZyD2FQyj9/4B3EiEN217
-         cIQp4nrJpRkiO2z4TkbTUE/RUx0s46V/cb5EavaZ0b5QgSg/V2MXrBvwxHmPJSkWkweT
-         MLVolq4Hdo7B174nT2TrmcVmE0ec0zMzegxzaP6BwMCaD+ZrhxUl07DzbOoIbk9tD/sS
-         tNrACPXTwXZ/KtFLdf6IGZR3NVIKcE5Jf0DxnwuhpTtYFPDMWyvPD689xyBX8IWw3oaK
-         met7vq0a/sqNRVOXzL9Wse5QsTttx5Nvf0y4Av/2pDoYETDDXIti+qmF5Lmmd5pEFxOZ
-         ruVA==
-X-Gm-Message-State: APjAAAWlSFNJ1ZoTYmOPlFzJRxL6RBhX0XyOMXwBt++hUDdzyKRHq4Ke
-        +QZdYBoOgAZ17hG8wCYFh1PrNaHOV3ZnsrwNT11cdw==
-X-Google-Smtp-Source: APXvYqxr6kgaBU11F4QE0S0IfOokn8oPdPXNm7jS0ZS0lltHMAic115dHc+sCND+AAuXQZuTXt6Xpcm0NtaKnohnL9I=
-X-Received: by 2002:adf:cf0a:: with SMTP id o10mr4561282wrj.325.1578492275313;
- Wed, 08 Jan 2020 06:04:35 -0800 (PST)
+        h=x-gm-message-state:sender:from:date:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to:user-agent;
+        bh=eKjsa4gTkbrivv0yK3FYeN120OuQ0ajMqme/DGdEw2A=;
+        b=JwDBIjp1SP6FlJGWHEJzG/iJufnRs5LeYJKkReXKeDTlref9quLki0hwZaEmH2aJyC
+         0ucB9QXShvGHHBo9dn8w3vEfb613ZGcgQMdhjPXpRiFxI/0Ser1g+ByOFuwE2w/ZVO13
+         JvA8ZG1qPjPnVSaZQ7Cxe7eYPiiJsi7xATnLDfDA8QVlim88ePaivKph1U6VFB06wpFT
+         urG9hmd0zPgvqp16Vx7a6uyK/W18pEmQDPichZVIyANCEZyVcM51Ll5XHlXMCUMyOvh8
+         4yGEXlZVcU3pt0fqQW3jxYmK11wkj/se3Be9kSxjCrvM7OLPpFIDlU7qMvxuIMsPV5Jt
+         VKVw==
+X-Gm-Message-State: APjAAAWRqb6Hzgpwhc5reE2jeVfU2diUIfkVQONObXdwy10Q6sJn+s3u
+        X0HpCuRp+KwDuabqpcj3YxtnFNQN
+X-Google-Smtp-Source: APXvYqwavfZIgn4rU8sxgYhm5zH/LcCC/zoAkAaC0ibcbF+f03xKQwyBVaDs8qwzJBADHQzVGf1X0w==
+X-Received: by 2002:a05:6214:192f:: with SMTP id es15mr4635614qvb.219.1578497008409;
+        Wed, 08 Jan 2020 07:23:28 -0800 (PST)
+Received: from rani.riverdale.lan ([2001:470:1f07:5f3::b55f])
+        by smtp.gmail.com with ESMTPSA id t2sm1464745qkc.31.2020.01.08.07.23.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 08 Jan 2020 07:23:28 -0800 (PST)
+From:   Arvind Sankar <nivedita@alum.mit.edu>
+X-Google-Original-From: Arvind Sankar <arvind@rani.riverdale.lan>
+Date:   Wed, 8 Jan 2020 10:23:26 -0500
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-efi@vger.kernel.org, luto@kernel.org, x86@kernel.org,
+        nivedita@alum.mit.edu
+Subject: Re: [PATCH 1/2] efi/libstub/x86: use const attribute for
+ efi_is_64bit()
+Message-ID: <20200108152325.GA2499882@rani.riverdale.lan>
+References: <20200108074502.10960-1-ardb@kernel.org>
+ <20200108074502.10960-2-ardb@kernel.org>
 MIME-Version: 1.0
-References: <20200108135350.3861390-1-arnd@arndb.de>
-In-Reply-To: <20200108135350.3861390-1-arnd@arndb.de>
-From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Date:   Wed, 8 Jan 2020 15:04:23 +0100
-Message-ID: <CAKv+Gu_DU_4uc+GTcdiEtLD-i48x_Rv2Y-W_NGk62yKxsAUqLQ@mail.gmail.com>
-Subject: Re: [PATCH] efi/libstub: x86: fix unused-variable warning
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     Ard Biesheuvel <ardb@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
-        "the arch/x86 maintainers" <x86@kernel.org>,
-        Arvind Sankar <nivedita@alum.mit.edu>,
-        James Morse <james.morse@arm.com>,
-        Matt Fleming <matt@codeblueprint.co.uk>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        "H. Peter Anvin" <hpa@zytor.com>, Enrico Weigelt <info@metux.net>,
-        Dominik Brodowski <linux@dominikbrodowski.net>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20200108074502.10960-2-ardb@kernel.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, 8 Jan 2020 at 14:54, Arnd Bergmann <arnd@arndb.de> wrote:
->
-> The only users of these got removed, so they also need to be
-> removed to avoid warnings:
->
-> arch/x86/boot/compressed/eboot.c: In function 'setup_efi_pci':
-> arch/x86/boot/compressed/eboot.c:117:16: error: unused variable 'nr_pci' [-Werror=unused-variable]
->   unsigned long nr_pci;
->                 ^~~~~~
-> arch/x86/boot/compressed/eboot.c: In function 'setup_uga':
-> arch/x86/boot/compressed/eboot.c:244:16: error: unused variable 'nr_ugas' [-Werror=unused-variable]
->   unsigned long nr_ugas;
->                 ^~~~~~~
->
-> Fixes: 2732ea0d5c0a ("efi/libstub: Use a helper to iterate over a EFI handle array")
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-
-Oops
-
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
-
-or I can add it to my next batch of EFI changes at the end of the week.
-
+On Wed, Jan 08, 2020 at 08:45:01AM +0100, Ard Biesheuvel wrote:
+> Reshuffle the x86 stub code a bit so that we can tag the efi_is_64bit()
+> function with the 'const' attribute, which permits the compiler to
+> optimize away any redundant calls. Since we have two different entry
+> points for 32 and 64 bit firmware in the startup code, this also
+> simplifies the C code since we'll enter it with the efi_is64 variable
+> already set.
+> 
+> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 > ---
->  arch/x86/boot/compressed/eboot.c | 2 --
->  1 file changed, 2 deletions(-)
->
+>  arch/x86/boot/compressed/eboot.c   | 14 ++++++--------
+>  arch/x86/boot/compressed/head_64.S |  7 +++----
+>  arch/x86/include/asm/efi.h         |  2 +-
+>  3 files changed, 10 insertions(+), 13 deletions(-)
+> 
 > diff --git a/arch/x86/boot/compressed/eboot.c b/arch/x86/boot/compressed/eboot.c
-> index da04948d75ed..57dfdc53d714 100644
+> index 4afd29eb5b34..ab3a40283db7 100644
 > --- a/arch/x86/boot/compressed/eboot.c
 > +++ b/arch/x86/boot/compressed/eboot.c
-> @@ -114,7 +114,6 @@ static void setup_efi_pci(struct boot_params *params)
->         void **pci_handle = NULL;
->         efi_guid_t pci_proto = EFI_PCI_IO_PROTOCOL_GUID;
->         unsigned long size = 0;
-> -       unsigned long nr_pci;
->         struct setup_data *data;
->         efi_handle_t h;
->         int i;
-> @@ -241,7 +240,6 @@ setup_uga(struct screen_info *si, efi_guid_t *uga_proto, unsigned long size)
->         u32 width, height;
->         void **uga_handle = NULL;
->         efi_uga_draw_protocol_t *uga = NULL, *first_uga;
-> -       unsigned long nr_ugas;
->         efi_handle_t handle;
->         int i;
->
-> --
-> 2.20.0
->
+> @@ -21,16 +21,18 @@
+>  #include "eboot.h"
+>  
+>  static efi_system_table_t *sys_table;
+> -static bool efi_is64 = IS_ENABLED(CONFIG_X86_64);
+> +extern const bool efi_is64;
+>  
+
+Didn't we need to declare this with hidden visibility? Or use the
+#pragma GCC visibility push(hidden)?
