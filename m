@@ -2,37 +2,38 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2AE18133C69
-	for <lists+linux-efi@lfdr.de>; Wed,  8 Jan 2020 08:45:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 048EA133F2A
+	for <lists+linux-efi@lfdr.de>; Wed,  8 Jan 2020 11:23:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726199AbgAHHpM (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 8 Jan 2020 02:45:12 -0500
-Received: from mail.kernel.org ([198.145.29.99]:45526 "EHLO mail.kernel.org"
+        id S1726931AbgAHKXK (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 8 Jan 2020 05:23:10 -0500
+Received: from mail.kernel.org ([198.145.29.99]:49620 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726087AbgAHHpM (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Wed, 8 Jan 2020 02:45:12 -0500
+        id S1726144AbgAHKXK (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Wed, 8 Jan 2020 05:23:10 -0500
 Received: from localhost.localdomain (amontpellier-657-1-18-247.w109-210.abo.wanadoo.fr [109.210.65.247])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 6B70F20848;
-        Wed,  8 Jan 2020 07:45:10 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id E3E4320673;
+        Wed,  8 Jan 2020 10:23:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1578469511;
-        bh=1ojnhk2gxkn8EqZNcy6WFPVlkiRM+cxQwg33Way/meY=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tIpZr3bUQXhE2i7WmtZLEPa8JXuN2jJVTvq650t6tlgMFbJ0xfO+MhuZqOAn3QG1K
-         MmoffTYbbW3v6BhhwgS/V17/stsjB7N+5Ab9GpREa1qrRjq1rscGiTJdhfI7RPAXha
-         9oIgOc4yb+H1pqBsTZalDWSpWWc4YXTFkxqUoB/Y=
+        s=default; t=1578478989;
+        bh=HBYcND0O4F0mOlf8KYE+tblLbrHUEjoYsw3oZGnSYLA=;
+        h=From:To:Cc:Subject:Date:From;
+        b=xWIWiYVtdyv7IQUpsL5XsTkdH4ccda5pg5nuNCXr7LunYXfxmiDz3zSjCXeb7vtlq
+         g2+XzosY723SVuVnsPyLrEM6pKGsPxKG4D9PR6zVm40sK8wAiP/gjb0IZSE3eq8Apd
+         CPxHtalasx4v+b6n/dlG4S7dOJYObe8QNshsoJiA=
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-efi@vger.kernel.org
-Cc:     luto@kernel.org, x86@kernel.org, nivedita@alum.mit.edu,
-        Ard Biesheuvel <ardb@kernel.org>
-Subject: [PATCH 2/2] efi/libstub/x86: use mandatory 16-byte stack alignment in mixed mode
-Date:   Wed,  8 Jan 2020 08:45:02 +0100
-Message-Id: <20200108074502.10960-3-ardb@kernel.org>
+Cc:     x86@kernel.org, luto@kernel.org, linux-kernel@vger.kernel.org,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Arvind Sankar <nivedita@alum.mit.edu>
+Subject: [RFC PATCH 0/3] x86/boot: get rid of GOT entries and associated fixup code
+Date:   Wed,  8 Jan 2020 11:23:01 +0100
+Message-Id: <20200108102304.25800-1-ardb@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200108074502.10960-1-ardb@kernel.org>
-References: <20200108074502.10960-1-ardb@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-efi-owner@vger.kernel.org
@@ -40,125 +41,52 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Reduce the stack frame of the EFI stub's mixed mode thunk routine by
-8 bytes, by moving the GDT and return addresses to EBP and EBX, which
-we need to preserve anyway, since their top halves will be cleared by
-the call into 32-bit firmware code. Doing so results in the UEFI code
-being entered with a 16 byte aligned stack, as mandated by the UEFI
-spec, fixing the last occurrence in the 64-bit kernel where we violate
-this requirement.
+Building position independent code using GCC by default results in references
+to symbols with external linkage to be resolved via GOT entries, which
+carry the absolute addresses of the symbols, and thus need to be corrected
+if the load time address of the executable != the link time address.
 
-Also, move the saved GDT from a global variable to an unused part of the
-stack frame, and touch up some other parts of the code.
+For fully linked binaries, such GOT indirected references are completely
+useless, and actually make the startup code more complicated than necessary,
+since these corrections may need to be applied more than once. In fact, we
+have been very careful to avoid such references in the EFI stub code, since
+it would require yet another [earlier] pass of GOT fixups which we currently
+don't implement.
 
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
----
- arch/x86/boot/compressed/efi_thunk_64.S | 46 ++++++--------------
- 1 file changed, 13 insertions(+), 33 deletions(-)
+Older GCCs were quirky when it came to overriding this behavior using symbol
+visibility, but now that we have increased the minimum GCC version to 4.6,
+we can actually start setting the symbol visibility to 'hidden' globally for
+all symbol references in the decompressor, getting rid of the GOT entirely.
+This means we can get rid of the GOT fixup code right away, and we can start
+using ordinary external symbol references in the EFI stub without running the
+risk of boot regressions.
 
-diff --git a/arch/x86/boot/compressed/efi_thunk_64.S b/arch/x86/boot/compressed/efi_thunk_64.S
-index d040ff5458e5..8fb7f6799c52 100644
---- a/arch/x86/boot/compressed/efi_thunk_64.S
-+++ b/arch/x86/boot/compressed/efi_thunk_64.S
-@@ -27,12 +27,9 @@ SYM_FUNC_START(__efi64_thunk)
- 	push	%rbp
- 	push	%rbx
- 
--	subq	$8, %rsp
--	leaq	1f(%rip), %rax
--	movl	%eax, 4(%rsp)
--	leaq	efi_gdt64(%rip), %rax
--	movl	%eax, (%rsp)
--	movl	%eax, 2(%rax)		/* Fixup the gdt base address */
-+	leaq	1f(%rip), %rbp
-+	leaq	efi_gdt64(%rip), %rbx
-+	movl	%ebx, 2(%rbx)		/* Fixup the gdt base address */
- 
- 	movl	%ds, %eax
- 	push	%rax
-@@ -48,12 +45,10 @@ SYM_FUNC_START(__efi64_thunk)
- 	movl	%esi, 0x0(%rsp)
- 	movl	%edx, 0x4(%rsp)
- 	movl	%ecx, 0x8(%rsp)
--	movq	%r8, %rsi
--	movl	%esi, 0xc(%rsp)
--	movq	%r9, %rsi
--	movl	%esi,  0x10(%rsp)
-+	movl	%r8d, 0xc(%rsp)
-+	movl	%r9d, 0x10(%rsp)
- 
--	sgdt	save_gdt(%rip)
-+	sgdt	0x14(%rsp)
- 
- 	/*
- 	 * Switch to gdt with 32-bit segments. This is the firmware GDT
-@@ -68,11 +63,10 @@ SYM_FUNC_START(__efi64_thunk)
- 	pushq	%rax
- 	lretq
- 
--1:	addq	$32, %rsp
-+1:	lgdt	0x14(%rsp)
-+	addq	$32, %rsp
- 	movq	%rdi, %rax
- 
--	lgdt	save_gdt(%rip)
--
- 	pop	%rbx
- 	movl	%ebx, %ss
- 	pop	%rbx
-@@ -83,15 +77,9 @@ SYM_FUNC_START(__efi64_thunk)
- 	/*
- 	 * Convert 32-bit status code into 64-bit.
- 	 */
--	test	%rax, %rax
--	jz	1f
--	movl	%eax, %ecx
--	andl	$0x0fffffff, %ecx
--	andl	$0xf0000000, %eax
--	shl	$32, %rax
--	or	%rcx, %rax
--1:
--	addq	$8, %rsp
-+	roll	$1, %eax
-+	rorq	$1, %rax
-+
- 	pop	%rbx
- 	pop	%rbp
- 	ret
-@@ -135,9 +123,7 @@ SYM_FUNC_START_LOCAL(efi_enter32)
- 	 */
- 	cli
- 
--	movl	56(%esp), %eax
--	movl	%eax, 2(%eax)
--	lgdtl	(%eax)
-+	lgdtl	(%ebx)
- 
- 	movl	%cr4, %eax
- 	btsl	$(X86_CR4_PAE_BIT), %eax
-@@ -154,9 +140,8 @@ SYM_FUNC_START_LOCAL(efi_enter32)
- 	xorl	%eax, %eax
- 	lldt	%ax
- 
--	movl	60(%esp), %eax
- 	pushl	$__KERNEL_CS
--	pushl	%eax
-+	pushl	%ebp
- 
- 	/* Enable paging */
- 	movl	%cr0, %eax
-@@ -172,11 +157,6 @@ SYM_DATA_START(efi32_boot_gdt)
- 	.quad	0
- SYM_DATA_END(efi32_boot_gdt)
- 
--SYM_DATA_START_LOCAL(save_gdt)
--	.word	0
--	.quad	0
--SYM_DATA_END(save_gdt)
--
- SYM_DATA_START(efi_gdt64)
- 	.word	efi_gdt64_end - efi_gdt64
- 	.long	0			/* Filled out by user */
+CC'ing Linus and Maarten, who were involved in diagnosing an issue related
+to GOT entries emitted from the EFI stub ~5 years ago. [0] [1]
+
+Many thanks to Arvind for the suggestions and the help in testing these
+changes. Tested on GCC 4.6 + binutils 2.24 (Ubuntu 14.04), and GCC 8 +
+binutils 2.31 (Debian Buster)
+
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Arvind Sankar <nivedita@alum.mit.edu>
+
+[0] https://lore.kernel.org/lkml/5405E186.2080406@canonical.com/
+[1] https://lore.kernel.org/lkml/CA+55aFxW9PmtjOf9nUQwpU8swsFqJOz8whZXcONo+XFmkSwezg@mail.gmail.com/
+
+Ard Biesheuvel (3):
+  x86/boot/compressed: move .got.plt entries out of the .got section
+  x86/boot/compressed: force hidden visibility for all symbol references
+  x86/boot/compressed: get rid of GOT fixup code
+
+ arch/x86/boot/compressed/Makefile      |  1 +
+ arch/x86/boot/compressed/head_32.S     | 22 ++------
+ arch/x86/boot/compressed/head_64.S     | 57 --------------------
+ arch/x86/boot/compressed/hidden.h      | 19 +++++++
+ arch/x86/boot/compressed/vmlinux.lds.S | 16 ++++--
+ 5 files changed, 36 insertions(+), 79 deletions(-)
+ create mode 100644 arch/x86/boot/compressed/hidden.h
+
 -- 
 2.20.1
-
