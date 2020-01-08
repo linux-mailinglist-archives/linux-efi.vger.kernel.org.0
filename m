@@ -2,87 +2,160 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7006D134867
-	for <lists+linux-efi@lfdr.de>; Wed,  8 Jan 2020 17:48:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A159134F27
+	for <lists+linux-efi@lfdr.de>; Wed,  8 Jan 2020 22:53:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728767AbgAHQsK (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 8 Jan 2020 11:48:10 -0500
-Received: from mail-wr1-f67.google.com ([209.85.221.67]:33900 "EHLO
-        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727606AbgAHQsK (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 8 Jan 2020 11:48:10 -0500
-Received: by mail-wr1-f67.google.com with SMTP id t2so4173035wrr.1
-        for <linux-efi@vger.kernel.org>; Wed, 08 Jan 2020 08:48:09 -0800 (PST)
+        id S1726930AbgAHVxw (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 8 Jan 2020 16:53:52 -0500
+Received: from mail-ot1-f66.google.com ([209.85.210.66]:39977 "EHLO
+        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726179AbgAHVxw (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 8 Jan 2020 16:53:52 -0500
+Received: by mail-ot1-f66.google.com with SMTP id w21so5141186otj.7
+        for <linux-efi@vger.kernel.org>; Wed, 08 Jan 2020 13:53:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=oThwVOSRghlMQrtGPJX+ACmEzpakZ7+aStYbwUOl/sQ=;
-        b=KJ8VyuDbKf/CPrDOdmCtRVxpPCX/7Bw2aLcUSgFdoCjxTyv2qSBWu4ufbzJFir/k3d
-         y3fNIDlz6I1cgxg6GcWbamUyAFo5XarJYOMqCqgWxWGFC8/ozip7Kdd2Dz2GBbR1y7Gd
-         w6IGiT/m172BO9/zrnfDaW2THDf8WhTBmx0Vh4F3WFBce1UUSebyzVN38MIhOG6d3O6M
-         dUrrq7OlsDBXdhZ5DQWdUdQ6rpHgvpWe6kvJM+kKRK6oA5Hlxb0SUULePRnvyIflSrAY
-         YacENCL515yBuZFJKvrQ8jMHHERmGLu5nuWHeBhd4w70PcOJ3grnKyX8gfc9V4a7/ZLk
-         DLEw==
+        bh=uhzjXDFfjYHRbMTJJFHpwq518k3jjZ5F1Nc5S+y6bT8=;
+        b=q78bn8qpIIpykvt7xIGtljLHImgPRgl+m0WhNnnVnT5a8wJXcakJViLzNxt3OdA55Z
+         hxiX4Ahmzg4E+dp2k3slw/wbUZuME4N5ryZHKeectR1RrX03U9+7zC266AUvIgZfeRYi
+         cHEcRPrhw+JhfpSKM1lZhZMBdba392ylfiqou221Sy5U4GKMxf5KAKQHbuRlqtQExx8K
+         hMCqPjcCqPlsZYDn2qwgFuC1BjQcwmpigt4mpha6hQZQmVgsoPzNb4TuxMoJoUYnyss9
+         8Xp128m5gzg8Dvibo3RPcBaFil8ise+FaupXZgls3QcWv/4KT0/MwmLn2VFfvbsH8hMU
+         Ddiw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=oThwVOSRghlMQrtGPJX+ACmEzpakZ7+aStYbwUOl/sQ=;
-        b=I3tcAkBbPlAvR1A3zIZcc8WXpdR+bGCGROh7DxGD9I0GHn4LLcJCmTOHKgSSFMErMQ
-         /odGFiyFlGHcm0QFsDZuq0FdAkxcNBoa/4Rq2BKn0RF7qeRPUxDVXWvpP3l5/WZu+LYI
-         1148dSv/2G4sr1kHpfpR4XbEQThOc+6El7CNB6qGLNVCd0QJogI/bc4Ooa51mdYjgxTG
-         1mJ5Bs4Y1873eZVqGHjmwiag48abJr/iAj7Zhz9qgLW4hJEed8upIvtWIlXq9P7a0cmz
-         E6vIMD8eIYRFAmiDPtE2bjcuLEind7+D8Xg8no6PCcIOEDDWuJ8xsXrZ0iMOOVre4pZz
-         u84w==
-X-Gm-Message-State: APjAAAWCcL6/o6yU8hy2qWCa0WH964G53S7gHRoLbd0bh95vS6CxuqtX
-        lR5UZrQ+uD01jZMXPvrxPdrfZRE9eCAXqNGatkAd8w==
-X-Google-Smtp-Source: APXvYqxld4/J+48jZWMZsKYas2V8hJ6QfYzgpwPJfWXcagD63FIKHzy4jZc/YPSKMusV0C4z/jLQo+8YZf5zhAIJeoE=
-X-Received: by 2002:a5d:43c7:: with SMTP id v7mr5359077wrr.32.1578502088604;
- Wed, 08 Jan 2020 08:48:08 -0800 (PST)
+        bh=uhzjXDFfjYHRbMTJJFHpwq518k3jjZ5F1Nc5S+y6bT8=;
+        b=OReWGdk9z19BOgXLeoY8UTnxGyNIR0lZU+C3g04DTL5RU2KVePyushHibEJHZslCq/
+         xGAIrnNwOjwL0qM9qOYR058yO7y53icMblYcLwNJkE9FI5YuKOcnZ97ny85hC/LjqiqH
+         nOrhUAmLMeiu+f3bJEgT8r1qs4z9ECZd7sH9NYHhiPVC1NKxjvP7lRsT7HERsE9fSdC8
+         gzYj/wRwOwYpr3K8g3LGS0Uyzb9JlTrIPzSOxoHjsOW5NQtQtRXPH/av8VKH4t7jz3SU
+         72rj/8ijmLSM5FnXDgyFsTV++CR10jSkqPLW2acXI1NBjAl+5hUcN/hgxYZR0c0JEP71
+         ghMQ==
+X-Gm-Message-State: APjAAAXfHJCaGvKpAY+G5kqSGoWLqduZIWpjRjJz89O8kr6ZHWOWwgFd
+        15VDLLF4gxv1sezEdYOaSkfmPlKTNvQ9rKCHPzBhgQ==
+X-Google-Smtp-Source: APXvYqxgJC+lj68M6vVZvqY28cs6rrDu3iNLGPXMI+DfmkJ6DbcrtgYrcHSP8WXBfLzw+SF0oAkfJncisjw/9a+k+mU=
+X-Received: by 2002:a9d:7852:: with SMTP id c18mr5583387otm.247.1578520431507;
+ Wed, 08 Jan 2020 13:53:51 -0800 (PST)
 MIME-Version: 1.0
-References: <20200108102304.25800-1-ardb@kernel.org> <20200108102304.25800-3-ardb@kernel.org>
- <20200108154031.GA2512498@rani.riverdale.lan> <CAKv+Gu8AOukQL3qokt+Rz3PKBRWWnSULGUr=+yxg_HPM8-uodw@mail.gmail.com>
- <20200108155700.GA2602122@rani.riverdale.lan>
-In-Reply-To: <20200108155700.GA2602122@rani.riverdale.lan>
-From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Date:   Wed, 8 Jan 2020 17:47:57 +0100
-Message-ID: <CAKv+Gu_EVuX1nktX6Ueyot7XFgtq+AG9SqRHvN91r9oG5GL_wQ@mail.gmail.com>
-Subject: Re: [RFC PATCH 2/3] x86/boot/compressed: force hidden visibility for
- all symbol references
-To:     Arvind Sankar <nivedita@alum.mit.edu>
-Cc:     Ard Biesheuvel <ardb@kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        "the arch/x86 maintainers" <x86@kernel.org>,
-        Andy Lutomirski <luto@kernel.org>,
+References: <157835762222.1456824.290100196815539830.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <157835764298.1456824.224151767362114611.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <20200107040415.GA19309@dhcp-128-65.nay.redhat.com> <CAPcyv4g_W4PoH6Wfj_SDGzGLpNLwxtoeGP7uwpzVMS4JWbXSTg@mail.gmail.com>
+ <20200107051919.GC19080@dhcp-128-65.nay.redhat.com> <CAKv+Gu-djB=3zTxjEbyjJXXpw=8NE6YA82hMW-JYyAQ2TSywtQ@mail.gmail.com>
+In-Reply-To: <CAKv+Gu-djB=3zTxjEbyjJXXpw=8NE6YA82hMW-JYyAQ2TSywtQ@mail.gmail.com>
+From:   Dan Williams <dan.j.williams@intel.com>
+Date:   Wed, 8 Jan 2020 13:53:40 -0800
+Message-ID: <CAPcyv4ixPchDOet=ztRQxLMgnJf9DauSFgBs3+TEoaua7R1s_Q@mail.gmail.com>
+Subject: Re: [PATCH v4 4/4] efi: Fix handling of multiple efi_fake_mem= entries
+To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Cc:     Dave Young <dyoung@redhat.com>, Ingo Molnar <mingo@redhat.com>,
+        Taku Izumi <izumi.taku@jp.fujitsu.com>,
+        Michael Weiser <michael@weiser.dinsnail.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@kernel.org>,
+        linux-efi <linux-efi@vger.kernel.org>, X86 ML <x86@kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>
+        Kexec Mailing List <kexec@lists.infradead.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, 8 Jan 2020 at 16:57, Arvind Sankar <nivedita@alum.mit.edu> wrote:
+On Tue, Jan 7, 2020 at 9:52 AM Ard Biesheuvel <ard.biesheuvel@linaro.org> wrote:
 >
-> On Wed, Jan 08, 2020 at 04:47:51PM +0100, Ard Biesheuvel wrote:
-> > The EFI stub already sets the hidden visibility attribute for the few
-> > external symbol references that it contains, so it is not needed in
-> > the context of this series.
+> On Tue, 7 Jan 2020 at 06:19, Dave Young <dyoung@redhat.com> wrote:
 > >
-> > In the future, we can revisit this if we want to get rid of the
-> > various __pure getter functions, but that requires thorough testing on
-> > other architectures and toolchains, so I'd prefer to leave that for
-> > later.
+> > On 01/06/20 at 08:16pm, Dan Williams wrote:
+> > > On Mon, Jan 6, 2020 at 8:04 PM Dave Young <dyoung@redhat.com> wrote:
+> > > >
+> > > > On 01/06/20 at 04:40pm, Dan Williams wrote:
+> > > > > Dave noticed that when specifying multiple efi_fake_mem= entries only
+> > > > > the last entry was successfully being reflected in the efi memory map.
+> > > > > This is due to the fact that the efi_memmap_insert() is being called
+> > > > > multiple times, but on successive invocations the insertion should be
+> > > > > applied to the last new memmap rather than the original map at
+> > > > > efi_fake_memmap() entry.
+> > > > >
+> > > > > Rework efi_fake_memmap() to install the new memory map after each
+> > > > > efi_fake_mem= entry is parsed.
+> > > > >
+> > > > > This also fixes an issue in efi_fake_memmap() that caused it to litter
+> > > > > emtpy entries into the end of the efi memory map. An empty entry causes
+> > > > > efi_memmap_insert() to attempt more memmap splits / copies than
+> > > > > efi_memmap_split_count() accounted for when sizing the new map. When
+> > > > > that happens efi_memmap_insert() may overrun its allocation, and if you
+> > > > > are lucky will spill over to an unmapped page leading to crash
+> > > > > signature like the following rather than silent corruption:
+> > > > >
+> > > > >     BUG: unable to handle page fault for address: ffffffffff281000
+> > > > >     [..]
+> > > > >     RIP: 0010:efi_memmap_insert+0x11d/0x191
+> > > > >     [..]
+> > > > >     Call Trace:
+> > > > >      ? bgrt_init+0xbe/0xbe
+> > > > >      ? efi_arch_mem_reserve+0x1cb/0x228
+> > > > >      ? acpi_parse_bgrt+0xa/0xd
+> > > > >      ? acpi_table_parse+0x86/0xb8
+> > > > >      ? acpi_boot_init+0x494/0x4e3
+> > > > >      ? acpi_parse_x2apic+0x87/0x87
+> > > > >      ? setup_acpi_sci+0xa2/0xa2
+> > > > >      ? setup_arch+0x8db/0x9e1
+> > > > >      ? start_kernel+0x6a/0x547
+> > > > >      ? secondary_startup_64+0xb6/0xc0
+> > > > >
+> > > > > Commit af1648984828 "x86/efi: Update e820 with reserved EFI boot
+> > > > > services data to fix kexec breakage" is listed in Fixes: since it
+> > > > > introduces more occurrences where efi_memmap_insert() is invoked after
+> > > > > an efi_fake_mem= configuration has been parsed. Previously the side
+> > > > > effects of vestigial empty entries were benign, but with commit
+> > > > > af1648984828 that follow-on efi_memmap_insert() invocation triggers
+> > > > > efi_memmap_insert() overruns.
+> > > > >
+> > > > > Fixes: 0f96a99dab36 ("efi: Add 'efi_fake_mem' boot option")
+> > > > > Fixes: af1648984828 ("x86/efi: Update e820 with reserved EFI boot services...")
+> > > >
+> > > > A nitpick for the Fixes flags, as I replied in the thread below:
+> > > > https://lore.kernel.org/linux-efi/CAPcyv4jLxqPaB22Ao9oV31Gm=b0+Phty+Uz33Snex4QchOUb0Q@mail.gmail.com/T/#m2bb2dd00f7715c9c19ccc48efef0fcd5fdb626e7
+> > > >
+> > > > I reproduced two other panics without the patches applied, so this issue
+> > > > is not caused by either of the commits, maybe just drop the Fixes.
+> > >
+> > > Just the "Fixes: af1648984828", right? No objection from me. I'll let
+> > > Ingo say if he needs a resend for that.
+> > >
+> > > The "Fixes: 0f96a99dab36" is valid because the original implementation
+> > > failed to handle the multiple argument case from the beginning.
+> >
+> > Agreed, thanks!
+> >
 >
-> We don't need it for the stub right now, but then this bit in the cover
-> letter is not yet true, we still need to be careful about libstub code.
->
-> > ...we can start using ordinary external symbol references in the EFI
-> > stub without running the risk of boot regressions.
+> I'll queue this but without the fixes tags. The -stable maintainers
+> are far too trigger happy IMHO, and this really needs careful review
+> before being backported. efi_fake_mem is a debug feature anyway, so I
+> don't see an urgent need to get this fixed retroactively in older
+> kernels.
 
-Spurious GOT entries will now be caught by the ASSERT() in the linker
-script and fail the build instead of causing hard to debug boot
-regressions, so it is not entirely untrue either. But I take your
-point.
+I'm fine to drop the fixes tags.
+
+However, I do want to point out my driving motive for digging in on
+efi_fake_mem=nn@ss:0x40000, is that it is a better interface for
+diverting memory ranges to device-dax than the current standard bearer
+memmap=nn!ss. The main benefit is that the kernel only considers the
+attribute when it is applied to EFI_CONVENTIONAL_MEMORY. This fixes a
+long standing unsolvable issue of people picking busted memmap=nn!ss
+settings that clobber platform memory ranges, or vector off into
+nothing.
+
+So yes, efi_fake_mem is a debug feature, but if the popularity of
+memmap=nn!ss is any clue I expect efi_fake_mem=nn@ss:0x40000 will be a
+useful tool going forward for late enabling, or repairing platform
+"soft reservation" declarations.
+
+I'll respin the series with those tags dropped and add the comment you
+recommended about the cases when efi_memmap_free() is expected to be a
+nop. Holler if there's anything else, but that's all I had on my list
+to fix up.
