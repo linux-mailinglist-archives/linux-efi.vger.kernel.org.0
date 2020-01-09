@@ -2,170 +2,155 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 72D2E1355E1
-	for <lists+linux-efi@lfdr.de>; Thu,  9 Jan 2020 10:36:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D8E81355E6
+	for <lists+linux-efi@lfdr.de>; Thu,  9 Jan 2020 10:37:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729642AbgAIJgG (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 9 Jan 2020 04:36:06 -0500
-Received: from mail-wr1-f67.google.com ([209.85.221.67]:35850 "EHLO
-        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729640AbgAIJgG (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 9 Jan 2020 04:36:06 -0500
-Received: by mail-wr1-f67.google.com with SMTP id z3so6628806wru.3
-        for <linux-efi@vger.kernel.org>; Thu, 09 Jan 2020 01:36:04 -0800 (PST)
+        id S1729678AbgAIJht (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 9 Jan 2020 04:37:49 -0500
+Received: from mail-wm1-f68.google.com ([209.85.128.68]:33061 "EHLO
+        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729661AbgAIJht (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 9 Jan 2020 04:37:49 -0500
+Received: by mail-wm1-f68.google.com with SMTP id d139so1608095wmd.0
+        for <linux-efi@vger.kernel.org>; Thu, 09 Jan 2020 01:37:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=CIc6Iu6FY3kQRSrHRSdV1kpKIbP+jBfUPikfJIi636g=;
-        b=GSTyUgzlPbACkH+mluJA7fEz/H2vqhWQOda9lk2E6T6LqFWlNiqdJHilTmH0IiOzT8
-         VOrbwmlUPY1ZUNoaqfxjtoHV5sAeY4bmZU6fqYRoo4/VRPA7xJTRhYltzYYHCIYyE9j/
-         JzQ/8hnHIWlyr7ApQ1mEVijYpa0nY76wkm3B0dfPtJAELcNkqVAQI2bMPu9wV5d6iKVA
-         jZQdh5a4Wtm2YH1Eft1s3/uhDJVZBbjNQUlhxSP1KrSMS4JokKwJMMzNUV7W79FaKnjc
-         kVftJ/dhYV8pwGX8SplEYRrxsB/CDfPKNIm/V/Z2zsKQw9mT+YgyEvzWXONmtwmf1nyJ
-         negA==
+        bh=lNujAYdpWiwDXEQQdLN1Vurqjh+2ZpMtBUoUWSeq3n8=;
+        b=YlcXAhzDj0o2GO1+jPXuS4BeonCzniOnF+er1530sz+dIzmdeWuplcTmqT5TsBBJKH
+         s6MlnibNMMoty/ci7vK2oE7hZAPEdjMcXKj98KxatSz61vF191e6KOY4YUlYpeWN8Hqu
+         ITvi6p+2EU6L8OJsUAzomiGcOMYaLJkvLWu0RzKmJPq1SyuOm7PT1Ab3i0R2NHUvu3Ox
+         xHJi4hP7jHUg+rIpey2jwznyfgdlj8jRbxKEiwxhWCJSaehLyRq/iwiwHq+Zo5zmoY6V
+         Pet7pud5+ejce9NGoC1UjFg5nsLcZl8cVo/1rqwMseNv0ZkoyYpfk8h5RXLGC5NvfkV1
+         ydnA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=CIc6Iu6FY3kQRSrHRSdV1kpKIbP+jBfUPikfJIi636g=;
-        b=TU+BjJYbpRSTNemgLxkE/AgZtVnEcy5idNs/SWXlt+LY+eZQ0JT/MvEvz37AjfEgrs
-         XmUw3y3JwB8iNBBvDwRlls/m1b/x8vYawYp+u3PDjSGSnUhmvbsxuOULbT25wkH2coJQ
-         gQNSSLeSuV0st09fZ53lGGcI65+k++tu0T7splzA6LERcOHgSP/LXG0UZluIIvi4sDno
-         +jVwYZOjKRIbVdrK97ua/C+SJzM/U/wGwzdSLhAvl9JuIj6Ua92z7anxJg/C9QrYwnWH
-         oiHDQ3AqjYXUlKGIzG8qjq6rwthu+pjYSeCjaUHwx52D8Btzh2WbbMFQkTBD3+prZcW1
-         EyOA==
-X-Gm-Message-State: APjAAAW3Jvo2gy6KoyVl9nCJa/VdtEOAqFejLdd12Nf0pjXQZCvCMFzv
-        LlJQjHLm2epkKZ+dbnjuUi+W4c6X2xKkQQqbpC20UA==
-X-Google-Smtp-Source: APXvYqwzpmoVz3XcxijGfOaz1ACHmsnjXCEqLojhNnSJC/ywgDelLfgn8bjgYuyLRffW+lo9jFhu41/Zy27UzteA8ZA=
-X-Received: by 2002:a5d:46c1:: with SMTP id g1mr9631274wrs.200.1578562563449;
- Thu, 09 Jan 2020 01:36:03 -0800 (PST)
+        bh=lNujAYdpWiwDXEQQdLN1Vurqjh+2ZpMtBUoUWSeq3n8=;
+        b=ZBQsJo61WlwpIW4L3xiMqwJ3f69DTIunJU/T21FW+owB0iLsemOxxq5X9NAg5rdo7g
+         YtaLSBUt6g5kLb2UVcL52SH7hPGzYuBnFl4DoXjtrYVNJmUorUMdaXwTPml3EtB4Kxmd
+         qP+XHyr2GGjD41w444uD0MBkAeFP1wlYCvcUQFI58+0hHQQSrDKDaDVwf/X7fNfz1bTt
+         iaqYBju+BD8GZdfayZkaAGBPq1PckOQHjhVGAUiTUPqPEC5jdaW86ITbUsrrzJseKW62
+         MJYRXRgfKNbtc0Mzp70wFmNwZ3gYE2sLKLlpoYuOj8yY9kxtMT4xHZDBldo0FqBS8IrB
+         puXg==
+X-Gm-Message-State: APjAAAXyAEXcZ75UxN83ijB8DbU3xJNx+krTzewtmuFrIOuhjE888n6w
+        jE/+L/6zLv2NKOyLnG5pEIziuVfuEi985F+FBeK/wA==
+X-Google-Smtp-Source: APXvYqwWGMHGzLMerqILiXKue/DvM+d1qJguUX2aVgIzTL/755mpvPEV7Kw2F5J/dWiy+YIiyXxUYYYl02ks2oxx3Ks=
+X-Received: by 2002:a1c:7205:: with SMTP id n5mr3802279wmc.9.1578562666884;
+ Thu, 09 Jan 2020 01:37:46 -0800 (PST)
 MIME-Version: 1.0
-References: <157835762222.1456824.290100196815539830.stgit@dwillia2-desk3.amr.corp.intel.com>
- <157835764298.1456824.224151767362114611.stgit@dwillia2-desk3.amr.corp.intel.com>
- <20200107040415.GA19309@dhcp-128-65.nay.redhat.com> <CAPcyv4g_W4PoH6Wfj_SDGzGLpNLwxtoeGP7uwpzVMS4JWbXSTg@mail.gmail.com>
- <20200107051919.GC19080@dhcp-128-65.nay.redhat.com> <CAKv+Gu-djB=3zTxjEbyjJXXpw=8NE6YA82hMW-JYyAQ2TSywtQ@mail.gmail.com>
- <CAPcyv4ixPchDOet=ztRQxLMgnJf9DauSFgBs3+TEoaua7R1s_Q@mail.gmail.com>
-In-Reply-To: <CAPcyv4ixPchDOet=ztRQxLMgnJf9DauSFgBs3+TEoaua7R1s_Q@mail.gmail.com>
+References: <20200103113953.9571-1-ardb@kernel.org>
+In-Reply-To: <20200103113953.9571-1-ardb@kernel.org>
 From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Date:   Thu, 9 Jan 2020 10:35:52 +0100
-Message-ID: <CAKv+Gu8W_EyMNAtDG6zK+dKRcaUEzeJ3fmPAiASdqatD3ewQJQ@mail.gmail.com>
-Subject: Re: [PATCH v4 4/4] efi: Fix handling of multiple efi_fake_mem= entries
-To:     Dan Williams <dan.j.williams@intel.com>
-Cc:     Dave Young <dyoung@redhat.com>, Ingo Molnar <mingo@redhat.com>,
-        Taku Izumi <izumi.taku@jp.fujitsu.com>,
-        Michael Weiser <michael@weiser.dinsnail.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>, X86 ML <x86@kernel.org>,
+Date:   Thu, 9 Jan 2020 10:37:36 +0100
+Message-ID: <CAKv+Gu8pzDSs6G5k9JfX77NB4q2kerxSuprnzFzeGBPd2kPd5g@mail.gmail.com>
+Subject: Re: [GIT PULL 00/20] More EFI updates for v5.6
+To:     Ard Biesheuvel <ardb@kernel.org>, Ingo Molnar <mingo@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>
+Cc:     linux-efi <linux-efi@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Kexec Mailing List <kexec@lists.infradead.org>
+        Andy Lutomirski <luto@kernel.org>,
+        Arvind Sankar <nivedita@alum.mit.edu>,
+        Matthew Garrett <mjg59@google.com>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, 8 Jan 2020 at 22:53, Dan Williams <dan.j.williams@intel.com> wrote:
+On Fri, 3 Jan 2020 at 12:40, Ard Biesheuvel <ardb@kernel.org> wrote:
 >
-> On Tue, Jan 7, 2020 at 9:52 AM Ard Biesheuvel <ard.biesheuvel@linaro.org> wrote:
-> >
-> > On Tue, 7 Jan 2020 at 06:19, Dave Young <dyoung@redhat.com> wrote:
-> > >
-> > > On 01/06/20 at 08:16pm, Dan Williams wrote:
-> > > > On Mon, Jan 6, 2020 at 8:04 PM Dave Young <dyoung@redhat.com> wrote:
-> > > > >
-> > > > > On 01/06/20 at 04:40pm, Dan Williams wrote:
-> > > > > > Dave noticed that when specifying multiple efi_fake_mem= entries only
-> > > > > > the last entry was successfully being reflected in the efi memory map.
-> > > > > > This is due to the fact that the efi_memmap_insert() is being called
-> > > > > > multiple times, but on successive invocations the insertion should be
-> > > > > > applied to the last new memmap rather than the original map at
-> > > > > > efi_fake_memmap() entry.
-> > > > > >
-> > > > > > Rework efi_fake_memmap() to install the new memory map after each
-> > > > > > efi_fake_mem= entry is parsed.
-> > > > > >
-> > > > > > This also fixes an issue in efi_fake_memmap() that caused it to litter
-> > > > > > emtpy entries into the end of the efi memory map. An empty entry causes
-> > > > > > efi_memmap_insert() to attempt more memmap splits / copies than
-> > > > > > efi_memmap_split_count() accounted for when sizing the new map. When
-> > > > > > that happens efi_memmap_insert() may overrun its allocation, and if you
-> > > > > > are lucky will spill over to an unmapped page leading to crash
-> > > > > > signature like the following rather than silent corruption:
-> > > > > >
-> > > > > >     BUG: unable to handle page fault for address: ffffffffff281000
-> > > > > >     [..]
-> > > > > >     RIP: 0010:efi_memmap_insert+0x11d/0x191
-> > > > > >     [..]
-> > > > > >     Call Trace:
-> > > > > >      ? bgrt_init+0xbe/0xbe
-> > > > > >      ? efi_arch_mem_reserve+0x1cb/0x228
-> > > > > >      ? acpi_parse_bgrt+0xa/0xd
-> > > > > >      ? acpi_table_parse+0x86/0xb8
-> > > > > >      ? acpi_boot_init+0x494/0x4e3
-> > > > > >      ? acpi_parse_x2apic+0x87/0x87
-> > > > > >      ? setup_acpi_sci+0xa2/0xa2
-> > > > > >      ? setup_arch+0x8db/0x9e1
-> > > > > >      ? start_kernel+0x6a/0x547
-> > > > > >      ? secondary_startup_64+0xb6/0xc0
-> > > > > >
-> > > > > > Commit af1648984828 "x86/efi: Update e820 with reserved EFI boot
-> > > > > > services data to fix kexec breakage" is listed in Fixes: since it
-> > > > > > introduces more occurrences where efi_memmap_insert() is invoked after
-> > > > > > an efi_fake_mem= configuration has been parsed. Previously the side
-> > > > > > effects of vestigial empty entries were benign, but with commit
-> > > > > > af1648984828 that follow-on efi_memmap_insert() invocation triggers
-> > > > > > efi_memmap_insert() overruns.
-> > > > > >
-> > > > > > Fixes: 0f96a99dab36 ("efi: Add 'efi_fake_mem' boot option")
-> > > > > > Fixes: af1648984828 ("x86/efi: Update e820 with reserved EFI boot services...")
-> > > > >
-> > > > > A nitpick for the Fixes flags, as I replied in the thread below:
-> > > > > https://lore.kernel.org/linux-efi/CAPcyv4jLxqPaB22Ao9oV31Gm=b0+Phty+Uz33Snex4QchOUb0Q@mail.gmail.com/T/#m2bb2dd00f7715c9c19ccc48efef0fcd5fdb626e7
-> > > > >
-> > > > > I reproduced two other panics without the patches applied, so this issue
-> > > > > is not caused by either of the commits, maybe just drop the Fixes.
-> > > >
-> > > > Just the "Fixes: af1648984828", right? No objection from me. I'll let
-> > > > Ingo say if he needs a resend for that.
-> > > >
-> > > > The "Fixes: 0f96a99dab36" is valid because the original implementation
-> > > > failed to handle the multiple argument case from the beginning.
-> > >
-> > > Agreed, thanks!
-> > >
-> >
-> > I'll queue this but without the fixes tags. The -stable maintainers
-> > are far too trigger happy IMHO, and this really needs careful review
-> > before being backported. efi_fake_mem is a debug feature anyway, so I
-> > don't see an urgent need to get this fixed retroactively in older
-> > kernels.
+> Ingo, Thomas,
 >
-> I'm fine to drop the fixes tags.
+> This is the second batch of EFI updates for v5.6. Two things are still
+> under discussion, so I'll probably have a few more changes for this
+> cycle in a week or so.
 >
-> However, I do want to point out my driving motive for digging in on
-> efi_fake_mem=nn@ss:0x40000, is that it is a better interface for
-> diverting memory ranges to device-dax than the current standard bearer
-> memmap=nn!ss. The main benefit is that the kernel only considers the
-> attribute when it is applied to EFI_CONVENTIONAL_MEMORY. This fixes a
-> long standing unsolvable issue of people picking busted memmap=nn!ss
-> settings that clobber platform memory ranges, or vector off into
-> nothing.
+> The following changes since commit 0679715e714345d273c0e1eb78078535ffc4b2a1:
 >
-> So yes, efi_fake_mem is a debug feature, but if the popularity of
-> memmap=nn!ss is any clue I expect efi_fake_mem=nn@ss:0x40000 will be a
-> useful tool going forward for late enabling, or repairing platform
-> "soft reservation" declarations.
+>   efi/libstub/x86: Avoid globals to store context during mixed mode calls (2019-12-25 10:49:26 +0100)
+>
+> are available in the Git repository at:
+>
+>   git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git tags/efi-next
+>
+> for you to fetch changes up to d95e4feae5368a91775c4597a8f298ba84f31535:
+>
+>   efi/x86: avoid RWX mappings for all of DRAM (2020-01-03 11:46:15 +0100)
 >
 
-OK, good to know.
+Ingo, Thomas,
 
-> I'll respin the series with those tags dropped and add the comment you
-> recommended about the cases when efi_memmap_free() is expected to be a
-> nop. Holler if there's anything else, but that's all I had on my list
-> to fix up.
+I'll be submitting another PR later today or tomorrow that goes on top
+of these changes. Please let me know if you would like a v2 of this PR
+with the new content included, or rather keep them separate.
 
-If it's just for the comment, I can just slap that on, as I already
-queued the patches with the fixes tags dropped. Or respin, whichever
-you prefer (efi/next branch is not stable anyway)
+Thanks,
+Ard.
+
+
+
+> ----------------------------------------------------------------
+> Second batch of EFI updates for v5.6:
+> - Some followup fixes for the EFI stub changes that have been queued up
+>   already.
+> - Overhaul of the x86 EFI boot/runtime code, to peel off layers of pointer
+>   casting and type mangling via variadic macros and asm wrappers that made
+>   the code fragile and ugly.
+> - Increase robustness for mixed mode code, by using argmaps to annotate and
+>   translate function prototypes that are not mixed mode safe. (Arvind)
+> - Add the ability to disable DMA at the root port level in the EFI stub, to
+>   avoid booting into the kernel proper with IOMMUs in pass through and DMA
+>   enabled (suggested by Matthew)
+> - Get rid of RWX mappings in the EFI memory map, where possible.
+>
+> ----------------------------------------------------------------
+> Ard Biesheuvel (17):
+>       efi/libstub: fix boot argument handling in mixed mode entry code
+>       efi/libstub/x86: force 'hidden' visibility for extern declarations
+>       efi/x86: re-disable RT services for 32-bit kernels running on 64-bit EFI
+>       efi/x86: map the entire EFI vendor string before copying it
+>       efi/x86: avoid redundant cast of EFI firmware service pointer
+>       efi/x86: split off some old memmap handling into separate routines
+>       efi/x86: split SetVirtualAddresMap() wrappers into 32 and 64 bit versions
+>       efi/x86: simplify i386 efi_call_phys() firmware call wrapper
+>       efi/x86: simplify 64-bit EFI firmware call wrapper
+>       efi/x86: simplify mixed mode call wrapper
+>       efi/x86: drop two near identical versions of efi_runtime_init()
+>       efi/x86: clean up efi_systab_init() routine for legibility
+>       efi/x86: don't panic or BUG() on non-critical error conditions
+>       efi/x86: remove unreachable code in kexec_enter_virtual_mode()
+>       x86/mm: fix NX bit clearing issue in kernel_map_pages_in_pgd
+>       efi/x86: don't map the entire kernel text RW for mixed mode
+>       efi/x86: avoid RWX mappings for all of DRAM
+>
+> Arvind Sankar (2):
+>       efi/x86: Check number of arguments to variadic functions
+>       efi/x86: Allow translating 64-bit arguments for mixed mode calls
+>
+> Matthew Garrett (1):
+>       efi: Allow disabling PCI busmastering on bridges during boot
+>
+>  Documentation/admin-guide/kernel-parameters.txt |   7 +-
+>  arch/x86/boot/compressed/eboot.c                |  18 +-
+>  arch/x86/boot/compressed/efi_thunk_64.S         |   4 +-
+>  arch/x86/boot/compressed/head_64.S              |  17 +-
+>  arch/x86/include/asm/efi.h                      | 169 ++++++++---
+>  arch/x86/mm/pageattr.c                          |   8 +-
+>  arch/x86/platform/efi/Makefile                  |   1 -
+>  arch/x86/platform/efi/efi.c                     | 354 ++++++++----------------
+>  arch/x86/platform/efi/efi_32.c                  |  22 +-
+>  arch/x86/platform/efi/efi_64.c                  | 157 +++++++----
+>  arch/x86/platform/efi/efi_stub_32.S             | 109 ++------
+>  arch/x86/platform/efi/efi_stub_64.S             |  43 +--
+>  arch/x86/platform/efi/efi_thunk_64.S            | 121 ++------
+>  arch/x86/platform/uv/bios_uv.c                  |   7 +-
+>  drivers/firmware/efi/Kconfig                    |  22 ++
+>  drivers/firmware/efi/libstub/Makefile           |   2 +-
+>  drivers/firmware/efi/libstub/efi-stub-helper.c  |  20 +-
+>  drivers/firmware/efi/libstub/pci.c              | 114 ++++++++
+>  include/linux/efi.h                             |  29 +-
+>  19 files changed, 597 insertions(+), 627 deletions(-)
+>  create mode 100644 drivers/firmware/efi/libstub/pci.c
