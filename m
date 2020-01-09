@@ -2,52 +2,52 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 27DE6135B71
-	for <lists+linux-efi@lfdr.de>; Thu,  9 Jan 2020 15:33:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C763F136091
+	for <lists+linux-efi@lfdr.de>; Thu,  9 Jan 2020 19:53:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731721AbgAIOdy (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 9 Jan 2020 09:33:54 -0500
-Received: from mail-wm1-f68.google.com ([209.85.128.68]:55698 "EHLO
-        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727854AbgAIOdy (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 9 Jan 2020 09:33:54 -0500
-Received: by mail-wm1-f68.google.com with SMTP id q9so3144055wmj.5
-        for <linux-efi@vger.kernel.org>; Thu, 09 Jan 2020 06:33:52 -0800 (PST)
+        id S1730243AbgAISxY (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 9 Jan 2020 13:53:24 -0500
+Received: from mail-oi1-f194.google.com ([209.85.167.194]:38924 "EHLO
+        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730025AbgAISxX (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 9 Jan 2020 13:53:23 -0500
+Received: by mail-oi1-f194.google.com with SMTP id a67so6814622oib.6
+        for <linux-efi@vger.kernel.org>; Thu, 09 Jan 2020 10:53:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
+        d=google.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=bsEH/6ZxbOWHzoiprvPjw2BBo+vXeuRRpym/r1C+eME=;
-        b=O1mEbBFAc+LTujgcgEW69/WpgHdDMwtg1j4VmjL2RtvVQgjMdjoBUGNViLAs9iwZfr
-         orNMBTb42seSump+jLcjdnzTzgIVLjqzaBt9p0/ew1v3eRl6LpqRov9OlEaXJ8KPXMjQ
-         6jhv9Zs9nWQDQ32hvNdui47FJ4o0adi+QUm0MEjTaWjMsTmgSU0qGsxoZIbuLz/jlmDC
-         NeQkTYpzWyh2Vywh4sRLd/BJQ1cLSKKu0SRIt4QZp5ZPd+TnrekzKVeUQHfL9ZOnMLvf
-         SjJOWnXL5RTUc6Uwzc7TlNZsCfGbT9Cx5G0OoZCCpeydWlnov3SXA3ml1Wgrt3iNNsMB
-         AYvg==
+        bh=LjrsEf49wxN7nbgg0ejb27fYAdliJCmtVPCHpdH/qLw=;
+        b=nbsjGP0t5XsrJ4fFUnDPSRHA8/sLBXsgAlK+wM5pdnHzsZM29HqyVrjtamseVopALT
+         r2jEHn31JnXHEnK5T4XuQl4kxmJpsXHEWdtsceXMEqBGBX9PlCkx6uYxDeq+PvvzbMxW
+         mHnATg+LU3VBWvmENF9PfPxgBDlMri/JFVHitDKZX3aLhFeiHua0N0hTPT6TwYTJ5cn2
+         FxJh2s3Vlog8YwAYxR0aKCjpCaj+owJwnfZp8Os9I5khGXNf5u2v1oyhTixr7Exx14Zf
+         Pz21n6JKf98cj1vqaZVvtrlTLY7U1lNoYT6air52s64WpvewD9zgNl7sbp7U4qocyt9j
+         JPRg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=bsEH/6ZxbOWHzoiprvPjw2BBo+vXeuRRpym/r1C+eME=;
-        b=bcUaOf1ENATWekjruqwprvWxvbFAykwPNC3/x0CobXQVbkq7Jh3Ktps/lDp6WpOEGp
-         ZfpAkCFU4vsW/P9gXawCxf8AS1qZE5QGH9KHSKvRujalsWDLjtw5iRaUUeC+hVadH2t2
-         t5ly91mp1tGicJzEZlQMGgCY2CU3GDvlchb9KvHytCt6F9ZgrVtDTqflzpiwmoJPXZVd
-         78qi25kVC+0vpIIwUZBfdxBxWR3YmQndltOhb9KNzNl7gB9Uu3BMhldXnc+wngOMqA/h
-         pAjukj+ehtTlVYlrqH89a368YmkoNtCn8GHShq4CChjqXmyqWS4rxS5o2eg71geCjzBV
-         bXHA==
-X-Gm-Message-State: APjAAAVKOfBVrLJ/m7DVkkRPefL7dAoeoGMm0YodgCcDEMnqJN3YluOg
-        mEmlW1kQNpLKNYPaE/wlPJZclTl+P/LZIvFEYv7oJw==
-X-Google-Smtp-Source: APXvYqy/x4UOQADZ/0HLoRlmUlJwkD2WULQMcQ1qLLn581R7u9sQav6GqjVH9N4f/W5fMqVlrsHL5HWPHPm0sYSVCFc=
-X-Received: by 2002:a1c:9d52:: with SMTP id g79mr5356424wme.148.1578580432049;
- Thu, 09 Jan 2020 06:33:52 -0800 (PST)
+        bh=LjrsEf49wxN7nbgg0ejb27fYAdliJCmtVPCHpdH/qLw=;
+        b=lAUaa28j3Pb4aS4yCgcSXGFvbbmAkiUklRstY01Zzgf/w1k0u2JU0q7KXXsgyy/6Jn
+         abMPpeRN5ZDkNTgjgPEiJB0YSRwh5H/QwdxWF544bfsFt4eGQ0i6WdGoqGf+BRls4N4R
+         w1mdKf9Mu6VOFwKhsQ7Se/8CAVWOxH0iOypXW2A/dA9/CtCgfwoIbsaWje9godNnDMhy
+         qNGr0/r9S7phIqJ/4sz3Ixs0cQpjuChu+xq+DZnLD8mhKsFBJqd6u7GnlEWxKRiIUeJN
+         9PbfThwdjJhCHVUDMYsQU1HIyk3+bKfkV+33sHDCtomlOHwvDrealUCovu0UhDYzYtSl
+         1+aA==
+X-Gm-Message-State: APjAAAUsQ7p9+3BDjfAW+emLmTQQhfSTmdPfgKj5/npleoSyDw9+nSPu
+        dqEEe+Tgc8jM5g6zDGz/PHMemwKeDuyrXvuYUgAAvw==
+X-Google-Smtp-Source: APXvYqzPmxBE+erUn0sSaFoHQdBFQrRk5ky8t4eEE9fAiXhM2jvamfjvIymet2QmHKnSAf9++E4OLUyK5Hq/WohYoto=
+X-Received: by 2002:aca:ea43:: with SMTP id i64mr4481440oih.30.1578596002690;
+ Thu, 09 Jan 2020 10:53:22 -0800 (PST)
 MIME-Version: 1.0
 References: <20191224044146.232713-1-saravanak@google.com> <CAKv+Gu_yDWhvR80Wg1-bzpD1aGwGC-UA+obcgn8CEKKjMdR7rQ@mail.gmail.com>
 In-Reply-To: <CAKv+Gu_yDWhvR80Wg1-bzpD1aGwGC-UA+obcgn8CEKKjMdR7rQ@mail.gmail.com>
-From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Date:   Thu, 9 Jan 2020 15:33:41 +0100
-Message-ID: <CAKv+Gu87zrOzN9GRrDdHsTOG=XGGY4sxXT_gZRD-BGfLuU0FiQ@mail.gmail.com>
+From:   Saravana Kannan <saravanak@google.com>
+Date:   Thu, 9 Jan 2020 10:52:46 -0800
+Message-ID: <CAGETcx9iA_irfpO2yJSPszeNrfwfYAV0KkZ+AyB7gcDo0v8p1g@mail.gmail.com>
 Subject: Re: [PATCH v2] efi: arm: defer probe of PCIe backed efifb on DT systems
-To:     Saravana Kannan <saravanak@google.com>
+To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>
 Cc:     Ard Biesheuvel <ardb@kernel.org>,
         linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
         Will Deacon <will@kernel.org>,
@@ -62,7 +62,7 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, 9 Jan 2020 at 15:05, Ard Biesheuvel <ard.biesheuvel@linaro.org> wrote:
+On Thu, Jan 9, 2020 at 6:06 AM Ard Biesheuvel <ard.biesheuvel@linaro.org> wrote:
 >
 > On Tue, 24 Dec 2019 at 05:41, Saravana Kannan <saravanak@google.com> wrote:
 > >
@@ -206,7 +206,9 @@ On Thu, 9 Jan 2020 at 15:05, Ard Biesheuvel <ard.biesheuvel@linaro.org> wrote:
 > > +static struct fwnode_operations efifb_fwnode_ops = {
 >
 > Please make this const
->
+
+Ack
+
 > > +       .add_links = efifb_add_links,
 > > +};
 > > +
@@ -236,7 +238,18 @@ On Thu, 9 Jan 2020 at 15:05, Ard Biesheuvel <ard.biesheuvel@linaro.org> wrote:
 >   if (IS_ENABLED(CONFIG_PCI))
 >
 > here
->
+
+As in around the line below where I set the fwnode? Then it's going to
+warn about unused variable. Maybe I should just do the if
+(IS_ENABLED(CONFIG_PCI)) inside the add_links() function to short
+circuit it.
+
+Responding to your other email here. Adding ifdef CONFIG_PCI was my
+first inclination, but then those 2 functions are defined if
+CONFIG_OF_ADDRESS are defined and if not the stubs are always there.
+There's no #ifdef CONFIG_PCI around any of them AFAICT. So I'm
+confused about what's going on.
+
 > > +       pd->dev.fwnode = &efifb_fwnode;
 > > +
 > > +       err = platform_device_add_data(pd, &screen_info, sizeof(screen_info));
@@ -251,14 +264,13 @@ On Thu, 9 Jan 2020 at 15:05, Ard Biesheuvel <ard.biesheuvel@linaro.org> wrote:
 > >
 >
 > With the changes above
+
+Yeah, will make them all.
+
 >
 > Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
 >
-> but it still needs testing as well.
 
-I'm having trouble reproducing the original issue, so it is difficult
-to confirm that it works as before.
+Thanks!
 
-In any case, I'm inclined to just take this through the EFI tree for
-v5.6, and if it needs additional tweaks, we can apply them as fixes on
-top.
+-Saravana
