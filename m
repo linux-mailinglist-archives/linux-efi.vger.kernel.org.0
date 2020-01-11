@@ -2,27 +2,27 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 622E7137EF0
-	for <lists+linux-efi@lfdr.de>; Sat, 11 Jan 2020 11:15:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 48336137E57
+	for <lists+linux-efi@lfdr.de>; Sat, 11 Jan 2020 11:09:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730286AbgAKKPK (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sat, 11 Jan 2020 05:15:10 -0500
-Received: from mail.kernel.org ([198.145.29.99]:56218 "EHLO mail.kernel.org"
+        id S1728812AbgAKKIx (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 11 Jan 2020 05:08:53 -0500
+Received: from mail.kernel.org ([198.145.29.99]:44232 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730048AbgAKKPK (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Sat, 11 Jan 2020 05:15:10 -0500
+        id S1729148AbgAKKIw (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Sat, 11 Jan 2020 05:08:52 -0500
 Received: from localhost (unknown [62.119.166.9])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 5CCAA2082E;
-        Sat, 11 Jan 2020 10:15:08 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 496092082E;
+        Sat, 11 Jan 2020 10:08:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1578737709;
-        bh=GO7tGw4PWBWDUud0LUtRlKZcxaeqxivaTtMUKSsvUI8=;
+        s=default; t=1578737331;
+        bh=GKYrCZ9/aDSL9Px/0Qf08dFJn+ZicSl101ldxGOtSH8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kMV1dOPDgsFJ33Ns5YQW6JjKmvLMJjcBJ21qODnIbQoHdHdkR1zYu9tJX9UhySKDJ
-         PuCnvH7xxswkeOl6zSgYMiZbK1b/dVIXywumhsFXw5Ox/hE8Hxb3cWZLCDNTmZ2viY
-         Nz05rKmHNThVUmOne/3y7TqTx2DHZkwpLls/HcMg=
+        b=CWpXMHFlMo3OIiiGHunzvEWSkYu+DqJf70HS/BgHoygYwbWj7bigg9CYgKOcV1eTO
+         lbyDOu9/uixqqT2ZMp88cqcFOy3CeeKf0V7NII3PaWT4xKwdQk0I1vSUXWG8MDEIKE
+         3SUXFQOMUADFMvHNkYLd91YDxXbv2t+9d5xrS+Qg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -38,12 +38,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Thomas Gleixner <tglx@linutronix.de>,
         kexec@lists.infradead.org, linux-efi@vger.kernel.org,
         Ingo Molnar <mingo@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 10/84] x86/efi: Update e820 with reserved EFI boot services data to fix kexec breakage
-Date:   Sat, 11 Jan 2020 10:49:47 +0100
-Message-Id: <20200111094848.096404230@linuxfoundation.org>
+Subject: [PATCH 4.14 07/62] x86/efi: Update e820 with reserved EFI boot services data to fix kexec breakage
+Date:   Sat, 11 Jan 2020 10:49:49 +0100
+Message-Id: <20200111094840.574018450@linuxfoundation.org>
 X-Mailer: git-send-email 2.24.1
-In-Reply-To: <20200111094845.328046411@linuxfoundation.org>
-References: <20200111094845.328046411@linuxfoundation.org>
+In-Reply-To: <20200111094837.425430968@linuxfoundation.org>
+References: <20200111094837.425430968@linuxfoundation.org>
 User-Agent: quilt/0.66
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -107,10 +107,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 2 insertions(+), 4 deletions(-)
 
 diff --git a/arch/x86/platform/efi/quirks.c b/arch/x86/platform/efi/quirks.c
-index 844d31cb8a0c..c9873c9168ad 100644
+index 5b513ccffde4..cadd7fd290fa 100644
 --- a/arch/x86/platform/efi/quirks.c
 +++ b/arch/x86/platform/efi/quirks.c
-@@ -259,10 +259,6 @@ void __init efi_arch_mem_reserve(phys_addr_t addr, u64 size)
+@@ -257,10 +257,6 @@ void __init efi_arch_mem_reserve(phys_addr_t addr, u64 size)
  		return;
  	}
  
@@ -121,7 +121,7 @@ index 844d31cb8a0c..c9873c9168ad 100644
  	size += addr % EFI_PAGE_SIZE;
  	size = round_up(size, EFI_PAGE_SIZE);
  	addr = round_down(addr, EFI_PAGE_SIZE);
-@@ -292,6 +288,8 @@ void __init efi_arch_mem_reserve(phys_addr_t addr, u64 size)
+@@ -290,6 +286,8 @@ void __init efi_arch_mem_reserve(phys_addr_t addr, u64 size)
  	early_memunmap(new, new_size);
  
  	efi_memmap_install(new_phys, num_entries);
