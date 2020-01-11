@@ -2,27 +2,27 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5441D137EF2
-	for <lists+linux-efi@lfdr.de>; Sat, 11 Jan 2020 11:15:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CB36E137E5A
+	for <lists+linux-efi@lfdr.de>; Sat, 11 Jan 2020 11:09:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730133AbgAKKPT (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sat, 11 Jan 2020 05:15:19 -0500
-Received: from mail.kernel.org ([198.145.29.99]:56610 "EHLO mail.kernel.org"
+        id S1729517AbgAKKI5 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 11 Jan 2020 05:08:57 -0500
+Received: from mail.kernel.org ([198.145.29.99]:44370 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729890AbgAKKPS (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Sat, 11 Jan 2020 05:15:18 -0500
+        id S1729148AbgAKKI4 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Sat, 11 Jan 2020 05:08:56 -0500
 Received: from localhost (unknown [62.119.166.9])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id E7EDD2077C;
-        Sat, 11 Jan 2020 10:15:16 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 133A720880;
+        Sat, 11 Jan 2020 10:08:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1578737717;
+        s=default; t=1578737335;
         bh=dSpqFK6i710jE4XItym/hIRAQU51Rs8DQiINUBZ5nGk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Tzu7KtF/t7yQoR7KRv4bY6NFf7xHx+PTNz9ctn7tZBMQT6nR5MzMdP2HMJm4pPBxu
-         iwJKtPu3vduUbqNvbSHcwE1vZxgg2Yll5EX/sNyARU8E3b/H6Rw1gOECVfTzwwMWY4
-         GpfVVP0ANcbn9+W1hjDUkc/4tlDS7U/UePmUlyuM=
+        b=I5lKDXqb1594+Eo9PLCfku7X3efS26q0dDnIer0AYYjEr87uz/WRjc54PjCXM1Qnb
+         0lDcnf+/jql6Cd6B3UUs9xq9SC2D9sSpLp73CRJ7+2q/l6IKGHiWG6oAid6MmVvGWP
+         BgaThR15rWO85YOcX+gZudAmjl9bayktdNd9nVEY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -33,12 +33,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Masayoshi Mizuma <m.mizuma@jp.fujitsu.com>,
         linux-efi@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 12/84] efi/gop: Return EFI_NOT_FOUND if there are no usable GOPs
-Date:   Sat, 11 Jan 2020 10:49:49 +0100
-Message-Id: <20200111094849.029768084@linuxfoundation.org>
+Subject: [PATCH 4.14 08/62] efi/gop: Return EFI_NOT_FOUND if there are no usable GOPs
+Date:   Sat, 11 Jan 2020 10:49:50 +0100
+Message-Id: <20200111094840.974597343@linuxfoundation.org>
 X-Mailer: git-send-email 2.24.1
-In-Reply-To: <20200111094845.328046411@linuxfoundation.org>
-References: <20200111094845.328046411@linuxfoundation.org>
+In-Reply-To: <20200111094837.425430968@linuxfoundation.org>
+References: <20200111094837.425430968@linuxfoundation.org>
 User-Agent: quilt/0.66
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
