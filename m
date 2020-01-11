@@ -2,139 +2,65 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AE47B1381D5
-	for <lists+linux-efi@lfdr.de>; Sat, 11 Jan 2020 15:57:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 53843138361
+	for <lists+linux-efi@lfdr.de>; Sat, 11 Jan 2020 21:00:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730286AbgAKO5x (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sat, 11 Jan 2020 09:57:53 -0500
-Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:20248 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1730276AbgAKO5x (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sat, 11 Jan 2020 09:57:53 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1578754672;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=6IIyl7nwLzkMIjP69KzWLUXNNYREWPo9znJtU/sIj/o=;
-        b=duAIfecSUhygFuQdn3GTZXSqBW4t4q4HeKOdMcumT2eGhPniI2QNgsJQhvHIW1zchaJBWL
-        G6sUROPTaQ12r/dJt8ljCS8Id9u/nV1x5ZqSc3+1h9HVZ856HgcPeaAHaOm+BLwt5WQsOI
-        Te5zQMSnUDxXPrI3rdztQxKovLFuaAE=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-426-A5kjaX56M6GbHvBdLqSCmQ-1; Sat, 11 Jan 2020 09:57:50 -0500
-X-MC-Unique: A5kjaX56M6GbHvBdLqSCmQ-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 1FE49107ACC4;
-        Sat, 11 Jan 2020 14:57:48 +0000 (UTC)
-Received: from shalem.localdomain.com (ovpn-116-84.ams2.redhat.com [10.36.116.84])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 4C21487EC6;
-        Sat, 11 Jan 2020 14:57:44 +0000 (UTC)
-From:   Hans de Goede <hdegoede@redhat.com>
-To:     Ard Biesheuvel <ardb@kernel.org>,
-        Darren Hart <dvhart@infradead.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        Luis Chamberlain <mcgrof@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        "H . Peter Anvin" <hpa@zytor.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Cc:     Hans de Goede <hdegoede@redhat.com>,
-        Peter Jones <pjones@redhat.com>,
-        Dave Olsthoorn <dave@bewaar.me>, x86@kernel.org,
-        platform-driver-x86@vger.kernel.org, linux-efi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-input@vger.kernel.org,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Subject: [PATCH v11 10/10] platform/x86: touchscreen_dmi: Add info for the Chuwi Vi8 Plus tablet
-Date:   Sat, 11 Jan 2020 15:57:03 +0100
-Message-Id: <20200111145703.533809-11-hdegoede@redhat.com>
-In-Reply-To: <20200111145703.533809-1-hdegoede@redhat.com>
-References: <20200111145703.533809-1-hdegoede@redhat.com>
+        id S1731014AbgAKUAD (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 11 Jan 2020 15:00:03 -0500
+Received: from sonic304-22.consmr.mail.ne1.yahoo.com ([66.163.191.148]:36607
+        "EHLO sonic304-22.consmr.mail.ne1.yahoo.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1731013AbgAKUAD (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sat, 11 Jan 2020 15:00:03 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1578772802; bh=ccCAWoSF5BLfDOatu3qpU6l9KI5KeJz6QggOEqZVG6E=; h=Date:From:Reply-To:Subject:References:From:Subject; b=jb5zCxttEI1w6ueBMvBrBIQFNpMURr8lX4uMr/XnJsZXxvtjol6pmrUX3lgJ9ZsmIEYIujhkGMtcckbh1DLLoV4wcK1gXGigPl6EFVHJp8858aA2kr/2lIcRQC6rBf/lOgYhD5XejJyevUKqwZnjXMCud6PyHt/dtDiv0276JHYhm5Ai1tDoOWZpQwQCMPhDNH60N6uFMY7+aUx/sBvuO059MVIgaCXzhJbsBXblyxJdXspaVBvYe7HCTfldCV9cWA01hrGcYBpvio5TF5S5nG29GJ8DwCo8s0OuN13nDkV5hUb22x8D3ixCD9YqkAw/g+kleEYa7OmsX5leIIgOrQ==
+X-YMail-OSG: RzCymNoVM1nV3kpIlx4JIAWQWUtbtQA9MOOY1AwIr6G58ggl92JLvUEMHl8tw1v
+ 1IIAm7ba7QorF0csvHXcoWOdAYMvvU3kx3rBCbqCYfsbEy2hrqSLFPhDoX7zEIa31ooHk7huF..K
+ UoyFspAqSSsxhSA9tX1b8XcCXizkV2.pKPAH0ueQ5O2bDX2QbzSXAgZwZ0eJHYu6Yu6V_e84l_Tw
+ PWImUHyUUwU9m0WZYxIRG4N9Iy30kFn8hywF8Dr10oY4ChhKQzGwrpXhcenYQo0EdLtoUg5fOen1
+ j0B5dAMVvl54KAMgCyuphz1k8TEHcBQSP7c.hyx3WsvGqjN7DSRAzVlRcb6F44s4xLcH5w45uNnr
+ 8nBPLisA4YiHxLl7ThkgMrLQVbT2CscII87o85izdwOwZujNPZgHRAQuYXz_LEZwvYt5L.GhQI54
+ kPYfLeaLEP1T_SDfLYIxUjnEMjwZt4n3fBkbtEfYxGYyzAJRfbucaaSRfufNLVmZ90eBcRcQ_13d
+ CkWc89dKPgWCthLzV_eXW0zix4sQOvWn.FwuFdP02QJK8hCxfE5cjtzRZINMKbmy.Z2m.GoE2ofW
+ D2ORTvYpJ5ktc5l5RAdvngNKm.CFOiqAd527KfjdgMATuUNxh1XivAayYlBQMJ_I.5Hg4v.8E3Bf
+ xLYPHmxaPlVTfXxKQJh0o9UZS42HfUCOCku01PyKRucVzhUD5RRf1G69aYMdeVefB9yG..WL7aWK
+ GBoq0aDil8ZIeAGTGaPwpaRX9yVDHtStyjrX2_KLBPNYKbWyXWPtHR7tmB.ZvNg77lZu9eH5RNhr
+ DTdk0hI0ruovDPwMzyeLAPoKNU6ET.zxfQ4oBpzTmsNEKF8GlJD_pZ8_iogSQDyv9KJhc1w5j7Aa
+ 8dRRhkXpKZhlT9pxreJWKC6sIYEA_DnaBMjhiJv4TokMtbGV9wVea7ns0HjhlJnMzadK780Ln2VC
+ meFnywqrZFQ_0GkW3GXAOp_i6S5NtMMLCtMoRT_2etJinxe5pRURL1kF1YlgQ6s67jvisTiMLCTl
+ _HX4ikIRT02HpOncw6Vtv6AHQtgQXXjHpdXhyOmHKUxZ9_k3xQkP.gxWUM02tiGMzaqIXV8Smn6A
+ YDo_Wn_k.ir94zZIFX3ttN41QSO8I8z2.RsYxUyoNFWu.vJZ8bWXpd17gRj7gvt8Ajm4HtO7Vj0O
+ trJzRYObYuxyXZpU4F8KajHNmp.x3uet87Co2gJcWt50Sn3Y1OOAs5kRKwkcz0ua_bGjKIF9dVBO
+ Toad0e_Vv9PMeQC83_SaRqPpTB1MkJcx2TD9KWP7DsV1V4v19ZQpx7KmZpLPtCkwEKVOl_kgQMo3
+ PrhrPFFe0M6h2caixBVhBSx2RNhvJmgJhxA--
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic304.consmr.mail.ne1.yahoo.com with HTTP; Sat, 11 Jan 2020 20:00:02 +0000
+Date:   Sat, 11 Jan 2020 20:00:01 +0000 (UTC)
+From:   MRS SABAH IBRAHIM <mrssabah51a@gmail.com>
+Reply-To: mrs2018sabahibrahim1@gmail.com
+Message-ID: <158270501.10165773.1578772801489@mail.yahoo.com>
+Subject: Compensation for your effort
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+References: <158270501.10165773.1578772801489.ref@mail.yahoo.com>
+X-Mailer: WebService/1.1.14873 YMailNodin Mozilla/5.0 (Windows NT 5.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.112 Safari/537.36
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Add touchscreen info for the Chuwi Vi8 Plus tablet. This tablet uses a
-Chipone ICN8505 touchscreen controller, with the firmware used by the
-touchscreen embedded in the EFI firmware.
+Dear Friend,
 
-Acked-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Acked-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
----
-Changes in v7:
-- Remove PROPERTY_ENTRY_BOOL("efi-embedded-firmware") properties entry,
-  as this is no longer necessary
+How are you I hope you are very fine with your entire family? If so glory be to  Almighty God.
+I'm happy to inform you about my success in getting those funds transferred under the cooperation of a new partner from  GREECE, Presently i'm in GREECE for a better treatment  and building of the orphanage home projects with the total  money.
 
-Changes in v6:
-- Switch from crc sums to SHA256 hashes for the firmware hash
----
- drivers/platform/x86/touchscreen_dmi.c | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
+Meanwhile, I didn't forget your past efforts and attempts to assist me in transferring those funds and use it for the building of the orphanage home and helping the less privilege.
 
-diff --git a/drivers/platform/x86/touchscreen_dmi.c b/drivers/platform/x8=
-6/touchscreen_dmi.c
-index 4449e4c0b26b..4a09b479cda5 100644
---- a/drivers/platform/x86/touchscreen_dmi.c
-+++ b/drivers/platform/x86/touchscreen_dmi.c
-@@ -132,6 +132,18 @@ static const struct ts_dmi_data chuwi_vi8_data =3D {
- 	.properties     =3D chuwi_vi8_props,
- };
-=20
-+static const struct ts_dmi_data chuwi_vi8_plus_data =3D {
-+	.embedded_fw =3D {
-+		.name	=3D "chipone/icn8505-HAMP0002.fw",
-+		.prefix =3D { 0xb0, 0x07, 0x00, 0x00, 0xe4, 0x07, 0x00, 0x00 },
-+		.length	=3D 35012,
-+		.sha256	=3D { 0x93, 0xe5, 0x49, 0xe0, 0xb6, 0xa2, 0xb4, 0xb3,
-+			    0x88, 0x96, 0x34, 0x97, 0x5e, 0xa8, 0x13, 0x78,
-+			    0x72, 0x98, 0xb8, 0x29, 0xeb, 0x5c, 0xa7, 0xf1,
-+			    0x25, 0x13, 0x43, 0xf4, 0x30, 0x7c, 0xfc, 0x7c },
-+	},
-+};
-+
- static const struct property_entry chuwi_vi10_props[] =3D {
- 	PROPERTY_ENTRY_U32("touchscreen-min-x", 0),
- 	PROPERTY_ENTRY_U32("touchscreen-min-y", 4),
-@@ -743,6 +755,15 @@ const struct dmi_system_id touchscreen_dmi_table[] =3D=
- {
- 			DMI_MATCH(DMI_BIOS_VERSION, "CHUWI.D86JLBNR"),
- 		},
- 	},
-+	{
-+		/* Chuwi Vi8 Plus (CWI519) */
-+		.driver_data =3D (void *)&chuwi_vi8_plus_data,
-+		.matches =3D {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Hampoo"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "D2D3_Vi8A1"),
-+			DMI_MATCH(DMI_BOARD_NAME, "Cherry Trail CR"),
-+		},
-+	},
- 	{
- 		/* Chuwi Vi10 (CWI505) */
- 		.driver_data =3D (void *)&chuwi_vi10_data,
-@@ -1137,6 +1158,9 @@ static int __init ts_dmi_init(void)
- 		return 0; /* Not an error */
-=20
- 	ts_data =3D dmi_id->driver_data;
-+	/* Some dmi table entries only provide an efi_embedded_fw_desc */
-+	if (!ts_data->properties)
-+		return 0;
-=20
- 	error =3D bus_register_notifier(&i2c_bus_type, &ts_dmi_notifier);
- 	if (error)
---=20
-2.24.1
+Please contact my nurse in Burkina Faso, her  name is Mrs. Manal Yusuf , ask her to send you the compensation of $600,000.00USD which i have credited with  the ECOBANK bank into an ATM card before i traveled for my treatment, you will indicate your contact as my else's business associate that tried to help me, but it could not work out for us, and I appreciated your good efforts at that time very much. so feel free and get in touched with the nurse Mrs. Manal Yusuf (email:
+mrs1manalyusuf@gmail.com ) and instruct her the address where to send the ATM card to you.
 
+Please i am in the hospital here, i would not have much time to check emails or  respond to you, but in case you have any important message do send me as an update, i might instruct the doctor to check it and respond to you, meanwhile, once you received the ATM CARD,  do not delay to inform me.
+
+Finally, remember that I had forwarded an instruction to the nurse on your behalf to deliver the ATM  card to you, so feel free to get in touch with her by email  she will send the ATM card to you without any delay.
+
+Thank you and God bless you.
+MRS SABAH IBRAHIM
