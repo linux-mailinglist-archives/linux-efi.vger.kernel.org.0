@@ -2,65 +2,85 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 53843138361
-	for <lists+linux-efi@lfdr.de>; Sat, 11 Jan 2020 21:00:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1100C138541
+	for <lists+linux-efi@lfdr.de>; Sun, 12 Jan 2020 07:14:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731014AbgAKUAD (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sat, 11 Jan 2020 15:00:03 -0500
-Received: from sonic304-22.consmr.mail.ne1.yahoo.com ([66.163.191.148]:36607
-        "EHLO sonic304-22.consmr.mail.ne1.yahoo.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1731013AbgAKUAD (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sat, 11 Jan 2020 15:00:03 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1578772802; bh=ccCAWoSF5BLfDOatu3qpU6l9KI5KeJz6QggOEqZVG6E=; h=Date:From:Reply-To:Subject:References:From:Subject; b=jb5zCxttEI1w6ueBMvBrBIQFNpMURr8lX4uMr/XnJsZXxvtjol6pmrUX3lgJ9ZsmIEYIujhkGMtcckbh1DLLoV4wcK1gXGigPl6EFVHJp8858aA2kr/2lIcRQC6rBf/lOgYhD5XejJyevUKqwZnjXMCud6PyHt/dtDiv0276JHYhm5Ai1tDoOWZpQwQCMPhDNH60N6uFMY7+aUx/sBvuO059MVIgaCXzhJbsBXblyxJdXspaVBvYe7HCTfldCV9cWA01hrGcYBpvio5TF5S5nG29GJ8DwCo8s0OuN13nDkV5hUb22x8D3ixCD9YqkAw/g+kleEYa7OmsX5leIIgOrQ==
-X-YMail-OSG: RzCymNoVM1nV3kpIlx4JIAWQWUtbtQA9MOOY1AwIr6G58ggl92JLvUEMHl8tw1v
- 1IIAm7ba7QorF0csvHXcoWOdAYMvvU3kx3rBCbqCYfsbEy2hrqSLFPhDoX7zEIa31ooHk7huF..K
- UoyFspAqSSsxhSA9tX1b8XcCXizkV2.pKPAH0ueQ5O2bDX2QbzSXAgZwZ0eJHYu6Yu6V_e84l_Tw
- PWImUHyUUwU9m0WZYxIRG4N9Iy30kFn8hywF8Dr10oY4ChhKQzGwrpXhcenYQo0EdLtoUg5fOen1
- j0B5dAMVvl54KAMgCyuphz1k8TEHcBQSP7c.hyx3WsvGqjN7DSRAzVlRcb6F44s4xLcH5w45uNnr
- 8nBPLisA4YiHxLl7ThkgMrLQVbT2CscII87o85izdwOwZujNPZgHRAQuYXz_LEZwvYt5L.GhQI54
- kPYfLeaLEP1T_SDfLYIxUjnEMjwZt4n3fBkbtEfYxGYyzAJRfbucaaSRfufNLVmZ90eBcRcQ_13d
- CkWc89dKPgWCthLzV_eXW0zix4sQOvWn.FwuFdP02QJK8hCxfE5cjtzRZINMKbmy.Z2m.GoE2ofW
- D2ORTvYpJ5ktc5l5RAdvngNKm.CFOiqAd527KfjdgMATuUNxh1XivAayYlBQMJ_I.5Hg4v.8E3Bf
- xLYPHmxaPlVTfXxKQJh0o9UZS42HfUCOCku01PyKRucVzhUD5RRf1G69aYMdeVefB9yG..WL7aWK
- GBoq0aDil8ZIeAGTGaPwpaRX9yVDHtStyjrX2_KLBPNYKbWyXWPtHR7tmB.ZvNg77lZu9eH5RNhr
- DTdk0hI0ruovDPwMzyeLAPoKNU6ET.zxfQ4oBpzTmsNEKF8GlJD_pZ8_iogSQDyv9KJhc1w5j7Aa
- 8dRRhkXpKZhlT9pxreJWKC6sIYEA_DnaBMjhiJv4TokMtbGV9wVea7ns0HjhlJnMzadK780Ln2VC
- meFnywqrZFQ_0GkW3GXAOp_i6S5NtMMLCtMoRT_2etJinxe5pRURL1kF1YlgQ6s67jvisTiMLCTl
- _HX4ikIRT02HpOncw6Vtv6AHQtgQXXjHpdXhyOmHKUxZ9_k3xQkP.gxWUM02tiGMzaqIXV8Smn6A
- YDo_Wn_k.ir94zZIFX3ttN41QSO8I8z2.RsYxUyoNFWu.vJZ8bWXpd17gRj7gvt8Ajm4HtO7Vj0O
- trJzRYObYuxyXZpU4F8KajHNmp.x3uet87Co2gJcWt50Sn3Y1OOAs5kRKwkcz0ua_bGjKIF9dVBO
- Toad0e_Vv9PMeQC83_SaRqPpTB1MkJcx2TD9KWP7DsV1V4v19ZQpx7KmZpLPtCkwEKVOl_kgQMo3
- PrhrPFFe0M6h2caixBVhBSx2RNhvJmgJhxA--
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic304.consmr.mail.ne1.yahoo.com with HTTP; Sat, 11 Jan 2020 20:00:02 +0000
-Date:   Sat, 11 Jan 2020 20:00:01 +0000 (UTC)
-From:   MRS SABAH IBRAHIM <mrssabah51a@gmail.com>
-Reply-To: mrs2018sabahibrahim1@gmail.com
-Message-ID: <158270501.10165773.1578772801489@mail.yahoo.com>
-Subject: Compensation for your effort
+        id S1732270AbgALGOI (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sun, 12 Jan 2020 01:14:08 -0500
+Received: from mail3-bck.iservicesmail.com ([217.130.24.85]:4788 "EHLO
+        mail3-bck.iservicesmail.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1732268AbgALGOI (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sun, 12 Jan 2020 01:14:08 -0500
+X-Greylist: delayed 301 seconds by postgrey-1.27 at vger.kernel.org; Sun, 12 Jan 2020 01:14:07 EST
+IronPort-SDR: +hhxqcLicT2D6ETOmFdSqa4peHMeh4hnU/oYCJ4tfEPQ8DF5jgr/aFBiaaIRtfkGbDDFvaKdxb
+ /73a5InReF0Q==
+IronPort-PHdr: =?us-ascii?q?9a23=3AcEGqrxDVyFESlWnxJPwxUyQJP3N1i/DPJgcQr6?=
+ =?us-ascii?q?AfoPdwSPTzoMbcNUDSrc9gkEXOFd2Cra4d0KyM7f6rCDdIyK3CmUhKSIZLWR?=
+ =?us-ascii?q?4BhJdetC0bK+nBN3fGKuX3ZTcxBsVIWQwt1Xi6NU9IBJS2PAWK8TW94jEIBx?=
+ =?us-ascii?q?rwKxd+KPjrFY7OlcS30P2594HObwlSizexfL1/IA+ooQjQt8Qajo9vJ6gswR?=
+ =?us-ascii?q?bVv3VEfPhby3l1LlyJhRb84cmw/J9n8ytOvv8q6tBNX6bncakmVLJUFDspPX?=
+ =?us-ascii?q?w7683trhnDUBCA5mAAXWUMkxpHGBbK4RfnVZrsqCT6t+592C6HPc3qSL0/RD?=
+ =?us-ascii?q?qv47t3RBLulSwLMTk1/nzLhcNqiaJaoAutqgJ4w47OeIGVM+B+cbnBfdwEXG?=
+ =?us-ascii?q?ZOQMBRWzVdD4Ogc4sAFfYOPeZGoIn4uVQOqwe+CRCyC+Pp0zNGgXj23ask3O?=
+ =?us-ascii?q?UhCA3JwgogFM8KvHnasNn5KKIeXOaox6fK0DrDdetb1zn95ojSbB4vouyCUr?=
+ =?us-ascii?q?1sfsTe0kQvCwHIgUmMpYD5Iz+ZyOIAuHWb4ep6UuKvjnYqpRtvrTiz2MgskJ?=
+ =?us-ascii?q?TCiYISylDC+iVy3YE4JcWmR05nf9GkCpVRtyacN4t5Wc4iQ3potz0mxbEcpZ?=
+ =?us-ascii?q?G7ey0KxI4nxx7ccvGKdZWD7BH7VOuJPzt0mXBodKiiixu87USs0PPwW8au3F?=
+ =?us-ascii?q?tEridIlMTHuGoX2BzJ8MeHT+Nw/kKm2TmSyQ/e8vpEIUUolarDLJ4h36Iwmo?=
+ =?us-ascii?q?ITsUvdGi/2n137jKqMeUUl/uio8froYrH6qpKTLYN0lAb+Pbk0lcyxBuQ4NB?=
+ =?us-ascii?q?YBU3KF9uSnzLHj/Ev5T6tWjvAujKXVrZLXKd4GqqO3HwNZyJgv5hmlAzqo0N?=
+ =?us-ascii?q?kUhXwHI0hEeBKDgYjpIVbOIPXgAPennVusjClkx+rIP73mBJXNIWPOkLf6fb?=
+ =?us-ascii?q?lm90FQ0hY8zdda555OCrEBI+r/WlXtu9zAEh85Lwu0zv7jCNV80IMeRG2ODr?=
+ =?us-ascii?q?aHP6PcsF+F/fwvI+aSa48Pojr9KOYq5+TojXAnnV8RZ66p3YEYaCPwIvMzJ0?=
+ =?us-ascii?q?SffGqpj9kAOXkFsxB4T+HwjlCGFzlJaCWIUro49w08XbqrEYrZDr+qhrPJiD?=
+ =?us-ascii?q?+2ApBMeWdABVCPEWzifK2LXv4NbGSZJco3wRIeUr30c4I92Avmiwj8xPIzNu?=
+ =?us-ascii?q?fI9zcHspTs/Nhu7eaVnhY3szx3WZfOm1qRRn15yzpbDwQ927py9Bclklo=3D?=
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-Anti-Spam-Result: =?us-ascii?q?A2GeAgBWtxpelyMYgtlNGBoBAQEBAQE?=
+ =?us-ascii?q?BAQEDAQEBAREBAQECAgEBAQGBaAQBAQEBCwEBGwgBgSWBTVIgEpNQgU0fg0O?=
+ =?us-ascii?q?LY4EAgx4VhgcUDIFbDQEBAQEBNQIBAYRATgEXgQ8kNQgOAgMNAQEFAQEBAQE?=
+ =?us-ascii?q?FBAEBAhABAQEBAQYYBoVzgh0MHgEEAQEBAQMDAwEBDAGDXQcZDzlKTAEOAVO?=
+ =?us-ascii?q?DBIJLAQEznXEBjQQNDQKFHYJKBAqBCYEaI4E2AYwYGoFBP4EjIYIrCAGCAYJ?=
+ =?us-ascii?q?/ARIBbIJIglkEjUISIYEHiCmYF4JBBHaJTIwCgjcBD4gBhDEDEIJFD4EJiAO?=
+ =?us-ascii?q?EToF9ozdXdAGBHnEzGoImGoEgTxgNiBuOLUCBFhACT4xbgjIBAQ?=
+X-IPAS-Result: =?us-ascii?q?A2GeAgBWtxpelyMYgtlNGBoBAQEBAQEBAQEDAQEBAREBA?=
+ =?us-ascii?q?QECAgEBAQGBaAQBAQEBCwEBGwgBgSWBTVIgEpNQgU0fg0OLY4EAgx4VhgcUD?=
+ =?us-ascii?q?IFbDQEBAQEBNQIBAYRATgEXgQ8kNQgOAgMNAQEFAQEBAQEFBAEBAhABAQEBA?=
+ =?us-ascii?q?QYYBoVzgh0MHgEEAQEBAQMDAwEBDAGDXQcZDzlKTAEOAVODBIJLAQEznXEBj?=
+ =?us-ascii?q?QQNDQKFHYJKBAqBCYEaI4E2AYwYGoFBP4EjIYIrCAGCAYJ/ARIBbIJIglkEj?=
+ =?us-ascii?q?UISIYEHiCmYF4JBBHaJTIwCgjcBD4gBhDEDEIJFD4EJiAOEToF9ozdXdAGBH?=
+ =?us-ascii?q?nEzGoImGoEgTxgNiBuOLUCBFhACT4xbgjIBAQ?=
+X-IronPort-AV: E=Sophos;i="5.69,424,1571695200"; 
+   d="scan'208";a="323209900"
+Received: from mailrel04.vodafone.es ([217.130.24.35])
+  by mail02.vodafone.es with ESMTP; 12 Jan 2020 07:09:04 +0100
+Received: (qmail 24225 invoked from network); 12 Jan 2020 05:00:20 -0000
+Received: from unknown (HELO 192.168.1.3) (quesosbelda@[217.217.179.17])
+          (envelope-sender <peterwong@hsbc.com.hk>)
+          by mailrel04.vodafone.es (qmail-ldap-1.03) with SMTP
+          for <linux-efi@vger.kernel.org>; 12 Jan 2020 05:00:20 -0000
+Date:   Sun, 12 Jan 2020 06:00:18 +0100 (CET)
+From:   Peter Wong <peterwong@hsbc.com.hk>
+Reply-To: Peter Wong <peterwonghkhsbc@gmail.com>
+To:     linux-efi@vger.kernel.org
+Message-ID: <12146499.460727.1578805219919.JavaMail.cash@217.130.24.55>
+Subject: Investment opportunity
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-References: <158270501.10165773.1578772801489.ref@mail.yahoo.com>
-X-Mailer: WebService/1.1.14873 YMailNodin Mozilla/5.0 (Windows NT 5.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.112 Safari/537.36
-To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Dear Friend,
+Greetings,
+Please read the attached investment proposal and reply for more details.
+Are you interested in loan?
+Sincerely: Peter Wong
 
-How are you I hope you are very fine with your entire family? If so glory be to  Almighty God.
-I'm happy to inform you about my success in getting those funds transferred under the cooperation of a new partner from  GREECE, Presently i'm in GREECE for a better treatment  and building of the orphanage home projects with the total  money.
 
-Meanwhile, I didn't forget your past efforts and attempts to assist me in transferring those funds and use it for the building of the orphanage home and helping the less privilege.
 
-Please contact my nurse in Burkina Faso, her  name is Mrs. Manal Yusuf , ask her to send you the compensation of $600,000.00USD which i have credited with  the ECOBANK bank into an ATM card before i traveled for my treatment, you will indicate your contact as my else's business associate that tried to help me, but it could not work out for us, and I appreciated your good efforts at that time very much. so feel free and get in touched with the nurse Mrs. Manal Yusuf (email:
-mrs1manalyusuf@gmail.com ) and instruct her the address where to send the ATM card to you.
 
-Please i am in the hospital here, i would not have much time to check emails or  respond to you, but in case you have any important message do send me as an update, i might instruct the doctor to check it and respond to you, meanwhile, once you received the ATM CARD,  do not delay to inform me.
+----------------------------------------------------
+This email was sent by the shareware version of Postman Professional.
 
-Finally, remember that I had forwarded an instruction to the nurse on your behalf to deliver the ATM  card to you, so feel free to get in touch with her by email  she will send the ATM card to you without any delay.
-
-Thank you and God bless you.
-MRS SABAH IBRAHIM
