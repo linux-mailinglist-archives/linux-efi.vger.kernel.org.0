@@ -2,108 +2,120 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 077E6138C4F
-	for <lists+linux-efi@lfdr.de>; Mon, 13 Jan 2020 08:29:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D5D45138F01
+	for <lists+linux-efi@lfdr.de>; Mon, 13 Jan 2020 11:27:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728738AbgAMH3W (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 13 Jan 2020 02:29:22 -0500
-Received: from mail-wr1-f66.google.com ([209.85.221.66]:39292 "EHLO
-        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728709AbgAMH3W (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 13 Jan 2020 02:29:22 -0500
-Received: by mail-wr1-f66.google.com with SMTP id y11so7397518wrt.6
-        for <linux-efi@vger.kernel.org>; Sun, 12 Jan 2020 23:29:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Whdn2m/U1+HR1RNQq+8AxWESiMgdzhNcD7fmHq1i6N8=;
-        b=bD+O85KGDadiliWt3Ps6YuhsgSPwXU8EYhpSch8p+13GrX2HlxbLekt0Q7m5w43NTc
-         KU72X99cw/UqTi2iXQzYiev8cXt8UvHfsC5iEU0o9JjBYfQP4IGFo4loiZSrQcHaj+ph
-         qfEe8OckgtbZyNM4ZcfXyT0L+HB9TdxF/T8EfwYEQX9bQV905u7RP61+cj0ZsXOaJUQ2
-         BnT4z6Rmzco6HRo3UCQx9fBV4dSbRjp4OJtXJ7PFXsBGmP14XS+uTFBR4wQ1FXrYw7sz
-         mimNnG+o78KhowrJbnHEPPTi3dlIhRe1x9ud8xc0psJ0tCP9dCDq30klcJVBSSjsPXOk
-         Mdiw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Whdn2m/U1+HR1RNQq+8AxWESiMgdzhNcD7fmHq1i6N8=;
-        b=TCpBeWQMFykmCxjtAzBKc2wAFZ6A/lhHISgHq0bVoTNvKg3PMS6SAIggLPivznB4A5
-         3kpYvqLXgelB+vf7AZJMf3h8XRzg7UiY8QUBmNL4/DMiquD3wnq2QATQeJlRQnaUCCx2
-         zyxefxnw+XzMj3oGqS9dZSucKxZ4MHWDIRmVD3mFSkYvpJy8QbvSH/Wv9D+hMAyFOtzf
-         sWVpk8Xy0FxWSGO/DrQRA5VMaRqkqhw3FL9EcHPgAHkvHWOK+UzaOmK68iEyBx1Se4eZ
-         qAyt8A5pGpssZZ4WB/OjhPddT7SoPyP1Hcmqoe6Um5/sGCjCr+6t0C1AZlXOyH/Mfbs4
-         i7Iw==
-X-Gm-Message-State: APjAAAW3Te0slIl/NSWFRuz8D140XZ8nojf8NIYKlLxSAktuzidAFcBf
-        mOJ69lqBHUDox4ZujalPaiaFQkofU9yD1kDaVo2gcw==
-X-Google-Smtp-Source: APXvYqybS5eWEDwKlCVck9fBn8ODoIWsy3woTpWRduDt3Jqrcph4In1sPlEdRF1YEQxWKwUulSCwOK9Iz13o914Trto=
-X-Received: by 2002:a5d:6652:: with SMTP id f18mr17078276wrw.246.1578900560096;
- Sun, 12 Jan 2020 23:29:20 -0800 (PST)
-MIME-Version: 1.0
-References: <20200103113953.9571-1-ardb@kernel.org> <CAKv+Gu8pzDSs6G5k9JfX77NB4q2kerxSuprnzFzeGBPd2kPd5g@mail.gmail.com>
- <20200110181312.GB83292@gmail.com>
-In-Reply-To: <20200110181312.GB83292@gmail.com>
-From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Date:   Mon, 13 Jan 2020 08:29:09 +0100
-Message-ID: <CAKv+Gu_4GNdu+72iGN5wnzfDx3iQ0uM2x9wC6pOBPvqAvJu8dA@mail.gmail.com>
-Subject: Re: [GIT PULL 00/20] More EFI updates for v5.6
-To:     Ingo Molnar <mingo@kernel.org>
-Cc:     Ard Biesheuvel <ardb@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Andy Lutomirski <luto@kernel.org>,
-        Arvind Sankar <nivedita@alum.mit.edu>,
-        Matthew Garrett <mjg59@google.com>
-Content-Type: text/plain; charset="UTF-8"
+        id S1728766AbgAMK1d (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 13 Jan 2020 05:27:33 -0500
+Received: from mail.inango-systems.com ([178.238.230.57]:50846 "EHLO
+        mail.inango-sw.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727014AbgAMK1d (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 13 Jan 2020 05:27:33 -0500
+Received: from localhost (localhost [127.0.0.1])
+        by mail.inango-sw.com (Postfix) with ESMTP id 54C431080786;
+        Mon, 13 Jan 2020 12:27:30 +0200 (IST)
+Received: from mail.inango-sw.com ([127.0.0.1])
+        by localhost (mail.inango-sw.com [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id 6RZ3lKHhyPMI; Mon, 13 Jan 2020 12:27:29 +0200 (IST)
+Received: from localhost (localhost [127.0.0.1])
+        by mail.inango-sw.com (Postfix) with ESMTP id E19E71080790;
+        Mon, 13 Jan 2020 12:27:28 +0200 (IST)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mail.inango-sw.com E19E71080790
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=inango-systems.com;
+        s=45A440E0-D841-11E8-B985-5FCC721607E0; t=1578911248;
+        bh=THTE1okMxz8IYZP5XaSN31O51fGXzRMX71TEetGqCAs=;
+        h=From:To:Date:Message-Id;
+        b=bF5v9klEHwgnw8MspBJCle0YY3J0qXaa+Uw1ccqeMsegQTqxIrEN6YgRnDreCXzK2
+         RQIjyN2ZlnlV4+tZDVBw4N8Q00i7dsi+24aciLaRHIar/70CNiNUD8gkMvpvaMqJTO
+         uUC1mczcRg0Bvc/1PKWw47hu76o3Sq/rDHPUWJQNSPD5w2vB8WQOEyblhIoH2SIm3S
+         EeDTo3iQAaC9mfx2VOotVJ7HUsa1Vo7g/hbXdFEvVlWmna4Q9prXXeEBZk60iwz55e
+         GkI4a4CcVe7srrFo5+9zOt36fKbsEEZo4DEscGnPUcETd38Pr4d80D2vmLkmD+EcmC
+         FyxH55K3mikjA==
+X-Virus-Scanned: amavisd-new at inango-sw.com
+Received: from mail.inango-sw.com ([127.0.0.1])
+        by localhost (mail.inango-sw.com [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id kQ81MXoXyOqu; Mon, 13 Jan 2020 12:27:28 +0200 (IST)
+Received: from nmerinov.inango.loc (unknown [194.60.247.123])
+        by mail.inango-sw.com (Postfix) with ESMTPSA id E1E281080782;
+        Mon, 13 Jan 2020 12:27:27 +0200 (IST)
+From:   Nikolai Merinov <n.merinov@inango-systems.com>
+To:     hch@infradead.org, Davidlohr Bueso <dave@stgolabs.net>,
+        Jens Axboe <axboe@kernel.dk>, Ard Biesheuvel <ardb@kernel.org>,
+        linux-efi@vger.kernel.org, linux-block@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     Nikolai Merinov <n.merinov@inango-systems.com>
+Subject: [PATCH v3] partitions/efi: Fix partition name parsing in GUID partition entry
+Date:   Mon, 13 Jan 2020 15:27:23 +0500
+Message-Id: <26f7bd89f212f68b03a4b207e96d8702c9049015.1578910723.git.n.merinov@inango-systems.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20200108133926.GC4455@infradead.org>
+References: <20181124162123.21300-1-n.merinov@inango-systems.com> <20191224092119.4581-1-n.merinov@inango-systems.com> <20200108133926.GC4455@infradead.org>
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, 10 Jan 2020 at 19:13, Ingo Molnar <mingo@kernel.org> wrote:
->
->
-> * Ard Biesheuvel <ard.biesheuvel@linaro.org> wrote:
->
-> > On Fri, 3 Jan 2020 at 12:40, Ard Biesheuvel <ardb@kernel.org> wrote:
-> > >
-> > > Ingo, Thomas,
-> > >
-> > > This is the second batch of EFI updates for v5.6. Two things are still
-> > > under discussion, so I'll probably have a few more changes for this
-> > > cycle in a week or so.
-> > >
-> > > The following changes since commit 0679715e714345d273c0e1eb78078535ffc4b2a1:
-> > >
-> > >   efi/libstub/x86: Avoid globals to store context during mixed mode calls (2019-12-25 10:49:26 +0100)
-> > >
-> > > are available in the Git repository at:
-> > >
-> > >   git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git tags/efi-next
-> > >
-> > > for you to fetch changes up to d95e4feae5368a91775c4597a8f298ba84f31535:
-> > >
-> > >   efi/x86: avoid RWX mappings for all of DRAM (2020-01-03 11:46:15 +0100)
-> > >
-> >
-> > Ingo, Thomas,
-> >
-> > I'll be submitting another PR later today or tomorrow that goes on top
-> > of these changes. Please let me know if you would like a v2 of this PR
-> > with the new content included, or rather keep them separate.
->
-> So there's one complication I noticed, there's conflicts with ongoing
-> x86/mm work. I've merged x86/mm into efi/core (and will send the branches
-> in that order in the merge window), and the final three patches conflict.
->
-> Mind sending those three patches and your other patches on top of the
-> latest efi/core (4444f8541dad)?
->
+GUID partition entry defined to have a partition name as 36 UTF-16LE
+code units. This means that on big-endian platforms ASCII symbols
+would be read with 0xXX00 efi_char16_t character code. In order to
+correctly extract ASCII characters from a partition name field we
+should be converted from 16LE to CPU architecture.
 
-No problem. I'll rebase and retest, and send out the result end of
-today or tomorrow.
+The problem exists on all big endian platforms.
 
-Thanks,
-Ard.
+Signed-off-by: Nikolai Merinov <n.merinov@inango-systems.com>
+---
+ block/partitions/efi.c | 3 ++-
+ block/partitions/efi.h | 2 +-
+ include/linux/efi.h    | 5 +++++
+ 3 files changed, 8 insertions(+), 2 deletions(-)
+
+diff --git a/block/partitions/efi.c b/block/partitions/efi.c
+index db2fef7dfc47..f1d0820de844 100644
+--- a/block/partitions/efi.c
++++ b/block/partitions/efi.c
+@@ -715,7 +715,8 @@ int efi_partition(struct parsed_partitions *state)
+ 				ARRAY_SIZE(ptes[i].partition_name));
+ 		info->volname[label_max] = 0;
+ 		while (label_count < label_max) {
+-			u8 c = ptes[i].partition_name[label_count] & 0xff;
++			u8 c = 0xff & efi_char16le_to_cpu(
++					ptes[i].partition_name[label_count]);
+ 			if (c && !isprint(c))
+ 				c = '!';
+ 			info->volname[label_count] = c;
+diff --git a/block/partitions/efi.h b/block/partitions/efi.h
+index 3e8576157575..4d4cae0bb79e 100644
+--- a/block/partitions/efi.h
++++ b/block/partitions/efi.h
+@@ -88,7 +88,7 @@ typedef struct _gpt_entry {
+ 	__le64 starting_lba;
+ 	__le64 ending_lba;
+ 	gpt_entry_attributes attributes;
+-	efi_char16_t partition_name[72 / sizeof (efi_char16_t)];
++	efi_char16le_t partition_name[72 / sizeof(efi_char16le_t)];
+ } __packed gpt_entry;
+ 
+ typedef struct _gpt_mbr_record {
+diff --git a/include/linux/efi.h b/include/linux/efi.h
+index aa54586db7a5..47882f2d45db 100644
+--- a/include/linux/efi.h
++++ b/include/linux/efi.h
+@@ -45,9 +45,14 @@
+ typedef unsigned long efi_status_t;
+ typedef u8 efi_bool_t;
+ typedef u16 efi_char16_t;		/* UNICODE character */
++typedef __le16 efi_char16le_t;		/* UTF16-LE */
++typedef __be16 efi_char16be_t;		/* UTF16-BE */
+ typedef u64 efi_physical_addr_t;
+ typedef void *efi_handle_t;
+ 
++#define efi_char16le_to_cpu le16_to_cpu
++#define efi_char16be_to_cpu be16_to_cpu
++
+ /*
+  * The UEFI spec and EDK2 reference implementation both define EFI_GUID as
+  * struct { u32 a; u16; b; u16 c; u8 d[8]; }; and so the implied alignment
+-- 
+2.17.1
+
