@@ -2,72 +2,108 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1FB69138B6F
-	for <lists+linux-efi@lfdr.de>; Mon, 13 Jan 2020 06:52:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 077E6138C4F
+	for <lists+linux-efi@lfdr.de>; Mon, 13 Jan 2020 08:29:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728748AbgAMFws (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 13 Jan 2020 00:52:48 -0500
-Received: from mail-oi1-f193.google.com ([209.85.167.193]:32874 "EHLO
-        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730659AbgAMFw0 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 13 Jan 2020 00:52:26 -0500
-Received: by mail-oi1-f193.google.com with SMTP id v140so7227283oie.0
-        for <linux-efi@vger.kernel.org>; Sun, 12 Jan 2020 21:52:25 -0800 (PST)
+        id S1728738AbgAMH3W (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 13 Jan 2020 02:29:22 -0500
+Received: from mail-wr1-f66.google.com ([209.85.221.66]:39292 "EHLO
+        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728709AbgAMH3W (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 13 Jan 2020 02:29:22 -0500
+Received: by mail-wr1-f66.google.com with SMTP id y11so7397518wrt.6
+        for <linux-efi@vger.kernel.org>; Sun, 12 Jan 2020 23:29:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=Rjbe3pVeMfYVPdmVklZ4b2stSqI32LIYp+bn/8NyJvk=;
-        b=El5YZgtDEXJCHEtZrRB1ujEJT5GnrR9nqQvx3oNXkD1KXWKAy5lE4fahagwXmNRBuY
-         Z373bCStdjZZAvrcMmyjZhqXNYKD7qS8gpQ1uKt4Zm/CJYofbOmd6y2KCfdaIf8lu4gx
-         e04Qq2Wd5k0QzXhgODgXLh9+BTAbr7mIJG1kvrHD2cB5892G2QaMtoQjZ8YbwAsn/v/R
-         qN1ulSwy8kLJzDOOwwvDkEa6g0paOaNUUW6lO8NcaOsOsQMTh2eV34LXY/bnRxfyDcL+
-         OFIAYoYpyWTxvo4nB11oXa8J2BNLiFXnr18VfN4DCPOmpXqWPT8f/9GzmZX8VWLxs4VK
-         s+8g==
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=Whdn2m/U1+HR1RNQq+8AxWESiMgdzhNcD7fmHq1i6N8=;
+        b=bD+O85KGDadiliWt3Ps6YuhsgSPwXU8EYhpSch8p+13GrX2HlxbLekt0Q7m5w43NTc
+         KU72X99cw/UqTi2iXQzYiev8cXt8UvHfsC5iEU0o9JjBYfQP4IGFo4loiZSrQcHaj+ph
+         qfEe8OckgtbZyNM4ZcfXyT0L+HB9TdxF/T8EfwYEQX9bQV905u7RP61+cj0ZsXOaJUQ2
+         BnT4z6Rmzco6HRo3UCQx9fBV4dSbRjp4OJtXJ7PFXsBGmP14XS+uTFBR4wQ1FXrYw7sz
+         mimNnG+o78KhowrJbnHEPPTi3dlIhRe1x9ud8xc0psJ0tCP9dCDq30klcJVBSSjsPXOk
+         Mdiw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=Rjbe3pVeMfYVPdmVklZ4b2stSqI32LIYp+bn/8NyJvk=;
-        b=iy4pVEn2ZH23x9+Iga5pTmlyquzl1SOiGfGMGVj9SlQn7BOPf1fyFyUNSpKn+nPXHr
-         konw5P/r5WgKlohVZmnd8kRgA51IOM6Mmxwvox0EMQ34+KT7KDXGo+rfIWVy5XrA5bMg
-         7hhCO7uBq07Lb9HxDzviam6Ak08CESyIKOTB/Kc74ZuN86R/gyKtdt+Q5mCF0hx/cKKl
-         Glxx1ahIx5H+8mj+MRdDtwkGciq/1zZyACw2DpwKzqd4+ZFTy2BUhb9SVUehjphjJFRL
-         zcwECR2fk2XpDWe185q7SZnH9w+RiEwpqnnsKnCNZ3XHmQ7YMFwKZBxzBswyqtvEn9nI
-         0jdg==
-X-Gm-Message-State: APjAAAWMguphdYzEbPNbpsIZC5zvaE/iFQaRJcuJJrFFSjhR8QMmDDsa
-        b4GmD8yuyz75ThfOIdraytlEgBxLCNJq3G/Q/oQ=
-X-Google-Smtp-Source: APXvYqy7JhGBt0ZjJ/1t4CT74GIhTuvbOMnCynReBbsGRcTAfZPwoiLBCe9XiPA9xaK1JAPmy14eucUMWI9DLkbKsUo=
-X-Received: by 2002:a54:4713:: with SMTP id k19mr11513430oik.113.1578894745174;
- Sun, 12 Jan 2020 21:52:25 -0800 (PST)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Whdn2m/U1+HR1RNQq+8AxWESiMgdzhNcD7fmHq1i6N8=;
+        b=TCpBeWQMFykmCxjtAzBKc2wAFZ6A/lhHISgHq0bVoTNvKg3PMS6SAIggLPivznB4A5
+         3kpYvqLXgelB+vf7AZJMf3h8XRzg7UiY8QUBmNL4/DMiquD3wnq2QATQeJlRQnaUCCx2
+         zyxefxnw+XzMj3oGqS9dZSucKxZ4MHWDIRmVD3mFSkYvpJy8QbvSH/Wv9D+hMAyFOtzf
+         sWVpk8Xy0FxWSGO/DrQRA5VMaRqkqhw3FL9EcHPgAHkvHWOK+UzaOmK68iEyBx1Se4eZ
+         qAyt8A5pGpssZZ4WB/OjhPddT7SoPyP1Hcmqoe6Um5/sGCjCr+6t0C1AZlXOyH/Mfbs4
+         i7Iw==
+X-Gm-Message-State: APjAAAW3Te0slIl/NSWFRuz8D140XZ8nojf8NIYKlLxSAktuzidAFcBf
+        mOJ69lqBHUDox4ZujalPaiaFQkofU9yD1kDaVo2gcw==
+X-Google-Smtp-Source: APXvYqybS5eWEDwKlCVck9fBn8ODoIWsy3woTpWRduDt3Jqrcph4In1sPlEdRF1YEQxWKwUulSCwOK9Iz13o914Trto=
+X-Received: by 2002:a5d:6652:: with SMTP id f18mr17078276wrw.246.1578900560096;
+ Sun, 12 Jan 2020 23:29:20 -0800 (PST)
 MIME-Version: 1.0
-Received: by 2002:a4a:41cb:0:0:0:0:0 with HTTP; Sun, 12 Jan 2020 21:52:24
- -0800 (PST)
-Reply-To: rickschaech@gmail.com
-From:   Rick Schaech <cathben72@gmail.com>
-Date:   Mon, 13 Jan 2020 01:52:24 -0400
-Message-ID: <CAEcBxO=TAnFn5LzizHa22hUC0Db5FuiZJF28m=yX3_9m--jRqg@mail.gmail.com>
-Subject: I wait for your swift response,
-To:     undisclosed-recipients:;
+References: <20200103113953.9571-1-ardb@kernel.org> <CAKv+Gu8pzDSs6G5k9JfX77NB4q2kerxSuprnzFzeGBPd2kPd5g@mail.gmail.com>
+ <20200110181312.GB83292@gmail.com>
+In-Reply-To: <20200110181312.GB83292@gmail.com>
+From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Date:   Mon, 13 Jan 2020 08:29:09 +0100
+Message-ID: <CAKv+Gu_4GNdu+72iGN5wnzfDx3iQ0uM2x9wC6pOBPvqAvJu8dA@mail.gmail.com>
+Subject: Re: [GIT PULL 00/20] More EFI updates for v5.6
+To:     Ingo Molnar <mingo@kernel.org>
+Cc:     Ard Biesheuvel <ardb@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Andy Lutomirski <luto@kernel.org>,
+        Arvind Sankar <nivedita@alum.mit.edu>,
+        Matthew Garrett <mjg59@google.com>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Dear, I'm Mr Rick Schaech, I am the General Account Auditor, Though i
-know we have not meet each other before but sometimes in life God have
-a reason of bringing two people from two different countries together
-as business partners or life partners.
+On Fri, 10 Jan 2020 at 19:13, Ingo Molnar <mingo@kernel.org> wrote:
+>
+>
+> * Ard Biesheuvel <ard.biesheuvel@linaro.org> wrote:
+>
+> > On Fri, 3 Jan 2020 at 12:40, Ard Biesheuvel <ardb@kernel.org> wrote:
+> > >
+> > > Ingo, Thomas,
+> > >
+> > > This is the second batch of EFI updates for v5.6. Two things are still
+> > > under discussion, so I'll probably have a few more changes for this
+> > > cycle in a week or so.
+> > >
+> > > The following changes since commit 0679715e714345d273c0e1eb78078535ffc4b2a1:
+> > >
+> > >   efi/libstub/x86: Avoid globals to store context during mixed mode calls (2019-12-25 10:49:26 +0100)
+> > >
+> > > are available in the Git repository at:
+> > >
+> > >   git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git tags/efi-next
+> > >
+> > > for you to fetch changes up to d95e4feae5368a91775c4597a8f298ba84f31535:
+> > >
+> > >   efi/x86: avoid RWX mappings for all of DRAM (2020-01-03 11:46:15 +0100)
+> > >
+> >
+> > Ingo, Thomas,
+> >
+> > I'll be submitting another PR later today or tomorrow that goes on top
+> > of these changes. Please let me know if you would like a v2 of this PR
+> > with the new content included, or rather keep them separate.
+>
+> So there's one complication I noticed, there's conflicts with ongoing
+> x86/mm work. I've merged x86/mm into efi/core (and will send the branches
+> in that order in the merge window), and the final three patches conflict.
+>
+> Mind sending those three patches and your other patches on top of the
+> latest efi/core (4444f8541dad)?
+>
 
-My dear friend, I have the sum of 15.7 Million USD i wish to put in
-your name due to the death of my late client who died several years
-ago as his next of kin column still remain blank. Though the internet
-medium is highly abuse these days but am assuring you that this
-transaction is legitimate and I am contacting you that we may have a
-deal, note for your cooperation and collaboration 40% of the sum will
-be for you while the other 60% will be for me as well. I wait for your
-swift response for more details. please forward your response to my
-personal E-mail: rickschaech@gmail.com
+No problem. I'll rebase and retest, and send out the result end of
+today or tomorrow.
 
-Yours sincerely,
-Rick Schaech.
+Thanks,
+Ard.
