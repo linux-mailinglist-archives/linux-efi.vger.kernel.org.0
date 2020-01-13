@@ -2,108 +2,72 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 041E213889B
-	for <lists+linux-efi@lfdr.de>; Sun, 12 Jan 2020 23:54:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1FB69138B6F
+	for <lists+linux-efi@lfdr.de>; Mon, 13 Jan 2020 06:52:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387474AbgALWyS (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sun, 12 Jan 2020 17:54:18 -0500
-Received: from mail.kernel.org ([198.145.29.99]:56952 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2387460AbgALWyS (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Sun, 12 Jan 2020 17:54:18 -0500
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 0CC242467C
-        for <linux-efi@vger.kernel.org>; Sun, 12 Jan 2020 22:54:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1578869657;
-        bh=OTPSk1FDbrul0QY/pUOTlMEtUEMURhj6Q/PvlUu/sI8=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=hzhvSFdpz62gogZ9QN7lfmafoGsakUjT1kaPTgxvKWg5Xq+befE3iVxPLwm79hZTC
-         daPQyiQvVm0j+WIy9HH+k4T6lNya6yT+5xyuppstOXHcEnLAtcJfMXOwB4xoUxPQBi
-         wd32iWGi8yUPDeOVPUB/jfWtezETqeizKYZhYU6U=
-Received: by mail-wr1-f53.google.com with SMTP id z7so6757328wrl.13
-        for <linux-efi@vger.kernel.org>; Sun, 12 Jan 2020 14:54:16 -0800 (PST)
-X-Gm-Message-State: APjAAAWgZYXqmlF8VuYoglCNQUZ7RSVv7NTYh80q0uV9Eg5P/yS6q4l0
-        EZRtC6K7yQOLVuqkrKzvedCSFnSxHEoqW8am5qqrNg==
-X-Google-Smtp-Source: APXvYqwqvYzhEdydCPNO7qcIvHe+8nzILh5eaIaQCyGHnDLwjQKEoFRnKyCjU2psD4HOU4Uu55mc3jpLpIFWqLzfw5Q=
-X-Received: by 2002:adf:f491:: with SMTP id l17mr14897341wro.149.1578869655295;
- Sun, 12 Jan 2020 14:54:15 -0800 (PST)
+        id S1728748AbgAMFws (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 13 Jan 2020 00:52:48 -0500
+Received: from mail-oi1-f193.google.com ([209.85.167.193]:32874 "EHLO
+        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730659AbgAMFw0 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 13 Jan 2020 00:52:26 -0500
+Received: by mail-oi1-f193.google.com with SMTP id v140so7227283oie.0
+        for <linux-efi@vger.kernel.org>; Sun, 12 Jan 2020 21:52:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=Rjbe3pVeMfYVPdmVklZ4b2stSqI32LIYp+bn/8NyJvk=;
+        b=El5YZgtDEXJCHEtZrRB1ujEJT5GnrR9nqQvx3oNXkD1KXWKAy5lE4fahagwXmNRBuY
+         Z373bCStdjZZAvrcMmyjZhqXNYKD7qS8gpQ1uKt4Zm/CJYofbOmd6y2KCfdaIf8lu4gx
+         e04Qq2Wd5k0QzXhgODgXLh9+BTAbr7mIJG1kvrHD2cB5892G2QaMtoQjZ8YbwAsn/v/R
+         qN1ulSwy8kLJzDOOwwvDkEa6g0paOaNUUW6lO8NcaOsOsQMTh2eV34LXY/bnRxfyDcL+
+         OFIAYoYpyWTxvo4nB11oXa8J2BNLiFXnr18VfN4DCPOmpXqWPT8f/9GzmZX8VWLxs4VK
+         s+8g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=Rjbe3pVeMfYVPdmVklZ4b2stSqI32LIYp+bn/8NyJvk=;
+        b=iy4pVEn2ZH23x9+Iga5pTmlyquzl1SOiGfGMGVj9SlQn7BOPf1fyFyUNSpKn+nPXHr
+         konw5P/r5WgKlohVZmnd8kRgA51IOM6Mmxwvox0EMQ34+KT7KDXGo+rfIWVy5XrA5bMg
+         7hhCO7uBq07Lb9HxDzviam6Ak08CESyIKOTB/Kc74ZuN86R/gyKtdt+Q5mCF0hx/cKKl
+         Glxx1ahIx5H+8mj+MRdDtwkGciq/1zZyACw2DpwKzqd4+ZFTy2BUhb9SVUehjphjJFRL
+         zcwECR2fk2XpDWe185q7SZnH9w+RiEwpqnnsKnCNZ3XHmQ7YMFwKZBxzBswyqtvEn9nI
+         0jdg==
+X-Gm-Message-State: APjAAAWMguphdYzEbPNbpsIZC5zvaE/iFQaRJcuJJrFFSjhR8QMmDDsa
+        b4GmD8yuyz75ThfOIdraytlEgBxLCNJq3G/Q/oQ=
+X-Google-Smtp-Source: APXvYqy7JhGBt0ZjJ/1t4CT74GIhTuvbOMnCynReBbsGRcTAfZPwoiLBCe9XiPA9xaK1JAPmy14eucUMWI9DLkbKsUo=
+X-Received: by 2002:a54:4713:: with SMTP id k19mr11513430oik.113.1578894745174;
+ Sun, 12 Jan 2020 21:52:25 -0800 (PST)
 MIME-Version: 1.0
-References: <20200111145703.533809-1-hdegoede@redhat.com> <20200111145703.533809-5-hdegoede@redhat.com>
-In-Reply-To: <20200111145703.533809-5-hdegoede@redhat.com>
-From:   Andy Lutomirski <luto@kernel.org>
-Date:   Sun, 12 Jan 2020 14:54:04 -0800
-X-Gmail-Original-Message-ID: <CALCETrXi_P1_nCp27yawLeUKuR=Wo11rKao222SVsnhi6qF9fA@mail.gmail.com>
-Message-ID: <CALCETrXi_P1_nCp27yawLeUKuR=Wo11rKao222SVsnhi6qF9fA@mail.gmail.com>
-Subject: Re: [PATCH v11 04/10] firmware: Add new platform fallback mechanism
- and firmware_request_platform()
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     Ard Biesheuvel <ardb@kernel.org>,
-        Darren Hart <dvhart@infradead.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        Luis Chamberlain <mcgrof@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        "H . Peter Anvin" <hpa@zytor.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Peter Jones <pjones@redhat.com>,
-        Dave Olsthoorn <dave@bewaar.me>, X86 ML <x86@kernel.org>,
-        Platform Driver <platform-driver-x86@vger.kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
-        "open list:HID CORE LAYER" <linux-input@vger.kernel.org>
+Received: by 2002:a4a:41cb:0:0:0:0:0 with HTTP; Sun, 12 Jan 2020 21:52:24
+ -0800 (PST)
+Reply-To: rickschaech@gmail.com
+From:   Rick Schaech <cathben72@gmail.com>
+Date:   Mon, 13 Jan 2020 01:52:24 -0400
+Message-ID: <CAEcBxO=TAnFn5LzizHa22hUC0Db5FuiZJF28m=yX3_9m--jRqg@mail.gmail.com>
+Subject: I wait for your swift response,
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Sat, Jan 11, 2020 at 6:57 AM Hans de Goede <hdegoede@redhat.com> wrote:
->
-> In some cases the platform's main firmware (e.g. the UEFI fw) may contain
-> an embedded copy of device firmware which needs to be (re)loaded into the
-> peripheral. Normally such firmware would be part of linux-firmware, but in
-> some cases this is not feasible, for 2 reasons:
->
-> 1) The firmware is customized for a specific use-case of the chipset / use
-> with a specific hardware model, so we cannot have a single firmware file
-> for the chipset. E.g. touchscreen controller firmwares are compiled
-> specifically for the hardware model they are used with, as they are
-> calibrated for a specific model digitizer.
->
-> 2) Despite repeated attempts we have failed to get permission to
-> redistribute the firmware. This is especially a problem with customized
-> firmwares, these get created by the chip vendor for a specific ODM and the
-> copyright may partially belong with the ODM, so the chip vendor cannot
-> give a blanket permission to distribute these.
->
-> This commit adds a new platform fallback mechanism to the firmware loader
-> which will try to lookup a device fw copy embedded in the platform's main
-> firmware if direct filesystem lookup fails.
->
-> Drivers which need such embedded fw copies can enable this fallback
-> mechanism by using the new firmware_request_platform() function.
+Dear, I'm Mr Rick Schaech, I am the General Account Auditor, Though i
+know we have not meet each other before but sometimes in life God have
+a reason of bringing two people from two different countries together
+as business partners or life partners.
 
-After finally wrapping my head around how this all fits together:
+My dear friend, I have the sum of 15.7 Million USD i wish to put in
+your name due to the death of my late client who died several years
+ago as his next of kin column still remain blank. Though the internet
+medium is highly abuse these days but am assuring you that this
+transaction is legitimate and I am contacting you that we may have a
+deal, note for your cooperation and collaboration 40% of the sum will
+be for you while the other 60% will be for me as well. I wait for your
+swift response for more details. please forward your response to my
+personal E-mail: rickschaech@gmail.com
 
-Early in boot, you check a bunch of firmware descriptors, bundled with
-drivers, to search EFI code and data for firmware before you free said
-code and data.  You catalogue it by name.  Later on, you use this list
-as a fallback, again catalogued by name.  I think it would be rather
-nicer if you simply had a list in a single file containing all these
-descriptors rather than commingling it with the driver's internal dmi
-data.  This gets rid of all the ifdeffery and module issues.  It also
-avoids any potential nastiness when you have a dmi entry that contains
-driver_data that points into the driver when the driver is a module.
-
-And you can mark the entire list __initdata.  And you can easily (now
-or later on) invert the code flow so you map each EFI region exactly
-once and then search for all the firmware in it.
-
---Andy
+Yours sincerely,
+Rick Schaech.
