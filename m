@@ -2,32 +2,56 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8715F13B2E7
-	for <lists+linux-efi@lfdr.de>; Tue, 14 Jan 2020 20:22:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CAA8A13B39F
+	for <lists+linux-efi@lfdr.de>; Tue, 14 Jan 2020 21:30:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728863AbgANTWW (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 14 Jan 2020 14:22:22 -0500
-Received: from mail.kernel.org ([198.145.29.99]:46278 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727102AbgANTWW (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Tue, 14 Jan 2020 14:22:22 -0500
-Received: from paulmck-ThinkPad-P72.home (50-39-105-78.bvtn.or.frontiernet.net [50.39.105.78])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 9888124658;
-        Tue, 14 Jan 2020 19:22:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1579029740;
-        bh=mKLOd2xmuYtb73s/4dD84EKQ2MMEkc1ge3ZF5InQbH8=;
-        h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
-        b=117MId6Fz76RZor5q9TDLOOoMgry1k3C0QHZUjZIdh92Cr0Y66vkwVY4G+FR6cfpv
-         BIBczBS/bbgKByRPmw3XmuYD/Ayq9MiHEziGem3GpZoV1tAE9hrhlFPzNXPZF0Ldve
-         dtbxedSQL5fov2WMA872xeXZ/jl8mPcSM/6v5OrA=
-Received: by paulmck-ThinkPad-P72.home (Postfix, from userid 1000)
-        id 3FB583522798; Tue, 14 Jan 2020 11:22:20 -0800 (PST)
-Date:   Tue, 14 Jan 2020 11:22:20 -0800
-From:   "Paul E. McKenney" <paulmck@kernel.org>
-To:     Qian Cai <cai@lca.pw>
+        id S1727556AbgANUa4 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 14 Jan 2020 15:30:56 -0500
+Received: from mail-qk1-f194.google.com ([209.85.222.194]:39184 "EHLO
+        mail-qk1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727285AbgANUa4 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 14 Jan 2020 15:30:56 -0500
+Received: by mail-qk1-f194.google.com with SMTP id c16so13470248qko.6
+        for <linux-efi@vger.kernel.org>; Tue, 14 Jan 2020 12:30:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=lca.pw; s=google;
+        h=content-transfer-encoding:from:mime-version:subject:date:message-id
+         :references:cc:in-reply-to:to;
+        bh=GM2cmKJLGIw00BnTkj1dcmxxtlMk1WYpnp+HW9nEczc=;
+        b=qfNdLg3kkuNI6cLLk03N289br06VFc6cqXJqoyJLg1KprL1vXCIrhjDgtVLFvs1Lwb
+         AGCRxsxBhq8RqUyn380ItGPioew6bRYplCRy7vK2et+jGpulMqjnLkOTPeNz/33eXrDq
+         0vFaoz7vDSh5K80ynQpMr5rMy8tA7f6nYDRq/e+wt1l6rr9+6nNEBxx8MmmB3Qm7R4Cl
+         TNl5xvJuy5W6ApqyVP/ggRMHAYLrtnXI4E8Xv7pyFWREaYmrxqRLCzpVXVmBV7MZyEXE
+         U3rJZrXfsMTvsHDdbHIlb8doOnexZCFIYMkSwEi0SRMSCJOxOWAm5Dg1RaK67s/foSTo
+         ZGxQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:content-transfer-encoding:from:mime-version
+         :subject:date:message-id:references:cc:in-reply-to:to;
+        bh=GM2cmKJLGIw00BnTkj1dcmxxtlMk1WYpnp+HW9nEczc=;
+        b=thN5vs8KQeJXBH6c2axPNQKKkjqNQcQHWkN//AImMdQqzOfuavvXhOoygrAcNSkgWB
+         sAmwWhmGCEvsrTOP33IRFFt+btfYgV014XSQnDwhzpcA/xKzsWpuSb1mHtafQRN4zgMq
+         cN9+MLKekve7S+wuHJiJpzumJp1i2AoXzYZIcRRbiRV/VbP4nAVShPUFwUBJlWJd1y0y
+         m+odBoIEKRMLHeUPvlCZ4WtGXpGUkbcYn8yrPP1fuRjCAznHIzTkp/ePqIhtpYXF+U3z
+         ZVq7G/xCSC0vRlEW78GxhwKARNSzgD/UYzhIRxHlRfEj61eQEDhSq70BEYWY0w+h2y9B
+         MNwQ==
+X-Gm-Message-State: APjAAAWLgpB7lZZ/ySxRq/UQcEPiuZCrCF/zKq2kzfk18Q4PPuFM+DHK
+        O52288wIkpP1G/+6yoXCTExWLw==
+X-Google-Smtp-Source: APXvYqySWPhc8cNWPW6ZR1czJUmUILrXAmHD502QnwiMjSkfcnjRHGogwSncB5M2bJhCbEL2kLY/AQ==
+X-Received: by 2002:ae9:c104:: with SMTP id z4mr18665764qki.418.1579033855079;
+        Tue, 14 Jan 2020 12:30:55 -0800 (PST)
+Received: from [192.168.1.183] (pool-71-184-117-43.bstnma.fios.verizon.net. [71.184.117.43])
+        by smtp.gmail.com with ESMTPSA id 68sm7357546qkj.102.2020.01.14.12.30.54
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 14 Jan 2020 12:30:54 -0800 (PST)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+From:   Qian Cai <cai@lca.pw>
+Mime-Version: 1.0 (1.0)
+Subject: Re: [PATCH v4 01/10] kcsan: Add Kernel Concurrency Sanitizer infrastructure
+Date:   Tue, 14 Jan 2020 15:30:53 -0500
+Message-Id: <F185919B-2D86-43B6-9BEC-D14D72871A58@lca.pw>
+References: <20200114192220.GS2935@paulmck-ThinkPad-P72>
 Cc:     Marco Elver <elver@google.com>,
         LKMM Maintainers -- Akira Yokosawa <akiyks@gmail.com>,
         Alan Stern <stern@rowland.harvard.edu>,
@@ -63,71 +87,31 @@ Cc:     Marco Elver <elver@google.com>,
         LKML <linux-kernel@vger.kernel.org>,
         Linux Memory Management List <linux-mm@kvack.org>,
         the arch/x86 maintainers <x86@kernel.org>
-Subject: Re: [PATCH v4 01/10] kcsan: Add Kernel Concurrency Sanitizer
- infrastructure
-Message-ID: <20200114192220.GS2935@paulmck-ThinkPad-P72>
-Reply-To: paulmck@kernel.org
-References: <CANpmjNOC2PYFsE_TK2SYmKcHxyG+2arWc8x_fmeWPOMi0+ot8g@mail.gmail.com>
- <53F6B915-AC53-41BB-BF32-33732515B3A0@lca.pw>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <53F6B915-AC53-41BB-BF32-33732515B3A0@lca.pw>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <20200114192220.GS2935@paulmck-ThinkPad-P72>
+To:     paulmck@kernel.org
+X-Mailer: iPhone Mail (17C54)
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, Jan 14, 2020 at 06:08:29AM -0500, Qian Cai wrote:
-> 
-> 
-> > On Jan 6, 2020, at 7:47 AM, Marco Elver <elver@google.com> wrote:
-> > 
-> > Thanks, I'll look into KCSAN + lockdep compatibility. It's probably
-> > missing some KCSAN_SANITIZE := n in some Makefile.
-> 
-> Can I have a update on fixing this? It looks like more of a problem that kcsan_setup_watchpoint() will disable IRQs and then dive into the page allocator where it would complain because it might sleep.
-> 
-> BTW, I saw Paul sent a pull request for 5.6 but it is ugly to have everybody could trigger a deadlock (sleep function called in atomic context) like this during boot once this hits the mainline not to mention about only recently it is possible to test this feature (thanks to warning ratelimit) with the existing debugging options because it was unable to boot due to the brokenness with debug_pagealloc as mentioned in this thread, so this does sounds like it needs more soak time for the mainline to me.
 
-Just so I understand...  Does this problem happen even in CONFIG_KCSAN=n
-kernels?
 
-I have been running extensive CONFIG_KSCAN=y rcutorture tests for quite
-awhile now, so even if this only happens for CONFIG_KSCAN=y, it is not
-like it affects everyone.
+> On Jan 14, 2020, at 2:22 PM, Paul E. McKenney <paulmck@kernel.org> wrote:
+>=20
+> Just so I understand...  Does this problem happen even in CONFIG_KCSAN=3Dn=
 
-Yes, it should be fixed, and Marco does have a patch on the way.
+> kernels?
 
-							Thanx, Paul
+No.
 
-> 0000000000000400
-> [   13.416814][    T1] Call Trace:
-> [   13.416814][    T1]  lock_is_held_type+0x66/0x160
-> [   13.416814][    T1]  ___might_sleep+0xc1/0x1d0
-> [   13.416814][    T1]  __might_sleep+0x5b/0xa0
-> [   13.416814][    T1]  slab_pre_alloc_hook+0x7b/0xa0
-> [   13.416814][    T1]  __kmalloc_node+0x60/0x300
-> [   13.416814   T1]  ? alloc_cpumask_var_node+0x44/0x70
-> [   13.416814][    T1]  ? topology_phys_to_logical_die+0x7e/0x180
-> [   13.416814][    T1]  alloc_cpumask_var_node+0x44/0x70
-> [   13.416814][    T1]  zalloc_cpumask_var+0x2a/0x40
-> [   13.416814][    T1]  native_smp_prepare_cpus+0x246/0x425
-> [   13.416814][    T1]  kernel_init_freeable+0x1b8/0x496
-> [   13.416814][    T1]  ? rest_init+0x381/0x381
-> [   13.416814][    T1]  kernel_init+0x18/0x17f
-> [   13.416814][    T1]  ? rest_init+0x381/0x381
-> [   13.416814][    T1]  ret_from_fork+0x3a/0x50
-> [   13.416814][    T1] irq event stamp: 910
-> [   13.416814][    T1] hardirqs last  enabled at (909): [<ffffffff8d1240f3>] _raw_write_unlock_irqrestore+0x53/0x57
-> [   13.416814][    T1] hardirqs last disabled at (910): [<ffffffff8c8bba76>] kcsan_setup_watchpoint+0x96/0x460
-> [   13.416814][    T1] softirqs last  enabled at (0): [<ffffffff8c6b697a>] copy_process+0x11fa/0x34f0
-> [   13.416814][    T1] softirqs last disabled at (0): [<0000000000000000>] 0x0
-> [   13.416814][    T1] ---[ end trace 7d1df66da055aa92 ]---
-> [   13.416814][    T1] possible reason: unannotated irqs-on.
-> [   13.416814][ent stamp: 910
-> [   13.416814][    T1] hardirqs last  enabled at (909): [<ffffffff8d1240f3>] _raw_write_unlock_irqrestore+0x53/0x57
-> [   13.416814][    T1] hardirqs last disabled at (910): [<ffffffff8c8bba76>] kcsan_setup_watchpoint+0x96/0x460
-> [   13.416814][    T1] softirqs last  enabled at (0): [<ffffffff8c6b697a>] copy_process+0x11fa/0x34f0
-> [   13.416814][    T1] softirqs last disabled at (0): [<0000000000000000>] 0x0
+>=20
+> I have been running extensive CONFIG_KSCAN=3Dy rcutorture tests for quite
+> awhile now, so even if this only happens for CONFIG_KSCAN=3Dy, it is not
+> like it affects everyone.
+>=20
+> Yes, it should be fixed, and Marco does have a patch on the way.
+
+The concern is really about setting KSCAN=3Dy in a distro debug kernel where=
+ it has other debug options. I=E2=80=99ll try to dig into more of those issu=
+es in the next few days.=
