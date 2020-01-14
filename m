@@ -2,192 +2,152 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D1114139782
-	for <lists+linux-efi@lfdr.de>; Mon, 13 Jan 2020 18:23:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A672313A7F3
+	for <lists+linux-efi@lfdr.de>; Tue, 14 Jan 2020 12:08:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728951AbgAMRXi (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 13 Jan 2020 12:23:38 -0500
-Received: from mail.kernel.org ([198.145.29.99]:42924 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728946AbgAMRXh (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Mon, 13 Jan 2020 12:23:37 -0500
-Received: from dogfood.home (amontpellier-657-1-18-247.w109-210.abo.wanadoo.fr [109.210.65.247])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 97FA1206DA;
-        Mon, 13 Jan 2020 17:23:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1578936216;
-        bh=yqJTpElEIc8QobaR9Uk2pT2ef9Mek7Pwo/n6rRWT4jA=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Qmq1FoVI08ZLfnqiF3oSV422/cURLUqT2913jMeAoQo3ad60QBEOvWhmXU3xhBQ0v
-         MQMGlvqlPIlEgVnFRLFIbuETXK/zM+sdWj22swh/5CeEinkF245zHzirgsIYlAXvwj
-         uxlS0Z5vGnh7G1O3fumS8AgU2ulP30KVPdFWOtr4=
-From:   Ard Biesheuvel <ardb@kernel.org>
-To:     linux-efi@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>
-Cc:     Ard Biesheuvel <ardb@kernel.org>, linux-kernel@vger.kernel.org,
-        Anshuman Khandual <anshuman.khandual@arm.com>,
+        id S1729462AbgANLId (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 14 Jan 2020 06:08:33 -0500
+Received: from mail-qk1-f196.google.com ([209.85.222.196]:40361 "EHLO
+        mail-qk1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727556AbgANLIc (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 14 Jan 2020 06:08:32 -0500
+Received: by mail-qk1-f196.google.com with SMTP id c17so11660459qkg.7
+        for <linux-efi@vger.kernel.org>; Tue, 14 Jan 2020 03:08:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=lca.pw; s=google;
+        h=content-transfer-encoding:from:mime-version:subject:date:message-id
+         :references:cc:in-reply-to:to;
+        bh=ukU/HTx3Lur+oN5f1R5Yulqfuax6so7AyFG3I+NXijE=;
+        b=mDLkJsF382qFbmEkUJXrjKsSsU0bztLQnJuEdueVjG+YHKn129QRMVkFBhaHs02jlb
+         S5JV36BNDDNUfL8KemT5hOsLWqTvUggPzEAa8N2CZKjqEUL2gsDnvv40g+BB+uela7dh
+         Jgrx9rDjz5OErwlXPsX7nNM+dSWsRNE8nulA4QnYl74qcvdSBJGmDk3He16/4mFZs33S
+         IzPGb27j4W2dHx0T8+OODSyZm7E16IzcLQzguhPs5vHLJASI9JeNCkexh2az/dQ96t3u
+         ruWKhzckHLSdD4ijmd79+MvrNJzlzIX0uzlRXCf+RicfDnuUK7rhsIpo8bqFBLTAzkrn
+         doog==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:content-transfer-encoding:from:mime-version
+         :subject:date:message-id:references:cc:in-reply-to:to;
+        bh=ukU/HTx3Lur+oN5f1R5Yulqfuax6so7AyFG3I+NXijE=;
+        b=dCr2Qc4soALsL9VOrx/ZAIb3CxOdGSWqS+hCNGB81G0h/IRU6Hzqbnnjs2kWWEVnfg
+         osiFcITmk/aG7hIEFMxVJr4/Dn+SD63qarc8GOS9NuCLJlFHJQn7SkEhNG1SOpIG3O18
+         djLFjwCh2svNVdAK3+DdyQkHNXex9QoBxhhlq/5PuBvfA9ODT01NEz6/k5ohr0Ylru8c
+         J2OO4D3weIcLhlj36mcv/6nIOYP2ihOuApO3UR/7A8Py5Ox93pDdeOHnsFEg3JZZX938
+         ttPNMeHnqchCt86/3zchT30cMoG04HJx4F+kRTeT9A+WasoDd9RWozFWdEOuszMeqdC4
+         LNLg==
+X-Gm-Message-State: APjAAAWW9UMEDRQpSM1fQIi/UZW97fpKJMjVH2Clmt7LxERf9tNflwd0
+        5BCRQkJxphET4JOrmpTJvajakg==
+X-Google-Smtp-Source: APXvYqw+K7nK6v62iaPG8IRuXo2+JcN5WoG4smCXzjE2do7qUArjfSk6sdyUR46tJD8UtoLaDUB45w==
+X-Received: by 2002:a37:4b93:: with SMTP id y141mr21982856qka.205.1579000111263;
+        Tue, 14 Jan 2020 03:08:31 -0800 (PST)
+Received: from [192.168.1.183] (pool-71-184-117-43.bstnma.fios.verizon.net. [71.184.117.43])
+        by smtp.gmail.com with ESMTPSA id i16sm6406845qkh.120.2020.01.14.03.08.30
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 14 Jan 2020 03:08:30 -0800 (PST)
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: quoted-printable
+From:   Qian Cai <cai@lca.pw>
+Mime-Version: 1.0 (1.0)
+Subject: Re: [PATCH v4 01/10] kcsan: Add Kernel Concurrency Sanitizer infrastructure
+Date:   Tue, 14 Jan 2020 06:08:29 -0500
+Message-Id: <53F6B915-AC53-41BB-BF32-33732515B3A0@lca.pw>
+References: <CANpmjNOC2PYFsE_TK2SYmKcHxyG+2arWc8x_fmeWPOMi0+ot8g@mail.gmail.com>
+Cc:     LKMM Maintainers -- Akira Yokosawa <akiyks@gmail.com>,
+        Alan Stern <stern@rowland.harvard.edu>,
+        Alexander Potapenko <glider@google.com>,
+        Andrea Parri <parri.andrea@gmail.com>,
+        Andrey Konovalov <andreyknvl@google.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
         Arnd Bergmann <arnd@arndb.de>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Dave Young <dyoung@redhat.com>,
-        Saravana Kannan <saravanak@google.com>
-Subject: [PATCH 13/13] efi: Fix handling of multiple efi_fake_mem= entries
-Date:   Mon, 13 Jan 2020 18:22:45 +0100
-Message-Id: <20200113172245.27925-14-ardb@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200113172245.27925-1-ardb@kernel.org>
-References: <20200113172245.27925-1-ardb@kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        Boqun Feng <boqun.feng@gmail.com>,
+        Borislav Petkov <bp@alien8.de>, Daniel Axtens <dja@axtens.net>,
+        Daniel Lustig <dlustig@nvidia.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        David Howells <dhowells@redhat.com>,
+        Dmitry Vyukov <dvyukov@google.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+        Jade Alglave <j.alglave@ucl.ac.uk>,
+        Joel Fernandes <joel@joelfernandes.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Josh Poimboeuf <jpoimboe@redhat.com>,
+        Luc Maranget <luc.maranget@inria.fr>,
+        Mark Rutland <Mark.Rutland@arm.com>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        "Paul E. McKenney" <paulmck@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Will Deacon <will@kernel.org>,
+        Eric Dumazet <edumazet@google.com>,
+        kasan-dev <kasan-dev@googlegroups.com>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
+        linux-efi@vger.kernel.org,
+        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Linux Memory Management List <linux-mm@kvack.org>,
+        the arch/x86 maintainers <x86@kernel.org>
+In-Reply-To: <CANpmjNOC2PYFsE_TK2SYmKcHxyG+2arWc8x_fmeWPOMi0+ot8g@mail.gmail.com>
+To:     Marco Elver <elver@google.com>
+X-Mailer: iPhone Mail (17C54)
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-From: Dan Williams <dan.j.williams@intel.com>
 
-Dave noticed that when specifying multiple efi_fake_mem= entries only
-the last entry was successfully being reflected in the efi memory map.
-This is due to the fact that the efi_memmap_insert() is being called
-multiple times, but on successive invocations the insertion should be
-applied to the last new memmap rather than the original map at
-efi_fake_memmap() entry.
 
-Rework efi_fake_memmap() to install the new memory map after each
-efi_fake_mem= entry is parsed.
+> On Jan 6, 2020, at 7:47 AM, Marco Elver <elver@google.com> wrote:
+>=20
+> Thanks, I'll look into KCSAN + lockdep compatibility. It's probably
+> missing some KCSAN_SANITIZE :=3D n in some Makefile.
 
-This also fixes an issue in efi_fake_memmap() that caused it to litter
-emtpy entries into the end of the efi memory map. An empty entry causes
-efi_memmap_insert() to attempt more memmap splits / copies than
-efi_memmap_split_count() accounted for when sizing the new map. When
-that happens efi_memmap_insert() may overrun its allocation, and if you
-are lucky will spill over to an unmapped page leading to crash
-signature like the following rather than silent corruption:
+Can I have a update on fixing this? It looks like more of a problem that kcs=
+an_setup_watchpoint() will disable IRQs and then dive into the page allocato=
+r where it would complain because it might sleep.
 
-    BUG: unable to handle page fault for address: ffffffffff281000
-    [..]
-    RIP: 0010:efi_memmap_insert+0x11d/0x191
-    [..]
-    Call Trace:
-     ? bgrt_init+0xbe/0xbe
-     ? efi_arch_mem_reserve+0x1cb/0x228
-     ? acpi_parse_bgrt+0xa/0xd
-     ? acpi_table_parse+0x86/0xb8
-     ? acpi_boot_init+0x494/0x4e3
-     ? acpi_parse_x2apic+0x87/0x87
-     ? setup_acpi_sci+0xa2/0xa2
-     ? setup_arch+0x8db/0x9e1
-     ? start_kernel+0x6a/0x547
-     ? secondary_startup_64+0xb6/0xc0
+BTW, I saw Paul sent a pull request for 5.6 but it is ugly to have everybody=
+ could trigger a deadlock (sleep function called in atomic context) like thi=
+s during boot once this hits the mainline not to mention about only recently=
+ it is possible to test this feature (thanks to warning ratelimit) with the e=
+xisting debugging options because it was unable to boot due to the brokennes=
+s with debug_pagealloc as mentioned in this thread, so this does sounds like=
+ it needs more soak time for the mainline to me.
 
-Commit af1648984828 "x86/efi: Update e820 with reserved EFI boot
-services data to fix kexec breakage" introduced more occurrences where
-efi_memmap_insert() is invoked after an efi_fake_mem= configuration has
-been parsed. Previously the side effects of vestigial empty entries were
-benign, but with commit af1648984828 that follow-on efi_memmap_insert()
-invocation triggers efi_memmap_insert() overruns.
-
-Link: https://lore.kernel.org/r/20191231014630.GA24942@dhcp-128-65.nay.redhat.com
-Reported-by: Dave Young <dyoung@redhat.com>
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
----
- drivers/firmware/efi/fake_mem.c | 31 ++++++++++++++++---------------
- drivers/firmware/efi/memmap.c   |  2 +-
- include/linux/efi.h             |  2 ++
- 3 files changed, 19 insertions(+), 16 deletions(-)
-
-diff --git a/drivers/firmware/efi/fake_mem.c b/drivers/firmware/efi/fake_mem.c
-index a8d20568d532..6e0f34a38171 100644
---- a/drivers/firmware/efi/fake_mem.c
-+++ b/drivers/firmware/efi/fake_mem.c
-@@ -34,25 +34,16 @@ static int __init cmp_fake_mem(const void *x1, const void *x2)
- 	return 0;
- }
- 
--void __init efi_fake_memmap(void)
-+static void __init efi_fake_range(struct efi_mem_range *efi_range)
- {
- 	struct efi_memory_map_data data = { 0 };
- 	int new_nr_map = efi.memmap.nr_map;
- 	efi_memory_desc_t *md;
- 	void *new_memmap;
--	int i;
--
--	if (!efi_enabled(EFI_MEMMAP) || !nr_fake_mem)
--		return;
- 
- 	/* count up the number of EFI memory descriptor */
--	for (i = 0; i < nr_fake_mem; i++) {
--		for_each_efi_memory_desc(md) {
--			struct range *r = &efi_fake_mems[i].range;
--
--			new_nr_map += efi_memmap_split_count(md, r);
--		}
--	}
-+	for_each_efi_memory_desc(md)
-+		new_nr_map += efi_memmap_split_count(md, &efi_range->range);
- 
- 	/* allocate memory for new EFI memmap */
- 	if (efi_memmap_alloc(new_nr_map, &data) != 0)
-@@ -61,17 +52,27 @@ void __init efi_fake_memmap(void)
- 	/* create new EFI memmap */
- 	new_memmap = early_memremap(data.phys_map, data.size);
- 	if (!new_memmap) {
--		memblock_free(data.phys_map, data.size);
-+		__efi_memmap_free(data.phys_map, data.size, data.flags);
- 		return;
- 	}
- 
--	for (i = 0; i < nr_fake_mem; i++)
--		efi_memmap_insert(&efi.memmap, new_memmap, &efi_fake_mems[i]);
-+	efi_memmap_insert(&efi.memmap, new_memmap, efi_range);
- 
- 	/* swap into new EFI memmap */
- 	early_memunmap(new_memmap, data.size);
- 
- 	efi_memmap_install(&data);
-+}
-+
-+void __init efi_fake_memmap(void)
-+{
-+	int i;
-+
-+	if (!efi_enabled(EFI_MEMMAP) || !nr_fake_mem)
-+		return;
-+
-+	for (i = 0; i < nr_fake_mem; i++)
-+		efi_fake_range(&efi_fake_mems[i]);
- 
- 	/* print new EFI memmap */
- 	efi_print_memmap();
-diff --git a/drivers/firmware/efi/memmap.c b/drivers/firmware/efi/memmap.c
-index 501672166502..2ff1883dc788 100644
---- a/drivers/firmware/efi/memmap.c
-+++ b/drivers/firmware/efi/memmap.c
-@@ -29,7 +29,7 @@ static phys_addr_t __init __efi_memmap_alloc_late(unsigned long size)
- 	return PFN_PHYS(page_to_pfn(p));
- }
- 
--static void __init __efi_memmap_free(u64 phys, unsigned long size, unsigned long flags)
-+void __init __efi_memmap_free(u64 phys, unsigned long size, unsigned long flags)
- {
- 	if (flags & EFI_MEMMAP_MEMBLOCK) {
- 		if (slab_is_available())
-diff --git a/include/linux/efi.h b/include/linux/efi.h
-index adbe421835c1..7efd7072cca5 100644
---- a/include/linux/efi.h
-+++ b/include/linux/efi.h
-@@ -976,6 +976,8 @@ extern void __iomem *efi_lookup_mapped_addr(u64 phys_addr);
- 
- extern int __init efi_memmap_alloc(unsigned int num_entries,
- 				   struct efi_memory_map_data *data);
-+extern void __efi_memmap_free(u64 phys, unsigned long size,
-+			      unsigned long flags);
- extern int __init efi_memmap_init_early(struct efi_memory_map_data *data);
- extern int __init efi_memmap_init_late(phys_addr_t addr, unsigned long size);
- extern void __init efi_memmap_unmap(void);
--- 
-2.20.1
-
+0000000000000400
+[   13.416814][    T1] Call Trace:
+[   13.416814][    T1]  lock_is_held_type+0x66/0x160
+[   13.416814][    T1]  ___might_sleep+0xc1/0x1d0
+[   13.416814][    T1]  __might_sleep+0x5b/0xa0
+[   13.416814][    T1]  slab_pre_alloc_hook+0x7b/0xa0
+[   13.416814][    T1]  __kmalloc_node+0x60/0x300
+[   13.416814   T1]  ? alloc_cpumask_var_node+0x44/0x70
+[   13.416814][    T1]  ? topology_phys_to_logical_die+0x7e/0x180
+[   13.416814][    T1]  alloc_cpumask_var_node+0x44/0x70
+[   13.416814][    T1]  zalloc_cpumask_var+0x2a/0x40
+[   13.416814][    T1]  native_smp_prepare_cpus+0x246/0x425
+[   13.416814][    T1]  kernel_init_freeable+0x1b8/0x496
+[   13.416814][    T1]  ? rest_init+0x381/0x381
+[   13.416814][    T1]  kernel_init+0x18/0x17f
+[   13.416814][    T1]  ? rest_init+0x381/0x381
+[   13.416814][    T1]  ret_from_fork+0x3a/0x50
+[   13.416814][    T1] irq event stamp: 910
+[   13.416814][    T1] hardirqs last  enabled at (909): [<ffffffff8d1240f3>]=
+ _raw_write_unlock_irqrestore+0x53/0x57
+[   13.416814][    T1] hardirqs last disabled at (910): [<ffffffff8c8bba76>]=
+ kcsan_setup_watchpoint+0x96/0x460
+[   13.416814][    T1] softirqs last  enabled at (0): [<ffffffff8c6b697a>] c=
+opy_process+0x11fa/0x34f0
+[   13.416814][    T1] softirqs last disabled at (0): [<0000000000000000>] 0=
+x0
+[   13.416814][    T1] ---[ end trace 7d1df66da055aa92 ]---
+[   13.416814][    T1] possible reason: unannotated irqs-on.
+[   13.416814][ent stamp: 910
+[   13.416814][    T1] hardirqs last  enabled at (909): [<ffffffff8d1240f3>]=
+ _raw_write_unlock_irqrestore+0x53/0x57
+[   13.416814][    T1] hardirqs last disabled at (910): [<ffffffff8c8bba76>]=
+ kcsan_setup_watchpoint+0x96/0x460
+[   13.416814][    T1] softirqs last  enabled at (0): [<ffffffff8c6b697a>] c=
+opy_process+0x11fa/0x34f0
+[   13.416814][    T1] softirqs last disabled at (0): [<0000000000000000>] 0=
+x0=
