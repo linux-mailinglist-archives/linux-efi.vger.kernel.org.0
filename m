@@ -2,139 +2,78 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 089C313C9B1
-	for <lists+linux-efi@lfdr.de>; Wed, 15 Jan 2020 17:38:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 83F9E13C9C5
+	for <lists+linux-efi@lfdr.de>; Wed, 15 Jan 2020 17:42:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729246AbgAOQgv (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 15 Jan 2020 11:36:51 -0500
-Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:20447 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1729266AbgAOQgu (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 15 Jan 2020 11:36:50 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1579106210;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=6IIyl7nwLzkMIjP69KzWLUXNNYREWPo9znJtU/sIj/o=;
-        b=UHypfphM3f08erT95URNJEP7LxM4oOZ+O315KZEnJjc0imOEu7aTALChw7PG3NnTCICG/H
-        EAV3dmFJX05kWAkdMfN/C1+fWSaXk9YprZE0AZoCTu5u7uyHoNszR5K/8L45Uv6kxcls55
-        AD0+qj1t3/zeTzjRrBgUjjdAkXYML7k=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-30-TluyZrpAP2WR_tppIxPjkg-1; Wed, 15 Jan 2020 11:36:48 -0500
-X-MC-Unique: TluyZrpAP2WR_tppIxPjkg-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 2B6BA800D48;
-        Wed, 15 Jan 2020 16:36:46 +0000 (UTC)
-Received: from shalem.localdomain.com (ovpn-116-188.ams2.redhat.com [10.36.116.188])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 386A25DA76;
-        Wed, 15 Jan 2020 16:36:42 +0000 (UTC)
-From:   Hans de Goede <hdegoede@redhat.com>
-To:     Ard Biesheuvel <ardb@kernel.org>,
+        id S1728896AbgAOQln (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 15 Jan 2020 11:41:43 -0500
+Received: from mail-pj1-f67.google.com ([209.85.216.67]:55146 "EHLO
+        mail-pj1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726483AbgAOQln (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 15 Jan 2020 11:41:43 -0500
+Received: by mail-pj1-f67.google.com with SMTP id kx11so167393pjb.4;
+        Wed, 15 Jan 2020 08:41:43 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=PFADiZneaHPl3Px4Pv4L/DBq5EnMqolLT+iGud91kB0=;
+        b=TcWcAWKuKphn4tX30fIv+aiO/xw414ABKU82vTtQhUC9JRJyvedbvDyiYuNQwO1G0x
+         kybQYg1pof0LKhBefS0DBvuTVffxEgwI05pYtzAI7iVst9FiJ1WXPHdDp3CL1l60asSQ
+         JwtmteRdGHIVCNf4w8YvGCa8hTszxl0cpXBwndcajfZXJ5cTFAmAOI45YWr3Bi5l3Rad
+         mHp6XdnEJIZkBNTCb5zlRBFw6aVx4Sso6S6CcZCunCMeVbl/+VTHkzR6YEsoI9ovKFvD
+         SS5BEVMi1mMIhsepoErl/XZ5FHgU8pYH8YDboOyrVRd/57bWj0drkSOkai+UoE2iWH4V
+         kgqw==
+X-Gm-Message-State: APjAAAVg2JB9rw+pJ96G/FgXCNCwExqyzH/3TV4hxw3ZWM1UHeVboDLz
+        IIfBiWHTt5JiNeIzgt2Ki+Y=
+X-Google-Smtp-Source: APXvYqxQ5iZS2DU23A5DxkIq1CgidqGx+IdPMVn7NDtRouiDeH/+InapUnbFEYKLw+BDvNbhe8q16Q==
+X-Received: by 2002:a17:90a:b30b:: with SMTP id d11mr835867pjr.22.1579106502730;
+        Wed, 15 Jan 2020 08:41:42 -0800 (PST)
+Received: from 42.do-not-panic.com (42.do-not-panic.com. [157.230.128.187])
+        by smtp.gmail.com with ESMTPSA id b8sm22555703pff.114.2020.01.15.08.41.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Jan 2020 08:41:41 -0800 (PST)
+Received: by 42.do-not-panic.com (Postfix, from userid 1000)
+        id 1161C40244; Wed, 15 Jan 2020 16:41:41 +0000 (UTC)
+Date:   Wed, 15 Jan 2020 16:41:41 +0000
+From:   Luis Chamberlain <mcgrof@kernel.org>
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     Ard Biesheuvel <ardb@kernel.org>,
         Darren Hart <dvhart@infradead.org>,
         Andy Shevchenko <andy@infradead.org>,
-        Luis Chamberlain <mcgrof@kernel.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         "Rafael J . Wysocki" <rafael@kernel.org>,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
         "H . Peter Anvin" <hpa@zytor.com>,
         Jonathan Corbet <corbet@lwn.net>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Cc:     Hans de Goede <hdegoede@redhat.com>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
         Peter Jones <pjones@redhat.com>,
         Dave Olsthoorn <dave@bewaar.me>, x86@kernel.org,
         platform-driver-x86@vger.kernel.org, linux-efi@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-input@vger.kernel.org,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Subject: [PATCH v12 10/10] platform/x86: touchscreen_dmi: Add info for the Chuwi Vi8 Plus tablet
-Date:   Wed, 15 Jan 2020 17:35:54 +0100
-Message-Id: <20200115163554.101315-11-hdegoede@redhat.com>
-In-Reply-To: <20200115163554.101315-1-hdegoede@redhat.com>
+        linux-input@vger.kernel.org
+Subject: Re: [PATCH v12 05/10] test_firmware: add support for
+ firmware_request_platform
+Message-ID: <20200115164141.GF11244@42.do-not-panic.com>
 References: <20200115163554.101315-1-hdegoede@redhat.com>
+ <20200115163554.101315-6-hdegoede@redhat.com>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200115163554.101315-6-hdegoede@redhat.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Add touchscreen info for the Chuwi Vi8 Plus tablet. This tablet uses a
-Chipone ICN8505 touchscreen controller, with the firmware used by the
-touchscreen embedded in the EFI firmware.
+On Wed, Jan 15, 2020 at 05:35:49PM +0100, Hans de Goede wrote:
+> Add support for testing firmware_request_platform through a new
+> trigger_request_platform trigger.
+> 
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 
-Acked-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Acked-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
----
-Changes in v7:
-- Remove PROPERTY_ENTRY_BOOL("efi-embedded-firmware") properties entry,
-  as this is no longer necessary
+Acked-by: Luis Chamberlain <mcgrof@kernel.org>
 
-Changes in v6:
-- Switch from crc sums to SHA256 hashes for the firmware hash
----
- drivers/platform/x86/touchscreen_dmi.c | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
-
-diff --git a/drivers/platform/x86/touchscreen_dmi.c b/drivers/platform/x8=
-6/touchscreen_dmi.c
-index 4449e4c0b26b..4a09b479cda5 100644
---- a/drivers/platform/x86/touchscreen_dmi.c
-+++ b/drivers/platform/x86/touchscreen_dmi.c
-@@ -132,6 +132,18 @@ static const struct ts_dmi_data chuwi_vi8_data =3D {
- 	.properties     =3D chuwi_vi8_props,
- };
-=20
-+static const struct ts_dmi_data chuwi_vi8_plus_data =3D {
-+	.embedded_fw =3D {
-+		.name	=3D "chipone/icn8505-HAMP0002.fw",
-+		.prefix =3D { 0xb0, 0x07, 0x00, 0x00, 0xe4, 0x07, 0x00, 0x00 },
-+		.length	=3D 35012,
-+		.sha256	=3D { 0x93, 0xe5, 0x49, 0xe0, 0xb6, 0xa2, 0xb4, 0xb3,
-+			    0x88, 0x96, 0x34, 0x97, 0x5e, 0xa8, 0x13, 0x78,
-+			    0x72, 0x98, 0xb8, 0x29, 0xeb, 0x5c, 0xa7, 0xf1,
-+			    0x25, 0x13, 0x43, 0xf4, 0x30, 0x7c, 0xfc, 0x7c },
-+	},
-+};
-+
- static const struct property_entry chuwi_vi10_props[] =3D {
- 	PROPERTY_ENTRY_U32("touchscreen-min-x", 0),
- 	PROPERTY_ENTRY_U32("touchscreen-min-y", 4),
-@@ -743,6 +755,15 @@ const struct dmi_system_id touchscreen_dmi_table[] =3D=
- {
- 			DMI_MATCH(DMI_BIOS_VERSION, "CHUWI.D86JLBNR"),
- 		},
- 	},
-+	{
-+		/* Chuwi Vi8 Plus (CWI519) */
-+		.driver_data =3D (void *)&chuwi_vi8_plus_data,
-+		.matches =3D {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Hampoo"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "D2D3_Vi8A1"),
-+			DMI_MATCH(DMI_BOARD_NAME, "Cherry Trail CR"),
-+		},
-+	},
- 	{
- 		/* Chuwi Vi10 (CWI505) */
- 		.driver_data =3D (void *)&chuwi_vi10_data,
-@@ -1137,6 +1158,9 @@ static int __init ts_dmi_init(void)
- 		return 0; /* Not an error */
-=20
- 	ts_data =3D dmi_id->driver_data;
-+	/* Some dmi table entries only provide an efi_embedded_fw_desc */
-+	if (!ts_data->properties)
-+		return 0;
-=20
- 	error =3D bus_register_notifier(&i2c_bus_type, &ts_dmi_notifier);
- 	if (error)
---=20
-2.24.1
-
+  Luis
