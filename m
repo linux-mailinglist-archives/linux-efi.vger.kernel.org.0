@@ -2,75 +2,76 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id ECFB7141720
-	for <lists+linux-efi@lfdr.de>; Sat, 18 Jan 2020 12:04:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C2CC41417B0
+	for <lists+linux-efi@lfdr.de>; Sat, 18 Jan 2020 14:35:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727531AbgARLEf (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sat, 18 Jan 2020 06:04:35 -0500
-Received: from mail-qt1-f175.google.com ([209.85.160.175]:40454 "EHLO
-        mail-qt1-f175.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726961AbgARLEe (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sat, 18 Jan 2020 06:04:34 -0500
-Received: by mail-qt1-f175.google.com with SMTP id v25so23884135qto.7
-        for <linux-efi@vger.kernel.org>; Sat, 18 Jan 2020 03:04:32 -0800 (PST)
+        id S1728680AbgARNfJ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 18 Jan 2020 08:35:09 -0500
+Received: from mail-wm1-f67.google.com ([209.85.128.67]:35698 "EHLO
+        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728670AbgARNfJ (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sat, 18 Jan 2020 08:35:09 -0500
+Received: by mail-wm1-f67.google.com with SMTP id p17so10332726wmb.0
+        for <linux-efi@vger.kernel.org>; Sat, 18 Jan 2020 05:35:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=lca.pw; s=google;
-        h=content-transfer-encoding:from:mime-version:subject:date:message-id
-         :references:cc:in-reply-to:to;
-        bh=E4iQ7ZDNrYmzMAHeHyv3uP9yYvMQ0RsRxXZm7yOz4Cw=;
-        b=d6JswzAOQih42l4rSMXXRRxslli+9tAZ/CG+plabBLqdTSTWpFBbQizjSQQe4noFz1
-         tLH3kXqsk7JXLwVYkgIbcAYkzZPLvo+3GzHkdFWRxbxs4SHSXPFWRYV8PN+v5U/QF862
-         +4z2SbeMzP+bMGu0r5e9ESL6Opxfz9zM1DdG4/fLypExnvDh4NH+yrulsdeSXTDRJMdm
-         7l7S2Aed8YKQOYf/2p8Ie1XePlMIlAeUk4AFuCL8dFkqncje3hgSExF5CBpJ8nNtRxzN
-         WU6m8X59fZF6KzQm5Qo2mgVv3ZuPzovylKxL+j9aL8qHGcePTraVIwLOJfUSYVa4VUdR
-         5iww==
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=v4hcChVlh2NTB+J9TajvHQFod1mYK/8qvcaZx/KVPww=;
+        b=WgOpWoDsUFi+t6oIKOLerTjgdRcFzr0CSjp1eXnLilPlzS3hlcoFW6mmln/ZzjmiZM
+         dsVcR7pQ8lnefiCk44p2s24wEfme3C+0dXmTWel4GV83DFjB3Df+ancuXUz/GR09XvDy
+         fPZ2JVY0d9b1f0HCYudCPZjMGi2kVsAPTcI+UqUX3fHnODCcokUvDUJd24j8suA8bgTq
+         /aymsnnkbtfTFhrTOFgnXusv2GxORzhZDCB5HvKDFPJ9nmN1Fi76bKwgAjKfRqIP8m59
+         isrj25fEjee+I9OwhLCCut/AS0krpp9zdYfBEjoE98SDzP5J0Xh0CmQJJLpLYs2OJfNg
+         XxzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:content-transfer-encoding:from:mime-version
-         :subject:date:message-id:references:cc:in-reply-to:to;
-        bh=E4iQ7ZDNrYmzMAHeHyv3uP9yYvMQ0RsRxXZm7yOz4Cw=;
-        b=UiMpK20kmmOrXT1Oe4dXDKrWzEYLvsB9NaywPU298LH5LHx6VEnbb4oM/fagv6MrF6
-         NPQ4DluEaqHOOXJzAUI3UgBvXXB2PKL1eBfDhYWIk2jVIyAWNZmJudCxDgFp8ex8QVNl
-         /NkCBbGiuKdEzKWPxNvISOycvodglGulUX1OtKWsLBCXHhdARjAtWivC/08bMYjp4NF9
-         pvbFVu1V+5NaLmXemZ4K4rqPgN2V4fEW8tqjcAqiPdtLZxpAtspPeIQl9octYVCQF2pV
-         Q1tVy8aTRq6pITiKGd9A2tOBuFcht7ZG6Q8WJat7y1qf2wSSIDxbFxBi/mMHUZug9g5Y
-         zioA==
-X-Gm-Message-State: APjAAAV2hAj8QPctVhIZBQw3Tn2WO2gl6NS4mkZKatjY4LTkBMJ91HAD
-        5FPKwjDKMbFfJMMVi1637gAThw==
-X-Google-Smtp-Source: APXvYqy0OAWkYxzJHelL7Pu/x/AtY+S1tuMmr4j+WEKJuL9ETD+TUIV95vcmX0JuBSca4Fp5eXLxSQ==
-X-Received: by 2002:ac8:7a70:: with SMTP id w16mr11517454qtt.154.1579345471965;
-        Sat, 18 Jan 2020 03:04:31 -0800 (PST)
-Received: from [192.168.1.183] (pool-71-184-117-43.bstnma.fios.verizon.net. [71.184.117.43])
-        by smtp.gmail.com with ESMTPSA id s1sm12892978qkm.84.2020.01.18.03.04.31
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 18 Jan 2020 03:04:31 -0800 (PST)
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: quoted-printable
-From:   Qian Cai <cai@lca.pw>
-Mime-Version: 1.0 (1.0)
-Subject: Re: [PATCH -next] x86/efi_64: fix a user-memory-access in runtime
-Date:   Sat, 18 Jan 2020 06:04:30 -0500
-Message-Id: <934E6F23-96FE-4C59-9387-9ABA2959DBBB@lca.pw>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=v4hcChVlh2NTB+J9TajvHQFod1mYK/8qvcaZx/KVPww=;
+        b=oPNPWvCtRhm/N6RTjDQrNNXWPeB0ynbOu3UnMUeSC/rdiHJZkw1Uj90Pzghv7ZvqlT
+         zbMqobglg4lVKjFtiDjx9ay4OZsDQBcIKg2aVaft/H6/d0jI2uM5Nvx+LKDA/uJks1Fx
+         cM7ErJJwrtjGhxo6gccvvbocm092WeAZh3Fsv7GsV0bZVHmMDyG4clxz58DOexPD81xR
+         ZusvE6oadffasDE1tYn/ZaUyMeRJ5flJMQAUaQMAN0CQUgBQSACUDKik/ByV7n2mKyar
+         RFO2g0PttD/zNUZSxTGWxBFuYjSaeL90sKHAU6QmPqG201itqsczHyVbuCRrvNL23gEQ
+         wEPg==
+X-Gm-Message-State: APjAAAUbbLRzwWg7oupMurj2gu3m1C6LLrgbcfNZpgPZ18Sro5X29eYb
+        BhelWJWM0FieE5FV5/CPC7LYp479EYkbfKJPVz74rg==
+X-Google-Smtp-Source: APXvYqyaoy2vU3Qze84uWGDV1JxToGEVTuxW8nks5DiBJxtsMUOnFnAPiE5XvI3fBz+4/RH6sm4kz+HQlWa4We4ckhQ=
+X-Received: by 2002:a1c:b603:: with SMTP id g3mr10152522wmf.133.1579354507256;
+ Sat, 18 Jan 2020 05:35:07 -0800 (PST)
+MIME-Version: 1.0
 References: <CAKv+Gu8WBSsG2e8bVpARcwNBrGtMLzUA+bbikHymrZsNQE6wvw@mail.gmail.com>
+ <934E6F23-96FE-4C59-9387-9ABA2959DBBB@lca.pw>
+In-Reply-To: <934E6F23-96FE-4C59-9387-9ABA2959DBBB@lca.pw>
+From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Date:   Sat, 18 Jan 2020 14:34:55 +0100
+Message-ID: <CAKv+Gu9PfAHP4_Xaj3_PHFGQCsZRk2oXGbh8oTt22y3aCJBFTg@mail.gmail.com>
+Subject: Re: [PATCH -next] x86/efi_64: fix a user-memory-access in runtime
+To:     Qian Cai <cai@lca.pw>
 Cc:     Ard Biesheuvel <ardb@kernel.org>, Ingo Molnar <mingo@redhat.com>,
         kasan-dev <kasan-dev@googlegroups.com>,
         linux-efi <linux-efi@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-In-Reply-To: <CAKv+Gu8WBSsG2e8bVpARcwNBrGtMLzUA+bbikHymrZsNQE6wvw@mail.gmail.com>
-To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>
-X-Mailer: iPhone Mail (17C54)
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
+On Sat, 18 Jan 2020 at 12:04, Qian Cai <cai@lca.pw> wrote:
+>
+>
+>
+> > On Jan 18, 2020, at 3:00 AM, Ard Biesheuvel <ard.biesheuvel@linaro.org> wrote:
+> >
+> > Can't we just use READ_ONCE_NOCHECK() instead?
+>
+> My understanding is that KASAN actually want to make sure there is a no dereference of user memory because it has security implications. Does that make no sense here?
 
+Not really. This code runs extremely early in the boot, with a
+temporary 1:1 memory mapping installed so that the EFI firmware can
+transition into virtually remapped mode.
 
-> On Jan 18, 2020, at 3:00 AM, Ard Biesheuvel <ard.biesheuvel@linaro.org> wr=
-ote:
->=20
-> Can't we just use READ_ONCE_NOCHECK() instead?
-
-My understanding is that KASAN actually want to make sure there is a no dere=
-ference of user memory because it has security implications. Does that make n=
-o sense here?=
+Furthermore, the same issue exists for mixed mode, so we'll need to
+fix that as well. I'll spin a patch and credit you as the reporter.
