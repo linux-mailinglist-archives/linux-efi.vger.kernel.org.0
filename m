@@ -2,132 +2,75 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 27F5E141670
-	for <lists+linux-efi@lfdr.de>; Sat, 18 Jan 2020 09:00:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ECFB7141720
+	for <lists+linux-efi@lfdr.de>; Sat, 18 Jan 2020 12:04:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726444AbgARIAN (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sat, 18 Jan 2020 03:00:13 -0500
-Received: from mail-wr1-f67.google.com ([209.85.221.67]:38909 "EHLO
-        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726425AbgARIAN (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sat, 18 Jan 2020 03:00:13 -0500
-Received: by mail-wr1-f67.google.com with SMTP id y17so24760845wrh.5
-        for <linux-efi@vger.kernel.org>; Sat, 18 Jan 2020 00:00:11 -0800 (PST)
+        id S1727531AbgARLEf (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 18 Jan 2020 06:04:35 -0500
+Received: from mail-qt1-f175.google.com ([209.85.160.175]:40454 "EHLO
+        mail-qt1-f175.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726961AbgARLEe (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sat, 18 Jan 2020 06:04:34 -0500
+Received: by mail-qt1-f175.google.com with SMTP id v25so23884135qto.7
+        for <linux-efi@vger.kernel.org>; Sat, 18 Jan 2020 03:04:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=WFOEOXqnCDTTcDQn4El+71G/5ufyH8CwcIjRAHLYoAg=;
-        b=vG/c8xAMLKnw35yMwUcyERh82mgpWduiosJkl6ePJZx//bVHz6K/t81pdkparT0iXQ
-         UqRivSuHguBripc8g2qmPENm7gWkXLsYSBGSWtqOINGdVHlVui62Dz1xLoKvU4LEXRAw
-         +ONISHBcLa/DtBEWffemkC/VGWnm7AqBratbxOL2qerng8irHqsFLKyHWo0rUVepd1Et
-         QVFmp4MVkmO+AE6gu0qswMtkByStwcQnyWA73tOnrEKr67BABarPpUVFlLIE5ubwnicX
-         ZHUDe+nSnjQAHdsqkcIibgc0oXD5FltiBNKRvhUGxNtPyPs6bhcRH3gNA8K/FFBGF899
-         BdSw==
+        d=lca.pw; s=google;
+        h=content-transfer-encoding:from:mime-version:subject:date:message-id
+         :references:cc:in-reply-to:to;
+        bh=E4iQ7ZDNrYmzMAHeHyv3uP9yYvMQ0RsRxXZm7yOz4Cw=;
+        b=d6JswzAOQih42l4rSMXXRRxslli+9tAZ/CG+plabBLqdTSTWpFBbQizjSQQe4noFz1
+         tLH3kXqsk7JXLwVYkgIbcAYkzZPLvo+3GzHkdFWRxbxs4SHSXPFWRYV8PN+v5U/QF862
+         +4z2SbeMzP+bMGu0r5e9ESL6Opxfz9zM1DdG4/fLypExnvDh4NH+yrulsdeSXTDRJMdm
+         7l7S2Aed8YKQOYf/2p8Ie1XePlMIlAeUk4AFuCL8dFkqncje3hgSExF5CBpJ8nNtRxzN
+         WU6m8X59fZF6KzQm5Qo2mgVv3ZuPzovylKxL+j9aL8qHGcePTraVIwLOJfUSYVa4VUdR
+         5iww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=WFOEOXqnCDTTcDQn4El+71G/5ufyH8CwcIjRAHLYoAg=;
-        b=cOBilfKaXqRS7b+yCHla8445sM5QlWtMkQnEJY7NUsA4xvWSEclNhxRPEIT5Lj7ZDD
-         19rVxLyXYlU4OUX70y8z8bJx3fvP8fWx97Ovao6iHS/V0UdGGj8LaHmM67TjoB8IfR1c
-         YlhcBdM+FWpc7nZqPHvUW1yoYecuXT+wdE4lZVrUX0UOl5RrIiYvAS5LBBrd2MQEYX2l
-         qGZvhTtDyUM1WWOJgM3AqH0Hm3RiYuSq3DK74nvgiQNa3EjRJpetU49OXAG2XcHEcq7n
-         bzB72ekEw5vJz7J+WuWTseMczMOqlIQg170bOIwvzjchw+kqpNBDMpm+gCbgFBBu5inD
-         T+xA==
-X-Gm-Message-State: APjAAAVYOjj8oBAtVTQvviI4L+iqbmwBQrWc+FsVNc4AsMEPjaH7bcFX
-        CPzhmAkAYGybzs5+fKxo9r7Mk9I+ZyvYNc+rBHLKEg==
-X-Google-Smtp-Source: APXvYqxAnrbSBO9XoqExZSQU6rzKOVMX5hrWLQTmZJfR0JgUPSpTLbnaLmkmSiraht3cZ64g2pxjZYjbInNmVVkHL6U=
-X-Received: by 2002:adf:e3c1:: with SMTP id k1mr7276173wrm.151.1579334411045;
- Sat, 18 Jan 2020 00:00:11 -0800 (PST)
-MIME-Version: 1.0
-References: <20200118063022.21743-1-cai@lca.pw>
-In-Reply-To: <20200118063022.21743-1-cai@lca.pw>
-From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Date:   Sat, 18 Jan 2020 09:00:04 +0100
-Message-ID: <CAKv+Gu8WBSsG2e8bVpARcwNBrGtMLzUA+bbikHymrZsNQE6wvw@mail.gmail.com>
+        h=x-gm-message-state:content-transfer-encoding:from:mime-version
+         :subject:date:message-id:references:cc:in-reply-to:to;
+        bh=E4iQ7ZDNrYmzMAHeHyv3uP9yYvMQ0RsRxXZm7yOz4Cw=;
+        b=UiMpK20kmmOrXT1Oe4dXDKrWzEYLvsB9NaywPU298LH5LHx6VEnbb4oM/fagv6MrF6
+         NPQ4DluEaqHOOXJzAUI3UgBvXXB2PKL1eBfDhYWIk2jVIyAWNZmJudCxDgFp8ex8QVNl
+         /NkCBbGiuKdEzKWPxNvISOycvodglGulUX1OtKWsLBCXHhdARjAtWivC/08bMYjp4NF9
+         pvbFVu1V+5NaLmXemZ4K4rqPgN2V4fEW8tqjcAqiPdtLZxpAtspPeIQl9octYVCQF2pV
+         Q1tVy8aTRq6pITiKGd9A2tOBuFcht7ZG6Q8WJat7y1qf2wSSIDxbFxBi/mMHUZug9g5Y
+         zioA==
+X-Gm-Message-State: APjAAAV2hAj8QPctVhIZBQw3Tn2WO2gl6NS4mkZKatjY4LTkBMJ91HAD
+        5FPKwjDKMbFfJMMVi1637gAThw==
+X-Google-Smtp-Source: APXvYqy0OAWkYxzJHelL7Pu/x/AtY+S1tuMmr4j+WEKJuL9ETD+TUIV95vcmX0JuBSca4Fp5eXLxSQ==
+X-Received: by 2002:ac8:7a70:: with SMTP id w16mr11517454qtt.154.1579345471965;
+        Sat, 18 Jan 2020 03:04:31 -0800 (PST)
+Received: from [192.168.1.183] (pool-71-184-117-43.bstnma.fios.verizon.net. [71.184.117.43])
+        by smtp.gmail.com with ESMTPSA id s1sm12892978qkm.84.2020.01.18.03.04.31
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 18 Jan 2020 03:04:31 -0800 (PST)
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: quoted-printable
+From:   Qian Cai <cai@lca.pw>
+Mime-Version: 1.0 (1.0)
 Subject: Re: [PATCH -next] x86/efi_64: fix a user-memory-access in runtime
-To:     Qian Cai <cai@lca.pw>
+Date:   Sat, 18 Jan 2020 06:04:30 -0500
+Message-Id: <934E6F23-96FE-4C59-9387-9ABA2959DBBB@lca.pw>
+References: <CAKv+Gu8WBSsG2e8bVpARcwNBrGtMLzUA+bbikHymrZsNQE6wvw@mail.gmail.com>
 Cc:     Ard Biesheuvel <ardb@kernel.org>, Ingo Molnar <mingo@redhat.com>,
         kasan-dev <kasan-dev@googlegroups.com>,
         linux-efi <linux-efi@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <CAKv+Gu8WBSsG2e8bVpARcwNBrGtMLzUA+bbikHymrZsNQE6wvw@mail.gmail.com>
+To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>
+X-Mailer: iPhone Mail (17C54)
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Sat, 18 Jan 2020 at 07:30, Qian Cai <cai@lca.pw> wrote:
->
-> The commit 698294704573 ("efi/x86: Split SetVirtualAddresMap() wrappers
-> into 32 and 64 bit versions") introduced a KASAN error during boot,
->
->  BUG: KASAN: user-memory-access in efi_set_virtual_address_map+0x4d3/0x574
->  Read of size 8 at addr 00000000788fee50 by task swapper/0/0
->
->  Hardware name: HP ProLiant XL450 Gen9 Server/ProLiant XL450 Gen9
->  Server, BIOS U21 05/05/2016
->  Call Trace:
->   dump_stack+0xa0/0xea
->   __kasan_report.cold.8+0xb0/0xc0
->   kasan_report+0x12/0x20
->   __asan_load8+0x71/0xa0
->   efi_set_virtual_address_map+0x4d3/0x574
->   efi_enter_virtual_mode+0x5f3/0x64e
->   start_kernel+0x53a/0x5dc
->   x86_64_start_reservations+0x24/0x26
->   x86_64_start_kernel+0xf4/0xfb
->   secondary_startup_64+0xb6/0xc0
->
-> It points to this line,
->
-> status = efi_call(efi.systab->runtime->set_virtual_address_map,
->
-> efi.systab->runtime's address is 00000000788fee18 which is an address in
-> EFI runtime service and does not have a KASAN shadow page. Fix it by
-> doing a copy_from_user() first instead.
->
 
-Can't we just use READ_ONCE_NOCHECK() instead?
 
-> Fixes: 698294704573 ("efi/x86: Split SetVirtualAddresMap() wrappers into 32 and 64 bit versions")
-> Signed-off-by: Qian Cai <cai@lca.pw>
-> ---
->  arch/x86/platform/efi/efi_64.c | 9 ++++++---
->  1 file changed, 6 insertions(+), 3 deletions(-)
->
-> diff --git a/arch/x86/platform/efi/efi_64.c b/arch/x86/platform/efi/efi_64.c
-> index 515eab388b56..d6712c9cb9d8 100644
-> --- a/arch/x86/platform/efi/efi_64.c
-> +++ b/arch/x86/platform/efi/efi_64.c
-> @@ -1023,6 +1023,7 @@ efi_status_t __init efi_set_virtual_address_map(unsigned long memory_map_size,
->                                                 u32 descriptor_version,
->                                                 efi_memory_desc_t *virtual_map)
->  {
-> +       efi_runtime_services_t runtime;
->         efi_status_t status;
->         unsigned long flags;
->         pgd_t *save_pgd = NULL;
-> @@ -1041,13 +1042,15 @@ efi_status_t __init efi_set_virtual_address_map(unsigned long memory_map_size,
->                 efi_switch_mm(&efi_mm);
->         }
->
-> +       if (copy_from_user(&runtime, efi.systab->runtime, sizeof(runtime)))
-> +               return EFI_ABORTED;
-> +
->         kernel_fpu_begin();
->
->         /* Disable interrupts around EFI calls: */
->         local_irq_save(flags);
-> -       status = efi_call(efi.systab->runtime->set_virtual_address_map,
-> -                         memory_map_size, descriptor_size,
-> -                         descriptor_version, virtual_map);
-> +       status = efi_call(runtime.set_virtual_address_map, memory_map_size,
-> +                         descriptor_size, descriptor_version, virtual_map);
->         local_irq_restore(flags);
->
->         kernel_fpu_end();
-> --
-> 2.21.0 (Apple Git-122.2)
->
+> On Jan 18, 2020, at 3:00 AM, Ard Biesheuvel <ard.biesheuvel@linaro.org> wr=
+ote:
+>=20
+> Can't we just use READ_ONCE_NOCHECK() instead?
+
+My understanding is that KASAN actually want to make sure there is a no dere=
+ference of user memory because it has security implications. Does that make n=
+o sense here?=
