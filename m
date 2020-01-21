@@ -2,218 +2,128 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5151014409D
-	for <lists+linux-efi@lfdr.de>; Tue, 21 Jan 2020 16:37:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D1BE314422F
+	for <lists+linux-efi@lfdr.de>; Tue, 21 Jan 2020 17:31:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728186AbgAUPhd (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 21 Jan 2020 10:37:33 -0500
-Received: from mga02.intel.com ([134.134.136.20]:37228 "EHLO mga02.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727817AbgAUPhd (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Tue, 21 Jan 2020 10:37:33 -0500
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by orsmga101.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 21 Jan 2020 07:37:31 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.70,346,1574150400"; 
-   d="scan'208";a="221738007"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by fmsmga008.fm.intel.com with ESMTP; 21 Jan 2020 07:37:29 -0800
-Received: from andy by smile with local (Exim 4.93)
-        (envelope-from <andy.shevchenko@gmail.com>)
-        id 1itvas-0007hw-Hr; Tue, 21 Jan 2020 17:37:30 +0200
-Date:   Tue, 21 Jan 2020 17:37:30 +0200
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Cc:     "Eric W. Biederman" <ebiederm@xmission.com>,
+        id S1727817AbgAUQbO (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 21 Jan 2020 11:31:14 -0500
+Received: from out01.mta.xmission.com ([166.70.13.231]:56736 "EHLO
+        out01.mta.xmission.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726555AbgAUQbN (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 21 Jan 2020 11:31:13 -0500
+Received: from in02.mta.xmission.com ([166.70.13.52])
+        by out01.mta.xmission.com with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.90_1)
+        (envelope-from <ebiederm@xmission.com>)
+        id 1itwQq-00024m-HU; Tue, 21 Jan 2020 09:31:12 -0700
+Received: from ip68-227-160-95.om.om.cox.net ([68.227.160.95] helo=x220.xmission.com)
+        by in02.mta.xmission.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.87)
+        (envelope-from <ebiederm@xmission.com>)
+        id 1itwQl-0001Fp-NK; Tue, 21 Jan 2020 09:31:12 -0700
+From:   ebiederm@xmission.com (Eric W. Biederman)
+To:     Jean Delvare <jdelvare@suse.de>
+Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Dave Young <dyoung@redhat.com>,
         linux-efi <linux-efi@vger.kernel.org>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
         Matt Fleming <matt@codeblueprint.co.uk>,
-        Kexec Mailing List <kexec@lists.infradead.org>,
+        kexec@lists.infradead.org,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Jean Delvare <jdelvare@suse.de>
-Subject: Re: [PATCH v1 2/2] firmware: dmi_scan: Pass dmi_entry_point to
- kexec'ed kernel
-Message-ID: <20200121153730.GZ32742@smile.fi.intel.com>
-References: <20161202195416.58953-3-andriy.shevchenko@linux.intel.com>
- <20161215122856.7d24b7a8@endymion>
- <20161216023213.GA4505@dhcp-128-65.nay.redhat.com>
- <1481890738.9552.70.camel@linux.intel.com>
- <20161216143330.69e9c8ee@endymion>
- <20161217105721.GB6922@dhcp-128-65.nay.redhat.com>
- <20200120121927.GJ32742@smile.fi.intel.com>
- <87a76i9ksr.fsf@x220.int.ebiederm.org>
- <CAHp75VdjwWfqHtJ3n-UK_n5nzpgcpERbM+_9-Z3FrjJx7nHQzQ@mail.gmail.com>
- <CAKv+Gu-sVSWNYHEjzjOfbEryOR_XruwH=qQphq4uTXMLPK18tw@mail.gmail.com>
+        Mika Westerberg <mika.westerberg@linux.intel.com>
+References: <20161202195416.58953-1-andriy.shevchenko@linux.intel.com>
+        <20161202195416.58953-3-andriy.shevchenko@linux.intel.com>
+        <20161215122856.7d24b7a8@endymion>
+        <20161216023213.GA4505@dhcp-128-65.nay.redhat.com>
+        <1481890738.9552.70.camel@linux.intel.com>
+        <20161216143330.69e9c8ee@endymion>
+        <20161217105721.GB6922@dhcp-128-65.nay.redhat.com>
+        <20200120121927.GJ32742@smile.fi.intel.com>
+        <87a76i9ksr.fsf@x220.int.ebiederm.org>
+        <20200120224204.4e5cc0df@endymion>
+        <CAHp75Veb02m3tU9tzZe912ZmX5mdaYkZ90DD67FVERJS15VsXw@mail.gmail.com>
+        <20200121100359.6125498c@endymion>
+Date:   Tue, 21 Jan 2020 10:29:35 -0600
+In-Reply-To: <20200121100359.6125498c@endymion> (Jean Delvare's message of
+        "Tue, 21 Jan 2020 10:03:59 +0100")
+Message-ID: <87zheg93io.fsf@x220.int.ebiederm.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAKv+Gu-sVSWNYHEjzjOfbEryOR_XruwH=qQphq4uTXMLPK18tw@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain
+X-XM-SPF: eid=1itwQl-0001Fp-NK;;;mid=<87zheg93io.fsf@x220.int.ebiederm.org>;;;hst=in02.mta.xmission.com;;;ip=68.227.160.95;;;frm=ebiederm@xmission.com;;;spf=neutral
+X-XM-AID: U2FsdGVkX19A1vHjXVSUHLJX23KSD0vshxuGi0OSXWU=
+X-SA-Exim-Connect-IP: 68.227.160.95
+X-SA-Exim-Mail-From: ebiederm@xmission.com
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on sa06.xmission.com
+X-Spam-Level: 
+X-Spam-Status: No, score=-0.3 required=8.0 tests=ALL_TRUSTED,BAYES_40,
+        DCC_CHECK_NEGATIVE,T_TM2_M_HEADER_IN_MSG,T_TooManySym_01,
+        T_TooManySym_02,XMSubLong autolearn=disabled version=3.4.2
+X-Spam-Report: * -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
+        * -0.0 BAYES_40 BODY: Bayes spam probability is 20 to 40%
+        *      [score: 0.3872]
+        *  0.7 XMSubLong Long Subject
+        *  0.0 T_TM2_M_HEADER_IN_MSG BODY: No description available.
+        * -0.0 DCC_CHECK_NEGATIVE Not listed in DCC
+        *      [sa06 1397; Body=1 Fuz1=1 Fuz2=1]
+        *  0.0 T_TooManySym_01 4+ unique symbols in subject
+        *  0.0 T_TooManySym_02 5+ unique symbols in subject
+X-Spam-DCC: XMission; sa06 1397; Body=1 Fuz1=1 Fuz2=1 
+X-Spam-Combo: ;Jean Delvare <jdelvare@suse.de>
+X-Spam-Relay-Country: 
+X-Spam-Timing: total 4361 ms - load_scoreonly_sql: 0.88 (0.0%),
+        signal_user_changed: 7 (0.2%), b_tie_ro: 3.7 (0.1%), parse: 2.7 (0.1%),
+         extract_message_metadata: 22 (0.5%), get_uri_detail_list: 1.98 (0.0%),
+         tests_pri_-1000: 28 (0.6%), tests_pri_-950: 2.8 (0.1%),
+        tests_pri_-900: 1.91 (0.0%), tests_pri_-90: 34 (0.8%), check_bayes: 32
+        (0.7%), b_tokenize: 7 (0.2%), b_tok_get_all: 7 (0.2%), b_comp_prob:
+        2.2 (0.1%), b_tok_touch_all: 12 (0.3%), b_finish: 0.80 (0.0%),
+        tests_pri_0: 586 (13.4%), check_dkim_signature: 1.69 (0.0%),
+        check_dkim_adsp: 2.9 (0.1%), poll_dns_idle: 3635 (83.4%),
+        tests_pri_10: 2.3 (0.1%), tests_pri_500: 3667 (84.1%), rewrite_mail:
+        0.00 (0.0%)
+Subject: Re: [PATCH v1 2/2] firmware: dmi_scan: Pass dmi_entry_point to kexec'ed kernel
+X-Spam-Flag: No
+X-SA-Exim-Version: 4.2.1 (built Thu, 05 May 2016 13:38:54 -0600)
+X-SA-Exim-Scanned: Yes (on in02.mta.xmission.com)
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, Jan 21, 2020 at 12:18:03AM +0100, Ard Biesheuvel wrote:
-> On Mon, 20 Jan 2020 at 23:31, Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
-> > On Mon, Jan 20, 2020 at 9:28 PM Eric W. Biederman <ebiederm@xmission.com> wrote:
-> > > Andy Shevchenko <andriy.shevchenko@linux.intel.com> writes:
-> > > > On Sat, Dec 17, 2016 at 06:57:21PM +0800, Dave Young wrote:
+Jean Delvare <jdelvare@suse.de> writes:
 
-...
+> On Mon, 20 Jan 2020 23:55:43 +0200, Andy Shevchenko wrote:
+>> On Mon, Jan 20, 2020 at 11:44 PM Jean Delvare <jdelvare@suse.de> wrote:
+>> >
+>> > On Mon, 20 Jan 2020 10:04:04 -0600, Eric W. Biederman wrote:  
+>> > > Second.  I looked at your test results and they don't directly make
+>> > > sense.  dmidecode bypasses the kernel completely or it did last time
+>> > > I looked so I don't know why you would be using that to test if
+>> > > something in the kernel is working.  
+>> >
+>> > That must have been long ago. A recent version of dmidecode (>= 3.0)
+>> > running on a recent kernel  
+>> > (>= d7f96f97c4031fa4ffdb7801f9aae23e96170a6f, v4.2) will read the DMI  
+>> > data from /sys/firmware/dmi/tables, so it is very much relying on the
+>> > kernel doing the right thing. If not, it will still try to fallback to
+>> > reading from /dev/mem directly on certain architectures. You can force
+>> > that old method with --no-sysfs.
+>> >
+>> > Hope that helps,  
+>> 
+>> I don't understand how it possible can help for in-kernel code, like
+>> DMI quirks in a drivers.
+>
+> OK, just ignore me then, probably I misunderstood the point made by
+> Eric.
 
-> > > > Can we apply these patches for now until you will find better
-> > > > solution?
-> > >
-> > > Not a chance.  The patches don't apply to any kernel in the git history.
-> > >
-> > > Which may be part of your problem.  You are or at least were running
-> > > with code that has not been merged upstream.
-> >
-> > It's done against linux-next.
-> > Applied clearly. (Not the version in this more than yearly old series
-> > of course, that's why I told I can resend)
-> >
-> > > > P.S. I may resend them rebased on recent vanilla.
-> > >
-> > > Second.  I looked at your test results and they don't directly make
-> > > sense.  dmidecode bypasses the kernel completely or it did last time
-> > > I looked so I don't know why you would be using that to test if
-> > > something in the kernel is working.
-> > >
-> > > However dmidecode failing suggests that the actual problem is something
-> > > in the first kernel is stomping the dmi tables.
-> >
-> > See below.
-> >
-> > > Adding a command line option won't fix stomped tables.
-> >
-> > It provides a mechanism, which seems to be absent, to the second
-> > kernel to know where to look for SMBIOS tables.
-> >
-> > > So what I would suggest is:
-> > > a) Verify that dmidecode works before kexec.
-> >
-> > Yes, it does.
-> >
-> > > b) Test to see if dmidecode works after kexec.
-> >
-> > No, it doesn't.
-> >
-> > > c) Once (a) shows that dmidecode works and (b) shows that dmidecode
-> > >    fails figure out what is stomping your dmi tables during or before
-> > >    kexec and that is what should get fixed.
-> >
-> > The problem here as I can see it that EFI and kexec protocols are not
-> > friendly to each other.
-> > I'm not an expert in either. That's why I'm asking for possible
-> > solutions. And this needs to be done in kernel to allow drivers to
-> > work.
-> >
-> > Does the
-> >
-> > commit 4996c02306a25def1d352ec8e8f48895bbc7dea9
-> > Author: Takao Indoh <indou.takao@jp.fujitsu.com>
-> > Date:   Thu Jul 14 18:05:21 2011 -0400
-> >
-> >     ACPI: introduce "acpi_rsdp=" parameter for kdump
-> >
-> > description shed a light on this?
-> >
-> > > Now using a non-efi method of dmi detection relies on the
-> > > tables being between 0xF0000 and 0x10000. AKA the last 64K
-> > > of the first 1MiB of memory.  You might check to see if your
-> > > dmi tables are in that address range.
-> >
-> > # dmidecode --no-sysfs
-> > # dmidecode 3.2
-> > Scanning /dev/mem for entry point.
-> > # No SMBIOS nor DMI entry point found, sorry.
-> >
-> > === with patch applied ===
-> > # dmidecode
-> > ...
-> >         Release Date: 03/10/2015
-> > ...
-> >
-> > >
-> > > Otherwise I suspect the good solution is to give efi it's own page
-> > > tables in the kernel and switch to it whenever efi functions are called.
-> > >
-> >
-> > > But on 32bit the Linux kernel has historically been just fine directly
-> > > accessing the hardware, and ignoring efi and all of the other BIOS's.
-> >
-> > It seems not only for 32-bit Linux kernel anymore. MS Surface 3 runs
-> > 64-bit code.
-> >
-> > > So if that doesn't work on Intel Galileo that is probably a firmware
-> > > problem.
-> >
-> > It's not only about Galileo anymore.
-> >
-> 
-> Looking at the x86 kexec EFI code, it seems that it has special
-> handling for the legacy SMBIOS table address, but not for the SMBIOS3
-> table address, which was introduced to accommodate SMBIOS tables
-> living in memory that is not 32-bit addressable.
-> 
-> Could anyone check whether these systems provide SMBIOS 3.0 tables,
-> and whether their address gets virtually remapped at ExitBootServices?
+No.  I just haven't dived into this area of code in a long time.
 
-On Microsoft Surface 3 tablet:
+It seems a little indirect to use dmidecode as the test to see if the
+kernel has the pointer to the dmitables, but with the knowledge you
+provided it seems like a perfectly valid test.
 
-=== First kernel ===
-
-# uname -a
-
-(Previously reported issue on)
-Linux buildroot 4.13.0+ #39 SMP Tue Sep 5 14:58:23 EEST 2017 x86_64 GNU/Linux
-
-(Updated today to)
-Linux buildroot 5.4.0+ #2 SMP Tue Nov 26 15:36:31 EET 2019 x86_64 GNU/Linux
-
-# ls -l /sys/firmware/dmi/tables/
-total 0
--r--------    1 root     root           825 Jan 21 15:41 DMI
--r--------    1 root     root            31 Jan 21 15:41 smbios_entry_point
-
-# od -Ax -tx1 /sys/firmware/dmi/tables/smbios_entry_point
-000000 5f 53 4d 5f 0f 1f 02 08 6a 00 00 00 00 00 00 00
-000010 5f 44 4d 49 5f e0 39 03 00 40 5b 7b 0f 00 27
-00001f
-
-# dmesg | grep -i dmi
-[    0.000000] DMI: Microsoft Corporation Surface 3/Surface 3, BIOS 1.50410.78 03/10/2015
-[    0.403058] ACPI: Added _OSI(Linux-Lenovo-NV-HDMI-Audio)
-
-# dmesg | grep -i smb
-[    0.000000] efi:  ESRT=0x7b7c6c98  ACPI=0x7ad5a000  ACPI 2.0=0x7ad5a000  SMBIOS=0x7b5f7d18
-[    0.000000] SMBIOS 2.8 present.
-
-=== kexec'ed kernel ===
-# uname -a
-(in both cases, see above `uname -a`, the same version)
-Linux buildroot 5.5.0-rc7+ #161 SMP Tue Jan 21 15:50:02 EET 2020 x86_64 GNU/Linux
-
-# dmidecode
-# dmidecode 3.2
-	Scanning /dev/mem for entry point.
-# No SMBIOS nor DMI entry point found, sorry.
-
-# dmidecode --no-sysfs
-# dmidecode 3.2
-	Scanning /dev/mem for entry point.
-# No SMBIOS nor DMI entry point found, sorry.
-
-
--- 
-With Best Regards,
-Andy Shevchenko
-
+Eric
 
