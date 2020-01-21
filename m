@@ -2,81 +2,79 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 98B381438EF
-	for <lists+linux-efi@lfdr.de>; Tue, 21 Jan 2020 10:04:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 504321439A5
+	for <lists+linux-efi@lfdr.de>; Tue, 21 Jan 2020 10:39:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727360AbgAUJEE (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 21 Jan 2020 04:04:04 -0500
-Received: from mx2.suse.de ([195.135.220.15]:53556 "EHLO mx2.suse.de"
+        id S1727962AbgAUJjS (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 21 Jan 2020 04:39:18 -0500
+Received: from mail.kernel.org ([198.145.29.99]:46664 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727220AbgAUJED (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Tue, 21 Jan 2020 04:04:03 -0500
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id 0F6E8BA7E;
-        Tue, 21 Jan 2020 09:04:01 +0000 (UTC)
-Date:   Tue, 21 Jan 2020 10:03:59 +0100
-From:   Jean Delvare <jdelvare@suse.de>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     "Eric W. Biederman" <ebiederm@xmission.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Dave Young <dyoung@redhat.com>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Matt Fleming <matt@codeblueprint.co.uk>,
-        kexec@lists.infradead.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: Re: [PATCH v1 2/2] firmware: dmi_scan: Pass dmi_entry_point to
- kexec'ed kernel
-Message-ID: <20200121100359.6125498c@endymion>
-In-Reply-To: <CAHp75Veb02m3tU9tzZe912ZmX5mdaYkZ90DD67FVERJS15VsXw@mail.gmail.com>
-References: <20161202195416.58953-1-andriy.shevchenko@linux.intel.com>
-        <20161202195416.58953-3-andriy.shevchenko@linux.intel.com>
-        <20161215122856.7d24b7a8@endymion>
-        <20161216023213.GA4505@dhcp-128-65.nay.redhat.com>
-        <1481890738.9552.70.camel@linux.intel.com>
-        <20161216143330.69e9c8ee@endymion>
-        <20161217105721.GB6922@dhcp-128-65.nay.redhat.com>
-        <20200120121927.GJ32742@smile.fi.intel.com>
-        <87a76i9ksr.fsf@x220.int.ebiederm.org>
-        <20200120224204.4e5cc0df@endymion>
-        <CAHp75Veb02m3tU9tzZe912ZmX5mdaYkZ90DD67FVERJS15VsXw@mail.gmail.com>
-Organization: SUSE Linux
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-suse-linux-gnu)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+        id S1725789AbgAUJjS (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Tue, 21 Jan 2020 04:39:18 -0500
+Received: from e123331-lin.home (amontpellier-657-1-18-247.w109-210.abo.wanadoo.fr [109.210.65.247])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 67F92217F4;
+        Tue, 21 Jan 2020 09:39:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1579599558;
+        bh=by1NOeU1Q5IktSBhyHEM7pGePHA9GLl6aFkJWgkvpvE=;
+        h=From:To:Cc:Subject:Date:From;
+        b=ekfbgNOLIk0eDs+lM9zD/tMGpNpV1yWg9p+8oINIQDggcuN9tGkOM+63KXSgZRptB
+         4YukOu2QtZA+GTGCZo+a6F/brit+lf5x00qEgZQGLUjKL89QV0F4K57UjTKOGmDjKm
+         62jPZgw3/GzUU2aW3a/m2QxvEThDc9f4ts26WbbQ=
+From:   Ard Biesheuvel <ardb@kernel.org>
+To:     linux-efi@vger.kernel.org
+Cc:     mingo@kernel.org, Ard Biesheuvel <ardb@kernel.org>
+Subject: [PATCH] efi/x86: disable instrumentation in EFI runtime handling code
+Date:   Tue, 21 Jan 2020 10:39:12 +0100
+Message-Id: <20200121093912.5246-1-ardb@kernel.org>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Mon, 20 Jan 2020 23:55:43 +0200, Andy Shevchenko wrote:
-> On Mon, Jan 20, 2020 at 11:44 PM Jean Delvare <jdelvare@suse.de> wrote:
-> >
-> > On Mon, 20 Jan 2020 10:04:04 -0600, Eric W. Biederman wrote:  
-> > > Second.  I looked at your test results and they don't directly make
-> > > sense.  dmidecode bypasses the kernel completely or it did last time
-> > > I looked so I don't know why you would be using that to test if
-> > > something in the kernel is working.  
-> >
-> > That must have been long ago. A recent version of dmidecode (>= 3.0)
-> > running on a recent kernel  
-> > (>= d7f96f97c4031fa4ffdb7801f9aae23e96170a6f, v4.2) will read the DMI  
-> > data from /sys/firmware/dmi/tables, so it is very much relying on the
-> > kernel doing the right thing. If not, it will still try to fallback to
-> > reading from /dev/mem directly on certain architectures. You can force
-> > that old method with --no-sysfs.
-> >
-> > Hope that helps,  
-> 
-> I don't understand how it possible can help for in-kernel code, like
-> DMI quirks in a drivers.
+We already disable KASAN instrumentation specifically for the
+EFI routines that are known to dereference memory addresses that
+KASAN does not know about, avoiding false positive KASAN splats.
 
-OK, just ignore me then, probably I misunderstood the point made by
-Eric.
+However, as it turns out, having GCOV or KASAN instrumentation enabled
+interferes with the compiler's ability to optimize away function calls
+that are guarded by IS_ENABLED() checks that should have resulted in
+those references to have been const-propagated out of existence. But
+with instrumenation enabled, we may get build errors like
 
+   ld: arch/x86/platform/efi/efi_64.o: in function `efi_thunk_set_virtual_address_map':
+>> arch/x86/platform/efi/efi_64.c:560: undefined reference to `__efi64_thunk'
+   ld: arch/x86/platform/efi/efi_64.o: in function `efi_set_virtual_address_map':
+>> arch/x86/platform/efi/efi_64.c:902: undefined reference to `efi_uv1_memmap_phys_prolog'
+>> ld: arch/x86/platform/efi/efi_64.c:921: undefined reference to `efi_uv1_memmap_phys_epilog'
+
+in builds where CONFIG_EFI=y but CONFIG_EFI_MIXED or CONFIG_X86_UV are not
+defined, even though the invocations are conditional on IS_ENABLED() checks
+against the respective Kconfig symbols.
+
+So let's disable instrumentation entirely for this subdirectory, which
+isn't that useful here to begin with.
+
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+---
+ arch/x86/platform/efi/Makefile | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/arch/x86/platform/efi/Makefile b/arch/x86/platform/efi/Makefile
+index 7ec3a8b31f8b..84b09c230cbd 100644
+--- a/arch/x86/platform/efi/Makefile
++++ b/arch/x86/platform/efi/Makefile
+@@ -1,5 +1,7 @@
+ # SPDX-License-Identifier: GPL-2.0
+ OBJECT_FILES_NON_STANDARD_efi_thunk_$(BITS).o := y
++KASAN_SANITIZE := n
++GCOV_PROFILE := n
+ 
+ obj-$(CONFIG_EFI) 		+= quirks.o efi.o efi_$(BITS).o efi_stub_$(BITS).o
+ obj-$(CONFIG_EFI_MIXED)		+= efi_thunk_$(BITS).o
 -- 
-Jean Delvare
-SUSE L3 Support
+2.17.1
+
