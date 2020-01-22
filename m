@@ -2,92 +2,87 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E6CA714560B
-	for <lists+linux-efi@lfdr.de>; Wed, 22 Jan 2020 14:35:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4483D145C53
+	for <lists+linux-efi@lfdr.de>; Wed, 22 Jan 2020 20:15:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729799AbgAVNTt (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 22 Jan 2020 08:19:49 -0500
-Received: from mail.kernel.org ([198.145.29.99]:35808 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728811AbgAVNTr (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Wed, 22 Jan 2020 08:19:47 -0500
-Received: from localhost (unknown [84.241.205.26])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 4861820678;
-        Wed, 22 Jan 2020 13:19:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1579699186;
-        bh=RSUDhfPhXk0dWiZ10UxNgdPkWdvoHWDWWByQvoZi8Lo=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yeOfO4omESxdLvcUs6gqyvwKYXhk3SJdL8/Ynx5bKc2MIUaAk0U9XcX/x+EF/TSos
-         eV8Pyr5t4R3g/BiezgWxRXyS5nR4Og8zYT2Yz+uwXXIfxUtV9n66xPb1CPiIigEQJT
-         HgGeVx2L7iCe3h0qSCzzwYCzZ5xL6QkbdknCOr2M=
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
-        Arvind Sankar <nivedita@alum.mit.edu>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-efi@vger.kernel.org, Ingo Molnar <mingo@kernel.org>
-Subject: [PATCH 5.4 066/222] x86/efistub: Disable paging at mixed mode entry
-Date:   Wed, 22 Jan 2020 10:27:32 +0100
-Message-Id: <20200122092838.449657394@linuxfoundation.org>
-X-Mailer: git-send-email 2.25.0
-In-Reply-To: <20200122092833.339495161@linuxfoundation.org>
-References: <20200122092833.339495161@linuxfoundation.org>
-User-Agent: quilt/0.66
+        id S1726207AbgAVTPB (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 22 Jan 2020 14:15:01 -0500
+Received: from mail-qt1-f196.google.com ([209.85.160.196]:33075 "EHLO
+        mail-qt1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726026AbgAVTPB (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 22 Jan 2020 14:15:01 -0500
+Received: by mail-qt1-f196.google.com with SMTP id d5so491121qto.0
+        for <linux-efi@vger.kernel.org>; Wed, 22 Jan 2020 11:15:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=lca.pw; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=wcZLBHfSelzBLql9iR2p8F2YLeGA3mb8mja49ZN5f84=;
+        b=J7d0NSFAdOvdf1j3I+XMD9gglB+MgxwDGbKrjQxGqVjK7ZlWBJe3XlQ+UM2YPmX2ey
+         2pC5v5rFRhefoIv1YdWzENhSjJ4RIbI9phPgOlr12qlSaQKqBtrryWzNBK2rFIbd2wZh
+         3MBH72tqFRpSsTashv+5PBH00zJhhzfZkzGxzB8McWgRVSi1ZUl4yGC3TzJXY+QcnYih
+         8ePmwtMbjp4HR8G3S1O/s3FUWD1qpvZ5Z/tBNeWASu8vQz/1uvuMIXRV4r0IGwHaA1tf
+         rGQjJpQe0rAG3jBAskRX6lg8oelt5D3h1DRvD84WAZGB7dtlzRwDQPp0RpMlYPrGxJO5
+         GNJQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=wcZLBHfSelzBLql9iR2p8F2YLeGA3mb8mja49ZN5f84=;
+        b=Ip19jstUrpNRZ3yBJajfNtBHZcePPvCcY4N3uB3cvks90ptimQvSC1GL3TSRxRBRlj
+         OkpLoCGMgkOkdmS+pav2MuFLy5N8jkHJ1p/SFIhUtO4N71fXjQ7OnQTuvnZA3nv6pDGZ
+         qoelsUqEshwFUqFrgIJndm8Ank3Be6SHUdPuq2b0/v/f696elfVBYpULeOwQHt6NMbiK
+         YlOuJ3A817L4srJjHM73bb4UfP7AJ44MuXUGMyJVz4W6RTAsOf//6KuPEq1NPrlj9+GX
+         782UVVovcISNNCpQ3ksgYFrob8vjx6dogIPW/G+tBL9qM9w+WSbv9IFX6weLFFLMbus1
+         BlUQ==
+X-Gm-Message-State: APjAAAW+nrEBszorS9DlhHCm9zqBy8lky70SEzO0xjLDPeZ2r4coumEo
+        j0FVtfA/x2aAzTubdX+/mPtxgQ==
+X-Google-Smtp-Source: APXvYqwF1rSoKbNyZjLl+is8u3JtESZR7y/+4GcKotqz8S/YtN8UZsOQ4+qJJ4ecO/nonjUj8cWmvw==
+X-Received: by 2002:ac8:2e4b:: with SMTP id s11mr12035146qta.389.1579720499968;
+        Wed, 22 Jan 2020 11:14:59 -0800 (PST)
+Received: from ovpn-123-97.rdu2.redhat.com (pool-71-184-117-43.bstnma.fios.verizon.net. [71.184.117.43])
+        by smtp.gmail.com with ESMTPSA id k50sm21675998qtc.90.2020.01.22.11.14.58
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 22 Jan 2020 11:14:59 -0800 (PST)
+From:   Qian Cai <cai@lca.pw>
+To:     mingo@redhat.com
+Cc:     ardb@kernel.org, tglx@linutronix.de, linux-efi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Qian Cai <cai@lca.pw>
+Subject: [PATCH -next] efi/libstub/x86: fix an EFI server boot failure
+Date:   Wed, 22 Jan 2020 14:14:30 -0500
+Message-Id: <20200122191430.4888-1-cai@lca.pw>
+X-Mailer: git-send-email 2.21.0 (Apple Git-122.2)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-From: Ard Biesheuvel <ardb@kernel.org>
+x86_64 EFI systems are unable to boot due to a typo in the recent commit.
 
-commit 4911ee401b7ceff8f38e0ac597cbf503d71e690c upstream.
+EFI config tables not found.
+ -- System halted
 
-The EFI mixed mode entry code goes through the ordinary startup_32()
-routine before jumping into the kernel's EFI boot code in 64-bit
-mode. The 32-bit startup code must be entered with paging disabled,
-but this is not documented as a requirement for the EFI handover
-protocol, and so we should disable paging explicitly when entering
-the kernel from 32-bit EFI firmware.
-
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Cc: <stable@vger.kernel.org>
-Cc: Arvind Sankar <nivedita@alum.mit.edu>
-Cc: Hans de Goede <hdegoede@redhat.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: linux-efi@vger.kernel.org
-Link: https://lkml.kernel.org/r/20191224132909.102540-4-ardb@kernel.org
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
+Fixes: 796eb8d26a57 ("efi/libstub/x86: Use const attribute for efi_is_64bit()")
+Signed-off-by: Qian Cai <cai@lca.pw>
 ---
- arch/x86/boot/compressed/head_64.S |    5 +++++
- 1 file changed, 5 insertions(+)
+ arch/x86/boot/compressed/eboot.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/boot/compressed/head_64.S
-+++ b/arch/x86/boot/compressed/head_64.S
-@@ -244,6 +244,11 @@ ENTRY(efi32_stub_entry)
- 	leal	efi32_config(%ebp), %eax
- 	movl	%eax, efi_config(%ebp)
+diff --git a/arch/x86/boot/compressed/eboot.c b/arch/x86/boot/compressed/eboot.c
+index 82e26d0ff075..287393d725f0 100644
+--- a/arch/x86/boot/compressed/eboot.c
++++ b/arch/x86/boot/compressed/eboot.c
+@@ -32,7 +32,7 @@ __attribute_const__ bool efi_is_64bit(void)
+ {
+ 	if (IS_ENABLED(CONFIG_EFI_MIXED))
+ 		return efi_is64;
+-	return IS_ENABLED(CONFIG_X64_64);
++	return IS_ENABLED(CONFIG_X86_64);
+ }
  
-+	/* Disable paging */
-+	movl	%cr0, %eax
-+	btrl	$X86_CR0_PG_BIT, %eax
-+	movl	%eax, %cr0
-+
- 	jmp	startup_32
- ENDPROC(efi32_stub_entry)
- #endif
-
+ static efi_status_t
+-- 
+2.21.0 (Apple Git-122.2)
 
