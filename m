@@ -2,40 +2,40 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D25AD145557
-	for <lists+linux-efi@lfdr.de>; Wed, 22 Jan 2020 14:25:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E6CA714560B
+	for <lists+linux-efi@lfdr.de>; Wed, 22 Jan 2020 14:35:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730134AbgAVNU7 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 22 Jan 2020 08:20:59 -0500
-Received: from mail.kernel.org ([198.145.29.99]:37536 "EHLO mail.kernel.org"
+        id S1729799AbgAVNTt (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 22 Jan 2020 08:19:49 -0500
+Received: from mail.kernel.org ([198.145.29.99]:35808 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730122AbgAVNU7 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Wed, 22 Jan 2020 08:20:59 -0500
+        id S1728811AbgAVNTr (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Wed, 22 Jan 2020 08:19:47 -0500
 Received: from localhost (unknown [84.241.205.26])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B59E82468A;
-        Wed, 22 Jan 2020 13:20:57 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 4861820678;
+        Wed, 22 Jan 2020 13:19:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1579699258;
-        bh=nWWiD5jEnlALudvtWMS1vnhl0X6ByubruA79LrLt6CE=;
+        s=default; t=1579699186;
+        bh=RSUDhfPhXk0dWiZ10UxNgdPkWdvoHWDWWByQvoZi8Lo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yCUxls7otRVqCnXdPA7STuOCsALDQ2O4NxZgQlE7QqsByCgrgwHhdAH6uEz3dL6Gq
-         R7j2yIZwmohmfqPGZmo6AGdvyoGveYZJJmifD0Gx6ABtbG3S67XDVhFsoRC6HQ+I06
-         38M+sobVnd8h/32w10wIlmKXBjzVN4+/phpuYfpk=
+        b=yeOfO4omESxdLvcUs6gqyvwKYXhk3SJdL8/Ynx5bKc2MIUaAk0U9XcX/x+EF/TSos
+         eV8Pyr5t4R3g/BiezgWxRXyS5nR4Og8zYT2Yz+uwXXIfxUtV9n66xPb1CPiIigEQJT
+         HgGeVx2L7iCe3h0qSCzzwYCzZ5xL6QkbdknCOr2M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Arvind Sankar <nivedita@alum.mit.edu>,
-        Ard Biesheuvel <ardb@kernel.org>,
+        stable@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
+        Arvind Sankar <nivedita@alum.mit.edu>,
         Hans de Goede <hdegoede@redhat.com>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Peter Zijlstra <peterz@infradead.org>,
         Thomas Gleixner <tglx@linutronix.de>,
         linux-efi@vger.kernel.org, Ingo Molnar <mingo@kernel.org>
-Subject: [PATCH 5.4 072/222] efi/earlycon: Fix write-combine mapping on x86
-Date:   Wed, 22 Jan 2020 10:27:38 +0100
-Message-Id: <20200122092838.874517870@linuxfoundation.org>
+Subject: [PATCH 5.4 066/222] x86/efistub: Disable paging at mixed mode entry
+Date:   Wed, 22 Jan 2020 10:27:32 +0100
+Message-Id: <20200122092838.449657394@linuxfoundation.org>
 X-Mailer: git-send-email 2.25.0
 In-Reply-To: <20200122092833.339495161@linuxfoundation.org>
 References: <20200122092833.339495161@linuxfoundation.org>
@@ -48,84 +48,46 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-From: Arvind Sankar <nivedita@alum.mit.edu>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-commit d92b54570d24d017d2630e314b525ed792f5aa6c upstream.
+commit 4911ee401b7ceff8f38e0ac597cbf503d71e690c upstream.
 
-On x86, until PAT is initialized, WC translates into UC-. Since we
-calculate and store pgprot_writecombine(PAGE_KERNEL) when earlycon is
-initialized, this means we actually use UC- mappings instead of WC
-mappings, which makes scrolling very slow.
+The EFI mixed mode entry code goes through the ordinary startup_32()
+routine before jumping into the kernel's EFI boot code in 64-bit
+mode. The 32-bit startup code must be entered with paging disabled,
+but this is not documented as a requirement for the EFI handover
+protocol, and so we should disable paging explicitly when entering
+the kernel from 32-bit EFI firmware.
 
-Instead store a boolean flag to indicate whether we want to use
-writeback or write-combine mappings, and recalculate the actual pgprot_t
-we need on every mapping. Once PAT is initialized, we will start using
-write-combine mappings, which speeds up the scrolling considerably.
-
-Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Cc: <stable@vger.kernel.org>
+Cc: Arvind Sankar <nivedita@alum.mit.edu>
 Cc: Hans de Goede <hdegoede@redhat.com>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: Thomas Gleixner <tglx@linutronix.de>
 Cc: linux-efi@vger.kernel.org
-Fixes: 69c1f396f25b ("efi/x86: Convert x86 EFI earlyprintk into generic earlycon implementation")
-Link: https://lkml.kernel.org/r/20191224132909.102540-2-ardb@kernel.org
+Link: https://lkml.kernel.org/r/20191224132909.102540-4-ardb@kernel.org
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- drivers/firmware/efi/earlycon.c |   16 +++++++---------
- 1 file changed, 7 insertions(+), 9 deletions(-)
+ arch/x86/boot/compressed/head_64.S |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/firmware/efi/earlycon.c
-+++ b/drivers/firmware/efi/earlycon.c
-@@ -17,7 +17,7 @@ static const struct console *earlycon_co
- static const struct font_desc *font;
- static u32 efi_x, efi_y;
- static u64 fb_base;
--static pgprot_t fb_prot;
-+static bool fb_wb;
- static void *efi_fb;
+--- a/arch/x86/boot/compressed/head_64.S
++++ b/arch/x86/boot/compressed/head_64.S
+@@ -244,6 +244,11 @@ ENTRY(efi32_stub_entry)
+ 	leal	efi32_config(%ebp), %eax
+ 	movl	%eax, efi_config(%ebp)
  
- /*
-@@ -33,10 +33,8 @@ static int __init efi_earlycon_remap_fb(
- 	if (!earlycon_console || !(earlycon_console->flags & CON_ENABLED))
- 		return 0;
- 
--	if (pgprot_val(fb_prot) == pgprot_val(PAGE_KERNEL))
--		efi_fb = memremap(fb_base, screen_info.lfb_size, MEMREMAP_WB);
--	else
--		efi_fb = memremap(fb_base, screen_info.lfb_size, MEMREMAP_WC);
-+	efi_fb = memremap(fb_base, screen_info.lfb_size,
-+			  fb_wb ? MEMREMAP_WB : MEMREMAP_WC);
- 
- 	return efi_fb ? 0 : -ENOMEM;
- }
-@@ -53,9 +51,12 @@ late_initcall(efi_earlycon_unmap_fb);
- 
- static __ref void *efi_earlycon_map(unsigned long start, unsigned long len)
- {
-+	pgprot_t fb_prot;
++	/* Disable paging */
++	movl	%cr0, %eax
++	btrl	$X86_CR0_PG_BIT, %eax
++	movl	%eax, %cr0
 +
- 	if (efi_fb)
- 		return efi_fb + start;
- 
-+	fb_prot = fb_wb ? PAGE_KERNEL : pgprot_writecombine(PAGE_KERNEL);
- 	return early_memremap_prot(fb_base + start, len, pgprot_val(fb_prot));
- }
- 
-@@ -215,10 +216,7 @@ static int __init efi_earlycon_setup(str
- 	if (screen_info.capabilities & VIDEO_CAPABILITY_64BIT_BASE)
- 		fb_base |= (u64)screen_info.ext_lfb_base << 32;
- 
--	if (opt && !strcmp(opt, "ram"))
--		fb_prot = PAGE_KERNEL;
--	else
--		fb_prot = pgprot_writecombine(PAGE_KERNEL);
-+	fb_wb = opt && !strcmp(opt, "ram");
- 
- 	si = &screen_info;
- 	xres = si->lfb_width;
+ 	jmp	startup_32
+ ENDPROC(efi32_stub_entry)
+ #endif
 
 
