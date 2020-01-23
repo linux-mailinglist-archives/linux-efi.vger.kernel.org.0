@@ -2,130 +2,123 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D980146FBA
-	for <lists+linux-efi@lfdr.de>; Thu, 23 Jan 2020 18:31:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 99D77147212
+	for <lists+linux-efi@lfdr.de>; Thu, 23 Jan 2020 20:49:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728904AbgAWRbB (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 23 Jan 2020 12:31:01 -0500
-Received: from mail.kernel.org ([198.145.29.99]:49692 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728792AbgAWRbB (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Thu, 23 Jan 2020 12:31:01 -0500
-Received: from e123331-lin.home (amontpellier-657-1-18-247.w109-210.abo.wanadoo.fr [109.210.65.247])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 6E0D021569;
-        Thu, 23 Jan 2020 17:30:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1579800660;
-        bh=+YI2M5SKhBJCFLqZih6bihD47cYXJn9nHejxv31f9Aw=;
-        h=From:To:Cc:Subject:Date:From;
-        b=spHTo4vc8ITV13ltK7QTZTF1lyK01rmVXX1JwueWTWpEo+UbNwbIYkfYYo3eiGYIr
-         5JkyALWZ4Gi0ohohsYf5FF4O07UTC1N45OWbI2yj9x3NPUSA0VmBW9+aAKkWpdaU+7
-         MM42stgtqZPgLrM/IOc08ypllTmpsqZX8ttI994I=
-From:   Ard Biesheuvel <ardb@kernel.org>
-To:     linux-efi@vger.kernel.org
-Cc:     leif.lindholm@linaro.org, daniel.kiper@oracle.com,
-        mjg59@google.com, Ard Biesheuvel <ardb@kernel.org>
-Subject: [RFC PATCH] efi/libstub/x86: look for bootparams when booting via PE entry point
-Date:   Thu, 23 Jan 2020 18:30:47 +0100
-Message-Id: <20200123173047.18409-1-ardb@kernel.org>
-X-Mailer: git-send-email 2.17.1
+        id S1726232AbgAWTtR (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 23 Jan 2020 14:49:17 -0500
+Received: from mail-qk1-f193.google.com ([209.85.222.193]:38352 "EHLO
+        mail-qk1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726118AbgAWTtR (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 23 Jan 2020 14:49:17 -0500
+Received: by mail-qk1-f193.google.com with SMTP id k6so4710323qki.5
+        for <linux-efi@vger.kernel.org>; Thu, 23 Jan 2020 11:49:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=lca.pw; s=google;
+        h=mime-version:subject:from:in-reply-to:date:cc
+         :content-transfer-encoding:message-id:references:to;
+        bh=fYWv3gkaBG3PC7KY5b1PI2c9hwBzlBIPCdR2DcObPZc=;
+        b=rcQkWff2IxD8g6voBRp5FFJKudPCu2/bWS9vjCC3BTh7jVw1+6wvrXtCMv/eqUU0K8
+         Mtn8A4f095sTk9pGH5ytPPFt9+LXqUaeZtE9nMPgEh7FSyeI5cFpiERe1+xuDf8OHOuY
+         paJRXyu7SboiwQAj090+qqt+509/rR2xRrOOeTqMuAA7HIpquqWj+5S0c77hRRCyRGYD
+         QgBUeJSA4F62UvixJGNUKvET7PAedWRTqTH4ZmU8gmINuZoiXGlm5cu6QZaftJdgOF6M
+         xDHukbohrGroDmu8d5773suxH+L7XI19X8EtKpNOT50+cc/lIZ5fEJcQYsnBP9Plr3PU
+         io7w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:subject:from:in-reply-to:date:cc
+         :content-transfer-encoding:message-id:references:to;
+        bh=fYWv3gkaBG3PC7KY5b1PI2c9hwBzlBIPCdR2DcObPZc=;
+        b=MqyqsIjhd/yt8KAX4LcsIhpxON8qEkwhISl5RmL9qj9d7VlD18NvDYMXTZg100ZL+d
+         MSEfJOly0LZabvgJ024wzXh/A/vPSp8AJ4sKWpQ+6PXheljaUcIj8ciTEdSjdPLF4E/f
+         48aTg71wJKGSQhRqMUv3LXUpHgG/pyij6ugU4/7HtOTVhHnwv8kjmSK7YyrvEJIT7B6n
+         mN1P33zXGTxKs+99GK/FDenD51iOuxBbarYtK9iSz9sCLhX2VCssMCB84SLVh3JSa5ai
+         D9XBKRMrCsXi+qep+59xB8RGmmA0mjstlG+hLuOSuAD/NDQf+JPOuozYMHXu/O91uQ28
+         cknw==
+X-Gm-Message-State: APjAAAXq3pVvjpZcDbMkIfb2wdMmY15m6T3VseDLaahzsej4VsPgBc2G
+        aECep5FjdzeWmMRJ5wpAqx/yxQrmdvZy3Q==
+X-Google-Smtp-Source: APXvYqx5v5NP0kCPnQiptjsW8R3LNoRZLqm+Mf0vqi2X+tunoECrfmNLbYLzVp4sOuFPwKFmDuOOMA==
+X-Received: by 2002:a37:4dc4:: with SMTP id a187mr18136788qkb.436.1579808956541;
+        Thu, 23 Jan 2020 11:49:16 -0800 (PST)
+Received: from [192.168.1.153] (pool-71-184-117-43.bstnma.fios.verizon.net. [71.184.117.43])
+        by smtp.gmail.com with ESMTPSA id i90sm1516366qtd.49.2020.01.23.11.49.15
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 23 Jan 2020 11:49:15 -0800 (PST)
+Content-Type: text/plain;
+        charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 13.0 \(3608.40.2.2.4\))
+Subject: Re: [PATCH -next] efi/libstub/x86: fix an EFI server boot failure
+From:   Qian Cai <cai@lca.pw>
+In-Reply-To: <CAKv+Gu_snhTpsM4cjZ38UhH02v151NW4cJdQu9QVqCWu4rFVZw@mail.gmail.com>
+Date:   Thu, 23 Jan 2020 14:49:14 -0500
+Cc:     Ingo Molnar <mingo@redhat.com>, Ard Biesheuvel <ardb@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <10CCB37C-B91A-4A15-B9C0-5DBA5DD0BFD9@lca.pw>
+References: <20200122191430.4888-1-cai@lca.pw>
+ <CAKv+Gu_snhTpsM4cjZ38UhH02v151NW4cJdQu9QVqCWu4rFVZw@mail.gmail.com>
+To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>
+X-Mailer: Apple Mail (2.3608.40.2.2.4)
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-There are currently a couple of different ways the Linux kernel can be
-booted on UEFI x86 systems:
-1) legacy boot - the bootloader jumps straight into the first byte of the
-   kernel image after taking down the UEFI boot services and populating a
-   bootparams structure with the required information
-2) PE entry point - the kernel is booted as an ordinary PE/COFF executable,
-   using the loadimage and startimage boot services, and it is left to the
-   boot stub to allocate and populate a bootparams structure
-3) EFI handover protocol - the kernel is copied into memory and the loader
-   jumps into it at a fixed offset, providing a bootparams structure but
-   with the EFI boot services still active.
 
-Option #3 is the option preferred by the distros today, since it allows
-the bootloader to populate and pass the bootparams structure directly,
-which enables things like initrd images loaded from any filesystem (as
-opposed to option #2, which requires the kernel's boot stub to load the
-initrd but it only supports loading images from the same volume that the
-kernel image was loaded from). Option #3 also supports loading 32-bit
-kernels on 64-bit firmware and vice versa.
 
-However, option #2 is a more seamless match, given that it uses the
-firmware's standard loading facilities, which is also what EFI secure
-boot authentication checks are based on.
+> On Jan 22, 2020, at 2:17 PM, Ard Biesheuvel =
+<ard.biesheuvel@linaro.org> wrote:
+>=20
+> On Wed, 22 Jan 2020 at 20:15, Qian Cai <cai@lca.pw> wrote:
+>>=20
+>> x86_64 EFI systems are unable to boot due to a typo in the recent =
+commit.
+>>=20
+>> EFI config tables not found.
+>> -- System halted
+>>=20
+>> Fixes: 796eb8d26a57 ("efi/libstub/x86: Use const attribute for =
+efi_is_64bit()")
+>> Signed-off-by: Qian Cai <cai@lca.pw>
+>> ---
+>> arch/x86/boot/compressed/eboot.c | 2 +-
+>> 1 file changed, 1 insertion(+), 1 deletion(-)
+>>=20
+>> diff --git a/arch/x86/boot/compressed/eboot.c =
+b/arch/x86/boot/compressed/eboot.c
+>> index 82e26d0ff075..287393d725f0 100644
+>> --- a/arch/x86/boot/compressed/eboot.c
+>> +++ b/arch/x86/boot/compressed/eboot.c
+>> @@ -32,7 +32,7 @@ __attribute_const__ bool efi_is_64bit(void)
+>> {
+>>        if (IS_ENABLED(CONFIG_EFI_MIXED))
+>>                return efi_is64;
+>> -       return IS_ENABLED(CONFIG_X64_64);
+>> +       return IS_ENABLED(CONFIG_X86_64);
+>> }
+>>=20
+>> static efi_status_t
+>=20
+> Apologies for the breakage - your fix is obviously correct. But I did
+> test this code, so I am curious why I didn't see this problem. Are you
+> booting via GRUB or from the UEFI shell? Can you share your .config
+> please?
 
-So let's provide a way for option #2 to be used in combination with a
-bootloader provided bootparams structure, by specifying a special protocol
-GUID for it, and looking for it on the image handle when entering via the
-ordinary PE/COFF entry point. This allows a loader to call LoadImage,
-install the new protocol on the resulting handle and invoke the kernel via
-StartImage, and thus rely on the authentication performed by those boot
-services if secure boot is enabled.
+https://raw.githubusercontent.com/cailca/linux-mm/master/x86.config
 
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
----
- arch/x86/boot/compressed/eboot.c | 8 ++++++++
- arch/x86/boot/header.S           | 2 +-
- include/linux/efi.h              | 1 +
- 3 files changed, 10 insertions(+), 1 deletion(-)
+BTW, this will also trigger a compilation breakage,
 
-diff --git a/arch/x86/boot/compressed/eboot.c b/arch/x86/boot/compressed/eboot.c
-index 82e26d0ff075..b74c4b18dc20 100644
---- a/arch/x86/boot/compressed/eboot.c
-+++ b/arch/x86/boot/compressed/eboot.c
-@@ -362,6 +362,7 @@ efi_status_t __efiapi efi_pe_entry(efi_handle_t handle,
- 	struct setup_header *hdr;
- 	efi_loaded_image_t *image;
- 	efi_guid_t proto = LOADED_IMAGE_PROTOCOL_GUID;
-+	efi_guid_t bp_proto = LINUX_EFI_X86_BOOTPARAMS_PROTOCOL_GUID;
- 	int options_size = 0;
- 	efi_status_t status;
- 	char *cmdline_ptr;
-@@ -374,6 +375,13 @@ efi_status_t __efiapi efi_pe_entry(efi_handle_t handle,
- 	if (sys_table->hdr.signature != EFI_SYSTEM_TABLE_SIGNATURE)
- 		return EFI_INVALID_PARAMETER;
- 
-+	status = efi_bs_call(handle_protocol, handle, &bp_proto,
-+			     (void **)&boot_params);
-+	if (status == EFI_SUCCESS) {
-+		efi_stub_entry(handle, sys_table, boot_params);
-+		/* not reached */
-+	}
-+
- 	status = efi_bs_call(handle_protocol, handle, &proto, (void *)&image);
- 	if (status != EFI_SUCCESS) {
- 		efi_printk("Failed to get handle for LOADED_IMAGE_PROTOCOL\n");
-diff --git a/arch/x86/boot/header.S b/arch/x86/boot/header.S
-index 97d9b6d6c1af..2b5d4d181df1 100644
---- a/arch/x86/boot/header.S
-+++ b/arch/x86/boot/header.S
-@@ -300,7 +300,7 @@ _start:
- 	# Part 2 of the header, from the old setup.S
- 
- 		.ascii	"HdrS"		# header signature
--		.word	0x020f		# header version number (>= 0x0105)
-+		.word	0x0210		# header version number (>= 0x0105)
- 					# or else old loadlin-1.5 will fail)
- 		.globl realmode_swtch
- realmode_swtch:	.word	0, 0		# default_switch, SETUPSEG
-diff --git a/include/linux/efi.h b/include/linux/efi.h
-index 4169e9d0d699..fd381ebce127 100644
---- a/include/linux/efi.h
-+++ b/include/linux/efi.h
-@@ -666,6 +666,7 @@ void efi_native_runtime_setup(void);
- #define LINUX_EFI_TPM_EVENT_LOG_GUID		EFI_GUID(0xb7799cb0, 0xeca2, 0x4943,  0x96, 0x67, 0x1f, 0xae, 0x07, 0xb7, 0x47, 0xfa)
- #define LINUX_EFI_TPM_FINAL_LOG_GUID		EFI_GUID(0x1e2ed096, 0x30e2, 0x4254,  0xbd, 0x89, 0x86, 0x3b, 0xbe, 0xf8, 0x23, 0x25)
- #define LINUX_EFI_MEMRESERVE_TABLE_GUID		EFI_GUID(0x888eb0c6, 0x8ede, 0x4ff5,  0xa8, 0xf0, 0x9a, 0xee, 0x5c, 0xb9, 0x77, 0xc2)
-+#define LINUX_EFI_X86_BOOTPARAMS_PROTOCOL_GUID	EFI_GUID(0xa50da594, 0x048d, 0x4296,  0xb2, 0xe1, 0xce, 0xc7, 0xb4, 0xf5, 0x79, 0x13)
- 
- /* OEM GUIDs */
- #define DELLEMC_EFI_RCI2_TABLE_GUID		EFI_GUID(0x2d9f28a2, 0xa886, 0x456a,  0x97, 0xa8, 0xf1, 0x1e, 0xf2, 0x4f, 0xf4, 0x55)
--- 
-2.17.1
+ld: arch/x86/platform/efi/efi_64.o: in function =
+`efi_set_virtual_address_map':
+efi_64.c:(.init.text+0x1419): undefined reference to `__efi64_thunk'
+ld: efi_64.c:(.init.text+0x1530): undefined reference to =
+`efi_uv1_memmap_phys_prolog'
+ld: efi_64.c:(.init.text+0x1706): undefined reference to =
+`efi_uv1_memmap_phys_epilog=E2=80=99
 
+Likely due to the commit =E2=80=9Cefi/x86: avoid KASAN false positives =
+when accessing the 1:1 mapping=E2=80=9D
+
+Looks like you are in process fixing that one as well.=
