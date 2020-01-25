@@ -2,235 +2,97 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 12CA0148B30
-	for <lists+linux-efi@lfdr.de>; Fri, 24 Jan 2020 16:20:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9DDF91493D9
+	for <lists+linux-efi@lfdr.de>; Sat, 25 Jan 2020 08:06:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729336AbgAXPUs (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 24 Jan 2020 10:20:48 -0500
-Received: from mail-wm1-f66.google.com ([209.85.128.66]:36376 "EHLO
-        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726173AbgAXPUs (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 24 Jan 2020 10:20:48 -0500
-Received: by mail-wm1-f66.google.com with SMTP id p17so2067575wma.1
-        for <linux-efi@vger.kernel.org>; Fri, 24 Jan 2020 07:20:45 -0800 (PST)
+        id S1727295AbgAYHGz (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 25 Jan 2020 02:06:55 -0500
+Received: from mail-wr1-f66.google.com ([209.85.221.66]:43298 "EHLO
+        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726145AbgAYHGz (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sat, 25 Jan 2020 02:06:55 -0500
+Received: by mail-wr1-f66.google.com with SMTP id d16so4727001wre.10
+        for <linux-efi@vger.kernel.org>; Fri, 24 Jan 2020 23:06:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=ysBwEu09FTfzBAjNkf0+xOmCwdqnhglCwE+GFK+CdT4=;
-        b=asBG0Fdamgf1eHesfFnL7dIPIOUW2fdmauXnMM9kP/kOW3hs4SzcRlSCFf1rH+TWnX
-         2g1Ore2t0vfqnIclx4NjA1lEK93kNCczg3zLFKTD5kbpZNnAOQVzCyiWq+LjXY1X37lp
-         o41EJOWaittizGKx/yG9UKpoZoNfjlqByNHfK5G7rZn4UncEGDd7M7unBUqzq5MCPinK
-         JfT5xP7ot6+puQ4+SfxKyE8v2MiqVYXHDPgIGNTJaexwehhqnWEc/g5986eaAKUdvnnR
-         0Q9FsffjMuqnw2d7clJLJepvJVFwOVDwGABEbI4oq84hkGvSjxwZ9qV/fF+S8oNzfLQw
-         P4Dw==
+        bh=J2pAdz/2no+OOg9fKoS5FkAo0J1e424VM8oJW+tiob0=;
+        b=iUx7nPSxTTagp7Ag7cP6ZLkQksAJzUfDwlOlpn93fDgcU/CWH5BN6v3XU4rKI7YrLv
+         vjr1uWgrDmh9+dN3c5kjP9G1B9uj0Uqj1oSypuajuo7A96HOXwXuh4VbKqKTtwNgU4PW
+         OOdmwUmaGXcXnhE/pHieJckCqK7vCixFms+uFW7vd9CcNESZuJ0qNJzlIsKPnFh4WZ96
+         nHI/YoeUr0t/uLjSMOI+2uWrWzP1+JWXs3Ay1+Me3zXF6jJeCfAuMduhOlphCFybBUw4
+         1dyWj8VNHeJgqGkNc91+L2BnSyFXhmKP0YPHHYIcsWIhLptuxK26jx+mhAv0gXVjEK2d
+         yDog==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=ysBwEu09FTfzBAjNkf0+xOmCwdqnhglCwE+GFK+CdT4=;
-        b=QPu8nBZta2FRTEd6EjFjg596Ge5JpB6/TiJyOtCMen7QwhCv4KurWPzeM2n/cDB/mK
-         f57GLJ4x+OVMFBp+fJDAgKKWaVBr1609iRtW+hPJDL09Y+Wa6WqPi8561EIby/Id0soG
-         WnB9gBzpYAtRrOyqR6A0E97+NSeJEC4DhSLWuFGtJsuqmn7z85j02zevrlciYgfd/mDZ
-         Wtr3A4T0ecjVSArsko9+mTuYJxHI6ZFwhhf5tEWzL6fSJRXFDYEsmk+ehqX52nRfHBOl
-         Go2Fu1RL1q2F87JEhSixTKpPutxgZ48Yylq5beHB1Z+eejf5VDYRR2g5gvK6eqiGcKeJ
-         0NWA==
-X-Gm-Message-State: APjAAAXJqVA33CjXCOWeRM2rTvySqwoW+ukIewkrs9siLiVEI8J83+OQ
-        QD3x/ChcVeLG0cTwmx1Kp79uaGpSUd/am5fho8x+Cw==
-X-Google-Smtp-Source: APXvYqy7Z2ePb3BmMa6CrK1emWvDEUIAQvCv/Wv/slcJofyskpSyFY1dCaf4GatSelKXtfJKgo6PQcrjiIjNs7hhCo0=
-X-Received: by 2002:a05:600c:248:: with SMTP id 8mr3744146wmj.1.1579879244984;
- Fri, 24 Jan 2020 07:20:44 -0800 (PST)
+        bh=J2pAdz/2no+OOg9fKoS5FkAo0J1e424VM8oJW+tiob0=;
+        b=C529y8KAPAKANfKrwNnkwgCzULus4x7xIuci0NVAhiZfy6BKSVz6wq5RQtySbnBtYm
+         gNyZcEqErH/X/D0CVFRAhJ4M7oiOVAms9180WLKWyKfuO880QacqKgJ4zCPH9b4DKvVJ
+         SQ4gILfH5fW/tlvPHdHBVvqsWPS7DxQtYfrdU9vjTjz5N3uvX7OicqHoOI64FYnoXfVn
+         dIJaph51WS3m7x348TXZRamgBwjSsoqo9ScvlAqakmZ0Gr9XXetbL6nXt9JUqZg0/osl
+         lPNspWDZKWr6/eNZTDqz46Nfaii2lTThcF6+rLsVdYzMGd79GzoPehHtOJTobDVBeZjb
+         KeKA==
+X-Gm-Message-State: APjAAAVm3OzIV/RVzCTsUcGeK7UB4Ps6Cl/CmbD1oLotDGjcxNmNeI/e
+        m42ddv1rg/DuO8vCx/ZWOJAqKloV9ER2dylmvVCQ2A==
+X-Google-Smtp-Source: APXvYqz3cWy/GqT/vNNk3kJQESif/EIu2KbH+K7HS8QiTyZS5IvujaaqLJaXWZ+XalPPx69ooJAoQ0ErXha/5McJ8Rg=
+X-Received: by 2002:a5d:65cf:: with SMTP id e15mr8635872wrw.126.1579936013232;
+ Fri, 24 Jan 2020 23:06:53 -0800 (PST)
 MIME-Version: 1.0
-References: <20200123173047.18409-1-ardb@kernel.org> <20200123232736.GS9444@bivouac.eciton.net>
- <CAKv+Gu8m8TzHe7GdCTrdy0atwVw-yQA+2=7CbTO0RpzuR19T0A@mail.gmail.com> <20200124103030.GA23297@bivouac.eciton.net>
-In-Reply-To: <20200124103030.GA23297@bivouac.eciton.net>
+References: <20200124051332.DoQFo8kO9%akpm@linux-foundation.org> <1ccf26d9-9420-fc33-ad96-c3daedb1c487@infradead.org>
+In-Reply-To: <1ccf26d9-9420-fc33-ad96-c3daedb1c487@infradead.org>
 From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Date:   Fri, 24 Jan 2020 16:20:31 +0100
-Message-ID: <CAKv+Gu85h=x9Lsn960dMo_Pu==rdnVdhw4H3i3VYD5v4sKt4dQ@mail.gmail.com>
-Subject: Re: [EXTERNAL] Re: [RFC PATCH] efi/libstub/x86: look for bootparams
- when booting via PE entry point
-To:     Leif Lindholm <leif@nuviainc.com>
-Cc:     Ard Biesheuvel <ardb@kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Daniel Kiper <daniel.kiper@oracle.com>,
-        Matthew Garrett <mjg59@google.com>
+Date:   Sat, 25 Jan 2020 08:06:42 +0100
+Message-ID: <CAKv+Gu8ZcO3jRMuMJL_eTmWtuzJ+=qEA9muuN5DpdpikFLwamg@mail.gmail.com>
+Subject: Re: mmotm 2020-01-23-21-12 uploaded (efi)
+To:     Randy Dunlap <rdunlap@infradead.org>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        Mark Brown <broonie@kernel.org>, linux-fsdevel@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux-MM <linux-mm@kvack.org>,
+        Linux-Next Mailing List <linux-next@vger.kernel.org>,
+        mhocko@suse.cz, mm-commits@vger.kernel.org,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        linux-efi <linux-efi@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, 24 Jan 2020 at 11:30, Leif Lindholm <leif@nuviainc.com> wrote:
+On Sat, 25 Jan 2020 at 01:09, Randy Dunlap <rdunlap@infradead.org> wrote:
 >
-> On Fri, Jan 24, 2020 at 08:28:08 +0100, Ard Biesheuvel wrote:
-> > On Fri, 24 Jan 2020 at 00:27, Leif Lindholm <leif@nuviainc.com> wrote:
-> > >
-> > > On Thu, Jan 23, 2020 at 18:30:47 +0100, Ard Biesheuvel wrote:
-> > > > There are currently a couple of different ways the Linux kernel can be
-> > > > booted on UEFI x86 systems:
-> > > > 1) legacy boot - the bootloader jumps straight into the first byte of the
-> > > >    kernel image after taking down the UEFI boot services and populating a
-> > > >    bootparams structure with the required information
-> > > > 2) PE entry point - the kernel is booted as an ordinary PE/COFF executable,
-> > > >    using the loadimage and startimage boot services, and it is left to the
-> > > >    boot stub to allocate and populate a bootparams structure
-> > > > 3) EFI handover protocol - the kernel is copied into memory and the loader
-> > > >    jumps into it at a fixed offset, providing a bootparams structure but
-> > > >    with the EFI boot services still active.
-> > > >
-> > > > Option #3 is the option preferred by the distros today, since it allows
-> > > > the bootloader to populate and pass the bootparams structure directly,
-> > > > which enables things like initrd images loaded from any filesystem (as
-> > > > opposed to option #2, which requires the kernel's boot stub to load the
-> > > > initrd but it only supports loading images from the same volume that the
-> > > > kernel image was loaded from). Option #3 also supports loading 32-bit
-> > > > kernels on 64-bit firmware and vice versa.
-> > > >
-> > > > However, option #2 is a more seamless match, given that it uses the
-> > > > firmware's standard loading facilities, which is also what EFI secure
-> > > > boot authentication checks are based on.
-> > > >
-> > > > So let's provide a way for option #2 to be used in combination with a
-> > > > bootloader provided bootparams structure, by specifying a special protocol
-> > > > GUID for it, and looking for it on the image handle when entering via the
-> > > > ordinary PE/COFF entry point. This allows a loader to call LoadImage,
-> > > > install the new protocol on the resulting handle and invoke the kernel via
-> > > > StartImage, and thus rely on the authentication performed by those boot
-> > > > services if secure boot is enabled.
-> > >
-> > > My impression is that this patch depends on the not-yet-upstream
-> > > "efi/libstub/x86: Drop __efi_early() export and efi_config struct"?
-> > >
+> On 1/23/20 9:13 PM, akpm@linux-foundation.org wrote:
+> > The mm-of-the-moment snapshot 2020-01-23-21-12 has been uploaded to
 > >
-> > Yes, it applies onto efi/next branch
+> >    http://www.ozlabs.org/~akpm/mmotm/
 > >
-> > > (This would be helpful to mention in relation to a future PATCH,
-> > > unless the requirements have by then already trickled upstream.)
+> > mmotm-readme.txt says
 > >
-> > Sure, although it is not unusual in Linux development for patches on
-> > $TOPIC to be created against $TOPIC's development branch.
->
-> No, it just would have saved me a few minutes of digging since I've
-> not been actively tracking linux-efi for quite some time (quite
-> possibly since the repo url included 'mfleming').
->
-
-Fair enough
-
-> > > I like how clean this change is (once prereqs are in).
-> > > But for the sake of having the conversation - doing this requires a
-> > > corresponding change in any bootloader, to register the bootparams
-> > > structure as a protocol on the image handle.
+> > README for mm-of-the-moment:
 > >
-> > Yes. I have looked into implementing this for OVMF, which implements
-> > the kernel's boot protocol directly (to support the
-> > -kernel/-append/-initrd QEMU arguments), but it is a bit involved,
-> > given how QEMU cuts up the PE image into two separate parts. I'll have
-> > another stab at it today, but it may be better to look at GRUB
-> > instead.
+> > http://www.ozlabs.org/~akpm/mmotm/
 > >
-
-I completed my OVMF implementation, and it basically does
-
-if (Bp->hdr.version >= 0x210) {
-  Status = gBS->LoadImage (FALSE, gImageHandle,
-                  (EFI_DEVICE_PATH *)&mKernelDevicePath,
-                  NULL, 0, &KernelImageHandle);
-  if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_WARN, "%a: failed to load kernel image - %r\n",
-      __FUNCTION__, Status));
-    return Status;
-  }
-
-  Status = gBS->InstallMultipleProtocolInterfaces (&KernelImageHandle,
-                  &gLinuxX86BootParamsProtocolGuid, KernelSetup,
-                  NULL);
-  if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_WARN,
-      "%a: failed to install bootparams protocol onto kernel image
-handle - %r\n",
-      __FUNCTION__, Status));
-    return Status;
-  }
-
-  Status = gBS->StartImage (KernelImageHandle, NULL, NULL);
-  DEBUG ((DEBUG_WARN, "%a: StartImage() returned - %r\n",
-      __FUNCTION__, Status));
-}
-
-
-> > > But the bootparams structure carries an awful lot of baggage.
-> > > Would it be worth considering substituting it for something else when
-> > > taking this path?
+> > This is a snapshot of my -mm patch queue.  Uploaded at random hopefully
+> > more than once a week.
 > >
-> > There are two approaches imaginable here:
-> > - use bootparams as is, and have it carry cmdline+initrd when booting
-> > in EFI mode, as it does today,
-> > - align with other EFI arches, and make GRUB pass the command line via
-> > the EFI loaded image options, and only pass initrd information.
 >
-> Since we have options #1-3 above, I will refer to these two options
-> as a) and b).
+> on x86_64:
+> CONFIG_X86_UV is not set/enabled.
 >
-> > Given how trivial [and potentially backportable] the approach below
-> > is, and the fact that it will enable the use of any kind of existing
-> > bootparams related quirk, I'm leaning towards keeping this approach,
-> > given that option #2 above requires the introduction of something that
-> > we will not be able to share with other arches anyway (unless we use a
-> > device tree for this purpose, which doesn't seem like a great idea
-> > either)
+> from linux-next.patch (in mmotm):
 >
-> Or we could (for example) migrate to a common format that uses config
-> tables, or a custom protocol like you do here,on all architectures.
+> ld: arch/x86/platform/efi/efi_64.o: in function `efi_set_virtual_address_map':
+> efi_64.c:(.init.text+0x11aa): undefined reference to `efi_uv1_memmap_phys_prolog'
+> ld: efi_64.c:(.init.text+0x123c): undefined reference to `efi_uv1_memmap_phys_epilog'
+>
+>
+> Full randconfig file is attached.
 >
 
-Actually, that is a good point. That would permit the grub-efi side to
-be 100% generic, which would be nice given the complexity of the
-proposed secure boot changes.
+Should be fixed by
 
-> > > > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> > > > ---
-> > > >  arch/x86/boot/compressed/eboot.c | 8 ++++++++
-> > > >  arch/x86/boot/header.S           | 2 +-
-> > > >  include/linux/efi.h              | 1 +
-> > > >  3 files changed, 10 insertions(+), 1 deletion(-)
-> > > >
-> > > > diff --git a/arch/x86/boot/compressed/eboot.c b/arch/x86/boot/compressed/eboot.c
-> > > > index 82e26d0ff075..b74c4b18dc20 100644
-> > > > --- a/arch/x86/boot/compressed/eboot.c
-> > > > +++ b/arch/x86/boot/compressed/eboot.c
-> > > > @@ -362,6 +362,7 @@ efi_status_t __efiapi efi_pe_entry(efi_handle_t handle,
-> > > >       struct setup_header *hdr;
-> > > >       efi_loaded_image_t *image;
-> > > >       efi_guid_t proto = LOADED_IMAGE_PROTOCOL_GUID;
-> > > > +     efi_guid_t bp_proto = LINUX_EFI_X86_BOOTPARAMS_PROTOCOL_GUID;
-> > > >       int options_size = 0;
-> > > >       efi_status_t status;
-> > > >       char *cmdline_ptr;
-> > > > @@ -374,6 +375,13 @@ efi_status_t __efiapi efi_pe_entry(efi_handle_t handle,
-> > > >       if (sys_table->hdr.signature != EFI_SYSTEM_TABLE_SIGNATURE)
-> > > >               return EFI_INVALID_PARAMETER;
-> > > >
-> > > > +     status = efi_bs_call(handle_protocol, handle, &bp_proto,
-> > > > +                          (void **)&boot_params);
-> > > > +     if (status == EFI_SUCCESS) {
-> > > > +             efi_stub_entry(handle, sys_table, boot_params);
-> > > > +             /* not reached */
-> > > > +     }
-> > > > +
-> > >
-> > > Would this make sense to move below LOADED_IMAGE_PROTOCOL lookup
-> > > below?
-> > >
-> >
-> > For what purpose? If we enter the image with a bootparams structure
-> > already provided, why should we care about the loaded image protocol?
->
-> I was thinking as a sanity check for a b) approach above. But I guess
-> then we'd need to either extend the API of efi_stub_entry even
-> further, or repeat the LOADED_IMAGE_PROTOCOL lookup there anyway.
->
-
-Right.
-
-In any case, it would make sense to discuss these options in a wider audience.
+https://lore.kernel.org/linux-efi/20200121093912.5246-1-ardb@kernel.org/
