@@ -2,98 +2,104 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D4D9149B36
-	for <lists+linux-efi@lfdr.de>; Sun, 26 Jan 2020 16:02:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 32FD214AC9E
+	for <lists+linux-efi@lfdr.de>; Tue, 28 Jan 2020 00:30:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726079AbgAZPCi (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sun, 26 Jan 2020 10:02:38 -0500
-Received: from us-smtp-2.mimecast.com ([207.211.31.81]:26050 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1725944AbgAZPCi (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sun, 26 Jan 2020 10:02:38 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1580050957;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=6/+tHocZErL7Y6LXRM3rxyHptPaj/JOElin4yBKSSZU=;
-        b=CDozTJIqyIm1Uth+KA5c94VEmKZd85xyc9S1AkoUZnG2ft9Kka+TINIR/JqdgCf3BS1X3W
-        SU5I7W4dC5z4rnZix+z/A+SmJmHATaN6pihBPBpXBbYIyKaICcNyb3V4t39utR3borBKYh
-        esfcu1Q62WZphrpnqUg0AtLcKe5uEXU=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-377-qJ8BVGLqPLqXazyL2SLcRg-1; Sun, 26 Jan 2020 10:02:34 -0500
-X-MC-Unique: qJ8BVGLqPLqXazyL2SLcRg-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id B427A800D41;
-        Sun, 26 Jan 2020 15:02:33 +0000 (UTC)
-Received: from shalem.localdomain.com (ovpn-116-101.ams2.redhat.com [10.36.116.101])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 9895E806B7;
-        Sun, 26 Jan 2020 15:02:32 +0000 (UTC)
-From:   Hans de Goede <hdegoede@redhat.com>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     Hans de Goede <hdegoede@redhat.com>, linux-efi@vger.kernel.org,
-        linux-acpi@vger.kernel.org, stable@vger.kernel.org
-Subject: [PATCH] efi/bgrt: Accept BGRT tables with a version of 0 on Lenovo laptops
-Date:   Sun, 26 Jan 2020 16:02:31 +0100
-Message-Id: <20200126150231.6021-1-hdegoede@redhat.com>
+        id S1726080AbgA0Xa6 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 27 Jan 2020 18:30:58 -0500
+Received: from mga11.intel.com ([192.55.52.93]:55696 "EHLO mga11.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725955AbgA0Xa6 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Mon, 27 Jan 2020 18:30:58 -0500
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 27 Jan 2020 15:30:57 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.70,371,1574150400"; 
+   d="scan'208";a="308922734"
+Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
+  by orsmga001.jf.intel.com with ESMTP; 27 Jan 2020 15:30:55 -0800
+Received: from kbuild by lkp-server01 with local (Exim 4.89)
+        (envelope-from <lkp@intel.com>)
+        id 1iwDqJ-0007LT-6q; Tue, 28 Jan 2020 07:30:55 +0800
+Date:   Tue, 28 Jan 2020 07:29:52 +0800
+From:   kbuild test robot <lkp@intel.com>
+To:     Qian Cai <cai@lca.pw>
+Cc:     kbuild-all@lists.01.org, ardb@kernel.org, mingo@redhat.com,
+        kasan-dev@googlegroups.com, linux-efi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Qian Cai <cai@lca.pw>
+Subject: Re: [PATCH -next] x86/efi_64: fix a user-memory-access in runtime
+Message-ID: <202001280700.tCtD1cvl%lkp@intel.com>
+References: <20200118063022.21743-1-cai@lca.pw>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200118063022.21743-1-cai@lca.pw>
+User-Agent: NeoMutt/20170113 (1.7.2)
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Some (somewhat older) Lenovo laptops have a correct BGRT table, except
-that the version field is 0 instead of 1.
+Hi Qian,
 
-Quickly after finding this out, even before submitting a first version of
-this patch upstream, the list of DMI matches for affected models grew to
-3 models (all Ivy Bridge based).
+Thank you for the patch! Perhaps something to improve:
 
-So rather then maintaining an ever growing list with DMI matches for
-affected Lenovo models, this commit simply checks if the vendor is Lenovo
-when the version is 0 and in that case accepts the out of spec version
-working around the Lenovo firmware bug.
+[auto build test WARNING on next-20200117]
+[cannot apply to efi/next v5.5]
+[if your patch is applied to the wrong git tree, please drop us a note to help
+improve the system. BTW, we also suggest to use '--base' option to specify the
+base tree in git format-patch, please see https://stackoverflow.com/a/37406982]
 
-Cc: stable@vger.kernel.org
-BugLink: https://bugzilla.redhat.com/show_bug.cgi?id=3D1791273
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+url:    https://github.com/0day-ci/linux/commits/Qian-Cai/x86-efi_64-fix-a-user-memory-access-in-runtime/20200118-171142
+base:    de970dffa7d19eae1d703c3534825308ef8d5dec
+reproduce:
+        # apt-get install sparse
+        # sparse version: v0.6.1-153-g47b6dfef-dirty
+        make ARCH=x86_64 allmodconfig
+        make C=1 CF='-fdiagnostic-prefix -D__CHECK_ENDIAN__'
+
+If you fix the issue, kindly add following tag
+Reported-by: kbuild test robot <lkp@intel.com>
+
+
+sparse warnings: (new ones prefixed by >>)
+
+>> arch/x86/platform/efi/efi_64.c:1045:48: sparse: sparse: incorrect type in argument 2 (different address spaces)
+>> arch/x86/platform/efi/efi_64.c:1045:48: sparse:    expected void const [noderef] <asn:1> *from
+>> arch/x86/platform/efi/efi_64.c:1045:48: sparse:    got union efi_runtime_services_t [usertype] *[usertype] runtime
+
+vim +1045 arch/x86/platform/efi/efi_64.c
+
+  1020	
+  1021	efi_status_t __init efi_set_virtual_address_map(unsigned long memory_map_size,
+  1022							unsigned long descriptor_size,
+  1023							u32 descriptor_version,
+  1024							efi_memory_desc_t *virtual_map)
+  1025	{
+  1026		efi_runtime_services_t runtime;
+  1027		efi_status_t status;
+  1028		unsigned long flags;
+  1029		pgd_t *save_pgd = NULL;
+  1030	
+  1031		if (efi_is_mixed())
+  1032			return efi_thunk_set_virtual_address_map(memory_map_size,
+  1033								 descriptor_size,
+  1034								 descriptor_version,
+  1035								 virtual_map);
+  1036	
+  1037		if (efi_enabled(EFI_OLD_MEMMAP)) {
+  1038			save_pgd = efi_old_memmap_phys_prolog();
+  1039			if (!save_pgd)
+  1040				return EFI_ABORTED;
+  1041		} else {
+  1042			efi_switch_mm(&efi_mm);
+  1043		}
+  1044	
+> 1045		if (copy_from_user(&runtime, efi.systab->runtime, sizeof(runtime)))
+
 ---
- drivers/firmware/efi/efi-bgrt.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/firmware/efi/efi-bgrt.c b/drivers/firmware/efi/efi-b=
-grt.c
-index b07c17643210..3a2d6d3a590b 100644
---- a/drivers/firmware/efi/efi-bgrt.c
-+++ b/drivers/firmware/efi/efi-bgrt.c
-@@ -15,6 +15,7 @@
- #include <linux/acpi.h>
- #include <linux/efi.h>
- #include <linux/efi-bgrt.h>
-+#include <linux/dmi.h>
-=20
- struct acpi_table_bgrt bgrt_tab;
- size_t bgrt_image_size;
-@@ -42,7 +43,12 @@ void __init efi_bgrt_init(struct acpi_table_header *ta=
-ble)
- 		return;
- 	}
- 	*bgrt =3D *(struct acpi_table_bgrt *)table;
--	if (bgrt->version !=3D 1) {
-+	/*
-+	 * Some older Lenovo laptops have a correct BGRT table, except that
-+	 * the version field is 0 instead of 1.
-+	 */
-+	if (bgrt->version !=3D 1 &&
-+	    !(bgrt->version =3D=3D 0 && dmi_name_in_vendors("LENOVO"))) {
- 		pr_notice("Ignoring BGRT: invalid version %u (expected 1)\n",
- 		       bgrt->version);
- 		goto out;
---=20
-2.24.1
-
+0-DAY kernel test infrastructure                 Open Source Technology Center
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org Intel Corporation
