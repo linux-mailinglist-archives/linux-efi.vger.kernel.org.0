@@ -2,104 +2,86 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 32FD214AC9E
-	for <lists+linux-efi@lfdr.de>; Tue, 28 Jan 2020 00:30:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B78DB14AFA2
+	for <lists+linux-efi@lfdr.de>; Tue, 28 Jan 2020 07:15:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726080AbgA0Xa6 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 27 Jan 2020 18:30:58 -0500
-Received: from mga11.intel.com ([192.55.52.93]:55696 "EHLO mga11.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725955AbgA0Xa6 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Mon, 27 Jan 2020 18:30:58 -0500
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 27 Jan 2020 15:30:57 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.70,371,1574150400"; 
-   d="scan'208";a="308922734"
-Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
-  by orsmga001.jf.intel.com with ESMTP; 27 Jan 2020 15:30:55 -0800
-Received: from kbuild by lkp-server01 with local (Exim 4.89)
-        (envelope-from <lkp@intel.com>)
-        id 1iwDqJ-0007LT-6q; Tue, 28 Jan 2020 07:30:55 +0800
-Date:   Tue, 28 Jan 2020 07:29:52 +0800
-From:   kbuild test robot <lkp@intel.com>
-To:     Qian Cai <cai@lca.pw>
-Cc:     kbuild-all@lists.01.org, ardb@kernel.org, mingo@redhat.com,
-        kasan-dev@googlegroups.com, linux-efi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Qian Cai <cai@lca.pw>
-Subject: Re: [PATCH -next] x86/efi_64: fix a user-memory-access in runtime
-Message-ID: <202001280700.tCtD1cvl%lkp@intel.com>
-References: <20200118063022.21743-1-cai@lca.pw>
-MIME-Version: 1.0
+        id S1725951AbgA1GPZ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 28 Jan 2020 01:15:25 -0500
+Received: from mail-qk1-f193.google.com ([209.85.222.193]:34066 "EHLO
+        mail-qk1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725799AbgA1GPZ (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 28 Jan 2020 01:15:25 -0500
+Received: by mail-qk1-f193.google.com with SMTP id d10so12311689qke.1
+        for <linux-efi@vger.kernel.org>; Mon, 27 Jan 2020 22:15:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=lca.pw; s=google;
+        h=content-transfer-encoding:from:mime-version:subject:date:message-id
+         :references:cc:in-reply-to:to;
+        bh=IX6vC1lqC7B6QSvzPSA4RSu0dRAbEMHe13lqUpG29i8=;
+        b=VKXqwFjmNXdB/wJW5knEKaf8vqMoxWZxZenXmtRbHfj2GkPH84URj6RIU7kuu9br/n
+         cO100UpGyUFr7n85BLlnvIKAGP009/Hcaf4XQmBvgCO4s5t20dg0E/x5WFuF1JfPexca
+         qKucwEcgFyhAQqLSQGzAgwSYxg/Krp1wdD+33iDC3XcjfzHjLG/WmY7kCH57ovDlVBWy
+         CInbxtz0nSTJ/aPX70647beyykTi1bIki7ecWq/g+4KVqa/PF299NRyKANNx082/SYZg
+         a66f6lAnlak0GqZDiNdAB9xuMjwBEyXfJgmNT0Lq1U8INg0B+xHSCqmhtit3iHj6blvY
+         73tA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:content-transfer-encoding:from:mime-version
+         :subject:date:message-id:references:cc:in-reply-to:to;
+        bh=IX6vC1lqC7B6QSvzPSA4RSu0dRAbEMHe13lqUpG29i8=;
+        b=HfAZAcQBDlYey0b6EYKrUPKp6r23YTdshNMvMFCXyl2+mc4yHtBeFiPnH04GBOrYmY
+         FSZx0CGtx86hb52IUTWt00MQo7oTJIOEytXnisfB++75xUgfv568C20CrJE5aQcUl7sg
+         MX05AcTqmV2wbsIk67yIQiFqnNWRccXt8+SXCdNZNy4FbYiXxPDtE5yYKfGS5q6q94qN
+         b1xziHjB/905MlBlZvQuSYxBRvjTEQxSz0xEstM+tZPTkYXt+cUnGz7TjCAd8BaygRwx
+         8MvP90lJrET76e/gWiBRzaWoQzbNCRFw10dxLwcAcZABzBl3o3Td0nX9zzOx7zoa/XJg
+         hvmA==
+X-Gm-Message-State: APjAAAWvZLbUE+/1IMFlJWgex/L8X4HzncCvarP5NMp7oxXuKLaX6nnq
+        DUEJ3yAoOSG5phGLQtxza5PanA==
+X-Google-Smtp-Source: APXvYqz7X3XsotDyp2Rkn3xurztaEfQuChOv10+xbCcj0AINYcjgBapre5/9nAD2nqzDixYkJRy09Q==
+X-Received: by 2002:a37:814:: with SMTP id 20mr20434739qki.314.1580192124338;
+        Mon, 27 Jan 2020 22:15:24 -0800 (PST)
+Received: from [192.168.1.183] (pool-71-184-117-43.bstnma.fios.verizon.net. [71.184.117.43])
+        by smtp.gmail.com with ESMTPSA id e16sm11951755qtc.85.2020.01.27.22.15.23
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 27 Jan 2020 22:15:23 -0800 (PST)
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200118063022.21743-1-cai@lca.pw>
-User-Agent: NeoMutt/20170113 (1.7.2)
+Content-Transfer-Encoding: quoted-printable
+From:   Qian Cai <cai@lca.pw>
+Mime-Version: 1.0 (1.0)
+Subject: Re: mmotm 2020-01-23-21-12 uploaded (efi)
+Date:   Tue, 28 Jan 2020 01:15:22 -0500
+Message-Id: <E600649B-A8CA-48D3-AD86-A2BAAE0BCA25@lca.pw>
+References: <CAKv+Gu8ZcO3jRMuMJL_eTmWtuzJ+=qEA9muuN5DpdpikFLwamg@mail.gmail.com>
+Cc:     Randy Dunlap <rdunlap@infradead.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Mark Brown <broonie@kernel.org>, linux-fsdevel@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux-MM <linux-mm@kvack.org>,
+        Linux-Next Mailing List <linux-next@vger.kernel.org>,
+        mhocko@suse.cz, mm-commits@vger.kernel.org,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        kasan-dev <kasan-dev@googlegroups.com>
+In-Reply-To: <CAKv+Gu8ZcO3jRMuMJL_eTmWtuzJ+=qEA9muuN5DpdpikFLwamg@mail.gmail.com>
+To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>
+X-Mailer: iPhone Mail (17C54)
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hi Qian,
-
-Thank you for the patch! Perhaps something to improve:
-
-[auto build test WARNING on next-20200117]
-[cannot apply to efi/next v5.5]
-[if your patch is applied to the wrong git tree, please drop us a note to help
-improve the system. BTW, we also suggest to use '--base' option to specify the
-base tree in git format-patch, please see https://stackoverflow.com/a/37406982]
-
-url:    https://github.com/0day-ci/linux/commits/Qian-Cai/x86-efi_64-fix-a-user-memory-access-in-runtime/20200118-171142
-base:    de970dffa7d19eae1d703c3534825308ef8d5dec
-reproduce:
-        # apt-get install sparse
-        # sparse version: v0.6.1-153-g47b6dfef-dirty
-        make ARCH=x86_64 allmodconfig
-        make C=1 CF='-fdiagnostic-prefix -D__CHECK_ENDIAN__'
-
-If you fix the issue, kindly add following tag
-Reported-by: kbuild test robot <lkp@intel.com>
 
 
-sparse warnings: (new ones prefixed by >>)
+> On Jan 25, 2020, at 2:06 AM, Ard Biesheuvel <ard.biesheuvel@linaro.org> wr=
+ote:
+>=20
+> Should be fixed by
+>=20
+> https://lore.kernel.org/linux-efi/20200121093912.5246-1-ardb@kernel.org/
 
->> arch/x86/platform/efi/efi_64.c:1045:48: sparse: sparse: incorrect type in argument 2 (different address spaces)
->> arch/x86/platform/efi/efi_64.c:1045:48: sparse:    expected void const [noderef] <asn:1> *from
->> arch/x86/platform/efi/efi_64.c:1045:48: sparse:    got union efi_runtime_services_t [usertype] *[usertype] runtime
+Cc kasan-devel@
 
-vim +1045 arch/x86/platform/efi/efi_64.c
-
-  1020	
-  1021	efi_status_t __init efi_set_virtual_address_map(unsigned long memory_map_size,
-  1022							unsigned long descriptor_size,
-  1023							u32 descriptor_version,
-  1024							efi_memory_desc_t *virtual_map)
-  1025	{
-  1026		efi_runtime_services_t runtime;
-  1027		efi_status_t status;
-  1028		unsigned long flags;
-  1029		pgd_t *save_pgd = NULL;
-  1030	
-  1031		if (efi_is_mixed())
-  1032			return efi_thunk_set_virtual_address_map(memory_map_size,
-  1033								 descriptor_size,
-  1034								 descriptor_version,
-  1035								 virtual_map);
-  1036	
-  1037		if (efi_enabled(EFI_OLD_MEMMAP)) {
-  1038			save_pgd = efi_old_memmap_phys_prolog();
-  1039			if (!save_pgd)
-  1040				return EFI_ABORTED;
-  1041		} else {
-  1042			efi_switch_mm(&efi_mm);
-  1043		}
-  1044	
-> 1045		if (copy_from_user(&runtime, efi.systab->runtime, sizeof(runtime)))
-
----
-0-DAY kernel test infrastructure                 Open Source Technology Center
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org Intel Corporation
+If everyone has to disable KASAN for the whole subdirectories like this, I a=
+m worried about we are losing testing coverage fairly quickly. Is there a bu=
+g in compiler?=
