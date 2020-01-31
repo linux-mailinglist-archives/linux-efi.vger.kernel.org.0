@@ -2,91 +2,99 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3160514ECEB
-	for <lists+linux-efi@lfdr.de>; Fri, 31 Jan 2020 14:06:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6CFBC14F290
+	for <lists+linux-efi@lfdr.de>; Fri, 31 Jan 2020 20:10:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728566AbgAaNGd (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 31 Jan 2020 08:06:33 -0500
-Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:43431 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1728514AbgAaNGd (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 31 Jan 2020 08:06:33 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1580475992;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=oyWbxDiWwx0o1DWN8s0a2KTquRs9xNqQuo7yNFc8UJk=;
-        b=UmzODbmpLECJcgFBnOLEppVNbHXf/g93EHezHt+GBUkjLLL1C20h30M/7u5k2Z94jJF1B/
-        lpkJIIbQ6OYTURNt/BT2IERbIW+7x0J3utXg8OvKixLSCKDSw+rVR1sE5a3a4pG0tAFSd8
-        1eT9DDZjFsXpfwC/8xW7m3d3R23AAwU=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-13-Rz5p1LzWNRWrYMuIpaZ-nA-1; Fri, 31 Jan 2020 08:06:30 -0500
-X-MC-Unique: Rz5p1LzWNRWrYMuIpaZ-nA-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id A30BB8010E9;
-        Fri, 31 Jan 2020 13:06:28 +0000 (UTC)
-Received: from localhost.localdomain.com (ovpn-112-36.ams2.redhat.com [10.36.112.36])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 422C063147;
-        Fri, 31 Jan 2020 13:06:26 +0000 (UTC)
-From:   Hans de Goede <hdegoede@redhat.com>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     Hans de Goede <hdegoede@redhat.com>, linux-efi@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: [PATCH v2] efi/bgrt: Accept BGRT tables with a version of 0
-Date:   Fri, 31 Jan 2020 14:06:23 +0100
-Message-Id: <20200131130623.33875-1-hdegoede@redhat.com>
+        id S1726443AbgAaTKt (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 31 Jan 2020 14:10:49 -0500
+Received: from mail-qt1-f193.google.com ([209.85.160.193]:39985 "EHLO
+        mail-qt1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726001AbgAaTKt (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 31 Jan 2020 14:10:49 -0500
+Received: by mail-qt1-f193.google.com with SMTP id v25so6248326qto.7;
+        Fri, 31 Jan 2020 11:10:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:from:date:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=PivSctEp2dPEPNMFSJeuoUGncLiGgf5oX5CQhG0ZOqA=;
+        b=dSaUshI4Xa0FzW4mbEcpG/KqihtGBIkR/jsxix5pxp8qC/PW6HswxZqJX1EqqYwCe+
+         4x0K9DZ4EKNOC0v2kijhreMdOWyTs6WII+y6HxTbxbIXZyiUrmDYq3/uVJ4J4eajzkb7
+         jnJGe2qIE+xkTnJm7P9HrAfcNQaCmjAoj9FcH6JekXgu6G5f1d3bzSpRfJCn5UJ6RxmO
+         qauIlodO5Yzv8oYcurphzJtuwyR40IHpXPwUW13FoNf6UIqMSJaslx0Dd1X0vIJ8OHwZ
+         6lcp993LPc1VW7DS25fbv+28bDi+whudccjfj0XkGrw3L9xpIvlCcJ5jbRJ2O8zyPhWo
+         NLgA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:from:date:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to:user-agent;
+        bh=PivSctEp2dPEPNMFSJeuoUGncLiGgf5oX5CQhG0ZOqA=;
+        b=BbYDAguIdaM0bHII5DzQcyLYQAg5UdWHRuzwRTrIuJkrped+pnzFocy9ZTwGS9/6Gt
+         zeevrcer/GOxWzglnRANZ6xzNlD9NUgX6hSohsA+Qtbrc5yBtIlMeVtOhSrlPmeGdmLm
+         GqOWTJ5Ad6i7V1SBSg4W76A7nTN8vIx7P9NVkyPXGvnnTALpy4MEN7xB3qPPXC2Do4J/
+         ufIfScrtKyagJ3FoUiiz/IHDwD/YOlrqgcQu0q/XYGQRlmVkD1lQtliIfyB3ZAkCJ1PW
+         nH3v5d7TBQWprYONmCYy54x0ES98swCCSxsgZkFdX5n3eesc/o+2XYPepSKY5a2KUbu4
+         Y46g==
+X-Gm-Message-State: APjAAAXJQfPlo4dELMp0Kib621MnXbvSCM2jsBh6YWr3KpmaxjrEBOOA
+        ZlGcUNqaZ+sNl+wWJvPkyps=
+X-Google-Smtp-Source: APXvYqwABYI983zuvxlpiVGDIBsEapH4xcdq2vH+NgM1DMH0lVyXFERRRFuygbPrsnaPOjhZL+kjVQ==
+X-Received: by 2002:ac8:187b:: with SMTP id n56mr12363273qtk.173.1580497848286;
+        Fri, 31 Jan 2020 11:10:48 -0800 (PST)
+Received: from rani.riverdale.lan ([2001:470:1f07:5f3::b55f])
+        by smtp.gmail.com with ESMTPSA id 3sm5173264qte.59.2020.01.31.11.10.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 31 Jan 2020 11:10:47 -0800 (PST)
+From:   Arvind Sankar <nivedita@alum.mit.edu>
+X-Google-Original-From: Arvind Sankar <arvind@rani.riverdale.lan>
+Date:   Fri, 31 Jan 2020 14:10:46 -0500
+To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Cc:     Arvind Sankar <nivedita@alum.mit.edu>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "H. Peter Anvin" <hpa@zytor.com>, Jonathan Corbet <corbet@lwn.net>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        the arch/x86 maintainers <x86@kernel.org>,
+        Linux Doc Mailing List <linux-doc@vger.kernel.org>
+Subject: Re: [PATCH 0/8] Remove 64-bit GDT setup in efi_main + doc fixes
+Message-ID: <20200131191045.GA2346161@rani.riverdale.lan>
+References: <20200130200440.1796058-1-nivedita@alum.mit.edu>
+ <CAKv+Gu8JGC21R+ngSYtVxFDF7m2nvX=Opo1fkvdFSq-Fz_7B_Q@mail.gmail.com>
+ <CAKv+Gu_xw+0dJipX073ErZmJz7RVSn2ZK3SzK3HUDYhJoEOQyQ@mail.gmail.com>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAKv+Gu_xw+0dJipX073ErZmJz7RVSn2ZK3SzK3HUDYhJoEOQyQ@mail.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Some (somewhat older) laptops have a correct BGRT table, except that the
-version field is 0 instead of 1.
+On Fri, Jan 31, 2020 at 10:31:44AM +0100, Ard Biesheuvel wrote:
+> Playing around with this a bit more, I think we should go with
+> 
+> if (IS_ENABLED(CONFIG_X86_32)) {
+>   static const struct desc_struct desc[] __aligned(8) = {
+>     [GDT_ENTRY_BOOT_CS] = GDT_ENTRY_INIT(0xc09b, 0, 0xfffff),
+>     [GDT_ENTRY_BOOT_DS] = GDT_ENTRY_INIT(0xc093, 0, 0xfffff),
+>   };
+> 
+>   native_load_gdt(&(struct desc_ptr){ sizeof(desc) - 1,
+>                                       (unsigned long)desc });
+> }
+> 
 
-This has been seen on several Ivy Bridge based Lenovo models.
+This is the way I originally did it (except I loaded the GDT with the
+relocated address of desc in case efi_relocate_kernel got called). It
+booted on a test, but I grew concerned because this GDT will be
+somewhere in the middle of the decompression buffer and get overwritten
+either during the copy to the end of the buffer or during decompression.
+If anything tries to reload segment registers it will blow up.
 
-For now the spec. only defines version 1, so it is reasonably safe to
-assume that tables with a version of 0 really are version 1 too,
-which is what this commit does so that the BGRT table will be accepted
-by the kernel on laptop models with this issue.
-
-Cc: stable@vger.kernel.org
-BugLink: https://bugzilla.redhat.com/show_bug.cgi?id=3D1791273
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
----
-Changes in v2:
-- Simply always accept version 0 everywhere as suggested by Ard
----
- drivers/firmware/efi/efi-bgrt.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/firmware/efi/efi-bgrt.c b/drivers/firmware/efi/efi-b=
-grt.c
-index b07c17643210..6aafdb67dbca 100644
---- a/drivers/firmware/efi/efi-bgrt.c
-+++ b/drivers/firmware/efi/efi-bgrt.c
-@@ -42,7 +42,12 @@ void __init efi_bgrt_init(struct acpi_table_header *ta=
-ble)
- 		return;
- 	}
- 	*bgrt =3D *(struct acpi_table_bgrt *)table;
--	if (bgrt->version !=3D 1) {
-+	/*
-+	 * Only version 1 is defined but some older laptops (seen on Lenovo
-+	 * Ivy Bridge models) have a correct version 1 BGRT table with the
-+	 * version set to 0, so we accept version 0 and 1.
-+	 */
-+	if (bgrt->version > 1) {
- 		pr_notice("Ignoring BGRT: invalid version %u (expected 1)\n",
- 		       bgrt->version);
- 		goto out;
---=20
-2.23.0
+Looking at the code though it doesn't look like anything will -- the
+segments are loaded at the beginning of startup_32, and then it looks
+like nothing should touch them until we get to the startup code of the
+decompressed kernel, which sets up its own boot GDT first. So this might
+be ok if the x86 maintainers agree.
 
