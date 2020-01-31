@@ -2,74 +2,124 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9775F14E57A
-	for <lists+linux-efi@lfdr.de>; Thu, 30 Jan 2020 23:20:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9EFFB14E9BD
+	for <lists+linux-efi@lfdr.de>; Fri, 31 Jan 2020 09:47:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726124AbgA3WUH (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 30 Jan 2020 17:20:07 -0500
-Received: from mail-qt1-f195.google.com ([209.85.160.195]:41555 "EHLO
-        mail-qt1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725855AbgA3WUH (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 30 Jan 2020 17:20:07 -0500
-Received: by mail-qt1-f195.google.com with SMTP id l19so3825825qtq.8;
-        Thu, 30 Jan 2020 14:20:06 -0800 (PST)
+        id S1728231AbgAaIrt (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 31 Jan 2020 03:47:49 -0500
+Received: from mail-lj1-f193.google.com ([209.85.208.193]:45377 "EHLO
+        mail-lj1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728151AbgAaIrt (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 31 Jan 2020 03:47:49 -0500
+Received: by mail-lj1-f193.google.com with SMTP id f25so6229859ljg.12
+        for <linux-efi@vger.kernel.org>; Fri, 31 Jan 2020 00:47:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=E2UsTg9sJleOEkW6MKHgQhUGOtlWWQFx7+63ORKNAZE=;
+        b=nruTZgZUgUjDpGYe7fB/R+WuWavZS6uAJYdMjlHtTzlR1RpqUbhSD4CE4kKtQfLcLp
+         dVXDp5me3uI0jzNo9Kf3RkrQ5i2PaFnNLXifALlxGhCnpK+Z2sZHtjzRemD4QYb1IXc4
+         Pps29YyWIxxn4FrvmPnau4U+Er/PfpIJOhmYZ1iOnNr7pmCyUa7dH5eMpZj3eYpWYmD9
+         eNvrm3m7aaVlcF2QZFqJq+chHFKF3IGHmK+qRGiqRRPx0K4dJFUgFFXmx3CApYXch7rn
+         XsmIyKwPHKvO51m8stKbAbvkLuFvCtwerU2utuRuiPNxUkjGg9OQD8no3eaSQ1Lqvzug
+         dHpA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=en1MT5pfFYZGlv9UT5t9agWedf83iVv/aGc5EUfT5Zc=;
-        b=Ev4rTNf6mduRXJB3Lr9t6ESO8yGPYrVRQa8YXDWaE/1mkN71xFH7FPDV+8+Mp88wo6
-         VWJ6SyEmxCVA4tIgG9X2eyUKeKX8LxS4be0SXKOvDMjBbNxKhC66iKjlptke6lZnjdv+
-         ezfPz0ZA4P25JRQDYOcDSBv2E4bCzK+i61o+07vzvDhq8O+arvd8FcPxJmKcaNggPxbL
-         Ra3x84wL4XwB5Aypy1LIYZQ22D7VlgmZdqbSLqC+iYe22j3vJG0W8CGPKCx8pEEWXX00
-         eTdGcUdrlJZrQ60xqmwrKuJbw7MON1TUcSxYnqgXjvFs5JDyGJz13ZYrO1z/Pq0oZOBO
-         8xbw==
-X-Gm-Message-State: APjAAAUZQhcgTHV4c0XaejTXIOYfbY9wufN8IKzGxpYqlW3Z1j1yBOcw
-        9aZecFQHcKzU9ZILZtQS+n8=
-X-Google-Smtp-Source: APXvYqwmKk3Q21jsUq6mWGkYPBdAVXbqi23AQ2F6jBL81aRXB94JTeDkd8tDk/DKdk6qqZJx0UDOAg==
-X-Received: by 2002:ac8:76d7:: with SMTP id q23mr473459qtr.198.1580422806255;
-        Thu, 30 Jan 2020 14:20:06 -0800 (PST)
-Received: from rani.riverdale.lan ([2001:470:1f07:5f3::b55f])
-        by smtp.gmail.com with ESMTPSA id d25sm3465389qkk.77.2020.01.30.14.20.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Jan 2020 14:20:05 -0800 (PST)
-From:   Arvind Sankar <nivedita@alum.mit.edu>
-To:     Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>
-Cc:     linux-efi@vger.kernel.org, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] efi/x86: Mark setup_graphics static
-Date:   Thu, 30 Jan 2020 17:20:04 -0500
-Message-Id: <20200130222004.1932152-1-nivedita@alum.mit.edu>
-X-Mailer: git-send-email 2.24.1
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=E2UsTg9sJleOEkW6MKHgQhUGOtlWWQFx7+63ORKNAZE=;
+        b=QyM5sMyGLT+YZsoRaBMJamzZU52lDM9Yy50NUn6cT+zmE0m5QaFyGK/c/YRveqZzr1
+         vR2XFRyYjVxH1r993B44qnWSNWYI2z1J2vn+DI4/Vf/nCoeNE1n52oKnaPOHQIevCtMO
+         zcV+Lv8d74vn3Zc3br0Vz0KuYdvXlJw4aGyhr+v2hJrC2qvrhfCHmxF5vk2C2/Gz/d7R
+         5xuXaq8QSruo2k1Bw4Kh5Wmv5OqpCztbHFSLARQF3+2JVuX8WdmIPldpONPAFhj7V6gI
+         n2p2e4D86xWySsngOCzHGkAH0y50qMquP9tFVxC9a+WR5sPWFd52LSHpzCCsuzr4Loay
+         WJHg==
+X-Gm-Message-State: APjAAAXt0QIve735lVF0nfu6y2H0mxwCcBW1v/MzYHop9jYzfXLA7KPU
+        b/232cij7QkrlpMEC/52gl6wUz6Ym7qAyol5Mq5TuLGUqC3QcPfO
+X-Google-Smtp-Source: APXvYqxS6JCjgiyvsY2Q+GNa8i0iWPWiHxTM8C4cSpLLHMWeLfVPBymKfoHXZNpSg7/sCIz8N5DhB8tPpx9e6aQza1U=
+X-Received: by 2002:adf:8564:: with SMTP id 91mr11037955wrh.252.1580460165016;
+ Fri, 31 Jan 2020 00:42:45 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20200130200440.1796058-1-nivedita@alum.mit.edu>
+In-Reply-To: <20200130200440.1796058-1-nivedita@alum.mit.edu>
+From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Date:   Fri, 31 Jan 2020 09:42:34 +0100
+Message-ID: <CAKv+Gu8JGC21R+ngSYtVxFDF7m2nvX=Opo1fkvdFSq-Fz_7B_Q@mail.gmail.com>
+Subject: Re: [PATCH 0/8] Remove 64-bit GDT setup in efi_main + doc fixes
+To:     Arvind Sankar <nivedita@alum.mit.edu>
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "H. Peter Anvin" <hpa@zytor.com>, Jonathan Corbet <corbet@lwn.net>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        "the arch/x86 maintainers" <x86@kernel.org>,
+        Linux Doc Mailing List <linux-doc@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-This function is only called from efi_main in the same source file.
+Thanks Arvind, this is good stuff.
 
-Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
----
- arch/x86/boot/compressed/eboot.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/boot/compressed/eboot.c b/arch/x86/boot/compressed/eboot.c
-index 2447e4508aa4..5e5f89ff5226 100644
---- a/arch/x86/boot/compressed/eboot.c
-+++ b/arch/x86/boot/compressed/eboot.c
-@@ -316,7 +316,7 @@ setup_uga(struct screen_info *si, efi_guid_t *uga_proto, unsigned long size)
- 	return status;
- }
- 
--void setup_graphics(struct boot_params *boot_params)
-+static void setup_graphics(struct boot_params *boot_params)
- {
- 	efi_guid_t graphics_proto = EFI_GRAPHICS_OUTPUT_PROTOCOL_GUID;
- 	struct screen_info *si;
--- 
-2.24.1
+On Thu, 30 Jan 2020 at 21:04, Arvind Sankar <nivedita@alum.mit.edu> wrote:
+>
+> For the 64-bit kernel, we do not need to setup a GDT in efi_main, as the
+> next step in the boot, startup_64, will set one up.
+>
 
+This seems obvious, but I need a nod from Ingo or Boris before I can take this.
+
+> This series factors out the GDT setup into a separate function and
+> restricts it to the 32-bit kernel. The memory allocation for the GDT is
+> also changed from allocating a full page via efi_alloc_low to the
+> required space (32 bytes) from alloc_pool boot service.
+>
+
+Can we go all the way and simply make this
+
+if (IS_ENABLED(CONFIG_X64_32)) {
+  static const struct desc_struct desc[] __aligned(8) = {
+    {}, /* The first GDT is a dummy. */
+    {}, /* Second entry is unused on 32-bit */
+    GDT_ENTRY_INIT(0xa09b, 0, 0xfffff), /* __KERNEL_CS */
+    GDT_ENTRY_INIT(0xc093, 0, 0xfffff), /* __KERNEL_DS */
+  };
+  struct desc_ptr gdt = { sizeof(desc) - 1, (unsigned long)desc };
+
+  native_load_gdt(&gdt);
+}
+
+(and drop the #defines from eboot.h that we no longer use)
+
+> The final two patches are doc fixes to clarify that the 32-bit EFI
+> handover entry point also requires segments/GDT to be setup, and that
+> for 64-bit mode we don't have any special segment requirements (the
+> 64-bit doc currently is just a copy of the 32-bit doc which isn't
+> right).
+>
+> Arvind Sankar (8):
+>   efi/x86: Use C wrapper instead of inline assembly
+>   efi/x86: Allocate the GDT pointer on the stack
+>   efi/x86: Factor GDT setup code into a function
+
+Given the above, I don't think we need the separate function, but if
+we do, please drop the 64-bit code first, otherwise there is much more
+churn than necessary.
+
+>   efi/x86: Only setup the GDT for 32-bit kernel
+>   efi/x86: Allocate only the required 32 bytes for the GDT
+>   efi/x86: Change __KERNEL_{CS,DS} to __BOOT_{CS,DS}
+>   Documentation/x86/boot: Clarify segment requirements for EFI handover
+>   Documentation/x86/boot: Correct segment requirements for 64-bit boot
+>
+>  Documentation/x86/boot.rst              |  15 +-
+>  arch/x86/boot/compressed/eboot.c        | 174 ++++++++++--------------
+>  arch/x86/boot/compressed/efi_thunk_64.S |   4 +-
+>  3 files changed, 85 insertions(+), 108 deletions(-)
+>
+> --
+> 2.24.1
+>
