@@ -2,52 +2,51 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5712F14FEB1
-	for <lists+linux-efi@lfdr.de>; Sun,  2 Feb 2020 18:55:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 13CF614FEB5
+	for <lists+linux-efi@lfdr.de>; Sun,  2 Feb 2020 19:02:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726906AbgBBRzE (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sun, 2 Feb 2020 12:55:04 -0500
-Received: from mail-wm1-f66.google.com ([209.85.128.66]:36120 "EHLO
-        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726885AbgBBRzE (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sun, 2 Feb 2020 12:55:04 -0500
-Received: by mail-wm1-f66.google.com with SMTP id p17so14409089wma.1
-        for <linux-efi@vger.kernel.org>; Sun, 02 Feb 2020 09:55:02 -0800 (PST)
+        id S1726952AbgBBSCJ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sun, 2 Feb 2020 13:02:09 -0500
+Received: from mail-wm1-f65.google.com ([209.85.128.65]:53127 "EHLO
+        mail-wm1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726885AbgBBSCJ (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sun, 2 Feb 2020 13:02:09 -0500
+Received: by mail-wm1-f65.google.com with SMTP id p9so13433312wmc.2
+        for <linux-efi@vger.kernel.org>; Sun, 02 Feb 2020 10:02:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=l16/jWBg5TdkuLQMSLdNnEO2hLRau3tU8l2zd5isbi4=;
-        b=TbPtfQQyQotPasF9Z3NIeqbz+pg3LRy9qOf3r/F8o0SAuMeEGwyaj1diE1wJHCSiit
-         DjSQ4VJQcEbXLhFs7iAoizPsguYDlcmG7czPm8igOCw8aeRZgNK+n72FnMNYa5iCIXMy
-         5qxme+/q37VpO36jGjOzrGwmzj+EFr3oKrsBK4n+2+kEes5I2k7cPAoey128xlr1C8/M
-         kj/2QOUZYuuPI/6QlZQAiwnwFVCMsCr83XLwF2BpqILBEWWNZxsg4eLePxR8Y5agiGNj
-         iJpR3uHd+TlnPvTwWTkP6fw7nycKk+/xL6tCnYknnYA8N+DEY6w/4hrk7Eg1N4BZhE6r
-         3EbQ==
+        bh=QmKWAHIRS574byfrrAo7husLV2hZAgH8s/ZJVLQJI3g=;
+        b=aBsX9Hpef1ms4ozqNDTFAQ2tNBdDwTakNV/lcZvRVy1CEWOUikE8PTfJdCCHOXThBy
+         K/uRER0R1Lt9H33e4VLfa/061i21BcHAA/i1SHMT+bzgKNLhJzJnIeEqiMv4ohyEeSdB
+         KU/ZxEKvrF34CjEu8x1Ei+Onktl9sth+4xVk10IeiQ9h6l9NfJxV5toDvXqJozfLwbjl
+         XXfb+0e4ERSlTlDxraoSv8pyQ+ReVlXsBx6Lanult13oOuEWjsJVi/LIQKCJkvGTZWxK
+         aeTcxo3ANAmtAo/zzDopyTAjlxD1rgSYAlyZiiPcu4IWJEK6Hc4m4TkhuR6YdHH8vaLC
+         HSoA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=l16/jWBg5TdkuLQMSLdNnEO2hLRau3tU8l2zd5isbi4=;
-        b=PMO5fUzyUjPu2YgGkpBPEkr3zKrSvEK0ejUanT0l5pppveGqEXpopFnvRJXiGvLITl
-         IvGdKHaMj2hckgoANChYP0LWe4SLUVoavTMgDwo7LwOyG53hvkblzdx5xGc9iowUJQ92
-         P8TgayoMtDu2+X1grsPKm5UPWY0eFRTkNayhbkOEfZC5Fn28Bvuf9YOe62BR7uBPl8JC
-         zY8AueC5Inaa5ozH/6/pfxsUFuGkgoVno9H2LOa8IgXJZRYsRasdqbHLfRgTNilCUcWw
-         IM9uaLxyUs4bvBr7UsLXBlSmRkuQyD2vfZ/au98lb1gssy7HSOQ/ynUj2o+LCqFYSlPh
-         WLoA==
-X-Gm-Message-State: APjAAAXeI6YKnaViQZ6OkoFGNOfQIiXr6EZdDFRZNO7dc8yCBJTEy89x
-        T121D7kz+3ctJKc5B2mexUl0eBMcLlrntbxQwiQx9A==
-X-Google-Smtp-Source: APXvYqzd+spEUZojR0Pta6mmrqcc+UjO+w2JlWfu6GM0fkKNdW6/l6Q/Tl8cMlgwoxSBGrzoFniwdsxwOCEAVzy/U+I=
-X-Received: by 2002:a7b:c4cc:: with SMTP id g12mr26387310wmk.68.1580666101359;
- Sun, 02 Feb 2020 09:55:01 -0800 (PST)
+        bh=QmKWAHIRS574byfrrAo7husLV2hZAgH8s/ZJVLQJI3g=;
+        b=Go+JHVyOUYB6f6wnsTGjPgzaGfX+CyTz5OKBiqI+DPkR0QutXPKAu/FWh5cmTyL25O
+         9AEIcFBqn75YwdDLV8LkKdAWJrdctQ2ZjbY/H6YfGgE5ZFlc8e36mDKauxqmnTB2P3CW
+         UyT3CstLUUdprrKNzYOkvqmQOAVmxe9Gjf/gWmZr6pNJ1UFGVuT2aTrrg4J7/7VE12dA
+         UsAxrlKY19wcgusNJdK7lmGr2d0mnPGk8S10XFXLmnGKDfMjaQghXtBzKEm3vEk7zVSN
+         yBnQHxiQZgkBuNvgQ+EJue5MWMd9HGfyi0qfM/1AdDchaljXSS91K36tM3dBzfUjdFQF
+         4Vtg==
+X-Gm-Message-State: APjAAAUmPKr+JLQm/sp20ckufN01hqT7D+Pj6BRRjA9X8QWWWSEpjRki
+        QBZNtc1Rp3M4upSQVBOt6yvfkT8CK4DxcrhK2QNyZQ==
+X-Google-Smtp-Source: APXvYqyp+LfNjYLyx7jF8VwNkgNpyXLXKBIKNlb+Sx5rURpHGzkTO0rTl3kUdkDD9b9d+3r5Ig7GL7iu2lydhzMHUQ4=
+X-Received: by 2002:a7b:cc81:: with SMTP id p1mr23729628wma.62.1580666525652;
+ Sun, 02 Feb 2020 10:02:05 -0800 (PST)
 MIME-Version: 1.0
-References: <20200130200440.1796058-1-nivedita@alum.mit.edu>
- <20200202171353.3736319-1-nivedita@alum.mit.edu> <20200202171353.3736319-3-nivedita@alum.mit.edu>
-In-Reply-To: <20200202171353.3736319-3-nivedita@alum.mit.edu>
+References: <20200130200440.1796058-1-nivedita@alum.mit.edu> <20200202171353.3736319-1-nivedita@alum.mit.edu>
+In-Reply-To: <20200202171353.3736319-1-nivedita@alum.mit.edu>
 From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Date:   Sun, 2 Feb 2020 18:54:48 +0100
-Message-ID: <CAKv+Gu9_bXmRMqs3Es7XXFjRafAm0HjyM6EasuKP1nka-dLdVA@mail.gmail.com>
-Subject: Re: [PATCH v2 2/7] efi/x86: Don't depend on firmware GDT layout
+Date:   Sun, 2 Feb 2020 19:01:27 +0100
+Message-ID: <CAKv+Gu_pXg3hFophgQZ2nMHMWZwUuiE2s+Z6bRzby8_3vXzcNg@mail.gmail.com>
+Subject: Re: [PATCH v2 0/7] x86/efi,boot: GDT handling cleanup/fixes
 To:     Arvind Sankar <nivedita@alum.mit.edu>
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
@@ -63,166 +62,65 @@ X-Mailing-List: linux-efi@vger.kernel.org
 
 On Sun, 2 Feb 2020 at 18:13, Arvind Sankar <nivedita@alum.mit.edu> wrote:
 >
-> At handover entry in efi32_stub_entry, the firmware's GDT is still
-> installed. We save the GDTR for later use in __efi64_thunk but we are
-> assuming that descriptor 2 (__KERNEL_CS) is a valid 32-bit code segment
-> descriptor and that descriptor 3 (__KERNEL_DS/__BOOT_DS) is a valid data
-> segment descriptor.
+> This series fixes a potential bug in EFI mixed-mode and leaves GDT
+> handling to startup_{32,64} instead of efi_main.
 >
-> This happens to be true for OVMF (it actually uses descriptor 1 for data
-> segments, but descriptor 3 is also setup as data), but we shouldn't
-> depend on this being the case.
+> The first patch removes KEEP_SEGMENTS support in loadflags, this is
+> unused now (details in patch 1 commit msg), to slightly simplify
+> subsequent changes.
 >
-> Fix this by saving the code and data selectors in addition to the GDTR
-> in efi32_stub_entry, and restoring them in __efi64_thunk before calling
-> the firmware. The UEFI specification guarantees that selectors will be
-> flat, so using the DS selector for all the segment registers should be
-> enough.
+> The second patch fixes a potential bug in EFI mixed-mode, where we are
+> currently relying on the firmware GDT having a particular layout: a
+> CODE32 segment as descriptor 2 and a DATA segment as descriptor 3.
 >
-> We also need to install our own GDT before initializing segment
-> registers in startup_32, so move the GDT load up to the beginning of the
-> function.
+> The third patch adds some safety during kernel decompression by updating
+> the GDTR to point to the copied GDT, rather than the old one which may
+> have been overwritten.
 >
-> Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
+> The fourth patch adds cld/cli to startup_64, and the fifth patch removes
+> all the GDT setup from efi_main and adds it to the 32-bit kernel's
+> startup_32. The 64-bit kernel already does GDT setup. This should be
+> safer as this code can keep track of where the .data section is moving
+> and ensure that GDTR is pointing to a clean copy of the GDT.
+>
+> The last two patches are to fix an off-by-one in the GDT limit and do a
+> micro-optimization to the GDT loading instructions.
+>
 
-It might be useful to mention /somewhere/ in the commit log that this
-applies to mixed mode
+Thanks Arvind.
 
-> ---
->  arch/x86/boot/compressed/efi_thunk_64.S | 29 +++++++++++++++++++-----
->  arch/x86/boot/compressed/head_64.S      | 30 +++++++++++++++----------
->  2 files changed, 42 insertions(+), 17 deletions(-)
+This looks good to me,
+
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
+
+but I'm a bit out of my depth here when it comes to x86'ology so it's
+really up to the x86 maintainers.
+
+
+> Changes from v1:
+> - added removal of KEEP_SEGMENTS
+> - added the mixed-mode fix
+> - completely removed GDT setup from efi_main, including for the 32-bit
+>   kernel
+> - dropped documentation patches for now
 >
-> diff --git a/arch/x86/boot/compressed/efi_thunk_64.S b/arch/x86/boot/compressed/efi_thunk_64.S
-> index 8fb7f6799c52..2b2049259619 100644
-> --- a/arch/x86/boot/compressed/efi_thunk_64.S
-> +++ b/arch/x86/boot/compressed/efi_thunk_64.S
-> @@ -54,11 +54,16 @@ SYM_FUNC_START(__efi64_thunk)
->          * Switch to gdt with 32-bit segments. This is the firmware GDT
->          * that was installed when the kernel started executing. This
->          * pointer was saved at the EFI stub entry point in head_64.S.
-> +        *
-> +        * Pass the saved DS selector to the 32-bit code, and use far return to
-> +        * restore the saved CS selector.
->          */
->         leaq    efi32_boot_gdt(%rip), %rax
->         lgdt    (%rax)
+> Arvind Sankar (7):
+>   x86/boot: Remove KEEP_SEGMENTS support
+>   efi/x86: Don't depend on firmware GDT layout
+>   x86/boot: Reload GDTR after copying to the end of the buffer
+>   x86/boot: Clear direction and interrupt flags in startup_64
+>   efi/x86: Remove GDT setup from efi_main
+>   x86/boot: GDT limit value should be size - 1
+>   x86/boot: Micro-optimize GDT loading instructions
 >
-> -       pushq   $__KERNEL_CS
-> +       movzwl  efi32_boot_ds(%rip), %edx
-> +       movzwq  efi32_boot_cs(%rip), %rax
-> +       pushq   %rax
->         leaq    efi_enter32(%rip), %rax
->         pushq   %rax
->         lretq
-> @@ -73,6 +78,10 @@ SYM_FUNC_START(__efi64_thunk)
->         movl    %ebx, %es
->         pop     %rbx
->         movl    %ebx, %ds
-> +       /* Clear out 32-bit selector from FS and GS */
-> +       xorl    %ebx, %ebx
-> +       movl    %ebx, %fs
-> +       movl    %ebx, %gs
+>  Documentation/x86/boot.rst              |   8 +-
+>  arch/x86/boot/compressed/eboot.c        | 103 ------------------------
+>  arch/x86/boot/compressed/efi_thunk_64.S |  29 +++++--
+>  arch/x86/boot/compressed/head_32.S      |  48 +++++++----
+>  arch/x86/boot/compressed/head_64.S      |  66 ++++++++-------
+>  arch/x86/kernel/head_32.S               |   6 --
+>  6 files changed, 99 insertions(+), 161 deletions(-)
 >
->         /*
->          * Convert 32-bit status code into 64-bit.
-> @@ -92,10 +101,12 @@ SYM_FUNC_END(__efi64_thunk)
->   * The stack should represent the 32-bit calling convention.
->   */
->  SYM_FUNC_START_LOCAL(efi_enter32)
-> -       movl    $__KERNEL_DS, %eax
-> -       movl    %eax, %ds
-> -       movl    %eax, %es
-> -       movl    %eax, %ss
-> +       /* Load firmware selector into data and stack segment registers */
-> +       movl    %edx, %ds
-> +       movl    %edx, %es
-> +       movl    %edx, %fs
-> +       movl    %edx, %gs
-> +       movl    %edx, %ss
->
->         /* Reload pgtables */
->         movl    %cr3, %eax
-> @@ -157,6 +168,14 @@ SYM_DATA_START(efi32_boot_gdt)
->         .quad   0
->  SYM_DATA_END(efi32_boot_gdt)
->
-> +SYM_DATA_START(efi32_boot_cs)
-> +       .word   0
-> +SYM_DATA_END(efi32_boot_cs)
-> +
-> +SYM_DATA_START(efi32_boot_ds)
-> +       .word   0
-> +SYM_DATA_END(efi32_boot_ds)
-> +
->  SYM_DATA_START(efi_gdt64)
->         .word   efi_gdt64_end - efi_gdt64
->         .long   0                       /* Filled out by user */
-> diff --git a/arch/x86/boot/compressed/head_64.S b/arch/x86/boot/compressed/head_64.S
-> index bd44d89540d3..c56b30bd9c7b 100644
-> --- a/arch/x86/boot/compressed/head_64.S
-> +++ b/arch/x86/boot/compressed/head_64.S
-> @@ -54,10 +54,6 @@ SYM_FUNC_START(startup_32)
->          */
->         cld
->         cli
-> -       movl    $(__BOOT_DS), %eax
-> -       movl    %eax, %ds
-> -       movl    %eax, %es
-> -       movl    %eax, %ss
->
->  /*
->   * Calculate the delta between where we were compiled to run
-> @@ -72,10 +68,20 @@ SYM_FUNC_START(startup_32)
->  1:     popl    %ebp
->         subl    $1b, %ebp
->
-> +       /* Load new GDT with the 64bit segments using 32bit descriptor */
-> +       addl    %ebp, gdt+2(%ebp)
-> +       lgdt    gdt(%ebp)
-> +
-> +       /* Load segment registers with our descriptors */
-> +       movl    $__BOOT_DS, %eax
-> +       movl    %eax, %ds
-> +       movl    %eax, %es
-> +       movl    %eax, %fs
-> +       movl    %eax, %gs
-> +       movl    %eax, %ss
-> +
->  /* setup a stack and make sure cpu supports long mode. */
-> -       movl    $boot_stack_end, %eax
-> -       addl    %ebp, %eax
-> -       movl    %eax, %esp
-> +       leal    boot_stack_end(%ebp), %esp
->
->         call    verify_cpu
->         testl   %eax, %eax
-> @@ -112,10 +118,6 @@ SYM_FUNC_START(startup_32)
->   * Prepare for entering 64 bit mode
->   */
->
-> -       /* Load new GDT with the 64bit segments using 32bit descriptor */
-> -       addl    %ebp, gdt+2(%ebp)
-> -       lgdt    gdt(%ebp)
-> -
->         /* Enable PAE mode */
->         movl    %cr4, %eax
->         orl     $X86_CR4_PAE, %eax
-> @@ -232,9 +234,13 @@ SYM_FUNC_START(efi32_stub_entry)
->
->         movl    %ecx, efi32_boot_args(%ebp)
->         movl    %edx, efi32_boot_args+4(%ebp)
-> -       sgdtl   efi32_boot_gdt(%ebp)
->         movb    $0, efi_is64(%ebp)
->
-> +       /* Save firmware GDTR and code/data selectors */
-> +       sgdtl   efi32_boot_gdt(%ebp)
-> +       movw    %cs, efi32_boot_cs(%ebp)
-> +       movw    %ds, efi32_boot_ds(%ebp)
-> +
->         /* Disable paging */
->         movl    %cr0, %eax
->         btrl    $X86_CR0_PG_BIT, %eax
 > --
 > 2.24.1
 >
