@@ -2,56 +2,47 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C5EF6155EC0
-	for <lists+linux-efi@lfdr.de>; Fri,  7 Feb 2020 20:47:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A9CA155EF4
+	for <lists+linux-efi@lfdr.de>; Fri,  7 Feb 2020 20:54:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727012AbgBGTr7 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 7 Feb 2020 14:47:59 -0500
-Received: from mail-wr1-f67.google.com ([209.85.221.67]:40608 "EHLO
-        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726988AbgBGTr7 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 7 Feb 2020 14:47:59 -0500
-Received: by mail-wr1-f67.google.com with SMTP id t3so299296wru.7
-        for <linux-efi@vger.kernel.org>; Fri, 07 Feb 2020 11:47:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=ADmEob5aCHIMZYdk17bc2JtUL+648UgN60jHGzFUmnQ=;
-        b=ZtenNvpggSNUBFW84py2rlNqNs1p27CT9g4Y0dQKsE0VKS/mqmxCYdKR44F4KrFJmH
-         ccgRRcEazb4hunqtwY7yIYDj1VI46LGOzVIA1W3gOalQEHUL4XoeKvTAwL4LuWC7wEfW
-         ku9j4hCIBFMt2Y6ZbkfWtXyv887LDZ2Ka8QncGwcHx4pHRG7UqtVJrnYarZuytQouWff
-         1IqZL2Qa70K/tU+n6B2Df3bQS2a2DKxwqYeKbg3UmzWAjmj1ybwWKOvJzy1IArws51Q6
-         VR7tmPpl6QbokDZMdKvp8ApdMtLCzEn/oW7hOcCEXhWH1uHKy5lV+e4K7EWISk+C3Igu
-         axRA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=ADmEob5aCHIMZYdk17bc2JtUL+648UgN60jHGzFUmnQ=;
-        b=ifZvKw6S7Kb2ZHfmnV3dbFIe1Z74IIuXk/7359juWsQcQt2cmS12rv6Bo2wQAJyIS7
-         3glJhgmnvf1cJtg4rs2aY5n3FUjI5/N0uKRn7v/ttPfWh+/jgi2YDy1SwbhI0MVOImRN
-         EaRr35VzXYL9kgB5MD1nMbeBraoskCs+GwnXvPFrhtwXiEpFohq+pIqHmCyFN8+3yzQ0
-         Mp0FbzrMz6YTxvCwg4G8BOInITWpj2yjDN3eN/7eyRnHqkItWRbanaPGAvl90qKewflm
-         zZWEvufNHnhNrfEYhc5sDWaNT8a3rIHH02Nyt5tAQsCbAtzqVHYGUyMXtWqo/7tvcH0x
-         6PbQ==
-X-Gm-Message-State: APjAAAU8F5+ErVeeDVn3Rms8zXW3Ofob3ER3tGH/qVPJcSEvqJqA/GLr
-        hFVLvjhMyLneCOHjv4tT3E2CTapaaup8ty2BmMOwOfnR2AIZgA==
-X-Google-Smtp-Source: APXvYqy8ulALAFMRrpiERJSH7DxxaKYXZW/FVT6fUplf6OymnaPN0l0tMb7TfG90cZJkFEOJdBoIgpGS95aYvd5xNtc=
-X-Received: by 2002:adf:fd8d:: with SMTP id d13mr643736wrr.208.1581104877140;
- Fri, 07 Feb 2020 11:47:57 -0800 (PST)
-MIME-Version: 1.0
-References: <20200206140352.6300-1-ardb@kernel.org> <20200207184532.GA3276112@rani.riverdale.lan>
-In-Reply-To: <20200207184532.GA3276112@rani.riverdale.lan>
-From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Date:   Fri, 7 Feb 2020 19:47:46 +0000
-Message-ID: <CAKv+Gu8Z3=cqbNxspLXAgM_8wEm+to2TWRjpaaC231MbwL2Ycw@mail.gmail.com>
+        id S1727005AbgBGTy2 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 7 Feb 2020 14:54:28 -0500
+Received: from bedivere.hansenpartnership.com ([66.63.167.143]:60100 "EHLO
+        bedivere.hansenpartnership.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726956AbgBGTy2 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 7 Feb 2020 14:54:28 -0500
+Received: from localhost (localhost [127.0.0.1])
+        by bedivere.hansenpartnership.com (Postfix) with ESMTP id 856738EE165;
+        Fri,  7 Feb 2020 11:54:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
+        s=20151216; t=1581105267;
+        bh=nwwCfdr9IRdM4o2QVGdnaVzNrm7zJ8bHxvLC3vENBCA=;
+        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+        b=ZCha+UDNdlHqqjuX7yqUY8oQkgSWcsp/V8dkFEWRYTgx/rWaKUv86mGqydF72KWMs
+         bnpgDQ0yQHecKGRVLmuNhw+4+BjtJkvo//KyCqq6rf2AZWySCofB9I7Rvqv81tkyXM
+         yh3GFEtJkVFlupbgaaP59shqcw5xLwlqhJ1lU4QE=
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+        by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id n-qUKKLwmuaF; Fri,  7 Feb 2020 11:54:27 -0800 (PST)
+Received: from [153.66.254.194] (unknown [50.35.76.230])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id B52018EE0E2;
+        Fri,  7 Feb 2020 11:54:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
+        s=20151216; t=1581105267;
+        bh=nwwCfdr9IRdM4o2QVGdnaVzNrm7zJ8bHxvLC3vENBCA=;
+        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+        b=ZCha+UDNdlHqqjuX7yqUY8oQkgSWcsp/V8dkFEWRYTgx/rWaKUv86mGqydF72KWMs
+         bnpgDQ0yQHecKGRVLmuNhw+4+BjtJkvo//KyCqq6rf2AZWySCofB9I7Rvqv81tkyXM
+         yh3GFEtJkVFlupbgaaP59shqcw5xLwlqhJ1lU4QE=
+Message-ID: <1581105265.4545.17.camel@HansenPartnership.com>
 Subject: Re: [PATCH 0/2] arch-agnostic initrd loading method for EFI systems
-To:     Arvind Sankar <nivedita@alum.mit.edu>
-Cc:     Ard Biesheuvel <ardb@kernel.org>,
+From:   James Bottomley <James.Bottomley@HansenPartnership.com>
+To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Cc:     Laszlo Ersek <lersek@redhat.com>, Ard Biesheuvel <ardb@kernel.org>,
         linux-efi <linux-efi@vger.kernel.org>,
         linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        Laszlo Ersek <lersek@redhat.com>,
         Leif Lindholm <leif@nuviainc.com>,
         Peter Jones <pjones@redhat.com>,
         Matthew Garrett <mjg59@google.com>,
@@ -59,28 +50,143 @@ Cc:     Ard Biesheuvel <ardb@kernel.org>,
         Ilias Apalodimas <ilias.apalodimas@linaro.org>,
         Heinrich Schuchardt <xypron.glpk@gmx.de>,
         Daniel Kiper <daniel.kiper@oracle.com>
+Date:   Fri, 07 Feb 2020 11:54:25 -0800
+In-Reply-To: <CAKv+Gu99wxr+OHwqPRjfF136VB3AwPbXXg1tx1=34jF2DU6Z6g@mail.gmail.com>
+References: <20200206140352.6300-1-ardb@kernel.org>
+         <fa3b3103-e77d-571d-71a4-604fa48368e6@redhat.com>
+         <cfb38b38-14f2-c61a-60a0-dfe14667b49c@redhat.com>
+         <CAKv+Gu__fUGyv4eu5oKcsVZYSbKRfYYd_VS8CGEV4jC+GuvqJA@mail.gmail.com>
+         <1581092420.7608.15.camel@HansenPartnership.com>
+         <CAKv+Gu99wxr+OHwqPRjfF136VB3AwPbXXg1tx1=34jF2DU6Z6g@mail.gmail.com>
 Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.26.6 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, 7 Feb 2020 at 18:45, Arvind Sankar <nivedita@alum.mit.edu> wrote:
->
-> On Thu, Feb 06, 2020 at 02:03:50PM +0000, Ard Biesheuvel wrote:
-> >   data structure. It also creates a time window where the initrd data sits
-> >   in memory, and can potentially be corrupted before the kernel is booted.
-> >
->
-> I don't quite understand the time window aspect -- can you expand on
-> that? It seems like the same time window exists between when the kernel
-> is loaded and when it actually runs, no? Why is this more important for
-> initrd?
+On Fri, 2020-02-07 at 18:31 +0000, Ard Biesheuvel wrote:
+> On Fri, 7 Feb 2020 at 16:20, James Bottomley
+> <James.Bottomley@hansenpartnership.com> wrote:
+> > 
+> > On Fri, 2020-02-07 at 12:23 +0000, Ard Biesheuvel wrote:
+> > > On Fri, 7 Feb 2020 at 09:22, Laszlo Ersek <lersek@redhat.com>
+> > > wrote:
+> > > > 
+> > > > On 02/07/20 10:09, Laszlo Ersek wrote:
+> > 
+> > [...]
+> > > > > For example, virt-install's "--location" option "can
+> > > > > recognize certain distribution trees and fetches a bootable
+> > > > > kernel/initrd pair to launch the install". It would be nice
+> > > > > to keep that working for older distros.
+> > > > > 
+> > > > > I think LoadFile[2] can co-exist with SimpleFs.
+> > > > > 
+> > > > > I also think that the "try SimpleFs first, fall back to
+> > > > > LoadFile[2] second" requirement applies only to the UEFI boot
+> > > > > manager, and not to the kernel's EFI stub. IOW in the new
+> > > > > approach the kernel is free to ignore (abandon) the old
+> > > > > approach for good.
+> > > > 
+> > > > ... But that might not be good for compatibility with grub
+> > > > and/or the platform firmware, from the kernel's own
+> > > > perspective, perhaps?...
+> > > > 
+> > > > Who is supposed to produce LoadFile2 with the new VenMedia
+> > > > devpath?
+> > > > 
+> > > 
+> > > What I am ultimately after is a generic GRUB that uses
+> > > LoadImage+Startimage for starting the kernel on all
+> > > architectures,
+> > 
+> > For most boots, we need to pivot to the MoK.  A long time ago, I
+> > proposed updating the platform security policy to do an override to
+> > allow MoK to become the security verifier (actually principally so
+> > I could get the gummiboot bootloader to work with the MoK method):
+> > 
+> > https://git.kernel.org/pub/scm/linux/kernel/git/jejb/efitools.git/t
+> > ree/lib/security_policy.c
+> > 
+> > And I believe all the pivot bootloaders now do this, but the fear
+> > was always this looks a bit like hackery that might not work in
+> > some UEFI implementations.  Since we don't really rely on it (shim
+> > link loads after signature verification) we don't know whether the
+> > assumption does break or not.  We'll need to get much more
+> > comfortable with the security override before we can let grub do a
+> > simple load+start.
+> > 
+> 
+> I'd like to do something much simpler: let shim override LoadImage
+> and StartImage,
 
-When using loadimage+startimage, the authentication and measurement of
-the kernel image occur during the call to loadimage(), even if the
-source of the load is memory itself, and startimage() is typically
-called right after.
+Actually, the non-shim bootloaders really don't want to do that: the
+whole point of being able to use LoadImage is that you don't need to
+know how to load a PECOFF binary or check its signature.  Overriding
+the security protocol allows updating the signature check, but if you
+look at the current efitools implementation it uses the pkcs7 protocol
+to avoid having to include crypto code.
 
-The assumption is that it may help to make this time as short as
-possible for the initrd as well.
+I've got the pecoff code they'd need in my uefi library:
+
+https://git.kernel.org/pub/scm/linux/kernel/git/jejb/efitools.git/tree/lib/pecoff.c
+
+But it's a lot of code for things that pride themselves on being tiny.
+
+>  and in their implementations, fall back to the firmware
+> ones if necessary.
+> 
+> > > and is able to load the initrd from anywhere in an arch agnostic
+> > > manner.
+> > 
+> > I think the use case might not really be grub, it's gummiboot, or
+> > systemd-boot as its now called:
+> > 
+> 
+> No it is definitely GRUB. GRUB today needs to attach to the shim
+> protocol, perform the authentication, measure the payload etc etc,
+> which means it knows far too much about the internals of shim or the
+> fact that it even exists.
+
+The shim protocol and shim are fairly separate.  I agree it means grub
+has to load and know the two entry points for context and verify but
+they're very far removed for the inner workings of shim.  Obviously, my
+non-shim loader has to supply them for grub, so this is the
+implementation:
+
+https://git.kernel.org/pub/scm/linux/kernel/git/jejb/efitools.git/tree/lib/shim_protocol.c
+
+It's only 50 lines.
+
+The other thing to consider is that crypto code is huge.  Shim
+currently includes it (although it could avoid this by using the pkcs7
+verifier protocol trick I use ... I should push that harder) and it
+adds about 1M of static code.  Grub does not have this code, so either
+grub uses shim and its code to do the signature verification or grub
+will have to include the additional 1M as well ... I think using shim
+via the protocol is preferable.
+
+> My ideal bootflow would be where the OS installer looks at the
+> firmware's db/dbx, doesn't bother to install shim if the OS vendor's
+> cert is there, and uses the exact same GRUB regardless of whether
+> shim is part of the bootflow or not.
+
+That's not enough.  The whole point of MoK is that the user may have
+done their own key addition, so you could be in the situation where the
+vendor cert is present in db but the user has a MoK override for boot
+and if you assume presence of the vendor cert means you can use
+loadimage, this will fail because the MoK cert isn't in db ... unless
+you've added the MoK key via the security protocol override.
+
+> One of the things impeding this is the fact that we cannot load the
+> initrd from anywhere when using loadimage+startimage.
+
+unless initrd becomes a PECOFF binary, it can never be loaded by
+loadimage ... I thought you were still letting the kernel load it via
+LoadFile2?  (assuming you are and that the above is just a typo).
+
+James
+
