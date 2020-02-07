@@ -2,414 +2,297 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 335921557DB
-	for <lists+linux-efi@lfdr.de>; Fri,  7 Feb 2020 13:37:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AD1A0155876
+	for <lists+linux-efi@lfdr.de>; Fri,  7 Feb 2020 14:30:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726860AbgBGMhH (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 7 Feb 2020 07:37:07 -0500
-Received: from mail-wr1-f65.google.com ([209.85.221.65]:39320 "EHLO
-        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726798AbgBGMhH (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 7 Feb 2020 07:37:07 -0500
-Received: by mail-wr1-f65.google.com with SMTP id y11so2502376wrt.6
-        for <linux-efi@vger.kernel.org>; Fri, 07 Feb 2020 04:37:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=vkVYI+CMZ47aunrYcixncDMI2WV0XZu11LSOldQ9xCo=;
-        b=pTMHIU+8VlOwUDMffz25O5QHdyJuLoYX1LgAJJz7GTGg3zcKj32XBFikkZs+87JHsN
-         CT4N5NQAQzYlWnrPja7xCs9xK1sNKZH7x7JJvBjoCAWRmA3UJd9ncKXJdy4tles4Uv2L
-         HMhTjV352MO6HDkjMeGzUD+wF6960UK+RAG2bRqmRxJcGqK9lnSPD9WqBZBbDPYaJ70C
-         fjqcqDqa39zdEHoWhM3dzEP3sB1FZdZOO6XhTWJ9nCLlaSTV0xeXP4f3hEYAfKkqtha1
-         vAzeEvWw87jnyZ50i0b6MCdGYRngeQ/2dyAM6HsrOGR6UoIrxMb6LCZeKBU5KLmzTHBi
-         /5ig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=vkVYI+CMZ47aunrYcixncDMI2WV0XZu11LSOldQ9xCo=;
-        b=pWwBVNa3RJIMhQh9kjHkEEipewIhbiek8fek+fEat526QxSuVSlWAfIBsow0woTiG/
-         vMukA1/q3LCPqS8BdQI4StkzXByaxHvQq2Mn8kXZYEpiKrmLKqZuDoDPwvScMzkjCujc
-         CPjsB7wvU6TpukCf1RDhguepncD4FvR0V+6J7NKy2OoP7q2SOe1r4Zln4YwrZJJtU9Lx
-         qvjvAhdW85Ylrpn2aVe1BLEOLNsfl0EnoenUw0kfh3efnd7ZAsW7Qam7dISWU5uaJEd0
-         8J8c3j2M8gzEeOWBvIbOhVBRoE/gy1/Z3yF0f1T4GCfvr/ITQ3TyJlUfOPEc7nMeTT6M
-         Ff+A==
-X-Gm-Message-State: APjAAAXX/hpH4Fz0q4B2rCqAw96rPtgX2yTieP/r4ihQHp0UWbi9KlW5
-        y5hUoXcsrYkJEEHFesw/nvyGaNJpdgPHLh/EF9+ukA==
-X-Google-Smtp-Source: APXvYqz1dxbqKwf2K1LabMt3fHiPgtRqKkO7RG0VG3AZBLJHYLwZu9RoAWwixkwviZkFtJKfa8JvEX48F9Il1s/DrS0=
-X-Received: by 2002:a5d:65cf:: with SMTP id e15mr4490843wrw.126.1581079023837;
- Fri, 07 Feb 2020 04:37:03 -0800 (PST)
-MIME-Version: 1.0
-References: <20200206140352.6300-1-ardb@kernel.org> <20200206140352.6300-2-ardb@kernel.org>
- <43362e18-eddc-9903-0e63-9d3eebe70313@redhat.com>
-In-Reply-To: <43362e18-eddc-9903-0e63-9d3eebe70313@redhat.com>
-From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Date:   Fri, 7 Feb 2020 12:36:52 +0000
-Message-ID: <CAKv+Gu89o4oJEJvJMuE68HM5NDgokQ0W-D7YQB6xOX2EbhYYBw@mail.gmail.com>
+        id S1726798AbgBGNam (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 7 Feb 2020 08:30:42 -0500
+Received: from mout.gmx.net ([212.227.17.22]:37947 "EHLO mout.gmx.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726674AbgBGNal (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Fri, 7 Feb 2020 08:30:41 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1581082222;
+        bh=qk7eh8+w6wUyNv6TyvF4v/fPPu2UP2u8eTUdEbN3SmY=;
+        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=erl7rriu2Xz8D1E1TTU6InDZiObJH6D7Xlnbqr4k61CZlG9ZrznvCZSA0Qta1//vZ
+         3uJOFyIG4Q839gw1PceBtUgGwIboDp5EZ3bQTIXgMSa7dvqZUIsSf8A9/GEsZHomrO
+         Hqmh75uB67cubXmuPD9S2n/hm0lm/p1frxMnccE8=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from [172.20.10.6] ([109.40.64.192]) by mail.gmx.com (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MV67y-1j8CMK0Zmw-00S9wS; Fri, 07
+ Feb 2020 14:30:22 +0100
 Subject: Re: [PATCH 1/2] efi/libstub: add support for loading the initrd from
  a device path
-To:     Laszlo Ersek <lersek@redhat.com>
+To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>
 Cc:     Ard Biesheuvel <ardb@kernel.org>,
         linux-efi <linux-efi@vger.kernel.org>,
         linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        Laszlo Ersek <lersek@redhat.com>,
         Leif Lindholm <leif@nuviainc.com>,
         Peter Jones <pjones@redhat.com>,
         Matthew Garrett <mjg59@google.com>,
         Alexander Graf <agraf@csgraf.de>,
         Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-        Heinrich Schuchardt <xypron.glpk@gmx.de>,
         Daniel Kiper <daniel.kiper@oracle.com>
-Content-Type: text/plain; charset="UTF-8"
+References: <20200206140352.6300-1-ardb@kernel.org>
+ <20200206140352.6300-2-ardb@kernel.org>
+ <a6d7fefb-2f02-86a3-66aa-c3c129a91fb1@gmx.de>
+ <CAKv+Gu9Z24GeqrqKhPJN+aAu8crSKvT0ZBeFL=0ik=z2Sd1FmQ@mail.gmail.com>
+ <b2535bc9-f9be-e250-4da1-bce0b67abb6f@gmx.de>
+ <CAKv+Gu-X6DKhtbfVgRLPomkkKJ7=4vRs-crLL0p7E7043J4H0g@mail.gmail.com>
+ <081d152a-fa9b-886a-565d-b244dea08cd5@gmx.de>
+ <CAKv+Gu-f9O4eon_E7=OUu_tNwybi7u6bF2zMowPHbA-MhiTjNg@mail.gmail.com>
+From:   Heinrich Schuchardt <xypron.glpk@gmx.de>
+Message-ID: <9e7c378a-782f-f56e-2ce3-0af6386b0bff@gmx.de>
+Date:   Fri, 7 Feb 2020 14:30:10 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.2
+MIME-Version: 1.0
+In-Reply-To: <CAKv+Gu-f9O4eon_E7=OUu_tNwybi7u6bF2zMowPHbA-MhiTjNg@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:lnGKa4fFsvve85a9g3QkeisSMGX5j9HexscjEHstFDrsWpWlBnC
+ nXp2/Hu/GwpoVeNzyyaFepRSmsbMoUx7Mo+67rYR4WiUOvADjixmgc8S4xBIxCnKlgkJt3h
+ ElJXVuxWDpRhccpiEuIGoPYugpBBDU2h6Axyf4GO2PZfe0snDstZcMA3rfxNnZbMAL47QF8
+ xPvNVXHZanEqfYeAeli4A==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:vhfxTQDZ8ZY=:1Ypjgdjrs8uvD7Ct1+CAxD
+ kywA7CY8Ntiv3DoWovZ3DibtoQLfoNCLBSx7BK+/I1bm39np55DBYKjIsge9tyZGCtNJEdrWO
+ Ke79yeYYNZC0THsXcIUSbV6EsI+wBKKpd+dQNF1eynP+4RhFROKHHz4tynFWW1Vw3PFUvzslc
+ QwYybnKvre9E0u0KVkvwxoDMeMRsiW3gYu9ic42H0dXX/2scBWppP16IUm5rTuQFA390/fWYg
+ L/0Zq90QcIozWtgQi3em9/smW+glJN6JsMCTcu3Ew5peXJUxjgG2QqiN0+zIPRmCY+osDQJCj
+ 2U3lagaRcD7i5KNPVoN/In6Defzs9XfN0VA9sJgZRIsJwqOJx8SjtHDZQBCD4Hlxo3eYbBq1V
+ SBm6HtwUkKoDjpLOi5XwecPklgZlsNFSQ8AoFfPBSgwI8Fj2gA3B+KaopM3BSNQD/3oynmxzF
+ rOtQp0tw//xmMhRWkhJzvM2soxVeXbAB8JVI1WBQ7JoGRCneAdT6R6weM7K5JuflXK4PLqZYS
+ nxcK8nL0dD/EOAh4KzZ3UCE8lc/IQzF/bVmjHrDArmCqtg2gwIVC7gBFQcRUXREl37HtarhrI
+ U6unZyMHVGDEgg/BA6PEpu+Lishn2OlljsFp+nHenHFeYD385nPYkNWUtKNEIYPFPNJNC9Wua
+ Wm4oVlR9qC/NSzmrsAyGRPXveMKG5r4ioYsaW0TFHNvUZ2sfYSFnk5rEWaVMTq5UbBicjP7mu
+ xjSWXgTMPRhMbvDLZmpRZwICPHAmm98LvSQVyqFJbZZ6GHs87M2EKkmxNCmQJLSlljk0aY+Jl
+ iBqD1JiFs0dcyB7pEWiATGxXzqMiGzGwizvBRNHgz5VCwkC5k26M42SJIQX7gh+ua5yHNHwby
+ S0/vhCQGY1Lzg95rQ2pVR1wzhjuht6SP5zVNiPeEyDgydHykBuS75zLf3fwyuGsnFrKRLYzRP
+ bei1HhWcS1CWKHm5LKxbydaoZmtlxTTFOhGZEUn3ngVvGfKYggAE98QrT2JCHbqTLF3MJVk4G
+ kh+i8ARUbNTlBTTgaaaPH7nhmH/pmabZ6rATPEUJL4KaZJVgkRwtPIXXdK+JJKr4VAi+tdvL9
+ +Tu9Kx5JVDY5OG/q4hUSlvz1Qr3yjtH4RI2sohlAsuL9fK3Tz3mBOxv3hd7kLq+Y1nbY6J6Ss
+ BDeNCpumhcvxe5z5WCD8I1+8r5hSAFtYHEaDgmUczqQIDu5tN//h8jKPpXIghi1AS/AJLnMSx
+ XWcDa4m8MxTxTvAjU
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, 7 Feb 2020 at 09:48, Laszlo Ersek <lersek@redhat.com> wrote:
+
+
+On 2/7/20 9:12 AM, Ard Biesheuvel wrote:
+> On Fri, 7 Feb 2020 at 00:58, Heinrich Schuchardt <xypron.glpk@gmx.de> wr=
+ote:
+>>
+>> On 2/7/20 1:21 AM, Ard Biesheuvel wrote:
+>>> On Fri, 7 Feb 2020 at 00:01, Heinrich Schuchardt <xypron.glpk@gmx.de> =
+wrote:
+>>>>
+>>>> On 2/6/20 11:35 PM, Ard Biesheuvel wrote:
+>>>>> On Thu, 6 Feb 2020 at 18:26, Heinrich Schuchardt <xypron.glpk@gmx.de=
+> wrote:
+> ...
+>>>>>> Please, indicate which software you expect to expose the initrd rel=
+ated
+>>>>>> EFI_LOAD_FILE2_PROTOCOL.
+>>>>>>
+>>>>>
+>>>>> The primary use case is GRUB and other intermediate loaders, since i=
+t
+>>>>> would remove any need for these components to know any such details.
+>>>>> My aim is to make the next architecture that gets added to GRUB for
+>>>>> EFI boot 100% generic.
+>>>>>
+>>>>>> Using an UEFI variable for passing the initrd device path would be =
+a
+>>>>>> leaner solution on the bootloader side than requiring an extra
+>>>>>> EFI_LOAD_FILE2_PROTOCOL implementation.
+>>>>>>
+>>>>>
+>>>>> This would also require kernel changes, since we don't currently loa=
+d
+>>>>> initrds from arbitrary device paths. The EFI_FILE_PROTOCOL is much
+>>>>> more complicated than needed, and it doesn't work well with mixed
+>>>>> mode. It also requires GRUB to expose the filesystem it loads the
+>>>>> initrd from via EFI protocols, which is currently unnecessary and
+>>>>> therefore not implemented.
+>>>>
+>>>> This means you move the complexity of EFI_FILE_PROTOCOL from Linux to=
+ GRUB.
+>>>>
+>>>
+>>> No. I am not interested in EFI_FILE_PROTOCOL, only in LoadFile2, which
+>>> is a single method that needs to be implemented.
+>>
+>> I said you move complexity because GRUB will need to use the
+>> EFI_FILE_PROTOCOL to do the job that you do not want to do in Linux.
+>>
+>>>
+>>>> I would not have a problem if this would only touch GRUB. But if list=
+en
+>>>> to Ilias we are replacing one implementation in Linux by one in GRUB =
+and
+>>>> one in U-Boot and one in EDK2 and one in any other firmware.
+>>>>
+>>>
+>>> If u-boot will be used to boot RISC-V in EFI mode without GRUB, then I
+>>> expect that we will need an implementation of this in u-boot.
+>>
+>> What sets RISC-V apart? GRUB for RISC-V is available.
+  >>
 >
-> On 02/06/20 15:03, Ard Biesheuvel wrote:
-> > There are currently two ways to specify the initrd to be passed to the
-> > Linux kernel when booting via the EFI stub:
-> > - it can be passed as a initrd= command line option when doing a pure PE
-> >   boot (as opposed to the EFI handover protocol that exists for x86)
-> > - otherwise, the bootloader or firmware can load the initrd into memory,
-> >   and pass the address and size via the bootparams struct (x86) or
-> >   device tree (ARM)
-> >
-> > In the first case, we are limited to loading from the same file system
-> > that the kernel was loaded from, and it is also problematic in a trusted
-> > boot context, given that we cannot easily protect the command line from
-> > tampering without either adding complicated white/blacklisting of boot
-> > arguments or locking down the command line altogether.
-> >
-> > In the second case, we force the bootloader to duplicate knowledge about
-> > the boot protocol which is already encoded in the stub, and which may be
-> > subject to change over time, e.g., bootparams struct definitions, memory
-> > allocation/alignment requirements for the placement of the initrd etc etc.
-> > In the ARM case, it also requires the bootloader to modify the hardware
-> > description provided by the firmware, as it is passed in the same file.
-> > On systems where the initrd is measured after loading, it creates a time
-> > window where the initrd contents might be manipulated in memory before
-> > handing over to the kernel.
-> >
-> > Address these concerns by adding support for loading the initrd into
-> > memory by invoking the EFI LoadFile2 protocol installed on a vendor
-> > GUIDed device path that specifically designates a Linux initrd.
-> > This addresses the above concerns, by putting the EFI stub in charge of
-> > placement in memory and of passing the base and size to the kernel proper
-> > (via whatever means it desires) while still leaving it up to the firmware
-> > or bootloader to obtain the file contents, potentially from other file
-> > systems than the one the kernel itself was loaded from. On platforms that
-> > implement measured boot, it permits the firmware to take the measurement
-> > right before the kernel actually consumes the contents.
-> >
-> > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> > ---
-> >  drivers/firmware/efi/libstub/arm-stub.c        | 16 +++--
-> >  drivers/firmware/efi/libstub/efi-stub-helper.c | 65 ++++++++++++++++++++
-> >  drivers/firmware/efi/libstub/efistub.h         | 12 ++++
-> >  drivers/firmware/efi/libstub/x86-stub.c        | 36 ++++++++++-
-> >  include/linux/efi.h                            |  1 +
-> >  5 files changed, 123 insertions(+), 7 deletions(-)
-> >
-> > diff --git a/drivers/firmware/efi/libstub/arm-stub.c b/drivers/firmware/efi/libstub/arm-stub.c
-> > index c7b091f50e55..1db943c1ba2b 100644
-> > --- a/drivers/firmware/efi/libstub/arm-stub.c
-> > +++ b/drivers/firmware/efi/libstub/arm-stub.c
-> > @@ -157,6 +157,7 @@ unsigned long efi_entry(void *handle, efi_system_table_t *sys_table_arg,
-> >       enum efi_secureboot_mode secure_boot;
-> >       struct screen_info *si;
-> >       efi_properties_table_t *prop_tbl;
-> > +     unsigned long max_addr;
-> >
-> >       sys_table = sys_table_arg;
-> >
-> > @@ -255,11 +256,18 @@ unsigned long efi_entry(void *handle, efi_system_table_t *sys_table_arg,
-> >       if (!fdt_addr)
-> >               pr_efi("Generating empty DTB\n");
-> >
-> > -     status = efi_load_initrd(image, ULONG_MAX,
-> > -                              efi_get_max_initrd_addr(dram_base, *image_addr),
-> > -                              &initrd_addr, &initrd_size);
-> > +     max_addr = efi_get_max_initrd_addr(dram_base, *image_addr);
-> > +     status = efi_load_initrd_devpath(&initrd_addr, &initrd_size, max_addr);
-> > +     if (status == EFI_SUCCESS)
-> > +             pr_efi("Loaded initrd from LINUX_EFI_INITRD_MEDIA_GUID device path\n");
-> > +     else if (status == EFI_NOT_FOUND) {
-> > +             status = efi_load_initrd(image, ULONG_MAX, max_addr,
-> > +                                      &initrd_addr, &initrd_size);
+> RISC-V EFI boot is not supported yet in upstream Linux.
+
+It is currently prepared Atish Patra of WDC.
+
 >
-> - So this seems to be fallback#1, for ARM, which looks good.
+>>>
+>>>>>
+>>>>> Also, using an EFI variable defeats the purpose. The whole point of
+>>>>> this is making it more likely that the kernel loaded the initrd that
+>>>>> the bootloader or firmware intended it to load, and having a piece o=
+f
+>>>>> simple [signed] code that implements this is the easiest way to
+>>>>> achieve that.
+>>>>
+>>>> At least on my Debian system it is the operating system creating init=
+rd
+>>>> and defining which initrd matches which kernel. GRUB simply assumes t=
+hat
+>>>> files ending on the same version number match. Therefore I would say
+>>>> Linux hopes that GRUB loads what Linux intended.
+>>>>
+>>>> The chain of trust would not be broken if the kernel were responsible
+>>>> for loading the initrd and for checking if it matches the kernel. Lin=
+ux
+>>>> already does this for the kernel modules in initrd.
+>>>>
+>>>
+>>> We can still sign the initrd and Linux can verify the signature. What
+>>> I am after is an interface that does not require the initrd to
+>>> originate from a EFI file system protocol, and which doesn't require
+>>> the loaded initrd to sit in memory for an unspecified amount of time
+>>> and its information passed via DT properties or bootparams structs.
+>>>
+>>> So invoking EFI_FILE_PROTOCOL directly is not going to work,
+>>> regardless of whether we get the devicepath from the command line or
+>>> from a EFI variable.
+>>
+>> What do you mean by "is not going to work"?
+>>
+>> With the device path you can find the handle implementing the
+>> EFI_SIMPLE_FIL_SYSTEM_PROTOCOL.
+>>
+>>>
+>>>>>
+>>>>> For u-boot, it should be trivial to implement a simple LoadFile2
+>>>>> protocol wrapper around EFI_FILE_PROTOCOL that can be installed on a
+>>>>> handle that also carries EFI_FILE_PROTOCOL.
+>>>>>
+>>>>
+>>>> A U-Boot implementation of the EFI_LOAD_FILE2_PROTOCOL would need a
+>>>> device path variable to find the block device and to open the
+>>>> EFI_SIMPLE_FILE_SYSTEM_PROTOCOL before accessing the file.
+>>>>
+>>>> Linux would not be needing more lines and we would not repeat the sam=
+e
+>>>> code in GRUB, U-Boot, EDK2, etc.
+>>>>
+>>>> As said Linux updates the initrd often. If that file is not signed by
+>>>> Linux in a well defined way, do not expect any security at all.
+>>>>
+>>>
+>>> It is not only about security. The primary goal is to remove the need
+>>> for arch specific knowledge in the firmware about DT, bootparams and
+>>> initrd allocation policies without being forced to load the initrd
+>>> from a filesystem that is exposed via a EFI protocol.
+>>
+>> Where are device-trees touched by this patch?
+>>
+>> When booting via UEFI there is no need for knowledge of initrd
+>> allocation policies in U-Boot because up to now Linux or GRUB or iPXE
+>> load initrd.
+>>
+>> Furthermore I need no knowledge of bootparams in U-Boot once we properl=
+y
+>> we support UEFI variables at runtime because grub-update will pass the
+>> command line in one of the Bootxxxx UEFI variables.
+>>
+>> But most importantly I do not have to implement anything Linux specific
+>> in U-Boot for booting via UEFI up to now.
+>>
 >
-> - Are you sure you only want to fall back to the old method on
-> EFI_NOT_FOUND? Wouldn't other return values from
-> efi_load_initrd_devpath() justify that too?
+> Adding Linux specific stuff to u-boot is arguably more appropriate
+> than adding architecture specific stuff to EFI loaders that could
+> otherwise be entirely generic.
 >
-> ... After checking the boot services called in
-> efi_load_initrd_devpath(), this idea seems reasonable, but then I'd
-> suggest documenting the significance of returning EFI_NOT_FOUND near the
-> efi_load_initrd_devpath() function declaration, in "efistub.h".
+> ...
+>>
+>> Your patch claims to fend off a specific threat scenario: A user puts a=
+n
+>> untrusted initrd on the disk and references it in the Linux command lin=
+e.
+>>
+>> If he is able to do so with your current bootloader (signed or not
+>> signed), he most probably will also be able to delete a good initrd fro=
+m
+>> the filesystem and thus force your code into the unsafe path.
+>>
+>> That is why I say that with the current fallback logic this patch
+>> achieves no increase in security. Of cause you could remove the fallbac=
+k
+>> logic. But in this case your Linux will not boot with any legacy
+>> bootloader or firmware.
+>>
+>
+> If there is a better way to expose the initrd that
+> a) does not require the initrd to reside on a file system that is
+> accessible via EFI protocols, and
+> b) does not require the loader to know about arch specific policies
+> regarding the placement of the initrd in memory, and
+> c) does not leave a time window between the time that the initrd is
+> loaded/verified/measured by the firmware and the time that the kernel
+> gets handed the buffer
+>
+> then I am happy to discuss it. This proposal is the best I could come
+> up with to achieve the above.
 >
 
-Good point.
+Hello Ard,
 
-> > +             if (status == EFI_SUCCESS)
-> > +                     pr_efi("Loaded initrd from command line option\n");
-> > +     }
-> >       if (status != EFI_SUCCESS)
-> > -             pr_efi_err("Failed initrd from command line!\n");
-> > +             pr_efi_err("Failed to load initrd!\n");
-> >
-> >       efi_random_get_seed();
-> >
-> > diff --git a/drivers/firmware/efi/libstub/efi-stub-helper.c b/drivers/firmware/efi/libstub/efi-stub-helper.c
-> > index 8e60a39df3c5..eaf45ea749b3 100644
-> > --- a/drivers/firmware/efi/libstub/efi-stub-helper.c
-> > +++ b/drivers/firmware/efi/libstub/efi-stub-helper.c
-> > @@ -323,3 +323,68 @@ void efi_char16_printk(efi_char16_t *str)
-> >       efi_call_proto(efi_table_attr(efi_system_table(), con_out),
-> >                      output_string, str);
-> >  }
-> > +
-> > +static const struct {
-> > +     struct efi_vendor_dev_path      vendor;
-> > +     struct efi_generic_dev_path     end;
-> > +} __packed initrd_devpath = {
-> > +     {
-> > +             EFI_DEV_MEDIA,
-> > +             EFI_DEV_MEDIA_VENDOR,
-> > +             sizeof(struct efi_vendor_dev_path),
-> > +             LINUX_EFI_INITRD_MEDIA_GUID
-> > +     }, {
-> > +             EFI_DEV_END_PATH,
-> > +             EFI_DEV_END_ENTIRE,
-> > +             sizeof(struct efi_generic_dev_path)
-> > +     }
-> > +};
-> > +
-> > +efi_status_t efi_load_initrd_devpath(unsigned long *load_addr,
-> > +                                  unsigned long *load_size,
-> > +                                  unsigned long max)
-> > +{
-> > +     efi_guid_t lf2_proto_guid = EFI_LOAD_FILE2_PROTOCOL_GUID;
-> > +     efi_device_path_protocol_t *dp;
-> > +     efi_load_file2_protocol_t *lf2;
-> > +     unsigned long initrd_addr;
-> > +     unsigned long initrd_size;
-> > +     efi_handle_t handle;
-> > +     efi_status_t status;
-> > +
-> > +     if (!load_addr || !load_size)
-> > +             return EFI_INVALID_PARAMETER;
-> > +
-> > +     dp = (efi_device_path_protocol_t *)&initrd_devpath;
-> > +     status = efi_bs_call(locate_device_path, &lf2_proto_guid, &dp, &handle);
-> > +     if (status != EFI_SUCCESS)
-> > +             return status;
-> > +
-> > +     status = efi_bs_call(handle_protocol, handle, &lf2_proto_guid,
-> > +                          (void **)&lf2);
-> > +     if (status != EFI_SUCCESS)
-> > +             return status;
-> > +
-> > +     initrd_size = 0;
-> > +     status = efi_call_proto(lf2, load_file,
-> > +                             (efi_device_path_protocol_t *)&initrd_devpath,
-> > +                             false, &initrd_size, NULL);
->
-> The second argument to EFI_LOAD_FILE2_PROTOCOL.LoadFile() is "FilePath",
-> specified as "The device specific path of the file to load". This means
-> it is supposed to be a (possibly empty) sequence of FILEPATH_DEVICE_PATH
-> nodes, terminated by and "End Entire Device Path" node. See
->
-> - 10.3.1 Generic Device Path Structures
-> - 10.3.5.4 File Path Media Device Path
->
-> in UEFI-2.8.
->
-> And "initrd_devpath" is not a device path like that; instead it's the
-> VenMedia device path that's installed on the handle that also carries
-> our LoadFile2 instance.
->
+I think part of our different views is that we are thinking about two
+different use cases which both have their relevance:
 
-OK, so you are saying this could be used to disambiguate which of
-several files you may want to load from the initrd GUIDed device path?
+If I understand you correctly, you are thinking about an embedded device
+where the kernel and the initrd is essentially part of the firmware
+provided by the device.
 
-> Now, I do see that this all theoretical here, as we don't expect the
-> LoadFile2 instance that we've found via our special
-> LINUX_EFI_INITRD_MEDIA_GUID VenMedia devpath to do *any* device-specific
-> filename / pathname parsing.
->
-> But in that case (i.e., given that the FilePath argument is totally
-> irrelevant), I think it's much clearer if we simply pass an empty device
-> path -- one that consists of a single "End Entire Device Path" node.
->
-> I've checked, and your ArmVirtQemu patch ignores the FilePath argument
-> too -- justifiedly so. I just think it's better to pass in a well-formed
-> device path, rather than NULL. Because, the FilePath parameter is not
-> marked OPTIONAL in the spec.
->
+I am thinking of a system running a standard Linux distribution like
+Debian where the initrd is generated by the operating system
 
-One thing that occurred to me is that we have to decide whether we
-want to support the '10.3.5.8 Relative Offset Range' device path node
-for this file, so that you could potentially load subranges of the
-file. I don't see a use case for it right now, though.
+In both use cases verifying the initrd is of importance.
 
-But for my understanding, would the FilePath passed to LoadFile2 be
-'Offset(...)+EndEntire' in that case? Or should it include the GUID
-device path node as well?
+Now concerning the requirements:
 
-> > +     if (status != EFI_BUFFER_TOO_SMALL)
-> > +             return EFI_LOAD_ERROR;
-> > +
-> > +     status = efi_allocate_pages(initrd_size, &initrd_addr, max);
-> > +     if (status != EFI_SUCCESS)
-> > +             return status;
-> > +
-> > +     status = efi_call_proto(lf2, load_file,
-> > +                             (efi_device_path_protocol_t *)&initrd_devpath,
-> > +                             false, &initrd_size, (void *)initrd_addr);
->
-> Same here.
->
-> > +     if (status != EFI_SUCCESS) {
-> > +             efi_free(initrd_size, initrd_addr);
-> > +             return status;
-> > +     }
-> > +
-> > +     *load_addr = initrd_addr;
-> > +     *load_size = initrd_size;
-> > +     return EFI_SUCCESS;
-> > +}
-> > diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
-> > index 99e93fd76ec5..fbf9f9442eed 100644
-> > --- a/drivers/firmware/efi/libstub/efistub.h
-> > +++ b/drivers/firmware/efi/libstub/efistub.h
-> > @@ -566,6 +566,14 @@ union efi_load_file_protocol {
-> >       } mixed_mode;
-> >  };
-> >
-> > +struct efi_vendor_dev_path {
-> > +     u8              type;
-> > +     u8              sub_type;
-> > +     u16             length;
-> > +     efi_guid_t      vendorguid;
-> > +     u8              vendordata[];
-> > +} __packed;
-> > +
-> >  void efi_pci_disable_bridge_busmaster(void);
-> >
-> >  typedef efi_status_t (*efi_exit_boot_map_processing)(
-> > @@ -651,4 +659,8 @@ efi_status_t efi_load_initrd(efi_loaded_image_t *image,
-> >                            unsigned long *load_addr,
-> >                            unsigned long *load_size);
-> >
-> > +efi_status_t efi_load_initrd_devpath(unsigned long *load_addr,
-> > +                                  unsigned long *load_size,
-> > +                                  unsigned long max);
-> > +
-> >  #endif
-> > diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
-> > index f3e2ff31b624..7f38f95676dd 100644
-> > --- a/drivers/firmware/efi/libstub/x86-stub.c
-> > +++ b/drivers/firmware/efi/libstub/x86-stub.c
-> > @@ -419,9 +419,20 @@ efi_status_t __efiapi efi_pe_entry(efi_handle_t handle,
-> >       if (status != EFI_SUCCESS)
-> >               goto fail2;
-> >
-> > -     status = efi_load_initrd(image, hdr->initrd_addr_max,
-> > -                              above4g ? ULONG_MAX : hdr->initrd_addr_max,
-> > -                              &ramdisk_addr, &ramdisk_size);
-> > +     /*
-> > +      * The initrd loaded from the Linux initrd vendor device
-> > +      * path should take precedence, as we don't want the
-> > +      * [unverified] command line to override the initrd
-> > +      * supplied by the [potentially verified] firmware.
-> > +      */
-> > +     status = efi_load_initrd_devpath(&ramdisk_addr, &ramdisk_size,
-> > +                                      above4g ? ULONG_MAX
-> > +                                              : hdr->initrd_addr_max);
-> > +     if (status == EFI_NOT_FOUND)
-> > +             status = efi_load_initrd(image, hdr->initrd_addr_max,
-> > +                                      above4g ? ULONG_MAX
-> > +                                              : hdr->initrd_addr_max,
-> > +                                      &ramdisk_addr, &ramdisk_size);
->
-> Fallback#2, for x86, also looks good.
->
-> >       if (status != EFI_SUCCESS)
-> >               goto fail2;
-> >       hdr->ramdisk_image = ramdisk_addr & 0xffffffff;
-> > @@ -732,6 +743,25 @@ struct boot_params *efi_main(efi_handle_t handle,
-> >                        ((u64)boot_params->ext_cmd_line_ptr << 32));
-> >       efi_parse_options((char *)cmdline_paddr);
-> >
-> > +     if (!hdr->ramdisk_size && !boot_params->ext_ramdisk_size) {
-> > +             unsigned long max = hdr->initrd_addr_max;
-> > +             unsigned long addr, size;
-> > +
-> > +             if (hdr->xloadflags & XLF_CAN_BE_LOADED_ABOVE_4G)
-> > +                     max = ULONG_MAX;
-> > +
-> > +             status = efi_load_initrd_devpath(&addr, &size, max);
-> > +             if (status == EFI_SUCCESS) {
-> > +                     hdr->ramdisk_image              = (u32)addr;
-> > +                     hdr->ramdisk_size               = (u32)size;
-> > +                     boot_params->ext_ramdisk_image  = (u64)addr >> 32;
-> > +                     boot_params->ext_ramdisk_size   = (u64)size >> 32;
-> > +             } else if (status != EFI_NOT_FOUND) {
-> > +                     efi_printk("efi_load_initrd_devpath() failed!\n");
-> > +                     goto fail;
-> > +             }
-> > +     }
-> > +
->
-> No fallback here; this is not a replacement for efi_load_initrd(), but a
-> brand new call. Why? (It's probably justified, I just don't know enough
-> about the kernel.)
->
+a) In U-Boot all file systems on block devices can be made accessible
+via EFI protocols. Are you thinking about initrds that are not in a file
+system?
 
-Yes, it is. efi_main() is called after efi_pe_entry() in the native PE
-boot case, and it is the only one being called when using the EFI
-handover protocol.
+b) My suggestion to use a UEFI variable for communicating the device
+path would not require any arch specific policies either.
 
-So the expected new flow would be for efi_pe_entry() to run first and
-load the initrd, in which case this code would not run. However, it
-would be better to still support the EFI handover protocol when using
-this method of loading the initrd, not only for convenience, but also
-because we cannot call efi_pe_entry() when running in mixed mode.
+c) I proposed that the kernel does the verification. So there would be
+equally nothing in between loading the file and its verification. Yet
+responsibilities would be changed.
 
-Interestingly, LoadImage() can be used to load 64-bit images on 32-bit
-EDK2 firmware today (and I have to check whether that holds for mixed
-mode Mac hardware as well), only StartImage() will fail. It all
-depends on whether we still care about mixed mode in the secure boot
-context going forward, but if we do, we may be able to use LoadImage()
-but then jump to this entry point (via startup_32 in head_32.S)
+But possibly I missed some requirements you have in mind that I should
+consider.
 
-So the bottom line is that we have to keep this entry point alive for
-the time being, but there is no reason to add initrd loading to it
-using the old method, since we can't support it very well in mixed
-mode (due to the prototypes of the protocols) and we don't support
-that now anyway.
+Best regards
 
-> >       /*
-> >        * If the boot loader gave us a value for secure_boot then we use that,
-> >        * otherwise we ask the BIOS.
-> > diff --git a/include/linux/efi.h b/include/linux/efi.h
-> > index 9ccf313fe9de..75c83c322c40 100644
-> > --- a/include/linux/efi.h
-> > +++ b/include/linux/efi.h
-> > @@ -353,6 +353,7 @@ void efi_native_runtime_setup(void);
-> >  #define LINUX_EFI_TPM_EVENT_LOG_GUID         EFI_GUID(0xb7799cb0, 0xeca2, 0x4943,  0x96, 0x67, 0x1f, 0xae, 0x07, 0xb7, 0x47, 0xfa)
-> >  #define LINUX_EFI_TPM_FINAL_LOG_GUID         EFI_GUID(0x1e2ed096, 0x30e2, 0x4254,  0xbd, 0x89, 0x86, 0x3b, 0xbe, 0xf8, 0x23, 0x25)
-> >  #define LINUX_EFI_MEMRESERVE_TABLE_GUID              EFI_GUID(0x888eb0c6, 0x8ede, 0x4ff5,  0xa8, 0xf0, 0x9a, 0xee, 0x5c, 0xb9, 0x77, 0xc2)
-> > +#define LINUX_EFI_INITRD_MEDIA_GUID          EFI_GUID(0x5568e427, 0x68fc, 0x4f3d,  0xac, 0x74, 0xca, 0x55, 0x52, 0x31, 0xcc, 0x68)
-> >
-> >  /* OEM GUIDs */
-> >  #define DELLEMC_EFI_RCI2_TABLE_GUID          EFI_GUID(0x2d9f28a2, 0xa886, 0x456a,  0x97, 0xa8, 0xf1, 0x1e, 0xf2, 0x4f, 0xf4, 0x55)
-> >
->
-> Thanks,
-> Laszlo
->
+Heinrich
+
