@@ -2,224 +2,142 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 066BF155387
-	for <lists+linux-efi@lfdr.de>; Fri,  7 Feb 2020 09:12:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 74A4D15544D
+	for <lists+linux-efi@lfdr.de>; Fri,  7 Feb 2020 10:09:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726586AbgBGIMR (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 7 Feb 2020 03:12:17 -0500
-Received: from mail-wr1-f68.google.com ([209.85.221.68]:46312 "EHLO
-        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726130AbgBGIMR (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 7 Feb 2020 03:12:17 -0500
-Received: by mail-wr1-f68.google.com with SMTP id z7so1488208wrl.13
-        for <linux-efi@vger.kernel.org>; Fri, 07 Feb 2020 00:12:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=RhtSsZPQxEIGMtQmL13uTWrwtYaQcv2uAFFx/BqaRZE=;
-        b=Iq1EpKAgpS6y9E0ptLbYm/g5LXKJJISmjKNvhmES0wbDbMH5zLVr9Wh4x5FWJE09JF
-         eMVL2Ze42BWMbOXgOt0vYKBaI1CAKfOHstfXcofCYFdSKDM+Huu7ep2N9gssiznpmfqz
-         86eXvCseSzg0VlVqtZL3ykwKnorvqhP38dksJgiGzDT33yuTzp3uXDBOiIScsII4PZIK
-         fqK9KbvZGIe+FAliWZvoS8gCZ+TvQYTVXy5IHjVF2DiOBONhOc6ySsry9Mcvxy2AI5+6
-         iV11xdMEgismz1DBYnns5kWyMjbgo8QQ8buKT7+4zSKiQa7cB9iyPRV2mgi5GQPm2z3Q
-         +Q3Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=RhtSsZPQxEIGMtQmL13uTWrwtYaQcv2uAFFx/BqaRZE=;
-        b=W1bXAMKfQ8nZSX97zquTQ8P0Cg6UWbgGi7V1T2wMhWNTkESDWBgbD1ATK6I64hlWN9
-         aaV5b11jjoglzFWf7kioiPhaeBjOMjpgbACfYryviAlC1ohBayAHnvmOzfp92MPbCEW+
-         lFK6LdezmzbFFdTL1dwGb5BJirxTgFxOWxsWHkZsFTq6GibChWnK8IL9nJOmtTFgZTzX
-         F+kltmHj0DYWovWxsbyTz5tKylAN7aWLl+4CSD1hD1bFCKukWKM+NhkR2kvIwiTOE9ey
-         CgKas2U8whhqgtq77yFBrsRbCp+/M5vRNeN8yq+L9/8B2x0R9jO/oJokB92esl8A1ooM
-         H4yQ==
-X-Gm-Message-State: APjAAAUvs4/braR9uqKyHbzSZkA52CEhdZEKwisFtxoO2wg9N2BiseUF
-        DLFS/3JxMPRSBzK54IA8HZI/m9R0MDyJUVPo8vGp2ti07j6F/Q==
-X-Google-Smtp-Source: APXvYqx8cIS8WVQ0f++9dJ/4i6q+U/hhZOXte0NdMOcfogNNO4rkYb8C/RivDqFlgOSQadNtNBqpZbm4PlM3AFyJW1I=
-X-Received: by 2002:adf:8564:: with SMTP id 91mr3350267wrh.252.1581063133977;
- Fri, 07 Feb 2020 00:12:13 -0800 (PST)
+        id S1726451AbgBGJJz (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 7 Feb 2020 04:09:55 -0500
+Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:35079 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726417AbgBGJJz (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 7 Feb 2020 04:09:55 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1581066594;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=QuLB0y7RG5We5q4Lc/bQBCJROUHui365GYirfx1BIiQ=;
+        b=O7vQ+2HHtq6Wg++CjYSR1Ejrl81gmLgByYwDDPaOIX/pVYvqU6kO1UwcW73fVMGc78bQJW
+        um4ZkpR4slyOjWtLn0diuuI5gNm1KhDWz7ur+3VPaqpTR66NwCK5aVDoL6Sam5T/KmE6s1
+        pmm6hSPuuQYwsycou8tIfNxM35pi3hE=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-16-Z5g9jiFKM9Wm4XOVaSUTtQ-1; Fri, 07 Feb 2020 04:09:44 -0500
+X-MC-Unique: Z5g9jiFKM9Wm4XOVaSUTtQ-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 3A1BD8010F6;
+        Fri,  7 Feb 2020 09:09:43 +0000 (UTC)
+Received: from lacos-laptop-7.usersys.redhat.com (ovpn-117-138.ams2.redhat.com [10.36.117.138])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id E24BF60BEC;
+        Fri,  7 Feb 2020 09:09:40 +0000 (UTC)
+Subject: Re: [PATCH 0/2] arch-agnostic initrd loading method for EFI systems
+To:     Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org
+Cc:     linux-arm-kernel@lists.infradead.org, leif@nuviainc.com,
+        pjones@redhat.com, mjg59@google.com, agraf@csgraf.de,
+        ilias.apalodimas@linaro.org, xypron.glpk@gmx.de,
+        daniel.kiper@oracle.com
+References: <20200206140352.6300-1-ardb@kernel.org>
+From:   Laszlo Ersek <lersek@redhat.com>
+Message-ID: <fa3b3103-e77d-571d-71a4-604fa48368e6@redhat.com>
+Date:   Fri, 7 Feb 2020 10:09:39 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
 MIME-Version: 1.0
-References: <20200206140352.6300-1-ardb@kernel.org> <20200206140352.6300-2-ardb@kernel.org>
- <a6d7fefb-2f02-86a3-66aa-c3c129a91fb1@gmx.de> <CAKv+Gu9Z24GeqrqKhPJN+aAu8crSKvT0ZBeFL=0ik=z2Sd1FmQ@mail.gmail.com>
- <b2535bc9-f9be-e250-4da1-bce0b67abb6f@gmx.de> <CAKv+Gu-X6DKhtbfVgRLPomkkKJ7=4vRs-crLL0p7E7043J4H0g@mail.gmail.com>
- <081d152a-fa9b-886a-565d-b244dea08cd5@gmx.de>
-In-Reply-To: <081d152a-fa9b-886a-565d-b244dea08cd5@gmx.de>
-From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Date:   Fri, 7 Feb 2020 08:12:02 +0000
-Message-ID: <CAKv+Gu-f9O4eon_E7=OUu_tNwybi7u6bF2zMowPHbA-MhiTjNg@mail.gmail.com>
-Subject: Re: [PATCH 1/2] efi/libstub: add support for loading the initrd from
- a device path
-To:     Heinrich Schuchardt <xypron.glpk@gmx.de>
-Cc:     Ard Biesheuvel <ardb@kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        Laszlo Ersek <lersek@redhat.com>,
-        Leif Lindholm <leif@nuviainc.com>,
-        Peter Jones <pjones@redhat.com>,
-        Matthew Garrett <mjg59@google.com>,
-        Alexander Graf <agraf@csgraf.de>,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-        Daniel Kiper <daniel.kiper@oracle.com>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20200206140352.6300-1-ardb@kernel.org>
+Content-Type: text/plain; charset=windows-1252
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, 7 Feb 2020 at 00:58, Heinrich Schuchardt <xypron.glpk@gmx.de> wrote:
->
-> On 2/7/20 1:21 AM, Ard Biesheuvel wrote:
-> > On Fri, 7 Feb 2020 at 00:01, Heinrich Schuchardt <xypron.glpk@gmx.de> wrote:
-> >>
-> >> On 2/6/20 11:35 PM, Ard Biesheuvel wrote:
-> >>> On Thu, 6 Feb 2020 at 18:26, Heinrich Schuchardt <xypron.glpk@gmx.de> wrote:
-...
-> >>>> Please, indicate which software you expect to expose the initrd related
-> >>>> EFI_LOAD_FILE2_PROTOCOL.
-> >>>>
-> >>>
-> >>> The primary use case is GRUB and other intermediate loaders, since it
-> >>> would remove any need for these components to know any such details.
-> >>> My aim is to make the next architecture that gets added to GRUB for
-> >>> EFI boot 100% generic.
-> >>>
-> >>>> Using an UEFI variable for passing the initrd device path would be a
-> >>>> leaner solution on the bootloader side than requiring an extra
-> >>>> EFI_LOAD_FILE2_PROTOCOL implementation.
-> >>>>
-> >>>
-> >>> This would also require kernel changes, since we don't currently load
-> >>> initrds from arbitrary device paths. The EFI_FILE_PROTOCOL is much
-> >>> more complicated than needed, and it doesn't work well with mixed
-> >>> mode. It also requires GRUB to expose the filesystem it loads the
-> >>> initrd from via EFI protocols, which is currently unnecessary and
-> >>> therefore not implemented.
-> >>
-> >> This means you move the complexity of EFI_FILE_PROTOCOL from Linux to GRUB.
-> >>
-> >
-> > No. I am not interested in EFI_FILE_PROTOCOL, only in LoadFile2, which
-> > is a single method that needs to be implemented.
->
-> I said you move complexity because GRUB will need to use the
-> EFI_FILE_PROTOCOL to do the job that you do not want to do in Linux.
->
-> >
-> >> I would not have a problem if this would only touch GRUB. But if listen
-> >> to Ilias we are replacing one implementation in Linux by one in GRUB and
-> >> one in U-Boot and one in EDK2 and one in any other firmware.
-> >>
-> >
-> > If u-boot will be used to boot RISC-V in EFI mode without GRUB, then I
-> > expect that we will need an implementation of this in u-boot.
->
-> What sets RISC-V apart? GRUB for RISC-V is available.
->
+On 02/06/20 15:03, Ard Biesheuvel wrote:
+> This series introduces an arch agnostic way of loading the initrd into
+> memory from the EFI stub. This addresses a number of shortcomings that
+> affect the current implementations that exist across architectures:
+> 
+> - The initrd=<file> command line option can only load files that reside
+>   on the same file system that the kernel itself was loaded from, which
+>   requires the bootloader or firmware to expose that file system via the
+>   appropriate EFI protocol, which is not always feasible. From the kernel
+>   side, this protocol is problematic since it is incompatible with mixed
+>   mode on x86 (this is due to the fact that some of its methods have
+>   prototypes that are difficult to marshall)
+> 
+> - The approach that is ordinarily taken by GRUB is to load the initrd into
+>   memory, and pass it to the kernel proper via the bootparams structure or
+>   via the device tree. This requires the boot loader to have an understanding
+>   of those structures, which are not always set in stone, and of the policies
+>   around where the initrd may be loaded into memory. In the ARM case, it
+>   requires GRUB to modify the hardware description provided by the firmware,
+>   given that the initrd base and offset in memory are passed via the same
+>   data structure. It also creates a time window where the initrd data sits
+>   in memory, and can potentially be corrupted before the kernel is booted.
+> 
+> Considering that we will soon have new users of these interfaces (EFI for
+> kvmtool on ARM, RISC-V in u-boot, etc), it makes sense to add a generic
+> interface now, before having another wave of bespoke arch specific code
+> coming in.
+> 
+> Another aspect to take into account is that support for UEFI secure boot
+> and measured boot is being taken into the upstream, and being able to
+> rely on the PE entry point for booting any architecture makes the GRUB
+> vs shim story much cleaner, as we should be able to rely on LoadImage
+> and StartImage on all architectures, while retaining the ability to
+> load initrds from anywhere.
+> 
+> Note that these patches depend on a fair amount of cleanup work that I
+> am targetting for v5.7. Branch can be found at:
+> https://git.kernel.org/pub/scm/linux/kernel/git/ardb/linux.git/log/?h=efistub-unification2
+> 
+> An implementation for ArmVirtQemu (OVMF for ARM aka AAVMF) can be found
+> at https://github.com/ardbiesheuvel/edk2/commits/linux-efi-generic.
+> The change is for ARM only, but the exact same code could be used on x86.
 
-RISC-V EFI boot is not supported yet in upstream Linux.
+I like this ArmVirtQemu feature, but I think it should be implemented as
+an addition, rather than a replacement. Older kernels (older EFI stubs)
+will try to fetch the initrd from the same fs where grub loaded the
+kernel from (exactly as you describe in the blurb).
 
-> >
-> >>>
-> >>> Also, using an EFI variable defeats the purpose. The whole point of
-> >>> this is making it more likely that the kernel loaded the initrd that
-> >>> the bootloader or firmware intended it to load, and having a piece of
-> >>> simple [signed] code that implements this is the easiest way to
-> >>> achieve that.
-> >>
-> >> At least on my Debian system it is the operating system creating initrd
-> >> and defining which initrd matches which kernel. GRUB simply assumes that
-> >> files ending on the same version number match. Therefore I would say
-> >> Linux hopes that GRUB loads what Linux intended.
-> >>
-> >> The chain of trust would not be broken if the kernel were responsible
-> >> for loading the initrd and for checking if it matches the kernel. Linux
-> >> already does this for the kernel modules in initrd.
-> >>
-> >
-> > We can still sign the initrd and Linux can verify the signature. What
-> > I am after is an interface that does not require the initrd to
-> > originate from a EFI file system protocol, and which doesn't require
-> > the loaded initrd to sit in memory for an unspecified amount of time
-> > and its information passed via DT properties or bootparams structs.
-> >
-> > So invoking EFI_FILE_PROTOCOL directly is not going to work,
-> > regardless of whether we get the devicepath from the command line or
-> > from a EFI variable.
->
-> What do you mean by "is not going to work"?
->
-> With the device path you can find the handle implementing the
-> EFI_SIMPLE_FIL_SYSTEM_PROTOCOL.
->
-> >
-> >>>
-> >>> For u-boot, it should be trivial to implement a simple LoadFile2
-> >>> protocol wrapper around EFI_FILE_PROTOCOL that can be installed on a
-> >>> handle that also carries EFI_FILE_PROTOCOL.
-> >>>
-> >>
-> >> A U-Boot implementation of the EFI_LOAD_FILE2_PROTOCOL would need a
-> >> device path variable to find the block device and to open the
-> >> EFI_SIMPLE_FILE_SYSTEM_PROTOCOL before accessing the file.
-> >>
-> >> Linux would not be needing more lines and we would not repeat the same
-> >> code in GRUB, U-Boot, EDK2, etc.
-> >>
-> >> As said Linux updates the initrd often. If that file is not signed by
-> >> Linux in a well defined way, do not expect any security at all.
-> >>
-> >
-> > It is not only about security. The primary goal is to remove the need
-> > for arch specific knowledge in the firmware about DT, bootparams and
-> > initrd allocation policies without being forced to load the initrd
-> > from a filesystem that is exposed via a EFI protocol.
->
-> Where are device-trees touched by this patch?
->
-> When booting via UEFI there is no need for knowledge of initrd
-> allocation policies in U-Boot because up to now Linux or GRUB or iPXE
-> load initrd.
->
-> Furthermore I need no knowledge of bootparams in U-Boot once we properly
-> we support UEFI variables at runtime because grub-update will pass the
-> command line in one of the Bootxxxx UEFI variables.
->
-> But most importantly I do not have to implement anything Linux specific
-> in U-Boot for booting via UEFI up to now.
->
+For example, virt-install's "--location" option "can recognize certain
+distribution trees and fetches a bootable kernel/initrd pair to launch
+the install". It would be nice to keep that working for older distros.
 
-Adding Linux specific stuff to u-boot is arguably more appropriate
-than adding architecture specific stuff to EFI loaders that could
-otherwise be entirely generic.
+I think LoadFile[2] can co-exist with SimpleFs.
 
-...
->
-> Your patch claims to fend off a specific threat scenario: A user puts an
-> untrusted initrd on the disk and references it in the Linux command line.
->
-> If he is able to do so with your current bootloader (signed or not
-> signed), he most probably will also be able to delete a good initrd from
-> the filesystem and thus force your code into the unsafe path.
->
-> That is why I say that with the current fallback logic this patch
-> achieves no increase in security. Of cause you could remove the fallback
-> logic. But in this case your Linux will not boot with any legacy
-> bootloader or firmware.
->
+I also think that the "try SimpleFs first, fall back to LoadFile[2]
+second" requirement applies only to the UEFI boot manager, and not to
+the kernel's EFI stub. IOW in the new approach the kernel is free to
+ignore (abandon) the old approach for good.
 
-If there is a better way to expose the initrd that
-a) does not require the initrd to reside on a file system that is
-accessible via EFI protocols, and
-b) does not require the loader to know about arch specific policies
-regarding the placement of the initrd in memory, and
-c) does not leave a time window between the time that the initrd is
-loaded/verified/measured by the firmware and the time that the kernel
-gets handed the buffer
+Thanks
+Laszlo
 
-then I am happy to discuss it. This proposal is the best I could come
-up with to achieve the above.
+> 
+> Cc: lersek@redhat.com
+> Cc: leif@nuviainc.com
+> Cc: pjones@redhat.com
+> Cc: mjg59@google.com
+> Cc: agraf@csgraf.de
+> Cc: ilias.apalodimas@linaro.org
+> Cc: xypron.glpk@gmx.de 
+> Cc: daniel.kiper@oracle.com
+> 
+> Ard Biesheuvel (2):
+>   efi/libstub: add support for loading the initrd from a device path
+>   efi/libstub: take noinitrd cmdline argument into account for devpath
+>     initrd
+> 
+>  drivers/firmware/efi/libstub/arm-stub.c       | 21 ++++--
+>  .../firmware/efi/libstub/efi-stub-helper.c    | 74 +++++++++++++++++++
+>  drivers/firmware/efi/libstub/efistub.h        | 13 ++++
+>  drivers/firmware/efi/libstub/x86-stub.c       | 51 ++++++++++---
+>  include/linux/efi.h                           |  1 +
+>  5 files changed, 146 insertions(+), 14 deletions(-)
+> 
 
--- 
-Ard.
