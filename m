@@ -2,34 +2,34 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 67B0E157F58
-	for <lists+linux-efi@lfdr.de>; Mon, 10 Feb 2020 17:03:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6E6FE157F59
+	for <lists+linux-efi@lfdr.de>; Mon, 10 Feb 2020 17:03:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727773AbgBJQDD (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 10 Feb 2020 11:03:03 -0500
-Received: from mail.kernel.org ([198.145.29.99]:52592 "EHLO mail.kernel.org"
+        id S1727777AbgBJQDE (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 10 Feb 2020 11:03:04 -0500
+Received: from mail.kernel.org ([198.145.29.99]:52616 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727435AbgBJQDC (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Mon, 10 Feb 2020 11:03:02 -0500
+        id S1727435AbgBJQDE (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Mon, 10 Feb 2020 11:03:04 -0500
 Received: from e123331-lin.home (amontpellier-657-1-18-247.w109-210.abo.wanadoo.fr [109.210.65.247])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 6895120842;
-        Mon, 10 Feb 2020 16:03:00 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 1AC9120838;
+        Mon, 10 Feb 2020 16:03:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1581350581;
-        bh=R7q80aWwvv5LOMlcAX4Y2uWOdpki+5GAuOG1bTRQdxg=;
+        s=default; t=1581350583;
+        bh=zkwoke0yAqb3jIDDlG/htKw0g74UzTeYGcQYiHf99p4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BGJdxe+i+6TyO1fAEWnFN6JYegR+KHyCzV3yE/XKWINfJKbF6S9LBdEgGLG9SZz8m
-         Zd12oru6xSsCIgVi42NgmPiHJNESywktUqnmbMtfP0pt7a31TlMsVacDgbL1RE6hck
-         URXUxPi2FYllM1JrXfD0yBFntDJ5w7DFjPp5GBn0=
+        b=laInU8wwT9UCQ8B7juis/MS5+g+gyRHo2th4ZK+4D46hdE+22mHOwqjixGqmL9eZD
+         U0VRddnaZ2UygGn2IS4oQpmihTIYl1xP81y7SmrxYN6ocRrmH5DVFJzySXl1iciab7
+         n5eu6DnzzHQDloGm2dsphNfrXecG8EBH1KHNp4VM=
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-efi@vger.kernel.org
 Cc:     Ard Biesheuvel <ardb@kernel.org>, nivedita@alum.mit.edu,
         mingo@kernel.org, lukas@wunner.de, atish.patra@wdc.com
-Subject: [PATCH 02/19] efi/libstub/x86: Avoid overflowing code32_start on PE entry
-Date:   Mon, 10 Feb 2020 17:02:31 +0100
-Message-Id: <20200210160248.4889-3-ardb@kernel.org>
+Subject: [PATCH 03/19] efi/libstub: Use hidden visiblity for all source files
+Date:   Mon, 10 Feb 2020 17:02:32 +0100
+Message-Id: <20200210160248.4889-4-ardb@kernel.org>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200210160248.4889-1-ardb@kernel.org>
 References: <20200210160248.4889-1-ardb@kernel.org>
@@ -38,101 +38,85 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-When using the native PE entry point (as opposed to the EFI handover
-protocol entry point that is used more widely), we set code32_start,
-which is a 32-bit wide field, to the effective symbol address of
-startup_32, which could overflow given that the EFI loader may have
-located the running image anywhere in memory, and we haven't reached
-the point yet where we relocate ourselves.
+Instead of setting the visibility pragma for a small set of symbol
+declarations that could result in absolute references that we cannot
+support in the stub, declare hidden visibility for all code in the
+EFI stub, which is more robust and future proof.
 
-Since we relocate ourselves if code32_start != pref_address, this
-isn't likely to lead to problems in practice, given how unlikely
-it is that the truncated effective address of startup_32 happens
-to equal pref_address. But it is better to defer the assignment
-of code32_start to after the relocation, when it is guaranteed to
-fit.
-
-While at it, move the call to efi_relocate_kernel() to an earlier
-stage so it is more likely that our preferred offset in memory has
-not been occupied by other memory allocations done in the mean time.
+To ensure that the #pragma is taken into account before any other
+includes are processed, put it in a header file of its own and
+include it via the compiler command line using the -include option.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/x86/boot/compressed/eboot.c | 40 +++++++++-----------
- 1 file changed, 18 insertions(+), 22 deletions(-)
+ arch/arm64/include/asm/efi.h              | 3 ---
+ drivers/firmware/efi/libstub/Makefile     | 2 +-
+ drivers/firmware/efi/libstub/arm64-stub.c | 8 +-------
+ drivers/firmware/efi/libstub/hidden.h     | 6 ++++++
+ 4 files changed, 8 insertions(+), 11 deletions(-)
 
-diff --git a/arch/x86/boot/compressed/eboot.c b/arch/x86/boot/compressed/eboot.c
-index 4745a1ee7953..55637135b50c 100644
---- a/arch/x86/boot/compressed/eboot.c
-+++ b/arch/x86/boot/compressed/eboot.c
-@@ -439,8 +439,6 @@ efi_status_t __efiapi efi_pe_entry(efi_handle_t handle,
- 	boot_params->ext_ramdisk_image = (u64)ramdisk_addr >> 32;
- 	boot_params->ext_ramdisk_size  = (u64)ramdisk_size >> 32;
- 
--	hdr->code32_start = (u32)(unsigned long)startup_32;
--
- 	efi_stub_entry(handle, sys_table, boot_params);
- 	/* not reached */
- 
-@@ -707,6 +705,7 @@ struct boot_params *efi_main(efi_handle_t handle,
- 			     efi_system_table_t *sys_table_arg,
- 			     struct boot_params *boot_params)
+diff --git a/arch/arm64/include/asm/efi.h b/arch/arm64/include/asm/efi.h
+index 44531a69d32b..56ae87401a26 100644
+--- a/arch/arm64/include/asm/efi.h
++++ b/arch/arm64/include/asm/efi.h
+@@ -107,9 +107,6 @@ static inline void free_screen_info(struct screen_info *si)
  {
-+	unsigned long bzimage_addr = (unsigned long)startup_32;
- 	struct setup_header *hdr = &boot_params->hdr;
- 	efi_status_t status;
- 	unsigned long cmdline_paddr;
-@@ -717,6 +716,23 @@ struct boot_params *efi_main(efi_handle_t handle,
- 	if (sys_table->hdr.signature != EFI_SYSTEM_TABLE_SIGNATURE)
- 		goto fail;
+ }
  
-+	/*
-+	 * If the kernel isn't already loaded at the preferred load
-+	 * address, relocate it.
-+	 */
-+	if (bzimage_addr != hdr->pref_address) {
-+		status = efi_relocate_kernel(&bzimage_addr,
-+					     hdr->init_size, hdr->init_size,
-+					     hdr->pref_address,
-+					     hdr->kernel_alignment,
-+					     LOAD_PHYSICAL_ADDR);
-+		if (status != EFI_SUCCESS) {
-+			efi_printk("efi_relocate_kernel() failed!\n");
-+			goto fail;
-+		}
-+	}
-+	hdr->code32_start = (u32)bzimage_addr;
-+
- 	/*
- 	 * make_boot_params() may have been called before efi_main(), in which
- 	 * case this is the second time we parse the cmdline. This is ok,
-@@ -746,26 +762,6 @@ struct boot_params *efi_main(efi_handle_t handle,
- 
- 	setup_quirks(boot_params);
- 
--	/*
--	 * If the kernel isn't already loaded at the preferred load
--	 * address, relocate it.
--	 */
--	if (hdr->pref_address != hdr->code32_start) {
--		unsigned long bzimage_addr = hdr->code32_start;
--		status = efi_relocate_kernel(&bzimage_addr,
--					     hdr->init_size, hdr->init_size,
--					     hdr->pref_address,
--					     hdr->kernel_alignment,
--					     LOAD_PHYSICAL_ADDR);
--		if (status != EFI_SUCCESS) {
--			efi_printk("efi_relocate_kernel() failed!\n");
--			goto fail;
--		}
+-/* redeclare as 'hidden' so the compiler will generate relative references */
+-extern struct screen_info screen_info __attribute__((__visibility__("hidden")));
 -
--		hdr->pref_address = hdr->code32_start;
--		hdr->code32_start = bzimage_addr;
--	}
--
- 	status = exit_boot(boot_params, handle);
- 	if (status != EFI_SUCCESS) {
- 		efi_printk("exit_boot() failed!\n");
+ static inline void efifb_setup_from_dmi(struct screen_info *si, const char *opt)
+ {
+ }
+diff --git a/drivers/firmware/efi/libstub/Makefile b/drivers/firmware/efi/libstub/Makefile
+index f14b7636323a..4efdbd711e8e 100644
+--- a/drivers/firmware/efi/libstub/Makefile
++++ b/drivers/firmware/efi/libstub/Makefile
+@@ -25,7 +25,7 @@ cflags-$(CONFIG_ARM)		:= $(subst $(CC_FLAGS_FTRACE),,$(KBUILD_CFLAGS)) \
+ cflags-$(CONFIG_EFI_ARMSTUB)	+= -I$(srctree)/scripts/dtc/libfdt
+ 
+ KBUILD_CFLAGS			:= $(cflags-y) -DDISABLE_BRANCH_PROFILING \
+-				   -D__NO_FORTIFY \
++				   -include hidden.h -D__NO_FORTIFY \
+ 				   $(call cc-option,-ffreestanding) \
+ 				   $(call cc-option,-fno-stack-protector) \
+ 				   -D__DISABLE_EXPORTS
+diff --git a/drivers/firmware/efi/libstub/arm64-stub.c b/drivers/firmware/efi/libstub/arm64-stub.c
+index 2915b44132e6..719d03a64329 100644
+--- a/drivers/firmware/efi/libstub/arm64-stub.c
++++ b/drivers/firmware/efi/libstub/arm64-stub.c
+@@ -6,17 +6,11 @@
+  * Adapted from ARM version by Mark Salter <msalter@redhat.com>
+  */
+ 
+-/*
+- * To prevent the compiler from emitting GOT-indirected (and thus absolute)
+- * references to the section markers, override their visibility as 'hidden'
+- */
+-#pragma GCC visibility push(hidden)
+-#include <asm/sections.h>
+-#pragma GCC visibility pop
+ 
+ #include <linux/efi.h>
+ #include <asm/efi.h>
+ #include <asm/memory.h>
++#include <asm/sections.h>
+ #include <asm/sysreg.h>
+ 
+ #include "efistub.h"
+diff --git a/drivers/firmware/efi/libstub/hidden.h b/drivers/firmware/efi/libstub/hidden.h
+new file mode 100644
+index 000000000000..3493b041f419
+--- /dev/null
++++ b/drivers/firmware/efi/libstub/hidden.h
+@@ -0,0 +1,6 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*
++ * To prevent the compiler from emitting GOT-indirected (and thus absolute)
++ * references to any global symbols, override their visibility as 'hidden'
++ */
++#pragma GCC visibility push(hidden)
 -- 
 2.17.1
 
