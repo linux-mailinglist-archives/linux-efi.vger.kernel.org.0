@@ -2,171 +2,128 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 36FAE157D57
-	for <lists+linux-efi@lfdr.de>; Mon, 10 Feb 2020 15:26:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 984F4157F56
+	for <lists+linux-efi@lfdr.de>; Mon, 10 Feb 2020 17:03:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727813AbgBJO0M (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 10 Feb 2020 09:26:12 -0500
-Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:51989 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1727481AbgBJO0M (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 10 Feb 2020 09:26:12 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1581344770;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=/PJa8ZTV8s4bvQ8gnVuKZHg2Z4/GRqTI9Yenrr72BM0=;
-        b=SvS7DlrdpbruMVPMXYSVINrXyjbXSZgLrmcFiIwyUax4jAfeaIzd+9plG89U9JpFndT2OQ
-        yhRjqKc27BHo1eVjdyYN4KnmfwBAiiknH0QkQCo7jcYlXHAt4BO5HZn3AbwwPMpvlKZ0Hq
-        /VFdcovW6qU9x1p7mZ13u4C8CKTMuDc=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-274-BaAQooWwM82-Cyxf1tWiGQ-1; Mon, 10 Feb 2020 09:26:08 -0500
-X-MC-Unique: BaAQooWwM82-Cyxf1tWiGQ-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        id S1727767AbgBJQC7 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 10 Feb 2020 11:02:59 -0500
+Received: from mail.kernel.org ([198.145.29.99]:52530 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727435AbgBJQC7 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Mon, 10 Feb 2020 11:02:59 -0500
+Received: from e123331-lin.home (amontpellier-657-1-18-247.w109-210.abo.wanadoo.fr [109.210.65.247])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 1857E1005502;
-        Mon, 10 Feb 2020 14:26:06 +0000 (UTC)
-Received: from lacos-laptop-7.usersys.redhat.com (unknown [10.36.118.180])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 4C4EF1001281;
-        Mon, 10 Feb 2020 14:26:03 +0000 (UTC)
-Subject: Re: [PATCH 1/2] efi/libstub: add support for loading the initrd from
- a device path
-To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Cc:     Ard Biesheuvel <ardb@kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        Leif Lindholm <leif@nuviainc.com>,
-        Peter Jones <pjones@redhat.com>,
-        Matthew Garrett <mjg59@google.com>,
-        Alexander Graf <agraf@csgraf.de>,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-        Heinrich Schuchardt <xypron.glpk@gmx.de>,
-        Daniel Kiper <daniel.kiper@oracle.com>
-References: <20200206140352.6300-1-ardb@kernel.org>
- <20200206140352.6300-2-ardb@kernel.org>
- <43362e18-eddc-9903-0e63-9d3eebe70313@redhat.com>
- <CAKv+Gu89o4oJEJvJMuE68HM5NDgokQ0W-D7YQB6xOX2EbhYYBw@mail.gmail.com>
-From:   Laszlo Ersek <lersek@redhat.com>
-Message-ID: <edddcef9-6ed6-9b16-cce1-8e1c08b781a1@redhat.com>
-Date:   Mon, 10 Feb 2020 15:26:02 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
-MIME-Version: 1.0
-In-Reply-To: <CAKv+Gu89o4oJEJvJMuE68HM5NDgokQ0W-D7YQB6xOX2EbhYYBw@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
+        by mail.kernel.org (Postfix) with ESMTPSA id 0E3022082F;
+        Mon, 10 Feb 2020 16:02:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1581350578;
+        bh=Q4ndgPGMWmRLWhwc0INCHB3kBDVfVNkFjyF571z6DHg=;
+        h=From:To:Cc:Subject:Date:From;
+        b=jTnB2q8egq9DMO5NUj57xR5Pk6YyDT/7IOBYkOg0lIJP7yyZdHaKaJjY8T9AQAT2O
+         Osf7VUE4UOU7Ikhsvev3FsCI/ZylHSrwjXNZfggc08UpvU+Eb59E5z2kQBf/b636Mk
+         qIpSFWq0T/OauWdxL7Jdj3H05pJqoCjgZ6lxAwm8=
+From:   Ard Biesheuvel <ardb@kernel.org>
+To:     linux-efi@vger.kernel.org
+Cc:     Ard Biesheuvel <ardb@kernel.org>, nivedita@alum.mit.edu,
+        mingo@kernel.org, lukas@wunner.de, atish.patra@wdc.com
+Subject: [PATCH 00/19] EFI stub early spring cleaning part 2
+Date:   Mon, 10 Feb 2020 17:02:29 +0100
+Message-Id: <20200210160248.4889-1-ardb@kernel.org>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 02/07/20 13:36, Ard Biesheuvel wrote:
-> On Fri, 7 Feb 2020 at 09:48, Laszlo Ersek <lersek@redhat.com> wrote:
->> On 02/06/20 15:03, Ard Biesheuvel wrote:
+This series is a second pass over the EFI stub code to clean it up and
+prepare it for some future changes:
+- loading the initrd in a different way, which should remove the need for
+  bootloaders to have knowledge about the initrd allocation policies and
+  about how to pass the base and size to the kernel proper,
+- support for RISC-V will be arriving soon, which makes this a good time to
+  do some janitorial work to avoid RISC-V from inheriting legacy that only
+  exists for the benefit of other architectures.
 
->>> +efi_status_t efi_load_initrd_devpath(unsigned long *load_addr,
->>> +                                  unsigned long *load_size,
->>> +                                  unsigned long max)
->>> +{
->>> +     efi_guid_t lf2_proto_guid = EFI_LOAD_FILE2_PROTOCOL_GUID;
->>> +     efi_device_path_protocol_t *dp;
->>> +     efi_load_file2_protocol_t *lf2;
->>> +     unsigned long initrd_addr;
->>> +     unsigned long initrd_size;
->>> +     efi_handle_t handle;
->>> +     efi_status_t status;
->>> +
->>> +     if (!load_addr || !load_size)
->>> +             return EFI_INVALID_PARAMETER;
->>> +
->>> +     dp = (efi_device_path_protocol_t *)&initrd_devpath;
->>> +     status = efi_bs_call(locate_device_path, &lf2_proto_guid, &dp, &handle);
->>> +     if (status != EFI_SUCCESS)
->>> +             return status;
->>> +
->>> +     status = efi_bs_call(handle_protocol, handle, &lf2_proto_guid,
->>> +                          (void **)&lf2);
->>> +     if (status != EFI_SUCCESS)
->>> +             return status;
->>> +
->>> +     initrd_size = 0;
->>> +     status = efi_call_proto(lf2, load_file,
->>> +                             (efi_device_path_protocol_t *)&initrd_devpath,
->>> +                             false, &initrd_size, NULL);
->>
->> The second argument to EFI_LOAD_FILE2_PROTOCOL.LoadFile() is "FilePath",
->> specified as "The device specific path of the file to load". This means
->> it is supposed to be a (possibly empty) sequence of FILEPATH_DEVICE_PATH
->> nodes, terminated by and "End Entire Device Path" node. See
->>
->> - 10.3.1 Generic Device Path Structures
->> - 10.3.5.4 File Path Media Device Path
->>
->> in UEFI-2.8.
->>
->> And "initrd_devpath" is not a device path like that; instead it's the
->> VenMedia device path that's installed on the handle that also carries
->> our LoadFile2 instance.
->>
-> 
-> OK, so you are saying this could be used to disambiguate which of
-> several files you may want to load from the initrd GUIDed device path?
+First of all, code has been moved into separate source files where appropriate,
+so that we can benefit from the fact that the EFI stub is a true static library,
+and so only the objects that are needed to satisfy symbol dependencies are
+incorporated into the final build. We also move x86's eboot.c into libstub/
+so we can use the same cflags and make rules across the entire library.
+(#5, #7, #9, #12, #13, #14)
 
-Yes, exactly.
+Patches #6, #15 and #17 clean up the memory allocation, file I/O and command
+line parsing routines that are shared by all architectures, to remove open
+coded logic that is already implemented elsewhere, either in the firmware or
+in code that we can incorporate from the kernel proper.
 
->> Now, I do see that this all theoretical here, as we don't expect the
->> LoadFile2 instance that we've found via our special
->> LINUX_EFI_INITRD_MEDIA_GUID VenMedia devpath to do *any* device-specific
->> filename / pathname parsing.
->>
->> But in that case (i.e., given that the FilePath argument is totally
->> irrelevant), I think it's much clearer if we simply pass an empty device
->> path -- one that consists of a single "End Entire Device Path" node.
->>
->> I've checked, and your ArmVirtQemu patch ignores the FilePath argument
->> too -- justifiedly so. I just think it's better to pass in a well-formed
->> device path, rather than NULL. Because, the FilePath parameter is not
->> marked OPTIONAL in the spec.
->>
-> 
-> One thing that occurred to me is that we have to decide whether we
-> want to support the '10.3.5.8 Relative Offset Range' device path node
-> for this file, so that you could potentially load subranges of the
-> file. I don't see a use case for it right now, though.
+Patches #10, #11 and #16 deal with upper limits for memory allocations.
 
-Agreed, it doesn't seem necessary / justified.
+Patches #18 and #19 adds the plumbing to enable us to locate device paths and
+invoke the EFI LoadFile2 protocol.
 
-> But for my understanding, would the FilePath passed to LoadFile2 be
-> 'Offset(...)+EndEntire' in that case? Or should it include the GUID
-> device path node as well?
+The remaining patches are cleanups or minor bug fixes across the board.
 
-I see the only specified, concrete use case for the Offset() devpath
-node in "14.4.2.1 PCI Bus Driver Responsibilities". I think it doesn't
-apply at all to our use case.
+Note that this series applies onto Arvind's x86/boot cleanups [0]. Full
+branch can be found here [1]
 
-Also, according to "10.3.5.8 Relative Offset Range",
+Cc: nivedita@alum.mit.edu
+Cc: mingo@kernel.org
+Cc: lukas@wunner.de
+Cc: atish.patra@wdc.com
 
-    This device path node specifies a range of offsets relative to the
-    first byte available on the device.
+[0] https://lore.kernel.org/linux-efi/20200202171353.3736319-1-nivedita@alum.mit.edu/
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/ardb/linux.git/log/?h=efi-spring-cleaning-part2
 
-In that sense, it seems like a (mutually exclusive) alternative to
-FilePath. Given a device, one would specify *either* an offset range
-(which is relative to the start of the device, when the device is viewed
-as a range of bytes), *or* a FilePath (which is "relative" to the device
-when viewed as a store of named files, but still not as a full-blown
-random-access filesystem).
+Ard Biesheuvel (19):
+  efi/libstub/x86: Remove pointless zeroing of apm_bios_info
+  efi/libstub/x86: Avoid overflowing code32_start on PE entry
+  efi/libstub: Use hidden visiblity for all source files
+  efi/libstub/arm: Relax FDT alignment requirement
+  efi/libstub: Move memory map handling and allocation routines to mem.c
+  efi/libstub: Simplify efi_high_alloc() and rename to
+    efi_allocate_pages()
+  efi/libstub/x86: Incorporate eboot.c into libstub
+  efi/libstub: Use consistent type names for file I/O protocols
+  efi/libstub: Move stub specific declarations into efistub.h
+  efi/libstub/x86: Permit bootparams struct to be allocated above 4 GB
+  efi/libstub/x86: Permit cmdline data to be allocated above 4 GB
+  efi/libstub: Move efi_random_alloc() into separate source file
+  efi/libstub: Move get_dram_base() into arm-stub.c
+  efi/libstub: Move file I/O support code into separate file
+  efi/libstub: Rewrite file I/O routine
+  efi/libstub: Take soft and hard memory limits into account for initrd
+    loading
+  efi/libstub: Clean up command line parsing routine
+  efi/libstub: Expose LocateDevicePath boot service
+  efi/libstub: Make the LoadFile EFI protocol accessible
 
-In brief, Offset() doesn't seem to apply in connection with LoadFile2,
-at all. Certainly not in our particular use case, I'd suggest.
+ arch/arm64/include/asm/efi.h                  |  10 -
+ arch/x86/boot/compressed/Makefile             |   5 +-
+ arch/x86/boot/compressed/eboot.h              |  31 -
+ arch/x86/include/asm/efi.h                    |   9 +-
+ drivers/firmware/efi/libstub/Makefile         |   6 +-
+ drivers/firmware/efi/libstub/arm-stub.c       |  47 +-
+ drivers/firmware/efi/libstub/arm64-stub.c     |   8 +-
+ .../firmware/efi/libstub/efi-stub-helper.c    | 725 +-----------------
+ drivers/firmware/efi/libstub/efistub.h        | 586 +++++++++++++-
+ drivers/firmware/efi/libstub/fdt.c            |   7 +-
+ drivers/firmware/efi/libstub/file.c           | 258 +++++++
+ drivers/firmware/efi/libstub/hidden.h         |   6 +
+ drivers/firmware/efi/libstub/mem.c            | 253 ++++++
+ drivers/firmware/efi/libstub/random.c         | 114 ---
+ drivers/firmware/efi/libstub/randomalloc.c    | 124 +++
+ drivers/firmware/efi/libstub/string.c         |  63 ++
+ .../firmware/efi/libstub/x86-stub.c           |  79 +-
+ include/linux/efi.h                           | 516 +------------
+ 18 files changed, 1389 insertions(+), 1458 deletions(-)
+ delete mode 100644 arch/x86/boot/compressed/eboot.h
+ create mode 100644 drivers/firmware/efi/libstub/file.c
+ create mode 100644 drivers/firmware/efi/libstub/hidden.h
+ create mode 100644 drivers/firmware/efi/libstub/mem.c
+ create mode 100644 drivers/firmware/efi/libstub/randomalloc.c
+ rename arch/x86/boot/compressed/eboot.c => drivers/firmware/efi/libstub/x86-stub.c (94%)
 
-[...]
-
-Thanks!
-Laszlo
+-- 
+2.17.1
 
