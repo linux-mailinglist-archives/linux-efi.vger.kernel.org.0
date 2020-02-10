@@ -2,34 +2,34 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0089C157F5D
-	for <lists+linux-efi@lfdr.de>; Mon, 10 Feb 2020 17:03:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D7AA157F5E
+	for <lists+linux-efi@lfdr.de>; Mon, 10 Feb 2020 17:03:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727781AbgBJQDK (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 10 Feb 2020 11:03:10 -0500
-Received: from mail.kernel.org ([198.145.29.99]:52734 "EHLO mail.kernel.org"
+        id S1727782AbgBJQDN (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 10 Feb 2020 11:03:13 -0500
+Received: from mail.kernel.org ([198.145.29.99]:52754 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727435AbgBJQDK (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Mon, 10 Feb 2020 11:03:10 -0500
+        id S1727435AbgBJQDN (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Mon, 10 Feb 2020 11:03:13 -0500
 Received: from e123331-lin.home (amontpellier-657-1-18-247.w109-210.abo.wanadoo.fr [109.210.65.247])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id CDEE4214DB;
-        Mon, 10 Feb 2020 16:03:08 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 813DF2168B;
+        Mon, 10 Feb 2020 16:03:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1581350590;
-        bh=K54a8DUyV7Yot/t1lCOUPHD1tfsFk5jYnwJWzz2w5kM=;
+        s=default; t=1581350591;
+        bh=fR1MLajy12VAkBQ+CZ5rb2XrJWUYT3T4nVepKlgAaIQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uX2+OI+5hv0zOVhyMeLl2UEztIoOTTMN8FqoWPomuwrVapzGNtwGfMuhVfQX3jHqn
-         zOOy+Dq7RRInnD+adrycBWMODeJ278QikEu+IIsqJgOONmEG3DGrvpp6F3ZP4xp8iH
-         zswR1J+lAtlyT/CET8QnSK3uoBivmSmdtO+2Jqao=
+        b=2B3baBq5taQgHkKNPC/MMqcamQZVjTrqBbkQOVzocSvYSUc8ugahQyD0fhd7MwRze
+         98iRdwAj90RQ9TkgvEUQLruo7nUQgm0six4LpfX/3GfOOLsZ/koQurDDLUOgk2MY9d
+         DdHLFnZgsFuZdD4TKxrGuFhulqtxh/ZzwstJDauY=
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-efi@vger.kernel.org
 Cc:     Ard Biesheuvel <ardb@kernel.org>, nivedita@alum.mit.edu,
         mingo@kernel.org, lukas@wunner.de, atish.patra@wdc.com
-Subject: [PATCH 07/19] efi/libstub/x86: Incorporate eboot.c into libstub
-Date:   Mon, 10 Feb 2020 17:02:36 +0100
-Message-Id: <20200210160248.4889-8-ardb@kernel.org>
+Subject: [PATCH 08/19] efi/libstub: Use consistent type names for file I/O protocols
+Date:   Mon, 10 Feb 2020 17:02:37 +0100
+Message-Id: <20200210160248.4889-9-ardb@kernel.org>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200210160248.4889-1-ardb@kernel.org>
 References: <20200210160248.4889-1-ardb@kernel.org>
@@ -38,141 +38,223 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Most of the EFI stub source files of all architectures reside under
-drivers/firmware/efi/libstub, where they share a Makefile with special
-CFLAGS and an include file with declarations that are only relevant
-for stub code.
+Align the naming of efi_file_io_interface_t and efi_file_handle_t with
+the UEFI spec, and call them efi_simple_file_system_protocol_t and
+efi_file_protocol_t, respectively, using the same convention we use
+for all other type definitions that originate in the UEFI spec.
 
-Currently, we carry a lot of stub specific stuff in linux/efi.h only
-because eboot.c in arch/x86 needs them as well. So let's move eboot.c
-into libstub/, and move the contents of eboot.h that we still care
-about into efistub.h
+While at it, move the definitions to efistub.h, so they are only seen
+by code that needs them.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/x86/boot/compressed/Makefile                                           |  5 +---
- arch/x86/boot/compressed/eboot.h                                            | 31 --------------------
- drivers/firmware/efi/libstub/Makefile                                       |  1 +
- drivers/firmware/efi/libstub/efistub.h                                      | 16 ++++++++++
- arch/x86/boot/compressed/eboot.c => drivers/firmware/efi/libstub/x86-stub.c |  5 +---
- 5 files changed, 19 insertions(+), 39 deletions(-)
+ drivers/firmware/efi/libstub/efi-stub-helper.c | 16 ++---
+ drivers/firmware/efi/libstub/efistub.h         | 63 ++++++++++++++++++++
+ include/linux/efi.h                            | 60 +------------------
+ 3 files changed, 72 insertions(+), 67 deletions(-)
 
-diff --git a/arch/x86/boot/compressed/Makefile b/arch/x86/boot/compressed/Makefile
-index 26050ae0b27e..e51879bdc51c 100644
---- a/arch/x86/boot/compressed/Makefile
-+++ b/arch/x86/boot/compressed/Makefile
-@@ -87,10 +87,7 @@ endif
+diff --git a/drivers/firmware/efi/libstub/efi-stub-helper.c b/drivers/firmware/efi/libstub/efi-stub-helper.c
+index 7afe31357df3..6db91655c743 100644
+--- a/drivers/firmware/efi/libstub/efi-stub-helper.c
++++ b/drivers/firmware/efi/libstub/efi-stub-helper.c
+@@ -54,7 +54,7 @@ bool __pure __efi_soft_reserve_enabled(void)
+ }
  
- vmlinux-objs-$(CONFIG_ACPI) += $(obj)/acpi.o
+ struct file_info {
+-	efi_file_handle_t *handle;
++	efi_file_protocol_t *handle;
+ 	u64 size;
+ };
  
--$(obj)/eboot.o: KBUILD_CFLAGS += -fshort-wchar -mno-red-zone
--
--vmlinux-objs-$(CONFIG_EFI_STUB) += $(obj)/eboot.o \
--	$(objtree)/drivers/firmware/efi/libstub/lib.a
-+vmlinux-objs-$(CONFIG_EFI_STUB) += $(objtree)/drivers/firmware/efi/libstub/lib.a
- vmlinux-objs-$(CONFIG_EFI_MIXED) += $(obj)/efi_thunk_$(BITS).o
+@@ -113,7 +113,7 @@ unsigned long get_dram_base(void)
+ static efi_status_t efi_file_size(void *__fh, efi_char16_t *filename_16,
+ 				  void **handle, u64 *file_sz)
+ {
+-	efi_file_handle_t *h, *fh = __fh;
++	efi_file_protocol_t *h, *fh = __fh;
+ 	efi_file_info_t *info;
+ 	efi_status_t status;
+ 	efi_guid_t info_guid = EFI_FILE_INFO_ID;
+@@ -159,22 +159,22 @@ static efi_status_t efi_file_size(void *__fh, efi_char16_t *filename_16,
+ 	return status;
+ }
  
- # The compressed kernel is built with -fPIC/-fPIE so that a boot loader
-diff --git a/arch/x86/boot/compressed/eboot.h b/arch/x86/boot/compressed/eboot.h
-deleted file mode 100644
-index 99f35343d443..000000000000
---- a/arch/x86/boot/compressed/eboot.h
-+++ /dev/null
-@@ -1,31 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0 */
--#ifndef BOOT_COMPRESSED_EBOOT_H
--#define BOOT_COMPRESSED_EBOOT_H
--
--#define SEG_TYPE_DATA		(0 << 3)
--#define SEG_TYPE_READ_WRITE	(1 << 1)
--#define SEG_TYPE_CODE		(1 << 3)
--#define SEG_TYPE_EXEC_READ	(1 << 1)
--#define SEG_TYPE_TSS		((1 << 3) | (1 << 0))
--#define SEG_OP_SIZE_32BIT	(1 << 0)
--#define SEG_GRANULARITY_4KB	(1 << 0)
--
--#define DESC_TYPE_CODE_DATA	(1 << 0)
--
--typedef union efi_uga_draw_protocol efi_uga_draw_protocol_t;
--
--union efi_uga_draw_protocol {
--	struct {
--		efi_status_t (__efiapi *get_mode)(efi_uga_draw_protocol_t *,
--						  u32*, u32*, u32*, u32*);
--		void *set_mode;
--		void *blt;
--	};
--	struct {
--		u32 get_mode;
--		u32 set_mode;
--		u32 blt;
--	} mixed_mode;
--};
--
--#endif /* BOOT_COMPRESSED_EBOOT_H */
-diff --git a/drivers/firmware/efi/libstub/Makefile b/drivers/firmware/efi/libstub/Makefile
-index 45d6eb657437..8e15634fa929 100644
---- a/drivers/firmware/efi/libstub/Makefile
-+++ b/drivers/firmware/efi/libstub/Makefile
-@@ -52,6 +52,7 @@ lib-$(CONFIG_EFI_ARMSTUB)	+= arm-stub.o fdt.o string.o \
+-static efi_status_t efi_file_read(efi_file_handle_t *handle,
++static efi_status_t efi_file_read(efi_file_protocol_t *handle,
+ 				  unsigned long *size, void *addr)
+ {
+ 	return handle->read(handle, size, addr);
+ }
  
- lib-$(CONFIG_ARM)		+= arm32-stub.o
- lib-$(CONFIG_ARM64)		+= arm64-stub.o
-+lib-$(CONFIG_X86)		+= x86-stub.o
- CFLAGS_arm32-stub.o		:= -DTEXT_OFFSET=$(TEXT_OFFSET)
- CFLAGS_arm64-stub.o		:= -DTEXT_OFFSET=$(TEXT_OFFSET)
+-static efi_status_t efi_file_close(efi_file_handle_t *handle)
++static efi_status_t efi_file_close(efi_file_protocol_t *handle)
+ {
+ 	return handle->close(handle);
+ }
  
+ static efi_status_t efi_open_volume(efi_loaded_image_t *image,
+-				    efi_file_handle_t **__fh)
++				    efi_file_protocol_t **__fh)
+ {
+-	efi_file_io_interface_t *io;
+-	efi_file_handle_t *fh;
++	efi_simple_file_system_protocol_t *io;
++	efi_file_protocol_t *fh;
+ 	efi_guid_t fs_proto = EFI_FILE_SYSTEM_GUID;
+ 	efi_status_t status;
+ 	efi_handle_t handle = image->device_handle;
+@@ -282,7 +282,7 @@ efi_status_t handle_cmdline_files(efi_loaded_image_t *image,
+ 	struct file_info *files;
+ 	unsigned long file_addr;
+ 	u64 file_size_total;
+-	efi_file_handle_t *fh = NULL;
++	efi_file_protocol_t *fh = NULL;
+ 	efi_status_t status;
+ 	int nr_files;
+ 	char *str;
 diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
-index c244b165005e..55de118e8267 100644
+index 55de118e8267..79cdb219f439 100644
 --- a/drivers/firmware/efi/libstub/efistub.h
 +++ b/drivers/firmware/efi/libstub/efistub.h
-@@ -90,4 +90,20 @@ void *get_efi_config_table(efi_guid_t guid);
- 	efi_rt_call(set_variable, (efi_char16_t *)(name),	\
- 		    (efi_guid_t *)(vendor), __VA_ARGS__)
+@@ -106,4 +106,67 @@ union efi_uga_draw_protocol {
+ 	} mixed_mode;
+ };
  
-+typedef union efi_uga_draw_protocol efi_uga_draw_protocol_t;
++typedef struct efi_loaded_image {
++	u32			revision;
++	efi_handle_t		parent_handle;
++	efi_system_table_t	*system_table;
++	efi_handle_t		device_handle;
++	void			*file_path;
++	void			*reserved;
++	u32			load_options_size;
++	void			*load_options;
++	void			*image_base;
++	__aligned_u64		image_size;
++	unsigned int		image_code_type;
++	unsigned int		image_data_type;
++	efi_status_t		(__efiapi *unload)(efi_handle_t image_handle);
++} efi_loaded_image_t;
 +
-+union efi_uga_draw_protocol {
-+	struct {
-+		efi_status_t (__efiapi *get_mode)(efi_uga_draw_protocol_t *,
-+						  u32*, u32*, u32*, u32*);
-+		void *set_mode;
-+		void *blt;
-+	};
-+	struct {
-+		u32 get_mode;
-+		u32 set_mode;
-+		u32 blt;
-+	} mixed_mode;
++typedef struct {
++	u64			size;
++	u64			file_size;
++	u64			phys_size;
++	efi_time_t		create_time;
++	efi_time_t		last_access_time;
++	efi_time_t		modification_time;
++	__aligned_u64		attribute;
++	efi_char16_t		filename[1];
++} efi_file_info_t;
++
++typedef struct efi_file_protocol efi_file_protocol_t;
++
++struct efi_file_protocol {
++	u64		revision;
++	efi_status_t	(__efiapi *open)	(efi_file_protocol_t *,
++						 efi_file_protocol_t **,
++						 efi_char16_t *, u64, u64);
++	efi_status_t	(__efiapi *close)	(efi_file_protocol_t *);
++	efi_status_t	(__efiapi *delete)	(efi_file_protocol_t *);
++	efi_status_t	(__efiapi *read)	(efi_file_protocol_t *,
++						 unsigned long *, void *);
++	efi_status_t	(__efiapi *write)	(efi_file_protocol_t *,
++						 unsigned long, void *);
++	efi_status_t	(__efiapi *get_position)(efi_file_protocol_t *, u64 *);
++	efi_status_t	(__efiapi *set_position)(efi_file_protocol_t *, u64);
++	efi_status_t	(__efiapi *get_info)	(efi_file_protocol_t *,
++						 efi_guid_t *, unsigned long *,
++						 void *);
++	efi_status_t	(__efiapi *set_info)	(efi_file_protocol_t *,
++						 efi_guid_t *, unsigned long,
++						 void *);
++	efi_status_t	(__efiapi *flush)	(efi_file_protocol_t *);
 +};
 +
++typedef struct efi_simple_file_system_protocol efi_simple_file_system_protocol_t;
++
++struct efi_simple_file_system_protocol {
++	u64	revision;
++	int	(__efiapi *open_volume)(efi_simple_file_system_protocol_t *,
++					efi_file_protocol_t **);
++};
++
++#define EFI_FILE_MODE_READ	0x0000000000000001
++#define EFI_FILE_MODE_WRITE	0x0000000000000002
++#define EFI_FILE_MODE_CREATE	0x8000000000000000
++
  #endif
-diff --git a/arch/x86/boot/compressed/eboot.c b/drivers/firmware/efi/libstub/x86-stub.c
-similarity index 99%
-rename from arch/x86/boot/compressed/eboot.c
-rename to drivers/firmware/efi/libstub/x86-stub.c
-index 55637135b50c..7e7c50883cce 100644
---- a/arch/x86/boot/compressed/eboot.c
-+++ b/drivers/firmware/efi/libstub/x86-stub.c
-@@ -6,8 +6,6 @@
-  *
-  * ----------------------------------------------------------------------- */
+diff --git a/include/linux/efi.h b/include/linux/efi.h
+index 7e231c3cfb6f..2b228df18407 100644
+--- a/include/linux/efi.h
++++ b/include/linux/efi.h
+@@ -796,65 +796,7 @@ struct efi_fdt_params {
+ 	u32 desc_ver;
+ };
  
--#pragma GCC visibility push(hidden)
+-typedef struct {
+-	u32 revision;
+-	efi_handle_t parent_handle;
+-	efi_system_table_t *system_table;
+-	efi_handle_t device_handle;
+-	void *file_path;
+-	void *reserved;
+-	u32 load_options_size;
+-	void *load_options;
+-	void *image_base;
+-	__aligned_u64 image_size;
+-	unsigned int image_code_type;
+-	unsigned int image_data_type;
+-	efi_status_t ( __efiapi *unload)(efi_handle_t image_handle);
+-} efi_loaded_image_t;
 -
- #include <linux/efi.h>
- #include <linux/pci.h>
+-typedef struct {
+-	u64 size;
+-	u64 file_size;
+-	u64 phys_size;
+-	efi_time_t create_time;
+-	efi_time_t last_access_time;
+-	efi_time_t modification_time;
+-	__aligned_u64 attribute;
+-	efi_char16_t filename[1];
+-} efi_file_info_t;
+-
+-typedef struct efi_file_handle efi_file_handle_t;
+-
+-struct efi_file_handle {
+-	u64 revision;
+-	efi_status_t (__efiapi *open)(efi_file_handle_t *,
+-				      efi_file_handle_t **,
+-				      efi_char16_t *, u64, u64);
+-	efi_status_t (__efiapi *close)(efi_file_handle_t *);
+-	void *delete;
+-	efi_status_t (__efiapi *read)(efi_file_handle_t *,
+-				      unsigned long *, void *);
+-	void *write;
+-	void *get_position;
+-	void *set_position;
+-	efi_status_t (__efiapi *get_info)(efi_file_handle_t *,
+-					  efi_guid_t *, unsigned long *,
+-					  void *);
+-	void *set_info;
+-	void *flush;
+-};
+-
+-typedef struct efi_file_io_interface efi_file_io_interface_t;
+-
+-struct efi_file_io_interface {
+-	u64 revision;
+-	int (__efiapi *open_volume)(efi_file_io_interface_t *,
+-				    efi_file_handle_t **);
+-};
+-
+-#define EFI_FILE_MODE_READ	0x0000000000000001
+-#define EFI_FILE_MODE_WRITE	0x0000000000000002
+-#define EFI_FILE_MODE_CREATE	0x8000000000000000
++typedef struct efi_loaded_image efi_loaded_image_t;
  
-@@ -17,8 +15,7 @@
- #include <asm/desc.h>
- #include <asm/boot.h>
- 
--#include "../string.h"
--#include "eboot.h"
-+#include "efistub.h"
- 
- static efi_system_table_t *sys_table;
- extern const bool efi_is64;
+ typedef struct {
+ 	u32 version;
 -- 
 2.17.1
 
