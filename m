@@ -2,34 +2,34 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0ED28157F5C
-	for <lists+linux-efi@lfdr.de>; Mon, 10 Feb 2020 17:03:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0089C157F5D
+	for <lists+linux-efi@lfdr.de>; Mon, 10 Feb 2020 17:03:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727779AbgBJQDJ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 10 Feb 2020 11:03:09 -0500
-Received: from mail.kernel.org ([198.145.29.99]:52714 "EHLO mail.kernel.org"
+        id S1727781AbgBJQDK (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 10 Feb 2020 11:03:10 -0500
+Received: from mail.kernel.org ([198.145.29.99]:52734 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727435AbgBJQDJ (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Mon, 10 Feb 2020 11:03:09 -0500
+        id S1727435AbgBJQDK (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Mon, 10 Feb 2020 11:03:10 -0500
 Received: from e123331-lin.home (amontpellier-657-1-18-247.w109-210.abo.wanadoo.fr [109.210.65.247])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 2789621569;
-        Mon, 10 Feb 2020 16:03:07 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id CDEE4214DB;
+        Mon, 10 Feb 2020 16:03:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1581350588;
-        bh=S2eliISg/+Q+9Odm/AMeFO2bH+WSNeQKwKkfIiZJxIc=;
+        s=default; t=1581350590;
+        bh=K54a8DUyV7Yot/t1lCOUPHD1tfsFk5jYnwJWzz2w5kM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qyOYqEJZ6ldsKflV0QszkOeloTe0vXpup47Df3ncZ/mTIuzuhkNyhLVLx/V8HOEKx
-         eV3/6QErcouGjC6Xqt+5cn+7oGvudGu+b2ResdNCUTSosj06iYFYiyzPme8DgcnxbJ
-         ry6TxCE8HivuHkr8un0nJ+6ws50FWQefdvw9z10c=
+        b=uX2+OI+5hv0zOVhyMeLl2UEztIoOTTMN8FqoWPomuwrVapzGNtwGfMuhVfQX3jHqn
+         zOOy+Dq7RRInnD+adrycBWMODeJ278QikEu+IIsqJgOONmEG3DGrvpp6F3ZP4xp8iH
+         zswR1J+lAtlyT/CET8QnSK3uoBivmSmdtO+2Jqao=
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-efi@vger.kernel.org
 Cc:     Ard Biesheuvel <ardb@kernel.org>, nivedita@alum.mit.edu,
         mingo@kernel.org, lukas@wunner.de, atish.patra@wdc.com
-Subject: [PATCH 06/19] efi/libstub: Simplify efi_high_alloc() and rename to efi_allocate_pages()
-Date:   Mon, 10 Feb 2020 17:02:35 +0100
-Message-Id: <20200210160248.4889-7-ardb@kernel.org>
+Subject: [PATCH 07/19] efi/libstub/x86: Incorporate eboot.c into libstub
+Date:   Mon, 10 Feb 2020 17:02:36 +0100
+Message-Id: <20200210160248.4889-8-ardb@kernel.org>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200210160248.4889-1-ardb@kernel.org>
 References: <20200210160248.4889-1-ardb@kernel.org>
@@ -38,200 +38,141 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The implementation of efi_high_alloc() uses a complicated way of
-traversing the memory map to find an available region that is located
-as close as possible to the provided upper limit, and calls AllocatePages
-subsequently to create the allocation at that exact address.
+Most of the EFI stub source files of all architectures reside under
+drivers/firmware/efi/libstub, where they share a Makefile with special
+CFLAGS and an include file with declarations that are only relevant
+for stub code.
 
-This is precisely what the EFI_ALLOCATE_MAX_ADDRESS allocation type
-argument to AllocatePages() does, and considering that EFI_ALLOC_ALIGN
-only exceeds EFI_PAGE_SIZE on arm64, let's use AllocatePages() directly
-and implement the alignment using code that the compiler can remove if
-it does not exceed EFI_PAGE_SIZE.
+Currently, we carry a lot of stub specific stuff in linux/efi.h only
+because eboot.c in arch/x86 needs them as well. So let's move eboot.c
+into libstub/, and move the contents of eboot.h that we still care
+about into efistub.h
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- drivers/firmware/efi/libstub/efi-stub-helper.c |   5 +-
- drivers/firmware/efi/libstub/fdt.c             |   3 +-
- drivers/firmware/efi/libstub/mem.c             | 102 ++++----------------
- include/linux/efi.h                            |   4 +-
- 4 files changed, 23 insertions(+), 91 deletions(-)
+ arch/x86/boot/compressed/Makefile                                           |  5 +---
+ arch/x86/boot/compressed/eboot.h                                            | 31 --------------------
+ drivers/firmware/efi/libstub/Makefile                                       |  1 +
+ drivers/firmware/efi/libstub/efistub.h                                      | 16 ++++++++++
+ arch/x86/boot/compressed/eboot.c => drivers/firmware/efi/libstub/x86-stub.c |  5 +---
+ 5 files changed, 19 insertions(+), 39 deletions(-)
 
-diff --git a/drivers/firmware/efi/libstub/efi-stub-helper.c b/drivers/firmware/efi/libstub/efi-stub-helper.c
-index 60d13c7a2e92..7afe31357df3 100644
---- a/drivers/firmware/efi/libstub/efi-stub-helper.c
-+++ b/drivers/firmware/efi/libstub/efi-stub-helper.c
-@@ -385,8 +385,7 @@ efi_status_t handle_cmdline_files(efi_loaded_image_t *image,
- 		 * so allocate enough memory for all the files.  This is used
- 		 * for loading multiple files.
- 		 */
--		status = efi_high_alloc(file_size_total, 0x1000, &file_addr,
--					max_addr);
-+		status = efi_allocate_pages(file_size_total, &file_addr, max_addr);
- 		if (status != EFI_SUCCESS) {
- 			pr_efi_err("Failed to alloc highmem for files\n");
- 			goto close_handles;
-@@ -536,7 +535,7 @@ char *efi_convert_cmdline(efi_loaded_image_t *image,
+diff --git a/arch/x86/boot/compressed/Makefile b/arch/x86/boot/compressed/Makefile
+index 26050ae0b27e..e51879bdc51c 100644
+--- a/arch/x86/boot/compressed/Makefile
++++ b/arch/x86/boot/compressed/Makefile
+@@ -87,10 +87,7 @@ endif
  
- 	options_bytes++;	/* NUL termination */
+ vmlinux-objs-$(CONFIG_ACPI) += $(obj)/acpi.o
  
--	status = efi_high_alloc(options_bytes, 0, &cmdline_addr,
-+	status = efi_allocate_pages(options_bytes, &cmdline_addr,
- 				MAX_CMDLINE_ADDRESS);
- 	if (status != EFI_SUCCESS)
- 		return NULL;
-diff --git a/drivers/firmware/efi/libstub/fdt.c b/drivers/firmware/efi/libstub/fdt.c
-index f71cd54823b7..46cffac7a5f1 100644
---- a/drivers/firmware/efi/libstub/fdt.c
-+++ b/drivers/firmware/efi/libstub/fdt.c
-@@ -277,8 +277,7 @@ efi_status_t allocate_new_fdt_and_exit_boot(void *handle,
- 	pr_efi("Exiting boot services and installing virtual address map...\n");
+-$(obj)/eboot.o: KBUILD_CFLAGS += -fshort-wchar -mno-red-zone
+-
+-vmlinux-objs-$(CONFIG_EFI_STUB) += $(obj)/eboot.o \
+-	$(objtree)/drivers/firmware/efi/libstub/lib.a
++vmlinux-objs-$(CONFIG_EFI_STUB) += $(objtree)/drivers/firmware/efi/libstub/lib.a
+ vmlinux-objs-$(CONFIG_EFI_MIXED) += $(obj)/efi_thunk_$(BITS).o
  
- 	map.map = &memory_map;
--	status = efi_high_alloc(MAX_FDT_SIZE, EFI_PAGE_SIZE,
--				new_fdt_addr, max_addr);
-+	status = efi_allocate_pages(MAX_FDT_SIZE, new_fdt_addr, max_addr);
- 	if (status != EFI_SUCCESS) {
- 		pr_efi_err("Unable to allocate memory for new device tree.\n");
- 		goto fail;
-diff --git a/drivers/firmware/efi/libstub/mem.c b/drivers/firmware/efi/libstub/mem.c
-index 690648a7ca1e..5808c8764e64 100644
---- a/drivers/firmware/efi/libstub/mem.c
-+++ b/drivers/firmware/efi/libstub/mem.c
-@@ -68,100 +68,34 @@ efi_status_t efi_get_memory_map(struct efi_boot_memmap *map)
- /*
-  * Allocate at the highest possible address that is not above 'max'.
-  */
--efi_status_t efi_high_alloc(unsigned long size, unsigned long align,
--			    unsigned long *addr, unsigned long max)
-+efi_status_t efi_allocate_pages(unsigned long size, unsigned long *addr,
-+				unsigned long max)
- {
--	unsigned long map_size, desc_size, buff_size;
--	efi_memory_desc_t *map;
-+	efi_physical_addr_t alloc_addr = ALIGN_DOWN(max + 1, EFI_ALLOC_ALIGN) - 1;
-+	int slack = EFI_ALLOC_ALIGN / EFI_PAGE_SIZE - 1;
- 	efi_status_t status;
--	unsigned long nr_pages;
--	u64 max_addr = 0;
--	int i;
--	struct efi_boot_memmap boot_map;
+ # The compressed kernel is built with -fPIC/-fPIE so that a boot loader
+diff --git a/arch/x86/boot/compressed/eboot.h b/arch/x86/boot/compressed/eboot.h
+deleted file mode 100644
+index 99f35343d443..000000000000
+--- a/arch/x86/boot/compressed/eboot.h
++++ /dev/null
+@@ -1,31 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0 */
+-#ifndef BOOT_COMPRESSED_EBOOT_H
+-#define BOOT_COMPRESSED_EBOOT_H
 -
--	boot_map.map =		&map;
--	boot_map.map_size =	&map_size;
--	boot_map.desc_size =	&desc_size;
--	boot_map.desc_ver =	NULL;
--	boot_map.key_ptr =	NULL;
--	boot_map.buff_size =	&buff_size;
+-#define SEG_TYPE_DATA		(0 << 3)
+-#define SEG_TYPE_READ_WRITE	(1 << 1)
+-#define SEG_TYPE_CODE		(1 << 3)
+-#define SEG_TYPE_EXEC_READ	(1 << 1)
+-#define SEG_TYPE_TSS		((1 << 3) | (1 << 0))
+-#define SEG_OP_SIZE_32BIT	(1 << 0)
+-#define SEG_GRANULARITY_4KB	(1 << 0)
 -
--	status = efi_get_memory_map(&boot_map);
--	if (status != EFI_SUCCESS)
--		goto fail;
+-#define DESC_TYPE_CODE_DATA	(1 << 0)
 -
--	/*
--	 * Enforce minimum alignment that EFI or Linux requires when
--	 * requesting a specific address.  We are doing page-based (or
--	 * larger) allocations, and both the address and size must meet
--	 * alignment constraints.
--	 */
--	if (align < EFI_ALLOC_ALIGN)
--		align = EFI_ALLOC_ALIGN;
+-typedef union efi_uga_draw_protocol efi_uga_draw_protocol_t;
+-
+-union efi_uga_draw_protocol {
+-	struct {
+-		efi_status_t (__efiapi *get_mode)(efi_uga_draw_protocol_t *,
+-						  u32*, u32*, u32*, u32*);
+-		void *set_mode;
+-		void *blt;
+-	};
+-	struct {
+-		u32 get_mode;
+-		u32 set_mode;
+-		u32 blt;
+-	} mixed_mode;
+-};
+-
+-#endif /* BOOT_COMPRESSED_EBOOT_H */
+diff --git a/drivers/firmware/efi/libstub/Makefile b/drivers/firmware/efi/libstub/Makefile
+index 45d6eb657437..8e15634fa929 100644
+--- a/drivers/firmware/efi/libstub/Makefile
++++ b/drivers/firmware/efi/libstub/Makefile
+@@ -52,6 +52,7 @@ lib-$(CONFIG_EFI_ARMSTUB)	+= arm-stub.o fdt.o string.o \
  
- 	size = round_up(size, EFI_ALLOC_ALIGN);
--	nr_pages = size / EFI_PAGE_SIZE;
--again:
--	for (i = 0; i < map_size / desc_size; i++) {
--		efi_memory_desc_t *desc;
--		unsigned long m = (unsigned long)map;
--		u64 start, end;
--
--		desc = efi_early_memdesc_ptr(m, desc_size, i);
--		if (desc->type != EFI_CONVENTIONAL_MEMORY)
--			continue;
--
--		if (efi_soft_reserve_enabled() &&
--		    (desc->attribute & EFI_MEMORY_SP))
--			continue;
--
--		if (desc->num_pages < nr_pages)
--			continue;
--
--		start = desc->phys_addr;
--		end = start + desc->num_pages * EFI_PAGE_SIZE;
--
--		if (end > max)
--			end = max;
--
--		if ((start + size) > end)
--			continue;
--
--		if (round_down(end - size, align) < start)
--			continue;
--
--		start = round_down(end - size, align);
-+	status = efi_bs_call(allocate_pages, EFI_ALLOCATE_MAX_ADDRESS,
-+			     EFI_LOADER_DATA, size / EFI_PAGE_SIZE + slack,
-+			     &alloc_addr);
-+	if (status != EFI_SUCCESS)
-+		return status;
+ lib-$(CONFIG_ARM)		+= arm32-stub.o
+ lib-$(CONFIG_ARM64)		+= arm64-stub.o
++lib-$(CONFIG_X86)		+= x86-stub.o
+ CFLAGS_arm32-stub.o		:= -DTEXT_OFFSET=$(TEXT_OFFSET)
+ CFLAGS_arm64-stub.o		:= -DTEXT_OFFSET=$(TEXT_OFFSET)
  
--		/*
--		 * Don't allocate at 0x0. It will confuse code that
--		 * checks pointers against NULL.
--		 */
--		if (start == 0x0)
--			continue;
-+	*addr = ALIGN((unsigned long)alloc_addr, EFI_ALLOC_ALIGN);
+diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
+index c244b165005e..55de118e8267 100644
+--- a/drivers/firmware/efi/libstub/efistub.h
++++ b/drivers/firmware/efi/libstub/efistub.h
+@@ -90,4 +90,20 @@ void *get_efi_config_table(efi_guid_t guid);
+ 	efi_rt_call(set_variable, (efi_char16_t *)(name),	\
+ 		    (efi_guid_t *)(vendor), __VA_ARGS__)
  
--		if (start > max_addr)
--			max_addr = start;
--	}
-+	if (slack > 0) {
-+		int l = (alloc_addr % EFI_ALLOC_ALIGN) / EFI_PAGE_SIZE;
++typedef union efi_uga_draw_protocol efi_uga_draw_protocol_t;
++
++union efi_uga_draw_protocol {
++	struct {
++		efi_status_t (__efiapi *get_mode)(efi_uga_draw_protocol_t *,
++						  u32*, u32*, u32*, u32*);
++		void *set_mode;
++		void *blt;
++	};
++	struct {
++		u32 get_mode;
++		u32 set_mode;
++		u32 blt;
++	} mixed_mode;
++};
++
+ #endif
+diff --git a/arch/x86/boot/compressed/eboot.c b/drivers/firmware/efi/libstub/x86-stub.c
+similarity index 99%
+rename from arch/x86/boot/compressed/eboot.c
+rename to drivers/firmware/efi/libstub/x86-stub.c
+index 55637135b50c..7e7c50883cce 100644
+--- a/arch/x86/boot/compressed/eboot.c
++++ b/drivers/firmware/efi/libstub/x86-stub.c
+@@ -6,8 +6,6 @@
+  *
+  * ----------------------------------------------------------------------- */
  
--	if (!max_addr)
--		status = EFI_NOT_FOUND;
--	else {
--		status = efi_bs_call(allocate_pages, EFI_ALLOCATE_ADDRESS,
--				     EFI_LOADER_DATA, nr_pages, &max_addr);
--		if (status != EFI_SUCCESS) {
--			max = max_addr;
--			max_addr = 0;
--			goto again;
-+		if (l) {
-+			efi_bs_call(free_pages, alloc_addr, slack - l + 1);
-+			slack = l - 1;
- 		}
+-#pragma GCC visibility push(hidden)
 -
--		*addr = max_addr;
-+		if (slack)
-+			efi_bs_call(free_pages, *addr + size, slack);
- 	}
--
--	efi_bs_call(free_pool, map);
--fail:
--	return status;
-+	return EFI_SUCCESS;
- }
--
- /*
-  * Allocate at the lowest possible address that is not below 'min'.
-  */
-diff --git a/include/linux/efi.h b/include/linux/efi.h
-index 7efd7072cca5..7e231c3cfb6f 100644
---- a/include/linux/efi.h
-+++ b/include/linux/efi.h
-@@ -1508,8 +1508,8 @@ efi_status_t efi_low_alloc(unsigned long size, unsigned long align,
- 	return efi_low_alloc_above(size, align, addr, 0x8);
- }
+ #include <linux/efi.h>
+ #include <linux/pci.h>
  
--efi_status_t efi_high_alloc(unsigned long size, unsigned long align,
--			    unsigned long *addr, unsigned long max);
-+efi_status_t efi_allocate_pages(unsigned long size, unsigned long *addr,
-+				unsigned long max);
+@@ -17,8 +15,7 @@
+ #include <asm/desc.h>
+ #include <asm/boot.h>
  
- efi_status_t efi_relocate_kernel(unsigned long *image_addr,
- 				 unsigned long image_size,
+-#include "../string.h"
+-#include "eboot.h"
++#include "efistub.h"
+ 
+ static efi_system_table_t *sys_table;
+ extern const bool efi_is64;
 -- 
 2.17.1
 
