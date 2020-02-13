@@ -2,36 +2,36 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 01B8415BCA3
-	for <lists+linux-efi@lfdr.de>; Thu, 13 Feb 2020 11:21:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E1FD515BCA4
+	for <lists+linux-efi@lfdr.de>; Thu, 13 Feb 2020 11:21:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729685AbgBMKVP (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 13 Feb 2020 05:21:15 -0500
-Received: from mail.kernel.org ([198.145.29.99]:54148 "EHLO mail.kernel.org"
+        id S1729699AbgBMKVR (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 13 Feb 2020 05:21:17 -0500
+Received: from mail.kernel.org ([198.145.29.99]:54164 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729428AbgBMKVP (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Thu, 13 Feb 2020 05:21:15 -0500
+        id S1729428AbgBMKVR (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Thu, 13 Feb 2020 05:21:17 -0500
 Received: from cam-smtp0.cambridge.arm.com (fw-tnat.cambridge.arm.com [217.140.96.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 282DB24649;
-        Thu, 13 Feb 2020 10:21:12 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 3860424650;
+        Thu, 13 Feb 2020 10:21:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1581589274;
-        bh=pum15wROF25YvfjoPY0ad3eoaspEGhpksVWQVRu9HL0=;
+        s=default; t=1581589276;
+        bh=9cbYbm586BLe73N2VYVbhPZNibByMC7XJYTpPqJNHaY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=x9XRGKRPo8YlULNW5vhjnTNi/S5gdppEAN3NEV9wfd7gEHbXAKgQNLEU/ssaUUV/z
-         qlUFAtQMZuHiO6Zk/NAJk0BsXGtK+9SP0OQMgAk4czedqwlC3+UDZjqaT0ah5GFzE7
-         +xRCpZ0xNAKusz7NDDySAXIMphFfmuNbqbeP8Myg=
+        b=Xbv2o/y7UyDFL2bCo+3s8k9J46WAGj+aW1sRfpJZKuPsxG6WVwpbFPpMT8f0iv46I
+         fC+XXQ005RjeRZPjJYCPOOn66lPmaupzzplXchQLWzSw1qEXhSJmg6/Dp0gVw+ewdB
+         NG9OZv9Nyx/p1XhwFWG/ajSMXnHP9Pd24hp4H30Y=
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-efi@vger.kernel.org
 Cc:     Ard Biesheuvel <ardb@kernel.org>,
         Hans de Goede <hdegoede@redhat.com>,
         Arvind Sankar <nivedita@alum.mit.edu>,
         Andy Lutomirski <luto@amacapital.net>
-Subject: [PATCH 2/3] efi/x86: remove support for EFI time and counter services in mixed mode
-Date:   Thu, 13 Feb 2020 11:21:01 +0100
-Message-Id: <20200213102102.30170-3-ardb@kernel.org>
+Subject: [PATCH 3/3] efi/x86: Handle by-ref arguments covering multiple pages in mixed mode
+Date:   Thu, 13 Feb 2020 11:21:02 +0100
+Message-Id: <20200213102102.30170-4-ardb@kernel.org>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200213102102.30170-1-ardb@kernel.org>
 References: <20200213102102.30170-1-ardb@kernel.org>
@@ -40,137 +40,118 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Mixed mode calls at runtime are rather tricky with vmap'ed stack, as
-we can no longer assume that data passed in by the callers of the
-EFI runtime wrapper routines is contiguous in physical memory.
+We currently apply some stringent checks on the variable name and
+buffer arguments passed to the EFI runtime services, and WARN()
+if they are allocated in the vmalloc space and are not aligned to
+their size - which must be a power of two - since in that case, it
+is not guaranteed that they will not cross a page boundary.
 
-We need to fix this, but before we do, let's drop the implementations
-of routines that we know are never used on x86, i.e., the RTC related
-ones. Given that UEFI rev2.8 permits any runtime service to return
-EFI_UNSUPPORTED at runtime, let's return that instead.
+However, we then simply proceed with the call, which could cause data
+corruption if the next physical page belongs to a mapping that is
+entirely unrelated.
 
-As get_next_high_mono_count() is never used at all, even on other
-architectures, let's make that return EFI_UNSUPPORTED as well.
+Given that with vmap'ed stacks, this condition is much more likely
+to trigger, let's relax the condition a bit, but fail the runtime
+service call if it triggers.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/x86/platform/efi/efi_64.c | 81 ++------------------
- 1 file changed, 5 insertions(+), 76 deletions(-)
+ arch/x86/platform/efi/efi_64.c | 45 +++++++++++---------
+ 1 file changed, 26 insertions(+), 19 deletions(-)
 
 diff --git a/arch/x86/platform/efi/efi_64.c b/arch/x86/platform/efi/efi_64.c
-index 543edfdcd1b9..ae398587f264 100644
+index ae398587f264..d19a2edd63cb 100644
 --- a/arch/x86/platform/efi/efi_64.c
 +++ b/arch/x86/platform/efi/efi_64.c
-@@ -568,85 +568,25 @@ efi_thunk_set_virtual_address_map(unsigned long memory_map_size,
- 
- static efi_status_t efi_thunk_get_time(efi_time_t *tm, efi_time_cap_t *tc)
+@@ -180,7 +180,7 @@ void efi_sync_low_kernel_mappings(void)
+ static inline phys_addr_t
+ virt_to_phys_or_null_size(void *va, unsigned long size)
  {
--	efi_status_t status;
--	u32 phys_tm, phys_tc;
--	unsigned long flags;
--
--	spin_lock(&rtc_lock);
--	spin_lock_irqsave(&efi_runtime_lock, flags);
--
--	phys_tm = virt_to_phys_or_null(tm);
--	phys_tc = virt_to_phys_or_null(tc);
--
--	status = efi_thunk(get_time, phys_tm, phys_tc);
--
--	spin_unlock_irqrestore(&efi_runtime_lock, flags);
--	spin_unlock(&rtc_lock);
--
--	return status;
-+	return EFI_UNSUPPORTED;
+-	bool bad_size;
++	phys_addr_t pa;
+ 
+ 	if (!va)
+ 		return 0;
+@@ -188,16 +188,13 @@ virt_to_phys_or_null_size(void *va, unsigned long size)
+ 	if (virt_addr_valid(va))
+ 		return virt_to_phys(va);
+ 
+-	/*
+-	 * A fully aligned variable on the stack is guaranteed not to
+-	 * cross a page bounary. Try to catch strings on the stack by
+-	 * checking that 'size' is a power of two.
+-	 */
+-	bad_size = size > PAGE_SIZE || !is_power_of_2(size);
++	pa = slow_virt_to_phys(va);
+ 
+-	WARN_ON(!IS_ALIGNED((unsigned long)va, size) || bad_size);
++	/* check if the object crosses a page boundary */
++	if (WARN_ON((pa ^ (pa + size - 1)) & PAGE_MASK))
++		return 0;
+ 
+-	return slow_virt_to_phys(va);
++	return pa;
  }
  
- static efi_status_t efi_thunk_set_time(efi_time_t *tm)
- {
--	efi_status_t status;
--	u32 phys_tm;
--	unsigned long flags;
--
--	spin_lock(&rtc_lock);
--	spin_lock_irqsave(&efi_runtime_lock, flags);
--
--	phys_tm = virt_to_phys_or_null(tm);
--
--	status = efi_thunk(set_time, phys_tm);
--
--	spin_unlock_irqrestore(&efi_runtime_lock, flags);
--	spin_unlock(&rtc_lock);
--
--	return status;
-+	return EFI_UNSUPPORTED;
- }
+ #define virt_to_phys_or_null(addr)				\
+@@ -615,8 +612,11 @@ efi_thunk_get_variable(efi_char16_t *name, efi_guid_t *vendor,
+ 	phys_attr = virt_to_phys_or_null(attr);
+ 	phys_data = virt_to_phys_or_null_size(data, *data_size);
  
- static efi_status_t
- efi_thunk_get_wakeup_time(efi_bool_t *enabled, efi_bool_t *pending,
- 			  efi_time_t *tm)
- {
--	efi_status_t status;
--	u32 phys_enabled, phys_pending, phys_tm;
--	unsigned long flags;
--
--	spin_lock(&rtc_lock);
--	spin_lock_irqsave(&efi_runtime_lock, flags);
--
--	phys_enabled = virt_to_phys_or_null(enabled);
--	phys_pending = virt_to_phys_or_null(pending);
--	phys_tm = virt_to_phys_or_null(tm);
--
--	status = efi_thunk(get_wakeup_time, phys_enabled,
--			     phys_pending, phys_tm);
--
--	spin_unlock_irqrestore(&efi_runtime_lock, flags);
--	spin_unlock(&rtc_lock);
--
--	return status;
-+	return EFI_UNSUPPORTED;
- }
+-	status = efi_thunk(get_variable, phys_name, phys_vendor,
+-			   phys_attr, phys_data_size, phys_data);
++	if (!phys_name || (data && !phys_data))
++		status = EFI_INVALID_PARAMETER;
++	else
++		status = efi_thunk(get_variable, phys_name, phys_vendor,
++				   phys_attr, phys_data_size, phys_data);
  
- static efi_status_t
- efi_thunk_set_wakeup_time(efi_bool_t enabled, efi_time_t *tm)
- {
--	efi_status_t status;
--	u32 phys_tm;
--	unsigned long flags;
--
--	spin_lock(&rtc_lock);
--	spin_lock_irqsave(&efi_runtime_lock, flags);
--
--	phys_tm = virt_to_phys_or_null(tm);
--
--	status = efi_thunk(set_wakeup_time, enabled, phys_tm);
--
--	spin_unlock_irqrestore(&efi_runtime_lock, flags);
--	spin_unlock(&rtc_lock);
--
--	return status;
-+	return EFI_UNSUPPORTED;
- }
+ 	spin_unlock_irqrestore(&efi_runtime_lock, flags);
  
- static unsigned long efi_name_size(efi_char16_t *name)
-@@ -770,18 +710,7 @@ efi_thunk_get_next_variable(unsigned long *name_size,
- static efi_status_t
- efi_thunk_get_next_high_mono_count(u32 *count)
- {
--	efi_status_t status;
--	u32 phys_count;
--	unsigned long flags;
--
--	spin_lock_irqsave(&efi_runtime_lock, flags);
--
--	phys_count = virt_to_phys_or_null(count);
--	status = efi_thunk(get_next_high_mono_count, phys_count);
--
--	spin_unlock_irqrestore(&efi_runtime_lock, flags);
--
--	return status;
-+	return EFI_UNSUPPORTED;
- }
+@@ -641,9 +641,11 @@ efi_thunk_set_variable(efi_char16_t *name, efi_guid_t *vendor,
+ 	phys_vendor = virt_to_phys_or_null(vnd);
+ 	phys_data = virt_to_phys_or_null_size(data, data_size);
  
- static void
+-	/* If data_size is > sizeof(u32) we've got problems */
+-	status = efi_thunk(set_variable, phys_name, phys_vendor,
+-			   attr, data_size, phys_data);
++	if (!phys_name || !phys_data)
++		status = EFI_INVALID_PARAMETER;
++	else
++		status = efi_thunk(set_variable, phys_name, phys_vendor,
++				   attr, data_size, phys_data);
+ 
+ 	spin_unlock_irqrestore(&efi_runtime_lock, flags);
+ 
+@@ -670,9 +672,11 @@ efi_thunk_set_variable_nonblocking(efi_char16_t *name, efi_guid_t *vendor,
+ 	phys_vendor = virt_to_phys_or_null(vnd);
+ 	phys_data = virt_to_phys_or_null_size(data, data_size);
+ 
+-	/* If data_size is > sizeof(u32) we've got problems */
+-	status = efi_thunk(set_variable, phys_name, phys_vendor,
+-			   attr, data_size, phys_data);
++	if (!phys_name || !phys_data)
++		status = EFI_INVALID_PARAMETER;
++	else
++		status = efi_thunk(set_variable, phys_name, phys_vendor,
++				   attr, data_size, phys_data);
+ 
+ 	spin_unlock_irqrestore(&efi_runtime_lock, flags);
+ 
+@@ -698,8 +702,11 @@ efi_thunk_get_next_variable(unsigned long *name_size,
+ 	phys_vendor = virt_to_phys_or_null(vnd);
+ 	phys_name = virt_to_phys_or_null_size(name, *name_size);
+ 
+-	status = efi_thunk(get_next_variable, phys_name_size,
+-			   phys_name, phys_vendor);
++	if (!phys_name)
++		status = EFI_INVALID_PARAMETER;
++	else
++		status = efi_thunk(get_next_variable, phys_name_size,
++				   phys_name, phys_vendor);
+ 
+ 	spin_unlock_irqrestore(&efi_runtime_lock, flags);
+ 
 -- 
 2.17.1
 
