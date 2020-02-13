@@ -2,125 +2,81 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 915AD15B322
-	for <lists+linux-efi@lfdr.de>; Wed, 12 Feb 2020 22:57:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A35A15B5E2
+	for <lists+linux-efi@lfdr.de>; Thu, 13 Feb 2020 01:34:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727692AbgBLV5X (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 12 Feb 2020 16:57:23 -0500
-Received: from mail-qt1-f177.google.com ([209.85.160.177]:47093 "EHLO
-        mail-qt1-f177.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727564AbgBLV5W (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 12 Feb 2020 16:57:22 -0500
-Received: by mail-qt1-f177.google.com with SMTP id e21so2827143qtp.13
-        for <linux-efi@vger.kernel.org>; Wed, 12 Feb 2020 13:57:22 -0800 (PST)
+        id S1729276AbgBMAew (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 12 Feb 2020 19:34:52 -0500
+Received: from mail-qt1-f170.google.com ([209.85.160.170]:34118 "EHLO
+        mail-qt1-f170.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729190AbgBMAew (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 12 Feb 2020 19:34:52 -0500
+Received: by mail-qt1-f170.google.com with SMTP id h12so3157040qtu.1
+        for <linux-efi@vger.kernel.org>; Wed, 12 Feb 2020 16:34:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=sender:from:date:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to:user-agent;
-        bh=HF/4PzMNjK5Tj6IHN/5C6uBOuB6Z7IVbPYbhJA3wDyc=;
-        b=fQlXRLxnktvmmjeAxU1jKblc3rZeVLXCwpdEzSIID60F6mQgP1a58KBtbZmsEVHrmQ
-         //mKgnl0CLZqK7f6+Mar1Eh7mBgyBghLGap69uh79G+IVwt0W9Gx+lbWXOD+uW0IfwbK
-         6o6r8CI2aO5lCceAQzj6TJlMs1A/GATaJ0sDBqZT5HmDL9DyKmcEkKPLHWngg/TZekfc
-         B+RXu3kVFV3Di4cF6c5nuoSuUy6Neh88TmJftZBk4lXuu8fBQboCuXIUyB1xYQSEvnz7
-         wtOraVvi3H28KVwaq0JTmPUq6oCRL/HwV2hmTSkeKp/8faZJtMagy9zxfwSYPLHkengc
-         G52A==
+        bh=KbzWTmlI92fxPxuN1voD79dF6p9bHCVqQjh6L8nnqdc=;
+        b=q0HxzbFatHONVpgeoeXmREzJsh1wDJWpSMwyyLo4YlmAUtsm3YeVL1J0yp3sWymt4Z
+         r6IXjHiVCzYYoPeUbp9SIgqXFAy9+Kle2PV8PSbMaaIcXAWpxyA4D4TqUHb288Vo6460
+         VQJxYtoyDjq5Q4tMk/KdElah0gAY9tTlZk1hck8B+ppa1bQ6aLisUZ4F21FxSAltEs9R
+         0sknBNDMD+QQg1ILMcuJBI9vsfblhjkEyyiOA90I6th9HB0t6aTPA1RaIbihwVgI8iGO
+         0fWbNn/zlKe95ffYWoibYjora8A2htJDuNzz7yQZGRMovcqw/bYoiIQCMMMQbuwqZL04
+         FkUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:sender:from:date:to:cc:subject:message-id
          :references:mime-version:content-disposition:in-reply-to:user-agent;
-        bh=HF/4PzMNjK5Tj6IHN/5C6uBOuB6Z7IVbPYbhJA3wDyc=;
-        b=M7M7TcTp+HsxcVwc7Q+z+BNB1sjOTZVI+qe+wAdWTCcDSk9e8J9Y04i3ttp7lCKOm0
-         1x25inNtVxfDvZXl649QYj/71DFFJnZv5Qlh+FQ7LVDaV22N94t1So805Rt/mComhpVA
-         G+M131FcWS6xnrLAp+aijgNeLYI3qHtrvo4Fqz+GX+c8mYuuabLhgwow7upmcjEj/46w
-         FAmnUWZTuwnv87sv2WbRbRGU2uC0+GbTkyzI3gFLD4wBnE2ARUDBQoCAJl6CKvOJXC0e
-         u4ksW4IJ9PBp2NmQQHpy5UCBz0XW9fcFVkbLERX+fh1vcfeazHhkmEFCQB7C5xOCn91U
-         B13Q==
-X-Gm-Message-State: APjAAAXHMCboYG9dM8+7aLHSYuZRAZ/L4xJGSQ9HtJqn+0atF4hPgZw5
-        SM2yBTcnilQZVZ547mUc15g=
-X-Google-Smtp-Source: APXvYqzxoVPwmvuKvD9wfat64vTO2+jNEzlo+kxL7foPHUZ4WM0hjg3RxB7U8lmWINFEvDOJRQnFCA==
-X-Received: by 2002:ac8:1a8c:: with SMTP id x12mr9331816qtj.297.1581544641524;
-        Wed, 12 Feb 2020 13:57:21 -0800 (PST)
+        bh=KbzWTmlI92fxPxuN1voD79dF6p9bHCVqQjh6L8nnqdc=;
+        b=psd3pVgslWaqpWph5EHj/WGt4XOrcqI+OAthasK+8mL4erIjr6Z6HBgW2sjEw1H2QI
+         sBMnQswFTWtFIjNdBuG3bVlNCPufr30145zKi1QMYRTNX33x/V5xa1kSTs/Qa4NcnT6u
+         kV6m0Kd2RiZV4RXW/fuZ5/qdWf3P3iMDJJweEZnO2pFhCguvHO9QiklnZxBBhp2LKAQY
+         dcphZ7wgZySObUyM7Cpg8QTSMGsmJkDVpGXcWkbHPKwnuCl7fdiIxCv2pmNu63Ikzdx6
+         E5TWiC9DOrjPzQD/ULt4ojJbbwswnjx00eshVswTVFY5mN9CcNAknkCdxTSz3ole1gvX
+         4VRQ==
+X-Gm-Message-State: APjAAAXT2Riyv1b83VuWjBsg95OFtnutxo3AwyRcc+kV7zp8VCSegjLp
+        cx0BuJg98Um+nf7VPT+p0Qc=
+X-Google-Smtp-Source: APXvYqzapykhVwBlHKF13f0hBuBc1hFsX5FevEXiX2OdXnmMiZJD4hXUPgbA5DRXcYM3JBKrWWKSwg==
+X-Received: by 2002:ac8:530c:: with SMTP id t12mr9040627qtn.83.1581554091416;
+        Wed, 12 Feb 2020 16:34:51 -0800 (PST)
 Received: from rani.riverdale.lan ([2001:470:1f07:5f3::b55f])
-        by smtp.gmail.com with ESMTPSA id y83sm137427qkb.40.2020.02.12.13.57.20
+        by smtp.gmail.com with ESMTPSA id t29sm357874qkm.27.2020.02.12.16.34.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Feb 2020 13:57:21 -0800 (PST)
+        Wed, 12 Feb 2020 16:34:51 -0800 (PST)
 From:   Arvind Sankar <nivedita@alum.mit.edu>
 X-Google-Original-From: Arvind Sankar <arvind@rani.riverdale.lan>
-Date:   Wed, 12 Feb 2020 16:57:19 -0500
+Date:   Wed, 12 Feb 2020 19:34:49 -0500
 To:     Hans de Goede <hdegoede@redhat.com>
 Cc:     Ard Biesheuvel <ardb@kernel.org>,
         Andy Lutomirski <luto@amacapital.net>,
         Matt Fleming <matt@codeblueprint.co.uk>,
         linux-efi <linux-efi@vger.kernel.org>
 Subject: Re: New EFI thunk alignment WARN_ON in 5.6 triggers multiple times
-Message-ID: <20200212215717.GA958135@rani.riverdale.lan>
+Message-ID: <20200213003449.GA1190065@rani.riverdale.lan>
 References: <aaf658ab-82ff-4a35-2984-77150924d3a7@redhat.com>
  <CAKv+Gu9fh_reYp65QXCeL4X3iovrCQFGNZWS3jMkpveZLgre-A@mail.gmail.com>
  <ab45ebd9-b2c3-d2f9-8947-be95aaab80bd@redhat.com>
+ <20200212215717.GA958135@rani.riverdale.lan>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <ab45ebd9-b2c3-d2f9-8947-be95aaab80bd@redhat.com>
+In-Reply-To: <20200212215717.GA958135@rani.riverdale.lan>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, Feb 12, 2020 at 04:00:24PM +0100, Hans de Goede wrote:
-> Hi,
-> 
-> On 2/12/20 12:53 PM, Ard Biesheuvel wrote:
-> > 
-> > 
-> > It seems that the purpose of the alignment check is to ensure that the
-> > data does not cross a page boundary, so that the data is guaranteed to
-> > be contiguous in the physical address space as well.
-> > 
-> > So in that light, the fix is most definitely wrong, although I am not
-> > sure how this is supposed to work generally.
-> 
-> I'm not sure that is what it is trying to check, if that is what it is
-> trying to check then the code is certainly wrong.
-> 
-> Let me first quote the entire check:
-> 
->          /*
->           * A fully aligned variable on the stack is guaranteed not to
->           * cross a page bounary. Try to catch strings on the stack by
->           * checking that 'size' is a power of two.
->           */
->          bad_size = size > PAGE_SIZE || !is_power_of_2(size);
-> 
->          WARN_ON(!IS_ALIGNED((unsigned long)va, size) || bad_size);
-> 
-> AFAIK EFI is using the identity map, and the kernel stack is
-> physically contiguous, so crossing a page boundary should not a
-> problem. Also notice how the bad_size thing is talking about
-> page boundary crossing, but the thing triggering is the
-> IS_ALIGNED check. AFAIK there is no requirement for a struct, e.g.
-> an UUID (which is the problem here) to be aligned to its size,
-> it just needs to be 8 byte / 64 bit aligned, which it is yet
-> the IS_ALIGNED check is failing because it is checking for
-> a larger, in this case twice as large, but possibly it will
-> end up checking for a much larger alignment.
-> 
-> As said I'm not exactly familiar with the alignment requirements
-> but the current check certainly seems wrong.
+On Wed, Feb 12, 2020 at 04:57:19PM -0500, Arvind Sankar wrote:
+> However, I'm also getting confused about how mixed-mode works at all if
+> we have more than 4Gb RAM, which it seems we want to support as we take
+> pains to allocate a stack below 4Gb for the thunk. But in this case, the
+> kernel text and stack could be above 4Gb physically, so rather than
+> using a 1:1 map we'd need to find some space in the low 4Gb of virtual
+> addresses to map those, but I don't see where we do this? Also, that
+> dynamically allocated variable_name could be above 4G as well.
 
-If VMAP_STACK is enabled, the stack pages may not be physically
-contiguous. So the check is trying to warn about all cases where the
-object might cross a page boundary and so not be physically contiguous,
-even if the current call is ok because it doesn't cross the page
-boundary.
-
-It should probably also error out rather than making the call if it is
-actually the case that it spans non-physically contiguous pages.
-
-However, I'm also getting confused about how mixed-mode works at all if
-we have more than 4Gb RAM, which it seems we want to support as we take
-pains to allocate a stack below 4Gb for the thunk. But in this case, the
-kernel text and stack could be above 4Gb physically, so rather than
-using a 1:1 map we'd need to find some space in the low 4Gb of virtual
-addresses to map those, but I don't see where we do this? Also, that
-dynamically allocated variable_name could be above 4G as well.
+Verified in QEMU that mixed mode crashes if physical RAM can extend
+above 4G. Are there any such real devices in existence? Should we check
+that and disable runtime services if so?
