@@ -2,27 +2,27 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 908B115E5A0
-	for <lists+linux-efi@lfdr.de>; Fri, 14 Feb 2020 17:44:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C099915E478
+	for <lists+linux-efi@lfdr.de>; Fri, 14 Feb 2020 17:36:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2393086AbgBNQVq (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 14 Feb 2020 11:21:46 -0500
-Received: from mail.kernel.org ([198.145.29.99]:56574 "EHLO mail.kernel.org"
+        id S2393652AbgBNQft (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 14 Feb 2020 11:35:49 -0500
+Received: from mail.kernel.org ([198.145.29.99]:33264 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2393075AbgBNQVo (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Fri, 14 Feb 2020 11:21:44 -0500
+        id S2405921AbgBNQYg (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Fri, 14 Feb 2020 11:24:36 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 9CB37246C5;
-        Fri, 14 Feb 2020 16:21:42 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id D128F2479D;
+        Fri, 14 Feb 2020 16:24:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1581697304;
-        bh=lL4pFfsrsx5IvHqyB0CeDf2N+rjFEBCQR0PaBMWEcVk=;
+        s=default; t=1581697476;
+        bh=u4qyc8uNB1l2T+CyO/foQ1KOl/EGrkXWAq28DrRAVi0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SEuBJEFzuMbG758vb88vmeye+U0Hy+XSdtlLJNuf8UgnJ/BbUu0kFEYkRLNPawEbH
-         t92d50sSk3Wjt1DF7zvA97IEZEVDdxF6d8vuRLCoWxbSYvJel16kSeqNv6Pg032Xkb
-         Ty9E2pOyZmyUFKHq6spzoykMeHDpoH3j2uoZHriM=
+        b=N4rcD326m2vNUk7WIzU4Z61e5TaTyQ3q6vSG0DlfLZGYxplJJXw62r6EU0MTN5PEA
+         U8M2pM6wrwATTdARqIGHnhcukoTT6WxhOdkvFzHgqQoArTOeQzzzw1p1OL29NfNCj2
+         OlXig9nMVQXYryOwK2k0p4rZPjGutqIDmXkZTfNk=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Ard Biesheuvel <ardb@kernel.org>,
@@ -33,12 +33,12 @@ Cc:     Ard Biesheuvel <ardb@kernel.org>,
         Ingo Molnar <mingo@kernel.org>,
         Sasha Levin <sashal@kernel.org>,
         platform-driver-x86@vger.kernel.org, x86@kernel.org
-Subject: [PATCH AUTOSEL 4.9 016/141] efi/x86: Map the entire EFI vendor string before copying it
-Date:   Fri, 14 Feb 2020 11:19:16 -0500
-Message-Id: <20200214162122.19794-16-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.4 008/100] efi/x86: Map the entire EFI vendor string before copying it
+Date:   Fri, 14 Feb 2020 11:22:52 -0500
+Message-Id: <20200214162425.21071-8-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200214162122.19794-1-sashal@kernel.org>
-References: <20200214162122.19794-1-sashal@kernel.org>
+In-Reply-To: <20200214162425.21071-1-sashal@kernel.org>
+References: <20200214162425.21071-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -76,10 +76,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 7 insertions(+), 6 deletions(-)
 
 diff --git a/arch/x86/platform/efi/efi.c b/arch/x86/platform/efi/efi.c
-index b6669d326545a..f08abdf8bb676 100644
+index 4bc352fc08f19..105872617be08 100644
 --- a/arch/x86/platform/efi/efi.c
 +++ b/arch/x86/platform/efi/efi.c
-@@ -478,7 +478,6 @@ void __init efi_init(void)
+@@ -465,7 +465,6 @@ void __init efi_init(void)
  	efi_char16_t *c16;
  	char vendor[100] = "unknown";
  	int i = 0;
@@ -87,7 +87,7 @@ index b6669d326545a..f08abdf8bb676 100644
  
  #ifdef CONFIG_X86_32
  	if (boot_params.efi_info.efi_systab_hi ||
-@@ -503,14 +502,16 @@ void __init efi_init(void)
+@@ -490,14 +489,16 @@ void __init efi_init(void)
  	/*
  	 * Show what we know for posterity
  	 */
