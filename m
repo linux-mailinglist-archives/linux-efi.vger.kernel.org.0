@@ -2,27 +2,27 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A736115ECBB
-	for <lists+linux-efi@lfdr.de>; Fri, 14 Feb 2020 18:29:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B068C15EA9B
+	for <lists+linux-efi@lfdr.de>; Fri, 14 Feb 2020 18:15:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390701AbgBNR3g (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 14 Feb 2020 12:29:36 -0500
-Received: from mail.kernel.org ([198.145.29.99]:59542 "EHLO mail.kernel.org"
+        id S2391974AbgBNQMV (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 14 Feb 2020 11:12:21 -0500
+Received: from mail.kernel.org ([198.145.29.99]:39726 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2390793AbgBNQHv (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Fri, 14 Feb 2020 11:07:51 -0500
+        id S2391968AbgBNQMV (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Fri, 14 Feb 2020 11:12:21 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 584FD206D7;
-        Fri, 14 Feb 2020 16:07:49 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id C398824697;
+        Fri, 14 Feb 2020 16:12:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1581696470;
-        bh=+JV1zX3XquiSEzUQgobeArAwwcIAYgouiRF7J9Wtenk=;
+        s=default; t=1581696740;
+        bh=FDLTKae5L6Lt5h3s6D/TeS96VdvhDxPetZvWw6O8jx4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=z7hDl1ICw73kyDJlWeVPBNbZoYv8+MOjFFGdy/SL+77XAZwAbpNG5cVVWVkJMgNrl
-         laMM04nwGNCp12EYxlQc5ZvI8TybbcI7dwPa3OY4KU9krfbaC09wMwIVbYoq5N67u3
-         2uRRftSgMV8ieE+q0p5yOswjNewool1olHLlYu/c=
+        b=2gYtf6cyXICXjE2Si97U/Tn8p3YjL4ZQqB+iyjWGT/bTJXvRaV/m7j9DdUs69qvna
+         udTpvXuiLswjZzOYeqVbzUNfteEdbWFC1XEXwmEJZpEgU+6NG5J7F+YlqpP1C2Efcp
+         yMYHv8pLsD47lbAMO8DjmNaFJzSsToJuKilsshGI=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Ard Biesheuvel <ardb@kernel.org>,
@@ -33,12 +33,12 @@ Cc:     Ard Biesheuvel <ardb@kernel.org>,
         Ingo Molnar <mingo@kernel.org>,
         Sasha Levin <sashal@kernel.org>,
         platform-driver-x86@vger.kernel.org, x86@kernel.org
-Subject: [PATCH AUTOSEL 5.4 279/459] efi/x86: Don't panic or BUG() on non-critical error conditions
-Date:   Fri, 14 Feb 2020 10:58:49 -0500
-Message-Id: <20200214160149.11681-279-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 024/252] efi/x86: Map the entire EFI vendor string before copying it
+Date:   Fri, 14 Feb 2020 11:07:59 -0500
+Message-Id: <20200214161147.15842-24-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200214160149.11681-1-sashal@kernel.org>
-References: <20200214160149.11681-1-sashal@kernel.org>
+In-Reply-To: <20200214161147.15842-1-sashal@kernel.org>
+References: <20200214161147.15842-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -50,17 +50,16 @@ X-Mailing-List: linux-efi@vger.kernel.org
 
 From: Ard Biesheuvel <ardb@kernel.org>
 
-[ Upstream commit e2d68a955e49d61fd0384f23e92058dc9b79be5e ]
+[ Upstream commit ffc2760bcf2dba0dbef74013ed73eea8310cc52c ]
 
-The logic in __efi_enter_virtual_mode() does a number of steps in
-sequence, all of which may fail in one way or the other. In most
-cases, we simply print an error and disable EFI runtime services
-support, but in some cases, we BUG() or panic() and bring down the
-system when encountering conditions that we could easily handle in
-the same way.
-
-While at it, replace a pointless page-to-virt-phys conversion with
-one that goes straight from struct page to physical.
+Fix a couple of issues with the way we map and copy the vendor string:
+- we map only 2 bytes, which usually works since you get at least a
+  page, but if the vendor string happens to cross a page boundary,
+  a crash will result
+- only call early_memunmap() if early_memremap() succeeded, or we will
+  call it with a NULL address which it doesn't like,
+- while at it, switch to early_memremap_ro(), and array indexing rather
+  than pointer dereferencing to read the CHAR16 characters.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 Cc: Andy Lutomirski <luto@kernel.org>
@@ -68,109 +67,48 @@ Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>
 Cc: Arvind Sankar <nivedita@alum.mit.edu>
 Cc: Matthew Garrett <mjg59@google.com>
 Cc: linux-efi@vger.kernel.org
-Link: https://lkml.kernel.org/r/20200103113953.9571-14-ardb@kernel.org
+Fixes: 5b83683f32b1 ("x86: EFI runtime service support")
+Link: https://lkml.kernel.org/r/20200103113953.9571-5-ardb@kernel.org
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/platform/efi/efi.c    | 28 ++++++++++++++--------------
- arch/x86/platform/efi/efi_64.c |  9 +++++----
- 2 files changed, 19 insertions(+), 18 deletions(-)
+ arch/x86/platform/efi/efi.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
 diff --git a/arch/x86/platform/efi/efi.c b/arch/x86/platform/efi/efi.c
-index 8a4f389330396..01d7ca492741d 100644
+index 335a62e74a2e9..5b0275310070e 100644
 --- a/arch/x86/platform/efi/efi.c
 +++ b/arch/x86/platform/efi/efi.c
-@@ -954,16 +954,14 @@ static void __init __efi_enter_virtual_mode(void)
+@@ -480,7 +480,6 @@ void __init efi_init(void)
+ 	efi_char16_t *c16;
+ 	char vendor[100] = "unknown";
+ 	int i = 0;
+-	void *tmp;
  
- 	if (efi_alloc_page_tables()) {
- 		pr_err("Failed to allocate EFI page tables\n");
--		clear_bit(EFI_RUNTIME_SERVICES, &efi.flags);
--		return;
-+		goto err;
- 	}
- 
- 	efi_merge_regions();
- 	new_memmap = efi_map_regions(&count, &pg_shift);
- 	if (!new_memmap) {
- 		pr_err("Error reallocating memory, EFI runtime non-functional!\n");
--		clear_bit(EFI_RUNTIME_SERVICES, &efi.flags);
--		return;
-+		goto err;
- 	}
- 
- 	pa = __pa(new_memmap);
-@@ -977,8 +975,7 @@ static void __init __efi_enter_virtual_mode(void)
- 
- 	if (efi_memmap_init_late(pa, efi.memmap.desc_size * count)) {
- 		pr_err("Failed to remap late EFI memory map\n");
--		clear_bit(EFI_RUNTIME_SERVICES, &efi.flags);
--		return;
-+		goto err;
- 	}
- 
- 	if (efi_enabled(EFI_DBG)) {
-@@ -986,12 +983,11 @@ static void __init __efi_enter_virtual_mode(void)
- 		efi_print_memmap();
- 	}
- 
--	BUG_ON(!efi.systab);
-+	if (WARN_ON(!efi.systab))
-+		goto err;
- 
--	if (efi_setup_page_tables(pa, 1 << pg_shift)) {
--		clear_bit(EFI_RUNTIME_SERVICES, &efi.flags);
--		return;
--	}
-+	if (efi_setup_page_tables(pa, 1 << pg_shift))
-+		goto err;
- 
- 	efi_sync_low_kernel_mappings();
- 
-@@ -1011,9 +1007,9 @@ static void __init __efi_enter_virtual_mode(void)
- 	}
- 
- 	if (status != EFI_SUCCESS) {
--		pr_alert("Unable to switch EFI into virtual mode (status=%lx)!\n",
--			 status);
--		panic("EFI call to SetVirtualAddressMap() failed!");
-+		pr_err("Unable to switch EFI into virtual mode (status=%lx)!\n",
-+		       status);
-+		goto err;
- 	}
- 
- 	efi_free_boot_services();
-@@ -1042,6 +1038,10 @@ static void __init __efi_enter_virtual_mode(void)
- 
- 	/* clean DUMMY object */
- 	efi_delete_dummy_variable();
-+	return;
-+
-+err:
-+	clear_bit(EFI_RUNTIME_SERVICES, &efi.flags);
- }
- 
- void __init efi_enter_virtual_mode(void)
-diff --git a/arch/x86/platform/efi/efi_64.c b/arch/x86/platform/efi/efi_64.c
-index 08ce8177c3af1..52a1e5192fa80 100644
---- a/arch/x86/platform/efi/efi_64.c
-+++ b/arch/x86/platform/efi/efi_64.c
-@@ -392,11 +392,12 @@ int __init efi_setup_page_tables(unsigned long pa_memmap, unsigned num_pages)
- 		return 0;
- 
- 	page = alloc_page(GFP_KERNEL|__GFP_DMA32);
--	if (!page)
--		panic("Unable to allocate EFI runtime stack < 4GB\n");
-+	if (!page) {
-+		pr_err("Unable to allocate EFI runtime stack < 4GB\n");
-+		return 1;
+ #ifdef CONFIG_X86_32
+ 	if (boot_params.efi_info.efi_systab_hi ||
+@@ -505,14 +504,16 @@ void __init efi_init(void)
+ 	/*
+ 	 * Show what we know for posterity
+ 	 */
+-	c16 = tmp = early_memremap(efi.systab->fw_vendor, 2);
++	c16 = early_memremap_ro(efi.systab->fw_vendor,
++				sizeof(vendor) * sizeof(efi_char16_t));
+ 	if (c16) {
+-		for (i = 0; i < sizeof(vendor) - 1 && *c16; ++i)
+-			vendor[i] = *c16++;
++		for (i = 0; i < sizeof(vendor) - 1 && c16[i]; ++i)
++			vendor[i] = c16[i];
+ 		vendor[i] = '\0';
+-	} else
++		early_memunmap(c16, sizeof(vendor) * sizeof(efi_char16_t));
++	} else {
+ 		pr_err("Could not map the firmware vendor!\n");
+-	early_memunmap(tmp, 2);
 +	}
  
--	efi_scratch.phys_stack = virt_to_phys(page_address(page));
--	efi_scratch.phys_stack += PAGE_SIZE; /* stack grows down */
-+	efi_scratch.phys_stack = page_to_phys(page + 1); /* stack grows down */
- 
- 	npages = (_etext - _text) >> PAGE_SHIFT;
- 	text = __pa(_text);
+ 	pr_info("EFI v%u.%.02u by %s\n",
+ 		efi.systab->hdr.revision >> 16,
 -- 
 2.20.1
 
