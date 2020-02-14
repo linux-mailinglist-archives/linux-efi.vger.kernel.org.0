@@ -2,91 +2,205 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D978015CF25
-	for <lists+linux-efi@lfdr.de>; Fri, 14 Feb 2020 01:38:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D5DF15D7CF
+	for <lists+linux-efi@lfdr.de>; Fri, 14 Feb 2020 13:56:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727665AbgBNAih (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 13 Feb 2020 19:38:37 -0500
-Received: from mail-qk1-f196.google.com ([209.85.222.196]:40028 "EHLO
-        mail-qk1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727604AbgBNAig (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 13 Feb 2020 19:38:36 -0500
-Received: by mail-qk1-f196.google.com with SMTP id b7so7618380qkl.7
-        for <linux-efi@vger.kernel.org>; Thu, 13 Feb 2020 16:38:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:from:date:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=wGH4VY/3ugpp7nzWpAp09Rovcx+O4RdGGz99VfpVE0k=;
-        b=V6RIg5lFKn8SGTXOEVEEQWPnDFJIa4x7oTbMlHJPCCvjD1SQumScY4+/x01VueDwjQ
-         oX1sqPAK7GOJLWeGDhHeh+x4SzW2+6F002PxORIApjUQlam4ShwKYf7hn8v3+BCTkbnB
-         Vv+5WZp2o3wgLsnoZomZ1m/28AlD/pQDDszTehbmWVOMF9Y1EZGBOoxVYpSeNVJfzder
-         XAZCrlEA+5/tbwlq8Bmx2q0HIIXVmigmKsxZD/IVu2peOeOZqvUkqFZmgrjNC1k2ZMbl
-         Rt633Tp+AzgUnQ66c0wShyM3HVZooGqY/YjaRTtm6j+fW/uRBT741KXKRSl3+vZkt4nw
-         oMGw==
+        id S1729286AbgBNM4A (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 14 Feb 2020 07:56:00 -0500
+Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:50429 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1729246AbgBNMz7 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 14 Feb 2020 07:55:59 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1581684958;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=uc3HW2s+A+nqIINnkUywDqrVNge9+qWZZoEL5muBZk8=;
+        b=J5P0Kb3ZNuVzJmkLCd71hNKJQs9TCtlZJ+ZBzh0x3raVRNW66/xv95dASUcKoxnuRI5vhj
+        83d0EbtYBgNqCxnfxjjSUKz0HIilMDeB8MezhQEToi+JMLAp4mnAZuT0cgOmbyXBXelQgy
+        wdl2XoCECYfXB3OkPuRUpMmr2exD/78=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-321-mJssFp7lN2yTMIQMzyDZDA-1; Fri, 14 Feb 2020 07:55:57 -0500
+X-MC-Unique: mJssFp7lN2yTMIQMzyDZDA-1
+Received: by mail-wm1-f72.google.com with SMTP id w12so3424117wmc.3
+        for <linux-efi@vger.kernel.org>; Fri, 14 Feb 2020 04:55:56 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:from:date:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to:user-agent;
-        bh=wGH4VY/3ugpp7nzWpAp09Rovcx+O4RdGGz99VfpVE0k=;
-        b=JfbMKlPF5VavRRiqnIlSuRt9ktTG0dbio7SPokjrOEaOJyzMqQzPVgZrtxIgYaWCg2
-         4miMmbuqrXOg+Hch28pG3eyWHN3eNMgUe0Byl8C4ETr7pkR3RKyDEyUKHOuA4Ohc5PGZ
-         H45rdpjlpDXrjQxwjMoNL0fFHPh524OMsQCJt79XztSBKq10voA6xqH12e+MGmnc8kgA
-         4TVevM2bM2YWsBhV3rv3Txult0+HI2PG8c5e020HTimb+2i/R1iyldkX0Dx97ncEbhMf
-         igxukpCwyPr9GPfl6BM7bStSEm1xh4xRgHt2a4ZZXQThQGgZuKT4igEAmLD8ldT41eNZ
-         kQZQ==
-X-Gm-Message-State: APjAAAWSlGVPY3o5/XWgxVmwp5XOrzs37mPCLvbQSmdRLonPn6rhHe+H
-        Y1cQdAvk45zjL0zDZ4ODBHw=
-X-Google-Smtp-Source: APXvYqwfnW4Vs+QhrRGYRew3FAdJ0vrdZDXZKbEZ0z9MgIlJXH1IiWUuhUEyeD7TvJXJg9PvvaQgiQ==
-X-Received: by 2002:a37:bd85:: with SMTP id n127mr240986qkf.113.1581640714660;
-        Thu, 13 Feb 2020 16:38:34 -0800 (PST)
-Received: from rani.riverdale.lan ([2001:470:1f07:5f3::b55f])
-        by smtp.gmail.com with ESMTPSA id t23sm2278596qtp.82.2020.02.13.16.38.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Feb 2020 16:38:34 -0800 (PST)
-From:   Arvind Sankar <nivedita@alum.mit.edu>
-X-Google-Original-From: Arvind Sankar <arvind@rani.riverdale.lan>
-Date:   Thu, 13 Feb 2020 19:38:32 -0500
-To:     Ard Biesheuvel <ardb@kernel.org>
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=uc3HW2s+A+nqIINnkUywDqrVNge9+qWZZoEL5muBZk8=;
+        b=EthfLnjCSxtW0VZZGr4543JurPHLgrEXFM02hzhzXnT9r9mj5Uvcdus9Q7GJidGQ3q
+         bLTCn4IfnZ4tKpM5CWJRgKvzQ4FptRPnlzBXsybco1nmfY96hFqcRBCcbw0WNBYR7lil
+         CcCb3xpi2lE2YMmOqSuNbTxbM5EPSD3FzCuYRiwHQYLSubYcp+cQd84h3MDyxQegDXcN
+         URHbba+YINo5POeDLqy5vMWpO3IMCzA/NW96LZ4IKl7GhXxvsPnHzgopwVpykzc+tFH+
+         15QDQ5BeKTaPrydYy2FwXiH/ikP3NGydFcfbzuc89bogTJLpHcNE5vN/hhUTTUcuOeqz
+         fMng==
+X-Gm-Message-State: APjAAAVsx/Ju/plZfPe+2vCQ6PZVJsDKggygqQ5U3oCyHZnuCyN54583
+        xkfWQnLvLaK6FzekRp4f8bcCukvnWowa3mP7O9zuSYcCcC+E+3vB9eH3y7i3KUOdhkUfJWVS94/
+        llDCNmFKsPwR9p9LNqMpk
+X-Received: by 2002:a1c:2786:: with SMTP id n128mr4455355wmn.47.1581684955563;
+        Fri, 14 Feb 2020 04:55:55 -0800 (PST)
+X-Google-Smtp-Source: APXvYqxJ6dvguYXFYFq96vqiRZFwGNHeGVjRgPK/bC89iqapMziKQFFp8Uw7XnFd8uosFfP3sdpKzg==
+X-Received: by 2002:a1c:2786:: with SMTP id n128mr4455343wmn.47.1581684955339;
+        Fri, 14 Feb 2020 04:55:55 -0800 (PST)
+Received: from x1.localdomain (2001-1c00-0c0c-fe00-fc7e-fd47-85c1-1ab3.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:fc7e:fd47:85c1:1ab3])
+        by smtp.gmail.com with ESMTPSA id e22sm7481102wme.45.2020.02.14.04.55.54
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 14 Feb 2020 04:55:54 -0800 (PST)
+Subject: Re: [PATCH 1/3] efi/x86: align GUIDs to their size in the mixed mode
+ runtime wrapper
+To:     Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org
 Cc:     Arvind Sankar <nivedita@alum.mit.edu>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        Laszlo Ersek <lersek@redhat.com>,
-        Leif Lindholm <leif@nuviainc.com>,
-        Peter Jones <pjones@redhat.com>,
-        Matthew Garrett <mjg59@google.com>,
-        Alexander Graf <agraf@csgraf.de>,
-        Daniel Kiper <daniel.kiper@oracle.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Michael Brown <mbrown@fensystems.co.uk>,
-        Ingo Molnar <mingo@kernel.org>
-Subject: Re: [RFC PATCH 0/3] efi/x86: add support for generic EFI mixed mode
- boot
-Message-ID: <20200214003832.GA3073156@rani.riverdale.lan>
-References: <20200213145928.7047-1-ardb@kernel.org>
- <20200213175317.GC1400002@rani.riverdale.lan>
- <CAKv+Gu-78w=gs+D-eS5iBX7e3zL57XBOe1vdW=Bkk=EcA+_FQA@mail.gmail.com>
- <20200213184752.GA1424509@rani.riverdale.lan>
- <CAKv+Gu9Azn9oGHaTqv+-Foj4=b5Y-JradERq4NC5V9XOaVjSKQ@mail.gmail.com>
- <20200214001048.GA3054227@rani.riverdale.lan>
- <20200214001257.GB3054227@rani.riverdale.lan>
- <CAKv+Gu92Tny_PJjddAtLrhdFJm0GqgSfj3NA26PX6xOiaStozg@mail.gmail.com>
+        Andy Lutomirski <luto@amacapital.net>
+References: <20200213102102.30170-1-ardb@kernel.org>
+ <20200213102102.30170-2-ardb@kernel.org>
+From:   Hans de Goede <hdegoede@redhat.com>
+Message-ID: <116eb62a-8067-b4f1-171a-2659bcaa94bf@redhat.com>
+Date:   Fri, 14 Feb 2020 13:55:53 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CAKv+Gu92Tny_PJjddAtLrhdFJm0GqgSfj3NA26PX6xOiaStozg@mail.gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20200213102102.30170-2-ardb@kernel.org>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, Feb 14, 2020 at 12:21:30AM +0000, Ard Biesheuvel wrote:
+Hi,
+
+On 2/13/20 11:21 AM, Ard Biesheuvel wrote:
+> The mixed mode runtime wrappers are fragile when it comes to how the
+> memory referred to by its pointer arguments are laid out in memory,
+> due to the fact that it translates these addresses to physical addresses
+> that the runtime services can dereference when running in 1:1 mode.
 > 
+> As a quick (i.e., backportable) fix, copy GUID pointer arguments to
+> the local stack into a buffer that is naturally aligned to its size,
+> so that is guaranteed to cover only one physical page.
 > 
-> I see the value of having a 64-bit image that can boot natively on
-> 32-bit firmware, but I am not expecting any buy in from the distros
-> for this scheme.
+> Note that on x86, we cannot rely on the stack pointer being aligned
+> the way the compiler expects, so we need to allocate an 8-byte aligned
+> buffer of sufficient size, and copy the GUID into that buffer at an
+> offset that is aligned to 16 bytes.
+> 
+> Reported-by: Hans de Goede <hdegoede@redhat.com>
+> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+
+I can confirm that this fixes the WARN_ON triggering I was seeing,
+thanks:
+
+Tested-by: Hans de Goede <hdegoede@redhat.com>
+
+Regards,
+
+Hans
+
+
+
+> ---
+>   arch/x86/platform/efi/efi_64.c | 25 ++++++++++++++++----
+>   1 file changed, 21 insertions(+), 4 deletions(-)
+> 
+> diff --git a/arch/x86/platform/efi/efi_64.c b/arch/x86/platform/efi/efi_64.c
+> index fa8506e76bbe..543edfdcd1b9 100644
+> --- a/arch/x86/platform/efi/efi_64.c
+> +++ b/arch/x86/platform/efi/efi_64.c
+> @@ -658,6 +658,8 @@ static efi_status_t
+>   efi_thunk_get_variable(efi_char16_t *name, efi_guid_t *vendor,
+>   		       u32 *attr, unsigned long *data_size, void *data)
+>   {
+> +	u8 buf[24] __aligned(8);
+> +	efi_guid_t *vnd = PTR_ALIGN((efi_guid_t *)buf, sizeof(*vnd));
+>   	efi_status_t status;
+>   	u32 phys_name, phys_vendor, phys_attr;
+>   	u32 phys_data_size, phys_data;
+> @@ -665,8 +667,10 @@ efi_thunk_get_variable(efi_char16_t *name, efi_guid_t *vendor,
+>   
+>   	spin_lock_irqsave(&efi_runtime_lock, flags);
+>   
+> +	*vnd = *vendor;
+> +
+>   	phys_data_size = virt_to_phys_or_null(data_size);
+> -	phys_vendor = virt_to_phys_or_null(vendor);
+> +	phys_vendor = virt_to_phys_or_null(vnd);
+>   	phys_name = virt_to_phys_or_null_size(name, efi_name_size(name));
+>   	phys_attr = virt_to_phys_or_null(attr);
+>   	phys_data = virt_to_phys_or_null_size(data, *data_size);
+> @@ -683,14 +687,18 @@ static efi_status_t
+>   efi_thunk_set_variable(efi_char16_t *name, efi_guid_t *vendor,
+>   		       u32 attr, unsigned long data_size, void *data)
+>   {
+> +	u8 buf[24] __aligned(8);
+> +	efi_guid_t *vnd = PTR_ALIGN((efi_guid_t *)buf, sizeof(*vnd));
+>   	u32 phys_name, phys_vendor, phys_data;
+>   	efi_status_t status;
+>   	unsigned long flags;
+>   
+>   	spin_lock_irqsave(&efi_runtime_lock, flags);
+>   
+> +	*vnd = *vendor;
+> +
+>   	phys_name = virt_to_phys_or_null_size(name, efi_name_size(name));
+> -	phys_vendor = virt_to_phys_or_null(vendor);
+> +	phys_vendor = virt_to_phys_or_null(vnd);
+>   	phys_data = virt_to_phys_or_null_size(data, data_size);
+>   
+>   	/* If data_size is > sizeof(u32) we've got problems */
+> @@ -707,6 +715,8 @@ efi_thunk_set_variable_nonblocking(efi_char16_t *name, efi_guid_t *vendor,
+>   				   u32 attr, unsigned long data_size,
+>   				   void *data)
+>   {
+> +	u8 buf[24] __aligned(8);
+> +	efi_guid_t *vnd = PTR_ALIGN((efi_guid_t *)buf, sizeof(*vnd));
+>   	u32 phys_name, phys_vendor, phys_data;
+>   	efi_status_t status;
+>   	unsigned long flags;
+> @@ -714,8 +724,10 @@ efi_thunk_set_variable_nonblocking(efi_char16_t *name, efi_guid_t *vendor,
+>   	if (!spin_trylock_irqsave(&efi_runtime_lock, flags))
+>   		return EFI_NOT_READY;
+>   
+> +	*vnd = *vendor;
+> +
+>   	phys_name = virt_to_phys_or_null_size(name, efi_name_size(name));
+> -	phys_vendor = virt_to_phys_or_null(vendor);
+> +	phys_vendor = virt_to_phys_or_null(vnd);
+>   	phys_data = virt_to_phys_or_null_size(data, data_size);
+>   
+>   	/* If data_size is > sizeof(u32) we've got problems */
+> @@ -732,14 +744,18 @@ efi_thunk_get_next_variable(unsigned long *name_size,
+>   			    efi_char16_t *name,
+>   			    efi_guid_t *vendor)
+>   {
+> +	u8 buf[24] __aligned(8);
+> +	efi_guid_t *vnd = PTR_ALIGN((efi_guid_t *)buf, sizeof(*vnd));
+>   	efi_status_t status;
+>   	u32 phys_name_size, phys_name, phys_vendor;
+>   	unsigned long flags;
+>   
+>   	spin_lock_irqsave(&efi_runtime_lock, flags);
+>   
+> +	*vnd = *vendor;
+> +
+>   	phys_name_size = virt_to_phys_or_null(name_size);
+> -	phys_vendor = virt_to_phys_or_null(vendor);
+> +	phys_vendor = virt_to_phys_or_null(vnd);
+>   	phys_name = virt_to_phys_or_null_size(name, *name_size);
+>   
+>   	status = efi_thunk(get_next_variable, phys_name_size,
+> @@ -747,6 +763,7 @@ efi_thunk_get_next_variable(unsigned long *name_size,
+>   
+>   	spin_unlock_irqrestore(&efi_runtime_lock, flags);
+>   
+> +	*vendor = *vnd;
+>   	return status;
+>   }
+>   
 > 
 
-Ok.
