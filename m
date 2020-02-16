@@ -2,135 +2,99 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E4EA2160587
-	for <lists+linux-efi@lfdr.de>; Sun, 16 Feb 2020 19:32:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BD57616058D
+	for <lists+linux-efi@lfdr.de>; Sun, 16 Feb 2020 19:41:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725989AbgBPScM (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sun, 16 Feb 2020 13:32:12 -0500
-Received: from mail.kernel.org ([198.145.29.99]:36264 "EHLO mail.kernel.org"
+        id S1725989AbgBPSlB (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sun, 16 Feb 2020 13:41:01 -0500
+Received: from mout.gmx.net ([212.227.15.18]:42341 "EHLO mout.gmx.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726020AbgBPScM (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Sun, 16 Feb 2020 13:32:12 -0500
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 554A022B48
-        for <linux-efi@vger.kernel.org>; Sun, 16 Feb 2020 18:32:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1581877931;
-        bh=EDzR1SWoeTP3PS53iYm+v8llO5Y8uiP2GNaxmMQ4++U=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=KzopiJlktkgo2BlJO3vgl9MaBGiKPsegU24YVDwiGiNOx04Jx3efc0f1wclBd3Bhn
-         qNwAuE/6o4lvolmI2A1RjPmwU2me/Dpa28WarONn07FACnuW/Dh868BsbeNOBMXQaO
-         T+iKtMs189lciumH3sR2ZYGPWH+hzmUcib4g5lr0=
-Received: by mail-wm1-f53.google.com with SMTP id m10so5809341wmc.0
-        for <linux-efi@vger.kernel.org>; Sun, 16 Feb 2020 10:32:11 -0800 (PST)
-X-Gm-Message-State: APjAAAXzT5r8V+LlDC3ChVuT//PGWn9AKlvvLSXCZloVWcNgYeG1AE/G
-        9nQqhBtfshYgx7kZyLrJ4CcewPcm/QBYaUVg7TlChA==
-X-Google-Smtp-Source: APXvYqw49cvCSIJYQeUyUb39Yo8eW5vIIraLjTmETS76Q9vf74bEtQkragmJ5CnqaAMS9OSHHTRcJG9ASHNzdzoQm8Y=
-X-Received: by 2002:a7b:c4cc:: with SMTP id g12mr18463603wmk.68.1581877929530;
- Sun, 16 Feb 2020 10:32:09 -0800 (PST)
+        id S1726020AbgBPSlA (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Sun, 16 Feb 2020 13:41:00 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1581878456;
+        bh=SSRIb3UcFG0HZ62FbpRPA/jmVRv2yFX2P1dmBznrzqU=;
+        h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
+        b=Rvieat/sFHpWwVWeo+6Ftmysg0EaumkTD0Kyp6tH9yYE7uFyCoqjRDzskefXN6d7d
+         72tPIw5Dc279GSJDE9Mr6zWc4h2GEZrRaPLMlU1Lxw0f6Sbr0NBZA5nlzd7LXjcl8i
+         zdZhyGBtpOaThjpg5IkGAHFG3aeCp6NB2h0RbCac=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from LT02.fritz.box ([84.119.33.160]) by mail.gmx.com (mrgmx004
+ [212.227.17.184]) with ESMTPSA (Nemesis) id 1MKKZ3-1il2Fb0Vmp-00Llnz; Sun, 16
+ Feb 2020 19:40:56 +0100
+From:   Heinrich Schuchardt <xypron.glpk@gmx.de>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Heinrich Schuchardt <xypron.glpk@gmx.de>
+Subject: [PATCH 1/1] efi/libstub: simplify efi_get_memory_map()
+Date:   Sun, 16 Feb 2020 19:40:50 +0100
+Message-Id: <20200216184050.3100-1-xypron.glpk@gmx.de>
+X-Mailer: git-send-email 2.25.0
 MIME-Version: 1.0
-References: <20200216182334.8121-1-ardb@kernel.org>
-In-Reply-To: <20200216182334.8121-1-ardb@kernel.org>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Sun, 16 Feb 2020 19:31:58 +0100
-X-Gmail-Original-Message-ID: <CAKv+Gu-4N6B0LPL1fn5C2EAh9y3ECZ=mSi92p0AyJf67mJoWmw@mail.gmail.com>
-Message-ID: <CAKv+Gu-4N6B0LPL1fn5C2EAh9y3ECZ=mSi92p0AyJf67mJoWmw@mail.gmail.com>
-Subject: Re: [PATCH 00/18] efi: clean up contents of struct efi
-To:     linux-efi <linux-efi@vger.kernel.org>,
-        Tony Luck <tony.luck@intel.com>,
-        "Yu, Fenghua" <fenghua.yu@intel.com>
-Cc:     linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Arvind Sankar <nivedita@alum.mit.edu>,
-        "the arch/x86 maintainers" <x86@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:37shUavVqDQ2Y2UAkT4uB5vcCOlKfitq+crqcrDJ4vjvDZIygNB
+ zXCKiKZ6PahDQU5lVJHhpFUQGWlwPgwDGnUerMDeRznzOuMLdgLf7ks7LxthsVEqztEk4rU
+ PuRSkXiIk8eieMyr7zOmPeMtnXShbPTs0FC5UjeAGlH7HhLofkZCSVfntkVPWTKyOKn1+dT
+ K/DZ9HBTuDhpl1UPohD/A==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:Vq4cYGzA9Rk=:HQJszciVRNpAP34/LDpikL
+ XoLk+v4gDVrDS6h0nbdJx3oFvn9NfTKSwzLxRzxryHTKXJeKdQDDYOotpX2NC4S+2xIKiXeSe
+ Kb81W+kgOj/+kanxBhDNBBeZV2Gm7aZrolAmUlhydFsNemi0pq7h59Q9t/NPlMNbZ+rT3TaPb
+ cmUMqsCzc4Ro1B/CqHsObgNLPo1it3aJnqxoT1suvJwjDKr3VBpZ7g3Zygd750A7jUvbjtju2
+ TemwBfqiTyLDOA+tk01L2+eaPXPkzWQ7kQHtaNRzLaiKfzsJR597kfduPpvsBmbHoahT3uTTb
+ u0b6Mk/c+gPZLndM1+Ax9byiPeSBuhrpg691m9MyOyQdk5DEkQLMSeJb1hSH8C1MW3oCsfGDG
+ QOqvfsP/NJfjM7WCI3uzg5tuWx09TvqzlyCq6n8ZvngBGH3MJM2KXi5xUOg2R3LLb4rvSVnci
+ wYZv6TXGldHVRoA7FkP0IB+ABNJEKvvtlrEEvOLUn3cgQ9hFVNkPbsy7xefgF8Q1P1SDHLRmD
+ RToh3J9vCpy9wFCxTL+2+Kkkqv0fdvT8bfMmG6xZ6/Zc42YuSLJOvdooGgQszKX1ClYjYF/bE
+ PzDux8p1EhdGSImP5RJL6HGMh3HQSLPnStEDyq1Zty87l87p47fxQktKdQEsgurzp/NSfw6IH
+ gUBJM3U9MuyF8SL+9tlQtEu78oV8qKGk19EkEyQrLcFVR78hPc8llxszE+lq/34xi2qPtVSPV
+ 5RcAPRgGhlrgJ4igUnBs7zDoZRx3ghOBrw2J5GF6aunqbQ25qiFiakLmxwCAYaXDs2USGyH7M
+ ow7oJy726nn15AxGL0Rrqj2E/+LrOzBKCdCbt964wpNYdf2dOuf5k0UZVV9esKGYe9fiQPT2d
+ k9c+vxwqeKZmn4sP+SdkxizXonhpmuTPHvuEnvYF65JKGAd/qonJRM7pcI1HEaQPgx9SrKrPr
+ ZtNJcK45mbwuSAV6Byt5YcSvHwgt1y8mj1Sw7pa9Dj7WL8+TKsQJdDhr2VJakCaXdEgvFoyrf
+ hgCht55oep3lxz9CTdyE/PfGj1UZ4egaF7mrnkw9qqezm2cLDhFsPFBooEhsnV70duP/16tZz
+ GLTENyRvNAvc+GLZ6HoJQlqN/Nnh+/r1DITVXRcP0Fxnmrwp9Df4cxmDJmzz0XpHSrVQgm3aJ
+ iuiIfvu8kGRECr1/Li2qFmN6A7RMbKNeSXKAtgwA6MZkpbIr9es96pU0+iwS9WM3QEFFOG5TE
+ OGL5VbYh1usPzYjR7
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-(+ Tony and Fenghua)
+Do not check the value of status twice.
 
-On Sun, 16 Feb 2020 at 19:23, Ard Biesheuvel <ardb@kernel.org> wrote:
->
-> The generic r/w singleton object 'struct efi efi' is currently being used
-> as a dumping ground for memory addresses of firmware tables that only have
-> significance for a single architecture, or only at boot time [whereas
-> struct efi is an object with indefinite lifetime, and which is exported
-> to modules]
->
-> Since we're expecting a new arrival that does affect all architectures,
-> which will need to be added to struct efi as well, let's do a cleanup
-> pass, and move out all the per-arch pieces and other stuff that does not
-> need to live in a global r/w struct.
->
-> As a side effect, I ran into some other things that can be refactored
-> so that more code is shared between architectures, or made x86 specific
-> if it is something that should maybe not have existed in the first place,
-> and x86 is the only architecture where we cannot remove it for compatibility
-> reasons.
->
-> Finally, we get rid of the struct efi::systab member, which we only need
-> at runtime to get at the 'runtime' pointer, so let's store that instead.
-> This allows us to drop some ugly handling of the remapped systab address,
-> which we cannot discover as easily as the remapped 'runtime' pointer.
->
-> Cc: nivedita@alum.mit.edu
-> Cc: x86@kernel.org
->
+Signed-off-by: Heinrich Schuchardt <xypron.glpk@gmx.de>
+=2D--
+ drivers/firmware/efi/libstub/mem.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
-Apologies to the IA64 maintainers for forgetting to cc you.
+diff --git a/drivers/firmware/efi/libstub/mem.c b/drivers/firmware/efi/lib=
+stub/mem.c
+index c6a784ed640f..c25fd9174b74 100644
+=2D-- a/drivers/firmware/efi/libstub/mem.c
++++ b/drivers/firmware/efi/libstub/mem.c
+@@ -52,13 +52,14 @@ efi_status_t efi_get_memory_map(struct efi_boot_memmap=
+ *map)
+ 		goto again;
+ 	}
 
-The whole series can be found at
-https://lore.kernel.org/linux-efi/20200216182334.8121-1-ardb@kernel.org/
+-	if (status !=3D EFI_SUCCESS)
++	if (status =3D=3D EFI_SUCCESS) {
++		if (map->key_ptr)
++			*map->key_ptr =3D key;
++		if (map->desc_ver)
++			*map->desc_ver =3D desc_version;
++	} else {
+ 		efi_bs_call(free_pool, m);
+-
+-	if (map->key_ptr && status =3D=3D EFI_SUCCESS)
+-		*map->key_ptr =3D key;
+-	if (map->desc_ver && status =3D=3D EFI_SUCCESS)
+-		*map->desc_ver =3D desc_version;
++	}
 
-Please let me know if you need me to resend with the missing cc's added.
+ fail:
+ 	*map->map =3D m;
+=2D-
+2.25.0
 
-
-
-
-> Ard Biesheuvel (18):
->   efi: drop handling of 'boot_info' configuration table
->   efi/ia64: move HCDP and MPS table handling into IA64 arch code
->   efi: move UGA and PROP table handling to x86 code
->   efi: make rng_seed table handling local to efi.c
->   efi: move mem_attr_table out of struct efi
->   efi: make memreserve table handling local to efi.c
->   efi: merge EFI system table revision and vendor checks
->   efi/ia64: use existing helpers to locate ESI table
->   efi/ia64: use local variable for EFI system table address
->   efi/ia64: switch to efi_config_parse_tables()
->   efi: make efi_config_init() x86 only
->   efi: clean up config_parse_tables()
->   efi/x86: remove runtime table address from kexec EFI setup data
->   efi/x86: make fw_vendor, config_table and runtime sysfs nodes x86
->     specific
->   efi/x86: merge assignments of efi.runtime_version
->   efi: add 'runtime' pointer to struct efi
->   efi/arm: drop unnecessary references to efi.systab
->   efi/x86: drop 'systab' member from struct efi
->
->  arch/ia64/kernel/efi.c                  |  55 ++--
->  arch/ia64/kernel/esi.c                  |  21 +-
->  arch/x86/include/asm/efi.h              |   6 +-
->  arch/x86/kernel/asm-offsets_32.c        |   5 +
->  arch/x86/kernel/kexec-bzimage64.c       |   5 +-
->  arch/x86/platform/efi/efi.c             | 262 ++++++++++----------
->  arch/x86/platform/efi/efi_32.c          |  13 +-
->  arch/x86/platform/efi/efi_64.c          |  14 +-
->  arch/x86/platform/efi/efi_stub_32.S     |  21 +-
->  arch/x86/platform/efi/quirks.c          |   2 +-
->  drivers/firmware/efi/arm-init.c         |  68 ++---
->  drivers/firmware/efi/arm-runtime.c      |  18 --
->  drivers/firmware/efi/efi.c              | 237 ++++++++----------
->  drivers/firmware/efi/memattr.c          |  13 +-
->  drivers/firmware/efi/runtime-wrappers.c |   4 +-
->  drivers/firmware/pcdp.c                 |   8 +-
->  include/linux/efi.h                     |  76 +++---
->  17 files changed, 379 insertions(+), 449 deletions(-)
->
-> --
-> 2.17.1
->
