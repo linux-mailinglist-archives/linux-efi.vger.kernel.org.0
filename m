@@ -2,240 +2,103 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2AF69160442
-	for <lists+linux-efi@lfdr.de>; Sun, 16 Feb 2020 15:12:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 484B01604EF
+	for <lists+linux-efi@lfdr.de>; Sun, 16 Feb 2020 18:13:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727889AbgBPOMA (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sun, 16 Feb 2020 09:12:00 -0500
-Received: from mail.kernel.org ([198.145.29.99]:36646 "EHLO mail.kernel.org"
+        id S1728476AbgBPRNu (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sun, 16 Feb 2020 12:13:50 -0500
+Received: from mout.gmx.net ([212.227.15.19]:60355 "EHLO mout.gmx.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726671AbgBPOMA (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Sun, 16 Feb 2020 09:12:00 -0500
-Received: from e123331-lin.home (amontpellier-657-1-18-247.w109-210.abo.wanadoo.fr [109.210.65.247])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id F1D912086A;
-        Sun, 16 Feb 2020 14:11:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1581862319;
-        bh=cuH/oieqCmUEjv1cGx+dzIaI0rTABpdFIA+RFrLgqko=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gHpSxYqFkfhSXH2MQvkxOwYX4Zlltt1b8gqe4i4aJcFVlW8LQkWAT37MIXYxtEds0
-         JzA7eeXosJ+qF1XHKGSDX9uuuRDfC/h6Fqi83M1+v+MvBIbvFYcDk7s34WipythlqH
-         2QaqgRAh3u/xtStPSxBlJ+Ls/+a+et4z1NgMxOiE=
-From:   Ard Biesheuvel <ardb@kernel.org>
-To:     linux-efi@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
-        lersek@redhat.com, leif@nuviainc.com, pjones@redhat.com,
-        mjg59@google.com, agraf@csgraf.de, ilias.apalodimas@linaro.org,
-        xypron.glpk@gmx.de, daniel.kiper@oracle.com, nivedita@alum.mit.edu,
-        James.Bottomley@hansenpartnership.com, lukas@wunner.de
-Subject: [PATCH v2 3/3] efi/libstub: Take noinitrd cmdline argument into account for devpath initrd
-Date:   Sun, 16 Feb 2020 15:11:04 +0100
-Message-Id: <20200216141104.21477-4-ardb@kernel.org>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200216141104.21477-1-ardb@kernel.org>
-References: <20200216141104.21477-1-ardb@kernel.org>
+        id S1728469AbgBPRNu (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Sun, 16 Feb 2020 12:13:50 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1581873225;
+        bh=eh78Xacl3/Rct4ovfBjtDAjQYNUH2DdDabj1l78Ud2E=;
+        h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
+        b=FUePMweafQ1HybDIiHUSBXg1p3x2XqT3yJRRV7Y9dQnE/fHJCqhU9cuOhGnv+u6wP
+         a0u5p5+F4vi63Zfa035HqKRNC1u2mL6UP7IKiy3JTC6pKtKXCYElAmcuiEPDLGRn4T
+         jg1IoT4DJDtt2q6NR7CO18OXNTDqdfHgDw5WqB9s=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from LT02.fritz.box ([84.119.33.160]) by mail.gmx.com (mrgmx004
+ [212.227.17.184]) with ESMTPSA (Nemesis) id 1MjjCL-1jjY4Q0ze7-00lFCc; Sun, 16
+ Feb 2020 18:13:45 +0100
+From:   Heinrich Schuchardt <xypron.glpk@gmx.de>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Heinrich Schuchardt <xypron.glpk@gmx.de>
+Subject: [PATCH 1/1] efi/libstub: function description efi_allocate_pages()
+Date:   Sun, 16 Feb 2020 18:13:40 +0100
+Message-Id: <20200216171340.6070-1-xypron.glpk@gmx.de>
+X-Mailer: git-send-email 2.25.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:szui1R6XNTVN5ouJvt02v4IxyTNVgJsAcjjZDwLpipqFN0BnMP5
+ SKcz1tFg5MQHlg/3I0iaSGoTQrhMmmM3TOe2ZrETEQ9MUGUu0K7Py/hMHBsETJFMvzUP8HU
+ 0aOeq52LdctXzTjCy2tIe4MGQqY7D2qu0JdovUvnBjyNDMAjNYrdL1YNC3Mjnr2oo8bWz8j
+ 0CWgA3nopl8t27iWORx/Q==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:LK1FmsZ+IfM=:RGYLg41Z4fp76SpfhfHVxp
+ 8ZXUBEIjpHZ/RzzCELnNaOCE4NjC/+Nqv7/RFYt+iYryDuwF0ww38l+TbafEv34KG2YD6LFJ+
+ J9KeRkTZjUWyFbmtS0zm86Fpu1zOFCe+ijCmKYxhTbEdwAs2yAPsXoqYnKcbbrqW9ms86XL6M
+ y/KMPhNCCqQJ5dMHby7FVce4+MmlvPzQ0Tns1fKTEI//n+ZVZY9o76wSUuLXtMBR4GVs6S9k6
+ MKrPsVayLmX/YCyyGiK436n3ScRs2gvgLijuQAfXSlDUj9oxD0Jp/6p7SUXbDyOz1gC15YdZ9
+ a7olfjVZf9JzkvdQ1J5kEJF1CvikIX42s2AMdBoT/SFWLubQw/ZaMBxwhwKgTLFYkFjtimKZ9
+ 4O8m4awv87V/IpI+DDfKwgtXbwVuRFvsleZcWQtkKX3VEymkuHA+vKoAW+A25wuzfAAEfTtAR
+ +FpQcu7iUtY3gEOM+a2VfEL9NVHt1Uf+VKvvg256QXFKpBqy6zmp2UtcjBSwlZ6eNxIpKjoif
+ 1h8aF7B70+Tt25njSvH/rLgQiJdZPVHOidIIAMOdf9EgWyd8Jf8hYtbkZee2yug9chpt6jUif
+ 8HxGnaFcw2dC/D4TQz2GMn7s0Qx3ifWALsXV9dauh3VXBLprBq6k01ZJgXaCxz3zk2YraELU/
+ jP0HKcnLLDbozNYExHlK++R94UCbuHPQhtR0cmCU3ykEWMjT32FhwrfmTKC/YTPlcPWHdEqbh
+ s/CWYlVQ8JDjydpXGC7T1+Obk9M9xxLS29sVVdrVfzEtYezEvR8FqfwkarvKSTkEmiuzzQFWw
+ WDcI/P9R/8vLVdGGPzJRil2af0Hs8yQNKx9/x6RNeoOmmlavJ1DK2SplTABj9hh9HC2JsVSzB
+ UjJQYHdwoHUKj/Tbhtf14I0G/OXcmyjg7U5qEJaxSyENdrFEvsbaQejfo5YdNOi6dX0mJcp+6
+ lRphOolyYFNYVnXyZsKyoj1Ztstcn2JhVwJLtPsDmXDgc+YGxMw47UpaC5SuaMfv2KLwerqF2
+ nSPoigjw2Un1BNSFax1rgiVCxIKDkbwhEsiqbrpdOtWOcTMZmJ5zsGXKuZj+ZgtReA/ag5xZe
+ M9WcjoCiCL8g1SHPI57arWVBmbP1rRqnUv+RaJ3ZC6vqCTm2DoOdvUeOa3PWMYLP/NHTHKYc+
+ pj6fklXOnKUSjl5I1tSNMx61JuQ9X+M1FCabFwpRsU7qVPAAblJAZulVzvKIXPu1eDWII0mc9
+ 26pXWJfxamIli4i3R
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-One of the advantages of using what basically amounts to a callback
-interface into the bootloader for loading the initrd is that it provides
-a natural place for the bootloader or firmware to measure the initrd
-contents while they are being passed to the kernel.
+Provide a Sphinx style function description for efi_allocate_pages().
 
-Unfortunately, this is not a guarantee that the initrd will in fact be
-loaded and its /init invoked by the kernel, since the command line may
-contain the 'noinitrd' option, in which case the initrd is ignored, but
-this will not be reflected in the PCR that covers the initrd measurement.
+Signed-off-by: Heinrich Schuchardt <xypron.glpk@gmx.de>
+=2D--
+ drivers/firmware/efi/libstub/mem.c | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
-This could be addressed by measuring the command line as well, and
-including that PCR in the attestation policy, but this locks down the
-command line completely, which may be too restrictive.
-
-So let's take the noinitrd argument into account in the stub, too. This
-forces any PCR that covers the initrd to assume a different value when
-noinitrd is passed, allowing an attestation policy to disregard the
-command line if there is no need to take its measurement into account
-for other reasons.
-
-As Peter points out, this would still require the agent that takes the
-measurements to measure a separator event into the PCR in question at
-ExitBootServices() time, to prevent replay attacks using the known
-measurement from the TPM log.
-
-Cc: Peter Jones <pjones@redhat.com>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
----
- drivers/firmware/efi/libstub/arm-stub.c        | 25 +++++-----
- drivers/firmware/efi/libstub/efi-stub-helper.c |  7 +++
- drivers/firmware/efi/libstub/efistub.h         |  1 +
- drivers/firmware/efi/libstub/x86-stub.c        | 52 +++++++++++---------
- 4 files changed, 51 insertions(+), 34 deletions(-)
-
-diff --git a/drivers/firmware/efi/libstub/arm-stub.c b/drivers/firmware/efi/libstub/arm-stub.c
-index 4bae620b95b9..56e475c1aa55 100644
---- a/drivers/firmware/efi/libstub/arm-stub.c
-+++ b/drivers/firmware/efi/libstub/arm-stub.c
-@@ -259,18 +259,21 @@ unsigned long efi_entry(void *handle, efi_system_table_t *sys_table_arg,
- 	if (!fdt_addr)
- 		pr_efi("Generating empty DTB\n");
- 
--	max_addr = efi_get_max_initrd_addr(dram_base, *image_addr);
--	status = efi_load_initrd_dev_path(&initrd_addr, &initrd_size, max_addr);
--	if (status == EFI_SUCCESS) {
--		pr_efi("Loaded initrd from LINUX_EFI_INITRD_MEDIA_GUID device path\n");
--	} else if (status == EFI_NOT_FOUND) {
--		status = efi_load_initrd(image, &initrd_addr, &initrd_size,
--					 ULONG_MAX, max_addr);
--		if (status == EFI_SUCCESS)
--			pr_efi("Loaded initrd from command line option\n");
-+	if (!noinitrd()) {
-+		max_addr = efi_get_max_initrd_addr(dram_base, *image_addr);
-+		status = efi_load_initrd_dev_path(&initrd_addr, &initrd_size,
-+						  max_addr);
-+		if (status == EFI_SUCCESS) {
-+			pr_efi("Loaded initrd from LINUX_EFI_INITRD_MEDIA_GUID device path\n");
-+		} else if (status == EFI_NOT_FOUND) {
-+			status = efi_load_initrd(image, &initrd_addr, &initrd_size,
-+						 ULONG_MAX, max_addr);
-+			if (status == EFI_SUCCESS)
-+				pr_efi("Loaded initrd from command line option\n");
-+		}
-+		if (status != EFI_SUCCESS)
-+			pr_efi_err("Failed to load initrd!\n");
- 	}
--	if (status != EFI_SUCCESS)
--		pr_efi_err("Failed to load initrd!\n");
- 
- 	efi_random_get_seed();
- 
-diff --git a/drivers/firmware/efi/libstub/efi-stub-helper.c b/drivers/firmware/efi/libstub/efi-stub-helper.c
-index e37afe2c752e..c5d04147ed17 100644
---- a/drivers/firmware/efi/libstub/efi-stub-helper.c
-+++ b/drivers/firmware/efi/libstub/efi-stub-helper.c
-@@ -14,6 +14,7 @@
- 
- static bool __efistub_global efi_nochunk;
- static bool __efistub_global efi_nokaslr;
-+static bool __efistub_global efi_noinitrd;
- static bool __efistub_global efi_quiet;
- static bool __efistub_global efi_novamap;
- static bool __efistub_global efi_nosoftreserve;
-@@ -28,6 +29,10 @@ bool __pure nokaslr(void)
- {
- 	return efi_nokaslr;
+diff --git a/drivers/firmware/efi/libstub/mem.c b/drivers/firmware/efi/lib=
+stub/mem.c
+index 5808c8764e64..c6a784ed640f 100644
+=2D-- a/drivers/firmware/efi/libstub/mem.c
++++ b/drivers/firmware/efi/libstub/mem.c
+@@ -65,8 +65,20 @@ efi_status_t efi_get_memory_map(struct efi_boot_memmap =
+*map)
+ 	return status;
  }
-+bool __pure noinitrd(void)
-+{
-+	return efi_noinitrd;
-+}
- bool __pure is_quiet(void)
- {
- 	return efi_quiet;
-@@ -87,6 +92,8 @@ efi_status_t efi_parse_options(char const *cmdline)
- 			efi_nokaslr = true;
- 		} else if (!strcmp(param, "quiet")) {
- 			efi_quiet = true;
-+		} else if (!strcmp(param, "noinitrd")) {
-+			efi_noinitrd = true;
- 		} else if (!strcmp(param, "efi") && val) {
- 			efi_nochunk = parse_option_str(val, "nochunk");
- 			efi_novamap = parse_option_str(val, "novamap");
-diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
-index b58cb2c4474e..2e5e79edb4d7 100644
---- a/drivers/firmware/efi/libstub/efistub.h
-+++ b/drivers/firmware/efi/libstub/efistub.h
-@@ -33,6 +33,7 @@
- 
- extern bool __pure nochunk(void);
- extern bool __pure nokaslr(void);
-+extern bool __pure noinitrd(void);
- extern bool __pure is_quiet(void);
- extern bool __pure novamap(void);
- 
-diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
-index 16bf4ed21f1f..7d4866471f86 100644
---- a/drivers/firmware/efi/libstub/x86-stub.c
-+++ b/drivers/firmware/efi/libstub/x86-stub.c
-@@ -421,15 +421,18 @@ efi_status_t __efiapi efi_pe_entry(efi_handle_t handle,
- 	if (status != EFI_SUCCESS)
- 		goto fail2;
- 
--	status = efi_load_initrd(image, &ramdisk_addr, &ramdisk_size,
--				 hdr->initrd_addr_max,
--				 above4g ? ULONG_MAX : hdr->initrd_addr_max);
--	if (status != EFI_SUCCESS)
--		goto fail2;
--	hdr->ramdisk_image = ramdisk_addr & 0xffffffff;
--	hdr->ramdisk_size  = ramdisk_size & 0xffffffff;
--	boot_params->ext_ramdisk_image = (u64)ramdisk_addr >> 32;
--	boot_params->ext_ramdisk_size  = (u64)ramdisk_size >> 32;
-+	if (!noinitrd()) {
-+		status = efi_load_initrd(image, &ramdisk_addr, &ramdisk_size,
-+					 hdr->initrd_addr_max,
-+					 above4g ? ULONG_MAX
-+						 : hdr->initrd_addr_max);
-+		if (status != EFI_SUCCESS)
-+			goto fail2;
-+		hdr->ramdisk_image = ramdisk_addr & 0xffffffff;
-+		hdr->ramdisk_size  = ramdisk_size & 0xffffffff;
-+		boot_params->ext_ramdisk_image = (u64)ramdisk_addr >> 32;
-+		boot_params->ext_ramdisk_size  = (u64)ramdisk_size >> 32;
-+	}
- 
- 	efi_stub_entry(handle, sys_table, boot_params);
- 	/* not reached */
-@@ -699,14 +702,9 @@ struct boot_params *efi_main(efi_handle_t handle,
- {
- 	unsigned long bzimage_addr = (unsigned long)startup_32;
- 	struct setup_header *hdr = &boot_params->hdr;
--	unsigned long max_addr = hdr->initrd_addr_max;
--	unsigned long initrd_addr, initrd_size;
- 	efi_status_t status;
- 	unsigned long cmdline_paddr;
- 
--	if (hdr->xloadflags & XLF_CAN_BE_LOADED_ABOVE_4G)
--		max_addr = ULONG_MAX;
--
- 	sys_table = sys_table_arg;
- 
- 	/* Check if we were booted by the EFI firmware */
-@@ -746,15 +744,23 @@ struct boot_params *efi_main(efi_handle_t handle,
- 	 * permit an initrd loaded from the LINUX_EFI_INITRD_MEDIA_GUID device
- 	 * path to supersede it.
- 	 */
--	status = efi_load_initrd_dev_path(&initrd_addr, &initrd_size, max_addr);
--	if (status == EFI_SUCCESS) {
--		hdr->ramdisk_image		= (u32)initrd_addr;
--		hdr->ramdisk_size 		= (u32)initrd_size;
--		boot_params->ext_ramdisk_image	= (u64)initrd_addr >> 32;
--		boot_params->ext_ramdisk_size 	= (u64)initrd_size >> 32;
--	} else if (status != EFI_NOT_FOUND) {
--		efi_printk("efi_load_initrd_dev_path() failed!\n");
--		goto fail;
-+	if (!noinitrd()) {
-+		unsigned long addr, size;
-+		unsigned long max_addr = hdr->initrd_addr_max;
-+
-+		if (hdr->xloadflags & XLF_CAN_BE_LOADED_ABOVE_4G)
-+			max_addr = ULONG_MAX;
-+
-+		status = efi_load_initrd_dev_path(&addr, &size, max_addr);
-+		if (status == EFI_SUCCESS) {
-+			hdr->ramdisk_image		= (u32)addr;
-+			hdr->ramdisk_size 		= (u32)size;
-+			boot_params->ext_ramdisk_image	= (u64)addr >> 32;
-+			boot_params->ext_ramdisk_size 	= (u64)size >> 32;
-+		} else if (status != EFI_NOT_FOUND) {
-+			efi_printk("efi_load_initrd_dev_path() failed!\n");
-+			goto fail;
-+		}
- 	}
- 
- 	/*
--- 
-2.17.1
+
+-/*
+- * Allocate at the highest possible address that is not above 'max'.
++/**
++ * efi_allocate_pages() - Allocate memory pages
++ * @size:	minimum number of bytes to allocate
++ * @addr:	On return the address of the first allocated page. The first
++ *		allocated page has alignment EFI_ALLOC_ALIGN which is an
++ *		architecture dependent multiple of the page size.
++ * @max:	the address that the last allocated memory page shall not
++ *		exceed
++ *
++ * Allocate pages as EFI_LOADER_DATA. The allocated pages are aligned acc=
+ording
++ * to EFI_ALLOC_ALIGN. The last allocated page will not exceed the addres=
+s
++ * given by 'max'.
++ *
++ * Return:	status code
+  */
+ efi_status_t efi_allocate_pages(unsigned long size, unsigned long *addr,
+ 				unsigned long max)
+=2D-
+2.25.0
 
