@@ -2,175 +2,128 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 504A115F172
-	for <lists+linux-efi@lfdr.de>; Fri, 14 Feb 2020 19:03:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E10D716043C
+	for <lists+linux-efi@lfdr.de>; Sun, 16 Feb 2020 15:11:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731143AbgBNPzw (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 14 Feb 2020 10:55:52 -0500
-Received: from mail.kernel.org ([198.145.29.99]:37162 "EHLO mail.kernel.org"
+        id S1727926AbgBPOLw (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sun, 16 Feb 2020 09:11:52 -0500
+Received: from mail.kernel.org ([198.145.29.99]:36394 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730653AbgBNPzw (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Fri, 14 Feb 2020 10:55:52 -0500
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        id S1727889AbgBPOLv (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Sun, 16 Feb 2020 09:11:51 -0500
+Received: from e123331-lin.home (amontpellier-657-1-18-247.w109-210.abo.wanadoo.fr [109.210.65.247])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 6D4ED24673;
-        Fri, 14 Feb 2020 15:55:49 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 25E9E2086A;
+        Sun, 16 Feb 2020 14:11:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1581695750;
-        bh=iVW8kYUZhNEhv4a1bYT2fR3fYrBKZHxbNJJMtyi5k9w=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=x486BSbgUxy4GWKRrAg0/5s/yyG7mO/Bmj/zztqjtX7NWZNANvs0xiAPeRseOSbv2
-         6k68PayBT94lT8VwT3vv7vrAVXJSzqK3KMiTWD6yTv1hXORYML3DS2X2tWFbqUTuEo
-         tLm8sxx7LfvIkpgTkP327CZ2Wu6t2LD9BdV8PRFM=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Ard Biesheuvel <ardb@kernel.org>,
-        Andy Lutomirski <luto@kernel.org>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Arvind Sankar <nivedita@alum.mit.edu>,
-        Matthew Garrett <mjg59@google.com>, linux-efi@vger.kernel.org,
-        Ingo Molnar <mingo@kernel.org>,
-        Sasha Levin <sashal@kernel.org>,
-        platform-driver-x86@vger.kernel.org, x86@kernel.org
-Subject: [PATCH AUTOSEL 5.5 320/542] efi/x86: Don't panic or BUG() on non-critical error conditions
-Date:   Fri, 14 Feb 2020 10:45:12 -0500
-Message-Id: <20200214154854.6746-320-sashal@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200214154854.6746-1-sashal@kernel.org>
-References: <20200214154854.6746-1-sashal@kernel.org>
-MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+        s=default; t=1581862310;
+        bh=DKirdU0ufWfvPWErLTUkOEyE4AL9d2cSF3zd29hUQRk=;
+        h=From:To:Cc:Subject:Date:From;
+        b=o4u0xzwJR2Do3USyGEZc8LJsFAfEKOLRrx++LbJ8mP4ZEXJzX51+M1UnPvuSGA1aK
+         uYa5jrKWmtACntcNXsdgpGCAeyDzVJwEoyW47K6nZJ2/Vs62A9ER9DxZfVR/6s6Nko
+         vP5jXf09H/ah9rN8/KCU6zMiORJOkG0lEx7S+8hs=
+From:   Ard Biesheuvel <ardb@kernel.org>
+To:     linux-efi@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
+        lersek@redhat.com, leif@nuviainc.com, pjones@redhat.com,
+        mjg59@google.com, agraf@csgraf.de, ilias.apalodimas@linaro.org,
+        xypron.glpk@gmx.de, daniel.kiper@oracle.com, nivedita@alum.mit.edu,
+        James.Bottomley@hansenpartnership.com, lukas@wunner.de
+Subject: [PATCH v2 0/3] arch-agnostic initrd loading method for EFI systems
+Date:   Sun, 16 Feb 2020 15:11:01 +0100
+Message-Id: <20200216141104.21477-1-ardb@kernel.org>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-From: Ard Biesheuvel <ardb@kernel.org>
+This series introduces an arch agnostic way of loading the initrd into
+memory from the EFI stub. This addresses a number of shortcomings that
+affect the current implementations that exist across architectures:
 
-[ Upstream commit e2d68a955e49d61fd0384f23e92058dc9b79be5e ]
+- The initrd=<file> command line option can only load files that reside
+  on the same file system that the kernel itself was loaded from, which
+  requires the bootloader or firmware to expose that file system via the
+  appropriate EFI protocol, which is not always feasible. From the kernel
+  side, this protocol is problematic since it is incompatible with mixed
+  mode on x86 (this is due to the fact that some of its methods have
+  prototypes that are difficult to marshall)
 
-The logic in __efi_enter_virtual_mode() does a number of steps in
-sequence, all of which may fail in one way or the other. In most
-cases, we simply print an error and disable EFI runtime services
-support, but in some cases, we BUG() or panic() and bring down the
-system when encountering conditions that we could easily handle in
-the same way.
+- The approach that is ordinarily taken by GRUB is to load the initrd into
+  memory, and pass it to the kernel proper via the bootparams structure or
+  via the device tree. This requires the boot loader to have an understanding
+  of those structures, which are not always set in stone, and of the policies
+  around where the initrd may be loaded into memory. In the ARM case, it
+  requires GRUB to modify the hardware description provided by the firmware,
+  given that the initrd base and offset in memory are passed via the same
+  data structure. It also creates a time window where the initrd data sits
+  in memory, and can potentially be corrupted before the kernel is booted.
 
-While at it, replace a pointless page-to-virt-phys conversion with
-one that goes straight from struct page to physical.
+Considering that we will soon have new users of these interfaces (EFI for
+kvmtool on ARM, RISC-V in u-boot, etc), it makes sense to add a generic
+interface now, before having another wave of bespoke arch specific code
+coming in.
 
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Cc: Arvind Sankar <nivedita@alum.mit.edu>
-Cc: Matthew Garrett <mjg59@google.com>
-Cc: linux-efi@vger.kernel.org
-Link: https://lkml.kernel.org/r/20200103113953.9571-14-ardb@kernel.org
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/x86/platform/efi/efi.c    | 28 ++++++++++++++--------------
- arch/x86/platform/efi/efi_64.c |  9 +++++----
- 2 files changed, 19 insertions(+), 18 deletions(-)
+Another aspect to take into account is that support for UEFI secure boot
+and measured boot is being taken into the upstream, and being able to
+rely on the PE entry point for booting any architecture makes the GRUB
+vs shim story much cleaner, as we should be able to rely on LoadImage
+and StartImage on all architectures, while retaining the ability to
+load initrds from anywhere.
 
-diff --git a/arch/x86/platform/efi/efi.c b/arch/x86/platform/efi/efi.c
-index 06f69bcd233fe..ad4dd3a977533 100644
---- a/arch/x86/platform/efi/efi.c
-+++ b/arch/x86/platform/efi/efi.c
-@@ -1000,16 +1000,14 @@ static void __init __efi_enter_virtual_mode(void)
- 
- 	if (efi_alloc_page_tables()) {
- 		pr_err("Failed to allocate EFI page tables\n");
--		clear_bit(EFI_RUNTIME_SERVICES, &efi.flags);
--		return;
-+		goto err;
- 	}
- 
- 	efi_merge_regions();
- 	new_memmap = efi_map_regions(&count, &pg_shift);
- 	if (!new_memmap) {
- 		pr_err("Error reallocating memory, EFI runtime non-functional!\n");
--		clear_bit(EFI_RUNTIME_SERVICES, &efi.flags);
--		return;
-+		goto err;
- 	}
- 
- 	pa = __pa(new_memmap);
-@@ -1023,8 +1021,7 @@ static void __init __efi_enter_virtual_mode(void)
- 
- 	if (efi_memmap_init_late(pa, efi.memmap.desc_size * count)) {
- 		pr_err("Failed to remap late EFI memory map\n");
--		clear_bit(EFI_RUNTIME_SERVICES, &efi.flags);
--		return;
-+		goto err;
- 	}
- 
- 	if (efi_enabled(EFI_DBG)) {
-@@ -1032,12 +1029,11 @@ static void __init __efi_enter_virtual_mode(void)
- 		efi_print_memmap();
- 	}
- 
--	BUG_ON(!efi.systab);
-+	if (WARN_ON(!efi.systab))
-+		goto err;
- 
--	if (efi_setup_page_tables(pa, 1 << pg_shift)) {
--		clear_bit(EFI_RUNTIME_SERVICES, &efi.flags);
--		return;
--	}
-+	if (efi_setup_page_tables(pa, 1 << pg_shift))
-+		goto err;
- 
- 	efi_sync_low_kernel_mappings();
- 
-@@ -1057,9 +1053,9 @@ static void __init __efi_enter_virtual_mode(void)
- 	}
- 
- 	if (status != EFI_SUCCESS) {
--		pr_alert("Unable to switch EFI into virtual mode (status=%lx)!\n",
--			 status);
--		panic("EFI call to SetVirtualAddressMap() failed!");
-+		pr_err("Unable to switch EFI into virtual mode (status=%lx)!\n",
-+		       status);
-+		goto err;
- 	}
- 
- 	efi_free_boot_services();
-@@ -1088,6 +1084,10 @@ static void __init __efi_enter_virtual_mode(void)
- 
- 	/* clean DUMMY object */
- 	efi_delete_dummy_variable();
-+	return;
-+
-+err:
-+	clear_bit(EFI_RUNTIME_SERVICES, &efi.flags);
- }
- 
- void __init efi_enter_virtual_mode(void)
-diff --git a/arch/x86/platform/efi/efi_64.c b/arch/x86/platform/efi/efi_64.c
-index 08ce8177c3af1..52a1e5192fa80 100644
---- a/arch/x86/platform/efi/efi_64.c
-+++ b/arch/x86/platform/efi/efi_64.c
-@@ -392,11 +392,12 @@ int __init efi_setup_page_tables(unsigned long pa_memmap, unsigned num_pages)
- 		return 0;
- 
- 	page = alloc_page(GFP_KERNEL|__GFP_DMA32);
--	if (!page)
--		panic("Unable to allocate EFI runtime stack < 4GB\n");
-+	if (!page) {
-+		pr_err("Unable to allocate EFI runtime stack < 4GB\n");
-+		return 1;
-+	}
- 
--	efi_scratch.phys_stack = virt_to_phys(page_address(page));
--	efi_scratch.phys_stack += PAGE_SIZE; /* stack grows down */
-+	efi_scratch.phys_stack = page_to_phys(page + 1); /* stack grows down */
- 
- 	npages = (_etext - _text) >> PAGE_SHIFT;
- 	text = __pa(_text);
+Note that these patches depend on a fair amount of cleanup work that I
+am targetting for v5.7. Branch can be found at:
+https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git/log/?h=next
+
+A PoC implementation for OVMF and ArmVirtQemu (OVMF for ARM aka AAVMF) can
+be found at https://github.com/ardbiesheuvel/edk2/commits/linux-efi-generic.
+
+A U-Boot implementation is under development as well, and can be found at
+https://github.com/apalos/u-boot/commits/efi_load_file_8
+
+Changes since v1:
+- merge vendor media device path type definition with the existing device path
+  definitions we already have, and rework the latter slightly to be more easily
+  reusable
+- use 'dev_path' not 'devpath' consistently
+- pass correct FilePath value to LoadFile2 (i.e., the device path pointer that
+  was advanced to point to the 'end' node by locate_device_path())
+- add kerneldoc comment to efi_load_initrd_dev_path()
+- take care to only return EFI_NOT_FOUND from efi_load_initrd_dev_path() if the
+  LoadFile2 protocol does not exist on the LINUX_EFI_INITRD_MEDIA_GUID device
+  path - this makes the logic whether to fallback to the command line method
+  more robust
+
+Cc: lersek@redhat.com
+Cc: leif@nuviainc.com
+Cc: pjones@redhat.com
+Cc: mjg59@google.com
+Cc: agraf@csgraf.de
+Cc: ilias.apalodimas@linaro.org
+Cc: xypron.glpk@gmx.de
+Cc: daniel.kiper@oracle.com
+Cc: nivedita@alum.mit.edu
+Cc: James.Bottomley@hansenpartnership.com
+Cc: lukas@wunner.de
+
+Ard Biesheuvel (3):
+  efi/dev-path-parser: Add struct definition for vendor type device path
+    nodes
+  efi/libstub: Add support for loading the initrd from a device path
+  efi/libstub: Take noinitrd cmdline argument into account for devpath
+    initrd
+
+ drivers/firmware/efi/apple-properties.c       |  8 +-
+ drivers/firmware/efi/dev-path-parser.c        | 38 ++++----
+ drivers/firmware/efi/libstub/arm-stub.c       | 20 ++++-
+ .../firmware/efi/libstub/efi-stub-helper.c    | 89 +++++++++++++++++++
+ drivers/firmware/efi/libstub/efistub.h        |  5 ++
+ drivers/firmware/efi/libstub/x86-stub.c       | 47 ++++++++--
+ include/linux/efi.h                           | 49 ++++++----
+ 7 files changed, 201 insertions(+), 55 deletions(-)
+
 -- 
-2.20.1
+2.17.1
 
