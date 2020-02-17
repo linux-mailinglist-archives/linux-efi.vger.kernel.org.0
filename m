@@ -2,99 +2,66 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 838FC161603
-	for <lists+linux-efi@lfdr.de>; Mon, 17 Feb 2020 16:23:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7686E161691
+	for <lists+linux-efi@lfdr.de>; Mon, 17 Feb 2020 16:45:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728745AbgBQPXQ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 17 Feb 2020 10:23:16 -0500
-Received: from mail.kernel.org ([198.145.29.99]:40530 "EHLO mail.kernel.org"
+        id S1729453AbgBQPpv (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 17 Feb 2020 10:45:51 -0500
+Received: from mx2.suse.de ([195.135.220.15]:40150 "EHLO mx2.suse.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727943AbgBQPXQ (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Mon, 17 Feb 2020 10:23:16 -0500
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 902F4215A4
-        for <linux-efi@vger.kernel.org>; Mon, 17 Feb 2020 15:23:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1581952995;
-        bh=nGy1lbmlsE02K8IM752m4QrHgHMzqoytnR/N5trdhuM=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=YVWCIRR/YSEuKkZxwoMfjLq1DsSHOiZctotmZDFVqlpkoGBowv46KMKnVmsRnFBNP
-         azPanoikqHJ5bz84UuCbg6/ZuoHGa6LoiYK8Z3SHH6ZVMyIBOY0GQSURyfDLIPiZPC
-         skox/eI/a8OdSO99Q/B5ooboZX2Q4RQ9+FSsiJUM=
-Received: by mail-wm1-f53.google.com with SMTP id c84so18913882wme.4
-        for <linux-efi@vger.kernel.org>; Mon, 17 Feb 2020 07:23:15 -0800 (PST)
-X-Gm-Message-State: APjAAAUC9WSkuazjRXtN034nbQhip7RkBXDjzhTYtlKSIcSVgMBTlZ1R
-        Vo/ERuklioSNKYU3Wu1zptwTp2il1BA9S5m/vAug5Q==
-X-Google-Smtp-Source: APXvYqyHORjwouYreTl4kAhc6BiIMxJdcGTSfhxyKg5tSCNd6yz3fr9OpNIKkFDxeYSV+ojwle73cM5xcMxQx+jVKhA=
-X-Received: by 2002:a05:600c:248:: with SMTP id 8mr22583343wmj.1.1581952993983;
- Mon, 17 Feb 2020 07:23:13 -0800 (PST)
-MIME-Version: 1.0
-References: <20200217123354.21140-1-Jason@zx2c4.com>
-In-Reply-To: <20200217123354.21140-1-Jason@zx2c4.com>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Mon, 17 Feb 2020 16:23:03 +0100
-X-Gmail-Original-Message-ID: <CAKv+Gu83dOKGbYU1t3_KZevB_rn-ktoropFrjASjsv3DozrV1A@mail.gmail.com>
-Message-ID: <CAKv+Gu83dOKGbYU1t3_KZevB_rn-ktoropFrjASjsv3DozrV1A@mail.gmail.com>
-Subject: Re: [PATCH] efi: READ_ONCE rng seed size before munmap
-To:     "Jason A. Donenfeld" <Jason@zx2c4.com>
-Cc:     linux-efi <linux-efi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        stable <stable@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        id S1727553AbgBQPpv (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Mon, 17 Feb 2020 10:45:51 -0500
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx2.suse.de (Postfix) with ESMTP id 73D37AD4F;
+        Mon, 17 Feb 2020 15:45:50 +0000 (UTC)
+From:   Takashi Iwai <tiwai@suse.de>
+To:     linux-efi@vger.kernel.org
+Cc:     Joey Lee <jlee@suse.com>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        linux-security-module@vger.kernel.org, inux-kernel@vger.kernel.org
+Subject: [PATCH] efi: Suppress spurious "Couldn't get size" error
+Date:   Mon, 17 Feb 2020 16:45:49 +0100
+Message-Id: <20200217154549.20895-1-tiwai@suse.de>
+X-Mailer: git-send-email 2.16.4
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Mon, 17 Feb 2020 at 13:34, Jason A. Donenfeld <Jason@zx2c4.com> wrote:
->
-> This function is consistent with using size instead of seed->size
-> (except for one place that this patch fixes), but it reads seed->size
-> without using READ_ONCE, which means the compiler might still do
-> something unwanted. So, this commit simply adds the READ_ONCE
-> wrapper.
->
-> Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
-> Cc: Ard Biesheuvel <ardb@kernel.org>
-> Cc: stable@vger.kernel.org
+The current efi code emits the error message like
+   Couldn't get size: 0x800000000000000e
+on various Dell and other machines.  Although the whole problem is the
+buggy firmware, showing this as an error level is rather annoying, as
+the error message appears over the boot splash.  Basically this is the
+result of missing entry and we have no explicit way to fix it for such
+a firmware problem, the error message may be suppressed.
 
-Thanks Jason
+This patch changes the error print condition and suppresses the error
+message if status is EFI_NOT_FOUND.  It's a partial patch from the
+more comprehensive one Joey Lee submitted in the past.
 
-I've queued this in efi/urgent with a fixes: tag rather than a cc:
-stable, since it only applies clean to v5.4 and later. We'll need a
-backport to 4.14 and 4.19 as well, which has a trivial conflict
-(s/add_bootloader_randomness/add_device_randomness/) but we'll need to
-wait for this patch to hit Linus's tree first.
+Link: https://lore.kernel.org/linux-efi/20190322103350.27764-2-jlee@suse.com/
+Cc: Joey Lee <jlee@suse.com>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+---
+ security/integrity/platform_certs/load_uefi.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
+diff --git a/security/integrity/platform_certs/load_uefi.c b/security/integrity/platform_certs/load_uefi.c
+index 111898aad56e..8501ea62cb3e 100644
+--- a/security/integrity/platform_certs/load_uefi.c
++++ b/security/integrity/platform_certs/load_uefi.c
+@@ -44,7 +44,8 @@ static __init void *get_cert_list(efi_char16_t *name, efi_guid_t *guid,
+ 
+ 	status = efi.get_variable(name, guid, NULL, &lsize, &tmpdb);
+ 	if (status != EFI_BUFFER_TOO_SMALL) {
+-		pr_err("Couldn't get size: 0x%lx\n", status);
++		if (status != EFI_NOT_FOUND)
++			pr_err("Couldn't get size: 0x%lx\n", status);
+ 		return NULL;
+ 	}
+ 
+-- 
+2.16.4
 
-> ---
->  drivers/firmware/efi/efi.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
-> index 621220ab3d0e..21ea99f65113 100644
-> --- a/drivers/firmware/efi/efi.c
-> +++ b/drivers/firmware/efi/efi.c
-> @@ -552,7 +552,7 @@ int __init efi_config_parse_tables(void *config_tables, int count, int sz,
->
->                 seed = early_memremap(efi.rng_seed, sizeof(*seed));
->                 if (seed != NULL) {
-> -                       size = seed->size;
-> +                       size = READ_ONCE(seed->size);
->                         early_memunmap(seed, sizeof(*seed));
->                 } else {
->                         pr_err("Could not map UEFI random seed!\n");
-> @@ -562,7 +562,7 @@ int __init efi_config_parse_tables(void *config_tables, int count, int sz,
->                                               sizeof(*seed) + size);
->                         if (seed != NULL) {
->                                 pr_notice("seeding entropy pool\n");
-> -                               add_bootloader_randomness(seed->bits, seed->size);
-> +                               add_bootloader_randomness(seed->bits, size);
->                                 early_memunmap(seed, sizeof(*seed) + size);
->                         } else {
->                                 pr_err("Could not map UEFI random seed!\n");
-> --
-> 2.25.0
->
