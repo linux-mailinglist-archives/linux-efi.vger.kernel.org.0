@@ -2,207 +2,99 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E512161508
-	for <lists+linux-efi@lfdr.de>; Mon, 17 Feb 2020 15:48:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 838FC161603
+	for <lists+linux-efi@lfdr.de>; Mon, 17 Feb 2020 16:23:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728841AbgBQOsx (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 17 Feb 2020 09:48:53 -0500
-Received: from mail.kernel.org ([198.145.29.99]:58410 "EHLO mail.kernel.org"
+        id S1728745AbgBQPXQ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 17 Feb 2020 10:23:16 -0500
+Received: from mail.kernel.org ([198.145.29.99]:40530 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729106AbgBQOsx (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Mon, 17 Feb 2020 09:48:53 -0500
-Received: from cam-smtp0.cambridge.arm.com (fw-tnat.cambridge.arm.com [217.140.96.140])
+        id S1727943AbgBQPXQ (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Mon, 17 Feb 2020 10:23:16 -0500
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 2672E20718;
-        Mon, 17 Feb 2020 14:48:48 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 902F4215A4
+        for <linux-efi@vger.kernel.org>; Mon, 17 Feb 2020 15:23:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1581950931;
-        bh=YMsj6ZCXOjVjqIQ5WJOslsVuo4Ujp6Z+Zb20CgrPT7A=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vpQoAwUv2XAnjX0yPIpGONcGbJ3rsKilz3XUri5RoVwbAdBHedLf/Cax6mBQL6Lf2
-         xFIyiAGM1vX8EHHvTOgMaVyyxLD2Uzspb3vr14/7BewdisLAsJLuGG72GhhPUVPDnT
-         WI/jH+0+qw9UTtvt7Duoit7y0g3bGeEiXBy2hvTs=
+        s=default; t=1581952995;
+        bh=nGy1lbmlsE02K8IM752m4QrHgHMzqoytnR/N5trdhuM=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=YVWCIRR/YSEuKkZxwoMfjLq1DsSHOiZctotmZDFVqlpkoGBowv46KMKnVmsRnFBNP
+         azPanoikqHJ5bz84UuCbg6/ZuoHGa6LoiYK8Z3SHH6ZVMyIBOY0GQSURyfDLIPiZPC
+         skox/eI/a8OdSO99Q/B5ooboZX2Q4RQ9+FSsiJUM=
+Received: by mail-wm1-f53.google.com with SMTP id c84so18913882wme.4
+        for <linux-efi@vger.kernel.org>; Mon, 17 Feb 2020 07:23:15 -0800 (PST)
+X-Gm-Message-State: APjAAAUC9WSkuazjRXtN034nbQhip7RkBXDjzhTYtlKSIcSVgMBTlZ1R
+        Vo/ERuklioSNKYU3Wu1zptwTp2il1BA9S5m/vAug5Q==
+X-Google-Smtp-Source: APXvYqyHORjwouYreTl4kAhc6BiIMxJdcGTSfhxyKg5tSCNd6yz3fr9OpNIKkFDxeYSV+ojwle73cM5xcMxQx+jVKhA=
+X-Received: by 2002:a05:600c:248:: with SMTP id 8mr22583343wmj.1.1581952993983;
+ Mon, 17 Feb 2020 07:23:13 -0800 (PST)
+MIME-Version: 1.0
+References: <20200217123354.21140-1-Jason@zx2c4.com>
+In-Reply-To: <20200217123354.21140-1-Jason@zx2c4.com>
 From:   Ard Biesheuvel <ardb@kernel.org>
-To:     linux-efi@vger.kernel.org
-Cc:     Ard Biesheuvel <ardb@kernel.org>, lersek@redhat.com,
-        leif@nuviainc.com, pjones@redhat.com, mjg59@google.com,
-        agraf@csgraf.de, daniel.kiper@oracle.com, hdegoede@redhat.com,
-        nivedita@alum.mit.edu, mingo@kernel.org
-Subject: [PATCH v2 5/5] efi/x86: Add true mixed mode entry point into .compat section
-Date:   Mon, 17 Feb 2020 15:48:22 +0100
-Message-Id: <20200217144822.24616-6-ardb@kernel.org>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200217144822.24616-1-ardb@kernel.org>
-References: <20200217144822.24616-1-ardb@kernel.org>
+Date:   Mon, 17 Feb 2020 16:23:03 +0100
+X-Gmail-Original-Message-ID: <CAKv+Gu83dOKGbYU1t3_KZevB_rn-ktoropFrjASjsv3DozrV1A@mail.gmail.com>
+Message-ID: <CAKv+Gu83dOKGbYU1t3_KZevB_rn-ktoropFrjASjsv3DozrV1A@mail.gmail.com>
+Subject: Re: [PATCH] efi: READ_ONCE rng seed size before munmap
+To:     "Jason A. Donenfeld" <Jason@zx2c4.com>
+Cc:     linux-efi <linux-efi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        stable <stable@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Currently, mixed mode is closely tied to the EFI handover protocol
-and relies on intimate knowledge of the bootparams structure, setup
-header etc, all of which are rather byzantine and entirely specific
-to x86.
+On Mon, 17 Feb 2020 at 13:34, Jason A. Donenfeld <Jason@zx2c4.com> wrote:
+>
+> This function is consistent with using size instead of seed->size
+> (except for one place that this patch fixes), but it reads seed->size
+> without using READ_ONCE, which means the compiler might still do
+> something unwanted. So, this commit simply adds the READ_ONCE
+> wrapper.
+>
+> Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+> Cc: Ard Biesheuvel <ardb@kernel.org>
+> Cc: stable@vger.kernel.org
 
-Even though no other EFI supported architectures are currently known
-that could support something like mixed mode, it still makes sense to
-abstract a bit from this, and make it part of a generic Linux on EFI
-boot protocol.
+Thanks Jason
 
-To that end, add a .compat section to the mixed mode binary, and populate
-it with the PE machine type and entry point address, allowing firmware
-implementations to match it to their native machine type, and invoke
-non-native binaries using a secondary entry point.
+I've queued this in efi/urgent with a fixes: tag rather than a cc:
+stable, since it only applies clean to v5.4 and later. We'll need a
+backport to 4.14 and 4.19 as well, which has a trivial conflict
+(s/add_bootloader_randomness/add_device_randomness/) but we'll need to
+wait for this patch to hit Linus's tree first.
 
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
----
- arch/x86/boot/Makefile      |  2 +-
- arch/x86/boot/header.S      | 20 +++++++++++-
- arch/x86/boot/tools/build.c | 34 +++++++++++++++++++-
- 3 files changed, 53 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/boot/Makefile b/arch/x86/boot/Makefile
-index 012b82fc8617..ef9e1f2c836c 100644
---- a/arch/x86/boot/Makefile
-+++ b/arch/x86/boot/Makefile
-@@ -88,7 +88,7 @@ $(obj)/vmlinux.bin: $(obj)/compressed/vmlinux FORCE
- 
- SETUP_OBJS = $(addprefix $(obj)/,$(setup-y))
- 
--sed-zoffset := -e 's/^\([0-9a-fA-F]*\) [a-zA-Z] \(startup_32\|startup_64\|efi32_stub_entry\|efi64_stub_entry\|efi_pe_entry\|input_data\|kernel_info\|_end\|_ehead\|_text\|z_.*\)$$/\#define ZO_\2 0x\1/p'
-+sed-zoffset := -e 's/^\([0-9a-fA-F]*\) [a-zA-Z] \(startup_32\|startup_64\|efi32_stub_entry\|efi64_stub_entry\|efi_pe_entry\|efi32_pe_entry\|input_data\|kernel_info\|_end\|_ehead\|_text\|z_.*\)$$/\#define ZO_\2 0x\1/p'
- 
- quiet_cmd_zoffset = ZOFFSET $@
-       cmd_zoffset = $(NM) $< | sed -n $(sed-zoffset) > $@
-diff --git a/arch/x86/boot/header.S b/arch/x86/boot/header.S
-index d59f6604bb42..76a485013771 100644
---- a/arch/x86/boot/header.S
-+++ b/arch/x86/boot/header.S
-@@ -106,7 +106,7 @@ coff_header:
- #else
- 	.word	0x8664				# x86-64
- #endif
--	.word	3				# nr_sections
-+	.word	section_count			# nr_sections
- 	.long	0 				# TimeDateStamp
- 	.long	0				# PointerToSymbolTable
- 	.long	1				# NumberOfSymbols
-@@ -230,6 +230,23 @@ section_table:
- 	.word	0				# NumberOfLineNumbers
- 	.long	0x42100040			# Characteristics (section flags)
- 
-+#ifdef CONFIG_EFI_MIXED
-+	#
-+	# The offset & size fields are filled in by build.c.
-+	#
-+	.asciz	".compat"
-+	.long	0
-+	.long	0x0
-+	.long	0				# Size of initialized data
-+						# on disk
-+	.long	0x0
-+	.long	0				# PointerToRelocations
-+	.long	0				# PointerToLineNumbers
-+	.word	0				# NumberOfRelocations
-+	.word	0				# NumberOfLineNumbers
-+	.long	0x60500020			# Characteristics (section flags)
-+#endif
-+
- 	#
- 	# The offset & size fields are filled in by build.c.
- 	#
-@@ -248,6 +265,7 @@ section_table:
- 	.word	0				# NumberOfLineNumbers
- 	.long	0x60500020			# Characteristics (section flags)
- 
-+	.set	section_count, (. - section_table) / 40
- #endif /* CONFIG_EFI_STUB */
- 
- 	# Kernel attributes; used by setup.  This is part 1 of the
-diff --git a/arch/x86/boot/tools/build.c b/arch/x86/boot/tools/build.c
-index 0c8c5a52f1f0..e83144c9db93 100644
---- a/arch/x86/boot/tools/build.c
-+++ b/arch/x86/boot/tools/build.c
-@@ -53,9 +53,16 @@ u8 buf[SETUP_SECT_MAX*512];
- 
- #define PECOFF_RELOC_RESERVE 0x20
- 
-+#ifdef CONFIG_EFI_MIXED
-+#define PECOFF_COMPAT_RESERVE 0x20
-+#else
-+#define PECOFF_COMPAT_RESERVE 0x0
-+#endif
-+
- unsigned long efi32_stub_entry;
- unsigned long efi64_stub_entry;
- unsigned long efi_pe_entry;
-+unsigned long efi32_pe_entry;
- unsigned long kernel_info;
- unsigned long startup_64;
- 
-@@ -189,7 +196,10 @@ static void update_pecoff_section_header(char *section_name, u32 offset, u32 siz
- static void update_pecoff_setup_and_reloc(unsigned int size)
- {
- 	u32 setup_offset = 0x200;
--	u32 reloc_offset = size - PECOFF_RELOC_RESERVE;
-+	u32 reloc_offset = size - PECOFF_RELOC_RESERVE - PECOFF_COMPAT_RESERVE;
-+#ifdef CONFIG_EFI_MIXED
-+	u32 compat_offset = reloc_offset + PECOFF_RELOC_RESERVE;
-+#endif
- 	u32 setup_size = reloc_offset - setup_offset;
- 
- 	update_pecoff_section_header(".setup", setup_offset, setup_size);
-@@ -201,6 +211,20 @@ static void update_pecoff_setup_and_reloc(unsigned int size)
- 	 */
- 	put_unaligned_le32(reloc_offset + 10, &buf[reloc_offset]);
- 	put_unaligned_le32(10, &buf[reloc_offset + 4]);
-+
-+#ifdef CONFIG_EFI_MIXED
-+	update_pecoff_section_header(".compat", compat_offset, PECOFF_COMPAT_RESERVE);
-+
-+	/*
-+	 * Put the IA-32 machine type (0x14c) and the associated entry point
-+	 * address in the .compat section, so loaders can figure out which other
-+	 * execution modes this image supports.
-+	 */
-+	buf[compat_offset] = 0x1;
-+	buf[compat_offset + 1] = 0x8;
-+	put_unaligned_le16(0x14c, &buf[compat_offset + 2]);
-+	put_unaligned_le32(efi32_pe_entry + size, &buf[compat_offset + 4]);
-+#endif
- }
- 
- static void update_pecoff_text(unsigned int text_start, unsigned int file_sz,
-@@ -282,6 +306,12 @@ static inline int reserve_pecoff_reloc_section(int c)
- }
- #endif /* CONFIG_EFI_STUB */
- 
-+static int reserve_pecoff_compat_section(int c)
-+{
-+	/* Reserve 0x20 bytes for .compat section */
-+	memset(buf+c, 0, PECOFF_COMPAT_RESERVE);
-+	return PECOFF_COMPAT_RESERVE;
-+}
- 
- /*
-  * Parse zoffset.h and find the entry points. We could just #include zoffset.h
-@@ -314,6 +344,7 @@ static void parse_zoffset(char *fname)
- 		PARSE_ZOFS(p, efi32_stub_entry);
- 		PARSE_ZOFS(p, efi64_stub_entry);
- 		PARSE_ZOFS(p, efi_pe_entry);
-+		PARSE_ZOFS(p, efi32_pe_entry);
- 		PARSE_ZOFS(p, kernel_info);
- 		PARSE_ZOFS(p, startup_64);
- 
-@@ -357,6 +388,7 @@ int main(int argc, char ** argv)
- 		die("Boot block hasn't got boot flag (0xAA55)");
- 	fclose(file);
- 
-+	c += reserve_pecoff_compat_section(c);
- 	c += reserve_pecoff_reloc_section(c);
- 
- 	/* Pad unused space with zeros */
--- 
-2.17.1
-
+> ---
+>  drivers/firmware/efi/efi.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
+> index 621220ab3d0e..21ea99f65113 100644
+> --- a/drivers/firmware/efi/efi.c
+> +++ b/drivers/firmware/efi/efi.c
+> @@ -552,7 +552,7 @@ int __init efi_config_parse_tables(void *config_tables, int count, int sz,
+>
+>                 seed = early_memremap(efi.rng_seed, sizeof(*seed));
+>                 if (seed != NULL) {
+> -                       size = seed->size;
+> +                       size = READ_ONCE(seed->size);
+>                         early_memunmap(seed, sizeof(*seed));
+>                 } else {
+>                         pr_err("Could not map UEFI random seed!\n");
+> @@ -562,7 +562,7 @@ int __init efi_config_parse_tables(void *config_tables, int count, int sz,
+>                                               sizeof(*seed) + size);
+>                         if (seed != NULL) {
+>                                 pr_notice("seeding entropy pool\n");
+> -                               add_bootloader_randomness(seed->bits, seed->size);
+> +                               add_bootloader_randomness(seed->bits, size);
+>                                 early_memunmap(seed, sizeof(*seed) + size);
+>                         } else {
+>                                 pr_err("Could not map UEFI random seed!\n");
+> --
+> 2.25.0
+>
