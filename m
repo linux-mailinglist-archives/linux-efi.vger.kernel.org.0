@@ -2,74 +2,88 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D113160D8E
-	for <lists+linux-efi@lfdr.de>; Mon, 17 Feb 2020 09:37:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5FCCE160D92
+	for <lists+linux-efi@lfdr.de>; Mon, 17 Feb 2020 09:38:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728245AbgBQIhh (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 17 Feb 2020 03:37:37 -0500
-Received: from mail.kernel.org ([198.145.29.99]:40838 "EHLO mail.kernel.org"
+        id S1728299AbgBQIh7 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 17 Feb 2020 03:37:59 -0500
+Received: from mail.kernel.org ([198.145.29.99]:41008 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728243AbgBQIhh (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Mon, 17 Feb 2020 03:37:37 -0500
+        id S1728243AbgBQIh7 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Mon, 17 Feb 2020 03:37:59 -0500
 Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D5DA520725
-        for <linux-efi@vger.kernel.org>; Mon, 17 Feb 2020 08:37:36 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id B5BAE2067D
+        for <linux-efi@vger.kernel.org>; Mon, 17 Feb 2020 08:37:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1581928657;
-        bh=YuwYn1OuFVo6pyjqNruXJfjYrKy4a216ddFYzIXWbZk=;
+        s=default; t=1581928679;
+        bh=OEYEsnHiPG+bbDAtNq8Y3KYQGtuOQ7X4K6jfDlfmg0s=;
         h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=EpU/3uHxkmPQ++DOQk715M2m9B7EnCNfOJEprjTJwXoCfHgWwO6OR0VYmZnZWnTIl
-         /naKlhR3HMIOwB1lhBx1ArKIyIIEAxaHUgzFKsPnENV3X09u3gtJmuqnbitnCyhxS+
-         4EbbnQ/SI1MLXeQvHLkh0r/dQUiRyqolibzmhs/A=
-Received: by mail-wm1-f54.google.com with SMTP id a6so17403143wme.2
-        for <linux-efi@vger.kernel.org>; Mon, 17 Feb 2020 00:37:36 -0800 (PST)
-X-Gm-Message-State: APjAAAU90GOMyEwnYeJOx/BNDMDAJQ9oKJidEEkpLfrTPcy70RbF0dy8
-        at6+7YMpTuUoApIjSX2Lsp6XM2zjs5XiRn46XzJB4w==
-X-Google-Smtp-Source: APXvYqwOE0W8BHa3zBYISaB7jk+5QILSPKIAAxZ6SUXeMKl2Rfr2yhn5YuTvlqofpRg9XLkoIybdGcDZiAWXDvvON4E=
-X-Received: by 2002:a7b:c4cc:: with SMTP id g12mr22275347wmk.68.1581928655220;
- Mon, 17 Feb 2020 00:37:35 -0800 (PST)
+        b=almyo8lEtdGcW/YK6xiEN5YsP6IougXe95O345/6cpifswCPx3X2QySoktEEZrfmu
+         vRhJgT/DSNEAivN5e3HnH1K1c1iU7YyhhkRicLieD5R+vAyfdWsCxMflhXHwKhr44K
+         WPOVPoBKR4aFkHuHW0iVNjd2GESyBduUUOCABbn4=
+Received: by mail-wm1-f54.google.com with SMTP id a5so16178925wmb.0
+        for <linux-efi@vger.kernel.org>; Mon, 17 Feb 2020 00:37:58 -0800 (PST)
+X-Gm-Message-State: APjAAAXzmdje86vf4/2zoOvrPkScsDqDhu9u5zQ3EQCbEe0gaZ/gTm4m
+        OfS/BuoLCu5qtjg6VVL/TtDBUqwS/18Ch9EIPTbN+A==
+X-Google-Smtp-Source: APXvYqyxuNjRyNRXggRupVSd2WRYP5sWapSYcLr4lLJjijhlrbJTrXEn7sHefsMSGvoow5y0+Eyf3SwDdJzB8ImIW9Q=
+X-Received: by 2002:a1c:bc46:: with SMTP id m67mr20340442wmf.40.1581928676930;
+ Mon, 17 Feb 2020 00:37:56 -0800 (PST)
 MIME-Version: 1.0
-References: <20200210160248.4889-1-ardb@kernel.org> <20200210160248.4889-14-ardb@kernel.org>
- <952796db5423caf21c411c6f5629f32882f55b29.camel@wdc.com>
-In-Reply-To: <952796db5423caf21c411c6f5629f32882f55b29.camel@wdc.com>
+References: <20200216184050.3100-1-xypron.glpk@gmx.de>
+In-Reply-To: <20200216184050.3100-1-xypron.glpk@gmx.de>
 From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Mon, 17 Feb 2020 09:37:24 +0100
-X-Gmail-Original-Message-ID: <CAKv+Gu_eJvZn8a45t5Hr23+QQySJOBaBwSsxW7dkYCoVPO4RPw@mail.gmail.com>
-Message-ID: <CAKv+Gu_eJvZn8a45t5Hr23+QQySJOBaBwSsxW7dkYCoVPO4RPw@mail.gmail.com>
-Subject: Re: [PATCH 13/19] efi/libstub: Move get_dram_base() into arm-stub.c
-To:     Atish Patra <Atish.Patra@wdc.com>
-Cc:     "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
-        "mingo@kernel.org" <mingo@kernel.org>,
-        "nivedita@alum.mit.edu" <nivedita@alum.mit.edu>,
-        "lukas@wunner.de" <lukas@wunner.de>
+Date:   Mon, 17 Feb 2020 09:37:46 +0100
+X-Gmail-Original-Message-ID: <CAKv+Gu_zevqzHRPMQaEcAeLPCYrTCLtbTbrZ2Ajz+ooYDb3m3A@mail.gmail.com>
+Message-ID: <CAKv+Gu_zevqzHRPMQaEcAeLPCYrTCLtbTbrZ2Ajz+ooYDb3m3A@mail.gmail.com>
+Subject: Re: [PATCH 1/1] efi/libstub: simplify efi_get_memory_map()
+To:     Heinrich Schuchardt <xypron.glpk@gmx.de>
+Cc:     linux-efi <linux-efi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Mon, 17 Feb 2020 at 02:17, Atish Patra <Atish.Patra@wdc.com> wrote:
+On Sun, 16 Feb 2020 at 19:40, Heinrich Schuchardt <xypron.glpk@gmx.de> wrote:
 >
-> On Mon, 2020-02-10 at 17:02 +0100, Ard Biesheuvel wrote:
-> > get_dram_base() is only called from arm-stub.c so move it into
-> > the same source file as its caller.
-> >
+> Do not check the value of status twice.
 >
-> Just FYI: riscv efi stub port is also going to use get_dram_base().
-> However, I have renamed arm-stub.c to generic efi-stub.c so that arm,
-> arm64 and riscv can reuse it. Thus, Moving get_dram_base() into arm-
-> stub.c works for riscv as well. I will rebase my patches on top of this
-> series.
+> Signed-off-by: Heinrich Schuchardt <xypron.glpk@gmx.de>
+
+Thanks, I'll queue this one as well.
+
+> ---
+>  drivers/firmware/efi/libstub/mem.c | 13 +++++++------
+>  1 file changed, 7 insertions(+), 6 deletions(-)
 >
-
-Thanks Atish. I was hoping it would turn out like this, which is why I
-am pushing this series now.
-
-I haven't looked at your code yet, but please avoid using the command
-line based initrd/dtb loading routines. I am proposing a cleaner way
-to provide the initrd from firmware [0], and dtb loading by the stub
-should not be done in the first place.
-
-[0] https://lore.kernel.org/linux-efi/20200216141104.21477-1-ardb@kernel.org/
+> diff --git a/drivers/firmware/efi/libstub/mem.c b/drivers/firmware/efi/libstub/mem.c
+> index c6a784ed640f..c25fd9174b74 100644
+> --- a/drivers/firmware/efi/libstub/mem.c
+> +++ b/drivers/firmware/efi/libstub/mem.c
+> @@ -52,13 +52,14 @@ efi_status_t efi_get_memory_map(struct efi_boot_memmap *map)
+>                 goto again;
+>         }
+>
+> -       if (status != EFI_SUCCESS)
+> +       if (status == EFI_SUCCESS) {
+> +               if (map->key_ptr)
+> +                       *map->key_ptr = key;
+> +               if (map->desc_ver)
+> +                       *map->desc_ver = desc_version;
+> +       } else {
+>                 efi_bs_call(free_pool, m);
+> -
+> -       if (map->key_ptr && status == EFI_SUCCESS)
+> -               *map->key_ptr = key;
+> -       if (map->desc_ver && status == EFI_SUCCESS)
+> -               *map->desc_ver = desc_version;
+> +       }
+>
+>  fail:
+>         *map->map = m;
+> --
+> 2.25.0
+>
