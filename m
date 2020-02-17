@@ -2,36 +2,36 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B9288161504
-	for <lists+linux-efi@lfdr.de>; Mon, 17 Feb 2020 15:48:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8EEA7161505
+	for <lists+linux-efi@lfdr.de>; Mon, 17 Feb 2020 15:48:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728862AbgBQOsk (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 17 Feb 2020 09:48:40 -0500
-Received: from mail.kernel.org ([198.145.29.99]:58252 "EHLO mail.kernel.org"
+        id S1729076AbgBQOsn (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 17 Feb 2020 09:48:43 -0500
+Received: from mail.kernel.org ([198.145.29.99]:58296 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728723AbgBQOsk (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Mon, 17 Feb 2020 09:48:40 -0500
+        id S1729009AbgBQOsn (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Mon, 17 Feb 2020 09:48:43 -0500
 Received: from cam-smtp0.cambridge.arm.com (fw-tnat.cambridge.arm.com [217.140.96.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B530820801;
-        Mon, 17 Feb 2020 14:48:36 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id C9122208C4;
+        Mon, 17 Feb 2020 14:48:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1581950919;
-        bh=e6ZG+E976AIhWjAK1TIlokoW6bwBMK6XlYeJMhOh7Ds=;
+        s=default; t=1581950922;
+        bh=4rK/Cs75LSvVEvWuQDcMPhlsO3AXpj3H4QQv2bcKFFg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZOLTPU5KKQi1DP0HbQUf/DAbHo5bC24rT2C+IotZ9lr7BrxvvcIE9+GVeSxMNd0Pd
-         niFXhbx3UIpldVxWeJFFV10gJvCnIHDuVBxEbjEaqcQJgwnCGUtli8eccOaf0Qvr9F
-         2RMGKsNHpgtixp67Kolt3TmOwrkWcYrV+SUpb/Z0=
+        b=wV2aFTe8oZY4FYbcYLXWsg2aYO2uyC5ziXiFPZxLaOhqFig4KtgyYx4U+oi7hBY+H
+         JrAqluXSUom83kTRmfv5BfFrnUnpl/UQvgFBrru0IVLWhjF/aRPrSun6QYexmNHsNK
+         EVEgTt/ONrc0+kPQZ/vO+zHhTou9Z85jcIp47GKw=
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-efi@vger.kernel.org
 Cc:     Ard Biesheuvel <ardb@kernel.org>, lersek@redhat.com,
         leif@nuviainc.com, pjones@redhat.com, mjg59@google.com,
         agraf@csgraf.de, daniel.kiper@oracle.com, hdegoede@redhat.com,
         nivedita@alum.mit.edu, mingo@kernel.org
-Subject: [PATCH v2 1/5] efi/x86: Drop redundant .bss section
-Date:   Mon, 17 Feb 2020 15:48:18 +0100
-Message-Id: <20200217144822.24616-2-ardb@kernel.org>
+Subject: [PATCH v2 2/5] efi/libstub/x86: Make loaded_image protocol handling mixed mode safe
+Date:   Mon, 17 Feb 2020 15:48:19 +0100
+Message-Id: <20200217144822.24616-3-ardb@kernel.org>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200217144822.24616-1-ardb@kernel.org>
 References: <20200217144822.24616-1-ardb@kernel.org>
@@ -40,143 +40,109 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-In commit
-
-  c7fb93ec51d462ec ("x86/efi: Include a .bss section within the PE/COFF headers")
-
-we added a separate .bss section to the PE/COFF header of the compressed
-kernel describing the static memory footprint of the decompressor, to
-ensure that it has enough headroom to decompress itself.
-
-We can achieve the exact same result by increasing the virtual size of
-the .text section, without changing the raw size, which, as per the
-PE/COFF specification, requires the loader to zero initialize the delta.
-
-Doing so frees up a slot in the section table, which we will use later
-to describe the mixed mode entrypoint.
+Add the definitions and use the special wrapper so that the loaded_image
+UEFI protocol can be safely used from mixed mode.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/x86/boot/header.S      | 21 +-----------
- arch/x86/boot/tools/build.c | 35 ++++++++------------
- 2 files changed, 14 insertions(+), 42 deletions(-)
+ drivers/firmware/efi/libstub/efi-stub-helper.c |  4 +-
+ drivers/firmware/efi/libstub/efistub.h         | 45 ++++++++++++++------
+ drivers/firmware/efi/libstub/x86-stub.c        |  4 +-
+ 3 files changed, 35 insertions(+), 18 deletions(-)
 
-diff --git a/arch/x86/boot/header.S b/arch/x86/boot/header.S
-index 97d9b6d6c1af..d59f6604bb42 100644
---- a/arch/x86/boot/header.S
-+++ b/arch/x86/boot/header.S
-@@ -106,7 +106,7 @@ coff_header:
- #else
- 	.word	0x8664				# x86-64
- #endif
--	.word	4				# nr_sections
-+	.word	3				# nr_sections
- 	.long	0 				# TimeDateStamp
- 	.long	0				# PointerToSymbolTable
- 	.long	1				# NumberOfSymbols
-@@ -248,25 +248,6 @@ section_table:
- 	.word	0				# NumberOfLineNumbers
- 	.long	0x60500020			# Characteristics (section flags)
+diff --git a/drivers/firmware/efi/libstub/efi-stub-helper.c b/drivers/firmware/efi/libstub/efi-stub-helper.c
+index d98f9a1bf82c..618c189dd55c 100644
+--- a/drivers/firmware/efi/libstub/efi-stub-helper.c
++++ b/drivers/firmware/efi/libstub/efi-stub-helper.c
+@@ -171,8 +171,8 @@ char *efi_convert_cmdline(efi_loaded_image_t *image,
+ 	const u16 *s2;
+ 	u8 *s1 = NULL;
+ 	unsigned long cmdline_addr = 0;
+-	int load_options_chars = image->load_options_size / 2; /* UTF-16 */
+-	const u16 *options = image->load_options;
++	int load_options_chars = efi_table_attr(image, load_options_size) / 2;
++	const u16 *options = efi_table_attr(image, load_options);
+ 	int options_bytes = 0;  /* UTF-8 bytes */
+ 	int options_chars = 0;  /* UTF-16 chars */
+ 	efi_status_t status;
+diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
+index 2e5e79edb4d7..6960e730f990 100644
+--- a/drivers/firmware/efi/libstub/efistub.h
++++ b/drivers/firmware/efi/libstub/efistub.h
+@@ -308,20 +308,37 @@ union efi_graphics_output_protocol {
+ 	} mixed_mode;
+ };
  
--	#
--	# The offset & size fields are filled in by build.c.
--	#
--	.ascii	".bss"
--	.byte	0
--	.byte	0
--	.byte	0
--	.byte	0
--	.long	0
--	.long	0x0
--	.long	0				# Size of initialized data
--						# on disk
--	.long	0x0
--	.long	0				# PointerToRelocations
--	.long	0				# PointerToLineNumbers
--	.word	0				# NumberOfRelocations
--	.word	0				# NumberOfLineNumbers
--	.long	0xc8000080			# Characteristics (section flags)
--
- #endif /* CONFIG_EFI_STUB */
+-typedef struct {
+-	u32			revision;
+-	efi_handle_t		parent_handle;
+-	efi_system_table_t	*system_table;
+-	efi_handle_t		device_handle;
+-	void			*file_path;
+-	void			*reserved;
+-	u32			load_options_size;
+-	void			*load_options;
+-	void			*image_base;
+-	__aligned_u64		image_size;
+-	unsigned int		image_code_type;
+-	unsigned int		image_data_type;
+-	efi_status_t		(__efiapi *unload)(efi_handle_t image_handle);
++typedef union {
++	struct {
++		u32			revision;
++		efi_handle_t		parent_handle;
++		efi_system_table_t	*system_table;
++		efi_handle_t		device_handle;
++		void			*file_path;
++		void			*reserved;
++		u32			load_options_size;
++		void			*load_options;
++		void			*image_base;
++		__aligned_u64		image_size;
++		unsigned int		image_code_type;
++		unsigned int		image_data_type;
++		efi_status_t		(__efiapi *unload)(efi_handle_t image_handle);
++	};
++	struct {
++		u32		revision;
++		u32		parent_handle;
++		u32		system_table;
++		u32		device_handle;
++		u32		file_path;
++		u32		reserved;
++		u32		load_options_size;
++		u32		load_options;
++		u32		image_base;
++		__aligned_u64	image_size;
++		u32		image_code_type;
++		u32		image_data_type;
++		u32		unload;
++	} mixed_mode;
+ } efi_loaded_image_t;
  
- 	# Kernel attributes; used by setup.  This is part 1 of the
-diff --git a/arch/x86/boot/tools/build.c b/arch/x86/boot/tools/build.c
-index 55e669d29e54..0c8c5a52f1f0 100644
---- a/arch/x86/boot/tools/build.c
-+++ b/arch/x86/boot/tools/build.c
-@@ -203,10 +203,12 @@ static void update_pecoff_setup_and_reloc(unsigned int size)
- 	put_unaligned_le32(10, &buf[reloc_offset + 4]);
- }
+ typedef struct {
+diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
+index 7d4866471f86..ce0c3caa3087 100644
+--- a/drivers/firmware/efi/libstub/x86-stub.c
++++ b/drivers/firmware/efi/libstub/x86-stub.c
+@@ -377,7 +377,7 @@ efi_status_t __efiapi efi_pe_entry(efi_handle_t handle,
+ 		return status;
+ 	}
  
--static void update_pecoff_text(unsigned int text_start, unsigned int file_sz)
-+static void update_pecoff_text(unsigned int text_start, unsigned int file_sz,
-+			       unsigned int init_sz)
- {
- 	unsigned int pe_header;
- 	unsigned int text_sz = file_sz - text_start;
-+	unsigned int bss_sz = init_sz - file_sz;
+-	hdr = &((struct boot_params *)image->image_base)->hdr;
++	hdr = &((struct boot_params *)efi_table_attr(image, image_base))->hdr;
+ 	above4g = hdr->xloadflags & XLF_CAN_BE_LOADED_ABOVE_4G;
  
- 	pe_header = get_unaligned_le32(&buf[0x3c]);
+ 	status = efi_allocate_pages(0x4000, (unsigned long *)&boot_params,
+@@ -392,7 +392,7 @@ efi_status_t __efiapi efi_pe_entry(efi_handle_t handle,
+ 	hdr = &boot_params->hdr;
  
-@@ -216,28 +218,19 @@ static void update_pecoff_text(unsigned int text_start, unsigned int file_sz)
- 	 */
- 	put_unaligned_le32(file_sz - 512, &buf[pe_header + 0x1c]);
+ 	/* Copy the second sector to boot_params */
+-	memcpy(&hdr->jump, image->image_base + 512, 512);
++	memcpy(&hdr->jump, efi_table_attr(image, image_base) + 512, 512);
  
--	/*
--	 * Address of entry point for PE/COFF executable
--	 */
--	put_unaligned_le32(text_start + efi_pe_entry, &buf[pe_header + 0x28]);
--
--	update_pecoff_section_header(".text", text_start, text_sz);
--}
--
--static void update_pecoff_bss(unsigned int file_sz, unsigned int init_sz)
--{
--	unsigned int pe_header;
--	unsigned int bss_sz = init_sz - file_sz;
--
--	pe_header = get_unaligned_le32(&buf[0x3c]);
--
- 	/* Size of uninitialized data */
- 	put_unaligned_le32(bss_sz, &buf[pe_header + 0x24]);
- 
- 	/* Size of image */
- 	put_unaligned_le32(init_sz, &buf[pe_header + 0x50]);
- 
--	update_pecoff_section_header_fields(".bss", file_sz, bss_sz, 0, 0);
-+	/*
-+	 * Address of entry point for PE/COFF executable
-+	 */
-+	put_unaligned_le32(text_start + efi_pe_entry, &buf[pe_header + 0x28]);
-+
-+	update_pecoff_section_header_fields(".text", text_start, text_sz + bss_sz,
-+					    text_sz, text_start);
- }
- 
- static int reserve_pecoff_reloc_section(int c)
-@@ -278,9 +271,8 @@ static void efi_stub_entry_update(void)
- 
- static inline void update_pecoff_setup_and_reloc(unsigned int size) {}
- static inline void update_pecoff_text(unsigned int text_start,
--				      unsigned int file_sz) {}
--static inline void update_pecoff_bss(unsigned int file_sz,
--				     unsigned int init_sz) {}
-+				      unsigned int file_sz,
-+				      unsigned int init_sz) {}
- static inline void efi_stub_defaults(void) {}
- static inline void efi_stub_entry_update(void) {}
- 
-@@ -406,9 +398,8 @@ int main(int argc, char ** argv)
- 	buf[0x1f1] = setup_sectors-1;
- 	put_unaligned_le32(sys_size, &buf[0x1f4]);
- 
--	update_pecoff_text(setup_sectors * 512, i + (sys_size * 16));
- 	init_sz = get_unaligned_le32(&buf[0x260]);
--	update_pecoff_bss(i + (sys_size * 16), init_sz);
-+	update_pecoff_text(setup_sectors * 512, i + (sys_size * 16), init_sz);
- 
- 	efi_stub_entry_update();
- 
+ 	/*
+ 	 * Fill out some of the header fields ourselves because the
 -- 
 2.17.1
 
