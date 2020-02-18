@@ -2,101 +2,64 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D79C7162F0F
-	for <lists+linux-efi@lfdr.de>; Tue, 18 Feb 2020 19:53:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D505163082
+	for <lists+linux-efi@lfdr.de>; Tue, 18 Feb 2020 20:46:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726444AbgBRSxk (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 18 Feb 2020 13:53:40 -0500
-Received: from bombadil.infradead.org ([198.137.202.133]:53798 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726339AbgBRSxk (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 18 Feb 2020 13:53:40 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
-        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=6j4dbVJFJ7oC5DhQZUAIAKi7jxQSaytsVxqOSb9w4KQ=; b=U2j547CyaTMSl1ZbRusn62lgFo
-        J84flzxCZ4FHWDTcaPQ1AXHDxrJ4x9KkJ4LkWBgafCFjPC1U5sTuP2Xga8daT30nhifZiBXhNOkGa
-        nL27PfE/VPWQjKFtFMEWNa2HvzjkyCFuFi0AohXmC6XOGhRfjc+QP3NVjvuRmrJUOKkB6xsgDcLN6
-        Tm1XDKozCfBPbzoqOqd8YPIMQjf1OdhXTZ/hOY7UA47vOkuseO4GfUb4lTd18nx2XKopkgHIxUsYV
-        aQN4ihIQzpNNZwDK+rVq1IToXO1awP5GMc1SVbK95/HKgB2pn4ACNF2ijCKTa5bNuZOGmNp9sVzLw
-        aizBuPiw==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1j4800-0007Am-Hw; Tue, 18 Feb 2020 18:53:36 +0000
-Date:   Tue, 18 Feb 2020 10:53:36 -0800
-From:   Christoph Hellwig <hch@infradead.org>
-To:     Nikolai Merinov <n.merinov@inango-systems.com>
-Cc:     hch@infradead.org, Davidlohr Bueso <dave@stgolabs.net>,
-        Jens Axboe <axboe@kernel.dk>, Ard Biesheuvel <ardb@kernel.org>,
-        linux-efi@vger.kernel.org, linux-block@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] partitions/efi: Fix partition name parsing in GUID
- partition entry
-Message-ID: <20200218185336.GA14242@infradead.org>
-References: <20181124162123.21300-1-n.merinov@inango-systems.com>
- <20191224092119.4581-1-n.merinov@inango-systems.com>
- <20200108133926.GC4455@infradead.org>
- <26f7bd89f212f68b03a4b207e96d8702c9049015.1578910723.git.n.merinov@inango-systems.com>
+        id S1726427AbgBRTq2 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 18 Feb 2020 14:46:28 -0500
+Received: from mga17.intel.com ([192.55.52.151]:32453 "EHLO mga17.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726283AbgBRTq2 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Tue, 18 Feb 2020 14:46:28 -0500
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 18 Feb 2020 11:46:27 -0800
+X-IronPort-AV: E=Sophos;i="5.70,457,1574150400"; 
+   d="scan'208";a="315164534"
+Received: from agluck-desk2.sc.intel.com (HELO agluck-desk2.amr.corp.intel.com) ([10.3.52.68])
+  by orsmga001-auth.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 18 Feb 2020 11:46:26 -0800
+Date:   Tue, 18 Feb 2020 11:46:25 -0800
+From:   "Luck, Tony" <tony.luck@intel.com>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-efi <linux-efi@vger.kernel.org>,
+        "Yu, Fenghua" <fenghua.yu@intel.com>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Arvind Sankar <nivedita@alum.mit.edu>,
+        the arch/x86 maintainers <x86@kernel.org>
+Subject: Re: [PATCH 00/18] efi: clean up contents of struct efi
+Message-ID: <20200218194625.GA25459@agluck-desk2.amr.corp.intel.com>
+References: <20200216182334.8121-1-ardb@kernel.org>
+ <CAKv+Gu-4N6B0LPL1fn5C2EAh9y3ECZ=mSi92p0AyJf67mJoWmw@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <26f7bd89f212f68b03a4b207e96d8702c9049015.1578910723.git.n.merinov@inango-systems.com>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+In-Reply-To: <CAKv+Gu-4N6B0LPL1fn5C2EAh9y3ECZ=mSi92p0AyJf67mJoWmw@mail.gmail.com>
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Mon, Jan 13, 2020 at 03:27:23PM +0500, Nikolai Merinov wrote:
-> GUID partition entry defined to have a partition name as 36 UTF-16LE
-> code units. This means that on big-endian platforms ASCII symbols
-> would be read with 0xXX00 efi_char16_t character code. In order to
-> correctly extract ASCII characters from a partition name field we
-> should be converted from 16LE to CPU architecture.
+On Sun, Feb 16, 2020 at 07:31:58PM +0100, Ard Biesheuvel wrote:
+> (+ Tony and Fenghua)
 > 
-> The problem exists on all big endian platforms.
+> Apologies to the IA64 maintainers for forgetting to cc you.
+
+No worries.
 > 
-> Signed-off-by: Nikolai Merinov <n.merinov@inango-systems.com>
-> ---
->  block/partitions/efi.c | 3 ++-
->  block/partitions/efi.h | 2 +-
->  include/linux/efi.h    | 5 +++++
->  3 files changed, 8 insertions(+), 2 deletions(-)
+> The whole series can be found at
+> https://lore.kernel.org/linux-efi/20200216182334.8121-1-ardb@kernel.org/
 > 
-> diff --git a/block/partitions/efi.c b/block/partitions/efi.c
-> index db2fef7dfc47..f1d0820de844 100644
-> --- a/block/partitions/efi.c
-> +++ b/block/partitions/efi.c
-> @@ -715,7 +715,8 @@ int efi_partition(struct parsed_partitions *state)
->  				ARRAY_SIZE(ptes[i].partition_name));
->  		info->volname[label_max] = 0;
->  		while (label_count < label_max) {
-> -			u8 c = ptes[i].partition_name[label_count] & 0xff;
-> +			u8 c = 0xff & efi_char16le_to_cpu(
-> +					ptes[i].partition_name[label_count]);
+> Please let me know if you need me to resend with the missing cc's added.
 
-Why are you swapping the order of the comparism to an unusual one here?
+Thanks to get-lore-mbox.py I don't. It picked up all the pieces.
 
-> -	efi_char16_t partition_name[72 / sizeof (efi_char16_t)];
-> +	efi_char16le_t partition_name[72 / sizeof(efi_char16le_t)];
->  } __packed gpt_entry;
->  
->  typedef struct _gpt_mbr_record {
-> diff --git a/include/linux/efi.h b/include/linux/efi.h
-> index aa54586db7a5..47882f2d45db 100644
-> --- a/include/linux/efi.h
-> +++ b/include/linux/efi.h
-> @@ -45,9 +45,14 @@
->  typedef unsigned long efi_status_t;
->  typedef u8 efi_bool_t;
->  typedef u16 efi_char16_t;		/* UNICODE character */
-> +typedef __le16 efi_char16le_t;		/* UTF16-LE */
-> +typedef __be16 efi_char16be_t;		/* UTF16-BE */
->  typedef u64 efi_physical_addr_t;
->  typedef void *efi_handle_t;
->  
-> +#define efi_char16le_to_cpu le16_to_cpu
-> +#define efi_char16be_to_cpu be16_to_cpu
+It all builds and boots with no issues.
 
-I'd rather use plain __le16 and le16_to_cpu here.  Also the be
-variants seems to be entirely unused.
+Looks like a nice cleanup.
+
+Tested-by: Tony Luck <tony.luck@intel.com> # arch/ia64
+
+-Tony
