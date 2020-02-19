@@ -2,80 +2,94 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 30BE9164B70
-	for <lists+linux-efi@lfdr.de>; Wed, 19 Feb 2020 18:05:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 698D2164BB5
+	for <lists+linux-efi@lfdr.de>; Wed, 19 Feb 2020 18:19:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726648AbgBSRF3 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 19 Feb 2020 12:05:29 -0500
-Received: from avon.wwwdotorg.org ([104.237.132.123]:33014 "EHLO
-        avon.wwwdotorg.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726514AbgBSRF3 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 19 Feb 2020 12:05:29 -0500
-X-Greylist: delayed 331 seconds by postgrey-1.27 at vger.kernel.org; Wed, 19 Feb 2020 12:05:28 EST
-Received: from [10.20.204.51] (unknown [216.228.112.24])
+        id S1726634AbgBSRTc (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 19 Feb 2020 12:19:32 -0500
+Received: from mail.kernel.org ([198.145.29.99]:42872 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726514AbgBSRTc (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Wed, 19 Feb 2020 12:19:32 -0500
+Received: from cam-smtp0.cambridge.arm.com (fw-tnat.cambridge.arm.com [217.140.96.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by avon.wwwdotorg.org (Postfix) with ESMTPSA id 7C4F21C092D;
-        Wed, 19 Feb 2020 09:59:55 -0700 (MST)
-X-Virus-Status: Clean
-X-Virus-Scanned: clamav-milter 0.102.1 at avon.wwwdotorg.org
-Subject: Re: [PATCH v1] partitions/efi: Add 'gpt_sector' kernel cmdline
- parameter
-To:     Christoph Hellwig <hch@infradead.org>,
-        Dmitry Osipenko <digetx@gmail.com>
-Cc:     Jens Axboe <axboe@kernel.dk>, Davidlohr Bueso <dave@stgolabs.net>,
-        Colin Cross <ccross@android.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>,
-        David Heidelberg <david@ixit.cz>,
-        Peter Geis <pgwipeout@gmail.com>, linux-efi@vger.kernel.org,
-        linux-tegra@vger.kernel.org, linux-block@vger.kernel.org,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20200219162339.16192-1-digetx@gmail.com>
- <20200219162738.GA10644@infradead.org>
-From:   Stephen Warren <swarren@wwwdotorg.org>
-Message-ID: <f9e41108-7811-0deb-6977-be0f60e23b52@wwwdotorg.org>
-Date:   Wed, 19 Feb 2020 09:59:54 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
-MIME-Version: 1.0
-In-Reply-To: <20200219162738.GA10644@infradead.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+        by mail.kernel.org (Postfix) with ESMTPSA id 9583420801;
+        Wed, 19 Feb 2020 17:19:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1582132771;
+        bh=IId9tFtmAQIViFoahhM+vjHsH6D75y3Dzt08ogv9os0=;
+        h=From:To:Cc:Subject:Date:From;
+        b=D+lETJ/A4PT06Mq0D2z8VItX6k5wxoaSwby+MQpY7Po3JxMHYxc/JKZNu633ebmwG
+         kJFFS7iH+sTxB1i+vqNkR3ynU2LiSiMFEhO79sZwfkSliOOjGZVXmUCA752Xb28Ds4
+         1N+Ncrh8rgLuf1pzeDhXsNopCUVD+vNpSfgGKWqI=
+From:   Ard Biesheuvel <ardb@kernel.org>
+To:     linux-efi@vger.kernel.org
+Cc:     Ard Biesheuvel <ardb@kernel.org>,
+        Leif Lindholm <leif@nuviainc.com>,
+        Peter Jones <pjones@redhat.com>,
+        Alexander Graf <agraf@csgraf.de>,
+        Heinrich Schuchardt <xypron.glpk@gmx.de>,
+        Jeff Brasen <jbrasen@nvidia.com>,
+        Atish Patra <Atish.Patra@wdc.com>, x86@kernel.org
+Subject: [PATCH 0/9] efi: implement support for EFI RT properties table
+Date:   Wed, 19 Feb 2020 18:18:58 +0100
+Message-Id: <20200219171907.11894-1-ardb@kernel.org>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 2/19/20 9:27 AM, Christoph Hellwig wrote:
-> On Wed, Feb 19, 2020 at 07:23:39PM +0300, Dmitry Osipenko wrote:
->> The gpt_sector=<sector> causes the GPT partition search to look at the
->> specified sector for a valid GPT header if the GPT is not found at the
->> beginning or the end of block device.
->>
->> In particular this is needed for NVIDIA Tegra consumer-grade Android
->> devices in order to make them usable with the upstream kernel because
->> these devices use a proprietary / closed-source partition table format
->> for the EMMC and it's impossible to change the partition's format. Luckily
->> there is a GPT table in addition to the proprietary table, which is placed
->> in uncommon location of the EMMC storage and bootloader passes the
->> location to kernel using "gpt gpt_sector=<sector>" cmdline parameters.
->>
->> This patch is based on the original work done by Colin Cross for the
->> downstream Android kernel.
-> 
-> I don't think a magic command line is the way to go.  The best would be
-> to reverse-engineer the proprietary partition table format.  If that is
-> too hard we can at least key off the odd GPT location based of it's
-> magic number.
+The UEFI spec version 2.8 errata A defines a configuration table called
+EFI_RT_PROPERTIES_TABLE that carries a mask describing which EFI runtime
+services are still functional at OS runtime.
 
-I thought that the backup GPT was always present in the standard 
-location; it's just the primary GPT that's in an odd location. So, this 
-kernel parameter just forces the kernel to look first for the primary 
-GPT in the unusual location, thus avoiding an error message when that's 
-not there, and the system falls back to the backup GPT.
+Even though any runtime services that cease to be functional when exiting
+boot services are still required to return EFI_UNSUPPORTED when called by
+the OS, having this mask is helpful, since we can use it to prevent modules
+like efi-rtc or efivars from loading, instead of allowing them to probe and
+fail with an error.
 
-Or, do I misremember the layout, or the kernel's behaviour if primary 
-GPT is missing?
+So let's wire this up: make some room in struct efi for the mask, read it
+from the EFI_RT_PROPERTIES_TABLE if available, and replace various instances
+of 'if (efi_enabled(EFI_RUNTIME_SERVICES))' with checks for the runtime
+service in question that the code relies upon.
+
+Cc: Leif Lindholm <leif@nuviainc.com>
+Cc: Peter Jones <pjones@redhat.com>
+Cc: Alexander Graf <agraf@csgraf.de>
+Cc: Heinrich Schuchardt <xypron.glpk@gmx.de>
+Cc: Jeff Brasen <jbrasen@nvidia.com>
+Cc: Atish Patra <Atish.Patra@wdc.com>
+Cc: x86@kernel.org
+
+Ard Biesheuvel (9):
+  efi: store mask of supported runtime services in struct efi
+  efi: add support for EFI_RT_PROPERTIES table
+  efi: use more granular check for availability for variable services
+  efi: register EFI rtc platform device only when available
+  infiniband: hfi1: use EFI GetVariable only when available
+  scsi: iscsi: use EFI GetVariable only when available
+  efi: use EFI ResetSystem only when available
+  x86/ima: use EFI GetVariable only when available
+  integrity: check properly whether EFI GetVariable() is available
+
+ arch/x86/kernel/ima_arch.c                    |  2 +-
+ drivers/firmware/efi/efi-pstore.c             |  2 +-
+ drivers/firmware/efi/efi.c                    | 70 +++++++++++--------
+ drivers/firmware/efi/efivars.c                |  2 +-
+ drivers/firmware/efi/reboot.c                 |  4 +-
+ drivers/infiniband/hw/hfi1/efivar.c           |  2 +-
+ drivers/rtc/Makefile                          |  4 --
+ drivers/rtc/rtc-efi-platform.c                | 35 ----------
+ drivers/scsi/isci/init.c                      |  2 +-
+ fs/efivarfs/super.c                           |  2 +-
+ include/linux/efi.h                           | 40 +++++++++++
+ security/integrity/platform_certs/load_uefi.c |  2 +-
+ 12 files changed, 89 insertions(+), 78 deletions(-)
+ delete mode 100644 drivers/rtc/rtc-efi-platform.c
+
+-- 
+2.17.1
+
