@@ -2,27 +2,27 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DE4F8164BB6
-	for <lists+linux-efi@lfdr.de>; Wed, 19 Feb 2020 18:19:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F5F9164BB7
+	for <lists+linux-efi@lfdr.de>; Wed, 19 Feb 2020 18:19:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726638AbgBSRTf (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 19 Feb 2020 12:19:35 -0500
-Received: from mail.kernel.org ([198.145.29.99]:42922 "EHLO mail.kernel.org"
+        id S1726680AbgBSRTi (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 19 Feb 2020 12:19:38 -0500
+Received: from mail.kernel.org ([198.145.29.99]:42956 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726652AbgBSRTf (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Wed, 19 Feb 2020 12:19:35 -0500
+        id S1726514AbgBSRTh (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Wed, 19 Feb 2020 12:19:37 -0500
 Received: from cam-smtp0.cambridge.arm.com (fw-tnat.cambridge.arm.com [217.140.96.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 4791224672;
-        Wed, 19 Feb 2020 17:19:32 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id EC31224673;
+        Wed, 19 Feb 2020 17:19:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1582132774;
-        bh=/RdEDGgtdl0/msLC4fuNxM0m8ky68tzeUwE94uyIBGw=;
+        s=default; t=1582132777;
+        bh=Dv6uyXEmok6oEm/3BWepdoT4N6mQZdpZSQD3O1qUVIo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Ieu07njezJsAb+jamnTTadsHcWRcwmhDka1gEMXQsiNRvHtRWGSZYo7m8gCuPt5DJ
-         etip75nPMxFiizlTpGBlCVxvi+mW00iNAvPaRHtbCHGoNLzsrFn9m7eHedf5EuEESK
-         2lGQgNxSdhiRGAQQXGL2jzeZtVjbPU0/us1LS+lI=
+        b=bC5UK0Y3shDZN1aqGCmw33zkOpZM6lHRZK4rtNSrUciY75fFjiUH9lPHbI8bXCTc2
+         KD5LiiBGHxRIB8gUbYlYC4gSjzH6eSUNQ5w7DQ04xE2Q2lMY2FbAB/g/BI90GpMlGx
+         NY++pUSDA3lCr47AHhxm8nCQeofMfolJdkooB84o=
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-efi@vger.kernel.org
 Cc:     Ard Biesheuvel <ardb@kernel.org>,
@@ -32,9 +32,9 @@ Cc:     Ard Biesheuvel <ardb@kernel.org>,
         Heinrich Schuchardt <xypron.glpk@gmx.de>,
         Jeff Brasen <jbrasen@nvidia.com>,
         Atish Patra <Atish.Patra@wdc.com>, x86@kernel.org
-Subject: [PATCH 1/9] efi: store mask of supported runtime services in struct efi
-Date:   Wed, 19 Feb 2020 18:18:59 +0100
-Message-Id: <20200219171907.11894-2-ardb@kernel.org>
+Subject: [PATCH 2/9] efi: add support for EFI_RT_PROPERTIES table
+Date:   Wed, 19 Feb 2020 18:19:00 +0100
+Message-Id: <20200219171907.11894-3-ardb@kernel.org>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200219171907.11894-1-ardb@kernel.org>
 References: <20200219171907.11894-1-ardb@kernel.org>
@@ -43,124 +43,80 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Revision 2.8 of the UEFI spec introduces provisions for firmware to
-advertise lack of support for certain runtime services at OS runtime.
-Let's store this mask in struct efi for easy access.
+Take the newly introduced EFI_RT_PROPERTIES_TABLE configuration table
+into account, which carries a mask of which EFI runtime services are
+still functional after ExitBootServices() has been called by the OS.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- drivers/firmware/efi/efi.c | 27 ++++++++++-------
- include/linux/efi.h        | 31 ++++++++++++++++++++
- 2 files changed, 48 insertions(+), 10 deletions(-)
+ drivers/firmware/efi/efi.c | 12 ++++++++++++
+ include/linux/efi.h        |  9 +++++++++
+ 2 files changed, 21 insertions(+)
 
 diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
-index 7dbe1487b111..703a019d81b4 100644
+index 703a019d81b4..a35230517f9c 100644
 --- a/drivers/firmware/efi/efi.c
 +++ b/drivers/firmware/efi/efi.c
-@@ -34,6 +34,7 @@
- #include <asm/early_ioremap.h>
+@@ -47,6 +47,7 @@ EXPORT_SYMBOL(efi);
  
- struct efi __read_mostly efi = {
-+	.runtime_supported_mask = EFI_RT_SUPPORTED_ALL,
- 	.acpi			= EFI_INVALID_TABLE_ADDR,
- 	.acpi20			= EFI_INVALID_TABLE_ADDR,
- 	.smbios			= EFI_INVALID_TABLE_ADDR,
-@@ -301,16 +302,22 @@ static int __init efisubsys_init(void)
- 	if (!efi_enabled(EFI_BOOT))
- 		return 0;
+ static unsigned long __ro_after_init rng_seed = EFI_INVALID_TABLE_ADDR;
+ static unsigned long __initdata mem_reserve = EFI_INVALID_TABLE_ADDR;
++static unsigned long __initdata rt_prop = EFI_INVALID_TABLE_ADDR;
  
--	/*
--	 * Since we process only one efi_runtime_service() at a time, an
--	 * ordered workqueue (which creates only one execution context)
--	 * should suffice all our needs.
--	 */
--	efi_rts_wq = alloc_ordered_workqueue("efi_rts_wq", 0);
--	if (!efi_rts_wq) {
--		pr_err("Creating efi_rts_wq failed, EFI runtime services disabled.\n");
--		clear_bit(EFI_RUNTIME_SERVICES, &efi.flags);
--		return 0;
-+	if (!efi_enabled(EFI_RUNTIME_SERVICES))
-+		efi.runtime_supported_mask = 0;
-+
-+	if (efi.runtime_supported_mask) {
-+		/*
-+		 * Since we process only one efi_runtime_service() at a time, an
-+		 * ordered workqueue (which creates only one execution context)
-+		 * should suffice for all our needs.
-+		 */
-+		efi_rts_wq = alloc_ordered_workqueue("efi_rts_wq", 0);
-+		if (!efi_rts_wq) {
-+			pr_err("Creating efi_rts_wq failed, EFI runtime services disabled.\n");
-+			clear_bit(EFI_RUNTIME_SERVICES, &efi.flags);
-+			efi.runtime_supported_mask = 0;
-+			return 0;
-+		}
+ struct mm_struct efi_mm = {
+ 	.mm_rb			= RB_ROOT,
+@@ -449,6 +450,7 @@ static const efi_config_table_type_t common_tables[] __initconst = {
+ 	{LINUX_EFI_TPM_EVENT_LOG_GUID, "TPMEventLog", &efi.tpm_log},
+ 	{LINUX_EFI_TPM_FINAL_LOG_GUID, "TPMFinalLog", &efi.tpm_final_log},
+ 	{LINUX_EFI_MEMRESERVE_TABLE_GUID, "MEMRESERVE", &mem_reserve},
++	{EFI_RT_PROPERTIES_TABLE_GUID, "RTPROP", &rt_prop},
+ #ifdef CONFIG_EFI_RCI2_TABLE
+ 	{DELLEMC_EFI_RCI2_TABLE_GUID, NULL, &rci2_table_phys},
+ #endif
+@@ -575,6 +577,16 @@ int __init efi_config_parse_tables(const efi_config_table_t *config_tables,
+ 		}
  	}
  
- 	/* We register the efi directory at /sys/firmware/efi */
++	if (rt_prop != EFI_INVALID_TABLE_ADDR) {
++		efi_rt_properties_table_t *tbl;
++
++		tbl = early_memremap(rt_prop, sizeof(*tbl));
++		if (tbl) {
++			efi.runtime_supported_mask &= tbl->runtime_services_supported;
++			early_memunmap(tbl, sizeof(*tbl));
++		}
++	}
++
+ 	return 0;
+ }
+ 
 diff --git a/include/linux/efi.h b/include/linux/efi.h
-index a0008e3d4e9d..57695f400044 100644
+index 57695f400044..2ab33d5d6ca5 100644
 --- a/include/linux/efi.h
 +++ b/include/linux/efi.h
-@@ -523,6 +523,7 @@ typedef struct {
- extern struct efi {
- 	const efi_runtime_services_t	*runtime;		/* EFI runtime services table */
- 	unsigned int			runtime_version;	/* Runtime services version */
-+	unsigned int			runtime_supported_mask;
+@@ -334,6 +334,7 @@ void efi_native_runtime_setup(void);
+ #define EFI_TCG2_PROTOCOL_GUID			EFI_GUID(0x607f766c, 0x7455, 0x42be,  0x93, 0x0b, 0xe4, 0xd7, 0x6d, 0xb2, 0x72, 0x0f)
+ #define EFI_LOAD_FILE_PROTOCOL_GUID		EFI_GUID(0x56ec3091, 0x954c, 0x11d2,  0x8e, 0x3f, 0x00, 0xa0, 0xc9, 0x69, 0x72, 0x3b)
+ #define EFI_LOAD_FILE2_PROTOCOL_GUID		EFI_GUID(0x4006c0c1, 0xfcb3, 0x403e,  0x99, 0x6d, 0x4a, 0x6c, 0x87, 0x24, 0xe0, 0x6d)
++#define EFI_RT_PROPERTIES_TABLE_GUID		EFI_GUID(0xeb66918a, 0x7eef, 0x402a,  0x84, 0x2e, 0x93, 0x1d, 0x21, 0xc3, 0x8a, 0xe9)
  
- 	unsigned long			acpi;			/* ACPI table  (IA64 ext 0.71) */
- 	unsigned long			acpi20;			/* ACPI table  (ACPI 2.0) */
-@@ -551,6 +552,26 @@ extern struct efi {
- 	unsigned long			flags;
- } efi;
+ #define EFI_IMAGE_SECURITY_DATABASE_GUID	EFI_GUID(0xd719b2cb, 0x3d3a, 0x4596,  0xa3, 0xbc, 0xda, 0xd0, 0x0e, 0x67, 0x65, 0x6f)
+ #define EFI_SHIM_LOCK_GUID			EFI_GUID(0x605dab50, 0xe046, 0x4300,  0xab, 0xb6, 0x3d, 0xd8, 0x10, 0xdd, 0x8b, 0x23)
+@@ -486,6 +487,14 @@ typedef struct {
+ #define EFI_PROPERTIES_TABLE_VERSION	0x00010000
+ #define EFI_PROPERTIES_RUNTIME_MEMORY_PROTECTION_NON_EXECUTABLE_PE_DATA	0x1
  
-+#define EFI_RT_SUPPORTED_GET_TIME 				0x0001
-+#define EFI_RT_SUPPORTED_SET_TIME 				0x0002
-+#define EFI_RT_SUPPORTED_GET_WAKEUP_TIME			0x0004
-+#define EFI_RT_SUPPORTED_SET_WAKEUP_TIME			0x0008
-+#define EFI_RT_SUPPORTED_GET_VARIABLE				0x0010
-+#define EFI_RT_SUPPORTED_GET_NEXT_VARIABLE_NAME			0x0020
-+#define EFI_RT_SUPPORTED_SET_VARIABLE				0x0040
-+#define EFI_RT_SUPPORTED_SET_VIRTUAL_ADDRESS_MAP		0x0080
-+#define EFI_RT_SUPPORTED_CONVERT_POINTER			0x0100
-+#define EFI_RT_SUPPORTED_GET_NEXT_HIGH_MONOTONIC_COUNT		0x0200
-+#define EFI_RT_SUPPORTED_RESET_SYSTEM				0x0400
-+#define EFI_RT_SUPPORTED_UPDATE_CAPSULE				0x0800
-+#define EFI_RT_SUPPORTED_QUERY_CAPSULE_CAPABILITIES		0x1000
-+#define EFI_RT_SUPPORTED_QUERY_VARIABLE_INFO			0x2000
++typedef struct {
++	u16 version;
++	u16 length;
++	u32 runtime_services_supported;
++} efi_rt_properties_table_t;
 +
-+#define EFI_RT_SUPPORTED_ALL					0x3fff
++#define EFI_RT_PROPERTIES_TABLE_VERSION	0x1
 +
-+#define EFI_RT_SUPPORTED_TIME_SERVICES				0x000f
-+#define EFI_RT_SUPPORTED_VARIABLE_SERVICES			0x0070
-+
- extern struct mm_struct efi_mm;
+ #define EFI_INVALID_TABLE_ADDR		(~0UL)
  
- static inline int
-@@ -761,6 +782,11 @@ static inline bool __pure efi_soft_reserve_enabled(void)
- 	return IS_ENABLED(CONFIG_EFI_SOFT_RESERVE)
- 		&& __efi_soft_reserve_enabled();
- }
-+
-+static inline bool efi_rt_services_supported(unsigned int mask)
-+{
-+	return (efi.runtime_supported_mask & mask) == mask;
-+}
- #else
- static inline bool efi_enabled(int feature)
- {
-@@ -779,6 +805,11 @@ static inline bool efi_soft_reserve_enabled(void)
- {
- 	return false;
- }
-+
-+static inline bool efi_rt_services_supported(unsigned int mask)
-+{
-+	return false;
-+}
- #endif
- 
- extern int efi_status_to_err(efi_status_t status);
+ typedef struct {
 -- 
 2.17.1
 
