@@ -2,120 +2,271 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8ADB7164C65
-	for <lists+linux-efi@lfdr.de>; Wed, 19 Feb 2020 18:44:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E120F164D35
+	for <lists+linux-efi@lfdr.de>; Wed, 19 Feb 2020 19:00:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726829AbgBSRor (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 19 Feb 2020 12:44:47 -0500
-Received: from mail-lf1-f66.google.com ([209.85.167.66]:36550 "EHLO
-        mail-lf1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726634AbgBSRoq (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 19 Feb 2020 12:44:46 -0500
-Received: by mail-lf1-f66.google.com with SMTP id f24so813561lfh.3;
-        Wed, 19 Feb 2020 09:44:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=uPOumAcBRmkHJ4EJLjVwjyx0UkodYRqLQx2fcbRzjcU=;
-        b=e5cq4mF/bFwQMZTp+Vg5gt8plzWasQB/r379lvjWCErASKW+BA24SB2zyRZyLc7oSZ
-         eKHynbtTSgcyUJYqX+Jqk+hTx5l+o5ytfPRpvB8WPsPBQHThkSIWoujH9ARG2lEYmljh
-         Sa5plISmGyfd5q9hLgFzpxQKAELhTv2KoKASuA+jpf+fzErpbrZ/BUx7QH1X6S8ZlOUA
-         z6S+YwuBYuPsVwJ9Auuythr9wVH6piDHCcXCH+ECIltgt6y6HT9dxZARyfD4LqYNSPZ8
-         fSCHMfObm2ls8WuoqWT3eLjzLPLAp0P22mi/GAvLHFu7lzuvB88AQYdHT04Yfrvt4QH/
-         RPlA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=uPOumAcBRmkHJ4EJLjVwjyx0UkodYRqLQx2fcbRzjcU=;
-        b=G5ouDUSr6vEQA41NgErXP1VhP0li4TOijwsliMr3ocroWYVecmLWW1tbHg1ZaQqKwa
-         W7SUnZT/CevepzvPMlZ2FbMum52vDP+9S/0BP/f7LQhpTBRENY8WBsxQz3Mk2v7ktGZf
-         nLTylRLWLCfFVophLOg1UvK353DUByf0ej1EZTt1zR60edoX3dBPkw6f0OhjfYErpDOp
-         Gbi2GeJcou+oR0R9+laYpJrb8EzktuvV32+aJqMGFZQwHuYpoIwBfEXPca+DBXttiJlD
-         jYMP5NkoBLkMx+MES7/xT/LKeBPDyza7ZO1tNkIaNgsaa7ifRg0XwARnkAXHwZwvOHWM
-         84Qw==
-X-Gm-Message-State: APjAAAX3a/lTZTXX+JpklliJ9nL3lTpTOKD3HrdpeJOsVB7Ei6WEXAmU
-        5FsrMIVJ170rR5K3KSjBUGl8h9ah
-X-Google-Smtp-Source: APXvYqw3ltqhA/bDiRtozOcGmk+Vo3B59KY45uUdjerXfOUHP0AtD/B/7ZhTC9AxNjJ9jBSxV6oGVA==
-X-Received: by 2002:a19:5e41:: with SMTP id z1mr14182445lfi.101.1582134283843;
-        Wed, 19 Feb 2020 09:44:43 -0800 (PST)
-Received: from [192.168.2.145] (79-139-233-37.dynamic.spd-mgts.ru. [79.139.233.37])
-        by smtp.googlemail.com with ESMTPSA id s17sm254568ljo.18.2020.02.19.09.44.42
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 19 Feb 2020 09:44:43 -0800 (PST)
-Subject: Re: [PATCH v1] partitions/efi: Add 'gpt_sector' kernel cmdline
- parameter
-To:     Stephen Warren <swarren@wwwdotorg.org>,
-        Christoph Hellwig <hch@infradead.org>
-Cc:     Jens Axboe <axboe@kernel.dk>, Davidlohr Bueso <dave@stgolabs.net>,
-        Colin Cross <ccross@android.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>,
-        David Heidelberg <david@ixit.cz>,
-        Peter Geis <pgwipeout@gmail.com>, linux-efi@vger.kernel.org,
-        linux-tegra@vger.kernel.org, linux-block@vger.kernel.org,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20200219162339.16192-1-digetx@gmail.com>
- <20200219162738.GA10644@infradead.org>
- <f9e41108-7811-0deb-6977-be0f60e23b52@wwwdotorg.org>
-From:   Dmitry Osipenko <digetx@gmail.com>
-Message-ID: <0c0d0cff-7b20-f777-8724-0d2b07e60e3d@gmail.com>
-Date:   Wed, 19 Feb 2020 20:44:40 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.3.0
+        id S1726605AbgBSSAt (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 19 Feb 2020 13:00:49 -0500
+Received: from mga09.intel.com ([134.134.136.24]:21596 "EHLO mga09.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726582AbgBSSAt (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Wed, 19 Feb 2020 13:00:49 -0500
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by orsmga102.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 19 Feb 2020 10:00:46 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.70,461,1574150400"; 
+   d="scan'208";a="434553298"
+Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
+  by fmsmga005.fm.intel.com with ESMTP; 19 Feb 2020 10:00:44 -0800
+Received: from kbuild by lkp-server01 with local (Exim 4.89)
+        (envelope-from <lkp@intel.com>)
+        id 1j4TeO-000FQT-AB; Thu, 20 Feb 2020 02:00:44 +0800
+Date:   Thu, 20 Feb 2020 02:00:22 +0800
+From:   kbuild test robot <lkp@intel.com>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-efi@vger.kernel.org
+Subject: [efi:urgent] BUILD SUCCESS
+ 4905450b9255089ec1828882e0480831e535ccc5
+Message-ID: <5e4d77b6./U/a2MaCt+wyTOwq%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-In-Reply-To: <f9e41108-7811-0deb-6977-be0f60e23b52@wwwdotorg.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-19.02.2020 19:59, Stephen Warren пишет:
-> On 2/19/20 9:27 AM, Christoph Hellwig wrote:
->> On Wed, Feb 19, 2020 at 07:23:39PM +0300, Dmitry Osipenko wrote:
->>> The gpt_sector=<sector> causes the GPT partition search to look at the
->>> specified sector for a valid GPT header if the GPT is not found at the
->>> beginning or the end of block device.
->>>
->>> In particular this is needed for NVIDIA Tegra consumer-grade Android
->>> devices in order to make them usable with the upstream kernel because
->>> these devices use a proprietary / closed-source partition table format
->>> for the EMMC and it's impossible to change the partition's format.
->>> Luckily
->>> there is a GPT table in addition to the proprietary table, which is
->>> placed
->>> in uncommon location of the EMMC storage and bootloader passes the
->>> location to kernel using "gpt gpt_sector=<sector>" cmdline parameters.
->>>
->>> This patch is based on the original work done by Colin Cross for the
->>> downstream Android kernel.
->>
->> I don't think a magic command line is the way to go.  The best would be
->> to reverse-engineer the proprietary partition table format.  If that is
->> too hard we can at least key off the odd GPT location based of it's
->> magic number.
-> 
-> I thought that the backup GPT was always present in the standard
-> location; it's just the primary GPT that's in an odd location. So, this
-> kernel parameter just forces the kernel to look first for the primary
-> GPT in the unusual location, thus avoiding an error message when that's
-> not there, and the system falls back to the backup GPT.
-> 
-> Or, do I misremember the layout, or the kernel's behaviour if primary
-> GPT is missing?
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git  urgent
+branch HEAD: 4905450b9255089ec1828882e0480831e535ccc5  efi: READ_ONCE rng seed size before munmap
 
-The backup GPT not always presents in the standard location. For example
-Tegra30 ASUS Google Nexus 7 has a backup GPT in the proper location and
-this is what KMSG prints:
+elapsed time: 2886m
 
-[    1.722888] Primary GPT is invalid, using alternate GPT.
-[    1.723076]  mmcblk1: p1 p2 p3 p4 p5 p6 p7 p8 p9 p10
+configs tested: 216
+configs skipped: 7
 
-But this doesn't work for Tegra20 Acer A500 and (IIRC) Tegra30 Ouya
-because both primary and backup GPTs are invalid at the standard locations.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+arm                              allmodconfig
+arm                               allnoconfig
+arm                              allyesconfig
+arm64                            allmodconfig
+arm64                             allnoconfig
+arm64                            allyesconfig
+arm                         at91_dt_defconfig
+arm                           efm32_defconfig
+arm                          exynos_defconfig
+arm                        multi_v5_defconfig
+arm                        multi_v7_defconfig
+arm                        shmobile_defconfig
+arm                           sunxi_defconfig
+arm64                               defconfig
+sparc                            allyesconfig
+s390                       zfcpdump_defconfig
+parisc                            allnoconfig
+ia64                              allnoconfig
+microblaze                    nommu_defconfig
+h8300                    h8300h-sim_defconfig
+riscv                               defconfig
+xtensa                       common_defconfig
+s390                             allmodconfig
+nds32                               defconfig
+c6x                        evmc6678_defconfig
+parisc                generic-64bit_defconfig
+alpha                               defconfig
+powerpc                           allnoconfig
+s390                              allnoconfig
+mips                              allnoconfig
+i386                              allnoconfig
+mips                             allmodconfig
+mips                      malta_kvm_defconfig
+riscv                             allnoconfig
+i386                             alldefconfig
+i386                             allyesconfig
+i386                                defconfig
+ia64                             alldefconfig
+ia64                             allmodconfig
+ia64                             allyesconfig
+ia64                                defconfig
+c6x                              allyesconfig
+nios2                         10m50_defconfig
+nios2                         3c120_defconfig
+openrisc                    or1ksim_defconfig
+openrisc                 simple_smp_defconfig
+xtensa                          iss_defconfig
+csky                                defconfig
+nds32                             allnoconfig
+h8300                     edosk2674_defconfig
+h8300                       h8s-sim_defconfig
+m68k                             allmodconfig
+m68k                       m5475evb_defconfig
+m68k                          multi_defconfig
+m68k                           sun3_defconfig
+arc                              allyesconfig
+arc                                 defconfig
+microblaze                      mmu_defconfig
+powerpc                             defconfig
+powerpc                       ppc64_defconfig
+powerpc                          rhel-kconfig
+mips                           32r2_defconfig
+mips                         64r6el_defconfig
+mips                             allyesconfig
+mips                      fuloong2e_defconfig
+parisc                           allyesconfig
+parisc                generic-32bit_defconfig
+x86_64               randconfig-a001-20200218
+x86_64               randconfig-a002-20200218
+x86_64               randconfig-a003-20200218
+i386                 randconfig-a001-20200218
+i386                 randconfig-a002-20200218
+i386                 randconfig-a003-20200218
+x86_64               randconfig-a001-20200219
+x86_64               randconfig-a002-20200219
+x86_64               randconfig-a003-20200219
+i386                 randconfig-a001-20200219
+i386                 randconfig-a002-20200219
+i386                 randconfig-a003-20200219
+alpha                randconfig-a001-20200218
+m68k                 randconfig-a001-20200218
+mips                 randconfig-a001-20200218
+nds32                randconfig-a001-20200218
+parisc               randconfig-a001-20200218
+riscv                randconfig-a001-20200218
+alpha                randconfig-a001-20200219
+m68k                 randconfig-a001-20200219
+nds32                randconfig-a001-20200219
+parisc               randconfig-a001-20200219
+riscv                randconfig-a001-20200219
+c6x                  randconfig-a001-20200219
+h8300                randconfig-a001-20200219
+microblaze           randconfig-a001-20200219
+nios2                randconfig-a001-20200219
+sparc64              randconfig-a001-20200219
+csky                 randconfig-a001-20200219
+openrisc             randconfig-a001-20200219
+s390                 randconfig-a001-20200219
+xtensa               randconfig-a001-20200219
+x86_64               randconfig-b001-20200218
+x86_64               randconfig-b002-20200218
+x86_64               randconfig-b003-20200218
+i386                 randconfig-b001-20200218
+i386                 randconfig-b002-20200218
+i386                 randconfig-b003-20200218
+x86_64               randconfig-b001-20200219
+x86_64               randconfig-b002-20200219
+x86_64               randconfig-b003-20200219
+i386                 randconfig-b001-20200219
+i386                 randconfig-b002-20200219
+i386                 randconfig-b003-20200219
+x86_64               randconfig-c001-20200219
+x86_64               randconfig-c002-20200219
+x86_64               randconfig-c003-20200219
+i386                 randconfig-c001-20200219
+i386                 randconfig-c002-20200219
+i386                 randconfig-c003-20200219
+x86_64               randconfig-c001-20200218
+x86_64               randconfig-c002-20200218
+x86_64               randconfig-c003-20200218
+i386                 randconfig-c001-20200218
+i386                 randconfig-c002-20200218
+i386                 randconfig-c003-20200218
+x86_64               randconfig-d001-20200218
+x86_64               randconfig-d002-20200218
+x86_64               randconfig-d003-20200218
+i386                 randconfig-d001-20200218
+i386                 randconfig-d002-20200218
+i386                 randconfig-d003-20200218
+x86_64               randconfig-d001-20200219
+x86_64               randconfig-d002-20200219
+x86_64               randconfig-d003-20200219
+i386                 randconfig-d001-20200219
+i386                 randconfig-d002-20200219
+i386                 randconfig-d003-20200219
+x86_64               randconfig-e001-20200219
+x86_64               randconfig-e002-20200219
+x86_64               randconfig-e003-20200219
+i386                 randconfig-e001-20200219
+i386                 randconfig-e002-20200219
+i386                 randconfig-e003-20200219
+x86_64               randconfig-f001-20200218
+x86_64               randconfig-f002-20200218
+x86_64               randconfig-f003-20200218
+i386                 randconfig-f001-20200218
+i386                 randconfig-f002-20200218
+i386                 randconfig-f003-20200218
+x86_64               randconfig-f001-20200219
+x86_64               randconfig-f002-20200219
+x86_64               randconfig-f003-20200219
+i386                 randconfig-f001-20200219
+i386                 randconfig-f002-20200219
+i386                 randconfig-f003-20200219
+x86_64               randconfig-g001-20200218
+x86_64               randconfig-g002-20200218
+x86_64               randconfig-g003-20200218
+i386                 randconfig-g001-20200218
+i386                 randconfig-g002-20200218
+i386                 randconfig-g003-20200218
+x86_64               randconfig-g001-20200219
+x86_64               randconfig-g002-20200219
+x86_64               randconfig-g003-20200219
+i386                 randconfig-g001-20200219
+i386                 randconfig-g002-20200219
+i386                 randconfig-g003-20200219
+x86_64               randconfig-h001-20200218
+x86_64               randconfig-h002-20200218
+x86_64               randconfig-h003-20200218
+i386                 randconfig-h001-20200218
+i386                 randconfig-h002-20200218
+i386                 randconfig-h003-20200218
+x86_64               randconfig-h001-20200219
+x86_64               randconfig-h002-20200219
+x86_64               randconfig-h003-20200219
+i386                 randconfig-h001-20200219
+i386                 randconfig-h002-20200219
+i386                 randconfig-h003-20200219
+arc                  randconfig-a001-20200219
+arm                  randconfig-a001-20200219
+arm64                randconfig-a001-20200219
+ia64                 randconfig-a001-20200219
+powerpc              randconfig-a001-20200219
+sparc                randconfig-a001-20200219
+arc                  randconfig-a001-20200218
+arm                  randconfig-a001-20200218
+arm64                randconfig-a001-20200218
+ia64                 randconfig-a001-20200218
+powerpc              randconfig-a001-20200218
+sparc                randconfig-a001-20200218
+riscv                            allmodconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                          rv32_defconfig
+s390                             alldefconfig
+s390                             allyesconfig
+s390                          debug_defconfig
+s390                                defconfig
+sh                          rsk7269_defconfig
+sh                               allmodconfig
+sh                            titan_defconfig
+sh                  sh7785lcr_32bit_defconfig
+sh                                allnoconfig
+sparc                               defconfig
+sparc64                          allmodconfig
+sparc64                           allnoconfig
+sparc64                          allyesconfig
+sparc64                             defconfig
+um                                  defconfig
+um                             i386_defconfig
+um                           x86_64_defconfig
+x86_64                              fedora-25
+x86_64                                  kexec
+x86_64                                    lkp
+x86_64                                   rhel
+x86_64                         rhel-7.2-clear
+x86_64                               rhel-7.6
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
