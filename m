@@ -2,27 +2,27 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 95388164BB8
-	for <lists+linux-efi@lfdr.de>; Wed, 19 Feb 2020 18:19:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E3E7D164BBA
+	for <lists+linux-efi@lfdr.de>; Wed, 19 Feb 2020 18:19:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726682AbgBSRTk (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 19 Feb 2020 12:19:40 -0500
-Received: from mail.kernel.org ([198.145.29.99]:42990 "EHLO mail.kernel.org"
+        id S1726634AbgBSRTo (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 19 Feb 2020 12:19:44 -0500
+Received: from mail.kernel.org ([198.145.29.99]:43022 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726652AbgBSRTk (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Wed, 19 Feb 2020 12:19:40 -0500
+        id S1726514AbgBSRTo (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Wed, 19 Feb 2020 12:19:44 -0500
 Received: from cam-smtp0.cambridge.arm.com (fw-tnat.cambridge.arm.com [217.140.96.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 9B2DE24676;
-        Wed, 19 Feb 2020 17:19:37 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 7D30B24672;
+        Wed, 19 Feb 2020 17:19:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1582132780;
-        bh=gdQmEVdPMB7OpD2L+VsjxXfWQ5vdiViQIL2+0izbhf0=;
+        s=default; t=1582132783;
+        bh=3UF3ZqpkynaO6Ip8hQWd7SB5UbR3xruI+k9FQzuTYMw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JaoPLJGhon0mufOibywikBN50sNz/WG4MxbynfX3w26H0TFxu7i6/aWSYIUMCiYEF
-         1vsWJadcWF9Riu6tJkcGDKYZ9iAfh3cJjh0vjeGhKg8Zxo6KOPgbgEeowR2sgoNPXf
-         p3UkJMV9VdrjsDhc/eeQNuuNcGE6SepZg5NuYJbs=
+        b=KN1wiq1byoNz5SGoBc+33mTG4Unljvum+ji6UJaKIiC7LGC++s+l5fIRXaZnIPl3h
+         gzq3QkARE/h8ebdi7P4u2RY9AZqG/x1jOWMPel/VYZI3o11GI/jYRZBiNLQAkpyFut
+         Xg5qoGmq7aZIPqzQnMW2bZaTq2jRudtz9isCu23M=
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-efi@vger.kernel.org
 Cc:     Ard Biesheuvel <ardb@kernel.org>,
@@ -31,10 +31,13 @@ Cc:     Ard Biesheuvel <ardb@kernel.org>,
         Alexander Graf <agraf@csgraf.de>,
         Heinrich Schuchardt <xypron.glpk@gmx.de>,
         Jeff Brasen <jbrasen@nvidia.com>,
-        Atish Patra <Atish.Patra@wdc.com>, x86@kernel.org
-Subject: [PATCH 3/9] efi: use more granular check for availability for variable services
-Date:   Wed, 19 Feb 2020 18:19:01 +0100
-Message-Id: <20200219171907.11894-4-ardb@kernel.org>
+        Atish Patra <Atish.Patra@wdc.com>, x86@kernel.org,
+        Alessandro Zummo <a.zummo@towertech.it>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        linux-rtc@vger.kernel.org
+Subject: [PATCH 4/9] efi: register EFI rtc platform device only when available
+Date:   Wed, 19 Feb 2020 18:19:02 +0100
+Message-Id: <20200219171907.11894-5-ardb@kernel.org>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200219171907.11894-1-ardb@kernel.org>
 References: <20200219171907.11894-1-ardb@kernel.org>
@@ -43,112 +46,91 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The UEFI spec rev 2.8 permits firmware implementations to support only
-a subset of EFI runtime services at OS runtime (i.e., after the call to
-ExitBootServices()), so let's take this into account in the drivers that
-rely specifically on the availability of the EFI variable services.
+Drop the separate driver that registers the EFI rtc on all EFI
+systems that have runtime services available, and instead, move
+the registration into the core EFI code, and make it conditional
+on whether the actual time related services are available.
 
+Cc: Alessandro Zummo <a.zummo@towertech.it>
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Cc: linux-rtc@vger.kernel.org
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- drivers/firmware/efi/efi-pstore.c |  2 +-
- drivers/firmware/efi/efi.c        | 28 ++++++--------------
- drivers/firmware/efi/efivars.c    |  2 +-
- fs/efivarfs/super.c               |  2 +-
- 4 files changed, 11 insertions(+), 23 deletions(-)
+ drivers/firmware/efi/efi.c     |  3 ++
+ drivers/rtc/Makefile           |  4 ---
+ drivers/rtc/rtc-efi-platform.c | 35 --------------------
+ 3 files changed, 3 insertions(+), 39 deletions(-)
 
-diff --git a/drivers/firmware/efi/efi-pstore.c b/drivers/firmware/efi/efi-pstore.c
-index 9ea13e8d12ec..d2f6855d205b 100644
---- a/drivers/firmware/efi/efi-pstore.c
-+++ b/drivers/firmware/efi/efi-pstore.c
-@@ -356,7 +356,7 @@ static struct pstore_info efi_pstore_info = {
- 
- static __init int efivars_pstore_init(void)
- {
--	if (!efi_enabled(EFI_RUNTIME_SERVICES))
-+	if (!efi_rt_services_supported(EFI_RT_SUPPORTED_VARIABLE_SERVICES))
- 		return 0;
- 
- 	if (!efivars_kobject())
 diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
-index a35230517f9c..abf4c02e0201 100644
+index abf4c02e0201..69a585106d30 100644
 --- a/drivers/firmware/efi/efi.c
 +++ b/drivers/firmware/efi/efi.c
-@@ -328,12 +328,13 @@ static int __init efisubsys_init(void)
- 		return -ENOMEM;
+@@ -321,6 +321,9 @@ static int __init efisubsys_init(void)
+ 		}
  	}
  
--	error = generic_ops_register();
--	if (error)
--		goto err_put;
++	if (efi_rt_services_supported(EFI_RT_SUPPORTED_TIME_SERVICES))
++		platform_device_register_simple("rtc-efi", 0, NULL, 0);
++
+ 	/* We register the efi directory at /sys/firmware/efi */
+ 	efi_kobj = kobject_create_and_add("efi", firmware_kobj);
+ 	if (!efi_kobj) {
+diff --git a/drivers/rtc/Makefile b/drivers/rtc/Makefile
+index 4ac8f19fb631..24c7dfa1bd7d 100644
+--- a/drivers/rtc/Makefile
++++ b/drivers/rtc/Makefile
+@@ -12,10 +12,6 @@ obj-$(CONFIG_RTC_CLASS)		+= rtc-core.o
+ obj-$(CONFIG_RTC_MC146818_LIB)	+= rtc-mc146818-lib.o
+ rtc-core-y			:= class.o interface.o
+ 
+-ifdef CONFIG_RTC_DRV_EFI
+-rtc-core-y			+= rtc-efi-platform.o
+-endif
 -
--	if (efi_enabled(EFI_RUNTIME_SERVICES))
-+	if (efi_rt_services_supported(EFI_RT_SUPPORTED_VARIABLE_SERVICES)) {
- 		efivar_ssdt_load();
-+		error = generic_ops_register();
-+		if (error)
-+			goto err_put;
-+		platform_device_register_simple("efivars", 0, NULL, 0);
-+	}
- 
- 	error = sysfs_create_group(efi_kobj, &efi_subsys_attr_group);
- 	if (error) {
-@@ -358,7 +359,8 @@ static int __init efisubsys_init(void)
- err_remove_group:
- 	sysfs_remove_group(efi_kobj, &efi_subsys_attr_group);
- err_unregister:
--	generic_ops_unregister();
-+	if (efi_rt_services_supported(EFI_RT_SUPPORTED_VARIABLE_SERVICES))
-+		generic_ops_unregister();
- err_put:
- 	kobject_put(efi_kobj);
- 	return error;
-@@ -650,20 +652,6 @@ void __init efi_systab_report_header(const efi_table_hdr_t *systab_hdr,
- 		vendor);
- }
- 
--#ifdef CONFIG_EFI_VARS_MODULE
--static int __init efi_load_efivars(void)
+ rtc-core-$(CONFIG_RTC_NVMEM)		+= nvmem.o
+ rtc-core-$(CONFIG_RTC_INTF_DEV)		+= dev.o
+ rtc-core-$(CONFIG_RTC_INTF_PROC)	+= proc.o
+diff --git a/drivers/rtc/rtc-efi-platform.c b/drivers/rtc/rtc-efi-platform.c
+deleted file mode 100644
+index 6c037dc4e3dc..000000000000
+--- a/drivers/rtc/rtc-efi-platform.c
++++ /dev/null
+@@ -1,35 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0
+-/*
+- * Moved from arch/ia64/kernel/time.c
+- *
+- * Copyright (C) 1998-2003 Hewlett-Packard Co
+- *	Stephane Eranian <eranian@hpl.hp.com>
+- *	David Mosberger <davidm@hpl.hp.com>
+- * Copyright (C) 1999 Don Dugger <don.dugger@intel.com>
+- * Copyright (C) 1999-2000 VA Linux Systems
+- * Copyright (C) 1999-2000 Walt Drummond <drummond@valinux.com>
+- */
+-
+-#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+-
+-#include <linux/init.h>
+-#include <linux/kernel.h>
+-#include <linux/module.h>
+-#include <linux/efi.h>
+-#include <linux/platform_device.h>
+-
+-static struct platform_device rtc_efi_dev = {
+-	.name = "rtc-efi",
+-	.id = -1,
+-};
+-
+-static int __init rtc_init(void)
 -{
--	struct platform_device *pdev;
+-	if (efi_enabled(EFI_RUNTIME_SERVICES))
+-		if (platform_device_register(&rtc_efi_dev) < 0)
+-			pr_err("unable to register rtc device...\n");
 -
--	if (!efi_enabled(EFI_RUNTIME_SERVICES))
--		return 0;
--
--	pdev = platform_device_register_simple("efivars", 0, NULL, 0);
--	return PTR_ERR_OR_ZERO(pdev);
+-	/* not necessarily an error */
+-	return 0;
 -}
--device_initcall(efi_load_efivars);
--#endif
--
- static __initdata char memory_type_name[][20] = {
- 	"Reserved",
- 	"Loader Code",
-diff --git a/drivers/firmware/efi/efivars.c b/drivers/firmware/efi/efivars.c
-index 7576450c8254..d309abca5091 100644
---- a/drivers/firmware/efi/efivars.c
-+++ b/drivers/firmware/efi/efivars.c
-@@ -664,7 +664,7 @@ int efivars_sysfs_init(void)
- 	struct kobject *parent_kobj = efivars_kobject();
- 	int error = 0;
- 
--	if (!efi_enabled(EFI_RUNTIME_SERVICES))
-+	if (!efi_rt_services_supported(EFI_RT_SUPPORTED_VARIABLE_SERVICES))
- 		return -ENODEV;
- 
- 	/* No efivars has been registered yet */
-diff --git a/fs/efivarfs/super.c b/fs/efivarfs/super.c
-index fa4f6447ddad..12c66f5d92dd 100644
---- a/fs/efivarfs/super.c
-+++ b/fs/efivarfs/super.c
-@@ -252,7 +252,7 @@ static struct file_system_type efivarfs_type = {
- 
- static __init int efivarfs_init(void)
- {
--	if (!efi_enabled(EFI_RUNTIME_SERVICES))
-+	if (!efi_rt_services_supported(EFI_RT_SUPPORTED_VARIABLE_SERVICES))
- 		return -ENODEV;
- 
- 	if (!efivars_kobject())
+-module_init(rtc_init);
 -- 
 2.17.1
 
