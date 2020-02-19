@@ -2,304 +2,141 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CBD8A16486D
-	for <lists+linux-efi@lfdr.de>; Wed, 19 Feb 2020 16:24:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9928D164A37
+	for <lists+linux-efi@lfdr.de>; Wed, 19 Feb 2020 17:25:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726784AbgBSPYx (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 19 Feb 2020 10:24:53 -0500
-Received: from mail.kernel.org ([198.145.29.99]:38514 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726528AbgBSPYx (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Wed, 19 Feb 2020 10:24:53 -0500
-Received: from cam-smtp0.cambridge.arm.com (fw-tnat.cambridge.arm.com [217.140.96.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 43EC224671;
-        Wed, 19 Feb 2020 15:24:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1582125891;
-        bh=2Yifru4+OPwrLC2fBvFPYWlusQrWYJhTcoUViaqei20=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rmvh1uFHrKb/9y86IWBe2/WFT5fhsXXm1bR0kRnF7Wjcd2LxxzQHUTfJlA4Q4dbPg
-         kXg8vS8qGAyC+AY1UDBbz646bLwsc7kxVxhg0/6LxA653TJhQtLz6iLxIYnKklNSbL
-         UViUXPRmvpVg8MAv38IcDRaJYhbjCWwqaL9kANBo=
-From:   Ard Biesheuvel <ardb@kernel.org>
-To:     linux-efi@vger.kernel.org
-Cc:     linux-arm-kernel@lists.infradead.org, atish.patra@wdc.com,
-        leif@nuviainc.com, Ard Biesheuvel <ardb@kernel.org>
-Subject: [PATCH 3/3] efi/arm: rewrite FDT param discovery routines
-Date:   Wed, 19 Feb 2020 16:24:40 +0100
-Message-Id: <20200219152440.11561-4-ardb@kernel.org>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200219152440.11561-1-ardb@kernel.org>
-References: <20200219152440.11561-1-ardb@kernel.org>
+        id S1726712AbgBSQZ3 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 19 Feb 2020 11:25:29 -0500
+Received: from mail-lj1-f194.google.com ([209.85.208.194]:46566 "EHLO
+        mail-lj1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726659AbgBSQZ3 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 19 Feb 2020 11:25:29 -0500
+Received: by mail-lj1-f194.google.com with SMTP id x14so958693ljd.13;
+        Wed, 19 Feb 2020 08:25:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=LGUcIpTbEbd2gKzVZah8ywZm+EFWRECsbgMwE4dPkmc=;
+        b=q0KvBn7A14JQWVR1QGa6Q4b8U95+mkJ2Huoy2MrpQLM+x3CC3hwCOoVa/kQCAa2W7e
+         3kjdB16EuvFpGvPNgwlDpVjhHCwgfyWIiw1IaGYXn1MSNL8IF1a1JjNAYTJc+172PpxZ
+         5Z7vqbxPTifdCh9BU79UqIkJLfQlOn9qwxbCAR6Y6bIYX48nmkIJrhr87EWUuP0cRAb1
+         nPTwI8k4maeYJnZeaHiA4yp3J1yLLkAkwPGFGHeMP8H9vTGdP7OdDBpI4g3rkVJ/FpVq
+         d9m3b/L3RLClnokebu6bmvS9R0qn1q+RO2Ih2ptmAuXi2bVjMCusV2prdez3VivLhmuN
+         AoAA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=LGUcIpTbEbd2gKzVZah8ywZm+EFWRECsbgMwE4dPkmc=;
+        b=g5WZT/6mRjPY9xhI6zebnx+kYzTg0le6DugGvUo70NNVjyPNa0zMLoxZClzlyxziW2
+         K1xhLlBStU32Y/543boK6ghgI9CSmWJQrqfWxHSGw+FQfuaOAsDdGchZg/E88mhCgRN0
+         wnjpZQMQzoaxobpB8ObsBA06n0x9ICK8rg0YRTSLY0FFvirUJKcRBPfq0AAVhLyd+GN9
+         ldRWpkLun/T41fwlHO5cbl87VoB1dvx9jD/wj8o8oHkefcmX4CdYffwSb69ZZx3Gmy83
+         kdEGJ8UWvR/OPoQkQl4j1DdBn8HLIysSD7kvL7dNIU1I7TlYW0EWR+K11WIvpKuqrqor
+         LErA==
+X-Gm-Message-State: APjAAAUaWjwToWqca0sUCObsG/gyBjzrWFYQWHAV0XZYOOp19uxiWDqQ
+        vlO1QklsqYo0cW/lAh9Iv+jVrNUN
+X-Google-Smtp-Source: APXvYqzgQTpVrzmYj7+xZaS9PwsyHhb4+lZha07RnRL0jtLKr12a2UhG+kDKXAbBvaNwDh566wCCjg==
+X-Received: by 2002:a2e:b536:: with SMTP id z22mr15860746ljm.259.1582129526316;
+        Wed, 19 Feb 2020 08:25:26 -0800 (PST)
+Received: from localhost.localdomain (79-139-233-37.dynamic.spd-mgts.ru. [79.139.233.37])
+        by smtp.gmail.com with ESMTPSA id i67sm26819lfd.38.2020.02.19.08.25.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 19 Feb 2020 08:25:25 -0800 (PST)
+From:   Dmitry Osipenko <digetx@gmail.com>
+To:     Jens Axboe <axboe@kernel.dk>, Davidlohr Bueso <dave@stgolabs.net>,
+        Colin Cross <ccross@android.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        =?UTF-8?q?Micha=C5=82=20Miros=C5=82aw?= <mirq-linux@rere.qmqm.pl>,
+        David Heidelberg <david@ixit.cz>,
+        Peter Geis <pgwipeout@gmail.com>
+Cc:     linux-efi@vger.kernel.org, linux-tegra@vger.kernel.org,
+        linux-block@vger.kernel.org, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v1] partitions/efi: Add 'gpt_sector' kernel cmdline parameter
+Date:   Wed, 19 Feb 2020 19:23:39 +0300
+Message-Id: <20200219162339.16192-1-digetx@gmail.com>
+X-Mailer: git-send-email 2.24.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The efi_get_fdt_params() routine uses the early OF device tree
-traversal helpers, that iterate over each node in the DT and invoke
-a caller provided callback that can inspect the node's contents and
-look for the required data. This requires a special param struct to
-be passed around, with pointers into param enumeration structs that
-contain (and duplicate) property names and offsets into yet another
-struct that carries the collected data.
+The gpt_sector=<sector> causes the GPT partition search to look at the
+specified sector for a valid GPT header if the GPT is not found at the
+beginning or the end of block device.
 
-Since we know the data we look for is either under /hypervisor/uefi
-or under /chosen, it is much simpler to use the libfdt routines
-directly, and try to grab a reference to either node directly, and
-read each property in sequence.
+In particular this is needed for NVIDIA Tegra consumer-grade Android
+devices in order to make them usable with the upstream kernel because
+these devices use a proprietary / closed-source partition table format
+for the EMMC and it's impossible to change the partition's format. Luckily
+there is a GPT table in addition to the proprietary table, which is placed
+in uncommon location of the EMMC storage and bootloader passes the
+location to kernel using "gpt gpt_sector=<sector>" cmdline parameters.
 
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+This patch is based on the original work done by Colin Cross for the
+downstream Android kernel.
+
+Cc: Colin Cross <ccross@android.com>
+Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
 ---
- drivers/firmware/efi/fdtparams.c | 203 ++++++++------------
- 1 file changed, 85 insertions(+), 118 deletions(-)
+ Documentation/admin-guide/kernel-parameters.txt |  5 +++++
+ block/partitions/efi.c                          | 15 +++++++++++++++
+ 2 files changed, 20 insertions(+)
 
-diff --git a/drivers/firmware/efi/fdtparams.c b/drivers/firmware/efi/fdtparams.c
-index 7a384b307c56..23af4062e913 100644
---- a/drivers/firmware/efi/fdtparams.c
-+++ b/drivers/firmware/efi/fdtparams.c
-@@ -5,154 +5,121 @@
- #include <linux/module.h>
- #include <linux/init.h>
- #include <linux/efi.h>
--#include <linux/of.h>
-+#include <linux/libfdt.h>
- #include <linux/of_fdt.h>
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index 50138e6826a1..ee4781daa379 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -1382,6 +1382,11 @@
+ 			primary GPT is corrupted, it enables the backup/alternate
+ 			GPT to be used instead.
  
--#include <asm/early_ioremap.h>
-+#include <asm/unaligned.h>
- 
--#define UEFI_PARAM(name, prop, field)			   \
--	{						   \
--		{ name },				   \
--		{ prop },				   \
--		offsetof(struct efi_fdt_params, field),    \
--		sizeof_field(struct efi_fdt_params, field) \
--	}
--
--struct efi_fdt_params {
--	u64 system_table;
--	u64 mmap;
--	u32 mmap_size;
--	u32 desc_size;
--	u32 desc_ver;
--};
--
--struct params {
--	const char name[32];
--	const char propname[32];
--	int offset;
--	int size;
-+enum {
-+	SYSTAB,
-+	MMBASE,
-+	MMSIZE,
-+	DCSIZE,
-+	DCVERS,
- };
- 
--static __initdata struct params fdt_params[] = {
--	UEFI_PARAM("System Table", "linux,uefi-system-table", system_table),
--	UEFI_PARAM("MemMap Address", "linux,uefi-mmap-start", mmap),
--	UEFI_PARAM("MemMap Size", "linux,uefi-mmap-size", mmap_size),
--	UEFI_PARAM("MemMap Desc. Size", "linux,uefi-mmap-desc-size", desc_size),
--	UEFI_PARAM("MemMap Desc. Version", "linux,uefi-mmap-desc-ver", desc_ver)
-+static __initconst const char name[][22] = {
-+	[SYSTAB] = "System Table         ",
-+	[MMBASE] = "MemMap Address       ",
-+	[MMSIZE] = "MemMap Size          ",
-+	[DCSIZE] = "MemMap Desc. Size    ",
-+	[DCVERS] = "MemMap Desc. Version ",
- };
- 
--static __initdata struct params xen_fdt_params[] = {
--	UEFI_PARAM("System Table", "xen,uefi-system-table", system_table),
--	UEFI_PARAM("MemMap Address", "xen,uefi-mmap-start", mmap),
--	UEFI_PARAM("MemMap Size", "xen,uefi-mmap-size", mmap_size),
--	UEFI_PARAM("MemMap Desc. Size", "xen,uefi-mmap-desc-size", desc_size),
--	UEFI_PARAM("MemMap Desc. Version", "xen,uefi-mmap-desc-ver", desc_ver)
--};
--
--#define EFI_FDT_PARAMS_SIZE	ARRAY_SIZE(fdt_params)
--
--static __initdata struct {
--	const char *uname;
--	const char *subnode;
--	struct params *params;
-+static __initconst const struct {
-+	const char	path[17];
-+	const char	params[5][26];
- } dt_params[] = {
--	{ "hypervisor", "uefi", xen_fdt_params },
--	{ "chosen", NULL, fdt_params },
--};
--
--struct param_info {
--	int found;
--	void *params;
--	const char *missing;
-+#ifdef CONFIG_XEN
-+	{
-+		"/hypervisor/uefi",
-+		{
-+			[SYSTAB] = "xen,uefi-system-table",
-+			[MMBASE] = "xen,uefi-mmap-start",
-+			[MMSIZE] = "xen,uefi-mmap-size",
-+			[DCSIZE] = "xen,uefi-mmap-desc-size",
-+			[DCVERS] = "xen,uefi-mmap-desc-ver",
-+		}
-+	},
-+#endif
-+	{
-+		"/chosen",
-+		{
-+			[SYSTAB] = "linux,uefi-system-table",
-+			[MMBASE] = "linux,uefi-mmap-start",
-+			[MMSIZE] = "linux,uefi-mmap-size",
-+			[DCSIZE] = "linux,uefi-mmap-desc-size",
-+			[DCVERS] = "linux,uefi-mmap-desc-ver",
-+		}
-+	}
- };
- 
--static int __init __find_uefi_params(unsigned long node,
--				     struct param_info *info,
--				     struct params *params)
-+static int __init efi_get_fdt_prop(const void *fdt, int node, int dtp, int pp,
-+				   void *var, int size)
- {
- 	const void *prop;
--	void *dest;
-+	int len;
- 	u64 val;
--	int i, len;
- 
--	for (i = 0; i < EFI_FDT_PARAMS_SIZE; i++) {
--		prop = of_get_flat_dt_prop(node, params[i].propname, &len);
--		if (!prop) {
--			info->missing = params[i].name;
--			return 0;
--		}
--
--		dest = info->params + params[i].offset;
--		info->found++;
-+	prop = fdt_getprop(fdt, node, dt_params[dtp].params[pp], &len);
-+	if (!prop) {
-+		pr_err("Can't find property '%s' in device tree!\n",
-+		       dt_params[dtp].params[pp]);
-+		return 1;
-+	}
- 
--		val = of_read_number(prop, len / sizeof(u32));
-+	val = (len == 4) ? (u64)be32_to_cpup(prop) : get_unaligned_be64(prop);
- 
--		if (params[i].size == sizeof(u32))
--			*(u32 *)dest = val;
--		else
--			*(u64 *)dest = val;
-+	if (size == 8)
-+		*(u64 *)var = val;
-+	else
-+		*(u32 *)var = (val <= U32_MAX) ? val : U32_MAX; // saturate
- 
--		if (efi_enabled(EFI_DBG))
--			pr_info("  %s: 0x%0*llx\n", params[i].name,
--				params[i].size * 2, val);
--	}
-+	if (efi_enabled(EFI_DBG))
-+		pr_info("  %s: 0x%0*llx\n", name[pp], size * 2, val);
- 
--	return 1;
-+	return 0;
- }
- 
--static int __init fdt_find_uefi_params(unsigned long node, const char *uname,
--				       int depth, void *data)
-+u64 __init efi_get_fdt_params(struct efi_memory_map_data *mm)
- {
--	struct param_info *info = data;
-+	const void *fdt = initial_boot_params;
-+	unsigned long systab;
-+	struct {
-+		void	*var;
-+		int	size;
-+	} target[] = {
-+		[SYSTAB] = { &systab,		sizeof(systab) },
-+		[MMBASE] = { &mm->phys_map,	sizeof(mm->phys_map) },
-+		[MMSIZE] = { &mm->size,		sizeof(mm->size) },
-+		[DCSIZE] = { &mm->desc_size,	sizeof(mm->desc_size) },
-+		[DCVERS] = { &mm->desc_version,	sizeof(mm->desc_version) },
-+	};
- 	int i;
- 
-+	BUILD_BUG_ON(ARRAY_SIZE(target) != ARRAY_SIZE(name));
-+	BUILD_BUG_ON(ARRAY_SIZE(target) != ARRAY_SIZE(dt_params[0].params));
++	gpt_sector	[EFI] Forces GPT partition search to look at the
++			specified sector for a valid GPT header if the GPT is
++			not found at the beginning or the end of the block
++			device.
 +
- 	for (i = 0; i < ARRAY_SIZE(dt_params); i++) {
--		const char *subnode = dt_params[i].subnode;
-+		int node;
-+		int j;
- 
--		if (depth != 1 || strcmp(uname, dt_params[i].uname) != 0) {
--			info->missing = dt_params[i].params[0].name;
-+		node = fdt_path_offset(fdt, dt_params[i].path);
-+		if (node < 0)
- 			continue;
--		}
- 
--		if (subnode) {
--			int err = of_get_flat_dt_subnode_by_name(node, subnode);
-+		if (efi_enabled(EFI_DBG))
-+			pr_info("Getting UEFI parameters from %s in DT:\n",
-+				dt_params[i].path);
- 
--			if (err < 0)
-+		for (j = 0; j < ARRAY_SIZE(target); j++) {
-+			if (efi_get_fdt_prop(fdt, node, i, j, target[j].var,
-+					     target[j].size)) {
- 				return 0;
--
--			node = err;
-+			}
- 		}
--
--		return __find_uefi_params(node, info, dt_params[i].params);
-+		return systab;
- 	}
--
-+	pr_info("UEFI not found.\n");
- 	return 0;
+ 	grcan.enable0=	[HW] Configuration of physical interface 0. Determines
+ 			the "Enable 0" bit of the configuration register.
+ 			Format: 0 | 1
+diff --git a/block/partitions/efi.c b/block/partitions/efi.c
+index db2fef7dfc47..0c8926d76d7a 100644
+--- a/block/partitions/efi.c
++++ b/block/partitions/efi.c
+@@ -103,6 +103,17 @@ force_gpt_fn(char *str)
  }
--
--u64 __init efi_get_fdt_params(struct efi_memory_map_data *memmap)
--{
--	struct efi_fdt_params params;
--	struct param_info info;
--	int ret;
--
--	pr_info("Getting EFI parameters from FDT:\n");
--
--	info.found = 0;
--	info.params = &params;
--
--	ret = of_scan_flat_dt(fdt_find_uefi_params, &info);
--	if (!info.found) {
--		pr_info("UEFI not found.\n");
--		return 0;
--	} else if (!ret) {
--		pr_err("Can't find '%s' in device tree!\n", info.missing);
--		return 0;
--	}
--
--	memmap->desc_version	= params.desc_ver;
--	memmap->desc_size	= params.desc_size;
--	memmap->size		= params.mmap_size;
--	memmap->phys_map	= params.mmap;
--
--	return params.system_table;
--}
+ __setup("gpt", force_gpt_fn);
+ 
++/* This allows a kernel command line option 'gpt_sector=<sector>' to
++ * enable GPT header lookup at a non-standard location.
++ */
++static u64 force_gpt_sector;
++static int __init
++force_gpt_sector_fn(char *str)
++{
++	WARN_ON(kstrtoull(str, 10, &force_gpt_sector) < 0);
++	return 1;
++}
++__setup("gpt_sector=", force_gpt_sector_fn);
+ 
+ /**
+  * efi_crc32() - EFI version of crc32 function
+@@ -621,6 +632,10 @@ static int find_valid_gpt(struct parsed_partitions *state, gpt_header **gpt,
+         if (!good_agpt && force_gpt)
+                 good_agpt = is_gpt_valid(state, lastlba, &agpt, &aptes);
+ 
++	if (!good_agpt && force_gpt && force_gpt_sector)
++		good_agpt = is_gpt_valid(state, force_gpt_sector,
++					 &agpt, &aptes);
++
+         /* The obviously unsuccessful case */
+         if (!good_pgpt && !good_agpt)
+                 goto fail;
 -- 
-2.17.1
+2.24.0
 
