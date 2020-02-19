@@ -2,271 +2,141 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E120F164D35
-	for <lists+linux-efi@lfdr.de>; Wed, 19 Feb 2020 19:00:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 99555164E3B
+	for <lists+linux-efi@lfdr.de>; Wed, 19 Feb 2020 19:59:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726605AbgBSSAt (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 19 Feb 2020 13:00:49 -0500
-Received: from mga09.intel.com ([134.134.136.24]:21596 "EHLO mga09.intel.com"
+        id S1726613AbgBSS7G (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 19 Feb 2020 13:59:06 -0500
+Received: from mout.gmx.net ([212.227.17.21]:52401 "EHLO mout.gmx.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726582AbgBSSAt (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Wed, 19 Feb 2020 13:00:49 -0500
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by orsmga102.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 19 Feb 2020 10:00:46 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.70,461,1574150400"; 
-   d="scan'208";a="434553298"
-Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
-  by fmsmga005.fm.intel.com with ESMTP; 19 Feb 2020 10:00:44 -0800
-Received: from kbuild by lkp-server01 with local (Exim 4.89)
-        (envelope-from <lkp@intel.com>)
-        id 1j4TeO-000FQT-AB; Thu, 20 Feb 2020 02:00:44 +0800
-Date:   Thu, 20 Feb 2020 02:00:22 +0800
-From:   kbuild test robot <lkp@intel.com>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     linux-efi@vger.kernel.org
-Subject: [efi:urgent] BUILD SUCCESS
- 4905450b9255089ec1828882e0480831e535ccc5
-Message-ID: <5e4d77b6./U/a2MaCt+wyTOwq%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S1726609AbgBSS7G (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Wed, 19 Feb 2020 13:59:06 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1582138732;
+        bh=UoLem9HJc6PMKNRZJYUxVAoavXucXX3qF11FAWErWUk=;
+        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=UupuxbDbB1QzsP/GMP0/vKBYrc2VqgroiKhw+2is7sJGLnfwDCtLSG6WP/7FtyXmw
+         8gWtEdti9bspYSTanBDBPaCmuot9tZBq2AIU0J100E0AcQuHM3l8ia1nDDX/4GoPGh
+         1rtjfT1n80lhzCuQj9ue8K1/odwR1eIRfWOTFa8w=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from [192.168.123.51] ([84.119.33.160]) by mail.gmx.com (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MvbG2-1jLTD81QQQ-00sfJI; Wed, 19
+ Feb 2020 19:58:52 +0100
+Subject: Re: [PATCH 0/9] efi: implement support for EFI RT properties table
+To:     Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org
+Cc:     Leif Lindholm <leif@nuviainc.com>, Peter Jones <pjones@redhat.com>,
+        Alexander Graf <agraf@csgraf.de>,
+        Jeff Brasen <jbrasen@nvidia.com>,
+        Atish Patra <Atish.Patra@wdc.com>, x86@kernel.org,
+        AKASHI Takahiro <takahiro.akashi@linaro.org>
+References: <20200219171907.11894-1-ardb@kernel.org>
+From:   Heinrich Schuchardt <xypron.glpk@gmx.de>
+Message-ID: <6613b89d-113a-5f18-35d0-fba46bd53677@gmx.de>
+Date:   Wed, 19 Feb 2020 19:58:51 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.5.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <20200219171907.11894-1-ardb@kernel.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:ZxgRWMV8UTl+pGV/TliW9ZBGxpunOeFVrtvlrYXzOdXzzz4YkBI
+ RefxQMxsItCT1Lx0FiW8o45NXx8e0XHgYtb0n9QklvPnVM3KFBoTjnOnOSYuEjvU4K0c669
+ SXsU4lVjMSLpI9qj7tieJqulzF24LknooowgMMu9tPRbwS45XqSXZZxcMW8l2+9+mcBoZA+
+ GHfSsjNmae4H3jZarze4w==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:GgiXngmfcyo=:2BQXfFHfb/mXa6stiNMNtS
+ q86NjOYj2ZdDwJ4NAsZqaTVatfhced5H+KvyMmeQPtZLMr90ExJqi+h1mnDYAtyMmMAuwtIjL
+ kpSLts0zxTW/Fk2YmWocWHPH+FrSeNI9i040zeiOTll2nZNw4HFtWDWg3vxqYhyYvawv/jgqL
+ G8g4CA4/CT0QjsG8XsfinbeC+piKyZgypii7V79wazR+gl7tLdd9Si2jrJp5ZaW4r8KzVW1K1
+ O+mocO2oc+BrXhplbxjYWqiD3em6zTqJHnzFr70lbkbUy7nObntQLscqLLtPUAcIAjDcc4wiW
+ c7b7PLJbA5U0lgLkuadwo0JvMVKXDRiXXgqUq1etatw0floNKnMjnuooCpEMkwwxHePxRxZzW
+ K8/VMbNfKAIrkSdIwPHNX7+lqXURepO161P0Q/mBS4nWhV7/ab8i52Yhwk/zibaFU9hXGTYnA
+ VUL6QlQUCpqOeRFDiHpc/zcIWwtWFeQyFeNbUlHAI40JiAXBw5e8+zg4aPerqSGZ19sbCz5IL
+ 2x4M6jCpVr4qSit0X+YdY/x0ggHFTjhdR43LyY2EFt2cx86Ut1PBTYCWOfT1nPh2OJkW5tpZl
+ fmMopGNa/Ie0c6/7tqXiI8gHRile4So612K8mL6SMiSt3DYXyhgesxZpCVMdoI80qsjxpPKJX
+ I0YbyWUekognf4vnmx4X4Lcwq9/oa+wcGP7lZahJLB0t/ddBZXwNIMgyhlCTUDqGxypDS5d4U
+ ALkQeZzGkAT0xHMemReydh7ZTJavwoiqsXDyaV2LFXfU/HLNdwqH4qZ0ujLpTDJtxSl4ZJNtG
+ WD213nptNq9abp26+j4Swf0GEIlYX3MZo/QD6sQg9sC4FdKLTv8dkJFPZGYSVfylYXpqrXtpF
+ 1TFO7oJsXKWi+CzbN6gBD6h2EY6L18adce1gD0ev3MWACyumOvmvO9pnM29n4/PwDU4WDRSxG
+ N4MNWwcpZIYHq+uqGWdqRZsL8d3jPPZh77zfspDfz2sS37FdrkUByHhv3AuhdBoYyuzDhz9la
+ rK5E2NhAS7E0rEnmq+4ZcJBifEDijffRn2b5gNrw2ulIxiRmlkle49zit0jMCAyQJo+dS3Jtl
+ pe0nXm9QzbObuJImoaxjUamKJLYj7C8Rfhw53B+AhvDTvRcPRpsC+pZsbHKgYzmi4BypkfoIn
+ JmGdm6AEvw5UHizqp/B9uj0k0AjjnUmfH0DlGCUENbjk+qWf7S6HDGgZJyUlPXWW32ajAHD4J
+ g0/QVIo/W9oUtph3H
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git  urgent
-branch HEAD: 4905450b9255089ec1828882e0480831e535ccc5  efi: READ_ONCE rng seed size before munmap
+On 2/19/20 6:18 PM, Ard Biesheuvel wrote:
+> The UEFI spec version 2.8 errata A defines a configuration table called
+> EFI_RT_PROPERTIES_TABLE that carries a mask describing which EFI runtime
+> services are still functional at OS runtime.
+This configuration table defined in UEFI spec 2.8A is replacing the
+RuntimeServicesSupported variable introduced in UEFI spec 2.8 (which is
+already implemented in U-Boot).
 
-elapsed time: 2886m
+Replacing APIs as an "erratum" is unfortunate.
 
-configs tested: 216
-configs skipped: 7
+I am wondering whether in your implementation you will have to check for
+both the variable if the firmware implements UEFI 2.8 and for the table
+if the firmware implements UEFI 2.8A.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Best regards
 
-arm                              allmodconfig
-arm                               allnoconfig
-arm                              allyesconfig
-arm64                            allmodconfig
-arm64                             allnoconfig
-arm64                            allyesconfig
-arm                         at91_dt_defconfig
-arm                           efm32_defconfig
-arm                          exynos_defconfig
-arm                        multi_v5_defconfig
-arm                        multi_v7_defconfig
-arm                        shmobile_defconfig
-arm                           sunxi_defconfig
-arm64                               defconfig
-sparc                            allyesconfig
-s390                       zfcpdump_defconfig
-parisc                            allnoconfig
-ia64                              allnoconfig
-microblaze                    nommu_defconfig
-h8300                    h8300h-sim_defconfig
-riscv                               defconfig
-xtensa                       common_defconfig
-s390                             allmodconfig
-nds32                               defconfig
-c6x                        evmc6678_defconfig
-parisc                generic-64bit_defconfig
-alpha                               defconfig
-powerpc                           allnoconfig
-s390                              allnoconfig
-mips                              allnoconfig
-i386                              allnoconfig
-mips                             allmodconfig
-mips                      malta_kvm_defconfig
-riscv                             allnoconfig
-i386                             alldefconfig
-i386                             allyesconfig
-i386                                defconfig
-ia64                             alldefconfig
-ia64                             allmodconfig
-ia64                             allyesconfig
-ia64                                defconfig
-c6x                              allyesconfig
-nios2                         10m50_defconfig
-nios2                         3c120_defconfig
-openrisc                    or1ksim_defconfig
-openrisc                 simple_smp_defconfig
-xtensa                          iss_defconfig
-csky                                defconfig
-nds32                             allnoconfig
-h8300                     edosk2674_defconfig
-h8300                       h8s-sim_defconfig
-m68k                             allmodconfig
-m68k                       m5475evb_defconfig
-m68k                          multi_defconfig
-m68k                           sun3_defconfig
-arc                              allyesconfig
-arc                                 defconfig
-microblaze                      mmu_defconfig
-powerpc                             defconfig
-powerpc                       ppc64_defconfig
-powerpc                          rhel-kconfig
-mips                           32r2_defconfig
-mips                         64r6el_defconfig
-mips                             allyesconfig
-mips                      fuloong2e_defconfig
-parisc                           allyesconfig
-parisc                generic-32bit_defconfig
-x86_64               randconfig-a001-20200218
-x86_64               randconfig-a002-20200218
-x86_64               randconfig-a003-20200218
-i386                 randconfig-a001-20200218
-i386                 randconfig-a002-20200218
-i386                 randconfig-a003-20200218
-x86_64               randconfig-a001-20200219
-x86_64               randconfig-a002-20200219
-x86_64               randconfig-a003-20200219
-i386                 randconfig-a001-20200219
-i386                 randconfig-a002-20200219
-i386                 randconfig-a003-20200219
-alpha                randconfig-a001-20200218
-m68k                 randconfig-a001-20200218
-mips                 randconfig-a001-20200218
-nds32                randconfig-a001-20200218
-parisc               randconfig-a001-20200218
-riscv                randconfig-a001-20200218
-alpha                randconfig-a001-20200219
-m68k                 randconfig-a001-20200219
-nds32                randconfig-a001-20200219
-parisc               randconfig-a001-20200219
-riscv                randconfig-a001-20200219
-c6x                  randconfig-a001-20200219
-h8300                randconfig-a001-20200219
-microblaze           randconfig-a001-20200219
-nios2                randconfig-a001-20200219
-sparc64              randconfig-a001-20200219
-csky                 randconfig-a001-20200219
-openrisc             randconfig-a001-20200219
-s390                 randconfig-a001-20200219
-xtensa               randconfig-a001-20200219
-x86_64               randconfig-b001-20200218
-x86_64               randconfig-b002-20200218
-x86_64               randconfig-b003-20200218
-i386                 randconfig-b001-20200218
-i386                 randconfig-b002-20200218
-i386                 randconfig-b003-20200218
-x86_64               randconfig-b001-20200219
-x86_64               randconfig-b002-20200219
-x86_64               randconfig-b003-20200219
-i386                 randconfig-b001-20200219
-i386                 randconfig-b002-20200219
-i386                 randconfig-b003-20200219
-x86_64               randconfig-c001-20200219
-x86_64               randconfig-c002-20200219
-x86_64               randconfig-c003-20200219
-i386                 randconfig-c001-20200219
-i386                 randconfig-c002-20200219
-i386                 randconfig-c003-20200219
-x86_64               randconfig-c001-20200218
-x86_64               randconfig-c002-20200218
-x86_64               randconfig-c003-20200218
-i386                 randconfig-c001-20200218
-i386                 randconfig-c002-20200218
-i386                 randconfig-c003-20200218
-x86_64               randconfig-d001-20200218
-x86_64               randconfig-d002-20200218
-x86_64               randconfig-d003-20200218
-i386                 randconfig-d001-20200218
-i386                 randconfig-d002-20200218
-i386                 randconfig-d003-20200218
-x86_64               randconfig-d001-20200219
-x86_64               randconfig-d002-20200219
-x86_64               randconfig-d003-20200219
-i386                 randconfig-d001-20200219
-i386                 randconfig-d002-20200219
-i386                 randconfig-d003-20200219
-x86_64               randconfig-e001-20200219
-x86_64               randconfig-e002-20200219
-x86_64               randconfig-e003-20200219
-i386                 randconfig-e001-20200219
-i386                 randconfig-e002-20200219
-i386                 randconfig-e003-20200219
-x86_64               randconfig-f001-20200218
-x86_64               randconfig-f002-20200218
-x86_64               randconfig-f003-20200218
-i386                 randconfig-f001-20200218
-i386                 randconfig-f002-20200218
-i386                 randconfig-f003-20200218
-x86_64               randconfig-f001-20200219
-x86_64               randconfig-f002-20200219
-x86_64               randconfig-f003-20200219
-i386                 randconfig-f001-20200219
-i386                 randconfig-f002-20200219
-i386                 randconfig-f003-20200219
-x86_64               randconfig-g001-20200218
-x86_64               randconfig-g002-20200218
-x86_64               randconfig-g003-20200218
-i386                 randconfig-g001-20200218
-i386                 randconfig-g002-20200218
-i386                 randconfig-g003-20200218
-x86_64               randconfig-g001-20200219
-x86_64               randconfig-g002-20200219
-x86_64               randconfig-g003-20200219
-i386                 randconfig-g001-20200219
-i386                 randconfig-g002-20200219
-i386                 randconfig-g003-20200219
-x86_64               randconfig-h001-20200218
-x86_64               randconfig-h002-20200218
-x86_64               randconfig-h003-20200218
-i386                 randconfig-h001-20200218
-i386                 randconfig-h002-20200218
-i386                 randconfig-h003-20200218
-x86_64               randconfig-h001-20200219
-x86_64               randconfig-h002-20200219
-x86_64               randconfig-h003-20200219
-i386                 randconfig-h001-20200219
-i386                 randconfig-h002-20200219
-i386                 randconfig-h003-20200219
-arc                  randconfig-a001-20200219
-arm                  randconfig-a001-20200219
-arm64                randconfig-a001-20200219
-ia64                 randconfig-a001-20200219
-powerpc              randconfig-a001-20200219
-sparc                randconfig-a001-20200219
-arc                  randconfig-a001-20200218
-arm                  randconfig-a001-20200218
-arm64                randconfig-a001-20200218
-ia64                 randconfig-a001-20200218
-powerpc              randconfig-a001-20200218
-sparc                randconfig-a001-20200218
-riscv                            allmodconfig
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                          rv32_defconfig
-s390                             alldefconfig
-s390                             allyesconfig
-s390                          debug_defconfig
-s390                                defconfig
-sh                          rsk7269_defconfig
-sh                               allmodconfig
-sh                            titan_defconfig
-sh                  sh7785lcr_32bit_defconfig
-sh                                allnoconfig
-sparc                               defconfig
-sparc64                          allmodconfig
-sparc64                           allnoconfig
-sparc64                          allyesconfig
-sparc64                             defconfig
-um                                  defconfig
-um                             i386_defconfig
-um                           x86_64_defconfig
-x86_64                              fedora-25
-x86_64                                  kexec
-x86_64                                    lkp
-x86_64                                   rhel
-x86_64                         rhel-7.2-clear
-x86_64                               rhel-7.6
+Heinrich
 
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+>
+> Even though any runtime services that cease to be functional when exitin=
+g
+> boot services are still required to return EFI_UNSUPPORTED when called b=
+y
+> the OS, having this mask is helpful, since we can use it to prevent modu=
+les
+> like efi-rtc or efivars from loading, instead of allowing them to probe =
+and
+> fail with an error.
+>
+> So let's wire this up: make some room in struct efi for the mask, read i=
+t
+> from the EFI_RT_PROPERTIES_TABLE if available, and replace various insta=
+nces
+> of 'if (efi_enabled(EFI_RUNTIME_SERVICES))' with checks for the runtime
+> service in question that the code relies upon.
+>
+> Cc: Leif Lindholm <leif@nuviainc.com>
+> Cc: Peter Jones <pjones@redhat.com>
+> Cc: Alexander Graf <agraf@csgraf.de>
+> Cc: Heinrich Schuchardt <xypron.glpk@gmx.de>
+> Cc: Jeff Brasen <jbrasen@nvidia.com>
+> Cc: Atish Patra <Atish.Patra@wdc.com>
+> Cc: x86@kernel.org
+>
+> Ard Biesheuvel (9):
+>    efi: store mask of supported runtime services in struct efi
+>    efi: add support for EFI_RT_PROPERTIES table
+>    efi: use more granular check for availability for variable services
+>    efi: register EFI rtc platform device only when available
+>    infiniband: hfi1: use EFI GetVariable only when available
+>    scsi: iscsi: use EFI GetVariable only when available
+>    efi: use EFI ResetSystem only when available
+>    x86/ima: use EFI GetVariable only when available
+>    integrity: check properly whether EFI GetVariable() is available
+>
+>   arch/x86/kernel/ima_arch.c                    |  2 +-
+>   drivers/firmware/efi/efi-pstore.c             |  2 +-
+>   drivers/firmware/efi/efi.c                    | 70 +++++++++++--------
+>   drivers/firmware/efi/efivars.c                |  2 +-
+>   drivers/firmware/efi/reboot.c                 |  4 +-
+>   drivers/infiniband/hw/hfi1/efivar.c           |  2 +-
+>   drivers/rtc/Makefile                          |  4 --
+>   drivers/rtc/rtc-efi-platform.c                | 35 ----------
+>   drivers/scsi/isci/init.c                      |  2 +-
+>   fs/efivarfs/super.c                           |  2 +-
+>   include/linux/efi.h                           | 40 +++++++++++
+>   security/integrity/platform_certs/load_uefi.c |  2 +-
+>   12 files changed, 89 insertions(+), 78 deletions(-)
+>   delete mode 100644 drivers/rtc/rtc-efi-platform.c
+>
+
