@@ -2,137 +2,89 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 72EE2165236
-	for <lists+linux-efi@lfdr.de>; Wed, 19 Feb 2020 23:11:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3AB9516558C
+	for <lists+linux-efi@lfdr.de>; Thu, 20 Feb 2020 04:19:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727462AbgBSWLk (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 19 Feb 2020 17:11:40 -0500
-Received: from relay7-d.mail.gandi.net ([217.70.183.200]:41915 "EHLO
-        relay7-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727232AbgBSWLk (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 19 Feb 2020 17:11:40 -0500
-X-Originating-IP: 86.202.105.35
-Received: from localhost (lfbn-lyo-1-9-35.w86-202.abo.wanadoo.fr [86.202.105.35])
-        (Authenticated sender: alexandre.belloni@bootlin.com)
-        by relay7-d.mail.gandi.net (Postfix) with ESMTPSA id E5C402000B;
-        Wed, 19 Feb 2020 22:11:37 +0000 (UTC)
-Date:   Wed, 19 Feb 2020 23:11:37 +0100
-From:   Alexandre Belloni <alexandre.belloni@bootlin.com>
+        id S1727476AbgBTDTz (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 19 Feb 2020 22:19:55 -0500
+Received: from mail.hallyn.com ([178.63.66.53]:47712 "EHLO mail.hallyn.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727208AbgBTDTz (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Wed, 19 Feb 2020 22:19:55 -0500
+Received: by mail.hallyn.com (Postfix, from userid 1001)
+        id 5ADB89D4; Wed, 19 Feb 2020 21:19:53 -0600 (CST)
+Date:   Wed, 19 Feb 2020 21:19:53 -0600
+From:   "Serge E. Hallyn" <serge@hallyn.com>
 To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     linux-efi@vger.kernel.org, Leif Lindholm <leif@nuviainc.com>,
+Cc:     "Serge E. Hallyn" <serge@hallyn.com>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        Leif Lindholm <leif@nuviainc.com>,
         Peter Jones <pjones@redhat.com>,
+        Alexander Graf <agraf@csgraf.de>,
         Heinrich Schuchardt <xypron.glpk@gmx.de>,
         Jeff Brasen <jbrasen@nvidia.com>,
-        Atish Patra <Atish.Patra@wdc.com>, x86@kernel.org,
-        Alessandro Zummo <a.zummo@towertech.it>,
-        linux-rtc@vger.kernel.org
-Subject: Re: [PATCH 4/9] efi: register EFI rtc platform device only when
- available
-Message-ID: <20200219221016.GL3390@piout.net>
+        Atish Patra <Atish.Patra@wdc.com>,
+        the arch/x86 maintainers <x86@kernel.org>,
+        James Morris <jmorris@namei.org>,
+        linux-security-module <linux-security-module@vger.kernel.org>
+Subject: Re: [PATCH 9/9] integrity: check properly whether EFI GetVariable()
+ is available
+Message-ID: <20200220031953.GA32167@mail.hallyn.com>
 References: <20200219171907.11894-1-ardb@kernel.org>
- <20200219171907.11894-5-ardb@kernel.org>
+ <20200219171907.11894-10-ardb@kernel.org>
+ <20200219204603.GA28639@mail.hallyn.com>
+ <CAKv+Gu_c4mhMN5LBoH5jJWwMHaMxKY7zcp4hiqdRFiadPT8Nww@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200219171907.11894-5-ardb@kernel.org>
+In-Reply-To: <CAKv+Gu_c4mhMN5LBoH5jJWwMHaMxKY7zcp4hiqdRFiadPT8Nww@mail.gmail.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 19/02/2020 18:19:02+0100, Ard Biesheuvel wrote:
-> Drop the separate driver that registers the EFI rtc on all EFI
-> systems that have runtime services available, and instead, move
-> the registration into the core EFI code, and make it conditional
-> on whether the actual time related services are available.
+On Wed, Feb 19, 2020 at 10:00:11PM +0100, Ard Biesheuvel wrote:
+> On Wed, 19 Feb 2020 at 21:46, Serge E. Hallyn <serge@hallyn.com> wrote:
+> >
+> > On Wed, Feb 19, 2020 at 06:19:07PM +0100, Ard Biesheuvel wrote:
+> > > Testing the value of the efi.get_variable function pointer is not
+> > > the right way to establish whether the platform supports EFI
+> > > variables at runtime. Instead, use the newly added granular check
+> > > that can test for the presence of each EFI runtime service
+> > > individually.
+> > >
+> > > Cc: James Morris <jmorris@namei.org>
+> > > Cc: "Serge E. Hallyn" <serge@hallyn.com>
+> > > Cc: linux-security-module@vger.kernel.org
+> > > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> > > ---
+> > >  security/integrity/platform_certs/load_uefi.c | 2 +-
+> > >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > >
+> > > diff --git a/security/integrity/platform_certs/load_uefi.c b/security/integrity/platform_certs/load_uefi.c
+> > > index 111898aad56e..e2fe1bd3abb9 100644
+> > > --- a/security/integrity/platform_certs/load_uefi.c
+> > > +++ b/security/integrity/platform_certs/load_uefi.c
+> > > @@ -76,7 +76,7 @@ static int __init load_uefi_certs(void)
+> > >       unsigned long dbsize = 0, dbxsize = 0, moksize = 0;
+> > >       int rc = 0;
+> > >
+> > > -     if (!efi.get_variable)
+> > > +     if (!efi_rt_services_supported(EFI_RT_SUPPORTED_GET_VARIABLE))
+> >
+> > Sorry, where is this defined?
+> >
 > 
-> Cc: Alessandro Zummo <a.zummo@towertech.it>
-> Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>
-> Cc: linux-rtc@vger.kernel.org
-> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Acked-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+> Apologies, I failed to cc everyone on the whole series.
+> 
+> It is defined in the first patch.
+> 
+> https://lore.kernel.org/linux-efi/20200219171907.11894-1-ardb@kernel.org/
 
-> ---
->  drivers/firmware/efi/efi.c     |  3 ++
->  drivers/rtc/Makefile           |  4 ---
->  drivers/rtc/rtc-efi-platform.c | 35 --------------------
->  3 files changed, 3 insertions(+), 39 deletions(-)
-> 
-> diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
-> index abf4c02e0201..69a585106d30 100644
-> --- a/drivers/firmware/efi/efi.c
-> +++ b/drivers/firmware/efi/efi.c
-> @@ -321,6 +321,9 @@ static int __init efisubsys_init(void)
->  		}
->  	}
->  
-> +	if (efi_rt_services_supported(EFI_RT_SUPPORTED_TIME_SERVICES))
-> +		platform_device_register_simple("rtc-efi", 0, NULL, 0);
-> +
->  	/* We register the efi directory at /sys/firmware/efi */
->  	efi_kobj = kobject_create_and_add("efi", firmware_kobj);
->  	if (!efi_kobj) {
-> diff --git a/drivers/rtc/Makefile b/drivers/rtc/Makefile
-> index 4ac8f19fb631..24c7dfa1bd7d 100644
-> --- a/drivers/rtc/Makefile
-> +++ b/drivers/rtc/Makefile
-> @@ -12,10 +12,6 @@ obj-$(CONFIG_RTC_CLASS)		+= rtc-core.o
->  obj-$(CONFIG_RTC_MC146818_LIB)	+= rtc-mc146818-lib.o
->  rtc-core-y			:= class.o interface.o
->  
-> -ifdef CONFIG_RTC_DRV_EFI
-> -rtc-core-y			+= rtc-efi-platform.o
-> -endif
-> -
->  rtc-core-$(CONFIG_RTC_NVMEM)		+= nvmem.o
->  rtc-core-$(CONFIG_RTC_INTF_DEV)		+= dev.o
->  rtc-core-$(CONFIG_RTC_INTF_PROC)	+= proc.o
-> diff --git a/drivers/rtc/rtc-efi-platform.c b/drivers/rtc/rtc-efi-platform.c
-> deleted file mode 100644
-> index 6c037dc4e3dc..000000000000
-> --- a/drivers/rtc/rtc-efi-platform.c
-> +++ /dev/null
-> @@ -1,35 +0,0 @@
-> -// SPDX-License-Identifier: GPL-2.0
-> -/*
-> - * Moved from arch/ia64/kernel/time.c
-> - *
-> - * Copyright (C) 1998-2003 Hewlett-Packard Co
-> - *	Stephane Eranian <eranian@hpl.hp.com>
-> - *	David Mosberger <davidm@hpl.hp.com>
-> - * Copyright (C) 1999 Don Dugger <don.dugger@intel.com>
-> - * Copyright (C) 1999-2000 VA Linux Systems
-> - * Copyright (C) 1999-2000 Walt Drummond <drummond@valinux.com>
-> - */
-> -
-> -#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
-> -
-> -#include <linux/init.h>
-> -#include <linux/kernel.h>
-> -#include <linux/module.h>
-> -#include <linux/efi.h>
-> -#include <linux/platform_device.h>
-> -
-> -static struct platform_device rtc_efi_dev = {
-> -	.name = "rtc-efi",
-> -	.id = -1,
-> -};
-> -
-> -static int __init rtc_init(void)
-> -{
-> -	if (efi_enabled(EFI_RUNTIME_SERVICES))
-> -		if (platform_device_register(&rtc_efi_dev) < 0)
-> -			pr_err("unable to register rtc device...\n");
-> -
-> -	/* not necessarily an error */
-> -	return 0;
-> -}
-> -module_init(rtc_init);
-> -- 
-> 2.17.1
-> 
+Gotcha, thanks, I shoulda get-lore-mbox'ed it :)
 
--- 
-Alexandre Belloni, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+Acked-by: Serge Hallyn <serge@hallyn.com>
+
+thanks,
+-serge
