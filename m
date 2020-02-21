@@ -2,109 +2,125 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 66909167B7D
-	for <lists+linux-efi@lfdr.de>; Fri, 21 Feb 2020 12:06:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 83C30167C7C
+	for <lists+linux-efi@lfdr.de>; Fri, 21 Feb 2020 12:47:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727239AbgBULGX (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 21 Feb 2020 06:06:23 -0500
-Received: from mail-wm1-f68.google.com ([209.85.128.68]:39464 "EHLO
-        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726268AbgBULGX (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 21 Feb 2020 06:06:23 -0500
-Received: by mail-wm1-f68.google.com with SMTP id c84so1314819wme.4
-        for <linux-efi@vger.kernel.org>; Fri, 21 Feb 2020 03:06:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=wC99gSViwW4QZxw2MoLHrD9fHuB3q5UX7y2pGfODZfM=;
-        b=ILIzMqy5j+moeMHpnpHLZWOIHKrE7MD6DuOYv9dn+8zMhbn9ZeX+OWyrmIL9wmlG/8
-         a08eCkwC/U1DwdDsw/dqQzzmkirr84lzsRLfPjPk04aSeZMPi3mfzk4JOtXfr6P/81t6
-         2IzUGt2EcQlsJ/KY5mdTe4b+43Q0ntqkSRPAy9pnAHDiJS/ZcK8IhyMdzwKry5+EbuQE
-         6gqTWOcOkRoixH3osB6ZSW1tER7O5hnmms/k/GIo5ZuEZj5MxGchz4BPqGZCjf2gSGzo
-         u7UpNlHqCRks9J+t/k3BXtyf2PcxZAUzTBNV9BrUd7MkLerKfg5llgBENmZirOwe6JP+
-         +PTA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=wC99gSViwW4QZxw2MoLHrD9fHuB3q5UX7y2pGfODZfM=;
-        b=Ok1CLj1Uz7PzeOFi2nk9k8Us22iRMppj10EwGSiJXVHedljrTtCBix/CgwyDx9tgKD
-         jIb2ZKU3658vTsXfXIn+giiEXhcbUmU/HemcOEAM5Mac/q/wizHFSQpNNEzeqEHhg5Ee
-         +XCCI1mp5UJPBbMsoBUUwr5s+uJAdrh0eiX4v1swuC42E75Nv9qp079NWCS3UABTfigd
-         EN/TfYg9A7PX1aJVBfMIn4XqIl0joOcP/GLnCCWaYbEjlMSDXcAX8qdwIt4xM5cQrPW3
-         gK1HR1QWOA3g6t693wUQ2cq/miJ8ci69pULkkDUjbSUMa2kfPoVmFnhDw9SoPmAfr3NB
-         CGIA==
-X-Gm-Message-State: APjAAAWFtirNWJCuE3gG5SQkepH6CAPzRAIGYSxSBJnDMXUOiM2C+o2C
-        TAkdF5STGiEKpfZJXnmwVnQCHxTRBX01pn19qEg=
-X-Google-Smtp-Source: APXvYqxdR3MuXMmvRROa7F8Ui9N4meGdKRcjEIFFIxWnkDbVmOhD4noStC7lGdC5jkfJjBNVrmiifjRGRhXqsMDD+SI=
-X-Received: by 2002:a1c:7205:: with SMTP id n5mr3258838wmc.9.1582283181320;
- Fri, 21 Feb 2020 03:06:21 -0800 (PST)
+        id S1726934AbgBULrd (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 21 Feb 2020 06:47:33 -0500
+Received: from mout.gmx.net ([212.227.15.19]:53831 "EHLO mout.gmx.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726909AbgBULrd (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Fri, 21 Feb 2020 06:47:33 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1582285642;
+        bh=0PtZwcFUAPJb3906OUvjv5XTCsimZRw8glwcqJsmbPk=;
+        h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
+        b=kL/8mb1GGsNLC2675g1cnHzoPqKrc1eKDHH4Gbm3F7R8xX4h6Rcprg3LcfCxyD4kw
+         lds2FQA3a3adqU11Vzf+48YUfvsn9J8GOXvTxwXQ50A8JTjzcoztAhu3AEvErCCTQP
+         QkGtwxdXVbO2Q18jokBYhaCgg808eC8xVyzzwo9s=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from LT02.fritz.box ([84.119.33.160]) by mail.gmx.com (mrgmx004
+ [212.227.17.184]) with ESMTPSA (Nemesis) id 1Mqs4Z-1jr8zD0IQT-00mtkm; Fri, 21
+ Feb 2020 12:47:22 +0100
+From:   Heinrich Schuchardt <xypron.glpk@gmx.de>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     Ingo Molnar <mingo@kernel.org>,
+        Dominik Brodowski <linux@dominikbrodowski.net>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Heinrich Schuchardt <xypron.glpk@gmx.de>
+Subject: [PATCH 1/1] efi/libstub: describe RNG functions
+Date:   Fri, 21 Feb 2020 12:47:16 +0100
+Message-Id: <20200221114716.4372-1-xypron.glpk@gmx.de>
+X-Mailer: git-send-email 2.25.0
 MIME-Version: 1.0
-Received: by 2002:a1c:e4d7:0:0:0:0:0 with HTTP; Fri, 21 Feb 2020 03:06:20
- -0800 (PST)
-Reply-To: stellar074maoris@gmail.com
-From:   "Mrs.Stellar Maoris" <agencydirectorw@gmail.com>
-Date:   Fri, 21 Feb 2020 03:06:20 -0800
-Message-ID: <CAHEkVHswp-2DxautLZhR47ro6p2wiy+m3gXJdqKpMtDEXNyT_g@mail.gmail.com>
-Subject: Hello Dear Friend.
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:2qSY/f99+lAr2378TCeJToe4Uz21ROxHasAsb9FK0xAlqp3txJN
+ 7uuxnsjLrcxD9sim/cgZHKJeIRJW0prVPk5b6NNw2UojlptliHldulNIunKIrIFJLvYBlP+
+ +lvBLsW3eZLuEl01i2PQwcP5OglVi85cPIHh8+N4gUuELSzBz5sVzDX5WBxn6e3UDY/urKb
+ Yew51cUapCI+XAbwCXK3w==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:UT27+fA04vA=:BrTFdPlpzhIOhT6ZLUhlta
+ Yx/SYsuZMFB+m+atrXvGCpCA+PRBhKZzQcoxb9f/p7B4a6czTI+s2yYu7ls3Z3bkRAfhobqFR
+ ospU5wDzcp6siiyeA18fJjqnwZPK7W5yCBFmra8xsScohLdWYDIFt2KcaY5IKXlyuqyVJH8pF
+ bPyAilUAGlmRQN6tSWyevEU+PFRz+uScx07WuWFCOsWSejh+PxY1VFO0vyl6LqWiPEjbYlftx
+ 0QBkyEUu4JMfxjhDcH05/Y5nlrn9dfMvhUX/+i6YzGpiGOsTgLAgANQ69fE9u7qXfFx1Rg3gQ
+ 2C2czx7QqGkMSBKV9EXg27qi7s+fSL2nAt6IpppyResjJaNzm03dNHbTdAGnkZMWxmIBqcN5y
+ bcdfGU/YSOSrVQPs+KJGqq9RgIXSlm/HPNbw0wyQGSWctBsM+o7nC7t/wpQwtlV6RcYVqYPEB
+ MFgj0ugj+yYux7QLxT4lLbNwwr0/V8vXDfuZ0zyMMSBa6Uhk8CvOYWQyk+oIznle8HaAiQi8g
+ o7LH3xmlTfw/v067nyevB1AkvBMTuCm++Jk3r4XEdpaMLupFRm8yfXjWZJzbXMSDha1Iz8m5y
+ pRtIkTG4qU9wolzjSSzGOek1ZiXSzonbBsSHzuWyAr8+ZY/K/IuFFQZWkyXMJaxmoCov5buTa
+ wXCqpgrvnJYV05dvbMAesUy5lIXXsJWifX+9byo0FG6Uhk/o3vey7Oinln/v7QKM4ZVK65SaV
+ P0RH0AYATcYu6m+IOX/4j9xc5EaQpEMBHQfCt2+zoThRhA4ru1CmQBrwMxlknHIqArRtYG4Wa
+ wj5CxNWnjJwiiJHYpvNuOwbfdcCF5F2O6ge5xfa+5xroUYJczk5gVPRHFhEzBnzr+3moc6dwp
+ 5KpxhrcOmLZkwyPoqcIqvokka3hVWcv37pwR07B3QeIjHH9/4buzLhkKmW+TPoFoAOEchxqCa
+ b2unCMktSvvW7AYffIqdZ2puUbAdNj8yqlcM7lAak/tT99ZWXJhccx+EeekHOb0nMvyIv9gRk
+ O9mA8Dm+8Y+vYxgaG0idTHevrXR2C5omcVoD4+pOYrMtUNVIQ2bGLOM2KGId2Qp7pfT/mtFJq
+ P1S+rGYnN9iR3sGd7BsJAmqyTXN53GqBQ6aOrGDP8b+xoLjabpnx7t1ZMiLbW+nIlcD65hNil
+ T6xu36oE0lD0v3Sv1eXsbva3CNDfUfRfoaI/Z4JI/w/5SzJEzohQWGyKzMtd2oXif2bkaxh48
+ 55ppqc8To52JYJxkg
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-My Dear Friend,
+Provide descriptions for the functions invoking the EFI_RNG_PROTOCOL.
 
-I am  Mrs. Stellar Maoris from united state of America a manger in
-HSBC bank in Madrid Spain, 35 years old of age, divorced , I am
-sending you this brief letter to seek for your partnership and long term
-relationship, I have an important and urgent issue I want to discuss
-with you privately about Transaction fund worth the sum of $9.5 million
-America dollars left by most of the greedy Asia Kuwait politician in
-our bank here in Madrid Spain,
+Signed-off-by: Heinrich Schuchardt <xypron.glpk@gmx.de>
+=2D--
+ drivers/firmware/efi/libstub/random.c | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
-I want the bank to transfer the money left by most of the greedy
-Asia Kuwait politician into your bank account in your country for a
-good project investment, those so called   politician  used our bank
-to launder money overseas through the help of their Political
-advisers. And Most of the funds which they Transferred out of the
-shores of Asia  were gold and oil money that
-Was supposed to have been used to develop the continent.
+diff --git a/drivers/firmware/efi/libstub/random.c b/drivers/firmware/efi/=
+libstub/random.c
+index 21e7e9325219..24aa37535372 100644
+=2D-- a/drivers/firmware/efi/libstub/random.c
++++ b/drivers/firmware/efi/libstub/random.c
+@@ -25,6 +25,17 @@ union efi_rng_protocol {
+ 	} mixed_mode;
+ };
 
-can you invest this money and also help the poor in your country ? the amou=
-nt
-value at ($9.5million Dollars) left in his account still unclaimed
-because no one come to ask for the fund and our bank governor want to
-transfer the fund into governor treasury account as unclaimed fund
-after 1month if no one come to ask for the fund and I have every
-relevant information And documents to back you up.
++/**
++ * efi_get_random_bytes() - fill a buffer with random bytes
++ * @size:	size of the buffer
++ * @out:	caller allocated buffer to receive the random bytes
++ *
++ * The call will fail if either the firmware does not implement the
++ * EFI_RNG_PROTOCOL or there are not enough random bytes available to fil=
+l
++ * the buffer.
++ *
++ * Return:	status code
++ */
+ efi_status_t efi_get_random_bytes(unsigned long size, u8 *out)
+ {
+ 	efi_guid_t rng_proto =3D EFI_RNG_PROTOCOL_GUID;
+@@ -38,6 +49,19 @@ efi_status_t efi_get_random_bytes(unsigned long size, u=
+8 *out)
+ 	return efi_call_proto(rng, get_rng, NULL, size, out);
+ }
 
-So if you are interested we shall have percentage of  (50% for me)
-(35% for you) while 15% for the orphanage in your country.
++/**
++ * efi_random_get_seed() - provide random seed as configuration table
++ *
++ * The EFI_RNG_PROTOCOL is used to read random bytes. These random bytes =
+are
++ * saved as a configuration table which can be used as entropy by the ker=
+nel
++ * for the initialization of its pseudo random number generator.
++ *
++ * If the EFI_RNG_PROTOCOL is not available or there are not enough rando=
+m bytes
++ * available, the configuration table will not be installed and an error =
+code
++ * will be returned.
++ *
++ * Return:	status code
++ */
+ efi_status_t efi_random_get_seed(void)
+ {
+ 	efi_guid_t rng_proto =3D EFI_RNG_PROTOCOL_GUID;
+=2D-
+2.25.0
 
-Kindly fill the space listed below to enable me draft you an
-application letter of claim which you will used to contact the bank
-for immediate transfer of the fund into your bank account.
-
-
-Your full names................
-
-Your country of origin................
-
-Your Mobile No & ID......................
-
-Your Married Status=E2=80=A6=E2=80=A6=E2=80=A6=E2=80=A6=E2=80=A6=E2=80=A6=
-=E2=80=A6=E2=80=A6
-
-Your Age=E2=80=A6=E2=80=A6=E2=80=A6=E2=80=A6=E2=80=A6=E2=80=A6=E2=80=A6=E2=
-=80=A6
-Your urgent respond will be highly appreciated Awaiting to hear from you as=
-ap.
-
-My Regard.
-Stellar Maoris
-Please Contact Email Direct : stellar074maoris@gmail.com
-Phone Number: +34(62) 768 5146
