@@ -2,81 +2,266 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BEA3916789B
-	for <lists+linux-efi@lfdr.de>; Fri, 21 Feb 2020 09:50:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B6B71678DB
+	for <lists+linux-efi@lfdr.de>; Fri, 21 Feb 2020 09:56:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728512AbgBUItU (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 21 Feb 2020 03:49:20 -0500
-Received: from mail.kernel.org ([198.145.29.99]:58176 "EHLO mail.kernel.org"
+        id S1730801AbgBUI4j (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 21 Feb 2020 03:56:39 -0500
+Received: from mail.kernel.org ([198.145.29.99]:60558 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730187AbgBUItN (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Fri, 21 Feb 2020 03:49:13 -0500
+        id S1730355AbgBUI4i (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Fri, 21 Feb 2020 03:56:38 -0500
 Received: from e123331-lin.home (amontpellier-657-1-18-247.w109-210.abo.wanadoo.fr [109.210.65.247])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A8BF4206DB;
-        Fri, 21 Feb 2020 08:49:11 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 1E443206DB;
+        Fri, 21 Feb 2020 08:56:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1582274952;
-        bh=bapAttMT/RXTqagAhgnEldb9Kde9T0RQHIsyb+9aKdA=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OwrhxIc5ImPUfMFuZCzx0x1FVNxLKStzNueuWO4aYvTKENoPEbB1qNMf4KN+FMR4n
-         185q0EKJ9GKah2EAOlWcTXgJ9RacCZirm25Ie8QB1OjhgYY0p7ZpnaK516zXPniNCc
-         6mL3m11n/pSxfXWCyFA7blprusgUwApOnHyKy0dM=
+        s=default; t=1582275397;
+        bh=BMINGId4oJOOVJ0qaN3fAj6biyBWAwSpjG7KGPv2NSw=;
+        h=From:To:Cc:Subject:Date:From;
+        b=ysy/tb1YFpy5JwR+n2E1EFlRJ9km+8IRIc8QyBDQK1OrTEt8c2XVe8zKSIlH7Sss2
+         di17lQvofSvRgCT7enRTW2rjLWnom02jkyObqx+rpqKoZorgSLhbBxTcxHxnHiYLVJ
+         kKyTOILvRLdTbzUg1maI3EM33kjSF9cbTGoVIIE8=
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-efi@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
         Thomas Gleixner <tglx@linutronix.de>
-Cc:     "Jason A. Donenfeld" <Jason@zx2c4.com>,
-        Ard Biesheuvel <ardb@kernel.org>, linux-kernel@vger.kernel.org
-Subject: [PATCH 4/4] efi: READ_ONCE rng seed size before munmap
-Date:   Fri, 21 Feb 2020 09:48:49 +0100
-Message-Id: <20200221084849.26878-5-ardb@kernel.org>
+Cc:     Ard Biesheuvel <ardb@kernel.org>, linux-kernel@vger.kernel.org
+Subject: [GIT PULL] EFI updates for v5.7
+Date:   Fri, 21 Feb 2020 09:56:30 +0100
+Message-Id: <20200221085630.27093-1-ardb@kernel.org>
 X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200221084849.26878-1-ardb@kernel.org>
-References: <20200221084849.26878-1-ardb@kernel.org>
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-From: "Jason A. Donenfeld" <Jason@zx2c4.com>
+Hello Ingo, Thomas,
 
-This function is consistent with using size instead of seed->size
-(except for one place that this patch fixes), but it reads seed->size
-without using READ_ONCE, which means the compiler might still do
-something unwanted. So, this commit simply adds the READ_ONCE
-wrapper.
+I am sending this as an ordinary PR this time, given the size. Please let
+me know if instead, you prefer me to send it out piecemeal as usual. Either
+works for me, I was just reluctant to spam people unsolicited.
 
-Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
-Fixes: 636259880a7e ("efi: Add support for seeding the RNG from a UEFI ...")
-Link: https://lore.kernel.org/r/20200217123354.21140-1-Jason@zx2c4.com
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
----
- drivers/firmware/efi/efi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Note that EFI for RISC-V may still arrive this cycle as well. 
 
-diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
-index 621220ab3d0e..21ea99f65113 100644
---- a/drivers/firmware/efi/efi.c
-+++ b/drivers/firmware/efi/efi.c
-@@ -552,7 +552,7 @@ int __init efi_config_parse_tables(void *config_tables, int count, int sz,
- 
- 		seed = early_memremap(efi.rng_seed, sizeof(*seed));
- 		if (seed != NULL) {
--			size = seed->size;
-+			size = READ_ONCE(seed->size);
- 			early_memunmap(seed, sizeof(*seed));
- 		} else {
- 			pr_err("Could not map UEFI random seed!\n");
-@@ -562,7 +562,7 @@ int __init efi_config_parse_tables(void *config_tables, int count, int sz,
- 					      sizeof(*seed) + size);
- 			if (seed != NULL) {
- 				pr_notice("seeding entropy pool\n");
--				add_bootloader_randomness(seed->bits, seed->size);
-+				add_bootloader_randomness(seed->bits, size);
- 				early_memunmap(seed, sizeof(*seed) + size);
- 			} else {
- 				pr_err("Could not map UEFI random seed!\n");
--- 
-2.17.1
+Please take special note of the GDT changes by Arvind. They were posted to
+the list without any feedback, and they look fine to me, but I know very
+little about these x86 CPU low level details.
 
+This was all build and boot tested on various different kinds of hardware,
+and all minor issues were fixed along the way.
+
+
+The following changes since commit bb6d3fb354c5ee8d6bde2d576eb7220ea09862b9:
+
+  Linux 5.6-rc1 (2020-02-09 16:08:48 -0800)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git efi-next
+
+for you to fetch changes up to c0cd4ad8a865f910e646f37b16566a2f408e63a4:
+
+  efi: Bump the Linux EFI stub major version number to #1 (2020-02-21 09:04:34 +0100)
+
+----------------------------------------------------------------
+This time, the set of changes for the EFI subsystem is much larger than
+usual. The main reasons are:
+- Get things cleaned up before EFI support for RISC-V arrives, which will
+  increase the size of the validation matrix, and therefore the threshold to
+  making drastic changes,
+- After years of defunct maintainership, the GRUB project has finally started
+  to consider changes from the distros regarding UEFI boot, some of which are
+  highly specific to the way x86 does UEFI secure boot and measured boot,
+  based on knowledge of both shim internals and the layout of bootparams and
+  the x86 setup header. Having this maintenance burden on other architectures
+  (which don't need shim in the first place) is hard to justify, so instead,
+  we are introducing a generic Linux/UEFI boot protocol.
+
+Summary of changes:
+- Boot time GDT handling changes (Arvind)
+- Simplify handling of EFI properties table on arm64
+- Generic EFI stub cleanups, to improve command line handling, file I/O,
+  memory allocation, etc.
+- Introduce a generic initrd loading method based on calling back into
+  the firmware, instead of relying on the x86 EFI handover protocol or
+  device tree.
+- Introduce a mixed mode boot method that does not rely on the x86 EFI
+  handover protocol either, and could potentially be adopted by other
+  architectures (if another one ever surfaces where one execution mode
+  is a superset of another)
+- Clean up the contents of struct efi, and move out everything that
+  doesn't need to be stored there.
+- Incorporate support for UEFI spec v2.8A changes that permit firmware
+  implementations to return EFI_UNSUPPORTED from UEFI runtime services at
+  OS runtime, and expose a mask of which ones are supported or unsupported
+  via a configuration table.
+- Add kerneldoc for the memory allocation routines in the stub (Heinrich)
+- Partial fix for the lack of by-VA cache maintenance in the decompressor
+  on 32-bit ARM. Note that these patches were deliberately put at the
+  beginning so they can be used as a stable branch that will be shared with
+  a PR containing the complete fix, which I will send to the ARM tree.
+
+----------------------------------------------------------------
+Ard Biesheuvel (66):
+      efi/arm: Work around missing cache maintenance in decompressor handover
+      efi/arm: Pass start and end addresses to cache_clean_flush()
+      efi/libstub/arm: Make efi_entry() an ordinary PE/COFF entrypoint
+      efi/libstub/arm64: Use 1:1 mapping of RT services if property table exists
+      efi/libstub/x86: Remove pointless zeroing of apm_bios_info
+      efi/libstub/x86: Avoid overflowing code32_start on PE entry
+      efi/libstub: Use hidden visibility for all source files
+      efi/libstub/arm: Relax FDT alignment requirement
+      efi/libstub: Move memory map handling and allocation routines to mem.c
+      efi/libstub: Simplify efi_high_alloc() and rename to efi_allocate_pages()
+      efi/libstub/x86: Incorporate eboot.c into libstub
+      efi/libstub: Use consistent type names for file I/O protocols
+      efi/libstub/x86: Permit bootparams struct to be allocated above 4 GB
+      efi/libstub: Move stub specific declarations into efistub.h
+      efi/libstub/x86: Permit cmdline data to be allocated above 4 GB
+      efi/libstub: Move efi_random_alloc() into separate source file
+      efi/libstub: Move get_dram_base() into arm-stub.c
+      efi/libstub: Move file I/O support code into separate file
+      efi/libstub: Rewrite file I/O routine
+      efi/libstub: Take soft and hard memory limits into account for initrd loading
+      efi/libstub: Clean up command line parsing routine
+      efi/libstub: Expose LocateDevicePath boot service
+      efi/libstub: Make the LoadFile EFI protocol accessible
+      efi/x86: Reindent struct initializer for legibility
+      efi/x86: Replace #ifdefs with IS_ENABLED() checks
+      efi/dev-path-parser: Add struct definition for vendor type device path nodes
+      efi/libstub: Add support for loading the initrd from a device path
+      efi/libstub: Take noinitrd cmdline argument into account for devpath initrd
+      efi: Drop handling of 'boot_info' configuration table
+      efi/ia64: Move HCDP and MPS table handling into IA64 arch code
+      efi: Move UGA and PROP table handling to x86 code
+      efi: Make rng_seed table handling local to efi.c
+      efi: Move mem_attr_table out of struct efi
+      efi: Make memreserve table handling local to efi.c
+      efi: Merge EFI system table revision and vendor checks
+      efi/ia64: Use existing helpers to locate ESI table
+      efi/ia64: Use local variable for EFI system table address
+      efi/ia64: Switch to efi_config_parse_tables()
+      efi: Make efi_config_init() x86 only
+      efi: Clean up config_parse_tables()
+      efi/x86: Remove runtime table address from kexec EFI setup data
+      efi/x86: Make fw_vendor, config_table and runtime sysfs nodes x86 specific
+      efi/x86: Merge assignments of efi.runtime_version
+      efi: Add 'runtime' pointer to struct efi
+      efi/arm: Drop unnecessary references to efi.systab
+      efi/x86: Drop 'systab' member from struct efi
+      efi/x86: Drop redundant .bss section
+      efi/libstub/x86: Make loaded_image protocol handling mixed mode safe
+      efi/libstub/x86: Use Exit() boot service to exit the stub on errors
+      efi/x86: Implement mixed mode boot without the handover protocol
+      efi/x86: Add true mixed mode entry point into .compat section
+      efi/arm: Move FDT param discovery code out of efi.c
+      efi/arm: Move FDT specific definitions into fdtparams.c
+      efi/arm: Rewrite FDT param discovery routines
+      efi: Store mask of supported runtime services in struct efi
+      efi: Add support for EFI_RT_PROPERTIES table
+      efi: Use more granular check for availability for variable services
+      efi: Register EFI rtc platform device only when available
+      infiniband: hfi1: Use EFI GetVariable only when available
+      scsi: iscsi: Use EFI GetVariable only when available
+      efi: Use EFI ResetSystem only when available
+      x86/ima: Use EFI GetVariable only when available
+      integrity: Check properly whether EFI GetVariable() is available
+      efi/x86: Use symbolic constants in PE header instead of bare numbers
+      efi/libstub: Introduce symbolic constants for the stub major/minor version
+      efi: Bump the Linux EFI stub major version number to #1
+
+Arvind Sankar (8):
+      x86/boot: Remove KEEP_SEGMENTS support
+      efi/x86: Don't depend on firmware GDT layout
+      x86/boot: Reload GDTR after copying to the end of the buffer
+      x86/boot: Clear direction and interrupt flags in startup_64
+      efi/x86: Remove GDT setup from efi_main
+      x86/boot: GDT limit value should be size - 1
+      x86/boot: Micro-optimize GDT loading instructions
+      efi/x86: Mark setup_graphics static
+
+Gustavo A. R. Silva (1):
+      efi/apple-properties: Replace zero-length array with flexible-array member
+
+Hans de Goede (1):
+      efi/bgrt: Accept BGRT tables with a version of 0
+
+Heinrich Schuchardt (4):
+      efi/libstub: Add function description of efi_allocate_pages()
+      efi/libstub: Simplify efi_get_memory_map()
+      efi/libstub: Describe memory functions
+      efi/libstub: Describe efi_relocate_kernel()
+
+ Documentation/x86/boot.rst                         |   8 +-
+ arch/arm/boot/compressed/efi-header.S              |   6 +-
+ arch/arm/boot/compressed/head.S                    |  64 +-
+ arch/arm64/include/asm/efi.h                       |  10 -
+ arch/arm64/kernel/efi-entry.S                      |  64 +-
+ arch/arm64/kernel/efi-header.S                     |   6 +-
+ arch/arm64/kernel/image-vars.h                     |   1 +
+ arch/ia64/kernel/efi.c                             |  55 +-
+ arch/ia64/kernel/esi.c                             |  21 +-
+ arch/x86/boot/Makefile                             |   2 +-
+ arch/x86/boot/compressed/Makefile                  |   5 +-
+ arch/x86/boot/compressed/eboot.h                   |  31 -
+ arch/x86/boot/compressed/efi_thunk_64.S            |  29 +-
+ arch/x86/boot/compressed/head_32.S                 |  48 +-
+ arch/x86/boot/compressed/head_64.S                 | 125 +++-
+ arch/x86/boot/header.S                             |  87 +--
+ arch/x86/boot/tools/build.c                        |  69 +-
+ arch/x86/include/asm/efi.h                         |  23 +-
+ arch/x86/kernel/asm-offsets_32.c                   |   5 +
+ arch/x86/kernel/head_32.S                          |   6 -
+ arch/x86/kernel/ima_arch.c                         |   2 +-
+ arch/x86/kernel/kexec-bzimage64.c                  |   5 +-
+ arch/x86/platform/efi/efi.c                        | 283 ++++---
+ arch/x86/platform/efi/efi_32.c                     |  13 +-
+ arch/x86/platform/efi/efi_64.c                     |  14 +-
+ arch/x86/platform/efi/efi_stub_32.S                |  21 +-
+ arch/x86/platform/efi/quirks.c                     |   2 +-
+ drivers/firmware/efi/Makefile                      |   1 +
+ drivers/firmware/efi/apple-properties.c            |  12 +-
+ drivers/firmware/efi/arm-init.c                    |  83 +--
+ drivers/firmware/efi/arm-runtime.c                 |  18 -
+ drivers/firmware/efi/dev-path-parser.c             |  38 +-
+ drivers/firmware/efi/efi-bgrt.c                    |   7 +-
+ drivers/firmware/efi/efi-pstore.c                  |   2 +-
+ drivers/firmware/efi/efi.c                         | 418 ++++-------
+ drivers/firmware/efi/efivars.c                     |   2 +-
+ drivers/firmware/efi/fdtparams.c                   | 126 ++++
+ drivers/firmware/efi/libstub/Makefile              |   7 +-
+ drivers/firmware/efi/libstub/arm-stub.c            | 193 ++---
+ drivers/firmware/efi/libstub/arm32-stub.c          |   1 +
+ drivers/firmware/efi/libstub/arm64-stub.c          |  11 +-
+ drivers/firmware/efi/libstub/efi-stub-helper.c     | 822 ++++-----------------
+ drivers/firmware/efi/libstub/efistub.h             | 611 ++++++++++++++-
+ drivers/firmware/efi/libstub/fdt.c                 |   7 +-
+ drivers/firmware/efi/libstub/file.c                | 258 +++++++
+ drivers/firmware/efi/libstub/hidden.h              |   6 +
+ drivers/firmware/efi/libstub/mem.c                 | 309 ++++++++
+ drivers/firmware/efi/libstub/random.c              | 114 ---
+ drivers/firmware/efi/libstub/randomalloc.c         | 124 ++++
+ drivers/firmware/efi/libstub/string.c              |  63 ++
+ .../firmware/efi/libstub/x86-stub.c                | 258 +++----
+ drivers/firmware/efi/memattr.c                     |  13 +-
+ drivers/firmware/efi/reboot.c                      |   4 +-
+ drivers/firmware/efi/runtime-wrappers.c            |   4 +-
+ drivers/firmware/pcdp.c                            |   8 +-
+ drivers/infiniband/hw/hfi1/efivar.c                |   2 +-
+ drivers/rtc/Makefile                               |   4 -
+ drivers/rtc/rtc-efi-platform.c                     |  35 -
+ drivers/scsi/isci/init.c                           |   2 +-
+ fs/efivarfs/super.c                                |   2 +-
+ include/linux/efi.h                                | 691 +++--------------
+ include/linux/pe.h                                 |  21 +
+ security/integrity/platform_certs/load_uefi.c      |   2 +-
+ 63 files changed, 2667 insertions(+), 2617 deletions(-)
+ delete mode 100644 arch/x86/boot/compressed/eboot.h
+ create mode 100644 drivers/firmware/efi/fdtparams.c
+ create mode 100644 drivers/firmware/efi/libstub/file.c
+ create mode 100644 drivers/firmware/efi/libstub/hidden.h
+ create mode 100644 drivers/firmware/efi/libstub/mem.c
+ create mode 100644 drivers/firmware/efi/libstub/randomalloc.c
+ rename arch/x86/boot/compressed/eboot.c => drivers/firmware/efi/libstub/x86-stub.c (82%)
+ delete mode 100644 drivers/rtc/rtc-efi-platform.c
