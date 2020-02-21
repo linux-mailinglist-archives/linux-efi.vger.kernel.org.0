@@ -2,43 +2,44 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C6091683EB
-	for <lists+linux-efi@lfdr.de>; Fri, 21 Feb 2020 17:45:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 35B1D16848F
+	for <lists+linux-efi@lfdr.de>; Fri, 21 Feb 2020 18:12:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726150AbgBUQpy (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 21 Feb 2020 11:45:54 -0500
-Received: from mail.kernel.org ([198.145.29.99]:47106 "EHLO mail.kernel.org"
+        id S1727291AbgBURMy (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 21 Feb 2020 12:12:54 -0500
+Received: from mail.kernel.org ([198.145.29.99]:33418 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726132AbgBUQpy (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Fri, 21 Feb 2020 11:45:54 -0500
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+        id S1725957AbgBURMy (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Fri, 21 Feb 2020 12:12:54 -0500
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A124724673
-        for <linux-efi@vger.kernel.org>; Fri, 21 Feb 2020 16:45:52 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id E6C9F2467B
+        for <linux-efi@vger.kernel.org>; Fri, 21 Feb 2020 17:12:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1582303552;
-        bh=Pns+ERY7mpTMf04NOQCmngZvRZZtQGF/khd1faPzvo0=;
+        s=default; t=1582305173;
+        bh=WS2XzXY4EpdDBi3H3rPKmUOormw7TrfZRFHvWYAADzs=;
         h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=hpODqaIPLQ6FPydOMO0UFxS71ogf89iJcP0MmU5Yb/I+DFlnfI64/PZvm9e05ylB9
-         hhKFF5/EIsARyVBNPHvD+BqTn6NURuCZ7wWRIWYT8vcxVJayaL48eJkMT0qwogqI+G
-         KN4tdwI6pCDkj0/6tTAgcMOXjMUk+eQEXV9pqCIk=
-Received: by mail-wr1-f47.google.com with SMTP id z3so2784856wru.3
-        for <linux-efi@vger.kernel.org>; Fri, 21 Feb 2020 08:45:52 -0800 (PST)
-X-Gm-Message-State: APjAAAUIiN8JQDbHrl3QQ9eLNO5xyp8lma/dNRdDbJZAORdvIgphohjI
-        cdaWcIHE9U0btSH3ObKBMYR0NhdCnSVZoKiUh8Jn5Q==
-X-Google-Smtp-Source: APXvYqzYiqkbWcZsThISpUsgu3zjOcTUy1IyBUajc2V79w/UFgUxPc3gKgoogmJ6rA/b5DBpfcoPWoGeFaT1rqZs9sM=
-X-Received: by 2002:adf:fd8d:: with SMTP id d13mr50163730wrr.208.1582303551022;
- Fri, 21 Feb 2020 08:45:51 -0800 (PST)
+        b=XCVo/9dOTu4oDmh9/Ii4gsP3jHQL48ZcSczUWi+l69ECoEFFiMsNl8vwzcoQlUSmL
+         30aimy54oomQrdvVvn4TsiBqCp+KlIWhtMoNj0MMhKJ0aBA9K09DafgMnHkv4VdqHp
+         XO/unKM8uxv2KUyeSyKVfPrHLirjXICzYYCvaVGI=
+Received: by mail-wm1-f50.google.com with SMTP id p9so2550807wmc.2
+        for <linux-efi@vger.kernel.org>; Fri, 21 Feb 2020 09:12:52 -0800 (PST)
+X-Gm-Message-State: APjAAAUIAagYyFbmoY6Ho++XKh0Xg6UUH7dF208lXNke6gztEPx4YzNy
+        Ii3nOPA/KfukCwe7V9Mls1b71DHV1UnbRAuEI+3vSA==
+X-Google-Smtp-Source: APXvYqxVLsG6RhV+IKNXrE6zlGlBCVRugSALpAIsBTb3vl2WoV83uhu7LO1+sJwgl5u+GdcWeXJm0dMgyMR/cxF+zSI=
+X-Received: by 2002:a1c:b603:: with SMTP id g3mr5127993wmf.133.1582305171215;
+ Fri, 21 Feb 2020 09:12:51 -0800 (PST)
 MIME-Version: 1.0
-References: <20200217144822.24616-1-ardb@kernel.org> <20200217144822.24616-2-ardb@kernel.org>
- <20200221164010.GB2766905@rani.riverdale.lan>
-In-Reply-To: <20200221164010.GB2766905@rani.riverdale.lan>
+References: <20200217144822.24616-1-ardb@kernel.org> <20200217144822.24616-5-ardb@kernel.org>
+ <20200221163915.GA2766905@rani.riverdale.lan>
+In-Reply-To: <20200221163915.GA2766905@rani.riverdale.lan>
 From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Fri, 21 Feb 2020 17:45:40 +0100
-X-Gmail-Original-Message-ID: <CAKv+Gu89Y8RP9-cS3z+m6gpkp3Wy-n6FxocMwOSsrGobWUw3Jg@mail.gmail.com>
-Message-ID: <CAKv+Gu89Y8RP9-cS3z+m6gpkp3Wy-n6FxocMwOSsrGobWUw3Jg@mail.gmail.com>
-Subject: Re: [PATCH v2 1/5] efi/x86: Drop redundant .bss section
+Date:   Fri, 21 Feb 2020 18:12:40 +0100
+X-Gmail-Original-Message-ID: <CAKv+Gu8nwcyXqHDs6FowwYQw6xxLC+=Y8OqQkU=fRUsaLY3Fpg@mail.gmail.com>
+Message-ID: <CAKv+Gu8nwcyXqHDs6FowwYQw6xxLC+=Y8OqQkU=fRUsaLY3Fpg@mail.gmail.com>
+Subject: Re: [PATCH v2 4/5] efi/x86: Implement mixed mode boot without the
+ handover protocol
 To:     Arvind Sankar <nivedita@alum.mit.edu>
 Cc:     linux-efi <linux-efi@vger.kernel.org>,
         Laszlo Ersek <lersek@redhat.com>,
@@ -55,79 +56,80 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, 21 Feb 2020 at 17:40, Arvind Sankar <nivedita@alum.mit.edu> wrote:
+On Fri, 21 Feb 2020 at 17:39, Arvind Sankar <nivedita@alum.mit.edu> wrote:
 >
-> On Mon, Feb 17, 2020 at 03:48:18PM +0100, Ard Biesheuvel wrote:
-> > In commit
+> On Mon, Feb 17, 2020 at 03:48:21PM +0100, Ard Biesheuvel wrote:
+> > Add support for booting 64-bit x86 kernels from 32-bit firmware running
+> > on 64-bit capable CPUs without requiring the bootloader to implement
+> > the EFI handover protocol or allocate the setup block, etc etc, all of
+> > which can be done by the stub itself, using code that already exists.
 > >
-> >   c7fb93ec51d462ec ("x86/efi: Include a .bss section within the PE/COFF headers")
+> > Instead, create an ordinary EFI application entrypoint but implemented
+> > in 32-bit code [so that it can be invoked by 32-bit firmware], and stash
+> > the address of this 32-bit entrypoint in the .compat section where the
+> > bootloader can find it.
 > >
-> > we added a separate .bss section to the PE/COFF header of the compressed
-> > kernel describing the static memory footprint of the decompressor, to
-> > ensure that it has enough headroom to decompress itself.
-> >
-> > We can achieve the exact same result by increasing the virtual size of
-> > the .text section, without changing the raw size, which, as per the
-> > PE/COFF specification, requires the loader to zero initialize the delta.
-> >
-> > Doing so frees up a slot in the section table, which we will use later
-> > to describe the mixed mode entrypoint.
+> > Note that we use the setup block embedded in the binary to go through
+> > startup_32(), but it gets reallocated and copied in efi_pe_entry(),
+> > using the same code that runs when the x86 kernel is booted in EFI
+> > mode from native firmware. This requires the loaded image protocol to
+> > be installed on the kernel image's EFI handle, and point to the kernel
+> > image itself and not to its loader. This, in turn, requires the
+> > bootloader to use the LoadImage() boot service to load the 64-bit
+> > image from 32-bit firmware, which is in fact supported by firmware
+> > based on EDK2. (Only StartImage() will fail, and instead, the newly
+> > added entrypoint needs to be invoked)
 > >
 > > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> > ---
-> >  arch/x86/boot/header.S      | 21 +-----------
-> >  arch/x86/boot/tools/build.c | 35 ++++++++------------
-> >  2 files changed, 14 insertions(+), 42 deletions(-)
-> >
-> > diff --git a/arch/x86/boot/tools/build.c b/arch/x86/boot/tools/build.c
-> > index 55e669d29e54..0c8c5a52f1f0 100644
-> > --- a/arch/x86/boot/tools/build.c
-> > +++ b/arch/x86/boot/tools/build.c
-> > @@ -203,10 +203,12 @@ static void update_pecoff_setup_and_reloc(unsigned int size)
-> >       put_unaligned_le32(10, &buf[reloc_offset + 4]);
-> >  }
-> >
-> > -static void update_pecoff_text(unsigned int text_start, unsigned int file_sz)
-> > +static void update_pecoff_text(unsigned int text_start, unsigned int file_sz,
-> > +                            unsigned int init_sz)
-> >  {
-> >       unsigned int pe_header;
-> >       unsigned int text_sz = file_sz - text_start;
-> > +     unsigned int bss_sz = init_sz - file_sz;
-> >
-> >       pe_header = get_unaligned_le32(&buf[0x3c]);
-> >
-> > @@ -216,28 +218,19 @@ static void update_pecoff_text(unsigned int text_start, unsigned int file_sz)
-> >        */
-> >       put_unaligned_le32(file_sz - 512, &buf[pe_header + 0x1c]);
-> >
-> > -     /*
-> > -      * Address of entry point for PE/COFF executable
-> > -      */
-> > -     put_unaligned_le32(text_start + efi_pe_entry, &buf[pe_header + 0x28]);
-> > -
-> > -     update_pecoff_section_header(".text", text_start, text_sz);
-> > -}
-> > -
-> > -static void update_pecoff_bss(unsigned int file_sz, unsigned int init_sz)
-> > -{
-> > -     unsigned int pe_header;
-> > -     unsigned int bss_sz = init_sz - file_sz;
-> > -
-> > -     pe_header = get_unaligned_le32(&buf[0x3c]);
-> > -
-> >       /* Size of uninitialized data */
-> >       put_unaligned_le32(bss_sz, &buf[pe_header + 0x24]);
 >
-> Should this still be populated given that there's no .bss section any
-> more?
+> I think there's one issue with this. startup_32 is 14KiB from the start
+> of the image because of .setup. This means the code in startup_32 that
+> rounds the load address up to kernel_alignment will likely calculate it
+> as 2MiB from the image address (if the image address was 2MiB-aligned),
+> and the page tables constructed by the 32-bit code will be beyond the
+> space allocated for the image.
+>
 
-Good point. The PE/COFF spec is explicit, for a change, and
-specifically mentions that this should be the combined sizeof all BSS
-sections. It doesn't really specify how one could have multiple BSS
-sections, but the wording does support your view that this should be
-zero, and the value of bss_sz added to the SizeOfText field.
+Right. Image address could be any multiple of 4 KB so we'll have to
+deal with that.
 
-I couldn't find any code in EDK2 that actually references this field
-(apart from the ELF to PE/COFF converter that always sets it to 0x0),
-and so I don't think it really matters.
+> I think the simplest fix would be to increase SizeOfImage by
+> kernel_alignment to allow enough slop space for the alignment.
+
+So we basically need at least 2 MB - 14 KB slack at the top, right?
+That's easily done.
+
+> We should
+> also increase it by text_start, since we need init_size beginning from
+> startup_32, not from the image address.
+
+So something like the below?
+
+--- a/arch/x86/boot/tools/build.c
++++ b/arch/x86/boot/tools/build.c
+@@ -236,14 +236,23 @@
+
+        pe_header = get_unaligned_le32(&buf[0x3c]);
+
++#ifdef CONFIG_EFI_MIXED
++       /*
++        * In order for startup_32 to safely execute in place, we need to give
++        * it a bit of headroom to create its page tables.
++        */
++       bss_sz += text_start + CONFIG_PHYSICAL_ALIGN;
++       init_sz += text_start + CONFIG_PHYSICAL_ALIGN;
++#endif
++
+        /*
+         * Size of code: Subtract the size of the first sector (512 bytes)
+         * which includes the header.
+         */
+-       put_unaligned_le32(file_sz - 512, &buf[pe_header + 0x1c]);
++       put_unaligned_le32(file_sz + bss_sz- 512, &buf[pe_header + 0x1c]);
+
+        /* Size of uninitialized data */
+-       put_unaligned_le32(bss_sz, &buf[pe_header + 0x24]);
++       put_unaligned_le32(0, &buf[pe_header + 0x24]);
+
+        /* Size of image */
+        put_unaligned_le32(init_sz, &buf[pe_header + 0x50]);
