@@ -2,118 +2,87 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C56F168709
-	for <lists+linux-efi@lfdr.de>; Fri, 21 Feb 2020 19:54:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E404E16874F
+	for <lists+linux-efi@lfdr.de>; Fri, 21 Feb 2020 20:18:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729477AbgBUSyR (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 21 Feb 2020 13:54:17 -0500
-Received: from mail.kernel.org ([198.145.29.99]:44854 "EHLO mail.kernel.org"
+        id S1729484AbgBUTSi (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 21 Feb 2020 14:18:38 -0500
+Received: from mout.gmx.net ([212.227.15.18]:50969 "EHLO mout.gmx.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726150AbgBUSyR (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Fri, 21 Feb 2020 13:54:17 -0500
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 7729C24676
-        for <linux-efi@vger.kernel.org>; Fri, 21 Feb 2020 18:54:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1582311256;
-        bh=De75B74dVVWAYyS4B+Jp2OvDkZjR53PXmkIdVfCOcSs=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=tkUgwgSeyxm7HsaaK/RJ7GTwJCE+gngkSMGIMClCch4Tpek4uLPKSmQNJMb5QpEq1
-         0b02bKjCaiVcbohbxRUb6Hi5luN8XFbYLLu0R85acgO2WzmcKh7Sb5CuLbEukViA3A
-         LaZHMtqPmJPqYh5OGrsWTnqs45bPcMeHBrexuO34=
-Received: by mail-wm1-f53.google.com with SMTP id m10so5813190wmc.0
-        for <linux-efi@vger.kernel.org>; Fri, 21 Feb 2020 10:54:16 -0800 (PST)
-X-Gm-Message-State: APjAAAU466mJVx61og98Iu69+CFBDR+s/kRnd125Lu0yijD5KUubIe/H
-        exWFKMmw/7ayjg4KEHUS3ATwpIVb53eRDQ9EV68R6g==
-X-Google-Smtp-Source: APXvYqz3uUYXXMBKRJRTt3ao2yMpHyALTJh8QnglZGdfV2wsHzBWz38Z6cyoGo+6G8dLz3GMLtv01ZxhrjkleFGeGDU=
-X-Received: by 2002:a1c:282:: with SMTP id 124mr5082854wmc.62.1582311254824;
- Fri, 21 Feb 2020 10:54:14 -0800 (PST)
+        id S1727966AbgBUTSi (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Fri, 21 Feb 2020 14:18:38 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1582312714;
+        bh=Nq85DrtKzSXKfwb6vz49+YhiGD+iT9Q5RUtxJ2jJoXc=;
+        h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
+        b=LlZTVYlWK89DpP5g6yOlOJJ8N1e7J1SaWWTaqcwoT9GgFE9Gi00dKjbGzqdyBh0Dq
+         DBDJP+fhH2SzFbaNGiKREXGpOGjwiZ5vmZG5wN61L/XG1YkPogpe1kbVj555tDN78n
+         +TDklW4J7AG0f6xIaduP6+gXJyAbYpg7XWxUu+fg=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from LT02.fritz.box ([84.119.33.160]) by mail.gmx.com (mrgmx004
+ [212.227.17.184]) with ESMTPSA (Nemesis) id 1MCKBc-1jEXUZ3Dne-009Pxy; Fri, 21
+ Feb 2020 20:18:33 +0100
+From:   Heinrich Schuchardt <xypron.glpk@gmx.de>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Heinrich Schuchardt <xypron.glpk@gmx.de>
+Subject: [PATCH 1/1] efi/libstub: error message in handle_cmdline_files()
+Date:   Fri, 21 Feb 2020 20:18:29 +0100
+Message-Id: <20200221191829.18149-1-xypron.glpk@gmx.de>
+X-Mailer: git-send-email 2.25.0
 MIME-Version: 1.0
-References: <20200217144822.24616-1-ardb@kernel.org> <20200217144822.24616-5-ardb@kernel.org>
- <20200221163915.GA2766905@rani.riverdale.lan> <CAKv+Gu8nwcyXqHDs6FowwYQw6xxLC+=Y8OqQkU=fRUsaLY3Fpg@mail.gmail.com>
- <20200221175949.GA2825100@rani.riverdale.lan>
-In-Reply-To: <20200221175949.GA2825100@rani.riverdale.lan>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Fri, 21 Feb 2020 19:54:02 +0100
-X-Gmail-Original-Message-ID: <CAKv+Gu-Q6SjVYoAqmAE-JZguFd5PsG6hkZWLj_nnA91+C2ZA6g@mail.gmail.com>
-Message-ID: <CAKv+Gu-Q6SjVYoAqmAE-JZguFd5PsG6hkZWLj_nnA91+C2ZA6g@mail.gmail.com>
-Subject: Re: [PATCH v2 4/5] efi/x86: Implement mixed mode boot without the
- handover protocol
-To:     Arvind Sankar <nivedita@alum.mit.edu>
-Cc:     linux-efi <linux-efi@vger.kernel.org>,
-        Laszlo Ersek <lersek@redhat.com>,
-        Leif Lindholm <leif@nuviainc.com>,
-        Peter Jones <pjones@redhat.com>,
-        Matthew Garrett <mjg59@google.com>,
-        Alexander Graf <agraf@csgraf.de>,
-        Daniel Kiper <daniel.kiper@oracle.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Ingo Molnar <mingo@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:ycPl9JvoBhgdTMmldjA76dcB1rPEEbh8gko8LaEbQuGzIGCqnyI
+ GukskLxIAEQfcKCkQQIUD+9Lpahe+3demcG4iep5guTrwOELDn5p1Gzzy62Zb89/oxl8f7B
+ nC+FLtj/qIvXB7UgrOS6r2w1sxcE/lRU/kOCs+am86pt8bx8MCclqzLDefgiUFWvmbVx9Io
+ F39mMHyLXubVFOhUrIR5w==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:Oe9SAzEVDjc=:/TsCzLQ47OFf8pTe73krY9
+ 7gBTD8KSZdL94/fGAQl9HaPrsAdyzY9WssUi67lFnGMGvSHa5/YVA/NZ73c8wPWbqYTQxc/ze
+ EknbLTjxrQxBd3NomN2yxPNhRb06KS0VI8t7zm03h4xAMEIn5RbPTjmuwEeOnotqiDUSn3kC3
+ Q2amF6wSdOGXzRofqwQNDlF5g7nFnyTtLegzfgywPQxJzu+89lOsV4ycT318N9kMpecaMWKdl
+ AqHP0Ibe5kxtgCVI47nyVFKRpFtKc+18kbqF/uhn2cpl/iL0Iggr+rVCO8SC4EgpwOkKhs7/3
+ FnbRVRyK3cqQvuYwVabpqeQpmSkIGsaqRcxRGdI+B3miO8TRP+prA0cQVxWOlUQsmGUu9JoZX
+ uIJh0ePIo1vqeyJCKVWd+un+1VsBXGYDAuoSaK75CqD26wVJYR9T+POlg9VJxnkclW23L9NX7
+ Q9sk52qNhEJydu0wWZL2x7YSSkrVqlEcQEFhPxQxoLObdqE9G86sYg3QYjlHYGgyS9yh92wJo
+ icGHDjFQaNWqi1ez3pBAfTWmrskx4EUsvywio74AVDbAeXrx/06/uyuydiARF5GnTmuyB2jBS
+ S76+X5fCZ9ft89NUdHRBrpbKoyybdIvTOqq/GP1zEBxrFkDBuP8cZMkHtSrA5hLu+nbpTRx5d
+ ItXdWxzciUpPJxprqi9jmNWHL3qqnSCmi8yZKI7+slocA4tKwgx/DzkmWlUB5CN16vixux7B+
+ 50Vew0ffi+vP2rqGhGYwqXhkxHXyJciYrDhzrSoWFWElOHa47f5PllZ+1lFzqw7paa/QSF3T2
+ gqI7xKzm8UPerIxkGTacbvGJc35c8rKN1u1tS/vKp2wnDY0UQv1B2BaW6ylv46y4jHg/krIqk
+ crBbYCZiCClxWMdCo5s7JxJ6xOBI+Tat0+cKMhg5cQ9BV8FTMxzvSZWWqKdJqV/nHCp46iAU7
+ TLy/IqrXfr95HIBuX3NezmRhdxWnQdOIFpJo2A6bIEa1dgqTT9HGemkpaf82GeEYSV2kwnFvV
+ EWkZwp9X2S30m+aHFV4elarpiViCPfh87NzHztzD2tdE6STnatCcMxvaqH/XD0vQsd0QJZWFc
+ /cS3Nm7OAAjS5Bl3kkTdgN1TkhaJ1TmLk+2jMVLuO5WfGFK8WH9cexcvU3N3ozqmaRR7IdagF
+ WGMaFqNaq/PEk2nAQWyBVg6lXvpBgOZBNGzlJNClnCh9W/UzZ9FnGBWkrwivXlXBZ0uGwpWyy
+ 47ry29G0ky8nuUlR9
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, 21 Feb 2020 at 18:59, Arvind Sankar <nivedita@alum.mit.edu> wrote:
->
-> On Fri, Feb 21, 2020 at 06:12:40PM +0100, Ard Biesheuvel wrote:
-> > On Fri, 21 Feb 2020 at 17:39, Arvind Sankar <nivedita@alum.mit.edu> wrote:
-> > >
-> > > On Mon, Feb 17, 2020 at 03:48:21PM +0100, Ard Biesheuvel wrote:
-> > > > Add support for booting 64-bit x86 kernels from 32-bit firmware running
-> > > > on 64-bit capable CPUs without requiring the bootloader to implement
-> > > > the EFI handover protocol or allocate the setup block, etc etc, all of
-> > > > which can be done by the stub itself, using code that already exists.
-> > > >
-> > > > Instead, create an ordinary EFI application entrypoint but implemented
-> > > > in 32-bit code [so that it can be invoked by 32-bit firmware], and stash
-> > > > the address of this 32-bit entrypoint in the .compat section where the
-> > > > bootloader can find it.
-> > > >
-> > > > Note that we use the setup block embedded in the binary to go through
-> > > > startup_32(), but it gets reallocated and copied in efi_pe_entry(),
-> > > > using the same code that runs when the x86 kernel is booted in EFI
-> > > > mode from native firmware. This requires the loaded image protocol to
-> > > > be installed on the kernel image's EFI handle, and point to the kernel
-> > > > image itself and not to its loader. This, in turn, requires the
-> > > > bootloader to use the LoadImage() boot service to load the 64-bit
-> > > > image from 32-bit firmware, which is in fact supported by firmware
-> > > > based on EDK2. (Only StartImage() will fail, and instead, the newly
-> > > > added entrypoint needs to be invoked)
-> > > >
-> > > > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> > >
-> > > I think there's one issue with this. startup_32 is 14KiB from the start
-> > > of the image because of .setup. This means the code in startup_32 that
-> > > rounds the load address up to kernel_alignment will likely calculate it
-> > > as 2MiB from the image address (if the image address was 2MiB-aligned),
-> > > and the page tables constructed by the 32-bit code will be beyond the
-> > > space allocated for the image.
-> > >
-> >
-> > Right. Image address could be any multiple of 4 KB so we'll have to
-> > deal with that.
-> >
-> > > I think the simplest fix would be to increase SizeOfImage by
-> > > kernel_alignment to allow enough slop space for the alignment.
-> >
-> > So we basically need at least 2 MB - 14 KB slack at the top, right?
-> > That's easily done.
-> >
-> > > We should
-> > > also increase it by text_start, since we need init_size beginning from
-> > > startup_32, not from the image address.
-> >
-> > So something like the below?
->
-> Yup.
->
-> You might as well do the text_start bit unconditionally I think? If by
-> some blind stroke of luck startup_32 ends up at pref_address and so we
-> don't call efi_relocate_kernel, we'll need the room.
->
+The memory for files is allocated not reallocated.
 
-Yeah, so this could already be an issue today ...
+Signed-off-by: Heinrich Schuchardt <xypron.glpk@gmx.de>
+=2D--
+ drivers/firmware/efi/libstub/file.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/firmware/efi/libstub/file.c b/drivers/firmware/efi/li=
+bstub/file.c
+index be78f64f8d80..d4c7e5f59d2c 100644
+=2D-- a/drivers/firmware/efi/libstub/file.c
++++ b/drivers/firmware/efi/libstub/file.c
+@@ -190,7 +190,7 @@ static efi_status_t handle_cmdline_files(efi_loaded_im=
+age_t *image,
+ 							    &alloc_addr,
+ 							    hard_limit);
+ 			if (status !=3D EFI_SUCCESS) {
+-				pr_efi_err("Failed to reallocate memory for files\n");
++				pr_efi_err("Failed to allocate memory for files\n");
+ 				goto err_close_file;
+ 			}
+
+=2D-
+2.25.0
+
