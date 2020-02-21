@@ -2,117 +2,138 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B070116825F
-	for <lists+linux-efi@lfdr.de>; Fri, 21 Feb 2020 16:54:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 859341682DB
+	for <lists+linux-efi@lfdr.de>; Fri, 21 Feb 2020 17:11:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728235AbgBUPyw (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 21 Feb 2020 10:54:52 -0500
-Received: from mail.kernel.org ([198.145.29.99]:44430 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728081AbgBUPyv (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Fri, 21 Feb 2020 10:54:51 -0500
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8AC392465D
-        for <linux-efi@vger.kernel.org>; Fri, 21 Feb 2020 15:54:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1582300490;
-        bh=d7tniPqVuCgYodFudF2UEkt6ItbAby2BJD3sVoiz6sM=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=MH6IKySalHiwzsOkR4Uv48+m8aWlGc9FCsmS8JG8pWhmpPat9s4stpQk/ZN6X3feE
-         8uyUlvF/ykBU/sn22BA7mUc8HiAnovrwPOHBp9A5GH/O1wSJxoMvgEydmDJmpcUuMl
-         tGCZIdKU46dZpThMNN1P0hQ/Ge1C98cnP0HevVTg=
-Received: by mail-wm1-f52.google.com with SMTP id a6so2437554wme.2
-        for <linux-efi@vger.kernel.org>; Fri, 21 Feb 2020 07:54:50 -0800 (PST)
-X-Gm-Message-State: APjAAAVQm5mplI0qAPbjn1JXsUiehqqaxv3rSGNbmUO2VjzLgJNsRIL6
-        0u+FbjceZCOIzTdSe/yrdJ5kiVeZLCBNnZF+zFwN4g==
-X-Google-Smtp-Source: APXvYqxaM1bvUuTrhSNBWekJbeff9q1JUzwFFi3SVvt+xnxY4850Oo6CJeaPcmPwpM8hqJvnGAdNmxiPsH0dCUnF6mQ=
-X-Received: by 2002:a1c:bc46:: with SMTP id m67mr4464293wmf.40.1582300488929;
- Fri, 21 Feb 2020 07:54:48 -0800 (PST)
-MIME-Version: 1.0
-References: <20200219094340.16597-1-ardb@kernel.org> <CAKv+Gu_aL_=W7qMuLwu+427=DSgj5Kmg7Qm0ujooxS9s=zDT2g@mail.gmail.com>
- <fa6aa783-0b01-9d29-03be-3ec8d352f373@arm.com> <CAKv+Gu8g_fb-Xq3XcyZivG5405jypHnkBy6gnWMWy4Oz8763XA@mail.gmail.com>
-In-Reply-To: <CAKv+Gu8g_fb-Xq3XcyZivG5405jypHnkBy6gnWMWy4Oz8763XA@mail.gmail.com>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Fri, 21 Feb 2020 16:54:38 +0100
-X-Gmail-Original-Message-ID: <CAKv+Gu-FGL3J9fuY3V4GTaqdLTVLfeErN1GPd5nWL4McjMj_Hg@mail.gmail.com>
-Message-ID: <CAKv+Gu-FGL3J9fuY3V4GTaqdLTVLfeErN1GPd5nWL4McjMj_Hg@mail.gmail.com>
-Subject: Re: [PATCH v2 0/4] ARM: decompressor: use by-VA cache maintenance for
- v7 cores
-To:     Robin Murphy <robin.murphy@arm.com>
+        id S1727213AbgBUQLt (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 21 Feb 2020 11:11:49 -0500
+Received: from gateway31.websitewelcome.com ([192.185.143.35]:27161 "EHLO
+        gateway31.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727137AbgBUQLt (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 21 Feb 2020 11:11:49 -0500
+X-Greylist: delayed 1333 seconds by postgrey-1.27 at vger.kernel.org; Fri, 21 Feb 2020 11:11:48 EST
+Received: from cm12.websitewelcome.com (cm12.websitewelcome.com [100.42.49.8])
+        by gateway31.websitewelcome.com (Postfix) with ESMTP id 4792D3F16
+        for <linux-efi@vger.kernel.org>; Fri, 21 Feb 2020 09:49:35 -0600 (CST)
+Received: from gator4166.hostgator.com ([108.167.133.22])
+        by cmsmtp with SMTP
+        id 5AYZjRR7uvBMd5AYZjOJCs; Fri, 21 Feb 2020 09:49:35 -0600
+X-Authority-Reason: nr=8
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=jLtuDYMwrewwkQYs7hCd13VFgJPAgO9CH5G/SdbjwwY=; b=ZncAuOkW5LUk4w3t/N6TSy9Lp3
+        F3iqT1jy+qmpHqdQwrznrQIOKrU3rLCO9hZCzxNF6YGTqrWKUoRvm5QCe79tU239vOZWIgCxM8sMK
+        euigRcztPzrJqqHKmcCIPkTRCPq/S/hTHVqn21Vt6xhvDHy2zC9la8jRub5MvJ//pQasaM9YdqoxD
+        TFI2SHVLo1WQjU6f7Od/P/pN2tZn1F7Viw+i4yPzwWC958s7vWsoaD1BrfmoUZZNYZTmg7o4/nkXD
+        MkIWGi9R+14hIa6eUfqYjkxaK03pXhZrIS24pCdE521RCSeYU7ZWiVnuqpO4+esp7asgIu5trqKi+
+        BGWv6oJA==;
+Received: from [200.68.140.54] (port=18298 helo=[192.168.43.131])
+        by gator4166.hostgator.com with esmtpsa (TLSv1.2:ECDHE-RSA-AES128-GCM-SHA256:128)
+        (Exim 4.92)
+        (envelope-from <gustavo@embeddedor.com>)
+        id 1j5AYY-003r6B-VU; Fri, 21 Feb 2020 09:49:35 -0600
+Subject: Re: [PATCH] efi/apple-properties: Replace zero-length array with
+ flexible-array member
+To:     Ard Biesheuvel <ardb@kernel.org>
 Cc:     linux-efi <linux-efi@vger.kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Nicolas Pitre <nico@fluxnic.net>,
-        Tony Lindgren <tony@atomide.com>,
-        Marc Zyngier <maz@kernel.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+References: <20200221152430.GA20788@embeddedor>
+ <CAKv+Gu9wZ1PjDVQmFPaoxwyDZRYev2LAXr5vBkBGAstdf-5W7w@mail.gmail.com>
+From:   "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+Autocrypt: addr=gustavo@embeddedor.com; keydata=
+ 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
+ VtSixD1uOgytAP7RWS474w==
+Message-ID: <745923b4-6751-97cc-30a2-337695384810@embeddedor.com>
+Date:   Fri, 21 Feb 2020 09:52:19 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
+MIME-Version: 1.0
+In-Reply-To: <CAKv+Gu9wZ1PjDVQmFPaoxwyDZRYev2LAXr5vBkBGAstdf-5W7w@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - embeddedor.com
+X-BWhitelist: no
+X-Source-IP: 200.68.140.54
+X-Source-L: No
+X-Exim-ID: 1j5AYY-003r6B-VU
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: ([192.168.43.131]) [200.68.140.54]:18298
+X-Source-Auth: gustavo@embeddedor.com
+X-Email-Count: 27
+X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
+X-Local-Domain: yes
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, 21 Feb 2020 at 14:42, Ard Biesheuvel <ardb@kernel.org> wrote:
->
-> On Fri, 21 Feb 2020 at 14:35, Robin Murphy <robin.murphy@arm.com> wrote:
-> >
-> > On 20/02/2020 6:08 pm, Ard Biesheuvel wrote:
-> > > (+ Arnd)
-> > >
-> > > On Wed, 19 Feb 2020 at 10:43, Ard Biesheuvel <ardb@kernel.org> wrote:
-> > >>
-> > >> While making changes to the EFI stub startup code, I noticed that we are
-> > >> still doing set/way maintenance on the caches when booting on v7 cores.
-> > >> This works today on VMs by virtue of the fact that KVM traps set/way ops
-> > >> and cleans the whole address space by VA on behalf of the guest, and on
-> > >> most v7 hardware, the set/way ops are in fact sufficient when only one
-> > >> core is running, as there usually is no system cache. But on systems
-> > >> like SynQuacer, for which 32-bit firmware is available, the current cache
-> > >> maintenance only pushes the data out to the L3 system cache, where it
-> > >> is not visible to the CPU once it turns the MMU and caches off.
-> > >>
-> > >> So instead, switch to the by-VA cache maintenance that the architecture
-> > >> requires for v7 and later (and ARM1176, as a side effect).
-> > >>
-> > >> Changes since v1:
-> > >> - include the EFI patch that was sent out separately before (#1)
-> > >> - split the preparatory work to pass the region to clean in r0/r1 in a EFI
-> > >>    specific one and one for the decompressor - this way, the first two patches
-> > >>    can go on a stable branch that is shared between the ARM tree and the EFI
-> > >>    tree
-> > >> - document the meaning of the values in r0/r1 upon entry to cache_clean_flush
-> > >> - take care to treat the region end address as exclusive
-> > >> - switch to clean+invalidate to align with the other implementations
-> > >> - drop some code that manages the stack pointer value before calling
-> > >>    cache_clean_flush(), which is no longer necessary
-> > >> - take care to clean the entire region that is covered by the relocated zImage
-> > >>    if it needs to relocate itself before decompressing
-> > >>
-> > >> https://git.kernel.org/pub/scm/linux/kernel/git/ardb/linux.git/log/?h=arm32-efi-cache-ops
-> > >>
-> > >
-> > > Adding my own data point here: with these patches, I can reproducibly
-> > > boot on the SynQuacer platform (24x Cortex-A53 + GICv3 + L3 system
-> > > cache) until the point where /init is loaded, after which it hangs
-> > > (see below), whereas without them, it always crashes early with weird,
-> > > unreproducible errors, if it even makes it far enough through the
-> > > decompressor to produce any earlycon output.
-> > >
-> > > There is some other weird stuff going on, but this is unlikely to be
-> > > related to cache maintenance:
-> > > - multiple occurrences of
-> > >     OF: translation of DMA address(0) to CPU address failed node(...)
-> >
-> > FWIW that implies a "dma-ranges" property in the wrong place in the DT -
-> > if you copied the now-gone Juno example of placing one directly in the
-> > root node, that was bogus, sorry.
-> >
->
-> OK, so where should it be instead? Are you saying it is now required
-> to have a /soc or /smb node that contains all the device nodes?
->
 
-Never mind - I'll just drop "dma-ranges" from the root node entirely.
+
+On 2/21/20 09:44, Ard Biesheuvel wrote:
+
+>>
+>> [1] https://gcc.gnu.org/onlinedocs/gcc/Zero-Length.html
+>> [2] https://github.com/KSPP/linux/issues/21
+>> [3] commit 76497732932f ("cxgb3/l2t: Fix undefined behaviour")
+>>
+>> Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
+> 
+> Please don't send duplicates. I already queued this in efi/next, and
+> responded accordingly.
+> 
+
+Oh, sorry for the noise, and thanks for queuing that up.
+
+--
+Gustavo
