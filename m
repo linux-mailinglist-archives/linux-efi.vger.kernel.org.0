@@ -2,27 +2,27 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 41A99167788
-	for <lists+linux-efi@lfdr.de>; Fri, 21 Feb 2020 09:44:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7444F167631
+	for <lists+linux-efi@lfdr.de>; Fri, 21 Feb 2020 09:37:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730084AbgBUHx2 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 21 Feb 2020 02:53:28 -0500
-Received: from mail.kernel.org ([198.145.29.99]:51696 "EHLO mail.kernel.org"
+        id S1732434AbgBUIJv (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 21 Feb 2020 03:09:51 -0500
+Received: from mail.kernel.org ([198.145.29.99]:44874 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729337AbgBUHx1 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Fri, 21 Feb 2020 02:53:27 -0500
+        id S1731637AbgBUIJv (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Fri, 21 Feb 2020 03:09:51 -0500
 Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 420832465D;
-        Fri, 21 Feb 2020 07:53:26 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 228EC20578;
+        Fri, 21 Feb 2020 08:09:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1582271606;
-        bh=iVW8kYUZhNEhv4a1bYT2fR3fYrBKZHxbNJJMtyi5k9w=;
+        s=default; t=1582272590;
+        bh=+JV1zX3XquiSEzUQgobeArAwwcIAYgouiRF7J9Wtenk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=m9QXgOrhGGcTDpcgMtwjX3xET7BFOAbThJxcBBwrW7eLpxQBSyHWLMGf/QuyymRYv
-         OoLHFjTFUELwjtmc48u/lvaUX9jgkeBvJAIZ+PnmL7x6zWiORPmHy5xAMiy0pUDY5k
-         6J9xoGi+DAaX+WbjTZEIsV3iTGqn1V6nkJiq9rQ8=
+        b=vuEIZ0bf5f0swAc6FFA72glV2yp023oQ7jgqYpdY1h3r3nuZG1p3lXF1tL4kqvDDo
+         s6phYccZidM41d/STePRDfTzh3mxdoiCtAW4canTn42xCP1mhd6y+dmQ5L369EQ+Wa
+         av07JffpigDzF3Gkv1ogbLisvjmYXk5pOXekpmkY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -32,12 +32,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Arvind Sankar <nivedita@alum.mit.edu>,
         Matthew Garrett <mjg59@google.com>, linux-efi@vger.kernel.org,
         Ingo Molnar <mingo@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.5 229/399] efi/x86: Dont panic or BUG() on non-critical error conditions
-Date:   Fri, 21 Feb 2020 08:39:14 +0100
-Message-Id: <20200221072425.094393843@linuxfoundation.org>
+Subject: [PATCH 5.4 200/344] efi/x86: Dont panic or BUG() on non-critical error conditions
+Date:   Fri, 21 Feb 2020 08:39:59 +0100
+Message-Id: <20200221072407.233116928@linuxfoundation.org>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200221072402.315346745@linuxfoundation.org>
-References: <20200221072402.315346745@linuxfoundation.org>
+In-Reply-To: <20200221072349.335551332@linuxfoundation.org>
+References: <20200221072349.335551332@linuxfoundation.org>
 User-Agent: quilt/0.66
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -76,10 +76,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  2 files changed, 19 insertions(+), 18 deletions(-)
 
 diff --git a/arch/x86/platform/efi/efi.c b/arch/x86/platform/efi/efi.c
-index 06f69bcd233fe..ad4dd3a977533 100644
+index 8a4f389330396..01d7ca492741d 100644
 --- a/arch/x86/platform/efi/efi.c
 +++ b/arch/x86/platform/efi/efi.c
-@@ -1000,16 +1000,14 @@ static void __init __efi_enter_virtual_mode(void)
+@@ -954,16 +954,14 @@ static void __init __efi_enter_virtual_mode(void)
  
  	if (efi_alloc_page_tables()) {
  		pr_err("Failed to allocate EFI page tables\n");
@@ -98,7 +98,7 @@ index 06f69bcd233fe..ad4dd3a977533 100644
  	}
  
  	pa = __pa(new_memmap);
-@@ -1023,8 +1021,7 @@ static void __init __efi_enter_virtual_mode(void)
+@@ -977,8 +975,7 @@ static void __init __efi_enter_virtual_mode(void)
  
  	if (efi_memmap_init_late(pa, efi.memmap.desc_size * count)) {
  		pr_err("Failed to remap late EFI memory map\n");
@@ -108,7 +108,7 @@ index 06f69bcd233fe..ad4dd3a977533 100644
  	}
  
  	if (efi_enabled(EFI_DBG)) {
-@@ -1032,12 +1029,11 @@ static void __init __efi_enter_virtual_mode(void)
+@@ -986,12 +983,11 @@ static void __init __efi_enter_virtual_mode(void)
  		efi_print_memmap();
  	}
  
@@ -125,7 +125,7 @@ index 06f69bcd233fe..ad4dd3a977533 100644
  
  	efi_sync_low_kernel_mappings();
  
-@@ -1057,9 +1053,9 @@ static void __init __efi_enter_virtual_mode(void)
+@@ -1011,9 +1007,9 @@ static void __init __efi_enter_virtual_mode(void)
  	}
  
  	if (status != EFI_SUCCESS) {
@@ -138,7 +138,7 @@ index 06f69bcd233fe..ad4dd3a977533 100644
  	}
  
  	efi_free_boot_services();
-@@ -1088,6 +1084,10 @@ static void __init __efi_enter_virtual_mode(void)
+@@ -1042,6 +1038,10 @@ static void __init __efi_enter_virtual_mode(void)
  
  	/* clean DUMMY object */
  	efi_delete_dummy_variable();
