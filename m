@@ -2,51 +2,51 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0DCFF168BA7
-	for <lists+linux-efi@lfdr.de>; Sat, 22 Feb 2020 02:40:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C7893168BB4
+	for <lists+linux-efi@lfdr.de>; Sat, 22 Feb 2020 02:41:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727686AbgBVBkw (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 21 Feb 2020 20:40:52 -0500
-Received: from mail-pf1-f202.google.com ([209.85.210.202]:38557 "EHLO
-        mail-pf1-f202.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727934AbgBVBkt (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 21 Feb 2020 20:40:49 -0500
-Received: by mail-pf1-f202.google.com with SMTP id 203so2348664pfx.5
-        for <linux-efi@vger.kernel.org>; Fri, 21 Feb 2020 17:40:49 -0800 (PST)
+        id S1727974AbgBVBky (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 21 Feb 2020 20:40:54 -0500
+Received: from mail-pl1-f202.google.com ([209.85.214.202]:51972 "EHLO
+        mail-pl1-f202.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727952AbgBVBkw (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 21 Feb 2020 20:40:52 -0500
+Received: by mail-pl1-f202.google.com with SMTP id 71so2138117plb.18
+        for <linux-efi@vger.kernel.org>; Fri, 21 Feb 2020 17:40:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20161025;
         h=date:in-reply-to:message-id:mime-version:references:subject:from:to
          :cc;
-        bh=On3eRiTUnDa5BtXq5RoayDWDf1ZPcj84ltPeiblPUMk=;
-        b=vPVdBWrpXeFBwDzA5UrONBEBUuLscK8+OhywnT5ys4wGN35JJJwulswpUcPpYhqgK1
-         m50/tOnt9RKLC2CDy1u57pKZq6LvoiBghI1GhMnyrgRkYCQ09XTbH5UbmTXGKlNWbuXQ
-         J3yEVs2TUYmfQDwog+NbQIKm5eJ9aYIVY/QkapqWh4uUSlngOAWp12+cTIlG5o3vOPN2
-         +awo8m7Idn6jacZxli1lQRoCqwPlXpk4w99usheYI6920vzDSttPbRIKRyN5a+UHZeOi
-         IeuX7ehPEmlkLhMAz2fRsHA3Tok+GPP1xMC6bUPf2tkLmvFdE1m5ArcijHdbPJaf50Lj
-         d1JA==
+        bh=KcPp0gP7GELHPbQmhvOuNvrhkif2qUrzumcvFBDOK9U=;
+        b=tiWAct/lW1qWhKwT1NraZmKOl/hogEF7BkErGRXVit1viyco6ajvbC9mz3kiFMua6i
+         TXNq2t+i0wPehD/a08VL1JQQH9Rnr9VR2NEKeEmZ8FLJhmSFDZ0rVirUFv3+tELLG6Gp
+         1Odhw8Q7qlUlkq1pZqeqAMwP3dTqnrHwG/aPULh9Zktd5pHO30UGcf0fGZWZPZ85s0Y6
+         g5vruuy+o5NmhnAq1Bi7z5UhTM9KxLDhHYWDSFQ31yZ5D0g/dNjltCGyIjGVEk50kOv0
+         /sABPtof6x7ACZaNTuqAWywFBrRPUIP1zVHm1SpMLSbhEsUJQJhGbghszJjbeEqYP4d+
+         zPkg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:in-reply-to:message-id:mime-version
          :references:subject:from:to:cc;
-        bh=On3eRiTUnDa5BtXq5RoayDWDf1ZPcj84ltPeiblPUMk=;
-        b=Z7blio2+X0QUX04idinr8huPFltRd0C0uqE8uic68WCbrxQFCkXM3ijYIMriGA9kOK
-         apfC2qlMUolgdinUlB4iWqJWuBVKMXTtVthNdLoAZXePD0pudZsOrPNQuYu4/U4+C/qm
-         HpZ66UamJ8uEbjSWE3+1cDIjqbNas5GKXTYL9o4phXrYLuE5gSPPMhvirLnNpppTGvyW
-         J2OKx7rIen7h72ulSd5AWA5KOyz3zuBijh7ng1JQARKeWxvTiwdrZJnRKrOwQBqoWkkO
-         H+2LK3kU7vRWvBJ1xLyjD3QLM4pbY7RzbeAGlWtfUQmCdrkEsv/ns1+zruRxE5yrPXMz
-         5QdA==
-X-Gm-Message-State: APjAAAUlHMecw+i0yIzCh8vLwb6Y/e7A8852V5YJCvlrmSW+3iMihha2
-        +K3F3e1ghDd93vwWKnRbZ9HB63OSfydh+2s=
-X-Google-Smtp-Source: APXvYqxcK8NEEB7SEtnQp1SzN8VYXqvTOUc2SeP/yCk74iurh+KqopNGx+3yHKNbMZyq5ledAISRoddCngOncis=
-X-Received: by 2002:a63:4a47:: with SMTP id j7mr40867151pgl.196.1582335649047;
- Fri, 21 Feb 2020 17:40:49 -0800 (PST)
-Date:   Fri, 21 Feb 2020 17:40:35 -0800
+        bh=KcPp0gP7GELHPbQmhvOuNvrhkif2qUrzumcvFBDOK9U=;
+        b=bHpG7i8f9GtVp69R2bKV/JsIAhPShio9FW4rQVyB2eckhw64RV6DVgrMKTOWW8p3TF
+         se9YzZCMXdn5B8o/J4xC/+Z/aU9T0g6v7dIopCGsHYfDZCVt4QboR01CN6tdlqV1rqgq
+         ySC8OgHPXW7LobjTyH5xgVBjQ1cWBOg4EYbgkpCy8Mk5LIRDNoL5Q7u+ofD8yQpvwx2u
+         /RGvUrvZfMxGOkQNbpLHFG3W8BnnNAPZw9ijUZ9TKOns6bzqSfVk+k859UhMSI2NAT7U
+         MbmvumTWWC2JJfJLFOQKuH2Jcum0XQF/+/64q7HhVKAqUBuWnaCTDApzYbmGkMikqsNm
+         CM7g==
+X-Gm-Message-State: APjAAAVzuNYHXOPWGCAkCqATcdFNkMvpNrhBh9Md4sW4VQHWTcTsvJtS
+        OPdGE2qASrbA0wcC3j47HgFMThBk4R/vPCM=
+X-Google-Smtp-Source: APXvYqzPdWRjgeOkhSTiaxyK4n8nsnHWWk0aEfT3lTbN5PVbLfvLNibYxGOnd/zAFy69mSlFb3/Z8610AQaog60=
+X-Received: by 2002:a63:ec49:: with SMTP id r9mr41310425pgj.445.1582335652146;
+ Fri, 21 Feb 2020 17:40:52 -0800 (PST)
+Date:   Fri, 21 Feb 2020 17:40:36 -0800
 In-Reply-To: <20200222014038.180923-1-saravanak@google.com>
-Message-Id: <20200222014038.180923-3-saravanak@google.com>
+Message-Id: <20200222014038.180923-4-saravanak@google.com>
 Mime-Version: 1.0
 References: <20200222014038.180923-1-saravanak@google.com>
 X-Mailer: git-send-email 2.25.0.265.gbab2e86ba0-goog
-Subject: [PATCH v1 2/5] driver core: Add fw_devlink kernel commandline option
+Subject: [PATCH v1 3/5] efi/arm: Start using fw_devlink_get_flags()
 From:   Saravana Kannan <saravanak@google.com>
 To:     Jonathan Corbet <corbet@lwn.net>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -65,112 +65,28 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-fwnode_operations.add_links allows creating device links from
-information provided by firmware.
-
-fwnode_operations.add_links is currently implemented only by
-OF/devicetree code and a specific case of efi. However, there's nothing
-preventing ACPI or other firmware types from implementing it.
-
-The OF implementation is currently controlled by a kernel commandline
-parameter called of_devlink.
-
-Since this feature is generic isn't limited to OF, add a generic
-fw_devlink kernel commandline parameter to control this feature across
-firmware types.
+The fw_devlink_get_flags() provides the right flags to use when creating
+mandatory device links derived from information provided by the
+firmware. So, use that.
 
 Signed-off-by: Saravana Kannan <saravanak@google.com>
 ---
- .../admin-guide/kernel-parameters.txt         | 18 +++++++++++++
- drivers/base/core.c                           | 27 ++++++++++++++++++-
- include/linux/fwnode.h                        |  2 ++
- 3 files changed, 46 insertions(+), 1 deletion(-)
+ drivers/firmware/efi/arm-init.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index dbc22d684627..29985152b66d 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -1350,6 +1350,24 @@
- 			can be changed at run time by the max_graph_depth file
- 			in the tracefs tracing directory. default: 0 (no limit)
- 
-+	fw_devlink=	[KNL] Create device links between consumer and supplier
-+			devices by scanning the firmware to infer the
-+			consumer/supplier relationships. This feature is
-+			especially useful when drivers are loaded as modules as
-+			it ensures proper ordering of tasks like device probing
-+			(suppliers first, then consumers), supplier boot state
-+			clean up (only after all consumers have probed),
-+			suspend/resume & runtime PM (consumers first, then
-+			suppliers).
-+			Format: { off | permissive | on | rpm }
-+			off --	Don't create device links from firmware info.
-+			permissive -- Create device links from firmware info
-+				but use it only for ordering boot state clean
-+				up (sync_state() calls).
-+			on -- 	Create device links from firmware info and use it
-+				to enforce probe and suspend/resume ordering.
-+			rpm --	Like "on", but also use to order runtime PM.
-+
- 	gamecon.map[2|3]=
- 			[HW,JOY] Multisystem joystick and NES/SNES/PSX pad
- 			support via parallel port (up to 5 devices per port)
-diff --git a/drivers/base/core.c b/drivers/base/core.c
-index d32a3aefff32..aeaca8a3aad9 100644
---- a/drivers/base/core.c
-+++ b/drivers/base/core.c
-@@ -2345,6 +2345,31 @@ static int device_private_init(struct device *dev)
- 	return 0;
- }
- 
-+u32 fw_devlink_flags;
-+static int __init fw_devlink_setup(char *arg)
-+{
-+	if (!arg)
-+		return -EINVAL;
-+
-+	if (strcmp(arg, "off") == 0) {
-+		fw_devlink_flags = 0;
-+	} else if (strcmp(arg, "permissive") == 0) {
-+		fw_devlink_flags = DL_FLAG_SYNC_STATE_ONLY;
-+	} else if (strcmp(arg, "on") == 0) {
-+		fw_devlink_flags = DL_FLAG_AUTOPROBE_CONSUMER;
-+	} else if (strcmp(arg, "rpm") == 0) {
-+		fw_devlink_flags = DL_FLAG_AUTOPROBE_CONSUMER |
-+				   DL_FLAG_PM_RUNTIME;
-+	}
-+	return 0;
-+}
-+early_param("fw_devlink", fw_devlink_setup);
-+
-+u32 fw_devlink_get_flags(void)
-+{
-+	return fw_devlink_flags;
-+}
-+
- /**
-  * device_add - add device to device hierarchy.
-  * @dev: device.
-@@ -2493,7 +2518,7 @@ int device_add(struct device *dev)
+diff --git a/drivers/firmware/efi/arm-init.c b/drivers/firmware/efi/arm-init.c
+index d99f5b0c8a09..6703bedfa9e1 100644
+--- a/drivers/firmware/efi/arm-init.c
++++ b/drivers/firmware/efi/arm-init.c
+@@ -349,7 +349,7 @@ static int efifb_add_links(const struct fwnode_handle *fwnode,
+ 	 * If this fails, retrying this function at a later point won't
+ 	 * change anything. So, don't return an error after this.
  	 */
- 	device_link_add_missing_supplier_links();
+-	if (!device_link_add(dev, sup_dev, 0))
++	if (!device_link_add(dev, sup_dev, fw_devlink_get_flags()))
+ 		dev_warn(dev, "device_link_add() failed\n");
  
--	if (fwnode_has_op(dev->fwnode, add_links)) {
-+	if (fw_devlink_flags && fwnode_has_op(dev->fwnode, add_links)) {
- 		fw_ret = fwnode_call_int_op(dev->fwnode, add_links, dev);
- 		if (fw_ret == -ENODEV)
- 			device_link_wait_for_mandatory_supplier(dev);
-diff --git a/include/linux/fwnode.h b/include/linux/fwnode.h
-index 8feeb94b8acc..e0abafbb17f8 100644
---- a/include/linux/fwnode.h
-+++ b/include/linux/fwnode.h
-@@ -170,4 +170,6 @@ struct fwnode_operations {
- 	} while (false)
- #define get_dev_from_fwnode(fwnode)	get_device((fwnode)->dev)
- 
-+extern u32 fw_devlink_get_flags(void);
-+
- #endif
+ 	put_device(sup_dev);
 -- 
 2.25.0.265.gbab2e86ba0-goog
 
