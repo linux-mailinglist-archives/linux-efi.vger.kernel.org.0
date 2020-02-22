@@ -2,115 +2,223 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E6F86168BAD
-	for <lists+linux-efi@lfdr.de>; Sat, 22 Feb 2020 02:41:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2030F168CEC
+	for <lists+linux-efi@lfdr.de>; Sat, 22 Feb 2020 07:45:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728008AbgBVBlA (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 21 Feb 2020 20:41:00 -0500
-Received: from mail-pg1-f201.google.com ([209.85.215.201]:47851 "EHLO
-        mail-pg1-f201.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728003AbgBVBk7 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 21 Feb 2020 20:40:59 -0500
-Received: by mail-pg1-f201.google.com with SMTP id l15so2114394pgk.14
-        for <linux-efi@vger.kernel.org>; Fri, 21 Feb 2020 17:40:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=date:in-reply-to:message-id:mime-version:references:subject:from:to
-         :cc;
-        bh=KJExBCe79TvbDWBtLAIAPlDU0zRERHckO2kWsYTv978=;
-        b=Q+ZW5zteZDu1FNYEMvKTjgWjf9TVSuk16yWcCy2JweJvkq+lTHDxx786967t+KpMC4
-         WrYcOnyyCjG511w+00j/x8XY7e26b2TsnE4kgWSZWOu2mqXMNa4nKltDIZEpyts40fte
-         lFqRTRmjS84KOl/C+eXYSKbGlWvz3Gd//g5GAHgn0aO4ANiawlYoLTBfCMF4SiV0na5K
-         le4v19xzzHsWvOo6HvWOoFfzUVYAS9DL8Q/vlnOOT1FwrUxBu+HkYHMl42BYYcyqchtQ
-         ViLRU0kcaRQfGqeLQ4KYUhyqKl7rdiLM2cX6tOiClI1uGnFefdSz/2HsMYabeyxF/Who
-         Bv0A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:in-reply-to:message-id:mime-version
-         :references:subject:from:to:cc;
-        bh=KJExBCe79TvbDWBtLAIAPlDU0zRERHckO2kWsYTv978=;
-        b=uEKl/OtBuXeRNLTvtJEhOCsGVTOf965vFvzIGJiFqELzqbTfwFL8y4fYKbc5HqDglA
-         QdKyyqsq3sEH2XAHsm7bT0oR7mnPI1RNvGrtaIzGVWeXvaPrKX95r6Trw3ZldrEWg7O2
-         76efGCvkSWH/O15iXFGDFHBraNEgsnG9snVdmcu8+I0ViaQFaBERS4ctUOENhWSdS+J+
-         8FU2rD1xehuC1WICYvmS+js3FTlRe0ioBcBIWym4ilZZvaQTIQww35M1A5aJo1eYtIZI
-         EJtUA/E/ZdDPz5NKkM/1HMPZacVNbUggSTf43o1EhAQ3HcYR4O1W+CPtg6U2TrBwgIBH
-         cOwg==
-X-Gm-Message-State: APjAAAUOBGwaBMrgPOoy9Kg96wOClBDEmQlSl9g/BzrcKDFgLURf5p6z
-        JRFF2t8nA57azs2JEw1weEtnBIuseaSBFPc=
-X-Google-Smtp-Source: APXvYqzeslKuPNzcFs1IbK32oZCNMmy4nVP9Y84HztkmAh6Tdl4LyaoiuujEisOnVrevdJg+wGWCL5JtzXjW6PI=
-X-Received: by 2002:a63:4804:: with SMTP id v4mr40448137pga.373.1582335658427;
- Fri, 21 Feb 2020 17:40:58 -0800 (PST)
-Date:   Fri, 21 Feb 2020 17:40:38 -0800
-In-Reply-To: <20200222014038.180923-1-saravanak@google.com>
-Message-Id: <20200222014038.180923-6-saravanak@google.com>
-Mime-Version: 1.0
-References: <20200222014038.180923-1-saravanak@google.com>
-X-Mailer: git-send-email 2.25.0.265.gbab2e86ba0-goog
-Subject: [PATCH v1 5/5] of: property: Delete of_devlink kernel commandline option
-From:   Saravana Kannan <saravanak@google.com>
-To:     Jonathan Corbet <corbet@lwn.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Len Brown <lenb@kernel.org>
-Cc:     Saravana Kannan <saravanak@google.com>, kernel-team@android.com,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-efi@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-acpi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+        id S1726928AbgBVGpF (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 22 Feb 2020 01:45:05 -0500
+Received: from mga02.intel.com ([134.134.136.20]:4805 "EHLO mga02.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726726AbgBVGpF (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Sat, 22 Feb 2020 01:45:05 -0500
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by orsmga101.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 21 Feb 2020 22:45:04 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.70,471,1574150400"; 
+   d="scan'208";a="229400689"
+Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
+  by fmsmga007.fm.intel.com with ESMTP; 21 Feb 2020 22:45:02 -0800
+Received: from kbuild by lkp-server01 with local (Exim 4.89)
+        (envelope-from <lkp@intel.com>)
+        id 1j5OX8-00059J-8j; Sat, 22 Feb 2020 14:45:02 +0800
+Date:   Sat, 22 Feb 2020 14:44:45 +0800
+From:   kbuild test robot <lkp@intel.com>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-efi@vger.kernel.org
+Subject: [efi:next] BUILD REGRESSION
+ c0cd4ad8a865f910e646f37b16566a2f408e63a4
+Message-ID: <5e50cddd.xw5Z5awiP+b+F8JV%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-With the addition of fw_devlink kernel commandline option, of_devlink is
-redundant and not useful anymore. So, delete it.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git  next
+branch HEAD: c0cd4ad8a865f910e646f37b16566a2f408e63a4  efi: Bump the Linux EFI stub major version number to #1
 
-Signed-off-by: Saravana Kannan <saravanak@google.com>
+Regressions in current branch:
+
+drivers/firmware/efi/libstub/file.c:81 efi_open_volume() error: potentially dereferencing uninitialized 'io'.
+drivers/firmware/efi/libstub/x86-stub.c:183 retrieve_apple_device_properties() error: potentially dereferencing uninitialized 'p'.
+drivers/firmware/efi/libstub/x86-stub.c:387 efi_pe_entry() error: potentially dereferencing uninitialized 'image'.
+
+Error ids grouped by kconfigs:
+
+recent_errors
+`-- x86_64-defconfig
+    |-- drivers-firmware-efi-libstub-file.c-efi_open_volume()-error:potentially-dereferencing-uninitialized-io-.
+    |-- drivers-firmware-efi-libstub-x86-stub.c-efi_pe_entry()-error:potentially-dereferencing-uninitialized-image-.
+    `-- drivers-firmware-efi-libstub-x86-stub.c-retrieve_apple_device_properties()-error:potentially-dereferencing-uninitialized-p-.
+
+TIMEOUT after 861m
+
+
+Sorry we cannot finish the testset for your branch within a reasonable time.
+It's our fault -- either some build server is down or some build worker is busy
+doing bisects for _other_ trees. The branch will get more complete coverage and
+possible error reports when our build infrastructure is restored or catches up.
+There will be no more build success notification for this branch head, but you
+can expect reasonably good test coverage after waiting for 1 day.
+
+configs timed out: 1
+
+x86_64                            allnoconfig
+
+configs tested: 145
+configs skipped: 0
+
+arm                              allmodconfig
+arm                               allnoconfig
+arm                              allyesconfig
+arm64                            allmodconfig
+arm64                             allnoconfig
+arm64                            allyesconfig
+arm                         at91_dt_defconfig
+arm                           efm32_defconfig
+arm                          exynos_defconfig
+arm                        multi_v5_defconfig
+arm                        multi_v7_defconfig
+arm                        shmobile_defconfig
+arm                           sunxi_defconfig
+arm64                               defconfig
+sparc                            allyesconfig
+i386                             allyesconfig
+i386                             alldefconfig
+i386                                defconfig
+i386                              allnoconfig
+ia64                             alldefconfig
+ia64                             allmodconfig
+ia64                              allnoconfig
+ia64                             allyesconfig
+ia64                                defconfig
+nios2                         3c120_defconfig
+nios2                         10m50_defconfig
+c6x                        evmc6678_defconfig
+xtensa                          iss_defconfig
+c6x                              allyesconfig
+xtensa                       common_defconfig
+openrisc                 simple_smp_defconfig
+openrisc                    or1ksim_defconfig
+alpha                               defconfig
+csky                                defconfig
+nds32                             allnoconfig
+nds32                               defconfig
+h8300                     edosk2674_defconfig
+h8300                    h8300h-sim_defconfig
+h8300                       h8s-sim_defconfig
+m68k                             allmodconfig
+m68k                       m5475evb_defconfig
+m68k                          multi_defconfig
+m68k                           sun3_defconfig
+arc                                 defconfig
+arc                              allyesconfig
+powerpc                             defconfig
+powerpc                       ppc64_defconfig
+powerpc                          rhel-kconfig
+microblaze                      mmu_defconfig
+microblaze                    nommu_defconfig
+powerpc                           allnoconfig
+mips                           32r2_defconfig
+mips                         64r6el_defconfig
+mips                             allmodconfig
+mips                              allnoconfig
+mips                             allyesconfig
+mips                      fuloong2e_defconfig
+mips                      malta_kvm_defconfig
+parisc                            allnoconfig
+parisc                           allyesconfig
+parisc                generic-32bit_defconfig
+parisc                generic-64bit_defconfig
+x86_64               randconfig-a001-20200221
+x86_64               randconfig-a002-20200221
+x86_64               randconfig-a003-20200221
+i386                 randconfig-a001-20200221
+i386                 randconfig-a002-20200221
+i386                 randconfig-a003-20200221
+alpha                randconfig-a001-20200222
+m68k                 randconfig-a001-20200222
+mips                 randconfig-a001-20200222
+nds32                randconfig-a001-20200222
+parisc               randconfig-a001-20200222
+riscv                randconfig-a001-20200222
+nios2                randconfig-a001-20200221
+c6x                  randconfig-a001-20200221
+microblaze           randconfig-a001-20200221
+sparc64              randconfig-a001-20200221
+h8300                randconfig-a001-20200221
+csky                 randconfig-a001-20200222
+openrisc             randconfig-a001-20200222
+s390                 randconfig-a001-20200222
+sh                   randconfig-a001-20200222
+xtensa               randconfig-a001-20200222
+csky                 randconfig-a001-20200221
+openrisc             randconfig-a001-20200221
+s390                 randconfig-a001-20200221
+sh                   randconfig-a001-20200221
+xtensa               randconfig-a001-20200221
+x86_64               randconfig-b001-20200221
+x86_64               randconfig-b002-20200221
+x86_64               randconfig-b003-20200221
+i386                 randconfig-b001-20200221
+i386                 randconfig-b002-20200221
+i386                 randconfig-b003-20200221
+x86_64               randconfig-d001-20200221
+x86_64               randconfig-d002-20200221
+x86_64               randconfig-d003-20200221
+i386                 randconfig-d001-20200221
+i386                 randconfig-d002-20200221
+i386                 randconfig-d003-20200221
+x86_64               randconfig-h001-20200221
+x86_64               randconfig-h002-20200221
+x86_64               randconfig-h003-20200221
+i386                 randconfig-h001-20200221
+i386                 randconfig-h002-20200221
+i386                 randconfig-h003-20200221
+arc                  randconfig-a001-20200221
+arm                  randconfig-a001-20200221
+arm64                randconfig-a001-20200221
+ia64                 randconfig-a001-20200221
+powerpc              randconfig-a001-20200221
+sparc                randconfig-a001-20200221
+riscv                            allmodconfig
+riscv                             allnoconfig
+riscv                            allyesconfig
+riscv                               defconfig
+riscv                    nommu_virt_defconfig
+riscv                          rv32_defconfig
+s390                             alldefconfig
+s390                             allmodconfig
+s390                              allnoconfig
+s390                             allyesconfig
+s390                          debug_defconfig
+s390                                defconfig
+s390                       zfcpdump_defconfig
+sh                               allmodconfig
+sh                                allnoconfig
+sh                          rsk7269_defconfig
+sh                  sh7785lcr_32bit_defconfig
+sh                            titan_defconfig
+sparc                               defconfig
+sparc64                          allmodconfig
+sparc64                           allnoconfig
+sparc64                          allyesconfig
+sparc64                             defconfig
+um                                  defconfig
+um                             i386_defconfig
+um                           x86_64_defconfig
+x86_64                              fedora-25
+x86_64                                  kexec
+x86_64                                    lkp
+x86_64                                   rhel
+x86_64                         rhel-7.2-clear
+x86_64                               rhel-7.6
+
 ---
- Documentation/admin-guide/kernel-parameters.txt | 6 ------
- drivers/of/property.c                           | 6 ------
- 2 files changed, 12 deletions(-)
-
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index 29985152b66d..6692b2aa6140 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -3299,12 +3299,6 @@
- 			This can be set from sysctl after boot.
- 			See Documentation/admin-guide/sysctl/vm.rst for details.
- 
--	of_devlink	[OF, KNL] Create device links between consumer and
--			supplier devices by scanning the devictree to infer the
--			consumer/supplier relationships.  A consumer device
--			will not be probed until all the supplier devices have
--			probed successfully.
--
- 	ohci1394_dma=early	[HW] enable debugging via the ohci1394 driver.
- 			See Documentation/debugging-via-ohci1394.txt for more
- 			info.
-diff --git a/drivers/of/property.c b/drivers/of/property.c
-index 15fc9315f1a7..f104f15b57fb 100644
---- a/drivers/of/property.c
-+++ b/drivers/of/property.c
-@@ -1299,15 +1299,9 @@ static int of_link_to_suppliers(struct device *dev,
- 	return ret;
- }
- 
--static bool of_devlink;
--core_param(of_devlink, of_devlink, bool, 0);
--
- static int of_fwnode_add_links(const struct fwnode_handle *fwnode,
- 			       struct device *dev)
- {
--	if (!of_devlink)
--		return 0;
--
- 	if (unlikely(!is_of_node(fwnode)))
- 		return 0;
- 
--- 
-2.25.0.265.gbab2e86ba0-goog
-
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
