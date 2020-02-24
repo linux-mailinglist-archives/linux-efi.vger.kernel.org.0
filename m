@@ -2,87 +2,215 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CD9B1169A75
-	for <lists+linux-efi@lfdr.de>; Sun, 23 Feb 2020 23:25:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EB61B169DD7
+	for <lists+linux-efi@lfdr.de>; Mon, 24 Feb 2020 06:43:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727115AbgBWWZr (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sun, 23 Feb 2020 17:25:47 -0500
-Received: from mout.gmx.net ([212.227.15.15]:56979 "EHLO mout.gmx.net"
+        id S1725895AbgBXFnW (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 24 Feb 2020 00:43:22 -0500
+Received: from mga12.intel.com ([192.55.52.136]:27909 "EHLO mga12.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726302AbgBWWZq (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Sun, 23 Feb 2020 17:25:46 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1582496742;
-        bh=2i5YMl/hfe+PmpPCLdddML5DVgrpCwKNSzzG2FlJGVI=;
-        h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
-        b=JF9Z1zTbOVc08jB8r1fcLoVfC/IXWI7sFqyw5TvQk4/PznV+stiHKpjc4mv77zV1m
-         MUNzhZ5VkWH6sKm+q5Z58ZQ8klZOAYSuMdWsvqvrB1RLL6jWHioWuCTVeUyHb5c2oE
-         Qu+B9kRnt1P8ABsPyY3N3TvHZkJLbzV5CjZjprrw=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from LT02.fritz.box ([84.119.33.160]) by mail.gmx.com (mrgmx004
- [212.227.17.184]) with ESMTPSA (Nemesis) id 1MzyuS-1jJWNB1n4Y-00x2fz; Sun, 23
- Feb 2020 23:25:42 +0100
-From:   Heinrich Schuchardt <xypron.glpk@gmx.de>
+        id S1725809AbgBXFnV (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Mon, 24 Feb 2020 00:43:21 -0500
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 23 Feb 2020 21:43:21 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.70,479,1574150400"; 
+   d="scan'208";a="435797571"
+Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
+  by fmsmga005.fm.intel.com with ESMTP; 23 Feb 2020 21:43:19 -0800
+Received: from kbuild by lkp-server01 with local (Exim 4.89)
+        (envelope-from <lkp@intel.com>)
+        id 1j66WU-000EH6-SD; Mon, 24 Feb 2020 13:43:18 +0800
+Date:   Mon, 24 Feb 2020 13:42:28 +0800
+From:   kbuild test robot <lkp@intel.com>
 To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Heinrich Schuchardt <xypron.glpk@gmx.de>
-Subject: [PATCH 1/1] efi: superfluous assignment in setup_fake_mem()
-Date:   Sun, 23 Feb 2020 23:25:35 +0100
-Message-Id: <20200223222535.156348-1-xypron.glpk@gmx.de>
-X-Mailer: git-send-email 2.25.0
+Cc:     linux-efi@vger.kernel.org
+Subject: [efi:next] BUILD REGRESSION
+ dc235d62fc60a6549238eda7ff29769457fe5663
+Message-ID: <5e536244.WaSFhAJYEhoCuS4l%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:LK6sG8SfIIYx1YnO8w4Z4NnmNAmf4socAqMd1voV54UvOjur99a
- kMkxwqo9TixuLqF5fYZ5zhdENmElOccRM18UokExDcbQlScjL4JyeROW4FtbquugQMfKGpU
- sO8nUSGjCrmkD3GgfffmTg6utY5orpbevCWN4Bc+QmrBANnf6UGBl4WffMVsjFo5umoSMjb
- HMnDjSLRQon2Z+ZP4qPlA==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:NOQSK9gUsYA=:AADbh22rGB0+Y/DtNtpxVi
- XsGJCXDgmZA0mTSTkXrKZ2kH3kB1eGtXTq0DkZ053Eve7GnuUfAoac6GvI7bYwSDsM4+zO29z
- jdbo4hN1vKGvthJT0NIW6PEkq9sxBWdSL6MPy5CPmOpJ+nSDBd0kwCBH3mdARNslbbPbTdSzl
- CLp4KqNz+feXnkISni6jKjtGOfYLMOwOyAwtxMagbyni6gcIn7V1Zha/Oj5HMTuVYkfHVUCpD
- 6O9fG4haMoAztBWiEu/K5EQ9vUN0BImhRtRzzQnBAwpdinybVu+DEspXCp3ZvhlLR9p1SVfHm
- wG7csxmNPs0JqN/96grU7a/MA9v2F67ZptrPyxbMYevofUf0JHxguZuNiPVIuJgT9aaeYd36L
- BlUh/qBH1a2eZrZv9zvDIannzlbf/H+hcZXUeQrNgtFefKTjc6cu3AHhS3nVs3eJYEVbntkJp
- ET2TU9UmuuTys+4eBQczQuWDCI+MABQiNfni3vm++yj5KdFQVbxfS9ySQJIPZeu1xSfc7yZ1E
- VEGr8cHzRDeSsz4YHX5cMHxNf+8/6nwgAtD1V1v4GXHN75SL7WMeJ+EgvyCalkhtz12AlET35
- LMc3rLRQW2Ens5pkQsAR3aDfV7NYHvrCA5IpgOcVAc0Uglw8X+Jms1cexwEPA/NxpPQyjtYm9
- vO2qbCvPmf2IOHrFxEke3FYd1yMW+KXKQKZ/+Bxnepr0Zb+c/AKzoJg4/qbMv0dCyiVYOCyu+
- 9lBt3/9JCjg499WE67auAlJnlXI9yteEx/5SZDSWUSYWUGf3/CfhjcwlAzEAJRw0euPUZBgGI
- Amoecp1RtnU1pN5HKVNTW0ORR0BDE4qqQkMSnjbVl6ZhHIKd7MNpYvFvz7o3lsCsy90efK1id
- si7DnqOdb8vbmcHS0NHUK7URKFrZIyxpgf/ugDFZZM52QLWNtYBVT+j5s3bfgYk6MgxiWm3d9
- fGoPJYZNcOECTd30/E11qDox7+k1svpoqo6lsWWqy7ByibAl9iExgBtUxrBmKqSFy3ra7UuPY
- HsppytmxKFDbDE9uJRQ9C+fEgL9lIFi5rU9UgSQhhuTWMmWhtl2LQSqlyTdj/D3S99rFUG8FA
- QhEBWfl2I4FUy+l12yT1i6zbbwprNEuPHKAvd5SOQuezKEAVUu4Ly1lJHr/j63TivX588CXeW
- Kikml2RmmD1Kuaiee5OGKAXrpvm2LzQhpyVFkMPTBF7XTSrB6DNHsk+YiwY0WLFgf7oXgEu1q
- D9CNS0nWUwi7fiTci
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The value 0 assigned to mem_size is never used. So let's remove the
-assignment.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git  next
+branch HEAD: dc235d62fc60a6549238eda7ff29769457fe5663  efi: Bump the Linux EFI stub major version number to #1
 
-Signed-off-by: Heinrich Schuchardt <xypron.glpk@gmx.de>
-=2D--
- drivers/firmware/efi/fake_mem.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Regressions in current branch:
 
-diff --git a/drivers/firmware/efi/fake_mem.c b/drivers/firmware/efi/fake_m=
-em.c
-index 6e0f34a38171..2e314306ce3c 100644
-=2D-- a/drivers/firmware/efi/fake_mem.c
-+++ b/drivers/firmware/efi/fake_mem.c
-@@ -80,7 +80,7 @@ void __init efi_fake_memmap(void)
+drivers/firmware/efi/libstub/file.c:81 efi_open_volume() error: potentially dereferencing uninitialized 'io'.
+drivers/firmware/efi/libstub/x86-stub.c:183 retrieve_apple_device_properties() error: potentially dereferencing uninitialized 'p'.
+drivers/firmware/efi/libstub/x86-stub.c:387 efi_pe_entry() error: potentially dereferencing uninitialized 'image'.
 
- static int __init setup_fake_mem(char *p)
- {
--	u64 start =3D 0, mem_size =3D 0, attribute =3D 0;
-+	u64 start =3D 0, mem_size, attribute =3D 0;
- 	int i;
+Error ids grouped by kconfigs:
 
- 	if (!p)
-=2D-
-2.25.0
+recent_errors
+`-- x86_64-defconfig
+    |-- drivers-firmware-efi-libstub-file.c-efi_open_volume()-error:potentially-dereferencing-uninitialized-io-.
+    |-- drivers-firmware-efi-libstub-x86-stub.c-efi_pe_entry()-error:potentially-dereferencing-uninitialized-image-.
+    `-- drivers-firmware-efi-libstub-x86-stub.c-retrieve_apple_device_properties()-error:potentially-dereferencing-uninitialized-p-.
 
+TIMEOUT after 485m
+
+
+Sorry we cannot finish the testset for your branch within a reasonable time.
+It's our fault -- either some build server is down or some build worker is busy
+doing bisects for _other_ trees. The branch will get more complete coverage and
+possible error reports when our build infrastructure is restored or catches up.
+There will be no more build success notification for this branch head, but you
+can expect reasonably good test coverage after waiting for 1 day.
+
+configs timed out: 9
+
+mips                           32r2_defconfig
+mips                         64r6el_defconfig
+mips                             allmodconfig
+mips                              allnoconfig
+mips                             allyesconfig
+mips                      fuloong2e_defconfig
+mips                      malta_kvm_defconfig
+riscv                            allmodconfig
+riscv                            allyesconfig
+
+configs tested: 129
+configs skipped: 32
+
+arm64                            allyesconfig
+arm                              allyesconfig
+arm64                            allmodconfig
+arm64                             allnoconfig
+arm                               allnoconfig
+sparc                            allyesconfig
+i386                              allnoconfig
+i386                             allyesconfig
+i386                             alldefconfig
+i386                                defconfig
+arm                              allmodconfig
+nios2                         3c120_defconfig
+nios2                         10m50_defconfig
+c6x                        evmc6678_defconfig
+xtensa                          iss_defconfig
+c6x                              allyesconfig
+xtensa                       common_defconfig
+openrisc                 simple_smp_defconfig
+openrisc                    or1ksim_defconfig
+parisc                            allnoconfig
+parisc                generic-64bit_defconfig
+parisc                generic-32bit_defconfig
+parisc                           allyesconfig
+x86_64               randconfig-a001-20200224
+x86_64               randconfig-a002-20200224
+x86_64               randconfig-a003-20200224
+i386                 randconfig-a002-20200224
+i386                 randconfig-a001-20200224
+i386                 randconfig-a003-20200224
+nds32                randconfig-a001-20200224
+mips                 randconfig-a001-20200224
+riscv                randconfig-a001-20200224
+parisc               randconfig-a001-20200224
+alpha                randconfig-a001-20200224
+m68k                 randconfig-a001-20200224
+nios2                randconfig-a001-20200224
+c6x                  randconfig-a001-20200224
+sparc64              randconfig-a001-20200224
+microblaze           randconfig-a001-20200224
+h8300                randconfig-a001-20200224
+openrisc             randconfig-a001-20200224
+sh                   randconfig-a001-20200224
+s390                 randconfig-a001-20200224
+xtensa               randconfig-a001-20200224
+csky                 randconfig-a001-20200224
+x86_64               randconfig-b001-20200223
+i386                 randconfig-b002-20200223
+i386                 randconfig-b003-20200223
+x86_64               randconfig-b003-20200223
+x86_64               randconfig-b002-20200223
+i386                 randconfig-b001-20200223
+i386                 randconfig-c003-20200224
+i386                 randconfig-c001-20200224
+x86_64               randconfig-c001-20200224
+x86_64               randconfig-c003-20200224
+x86_64               randconfig-c002-20200224
+i386                 randconfig-c002-20200224
+i386                 randconfig-d002-20200224
+x86_64               randconfig-d002-20200224
+x86_64               randconfig-d003-20200224
+i386                 randconfig-d001-20200224
+x86_64               randconfig-d001-20200224
+i386                 randconfig-d003-20200224
+x86_64               randconfig-e001-20200224
+x86_64               randconfig-e002-20200224
+x86_64               randconfig-e003-20200224
+i386                 randconfig-e001-20200224
+i386                 randconfig-e002-20200224
+i386                 randconfig-e003-20200224
+x86_64               randconfig-e002-20200223
+i386                 randconfig-e001-20200223
+x86_64               randconfig-e003-20200223
+i386                 randconfig-e003-20200223
+x86_64               randconfig-e001-20200223
+i386                 randconfig-e002-20200223
+x86_64               randconfig-f003-20200223
+x86_64               randconfig-f002-20200223
+x86_64               randconfig-f001-20200223
+i386                 randconfig-f001-20200223
+i386                 randconfig-f003-20200223
+i386                 randconfig-f002-20200223
+x86_64               randconfig-g001-20200224
+i386                 randconfig-g002-20200224
+i386                 randconfig-g003-20200224
+x86_64               randconfig-g003-20200224
+i386                 randconfig-g001-20200224
+x86_64               randconfig-g002-20200224
+i386                 randconfig-h003-20200223
+i386                 randconfig-h002-20200223
+x86_64               randconfig-h002-20200223
+x86_64               randconfig-h003-20200223
+i386                 randconfig-h001-20200223
+x86_64               randconfig-h001-20200223
+arm64                randconfig-a001-20200224
+ia64                 randconfig-a001-20200224
+powerpc              randconfig-a001-20200224
+arm                  randconfig-a001-20200224
+arc                  randconfig-a001-20200224
+sparc                randconfig-a001-20200224
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+s390                       zfcpdump_defconfig
+s390                          debug_defconfig
+s390                             allyesconfig
+s390                              allnoconfig
+s390                             allmodconfig
+s390                             alldefconfig
+s390                                defconfig
+sh                          rsk7269_defconfig
+sh                               allmodconfig
+sh                            titan_defconfig
+sh                  sh7785lcr_32bit_defconfig
+sh                                allnoconfig
+sparc                               defconfig
+sparc64                             defconfig
+sparc64                           allnoconfig
+sparc64                          allyesconfig
+sparc64                          allmodconfig
+um                           x86_64_defconfig
+um                             i386_defconfig
+um                                  defconfig
+x86_64                                   rhel
+x86_64                         rhel-7.2-clear
+x86_64                                    lkp
+x86_64                              fedora-25
+x86_64                                  kexec
+x86_64                               rhel-7.6
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
