@@ -2,177 +2,121 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 034EB16EF20
-	for <lists+linux-efi@lfdr.de>; Tue, 25 Feb 2020 20:36:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BA21B16F01F
+	for <lists+linux-efi@lfdr.de>; Tue, 25 Feb 2020 21:34:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728443AbgBYTgE (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 25 Feb 2020 14:36:04 -0500
-Received: from mail-mw2nam10on2042.outbound.protection.outlook.com ([40.107.94.42]:11681
-        "EHLO NAM10-MW2-obe.outbound.protection.outlook.com"
+        id S1730870AbgBYUeX (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 25 Feb 2020 15:34:23 -0500
+Received: from mail-dm6nam12on2054.outbound.protection.outlook.com ([40.107.243.54]:36545
+        "EHLO NAM12-DM6-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1728146AbgBYTgE (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Tue, 25 Feb 2020 14:36:04 -0500
+        id S1730566AbgBYUeW (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Tue, 25 Feb 2020 15:34:22 -0500
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=IMd09N4olYPyDHm8xl4Oh53XsO3BthlCW581RfU61vn8umYMb2kyqQhiqqZOte2EwFYrMRrQMQXfp7DfphGbTXGl5ZnIh6e5LGlwLSUAEB/q1U1pXtTSJRPJf5qsN5U0NEktDEIZ9y5egK5GhQFLLW1M1c+CYo+hmc4b79pYOJ/4ZwyR5Vv6OsfaDX1egrykFk2rsW6poEeLJMNUIMgF39/Clv3PT1tdPiiM/2pTLm0iKmTk3StiwaZ/nop5szxyyTLyTFLB9f415+K6jB+4XUWqezhk6sepRelWY+dMHXah2F4gxWHTiTsrncKnu4nFwtlwzAwRyHuPVx9pWNb72g==
+ b=l1I6FqHRDFY/U4fiPuPfHd55nr4mU9lracwVK8v5ZRpv2x0eyXnPUCqX7MYuquzFMNrweptTpteTZK4bLiRw0QI0jVEel2qE2vzN9b23d5XQZeuTMIwa/szCTYcg5xQ4OahemvOkoiV2AfW+Bd6P0R+MMVC5+i8YAsiGJOZc4mjWsFhBqD8YSmq3KOMo/JmUKsPe9He8ndp3wNU9aYLl5L7xBN092i4c5MKROSBgHTTxmNAnIbVvxrDe5I4ZcWCtKTVkRsiJ7s3TCv7FsMWSfHF5RTyV5NYLg867fu8mUvXHCt5+rS6r63eTuSSzh6we4plMQk3IjIB0hV2Fh76T1g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=nlgVn6QYCOVLsl+Rn2qJslCl7d1klt5M045bXNO/BmM=;
- b=BmkT/UXFtb583iRlqKJdbFdY2ax4HQjmXSWSvRoTKhjGVLM1HSIb8UFts4JNU9qT0H55Mo/nxHTgUCtGshg0OYru8XoKtCHl1E4ZGEai+geKo+MlvF9iDtMiRbM1V/ZqEIVUQCwX0AbSbL4dowkfUXgZw79oOI++6fboOcs8eGBDK6z21SA0VoygO1D4SBjUKhM4mmxS/Hg5ndvYA149h5hI9dd9tMRzHiHbEPD9wmRmEtknZJTbP0NM6Z/PIcVFYIXbIPwxJk39PEBgPmiZf6sevXlkdhmaD88Y1kmYk7bqN33lm3LcxFrLLpySoFSMrRg3uC/ID+jU322yUjFEAw==
+ bh=BMu1safw3ql9Pth50Jj1XaUPIByC5j4iVT2i/oQTALs=;
+ b=ezBOIuH8vsg+SjEj2dfF5CzNYapaD2JXdhLHEVJEtDC3Rq+5MRkk4+GzmD4VHeiWlqP6aJxZvUywcui6PZxWn/f+sEvDe5cJSpFfPbFLApOVhGc3xREGKMnS3bVWu4KAIAZVoYZYRJRN5ynCcYm/4JW0RzRfldZf8+ztZ7iK8YOIIIHss+E5J1Us9v3HAXmF5Mf+sMdZ2O/3af8thrAoWssK37nNPS6KF5bSv+VXQ6+QrD4daa3sSmTR2dOybNKSWFHnvDCora9iEz1/MtMEI8VIt/LO5Ryq6YIVSBg7SsJ2PSQbZsmCIKSyWDzdcs14Y0P0zZojte5VstQtlY9eig==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
  header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=amdcloud.onmicrosoft.com; s=selector2-amdcloud-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=nlgVn6QYCOVLsl+Rn2qJslCl7d1klt5M045bXNO/BmM=;
- b=zmL044VIS7oRNCckUkxv9cW1imahpgdJBqIuUf9nHGpAUtj0StJwFtMQzs2/DKgHnb80gZB156AeehSqCR6on96zv6wHeDxzLqHqF62qifSk7ukOqjN2bxzdYLs1DhSDrTs0+fz/eR/8FrMVoFrsXNnt1dQwEhzImgrKWHh2vWk=
+ bh=BMu1safw3ql9Pth50Jj1XaUPIByC5j4iVT2i/oQTALs=;
+ b=WkPlT7KahK4vqlmbHnxaOk58o/St+pO1pIRSb//eQnxX6GQMepiNNCPJJQXq87EN0emHGz0SFFb+YpsrdzUEjNCHCkKz6j/wZK679bqejPnheyEYQWgLvojpIvfHbDwlHbPtXBP7i9MqcXqd1VSICctBDzqSrsLnbIpXATvVmzE=
 Authentication-Results: spf=none (sender IP is )
  smtp.mailfrom=Thomas.Lendacky@amd.com; 
 Received: from DM6PR12MB3163.namprd12.prod.outlook.com (2603:10b6:5:15e::26)
- by DM6PR12MB2731.namprd12.prod.outlook.com (2603:10b6:5:45::19) with
+ by DM6PR12MB4434.namprd12.prod.outlook.com (2603:10b6:5:2ad::12) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2750.22; Tue, 25 Feb
- 2020 19:36:01 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2750.21; Tue, 25 Feb
+ 2020 20:34:20 +0000
 Received: from DM6PR12MB3163.namprd12.prod.outlook.com
  ([fe80::f0f9:a88f:f840:2733]) by DM6PR12MB3163.namprd12.prod.outlook.com
  ([fe80::f0f9:a88f:f840:2733%7]) with mapi id 15.20.2750.021; Tue, 25 Feb 2020
- 19:36:01 +0000
-Subject: Re: [PATCH v2] x86/efi: Add additional efi tables for unencrypted
- mapping checks
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        the arch/x86 maintainers <x86@kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        platform-driver-x86@vger.kernel.org,
+ 20:34:20 +0000
+From:   Tom Lendacky <thomas.lendacky@amd.com>
+To:     linux-kernel@vger.kernel.org, x86@kernel.org,
+        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org
+Cc:     Ard Biesheuvel <ardb@kernel.org>,
         Darren Hart <dvhart@infradead.org>,
         Andy Shevchenko <andy@infradead.org>,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
         "H. Peter Anvin" <hpa@zytor.com>
-References: <261ea8108c6290e95962be2638bd204f90787c1c.1582652466.git.thomas.lendacky@amd.com>
- <CAKv+Gu_FJeiaY5yw9=ER4XyBZrDFZ5L4igrqxP6hhJ7Z8easpw@mail.gmail.com>
- <9e16fed9-4399-5c78-cbfb-6be75c295f31@amd.com>
- <CAKv+Gu_0LUY67DwSLU1tyijuF+0mKPpvq1j3RSMy5HBxYE-3qw@mail.gmail.com>
- <96417897-8bf0-e60c-6285-7286673ecd01@amd.com>
- <CAKv+Gu-5=5bKBdO_r=Z3bAqCM36vfH=vLcCcaFtKcwYpe=AP7g@mail.gmail.com>
- <b2374776-6499-0b99-9df0-b17a4d84b0e4@amd.com>
- <CAKv+Gu8M5LMjA+JnJ57+BU4jmpgz0OqLyt1W9LXj_UDH=5DgjQ@mail.gmail.com>
-From:   Tom Lendacky <thomas.lendacky@amd.com>
-Message-ID: <48d68a64-fc23-a59e-4f07-4913075eaf5b@amd.com>
-Date:   Tue, 25 Feb 2020 13:35:59 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
-In-Reply-To: <CAKv+Gu8M5LMjA+JnJ57+BU4jmpgz0OqLyt1W9LXj_UDH=5DgjQ@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SN4PR0501CA0015.namprd05.prod.outlook.com
- (2603:10b6:803:40::28) To DM6PR12MB3163.namprd12.prod.outlook.com
+Subject: [PATCH v3 0/2] SME EFI table updates/fixes
+Date:   Tue, 25 Feb 2020 14:34:00 -0600
+Message-Id: <cover.1582662842.git.thomas.lendacky@amd.com>
+X-Mailer: git-send-email 2.17.1
+Content-Type: text/plain
+X-ClientProxiedBy: SN4PR0701CA0012.namprd07.prod.outlook.com
+ (2603:10b6:803:28::22) To DM6PR12MB3163.namprd12.prod.outlook.com
  (2603:10b6:5:15e::26)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from [10.236.30.74] (165.204.77.1) by SN4PR0501CA0015.namprd05.prod.outlook.com (2603:10b6:803:40::28) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2772.10 via Frontend Transport; Tue, 25 Feb 2020 19:36:00 +0000
+Received: from tlendack-t1.amd.com (165.204.77.1) by SN4PR0701CA0012.namprd07.prod.outlook.com (2603:10b6:803:28::22) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2772.14 via Frontend Transport; Tue, 25 Feb 2020 20:34:18 +0000
+X-Mailer: git-send-email 2.17.1
 X-Originating-IP: [165.204.77.1]
 X-MS-PublicTrafficType: Email
 X-MS-Office365-Filtering-HT: Tenant
-X-MS-Office365-Filtering-Correlation-Id: 41f046d2-e197-4c28-de55-08d7ba29f1b4
-X-MS-TrafficTypeDiagnostic: DM6PR12MB2731:
-X-Microsoft-Antispam-PRVS: <DM6PR12MB2731D4E1424BA80C293D5FFCECED0@DM6PR12MB2731.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
+X-MS-Office365-Filtering-Correlation-Id: 41a0f8b4-e5ee-4a80-2dbf-08d7ba3216f2
+X-MS-TrafficTypeDiagnostic: DM6PR12MB4434:|DM6PR12MB4434:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <DM6PR12MB44344A3E71921208069C2897ECED0@DM6PR12MB4434.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:1091;
 X-Forefront-PRVS: 0324C2C0E2
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(4636009)(366004)(396003)(346002)(136003)(376002)(39860400002)(199004)(189003)(54906003)(8676002)(316002)(8936002)(81156014)(6486002)(36756003)(956004)(2616005)(7416002)(2906002)(31686004)(81166006)(16576012)(66476007)(31696002)(86362001)(6916009)(66946007)(53546011)(5660300002)(16526019)(4326008)(26005)(66556008)(478600001)(52116002)(186003);DIR:OUT;SFP:1101;SCL:1;SRVR:DM6PR12MB2731;H:DM6PR12MB3163.namprd12.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(4636009)(376002)(39860400002)(346002)(366004)(396003)(136003)(189003)(199004)(956004)(6486002)(7416002)(52116002)(7696005)(66556008)(4744005)(316002)(5660300002)(2616005)(6666004)(66946007)(36756003)(86362001)(186003)(81156014)(2906002)(81166006)(4326008)(54906003)(16526019)(66476007)(8936002)(26005)(8676002)(15650500001)(478600001);DIR:OUT;SFP:1101;SCL:1;SRVR:DM6PR12MB4434;H:DM6PR12MB3163.namprd12.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
 Received-SPF: None (protection.outlook.com: amd.com does not designate
  permitted sender hosts)
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: TM0R9+G6j+rluv1qPN5Gwz8X55b5HR/4i9lGjCEkexg+44Jc/b6Vk4AK5ndm8OYUTC600n29Aq3AEBuq9LWe1Y84Fcf0D1vFmoWej3Y1qYbudBrcLu4wroY8UwNF2B6LzXyID6UjK1Au+7I7FbRViPOs4m1kBWYyOh8IlsyKBI++fPzNWq6etthZ/J2jDXRY0202iFl9zF2GE6czUKIfs52PkXHnRetBc2Gq8DKlVYsgM3BtLW/q9fSG55OssE4/x1hEH5nwAzDL76YbaNm853MZoKJ93ic1ij0YgRla/evan2BhZklClWCp7yUcoaUc8ii0Bca3lr5tzBIRUteAezlP2Zulo1mYS0wOv4wFUnVcp6OK5fY98Kd5/4cTDi1Bk5HcnwFNtSGmpBwBtYTLuNlMjTUzb9H2PTVgsStu6mdeiDV+c/UhrhGw2NE+sct0
-X-MS-Exchange-AntiSpam-MessageData: cs65LHp2wOElEsF4VQyEBtAXVgPuKfp+FICKEe3+JuqM9pi25mAu5dOfXsK8KAMkJZ7IlIGV6+vKgTv4N0YlFzs+GOZT35q1IAiMCeuu0d3QzvM/I0L2xBn2eZ77vkwkMhLMI/QMIlVHnkrRcrfcbQ==
+X-Microsoft-Antispam-Message-Info: F02os+koM1CoOIlgT9oe3bJ+e11kUWOvoIWy2obCw7l5F+99LmvWgNhn4pY16gWx7W95anPR6jaZcF/1W+oDs8oNM9ephPt0iHNaxED0ZCi1CaOzZJPsN+729VjwFVU55igT45z7vqryJBSeXWNOz8s7TnjbeJMwh+1yrhlLthUGhKn6GlL5PTKlSyr+n4LOIMvRURBlqKnsho/YMdmMinABHGm5JC1ZkjNz6Ic/f4AHfFfkiM8GiqeuGrMCl9EqyEMkpUf8195O0EZ4R3nhWaKPTB/nIf+xPQ6WUpymZxPnlVOnQt/99mruElFZ2gDaFz0cm0dzACyAmnWSa17+OtVL0KWdO27e7Dua/l8KNgoK3O+S6NKDLKmhVmaLLgPy/qWKXi7y+ZdAFtyJKJhBilLPyVMe/4GWrDfldwcN0idO/MtFC6WePouA97Y9hVcW
+X-MS-Exchange-AntiSpam-MessageData: 7PP9OGvKfeOHeMmjLYavCF9qkHhNqAzkbddPw5VahA+PjJIdSKjRkdgHhusUzU4YqVqKw/Zn1EyjlhvHlpVuY7Jr0Eh+b2XVPNIESb8gwxZFmTccTlHkXO5hauEP9v78CbSlsVrZoqTM3NIm1h63+w==
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 41f046d2-e197-4c28-de55-08d7ba29f1b4
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Feb 2020 19:36:00.9471
+X-MS-Exchange-CrossTenant-Network-Message-Id: 41a0f8b4-e5ee-4a80-2dbf-08d7ba3216f2
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Feb 2020 20:34:20.3619
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: jt3XLgHxw/OlfH3VB1FP1b9isFRjoPRwbUEW9l+rd+npRWwOOWAd99Ky+v0Jti/wc4b4OSeJzksD+uxZ3lSPqA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB2731
+X-MS-Exchange-CrossTenant-UserPrincipalName: aZGqHI0a/Y7jdjvqU//nqXs3nvGpwDoaaZtmah5lU2wJuF7rqryRz8EEyJZKQOqTI7fcGdg4Fskt3G3H1K9dxA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4434
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 2/25/20 1:28 PM, Ard Biesheuvel wrote:
-> On Tue, 25 Feb 2020 at 20:21, Tom Lendacky <thomas.lendacky@amd.com> wrote:
->>
->> On 2/25/20 12:12 PM, Ard Biesheuvel wrote:
->>> On Tue, 25 Feb 2020 at 19:10, Tom Lendacky <thomas.lendacky@amd.com> wrote:
->>>>
->>>> On 2/25/20 11:58 AM, Ard Biesheuvel wrote:
->>>>> On Tue, 25 Feb 2020 at 18:54, Tom Lendacky <thomas.lendacky@amd.com> wrote:
->>>>>>
->>>>>> On 2/25/20 11:45 AM, Ard Biesheuvel wrote:
->>>>>>> On Tue, 25 Feb 2020 at 18:41, Tom Lendacky <thomas.lendacky@amd.com> wrote:
->>>>>>>>
->>>>>>>> When booting with SME active, EFI tables must be mapped unencrypted since
->>>>>>>> they were built by UEFI in unencrypted memory. Update the list of tables
->>>>>>>> to be checked during early_memremap() processing to account for new EFI
->>>>>>>> tables.
->>>>>>>>
->>>>>>>> This fixes a bug where an EFI TPM log table has been created by UEFI, but
->>>>>>>> it lives in memory that has been marked as usable rather than reserved.
->>>>>>>>
->>>>>>>> Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
->>>>>>>>
->>>>>>>> ---
->>>>>>>> Changes since v1:
->>>>>>>> - Re-spun against EFI tree
->>>>>>>
->>>>>>> Which one? Surely not the one in the link I included?
->>>>>>
->>>>>> I did a git clone of
->>>>>>
->>>>>>   git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git
->>>>>>
->>>>>> and checked out branch next. Not sure what I missed...
->>>>>>
->>>>>
->>>>> Weird. Do you see commit 5d288dbd88606d8f215c7138b10649115d79cadd on
->>>>> that branch? It removes rng_seed from struct efi, hence my request to
->>>>> rebase your patch.
->>>>
->>>> I had just assumed you wanted a cleaner version and didn't realize that
->>>> rng_seed was removed from struct efi. My bad for not building.
->>>>
->>>>>
->>>>> IMO, best is to simply drop the 'static' from rng_seed, rename it to
->>>>> efi_rng_seed, and drop an extern declaration in linux/efi.h so it is
->>>>> accessible from your code. I'm reluctant to put it back in struct efi.
->>>>
->>>> Ok, I'll re-work the patch.
->>>>
->>>
->>> OK
->>>
->>> Btw if you want the TPM part of the fix to go to -stable, better to
->>> split them in two (and I'll put a cc:stable on the tpm one)
->>
->> I had thought about stable, but the fix gets tricky since the two tables
->> were added at different times (4.16 and 5.3) and the efi_tables array was
->> moved from drivers/firmware/efi/efi.c to arch/x86/platform/efi/efi.c in 5.4.
->>
->> I could do the two TPM tables each as their own patch and add an
->> appropriate Cc: stable # v4.16.x-, etc., if you don't think that's
->> overkill. The array move shouldn't be too hard to adjust for in stable.
->> Thoughts?
->>
-> 
-> So v5.4/v5.5 seems straight-forward then, no? Once that one is in, we
-> can do one specially for v4.19
+This patch series adds new EFI tables to the list of tables that are
+to be mapped unencrypted when SME is active
 
-Works for me.
+- EFI TPM log and TPM final log tables
+- EFI RNG seed table
 
-Thanks,
-Tom
+---
 
-> 
+Patches based on
+  git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git next
+
+and commit:
+  dc235d62fc60 ("efi: Bump the Linux EFI stub major version number to #1")
+
+Changes since v2:
+- Split the patch into TPM related and RNG related patches
+- Account for the moving of the RNG seed EFI table from struct efi
+  to a static variable
+
+Tom Lendacky (2):
+  x86/efi: Add TPM related EFI tables to unencrypted mapping checks
+  x86/efi: Add RNG seed EFI table to unencrypted mapping check
+
+ arch/x86/platform/efi/efi.c |  3 +++
+ drivers/firmware/efi/efi.c  | 18 ++++++++++--------
+ include/linux/efi.h         |  2 ++
+ 3 files changed, 15 insertions(+), 8 deletions(-)
+
+-- 
+2.17.1
+
