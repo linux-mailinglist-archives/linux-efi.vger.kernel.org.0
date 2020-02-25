@@ -2,170 +2,120 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E1BEB16B5BE
-	for <lists+linux-efi@lfdr.de>; Tue, 25 Feb 2020 00:37:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 60A4516EA36
+	for <lists+linux-efi@lfdr.de>; Tue, 25 Feb 2020 16:34:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727843AbgBXXhA (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 24 Feb 2020 18:37:00 -0500
-Received: from mail.kernel.org ([198.145.29.99]:58626 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727081AbgBXXhA (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Mon, 24 Feb 2020 18:37:00 -0500
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 863F721556
-        for <linux-efi@vger.kernel.org>; Mon, 24 Feb 2020 23:36:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1582587418;
-        bh=U+C01gpfph6ZPINhoShrAsfsumPsY2cdU2HX5aGn0Tc=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=hTGo+EKvwjslJrrG36fYa+RQXI72oMF2wJ41dA2iYXzQtnkv95aGDPs388G+/PFo5
-         91lOFDHFHvRqaPcXItgjFjrjUUnhKQDvUx5nwu//zb3QrBW98dp04aLtb0l6msmUtm
-         yIPvZ7HFh3xp6rYfG/OfyvJ4fKkSBhN/6+UiNJMo=
-Received: by mail-wm1-f54.google.com with SMTP id s144so960731wme.1
-        for <linux-efi@vger.kernel.org>; Mon, 24 Feb 2020 15:36:58 -0800 (PST)
-X-Gm-Message-State: APjAAAWZ8utsrWtWFoAyFrzniVH02LjCGbY340FvyzNRAYPY44SqUnMy
-        EaXUPf8o/yczGxrD+JMimBu8ZXuadfDwrtl7soA9CQ==
-X-Google-Smtp-Source: APXvYqyYevqNGK2IFE3HzmOa/V/u4wqkglDMTSogkltLAkBHZotLEGxCZNCh/kYKEP+C1LuXd9JpyCXpSuBin0gw4JE=
-X-Received: by 2002:a1c:b603:: with SMTP id g3mr1419151wmf.133.1582587416968;
- Mon, 24 Feb 2020 15:36:56 -0800 (PST)
+        id S1731076AbgBYPeo (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 25 Feb 2020 10:34:44 -0500
+Received: from mail-mw2nam10on2053.outbound.protection.outlook.com ([40.107.94.53]:6174
+        "EHLO NAM10-MW2-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1728065AbgBYPeo (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Tue, 25 Feb 2020 10:34:44 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Qc6qpHnuG8h0kshdpAoGdD69tFSolBqvZzDXb1f6AGlEyB+iu+SuwTcmhJO1hE1+tXgMa3AKgXkz+Bm4o1J0aGaK6wjGTgK7I4gxjcsp8y5mfEHiKURBc9SyG9A6zrQODzIp885QHwtiJNaSGk+LGqf54d47v8vfwHtOGC+rfOPlrn7yUZdlNpFCvYrgTYBEMqsC1XmqTxZd/lr47rPheYe8+MNn9OPXGyIcW4NbUFFoWh/Sc09H2LaapqT0J8ls2QJ8QbPyD+8iReO4FDe0ylqEDneQ3JfQDV6/ypxfuT8AKAXkDR2rn5QcZbif9FYsHsz1xJAp5FPUITTP+fEHMw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=EYdIxPP0DvGcdDqF9+6+0QSGc0TSSLAWAFJy/JODWE0=;
+ b=DRMmxxxe8OMzCnq052/YmaiWXAXVentMPSAi72/zbcqYaazc3oshuTKg3EPoZbfGyqAQoseeGE8I7PkzGtGOdbqvsoMTw8DwrMsEknwb+5vyiz9gBZhJPNDTfFzo9EvhS3FtysU5sa7fobFo40f1+MlCJpfRJSVz4cmDoomUzJtz4giuK6oajKtv2BbBVaIHZQGw6D62jR2hDykHxT6EoM1PFxUITQtrgCPZ+t51in92DwA/6tOqo6oJcKghWAf4KFOSI8Rmg5oxG1tJ+obfarOMQRdycvs6OROLE/zLv2VbfLCKzr7IQqMHvsEt3GzAVawKOyws9waPGfEMcEpP/w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=amdcloud.onmicrosoft.com; s=selector2-amdcloud-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=EYdIxPP0DvGcdDqF9+6+0QSGc0TSSLAWAFJy/JODWE0=;
+ b=CVaSt1m/TWbOpqZDqFPOAOCNg0U/XQdTwHBcIYGhtSB6/Lmc3YjlFb1maFEC5sXqIM9FrJFI9inaRChfAud+GKmXKFFsuzy3GQ5kRcwAn3fAoviVqG2vz+ixe08RmYZpZchhZsdbVgAbQOUFRjWWWrFDlnXOOA2RjDSHomk9zh0=
+Authentication-Results: spf=none (sender IP is )
+ smtp.mailfrom=Thomas.Lendacky@amd.com; 
+Received: from DM6PR12MB3163.namprd12.prod.outlook.com (2603:10b6:5:15e::26)
+ by DM6PR12MB2985.namprd12.prod.outlook.com (2603:10b6:5:116::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2750.21; Tue, 25 Feb
+ 2020 15:34:39 +0000
+Received: from DM6PR12MB3163.namprd12.prod.outlook.com
+ ([fe80::f0f9:a88f:f840:2733]) by DM6PR12MB3163.namprd12.prod.outlook.com
+ ([fe80::f0f9:a88f:f840:2733%7]) with mapi id 15.20.2750.021; Tue, 25 Feb 2020
+ 15:34:39 +0000
+From:   Tom Lendacky <thomas.lendacky@amd.com>
+To:     linux-kernel@vger.kernel.org, x86@kernel.org,
+        platform-driver-x86@vger.kernel.org, linux-efi@vger.kernel.org
+Cc:     Ard Biesheuvel <ardb@kernel.org>,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "H. Peter Anvin" <hpa@zytor.com>
+Subject: [PATCH] x86/efi: Add additional efi tables for unencrypted mapping checks
+Date:   Tue, 25 Feb 2020 09:34:26 -0600
+Message-Id: <9b52495a2d8adfc8f2d731a0236c945196143ef4.1582644865.git.thomas.lendacky@amd.com>
+X-Mailer: git-send-email 2.17.1
+Content-Type: text/plain
+X-ClientProxiedBy: DM5PR15CA0067.namprd15.prod.outlook.com
+ (2603:10b6:3:ae::29) To DM6PR12MB3163.namprd12.prod.outlook.com
+ (2603:10b6:5:15e::26)
 MIME-Version: 1.0
-References: <20200210160248.4889-1-ardb@kernel.org> <20200210160248.4889-4-ardb@kernel.org>
- <d3402c42836aca94d1a2ff385c088af605578068.camel@wdc.com>
-In-Reply-To: <d3402c42836aca94d1a2ff385c088af605578068.camel@wdc.com>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Tue, 25 Feb 2020 00:36:45 +0100
-X-Gmail-Original-Message-ID: <CAKv+Gu9bPsiJLQqsfXwDMNe-VCsVCqDNvZAiCnon18kYG4M9qA@mail.gmail.com>
-Message-ID: <CAKv+Gu9bPsiJLQqsfXwDMNe-VCsVCqDNvZAiCnon18kYG4M9qA@mail.gmail.com>
-Subject: Re: [PATCH 03/19] efi/libstub: Use hidden visiblity for all source files
-To:     Atish Patra <Atish.Patra@wdc.com>
-Cc:     "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
-        "mingo@kernel.org" <mingo@kernel.org>,
-        "nivedita@alum.mit.edu" <nivedita@alum.mit.edu>,
-        "lukas@wunner.de" <lukas@wunner.de>
-Content-Type: text/plain; charset="UTF-8"
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from tlendack-t1.amd.com (165.204.77.1) by DM5PR15CA0067.namprd15.prod.outlook.com (2603:10b6:3:ae::29) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2772.14 via Frontend Transport; Tue, 25 Feb 2020 15:34:38 +0000
+X-Mailer: git-send-email 2.17.1
+X-Originating-IP: [165.204.77.1]
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-HT: Tenant
+X-MS-Office365-Filtering-Correlation-Id: 4fd4f116-39a6-484b-383c-08d7ba0839e9
+X-MS-TrafficTypeDiagnostic: DM6PR12MB2985:|DM6PR12MB2985:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <DM6PR12MB2985ACFA8AF05639BC838EB2ECED0@DM6PR12MB2985.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:8273;
+X-Forefront-PRVS: 0324C2C0E2
+X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(4636009)(396003)(366004)(376002)(39860400002)(136003)(346002)(189003)(199004)(478600001)(52116002)(6666004)(7696005)(81156014)(4744005)(86362001)(956004)(5660300002)(2906002)(66946007)(36756003)(4326008)(66556008)(66476007)(8936002)(2616005)(81166006)(8676002)(54906003)(316002)(186003)(16526019)(26005)(6486002)(7416002);DIR:OUT;SFP:1101;SCL:1;SRVR:DM6PR12MB2985;H:DM6PR12MB3163.namprd12.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+Received-SPF: None (protection.outlook.com: amd.com does not designate
+ permitted sender hosts)
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: cvoo9rdy+5XGUXajHOFE79rLdSgayMiacxgcwyFIHiXOQEErztIv6p2m8Q3jKuN7N8plZtoDE8cWuGTq/WGBBSNhqEXYVjIeBK4bJNLbBkUe7mz48g4PLUyKQ+igydngBF5t/dXxXX3ML7u98y8fRtKXkHKRO2J90l/LKXMegpjzMs2blz3gP1YoioZb5UhjBBP9NEIvThGbUX2efxLCNLjbHoHJrFQKjBGENl/W+QYu0PjwFWOsR91eMOHqnZWiaVyIugJ3NlxnaE+Jn63arhx9MGm86p0SaeGuffDDMyupCQvjOoCWMThjC3OoiBLoMTpx9xku5unnJ2Xb4L9eDD5itLaN0rzwV4vfwN+b2cJCuDekeQG9TIQYF/Lwulgc3Bc7kBENRt98Oz3aveSBgrc87FyvZW5doHIEt5XnXBdSpy8l+RbDCtapnpAXBOzX
+X-MS-Exchange-AntiSpam-MessageData: ZBaznb/uxiP/2nQXMG2v1HDb8/obbQcm88Abqpn7FFSRMexE3/H3IGnAZzKvoj+esSbA6x6EQ8zLm4ciHdwEWeg7aelSjjh+udLoTb4EUFWNPCNLxdj15M/KEZFj3FEIEn+TwLOg0PQ7IHvyPMgwBA==
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4fd4f116-39a6-484b-383c-08d7ba0839e9
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Feb 2020 15:34:39.2743
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: MOpTR+GSle+SrgpRGIS4plRcz3jhm6B/skxa8HNX1z6HM6mcpF1RD4cMefZ0e3GeWCPkwRKCGmkHEvTN96W50Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB2985
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, 25 Feb 2020 at 00:15, Atish Patra <Atish.Patra@wdc.com> wrote:
->
-> On Mon, 2020-02-10 at 17:02 +0100, Ard Biesheuvel wrote:
-> > Instead of setting the visibility pragma for a small set of symbol
-> > declarations that could result in absolute references that we cannot
-> > support in the stub, declare hidden visibility for all code in the
-> > EFI stub, which is more robust and future proof.
-> >
-> > To ensure that the #pragma is taken into account before any other
-> > includes are processed, put it in a header file of its own and
-> > include it via the compiler command line using the -include option.
-> >
-> > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> > ---
-> >  arch/arm64/include/asm/efi.h              | 3 ---
-> >  drivers/firmware/efi/libstub/Makefile     | 2 +-
-> >  drivers/firmware/efi/libstub/arm64-stub.c | 8 +-------
-> >  drivers/firmware/efi/libstub/hidden.h     | 6 ++++++
-> >  4 files changed, 8 insertions(+), 11 deletions(-)
-> >
-> > diff --git a/arch/arm64/include/asm/efi.h
-> > b/arch/arm64/include/asm/efi.h
-> > index 44531a69d32b..56ae87401a26 100644
-> > --- a/arch/arm64/include/asm/efi.h
-> > +++ b/arch/arm64/include/asm/efi.h
-> > @@ -107,9 +107,6 @@ static inline void free_screen_info(struct
-> > screen_info *si)
-> >  {
-> >  }
-> >
-> > -/* redeclare as 'hidden' so the compiler will generate relative
-> > references */
-> > -extern struct screen_info screen_info
-> > __attribute__((__visibility__("hidden")));
-> > -
-> >  static inline void efifb_setup_from_dmi(struct screen_info *si,
-> > const char *opt)
-> >  {
-> >  }
-> > diff --git a/drivers/firmware/efi/libstub/Makefile
-> > b/drivers/firmware/efi/libstub/Makefile
-> > index f14b7636323a..4efdbd711e8e 100644
-> > --- a/drivers/firmware/efi/libstub/Makefile
-> > +++ b/drivers/firmware/efi/libstub/Makefile
-> > @@ -25,7 +25,7 @@ cflags-$(CONFIG_ARM)                := $(subst
-> > $(CC_FLAGS_FTRACE),,$(KBUILD_CFLAGS)) \
-> >  cflags-$(CONFIG_EFI_ARMSTUB) += -I$(srctree)/scripts/dtc/libfdt
-> >
-> >  KBUILD_CFLAGS                        := $(cflags-y)
-> > -DDISABLE_BRANCH_PROFILING \
-> > -                                -D__NO_FORTIFY \
-> > +                                -include hidden.h -D__NO_FORTIFY \
-> >                                  $(call cc-option,-ffreestanding) \
-> >                                  $(call cc-option,-fno-stack-
-> > protector) \
-> >                                  -D__DISABLE_EXPORTS
-> > diff --git a/drivers/firmware/efi/libstub/arm64-stub.c
-> > b/drivers/firmware/efi/libstub/arm64-stub.c
-> > index 2915b44132e6..719d03a64329 100644
-> > --- a/drivers/firmware/efi/libstub/arm64-stub.c
-> > +++ b/drivers/firmware/efi/libstub/arm64-stub.c
-> > @@ -6,17 +6,11 @@
-> >   * Adapted from ARM version by Mark Salter <msalter@redhat.com>
-> >   */
-> >
-> > -/*
-> > - * To prevent the compiler from emitting GOT-indirected (and thus
-> > absolute)
-> > - * references to the section markers, override their visibility as
-> > 'hidden'
-> > - */
-> > -#pragma GCC visibility push(hidden)
-> > -#include <asm/sections.h>
-> > -#pragma GCC visibility pop
-> >
-> >  #include <linux/efi.h>
-> >  #include <asm/efi.h>
-> >  #include <asm/memory.h>
-> > +#include <asm/sections.h>
-> >  #include <asm/sysreg.h>
-> >
-> >  #include "efistub.h"
-> > diff --git a/drivers/firmware/efi/libstub/hidden.h
-> > b/drivers/firmware/efi/libstub/hidden.h
-> > new file mode 100644
-> > index 000000000000..3493b041f419
-> > --- /dev/null
-> > +++ b/drivers/firmware/efi/libstub/hidden.h
-> > @@ -0,0 +1,6 @@
-> > +/* SPDX-License-Identifier: GPL-2.0 */
-> > +/*
-> > + * To prevent the compiler from emitting GOT-indirected (and thus
-> > absolute)
-> > + * references to any global symbols, override their visibility as
-> > 'hidden'
-> > + */
-> > +#pragma GCC visibility push(hidden)
->
-> I am getting following compiler errors because of this patch while
-> cross compiling for ARM, ARM64 and RISC-V.
->
-> cc1: fatal error: hidden.h: No such file or directory
->
-> Adding the following line to cflags solves the issue which indicates
-> that gcc is not looking at the source file directory for this
-> particularly include file.
->
-> -I$(srctree)/drivers/firmware/efi/libstub
->
-> I might have some trick in my build setup. Just posting here to see if
-> anybody else also seeing the same problem.
->
+When booting with SME active, EFI tables must be mapped unencrypted since
+they were built by UEFI in unencrypted memory. Update the list of tables
+to be checked during early_memremap() processing to account for new EFI
+tables.
 
-Thanks Atish. Heinrich reported the same issue. It didn't affect me or
-any of the bots because it only hits if you build in-tree (i.e.,
-$srctree == $objtree)
+This fixes a bug where an EFI TPM log table has been created by UEFI, but
+it lives in memory that has been marked as usable rather than reserved.
 
-My latest efi/next branch carries a fix for this (similar to your
-suggestion, but using -include)
+Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
+---
+ arch/x86/platform/efi/efi.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/arch/x86/platform/efi/efi.c b/arch/x86/platform/efi/efi.c
+index ae923ee8e2b4..eba5038c7a44 100644
+--- a/arch/x86/platform/efi/efi.c
++++ b/arch/x86/platform/efi/efi.c
+@@ -85,6 +85,9 @@ static const unsigned long * const efi_tables[] = {
+ #ifdef CONFIG_EFI_RCI2_TABLE
+ 	&rci2_table_phys,
+ #endif
++	&efi.rng_seed,
++	&efi.tpm_log,
++	&efi.tpm_final_log,
+ };
+ 
+ u64 efi_setup;		/* efi setup_data physical address */
+-- 
+2.17.1
+
