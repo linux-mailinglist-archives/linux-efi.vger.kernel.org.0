@@ -2,27 +2,27 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 78A991704FC
-	for <lists+linux-efi@lfdr.de>; Wed, 26 Feb 2020 17:57:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A8011704FD
+	for <lists+linux-efi@lfdr.de>; Wed, 26 Feb 2020 17:57:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727112AbgBZQ5s (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 26 Feb 2020 11:57:48 -0500
-Received: from mail.kernel.org ([198.145.29.99]:35956 "EHLO mail.kernel.org"
+        id S1727141AbgBZQ5u (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 26 Feb 2020 11:57:50 -0500
+Received: from mail.kernel.org ([198.145.29.99]:35980 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726980AbgBZQ5r (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Wed, 26 Feb 2020 11:57:47 -0500
+        id S1726980AbgBZQ5u (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Wed, 26 Feb 2020 11:57:50 -0500
 Received: from e123331-lin.home (amontpellier-657-1-18-247.w109-210.abo.wanadoo.fr [109.210.65.247])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 42D2D21556;
-        Wed, 26 Feb 2020 16:57:45 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 7235624683;
+        Wed, 26 Feb 2020 16:57:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1582736267;
-        bh=Snro6dewJjLv0IRXOXFhEpHZJxQtAuKLFzocHl4NYu0=;
-        h=From:To:Cc:Subject:Date:From;
-        b=QbkaaaoZusV5GN4xkIz9nl0KTwlVMJWOz/U0UGhMGMslxSGXIlqYGBBucWunuZ/Bi
-         FhtgKLmotwCyNkQJVdwwxLaLcyZDbRiQen5vD3VKSD8LuRoKCkEYusfei8ECBkaebL
-         mGw4gw3JvV+u8VPRKr4LlWXcfeREQztbJwGBiZQM=
+        s=default; t=1582736269;
+        bh=u6UNh9AxsmaZvMVFcXaOuu9HBc8jrZmXLZzpHbnjRV4=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=Ct2vSQGYPQgQCLm+j0XQuXIjZVpEl44NBKJXr6bbccQiPi6WgvAYWP7Ssd2mNJQF+
+         rzcVPjAtnPrbWvEAfORZZHLU5BzZNiFv4VbKQP5AFtlICaw3f2pDhgKpD3V3g7IcZW
+         U7j565si4nwg30EgxhPkI4wABCwFElcC2K1i2Bto=
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-arm-kernel@lists.infradead.org
 Cc:     linux-efi@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
@@ -32,85 +32,88 @@ Cc:     linux-efi@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
         Catalin Marinas <catalin.marinas@arm.com>,
         Tony Lindgren <tony@atomide.com>,
         Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH v4 0/5] ARM: decompressor: use by-VA cache maintenance for v7 cores
-Date:   Wed, 26 Feb 2020 17:57:33 +0100
-Message-Id: <20200226165738.11201-1-ardb@kernel.org>
+Subject: [PATCH v4 1/5] efi/arm: Work around missing cache maintenance in decompressor handover
+Date:   Wed, 26 Feb 2020 17:57:34 +0100
+Message-Id: <20200226165738.11201-2-ardb@kernel.org>
 X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20200226165738.11201-1-ardb@kernel.org>
+References: <20200226165738.11201-1-ardb@kernel.org>
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-While making changes to the EFI stub startup code, I noticed that we are
-still doing set/way maintenance on the caches when booting on v7 cores.
-This works today on VMs by virtue of the fact that KVM traps set/way ops
-and cleans the whole address space by VA on behalf of the guest, and on
-most v7 hardware, the set/way ops are in fact sufficient when only one
-core is running, as there usually is no system cache. But on systems
-like SynQuacer, for which 32-bit firmware is available, the current cache
-maintenance only pushes the data out to the L3 system cache, where it
-is not visible to the CPU once it turns the MMU and caches off.
+The EFI stub executes within the context of the zImage as it was
+loaded by the firmware, which means it is treated as an ordinary
+PE/COFF executable, which is loaded into memory, and cleaned to
+the PoU to ensure that it can be executed safely while the MMU
+and caches are on.
 
-So instead, switch to the by-VA cache maintenance that the architecture
-requires for v7 and later (and ARM1176, as a side effect).
+When the EFI stub hands over to the decompressor, we clean the caches
+by set/way and disable the MMU and D-cache, to comply with the Linux
+boot protocol for ARM. However, cache maintenance by set/way is not
+sufficient to ensure that subsequent instruction fetches and data
+accesses done with the MMU off see the correct data. This means that
+proceeding as we do currently is not safe, especially since we also
+perform data accesses with the MMU off, from a literal pool as well as
+the stack.
 
-Changes since v3:
-- ensure that the region that is cleaned after self-relocation of the zImage
-  covers the appended DTB, if present
+So let's kick this can down the road a bit, and jump into the relocated
+zImage before disabling the caches. This removes the requirement to
+perform any by-VA cache maintenance on the original PE/COFF executable,
+but it does require that the relocated zImage is cleaned to the PoC,
+which is currently not the case. This will be addressed in a subsequent
+patch.
 
-Apologies to Linus, but due to this change, I decided not to take your
-Tested-by into account, and I would appreciate it if you could retest
-this version of the series? Thanks.
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+---
+ arch/arm/boot/compressed/head.S | 20 ++++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
 
-Changes since v2:
-- add a patch to factor out the code sequence that obtains the inflated image
-  size by doing an unaligned LE32 load from the end of the compressed data
-- use new macro to load the inflated image size instead of doing a potentially
-  unaligned load
-- omit the stack for getting the base and size of the self-relocated zImage
-
-Changes since v1:
-- include the EFI patch that was sent out separately before (#1)
-- split the preparatory work to pass the region to clean in r0/r1 in a EFI
-  specific one and one for the decompressor - this way, the first two patches
-  can go on a stable branch that is shared between the ARM tree and the EFI
-  tree
-- document the meaning of the values in r0/r1 upon entry to cache_clean_flush
-- take care to treat the region end address as exclusive
-- switch to clean+invalidate to align with the other implementations
-- drop some code that manages the stack pointer value before calling
-  cache_clean_flush(), which is no longer necessary
-- take care to clean the entire region that is covered by the relocated zImage
-  if it needs to relocate itself before decompressing
-
-https://git.kernel.org/pub/scm/linux/kernel/git/ardb/linux.git/log/?h=arm32-efi-cache-ops
-
-[ Several people asked me offline why on earth I am running SynQuacer on 32 bit:
-  the answer is that this is simply to prove that it is currently broken, and
-  this implies that for 32-bit VMs running under KVM, we are relying on the
-  special, non-architectural cache management done by the hypervisor on behalf
-  of the guest to be able to run this code. ]
-
-Cc: Russell King <linux@armlinux.org.uk>
-Cc: Marc Zyngier <maz@kernel.org>
-Cc: Nicolas Pitre <nico@fluxnic.net>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Tony Lindgren <tony@atomide.com>
-Cc: Linus Walleij <linus.walleij@linaro.org>
-
-Ard Biesheuvel (5):
-  efi/arm: Work around missing cache maintenance in decompressor
-    handover
-  efi/arm: Pass start and end addresses to cache_clean_flush()
-  ARM: decompressor: factor out routine to obtain the inflated image
-    size
-  ARM: decompressor: prepare cache_clean_flush for doing by-VA
-    maintenance
-  ARM: decompressor: switch to by-VA cache maintenance for v7 cores
-
- arch/arm/boot/compressed/head.S | 162 +++++++++++---------
- 1 file changed, 86 insertions(+), 76 deletions(-)
-
+diff --git a/arch/arm/boot/compressed/head.S b/arch/arm/boot/compressed/head.S
+index 088b0a060876..39f7071d47c7 100644
+--- a/arch/arm/boot/compressed/head.S
++++ b/arch/arm/boot/compressed/head.S
+@@ -1461,6 +1461,17 @@ ENTRY(efi_stub_entry)
+ 		@ Preserve return value of efi_entry() in r4
+ 		mov	r4, r0
+ 		bl	cache_clean_flush
++
++		@ The PE/COFF loader might not have cleaned the code we are
++		@ running beyond the PoU, and so calling cache_off below from
++		@ inside the PE/COFF loader allocated region is unsafe. Let's
++		@ assume our own zImage relocation code did a better job, and
++		@ jump into its version of this routine before proceeding.
++		ldr	r0, [sp]			@ relocated zImage
++		ldr	r1, .Ljmp
++		sub	r1, r0, r1
++		mov	pc, r1				@ no mode switch
++0:
+ 		bl	cache_off
+ 
+ 		@ Set parameters for booting zImage according to boot protocol
+@@ -1469,18 +1480,15 @@ ENTRY(efi_stub_entry)
+ 		mov	r0, #0
+ 		mov	r1, #0xFFFFFFFF
+ 		mov	r2, r4
+-
+-		@ Branch to (possibly) relocated zImage that is in [sp]
+-		ldr	lr, [sp]
+-		ldr	ip, =start_offset
+-		add	lr, lr, ip
+-		mov	pc, lr				@ no mode switch
++		b	__efi_start
+ 
+ efi_load_fail:
+ 		@ Return EFI_LOAD_ERROR to EFI firmware on error.
+ 		ldr	r0, =0x80000001
+ 		ldmfd	sp!, {ip, pc}
+ ENDPROC(efi_stub_entry)
++		.align	2
++.Ljmp:		.long	start - 0b
+ #endif
+ 
+ 		.align
 -- 
 2.17.1
 
