@@ -2,102 +2,67 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D1991709D7
-	for <lists+linux-efi@lfdr.de>; Wed, 26 Feb 2020 21:36:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 18A971709F8
+	for <lists+linux-efi@lfdr.de>; Wed, 26 Feb 2020 21:45:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727445AbgBZUgb (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 26 Feb 2020 15:36:31 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:49156 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1727277AbgBZUga (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 26 Feb 2020 15:36:30 -0500
-Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
-        by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 01QKOUh4107376
-        for <linux-efi@vger.kernel.org>; Wed, 26 Feb 2020 15:36:29 -0500
-Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
-        by mx0b-001b2d01.pphosted.com with ESMTP id 2ydcnguxuj-1
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <linux-efi@vger.kernel.org>; Wed, 26 Feb 2020 15:36:29 -0500
-Received: from localhost
-        by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <linux-efi@vger.kernel.org> from <zohar@linux.ibm.com>;
-        Wed, 26 Feb 2020 20:36:27 -0000
-Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
-        by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-        Wed, 26 Feb 2020 20:36:23 -0000
-Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com [9.149.105.60])
-        by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 01QKaLJj47448484
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 26 Feb 2020 20:36:21 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 9F3B642042;
-        Wed, 26 Feb 2020 20:36:21 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 62F7D42047;
-        Wed, 26 Feb 2020 20:36:20 +0000 (GMT)
-Received: from dhcp-9-31-102-24.watson.ibm.com (unknown [9.31.102.24])
-        by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-        Wed, 26 Feb 2020 20:36:20 +0000 (GMT)
-Subject: Re: [PATCH] ima: add a new CONFIG for loading arch-specific policies
-From:   Mimi Zohar <zohar@linux.ibm.com>
-To:     Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
-        Nayna Jain <nayna@linux.ibm.com>,
-        linux-integrity@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-efi@vger.kernel.org, linux-s390@vger.kernel.org
-Cc:     Ard Biesheuvel <ardb@kernel.org>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Philipp Rudo <prudo@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
+        id S1727434AbgBZUpS (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 26 Feb 2020 15:45:18 -0500
+Received: from mail-qk1-f195.google.com ([209.85.222.195]:46218 "EHLO
+        mail-qk1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727379AbgBZUpS (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 26 Feb 2020 15:45:18 -0500
+Received: by mail-qk1-f195.google.com with SMTP id u124so876707qkh.13;
+        Wed, 26 Feb 2020 12:45:17 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=uQf5zd7/YhdOToeAJNkRelZw6x4Qcdbamv946AByH+U=;
+        b=e/adtSQO+9aBCXa7M/MaAOv4ElqYz/wpv8QtPgVa5eGLWK5OHjLJHUJKOIDfqZU5Fy
+         AzcD02O0+JKpfr8bMD4aHCK4f69B4T/K9NFXnDH3BvRSxe3+q3tiNMiu6RuB26aAvpfF
+         uqI9d3N/SzOYKTAFy4QMRMquwxoGKMmdqp9bqj45slJl+Rf/oajK3v2cpPKF2/y5JRwc
+         /8/nRR0qcXESJMPkU8b44AtmVkJEANXyjlB9aQhXTJB5a6PRoQ10M8cvT1ru3I11Gx+h
+         B4f92K2bAA2+v+zp0+URoVYkwph1yo+uNTUGUUo9FDyEK3icONWq6Kt1hVR+0F5nJac6
+         +yOA==
+X-Gm-Message-State: APjAAAUTBl21/2ArZeG7NvB1fLuO17p2Acp8OYa0sh1Mi/pHlj6Qfm7q
+        vXe2utWDqq7c8JethcT1ljHRd4I+QIc=
+X-Google-Smtp-Source: APXvYqwEDq8Pw0VtdscjiLGrbQ4rTIOFi4L1CtxrHd22KXkTyDxYAiXYe1/AvO/R/uK2XW+BgN1KFQ==
+X-Received: by 2002:a37:947:: with SMTP id 68mr1160077qkj.227.1582749917025;
+        Wed, 26 Feb 2020 12:45:17 -0800 (PST)
+Received: from rani.riverdale.lan ([2001:470:1f07:5f3::b55f])
+        by smtp.gmail.com with ESMTPSA id f26sm1651452qtv.77.2020.02.26.12.45.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 26 Feb 2020 12:45:16 -0800 (PST)
+From:   Arvind Sankar <nivedita@alum.mit.edu>
+To:     Ingo Molnar <mingo@kernel.org>
+Cc:     Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org,
+        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-Date:   Wed, 26 Feb 2020 15:36:19 -0500
-In-Reply-To: <94fe39a9-db9e-211d-d9b7-4cfe1a270e6f@linux.microsoft.com>
-References: <1582744207-25969-1-git-send-email-nayna@linux.ibm.com>
-         <94fe39a9-db9e-211d-d9b7-4cfe1a270e6f@linux.microsoft.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.20.5 (3.20.5-1.fc24) 
-Mime-Version: 1.0
+Subject: [PATCH 0/1] Small fix to boot-time GDT handling
+Date:   Wed, 26 Feb 2020 15:45:14 -0500
+Message-Id: <20200226204515.2752095-1-nivedita@alum.mit.edu>
+X-Mailer: git-send-email 2.24.1
+In-Reply-To: <20200226142713.GB3100@gmail.com>
+References: <20200226142713.GB3100@gmail.com>
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 20022620-4275-0000-0000-000003A5C3E1
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20022620-4276-0000-0000-000038B9E0AE
-Message-Id: <1582749379.10443.246.camel@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.572
- definitions=2020-02-26_07:2020-02-26,2020-02-26 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- phishscore=0 spamscore=0 suspectscore=3 impostorscore=0 clxscore=1011
- mlxscore=0 bulkscore=0 malwarescore=0 priorityscore=1501 mlxlogscore=885
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2001150001 definitions=main-2002260122
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, 2020-02-26 at 11:21 -0800, Lakshmi Ramasubramanian wrote:
-> Hi Nayna,
-> 
-> > +
-> > +config IMA_SECURE_AND_OR_TRUSTED_BOOT
-> > +	bool
-> > +	depends on IMA
-> > +	depends on IMA_ARCH_POLICY
-> > +	default n
-> > +	help
-> > +	   This option is selected by architectures to enable secure and/or
-> > +	   trusted boot based on IMA runtime policies.
-> > 
-> 
-> Why is the default for this new config "n"?
-> Is there any reason to not turn on this config if both IMA and 
-> IMA_ARCH_POLICY are set to y?
+Hi Ingo, I noticed a potential problem with the 32-bit GDT handling code
+that I had submitted. This patch (based on tip:efi/core) should address
+that.
 
-Good catch.  Having "IMA_SECURE_AND_OR_TRUSTED_BOOT" depend on
-"IMA_ARCH_POLICY" doesn't make sense.  "IMA_ARCH_POLICY" needs to be
-selected.
+Thanks.
 
-thanks,
+Arvind Sankar (1):
+  x86/boot/compressed/32: Fix reloading of GDTR post-relocation
 
-Mimi
+ arch/x86/boot/compressed/head_32.S | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
+
+-- 
+2.24.1
 
