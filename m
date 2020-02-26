@@ -2,27 +2,27 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A8011704FD
-	for <lists+linux-efi@lfdr.de>; Wed, 26 Feb 2020 17:57:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EFEF8170501
+	for <lists+linux-efi@lfdr.de>; Wed, 26 Feb 2020 17:57:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727141AbgBZQ5u (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 26 Feb 2020 11:57:50 -0500
-Received: from mail.kernel.org ([198.145.29.99]:35980 "EHLO mail.kernel.org"
+        id S1726980AbgBZQ5v (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 26 Feb 2020 11:57:51 -0500
+Received: from mail.kernel.org ([198.145.29.99]:36018 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726980AbgBZQ5u (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Wed, 26 Feb 2020 11:57:50 -0500
+        id S1727196AbgBZQ5v (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Wed, 26 Feb 2020 11:57:51 -0500
 Received: from e123331-lin.home (amontpellier-657-1-18-247.w109-210.abo.wanadoo.fr [109.210.65.247])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 7235624683;
-        Wed, 26 Feb 2020 16:57:47 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 9ABAC24685;
+        Wed, 26 Feb 2020 16:57:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1582736269;
-        bh=u6UNh9AxsmaZvMVFcXaOuu9HBc8jrZmXLZzpHbnjRV4=;
+        s=default; t=1582736271;
+        bh=4sZ0PYKHHFjGjhnZonEyKKQjDJ4zZiNH+ld8nAMN3p8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Ct2vSQGYPQgQCLm+j0XQuXIjZVpEl44NBKJXr6bbccQiPi6WgvAYWP7Ssd2mNJQF+
-         rzcVPjAtnPrbWvEAfORZZHLU5BzZNiFv4VbKQP5AFtlICaw3f2pDhgKpD3V3g7IcZW
-         U7j565si4nwg30EgxhPkI4wABCwFElcC2K1i2Bto=
+        b=DphzF4w0Z/g9FSxYW5EdUOqsxTMzE2r8wM54G6dRwsw6KYWEM3IZwKHj4qzJ7b7gj
+         Zoxsq2/R7kQmdxL2zccS5QnMx0FhVrctUJ6jOedvRzfUewBJ7vD1Jj1Smiic6GEt0X
+         p038Izktdh2UBBQPKiZ41O/FPAfsN25Bq9YIju/Y=
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-arm-kernel@lists.infradead.org
 Cc:     linux-efi@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
@@ -32,9 +32,9 @@ Cc:     linux-efi@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
         Catalin Marinas <catalin.marinas@arm.com>,
         Tony Lindgren <tony@atomide.com>,
         Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH v4 1/5] efi/arm: Work around missing cache maintenance in decompressor handover
-Date:   Wed, 26 Feb 2020 17:57:34 +0100
-Message-Id: <20200226165738.11201-2-ardb@kernel.org>
+Subject: [PATCH v4 2/5] efi/arm: Pass start and end addresses to cache_clean_flush()
+Date:   Wed, 26 Feb 2020 17:57:35 +0100
+Message-Id: <20200226165738.11201-3-ardb@kernel.org>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200226165738.11201-1-ardb@kernel.org>
 References: <20200226165738.11201-1-ardb@kernel.org>
@@ -43,77 +43,37 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The EFI stub executes within the context of the zImage as it was
-loaded by the firmware, which means it is treated as an ordinary
-PE/COFF executable, which is loaded into memory, and cleaned to
-the PoU to ensure that it can be executed safely while the MMU
-and caches are on.
+In preparation for turning the decompressor's cache clean/flush
+operations into proper by-VA maintenance for v7 cores, pass the
+start and end addresses of the regions that need cache maintenance
+into cache_clean_flush in registers r0 and r1.
 
-When the EFI stub hands over to the decompressor, we clean the caches
-by set/way and disable the MMU and D-cache, to comply with the Linux
-boot protocol for ARM. However, cache maintenance by set/way is not
-sufficient to ensure that subsequent instruction fetches and data
-accesses done with the MMU off see the correct data. This means that
-proceeding as we do currently is not safe, especially since we also
-perform data accesses with the MMU off, from a literal pool as well as
-the stack.
-
-So let's kick this can down the road a bit, and jump into the relocated
-zImage before disabling the caches. This removes the requirement to
-perform any by-VA cache maintenance on the original PE/COFF executable,
-but it does require that the relocated zImage is cleaned to the PoC,
-which is currently not the case. This will be addressed in a subsequent
+Currently, all implementations of cache_clean_flush ignore these
+values, so no functional change is expected as a result of this
 patch.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/arm/boot/compressed/head.S | 20 ++++++++++++++------
- 1 file changed, 14 insertions(+), 6 deletions(-)
+ arch/arm/boot/compressed/head.S | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
 diff --git a/arch/arm/boot/compressed/head.S b/arch/arm/boot/compressed/head.S
-index 088b0a060876..39f7071d47c7 100644
+index 39f7071d47c7..8487221bedb0 100644
 --- a/arch/arm/boot/compressed/head.S
 +++ b/arch/arm/boot/compressed/head.S
-@@ -1461,6 +1461,17 @@ ENTRY(efi_stub_entry)
+@@ -1460,6 +1460,12 @@ ENTRY(efi_stub_entry)
+ 
  		@ Preserve return value of efi_entry() in r4
  		mov	r4, r0
- 		bl	cache_clean_flush
++		add	r1, r4, #SZ_2M			@ DT end
++		bl	cache_clean_flush
 +
-+		@ The PE/COFF loader might not have cleaned the code we are
-+		@ running beyond the PoU, and so calling cache_off below from
-+		@ inside the PE/COFF loader allocated region is unsafe. Let's
-+		@ assume our own zImage relocation code did a better job, and
-+		@ jump into its version of this routine before proceeding.
 +		ldr	r0, [sp]			@ relocated zImage
-+		ldr	r1, .Ljmp
-+		sub	r1, r0, r1
-+		mov	pc, r1				@ no mode switch
-+0:
- 		bl	cache_off
++		ldr	r1, =_edata			@ size of zImage
++		add	r1, r1, r0			@ end of zImage
+ 		bl	cache_clean_flush
  
- 		@ Set parameters for booting zImage according to boot protocol
-@@ -1469,18 +1480,15 @@ ENTRY(efi_stub_entry)
- 		mov	r0, #0
- 		mov	r1, #0xFFFFFFFF
- 		mov	r2, r4
--
--		@ Branch to (possibly) relocated zImage that is in [sp]
--		ldr	lr, [sp]
--		ldr	ip, =start_offset
--		add	lr, lr, ip
--		mov	pc, lr				@ no mode switch
-+		b	__efi_start
- 
- efi_load_fail:
- 		@ Return EFI_LOAD_ERROR to EFI firmware on error.
- 		ldr	r0, =0x80000001
- 		ldmfd	sp!, {ip, pc}
- ENDPROC(efi_stub_entry)
-+		.align	2
-+.Ljmp:		.long	start - 0b
- #endif
- 
- 		.align
+ 		@ The PE/COFF loader might not have cleaned the code we are
 -- 
 2.17.1
 
