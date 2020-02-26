@@ -2,97 +2,99 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id ADCF517018E
-	for <lists+linux-efi@lfdr.de>; Wed, 26 Feb 2020 15:50:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 89B031704F6
+	for <lists+linux-efi@lfdr.de>; Wed, 26 Feb 2020 17:55:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727741AbgBZOuU (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 26 Feb 2020 09:50:20 -0500
-Received: from mail.kernel.org ([198.145.29.99]:46068 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727590AbgBZOuU (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Wed, 26 Feb 2020 09:50:20 -0500
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 5E71324685
-        for <linux-efi@vger.kernel.org>; Wed, 26 Feb 2020 14:50:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1582728619;
-        bh=gq1Mm1RYPBjDxN/0IhfPFWShhaidnAl/LIloGKcu7l0=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=1CJ7CjavlI+rhp0TARUE+0LlSsFswifiWpEQCuV8K6mY5t7a6cI4lxAUGe5VXSIAR
-         nRcKcZxrwVViCcXBrilB8wZCpjSq07xz3snMkBdhUSS1dbjO0vZHyBcgsO5Sx8j8A1
-         48zPiQYUpMfU8KhRgvD6tm/YC4rhSzI+geCV7nfA=
-Received: by mail-wm1-f44.google.com with SMTP id q9so3379436wmj.5
-        for <linux-efi@vger.kernel.org>; Wed, 26 Feb 2020 06:50:19 -0800 (PST)
-X-Gm-Message-State: APjAAAVTmlWS6m3M1H6fD95d2kzWdbRkASUJyion1iqqrul6LM1yT6ZH
-        A6kd+gxbypYc/tqMTc93MyJMaoOakP8m/1VwKyGeGg==
-X-Google-Smtp-Source: APXvYqyhZmdeHmVsK20o2/b1vO9bIxFOOv3EJjBmSfExbTytVn5FCW1J3TgcDORoYH2uM+W4bGDm4RDU5KdFx0MPqyM=
-X-Received: by 2002:a1c:bc46:: with SMTP id m67mr5822649wmf.40.1582728617842;
- Wed, 26 Feb 2020 06:50:17 -0800 (PST)
+        id S1727311AbgBZQzR (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 26 Feb 2020 11:55:17 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:58288 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726214AbgBZQzQ (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 26 Feb 2020 11:55:16 -0500
+Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
+        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
+        (Exim 4.80)
+        (envelope-from <tip-bot2@linutronix.de>)
+        id 1j6zxp-0002Dj-BO; Wed, 26 Feb 2020 17:55:13 +0100
+Received: from [127.0.1.1] (localhost [IPv6:::1])
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id EB54E1C215C;
+        Wed, 26 Feb 2020 17:55:12 +0100 (CET)
+Date:   Wed, 26 Feb 2020 16:55:12 -0000
+From:   "tip-bot2 for Jason A. Donenfeld" <tip-bot2@linutronix.de>
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: efi/urgent] efi: READ_ONCE rng seed size before munmap
+Cc:     "Jason A. Donenfeld" <Jason@zx2c4.com>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Ingo Molnar <mingo@kernel.org>, linux-efi@vger.kernel.org,
+        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200217123354.21140-1-Jason@zx2c4.com>
+References: <20200217123354.21140-1-Jason@zx2c4.com>
 MIME-Version: 1.0
-References: <20200224133856.12832-1-ardb@kernel.org> <20200226142713.GB3100@gmail.com>
-In-Reply-To: <20200226142713.GB3100@gmail.com>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Wed, 26 Feb 2020 15:50:07 +0100
-X-Gmail-Original-Message-ID: <CAKv+Gu8eeRB7PiKNK_f7G5mpwsiVP0XWmi=KiyDjju9fk=QuZw@mail.gmail.com>
-Message-ID: <CAKv+Gu8eeRB7PiKNK_f7G5mpwsiVP0XWmi=KiyDjju9fk=QuZw@mail.gmail.com>
-Subject: Re: [GIT PULL v2] EFI updates for v5.7
-To:     Ingo Molnar <mingo@kernel.org>
-Cc:     linux-efi <linux-efi@vger.kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "the arch/x86 maintainers" <x86@kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Arvind Sankar <nivedita@alum.mit.edu>
-Content-Type: text/plain; charset="UTF-8"
+Message-ID: <158273611261.28353.8523357540114932134.tip-bot2@tip-bot2>
+X-Mailer: tip-git-log-daemon
+Robot-ID: <tip-bot2.linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Linutronix-Spam-Score: -1.0
+X-Linutronix-Spam-Level: -
+X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, 26 Feb 2020 at 15:27, Ingo Molnar <mingo@kernel.org> wrote:
->
->
-> * Ard Biesheuvel <ardb@kernel.org> wrote:
->
-> > Hello Ingo, Thomas,
-> >
-> > I am sending this as an ordinary PR again, given the size. Please let me
-> > know if instead, you prefer me to send it out piecemeal as usual. Either
-> > works for me, I was just reluctant to spam people unsolicited.
-> >
-> > Note that EFI for RISC-V may still arrive this cycle as well.
-> >
-> > Please take special note of the GDT changes by Arvind. They were posted to
-> > the list without any feedback, and they look fine to me, but I know very
-> > little about these x86 CPU low level details.
-> >
-> > This was all build and boot tested on various different kinds of hardware,
-> > and all minor issues that were reported by the robots were fixed along the way.
-> >
-> > Please pull,
-> > Ard.
-> >
-> >
-> > The following changes since commit bb6d3fb354c5ee8d6bde2d576eb7220ea09862b9:
-> >
-> >   Linux 5.6-rc1 (2020-02-09 16:08:48 -0800)
-> >
-> > are available in the Git repository at:
-> >
-> >   git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git tags/efi-next
-> >
-> > for you to fetch changes up to dc235d62fc60a6549238eda7ff29769457fe5663:
-> >
-> >   efi: Bump the Linux EFI stub major version number to #1 (2020-02-23 21:59:42 +0100)
->
-> >  66 files changed, 2718 insertions(+), 2638 deletions(-)
->
-> Pulled this as a Git tree, thanks Ard!
->
-> The boot-time GDT handling cleanups from Arvind look good to me too.
-> There's a couple of arguably scary commits in there, so these might be
-> 'famous last words'. :-)
->
+The following commit has been merged into the efi/urgent branch of tip:
 
-Thanks!
+Commit-ID:     be36f9e7517e17810ec369626a128d7948942259
+Gitweb:        https://git.kernel.org/tip/be36f9e7517e17810ec369626a128d7948942259
+Author:        Jason A. Donenfeld <Jason@zx2c4.com>
+AuthorDate:    Fri, 21 Feb 2020 09:48:49 +01:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Wed, 26 Feb 2020 15:31:43 +01:00
+
+efi: READ_ONCE rng seed size before munmap
+
+This function is consistent with using size instead of seed->size
+(except for one place that this patch fixes), but it reads seed->size
+without using READ_ONCE, which means the compiler might still do
+something unwanted. So, this commit simply adds the READ_ONCE
+wrapper.
+
+Fixes: 636259880a7e ("efi: Add support for seeding the RNG from a UEFI ...")
+Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: linux-efi@vger.kernel.org
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/20200217123354.21140-1-Jason@zx2c4.com
+Link: https://lore.kernel.org/r/20200221084849.26878-5-ardb@kernel.org
+---
+ drivers/firmware/efi/efi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
+index 621220a..21ea99f 100644
+--- a/drivers/firmware/efi/efi.c
++++ b/drivers/firmware/efi/efi.c
+@@ -552,7 +552,7 @@ int __init efi_config_parse_tables(void *config_tables, int count, int sz,
+ 
+ 		seed = early_memremap(efi.rng_seed, sizeof(*seed));
+ 		if (seed != NULL) {
+-			size = seed->size;
++			size = READ_ONCE(seed->size);
+ 			early_memunmap(seed, sizeof(*seed));
+ 		} else {
+ 			pr_err("Could not map UEFI random seed!\n");
+@@ -562,7 +562,7 @@ int __init efi_config_parse_tables(void *config_tables, int count, int sz,
+ 					      sizeof(*seed) + size);
+ 			if (seed != NULL) {
+ 				pr_notice("seeding entropy pool\n");
+-				add_bootloader_randomness(seed->bits, seed->size);
++				add_bootloader_randomness(seed->bits, size);
+ 				early_memunmap(seed, sizeof(*seed) + size);
+ 			} else {
+ 				pr_err("Could not map UEFI random seed!\n");
