@@ -2,77 +2,166 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6651F170588
-	for <lists+linux-efi@lfdr.de>; Wed, 26 Feb 2020 18:07:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 14B47170883
+	for <lists+linux-efi@lfdr.de>; Wed, 26 Feb 2020 20:10:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727262AbgBZRHh (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 26 Feb 2020 12:07:37 -0500
-Received: from mail.kernel.org ([198.145.29.99]:40980 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726214AbgBZRHh (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Wed, 26 Feb 2020 12:07:37 -0500
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id CC0622467F
-        for <linux-efi@vger.kernel.org>; Wed, 26 Feb 2020 17:07:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1582736857;
-        bh=hdBOrNvqms6LuHkKaNu6g1GZnlXtrzXpNgMmojjUAoU=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=bzckcxKBmI/41g+OQgQVT4JyCXrpKENm0o4X2kIZxb8b7Tq0Ju0jpRG4fcAQOdYBr
-         em9Jx5NQojxt+gALqKJPJBcTbxAlPk9pu5yyaWvRtcaoKWLlJHHS5PFwD4W+hCT61C
-         mjM3Q6lS9TwA5hp0O5wXYjKHUcEu8XFZpG7fm7fE=
-Received: by mail-wr1-f47.google.com with SMTP id r17so1883656wrj.7
-        for <linux-efi@vger.kernel.org>; Wed, 26 Feb 2020 09:07:36 -0800 (PST)
-X-Gm-Message-State: APjAAAWJzkKReeDYB6Mb8rWzxszs9fFE85gUNNVbzG0lga6ROfYGn6+u
-        0Toc3VHAqBjxRh4Vow7QDT35Yly8VBMh9u8sf5mBaA==
-X-Google-Smtp-Source: APXvYqx+iElQIGWBKUiundYdfvD86tWpE7osPnNNLRATKnU/zrwkEUsr7nY9Tn2lBt1Hkf0xS0YZvAhu9gwG/tuHw0c=
-X-Received: by 2002:a05:6000:110b:: with SMTP id z11mr6703799wrw.252.1582736855337;
- Wed, 26 Feb 2020 09:07:35 -0800 (PST)
-MIME-Version: 1.0
-References: <20200223221324.156086-1-xypron.glpk@gmx.de>
-In-Reply-To: <20200223221324.156086-1-xypron.glpk@gmx.de>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Wed, 26 Feb 2020 18:07:24 +0100
-X-Gmail-Original-Message-ID: <CAKv+Gu84RKGFxFSGra__NbsYVLzu9TH7C+b02e1GxEbo5zyHFw@mail.gmail.com>
-Message-ID: <CAKv+Gu84RKGFxFSGra__NbsYVLzu9TH7C+b02e1GxEbo5zyHFw@mail.gmail.com>
-Subject: Re: [PATCH 1/1] efi: don't shadow i in efi_config_parse_tables()
-To:     Heinrich Schuchardt <xypron.glpk@gmx.de>
-Cc:     linux-efi <linux-efi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        id S1727035AbgBZTKW (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 26 Feb 2020 14:10:22 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:31912 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727049AbgBZTKW (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 26 Feb 2020 14:10:22 -0500
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 01QJ9OhH142875
+        for <linux-efi@vger.kernel.org>; Wed, 26 Feb 2020 14:10:20 -0500
+Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 2ydxen8bkm-1
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <linux-efi@vger.kernel.org>; Wed, 26 Feb 2020 14:10:20 -0500
+Received: from localhost
+        by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <linux-efi@vger.kernel.org> from <nayna@linux.ibm.com>;
+        Wed, 26 Feb 2020 19:10:18 -0000
+Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
+        by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+        Wed, 26 Feb 2020 19:10:15 -0000
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com [9.149.105.61])
+        by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 01QJAEhm53674226
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 26 Feb 2020 19:10:14 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 0150C11C04C;
+        Wed, 26 Feb 2020 19:10:14 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 71B3111C058;
+        Wed, 26 Feb 2020 19:10:11 +0000 (GMT)
+Received: from swastik.ibm.com (unknown [9.160.92.140])
+        by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Wed, 26 Feb 2020 19:10:11 +0000 (GMT)
+From:   Nayna Jain <nayna@linux.ibm.com>
+To:     linux-integrity@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-efi@vger.kernel.org, linux-s390@vger.kernel.org
+Cc:     Ard Biesheuvel <ardb@kernel.org>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Philipp Rudo <prudo@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>, zohar@linux.ibm.com,
+        linux-kernel@vger.kernel.org, Nayna Jain <nayna@linux.ibm.com>
+Subject: [PATCH] ima: add a new CONFIG for loading arch-specific policies
+Date:   Wed, 26 Feb 2020 14:10:07 -0500
+X-Mailer: git-send-email 1.8.3.1
+X-TM-AS-GCONF: 00
+x-cbid: 20022619-0008-0000-0000-00000356B53E
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20022619-0009-0000-0000-00004A77D515
+Message-Id: <1582744207-25969-1-git-send-email-nayna@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.572
+ definitions=2020-02-26_07:2020-02-26,2020-02-26 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0
+ lowpriorityscore=0 priorityscore=1501 spamscore=0 suspectscore=0
+ impostorscore=0 malwarescore=0 phishscore=0 mlxlogscore=999 mlxscore=0
+ clxscore=1011 adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2001150001 definitions=main-2002260119
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Sun, 23 Feb 2020 at 23:13, Heinrich Schuchardt <xypron.glpk@gmx.de> wrote:
->
-> Shadowing variables is generally frowned upon.
->
-> Let's simply reuse the existing loop counter i instead of shadowing it.
->
-> Signed-off-by: Heinrich Schuchardt <xypron.glpk@gmx.de>
+Every time a new architecture defines the IMA architecture specific
+functions - arch_ima_get_secureboot() and arch_ima_get_policy(), the IMA
+include file needs to be updated. To avoid this "noise", this patch
+defines a new IMA Kconfig IMA_SECURE_AND_OR_TRUSTED_BOOT option, allowing
+the different architectures to select it.
 
-Queued in efi/next, thanks.
+Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: Martin Schwidefsky <schwidefsky@de.ibm.com>
+Cc: Philipp Rudo <prudo@linux.ibm.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+---
+ arch/powerpc/Kconfig           | 2 +-
+ arch/s390/Kconfig              | 1 +
+ arch/x86/Kconfig               | 1 +
+ include/linux/ima.h            | 3 +--
+ security/integrity/ima/Kconfig | 9 +++++++++
+ 5 files changed, 13 insertions(+), 3 deletions(-)
 
-> ---
->  drivers/firmware/efi/efi.c | 1 -
->  1 file changed, 1 deletion(-)
->
-> diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
-> index 69a585106d30..d0c7f4c1db31 100644
-> --- a/drivers/firmware/efi/efi.c
-> +++ b/drivers/firmware/efi/efi.c
-> @@ -553,7 +553,6 @@ int __init efi_config_parse_tables(const efi_config_table_t *config_tables,
->                 while (prsv) {
->                         struct linux_efi_memreserve *rsv;
->                         u8 *p;
-> -                       int i;
->
->                         /*
->                          * Just map a full page: that is what we will get
-> --
-> 2.25.0
->
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index 497b7d0b2d7e..b8ce1b995633 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -246,6 +246,7 @@ config PPC
+ 	select SYSCTL_EXCEPTION_TRACE
+ 	select THREAD_INFO_IN_TASK
+ 	select VIRT_TO_BUS			if !PPC64
++	select IMA_SECURE_AND_OR_TRUSTED_BOOT	if PPC_SECURE_BOOT
+ 	#
+ 	# Please keep this list sorted alphabetically.
+ 	#
+@@ -978,7 +979,6 @@ config PPC_SECURE_BOOT
+ 	prompt "Enable secure boot support"
+ 	bool
+ 	depends on PPC_POWERNV
+-	depends on IMA_ARCH_POLICY
+ 	help
+ 	  Systems with firmware secure boot enabled need to define security
+ 	  policies to extend secure boot to the OS. This config allows a user
+diff --git a/arch/s390/Kconfig b/arch/s390/Kconfig
+index 8abe77536d9d..90ff3633ade6 100644
+--- a/arch/s390/Kconfig
++++ b/arch/s390/Kconfig
+@@ -195,6 +195,7 @@ config S390
+ 	select ARCH_HAS_FORCE_DMA_UNENCRYPTED
+ 	select SWIOTLB
+ 	select GENERIC_ALLOCATOR
++	select IMA_SECURE_AND_OR_TRUSTED_BOOT
+ 
+ 
+ config SCHED_OMIT_FRAME_POINTER
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index beea77046f9b..cafa66313fe2 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -230,6 +230,7 @@ config X86
+ 	select VIRT_TO_BUS
+ 	select X86_FEATURE_NAMES		if PROC_FS
+ 	select PROC_PID_ARCH_STATUS		if PROC_FS
++	select IMA_SECURE_AND_OR_TRUSTED_BOOT	if EFI
+ 
+ config INSTRUCTION_DECODER
+ 	def_bool y
+diff --git a/include/linux/ima.h b/include/linux/ima.h
+index 1659217e9b60..aefe758f4466 100644
+--- a/include/linux/ima.h
++++ b/include/linux/ima.h
+@@ -30,8 +30,7 @@ extern void ima_kexec_cmdline(const void *buf, int size);
+ extern void ima_add_kexec_buffer(struct kimage *image);
+ #endif
+ 
+-#if (defined(CONFIG_X86) && defined(CONFIG_EFI)) || defined(CONFIG_S390) \
+-	|| defined(CONFIG_PPC_SECURE_BOOT)
++#ifdef CONFIG_IMA_SECURE_AND_OR_TRUSTED_BOOT
+ extern bool arch_ima_get_secureboot(void);
+ extern const char * const *arch_get_ima_policy(void);
+ #else
+diff --git a/security/integrity/ima/Kconfig b/security/integrity/ima/Kconfig
+index 3f3ee4e2eb0d..d17972aa413a 100644
+--- a/security/integrity/ima/Kconfig
++++ b/security/integrity/ima/Kconfig
+@@ -327,3 +327,12 @@ config IMA_QUEUE_EARLY_BOOT_KEYS
+ 	depends on IMA_MEASURE_ASYMMETRIC_KEYS
+ 	depends on SYSTEM_TRUSTED_KEYRING
+ 	default y
++
++config IMA_SECURE_AND_OR_TRUSTED_BOOT
++	bool
++	depends on IMA
++	depends on IMA_ARCH_POLICY
++	default n
++	help
++	   This option is selected by architectures to enable secure and/or
++	   trusted boot based on IMA runtime policies.
+-- 
+2.18.1
+
