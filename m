@@ -2,42 +2,43 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8434016F850
-	for <lists+linux-efi@lfdr.de>; Wed, 26 Feb 2020 08:06:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 188BC16F857
+	for <lists+linux-efi@lfdr.de>; Wed, 26 Feb 2020 08:09:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726823AbgBZHGR (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 26 Feb 2020 02:06:17 -0500
-Received: from mail.kernel.org ([198.145.29.99]:41518 "EHLO mail.kernel.org"
+        id S1726823AbgBZHJE (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 26 Feb 2020 02:09:04 -0500
+Received: from mail.kernel.org ([198.145.29.99]:42496 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726587AbgBZHGR (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Wed, 26 Feb 2020 02:06:17 -0500
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+        id S1726948AbgBZHJE (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Wed, 26 Feb 2020 02:09:04 -0500
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8399824672
-        for <linux-efi@vger.kernel.org>; Wed, 26 Feb 2020 07:06:16 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id DBDED24670
+        for <linux-efi@vger.kernel.org>; Wed, 26 Feb 2020 07:09:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1582700776;
-        bh=uZjWbm4CHv7CzRvbIQoptYI7eFmVZqT/jpXr1XMve3I=;
+        s=default; t=1582700943;
+        bh=BdvukjoB3WBnGxQuMkXsAyznS/yxxSlgLx6C/Lh+O5s=;
         h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=ZUggyWOdb8O1B4aYP7ECTmUI12PniQXaw4GAhKMCAzyTOVDikA+4CQ7m8IvF/eHYC
-         DHylRK4TugMmAsQVorPWYkdc+zKWRBzr/03f52i0+4LXaGj7ngPVi+y4bPx5Q6wvvQ
-         gN3avXJRVRrrMK37zeOLogvYyjySaq+75Zjp9HKs=
-Received: by mail-wm1-f53.google.com with SMTP id p17so1776015wma.1
-        for <linux-efi@vger.kernel.org>; Tue, 25 Feb 2020 23:06:16 -0800 (PST)
-X-Gm-Message-State: APjAAAUgIHSwEDOwplp+gPsWvjM1AsZb2wbRCUV+0kmXvWAZQeLxy7Dc
-        B4YmQXbpL0qNbMDSXFxXDVx6Lfmhjh8cKEaE9FBmWA==
-X-Google-Smtp-Source: APXvYqxVo4pBQodPuVmpIAWoLWlNGgk9OZk/TYLmLgPc/3nUtao5D+GJ3tSM7OyQhzsoCgw/xpZfGvWiOFsuBzM9GRg=
-X-Received: by 2002:a05:600c:24b:: with SMTP id 11mr216141wmj.1.1582700774936;
- Tue, 25 Feb 2020 23:06:14 -0800 (PST)
+        b=aLXV00WGNbPLHXgt1q6/H3/GVzQFXdwh6tHYzbPOgypdiAlt3vP/fGyZQrHx8mSxE
+         /Xrq/zq1RkklN4cocFA1Hae36qAzR3g6ChMWulwQWOy2JQcTCIidyU6lZztqBrS3os
+         1MvQ7Rex4Tm3nmfMV9H1IR8j8w0hYofJf/Tvxxpg=
+Received: by mail-wm1-f45.google.com with SMTP id m3so1799787wmi.0
+        for <linux-efi@vger.kernel.org>; Tue, 25 Feb 2020 23:09:02 -0800 (PST)
+X-Gm-Message-State: APjAAAVadc+9LaCYD+MoonybZVgryBrwvozl+8S7vf/57fmgyTJ80wye
+        y6ejFYHFHRfiyLmjxe73RMbasJJlAUrCJroyASKNPw==
+X-Google-Smtp-Source: APXvYqygd/ulFA+LBYcE+02wpHVNjovd2gznC4M9/EIQzEGIl8/sG8qvkHkL/jt8pXKkT3+TfT6z5RSmn21ULS3+N40=
+X-Received: by 2002:a7b:cb93:: with SMTP id m19mr72538wmi.133.1582700941221;
+ Tue, 25 Feb 2020 23:09:01 -0800 (PST)
 MIME-Version: 1.0
-References: <20200226011037.7179-1-atish.patra@wdc.com> <20200226011037.7179-3-atish.patra@wdc.com>
-In-Reply-To: <20200226011037.7179-3-atish.patra@wdc.com>
+References: <20200226011037.7179-1-atish.patra@wdc.com> <20200226011037.7179-4-atish.patra@wdc.com>
+In-Reply-To: <20200226011037.7179-4-atish.patra@wdc.com>
 From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Wed, 26 Feb 2020 08:06:04 +0100
-X-Gmail-Original-Message-ID: <CAKv+Gu-LAfcH5mLZNLk7=A3E43a93FK+8DPYNrx1FANnbo3J7g@mail.gmail.com>
-Message-ID: <CAKv+Gu-LAfcH5mLZNLk7=A3E43a93FK+8DPYNrx1FANnbo3J7g@mail.gmail.com>
-Subject: Re: [RFC PATCH 2/5] include: pe.h: Add RISC-V related PE definition
+Date:   Wed, 26 Feb 2020 08:08:50 +0100
+X-Gmail-Original-Message-ID: <CAKv+Gu8HdRa5k=h1XF2fm80VEgvuxa_tX_P0qFSdkk=CVc6ffA@mail.gmail.com>
+Message-ID: <CAKv+Gu8HdRa5k=h1XF2fm80VEgvuxa_tX_P0qFSdkk=CVc6ffA@mail.gmail.com>
+Subject: Re: [RFC PATCH 3/5] RISC-V: Define fixmap bindings for generic early
+ ioremap support
 To:     Atish Patra <atish.patra@wdc.com>
 Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         Albert Ou <aou@eecs.berkeley.edu>,
@@ -76,33 +77,95 @@ X-Mailing-List: linux-efi@vger.kernel.org
 
 On Wed, 26 Feb 2020 at 02:10, Atish Patra <atish.patra@wdc.com> wrote:
 >
-> Define RISC-V related machine types.
+> UEFI uses early IO or memory mappings for runtime services before
+> normal ioremap() is usable. This patch only adds minimum necessary
+> fixmap bindings and headers for generic ioremap support to work.
 >
 > Signed-off-by: Atish Patra <atish.patra@wdc.com>
 
-If you put them in alphabetical order wrt SH3:
+Looks reasonable to me,
 
-Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
 
+although I wonder why it is part of this series?
 
 > ---
->  include/linux/pe.h | 3 +++
->  1 file changed, 3 insertions(+)
+>  arch/riscv/Kconfig              |  1 +
+>  arch/riscv/include/asm/Kbuild   |  1 +
+>  arch/riscv/include/asm/fixmap.h | 21 ++++++++++++++++++++-
+>  arch/riscv/include/asm/io.h     |  1 +
+>  4 files changed, 23 insertions(+), 1 deletion(-)
 >
-> diff --git a/include/linux/pe.h b/include/linux/pe.h
-> index 8ad71d763a77..6a7c497e4b1f 100644
-> --- a/include/linux/pe.h
-> +++ b/include/linux/pe.h
-> @@ -56,6 +56,9 @@
->  #define        IMAGE_FILE_MACHINE_POWERPCFP    0x01f1
->  #define        IMAGE_FILE_MACHINE_R4000        0x0166
->  #define        IMAGE_FILE_MACHINE_SH3          0x01a2
-> +#define        IMAGE_FILE_MACHINE_RISCV32      0x5032
-> +#define        IMAGE_FILE_MACHINE_RISCV64      0x5064
-> +#define        IMAGE_FILE_MACHINE_RISCV128     0x5128
->  #define        IMAGE_FILE_MACHINE_SH3DSP       0x01a3
->  #define        IMAGE_FILE_MACHINE_SH3E         0x01a4
->  #define        IMAGE_FILE_MACHINE_SH4          0x01a6
+> diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+> index 27bfc7947e44..42c122170cfd 100644
+> --- a/arch/riscv/Kconfig
+> +++ b/arch/riscv/Kconfig
+> @@ -65,6 +65,7 @@ config RISCV
+>         select ARCH_HAS_GCOV_PROFILE_ALL
+>         select HAVE_COPY_THREAD_TLS
+>         select HAVE_ARCH_KASAN if MMU && 64BIT
+> +       select GENERIC_EARLY_IOREMAP
+>
+>  config ARCH_MMAP_RND_BITS_MIN
+>         default 18 if 64BIT
+> diff --git a/arch/riscv/include/asm/Kbuild b/arch/riscv/include/asm/Kbuild
+> index ec0ca8c6ab64..517394390106 100644
+> --- a/arch/riscv/include/asm/Kbuild
+> +++ b/arch/riscv/include/asm/Kbuild
+> @@ -4,6 +4,7 @@ generic-y += checksum.h
+>  generic-y += compat.h
+>  generic-y += device.h
+>  generic-y += div64.h
+> +generic-y += early_ioremap.h
+>  generic-y += extable.h
+>  generic-y += flat.h
+>  generic-y += dma.h
+> diff --git a/arch/riscv/include/asm/fixmap.h b/arch/riscv/include/asm/fixmap.h
+> index 42d2c42f3cc9..7a4beb7e29a3 100644
+> --- a/arch/riscv/include/asm/fixmap.h
+> +++ b/arch/riscv/include/asm/fixmap.h
+> @@ -25,9 +25,28 @@ enum fixed_addresses {
+>  #define FIX_FDT_SIZE   SZ_1M
+>         FIX_FDT_END,
+>         FIX_FDT = FIX_FDT_END + FIX_FDT_SIZE / PAGE_SIZE - 1,
+> +       FIX_EARLYCON_MEM_BASE,
+> +
+>         FIX_PTE,
+>         FIX_PMD,
+> -       FIX_EARLYCON_MEM_BASE,
+> +       /*
+> +        * Make sure that it is 2MB aligned.
+> +        */
+> +#define NR_FIX_SZ_2M   (SZ_2M / PAGE_SIZE)
+> +       FIX_THOLE = NR_FIX_SZ_2M - FIX_PMD - 1,
+> +
+> +       __end_of_permanent_fixed_addresses,
+> +       /*
+> +        * Temporary boot-time mappings, used by early_ioremap(),
+> +        * before ioremap() is functional.
+> +        */
+> +#define NR_FIX_BTMAPS          (SZ_256K / PAGE_SIZE)
+> +#define FIX_BTMAPS_SLOTS       7
+> +#define TOTAL_FIX_BTMAPS       (NR_FIX_BTMAPS * FIX_BTMAPS_SLOTS)
+> +
+> +       FIX_BTMAP_END = __end_of_permanent_fixed_addresses,
+> +       FIX_BTMAP_BEGIN = FIX_BTMAP_END + TOTAL_FIX_BTMAPS - 1,
+> +
+>         __end_of_fixed_addresses
+>  };
+>
+> diff --git a/arch/riscv/include/asm/io.h b/arch/riscv/include/asm/io.h
+> index 0f477206a4ed..047f414b6948 100644
+> --- a/arch/riscv/include/asm/io.h
+> +++ b/arch/riscv/include/asm/io.h
+> @@ -14,6 +14,7 @@
+>  #include <linux/types.h>
+>  #include <asm/mmiowb.h>
+>  #include <asm/pgtable.h>
+> +#include <asm/early_ioremap.h>
+>
+>  /*
+>   * MMIO access functions are separated out to break dependency cycles
 > --
 > 2.24.0
 >
