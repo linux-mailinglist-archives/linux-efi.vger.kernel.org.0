@@ -2,87 +2,109 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0CC0D1725DD
-	for <lists+linux-efi@lfdr.de>; Thu, 27 Feb 2020 19:03:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7FAD71728CB
+	for <lists+linux-efi@lfdr.de>; Thu, 27 Feb 2020 20:39:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729283AbgB0SDJ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 27 Feb 2020 13:03:09 -0500
-Received: from mail-qv1-f68.google.com ([209.85.219.68]:34257 "EHLO
-        mail-qv1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726805AbgB0SDJ (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 27 Feb 2020 13:03:09 -0500
-Received: by mail-qv1-f68.google.com with SMTP id o18so14104qvf.1;
-        Thu, 27 Feb 2020 10:03:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:from:date:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=LUivbxZvkhrhksfrufImP5WxVz+Lup/2YGlGavTZRzU=;
-        b=FECqC/GLqU4wsSzEi4rPTFDzOXiJO4CXOuMOJtQhjaXNpmtMCYY/O6CxZd8c5QeaFJ
-         w2nhwZq6DTmOU6dV+/ZPcUSED9y9g0GDkBA3S0rrjNXBxc2YBVthEbkRr30uXl8vLvrk
-         RuHejyJlqwMvxy/BOKLS43wSWaqT+byxSShnrrst4a/1zIbiC9g8E5redGQYliesOW5k
-         OwgIcES80s3l2Y+WAE3FmaKIVeKUWimW19fXFqnhy4gON87OrMWgI+Zcm6Ru3e+7a+au
-         1/W8PlDJ/ogtz3TZ8au57Mkkcs2D83jdIzSG+IiYYSau1Iy39Fyr9QgcF8KBVgDO4MWd
-         fztQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:from:date:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to:user-agent;
-        bh=LUivbxZvkhrhksfrufImP5WxVz+Lup/2YGlGavTZRzU=;
-        b=etze2xXSgzQdkjymxx4W0KDHQ2uvI+cXWLNdWIwqluSWUU53fMftpEaUVNbPFDvmXp
-         RINUkkePBLmQF8lI1CWQ5fJVn9RukOJplgKk1HSoCxnkPm3oW8vXAogvdpeFtc9v1GCe
-         3mQoQ5yTp8OIv0OuqJW3AGhSWD6+/RlGSmNQpFSOo/XvyYjwrdj6iDvY4BMVeZMn8hXE
-         BkvG9vNLd7YnX6D6GrQnoKezRfytHo8Og7vKJACisQRdcmsdoDjjiPEzm3MmyaRyperz
-         J0aw0ajQCjxuD8Ib0br1Kcf8IlgLkeRF2NYDEbZPWiKevR+WKIEukfwxiWX7ADU0UGc8
-         F7Og==
-X-Gm-Message-State: APjAAAWz1odKqF/kWf2859XDB7xE6WT3e2cJ2ktEbMN1bL87rYSnhoHJ
-        5ePnfqd6Zj0tJ4Yj1/16L/jGUxVL1G8=
-X-Google-Smtp-Source: APXvYqyOmOSD5Jm9Upwu1WHPMaefpd6RANzksD5mm3iBpbX9WBw1KKWWevGspvflnOKhG9RICeYjCA==
-X-Received: by 2002:a0c:c24f:: with SMTP id w15mr75014qvh.66.1582826588320;
-        Thu, 27 Feb 2020 10:03:08 -0800 (PST)
-Received: from rani.riverdale.lan ([2001:470:1f07:5f3::b55f])
-        by smtp.gmail.com with ESMTPSA id m11sm521291qkh.31.2020.02.27.10.03.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 Feb 2020 10:03:07 -0800 (PST)
-From:   Arvind Sankar <nivedita@alum.mit.edu>
-X-Google-Original-From: Arvind Sankar <arvind@rani.riverdale.lan>
-Date:   Thu, 27 Feb 2020 13:03:06 -0500
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     Arvind Sankar <nivedita@alum.mit.edu>,
-        Ingo Molnar <mingo@kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        the arch/x86 maintainers <x86@kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Borislav Petkov <bp@alien8.de>
-Subject: Re: [PATCH v2 1/1] x86/boot/compressed: Fix reloading of GDTR
- post-relocation
-Message-ID: <20200227180305.GA3598722@rani.riverdale.lan>
-References: <20200226204515.2752095-1-nivedita@alum.mit.edu>
- <20200226230031.3011645-2-nivedita@alum.mit.edu>
- <20200227081229.GA29411@gmail.com>
- <20200227151643.GA3498170@rani.riverdale.lan>
- <CAKv+Gu8BiW6P6Xv3EAPUEmbS3GQMJW=eRr-yygRbForaGDQyyw@mail.gmail.com>
- <20200227155421.GA3507597@rani.riverdale.lan>
- <CAKv+Gu-k0c8GzKysv4Z9tYzEvfhJUzuiKx5nfwD0JU8ys=LZdg@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CAKv+Gu-k0c8GzKysv4Z9tYzEvfhJUzuiKx5nfwD0JU8ys=LZdg@mail.gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+        id S1729921AbgB0TiV (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 27 Feb 2020 14:38:21 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:40252 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1730467AbgB0TiU (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 27 Feb 2020 14:38:20 -0500
+Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 01RJTxWM064780
+        for <linux-efi@vger.kernel.org>; Thu, 27 Feb 2020 14:38:19 -0500
+Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 2ydcp6d905-1
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <linux-efi@vger.kernel.org>; Thu, 27 Feb 2020 14:38:19 -0500
+Received: from localhost
+        by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <linux-efi@vger.kernel.org> from <zohar@linux.ibm.com>;
+        Thu, 27 Feb 2020 19:38:17 -0000
+Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
+        by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+        Thu, 27 Feb 2020 19:38:13 -0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com [9.149.105.62])
+        by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 01RJcBHG58917066
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 27 Feb 2020 19:38:11 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 586A5AE053;
+        Thu, 27 Feb 2020 19:38:11 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id E862FAE045;
+        Thu, 27 Feb 2020 19:38:09 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.85.166.13])
+        by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Thu, 27 Feb 2020 19:38:09 +0000 (GMT)
+Subject: Re: [PATCH] ima: add a new CONFIG for loading arch-specific policies
+From:   Mimi Zohar <zohar@linux.ibm.com>
+To:     Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
+        Nayna Jain <nayna@linux.ibm.com>,
+        linux-integrity@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-efi@vger.kernel.org, linux-s390@vger.kernel.org
+Cc:     Ard Biesheuvel <ardb@kernel.org>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Philipp Rudo <prudo@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        linux-kernel@vger.kernel.org
+Date:   Thu, 27 Feb 2020 14:38:09 -0500
+In-Reply-To: <1582749379.10443.246.camel@linux.ibm.com>
+References: <1582744207-25969-1-git-send-email-nayna@linux.ibm.com>
+         <94fe39a9-db9e-211d-d9b7-4cfe1a270e6f@linux.microsoft.com>
+         <1582749379.10443.246.camel@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.20.5 (3.20.5-1.fc24) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+x-cbid: 20022719-0012-0000-0000-0000038AEA57
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20022719-0013-0000-0000-000021C794C1
+Message-Id: <1582832289.10443.298.camel@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.572
+ definitions=2020-02-27_06:2020-02-26,2020-02-27 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 clxscore=1015
+ adultscore=0 bulkscore=0 mlxscore=0 phishscore=0 impostorscore=0
+ lowpriorityscore=0 suspectscore=0 mlxlogscore=946 malwarescore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2001150001 definitions=main-2002270136
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, Feb 27, 2020 at 06:47:55PM +0100, Ard Biesheuvel wrote:
+On Wed, 2020-02-26 at 15:36 -0500, Mimi Zohar wrote:
+> On Wed, 2020-02-26 at 11:21 -0800, Lakshmi Ramasubramanian wrote:
+> > Hi Nayna,
+> > 
+> > > +
+> > > +config IMA_SECURE_AND_OR_TRUSTED_BOOT
+> > > +	bool
+> > > +	depends on IMA
+> > > +	depends on IMA_ARCH_POLICY
+> > > +	default n
+> > > +	help
+> > > +	   This option is selected by architectures to enable secure and/or
+> > > +	   trusted boot based on IMA runtime policies.
+> > > 
+> > 
+> > Why is the default for this new config "n"?
+> > Is there any reason to not turn on this config if both IMA and 
+> > IMA_ARCH_POLICY are set to y?
 > 
-> Interesting. I am going to rip most of the EFI handover protocol stuff
-> out of OVMF, since it is mostly unnecessary, and having the PE/COFF
-> loader put the image in the correct place right away is a nice
-> complimentary improvement to that. (Note that the OVMF implementation
-> of the EFI handover protocol does not currently honor the preferred
-> address from the setup header anyway)
+> Good catch.  Having "IMA_SECURE_AND_OR_TRUSTED_BOOT" depend on
+> "IMA_ARCH_POLICY" doesn't make sense.  "IMA_ARCH_POLICY" needs to be
+> selected.
 
-Yeah, for my testing I'm running the image from the EFI shell, which
-enters via PE entry point and honors the pref address.
+After discussing this some more with Nayna, the new Kconfig indicates
+that the architecture defines the arch_ima_get_secureboot() and
+arch_get_ima_policy() functions, but doesn't automatically enable
+IMA_ARCH_POLICY.  The decision to enable IMA_ARCH_POLICY is left up to
+whoever is building the kernel.  The patch, at least this aspect of
+it, is correct.
+
+Mimi
+
