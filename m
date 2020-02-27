@@ -2,27 +2,27 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 24324171FD3
-	for <lists+linux-efi@lfdr.de>; Thu, 27 Feb 2020 15:40:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F139F1720B8
+	for <lists+linux-efi@lfdr.de>; Thu, 27 Feb 2020 15:45:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731568AbgB0Nya (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 27 Feb 2020 08:54:30 -0500
-Received: from mail.kernel.org ([198.145.29.99]:54528 "EHLO mail.kernel.org"
+        id S1730503AbgB0NqZ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 27 Feb 2020 08:46:25 -0500
+Received: from mail.kernel.org ([198.145.29.99]:42620 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731871AbgB0Ny0 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Thu, 27 Feb 2020 08:54:26 -0500
+        id S1730167AbgB0NqY (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Thu, 27 Feb 2020 08:46:24 -0500
 Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 5F6FE20801;
-        Thu, 27 Feb 2020 13:54:25 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 5CFAF20801;
+        Thu, 27 Feb 2020 13:46:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1582811665;
-        bh=FDLTKae5L6Lt5h3s6D/TeS96VdvhDxPetZvWw6O8jx4=;
+        s=default; t=1582811183;
+        bh=lL4pFfsrsx5IvHqyB0CeDf2N+rjFEBCQR0PaBMWEcVk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tWLgkZFyVurS1HeyMi7XIRbRPpxWiRNbbKypDVXdtn6+tgq2wKYZYR0gsHVsn4T0f
-         VkTOybWW5fWydteCRzI3bNqf7/iKPY317s1iSkMZE0rlJ4bgfY6s9rKtKFGBm5u7jo
-         Vvz/oOLrrHYdIHnRehe7MFMC6SNsmgNscqkp8LyY=
+        b=PVp4SjeiFz35pquMUycb8QbT+IrhrBfQOhmh81KcehNylXW1KhkwImNLMR10GIOtA
+         EzMwZodVzyYqXcs3wkMh3mspQC5LdWh8D5hIurinx3YrUhMU17iMQc/fkMWmo1ckdq
+         Xd7lGcUNdv+dQAWHpUVEGLQL17jJ35VjwRzZsE3k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -32,12 +32,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Arvind Sankar <nivedita@alum.mit.edu>,
         Matthew Garrett <mjg59@google.com>, linux-efi@vger.kernel.org,
         Ingo Molnar <mingo@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 054/237] efi/x86: Map the entire EFI vendor string before copying it
-Date:   Thu, 27 Feb 2020 14:34:28 +0100
-Message-Id: <20200227132300.786537149@linuxfoundation.org>
+Subject: [PATCH 4.9 033/165] efi/x86: Map the entire EFI vendor string before copying it
+Date:   Thu, 27 Feb 2020 14:35:07 +0100
+Message-Id: <20200227132235.916584144@linuxfoundation.org>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200227132255.285644406@linuxfoundation.org>
-References: <20200227132255.285644406@linuxfoundation.org>
+In-Reply-To: <20200227132230.840899170@linuxfoundation.org>
+References: <20200227132230.840899170@linuxfoundation.org>
 User-Agent: quilt/0.66
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -75,10 +75,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 7 insertions(+), 6 deletions(-)
 
 diff --git a/arch/x86/platform/efi/efi.c b/arch/x86/platform/efi/efi.c
-index 335a62e74a2e9..5b0275310070e 100644
+index b6669d326545a..f08abdf8bb676 100644
 --- a/arch/x86/platform/efi/efi.c
 +++ b/arch/x86/platform/efi/efi.c
-@@ -480,7 +480,6 @@ void __init efi_init(void)
+@@ -478,7 +478,6 @@ void __init efi_init(void)
  	efi_char16_t *c16;
  	char vendor[100] = "unknown";
  	int i = 0;
@@ -86,7 +86,7 @@ index 335a62e74a2e9..5b0275310070e 100644
  
  #ifdef CONFIG_X86_32
  	if (boot_params.efi_info.efi_systab_hi ||
-@@ -505,14 +504,16 @@ void __init efi_init(void)
+@@ -503,14 +502,16 @@ void __init efi_init(void)
  	/*
  	 * Show what we know for posterity
  	 */
