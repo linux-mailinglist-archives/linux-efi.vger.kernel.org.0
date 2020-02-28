@@ -2,39 +2,40 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3007917339F
-	for <lists+linux-efi@lfdr.de>; Fri, 28 Feb 2020 10:19:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 71DC217340C
+	for <lists+linux-efi@lfdr.de>; Fri, 28 Feb 2020 10:31:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726148AbgB1JTR (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 28 Feb 2020 04:19:17 -0500
-Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:30141 "EHLO
+        id S1726714AbgB1Jbq (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 28 Feb 2020 04:31:46 -0500
+Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:44680 "EHLO
         us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726603AbgB1JTR (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 28 Feb 2020 04:19:17 -0500
+        with ESMTP id S1726536AbgB1Jbp (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 28 Feb 2020 04:31:45 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1582881555;
+        s=mimecast20190719; t=1582882304;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-        bh=BrFCNX4F1XmOwW/MDeZGMPxT/iET1QQu3H0uJejQp0I=;
-        b=NeuVF72xS/TLXANPdZJ2ps4/CnkL/iRR4vL0wbf/m2jg/yMIXi54Slma1p3a+YcCm1aBOa
-        dPjApazVbblMMIwAJnq+ewM9UfDKEU88G/EM8sMoXA3OjoZEsjsc0uioSHyESUgpxv3bbE
-        IKuPuG9C67cP/rwYRUny2wGeXRzVvNA=
+        bh=pyyi2jMoTboEhmaXagzaHBnWexW62ljXBFzIAxgSo3w=;
+        b=AvkjVPI5n+iIZGMCcIWxTBha4WfAnN4iaFjKcdtprrwFfufGBWYrN979RaErcKK2jIzyms
+        7wNJsGDoI6oaW/HIa8Sbw22RafGy/D16iwrCU62MKb64WO4sqKndTzQVj/N3Xp3dp03gmh
+        u/AVekxOsFUtjmJ7HThz0avIEsT9ysQ=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-385-wl2DRK5AOjm4At23FzUAJw-1; Fri, 28 Feb 2020 04:19:13 -0500
-X-MC-Unique: wl2DRK5AOjm4At23FzUAJw-1
+ us-mta-411-h1EFlB3LNSaFLdHgNioUYw-1; Fri, 28 Feb 2020 04:31:42 -0500
+X-MC-Unique: h1EFlB3LNSaFLdHgNioUYw-1
 Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 54D39DC2E;
-        Fri, 28 Feb 2020 09:19:11 +0000 (UTC)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 0B851801E5C;
+        Fri, 28 Feb 2020 09:31:40 +0000 (UTC)
 Received: from [10.36.117.180] (ovpn-117-180.ams2.redhat.com [10.36.117.180])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 229858C099;
-        Fri, 28 Feb 2020 09:19:04 +0000 (UTC)
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 4A6D98C09E;
+        Fri, 28 Feb 2020 09:31:33 +0000 (UTC)
 Subject: Re: [RESEND PATCH v2] efi: Only print errors about failing to get
  certs if EFI vars are found
+From:   David Hildenbrand <david@redhat.com>
 To:     Javier Martinez Canillas <javierm@redhat.com>,
         linux-kernel@vger.kernel.org
 Cc:     linux-efi@vger.kernel.org, Hans de Goede <hdegoede@redhat.com>,
@@ -45,9 +46,11 @@ Cc:     linux-efi@vger.kernel.org, Hans de Goede <hdegoede@redhat.com>,
         Nayna Jain <nayna@linux.ibm.com>,
         "Serge E. Hallyn" <serge@hallyn.com>,
         YueHaibing <yuehaibing@huawei.com>,
-        linux-security-module@vger.kernel.org
+        linux-security-module@vger.kernel.org,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Serge Hallyn <serge@hallyn.com>
 References: <20200217113947.2070436-1-javierm@redhat.com>
-From:   David Hildenbrand <david@redhat.com>
+ <0fd1b499-3a5e-c78e-0279-186a4c424217@redhat.com>
 Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
  mQINBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
  dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
@@ -92,107 +95,105 @@ Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
  njnuI31KBiLUks+paRkHQlFcgS2N3gkRBzH7xSZ+t7Re3jvXdXEzKBbQ+dC3lpJB0wPnyMcX
  FOTT3aZT7IgePkt5iC/BKBk3hqKteTnJFeVIT7EC+a6YUFg=
 Organization: Red Hat GmbH
-Message-ID: <0fd1b499-3a5e-c78e-0279-186a4c424217@redhat.com>
-Date:   Fri, 28 Feb 2020 10:19:03 +0100
+Message-ID: <5c60e016-fb30-b33d-39c6-ea30a4f777cb@redhat.com>
+Date:   Fri, 28 Feb 2020 10:31:33 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.5.0
 MIME-Version: 1.0
-In-Reply-To: <20200217113947.2070436-1-javierm@redhat.com>
+In-Reply-To: <0fd1b499-3a5e-c78e-0279-186a4c424217@redhat.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
-Content-Transfer-Encoding: quoted-printable
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 17.02.20 12:39, Javier Martinez Canillas wrote:
-> If CONFIG_LOAD_UEFI_KEYS is enabled, the kernel attempts to load the ce=
-rts
-> from the db, dbx and MokListRT EFI variables into the appropriate keyri=
-ngs.
->=20
-> But it just assumes that the variables will be present and prints an er=
-ror
-> if the certs can't be loaded, even when is possible that the variables =
-may
-> not exist. For example the MokListRT variable will only be present if s=
-him
-> is used.
->=20
-> So only print an error message about failing to get the certs list from=
- an
-> EFI variable if this is found. Otherwise these printed errors just poll=
-ute
-> the kernel log ring buffer with confusing messages like the following:
->=20
-> [    5.427251] Couldn't get size: 0x800000000000000e
-> [    5.427261] MODSIGN: Couldn't get UEFI db list
-> [    5.428012] Couldn't get size: 0x800000000000000e
-> [    5.428023] Couldn't get UEFI MokListRT
->=20
-> Reported-by: Hans de Goede <hdegoede@redhat.com>
-> Signed-off-by: Javier Martinez Canillas <javierm@redhat.com>
-> Tested-by: Hans de Goede <hdegoede@redhat.com>
+On 28.02.20 10:19, David Hildenbrand wrote:
+> On 17.02.20 12:39, Javier Martinez Canillas wrote:
+>> If CONFIG_LOAD_UEFI_KEYS is enabled, the kernel attempts to load the certs
+>> from the db, dbx and MokListRT EFI variables into the appropriate keyrings.
+>>
+>> But it just assumes that the variables will be present and prints an error
+>> if the certs can't be loaded, even when is possible that the variables may
+>> not exist. For example the MokListRT variable will only be present if shim
+>> is used.
+>>
+>> So only print an error message about failing to get the certs list from an
+>> EFI variable if this is found. Otherwise these printed errors just pollute
+>> the kernel log ring buffer with confusing messages like the following:
+>>
+>> [    5.427251] Couldn't get size: 0x800000000000000e
+>> [    5.427261] MODSIGN: Couldn't get UEFI db list
+>> [    5.428012] Couldn't get size: 0x800000000000000e
+>> [    5.428023] Couldn't get UEFI MokListRT
+>>
+>> Reported-by: Hans de Goede <hdegoede@redhat.com>
+>> Signed-off-by: Javier Martinez Canillas <javierm@redhat.com>
+>> Tested-by: Hans de Goede <hdegoede@redhat.com>
+> 
+> This patch seems to break a very basic x86-64 QEMU setup (booting
+> upstream kernel with a F31 initrd - are you running basic boot tests?).
+> Luckily, it only took me 5 minutes to identify this patch. Reverting
+> this patch from linux-next fixes it for me.
+> 
+> 
+> [    1.042766] Loaded X.509 cert 'Build time autogenerated kernel key: 6625d6e34255935276d2c9851e2458909a4bcd69'
+> [    1.044314] zswap: loaded using pool lzo/zbud
+> [    1.045663] Key type ._fscrypt registered
+> [    1.046154] Key type .fscrypt registered
+> [    1.046524] Key type fscrypt-provisioning registered
+> [    1.051178] Key type big_key registered
+> [    1.055108] Key type encrypted registered
+> [    1.055513] BUG: kernel NULL pointer dereference, address: 0000000000000000
+> [    1.056172] #PF: supervisor instruction fetch in kernel mode
+> [    1.056706] #PF: error_code(0x0010) - not-present page
+> [    1.057367] PGD 0 P4D 0 
+> [    1.057729] Oops: 0010 [#1] SMP NOPTI
+> [    1.058249] CPU: 1 PID: 1 Comm: swapper/0 Not tainted 5.6.0-rc3-next-20200228+ #79
+> [    1.059167] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.13.0-0-gf21b5a4aeb02-prebuilt.qemu.4
+> [    1.060230] RIP: 0010:0x0
+> [    1.060478] Code: Bad RIP value.
+> [    1.060786] RSP: 0018:ffffbc7880637d98 EFLAGS: 00010246
+> [    1.061281] RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffffbc7880637dc8
+> [    1.061954] RDX: 0000000000000000 RSI: ffffbc7880637df0 RDI: ffffffffa73c40be
+> [    1.062611] RBP: ffffbc7880637e20 R08: ffffbc7880637dac R09: ffffa0238f4ba6c0
+> [    1.063278] R10: 0000000000000000 R11: 0000000000000001 R12: 0000000000000000
+> [    1.063956] R13: ffffa024bdd6f660 R14: 0000000000000000 R15: 0000000000000000
+> [    1.064609] FS:  0000000000000000(0000) GS:ffffa023fdd00000(0000) knlGS:0000000000000000
+> [    1.065360] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> [    1.065900] CR2: ffffffffffffffd6 CR3: 00000000b1610000 CR4: 00000000000006e0
+> [    1.066562] Call Trace:
+> [    1.066803]  load_uefi_certs+0xc8/0x2bb
+> [    1.067171]  ? get_cert_list+0xfb/0xfb
+> [    1.067523]  do_one_initcall+0x5d/0x2f0
+> [    1.067894]  ? rcu_read_lock_sched_held+0x52/0x80
+> [    1.068337]  kernel_init_freeable+0x243/0x2c2
+> [    1.068751]  ? rest_init+0x23a/0x23a
+> [    1.069095]  kernel_init+0xa/0x106
+> [    1.069416]  ret_from_fork+0x27/0x50
+> [    1.069759] Modules linked in:
+> [    1.070050] CR2: 0000000000000000
+> [    1.070361] ---[ end trace fcce9bb4feb21d99 ]---
+> 
+> 
 
-This patch seems to break a very basic x86-64 QEMU setup (booting
-upstream kernel with a F31 initrd - are you running basic boot tests?).
-Luckily, it only took me 5 minutes to identify this patch. Reverting
-this patch from linux-next fixes it for me.
+Sorry, wrong mail identified, the patch is actually
 
+commit 6b75d54d5258ccd655387a00bbe1b00f92f4d965
+Author: Ard Biesheuvel <ardb@kernel.org>
+Date:   Sun Feb 16 19:46:25 2020 +0100
 
-[    1.042766] Loaded X.509 cert 'Build time autogenerated kernel key: 66=
-25d6e34255935276d2c9851e2458909a4bcd69'
-[    1.044314] zswap: loaded using pool lzo/zbud
-[    1.045663] Key type ._fscrypt registered
-[    1.046154] Key type .fscrypt registered
-[    1.046524] Key type fscrypt-provisioning registered
-[    1.051178] Key type big_key registered
-[    1.055108] Key type encrypted registered
-[    1.055513] BUG: kernel NULL pointer dereference, address: 00000000000=
-00000
-[    1.056172] #PF: supervisor instruction fetch in kernel mode
-[    1.056706] #PF: error_code(0x0010) - not-present page
-[    1.057367] PGD 0 P4D 0=20
-[    1.057729] Oops: 0010 [#1] SMP NOPTI
-[    1.058249] CPU: 1 PID: 1 Comm: swapper/0 Not tainted 5.6.0-rc3-next-2=
-0200228+ #79
-[    1.059167] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIO=
-S rel-1.13.0-0-gf21b5a4aeb02-prebuilt.qemu.4
-[    1.060230] RIP: 0010:0x0
-[    1.060478] Code: Bad RIP value.
-[    1.060786] RSP: 0018:ffffbc7880637d98 EFLAGS: 00010246
-[    1.061281] RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffffbc788=
-0637dc8
-[    1.061954] RDX: 0000000000000000 RSI: ffffbc7880637df0 RDI: ffffffffa=
-73c40be
-[    1.062611] RBP: ffffbc7880637e20 R08: ffffbc7880637dac R09: ffffa0238=
-f4ba6c0
-[    1.063278] R10: 0000000000000000 R11: 0000000000000001 R12: 000000000=
-0000000
-[    1.063956] R13: ffffa024bdd6f660 R14: 0000000000000000 R15: 000000000=
-0000000
-[    1.064609] FS:  0000000000000000(0000) GS:ffffa023fdd00000(0000) knlG=
-S:0000000000000000
-[    1.065360] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[    1.065900] CR2: ffffffffffffffd6 CR3: 00000000b1610000 CR4: 000000000=
-00006e0
-[    1.066562] Call Trace:
-[    1.066803]  load_uefi_certs+0xc8/0x2bb
-[    1.067171]  ? get_cert_list+0xfb/0xfb
-[    1.067523]  do_one_initcall+0x5d/0x2f0
-[    1.067894]  ? rcu_read_lock_sched_held+0x52/0x80
-[    1.068337]  kernel_init_freeable+0x243/0x2c2
-[    1.068751]  ? rest_init+0x23a/0x23a
-[    1.069095]  kernel_init+0xa/0x106
-[    1.069416]  ret_from_fork+0x27/0x50
-[    1.069759] Modules linked in:
-[    1.070050] CR2: 0000000000000000
-[    1.070361] ---[ end trace fcce9bb4feb21d99 ]---
+    integrity: Check properly whether EFI GetVariable() is available
+
+    Testing the value of the efi.get_variable function pointer is not
+
+which made it work. (not even able to find that patch on lkml ...)
 
 
---=20
+
+-- 
 Thanks,
 
 David / dhildenb
