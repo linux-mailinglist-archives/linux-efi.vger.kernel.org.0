@@ -2,187 +2,311 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 78EFB172F4D
-	for <lists+linux-efi@lfdr.de>; Fri, 28 Feb 2020 04:27:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7CBB7173173
+	for <lists+linux-efi@lfdr.de>; Fri, 28 Feb 2020 07:57:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730699AbgB1D1j (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 27 Feb 2020 22:27:39 -0500
-Received: from mail-oi1-f194.google.com ([209.85.167.194]:34469 "EHLO
-        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730665AbgB1D1j (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 27 Feb 2020 22:27:39 -0500
-Received: by mail-oi1-f194.google.com with SMTP id l136so1569893oig.1
-        for <linux-efi@vger.kernel.org>; Thu, 27 Feb 2020 19:27:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=NDgUQnCysZ7NFsIwDokx6+x5eoZKUCkBzb/ZNj5Uk14=;
-        b=qdaDLB40g+oyHb7JAcITCqVVaUs363TrbWV1T7QaYfFPpjtX8uy60Dkj2GU6XBpJGN
-         lAN731kvw5+DtZs/Jmqj9a2zAwq3yyiugAXweWmF+/7ozu2pZbH5NlF01boeMxI4jdgy
-         wPRxGYAstclqvIhU99ubI0HPyarsbPFL0vGzov59t9CBbria3MovzKiPtqyjDYHWW2JH
-         2VT7OciJqRRyU7x4MX7hi9uKOBuzKgCDwo/tWsH1Su907YVLYbNXINavQw2gJe+mO85A
-         /jDNEzcKqvCRg53uCe5vIYRMa8+V2F9YUQ2DdfHUYcFd8Xslim1gBU7pGdnNPZQA37BA
-         sbBA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=NDgUQnCysZ7NFsIwDokx6+x5eoZKUCkBzb/ZNj5Uk14=;
-        b=nN0n7dSYxSEOVtZHWE1rGhn/QUnrDZUA+PBTKZv/zXkIQI0cywimu/5UfyvfuwPXyr
-         te19AYN9Zfzdc3LQjNW1kUEPtGPmkxbsk+OxtKJ9S1T0quEyFkpBaQ/egeF4N19WfCJg
-         W1zfplh6PoTt7knofp2oSM9m6cO5pKVu7nXVpUTa97ir3LIZKxKVWMKeHN76G3+9bHdy
-         Gb84/3bplnagHHyPczzCMwseNM+C3ItUmMbRa8LblGYFCmHehDtVdwgRz2S8YYfuqTjt
-         Vv7epsdbCAWZSGW96RtTTcPBz1CitDkRO99cSPky9WjabZX7zhygmxM3lhuiOE+ZF+6+
-         yhQg==
-X-Gm-Message-State: APjAAAXsqTKN8YJVjVBw0MC4vcmQN24G3ZYca6EIVZ3BMKsJF4AdbpTQ
-        1lM3xWL3g3/dGHLol1nuew7sYTUSjf3QVddlDcyTCA==
-X-Google-Smtp-Source: APXvYqyOVn3TXyhx+GoHYcgMBBF9yOdT1HuTV+3w8j1kxYzXCl2z3YA80qnpCa43jnHHo1tUjwE1QG14/Zn3P7OrhMk=
-X-Received: by 2002:aca:5205:: with SMTP id g5mr5640oib.43.1582860458043; Thu,
- 27 Feb 2020 19:27:38 -0800 (PST)
+        id S1726824AbgB1G51 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 28 Feb 2020 01:57:27 -0500
+Received: from mail.kernel.org ([198.145.29.99]:34640 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726816AbgB1G51 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Fri, 28 Feb 2020 01:57:27 -0500
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 9A2E3246B7
+        for <linux-efi@vger.kernel.org>; Fri, 28 Feb 2020 06:57:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1582873046;
+        bh=+rH1XpINpBtrm88dqha9DYIzJHHfZ5HEryEX8ySQ3v8=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=1IXlJ9iAroPkej8YtxatmI+am+jjVjZK896xJjmwx0XgK4O9354IrhfiFdeMnmL0c
+         yp5cRueU1MwnDlssmO/84v1WjeIWjW0ryn5kanidXZZFZnG4J0ltw1/dAHUYzylpe0
+         EcRcTppk9/rAED5Y/tn6ZGtrY8njx9ogaYLF6wtc=
+Received: by mail-wm1-f45.google.com with SMTP id c84so1987841wme.4
+        for <linux-efi@vger.kernel.org>; Thu, 27 Feb 2020 22:57:26 -0800 (PST)
+X-Gm-Message-State: APjAAAWQWPMBtU6AR3oNIEDOchFSMBpKTK2VHHV9TrayKrjRK1gsNapj
+        enPjfUTvgIQrCYfioLKSIgLzwtRPeIXcR3Dy6F6TiA==
+X-Google-Smtp-Source: APXvYqxtrGbWvZZne3m36BaZC5k/CTyLwXh+VURvxHGT0Tcc9qYyqdtozf4p3oSB1pCY8XemvKU0wJ114Y5Za7eguo4=
+X-Received: by 2002:a1c:bc46:: with SMTP id m67mr3136039wmf.40.1582873044773;
+ Thu, 27 Feb 2020 22:57:24 -0800 (PST)
 MIME-Version: 1.0
-References: <20200222014038.180923-1-saravanak@google.com> <20200222014038.180923-3-saravanak@google.com>
-In-Reply-To: <20200222014038.180923-3-saravanak@google.com>
-From:   Saravana Kannan <saravanak@google.com>
-Date:   Thu, 27 Feb 2020 19:27:01 -0800
-Message-ID: <CAGETcx-xxd_E=-zF5+a58queyGg_5JX9tbCm49YBtcvFUhVEZw@mail.gmail.com>
-Subject: Re: [PATCH v1 2/5] driver core: Add fw_devlink kernel commandline option
-To:     Jonathan Corbet <corbet@lwn.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Len Brown <lenb@kernel.org>
-Cc:     Android Kernel Team <kernel-team@android.com>,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+References: <20200226011037.7179-1-atish.patra@wdc.com> <20200226011037.7179-6-atish.patra@wdc.com>
+ <CAKv+Gu_iAzQ6et13aACarqns8-xzQ+YSqj+m3mVGGy=ny8GJBg@mail.gmail.com>
+ <26172d39fdb5ecd951ade0a89566c010f6166a03.camel@wdc.com> <CAKv+Gu8i93gM0dMqzbhvNbqsgd9dHCMGzX7E47uusrUvv6xRJA@mail.gmail.com>
+ <46e9873e288134f638cd8726a2c15c9ca63860ce.camel@wdc.com>
+In-Reply-To: <46e9873e288134f638cd8726a2c15c9ca63860ce.camel@wdc.com>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Fri, 28 Feb 2020 07:57:14 +0100
+X-Gmail-Original-Message-ID: <CAKv+Gu_2dCj74VvCMRQ9yFgBtJRENasBbEV0bwcfqLQwuaj0=A@mail.gmail.com>
+Message-ID: <CAKv+Gu_2dCj74VvCMRQ9yFgBtJRENasBbEV0bwcfqLQwuaj0=A@mail.gmail.com>
+Subject: Re: [RFC PATCH 5/5] RISC-V: Add EFI stub support.
+To:     Atish Patra <Atish.Patra@wdc.com>
+Cc:     "alexios.zavras@intel.com" <alexios.zavras@intel.com>,
+        "tglx@linutronix.de" <tglx@linutronix.de>,
+        "mchehab+samsung@kernel.org" <mchehab+samsung@kernel.org>,
+        "pbonzini@redhat.com" <pbonzini@redhat.com>,
+        "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
+        "michal.simek@xilinx.com" <michal.simek@xilinx.com>,
+        "abner.chang@hpe.com" <abner.chang@hpe.com>,
+        "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
+        "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "daniel.schaefer@hpe.com" <daniel.schaefer@hpe.com>,
+        Anup Patel <Anup.Patel@wdc.com>,
+        "kstewart@linuxfoundation.org" <kstewart@linuxfoundation.org>,
+        "palmer@dabbelt.com" <palmer@dabbelt.com>,
+        "aou@eecs.berkeley.edu" <aou@eecs.berkeley.edu>,
+        "arnd@arndb.de" <arnd@arndb.de>,
+        "rppt@linux.ibm.com" <rppt@linux.ibm.com>,
+        "bp@suse.de" <bp@suse.de>,
+        "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
+        "greentime.hu@sifive.com" <greentime.hu@sifive.com>,
+        "keescook@chromium.org" <keescook@chromium.org>,
+        "agraf@csgraf.de" <agraf@csgraf.de>,
+        "will@kernel.org" <will@kernel.org>,
+        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+        "mingo@kernel.org" <mingo@kernel.org>,
+        "allison@lohutok.net" <allison@lohutok.net>,
+        "han_mao@c-sky.com" <han_mao@c-sky.com>,
+        "paul.walmsley@sifive.com" <paul.walmsley@sifive.com>,
+        "leif@nuviainc.com" <leif@nuviainc.com>,
+        "linus.walleij@linaro.org" <linus.walleij@linaro.org>,
+        "akpm@linux-foundation.org" <akpm@linux-foundation.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, Feb 21, 2020 at 5:40 PM Saravana Kannan <saravanak@google.com> wrote:
+On Fri, 28 Feb 2020 at 02:05, Atish Patra <Atish.Patra@wdc.com> wrote:
 >
-> fwnode_operations.add_links allows creating device links from
-> information provided by firmware.
+> On Thu, 2020-02-27 at 20:59 +0100, Ard Biesheuvel wrote:
+> > On Thu, 27 Feb 2020 at 20:53, Atish Patra <Atish.Patra@wdc.com>
+> > wrote:
+> > > On Wed, 2020-02-26 at 08:28 +0100, Ard Biesheuvel wrote:
+> > > > On Wed, 26 Feb 2020 at 02:10, Atish Patra <atish.patra@wdc.com>
+> > > > wrote:
+> > > > > Add a RISC-V architecture specific stub code that actually
+> > > > > copies
+> > > > > the
+> > > > > actual kernel image to a valid address and jump to it after
+> > > > > boot
+> > > > > services
+> > > > > are terminated. Enable UEFI related kernel configs as well for
+> > > > > RISC-V.
+> > > > >
+> > > > > Signed-off-by: Atish Patra <atish.patra@wdc.com>
+> > > > > ---
+> > > > >  arch/riscv/Kconfig                        |  20 ++++
+> > > > >  arch/riscv/Makefile                       |   1 +
+> > > > >  arch/riscv/configs/defconfig              |   1 +
+> > > > >  drivers/firmware/efi/libstub/Makefile     |   8 ++
+> > > > >  drivers/firmware/efi/libstub/riscv-stub.c | 135
+> > > > > ++++++++++++++++++++++
+> > > > >  5 files changed, 165 insertions(+)
+> > > > >  create mode 100644 drivers/firmware/efi/libstub/riscv-stub.c
+> > > > >
+> > > > > diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+> > > > > index 42c122170cfd..68b1d565e51d 100644
+> > > > > --- a/arch/riscv/Kconfig
+> > > > > +++ b/arch/riscv/Kconfig
+> > > > > @@ -372,10 +372,30 @@ config CMDLINE_FORCE
+> > > > >
+> > > > >  endchoice
+> > > > >
+> > > > > +config EFI_STUB
+> > > > > +       bool
+> > > > > +
+> > > > > +config EFI
+> > > > > +       bool "UEFI runtime support"
+> > > > > +       depends on OF
+> > > > > +       select LIBFDT
+> > > > > +       select UCS2_STRING
+> > > > > +       select EFI_PARAMS_FROM_FDT
+> > > > > +       select EFI_STUB
+> > > > > +       select EFI_GENERIC_ARCH_STUB
+> > > > > +       default y
+> > > > > +       help
+> > > > > +         This option provides support for runtime services
+> > > > > provided
+> > > > > +         by UEFI firmware (such as non-volatile variables,
+> > > > > realtime
+> > > > > +          clock, and platform reset). A UEFI stub is also
+> > > > > provided
+> > > > > to
+> > > > > +         allow the kernel to be booted as an EFI application.
+> > > > > This
+> > > > > +         is only useful on systems that have UEFI firmware.
+> > > > > +
+> > > > >  endmenu
+> > > > >
+> > > > >  menu "Power management options"
+> > > > >
+> > > > >  source "kernel/power/Kconfig"
+> > > > > +source "drivers/firmware/Kconfig"
+> > > > >
+> > > > >  endmenu
+> > > > > diff --git a/arch/riscv/Makefile b/arch/riscv/Makefile
+> > > > > index b9009a2fbaf5..0afaa89ba9ad 100644
+> > > > > --- a/arch/riscv/Makefile
+> > > > > +++ b/arch/riscv/Makefile
+> > > > > @@ -78,6 +78,7 @@ head-y := arch/riscv/kernel/head.o
+> > > > >  core-y += arch/riscv/
+> > > > >
+> > > > >  libs-y += arch/riscv/lib/
+> > > > > +core-$(CONFIG_EFI_STUB) +=
+> > > > > $(objtree)/drivers/firmware/efi/libstub/lib.a
+> > > > >
+> > > > >  PHONY += vdso_install
+> > > > >  vdso_install:
+> > > > > diff --git a/arch/riscv/configs/defconfig
+> > > > > b/arch/riscv/configs/defconfig
+> > > > > index e2ff95cb3390..0a5d3578f51e 100644
+> > > > > --- a/arch/riscv/configs/defconfig
+> > > > > +++ b/arch/riscv/configs/defconfig
+> > > > > @@ -125,3 +125,4 @@ CONFIG_DEBUG_BLOCK_EXT_DEVT=y
+> > > > >  # CONFIG_FTRACE is not set
+> > > > >  # CONFIG_RUNTIME_TESTING_MENU is not set
+> > > > >  CONFIG_MEMTEST=y
+> > > > > +CONFIG_EFI=y
+> > > > > diff --git a/drivers/firmware/efi/libstub/Makefile
+> > > > > b/drivers/firmware/efi/libstub/Makefile
+> > > > > index 2c5b76787126..38facb61745b 100644
+> > > > > --- a/drivers/firmware/efi/libstub/Makefile
+> > > > > +++ b/drivers/firmware/efi/libstub/Makefile
+> > > > > @@ -21,6 +21,8 @@ cflags-$(CONFIG_ARM64)                :=
+> > > > > $(subst
+> > > > > $(CC_FLAGS_FTRACE),,$(KBUILD_CFLAGS)) \
+> > > > >  cflags-$(CONFIG_ARM)           := $(subst
+> > > > > $(CC_FLAGS_FTRACE),,$(KBUILD_CFLAGS)) \
+> > > > >                                    -fno-builtin -fpic \
+> > > > >                                    $(call cc-option,-mno-
+> > > > > single-
+> > > > > pic-base)
+> > > > > +cflags-$(CONFIG_RISCV)         := $(subst
+> > > > > $(CC_FLAGS_FTRACE),,$(KBUILD_CFLAGS)) \
+> > > > > +                                  -fpic
+> > > > >
+> > > > >  cflags-$(CONFIG_EFI_GENERIC_ARCH_STUB) +=
+> > > > > -I$(srctree)/scripts/dtc/libfdt
+> > > > >
+> > > > > @@ -55,6 +57,7 @@ lib-
+> > > > > $(CONFIG_EFI_GENERIC_ARCH_STUB)           +=
+> > > > > efi-stub.o fdt.o string.o \
+> > > > >  lib-$(CONFIG_ARM)              += arm32-stub.o
+> > > > >  lib-$(CONFIG_ARM64)            += arm64-stub.o
+> > > > >  lib-$(CONFIG_X86)              += x86-stub.o
+> > > > > +lib-$(CONFIG_RISCV)            += riscv-stub.o
+> > > > >  CFLAGS_arm32-stub.o            := -DTEXT_OFFSET=$(TEXT_OFFSET)
+> > > > >  CFLAGS_arm64-stub.o            := -DTEXT_OFFSET=$(TEXT_OFFSET)
+> > > > >
+> > > > > @@ -79,6 +82,11 @@ STUBCOPY_FLAGS-$(CONFIG_ARM64)       += --
+> > > > > prefix-alloc-sections=.init \
+> > > > >                                    --prefix-symbols=__efistub_
+> > > > >  STUBCOPY_RELOC-$(CONFIG_ARM64) := R_AARCH64_ABS
+> > > > >
+> > > > > +STUBCOPY_FLAGS-$(CONFIG_RISCV) += --prefix-alloc-
+> > > > > sections=.init \
+> > > > > +                                  --prefix-symbols=__efistub_
+> > > > > +STUBCOPY_RELOC-$(CONFIG_RISCV) := R_RISCV_HI20
+> > > > > +
+> > > > > +
+> > > > >  $(obj)/%.stub.o: $(obj)/%.o FORCE
+> > > > >         $(call if_changed,stubcopy)
+> > > > >
+> > > > > diff --git a/drivers/firmware/efi/libstub/riscv-stub.c
+> > > > > b/drivers/firmware/efi/libstub/riscv-stub.c
+> > > > > new file mode 100644
+> > > > > index 000000000000..3935b29ea93a
+> > > > > --- /dev/null
+> > > > > +++ b/drivers/firmware/efi/libstub/riscv-stub.c
+> > > > > @@ -0,0 +1,135 @@
+> > > > > +// SPDX-License-Identifier: GPL-2.0
+> > > > > +/*
+> > > > > + * Copyright (C) 2013, 2014 Linaro Ltd;  <roy.franz@linaro.org
+> > > > > >
+> > > > > + * Copyright (C) 2020 Western Digital Corporation or its
+> > > > > affiliates.
+> > > > > + *
+> > > > > + * This file implements the EFI boot stub for the RISC-V
+> > > > > kernel.
+> > > > > + * Adapted from ARM64 version at
+> > > > > drivers/firmware/efi/libstub/arm64-stub.c.
+> > > > > + */
+> > > > > +
+> > > > > +#include <linux/efi.h>
+> > > > > +#include <linux/libfdt.h>
+> > > > > +#include <linux/libfdt_env.h>
+> > > > > +#include <asm/efi.h>
+> > > > > +#include <asm/sections.h>
+> > > > > +
+> > > > > +#include "efistub.h"
+> > > > > +/*
+> > > > > + * RISCV requires the kernel image to placed TEXT_OFFSET bytes
+> > > > > beyond a 2 MB
+> > > > > + * aligned base for 64 bit and 4MB for 32 bit.
+> > > > > + */
+> > > > > +#if IS_ENABLED(CONFIG_64BIT)
+> > > >
+> > > > You can use #ifdef here
+> > > >
+> > >
+> > > ok.
+> > >
+> > > > > +#define MIN_KIMG_ALIGN SZ_2M
+> > > > > +#else
+> > > > > +#define MIN_KIMG_ALIGN SZ_4M
+> > > > > +#endif
+> > > > > +/*
+> > > > > + * TEXT_OFFSET ensures that we don't overwrite the firmware
+> > > > > that
+> > > > > probably sits
+> > > > > + * at the beginning of the DRAM.
+> > > > > + */
+> > > >
+> > > > Ugh. Really? On an EFI system, that memory should be reserved in
+> > > > some
+> > > > way, we shouldn't be able to stomp on it like that.
+> > > >
+> > >
+> > > Currently, we reserve the initial 128KB for run time firmware(only
+> > > openSBI for now, EDK2 later) by using PMP (physical memory
+> > > protection).
+> > > Any acess to that region from supervisor mode (i.e. U-Boot) will
+> > > result
+> > > in a fault.
+> > >
+> > > Is it mandatory for UEFI to reserve the beginning of the DRAM ?
+> > >
+> >
+> > It is mandatory to describe which memory is usable and which memory
+> > is
+> > reserved. If this memory is not usable, you either describe it as
+> > reserved, or not describe it at all. Describing it as usable memory,
+> > allocating it for the kernel but with a hidden agreement that it is
+> > reserved is highly likely to cause problems down the road.
+> >
 >
-> fwnode_operations.add_links is currently implemented only by
-> OF/devicetree code and a specific case of efi. However, there's nothing
-> preventing ACPI or other firmware types from implementing it.
+> I completely agree with you on this. We have been talking to have a
+> booting guide and memory map document for RISC-V Linux to document all
+> the idiosyncries of RISC-V. But that has not happend until now.
+> Once, the ordered booting patches are merged, I will try to take a stab
+> at it.
 >
-> The OF implementation is currently controlled by a kernel commandline
-> parameter called of_devlink.
+> Other than that, do we need to describe it somewhere in U-boot wrt to
+> UEFI so that it doesn't allocate memory from that region ?
 >
-> Since this feature is generic isn't limited to OF, add a generic
-> fw_devlink kernel commandline parameter to control this feature across
-> firmware types.
->
-> Signed-off-by: Saravana Kannan <saravanak@google.com>
-> ---
->  .../admin-guide/kernel-parameters.txt         | 18 +++++++++++++
->  drivers/base/core.c                           | 27 ++++++++++++++++++-
->  include/linux/fwnode.h                        |  2 ++
->  3 files changed, 46 insertions(+), 1 deletion(-)
->
-> diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-> index dbc22d684627..29985152b66d 100644
-> --- a/Documentation/admin-guide/kernel-parameters.txt
-> +++ b/Documentation/admin-guide/kernel-parameters.txt
-> @@ -1350,6 +1350,24 @@
->                         can be changed at run time by the max_graph_depth file
->                         in the tracefs tracing directory. default: 0 (no limit)
->
-> +       fw_devlink=     [KNL] Create device links between consumer and supplier
-> +                       devices by scanning the firmware to infer the
-> +                       consumer/supplier relationships. This feature is
-> +                       especially useful when drivers are loaded as modules as
-> +                       it ensures proper ordering of tasks like device probing
-> +                       (suppliers first, then consumers), supplier boot state
-> +                       clean up (only after all consumers have probed),
-> +                       suspend/resume & runtime PM (consumers first, then
-> +                       suppliers).
-> +                       Format: { off | permissive | on | rpm }
-> +                       off --  Don't create device links from firmware info.
-> +                       permissive -- Create device links from firmware info
-> +                               but use it only for ordering boot state clean
-> +                               up (sync_state() calls).
-> +                       on --   Create device links from firmware info and use it
-> +                               to enforce probe and suspend/resume ordering.
-> +                       rpm --  Like "on", but also use to order runtime PM.
-> +
 
-A bit of bikeshedding myself: I could rename "on" to "enforce" and
-"rpm" to "enforce-rpm".
+It is an idiosyncrasy that the firmware should hide from the OS.
 
-Let me know if any of you have a strong preference on these two options.
+What if GRUB comes along and attempts to allocate that memory? Do we
+also have to teach it that the first 128 KB memory of free memory are
+magic and should not be touched?
 
--Saravana
-
->         gamecon.map[2|3]=
->                         [HW,JOY] Multisystem joystick and NES/SNES/PSX pad
->                         support via parallel port (up to 5 devices per port)
-> diff --git a/drivers/base/core.c b/drivers/base/core.c
-> index d32a3aefff32..aeaca8a3aad9 100644
-> --- a/drivers/base/core.c
-> +++ b/drivers/base/core.c
-> @@ -2345,6 +2345,31 @@ static int device_private_init(struct device *dev)
->         return 0;
->  }
->
-> +u32 fw_devlink_flags;
-> +static int __init fw_devlink_setup(char *arg)
-> +{
-> +       if (!arg)
-> +               return -EINVAL;
-> +
-> +       if (strcmp(arg, "off") == 0) {
-> +               fw_devlink_flags = 0;
-> +       } else if (strcmp(arg, "permissive") == 0) {
-> +               fw_devlink_flags = DL_FLAG_SYNC_STATE_ONLY;
-> +       } else if (strcmp(arg, "on") == 0) {
-> +               fw_devlink_flags = DL_FLAG_AUTOPROBE_CONSUMER;
-> +       } else if (strcmp(arg, "rpm") == 0) {
-> +               fw_devlink_flags = DL_FLAG_AUTOPROBE_CONSUMER |
-> +                                  DL_FLAG_PM_RUNTIME;
-> +       }
-> +       return 0;
-> +}
-> +early_param("fw_devlink", fw_devlink_setup);
-> +
-> +u32 fw_devlink_get_flags(void)
-> +{
-> +       return fw_devlink_flags;
-> +}
-> +
->  /**
->   * device_add - add device to device hierarchy.
->   * @dev: device.
-> @@ -2493,7 +2518,7 @@ int device_add(struct device *dev)
->          */
->         device_link_add_missing_supplier_links();
->
-> -       if (fwnode_has_op(dev->fwnode, add_links)) {
-> +       if (fw_devlink_flags && fwnode_has_op(dev->fwnode, add_links)) {
->                 fw_ret = fwnode_call_int_op(dev->fwnode, add_links, dev);
->                 if (fw_ret == -ENODEV)
->                         device_link_wait_for_mandatory_supplier(dev);
-> diff --git a/include/linux/fwnode.h b/include/linux/fwnode.h
-> index 8feeb94b8acc..e0abafbb17f8 100644
-> --- a/include/linux/fwnode.h
-> +++ b/include/linux/fwnode.h
-> @@ -170,4 +170,6 @@ struct fwnode_operations {
->         } while (false)
->  #define get_dev_from_fwnode(fwnode)    get_device((fwnode)->dev)
->
-> +extern u32 fw_devlink_get_flags(void);
-> +
->  #endif
-> --
-> 2.25.0.265.gbab2e86ba0-goog
->
+So the answer is to mark it as reserved. This way, no UEFI tools,
+bootloaders etc will ever try to use it. Then, in the stub, you can
+tweak the existing code to cheat a bit, and make the TEXT_OFFSET
+window overlap the 128 KB reserved window at the bottom of memory.
+Doing that in the stub is fine - this is part of the kernel so it can
+know about crazy RISC-V rules.
