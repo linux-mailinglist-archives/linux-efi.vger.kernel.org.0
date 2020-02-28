@@ -2,311 +2,198 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7CBB7173173
-	for <lists+linux-efi@lfdr.de>; Fri, 28 Feb 2020 07:57:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3007917339F
+	for <lists+linux-efi@lfdr.de>; Fri, 28 Feb 2020 10:19:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726824AbgB1G51 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 28 Feb 2020 01:57:27 -0500
-Received: from mail.kernel.org ([198.145.29.99]:34640 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726816AbgB1G51 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Fri, 28 Feb 2020 01:57:27 -0500
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        id S1726148AbgB1JTR (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 28 Feb 2020 04:19:17 -0500
+Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:30141 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726603AbgB1JTR (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 28 Feb 2020 04:19:17 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1582881555;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+        bh=BrFCNX4F1XmOwW/MDeZGMPxT/iET1QQu3H0uJejQp0I=;
+        b=NeuVF72xS/TLXANPdZJ2ps4/CnkL/iRR4vL0wbf/m2jg/yMIXi54Slma1p3a+YcCm1aBOa
+        dPjApazVbblMMIwAJnq+ewM9UfDKEU88G/EM8sMoXA3OjoZEsjsc0uioSHyESUgpxv3bbE
+        IKuPuG9C67cP/rwYRUny2wGeXRzVvNA=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-385-wl2DRK5AOjm4At23FzUAJw-1; Fri, 28 Feb 2020 04:19:13 -0500
+X-MC-Unique: wl2DRK5AOjm4At23FzUAJw-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 9A2E3246B7
-        for <linux-efi@vger.kernel.org>; Fri, 28 Feb 2020 06:57:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1582873046;
-        bh=+rH1XpINpBtrm88dqha9DYIzJHHfZ5HEryEX8ySQ3v8=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=1IXlJ9iAroPkej8YtxatmI+am+jjVjZK896xJjmwx0XgK4O9354IrhfiFdeMnmL0c
-         yp5cRueU1MwnDlssmO/84v1WjeIWjW0ryn5kanidXZZFZnG4J0ltw1/dAHUYzylpe0
-         EcRcTppk9/rAED5Y/tn6ZGtrY8njx9ogaYLF6wtc=
-Received: by mail-wm1-f45.google.com with SMTP id c84so1987841wme.4
-        for <linux-efi@vger.kernel.org>; Thu, 27 Feb 2020 22:57:26 -0800 (PST)
-X-Gm-Message-State: APjAAAWQWPMBtU6AR3oNIEDOchFSMBpKTK2VHHV9TrayKrjRK1gsNapj
-        enPjfUTvgIQrCYfioLKSIgLzwtRPeIXcR3Dy6F6TiA==
-X-Google-Smtp-Source: APXvYqxtrGbWvZZne3m36BaZC5k/CTyLwXh+VURvxHGT0Tcc9qYyqdtozf4p3oSB1pCY8XemvKU0wJ114Y5Za7eguo4=
-X-Received: by 2002:a1c:bc46:: with SMTP id m67mr3136039wmf.40.1582873044773;
- Thu, 27 Feb 2020 22:57:24 -0800 (PST)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 54D39DC2E;
+        Fri, 28 Feb 2020 09:19:11 +0000 (UTC)
+Received: from [10.36.117.180] (ovpn-117-180.ams2.redhat.com [10.36.117.180])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 229858C099;
+        Fri, 28 Feb 2020 09:19:04 +0000 (UTC)
+Subject: Re: [RESEND PATCH v2] efi: Only print errors about failing to get
+ certs if EFI vars are found
+To:     Javier Martinez Canillas <javierm@redhat.com>,
+        linux-kernel@vger.kernel.org
+Cc:     linux-efi@vger.kernel.org, Hans de Goede <hdegoede@redhat.com>,
+        Eric Richter <erichte@linux.ibm.com>,
+        James Morris <jmorris@namei.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        Nayna Jain <nayna@linux.ibm.com>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        YueHaibing <yuehaibing@huawei.com>,
+        linux-security-module@vger.kernel.org
+References: <20200217113947.2070436-1-javierm@redhat.com>
+From:   David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
+ 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
+Organization: Red Hat GmbH
+Message-ID: <0fd1b499-3a5e-c78e-0279-186a4c424217@redhat.com>
+Date:   Fri, 28 Feb 2020 10:19:03 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.5.0
 MIME-Version: 1.0
-References: <20200226011037.7179-1-atish.patra@wdc.com> <20200226011037.7179-6-atish.patra@wdc.com>
- <CAKv+Gu_iAzQ6et13aACarqns8-xzQ+YSqj+m3mVGGy=ny8GJBg@mail.gmail.com>
- <26172d39fdb5ecd951ade0a89566c010f6166a03.camel@wdc.com> <CAKv+Gu8i93gM0dMqzbhvNbqsgd9dHCMGzX7E47uusrUvv6xRJA@mail.gmail.com>
- <46e9873e288134f638cd8726a2c15c9ca63860ce.camel@wdc.com>
-In-Reply-To: <46e9873e288134f638cd8726a2c15c9ca63860ce.camel@wdc.com>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Fri, 28 Feb 2020 07:57:14 +0100
-X-Gmail-Original-Message-ID: <CAKv+Gu_2dCj74VvCMRQ9yFgBtJRENasBbEV0bwcfqLQwuaj0=A@mail.gmail.com>
-Message-ID: <CAKv+Gu_2dCj74VvCMRQ9yFgBtJRENasBbEV0bwcfqLQwuaj0=A@mail.gmail.com>
-Subject: Re: [RFC PATCH 5/5] RISC-V: Add EFI stub support.
-To:     Atish Patra <Atish.Patra@wdc.com>
-Cc:     "alexios.zavras@intel.com" <alexios.zavras@intel.com>,
-        "tglx@linutronix.de" <tglx@linutronix.de>,
-        "mchehab+samsung@kernel.org" <mchehab+samsung@kernel.org>,
-        "pbonzini@redhat.com" <pbonzini@redhat.com>,
-        "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
-        "michal.simek@xilinx.com" <michal.simek@xilinx.com>,
-        "abner.chang@hpe.com" <abner.chang@hpe.com>,
-        "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
-        "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "daniel.schaefer@hpe.com" <daniel.schaefer@hpe.com>,
-        Anup Patel <Anup.Patel@wdc.com>,
-        "kstewart@linuxfoundation.org" <kstewart@linuxfoundation.org>,
-        "palmer@dabbelt.com" <palmer@dabbelt.com>,
-        "aou@eecs.berkeley.edu" <aou@eecs.berkeley.edu>,
-        "arnd@arndb.de" <arnd@arndb.de>,
-        "rppt@linux.ibm.com" <rppt@linux.ibm.com>,
-        "bp@suse.de" <bp@suse.de>,
-        "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
-        "greentime.hu@sifive.com" <greentime.hu@sifive.com>,
-        "keescook@chromium.org" <keescook@chromium.org>,
-        "agraf@csgraf.de" <agraf@csgraf.de>,
-        "will@kernel.org" <will@kernel.org>,
-        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-        "mingo@kernel.org" <mingo@kernel.org>,
-        "allison@lohutok.net" <allison@lohutok.net>,
-        "han_mao@c-sky.com" <han_mao@c-sky.com>,
-        "paul.walmsley@sifive.com" <paul.walmsley@sifive.com>,
-        "leif@nuviainc.com" <leif@nuviainc.com>,
-        "linus.walleij@linaro.org" <linus.walleij@linaro.org>,
-        "akpm@linux-foundation.org" <akpm@linux-foundation.org>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20200217113947.2070436-1-javierm@redhat.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, 28 Feb 2020 at 02:05, Atish Patra <Atish.Patra@wdc.com> wrote:
->
-> On Thu, 2020-02-27 at 20:59 +0100, Ard Biesheuvel wrote:
-> > On Thu, 27 Feb 2020 at 20:53, Atish Patra <Atish.Patra@wdc.com>
-> > wrote:
-> > > On Wed, 2020-02-26 at 08:28 +0100, Ard Biesheuvel wrote:
-> > > > On Wed, 26 Feb 2020 at 02:10, Atish Patra <atish.patra@wdc.com>
-> > > > wrote:
-> > > > > Add a RISC-V architecture specific stub code that actually
-> > > > > copies
-> > > > > the
-> > > > > actual kernel image to a valid address and jump to it after
-> > > > > boot
-> > > > > services
-> > > > > are terminated. Enable UEFI related kernel configs as well for
-> > > > > RISC-V.
-> > > > >
-> > > > > Signed-off-by: Atish Patra <atish.patra@wdc.com>
-> > > > > ---
-> > > > >  arch/riscv/Kconfig                        |  20 ++++
-> > > > >  arch/riscv/Makefile                       |   1 +
-> > > > >  arch/riscv/configs/defconfig              |   1 +
-> > > > >  drivers/firmware/efi/libstub/Makefile     |   8 ++
-> > > > >  drivers/firmware/efi/libstub/riscv-stub.c | 135
-> > > > > ++++++++++++++++++++++
-> > > > >  5 files changed, 165 insertions(+)
-> > > > >  create mode 100644 drivers/firmware/efi/libstub/riscv-stub.c
-> > > > >
-> > > > > diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-> > > > > index 42c122170cfd..68b1d565e51d 100644
-> > > > > --- a/arch/riscv/Kconfig
-> > > > > +++ b/arch/riscv/Kconfig
-> > > > > @@ -372,10 +372,30 @@ config CMDLINE_FORCE
-> > > > >
-> > > > >  endchoice
-> > > > >
-> > > > > +config EFI_STUB
-> > > > > +       bool
-> > > > > +
-> > > > > +config EFI
-> > > > > +       bool "UEFI runtime support"
-> > > > > +       depends on OF
-> > > > > +       select LIBFDT
-> > > > > +       select UCS2_STRING
-> > > > > +       select EFI_PARAMS_FROM_FDT
-> > > > > +       select EFI_STUB
-> > > > > +       select EFI_GENERIC_ARCH_STUB
-> > > > > +       default y
-> > > > > +       help
-> > > > > +         This option provides support for runtime services
-> > > > > provided
-> > > > > +         by UEFI firmware (such as non-volatile variables,
-> > > > > realtime
-> > > > > +          clock, and platform reset). A UEFI stub is also
-> > > > > provided
-> > > > > to
-> > > > > +         allow the kernel to be booted as an EFI application.
-> > > > > This
-> > > > > +         is only useful on systems that have UEFI firmware.
-> > > > > +
-> > > > >  endmenu
-> > > > >
-> > > > >  menu "Power management options"
-> > > > >
-> > > > >  source "kernel/power/Kconfig"
-> > > > > +source "drivers/firmware/Kconfig"
-> > > > >
-> > > > >  endmenu
-> > > > > diff --git a/arch/riscv/Makefile b/arch/riscv/Makefile
-> > > > > index b9009a2fbaf5..0afaa89ba9ad 100644
-> > > > > --- a/arch/riscv/Makefile
-> > > > > +++ b/arch/riscv/Makefile
-> > > > > @@ -78,6 +78,7 @@ head-y := arch/riscv/kernel/head.o
-> > > > >  core-y += arch/riscv/
-> > > > >
-> > > > >  libs-y += arch/riscv/lib/
-> > > > > +core-$(CONFIG_EFI_STUB) +=
-> > > > > $(objtree)/drivers/firmware/efi/libstub/lib.a
-> > > > >
-> > > > >  PHONY += vdso_install
-> > > > >  vdso_install:
-> > > > > diff --git a/arch/riscv/configs/defconfig
-> > > > > b/arch/riscv/configs/defconfig
-> > > > > index e2ff95cb3390..0a5d3578f51e 100644
-> > > > > --- a/arch/riscv/configs/defconfig
-> > > > > +++ b/arch/riscv/configs/defconfig
-> > > > > @@ -125,3 +125,4 @@ CONFIG_DEBUG_BLOCK_EXT_DEVT=y
-> > > > >  # CONFIG_FTRACE is not set
-> > > > >  # CONFIG_RUNTIME_TESTING_MENU is not set
-> > > > >  CONFIG_MEMTEST=y
-> > > > > +CONFIG_EFI=y
-> > > > > diff --git a/drivers/firmware/efi/libstub/Makefile
-> > > > > b/drivers/firmware/efi/libstub/Makefile
-> > > > > index 2c5b76787126..38facb61745b 100644
-> > > > > --- a/drivers/firmware/efi/libstub/Makefile
-> > > > > +++ b/drivers/firmware/efi/libstub/Makefile
-> > > > > @@ -21,6 +21,8 @@ cflags-$(CONFIG_ARM64)                :=
-> > > > > $(subst
-> > > > > $(CC_FLAGS_FTRACE),,$(KBUILD_CFLAGS)) \
-> > > > >  cflags-$(CONFIG_ARM)           := $(subst
-> > > > > $(CC_FLAGS_FTRACE),,$(KBUILD_CFLAGS)) \
-> > > > >                                    -fno-builtin -fpic \
-> > > > >                                    $(call cc-option,-mno-
-> > > > > single-
-> > > > > pic-base)
-> > > > > +cflags-$(CONFIG_RISCV)         := $(subst
-> > > > > $(CC_FLAGS_FTRACE),,$(KBUILD_CFLAGS)) \
-> > > > > +                                  -fpic
-> > > > >
-> > > > >  cflags-$(CONFIG_EFI_GENERIC_ARCH_STUB) +=
-> > > > > -I$(srctree)/scripts/dtc/libfdt
-> > > > >
-> > > > > @@ -55,6 +57,7 @@ lib-
-> > > > > $(CONFIG_EFI_GENERIC_ARCH_STUB)           +=
-> > > > > efi-stub.o fdt.o string.o \
-> > > > >  lib-$(CONFIG_ARM)              += arm32-stub.o
-> > > > >  lib-$(CONFIG_ARM64)            += arm64-stub.o
-> > > > >  lib-$(CONFIG_X86)              += x86-stub.o
-> > > > > +lib-$(CONFIG_RISCV)            += riscv-stub.o
-> > > > >  CFLAGS_arm32-stub.o            := -DTEXT_OFFSET=$(TEXT_OFFSET)
-> > > > >  CFLAGS_arm64-stub.o            := -DTEXT_OFFSET=$(TEXT_OFFSET)
-> > > > >
-> > > > > @@ -79,6 +82,11 @@ STUBCOPY_FLAGS-$(CONFIG_ARM64)       += --
-> > > > > prefix-alloc-sections=.init \
-> > > > >                                    --prefix-symbols=__efistub_
-> > > > >  STUBCOPY_RELOC-$(CONFIG_ARM64) := R_AARCH64_ABS
-> > > > >
-> > > > > +STUBCOPY_FLAGS-$(CONFIG_RISCV) += --prefix-alloc-
-> > > > > sections=.init \
-> > > > > +                                  --prefix-symbols=__efistub_
-> > > > > +STUBCOPY_RELOC-$(CONFIG_RISCV) := R_RISCV_HI20
-> > > > > +
-> > > > > +
-> > > > >  $(obj)/%.stub.o: $(obj)/%.o FORCE
-> > > > >         $(call if_changed,stubcopy)
-> > > > >
-> > > > > diff --git a/drivers/firmware/efi/libstub/riscv-stub.c
-> > > > > b/drivers/firmware/efi/libstub/riscv-stub.c
-> > > > > new file mode 100644
-> > > > > index 000000000000..3935b29ea93a
-> > > > > --- /dev/null
-> > > > > +++ b/drivers/firmware/efi/libstub/riscv-stub.c
-> > > > > @@ -0,0 +1,135 @@
-> > > > > +// SPDX-License-Identifier: GPL-2.0
-> > > > > +/*
-> > > > > + * Copyright (C) 2013, 2014 Linaro Ltd;  <roy.franz@linaro.org
-> > > > > >
-> > > > > + * Copyright (C) 2020 Western Digital Corporation or its
-> > > > > affiliates.
-> > > > > + *
-> > > > > + * This file implements the EFI boot stub for the RISC-V
-> > > > > kernel.
-> > > > > + * Adapted from ARM64 version at
-> > > > > drivers/firmware/efi/libstub/arm64-stub.c.
-> > > > > + */
-> > > > > +
-> > > > > +#include <linux/efi.h>
-> > > > > +#include <linux/libfdt.h>
-> > > > > +#include <linux/libfdt_env.h>
-> > > > > +#include <asm/efi.h>
-> > > > > +#include <asm/sections.h>
-> > > > > +
-> > > > > +#include "efistub.h"
-> > > > > +/*
-> > > > > + * RISCV requires the kernel image to placed TEXT_OFFSET bytes
-> > > > > beyond a 2 MB
-> > > > > + * aligned base for 64 bit and 4MB for 32 bit.
-> > > > > + */
-> > > > > +#if IS_ENABLED(CONFIG_64BIT)
-> > > >
-> > > > You can use #ifdef here
-> > > >
-> > >
-> > > ok.
-> > >
-> > > > > +#define MIN_KIMG_ALIGN SZ_2M
-> > > > > +#else
-> > > > > +#define MIN_KIMG_ALIGN SZ_4M
-> > > > > +#endif
-> > > > > +/*
-> > > > > + * TEXT_OFFSET ensures that we don't overwrite the firmware
-> > > > > that
-> > > > > probably sits
-> > > > > + * at the beginning of the DRAM.
-> > > > > + */
-> > > >
-> > > > Ugh. Really? On an EFI system, that memory should be reserved in
-> > > > some
-> > > > way, we shouldn't be able to stomp on it like that.
-> > > >
-> > >
-> > > Currently, we reserve the initial 128KB for run time firmware(only
-> > > openSBI for now, EDK2 later) by using PMP (physical memory
-> > > protection).
-> > > Any acess to that region from supervisor mode (i.e. U-Boot) will
-> > > result
-> > > in a fault.
-> > >
-> > > Is it mandatory for UEFI to reserve the beginning of the DRAM ?
-> > >
-> >
-> > It is mandatory to describe which memory is usable and which memory
-> > is
-> > reserved. If this memory is not usable, you either describe it as
-> > reserved, or not describe it at all. Describing it as usable memory,
-> > allocating it for the kernel but with a hidden agreement that it is
-> > reserved is highly likely to cause problems down the road.
-> >
->
-> I completely agree with you on this. We have been talking to have a
-> booting guide and memory map document for RISC-V Linux to document all
-> the idiosyncries of RISC-V. But that has not happend until now.
-> Once, the ordered booting patches are merged, I will try to take a stab
-> at it.
->
-> Other than that, do we need to describe it somewhere in U-boot wrt to
-> UEFI so that it doesn't allocate memory from that region ?
->
+On 17.02.20 12:39, Javier Martinez Canillas wrote:
+> If CONFIG_LOAD_UEFI_KEYS is enabled, the kernel attempts to load the ce=
+rts
+> from the db, dbx and MokListRT EFI variables into the appropriate keyri=
+ngs.
+>=20
+> But it just assumes that the variables will be present and prints an er=
+ror
+> if the certs can't be loaded, even when is possible that the variables =
+may
+> not exist. For example the MokListRT variable will only be present if s=
+him
+> is used.
+>=20
+> So only print an error message about failing to get the certs list from=
+ an
+> EFI variable if this is found. Otherwise these printed errors just poll=
+ute
+> the kernel log ring buffer with confusing messages like the following:
+>=20
+> [    5.427251] Couldn't get size: 0x800000000000000e
+> [    5.427261] MODSIGN: Couldn't get UEFI db list
+> [    5.428012] Couldn't get size: 0x800000000000000e
+> [    5.428023] Couldn't get UEFI MokListRT
+>=20
+> Reported-by: Hans de Goede <hdegoede@redhat.com>
+> Signed-off-by: Javier Martinez Canillas <javierm@redhat.com>
+> Tested-by: Hans de Goede <hdegoede@redhat.com>
 
-It is an idiosyncrasy that the firmware should hide from the OS.
+This patch seems to break a very basic x86-64 QEMU setup (booting
+upstream kernel with a F31 initrd - are you running basic boot tests?).
+Luckily, it only took me 5 minutes to identify this patch. Reverting
+this patch from linux-next fixes it for me.
 
-What if GRUB comes along and attempts to allocate that memory? Do we
-also have to teach it that the first 128 KB memory of free memory are
-magic and should not be touched?
 
-So the answer is to mark it as reserved. This way, no UEFI tools,
-bootloaders etc will ever try to use it. Then, in the stub, you can
-tweak the existing code to cheat a bit, and make the TEXT_OFFSET
-window overlap the 128 KB reserved window at the bottom of memory.
-Doing that in the stub is fine - this is part of the kernel so it can
-know about crazy RISC-V rules.
+[    1.042766] Loaded X.509 cert 'Build time autogenerated kernel key: 66=
+25d6e34255935276d2c9851e2458909a4bcd69'
+[    1.044314] zswap: loaded using pool lzo/zbud
+[    1.045663] Key type ._fscrypt registered
+[    1.046154] Key type .fscrypt registered
+[    1.046524] Key type fscrypt-provisioning registered
+[    1.051178] Key type big_key registered
+[    1.055108] Key type encrypted registered
+[    1.055513] BUG: kernel NULL pointer dereference, address: 00000000000=
+00000
+[    1.056172] #PF: supervisor instruction fetch in kernel mode
+[    1.056706] #PF: error_code(0x0010) - not-present page
+[    1.057367] PGD 0 P4D 0=20
+[    1.057729] Oops: 0010 [#1] SMP NOPTI
+[    1.058249] CPU: 1 PID: 1 Comm: swapper/0 Not tainted 5.6.0-rc3-next-2=
+0200228+ #79
+[    1.059167] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIO=
+S rel-1.13.0-0-gf21b5a4aeb02-prebuilt.qemu.4
+[    1.060230] RIP: 0010:0x0
+[    1.060478] Code: Bad RIP value.
+[    1.060786] RSP: 0018:ffffbc7880637d98 EFLAGS: 00010246
+[    1.061281] RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffffbc788=
+0637dc8
+[    1.061954] RDX: 0000000000000000 RSI: ffffbc7880637df0 RDI: ffffffffa=
+73c40be
+[    1.062611] RBP: ffffbc7880637e20 R08: ffffbc7880637dac R09: ffffa0238=
+f4ba6c0
+[    1.063278] R10: 0000000000000000 R11: 0000000000000001 R12: 000000000=
+0000000
+[    1.063956] R13: ffffa024bdd6f660 R14: 0000000000000000 R15: 000000000=
+0000000
+[    1.064609] FS:  0000000000000000(0000) GS:ffffa023fdd00000(0000) knlG=
+S:0000000000000000
+[    1.065360] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[    1.065900] CR2: ffffffffffffffd6 CR3: 00000000b1610000 CR4: 000000000=
+00006e0
+[    1.066562] Call Trace:
+[    1.066803]  load_uefi_certs+0xc8/0x2bb
+[    1.067171]  ? get_cert_list+0xfb/0xfb
+[    1.067523]  do_one_initcall+0x5d/0x2f0
+[    1.067894]  ? rcu_read_lock_sched_held+0x52/0x80
+[    1.068337]  kernel_init_freeable+0x243/0x2c2
+[    1.068751]  ? rest_init+0x23a/0x23a
+[    1.069095]  kernel_init+0xa/0x106
+[    1.069416]  ret_from_fork+0x27/0x50
+[    1.069759] Modules linked in:
+[    1.070050] CR2: 0000000000000000
+[    1.070361] ---[ end trace fcce9bb4feb21d99 ]---
+
+
+--=20
+Thanks,
+
+David / dhildenb
+
