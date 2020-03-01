@@ -2,44 +2,44 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1AA0F1750C1
+	by mail.lfdr.de (Postfix) with ESMTP id A336F1750C3
 	for <lists+linux-efi@lfdr.de>; Mon,  2 Mar 2020 00:04:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726785AbgCAXEl (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sun, 1 Mar 2020 18:04:41 -0500
-Received: from mail-qt1-f196.google.com ([209.85.160.196]:32933 "EHLO
-        mail-qt1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726766AbgCAXEk (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sun, 1 Mar 2020 18:04:40 -0500
-Received: by mail-qt1-f196.google.com with SMTP id x8so4111680qts.0;
-        Sun, 01 Mar 2020 15:04:40 -0800 (PST)
+        id S1726845AbgCAXEm (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sun, 1 Mar 2020 18:04:42 -0500
+Received: from mail-qt1-f193.google.com ([209.85.160.193]:38935 "EHLO
+        mail-qt1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726418AbgCAXEl (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sun, 1 Mar 2020 18:04:41 -0500
+Received: by mail-qt1-f193.google.com with SMTP id e13so2679591qts.6;
+        Sun, 01 Mar 2020 15:04:41 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=AUjIIsPXPmqVI6pKRaapg6FxwXRBN7yq/9Q9SfoYuSg=;
-        b=r88TRoy2X2zJDT73nWbIeEZ7OeQuVD/UIyt/6rAar357qAivbB9n3qjqQz5jHP2QWV
-         8PL6TOq7P+lN9v/bObsA0SQ4ibVzcSCcd/hfIf1fSwWvVmANnxQcSuOGIGX058DCEe9J
-         f5ucb408+zJEDBFUJ6lh6mNStfEvAJ8dvQBHtOV/ZUpZ2p7ck8PKhtFrRpVfg/GthtSu
-         /GmKeuVlzx04wUt5X+ogIC0iyc+NIuz7r5koU+Y0DHPNGIMiCtC/PM7gGisGFK8L2ECc
-         u/QbsGoSBQO2SRLcEHdczvikQbpZS193uPG+4wUboe1NULpcLfzbd2UJPYp+DHt26h3O
-         kNyA==
-X-Gm-Message-State: ANhLgQ3RlVKMoBEl8dohSPn60uezo5+uvdslys6b7X2oKlw39HK7EnxD
-        XJ395ls1bmMNMHpi/jTPhck=
-X-Google-Smtp-Source: ADFU+vsYAIdS2YWQfdA/f/nvEC++maOnxktB9K4vPdLL6bZVhnK6dPUBWrJoOG04FjioiuNNSi+ZCQ==
-X-Received: by 2002:ac8:6d10:: with SMTP id o16mr3479482qtt.308.1583103879876;
-        Sun, 01 Mar 2020 15:04:39 -0800 (PST)
+        bh=rmV5IqscjIZivuAGdRTQkJJYXa88r33702K1Dz7eG0U=;
+        b=HE/+8tYwyaWyJPL3sje7YiYjE3E4TzuRDcMAqonSuz+aMEGucgWoByNQOp9qElYaLL
+         UnFYaG3kq1s+RtF81i+6ikmbA5lotLw/GyyLcO+EqYnMtSbi0k0Jxzb65kPiuy76MA+g
+         bMS8DHBFRcPXBzEWT9dR7PbX7h1ZVhgtSlIj5AAdXOAjTimDKwTYf9mwNbqQvLswuuGV
+         Mj0nV9Ih4SZ2Dzby7pdb12HBRs3C6tuMNane29AysdnEpzR1c86oK3GRvJ2TUW4kZYC6
+         i+xS0vHtkF1Hwkyqig1sxlcRdkl9j+k+xWEPeGOGSBwKcRKBaDRGZcJRSGH896JYTs1A
+         YbxQ==
+X-Gm-Message-State: APjAAAUQQvf5kIiI3ZcdmBe4aWNQtOEVV2+BXKorL+lNqT/egVFMMl4I
+        +C3vXO84Jgj8iGYF52MlHfgOh3yBeBc=
+X-Google-Smtp-Source: APXvYqwrOTQTq4Ldfu4ycs185PMTamy4EcVtEkfdUsQOwCAPB6QuwGrqtdvCKbFpZijKIpFhFc4ZlQ==
+X-Received: by 2002:ac8:7090:: with SMTP id y16mr12998941qto.356.1583103880601;
+        Sun, 01 Mar 2020 15:04:40 -0800 (PST)
 Received: from rani.riverdale.lan ([2001:470:1f07:5f3::b55f])
         by smtp.gmail.com with ESMTPSA id n138sm9065082qkn.33.2020.03.01.15.04.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 01 Mar 2020 15:04:39 -0800 (PST)
+        Sun, 01 Mar 2020 15:04:40 -0800 (PST)
 From:   Arvind Sankar <nivedita@alum.mit.edu>
 To:     Ard Biesheuvel <ardb@kernel.org>
 Cc:     linux-efi@vger.kernel.org, x86@kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH 3/5] efi/x86: Make efi32_pe_entry more readable
-Date:   Sun,  1 Mar 2020 18:04:34 -0500
-Message-Id: <20200301230436.2246909-4-nivedita@alum.mit.edu>
+Subject: [PATCH 4/5] efi/x86: Avoid using code32_start
+Date:   Sun,  1 Mar 2020 18:04:35 -0500
+Message-Id: <20200301230436.2246909-5-nivedita@alum.mit.edu>
 X-Mailer: git-send-email 2.24.1
 In-Reply-To: <20200301230436.2246909-1-nivedita@alum.mit.edu>
 References: <20200301230436.2246909-1-nivedita@alum.mit.edu>
@@ -50,100 +50,104 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Setup a proper frame pointer in efi32_pe_entry so that it's easier to
-calculate offsets for arguments.
+code32_start is meant for 16-bit real-mode bootloaders to inform the
+kernel where the 32-bit protected mode code starts. Nothing in the
+protected mode kernel except the EFI stub uses it.
+
+efi_main currently returns boot_params, with code32_start set inside it
+to tell efi_stub_entry where startup_32 is located. Since it was invoked
+by efi_stub_entry in the first place, boot_params is already known.
+Return the address of startup_32 instead.
+
+This will allow a 64-bit kernel to live above 4Gb, for example, and it's
+cleaner.
 
 Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
 ---
- arch/x86/boot/compressed/head_64.S | 57 +++++++++++++++++++++---------
- 1 file changed, 40 insertions(+), 17 deletions(-)
+ arch/x86/boot/compressed/head_32.S      |  3 +--
+ arch/x86/boot/compressed/head_64.S      |  4 ++--
+ arch/x86/kernel/asm-offsets.c           |  1 -
+ drivers/firmware/efi/libstub/x86-stub.c | 10 +++++-----
+ 4 files changed, 8 insertions(+), 10 deletions(-)
 
+diff --git a/arch/x86/boot/compressed/head_32.S b/arch/x86/boot/compressed/head_32.S
+index 2f8138b71ea9..e013bdc1237b 100644
+--- a/arch/x86/boot/compressed/head_32.S
++++ b/arch/x86/boot/compressed/head_32.S
+@@ -156,9 +156,8 @@ SYM_FUNC_END(startup_32)
+ SYM_FUNC_START(efi32_stub_entry)
+ SYM_FUNC_START_ALIAS(efi_stub_entry)
+ 	add	$0x4, %esp
++	movl	8(%esp), %esi	/* save boot_params pointer */
+ 	call	efi_main
+-	movl	%eax, %esi
+-	movl	BP_code32_start(%esi), %eax
+ 	leal	startup_32(%eax), %eax
+ 	jmp	*%eax
+ SYM_FUNC_END(efi32_stub_entry)
 diff --git a/arch/x86/boot/compressed/head_64.S b/arch/x86/boot/compressed/head_64.S
-index 920daf62dac2..fabbd4c2e9f2 100644
+index fabbd4c2e9f2..6a4ff919008c 100644
 --- a/arch/x86/boot/compressed/head_64.S
 +++ b/arch/x86/boot/compressed/head_64.S
-@@ -658,42 +658,65 @@ SYM_DATA(efi_is64, .byte 1)
- 	.text
- 	.code32
- SYM_FUNC_START(efi32_pe_entry)
-+/*
-+ * efi_status_t efi32_pe_entry(efi_handle_t image_handle,
-+ *			       efi_system_table_32_t *sys_table)
-+ */
-+
- 	pushl	%ebp
-+	movl	%esp, %ebp
-+	pushl	%eax				// dummy push to allocate loaded_image
+@@ -472,9 +472,9 @@ SYM_CODE_END(startup_64)
+ SYM_FUNC_START(efi64_stub_entry)
+ SYM_FUNC_START_ALIAS(efi_stub_entry)
+ 	and	$~0xf, %rsp			/* realign the stack */
++	movq	%rdx, %rbx			/* save boot_params pointer */
+ 	call	efi_main
+-	movq	%rax,%rsi
+-	movl	BP_code32_start(%esi), %eax
++	movq	%rbx,%rsi
+ 	leaq	startup_64(%rax), %rax
+ 	jmp	*%rax
+ SYM_FUNC_END(efi64_stub_entry)
+diff --git a/arch/x86/kernel/asm-offsets.c b/arch/x86/kernel/asm-offsets.c
+index 5c7ee3df4d0b..3ca07ad552ae 100644
+--- a/arch/x86/kernel/asm-offsets.c
++++ b/arch/x86/kernel/asm-offsets.c
+@@ -88,7 +88,6 @@ static void __used common(void)
+ 	OFFSET(BP_kernel_alignment, boot_params, hdr.kernel_alignment);
+ 	OFFSET(BP_init_size, boot_params, hdr.init_size);
+ 	OFFSET(BP_pref_address, boot_params, hdr.pref_address);
+-	OFFSET(BP_code32_start, boot_params, hdr.code32_start);
  
--	pushl	%ebx
-+	pushl	%ebx				// save callee-save registers
- 	pushl	%edi
-+
- 	call	verify_cpu			// check for long mode support
--	popl	%edi
--	popl	%ebx
- 	testl	%eax, %eax
- 	movl	$0x80000003, %eax		// EFI_UNSUPPORTED
--	jnz	3f
-+	jnz	2f
+ 	BLANK();
+ 	DEFINE(PTREGS_SIZE, sizeof(struct pt_regs));
+diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
+index 9db98839d7b4..7f3e97c2aad3 100644
+--- a/drivers/firmware/efi/libstub/x86-stub.c
++++ b/drivers/firmware/efi/libstub/x86-stub.c
+@@ -703,10 +703,11 @@ static efi_status_t exit_boot(struct boot_params *boot_params, void *handle)
+ }
  
- 	call	1f
--1:	pop	%ebp
--	subl	$1b, %ebp
-+1:	pop	%ebx
-+	subl	$1b, %ebx
+ /*
+- * On success we return a pointer to a boot_params structure, and NULL
+- * on failure.
++ * On success, we return the address of startup_32, which has potentially been
++ * relocated by efi_relocate_kernel.
++ * On failure, we exit to the firmware via efi_exit instead of returning.
+  */
+-struct boot_params *efi_main(efi_handle_t handle,
++unsigned long efi_main(efi_handle_t handle,
+ 			     efi_system_table_t *sys_table_arg,
+ 			     struct boot_params *boot_params)
+ {
+@@ -736,7 +737,6 @@ struct boot_params *efi_main(efi_handle_t handle,
+ 			goto fail;
+ 		}
+ 	}
+-	hdr->code32_start = (u32)bzimage_addr;
  
- 	/* Get the loaded image protocol pointer from the image handle */
--	subl	$12, %esp			// space for the loaded image pointer
--	pushl	%esp				// pass its address
--	leal	loaded_image_proto(%ebp), %eax
-+	leal	-4(%ebp), %eax
-+	pushl	%eax				// &loaded_image
-+	leal	loaded_image_proto(%ebx), %eax
- 	pushl	%eax				// pass the GUID address
--	pushl	28(%esp)			// pass the image handle
-+	pushl	8(%ebp)				// pass the image handle
+ 	/*
+ 	 * efi_pe_entry() may have been called before efi_main(), in which
+@@ -799,7 +799,7 @@ struct boot_params *efi_main(efi_handle_t handle,
+ 		goto fail;
+ 	}
  
--	movl	36(%esp), %eax			// sys_table
-+	/*
-+	 * Note the alignment of the stack frame.
-+	 *   sys_table
-+	 *   handle             <-- 16-byte aligned on entry by ABI
-+	 *   return address
-+	 *   frame pointer
-+	 *   loaded_image       <-- local variable
-+	 *   saved %ebx		<-- 16-byte aligned here
-+	 *   saved %edi
-+	 *   &loaded_image
-+	 *   &loaded_image_proto
-+	 *   handle             <-- 16-byte aligned for call to handle_protocol
-+	 */
-+
-+	movl	12(%ebp), %eax			// sys_table
- 	movl	ST32_boottime(%eax), %eax	// sys_table->boottime
- 	call	*BS32_handle_protocol(%eax)	// sys_table->boottime->handle_protocol
--	cmp	$0, %eax
-+	addl	$12, %esp			// restore argument space
-+	testl	%eax, %eax
- 	jnz	2f
- 
--	movl	32(%esp), %ecx			// image_handle
--	movl	36(%esp), %edx			// sys_table
--	movl	12(%esp), %esi			// loaded_image
-+	movl	8(%ebp), %ecx			// image_handle
-+	movl	12(%ebp), %edx			// sys_table
-+	movl	-4(%ebp), %esi			// loaded_image
- 	movl	LI32_image_base(%esi), %esi	// loaded_image->image_base
-+	movl	%ebx, %ebp			// startup_32 for efi32_pe_stub_entry
- 	jmp	efi32_pe_stub_entry
- 
--2:	addl	$24, %esp
--3:	popl	%ebp
-+2:	popl	%edi				// restore callee-save registers
-+	popl	%ebx
-+	leave
- 	ret
- SYM_FUNC_END(efi32_pe_entry)
+-	return boot_params;
++	return bzimage_addr;
+ fail:
+ 	efi_printk("efi_main() failed!\n");
  
 -- 
 2.24.1
