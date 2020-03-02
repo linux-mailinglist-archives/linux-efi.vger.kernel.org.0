@@ -2,143 +2,230 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 239961750CD
-	for <lists+linux-efi@lfdr.de>; Mon,  2 Mar 2020 00:05:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6EB5317529B
+	for <lists+linux-efi@lfdr.de>; Mon,  2 Mar 2020 05:21:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727030AbgCAXFo (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sun, 1 Mar 2020 18:05:44 -0500
-Received: from mail-qt1-f196.google.com ([209.85.160.196]:46332 "EHLO
-        mail-qt1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727005AbgCAXFn (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sun, 1 Mar 2020 18:05:43 -0500
-Received: by mail-qt1-f196.google.com with SMTP id i14so6212737qtv.13;
-        Sun, 01 Mar 2020 15:05:42 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=TmFYuzkHLJ+9f+n2eD9AkXx/hb/8ewiBrSbG+YWInKU=;
-        b=o5futjXflWk6FYfg4ZotfR3My9uS6UWiksgyuvm3U2rN8VMoXMzHcJRmFrwl8GUsdR
-         3UJumQXIqn2hb4Pwt0wdZMRzHoSHW3gKI/h7qpEhLhegAC/SSlgOuAntggyGbvhC4aIp
-         L6y/o06UZfqec1FLO2Omxwijujik1bxTUMRlXVZqYZkDP5cLM+LioojPQFquW6tLXana
-         7P7A4RGWAMd/VwbAG0QcnphXSJjXAwl07wYE98xH1WmOgsyQGmt2Qp2km9OQJMO1sibT
-         eKewm1kUlM/iQoXByQEUknyxYix5ED/axD6E75zAiH82j/w8soHUqNrnPaijYRNYxLfI
-         X30g==
-X-Gm-Message-State: APjAAAXG3Fv5gc+CAh/ya4G/5uiSUNq9+rBv0+mQKP+iCZKsMHASxiOR
-        0W9fTo2ImQVcf4dZzqLOLu8SNqNEG5I=
-X-Google-Smtp-Source: APXvYqz/ZnQmNXnaD3opX5tIEqGHyNHgrpjw244GOuT120Ygti5FJZKl4SumZxSBIr2iwO0v8SCeAA==
-X-Received: by 2002:ac8:4e91:: with SMTP id 17mr13884767qtp.133.1583103942086;
-        Sun, 01 Mar 2020 15:05:42 -0800 (PST)
-Received: from rani.riverdale.lan ([2001:470:1f07:5f3::b55f])
-        by smtp.gmail.com with ESMTPSA id x131sm8923906qka.1.2020.03.01.15.05.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 01 Mar 2020 15:05:41 -0800 (PST)
-From:   Arvind Sankar <nivedita@alum.mit.edu>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     linux-efi@vger.kernel.org, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH 5/5] efi/x86: Don't relocate the kernel unless necessary
-Date:   Sun,  1 Mar 2020 18:05:37 -0500
-Message-Id: <20200301230537.2247550-6-nivedita@alum.mit.edu>
-X-Mailer: git-send-email 2.24.1
-In-Reply-To: <20200301230537.2247550-1-nivedita@alum.mit.edu>
+        id S1726811AbgCBEVk (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sun, 1 Mar 2020 23:21:40 -0500
+Received: from mail-eopbgr20051.outbound.protection.outlook.com ([40.107.2.51]:13282
+        "EHLO EUR02-VE1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726860AbgCBEVk (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Sun, 1 Mar 2020 23:21:40 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=cXkNo1VTKwjyZ8GE9kqEM2BZ6eyaiFQqlw30VF5akIytT0udjbV+7ZLCBEtCrrNMt9Chcysm5m4QhfSq75CoDeNZCMiaA808mW7hK2hsRjNd7S7du9gJJSg9P7XgCVR9Wsv0NsAY2Pb9XGE+/X6h22567KHqOm2zCtLSBgcmDntaPqnsyBvgxc2XtuLTqFKk7t0EsslK9jSkz591urgSzIJUrKeRJqW/FtYCqRVSacpaEs2Boj65Cgcwq6cFGai3V2mnwiMFcO94SyH8834qbbIHc+s6dKUSw0KrQSKj6AXHrxViw7sxFAg04PX8xw3Gp7laUCqAR38bS6blcUtdNQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=9gwUmaRoUcE1kqxfagjjMP2lKMaphw7ZFFyClxHfKGg=;
+ b=WPLJS1/oP6KzudlAQTo3DkAknpvVyGH+CaVYWAvWPgR3BeOUNYibQPC3pjbl8K+ebA8Dhg+naBuPDrkEfS664wg2200hvK439aRlCi5fAa4Y1rs3Wjj/Zg+MrKO/ovljEih5ds/+C4Vq5U5O7KIROVJ5/Lh0SgmSBlnnxVqbv51CkWFGWT/KOwv1mtehsBUx8Y4Wg2HGrJYEND9R7gsT5UbT0xgqMSqaGwTf65wMb6ASjpP+81T3oEBrJGxfrhv3mwMI2+zCNwpBOLBIGVCtC2lj9rYcD7CoAtBXFZeTSLjfyiAVad7yjg38h7NPiVwJTRLuNKV1y6pOgJp9YR2Sow==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nextfour.com; dmarc=pass action=none header.from=nextfour.com;
+ dkim=pass header.d=nextfour.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=NextfourGroupOy.onmicrosoft.com;
+ s=selector2-NextfourGroupOy-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=9gwUmaRoUcE1kqxfagjjMP2lKMaphw7ZFFyClxHfKGg=;
+ b=GZ9HS+FGkjLE7I/dgJj2Vtd+/s/8SYOfi3c9o/L2usteu8+lFWi1ONHdjnixjbfWPBOOqyT3zjsVDYaDFmN/x1flanK2GPp84gcZ4Lx0GfHCII8W6fp3KbRLDPPrLw8GJ9gru4wUkIv4hD0d6VS0CTGPTI8ZgUrq2HJsSUOjWHI=
+Received: from VI1PR03MB3775.eurprd03.prod.outlook.com (52.134.21.155) by
+ VI1PR03MB4142.eurprd03.prod.outlook.com (20.177.55.91) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2772.18; Mon, 2 Mar 2020 04:21:30 +0000
+Received: from VI1PR03MB3775.eurprd03.prod.outlook.com
+ ([fe80::ed88:2188:604c:bfcc]) by VI1PR03MB3775.eurprd03.prod.outlook.com
+ ([fe80::ed88:2188:604c:bfcc%7]) with mapi id 15.20.2772.019; Mon, 2 Mar 2020
+ 04:21:30 +0000
+Received: from [10.10.10.144] (194.157.170.35) by HE1P195CA0011.EURP195.PROD.OUTLOOK.COM (2603:10a6:3:fd::21) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2772.14 via Frontend Transport; Mon, 2 Mar 2020 04:21:29 +0000
+From:   =?utf-8?B?TWlrYSBQZW50dGlsw6Q=?= <mika.penttila@nextfour.com>
+To:     Arvind Sankar <nivedita@alum.mit.edu>,
+        Ard Biesheuvel <ardb@kernel.org>
+CC:     "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
+        "x86@kernel.org" <x86@kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 4/5] efi/x86: Remove extra headroom for setup block
+Thread-Topic: [PATCH 4/5] efi/x86: Remove extra headroom for setup block
+Thread-Index: AQHV8B30/Z1XsdfJrEypETFXyJJ1Zag0s9cA
+Date:   Mon, 2 Mar 2020 04:21:30 +0000
+Message-ID: <db83f5a1-b827-2a31-0ca9-a04df8257324@nextfour.com>
 References: <20200301230537.2247550-1-nivedita@alum.mit.edu>
+ <20200301230537.2247550-5-nivedita@alum.mit.edu>
+In-Reply-To: <20200301230537.2247550-5-nivedita@alum.mit.edu>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: yes
+X-MS-TNEF-Correlator: 
+x-clientproxiedby: HE1P195CA0011.EURP195.PROD.OUTLOOK.COM (2603:10a6:3:fd::21)
+ To VI1PR03MB3775.eurprd03.prod.outlook.com (2603:10a6:803:2b::27)
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=mika.penttila@nextfour.com; 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-pep-version: 2.0
+x-originating-ip: [194.157.170.35]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 7e7b5073-216b-4e14-0a05-08d7be612e92
+x-ms-traffictypediagnostic: VI1PR03MB4142:
+x-microsoft-antispam-prvs: <VI1PR03MB414287A3234263E6FFF30AD183E70@VI1PR03MB4142.eurprd03.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:152;
+x-forefront-prvs: 033054F29A
+x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(396003)(136003)(346002)(376002)(39830400003)(366004)(199004)(189003)(16576012)(316002)(66946007)(110136005)(54906003)(81156014)(81166006)(5660300002)(2906002)(8936002)(2616005)(31686004)(8676002)(956004)(6486002)(52116002)(508600001)(66556008)(66476007)(66446008)(36756003)(64756008)(85182001)(186003)(16526019)(26005)(66616009)(71200400001)(31696002)(4326008)(6666004)(86362001);DIR:OUT;SFP:1101;SCL:1;SRVR:VI1PR03MB4142;H:VI1PR03MB3775.eurprd03.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+received-spf: None (protection.outlook.com: nextfour.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: LTwIAagnE0YsnT4wVq5bj+Fn4+wSgiFpEXvVJt4psmkC78+LSVgu9NtCKLL3jf2X0ngShMzHKqWwTrkFAFu/H8a2MGQsDNyL7sLn4ijGqOlqKiC2+Y/pOAOvuLw3OCJhNEbdA9r9S5YAENp3/G/q5/hk0YMSPjZqBNWS1S8w+0ueHNWVvF6OTKqW0xR2UsxwoiIm29vHJtywDBjzhqmWrltcaaKia0h1p/+qFR3nCuPwtVkqr9ii+20MEMnfdb4k5Ge6I9DsMq/jIBU/ZEJueIyTEJCy/JU568+doHFGMHWzBKBdmHngCDaZV2WgaSA4L8OZPAA9xPH4Ct0VQdTVF2jEtCLDovEybcf+9mKK0P83BgXUm3QYucwYAdlGdGgdjG2w6XRBKxXWxVOy9rwQ8sED3HeyqI6egyC6QgOd/qpunP10Dz8ILWsfYYvjqEUM
+x-ms-exchange-antispam-messagedata: HiOXLX5E0RPwmYU79bE/bC3OagFZs5BR8mE/JXsJSe8dBrhDgFHGZ0if/gYLmMpS7Fk7bdcdTQ5q8iOlWeFmfgDXKkLBeeHLcqdJvCQKoi8gotPkU/0LNsEz4mp96Eb68Id7xybq1q6ibu/PstyfTA==
+x-ms-exchange-transport-forked: True
+Content-Type: multipart/mixed;
+        boundary="_002_db83f5a1b8272a310ca9a04df8257324nextfourcom_"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: nextfour.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7e7b5073-216b-4e14-0a05-08d7be612e92
+X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Mar 2020 04:21:30.0821
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 972e95c2-9290-4a02-8705-4014700ea294
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: N36P7f+rvY2aFsWjcB4/IRsSaIeZ7KIhaG1Wyht5PJySY1lNvlDgK5aJO3/c8CdQcBKLxf3jeVr+zD8EkShcxYIkb1lfrVj2bvuNYnSshmo=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR03MB4142
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Add alignment slack to the PE image size, so that we can realign the
-decompression buffer within the space allocated for the image.
+--_002_db83f5a1b8272a310ca9a04df8257324nextfourcom_
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <B43568D38D73A449970690EF0BB2678D@eurprd03.prod.outlook.com>
+Content-Transfer-Encoding: base64
 
-Only relocate the kernel if it has been loaded at an unsuitable address:
-* Below LOAD_PHYSICAL_ADDR, or
-* Above 64T for 64-bit and 512MiB for 32-bit
+DQoNCk9uIDIuMy4yMDIwIDEuMDUsIEFydmluZCBTYW5rYXIgd3JvdGU6DQo+IGNvbW1pdCAyMjNl
+M2VlNTZmNzcgKCJlZmkveDg2OiBhZGQgaGVhZHJvb20gdG8gZGVjb21wcmVzc29yIEJTUyB0bw0K
+PiBhY2NvdW50IGZvciBzZXR1cCBibG9jayIpIGFkZGVkIGhlYWRyb29tIHRvIHRoZSBQRSBpbWFn
+ZSB0byBhY2NvdW50IGZvcg0KPiB0aGUgc2V0dXAgYmxvY2ssIHdoaWNoIHdhc24ndCB1c2VkIGZv
+ciB0aGUgZGVjb21wcmVzc2lvbiBidWZmZXIuDQo+DQo+IE5vdyB0aGF0IHdlIGRlY29tcHJlc3Mg
+ZnJvbSB0aGUgc3RhcnQgb2YgdGhlIGltYWdlLCB0aGlzIGlzIG5vIGxvbmdlcg0KPiByZXF1aXJl
+ZC4NCj4NCj4gQWRkIGEgY2hlY2sgdG8gbWFrZSBzdXJlIHRoYXQgdGhlIGhlYWQgc2VjdGlvbiBv
+ZiB0aGUgY29tcHJlc3NlZCBrZXJuZWwNCj4gd29uJ3Qgb3ZlcndyaXRlIGl0c2VsZiB3aGlsZSBy
+ZWxvY2F0aW5nLiBUaGlzIGlzIG9ubHkgZm9yDQo+IGZ1dHVyZS1wcm9vZmluZyBhcyB3aXRoIGN1
+cnJlbnQgbGltaXRzIG9uIHRoZSBzZXR1cCBhbmQgdGhlIGFjdHVhbCBzaXplDQo+IG9mIHRoZSBo
+ZWFkIHNlY3Rpb24sIHRoaXMgY2FuIG5ldmVyIGhhcHBlbi4NCj4NCj4gU2lnbmVkLW9mZi1ieTog
+QXJ2aW5kIFNhbmthciA8bml2ZWRpdGFAYWx1bS5taXQuZWR1Pg0KDQpUbyBtYWtlIGNsZWFyLCB0
+aGUga2VybmVsIChoZWFkXzMyLnMgYW5kIGhlYWRfNjQucykgc3RpbGwgcmVsb2NhdGVzDQppdHNl
+bGYgdG8gdGhlIGVuZCBvZiB0aGUgYnVmZmVyIGFuZCBkb2VzIGluLXBsYWNlIGRlY29tcHJlc3Np
+b24uIFNvIHRoaXMNCmlzIGp1c3QgdG8gbWFrZSBpbml0IHN6IHNtYWxsZXIuDQoNCg0KPiAtLS0N
+Cj4gIGFyY2gveDg2L2Jvb3QvdG9vbHMvYnVpbGQuYyB8IDI4ICsrKysrKysrKysrKysrKysrKysr
+KysrKysrLS0NCj4gIDEgZmlsZSBjaGFuZ2VkLCAyNiBpbnNlcnRpb25zKCspLCAyIGRlbGV0aW9u
+cygtKQ0KPg0KPiBkaWZmIC0tZ2l0IGEvYXJjaC94ODYvYm9vdC90b29scy9idWlsZC5jIGIvYXJj
+aC94ODYvYm9vdC90b29scy9idWlsZC5jDQo+IGluZGV4IDkwZDQwM2RmZWM4MC4uM2QwM2FkNzUz
+ZWQ1IDEwMDY0NA0KPiAtLS0gYS9hcmNoL3g4Ni9ib290L3Rvb2xzL2J1aWxkLmMNCj4gKysrIGIv
+YXJjaC94ODYvYm9vdC90b29scy9idWlsZC5jDQo+IEBAIC02NSw2ICs2NSw4IEBAIHVuc2lnbmVk
+IGxvbmcgZWZpX3BlX2VudHJ5Ow0KPiAgdW5zaWduZWQgbG9uZyBlZmkzMl9wZV9lbnRyeTsNCj4g
+IHVuc2lnbmVkIGxvbmcga2VybmVsX2luZm87DQo+ICB1bnNpZ25lZCBsb25nIHN0YXJ0dXBfNjQ7
+DQo+ICt1bnNpZ25lZCBsb25nIF9laGVhZDsNCj4gK3Vuc2lnbmVkIGxvbmcgX2VuZDsNCj4gIA0K
+PiAgLyotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tKi8NCj4gIA0KPiBAQCAtMjMyLDcgKzIzNCw3IEBAIHN0YXRpYyB2
+b2lkIHVwZGF0ZV9wZWNvZmZfdGV4dCh1bnNpZ25lZCBpbnQgdGV4dF9zdGFydCwgdW5zaWduZWQg
+aW50IGZpbGVfc3osDQo+ICB7DQo+ICAJdW5zaWduZWQgaW50IHBlX2hlYWRlcjsNCj4gIAl1bnNp
+Z25lZCBpbnQgdGV4dF9zeiA9IGZpbGVfc3ogLSB0ZXh0X3N0YXJ0Ow0KPiAtCXVuc2lnbmVkIGlu
+dCBic3Nfc3ogPSBpbml0X3N6ICsgdGV4dF9zdGFydCAtIGZpbGVfc3o7DQo+ICsJdW5zaWduZWQg
+aW50IGJzc19zeiA9IGluaXRfc3ogLSBmaWxlX3N6Ow0KPiAgDQo+ICAJcGVfaGVhZGVyID0gZ2V0
+X3VuYWxpZ25lZF9sZTMyKCZidWZbMHgzY10pOw0KPiAgDQo+IEBAIC0yNTksNyArMjYxLDcgQEAg
+c3RhdGljIHZvaWQgdXBkYXRlX3BlY29mZl90ZXh0KHVuc2lnbmVkIGludCB0ZXh0X3N0YXJ0LCB1
+bnNpZ25lZCBpbnQgZmlsZV9zeiwNCj4gIAlwdXRfdW5hbGlnbmVkX2xlMzIoZmlsZV9zeiAtIDUx
+MiArIGJzc19zeiwgJmJ1ZltwZV9oZWFkZXIgKyAweDFjXSk7DQo+ICANCj4gIAkvKiBTaXplIG9m
+IGltYWdlICovDQo+IC0JcHV0X3VuYWxpZ25lZF9sZTMyKGluaXRfc3ogKyB0ZXh0X3N0YXJ0LCAm
+YnVmW3BlX2hlYWRlciArIDB4NTBdKTsNCj4gKwlwdXRfdW5hbGlnbmVkX2xlMzIoaW5pdF9zeiwg
+JmJ1ZltwZV9oZWFkZXIgKyAweDUwXSk7DQo+ICANCj4gIAkvKg0KPiAgCSAqIEFkZHJlc3Mgb2Yg
+ZW50cnkgcG9pbnQgZm9yIFBFL0NPRkYgZXhlY3V0YWJsZQ0KPiBAQCAtMzYwLDYgKzM2Miw4IEBA
+IHN0YXRpYyB2b2lkIHBhcnNlX3pvZmZzZXQoY2hhciAqZm5hbWUpDQo+ICAJCVBBUlNFX1pPRlMo
+cCwgZWZpMzJfcGVfZW50cnkpOw0KPiAgCQlQQVJTRV9aT0ZTKHAsIGtlcm5lbF9pbmZvKTsNCj4g
+IAkJUEFSU0VfWk9GUyhwLCBzdGFydHVwXzY0KTsNCj4gKwkJUEFSU0VfWk9GUyhwLCBfZWhlYWQp
+Ow0KPiArCQlQQVJTRV9aT0ZTKHAsIF9lbmQpOw0KPiAgDQo+ICAJCXAgPSBzdHJjaHIocCwgJ1xu
+Jyk7DQo+ICAJCXdoaWxlIChwICYmICgqcCA9PSAnXHInIHx8ICpwID09ICdcbicpKQ0KPiBAQCAt
+NDQ0LDYgKzQ0OCwyNiBAQCBpbnQgbWFpbihpbnQgYXJnYywgY2hhciAqKiBhcmd2KQ0KPiAgCXB1
+dF91bmFsaWduZWRfbGUzMihzeXNfc2l6ZSwgJmJ1ZlsweDFmNF0pOw0KPiAgDQo+ICAJaW5pdF9z
+eiA9IGdldF91bmFsaWduZWRfbGUzMigmYnVmWzB4MjYwXSk7DQo+ICsjaWZkZWYgQ09ORklHX0VG
+SV9TVFVCDQo+ICsJLyoNCj4gKwkgKiBUaGUgZGVjb21wcmVzc2lvbiBidWZmZXIgd2lsbCBzdGFy
+dCBhdCBJbWFnZUJhc2UuIFdoZW4gcmVsb2NhdGluZw0KPiArCSAqIHRoZSBjb21wcmVzc2VkIGtl
+cm5lbCB0byBpdHMgZW5kLCB3ZSBtdXN0IGVuc3VyZSB0aGF0IHRoZSBoZWFkDQo+ICsJICogc2Vj
+dGlvbiBkb2VzIG5vdCBnZXQgb3ZlcndyaXR0ZW4uICBUaGUgaGVhZCBzZWN0aW9uIG9jY3VwaWVz
+DQo+ICsJICogW2ksIGkgKyBfZWhlYWQpLCBhbmQgdGhlIGRlc3RpbmF0aW9uIGlzIFtpbml0X3N6
+IC0gX2VuZCwgaW5pdF9zeikuDQo+ICsJICoNCj4gKwkgKiBBdCBwcmVzZW50IHRoZXNlIHNob3Vs
+ZCBuZXZlciBvdmVybGFwLCBiZWNhdXNlIGkgaXMgYXQgbW9zdCAzMmsNCj4gKwkgKiBiZWNhdXNl
+IG9mIFNFVFVQX1NFQ1RfTUFYLCBfZWhlYWQgaXMgbGVzcyB0aGFuIDFrLCBhbmQgdGhlDQo+ICsJ
+ICogY2FsY3VsYXRpb24gb2YgSU5JVF9TSVpFIGluIGJvb3QvaGVhZGVyLlMgZW5zdXJlcyB0aGF0
+DQo+ICsJICogaW5pdF9zeiAtIF9lbmQgaXMgYXQgbGVhc3QgNjRrLg0KPiArCSAqDQo+ICsJICog
+Rm9yIGZ1dHVyZS1wcm9vZmluZywgaW5jcmVhc2UgaW5pdF9zeiBpZiBuZWNlc3NhcnkuDQo+ICsJ
+ICovDQo+ICsNCj4gKwlpZiAoaW5pdF9zeiAtIF9lbmQgPCBpICsgX2VoZWFkKSB7DQo+ICsJCWlu
+aXRfc3ogPSAoaSArIF9laGVhZCArIF9lbmQgKyA0MDk1KSAmIH40MDk1Ow0KPiArCQlwdXRfdW5h
+bGlnbmVkX2xlMzIoaW5pdF9zeiwgJmJ1ZlsweDI2MF0pOw0KPiArCX0NCj4gKyNlbmRpZg0KPiAg
+CXVwZGF0ZV9wZWNvZmZfdGV4dChzZXR1cF9zZWN0b3JzICogNTEyLCBpICsgKHN5c19zaXplICog
+MTYpLCBpbml0X3N6KTsNCj4gIA0KPiAgCWVmaV9zdHViX2VudHJ5X3VwZGF0ZSgpOw0KDQo=
 
-For 32-bit, the upper limit is conservative, but the exact limit can be
-difficult to calculate.
+--_002_db83f5a1b8272a310ca9a04df8257324nextfourcom_
+Content-Type: application/pgp-keys; name="pEpkey.asc"
+Content-Description: pEpkey.asc
+Content-Disposition: attachment; filename="pEpkey.asc"; size=3157;
+	creation-date="Mon, 02 Mar 2020 04:21:29 GMT";
+	modification-date="Mon, 02 Mar 2020 04:21:29 GMT"
+Content-ID: <1C4F99DB8E14184489F8E3A8D40D5F26@eurprd03.prod.outlook.com>
+Content-Transfer-Encoding: base64
 
-Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
----
- arch/x86/boot/tools/build.c             | 16 ++++++----------
- drivers/firmware/efi/libstub/x86-stub.c | 22 +++++++++++++++++++---
- 2 files changed, 25 insertions(+), 13 deletions(-)
+LS0tLS1CRUdJTiBQR1AgUFVCTElDIEtFWSBCTE9DSy0tLS0tDQoNCm1RR05CRnZYMjBRQkRBREhm
+U1VzR2tvY2JsMCt0T1R5TXYyYnQxdVZnWVNDN09QQTE5d3FwWXZhTk9ZdjN1d0UNCnUxRmo0QUl3
+Tkp1cjZHZWlETzhheXZ0NHlMSzErUnQraGUxQzNlQmJvbnlPNGVIVml5QmdoYkdoN0JsM0xqemEN
+CndONVo2WmR0alBzZFVrUTROWGhoWXJDL041QXAwWi80U1VIOWwwMS9LdkgyTy9ERUZwUWVGekFY
+TG9DYVBFTnQNCmJ6bnNmdTlGN2VWV3FUa0ZtdTVLNkR3MFJaMzRHNlJQaGtFUG5Uc0VPWkZLbENT
+WkJUNFhXZWQ3dys3Y0d1R2YNCmJSVmNzQ3QwSThXNzlEQU12WTl0Qk4wOGVtUXZUeWsrWnF5SUNN
+UVFIR0dyVGhpcWVRbVZhNEcxYzBuaW5YWG0NCkNXaHZ4MUxiYUxlOFhuVG4rODV2SndTb092N2NH
+R00yUXJGY2sza1A4cGdsbEd1c0hsU0JNUkVwQWEvZmFKVk4NCmJXL1c1TS8yVGtuS3I0YjZjYWNq
+NjduOGVTalIxb0VsOVMxR09CM0xSYWRmYlJ2NDhVNXRsRFhtSlEwMHdURlcNCjZNZE5Oc0Q5dnRP
+OXJ6UkEyWlhNUnJxTTkxV0RReHdFYW9mTDc5RjU1a3E2eW5FQmJWNEdKbG11TTdHS1h4RWkNCjZw
+ZWIvVGNVeUN0YzBzRUFFUUVBQWJRclRXbHJZU0JRWlc1MGRHbHN3NlFnUEcxcGEyRXVjR1Z1ZEhS
+cGJHRkENCmJtVjRkR1p2ZFhJdVkyOXRQb2tCMUFRVEFRZ0FQZ0liQXdVTENRZ0hBZ1lWQ2drSUN3
+SUVGZ0lEQVFJZUFRSVgNCmdCWWhCRmF0YTJrVEl4ZWtsTWhPWU1RR2VjZnoyd3pGQlFKZHI5Z1VC
+UWtEdVc3TUFBb0pFTVFHZWNmejJ3ekYNCmZxME1BS1N1M2hIc1ZOZG1BaUEreDhYU3o4SEhVTnFo
+ZVEyM053U2MwZEJleDZibytGdVUwT1hLTmZhODRUZTgNCnpwQ2V5OU80bWY0L0ZyQ09temF5U2xh
+a2ZrRFZhQy9lSm5ETTV1Ny9yVy9pZnJ6a1pRMWdjcXpKcTJud1lTUzANCittbDZBcVpOYU9SWEFz
+bjlRNkZWZVlFR1BremNNK0pLcGxqQllwTUN0ckhqOG1JSCsxL0JOcGR4VGplVThPTSsNCmpKbTQy
+R1RtRXVDZGI3a1M1WXdFcTNTajZ3bXdnOFI3RFpnQTlraG9GMHcyUFdCYi9LNk1NMHZQZjZvTE9o
+RFANCk1KTXlaSjQzMUpJQ0FlTFl6V3ZCQitCdCtDYkRqQkpUcFBPYmRhYTd1VnVuOGlUVUJYZEc2
+RVNBY3VPUzlTMlENCnBRMkhVV3A1WkZxbWpmb0lCcklWTTFXSnVRZmgrSXBsWTc0MHhVUWVvd2VZ
+TVVndVFEekVFSVlPT3ZXNzVrMFANCkdUYUcxSjdJVktuRjcrRHIzcWxUd29vMWVpeVMzakxuYVlH
+VWRvS1h5dDVXcythU2liYWlIV1pUUkFQM3R6MWUNClFCUmU0Mml3aVBOUFlVOWNyaTNlMHkxT0VN
+M0Rqd0ErMmJGbm05aFEyaGVMQUV6ZkswWTBHMmJ6R00ydWJSN0INCnY2WnBBb2tCMUFRVEFRZ0FQ
+aFloQkZhdGEya1RJeGVrbE1oT1lNUUdlY2Z6Mnd6RkJRSmIxOXVMQWhzREJRa0INCjRUT0FCUXNK
+Q0FjQ0JoVUtDUWdMQWdRV0FnTUJBaDRCQWhlQUFBb0pFTVFHZWNmejJ3ekZWandMLzM1UzU0dEkN
+CmRXT0xGZXUzcHdUT3ZjKzY1SzR4V1l4cE5aMVRxWVltWW9pUG9IUERTT1pnUDlQeEV2eFk3ODZ1
+OTV4M0dPekkNCk9WbkFWRkxtYTZPeDdnbEVISThwYkNUZEs0ZTdZb2o0NHdqcWcyeTFoMWl4N2d4
+Ny94MEpyU2dadG9oMEJCeG0NCjM4UENTamg1QUtwTGt5ZmlhWktpblJUWE1SejROL0VPSHBKQlJv
+eHN5V2U4aFNsUFdGbXpRVE81SGJ5NzdNZ1ENCnAzajRLV1ZNYnUxdWVUQi9HZzgxN2hLTUViWFo5
+SnlMYVhmdDIxUjFvYU8zUDdwajhPWk9RN0F5OFBwWTlxbTgNCkVKZHo4R2VIUVZQMEhadHdJMXdZ
+YWFYS1FuMzVWRThVU21MNndUZmVtRW55bVFEMWUyYU9nVGNIb1NOR001a3gNCnNuQUd4VjcrK0pr
+Njh6K2hBVHpoajJ4SmpKNjRHdGoySlJFNU52T011RG4yM2QrcnlHblZjZmQwcHdTMU9UUEoNCmVK
+V3lZb0xCNm1sRUliT2NoUmhaeVFweGNNZktkdkJhTURNK0l2YXo0aWFldDhiWHlVdVhhMXBzR0o2
+NGpycUMNCnFiUDBzK2xBLzBPVTBidHNoTjNNWjZCSGxrR3A0WFBhSFFaVVc2dDlPSitrQnhaaXpl
+WjRvOTdRWUxrQmpRUmINCjE5dEpBUXdBcmJUTW8wbGFTaG1WODJXV1lBM1NjRmYzT3NyYmt2aTVN
+VGxyTkpTUTRjZGhNVmZHeVU2cmlOM2INCjU0OTVFQm1BQ21FRTduWjduQVJyYllUN0E1UENKUFpz
+YUU0Mnp3cTNBWjg5MEFvRWpqTEYrU2x1VUJHWmtaeisNCmxMQnhwTHh5aGxxQ2gwaUkyR3JnRVZG
+aGtlRExNSkZRT2ZUdm1HeVFRWXUzRllJMlpvNG9CcHFtaXd5WlZOaTgNCllKbUNZSksrMTFZT1I4
+U21SVC9nN3c1cG95Mldla3RIZmhJbUdwZE1FUmtUTnp6U3g5cmUra1NmRUlLRWxlQ2ENClhDZjNK
+VW4wWU1ZYlY3Z2lnV2RqR0tFYmZIODJYbm1qejFkd2pjcVBoRitUbHhsaHNvTDF3ZGh1eUJCTGpm
+SE8NCjEzLzh3YUQwRGxtdFpibmdCSW5kVkJDQmV0Qzl3cDk3MkdQamN5VkFQTHlHUWE5cGs1SklP
+Z0lVRWRNcjV0VG8NClkyZ0hqS2pKMzFrUk9FbDhWRnppdGt1K2ZzSXNaYmRQZnFwMmdPVW9xZ1ZF
+RGt5M0hZRmlhWnVsek5QVW1ZUlkNCkovR0hvOEFMVThoNE5TdkNkazk3Q3pIdmRrQjEvRThIMTlL
+dmswYVpIekZRY0JuaGt6cStuMFpiU2FUSlM3TTQNCmFxUmFJOGY3QUJFQkFBR0pBYndFR0FFSUFD
+WUNHd3dXSVFSV3JXdHBFeU1YcEpUSVRtREVCbm5IODlzTXhRVUMNClhhL1lGQVVKQTdsdXh3QUtD
+UkRFQm5uSDg5c014WUx4Qy85THUxeGpkVVRkbWQxMC81RXpBMWkwYmROQm9qQlkNCjNQSjRPNGJo
+R3BiOUtHbnhzaFRPRVduY05teXk0MHM4YUhMYmRyZ0VWS0N0a1Mra3dBcm1URmptazQ5R3pRaWUN
+CnJSTzJjTlUwV2tVZXBjWDl3cjUxcUtTYnJuZDdFMHJ6MHlNbXVXdlJIalJ0ejErRDhkUi9HSmhK
+ZFlyRUtxbmwNCnZQVm5yT05qNVp4WFc4d2pzZ1FtczVpTHVWUXp1eVJ5WDRROHhiSFJiYWlsWEVE
+TlUrSFRXUjU4YUFtdzRpeWwNCjI4N0x0RHd5VS9JU2M3T3FNMkVzVFBPaFNlWWpPbkxIWnZvdCt1
+ZnU2cU9HS2tBaUthTm53TjZwUkprVzF6S1kNCnFuUVJZMEhKNmt5cmoxWmFKdzFONEMzVm9wQkxq
+Qy9Qbm44dldBekgzNVJMKzJvaGs0MTY4ZEhhQXJVYVJOV0sNCnF1REFWK3psOGRsR0wySDVVMHlu
+cUxCNWtvU0NINHpnUURtY0gycHQyN3pCcXVxNE1ySzNwTC85emduWE9VeWENClZuUGVjTGRHakhS
+YTIyS2xkb05WT2Y0MWtJQ2wxTFo2ZllXcXhWWEl2ZUE2N0hTcWlmZHVjVVA5bjUwYVdUeWcNCkZx
+L1JFbVVlcmFVV2NZeWRFK0IrNFh0NXlJRi9WL1p3bTBvPQ0KPVoyVkoNCi0tLS0tRU5EIFBHUCBQ
+VUJMSUMgS0VZIEJMT0NLLS0tLS0NCg==
 
-diff --git a/arch/x86/boot/tools/build.c b/arch/x86/boot/tools/build.c
-index 3d03ad753ed5..db528961c283 100644
---- a/arch/x86/boot/tools/build.c
-+++ b/arch/x86/boot/tools/build.c
-@@ -238,21 +238,17 @@ static void update_pecoff_text(unsigned int text_start, unsigned int file_sz,
- 
- 	pe_header = get_unaligned_le32(&buf[0x3c]);
- 
--#ifdef CONFIG_EFI_MIXED
- 	/*
--	 * In mixed mode, we will execute startup_32() at whichever offset in
--	 * memory it happened to land when the PE/COFF loader loaded the image,
--	 * which may be misaligned with respect to the kernel_alignment field
--	 * in the setup header.
-+	 * The PE/COFF loader may load the image at an address which is
-+	 * misaligned with respect to the kernel_alignment field in the setup
-+	 * header.
- 	 *
--	 * In order for startup_32 to safely execute in place at this offset,
--	 * we need to ensure that the CONFIG_PHYSICAL_ALIGN aligned allocation
--	 * it creates for the page tables does not extend beyond the declared
--	 * size of the image in the PE/COFF header. So add the required slack.
-+	 * In order to avoid relocating the kernel to correct the misalignment,
-+	 * add slack to allow the buffer to be aligned within the declared size
-+	 * of the image.
- 	 */
- 	bss_sz	+= CONFIG_PHYSICAL_ALIGN;
- 	init_sz	+= CONFIG_PHYSICAL_ALIGN;
--#endif
- 
- 	/*
- 	 * Size of code: Subtract the size of the first sector (512 bytes)
-diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
-index 0c4a6352cfd3..957feeacdd8f 100644
---- a/drivers/firmware/efi/libstub/x86-stub.c
-+++ b/drivers/firmware/efi/libstub/x86-stub.c
-@@ -717,6 +717,7 @@ unsigned long efi_main(efi_handle_t handle,
- 			     struct boot_params *boot_params)
- {
- 	unsigned long bzimage_addr = (unsigned long)startup_32;
-+	unsigned long buffer_start, buffer_end;
- 	struct setup_header *hdr = &boot_params->hdr;
- 	efi_status_t status;
- 	unsigned long cmdline_paddr;
-@@ -728,10 +729,25 @@ unsigned long efi_main(efi_handle_t handle,
- 		efi_exit(handle, EFI_INVALID_PARAMETER);
- 
- 	/*
--	 * If the kernel isn't already loaded at the preferred load
--	 * address, relocate it.
-+	 * If the kernel isn't already loaded at a suitable address,
-+	 * relocate it.
-+	 * It must be loaded above LOAD_PHYSICAL_ADDR.
-+	 * The maximum address for 64-bit is 1 << 46 for 4-level paging.
-+	 * For 32-bit, the maximum address is complicated to figure out, for
-+	 * now use KERNEL_IMAGE_SIZE, which will be 512MiB, the same as what
-+	 * KASLR uses.
-+	 * Also relocate it if image_offset is zero, i.e. we weren't loaded by
-+	 * LoadImage, but we are not aligned correctly.
- 	 */
--	if (bzimage_addr - image_offset != hdr->pref_address) {
-+	buffer_start = ALIGN(bzimage_addr - image_offset,
-+			     hdr->kernel_alignment);
-+	buffer_end = buffer_start + hdr->init_size;
-+
-+	if (buffer_start < LOAD_PHYSICAL_ADDR
-+	    || IS_ENABLED(CONFIG_X86_32) && buffer_end > KERNEL_IMAGE_SIZE
-+	    || IS_ENABLED(CONFIG_X86_64) && buffer_end > 1ull << 46
-+	    || image_offset == 0 && !IS_ALIGNED(bzimage_addr,
-+						hdr->kernel_alignment)) {
- 		status = efi_relocate_kernel(&bzimage_addr,
- 					     hdr->init_size, hdr->init_size,
- 					     hdr->pref_address,
--- 
-2.24.1
-
+--_002_db83f5a1b8272a310ca9a04df8257324nextfourcom_--
