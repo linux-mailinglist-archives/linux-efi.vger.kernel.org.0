@@ -2,108 +2,126 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A2F281760BB
-	for <lists+linux-efi@lfdr.de>; Mon,  2 Mar 2020 18:09:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F9E01765D6
+	for <lists+linux-efi@lfdr.de>; Mon,  2 Mar 2020 22:21:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727276AbgCBRJt (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 2 Mar 2020 12:09:49 -0500
-Received: from mail.kernel.org ([198.145.29.99]:55146 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727423AbgCBRJr (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Mon, 2 Mar 2020 12:09:47 -0500
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id CD99424676
-        for <linux-efi@vger.kernel.org>; Mon,  2 Mar 2020 17:09:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1583168986;
-        bh=wOOJalJ6H53XXQk1DAauUesmJQFNORcTG2bDbS4jTOI=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=sBlRkkgxt6D2/JozMgjWEI09F+LrMw1oMwtTu/eWsPxGikV+EZyIU832PuFwNMuZR
-         EsEQ0Pid29Fz4t0caF+nnxrMfGseFnOZgerLycnpy+UDXCcgU55njWpdZgfiA1RUgZ
-         9bQ2Nm80zXEBPQbkvUVs1i1HKpv1GMSDUURHuJ5M=
-Received: by mail-wr1-f48.google.com with SMTP id x7so735673wrr.0
-        for <linux-efi@vger.kernel.org>; Mon, 02 Mar 2020 09:09:45 -0800 (PST)
-X-Gm-Message-State: ANhLgQ0dGsVCZ4vlEUysT6EkTF8H/1XJyNG51TwYLKsdn1xUGZd2K20s
-        bioTjPB4JCQy20DfjWKdg2hOMMRY5B+F/l5RpgPTDw==
-X-Google-Smtp-Source: ADFU+vulOOyRBC0j8mmKmW/9sKyLi7JLKHuZJbI1cY4csL1kVUSZ58d6JD2kDoI8OSDSrqqv0eu9kTb7HeKZb9iJbEQ=
-X-Received: by 2002:adf:e742:: with SMTP id c2mr563486wrn.262.1583168984232;
- Mon, 02 Mar 2020 09:09:44 -0800 (PST)
-MIME-Version: 1.0
-References: <20200301230436.2246909-1-nivedita@alum.mit.edu>
- <20200301230436.2246909-4-nivedita@alum.mit.edu> <CAKv+Gu9RRDidiJ8WAnSta1kZoioFU_ZLxwGPQuhepd9N23HUJw@mail.gmail.com>
- <20200302165359.GA2599505@rani.riverdale.lan> <CAKv+Gu-8HeNaRYZNtTHr1_VF1aH=BRKF4CaeyP-PPfHNQN2paA@mail.gmail.com>
- <20200302170205.GA2937123@rani.riverdale.lan>
-In-Reply-To: <20200302170205.GA2937123@rani.riverdale.lan>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Mon, 2 Mar 2020 18:09:33 +0100
-X-Gmail-Original-Message-ID: <CAKv+Gu_2JBC5mx=4xqz3Rfr=m8O3RBh8j5Yxfot_W5RJ6AsrYA@mail.gmail.com>
-Message-ID: <CAKv+Gu_2JBC5mx=4xqz3Rfr=m8O3RBh8j5Yxfot_W5RJ6AsrYA@mail.gmail.com>
-Subject: Re: [PATCH 3/5] efi/x86: Make efi32_pe_entry more readable
-To:     Arvind Sankar <nivedita@alum.mit.edu>
-Cc:     linux-efi <linux-efi@vger.kernel.org>,
-        "the arch/x86 maintainers" <x86@kernel.org>,
+        id S1725911AbgCBVVP (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 2 Mar 2020 16:21:15 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:33630 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726700AbgCBVVP (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 2 Mar 2020 16:21:15 -0500
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 022LL3Wh080945
+        for <linux-efi@vger.kernel.org>; Mon, 2 Mar 2020 16:21:14 -0500
+Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 2yfm51ty4a-1
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <linux-efi@vger.kernel.org>; Mon, 02 Mar 2020 16:21:14 -0500
+Received: from localhost
+        by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <linux-efi@vger.kernel.org> from <heiko.carstens@de.ibm.com>;
+        Mon, 2 Mar 2020 21:21:11 -0000
+Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
+        by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+        Mon, 2 Mar 2020 21:21:09 -0000
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com [9.149.105.232])
+        by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 022LK9AD37880264
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 2 Mar 2020 21:20:09 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 6FF295204F;
+        Mon,  2 Mar 2020 21:21:07 +0000 (GMT)
+Received: from osiris (unknown [9.145.25.181])
+        by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTPS id 0072952059;
+        Mon,  2 Mar 2020 21:21:06 +0000 (GMT)
+Date:   Mon, 2 Mar 2020 22:21:05 +0100
+From:   Heiko Carstens <heiko.carstens@de.ibm.com>
+To:     Mimi Zohar <zohar@linux.ibm.com>
+Cc:     Ard Biesheuvel <ardb@kernel.org>, Nayna Jain <nayna@linux.ibm.com>,
+        linux-integrity <linux-integrity@vger.kernel.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Philipp Rudo <prudo@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [PATCH] ima: add a new CONFIG for loading arch-specific policies
+References: <1582744207-25969-1-git-send-email-nayna@linux.ibm.com>
+ <1583160524.8544.91.camel@linux.ibm.com>
+ <CAKv+Gu_E9O05xB7i2Y8KiMJUjtZoq54GxSbHnyTFePcF6fqQNA@mail.gmail.com>
+ <1583161018.8544.96.camel@linux.ibm.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <1583161018.8544.96.camel@linux.ibm.com>
+X-TM-AS-GCONF: 00
+x-cbid: 20030221-0012-0000-0000-0000038C6B98
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20030221-0013-0000-0000-000021C91FE8
+Message-Id: <20200302212105.GH4035@osiris>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.572
+ definitions=2020-03-02_08:2020-03-02,2020-03-02 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 adultscore=0
+ priorityscore=1501 lowpriorityscore=0 malwarescore=0 mlxscore=0
+ clxscore=1011 bulkscore=0 spamscore=0 mlxlogscore=999 suspectscore=1
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2001150001 definitions=main-2003020138
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Mon, 2 Mar 2020 at 18:02, Arvind Sankar <nivedita@alum.mit.edu> wrote:
->
-> On Mon, Mar 02, 2020 at 05:57:04PM +0100, Ard Biesheuvel wrote:
-> > On Mon, 2 Mar 2020 at 17:54, Arvind Sankar <nivedita@alum.mit.edu> wrote:
+On Mon, Mar 02, 2020 at 09:56:58AM -0500, Mimi Zohar wrote:
+> On Mon, 2020-03-02 at 15:52 +0100, Ard Biesheuvel wrote:
+> > On Mon, 2 Mar 2020 at 15:48, Mimi Zohar <zohar@linux.ibm.com> wrote:
+> > > > diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+> > > > index beea77046f9b..cafa66313fe2 100644
+> > > > --- a/arch/x86/Kconfig
+> > > > +++ b/arch/x86/Kconfig
+> > > > @@ -230,6 +230,7 @@ config X86
+> > > >       select VIRT_TO_BUS
+> > > >       select X86_FEATURE_NAMES                if PROC_FS
+> > > >       select PROC_PID_ARCH_STATUS             if PROC_FS
+> > > > +     select IMA_SECURE_AND_OR_TRUSTED_BOOT   if EFI
 > > >
-> > > On Mon, Mar 02, 2020 at 08:49:17AM +0100, Ard Biesheuvel wrote:
-> > > > On Mon, 2 Mar 2020 at 00:04, Arvind Sankar <nivedita@alum.mit.edu> wrote:
-> > > ...
-> > > > >         call    1f
-> > > > > -1:     pop     %ebp
-> > > > > -       subl    $1b, %ebp
-> > > > > +1:     pop     %ebx
-> > > > > +       subl    $1b, %ebx
-> > > ...
-> > > > >
-> > > > > +       movl    %ebx, %ebp                      // startup_32 for efi32_pe_stub_entry
-> > > >
-> > > > The code that follows efi32_pe_stub_entry still expects the runtime
-> > > > displacement in %ebp, so we'll need to pass that in another way here.
-> > > >
-> > > > >         jmp     efi32_pe_stub_entry
+> > > Not everyone is interested in enabling IMA or requiring IMA runtime
+> > > policies.  With this patch, enabling IMA_ARCH_POLICY is therefore
+> > > still left up to the person building the kernel.  As a result, I'm
+> > > seeing the following warning, which is kind of cool.
 > > >
-> > > Didn't follow -- what do you mean by runtime displacement?
+> > > WARNING: unmet direct dependencies detected for
+> > > IMA_SECURE_AND_OR_TRUSTED_BOOT
+> > >   Depends on [n]: INTEGRITY [=y] && IMA [=y] && IMA_ARCH_POLICY [=n]
+> > >   Selected by [y]:
+> > >   - X86 [=y] && EFI [=y]
 > > >
-> > > efi32_pe_stub_entry expects the runtime address of startup_32 to be in
-> > > %ebp, but with the changes for keeping the frame pointer in %ebp, I
-> > > changed the runtime address to be in %ebx instead. Hence I added that
-> > > movl %ebx, %ebp to put it in %ebp just before calling efi32_pe_stub_entry.
-> > > That should be fine, no?
-> >
-> > But how does that work with:
-> >
-> > SYM_INNER_LABEL(efi32_pe_stub_entry, SYM_L_LOCAL)
-> >     movl %ecx, efi32_boot_args(%ebp)
-> >     movl %edx, efi32_boot_args+4(%ebp)
-> >     movb $0, efi_is64(%ebp)
-> >
-> >
+> > > Ard, Michael, Martin, just making sure this type of warning is
+> > > acceptable before upstreaming this patch.  I would appreciate your
+> > > tags.
+> > >
+> > 
+> > Ehm, no, warnings like these are not really acceptable. It means there
+> > is an inconsistency in the way the Kconfig dependencies are defined.
+> > 
+> > Does this help:
+> > 
+> >   select IMA_SECURE_AND_OR_TRUSTED_BOOT   if EFI && IMA_ARCH_POLICY
+> > 
 > > ?
->
-> Why wouldn't it work? Before this change, efi32_pe_entry set %ebp to
-> startup_32 (via the call/pop/sub sequence), so efi32_pe_stub_entry was
-> entered with %ebp == startup_32.
->
-> After this change, the call/pop/sub sequence puts startup_32 into %ebx,
-> and then I copy it into %ebp just before branching to efi32_pe_stub_entry.
-> So everything should continue to work the same way as before?
+> 
+> Yes, that's fine for x86.  Michael, Martin, do you want something
+> similar or would you prefer actually selecting IMA_ARCH_POLICY?
 
-Ah ok, so the sequence
+For s390 something like
 
-   call 1f
-1: pop %ebp
-   subl $1b, %ebp
+	select IMA_SECURE_AND_OR_TRUSTED_BOOT if IMA_ARCH_POLICY
 
-happens to produce the value of startup_32, which is obvious now that
-I think of it, but it wasn't before.
+should be fine.
+
+Thanks,
+Heiko
+
