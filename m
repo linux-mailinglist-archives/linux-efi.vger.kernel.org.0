@@ -2,80 +2,124 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9FFE5177414
-	for <lists+linux-efi@lfdr.de>; Tue,  3 Mar 2020 11:25:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A17B17779F
+	for <lists+linux-efi@lfdr.de>; Tue,  3 Mar 2020 14:45:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728520AbgCCKZC (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 3 Mar 2020 05:25:02 -0500
-Received: from us-smtp-1.mimecast.com ([207.211.31.81]:56116 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1728480AbgCCKZC (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 3 Mar 2020 05:25:02 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1583231101;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=Y9OskcRkJBB13zwLLGMfs2S2+SpY5k0BUryUkH7intc=;
-        b=iVaKgjE031bDkJ/OWL6R2zxwibNYiRh5yCoJxUB188sVJAdOrIuutpOgGv0QAmzYs/dWIC
-        IUXMjY8eO9tfaofpWag1dhismXj5aEulD37azdRPCX4kYy5QuP2SEfUu9bsVzy21Q8xnoT
-        JaIigerU1LEruO047hSAC755O/IdnmQ=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-269-Mq5NpSpDOvCPhq4vNA4ahw-1; Tue, 03 Mar 2020 05:24:59 -0500
-X-MC-Unique: Mq5NpSpDOvCPhq4vNA4ahw-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id A808D800D50;
-        Tue,  3 Mar 2020 10:24:58 +0000 (UTC)
-Received: from colo-mx.corp.redhat.com (colo-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.21])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id 9CD0160BF3;
-        Tue,  3 Mar 2020 10:24:58 +0000 (UTC)
-Received: from zmail21.collab.prod.int.phx2.redhat.com (zmail21.collab.prod.int.phx2.redhat.com [10.5.83.24])
-        by colo-mx.corp.redhat.com (Postfix) with ESMTP id 90B6686A00;
-        Tue,  3 Mar 2020 10:24:58 +0000 (UTC)
-Date:   Tue, 3 Mar 2020 05:24:58 -0500 (EST)
-From:   Vladis Dronov <vdronov@redhat.com>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     linux-efi <linux-efi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Message-ID: <358842423.12639861.1583231098544.JavaMail.zimbra@redhat.com>
-In-Reply-To: <1980156503.12639063.1583230452485.JavaMail.zimbra@redhat.com>
-References: <20200303085528.27658-1-vdronov@redhat.com> <CAKv+Gu_3ZRRcoAcLTVVQe26q5x9KALmztaNQF=e=KqWaAwxtpA@mail.gmail.com> <1980156503.12639063.1583230452485.JavaMail.zimbra@redhat.com>
-Subject: Re: [PATCH] efi: fix a race and a buffer overflow while reading
- efivars via sysfs
+        id S1728494AbgCCNpZ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 3 Mar 2020 08:45:25 -0500
+Received: from mail-qk1-f193.google.com ([209.85.222.193]:33842 "EHLO
+        mail-qk1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727191AbgCCNpZ (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 3 Mar 2020 08:45:25 -0500
+Received: by mail-qk1-f193.google.com with SMTP id 11so3425018qkd.1;
+        Tue, 03 Mar 2020 05:45:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:from:date:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to
+         :user-agent;
+        bh=k3SVGsAkRULOndp1bH4Vy4WDCwesGWr3P2z5Nm2yK10=;
+        b=sWbH2eXGNk7O1rQtiTzgMXTDZu43PmepDSxq/uNPdI7SoPgKCrQc597H3jFSvq2zv1
+         he75Y3Zb2UfC0zVYPysm6n3V+dKaiHAnEWWMEgHkZTWindFlUzUwSNrgbYg8JwUUAuET
+         K9VADaX7yvdP7LE2K8UTyxstGXHGw3Z7ZXBtsPfecPJGtAXaxrFtqlXDjnJJu84WC74g
+         xVAZhKs+WisQ6K5jO6DzK1ETO9PjxW2uwIGBQk8cCYnKD0MZxpdfSG41qOjKPDD84cBd
+         KkOo2PAR3ze0M7wNRVkVghDcTdire3inJI9/dDoxrSTL9HcS4rQo7xAjsJumQYgjF/Ka
+         aRzw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:from:date:to:cc:subject:message-id
+         :references:mime-version:content-disposition
+         :content-transfer-encoding:in-reply-to:user-agent;
+        bh=k3SVGsAkRULOndp1bH4Vy4WDCwesGWr3P2z5Nm2yK10=;
+        b=Bwkbv+MiRKDx2Wf92mwku23vPB6QvpIZozG8w9Utl9JyJyEQjzWxzNC+2Viuot10yr
+         G5i0Es0qd4mn52YVJLKc4GeNVLKuBKhsYV6HM8RMHDlmqVUYa73Uod7L3ytBxbtfIPic
+         sMXaeZtMKRGNrXxSk+dB7ar/Bk+ZqHko4MgNIdAfjCWPc9HD4xcxjK+fVWbuhMfl5tWu
+         EwJbgsEffxir4g2HDyYgMvcYeP97VeSfYAv5ZKtkfX5At50VwhZpjPqlg9KvpQ76g1MK
+         3eisOgb+3ZQ3cdiUybbVY5abjzdTuMhBH4Z9+pnzO42kvTQCeSeJ9+c3oy9pd3z3gmGO
+         QSQQ==
+X-Gm-Message-State: ANhLgQ1qkLdBHYpl9v2/a3H/3UBgzowPC7g3qcG1TFj88tSjiTvkToMF
+        wl1zh6rlVmdDamwWKwLrc1iQuVrHnOU=
+X-Google-Smtp-Source: ADFU+vtMcmjz2IkoUm+AEKIOmhmLZ+Zq/cFMxCPvZfbkApv9+ewkMMxJ3r0lr/5bDhlCrRFK+R2JMg==
+X-Received: by 2002:ae9:ef4c:: with SMTP id d73mr3833332qkg.201.1583243123678;
+        Tue, 03 Mar 2020 05:45:23 -0800 (PST)
+Received: from rani.riverdale.lan ([2001:470:1f07:5f3::b55f])
+        by smtp.gmail.com with ESMTPSA id o127sm12169290qke.92.2020.03.03.05.45.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Mar 2020 05:45:23 -0800 (PST)
+From:   Arvind Sankar <nivedita@alum.mit.edu>
+X-Google-Original-From: Arvind Sankar <arvind@rani.riverdale.lan>
+Date:   Tue, 3 Mar 2020 08:45:21 -0500
+To:     Mika =?utf-8?B?UGVudHRpbMOk?= <mika.penttila@nextfour.com>
+Cc:     Arvind Sankar <nivedita@alum.mit.edu>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
+        "x86@kernel.org" <x86@kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 2/5] efi/x86: Decompress at start of PE image load address
+Message-ID: <20200303134521.GA3628638@rani.riverdale.lan>
+References: <20200301230537.2247550-1-nivedita@alum.mit.edu>
+ <20200301230537.2247550-3-nivedita@alum.mit.edu>
+ <dce7e026-ccb2-36f0-c892-83558dcc055f@nextfour.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.40.204.56, 10.4.195.30]
-Thread-Topic: fix a race and a buffer overflow while reading efivars via sysfs
-Thread-Index: a9pXAtMcyqvelpyZViw1cEjneZdMYYgMv25R
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <dce7e026-ccb2-36f0-c892-83558dcc055f@nextfour.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hello, Ard, all,
-
-> > Wouldn't it be easier to pass a var_data_size stack variable into
-> > efivar_entry_get(), and only update the value in 'var' if it is <=
-> > 1024?
-> > 
+On Tue, Mar 03, 2020 at 06:28:20AM +0000, Mika Penttilä wrote:
 > 
-> I was thinking about this approach, but this way we still do not protect
-> var from a concurrent access. For example, efivar_data_read() can race
-> with itself:
+> 
+> On 2.3.2020 1.05, Arvind Sankar wrote:
+> > When booted via PE loader, define image_offset to hold the offset of
+> > startup_32 from the start of the PE image, and use it as the start of
+> > the decompression buffer.
+> >
+> > Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
+> > ---
+> >  arch/x86/boot/compressed/head_32.S      | 17 +++++++++++
+> >  arch/x86/boot/compressed/head_64.S      | 38 +++++++++++++++++++++++--
+> >  drivers/firmware/efi/libstub/x86-stub.c | 12 ++++++--
+> >  3 files changed, 61 insertions(+), 6 deletions(-)
+> 
+> ...
+> > --- a/drivers/firmware/efi/libstub/x86-stub.c
+> > +++ b/drivers/firmware/efi/libstub/x86-stub.c
+> > @@ -19,6 +19,7 @@
+> >  
+> >  static efi_system_table_t *sys_table;
+> >  extern const bool efi_is64;
+> > +extern u32 image_offset;
+> >  
+> >  __pure efi_system_table_t *efi_system_table(void)
+> >  {
+> > @@ -364,6 +365,7 @@ efi_status_t __efiapi efi_pe_entry(efi_handle_t handle,
+> >  	struct boot_params *boot_params;
+> >  	struct setup_header *hdr;
+> >  	efi_loaded_image_t *image;
+> > +	void *image_base;
+> >  	efi_guid_t proto = LOADED_IMAGE_PROTOCOL_GUID;
+> >  	int options_size = 0;
+> >  	efi_status_t status;
+> > @@ -384,7 +386,10 @@ efi_status_t __efiapi efi_pe_entry(efi_handle_t handle,
+> >  		efi_exit(handle, status);
+> >  	}
+> >  
+> > -	hdr = &((struct boot_params *)efi_table_attr(image, image_base))->hdr;
+> > +	image_base = efi_table_attr(image, image_base);
+> > +	image_offset = (void *)startup_32 - image_base;
+> 
+> startup_32 == 0, so maybe something like
+> 
+> leaq	startup_32(%rip) - image_base
+> 
+> should be used ?
+> 
 
-Oh, indeed, this race is not possible the way you sugget with a var_data_size
-stack variable. Unfortunately, AFAIU, the read/write race stays:
- 
-> ... efivar read functions still can race with the write function
-> efivar_store_raw(). Surely, the race window is much smaller but it is there.
-> I strongly believe we need to protect all data accesses here with a lock.
-
-Best regards,
-Vladis Dronov | Red Hat, Inc. | The Core Kernel | Senior Software Engineer
-
+That's what it already uses. All the files in this directory are
+compiled to be position-independent, so it uses rip-relative addressing
+on 64-bit and GOT-relative addressing on 32-bit.
