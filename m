@@ -2,147 +2,362 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BFBD9178465
-	for <lists+linux-efi@lfdr.de>; Tue,  3 Mar 2020 21:55:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A6D67178500
+	for <lists+linux-efi@lfdr.de>; Tue,  3 Mar 2020 22:40:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732094AbgCCUyx (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 3 Mar 2020 15:54:53 -0500
-Received: from mail-qv1-f65.google.com ([209.85.219.65]:45477 "EHLO
-        mail-qv1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731387AbgCCUyu (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 3 Mar 2020 15:54:50 -0500
-Received: by mail-qv1-f65.google.com with SMTP id r8so2336654qvs.12;
-        Tue, 03 Mar 2020 12:54:50 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=LpQl3QOx5Q+iwwtomiSeHz+aE8G4tQSvo7FgTI9tPuc=;
-        b=PSqdvhd2W9ItnvxRDhJ7TffR6b8U5YbwMkn+rJNsf8NU4SnVlI7b+KD5hP8EbADXuy
-         rrGLg2bM1vUkll2IIUDRT5+ZkiXOt9nNBtLP90Y3++sJj0t7qTi5G2UHBR3MBgKnH/8S
-         tPQ0FLGFcaK0Oa9hVquZwuYpvpugUO5zHvZOqwBsc+phzSRthRwyrqhfJ95GXPCoY0Ag
-         u1nvy7hscs18G8OMTzXYBWnGybSu5C2t2J5Mj3BVZuoOGNK4jrzTAJpLnzMw1oX68CH0
-         ZXDk8xlWL3mUjCEazRLF88ByEJ8YueK9SBOH3E9jmUSP+7XPBjjhsg9kw2eAhIc7Xki+
-         K0JA==
-X-Gm-Message-State: ANhLgQ0u7ed+cMU3Se7L4UNTudW8qUYo/Wi0Pl9zjZxZezRBBqGjKP+p
-        3jmIRKnGKrjKFABDKNEOFl0=
-X-Google-Smtp-Source: ADFU+vsZniQDhGjqLlXxME0EXoL4+0fXjheAns0z7Q7Ng0aBa8/DycAE2U+TOxoyv1vKlgUcFXZ4GA==
-X-Received: by 2002:a05:6214:381:: with SMTP id l1mr5780954qvy.178.1583268889854;
-        Tue, 03 Mar 2020 12:54:49 -0800 (PST)
-Received: from rani.riverdale.lan ([2001:470:1f07:5f3::b55f])
-        by smtp.gmail.com with ESMTPSA id v12sm11473041qti.84.2020.03.03.12.54.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Mar 2020 12:54:49 -0800 (PST)
-From:   Arvind Sankar <nivedita@alum.mit.edu>
-To:     Dave Hansen <dave.hansen@linux.intel.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
-        Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH 4/4] x86/mm/pat: Make num_pages consistent in populate_{pte,pud,pgd}
-Date:   Tue,  3 Mar 2020 15:54:45 -0500
-Message-Id: <20200303205445.3965393-5-nivedita@alum.mit.edu>
-X-Mailer: git-send-email 2.24.1
-In-Reply-To: <20200303205445.3965393-1-nivedita@alum.mit.edu>
-References: <20200303205445.3965393-1-nivedita@alum.mit.edu>
+        id S1728386AbgCCVkh (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 3 Mar 2020 16:40:37 -0500
+Received: from mail.kernel.org ([198.145.29.99]:53120 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728069AbgCCVkh (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Tue, 3 Mar 2020 16:40:37 -0500
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id C5B9420CC7
+        for <linux-efi@vger.kernel.org>; Tue,  3 Mar 2020 21:40:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1583271636;
+        bh=0jpsm3BBvnD478P2r5zTpeDAbp5w828MO+Ug3OmTz1Y=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=vV83R1WQOEwrilldQhJXU9KGgWVNk6TsLU0nQ/rrZJh8ai/KCnQBnqYKVmUYYf6jW
+         ekhuKN3kiGxYF6aAFkl0dcHpEIdwgLXWMjURm9/wowTO5Zo89POSTgZrNZ8NzPcm/f
+         oQAOPicbfhz/MDGF2wkFpkL63OCZziQKS7kMrZz8=
+Received: by mail-wm1-f42.google.com with SMTP id g134so3661107wme.3
+        for <linux-efi@vger.kernel.org>; Tue, 03 Mar 2020 13:40:35 -0800 (PST)
+X-Gm-Message-State: ANhLgQ1LaLsh1T7W/MZOjCRJ1ygtivjDqRxWMxv2erpiG5vhjZska3IP
+        gqpCXEOTKmdUzXlo3zyCQxaSA04Cg+I8S6D1kulBLA==
+X-Google-Smtp-Source: ADFU+vv8K/yzcQfqLLdVnpOiBFhF4pvd3KmGe7fU1o40H8tR6B6No3Mj2vvp3wcRAAYE3cJq3QBoueGxcMNpfBbbYrE=
+X-Received: by 2002:a1c:2d88:: with SMTP id t130mr560545wmt.68.1583271634105;
+ Tue, 03 Mar 2020 13:40:34 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20200216182334.8121-1-ardb@kernel.org> <20200216182334.8121-17-ardb@kernel.org>
+ <20200303160353.GA20372@roeck-us.net> <CAKv+Gu_dG2dsrNBWG3fV5S40y6iRGSj7MO2gbtZhqEUg5mXgyQ@mail.gmail.com>
+ <20200303175355.GA14065@roeck-us.net> <CAKv+Gu_4tbdR8zF0eerZBbiFhCh_hg20rTovxqcaByW8J4b-UA@mail.gmail.com>
+ <CAKv+Gu8+JV0WLqNzX_cMGRwDH4vMS_v8a_uJ8ciDtgzGUVsmhA@mail.gmail.com> <20200303203043.GA4078@roeck-us.net>
+In-Reply-To: <20200303203043.GA4078@roeck-us.net>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Tue, 3 Mar 2020 22:40:23 +0100
+X-Gmail-Original-Message-ID: <CAKv+Gu9bqB-nxk76ZKeaC14dTemS8ZZNtrwHd6PUWknkqnAueQ@mail.gmail.com>
+Message-ID: <CAKv+Gu9bqB-nxk76ZKeaC14dTemS8ZZNtrwHd6PUWknkqnAueQ@mail.gmail.com>
+Subject: Re: [PATCH 16/18] efi: add 'runtime' pointer to struct efi
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     linux-efi <linux-efi@vger.kernel.org>,
+        Arvind Sankar <nivedita@alum.mit.edu>,
+        "the arch/x86 maintainers" <x86@kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The number of pages is currently all of int, unsigned int, long and
-unsigned long in different places.
+On Tue, 3 Mar 2020 at 21:30, Guenter Roeck <linux@roeck-us.net> wrote:
+>
+> On Tue, Mar 03, 2020 at 07:14:52PM +0100, Ard Biesheuvel wrote:
+> > On Tue, 3 Mar 2020 at 19:01, Ard Biesheuvel <ardb@kernel.org> wrote:
+> > >
+> > > On Tue, 3 Mar 2020 at 18:54, Guenter Roeck <linux@roeck-us.net> wrote:
+> > > >
+> > > > On Tue, Mar 03, 2020 at 05:39:43PM +0100, Ard Biesheuvel wrote:
+> > > > > On Tue, 3 Mar 2020 at 17:03, Guenter Roeck <linux@roeck-us.net> wrote:
+> > > > > >
+> > > > > > On Sun, Feb 16, 2020 at 07:23:32PM +0100, Ard Biesheuvel wrote:
+> > > > > > > Instead of going through the EFI system table each time, just copy the
+> > > > > > > runtime services table pointer into struct efi directly. This is the
+> > > > > > > last use of the system table pointer in struct efi, allowing us to
+> > > > > > > drop it in a future patch, along with a fair amount of quirky handling
+> > > > > > > of the translated address.
+> > > > > > >
+> > > > > > > Note that usually, the runtime services pointer changes value during
+> > > > > > > the call to SetVirtualAddressMap(), so grab the updated value as soon
+> > > > > > > as that call returns. (Mixed mode uses a 1:1 mapping, and kexec boot
+> > > > > > > enters with the updated address in the system table, so in those cases,
+> > > > > > > we don't need to do anything here)
+> > > > > > >
+> > > > > > > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> > > > > >
+> > > > > > This patch results in a crash with i386 efi boots if PAE (CONFIG_HIGHMEM64G=y)
+> > > > > > is enabled. Bisect and crash logs attached. There is also a warning which
+> > > > > > I don't recall seeing before, but it may not be caused by this patch
+> > > > > > (I didn' bisect the warning). The warning is seen with all i386:efi boots,
+> > > > > > not only when PAE is enabled. The warning log is also attached.
+> > > > > >
+> > > > > > Guenter
+> > > > > >
+> > > > > > ---
+> > > > > > Qemu command line:
+> > > > > >
+> > > > > > qemu-system-i386 -kernel arch/x86/boot/bzImage -M pc -cpu Westmere \
+> > > > > >         -no-reboot -m 256 -snapshot \
+> > > > > >         -bios OVMF-pure-efi-32.fd \
+> > > > > >         -usb -device usb-storage,drive=d0 \
+> > > > > >         -drive file=rootfs.ext2,if=none,id=d0,format=raw \
+> > > > > >         --append 'earlycon=uart8250,io,0x3f8,9600n8 panic=-1 slub_debug=FZPUA root=/dev/sda rootwait mem=256M console=ttyS0' \
+> > > > > >         -nographic
+> > > > > >
+> > > > >
+> > > > > I am failing to reproduce this. Do you have a .config and a copy of
+> > > > > OVMF-pure-efi-32.fd anywhere?
+> > > > >
+> > > >
+> > > > https://github.com/groeck/linux-build-test/blob/master/rootfs/firmware/OVMF-pure-efi-32.fd
+> > > > https://github.com/groeck/linux-build-test/blob/master/rootfs/x86/rootfs.ext2.gz
+> > > >
+> > > > Config file is below, shortened by "make savedefconfig" on the actual
+> > > > configuration used on next-20200303. Qemu version is 4.2, though that
+> > > > should not really matter. Note that it isn't necessary to boot from usb,
+> > > > that was just my test case.
+> > > >
+> > > > Here is a pointer to a complete log, showing the various conditions
+> > > > resulting in the warning and the crash:
+> > > >
+> > > > https://kerneltests.org/builders/qemu-x86-next/builds/1310/steps/qemubuildcommand_1/logs/stdio
+> > > >
+> > >
+> > > Thanks.
+> > >
+> > > How do I generate your exact .config from the below? I still cannot
+> > > reproduce with the different firmware.
+> > >
+> > > My qemu is 3.1 btw
+> > >
+> >
+> > Also, I don't see CONFIG_HIGHMEM64G=y anywhere below??
+> >
+>
+> Sorry, I should have used make ARCH=i386 savedefconfig. Another attempt
+> below. This needs to be built with "make ARCH=i386".
+>
 
-Change it to be consistently unsigned long.
+It still doesn't enable CONFIG_HIGHMEM64G, and so it is not entirely
+clear to me how I should derive your failing config from this.
+Couldn't you simply share the whole thing?
 
-Remove the unnecessary min(num_pages, cur_pages), since pre_end has
-already been min'd with start + num_pages << PAGE_SHIFT. This gets rid
-of two conversions to int/unsigned int.
 
-Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
----
- arch/x86/include/asm/pgtable_types.h |  2 +-
- arch/x86/mm/pat/set_memory.c         | 13 ++++++-------
- 2 files changed, 7 insertions(+), 8 deletions(-)
 
-diff --git a/arch/x86/include/asm/pgtable_types.h b/arch/x86/include/asm/pgtable_types.h
-index 0239998d8cdc..894569255a95 100644
---- a/arch/x86/include/asm/pgtable_types.h
-+++ b/arch/x86/include/asm/pgtable_types.h
-@@ -574,7 +574,7 @@ extern pmd_t *lookup_pmd_address(unsigned long address);
- extern phys_addr_t slow_virt_to_phys(void *__address);
- extern int __init kernel_map_pages_in_pgd(pgd_t *pgd, u64 pfn,
- 					  unsigned long address,
--					  unsigned numpages,
-+					  unsigned long numpages,
- 					  unsigned long page_flags);
- extern int __init kernel_unmap_pages_in_pgd(pgd_t *pgd, unsigned long address,
- 					    unsigned long numpages);
-diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
-index 2f98423ef69a..51b64937cc16 100644
---- a/arch/x86/mm/pat/set_memory.c
-+++ b/arch/x86/mm/pat/set_memory.c
-@@ -1230,7 +1230,7 @@ static int alloc_pmd_page(pud_t *pud)
- 
- static void populate_pte(struct cpa_data *cpa,
- 			 unsigned long start, unsigned long end,
--			 unsigned num_pages, pmd_t *pmd, pgprot_t pgprot)
-+			 unsigned long num_pages, pmd_t *pmd, pgprot_t pgprot)
- {
- 	pte_t *pte;
- 
-@@ -1249,9 +1249,9 @@ static void populate_pte(struct cpa_data *cpa,
- 
- static int populate_pmd(struct cpa_data *cpa,
- 			unsigned long start, unsigned long end,
--			unsigned num_pages, pud_t *pud, pgprot_t pgprot)
-+			unsigned long num_pages, pud_t *pud, pgprot_t pgprot)
- {
--	long cur_pages = 0;
-+	unsigned long cur_pages = 0;
- 	pmd_t *pmd;
- 	pgprot_t pmd_pgprot;
- 
-@@ -1264,7 +1264,6 @@ static int populate_pmd(struct cpa_data *cpa,
- 
- 		pre_end   = min_t(unsigned long, pre_end, next_page);
- 		cur_pages = (pre_end - start) >> PAGE_SHIFT;
--		cur_pages = min_t(unsigned int, num_pages, cur_pages);
- 
- 		/*
- 		 * Need a PTE page?
-@@ -1326,7 +1325,7 @@ static int populate_pud(struct cpa_data *cpa, unsigned long start, p4d_t *p4d,
- {
- 	pud_t *pud;
- 	unsigned long end;
--	long cur_pages = 0;
-+	unsigned long cur_pages = 0;
- 	pgprot_t pud_pgprot;
- 	int ret;
- 
-@@ -1342,7 +1341,6 @@ static int populate_pud(struct cpa_data *cpa, unsigned long start, p4d_t *p4d,
- 
- 		pre_end   = min_t(unsigned long, end, next_page);
- 		cur_pages = (pre_end - start) >> PAGE_SHIFT;
--		cur_pages = min_t(int, (int)cpa->numpages, cur_pages);
- 
- 		pud = pud_offset(p4d, start);
- 
-@@ -2231,7 +2229,8 @@ bool kernel_page_present(struct page *page)
- #endif /* CONFIG_HIBERNATION */
- 
- int __init kernel_map_pages_in_pgd(pgd_t *pgd, u64 pfn, unsigned long address,
--				   unsigned numpages, unsigned long page_flags)
-+				   unsigned long numpages,
-+				   unsigned long page_flags)
- {
- 	int retval = -EINVAL;
- 
--- 
-2.24.1
 
+> CONFIG_SYSVIPC=y
+> CONFIG_PREEMPT=y
+> CONFIG_BSD_PROCESS_ACCT=y
+> CONFIG_LOG_BUF_SHIFT=14
+> CONFIG_EXPERT=y
+> CONFIG_PROFILING=y
+> CONFIG_ARCH_PXA=y
+> CONFIG_PXA_SHARPSL=y
+> CONFIG_MACH_AKITA=y
+> CONFIG_MACH_BORZOI=y
+> CONFIG_ZBOOT_ROM_TEXT=0x0
+> CONFIG_ZBOOT_ROM_BSS=0x0
+> CONFIG_CMDLINE="console=ttyS0,115200n8 console=tty1 noinitrd root=/dev/mtdblock2 rootfstype=jffs2   debug"
+> CONFIG_FPE_NWFPE=y
+> CONFIG_OPROFILE=m
+> CONFIG_MODULES=y
+> CONFIG_MODULE_UNLOAD=y
+> CONFIG_MODULE_FORCE_UNLOAD=y
+> # CONFIG_BLK_DEV_BSG is not set
+> CONFIG_PARTITION_ADVANCED=y
+> CONFIG_BINFMT_MISC=m
+> CONFIG_NET=y
+> CONFIG_PACKET=y
+> CONFIG_UNIX=y
+> CONFIG_INET=y
+> CONFIG_SYN_COOKIES=y
+> CONFIG_INET6_AH=m
+> CONFIG_INET6_ESP=m
+> CONFIG_INET6_IPCOMP=m
+> CONFIG_IPV6_TUNNEL=m
+> CONFIG_NETFILTER=y
+> CONFIG_IP_NF_IPTABLES=m
+> CONFIG_IP_NF_MATCH_ECN=m
+> CONFIG_IP_NF_MATCH_TTL=m
+> CONFIG_IP_NF_FILTER=m
+> CONFIG_IP_NF_MANGLE=m
+> CONFIG_IP_NF_RAW=m
+> CONFIG_IP_NF_ARPTABLES=m
+> CONFIG_IP_NF_ARPFILTER=m
+> CONFIG_IP_NF_ARP_MANGLE=m
+> CONFIG_IP6_NF_IPTABLES=m
+> CONFIG_IP6_NF_MATCH_EUI64=m
+> CONFIG_IP6_NF_MATCH_FRAG=m
+> CONFIG_IP6_NF_MATCH_OPTS=m
+> CONFIG_IP6_NF_MATCH_HL=m
+> CONFIG_IP6_NF_MATCH_IPV6HEADER=m
+> CONFIG_IP6_NF_MATCH_RT=m
+> CONFIG_IP6_NF_FILTER=m
+> CONFIG_IP6_NF_MANGLE=m
+> CONFIG_IP6_NF_RAW=m
+> CONFIG_BT=m
+> CONFIG_BT_RFCOMM=m
+> CONFIG_BT_RFCOMM_TTY=y
+> CONFIG_BT_BNEP=m
+> CONFIG_BT_BNEP_MC_FILTER=y
+> CONFIG_BT_BNEP_PROTO_FILTER=y
+> CONFIG_BT_HIDP=m
+> CONFIG_BT_HCIUART=m
+> CONFIG_BT_HCIUART_H4=y
+> CONFIG_BT_HCIUART_BCSP=y
+> CONFIG_BT_HCIBCM203X=m
+> CONFIG_BT_HCIBPA10X=m
+> CONFIG_BT_HCIBFUSB=m
+> CONFIG_BT_HCIDTL1=m
+> CONFIG_BT_HCIBT3C=m
+> CONFIG_BT_HCIBLUECARD=m
+> CONFIG_BT_HCIVHCI=m
+> CONFIG_PCCARD=y
+> CONFIG_PCMCIA_PXA2XX=y
+> CONFIG_MTD=y
+> CONFIG_MTD_CMDLINE_PARTS=y
+> CONFIG_MTD_BLOCK=y
+> CONFIG_MTD_ROM=y
+> CONFIG_MTD_COMPLEX_MAPPINGS=y
+> CONFIG_MTD_RAW_NAND=y
+> CONFIG_MTD_NAND_SHARPSL=y
+> CONFIG_BLK_DEV_LOOP=y
+> CONFIG_BLK_DEV_SD=y
+> CONFIG_CHR_DEV_ST=m
+> CONFIG_BLK_DEV_SR=m
+> CONFIG_CHR_DEV_SG=m
+> CONFIG_ATA=y
+> CONFIG_PATA_PCMCIA=y
+> CONFIG_NETDEVICES=y
+> CONFIG_PCMCIA_PCNET=m
+> CONFIG_PPP=m
+> CONFIG_PPP_BSDCOMP=m
+> CONFIG_PPP_ASYNC=m
+> CONFIG_USB_CATC=m
+> CONFIG_USB_KAWETH=m
+> CONFIG_USB_PEGASUS=m
+> CONFIG_USB_RTL8150=m
+> CONFIG_USB_USBNET=m
+> # CONFIG_USB_NET_CDC_SUBSET is not set
+> CONFIG_INPUT_EVDEV=y
+> # CONFIG_KEYBOARD_ATKBD is not set
+> # CONFIG_INPUT_MOUSE is not set
+> CONFIG_INPUT_TOUCHSCREEN=y
+> CONFIG_TOUCHSCREEN_ADS7846=y
+> CONFIG_INPUT_MISC=y
+> CONFIG_INPUT_UINPUT=m
+> # CONFIG_SERIO is not set
+> # CONFIG_LEGACY_PTYS is not set
+> CONFIG_SERIAL_8250=m
+> CONFIG_SERIAL_8250_CS=m
+> CONFIG_SERIAL_PXA=y
+> CONFIG_SERIAL_PXA_CONSOLE=y
+> CONFIG_SPI_PXA2XX=y
+> CONFIG_FB=y
+> CONFIG_FB_PXA=y
+> CONFIG_LCD_CLASS_DEVICE=y
+> CONFIG_LCD_CORGI=y
+> CONFIG_BACKLIGHT_CLASS_DEVICE=y
+> CONFIG_FRAMEBUFFER_CONSOLE=y
+> CONFIG_FRAMEBUFFER_CONSOLE_ROTATION=y
+> CONFIG_HID_A4TECH=m
+> CONFIG_HID_APPLE=m
+> CONFIG_HID_BELKIN=m
+> CONFIG_HID_CHERRY=m
+> CONFIG_HID_CHICONY=m
+> CONFIG_HID_CYPRESS=m
+> CONFIG_HID_EZKEY=m
+> CONFIG_HID_GYRATION=m
+> CONFIG_HID_MICROSOFT=m
+> CONFIG_HID_MONTEREY=m
+> CONFIG_HID_PANTHERLORD=m
+> CONFIG_HID_PETALYNX=m
+> CONFIG_HID_SAMSUNG=m
+> CONFIG_HID_SUNPLUS=m
+> CONFIG_USB_KBD=m
+> CONFIG_USB_MOUSE=m
+> CONFIG_USB=m
+> CONFIG_USB_MON=m
+> CONFIG_USB_OHCI_HCD=m
+> CONFIG_USB_SL811_HCD=m
+> CONFIG_USB_SL811_CS=m
+> CONFIG_USB_ACM=m
+> CONFIG_USB_PRINTER=m
+> CONFIG_USB_STORAGE=m
+> CONFIG_USB_MDC800=m
+> CONFIG_USB_MICROTEK=m
+> CONFIG_USB_SERIAL=m
+> CONFIG_USB_SERIAL_GENERIC=y
+> CONFIG_USB_SERIAL_BELKIN=m
+> CONFIG_USB_SERIAL_DIGI_ACCELEPORT=m
+> CONFIG_USB_SERIAL_CYPRESS_M8=m
+> CONFIG_USB_SERIAL_EMPEG=m
+> CONFIG_USB_SERIAL_FTDI_SIO=m
+> CONFIG_USB_SERIAL_VISOR=m
+> CONFIG_USB_SERIAL_IPAQ=m
+> CONFIG_USB_SERIAL_IR=m
+> CONFIG_USB_SERIAL_EDGEPORT=m
+> CONFIG_USB_SERIAL_EDGEPORT_TI=m
+> CONFIG_USB_SERIAL_GARMIN=m
+> CONFIG_USB_SERIAL_IPW=m
+> CONFIG_USB_SERIAL_KEYSPAN_PDA=m
+> CONFIG_USB_SERIAL_KEYSPAN=m
+> CONFIG_USB_SERIAL_KLSI=m
+> CONFIG_USB_SERIAL_KOBIL_SCT=m
+> CONFIG_USB_SERIAL_MCT_U232=m
+> CONFIG_USB_SERIAL_PL2303=m
+> CONFIG_USB_SERIAL_SAFE=m
+> CONFIG_USB_SERIAL_TI=m
+> CONFIG_USB_SERIAL_CYBERJACK=m
+> CONFIG_USB_SERIAL_XIRCOM=m
+> CONFIG_USB_SERIAL_OMNINET=m
+> CONFIG_USB_EMI62=m
+> CONFIG_USB_EMI26=m
+> CONFIG_USB_LEGOTOWER=m
+> CONFIG_USB_LCD=m
+> CONFIG_USB_CYTHERM=m
+> CONFIG_USB_IDMOUSE=m
+> CONFIG_USB_GADGET=m
+> CONFIG_USB_ZERO=m
+> CONFIG_USB_ETH=m
+> CONFIG_USB_GADGETFS=m
+> CONFIG_USB_MASS_STORAGE=m
+> CONFIG_USB_G_SERIAL=m
+> CONFIG_MMC=y
+> CONFIG_MMC_PXA=y
+> CONFIG_EXT2_FS=y
+> CONFIG_EXT2_FS_XATTR=y
+> CONFIG_EXT2_FS_POSIX_ACL=y
+> CONFIG_EXT2_FS_SECURITY=y
+> CONFIG_EXT3_FS=y
+> CONFIG_MSDOS_FS=y
+> CONFIG_VFAT_FS=y
+> CONFIG_TMPFS=y
+> CONFIG_JFFS2_FS=y
+> CONFIG_JFFS2_SUMMARY=y
+> CONFIG_JFFS2_COMPRESSION_OPTIONS=y
+> CONFIG_JFFS2_RUBIN=y
+> CONFIG_CRAMFS=m
+> CONFIG_NFS_FS=m
+> CONFIG_NFS_V4=m
+> CONFIG_NLS_DEFAULT="cp437"
+> CONFIG_NLS_CODEPAGE_437=y
+> CONFIG_NLS_ISO8859_1=y
+> CONFIG_NLS_UTF8=y
+> CONFIG_CRYPTO_TEST=m
+> CONFIG_CRYPTO_HMAC=y
+> CONFIG_CRYPTO_MD4=m
+> CONFIG_CRYPTO_MICHAEL_MIC=m
+> CONFIG_CRYPTO_SHA512=m
+> CONFIG_CRYPTO_WP512=m
+> CONFIG_CRYPTO_ANUBIS=m
+> CONFIG_CRYPTO_ARC4=m
+> CONFIG_CRYPTO_BLOWFISH=m
+> CONFIG_CRYPTO_CAST5=m
+> CONFIG_CRYPTO_CAST6=m
+> CONFIG_CRYPTO_KHAZAD=m
+> CONFIG_CRYPTO_SERPENT=m
+> CONFIG_CRYPTO_TEA=m
+> CONFIG_CRYPTO_TWOFISH=m
+> CONFIG_CRC_CCITT=y
+> CONFIG_LIBCRC32C=m
+> CONFIG_FONTS=y
+> CONFIG_FONT_8x8=y
+> CONFIG_FONT_8x16=y
+> CONFIG_MAGIC_SYSRQ=y
+> # CONFIG_DEBUG_PREEMPT is not set
+> # CONFIG_FTRACE is not set
+> CONFIG_DEBUG_LL=y
