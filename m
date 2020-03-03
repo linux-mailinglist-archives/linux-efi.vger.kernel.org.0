@@ -2,212 +2,114 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E04F178599
-	for <lists+linux-efi@lfdr.de>; Tue,  3 Mar 2020 23:26:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E5BD1785EF
+	for <lists+linux-efi@lfdr.de>; Tue,  3 Mar 2020 23:51:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727827AbgCCW0P (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 3 Mar 2020 17:26:15 -0500
-Received: from mail.kernel.org ([198.145.29.99]:33284 "EHLO mail.kernel.org"
+        id S1727956AbgCCWu7 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 3 Mar 2020 17:50:59 -0500
+Received: from mail.kernel.org ([198.145.29.99]:38120 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727793AbgCCW0P (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Tue, 3 Mar 2020 17:26:15 -0500
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+        id S1727805AbgCCWu7 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Tue, 3 Mar 2020 17:50:59 -0500
+Received: from e123331-lin.home (amontpellier-657-1-18-247.w109-210.abo.wanadoo.fr [109.210.65.247])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 79E8A20848
-        for <linux-efi@vger.kernel.org>; Tue,  3 Mar 2020 22:26:14 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id EBB51206D5;
+        Tue,  3 Mar 2020 22:50:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1583274374;
-        bh=IQRk+eFyYJbHwb5eI2wYOOU5Ad0xyo8Ui/jniBEGSF8=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=H1iXvAO8KqFpuVbyeWy2cJXvNy03pBgZ3Z4aFPJy1/64efKNP8vtdwTu47HOQ8DEd
-         LjJrSdVI4VJg9GPFvawj+9RlHGZolWEDJx9ocnJE9WBk5JAQtxx+eBhE5A8GEWpPux
-         ZZF7PYIUeJL970gwHM6u2b3y2na2ZGVqVo+oeKvM=
-Received: by mail-wr1-f43.google.com with SMTP id x7so6524336wrr.0
-        for <linux-efi@vger.kernel.org>; Tue, 03 Mar 2020 14:26:14 -0800 (PST)
-X-Gm-Message-State: ANhLgQ1Y/IVIzXQsucogiBeL6oh7iTAv8hxSs2CLxZ3XNRep1ZmrEJCQ
-        wdH8YKpcD14pwpQiAc8soyzoyG3ghH4dEtldz8EpnA==
-X-Google-Smtp-Source: ADFU+vu1fLRYbCKGQ/5O+V3FsnX68e8PkwyG8jiBMrqAlOtj12J1JrgdIvP+mFodyfHh5And3nvSwNdP+60iKiui/Gs=
-X-Received: by 2002:adf:e742:: with SMTP id c2mr193882wrn.262.1583274372835;
- Tue, 03 Mar 2020 14:26:12 -0800 (PST)
-MIME-Version: 1.0
-References: <20200301230537.2247550-1-nivedita@alum.mit.edu> <20200303221205.4048668-1-nivedita@alum.mit.edu>
-In-Reply-To: <20200303221205.4048668-1-nivedita@alum.mit.edu>
+        s=default; t=1583275858;
+        bh=kD3TgwpfeB4BdM3BVdG6yiF3l66qoxKOPWlfE5Llr7I=;
+        h=From:To:Cc:Subject:Date:From;
+        b=JmXJYQu32b3MEF5ZwjMTrWVwQIUpdvvJ8LOQ+0T5XzG7ekAYx7MWfugIVboupNCLQ
+         kbYFRse77UDXFWme7NqNmJMRiAQyG9f5COlunhg/zfBX8bY9e1OCZGArzNFpPZuPSf
+         S9w07KcQTtLotkhNitZ8rsoM3qbCetKn+PQbjsdA=
 From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Tue, 3 Mar 2020 23:26:01 +0100
-X-Gmail-Original-Message-ID: <CAKv+Gu_S_BwKRXhRz2=AoNj2E8sxuXSfZwg2poLDq96FmaoVtA@mail.gmail.com>
-Message-ID: <CAKv+Gu_S_BwKRXhRz2=AoNj2E8sxuXSfZwg2poLDq96FmaoVtA@mail.gmail.com>
-Subject: Re: [PATCH v2 0/5] Minimize the need to move the kernel in the EFI stub
-To:     Arvind Sankar <nivedita@alum.mit.edu>
-Cc:     linux-efi <linux-efi@vger.kernel.org>,
-        "the arch/x86 maintainers" <x86@kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+To:     linux-efi@vger.kernel.org
+Cc:     nivedita@alum.mit.edu, Ard Biesheuvel <ardb@kernel.org>
+Subject: [PATCH] efi/libstub/x86: use ULONG_MAX as upper bound for all allocations
+Date:   Tue,  3 Mar 2020 23:50:54 +0100
+Message-Id: <20200303225054.28741-1-ardb@kernel.org>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, 3 Mar 2020 at 23:12, Arvind Sankar <nivedita@alum.mit.edu> wrote:
->
-> This series adds the ability to use the entire PE image space for
-> decompression, provides the preferred address to the PE loader via the
-> header, and finally restricts efi_relocate_kernel to cases where we
-> really need it rather than whenever we were loaded at something other
-> than preferred address.
->
-> Based on tip:efi/core + the cleanup series [1]
-> [1] https://lore.kernel.org/linux-efi/20200301230436.2246909-1-nivedita@alum.mit.edu/
->
-> Changes from v1
-> - clarify a few comments
-> - cleanups to code formatting
->
-> Arvind Sankar (5):
->   x86/boot/compressed/32: Save the output address instead of
->     recalculating it
->   efi/x86: Decompress at start of PE image load address
->   efi/x86: Add kernel preferred address to PE header
->   efi/x86: Remove extra headroom for setup block
->   efi/x86: Don't relocate the kernel unless necessary
->
+The header flag XLF_CAN_BE_LOADED_ABOVE_4G will inform us whether
+allocations above 4 GiB for kernel, command line, etc are permitted,
+so we take it into account when calling efi_allocate_pages() etc.
 
-Thanks. I have queued these up in efi/next, along with your mixed mode cleanups.
+However, CONFIG_EFI_STUB implies CONFIG_RELOCATABLE, and so the flag
+is guaranteed to be set on x86_64 builds, whereas i386 builds are
+guaranteed to run under firmware that will not allocate above 4 GB
+in the first place.
 
+So drop the check, and just pass ULONG_MAX as the upper bound for
+all allocations.
 
->  arch/x86/boot/compressed/head_32.S      | 42 +++++++++++++++-------
->  arch/x86/boot/compressed/head_64.S      | 42 ++++++++++++++++++++--
->  arch/x86/boot/header.S                  |  6 ++--
->  arch/x86/boot/tools/build.c             | 44 ++++++++++++++++-------
->  drivers/firmware/efi/libstub/x86-stub.c | 48 ++++++++++++++++++++++---
->  5 files changed, 147 insertions(+), 35 deletions(-)
->
-> Range-diff against v1:
-> 1:  0cdb6bf27a24 ! 1:  2ecbf60b9ecd x86/boot/compressed/32: Save the output address instead of recalculating it
->     @@ Metadata
->       ## Commit message ##
->          x86/boot/compressed/32: Save the output address instead of recalculating it
->
->     -    In preparation for being able to decompress starting at a different
->     -    address than startup_32, save the calculated output address instead of
->     -    recalculating it later.
->     +    In preparation for being able to decompress into a buffer starting at a
->     +    different address than startup_32, save the calculated output address
->     +    instead of recalculating it later.
->
->          We now keep track of three addresses:
->                  %edx: startup_32 as we were loaded by bootloader
-> 2:  d4df840752ac ! 2:  e2bdbe6cb692 efi/x86: Decompress at start of PE image load address
->     @@ arch/x86/boot/compressed/head_64.S: SYM_FUNC_START(efi32_pe_entry)
->         movl    -4(%ebp), %esi                  // loaded_image
->         movl    LI32_image_base(%esi), %esi     // loaded_image->image_base
->         movl    %ebx, %ebp                      // startup_32 for efi32_pe_stub_entry
->     ++  /*
->     ++   * We need to set the image_offset variable here since startup_32 will
->     ++   * use it before we get to the 64-bit efi_pe_entry in C code.
->     ++   */
->      +  subl    %esi, %ebx
->      +  movl    %ebx, image_offset(%ebp)        // save image_offset
->         jmp     efi32_pe_stub_entry
->     @@ drivers/firmware/efi/libstub/x86-stub.c: unsigned long efi_main(efi_handle_t han
->                         efi_printk("efi_relocate_kernel() failed!\n");
->                         goto fail;
->                 }
->     ++          /*
->     ++           * Now that we've copied the kernel elsewhere, we no longer
->     ++           * have a setup block before startup_32, so reset image_offset
->     ++           * to zero in case it was set earlier.
->     ++           */
->      +          image_offset = 0;
->         }
->
-> 3:  4bae68f25b90 ! 3:  ea840f78f138 efi/x86: Add kernel preferred address to PE header
->     @@ arch/x86/boot/header.S: optional_header:
->
->       extra_header_fields:
->      +  # PE specification requires ImageBase to be 64k-aligned
->     -+  .set    ImageBase, (LOAD_PHYSICAL_ADDR+0xffff) & ~0xffff
->     ++  .set    image_base, (LOAD_PHYSICAL_ADDR + 0xffff) & ~0xffff
->       #ifdef CONFIG_X86_32
->      -  .long   0                               # ImageBase
->     -+  .long   ImageBase                       # ImageBase
->     ++  .long   image_base                      # ImageBase
->       #else
->      -  .quad   0                               # ImageBase
->     -+  .quad   ImageBase                       # ImageBase
->     ++  .quad   image_base                      # ImageBase
->       #endif
->         .long   0x20                            # SectionAlignment
->         .long   0x20                            # FileAlignment
-> 4:  2330a25c6b0f ! 4:  c25a9b507d6d efi/x86: Remove extra headroom for setup block
->     @@ Commit message
->          account for setup block") added headroom to the PE image to account for
->          the setup block, which wasn't used for the decompression buffer.
->
->     -    Now that we decompress from the start of the image, this is no longer
->     -    required.
->     +    Now that the decompression buffer is located at the start of the image,
->     +    and includes the setup block, this is no longer required.
->
->          Add a check to make sure that the head section of the compressed kernel
->          won't overwrite itself while relocating. This is only for
-> 5:  2081f91cbe75 ! 5:  d3dc3af1c7b8 efi/x86: Don't relocate the kernel unless necessary
->     @@ arch/x86/boot/tools/build.c: static void update_pecoff_text(unsigned int text_st
->          * Size of code: Subtract the size of the first sector (512 bytes)
->
->       ## drivers/firmware/efi/libstub/x86-stub.c ##
->     +@@
->     +
->     + #include "efistub.h"
->     +
->     ++/* Maximum physical address for 64-bit kernel with 4-level paging */
->     ++#define MAXMEM_X86_64_4LEVEL (1ull << 46)
->     ++
->     + static efi_system_table_t *sys_table;
->     + extern const bool efi_is64;
->     + extern u32 image_offset;
->      @@ drivers/firmware/efi/libstub/x86-stub.c: unsigned long efi_main(efi_handle_t handle,
->                              struct boot_params *boot_params)
->       {
->     @@ drivers/firmware/efi/libstub/x86-stub.c: unsigned long efi_main(efi_handle_t han
->      -   * address, relocate it.
->      +   * If the kernel isn't already loaded at a suitable address,
->      +   * relocate it.
->     ++   *
->      +   * It must be loaded above LOAD_PHYSICAL_ADDR.
->     -+   * The maximum address for 64-bit is 1 << 46 for 4-level paging.
->     ++   *
->     ++   * The maximum address for 64-bit is 1 << 46 for 4-level paging. This
->     ++   * is defined as the macro MAXMEM, but unfortunately that is not a
->     ++   * compile-time constant if 5-level paging is configured, so we instead
->     ++   * define our own macro for use here.
->     ++   *
->      +   * For 32-bit, the maximum address is complicated to figure out, for
->      +   * now use KERNEL_IMAGE_SIZE, which will be 512MiB, the same as what
->      +   * KASLR uses.
->     ++   *
->      +   * Also relocate it if image_offset is zero, i.e. we weren't loaded by
->      +   * LoadImage, but we are not aligned correctly.
->          */
->      -  if (bzimage_addr - image_offset != hdr->pref_address) {
->     ++
->      +  buffer_start = ALIGN(bzimage_addr - image_offset,
->      +                       hdr->kernel_alignment);
->      +  buffer_end = buffer_start + hdr->init_size;
->      +
->     -+  if (buffer_start < LOAD_PHYSICAL_ADDR
->     -+      || IS_ENABLED(CONFIG_X86_32) && buffer_end > KERNEL_IMAGE_SIZE
->     -+      || IS_ENABLED(CONFIG_X86_64) && buffer_end > 1ull << 46
->     -+      || image_offset == 0 && !IS_ALIGNED(bzimage_addr,
->     -+                                          hdr->kernel_alignment)) {
->     ++  if ((buffer_start < LOAD_PHYSICAL_ADDR)                              ||
->     ++      (IS_ENABLED(CONFIG_X86_32) && buffer_end > KERNEL_IMAGE_SIZE)    ||
->     ++      (IS_ENABLED(CONFIG_X86_64) && buffer_end > MAXMEM_X86_64_4LEVEL) ||
->     ++      (image_offset == 0 && !IS_ALIGNED(bzimage_addr,
->     ++                                        hdr->kernel_alignment))) {
->                 status = efi_relocate_kernel(&bzimage_addr,
->                                              hdr->init_size, hdr->init_size,
->                                              hdr->pref_address,
-> --
-> 2.24.1
->
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+---
+ drivers/firmware/efi/libstub/x86-stub.c | 17 ++++-------------
+ 1 file changed, 4 insertions(+), 13 deletions(-)
+
+diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
+index c774b97c9820..e4817579d96b 100644
+--- a/drivers/firmware/efi/libstub/x86-stub.c
++++ b/drivers/firmware/efi/libstub/x86-stub.c
+@@ -375,7 +375,6 @@ efi_status_t __efiapi efi_pe_entry(efi_handle_t handle,
+ 	char *cmdline_ptr;
+ 	unsigned long ramdisk_addr;
+ 	unsigned long ramdisk_size;
+-	bool above4g;
+ 
+ 	sys_table = sys_table_arg;
+ 
+@@ -393,10 +392,8 @@ efi_status_t __efiapi efi_pe_entry(efi_handle_t handle,
+ 	image_offset = (void *)startup_32 - image_base;
+ 
+ 	hdr = &((struct boot_params *)image_base)->hdr;
+-	above4g = hdr->xloadflags & XLF_CAN_BE_LOADED_ABOVE_4G;
+ 
+-	status = efi_allocate_pages(0x4000, (unsigned long *)&boot_params,
+-				    above4g ? ULONG_MAX : UINT_MAX);
++	status = efi_allocate_pages(0x4000, (unsigned long *)&boot_params, ULONG_MAX);
+ 	if (status != EFI_SUCCESS) {
+ 		efi_printk("Failed to allocate lowmem for boot params\n");
+ 		efi_exit(handle, status);
+@@ -420,8 +417,7 @@ efi_status_t __efiapi efi_pe_entry(efi_handle_t handle,
+ 	hdr->type_of_loader = 0x21;
+ 
+ 	/* Convert unicode cmdline to ascii */
+-	cmdline_ptr = efi_convert_cmdline(image, &options_size,
+-					  above4g ? ULONG_MAX : UINT_MAX);
++	cmdline_ptr = efi_convert_cmdline(image, &options_size, ULONG_MAX);
+ 	if (!cmdline_ptr)
+ 		goto fail;
+ 
+@@ -441,8 +437,7 @@ efi_status_t __efiapi efi_pe_entry(efi_handle_t handle,
+ 			status = efi_load_initrd(image, &ramdisk_addr,
+ 						 &ramdisk_size,
+ 						 hdr->initrd_addr_max,
+-						 above4g ? ULONG_MAX
+-							 : hdr->initrd_addr_max);
++						 ULONG_MAX);
+ 			if (status != EFI_SUCCESS)
+ 				goto fail2;
+ 			hdr->ramdisk_image = ramdisk_addr & 0xffffffff;
+@@ -794,12 +789,8 @@ unsigned long efi_main(efi_handle_t handle,
+ 	 */
+ 	if (!noinitrd()) {
+ 		unsigned long addr, size;
+-		unsigned long max_addr = hdr->initrd_addr_max;
+ 
+-		if (hdr->xloadflags & XLF_CAN_BE_LOADED_ABOVE_4G)
+-			max_addr = ULONG_MAX;
+-
+-		status = efi_load_initrd_dev_path(&addr, &size, max_addr);
++		status = efi_load_initrd_dev_path(&addr, &size, ULONG_MAX);
+ 		if (status == EFI_SUCCESS) {
+ 			hdr->ramdisk_image		= (u32)addr;
+ 			hdr->ramdisk_size 		= (u32)size;
+-- 
+2.17.1
+
