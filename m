@@ -2,217 +2,70 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B320176F6C
-	for <lists+linux-efi@lfdr.de>; Tue,  3 Mar 2020 07:28:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 550081770C0
+	for <lists+linux-efi@lfdr.de>; Tue,  3 Mar 2020 09:06:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727398AbgCCG21 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 3 Mar 2020 01:28:27 -0500
-Received: from mail-eopbgr00055.outbound.protection.outlook.com ([40.107.0.55]:50565
-        "EHLO EUR02-AM5-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725763AbgCCG20 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Tue, 3 Mar 2020 01:28:26 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=iILTsBszfPtW15UVaE8xTl0HcBXsU67L0GhFYYYKYNYnB/eSdsPL5+6y00AcZyBjBam4ZbX1gIbyaKPV6l6fPhJuTcBYjL/B4XBv+jiv/yLr8x6aIBKsZJaX4e28Wod3E7J2A7lcr37QNNflpSf06kXM04Ki62mNk8+xgJzpUK14XwLblK/yNXAIvctTlkXnnnGiuO7m+STIMq+/EpnnvHt/GOk3RuejQHUtnUpBghsucDY6mLFQDC0ZVhMAYgwNE9OiyPicE+b7EjeyBOup35wWjkbze9IZ3A++u2qCpivr9vy7LuqwIXsCo4x/pUsypu8CfYGwYnPQggNWl0seRw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=op1VL4rG7Vj0kFzScLxGK687aMwzIOY36dnEuKl0Efs=;
- b=SmMTwQa+4brMrxfdxSVbXbrkLrWCJCon3+Lt/E2noeanAcQyLYZh59KzAdm8Do3pij7ymfP1wcnuVozK3iAodrX0gy+GefAvhO7KKUdy77DXUVnpgBfujXuClpIDh8/9VhImHaAe1sgDmzSmLsmbtdj1E3s+L/3BCr4SxUaW353fOnEhVTBrTGLWA8melWft8VHeAPxB3Exli4TT90uihKFindc7aZ8vWuxrEtm6MdGLilpd2RkmpooGV0ZX97OwXZ21vJOMPw49PBYz3leo3q/98u81kBUXi/+xNmOctdtjY3chAD2SfAkY24BbrIv0chr3jkJX8U9RdhghcR97qA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nextfour.com; dmarc=pass action=none header.from=nextfour.com;
- dkim=pass header.d=nextfour.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=NextfourGroupOy.onmicrosoft.com;
- s=selector2-NextfourGroupOy-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=op1VL4rG7Vj0kFzScLxGK687aMwzIOY36dnEuKl0Efs=;
- b=OJ3QFok7lMEwWwVhzJzug8vIwPZ8rmUX84jbzIP4Q0ujm7k9/23AvakG6c+Igm3jM9b35QQ2iQgVoS70Uw5fkCml/7r4RyRrr82StIbvQOemWkMMaGq53+UPuS3fHQijMiFPId6Ta9xHeOk5qxJu5ANnVkwN7gFqde1Hq/2D3C0=
-Received: from VI1PR03MB3775.eurprd03.prod.outlook.com (52.134.21.155) by
- VI1PR03MB5119.eurprd03.prod.outlook.com (20.178.14.93) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2772.14; Tue, 3 Mar 2020 06:28:20 +0000
-Received: from VI1PR03MB3775.eurprd03.prod.outlook.com
- ([fe80::ed88:2188:604c:bfcc]) by VI1PR03MB3775.eurprd03.prod.outlook.com
- ([fe80::ed88:2188:604c:bfcc%7]) with mapi id 15.20.2772.019; Tue, 3 Mar 2020
- 06:28:20 +0000
-Received: from [10.10.10.144] (194.157.170.35) by HE1PR0102CA0039.eurprd01.prod.exchangelabs.com (2603:10a6:7:7d::16) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2772.14 via Frontend Transport; Tue, 3 Mar 2020 06:28:19 +0000
-From:   =?utf-8?B?TWlrYSBQZW50dGlsw6Q=?= <mika.penttila@nextfour.com>
-To:     Arvind Sankar <nivedita@alum.mit.edu>,
-        Ard Biesheuvel <ardb@kernel.org>
-CC:     "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
-        "x86@kernel.org" <x86@kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 2/5] efi/x86: Decompress at start of PE image load address
-Thread-Topic: [PATCH 2/5] efi/x86: Decompress at start of PE image load
- address
-Thread-Index: AQHV8B32wchWzmVphE6EXNWmcTrmKag2aZ2A
-Date:   Tue, 3 Mar 2020 06:28:20 +0000
-Message-ID: <dce7e026-ccb2-36f0-c892-83558dcc055f@nextfour.com>
-References: <20200301230537.2247550-1-nivedita@alum.mit.edu>
- <20200301230537.2247550-3-nivedita@alum.mit.edu>
-In-Reply-To: <20200301230537.2247550-3-nivedita@alum.mit.edu>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: yes
-X-MS-TNEF-Correlator: 
-x-clientproxiedby: HE1PR0102CA0039.eurprd01.prod.exchangelabs.com
- (2603:10a6:7:7d::16) To VI1PR03MB3775.eurprd03.prod.outlook.com
- (2603:10a6:803:2b::27)
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=mika.penttila@nextfour.com; 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-pep-version: 2.0
-x-originating-ip: [194.157.170.35]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: a0c8d678-2c9e-4f45-b6fb-08d7bf3c10ea
-x-ms-traffictypediagnostic: VI1PR03MB5119:
-x-microsoft-antispam-prvs: <VI1PR03MB51195E9A47E90A0ACF7ADE2783E40@VI1PR03MB5119.eurprd03.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:2887;
-x-forefront-prvs: 03319F6FEF
-x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(39830400003)(136003)(346002)(366004)(396003)(376002)(189003)(199004)(6486002)(508600001)(81166006)(2616005)(85182001)(956004)(81156014)(6666004)(8936002)(8676002)(110136005)(4326008)(16526019)(54906003)(186003)(26005)(36756003)(16576012)(66446008)(66476007)(31686004)(52116002)(64756008)(86362001)(316002)(71200400001)(66946007)(66616009)(66556008)(5660300002)(31696002)(2906002);DIR:OUT;SFP:1101;SCL:1;SRVR:VI1PR03MB5119;H:VI1PR03MB3775.eurprd03.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-received-spf: None (protection.outlook.com: nextfour.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: Yj+F+OeHpbjvQ13FJVXsIwmE/FQzX2TxNRZ1UQwC/sz34vnZM+ERGG18/ZzPtaxxJe5mZFvFCAYOz/mRCKP9vRDuGEBB/pjWdMbezoyw5++JsAaaH6iIGbb7u+DyJEA5X9XvWdZ1YXkAcXcLtEJzLV4Qx1u9/CRyfMeH07KtVG5rn+anxC0WUa4yTl/zxscGoQYHwWw2XKEhgaSRCeQ/7AKOATRK62fGSq12+KyVfeoMsaa6jEtx8XFPKjedOkdMZlNYbudTwhLNPUlCefr7TWainDtMsp3tV4B0r7NgHSOWQHi9Oa0lWbXUNlXy2h67tgWljgehJGI3tDRl6EMBcizo4RzBlTSPyvntCjjU2NXR5KavCUoP3E5meczwhC9tm9D0cdRb16TESklqQ5A5qtWJ+T8Ax86hYZRjnr2tJEwvoIOrHES6O0KWJ8+Iuppi
-x-ms-exchange-antispam-messagedata: cQxDJ4xLF/VqeH2T9yf4eQSLQWxjW4S1/FvHDaoQf19TKw4hCCZkevQoRz8CG6Izri8l99Dka3apAUfkM32RfdJpEMsU+IOUcbghJrzFHm6qJj6tiEq65jNnHXAEc34Xs/f2xA/LdOuzvKLbDBu5qQ==
-x-ms-exchange-transport-forked: True
-Content-Type: multipart/mixed;
-        boundary="_002_dce7e026ccb236f0c89283558dcc055fnextfourcom_"
-MIME-Version: 1.0
-X-OriginatorOrg: nextfour.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a0c8d678-2c9e-4f45-b6fb-08d7bf3c10ea
-X-MS-Exchange-CrossTenant-originalarrivaltime: 03 Mar 2020 06:28:20.1923
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 972e95c2-9290-4a02-8705-4014700ea294
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 9uykphOmQ5PAavhPzdout8AXVRforN5gzTzJOsfWU5gv8kW0sZu/NsqdGjloyYEgzzzBidoRcUA40nEO6VsfLJQl9/6bxUcRb0iCoikMuEs=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR03MB5119
+        id S1727744AbgCCIG5 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 3 Mar 2020 03:06:57 -0500
+Received: from mail.kernel.org ([198.145.29.99]:46664 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727726AbgCCIG5 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Tue, 3 Mar 2020 03:06:57 -0500
+Received: from e123331-lin.home (amontpellier-657-1-18-247.w109-210.abo.wanadoo.fr [109.210.65.247])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 1157820CC7;
+        Tue,  3 Mar 2020 08:06:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1583222816;
+        bh=woSE0T1/mPucInnvKy6XmS0LeBbHNgQ0XzBMVOTpWvU=;
+        h=From:To:Cc:Subject:Date:From;
+        b=eC5sD1GgEQRRk2vfp8M+bmAbjqQQz1y88qRyuVlpEVV5F2d3J9073R/kUDaGaZj54
+         Ii/vQ8yRwdDLgcH1tXozqebFdKrAa5yOmvXi24v/e+otS+u64C6G6+gc+WEmWFHVlM
+         qaep8vOE1wvAMfoHJNPqXofQPMSRbYM17WuGvRK0=
+From:   Ard Biesheuvel <ardb@kernel.org>
+To:     linux-efi@vger.kernel.org
+Cc:     Ard Biesheuvel <ardb@kernel.org>,
+        Nathan Chancellor <natechancellor@gmail.com>
+Subject: [PATCH] efi/libstub/x86: deal with exit() boot service returning
+Date:   Tue,  3 Mar 2020 09:06:48 +0100
+Message-Id: <20200303080648.21427-1-ardb@kernel.org>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
---_002_dce7e026ccb236f0c89283558dcc055fnextfourcom_
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <24D5CE18F64E0347941A35A5EC423454@eurprd03.prod.outlook.com>
-Content-Transfer-Encoding: base64
+Even though it is uncommon, there are cases where the Exit() EFI boot
+service might return, e.g., when we were booted via the EFI handover
+protocol from OVMF and the kernel image was specified on the command
+line, in which case Exit() attempts to terminate the boot manager,
+which is not an EFI application itself. So let's drop into a deadloop
+instead.
 
-DQoNCk9uIDIuMy4yMDIwIDEuMDUsIEFydmluZCBTYW5rYXIgd3JvdGU6DQo+IFdoZW4gYm9vdGVk
-IHZpYSBQRSBsb2FkZXIsIGRlZmluZSBpbWFnZV9vZmZzZXQgdG8gaG9sZCB0aGUgb2Zmc2V0IG9m
-DQo+IHN0YXJ0dXBfMzIgZnJvbSB0aGUgc3RhcnQgb2YgdGhlIFBFIGltYWdlLCBhbmQgdXNlIGl0
-IGFzIHRoZSBzdGFydCBvZg0KPiB0aGUgZGVjb21wcmVzc2lvbiBidWZmZXIuDQo+DQo+IFNpZ25l
-ZC1vZmYtYnk6IEFydmluZCBTYW5rYXIgPG5pdmVkaXRhQGFsdW0ubWl0LmVkdT4NCj4gLS0tDQo+
-ICBhcmNoL3g4Ni9ib290L2NvbXByZXNzZWQvaGVhZF8zMi5TICAgICAgfCAxNyArKysrKysrKysr
-Kw0KPiAgYXJjaC94ODYvYm9vdC9jb21wcmVzc2VkL2hlYWRfNjQuUyAgICAgIHwgMzggKysrKysr
-KysrKysrKysrKysrKysrKystLQ0KPiAgZHJpdmVycy9maXJtd2FyZS9lZmkvbGlic3R1Yi94ODYt
-c3R1Yi5jIHwgMTIgKysrKysrLS0NCj4gIDMgZmlsZXMgY2hhbmdlZCwgNjEgaW5zZXJ0aW9ucygr
-KSwgNiBkZWxldGlvbnMoLSkNCg0KLi4uDQo+IC0tLSBhL2RyaXZlcnMvZmlybXdhcmUvZWZpL2xp
-YnN0dWIveDg2LXN0dWIuYw0KPiArKysgYi9kcml2ZXJzL2Zpcm13YXJlL2VmaS9saWJzdHViL3g4
-Ni1zdHViLmMNCj4gQEAgLTE5LDYgKzE5LDcgQEANCj4gIA0KPiAgc3RhdGljIGVmaV9zeXN0ZW1f
-dGFibGVfdCAqc3lzX3RhYmxlOw0KPiAgZXh0ZXJuIGNvbnN0IGJvb2wgZWZpX2lzNjQ7DQo+ICtl
-eHRlcm4gdTMyIGltYWdlX29mZnNldDsNCj4gIA0KPiAgX19wdXJlIGVmaV9zeXN0ZW1fdGFibGVf
-dCAqZWZpX3N5c3RlbV90YWJsZSh2b2lkKQ0KPiAgew0KPiBAQCAtMzY0LDYgKzM2NSw3IEBAIGVm
-aV9zdGF0dXNfdCBfX2VmaWFwaSBlZmlfcGVfZW50cnkoZWZpX2hhbmRsZV90IGhhbmRsZSwNCj4g
-IAlzdHJ1Y3QgYm9vdF9wYXJhbXMgKmJvb3RfcGFyYW1zOw0KPiAgCXN0cnVjdCBzZXR1cF9oZWFk
-ZXIgKmhkcjsNCj4gIAllZmlfbG9hZGVkX2ltYWdlX3QgKmltYWdlOw0KPiArCXZvaWQgKmltYWdl
-X2Jhc2U7DQo+ICAJZWZpX2d1aWRfdCBwcm90byA9IExPQURFRF9JTUFHRV9QUk9UT0NPTF9HVUlE
-Ow0KPiAgCWludCBvcHRpb25zX3NpemUgPSAwOw0KPiAgCWVmaV9zdGF0dXNfdCBzdGF0dXM7DQo+
-IEBAIC0zODQsNyArMzg2LDEwIEBAIGVmaV9zdGF0dXNfdCBfX2VmaWFwaSBlZmlfcGVfZW50cnko
-ZWZpX2hhbmRsZV90IGhhbmRsZSwNCj4gIAkJZWZpX2V4aXQoaGFuZGxlLCBzdGF0dXMpOw0KPiAg
-CX0NCj4gIA0KPiAtCWhkciA9ICYoKHN0cnVjdCBib290X3BhcmFtcyAqKWVmaV90YWJsZV9hdHRy
-KGltYWdlLCBpbWFnZV9iYXNlKSktPmhkcjsNCj4gKwlpbWFnZV9iYXNlID0gZWZpX3RhYmxlX2F0
-dHIoaW1hZ2UsIGltYWdlX2Jhc2UpOw0KPiArCWltYWdlX29mZnNldCA9ICh2b2lkICopc3RhcnR1
-cF8zMiAtIGltYWdlX2Jhc2U7DQoNCnN0YXJ0dXBfMzIgPT0gMCwgc28gbWF5YmUgc29tZXRoaW5n
-IGxpa2UNCg0KbGVhcQlzdGFydHVwXzMyKCVyaXApIC0gaW1hZ2VfYmFzZQ0KDQpzaG91bGQgYmUg
-dXNlZCA/DQoNCg0KPiArDQo+ICsJaGRyID0gJigoc3RydWN0IGJvb3RfcGFyYW1zICopaW1hZ2Vf
-YmFzZSktPmhkcjsNCj4gIAlhYm92ZTRnID0gaGRyLT54bG9hZGZsYWdzICYgWExGX0NBTl9CRV9M
-T0FERURfQUJPVkVfNEc7DQo+ICANCj4gIAlzdGF0dXMgPSBlZmlfYWxsb2NhdGVfcGFnZXMoMHg0
-MDAwLCAodW5zaWduZWQgbG9uZyAqKSZib290X3BhcmFtcywNCj4gQEAgLTM5OSw3ICs0MDQsNyBA
-QCBlZmlfc3RhdHVzX3QgX19lZmlhcGkgZWZpX3BlX2VudHJ5KGVmaV9oYW5kbGVfdCBoYW5kbGUs
-DQo+ICAJaGRyID0gJmJvb3RfcGFyYW1zLT5oZHI7DQo+ICANCj4gIAkvKiBDb3B5IHRoZSBzZWNv
-bmQgc2VjdG9yIHRvIGJvb3RfcGFyYW1zICovDQo+IC0JbWVtY3B5KCZoZHItPmp1bXAsIGVmaV90
-YWJsZV9hdHRyKGltYWdlLCBpbWFnZV9iYXNlKSArIDUxMiwgNTEyKTsNCj4gKwltZW1jcHkoJmhk
-ci0+anVtcCwgaW1hZ2VfYmFzZSArIDUxMiwgNTEyKTsNCj4gIA0KPiAgCS8qDQo+ICAJICogRmls
-bCBvdXQgc29tZSBvZiB0aGUgaGVhZGVyIGZpZWxkcyBvdXJzZWx2ZXMgYmVjYXVzZSB0aGUNCj4g
-QEAgLTcyNiw3ICs3MzEsNyBAQCB1bnNpZ25lZCBsb25nIGVmaV9tYWluKGVmaV9oYW5kbGVfdCBo
-YW5kbGUsDQo+ICAJICogSWYgdGhlIGtlcm5lbCBpc24ndCBhbHJlYWR5IGxvYWRlZCBhdCB0aGUg
-cHJlZmVycmVkIGxvYWQNCj4gIAkgKiBhZGRyZXNzLCByZWxvY2F0ZSBpdC4NCj4gIAkgKi8NCj4g
-LQlpZiAoYnppbWFnZV9hZGRyICE9IGhkci0+cHJlZl9hZGRyZXNzKSB7DQo+ICsJaWYgKGJ6aW1h
-Z2VfYWRkciAtIGltYWdlX29mZnNldCAhPSBoZHItPnByZWZfYWRkcmVzcykgew0KPiAgCQlzdGF0
-dXMgPSBlZmlfcmVsb2NhdGVfa2VybmVsKCZiemltYWdlX2FkZHIsDQo+ICAJCQkJCSAgICAgaGRy
-LT5pbml0X3NpemUsIGhkci0+aW5pdF9zaXplLA0KPiAgCQkJCQkgICAgIGhkci0+cHJlZl9hZGRy
-ZXNzLA0KPiBAQCAtNzM2LDYgKzc0MSw3IEBAIHVuc2lnbmVkIGxvbmcgZWZpX21haW4oZWZpX2hh
-bmRsZV90IGhhbmRsZSwNCj4gIAkJCWVmaV9wcmludGsoImVmaV9yZWxvY2F0ZV9rZXJuZWwoKSBm
-YWlsZWQhXG4iKTsNCj4gIAkJCWdvdG8gZmFpbDsNCj4gIAkJfQ0KPiArCQlpbWFnZV9vZmZzZXQg
-PSAwOw0KPiAgCX0NCj4gIA0KPiAgCS8qDQoNCg==
+Cc: Nathan Chancellor <natechancellor@gmail.com>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+---
+As a side effect, this also fixes [0], which is as yet undiagnosed.
 
---_002_dce7e026ccb236f0c89283558dcc055fnextfourcom_
-Content-Type: application/pgp-keys; name="pEpkey.asc"
-Content-Description: pEpkey.asc
-Content-Disposition: attachment; filename="pEpkey.asc"; size=3157;
-	creation-date="Tue, 03 Mar 2020 06:28:19 GMT";
-	modification-date="Tue, 03 Mar 2020 06:28:19 GMT"
-Content-ID: <4A9F1910C31AC34EBAB648C771C7EFBA@eurprd03.prod.outlook.com>
-Content-Transfer-Encoding: base64
+[0] https://github.com/ClangBuiltLinux/linux/issues/917
 
-LS0tLS1CRUdJTiBQR1AgUFVCTElDIEtFWSBCTE9DSy0tLS0tDQoNCm1RR05CRnZYMjBRQkRBREhm
-U1VzR2tvY2JsMCt0T1R5TXYyYnQxdVZnWVNDN09QQTE5d3FwWXZhTk9ZdjN1d0UNCnUxRmo0QUl3
-Tkp1cjZHZWlETzhheXZ0NHlMSzErUnQraGUxQzNlQmJvbnlPNGVIVml5QmdoYkdoN0JsM0xqemEN
-CndONVo2WmR0alBzZFVrUTROWGhoWXJDL041QXAwWi80U1VIOWwwMS9LdkgyTy9ERUZwUWVGekFY
-TG9DYVBFTnQNCmJ6bnNmdTlGN2VWV3FUa0ZtdTVLNkR3MFJaMzRHNlJQaGtFUG5Uc0VPWkZLbENT
-WkJUNFhXZWQ3dys3Y0d1R2YNCmJSVmNzQ3QwSThXNzlEQU12WTl0Qk4wOGVtUXZUeWsrWnF5SUNN
-UVFIR0dyVGhpcWVRbVZhNEcxYzBuaW5YWG0NCkNXaHZ4MUxiYUxlOFhuVG4rODV2SndTb092N2NH
-R00yUXJGY2sza1A4cGdsbEd1c0hsU0JNUkVwQWEvZmFKVk4NCmJXL1c1TS8yVGtuS3I0YjZjYWNq
-NjduOGVTalIxb0VsOVMxR09CM0xSYWRmYlJ2NDhVNXRsRFhtSlEwMHdURlcNCjZNZE5Oc0Q5dnRP
-OXJ6UkEyWlhNUnJxTTkxV0RReHdFYW9mTDc5RjU1a3E2eW5FQmJWNEdKbG11TTdHS1h4RWkNCjZw
-ZWIvVGNVeUN0YzBzRUFFUUVBQWJRclRXbHJZU0JRWlc1MGRHbHN3NlFnUEcxcGEyRXVjR1Z1ZEhS
-cGJHRkENCmJtVjRkR1p2ZFhJdVkyOXRQb2tCMUFRVEFRZ0FQZ0liQXdVTENRZ0hBZ1lWQ2drSUN3
-SUVGZ0lEQVFJZUFRSVgNCmdCWWhCRmF0YTJrVEl4ZWtsTWhPWU1RR2VjZnoyd3pGQlFKZHI5Z1VC
-UWtEdVc3TUFBb0pFTVFHZWNmejJ3ekYNCmZxME1BS1N1M2hIc1ZOZG1BaUEreDhYU3o4SEhVTnFo
-ZVEyM053U2MwZEJleDZibytGdVUwT1hLTmZhODRUZTgNCnpwQ2V5OU80bWY0L0ZyQ09temF5U2xh
-a2ZrRFZhQy9lSm5ETTV1Ny9yVy9pZnJ6a1pRMWdjcXpKcTJud1lTUzANCittbDZBcVpOYU9SWEFz
-bjlRNkZWZVlFR1BremNNK0pLcGxqQllwTUN0ckhqOG1JSCsxL0JOcGR4VGplVThPTSsNCmpKbTQy
-R1RtRXVDZGI3a1M1WXdFcTNTajZ3bXdnOFI3RFpnQTlraG9GMHcyUFdCYi9LNk1NMHZQZjZvTE9o
-RFANCk1KTXlaSjQzMUpJQ0FlTFl6V3ZCQitCdCtDYkRqQkpUcFBPYmRhYTd1VnVuOGlUVUJYZEc2
-RVNBY3VPUzlTMlENCnBRMkhVV3A1WkZxbWpmb0lCcklWTTFXSnVRZmgrSXBsWTc0MHhVUWVvd2VZ
-TVVndVFEekVFSVlPT3ZXNzVrMFANCkdUYUcxSjdJVktuRjcrRHIzcWxUd29vMWVpeVMzakxuYVlH
-VWRvS1h5dDVXcythU2liYWlIV1pUUkFQM3R6MWUNClFCUmU0Mml3aVBOUFlVOWNyaTNlMHkxT0VN
-M0Rqd0ErMmJGbm05aFEyaGVMQUV6ZkswWTBHMmJ6R00ydWJSN0INCnY2WnBBb2tCMUFRVEFRZ0FQ
-aFloQkZhdGEya1RJeGVrbE1oT1lNUUdlY2Z6Mnd6RkJRSmIxOXVMQWhzREJRa0INCjRUT0FCUXNK
-Q0FjQ0JoVUtDUWdMQWdRV0FnTUJBaDRCQWhlQUFBb0pFTVFHZWNmejJ3ekZWandMLzM1UzU0dEkN
-CmRXT0xGZXUzcHdUT3ZjKzY1SzR4V1l4cE5aMVRxWVltWW9pUG9IUERTT1pnUDlQeEV2eFk3ODZ1
-OTV4M0dPekkNCk9WbkFWRkxtYTZPeDdnbEVISThwYkNUZEs0ZTdZb2o0NHdqcWcyeTFoMWl4N2d4
-Ny94MEpyU2dadG9oMEJCeG0NCjM4UENTamg1QUtwTGt5ZmlhWktpblJUWE1SejROL0VPSHBKQlJv
-eHN5V2U4aFNsUFdGbXpRVE81SGJ5NzdNZ1ENCnAzajRLV1ZNYnUxdWVUQi9HZzgxN2hLTUViWFo5
-SnlMYVhmdDIxUjFvYU8zUDdwajhPWk9RN0F5OFBwWTlxbTgNCkVKZHo4R2VIUVZQMEhadHdJMXdZ
-YWFYS1FuMzVWRThVU21MNndUZmVtRW55bVFEMWUyYU9nVGNIb1NOR001a3gNCnNuQUd4VjcrK0pr
-Njh6K2hBVHpoajJ4SmpKNjRHdGoySlJFNU52T011RG4yM2QrcnlHblZjZmQwcHdTMU9UUEoNCmVK
-V3lZb0xCNm1sRUliT2NoUmhaeVFweGNNZktkdkJhTURNK0l2YXo0aWFldDhiWHlVdVhhMXBzR0o2
-NGpycUMNCnFiUDBzK2xBLzBPVTBidHNoTjNNWjZCSGxrR3A0WFBhSFFaVVc2dDlPSitrQnhaaXpl
-WjRvOTdRWUxrQmpRUmINCjE5dEpBUXdBcmJUTW8wbGFTaG1WODJXV1lBM1NjRmYzT3NyYmt2aTVN
-VGxyTkpTUTRjZGhNVmZHeVU2cmlOM2INCjU0OTVFQm1BQ21FRTduWjduQVJyYllUN0E1UENKUFpz
-YUU0Mnp3cTNBWjg5MEFvRWpqTEYrU2x1VUJHWmtaeisNCmxMQnhwTHh5aGxxQ2gwaUkyR3JnRVZG
-aGtlRExNSkZRT2ZUdm1HeVFRWXUzRllJMlpvNG9CcHFtaXd5WlZOaTgNCllKbUNZSksrMTFZT1I4
-U21SVC9nN3c1cG95Mldla3RIZmhJbUdwZE1FUmtUTnp6U3g5cmUra1NmRUlLRWxlQ2ENClhDZjNK
-VW4wWU1ZYlY3Z2lnV2RqR0tFYmZIODJYbm1qejFkd2pjcVBoRitUbHhsaHNvTDF3ZGh1eUJCTGpm
-SE8NCjEzLzh3YUQwRGxtdFpibmdCSW5kVkJDQmV0Qzl3cDk3MkdQamN5VkFQTHlHUWE5cGs1SklP
-Z0lVRWRNcjV0VG8NClkyZ0hqS2pKMzFrUk9FbDhWRnppdGt1K2ZzSXNaYmRQZnFwMmdPVW9xZ1ZF
-RGt5M0hZRmlhWnVsek5QVW1ZUlkNCkovR0hvOEFMVThoNE5TdkNkazk3Q3pIdmRrQjEvRThIMTlL
-dmswYVpIekZRY0JuaGt6cStuMFpiU2FUSlM3TTQNCmFxUmFJOGY3QUJFQkFBR0pBYndFR0FFSUFD
-WUNHd3dXSVFSV3JXdHBFeU1YcEpUSVRtREVCbm5IODlzTXhRVUMNClhhL1lGQVVKQTdsdXh3QUtD
-UkRFQm5uSDg5c014WUx4Qy85THUxeGpkVVRkbWQxMC81RXpBMWkwYmROQm9qQlkNCjNQSjRPNGJo
-R3BiOUtHbnhzaFRPRVduY05teXk0MHM4YUhMYmRyZ0VWS0N0a1Mra3dBcm1URmptazQ5R3pRaWUN
-CnJSTzJjTlUwV2tVZXBjWDl3cjUxcUtTYnJuZDdFMHJ6MHlNbXVXdlJIalJ0ejErRDhkUi9HSmhK
-ZFlyRUtxbmwNCnZQVm5yT05qNVp4WFc4d2pzZ1FtczVpTHVWUXp1eVJ5WDRROHhiSFJiYWlsWEVE
-TlUrSFRXUjU4YUFtdzRpeWwNCjI4N0x0RHd5VS9JU2M3T3FNMkVzVFBPaFNlWWpPbkxIWnZvdCt1
-ZnU2cU9HS2tBaUthTm53TjZwUkprVzF6S1kNCnFuUVJZMEhKNmt5cmoxWmFKdzFONEMzVm9wQkxq
-Qy9Qbm44dldBekgzNVJMKzJvaGs0MTY4ZEhhQXJVYVJOV0sNCnF1REFWK3psOGRsR0wySDVVMHlu
-cUxCNWtvU0NINHpnUURtY0gycHQyN3pCcXVxNE1ySzNwTC85emduWE9VeWENClZuUGVjTGRHakhS
-YTIyS2xkb05WT2Y0MWtJQ2wxTFo2ZllXcXhWWEl2ZUE2N0hTcWlmZHVjVVA5bjUwYVdUeWcNCkZx
-L1JFbVVlcmFVV2NZeWRFK0IrNFh0NXlJRi9WL1p3bTBvPQ0KPVoyVkoNCi0tLS0tRU5EIFBHUCBQ
-VUJMSUMgS0VZIEJMT0NLLS0tLS0NCg==
+ drivers/firmware/efi/libstub/x86-stub.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---_002_dce7e026ccb236f0c89283558dcc055fnextfourcom_--
+diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
+index 7f3e97c2aad3..5c7480c4d379 100644
+--- a/drivers/firmware/efi/libstub/x86-stub.c
++++ b/drivers/firmware/efi/libstub/x86-stub.c
+@@ -344,7 +344,7 @@ static void setup_graphics(struct boot_params *boot_params)
+ static void __noreturn efi_exit(efi_handle_t handle, efi_status_t status)
+ {
+ 	efi_bs_call(exit, handle, status, 0, NULL);
+-	unreachable();
++	for(;;);
+ }
+ 
+ void startup_32(struct boot_params *boot_params);
+-- 
+2.17.1
+
