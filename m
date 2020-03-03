@@ -2,362 +2,208 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A6D67178500
-	for <lists+linux-efi@lfdr.de>; Tue,  3 Mar 2020 22:40:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EF68C178546
+	for <lists+linux-efi@lfdr.de>; Tue,  3 Mar 2020 23:12:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728386AbgCCVkh (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 3 Mar 2020 16:40:37 -0500
-Received: from mail.kernel.org ([198.145.29.99]:53120 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728069AbgCCVkh (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Tue, 3 Mar 2020 16:40:37 -0500
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C5B9420CC7
-        for <linux-efi@vger.kernel.org>; Tue,  3 Mar 2020 21:40:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1583271636;
-        bh=0jpsm3BBvnD478P2r5zTpeDAbp5w828MO+Ug3OmTz1Y=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=vV83R1WQOEwrilldQhJXU9KGgWVNk6TsLU0nQ/rrZJh8ai/KCnQBnqYKVmUYYf6jW
-         ekhuKN3kiGxYF6aAFkl0dcHpEIdwgLXWMjURm9/wowTO5Zo89POSTgZrNZ8NzPcm/f
-         oQAOPicbfhz/MDGF2wkFpkL63OCZziQKS7kMrZz8=
-Received: by mail-wm1-f42.google.com with SMTP id g134so3661107wme.3
-        for <linux-efi@vger.kernel.org>; Tue, 03 Mar 2020 13:40:35 -0800 (PST)
-X-Gm-Message-State: ANhLgQ1LaLsh1T7W/MZOjCRJ1ygtivjDqRxWMxv2erpiG5vhjZska3IP
-        gqpCXEOTKmdUzXlo3zyCQxaSA04Cg+I8S6D1kulBLA==
-X-Google-Smtp-Source: ADFU+vv8K/yzcQfqLLdVnpOiBFhF4pvd3KmGe7fU1o40H8tR6B6No3Mj2vvp3wcRAAYE3cJq3QBoueGxcMNpfBbbYrE=
-X-Received: by 2002:a1c:2d88:: with SMTP id t130mr560545wmt.68.1583271634105;
- Tue, 03 Mar 2020 13:40:34 -0800 (PST)
+        id S1727322AbgCCWMI (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 3 Mar 2020 17:12:08 -0500
+Received: from mail-qk1-f196.google.com ([209.85.222.196]:44747 "EHLO
+        mail-qk1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727304AbgCCWMH (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 3 Mar 2020 17:12:07 -0500
+Received: by mail-qk1-f196.google.com with SMTP id f198so5062431qke.11;
+        Tue, 03 Mar 2020 14:12:07 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=TSBvxkQcwo2aimYEfAypUuClu5JI3QZp//yRktXSyEw=;
+        b=kjNRYt2CPJiRkx+g0rzd6qlGxQhD+kKA+9M5qP1/K4e6GRPM67PYzJnR0flf9G+2FM
+         LUSe4dlSOv5f3oQCrliO7QDo90FtvrR2JFmXlbHMh6ZhG8j5Y/mAOrpIzEhD8rL/4Boh
+         8yMW20ptsbC2LAhYE/QY82rAEncwbJKnCQ+295JXw9vP7vBLwbvtTICOu8q6FnkU91rs
+         pqIAdHWkfcrZfIavlC1V2pfmxlSZasptxua0grOeC3X5IiSkhU9xQcjjiur0Ej8FqNz/
+         McySygUY8xXIQsP9zdsQMEGqxywoUiSvCWYFMQB9RwKXdd0u7zrdpONFM6rfjkPp4hoS
+         tW8A==
+X-Gm-Message-State: ANhLgQ13zl7mz3sNeguR5kKCLz+5weS4kohLtP8CT+QyiQ5IJGkljzU6
+        bt93ZSWbsKcE/d4qPYpB/EE=
+X-Google-Smtp-Source: ADFU+vvXLCn779vKR22Hor+an4ZGYiRcG9TKkv4IYO88H13q5AN2Yu7dlhCEjc8mt4TS+JofudQT0w==
+X-Received: by 2002:a37:8e03:: with SMTP id q3mr165871qkd.395.1583273526413;
+        Tue, 03 Mar 2020 14:12:06 -0800 (PST)
+Received: from rani.riverdale.lan ([2001:470:1f07:5f3::b55f])
+        by smtp.gmail.com with ESMTPSA id i91sm13267378qtd.70.2020.03.03.14.12.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Mar 2020 14:12:05 -0800 (PST)
+From:   Arvind Sankar <nivedita@alum.mit.edu>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-efi@vger.kernel.org, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v2 0/5] Minimize the need to move the kernel in the EFI stub
+Date:   Tue,  3 Mar 2020 17:12:00 -0500
+Message-Id: <20200303221205.4048668-1-nivedita@alum.mit.edu>
+X-Mailer: git-send-email 2.24.1
+In-Reply-To: <20200301230537.2247550-1-nivedita@alum.mit.edu>
+References: <20200301230537.2247550-1-nivedita@alum.mit.edu>
 MIME-Version: 1.0
-References: <20200216182334.8121-1-ardb@kernel.org> <20200216182334.8121-17-ardb@kernel.org>
- <20200303160353.GA20372@roeck-us.net> <CAKv+Gu_dG2dsrNBWG3fV5S40y6iRGSj7MO2gbtZhqEUg5mXgyQ@mail.gmail.com>
- <20200303175355.GA14065@roeck-us.net> <CAKv+Gu_4tbdR8zF0eerZBbiFhCh_hg20rTovxqcaByW8J4b-UA@mail.gmail.com>
- <CAKv+Gu8+JV0WLqNzX_cMGRwDH4vMS_v8a_uJ8ciDtgzGUVsmhA@mail.gmail.com> <20200303203043.GA4078@roeck-us.net>
-In-Reply-To: <20200303203043.GA4078@roeck-us.net>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Tue, 3 Mar 2020 22:40:23 +0100
-X-Gmail-Original-Message-ID: <CAKv+Gu9bqB-nxk76ZKeaC14dTemS8ZZNtrwHd6PUWknkqnAueQ@mail.gmail.com>
-Message-ID: <CAKv+Gu9bqB-nxk76ZKeaC14dTemS8ZZNtrwHd6PUWknkqnAueQ@mail.gmail.com>
-Subject: Re: [PATCH 16/18] efi: add 'runtime' pointer to struct efi
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     linux-efi <linux-efi@vger.kernel.org>,
-        Arvind Sankar <nivedita@alum.mit.edu>,
-        "the arch/x86 maintainers" <x86@kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, 3 Mar 2020 at 21:30, Guenter Roeck <linux@roeck-us.net> wrote:
->
-> On Tue, Mar 03, 2020 at 07:14:52PM +0100, Ard Biesheuvel wrote:
-> > On Tue, 3 Mar 2020 at 19:01, Ard Biesheuvel <ardb@kernel.org> wrote:
-> > >
-> > > On Tue, 3 Mar 2020 at 18:54, Guenter Roeck <linux@roeck-us.net> wrote:
-> > > >
-> > > > On Tue, Mar 03, 2020 at 05:39:43PM +0100, Ard Biesheuvel wrote:
-> > > > > On Tue, 3 Mar 2020 at 17:03, Guenter Roeck <linux@roeck-us.net> wrote:
-> > > > > >
-> > > > > > On Sun, Feb 16, 2020 at 07:23:32PM +0100, Ard Biesheuvel wrote:
-> > > > > > > Instead of going through the EFI system table each time, just copy the
-> > > > > > > runtime services table pointer into struct efi directly. This is the
-> > > > > > > last use of the system table pointer in struct efi, allowing us to
-> > > > > > > drop it in a future patch, along with a fair amount of quirky handling
-> > > > > > > of the translated address.
-> > > > > > >
-> > > > > > > Note that usually, the runtime services pointer changes value during
-> > > > > > > the call to SetVirtualAddressMap(), so grab the updated value as soon
-> > > > > > > as that call returns. (Mixed mode uses a 1:1 mapping, and kexec boot
-> > > > > > > enters with the updated address in the system table, so in those cases,
-> > > > > > > we don't need to do anything here)
-> > > > > > >
-> > > > > > > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> > > > > >
-> > > > > > This patch results in a crash with i386 efi boots if PAE (CONFIG_HIGHMEM64G=y)
-> > > > > > is enabled. Bisect and crash logs attached. There is also a warning which
-> > > > > > I don't recall seeing before, but it may not be caused by this patch
-> > > > > > (I didn' bisect the warning). The warning is seen with all i386:efi boots,
-> > > > > > not only when PAE is enabled. The warning log is also attached.
-> > > > > >
-> > > > > > Guenter
-> > > > > >
-> > > > > > ---
-> > > > > > Qemu command line:
-> > > > > >
-> > > > > > qemu-system-i386 -kernel arch/x86/boot/bzImage -M pc -cpu Westmere \
-> > > > > >         -no-reboot -m 256 -snapshot \
-> > > > > >         -bios OVMF-pure-efi-32.fd \
-> > > > > >         -usb -device usb-storage,drive=d0 \
-> > > > > >         -drive file=rootfs.ext2,if=none,id=d0,format=raw \
-> > > > > >         --append 'earlycon=uart8250,io,0x3f8,9600n8 panic=-1 slub_debug=FZPUA root=/dev/sda rootwait mem=256M console=ttyS0' \
-> > > > > >         -nographic
-> > > > > >
-> > > > >
-> > > > > I am failing to reproduce this. Do you have a .config and a copy of
-> > > > > OVMF-pure-efi-32.fd anywhere?
-> > > > >
-> > > >
-> > > > https://github.com/groeck/linux-build-test/blob/master/rootfs/firmware/OVMF-pure-efi-32.fd
-> > > > https://github.com/groeck/linux-build-test/blob/master/rootfs/x86/rootfs.ext2.gz
-> > > >
-> > > > Config file is below, shortened by "make savedefconfig" on the actual
-> > > > configuration used on next-20200303. Qemu version is 4.2, though that
-> > > > should not really matter. Note that it isn't necessary to boot from usb,
-> > > > that was just my test case.
-> > > >
-> > > > Here is a pointer to a complete log, showing the various conditions
-> > > > resulting in the warning and the crash:
-> > > >
-> > > > https://kerneltests.org/builders/qemu-x86-next/builds/1310/steps/qemubuildcommand_1/logs/stdio
-> > > >
-> > >
-> > > Thanks.
-> > >
-> > > How do I generate your exact .config from the below? I still cannot
-> > > reproduce with the different firmware.
-> > >
-> > > My qemu is 3.1 btw
-> > >
-> >
-> > Also, I don't see CONFIG_HIGHMEM64G=y anywhere below??
-> >
->
-> Sorry, I should have used make ARCH=i386 savedefconfig. Another attempt
-> below. This needs to be built with "make ARCH=i386".
->
+This series adds the ability to use the entire PE image space for
+decompression, provides the preferred address to the PE loader via the
+header, and finally restricts efi_relocate_kernel to cases where we
+really need it rather than whenever we were loaded at something other
+than preferred address.
 
-It still doesn't enable CONFIG_HIGHMEM64G, and so it is not entirely
-clear to me how I should derive your failing config from this.
-Couldn't you simply share the whole thing?
+Based on tip:efi/core + the cleanup series [1]
+[1] https://lore.kernel.org/linux-efi/20200301230436.2246909-1-nivedita@alum.mit.edu/
 
+Changes from v1
+- clarify a few comments
+- cleanups to code formatting
 
+Arvind Sankar (5):
+  x86/boot/compressed/32: Save the output address instead of
+    recalculating it
+  efi/x86: Decompress at start of PE image load address
+  efi/x86: Add kernel preferred address to PE header
+  efi/x86: Remove extra headroom for setup block
+  efi/x86: Don't relocate the kernel unless necessary
 
+ arch/x86/boot/compressed/head_32.S      | 42 +++++++++++++++-------
+ arch/x86/boot/compressed/head_64.S      | 42 ++++++++++++++++++++--
+ arch/x86/boot/header.S                  |  6 ++--
+ arch/x86/boot/tools/build.c             | 44 ++++++++++++++++-------
+ drivers/firmware/efi/libstub/x86-stub.c | 48 ++++++++++++++++++++++---
+ 5 files changed, 147 insertions(+), 35 deletions(-)
 
-> CONFIG_SYSVIPC=y
-> CONFIG_PREEMPT=y
-> CONFIG_BSD_PROCESS_ACCT=y
-> CONFIG_LOG_BUF_SHIFT=14
-> CONFIG_EXPERT=y
-> CONFIG_PROFILING=y
-> CONFIG_ARCH_PXA=y
-> CONFIG_PXA_SHARPSL=y
-> CONFIG_MACH_AKITA=y
-> CONFIG_MACH_BORZOI=y
-> CONFIG_ZBOOT_ROM_TEXT=0x0
-> CONFIG_ZBOOT_ROM_BSS=0x0
-> CONFIG_CMDLINE="console=ttyS0,115200n8 console=tty1 noinitrd root=/dev/mtdblock2 rootfstype=jffs2   debug"
-> CONFIG_FPE_NWFPE=y
-> CONFIG_OPROFILE=m
-> CONFIG_MODULES=y
-> CONFIG_MODULE_UNLOAD=y
-> CONFIG_MODULE_FORCE_UNLOAD=y
-> # CONFIG_BLK_DEV_BSG is not set
-> CONFIG_PARTITION_ADVANCED=y
-> CONFIG_BINFMT_MISC=m
-> CONFIG_NET=y
-> CONFIG_PACKET=y
-> CONFIG_UNIX=y
-> CONFIG_INET=y
-> CONFIG_SYN_COOKIES=y
-> CONFIG_INET6_AH=m
-> CONFIG_INET6_ESP=m
-> CONFIG_INET6_IPCOMP=m
-> CONFIG_IPV6_TUNNEL=m
-> CONFIG_NETFILTER=y
-> CONFIG_IP_NF_IPTABLES=m
-> CONFIG_IP_NF_MATCH_ECN=m
-> CONFIG_IP_NF_MATCH_TTL=m
-> CONFIG_IP_NF_FILTER=m
-> CONFIG_IP_NF_MANGLE=m
-> CONFIG_IP_NF_RAW=m
-> CONFIG_IP_NF_ARPTABLES=m
-> CONFIG_IP_NF_ARPFILTER=m
-> CONFIG_IP_NF_ARP_MANGLE=m
-> CONFIG_IP6_NF_IPTABLES=m
-> CONFIG_IP6_NF_MATCH_EUI64=m
-> CONFIG_IP6_NF_MATCH_FRAG=m
-> CONFIG_IP6_NF_MATCH_OPTS=m
-> CONFIG_IP6_NF_MATCH_HL=m
-> CONFIG_IP6_NF_MATCH_IPV6HEADER=m
-> CONFIG_IP6_NF_MATCH_RT=m
-> CONFIG_IP6_NF_FILTER=m
-> CONFIG_IP6_NF_MANGLE=m
-> CONFIG_IP6_NF_RAW=m
-> CONFIG_BT=m
-> CONFIG_BT_RFCOMM=m
-> CONFIG_BT_RFCOMM_TTY=y
-> CONFIG_BT_BNEP=m
-> CONFIG_BT_BNEP_MC_FILTER=y
-> CONFIG_BT_BNEP_PROTO_FILTER=y
-> CONFIG_BT_HIDP=m
-> CONFIG_BT_HCIUART=m
-> CONFIG_BT_HCIUART_H4=y
-> CONFIG_BT_HCIUART_BCSP=y
-> CONFIG_BT_HCIBCM203X=m
-> CONFIG_BT_HCIBPA10X=m
-> CONFIG_BT_HCIBFUSB=m
-> CONFIG_BT_HCIDTL1=m
-> CONFIG_BT_HCIBT3C=m
-> CONFIG_BT_HCIBLUECARD=m
-> CONFIG_BT_HCIVHCI=m
-> CONFIG_PCCARD=y
-> CONFIG_PCMCIA_PXA2XX=y
-> CONFIG_MTD=y
-> CONFIG_MTD_CMDLINE_PARTS=y
-> CONFIG_MTD_BLOCK=y
-> CONFIG_MTD_ROM=y
-> CONFIG_MTD_COMPLEX_MAPPINGS=y
-> CONFIG_MTD_RAW_NAND=y
-> CONFIG_MTD_NAND_SHARPSL=y
-> CONFIG_BLK_DEV_LOOP=y
-> CONFIG_BLK_DEV_SD=y
-> CONFIG_CHR_DEV_ST=m
-> CONFIG_BLK_DEV_SR=m
-> CONFIG_CHR_DEV_SG=m
-> CONFIG_ATA=y
-> CONFIG_PATA_PCMCIA=y
-> CONFIG_NETDEVICES=y
-> CONFIG_PCMCIA_PCNET=m
-> CONFIG_PPP=m
-> CONFIG_PPP_BSDCOMP=m
-> CONFIG_PPP_ASYNC=m
-> CONFIG_USB_CATC=m
-> CONFIG_USB_KAWETH=m
-> CONFIG_USB_PEGASUS=m
-> CONFIG_USB_RTL8150=m
-> CONFIG_USB_USBNET=m
-> # CONFIG_USB_NET_CDC_SUBSET is not set
-> CONFIG_INPUT_EVDEV=y
-> # CONFIG_KEYBOARD_ATKBD is not set
-> # CONFIG_INPUT_MOUSE is not set
-> CONFIG_INPUT_TOUCHSCREEN=y
-> CONFIG_TOUCHSCREEN_ADS7846=y
-> CONFIG_INPUT_MISC=y
-> CONFIG_INPUT_UINPUT=m
-> # CONFIG_SERIO is not set
-> # CONFIG_LEGACY_PTYS is not set
-> CONFIG_SERIAL_8250=m
-> CONFIG_SERIAL_8250_CS=m
-> CONFIG_SERIAL_PXA=y
-> CONFIG_SERIAL_PXA_CONSOLE=y
-> CONFIG_SPI_PXA2XX=y
-> CONFIG_FB=y
-> CONFIG_FB_PXA=y
-> CONFIG_LCD_CLASS_DEVICE=y
-> CONFIG_LCD_CORGI=y
-> CONFIG_BACKLIGHT_CLASS_DEVICE=y
-> CONFIG_FRAMEBUFFER_CONSOLE=y
-> CONFIG_FRAMEBUFFER_CONSOLE_ROTATION=y
-> CONFIG_HID_A4TECH=m
-> CONFIG_HID_APPLE=m
-> CONFIG_HID_BELKIN=m
-> CONFIG_HID_CHERRY=m
-> CONFIG_HID_CHICONY=m
-> CONFIG_HID_CYPRESS=m
-> CONFIG_HID_EZKEY=m
-> CONFIG_HID_GYRATION=m
-> CONFIG_HID_MICROSOFT=m
-> CONFIG_HID_MONTEREY=m
-> CONFIG_HID_PANTHERLORD=m
-> CONFIG_HID_PETALYNX=m
-> CONFIG_HID_SAMSUNG=m
-> CONFIG_HID_SUNPLUS=m
-> CONFIG_USB_KBD=m
-> CONFIG_USB_MOUSE=m
-> CONFIG_USB=m
-> CONFIG_USB_MON=m
-> CONFIG_USB_OHCI_HCD=m
-> CONFIG_USB_SL811_HCD=m
-> CONFIG_USB_SL811_CS=m
-> CONFIG_USB_ACM=m
-> CONFIG_USB_PRINTER=m
-> CONFIG_USB_STORAGE=m
-> CONFIG_USB_MDC800=m
-> CONFIG_USB_MICROTEK=m
-> CONFIG_USB_SERIAL=m
-> CONFIG_USB_SERIAL_GENERIC=y
-> CONFIG_USB_SERIAL_BELKIN=m
-> CONFIG_USB_SERIAL_DIGI_ACCELEPORT=m
-> CONFIG_USB_SERIAL_CYPRESS_M8=m
-> CONFIG_USB_SERIAL_EMPEG=m
-> CONFIG_USB_SERIAL_FTDI_SIO=m
-> CONFIG_USB_SERIAL_VISOR=m
-> CONFIG_USB_SERIAL_IPAQ=m
-> CONFIG_USB_SERIAL_IR=m
-> CONFIG_USB_SERIAL_EDGEPORT=m
-> CONFIG_USB_SERIAL_EDGEPORT_TI=m
-> CONFIG_USB_SERIAL_GARMIN=m
-> CONFIG_USB_SERIAL_IPW=m
-> CONFIG_USB_SERIAL_KEYSPAN_PDA=m
-> CONFIG_USB_SERIAL_KEYSPAN=m
-> CONFIG_USB_SERIAL_KLSI=m
-> CONFIG_USB_SERIAL_KOBIL_SCT=m
-> CONFIG_USB_SERIAL_MCT_U232=m
-> CONFIG_USB_SERIAL_PL2303=m
-> CONFIG_USB_SERIAL_SAFE=m
-> CONFIG_USB_SERIAL_TI=m
-> CONFIG_USB_SERIAL_CYBERJACK=m
-> CONFIG_USB_SERIAL_XIRCOM=m
-> CONFIG_USB_SERIAL_OMNINET=m
-> CONFIG_USB_EMI62=m
-> CONFIG_USB_EMI26=m
-> CONFIG_USB_LEGOTOWER=m
-> CONFIG_USB_LCD=m
-> CONFIG_USB_CYTHERM=m
-> CONFIG_USB_IDMOUSE=m
-> CONFIG_USB_GADGET=m
-> CONFIG_USB_ZERO=m
-> CONFIG_USB_ETH=m
-> CONFIG_USB_GADGETFS=m
-> CONFIG_USB_MASS_STORAGE=m
-> CONFIG_USB_G_SERIAL=m
-> CONFIG_MMC=y
-> CONFIG_MMC_PXA=y
-> CONFIG_EXT2_FS=y
-> CONFIG_EXT2_FS_XATTR=y
-> CONFIG_EXT2_FS_POSIX_ACL=y
-> CONFIG_EXT2_FS_SECURITY=y
-> CONFIG_EXT3_FS=y
-> CONFIG_MSDOS_FS=y
-> CONFIG_VFAT_FS=y
-> CONFIG_TMPFS=y
-> CONFIG_JFFS2_FS=y
-> CONFIG_JFFS2_SUMMARY=y
-> CONFIG_JFFS2_COMPRESSION_OPTIONS=y
-> CONFIG_JFFS2_RUBIN=y
-> CONFIG_CRAMFS=m
-> CONFIG_NFS_FS=m
-> CONFIG_NFS_V4=m
-> CONFIG_NLS_DEFAULT="cp437"
-> CONFIG_NLS_CODEPAGE_437=y
-> CONFIG_NLS_ISO8859_1=y
-> CONFIG_NLS_UTF8=y
-> CONFIG_CRYPTO_TEST=m
-> CONFIG_CRYPTO_HMAC=y
-> CONFIG_CRYPTO_MD4=m
-> CONFIG_CRYPTO_MICHAEL_MIC=m
-> CONFIG_CRYPTO_SHA512=m
-> CONFIG_CRYPTO_WP512=m
-> CONFIG_CRYPTO_ANUBIS=m
-> CONFIG_CRYPTO_ARC4=m
-> CONFIG_CRYPTO_BLOWFISH=m
-> CONFIG_CRYPTO_CAST5=m
-> CONFIG_CRYPTO_CAST6=m
-> CONFIG_CRYPTO_KHAZAD=m
-> CONFIG_CRYPTO_SERPENT=m
-> CONFIG_CRYPTO_TEA=m
-> CONFIG_CRYPTO_TWOFISH=m
-> CONFIG_CRC_CCITT=y
-> CONFIG_LIBCRC32C=m
-> CONFIG_FONTS=y
-> CONFIG_FONT_8x8=y
-> CONFIG_FONT_8x16=y
-> CONFIG_MAGIC_SYSRQ=y
-> # CONFIG_DEBUG_PREEMPT is not set
-> # CONFIG_FTRACE is not set
-> CONFIG_DEBUG_LL=y
+Range-diff against v1:
+1:  0cdb6bf27a24 ! 1:  2ecbf60b9ecd x86/boot/compressed/32: Save the output address instead of recalculating it
+    @@ Metadata
+      ## Commit message ##
+         x86/boot/compressed/32: Save the output address instead of recalculating it
+     
+    -    In preparation for being able to decompress starting at a different
+    -    address than startup_32, save the calculated output address instead of
+    -    recalculating it later.
+    +    In preparation for being able to decompress into a buffer starting at a
+    +    different address than startup_32, save the calculated output address
+    +    instead of recalculating it later.
+     
+         We now keep track of three addresses:
+                 %edx: startup_32 as we were loaded by bootloader
+2:  d4df840752ac ! 2:  e2bdbe6cb692 efi/x86: Decompress at start of PE image load address
+    @@ arch/x86/boot/compressed/head_64.S: SYM_FUNC_START(efi32_pe_entry)
+      	movl	-4(%ebp), %esi			// loaded_image
+      	movl	LI32_image_base(%esi), %esi	// loaded_image->image_base
+      	movl	%ebx, %ebp			// startup_32 for efi32_pe_stub_entry
+    ++	/*
+    ++	 * We need to set the image_offset variable here since startup_32 will
+    ++	 * use it before we get to the 64-bit efi_pe_entry in C code.
+    ++	 */
+     +	subl	%esi, %ebx
+     +	movl	%ebx, image_offset(%ebp)	// save image_offset
+      	jmp	efi32_pe_stub_entry
+    @@ drivers/firmware/efi/libstub/x86-stub.c: unsigned long efi_main(efi_handle_t han
+      			efi_printk("efi_relocate_kernel() failed!\n");
+      			goto fail;
+      		}
+    ++		/*
+    ++		 * Now that we've copied the kernel elsewhere, we no longer
+    ++		 * have a setup block before startup_32, so reset image_offset
+    ++		 * to zero in case it was set earlier.
+    ++		 */
+     +		image_offset = 0;
+      	}
+      
+3:  4bae68f25b90 ! 3:  ea840f78f138 efi/x86: Add kernel preferred address to PE header
+    @@ arch/x86/boot/header.S: optional_header:
+      
+      extra_header_fields:
+     +	# PE specification requires ImageBase to be 64k-aligned
+    -+	.set	ImageBase, (LOAD_PHYSICAL_ADDR+0xffff) & ~0xffff
+    ++	.set	image_base, (LOAD_PHYSICAL_ADDR + 0xffff) & ~0xffff
+      #ifdef CONFIG_X86_32
+     -	.long	0				# ImageBase
+    -+	.long	ImageBase			# ImageBase
+    ++	.long	image_base			# ImageBase
+      #else
+     -	.quad	0				# ImageBase
+    -+	.quad	ImageBase			# ImageBase
+    ++	.quad	image_base			# ImageBase
+      #endif
+      	.long	0x20				# SectionAlignment
+      	.long	0x20				# FileAlignment
+4:  2330a25c6b0f ! 4:  c25a9b507d6d efi/x86: Remove extra headroom for setup block
+    @@ Commit message
+         account for setup block") added headroom to the PE image to account for
+         the setup block, which wasn't used for the decompression buffer.
+     
+    -    Now that we decompress from the start of the image, this is no longer
+    -    required.
+    +    Now that the decompression buffer is located at the start of the image,
+    +    and includes the setup block, this is no longer required.
+     
+         Add a check to make sure that the head section of the compressed kernel
+         won't overwrite itself while relocating. This is only for
+5:  2081f91cbe75 ! 5:  d3dc3af1c7b8 efi/x86: Don't relocate the kernel unless necessary
+    @@ arch/x86/boot/tools/build.c: static void update_pecoff_text(unsigned int text_st
+      	 * Size of code: Subtract the size of the first sector (512 bytes)
+     
+      ## drivers/firmware/efi/libstub/x86-stub.c ##
+    +@@
+    + 
+    + #include "efistub.h"
+    + 
+    ++/* Maximum physical address for 64-bit kernel with 4-level paging */
+    ++#define MAXMEM_X86_64_4LEVEL (1ull << 46)
+    ++
+    + static efi_system_table_t *sys_table;
+    + extern const bool efi_is64;
+    + extern u32 image_offset;
+     @@ drivers/firmware/efi/libstub/x86-stub.c: unsigned long efi_main(efi_handle_t handle,
+      			     struct boot_params *boot_params)
+      {
+    @@ drivers/firmware/efi/libstub/x86-stub.c: unsigned long efi_main(efi_handle_t han
+     -	 * address, relocate it.
+     +	 * If the kernel isn't already loaded at a suitable address,
+     +	 * relocate it.
+    ++	 *
+     +	 * It must be loaded above LOAD_PHYSICAL_ADDR.
+    -+	 * The maximum address for 64-bit is 1 << 46 for 4-level paging.
+    ++	 *
+    ++	 * The maximum address for 64-bit is 1 << 46 for 4-level paging. This
+    ++	 * is defined as the macro MAXMEM, but unfortunately that is not a
+    ++	 * compile-time constant if 5-level paging is configured, so we instead
+    ++	 * define our own macro for use here.
+    ++	 *
+     +	 * For 32-bit, the maximum address is complicated to figure out, for
+     +	 * now use KERNEL_IMAGE_SIZE, which will be 512MiB, the same as what
+     +	 * KASLR uses.
+    ++	 *
+     +	 * Also relocate it if image_offset is zero, i.e. we weren't loaded by
+     +	 * LoadImage, but we are not aligned correctly.
+      	 */
+     -	if (bzimage_addr - image_offset != hdr->pref_address) {
+    ++
+     +	buffer_start = ALIGN(bzimage_addr - image_offset,
+     +			     hdr->kernel_alignment);
+     +	buffer_end = buffer_start + hdr->init_size;
+     +
+    -+	if (buffer_start < LOAD_PHYSICAL_ADDR
+    -+	    || IS_ENABLED(CONFIG_X86_32) && buffer_end > KERNEL_IMAGE_SIZE
+    -+	    || IS_ENABLED(CONFIG_X86_64) && buffer_end > 1ull << 46
+    -+	    || image_offset == 0 && !IS_ALIGNED(bzimage_addr,
+    -+						hdr->kernel_alignment)) {
+    ++	if ((buffer_start < LOAD_PHYSICAL_ADDR)				     ||
+    ++	    (IS_ENABLED(CONFIG_X86_32) && buffer_end > KERNEL_IMAGE_SIZE)    ||
+    ++	    (IS_ENABLED(CONFIG_X86_64) && buffer_end > MAXMEM_X86_64_4LEVEL) ||
+    ++	    (image_offset == 0 && !IS_ALIGNED(bzimage_addr,
+    ++					      hdr->kernel_alignment))) {
+      		status = efi_relocate_kernel(&bzimage_addr,
+      					     hdr->init_size, hdr->init_size,
+      					     hdr->pref_address,
+-- 
+2.24.1
+
