@@ -2,45 +2,53 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1149B17981A
-	for <lists+linux-efi@lfdr.de>; Wed,  4 Mar 2020 19:39:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B156C17983E
+	for <lists+linux-efi@lfdr.de>; Wed,  4 Mar 2020 19:45:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730237AbgCDSji (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 4 Mar 2020 13:39:38 -0500
-Received: from mail.kernel.org ([198.145.29.99]:59868 "EHLO mail.kernel.org"
+        id S2388221AbgCDSpE (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 4 Mar 2020 13:45:04 -0500
+Received: from mail.kernel.org ([198.145.29.99]:34604 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726561AbgCDSjh (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Wed, 4 Mar 2020 13:39:37 -0500
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+        id S1729600AbgCDSpE (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Wed, 4 Mar 2020 13:45:04 -0500
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id DE5AA20866
-        for <linux-efi@vger.kernel.org>; Wed,  4 Mar 2020 18:39:36 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 2D22224658
+        for <linux-efi@vger.kernel.org>; Wed,  4 Mar 2020 18:45:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1583347177;
-        bh=9tGRcQmnCs+8mBc+xsHARFOn6Shor2qdv6a+qSVcbqI=;
+        s=default; t=1583347503;
+        bh=Xrw/0ZXS8o5llP7/hWRgBB1gg32aOCivmOH4N2PPq28=;
         h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=vfDJA7Dd3AwkFhExwp4eYq1KDYgYgYvgeUxyYNXoaJ1LDiC039PR0+4wSrkRF4Fjx
-         6MG4vqMW82SCJ5qxc9mivHWIYRQBl2CU0BDyvfXSP5WUdRaWxzb6f8snhNB5r1BuuW
-         ddUaL7O+Nf8DBtQGYXe04o2dcg22IoWVPROPwFQU=
-Received: by mail-wm1-f43.google.com with SMTP id p9so3343702wmc.2
-        for <linux-efi@vger.kernel.org>; Wed, 04 Mar 2020 10:39:36 -0800 (PST)
-X-Gm-Message-State: ANhLgQ3Om5yKoPv5YXXUmIIRfa6Psz4wcZfimQp37+XAKZJDhcae4acN
-        v8xshs3ro+IUKN3ryjcQ5Ob93RcCbG5f0fOzIu9ftw==
-X-Google-Smtp-Source: ADFU+vttxjU/Y73QEBY17H75MYW46EApWec4EeV3gpG4CFPchH5eoJU4xLG4yiIpoTbkLzMnTlREglqTaF0Dh20Bf3o=
-X-Received: by 2002:a05:600c:24b:: with SMTP id 11mr4758988wmj.1.1583347175359;
- Wed, 04 Mar 2020 10:39:35 -0800 (PST)
+        b=evFc4Gy2bN812x4sk2r8Pn9zAtdOD5nizsdGRFGnPPQJjIT3Giw+WApSBY2sg4RQj
+         iTqf7tJ5u5IGF0EXEAMZNb1VAIz5xMM6HzAydQcZPNoCREgPFvBNUAcWYJTqD+wqzD
+         sux5tvloTufAOp3GDV77PXiGSd4cbGPBEygtj4qA=
+Received: by mail-wr1-f52.google.com with SMTP id n7so3720512wrt.11
+        for <linux-efi@vger.kernel.org>; Wed, 04 Mar 2020 10:45:03 -0800 (PST)
+X-Gm-Message-State: ANhLgQ2nbZVnEq/+cFt7CZtoIl83gHqgTwf//H2nJZ3+USy/k2Q3luT2
+        Sa18s9X0e3oZBknLkVx7n3hrLmoWhPf6qUp4qzQR3A==
+X-Google-Smtp-Source: ADFU+vtlsxwoHrm1OQRutaVl5g00tzjaOFt5JVahFb3l/ibOgX3f8Wh4bQByjMpAPzr6IyStGc/YxKeZy0zjhVlBpC0=
+X-Received: by 2002:a05:6000:110b:: with SMTP id z11mr5480355wrw.252.1583347501553;
+ Wed, 04 Mar 2020 10:45:01 -0800 (PST)
 MIME-Version: 1.0
-References: <20200304183659.257828-1-nivedita@alum.mit.edu>
-In-Reply-To: <20200304183659.257828-1-nivedita@alum.mit.edu>
+References: <20200303205445.3965393-1-nivedita@alum.mit.edu>
+ <20200303205445.3965393-2-nivedita@alum.mit.edu> <CAKv+Gu_LmntqGjkakR0-SFSCR+JF+CFeKyc=5qzOdpn4wTvKhw@mail.gmail.com>
+ <20200304154908.GB998825@rani.riverdale.lan>
+In-Reply-To: <20200304154908.GB998825@rani.riverdale.lan>
 From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Wed, 4 Mar 2020 19:39:23 +0100
-X-Gmail-Original-Message-ID: <CAKv+Gu_Bc5WYG_D7cM_fPi8rV65ouEre8uYUck0FCxN9FSUopw@mail.gmail.com>
-Message-ID: <CAKv+Gu_Bc5WYG_D7cM_fPi8rV65ouEre8uYUck0FCxN9FSUopw@mail.gmail.com>
-Subject: Re: [PATCH] efi/x86: Move mixed-mode thunk to efi/libstub
+Date:   Wed, 4 Mar 2020 19:44:50 +0100
+X-Gmail-Original-Message-ID: <CAKv+Gu-Xo2zj9_N+K8FrpBstgU57GZvWO-pDr4tRAODhsYzW-A@mail.gmail.com>
+Message-ID: <CAKv+Gu-Xo2zj9_N+K8FrpBstgU57GZvWO-pDr4tRAODhsYzW-A@mail.gmail.com>
+Subject: Re: [PATCH 1/4] x86/mm/pat: Handle no-GBPAGES case correctly in populate_pud
 To:     Arvind Sankar <nivedita@alum.mit.edu>
-Cc:     linux-efi <linux-efi@vger.kernel.org>,
+Cc:     Dave Hansen <dave.hansen@linux.intel.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "H. Peter Anvin" <hpa@zytor.com>,
         "the arch/x86 maintainers" <x86@kernel.org>,
+        linux-efi <linux-efi@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
@@ -48,52 +56,83 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, 4 Mar 2020 at 19:37, Arvind Sankar <nivedita@alum.mit.edu> wrote:
+On Wed, 4 Mar 2020 at 16:49, Arvind Sankar <nivedita@alum.mit.edu> wrote:
 >
-> Commit c2d0b470154c ("efi/libstub/x86: Incorporate eboot.c into
-> libstub") moved all the callers of the mixed-mode thunk into
-> efi/libstub, so move the thunk itself as well for completeness.
+> On Wed, Mar 04, 2020 at 09:17:44AM +0100, Ard Biesheuvel wrote:
+> > On Tue, 3 Mar 2020 at 21:54, Arvind Sankar <nivedita@alum.mit.edu> wrote:
+> > >
+> > > Commit d367cef0a7f0 ("x86/mm/pat: Fix boot crash when 1GB pages are not
+> > > supported by the CPU") added checking for CPU support for 1G pages
+> > > before using them.
+> > >
+> > > However, when support is not present, nothing is done to map the
+> > > intermediate 1G regions and we go directly to the code that normally
+> > > maps the remainder after 1G mappings have been done. This code can only
+> > > handle mappings that fit inside a single PUD entry, but there is no
+> > > check, and it instead silently produces a corrupted mapping to the end
+> > > of the PUD entry, and no mapping beyond it, but still returns success.
+> > >
+> > > This bug is encountered on EFI machines in mixed mode (32-bit firmware
+> > > with 64-bit kernel), with RAM beyond 2G. The EFI support code
+> > > direct-maps all the RAM, so a memory range from below 1G to above 2G
+> > > triggers the bug and results in no mapping above 2G, and an incorrect
+> > > mapping in the 1G-2G range. If the kernel resides in the 1G-2G range, a
+> > > firmware call does not return correctly, and if it resides above 2G, we
+> > > end up passing addresses that are not mapped in the EFI pagetable.
+> > >
+> > > Fix this by mapping the 1G regions using 2M pages when 1G page support
+> > > is not available.
+> > >
+> > > Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
+> >
+> > I was trying to test these patches, and while they seem fine from a
+> > regression point of view, I can't seem to reproduce this issue and
+> > make it go away again by applying this patch.
+> >
+> > Do you have any detailed instructions how to reproduce this?
+> >
 >
-> Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
+> The steps I'm following are
+> - build x86_64 defconfig + enable EFI_PGT_DUMP (to show the incorrect
+>   pagetable)
+> - run (QEMU is 4.2.0)
+> $ qemu-system-x86_64 -cpu Haswell -pflash qemu/OVMF_32.fd -m 3072 -nographic \
+>   -kernel kernel64/arch/x86/boot/bzImage -append "earlyprintk=ttyS0,keep efi=debug nokaslr"
+>
+> The EFI memory map I get is (abbreviated to regions of interest):
+> ...
+> [    0.253991] efi: mem10: [Conventional Memory|   |  |  |  |  |  |  |  |   |WB|WT|WC|UC] range=[0x00000000053e7000-0x000000003fffbfff] (940MB)
+> [    0.254424] efi: mem11: [Loader Data        |   |  |  |  |  |  |  |  |   |WB|WT|WC|UC] range=[0x000000003fffc000-0x000000003fffffff] (0MB)
+> [    0.254991] efi: mem12: [Conventional Memory|   |  |  |  |  |  |  |  |   |WB|WT|WC|UC] range=[0x0000000040000000-0x00000000bbf77fff] (1983MB)
+> ...
+>
+> The pagetable this produces is (abbreviated again):
+> ...
+> [    0.272980] 0x0000000003400000-0x0000000004800000          20M     ro         PSE         x  pmd
+> [    0.273327] 0x0000000004800000-0x0000000005200000          10M     RW         PSE         NX pmd
+> [    0.273987] 0x0000000005200000-0x0000000005400000           2M     RW                     NX pte
+> [    0.274343] 0x0000000005400000-0x000000003fe00000         938M     RW         PSE         NX pmd
+> [    0.274725] 0x000000003fe00000-0x0000000040000000           2M     RW                     NX pte
+> [    0.275066] 0x0000000040000000-0x0000000080000000           1G     RW         PSE         NX pmd
+> [    0.275437] 0x0000000080000000-0x00000000bbe00000         958M                               pmd
+> ...
+>
+> Note how 0x80000000-0xbbe00000 range is unmapped in the resulting
+> pagetable. The dump doesn't show physical addresses, but the
+> 0x40000000-0x80000000 range is incorrectly mapped as well, as the loop
+> in populate_pmd would just go over that virtual address range twice.
+>
+>         while (end - start >= PMD_SIZE) {
+>                 ...
+>                 pmd = pmd_offset(pud, start);
+>
+>                 set_pmd(pmd, pmd_mkhuge(pfn_pmd(cpa->pfn,
+>                                         canon_pgprot(pmd_pgprot))));
+>
+>                 start     += PMD_SIZE;
+>                 cpa->pfn  += PMD_SIZE >> PAGE_SHIFT;
+>                 cur_pages += PMD_SIZE >> PAGE_SHIFT;
+>         }
 
-Thanks for the patch, but I'd prefer to leave the .S pieces under arch/
-(unless there's some benefit I'm not seeing)
-
-> ---
->  arch/x86/boot/compressed/Makefile                                | 1 -
->  drivers/firmware/efi/libstub/Makefile                            | 1 +
->  .../firmware/efi/libstub/x86_64-thunk.S                          | 0
->  3 files changed, 1 insertion(+), 1 deletion(-)
->  rename arch/x86/boot/compressed/efi_thunk_64.S => drivers/firmware/efi/libstub/x86_64-thunk.S (100%)
->
-> diff --git a/arch/x86/boot/compressed/Makefile b/arch/x86/boot/compressed/Makefile
-> index e51879bdc51c..047004d39a55 100644
-> --- a/arch/x86/boot/compressed/Makefile
-> +++ b/arch/x86/boot/compressed/Makefile
-> @@ -88,7 +88,6 @@ endif
->  vmlinux-objs-$(CONFIG_ACPI) += $(obj)/acpi.o
->
->  vmlinux-objs-$(CONFIG_EFI_STUB) += $(objtree)/drivers/firmware/efi/libstub/lib.a
-> -vmlinux-objs-$(CONFIG_EFI_MIXED) += $(obj)/efi_thunk_$(BITS).o
->
->  # The compressed kernel is built with -fPIC/-fPIE so that a boot loader
->  # can place it anywhere in memory and it will still run. However, since
-> diff --git a/drivers/firmware/efi/libstub/Makefile b/drivers/firmware/efi/libstub/Makefile
-> index 4d6246c6f651..85b66e5e5d1f 100644
-> --- a/drivers/firmware/efi/libstub/Makefile
-> +++ b/drivers/firmware/efi/libstub/Makefile
-> @@ -55,6 +55,7 @@ lib-$(CONFIG_EFI_ARMSTUB)     += arm-stub.o fdt.o string.o \
->  lib-$(CONFIG_ARM)              += arm32-stub.o
->  lib-$(CONFIG_ARM64)            += arm64-stub.o
->  lib-$(CONFIG_X86)              += x86-stub.o
-> +lib-$(CONFIG_EFI_MIXED)                += x86_64-thunk.o
->  CFLAGS_arm32-stub.o            := -DTEXT_OFFSET=$(TEXT_OFFSET)
->  CFLAGS_arm64-stub.o            := -DTEXT_OFFSET=$(TEXT_OFFSET)
->
-> diff --git a/arch/x86/boot/compressed/efi_thunk_64.S b/drivers/firmware/efi/libstub/x86_64-thunk.S
-> similarity index 100%
-> rename from arch/x86/boot/compressed/efi_thunk_64.S
-> rename to drivers/firmware/efi/libstub/x86_64-thunk.S
-> --
-> 2.24.1
->
+I've tried a couple of different ways, but I can't seem to get my
+memory map organized in the way that will trigger the error.
