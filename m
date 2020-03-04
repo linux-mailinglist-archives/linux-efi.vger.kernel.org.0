@@ -2,87 +2,160 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 89A0A17868A
-	for <lists+linux-efi@lfdr.de>; Wed,  4 Mar 2020 00:40:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9389A178869
+	for <lists+linux-efi@lfdr.de>; Wed,  4 Mar 2020 03:34:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728451AbgCCXkV (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 3 Mar 2020 18:40:21 -0500
-Received: from mail-qt1-f195.google.com ([209.85.160.195]:40124 "EHLO
-        mail-qt1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727802AbgCCXkV (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 3 Mar 2020 18:40:21 -0500
-Received: by mail-qt1-f195.google.com with SMTP id o10so31985qtr.7
-        for <linux-efi@vger.kernel.org>; Tue, 03 Mar 2020 15:40:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:from:date:to:cc:subject:message-id:mime-version
-         :content-disposition:user-agent;
-        bh=fF63PTGaptVX8qwSKQHVhiM3NGTtgmUaKxEtHZyvk/8=;
-        b=blJwV2Jq00d/TIw7HVIfLIgRSqEeJ3A0qmbmvy2Vk1ix2/LT+mWWdvhoC0XqtcLKLr
-         Gpu7tSQzSofn7TNIN1SCb1uSzXTIMHF408H+mAOrU4BZWUVxgUZ2HLk1ZbEMfWjX/c96
-         2WIyr7fbzPsOEbbeUoUNQ3cPnwDPHQ5rXEeCQgwaU6eWACz8fpcW05frFloA7A+S21gU
-         JxW2+Qmi3XUr7EkQQ6BQDbCRfzqeJSuJ8JHbqVmY7k9i+CTovoM+OEoZNCLvdTDy2+8m
-         q8aS/03b0cKjheH6vOjJxTyrk26KeLI2NzLF3q7eEiHqQXKws26I0Zl2dQZh9qNRF3/k
-         Sn9A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:from:date:to:cc:subject:message-id
-         :mime-version:content-disposition:user-agent;
-        bh=fF63PTGaptVX8qwSKQHVhiM3NGTtgmUaKxEtHZyvk/8=;
-        b=dZJWSDQiRWrQC1DhXVLj7O5Yg2rdiTBCQ1dJg81YkvrlA0UUUS0XTw+gajqvfu5Ezl
-         yKFr6LrFlAFSfh0OuCLMKrPbL6s5P1d9/C9h5X7AecPrFuNDM/HsHQUgVgkP0xSDF3eF
-         0qyWRPEU1YQ/WQyiVkGOAhKak/STdlAkGSXBgorB6bz1gpRej/I7GZK8LDNSsh+OSq3F
-         686HY7gESyFE45pfX6hbZm+JGGaHdn9THLlfqaWmBHBJ3tsxp/d33Ys0QUwVkSdEPY+x
-         fbfk4GdyUDN/q0JZX1W0w83FGyC1aZ4qQlPrua+A3soFTpLgDxD0w+/hetR3YZncSHP4
-         F4vQ==
-X-Gm-Message-State: ANhLgQ1QrgFXZK3dd/raBhCLWa4S+S2mNElnCelUSlTh8swi2TBOZela
-        /+IvrlkNG8fjLg+FOPio6Xv894OAshg=
-X-Google-Smtp-Source: ADFU+vt1rFGG3NPSCiV4+bwXzAzLxUiq9O80AYDmnib7SaMeJ+F1pJxY6tyxFTQm0HvP7joIlXNN1Q==
-X-Received: by 2002:ac8:4e94:: with SMTP id 20mr46264qtp.335.1583278820050;
-        Tue, 03 Mar 2020 15:40:20 -0800 (PST)
-Received: from rani.riverdale.lan ([2001:470:1f07:5f3::b55f])
-        by smtp.gmail.com with ESMTPSA id o6sm2286966qkj.96.2020.03.03.15.40.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Mar 2020 15:40:19 -0800 (PST)
-From:   Arvind Sankar <nivedita@alum.mit.edu>
-X-Google-Original-From: Arvind Sankar <arvind@rani.riverdale.lan>
-Date:   Tue, 3 Mar 2020 18:40:18 -0500
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     linux-efi@vger.kernel.org
-Subject: ioremap WARN on 32-bit kernel
-Message-ID: <20200303234018.GB154112@rani.riverdale.lan>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-User-Agent: Mutt/1.10.1 (2018-07-13)
+        id S2387454AbgCDCe6 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 3 Mar 2020 21:34:58 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:43944 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S2387406AbgCDCe6 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 3 Mar 2020 21:34:58 -0500
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 0242YubR140993
+        for <linux-efi@vger.kernel.org>; Tue, 3 Mar 2020 21:34:58 -0500
+Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 2yhhy619bh-1
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <linux-efi@vger.kernel.org>; Tue, 03 Mar 2020 21:34:57 -0500
+Received: from localhost
+        by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <linux-efi@vger.kernel.org> from <nayna@linux.ibm.com>;
+        Wed, 4 Mar 2020 02:34:45 -0000
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
+        by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+        Wed, 4 Mar 2020 02:34:41 -0000
+Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com [9.149.105.60])
+        by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 0242YdrU48693396
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 4 Mar 2020 02:34:39 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id AA3CD42084;
+        Wed,  4 Mar 2020 02:34:39 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 1A9194207C;
+        Wed,  4 Mar 2020 02:33:40 +0000 (GMT)
+Received: from swastik.ibm.com (unknown [9.160.57.81])
+        by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Wed,  4 Mar 2020 02:33:39 +0000 (GMT)
+From:   Nayna Jain <nayna@linux.ibm.com>
+To:     linux-integrity@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-efi@vger.kernel.org, linux-s390@vger.kernel.org
+Cc:     Ard Biesheuvel <ardb@kernel.org>,
+        Philipp Rudo <prudo@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>, zohar@linux.ibm.com,
+        linux-kernel@vger.kernel.org, Nayna Jain <nayna@linux.ibm.com>
+Subject: [PATCH v2] ima: add a new CONFIG for loading arch-specific policies
+Date:   Tue,  3 Mar 2020 21:33:31 -0500
+X-Mailer: git-send-email 1.8.3.1
+X-TM-AS-GCONF: 00
+x-cbid: 20030402-0016-0000-0000-000002ECF156
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20030402-0017-0000-0000-000033503B67
+Message-Id: <1583289211-5420-1-git-send-email-nayna@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.572
+ definitions=2020-03-03_08:2020-03-03,2020-03-03 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ mlxlogscore=999 lowpriorityscore=0 suspectscore=0 phishscore=0 mlxscore=0
+ impostorscore=0 bulkscore=0 malwarescore=0 adultscore=0 clxscore=1015
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2001150001 definitions=main-2003040018
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-I consistently get this splat when booting 32-bit kernel on QEMU+OVMF,
-with at least 1024Mb. Seems to have been there for quite a while (before
-v5.0). Any ideas/can you repro?
+Every time a new architecture defines the IMA architecture specific
+functions - arch_ima_get_secureboot() and arch_ima_get_policy(), the IMA
+include file needs to be updated. To avoid this "noise", this patch
+defines a new IMA Kconfig IMA_SECURE_AND_OR_TRUSTED_BOOT option, allowing
+the different architectures to select it.
 
-[    0.227718] ------------[ cut here ]------------                                                                                                                                                                                                                            
-[    0.227998] ioremap on RAM at 0x3f251000 - 0x3fa1afff                                                                                                                                                                                                                       
-[    0.228421] WARNING: CPU: 0 PID: 0 at arch/x86/mm/ioremap.c:166 __ioremap_caller.constprop.0+0x249/0x260                                                                                                                                                                    
-[    0.228570] Modules linked in:                                                                                                                                                                                                                                              
-[    0.228570] CPU: 0 PID: 0 Comm: swapper/0 Not tainted 4.20.0 #48                                                                                                                                                                                                            
-[    0.228570] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 0.0.0 02/06/2015                                                                                                                                                                                    
-[    0.228570] EIP: __ioremap_caller.constprop.0+0x249/0x260                                                                                                                                                                                                                   
-[    0.228570] Code: 90 0f b7 05 4e 38 40 de 09 45 e0 e9 09 ff ff ff 90 8d 45 ec c6 05 a1 52 4a de 01 50 8d 45 e4 50 68 b4 7b 2d de e8 3e bb 00 00 <0f> 0b 31 ff 83 c4 0c e9 66 ff ff ff 8d b4 26 00 00 00 00 8d 74 26                                                         
-[    0.228570] EAX: 00000029 EBX: 00000000 ECX: de59c228 EDX: 00000001                                                                                                                                                                                                         
-[    0.228570] ESI: 3f250fff EDI: 00000000 EBP: de3edf20 ESP: de3edee0                                                                                                                                                                                                         
-[    0.228570] DS: 007b ES: 007b FS: 00d8 GS: 00e0 SS: 0068 EFLAGS: 00200296                                                                                                                                                                                                   
-[    0.228570] CR0: 80050033 CR2: ffd17000 CR3: 1e58c000 CR4: 00040690                                                                                                                                                                                                         
-[    0.228570] Call Trace:                                                                                                                                                                                                                                                     
-[    0.228570]  ioremap_cache+0xd/0x10                                                                                                                                                                                                                                         
-[    0.228570]  ? old_map_region+0x72/0x9d                                                                                                                                                                                                                                     
-[    0.228570]  old_map_region+0x72/0x9d                                                                                                                                                                                                                                       
-[    0.228570]  efi_map_region+0x8/0xa                                                                                                                                                                                                                                         
-[    0.228570]  efi_enter_virtual_mode+0x260/0x43b                                                                                                                                                                                                                             
-[    0.228570]  start_kernel+0x329/0x3aa                                                                                                                                                                                                                                       
-[    0.228570]  i386_start_kernel+0xa7/0xab                                                                                                                                                                                                                                    
-[    0.228570]  startup_32_smp+0x164/0x168                                                                                                                                                                                                                                     
-[    0.228570] ---[ end trace e15ccf6b9f356833 ]---
+Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: Philipp Rudo <prudo@linux.ibm.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+---
+v2:
+* Fixed the issue identified by Mimi. Thanks Mimi, Ard, Heiko and Michael for
+discussing the fix.
+
+ arch/powerpc/Kconfig           | 1 +
+ arch/s390/Kconfig              | 1 +
+ arch/x86/Kconfig               | 1 +
+ include/linux/ima.h            | 3 +--
+ security/integrity/ima/Kconfig | 9 +++++++++
+ 5 files changed, 13 insertions(+), 2 deletions(-)
+
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index 497b7d0b2d7e..a5cfde432983 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -979,6 +979,7 @@ config PPC_SECURE_BOOT
+ 	bool
+ 	depends on PPC_POWERNV
+ 	depends on IMA_ARCH_POLICY
++	select IMA_SECURE_AND_OR_TRUSTED_BOOT
+ 	help
+ 	  Systems with firmware secure boot enabled need to define security
+ 	  policies to extend secure boot to the OS. This config allows a user
+diff --git a/arch/s390/Kconfig b/arch/s390/Kconfig
+index 8abe77536d9d..4a502fbcb800 100644
+--- a/arch/s390/Kconfig
++++ b/arch/s390/Kconfig
+@@ -195,6 +195,7 @@ config S390
+ 	select ARCH_HAS_FORCE_DMA_UNENCRYPTED
+ 	select SWIOTLB
+ 	select GENERIC_ALLOCATOR
++	select IMA_SECURE_AND_OR_TRUSTED_BOOT if IMA_ARCH_POLICY
+ 
+ 
+ config SCHED_OMIT_FRAME_POINTER
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index beea77046f9b..7f5bfaf0cbd2 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -230,6 +230,7 @@ config X86
+ 	select VIRT_TO_BUS
+ 	select X86_FEATURE_NAMES		if PROC_FS
+ 	select PROC_PID_ARCH_STATUS		if PROC_FS
++	select IMA_SECURE_AND_OR_TRUSTED_BOOT	if EFI && IMA_ARCH_POLICY
+ 
+ config INSTRUCTION_DECODER
+ 	def_bool y
+diff --git a/include/linux/ima.h b/include/linux/ima.h
+index 1659217e9b60..aefe758f4466 100644
+--- a/include/linux/ima.h
++++ b/include/linux/ima.h
+@@ -30,8 +30,7 @@ extern void ima_kexec_cmdline(const void *buf, int size);
+ extern void ima_add_kexec_buffer(struct kimage *image);
+ #endif
+ 
+-#if (defined(CONFIG_X86) && defined(CONFIG_EFI)) || defined(CONFIG_S390) \
+-	|| defined(CONFIG_PPC_SECURE_BOOT)
++#ifdef CONFIG_IMA_SECURE_AND_OR_TRUSTED_BOOT
+ extern bool arch_ima_get_secureboot(void);
+ extern const char * const *arch_get_ima_policy(void);
+ #else
+diff --git a/security/integrity/ima/Kconfig b/security/integrity/ima/Kconfig
+index 3f3ee4e2eb0d..d17972aa413a 100644
+--- a/security/integrity/ima/Kconfig
++++ b/security/integrity/ima/Kconfig
+@@ -327,3 +327,12 @@ config IMA_QUEUE_EARLY_BOOT_KEYS
+ 	depends on IMA_MEASURE_ASYMMETRIC_KEYS
+ 	depends on SYSTEM_TRUSTED_KEYRING
+ 	default y
++
++config IMA_SECURE_AND_OR_TRUSTED_BOOT
++	bool
++	depends on IMA
++	depends on IMA_ARCH_POLICY
++	default n
++	help
++	   This option is selected by architectures to enable secure and/or
++	   trusted boot based on IMA runtime policies.
+-- 
+2.13.6
+
