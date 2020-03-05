@@ -2,76 +2,91 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 37453179FDC
-	for <lists+linux-efi@lfdr.de>; Thu,  5 Mar 2020 07:17:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 490C517A077
+	for <lists+linux-efi@lfdr.de>; Thu,  5 Mar 2020 08:21:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725913AbgCEGRg (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 5 Mar 2020 01:17:36 -0500
-Received: from us-smtp-2.mimecast.com ([205.139.110.61]:23690 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1725818AbgCEGRf (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 5 Mar 2020 01:17:35 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1583389055;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=E6xu+5UxvlRGBObBERKpxsZYB1W/AKSUkfhw6bHB3FM=;
-        b=UcqGQlRv9RSyp+wc3GoY798GYPY2yOfh765BzB1dag0mtH/AE/UMflm6JT8GL4UcBT8Vfs
-        Yy3w648ewf9je9HUZdwBMepbxB2EdzXcUd47f4JLKEcesbcUhEsHtIkIAxqYcXwp/sxIpp
-        KJdyCVd1TGflRHrdSaBl9+JyyMxKSA4=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-310-fVRD406aNJWJE02WSIVI_w-1; Thu, 05 Mar 2020 01:17:30 -0500
-X-MC-Unique: fVRD406aNJWJE02WSIVI_w-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        id S1725975AbgCEHVC (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 5 Mar 2020 02:21:02 -0500
+Received: from mail.kernel.org ([198.145.29.99]:57204 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725974AbgCEHVC (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Thu, 5 Mar 2020 02:21:02 -0500
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id C553813E4;
-        Thu,  5 Mar 2020 06:17:29 +0000 (UTC)
-Received: from colo-mx.corp.redhat.com (colo-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.20])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id B1A1319C6A;
-        Thu,  5 Mar 2020 06:17:29 +0000 (UTC)
-Received: from zmail21.collab.prod.int.phx2.redhat.com (zmail21.collab.prod.int.phx2.redhat.com [10.5.83.24])
-        by colo-mx.corp.redhat.com (Postfix) with ESMTP id A12DA1809563;
-        Thu,  5 Mar 2020 06:17:29 +0000 (UTC)
-Date:   Thu, 5 Mar 2020 01:17:29 -0500 (EST)
-From:   Vladis Dronov <vdronov@redhat.com>
-To:     joeyli <jlee@suse.com>
-Cc:     Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Message-ID: <1322502214.13237657.1583389049605.JavaMail.zimbra@redhat.com>
-In-Reply-To: <20200305060123.GS16878@linux-l9pv.suse>
-References: <CAKv+Gu_3ZRRcoAcLTVVQe26q5x9KALmztaNQF=e=KqWaAwxtpA@mail.gmail.com> <20200304154936.24206-1-vdronov@redhat.com> <20200305060123.GS16878@linux-l9pv.suse>
-Subject: Re: [PATCH v2] efi: fix a race and a buffer overflow while reading
- efivars via sysfs
+        by mail.kernel.org (Postfix) with ESMTPSA id B1F3C2166E
+        for <linux-efi@vger.kernel.org>; Thu,  5 Mar 2020 07:21:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1583392862;
+        bh=sVCSyX5PL4idBbvN6Bl80w4Y0gYN/2UcaYOAik4CYMs=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=1xM12VVU64PzeUxBGuPI1GuS1ZczDqAskUpn6WAVIcdelQTFCGFqHgBYpmOMfN8r6
+         2l8ANERzq66jKCEb/oox/K+KUqEqLPAU02S+zYHHk7a3XwHRDwjG94Ed3dpvgFO1aV
+         i7wI7nrYBG/bWEXIeXA6DkoRv4ToxdJbX7LHJXG0=
+Received: by mail-wm1-f41.google.com with SMTP id a5so4981985wmb.0
+        for <linux-efi@vger.kernel.org>; Wed, 04 Mar 2020 23:21:01 -0800 (PST)
+X-Gm-Message-State: ANhLgQ2Ll6FOQCfYMYsLerWahgrq9fCgZPwnnbR7JTySgukcqOQ+5Mud
+        48xxfd7zoEsOPLS8Pl+jB0yfwznhp62aIkmY4SLT/A==
+X-Google-Smtp-Source: ADFU+vvctrYy4m8EpCJoDAsfXsp0t7dPCLjO+yyjyEvxk5QgJYx3Js/UZ2wDqkfr4XlFhrcv6faNQh07nhMV/vxzlYY=
+X-Received: by 2002:a7b:cb93:: with SMTP id m19mr8181328wmi.133.1583392859964;
+ Wed, 04 Mar 2020 23:20:59 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.40.204.88, 10.4.195.7]
-Thread-Topic: fix a race and a buffer overflow while reading efivars via sysfs
-Thread-Index: yZpuewxX2bAsD2i1VoJ9lfrdXAYJYw==
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
+References: <20200305055047.6097-1-masahiroy@kernel.org>
+In-Reply-To: <20200305055047.6097-1-masahiroy@kernel.org>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Thu, 5 Mar 2020 08:20:49 +0100
+X-Gmail-Original-Message-ID: <CAKv+Gu8KfZZ_v-kUq=vwd+8MfhiOCpTG_AYA06bAuq7G-=c+WQ@mail.gmail.com>
+Message-ID: <CAKv+Gu8KfZZ_v-kUq=vwd+8MfhiOCpTG_AYA06bAuq7G-=c+WQ@mail.gmail.com>
+Subject: Re: [PATCH] efi/libstub: avoid linking libstub/lib-ksyms.o into vmlinux
+To:     Masahiro Yamada <masahiroy@kernel.org>
+Cc:     linux-efi <linux-efi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Ingo Molnar <mingo@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hello, Joey, all,
+On Thu, 5 Mar 2020 at 06:50, Masahiro Yamada <masahiroy@kernel.org> wrote:
+>
+> drivers/firmware/efi/libstub/Makefile is supposed to create a static
+> library, which is not directly linked to vmlinux.
+>
 
-> > -	var->DataSize = 1024;
-> > -	if (efivar_entry_get(entry, &entry->var.Attributes,
-> > -			     &entry->var.DataSize, entry->var.Data))
-> > +	ret = efivar_entry_get(entry, &var->Attributes, &datasize, var->Data);
-> > +	var->DataSize = size;
-> 
-> The size is indeterminate here. I think that it should uses datasize?
-> 	var->DataSize = datasize;
+This is not true for arm64. Does that matter?
 
-Indeed, my mistake. Thank you much! I will fix it in the v3 patchset I'm
-currently composing.
-
-Best regards,
-Vladis Dronov | Red Hat, Inc. | The Core Kernel | Senior Software Engineer
-
+> Since commit 7f2084fa55e6 ("[kbuild] handle exports in lib-y objects
+> reliably"), any Makefile using lib-y generates lib-ksyms.o which is
+> linked into vmlinux.
+>
+> In this case, the following garbage object is linked into vmlinux.
+>
+>   drivers/firmware/efi/libstub/lib-ksyms.o
+>
+> We do not want to link anything from libstub/ directly to vmlinux,
+> so using subdir-y instead of obj-y is the correct way to descend into
+> this directory.
+>
+> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+> ---
+>
+>  drivers/firmware/efi/Makefile | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/firmware/efi/Makefile b/drivers/firmware/efi/Makefile
+> index 554d795270d9..4fd2fa02f549 100644
+> --- a/drivers/firmware/efi/Makefile
+> +++ b/drivers/firmware/efi/Makefile
+> @@ -19,7 +19,7 @@ obj-$(CONFIG_EFI_VARS_PSTORE)         += efi-pstore.o
+>  obj-$(CONFIG_UEFI_CPER)                        += cper.o
+>  obj-$(CONFIG_EFI_RUNTIME_MAP)          += runtime-map.o
+>  obj-$(CONFIG_EFI_RUNTIME_WRAPPERS)     += runtime-wrappers.o
+> -obj-$(CONFIG_EFI_STUB)                 += libstub/
+> +subdir-$(CONFIG_EFI_STUB)              += libstub
+>  obj-$(CONFIG_EFI_FAKE_MEMMAP)          += fake_map.o
+>  obj-$(CONFIG_EFI_BOOTLOADER_CONTROL)   += efibc.o
+>  obj-$(CONFIG_EFI_TEST)                 += test/
+> --
+> 2.17.1
+>
