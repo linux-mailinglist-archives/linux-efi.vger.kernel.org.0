@@ -2,144 +2,282 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 10E9A17A0A9
-	for <lists+linux-efi@lfdr.de>; Thu,  5 Mar 2020 08:47:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A26617A0D6
+	for <lists+linux-efi@lfdr.de>; Thu,  5 Mar 2020 09:12:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726009AbgCEHr2 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 5 Mar 2020 02:47:28 -0500
-Received: from mail.kernel.org ([198.145.29.99]:34120 "EHLO mail.kernel.org"
+        id S1726036AbgCEIM1 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 5 Mar 2020 03:12:27 -0500
+Received: from mga07.intel.com ([134.134.136.100]:58775 "EHLO mga07.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725900AbgCEHr2 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Thu, 5 Mar 2020 02:47:28 -0500
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 392A120870
-        for <linux-efi@vger.kernel.org>; Thu,  5 Mar 2020 07:47:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1583394447;
-        bh=uYnZ8RHtPgOP0bMawYXhsO4Ftw7rRBzo1uB+1SPw8Tk=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=aZDPUVnTrYZWbY/bp0iouzuzOe/egonJiJF8W5yqlXcdcvLABGWIM2ZJS/gjqIWWR
-         0uoeBC7VjBHmxh5TRw55FaU73855VpMjfK4zV3r3yqOU4Nf4vuL/TyE89uqzcPVsq6
-         9gx/CsLPFb8GhZbkTWeQCMIKrLHJWHygL5G+6ow8=
-Received: by mail-wm1-f45.google.com with SMTP id 6so5049692wmi.5
-        for <linux-efi@vger.kernel.org>; Wed, 04 Mar 2020 23:47:27 -0800 (PST)
-X-Gm-Message-State: ANhLgQ0ImhSZbNW0ok8q3NXLp5eJNMqZFiEhUgA27nfF5R+cGQtqPAbb
-        7nLln9SAE6iIew+x6br6wRiusXWN25uVHdmddkZpUg==
-X-Google-Smtp-Source: ADFU+vsoa1s+f4+HYz7apQWwuAhfOae5XkffzCXVQ4Bm3Ifg0B2MiPly03//GtukTrjQ7r7KJ3QBW3+/1vaSSpYIGCQ=
-X-Received: by 2002:a05:600c:da:: with SMTP id u26mr7771511wmm.40.1583394445713;
- Wed, 04 Mar 2020 23:47:25 -0800 (PST)
+        id S1725816AbgCEIM1 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Thu, 5 Mar 2020 03:12:27 -0500
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 05 Mar 2020 00:12:26 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.70,517,1574150400"; 
+   d="scan'208";a="234341116"
+Received: from shao2-debian.sh.intel.com (HELO [10.239.13.3]) ([10.239.13.3])
+  by orsmga008.jf.intel.com with ESMTP; 05 Mar 2020 00:12:25 -0800
+Subject: Re: [efi:next] BUILD REGRESSION
+ 0ceadd2c387c53cd26352fcd2447f310b99459d1
+To:     Ard Biesheuvel <ardb@kernel.org>, kbuild test robot <lkp@intel.com>
+Cc:     linux-efi <linux-efi@vger.kernel.org>
+References: <5e6092e5.VxSlbOIvDuPF6kjh%lkp@intel.com>
+ <CAKv+Gu-_Yhk2Ok70QDmW6L_8C-LoACx=Bmhy1RSo5rccxoV4SA@mail.gmail.com>
+From:   Rong Chen <rong.a.chen@intel.com>
+Message-ID: <c51de87e-5802-14c2-4509-93fd73594840@intel.com>
+Date:   Thu, 5 Mar 2020 16:12:15 +0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-References: <20200305055047.6097-1-masahiroy@kernel.org> <CAKv+Gu8KfZZ_v-kUq=vwd+8MfhiOCpTG_AYA06bAuq7G-=c+WQ@mail.gmail.com>
- <CAK7LNATwBALmPjZiY6teac3FcA_BFsBVzwf5cqbVNCZSqGrHJg@mail.gmail.com>
-In-Reply-To: <CAK7LNATwBALmPjZiY6teac3FcA_BFsBVzwf5cqbVNCZSqGrHJg@mail.gmail.com>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Thu, 5 Mar 2020 08:47:15 +0100
-X-Gmail-Original-Message-ID: <CAKv+Gu-7GYj5fJjOMRQQiKhA+PYeHYcwcG6sVx5O0Pj2Ufd2rg@mail.gmail.com>
-Message-ID: <CAKv+Gu-7GYj5fJjOMRQQiKhA+PYeHYcwcG6sVx5O0Pj2Ufd2rg@mail.gmail.com>
-Subject: Re: [PATCH] efi/libstub: avoid linking libstub/lib-ksyms.o into vmlinux
-To:     Masahiro Yamada <masahiroy@kernel.org>
-Cc:     linux-efi <linux-efi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Ingo Molnar <mingo@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <CAKv+Gu-_Yhk2Ok70QDmW6L_8C-LoACx=Bmhy1RSo5rccxoV4SA@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, 5 Mar 2020 at 08:39, Masahiro Yamada <masahiroy@kernel.org> wrote:
->
-> On Thu, Mar 5, 2020 at 4:21 PM Ard Biesheuvel <ardb@kernel.org> wrote:
-> >
-> > On Thu, 5 Mar 2020 at 06:50, Masahiro Yamada <masahiroy@kernel.org> wrote:
-> > >
-> > > drivers/firmware/efi/libstub/Makefile is supposed to create a static
-> > > library, which is not directly linked to vmlinux.
-> > >
-> >
-> > This is not true for arm64. Does that matter?
->
->
->
-> Yeah, I know.  arm64 vmlinux links it
-> (but in a different manner from normal lib.a )
->
->
-> Shall I rephrase this paragraph as follows?
->
-> drivers/firmware/efi/libstub/Makefile is supposed to create a static
-> library, which is not directly linked to vmlinux on ARCH=arm, x86.
->
->
->
-> This is just a matter of whether linking
-> unneeded lib-ksyms.o or not.
->
-
-How about
-
-"""
-drivers/firmware/efi/libstub/Makefile builds a static library, which
-is not linked into the main vmlinux target in the ordinary way
-[arm64], or at all [ARM, x86]
-"""
 
 
+On 3/5/20 3:22 PM, Ard Biesheuvel wrote:
+> On Thu, 5 Mar 2020 at 06:50, kbuild test robot <lkp@intel.com> wrote:
+>> tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git  next
+>> branch HEAD: 0ceadd2c387c53cd26352fcd2447f310b99459d1  efi/x86: preserve %ebx correctly in efi_set_virtual_address_map()
+>>
+>> Regressions in current branch:
+>>
+>> drivers/firmware/efi/libstub/file.c:81 efi_open_volume() error: potentially dereferencing uninitialized 'io'.
+>> drivers/firmware/efi/libstub/x86-stub.c:187 retrieve_apple_device_properties() error: potentially dereferencing uninitialized 'p'.
+>> drivers/firmware/efi/libstub/x86-stub.c:392 efi_pe_entry() error: potentially dereferencing uninitialized 'image'.
+>>
+> Once again, this is not a regression, afaict. Please read the code.
+
+Hi Ard,
+
+Thanks for the explanation, we'll take a look.
+
+Best Regards,
+Rong Chen
 
 >
->
->
->
-> > > Since commit 7f2084fa55e6 ("[kbuild] handle exports in lib-y objects
-> > > reliably"), any Makefile using lib-y generates lib-ksyms.o which is
-> > > linked into vmlinux.
-> > >
-> > > In this case, the following garbage object is linked into vmlinux.
-> > >
-> > >   drivers/firmware/efi/libstub/lib-ksyms.o
-> > >
-> > > We do not want to link anything from libstub/ directly to vmlinux,
+>> Error ids grouped by kconfigs:
+>>
+>> recent_errors
+>> `-- x86_64-defconfig
+>>      |-- drivers-firmware-efi-libstub-file.c-efi_open_volume()-error:potentially-dereferencing-uninitialized-io-.
+>>      |-- drivers-firmware-efi-libstub-x86-stub.c-efi_pe_entry()-error:potentially-dereferencing-uninitialized-image-.
+>>      `-- drivers-firmware-efi-libstub-x86-stub.c-retrieve_apple_device_properties()-error:potentially-dereferencing-uninitialized-p-.
+>>
+>> elapsed time: 648m
+>>
+>> configs tested: 199
+>> configs skipped: 0
+>>
+>> arm                              allmodconfig
+>> arm                               allnoconfig
+>> arm                              allyesconfig
+>> arm64                            allmodconfig
+>> arm64                             allnoconfig
+>> arm64                            allyesconfig
+>> arm                         at91_dt_defconfig
+>> arm                           efm32_defconfig
+>> arm                          exynos_defconfig
+>> arm                        multi_v5_defconfig
+>> arm                        multi_v7_defconfig
+>> arm                        shmobile_defconfig
+>> arm                           sunxi_defconfig
+>> arm64                               defconfig
+>> sparc                            allyesconfig
+>> ia64                              allnoconfig
+>> s390                              allnoconfig
+>> csky                                defconfig
+>> powerpc                             defconfig
+>> s390                          debug_defconfig
+>> m68k                           sun3_defconfig
+>> sparc64                          allmodconfig
+>> sh                  sh7785lcr_32bit_defconfig
+>> sh                          rsk7269_defconfig
+>> i386                              allnoconfig
+>> i386                             allyesconfig
+>> i386                             alldefconfig
+>> i386                                defconfig
+>> ia64                             allmodconfig
+>> ia64                                defconfig
+>> ia64                             allyesconfig
+>> ia64                             alldefconfig
+>> c6x                              allyesconfig
+>> c6x                        evmc6678_defconfig
+>> nios2                         10m50_defconfig
+>> nios2                         3c120_defconfig
+>> openrisc                    or1ksim_defconfig
+>> openrisc                 simple_smp_defconfig
+>> xtensa                       common_defconfig
+>> xtensa                          iss_defconfig
+>> alpha                               defconfig
+>> nds32                             allnoconfig
+>> nds32                               defconfig
+>> h8300                     edosk2674_defconfig
+>> h8300                    h8300h-sim_defconfig
+>> h8300                       h8s-sim_defconfig
+>> m68k                             allmodconfig
+>> m68k                       m5475evb_defconfig
+>> m68k                          multi_defconfig
+>> arc                              allyesconfig
+>> arc                                 defconfig
+>> microblaze                      mmu_defconfig
+>> microblaze                    nommu_defconfig
+>> powerpc                           allnoconfig
+>> powerpc                       ppc64_defconfig
+>> powerpc                          rhel-kconfig
+>> mips                           32r2_defconfig
+>> mips                         64r6el_defconfig
+>> mips                             allmodconfig
+>> mips                              allnoconfig
+>> mips                             allyesconfig
+>> mips                      fuloong2e_defconfig
+>> mips                      malta_kvm_defconfig
+>> parisc                            allnoconfig
+>> parisc                           allyesconfig
+>> parisc                generic-32bit_defconfig
+>> parisc                generic-64bit_defconfig
+>> x86_64               randconfig-a001-20200305
+>> x86_64               randconfig-a002-20200305
+>> x86_64               randconfig-a003-20200305
+>> i386                 randconfig-a001-20200305
+>> i386                 randconfig-a002-20200305
+>> i386                 randconfig-a003-20200305
+>> x86_64               randconfig-a001-20200304
+>> x86_64               randconfig-a002-20200304
+>> x86_64               randconfig-a003-20200304
+>> i386                 randconfig-a001-20200304
+>> i386                 randconfig-a002-20200304
+>> i386                 randconfig-a003-20200304
+>> alpha                randconfig-a001-20200304
+>> m68k                 randconfig-a001-20200304
+>> mips                 randconfig-a001-20200304
+>> nds32                randconfig-a001-20200304
+>> parisc               randconfig-a001-20200304
+>> riscv                randconfig-a001-20200304
+>> c6x                  randconfig-a001-20200304
+>> h8300                randconfig-a001-20200304
+>> microblaze           randconfig-a001-20200304
+>> nios2                randconfig-a001-20200304
+>> sparc64              randconfig-a001-20200304
+>> sh                   randconfig-a001-20200304
+>> openrisc             randconfig-a001-20200304
+>> csky                 randconfig-a001-20200304
+>> s390                 randconfig-a001-20200304
+>> xtensa               randconfig-a001-20200304
+>> x86_64               randconfig-b001-20200304
+>> x86_64               randconfig-b002-20200304
+>> x86_64               randconfig-b003-20200304
+>> i386                 randconfig-b001-20200304
+>> i386                 randconfig-b002-20200304
+>> i386                 randconfig-b003-20200304
+>> x86_64               randconfig-b001-20200305
+>> x86_64               randconfig-b002-20200305
+>> x86_64               randconfig-b003-20200305
+>> i386                 randconfig-b001-20200305
+>> i386                 randconfig-b002-20200305
+>> i386                 randconfig-b003-20200305
+>> x86_64               randconfig-c001-20200305
+>> x86_64               randconfig-c002-20200305
+>> x86_64               randconfig-c003-20200305
+>> i386                 randconfig-c001-20200305
+>> i386                 randconfig-c002-20200305
+>> i386                 randconfig-c003-20200305
+>> x86_64               randconfig-c001-20200304
+>> x86_64               randconfig-c002-20200304
+>> x86_64               randconfig-c003-20200304
+>> i386                 randconfig-c001-20200304
+>> i386                 randconfig-c002-20200304
+>> i386                 randconfig-c003-20200304
+>> x86_64               randconfig-d001-20200304
+>> x86_64               randconfig-d002-20200304
+>> x86_64               randconfig-d003-20200304
+>> i386                 randconfig-d001-20200304
+>> i386                 randconfig-d002-20200304
+>> i386                 randconfig-d003-20200304
+>> x86_64               randconfig-e001-20200305
+>> x86_64               randconfig-e002-20200305
+>> x86_64               randconfig-e003-20200305
+>> i386                 randconfig-e001-20200305
+>> i386                 randconfig-e002-20200305
+>> i386                 randconfig-e003-20200305
+>> x86_64               randconfig-e001-20200304
+>> x86_64               randconfig-e002-20200304
+>> x86_64               randconfig-e003-20200304
+>> i386                 randconfig-e001-20200304
+>> i386                 randconfig-e002-20200304
+>> i386                 randconfig-e003-20200304
+>> x86_64               randconfig-f001-20200304
+>> x86_64               randconfig-f002-20200304
+>> x86_64               randconfig-f003-20200304
+>> i386                 randconfig-f001-20200304
+>> i386                 randconfig-f002-20200304
+>> i386                 randconfig-f003-20200304
+>> x86_64               randconfig-g001-20200304
+>> x86_64               randconfig-g002-20200304
+>> x86_64               randconfig-g003-20200304
+>> i386                 randconfig-g001-20200304
+>> i386                 randconfig-g002-20200304
+>> i386                 randconfig-g003-20200304
+>> x86_64               randconfig-h001-20200305
+>> x86_64               randconfig-h002-20200305
+>> x86_64               randconfig-h003-20200305
+>> i386                 randconfig-h001-20200305
+>> i386                 randconfig-h002-20200305
+>> i386                 randconfig-h003-20200305
+>> x86_64               randconfig-h001-20200304
+>> x86_64               randconfig-h002-20200304
+>> x86_64               randconfig-h003-20200304
+>> i386                 randconfig-h001-20200304
+>> i386                 randconfig-h002-20200304
+>> i386                 randconfig-h003-20200304
+>> arc                  randconfig-a001-20200305
+>> ia64                 randconfig-a001-20200305
+>> sparc                randconfig-a001-20200305
+>> arm                  randconfig-a001-20200305
+>> arm64                randconfig-a001-20200305
+>> arc                  randconfig-a001-20200304
+>> arm                  randconfig-a001-20200304
+>> arm64                randconfig-a001-20200304
+>> ia64                 randconfig-a001-20200304
+>> powerpc              randconfig-a001-20200304
+>> sparc                randconfig-a001-20200304
+>> riscv                            allmodconfig
+>> riscv                             allnoconfig
+>> riscv                            allyesconfig
+>> riscv                               defconfig
+>> riscv                    nommu_virt_defconfig
+>> riscv                          rv32_defconfig
+>> s390                             alldefconfig
+>> s390                             allmodconfig
+>> s390                             allyesconfig
+>> s390                                defconfig
+>> s390                       zfcpdump_defconfig
+>> sh                               allmodconfig
+>> sh                                allnoconfig
+>> sh                            titan_defconfig
+>> sparc                               defconfig
+>> sparc64                           allnoconfig
+>> sparc64                          allyesconfig
+>> sparc64                             defconfig
+>> um                           x86_64_defconfig
+>> um                             i386_defconfig
+>> um                                  defconfig
+>> x86_64                              fedora-25
+>> x86_64                                  kexec
+>> x86_64                                    lkp
+>> x86_64                                   rhel
+>> x86_64                         rhel-7.2-clear
+>> x86_64                               rhel-7.6
+>>
+>> ---
+>> 0-DAY CI Kernel Test Service, Intel Corporation
+>> https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
 
-and
-
-"""
-We do not want to follow the default linking rules for static
-libraries built under libstub/
-"""
-
-If you agree, no need to resend, I'll fix it up when applying
-
-
-> > > so using subdir-y instead of obj-y is the correct way to descend into
-> > > this directory.
-> > >
-> > > Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-> > > ---
-> > >
-> > >  drivers/firmware/efi/Makefile | 2 +-
-> > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > >
-> > > diff --git a/drivers/firmware/efi/Makefile b/drivers/firmware/efi/Makefile
-> > > index 554d795270d9..4fd2fa02f549 100644
-> > > --- a/drivers/firmware/efi/Makefile
-> > > +++ b/drivers/firmware/efi/Makefile
-> > > @@ -19,7 +19,7 @@ obj-$(CONFIG_EFI_VARS_PSTORE)         += efi-pstore.o
-> > >  obj-$(CONFIG_UEFI_CPER)                        += cper.o
-> > >  obj-$(CONFIG_EFI_RUNTIME_MAP)          += runtime-map.o
-> > >  obj-$(CONFIG_EFI_RUNTIME_WRAPPERS)     += runtime-wrappers.o
-> > > -obj-$(CONFIG_EFI_STUB)                 += libstub/
-> > > +subdir-$(CONFIG_EFI_STUB)              += libstub
-> > >  obj-$(CONFIG_EFI_FAKE_MEMMAP)          += fake_map.o
-> > >  obj-$(CONFIG_EFI_BOOTLOADER_CONTROL)   += efibc.o
-> > >  obj-$(CONFIG_EFI_TEST)                 += test/
-> > > --
-> > > 2.17.1
-> > >
->
->
->
-> --
-> Best Regards
-> Masahiro Yamada
