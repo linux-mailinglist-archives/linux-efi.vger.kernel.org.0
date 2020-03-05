@@ -2,71 +2,75 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DF7DE17A7AF
-	for <lists+linux-efi@lfdr.de>; Thu,  5 Mar 2020 15:37:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DAC3B17A848
+	for <lists+linux-efi@lfdr.de>; Thu,  5 Mar 2020 15:56:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727050AbgCEOgp (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 5 Mar 2020 09:36:45 -0500
-Received: from mail-qt1-f193.google.com ([209.85.160.193]:39874 "EHLO
-        mail-qt1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727026AbgCEOgo (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 5 Mar 2020 09:36:44 -0500
-Received: by mail-qt1-f193.google.com with SMTP id e13so4265072qts.6
-        for <linux-efi@vger.kernel.org>; Thu, 05 Mar 2020 06:36:44 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=ZZ2RKPnI2lXvFfz5wxz2/rek312QvCvhMZ2aTBpcLBw=;
-        b=Y/zUObpKFvYyyYeHDI8bYmhCm9pwqxO6iHa2sMwEJz6T2HVj+nBTzU9KyfORh3GN29
-         xweDiEipIndzUQF2YJFqDRT8AFCyZN/upEs+7lLo3Ul1obaLzwOuQOOR6uwz8fMQ0QSP
-         lQm25HGxTvKgnvkOKxLGoZjX4AncLtDhOoOduBpCgGigkZxGyLQCO453/6K688Cdq/aw
-         okIn/iyXVVJBfNFYYJEz/mg/WKdpdoaFcMosR2RaimsGRfet1i8xfXv1YUNGSY/zVWKT
-         FSIe+/1EgPmD1ub83PiFagmL+mCNfCozE6i3rCoqigXCRZylv07l8fp7d7fK9NPVb3Fe
-         ZIxQ==
-X-Gm-Message-State: ANhLgQ0ycyS1wvW7DSFfs3ibcR2gmQdKUz1FYl3UsWhD9zj9wUsYkwUT
-        6W76+VlKYWyGi2UiwTDmVu3CjZEbbAg=
-X-Google-Smtp-Source: ADFU+vuj/PZ63x9g05Vi5isVaxo4I0K4wr7aoTS6aK02+NEQLFDAkxQjO3TMXAqbem1xGoVA+Vir8w==
-X-Received: by 2002:ac8:76d7:: with SMTP id q23mr7526518qtr.198.1583419003900;
-        Thu, 05 Mar 2020 06:36:43 -0800 (PST)
-Received: from rani.riverdale.lan ([2001:470:1f07:5f3::b55f])
-        by smtp.gmail.com with ESMTPSA id u48sm2219090qtc.79.2020.03.05.06.36.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Mar 2020 06:36:43 -0800 (PST)
-From:   Arvind Sankar <nivedita@alum.mit.edu>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     linux-efi@vger.kernel.org
-Subject: [PATCH] efi/x86: Fix cast of image argument
-Date:   Thu,  5 Mar 2020 09:36:42 -0500
-Message-Id: <20200305143642.820865-1-nivedita@alum.mit.edu>
-X-Mailer: git-send-email 2.24.1
+        id S1725963AbgCEO4a (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 5 Mar 2020 09:56:30 -0500
+Received: from mail.kernel.org ([198.145.29.99]:44340 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726004AbgCEO4a (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Thu, 5 Mar 2020 09:56:30 -0500
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 5053320848
+        for <linux-efi@vger.kernel.org>; Thu,  5 Mar 2020 14:56:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1583420189;
+        bh=5fO0JuvSBZFq3MCg8Q+HsdlsL0Z4Fu5Tx39F6eTCQwE=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=TZZ3FG3CE+MokD3S8s5aJvFWJQ0Fpq0sk1KICkgvIBa84qpU07bgPD0kksUTDs7us
+         JGf2VxC5s/lo7hMShMLsF8pn/FkmJcBzHFUiSfCnyI+g0QVPY/IwPFvSmMqZR90BCL
+         O5pK3ww+REh/9Tksxp38btxQuDltptUZ3U7Xxs6c=
+Received: by mail-wm1-f44.google.com with SMTP id a5so6675737wmb.0
+        for <linux-efi@vger.kernel.org>; Thu, 05 Mar 2020 06:56:29 -0800 (PST)
+X-Gm-Message-State: ANhLgQ3g6gVkY2B6ognAYe0OR80WQW0AZ/NTXjtlxdW8JLoWJV5ugZvI
+        vEmveZd2hsOwKCpVJ1stV8235LbOnCVrrtg35oHGDw==
+X-Google-Smtp-Source: ADFU+vuoYH3aMx97JSuIEvocQl0Zu5Y+lid1E5vLIpWqz0meBSvgsFQfz/T29iXj4zOnUheQkkMWkQ8hDCb16y+l9lE=
+X-Received: by 2002:a05:600c:24b:: with SMTP id 11mr9872565wmj.1.1583420187771;
+ Thu, 05 Mar 2020 06:56:27 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20200305143642.820865-1-nivedita@alum.mit.edu>
+In-Reply-To: <20200305143642.820865-1-nivedita@alum.mit.edu>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Thu, 5 Mar 2020 15:56:16 +0100
+X-Gmail-Original-Message-ID: <CAKv+Gu-Ko26Th5dhbSk6NvoRdbkAz4PC9spEb4-c7+JxyJqunA@mail.gmail.com>
+Message-ID: <CAKv+Gu-Ko26Th5dhbSk6NvoRdbkAz4PC9spEb4-c7+JxyJqunA@mail.gmail.com>
+Subject: Re: [PATCH] efi/x86: Fix cast of image argument
+To:     Arvind Sankar <nivedita@alum.mit.edu>
+Cc:     linux-efi <linux-efi@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-handle_protocol expects void **, not void *.
+On Thu, 5 Mar 2020 at 15:36, Arvind Sankar <nivedita@alum.mit.edu> wrote:
+>
+> handle_protocol expects void **, not void *.
+>
+> Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
 
-Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
----
- drivers/firmware/efi/libstub/x86-stub.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Queued, thanks
 
-diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
-index fbc4354f534c..95b29d8bf8e4 100644
---- a/drivers/firmware/efi/libstub/x86-stub.c
-+++ b/drivers/firmware/efi/libstub/x86-stub.c
-@@ -383,7 +383,7 @@ efi_status_t __efiapi efi_pe_entry(efi_handle_t handle,
- 	if (sys_table->hdr.signature != EFI_SYSTEM_TABLE_SIGNATURE)
- 		efi_exit(handle, EFI_INVALID_PARAMETER);
- 
--	status = efi_bs_call(handle_protocol, handle, &proto, (void *)&image);
-+	status = efi_bs_call(handle_protocol, handle, &proto, (void **)&image);
- 	if (status != EFI_SUCCESS) {
- 		efi_printk("Failed to get handle for LOADED_IMAGE_PROTOCOL\n");
- 		efi_exit(handle, status);
--- 
-2.24.1
-
+> ---
+>  drivers/firmware/efi/libstub/x86-stub.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
+> index fbc4354f534c..95b29d8bf8e4 100644
+> --- a/drivers/firmware/efi/libstub/x86-stub.c
+> +++ b/drivers/firmware/efi/libstub/x86-stub.c
+> @@ -383,7 +383,7 @@ efi_status_t __efiapi efi_pe_entry(efi_handle_t handle,
+>         if (sys_table->hdr.signature != EFI_SYSTEM_TABLE_SIGNATURE)
+>                 efi_exit(handle, EFI_INVALID_PARAMETER);
+>
+> -       status = efi_bs_call(handle_protocol, handle, &proto, (void *)&image);
+> +       status = efi_bs_call(handle_protocol, handle, &proto, (void **)&image);
+>         if (status != EFI_SUCCESS) {
+>                 efi_printk("Failed to get handle for LOADED_IMAGE_PROTOCOL\n");
+>                 efi_exit(handle, status);
+> --
+> 2.24.1
+>
