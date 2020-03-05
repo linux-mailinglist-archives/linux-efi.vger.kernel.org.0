@@ -2,111 +2,212 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 575D0179BF6
-	for <lists+linux-efi@lfdr.de>; Wed,  4 Mar 2020 23:49:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C31BD179E3F
+	for <lists+linux-efi@lfdr.de>; Thu,  5 Mar 2020 04:26:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388467AbgCDWtI (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 4 Mar 2020 17:49:08 -0500
-Received: from mail.kernel.org ([198.145.29.99]:51032 "EHLO mail.kernel.org"
+        id S1725807AbgCED0I (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 4 Mar 2020 22:26:08 -0500
+Received: from ozlabs.org ([203.11.71.1]:46743 "EHLO ozlabs.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2387931AbgCDWtI (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Wed, 4 Mar 2020 17:49:08 -0500
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        id S1725776AbgCED0I (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Wed, 4 Mar 2020 22:26:08 -0500
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 5D22021739
-        for <linux-efi@vger.kernel.org>; Wed,  4 Mar 2020 22:49:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1583362147;
-        bh=XGcZGdEgM/vF7v5mdp3torxe2y7WxwOP/Qm/IpOOGes=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=gso1N108434AieE+ggenhKm/c6dmwGmd1liZEW63oqPD3UFK7cfjXn6I+S2fRAUgh
-         Frp6IioKacGK2o6UzxTNASyT3P3piao7biNGmpoD2xmavxh4XKk4kSBLYgHoAEN+OD
-         6DEk1W0TyBvir0TuP/5hjjDnjugW+UBlxnOoWcZk=
-Received: by mail-wr1-f47.google.com with SMTP id h9so4563284wrr.10
-        for <linux-efi@vger.kernel.org>; Wed, 04 Mar 2020 14:49:07 -0800 (PST)
-X-Gm-Message-State: ANhLgQ0YjArj7+SiH3DZrp5MG00pv4a2Q63JhNEW42uJLyC8L3kURotC
-        0vLbKRaLkW7UFm6D1q79lgne6XMiDv2yLCMm+RjIng==
-X-Google-Smtp-Source: ADFU+vsWSVNlJkST4UHauA5BWk+eWwcGbu9YRrgToE95Gya3bYNCXVsvtg6M1wlo3k6wmlTpbKSSwVECLp8UN6wlGYc=
-X-Received: by 2002:adf:f84a:: with SMTP id d10mr6369353wrq.208.1583362145754;
- Wed, 04 Mar 2020 14:49:05 -0800 (PST)
+        by mail.ozlabs.org (Postfix) with ESMTPSA id 48Xx3c0nB0z9sNg;
+        Thu,  5 Mar 2020 14:26:03 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+        s=201909; t=1583378764;
+        bh=n7Wk2CTjL+YpeiTvNbjnCG4kwoUD1e2RPLWE3xN1au0=;
+        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+        b=dLaL/OjkNkN9KF1Cjfs20SM3rMJ0QIylnwxzc9IKkkCzwfVo0juguna8o5MOuMges
+         EM094nNGS74RYpgeFT+PSub9CqUFJz1tod6CeCU/HDA2wxiQ9nlmU686Pdz2mEriWY
+         wWdZfqu7ASGu5/RK9Vzmzm7heTMH8XjxBPHDdxCzfkmBKJSU6p1eanvxEcfOVnsccP
+         9M5FZKpbOYTwEAPh53SbO2DshNmlndAMA1Sm6iouDy/Yr0h9EwVevqHma6bCPFcEBK
+         EOglgdj+mn00z1YkwFxVsVH4UyRCe0UO5US7zxfD8L/rFvDalTZFbonzT9cCzjj0iI
+         iKdmHk2NkHLIg==
+From:   Michael Ellerman <mpe@ellerman.id.au>
+To:     James Bottomley <James.Bottomley@HansenPartnership.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        Nayna Jain <nayna@linux.ibm.com>,
+        linux-integrity@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-efi@vger.kernel.org, linux-s390@vger.kernel.org
+Cc:     Ard Biesheuvel <ardb@kernel.org>,
+        Philipp Rudo <prudo@linux.ibm.com>,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] ima: add a new CONFIG for loading arch-specific policies
+In-Reply-To: <1583336133.3284.1.camel@HansenPartnership.com>
+References: <1583289211-5420-1-git-send-email-nayna@linux.ibm.com> <1583307813.3907.4.camel@HansenPartnership.com> <1583325309.6264.23.camel@linux.ibm.com> <1583336133.3284.1.camel@HansenPartnership.com>
+Date:   Thu, 05 Mar 2020 14:26:00 +1100
+Message-ID: <87a74vqy7r.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-References: <20200228121408.9075-1-ardb@kernel.org>
-In-Reply-To: <20200228121408.9075-1-ardb@kernel.org>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Wed, 4 Mar 2020 23:48:54 +0100
-X-Gmail-Original-Message-ID: <CAKv+Gu-Yj18WXurHNC4wCmLSA-neOTcc7d5fQyXEwC+o7KA2eg@mail.gmail.com>
-Message-ID: <CAKv+Gu-Yj18WXurHNC4wCmLSA-neOTcc7d5fQyXEwC+o7KA2eg@mail.gmail.com>
-Subject: Re: [GIT PULL 0/6] More EFI updates for v5.7
-To:     linux-efi <linux-efi@vger.kernel.org>,
-        Ingo Molnar <mingo@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        David Hildenbrand <david@redhat.com>,
-        Heinrich Schuchardt <xypron.glpk@gmx.de>,
-        Tom Lendacky <thomas.lendacky@amd.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, 28 Feb 2020 at 13:14, Ard Biesheuvel <ardb@kernel.org> wrote:
+James Bottomley <James.Bottomley@HansenPartnership.com> writes:
+> On Wed, 2020-03-04 at 07:35 -0500, Mimi Zohar wrote:
+>> On Tue, 2020-03-03 at 23:43 -0800, James Bottomley wrote:
+>> > On Tue, 2020-03-03 at 21:33 -0500, Nayna Jain wrote:
+>> > > diff --git a/security/integrity/ima/Kconfig
+>> > > b/security/integrity/ima/Kconfig
+>> > > index 3f3ee4e2eb0d..d17972aa413a 100644
+>> > > --- a/security/integrity/ima/Kconfig
+>> > > +++ b/security/integrity/ima/Kconfig
+>> > > @@ -327,3 +327,12 @@ config IMA_QUEUE_EARLY_BOOT_KEYS
+>> > >  	depends on IMA_MEASURE_ASYMMETRIC_KEYS
+>> > >  	depends on SYSTEM_TRUSTED_KEYRING
+>> > >  	default y
+>> > > +
+>> > > +config IMA_SECURE_AND_OR_TRUSTED_BOOT
+>> > > +	bool
+>> > > +	depends on IMA
+>> > > +	depends on IMA_ARCH_POLICY
+>> > > +	default n
+>> > 
+>> > You can't do this: a symbol designed to be selected can't depend on
+>> > other symbols because Kconfig doesn't see the dependencies during
+>> > select.  We even have a doc for this now:
+>> > 
+>> > Documentation/kbuild/Kconfig.select-break
+>> 
+>> The document is discussing a circular dependency, where C selects B.
+>>  IMA_SECURE_AND_OR_TRUSTED_BOOT is not selecting anything, but is
+>> being selected.  All of the Kconfig's are now dependent on
+>> IMA_ARCH_POLICY being enabled before selecting
+>> IMA_SECURE_AND_OR_TRUSTED_BOOT.
+>> 
+>> As Ard pointed out, both IMA and IMA_ARCH_POLICY are not needed, as
+>> IMA_ARCH_POLICY is already dependent on IMA.
 >
-> Hello Ingo, Thomas,
->
-> A small set of EFI followup changes for v5.7. The last one fixes a boot
-> regression in linux-next on x86 machines booting without EFI but with
-> the IMA security subsystem enabled, which is why I am sending out the
-> next batch a bit earlier than intended.
->
+> Then removing them is fine, if they're not necessary ... you just can't
+>  select a symbol with dependencies because the two Kconfig mechanisms
+> don't mix.
 
-Please disregard this for now. I will send a v2 tomorrow or Friday
-which will contain a few more fixes for the changes that are queued
-for v5.7 already.
+You can safely select something if the selector has the same or stricter
+set of dependencies than the selectee. And in this case that's true.
 
->
-> The following changes since commit e9765680a31b22ca6703936c000ce5cc46192e10:
->
->   Merge tag 'efi-next' of git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi into efi/core (2020-02-26 15:21:22 +0100)
->
-> are available in the Git repository at:
->
->   git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git tags/efi-next
->
-> for you to fetch changes up to be15278269343ec0e4d0e41bab5f64b49b0edb6b:
->
->   efi: mark all EFI runtime services as unsupported on non-EFI boot (2020-02-28 12:54:46 +0100)
->
-> ----------------------------------------------------------------
-> More EFI updates for v5.7
->
-> A couple of followup fixes for the EFI changes queued for v5.7:
-> - a fix for a boot regression on x86 booting without UEFI
-> - memory encryption fixes for x86, so that the TPM tables and the RNG
->   config table created by the stub are correctly identified as living
->   in unencrypted memory
-> - style tweak from Heinrich
-> - followup to the ARM EFI entry code simplifications to ensure that we
->   don't rely on EFI_LOADER_DATA memory being RWX
->
-> ----------------------------------------------------------------
-> Ard Biesheuvel (3):
->       efi/arm: clean EFI stub exit code from cache instead of avoiding it
->       efi/arm64: clean EFI stub exit code from cache instead of avoiding it
->       efi: mark all EFI runtime services as unsupported on non-EFI boot
->
-> Heinrich Schuchardt (1):
->       efi: don't shadow i in efi_config_parse_tables()
->
-> Tom Lendacky (2):
->       efi/x86: Add TPM related EFI tables to unencrypted mapping checks
->       efi/x86: Add RNG seed EFI table to unencrypted mapping check
->
->  arch/arm/boot/compressed/head.S | 18 ++++++++----------
->  arch/arm64/kernel/efi-entry.S   | 26 +++++++++++++-------------
->  arch/arm64/kernel/image-vars.h  |  4 ++--
->  arch/x86/platform/efi/efi.c     |  3 +++
->  drivers/firmware/efi/efi.c      | 25 +++++++++++++------------
->  include/linux/efi.h             |  2 ++
->  6 files changed, 41 insertions(+), 37 deletions(-)
+config IMA_SECURE_AND_OR_TRUSTED_BOOT
+       bool
+       depends on IMA
+       depends on IMA_ARCH_POLICY
+
+powerpc:
+        depends on IMA_ARCH_POLICY
+        select IMA_SECURE_AND_OR_TRUSTED_BOOT
+
+s390: select IMA_SECURE_AND_OR_TRUSTED_BOOT if IMA_ARCH_POLICY
+
+x86: select IMA_SECURE_AND_OR_TRUSTED_BOOT   if EFI && IMA_ARCH_POLICY
+
+
+But that's not to say it's the best solution, because you have to ensure
+the arch code has the right set of dependencies.
+
+I think this is actually a perfect case for using imply. We want the
+arch code to indicate it wants IMA_SECURE_..., but only if all the IMA
+related dependencies are met.
+
+I think the patch below should work.
+
+For example:
+
+$ grep PPC_SECURE_BOOT .config
+CONFIG_PPC_SECURE_BOOT=y
+$ ./scripts/config -d CONFIG_IMA_SECURE_AND_OR_TRUSTED_BOOT
+$ grep IMA_SECURE .config
+# CONFIG_IMA_SECURE_AND_OR_TRUSTED_BOOT is not set
+$ make oldconfig
+scripts/kconfig/conf  --oldconfig Kconfig
+#
+# configuration written to .config
+#
+$ grep IMA_SECURE .config
+CONFIG_IMA_SECURE_AND_OR_TRUSTED_BOOT=y
+
+$ ./scripts/config -d CONFIG_IMA_ARCH_POLICY
+$ grep -e IMA_ARCH_POLICY -e IMA_SECURE .config
+# CONFIG_IMA_ARCH_POLICY is not set
+CONFIG_IMA_SECURE_AND_OR_TRUSTED_BOOT=y
+$ make olddefconfig
+scripts/kconfig/conf  --olddefconfig Kconfig
+#
+# configuration written to .config
+#
+$ grep -e IMA_ARCH_POLICY -e IMA_SECURE .config
+# CONFIG_IMA_ARCH_POLICY is not set
+$ 
+
+
+cheers
+
+
+
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index 497b7d0b2d7e..5b9f1cba2a44 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -979,6 +979,7 @@ config PPC_SECURE_BOOT
+        bool
+        depends on PPC_POWERNV
+        depends on IMA_ARCH_POLICY
++       imply IMA_SECURE_AND_OR_TRUSTED_BOOT
+        help
+          Systems with firmware secure boot enabled need to define security
+          policies to extend secure boot to the OS. This config allows a user
+diff --git a/arch/s390/Kconfig b/arch/s390/Kconfig
+index 8abe77536d9d..59c216af6264 100644
+--- a/arch/s390/Kconfig
++++ b/arch/s390/Kconfig
+@@ -195,6 +195,7 @@ config S390
+        select ARCH_HAS_FORCE_DMA_UNENCRYPTED
+        select SWIOTLB
+        select GENERIC_ALLOCATOR
++       imply IMA_SECURE_AND_OR_TRUSTED_BOOT
+ 
+ 
+ config SCHED_OMIT_FRAME_POINTER
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index beea77046f9b..92204a486d97 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -230,6 +230,7 @@ config X86
+        select VIRT_TO_BUS
+        select X86_FEATURE_NAMES                if PROC_FS
+        select PROC_PID_ARCH_STATUS             if PROC_FS
++       imply IMA_SECURE_AND_OR_TRUSTED_BOOT    if EFI
+ 
+ config INSTRUCTION_DECODER
+        def_bool y
+diff --git a/include/linux/ima.h b/include/linux/ima.h
+index 1659217e9b60..aefe758f4466 100644
+--- a/include/linux/ima.h
++++ b/include/linux/ima.h
+@@ -30,8 +30,7 @@ extern void ima_kexec_cmdline(const void *buf, int size);
+ extern void ima_add_kexec_buffer(struct kimage *image);
+ #endif
+ 
+-#if (defined(CONFIG_X86) && defined(CONFIG_EFI)) || defined(CONFIG_S390) \
+-       || defined(CONFIG_PPC_SECURE_BOOT)
++#ifdef CONFIG_IMA_SECURE_AND_OR_TRUSTED_BOOT
+ extern bool arch_ima_get_secureboot(void);
+ extern const char * const *arch_get_ima_policy(void);
+ #else
+diff --git a/security/integrity/ima/Kconfig b/security/integrity/ima/Kconfig
+index 3f3ee4e2eb0d..5ba4ae040fd8 100644
+--- a/security/integrity/ima/Kconfig
++++ b/security/integrity/ima/Kconfig
+@@ -327,3 +327,10 @@ config IMA_QUEUE_EARLY_BOOT_KEYS
+        depends on IMA_MEASURE_ASYMMETRIC_KEYS
+        depends on SYSTEM_TRUSTED_KEYRING
+        default y
++
++config IMA_SECURE_AND_OR_TRUSTED_BOOT
++       bool
++       depends on IMA_ARCH_POLICY
++       help
++          This option is selected by architectures to enable secure and/or
++          trusted boot based on IMA runtime policies.
