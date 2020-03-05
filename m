@@ -2,71 +2,77 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5DFB417A1B4
-	for <lists+linux-efi@lfdr.de>; Thu,  5 Mar 2020 09:51:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1BD3F17A36E
+	for <lists+linux-efi@lfdr.de>; Thu,  5 Mar 2020 11:52:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726036AbgCEIvc (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 5 Mar 2020 03:51:32 -0500
-Received: from mail.kernel.org ([198.145.29.99]:42814 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725816AbgCEIvc (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Thu, 5 Mar 2020 03:51:32 -0500
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        id S1726990AbgCEKwL (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 5 Mar 2020 05:52:11 -0500
+Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:33494 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726979AbgCEKwL (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 5 Mar 2020 05:52:11 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1583405530;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=UI+jv9WRtSfSOrEtwCJt1VuJ+panaiTzk05DWwgj8hE=;
+        b=HRknIKDpghL6caqd+YJ0DLe0hJgHgNCsRMPR9rPLo+r0K/XyWhtcCPQY4p4/StEaGSYxWU
+        jlWDJqVPRf/Lsrsr/3EGz/pU7PTZHqSPRy2ConhZGR0zg/fNT8oeSKpXcqLkMFl29JtJX8
+        ZBVtJXvJjfKryM8LXvcQ8yC/Apkr6J8=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-421-Ix9rltTnOy6V2Odi6gbcew-1; Thu, 05 Mar 2020 05:52:05 -0500
+X-MC-Unique: Ix9rltTnOy6V2Odi6gbcew-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 6576021556
-        for <linux-efi@vger.kernel.org>; Thu,  5 Mar 2020 08:51:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1583398291;
-        bh=0cu+E7SCRqW6qkQHGXrzeQ+THUKLi1C1UePfJyu621M=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=r4fzgfaMgkKh+As+J8drFx6XKOa59EaD3zNOFsNH76p0Vz4E8Gozfob3HT2U1GdhD
-         49pnayl9w7uPl/YibyEKehJCohTD7tjNPxNdIZRknXQ/nsU+jpPU9oP55qe1j6enCZ
-         KoMjOYtEebuTRua40kfCZIr51ysrzmt2fveEq29E=
-Received: by mail-wr1-f43.google.com with SMTP id j16so5960978wrt.3
-        for <linux-efi@vger.kernel.org>; Thu, 05 Mar 2020 00:51:31 -0800 (PST)
-X-Gm-Message-State: ANhLgQ0b850lNeGeVzUeN9HlFgLSX/6U9WABChfgne3NC+vd2M47/nO7
-        UkRy8FmMO0V/ofII84aX8q6ZNgRcRFEkDh7aVy45sQ==
-X-Google-Smtp-Source: ADFU+vu1ijqG8p3DiUfaypO6t/Xgilxszgy8aBBPXyoFMVMrP4wcYC1eIZIlszQmXGBZPcUsbJET0oDCe8arwlQ0SVo=
-X-Received: by 2002:a05:6000:110b:: with SMTP id z11mr9167986wrw.252.1583398289927;
- Thu, 05 Mar 2020 00:51:29 -0800 (PST)
-MIME-Version: 1.0
-References: <CAKv+Gu_3ZRRcoAcLTVVQe26q5x9KALmztaNQF=e=KqWaAwxtpA@mail.gmail.com>
- <20200305084041.24053-1-vdronov@redhat.com>
-In-Reply-To: <20200305084041.24053-1-vdronov@redhat.com>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Thu, 5 Mar 2020 09:51:19 +0100
-X-Gmail-Original-Message-ID: <CAKv+Gu8EzLoaa5PP8FjPqY1OUYoftmibHJUPB13mFW3AH_Y4cw@mail.gmail.com>
-Message-ID: <CAKv+Gu8EzLoaa5PP8FjPqY1OUYoftmibHJUPB13mFW3AH_Y4cw@mail.gmail.com>
-Subject: Re: [PATCH v3 0/3] efi: fix a race and add a sanity check
-To:     Vladis Dronov <vdronov@redhat.com>
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 4CE67800D50;
+        Thu,  5 Mar 2020 10:52:04 +0000 (UTC)
+Received: from colo-mx.corp.redhat.com (colo-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.20])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id 42E455C219;
+        Thu,  5 Mar 2020 10:52:04 +0000 (UTC)
+Received: from zmail21.collab.prod.int.phx2.redhat.com (zmail21.collab.prod.int.phx2.redhat.com [10.5.83.24])
+        by colo-mx.corp.redhat.com (Postfix) with ESMTP id 3363D1809563;
+        Thu,  5 Mar 2020 10:52:04 +0000 (UTC)
+Date:   Thu, 5 Mar 2020 05:52:04 -0500 (EST)
+From:   Vladis Dronov <vdronov@redhat.com>
+To:     Ard Biesheuvel <ardb@kernel.org>
 Cc:     linux-efi <linux-efi@vger.kernel.org>, joeyli <jlee@suse.com>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Message-ID: <911968708.13281322.1583405524154.JavaMail.zimbra@redhat.com>
+In-Reply-To: <CAKv+Gu_n8MhgRFw-BUFgN1UUfTh1R6wsCNxKRA9QrQK74z6g7g@mail.gmail.com>
+References: <CAKv+Gu_3ZRRcoAcLTVVQe26q5x9KALmztaNQF=e=KqWaAwxtpA@mail.gmail.com> <20200305084041.24053-1-vdronov@redhat.com> <20200305084041.24053-2-vdronov@redhat.com> <CAKv+Gu_n8MhgRFw-BUFgN1UUfTh1R6wsCNxKRA9QrQK74z6g7g@mail.gmail.com>
+Subject: Re: [PATCH v3 1/3] efi: fix a race and a buffer overflow while
+ reading efivars via sysfs
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.40.204.231, 10.4.195.11]
+Thread-Topic: fix a race and a buffer overflow while reading efivars via sysfs
+Thread-Index: ZwtG1mjZkaktWXHopN/M4SFWBKQyCQ==
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, 5 Mar 2020 at 09:41, Vladis Dronov <vdronov@redhat.com> wrote:
->
-> There is a race and a buffer overflow while reading an efi variable
-> and the first patch fixes it. The second patch adds a sanity check
-> to efivar_store_raw(). And the third one just fixes mistypes in
-> comments.
->
-> Vladis Dronov (3):
->   efi: fix a race and a buffer overflow while reading efivars via sysfs
->   efi: add a sanity check to efivar_store_raw()
->   efi: fix a mistype in comments mentioning efivar_entry_iter_begin()
->
+Hello, Ard!
 
-Queued in efi/next
+> > Reported-by: Bob Sanders <bob.sanders@hpe.com> and the LTP testsuite
+> > Link:
+> > https://lore.kernel.org/linux-efi/20200303085528.27658-1-vdronov@redhat.com/T/#u
+> 
+> For the future, please don't add these links. This one points to the
+> old version of the patch, not to this one. It will be added by the
+> tooling once the patch gets picked up.
 
-Thanks!
+Aha. I was under an impression Links: are added manually by authors. My intention
+here was to point at the root message of the whole discussion, not at the patch.
 
->  drivers/firmware/efi/efi-pstore.c |  2 +-
->  drivers/firmware/efi/efivars.c    | 32 +++++++++++++++++++++++---------
->  drivers/firmware/efi/vars.c       |  2 +-
->  3 files changed, 25 insertions(+), 11 deletions(-)
->
+Anyway, thank you for the review and for bearing with me!
+
+Best regards,
+Vladis Dronov | Red Hat, Inc. | The Core Kernel | Senior Software Engineer
+
