@@ -2,203 +2,162 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CCEB817C4F6
-	for <lists+linux-efi@lfdr.de>; Fri,  6 Mar 2020 18:59:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6835617CF32
+	for <lists+linux-efi@lfdr.de>; Sat,  7 Mar 2020 16:56:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726083AbgCFR7e (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 6 Mar 2020 12:59:34 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:39406 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1725873AbgCFR7e (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 6 Mar 2020 12:59:34 -0500
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
-        by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 026HpPHx097350;
-        Fri, 6 Mar 2020 12:59:19 -0500
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.11])
-        by mx0b-001b2d01.pphosted.com with ESMTP id 2ykd4a5tcv-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 06 Mar 2020 12:59:19 -0500
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
-        by ppma03dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 026HrPdC000583;
-        Fri, 6 Mar 2020 17:59:19 GMT
-Received: from b01cxnp22033.gho.pok.ibm.com (b01cxnp22033.gho.pok.ibm.com [9.57.198.23])
-        by ppma03dal.us.ibm.com with ESMTP id 2yffk8am77-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 06 Mar 2020 17:59:19 +0000
-Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com [9.57.199.110])
-        by b01cxnp22033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 026HxI5T50987368
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 6 Mar 2020 17:59:18 GMT
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 3638EAE062;
-        Fri,  6 Mar 2020 17:59:18 +0000 (GMT)
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id AB834AE05C;
-        Fri,  6 Mar 2020 17:59:16 +0000 (GMT)
-Received: from swastik.ibm.com (unknown [9.160.48.59])
-        by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTP;
-        Fri,  6 Mar 2020 17:59:16 +0000 (GMT)
-Subject: Re: [PATCH v3] ima: add a new CONFIG for loading arch-specific
- policies
-To:     Nayna Jain <nayna@linux.ibm.com>, linux-integrity@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-efi@vger.kernel.org,
-        linux-s390@vger.kernel.org, zohar@linux.ibm.com,
-        Philipp Rudo <prudo@linux.ibm.com>,
-        Ard Biesheuvel <ardb@kernel.org>
-Cc:     linux-kernel@vger.kernel.org
-References: <1583516360-22016-1-git-send-email-nayna@linux.ibm.com>
-From:   Nayna <nayna@linux.vnet.ibm.com>
-Message-ID: <193c432d-f901-82e3-755c-e9fb723a36b7@linux.vnet.ibm.com>
-Date:   Fri, 6 Mar 2020 12:59:15 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
-MIME-Version: 1.0
-In-Reply-To: <1583516360-22016-1-git-send-email-nayna@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.572
- definitions=2020-03-06_06:2020-03-06,2020-03-06 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 phishscore=0
- mlxscore=0 spamscore=0 clxscore=1011 lowpriorityscore=0 bulkscore=0
- priorityscore=1501 mlxlogscore=999 adultscore=0 impostorscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2001150001 definitions=main-2003060113
+        id S1726180AbgCGP4u (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 7 Mar 2020 10:56:50 -0500
+Received: from mail.kernel.org ([198.145.29.99]:36106 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726174AbgCGP4u (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Sat, 7 Mar 2020 10:56:50 -0500
+Received: from cam-smtp0.cambridge.arm.com (fw-tnat.cambridge.arm.com [217.140.96.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 76CE220674;
+        Sat,  7 Mar 2020 15:56:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1583596609;
+        bh=8MI55DjI7SPa+6493Wp4gaug1CV3Sfs7TkkZ1Zeatf4=;
+        h=From:To:Cc:Subject:Date:From;
+        b=XN4+nqBNMho+duUIrX23I+mrOOnkh08cKbD638f8l+7aYa1pwjeF9ju1G2kb9Axva
+         Ej5AX+ZKPVZb3swYRS8m3NlxrDw8nwEMKVT1/zIqSuLLCr5AQoSfkRMZfGtx5QpKTZ
+         jSHb+QAparaCq53NISnb/n7ZCqX3z0IgEXtzxxc8=
+From:   Ard Biesheuvel <ardb@kernel.org>
+To:     linux-efi@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>
+Cc:     Ard Biesheuvel <ardb@kernel.org>, linux-kernel@vger.kernel.org,
+        hdegoede@redhat.com, nivedita@alum.mit.edu
+Subject: [GIT PULL v2] More EFI updates for v5.7
+Date:   Sat,  7 Mar 2020 16:56:43 +0100
+Message-Id: <20200307155643.18095-1-ardb@kernel.org>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Oops,  Please ignore this patch.
+Hello Ingo, Thomas,
 
-By mistake I posted the wrong version. I am sorry for the confusion,  I 
-will resend the right version.
+This is v2 of my pull request for the second batch of EFI updates for v5.7.
+It incorporates the stable branch created to help get Hans's embedded
+firmware stuff merged, so I am sending this as an ordinary pull request
+as well.
 
-Thanks & Regards,
+Please pull.
 
-      - Nayna
 
-On 3/6/20 12:39 PM, Nayna Jain wrote:
-> Every time a new architecture defines the IMA architecture specific
-> functions - arch_ima_get_secureboot() and arch_ima_get_policy(), the IMA
-> include file needs to be updated. To avoid this "noise", this patch
-> defines a new IMA Kconfig IMA_SECURE_AND_OR_TRUSTED_BOOT option, allowing
-> the different architectures to select it.
->
-> Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
-> Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
-> Cc: Ard Biesheuvel <ardb@kernel.org>
-> Cc: Philipp Rudo <prudo@linux.ibm.com>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> ---
-> v3:
-> * Updated and tested the patch with improvements suggested by Michael.
-> It now uses "imply" instead of "select". Thanks Michael.
-> * Have missed replacing the CONFIG_IMA in x86 and s390 with new config,
-> that was resulting in redefinition when the IMA_SECURE_AND_OR_TRUSTED_BOOT
-> is not enabled. Thanks to Mimi for recognizing the problem.
->
-> v2:
-> * Fixed the issue identified by Mimi. Thanks Mimi, Ard, Heiko and Michael for
-> discussing the fix.
->
->   arch/powerpc/Kconfig           | 1 +
->   arch/s390/Kconfig              | 1 +
->   arch/s390/kernel/Makefile      | 2 +-
->   arch/x86/Kconfig               | 1 +
->   arch/x86/kernel/Makefile       | 2 +-
->   include/linux/ima.h            | 3 +--
->   security/integrity/ima/Kconfig | 8 ++++++++
->   7 files changed, 14 insertions(+), 4 deletions(-)
->
-> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-> index 497b7d0b2d7e..a5cfde432983 100644
-> --- a/arch/powerpc/Kconfig
-> +++ b/arch/powerpc/Kconfig
-> @@ -979,6 +979,7 @@ config PPC_SECURE_BOOT
->   	bool
->   	depends on PPC_POWERNV
->   	depends on IMA_ARCH_POLICY
-> +	select IMA_SECURE_AND_OR_TRUSTED_BOOT
->   	help
->   	  Systems with firmware secure boot enabled need to define security
->   	  policies to extend secure boot to the OS. This config allows a user
-> diff --git a/arch/s390/Kconfig b/arch/s390/Kconfig
-> index 8abe77536d9d..4a502fbcb800 100644
-> --- a/arch/s390/Kconfig
-> +++ b/arch/s390/Kconfig
-> @@ -195,6 +195,7 @@ config S390
->   	select ARCH_HAS_FORCE_DMA_UNENCRYPTED
->   	select SWIOTLB
->   	select GENERIC_ALLOCATOR
-> +	select IMA_SECURE_AND_OR_TRUSTED_BOOT if IMA_ARCH_POLICY
->   
->   
->   config SCHED_OMIT_FRAME_POINTER
-> diff --git a/arch/s390/kernel/Makefile b/arch/s390/kernel/Makefile
-> index 2b1203cf7be6..578a6fa82ea4 100644
-> --- a/arch/s390/kernel/Makefile
-> +++ b/arch/s390/kernel/Makefile
-> @@ -70,7 +70,7 @@ obj-$(CONFIG_JUMP_LABEL)	+= jump_label.o
->   obj-$(CONFIG_KEXEC_FILE)	+= machine_kexec_file.o kexec_image.o
->   obj-$(CONFIG_KEXEC_FILE)	+= kexec_elf.o
->   
-> -obj-$(CONFIG_IMA)		+= ima_arch.o
-> +obj-$(CONFIG_IMA_SECURE_AND_OR_TRUSTED_BOOT)	+= ima_arch.o
->   
->   obj-$(CONFIG_PERF_EVENTS)	+= perf_event.o perf_cpum_cf_common.o
->   obj-$(CONFIG_PERF_EVENTS)	+= perf_cpum_cf.o perf_cpum_sf.o
-> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-> index beea77046f9b..7f5bfaf0cbd2 100644
-> --- a/arch/x86/Kconfig
-> +++ b/arch/x86/Kconfig
-> @@ -230,6 +230,7 @@ config X86
->   	select VIRT_TO_BUS
->   	select X86_FEATURE_NAMES		if PROC_FS
->   	select PROC_PID_ARCH_STATUS		if PROC_FS
-> +	select IMA_SECURE_AND_OR_TRUSTED_BOOT	if EFI && IMA_ARCH_POLICY
->   
->   config INSTRUCTION_DECODER
->   	def_bool y
-> diff --git a/arch/x86/kernel/Makefile b/arch/x86/kernel/Makefile
-> index 9b294c13809a..7f131ceba136 100644
-> --- a/arch/x86/kernel/Makefile
-> +++ b/arch/x86/kernel/Makefile
-> @@ -155,5 +155,5 @@ ifeq ($(CONFIG_X86_64),y)
->   endif
->   
->   ifdef CONFIG_EFI
-> -obj-$(CONFIG_IMA)			+= ima_arch.o
-> +obj-$(CONFIG_IMA_SECURE_AND_OR_TRUSTED_BOOT)	+= ima_arch.o
->   endif
-> diff --git a/include/linux/ima.h b/include/linux/ima.h
-> index 1659217e9b60..aefe758f4466 100644
-> --- a/include/linux/ima.h
-> +++ b/include/linux/ima.h
-> @@ -30,8 +30,7 @@ extern void ima_kexec_cmdline(const void *buf, int size);
->   extern void ima_add_kexec_buffer(struct kimage *image);
->   #endif
->   
-> -#if (defined(CONFIG_X86) && defined(CONFIG_EFI)) || defined(CONFIG_S390) \
-> -	|| defined(CONFIG_PPC_SECURE_BOOT)
-> +#ifdef CONFIG_IMA_SECURE_AND_OR_TRUSTED_BOOT
->   extern bool arch_ima_get_secureboot(void);
->   extern const char * const *arch_get_ima_policy(void);
->   #else
-> diff --git a/security/integrity/ima/Kconfig b/security/integrity/ima/Kconfig
-> index 3f3ee4e2eb0d..2baaf196c6d8 100644
-> --- a/security/integrity/ima/Kconfig
-> +++ b/security/integrity/ima/Kconfig
-> @@ -327,3 +327,11 @@ config IMA_QUEUE_EARLY_BOOT_KEYS
->   	depends on IMA_MEASURE_ASYMMETRIC_KEYS
->   	depends on SYSTEM_TRUSTED_KEYRING
->   	default y
-> +
-> +config IMA_SECURE_AND_OR_TRUSTED_BOOT
-> +	bool
-> +	depends on IMA_ARCH_POLICY
-> +	default n
-> +	help
-> +	   This option is selected by architectures to enable secure and/or
-> +	   trusted boot based on IMA runtime policies.
+The following changes since commit e9765680a31b22ca6703936c000ce5cc46192e10:
+
+  Merge tag 'efi-next' of git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi into efi/core (2020-02-26 15:21:22 +0100)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git tags/efi-next
+
+for you to fetch changes up to dfb2a1c61fcdc8be5dd74608c411c78008a0f078:
+
+  partitions/efi: Fix partition name parsing in GUID partition entry (2020-03-06 11:17:42 +0100)
+
+----------------------------------------------------------------
+More EFI updates for v5.7
+
+- a fix for a boot regression in the IMA code on x86 booting without UEFI
+- memory encryption fixes for x86, so that the TPM tables and the RNG
+  config table created by the stub are correctly identified as living in
+  unencrypted memory
+- style tweak and doc update from Heinrich
+- followup to the ARM EFI entry code simplifications to ensure that we
+  don't rely on EFI_LOADER_DATA memory being RWX
+- fixes from Arvind to ensure that the new mixed mode approach works as
+  expected regardless of where the image is loaded in memory by the UEFI
+  PE/COFF loader
+- more fixes from Arvind to make it more likely that the image can be
+  decompressed in place, regardless of where it was loaded in memory
+- efivars bugfix and some cleanup from Vladis
+- incorporate a stable branch with the EFI pieces of Hans's work on
+  loading device firmware from EFI boot service memory regions
+- some followup fixes for the EFI stub changes that are queued for
+  v5.7 already
+- an endianness fix for the EFI GPT partition table driver
+
+----------------------------------------------------------------
+Ard Biesheuvel (8):
+      Merge tag 'stable-shared-branch-for-driver-tree' into HEAD
+      efi/arm: clean EFI stub exit code from cache instead of avoiding it
+      efi/arm64: clean EFI stub exit code from cache instead of avoiding it
+      efi: mark all EFI runtime services as unsupported on non-EFI boot
+      efi/libstub/x86: deal with exit() boot service returning
+      efi/x86: ignore memory attributes table on i386
+      efi/x86: preserve %ebx correctly in efi_set_virtual_address_map()
+      efi/libstub/x86: use ULONG_MAX as upper bound for all allocations
+
+Arvind Sankar (11):
+      efi/x86: Annotate the LOADED_IMAGE_PROTOCOL_GUID with SYM_DATA
+      efi/x86: Respect 32-bit ABI in efi32_pe_entry
+      efi/x86: Make efi32_pe_entry more readable
+      efi/x86: Avoid using code32_start
+      x86/boot: Use unsigned comparison for addresses
+      x86/boot/compressed/32: Save the output address instead of recalculating it
+      efi/x86: Decompress at start of PE image load address
+      efi/x86: Add kernel preferred address to PE header
+      efi/x86: Remove extra headroom for setup block
+      efi/x86: Don't relocate the kernel unless necessary
+      efi/x86: Fix cast of image argument
+
+Hans de Goede (2):
+      efi: Export boot-services code and data as debugfs-blobs
+      efi: Add embedded peripheral firmware support
+
+Heinrich Schuchardt (2):
+      efi: don't shadow i in efi_config_parse_tables()
+      efi/libstub: add libstub/mem.c to documentation tree
+
+Lukas Bulwahn (1):
+      MAINTAINERS: adjust EFI entry to removing eboot.c
+
+Masahiro Yamada (1):
+      efi/libstub: avoid linking libstub/lib-ksyms.o into vmlinux
+
+Nikolai Merinov (1):
+      partitions/efi: Fix partition name parsing in GUID partition entry
+
+Tom Lendacky (2):
+      efi/x86: Add TPM related EFI tables to unencrypted mapping checks
+      efi/x86: Add RNG seed EFI table to unencrypted mapping check
+
+Vladis Dronov (3):
+      efi: fix a race and a buffer overflow while reading efivars via sysfs
+      efi: add a sanity check to efivar_store_raw()
+      efi: fix a mistype in comments mentioning efivar_entry_iter_begin()
+
+ Documentation/driver-api/firmware/efi/index.rst |  11 ++
+ Documentation/driver-api/firmware/index.rst     |   1 +
+ MAINTAINERS                                     |   1 -
+ arch/arm/boot/compressed/head.S                 |  18 ++-
+ arch/arm64/kernel/efi-entry.S                   |  26 ++---
+ arch/arm64/kernel/image-vars.h                  |   4 +-
+ arch/x86/boot/compressed/head_32.S              |  47 +++++---
+ arch/x86/boot/compressed/head_64.S              | 112 ++++++++++++++----
+ arch/x86/boot/header.S                          |   6 +-
+ arch/x86/boot/tools/build.c                     |  44 +++++--
+ arch/x86/kernel/asm-offsets.c                   |   1 -
+ arch/x86/platform/efi/efi.c                     |   5 +
+ arch/x86/platform/efi/efi_stub_32.S             |   2 +-
+ arch/x86/platform/efi/quirks.c                  |   4 +
+ block/partitions/efi.c                          |  35 ++++--
+ block/partitions/efi.h                          |   2 +-
+ drivers/firmware/efi/Kconfig                    |   5 +
+ drivers/firmware/efi/Makefile                   |   3 +-
+ drivers/firmware/efi/efi-pstore.c               |   2 +-
+ drivers/firmware/efi/efi.c                      |  84 +++++++++++---
+ drivers/firmware/efi/efivars.c                  |  32 ++++--
+ drivers/firmware/efi/embedded-firmware.c        | 147 ++++++++++++++++++++++++
+ drivers/firmware/efi/libstub/x86-stub.c         |  80 +++++++++----
+ drivers/firmware/efi/vars.c                     |   2 +-
+ include/linux/efi.h                             |   9 ++
+ include/linux/efi_embedded_fw.h                 |  41 +++++++
+ 26 files changed, 583 insertions(+), 141 deletions(-)
+ create mode 100644 Documentation/driver-api/firmware/efi/index.rst
+ create mode 100644 drivers/firmware/efi/embedded-firmware.c
+ create mode 100644 include/linux/efi_embedded_fw.h
