@@ -2,27 +2,27 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C06317D285
-	for <lists+linux-efi@lfdr.de>; Sun,  8 Mar 2020 09:10:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 631BE17D287
+	for <lists+linux-efi@lfdr.de>; Sun,  8 Mar 2020 09:10:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726210AbgCHIKW (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sun, 8 Mar 2020 04:10:22 -0400
-Received: from mail.kernel.org ([198.145.29.99]:38188 "EHLO mail.kernel.org"
+        id S1726055AbgCHIKZ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sun, 8 Mar 2020 04:10:25 -0400
+Received: from mail.kernel.org ([198.145.29.99]:38306 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726055AbgCHIKW (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Sun, 8 Mar 2020 04:10:22 -0400
+        id S1726866AbgCHIKZ (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Sun, 8 Mar 2020 04:10:25 -0400
 Received: from e123331-lin.home (amontpellier-657-1-18-247.w109-210.abo.wanadoo.fr [109.210.65.247])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 634DC2173E;
-        Sun,  8 Mar 2020 08:10:18 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id EDC542187F;
+        Sun,  8 Mar 2020 08:10:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1583655021;
-        bh=rN3pVi6vb7RD9V3f/+mRYikZsk3O/aOcSpSlsYQSHGA=;
+        s=default; t=1583655025;
+        bh=wsZayJivl+Akw8OakDrwAN3vwWAPvujymInCavCuQqo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FDy05dQLoZC60ordL4gxXUb2JzvVbKkDG+sdDYJi8+Qft/AOgyJkl05BlPyZuKBEK
-         IuJmORppFyv2Sx4jSZgsZh76XhK88DW9Dci3yO3Fy2HeIIHlCBvmZDmm/VjJ8z3T7e
-         GU/L0UHAigNALVcq2/aeSy/D80IG7kMM/UIPdtdw=
+        b=mt5TpUcrHB1R5ntTmUdJIdouQL/WhWHlDI1TDuSSjpl2Y1Qoc75tnU6OE3d95R1J2
+         7Mapx9ZXM7jEptZRNkJemj/1AUHP0lLs62cFwQqiSKTAQVfcfJRrCo2xmFSIpj5ZST
+         R9pVPFljjL02gPTyVXJOdUTVGKlFrInAOl9c7Ang=
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-efi@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
         Thomas Gleixner <tglx@linutronix.de>
@@ -39,9 +39,9 @@ Cc:     Ard Biesheuvel <ardb@kernel.org>, linux-kernel@vger.kernel.org,
         Nikolai Merinov <n.merinov@inango-systems.com>,
         Tom Lendacky <thomas.lendacky@amd.com>,
         Vladis Dronov <vdronov@redhat.com>
-Subject: [PATCH 21/28] efi/x86: preserve %ebx correctly in efi_set_virtual_address_map()
-Date:   Sun,  8 Mar 2020 09:08:52 +0100
-Message-Id: <20200308080859.21568-22-ardb@kernel.org>
+Subject: [PATCH 22/28] efi/libstub: avoid linking libstub/lib-ksyms.o into vmlinux
+Date:   Sun,  8 Mar 2020 09:08:53 +0100
+Message-Id: <20200308080859.21568-23-ardb@kernel.org>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200308080859.21568-1-ardb@kernel.org>
 References: <20200308080859.21568-1-ardb@kernel.org>
@@ -50,35 +50,45 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Commit 59f2a619a2db8611 ("efi: Add 'runtime' pointer to struct efi")
-modified the assembler routine called by efi_set_virtual_address_map(),
-to grab the 'runtime' EFI service pointer while running with paging
-disabled (which is tricky to do in C code)
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-After the change, register %ebx is not restored correctly, resulting
-in all kinds of weird behavior, so fix that.
+drivers/firmware/efi/libstub/Makefile builds a static library, which
+is not linked into the main vmlinux target in the ordinary way [arm64],
+or at all [ARM, x86].
 
-Reported-by: Guenter Roeck <linux@roeck-us.net>
-Tested-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20200304133515.15035-1-ardb@kernel.org
+Since commit 7f2084fa55e6 ("[kbuild] handle exports in lib-y objects
+reliably"), any Makefile using lib-y generates lib-ksyms.o which is
+linked into vmlinux.
+
+In this case, the following garbage object is linked into vmlinux.
+
+  drivers/firmware/efi/libstub/lib-ksyms.o
+
+We do not want to follow the default linking rules for static libraries
+built under libstub/ so using subdir-y instead of obj-y is the correct
+way to descend into this directory.
+
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Link: https://lore.kernel.org/r/20200305055047.6097-1-masahiroy@kernel.org
+[ardb: update commit log to clarify that arm64 deviates in this respect]
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/x86/platform/efi/efi_stub_32.S | 2 +-
+ drivers/firmware/efi/Makefile | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/platform/efi/efi_stub_32.S b/arch/x86/platform/efi/efi_stub_32.S
-index 09237236fb25..09ec84f6ef51 100644
---- a/arch/x86/platform/efi/efi_stub_32.S
-+++ b/arch/x86/platform/efi/efi_stub_32.S
-@@ -54,7 +54,7 @@ SYM_FUNC_START(efi_call_svam)
- 	orl	$0x80000000, %edx
- 	movl	%edx, %cr0
- 
--	pop	%ebx
-+	movl	16(%esp), %ebx
- 	leave
- 	ret
- SYM_FUNC_END(efi_call_svam)
+diff --git a/drivers/firmware/efi/Makefile b/drivers/firmware/efi/Makefile
+index 317a05cd388b..7a216984552b 100644
+--- a/drivers/firmware/efi/Makefile
++++ b/drivers/firmware/efi/Makefile
+@@ -20,7 +20,7 @@ obj-$(CONFIG_EFI_VARS_PSTORE)		+= efi-pstore.o
+ obj-$(CONFIG_UEFI_CPER)			+= cper.o
+ obj-$(CONFIG_EFI_RUNTIME_MAP)		+= runtime-map.o
+ obj-$(CONFIG_EFI_RUNTIME_WRAPPERS)	+= runtime-wrappers.o
+-obj-$(CONFIG_EFI_STUB)			+= libstub/
++subdir-$(CONFIG_EFI_STUB)		+= libstub
+ obj-$(CONFIG_EFI_FAKE_MEMMAP)		+= fake_map.o
+ obj-$(CONFIG_EFI_BOOTLOADER_CONTROL)	+= efibc.o
+ obj-$(CONFIG_EFI_TEST)			+= test/
 -- 
 2.17.1
 
