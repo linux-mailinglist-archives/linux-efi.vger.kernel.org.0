@@ -2,158 +2,155 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 393CB17D1EF
-	for <lists+linux-efi@lfdr.de>; Sun,  8 Mar 2020 06:47:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B14C417D25B
+	for <lists+linux-efi@lfdr.de>; Sun,  8 Mar 2020 09:09:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725992AbgCHFry (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sun, 8 Mar 2020 00:47:54 -0500
-Received: from mga07.intel.com ([134.134.136.100]:8417 "EHLO mga07.intel.com"
+        id S1725904AbgCHIJH (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sun, 8 Mar 2020 04:09:07 -0400
+Received: from mail.kernel.org ([198.145.29.99]:36032 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725904AbgCHFry (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Sun, 8 Mar 2020 00:47:54 -0500
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 07 Mar 2020 21:47:53 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.70,528,1574150400"; 
-   d="scan'208";a="276093722"
-Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
-  by fmsmga002.fm.intel.com with ESMTP; 07 Mar 2020 21:47:51 -0800
-Received: from kbuild by lkp-server01 with local (Exim 4.89)
-        (envelope-from <lkp@intel.com>)
-        id 1jAon1-0005W8-9j; Sun, 08 Mar 2020 13:47:51 +0800
-Date:   Sun, 08 Mar 2020 13:47:09 +0800
-From:   kbuild test robot <lkp@intel.com>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     linux-efi@vger.kernel.org
-Subject: [efi:next] BUILD REGRESSION
- dfb2a1c61fcdc8be5dd74608c411c78008a0f078
-Message-ID: <5e6486dd.mJYU1oLaZtl8LrQi%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S1725854AbgCHIJH (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Sun, 8 Mar 2020 04:09:07 -0400
+Received: from e123331-lin.home (amontpellier-657-1-18-247.w109-210.abo.wanadoo.fr [109.210.65.247])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 876482072A;
+        Sun,  8 Mar 2020 08:09:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1583654946;
+        bh=hLJ9CFsbuXNnSzqxjOWOGdWMTLJvW1pCNuIWPtWSRSA=;
+        h=From:To:Cc:Subject:Date:From;
+        b=Tryqldz5P1wtvDZjuO4CPKkvwUQ2KYptlEuE3dGD6KtQO1AeLzkCSLO4OzFMoxml/
+         RoPLH9wUPHz2ucP1VUNv/VmE8EgMXc5I2zlXIYsnCEBzE6GFcgFwOf79Dyov1XFKWw
+         t1h5SsKdmeccIxBaHfaTNyeDM0z8zsbTvCw+OxG8=
+From:   Ard Biesheuvel <ardb@kernel.org>
+To:     linux-efi@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>
+Cc:     Ard Biesheuvel <ardb@kernel.org>, linux-kernel@vger.kernel.org,
+        Arvind Sankar <nivedita@alum.mit.edu>,
+        Christoph Hellwig <hch@lst.de>,
+        David Hildenbrand <david@redhat.com>,
+        Davidlohr Bueso <dave@stgolabs.net>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Heinrich Schuchardt <xypron.glpk@gmx.de>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Nikolai Merinov <n.merinov@inango-systems.com>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        Vladis Dronov <vdronov@redhat.com>
+Subject: [GIT PULL 00/28] More EFI fixes for v5.7
+Date:   Sun,  8 Mar 2020 09:08:31 +0100
+Message-Id: <20200308080859.21568-1-ardb@kernel.org>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git  next
-branch HEAD: dfb2a1c61fcdc8be5dd74608c411c78008a0f078  partitions/efi: Fix partition name parsing in GUID partition entry
+The following changes since commit b9d8b63e340392d7f3ad79881f36a550566cbbbe:
 
-Regressions in current branch:
+  Merge tag 'stable-shared-branch-for-driver-tree' into HEAD (2020-03-05 09:58:20 +0100)
 
-drivers/firmware/efi/libstub/file.c:81 efi_open_volume() error: potentially dereferencing uninitialized 'io'.
-drivers/firmware/efi/libstub/x86-stub.c:187 retrieve_apple_device_properties() error: potentially dereferencing uninitialized 'p'.
-drivers/firmware/efi/libstub/x86-stub.c:392 efi_pe_entry() error: potentially dereferencing uninitialized 'image'.
+are available in the Git repository at:
 
-Error ids grouped by kconfigs:
+  git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git tags/efi-next
 
-recent_errors
-`-- x86_64-defconfig
-    |-- drivers-firmware-efi-libstub-file.c-efi_open_volume()-error:potentially-dereferencing-uninitialized-io-.
-    |-- drivers-firmware-efi-libstub-x86-stub.c-efi_pe_entry()-error:potentially-dereferencing-uninitialized-image-.
-    `-- drivers-firmware-efi-libstub-x86-stub.c-retrieve_apple_device_properties()-error:potentially-dereferencing-uninitialized-p-.
+for you to fetch changes up to dfb2a1c61fcdc8be5dd74608c411c78008a0f078:
 
-elapsed time: 484m
+  partitions/efi: Fix partition name parsing in GUID partition entry (2020-03-06 11:17:42 +0100)
 
-configs tested: 92
-configs skipped: 84
+----------------------------------------------------------------
+More EFI updates for v5.7
 
-arm                              allmodconfig
-arm                               allnoconfig
-arm                              allyesconfig
-arm64                            allmodconfig
-arm64                             allnoconfig
-arm64                            allyesconfig
-sparc                            allyesconfig
-i386                              allnoconfig
-i386                             allyesconfig
-i386                             alldefconfig
-i386                                defconfig
-ia64                             alldefconfig
-ia64                             allmodconfig
-ia64                              allnoconfig
-ia64                             allyesconfig
-ia64                                defconfig
-i386                 randconfig-a003-20200308
-i386                 randconfig-a001-20200308
-x86_64               randconfig-a001-20200308
-x86_64               randconfig-a003-20200308
-i386                 randconfig-a002-20200308
-x86_64               randconfig-a002-20200308
-riscv                randconfig-a001-20200308
-m68k                 randconfig-a001-20200308
-alpha                randconfig-a001-20200308
-mips                 randconfig-a001-20200308
-nds32                randconfig-a001-20200308
-parisc               randconfig-a001-20200308
-sparc64              randconfig-a001-20200308
-microblaze           randconfig-a001-20200308
-c6x                  randconfig-a001-20200308
-nios2                randconfig-a001-20200308
-h8300                randconfig-a001-20200308
-openrisc             randconfig-a001-20200308
-sh                   randconfig-a001-20200308
-csky                 randconfig-a001-20200308
-s390                 randconfig-a001-20200308
-xtensa               randconfig-a001-20200308
-x86_64               randconfig-b001-20200308
-x86_64               randconfig-b002-20200308
-i386                 randconfig-b001-20200308
-i386                 randconfig-b003-20200308
-x86_64               randconfig-b003-20200308
-i386                 randconfig-b002-20200308
-i386                 randconfig-c001-20200308
-x86_64               randconfig-c003-20200308
-i386                 randconfig-c002-20200308
-x86_64               randconfig-c002-20200308
-i386                 randconfig-c003-20200308
-x86_64               randconfig-c001-20200308
-i386                 randconfig-d001-20200308
-x86_64               randconfig-d003-20200308
-x86_64               randconfig-d001-20200308
-i386                 randconfig-d003-20200308
-x86_64               randconfig-d002-20200308
-i386                 randconfig-d002-20200308
-i386                 randconfig-e001-20200308
-i386                 randconfig-e003-20200308
-x86_64               randconfig-e002-20200308
-x86_64               randconfig-e001-20200308
-i386                 randconfig-e002-20200308
-x86_64               randconfig-e003-20200308
-i386                 randconfig-f003-20200308
-x86_64               randconfig-f001-20200308
-i386                 randconfig-f002-20200308
-i386                 randconfig-f001-20200308
-x86_64               randconfig-f002-20200308
-x86_64               randconfig-f003-20200308
-i386                 randconfig-g001-20200308
-x86_64               randconfig-g003-20200308
-i386                 randconfig-g003-20200308
-x86_64               randconfig-g001-20200308
-x86_64               randconfig-g002-20200308
-i386                 randconfig-g002-20200308
-i386                 randconfig-h001-20200308
-x86_64               randconfig-h001-20200308
-x86_64               randconfig-h002-20200308
-x86_64               randconfig-h003-20200308
-i386                 randconfig-h003-20200308
-i386                 randconfig-h002-20200308
-arc                  randconfig-a001-20200308
-sparc                randconfig-a001-20200308
-ia64                 randconfig-a001-20200308
-arm                  randconfig-a001-20200308
-arm64                randconfig-a001-20200308
-powerpc              randconfig-a001-20200308
-x86_64                                   rhel
-x86_64                               rhel-7.6
-x86_64                         rhel-7.2-clear
-x86_64                                    lkp
-x86_64                              fedora-25
-x86_64                                  kexec
+- a fix for a boot regression in the IMA code on x86 booting without UEFI
+- memory encryption fixes for x86, so that the TPM tables and the RNG
+  config table created by the stub are correctly identified as living in
+  unencrypted memory
+- style tweak and doc update from Heinrich
+- followup to the ARM EFI entry code simplifications to ensure that we
+  don't rely on EFI_LOADER_DATA memory being RWX
+- fixes from Arvind to ensure that the new mixed mode approach works as
+  expected regardless of where the image is loaded in memory by the UEFI
+  PE/COFF loader
+- more fixes from Arvind to make it more likely that the image can be
+  decompressed in place, regardless of where it was loaded in memory
+- efivars bugfix and some cleanup from Vladis
+- incorporate a stable branch with the EFI pieces of Hans's work on
+  loading device firmware from EFI boot service memory regions
+- some followup fixes for the EFI stub changes that are queued for
+  v5.7 already
+- an endianness fix for the EFI GPT partition table driver
 
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+----------------------------------------------------------------
+Ard Biesheuvel (7):
+      efi/arm: clean EFI stub exit code from cache instead of avoiding it
+      efi/arm64: clean EFI stub exit code from cache instead of avoiding it
+      efi: mark all EFI runtime services as unsupported on non-EFI boot
+      efi/libstub/x86: deal with exit() boot service returning
+      efi/x86: ignore memory attributes table on i386
+      efi/x86: preserve %ebx correctly in efi_set_virtual_address_map()
+      efi/libstub/x86: use ULONG_MAX as upper bound for all allocations
+
+Arvind Sankar (11):
+      efi/x86: Annotate the LOADED_IMAGE_PROTOCOL_GUID with SYM_DATA
+      efi/x86: Respect 32-bit ABI in efi32_pe_entry
+      efi/x86: Make efi32_pe_entry more readable
+      efi/x86: Avoid using code32_start
+      x86/boot: Use unsigned comparison for addresses
+      x86/boot/compressed/32: Save the output address instead of recalculating it
+      efi/x86: Decompress at start of PE image load address
+      efi/x86: Add kernel preferred address to PE header
+      efi/x86: Remove extra headroom for setup block
+      efi/x86: Don't relocate the kernel unless necessary
+      efi/x86: Fix cast of image argument
+
+Heinrich Schuchardt (2):
+      efi: don't shadow i in efi_config_parse_tables()
+      efi/libstub: add libstub/mem.c to documentation tree
+
+Lukas Bulwahn (1):
+      MAINTAINERS: adjust EFI entry to removing eboot.c
+
+Masahiro Yamada (1):
+      efi/libstub: avoid linking libstub/lib-ksyms.o into vmlinux
+
+Nikolai Merinov (1):
+      partitions/efi: Fix partition name parsing in GUID partition entry
+
+Tom Lendacky (2):
+      efi/x86: Add TPM related EFI tables to unencrypted mapping checks
+      efi/x86: Add RNG seed EFI table to unencrypted mapping check
+
+Vladis Dronov (3):
+      efi: fix a race and a buffer overflow while reading efivars via sysfs
+      efi: add a sanity check to efivar_store_raw()
+      efi: fix a mistype in comments mentioning efivar_entry_iter_begin()
+
+ Documentation/driver-api/firmware/efi/index.rst |  11 +++
+ Documentation/driver-api/firmware/index.rst     |   1 +
+ MAINTAINERS                                     |   1 -
+ arch/arm/boot/compressed/head.S                 |  18 ++--
+ arch/arm64/kernel/efi-entry.S                   |  26 +++---
+ arch/arm64/kernel/image-vars.h                  |   4 +-
+ arch/x86/boot/compressed/head_32.S              |  47 ++++++----
+ arch/x86/boot/compressed/head_64.S              | 112 +++++++++++++++++++-----
+ arch/x86/boot/header.S                          |   6 +-
+ arch/x86/boot/tools/build.c                     |  44 +++++++---
+ arch/x86/kernel/asm-offsets.c                   |   1 -
+ arch/x86/platform/efi/efi.c                     |   3 +
+ arch/x86/platform/efi/efi_stub_32.S             |   2 +-
+ block/partitions/efi.c                          |  35 ++++++--
+ block/partitions/efi.h                          |   2 +-
+ drivers/firmware/efi/Makefile                   |   2 +-
+ drivers/firmware/efi/efi-pstore.c               |   2 +-
+ drivers/firmware/efi/efi.c                      |  27 +++---
+ drivers/firmware/efi/efivars.c                  |  32 +++++--
+ drivers/firmware/efi/libstub/x86-stub.c         |  80 +++++++++++------
+ drivers/firmware/efi/vars.c                     |   2 +-
+ include/linux/efi.h                             |   2 +
+ 22 files changed, 319 insertions(+), 141 deletions(-)
+ create mode 100644 Documentation/driver-api/firmware/efi/index.rst
