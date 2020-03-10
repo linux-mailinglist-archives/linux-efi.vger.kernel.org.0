@@ -2,60 +2,74 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CF0B317F245
-	for <lists+linux-efi@lfdr.de>; Tue, 10 Mar 2020 09:50:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EDF1E17F72F
+	for <lists+linux-efi@lfdr.de>; Tue, 10 Mar 2020 13:13:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726446AbgCJIuc (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 10 Mar 2020 04:50:32 -0400
-Received: from mail-pj1-f66.google.com ([209.85.216.66]:38172 "EHLO
-        mail-pj1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726389AbgCJIub (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 10 Mar 2020 04:50:31 -0400
-Received: by mail-pj1-f66.google.com with SMTP id a16so134941pju.3
-        for <linux-efi@vger.kernel.org>; Tue, 10 Mar 2020 01:50:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=sJVBoQKixb5p370nrEQPZX+yKlEEg3KAUoUgqXctlgw=;
-        b=gGkZDLDfwM2cKvrpxaOM5TkDRrCuVS7o5PixHdxkMHvN9hCQjbR9Vx7tNeO0MrR28g
-         HOGo9jd8/rdyT7eSLBoKjQoGG556+XeGA4QBjrx936UetWYvVOnNKTMVBtZkBPJ6m5G9
-         5rpBvzkFAGLePOw4CcgHYAhbFX6JfBO1eGgwO9bZpWUV1YkPmUl4IGyW2m2EYqkagqN+
-         IZMQOOT/NVSiyi4tQ0CFPzYq84gu99jutDwjvcMr21xNIYRTCfbvFF3+UDA7DbziiMeo
-         W/RVqedApWKDpZ3+/5XO6Xc0L4gvWJVZv9gGlWKLof4oh2AGrmNOhNTWPjUKKrOtc+Ow
-         shQw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=sJVBoQKixb5p370nrEQPZX+yKlEEg3KAUoUgqXctlgw=;
-        b=jVPXh47CEcmX8D78GwmFOzs32Pur/ukDdyzko7X5Pkbk3tvKEGkPy5zoGRbXNhCM4G
-         X5hxY1MLg8ZrS+EZt5N3LTQDnjz9nmnFd0w8mJ/F67AZs098c+qYeNuwOjbMbKZH4q6u
-         K9JlSjRoIIBocSY6P+zXafUU9XBlJIkGqo+1aYXFIUE4PacgdB4P0+hdTuTZkKskKxnJ
-         LiJSZt0H5l2dA5xM6rGKBMxTEB4IDEbyP2Dkp+X1LFQEZteZTmdZ1if0Pv+F6rAANumA
-         64A18cai6oVPCBTkDK/vZvvii7dqLuUe1pcdfAEmA9zDDYqvYrj52hJi9+j2B5RVb53L
-         UqHQ==
-X-Gm-Message-State: ANhLgQ1u2diwcNO8tXR148RGFmetYv9jpSgmP36t1wBl9GEKuB1/vEoq
-        6FkhbpuNXw87Paeq1UsuAiaQ5U7ilPDXhuxYy5U=
-X-Google-Smtp-Source: ADFU+vuS15xlelWxw/G8arDx07L68PIOfne0T2nh/rax8wDC8HvH2TQwT6kGruYPHx9l0LwPLm1ISQV4r8VpgRwzUNY=
-X-Received: by 2002:a17:902:44d:: with SMTP id 71mr19199133ple.95.1583830230996;
- Tue, 10 Mar 2020 01:50:30 -0700 (PDT)
+        id S1726271AbgCJMN4 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 10 Mar 2020 08:13:56 -0400
+Received: from mail.11d01.mspz7.gob.ec ([190.152.145.91]:49542 "EHLO
+        mail.11d01.mspz7.gob.ec" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726224AbgCJMN4 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 10 Mar 2020 08:13:56 -0400
+Received: from localhost (localhost [127.0.0.1])
+        by mail.11d01.mspz7.gob.ec (Postfix) with ESMTP id 93B052F710A5;
+        Tue, 10 Mar 2020 03:51:24 -0500 (-05)
+Received: from mail.11d01.mspz7.gob.ec ([127.0.0.1])
+        by localhost (mail.11d01.mspz7.gob.ec [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id ndBUaEZwhDMW; Tue, 10 Mar 2020 03:51:23 -0500 (-05)
+Received: from localhost (localhost [127.0.0.1])
+        by mail.11d01.mspz7.gob.ec (Postfix) with ESMTP id ABB6E2F6D566;
+        Tue, 10 Mar 2020 03:07:46 -0500 (-05)
+DKIM-Filter: OpenDKIM Filter v2.9.2 mail.11d01.mspz7.gob.ec ABB6E2F6D566
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=11d01.mspz7.gob.ec;
+        s=50CBC7E4-8BED-11E9-AF6C-F1A741A224D3; t=1583827666;
+        bh=o+H3O7n1+zJcXo0FhJs7spyf8HmE4ClnBa/Y2Gk0DL0=;
+        h=Content-Type:MIME-Version:Content-Transfer-Encoding:Subject:To:
+         From:Date:Reply-To:Message-Id;
+        b=iEaAo22S+sR4wzRW7hjUuLvISkx0MoIGghtYp2/O9qI1EKsSG8mJlnPHe198tv6xE
+         28mUTw/x5zO/bGhdypmnHEqlYsQbvWLDtp7bH6K8XpBP4mPnoYoobAySkvua0rZI4p
+         t58AbKn61dCeey//nuBKLhNP6+3QAJjkZ+rEiD1c=
+X-Virus-Scanned: amavisd-new at 11d01.mspz7.gob.ec
+Received: from mail.11d01.mspz7.gob.ec ([127.0.0.1])
+        by localhost (mail.11d01.mspz7.gob.ec [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id R3PjlEzq0sBN; Tue, 10 Mar 2020 03:07:46 -0500 (-05)
+Received: from [10.19.167.32] (unknown [105.0.4.171])
+        by mail.11d01.mspz7.gob.ec (Postfix) with ESMTPSA id 573D62F665AE;
+        Tue, 10 Mar 2020 02:40:45 -0500 (-05)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Received: by 2002:a17:90a:890d:0:0:0:0 with HTTP; Tue, 10 Mar 2020 01:50:29
- -0700 (PDT)
-Reply-To: laurarichard051@gmail.com
-From:   laura Richardson <soniagarang014@gmail.com>
-Date:   Tue, 10 Mar 2020 08:50:29 +0000
-Message-ID: <CANJ88bpoaRPB6k2XbS3UCR40VPL4wqbDZq3UBnF_ZL3cpzjsZg@mail.gmail.com>
-Subject: Hi
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: =?utf-8?q?Wohlt=C3=A4tigkeitsspende_von_2=2E000=2E000_Millionen_Euro?=
+To:     Recipients <ronald.pena@11d01.mspz7.gob.ec>
+From:   ''Michael weirsky'' <ronald.pena@11d01.mspz7.gob.ec>
+Date:   Tue, 10 Mar 2020 10:10:14 +0200
+Reply-To: mikeweirskyspende@gmail.com
+Message-Id: <20200310074046.573D62F665AE@mail.11d01.mspz7.gob.ec>
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hi dear friend,
+Lieber Freund,
 
-I'm Laura J. Richardson, i`m from the United States. Please i would
-wish to have a communication with you. I will be waiting for your
-response.
+Ich bin Herr Mike Weirsky, New Jersey, Vereinigte Staaten von Amerika, der =
+Mega-Gewinner von $ 273million In Mega Millions Jackpot, spende ich an 5 zu=
+f=C3=A4llige Personen, wenn Sie diese E-Mail erhalten, dann wurde Ihre E-Ma=
+il nach einem Spinball ausgew=C3=A4hlt.Ich habe den gr=C3=B6=C3=9Ften Teil =
+meines Verm=C3=B6gens auf eine Reihe von Wohlt=C3=A4tigkeitsorganisationen =
+und Organisationen verteilt.Ich habe mich freiwillig dazu entschieden, die =
+Summe von =E2=82=AC 2.000.000,00 an Sie als eine der ausgew=C3=A4hlten 5 zu=
+ spenden, um meine Gewinne zu =C3=BCberpr=C3=BCfen.
+Das ist dein Spendencode: [MW530342019]
+www.youtube.com/watch?v=3Dun8yRTmrYMY
+
+Antworten Sie mit dem SPENDE-CODE an diese =
+
+
+E-Mail:mikeweirskyspende@gmail.com
+
+Ich hoffe, Sie und Ihre Familie gl=C3=BCcklich zu machen.
+
+Gr=C3=BC=C3=9Fe
+Herr Mike Weirsky
