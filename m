@@ -2,37 +2,36 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F00E17FA4D
-	for <lists+linux-efi@lfdr.de>; Tue, 10 Mar 2020 14:04:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 06A4A17FA4A
+	for <lists+linux-efi@lfdr.de>; Tue, 10 Mar 2020 14:04:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728807AbgCJNEM (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 10 Mar 2020 09:04:12 -0400
-Received: from mail.kernel.org ([198.145.29.99]:49182 "EHLO mail.kernel.org"
+        id S1729313AbgCJNES (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 10 Mar 2020 09:04:18 -0400
+Received: from mail.kernel.org ([198.145.29.99]:49242 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729456AbgCJNEL (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Tue, 10 Mar 2020 09:04:11 -0400
+        id S1729456AbgCJNEQ (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Tue, 10 Mar 2020 09:04:16 -0400
 Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C9C672468C;
-        Tue, 10 Mar 2020 13:04:10 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 9D63E24693;
+        Tue, 10 Mar 2020 13:04:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1583845451;
-        bh=khnnaXEotQCDVtCSFvYA545nYovW0yzZNDRL37GEq3c=;
+        s=default; t=1583845455;
+        bh=C8JapEoOUIN4r0cBd+3vAgQBPCVeIqxcY2yj8qwgDYk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GsymGbLMZrPf3FmTFK8zaM4gjDfghU++dg8zgq6VcjACXHlXDHTmZaMVSzM2VLls6
-         oobDDX3xWG3NLT5nVjQoOEZ3KqYBHij3pZkrd5B0UR2z2AW73pUwU4QoNdPbiAgvIw
-         R8HFYLPiwOgjG9fXglA8R5lT+hd8d4JUkr2iepOE=
+        b=JCySiBjglU0Md/dYRQwPTJ1aeoxzFx9UUJbcVdIij9FmZOvdg/QgDYIW3YcuQRHYI
+         a1RRMlUUQQQ/Xsyou6uYrzqjpDyuHD199rG8G+KOf76wkElZeoq5rj8KgzYp8IV0zZ
+         6nPqin5JLbP+t24fbMYXjMHzY/RTynbrdda8QPic=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Hans de Goede <hdegoede@redhat.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
+        stable@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
         Ingo Molnar <mingo@kernel.org>, linux-efi@vger.kernel.org,
         Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 5.5 186/189] efi/x86: Align GUIDs to their size in the mixed mode runtime wrapper
-Date:   Tue, 10 Mar 2020 13:40:23 +0100
-Message-Id: <20200310123658.257035725@linuxfoundation.org>
+Subject: [PATCH 5.5 187/189] efi/x86: Handle by-ref arguments covering multiple pages in mixed mode
+Date:   Tue, 10 Mar 2020 13:40:24 +0100
+Message-Id: <20200310123658.336363020@linuxfoundation.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200310123639.608886314@linuxfoundation.org>
 References: <20200310123639.608886314@linuxfoundation.org>
@@ -47,127 +46,135 @@ X-Mailing-List: linux-efi@vger.kernel.org
 
 From: Ard Biesheuvel <ardb@kernel.org>
 
-commit 63056e8b5ebf41d52170e9f5ba1fc83d1855278c upstream.
+commit 8319e9d5ad98ffccd19f35664382c73cea216193 upstream.
 
-Hans reports that his mixed mode systems running v5.6-rc1 kernels hit
-the WARN_ON() in virt_to_phys_or_null_size(), caused by the fact that
-efi_guid_t objects on the vmap'ed stack happen to be misaligned with
-respect to their sizes. As a quick (i.e., backportable) fix, copy GUID
-pointer arguments to the local stack into a buffer that is naturally
-aligned to its size, so that it is guaranteed to cover only one
-physical page.
+The mixed mode runtime wrappers are fragile when it comes to how the
+memory referred to by its pointer arguments are laid out in memory, due
+to the fact that it translates these addresses to physical addresses that
+the runtime services can dereference when running in 1:1 mode. Since
+vmalloc'ed pages (including the vmap'ed stack) are not contiguous in the
+physical address space, this scheme only works if the referenced memory
+objects do not cross page boundaries.
 
-Note that on x86, we cannot rely on the stack pointer being aligned
-the way the compiler expects, so we need to allocate an 8-byte aligned
-buffer of sufficient size, and copy the GUID into that buffer at an
-offset that is aligned to 16 bytes.
+Currently, the mixed mode runtime service wrappers require that all by-ref
+arguments that live in the vmalloc space have a size that is a power of 2,
+and are aligned to that same value. While this is a sensible way to
+construct an object that is guaranteed not to cross a page boundary, it is
+overly strict when it comes to checking whether a given object violates
+this requirement, as we can simply take the physical address of the first
+and the last byte, and verify that they point into the same physical page.
+
+When this check fails, we emit a WARN(), but then simply proceed with the
+call, which could cause data corruption if the next physical page belongs
+to a mapping that is entirely unrelated.
+
+Given that with vmap'ed stacks, this condition is much more likely to
+trigger, let's relax the condition a bit, but fail the runtime service
+call if it does trigger.
 
 Fixes: f6697df36bdf0bf7 ("x86/efi: Prevent mixed mode boot corruption with CONFIG_VMAP_STACK=y")
-Reported-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Tested-by: Hans de Goede <hdegoede@redhat.com>
 Cc: linux-efi@vger.kernel.org
 Cc: Ingo Molnar <mingo@kernel.org>
 Cc: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20200221084849.26878-2-ardb@kernel.org
+Link: https://lore.kernel.org/r/20200221084849.26878-4-ardb@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/x86/platform/efi/efi_64.c |   25 +++++++++++++++++++++----
- 1 file changed, 21 insertions(+), 4 deletions(-)
+ arch/x86/platform/efi/efi_64.c |   45 +++++++++++++++++++++++------------------
+ 1 file changed, 26 insertions(+), 19 deletions(-)
 
 --- a/arch/x86/platform/efi/efi_64.c
 +++ b/arch/x86/platform/efi/efi_64.c
-@@ -791,6 +791,8 @@ static efi_status_t
- efi_thunk_get_variable(efi_char16_t *name, efi_guid_t *vendor,
- 		       u32 *attr, unsigned long *data_size, void *data)
+@@ -316,7 +316,7 @@ void efi_sync_low_kernel_mappings(void)
+ static inline phys_addr_t
+ virt_to_phys_or_null_size(void *va, unsigned long size)
  {
-+	u8 buf[24] __aligned(8);
-+	efi_guid_t *vnd = PTR_ALIGN((efi_guid_t *)buf, sizeof(*vnd));
- 	efi_status_t status;
- 	u32 phys_name, phys_vendor, phys_attr;
- 	u32 phys_data_size, phys_data;
-@@ -798,8 +800,10 @@ efi_thunk_get_variable(efi_char16_t *nam
+-	bool bad_size;
++	phys_addr_t pa;
  
- 	spin_lock_irqsave(&efi_runtime_lock, flags);
+ 	if (!va)
+ 		return 0;
+@@ -324,16 +324,13 @@ virt_to_phys_or_null_size(void *va, unsi
+ 	if (virt_addr_valid(va))
+ 		return virt_to_phys(va);
  
-+	*vnd = *vendor;
-+
- 	phys_data_size = virt_to_phys_or_null(data_size);
--	phys_vendor = virt_to_phys_or_null(vendor);
-+	phys_vendor = virt_to_phys_or_null(vnd);
- 	phys_name = virt_to_phys_or_null_size(name, efi_name_size(name));
+-	/*
+-	 * A fully aligned variable on the stack is guaranteed not to
+-	 * cross a page bounary. Try to catch strings on the stack by
+-	 * checking that 'size' is a power of two.
+-	 */
+-	bad_size = size > PAGE_SIZE || !is_power_of_2(size);
++	pa = slow_virt_to_phys(va);
+ 
+-	WARN_ON(!IS_ALIGNED((unsigned long)va, size) || bad_size);
++	/* check if the object crosses a page boundary */
++	if (WARN_ON((pa ^ (pa + size - 1)) & PAGE_MASK))
++		return 0;
+ 
+-	return slow_virt_to_phys(va);
++	return pa;
+ }
+ 
+ #define virt_to_phys_or_null(addr)				\
+@@ -808,8 +805,11 @@ efi_thunk_get_variable(efi_char16_t *nam
  	phys_attr = virt_to_phys_or_null(attr);
  	phys_data = virt_to_phys_or_null_size(data, *data_size);
-@@ -816,14 +820,18 @@ static efi_status_t
- efi_thunk_set_variable(efi_char16_t *name, efi_guid_t *vendor,
- 		       u32 attr, unsigned long data_size, void *data)
- {
-+	u8 buf[24] __aligned(8);
-+	efi_guid_t *vnd = PTR_ALIGN((efi_guid_t *)buf, sizeof(*vnd));
- 	u32 phys_name, phys_vendor, phys_data;
- 	efi_status_t status;
- 	unsigned long flags;
  
- 	spin_lock_irqsave(&efi_runtime_lock, flags);
- 
-+	*vnd = *vendor;
-+
- 	phys_name = virt_to_phys_or_null_size(name, efi_name_size(name));
--	phys_vendor = virt_to_phys_or_null(vendor);
-+	phys_vendor = virt_to_phys_or_null(vnd);
- 	phys_data = virt_to_phys_or_null_size(data, data_size);
- 
- 	/* If data_size is > sizeof(u32) we've got problems */
-@@ -840,6 +848,8 @@ efi_thunk_set_variable_nonblocking(efi_c
- 				   u32 attr, unsigned long data_size,
- 				   void *data)
- {
-+	u8 buf[24] __aligned(8);
-+	efi_guid_t *vnd = PTR_ALIGN((efi_guid_t *)buf, sizeof(*vnd));
- 	u32 phys_name, phys_vendor, phys_data;
- 	efi_status_t status;
- 	unsigned long flags;
-@@ -847,8 +857,10 @@ efi_thunk_set_variable_nonblocking(efi_c
- 	if (!spin_trylock_irqsave(&efi_runtime_lock, flags))
- 		return EFI_NOT_READY;
- 
-+	*vnd = *vendor;
-+
- 	phys_name = virt_to_phys_or_null_size(name, efi_name_size(name));
--	phys_vendor = virt_to_phys_or_null(vendor);
-+	phys_vendor = virt_to_phys_or_null(vnd);
- 	phys_data = virt_to_phys_or_null_size(data, data_size);
- 
- 	/* If data_size is > sizeof(u32) we've got problems */
-@@ -865,14 +877,18 @@ efi_thunk_get_next_variable(unsigned lon
- 			    efi_char16_t *name,
- 			    efi_guid_t *vendor)
- {
-+	u8 buf[24] __aligned(8);
-+	efi_guid_t *vnd = PTR_ALIGN((efi_guid_t *)buf, sizeof(*vnd));
- 	efi_status_t status;
- 	u32 phys_name_size, phys_name, phys_vendor;
- 	unsigned long flags;
- 
- 	spin_lock_irqsave(&efi_runtime_lock, flags);
- 
-+	*vnd = *vendor;
-+
- 	phys_name_size = virt_to_phys_or_null(name_size);
--	phys_vendor = virt_to_phys_or_null(vendor);
-+	phys_vendor = virt_to_phys_or_null(vnd);
- 	phys_name = virt_to_phys_or_null_size(name, *name_size);
- 
- 	status = efi_thunk(get_next_variable, phys_name_size,
-@@ -880,6 +896,7 @@ efi_thunk_get_next_variable(unsigned lon
+-	status = efi_thunk(get_variable, phys_name, phys_vendor,
+-			   phys_attr, phys_data_size, phys_data);
++	if (!phys_name || (data && !phys_data))
++		status = EFI_INVALID_PARAMETER;
++	else
++		status = efi_thunk(get_variable, phys_name, phys_vendor,
++				   phys_attr, phys_data_size, phys_data);
  
  	spin_unlock_irqrestore(&efi_runtime_lock, flags);
  
-+	*vendor = *vnd;
- 	return status;
- }
+@@ -834,9 +834,11 @@ efi_thunk_set_variable(efi_char16_t *nam
+ 	phys_vendor = virt_to_phys_or_null(vnd);
+ 	phys_data = virt_to_phys_or_null_size(data, data_size);
+ 
+-	/* If data_size is > sizeof(u32) we've got problems */
+-	status = efi_thunk(set_variable, phys_name, phys_vendor,
+-			   attr, data_size, phys_data);
++	if (!phys_name || !phys_data)
++		status = EFI_INVALID_PARAMETER;
++	else
++		status = efi_thunk(set_variable, phys_name, phys_vendor,
++				   attr, data_size, phys_data);
+ 
+ 	spin_unlock_irqrestore(&efi_runtime_lock, flags);
+ 
+@@ -863,9 +865,11 @@ efi_thunk_set_variable_nonblocking(efi_c
+ 	phys_vendor = virt_to_phys_or_null(vnd);
+ 	phys_data = virt_to_phys_or_null_size(data, data_size);
+ 
+-	/* If data_size is > sizeof(u32) we've got problems */
+-	status = efi_thunk(set_variable, phys_name, phys_vendor,
+-			   attr, data_size, phys_data);
++	if (!phys_name || !phys_data)
++		status = EFI_INVALID_PARAMETER;
++	else
++		status = efi_thunk(set_variable, phys_name, phys_vendor,
++				   attr, data_size, phys_data);
+ 
+ 	spin_unlock_irqrestore(&efi_runtime_lock, flags);
+ 
+@@ -891,8 +895,11 @@ efi_thunk_get_next_variable(unsigned lon
+ 	phys_vendor = virt_to_phys_or_null(vnd);
+ 	phys_name = virt_to_phys_or_null_size(name, *name_size);
+ 
+-	status = efi_thunk(get_next_variable, phys_name_size,
+-			   phys_name, phys_vendor);
++	if (!phys_name)
++		status = EFI_INVALID_PARAMETER;
++	else
++		status = efi_thunk(get_next_variable, phys_name_size,
++				   phys_name, phys_vendor);
+ 
+ 	spin_unlock_irqrestore(&efi_runtime_lock, flags);
  
 
 
