@@ -2,106 +2,69 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C06FF181A0E
-	for <lists+linux-efi@lfdr.de>; Wed, 11 Mar 2020 14:43:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5820D181ACB
+	for <lists+linux-efi@lfdr.de>; Wed, 11 Mar 2020 15:08:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729631AbgCKNnV (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 11 Mar 2020 09:43:21 -0400
-Received: from mail.kernel.org ([198.145.29.99]:60914 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729629AbgCKNnV (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Wed, 11 Mar 2020 09:43:21 -0400
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D060722525
-        for <linux-efi@vger.kernel.org>; Wed, 11 Mar 2020 13:43:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1583934200;
-        bh=gNzZd+j72gePWmbyxah3BW9W182jo3x0E2sGNNtTIc8=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=TplORw08IqFWEgK3AnZIOyXQ7pqWteCCPUhtZF32ONA3cQBZIRwmYQcMS2kPsP5F7
-         yKp8kUhNml4BXCmsY3bm4T4H0meLn4aQH4nueJ80/1pwl2ZWzi24+Vxkspm6epxMn6
-         fi7SaKFkrez7zS+x1Zxe0t2dFZdCe7jVJ2DRitn8=
-Received: by mail-wm1-f43.google.com with SMTP id a5so2161000wmb.0
-        for <linux-efi@vger.kernel.org>; Wed, 11 Mar 2020 06:43:19 -0700 (PDT)
-X-Gm-Message-State: ANhLgQ0tpQoEBpfjw8uPnsJEIe9uLuHGMNwaTt4WLHXksEjLmXpNw1ke
-        jsZN7zoX0wNuW0WpF6982+wqKAnuZ/pmixxYlxOMOw==
-X-Google-Smtp-Source: ADFU+vvrJVxZ+Wi3m98AeFKOvIhIt38hptalbmNoiJj0xYwDRjDAl8dyVCIHSN8/hkVsE8CyLcTvE98AIbOg067m4aU=
-X-Received: by 2002:a05:600c:24b:: with SMTP id 11mr3844796wmj.1.1583934198087;
- Wed, 11 Mar 2020 06:43:18 -0700 (PDT)
+        id S1729682AbgCKOIj (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 11 Mar 2020 10:08:39 -0400
+Received: from mail-wr1-f67.google.com ([209.85.221.67]:45230 "EHLO
+        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729640AbgCKOIj (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 11 Mar 2020 10:08:39 -0400
+Received: by mail-wr1-f67.google.com with SMTP id m9so2763258wro.12
+        for <linux-efi@vger.kernel.org>; Wed, 11 Mar 2020 07:08:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=oKBnUqxkzb7d7sbIS2OKF3jj3IOW0mcQ4QlWxLRUkk4=;
+        b=uBqiNr0fgkXAjFmgpSWDnnclUsO9GYzmCMMuIY1TkHmli192/qmtJHShThlic5y7Zd
+         OPr76leUe9e8WUGa9OToroJq0Tj0UfVJgw5CERCYUsj3k7YuJXnkVZM2RdQ2rBgnOu+l
+         GMFmJuqGFUP07DTgd551x0QOVYws/DwudfVr3AFBhNXH4j+u7Ep3HYHvDpvkvp6NYE/+
+         yDNwPhKo5AwJ7ke737ZWNRto9N7IEqG6mSODT0aSDT1SsL3ca9Zn0QAZInHj4skkRZbN
+         4Fq8+DIDRm75FYvSvCItmaTVKJkHT+anfdAbkvnYpOxB8YkU1SUPlgMMoZ9VfB6vdc2N
+         NbnQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=oKBnUqxkzb7d7sbIS2OKF3jj3IOW0mcQ4QlWxLRUkk4=;
+        b=MfjYHxcXCaTek74sJnlE/syA/XlhSHA9C4Ea+nUNgjaUmcTgPRSKnHbT/K/aEAUtZa
+         I2yygEyrDPJZaVGkPhJEp6TseXpYeyNk20mArqOQY6yUlsm7CpL4ctvR+jw7WtUHeZhK
+         ySU3TXxrd5ox0YYCBuWDQFK7UPtiZqw2CRGm0YwyMbI1SbR9AqBrdjeSmaynP1tnQE9t
+         WZsl5fj3mBp4RGtwEx1yGpJqJ7JhkbAhyH+62cC9UQGfZh3wFQZC3x1qB3jX0NqIVP0o
+         80fSptLTGL8BNdlo6tD9QzoBY7JL5vR4BLImKYQF8LpcyM9KxQd2ohdMm7GMycekWf9A
+         0gdQ==
+X-Gm-Message-State: ANhLgQ0izYZX8yH89u3x9hvGurfi/f36Lp51VONkQdb6e5n7zrHQvISe
+        LQCdq0px/pe14hgrvKgX5dJyZgzGVHfHHMpps10=
+X-Google-Smtp-Source: ADFU+vtx3L9v/dv9bhnwCRxjJ3by7CKBqD6Tb5puANG0eacWkxx7soje+ha8CCckHUVYSpQuCvaW9qTl+yyJA+6hPPY=
+X-Received: by 2002:adf:f08e:: with SMTP id n14mr4585802wro.367.1583935717688;
+ Wed, 11 Mar 2020 07:08:37 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200310124530.808338541@linuxfoundation.org> <20200310124535.409134291@linuxfoundation.org>
- <20200311130106.GB7285@duo.ucw.cz> <20200311131311.GA3858095@kroah.com> <20200311132845.GA24349@duo.ucw.cz>
-In-Reply-To: <20200311132845.GA24349@duo.ucw.cz>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Wed, 11 Mar 2020 09:43:06 -0400
-X-Gmail-Original-Message-ID: <CAKv+Gu9efurx3WT6AviURhgro8x4EjkvcQs6eiz-M-R6wGTp4w@mail.gmail.com>
-Message-ID: <CAKv+Gu9efurx3WT6AviURhgro8x4EjkvcQs6eiz-M-R6wGTp4w@mail.gmail.com>
-Subject: Re: [PATCH 4.19 84/86] efi/x86: Handle by-ref arguments covering
- multiple pages in mixed mode
-To:     Pavel Machek <pavel@denx.de>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        stable <stable@vger.kernel.org>, Ingo Molnar <mingo@kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>
+Received: by 2002:a05:6000:92:0:0:0:0 with HTTP; Wed, 11 Mar 2020 07:08:37
+ -0700 (PDT)
+Reply-To: aakkaavvii@gmail.com
+From:   Abraham Morrison <sambchambers06@gmail.com>
+Date:   Wed, 11 Mar 2020 07:08:37 -0700
+Message-ID: <CA+RS1P0PmX6jkWXihDLipspiLyzP_VkTHS=V8Oih0+ZuXreTcg@mail.gmail.com>
+Subject: Good day!
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, 11 Mar 2020 at 09:28, Pavel Machek <pavel@denx.de> wrote:
->
-> On Wed 2020-03-11 14:13:11, Greg Kroah-Hartman wrote:
-> > On Wed, Mar 11, 2020 at 02:01:07PM +0100, Pavel Machek wrote:
-> > > Hi!
-> > >
-> > > > Currently, the mixed mode runtime service wrappers require that all by-ref
-> > > > arguments that live in the vmalloc space have a size that is a power of 2,
-> > > > and are aligned to that same value. While this is a sensible way to
-> > > > construct an object that is guaranteed not to cross a page boundary, it is
-> > > > overly strict when it comes to checking whether a given object violates
-> > > > this requirement, as we can simply take the physical address of the first
-> > > > and the last byte, and verify that they point into the same physical
-> > > > page.
-> > >
-> > > Dunno. If start passing buffers that _sometime_ cross page boundaries,
-> > > we'll get hard to debug failures. Maybe original code is better
-> > > buecause it catches problems earlier?
-> > >
-> > > Furthermore, all existing code should pass aligned, 2^n size buffers,
-> > > so we should not need this in stable?
-> >
-> > For some crazy reason you cut out the reason I applied this patch to the
-> > stable tree.  From the changelog text:
-> >       Fixes: f6697df36bdf0bf7 ("x86/efi: Prevent mixed mode boot
-> >corruption with CONFIG_VMAP_STACK=y")
->
-> I did not notice that, but reviewing f669 does not really help. If
-> there is some known code that passes unaligned (but guaranteed
-> not-to-cross-page) buffers here, then yes, but is it? Having
-> not-page-crossing guarantees is kind of hard without alignment.
->
-> People seem to be adding Fixes: tags even if it is not a bugfix, just
-> as reminder that this has relation to some other commit...
->
-
-If you read the commit log until the end, you will find a paragraph
-that describes how the old code warns about, but then ignores the
-error condition, and proceeds in a way that may cause data corruption.
-Also, on x86, the stack alignment is only 8 bytes, so with the
-introduction of vmapped stacks, most guarantees about alignment of
-objects in the vmalloc space went out the window, potentially
-triggering this condition in unanticipated ways.
-
-It is not very constructive to comment on 'what people seem to be
-doing' if you have no clue what the context of the change is. Opinions
-are welcome but informed ones are preferred.
-
-
->
-> --
-> DENX Software Engineering GmbH,      Managing Director: Wolfgang Denk
-> HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+Dear friend, I am Mr. Abraham Morrison, did you receive my previous
+letter? I have an important information for you. So if you are
+interested get back to me for more details.
+Thank you.
+Mr. Abraham Morrison.
+.....................
+Caro amigo, sou o Sr. Abraham Morrison, voc=C3=AA recebeu minha carta
+anterior? Eu tenho uma informa=C3=A7=C3=A3o importante para voc=C3=AA. Ent=
+=C3=A3o, se voc=C3=AA
+estiver interessado, volte para mim para mais detalhes.
+Obrigado.
+Sr. Abraham Morrison.
