@@ -2,70 +2,74 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 517EA182E1E
-	for <lists+linux-efi@lfdr.de>; Thu, 12 Mar 2020 11:46:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CA43B182EC5
+	for <lists+linux-efi@lfdr.de>; Thu, 12 Mar 2020 12:16:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726000AbgCLKqm (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 12 Mar 2020 06:46:42 -0400
-Received: from mail.skyhub.de ([5.9.137.197]:43030 "EHLO mail.skyhub.de"
+        id S1726023AbgCLLQA (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 12 Mar 2020 07:16:00 -0400
+Received: from ozlabs.org ([203.11.71.1]:41585 "EHLO ozlabs.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725268AbgCLKqm (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Thu, 12 Mar 2020 06:46:42 -0400
-Received: from zn.tnic (p200300EC2F0DBF00894A3A768C8141DF.dip0.t-ipconnect.de [IPv6:2003:ec:2f0d:bf00:894a:3a76:8c81:41df])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        id S1726000AbgCLLP7 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Thu, 12 Mar 2020 07:15:59 -0400
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id EBE0D1EC0CF8;
-        Thu, 12 Mar 2020 11:46:40 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1584010001;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=h9ufmfACEP9wthZWwpWI3tKNBhqEf8SV+AxE3rwYr9c=;
-        b=bqbTBOCppYPX9tpBsHgOizmdTbt4XCOJ7+iJ997dEg5vDu35TdlNOKM8GrnYXJwDHbOK2k
-        hPOV/7eqTYiQkn0+TwNYCv+0fIVIgXc52tGVsprENUj7G5YJ39LgzHbqIEJENmpP7WPowY
-        Z9f5rdKFpPc1OKvrSh3k2c5YhqxjkTI=
-Date:   Thu, 12 Mar 2020 11:46:43 +0100
-From:   Borislav Petkov <bp@alien8.de>
-To:     Jian-Hong Pan <jian-hong@endlessm.com>
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        "H . Peter Anvin" <hpa@zytor.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        Anton Vorontsov <anton@enomsg.org>,
-        Colin Cross <ccross@android.com>,
-        Tony Luck <tony.luck@intel.com>, x86@kernel.org,
-        linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
-        linux@endlessm.com
-Subject: Re: [PATCH] Revert "x86/reboot, efi: Use EFI reboot for Acer
- TravelMate X514-51T"
-Message-ID: <20200312104643.GA15619@zn.tnic>
-References: <20200312083341.9365-1-jian-hong@endlessm.com>
+        by mail.ozlabs.org (Postfix) with ESMTPSA id 48dR8X5Bv8z9sPF;
+        Thu, 12 Mar 2020 22:15:56 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+        s=201909; t=1584011757;
+        bh=4geycpt2qvWbUaRVZsgFbTdpxz2a/tZbMuUtWLTmjn8=;
+        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+        b=Nsh7A3T9QhufussDqh6t2HhZOJeKPshqGQLRydZ+4DqE+DrYrNK8p09zF6lMuNbPp
+         lqkyUlaVR+EWRRHqzjzcy/Df2pSVAHJJvp0A5SlXuPfvbSNYH34AQONTelobFpo72G
+         7oz//YPk0Ej2OZc7yxOHsdnwE3hMi42WqftrRjwvwnKodujlENXI1qwe2svalECXMO
+         muqFxOsAtIuAnGakEDji8IzpRNo7xRVqmdTBStq9I/w3//nIYtD95x3qjjBoKNydll
+         prwdvFroRQMPje7gm8XTWT2INbodh9tjCxtJCNxb6TFYHU2Ku9N9/8wMdU5+Pett6E
+         uE1RDylgnsSpw==
+From:   Michael Ellerman <mpe@ellerman.id.au>
+To:     Nayna Jain <nayna@linux.ibm.com>, linux-integrity@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-efi@vger.kernel.org,
+        linux-s390@vger.kernel.org, x86@kernel.org
+Cc:     Ard Biesheuvel <ardb@kernel.org>,
+        Philipp Rudo <prudo@linux.ibm.com>, zohar@linux.ibm.com,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-kernel@vger.kernel.org,
+        Nayna Jain <nayna@linux.vnet.ibm.com>,
+        Nayna Jain <nayna@linux.ibm.com>
+Subject: Re: [PATCH v3] ima: add a new CONFIG for loading arch-specific policies
+In-Reply-To: <1583715471-15525-1-git-send-email-nayna@linux.ibm.com>
+References: <1583715471-15525-1-git-send-email-nayna@linux.ibm.com>
+Date:   Thu, 12 Mar 2020 22:15:54 +1100
+Message-ID: <87d09hj02d.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20200312083341.9365-1-jian-hong@endlessm.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, Mar 12, 2020 at 04:33:42PM +0800, Jian-Hong Pan wrote:
-> This reverts commit 0082517fa4bce073e7cf542633439f26538a14cc.
-> 
-> According to Acer's information, this reboot issue is fixed since 1.08
-> and newer BIOS. So, we can revert the quirk.
+Nayna Jain <nayna@linux.ibm.com> writes:
+> From: Nayna Jain <nayna@linux.vnet.ibm.com>
+>
+> Every time a new architecture defines the IMA architecture specific
+> functions - arch_ima_get_secureboot() and arch_ima_get_policy(), the IMA
+> include file needs to be updated. To avoid this "noise", this patch
+> defines a new IMA Kconfig IMA_SECURE_AND_OR_TRUSTED_BOOT option, allowing
+> the different architectures to select it.
+>
+> Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
+> Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
+> Acked-by: Ard Biesheuvel <ardb@kernel.org>
+> Cc: Ard Biesheuvel <ardb@kernel.org>
+> Cc: Philipp Rudo <prudo@linux.ibm.com>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> ---
+> v3:
+> * Removes CONFIG_IMA dependency. Thanks Ard.
+> * Updated the patch with improvements suggested by Michael. It now uses
+> "imply" instead of "select". Thanks Michael.
 
-We can?
+Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
 
-How do you know *everyone* affected will update their BIOS?
-
-And what's the downside of keeping it?
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+cheers
