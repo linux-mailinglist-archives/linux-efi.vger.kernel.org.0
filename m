@@ -2,79 +2,140 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1CB9318278A
-	for <lists+linux-efi@lfdr.de>; Thu, 12 Mar 2020 04:52:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 10511182B42
+	for <lists+linux-efi@lfdr.de>; Thu, 12 Mar 2020 09:34:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387676AbgCLDwl (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 11 Mar 2020 23:52:41 -0400
-Received: from mail-qt1-f195.google.com ([209.85.160.195]:41071 "EHLO
-        mail-qt1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387453AbgCLDwl (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 11 Mar 2020 23:52:41 -0400
-Received: by mail-qt1-f195.google.com with SMTP id l21so3304498qtr.8;
-        Wed, 11 Mar 2020 20:52:40 -0700 (PDT)
+        id S1726437AbgCLIen (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 12 Mar 2020 04:34:43 -0400
+Received: from mail-pl1-f194.google.com ([209.85.214.194]:41929 "EHLO
+        mail-pl1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726023AbgCLIen (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 12 Mar 2020 04:34:43 -0400
+Received: by mail-pl1-f194.google.com with SMTP id t14so2371276plr.8
+        for <linux-efi@vger.kernel.org>; Thu, 12 Mar 2020 01:34:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:from:date:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=WUYv968HTJjo1Mkp2/EuQ7/8GKIJ2nyGafz2Vr8qTVU=;
-        b=vVMFSuX799qi1oZfkM763trW9w5t0dLOrZsD+gKWVTb+cnNmhasgRFnkZVGyWZh3aa
-         Mq1aOr0aivlPh2BaZC2fTWQXFWfAOSE+uV9TeIPNCv4lRInrqOz5NGNb5he7AlpH5+Vn
-         IcplsE90MjuAk2JQZJTyXmGrlo76pG/lH/lPERxK5chFrFY6k4ZIAvAP9iXUqQv1+wf8
-         A5ivCiLHvrAytRq8uFCzpYHkUWUNJDdSxOIhxPQIWdwnvvR3oXsviVm5uCb3bwNkVsJo
-         f8MWSlFm9B8qibj5U0gje3m022CRZ2OOZ+NfMjME9LHSP5GG+mSYxGpFeiqElrOIY4pt
-         EOZw==
+        d=endlessm-com.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=o8tWeCypuK1QOsKNJkPWjnl6zp71Q9i3fpD2i8Bk47I=;
+        b=kDMvA2exUIdT1c6vkox/9tshpEUaxfe3peeGwW7N3j+NMe16liNfQTD5oL8HlYFePF
+         fzgSMWlcsMGtkzxAaHHGs3bT7k1uvXaS6W69RUIvuuBSeDOWfWwPckHvclvaedExsmUB
+         GWhXUjbK+qA6KG4n0sQ+S3jSTMF4Wi1KmU926yp6f0E1PzTfnjk5tSzoIuPXApsHTCWn
+         oH0JB3DMFc99MinbXtpjMken/HnHg6SN8VX3UHCKnvP8qllUGoW+BdogB4XwEgWtsCLw
+         zFKgGyuX776BjcJNU3GDxj0vwBdZ5rzwyGeB/tMtVLVEJebgGBi0tWggi8NrAWdeeR/q
+         4lKg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:from:date:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to:user-agent;
-        bh=WUYv968HTJjo1Mkp2/EuQ7/8GKIJ2nyGafz2Vr8qTVU=;
-        b=FNNA4EyC0oLsch4bcvOZ8anQjgBw/Do/51h6eb+ZVtMswRMmXCUHIniblrft/2rIrJ
-         NRb80RRRjFyaklQSVPfzdiIlPRbsPh3ShRbkqVqNWiph73Vjv8RKfTc5hv/avlwIT5NT
-         Zt0FCZw0sS/Ui3RJAt4HmMVTlVhlomIX4+c1Oe/n87P1jWmDfndF1FhJ09N1OF6N2VCj
-         xb3WZZWF73WVms7lbKUmAMRqAFk0rDe3NsP9uMFI94FhgEv6xXrI7RR1dqsuEn09T0Ae
-         CAgceCb2TgknJpSPQmcpzZ4Q41XZW/mTXY7Z04XLGPsFlzR0VrsDpAovIvluYNSUMJrt
-         EPGw==
-X-Gm-Message-State: ANhLgQ2n9knsb69KfcS35WXJOtEwn4AF5dbU28tbMQNYFHbOW4F0WZxx
-        +BIO5k8+BvkdL+IBPZt2g3mLt+fMgdQ=
-X-Google-Smtp-Source: ADFU+vsr7Qn8d5IsLiuWpSqtsp+6BR3IFdwwAKdoOOHKkgW9qSF96V8Tse0BhdrAktQUvAmOzrFgwA==
-X-Received: by 2002:ac8:4cc9:: with SMTP id l9mr5461056qtv.207.1583985159524;
-        Wed, 11 Mar 2020 20:52:39 -0700 (PDT)
-Received: from rani.riverdale.lan ([2001:470:1f07:5f3::b55f])
-        by smtp.gmail.com with ESMTPSA id x1sm7836549qkl.128.2020.03.11.20.52.38
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=o8tWeCypuK1QOsKNJkPWjnl6zp71Q9i3fpD2i8Bk47I=;
+        b=uHHmjkdBNCiCerOAA3Qd0B6bBWsnhnMdi5Xf7cV68kbjnvmI7IFtkvrKetMEGEuu+L
+         w3cDm38YbumdqV9qhs9itydESpuaeA/2HQ3JRODu9XU9Ju2m3maU+gtZ+aOiuQnk9B7R
+         eukc+OQ9yAw3iSqGYsw+PlPM8JJlBsEWMnzmu/3b2A6DWaQYSkFhZKgd409HXEIu3fGC
+         ZpywCorRGNfsi8vL3m1wQ+AfR49lEMbsxWmqeFGTVsJHerOXvHQo0/YhDdbtYejsJ/e4
+         9KYXOO9Ljs3nC3Ls6GSN/6DqHJYrWwV2/Qb7VMH/tM8cJsuLIgnNXk65cJryorq926zn
+         Vyhw==
+X-Gm-Message-State: ANhLgQ0dRGU+UXrCAGG7ynMlt6yqvJxO5FuigfBOzdFz8O4q397zT8PU
+        3ZDIHphKWxn4H94GqJwbA3Hwzw==
+X-Google-Smtp-Source: ADFU+vvspHbr8K5oFPO6UNLDH5awu771Qxb0TRck99UbEb+J2KJblpIGzDwr0ExCYH8hcE0po0F1lA==
+X-Received: by 2002:a17:90b:1904:: with SMTP id mp4mr3126972pjb.110.1584002080097;
+        Thu, 12 Mar 2020 01:34:40 -0700 (PDT)
+Received: from starnight.local ([150.116.255.181])
+        by smtp.googlemail.com with ESMTPSA id s13sm8163947pjp.1.2020.03.12.01.34.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Mar 2020 20:52:39 -0700 (PDT)
-From:   Arvind Sankar <nivedita@alum.mit.edu>
-X-Google-Original-From: Arvind Sankar <arvind@rani.riverdale.lan>
-Date:   Wed, 11 Mar 2020 23:52:37 -0400
-To:     Pavel Machek <pavel@denx.de>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Thu, 12 Mar 2020 01:34:39 -0700 (PDT)
+From:   Jian-Hong Pan <jian-hong@endlessm.com>
+To:     Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "H . Peter Anvin" <hpa@zytor.com>,
         Ard Biesheuvel <ardb@kernel.org>,
-        Ingo Molnar <mingo@kernel.org>, linux-efi@vger.kernel.org,
-        Thomas Gleixner <tglx@linutronix.de>
-Subject: Re: [PATCH 4.19 84/86] efi/x86: Handle by-ref arguments covering
- multiple pages in mixed mode
-Message-ID: <20200312035235.GA270934@rani.riverdale.lan>
-References: <20200310124530.808338541@linuxfoundation.org>
- <20200310124535.409134291@linuxfoundation.org>
- <20200311130106.GB7285@duo.ucw.cz>
+        Kees Cook <keescook@chromium.org>,
+        Anton Vorontsov <anton@enomsg.org>,
+        Colin Cross <ccross@android.com>,
+        Tony Luck <tony.luck@intel.com>
+Cc:     x86@kernel.org, linux-kernel@vger.kernel.org,
+        linux-efi@vger.kernel.org, linux@endlessm.com,
+        Jian-Hong Pan <jian-hong@endlessm.com>
+Subject: [PATCH] Revert "x86/reboot, efi: Use EFI reboot for Acer TravelMate X514-51T"
+Date:   Thu, 12 Mar 2020 16:33:42 +0800
+Message-Id: <20200312083341.9365-1-jian-hong@endlessm.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20200311130106.GB7285@duo.ucw.cz>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, Mar 11, 2020 at 02:01:07PM +0100, Pavel Machek wrote:
-> We don't really need to do this computation on pa, it would work on va
-> as well, right? It does not matter much, but old code worked that way.
-> 
-> Plus, strictly speaking, pa + size can overflow for huge sizes, and
-> test will return false negatives.
+This reverts commit 0082517fa4bce073e7cf542633439f26538a14cc.
 
-This is 64-bit code, overflow would need pa + size to be bigger than
-2^64, and even then a false negative would need size to be around 2^64.
+According to Acer's information, this reboot issue is fixed since 1.08
+and newer BIOS. So, we can revert the quirk.
+
+Fixes: 0082517fa4bc ("x86/reboot, efi: Use EFI reboot for Acer TravelMate X514-51T")
+Signed-off-by: Jian-Hong Pan <jian-hong@endlessm.com>
+---
+ arch/x86/kernel/reboot.c | 21 ---------------------
+ include/linux/efi.h      |  7 +------
+ 2 files changed, 1 insertion(+), 27 deletions(-)
+
+diff --git a/arch/x86/kernel/reboot.c b/arch/x86/kernel/reboot.c
+index 0cc7c0b106bb..92177ccd47f3 100644
+--- a/arch/x86/kernel/reboot.c
++++ b/arch/x86/kernel/reboot.c
+@@ -81,19 +81,6 @@ static int __init set_bios_reboot(const struct dmi_system_id *d)
+ 	return 0;
+ }
+ 
+-/*
+- * Some machines don't handle the default ACPI reboot method and
+- * require the EFI reboot method:
+- */
+-static int __init set_efi_reboot(const struct dmi_system_id *d)
+-{
+-	if (reboot_type != BOOT_EFI && !efi_runtime_disabled()) {
+-		reboot_type = BOOT_EFI;
+-		pr_info("%s series board detected. Selecting EFI-method for reboot.\n", d->ident);
+-	}
+-	return 0;
+-}
+-
+ void __noreturn machine_real_restart(unsigned int type)
+ {
+ 	local_irq_disable();
+@@ -179,14 +166,6 @@ static const struct dmi_system_id reboot_dmi_table[] __initconst = {
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "AOA110"),
+ 		},
+ 	},
+-	{	/* Handle reboot issue on Acer TravelMate X514-51T */
+-		.callback = set_efi_reboot,
+-		.ident = "Acer TravelMate X514-51T",
+-		.matches = {
+-			DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
+-			DMI_MATCH(DMI_PRODUCT_NAME, "TravelMate X514-51T"),
+-		},
+-	},
+ 
+ 	/* Apple */
+ 	{	/* Handle problems with rebooting on Apple MacBook5 */
+diff --git a/include/linux/efi.h b/include/linux/efi.h
+index 7efd7072cca5..8375bbc6e739 100644
+--- a/include/linux/efi.h
++++ b/include/linux/efi.h
+@@ -1529,12 +1529,7 @@ efi_status_t efi_parse_options(char const *cmdline);
+ efi_status_t efi_setup_gop(struct screen_info *si, efi_guid_t *proto,
+ 			   unsigned long size);
+ 
+-#ifdef CONFIG_EFI
+-extern bool efi_runtime_disabled(void);
+-#else
+-static inline bool efi_runtime_disabled(void) { return true; }
+-#endif
+-
++bool efi_runtime_disabled(void);
+ extern void efi_call_virt_check_flags(unsigned long flags, const char *call);
+ extern unsigned long efi_call_virt_save_flags(void);
+ 
+-- 
+2.25.1
+
