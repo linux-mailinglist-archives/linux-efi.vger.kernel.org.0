@@ -2,136 +2,232 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F31A18543E
-	for <lists+linux-efi@lfdr.de>; Sat, 14 Mar 2020 04:23:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5818618572A
+	for <lists+linux-efi@lfdr.de>; Sun, 15 Mar 2020 02:32:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726559AbgCNDXk (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 13 Mar 2020 23:23:40 -0400
-Received: from mail-pj1-f68.google.com ([209.85.216.68]:38386 "EHLO
-        mail-pj1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726530AbgCNDXk (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 13 Mar 2020 23:23:40 -0400
-Received: by mail-pj1-f68.google.com with SMTP id m15so4684087pje.3
-        for <linux-efi@vger.kernel.org>; Fri, 13 Mar 2020 20:23:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=rfdOz8mHYBRUomVk15RzHjMTiFUq9xKO13xgLgIv0XA=;
-        b=craGocgehlme7am/VOSIck8j0h/Fo6fJ2K+c+lafI7yDiPYy7qfoRnxmy96n5NvPJm
-         c0smWFIdFvCK8fd8LWhIJWWjeGW6PZkhg+iWO8X2UcTeeq+sTGhXI4NX57fHDqJDywiY
-         i8YiQ65plSuUnpyGjV36xL8WIjtRAnxdp/Bhw=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=rfdOz8mHYBRUomVk15RzHjMTiFUq9xKO13xgLgIv0XA=;
-        b=TmtQVxF09YWK5hBntqAN660vbMIpxXLpNPbW3QYTa2A5f3wLCkKg47fRc6cXnFzOr1
-         cRESr4pMYA1v3muEzKkWRPh6vPx+xUyBRy5hxvjh8x89vLMaSFVltJYja4anH1B2nSjc
-         kvuL5a5Q/o2oUoKc5wVvkRpmfIrY4SRR661CYPu70EoxT/UkJeImz2i2fnA0/eTn+t8f
-         ykaRo/ZduIw8cF/PXeG9Otoem4VXvy0FiMxmH7gtj+fNu9GcQAgP4nuySdp2HFodAQX5
-         SJ8j/RwOMjSOykg3GBTW60gws/sFp49OH1V53yPSoRnICDwBI0rQYtkRQ1J+7VwJraXm
-         SXuA==
-X-Gm-Message-State: ANhLgQ2woCLowPg3mm+9Fu9PTE023Or4+e4AGFQxX/fO2i9fKJpwyYYG
-        bCxjWc4nB9kthN2z6bv4X4aClw==
-X-Google-Smtp-Source: ADFU+vtqhny53+UwKx0kI/rxGpW3RocBkKNvILOn/f4BjoCfsdT765v8Ax+3V0NOKKSQK+JcSK+PiA==
-X-Received: by 2002:a17:90b:344:: with SMTP id fh4mr12401643pjb.126.1584156219439;
-        Fri, 13 Mar 2020 20:23:39 -0700 (PDT)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id 19sm20623109pgx.63.2020.03.13.20.23.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Mar 2020 20:23:37 -0700 (PDT)
-Date:   Fri, 13 Mar 2020 20:23:37 -0700
-From:   Kees Cook <keescook@chromium.org>
-To:     Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-Cc:     ardb@kernel.org, tony.luck@intel.com, matt@codeblueprint.co.uk,
-        liming.gao@intel.com, linux-efi@vger.kernel.org
-Subject: Re: [PATCH v6 1/2] efi: Add 'nr_config_table' variable in efi
- structure
-Message-ID: <202003132023.68BFCB0@keescook>
-References: <20200312011324.70701-1-qiuxu.zhuo@intel.com>
+        id S1726856AbgCOBcW (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 14 Mar 2020 21:32:22 -0400
+Received: from mail-mw2nam10on2097.outbound.protection.outlook.com ([40.107.94.97]:13053
+        "EHLO NAM10-MW2-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726716AbgCOBcV (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Sat, 14 Mar 2020 21:32:21 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=cB1ToQbaikyQpiH3vOLKSgGHyVfK+9f388XH5VF4ZSy6CVNyabSEih6b1KVjB+tIlbV28EUyMGSLztsyeqcmRO8Ovms0u41ur51cLFlwLkp2RvNmrZnNloGxSGu1dAooBMgH/1WHWpdS2u+OoTL44M/lpvXNyJfpktFH8k0UuV1gBoVHSJ8ildBmDo2askuj3r7VPlKDP6PowsypwxQfOzEg0S+G23Pjh8Mnj2kOcy4U6ZgCvNPaBHXAtORTiFiyoloC+C7eTKFNqsQI9JCm+8+Hmrk/5NekwTT6OmSRkaZ9MtqE+yiFlMCfztgPHkPzKWNAlXlJH8ve79qcKiOr5g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=NHV8a9pcFFWQTnd4HapIeaqDNPT6mfyCP7xMUlmD/L8=;
+ b=oR/p4XyyWT3bSqhmvWqVj3MmeIYtDNptqlPJlZdJz/7C5DZdnRQLQmyc2xSmwtpehJaT1RMeYJsUsKx39A4xdfIAGC90y/IehjBx14wkJBlLPpGSSR5dIiwNjziH4w74uhKvpZn7tPIWb5uyxAn/bRvD4Q6okKLRHTbR145jHt5MtK0hY7fJMC5OuWJC+WKBOdKvm8TFeFh2UTMrMHlAk7hbQlQXNLTNcQDDiBCqqSRegAHMDUfGkXNgN8sbYcngSzYkX4199AODTQAqWKFhHa+ckMY2GGNqC72MfXjlFNj/Qunhh7OaR+Drtl/zb4hW9LH5Odc2km6d5T562P+x/w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=microsoft.com; dmarc=pass action=none
+ header.from=microsoft.com; dkim=pass header.d=microsoft.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=NHV8a9pcFFWQTnd4HapIeaqDNPT6mfyCP7xMUlmD/L8=;
+ b=fbSqai0u0wL7pusbq5tfzTQuJDdOWMX3BX8NHKb5Ocru6drQcjUPlZoLct7BE37HZIBCs2cc7iGQPXv+r68pseSLo9OtE8WjSQNGXUboKHvso7EtsBzBXfn3C2dfDZcYPoIicUVkuE+i66VfHoqYDiQwqtYl1yl792feMQF1ySg=
+Authentication-Results: spf=none (sender IP is )
+ smtp.mailfrom=mikelley@microsoft.com; 
+Received: from SN6PR2101MB0927.namprd21.prod.outlook.com (2603:10b6:805:a::18)
+ by SN6PR2101MB1632.namprd21.prod.outlook.com (2603:10b6:805:53::25) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2835.4; Sat, 14 Mar
+ 2020 15:35:57 +0000
+Received: from SN6PR2101MB0927.namprd21.prod.outlook.com
+ ([fe80::a819:6437:1733:17b3]) by SN6PR2101MB0927.namprd21.prod.outlook.com
+ ([fe80::a819:6437:1733:17b3%9]) with mapi id 15.20.2835.008; Sat, 14 Mar 2020
+ 15:35:57 +0000
+From:   Michael Kelley <mikelley@microsoft.com>
+To:     will@kernel.org, ardb@kernel.org, arnd@arndb.de,
+        catalin.marinas@arm.com, mark.rutland@arm.com, maz@kernel.org,
+        linux-arm-kernel@lists.infradead.org, gregkh@linuxfoundation.org,
+        linux-kernel@vger.kernel.org, linux-hyperv@vger.kernel.org,
+        linux-efi@vger.kernel.org, linux-arch@vger.kernel.org,
+        olaf@aepfle.de, apw@canonical.com, vkuznets@redhat.com,
+        jasowang@redhat.com, marcelo.cerri@canonical.com, kys@microsoft.com
+Cc:     mikelley@microsoft.com, sunilmut@microsoft.com,
+        boqun.feng@gmail.com
+Subject: [PATCH v6 00/10] Subject: Enable Linux guests on Hyper-V on ARM64
+Date:   Sat, 14 Mar 2020 08:35:09 -0700
+Message-Id: <1584200119-18594-1-git-send-email-mikelley@microsoft.com>
+X-Mailer: git-send-email 1.8.3.1
+Content-Type: text/plain
+X-ClientProxiedBy: MWHPR22CA0047.namprd22.prod.outlook.com
+ (2603:10b6:300:69::33) To SN6PR2101MB0927.namprd21.prod.outlook.com
+ (2603:10b6:805:a::18)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200312011324.70701-1-qiuxu.zhuo@intel.com>
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from mhkkerneltest.corp.microsoft.com (131.107.159.247) by MWHPR22CA0047.namprd22.prod.outlook.com (2603:10b6:300:69::33) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2814.18 via Frontend Transport; Sat, 14 Mar 2020 15:35:56 +0000
+X-Mailer: git-send-email 1.8.3.1
+X-Originating-IP: [131.107.159.247]
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-HT: Tenant
+X-MS-Office365-Filtering-Correlation-Id: bca0b8a4-e0d2-4a10-f661-08d7c82d6400
+X-MS-TrafficTypeDiagnostic: SN6PR2101MB1632:|SN6PR2101MB1632:|SN6PR2101MB1632:
+X-MS-Exchange-Transport-Forked: True
+X-LD-Processed: 72f988bf-86f1-41af-91ab-2d7cd011db47,ExtAddr
+X-Microsoft-Antispam-PRVS: <SN6PR2101MB1632CA9DBC2E079346B8144ED7FB0@SN6PR2101MB1632.namprd21.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:5797;
+X-Forefront-PRVS: 034215E98F
+X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10019020)(4636009)(136003)(366004)(39860400002)(346002)(376002)(396003)(199004)(10290500003)(478600001)(2906002)(6486002)(36756003)(8936002)(66946007)(26005)(86362001)(2616005)(16526019)(186003)(956004)(66556008)(6636002)(66476007)(4326008)(7416002)(316002)(81166006)(8676002)(81156014)(52116002)(7696005)(6666004)(5660300002)(921003)(1121003);DIR:OUT;SFP:1102;SCL:1;SRVR:SN6PR2101MB1632;H:SN6PR2101MB0927.namprd21.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;
+Received-SPF: None (protection.outlook.com: microsoft.com does not designate
+ permitted sender hosts)
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: TIFQGL1u+bzpeThgYYrSTA/JZvZgmA7U+nY3pOmsgVioqxqRDWrBuNsVvZ/piqwwuLzk3mOgjP8EHcbqGrN8+iyIlL28skKtsalCBwd9VuYDB45q5n20dPlX9GK+/wBQQEvVEl4a3sobAijVa1VAsYHAOrOoPBVLXwwdPSGlTpv5cKTchPO3ELndQiGaBQOBXSssG6wlEi0UegSVfLvzasDJib9klQc9GXoEWZvIyGrXl+Ox9LxbPnvHJ6bYaHwgg148KfyDAJJJ+rKAQ70q4fUf//WR3N21a+/duQXV/QfIDcG+v3K2yIejsHouJzPy4oomf1SEaXPG/KC4yb9yklfQ/XluNvZb+dU4bkoS0ScSjhGIbx3AicZc7UQ+AX2uicbDaPsvtzBldRx5J0qOHwwYeYFCuBqhMyXUgv1l+60ziRfPLtdXqCMBJfYjJSkAh/nUvHsZPbZDTrNwOKIzQFcAXr8+ilPXKacWVeHCT3XXC5QzG/07I7EDzz55rfYK
+X-MS-Exchange-AntiSpam-MessageData: BUqqDMCRXJaTUfARN2oBsTyxAw6JBE5e2FlAcwG656L6K/vVB/IJeAtvZcN6IfErWhSvEwLhiPjTgI3rLGMzluZf+j7YVi3w/FvzQtns5FY7vcZNu0MBTY3skC94OusLUC11adeRdIF33LpY7qzBfw==
+X-OriginatorOrg: microsoft.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: bca0b8a4-e0d2-4a10-f661-08d7c82d6400
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Mar 2020 15:35:57.4591
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 72f988bf-86f1-41af-91ab-2d7cd011db47
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 09NTPQAhSjQKpAvO4SN/WQDoG5YmJ0el1nWyuescoHykE8Hq10k6Ym0bAUsCPsUSxd1lvgzcW4zyvbTxoSy7gg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN6PR2101MB1632
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, Mar 12, 2020 at 09:13:24AM +0800, Qiuxu Zhuo wrote:
-> The 'nr_config_table' and 'config_table' (already in efi structure)
-> in efi structure provide a way for some driver(e.g. capsule-pstore
-> goes through the configuration table to extract crash capsules to
-> aid in debugging) to iterate over the EFI configuration table array.
-> 
-> Signed-off-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-> ---
->  arch/x86/platform/efi/efi.c     | 1 +
->  drivers/firmware/efi/arm-init.c | 4 +++-
->  drivers/firmware/efi/efi.c      | 1 +
->  include/linux/efi.h             | 1 +
->  4 files changed, 6 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/x86/platform/efi/efi.c b/arch/x86/platform/efi/efi.c
-> index ae923ee8e2b4..2f3065905e8a 100644
-> --- a/arch/x86/platform/efi/efi.c
-> +++ b/arch/x86/platform/efi/efi.c
-> @@ -456,6 +456,7 @@ void __init efi_init(void)
->  		return;
->  
->  	efi.config_table = (unsigned long)efi.systab->tables;
-> +	efi.nr_config_table = (unsigned long)efi.systab->nr_tables;
->  	efi.fw_vendor	 = (unsigned long)efi.systab->fw_vendor;
->  	efi.runtime	 = (unsigned long)efi.systab->runtime;
->  
-> diff --git a/drivers/firmware/efi/arm-init.c b/drivers/firmware/efi/arm-init.c
-> index d99f5b0c8a09..f2e2e1c1624b 100644
-> --- a/drivers/firmware/efi/arm-init.c
-> +++ b/drivers/firmware/efi/arm-init.c
-> @@ -143,8 +143,10 @@ static int __init uefi_init(void)
->  					 sizeof(efi_config_table_t),
->  					 arch_tables);
->  
-> -	if (!retval)
-> +	if (!retval) {
->  		efi.config_table = (unsigned long)efi.systab->tables;
-> +		efi.nr_config_table = (unsigned long)efi.systab->nr_tables;
-> +	}
->  
->  	early_memunmap(config_tables, table_size);
->  out:
-> diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
-> index 621220ab3d0e..1b599941bad3 100644
-> --- a/drivers/firmware/efi/efi.c
-> +++ b/drivers/firmware/efi/efi.c
-> @@ -46,6 +46,7 @@ struct efi __read_mostly efi = {
->  	.fw_vendor		= EFI_INVALID_TABLE_ADDR,
->  	.runtime		= EFI_INVALID_TABLE_ADDR,
->  	.config_table		= EFI_INVALID_TABLE_ADDR,
-> +	.nr_config_table	= 0,
->  	.esrt			= EFI_INVALID_TABLE_ADDR,
->  	.properties_table	= EFI_INVALID_TABLE_ADDR,
->  	.mem_attr_table		= EFI_INVALID_TABLE_ADDR,
-> diff --git a/include/linux/efi.h b/include/linux/efi.h
-> index 7efd7072cca5..13b3fe069f1f 100644
-> --- a/include/linux/efi.h
-> +++ b/include/linux/efi.h
-> @@ -913,6 +913,7 @@ extern struct efi {
->  	unsigned long fw_vendor;	/* fw_vendor */
->  	unsigned long runtime;		/* runtime table */
->  	unsigned long config_table;	/* config tables */
-> +	unsigned long nr_config_table; /* the number of config tables */
+This series enables Linux guests running on Hyper-V on ARM64
+hardware. New ARM64-specific code in arch/arm64/hyperv initializes
+Hyper-V, including its interrupts and hypercall mechanism.
+Existing architecture independent drivers for Hyper-V's VMbus and
+synthetic devices just work when built for ARM64. Hyper-V code is
+built and included in the image and modules only if CONFIG_HYPERV
+is enabled.
 
-nit: please use a tab character before the comment to get correct
-alignemnt.
+The ten patches are organized as follows:
+1) Add include files that define the Hyper-V interface as
+   described in the Hyper-V Top Level Functional Spec (TLFS), plus
+   additional definitions specific to Linux running on Hyper-V.
 
->  	unsigned long esrt;		/* ESRT table */
->  	unsigned long properties_table;	/* properties table */
->  	unsigned long mem_attr_table;	/* memory attributes table */
-> -- 
-> 2.17.1
-> 
+2) Add #define for vendor specific owner definition to linux/arm-smccc.h
+
+3) thru 7) Add core Hyper-V support on ARM64, including hypercalls,
+   interrupt handlers, kexec & panic handlers, and core hypervisor
+   initialization.
+
+8) Update the existing VMbus driver to generalize interrupt
+   management across x86/x64 and ARM64.
+
+9) Export screen_info so it may be used by the Hyper-V frame buffer
+   driver built as a module. It's already exported for x86,
+   powerpc, and alpha architectures.
+
+10) Make CONFIG_HYPERV selectable on ARM64 in addition to x86/x64.
+
+Some areas of Linux guests on Hyper-V on ARM64 are a work-
+in-progress:
+
+* Hyper-V on ARM64 currently runs with a 4 Kbyte page size, but
+  allows guests with 16K/64K page size. However, the Linux drivers
+  for Hyper-V synthetic devices assume the guest page size is 4K.
+  This patch set lays the groundwork for larger guest page sizes,
+  but additional patches are coming to update these drivers.
+
+* The Hyper-V vPCI driver at drivers/pci/host/pci-hyperv.c has
+  x86/x64-specific code and is not being built for ARM64. Fixing
+  this driver to enable vPCI devices on ARM64 will be done later.
+
+In a few cases, terminology from the x86/x64 world has been carried
+over into the ARM64 code ("MSR", "TSC").  Hyper-V still uses the
+x86/x64 terminology and has not replaced it with something more
+generic, so the code uses the Hyper-V terminology.  This will be
+fixed when Hyper-V updates the usage in the TLFS.
+
+This patch set is based on a 5.6-rc5 linux-next tree.
+
+Changes in v6:
+* Use SMCCC hypercall interface instead of direct invocation
+  of HVC instruction and the Hyper-V hypercall interface
+  [Marc Zyngier]
+* Reimplemented functions to alloc/free Hyper-V size pages
+  using kmalloc/kfree since kmalloc now guarantees alignment of
+  power of 2 size allocations [Marc Zyngier]
+* Export screen_info in arm64 architecture so it can be used
+  by the Hyper-V buffer driver built as a module
+* Renamed source file arch/arm64/hyperv/hv_init.c to hv_core.c
+  to better reflect its content
+* Fixed the bit position of certain feature flags presented by
+  Hyper-V to the guest.  The bit positions on ARM64 don't match
+  the position on x86 like originally thought.
+* Minor fixups to rebase to 5.6-rc5 linux-next
+
+Changes in v5:
+* Minor fixups to rebase to 5.4-rc1 linux-next
+
+Changes in v4:
+* Moved clock-related code into an architecture independent
+  Hyper-V clocksource driver that is already upstream. Clock
+  related code is removed from this patch set except for the
+  ARM64 specific interrupt handler. [Marc Zyngier]
+* Separately upstreamed the split of mshyperv.h into arch independent
+  and arch dependent portions. The arch independent portion has been
+  removed from this patch set.
+* Divided patch #2 of the series into multiple smaller patches
+  [Marc Zyngier]
+* Changed a dozen or so smaller things based on feedback
+  [Marc Zyngier, Will Deacon]
+* Added functions to alloc/free Hyper-V size pages for use by
+  drivers for Hyper-V synthetic devices when updated to not assume
+  guest page size and Hyper-v page size are the same
+
+Changes in v3:
+* Added initialization of hv_vp_index array like was recently
+  added on x86 branch [KY Srinivasan]
+* Changed Hyper-V ARM64 register symbols to be all uppercase 
+  instead of mixed case [KY Srinivasan]
+* Separated mshyperv.h into two files, one architecture
+  independent and one architecture dependent. After this code
+  is upstream, will make changes to the x86 code to use the
+  architecture independent file and remove duplication. And
+  once we have a multi-architecture Hyper-V TLFS, will do a
+  separate patch to split hyperv-tlfs.h in the same way.
+  [KY Srinivasan]
+* Minor tweaks to rebase to latest linux-next code
+
+Changes in v2:
+* Removed patch to implement slow_virt_to_phys() on ARM64.
+  Use of slow_virt_to_phys() in arch independent Hyper-V
+  drivers has been eliminated by commit 6ba34171bcbd
+  ("Drivers: hv: vmbus: Remove use of slow_virt_to_phys()")
+* Minor tweaks to rebase to latest linux-next code
+
+Michael Kelley (10):
+  arm64: hyperv: Add core Hyper-V include files
+  arm/arm64: smccc-1.1: Add vendor specific owner definition
+  arm64: hyperv: Add hypercall and register access functions
+  arm64: hyperv: Add memory alloc/free functions for Hyper-V size pages
+  arm64: hyperv: Add interrupt handlers for VMbus and stimer
+  arm64: hyperv: Add kexec and panic handlers
+  arm64: hyperv: Initialize hypervisor on boot
+  Drivers: hv: vmbus: Add hooks for per-CPU IRQ
+  arm64: efi: Export screen_info
+  Drivers: hv: Enable Hyper-V code to be built on ARM64
+
+ MAINTAINERS                          |   3 +
+ arch/arm64/Kbuild                    |   1 +
+ arch/arm64/hyperv/Makefile           |   2 +
+ arch/arm64/hyperv/hv_core.c          | 418 +++++++++++++++++++++++++++++++++++
+ arch/arm64/hyperv/mshyperv.c         | 165 ++++++++++++++
+ arch/arm64/include/asm/hyperv-tlfs.h | 413 ++++++++++++++++++++++++++++++++++
+ arch/arm64/include/asm/mshyperv.h    | 115 ++++++++++
+ arch/arm64/kernel/efi.c              |   1 +
+ arch/x86/include/asm/mshyperv.h      |   4 +
+ drivers/hv/Kconfig                   |   3 +-
+ drivers/hv/hv.c                      |   3 +
+ include/asm-generic/mshyperv.h       |   5 +
+ include/linux/arm-smccc.h            |   1 +
+ 13 files changed, 1133 insertions(+), 1 deletion(-)
+ create mode 100644 arch/arm64/hyperv/Makefile
+ create mode 100644 arch/arm64/hyperv/hv_core.c
+ create mode 100644 arch/arm64/hyperv/mshyperv.c
+ create mode 100644 arch/arm64/include/asm/hyperv-tlfs.h
+ create mode 100644 arch/arm64/include/asm/mshyperv.h
 
 -- 
-Kees Cook
+1.8.3.1
+
