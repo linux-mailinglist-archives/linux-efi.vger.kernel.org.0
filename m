@@ -2,69 +2,79 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EA26D185864
-	for <lists+linux-efi@lfdr.de>; Sun, 15 Mar 2020 03:05:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A3AF2185C94
+	for <lists+linux-efi@lfdr.de>; Sun, 15 Mar 2020 14:20:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727197AbgCOCF4 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sat, 14 Mar 2020 22:05:56 -0400
-Received: from mail-qk1-f194.google.com ([209.85.222.194]:34393 "EHLO
-        mail-qk1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726130AbgCOCF4 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sat, 14 Mar 2020 22:05:56 -0400
-Received: by mail-qk1-f194.google.com with SMTP id f3so19997425qkh.1
-        for <linux-efi@vger.kernel.org>; Sat, 14 Mar 2020 19:05:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:sender:from:date:message-id:subject:to;
-        bh=rySLrb6e8pdxDloLytBEUWmIP8HvBNLPxIuJLcg1j9c=;
-        b=Jk6/+fJx+TslAJH6ulaEgz06hr42z6TWCP6Y2spVECMGsx2hL6gxZKiqOU8dKYNZ+K
-         wrqL4IEDH/5l/3aDgnu14WIfmtmmkLAP6IV6xwMNiTZKTQcGizzeqN2Z4xrLdugaBrW1
-         FHSh248ZHb5n1eCeA5JLtWrOeVMM11eNP0fjWX8ygGcL9z0N8OAD7JTj/HqJBqqXQ246
-         lvkoJh6bEKGqFqaO9jyg9uLaypm+rjPNtySmuwbHMINEK9ZYOj91uFEjwKbGIA9kEROb
-         qj5F955lJ76Es51A46d3JtQbR4Eq1hn6pbNdzFKSdSivt+VP53s/dxAZhajz5eyZxDby
-         V7KA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
-         :to;
-        bh=rySLrb6e8pdxDloLytBEUWmIP8HvBNLPxIuJLcg1j9c=;
-        b=PKLVSAGSY51enS3wGE0cN3q3T6tJFh1WWEnOqQN0PxCdWNmGIxlsixMklEP8HGvfxY
-         IdnNmhXFTdVRA6ICAOWpnWrc2NmRFgpO19Kvls0OndyBDzXp3TRh6+ES5NlkBl0GSNYN
-         GD+MqhTleaCfQTZ5NBRZK+W6jMGR8Nsk832mU24t+WnEtwpU0GPx0IceEMuORKnunUzN
-         ICjIThavuz4VquAp90kZBRiU3HLWGg9f3c6KvvREwafBgwMXR+RZHaHmDVWdP9V+ldrS
-         ke8otBndjRFL1FTRhzEIfTHrvFFn+ykj0JNt6KNSluzaHPX/1jSLzVSZrigt3YX0APq6
-         uu0A==
-X-Gm-Message-State: ANhLgQ1G3dJR7mk7DY1WbLcR5F5JrdZqFaoddbNG5U7p5+c8smMBFTRk
-        JJrUfGTPWgxMjh2GJAe5u9DV+FZjIozTFzUMAiEcNDO3DFw=
-X-Google-Smtp-Source: ADFU+vswlN1R5SzrAFhoLDBCge9TkhWfziJ7I8/Vc9g2GKYaNycQVgCW3OJhd/4bklqTWZDcr+S51Ni/AMVAzvhKWNE=
-X-Received: by 2002:a9d:560b:: with SMTP id e11mr15041026oti.226.1584205026049;
- Sat, 14 Mar 2020 09:57:06 -0700 (PDT)
+        id S1728583AbgCONUl convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-efi@lfdr.de>); Sun, 15 Mar 2020 09:20:41 -0400
+Received: from mga18.intel.com ([134.134.136.126]:4372 "EHLO mga18.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728582AbgCONUl (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Sun, 15 Mar 2020 09:20:41 -0400
+IronPort-SDR: pbFVnCkXChS9yhh5IQCqux6HbqBjWbw633rqXm1pTvwlqwgqg6GfqY18DRusa0kWQME8HDeN9Y
+ qKjTrM73sCxQ==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Mar 2020 06:20:40 -0700
+IronPort-SDR: oetZumnJebBpPskjZ34t9uSTsqH2RwVT0xCGSlbToP2DSsqTw2rK7pQR5/HT04K0/emw9k+L4E
+ yy4aFz/vnlTQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.70,556,1574150400"; 
+   d="scan'208";a="232910924"
+Received: from fmsmsx108.amr.corp.intel.com ([10.18.124.206])
+  by orsmga007.jf.intel.com with ESMTP; 15 Mar 2020 06:20:40 -0700
+Received: from shsmsx605.ccr.corp.intel.com (10.109.6.215) by
+ FMSMSX108.amr.corp.intel.com (10.18.124.206) with Microsoft SMTP Server (TLS)
+ id 14.3.439.0; Sun, 15 Mar 2020 06:20:40 -0700
+Received: from shsmsx605.ccr.corp.intel.com (10.109.6.215) by
+ SHSMSX605.ccr.corp.intel.com (10.109.6.215) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1713.5; Sun, 15 Mar 2020 21:20:37 +0800
+Received: from shsmsx605.ccr.corp.intel.com ([10.109.6.215]) by
+ SHSMSX605.ccr.corp.intel.com ([10.109.6.215]) with mapi id 15.01.1713.004;
+ Sun, 15 Mar 2020 21:20:37 +0800
+From:   "Zhuo, Qiuxu" <qiuxu.zhuo@intel.com>
+To:     Kees Cook <keescook@chromium.org>
+CC:     "ardb@kernel.org" <ardb@kernel.org>,
+        "Luck, Tony" <tony.luck@intel.com>,
+        "matt@codeblueprint.co.uk" <matt@codeblueprint.co.uk>,
+        "Gao, Liming" <liming.gao@intel.com>,
+        "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>
+Subject: RE: [PATCH v6 1/2] efi: Add 'nr_config_table' variable in efi
+ structure
+Thread-Topic: [PATCH v6 1/2] efi: Add 'nr_config_table' variable in efi
+ structure
+Thread-Index: AQHV+AtZNdca73ftgkurIc1TPG8omahG6bOAgAK+jsA=
+Date:   Sun, 15 Mar 2020 13:20:37 +0000
+Message-ID: <11ea78c630fc46c4bbbd837c06130082@intel.com>
+References: <20200312011324.70701-1-qiuxu.zhuo@intel.com>
+ <202003132023.68BFCB0@keescook>
+In-Reply-To: <202003132023.68BFCB0@keescook>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+dlp-product: dlpe-windows
+dlp-reaction: no-action
+dlp-version: 11.2.0.6
+x-originating-ip: [10.239.127.36]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Received: by 2002:ac9:3bc4:0:0:0:0:0 with HTTP; Sat, 14 Mar 2020 09:57:05
- -0700 (PDT)
-From:   Omar Ousman <omarousman25@gmail.com>
-Date:   Sat, 14 Mar 2020 17:57:05 +0100
-X-Google-Sender-Auth: ZBmxavjsl6uURHJRaxPftUhWAFE
-Message-ID: <CABmh+1kGA2KxV+JrRg4s5ZQoTMW_22U9uNugQSg=XpM8+SWYnA@mail.gmail.com>
-Subject: You received my last mail,,,,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-I am Mr.Omar Ousman, a regional managing director (CORIS BANK
-INTERNATIONAL) Ouagadougou Burkina Faso, in my department we have
-US$9,500.0000 million united state dollars, to transfer into your
-account as a dormant fund.If you are interested to use this fund to
-help the orphans around the world contact and send me your personal
-information for more details to my email omarousman25@gmail.com
+> From: linux-efi-owner@vger.kernel.org <linux-efi-owner@vger.kernel.org> On  Behalf Of Kees Cook
+>> ...
+> >  	unsigned long runtime;		/* runtime table */
+> >  	unsigned long config_table;	/* config tables */
+> > +	unsigned long nr_config_table; /* the number of config tables */
+> 
+> nit: please use a tab character before the comment to get correct alignemnt.
 
-Your full names..........
-Your country of origin..........
-Your occupation..........
-Your Age..........
-Your Mobile Number..........
+OK. Will correct it. Thanks!
 
-Best Regards,
+-Qiuxu
