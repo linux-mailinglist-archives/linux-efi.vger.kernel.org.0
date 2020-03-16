@@ -2,86 +2,83 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 873971864AB
-	for <lists+linux-efi@lfdr.de>; Mon, 16 Mar 2020 06:33:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D0A3E18663A
+	for <lists+linux-efi@lfdr.de>; Mon, 16 Mar 2020 09:20:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729682AbgCPFdM (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 16 Mar 2020 01:33:12 -0400
-Received: from mga17.intel.com ([192.55.52.151]:26380 "EHLO mga17.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726821AbgCPFdM (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Mon, 16 Mar 2020 01:33:12 -0400
-IronPort-SDR: +ybyiTjTmx5mkRnUa3xz/qeKUGShyA4PD+ADjS6zOCXuZqeYGBTwOusoruFUN8wtFFgrjkFmh7
- ptvdB8v6YP8w==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Mar 2020 22:33:11 -0700
-IronPort-SDR: Q12YfgGBkaN5GdjX8vNhB9Y9BEEPy23gK4ICDAinqBAYA/TM4thCnOyLlxDCamAOS8vvSukxvn
- HyLyqu32NXfA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.70,559,1574150400"; 
-   d="scan'208";a="235927298"
-Received: from fmsmsx103.amr.corp.intel.com ([10.18.124.201])
-  by fmsmga007.fm.intel.com with ESMTP; 15 Mar 2020 22:33:11 -0700
-Received: from shsmsx601.ccr.corp.intel.com (10.109.6.141) by
- FMSMSX103.amr.corp.intel.com (10.18.124.201) with Microsoft SMTP Server (TLS)
- id 14.3.439.0; Sun, 15 Mar 2020 22:33:11 -0700
-Received: from shsmsx605.ccr.corp.intel.com (10.109.6.215) by
- SHSMSX601.ccr.corp.intel.com (10.109.6.141) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1713.5; Mon, 16 Mar 2020 13:32:41 +0800
-Received: from shsmsx605.ccr.corp.intel.com ([10.109.6.215]) by
- SHSMSX605.ccr.corp.intel.com ([10.109.6.215]) with mapi id 15.01.1713.004;
- Mon, 16 Mar 2020 13:32:41 +0800
-From:   "Zhuo, Qiuxu" <qiuxu.zhuo@intel.com>
-To:     Ard Biesheuvel <ardb@kernel.org>
-CC:     Kees Cook <keescook@chromium.org>,
-        "Luck, Tony" <tony.luck@intel.com>,
-        Matt Fleming <matt@codeblueprint.co.uk>,
-        "Gao, Liming" <liming.gao@intel.com>,
-        linux-efi <linux-efi@vger.kernel.org>
-Subject: RE: [PATCH v6 0/2] Add capsule-pstore backend support
-Thread-Topic: [PATCH v6 0/2] Add capsule-pstore backend support
-Thread-Index: AQHV+AtRt2A4QBRYMEWJgS/6qY3k5KhJLOAAgAGIUXA=
-Date:   Mon, 16 Mar 2020 05:32:41 +0000
-Message-ID: <d0a09900ca0341029980d351bbe2aecc@intel.com>
-References: <20200312011312.70653-1-qiuxu.zhuo@intel.com>
- <CAKv+Gu9BvqZavV6XjfuacXXpabNCXLYEw-f=81fwX8hdL6Fn-A@mail.gmail.com>
-In-Reply-To: <CAKv+Gu9BvqZavV6XjfuacXXpabNCXLYEw-f=81fwX8hdL6Fn-A@mail.gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-dlp-product: dlpe-windows
-dlp-reaction: no-action
-dlp-version: 11.2.0.6
-x-originating-ip: [10.239.127.36]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        id S1730086AbgCPIU4 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 16 Mar 2020 04:20:56 -0400
+Received: from mout.kundenserver.de ([212.227.17.24]:48799 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730034AbgCPIU4 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 16 Mar 2020 04:20:56 -0400
+Received: from mail-qk1-f180.google.com ([209.85.222.180]) by
+ mrelayeu.kundenserver.de (mreue107 [212.227.15.145]) with ESMTPSA (Nemesis)
+ id 1MEVqu-1j6Yv62DbW-00G0Hm; Mon, 16 Mar 2020 09:20:54 +0100
+Received: by mail-qk1-f180.google.com with SMTP id c145so24591174qke.12;
+        Mon, 16 Mar 2020 01:20:54 -0700 (PDT)
+X-Gm-Message-State: ANhLgQ25IJsjCF4738PIkgJ2tExxjlDAHAquM/L5EXO1shlp/BalAUv4
+        g9OETrClgVxEBs19Y7GPjuSWBJBpRrm5fYr24dA=
+X-Google-Smtp-Source: ADFU+vtZkjo0vBQ9aoA74/yqa0lPFIa34VkRS7tbzInZGxQBVX7guZUNzz41ojACEOaEmnmy5gmfBpvemtmAz+Tp3s4=
+X-Received: by 2002:a37:b984:: with SMTP id j126mr23717429qkf.3.1584346853152;
+ Mon, 16 Mar 2020 01:20:53 -0700 (PDT)
 MIME-Version: 1.0
+References: <1584200119-18594-1-git-send-email-mikelley@microsoft.com> <1584200119-18594-10-git-send-email-mikelley@microsoft.com>
+In-Reply-To: <1584200119-18594-10-git-send-email-mikelley@microsoft.com>
+From:   Arnd Bergmann <arnd@arndb.de>
+Date:   Mon, 16 Mar 2020 09:20:37 +0100
+X-Gmail-Original-Message-ID: <CAK8P3a1YUjhaVUmjVC2pCoTTBTU408iN44Q=QZ0RDz8rmzJisQ@mail.gmail.com>
+Message-ID: <CAK8P3a1YUjhaVUmjVC2pCoTTBTU408iN44Q=QZ0RDz8rmzJisQ@mail.gmail.com>
+Subject: Re: [PATCH v6 09/10] arm64: efi: Export screen_info
+To:     Michael Kelley <mikelley@microsoft.com>
+Cc:     Will Deacon <will@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Marc Zyngier <maz@kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        gregkh <gregkh@linuxfoundation.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        linux-hyperv@vger.kernel.org,
+        linux-efi <linux-efi@vger.kernel.org>,
+        linux-arch <linux-arch@vger.kernel.org>, olaf@aepfle.de,
+        Andy Whitcroft <apw@canonical.com>,
+        Vitaly Kuznetsov <vkuznets@redhat.com>,
+        Jason Wang <jasowang@redhat.com>, marcelo.cerri@canonical.com,
+        "K. Y. Srinivasan" <kys@microsoft.com>, sunilmut@microsoft.com,
+        Boqun Feng <boqun.feng@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Provags-ID: V03:K1:3oiE+Otbi3jGoRi0yjnKv95hDDl7bcMuoGX6Dw9D31mFMPeYSYV
+ /VFxgUr5NoC+gzUi/shyYcUzhROyvji2QmRVwepKFeCCQSqxBS1FJsQ8iDXSl/dlplv8h3C
+ Klt6YPtEyXC4PLvLTD4R1/sdFcz8nqEZ0+GhkUvneACxcHzhz0K0IxUCgZyUcNmgTt0ldpw
+ lUHE/Z8cSJ7M/3SZEt7qg==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:EzFEDNwqUXg=:Te3pPTz/fHgCxcuNS/q6Yd
+ b3bjIcurtb42JyNfB/YwiM1+xkT6bCyBSwg63OT00C76m9rLzdWUUVLaaWFPJWo+rXvYC5XNr
+ uwSSMlxWYW6l9Oanyd0sPvQk1jTWHy+xUqXRRSkloXo0zYYZaeUAz4Pjx7UtDjF6/5oOKLIpN
+ 9xMlYC7TyI5Ij0+d9Yh3r4qLyfFvHs6z/7iK4rkusl33pX+AHvhD4sQWvmb/hvYOcrvC/+H0r
+ Zgsr5tXFHCNEdd22VZY5yuj9KALnY1fE359j2BeouftK8lvYALNm0a1C4WBK+f5CVa5Wa8Gvj
+ Fr4Hm43UshnnC2pISSpr0wvAUzla+n3aCVL1Twn9/WZbAs4cI9eoz+3owPd4MyuHkZxAq7E4r
+ qpzAg8hciQkGoeqmmBrS6fezCT/I7kMDtck1Hlogi39OgkJr7+i1K1qxm1vsG1d8EEaxcJ272
+ D5N1OubPzk/u8FPxpciaRydt3zi7FTo7NSlWrIW6a0/Ci0UySbdDbGtLmDB2BhK2+CnzPLCNc
+ JHoFX5uWIMP1x7EaJuOIroIWftYotzYxnRDAmoUZTqA7yKIJysfIyTZR43MKSUrOa4b5aqa55
+ ldIDr2CnZup+fckT7MwA41yyGKcn3vWqAzJ8DItg+HBH+BTRUjAsLjTxf4SoQnQK2dIluuL7U
+ MKVukYbKQeFHId1biQroJm6KV4u7zllQ5oa+HUF10WK5m1xYV8QauC+BjCjhkT3rJc3umIvgG
+ zBOO0ppvtZW7TBI0K5i1kWzGRcpGb2267RdO24e4TIWUJs3soH8rJfhvA8cUBPlpuax2BHii4
+ JfNHzfETBJNSBD3Qp4eqOZbhJ4zvKpmOQNueLRt1E2zaMVNhEY=
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-PiBGcm9tOiBsaW51eC1lZmktb3duZXJAdmdlci5rZXJuZWwub3JnIDxsaW51eC1lZmktb3duZXJA
-dmdlci5rZXJuZWwub3JnPiBPbg0KPi4uLg0KPiBPbiBXZWQsIDExIE1hciAyMDIwIGF0IDIxOjEy
-LCBRaXV4dSBaaHVvIDxxaXV4dS56aHVvQGludGVsLmNvbT4gd3JvdGU6DQo+ID4NCj4gPiBDaGFu
-Z2UgTG9nIHY1LT52NjoNCj4gPiAgIFBhcnQxOiBObyBjaGFuZ2VzLg0KPiA+ICAgUGFydDI6IFVw
-ZGF0ZSBjYXBzdWxlLXBzdG9yZS5jIGZpbGUgaGVhZGVyLg0KPiA+ICAgICAgICAgIE1vdmUgdGhl
-IHZhcmlhYmxlICdlZmlfY2Fwc3VsZV9wc3RvcmVfaW5mbycgYmFja3dhcmQgKGZvciByZW1vdmlu
-Zw0KPiBzb21lIGZ1bmN0aW9uIGRlY2xhcmF0aW9ucykuDQo+ID4NCj4gDQo+IFRoaXMgY29uZmxp
-Y3RzIGJhZGx5IHdpdGggdGhlIGVmaS9jb3JlIGNoYW5nZXMgcXVldWVkIHVwIGluIHRoZSB0aXAg
-dHJlZSAoYW5kIGhlbmNlIGxpbnV4LW5leHQpIFBsZWFzZSByZWJhc2UgYW5kIHJlcG9zdA0KDQpI
-aSBBcmQsDQoNClRoZSBmb2xsb3dpbmcgY29tbWl0IG9uIHRoZSB0aXAgdHJlZSByZW1vdmVzIHRo
-ZSB2YXJpYWJsZXMgJ2NvbmZpZ190YWJsZScgZnJvbSB0aGUgZWZpIHN0cnVjdHVyZS4NCg0KICAg
-IDljZDQzN2FjMGVmNCAoImVmaS94ODY6IE1ha2UgZndfdmVuZG9yLCBjb25maWdfdGFibGUgYW5k
-IHJ1bnRpbWUgc3lzZnMgbm9kZXMgeDg2IHNwZWNpZmljIikNCg0KQnV0IHRoZSBleHRlcm5hbCBk
-cml2ZXIgImNhcHN1bGUtcHN0b3JlLmtvIiBuZWVkcyB0byBhY2Nlc3MgJ2NvbmZpZ190YWJsZScg
-YW5kICducl90YWJsZXMnIHRvIGdvIHRocm91Z2gNCnRoZSBjb25maWd1cmF0aW9uIHRhYmxlIHRv
-IGV4dHJhY3QgY3Jhc2ggY2Fwc3VsZXMuDQoNCkFkZGluZyAnY29uZmlnX3RhYmxlJyBhbmQgJ25y
-X3RhYmxlcycgYmFjayB0byB0aGUgZWZpIHN0cnVjdHVyZSBsb29rcyBsaWtlIG5vdCBhIGdvb2Qg
-d2F5LiANCkRvIHlvdSBoYXZlIGFueSAgc3VnZ2VzdGlvbiBvbiBob3cgdG8gZXhwb3J0ICdjb25m
-aWdfdGFibGUnIGFuZCAnbnJfdGFibGVzJyB2YXJpYWJsZXMgZm9yIHRoZSBleHRlcm5hbCBkcml2
-ZXIgImNhcHN1bGUtcHN0b3JlLmtvIj8NCg0KVGhhbmtzIQ0KLVFpdXh1DQoNCg0KDQo=
+On Sat, Mar 14, 2020 at 4:36 PM Michael Kelley <mikelley@microsoft.com> wrote:
+>
+> The Hyper-V frame buffer driver may be built as a module, and
+> it needs access to screen_info. So export screen_info.
+>
+> Signed-off-by: Michael Kelley <mikelley@microsoft.com>
+
+Is there any chance of using a more modern KMS based driver for the screen
+than the old fbdev subsystem? I had hoped to one day completely remove
+support for the old CONFIG_VIDEO_FBDEV and screen_info from modern
+architectures.
+
+     Arnd
