@@ -2,144 +2,84 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 45973189D70
-	for <lists+linux-efi@lfdr.de>; Wed, 18 Mar 2020 14:56:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8659B18A3AD
+	for <lists+linux-efi@lfdr.de>; Wed, 18 Mar 2020 21:19:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726998AbgCRN4g (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 18 Mar 2020 09:56:36 -0400
-Received: from us-smtp-delivery-74.mimecast.com ([63.128.21.74]:42785 "EHLO
-        us-smtp-delivery-74.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726851AbgCRN4g (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 18 Mar 2020 09:56:36 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1584539795;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=UXRpaQxYrO/gvKAeP6md3e48aYoFmEEQesPUZqe43ME=;
-        b=ZaKOiB5P+N12ZoHn3ci35b7mg9iAv/fiYGILl9VnA6SShououLoROCorCbpVCWrkjVf1VJ
-        9NQwA4jUdKtJwQJAKyMOWL092oXhb+TciB8mGvRyvDbj6N6+RP6IyK/os4Qaa5llIpJyRT
-        9K8OMrcBhvhIKIpS/u4VvEPQltGuN28=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-44-axINgpW9OueywILVOZKYvQ-1; Wed, 18 Mar 2020 09:56:26 -0400
-X-MC-Unique: axINgpW9OueywILVOZKYvQ-1
-Received: by mail-wm1-f71.google.com with SMTP id f8so430481wmh.4
-        for <linux-efi@vger.kernel.org>; Wed, 18 Mar 2020 06:56:26 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=UXRpaQxYrO/gvKAeP6md3e48aYoFmEEQesPUZqe43ME=;
-        b=J8FN7tEjYjzrBraNOyeBuLrPStDtu853fia/i6/TsKcojrxTB92JqXlND51tz2nefz
-         rZV+WPUzROyUiwdlCTDzWj+uv2jQ546hcb4dOk9WIRlBMvvlIUcrWZ6APIso6UdTaImv
-         Q/tTDlGnWEuCVNg6noJ5yAbxsD44j1BztS2Q9TLggNWGQDYt0RRPdJYOPIHGho4FkgLK
-         X70LS8VwxNkN8T97dEKdusrVlIKr+ZqwybsVHnyh4wyuYTLKhVoIGcbIKcSFN76+Iias
-         9lMxIw9ClzmN40RuOS5MHjWJFN6knCcSv+fDIpcLnTX+hTUtV7dRlvPnNColL8AwxUna
-         RNWg==
-X-Gm-Message-State: ANhLgQ11q+AYwAZBSH0RafwXnnhelQKqeX5zOA+XiGvPguNOsIHx5p/g
-        3HJ4xA1ZVibwp4hrOydo6PrVSqCQdEEov9OvYJLXhqwXccAT/062LsAuoChkjLUf66SS+UtSQVx
-        qFAADCDdve6u2O1HD6f61
-X-Received: by 2002:a7b:c1da:: with SMTP id a26mr5439589wmj.45.1584539785328;
-        Wed, 18 Mar 2020 06:56:25 -0700 (PDT)
-X-Google-Smtp-Source: ADFU+vtb1764SLhxHnGxs/fPAE7qJ0588Bl0/gSd2uZQ4GBTE49dIlkXOgxGNoiqRP7YGeBsiqCsow==
-X-Received: by 2002:a7b:c1da:: with SMTP id a26mr5439564wmj.45.1584539785096;
-        Wed, 18 Mar 2020 06:56:25 -0700 (PDT)
-Received: from x1.localdomain (2001-1c00-0c0c-fe00-fc7e-fd47-85c1-1ab3.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:fc7e:fd47:85c1:1ab3])
-        by smtp.gmail.com with ESMTPSA id w67sm3982303wmb.41.2020.03.18.06.56.23
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 18 Mar 2020 06:56:24 -0700 (PDT)
-Subject: Re: [PATCH v12 03/10] firmware: Rename FW_OPT_NOFALLBACK to
- FW_OPT_NOFALLBACK_SYSFS
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Andy Lutomirski <luto@kernel.org>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Darren Hart <dvhart@infradead.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        Luis Chamberlain <mcgrof@kernel.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        "H . Peter Anvin" <hpa@zytor.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Peter Jones <pjones@redhat.com>,
-        Dave Olsthoorn <dave@bewaar.me>, x86@kernel.org,
-        platform-driver-x86@vger.kernel.org, linux-efi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-input@vger.kernel.org
-References: <20200115163554.101315-1-hdegoede@redhat.com>
- <20200115163554.101315-4-hdegoede@redhat.com>
- <20200124085751.GA2957916@kroah.com>
- <d25d5d6e-0348-b19f-539e-048cfa70d6a6@redhat.com>
- <20200318132741.GA2794545@kroah.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-Message-ID: <8fa336bd-339f-40e0-08fe-e6b968736679@redhat.com>
-Date:   Wed, 18 Mar 2020 14:56:23 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+        id S1726933AbgCRUTo (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 18 Mar 2020 16:19:44 -0400
+Received: from mail.kernel.org ([198.145.29.99]:59612 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726813AbgCRUTo (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Wed, 18 Mar 2020 16:19:44 -0400
+Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id B5EE82077B
+        for <linux-efi@vger.kernel.org>; Wed, 18 Mar 2020 20:19:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1584562783;
+        bh=2BOvFL6wDqhZM4tL2WXsTzNvoXA1qAyLp4CuLbPElwQ=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=rxyYS/KThs08WX8a343+WvilwkUHtvjfmEQXw/7enmZL0mDD7wDw4C73UHDTEN9sM
+         ShC2iFMjOmb3ZzEj3mG4Euob5FcZg0izLoHYcTyxHwlARFo7CGDU6mEqXuc4dqvGs5
+         W6UR6Jb37n+UiSi1Qt1u4bVyrINBMvl1p+0wecYs=
+Received: by mail-qv1-f50.google.com with SMTP id n1so9910420qvz.4
+        for <linux-efi@vger.kernel.org>; Wed, 18 Mar 2020 13:19:43 -0700 (PDT)
+X-Gm-Message-State: ANhLgQ31Pq/boZE12j6TOq5Iat+uqim7+JzvRy3fVZanr/cOqa2dj45M
+        2muo7vogHLMS4o70YtuvAEIn1aX+Yi9zUcsHCJXccg==
+X-Google-Smtp-Source: ADFU+vvcG/jaaqeVu4NnhMXDQ3RRng6YN9Mn4g+XqWh2XIesDR7bZ/BoYLXTyeygvvnYgL3hUzCcPYMgEVmKtorH2vQ=
+X-Received: by 2002:a0c:80a5:: with SMTP id 34mr6294470qvb.184.1584562782783;
+ Wed, 18 Mar 2020 13:19:42 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20200318132741.GA2794545@kroah.com>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <20200312011312.70653-1-qiuxu.zhuo@intel.com> <CAKv+Gu9BvqZavV6XjfuacXXpabNCXLYEw-f=81fwX8hdL6Fn-A@mail.gmail.com>
+ <d0a09900ca0341029980d351bbe2aecc@intel.com>
+In-Reply-To: <d0a09900ca0341029980d351bbe2aecc@intel.com>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Wed, 18 Mar 2020 16:19:31 -0400
+X-Gmail-Original-Message-ID: <CAKv+Gu82OFMJk-jQKdvA0_Sgp_CCmvC1a63QYrY+Cc4Qjx3+Yw@mail.gmail.com>
+Message-ID: <CAKv+Gu82OFMJk-jQKdvA0_Sgp_CCmvC1a63QYrY+Cc4Qjx3+Yw@mail.gmail.com>
+Subject: Re: [PATCH v6 0/2] Add capsule-pstore backend support
+To:     "Zhuo, Qiuxu" <qiuxu.zhuo@intel.com>
+Cc:     Kees Cook <keescook@chromium.org>,
+        "Luck, Tony" <tony.luck@intel.com>,
+        Matt Fleming <matt@codeblueprint.co.uk>,
+        "Gao, Liming" <liming.gao@intel.com>,
+        linux-efi <linux-efi@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hi Greg,
+On Mon, 16 Mar 2020 at 01:33, Zhuo, Qiuxu <qiuxu.zhuo@intel.com> wrote:
+>
+> > From: linux-efi-owner@vger.kernel.org <linux-efi-owner@vger.kernel.org> On
+> >...
+> > On Wed, 11 Mar 2020 at 21:12, Qiuxu Zhuo <qiuxu.zhuo@intel.com> wrote:
+> > >
+> > > Change Log v5->v6:
+> > >   Part1: No changes.
+> > >   Part2: Update capsule-pstore.c file header.
+> > >          Move the variable 'efi_capsule_pstore_info' backward (for removing
+> > some function declarations).
+> > >
+> >
+> > This conflicts badly with the efi/core changes queued up in the tip tree (and hence linux-next) Please rebase and repost
+>
+> Hi Ard,
+>
+> The following commit on the tip tree removes the variables 'config_table' from the efi structure.
+>
+>     9cd437ac0ef4 ("efi/x86: Make fw_vendor, config_table and runtime sysfs nodes x86 specific")
+>
+> But the external driver "capsule-pstore.ko" needs to access 'config_table' and 'nr_tables' to go through
+> the configuration table to extract crash capsules.
+>
+> Adding 'config_table' and 'nr_tables' back to the efi structure looks like not a good way.
+> Do you have any  suggestion on how to export 'config_table' and 'nr_tables' variables for the external driver "capsule-pstore.ko"?
+>
 
-On 3/18/20 2:27 PM, Greg Kroah-Hartman wrote:
-> On Fri, Jan 24, 2020 at 10:16:48AM +0100, Hans de Goede wrote:
->> Hi,
->>
->> On 1/24/20 9:57 AM, Greg Kroah-Hartman wrote:
->>> On Wed, Jan 15, 2020 at 05:35:47PM +0100, Hans de Goede wrote:
->>>> This is a preparation patch for adding a new platform fallback mechanism,
->>>> which will have its own enable/disable FW_OPT_xxx option.
->>>>
->>>> Note this also fixes a typo in one of the re-wordwrapped comments:
->>>> enfoce -> enforce.
->>>>
->>>> Acked-by: Luis Chamberlain <mcgrof@kernel.org>
->>>> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
->>>
->>> I've taken this in my tree for now in a quest to try to get others to
->>> pay attention to this series...
->>
->> Thank you.
->>
->> As mentioned before I believe that this series is ready for merging now.
->>
->> Andy Lutomirski had one last change request for v12 of the second
->> patch in the series, specifically to replace the loop searching for
->> the prefix with a memem, but the kernel does not have memmem.
->>
->> Andy, are you ok with v12 as is, given that we don't have memmem ?
->>
->> Assuming Andy is ok with v12 as is, then to merge this we need
->> to probably wait for 5.6-rc1 and then have the x86/efi folks do
->> an immutable branch with the first 2 patches of the series.
-> 
-> Did this every happen?  Or do I need to dump this all into my tree?
+I will get back to you on monday about this. In any case, this will
+have to wait until v5.8
 
-Ard has done a immutable branch with just the 2 patches:
-
-https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git/tag/?h=stable-shared-branch-for-driver-tree
-
-I did not see any mails about this being pulled / merged, but I just
-checked and this has landed in the tip tree 10 days ago:
-
-https://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git/log/include/linux/efi.h?h=efi/core
-
-So if you merge the stable-shared-branch-for-driver-tree tag and then
-merge patches 3-8 of this series (or rather 4-8 since you already
-merged 3 IIRC) that would be great.
-
-Regards,
-
-Hans
-
+>
