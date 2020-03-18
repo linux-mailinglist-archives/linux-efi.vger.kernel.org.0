@@ -2,132 +2,125 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DD8501892CA
-	for <lists+linux-efi@lfdr.de>; Wed, 18 Mar 2020 01:18:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5963B189611
+	for <lists+linux-efi@lfdr.de>; Wed, 18 Mar 2020 07:59:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727124AbgCRASm (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 17 Mar 2020 20:18:42 -0400
-Received: from mail-eopbgr770101.outbound.protection.outlook.com ([40.107.77.101]:27902
-        "EHLO NAM02-SN1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726735AbgCRASm (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Tue, 17 Mar 2020 20:18:42 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=g9qs5GRq9v40XZmFfW5YDJH3ci7OFvETTsQ7B3HiJ2pK9i821Ezd+oLCggVpXzgrFHmoI1vOPJH+jlSR3Tae0+as33bvUdnhxhZhY6k1wG4Y8IA1y5SAM48zoLmLaXknAGZVGmXaJivkI6jgdZghqZtrH3aYj5vVfdsw7whZXJI5oInoiXq3shK/UwPD45XV1yW9trkeYjOTsvHnYRBPo9GxdB0aqpxDtomNSsP3USkHrluNkGJiJ0u5QQFXJPxbJxD0mkBh9+kdUa+VXsY80+nlAAysFaJj1fSx6nx9OR1RMThzEllFF/S7xfLUdCcBiu0EJzNmEO2pI7ommCaJCg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1d+VYi8g7pTo0pUctlsP9nsPPvpQ/jGV+rl1Qn8AErE=;
- b=BFOcqGpdSmNFf5oFwa2cnouOoEkFuqbTCqv9IX5y2UShyAaTj7U0m7PiaU2HyeQDZbujHcs87UUuDXv5ZDbIeLEUOVVIoEjqxjFpMG7bi1vCGfloHBqkiA1GpA3PijK9v7+nLP5zPtlA0hl6+23dRNvM7dBgZ1/H0XilIQvuui3Y6RgYam98Xtn+Qvy33fPwoL1UmJznbRFzs1J+DdOP7jkTZfJgeWr93eydXlDceGpm0/grvUACvVluguvsI0qFnlIyKifzStJlC3aV+cDUruErkrxLBjrNAh5/Zp32VmoyFDf3vjglEw0Ii40Ut8JpVfV3wDeRGi+brlPLYa//zQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=microsoft.com; dmarc=pass action=none
- header.from=microsoft.com; dkim=pass header.d=microsoft.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1d+VYi8g7pTo0pUctlsP9nsPPvpQ/jGV+rl1Qn8AErE=;
- b=VojK9mX+FrTBR4KsjJzW43N7eFPGIB8UrdePlsh/hefTJlRvAcfDNMgUd2H+dlk/O8Op6eskdKm0OEJmhZnMrwrfnWnSooPJI1x96gdTy6bl8ZMXi3GhNlLfk4LdCYaaw33nyP6TxN8DYvpkAIGVS9O0AOyYwe83bQPNuzyGMwY=
-Received: from MW2PR2101MB1052.namprd21.prod.outlook.com (2603:10b6:302:a::16)
- by MW2PR2101MB1082.namprd21.prod.outlook.com (2603:10b6:302:a::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2835.7; Wed, 18 Mar
- 2020 00:18:39 +0000
-Received: from MW2PR2101MB1052.namprd21.prod.outlook.com
- ([fe80::71ee:121:71bd:6156]) by MW2PR2101MB1052.namprd21.prod.outlook.com
- ([fe80::71ee:121:71bd:6156%9]) with mapi id 15.20.2835.003; Wed, 18 Mar 2020
- 00:18:39 +0000
-From:   Michael Kelley <mikelley@microsoft.com>
-To:     Arnd Bergmann <arnd@arndb.de>
-CC:     Will Deacon <will@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Marc Zyngier <maz@kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        gregkh <gregkh@linuxfoundation.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        "olaf@aepfle.de" <olaf@aepfle.de>,
-        Andy Whitcroft <apw@canonical.com>,
-        vkuznets <vkuznets@redhat.com>, Jason Wang <jasowang@redhat.com>,
-        "marcelo.cerri@canonical.com" <marcelo.cerri@canonical.com>,
-        KY Srinivasan <kys@microsoft.com>,
-        Sunil Muthuswamy <sunilmut@microsoft.com>,
-        Boqun Feng <boqun.feng@gmail.com>
-Subject: RE: [PATCH v6 09/10] arm64: efi: Export screen_info
-Thread-Topic: [PATCH v6 09/10] arm64: efi: Export screen_info
-Thread-Index: AQHV+hZM60S+LKGqSUO5qXQSEIBQyahK416AgAKQkEA=
-Date:   Wed, 18 Mar 2020 00:18:39 +0000
-Message-ID: <MW2PR2101MB10524254D2FE3EFC72329465D7F70@MW2PR2101MB1052.namprd21.prod.outlook.com>
-References: <1584200119-18594-1-git-send-email-mikelley@microsoft.com>
- <1584200119-18594-10-git-send-email-mikelley@microsoft.com>
- <CAK8P3a1YUjhaVUmjVC2pCoTTBTU408iN44Q=QZ0RDz8rmzJisQ@mail.gmail.com>
-In-Reply-To: <CAK8P3a1YUjhaVUmjVC2pCoTTBTU408iN44Q=QZ0RDz8rmzJisQ@mail.gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-msip_labels: MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Enabled=True;
- MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SiteId=72f988bf-86f1-41af-91ab-2d7cd011db47;
- MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Owner=mikelley@ntdev.microsoft.com;
- MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SetDate=2020-03-18T00:18:36.7972300Z;
- MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Name=General;
- MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Application=Microsoft Azure
- Information Protection;
- MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ActionId=92eac9d0-fc23-4dc8-9926-4f5d9b19181f;
- MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Extended_MSFT_Method=Automatic
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=mikelley@microsoft.com; 
-x-originating-ip: [24.22.167.197]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-ht: Tenant
-x-ms-office365-filtering-correlation-id: 39cc58c0-2c60-48cb-5116-08d7cad1e86b
-x-ms-traffictypediagnostic: MW2PR2101MB1082:|MW2PR2101MB1082:|MW2PR2101MB1082:
-x-ms-exchange-transport-forked: True
-x-ld-processed: 72f988bf-86f1-41af-91ab-2d7cd011db47,ExtAddr
-x-microsoft-antispam-prvs: <MW2PR2101MB1082BD0386B7115665EB1D14D7F70@MW2PR2101MB1082.namprd21.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:7691;
-x-forefront-prvs: 03468CBA43
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(4636009)(136003)(346002)(376002)(396003)(39860400002)(366004)(199004)(10290500003)(55016002)(478600001)(7696005)(5660300002)(9686003)(54906003)(2906002)(7416002)(8990500004)(53546011)(33656002)(52536014)(6506007)(6916009)(76116006)(71200400001)(186003)(4744005)(66946007)(66476007)(66446008)(64756008)(66556008)(4326008)(8676002)(316002)(86362001)(81156014)(8936002)(81166006)(26005);DIR:OUT;SFP:1102;SCL:1;SRVR:MW2PR2101MB1082;H:MW2PR2101MB1052.namprd21.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;
-received-spf: None (protection.outlook.com: microsoft.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: MIuoynU3lG/4CEJHwvOc3DUUrjvzesO/IF7QFmPuUKIkEaoNjqYOg9TUC/cLgSltN/rLeZ5fwjU9zYHKFl8dSrevPLnlkTCKJ6KRMtTPZwU0H6Y1jiiZvJ9uwV17UII3I64GKIVHQzz6npucUkoT9JWmKezymJsITuUitGAyNcpqOUjaPf6e9+lenzOfoMdpqHh+ECo8aaz7ecLk3+Ej3De3I7lO4zVW8hfG//td+ztVeohKwxXVICH9Cl4qEUHPdhaHJneHpVggHlAXZW4rCeFzHYCfz9KMYcQU1t0ToD+Mimuduf73n5FYdoXK7g38tpwiSe2bK6YWijfFnZfOsi/YQo3N8J7eCgSD3xRAWZ64oMYITT66bMrrnuQY6wydjutWw8mG+x9tsQIQdaeDXcJN0MDLlumvCjDXskMDC69ISKt7QCKlUV0ttGBC4Qf5
-x-ms-exchange-antispam-messagedata: 7VQPMRZBgY1mWcLu8YDz+RVEoqF40yQoksCiG9tX9cP9MIZsau0F83BeENi7eIYqcCexY6PxtuGSXT6i/hg0G5DXIwRs6P8Z1AD616/B4z/nCY2KbmpjfySxISqaeNNuoSl5fNlk2DYKmIojaveXKA==
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        id S1726586AbgCRG7d (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 18 Mar 2020 02:59:33 -0400
+Received: from mail-vs1-f68.google.com ([209.85.217.68]:46643 "EHLO
+        mail-vs1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726553AbgCRG7d (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 18 Mar 2020 02:59:33 -0400
+Received: by mail-vs1-f68.google.com with SMTP id z125so15711557vsb.13
+        for <linux-efi@vger.kernel.org>; Tue, 17 Mar 2020 23:59:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=endlessm-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=84CyLEGDeMMgsgG4RaCNG98bUTLvwTeDFWdvNMzaPgc=;
+        b=LwOldjIv9TqBbm3bBdPv/TQV8lbNHF8shtoJW2FMp8B3D2bBVrSgEsPCIkAtEqPYbU
+         I1qFGJ3K/bhCA9x3HBsCSvcLQhiYFZA8dFbYbPO9nVI9p6ODNGY0lQ1FP4Cp9zAKK3FQ
+         Jn49klaQ01J+PXjtnf1R6VXsPD9gOhXntyEW0f7TxTnMUWWol8eXkzYpJy5S7lxerAyr
+         rIJjzEeox7glZZW878CS1FUKgUgVzZvyf//7SIpZCj/yLac9BICSdfQVDTDPXsFrjDnX
+         7NC0nASlTgTVINlRuLnV9e0asZGS40JTZjcbyuJcqGP6j4Up+IgU20KVC+dTzcPM5Pcz
+         Yr7Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=84CyLEGDeMMgsgG4RaCNG98bUTLvwTeDFWdvNMzaPgc=;
+        b=gpxnXiRAJtDDIfo1fEnY1Q5WAUix/r80F8YSjGecy2y0Yr+d+3bedDfSbsH1do+xMr
+         k7VpmXvfd76pLIifINLyysI1cyIcma+9pnRF9Syse+BXutct4N3UUiLvIIvB/+Y9isKH
+         zD2jqZ3gtQIn1wCjrWG1llS0MSGoLQfyDNo139WiJzpyJELYoXlatOGIIWnOCffGYuZ4
+         lVdCuvzN45yIaW7eVlEUucIf3GTMDcED5uW8lcLUKaCpCkstaG8DG4774ZSjpmEwz2jk
+         lBVHmtTVmNGub4VZNBrAczV5dYnzP7ft4Ie37wEfIAOuWLHPRwPv82Rq9qX33gRfsOAe
+         pRyA==
+X-Gm-Message-State: ANhLgQ0pbJqUBsXRxX60UYITQWQu2ro66SV87yUwPYZTeWUPfXeR+tMP
+        9tPftuQSy3eD8AhPkA3EiqYXmEzTAXk95jNcmlNDSA==
+X-Google-Smtp-Source: ADFU+vtVXVGVP6/sC09G6kPLC+J4DVM6zjb4y8Uz1uz/zwJi6/gkkfTNntH/yl/SPpinD1c3hcUGGWJYLvYcTAfuXc8=
+X-Received: by 2002:a05:6102:1cf:: with SMTP id s15mr1919044vsq.109.1584514771785;
+ Tue, 17 Mar 2020 23:59:31 -0700 (PDT)
 MIME-Version: 1.0
-X-OriginatorOrg: microsoft.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 39cc58c0-2c60-48cb-5116-08d7cad1e86b
-X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Mar 2020 00:18:39.0758
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 72f988bf-86f1-41af-91ab-2d7cd011db47
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: Psd0mnrks8as3rv16Tp4Ra8aNacOu3+ok9lahG4zuNKlYVA2MUs80IQ852swg9lugDtUiy6MKsZMcGFeaMwWSZCf5Y+lBIkalSZvR6x3v4I=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW2PR2101MB1082
+References: <20200312083341.9365-1-jian-hong@endlessm.com> <20200312104643.GA15619@zn.tnic>
+ <CAPpJ_eetjhmPwXXXn2y-vibRCK6rrKsFZgC+YGzxO4fMrCKpuQ@mail.gmail.com> <20200316100201.GG26126@zn.tnic>
+In-Reply-To: <20200316100201.GG26126@zn.tnic>
+From:   Jian-Hong Pan <jian-hong@endlessm.com>
+Date:   Wed, 18 Mar 2020 14:58:54 +0800
+Message-ID: <CAPpJ_echFt1LbMbjka4r=gPBF9XqGbFUOmUmB8Wi5p9TVK2wuA@mail.gmail.com>
+Subject: Re: [PATCH] Revert "x86/reboot, efi: Use EFI reboot for Acer
+ TravelMate X514-51T"
+To:     Borislav Petkov <bp@alien8.de>
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        "H . Peter Anvin" <hpa@zytor.com>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Anton Vorontsov <anton@enomsg.org>,
+        Colin Cross <ccross@android.com>,
+        Tony Luck <tony.luck@intel.com>, x86@kernel.org,
+        Linux Kernel <linux-kernel@vger.kernel.org>,
+        linux-efi@vger.kernel.org,
+        Linux Upstreaming Team <linux@endlessm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-RnJvbTogQXJuZCBCZXJnbWFubiA8YXJuZEBhcm5kYi5kZT4NCj4gDQo+IE9uIFNhdCwgTWFyIDE0
-LCAyMDIwIGF0IDQ6MzYgUE0gTWljaGFlbCBLZWxsZXkgPG1pa2VsbGV5QG1pY3Jvc29mdC5jb20+
-IHdyb3RlOg0KPiA+DQo+ID4gVGhlIEh5cGVyLVYgZnJhbWUgYnVmZmVyIGRyaXZlciBtYXkgYmUg
-YnVpbHQgYXMgYSBtb2R1bGUsIGFuZA0KPiA+IGl0IG5lZWRzIGFjY2VzcyB0byBzY3JlZW5faW5m
-by4gU28gZXhwb3J0IHNjcmVlbl9pbmZvLg0KPiA+DQo+ID4gU2lnbmVkLW9mZi1ieTogTWljaGFl
-bCBLZWxsZXkgPG1pa2VsbGV5QG1pY3Jvc29mdC5jb20+DQo+IA0KPiBJcyB0aGVyZSBhbnkgY2hh
-bmNlIG9mIHVzaW5nIGEgbW9yZSBtb2Rlcm4gS01TIGJhc2VkIGRyaXZlciBmb3IgdGhlIHNjcmVl
-bg0KPiB0aGFuIHRoZSBvbGQgZmJkZXYgc3Vic3lzdGVtPyBJIGhhZCBob3BlZCB0byBvbmUgZGF5
-IGNvbXBsZXRlbHkgcmVtb3ZlDQo+IHN1cHBvcnQgZm9yIHRoZSBvbGQgQ09ORklHX1ZJREVPX0ZC
-REVWIGFuZCBzY3JlZW5faW5mbyBmcm9tIG1vZGVybg0KPiBhcmNoaXRlY3R1cmVzLg0KPiANCg0K
-VGhlIGN1cnJlbnQgaHlwZXJ2X2ZiLmMgZHJpdmVyIGlzIGFsbCB3ZSBoYXZlIHRvZGF5IGZvciB0
-aGUgc3ludGhldGljIEh5cGVyLVYNCmZyYW1lIGJ1ZmZlciBkZXZpY2UuICBUaGF0IGRyaXZlciBi
-dWlsZHMgYW5kIHJ1bnMgb24gYm90aCBBUk02NCBhbmQgeDg2Lg0KDQpJJ20gbm90IGtub3dsZWRn
-ZWFibGUgYWJvdXQgdmlkZW8vZ3JhcGhpY3MgZHJpdmVycywgYnV0IHdoZW4geW91DQpzYXkgImEg
-bW9yZSBtb2Rlcm4gS01TIGJhc2VkIGRyaXZlciIsIGFyZSB5b3UgbWVhbmluZyBvbmUgYmFzZWQg
-b24NCkRSTSAmIEtNUz8gIERvZXMgRFJNIG1ha2Ugc2Vuc2UgZm9yIGEgImR1bWIiIGZyYW1lIGJ1
-ZmZlciBkZXZpY2U/DQpBcmUgdGhlcmUgYW55IGRyaXZlcnMgdGhhdCB3b3VsZCBiZSBhIGdvb2Qg
-cGF0dGVybiB0byBsb29rIGF0Pw0KDQpNaWNoYWVsDQoNCg==
+Borislav Petkov <bp@alien8.de> =E6=96=BC 2020=E5=B9=B43=E6=9C=8816=E6=97=A5=
+ =E9=80=B1=E4=B8=80 =E4=B8=8B=E5=8D=886:01=E5=AF=AB=E9=81=93=EF=BC=9A
+>
+> On Mon, Mar 16, 2020 at 05:17:56PM +0800, Jian-Hong Pan wrote:
+> > But, that will raise another question:  Since the original quirk works
+> > for all Acer X514-51T and the quirk cannot be removed for older BIOS.
+> > Why not keep only original matching items for all Acer X514-51T
+> > laptops?
+>
+> What does the "original matching items" mean?
+
+I should make it more clearly.
+
+The quirk's original matching items for Acer TravelMate X514-51T from
+commit 0082517fa4bc ("x86/reboot, efi: Use EFI reboot for Acer
+TravelMate X514-51T"):
+
+        {       /* Handle reboot issue on Acer TravelMate X514-51T */
+                .callback =3D set_efi_reboot,
+                .ident =3D "Acer TravelMate X514-51T",
+                .matches =3D {
+                        DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
+                        DMI_MATCH(DMI_PRODUCT_NAME, "TravelMate X514-51T"),
+                },
+        },
+
+These matching items make all Acer TravelMate X514-51Ts apply the quirk.
+
+If BIOS version condition is added like:
+
+        {       /* Handle reboot issue on Acer TravelMate X514-51T */
+                .callback =3D set_efi_reboot,
+                .ident =3D "Acer TravelMate X514-51T",
+                .matches =3D {
+                        DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
+                        DMI_MATCH(DMI_PRODUCT_NAME, "TravelMate X514-51T"),
+                        DMI_MATCH(DMI_BIOS_VERSION, "V1.0"),
+                },
+        },
+
+Then, only Acer TravelMate X514-51T with older BIOS (1.04 and before,
+according BIOS version listed on Acer's website [1]) will apply the
+quirk.
+The one with newer BIOS's reboot type will be defined later by the codes.
+
+[1] https://www.acer.com/ac/en/US/content/support-product/7889?b=3D1
+
+> > I am not sure which option is better.  Any comment?
+>
+> If you mean, "let's not do anything and fix it only when there's really
+> a need to fix anything", then yes, I agree.
+
+Got it!
+
+Thanks,
+Jian-Hong Pan
