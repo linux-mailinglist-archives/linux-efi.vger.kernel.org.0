@@ -2,84 +2,84 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8659B18A3AD
-	for <lists+linux-efi@lfdr.de>; Wed, 18 Mar 2020 21:19:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F57718AECD
+	for <lists+linux-efi@lfdr.de>; Thu, 19 Mar 2020 09:53:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726933AbgCRUTo (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 18 Mar 2020 16:19:44 -0400
-Received: from mail.kernel.org ([198.145.29.99]:59612 "EHLO mail.kernel.org"
+        id S1726603AbgCSIxl (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 19 Mar 2020 04:53:41 -0400
+Received: from mga06.intel.com ([134.134.136.31]:19176 "EHLO mga06.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726813AbgCRUTo (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Wed, 18 Mar 2020 16:19:44 -0400
-Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B5EE82077B
-        for <linux-efi@vger.kernel.org>; Wed, 18 Mar 2020 20:19:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1584562783;
-        bh=2BOvFL6wDqhZM4tL2WXsTzNvoXA1qAyLp4CuLbPElwQ=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=rxyYS/KThs08WX8a343+WvilwkUHtvjfmEQXw/7enmZL0mDD7wDw4C73UHDTEN9sM
-         ShC2iFMjOmb3ZzEj3mG4Euob5FcZg0izLoHYcTyxHwlARFo7CGDU6mEqXuc4dqvGs5
-         W6UR6Jb37n+UiSi1Qt1u4bVyrINBMvl1p+0wecYs=
-Received: by mail-qv1-f50.google.com with SMTP id n1so9910420qvz.4
-        for <linux-efi@vger.kernel.org>; Wed, 18 Mar 2020 13:19:43 -0700 (PDT)
-X-Gm-Message-State: ANhLgQ31Pq/boZE12j6TOq5Iat+uqim7+JzvRy3fVZanr/cOqa2dj45M
-        2muo7vogHLMS4o70YtuvAEIn1aX+Yi9zUcsHCJXccg==
-X-Google-Smtp-Source: ADFU+vvcG/jaaqeVu4NnhMXDQ3RRng6YN9Mn4g+XqWh2XIesDR7bZ/BoYLXTyeygvvnYgL3hUzCcPYMgEVmKtorH2vQ=
-X-Received: by 2002:a0c:80a5:: with SMTP id 34mr6294470qvb.184.1584562782783;
- Wed, 18 Mar 2020 13:19:42 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200312011312.70653-1-qiuxu.zhuo@intel.com> <CAKv+Gu9BvqZavV6XjfuacXXpabNCXLYEw-f=81fwX8hdL6Fn-A@mail.gmail.com>
- <d0a09900ca0341029980d351bbe2aecc@intel.com>
-In-Reply-To: <d0a09900ca0341029980d351bbe2aecc@intel.com>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Wed, 18 Mar 2020 16:19:31 -0400
-X-Gmail-Original-Message-ID: <CAKv+Gu82OFMJk-jQKdvA0_Sgp_CCmvC1a63QYrY+Cc4Qjx3+Yw@mail.gmail.com>
-Message-ID: <CAKv+Gu82OFMJk-jQKdvA0_Sgp_CCmvC1a63QYrY+Cc4Qjx3+Yw@mail.gmail.com>
-Subject: Re: [PATCH v6 0/2] Add capsule-pstore backend support
-To:     "Zhuo, Qiuxu" <qiuxu.zhuo@intel.com>
-Cc:     Kees Cook <keescook@chromium.org>,
+        id S1725601AbgCSIxl (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Thu, 19 Mar 2020 04:53:41 -0400
+IronPort-SDR: 12Tcxq17SbC5MFoDNcjbtnr5tLlpi9qO1AzUJFS9DSHmb0WQr1TjyZEdo70pN7THQQlaToMQWG
+ i++KHz+Hk16Q==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2020 01:53:40 -0700
+IronPort-SDR: hmqkIZrkgxr7+bG82c3c0eEbgosmcrbnDD7ZTAbJMxtvUPPTjXrbUp+98kxxHm/86LxgPU/+hF
+ v3NUDWqXYqlA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.70,571,1574150400"; 
+   d="scan'208";a="391736233"
+Received: from fmsmsx105.amr.corp.intel.com ([10.18.124.203])
+  by orsmga004.jf.intel.com with ESMTP; 19 Mar 2020 01:53:40 -0700
+Received: from shsmsx605.ccr.corp.intel.com (10.109.6.215) by
+ FMSMSX105.amr.corp.intel.com (10.18.124.203) with Microsoft SMTP Server (TLS)
+ id 14.3.439.0; Thu, 19 Mar 2020 01:53:40 -0700
+Received: from shsmsx605.ccr.corp.intel.com (10.109.6.215) by
+ SHSMSX605.ccr.corp.intel.com (10.109.6.215) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1713.5; Thu, 19 Mar 2020 16:53:38 +0800
+Received: from shsmsx605.ccr.corp.intel.com ([10.109.6.215]) by
+ SHSMSX605.ccr.corp.intel.com ([10.109.6.215]) with mapi id 15.01.1713.004;
+ Thu, 19 Mar 2020 16:53:38 +0800
+From:   "Zhuo, Qiuxu" <qiuxu.zhuo@intel.com>
+To:     Ard Biesheuvel <ardb@kernel.org>
+CC:     Kees Cook <keescook@chromium.org>,
         "Luck, Tony" <tony.luck@intel.com>,
         Matt Fleming <matt@codeblueprint.co.uk>,
         "Gao, Liming" <liming.gao@intel.com>,
         linux-efi <linux-efi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Subject: RE: [PATCH v6 0/2] Add capsule-pstore backend support
+Thread-Topic: [PATCH v6 0/2] Add capsule-pstore backend support
+Thread-Index: AQHV+AtRt2A4QBRYMEWJgS/6qY3k5KhJLOAAgAGIUXCAA5msgIABV86w
+Date:   Thu, 19 Mar 2020 08:53:38 +0000
+Message-ID: <abd0a0d1095f4bc4a8fc2be420a2478a@intel.com>
+References: <20200312011312.70653-1-qiuxu.zhuo@intel.com>
+ <CAKv+Gu9BvqZavV6XjfuacXXpabNCXLYEw-f=81fwX8hdL6Fn-A@mail.gmail.com>
+ <d0a09900ca0341029980d351bbe2aecc@intel.com>
+ <CAKv+Gu82OFMJk-jQKdvA0_Sgp_CCmvC1a63QYrY+Cc4Qjx3+Yw@mail.gmail.com>
+In-Reply-To: <CAKv+Gu82OFMJk-jQKdvA0_Sgp_CCmvC1a63QYrY+Cc4Qjx3+Yw@mail.gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+dlp-product: dlpe-windows
+dlp-reaction: no-action
+dlp-version: 11.2.0.6
+x-originating-ip: [10.239.127.36]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Mon, 16 Mar 2020 at 01:33, Zhuo, Qiuxu <qiuxu.zhuo@intel.com> wrote:
->
-> > From: linux-efi-owner@vger.kernel.org <linux-efi-owner@vger.kernel.org> On
-> >...
-> > On Wed, 11 Mar 2020 at 21:12, Qiuxu Zhuo <qiuxu.zhuo@intel.com> wrote:
-> > >
-> > > Change Log v5->v6:
-> > >   Part1: No changes.
-> > >   Part2: Update capsule-pstore.c file header.
-> > >          Move the variable 'efi_capsule_pstore_info' backward (for removing
-> > some function declarations).
-> > >
-> >
-> > This conflicts badly with the efi/core changes queued up in the tip tree (and hence linux-next) Please rebase and repost
->
-> Hi Ard,
->
-> The following commit on the tip tree removes the variables 'config_table' from the efi structure.
->
->     9cd437ac0ef4 ("efi/x86: Make fw_vendor, config_table and runtime sysfs nodes x86 specific")
->
-> But the external driver "capsule-pstore.ko" needs to access 'config_table' and 'nr_tables' to go through
-> the configuration table to extract crash capsules.
->
-> Adding 'config_table' and 'nr_tables' back to the efi structure looks like not a good way.
-> Do you have any  suggestion on how to export 'config_table' and 'nr_tables' variables for the external driver "capsule-pstore.ko"?
->
-
-I will get back to you on monday about this. In any case, this will
-have to wait until v5.8
-
->
+PiBGcm9tOiBsaW51eC1lZmktb3duZXJAdmdlci5rZXJuZWwub3JnIDxsaW51eC1lZmktb3duZXJA
+dmdlci5rZXJuZWwub3JnPiBPbj4gQmVoYWxmIE9mIEFyZCBCaWVzaGV1dmVsDQo+IC4uLg0KPiA+
+IFRoZSBmb2xsb3dpbmcgY29tbWl0IG9uIHRoZSB0aXAgdHJlZSByZW1vdmVzIHRoZSB2YXJpYWJs
+ZXMgJ2NvbmZpZ190YWJsZScgZnJvbSB0aGUgZWZpIHN0cnVjdHVyZS4NCj4gPg0KPiA+ICAgICA5
+Y2Q0MzdhYzBlZjQgKCJlZmkveDg2OiBNYWtlIGZ3X3ZlbmRvciwgY29uZmlnX3RhYmxlIGFuZCBy
+dW50aW1lIHN5c2ZzIG5vZGVzIHg4NiBzcGVjaWZpYyIpDQo+ID4NCj4gPiBCdXQgdGhlIGV4dGVy
+bmFsIGRyaXZlciAiY2Fwc3VsZS1wc3RvcmUua28iIG5lZWRzIHRvIGFjY2VzcyAgJ2NvbmZpZ190
+YWJsZScgYW5kICducl90YWJsZXMnIHRvIGdvIHRocm91Z2ggdGhlIGNvbmZpZ3VyYXRpb24gdGFi
+bGUgdG8gZXh0cmFjdCAgY3Jhc2ggY2Fwc3VsZXMuDQo+ID4NCj4gPiBBZGRpbmcgJ2NvbmZpZ190
+YWJsZScgYW5kICducl90YWJsZXMnIGJhY2sgdG8gdGhlIGVmaSBzdHJ1Y3R1cmUgbG9va3MgbGlr
+ZSBub3QgYSBnb29kIHdheS4NCj4gPiBEbyB5b3UgaGF2ZSBhbnkgIHN1Z2dlc3Rpb24gb24gaG93
+IHRvIGV4cG9ydCAnY29uZmlnX3RhYmxlJyBhbmQgJ25yX3RhYmxlcycgdmFyaWFibGVzIGZvciB0
+aGUgZXh0ZXJuYWwgZHJpdmVyICJjYXBzdWxlLXBzdG9yZS5rbyI/DQo+ID4NCj4gDQo+IEkgd2ls
+bCBnZXQgYmFjayB0byB5b3Ugb24gbW9uZGF5IGFib3V0IHRoaXMuIEluIGFueSBjYXNlLCB0aGlz
+IHdpbGwgaGF2ZSB0byB3YWl0IHVudGlsIHY1LjgNCg0KT0suIFRoYW5rcyENCg0KLVFpdXh1DQoN
+Cg0K
