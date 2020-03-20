@@ -2,44 +2,44 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4AAB918C518
-	for <lists+linux-efi@lfdr.de>; Fri, 20 Mar 2020 03:01:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 76B4D18C51A
+	for <lists+linux-efi@lfdr.de>; Fri, 20 Mar 2020 03:01:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727456AbgCTCAg (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 19 Mar 2020 22:00:36 -0400
-Received: from mail-qv1-f67.google.com ([209.85.219.67]:41414 "EHLO
-        mail-qv1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727437AbgCTCAg (ORCPT
+        id S1727495AbgCTCBO (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 19 Mar 2020 22:01:14 -0400
+Received: from mail-qk1-f194.google.com ([209.85.222.194]:34415 "EHLO
+        mail-qk1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727440AbgCTCAg (ORCPT
         <rfc822;linux-efi@vger.kernel.org>); Thu, 19 Mar 2020 22:00:36 -0400
-Received: by mail-qv1-f67.google.com with SMTP id a10so2203906qvq.8;
-        Thu, 19 Mar 2020 19:00:35 -0700 (PDT)
+Received: by mail-qk1-f194.google.com with SMTP id f3so5471887qkh.1;
+        Thu, 19 Mar 2020 19:00:36 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=W439qqnj3amgmXthHTe3CXz0LpqU3anmtZjYuvrxKAY=;
-        b=k/p9CJssWApU0QgjDkFMF8uMJDY0YQ7uXxddqq/wyPfCvz5rEbvR93OL5qLiI9MwV9
-         k3MjE/zeJMwwZ731T9j52VjOmiuNxhWcAfOto163RkiJTZXYUIRBM9QGkW20RFJydzOW
-         erNbKco/uZEmTFvJF/yuaKyJ3FxOb8FilZq/tUynt2oGlEhcnlm/kZ9cA//V/+BajClq
-         nIXbq+acu9QvlgcPFfFR7RD1zF1uweqdUawclLgrbCKYP5eoOXSuclqB13VTDUXy4VAX
-         rYUSAJ61mMhLtJrDAnPHuKmzpD2vpfj8W9jVzuT1/fyCNyU+e5BOBRuaU2KfGqg392GT
-         NbXA==
-X-Gm-Message-State: ANhLgQ2i/KFv+GDbze2JUkdI2nnPU4TuxeZqm3UdaC8glickfI9bmuof
-        hf7gRK2olAYnKqypKjn+j5ck5Brk
-X-Google-Smtp-Source: ADFU+vupUKli7hYGqYR+mFfdU669ysb47zI3ZsYPjfJQ/pnhJunV/UMY7Kswi9hVcFh1kaCOIg6AUA==
-X-Received: by 2002:a0c:eb8b:: with SMTP id x11mr6195704qvo.86.1584669634680;
-        Thu, 19 Mar 2020 19:00:34 -0700 (PDT)
+        bh=eyuZ8M8hTl4MaCMTYbXHyAXP3KMzGBIXaWWMgKU8ijQ=;
+        b=bmWXNWwB8GtLQVdbJpZBZTdl3SMZvQJYTpUcxfTpTYBd1LFqKTv8BxecgmUQCs5GCY
+         C9EthtWyk2AtmaWS2MLb692DY5r1b2ySQMPEMkPpCuHNcLikiII6OuIhNCmiIKwP5SAb
+         ebJ4L1+X0lvLAIfFv2+2B2YM6UOrcphgr6gkQFs8zD7zOKmEAPzagRy7vbmwM6TE/Ybk
+         3Zp/UG3oS8zugsJglq2vn1r3hHISKjxj4UjsCO6hfRVevgKIzV2LTVtJnLvTwXbSyhHy
+         nk2h7G3enIQY1JyP7fH3eUlRc7MvCp/nZOxOxtMG6bojaXN0zY8wdieD3w99sGgEmml8
+         bn+A==
+X-Gm-Message-State: ANhLgQ0jc6Sp6n4Nxzo+LwwmunKvFC73MtBhRFZAyAGCMRHXMo8yqTnD
+        cw4xp93RWVu6TIyEyQRK4PI=
+X-Google-Smtp-Source: ADFU+vstf0QpP2kqgq0e2yzW6Tx65yPke7CM+e3g96oIBbpntCYmoarfKV3+TH/sQq9Zje7b6Uci3A==
+X-Received: by 2002:a37:6411:: with SMTP id y17mr6065401qkb.437.1584669635482;
+        Thu, 19 Mar 2020 19:00:35 -0700 (PDT)
 Received: from rani.riverdale.lan ([2001:470:1f07:5f3::b55f])
-        by smtp.gmail.com with ESMTPSA id n46sm3342198qtb.48.2020.03.19.19.00.33
+        by smtp.gmail.com with ESMTPSA id n46sm3342198qtb.48.2020.03.19.19.00.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Thu, 19 Mar 2020 19:00:34 -0700 (PDT)
 From:   Arvind Sankar <nivedita@alum.mit.edu>
 To:     Ard Biesheuvel <ardb@kernel.org>
 Cc:     Hans de Goede <hdegoede@redhat.com>, linux-efi@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH v2 05/14] efi/gop: Slightly re-arrange logic of find_gop
-Date:   Thu, 19 Mar 2020 22:00:19 -0400
-Message-Id: <20200320020028.1936003-6-nivedita@alum.mit.edu>
+Subject: [PATCH v2 06/14] efi/gop: Move variable declarations into loop block
+Date:   Thu, 19 Mar 2020 22:00:20 -0400
+Message-Id: <20200320020028.1936003-7-nivedita@alum.mit.edu>
 X-Mailer: git-send-email 2.24.1
 In-Reply-To: <20200319192855.29876-1-nivedita@alum.mit.edu>
 References: <20200319192855.29876-1-nivedita@alum.mit.edu>
@@ -50,64 +50,52 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Small cleanup to get rid of conout_found.
+Declare the variables inside the block where they're used.
+
+Get rid of a couple of redundant initializers.
 
 Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
 ---
- drivers/firmware/efi/libstub/gop.c | 30 +++++++++++++-----------------
- 1 file changed, 13 insertions(+), 17 deletions(-)
+ drivers/firmware/efi/libstub/gop.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/firmware/efi/libstub/gop.c b/drivers/firmware/efi/libstub/gop.c
-index 92abcf558845..a7d3efe36c78 100644
+index a7d3efe36c78..0d195060a370 100644
 --- a/drivers/firmware/efi/libstub/gop.c
 +++ b/drivers/firmware/efi/libstub/gop.c
-@@ -99,7 +99,6 @@ find_gop(efi_guid_t *proto, unsigned long size, void **handles)
+@@ -88,16 +88,19 @@ setup_pixel_info(struct screen_info *si, u32 pixels_per_scan_line,
+ static efi_graphics_output_protocol_t *
+ find_gop(efi_guid_t *proto, unsigned long size, void **handles)
+ {
+-	efi_graphics_output_protocol_t *gop, *first_gop;
+-	efi_graphics_output_protocol_mode_t *mode;
+-	efi_graphics_output_mode_info_t *info = NULL;
+-	efi_status_t status;
++	efi_graphics_output_protocol_t *first_gop;
+ 	efi_handle_t h;
+ 	int i;
+ 
+ 	first_gop = NULL;
  
  	for_each_efi_handle(h, handles, size, i) {
++		efi_status_t status;
++
++		efi_graphics_output_protocol_t *gop;
++		efi_graphics_output_protocol_mode_t *mode;
++		efi_graphics_output_mode_info_t *info;
++
  		efi_guid_t conout_proto = EFI_CONSOLE_OUT_DEVICE_GUID;
--		bool conout_found = false;
  		void *dummy = NULL;
  
- 		status = efi_bs_call(handle_protocol, h, proto, (void **)&gop);
-@@ -111,25 +110,22 @@ find_gop(efi_guid_t *proto, unsigned long size, void **handles)
- 		if (info->pixel_format == PIXEL_BLT_ONLY)
- 			continue;
+@@ -136,7 +139,7 @@ static efi_status_t setup_gop(struct screen_info *si, efi_guid_t *proto,
+ {
+ 	efi_graphics_output_protocol_t *gop;
+ 	efi_graphics_output_protocol_mode_t *mode;
+-	efi_graphics_output_mode_info_t *info = NULL;
++	efi_graphics_output_mode_info_t *info;
+ 	efi_physical_addr_t fb_base;
  
-+		/*
-+		 * Systems that use the UEFI Console Splitter may
-+		 * provide multiple GOP devices, not all of which are
-+		 * backed by real hardware. The workaround is to search
-+		 * for a GOP implementing the ConOut protocol, and if
-+		 * one isn't found, to just fall back to the first GOP.
-+		 *
-+		 * Once we've found a GOP supporting ConOut,
-+		 * don't bother looking any further.
-+		 */
- 		status = efi_bs_call(handle_protocol, h, &conout_proto, &dummy);
- 		if (status == EFI_SUCCESS)
--			conout_found = true;
--
--		if (!first_gop || conout_found) {
--			/*
--			 * Systems that use the UEFI Console Splitter may
--			 * provide multiple GOP devices, not all of which are
--			 * backed by real hardware. The workaround is to search
--			 * for a GOP implementing the ConOut protocol, and if
--			 * one isn't found, to just fall back to the first GOP.
--			 *
--			 * Once we've found a GOP supporting ConOut,
--			 * don't bother looking any further.
--			 */
-+			return gop;
-+
-+		if (!first_gop)
- 			first_gop = gop;
--			if (conout_found)
--				break;
--		}
- 	}
- 
- 	return first_gop;
+ 	gop = find_gop(proto, size, handles);
 -- 
 2.24.1
 
