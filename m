@@ -2,122 +2,71 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F4F018D63F
-	for <lists+linux-efi@lfdr.de>; Fri, 20 Mar 2020 18:51:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B62E18D85B
+	for <lists+linux-efi@lfdr.de>; Fri, 20 Mar 2020 20:25:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726816AbgCTRvL (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 20 Mar 2020 13:51:11 -0400
-Received: from mail-qk1-f196.google.com ([209.85.222.196]:39552 "EHLO
-        mail-qk1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726801AbgCTRvL (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 20 Mar 2020 13:51:11 -0400
-Received: by mail-qk1-f196.google.com with SMTP id t17so7751172qkm.6;
-        Fri, 20 Mar 2020 10:51:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:from:date:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=hxHH0kI7s1vSpVNgl5JYOWg+jijYanmSy/fK/k59mT8=;
-        b=bOREPh6B9ekSJA6CE6WbUoN4PEKqt+XZgcxLZUZqrwE/Qf1daE1U/j9xt2w6ebgFp0
-         0M46nVb/5VZLl5ExIYy0TMgkyox0HTEbDTQSIBZCpdYaJ6jP3tHgifgOvuLCjW+77yZQ
-         HnVt1OCNXk/KQH6VrM57fFVIKLQh4lpuGPLVwOIYYIp/lYlYiojoURwfVNHHy3kesBV2
-         Rm6hrK6GnvFkoHuI7zO//Ar+i2JwvXVtFySdI3FOMdJ5QtIJxQW4bGmdGBTXkAcHTv4S
-         xQ4cfh+InlKtIFTLEQx/ptuKpAzPmebKwdlnkEFg9dNKwZsSmTxJxSm9PsJSjC9KceP/
-         +0YA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:from:date:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to:user-agent;
-        bh=hxHH0kI7s1vSpVNgl5JYOWg+jijYanmSy/fK/k59mT8=;
-        b=sNsqfBisxENwUj/HIfRt6hhZEGaDxZNmQxPD53id+kmZDS2ZOoxJqYItKaFkqieFCO
-         sj/t0x2Csdo6cs8giFgqO1k8ZVVncovlOj4gR4q8y/CDu9E+fdK19/ap/yA0kmBj6hCh
-         S5/w8oILKgqJ96Tpg/rquWd6Gpkys1X4fJnpS9h5HoSRWqps7v8ZaMO36OJWI30BoGnZ
-         IxHDsDG9mTpTu9fLR1Bkve0d/uuH26N0udgowZPkCHV1nE3mje9zAmkr+e7fTAIPNaNM
-         j7ovnj4VIPl9hy4hmr5MYOoHDtfyvSm4GLX+RX8NGD37FXp42Kx6uuC0sTma5qbPzrtI
-         LRXA==
-X-Gm-Message-State: ANhLgQ3bsL4zhcIxL3ZDmPRkPmeBQTceglFtYrnbZwwxAB8gr9It6b/F
-        rHuddUOFAUpxQFad1fhKQ1k=
-X-Google-Smtp-Source: ADFU+vtfxAY9dL7Q7kXhNYv31rCod+UHnzHqE+xyavb3dEcZvHd+VebFGeabrnJckiMgwi3q1ojrLw==
-X-Received: by 2002:a37:9104:: with SMTP id t4mr9634724qkd.449.1584726669509;
-        Fri, 20 Mar 2020 10:51:09 -0700 (PDT)
-Received: from rani.riverdale.lan ([2001:470:1f07:5f3::b55f])
-        by smtp.gmail.com with ESMTPSA id z1sm5136726qtc.51.2020.03.20.10.51.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 Mar 2020 10:51:09 -0700 (PDT)
-From:   Arvind Sankar <nivedita@alum.mit.edu>
-X-Google-Original-From: Arvind Sankar <arvind@rani.riverdale.lan>
-Date:   Fri, 20 Mar 2020 13:51:07 -0400
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     kbuild@lists.01.org, Arvind Sankar <nivedita@alum.mit.edu>,
-        kbuild-all@lists.01.org, Ard Biesheuvel <ardb@kernel.org>,
-        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 11/14] efi/gop: Allow specifying mode number on command
- line
-Message-ID: <20200320175104.GA3101477@rani.riverdale.lan>
-References: <20200319192855.29876-12-nivedita@alum.mit.edu>
- <20200320143526.GI4650@kadam>
+        id S1726829AbgCTTZ3 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 20 Mar 2020 15:25:29 -0400
+Received: from mga02.intel.com ([134.134.136.20]:11708 "EHLO mga02.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726738AbgCTTZ3 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Fri, 20 Mar 2020 15:25:29 -0400
+IronPort-SDR: YBPDPdYwVKO7yF/oyyg7P1epCP2MtVI6kvtDmCk1IoiZSZRamM4fwjfslXYyC7UlkIA7K2nef9
+ kH4kN9OlITBQ==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2020 12:25:28 -0700
+IronPort-SDR: NZXMP46VphHgAClkm6jUIN4i9FLSdP3BvP2LRdBWzZtkb0WYigf4i+SbGrTexQrIydwmZeQJ29
+ BYez0E2zyECw==
+X-IronPort-AV: E=Sophos;i="5.72,285,1580803200"; 
+   d="scan'208";a="280521575"
+Received: from agluck-desk2.sc.intel.com (HELO agluck-desk2.amr.corp.intel.com) ([10.3.52.68])
+  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2020 12:25:28 -0700
+Date:   Fri, 20 Mar 2020 12:25:27 -0700
+From:   "Luck, Tony" <tony.luck@intel.com>
+To:     "Zhuo, Qiuxu" <qiuxu.zhuo@intel.com>
+Cc:     Ard Biesheuvel <ardb@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Matt Fleming <matt@codeblueprint.co.uk>,
+        "Gao, Liming" <liming.gao@intel.com>,
+        linux-efi <linux-efi@vger.kernel.org>
+Subject: Re: [PATCH v6 0/2] Add capsule-pstore backend support
+Message-ID: <20200320192527.GA31764@agluck-desk2.amr.corp.intel.com>
+References: <20200312011312.70653-1-qiuxu.zhuo@intel.com>
+ <CAKv+Gu9BvqZavV6XjfuacXXpabNCXLYEw-f=81fwX8hdL6Fn-A@mail.gmail.com>
+ <d0a09900ca0341029980d351bbe2aecc@intel.com>
+ <CAKv+Gu82OFMJk-jQKdvA0_Sgp_CCmvC1a63QYrY+Cc4Qjx3+Yw@mail.gmail.com>
+ <abd0a0d1095f4bc4a8fc2be420a2478a@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200320143526.GI4650@kadam>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <abd0a0d1095f4bc4a8fc2be420a2478a@intel.com>
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, Mar 20, 2020 at 05:36:04PM +0300, Dan Carpenter wrote:
-> Hi Arvind,
+On Thu, Mar 19, 2020 at 01:53:38AM -0700, Zhuo, Qiuxu wrote:
+> > From: linux-efi-owner@vger.kernel.org <linux-efi-owner@vger.kernel.org> On> Behalf Of Ard Biesheuvel
+> > ...
+> > > The following commit on the tip tree removes the variables 'config_table' from the efi structure.
+> > >
+> > >     9cd437ac0ef4 ("efi/x86: Make fw_vendor, config_table and runtime sysfs nodes x86 specific")
+> > >
+> > > But the external driver "capsule-pstore.ko" needs to access  'config_table' and 'nr_tables' to go through the configuration table to extract  crash capsules.
+> > >
+> > > Adding 'config_table' and 'nr_tables' back to the efi structure looks like not a good way.
+> > > Do you have any  suggestion on how to export 'config_table' and 'nr_tables' variables for the external driver "capsule-pstore.ko"?
+> > >
+> > 
+> > I will get back to you on monday about this. In any case, this will have to wait until v5.8
 > 
-> Thank you for the patch! Perhaps something to improve:
-> 
-> url:    https://github.com/0day-ci/linux/commits/Arvind-Sankar/efi-gop-Refactoring-mode-setting-feature/20200320-044605
-> base:   https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git next
-> 
-> If you fix the issue, kindly add following tag
-> Reported-by: kbuild test robot <lkp@intel.com>
-> Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
-> 
-> New smatch warnings:
-> drivers/firmware/efi/libstub/gop.c:113 set_mode() error: uninitialized symbol 'new_mode'.
-> 
-> # https://github.com/0day-ci/linux/commit/af85e496c9f577df9743784171b1cda94220dd8f
-> git remote add linux-review https://github.com/0day-ci/linux
-> git remote update linux-review
-> git checkout af85e496c9f577df9743784171b1cda94220dd8f
-> vim +/info +85 drivers/firmware/efi/libstub/gop.c
-> 
-> af85e496c9f577 Arvind Sankar 2020-03-19   97  static void set_mode(efi_graphics_output_protocol_t *gop)
-> af85e496c9f577 Arvind Sankar 2020-03-19   98  {
-> af85e496c9f577 Arvind Sankar 2020-03-19   99  	efi_graphics_output_protocol_mode_t *mode;
-> af85e496c9f577 Arvind Sankar 2020-03-19  100  	u32 cur_mode, new_mode;
-> af85e496c9f577 Arvind Sankar 2020-03-19  101  
-> af85e496c9f577 Arvind Sankar 2020-03-19  102  	switch (cmdline.option) {
-> af85e496c9f577 Arvind Sankar 2020-03-19  103  	case EFI_CMDLINE_NONE:
-> af85e496c9f577 Arvind Sankar 2020-03-19  104  		return;
-> af85e496c9f577 Arvind Sankar 2020-03-19  105  	case EFI_CMDLINE_MODE_NUM:
-> af85e496c9f577 Arvind Sankar 2020-03-19  106  		new_mode = choose_mode_modenum(gop);
-> af85e496c9f577 Arvind Sankar 2020-03-19  107  		break;
-> 
-> No default case?
+> OK. Thanks!
 
-Yeah, it's an enum with the only two values covered by the switch cases,
-so it's really a bogus warning. I posted a v2 with a default case
-instead anyway to silence it.
+Would it be acceptable to take the first half of Qiuxu's
+function efi_capsule_table_get() and move it into the
+generic efi code naming it something like: "efi_get_table_by_guid()"?
+Then EXPORT_GPL that function?
 
-> 
-> af85e496c9f577 Arvind Sankar 2020-03-19  108  	}
-> af85e496c9f577 Arvind Sankar 2020-03-19  109  
-> af85e496c9f577 Arvind Sankar 2020-03-19  110  	mode = efi_table_attr(gop, mode);
-> af85e496c9f577 Arvind Sankar 2020-03-19  111  	cur_mode = efi_table_attr(mode, mode);
-> af85e496c9f577 Arvind Sankar 2020-03-19  112  
-> af85e496c9f577 Arvind Sankar 2020-03-19 @113  	if (new_mode == cur_mode)
-> af85e496c9f577 Arvind Sankar 2020-03-19  114  		return;
-> af85e496c9f577 Arvind Sankar 2020-03-19  115  
-> af85e496c9f577 Arvind Sankar 2020-03-19  116  	if (efi_call_proto(gop, set_mode, new_mode) != EFI_SUCCESS)
-> af85e496c9f577 Arvind Sankar 2020-03-19  117  		efi_printk("Failed to set requested mode\n");
-> af85e496c9f577 Arvind Sankar 2020-03-19  118  }
-> 
-> ---
-> 0-DAY CI Kernel Test Service, Intel Corporation
-> https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+-Tony
