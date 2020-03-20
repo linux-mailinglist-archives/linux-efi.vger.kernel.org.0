@@ -2,44 +2,44 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 380E418C516
-	for <lists+linux-efi@lfdr.de>; Fri, 20 Mar 2020 03:01:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A3FF118C511
+	for <lists+linux-efi@lfdr.de>; Fri, 20 Mar 2020 03:01:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727469AbgCTCAi (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        id S1727437AbgCTCAi (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
         Thu, 19 Mar 2020 22:00:38 -0400
-Received: from mail-qt1-f194.google.com ([209.85.160.194]:35117 "EHLO
-        mail-qt1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727455AbgCTCAh (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 19 Mar 2020 22:00:37 -0400
-Received: by mail-qt1-f194.google.com with SMTP id v15so3772884qto.2;
-        Thu, 19 Mar 2020 19:00:36 -0700 (PDT)
+Received: from mail-qt1-f193.google.com ([209.85.160.193]:43113 "EHLO
+        mail-qt1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727384AbgCTCAi (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 19 Mar 2020 22:00:38 -0400
+Received: by mail-qt1-f193.google.com with SMTP id l13so3727588qtv.10;
+        Thu, 19 Mar 2020 19:00:37 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=IbeHQl1XqMr+8edKb2icuORkyf9Hpoc/AyZgQ5A8vls=;
-        b=FNJMDwQ44xJ5MsQOOvmIvWs1MaSlxNlj/UXIAAq2E1wu6yg8zTVNhBnd5eGt4nIcaL
-         JdJn+ta795AnhyrRoT+wq2n7XxLUU7ILa3y2wH6/0vdb3HuJRqZqaGlmAjUBlmeEgBy3
-         7DIncZuK3/RnDzfbDfDs2zXdnakXIvfhy4sRH/aoyPTiUQic+eJ0KfipnvJmtC1Cmpfa
-         oDVnfaveXfpmMsuMK1RnJvGX/t3VkNWpgTrXyNMxn02xmu16VwDEtdCPrrlqA352nvg3
-         Kav1v/EzQDN/dCdfGKz0PmB81XGl9Y5ZGjix7NoUEy6Ogd4sOgTXQmyvUnx1wc7v0SnJ
-         EmSQ==
-X-Gm-Message-State: ANhLgQ1JlccI077y6GhKQBn/ZIcn1PL05HkQ7U5SntQxibZToRgPDZzD
-        K3TNT4pfbaM/Qpu2W0YX4Pw=
-X-Google-Smtp-Source: ADFU+vu1dvYJMVVcqtaiWVGPXAKD+ciFIpxS2oh0TdRW1ME68Umtjs4YHnwukrJ1k+jXDOTVN+w5CA==
-X-Received: by 2002:ac8:5210:: with SMTP id r16mr6139776qtn.173.1584669636272;
-        Thu, 19 Mar 2020 19:00:36 -0700 (PDT)
+        bh=dCY4pcQQ/duoAuYSGzQpiC4wbuyHn31kQSsl0gZlWOc=;
+        b=Tt/3n3QqhhdMgCk69MkeRisJ3ybSs4PBEUsaSkZQpKX9/i8YuWbIlvcW/+mqkpfyXM
+         AwEUj9M2++iIWyYHP8rbvs+ZON38s6UMu3AVAua9eZsk+VMdU2xsXaf6kF96ZDc3uyZe
+         kVDXq0opJT3NYsUhNjjcRCk5XT+QlaH/C2VOID7sCaIVWOyLLvgbHhCBXYAi6Oloqnyd
+         F+JKzrGI2hcnv93Jkm6OPurc7BpSzx4xbMIMvRiL1p08/T8zKT2EXfbgTBGcm3ifAL77
+         MCBzgydmZ4GKjKyYDU3CmKIMIw2RH+GjV1cNgxsNA72YuRkERlXQ9rvITlBOPbGOpsdd
+         BCfw==
+X-Gm-Message-State: ANhLgQ0uH3+wM+1Ds+u6pG/6JDTmOxhCzAvP62MM3dLRviiPGItZNBpJ
+        F/pTAhzu/H+78PLdzIO8iyY=
+X-Google-Smtp-Source: ADFU+vtxi+jBVrnp2o7KKK44IB7clGMxHLmgo1xIZDGx6U3IQjm3ufj4lAjSKCLw8JXKi//PktAI+g==
+X-Received: by 2002:ac8:545a:: with SMTP id d26mr6011921qtq.238.1584669637023;
+        Thu, 19 Mar 2020 19:00:37 -0700 (PDT)
 Received: from rani.riverdale.lan ([2001:470:1f07:5f3::b55f])
-        by smtp.gmail.com with ESMTPSA id n46sm3342198qtb.48.2020.03.19.19.00.35
+        by smtp.gmail.com with ESMTPSA id n46sm3342198qtb.48.2020.03.19.19.00.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Mar 2020 19:00:35 -0700 (PDT)
+        Thu, 19 Mar 2020 19:00:36 -0700 (PDT)
 From:   Arvind Sankar <nivedita@alum.mit.edu>
 To:     Ard Biesheuvel <ardb@kernel.org>
 Cc:     Hans de Goede <hdegoede@redhat.com>, linux-efi@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH v2 07/14] efi/gop: Use helper macros for populating lfb_base
-Date:   Thu, 19 Mar 2020 22:00:21 -0400
-Message-Id: <20200320020028.1936003-8-nivedita@alum.mit.edu>
+Subject: [PATCH v2 08/14] efi/gop: Use helper macros for find_bits
+Date:   Thu, 19 Mar 2020 22:00:22 -0400
+Message-Id: <20200320020028.1936003-9-nivedita@alum.mit.edu>
 X-Mailer: git-send-email 2.24.1
 In-Reply-To: <20200319192855.29876-1-nivedita@alum.mit.edu>
 References: <20200319192855.29876-1-nivedita@alum.mit.edu>
@@ -50,29 +50,63 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Use the lower/upper_32_bits macros from kernel.h to initialize
-si->lfb_base and si->ext_lfb_base.
+Use the __ffs/__fls macros to calculate the position and size of the
+mask.
+
+Correct type of mask to u32 instead of unsigned long.
 
 Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
 ---
- drivers/firmware/efi/libstub/gop.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/firmware/efi/libstub/gop.c | 26 ++++++++------------------
+ 1 file changed, 8 insertions(+), 18 deletions(-)
 
 diff --git a/drivers/firmware/efi/libstub/gop.c b/drivers/firmware/efi/libstub/gop.c
-index 0d195060a370..7b0baf9a912f 100644
+index 7b0baf9a912f..8bf424f35759 100644
 --- a/drivers/firmware/efi/libstub/gop.c
 +++ b/drivers/firmware/efi/libstub/gop.c
-@@ -158,8 +158,8 @@ static efi_status_t setup_gop(struct screen_info *si, efi_guid_t *proto,
- 	si->lfb_height = info->vertical_resolution;
+@@ -5,6 +5,7 @@
+  *
+  * ----------------------------------------------------------------------- */
  
- 	fb_base		 = efi_table_attr(mode, frame_buffer_base);
--	si->lfb_base	 = fb_base;
--	si->ext_lfb_base = (u64)(unsigned long)fb_base >> 32;
-+	si->lfb_base	 = lower_32_bits(fb_base);
-+	si->ext_lfb_base = upper_32_bits(fb_base);
- 	if (si->ext_lfb_base)
- 		si->capabilities |= VIDEO_CAPABILITY_64BIT_BASE;
++#include <linux/bitops.h>
+ #include <linux/efi.h>
+ #include <linux/screen_info.h>
+ #include <asm/efi.h>
+@@ -12,27 +13,16 @@
  
+ #include "efistub.h"
+ 
+-static void find_bits(unsigned long mask, u8 *pos, u8 *size)
++static void find_bits(u32 mask, u8 *pos, u8 *size)
+ {
+-	u8 first, len;
+-
+-	first = 0;
+-	len = 0;
+-
+-	if (mask) {
+-		while (!(mask & 0x1)) {
+-			mask = mask >> 1;
+-			first++;
+-		}
+-
+-		while (mask & 0x1) {
+-			mask = mask >> 1;
+-			len++;
+-		}
++	if (!mask) {
++		*pos = *size = 0;
++		return;
+ 	}
+ 
+-	*pos = first;
+-	*size = len;
++	/* UEFI spec guarantees that the set bits are contiguous */
++	*pos  = __ffs(mask);
++	*size = __fls(mask) - *pos + 1;
+ }
+ 
+ static void
 -- 
 2.24.1
 
