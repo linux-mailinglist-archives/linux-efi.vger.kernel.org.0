@@ -2,70 +2,96 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 314C218CC39
-	for <lists+linux-efi@lfdr.de>; Fri, 20 Mar 2020 12:07:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3FEF318CDF5
+	for <lists+linux-efi@lfdr.de>; Fri, 20 Mar 2020 13:38:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727043AbgCTLHs (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 20 Mar 2020 07:07:48 -0400
-Received: from mail-oi1-f194.google.com ([209.85.167.194]:36853 "EHLO
-        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726951AbgCTLHs (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 20 Mar 2020 07:07:48 -0400
-Received: by mail-oi1-f194.google.com with SMTP id k18so6070678oib.3
-        for <linux-efi@vger.kernel.org>; Fri, 20 Mar 2020 04:07:47 -0700 (PDT)
+        id S1726896AbgCTMiI (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 20 Mar 2020 08:38:08 -0400
+Received: from mail-qk1-f194.google.com ([209.85.222.194]:40650 "EHLO
+        mail-qk1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726814AbgCTMiH (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 20 Mar 2020 08:38:07 -0400
+Received: by mail-qk1-f194.google.com with SMTP id l25so1688794qki.7
+        for <linux-efi@vger.kernel.org>; Fri, 20 Mar 2020 05:38:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=kuhba0bbR9oJup1oQ7P5tNPZ9FqBHXE57QqcfHgaIHo=;
-        b=fpskhoGsNRoRQQsQyCpFGYyMz4V0VH265aQV8VlvJFSs/i1k07xaX+bXT2wkvSMWe5
-         zfq/drLsaCWX7kXQb8npmt4UWP8iR5CkPK8DWakfp2GUxcAjuHk8YixJ+Mjlo2NoB6El
-         nYE/vIxW18S+s6oXMvQWPPZO26naB2e1oBf4acl5x9bqoaOL5eQHZJdW/Uaiid9/D6I4
-         QMoEQpA+KTEY0j+3jKsUdyEZUqBb+cGps3JA3FDL6r6nGjMDdjvJCpdtiSGamQCfaC5S
-         tVTErq1UxRqGg0ZD8YHv0hGcDpk9XmrOIzaS12y+iSvxllg9EluPkVEjGmU8r7r7+0uu
-         fZrA==
+        d=endlessm-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=lUsFDDLc+OT1mxat4BydgprIPibf9UQTcm/vZqGE7Pg=;
+        b=tZugQz/AH0shvqjYWaF1gAAwX+4ovdwCpMJMoGaKc3JPHNP4DA0wP2zsgC6Wc7fcg7
+         6b/lkws0cqY8gp36RTo5o0CfaGP2IIcQy+DYVsoxd+wux++dbBa5aLZaeLXCvn6pqDX4
+         FgHC2C8kyi7zTi7bMu5dulWZ6wSXCXhxLDDUK533HO0MZDS+kbxeuPXjJpp/F7DX93JL
+         g3wBrf1xCYeBbUCQSoEUYQIrA0EszHphDJCTYduJhXi36Hynt6Az3btqPZrUFmEz7+Fx
+         GOMEQYUDg01KIVTjvzayfXnA7mXXR76J+LjqCgO0nZg6b4+WcdsuuGzGFuz6G99yEIgf
+         3nOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=kuhba0bbR9oJup1oQ7P5tNPZ9FqBHXE57QqcfHgaIHo=;
-        b=qjPSC3/Z8caFq17tpGVulxRgdENRBc6w0zz+Phyy1GrqhD54/U0Z3utkyoCoLqLIni
-         r6lOVNIWtgouvBymGSQq6TQv3T7E+cS+zFoZE/lU3f2hZF0ZPVvBDL2U8r5ncEYzKGs4
-         H4mMEANmRkpRtdvY2zmYngAnDSnvrdr/bH0NhFjXrA74wfZj2GtWFJmXQpGfWQjk4r1W
-         BbftzNRUoLe2HrzBhoUA18d7Pa9K4iIJa3qFD5MeJl7hykwuulpK9hKVGR63fOyVPJnu
-         ciU9kBoAMBrhn/0odMMFvm7lXdg4cBmsmeXOvPcvm7EGS6JTfyZ83FY5fvUsriqYBTDD
-         UIeA==
-X-Gm-Message-State: ANhLgQ1rfB3+FBlCcKSvG22Bi/+V1U96SzT8dt6hMswRmbzBKviusnos
-        mqRT+pm8zc+f5FNk00zq2Dz8Ngq2jr5zJzg8IUM=
-X-Google-Smtp-Source: ADFU+vvRXYpGlgU8kruJ4epNpFpbouihhbYDMjIBj7lPYgBj2kjx5SsGrFOE0Ms+hQdDuga4qwG9zvDxADlARvL2H0Y=
-X-Received: by 2002:aca:3ad7:: with SMTP id h206mr5644593oia.169.1584702467665;
- Fri, 20 Mar 2020 04:07:47 -0700 (PDT)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=lUsFDDLc+OT1mxat4BydgprIPibf9UQTcm/vZqGE7Pg=;
+        b=Q5jsTjZfBJIl/VkiruQLXZkngx3SHIchhaWK8yUloHGRfFqsaj8wPbcz9afwc2WDQJ
+         YX698dT0RSg8Useaok6x1aG/Ze5EOonYxNKxQgkMM3ybdJM+T4l/S8GyfKFrkkE3baJP
+         beSjiLdD8ti+fkK6J8qW130qoSqiOMxauyNyvCZATx6HOvU17ZPKHuYzoAOZHl0k+5SE
+         oSfTgh2E/WUtKsf+kih48bl2nWG+rq090o0U4O4i6IuU+BOZ12DnSOmROZzBKBjPB0lF
+         DkoBvz9IbR23UVRDJO9W+9/cPSPdAwl1xklqkRLpHkio/4ZkRS+Pdr+EsXBLlPhWUgt5
+         x8Cg==
+X-Gm-Message-State: ANhLgQ1qSyLBdFaMWQFAvKwpGAxMPHF4XBKpYEVUR9YL7+TiHxhCIhQz
+        +10YJf754X9DbdOQgbxaXmKPiRpS26a6wkr98/XPGQ==
+X-Google-Smtp-Source: ADFU+vvDBQQsdYulrWhgu3FelWi5P2Ua5BYNVN5DgtEqXHnJH+UBtT1nfmzl6r7OJ12TSJdnY5SvrhtF8srk+gySCGk=
+X-Received: by 2002:a37:51d5:: with SMTP id f204mr7674280qkb.14.1584707886141;
+ Fri, 20 Mar 2020 05:38:06 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:a4a:c897:0:0:0:0:0 with HTTP; Fri, 20 Mar 2020 04:07:47
- -0700 (PDT)
-From:   federa bureau of inteligence <federabureauofinteligence@gmail.com>
-Date:   Fri, 20 Mar 2020 11:07:47 +0000
-Message-ID: <CAE9o6LDHRn+J__z7O88dePbrQh6R9Hx0mvRSC3EH5CSi+3ddtg@mail.gmail.com>
-Subject: HAPPY SURVIVAL OF CORONAVIRUS
-To:     undisclosed-recipients:;
+References: <20200312083341.9365-1-jian-hong@endlessm.com> <20200312104643.GA15619@zn.tnic>
+In-Reply-To: <20200312104643.GA15619@zn.tnic>
+From:   Daniel Drake <drake@endlessm.com>
+Date:   Fri, 20 Mar 2020 20:37:54 +0800
+Message-ID: <CAD8Lp47ndRqeS5VbkCMR_Faq-du9eDW28rHOG4Owxq862t-kGQ@mail.gmail.com>
+Subject: Re: [PATCH] Revert "x86/reboot, efi: Use EFI reboot for Acer
+ TravelMate X514-51T"
+To:     Borislav Petkov <bp@alien8.de>
+Cc:     Jian-Hong Pan <jian-hong@endlessm.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        "H . Peter Anvin" <hpa@zytor.com>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Anton Vorontsov <anton@enomsg.org>,
+        Colin Cross <ccross@android.com>,
+        Tony Luck <tony.luck@intel.com>, x86@kernel.org,
+        Linux Kernel <linux-kernel@vger.kernel.org>,
+        linux-efi@vger.kernel.org,
+        Linux Upstreaming Team <linux@endlessm.com>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Dear Sir,
+On Thu, Mar 12, 2020 at 6:46 PM Borislav Petkov <bp@alien8.de> wrote:
+> How do you know *everyone* affected will update their BIOS?
+>
+> And what's the downside of keeping it?
 
-HAPPY SURVIVAL OF CORONAVIRUS
+It could indeed be kept without user-visible downside, and that would
+be the normal case for quirks that work around BIOS bugs.
 
-We are reaching for a very interesting business transaction which we
-feel will of great benefit.We the FBI unit in the western subregion of
-Africa have a fund which we confiscated and lodge it in a bank
+But I had two reasons for suggesting that Jian-Hong should send this
+revert patch, which may be worth some consideration:
 
-This fund is worth of $12.5 million dollars.We will need your
-assistance to recieve this fund into your account for investment in
-your country.
+ 1. This was working around a BIOS bug truly separate from Linux to
+the point where it was a little questionable for Linux to put a quirk
+in place. The original bug was that after Linux completed executing
+the reboot code, the machine would reboot, the BIOS would start
+loading, and then crash well before loading the OS. Presumably
+crashing on some state that Linux left that was not reset in the
+machine's reboot stage. The vendor later found the issue (something
+TPM-related) and fixed the BIOS to avoid the crash.
+ 2. We normally receive these units before they go into mass
+production, so there's a decent chance that production versions
+already include this BIOS fix.
 
-We will need your urgent response for details
+Based on that I was considering that the patch could be reverted for
+cleanliness/ At the same time, I do not have strong feelings on this,
+no issues if the quirk is left in place.
 
-Inspector Greg Adams,
-For and on behalf of Cote D'Ivoire FBI
-Tel 00225 6716 6756
+Daniel
