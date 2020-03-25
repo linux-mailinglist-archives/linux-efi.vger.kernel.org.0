@@ -2,79 +2,111 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F380192D74
-	for <lists+linux-efi@lfdr.de>; Wed, 25 Mar 2020 16:52:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 72AD9192E6E
+	for <lists+linux-efi@lfdr.de>; Wed, 25 Mar 2020 17:42:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727811AbgCYPwW (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 25 Mar 2020 11:52:22 -0400
-Received: from mail.kernel.org ([198.145.29.99]:49388 "EHLO mail.kernel.org"
+        id S1727281AbgCYQl7 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 25 Mar 2020 12:41:59 -0400
+Received: from mail.kernel.org ([198.145.29.99]:40774 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727775AbgCYPwW (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Wed, 25 Mar 2020 11:52:22 -0400
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+        id S1727236AbgCYQl5 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Wed, 25 Mar 2020 12:41:57 -0400
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C86772078A
-        for <linux-efi@vger.kernel.org>; Wed, 25 Mar 2020 15:52:21 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 353BE20740
+        for <linux-efi@vger.kernel.org>; Wed, 25 Mar 2020 16:41:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1585151542;
-        bh=A4aToqgYItAqaRXK+3xYpi8GGWZeOAW9vy5r583WeHs=;
+        s=default; t=1585154516;
+        bh=yRf3oNqMwM2iTG7pyGx5Rsiqc2MPxpMsUz50QFD55ic=;
         h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=bI1HIvZMrl1CxxMsAyD8uC2fDT7OXAvzGPSnDrUThrlUHbWlZUcYMmqN7dzktVOwV
-         fgkiche1KVleEB6GbMo5BRNvfKfoqj0P6X5Jff4EgzSPpRYU3PRpG3Rkezdrt/6ejm
-         56HvU5HSbIrf9Xcvsstm1ubMPSwD1JfJo3VTTnWI=
-Received: by mail-wm1-f48.google.com with SMTP id a81so3278239wmf.5
-        for <linux-efi@vger.kernel.org>; Wed, 25 Mar 2020 08:52:21 -0700 (PDT)
-X-Gm-Message-State: ANhLgQ1qvOyZrvZP6h7V/qK2rjgXX75oyng62Y84eSfNpQRB/0I2G2Do
-        evsH3mrSYecEekG+J47OPvw1syEoNHAXSYue16QXWw==
-X-Google-Smtp-Source: ADFU+vt8735ZWRnBwRWD9SqkPAn5QRqdMwZN/c2sk954h87LHobbuMDhyHh7DZF84UWK+AvlpFCnB2rr2aczEq6qvrM=
-X-Received: by 2002:a1c:ac8a:: with SMTP id v132mr3934539wme.62.1585151540255;
- Wed, 25 Mar 2020 08:52:20 -0700 (PDT)
+        b=wNQncXlQb/kPiwpu/mNOFphhaZSdu97fZPMktrBI7ULMMXkPdoyM8nhLcnyLdX/rF
+         0K7Ar8NSbvT49k4sqi0+3CcxQyMV26BwaVwShTFQHaevvIOen/kfKLhTT5Dd5x0x8l
+         xzefK26AVtCdsvDcHKGeToClSagQaDx2iO16yAcw=
+Received: by mail-wm1-f42.google.com with SMTP id 26so5361788wmk.1
+        for <linux-efi@vger.kernel.org>; Wed, 25 Mar 2020 09:41:56 -0700 (PDT)
+X-Gm-Message-State: ANhLgQ2Ea35kxZy0wQZXQvvib8mqzNnfwonmojNtL29dKlkR+fYaJ/Zb
+        QivW+16/0/ua7UwHNgA5vxqvfT5o8JIQxiHDUUXH4g==
+X-Google-Smtp-Source: ADFU+vta9fWvKi78EiQgK6NXqyVsyEPSz4RCJCiGEaOzJ6l59KxD8f76QU5aW9FhDm0K613szx7H2SBu9jYqH3AMzTA=
+X-Received: by 2002:a7b:c050:: with SMTP id u16mr4608096wmc.68.1585154514613;
+ Wed, 25 Mar 2020 09:41:54 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200312011312.70653-1-qiuxu.zhuo@intel.com> <CAKv+Gu9BvqZavV6XjfuacXXpabNCXLYEw-f=81fwX8hdL6Fn-A@mail.gmail.com>
- <d0a09900ca0341029980d351bbe2aecc@intel.com> <CAKv+Gu82OFMJk-jQKdvA0_Sgp_CCmvC1a63QYrY+Cc4Qjx3+Yw@mail.gmail.com>
- <abd0a0d1095f4bc4a8fc2be420a2478a@intel.com> <20200320192527.GA31764@agluck-desk2.amr.corp.intel.com>
-In-Reply-To: <20200320192527.GA31764@agluck-desk2.amr.corp.intel.com>
+References: <20200319192855.29876-1-nivedita@alum.mit.edu> <20200320020028.1936003-1-nivedita@alum.mit.edu>
+In-Reply-To: <20200320020028.1936003-1-nivedita@alum.mit.edu>
 From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Wed, 25 Mar 2020 16:52:09 +0100
-X-Gmail-Original-Message-ID: <CAKv+Gu9zJ7O29Y1+99TSBuQJ86RKDJ4MQHZSUs+rxq0WHKMEYg@mail.gmail.com>
-Message-ID: <CAKv+Gu9zJ7O29Y1+99TSBuQJ86RKDJ4MQHZSUs+rxq0WHKMEYg@mail.gmail.com>
-Subject: Re: [PATCH v6 0/2] Add capsule-pstore backend support
-To:     "Luck, Tony" <tony.luck@intel.com>
-Cc:     "Zhuo, Qiuxu" <qiuxu.zhuo@intel.com>,
-        Kees Cook <keescook@chromium.org>,
-        Matt Fleming <matt@codeblueprint.co.uk>,
-        "Gao, Liming" <liming.gao@intel.com>,
-        linux-efi <linux-efi@vger.kernel.org>
+Date:   Wed, 25 Mar 2020 17:41:43 +0100
+X-Gmail-Original-Message-ID: <CAKv+Gu8-iK-FQrgCY6YGXyg155chMPJQZeQr-i_xQbqoQ57F0g@mail.gmail.com>
+Message-ID: <CAKv+Gu8-iK-FQrgCY6YGXyg155chMPJQZeQr-i_xQbqoQ57F0g@mail.gmail.com>
+Subject: Re: [PATCH v2 00/14] efi/gop: Refactoring + mode-setting feature
+To:     Arvind Sankar <nivedita@alum.mit.edu>
+Cc:     Hans de Goede <hdegoede@redhat.com>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, 20 Mar 2020 at 20:25, Luck, Tony <tony.luck@intel.com> wrote:
+On Fri, 20 Mar 2020 at 03:00, Arvind Sankar <nivedita@alum.mit.edu> wrote:
 >
-> On Thu, Mar 19, 2020 at 01:53:38AM -0700, Zhuo, Qiuxu wrote:
-> > > From: linux-efi-owner@vger.kernel.org <linux-efi-owner@vger.kernel.org> On> Behalf Of Ard Biesheuvel
-> > > ...
-> > > > The following commit on the tip tree removes the variables 'config_table' from the efi structure.
-> > > >
-> > > >     9cd437ac0ef4 ("efi/x86: Make fw_vendor, config_table and runtime sysfs nodes x86 specific")
-> > > >
-> > > > But the external driver "capsule-pstore.ko" needs to access  'config_table' and 'nr_tables' to go through the configuration table to extract  crash capsules.
-> > > >
-> > > > Adding 'config_table' and 'nr_tables' back to the efi structure looks like not a good way.
-> > > > Do you have any  suggestion on how to export 'config_table' and 'nr_tables' variables for the external driver "capsule-pstore.ko"?
-> > > >
-> > >
-> > > I will get back to you on monday about this. In any case, this will have to wait until v5.8
-> >
-> > OK. Thanks!
+> This series is against tip:efi/core.
 >
-> Would it be acceptable to take the first half of Qiuxu's
-> function efi_capsule_table_get() and move it into the
-> generic efi code naming it something like: "efi_get_table_by_guid()"?
-> Then EXPORT_GPL that function?
+> Patches 1-9 are small cleanups and refactoring of the code in
+> libstub/gop.c.
+>
+> The rest of the patches add the ability to use a command-line option to
+> switch the gop's display mode.
+>
+> The options supported are:
+> video=efifb:mode=n
+>         Choose a specific mode number
+> video=efifb:<xres>x<yres>[-(rgb|bgr|<bpp>)]
+>         Specify mode by resolution and optionally color depth
+> video=efifb:auto
+>         Let the EFI stub choose the highest resolution mode available.
+>
+> The mode-setting additions increase code size of gop.o by about 3k on
+> x86-64 with EFI_MIXED enabled.
+>
+> Changes in v2 (HT lkp@intel.com):
+> - Fix __efistub_global attribute to be after the variable.
+>   (NB: bunch of other places should ideally be fixed, those I guess
+>   don't matter as they are scalars?)
+> - Silence -Wmaybe-uninitialized warning in set_mode function.
 >
 
-That sounds reasonable to me.
+These look good to me. The only question I have is whether it would be
+possible to use the existing next_arg() and parse_option_str()
+functions to replace some of the open code parsing that goes on in
+patches 11 - 14.
+
+
+> Arvind Sankar (14):
+>   efi/gop: Remove redundant current_fb_base
+>   efi/gop: Move check for framebuffer before con_out
+>   efi/gop: Get mode information outside the loop
+>   efi/gop: Factor out locating the gop into a function
+>   efi/gop: Slightly re-arrange logic of find_gop
+>   efi/gop: Move variable declarations into loop block
+>   efi/gop: Use helper macros for populating lfb_base
+>   efi/gop: Use helper macros for find_bits
+>   efi/gop: Remove unreachable code from setup_pixel_info
+>   efi/gop: Add prototypes for query_mode and set_mode
+>   efi/gop: Allow specifying mode number on command line
+>   efi/gop: Allow specifying mode by <xres>x<yres>
+>   efi/gop: Allow specifying depth as well as resolution
+>   efi/gop: Allow automatically choosing the best mode
+>
+>  Documentation/fb/efifb.rst                    |  33 +-
+>  arch/x86/include/asm/efi.h                    |   4 +
+>  .../firmware/efi/libstub/efi-stub-helper.c    |   3 +
+>  drivers/firmware/efi/libstub/efistub.h        |   8 +-
+>  drivers/firmware/efi/libstub/gop.c            | 489 ++++++++++++++----
+>  5 files changed, 428 insertions(+), 109 deletions(-)
+>
+>
+> base-commit: d5528d5e91041e68e8eab9792ce627705a0ed273
+> --
+> 2.24.1
+>
