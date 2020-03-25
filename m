@@ -2,48 +2,44 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BB9DF192F52
-	for <lists+linux-efi@lfdr.de>; Wed, 25 Mar 2020 18:33:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B4E14192F5B
+	for <lists+linux-efi@lfdr.de>; Wed, 25 Mar 2020 18:34:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727695AbgCYRdn (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 25 Mar 2020 13:33:43 -0400
-Received: from mail.kernel.org ([198.145.29.99]:56832 "EHLO mail.kernel.org"
+        id S1727828AbgCYRe2 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 25 Mar 2020 13:34:28 -0400
+Received: from mail.kernel.org ([198.145.29.99]:57170 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727320AbgCYRdm (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Wed, 25 Mar 2020 13:33:42 -0400
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+        id S1727695AbgCYRe2 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Wed, 25 Mar 2020 13:34:28 -0400
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 45D6B20740
-        for <linux-efi@vger.kernel.org>; Wed, 25 Mar 2020 17:33:42 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 1326C20740
+        for <linux-efi@vger.kernel.org>; Wed, 25 Mar 2020 17:34:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1585157622;
-        bh=pphi18T7D1mIuaACHN5g5DSb3sNXUF78jLFaPNjg/FU=;
+        s=default; t=1585157667;
+        bh=94llP6pxjUCSz+E2JwEvEnVMsGf+o3HmJYs0SY1dkEw=;
         h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=dBxFoHbT7V49DRyihWtbg6OjE4jYgotPj5t38WAkupzdLoXGYJfmJmRkOVOpsygqR
-         XTa+WAWpwnwBGsmfzThtCd3Lc4NJWKPUovSvYn4zQ2EaD+es9pehj4wJDmCZjj0cTt
-         9A3TeXbR83EY5Vxew92p8k/QCBtvnNwdhuhvZZsA=
-Received: by mail-wr1-f44.google.com with SMTP id u10so4226344wro.7
-        for <linux-efi@vger.kernel.org>; Wed, 25 Mar 2020 10:33:42 -0700 (PDT)
-X-Gm-Message-State: ANhLgQ0VHfi8xTUQucTlt8cT4W/w4E/jV2h5Zcf7dTVwLv86C9Qbi1UG
-        1D2BoruxSoVC2gOXWtsCDwkokVmkOIQk+1sgZ5oLIQ==
-X-Google-Smtp-Source: ADFU+vtx6OAR/Fi7rV5lGb0rQePCkeCAIrRpEVmnbHA2ofmwgacBNg5WhWV1S2kZoRi85Il2hsnPQskuGYBHW8/OEjM=
-X-Received: by 2002:a5d:4fcf:: with SMTP id h15mr4548116wrw.262.1585157620715;
- Wed, 25 Mar 2020 10:33:40 -0700 (PDT)
+        b=vyXdMn6LTB/ZBJzJhU2OkW9K764yEb3/kcpYsk4VE8oguctYxcN1JMCLn2eToI9Mi
+         L3LteaIGqZWzFgcFJ111bgVS12QXLFrq4JRSIXSO4YfczFADBC+lkJqsA3VywPSYaA
+         IGT7gQMHQDjQ0YXx/X+4kxrXEwsfRQYQEOWD5aoU=
+Received: by mail-wm1-f50.google.com with SMTP id m3so3747581wmi.0
+        for <linux-efi@vger.kernel.org>; Wed, 25 Mar 2020 10:34:27 -0700 (PDT)
+X-Gm-Message-State: ANhLgQ0WbDOVX70XCpnyPv7qLv6sIRautu70++OTctcWN/fGijqasDZI
+        +ehZwKIyx9rtTj8Z+3RLhP3qi0N8j0R5bj2YRXNg6A==
+X-Google-Smtp-Source: ADFU+vtGlUbKLQBPPKXRCRMI0idw94HVW4lJVSi/Z2iQoS/wuuAPgA48VyGt0m52Nx33CoeTFmfRRRtUqhUwE/hc5Lo=
+X-Received: by 2002:a1c:de87:: with SMTP id v129mr4344376wmg.40.1585157665490;
+ Wed, 25 Mar 2020 10:34:25 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200312011312.70653-1-qiuxu.zhuo@intel.com> <CAKv+Gu9BvqZavV6XjfuacXXpabNCXLYEw-f=81fwX8hdL6Fn-A@mail.gmail.com>
- <d0a09900ca0341029980d351bbe2aecc@intel.com> <CAKv+Gu82OFMJk-jQKdvA0_Sgp_CCmvC1a63QYrY+Cc4Qjx3+Yw@mail.gmail.com>
- <abd0a0d1095f4bc4a8fc2be420a2478a@intel.com> <20200320192527.GA31764@agluck-desk2.amr.corp.intel.com>
- <CAKv+Gu9zJ7O29Y1+99TSBuQJ86RKDJ4MQHZSUs+rxq0WHKMEYg@mail.gmail.com>
-In-Reply-To: <CAKv+Gu9zJ7O29Y1+99TSBuQJ86RKDJ4MQHZSUs+rxq0WHKMEYg@mail.gmail.com>
+References: <20200312011324.70701-1-qiuxu.zhuo@intel.com>
+In-Reply-To: <20200312011324.70701-1-qiuxu.zhuo@intel.com>
 From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Wed, 25 Mar 2020 18:33:29 +0100
-X-Gmail-Original-Message-ID: <CAKv+Gu-XZEnxU5eGSfemhSWj8agZUFV59h23fPMH80Hk-pjuaA@mail.gmail.com>
-Message-ID: <CAKv+Gu-XZEnxU5eGSfemhSWj8agZUFV59h23fPMH80Hk-pjuaA@mail.gmail.com>
-Subject: Re: [PATCH v6 0/2] Add capsule-pstore backend support
-To:     "Luck, Tony" <tony.luck@intel.com>
-Cc:     "Zhuo, Qiuxu" <qiuxu.zhuo@intel.com>,
-        Kees Cook <keescook@chromium.org>,
+Date:   Wed, 25 Mar 2020 18:34:14 +0100
+X-Gmail-Original-Message-ID: <CAKv+Gu_p56925-Grfk0GAtju8BTsShGx0wDMWe4MeqkVQg1QZQ@mail.gmail.com>
+Message-ID: <CAKv+Gu_p56925-Grfk0GAtju8BTsShGx0wDMWe4MeqkVQg1QZQ@mail.gmail.com>
+Subject: Re: [PATCH v6 1/2] efi: Add 'nr_config_table' variable in efi structure
+To:     Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+Cc:     Kees Cook <keescook@chromium.org>, Tony Luck <tony.luck@intel.com>,
         Matt Fleming <matt@codeblueprint.co.uk>,
         "Gao, Liming" <liming.gao@intel.com>,
         linux-efi <linux-efi@vger.kernel.org>
@@ -53,36 +49,77 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, 25 Mar 2020 at 16:52, Ard Biesheuvel <ardb@kernel.org> wrote:
+On Thu, 12 Mar 2020 at 02:12, Qiuxu Zhuo <qiuxu.zhuo@intel.com> wrote:
 >
-> On Fri, 20 Mar 2020 at 20:25, Luck, Tony <tony.luck@intel.com> wrote:
-> >
-> > On Thu, Mar 19, 2020 at 01:53:38AM -0700, Zhuo, Qiuxu wrote:
-> > > > From: linux-efi-owner@vger.kernel.org <linux-efi-owner@vger.kernel.org> On> Behalf Of Ard Biesheuvel
-> > > > ...
-> > > > > The following commit on the tip tree removes the variables 'config_table' from the efi structure.
-> > > > >
-> > > > >     9cd437ac0ef4 ("efi/x86: Make fw_vendor, config_table and runtime sysfs nodes x86 specific")
-> > > > >
-> > > > > But the external driver "capsule-pstore.ko" needs to access  'config_table' and 'nr_tables' to go through the configuration table to extract  crash capsules.
-> > > > >
-> > > > > Adding 'config_table' and 'nr_tables' back to the efi structure looks like not a good way.
-> > > > > Do you have any  suggestion on how to export 'config_table' and 'nr_tables' variables for the external driver "capsule-pstore.ko"?
-> > > > >
-> > > >
-> > > > I will get back to you on monday about this. In any case, this will have to wait until v5.8
-> > >
-> > > OK. Thanks!
-> >
-> > Would it be acceptable to take the first half of Qiuxu's
-> > function efi_capsule_table_get() and move it into the
-> > generic efi code naming it something like: "efi_get_table_by_guid()"?
-> > Then EXPORT_GPL that function?
-> >
+> The 'nr_config_table' and 'config_table' (already in efi structure)
+> in efi structure provide a way for some driver(e.g. capsule-pstore
+> goes through the configuration table to extract crash capsules to
+> aid in debugging) to iterate over the EFI configuration table array.
 >
-> That sounds reasonable to me.
+> Signed-off-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
 
-Actually, I don't think this is necessary. The capsule pstore
-implementation uses a fixed GUID, which we could simply add to the
-common_tables[] array so that its address gets recorded when we
-iterate over the list of config tables.
+As indicated in my reply to your cover letter, I don't think we need
+this patch. Please drop it.
+
+> ---
+>  arch/x86/platform/efi/efi.c     | 1 +
+>  drivers/firmware/efi/arm-init.c | 4 +++-
+>  drivers/firmware/efi/efi.c      | 1 +
+>  include/linux/efi.h             | 1 +
+>  4 files changed, 6 insertions(+), 1 deletion(-)
+>
+> diff --git a/arch/x86/platform/efi/efi.c b/arch/x86/platform/efi/efi.c
+> index ae923ee8e2b4..2f3065905e8a 100644
+> --- a/arch/x86/platform/efi/efi.c
+> +++ b/arch/x86/platform/efi/efi.c
+> @@ -456,6 +456,7 @@ void __init efi_init(void)
+>                 return;
+>
+>         efi.config_table = (unsigned long)efi.systab->tables;
+> +       efi.nr_config_table = (unsigned long)efi.systab->nr_tables;
+>         efi.fw_vendor    = (unsigned long)efi.systab->fw_vendor;
+>         efi.runtime      = (unsigned long)efi.systab->runtime;
+>
+> diff --git a/drivers/firmware/efi/arm-init.c b/drivers/firmware/efi/arm-init.c
+> index d99f5b0c8a09..f2e2e1c1624b 100644
+> --- a/drivers/firmware/efi/arm-init.c
+> +++ b/drivers/firmware/efi/arm-init.c
+> @@ -143,8 +143,10 @@ static int __init uefi_init(void)
+>                                          sizeof(efi_config_table_t),
+>                                          arch_tables);
+>
+> -       if (!retval)
+> +       if (!retval) {
+>                 efi.config_table = (unsigned long)efi.systab->tables;
+> +               efi.nr_config_table = (unsigned long)efi.systab->nr_tables;
+> +       }
+>
+>         early_memunmap(config_tables, table_size);
+>  out:
+> diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
+> index 621220ab3d0e..1b599941bad3 100644
+> --- a/drivers/firmware/efi/efi.c
+> +++ b/drivers/firmware/efi/efi.c
+> @@ -46,6 +46,7 @@ struct efi __read_mostly efi = {
+>         .fw_vendor              = EFI_INVALID_TABLE_ADDR,
+>         .runtime                = EFI_INVALID_TABLE_ADDR,
+>         .config_table           = EFI_INVALID_TABLE_ADDR,
+> +       .nr_config_table        = 0,
+>         .esrt                   = EFI_INVALID_TABLE_ADDR,
+>         .properties_table       = EFI_INVALID_TABLE_ADDR,
+>         .mem_attr_table         = EFI_INVALID_TABLE_ADDR,
+> diff --git a/include/linux/efi.h b/include/linux/efi.h
+> index 7efd7072cca5..13b3fe069f1f 100644
+> --- a/include/linux/efi.h
+> +++ b/include/linux/efi.h
+> @@ -913,6 +913,7 @@ extern struct efi {
+>         unsigned long fw_vendor;        /* fw_vendor */
+>         unsigned long runtime;          /* runtime table */
+>         unsigned long config_table;     /* config tables */
+> +       unsigned long nr_config_table; /* the number of config tables */
+>         unsigned long esrt;             /* ESRT table */
+>         unsigned long properties_table; /* properties table */
+>         unsigned long mem_attr_table;   /* memory attributes table */
+> --
+> 2.17.1
+>
