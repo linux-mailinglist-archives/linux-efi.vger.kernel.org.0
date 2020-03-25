@@ -2,71 +2,64 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B62E18D85B
-	for <lists+linux-efi@lfdr.de>; Fri, 20 Mar 2020 20:25:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B73FD192533
+	for <lists+linux-efi@lfdr.de>; Wed, 25 Mar 2020 11:13:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726829AbgCTTZ3 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 20 Mar 2020 15:25:29 -0400
-Received: from mga02.intel.com ([134.134.136.20]:11708 "EHLO mga02.intel.com"
+        id S1726264AbgCYKNU (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 25 Mar 2020 06:13:20 -0400
+Received: from mail.kernel.org ([198.145.29.99]:38958 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726738AbgCTTZ3 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Fri, 20 Mar 2020 15:25:29 -0400
-IronPort-SDR: YBPDPdYwVKO7yF/oyyg7P1epCP2MtVI6kvtDmCk1IoiZSZRamM4fwjfslXYyC7UlkIA7K2nef9
- kH4kN9OlITBQ==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2020 12:25:28 -0700
-IronPort-SDR: NZXMP46VphHgAClkm6jUIN4i9FLSdP3BvP2LRdBWzZtkb0WYigf4i+SbGrTexQrIydwmZeQJ29
- BYez0E2zyECw==
-X-IronPort-AV: E=Sophos;i="5.72,285,1580803200"; 
-   d="scan'208";a="280521575"
-Received: from agluck-desk2.sc.intel.com (HELO agluck-desk2.amr.corp.intel.com) ([10.3.52.68])
-  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2020 12:25:28 -0700
-Date:   Fri, 20 Mar 2020 12:25:27 -0700
-From:   "Luck, Tony" <tony.luck@intel.com>
-To:     "Zhuo, Qiuxu" <qiuxu.zhuo@intel.com>
-Cc:     Ard Biesheuvel <ardb@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        Matt Fleming <matt@codeblueprint.co.uk>,
-        "Gao, Liming" <liming.gao@intel.com>,
-        linux-efi <linux-efi@vger.kernel.org>
-Subject: Re: [PATCH v6 0/2] Add capsule-pstore backend support
-Message-ID: <20200320192527.GA31764@agluck-desk2.amr.corp.intel.com>
-References: <20200312011312.70653-1-qiuxu.zhuo@intel.com>
- <CAKv+Gu9BvqZavV6XjfuacXXpabNCXLYEw-f=81fwX8hdL6Fn-A@mail.gmail.com>
- <d0a09900ca0341029980d351bbe2aecc@intel.com>
- <CAKv+Gu82OFMJk-jQKdvA0_Sgp_CCmvC1a63QYrY+Cc4Qjx3+Yw@mail.gmail.com>
- <abd0a0d1095f4bc4a8fc2be420a2478a@intel.com>
+        id S1726043AbgCYKNU (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Wed, 25 Mar 2020 06:13:20 -0400
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 73AB3206F6
+        for <linux-efi@vger.kernel.org>; Wed, 25 Mar 2020 10:13:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1585131199;
+        bh=YoGWxBSDa8w2HaKjgI6HCFScbw5ThSeWBwlptOiz/TE=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=Y2s/IPFKUpYRXJCoE3UJfCr4MD9IRwAleMh2xexVEGbo/6v8Tdt+l+HKJtpvrt48v
+         4cWlfTERVL4qXwmC4Km5B29gNryOzIulscaSeRe/h/eoopl8v8sJdaoZ7TB7N0T5W4
+         MN9+OKDBb5tc98guMnBVVP6pCnw7vTnN2xTZdKt0=
+Received: by mail-wm1-f52.google.com with SMTP id b12so1696038wmj.3
+        for <linux-efi@vger.kernel.org>; Wed, 25 Mar 2020 03:13:19 -0700 (PDT)
+X-Gm-Message-State: ANhLgQ1NP+0TkPWO/AXqVzqKh1EMHhmzADCNyy2hblGFW660B3JdrBzt
+        MusVLVf5wBTWAYaR3K9kEDoKiTeN2fGYNGoyvq8FVg==
+X-Google-Smtp-Source: ADFU+vvJHI5y1nnOoWdOwcn46Rc67YSck/gQ/al4nNQHZr/R78WNYxgs+8VffdUMuf5eX56X1J8x7enaFSrMKd1oh84=
+X-Received: by 2002:a7b:cb81:: with SMTP id m1mr2648477wmi.1.1585131197918;
+ Wed, 25 Mar 2020 03:13:17 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <abd0a0d1095f4bc4a8fc2be420a2478a@intel.com>
+References: <20200311072145.5001-1-tiwai@suse.de> <s5h4kukuyga.wl-tiwai@suse.de>
+In-Reply-To: <s5h4kukuyga.wl-tiwai@suse.de>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Wed, 25 Mar 2020 11:13:07 +0100
+X-Gmail-Original-Message-ID: <CAKv+Gu-GNbgqDWYvp9=ZA+SgpZC=NXgvdMLxF-AY854XF8wTmA@mail.gmail.com>
+Message-ID: <CAKv+Gu-GNbgqDWYvp9=ZA+SgpZC=NXgvdMLxF-AY854XF8wTmA@mail.gmail.com>
+Subject: Re: [PATCH] efi/cper: Use scnprintf() for avoiding potential buffer overflow
+To:     Takashi Iwai <tiwai@suse.de>
+Cc:     linux-efi <linux-efi@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, Mar 19, 2020 at 01:53:38AM -0700, Zhuo, Qiuxu wrote:
-> > From: linux-efi-owner@vger.kernel.org <linux-efi-owner@vger.kernel.org> On> Behalf Of Ard Biesheuvel
-> > ...
-> > > The following commit on the tip tree removes the variables 'config_table' from the efi structure.
-> > >
-> > >     9cd437ac0ef4 ("efi/x86: Make fw_vendor, config_table and runtime sysfs nodes x86 specific")
-> > >
-> > > But the external driver "capsule-pstore.ko" needs to access  'config_table' and 'nr_tables' to go through the configuration table to extract  crash capsules.
-> > >
-> > > Adding 'config_table' and 'nr_tables' back to the efi structure looks like not a good way.
-> > > Do you have any  suggestion on how to export 'config_table' and 'nr_tables' variables for the external driver "capsule-pstore.ko"?
-> > >
-> > 
-> > I will get back to you on monday about this. In any case, this will have to wait until v5.8
-> 
-> OK. Thanks!
+On Thu, 19 Mar 2020 at 17:00, Takashi Iwai <tiwai@suse.de> wrote:
+>
+> On Wed, 11 Mar 2020 08:21:45 +0100,
+> Takashi Iwai wrote:
+> >
+> > Since snprintf() returns the would-be-output size instead of the
+> > actual output size, the succeeding calls may go beyond the given
+> > buffer limit.  Fix it by replacing with scnprintf().
+> >
+> > Signed-off-by: Takashi Iwai <tiwai@suse.de>
+>
+> A gentle reminder for this forgotten patch.
+> Let me know if any further changes are needed.
+>
 
-Would it be acceptable to take the first half of Qiuxu's
-function efi_capsule_table_get() and move it into the
-generic efi code naming it something like: "efi_get_table_by_guid()"?
-Then EXPORT_GPL that function?
 
--Tony
+Thanks Takashi, I'll queue this up.
