@@ -2,210 +2,79 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A1D43194AF9
-	for <lists+linux-efi@lfdr.de>; Thu, 26 Mar 2020 22:54:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 13A7A194D9A
+	for <lists+linux-efi@lfdr.de>; Fri, 27 Mar 2020 00:56:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726296AbgCZVyZ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 26 Mar 2020 17:54:25 -0400
-Received: from mga02.intel.com ([134.134.136.20]:38891 "EHLO mga02.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726260AbgCZVyZ (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Thu, 26 Mar 2020 17:54:25 -0400
-IronPort-SDR: CYeEMvXC+dswnJfBn9divlbuqxiG9Lqzpmxgj8FyNQIR7uRVlKucYMFsprtiUDe//u9cBwZNwb
- 4arZO1nDuuag==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2020 14:54:23 -0700
-IronPort-SDR: AAbJSrj7G4aiBqB3F05APcGP3dNBAR0YQ+dVx5/8H6kDwUxDkKAD/1rVMrjTe3W4on62t2GSgi
- yzxWTCtmkZqw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.72,309,1580803200"; 
-   d="scan'208";a="448785118"
-Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
-  by fmsmga006.fm.intel.com with ESMTP; 26 Mar 2020 14:54:22 -0700
-Received: from kbuild by lkp-server01 with local (Exim 4.89)
-        (envelope-from <lkp@intel.com>)
-        id 1jHaSD-0002cu-U3; Fri, 27 Mar 2020 05:54:21 +0800
-Date:   Fri, 27 Mar 2020 05:53:23 +0800
-From:   kbuild test robot <lkp@intel.com>
+        id S1727345AbgCZX4m (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 26 Mar 2020 19:56:42 -0400
+Received: from mail-qk1-f193.google.com ([209.85.222.193]:34774 "EHLO
+        mail-qk1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726359AbgCZX4m (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 26 Mar 2020 19:56:42 -0400
+Received: by mail-qk1-f193.google.com with SMTP id i6so9135386qke.1;
+        Thu, 26 Mar 2020 16:56:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:from:date:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=sD9cv/e/jx5JHSt1rnho9FXARIJYPMfW1ypvOFyaY9s=;
+        b=N+e3K4TvDyaZ4Dj3m/utvfySSSdAIElHH8I6frjCUQ8/IE6J328+51GyH8jujFQut4
+         HAff1kN88iXqRe/wHMTy+l4o22hXNQqDzbO/92qbXZ7Szd+fbSHwmsmsYcGz42WqS/Mf
+         xV52WnXtW6O9A5DNp+5GLNYaN5YQ8kZ8qnVrtkhLwEjKpztozDYgIbSJTTfJGVeFOUHf
+         DKiAmoypGikmU0z0PMzshLhfGGGrj3sSXvxiSK8uYMSbLE2QP3PCPtGp8riE45C+2bsN
+         RlPMoMAxAvvOBt/+Pzds1dgnRJyy2qTle/1siuV4vl1Gd7GcmkIAOBDeNKpvnvPJuBnG
+         HvCA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:from:date:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to:user-agent;
+        bh=sD9cv/e/jx5JHSt1rnho9FXARIJYPMfW1ypvOFyaY9s=;
+        b=lMu5Jnia1rYV2a90CDPeUteuZ4H5CS8Zbh7DohU9eGS76BE7pRHxPWGNrouG5BfBrx
+         /s3ln9SpGOoaRYknZDYQXzyncGsdgFxwZIqMJbnSJjyMgcOtqogl1ooNkz9zgcCNidql
+         xR28tfk+yzEQgu6lfXVUk48rbhtEqMygM5Ty7/PMt3MY5S8dGkxjYFLHliT/1NpbtClM
+         gjk86f6eF/LFxy8t/xSwcJyIqVLwFRYgH83xa1xitpfJzLcRdeb0+GBx75aiNsuBtcKL
+         wt2E2FYUWYLCCpAnkhuWzMbK7zGjI6wD+8RwEzeOyveeRx0YGAch7OjxUsIB/lfCGRoB
+         sxsQ==
+X-Gm-Message-State: ANhLgQ18mIV5N5vwPMgKxlKZ28wrm1FWTOXk8h6OWKsdbobJD2om5NdE
+        SGnKcYgUtOi+EiyPeX7BZPw=
+X-Google-Smtp-Source: ADFU+vtbe3D/qiE2OVFodOIkccs0SBYWk0CMSYd6+UEbXddisShf9BqeySwyFWPU/wSD3O9cpYT0VQ==
+X-Received: by 2002:a05:620a:22b1:: with SMTP id p17mr11774955qkh.396.1585267000525;
+        Thu, 26 Mar 2020 16:56:40 -0700 (PDT)
+Received: from rani.riverdale.lan ([2001:470:1f07:5f3::b55f])
+        by smtp.gmail.com with ESMTPSA id p1sm2524807qkf.73.2020.03.26.16.56.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 26 Mar 2020 16:56:40 -0700 (PDT)
+From:   Arvind Sankar <nivedita@alum.mit.edu>
+X-Google-Original-From: Arvind Sankar <arvind@rani.riverdale.lan>
+Date:   Thu, 26 Mar 2020 19:56:38 -0400
 To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     linux-efi@vger.kernel.org
-Subject: [efi:next] BUILD SUCCESS 7f464c588240add3620dc2080872cc4d44f7d248
-Message-ID: <5e7d2453.6jINI4pJZ4M64JsC%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+Cc:     Arvind Sankar <nivedita@alum.mit.edu>,
+        Hans de Goede <hdegoede@redhat.com>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 00/14] efi/gop: Refactoring + mode-setting feature
+Message-ID: <20200326235637.GA2364023@rani.riverdale.lan>
+References: <20200319192855.29876-1-nivedita@alum.mit.edu>
+ <20200320020028.1936003-1-nivedita@alum.mit.edu>
+ <CAKv+Gu8-iK-FQrgCY6YGXyg155chMPJQZeQr-i_xQbqoQ57F0g@mail.gmail.com>
+ <20200325221007.GA290267@rani.riverdale.lan>
+ <CAMj1kXHPmtYgoUViF4baVHfy178ef8u57wJgqcZVagGTAuP3iQ@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAMj1kXHPmtYgoUViF4baVHfy178ef8u57wJgqcZVagGTAuP3iQ@mail.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git  next
-branch HEAD: 7f464c588240add3620dc2080872cc4d44f7d248  efi: move arch_tables check to caller
+On Thu, Mar 26, 2020 at 12:36:25AM +0100, Ard Biesheuvel wrote:
+> 
+> Yes, -ffreestanding implies -fno-builtin, which means that the
+> compiler cannot assume it knows (and can optimize away) the behavior
+> of strlen(), memset(), etc.
 
-elapsed time: 483m
+Yes exactly. Do you foresee any problems with removing it?
 
-configs tested: 152
-configs skipped: 0
-
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-arm                              allmodconfig
-arm                               allnoconfig
-arm                              allyesconfig
-arm64                            allmodconfig
-arm64                             allnoconfig
-arm64                            allyesconfig
-arm                         at91_dt_defconfig
-arm                           efm32_defconfig
-arm                          exynos_defconfig
-arm                        multi_v5_defconfig
-arm                        multi_v7_defconfig
-arm                        shmobile_defconfig
-arm                           sunxi_defconfig
-arm64                               defconfig
-sparc                            allyesconfig
-riscv                    nommu_virt_defconfig
-s390                             alldefconfig
-i386                              allnoconfig
-i386                             allyesconfig
-i386                             alldefconfig
-i386                                defconfig
-ia64                             alldefconfig
-ia64                             allmodconfig
-ia64                              allnoconfig
-ia64                             allyesconfig
-ia64                                defconfig
-nios2                         3c120_defconfig
-nios2                         10m50_defconfig
-c6x                        evmc6678_defconfig
-xtensa                          iss_defconfig
-c6x                              allyesconfig
-xtensa                       common_defconfig
-openrisc                 simple_smp_defconfig
-openrisc                    or1ksim_defconfig
-alpha                               defconfig
-csky                                defconfig
-nds32                             allnoconfig
-nds32                               defconfig
-h8300                     edosk2674_defconfig
-h8300                    h8300h-sim_defconfig
-h8300                       h8s-sim_defconfig
-m68k                             allmodconfig
-m68k                       m5475evb_defconfig
-m68k                          multi_defconfig
-m68k                           sun3_defconfig
-arc                                 defconfig
-arc                              allyesconfig
-powerpc                             defconfig
-powerpc                       ppc64_defconfig
-powerpc                          rhel-kconfig
-microblaze                      mmu_defconfig
-microblaze                    nommu_defconfig
-powerpc                           allnoconfig
-mips                           32r2_defconfig
-mips                         64r6el_defconfig
-mips                             allmodconfig
-mips                              allnoconfig
-mips                             allyesconfig
-mips                      fuloong2e_defconfig
-mips                      malta_kvm_defconfig
-parisc                            allnoconfig
-parisc                           allyesconfig
-parisc                generic-32bit_defconfig
-parisc                generic-64bit_defconfig
-x86_64               randconfig-a001-20200326
-x86_64               randconfig-a002-20200326
-x86_64               randconfig-a003-20200326
-i386                 randconfig-a001-20200326
-i386                 randconfig-a002-20200326
-i386                 randconfig-a003-20200326
-mips                 randconfig-a001-20200326
-nds32                randconfig-a001-20200326
-m68k                 randconfig-a001-20200326
-parisc               randconfig-a001-20200326
-alpha                randconfig-a001-20200326
-riscv                randconfig-a001-20200326
-c6x                  randconfig-a001-20200326
-h8300                randconfig-a001-20200326
-microblaze           randconfig-a001-20200326
-nios2                randconfig-a001-20200326
-sparc64              randconfig-a001-20200326
-csky                 randconfig-a001-20200326
-openrisc             randconfig-a001-20200326
-s390                 randconfig-a001-20200326
-sh                   randconfig-a001-20200326
-xtensa               randconfig-a001-20200326
-x86_64               randconfig-c001-20200326
-x86_64               randconfig-c002-20200326
-x86_64               randconfig-c003-20200326
-i386                 randconfig-c001-20200326
-i386                 randconfig-c002-20200326
-i386                 randconfig-c003-20200326
-x86_64               randconfig-e001-20200326
-x86_64               randconfig-e002-20200326
-x86_64               randconfig-e003-20200326
-i386                 randconfig-e001-20200326
-i386                 randconfig-e002-20200326
-i386                 randconfig-e003-20200326
-x86_64               randconfig-f001-20200326
-x86_64               randconfig-f002-20200326
-x86_64               randconfig-f003-20200326
-i386                 randconfig-f001-20200326
-i386                 randconfig-f002-20200326
-i386                 randconfig-f003-20200326
-x86_64               randconfig-g001-20200326
-x86_64               randconfig-g002-20200326
-x86_64               randconfig-g003-20200326
-i386                 randconfig-g001-20200326
-i386                 randconfig-g002-20200326
-i386                 randconfig-g003-20200326
-x86_64               randconfig-h001-20200326
-x86_64               randconfig-h002-20200326
-x86_64               randconfig-h003-20200326
-i386                 randconfig-h001-20200326
-i386                 randconfig-h002-20200326
-i386                 randconfig-h003-20200326
-arc                  randconfig-a001-20200326
-arm                  randconfig-a001-20200326
-arm64                randconfig-a001-20200326
-ia64                 randconfig-a001-20200326
-powerpc              randconfig-a001-20200326
-sparc                randconfig-a001-20200326
-riscv                            allyesconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-s390                             allmodconfig
-s390                              allnoconfig
-s390                             allyesconfig
-s390                          debug_defconfig
-s390                                defconfig
-s390                       zfcpdump_defconfig
-sh                               allmodconfig
-sh                                allnoconfig
-sh                          rsk7269_defconfig
-sh                  sh7785lcr_32bit_defconfig
-sh                            titan_defconfig
-sparc                               defconfig
-sparc64                          allmodconfig
-sparc64                           allnoconfig
-sparc64                          allyesconfig
-sparc64                             defconfig
-um                                  defconfig
-um                             i386_defconfig
-um                           x86_64_defconfig
-x86_64                              fedora-25
-x86_64                                  kexec
-x86_64                                    lkp
-x86_64                                   rhel
-x86_64                         rhel-7.2-clear
-x86_64                               rhel-7.6
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+Thanks.
