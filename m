@@ -2,73 +2,89 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C51211957F3
-	for <lists+linux-efi@lfdr.de>; Fri, 27 Mar 2020 14:24:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B03C419584F
+	for <lists+linux-efi@lfdr.de>; Fri, 27 Mar 2020 14:47:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726758AbgC0NY1 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 27 Mar 2020 09:24:27 -0400
-Received: from mail-oi1-f196.google.com ([209.85.167.196]:43617 "EHLO
-        mail-oi1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726275AbgC0NY0 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 27 Mar 2020 09:24:26 -0400
-Received: by mail-oi1-f196.google.com with SMTP id p125so8690834oif.10
-        for <linux-efi@vger.kernel.org>; Fri, 27 Mar 2020 06:24:25 -0700 (PDT)
+        id S1726656AbgC0Nrn (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 27 Mar 2020 09:47:43 -0400
+Received: from mail-il1-f193.google.com ([209.85.166.193]:40139 "EHLO
+        mail-il1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726275AbgC0Nrm (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 27 Mar 2020 09:47:42 -0400
+Received: by mail-il1-f193.google.com with SMTP id j9so8803773ilr.7
+        for <linux-efi@vger.kernel.org>; Fri, 27 Mar 2020 06:47:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=uIvUjlehSVigkxhw02yxSAS/Jekd0JL8sbxoZE/mhG8=;
+        b=eazV06auQMPUGNkmHBAHGQ6JenTtMi5+DzJ/oxdgt9z2UM0wSy2gqLqNGJaA9I4r2w
+         Fjhcct1ufGwBqt/9BQH6YbDUepCJSwwNqcUon+wjqvNmwd6pPLm/wFZTy1budpR7gLGu
+         BG47owqFSfXsatYJp7BtxasH5Ib3SkuB6KAxTWqvR+70ZrzLIOK5H1ouKHdsUqWdDARH
+         HrlkUHxIBWWtiCI6NxLKzZpdQMkEgPSHjc/bWiOnBEFNU5Cn9fK/gN1rFQopyDTVTBJA
+         cBYF7NkYzkMg3AwJ4fF1yJHEcggXICmeIPomzb7/6c+uCSjaG7AWqF4EyNM4gn4RuLQQ
+         /U4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=OKthXtFlNti0LSi4OUZW/5dQsmpNf9se60/riHk1XAk=;
-        b=gjroWUnPUrMQf40xV5RMOqow/wkHQ7X0p5H7GML69HnvTkGISIQsGjXB9q7FgGzmQM
-         QtJmMUFGFLaAtdGJyCVBEhzPYmtvTlM8z+QdNuRv3geCViBnU5w5O9k0GdJxWPiFBbcu
-         bYlGiO5Rv2wEFiqWX73pAb7APNozT95YbFKL0iQtbD5ThCGTOHBfUhLLfhkICgvTyy1Z
-         nS54hlpp/rYr4F8mkmEPZ3idqrXCAPlC1P8xesO1oGzcg5ZDLTMB8nHQH/rhk//L4WFb
-         TZbl5UlAzZCVmrvAULDd9JbFV6sr26ZK8r9g3F40t3zsuXrfEHg1BpXp77yGfW6j6YfR
-         JvwQ==
-X-Gm-Message-State: ANhLgQ3UUZVYEHJ4mvH30YqovwdKxW25zqoO1bdcBQOYFE4Jkgplbyam
-        TG0r+WxIwPlfLTJTLzadCXWYasNOdk5FVFA8Cjs=
-X-Google-Smtp-Source: ADFU+vswoFq/dDr3qtbsUGZVp2CzdOz0pAn3X10jnaCb7tmV/fihHKD+GJxSWHt9DZGsDGJs3HUQaf2OBy+b5vhI32o=
-X-Received: by 2002:aca:ad93:: with SMTP id w141mr4042623oie.54.1585315465084;
- Fri, 27 Mar 2020 06:24:25 -0700 (PDT)
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=uIvUjlehSVigkxhw02yxSAS/Jekd0JL8sbxoZE/mhG8=;
+        b=LoL5QubOJL4KGA4L3Gn6LdKSBJb+q7v+4kTLshV+NmS/zNJr9+CW5BSuUdLMJEml50
+         z3zpt51utVHlzKio99hhbikyI278LdP+f3KF+AJ4KyDwlK0SFV4pkV+gJmrVdO+T9UVX
+         j0YIAMDJWKR3dPrwRz45Ns3kasL6h+nQKhXfFFIFjhs4NUC6fqdPMW8rkqryerSPcNjS
+         +QTzPhNnl7Z5IpRI5wRi8O1i1ByvJnLo1Z2mBgCImdfU4ZKCqKUXMG9pR07/emEDzpUB
+         fTCLMA5J7QZxw0hOxKhJG/sz1aeFYKzl8j+nKI4uDeLAPdT2umCPTjU/QtM01IXxwOk+
+         e7Hw==
+X-Gm-Message-State: ANhLgQ2wvYIAFk+SM1ersp4taSct6OLgiDqfVGmISfoa+Yu7k1M8pecP
+        //rU2RYd2n+6MPSODdq4Jiqg2nAHyAMF41WReP8=
+X-Google-Smtp-Source: ADFU+vsEOT+WQWygc9WYFTnaWEPBClFt90zYv+NMNp1u8R4Bbk9IaFGAjabyQQADVDVvD9OiSPeipr3XO+sCei3j+Lo=
+X-Received: by 2002:a92:d650:: with SMTP id x16mr14107808ilp.226.1585316861815;
+ Fri, 27 Mar 2020 06:47:41 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200327105906.2665-1-ardb@kernel.org> <20200327105906.2665-4-ardb@kernel.org>
-In-Reply-To: <20200327105906.2665-4-ardb@kernel.org>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Fri, 27 Mar 2020 14:24:14 +0100
-Message-ID: <CAMuHMdW35FXXvCFY6euA2p5YqN36-Q4M-5kbAvhhypr1K20uLQ@mail.gmail.com>
-Subject: Re: [PATCH 3/5] ARM: decompressor: defer loading of the contents of
- the LC0 structure
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Nicolas Pitre <nico@fluxnic.net>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Russell King <linux@armlinux.org.uk>
+Received: by 2002:a5e:8817:0:0:0:0:0 with HTTP; Fri, 27 Mar 2020 06:47:41
+ -0700 (PDT)
+Reply-To: officework_progress@yahoo.com
+From:   Andrew Ede <consumingfirechurch4@gmail.com>
+Date:   Fri, 27 Mar 2020 15:47:41 +0200
+Message-ID: <CAK6CGFczHjvD7X70Lr7hQAsGEVxbGPAfZ-CWajKzA8NWiay-vw@mail.gmail.com>
+Subject: HOW ARE YOU?
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, Mar 27, 2020 at 11:59 AM Ard Biesheuvel <ardb@kernel.org> wrote:
-> The remaining contents of LC0 are only used after the point in the
-> decompressor startup code where we enter via 'wont_overwrite'. So
-> move the loading of the LC0 structure after it. This will allow us
-> to jump to wont_overwrite directly from the EFI stub, and execute
-> the decompressor in place at the offset it was loaded by the UEFI
-> firmware.
->
-> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Good day.
 
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+My reason of contacting you is that I and my colleagues working in our
+country=E2=80=99s National Petroleum Corporation want to buy any existing
+modern crude oil refinery in any part of the world.
 
-Gr{oetje,eeting}s,
+We are ready to buy any available land to build the Refinery or buy
+the existing one anywhere outside Africa. We will make you our foreign
+partner abroad with some percentage shareholding if you will be
+interested to work with us on this project.
 
-                        Geert
+We have the sum of ($600 Million Dollars) Six Hundred Million Dollars
+for this project.
 
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+Meanwhile, this amount of ($600 Million Dollars) will be accessible
+through Foreign Contract Purchase Fund. We are going to clarify what
+we meant by Foreign Contract Purchase Fund as soon as we hear from you
+for better understanding and the way forward.
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+However, in case you are not capable to handle this project with us,
+please kindly connect us to any capable person or company that would
+handle the project with us in order to enable us proceed at once.
+
+We hope to hear you in no distance time through this e-mail address
+at: officework_progress@yahoo.com, for immediate communication and
+more facts on how to go on.
+
+With respect
+
+Best Regards
+
+Andrew Ede and Co,,
