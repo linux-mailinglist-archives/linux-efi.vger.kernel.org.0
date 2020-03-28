@@ -2,96 +2,113 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EF0D7195B4D
-	for <lists+linux-efi@lfdr.de>; Fri, 27 Mar 2020 17:39:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4FFAB196685
+	for <lists+linux-efi@lfdr.de>; Sat, 28 Mar 2020 15:06:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727726AbgC0Qji (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 27 Mar 2020 12:39:38 -0400
-Received: from mail.kernel.org ([198.145.29.99]:38576 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727354AbgC0Qji (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Fri, 27 Mar 2020 12:39:38 -0400
-Received: from mail-il1-f179.google.com (mail-il1-f179.google.com [209.85.166.179])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8FA6F206E6
-        for <linux-efi@vger.kernel.org>; Fri, 27 Mar 2020 16:39:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1585327177;
-        bh=ZEddlQQBVpZaj68WLHeCIllXn470qEYZsu7CXKIM1ME=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=0JyndC3rN2BUpb325ijRrsPTzuQ8ygS2o+amG95PBOQvI6lG58PIddSXQl1WrRYrk
-         Oeb/gCTBhqwNVgZ4/B19Xu8OJK8O9iMorFMcfTG/oe3ePB9mWrdImBLHeduhoICROT
-         uVUWHxhWCMefsMfv2J9vxrUfcwJNJppCN+tobQrQ=
-Received: by mail-il1-f179.google.com with SMTP id p13so9334074ilp.3
-        for <linux-efi@vger.kernel.org>; Fri, 27 Mar 2020 09:39:37 -0700 (PDT)
-X-Gm-Message-State: ANhLgQ2KGsnB0BGBfJJffk052hW3mO+TcYoCrBtCP3Jsyhl23o7iuhei
-        dCm0VudUwRutnbgfgUf+roz0925RvL7nTvuwh/E=
-X-Google-Smtp-Source: ADFU+vuirgriVF5NaFjEEhDBaIwOsBfuw95HZvZrU2mT18aiPHSY2CISoFqvIX1qQZwRmH6GphbGbem1XLIcbGjresU=
-X-Received: by 2002:a92:ddcb:: with SMTP id d11mr14616725ilr.211.1585327176978;
- Fri, 27 Mar 2020 09:39:36 -0700 (PDT)
+        id S1726402AbgC1OGx (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 28 Mar 2020 10:06:53 -0400
+Received: from mail-qv1-f68.google.com ([209.85.219.68]:36659 "EHLO
+        mail-qv1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726045AbgC1OGx (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sat, 28 Mar 2020 10:06:53 -0400
+Received: by mail-qv1-f68.google.com with SMTP id z13so6468580qvw.3
+        for <linux-efi@vger.kernel.org>; Sat, 28 Mar 2020 07:06:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:from:date:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=fGsxLmh5pI9jvRewegPjPIfMEi2hmilikFGOfTAF5n0=;
+        b=IOO3tBQGnquvTK7I5PcGhVPWgR1i1JQM8vZDTxeBnMynSeT3Tj5qUkdsBGWoypkwH6
+         VNYAJ3Lav0AcTEpIVlVn6OKSoqtewxs/6oGA7p4w077LydglVR+IBqKUqvJOqHNHfM1Q
+         woHY3D8XZxUm9Zy9kmmNnpVgxTrsVQp7Z3H90vH+RLg3HxI2XZka30IbHogQ3M0GvikK
+         o90X+Q4DQuCS7Rh+ZdytIlZ/NL9iSH6nUFIWS0FjVF8pjrjLLKSb9pFkF3r5PYpQFfM5
+         1crvEzaNmXIvNMqNI6Vt8QjxB8n95bpXqznPg7IJmhwkd/YVdgvvOLrLTj4iPBz8ETPU
+         k3yQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:from:date:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to:user-agent;
+        bh=fGsxLmh5pI9jvRewegPjPIfMEi2hmilikFGOfTAF5n0=;
+        b=mtQVJHl/zJgaknCKIf+Z0/RJZu49jFNiTjO/BlC81WgseKokDIT41cxNHhYxAFjxHs
+         ZBRPNwoD5mthrHzbCJXxO2sv7zJo/oQeA/GD+1g4ee1gszR559H4s6BkRLYoW3bsFNIp
+         YckeuD9Ia3Dd/AGh4QL+0oD/QhZTpk3oLCxsR278ZcQh1FEzlH0eXFTVkHHzzGC6cxq8
+         yv8Fhe6bdIPnl/2Gt+0xhXg5NCx2slQK2gO3VIh2xT37uW94M3MbaJll9sJ25vzQYJGd
+         zyiA76bddcD7cRuhmmgds5B73TzJ27uauFILD0bQ3XPq1deknqavc2oGF34rhpHzfx/P
+         n6SQ==
+X-Gm-Message-State: ANhLgQ1FWnl1kctFV7eezkYrWf+51TPDbuZvhZMQeUcBKhXydFWmRR5I
+        5h/5d2sNnm2cRrDgfstd+XN425vA
+X-Google-Smtp-Source: ADFU+vvDhFVr8QcLMkylqFmHCvdb9E2vpDpaAVlxWGhCU5iJIINJbAUGk2ScwdB+6LDE7TQWnuqsQw==
+X-Received: by 2002:ad4:4468:: with SMTP id s8mr3875503qvt.115.1585404412066;
+        Sat, 28 Mar 2020 07:06:52 -0700 (PDT)
+Received: from rani.riverdale.lan ([2001:470:1f07:5f3::b55f])
+        by smtp.gmail.com with ESMTPSA id p9sm6171497qtu.3.2020.03.28.07.06.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 28 Mar 2020 07:06:51 -0700 (PDT)
+From:   Arvind Sankar <nivedita@alum.mit.edu>
+X-Google-Original-From: Arvind Sankar <arvind@rani.riverdale.lan>
+Date:   Sat, 28 Mar 2020 10:06:50 -0400
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-arm-kernel@lists.infradead.org, catalin.marinas@arm.com,
+        will@kernel.org, mark.rutland@arm.com, linux-efi@vger.kernel.org
+Subject: Re: [PATCH 2/2] efi/arm64: increase the PE/COFF alignment so the
+ kernel can run in place
+Message-ID: <20200328140648.GA234129@rani.riverdale.lan>
+References: <20200326165905.2240-1-ardb@kernel.org>
+ <20200326165905.2240-3-ardb@kernel.org>
 MIME-Version: 1.0
-References: <20200326165905.2240-1-ardb@kernel.org> <20200327131900.000068aa@Huawei.com>
-In-Reply-To: <20200327131900.000068aa@Huawei.com>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Fri, 27 Mar 2020 17:39:26 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXHCs8N3AHjhToseAaLAE4VWi_yC=BF6nru9M3gASJz6Jw@mail.gmail.com>
-Message-ID: <CAMj1kXHCs8N3AHjhToseAaLAE4VWi_yC=BF6nru9M3gASJz6Jw@mail.gmail.com>
-Subject: Re: [PATCH 0/2] efi/arm64: execute the kernel in place if possible
-To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc:     Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Will Deacon <will@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20200326165905.2240-3-ardb@kernel.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, 27 Mar 2020 at 14:19, Jonathan Cameron
-<Jonathan.Cameron@huawei.com> wrote:
->
-> On Thu, 26 Mar 2020 17:59:03 +0100
-> Ard Biesheuvel <ardb@kernel.org> wrote:
->
-> > Update the relocation logic in the EFI stub for arm64 so it runs the
-> > kernel in place if it was loaded by firmware at an address which allows
-> > doing so. Then, update the PE/COFF header metadata and increase the
-> > section alignment to force the UEFI image loader to honour the minimal
-> > alignment requirement imposed by the kernel proper.
-> >
-> > Ard Biesheuvel (2):
-> >   efi/libstub/arm64: avoid copying the kernel unnecessarily
-> >   efi/arm64: increase the PE/COFF alignment so the kernel can run in
-> >     place
-> >
-> >  arch/arm64/kernel/efi-header.S            | 2 +-
-> >  arch/arm64/kernel/image-vars.h            | 7 +++++++
-> >  drivers/firmware/efi/libstub/arm64-stub.c | 9 +++++++++
-> >  3 files changed, 17 insertions(+), 1 deletion(-)
-> >
-> Hi Ard.
->
-> Seems sensible to me so I decided to give it a quick test.
-> As things stand RELOCATABLE is only selectable by selecting
-> RANDOMIZE_BASE.   Probably want to be able to configure it
-> separately (needs some help text, or a specific option to
-> select CONFIG_RELOCATABLE).
->
+On Thu, Mar 26, 2020 at 05:59:05PM +0100, Ard Biesheuvel wrote:
+> Update the PE/COFF metadata so that the UEFI image loader will load the
+> kernel image at an offset that allows it to execute in place.
+> 
+> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> ---
+>  arch/arm64/kernel/efi-header.S | 2 +-
+>  arch/arm64/kernel/image-vars.h | 7 +++++++
+>  2 files changed, 8 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/arm64/kernel/efi-header.S b/arch/arm64/kernel/efi-header.S
+> index 914999ccaf8a..f9ee1c2a5fd6 100644
+> --- a/arch/arm64/kernel/efi-header.S
+> +++ b/arch/arm64/kernel/efi-header.S
+> @@ -32,7 +32,7 @@ optional_header:
+>  
+>  extra_header_fields:
+>  	.quad	0					// ImageBase
+> -	.long	SZ_4K					// SectionAlignment
+> +	.long	PECOFF_SECTION_ALIGNMENT		// SectionAlignment
+>  	.long	PECOFF_FILE_ALIGNMENT			// FileAlignment
+>  	.short	0					// MajorOperatingSystemVersion
+>  	.short	0					// MinorOperatingSystemVersion
+> diff --git a/arch/arm64/kernel/image-vars.h b/arch/arm64/kernel/image-vars.h
+> index be0a63ffed23..7a7fa3ba7b2f 100644
+> --- a/arch/arm64/kernel/image-vars.h
+> +++ b/arch/arm64/kernel/image-vars.h
+> @@ -15,6 +15,13 @@
+>  __efistub_kernel_size		= _edata - _text;
+>  __efistub_primary_entry_offset	= primary_entry - _text;
+>  
+> +#ifndef CONFIG_RELOCATABLE
+> +PECOFF_SECTION_ALIGNMENT = SZ_4K;
+> +#elif THREAD_ALIGN > SEGMENT_ALIGN
+> +PECOFF_SECTION_ALIGNMENT = THREAD_ALIGN;
+> +#else
+> +PECOFF_SECTION_ALIGNMENT = SEGMENT_ALIGN;
+> +#endif
+>  
+>  /*
+>   * The EFI stub has its own symbol namespace prefixed by __efistub_, to
+> -- 
+> 2.17.1
+> 
 
-The idea is really that KASLR kernels that were booted without a seed
-(or with 'nokaslr' on the command line) take this path. But in fact, I
-realized that the same logic applies to non-relocatable kernels, just
-with an alignment of 2 MB rather than 64 KB or 128 KB. So I will be
-sending a v2 that looks slightly different. (Another thing that I
-realized is that /if/ the KASLR path fails for any reason, we could
-still take this path instead of doing the allocation)
-
-> Otherwise, superficially seems to work good for me doing a
-> boot via pxe/grub on a Kunpeng 920 with some prints added to
-> make sure it's taking the right paths.
->
-
-Excellent! Thanks for testing, and I will be cc'ing you on v2.
+The section virtual addresses and (possibly) size of image need to be
+updated to be a multiple of PECOFF_SECTION_ALIGNMENT, no?
