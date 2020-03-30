@@ -2,83 +2,67 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5BEF5197600
-	for <lists+linux-efi@lfdr.de>; Mon, 30 Mar 2020 09:51:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C71221979B1
+	for <lists+linux-efi@lfdr.de>; Mon, 30 Mar 2020 12:52:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729555AbgC3HvZ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 30 Mar 2020 03:51:25 -0400
-Received: from mail.kernel.org ([198.145.29.99]:33016 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728766AbgC3HvY (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Mon, 30 Mar 2020 03:51:24 -0400
-Received: from mail-io1-f52.google.com (mail-io1-f52.google.com [209.85.166.52])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 6BC2520774
-        for <linux-efi@vger.kernel.org>; Mon, 30 Mar 2020 07:51:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1585554684;
-        bh=Y8iozU+3Uxa2Bhwk87vv3a4C+Xj6+XHJpWVgFKneD3w=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=OG0SSX0NEbTTX+RjrsSju52zT65Alrient5Pcy7VznCyf2tnAOmJbWbPD9FFHOjQz
-         qjXNdCXkSRxdy8peqmT0E5/CG9tVaBr7zhcWkzz9StuxUeW39J1A2+OYKP+d619ZbW
-         VlozX+T30/3hMhj9PFAwjZOQgNFk+DuFM/ARFJ90=
-Received: by mail-io1-f52.google.com with SMTP id h131so16722955iof.1
-        for <linux-efi@vger.kernel.org>; Mon, 30 Mar 2020 00:51:24 -0700 (PDT)
-X-Gm-Message-State: ANhLgQ3w48oPOSk8ohxwOrJqL9zc/0rJKC6wd8wNF9JIgkGoeyGHrcYU
-        7Yrw8i6PTeQw2dt4cSbibWXCquemUCqdhuiYugw=
-X-Google-Smtp-Source: ADFU+vtM6+Nn+/IjEoVFqOuexbxH6OIOgiutPqTBcyosryYk8TDDw3LTxT6L93nYf9LVEPa+uut3+OR1ktd8ljcCycE=
-X-Received: by 2002:a02:a1c2:: with SMTP id o2mr9476970jah.98.1585554683858;
- Mon, 30 Mar 2020 00:51:23 -0700 (PDT)
+        id S1729496AbgC3Kw0 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 30 Mar 2020 06:52:26 -0400
+Received: from mail-vk1-f196.google.com ([209.85.221.196]:44369 "EHLO
+        mail-vk1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729455AbgC3Kw0 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 30 Mar 2020 06:52:26 -0400
+Received: by mail-vk1-f196.google.com with SMTP id s194so4518277vkb.11
+        for <linux-efi@vger.kernel.org>; Mon, 30 Mar 2020 03:52:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=82B0OONv9gwbZlPp43NzThDz2fRV+KRFwafOQ16joDw=;
+        b=W/pqz5d7jRz2XhuR0NPXi/HrPrA1EYS2PHHQ1FpsLUolfOVyK7H009Wnc0lrOJx6Hi
+         8vUUF/pk3PeclHcAYXDWVsOIJGvMQpXmWA9vT3q5H+Fq3bPr7slBRNCq5ggPLqTXWSUN
+         WeDqQdBB3Fj9UYma7K77X5d+kEKTp6fOD5VReaWt0mRVZHR6HEobypypOg452dQIxRuj
+         xU65Ut9jAR+y63swe5g9KvSFt96uljniqy4kiAqd2Y/ynJzIziUhlZ91pwoD0sDfF2kV
+         2p+fbv2x6QZq8+EhnWOm9VRs7gRyumQNwl/HLY+Ct1f3AZKCEqIBhRL3NUkC6PiM1Er/
+         am5A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=82B0OONv9gwbZlPp43NzThDz2fRV+KRFwafOQ16joDw=;
+        b=I4PXGsMkuFkebxA0TFN6T9zF4ksi+8rhe7Nc9nVyl0DE7JlaJ5MEXA1cIVYsM0cbtu
+         bCuT4VbVGwQtzyVOsLmkMwBHZmIK/hcf3SGGqHCs6mIVDDbNBlFMCMkP4PFALkHOik9M
+         tDugllb5AKEsZe/S2xkPAO/8646fwk5Jo5EqMp0eY0kZ6ZESshZaidWtBDhWaO6BZLG2
+         9anzEkPwW4sX1O6EFlcGhnXo7KVqHRkptamHGYUSBYCZ4Z9Wu1k+fgO4/Dtnk4YwMQe3
+         B3bqrXr2TNPFAql0wsR2EKXZBwOTZ3WlEshDuJVgHWBHpW6liO8gpKf0d5PI3TvjneQo
+         8tkg==
+X-Gm-Message-State: AGi0PuZ6DHJJzIpVO/0MCUBeL5nLrw4eW0mUG056Pe2VFugJ/lWQjc4i
+        vm/McnaXDfDup0ci/SDRqSgCpt7T2njoNwHxbyE=
+X-Google-Smtp-Source: APiQypKDRP4A2GOOhX29xPbS6X6J2bOe+cEnGPGhkRlrf/LV9QYV7GSVV1iViigrqjvUPzJfpKV+0f/QlvWFf/q+m5k=
+X-Received: by 2002:a1f:2c4b:: with SMTP id s72mr7433998vks.93.1585565545391;
+ Mon, 30 Mar 2020 03:52:25 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200328205809.23825-1-ardb@kernel.org> <20200330074721.GV22097@bivouac.eciton.net>
- <CAMj1kXFPtY20afbAZgXT3As4TUuAqi3=pG8u19hjMjFxgN6HWA@mail.gmail.com>
-In-Reply-To: <CAMj1kXFPtY20afbAZgXT3As4TUuAqi3=pG8u19hjMjFxgN6HWA@mail.gmail.com>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Mon, 30 Mar 2020 09:51:12 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXEf5rT1pmDNQoOd5Tx9xQ=fUMT0xo4JXZNfz=VDY9268Q@mail.gmail.com>
-Message-ID: <CAMj1kXEf5rT1pmDNQoOd5Tx9xQ=fUMT0xo4JXZNfz=VDY9268Q@mail.gmail.com>
-Subject: Re: [PATCH] efi/libstub/arm64: avoid image_base value from efi_loaded_image
-To:     Leif Lindholm <leif@nuviainc.com>
-Cc:     Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Michael Kelley <mikelley@microsoft.com>,
-        Boqun Feng <Boqun.Feng@microsoft.com>
+Received: by 2002:a67:c005:0:0:0:0:0 with HTTP; Mon, 30 Mar 2020 03:52:24
+ -0700 (PDT)
+Reply-To: maryalice00.12@postribe.com
+From:   Maryalice Williams <maryalicewilliams730@gmail.com>
+Date:   Mon, 30 Mar 2020 08:52:24 -0200
+Message-ID: <CAKwdjspKQpXNN-muj712Ym+s=yC75k8CUdb6ULnvzKHxbYXvwA@mail.gmail.com>
+Subject: Reply For More Details.
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Mon, 30 Mar 2020 at 09:50, Ard Biesheuvel <ardb@kernel.org> wrote:
->
-> On Mon, 30 Mar 2020 at 09:47, Leif Lindholm <leif@nuviainc.com> wrote:
-> >
-> > On Sat, Mar 28, 2020 at 21:58:09 +0100, Ard Biesheuvel wrote:
-> > > Commit 9f9223778ef3 ("efi/libstub/arm: Make efi_entry() an ordinary
-> > > PE/COFF entrypoint") did some code refactoring to get rid of the
-> > > EFI entry point assembler code, and in the process, it got rid of the
-> > > assignment of image_addr to the value of _text. Instead, it switched
-> > > to using the image_base field of the efi_loaded_image struct provided
-> > > by UEFI, which should contain the same value.
-> > >
-> > > However, Michael reports that this is not the case: older GRUB builds
-> > > corrupt this value in some way, and since we can easily switch back to
-> > > referring to _text to discover this value, let's simply do that.
-> >
-> > It is not clear to me how "older GRUB builds" would differ here.
-> > I think more investigation is needed before making that claim.
-> > My suspicion is that some (old) version of non-upstream, shim-enabled
-> > distro-specific build is playing a part.
-> >
-> > So, do we have the option for more detailed investigations, or can we
-> > vague the claim up to say "some GRUB builds seen in the wild, based
-> > on an upstream 2.02" or suchlike?
-> >
->
-> I've queued a fix that prints a nastygram if the value deviates from
-> the expected one. Let's see if this triggers any reports.
+-- 
+My dear,
 
-(/me looks at context)
+I am Mrs Maryalice Williams, I want to send you donation of two
+million seven hundred thousand Dollars ($2.7M) for volunteer projects
+in your country due to my ill health that could not permit me. Kindly
+reply for more details, and also send me the following details, as per
+below, your full Name ..........,  Address...........,
+Age...............,  Occupation ...............
 
-*This* is the fix that prints a nastygram.
+Remain blessed,
+Mrs. Maryalice Williams.
