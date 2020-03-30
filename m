@@ -2,213 +2,131 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 20864196EA0
-	for <lists+linux-efi@lfdr.de>; Sun, 29 Mar 2020 19:18:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A9AC01975F4
+	for <lists+linux-efi@lfdr.de>; Mon, 30 Mar 2020 09:47:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728366AbgC2RSL (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sun, 29 Mar 2020 13:18:11 -0400
-Received: from mga03.intel.com ([134.134.136.65]:3314 "EHLO mga03.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728340AbgC2RSL (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Sun, 29 Mar 2020 13:18:11 -0400
-IronPort-SDR: JE4YpQLUHZHclZt+FiHLjFynZDwEIjB0OsEVDDRaz1OCRvD5qS4ofd5qXDlvdWE+FN+v1Yvg4e
- CNQQuaylND6Q==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Mar 2020 10:18:10 -0700
-IronPort-SDR: yL++dW3v3wYyqtltd/coznLw/70zdvVrDT1kAFvi3qZy5eqMrbo7ZUdDPSvIeMmTAleEOzIwUW
- UEdo5+VLd5Ag==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.72,321,1580803200"; 
-   d="scan'208";a="448006676"
-Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
-  by fmsmga005.fm.intel.com with ESMTP; 29 Mar 2020 10:18:09 -0700
-Received: from kbuild by lkp-server01 with local (Exim 4.89)
-        (envelope-from <lkp@intel.com>)
-        id 1jIbZY-000FjE-Rc; Mon, 30 Mar 2020 01:18:08 +0800
-Date:   Mon, 30 Mar 2020 01:17:42 +0800
-From:   kbuild test robot <lkp@intel.com>
+        id S1729420AbgC3Hr1 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 30 Mar 2020 03:47:27 -0400
+Received: from mail-wm1-f66.google.com ([209.85.128.66]:51972 "EHLO
+        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728766AbgC3Hr1 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 30 Mar 2020 03:47:27 -0400
+Received: by mail-wm1-f66.google.com with SMTP id c187so18901991wme.1
+        for <linux-efi@vger.kernel.org>; Mon, 30 Mar 2020 00:47:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=nuviainc-com.20150623.gappssmtp.com; s=20150623;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=LWOAY4DgjcNLGyhp459FWx1XMXhcO1ETDlLIMfEa72Q=;
+        b=sqW8IpF1V79Q8xk7+BFlh+q0ZAm/IGugJy8WeGH7Kpo5nLu6P8tWVmeQcBGwRkEUUA
+         PgEtq40FXpqbbZT0h9Av2INmno6ItZiC8SNpFBnYxBy7yY3cramhuwR7FeXK9IhY8+yw
+         DV/Zvi86HNYh7yS1YU3rRVA6FvDfKggUgEQY62otSAN/cN+/zsmMNE8+wPIci8kfSklI
+         S7pzLspbBefmmBrWCR25G+eAMAOeUot8sUhERunYXsRNFJTXS8NEp8pJdtASKFGqWPPA
+         5olN8Frmny2VsX4PZXsNXYxJ2gFsghknjbN41MDHig8lKx2udOs8oTvn1H7sT7kd5MLs
+         vIVQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=LWOAY4DgjcNLGyhp459FWx1XMXhcO1ETDlLIMfEa72Q=;
+        b=rG6vdIJcDj+hzWDGcp62Xz+hOPnjam+iaM2o2+polvpE6gNhddkDXBf4dNlSpA6gpw
+         zIgAjKN8v1auVgaXgrLjcWN5nRa6ZklFagW6uqAR3CQcNFBIxals1E7KVJ+wNX/7+Thz
+         iUtCJ8q9By6PRqj3h1BvbN+uVgz7VYFJN3dgb3duP98VvWkZhrvunSLEKSVX21ODeFrA
+         cjUM/h8h+UaYeJRGbk05b/9nQhacJvQ7JWel1uQ7OnqZhnWelIv3kyzjxqtnEOtO/o0L
+         OhnWbIfw42KsZFvGP21cO7sEyItTnRxGD+24gaYz2VscJcbKx895Bw80+FZWXzRkvKXX
+         K4Aw==
+X-Gm-Message-State: ANhLgQ3R6dZkF42xqHDRtOO5QA0WUoe/Dd3uWRX5z4hk0oVteDbxrplF
+        QFwjTgpL8i/fShgq0AHzupKFDQ==
+X-Google-Smtp-Source: ADFU+vu0UL2EecnqgEV0Rpo8wZsnkzDV/O1+EUQ6YPNpPvgeonkHJEt+JQXkghaKvi8juGhZ5e7FeQ==
+X-Received: by 2002:a1c:648b:: with SMTP id y133mr11511761wmb.173.1585554443321;
+        Mon, 30 Mar 2020 00:47:23 -0700 (PDT)
+Received: from bivouac.eciton.net (bivouac.eciton.net. [2a00:1098:0:86:1000:23:0:2])
+        by smtp.gmail.com with ESMTPSA id l10sm20495745wrq.95.2020.03.30.00.47.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 30 Mar 2020 00:47:22 -0700 (PDT)
+Date:   Mon, 30 Mar 2020 08:47:21 +0100
+From:   Leif Lindholm <leif@nuviainc.com>
 To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     linux-efi@vger.kernel.org
-Subject: [efi:next] BUILD SUCCESS a7a39e7e9249f2c47245d87fa0e86c874c0eb69f
-Message-ID: <5e80d836.LXy9o22RlOsjwFyp%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+Cc:     linux-arm-kernel@lists.infradead.org, linux-efi@vger.kernel.org,
+        mikelley@microsoft.com, Boqun.Feng@microsoft.com
+Subject: Re: [PATCH] efi/libstub/arm64: avoid image_base value from
+ efi_loaded_image
+Message-ID: <20200330074721.GV22097@bivouac.eciton.net>
+References: <20200328205809.23825-1-ardb@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+In-Reply-To: <20200328205809.23825-1-ardb@kernel.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git  next
-branch HEAD: a7a39e7e9249f2c47245d87fa0e86c874c0eb69f  efi: move arch_tables check to caller
+On Sat, Mar 28, 2020 at 21:58:09 +0100, Ard Biesheuvel wrote:
+> Commit 9f9223778ef3 ("efi/libstub/arm: Make efi_entry() an ordinary
+> PE/COFF entrypoint") did some code refactoring to get rid of the
+> EFI entry point assembler code, and in the process, it got rid of the
+> assignment of image_addr to the value of _text. Instead, it switched
+> to using the image_base field of the efi_loaded_image struct provided
+> by UEFI, which should contain the same value.
+> 
+> However, Michael reports that this is not the case: older GRUB builds
+> corrupt this value in some way, and since we can easily switch back to
+> referring to _text to discover this value, let's simply do that.
 
-elapsed time: 480m
+It is not clear to me how "older GRUB builds" would differ here.
+I think more investigation is needed before making that claim.
+My suspicion is that some (old) version of non-upstream, shim-enabled
+distro-specific build is playing a part.
 
-configs tested: 155
-configs skipped: 0
+So, do we have the option for more detailed investigations, or can we
+vague the claim up to say "some GRUB builds seen in the wild, based
+on an upstream 2.02" or suchlike?
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+/
+    Leif
 
-arm64                            allyesconfig
-arm                              allyesconfig
-arm64                             allnoconfig
-arm                               allnoconfig
-arm                         at91_dt_defconfig
-arm                           efm32_defconfig
-arm                          exynos_defconfig
-arm                        multi_v5_defconfig
-arm                        multi_v7_defconfig
-arm                        shmobile_defconfig
-arm                           sunxi_defconfig
-arm64                               defconfig
-sparc                            allyesconfig
-arm64                            allmodconfig
-nds32                             allnoconfig
-parisc                generic-32bit_defconfig
-parisc                            allnoconfig
-powerpc                       ppc64_defconfig
-nios2                         10m50_defconfig
-s390                              allnoconfig
-s390                             alldefconfig
-m68k                          multi_defconfig
-i386                              allnoconfig
-i386                             alldefconfig
-i386                             allyesconfig
-i386                                defconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                              allnoconfig
-ia64                             allyesconfig
-ia64                             alldefconfig
-arm                              allmodconfig
-nios2                         3c120_defconfig
-c6x                        evmc6678_defconfig
-xtensa                          iss_defconfig
-c6x                              allyesconfig
-xtensa                       common_defconfig
-openrisc                 simple_smp_defconfig
-openrisc                    or1ksim_defconfig
-nds32                               defconfig
-csky                                defconfig
-alpha                               defconfig
-h8300                       h8s-sim_defconfig
-h8300                     edosk2674_defconfig
-m68k                       m5475evb_defconfig
-m68k                             allmodconfig
-h8300                    h8300h-sim_defconfig
-m68k                           sun3_defconfig
-arc                              allyesconfig
-arc                                 defconfig
-microblaze                      mmu_defconfig
-microblaze                    nommu_defconfig
-powerpc                           allnoconfig
-powerpc                             defconfig
-powerpc                          rhel-kconfig
-mips                      fuloong2e_defconfig
-mips                      malta_kvm_defconfig
-mips                             allyesconfig
-mips                         64r6el_defconfig
-mips                              allnoconfig
-mips                           32r2_defconfig
-mips                             allmodconfig
-parisc                generic-64bit_defconfig
-parisc                           allyesconfig
-nds32                randconfig-a001-20200329
-mips                 randconfig-a001-20200329
-parisc               randconfig-a001-20200329
-m68k                 randconfig-a001-20200329
-alpha                randconfig-a001-20200329
-riscv                randconfig-a001-20200329
-c6x                  randconfig-a001-20200329
-h8300                randconfig-a001-20200329
-microblaze           randconfig-a001-20200329
-nios2                randconfig-a001-20200329
-sparc64              randconfig-a001-20200329
-s390                 randconfig-a001-20200329
-xtensa               randconfig-a001-20200329
-csky                 randconfig-a001-20200329
-openrisc             randconfig-a001-20200329
-sh                   randconfig-a001-20200329
-i386                 randconfig-b003-20200329
-x86_64               randconfig-b003-20200329
-i386                 randconfig-b001-20200329
-i386                 randconfig-b002-20200329
-x86_64               randconfig-b002-20200329
-x86_64               randconfig-b001-20200329
-x86_64               randconfig-c003-20200329
-i386                 randconfig-c002-20200329
-x86_64               randconfig-c001-20200329
-x86_64               randconfig-c002-20200329
-i386                 randconfig-c003-20200329
-i386                 randconfig-c001-20200329
-x86_64               randconfig-d001-20200329
-x86_64               randconfig-d002-20200329
-x86_64               randconfig-d003-20200329
-i386                 randconfig-d001-20200329
-i386                 randconfig-d002-20200329
-i386                 randconfig-d003-20200329
-x86_64               randconfig-e001-20200329
-i386                 randconfig-e002-20200329
-x86_64               randconfig-e003-20200329
-i386                 randconfig-e003-20200329
-x86_64               randconfig-e002-20200329
-i386                 randconfig-e001-20200329
-i386                 randconfig-f001-20200329
-i386                 randconfig-f003-20200329
-i386                 randconfig-f002-20200329
-x86_64               randconfig-f002-20200329
-x86_64               randconfig-f001-20200329
-i386                 randconfig-g003-20200329
-x86_64               randconfig-g002-20200329
-i386                 randconfig-g002-20200329
-i386                 randconfig-g001-20200329
-x86_64               randconfig-g001-20200329
-x86_64               randconfig-h002-20200329
-x86_64               randconfig-h003-20200329
-i386                 randconfig-h003-20200329
-x86_64               randconfig-h001-20200329
-i386                 randconfig-h001-20200329
-i386                 randconfig-h002-20200329
-arm                  randconfig-a001-20200329
-arm64                randconfig-a001-20200329
-ia64                 randconfig-a001-20200329
-sparc                randconfig-a001-20200329
-arc                  randconfig-a001-20200329
-powerpc              randconfig-a001-20200329
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-s390                       zfcpdump_defconfig
-s390                          debug_defconfig
-s390                             allyesconfig
-s390                             allmodconfig
-s390                                defconfig
-sh                          rsk7269_defconfig
-sh                               allmodconfig
-sh                            titan_defconfig
-sh                  sh7785lcr_32bit_defconfig
-sh                                allnoconfig
-sparc                               defconfig
-sparc64                             defconfig
-sparc64                           allnoconfig
-sparc64                          allyesconfig
-sparc64                          allmodconfig
-um                           x86_64_defconfig
-um                             i386_defconfig
-um                                  defconfig
-x86_64                                   rhel
-x86_64                               rhel-7.6
-x86_64                         rhel-7.2-clear
-x86_64                                    lkp
-x86_64                              fedora-25
-x86_64                                  kexec
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+> While at it, fix another issue in commit 9f9223778ef3, which may result
+> in the unassigned image_addr to be misidentified as the preferred load
+> offset of the kernel, which is unlikely but will cause a boot crash if
+> it does occur.
+> 
+> Finally, let's add a warning if the _text vs. image_base discrepancy is
+> detected, so we can tell more easily how widespread this issue actually
+> is.
+> 
+> Reported-by: Michael Kelley <mikelley@microsoft.com>
+> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> ---
+>  drivers/firmware/efi/libstub/arm64-stub.c | 7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/firmware/efi/libstub/arm64-stub.c b/drivers/firmware/efi/libstub/arm64-stub.c
+> index 9254cd8ab2d3..db0c1a9c1699 100644
+> --- a/drivers/firmware/efi/libstub/arm64-stub.c
+> +++ b/drivers/firmware/efi/libstub/arm64-stub.c
+> @@ -116,6 +116,7 @@ efi_status_t handle_kernel_image(unsigned long *image_addr,
+>  		 * Mustang), we can still place the kernel at the address
+>  		 * 'dram_base + TEXT_OFFSET'.
+>  		 */
+> +		*image_addr = (unsigned long)_text;
+>  		if (*image_addr == preferred_offset)
+>  			return EFI_SUCCESS;
+>  
+> @@ -140,7 +141,11 @@ efi_status_t handle_kernel_image(unsigned long *image_addr,
+>  		}
+>  		*image_addr = *reserve_addr + TEXT_OFFSET;
+>  	}
+> -	memcpy((void *)*image_addr, image->image_base, kernel_size);
+> +
+> +	if (image->image_base != _text)
+> +		pr_efi_err("FIRMWARE BUG: efi_loaded_image_t::image_base has bogus value\n");
+> +
+> +	memcpy((void *)*image_addr, _text, kernel_size);
+>  
+>  	return EFI_SUCCESS;
+>  }
+> -- 
+> 2.17.1
+> 
