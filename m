@@ -2,146 +2,152 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B587199C91
-	for <lists+linux-efi@lfdr.de>; Tue, 31 Mar 2020 19:10:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F00C199ED5
+	for <lists+linux-efi@lfdr.de>; Tue, 31 Mar 2020 21:20:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731113AbgCaRKx (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 31 Mar 2020 13:10:53 -0400
-Received: from mail-ot1-f65.google.com ([209.85.210.65]:36998 "EHLO
-        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730562AbgCaRKx (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 31 Mar 2020 13:10:53 -0400
-Received: by mail-ot1-f65.google.com with SMTP id g23so22821277otq.4
-        for <linux-efi@vger.kernel.org>; Tue, 31 Mar 2020 10:10:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=qHYDmZrgq5jmEkRfovldh3Vm9VQlL40sufsyBZ8bEao=;
-        b=ejCKGv9ewqzPDwu36dgEf76BAdc6P8/FNIHvqlRJ2NbFTsqobiYJueIPM1QZi0OCCQ
-         mbU1B6WSb811ZFiG9JOqTsYC1SHqnNkP67uF97SvOhv96tkShJMN5PdECEv/UVHWpBbe
-         dmopibqZGT8YOlWB1Mxjj8B8vSeGI+adpgikk5ZFFX19jP5gQEyzgvSeCkR+ruYYKmOR
-         1nHq5goBe3vvatRr2t6ArsKapoHRzQb/Dp8xUl9h++ZuJuyY81r7fl+m1ecyqBeAUMb9
-         U7tiQZCEeGGDdpZ4SYSLIDyZTmrECoB9X/A+YpKZrNIyVhGzFEbffqrR2St0hFC6aHil
-         3G0g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=qHYDmZrgq5jmEkRfovldh3Vm9VQlL40sufsyBZ8bEao=;
-        b=mMFhsRbnYgWx+RhPqY2ORGQfaZ647OdeSZafn3tvOxo73i/B68j53Dbj1TmGU/5ZSD
-         EsjQoO3tKz6gVyJkwrrgq2nFZXLaVfliyAWA7zEhOtvmBSVl3qxHt/ggmWBDBY6n/1Ei
-         Qmhxfez8XY9nm4//MsYHNl+p5jkiyFGivpBlsT4N/WnBYgqzaneQA5NBeJtJtPlTBO+0
-         Bhy2JBbIkJGKSlgY1esKJ4WTPegjfRm275OwbN4s+Vl4UKNMNeZRUkWCLPigpyhX8e64
-         Fq424ytZ4Eo0mk6SgtrMrodypcfLXCsKVsyPnAnQMEqLSMmvBXjMBKXm6/sZvjVWQcR5
-         OHMg==
-X-Gm-Message-State: ANhLgQ3gOMtzUTG++LbVq7ZGpX1PmZkWKwSG+hswzYX5pR7xes51HgNW
-        GSpA1I/0ag/OCyggeapnKSUQYbzZiZJOdK/ugubJyQ==
-X-Google-Smtp-Source: ADFU+vvG/KSouwa/5JXn2S/dDVOQi5q+3SzbGyUUkrqFLoZCxv6KzvHR1l+yj5t93H1llPNa0r7/9yF4i0utZTLMJIE=
-X-Received: by 2002:a05:6830:1ac1:: with SMTP id r1mr9669891otc.139.1585674651276;
- Tue, 31 Mar 2020 10:10:51 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200222014038.180923-1-saravanak@google.com> <20200222014038.180923-6-saravanak@google.com>
- <CAMuHMdW_pvt1b6Y8e5j0Q5yDFMsg5z61upOo+gFaq7zf1F0V6w@mail.gmail.com>
-In-Reply-To: <CAMuHMdW_pvt1b6Y8e5j0Q5yDFMsg5z61upOo+gFaq7zf1F0V6w@mail.gmail.com>
-From:   Saravana Kannan <saravanak@google.com>
-Date:   Tue, 31 Mar 2020 10:10:15 -0700
-Message-ID: <CAGETcx_pg_wFLP9zdhxzKUnVp3Hx_t3xz88bas4UJavgehupBw@mail.gmail.com>
-Subject: Re: [PATCH v1 5/5] of: property: Delete of_devlink kernel commandline option
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     Jonathan Corbet <corbet@lwn.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Len Brown <lenb@kernel.org>,
-        Android Kernel Team <kernel-team@android.com>,
-        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        id S1727575AbgCaTUj (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 31 Mar 2020 15:20:39 -0400
+Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:20516 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1727509AbgCaTUj (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 31 Mar 2020 15:20:39 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1585682438;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=EePuS6hJnpigKkKFfbeY5lY7BtvEx2PU+2Avp7mwnxU=;
+        b=YZKLh9Vvcefc3KcVXCTo1blConIMz6JvfAp1xq+OjPg0pSLd5sZWXL+zFBJ146SLd4c1bS
+        LaDA36DeshdXJOyDOiu3z2Oj7OfOXMZa1694fXhBGnR4BguLOMxf2gGfq/MhsfxSf6SAk6
+        jJBmq1dL6+S7mF7DYhsgZR8L4zm/nM8=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-145-i2TYWn2eM76Y66Yn5Kyc8g-1; Tue, 31 Mar 2020 15:20:34 -0400
+X-MC-Unique: i2TYWn2eM76Y66Yn5Kyc8g-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 9593C149FB;
+        Tue, 31 Mar 2020 19:20:09 +0000 (UTC)
+Received: from lacos-laptop-7.usersys.redhat.com (ovpn-115-131.ams2.redhat.com [10.36.115.131])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 03838DA0E0;
+        Tue, 31 Mar 2020 19:20:07 +0000 (UTC)
+Subject: Re: [PATCH] efi/libstub/arm64: avoid image_base value from
+ efi_loaded_image
+To:     Ard Biesheuvel <ardb@kernel.org>,
+        Michael Kelley <mikelley@microsoft.com>
+Cc:     Leif Lindholm <leif@nuviainc.com>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
         linux-efi <linux-efi@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        Boqun Feng <Boqun.Feng@microsoft.com>
+References: <20200328205809.23825-1-ardb@kernel.org>
+ <20200330074721.GV22097@bivouac.eciton.net>
+ <CAMj1kXFPtY20afbAZgXT3As4TUuAqi3=pG8u19hjMjFxgN6HWA@mail.gmail.com>
+ <CAMj1kXEf5rT1pmDNQoOd5Tx9xQ=fUMT0xo4JXZNfz=VDY9268Q@mail.gmail.com>
+ <DM5PR2101MB104760D03E632DD4DBE99AE1D7CB0@DM5PR2101MB1047.namprd21.prod.outlook.com>
+ <CAMj1kXF+2O5cDC9zuNp9Lx9Oe6WyxRghPqSi63CnF+KCcGUZyw@mail.gmail.com>
+ <CAMj1kXFJB9ciJ41V2tpQNX_mN7S8BweV9_ME3sDxKjwnR2Jwbg@mail.gmail.com>
+From:   Laszlo Ersek <lersek@redhat.com>
+Message-ID: <91ce0460-ae47-8092-0dfa-4b7ff6edc283@redhat.com>
+Date:   Tue, 31 Mar 2020 21:20:07 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
+MIME-Version: 1.0
+In-Reply-To: <CAMj1kXFJB9ciJ41V2tpQNX_mN7S8BweV9_ME3sDxKjwnR2Jwbg@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, Mar 31, 2020 at 5:20 AM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
->
-> Hi Saravana,
->
-> On Sat, Feb 22, 2020 at 2:41 AM Saravana Kannan <saravanak@google.com> wrote:
-> > With the addition of fw_devlink kernel commandline option, of_devlink is
-> > redundant and not useful anymore. So, delete it.
-> >
-> > Signed-off-by: Saravana Kannan <saravanak@google.com>
->
-> Thanks for your patch!
->
-> This is now commit e94f62b7140fa3da ("of: property: Delete of_devlink
-> kernel commandline option") upstream.
->
-> > --- a/Documentation/admin-guide/kernel-parameters.txt
-> > +++ b/Documentation/admin-guide/kernel-parameters.txt
-> > @@ -3299,12 +3299,6 @@
-> >                         This can be set from sysctl after boot.
-> >                         See Documentation/admin-guide/sysctl/vm.rst for details.
-> >
-> > -       of_devlink      [OF, KNL] Create device links between consumer and
-> > -                       supplier devices by scanning the devictree to infer the
-> > -                       consumer/supplier relationships.  A consumer device
-> > -                       will not be probed until all the supplier devices have
-> > -                       probed successfully.
-> > -
-> >         ohci1394_dma=early      [HW] enable debugging via the ohci1394 driver.
-> >                         See Documentation/debugging-via-ohci1394.txt for more
-> >                         info.
->
-> While I agree with the thunk above...
->
-> > diff --git a/drivers/of/property.c b/drivers/of/property.c
-> > index 15fc9315f1a7..f104f15b57fb 100644
-> > --- a/drivers/of/property.c
-> > +++ b/drivers/of/property.c
-> > @@ -1299,15 +1299,9 @@ static int of_link_to_suppliers(struct device *dev,
-> >         return ret;
-> >  }
-> >
-> > -static bool of_devlink;
-> > -core_param(of_devlink, of_devlink, bool, 0);
-> > -
-> >  static int of_fwnode_add_links(const struct fwnode_handle *fwnode,
-> >                                struct device *dev)
-> >  {
-> > -       if (!of_devlink)
-> > -               return 0;
-> > -
-> >         if (unlikely(!is_of_node(fwnode)))
-> >                 return 0;
+On 03/31/20 09:56, Ard Biesheuvel wrote:
+> On Mon, 30 Mar 2020 at 20:24, Ard Biesheuvel <ardb@kernel.org> wrote:
+>>
+>> On Mon, 30 Mar 2020 at 20:12, Michael Kelley <mikelley@microsoft.com> wrote:
+>>>
+>>> From: Ard Biesheuvel <ardb@kernel.org>  Sent: Monday, March 30, 2020 12:51 AM
+>>>>
+>>>> On Mon, 30 Mar 2020 at 09:50, Ard Biesheuvel <ardb@kernel.org> wrote:
+>>>>>
+>>>>> On Mon, 30 Mar 2020 at 09:47, Leif Lindholm <leif@nuviainc.com> wrote:
+>>>>>>
+>>>>>> On Sat, Mar 28, 2020 at 21:58:09 +0100, Ard Biesheuvel wrote:
+>>>>>>> Commit 9f9223778ef3 ("efi/libstub/arm: Make efi_entry() an ordinary
+>>>>>>> PE/COFF entrypoint") did some code refactoring to get rid of the
+>>>>>>> EFI entry point assembler code, and in the process, it got rid of the
+>>>>>>> assignment of image_addr to the value of _text. Instead, it switched
+>>>>>>> to using the image_base field of the efi_loaded_image struct provided
+>>>>>>> by UEFI, which should contain the same value.
+>>>>>>>
+>>>>>>> However, Michael reports that this is not the case: older GRUB builds
+>>>>>>> corrupt this value in some way, and since we can easily switch back to
+>>>>>>> referring to _text to discover this value, let's simply do that.
+>>>>>>
+>>>>>> It is not clear to me how "older GRUB builds" would differ here.
+>>>>>> I think more investigation is needed before making that claim.
+>>>>>> My suspicion is that some (old) version of non-upstream, shim-enabled
+>>>>>> distro-specific build is playing a part.
+>>>>>>
+>>>>>> So, do we have the option for more detailed investigations, or can we
+>>>>>> vague the claim up to say "some GRUB builds seen in the wild, based
+>>>>>> on an upstream 2.02" or suchlike?
+>>>>>>
+>>>>>
+>>>>> I've queued a fix that prints a nastygram if the value deviates from
+>>>>> the expected one. Let's see if this triggers any reports.
+>>>>
+>>>> (/me looks at context)
+>>>>
+>>>> *This* is the fix that prints a nastygram.
+>>>
+>>> FWIW, I pulled the BOOTAA64.EFI and grubaa64.efi files from CentOS 7.6
+>>> and CentOS 8.0 binary packages and tested both in my Hyper-V VM.
+>>> Using strings | grep '2\.' to get version info, the CentOS 7.6 grubaa64.efi
+>>> shows:
+>>>
+>>>         User-Agent: GRUB 2.02~beta2
+>>>
+>>> The CentOS 8.0 grubaa64.efi shows:
+>>>
+>>>         User-Agent: GRUB 2.03
+>>>
+>>> Both versions produce the FIRMWARE BUG warning when using Ard's
+>>> latest patch.  I'll assume the equivalent RHEL versions are the same.
+>>> So we've got official distro releases that show the problem.
+>>>
+>>> As reported earlier, the BOOTAA64.EFI and grubaa64.efi from a
+>>> Debian release (not exactly sure which one) do not produce the
+>>> FIRMWARE BUG warning.  The grubaa64.efi reports as 2.04-4.
+>>>
+>>
+>> Thanks a lot Michael, that is really helpful.
+> 
+> I could not reproduce the issue with Debian Stretch's
+> 2.02~beta3-5+deb9u2, so it does appear to be RedHat's value add that
+> is to blame here.
+> 
+> @Laszlo: TL;DR RedHat's GRUB for arm64 appears to clobber the
+> image_base field of the efi_loaded_image struct passed to the kernel.
+> Could you please recommend a way to report this?
 
-Hi Geert,
+Yes. I seem to recall that you already have an account at
+<https://bugzilla.redhat.com/>. Please log in, then go to the following
+link:
 
-> ... I have some reservations about removing the actual code.
-> The "of_devlink" kernel parameter was supported in v5.5 and v5.6, so
-> removing its support may silently break some setups.
->
-> Is this likely to happen?
+https://bugzilla.redhat.com/enter_bug.cgi?product=Red%20Hat%20Enterprise%20Linux%208
 
-As much as I'd love to see people start using this, I doubt of_devlink
-has been significantly adopted outside of Android yet (I'm working on
-making that easier :)). I'd be happy to be proven wrong though :)
+In the "Component" field, please enter "grub2", then fill in Summary /
+Description / etc.
 
-of_devlink/fw_devlink is mainly useful when module loading is causing
-ordering and clean up issues. So if deletion of of_devlink breaks
-anything, I'd expect it to break in obvious ways and not silently.
+Please be thorough, as if you wanted me to reproduce the issue :)
 
-> Do we need a compatibility fallback that warns to user to update his kernel
-> command line?
+After filing the bug, please send the BZ link to me (or add me to the
+bug's CC list), so I can ping some RH bootloader folks directly.
 
-I don't think we need to, but I'm not strongly against your suggestion
-either. Let us know what you think.
+Thanks!
+Laszlo
 
--Saravana
