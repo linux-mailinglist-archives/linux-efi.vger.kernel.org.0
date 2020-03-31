@@ -2,122 +2,127 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B4FF7198DA9
-	for <lists+linux-efi@lfdr.de>; Tue, 31 Mar 2020 09:56:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6314D199640
+	for <lists+linux-efi@lfdr.de>; Tue, 31 Mar 2020 14:20:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729425AbgCaH4e (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 31 Mar 2020 03:56:34 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35028 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729925AbgCaH4d (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Tue, 31 Mar 2020 03:56:33 -0400
-Received: from mail-il1-f181.google.com (mail-il1-f181.google.com [209.85.166.181])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A97192083E
-        for <linux-efi@vger.kernel.org>; Tue, 31 Mar 2020 07:56:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1585641392;
-        bh=3ercSEYHSsTKpm07uaUkl1Ke9Bk5D1FbsI6WPyK1fow=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=ZkXx1xdhzTOSUctGRLRbHp84UKY6td5WIlGgD7yY7aQb1K2BpJ73R1V/ER/E4DMYp
-         mvLp8rIChBc35deAFL2XsWRaZvK+fVS+ee6JaHJIC90w541Cv9ebguI4+mvjYSinWk
-         SSfnPCbMy8yw22aW3J0SqWFH8shqd9rVQID5/t0U=
-Received: by mail-il1-f181.google.com with SMTP id f16so18504683ilj.9
-        for <linux-efi@vger.kernel.org>; Tue, 31 Mar 2020 00:56:32 -0700 (PDT)
-X-Gm-Message-State: ANhLgQ0Y1yFJUzXLCGB2ZGoBb8JwcUqdGuCfByYa2p+zcidp1YNLh1RR
-        GRsO/TsvgvfxcDq/n+4kWTqUgmNqVnz+NTjf1II=
-X-Google-Smtp-Source: ADFU+vvYWMQ/amzvYwYMfsiNFRIesCFTg8eWMXBJuJX6OG9NPd1JuT33mGJHPRlh0m8xSgu4AzVxlZgn7oaDWDlV9Ss=
-X-Received: by 2002:a05:6e02:551:: with SMTP id i17mr13821185ils.218.1585641392036;
- Tue, 31 Mar 2020 00:56:32 -0700 (PDT)
+        id S1730598AbgCaMUk (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 31 Mar 2020 08:20:40 -0400
+Received: from mail-oi1-f196.google.com ([209.85.167.196]:33677 "EHLO
+        mail-oi1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730343AbgCaMUk (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 31 Mar 2020 08:20:40 -0400
+Received: by mail-oi1-f196.google.com with SMTP id m14so18751468oic.0;
+        Tue, 31 Mar 2020 05:20:40 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=26HG4zFgugkC6qzQClM9onqv7r2JKUuvQ00Kk/wIJGg=;
+        b=FXONAX0YpRtypaPZSQ3Wl+XD3tf3+JlmJqeg/M7PVGwJ6lhsSmO/xszNzUo0ZFEH7C
+         QjxAU8sb/l/5ym0tVfMZevO3fuPtaEFq85Fyk2lVDUXwUP/HlqVcG48C9u6aavlD558u
+         1Vewn+ET4rtfukpG+ZfadBHSRNXtnrqQn/FtO6yVKF93tL7NSimv4+dkpi2gcW138oCD
+         RQGPOKWeO1w9JBNtgn9C/wdWlI++DmlEZOWM/zvcpmQC7ISgpnQr5lh22R6QvPNXNGjK
+         XrwehwHU6Zw/wm4wf6FDTvQmBI0rS2XsGxCZwcOKeSuMEFIJ/guK4Yd24c+YFUFKVn3F
+         b6mQ==
+X-Gm-Message-State: ANhLgQ2xFzXvel5n+ntHqhCCoNZvzNaqaHADOoajsLlkkhRwQs0b308P
+        JLbe/qqQRP8IMU/ueFHAlEJiAOrh37Wb4DAReH8=
+X-Google-Smtp-Source: ADFU+vvJjq6t9HN5MU6KVtgDmhuo8qjq6hgZzLnrDwNCTZl1iXr18JU6fsxiGfnMFt3tCqOJSDnBy8jyMBNiZHZ3piU=
+X-Received: by 2002:aca:cdd1:: with SMTP id d200mr1719981oig.153.1585657239572;
+ Tue, 31 Mar 2020 05:20:39 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200328205809.23825-1-ardb@kernel.org> <20200330074721.GV22097@bivouac.eciton.net>
- <CAMj1kXFPtY20afbAZgXT3As4TUuAqi3=pG8u19hjMjFxgN6HWA@mail.gmail.com>
- <CAMj1kXEf5rT1pmDNQoOd5Tx9xQ=fUMT0xo4JXZNfz=VDY9268Q@mail.gmail.com>
- <DM5PR2101MB104760D03E632DD4DBE99AE1D7CB0@DM5PR2101MB1047.namprd21.prod.outlook.com>
- <CAMj1kXF+2O5cDC9zuNp9Lx9Oe6WyxRghPqSi63CnF+KCcGUZyw@mail.gmail.com>
-In-Reply-To: <CAMj1kXF+2O5cDC9zuNp9Lx9Oe6WyxRghPqSi63CnF+KCcGUZyw@mail.gmail.com>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Tue, 31 Mar 2020 09:56:20 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXFJB9ciJ41V2tpQNX_mN7S8BweV9_ME3sDxKjwnR2Jwbg@mail.gmail.com>
-Message-ID: <CAMj1kXFJB9ciJ41V2tpQNX_mN7S8BweV9_ME3sDxKjwnR2Jwbg@mail.gmail.com>
-Subject: Re: [PATCH] efi/libstub/arm64: avoid image_base value from efi_loaded_image
-To:     Michael Kelley <mikelley@microsoft.com>, lersek@redhat.com
-Cc:     Leif Lindholm <leif@nuviainc.com>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+References: <20200222014038.180923-1-saravanak@google.com> <20200222014038.180923-6-saravanak@google.com>
+In-Reply-To: <20200222014038.180923-6-saravanak@google.com>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Tue, 31 Mar 2020 14:20:27 +0200
+Message-ID: <CAMuHMdW_pvt1b6Y8e5j0Q5yDFMsg5z61upOo+gFaq7zf1F0V6w@mail.gmail.com>
+Subject: Re: [PATCH v1 5/5] of: property: Delete of_devlink kernel commandline option
+To:     Saravana Kannan <saravanak@google.com>
+Cc:     Jonathan Corbet <corbet@lwn.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Len Brown <lenb@kernel.org>,
+        Android Kernel Team <kernel-team@android.com>,
+        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         linux-efi <linux-efi@vger.kernel.org>,
-        Boqun Feng <Boqun.Feng@microsoft.com>
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Mon, 30 Mar 2020 at 20:24, Ard Biesheuvel <ardb@kernel.org> wrote:
->
-> On Mon, 30 Mar 2020 at 20:12, Michael Kelley <mikelley@microsoft.com> wrote:
-> >
-> > From: Ard Biesheuvel <ardb@kernel.org>  Sent: Monday, March 30, 2020 12:51 AM
-> > >
-> > > On Mon, 30 Mar 2020 at 09:50, Ard Biesheuvel <ardb@kernel.org> wrote:
-> > > >
-> > > > On Mon, 30 Mar 2020 at 09:47, Leif Lindholm <leif@nuviainc.com> wrote:
-> > > > >
-> > > > > On Sat, Mar 28, 2020 at 21:58:09 +0100, Ard Biesheuvel wrote:
-> > > > > > Commit 9f9223778ef3 ("efi/libstub/arm: Make efi_entry() an ordinary
-> > > > > > PE/COFF entrypoint") did some code refactoring to get rid of the
-> > > > > > EFI entry point assembler code, and in the process, it got rid of the
-> > > > > > assignment of image_addr to the value of _text. Instead, it switched
-> > > > > > to using the image_base field of the efi_loaded_image struct provided
-> > > > > > by UEFI, which should contain the same value.
-> > > > > >
-> > > > > > However, Michael reports that this is not the case: older GRUB builds
-> > > > > > corrupt this value in some way, and since we can easily switch back to
-> > > > > > referring to _text to discover this value, let's simply do that.
-> > > > >
-> > > > > It is not clear to me how "older GRUB builds" would differ here.
-> > > > > I think more investigation is needed before making that claim.
-> > > > > My suspicion is that some (old) version of non-upstream, shim-enabled
-> > > > > distro-specific build is playing a part.
-> > > > >
-> > > > > So, do we have the option for more detailed investigations, or can we
-> > > > > vague the claim up to say "some GRUB builds seen in the wild, based
-> > > > > on an upstream 2.02" or suchlike?
-> > > > >
-> > > >
-> > > > I've queued a fix that prints a nastygram if the value deviates from
-> > > > the expected one. Let's see if this triggers any reports.
-> > >
-> > > (/me looks at context)
-> > >
-> > > *This* is the fix that prints a nastygram.
-> >
-> > FWIW, I pulled the BOOTAA64.EFI and grubaa64.efi files from CentOS 7.6
-> > and CentOS 8.0 binary packages and tested both in my Hyper-V VM.
-> > Using strings | grep '2\.' to get version info, the CentOS 7.6 grubaa64.efi
-> > shows:
-> >
-> >         User-Agent: GRUB 2.02~beta2
-> >
-> > The CentOS 8.0 grubaa64.efi shows:
-> >
-> >         User-Agent: GRUB 2.03
-> >
-> > Both versions produce the FIRMWARE BUG warning when using Ard's
-> > latest patch.  I'll assume the equivalent RHEL versions are the same.
-> > So we've got official distro releases that show the problem.
-> >
-> > As reported earlier, the BOOTAA64.EFI and grubaa64.efi from a
-> > Debian release (not exactly sure which one) do not produce the
-> > FIRMWARE BUG warning.  The grubaa64.efi reports as 2.04-4.
-> >
->
-> Thanks a lot Michael, that is really helpful.
+Hi Saravana,
 
-I could not reproduce the issue with Debian Stretch's
-2.02~beta3-5+deb9u2, so it does appear to be RedHat's value add that
-is to blame here.
+On Sat, Feb 22, 2020 at 2:41 AM Saravana Kannan <saravanak@google.com> wrote:
+> With the addition of fw_devlink kernel commandline option, of_devlink is
+> redundant and not useful anymore. So, delete it.
+>
+> Signed-off-by: Saravana Kannan <saravanak@google.com>
 
-@Laszlo: TL;DR RedHat's GRUB for arm64 appears to clobber the
-image_base field of the efi_loaded_image struct passed to the kernel.
-Could you please recommend a way to report this?
+Thanks for your patch!
+
+This is now commit e94f62b7140fa3da ("of: property: Delete of_devlink
+kernel commandline option") upstream.
+
+> --- a/Documentation/admin-guide/kernel-parameters.txt
+> +++ b/Documentation/admin-guide/kernel-parameters.txt
+> @@ -3299,12 +3299,6 @@
+>                         This can be set from sysctl after boot.
+>                         See Documentation/admin-guide/sysctl/vm.rst for details.
+>
+> -       of_devlink      [OF, KNL] Create device links between consumer and
+> -                       supplier devices by scanning the devictree to infer the
+> -                       consumer/supplier relationships.  A consumer device
+> -                       will not be probed until all the supplier devices have
+> -                       probed successfully.
+> -
+>         ohci1394_dma=early      [HW] enable debugging via the ohci1394 driver.
+>                         See Documentation/debugging-via-ohci1394.txt for more
+>                         info.
+
+While I agree with the thunk above...
+
+> diff --git a/drivers/of/property.c b/drivers/of/property.c
+> index 15fc9315f1a7..f104f15b57fb 100644
+> --- a/drivers/of/property.c
+> +++ b/drivers/of/property.c
+> @@ -1299,15 +1299,9 @@ static int of_link_to_suppliers(struct device *dev,
+>         return ret;
+>  }
+>
+> -static bool of_devlink;
+> -core_param(of_devlink, of_devlink, bool, 0);
+> -
+>  static int of_fwnode_add_links(const struct fwnode_handle *fwnode,
+>                                struct device *dev)
+>  {
+> -       if (!of_devlink)
+> -               return 0;
+> -
+>         if (unlikely(!is_of_node(fwnode)))
+>                 return 0;
+
+... I have some reservations about removing the actual code.
+The "of_devlink" kernel parameter was supported in v5.5 and v5.6, so
+removing its support may silently break some setups.
+
+Is this likely to happen?
+Do we need a compatibility fallback that warns to user to update his kernel
+command line?
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
