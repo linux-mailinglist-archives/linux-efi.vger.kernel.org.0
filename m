@@ -2,164 +2,194 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 71F2419C581
-	for <lists+linux-efi@lfdr.de>; Thu,  2 Apr 2020 17:08:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C471E19E13D
+	for <lists+linux-efi@lfdr.de>; Sat,  4 Apr 2020 01:02:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388813AbgDBPHx (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 2 Apr 2020 11:07:53 -0400
-Received: from mail-wm1-f66.google.com ([209.85.128.66]:35464 "EHLO
-        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726927AbgDBPHx (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 2 Apr 2020 11:07:53 -0400
-Received: by mail-wm1-f66.google.com with SMTP id i19so4070104wmb.0
-        for <linux-efi@vger.kernel.org>; Thu, 02 Apr 2020 08:07:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=19stq3FWZueXypmouXGwTpgVoGNQ+00tB3L/ewA9vxs=;
-        b=ByZEXTfXlltF/rl77sI5pJ3DwEMwFfDqiHpzLP0QzkQvd1tlON1rsjxlpBZko8fGHn
-         de5lsPM8ns0p08XwEEwQ/No8mT0LYTeEeSVi8d0IPw00vEMbQSFk4u0bGxq9rKAEYnVS
-         b4XnVTQqAM3S6e4X4nY2apmFZfXRfSPzlGYkOcY9rb3+ggK0nVDRSiwN5QiTEETERuiI
-         1Yml57CWuBHmsI3W7FOYIr7JpoVFInD0eJlGCD90FP3h3xyc9UQ0ETUAIHVZCwDdQk5C
-         BvMvoJJjcMv8qKbaYvpo6uOE+mhilNbXRRKrQJ1s2SKXSAkLGhxAbR1NN5mN0KGqibv2
-         ngoQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=19stq3FWZueXypmouXGwTpgVoGNQ+00tB3L/ewA9vxs=;
-        b=eskozyeA0b39wBsAVEACf2r1XokY1D1xvKhtiCdnW+da7SrhYlXpyI3ZJqdkLXM5jX
-         RGCY1zRZo874XZVpSgNrRg9LKOm1h+lM880eoXNwLYXwZ3lukXbvdubzj9ebQbPFgJsJ
-         mQCvcEwGVPR8bOOKpEwOrugpipfb1NydZqRSOmhmpNL3I7YBQ4JusWkJzaDTjT2G1BC6
-         X/koZKrx6l+53Xc3wN+zCeZChzafuvAOmlZQ5JW8nY2rYw/PDAvq8W+4Uwd6lhzOoPZu
-         83eBdiXLa8xYowvM3hM0+j6XazIqfwlRQcLPF9dHvChf9EHAomil6EOCY5+xEEzha2RP
-         5V6g==
-X-Gm-Message-State: AGi0PuYzVEjAIel0nAbkrc3MaTgyOUXUQKeI5Nq5SdelUWa9ZDKFismF
-        k4qGoOHde3JG2eRUtoSM+Q8wWwnhuV5eCYHnBVU=
-X-Google-Smtp-Source: APiQypJ4GFzObgOodNAa76YiRRg8G9Q+gC2ROrMtmOiH/X0vd1CFf3ABAmCUpdhstaSiM3IJTkfRfWMLVc6c8yOlulg=
-X-Received: by 2002:a7b:cd02:: with SMTP id f2mr3779223wmj.97.1585840070796;
- Thu, 02 Apr 2020 08:07:50 -0700 (PDT)
+        id S1727907AbgDCXCS (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 3 Apr 2020 19:02:18 -0400
+Received: from mga05.intel.com ([192.55.52.43]:63296 "EHLO mga05.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727829AbgDCXCS (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Fri, 3 Apr 2020 19:02:18 -0400
+IronPort-SDR: IRKUKsgjqXxEohNXW9TWIMtwOqSIe7z77MYayIbsQ5gILawzvIAioEywIOKX3SqZJhWZcdcpNl
+ e3hAX+Lp9ADg==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Apr 2020 16:02:18 -0700
+IronPort-SDR: 7X2FdEeSHnZud7U2di3W2CIpbLySTT+WfbNcqcpADFSzU7W42GaDPZkVI7HQlMDErZLgI2Bi44
+ RLmTPlFWod2g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.72,341,1580803200"; 
+   d="scan'208";a="241248159"
+Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
+  by fmsmga007.fm.intel.com with ESMTP; 03 Apr 2020 16:02:15 -0700
+Received: from kbuild by lkp-server01 with local (Exim 4.89)
+        (envelope-from <lkp@intel.com>)
+        id 1jKVK8-0007gr-OX; Sat, 04 Apr 2020 07:02:04 +0800
+Date:   Sat, 04 Apr 2020 07:01:06 +0800
+From:   kbuild test robot <lkp@intel.com>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-efi@vger.kernel.org
+Subject: [efi:urgent] BUILD SUCCESS
+ 33da38529f13f938a73107aa2dc7c3b4e786967a
+Message-ID: <5e87c032.59Gf9H9dKvGGOkeb%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Received: by 2002:a1c:808d:0:0:0:0:0 with HTTP; Thu, 2 Apr 2020 08:07:50 -0700 (PDT)
-Reply-To: aishaeeeelgaddafi@gmail.com
-From:   aisha elgaddfi <aishaeelgaddafi@gmail.com>
-Date:   Thu, 2 Apr 2020 17:07:50 +0200
-Message-ID: <CABS4X6OA+Hyx4s0N9gQOpTQDvHUkZXy5EX17ZyejEJEQ6fbqkA@mail.gmail.com>
-Subject: Can I invest in your country from Mrs. Aisha El Gaddafi?
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Dearest One
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git  urgent
+branch HEAD: 33da38529f13f938a73107aa2dc7c3b4e786967a  efi/libstub/x86: remove redundant assignment to pointer hdr
 
-Please I want you to exercise some patience reading through this mail
-so that it will enable you have good understanding, meanwhile I will
-appreciate you to ignore and delete this mail from your mail box if
-you are not interested been my partner for the investment project in
-your country.
+elapsed time: 481m
 
-This letter may come to you as a surprise, but I want you to
-understand that it is only through an opportunity that people can meet
-each other and become friends and business partners in life. Though,
-the society today is so unpredictable that the good and the bad live
-side by side coupled with the monumental hype and crap of the abuse of
-the Internet by some unscrupulous persons in the recent times, thereby
-making it extremely difficult for genuine and legitimate business
-class persons to get attention and recognition. However, Internet was
-established for easy communication and business transaction of far
-partners but today, the same internet is use to deceived some business
-class persons so i will not be surprise to see you rejecting this
-proposal just because of what bad eggs has done to internet today.
+configs tested: 135
+configs skipped: 0
 
-Nevertheless, i want you to understand that there is still genuine and
-legitimate business class persons in internet world today so i am
-assuring you that this transaction is 100% genuine. You can give it a
-trial.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-I decided to contact you over this business, after a careful thought
-and also going the way of my instincts, believing that you are capable
-of handling this business in honesty and sincerity and also be of
-immense help towards the smooth completion of this transaction.
+arm                              allmodconfig
+arm                               allnoconfig
+arm                              allyesconfig
+arm64                            allmodconfig
+arm64                             allnoconfig
+arm64                            allyesconfig
+arm                           efm32_defconfig
+arm                         at91_dt_defconfig
+arm                        shmobile_defconfig
+arm64                               defconfig
+arm                          exynos_defconfig
+arm                        multi_v5_defconfig
+arm                           sunxi_defconfig
+arm                        multi_v7_defconfig
+sparc                            allyesconfig
+i386                                defconfig
+riscv                          rv32_defconfig
+s390                       zfcpdump_defconfig
+m68k                           sun3_defconfig
+sh                            titan_defconfig
+powerpc                           allnoconfig
+xtensa                       common_defconfig
+ia64                             alldefconfig
+i386                              allnoconfig
+i386                             alldefconfig
+i386                             allyesconfig
+ia64                             allmodconfig
+ia64                              allnoconfig
+ia64                             allyesconfig
+ia64                                defconfig
+c6x                              allyesconfig
+c6x                        evmc6678_defconfig
+nios2                         10m50_defconfig
+nios2                         3c120_defconfig
+openrisc                    or1ksim_defconfig
+openrisc                 simple_smp_defconfig
+xtensa                          iss_defconfig
+h8300                       h8s-sim_defconfig
+h8300                     edosk2674_defconfig
+m68k                       m5475evb_defconfig
+m68k                             allmodconfig
+h8300                    h8300h-sim_defconfig
+m68k                          multi_defconfig
+arc                              allyesconfig
+arc                                 defconfig
+microblaze                      mmu_defconfig
+microblaze                    nommu_defconfig
+powerpc                             defconfig
+powerpc                       ppc64_defconfig
+powerpc                          rhel-kconfig
+mips                           32r2_defconfig
+mips                         64r6el_defconfig
+mips                             allmodconfig
+mips                              allnoconfig
+mips                             allyesconfig
+mips                      fuloong2e_defconfig
+mips                      malta_kvm_defconfig
+parisc                            allnoconfig
+parisc                generic-64bit_defconfig
+parisc                generic-32bit_defconfig
+parisc                           allyesconfig
+x86_64               randconfig-a001-20200403
+x86_64               randconfig-a002-20200403
+x86_64               randconfig-a003-20200403
+i386                 randconfig-a001-20200403
+i386                 randconfig-a002-20200403
+i386                 randconfig-a003-20200403
+nds32                randconfig-a001-20200403
+m68k                 randconfig-a001-20200403
+alpha                randconfig-a001-20200403
+parisc               randconfig-a001-20200403
+riscv                randconfig-a001-20200403
+sparc64              randconfig-a001-20200403
+h8300                randconfig-a001-20200403
+nios2                randconfig-a001-20200403
+microblaze           randconfig-a001-20200403
+c6x                  randconfig-a001-20200403
+s390                 randconfig-a001-20200403
+xtensa               randconfig-a001-20200403
+csky                 randconfig-a001-20200403
+openrisc             randconfig-a001-20200403
+sh                   randconfig-a001-20200403
+x86_64               randconfig-e001-20200403
+x86_64               randconfig-e002-20200403
+x86_64               randconfig-e003-20200403
+i386                 randconfig-e001-20200403
+i386                 randconfig-e002-20200403
+i386                 randconfig-e003-20200403
+x86_64               randconfig-f001-20200403
+x86_64               randconfig-f002-20200403
+x86_64               randconfig-f003-20200403
+i386                 randconfig-f001-20200403
+i386                 randconfig-f002-20200403
+i386                 randconfig-f003-20200403
+x86_64               randconfig-g001-20200403
+x86_64               randconfig-g002-20200403
+x86_64               randconfig-g003-20200403
+i386                 randconfig-g001-20200403
+i386                 randconfig-g002-20200403
+i386                 randconfig-g003-20200403
+arm64                randconfig-a001-20200403
+sparc                randconfig-a001-20200403
+ia64                 randconfig-a001-20200403
+arc                  randconfig-a001-20200403
+arm                  randconfig-a001-20200403
+powerpc              randconfig-a001-20200403
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                            allmodconfig
+s390                          debug_defconfig
+s390                             allyesconfig
+s390                              allnoconfig
+s390                             allmodconfig
+s390                             alldefconfig
+s390                                defconfig
+sh                          rsk7269_defconfig
+sh                               allmodconfig
+sh                  sh7785lcr_32bit_defconfig
+sh                                allnoconfig
+sparc                               defconfig
+sparc64                             defconfig
+sparc64                           allnoconfig
+sparc64                          allyesconfig
+sparc64                          allmodconfig
+um                           x86_64_defconfig
+um                             i386_defconfig
+um                                  defconfig
+x86_64                                   rhel
+x86_64                               rhel-7.6
+x86_64                         rhel-7.2-clear
+x86_64                                    lkp
+x86_64                              fedora-25
+x86_64                                  kexec
 
-Before I introduce myself, I wish to inform you that this letter is
-not a hoax mail and I urge you to treat it serious. This letter must,
-come to you as a big surprise, but I believe it is only a day that
-people meet and become great friends and business partners.
-
-Please I want you to read this letter very carefully and I must
-apologize for barging this message into your mail box without any
-formal introduction due to the urgency and confidentiality of this
-business and I know that this message will come to you as a surprise.
-Please, this is not a joke and I will not like you to joke with it OK.
-With due respect to your person and much sincerity of purpose, I make
-this contact with you as I believe that you can be of great
-assistance,  to me.
-
-Introductions; My names are Aisha Gaddafi,the only biological daughter
-of late Libya president Gaddafi, I want to use this opportunity to
-inform you that I need a very honest and reliable person that can help
-me look for a profitable business/ company to invest into there in
-your country then you let me know while and provide account where I
-can transfer the sum of$30,500,000.00.Dollars (Thirty million five
-hundred and fifty thousand united state dollars) for the investment in
-your country.
-
-My late father also deposited 37kg of (GOLD) in Accra Ghana a
-neighboring country where i am presently now. My plan is after
-claiming this fund, we will have enough fund to move for the claim of
-the GOLD.
-
- I am currently residing in  one of the African Countries,
-unfortunately as a refugee. At the meantime, my family is the target
-of Western nations led by Nato who  lead the death of my father at all
-costs and Our investments and bank accounts in several countries are
-their targets to freeze.
-
-I have no option rather to contact an interested foreign
-investor/partner who will be able to take absolute control of part of
-the vast cash available in a private account that my late father open
-on my behalf here in the country before his sudden death by the
-western world.
-
-If this transaction interest you, kindly reply me back immediately for
-more details on how to execute the project.Please one more
-veryimportant thing here, is that you don=E2=80=99t have to disclose it to =
-any
-body because of what is going with my entire family, if the united
-nation happens to know this account, they will freeze it as they
-freeze others so keep this transaction for yourself only until we
-finalize it. I want to transfer this money into your account
-immediately for onward investment in your country because I don=E2=80=99t w=
-ant
-the united nation to know about this account of which you are aware of
-my family problems.
-
-About me and the reason why I am now in Burkina Faso as you can read
-more in the linked below Please inter the link to read and know more
-about me and the reason why I contacted you.
-
-http://www.telegraph.co.uk/news/worldnews/africaandindianocean/libya/996720=
-3/Gaddafis-daughter-thrown-out-of-Algeria-after-she-set-fire-to-presidentia=
-l-residence.html
-
-Once again, i have the sum of US$ 30.5 Thirty Million five hundred
-thousand in one bank in Burkina Faso Called  Banque Commerciale du
-Burkina (BCB).
-
-Therefore if you are capable of running an establishment and can
-maintain the high level of secrecy required in this project, kindly
-reply with the following information for details of the project and
-please always reach me on this my below alternative email address for
-urgent attention ok. ( aishaeeeelgaddafi@gmail.com )
-
-You are advice to contact me immediately for more details if you are
-really interested. As soon as i hear from you, i will give you mor
-details of this transaction.
-
-Best Regard
-Mrs.Aisha El Gaddafi
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
