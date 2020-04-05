@@ -2,194 +2,98 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C471E19E13D
-	for <lists+linux-efi@lfdr.de>; Sat,  4 Apr 2020 01:02:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B56C19EE7D
+	for <lists+linux-efi@lfdr.de>; Mon,  6 Apr 2020 01:18:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727907AbgDCXCS (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 3 Apr 2020 19:02:18 -0400
-Received: from mga05.intel.com ([192.55.52.43]:63296 "EHLO mga05.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727829AbgDCXCS (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Fri, 3 Apr 2020 19:02:18 -0400
-IronPort-SDR: IRKUKsgjqXxEohNXW9TWIMtwOqSIe7z77MYayIbsQ5gILawzvIAioEywIOKX3SqZJhWZcdcpNl
- e3hAX+Lp9ADg==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Apr 2020 16:02:18 -0700
-IronPort-SDR: 7X2FdEeSHnZud7U2di3W2CIpbLySTT+WfbNcqcpADFSzU7W42GaDPZkVI7HQlMDErZLgI2Bi44
- RLmTPlFWod2g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.72,341,1580803200"; 
-   d="scan'208";a="241248159"
-Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
-  by fmsmga007.fm.intel.com with ESMTP; 03 Apr 2020 16:02:15 -0700
-Received: from kbuild by lkp-server01 with local (Exim 4.89)
-        (envelope-from <lkp@intel.com>)
-        id 1jKVK8-0007gr-OX; Sat, 04 Apr 2020 07:02:04 +0800
-Date:   Sat, 04 Apr 2020 07:01:06 +0800
-From:   kbuild test robot <lkp@intel.com>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     linux-efi@vger.kernel.org
-Subject: [efi:urgent] BUILD SUCCESS
- 33da38529f13f938a73107aa2dc7c3b4e786967a
-Message-ID: <5e87c032.59Gf9H9dKvGGOkeb%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S1727707AbgDEXSt (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sun, 5 Apr 2020 19:18:49 -0400
+Received: from mail-qv1-f66.google.com ([209.85.219.66]:34255 "EHLO
+        mail-qv1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727612AbgDEXSs (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sun, 5 Apr 2020 19:18:48 -0400
+Received: by mail-qv1-f66.google.com with SMTP id s18so6691449qvn.1;
+        Sun, 05 Apr 2020 16:18:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:from:date:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=M/F/f/WzwdqXVXZxqD6HXXgsX9oeQ3XHsN3eudpW6Js=;
+        b=QwVnRAi1GBtAEz+wTk1Adt9f8cAAAx7zwq08y7UvmAG+z2Tfvyf8ot33CvKSQrOOUw
+         xsk7SYls+pdhTRdE9x97McpZA9ACwMFKldKpiS6DdfQ8gE8bC/B44wmXwJPKEwf1ebGw
+         xmfFLdBp58U3VGm7FfkKVUByxwLg4zhreRneAYM+uAdqP/OiKHNey7uQKIqcjXkDf4tS
+         ibEY4k+UsASqou4b7CbDmF5b8aUb8+wDHgDlNun/NjeXLjRyqvLA4WK47VbLICPRz49q
+         5MqZ49okDnTcgrmmgrdBuAH9aDBCZ94xAoKcUMcNU2rzCHaBg5TU8YDesEKLdDo6YTwt
+         4qhg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:from:date:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to;
+        bh=M/F/f/WzwdqXVXZxqD6HXXgsX9oeQ3XHsN3eudpW6Js=;
+        b=WVBvPaHoRXpImGE/inBG+/e1gJNmUa/yfdfjcsublNjCHEBml/IzDrOOKp3h+oFJJs
+         3TklVHzJQOD3frJzVyYHq2hwocD4Vim38gtHklvemhTaJ8u0HKILRrITrVBggyY+yha0
+         nWfoF/bxQqzFRgna8Vz/w2qxWgdQ2UFE5rajAJKZyCn8KEHpVX3h8r1zh2qJwh0FZxiS
+         lkSYOJtGxjV/OkafST7dRKoDPnyu7DYX0LOxjyJWUdZDbNW370zkNBhuXUsR/BgSQGXC
+         MYvdefS4G+mFBklAqYi9MDjc9L8Z+Bywdm8UEQArgnYGwqSYuI4XZj+yWg1hqpp2HB11
+         3sPg==
+X-Gm-Message-State: AGi0PubXa6Q87AFmoDW5QN2SH8rXlUQeO6l0Uf1VhunDEEgM7fzdyTSz
+        bW4jLODGWT4O9RjSiPfDLTg32RJ+
+X-Google-Smtp-Source: APiQypLc1ovH2pPL1gk+Ej3Io8JqDMxZYYdmuFrMa7Z/i+9n8HvoSu3F9+6C7Y5gTXsKzf28Am+Mxg==
+X-Received: by 2002:ad4:498c:: with SMTP id t12mr18696454qvx.27.1586128727395;
+        Sun, 05 Apr 2020 16:18:47 -0700 (PDT)
+Received: from rani.riverdale.lan ([2001:470:1f07:5f3::b55f])
+        by smtp.gmail.com with ESMTPSA id o5sm3810154qkh.77.2020.04.05.16.18.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 05 Apr 2020 16:18:46 -0700 (PDT)
+From:   Arvind Sankar <nivedita@alum.mit.edu>
+X-Google-Original-From: Arvind Sankar <arvind@rani.riverdale.lan>
+Date:   Sun, 5 Apr 2020 19:18:45 -0400
+To:     Sergey Shatunov <me@prok.pw>
+Cc:     nivedita@alum.mit.edu, bp@alien8.de, hpa@zytor.com,
+        linux-kernel@vger.kernel.org, mingo@redhat.com, tglx@linutronix.de,
+        x86@kernel.org, linux-efi@vger.kernel.org
+Subject: Re: [PATCH 1/2] x86/boot/compressed/64: Remove .bss/.pgtable from
+ bzImage
+Message-ID: <20200405231845.GA3095309@rani.riverdale.lan>
+References: <20200109150218.16544-1-nivedita@alum.mit.edu>
+ <20200405154245.11972-1-me@prok.pw>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20200405154245.11972-1-me@prok.pw>
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git  urgent
-branch HEAD: 33da38529f13f938a73107aa2dc7c3b4e786967a  efi/libstub/x86: remove redundant assignment to pointer hdr
+On Sun, Apr 05, 2020 at 10:42:46PM +0700, Sergey Shatunov wrote:
+> This patch causes some strange things happens with my laptop.
+> 
+> Cold boot crashed in some early initilization logic with message 'Failed to execute /esp/.../linux.efi: Buffer Too Small'.
+> After couple reboots into firmware setup (bios) or hot reboot from other working kernel (without that commit) helps it to boot.
+> During bisecting couple times I saw different message: 'exit_efi() failed; efi_main() failed', but above tricks helps it too.
+> So bisect points to that commit and I tried to compile kernel with that commit reverted and it works flawlessly.
+> 
+> Some notes about my setup:
+> Kernel tree I used: Torvalds git (which recently pulls that commit).
+> Kernel itself with initrd and cmdline packed into systemd-boot stub (probably here can be issues too, not sure).
+> Secure boot enabled with custom keyring.
+> 
+> I can provide more info or change my setup (for example get rid of systemd-boot stub) if needed for sure.
 
-elapsed time: 481m
+I'm not familiar with systemd-boot: when you say systemd-boot stub, is
+that something different from the kernel's EFI_STUB option? Or is it
+just a kernel with EFI_STUB enabled and with builtin initramfs + builtin
+cmdline? If it is different, can you point me to the tool that creates
+it?
 
-configs tested: 135
-configs skipped: 0
+The first error message you mention should be from systemd-boot after
+the kernel exits with an EFI_BUFFER_TOO_SMALL error status. The second
+one -- is that 'exit_boot() failed' rather than 'exit_efi() failed'? I
+can't find the latter string in the tree.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Can you also specify a commit tag that is broken + works with this patch
+reverted, just to make sure we're looking at the same code?
 
-arm                              allmodconfig
-arm                               allnoconfig
-arm                              allyesconfig
-arm64                            allmodconfig
-arm64                             allnoconfig
-arm64                            allyesconfig
-arm                           efm32_defconfig
-arm                         at91_dt_defconfig
-arm                        shmobile_defconfig
-arm64                               defconfig
-arm                          exynos_defconfig
-arm                        multi_v5_defconfig
-arm                           sunxi_defconfig
-arm                        multi_v7_defconfig
-sparc                            allyesconfig
-i386                                defconfig
-riscv                          rv32_defconfig
-s390                       zfcpdump_defconfig
-m68k                           sun3_defconfig
-sh                            titan_defconfig
-powerpc                           allnoconfig
-xtensa                       common_defconfig
-ia64                             alldefconfig
-i386                              allnoconfig
-i386                             alldefconfig
-i386                             allyesconfig
-ia64                             allmodconfig
-ia64                              allnoconfig
-ia64                             allyesconfig
-ia64                                defconfig
-c6x                              allyesconfig
-c6x                        evmc6678_defconfig
-nios2                         10m50_defconfig
-nios2                         3c120_defconfig
-openrisc                    or1ksim_defconfig
-openrisc                 simple_smp_defconfig
-xtensa                          iss_defconfig
-h8300                       h8s-sim_defconfig
-h8300                     edosk2674_defconfig
-m68k                       m5475evb_defconfig
-m68k                             allmodconfig
-h8300                    h8300h-sim_defconfig
-m68k                          multi_defconfig
-arc                              allyesconfig
-arc                                 defconfig
-microblaze                      mmu_defconfig
-microblaze                    nommu_defconfig
-powerpc                             defconfig
-powerpc                       ppc64_defconfig
-powerpc                          rhel-kconfig
-mips                           32r2_defconfig
-mips                         64r6el_defconfig
-mips                             allmodconfig
-mips                              allnoconfig
-mips                             allyesconfig
-mips                      fuloong2e_defconfig
-mips                      malta_kvm_defconfig
-parisc                            allnoconfig
-parisc                generic-64bit_defconfig
-parisc                generic-32bit_defconfig
-parisc                           allyesconfig
-x86_64               randconfig-a001-20200403
-x86_64               randconfig-a002-20200403
-x86_64               randconfig-a003-20200403
-i386                 randconfig-a001-20200403
-i386                 randconfig-a002-20200403
-i386                 randconfig-a003-20200403
-nds32                randconfig-a001-20200403
-m68k                 randconfig-a001-20200403
-alpha                randconfig-a001-20200403
-parisc               randconfig-a001-20200403
-riscv                randconfig-a001-20200403
-sparc64              randconfig-a001-20200403
-h8300                randconfig-a001-20200403
-nios2                randconfig-a001-20200403
-microblaze           randconfig-a001-20200403
-c6x                  randconfig-a001-20200403
-s390                 randconfig-a001-20200403
-xtensa               randconfig-a001-20200403
-csky                 randconfig-a001-20200403
-openrisc             randconfig-a001-20200403
-sh                   randconfig-a001-20200403
-x86_64               randconfig-e001-20200403
-x86_64               randconfig-e002-20200403
-x86_64               randconfig-e003-20200403
-i386                 randconfig-e001-20200403
-i386                 randconfig-e002-20200403
-i386                 randconfig-e003-20200403
-x86_64               randconfig-f001-20200403
-x86_64               randconfig-f002-20200403
-x86_64               randconfig-f003-20200403
-i386                 randconfig-f001-20200403
-i386                 randconfig-f002-20200403
-i386                 randconfig-f003-20200403
-x86_64               randconfig-g001-20200403
-x86_64               randconfig-g002-20200403
-x86_64               randconfig-g003-20200403
-i386                 randconfig-g001-20200403
-i386                 randconfig-g002-20200403
-i386                 randconfig-g003-20200403
-arm64                randconfig-a001-20200403
-sparc                randconfig-a001-20200403
-ia64                 randconfig-a001-20200403
-arc                  randconfig-a001-20200403
-arm                  randconfig-a001-20200403
-powerpc              randconfig-a001-20200403
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                            allmodconfig
-s390                          debug_defconfig
-s390                             allyesconfig
-s390                              allnoconfig
-s390                             allmodconfig
-s390                             alldefconfig
-s390                                defconfig
-sh                          rsk7269_defconfig
-sh                               allmodconfig
-sh                  sh7785lcr_32bit_defconfig
-sh                                allnoconfig
-sparc                               defconfig
-sparc64                             defconfig
-sparc64                           allnoconfig
-sparc64                          allyesconfig
-sparc64                          allmodconfig
-um                           x86_64_defconfig
-um                             i386_defconfig
-um                                  defconfig
-x86_64                                   rhel
-x86_64                               rhel-7.6
-x86_64                         rhel-7.2-clear
-x86_64                                    lkp
-x86_64                              fedora-25
-x86_64                                  kexec
+Thanks
 
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+Cc linux-efi.
