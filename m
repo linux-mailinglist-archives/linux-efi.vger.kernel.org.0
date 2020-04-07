@@ -2,140 +2,80 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DB7EC19FD32
-	for <lists+linux-efi@lfdr.de>; Mon,  6 Apr 2020 20:30:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 44E991A063F
+	for <lists+linux-efi@lfdr.de>; Tue,  7 Apr 2020 07:12:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726420AbgDFSaL (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 6 Apr 2020 14:30:11 -0400
-Received: from mail.kernel.org ([198.145.29.99]:44710 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725787AbgDFSaK (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Mon, 6 Apr 2020 14:30:10 -0400
-Received: from mail-io1-f43.google.com (mail-io1-f43.google.com [209.85.166.43])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 7DF642078C;
-        Mon,  6 Apr 2020 18:30:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1586197809;
-        bh=HBvFCeSJpqyDca6uPYo//uUcwNS1HPsmDmAlbZua63w=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=OQu/KdqJDMcqZ+Bn5MhryrSIlGUHMSCxoQrTySfWGm1ktwzBg6k747lsrw+hZMziC
-         y5Nf10brDLchUsRgeYPnGZGa24JPBacfZ9l4FK7znrXsllWpNbStplA7N6K+xnag/o
-         Ryltx4sNIduVtvaQRx22htBLO7ONSwi9FeB4uwqw=
-Received: by mail-io1-f43.google.com with SMTP id y14so473769iol.12;
-        Mon, 06 Apr 2020 11:30:09 -0700 (PDT)
-X-Gm-Message-State: AGi0PubxFqFEwI5fPWqNYrlBSehLjkE/qvvonBGr7ezCPQayBGiTGcw5
-        8/s5fP6ECNPrWdIermal4xZ2ESqPPcfhWj4x9To=
-X-Google-Smtp-Source: APiQypId4Gl802lHnEOrV9sQstKR9OAkyvaTpSgpJG5BIvk42Cjxi15zB2C1hlXWt9hJyyflowd/BdxiWcIZ1/rOigw=
-X-Received: by 2002:a5e:8b47:: with SMTP id z7mr1222858iom.16.1586197808726;
- Mon, 06 Apr 2020 11:30:08 -0700 (PDT)
+        id S1726977AbgDGFMv (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 7 Apr 2020 01:12:51 -0400
+Received: from mail-ua1-f66.google.com ([209.85.222.66]:46124 "EHLO
+        mail-ua1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726898AbgDGFMm (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 7 Apr 2020 01:12:42 -0400
+Received: by mail-ua1-f66.google.com with SMTP id y17so822256uap.13
+        for <linux-efi@vger.kernel.org>; Mon, 06 Apr 2020 22:12:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=38NlpNEbzNFWb7RFQtfvRASB+B576yw7dNc7pozf3pc=;
+        b=m9m/DCsFRus/zRmIuphflM5sHyenmkMN/TOEnECOGthbLJHVg8u2+iqtFZpNbyb2/k
+         2tLF//qwyXGtNVJKRleGUy+KbEtVjN+06Aw6FbGL98d5M/QEqB9c9SHaIsBPFlQYoUCh
+         Lj+P9EPUGdvyQRip4KeH3oSvDVhqDTV0IJcbcI66BzYP/b9Y/1y4LF++1q0teLhPl3GM
+         v15gBTxOBB8qvH4CNaCnwdm2sugBL+St8qIlm7SqBWweWj6hdsos1F0mjeWO8qJt64R9
+         xl3tya8AfljNAFdSOkZ4tC7INitomO8JQPFHHcp+JAODUsaup01At9KIYDntXEoTQZb0
+         DmdQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=38NlpNEbzNFWb7RFQtfvRASB+B576yw7dNc7pozf3pc=;
+        b=i+2JSHEKKIAA8hcO/bYkKCaWQ92TGZlAdoUBXpkZSys6kN+nmCauvje0tHtFKVZq7o
+         1qCTmOgXJr9JlANzfdqznQQyGI3HlXH2R4mYV28N0eb+nJzphkvTfxmhwMwlBLSFo7c8
+         OKPnN+TgDniH6CScXLKTtEqWGA9yzIOH/llRmRHUjiFBAxhK1ZbSQ5pGg2MiD4ZD63D9
+         534/LLHg4y3EIIdHIEoqTq8UB5NrA71/AwiR6cTeZ77roFKwRofeWxWCsUSD1xKSPIBx
+         LqnMzFI9ix8pwzC19HCGy2sEmqUa0I3iJKaJexuMpXxCGU0rNrGFkURHuXYAx/P3MVZp
+         +E8Q==
+X-Gm-Message-State: AGi0PuamJAdFXbq79I/MDSWO1x4kyjy2cI4gmvMARBpGVQNYg8ioVs/5
+        7RR6YQF6kv69FTcW3+8tb7KQdt2yuYCtIgXK1cI=
+X-Google-Smtp-Source: APiQypIYXniGQUHEpASwiGNjKth4Cu9ElCz4yjrJ2uXbYBYunhfz0887D/TRydUbTstl7MwaeVftG8QxF1P80ST3qos=
+X-Received: by 2002:ab0:a9:: with SMTP id 38mr504317uaj.61.1586236361040; Mon,
+ 06 Apr 2020 22:12:41 -0700 (PDT)
 MIME-Version: 1.0
-References: <CAMj1kXEUkJ1XJ9OTsijeq8tNNYC00bXqEV44OMtX5ugo9WoLKA@mail.gmail.com>
- <20200406180614.429454-1-nivedita@alum.mit.edu>
-In-Reply-To: <20200406180614.429454-1-nivedita@alum.mit.edu>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Mon, 6 Apr 2020 20:29:57 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXEpaKxoOBP9suDR1CJ7gTnKEQJcA1nPa3BWh1sN5piZoA@mail.gmail.com>
-Message-ID: <CAMj1kXEpaKxoOBP9suDR1CJ7gTnKEQJcA1nPa3BWh1sN5piZoA@mail.gmail.com>
-Subject: Re: [PATCH 1/2] efi/x86: Move efi stub globals from .bss to .data
-To:     Arvind Sankar <nivedita@alum.mit.edu>
-Cc:     Borislav Petkov <bp@alien8.de>, Sergey Shatunov <me@prok.pw>,
-        hpa@zytor.com,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        mingo@redhat.com, Thomas Gleixner <tglx@linutronix.de>,
-        x86@kernel.org, linux-efi <linux-efi@vger.kernel.org>,
-        initramfs@vger.kernel.org,
-        Donovan Tremura <neurognostic@protonmail.ch>,
-        Harald Hoyer <harald@hoyer.xyz>
+Received: by 2002:ab0:4929:0:0:0:0:0 with HTTP; Mon, 6 Apr 2020 22:12:40 -0700 (PDT)
+From:   SANDRA DEWI <dewisandra154@gmail.com>
+Date:   Tue, 7 Apr 2020 05:12:40 +0000
+Message-ID: <CABRVPWys0xe4CWBkaU0ZXQW+4d=tjDOjyo8cKohc5-VFkWPkcA@mail.gmail.com>
+Subject: whether this is your correct email address or not
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Mon, 6 Apr 2020 at 20:06, Arvind Sankar <nivedita@alum.mit.edu> wrote:
->
-> Commit
->
->   3ee372ccce4d ("x86/boot/compressed/64: Remove .bss/.pgtable from
->   bzImage")
->
-> removed the .bss section from the bzImage.
->
-> However, while a PE loader is required to zero-initialize the .bss
-> section before calling the PE entry point, the EFI handover protocol
-> does not currently document any requirement that .bss be initialized by
-> the bootloader prior to calling the handover entry.
->
-> When systemd-boot is used to boot a unified kernel image [1], the image
-> is constructed by embedding the bzImage as a .linux section in a PE
-> executable that contains a small stub loader from systemd together with
-> additional sections and potentially an initrd. As the .bss section
-> within the bzImage is no longer explicitly present as part of the file,
-> it is not initialized before calling the EFI handover entry.
-> Furthermore, as the size of the embedded .linux section is only the size
-> of the bzImage file itself, the .bss section's memory may not even have
-> been allocated.
->
-> In particular, this can result in efi_disable_pci_dma being true even
-> when it was not specified via the command line or configuration option,
-> which in turn causes crashes while booting on some systems.
->
-> To avoid issues, place all EFI stub global variables into the .data
-> section instead of .bss. As of this writing, only boolean flags for a
-> few command line arguments and the sys_table pointer were in .bss and
-> will now move into the .data section.
->
-> [1] https://systemd.io/BOOT_LOADER_SPECIFICATION/#type-2-efi-unified-kernel-images
->
-> Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
-> Reported-by: Sergey Shatunov <me@prok.pw>
-> Fixes: 3ee372ccce4d ("x86/boot/compressed/64: Remove .bss/.pgtable from bzImage")
-
-Thanks Arvind.
-
-This should be fine for the time being, but going forward, it would
-indeed be better [as you suggested] to consolidate the section
-tweaking logic that exists on different architectures for entirely
-different reasons, but with similar results. That will also ensure
-that BSS gets pulled into .data (or .init.data for arm64)
-automatically, rather than requiring these manual annotations.
-
-I'll queue these up in efi/urgent, and send them on later this week.
+Dear ,Pastor
 
 
-> ---
->  drivers/firmware/efi/libstub/efistub.h  | 2 +-
->  drivers/firmware/efi/libstub/x86-stub.c | 2 +-
->  2 files changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
-> index cc90a748bcf0..67d26949fd26 100644
-> --- a/drivers/firmware/efi/libstub/efistub.h
-> +++ b/drivers/firmware/efi/libstub/efistub.h
-> @@ -25,7 +25,7 @@
->  #define EFI_ALLOC_ALIGN                EFI_PAGE_SIZE
->  #endif
->
-> -#ifdef CONFIG_ARM
-> +#if defined(CONFIG_ARM) || defined(CONFIG_X86)
->  #define __efistub_global       __section(.data)
->  #else
->  #define __efistub_global
-> diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
-> index 8d3a707789de..e7af6d2eddbf 100644
-> --- a/drivers/firmware/efi/libstub/x86-stub.c
-> +++ b/drivers/firmware/efi/libstub/x86-stub.c
-> @@ -20,7 +20,7 @@
->  /* Maximum physical address for 64-bit kernel with 4-level paging */
->  #define MAXMEM_X86_64_4LEVEL (1ull << 46)
->
-> -static efi_system_table_t *sys_table;
-> +static efi_system_table_t *sys_table __efistub_global;
->  extern const bool efi_is64;
->  extern u32 image_offset;
->
-> --
-> 2.24.1
->
+
+I have a client who is an oil business man and he made a fixed deposit
+of $26 million USD in my bank, where I am the director of the branch,
+My client died with his entire family in Jordanian
+
+50% of the fund will be for the church  for the work of God,the
+balance 50% we share it in the ratio of 50/50. Meaning 50% to you and
+50% for me
+
+intervention in the Syrian Civil War 2014 leaving behind no next of
+kin. I Propose to present you as next of kin to claim the funds, if
+interested reply me for full details and how we are to
+
+
+
+proceed to close this deal.
+
+
+
+
+Mrs. Sandra Dewi
+
+
+
+Email  mrsdewi@gmx.com
