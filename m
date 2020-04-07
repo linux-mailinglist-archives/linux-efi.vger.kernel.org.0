@@ -2,139 +2,140 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F8DC1A1046
-	for <lists+linux-efi@lfdr.de>; Tue,  7 Apr 2020 17:35:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 53DAA1A10C7
+	for <lists+linux-efi@lfdr.de>; Tue,  7 Apr 2020 17:56:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729127AbgDGPfj (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 7 Apr 2020 11:35:39 -0400
-Received: from mail-qk1-f196.google.com ([209.85.222.196]:46520 "EHLO
-        mail-qk1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728994AbgDGPfj (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 7 Apr 2020 11:35:39 -0400
-Received: by mail-qk1-f196.google.com with SMTP id g74so1550769qke.13;
-        Tue, 07 Apr 2020 08:35:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:from:date:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=VVevqv5RlYHEcc+VsjM+owOd+nD3tCu0YjZUMtZz+2E=;
-        b=lLC8DsKJm4ae32XuTyENAFQ7tiTN+O/hWLs2IA0fs7KcgrsRV35TfQfxfZPwO0fECQ
-         gPutAwzeLbJ1IOfB0Y1rs6Xm5wK2xfwCf5BMrnKRYR9H4SMxEBiW/8gb0+UFMHRWo/ke
-         bxc7iYuoSpc5js44pnAxjKBTfFPBZsu8iBwoURTouYO2CeOCM7u7xy69JnxXdQYvhYNI
-         LX87NbojQWNDUD+CLU22hh2g0LseuKH6QCYoAhvBWmiKfs19GMEmqXPwph5veTuqkRji
-         XjGkVdxx/b0to+rBhIvaY/APqrwYQZyJQWrwoI4XB8om0p6Ogv3rYVmXC0UyEruI8/5k
-         1dkQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:from:date:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to;
-        bh=VVevqv5RlYHEcc+VsjM+owOd+nD3tCu0YjZUMtZz+2E=;
-        b=IMcqNQNywmjAMrZY17oiFnl9S78zV5Dy8EPAkskdRLQXNIBKha9nFPJxFxl0nh+ZzD
-         hYQxhj/8VEcPKzjMnzElqDEs4jq/aGZqcgcj8zUYPRIkSHgki7QDrRAvYjoK9dHeovB6
-         nwzHTssrja+p43A3A7QlOrU2F1oz44w/omHqbOYgzxHlkjDSpb0tFso0FkCTYZI/vV8e
-         FtTIbth05X0yKc9OWV1I80nBHcIgZMM4UKAYp8q/YzAt/FncwYKaMvoais8n4h/cbxaf
-         h0B24yLg37h638KSbAzYzX6Q9F5x1OOuyJRykNLT171P1lCGeHxLbROgNe914qxmCZ+e
-         KfQQ==
-X-Gm-Message-State: AGi0Pub8/sqsDdA6lBqOsjWHJ3RF2HQHd9dba3bfmfdBjridFnaNnoTv
-        +8sQ53VzpFIfk1a4hhkwvmw=
-X-Google-Smtp-Source: APiQypLtjpuhHon36gDSxT/FeQxQ6So32gl0ImI03OBCbpdz9zSQPJyJaFdN5IxqvqxgxhD405xb0Q==
-X-Received: by 2002:a05:620a:13ae:: with SMTP id m14mr2851662qki.214.1586273737786;
-        Tue, 07 Apr 2020 08:35:37 -0700 (PDT)
-Received: from rani.riverdale.lan ([2001:470:1f07:5f3::b55f])
-        by smtp.gmail.com with ESMTPSA id h13sm8337986qkj.21.2020.04.07.08.35.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Apr 2020 08:35:37 -0700 (PDT)
-From:   Arvind Sankar <nivedita@alum.mit.edu>
-X-Google-Original-From: Arvind Sankar <arvind@rani.riverdale.lan>
-Date:   Tue, 7 Apr 2020 11:35:35 -0400
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     linux-efi@vger.kernel.org, x86@kernel.org,
-        linux-doc@vger.kernel.org, corbet@lwn.net, nivedita@alum.mit.edu,
-        bp@alien8.de
-Subject: Re: [PATCH] Documentation: efi/x86: clarify EFI handover protocol
- and its requirements
-Message-ID: <20200407153535.GA1627475@rani.riverdale.lan>
-References: <20200407153206.17360-1-ardb@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20200407153206.17360-1-ardb@kernel.org>
+        id S1726890AbgDGP4b (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 7 Apr 2020 11:56:31 -0400
+Received: from mail.kernel.org ([198.145.29.99]:36790 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726889AbgDGP4b (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Tue, 7 Apr 2020 11:56:31 -0400
+Received: from cam-smtp0.cambridge.arm.com (fw-tnat.cambridge.arm.com [217.140.96.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id AFB1F2072A;
+        Tue,  7 Apr 2020 15:56:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1586274990;
+        bh=zBZKI+9jb0HjHyKoJhQhGw3onl80w3zMTcWXoDvhaXU=;
+        h=From:To:Cc:Subject:Date:From;
+        b=lOuxJUTy81I8lkRSs+9nwpscfhBZj1Iop08Xl15LtSE7HHamtL49h/qk3A9OFFS1L
+         mNl/pQCtzaVxCM0/dbQP7JbiMtCLb1W1u2FQGIhLI0StpvtrasdOkRhmHPFtwjYdYN
+         tmejFplx8h2fsnt4HhMSVlGbDdvOzq3RWxFWQIT8=
+From:   Ard Biesheuvel <ardb@kernel.org>
+To:     linux-efi@vger.kernel.org
+Cc:     arnd@arndb.de, linux-kernel@vger.kernel.org,
+        Ard Biesheuvel <ardb@kernel.org>
+Subject: [PATCH] efi/libstub/file: merge filename buffers to reduce stack usage
+Date:   Tue,  7 Apr 2020 17:56:14 +0200
+Message-Id: <20200407155614.20440-1-ardb@kernel.org>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, Apr 07, 2020 at 05:32:06PM +0200, Ard Biesheuvel wrote:
-> The EFI handover protocol was introduced on x86 to permit the boot
-> loader to pass a populated boot_params structure as an additional
-> function argument to the entry point. This allows the bootloader to
-> pass the base and size of a initrd image, which is more flexible
-> than relying on the EFI stub's file I/O routines, which can only
-> access the file system from which the kernel image itself was loaded
-> from firmware.
-> 
-> This approach requires a fair amount of internal knowledge regarding
-> the layout of the boot_params structure on the part of the boot loader,
-> as well as knowledge regarding the allowed placement of the initrd in
-> memory, and so it has been deprecated in favour of a new initrd loading
-> method that is based on existing UEFI protocols and best practices.
-> 
-> So update the x86 boot protocol documentation to clarify that the EFI
-> handover protocol has been deprecated, and while at it, add a note that
-> invoking the EFI handover protocol still requires the PE/COFF image to
-> be loader properly (as opposed to simply being copied into memory). Also,
-     ^^ typo
-> drop the code32_start header field from the list of values that need to be
-> provided, as this is no longer required.
-> 
-> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> ---
->  Documentation/x86/boot.rst | 17 ++++++++++++++---
->  1 file changed, 14 insertions(+), 3 deletions(-)
-> 
-> diff --git a/Documentation/x86/boot.rst b/Documentation/x86/boot.rst
-> index fa7ddc0428c8..22ac52921692 100644
-> --- a/Documentation/x86/boot.rst
-> +++ b/Documentation/x86/boot.rst
-> @@ -1399,14 +1399,19 @@ must have read/write permission; CS must be __BOOT_CS and DS, ES, SS
->  must be __BOOT_DS; interrupt must be disabled; %rsi must hold the base
->  address of the struct boot_params.
->  
-> -EFI Handover Protocol
-> -=====================
-> +EFI Handover Protocol (deprecated)
-> +==================================
->  
->  This protocol allows boot loaders to defer initialisation to the EFI
->  boot stub. The boot loader is required to load the kernel/initrd(s)
->  from the boot media and jump to the EFI handover protocol entry point
->  which is hdr->handover_offset bytes from the beginning of
->  startup_{32,64}.
-> +The boot loader MUST respect the kernel's PE/COFF metadata when it comes
-> +to section alignment, the memory footprint of the executable image beyond
-> +the size of the file itself, and any other aspect of the PE/COFF header
-> +that may affect correct operation of the image as a PE/COFF binary in the
-> +execution context provided by the EFI firmware.
->  
->  The function prototype for the handover entry point looks like this::
->  
-> @@ -1419,9 +1424,15 @@ UEFI specification. 'bp' is the boot loader-allocated boot params.
->  
->  The boot loader *must* fill out the following fields in bp::
->  
-> -  - hdr.code32_start
->    - hdr.cmd_line_ptr
->    - hdr.ramdisk_image (if applicable)
->    - hdr.ramdisk_size  (if applicable)
->  
->  All other fields should be zero.
-> +
-> +NOTE: The EFI Handover Protocol is deprecated in favour of the ordinary PE/COFF
-> +      entry point, combined with the LINUX_EFI_INITRD_MEDIA_GUID based initrd
-> +      loading protocol, which removes the need for any knowledge on the part of
-> +      the EFI bootloader regarding the internal representation of boot_params or
-> +      any requirements/limitations regarding the placement of the command line
-> +      and ramdisk in memory, or the placement of the kernel image itself.
-> -- 
-> 2.17.1
-> 
+Arnd reports that commit
+
+  9302c1bb8e47 ("efi/libstub: Rewrite file I/O routine")
+
+reworks the file I/O routines in a way that triggers the following
+warning:
+
+  drivers/firmware/efi/libstub/file.c:240:1: warning: the frame size
+            of 1200 bytes is larger than 1024 bytes [-Wframe-larger-than=]
+
+We can work around this issue by reusing the 'filename' field of the
+file info struct that we use to obtain file information from EFI (which
+contains the filename even though we already know it since we used it
+to open the file in the first place)
+
+Reported-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+---
+ drivers/firmware/efi/libstub/file.c | 27 ++++++++++++++-------------
+ 1 file changed, 14 insertions(+), 13 deletions(-)
+
+diff --git a/drivers/firmware/efi/libstub/file.c b/drivers/firmware/efi/libstub/file.c
+index d4c7e5f59d2c..ea66b1f16a79 100644
+--- a/drivers/firmware/efi/libstub/file.c
++++ b/drivers/firmware/efi/libstub/file.c
+@@ -29,30 +29,31 @@
+  */
+ #define EFI_READ_CHUNK_SIZE	SZ_1M
+ 
++struct finfo {
++	efi_file_info_t info;
++	efi_char16_t	filename[MAX_FILENAME_SIZE];
++};
++
+ static efi_status_t efi_open_file(efi_file_protocol_t *volume,
+-				  efi_char16_t *filename_16,
++				  struct finfo *fi,
+ 				  efi_file_protocol_t **handle,
+ 				  unsigned long *file_size)
+ {
+-	struct {
+-		efi_file_info_t info;
+-		efi_char16_t	filename[MAX_FILENAME_SIZE];
+-	} finfo;
+ 	efi_guid_t info_guid = EFI_FILE_INFO_ID;
+ 	efi_file_protocol_t *fh;
+ 	unsigned long info_sz;
+ 	efi_status_t status;
+ 
+-	status = volume->open(volume, &fh, filename_16, EFI_FILE_MODE_READ, 0);
++	status = volume->open(volume, &fh, fi->filename, EFI_FILE_MODE_READ, 0);
+ 	if (status != EFI_SUCCESS) {
+ 		pr_efi_err("Failed to open file: ");
+-		efi_char16_printk(filename_16);
++		efi_char16_printk(fi->filename);
+ 		efi_printk("\n");
+ 		return status;
+ 	}
+ 
+-	info_sz = sizeof(finfo);
+-	status = fh->get_info(fh, &info_guid, &info_sz, &finfo);
++	info_sz = sizeof(struct finfo);
++	status = fh->get_info(fh, &info_guid, &info_sz, fi);
+ 	if (status != EFI_SUCCESS) {
+ 		pr_efi_err("Failed to get file info\n");
+ 		fh->close(fh);
+@@ -60,7 +61,7 @@ static efi_status_t efi_open_file(efi_file_protocol_t *volume,
+ 	}
+ 
+ 	*handle = fh;
+-	*file_size = finfo.info.file_size;
++	*file_size = fi->info.file_size;
+ 	return EFI_SUCCESS;
+ }
+ 
+@@ -146,13 +147,13 @@ static efi_status_t handle_cmdline_files(efi_loaded_image_t *image,
+ 
+ 	alloc_addr = alloc_size = 0;
+ 	do {
+-		efi_char16_t filename[MAX_FILENAME_SIZE];
++		struct finfo fi;
+ 		unsigned long size;
+ 		void *addr;
+ 
+ 		offset = find_file_option(cmdline, cmdline_len,
+ 					  optstr, optstr_size,
+-					  filename, ARRAY_SIZE(filename));
++					  fi.filename, ARRAY_SIZE(fi.filename));
+ 
+ 		if (!offset)
+ 			break;
+@@ -166,7 +167,7 @@ static efi_status_t handle_cmdline_files(efi_loaded_image_t *image,
+ 				return status;
+ 		}
+ 
+-		status = efi_open_file(volume, filename, &file, &size);
++		status = efi_open_file(volume, &fi, &file, &size);
+ 		if (status != EFI_SUCCESS)
+ 			goto err_close_volume;
+ 
+-- 
+2.17.1
+
