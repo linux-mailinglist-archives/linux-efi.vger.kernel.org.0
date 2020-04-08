@@ -2,80 +2,74 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2077C1A280B
-	for <lists+linux-efi@lfdr.de>; Wed,  8 Apr 2020 19:40:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0FAC31A2828
+	for <lists+linux-efi@lfdr.de>; Wed,  8 Apr 2020 19:58:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728262AbgDHRkJ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 8 Apr 2020 13:40:09 -0400
-Received: from mail.kernel.org ([198.145.29.99]:56108 "EHLO mail.kernel.org"
+        id S1727028AbgDHR6C (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 8 Apr 2020 13:58:02 -0400
+Received: from mail.skyhub.de ([5.9.137.197]:59098 "EHLO mail.skyhub.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726687AbgDHRkJ (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Wed, 8 Apr 2020 13:40:09 -0400
-Received: from mail-io1-f48.google.com (mail-io1-f48.google.com [209.85.166.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        id S1726780AbgDHR6C (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Wed, 8 Apr 2020 13:58:02 -0400
+Received: from zn.tnic (p200300EC2F0A93002886CB34BCAFCB01.dip0.t-ipconnect.de [IPv6:2003:ec:2f0a:9300:2886:cb34:bcaf:cb01])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 958F82082F;
-        Wed,  8 Apr 2020 17:40:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1586367608;
-        bh=4z1t98y0f7P25Qq1cT4GsOFIlAkeVEE1O985a/IK2bw=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=2aCurHaf3Kme+m9VA6KdGsnfYZHycQsMSe1KCF6NApw9Al+cODF6apQPpghxHCZb7
-         XXqHbl32UYsvaItv1JOE4FnK6an5lnTUOYN8mTX+ySi2WF6JJcImhX5FjWDrvn7lZk
-         8Izq2J1s8bYv9/13kjMGJe7p7tFjZdImAwQ3c+kQ=
-Received: by mail-io1-f48.google.com with SMTP id b12so945479ion.8;
-        Wed, 08 Apr 2020 10:40:08 -0700 (PDT)
-X-Gm-Message-State: AGi0PuaCJcAOX65z5ZwJboLG/frzHJzv7y9lwR6ZQOEhfbuOPC4LLNyn
-        e3TRR3Xda2cNL0W1vrxfW3Ar3eGfIij5tEQK8kQ=
-X-Google-Smtp-Source: APiQypLEH9T9Ob5L5UbvOCSRgeiNT5mh0Wy0gYcPpE7ul5g85frCf//lo7NmhEqJG95c0EUOoQ/LFCfUSNUCkGDKkpA=
-X-Received: by 2002:a02:7785:: with SMTP id g127mr7811753jac.134.1586367607998;
- Wed, 08 Apr 2020 10:40:07 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200326135041.3264-1-b.thiel@posteo.de>
-In-Reply-To: <20200326135041.3264-1-b.thiel@posteo.de>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Wed, 8 Apr 2020 19:39:56 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXF6UF318wCL74T9orJk=+LafZ3VFXUGmqoBefYVaP2gNw@mail.gmail.com>
-Message-ID: <CAMj1kXF6UF318wCL74T9orJk=+LafZ3VFXUGmqoBefYVaP2gNw@mail.gmail.com>
-Subject: Re: [PATCH] x86/efi: Add a prototype for efi_arch_mem_reserve()
-To:     Benjamin Thiel <b.thiel@posteo.de>
-Cc:     X86 ML <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>,
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 90F541EC0CD9;
+        Wed,  8 Apr 2020 19:58:00 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1586368680;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=EzzxUVtmTm/3Jlc1oShOC/yjn0NG06h83DNl2MgAQgg=;
+        b=HgiWbD9rW0RVGYaoQrtZR5kayVtadTnVRw9XJ447LU49VDnnv61CUm0N4zhFCIeH5YYvJf
+        J7L61rcPQRI1RLxG/kahf3/pN6RIid/wknNDP+fJzhEqyMLr6NXpTfLaVgctoP0Qc6tz9C
+        N6eLcJkM+MS1n52Zzcrj/tDuou+0V/w=
+Date:   Wed, 8 Apr 2020 19:57:56 +0200
+From:   Borislav Petkov <bp@alien8.de>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     Benjamin Thiel <b.thiel@posteo.de>, X86 ML <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
         linux-efi <linux-efi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH] x86/efi: Add a prototype for efi_arch_mem_reserve()
+Message-ID: <20200408175756.GG24663@zn.tnic>
+References: <20200326135041.3264-1-b.thiel@posteo.de>
+ <CAMj1kXF6UF318wCL74T9orJk=+LafZ3VFXUGmqoBefYVaP2gNw@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAMj1kXF6UF318wCL74T9orJk=+LafZ3VFXUGmqoBefYVaP2gNw@mail.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, 26 Mar 2020 at 14:50, Benjamin Thiel <b.thiel@posteo.de> wrote:
->
-> ... in order to fix a -Wmissing-ptototypes warning:
->
-> arch/x86/platform/efi/quirks.c:245:13: warning:
-> no previous prototype for =E2=80=98efi_arch_mem_reserve=E2=80=99 [-Wmissi=
-ng-prototypes]
-> void __init efi_arch_mem_reserve(phys_addr_t addr, u64 size)
->
-> Signed-off-by: Benjamin Thiel <b.thiel@posteo.de>
+On Wed, Apr 08, 2020 at 07:39:56PM +0200, Ard Biesheuvel wrote:
+> On Thu, 26 Mar 2020 at 14:50, Benjamin Thiel <b.thiel@posteo.de> wrote:
+> >
+> > ... in order to fix a -Wmissing-ptototypes warning:
+> >
+> > arch/x86/platform/efi/quirks.c:245:13: warning:
+> > no previous prototype for ‘efi_arch_mem_reserve’ [-Wmissing-prototypes]
+> > void __init efi_arch_mem_reserve(phys_addr_t addr, u64 size)
+> >
+> > Signed-off-by: Benjamin Thiel <b.thiel@posteo.de>
+> 
+> Thanks. I'll queue this as a fix.
 
-Thanks. I'll queue this as a fix.
+I already took that one, see:
 
-> ---
->  include/linux/efi.h | 2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/include/linux/efi.h b/include/linux/efi.h
-> index 7efd7072cca5..e4b28ae1ba61 100644
-> --- a/include/linux/efi.h
-> +++ b/include/linux/efi.h
-> @@ -1703,4 +1703,6 @@ struct linux_efi_memreserve {
->
->  void efi_pci_disable_bridge_busmaster(void);
->
-> +void __init efi_arch_mem_reserve(phys_addr_t addr, u64 size);
-> +
->  #endif /* _LINUX_EFI_H */
-> --
-> 2.17.1
->
+860f89e61824 ("x86/efi: Add a prototype for efi_arch_mem_reserve()")
+
+but forgot to Cc: linux-efi@.
+
+Sorry about that.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
