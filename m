@@ -2,27 +2,27 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C4641A3483
-	for <lists+linux-efi@lfdr.de>; Thu,  9 Apr 2020 15:04:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 86F2A1A3485
+	for <lists+linux-efi@lfdr.de>; Thu,  9 Apr 2020 15:04:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726477AbgDINEz (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 9 Apr 2020 09:04:55 -0400
-Received: from mail.kernel.org ([198.145.29.99]:43670 "EHLO mail.kernel.org"
+        id S1726806AbgDINE6 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 9 Apr 2020 09:04:58 -0400
+Received: from mail.kernel.org ([198.145.29.99]:43738 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726690AbgDINEy (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Thu, 9 Apr 2020 09:04:54 -0400
+        id S1726690AbgDINE5 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Thu, 9 Apr 2020 09:04:57 -0400
 Received: from e123331-lin.home (amontpellier-657-1-18-247.w109-210.abo.wanadoo.fr [109.210.65.247])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 94BA92082D;
-        Thu,  9 Apr 2020 13:04:52 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 6C4B420A8B;
+        Thu,  9 Apr 2020 13:04:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1586437495;
-        bh=p5ntWWkMKxdy8i4k3Qc1Hwi8VIJz5rcSTUP6kwqvsOs=;
-        h=From:To:Cc:Subject:Date:From;
-        b=NLQuZvobiDcu4GyFzC8Ou9at5pwBndLoho/o3dkRyxOEKr+cLMvjrm1c+g2MoYaZI
-         nD137xB667FRI3ZuqSwBgKXcZlqxvuaCRQY62FamjY3V0rPyuGRkyacUhGeotBrYL4
-         dFAW8hXtqdcba4iMB7lX1KWnWLPvIqYWngEw+R2U=
+        s=default; t=1586437497;
+        bh=Ls1FByjaGoM039Qe5lBEXVKfmaYzJQyH1QArsy3/P9Q=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=uvYIreikvtFkV/KnHxIKCsbGz/OpFoNieDELpZ/M5Y5gZss9t0Bs5dZd3izlgb2Qm
+         Ni3/JH8qX5J1w7RnZZnGofuz+CpllSdRRjmz3XlfoZ5QLpEnoYEleA37HCHdICkcyh
+         3LJAR1ji609hDjdKRzLDYjYIb0nzYLWkcXKUlGXE=
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-efi@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
         Thomas Gleixner <tglx@linutronix.de>
@@ -33,67 +33,43 @@ Cc:     Ard Biesheuvel <ardb@kernel.org>, linux-kernel@vger.kernel.org,
         Colin Ian King <colin.king@canonical.com>,
         Gary Lin <glin@suse.com>, Jiri Slaby <jslaby@suse.cz>,
         Sergey Shatunov <me@prok.pw>, Takashi Iwai <tiwai@suse.de>
-Subject: [GIT PULL 0/9] EFI fixes for v5.7-rc
-Date:   Thu,  9 Apr 2020 15:04:25 +0200
-Message-Id: <20200409130434.6736-1-ardb@kernel.org>
+Subject: [PATCH 1/9] efi/cper: Use scnprintf() for avoiding potential buffer overflow
+Date:   Thu,  9 Apr 2020 15:04:26 +0200
+Message-Id: <20200409130434.6736-2-ardb@kernel.org>
 X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20200409130434.6736-1-ardb@kernel.org>
+References: <20200409130434.6736-1-ardb@kernel.org>
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The following changes since commit 594e576d4b93b8cda3247542366b47e1b2ddc4dc:
+From: Takashi Iwai <tiwai@suse.de>
 
-  efi/libstub/arm: Fix spurious message that an initrd was loaded (2020-03-29 12:08:18 +0200)
+Since snprintf() returns the would-be-output size instead of the
+actual output size, the succeeding calls may go beyond the given
+buffer limit.  Fix it by replacing with scnprintf().
 
-are available in the Git repository at:
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://lore.kernel.org/r/20200311072145.5001-1-tiwai@suse.de
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+---
+ drivers/firmware/efi/cper.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git tags/efi-urgent
+diff --git a/drivers/firmware/efi/cper.c b/drivers/firmware/efi/cper.c
+index b1af0de2e100..9d2512913d25 100644
+--- a/drivers/firmware/efi/cper.c
++++ b/drivers/firmware/efi/cper.c
+@@ -101,7 +101,7 @@ void cper_print_bits(const char *pfx, unsigned int bits,
+ 		if (!len)
+ 			len = snprintf(buf, sizeof(buf), "%s%s", pfx, str);
+ 		else
+-			len += snprintf(buf+len, sizeof(buf)-len, ", %s", str);
++			len += scnprintf(buf+len, sizeof(buf)-len, ", %s", str);
+ 	}
+ 	if (len)
+ 		printk("%s\n", buf);
+-- 
+2.17.1
 
-for you to fetch changes up to 55a3cad6df4bff67280c4722ceb2a5ff4375eff9:
-
-  efi/x86: Don't remap text<->rodata gap read-only for mixed mode (2020-04-09 14:50:21 +0200)
-
-----------------------------------------------------------------
-EFI fixes for v5.7-rcX:
-- a couple of mixed mode fixes for the changes made in v5.6
-- a couple of fixes from Arvind to deal with buggy firmware that does not
-  load the PE/COFF kernel image based on the description in the PE/COFF
-  header, but simply copies it to memory
-- add a clarification to the x86 boot protocol documentation regarding the
-  previous issue
-- reduce the stack footprint of the new file I/O code, to suppress a
-  compiler warning
-- use the right sprintf() flavor in the CPER code to prevent a potential
-  out of bounds write
-- prevent a symbol reference from going out of range in the ARM startup code
-- cosmetic fix for an issue reported by Coverity
-
-----------------------------------------------------------------
-Ard Biesheuvel (4):
-      efi/arm: Deal with ADR going out of range in efi_enter_kernel()
-      Documentation: efi/x86: clarify EFI handover protocol and its requirements
-      efi/libstub/file: merge filename buffers to reduce stack usage
-      efi/x86: Don't remap text<->rodata gap read-only for mixed mode
-
-Arvind Sankar (2):
-      efi/x86: Move efi stub globals from .bss to .data
-      efi/x86: Always relocate the kernel for EFI handover entry
-
-Colin Ian King (1):
-      efi/libstub/x86: remove redundant assignment to pointer hdr
-
-Gary Lin (1):
-      efi/x86: Fix the deletion of variables in mixed mode
-
-Takashi Iwai (1):
-      efi/cper: Use scnprintf() for avoiding potential buffer overflow
-
- Documentation/x86/boot.rst              | 21 ++++++++++++++++++---
- arch/arm/boot/compressed/head.S         |  3 ++-
- arch/x86/platform/efi/efi_64.c          | 16 ++++++++++++----
- drivers/firmware/efi/cper.c             |  2 +-
- drivers/firmware/efi/libstub/efistub.h  |  2 +-
- drivers/firmware/efi/libstub/file.c     | 27 ++++++++++++++-------------
- drivers/firmware/efi/libstub/x86-stub.c | 18 +++++++++++-------
- 7 files changed, 59 insertions(+), 30 deletions(-)
