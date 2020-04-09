@@ -2,47 +2,22 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D74711A30C1
-	for <lists+linux-efi@lfdr.de>; Thu,  9 Apr 2020 10:19:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E8D421A3103
+	for <lists+linux-efi@lfdr.de>; Thu,  9 Apr 2020 10:34:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725862AbgDIITe (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 9 Apr 2020 04:19:34 -0400
-Received: from mail.kernel.org ([198.145.29.99]:56684 "EHLO mail.kernel.org"
+        id S1726627AbgDIIeu (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 9 Apr 2020 04:34:50 -0400
+Received: from mx2.suse.de ([195.135.220.15]:55176 "EHLO mx2.suse.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725828AbgDIITe (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Thu, 9 Apr 2020 04:19:34 -0400
-Received: from mail-io1-f50.google.com (mail-io1-f50.google.com [209.85.166.50])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B5E7D206F5;
-        Thu,  9 Apr 2020 08:19:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1586420373;
-        bh=W/nixM4Oi/VzLBVtTFDmUh394dSfQ8nzuUewfPJ+Vxg=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=u/2lFNtOcX6OMxFuWpdDUKnk5wGSi7l9l8TJq/RNU7ut6gHeiryipE7e2YO21Va3j
-         OS059n/fdTPV+YgmTXg0YCjDbDAk1o0dY7Y7oUlGF1/FT0nLfvZlVbLkZJ26SBDwdn
-         WeVS2LjqQZxveiUu9uz2NiRv0rebEmmPzbgwVm1E=
-Received: by mail-io1-f50.google.com with SMTP id f3so3020301ioj.1;
-        Thu, 09 Apr 2020 01:19:33 -0700 (PDT)
-X-Gm-Message-State: AGi0PubcwfMRu3dyQTugUAykS97KIdQhNrX75VBrW3uDd0nsaNmmC++r
-        TcSdKoQzXDrLae+opXQ1NcNWjynSwL2RxkLNuWM=
-X-Google-Smtp-Source: APiQypJ8sS5bP8UnFCC5IOTIE/mcXrrclkovcihKSJMmmXBhGgZaVJIahO+oMpxhKurh8GQ2C6WvD6l+YFBUqa/FaxU=
-X-Received: by 2002:a6b:f413:: with SMTP id i19mr10971407iog.203.1586420373143;
- Thu, 09 Apr 2020 01:19:33 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200113172245.27925-1-ardb@kernel.org> <20200113172245.27925-6-ardb@kernel.org>
- <63b125a4-6c62-fcdf-de22-d3bebe2dcbf5@suse.cz> <CAMj1kXGiT_zYjc6X-msRXVozhpDAY0UesEW3_4fOgiH4FyMgDw@mail.gmail.com>
- <972b66a9-92c7-9a15-1aa1-e3236abe90df@suse.cz> <CAMj1kXFGkOM9fbqr44_TbdxqFjH1i3d8dkO64C1mQmH=AqrUSQ@mail.gmail.com>
- <20200409080626.GV5951@GaryWorkstation> <984a2b3c-a9d4-e733-6372-4abf0f99be1f@suse.cz>
-In-Reply-To: <984a2b3c-a9d4-e733-6372-4abf0f99be1f@suse.cz>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Thu, 9 Apr 2020 10:19:22 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXFHUusU9dDgqhU_qswDVgYWx_kpaDEroj4ZSt3hr-AFsA@mail.gmail.com>
-Message-ID: <CAMj1kXFHUusU9dDgqhU_qswDVgYWx_kpaDEroj4ZSt3hr-AFsA@mail.gmail.com>
+        id S1726470AbgDIIet (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Thu, 9 Apr 2020 04:34:49 -0400
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx2.suse.de (Postfix) with ESMTP id 693F2ACBA;
+        Thu,  9 Apr 2020 08:34:47 +0000 (UTC)
 Subject: Re: [PATCH 05/13] efi/x86: don't map the entire kernel text RW for
  mixed mode
-To:     Jiri Slaby <jslaby@suse.cz>
+To:     Ard Biesheuvel <ardb@kernel.org>
 Cc:     Gary Lin <glin@suse.com>, linux-efi <linux-efi@vger.kernel.org>,
         Ingo Molnar <mingo@kernel.org>,
         Thomas Gleixner <tglx@linutronix.de>,
@@ -52,110 +27,179 @@ Cc:     Gary Lin <glin@suse.com>, linux-efi <linux-efi@vger.kernel.org>,
         Dan Williams <dan.j.williams@intel.com>,
         Dave Young <dyoung@redhat.com>,
         Saravana Kannan <saravanak@google.com>
-Content-Type: text/plain; charset="UTF-8"
+References: <20200113172245.27925-1-ardb@kernel.org>
+ <20200113172245.27925-6-ardb@kernel.org>
+ <63b125a4-6c62-fcdf-de22-d3bebe2dcbf5@suse.cz>
+ <CAMj1kXGiT_zYjc6X-msRXVozhpDAY0UesEW3_4fOgiH4FyMgDw@mail.gmail.com>
+ <972b66a9-92c7-9a15-1aa1-e3236abe90df@suse.cz>
+ <CAMj1kXFGkOM9fbqr44_TbdxqFjH1i3d8dkO64C1mQmH=AqrUSQ@mail.gmail.com>
+ <20200409080626.GV5951@GaryWorkstation>
+ <984a2b3c-a9d4-e733-6372-4abf0f99be1f@suse.cz>
+ <CAMj1kXFHUusU9dDgqhU_qswDVgYWx_kpaDEroj4ZSt3hr-AFsA@mail.gmail.com>
+From:   Jiri Slaby <jslaby@suse.cz>
+Autocrypt: addr=jslaby@suse.cz; prefer-encrypt=mutual; keydata=
+ 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
+Message-ID: <d38fd829-b944-da10-58c0-180f80e8264d@suse.cz>
+Date:   Thu, 9 Apr 2020 10:34:46 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.5.0
+MIME-Version: 1.0
+In-Reply-To: <CAMj1kXFHUusU9dDgqhU_qswDVgYWx_kpaDEroj4ZSt3hr-AFsA@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, 9 Apr 2020 at 10:10, Jiri Slaby <jslaby@suse.cz> wrote:
->
-> On 09. 04. 20, 10:06, Gary Lin wrote:
-> > On Thu, Apr 09, 2020 at 09:51:20AM +0200, Ard Biesheuvel wrote:
-> >> On Wed, 8 Apr 2020 at 12:51, Jiri Slaby <jslaby@suse.cz> wrote:
-> >>>
-> >>> Ccing Gary.
-> >>>
-> >>> On 08. 04. 20, 12:47, Ard Biesheuvel wrote:
-> >>>> On Wed, 8 Apr 2020 at 12:42, Jiri Slaby <jslaby@suse.cz> wrote:
-> >>>>>
-> >>>>> On 13. 01. 20, 18:22, Ard Biesheuvel wrote:
-> >>>>>> The mixed mode thunking routine requires a part of it to be
-> >>>>>> mapped 1:1, and for this reason, we currently map the entire
-> >>>>>> kernel .text read/write in the EFI page tables, which is bad.
-> >>>>>>
-> >>>>>> In fact, the kernel_map_pages_in_pgd() invocation that installs
-> >>>>>> this mapping is entirely redundant, since all of DRAM is already
-> >>>>>> 1:1 mapped read/write in the EFI page tables when we reach this
-> >>>>>> point, which means that .rodata is mapped read-write as well.
-> >>>>>>
-> >>>>>> So let's remap both .text and .rodata read-only in the EFI
-> >>>>>> page tables.
-> >>>>>
-> >>>>> This patch causes unhandled page faults in mixed mode:
-> >>>>>
-> >>>>>> BUG: unable to handle page fault for address: 000000001557ee88
-> >>>>>> #PF: supervisor write access in kernel mode
-> >>>>>> #PF: error_code(0x0003) - permissions violation
-> >>>>>> PGD fd52063 P4D fd52063 PUD fd53063 PMD 154000e1
-> >>>>>> Oops: 0003 [#1] SMP PTI
-> >>>>>> CPU: 1 PID: 191 Comm: systemd-escape Not tainted
-> >>>>> 5.6.2-20.gb22bc26-default #1 openSUSE Tumbleweed (unreleased)
-> >>>>>> Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 0.0.0
-> >>>>> 02/06/2015
-> >>>>>> RIP: 0008:0x3d2eed95
-> >>>>>> Code: 8b 45 d4 8b 4d 10 8b 40 04 89 01 89 3b 50 6a 00 8b 55 0c 6a 00
-> >>>>> 8b 45 08 0f b6 4d e4 6a 01 31 f6 e8 ee c5 fc ff 83 c4 10 eb 07 <89> 03
-> >>>>> be 05 00 00 80 a1 74 63 31 3d 83 c0 48 e8 44 d2 ff ff eb 05
-> >>>>>> RSP: 0018:000000000fd66fa0 EFLAGS: 00010002
-> >>>>>> RAX: 0000000000000001 RBX: 000000001557ee88 RCX: 000000003d1f1120
-> >>>>>> RDX: 0000000000000001 RSI: 0000000000000000 RDI: 0000000000000001
-> >>>>>> RBP: 000000000fd66fd8 R08: 000000001557ee88 R09: 0000000000000000
-> >>>>>> R10: 0000000000000055 R11: 0000000000000000 R12: 0000000015bcf000
-> >>>>>> R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
-> >>>>>> FS:  00007f36ee9dc940(0000) GS:ffff9b903d700000(0000)
-> >>>>> knlGS:0000000000000000
-> >>>>>> CS:  0008 DS: 0018 ES: 0018 CR0: 0000000080050033
-> >>>>>> CR2: 000000001557ee88 CR3: 000000000fd5e000 CR4: 00000000000006e0
-> >>>>>> DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-> >>>>>> DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-> >>>>>> Call Trace:
-> >>>>>> Modules linked in: efivarfs
-> >>>>>> CR2: 000000001557ee88
-> >>>>>
-> >>>>> EFI apparently tries to write to now read-only memory.
-> >>>>>
-> >>>>> See:
-> >>>>> https://bugzilla.suse.com/show_bug.cgi?id=1168645
-> >>>>>
-> >>>>> Reverting it on the top of 5.6 fixes the issue.
-> >>>>>
-> >>>>> I am using
-> >>>>> /usr/share/qemu/ovmf-ia32-code.bin
-> >>>>> /usr/share/qemu/ovmf-ia32-vars.bin
-> >>>>> from qemu-ovmf-ia32-202002-1.1.noarch rpm.
-> >>>>>
-> >>>>
-> >>>> Do you have a git tree for Suse's OVMF fork? I did a lot of testing
-> >>>> with upstream OVMF, and never ran into this issue.
-> >>>
-> >>> Not really a git tree, but the sources are here:
-> >>> https://build.opensuse.org/package/show/openSUSE:Factory/ovmf
-> >>>
-> >>
-> >>
-> >> Anywhere I can get an actual build? The src rpm only has the sources,
-> >> and the i586 rpm has nothing except
-> >>
-> >> $ rpm -qlp ~/Downloads/ovmf-202002-1.1.i586.rpm
-> >> warning: /home/ardbie01/Downloads/ovmf-202002-1.1.i586.rpm: Header V3
-> >> RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
-> >> /usr/share/doc/packages/ovmf
-> >> /usr/share/doc/packages/ovmf/README
-> >
-> > Hmmm, it's weird that OBS doesn't list all derived files.
-> > Anyway, the ia32 ovmf is available in
-> > http://download.opensuse.org/tumbleweed/repo/oss/noarch/qemu-ovmf-ia32-202002-1.1.noarch.rpm
->
-> It indeed does:
-> https://build.opensuse.org/package/binaries/openSUSE:Factory/ovmf/standard
->
-> Note that the ia32 version is noarch, built on i586.
->
+On 09. 04. 20, 10:19, Ard Biesheuvel wrote:
+>>>> $ rpm -qlp ~/Downloads/ovmf-202002-1.1.i586.rpm
+>>>> warning: /home/ardbie01/Downloads/ovmf-202002-1.1.i586.rpm: Header V3
+>>>> RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+>>>> /usr/share/doc/packages/ovmf
+>>>> /usr/share/doc/packages/ovmf/README
+>>>
+>>> Hmmm, it's weird that OBS doesn't list all derived files.
+>>> Anyway, the ia32 ovmf is available in
+>>> http://download.opensuse.org/tumbleweed/repo/oss/noarch/qemu-ovmf-ia32-202002-1.1.noarch.rpm
+>>
+>> It indeed does:
+>> https://build.opensuse.org/package/binaries/openSUSE:Factory/ovmf/standard
+>>
+>> Note that the ia32 version is noarch, built on i586.
+>>
+> 
+> I am not able to reproduce this issue using the linked firmware image
+> and a 5.6 x86_64_defconfig with efivarfs built in.
 
-I am not able to reproduce this issue using the linked firmware image
-and a 5.6 x86_64_defconfig with efivarfs built in.
+Yeah, I had to use the distro config too. Not sure what the trigger is.
+Maybe some NUMA configs or something.
 
-Could anyone share the full log, please, along with the kernel config
-that was used? Also, it would be good to know if it is reproducible
-using a kernel built from upstream.
+> Could anyone share the full log, please, along with the kernel config
+> that was used?
+
+Both uploaded:
+http://decibel.fi.muni.cz/~xslaby/err/
+
+Note that I switched the for-me-necessary =m configs to =y. So that it
+is enough to build bzImage, w/o modules...
+
+> Also, it would be good to know if it is reproducible
+> using a kernel built from upstream.
+
+Sure, I was bisecting the upstream kernel:
+git bisect start
+# bad: [7111951b8d4973bda27ff663f2cf18b663d15b48] Linux 5.6
+git bisect bad 7111951b8d4973bda27ff663f2cf18b663d15b48
+# good: [d5226fa6dbae0569ee43ecfc08bdcd6770fc4755] Linux 5.5
+git bisect good d5226fa6dbae0569ee43ecfc08bdcd6770fc4755
+# skip: [9f68e3655aae6d49d6ba05dd263f99f33c2567af] Merge tag
+'drm-next-2020-01-30' of git://anongit.freedesktop.org/drm/drm
+git bisect skip 9f68e3655aae6d49d6ba05dd263f99f33c2567af
+# good: [b4a4bd0f2629ec2ece7690de1b4721529da29871] irqchip/gic-v4.1: Add
+VPE INVALL callback
+git bisect good b4a4bd0f2629ec2ece7690de1b4721529da29871
+# good: [c130d2dc93cd03323494d82dbe7b5fb0d101ab62] rcu: Rename some
+instance of CONFIG_PREEMPTION to CONFIG_PREEMPT_RCU
+git bisect good c130d2dc93cd03323494d82dbe7b5fb0d101ab62
+# good: [0aee99a1ea53de1aedcf96a4d52d6161ffba011a] iio: gyro: adis16136:
+rework locks using ADIS library's state lock
+git bisect good 0aee99a1ea53de1aedcf96a4d52d6161ffba011a
+# bad: [83576e32a71717d1912b7dcb247a0f15613272da] Merge branch
+'macb-TSO-bug-fixes'
+git bisect bad 83576e32a71717d1912b7dcb247a0f15613272da
+# bad: [7ba31c3f2f1ee095d8126f4d3757fc3b2bc3c838] Merge tag
+'staging-5.6-rc1' of
+git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/staging
+git bisect bad 7ba31c3f2f1ee095d8126f4d3757fc3b2bc3c838
+# good: [f76e4c167ea2212e23c15ee7e601a865e822c291] net: phy: add default
+ARCH_BCM_IPROC for MDIO_BCM_IPROC
+git bisect good f76e4c167ea2212e23c15ee7e601a865e822c291
+# bad: [bd2463ac7d7ec51d432f23bf0e893fb371a908cd] Merge
+git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next
+git bisect bad bd2463ac7d7ec51d432f23bf0e893fb371a908cd
+# good: [e279160f491392f1345f6eb4b0eeec5a6a2ecdd7] Merge tag
+'timers-core-2020-01-27' of
+git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip
+git bisect good e279160f491392f1345f6eb4b0eeec5a6a2ecdd7
+# bad: [511fdb78442229ac11057b4a55c3f03c253c062f] Merge branch
+'x86-mtrr-for-linus' of
+git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip
+git bisect bad 511fdb78442229ac11057b4a55c3f03c253c062f
+# bad: [2180f214f4a5d8e2d8b7138d9a59246ee05753b9] Merge branch
+'locking-core-for-linus' of
+git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip
+git bisect bad 2180f214f4a5d8e2d8b7138d9a59246ee05753b9
+# good: [d99391ec2b42d827d92003dcdcb96fadac9d862b] Merge branch
+'core-rcu-for-linus' of
+git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip
+git bisect good d99391ec2b42d827d92003dcdcb96fadac9d862b
+# good: [57ad87ddce79b6d54f8e442d0ecf4b5bbe8c5a9e] Merge branch 'x86/mm'
+into efi/core, to pick up dependencies
+git bisect good 57ad87ddce79b6d54f8e442d0ecf4b5bbe8c5a9e
+# good: [ac3c76cc6d6deef573dd8c14232f20c6aa744f83] efi/libstub/x86: Use
+mandatory 16-byte stack alignment in mixed mode
+git bisect good ac3c76cc6d6deef573dd8c14232f20c6aa744f83
+# bad: [484a418d075488c6999528247cc711d12c373447] efi: Fix handling of
+multiple efi_fake_mem= entries
+git bisect bad 484a418d075488c6999528247cc711d12c373447
+# bad: [1f299fad1e312947c974c6a1d8a3a484f27a6111] efi/x86: Limit EFI old
+memory map to SGI UV machines
+git bisect bad 1f299fad1e312947c974c6a1d8a3a484f27a6111
+# good: [75fbef0a8b6b4bb19b9a91b5214f846c2dc5139e] x86/mm: Fix NX bit
+clearing issue in kernel_map_pages_in_pgd
+git bisect good 75fbef0a8b6b4bb19b9a91b5214f846c2dc5139e
+# bad: [97bb9cdc32108036170d9d0d208257168f80d9e9] efi/x86: Avoid RWX
+mappings for all of DRAM
+git bisect bad 97bb9cdc32108036170d9d0d208257168f80d9e9
+# bad: [d9e3d2c4f103200d87f2c243a84c1fd3b3bfea8c] efi/x86: Don't map the
+entire kernel text RW for mixed mode
+git bisect bad d9e3d2c4f103200d87f2c243a84c1fd3b3bfea8c
+# first bad commit: [d9e3d2c4f103200d87f2c243a84c1fd3b3bfea8c] efi/x86:
+Don't map the entire kernel text RW for mixed mode
+
+thanks,
+-- 
+js
+suse labs
