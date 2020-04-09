@@ -2,27 +2,27 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6606C1A348B
-	for <lists+linux-efi@lfdr.de>; Thu,  9 Apr 2020 15:05:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E9D31A3491
+	for <lists+linux-efi@lfdr.de>; Thu,  9 Apr 2020 15:05:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726855AbgDINFG (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 9 Apr 2020 09:05:06 -0400
-Received: from mail.kernel.org ([198.145.29.99]:43916 "EHLO mail.kernel.org"
+        id S1726867AbgDINFK (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 9 Apr 2020 09:05:10 -0400
+Received: from mail.kernel.org ([198.145.29.99]:43976 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726690AbgDINFG (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Thu, 9 Apr 2020 09:05:06 -0400
+        id S1726690AbgDINFJ (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Thu, 9 Apr 2020 09:05:09 -0400
 Received: from e123331-lin.home (amontpellier-657-1-18-247.w109-210.abo.wanadoo.fr [109.210.65.247])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D490721556;
-        Thu,  9 Apr 2020 13:05:03 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id A468D214DB;
+        Thu,  9 Apr 2020 13:05:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1586437506;
-        bh=ilS9Uh3RrYGVJaGs8AYWP2E9uj7DxanAuXoWfeQM8ZA=;
+        s=default; t=1586437509;
+        bh=j2Uul8LoJ+xuLlVQplR6zRGNuoR46qZQgWKeGWtCP9M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SX96mAGFX6SqwnptbHoyyroFo+xTp8pvzuO1sa9LkgXzQSbg4bpoBIkPrbFqM16P5
-         SUleIfqb6MjNrJWpgtfuujELOEJQfRLJdtYgh9n5nXW83ZY6/wlEs7ddxIdPWxw6Cp
-         6RtL+GF+EyXbGF7yXRdZuAugQhLJfdve0eEclZLM=
+        b=1FVLQHqZZ3dJFJ/Dp0qXgAM9u3DO6P8HY2BB8qSBahAVovsuk4F52Kvugkw8PW9p3
+         rWlneg+YMLuxJXM6M7fMy++9jzWeKXrYcnnyk+rFmbe0thDzOQ2PpuhkdSQC09GZwQ
+         LzuZsKXGkmQiuH3SDzkZE5b7r9a4DyrICFPT+5E8=
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-efi@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
         Thomas Gleixner <tglx@linutronix.de>
@@ -33,9 +33,9 @@ Cc:     Ard Biesheuvel <ardb@kernel.org>, linux-kernel@vger.kernel.org,
         Colin Ian King <colin.king@canonical.com>,
         Gary Lin <glin@suse.com>, Jiri Slaby <jslaby@suse.cz>,
         Sergey Shatunov <me@prok.pw>, Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 4/9] efi/x86: Always relocate the kernel for EFI handover entry
-Date:   Thu,  9 Apr 2020 15:04:29 +0200
-Message-Id: <20200409130434.6736-5-ardb@kernel.org>
+Subject: [PATCH 5/9] efi/arm: Deal with ADR going out of range in efi_enter_kernel()
+Date:   Thu,  9 Apr 2020 15:04:30 +0200
+Message-Id: <20200409130434.6736-6-ardb@kernel.org>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200409130434.6736-1-ardb@kernel.org>
 References: <20200409130434.6736-1-ardb@kernel.org>
@@ -44,70 +44,44 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-From: Arvind Sankar <nivedita@alum.mit.edu>
-
 Commit
 
-  d5cdf4cfeac9 ("efi/x86: Don't relocate the kernel unless necessary")
+  0698fac4ac2a ("efi/arm: Clean EFI stub exit code from cache instead of avoiding it")
 
-tries to avoid relocating the kernel in the EFI stub as far as possible.
+introduced a PC-relative reference to 'call_cache_fn' into
+efi_enter_kernel(), which lives way at the end of head.S. In some cases,
+the ARM version of the ADR instruction does not have sufficient range,
+resulting in a build error:
 
-However, when systemd-boot is used to boot a unified kernel image [1],
-the image is constructed by embedding the bzImage as a .linux section in
-a PE executable that contains a small stub loader from systemd that will
-call the EFI stub handover entry, together with additional sections and
-potentially an initrd. When this image is constructed, by for example
-dracut, the initrd is placed after the bzImage without ensuring that at
-least init_size bytes are available for the bzImage. If the kernel is
-not relocated by the EFI stub, this could result in the compressed
-kernel's startup code in head_{32,64}.S overwriting the initrd.
+  arch/arm/boot/compressed/head.S:1453: Error: invalid constant (fffffffffffffbe4) after fixup
 
-To prevent this, unconditionally relocate the kernel if the EFI stub was
-entered via the handover entry point.
+ARM defines an alternative with a wider range, called ADRL, but this does
+not exist for Thumb-2. At the same time, the ADR instruction in Thumb-2
+has a wider range, and so it does not suffer from the same issue.
 
-[1] https://systemd.io/BOOT_LOADER_SPECIFICATION/#type-2-efi-unified-kernel-images
+So let's switch to ADRL for ARM builds, and keep the ADR for Thumb-2 builds.
 
-Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
-Reported-by: Sergey Shatunov <me@prok.pw>
-Fixes: d5cdf4cfeac9 ("efi/x86: Don't relocate the kernel unless necessary")
-Link: https://lore.kernel.org/r/20200406180614.429454-2-nivedita@alum.mit.edu
+Reported-by: Arnd Bergmann <arnd@arndb.de>
+Tested-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- drivers/firmware/efi/libstub/x86-stub.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ arch/arm/boot/compressed/head.S | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
-index 867a57e28980..05ccb229fb45 100644
---- a/drivers/firmware/efi/libstub/x86-stub.c
-+++ b/drivers/firmware/efi/libstub/x86-stub.c
-@@ -740,8 +740,15 @@ unsigned long efi_main(efi_handle_t handle,
- 	 * now use KERNEL_IMAGE_SIZE, which will be 512MiB, the same as what
- 	 * KASLR uses.
- 	 *
--	 * Also relocate it if image_offset is zero, i.e. we weren't loaded by
--	 * LoadImage, but we are not aligned correctly.
-+	 * Also relocate it if image_offset is zero, i.e. the kernel wasn't
-+	 * loaded by LoadImage, but rather by a bootloader that called the
-+	 * handover entry. The reason we must always relocate in this case is
-+	 * to handle the case of systemd-boot booting a unified kernel image,
-+	 * which is a PE executable that contains the bzImage and an initrd as
-+	 * COFF sections. The initrd section is placed after the bzImage
-+	 * without ensuring that there are at least init_size bytes available
-+	 * for the bzImage, and thus the compressed kernel's startup code may
-+	 * overwrite the initrd unless it is moved out of the way.
- 	 */
- 
- 	buffer_start = ALIGN(bzimage_addr - image_offset,
-@@ -751,8 +758,7 @@ unsigned long efi_main(efi_handle_t handle,
- 	if ((buffer_start < LOAD_PHYSICAL_ADDR)				     ||
- 	    (IS_ENABLED(CONFIG_X86_32) && buffer_end > KERNEL_IMAGE_SIZE)    ||
- 	    (IS_ENABLED(CONFIG_X86_64) && buffer_end > MAXMEM_X86_64_4LEVEL) ||
--	    (image_offset == 0 && !IS_ALIGNED(bzimage_addr,
--					      hdr->kernel_alignment))) {
-+	    (image_offset == 0)) {
- 		status = efi_relocate_kernel(&bzimage_addr,
- 					     hdr->init_size, hdr->init_size,
- 					     hdr->pref_address,
+diff --git a/arch/arm/boot/compressed/head.S b/arch/arm/boot/compressed/head.S
+index 04f77214f050..61e6ee3ba75f 100644
+--- a/arch/arm/boot/compressed/head.S
++++ b/arch/arm/boot/compressed/head.S
+@@ -1454,7 +1454,8 @@ ENTRY(efi_enter_kernel)
+ 		@ running beyond the PoU, and so calling cache_off below from
+ 		@ inside the PE/COFF loader allocated region is unsafe unless
+ 		@ we explicitly clean it to the PoC.
+-		adr	r0, call_cache_fn		@ region of code we will
++ ARM(		adrl	r0, call_cache_fn	)
++ THUMB(		adr	r0, call_cache_fn	)	@ region of code we will
+ 		adr	r1, 0f				@ run with MMU off
+ 		bl	cache_clean_flush
+ 		bl	cache_off
 -- 
 2.17.1
 
