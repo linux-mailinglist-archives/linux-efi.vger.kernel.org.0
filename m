@@ -2,89 +2,84 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E4AB1A3C07
-	for <lists+linux-efi@lfdr.de>; Thu,  9 Apr 2020 23:44:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 58ACF1A3D23
+	for <lists+linux-efi@lfdr.de>; Fri, 10 Apr 2020 01:57:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726926AbgDIVo5 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 9 Apr 2020 17:44:57 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:54766 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726866AbgDIVo4 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 9 Apr 2020 17:44:56 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 039Lh6gl051871;
-        Thu, 9 Apr 2020 21:44:55 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
- subject : date : message-id; s=corp-2020-01-29;
- bh=KVyrR7Ev5APxOYVha5QcIl4uYw2bqBLsnRLs8f9X/Zo=;
- b=JVWpMDaFxV/Xn08SFhcnwE+kgFdAVQyxbDj8C/1buG1gAWbip/BW23tkFw70Lx8ghAj9
- YmMXoxpxmkLRSZef9thxMjHriDKdyZRDCcSyRLQzT1VXm/h7TOsRzng8QLLo/OxBbUfD
- ZeGkO0b7QdVOL9bUiTpKmuvoZHd362724REh9k0uNeDe4GolPiBU9J7Fe06vTl2B2Hsn
- lGTj0sMslkluHAT5JxcQv9P/sjot3EIlyIXNd1Ct9Zjsoz56um7D8sVa/VAWpQM05FdA
- 7ogw1cGBuSWnw8v9qmLhqP7oa79pfV96LfTZcyNGqY5iQu4lN2wkOy1uJcQISJ8hmSHC /Q== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by userp2120.oracle.com with ESMTP id 309gw4fuu1-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 09 Apr 2020 21:44:55 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 039LfdM1180988;
-        Thu, 9 Apr 2020 21:44:54 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by aserp3020.oracle.com with ESMTP id 3091m9p5sh-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 09 Apr 2020 21:44:54 +0000
-Received: from abhmp0017.oracle.com (abhmp0017.oracle.com [141.146.116.23])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 039Lirng016549;
-        Thu, 9 Apr 2020 21:44:53 GMT
-Received: from toshiba-tecra.hsd1.ca.comcast.net (/10.159.132.43)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Thu, 09 Apr 2020 14:44:53 -0700
-From:   Victor Erminpour <victor.erminpour@oracle.com>
-To:     ardb@kernel.org
-Cc:     linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        victor.erminpour@oracle.com
-Subject: [PATCH] efi/libstub/arm64: Enable __efistub_global define in .data section
-Date:   Thu,  9 Apr 2020 14:44:29 -0700
-Message-Id: <1586468669-21456-1-git-send-email-victor.erminpour@oracle.com>
-X-Mailer: git-send-email 1.8.3.1
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9586 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 bulkscore=0 mlxscore=0
- malwarescore=0 spamscore=0 adultscore=0 suspectscore=1 mlxlogscore=979
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
- definitions=main-2004090152
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9586 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 bulkscore=0
- phishscore=0 lowpriorityscore=0 impostorscore=0 clxscore=1011
- suspectscore=1 malwarescore=0 spamscore=0 mlxlogscore=999 mlxscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2004090152
+        id S1726795AbgDIX5q (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 9 Apr 2020 19:57:46 -0400
+Received: from outgoing-auth-1.mit.edu ([18.9.28.11]:57104 "EHLO
+        outgoing.mit.edu" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726779AbgDIX5q (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 9 Apr 2020 19:57:46 -0400
+Received: from callcc.thunk.org (pool-72-93-95-157.bstnma.fios.verizon.net [72.93.95.157])
+        (authenticated bits=0)
+        (User authenticated as tytso@ATHENA.MIT.EDU)
+        by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 039NvGB6013309
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 9 Apr 2020 19:57:16 -0400
+Received: by callcc.thunk.org (Postfix, from userid 15806)
+        id 32E0A42013D; Thu,  9 Apr 2020 19:57:16 -0400 (EDT)
+Date:   Thu, 9 Apr 2020 19:57:16 -0400
+From:   "Theodore Y. Ts'o" <tytso@mit.edu>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-efi <linux-efi@vger.kernel.org>,
+        Ingo Molnar <mingo@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Arvind Sankar <nivedita@alum.mit.edu>,
+        Borislav Petkov <bp@suse.de>,
+        Colin Ian King <colin.king@canonical.com>,
+        Gary Lin <glin@suse.com>, Jiri Slaby <jslaby@suse.cz>,
+        Sergey Shatunov <me@prok.pw>, Takashi Iwai <tiwai@suse.de>
+Subject: Re: [GIT PULL 0/9] EFI fixes for v5.7-rc
+Message-ID: <20200409235716.GF45598@mit.edu>
+References: <20200409130434.6736-1-ardb@kernel.org>
+ <20200409190109.GB45598@mit.edu>
+ <CAMj1kXGiA3PAybR7r9tatL7WV5iU7B1OQxQok3d-JmRnhX1TnA@mail.gmail.com>
+ <20200409201632.GC45598@mit.edu>
+ <CAMj1kXFqKGSqm_y+ht4mmmu10TrhSyiTG8V3PxRYGodpZ=xNFQ@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMj1kXFqKGSqm_y+ht4mmmu10TrhSyiTG8V3PxRYGodpZ=xNFQ@mail.gmail.com>
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Enable the __efistub_global define to place variables in the
-.data section for both CONFIG_ARM and CONFIG_ARM64.
+On Thu, Apr 09, 2020 at 11:29:06PM +0200, Ard Biesheuvel wrote:
+> > What happens is that the kexec'ed kernel immediately crashes, at which
+> > point we drop back into the BIOS, and then it boots the Debain 4.19.0
+> > distro kernel instead of the kernel to be tested boot.  Since we lose
+> > the boot command line that was used from the kexec, the gce-xfstests
+> > image retries the kexec, which fails, and the failing kexec repeats
+> > until I manually kill the VM.
+>
+> Does this help at all?
+> 
+> diff --git a/arch/x86/include/asm/efi.h b/arch/x86/include/asm/efi.h
+> index 781170d36f50..52f8138243df 100644
+> --- a/arch/x86/include/asm/efi.h
+> +++ b/arch/x86/include/asm/efi.h
+> @@ -180,6 +180,7 @@ extern void __init
+> efi_uv1_memmap_phys_epilog(pgd_t *save_pgd);
+> 
+>  struct efi_setup_data {
+>         u64 fw_vendor;
+> +       u64 __unused;
+>         u64 tables;
+>         u64 smbios;
+>         u64 reserved[8];
 
-This places the EFIstub sys_table variable and other EFIstub
-static variables in the .data section for both CONFIG_ARM and
-CONFIG_ARM64.
 
-Signed-off-by: Victor Erminpour <victor.erminpour@oracle.com>
----
- drivers/firmware/efi/libstub/efistub.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Tested-by: Theodore Ts'o <tytso@mit.edu>
 
-diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
-index c244b16..59932d6 100644
---- a/drivers/firmware/efi/libstub/efistub.h
-+++ b/drivers/firmware/efi/libstub/efistub.h
-@@ -25,7 +25,7 @@
- #define EFI_ALLOC_ALIGN		EFI_PAGE_SIZE
- #endif
- 
--#ifdef CONFIG_ARM
-+#if defined(CONFIG_ARM) || defined(CONFIG_ARM64)
- #define __efistub_global	__section(.data)
- #else
- #define __efistub_global
+Yep, that fixed it.  Thanks!!
+
+I wonder if this structure definition should be moved something like
+arch/x86/include/uapi/asm/efi.h so it's more obvious that the
+structure layout is used externally to the kernel?
+
+						- Ted
+
