@@ -2,95 +2,203 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D7611A2B77
-	for <lists+linux-efi@lfdr.de>; Wed,  8 Apr 2020 23:54:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F0F01A2D70
+	for <lists+linux-efi@lfdr.de>; Thu,  9 Apr 2020 03:44:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726477AbgDHVyV (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 8 Apr 2020 17:54:21 -0400
-Received: from sonic306-21.consmr.mail.ir2.yahoo.com ([77.238.176.207]:40945
-        "EHLO sonic306-21.consmr.mail.ir2.yahoo.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726508AbgDHVyV (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 8 Apr 2020 17:54:21 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1586382858; bh=q1Er/SdqxATomBDx27mJAnsQxxrJWpCL+Y8MaW3053A=; h=Date:From:Reply-To:Subject:References:From:Subject; b=nEBVwclaMtukzYyl98uwbeN/NvQ3WKTVywa4q/5SWeH0IROEabvmGqcqNPoWd8R8hIKzuRE6WtmNaGZvpQgGfxGMebrSnMaQ+8+F8TU5PV8e0DQ5TzKdLOvAMNtEvizIQ2LzAYOonD7xGQr558sCnr46TnMTTyRFYNryvxf9XLDYquRoLk6gLWNsIzSy0l+W/54rvqEaEVN4ET4y1N1/HOJ0Y28c8Y/Ir1u72X6hj2KGboOO70aBChXIE/10vBMyE+LxbRd68QkGN0G1k0augma3Eaax56Ed5C+lMHGi39XhP7OpT6LZfaDDtHDsjLaFwkkeeMnjk82rZAiNhC02TQ==
-X-YMail-OSG: 5usHcjwVM1nCnT3yED6mbEH6lePu6kYsBLbQe2Zhfkp9uY1_J4Jnu37vdUChAG7
- DYp4x8xq63ATPkgCRvTzXGnH1DZpdxhHMt1zNN8bZP7KLhKAPfyuFYR.7qU._m5Whn3r_7Yiffh_
- _VwUZCqe_Mia7h2p217r6NS9_JwSM1w6N.dA6R2usLgHoOxlffAYbmKwDCma5Iii8WpE8_ZLkknk
- z_TIwpuXNsY7OPOCNOcTSefWlhbh7I3e0Bq4HxxpNG9Z_yOzyQQWqHVqfmxp2vHTNhmjlQE_F67i
- R5kD7B6x9aKBpQPy7U1_M7XE.KvppKSROqb0TE_2f0wU0Iu5HuoX1Hpt0Cr5DXDHQEmlw.nEAMzM
- 1_2z3Moy9DF.9M91Rmauc_C_Ldx80BAAWnzsF8cBVwcFiM7BDJFTwvhU3M8hTyI.BRcK5UJXeNwM
- YLt_UFHxrdbSeZE5WafI60FuQQGLlnuC_LRrqLmO0PBB24Rj6FepZXczBfGChek.vFfhHOmCty5f
- n14GpzTyZOAkfmE0PKOYM0ZAz7EFd360poxm37cazpvs0P_ajmEUYVxHndPt_SkahxqbWK6d3.fc
- ZK_yZ7em5rXMIUvXbb0o1XG2R0tqTZSgChAZA8gi6CkipJhB99NUSKqTJ_M_W0cZbGdWRs1o3RHI
- Z2LIZEfE.r4uG4kOOpVh0qshEHVmLgfS_ZuBvTb2RcSZkZbz01XV8duUi1LHaOsXClPitlzWPQak
- CZI6vrJOIGYbM__KbqEvFsYoRTWHbeXpnpXr0WgxEnMUSg3QmA9CP8CBghUCDC3Bvct2ulnCLviu
- umnbosw5Nr8VxS5hGaUl5UBk7bQrs3b9dm_DC5_3giavBiSzjmX0krV5FpqESSTnG5cgVe7qr9jf
- RkGugZrIAT8v_cM90jnEzq0OSxxLPIxS3AJCXZOvXVmQSMlAmBSw2rMIxd8twd3bkvVVv97aXODr
- 3R8ByvfYoC6.dR92d_YyeApvsIRUgCok6c.vCB3Pbe3tAz1a.xQTyZu5Mp247jpADvGtBrcCwD8.
- HXazPn1b_QU4GJvh2vB7kgwCLvZmqVJXCqlmZXOVAeFeN2mubdJymVJPhIfY.qjAfy9kqwMt9qpW
- LRB_CxKwTPxRqhjHpfaaZU.BwH1erjhP005SyNZpNL5rLT4F4bCnR1VOhSz4YnShiqUovc2LFFVR
- BLQGVJiQnfoIF_HxrYo3rH_.I.hPj6c_8FlE66165mjvsC7eyDBgd1vgWXKakBI7ToIIKV2aihry
- PG6hduUN8HZ51IrAv8XuktLZUippJsMKVFiSa_pGFe9V_qBAQtvdau1muiQ4rNV4Klr7x_5pOhGQ
- -
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic306.consmr.mail.ir2.yahoo.com with HTTP; Wed, 8 Apr 2020 21:54:18 +0000
-Date:   Wed, 8 Apr 2020 21:54:14 +0000 (UTC)
-From:   "Mrs. Mina A. Brunel" <mrs.minaabrunel209@gmail.com>
-Reply-To: mrs.minaabrunel30@gmail.com
-Message-ID: <1914428890.4990332.1586382854104@mail.yahoo.com>
-Subject: My Dear in the lord
+        id S1726582AbgDIBol (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 8 Apr 2020 21:44:41 -0400
+Received: from mga18.intel.com ([134.134.136.126]:23906 "EHLO mga18.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726579AbgDIBol (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Wed, 8 Apr 2020 21:44:41 -0400
+IronPort-SDR: GP3X8Gi8iP+cH9ISjG3oxQo9DwKayHBAVCZdRW50s9qmvDQGVe6/16VPpciURyJByNEb2Oi7zA
+ 59L61dcuV0iA==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2020 18:44:40 -0700
+IronPort-SDR: gOnmBvFts9djdwO+fwjBN4ZwF2jOa3LrELVrzFqY+OWUDo5EFdGDU9XQnB0z6EN/wz996cgZNP
+ +SaHn55xgDWQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.72,360,1580803200"; 
+   d="scan'208";a="242514066"
+Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
+  by fmsmga007.fm.intel.com with ESMTP; 08 Apr 2020 18:44:38 -0700
+Received: from kbuild by lkp-server01 with local (Exim 4.89)
+        (envelope-from <lkp@intel.com>)
+        id 1jMMFB-000Eiv-Mj; Thu, 09 Apr 2020 09:44:37 +0800
+Date:   Thu, 09 Apr 2020 09:43:44 +0800
+From:   kbuild test robot <lkp@intel.com>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-efi@vger.kernel.org
+Subject: [efi:urgent] BUILD SUCCESS
+ f5356a8c201bf2dfa3783b3894f31f8e96f94624
+Message-ID: <5e8e7dd0.hLflH8uMWc9Gqk98%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-References: <1914428890.4990332.1586382854104.ref@mail.yahoo.com>
-X-Mailer: WebService/1.1.15620 YMailNodin Mozilla/5.0 (Windows NT 6.1; rv:74.0) Gecko/20100101 Firefox/74.0
-To:     unlisted-recipients:; (no To-header on input)
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git  urgent
+branch HEAD: f5356a8c201bf2dfa3783b3894f31f8e96f94624  x86/efi: Add a prototype for efi_arch_mem_reserve()
 
+elapsed time: 481m
 
-My Dear in the lord
+configs tested: 144
+configs skipped: 0
 
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-My name is Mrs. Mina A. Brunel I am a Norway Citizen who is living in Burki=
-na Faso, I am married to Mr. Brunel Patrice, a politician who owns a small =
-gold company in Burkina Faso; He died of Leprosy and Radesyge, in the year =
-February 2010, During his lifetime he deposited the sum of =E2=82=AC 8.5 Mi=
-llion Euro) Eight million, Five hundred thousand Euros in a bank in Rome th=
-e capital city of Italy in Southern Europe. The money was from the sale of =
-his company and death benefits payment and entitlements of my deceased husb=
-and by his company.
+arm64                            allyesconfig
+arm                              allyesconfig
+arm64                             allnoconfig
+arm                               allnoconfig
+arm                           efm32_defconfig
+arm                         at91_dt_defconfig
+arm                        shmobile_defconfig
+arm64                               defconfig
+arm                          exynos_defconfig
+arm                        multi_v5_defconfig
+arm                           sunxi_defconfig
+arm                        multi_v7_defconfig
+sparc                            allyesconfig
+h8300                    h8300h-sim_defconfig
+s390                                defconfig
+xtensa                          iss_defconfig
+i386                              allnoconfig
+i386                             alldefconfig
+i386                             allyesconfig
+i386                              debian-10.3
+i386                                defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                              allnoconfig
+ia64                             allyesconfig
+ia64                             alldefconfig
+arm64                            allmodconfig
+arm                              allmodconfig
+c6x                              allyesconfig
+c6x                        evmc6678_defconfig
+nios2                         10m50_defconfig
+nios2                         3c120_defconfig
+openrisc                    or1ksim_defconfig
+openrisc                 simple_smp_defconfig
+xtensa                       common_defconfig
+nds32                               defconfig
+nds32                             allnoconfig
+csky                                defconfig
+alpha                               defconfig
+h8300                       h8s-sim_defconfig
+h8300                     edosk2674_defconfig
+m68k                       m5475evb_defconfig
+m68k                             allmodconfig
+m68k                           sun3_defconfig
+m68k                          multi_defconfig
+arc                              allyesconfig
+arc                                 defconfig
+microblaze                      mmu_defconfig
+microblaze                    nommu_defconfig
+powerpc                           allnoconfig
+powerpc                             defconfig
+powerpc                       ppc64_defconfig
+powerpc                          rhel-kconfig
+mips                      fuloong2e_defconfig
+mips                      malta_kvm_defconfig
+mips                             allyesconfig
+mips                         64r6el_defconfig
+mips                              allnoconfig
+mips                           32r2_defconfig
+mips                             allmodconfig
+parisc                            allnoconfig
+parisc                           allyesconfig
+parisc                generic-32bit_defconfig
+parisc                generic-64bit_defconfig
+c6x                  randconfig-a001-20200408
+h8300                randconfig-a001-20200408
+microblaze           randconfig-a001-20200408
+nios2                randconfig-a001-20200408
+sparc64              randconfig-a001-20200408
+s390                 randconfig-a001-20200408
+xtensa               randconfig-a001-20200408
+csky                 randconfig-a001-20200408
+openrisc             randconfig-a001-20200408
+sh                   randconfig-a001-20200408
+x86_64               randconfig-b001-20200408
+x86_64               randconfig-b002-20200408
+x86_64               randconfig-b003-20200408
+i386                 randconfig-b001-20200408
+i386                 randconfig-b002-20200408
+i386                 randconfig-b003-20200408
+x86_64               randconfig-c001-20200408
+x86_64               randconfig-c002-20200408
+x86_64               randconfig-c003-20200408
+i386                 randconfig-c001-20200408
+i386                 randconfig-c002-20200408
+i386                 randconfig-c003-20200408
+x86_64               randconfig-d001-20200409
+x86_64               randconfig-d002-20200409
+x86_64               randconfig-d003-20200409
+i386                 randconfig-d001-20200409
+i386                 randconfig-d002-20200409
+i386                 randconfig-d003-20200409
+x86_64               randconfig-e002-20200408
+i386                 randconfig-e003-20200408
+i386                 randconfig-e001-20200408
+x86_64               randconfig-e001-20200408
+x86_64               randconfig-e003-20200408
+i386                 randconfig-e002-20200408
+i386                 randconfig-f001-20200408
+i386                 randconfig-f003-20200408
+x86_64               randconfig-f003-20200408
+x86_64               randconfig-f001-20200408
+i386                 randconfig-f002-20200408
+i386                 randconfig-h002-20200408
+i386                 randconfig-h003-20200408
+i386                 randconfig-h001-20200408
+x86_64               randconfig-h001-20200408
+x86_64               randconfig-h003-20200408
+sparc                randconfig-a001-20200408
+arm64                randconfig-a001-20200408
+ia64                 randconfig-a001-20200408
+arc                  randconfig-a001-20200408
+arm                  randconfig-a001-20200408
+riscv                            allmodconfig
+riscv                             allnoconfig
+riscv                            allyesconfig
+riscv                               defconfig
+riscv                    nommu_virt_defconfig
+riscv                          rv32_defconfig
+s390                             alldefconfig
+s390                             allmodconfig
+s390                              allnoconfig
+s390                             allyesconfig
+s390                          debug_defconfig
+s390                       zfcpdump_defconfig
+sh                               allmodconfig
+sh                                allnoconfig
+sh                          rsk7269_defconfig
+sh                  sh7785lcr_32bit_defconfig
+sh                            titan_defconfig
+sparc                               defconfig
+sparc64                             defconfig
+sparc64                           allnoconfig
+sparc64                          allyesconfig
+sparc64                          allmodconfig
+um                           x86_64_defconfig
+um                             i386_defconfig
+um                                  defconfig
+x86_64                                   rhel
+x86_64                               rhel-7.6
+x86_64                         rhel-7.2-clear
+x86_64                                    lkp
+x86_64                              fedora-25
+x86_64                                  kexec
 
-I am sending you this message with heavy tears in my eyes and great sorrow =
-in my heart, and also praying that it will reach you in good health because=
- I am not in good health, I sleep every night without knowing if I may be a=
-live to see the next day. I am suffering from long time cancer and presentl=
-y I am partially suffering from Leprosy, which has become difficult for me =
-to move around. I was married to my late husband for more than 6 years with=
-out having a child and my doctor confided that I have less chance to live, =
-having to know when the cup of death will come, I decided to contact you to=
- claim the fund since I don't have any relation I grew up from an orphanage=
- home.
-
-I have decided to donate this money for the support of helping Motherless b=
-abies/Less privileged/Widows and churches also to build the house of God be=
-cause I am dying and diagnosed with cancer for about 3 years ago. I have de=
-cided to donate from what I have inherited from my late husband to you for =
-the good work of Almighty God; I will be going in for an operation surgery =
-soon.
-
-Now I want you to stand as my next of kin to claim the funds for charity pu=
-rposes. Because of this money remains unclaimed after my death, the bank ex=
-ecutives or the government will take the money as unclaimed fund and maybe =
-use it for selfishness and worthless ventures, I need a very honest person =
-who can claim this money and use it for Charity works, for orphanages, wido=
-ws and also build schools and churches for less privilege that will be name=
-d after my late husband and my name.
-
-I need your urgent answer to know if you will be able to execute this proje=
-ct, and I will give you more information on how the fund will be transferre=
-d to your bank account or online banking.
-
-Thanks
-Mrs. Mina A. Brunel
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
