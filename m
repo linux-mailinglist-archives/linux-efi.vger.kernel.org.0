@@ -2,122 +2,109 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B2AA1A4715
-	for <lists+linux-efi@lfdr.de>; Fri, 10 Apr 2020 15:55:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4CCA91A4719
+	for <lists+linux-efi@lfdr.de>; Fri, 10 Apr 2020 15:56:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726173AbgDJNzE (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 10 Apr 2020 09:55:04 -0400
-Received: from us-smtp-2.mimecast.com ([207.211.31.81]:30193 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726145AbgDJNzE (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 10 Apr 2020 09:55:04 -0400
+        id S1726049AbgDJN4z (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 10 Apr 2020 09:56:55 -0400
+Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:23441 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726009AbgDJN4z (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 10 Apr 2020 09:56:55 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1586526903;
+        s=mimecast20190719; t=1586527015;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          in-reply-to:in-reply-to:references:references;
-        bh=iz174XEQjo4HdMwcToRtjnHITXXF+QDP8a5ZECFP3Pc=;
-        b=P/Id93cTrRAhZS01mimoNV08pgUuQQBhq+OskWK9iNVMg8bS/IQPrxqkpr1qdT2JXQ7W0J
-        lkiLUJZMgbxSnbgTqinrqCmSL1zYC/h7lbqU6rycK4CXGoyf72wsbuKtEVYvDr48C91GV+
-        w9Bhjbd84Xw0WdHSjcJx90kv7eoYNVc=
+        bh=nW5KiM1fZYNc1UcYcl9YdKo4WdN7oTP1I+uU2HGq6SM=;
+        b=WarJyeHPYwS0pQ+bzT34nyxnLrxoK3pApmBsvs2p0i/g6HzNig+t5C6WdAEkSHT0FTJOZP
+        t6NgkhP/0j3XDD5DwR6Pl1alRmeF+hGn8F2ytCr81lw7fozmKSbiveYsUwZ3C5E4M++Uzo
+        QWROrKplyt/XAwPvDjptiXKh8FqWdyI=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-379-0sQfwSBnPamulE2kIkaCUA-1; Fri, 10 Apr 2020 09:54:59 -0400
-X-MC-Unique: 0sQfwSBnPamulE2kIkaCUA-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
+ us-mta-325-jnqy7MywOXCld6K1w8XAOw-1; Fri, 10 Apr 2020 09:56:52 -0400
+X-MC-Unique: jnqy7MywOXCld6K1w8XAOw-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 998DB107ACC7;
-        Fri, 10 Apr 2020 13:54:55 +0000 (UTC)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 2615E1137848;
+        Fri, 10 Apr 2020 13:56:51 +0000 (UTC)
 Received: from dhcp-128-65.nay.redhat.com (ovpn-12-106.pek2.redhat.com [10.72.12.106])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id A4ED260C05;
-        Fri, 10 Apr 2020 13:54:47 +0000 (UTC)
-Date:   Fri, 10 Apr 2020 21:54:42 +0800
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id 0860310027B3;
+        Fri, 10 Apr 2020 13:56:47 +0000 (UTC)
+Date:   Fri, 10 Apr 2020 21:56:44 +0800
 From:   Dave Young <dyoung@redhat.com>
 To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     "Theodore Y. Ts'o" <tytso@mit.edu>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Ingo Molnar <mingo@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        kexec@lists.infradead.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Arvind Sankar <nivedita@alum.mit.edu>,
-        Borislav Petkov <bp@suse.de>,
-        Colin Ian King <colin.king@canonical.com>,
-        Gary Lin <glin@suse.com>, Jiri Slaby <jslaby@suse.cz>,
-        Sergey Shatunov <me@prok.pw>, Takashi Iwai <tiwai@suse.de>
-Subject: Re: [GIT PULL 0/9] EFI fixes for v5.7-rc
-Message-ID: <20200410135442.GA6772@dhcp-128-65.nay.redhat.com>
-References: <20200409130434.6736-1-ardb@kernel.org>
- <20200409190109.GB45598@mit.edu>
- <CAMj1kXGiA3PAybR7r9tatL7WV5iU7B1OQxQok3d-JmRnhX1TnA@mail.gmail.com>
- <20200409201632.GC45598@mit.edu>
- <CAMj1kXFqKGSqm_y+ht4mmmu10TrhSyiTG8V3PxRYGodpZ=xNFQ@mail.gmail.com>
- <20200409235716.GF45598@mit.edu>
- <CAMj1kXH4VtNcJugpG_UR10ewGiOApTiw=C3FsuyAQQyg67Q8Aw@mail.gmail.com>
+Cc:     linux-efi@vger.kernel.org, x86@kernel.org, tytso@mit.edu,
+        bp@alien8.de, mingo@kernel.org, kexec@lists.infradead.org
+Subject: Re: [PATCH] efi/x86: Revert struct layout change to fix kexec boot
+ regression
+Message-ID: <20200410135644.GB6772@dhcp-128-65.nay.redhat.com>
+References: <20200410074320.16589-1-ardb@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAMj1kXH4VtNcJugpG_UR10ewGiOApTiw=C3FsuyAQQyg67Q8Aw@mail.gmail.com>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
+In-Reply-To: <20200410074320.16589-1-ardb@kernel.org>
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Cc kexec list.
-On 04/10/20 at 09:08am, Ard Biesheuvel wrote:
-> On Fri, 10 Apr 2020 at 01:57, Theodore Y. Ts'o <tytso@mit.edu> wrote:
-> >
-> > On Thu, Apr 09, 2020 at 11:29:06PM +0200, Ard Biesheuvel wrote:
-> > > > What happens is that the kexec'ed kernel immediately crashes, at which
-> > > > point we drop back into the BIOS, and then it boots the Debain 4.19.0
-> > > > distro kernel instead of the kernel to be tested boot.  Since we lose
-> > > > the boot command line that was used from the kexec, the gce-xfstests
-> > > > image retries the kexec, which fails, and the failing kexec repeats
-> > > > until I manually kill the VM.
-> > >
-> > > Does this help at all?
-> > >
-> > > diff --git a/arch/x86/include/asm/efi.h b/arch/x86/include/asm/efi.h
-> > > index 781170d36f50..52f8138243df 100644
-> > > --- a/arch/x86/include/asm/efi.h
-> > > +++ b/arch/x86/include/asm/efi.h
-> > > @@ -180,6 +180,7 @@ extern void __init
-> > > efi_uv1_memmap_phys_epilog(pgd_t *save_pgd);
-> > >
-> > >  struct efi_setup_data {
-> > >         u64 fw_vendor;
-> > > +       u64 __unused;
-> > >         u64 tables;
-> > >         u64 smbios;
-> > >         u64 reserved[8];
-> >
-> >
-> > Tested-by: Theodore Ts'o <tytso@mit.edu>
-> >
+On 04/10/20 at 09:43am, Ard Biesheuvel wrote:
+> Commit
 > 
-> OK, I'll spin a proper patch
+>   0a67361dcdaa29 ("efi/x86: Remove runtime table address from kexec EFI setup data")
 > 
-> > Yep, that fixed it.  Thanks!!
-> >
-> > I wonder if this structure definition should be moved something like
-> > arch/x86/include/uapi/asm/efi.h so it's more obvious that the
-> > structure layout is used externally to the kernel?
-> >
+> removed the code that retrieves the non-remapped UEFI runtime services
+> pointer from the data structure provided by kexec, as it was never really
+> needed on the kexec boot path: mapping the runtime services table at its
+> non-remapped address is only needed when calling SetVirtualAddressMap(),
+> which never happens during a kexec boot in the first place.
 > 
-> Well, 95% of the data structures used by EFI are based on the UEFI
-> spec, so the base assumption is really that we cannot make changes
-> like these to begin with. But I'll add a DON'T TOUCH comment here in
-> any case.
+> However, dropping the 'runtime' member from struct efi_setup_data was a
+> mistake. That struct is shared ABI between the kernel and the kexec tooling
+> for x86, and so we cannot simply change its layout. So let's put back the
+> removed field, but call it 'unused' to reflect the fact that we never look
+> at its contents. While at it, add a comment to remind our future selves
+> that the layout is external ABI.
+> 
+> Reported-by: Theodore Ts'o <tytso@mit.edu>
+> Tested-by: Theodore Ts'o <tytso@mit.edu>
+> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> ---
+> 
+> Ingo, Thomas, Boris: I sent out my efi-urgent pull request just yesterday,
+> so please take this directly into tip:efi/urgent - no need to wait for the
+> next batch.
+> 
+>  arch/x86/include/asm/efi.h | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/arch/x86/include/asm/efi.h b/arch/x86/include/asm/efi.h
+> index 781170d36f50..96044c8d8600 100644
+> --- a/arch/x86/include/asm/efi.h
+> +++ b/arch/x86/include/asm/efi.h
+> @@ -178,8 +178,10 @@ extern void efi_free_boot_services(void);
+>  extern pgd_t * __init efi_uv1_memmap_phys_prolog(void);
+>  extern void __init efi_uv1_memmap_phys_epilog(pgd_t *save_pgd);
+>  
+> +/* kexec external ABI */
+>  struct efi_setup_data {
+>  	u64 fw_vendor;
+> +	u64 unused;
+>  	u64 tables;
+>  	u64 smbios;
+>  	u64 reserved[8];
+> -- 
+> 2.17.1
 > 
 
-The runtime cleanup looks a very good one, but I also missed that,
-userspace kexec-tools will break with the efi setup_data changes. But
-kexec_file_load will just work with the cleanup applied.
+Ah, replied too quick in another mail.  I just cced kexec list again.
 
-Ard, could you add kexec list in cc when you send the fix out?
+Thanks for the fix:
+
+Reviewed-by: Dave Young <dyoung@redhat.com>
 
 Thanks
 Dave
