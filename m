@@ -2,39 +2,39 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0DCC21A4040
-	for <lists+linux-efi@lfdr.de>; Fri, 10 Apr 2020 05:57:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A7961A3FD8
+	for <lists+linux-efi@lfdr.de>; Fri, 10 Apr 2020 05:56:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728915AbgDJDyJ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 9 Apr 2020 23:54:09 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35078 "EHLO mail.kernel.org"
+        id S1729052AbgDJDvA (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 9 Apr 2020 23:51:00 -0400
+Received: from mail.kernel.org ([198.145.29.99]:36004 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728899AbgDJDu1 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Thu, 9 Apr 2020 23:50:27 -0400
+        id S1729045AbgDJDvA (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Thu, 9 Apr 2020 23:51:00 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 36BD3206C0;
-        Fri, 10 Apr 2020 03:50:27 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 45D5321775;
+        Fri, 10 Apr 2020 03:50:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1586490627;
-        bh=An4EaviWBME8D96bl9RCViqqRBYpK9o27KjVjecXiYE=;
+        s=default; t=1586490660;
+        bh=SnoorjqcdVM9MzF835qihNuP4uKqiI1nel2b0rE2vNw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EwKZ6FJtlsc4Fr0yTkx/NBrrOrlSTEi+xh29b254/jJBecBJRrPWPJhxz5Y3FmZ3T
-         0dZWZjJs1/NR7vIG7Ir8ftbD/z6bWxwH/J7LVAWupdV57k5pQ+L9nm97nlHBj4JCmC
-         HFAhN8RVKqZNG30Dmlhv3sSzR1NY0uvoSH0eTmfE=
+        b=s3GyBfsyno9A+/aMgx/JE3Q0bJUQYjcfFZ21HxmqWmJUe3BzBXPbVgErjgmKibAsF
+         5lvLSFqpyLY012TYfkCcMic6a2O7+jWZoaF2DU1Qa/W/XP5GbvYngWZq2errXiaNm7
+         2/jVdrUbkMHV0TZFYZiRQ+CfR0chP2s+RB94hGwg=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Ard Biesheuvel <ardb@kernel.org>,
         Arvind Sankar <nivedita@alum.mit.edu>,
         Ingo Molnar <mingo@kernel.org>,
         Sasha Levin <sashal@kernel.org>, linux-efi@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 19/32] efi/x86: Ignore the memory attributes table on i386
-Date:   Thu,  9 Apr 2020 23:49:52 -0400
-Message-Id: <20200410035005.9371-19-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 13/22] efi/x86: Ignore the memory attributes table on i386
+Date:   Thu,  9 Apr 2020 23:50:35 -0400
+Message-Id: <20200410035044.9698-13-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200410035005.9371-1-sashal@kernel.org>
-References: <20200410035005.9371-1-sashal@kernel.org>
+In-Reply-To: <20200410035044.9698-1-sashal@kernel.org>
+References: <20200410035044.9698-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -101,10 +101,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
-index d54fca902e64f..f1e0a27152691 100644
+index f50072b51aefb..b39b7e6d4e4dc 100644
 --- a/drivers/firmware/efi/efi.c
 +++ b/drivers/firmware/efi/efi.c
-@@ -572,7 +572,7 @@ int __init efi_config_parse_tables(void *config_tables, int count, int sz,
+@@ -550,7 +550,7 @@ int __init efi_config_parse_tables(void *config_tables, int count, int sz,
  		}
  	}
  
@@ -112,7 +112,7 @@ index d54fca902e64f..f1e0a27152691 100644
 +	if (!IS_ENABLED(CONFIG_X86_32) && efi_enabled(EFI_MEMMAP))
  		efi_memattr_init();
  
- 	efi_tpm_eventlog_init();
+ 	/* Parse the EFI Properties table if it exists */
 -- 
 2.20.1
 
