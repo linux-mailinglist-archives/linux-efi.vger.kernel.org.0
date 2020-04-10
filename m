@@ -2,220 +2,136 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 706941A4992
-	for <lists+linux-efi@lfdr.de>; Fri, 10 Apr 2020 19:54:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 66F851A499E
+	for <lists+linux-efi@lfdr.de>; Fri, 10 Apr 2020 20:01:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726626AbgDJRyB (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 10 Apr 2020 13:54:01 -0400
-Received: from mail-wm1-f65.google.com ([209.85.128.65]:40642 "EHLO
-        mail-wm1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726142AbgDJRyB (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 10 Apr 2020 13:54:01 -0400
-Received: by mail-wm1-f65.google.com with SMTP id a81so3434961wmf.5
-        for <linux-efi@vger.kernel.org>; Fri, 10 Apr 2020 10:54:01 -0700 (PDT)
+        id S1726203AbgDJSB1 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 10 Apr 2020 14:01:27 -0400
+Received: from mail-qt1-f196.google.com ([209.85.160.196]:42347 "EHLO
+        mail-qt1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726177AbgDJSB1 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 10 Apr 2020 14:01:27 -0400
+Received: by mail-qt1-f196.google.com with SMTP id b10so2061175qtt.9;
+        Fri, 10 Apr 2020 11:01:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=mPiD/+qGlSJpzTBrqbT0O+BTDyKPFOM+m0rEGWX8Zq4=;
-        b=lGOtVGU/c7nqDeTJjW1l4JcFLJdBcpXJCe49QcZldiBlMqtGEEUvp+OpMEgitcPYYl
-         bPdzJJ7YaqqWC5tD6M3ZLGP3/GrQje8Jme9Hmyq5K6CP0uQBwlwuD5zEo/cZYJM4Rp8h
-         7lRuTHfee+OxtggIuLFuMcsIbs32ROt4gkLq0=
+        d=gmail.com; s=20161025;
+        h=sender:from:date:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=mQm+cfpWWNubJH8IeV0+wdXKUR9XPtCh19rQwA2lnYY=;
+        b=CaveKvpOLQXG9VhSr0uDNp6G9Afwvp6Ys1zEJo7nBfUkRj+OVK4oMLcdM7OW8gV3yw
+         InN4odf+FfCkSJstJGjCaH3Oy5aqir5boQPlBZfptZvJxNoy2RjM8gIn/jnEPV5OL3Er
+         8yP4RDZ50n39q3l1QhAXtGfranzbVBNsBKX3FMSgZdCHWwv7P6L7xjQoPlW4GeOTDRDB
+         +iiZkk9EJBfC82r+1wt8+f/D6mivq4igWA53XV6VJguSmSFdHr3skL2Do4El8fvHXvy9
+         JQuSzY+P++qi0LQHkX8tJHr6J+jiWWngWMtnYq370tGQHiLJ8/TZXxcf1m6JkF5MOLuX
+         J15g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=mPiD/+qGlSJpzTBrqbT0O+BTDyKPFOM+m0rEGWX8Zq4=;
-        b=rc5bknYZuiymCIkIMSgpxHnkW0U30C4Ih+GUfly3BsW3m8FdeJlJSypXh4RmhZ2TTU
-         EQmNhwPlatGHc1GiHW6DCTVk3SVo6rRndvcbq8INHYxqEFR4K3UC2ggzSS9VQIXQtG3o
-         HmTXJiNN/I98KAsrmrKPsaBdRVLqaeiBMJMGJGBAay4XVgIXAECEHOeR40+4lknD72nE
-         oYktXObkDJ043peOKxvzhagc1vSo6OVk6OMLsYYKLjuKTwCfGgNIvBTH3wyk75Iz/4hN
-         TKrN2D7hcsXUNZb7otikSky9KJMrri7j4AWpi/Qcx8LSqhy+pP7fdngT8cEqhi4B03Ay
-         aOXg==
-X-Gm-Message-State: AGi0PubylCP2WFIb+yxgdWy30WBgHk3znWq0BXG4IIsmD4CrL5yVtXVd
-        2Y7dhUqAJy6muMP/Biv5RFwNbFIC0FY7QctTewhRNA==
-X-Google-Smtp-Source: APiQypK9HBHaJDkk+oKjfvlcWdtUYX5HtHcLNss2Tkw7usLY0PjxmfE+1xsrM0Q02bunWwWDV5tNTal6fdBySJBEF+k=
-X-Received: by 2002:a05:600c:2f88:: with SMTP id t8mr6004610wmn.46.1586541240137;
- Fri, 10 Apr 2020 10:54:00 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200410172824.86217-1-ignat@cloudflare.com> <CAMj1kXFu5Jd7RzY1tC-RXKof4_s=qU+xRa37qKSQqiZ5tta9Bg@mail.gmail.com>
-In-Reply-To: <CAMj1kXFu5Jd7RzY1tC-RXKof4_s=qU+xRa37qKSQqiZ5tta9Bg@mail.gmail.com>
-From:   Ignat Korchagin <ignat@cloudflare.com>
-Date:   Fri, 10 Apr 2020 18:53:49 +0100
-Message-ID: <CALrw=nE9W05PUA5RhNro97_3vEeN0WpnfENhcJD6Uc9TSawT3Q@mail.gmail.com>
-Subject: Re: [PATCH] efi/x86: Expose number of entries in the EFI
- configuration table via sysfs
+        h=x-gm-message-state:sender:from:date:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to;
+        bh=mQm+cfpWWNubJH8IeV0+wdXKUR9XPtCh19rQwA2lnYY=;
+        b=SulLoZUtDm941b4FXb4OiXsaYYbGeo0WSZsjwjCHf6UxohYEF27EiJJGMr3JT+OSEg
+         hwOLuRHOho9+7rM+16wCfR4E+jETSkyOauInxeOTp6gNhE78Zf92NFyT04KLNuSWuo4r
+         p8wqfsGHPcg7Y2DwH12lpmaWhsFcgWJlO2hiPMcSOf3HtALb3AbBUqXrIrycL3Q6CEsQ
+         z2PSfkZghpbN8200jBHFej+az54m6tQSgeuO3sGttJuKcgYVDE/L4hc8yHgERvjDiVod
+         o7u4jhgZ3aB1UpielWSP1EvIRQlxLH2rjP7Ml9KQZ9Qrgr11VP4ahp4OTWXkP/+4yQjz
+         FIUQ==
+X-Gm-Message-State: AGi0PuZeOMXJvfvPALP9LlJvOZHsO4ul1V5WJNbRkc3R+06xCBDtl0kY
+        fkt7LC673YCui1Yl5LmCSA0=
+X-Google-Smtp-Source: APiQypJoS5m7D4g6TWDyXhnb5ZHWGUcsE3hdGJF2RVjvUDaZXUFg2mYNnlkGd689BW6RpC2l02SINQ==
+X-Received: by 2002:ac8:4e01:: with SMTP id c1mr400253qtw.170.1586541686346;
+        Fri, 10 Apr 2020 11:01:26 -0700 (PDT)
+Received: from rani.riverdale.lan ([2001:470:1f07:5f3::b55f])
+        by smtp.gmail.com with ESMTPSA id g2sm2034804qtj.96.2020.04.10.11.01.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 10 Apr 2020 11:01:25 -0700 (PDT)
+From:   Arvind Sankar <nivedita@alum.mit.edu>
+X-Google-Original-From: Arvind Sankar <arvind@rani.riverdale.lan>
+Date:   Fri, 10 Apr 2020 14:01:23 -0400
 To:     Ard Biesheuvel <ardb@kernel.org>
 Cc:     Arvind Sankar <nivedita@alum.mit.edu>,
-        Borislav Petkov <bp@alien8.de>, Ingo Molnar <mingo@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Brian Gerst <brgerst@gmail.com>,
         linux-efi <linux-efi@vger.kernel.org>,
-        kernel-team <kernel-team@cloudflare.com>
-Content-Type: text/plain; charset="UTF-8"
+        Ingo Molnar <mingo@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@suse.de>,
+        Colin Ian King <colin.king@canonical.com>,
+        Gary Lin <glin@suse.com>, Jiri Slaby <jslaby@suse.cz>,
+        Sergey Shatunov <me@prok.pw>, Takashi Iwai <tiwai@suse.de>
+Subject: Re: [PATCH 3/9] efi/x86: Move efi stub globals from .bss to .data
+Message-ID: <20200410180123.GA1155098@rani.riverdale.lan>
+References: <20200409130434.6736-1-ardb@kernel.org>
+ <20200409130434.6736-4-ardb@kernel.org>
+ <CAMzpN2gJWwVun1Kp6vGuza9LM5KpB=0EwsP8x8eOJQuDGh38Hg@mail.gmail.com>
+ <CAMzpN2jFbf8k99pWaTYRBmSB+iNAKYsufjEhqO6Vv0qxAcHyGA@mail.gmail.com>
+ <20200409210847.GA1312580@rani.riverdale.lan>
+ <CAMj1kXFhtK=FRDKBE5OtenNEtpK=kVwyo+0nqJZ_K80RmtYxEg@mail.gmail.com>
+ <20200410151612.GA970420@rani.riverdale.lan>
+ <CAMj1kXGMNMdgjinYNgrN2wGRFG4rKE2YHo-=3s4Ofv2KPUMqKQ@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAMj1kXGMNMdgjinYNgrN2wGRFG4rKE2YHo-=3s4Ofv2KPUMqKQ@mail.gmail.com>
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, Apr 10, 2020 at 6:38 PM Ard Biesheuvel <ardb@kernel.org> wrote:
->
-> Hello Ignat,
->
-> Thanks for the patch.
->
-> On Fri, 10 Apr 2020 at 19:28, Ignat Korchagin <ignat@cloudflare.com> wrote:
+On Fri, Apr 10, 2020 at 06:03:38PM +0200, Ard Biesheuvel wrote:
+> On Fri, 10 Apr 2020 at 17:16, Arvind Sankar <nivedita@alum.mit.edu> wrote:
 > >
-> > Currently Linux exposes the physical address of the EFI configuration table via
-> > sysfs, but not the number of entries.
+> > On Fri, Apr 10, 2020 at 10:20:42AM +0200, Ard Biesheuvel wrote:
+> > > On Thu, 9 Apr 2020 at 23:08, Arvind Sankar <nivedita@alum.mit.edu> wrote:
+> > > >
+> > > > On Thu, Apr 09, 2020 at 04:53:07PM -0400, Brian Gerst wrote:
+> > > > > > Can we use the -fno-zero-initialized-in-bss compiler flag instead of
+> > > > > > explicitly marking global variables?
+> > > > >
+> > > > > Scratch that.  Apparently it only works when a variable is explicitly
+> > > > > initialized to zero.
+> > > > >
+> > > > > --
+> > > > > Brian Gerst
+> > > >
+> > > > Right, there doesn't seem to be a compiler option to turn off the use of
+> > > > .bss altogether.
+> > >
+> > > Yeah. I'll try to come up with a way to consolidate this a bit across
+> > > architectures (which is a bit easier now that all of the EFI stub C
+> > > code lives in the same place). It is probably easiest to use a section
+> > > renaming trick similar to the one I added for ARM (as Arvind suggested
+> > > as well, IIRC), and get rid of the per-symbol annotations altogether.
 > >
->
-> It does so on x86 only, and the purpose is specifically defined as
-> kexec. This is for a good reason: kexec on x86 EFI machines has
-> accumulated some historical quirks dealing with issues that do not
-> exist on other architectures.
->
-> > The number of entries for the EFI configuration table is located in the EFI
-> > system table and the EFI system table is not exposed, so there is no way for
-> > a userspace application to reliably navigate the EFI configuration table.
+> > Does that work for 32-bit ARM, or does it need to be .data to tell the
+> > compiler to avoid generating GOT references? If that's fine, we don't
+> > actually need to rename sections -- linker script magic is enough. For
+> > eg, the below pulls the EFI stub bss into .data for x86 without the need
+> > for the annotations.
 > >
-> > One potential use case for such a userspace program would be a monitoring agent,
-> > which parses Image Execution Information Table from the EFI configuration table
-> > and reports all the UEFI executables, which have been denied execution due to
-> > the enforced Secure Boot policy thus providing intrusion detection capabilities.
-> >
->
-> Exposing a physical address via syfs and using /dev/mem to scoop up
-> the data is not a robust, secure or portable interface, especially in
-> the quoted context of a UEFI secure boot enabled system.
-
-TBH, it is not hard to find this number by scanning the same mapped region for
-EFI system table (which is easily identifiable by its signature). So
-security is not an
-issue here, although robustness and portability indeed.
-
-> If you need to access this table from userland, I suggest we come up
-> with a generic method that does not rely on /dev/mem. It would be even
-> better if we could come up with some infrastructure that makes this
-> easily extendable to other configuration tables. But simply exposing
-> the address and size of the config table array in memory is not the
-> right way.
-
-Would you prefer something closer to the efivars filesystem then?
-
-> > Signed-off-by: Ignat Korchagin <ignat@cloudflare.com>
-> > ---
-> >  Documentation/ABI/testing/sysfs-firmware-efi | 12 +++++++++-
-> >  arch/x86/platform/efi/efi.c                  | 24 +++++++++++++++-----
-> >  drivers/firmware/efi/efi.c                   |  2 ++
-> >  3 files changed, 31 insertions(+), 7 deletions(-)
-> >
-> > diff --git a/Documentation/ABI/testing/sysfs-firmware-efi b/Documentation/ABI/testing/sysfs-firmware-efi
-> > index 5e4d0b27cdfe..37d0364c16cb 100644
-> > --- a/Documentation/ABI/testing/sysfs-firmware-efi
-> > +++ b/Documentation/ABI/testing/sysfs-firmware-efi
-> > @@ -17,7 +17,9 @@ Date:         December 2013
-> >  Contact:       Dave Young <dyoung@redhat.com>
-> >  Description:   It shows the physical address of config table entry in the EFI
-> >                 system table.
-> > -Users:         Kexec
-> > +Users:         Kexec, userspace tools for reading information from UEFI
-> > +               configuration table (for example, Image Execution Information
-> > +               Table)
-> >
-> >  What:          /sys/firmware/efi/systab
-> >  Date:          April 2005
-> > @@ -36,3 +38,11 @@ Description: Displays the content of the Runtime Configuration Interface
-> >                 Table version 2 on Dell EMC PowerEdge systems in binary format
-> >  Users:         It is used by Dell EMC OpenManage Server Administrator tool to
-> >                 populate BIOS setup page.
-> > +
-> > +What:          /sys/firmware/efi/nr_tables
-> > +Date:          April 2020
-> > +Contact:       linux-efi@vger.kernel.org
-> > +Description:   It shows number of entries in the config table entry in the EFI
-> > +               system table.
-> > +Users:         Userspace tools for reading information from UEFI configuration
-> > +               table (for example, Image Execution Information Table)
-> > diff --git a/arch/x86/platform/efi/efi.c b/arch/x86/platform/efi/efi.c
-> > index 1aae5302501d..83574db489d4 100644
-> > --- a/arch/x86/platform/efi/efi.c
-> > +++ b/arch/x86/platform/efi/efi.c
-> > @@ -57,9 +57,9 @@
-> >  static unsigned long efi_systab_phys __initdata;
-> >  static unsigned long prop_phys = EFI_INVALID_TABLE_ADDR;
-> >  static unsigned long uga_phys = EFI_INVALID_TABLE_ADDR;
-> > -static unsigned long efi_runtime, efi_nr_tables;
-> > +static unsigned long efi_runtime;
-> >
-> > -unsigned long efi_fw_vendor, efi_config_table;
-> > +unsigned long efi_fw_vendor, efi_config_table, efi_nr_tables;
-> >
-> >  static const efi_config_table_type_t arch_tables[] __initconst = {
-> >         {EFI_PROPERTIES_TABLE_GUID, "PROP", &prop_phys},
-> > @@ -963,20 +963,29 @@ char *efi_systab_show_arch(char *str)
-> >
-> >  #define EFI_FIELD(var) efi_ ## var
-> >
-> > -#define EFI_ATTR_SHOW(name) \
-> > +#define EFI_ATTR_SHOW_ADDR(name) \
-> >  static ssize_t name##_show(struct kobject *kobj, \
-> >                                 struct kobj_attribute *attr, char *buf) \
-> >  { \
-> >         return sprintf(buf, "0x%lx\n", EFI_FIELD(name)); \
-> >  }
-> >
-> > -EFI_ATTR_SHOW(fw_vendor);
-> > -EFI_ATTR_SHOW(runtime);
-> > -EFI_ATTR_SHOW(config_table);
-> > +#define EFI_ATTR_SHOW_ULONG(name) \
-> > +static ssize_t name##_show(struct kobject *kobj, \
-> > +                                struct kobj_attribute *attr, char *buf) \
-> > +{ \
-> > +        return sprintf(buf, "%lu\n", EFI_FIELD(name)); \
-> > +}
-> > +
-> > +EFI_ATTR_SHOW_ADDR(fw_vendor);
-> > +EFI_ATTR_SHOW_ADDR(runtime);
-> > +EFI_ATTR_SHOW_ADDR(config_table);
-> > +EFI_ATTR_SHOW_ULONG(nr_tables);
-> >
-> >  struct kobj_attribute efi_attr_fw_vendor = __ATTR_RO(fw_vendor);
-> >  struct kobj_attribute efi_attr_runtime = __ATTR_RO(runtime);
-> >  struct kobj_attribute efi_attr_config_table = __ATTR_RO(config_table);
-> > +struct kobj_attribute efi_attr_nr_tables = __ATTR_RO(nr_tables);
-> >
-> >  umode_t efi_attr_is_visible(struct kobject *kobj, struct attribute *attr, int n)
-> >  {
-> > @@ -990,6 +999,9 @@ umode_t efi_attr_is_visible(struct kobject *kobj, struct attribute *attr, int n)
-> >         } else if (attr == &efi_attr_config_table.attr) {
-> >                 if (efi_config_table == EFI_INVALID_TABLE_ADDR)
-> >                         return 0;
-> > +       } else if (attr == &efi_attr_nr_tables.attr) {
-> > +               if (efi_config_table == EFI_INVALID_TABLE_ADDR)
-> > +                       return 0;
+> > diff --git a/arch/x86/boot/compressed/vmlinux.lds.S b/arch/x86/boot/compressed/vmlinux.lds.S
+> > index 508cfa6828c5..e324819c95bc 100644
+> > --- a/arch/x86/boot/compressed/vmlinux.lds.S
+> > +++ b/arch/x86/boot/compressed/vmlinux.lds.S
+> > @@ -52,6 +52,7 @@ SECTIONS
+> >                 _data = . ;
+> >                 *(.data)
+> >                 *(.data.*)
+> > +               drivers/firmware/efi/libstub/lib.a:(.bss .bss.*)
+> >                 _edata = . ;
 > >         }
-> >         return attr->mode;
-> >  }
-> > diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
-> > index 911a2bd0f6b7..0fe064582f33 100644
-> > --- a/drivers/firmware/efi/efi.c
-> > +++ b/drivers/firmware/efi/efi.c
-> > @@ -150,6 +150,7 @@ static ssize_t fw_platform_size_show(struct kobject *kobj,
-> >  extern __weak struct kobj_attribute efi_attr_fw_vendor;
-> >  extern __weak struct kobj_attribute efi_attr_runtime;
-> >  extern __weak struct kobj_attribute efi_attr_config_table;
-> > +extern __weak struct kobj_attribute efi_attr_nr_tables;
-> >  static struct kobj_attribute efi_attr_fw_platform_size =
-> >         __ATTR_RO(fw_platform_size);
-> >
-> > @@ -159,6 +160,7 @@ static struct attribute *efi_subsys_attrs[] = {
-> >         &efi_attr_fw_vendor.attr,
-> >         &efi_attr_runtime.attr,
-> >         &efi_attr_config_table.attr,
-> > +       &efi_attr_nr_tables.attr,
-> >         NULL,
-> >  };
-> >
-> > --
-> > 2.20.1
-> >
+> >         . = ALIGN(L1_CACHE_BYTES);
+> 
+> No, we can add this to ARM as well, and get rid of the
+> __efistub_global annotations entirely.
+
+Cool.
+
+> 
+> We'll still need .data.efistub for the .data pieces, but that is a
+> separate issue.
+
+You can avoid that by using an archive specification like above. i.e.
+adding
+	drivers/firmware/efi/libstub/lib.a:(.data .data.*)
+to the .init.data output section will pull in just the .data input
+sections from the EFI stub into the .init.data section.
