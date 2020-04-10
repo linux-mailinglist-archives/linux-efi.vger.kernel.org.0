@@ -2,77 +2,89 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 662AE1A4375
-	for <lists+linux-efi@lfdr.de>; Fri, 10 Apr 2020 10:20:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A6B31A45C4
+	for <lists+linux-efi@lfdr.de>; Fri, 10 Apr 2020 13:43:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725861AbgDJIUy (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 10 Apr 2020 04:20:54 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35544 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725839AbgDJIUx (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Fri, 10 Apr 2020 04:20:53 -0400
-Received: from mail-il1-f177.google.com (mail-il1-f177.google.com [209.85.166.177])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 7AB5421556;
-        Fri, 10 Apr 2020 08:20:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1586506853;
-        bh=5k2owslALNv4JQUFd76NSg+vxcF3iacavyDaDEKz6so=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=mdiHg9r9Nsg8z9iAJPD1dpeagLc0bAVvUmW+3NmVjSPG/4TtLUyFQ0NRDuZbrM2Ju
-         DZmaI7sFZqVbqF1j9lBUF+XSwvaAVNK1O8EiCx/SEagBBJ99cN5urm+0rIlNkJcgrN
-         lXMa8YhK+KFQ68twSAgBYZ/YAT8lUNh0uy86HLik=
-Received: by mail-il1-f177.google.com with SMTP id p13so1203454ilp.3;
-        Fri, 10 Apr 2020 01:20:53 -0700 (PDT)
-X-Gm-Message-State: AGi0PuY6JGIBrch6AVJ9AcRJCPwk0sENvo0pcYvSZuPRmCB8m73bHe/N
-        hb3v3+i/KLjUtVW7dO8L9Ojwe7Qc2iZO5AAVntA=
-X-Google-Smtp-Source: APiQypIKE0UGN7ziuo+6K0SRPgC+zVoVPqcK1SO1VFVqbW7C4JolbA+dHo9egsBlDpl5rYSZu1dKu4ThJgoeL80ZcOY=
-X-Received: by 2002:a92:dcd1:: with SMTP id b17mr4073059ilr.80.1586506852792;
- Fri, 10 Apr 2020 01:20:52 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200409130434.6736-1-ardb@kernel.org> <20200409130434.6736-4-ardb@kernel.org>
- <CAMzpN2gJWwVun1Kp6vGuza9LM5KpB=0EwsP8x8eOJQuDGh38Hg@mail.gmail.com>
- <CAMzpN2jFbf8k99pWaTYRBmSB+iNAKYsufjEhqO6Vv0qxAcHyGA@mail.gmail.com> <20200409210847.GA1312580@rani.riverdale.lan>
-In-Reply-To: <20200409210847.GA1312580@rani.riverdale.lan>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Fri, 10 Apr 2020 10:20:42 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXFhtK=FRDKBE5OtenNEtpK=kVwyo+0nqJZ_K80RmtYxEg@mail.gmail.com>
-Message-ID: <CAMj1kXFhtK=FRDKBE5OtenNEtpK=kVwyo+0nqJZ_K80RmtYxEg@mail.gmail.com>
-Subject: Re: [PATCH 3/9] efi/x86: Move efi stub globals from .bss to .data
+        id S1726080AbgDJLm7 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 10 Apr 2020 07:42:59 -0400
+Received: from www17.your-server.de ([213.133.104.17]:59768 "EHLO
+        www17.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726059AbgDJLm7 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 10 Apr 2020 07:42:59 -0400
+X-Greylist: delayed 1007 seconds by postgrey-1.27 at vger.kernel.org; Fri, 10 Apr 2020 07:42:58 EDT
+Received: from sslproxy01.your-server.de ([78.46.139.224])
+        by www17.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92.3)
+        (envelope-from <thomas@m3y3r.de>)
+        id 1jMrnU-00033v-Fi; Fri, 10 Apr 2020 13:26:08 +0200
+Received: from [2a02:908:4c22:ec00:8ad5:993:4cda:a89f] (helo=localhost.localdomain)
+        by sslproxy01.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <thomas@m3y3r.de>)
+        id 1jMrnU-0008wV-2k; Fri, 10 Apr 2020 13:26:08 +0200
+Date:   Fri, 10 Apr 2020 13:26:05 +0200
+From:   Thomas Meyer <thomas@m3y3r.de>
 To:     Arvind Sankar <nivedita@alum.mit.edu>
-Cc:     Brian Gerst <brgerst@gmail.com>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Ingo Molnar <mingo@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
+Cc:     Ard Biesheuvel <ardb@kernel.org>, Borislav Petkov <bp@alien8.de>,
+        Sergey Shatunov <me@prok.pw>, hpa@zytor.com,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@suse.de>,
-        Colin Ian King <colin.king@canonical.com>,
-        Gary Lin <glin@suse.com>, Jiri Slaby <jslaby@suse.cz>,
-        Sergey Shatunov <me@prok.pw>, Takashi Iwai <tiwai@suse.de>
-Content-Type: text/plain; charset="UTF-8"
+        mingo@redhat.com, Thomas Gleixner <tglx@linutronix.de>,
+        x86@kernel.org, linux-efi <linux-efi@vger.kernel.org>,
+        initramfs@vger.kernel.org,
+        Donovan Tremura <neurognostic@protonmail.ch>,
+        Harald Hoyer <harald@hoyer.xyz>
+Subject: Re: [PATCH 1/2] efi/x86: Move efi stub globals from .bss to .data
+Message-ID: <20200410112605.GA3344@localhost.localdomain>
+References: <CAMj1kXEUkJ1XJ9OTsijeq8tNNYC00bXqEV44OMtX5ugo9WoLKA@mail.gmail.com>
+ <20200406180614.429454-1-nivedita@alum.mit.edu>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200406180614.429454-1-nivedita@alum.mit.edu>
+X-Authenticated-Sender: thomas@m3y3r.de
+X-Virus-Scanned: Clear (ClamAV 0.102.2/25777/Thu Apr  9 13:52:18 2020)
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, 9 Apr 2020 at 23:08, Arvind Sankar <nivedita@alum.mit.edu> wrote:
->
-> On Thu, Apr 09, 2020 at 04:53:07PM -0400, Brian Gerst wrote:
-> > > Can we use the -fno-zero-initialized-in-bss compiler flag instead of
-> > > explicitly marking global variables?
-> >
-> > Scratch that.  Apparently it only works when a variable is explicitly
-> > initialized to zero.
-> >
-> > --
-> > Brian Gerst
->
-> Right, there doesn't seem to be a compiler option to turn off the use of
-> .bss altogether.
+On Mon, Apr 06, 2020 at 02:06:13PM -0400, Arvind Sankar wrote:
 
-Yeah. I'll try to come up with a way to consolidate this a bit across
-architectures (which is a bit easier now that all of the EFI stub C
-code lives in the same place). It is probably easiest to use a section
-renaming trick similar to the one I added for ARM (as Arvind suggested
-as well, IIRC), and get rid of the per-symbol annotations altogether.
+Hi,
+
+I did write an email to x86@kernel.org, which sadly seems to have no
+mailing list archive, I wonder if my problem has anything to do with the
+patches you are discussing here:
+
+I found this reply, which contains my original email in my inbox:
+
+Subject: Kernel v5.5 doesn't boot on my x86 laptop
+
+Hi,
+
+I'm using an old MacBookPro1,1 to run Fedora 30 (the last one to support
+x86) and a upstream up-to-date kernel, currently 5.4.16.
+
+I'm using sd-boot to boot into an EFI-enabled kernel which contains
+an embedded initram cpio image (because loading the image from kernel's
+EFI stub doesn't seem to work for some unknown reason, I tried to debug
+this but my early debugging foo is too weak).
+
+Kernel 5.4.x works correctly with this setup (but resuming from disk
+seems to have broken in 5.4.x or maybe even earlier - when resuming from
+disk I get all kind of funky OOPSes/errors, but that's another story, hopefully
+5.5.x was fixed in this regards).
+
+So I did have a look at the commits under arch/x86/boot and "x86/boot:
+Introduce setup_indirect" (b3c72fc9a78e74161f9d05ef7191706060628f8c) did
+talk about "bump setup_header version in arch/x86/boot/header.S", so I
+did revert above commit and I was finally able to boot into v5.5 kernel!
+
+So either sd-boot also needs an upgrade or this commit does break
+something.
+Any help is welcome, don't hesitate to get in contact with me if you
+have any questions.
+
+mfg
+thomas
+ 
