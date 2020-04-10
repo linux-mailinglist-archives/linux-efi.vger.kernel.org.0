@@ -2,39 +2,39 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B8A951A419E
-	for <lists+linux-efi@lfdr.de>; Fri, 10 Apr 2020 06:16:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2DAEB1A4085
+	for <lists+linux-efi@lfdr.de>; Fri, 10 Apr 2020 05:57:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728349AbgDJD63 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 9 Apr 2020 23:58:29 -0400
-Received: from mail.kernel.org ([198.145.29.99]:60442 "EHLO mail.kernel.org"
+        id S1726871AbgDJD4K (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 9 Apr 2020 23:56:10 -0400
+Received: from mail.kernel.org ([198.145.29.99]:33884 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728333AbgDJDsp (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Thu, 9 Apr 2020 23:48:45 -0400
+        id S1728636AbgDJDtp (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Thu, 9 Apr 2020 23:49:45 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A390B21473;
-        Fri, 10 Apr 2020 03:48:44 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 4657A214DB;
+        Fri, 10 Apr 2020 03:49:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1586490525;
-        bh=8A6e/2fKQdaiQBJoePBchJCjphxGBAVEWwqunLihCsU=;
+        s=default; t=1586490585;
+        bh=VYPYg6i/pKod6qF6y1lY09357dtCaYVNp3iKvoKFzC8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0x5Lxwd+aAiTqYi64gzL662rvj2xk77qBzPGLw7qhC6bZ1gDBSTV0WOM+XcGzBebP
-         WIVEFl1NJ2NVjfLCEhB2Twd1lc2sceOwvZaV14KFJQvyLtydcbJLizrtqBMjGWbdkG
-         8ued/EXpKSBXOsZl+jNzm8dpAA39ImsJbRTOaI5g=
+        b=wC+PUN367BrQplZXAqaB9h47HTQGZ4D8WWHD2JBzjYW8Pt2FvxEpS5P/p9U1JARgf
+         fx0l0my+XOiMwUbLQ1Fb/221IHVJMUa74f8R2nXwF+V8QrBUVA6K9V5GwtY0+r9dy5
+         PoVA5a91FFHNJ5WizAacou/eBF0L6k5xEbiFMO90=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Ard Biesheuvel <ardb@kernel.org>,
         Arvind Sankar <nivedita@alum.mit.edu>,
         Ingo Molnar <mingo@kernel.org>,
         Sasha Levin <sashal@kernel.org>, linux-efi@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.5 38/56] efi/x86: Ignore the memory attributes table on i386
-Date:   Thu,  9 Apr 2020 23:47:42 -0400
-Message-Id: <20200410034800.8381-38-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 30/46] efi/x86: Ignore the memory attributes table on i386
+Date:   Thu,  9 Apr 2020 23:48:53 -0400
+Message-Id: <20200410034909.8922-30-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200410034800.8381-1-sashal@kernel.org>
-References: <20200410034800.8381-1-sashal@kernel.org>
+In-Reply-To: <20200410034909.8922-1-sashal@kernel.org>
+References: <20200410034909.8922-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -101,10 +101,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
-index a9778591341bb..8c32054a266c9 100644
+index ad8a4bc074fbf..e3861d267d9aa 100644
 --- a/drivers/firmware/efi/efi.c
 +++ b/drivers/firmware/efi/efi.c
-@@ -570,7 +570,7 @@ int __init efi_config_parse_tables(void *config_tables, int count, int sz,
+@@ -562,7 +562,7 @@ int __init efi_config_parse_tables(void *config_tables, int count, int sz,
  		}
  	}
  
