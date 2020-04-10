@@ -2,67 +2,119 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A9691A478E
-	for <lists+linux-efi@lfdr.de>; Fri, 10 Apr 2020 16:37:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B7ED1A4792
+	for <lists+linux-efi@lfdr.de>; Fri, 10 Apr 2020 16:38:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726703AbgDJOhe (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 10 Apr 2020 10:37:34 -0400
-Received: from mail.kernel.org ([198.145.29.99]:38328 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726080AbgDJOhe (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Fri, 10 Apr 2020 10:37:34 -0400
-Received: from mail-io1-f54.google.com (mail-io1-f54.google.com [209.85.166.54])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 621CC214DB
-        for <linux-efi@vger.kernel.org>; Fri, 10 Apr 2020 14:37:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1586529454;
-        bh=Z7jwyP2YIo+tZuJUBf+I9TQcwmxTpRoTYKEYM9GjXnU=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=05xM/d7FTMx3Hm7AgKf0uySrqEZ07ZiCup/2iPA9xp2xt1r/7rqLmla8WdchRpxqd
-         9jEqT8XWxJfVTNOCau2KiK68U6DSVWR6WNNu/u9ki+5n5lg9Z3P27GJr2MIBgrr7vz
-         FIALJJANMx3Jhzb7P5R748E7lwr2tGGJCxxN7njA=
-Received: by mail-io1-f54.google.com with SMTP id o127so1963744iof.0
-        for <linux-efi@vger.kernel.org>; Fri, 10 Apr 2020 07:37:34 -0700 (PDT)
-X-Gm-Message-State: AGi0Pubn6enWmSA2qWbicEhAeSjrr6IcOC+Zz05y55k8ZgVBq3q82cLf
-        s/pFen4NNMuZM2GchlPc9MbBrB5Pod/bbfZytpk=
-X-Google-Smtp-Source: APiQypILfZjHRweFRWy/NTWA4yyEihfNb9gcdnBTwp1cd9A2O7g+VfZP/40WXeqcbWUOuKJ7h+p4l4wvh9sUw4n3GjM=
-X-Received: by 2002:a6b:f413:: with SMTP id i19mr4587125iog.203.1586529453796;
- Fri, 10 Apr 2020 07:37:33 -0700 (PDT)
+        id S1726080AbgDJOi0 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 10 Apr 2020 10:38:26 -0400
+Received: from mail-qt1-f194.google.com ([209.85.160.194]:33755 "EHLO
+        mail-qt1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726191AbgDJOiZ (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 10 Apr 2020 10:38:25 -0400
+Received: by mail-qt1-f194.google.com with SMTP id x2so1588728qtr.0;
+        Fri, 10 Apr 2020 07:38:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:from:date:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=NqTgJgoFcWZbfgL4/2jfGGaFchCV3KhCua+Z4Yrr4+c=;
+        b=hm+zyPGC2pA8P0J0T3OF281shf1QMUfPT1IN5hzlMc9i5A660/wYCUQts1ZKNuy2OH
+         H78V/ckjUu0dq/QqtnGZFbe2K2rc46NMVqGbh1RCVjcI8BAoOv5E8oa1nrO9nBmYyHEL
+         XkxUgV0szYQaS2hDFKinq4nTq5zFds7fVE63MmSYKRtX4utGRs8p1WLS3eraFC6awvzr
+         8pRUtSkjPYKpQFqJ7Y1PailsxbbpXwJEwM336KNIW1Htmp84Gn0mNywpugFJ+ye1+sVG
+         3nJA3mnoOLEPh1mdczLaCTntweattJTnaGZNPxEUczEnJ/kDJk5l1KyJm5KkOdg2eK2w
+         ttKw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:from:date:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to;
+        bh=NqTgJgoFcWZbfgL4/2jfGGaFchCV3KhCua+Z4Yrr4+c=;
+        b=BaAZ1Q+MPhn5BUeq1LiXP/vjG7oJQrXAzVN2Qqsh6Baj2sXpn6D80VHbzgEDqPaR/S
+         /BS9axmnQevq3LsK9KtXP+Rh70VBFbeaiqSpRuk0QuTA4f1aznG6HNBFiUDFcL88do9C
+         imsyoeQPpFhX/XjO9xA1V6vQMabs6j9BU1h2YN1zhSo848VjFhXOZk8w3f880Bb2qBav
+         WIYkloWLqo5j3SG57D2wbJ//EyZl7PuXFeSLtwBmV5wdKNmHuNvTTkLVOOo5CuC6hdrZ
+         CTwaMeTn89VN83A3mpUe75uyXjD/dLzasxQnLXGzL7wkIzoj3uPEgHxvBzH0swcZEz/0
+         aMIg==
+X-Gm-Message-State: AGi0PuaZGBZDXjyKV2Ymam/7rMEpmTtDhkiE5jm6daooTEh5jLCFY1vC
+        luSWteN6787+5QTdHEH0//k=
+X-Google-Smtp-Source: APiQypKKRS01bxorhNYqVjDfr/jkl1Naig3EQeHWNAS87LrGoMEKiLN5XAlkjSAwd9SVuxZy3IrYvg==
+X-Received: by 2002:aed:2625:: with SMTP id z34mr4669835qtc.70.1586529503527;
+        Fri, 10 Apr 2020 07:38:23 -0700 (PDT)
+Received: from rani.riverdale.lan ([2001:470:1f07:5f3::b55f])
+        by smtp.gmail.com with ESMTPSA id t13sm614960qkt.62.2020.04.10.07.38.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 10 Apr 2020 07:38:22 -0700 (PDT)
+From:   Arvind Sankar <nivedita@alum.mit.edu>
+X-Google-Original-From: Arvind Sankar <arvind@rani.riverdale.lan>
+Date:   Fri, 10 Apr 2020 10:38:21 -0400
+To:     Thomas Meyer <thomas@m3y3r.de>
+Cc:     Arvind Sankar <nivedita@alum.mit.edu>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Borislav Petkov <bp@alien8.de>, Sergey Shatunov <me@prok.pw>,
+        hpa@zytor.com,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        mingo@redhat.com, Thomas Gleixner <tglx@linutronix.de>,
+        x86@kernel.org, linux-efi <linux-efi@vger.kernel.org>,
+        initramfs@vger.kernel.org,
+        Donovan Tremura <neurognostic@protonmail.ch>,
+        Harald Hoyer <harald@hoyer.xyz>
+Subject: Re: [PATCH 1/2] efi/x86: Move efi stub globals from .bss to .data
+Message-ID: <20200410143821.GB936997@rani.riverdale.lan>
+References: <CAMj1kXEUkJ1XJ9OTsijeq8tNNYC00bXqEV44OMtX5ugo9WoLKA@mail.gmail.com>
+ <20200406180614.429454-1-nivedita@alum.mit.edu>
+ <20200410112605.GA3344@localhost.localdomain>
 MIME-Version: 1.0
-References: <20200410074320.16589-1-ardb@kernel.org> <20200410135644.GB6772@dhcp-128-65.nay.redhat.com>
- <20200410140151.GC6772@dhcp-128-65.nay.redhat.com> <CAMj1kXEM13Y5FCh8GvJGTueen3fa0u_JX66j0X10KPf4Z0c4Jg@mail.gmail.com>
- <20200410143313.GB8205@zn.tnic>
-In-Reply-To: <20200410143313.GB8205@zn.tnic>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Fri, 10 Apr 2020 16:37:23 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXGn+RuJx2PJ+X5KJ3rtMyRRX2eOK2Zu5GuK1NHxum1M4w@mail.gmail.com>
-Message-ID: <CAMj1kXGn+RuJx2PJ+X5KJ3rtMyRRX2eOK2Zu5GuK1NHxum1M4w@mail.gmail.com>
-Subject: Re: [PATCH] efi/x86: Revert struct layout change to fix kexec boot regression
-To:     Borislav Petkov <bp@alien8.de>
-Cc:     Dave Young <dyoung@redhat.com>,
-        linux-efi <linux-efi@vger.kernel.org>, X86 ML <x86@kernel.org>,
-        "Theodore Y. Ts'o" <tytso@mit.edu>, Ingo Molnar <mingo@kernel.org>,
-        kexec@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20200410112605.GA3344@localhost.localdomain>
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, 10 Apr 2020 at 16:34, Borislav Petkov <bp@alien8.de> wrote:
->
-> On Fri, Apr 10, 2020 at 04:22:49PM +0200, Ard Biesheuvel wrote:
-> > > BTW, a fixes tag is good to have..
-> >
-> > I usually omit those for patches that fix bugs that were introduced in
-> > the current cycle.
->
-> A valid use case for having the Fixes: tag anyway are the backporting
-> kernels gangs which might pick up the first patch for whatever reason
-> and would probably be thankful if they find the second one, i.e., the
-> fix for the first one, through grepping or other, automated means.
->
+On Fri, Apr 10, 2020 at 01:26:05PM +0200, Thomas Meyer wrote:
+> On Mon, Apr 06, 2020 at 02:06:13PM -0400, Arvind Sankar wrote:
+> 
+> Hi,
+> 
+> I did write an email to x86@kernel.org, which sadly seems to have no
+> mailing list archive, I wonder if my problem has anything to do with the
+> patches you are discussing here:
+> 
+> I found this reply, which contains my original email in my inbox:
+> 
+> Subject: Kernel v5.5 doesn't boot on my x86 laptop
+> 
+> Hi,
+> 
+> I'm using an old MacBookPro1,1 to run Fedora 30 (the last one to support
+> x86) and a upstream up-to-date kernel, currently 5.4.16.
+> 
+> I'm using sd-boot to boot into an EFI-enabled kernel which contains
+> an embedded initram cpio image (because loading the image from kernel's
+> EFI stub doesn't seem to work for some unknown reason, I tried to debug
+> this but my early debugging foo is too weak).
+> 
+> Kernel 5.4.x works correctly with this setup (but resuming from disk
+> seems to have broken in 5.4.x or maybe even earlier - when resuming from
+> disk I get all kind of funky OOPSes/errors, but that's another story, hopefully
+> 5.5.x was fixed in this regards).
+> 
+> So I did have a look at the commits under arch/x86/boot and "x86/boot:
+> Introduce setup_indirect" (b3c72fc9a78e74161f9d05ef7191706060628f8c) did
+> talk about "bump setup_header version in arch/x86/boot/header.S", so I
+> did revert above commit and I was finally able to boot into v5.5 kernel!
+> 
+> So either sd-boot also needs an upgrade or this commit does break
+> something.
+> Any help is welcome, don't hesitate to get in contact with me if you
+> have any questions.
+> 
+> mfg
+> thomas
+>  
 
-Fair point.
+If it is a problem with 5.5, it would be unrelated to this thread, which
+is about problems introduced by patches for the upcoming 5.7.
+
+Thanks.
