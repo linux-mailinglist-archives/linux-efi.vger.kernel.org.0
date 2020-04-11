@@ -2,99 +2,95 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 824061A4D1D
-	for <lists+linux-efi@lfdr.de>; Sat, 11 Apr 2020 03:03:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A580E1A4E5C
+	for <lists+linux-efi@lfdr.de>; Sat, 11 Apr 2020 08:39:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726702AbgDKBDp (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 10 Apr 2020 21:03:45 -0400
-Received: from mail-qt1-f194.google.com ([209.85.160.194]:33313 "EHLO
-        mail-qt1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726671AbgDKBDp (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 10 Apr 2020 21:03:45 -0400
-Received: by mail-qt1-f194.google.com with SMTP id x2so2885666qtr.0;
-        Fri, 10 Apr 2020 18:03:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:from:date:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=VXcaUuCkQA9gomy0iPBx4UPJzC3ZDlPjCnEVyPOFA3o=;
-        b=EtSwTnjbcsUfIJlKvLBHj4S058hpEWb2V77G0Te1Zw/jLMpcUFnS/R/36H5VBiwyWd
-         uOgoZ37fJ2CMAKXkkfPVcmpw8FZLLSxZCV3eW8dBgRzURSKk+PTQwjBF9o+2xpmxRcAP
-         BVlslzzLlBYn4iRXPaL/o1ftRWPm10QTnKRgR/27o+7Phqb5V8Bz3hIZ78rh/gFjRE1R
-         WayeUQc+0FDUUYEwHBegeO+Nv/e7w1JXrvgyfutFNXQ/C/4hpZCiGy1WDT1vlCWChaL4
-         2umgrv1jYJ6tqeGOej5rTxxJcgfoHiOSgPm3ZQMgoS/R93SKvoNvJoNWTKWjKT/wKReC
-         O+9g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:from:date:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to;
-        bh=VXcaUuCkQA9gomy0iPBx4UPJzC3ZDlPjCnEVyPOFA3o=;
-        b=NokYYIQvoRD9bV+vgSZXWGVKwGef/Kdx6R7/Jvy5PTsMX9rBvKWIi9Btshf8Y/3VtF
-         QbnKhrHslkpXkoxKamrq3AojuoA6yVJeSBpSR+VbSF8NbN/JANcQzAHZRHAxhNcEhcXr
-         EBqYualiH/7pFRIjmPQvl2nWeu8V2s8wXatN5uDzUAFmcC8CZ28OW/grfhgNZ1tTLe5w
-         qIkYilqL+ECBqkMQZMDDmCLdFZoLT0COeCCoQP3LkwJ7w17GAUqsBKVGUXyQyNosf/d5
-         505Qn2A/JLlGdi56YP8nbgm3HLFA2oMGJWA0JdkRPSTDBtRqC3R2z6DxwQ0naiHF+X1I
-         zzHQ==
-X-Gm-Message-State: AGi0PuYN/dlAWur+4bjTTRmexlkxa66jr+idGjSH8EvVOgN3tYZzT8uz
-        TnfwXHv1OPH362+1rL4OtVE=
-X-Google-Smtp-Source: APiQypJtigfGLwOIVIZxFh/QuW7K6+8zqpuqE/VDcUiqppd8eMRh2alqeGY0iT1iq5bggEyRf3gSWQ==
-X-Received: by 2002:ac8:2afc:: with SMTP id c57mr1766733qta.324.1586567024512;
-        Fri, 10 Apr 2020 18:03:44 -0700 (PDT)
-Received: from rani.riverdale.lan ([2001:470:1f07:5f3::b55f])
-        by smtp.gmail.com with ESMTPSA id d4sm2881198qtc.48.2020.04.10.18.03.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Apr 2020 18:03:42 -0700 (PDT)
-From:   Arvind Sankar <nivedita@alum.mit.edu>
-X-Google-Original-From: Arvind Sankar <arvind@rani.riverdale.lan>
-Date:   Fri, 10 Apr 2020 21:03:40 -0400
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     Arvind Sankar <nivedita@alum.mit.edu>,
-        Brian Gerst <brgerst@gmail.com>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Ingo Molnar <mingo@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@suse.de>,
-        Colin Ian King <colin.king@canonical.com>,
-        Gary Lin <glin@suse.com>, Jiri Slaby <jslaby@suse.cz>,
-        Sergey Shatunov <me@prok.pw>, Takashi Iwai <tiwai@suse.de>
-Subject: Re: [PATCH 3/9] efi/x86: Move efi stub globals from .bss to .data
-Message-ID: <20200411010340.GA1612878@rani.riverdale.lan>
-References: <20200409130434.6736-1-ardb@kernel.org>
- <20200409130434.6736-4-ardb@kernel.org>
- <CAMzpN2gJWwVun1Kp6vGuza9LM5KpB=0EwsP8x8eOJQuDGh38Hg@mail.gmail.com>
- <CAMzpN2jFbf8k99pWaTYRBmSB+iNAKYsufjEhqO6Vv0qxAcHyGA@mail.gmail.com>
- <20200409210847.GA1312580@rani.riverdale.lan>
- <CAMj1kXFhtK=FRDKBE5OtenNEtpK=kVwyo+0nqJZ_K80RmtYxEg@mail.gmail.com>
- <20200410151612.GA970420@rani.riverdale.lan>
- <CAMj1kXGMNMdgjinYNgrN2wGRFG4rKE2YHo-=3s4Ofv2KPUMqKQ@mail.gmail.com>
- <20200410180123.GA1155098@rani.riverdale.lan>
- <CAMj1kXGW6V8Zif7-95MbivNgtDoufVt=uMDtYuFvEJCzOub+sA@mail.gmail.com>
+        id S1725945AbgDKGjM (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 11 Apr 2020 02:39:12 -0400
+Received: from mail.kernel.org ([198.145.29.99]:42364 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725867AbgDKGjM (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Sat, 11 Apr 2020 02:39:12 -0400
+Received: from mail-io1-f53.google.com (mail-io1-f53.google.com [209.85.166.53])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id E308220B1F;
+        Sat, 11 Apr 2020 06:39:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1586587152;
+        bh=HWHJPILduYQ1xyphNec7DOITk86Vn5G/w09Haiir/sA=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=2bxSJTfwvDlWdTGtWjUGaQVjdIAW3wlH2dnhCg+UsVP+/XJVPW+UQSV2VyMX7vDB5
+         U5cSy1RBE+wsMLEQlxLCJ8QVLSPWC0KMZC5pEVGpJnkggl2weuJFfnDVNvsFouSrTj
+         EdTCPYGwoEujo/7RJXpC8G/wsKU6a/EB3niZFn+E=
+Received: by mail-io1-f53.google.com with SMTP id f19so3860394iog.5;
+        Fri, 10 Apr 2020 23:39:11 -0700 (PDT)
+X-Gm-Message-State: AGi0PuZd4R8iQjmVAsnO9idJeGqqbHwulcmwPiRbeHL7pbrDzXtCRxNA
+        ebmGyPPJe4p9VWb3UvMhyc8ftDjY0rZRjh5vvZU=
+X-Google-Smtp-Source: APiQypIMmf7iuMrn+v96ksMmp4R4knwgBE9EtdO4mm3/ygCFmgX4pZmQEx0xIgsOg3CvkN2fbHC6a6RymqdyTVY+flk=
+X-Received: by 2002:a02:7785:: with SMTP id g127mr7528307jac.134.1586587151371;
+ Fri, 10 Apr 2020 23:39:11 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CAMj1kXGW6V8Zif7-95MbivNgtDoufVt=uMDtYuFvEJCzOub+sA@mail.gmail.com>
+References: <1586468669-21456-1-git-send-email-victor.erminpour@oracle.com>
+ <CAMj1kXGgYYx=9rq-Ficw3vS6FX_0nb-hRStXijh7H4zdD=+Gaw@mail.gmail.com> <aee6c7cc-24c7-2822-47d5-1e05413a8024@oracle.com>
+In-Reply-To: <aee6c7cc-24c7-2822-47d5-1e05413a8024@oracle.com>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Sat, 11 Apr 2020 08:39:00 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXFF3gR+LyE1VbLuwnRA3CzQtF90mv7rpw9x2RcyugO1JA@mail.gmail.com>
+Message-ID: <CAMj1kXFF3gR+LyE1VbLuwnRA3CzQtF90mv7rpw9x2RcyugO1JA@mail.gmail.com>
+Subject: Re: [PATCH] efi/libstub/arm64: Enable __efistub_global define in
+ .data section
+To:     Victor Erminpour <victor.erminpour@oracle.com>,
+        Arvind Sankar <nivedita@alum.mit.edu>
+Cc:     linux-efi <linux-efi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, Apr 10, 2020 at 08:03:15PM +0200, Ard Biesheuvel wrote:
-> > >
-> > > We'll still need .data.efistub for the .data pieces, but that is a
-> > > separate issue.
+On Sat, 11 Apr 2020 at 00:12, Victor Erminpour
+<victor.erminpour@oracle.com> wrote:
+>
+>
+>
+> On 4/10/20 1:09 AM, Ard Biesheuvel wrote:
+> > On Thu, 9 Apr 2020 at 23:44, Victor Erminpour
+> > <victor.erminpour@oracle.com> wrote:
+> >>
+> >> Enable the __efistub_global define to place variables in the
+> >> .data section for both CONFIG_ARM and CONFIG_ARM64.
+> >>
+> >> This places the EFIstub sys_table variable and other EFIstub
+> >> static variables in the .data section for both CONFIG_ARM and
+> >> CONFIG_ARM64.
+> >>
 > >
-> > You can avoid that by using an archive specification like above. i.e.
-> > adding
-> >         drivers/firmware/efi/libstub/lib.a:(.data .data.*)
-> > to the .init.data output section will pull in just the .data input
-> > sections from the EFI stub into the .init.data section.
-> 
-> Sure. But the ARM decompressor linker script currently discards .data
-> before this point in the linker script, and relies on this as a safety
-> net to ensure that no new .data items get added to the decompressor
-> binary (which runs after the stub)
+> > What does that achieve?
+>
+> Hi Ard,
+>
+> Without placing these global variables in .data, I get the
+> following errors when booting an ARM64 EFI system:
+>
+> EFI stub: ERROR: Exit boot services failed.
+> EFI stub: ERROR: Failed to update FDT and exit boot services
+>
 
-You should be able to use EXCLUDE_FILE to skip discarding the .data
-section from libstub. That also supports the archive: syntax according
-to the docs though I haven't tried it.
+Which boot loader are you using? Does this involve shim?
+
+Also, does it help if you add 'efi=no_disable_early_pci_dma'?
+
+
+>
+> I know that the ARM64 linker script is supposed to put the
+> .init.bss into the .init.data section, but I don't think this
+> is happening for all systems.
+>
+> Having it explicitly enabled for CONFIG_ARM64 worked for me.
+>
+
+OK, thanks for the report. However, we will be removing
+__efistub_global entirely during the next cycle, so this is not the
+right fix.
