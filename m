@@ -2,64 +2,85 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 31BA31A5393
-	for <lists+linux-efi@lfdr.de>; Sat, 11 Apr 2020 21:44:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B50591A5C0A
+	for <lists+linux-efi@lfdr.de>; Sun, 12 Apr 2020 04:49:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726204AbgDKToq (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sat, 11 Apr 2020 15:44:46 -0400
-Received: from outgoing-auth-1.mit.edu ([18.9.28.11]:57761 "EHLO
-        outgoing.mit.edu" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726167AbgDKTop (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sat, 11 Apr 2020 15:44:45 -0400
-Received: from callcc.thunk.org (pool-72-93-95-157.bstnma.fios.verizon.net [72.93.95.157])
-        (authenticated bits=0)
-        (User authenticated as tytso@ATHENA.MIT.EDU)
-        by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 03BJhp5B029461
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Sat, 11 Apr 2020 15:43:52 -0400
-Received: by callcc.thunk.org (Postfix, from userid 15806)
-        id 9189742013D; Sat, 11 Apr 2020 15:43:51 -0400 (EDT)
-Date:   Sat, 11 Apr 2020 15:43:51 -0400
-From:   "Theodore Y. Ts'o" <tytso@mit.edu>
-To:     Dave Young <dyoung@redhat.com>
-Cc:     Ard Biesheuvel <ardb@kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Ingo Molnar <mingo@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        kexec@lists.infradead.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Arvind Sankar <nivedita@alum.mit.edu>,
-        Borislav Petkov <bp@suse.de>,
-        Colin Ian King <colin.king@canonical.com>,
-        Gary Lin <glin@suse.com>, Jiri Slaby <jslaby@suse.cz>,
-        Sergey Shatunov <me@prok.pw>, Takashi Iwai <tiwai@suse.de>
-Subject: Re: [GIT PULL 0/9] EFI fixes for v5.7-rc
-Message-ID: <20200411194351.GQ45598@mit.edu>
-References: <20200409130434.6736-1-ardb@kernel.org>
- <20200409190109.GB45598@mit.edu>
- <CAMj1kXGiA3PAybR7r9tatL7WV5iU7B1OQxQok3d-JmRnhX1TnA@mail.gmail.com>
- <20200409201632.GC45598@mit.edu>
- <CAMj1kXFqKGSqm_y+ht4mmmu10TrhSyiTG8V3PxRYGodpZ=xNFQ@mail.gmail.com>
- <20200409235716.GF45598@mit.edu>
- <CAMj1kXH4VtNcJugpG_UR10ewGiOApTiw=C3FsuyAQQyg67Q8Aw@mail.gmail.com>
- <20200410135442.GA6772@dhcp-128-65.nay.redhat.com>
+        id S1726155AbgDLCti (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 11 Apr 2020 22:49:38 -0400
+Received: from us-smtp-2.mimecast.com ([207.211.31.81]:20422 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726108AbgDLCth (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sat, 11 Apr 2020 22:49:37 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1586659777;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type;
+        bh=VogcAM4f+7ZYGZP3VmVCoYpWE3MtWwpRfqsHtlQY+ws=;
+        b=ZNX4gvd86QfeJWXqc6fYzzFahZHRnQM8PD8GDONaugGLIiF8GzGjFGn97uaHvkC9jCdYNT
+        /D/6nGUcBvXR0/AwdOpReIiA47fh0iHB0ikuYCbDkRJbyONAA31revLF4g6KTdFmwtScau
+        CDwwRv59/3jc/RVLuRa8PADZHQwR0Y4=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-415-iwefRy8oOki2qNz0nU7NVA-1; Sat, 11 Apr 2020 22:49:34 -0400
+X-MC-Unique: iwefRy8oOki2qNz0nU7NVA-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id C977A107ACC9;
+        Sun, 12 Apr 2020 02:49:33 +0000 (UTC)
+Received: from dhcp-128-65.nay.redhat.com (ovpn-12-101.pek2.redhat.com [10.72.12.101])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id E5514CFDE3;
+        Sun, 12 Apr 2020 02:49:31 +0000 (UTC)
+Date:   Sun, 12 Apr 2020 10:49:27 +0800
+From:   Dave Young <dyoung@redhat.com>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] efi/earlycon: fix early printk for wider fonts
+Message-ID: <20200412024927.GA6884@dhcp-128-65.nay.redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200410135442.GA6772@dhcp-128-65.nay.redhat.com>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, Apr 10, 2020 at 09:54:42PM +0800, Dave Young wrote:
-> 
-> The runtime cleanup looks a very good one, but I also missed that,
-> userspace kexec-tools will break with the efi setup_data changes. But
-> kexec_file_load will just work with the cleanup applied.
+When I play with terminus fonts I noticed the efi early printk does
+not work because the earlycon code assumes font width is 8.
 
-Hmmm, I wonder if there could be some kselftest or kunit tests that
-would make it easier to pick up these sorts of regressions earlier?
+Here add the code to adapt with larger fonts.  Tested with all kinds
+of kernel built-in fonts on my laptop. Also tested with a local draft
+patch for 14x28 !bold terminus font.
 
-      	      	     	     	      	    - Ted
+Signed-off-by: Dave Young <dyoung@redhat.com>
+---
+ drivers/firmware/efi/earlycon.c |   14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
+
+--- linux-x86.orig/drivers/firmware/efi/earlycon.c
++++ linux-x86/drivers/firmware/efi/earlycon.c
+@@ -114,14 +114,16 @@ static void efi_earlycon_write_char(u32
+ 	const u32 color_black = 0x00000000;
+ 	const u32 color_white = 0x00ffffff;
+ 	const u8 *src;
+-	u8 s8;
+-	int m;
++	int m, n, bytes;
++	u8 x;
+ 
+-	src = font->data + c * font->height;
+-	s8 = *(src + h);
++	bytes = BITS_TO_BYTES(font->width);
++	src = font->data + c * font->height * bytes + h * bytes;
+ 
+-	for (m = 0; m < 8; m++) {
+-		if ((s8 >> (7 - m)) & 1)
++	for (m = 0; m < font->width; m++) {
++		n = m % 8;
++		x = *(src + m / 8);
++		if ((x >> (7 - n)) & 1)
+ 			*dst = color_white;
+ 		else
+ 			*dst = color_black;
+
