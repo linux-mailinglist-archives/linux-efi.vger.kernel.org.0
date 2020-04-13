@@ -2,87 +2,87 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CA81C1A6936
-	for <lists+linux-efi@lfdr.de>; Mon, 13 Apr 2020 17:55:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4481C1A6937
+	for <lists+linux-efi@lfdr.de>; Mon, 13 Apr 2020 17:55:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731165AbgDMPza (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 13 Apr 2020 11:55:30 -0400
-Received: from mail.kernel.org ([198.145.29.99]:56630 "EHLO mail.kernel.org"
+        id S1731167AbgDMPze (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 13 Apr 2020 11:55:34 -0400
+Received: from mail.kernel.org ([198.145.29.99]:56672 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730923AbgDMPz3 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Mon, 13 Apr 2020 11:55:29 -0400
+        id S1730923AbgDMPzc (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Mon, 13 Apr 2020 11:55:32 -0400
 Received: from e123331-lin.home (amontpellier-657-1-18-247.w109-210.abo.wanadoo.fr [109.210.65.247])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 94EFF20656;
-        Mon, 13 Apr 2020 15:55:26 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 5B76C20739;
+        Mon, 13 Apr 2020 15:55:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1586793328;
-        bh=KTk9cwV2T7FyWit4wXThuE2JxgSVPpcA0ysORxgBS4A=;
-        h=From:To:Cc:Subject:Date:From;
-        b=ourQLy0Pu50wfyvmPf0GEFw6SRXfymR7uwYQ6s5a0bKlQDWia3uriewvRTq9fm0C6
-         r2I9mTKQxpfeWX+DRLGVIcFkgydSJmh6AFNqKWoWIPFTO1D7sIkt9F7d8H3aimkvIV
-         kCbo25zAlrlaefFHeNSkWR+iKDNJbrH2GQMxl3dI=
+        s=default; t=1586793331;
+        bh=BUDRicBn8f0ZY8ppIfG0csRmOCIXJIw2tlzx7xNVDnw=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=Fw+jw5m5kVq0nwtcd5wSaX+y+J63IlU5bU5zu0fCjN72+FoqAi62rLYWY6i2erMJ/
+         gzbO5OSTQhM8UNd/4dvKXB8P6L1HFYMJApMuIOu0AGPgznh/zGy8nrLPWkpgMnO44S
+         3dZmdxXw4dpTgnaUIdaUJMshUNGnuHYA7LTMRyps=
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-efi@vger.kernel.org
 Cc:     linux-arm-kernel@lists.infradead.org, mark.rutland@arm.com,
         catalin.marinas@arm.com, will@kernel.org,
         Jonathan.Cameron@huawei.com, nivedita@alum.mit.edu,
         Ard Biesheuvel <ardb@kernel.org>
-Subject: [PATCH v2 0/8] efi/libstub: simplify arm64 kernel image loading
-Date:   Mon, 13 Apr 2020 17:55:13 +0200
-Message-Id: <20200413155521.24698-1-ardb@kernel.org>
+Subject: [PATCH v2 1/8] efi/libstub/random: align allocate size to EFI_ALLOC_ALIGN
+Date:   Mon, 13 Apr 2020 17:55:14 +0200
+Message-Id: <20200413155521.24698-2-ardb@kernel.org>
 X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20200413155521.24698-1-ardb@kernel.org>
+References: <20200413155521.24698-1-ardb@kernel.org>
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On arm64, the kernel image used to be virtually mapped via the linear
-region, making the two mappings correlated in a way that required the
-kernel to be located at the start of the linear region, or the memory
-below would not be accessible. For this reason, the EFI stub loader
-code for arm64 has the notion of a 'preferred offset' for the physical
-placement of the kernel image, and tries to put the kernel there, or
-at least as low as possible in physical memory (unless KASLR is active,
-in which case the placement is randomized)
+The EFI stub uses a per-architecture #define for the minimum base
+and size alignment of page allocations, which is set to 4 KB for
+all architecures except arm64, which uses 64 KB, to ensure that
+allocations can always be (un)mapped efficiently, regardless of
+the page size used by the kernel proper, which could be a kexec'ee
 
-When KASLR was introduced, the virtual mapping of the kernel was moved
-into the vmalloc region, and now, regardless of whether KASLR support
-is built in or active, the kernel can be placed anywhere in physical
-memory without any detrimental side effects on the linear region.
+The API wrappers around page based allocations assume that this
+alignment is always taken into account, and so efi_free() will
+also round up its size argument to EFI_ALLOC_ALIGN.
 
-This means that we can drop the notion of 'preferred offset' entirely,
-and invoke the kernel in place if the PE/COFF loader loaded it at the
-right offset. If not, we can invoke the ordinary UEFI top down page
-allocator to reallocate it elsewhere in memory. By updating the PE/COFF
-metadata, we can inform the PE/COFF loader about the desired alignment,
-making it less likely that we need to move the kernel image in the first
-place.
+Currently, efi_random_alloc() does not honour this alignment for
+the allocated size, and so freeing such an allocation may result
+in unrelated memory to be freed, potentially leading to issues
+after boot. So let's round up size in efi_random_alloc() as well.
 
-Ard Biesheuvel (8):
-  efi/libstub/random: align allocate size to EFI_ALLOC_ALIGN
-  efi/libstub/random: increase random alloc granularity
-  efi/libstub/arm64: replace 'preferred' offset with alignment check
-  efi/libstub/arm64: simplify randomized loading of kernel image
-  efi/libstub/arm64: align PE/COFF sections to segment alignment
-  efi/libstub: add API function to allocate aligned memory
-  efi/libstub/arm64: switch to ordinary page allocator for kernel image
-  efi/libstub: move efi_relocate_kernel() into separate source file
+Fixes: 2ddbfc81eac84a29 ("efi: stub: add implementation of efi_random_alloc()")
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+---
+ drivers/firmware/efi/libstub/randomalloc.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
- arch/arm64/kernel/efi-header.S             |   2 +-
- arch/arm64/kernel/vmlinux.lds.S            |   3 +-
- drivers/firmware/efi/libstub/Makefile      |   3 +-
- drivers/firmware/efi/libstub/alignedmem.c  |  57 ++++++
- drivers/firmware/efi/libstub/arm64-stub.c  |  92 +++-------
- drivers/firmware/efi/libstub/efistub.h     |  18 +-
- drivers/firmware/efi/libstub/mem.c         | 191 +-------------------
- drivers/firmware/efi/libstub/randomalloc.c |   6 +-
- drivers/firmware/efi/libstub/relocate.c    | 174 ++++++++++++++++++
- 9 files changed, 280 insertions(+), 266 deletions(-)
- create mode 100644 drivers/firmware/efi/libstub/alignedmem.c
- create mode 100644 drivers/firmware/efi/libstub/relocate.c
-
+diff --git a/drivers/firmware/efi/libstub/randomalloc.c b/drivers/firmware/efi/libstub/randomalloc.c
+index 4578f59e160c..6200dfa650f5 100644
+--- a/drivers/firmware/efi/libstub/randomalloc.c
++++ b/drivers/firmware/efi/libstub/randomalloc.c
+@@ -74,6 +74,8 @@ efi_status_t efi_random_alloc(unsigned long size,
+ 	if (align < EFI_ALLOC_ALIGN)
+ 		align = EFI_ALLOC_ALIGN;
+ 
++	size = round_up(size, EFI_ALLOC_ALIGN);
++
+ 	/* count the suitable slots in each memory map entry */
+ 	for (map_offset = 0; map_offset < map_size; map_offset += desc_size) {
+ 		efi_memory_desc_t *md = (void *)memory_map + map_offset;
+@@ -109,7 +111,7 @@ efi_status_t efi_random_alloc(unsigned long size,
+ 		}
+ 
+ 		target = round_up(md->phys_addr, align) + target_slot * align;
+-		pages = round_up(size, EFI_PAGE_SIZE) / EFI_PAGE_SIZE;
++		pages = size / EFI_PAGE_SIZE;
+ 
+ 		status = efi_bs_call(allocate_pages, EFI_ALLOCATE_ADDRESS,
+ 				     EFI_LOADER_DATA, pages, &target);
 -- 
 2.17.1
 
