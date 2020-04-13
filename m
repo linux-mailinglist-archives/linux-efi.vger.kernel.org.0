@@ -2,36 +2,36 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7CCDA1A693A
-	for <lists+linux-efi@lfdr.de>; Mon, 13 Apr 2020 17:55:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3FEA31A693B
+	for <lists+linux-efi@lfdr.de>; Mon, 13 Apr 2020 17:55:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731169AbgDMPzl (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 13 Apr 2020 11:55:41 -0400
-Received: from mail.kernel.org ([198.145.29.99]:56832 "EHLO mail.kernel.org"
+        id S1731170AbgDMPzm (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 13 Apr 2020 11:55:42 -0400
+Received: from mail.kernel.org ([198.145.29.99]:56882 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731168AbgDMPzk (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Mon, 13 Apr 2020 11:55:40 -0400
+        id S1731168AbgDMPzm (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Mon, 13 Apr 2020 11:55:42 -0400
 Received: from e123331-lin.home (amontpellier-657-1-18-247.w109-210.abo.wanadoo.fr [109.210.65.247])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A30C820656;
-        Mon, 13 Apr 2020 15:55:37 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id E10472074B;
+        Mon, 13 Apr 2020 15:55:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1586793339;
-        bh=VaI+rKotkHbmEOBPfdJZ7MBqgoLLXlfnO+NwSu9169I=;
+        s=default; t=1586793341;
+        bh=+Tttb0huoTKw4Ijl4wZLMTzjGhDuFYIUmN0xtS3Uu8k=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CYa+62IFPe+5jhDiE0ClLd93M9boPUkagr66R+g0/apFWpnNvsSwLYm/G+DsJ9+JM
-         8fLRcJ8K7RfMJYIBj3b0F2ilO+qO3nfqrFksOUaw8I2Ez8s4BYaGF3sLwcTPdl1ZXJ
-         GNFhkMTVJheVx6HRogegHJIToS8wi4YF9kQ7Zaq8=
+        b=aYt4ZJwov+lrO9dBwuFbE+/3tT7eKk4Q4lPtkNDOCp6pDeidruxK0ndeNlAMftJ/6
+         EE55wHJhPL7J0Qnrw1Di8SZ6hArpEGneqpIU8YHS27gIOMqK78Xp+dh58o1RQgJ38b
+         xiQC1am92GQc/1nJS7JAq1KKdLpCkx6a3RB81Fw0=
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-efi@vger.kernel.org
 Cc:     linux-arm-kernel@lists.infradead.org, mark.rutland@arm.com,
         catalin.marinas@arm.com, will@kernel.org,
         Jonathan.Cameron@huawei.com, nivedita@alum.mit.edu,
         Ard Biesheuvel <ardb@kernel.org>
-Subject: [PATCH v2 4/8] efi/libstub/arm64: simplify randomized loading of kernel image
-Date:   Mon, 13 Apr 2020 17:55:17 +0200
-Message-Id: <20200413155521.24698-5-ardb@kernel.org>
+Subject: [PATCH v2 5/8] efi/libstub/arm64: align PE/COFF sections to segment alignment
+Date:   Mon, 13 Apr 2020 17:55:18 +0200
+Message-Id: <20200413155521.24698-6-ardb@kernel.org>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200413155521.24698-1-ardb@kernel.org>
 References: <20200413155521.24698-1-ardb@kernel.org>
@@ -40,91 +40,56 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The KASLR code path in the arm64 version of the EFI stub incorporates
-some overly complicated logic to randomly allocate a region of the right
-alignment: there is no need to randomize the placement of the kernel
-modulo 2 MiB separately from the placement of the 2 MiB aligned allocation
-itself - we can simply follow the same logic used by the non-randomized
-placement, which is to allocate at the correct alignment, and only take
-TEXT_OFFSET into account if it is not a round multiple of the alignment.
+The arm64 kernel's segment alignment is fixed at 64 KB for any page
+size, and relocatable kernels are able to fix up any misalignment of
+the kernel image with respect to the 2 MB section alignment that is
+mandated by the arm64 boot protocol.
+
+Let's increase the PE/COFF section alignment to the same value, so that
+kernels loaded by the UEFI PE/COFF loader are guaranteed to end up at
+an address that doesn't require any reallocation to be done if the
+kernel is relocatable.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- drivers/firmware/efi/libstub/arm64-stub.c | 32 +++-----------------
- 1 file changed, 5 insertions(+), 27 deletions(-)
+ arch/arm64/kernel/efi-header.S  | 2 +-
+ arch/arm64/kernel/vmlinux.lds.S | 3 ++-
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/firmware/efi/libstub/arm64-stub.c b/drivers/firmware/efi/libstub/arm64-stub.c
-index cfd535c13242..6fc3bd9a56db 100644
---- a/drivers/firmware/efi/libstub/arm64-stub.c
-+++ b/drivers/firmware/efi/libstub/arm64-stub.c
-@@ -52,7 +52,7 @@ efi_status_t handle_kernel_image(unsigned long *image_addr,
- {
- 	efi_status_t status;
- 	unsigned long kernel_size, kernel_memsize = 0;
--	u64 phys_seed = 0;
-+	u32 phys_seed = 0;
+diff --git a/arch/arm64/kernel/efi-header.S b/arch/arm64/kernel/efi-header.S
+index 914999ccaf8a..6f58998ef647 100644
+--- a/arch/arm64/kernel/efi-header.S
++++ b/arch/arm64/kernel/efi-header.S
+@@ -32,7 +32,7 @@ optional_header:
  
- 	if (IS_ENABLED(CONFIG_RANDOMIZE_BASE)) {
- 		if (!nokaslr()) {
-@@ -74,36 +74,15 @@ efi_status_t handle_kernel_image(unsigned long *image_addr,
- 
- 	kernel_size = _edata - _text;
- 	kernel_memsize = kernel_size + (_end - _edata);
-+	*reserve_size = kernel_memsize + TEXT_OFFSET % min_kimg_align;
- 
- 	if (IS_ENABLED(CONFIG_RANDOMIZE_BASE) && phys_seed != 0) {
--		/*
--		 * Produce a displacement in the interval [0, MIN_KIMG_ALIGN)
--		 * that doesn't violate this kernel's de-facto alignment
--		 * constraints.
--		 */
--		u32 mask = (MIN_KIMG_ALIGN - 1) & ~(EFI_KIMG_ALIGN - 1);
--		u32 offset = (phys_seed >> 32) & mask;
--
--		/*
--		 * With CONFIG_RANDOMIZE_TEXT_OFFSET=y, TEXT_OFFSET may not
--		 * be a multiple of EFI_KIMG_ALIGN, and we must ensure that
--		 * we preserve the misalignment of 'offset' relative to
--		 * EFI_KIMG_ALIGN so that statically allocated objects whose
--		 * alignment exceeds PAGE_SIZE appear correctly aligned in
--		 * memory.
--		 */
--		offset |= TEXT_OFFSET % EFI_KIMG_ALIGN;
--
- 		/*
- 		 * If KASLR is enabled, and we have some randomness available,
- 		 * locate the kernel at a randomized offset in physical memory.
- 		 */
--		*reserve_size = kernel_memsize + offset;
--		status = efi_random_alloc(*reserve_size,
--					  MIN_KIMG_ALIGN, reserve_addr,
--					  (u32)phys_seed);
--
--		*image_addr = *reserve_addr + offset;
-+		status = efi_random_alloc(*reserve_size, min_kimg_align,
-+					  reserve_addr, phys_seed);
- 	} else {
- 		status = EFI_OUT_OF_RESOURCES;
- 	}
-@@ -119,7 +98,6 @@ efi_status_t handle_kernel_image(unsigned long *image_addr,
- 			return EFI_SUCCESS;
- 		}
- 
--		*reserve_size = kernel_memsize + TEXT_OFFSET % min_kimg_align;
- 		status = efi_low_alloc(*reserve_size,
- 				       min_kimg_align, reserve_addr);
- 
-@@ -128,9 +106,9 @@ efi_status_t handle_kernel_image(unsigned long *image_addr,
- 			*reserve_size = 0;
- 			return status;
- 		}
--		*image_addr = *reserve_addr + TEXT_OFFSET % min_kimg_align;
+ extra_header_fields:
+ 	.quad	0					// ImageBase
+-	.long	SZ_4K					// SectionAlignment
++	.long	SEGMENT_ALIGN				// SectionAlignment
+ 	.long	PECOFF_FILE_ALIGNMENT			// FileAlignment
+ 	.short	0					// MajorOperatingSystemVersion
+ 	.short	0					// MinorOperatingSystemVersion
+diff --git a/arch/arm64/kernel/vmlinux.lds.S b/arch/arm64/kernel/vmlinux.lds.S
+index 497f9675071d..1d399db0644f 100644
+--- a/arch/arm64/kernel/vmlinux.lds.S
++++ b/arch/arm64/kernel/vmlinux.lds.S
+@@ -175,7 +175,7 @@ SECTIONS
+ 		*(.altinstr_replacement)
  	}
  
-+	*image_addr = *reserve_addr + TEXT_OFFSET % min_kimg_align;
- 	memcpy((void *)*image_addr, _text, kernel_size);
+-	. = ALIGN(PAGE_SIZE);
++	. = ALIGN(SEGMENT_ALIGN);
+ 	__inittext_end = .;
+ 	__initdata_begin = .;
  
- 	return EFI_SUCCESS;
+@@ -246,6 +246,7 @@ SECTIONS
+ 	. += INIT_DIR_SIZE;
+ 	init_pg_end = .;
+ 
++	. = ALIGN(SEGMENT_ALIGN);
+ 	__pecoff_data_size = ABSOLUTE(. - __initdata_begin);
+ 	_end = .;
+ 
 -- 
 2.17.1
 
