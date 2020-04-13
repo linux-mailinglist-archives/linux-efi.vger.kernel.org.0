@@ -2,120 +2,145 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 51E361A6EBE
-	for <lists+linux-efi@lfdr.de>; Mon, 13 Apr 2020 23:54:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F12E1A6F86
+	for <lists+linux-efi@lfdr.de>; Tue, 14 Apr 2020 00:57:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389337AbgDMVyN (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 13 Apr 2020 17:54:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51990 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S2389286AbgDMVyL (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 13 Apr 2020 17:54:11 -0400
-Received: from mail-wm1-x342.google.com (mail-wm1-x342.google.com [IPv6:2a00:1450:4864:20::342])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A45DC0A3BE2
-        for <linux-efi@vger.kernel.org>; Mon, 13 Apr 2020 14:54:11 -0700 (PDT)
-Received: by mail-wm1-x342.google.com with SMTP id e26so10823827wmk.5
-        for <linux-efi@vger.kernel.org>; Mon, 13 Apr 2020 14:54:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=atishpatra.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=n2YrxFswkx7hDllVIsDVbzNNztgUR6Vkh9Ws2W9v0sU=;
-        b=S9tY0EwJ0DuckJovjeInEXlrGKO2+8M+UJjAQNxtSEHCABWcJrCv/FH8NxKGKNYGgk
-         eyx0wTZ5zhhpfDX1eFiNK7yAbuWgJ3GrMZ0cinZzhaqluce2O7yyc1PXRfrsWqI0N7mH
-         f9iB6dT8Fbpxh4Vmc19lHugKZi/s6WM4hqAbOWtMw5baLt1tc5TNXR7//SDq/IcUyAbw
-         lQVSvBUJnK4g8MhUdHCQjuoczqcMFlRzHMDNpZZyLZb1d2p7bZac1MTQ21FKk2tHTMxV
-         Pv7pBwT1bKUu8LgcDVVS+Vv37thyxOSQTxmqu9lBp7VR0gtifwgNeL7cbJwW86dACaYK
-         rGEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=n2YrxFswkx7hDllVIsDVbzNNztgUR6Vkh9Ws2W9v0sU=;
-        b=EEktAhpQjUr5G25xsqzuYd9CppGyQOZEiTQwK/XPYTwYTj07ohygGWX7Nxeuovq6D8
-         nzzJM4KglATdsTpTbR21mzDeLMVcfTXz+/Nu+87cerZFEtRsxHBhr+QQAQDh6tPqK8rB
-         edhu/Pmj9W/X8E5cfaGRD3e/lQY55ggph71cgGtAIMf12P93YfW1kvPj9KeShRELlPc8
-         7EIK7Mwci91j3pe/uhfUTlx+oVf4JIpKsWoG8x8XGdt4o7Erh+C+FkZok2U4P9HQzIad
-         lfFl2edLd521WgW+Oe/2g9LtFgaM6gxI6Af+l6qo1gyLS/mAMKymrzrb9ckqz1xoBhBd
-         WO3Q==
-X-Gm-Message-State: AGi0PuZSSPGYwwoGNfYFy6eb//G9M2zJnSJjYwqFHzudoa7exZf77HMg
-        5Jow6nLzPJrIXZAp9/XvrBQUbvvfNB2ACH8CFIglOO4=
-X-Google-Smtp-Source: APiQypLR+TgWBKP/kkMmQfl3pNKIeF2HWnQrkpYuKf4da4NMDuLoi6OHvBqTmJaukhMVepYAflj20L2qUMY42xQhy9s=
-X-Received: by 2002:a7b:cdfa:: with SMTP id p26mr9270601wmj.186.1586814849695;
- Mon, 13 Apr 2020 14:54:09 -0700 (PDT)
+        id S2389808AbgDMW5I (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 13 Apr 2020 18:57:08 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:55490 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728050AbgDMW5E (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 13 Apr 2020 18:57:04 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 03DMmxX5187003;
+        Mon, 13 Apr 2020 22:56:59 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=corp-2020-01-29;
+ bh=kUafvIvIPEKhK0ZXAQkw9p3e5TfvCeEnK9SeWV6yrHg=;
+ b=aBq0BzhwY30bedc966EA/bLXU7M3sR/OI7yFtL8iWYhxsiQJW1SPWAo3INkFvLot96uA
+ pluohDXKBDF0WwGzZO//4JJfcAghjUWwh5aCmzEJnIHl2zrPzhSEvsUvXEaPoRxs0g5z
+ BDIcAXJMZC7aejTrzc9uLanfyF2GZMnHz3kBWk0uUZZq3kMgfS7v5Ki7FYHpy7soG9e7
+ x1g/ZWqKlhTQIPxJnk/oJwXcorxbbkF8177UGchhjImHD6w5Opht6yuuyJRjp11CF8F7
+ 66E7fanNgdirIl0rsq69gmyQam2AcAWQ+DNZyXYp3b+Hy7Uh6wyd48ea2rdp4vgs6F44 Pw== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2130.oracle.com with ESMTP id 30b5ar19v1-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 13 Apr 2020 22:56:59 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 03DMgupn047458;
+        Mon, 13 Apr 2020 22:56:59 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by userp3020.oracle.com with ESMTP id 30bqkynmxk-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 13 Apr 2020 22:56:58 +0000
+Received: from abhmp0002.oracle.com (abhmp0002.oracle.com [141.146.116.8])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 03DMuwm3031399;
+        Mon, 13 Apr 2020 22:56:58 GMT
+Received: from [10.159.254.43] (/10.159.254.43)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 13 Apr 2020 15:56:57 -0700
+Subject: Re: [PATCH] efi/libstub/arm64: Enable __efistub_global define in
+ .data section
+To:     Ard Biesheuvel <ardb@kernel.org>,
+        Arvind Sankar <nivedita@alum.mit.edu>
+Cc:     linux-efi <linux-efi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+References: <1586468669-21456-1-git-send-email-victor.erminpour@oracle.com>
+ <CAMj1kXGgYYx=9rq-Ficw3vS6FX_0nb-hRStXijh7H4zdD=+Gaw@mail.gmail.com>
+ <aee6c7cc-24c7-2822-47d5-1e05413a8024@oracle.com>
+ <CAMj1kXFF3gR+LyE1VbLuwnRA3CzQtF90mv7rpw9x2RcyugO1JA@mail.gmail.com>
+From:   Victor Erminpour <victor.erminpour@oracle.com>
+Organization: Oracle America
+Message-ID: <95f421ad-6ba7-b968-d605-c464bc1df4e2@oracle.com>
+Date:   Mon, 13 Apr 2020 15:56:40 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
 MIME-Version: 1.0
-References: <20200413155521.24698-1-ardb@kernel.org>
-In-Reply-To: <20200413155521.24698-1-ardb@kernel.org>
-From:   Atish Patra <atishp@atishpatra.org>
-Date:   Mon, 13 Apr 2020 14:53:58 -0700
-Message-ID: <CAOnJCULxNtk99sudMD5Rn5ao0orwcarOAwg7NPXMK6ZdXmwNOA@mail.gmail.com>
-Subject: Re: [PATCH v2 0/8] efi/libstub: simplify arm64 kernel image loading
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     linux-efi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        mark.rutland@arm.com, catalin.marinas@arm.com, will@kernel.org,
-        Jonathan.Cameron@huawei.com, nivedita@alum.mit.edu
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <CAMj1kXFF3gR+LyE1VbLuwnRA3CzQtF90mv7rpw9x2RcyugO1JA@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9590 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 mlxlogscore=999
+ adultscore=0 mlxscore=0 phishscore=0 malwarescore=0 spamscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2004130165
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9590 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 impostorscore=0
+ clxscore=1011 priorityscore=1501 malwarescore=0 phishscore=0 spamscore=0
+ mlxlogscore=999 suspectscore=0 adultscore=0 mlxscore=0 lowpriorityscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
+ definitions=main-2004130165
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Mon, Apr 13, 2020 at 8:55 AM Ard Biesheuvel <ardb@kernel.org> wrote:
->
-> On arm64, the kernel image used to be virtually mapped via the linear
-> region, making the two mappings correlated in a way that required the
-> kernel to be located at the start of the linear region, or the memory
-> below would not be accessible. For this reason, the EFI stub loader
-> code for arm64 has the notion of a 'preferred offset' for the physical
-> placement of the kernel image, and tries to put the kernel there, or
-> at least as low as possible in physical memory (unless KASLR is active,
-> in which case the placement is randomized)
->
-> When KASLR was introduced, the virtual mapping of the kernel was moved
-> into the vmalloc region, and now, regardless of whether KASLR support
-> is built in or active, the kernel can be placed anywhere in physical
-> memory without any detrimental side effects on the linear region.
->
-> This means that we can drop the notion of 'preferred offset' entirely,
-> and invoke the kernel in place if the PE/COFF loader loaded it at the
-> right offset. If not, we can invoke the ordinary UEFI top down page
-> allocator to reallocate it elsewhere in memory. By updating the PE/COFF
-> metadata, we can inform the PE/COFF loader about the desired alignment,
-> making it less likely that we need to move the kernel image in the first
-> place.
->
-> Ard Biesheuvel (8):
->   efi/libstub/random: align allocate size to EFI_ALLOC_ALIGN
->   efi/libstub/random: increase random alloc granularity
->   efi/libstub/arm64: replace 'preferred' offset with alignment check
->   efi/libstub/arm64: simplify randomized loading of kernel image
->   efi/libstub/arm64: align PE/COFF sections to segment alignment
->   efi/libstub: add API function to allocate aligned memory
->   efi/libstub/arm64: switch to ordinary page allocator for kernel image
->   efi/libstub: move efi_relocate_kernel() into separate source file
->
->  arch/arm64/kernel/efi-header.S             |   2 +-
->  arch/arm64/kernel/vmlinux.lds.S            |   3 +-
->  drivers/firmware/efi/libstub/Makefile      |   3 +-
->  drivers/firmware/efi/libstub/alignedmem.c  |  57 ++++++
->  drivers/firmware/efi/libstub/arm64-stub.c  |  92 +++-------
->  drivers/firmware/efi/libstub/efistub.h     |  18 +-
->  drivers/firmware/efi/libstub/mem.c         | 191 +-------------------
->  drivers/firmware/efi/libstub/randomalloc.c |   6 +-
->  drivers/firmware/efi/libstub/relocate.c    | 174 ++++++++++++++++++
->  9 files changed, 280 insertions(+), 266 deletions(-)
->  create mode 100644 drivers/firmware/efi/libstub/alignedmem.c
->  create mode 100644 drivers/firmware/efi/libstub/relocate.c
->
-> --
-> 2.17.1
->
 
-Oops. I just noticed this series after I sent out a v2.
-I see that efi_low_alloc is removed now and the handle_kernel_image is
-simplified for arm64.
-I will update the risc-v uefi series accordingly. Sorry for the noise.
 
---
+On 4/10/20 11:39 PM, Ard Biesheuvel wrote:
+> On Sat, 11 Apr 2020 at 00:12, Victor Erminpour
+> <victor.erminpour@oracle.com> wrote:
+>>
+>>
+>>
+>> On 4/10/20 1:09 AM, Ard Biesheuvel wrote:
+>>> On Thu, 9 Apr 2020 at 23:44, Victor Erminpour
+>>> <victor.erminpour@oracle.com> wrote:
+>>>>
+>>>> Enable the __efistub_global define to place variables in the
+>>>> .data section for both CONFIG_ARM and CONFIG_ARM64.
+>>>>
+>>>> This places the EFIstub sys_table variable and other EFIstub
+>>>> static variables in the .data section for both CONFIG_ARM and
+>>>> CONFIG_ARM64.
+>>>>
+>>>
+>>> What does that achieve?
+>>
+>> Hi Ard,
+>>
+>> Without placing these global variables in .data, I get the
+>> following errors when booting an ARM64 EFI system:
+>>
+>> EFI stub: ERROR: Exit boot services failed.
+>> EFI stub: ERROR: Failed to update FDT and exit boot services
+>>
+> 
+> Which boot loader are you using? Does this involve shim?
+> 
+
+grub2-efi-aa64-2.02-0.80.0.4.el7.aarch64
+shim-aa64-15-1.0.4.el7.aarch64
+
+> Also, does it help if you add 'efi=no_disable_early_pci_dma'?
+> 
+
+Tried this boot time option, but to no effect.
+
+> 
+>>
+>> I know that the ARM64 linker script is supposed to put the
+>> .init.bss into the .init.data section, but I don't think this
+>> is happening for all systems.
+>>
+>> Having it explicitly enabled for CONFIG_ARM64 worked for me.
+>>
+> 
+> OK, thanks for the report. However, we will be removing
+> __efistub_global entirely during the next cycle, so this is not the
+> right fix.
+
+Thanks Ard, this sounds promising!
+
 Regards,
-Atish
+--Victor
+
+
+> 
+
+-- 
+Victor Hugo Erminpour
+Principal Member of Technical Staff
+Oracle America
