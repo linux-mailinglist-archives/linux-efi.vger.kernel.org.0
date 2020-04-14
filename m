@@ -2,125 +2,120 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D55841A73D8
-	for <lists+linux-efi@lfdr.de>; Tue, 14 Apr 2020 08:46:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA61B1A7496
+	for <lists+linux-efi@lfdr.de>; Tue, 14 Apr 2020 09:22:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2406087AbgDNGqO (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 14 Apr 2020 02:46:14 -0400
-Received: from mail.kernel.org ([198.145.29.99]:38220 "EHLO mail.kernel.org"
+        id S2406551AbgDNHWl (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 14 Apr 2020 03:22:41 -0400
+Received: from mail.kernel.org ([198.145.29.99]:45808 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728133AbgDNGqO (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Tue, 14 Apr 2020 02:46:14 -0400
-Received: from mail-io1-f44.google.com (mail-io1-f44.google.com [209.85.166.44])
+        id S2406537AbgDNHWj (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Tue, 14 Apr 2020 03:22:39 -0400
+Received: from mail-io1-f43.google.com (mail-io1-f43.google.com [209.85.166.43])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 16BBA20735;
-        Tue, 14 Apr 2020 06:46:13 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 871152076C
+        for <linux-efi@vger.kernel.org>; Tue, 14 Apr 2020 07:22:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1586846773;
-        bh=8fu2EomF01hOlRt2drZ0LQQl7yyoInoWnDvbfw4tvQM=;
+        s=default; t=1586848958;
+        bh=bWAiGhMnB+uz+Ggq1mfnljLnfrbDVBJTH8WUqa3lvg0=;
         h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=NClJpw+CgSR3IQKEpEheu2mjiO2H2WzZbKqPe57LT6UIk8K7FBxcPlwarnEfKzVDn
-         8gAWXDJho7TGDI5LaaaF7F6gMQeB7bHjRAx5ujPe2tY8yy/sdR1FqKnfzf92NNlXpm
-         zSDJ+ib5oZ9aFB04jqO6l+nUUrpvQ5NYX3SRRdWE=
-Received: by mail-io1-f44.google.com with SMTP id s18so8736620ioe.10;
-        Mon, 13 Apr 2020 23:46:13 -0700 (PDT)
-X-Gm-Message-State: AGi0Puas06QcmQbZCKh4ttdAxSAlo/hcFESxvgP8gfNibv8j4WVyT3o/
-        SfNxprF+7NbiZ7EmM1sJv0j1h7dWscWmm8y+i4I=
-X-Google-Smtp-Source: APiQypJMSxKebGAKJDBtfpNpe+EDZUxDmYFCwE0U/ExcsDR517mslTv+CttnMfcd482NZ3+ACciJ8UYpt1LR+NzsFP4=
-X-Received: by 2002:a05:6602:1550:: with SMTP id h16mr20064740iow.171.1586846772506;
- Mon, 13 Apr 2020 23:46:12 -0700 (PDT)
+        b=d/7nqShLX2L2unflS35pt6gLz2uzFR2R3bhLG84dpdEKh6uGDtM0IBN0l8+ef1GyT
+         EVX/kPofCo5vv7WqVPKzci6o/HM4Mx9PJ+yK76Uc1HM7x/j1ZCs91Jwc0wTFEM0zUb
+         IjEZ5EalPb8ryJB9krUz7InV5VCk9PvTbSBF1NyY=
+Received: by mail-io1-f43.google.com with SMTP id s18so8821567ioe.10
+        for <linux-efi@vger.kernel.org>; Tue, 14 Apr 2020 00:22:38 -0700 (PDT)
+X-Gm-Message-State: AGi0PuaEr2daJOnHMv/f9rUQTBKx5Rktg1q82NiwXU+q/I/9Ae9ZQT1n
+        /rlvMu2Quo15Xpc/Q7gKCdK1XCY9FxnP7WPzphs=
+X-Google-Smtp-Source: APiQypIlD71s/PvYUu50eFlUWcgtTgdiIzd+GcnusuWySkJjSnM9gznRgTmuJA3WpIrhurnp4iDv4paPmj06HDgryI0=
+X-Received: by 2002:a6b:7f48:: with SMTP id m8mr20408750ioq.142.1586848957898;
+ Tue, 14 Apr 2020 00:22:37 -0700 (PDT)
 MIME-Version: 1.0
-References: <1586468669-21456-1-git-send-email-victor.erminpour@oracle.com>
- <CAMj1kXGgYYx=9rq-Ficw3vS6FX_0nb-hRStXijh7H4zdD=+Gaw@mail.gmail.com>
- <aee6c7cc-24c7-2822-47d5-1e05413a8024@oracle.com> <CAMj1kXFF3gR+LyE1VbLuwnRA3CzQtF90mv7rpw9x2RcyugO1JA@mail.gmail.com>
- <95f421ad-6ba7-b968-d605-c464bc1df4e2@oracle.com>
-In-Reply-To: <95f421ad-6ba7-b968-d605-c464bc1df4e2@oracle.com>
+References: <20200413155521.24698-1-ardb@kernel.org> <CAOnJCULxNtk99sudMD5Rn5ao0orwcarOAwg7NPXMK6ZdXmwNOA@mail.gmail.com>
+In-Reply-To: <CAOnJCULxNtk99sudMD5Rn5ao0orwcarOAwg7NPXMK6ZdXmwNOA@mail.gmail.com>
 From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Tue, 14 Apr 2020 08:46:01 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXEg5YmoRg9e0T1PV43v8Fm6+88czV+bp=6XToK7PJ_qwg@mail.gmail.com>
-Message-ID: <CAMj1kXEg5YmoRg9e0T1PV43v8Fm6+88czV+bp=6XToK7PJ_qwg@mail.gmail.com>
-Subject: Re: [PATCH] efi/libstub/arm64: Enable __efistub_global define in
- .data section
-To:     Victor Erminpour <victor.erminpour@oracle.com>
-Cc:     Arvind Sankar <nivedita@alum.mit.edu>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Date:   Tue, 14 Apr 2020 09:22:27 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXHyP1qHJVBLQ3LaiQWx2swofA+msRJQjp0aX_AcPgB-UQ@mail.gmail.com>
+Message-ID: <CAMj1kXHyP1qHJVBLQ3LaiQWx2swofA+msRJQjp0aX_AcPgB-UQ@mail.gmail.com>
+Subject: Re: [PATCH v2 0/8] efi/libstub: simplify arm64 kernel image loading
+To:     Atish Patra <atishp@atishpatra.org>
+Cc:     linux-efi <linux-efi@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Arvind Sankar <nivedita@alum.mit.edu>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, 14 Apr 2020 at 00:57, Victor Erminpour
-<victor.erminpour@oracle.com> wrote:
+On Mon, 13 Apr 2020 at 23:54, Atish Patra <atishp@atishpatra.org> wrote:
 >
->
->
-> On 4/10/20 11:39 PM, Ard Biesheuvel wrote:
-> > On Sat, 11 Apr 2020 at 00:12, Victor Erminpour
-> > <victor.erminpour@oracle.com> wrote:
-> >>
-> >>
-> >>
-> >> On 4/10/20 1:09 AM, Ard Biesheuvel wrote:
-> >>> On Thu, 9 Apr 2020 at 23:44, Victor Erminpour
-> >>> <victor.erminpour@oracle.com> wrote:
-> >>>>
-> >>>> Enable the __efistub_global define to place variables in the
-> >>>> .data section for both CONFIG_ARM and CONFIG_ARM64.
-> >>>>
-> >>>> This places the EFIstub sys_table variable and other EFIstub
-> >>>> static variables in the .data section for both CONFIG_ARM and
-> >>>> CONFIG_ARM64.
-> >>>>
-> >>>
-> >>> What does that achieve?
-> >>
-> >> Hi Ard,
-> >>
-> >> Without placing these global variables in .data, I get the
-> >> following errors when booting an ARM64 EFI system:
-> >>
-> >> EFI stub: ERROR: Exit boot services failed.
-> >> EFI stub: ERROR: Failed to update FDT and exit boot services
-> >>
+> On Mon, Apr 13, 2020 at 8:55 AM Ard Biesheuvel <ardb@kernel.org> wrote:
 > >
-> > Which boot loader are you using? Does this involve shim?
+> > On arm64, the kernel image used to be virtually mapped via the linear
+> > region, making the two mappings correlated in a way that required the
+> > kernel to be located at the start of the linear region, or the memory
+> > below would not be accessible. For this reason, the EFI stub loader
+> > code for arm64 has the notion of a 'preferred offset' for the physical
+> > placement of the kernel image, and tries to put the kernel there, or
+> > at least as low as possible in physical memory (unless KASLR is active,
+> > in which case the placement is randomized)
+> >
+> > When KASLR was introduced, the virtual mapping of the kernel was moved
+> > into the vmalloc region, and now, regardless of whether KASLR support
+> > is built in or active, the kernel can be placed anywhere in physical
+> > memory without any detrimental side effects on the linear region.
+> >
+> > This means that we can drop the notion of 'preferred offset' entirely,
+> > and invoke the kernel in place if the PE/COFF loader loaded it at the
+> > right offset. If not, we can invoke the ordinary UEFI top down page
+> > allocator to reallocate it elsewhere in memory. By updating the PE/COFF
+> > metadata, we can inform the PE/COFF loader about the desired alignment,
+> > making it less likely that we need to move the kernel image in the first
+> > place.
+> >
+> > Ard Biesheuvel (8):
+> >   efi/libstub/random: align allocate size to EFI_ALLOC_ALIGN
+> >   efi/libstub/random: increase random alloc granularity
+> >   efi/libstub/arm64: replace 'preferred' offset with alignment check
+> >   efi/libstub/arm64: simplify randomized loading of kernel image
+> >   efi/libstub/arm64: align PE/COFF sections to segment alignment
+> >   efi/libstub: add API function to allocate aligned memory
+> >   efi/libstub/arm64: switch to ordinary page allocator for kernel image
+> >   efi/libstub: move efi_relocate_kernel() into separate source file
+> >
+> >  arch/arm64/kernel/efi-header.S             |   2 +-
+> >  arch/arm64/kernel/vmlinux.lds.S            |   3 +-
+> >  drivers/firmware/efi/libstub/Makefile      |   3 +-
+> >  drivers/firmware/efi/libstub/alignedmem.c  |  57 ++++++
+> >  drivers/firmware/efi/libstub/arm64-stub.c  |  92 +++-------
+> >  drivers/firmware/efi/libstub/efistub.h     |  18 +-
+> >  drivers/firmware/efi/libstub/mem.c         | 191 +-------------------
+> >  drivers/firmware/efi/libstub/randomalloc.c |   6 +-
+> >  drivers/firmware/efi/libstub/relocate.c    | 174 ++++++++++++++++++
+> >  9 files changed, 280 insertions(+), 266 deletions(-)
+> >  create mode 100644 drivers/firmware/efi/libstub/alignedmem.c
+> >  create mode 100644 drivers/firmware/efi/libstub/relocate.c
+> >
+> > --
+> > 2.17.1
 > >
 >
-> grub2-efi-aa64-2.02-0.80.0.4.el7.aarch64
-> shim-aa64-15-1.0.4.el7.aarch64
+> Oops. I just noticed this series after I sent out a v2.
+> I see that efi_low_alloc is removed now and the handle_kernel_image is
+> simplified for arm64.
+> I will update the risc-v uefi series accordingly. Sorry for the noise.
 >
 
-Does your system give access to the UEFI shell? If so, could you
-please try booting the [uncompressed] Image file from the command
-prompt? Which hardware are you booting?
+No worries. And apologies for making this a moving target :-)
 
-> > Also, does it help if you add 'efi=no_disable_early_pci_dma'?
-> >
->
-> Tried this boot time option, but to no effect.
->
-> >
-> >>
-> >> I know that the ARM64 linker script is supposed to put the
-> >> .init.bss into the .init.data section, but I don't think this
-> >> is happening for all systems.
-> >>
-> >> Having it explicitly enabled for CONFIG_ARM64 worked for me.
-> >>
-> >
-> > OK, thanks for the report. However, we will be removing
-> > __efistub_global entirely during the next cycle, so this is not the
-> > right fix.
->
-> Thanks Ard, this sounds promising!
->
+I realised you will probably need to bring back efi_low_alloc() as a
+global symbol, as I don't think you will be able to switch to
+efi_relocate_kernel().
 
-Quite the opposite, unfortunately. It means the feature you are using
-to fix your boot issue is going away.
-
-This really looks like a bootloader issue to me, so let's narrow this
-down first. If there is a real kernel issue here that needs
-__efistub_global to be fixed, we obviously won't be removing it.
+In any case, this series is just set of patches on the list, so feel
+free to propose changes if they are making your life too difficult.
