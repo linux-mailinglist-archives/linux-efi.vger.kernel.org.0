@@ -2,101 +2,125 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4ED5F1A73A0
-	for <lists+linux-efi@lfdr.de>; Tue, 14 Apr 2020 08:27:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D55841A73D8
+	for <lists+linux-efi@lfdr.de>; Tue, 14 Apr 2020 08:46:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2405992AbgDNG10 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 14 Apr 2020 02:27:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48270 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2405990AbgDNG1V (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 14 Apr 2020 02:27:21 -0400
-Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com [IPv6:2a00:1450:4864:20::441])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DD22C0A3BDC
-        for <linux-efi@vger.kernel.org>; Mon, 13 Apr 2020 23:27:20 -0700 (PDT)
-Received: by mail-wr1-x441.google.com with SMTP id u13so12458699wrp.3
-        for <linux-efi@vger.kernel.org>; Mon, 13 Apr 2020 23:27:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=Pp3TbajE6USya1p1kPwUAIS7aCYW8lYss1z9XY1NLSU=;
-        b=k+k79ZaMkCSE5EVgFSHlRI8rVTLKrsQZXC6dAZUCs8lP7k/E4TemgfyRl9Uhu0lEI/
-         WMBkxfk8NIhBPtZCwEvc310Pp0eO59AMi0ubXDs3Dq83gK0B46kLNBrjetd4d7+wfGZa
-         nzh9CFpYA8pG95u6IhCEOw37EZcOQE/E7wN+UYFzMP36mFhmkzHtY/ky0SJW+QgIFmtS
-         5McQHisGlJxjyQpP+cfjDiyQqnUppeluFEKaTzPxlCU+QrAu6sSC94ZATnWnCRkLM/zX
-         LWuOL3o5+Tm/5pNp6YKUDVxREs2Tsx/Cx+I68hP7QYPLGQiVIHlEFzeQROBvrEgVqzAz
-         hVyQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to:user-agent;
-        bh=Pp3TbajE6USya1p1kPwUAIS7aCYW8lYss1z9XY1NLSU=;
-        b=Suru2Z4n9SVrLqCy+OA+6Hc6qku9paio3N60cJmLkpPO15Ag4qZGa3YMsw9lpVsNoa
-         rDr5JB4z9fxffXldW9OBKXUXFKrA/G8aO9IJ9iMHUDisUDoK4gVoafOXtWqPP930le+b
-         /WUQsGrxHBC1rf1lD8BiP69tNEZQFeFUL0XZXKZ69Uw+mXxcf50mGRfcYN6fw93Uu6Dx
-         eIEqVT+6gh0caEJAhDpgC7k4JxaP88WJb8lnWGzP4RUy5SZdWN2E5mPJ+ql2NCvR0ajp
-         /4k6h8wxMcNU4ji6SZ82wK1WKD3Z5DPYR/Agl3Azh7wSIZTS4MaKp4hdelSja9zf+CwU
-         +cog==
-X-Gm-Message-State: AGi0PuakD7QljB7WpPxftQ7vAv8dddUPGVomjYVrg6rPZcI6+DBY7Rb1
-        MDFhI9IYOJJAdA9Xc4LrPJg=
-X-Google-Smtp-Source: APiQypLspMLRNRywgfLvdyn9tUzStiaUbcdWfbTU1t1J5ecrnnJPqSAi40+a/VRrvcDU4/aPihV9zg==
-X-Received: by 2002:a5d:4752:: with SMTP id o18mr8283149wrs.283.1586845639044;
-        Mon, 13 Apr 2020 23:27:19 -0700 (PDT)
-Received: from gmail.com (54033286.catv.pool.telekom.hu. [84.3.50.134])
-        by smtp.gmail.com with ESMTPSA id a7sm1028199wrs.61.2020.04.13.23.27.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Apr 2020 23:27:18 -0700 (PDT)
-Date:   Tue, 14 Apr 2020 08:27:16 +0200
-From:   Ingo Molnar <mingo@kernel.org>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     Borislav Petkov <bp@alien8.de>, Dave Young <dyoung@redhat.com>,
-        linux-efi <linux-efi@vger.kernel.org>, X86 ML <x86@kernel.org>,
-        "Theodore Y. Ts'o" <tytso@mit.edu>, kexec@lists.infradead.org
-Subject: Re: [PATCH] efi/x86: Revert struct layout change to fix kexec boot
- regression
-Message-ID: <20200414062716.GB84326@gmail.com>
-References: <20200410074320.16589-1-ardb@kernel.org>
- <20200410135644.GB6772@dhcp-128-65.nay.redhat.com>
- <20200410140151.GC6772@dhcp-128-65.nay.redhat.com>
- <CAMj1kXEM13Y5FCh8GvJGTueen3fa0u_JX66j0X10KPf4Z0c4Jg@mail.gmail.com>
- <20200410143313.GB8205@zn.tnic>
- <CAMj1kXGn+RuJx2PJ+X5KJ3rtMyRRX2eOK2Zu5GuK1NHxum1M4w@mail.gmail.com>
+        id S2406087AbgDNGqO (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 14 Apr 2020 02:46:14 -0400
+Received: from mail.kernel.org ([198.145.29.99]:38220 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728133AbgDNGqO (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Tue, 14 Apr 2020 02:46:14 -0400
+Received: from mail-io1-f44.google.com (mail-io1-f44.google.com [209.85.166.44])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 16BBA20735;
+        Tue, 14 Apr 2020 06:46:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1586846773;
+        bh=8fu2EomF01hOlRt2drZ0LQQl7yyoInoWnDvbfw4tvQM=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=NClJpw+CgSR3IQKEpEheu2mjiO2H2WzZbKqPe57LT6UIk8K7FBxcPlwarnEfKzVDn
+         8gAWXDJho7TGDI5LaaaF7F6gMQeB7bHjRAx5ujPe2tY8yy/sdR1FqKnfzf92NNlXpm
+         zSDJ+ib5oZ9aFB04jqO6l+nUUrpvQ5NYX3SRRdWE=
+Received: by mail-io1-f44.google.com with SMTP id s18so8736620ioe.10;
+        Mon, 13 Apr 2020 23:46:13 -0700 (PDT)
+X-Gm-Message-State: AGi0Puas06QcmQbZCKh4ttdAxSAlo/hcFESxvgP8gfNibv8j4WVyT3o/
+        SfNxprF+7NbiZ7EmM1sJv0j1h7dWscWmm8y+i4I=
+X-Google-Smtp-Source: APiQypJMSxKebGAKJDBtfpNpe+EDZUxDmYFCwE0U/ExcsDR517mslTv+CttnMfcd482NZ3+ACciJ8UYpt1LR+NzsFP4=
+X-Received: by 2002:a05:6602:1550:: with SMTP id h16mr20064740iow.171.1586846772506;
+ Mon, 13 Apr 2020 23:46:12 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAMj1kXGn+RuJx2PJ+X5KJ3rtMyRRX2eOK2Zu5GuK1NHxum1M4w@mail.gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+References: <1586468669-21456-1-git-send-email-victor.erminpour@oracle.com>
+ <CAMj1kXGgYYx=9rq-Ficw3vS6FX_0nb-hRStXijh7H4zdD=+Gaw@mail.gmail.com>
+ <aee6c7cc-24c7-2822-47d5-1e05413a8024@oracle.com> <CAMj1kXFF3gR+LyE1VbLuwnRA3CzQtF90mv7rpw9x2RcyugO1JA@mail.gmail.com>
+ <95f421ad-6ba7-b968-d605-c464bc1df4e2@oracle.com>
+In-Reply-To: <95f421ad-6ba7-b968-d605-c464bc1df4e2@oracle.com>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Tue, 14 Apr 2020 08:46:01 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXEg5YmoRg9e0T1PV43v8Fm6+88czV+bp=6XToK7PJ_qwg@mail.gmail.com>
+Message-ID: <CAMj1kXEg5YmoRg9e0T1PV43v8Fm6+88czV+bp=6XToK7PJ_qwg@mail.gmail.com>
+Subject: Re: [PATCH] efi/libstub/arm64: Enable __efistub_global define in
+ .data section
+To:     Victor Erminpour <victor.erminpour@oracle.com>
+Cc:     Arvind Sankar <nivedita@alum.mit.edu>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-
-* Ard Biesheuvel <ardb@kernel.org> wrote:
-
-> On Fri, 10 Apr 2020 at 16:34, Borislav Petkov <bp@alien8.de> wrote:
+On Tue, 14 Apr 2020 at 00:57, Victor Erminpour
+<victor.erminpour@oracle.com> wrote:
+>
+>
+>
+> On 4/10/20 11:39 PM, Ard Biesheuvel wrote:
+> > On Sat, 11 Apr 2020 at 00:12, Victor Erminpour
+> > <victor.erminpour@oracle.com> wrote:
+> >>
+> >>
+> >>
+> >> On 4/10/20 1:09 AM, Ard Biesheuvel wrote:
+> >>> On Thu, 9 Apr 2020 at 23:44, Victor Erminpour
+> >>> <victor.erminpour@oracle.com> wrote:
+> >>>>
+> >>>> Enable the __efistub_global define to place variables in the
+> >>>> .data section for both CONFIG_ARM and CONFIG_ARM64.
+> >>>>
+> >>>> This places the EFIstub sys_table variable and other EFIstub
+> >>>> static variables in the .data section for both CONFIG_ARM and
+> >>>> CONFIG_ARM64.
+> >>>>
+> >>>
+> >>> What does that achieve?
+> >>
+> >> Hi Ard,
+> >>
+> >> Without placing these global variables in .data, I get the
+> >> following errors when booting an ARM64 EFI system:
+> >>
+> >> EFI stub: ERROR: Exit boot services failed.
+> >> EFI stub: ERROR: Failed to update FDT and exit boot services
+> >>
 > >
-> > On Fri, Apr 10, 2020 at 04:22:49PM +0200, Ard Biesheuvel wrote:
-> > > > BTW, a fixes tag is good to have..
-> > >
-> > > I usually omit those for patches that fix bugs that were introduced in
-> > > the current cycle.
+> > Which boot loader are you using? Does this involve shim?
 > >
-> > A valid use case for having the Fixes: tag anyway are the backporting
-> > kernels gangs which might pick up the first patch for whatever reason
-> > and would probably be thankful if they find the second one, i.e., the
-> > fix for the first one, through grepping or other, automated means.
+>
+> grub2-efi-aa64-2.02-0.80.0.4.el7.aarch64
+> shim-aa64-15-1.0.4.el7.aarch64
+>
+
+Does your system give access to the UEFI shell? If so, could you
+please try booting the [uncompressed] Image file from the command
+prompt? Which hardware are you booting?
+
+> > Also, does it help if you add 'efi=no_disable_early_pci_dma'?
 > >
-> 
-> Fair point.
+>
+> Tried this boot time option, but to no effect.
+>
+> >
+> >>
+> >> I know that the ARM64 linker script is supposed to put the
+> >> .init.bss into the .init.data section, but I don't think this
+> >> is happening for all systems.
+> >>
+> >> Having it explicitly enabled for CONFIG_ARM64 worked for me.
+> >>
+> >
+> > OK, thanks for the report. However, we will be removing
+> > __efistub_global entirely during the next cycle, so this is not the
+> > right fix.
+>
+> Thanks Ard, this sounds promising!
+>
 
-I've added:
+Quite the opposite, unfortunately. It means the feature you are using
+to fix your boot issue is going away.
 
-  Fixes: 0a67361dcdaa29 ("efi/x86: Remove runtime table address from kexec EFI setup data")
-
-Out of abundance of caution. :-)
-
-Thanks,
-
-	Ingo
+This really looks like a bootloader issue to me, so let's narrow this
+down first. If there is a real kernel issue here that needs
+__efistub_global to be fixed, we obviously won't be removing it.
