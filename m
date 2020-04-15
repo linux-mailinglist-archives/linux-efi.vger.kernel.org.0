@@ -2,49 +2,49 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 538BE1AB221
+	by mail.lfdr.de (Postfix) with ESMTP id BF7631AB222
 	for <lists+linux-efi@lfdr.de>; Wed, 15 Apr 2020 21:56:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2406363AbgDOTyo (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        id S2441903AbgDOTyo (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
         Wed, 15 Apr 2020 15:54:44 -0400
-Received: from esa1.hgst.iphmx.com ([68.232.141.245]:22134 "EHLO
+Received: from esa1.hgst.iphmx.com ([68.232.141.245]:22138 "EHLO
         esa1.hgst.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2406078AbgDOTyl (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 15 Apr 2020 15:54:41 -0400
+        with ESMTP id S2406322AbgDOTym (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 15 Apr 2020 15:54:42 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
   d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
-  t=1586980480; x=1618516480;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=Hhsd5JtwPM12DYmkDLyIy4E1RXRHsLoMVadetZOBWkA=;
-  b=PMuRmvfYHNO+RITsw6TNQsObAwRNSoFctkwCitYukUtSRiwzkvobMJv8
-   J369MkZXlMuVGr2mTq6rxqJTPgwHjjfw18mW2CVyetTc8Q9zDWVqo3qPk
-   cidIYu3Fztozb1fJ1a8GBQR2v+PHPv4zJJFTVFsZF87l+xi+CVs34fhGI
-   fIWBg4dXEQAFydi/auRU7U54r5+ewlbWc14X1GYrMqAAs6CrlJRx9Ov6y
-   92GsQowoe7Vz5Wh3uWmX8cjzdw+xu0LZaYQu+KK9RyTUl7EuVTOVIOvVo
-   kCPNgkl75YUc5TnJRYOn1Mch5g9MNgJ9g5TZbTK+JWuIyPBHT9S5eAQ18
+  t=1586980481; x=1618516481;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=Djqlg8Cv1gfYTZdwhPlUmPWsMdIBfQD89t54SYqYujA=;
+  b=NQvD5FhSnjenJ7luBTQQW/dyXJp/3w2sxL2zvYUOQrRObIL41IVrAUGL
+   YvVqzEXuXh2CMugz17XGoFlssEwju3fQwK/FodkluLJRSVJ1EBauRctYw
+   zoke8FkzAoVCvtKeuDA34cL5gHIo57OOJw8Wo6UV8digvNlJsYlesjray
+   GDP3SBfoud6Ui6wpbiB5NJYm4ITQnvsEj6SPvKYdNTZCRr0JgreR9ITXD
+   g37fSmsw3Z3HNHtnu7ZvRZTCWsAdTLJaYe/bldiUq1AZ+VYbl9+8PNN7B
+   mz9lc4YQlic3G64jueUxe666BSyNGU2Z4yI/KXn/PpXkzCvLovFQRFYMA
    w==;
-IronPort-SDR: HskfMLuEx+gW50VLbJ+A5FzSC8/DAh+CCZNzhTgr5Fqos7Y6H4SeAqp6JazVt2kASw9ZT9pYf/
- 5a80S2vnjBkThuHpoGezCEaY50LzrtvPWV/2f8+Q0oDfI35540wfOQcYKTZf+18ruvLlvv33/T
- zcwSpFhV5kBTKbyuIC+zBQqbORrOa8VEhMqkb2BIHOiNIeldhYlky4pmqOmWRLUVFyoZAk3kI3
- ZwSblBkfyBQOwOmxqeVbPKC6axRzIENe6cOgap+gQB7NdCLPokxkz4iSRI3BkmgE500zrUxW5z
- maM=
+IronPort-SDR: lL32ABlfPZot9oxR0x6sRuRrJDayfBNMx3m1FABY3Tx5ra2DyFpax9RrSdiJLbb3UibBlQ3sPp
+ VdiJjXK/ewpp1OYCX/LBzMTw3vB49Q+GbQIBFgGJ8LjVWyhx3/9GdSt79oLGf+ox87zK/1lqf3
+ 3Uy7ECC4LyaqmlqooxyICcvdy8uURf31PUjPYbK6QNZXWOfiC6RFw4w//0bxm2Hdcj79fUU18z
+ efFIEUOc0I5ZjAkPCV637D6/OMvyfH2cRvIK/9BraulIEzK6GqlhKqwA42rEHtDuBExQrIh8eN
+ C6Y=
 X-IronPort-AV: E=Sophos;i="5.72,388,1580745600"; 
-   d="scan'208";a="244077013"
+   d="scan'208";a="244077016"
 Received: from h199-255-45-15.hgst.com (HELO uls-op-cesaep02.wdc.com) ([199.255.45.15])
   by ob1.hgst.iphmx.com with ESMTP; 16 Apr 2020 03:54:40 +0800
-IronPort-SDR: +8G22lKOTSnisZhBia4e6azOMqzIMditu1TTMSrqnkU+/vRV+D9j0O/iYJZZE6KmRCZEdjKB39
- ceTGljag/zDFgNQC9gP3W76t95Z3UyRnExxm/ge32n644K2hjgG5rIZNzWcMm+Y4n1b1ORoJLn
- 0uC8arGR6sPPd4MMqXWax1UHIi2W1Xi3iCOgrQDgBak+zgpUHzcypXj/4ROr5bD1+eb6F6j6+T
- Fkt2Z1urYEyVdkOgVgwnO2x50TF/a6FJaiSxZKPOZTjKwOmmieXgvnuBVgPzhq4eYLi8hGnxgF
- GaHCnrG+QDCQAjyeGwIIcNE7
+IronPort-SDR: 7VQRJwHY9jqjUF3M08RAZpGRD1V7QH/3T9WRECSmzot0qO/tEUyOzfl2zCrXgTS5ioVBWnmUiW
+ 1CFmiuSxX1Lf95derYJMCbQui+WyWsBcewnqZOphzzPf37z9ELxFYyg/fJMrK9I/guyPQe/7NR
+ 6hJ/68AYRem4s5KD8IAGtrxgpkql8J1zrUa2dpbIveeLWvhpooWCxKkTUFbb1vzQAgAXJZIlY8
+ mgB3YRY1py8tqHIAFzttl2e//5EgapHpRrCYw093mNz3lbF9G0/3aAYxUYjTYqxATFknKA+9kR
+ 4QbQMR+DmtZ+EqIwd4k96SKm
 Received: from uls-op-cesaip02.wdc.com ([10.248.3.37])
   by uls-op-cesaep02.wdc.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Apr 2020 12:45:08 -0700
-IronPort-SDR: 4zlsxO4RkiT45OqVEJZYxpJPZzqj8CHvYmVLBNY/LOdQ/H1G/eqCmGl6vWjLtcH/tZit8rvf9J
- 3aFsTlvTIsX7uIXQdsIdo/fQ9/h1tfKL0xL/VLUA3vNjnRRrMxDZaBvmtRYEhOr+bcfj6+MCCz
- vsLlTP/3jLqHirySbTVKexPEbPGYOsyPp/IxkyeNtxS4lYDy8Q2cZ04nxyld0tycqO98l7YVMa
- 13g6swKV44qzSYs9xfv8RAswec9tgjPOMdSiHURxJubnXqxlvi0eVTjp9IaQ/mYo3U4DBwhFV/
- Dt8=
+IronPort-SDR: nSxPAvAlQJjzhHxPbWNQxGt8iiqTRn/CFCJkP1IW2hN5kyO5x8A0nRolmARO8ejzgeKfne+XP+
+ YhJ4lrEiUZ37oaoV0GyXFhQYDJ03SuhpCh0NrV2VvwhAhUgoNRfuHaBpEE/l/USJX50yxiOqJy
+ YTTxdcr6U/EaTqWNrfb+QPwLTSOhaX7knnoFdhHsKeiBV4tKN+5T0zEH4dBF0qLaMALMgKuIbZ
+ 7HNCWtfgqizgzP0T4PThCN2aQ7PrhPH4yMg4hhf5fq9zYKTHHBylCByOHlSkTlfb6aJV+U9QcM
+ MVE=
 WDCIronportException: Internal
 Received: from 6hj08h2.ad.shared (HELO jedi-01.hgst.com) ([10.86.55.244])
   by uls-op-cesaip02.wdc.com with ESMTP; 15 Apr 2020 12:54:40 -0700
@@ -61,10 +61,12 @@ Cc:     Atish Patra <atish.patra@wdc.com>,
         Palmer Dabbelt <palmer@dabbelt.com>,
         Russell King <linux@armlinux.org.uk>,
         Will Deacon <will@kernel.org>
-Subject: [v3 PATCH 0/5] Add UEFI support for RISC-V 
-Date:   Wed, 15 Apr 2020 12:54:17 -0700
-Message-Id: <20200415195422.19866-1-atish.patra@wdc.com>
+Subject: [v3 PATCH 1/5] efi: Move arm-stub to a common file
+Date:   Wed, 15 Apr 2020 12:54:18 -0700
+Message-Id: <20200415195422.19866-2-atish.patra@wdc.com>
 X-Mailer: git-send-email 2.24.0
+In-Reply-To: <20200415195422.19866-1-atish.patra@wdc.com>
+References: <20200415195422.19866-1-atish.patra@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-efi-owner@vger.kernel.org
@@ -72,84 +74,112 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-This series adds UEFI support for RISC-V. Currently, only boot time
-services have been added. Runtime services will be added in a separate
-series. This series depends on some core EFI patches
-present in current in efi-next and following other patches.
+Most of the arm-stub code is written in an architecture independent manner.
+As a result, RISC-V can reuse most of the arm-stub code.
 
-U-Boot: Adds the boot hartid under chosen node.
-https://lists.denx.de/pipermail/u-boot/2020-April/405726.html
+Rename the arm-stub.c to efi-stub.c so that ARM, ARM64 and RISC-V can use it.
+This patch doesn't introduce any functional changes.
 
-Linux kernel: 5.7-rc1
+Signed-off-by: Atish Patra <atish.patra@wdc.com>
+---
+ arch/arm/Kconfig                                     |  2 +-
+ arch/arm64/Kconfig                                   |  2 +-
+ drivers/firmware/efi/Kconfig                         |  4 ++--
+ drivers/firmware/efi/libstub/Makefile                | 12 ++++++------
+ .../firmware/efi/libstub/{arm-stub.c => efi-stub.c}  |  0
+ 5 files changed, 10 insertions(+), 10 deletions(-)
+ rename drivers/firmware/efi/libstub/{arm-stub.c => efi-stub.c} (100%)
 
-OpenSBI: master
-
-Patch 1 just moves arm-stub code to a generic code so that it can be used
-across different architecture.
-
-Patch 3 adds fixmap bindings so that CONFIG_EFI can be compiled and we do not
-have create separate config to enable boot time services. 
-As runtime services are not enabled at this time, full generic early ioremap
-support is also not added in this series.
-
-Patch 4 and 5 adds the PE/COFF header and EFI stub code support for RISC-V
-respectively.
-
-The patches can also be found in following git repo.
-
-https://github.com/atishp04/linux/tree/wip_uefi_riscv_v3
-
-The patches have been verified on Qemu using bootefi command in U-Boot.
-
-Changes from v2->v3:
-1. Rebased on top of latest efi patches.
-2. Improved handle_kernel_image().
-
-Changes from v1->v2:
-1. Rebased on 5.7-rc1.
-2. Fixed minor typos and removed redundant macros/comments.
-
-Changes from previous version:
-1. Renamed to the generic efi stub macro.
-2. Address all redundant comments.
-3. Supported EFI kernel image with normal booti command.
-4. Removed runtime service related macro defines.
-
-Atish Patra (5):
-efi: Move arm-stub to a common file
-include: pe.h: Add RISC-V related PE definition
-RISC-V: Define fixmap bindings for generic early ioremap support
-RISC-V: Add PE/COFF header for EFI stub
-RISC-V: Add EFI stub support.
-
-arch/arm/Kconfig                              |   2 +-
-arch/arm64/Kconfig                            |   2 +-
-arch/riscv/Kconfig                            |  21 ++++
-arch/riscv/Makefile                           |   1 +
-arch/riscv/configs/defconfig                  |   1 +
-arch/riscv/include/asm/Kbuild                 |   1 +
-arch/riscv/include/asm/efi.h                  |  44 +++++++
-arch/riscv/include/asm/fixmap.h               |  18 +++
-arch/riscv/include/asm/io.h                   |   1 +
-arch/riscv/include/asm/sections.h             |  13 ++
-arch/riscv/kernel/Makefile                    |   4 +
-arch/riscv/kernel/efi-header.S                |  99 ++++++++++++++++
-arch/riscv/kernel/head.S                      |  16 +++
-arch/riscv/kernel/image-vars.h                |  53 +++++++++
-arch/riscv/kernel/vmlinux.lds.S               |  20 +++-
-drivers/firmware/efi/Kconfig                  |   4 +-
-drivers/firmware/efi/libstub/Makefile         |  19 ++-
-.../efi/libstub/{arm-stub.c => efi-stub.c}    |   0
-drivers/firmware/efi/libstub/riscv-stub.c     | 111 ++++++++++++++++++
-include/linux/pe.h                            |   3 +
-20 files changed, 421 insertions(+), 12 deletions(-)
-create mode 100644 arch/riscv/include/asm/efi.h
-create mode 100644 arch/riscv/include/asm/sections.h
-create mode 100644 arch/riscv/kernel/efi-header.S
-create mode 100644 arch/riscv/kernel/image-vars.h
-rename drivers/firmware/efi/libstub/{arm-stub.c => efi-stub.c} (100%)
-create mode 100644 drivers/firmware/efi/libstub/riscv-stub.c
-
---
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index 66a04f6f4775..165987aa5bcd 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -1954,7 +1954,7 @@ config EFI
+ 	select UCS2_STRING
+ 	select EFI_PARAMS_FROM_FDT
+ 	select EFI_STUB
+-	select EFI_ARMSTUB
++	select EFI_GENERIC_STUB
+ 	select EFI_RUNTIME_WRAPPERS
+ 	---help---
+ 	  This option provides support for runtime services provided
+diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+index 40fb05d96c60..32d818c5ccda 100644
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -1785,7 +1785,7 @@ config EFI
+ 	select EFI_PARAMS_FROM_FDT
+ 	select EFI_RUNTIME_WRAPPERS
+ 	select EFI_STUB
+-	select EFI_ARMSTUB
++	select EFI_GENERIC_STUB
+ 	default y
+ 	help
+ 	  This option provides support for runtime services provided
+diff --git a/drivers/firmware/efi/Kconfig b/drivers/firmware/efi/Kconfig
+index 613828d3f106..2a2b2b96a1dc 100644
+--- a/drivers/firmware/efi/Kconfig
++++ b/drivers/firmware/efi/Kconfig
+@@ -106,12 +106,12 @@ config EFI_PARAMS_FROM_FDT
+ config EFI_RUNTIME_WRAPPERS
+ 	bool
+ 
+-config EFI_ARMSTUB
++config EFI_GENERIC_STUB
+ 	bool
+ 
+ config EFI_ARMSTUB_DTB_LOADER
+ 	bool "Enable the DTB loader"
+-	depends on EFI_ARMSTUB
++	depends on EFI_GENERIC_STUB
+ 	default y
+ 	help
+ 	  Select this config option to add support for the dtb= command
+diff --git a/drivers/firmware/efi/libstub/Makefile b/drivers/firmware/efi/libstub/Makefile
+index 2dbe4394f818..2b4e09bf987c 100644
+--- a/drivers/firmware/efi/libstub/Makefile
++++ b/drivers/firmware/efi/libstub/Makefile
+@@ -23,7 +23,7 @@ cflags-$(CONFIG_ARM)		:= $(subst $(CC_FLAGS_FTRACE),,$(KBUILD_CFLAGS)) \
+ 				   -fno-builtin -fpic \
+ 				   $(call cc-option,-mno-single-pic-base)
+ 
+-cflags-$(CONFIG_EFI_ARMSTUB)	+= -I$(srctree)/scripts/dtc/libfdt
++cflags-$(CONFIG_EFI_GENERIC_STUB)	+= -I$(srctree)/scripts/dtc/libfdt
+ 
+ KBUILD_CFLAGS			:= $(cflags-y) -DDISABLE_BRANCH_PROFILING \
+ 				   -include $(srctree)/drivers/firmware/efi/libstub/hidden.h \
+@@ -46,13 +46,13 @@ lib-y				:= efi-stub-helper.o gop.o secureboot.o tpm.o \
+ 				   alignedmem.o relocate.o
+ 
+ # include the stub's generic dependencies from lib/ when building for ARM/arm64
+-arm-deps-y := fdt_rw.c fdt_ro.c fdt_wip.c fdt.c fdt_empty_tree.c fdt_sw.c
++efi-deps-y := fdt_rw.c fdt_ro.c fdt_wip.c fdt.c fdt_empty_tree.c fdt_sw.c
+ 
+ $(obj)/lib-%.o: $(srctree)/lib/%.c FORCE
+ 	$(call if_changed_rule,cc_o_c)
+ 
+-lib-$(CONFIG_EFI_ARMSTUB)	+= arm-stub.o fdt.o string.o \
+-				   $(patsubst %.c,lib-%.o,$(arm-deps-y))
++lib-$(CONFIG_EFI_GENERIC_STUB)		+= efi-stub.o fdt.o string.o \
++				   $(patsubst %.c,lib-%.o,$(efi-deps-y))
+ 
+ lib-$(CONFIG_ARM)		+= arm32-stub.o
+ lib-$(CONFIG_ARM64)		+= arm64-stub.o
+@@ -74,8 +74,8 @@ CFLAGS_arm64-stub.o		:= -DTEXT_OFFSET=$(TEXT_OFFSET)
+ # a verification pass to see if any absolute relocations exist in any of the
+ # object files.
+ #
+-extra-$(CONFIG_EFI_ARMSTUB)	:= $(lib-y)
+-lib-$(CONFIG_EFI_ARMSTUB)	:= $(patsubst %.o,%.stub.o,$(lib-y))
++extra-$(CONFIG_EFI_GENERIC_STUB)	:= $(lib-y)
++lib-$(CONFIG_EFI_GENERIC_STUB)	:= $(patsubst %.o,%.stub.o,$(lib-y))
+ 
+ STUBCOPY_FLAGS-$(CONFIG_ARM64)	+= --prefix-alloc-sections=.init \
+ 				   --prefix-symbols=__efistub_
+diff --git a/drivers/firmware/efi/libstub/arm-stub.c b/drivers/firmware/efi/libstub/efi-stub.c
+similarity index 100%
+rename from drivers/firmware/efi/libstub/arm-stub.c
+rename to drivers/firmware/efi/libstub/efi-stub.c
+-- 
 2.24.0
 
