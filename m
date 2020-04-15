@@ -2,46 +2,46 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 201071AB3A6
-	for <lists+linux-efi@lfdr.de>; Thu, 16 Apr 2020 00:15:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E94D1AB3A5
+	for <lists+linux-efi@lfdr.de>; Thu, 16 Apr 2020 00:15:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731307AbgDOWP1 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 15 Apr 2020 18:15:27 -0400
-Received: from mail-qt1-f196.google.com ([209.85.160.196]:45685 "EHLO
-        mail-qt1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730950AbgDOWPY (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 15 Apr 2020 18:15:24 -0400
-Received: by mail-qt1-f196.google.com with SMTP id 71so14820475qtc.12;
-        Wed, 15 Apr 2020 15:15:23 -0700 (PDT)
+        id S1731327AbgDOWP3 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 15 Apr 2020 18:15:29 -0400
+Received: from mail-qt1-f193.google.com ([209.85.160.193]:37966 "EHLO
+        mail-qt1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731102AbgDOWP0 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 15 Apr 2020 18:15:26 -0400
+Received: by mail-qt1-f193.google.com with SMTP id f13so14732828qti.5;
+        Wed, 15 Apr 2020 15:15:25 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=GU2OawWL1bidpPge0CUGIGiauoJ+t/PQ9Hui01IaJ3w=;
-        b=H10HIKDZuriOM741MqEdfjzXgBnUYPecL8ICO49bhfs1Zjq+BUYxkzSqPCH1T95Ehz
-         us8qX9FKnpVVTn9s5R1xxZgbdo+0VO0leLZA0UgxEU/EXeslYXGSAwWB2GRTQ4J2+OWH
-         M0uhvej6zZFJHvRlElxz7gIv9hvWW/lPx3QFHtYM04dvr0MwMebGdcXMTCvKaKmxdFOn
-         NgDc4eb1sfXMD9QIt7l7DjGjs8x5oXDSwUKeo+dJk7qkzoiD6u+it1LOU9pGTbCoQ9MA
-         S//BQeQ87jeLNKix/zsxbuVh2AQEl4aH4u3CWe+zRZ8rnRHkAsYHfnMdf0BynWUcWYHz
-         pUdQ==
-X-Gm-Message-State: AGi0PuaIHYoDFT3nH0tjv4DBozkpsx9Y4rA7tCI4NpKGENVjmrI2FUOk
-        2iA6PS8wCWiGPWL5+OhPPOs=
-X-Google-Smtp-Source: APiQypKKO+yiB7+uIjFNaUTWvJHYnvI37H4MMGwRwlMBGopSX4oyJgU87IbKYTyH9OfqIIaavzt8zA==
-X-Received: by 2002:ac8:7498:: with SMTP id v24mr22500450qtq.32.1586988923198;
-        Wed, 15 Apr 2020 15:15:23 -0700 (PDT)
+        bh=/884Y4S8L6kS/iSrGalw7uxiGyhKVKiR3Ww6KT2GqZU=;
+        b=saoxkQ4jJVC78vnE7dGC4IvxFpewAunuLSS1GBV2UU7+/aY8YP0ZUCxQSL9/NTjs3/
+         StK1LsgBQ//j6tdvfWfyiTtfUuXY1Alu0suw1PiJCmsOqweAn+ibUuF8tbJDZaOu/YJi
+         DIOM4AkkB/fywG7oHS4ZRh/j5Utkg5svGRmF/ocr5W92Zs9WQjZRyn8NtjQ10KsRJNau
+         7sI0kNkPa1rYOeOWJKI/igqhCT6DEesKkiJItvAWGiyp6nOXgetrPwqMQLHtANmBBbbn
+         4YF+30VfvY1u0iTUGpSa1Ro1MbZ4wPitGixqaDgvSWF7WDk7k90JEJ5m92AO+X7F1GaE
+         MjxA==
+X-Gm-Message-State: AGi0PubQkVoUDJ7TdHyqn55gCAR4+dko2Qe322/tCWI+Pix3b+gOMMD2
+        eAC3jbe8Nai9oG+XRUTZ3g4=
+X-Google-Smtp-Source: APiQypJlrUQQ2en4qUdzPOfXDNxDRWtBRRylqygI8Tcxmp3E2gsu+n70rOWANLLUxOh7H3FryRVBlg==
+X-Received: by 2002:ac8:7309:: with SMTP id x9mr21688226qto.68.1586988924230;
+        Wed, 15 Apr 2020 15:15:24 -0700 (PDT)
 Received: from rani.riverdale.lan ([2001:470:1f07:5f3::b55f])
-        by smtp.gmail.com with ESMTPSA id i20sm13264340qkl.135.2020.04.15.15.15.22
+        by smtp.gmail.com with ESMTPSA id i20sm13264340qkl.135.2020.04.15.15.15.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Apr 2020 15:15:22 -0700 (PDT)
+        Wed, 15 Apr 2020 15:15:23 -0700 (PDT)
 From:   Arvind Sankar <nivedita@alum.mit.edu>
 To:     Ard Biesheuvel <ardb@kernel.org>
 Cc:     linux-efi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         x86@kernel.org, Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
         linux-kernel@vger.kernel.org
-Subject: [PATCH 2/5] efi/libstub: Factor out relocation checking
-Date:   Wed, 15 Apr 2020 18:15:17 -0400
-Message-Id: <20200415221520.2692512-3-nivedita@alum.mit.edu>
+Subject: [PATCH 3/5] efi/x86: Remove __efistub_global annotation
+Date:   Wed, 15 Apr 2020 18:15:18 -0400
+Message-Id: <20200415221520.2692512-4-nivedita@alum.mit.edu>
 X-Mailer: git-send-email 2.24.1
 In-Reply-To: <20200415221520.2692512-1-nivedita@alum.mit.edu>
 References: <20200415221520.2692512-1-nivedita@alum.mit.edu>
@@ -52,65 +52,75 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-In preparation for using STUBCOPY for x86 as well, which doesn't require
-relocation checking, move the checking code into its own variable so it
-can be left out for x86.
+Instead of using __efistub_global to force variables into the .data
+section, leave them in the .bss but pull the EFI stub's .bss section
+into .data in the linker script for the compressed kernel.
 
 Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
 ---
- drivers/firmware/efi/libstub/Makefile | 30 ++++++++++++++++-----------
- 1 file changed, 18 insertions(+), 12 deletions(-)
+ arch/x86/boot/compressed/vmlinux.lds.S |  1 +
+ drivers/firmware/efi/libstub/Makefile  | 12 ++++++++++--
+ drivers/firmware/efi/libstub/efistub.h |  4 ----
+ 3 files changed, 11 insertions(+), 6 deletions(-)
 
+diff --git a/arch/x86/boot/compressed/vmlinux.lds.S b/arch/x86/boot/compressed/vmlinux.lds.S
+index 508cfa6828c5..0dc5c2b9614b 100644
+--- a/arch/x86/boot/compressed/vmlinux.lds.S
++++ b/arch/x86/boot/compressed/vmlinux.lds.S
+@@ -52,6 +52,7 @@ SECTIONS
+ 		_data = . ;
+ 		*(.data)
+ 		*(.data.*)
++		*(.bss.efistub)
+ 		_edata = . ;
+ 	}
+ 	. = ALIGN(L1_CACHE_BYTES);
 diff --git a/drivers/firmware/efi/libstub/Makefile b/drivers/firmware/efi/libstub/Makefile
-index 45ffe0822df1..e5e76677f2da 100644
+index e5e76677f2da..0bb2916eb12b 100644
 --- a/drivers/firmware/efi/libstub/Makefile
 +++ b/drivers/firmware/efi/libstub/Makefile
-@@ -80,6 +80,15 @@ STUBCOPY_FLAGS-$(CONFIG_ARM64)	+= --prefix-alloc-sections=.init \
+@@ -73,8 +73,8 @@ CFLAGS_arm64-stub.o		:= -DTEXT_OFFSET=$(TEXT_OFFSET)
+ # a verification pass to see if any absolute relocations exist in any of the
+ # object files.
+ #
+-extra-$(CONFIG_EFI_ARMSTUB)	:= $(lib-y)
+-lib-$(CONFIG_EFI_ARMSTUB)	:= $(patsubst %.o,%.stub.o,$(lib-y))
++extra-y	:= $(lib-y)
++lib-y	:= $(patsubst %.o,%.stub.o,$(lib-y))
+ 
+ STUBCOPY_FLAGS-$(CONFIG_ARM64)	+= --prefix-alloc-sections=.init \
  				   --prefix-symbols=__efistub_
- STUBCOPY_RELOC-$(CONFIG_ARM64)	:= R_AARCH64_ABS
+@@ -89,6 +89,14 @@ STUBCOPY_FLAGS-$(CONFIG_ARM)	+= --rename-section .data=.data.efistub	\
+ 				   --rename-section .bss=.bss.efistub,load,alloc
+ STUBCOPY_RELOC-$(CONFIG_ARM)	:= R_ARM_ABS
  
 +#
-+# ARM discards the .data section because it disallows r/w data in the
-+# decompressor. So move our .data to .data.efistub and .bss to .bss.efistub,
-+# which are preserved explicitly by the decompressor linker script.
++# For x86, bootloaders like systemd-boot or grub-efi do not zero-initialize the
++# .bss section, so the .bss section of the EFI stub needs to be included in the
++# .data section of the compressed kernel to ensure initialization. Rename the
++# .bss section here so it's easy to pick out in the linker script.
 +#
-+STUBCOPY_FLAGS-$(CONFIG_ARM)	+= --rename-section .data=.data.efistub	\
-+				   --rename-section .bss=.bss.efistub,load,alloc
-+STUBCOPY_RELOC-$(CONFIG_ARM)	:= R_ARM_ABS
++STUBCOPY_FLAGS-$(CONFIG_X86)	+= --rename-section .bss=.bss.efistub,load,alloc
 +
  $(obj)/%.stub.o: $(obj)/%.o FORCE
  	$(call if_changed,stubcopy)
  
-@@ -89,20 +98,17 @@ $(obj)/%.stub.o: $(obj)/%.o FORCE
- # such relocations. If none are found, regenerate the output object, but
- # this time, use objcopy and leave all sections in place.
- #
--quiet_cmd_stubcopy = STUBCPY $@
--      cmd_stubcopy =							\
-+
-+cmd_stubrelocs_check-y = /bin/true
-+
-+cmd_stubrelocs_check-$(CONFIG_EFI_ARMSTUB) =				\
- 	$(STRIP) --strip-debug -o $@ $<;				\
- 	if $(OBJDUMP) -r $@ | grep $(STUBCOPY_RELOC-y); then		\
- 		echo "$@: absolute symbol references not allowed in the EFI stub" >&2; \
- 		/bin/false;						\
--	fi;								\
--	$(OBJCOPY) $(STUBCOPY_FLAGS-y) $< $@
-+	fi
+diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
+index a92d42ffd9f7..49651e20bb9f 100644
+--- a/drivers/firmware/efi/libstub/efistub.h
++++ b/drivers/firmware/efi/libstub/efistub.h
+@@ -25,11 +25,7 @@
+ #define EFI_ALLOC_ALIGN		EFI_PAGE_SIZE
+ #endif
  
--#
--# ARM discards the .data section because it disallows r/w data in the
--# decompressor. So move our .data to .data.efistub and .bss to .bss.efistub,
--# which are preserved explicitly by the decompressor linker script.
--#
--STUBCOPY_FLAGS-$(CONFIG_ARM)	+= --rename-section .data=.data.efistub	\
--				   --rename-section .bss=.bss.efistub,load,alloc
--STUBCOPY_RELOC-$(CONFIG_ARM)	:= R_ARM_ABS
-+quiet_cmd_stubcopy = STUBCPY $@
-+      cmd_stubcopy =							\
-+	$(cmd_stubrelocs_check-y);					\
-+	$(OBJCOPY) $(STUBCOPY_FLAGS-y) $< $@
+-#if defined(CONFIG_X86)
+-#define __efistub_global	__section(.data)
+-#else
+ #define __efistub_global
+-#endif
+ 
+ extern bool __pure nochunk(void);
+ extern bool __pure nokaslr(void);
 -- 
 2.24.1
 
