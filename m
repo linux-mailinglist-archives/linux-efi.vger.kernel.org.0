@@ -2,152 +2,90 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E09421ABA56
-	for <lists+linux-efi@lfdr.de>; Thu, 16 Apr 2020 09:54:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6FCF51AC2FF
+	for <lists+linux-efi@lfdr.de>; Thu, 16 Apr 2020 15:39:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2439758AbgDPHwE (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 16 Apr 2020 03:52:04 -0400
-Received: from mail.kernel.org ([198.145.29.99]:59040 "EHLO mail.kernel.org"
+        id S2897330AbgDPNgb (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 16 Apr 2020 09:36:31 -0400
+Received: from mail.kernel.org ([198.145.29.99]:48524 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2439799AbgDPHwD (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Thu, 16 Apr 2020 03:52:03 -0400
-Received: from mail-il1-f172.google.com (mail-il1-f172.google.com [209.85.166.172])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        id S2897322AbgDPNgZ (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Thu, 16 Apr 2020 09:36:25 -0400
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 0199E2076A;
-        Thu, 16 Apr 2020 07:52:01 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 7C3922222C;
+        Thu, 16 Apr 2020 13:36:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1587023521;
-        bh=NzufprrHci2GBeQE1qpA00pu7UAi24+J7DgAw5oPGZ0=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=oRSdIqNWm9ATCg8yqzgmrw8l8CYbf65jBu9uZKgq+iwZxJIcwTSulmjsHzpf8OUHL
-         nyhyNAGv/MNGwIn5osMdBAXk5EkSuESUkiCS0DihTRypaMsvMSEBXbMB5q6R0voiaT
-         jbRchVAXmycHMWvCrDmXbbZhmfXFzORo9QrvaRis=
-Received: by mail-il1-f172.google.com with SMTP id f82so6003563ilh.8;
-        Thu, 16 Apr 2020 00:52:00 -0700 (PDT)
-X-Gm-Message-State: AGi0PubrifpXlDPtWhBHuCj/Cny1Iktc6Vr7SDFXYUQ0PxPwibsMdWVF
-        1D4Jy4RTnrl5e9dg4khCt1JTBNMCme08fW5/n5s=
-X-Google-Smtp-Source: APiQypL8wZ1+/gPrARSHoOw22uYvZMX8vTjJfW+r7Ld7iynuANQPH2+X6T4B9lPgKHbp8eTj+URL23FOS6APKKT7dXY=
-X-Received: by 2002:a92:991c:: with SMTP id p28mr4998325ili.258.1587023520423;
- Thu, 16 Apr 2020 00:52:00 -0700 (PDT)
+        s=default; t=1587044183;
+        bh=1jzhNCiKswhoIJTfB2OLMsRckfeRXXkCNaRRwVljCGw=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=xNdITB3IziSyyMzSOcwd7Tyi/Xji7ozxG5wVSvPYZGGGwBe3ufkWm87jAgGA+Af79
+         o8Be2+epqy+yDb5qqXQ9fG/OibHktcyrao/cX8mE8aT9iPUKplTauei3XSKl/aqk0D
+         APu9POsSBIO9T+jcCUlxeSHRmwYl6kcQrVAgsaeA=
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, Tom Lendacky <thomas.lendacky@amd.com>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Ingo Molnar <mingo@kernel.org>, linux-efi@vger.kernel.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        David Hildenbrand <david@redhat.com>,
+        Heinrich Schuchardt <xypron.glpk@gmx.de>
+Subject: [PATCH 5.5 112/257] efi/x86: Add TPM related EFI tables to unencrypted mapping checks
+Date:   Thu, 16 Apr 2020 15:22:43 +0200
+Message-Id: <20200416131340.248264441@linuxfoundation.org>
+X-Mailer: git-send-email 2.26.1
+In-Reply-To: <20200416131325.891903893@linuxfoundation.org>
+References: <20200416131325.891903893@linuxfoundation.org>
+User-Agent: quilt/0.66
 MIME-Version: 1.0
-References: <20200415221520.2692512-1-nivedita@alum.mit.edu> <20200415221520.2692512-5-nivedita@alum.mit.edu>
-In-Reply-To: <20200415221520.2692512-5-nivedita@alum.mit.edu>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Thu, 16 Apr 2020 09:51:49 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXERKP2x6=wgdgyRtr5Rh-116bwwvVy4zgHAH=Hy9QsOew@mail.gmail.com>
-Message-ID: <CAMj1kXERKP2x6=wgdgyRtr5Rh-116bwwvVy4zgHAH=Hy9QsOew@mail.gmail.com>
-Subject: Re: [PATCH 4/5] efi: Kill __efistub_global
-To:     Arvind Sankar <nivedita@alum.mit.edu>
-Cc:     linux-efi <linux-efi@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        X86 ML <x86@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, 16 Apr 2020 at 00:15, Arvind Sankar <nivedita@alum.mit.edu> wrote:
->
-> Now that both arm and x86 are using the linker script to place the EFI
-> stub's global variables in the correct section, remove __efistub_global.
->
-> Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
+From: Tom Lendacky <thomas.lendacky@amd.com>
 
-Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
+commit f10e80a19b07b58fc2adad7945f8313b01503bae upstream.
 
-> ---
->  drivers/firmware/efi/libstub/arm-stub.c        |  4 ++--
->  drivers/firmware/efi/libstub/efi-stub-helper.c | 15 +++++++--------
->  drivers/firmware/efi/libstub/efistub.h         |  2 --
->  drivers/firmware/efi/libstub/gop.c             |  2 +-
->  drivers/firmware/efi/libstub/x86-stub.c        |  2 +-
->  5 files changed, 11 insertions(+), 14 deletions(-)
->
-> diff --git a/drivers/firmware/efi/libstub/arm-stub.c b/drivers/firmware/efi/libstub/arm-stub.c
-> index 99a5cde7c2d8..bf42d6c742a8 100644
-> --- a/drivers/firmware/efi/libstub/arm-stub.c
-> +++ b/drivers/firmware/efi/libstub/arm-stub.c
-> @@ -36,9 +36,9 @@
->  #endif
->
->  static u64 virtmap_base = EFI_RT_VIRTUAL_BASE;
-> -static bool __efistub_global flat_va_mapping;
-> +static bool flat_va_mapping;
->
-> -static efi_system_table_t *__efistub_global sys_table;
-> +static efi_system_table_t *sys_table;
->
->  __pure efi_system_table_t *efi_system_table(void)
->  {
-> diff --git a/drivers/firmware/efi/libstub/efi-stub-helper.c b/drivers/firmware/efi/libstub/efi-stub-helper.c
-> index c6092b6038cf..14e56a64f208 100644
-> --- a/drivers/firmware/efi/libstub/efi-stub-helper.c
-> +++ b/drivers/firmware/efi/libstub/efi-stub-helper.c
-> @@ -12,14 +12,13 @@
->
->  #include "efistub.h"
->
-> -static bool __efistub_global efi_nochunk;
-> -static bool __efistub_global efi_nokaslr;
-> -static bool __efistub_global efi_noinitrd;
-> -static bool __efistub_global efi_quiet;
-> -static bool __efistub_global efi_novamap;
-> -static bool __efistub_global efi_nosoftreserve;
-> -static bool __efistub_global efi_disable_pci_dma =
-> -                                       IS_ENABLED(CONFIG_EFI_DISABLE_PCI_DMA);
-> +static bool efi_nochunk;
-> +static bool efi_nokaslr;
-> +static bool efi_noinitrd;
-> +static bool efi_quiet;
-> +static bool efi_novamap;
-> +static bool efi_nosoftreserve;
-> +static bool efi_disable_pci_dma = IS_ENABLED(CONFIG_EFI_DISABLE_PCI_DMA);
->
->  bool __pure nochunk(void)
->  {
-> diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
-> index 49651e20bb9f..f96c56596034 100644
-> --- a/drivers/firmware/efi/libstub/efistub.h
-> +++ b/drivers/firmware/efi/libstub/efistub.h
-> @@ -25,8 +25,6 @@
->  #define EFI_ALLOC_ALIGN                EFI_PAGE_SIZE
->  #endif
->
-> -#define __efistub_global
-> -
->  extern bool __pure nochunk(void);
->  extern bool __pure nokaslr(void);
->  extern bool __pure noinitrd(void);
-> diff --git a/drivers/firmware/efi/libstub/gop.c b/drivers/firmware/efi/libstub/gop.c
-> index fa05a0b0adfd..216327d0b034 100644
-> --- a/drivers/firmware/efi/libstub/gop.c
-> +++ b/drivers/firmware/efi/libstub/gop.c
-> @@ -32,7 +32,7 @@ static struct {
->                         u8 depth;
->                 } res;
->         };
-> -} cmdline __efistub_global = { .option = EFI_CMDLINE_NONE };
-> +} cmdline = { .option = EFI_CMDLINE_NONE };
->
->  static bool parse_modenum(char *option, char **next)
->  {
-> diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
-> index 7583e908852f..aedac3af4b5c 100644
-> --- a/drivers/firmware/efi/libstub/x86-stub.c
-> +++ b/drivers/firmware/efi/libstub/x86-stub.c
-> @@ -20,7 +20,7 @@
->  /* Maximum physical address for 64-bit kernel with 4-level paging */
->  #define MAXMEM_X86_64_4LEVEL (1ull << 46)
->
-> -static efi_system_table_t *sys_table __efistub_global;
-> +static efi_system_table_t *sys_table;
->  extern const bool efi_is64;
->  extern u32 image_offset;
->
-> --
-> 2.24.1
->
+When booting with SME active, EFI tables must be mapped unencrypted since
+they were built by UEFI in unencrypted memory. Update the list of tables
+to be checked during early_memremap() processing to account for the EFI
+TPM tables.
+
+This fixes a bug where an EFI TPM log table has been created by UEFI, but
+it lives in memory that has been marked as usable rather than reserved.
+
+Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: linux-efi@vger.kernel.org
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Heinrich Schuchardt <xypron.glpk@gmx.de>
+Cc: <stable@vger.kernel.org> # v5.4+
+Link: https://lore.kernel.org/r/4144cd813f113c20cdfa511cf59500a64e6015be.1582662842.git.thomas.lendacky@amd.com
+Link: https://lore.kernel.org/r/20200228121408.9075-2-ardb@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+---
+ arch/x86/platform/efi/efi.c |    2 ++
+ 1 file changed, 2 insertions(+)
+
+--- a/arch/x86/platform/efi/efi.c
++++ b/arch/x86/platform/efi/efi.c
+@@ -85,6 +85,8 @@ static const unsigned long * const efi_t
+ #ifdef CONFIG_EFI_RCI2_TABLE
+ 	&rci2_table_phys,
+ #endif
++	&efi.tpm_log,
++	&efi.tpm_final_log,
+ };
+ 
+ u64 efi_setup;		/* efi setup_data physical address */
+
+
