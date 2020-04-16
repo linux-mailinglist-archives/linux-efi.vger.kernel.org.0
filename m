@@ -2,90 +2,59 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 003A91AC3A3
-	for <lists+linux-efi@lfdr.de>; Thu, 16 Apr 2020 15:46:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9728D1AC631
+	for <lists+linux-efi@lfdr.de>; Thu, 16 Apr 2020 16:37:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2898569AbgDPNqT (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 16 Apr 2020 09:46:19 -0400
-Received: from mail.kernel.org ([198.145.29.99]:60184 "EHLO mail.kernel.org"
+        id S2394314AbgDPOfT (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 16 Apr 2020 10:35:19 -0400
+Received: from mga14.intel.com ([192.55.52.115]:32947 "EHLO mga14.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2392296AbgDPNqR (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Thu, 16 Apr 2020 09:46:17 -0400
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C89512076D;
-        Thu, 16 Apr 2020 13:46:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1587044777;
-        bh=1jzhNCiKswhoIJTfB2OLMsRckfeRXXkCNaRRwVljCGw=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1XwVQIwwDgT6qZooVs194NawgPWKaz/Z7xbhWz0YUt2OZjpgxrNKIapnicc9XL2ST
-         B4Ooln7hPRXk7tPHvEHGprNcaADlF8m4XvRePkRpe5v372pqKUPDnjkrLpQKlKecmF
-         pJCtwRmY7xb2Sj4aG5PsvjqjifIwixyLC/uSOOnM=
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Tom Lendacky <thomas.lendacky@amd.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Ingo Molnar <mingo@kernel.org>, linux-efi@vger.kernel.org,
-        Thomas Gleixner <tglx@linutronix.de>,
-        David Hildenbrand <david@redhat.com>,
-        Heinrich Schuchardt <xypron.glpk@gmx.de>
-Subject: [PATCH 5.4 098/232] efi/x86: Add TPM related EFI tables to unencrypted mapping checks
-Date:   Thu, 16 Apr 2020 15:23:12 +0200
-Message-Id: <20200416131327.275420952@linuxfoundation.org>
-X-Mailer: git-send-email 2.26.1
-In-Reply-To: <20200416131316.640996080@linuxfoundation.org>
-References: <20200416131316.640996080@linuxfoundation.org>
-User-Agent: quilt/0.66
+        id S2390489AbgDPOfQ (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Thu, 16 Apr 2020 10:35:16 -0400
+IronPort-SDR: +EoHWgc5JHZbsFU6TEE873X72BrAPnLUjSQe0ZhoXXntDb2Re65mKPQMIltgMo4o89+AEAH6bZ
+ l1Vvkef/BVcQ==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Apr 2020 07:35:16 -0700
+IronPort-SDR: Yczz4GfRLg57htWIkGagIvfQxxAfgXJ/Yc+9bq+5r6lkNggGyJwnt2bduztBdXN2nuoMj+0k6m
+ j7/qTxPSTwVA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.72,391,1580803200"; 
+   d="scan'208";a="332860044"
+Received: from mylly.fi.intel.com (HELO [10.237.72.51]) ([10.237.72.51])
+  by orsmga001.jf.intel.com with ESMTP; 16 Apr 2020 07:35:14 -0700
+To:     linux-efi@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
+        Tony Luck <tony.luck@intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From:   Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Subject: Regression with commit 0a67361dcdaa
+Message-ID: <eb0d88d0-879e-c500-261e-69c76fb68a89@linux.intel.com>
+Date:   Thu, 16 Apr 2020 17:35:14 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.5.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-From: Tom Lendacky <thomas.lendacky@amd.com>
+Hi
 
-commit f10e80a19b07b58fc2adad7945f8313b01503bae upstream.
+v5.7-rc1 hangs in early boot on an Intel Atom based prototype hardware 
+while v5.6 boots fine. I bisected the regression into 0a67361dcdaa 
+("efi/x86: Remove runtime table address from kexec EFI setup data").
 
-When booting with SME active, EFI tables must be mapped unencrypted since
-they were built by UEFI in unencrypted memory. Update the list of tables
-to be checked during early_memremap() processing to account for the EFI
-TPM tables.
+v5.7-rc1 caused a reboot loop on another Intel Core based prototype HW. 
+Reboots also on top of 0a67361dcdaa but boots fine with that commit 
+reverted.
 
-This fixes a bug where an EFI TPM log table has been created by UEFI, but
-it lives in memory that has been marked as usable rather than reserved.
+Our test system uses kexec to boot the test kernel. These two machines 
+got regression with v5.7-rc1. We have also others that boot fine.
 
-Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: linux-efi@vger.kernel.org
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Heinrich Schuchardt <xypron.glpk@gmx.de>
-Cc: <stable@vger.kernel.org> # v5.4+
-Link: https://lore.kernel.org/r/4144cd813f113c20cdfa511cf59500a64e6015be.1582662842.git.thomas.lendacky@amd.com
-Link: https://lore.kernel.org/r/20200228121408.9075-2-ardb@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
----
- arch/x86/platform/efi/efi.c |    2 ++
- 1 file changed, 2 insertions(+)
-
---- a/arch/x86/platform/efi/efi.c
-+++ b/arch/x86/platform/efi/efi.c
-@@ -85,6 +85,8 @@ static const unsigned long * const efi_t
- #ifdef CONFIG_EFI_RCI2_TABLE
- 	&rci2_table_phys,
- #endif
-+	&efi.tpm_log,
-+	&efi.tpm_final_log,
- };
- 
- u64 efi_setup;		/* efi setup_data physical address */
-
-
+-- 
+Jarkko
