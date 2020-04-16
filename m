@@ -2,27 +2,27 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6FCF51AC2FF
-	for <lists+linux-efi@lfdr.de>; Thu, 16 Apr 2020 15:39:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6ED121AC442
+	for <lists+linux-efi@lfdr.de>; Thu, 16 Apr 2020 15:57:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2897330AbgDPNgb (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 16 Apr 2020 09:36:31 -0400
-Received: from mail.kernel.org ([198.145.29.99]:48524 "EHLO mail.kernel.org"
+        id S2389036AbgDPN47 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 16 Apr 2020 09:56:59 -0400
+Received: from mail.kernel.org ([198.145.29.99]:43936 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2897322AbgDPNgZ (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Thu, 16 Apr 2020 09:36:25 -0400
+        id S2409247AbgDPN4z (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Thu, 16 Apr 2020 09:56:55 -0400
 Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 7C3922222C;
-        Thu, 16 Apr 2020 13:36:22 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id E99F920786;
+        Thu, 16 Apr 2020 13:56:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1587044183;
+        s=default; t=1587045415;
         bh=1jzhNCiKswhoIJTfB2OLMsRckfeRXXkCNaRRwVljCGw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xNdITB3IziSyyMzSOcwd7Tyi/Xji7ozxG5wVSvPYZGGGwBe3ufkWm87jAgGA+Af79
-         o8Be2+epqy+yDb5qqXQ9fG/OibHktcyrao/cX8mE8aT9iPUKplTauei3XSKl/aqk0D
-         APu9POsSBIO9T+jcCUlxeSHRmwYl6kcQrVAgsaeA=
+        b=sFXF656UiBTpJn3JMkDrhH2qFhxm4zT0Eb07ArMJnvBMZUSj2Q9XR0jYe+M3yeLwJ
+         dch3ODJ5IAg6wKhII0ohLBVF+9Ko+QampC93fN36BBRBmyTshbkVvxKo+mMuaKuPb6
+         qPGmYnHUEr92ABO0xuERKV6zLzxPR42iwNa4DTo8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -32,12 +32,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Thomas Gleixner <tglx@linutronix.de>,
         David Hildenbrand <david@redhat.com>,
         Heinrich Schuchardt <xypron.glpk@gmx.de>
-Subject: [PATCH 5.5 112/257] efi/x86: Add TPM related EFI tables to unencrypted mapping checks
-Date:   Thu, 16 Apr 2020 15:22:43 +0200
-Message-Id: <20200416131340.248264441@linuxfoundation.org>
+Subject: [PATCH 5.6 098/254] efi/x86: Add TPM related EFI tables to unencrypted mapping checks
+Date:   Thu, 16 Apr 2020 15:23:07 +0200
+Message-Id: <20200416131338.257988354@linuxfoundation.org>
 X-Mailer: git-send-email 2.26.1
-In-Reply-To: <20200416131325.891903893@linuxfoundation.org>
-References: <20200416131325.891903893@linuxfoundation.org>
+In-Reply-To: <20200416131325.804095985@linuxfoundation.org>
+References: <20200416131325.804095985@linuxfoundation.org>
 User-Agent: quilt/0.66
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
