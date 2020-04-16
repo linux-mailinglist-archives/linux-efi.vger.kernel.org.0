@@ -2,235 +2,81 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 99F521ACDFB
-	for <lists+linux-efi@lfdr.de>; Thu, 16 Apr 2020 18:48:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 169AA1AD025
+	for <lists+linux-efi@lfdr.de>; Thu, 16 Apr 2020 21:08:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727782AbgDPQsk (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 16 Apr 2020 12:48:40 -0400
-Received: from mail.kernel.org ([198.145.29.99]:58016 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727784AbgDPQsj (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Thu, 16 Apr 2020 12:48:39 -0400
-Received: from e123331-lin.home (amontpellier-657-1-18-247.w109-210.abo.wanadoo.fr [109.210.65.247])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B71BD2078E;
-        Thu, 16 Apr 2020 16:48:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1587055718;
-        bh=0nUoAnZ9o8LQRriL7NbZcWV5a2KvFnHCBjFMN+snG7U=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tg9tfxueSeLdVX+mPV83b8aQm9JmxbuDAyaaFbz01JcZgTu9FcZB/r+JnCVHJkaqr
-         V0fOCx+L1x82bzskGs4AoMllEE2bAsUfM8pjWsd/ppb4K7/D2ZFz9yhj/aFmSAHhSd
-         Hjy1433BsOTpSHG5aHqFmEacvM1UoELK1IMx38Gc=
-From:   Ard Biesheuvel <ardb@kernel.org>
-To:     linux-efi@vger.kernel.org
-Cc:     nivedita@alum.mit.edu, Ard Biesheuvel <ardb@kernel.org>
-Subject: [PATCH 2/2] efi/libstub: drop __pure getters for EFI stub options
-Date:   Thu, 16 Apr 2020 18:48:31 +0200
-Message-Id: <20200416164831.11724-2-ardb@kernel.org>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200416164831.11724-1-ardb@kernel.org>
+        id S1728831AbgDPTHj (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 16 Apr 2020 15:07:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52384 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728429AbgDPTHi (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 16 Apr 2020 15:07:38 -0400
+Received: from mail-qt1-x844.google.com (mail-qt1-x844.google.com [IPv6:2607:f8b0:4864:20::844])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0030C061A0C
+        for <linux-efi@vger.kernel.org>; Thu, 16 Apr 2020 12:07:37 -0700 (PDT)
+Received: by mail-qt1-x844.google.com with SMTP id w24so17368050qts.11
+        for <linux-efi@vger.kernel.org>; Thu, 16 Apr 2020 12:07:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:from:date:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=G3QAK3EQG+LMpKA8lW8S8JKPYZZgk3isr2t8e3jJe7o=;
+        b=sDeQ4B6yqpF6g27vOdSY0EARXE973+wgAk5rYMSUghlxonGEfK6b5O4b5z8jlo0s06
+         hsCtlklBRbY+Tufp9q32iKkyVUxzR9XfykVt9ZqEakhhEevQERSzp+ZhBhfS3qpLbt0a
+         w5igdxwlsBPFTyOS4bCG3Dt7brh6PovWbA03+cBfSDFzt0BbOZK9cFQ2vlxLAjw1yPOJ
+         kryyFnVqvbBoMTD3knvUKGx/n23VT7BYshYX56q3zeK2OwoNSutwxWCbeV5y4DOIoXPb
+         kI64j0wnwEJZ6sTvOyZsk5r521BbDgCHDJj0bdliFu4zjGmMVms5sN96FTLtTSeET96I
+         +nvg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:from:date:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to;
+        bh=G3QAK3EQG+LMpKA8lW8S8JKPYZZgk3isr2t8e3jJe7o=;
+        b=iY42TUoVllxPgTh5WAvN1imK0hb9O/57U2FKLf9WRhIgfxzplvOzQd/sWJdvFE/eiU
+         WQ+MWOl0Df+GaBj3FnQWF9sp6kLyqYkRWtcAc7TUZkfaHqkIxEn4FzR8lAo7b/p2kguy
+         Z2uXzBFZSLQnDCowG/8AaMXlJGraq7DAZT0/L8cDbRAK3nUgkUhct4HTr4dIIQY3cGlu
+         Mo1vynMf76CF6yUwYOFasFlXi/1HwGodriU9f2YJc+QwBFESzY9vBQh3xvFpemul+/iY
+         KwBXng3khDf9Nlyi6qmnXfjzMPqiCCWWVpA+ogvKBe0FWjS3/keZw5St612UZN9QI8ap
+         aH/Q==
+X-Gm-Message-State: AGi0Puas5mU+ZkWdgx6aj+XR+9y4xl5XfkhLXvMIjH9218KepCZSea6p
+        mr+vmd2/QT5B8AesTZulSETHo3wj
+X-Google-Smtp-Source: APiQypIin8J2fq8nm9mEptszFiz2iUJYCZ/jOD8m0974qRtp+XAf42QqjXNtm6055a4BWe6G1lgqVg==
+X-Received: by 2002:ac8:4cce:: with SMTP id l14mr11021470qtv.31.1587064056659;
+        Thu, 16 Apr 2020 12:07:36 -0700 (PDT)
+Received: from rani.riverdale.lan ([2001:470:1f07:5f3::b55f])
+        by smtp.gmail.com with ESMTPSA id w42sm13416532qtj.63.2020.04.16.12.07.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 16 Apr 2020 12:07:35 -0700 (PDT)
+From:   Arvind Sankar <nivedita@alum.mit.edu>
+X-Google-Original-From: Arvind Sankar <arvind@rani.riverdale.lan>
+Date:   Thu, 16 Apr 2020 15:07:34 -0400
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-efi@vger.kernel.org, nivedita@alum.mit.edu
+Subject: Re: [PATCH 1/2] efi/libstub: drop __pure getter for efi_system_table
+Message-ID: <20200416190734.GA3540850@rani.riverdale.lan>
 References: <20200416164831.11724-1-ardb@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20200416164831.11724-1-ardb@kernel.org>
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The practice of using __pure getter functions to access global
-variables in the EFI stub dates back to the time when we had to
-carefully prevent GOT entries from being emitted, because we
-could not rely on the toolchain to do this for us.
+On Thu, Apr 16, 2020 at 06:48:30PM +0200, Ard Biesheuvel wrote:
+> The practice of using __pure getter functions to access global
+> variables in the EFI stub dates back to the time when we had to
+> carefully prevent GOT entries from being emitted, because we
+> could not rely on the toolchain to do this for us.
+> 
+> Today, we use the hidden visibility pragma for all EFI stub source
+> files, which now all live in the same subdirectory, and we apply a
+> sanity check on the objects, so we can get rid of these getter
+> functions and simply refer to global data objects directly.
+> 
+> Start with efi_system_table(), and convert it into a global variable.
+> 
+> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 
-Today, we use the hidden visibility pragma for all EFI stub source
-files, which now all live in the same subdirectory, and we apply a
-sanity check on the objects, so we can get rid of these getter
-functions and simply refer to global data objects directly.
-
-So switch over the remaining boolean variables carrying options set
-on the kernel command line.
-
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
----
- drivers/firmware/efi/libstub/arm64-stub.c     |  2 +-
- .../firmware/efi/libstub/efi-stub-helper.c    | 38 ++++---------------
- drivers/firmware/efi/libstub/efi-stub.c       |  6 +--
- drivers/firmware/efi/libstub/efistub.h        | 13 ++++---
- drivers/firmware/efi/libstub/fdt.c            |  2 +-
- drivers/firmware/efi/libstub/file.c           |  2 +-
- drivers/firmware/efi/libstub/x86-stub.c       |  4 +-
- 7 files changed, 22 insertions(+), 45 deletions(-)
-
-diff --git a/drivers/firmware/efi/libstub/arm64-stub.c b/drivers/firmware/efi/libstub/arm64-stub.c
-index 99b67e88a33b..ba4db35015a3 100644
---- a/drivers/firmware/efi/libstub/arm64-stub.c
-+++ b/drivers/firmware/efi/libstub/arm64-stub.c
-@@ -55,7 +55,7 @@ efi_status_t handle_kernel_image(unsigned long *image_addr,
- 	u32 phys_seed = 0;
- 
- 	if (IS_ENABLED(CONFIG_RANDOMIZE_BASE)) {
--		if (!nokaslr()) {
-+		if (!efi_nokaslr) {
- 			status = efi_get_random_bytes(sizeof(phys_seed),
- 						      (u8 *)&phys_seed);
- 			if (status == EFI_NOT_FOUND) {
-diff --git a/drivers/firmware/efi/libstub/efi-stub-helper.c b/drivers/firmware/efi/libstub/efi-stub-helper.c
-index 0b1688b10ddc..6fd5f71eedbe 100644
---- a/drivers/firmware/efi/libstub/efi-stub-helper.c
-+++ b/drivers/firmware/efi/libstub/efi-stub-helper.c
-@@ -12,38 +12,14 @@
- 
- #include "efistub.h"
- 
--static bool efi_nochunk;
--static bool efi_nokaslr;
--static bool efi_noinitrd;
--static bool efi_quiet;
--static bool efi_novamap;
--static bool efi_nosoftreserve;
--static bool efi_disable_pci_dma = IS_ENABLED(CONFIG_EFI_DISABLE_PCI_DMA);
-+bool efi_nochunk;
-+bool efi_nokaslr;
-+bool efi_noinitrd;
-+bool efi_quiet;
-+bool efi_novamap;
-+bool efi_nosoftreserve;
- 
--bool __pure nochunk(void)
--{
--	return efi_nochunk;
--}
--bool __pure nokaslr(void)
--{
--	return efi_nokaslr;
--}
--bool __pure noinitrd(void)
--{
--	return efi_noinitrd;
--}
--bool __pure is_quiet(void)
--{
--	return efi_quiet;
--}
--bool __pure novamap(void)
--{
--	return efi_novamap;
--}
--bool __pure __efi_soft_reserve_enabled(void)
--{
--	return !efi_nosoftreserve;
--}
-+static bool efi_disable_pci_dma = IS_ENABLED(CONFIG_EFI_DISABLE_PCI_DMA);
- 
- void efi_printk(char *str)
- {
-diff --git a/drivers/firmware/efi/libstub/efi-stub.c b/drivers/firmware/efi/libstub/efi-stub.c
-index 1e9f433ce51f..9357384e6edd 100644
---- a/drivers/firmware/efi/libstub/efi-stub.c
-+++ b/drivers/firmware/efi/libstub/efi-stub.c
-@@ -263,7 +263,7 @@ efi_status_t efi_entry(efi_handle_t handle, efi_system_table_t *sys_table_arg)
- 	if (!fdt_addr)
- 		pr_efi("Generating empty DTB\n");
- 
--	if (!noinitrd()) {
-+	if (!efi_noinitrd) {
- 		max_addr = efi_get_max_initrd_addr(dram_base, image_addr);
- 		status = efi_load_initrd_dev_path(&initrd_addr, &initrd_size,
- 						  max_addr);
-@@ -294,7 +294,7 @@ efi_status_t efi_entry(efi_handle_t handle, efi_system_table_t *sys_table_arg)
- 			   EFI_PROPERTIES_RUNTIME_MEMORY_PROTECTION_NON_EXECUTABLE_PE_DATA);
- 
- 	/* hibernation expects the runtime regions to stay in the same place */
--	if (!IS_ENABLED(CONFIG_HIBERNATION) && !nokaslr() && !flat_va_mapping) {
-+	if (!IS_ENABLED(CONFIG_HIBERNATION) && !efi_nokaslr && !flat_va_mapping) {
- 		/*
- 		 * Randomize the base of the UEFI runtime services region.
- 		 * Preserve the 2 MB alignment of the region by taking a
-@@ -367,7 +367,7 @@ void efi_get_virtmap(efi_memory_desc_t *memory_map, unsigned long map_size,
- 		size = in->num_pages * EFI_PAGE_SIZE;
- 
- 		in->virt_addr = in->phys_addr;
--		if (novamap()) {
-+		if (efi_novamap) {
- 			continue;
- 		}
- 
-diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
-index 7fcd1579fad7..703c72cfb737 100644
---- a/drivers/firmware/efi/libstub/efistub.h
-+++ b/drivers/firmware/efi/libstub/efistub.h
-@@ -25,16 +25,17 @@
- #define EFI_ALLOC_ALIGN		EFI_PAGE_SIZE
- #endif
- 
--extern bool __pure nochunk(void);
--extern bool __pure nokaslr(void);
--extern bool __pure noinitrd(void);
--extern bool __pure is_quiet(void);
--extern bool __pure novamap(void);
-+extern bool efi_nochunk;
-+extern bool efi_nokaslr;
-+extern bool efi_noinitrd;
-+extern bool efi_quiet;
-+extern bool efi_novamap;
-+extern bool efi_nosoftreserve;
- 
- extern efi_system_table_t  *efi_system_table;
- 
- #define pr_efi(msg)		do {			\
--	if (!is_quiet()) efi_printk("EFI stub: "msg);	\
-+	if (!efi_quiet) efi_printk("EFI stub: "msg);	\
- } while (0)
- 
- #define pr_efi_err(msg) efi_printk("EFI stub: ERROR: "msg)
-diff --git a/drivers/firmware/efi/libstub/fdt.c b/drivers/firmware/efi/libstub/fdt.c
-index 06d5e7fc8e34..3074a5e27c65 100644
---- a/drivers/firmware/efi/libstub/fdt.c
-+++ b/drivers/firmware/efi/libstub/fdt.c
-@@ -310,7 +310,7 @@ efi_status_t allocate_new_fdt_and_exit_boot(void *handle,
- 	if (status == EFI_SUCCESS) {
- 		efi_set_virtual_address_map_t *svam;
- 
--		if (novamap())
-+		if (efi_novamap)
- 			return EFI_SUCCESS;
- 
- 		/* Install the new virtual address map */
-diff --git a/drivers/firmware/efi/libstub/file.c b/drivers/firmware/efi/libstub/file.c
-index ea66b1f16a79..951ef1d2b855 100644
---- a/drivers/firmware/efi/libstub/file.c
-+++ b/drivers/firmware/efi/libstub/file.c
-@@ -142,7 +142,7 @@ static efi_status_t handle_cmdline_files(efi_loaded_image_t *image,
- 	if (!load_addr || !load_size)
- 		return EFI_INVALID_PARAMETER;
- 
--	if (IS_ENABLED(CONFIG_X86) && !nochunk())
-+	if (IS_ENABLED(CONFIG_X86) && !efi_nochunk)
- 		efi_chunk_size = EFI_READ_CHUNK_SIZE;
- 
- 	alloc_addr = alloc_size = 0;
-diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
-index 0e6113799f4c..6012bb5d1b75 100644
---- a/drivers/firmware/efi/libstub/x86-stub.c
-+++ b/drivers/firmware/efi/libstub/x86-stub.c
-@@ -427,7 +427,7 @@ efi_status_t __efiapi efi_pe_entry(efi_handle_t handle,
- 		if (status != EFI_SUCCESS)
- 			goto fail2;
- 
--		if (!noinitrd()) {
-+		if (!efi_noinitrd) {
- 			status = efi_load_initrd(image, &ramdisk_addr,
- 						 &ramdisk_size,
- 						 hdr->initrd_addr_max,
-@@ -787,7 +787,7 @@ unsigned long efi_main(efi_handle_t handle,
- 	 * permit an initrd loaded from the LINUX_EFI_INITRD_MEDIA_GUID device
- 	 * path to supersede it.
- 	 */
--	if (!noinitrd()) {
-+	if (!efi_noinitrd) {
- 		unsigned long addr, size;
- 
- 		status = efi_load_initrd_dev_path(&addr, &size, ULONG_MAX);
--- 
-2.17.1
-
+Could turn efi_is_64bit() into an inline function as well?
