@@ -2,66 +2,51 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C3001B0084
-	for <lists+linux-efi@lfdr.de>; Mon, 20 Apr 2020 06:20:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E0C31B0222
+	for <lists+linux-efi@lfdr.de>; Mon, 20 Apr 2020 09:04:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725815AbgDTEUs (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 20 Apr 2020 00:20:48 -0400
-Received: from esa5.hgst.iphmx.com ([216.71.153.144]:18286 "EHLO
-        esa5.hgst.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725710AbgDTEUs (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 20 Apr 2020 00:20:48 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
-  t=1587356447; x=1618892447;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-id:content-transfer-encoding:
-   mime-version;
-  bh=8nRkcxVAyAVgErzy4y29tSdaJVgliKQGbUtVr3zQF/o=;
-  b=dyFeAmcflygsVfktauDYByPWtM92EMYUFulOWtDmj+awCnk+6VsaykoI
-   lWES3stlysOG7SfUzsxDj9f9O4CamjCHek1egplr4CWKIsBiisWQMMQHv
-   DbELIbXzDmb58i8Sfniv0AJh8fpCipyeMVlTsIOqwhEayLvt8w0OY5Zv5
-   jx/jG9RzLpSU7vkRK52qnRIqcgZxi4I2WDkZcuHbVSNJq7ahnnWBVb1Px
-   xKon/0BAYpzCcJnJ+iQ5Uz/ygURTAeBiSsgjWlBpKKtkxM2mhHhhlEIBr
-   qB187wP0/sNRi2VhUoOhYWxyHMXIdSQ27LxUqRUS1qRQH8uA3zW5Wj4GG
-   g==;
-IronPort-SDR: STCYjek4Z+dkO0bUqNVhRM0z14uMJxgvNebTDv0nAtRJA2ZuySqidkpHKE65fJ2xdscv7cgrVE
- 8JNMgti1tDYXHsEjcHJSBUypxFDts4SPV4JuuCtvSIDm9FKDuQJ8uPHLXZzI/Ie1xxNklUwN7D
- igXsEXs4KQqbxOuM6kCte9lxYTZEoMDLiuFdrZz/6esnRT4msFE8sgaBl8V9la9I3Rv+CDAwIp
- RLF2ixHEJWKqyMUJu9hx0dmfpYXNkhVK6/puihRZ5X2L+WHpbUR5LApFB3ctdQdSkhMQCTZYgl
- F24=
-X-IronPort-AV: E=Sophos;i="5.72,405,1580745600"; 
-   d="scan'208";a="135988705"
-Received: from mail-mw2nam12lp2048.outbound.protection.outlook.com (HELO NAM12-MW2-obe.outbound.protection.outlook.com) ([104.47.66.48])
-  by ob1.hgst.iphmx.com with ESMTP; 20 Apr 2020 12:20:42 +0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=HN/HLHBXW22AEAmDPILrnevJPIQhzYkzwL7v74vZGb5S7qGEaaUNPOXHVa2+aPnkjpt37QUVO/g6QSgUtDhEPKW/JOTxM9WMKOEVZEsmhGkhICHWHrs4S6zR77NCvYyR+JJa14sS3e6/zMP+hN0PhqvQZHgGJRvlnooUupT27+ZrqzMV5QLANu6ZW0cP1lM1M7mvZzHt0DraTgFrtjhc08ip4q7AKBRwrzFvZVbVJV4nmrsYfsc64eB/RCb2Ya/ckUIsdJIwNsFFvhnsHZdqdV/8IXEeVS5lS6sy9KvizLl5UdONppIJjn0NFjGC+xJJqCzulWu4MO7X10GCp5ptRQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8nRkcxVAyAVgErzy4y29tSdaJVgliKQGbUtVr3zQF/o=;
- b=j4sqzoISubhbjvTiozHyEz3anf/Me8x7lxZNRRek0pb0pA44CLtV3LxKaZeYRnDcMbR9l0Cec2om5geHWPlZsbtXC7RL/hq7NBQwGgdk1y+2xsLf/EF3QKfmpy55JJ3XbxLwZb7xGZx4VXuQiNJc+H56hLpRqs7SQRrbpuffCALaOqzoUIAmtc5ZqFLRIR0r7B33nIMmMp5pxYvVws/+QidagOhOn0O930b/yR4XCr8K1GFFwvNElTUv/u/RKYDUaXKB91OFJ6cReV0T1XJS96LHJOh9RS4V9+RWPlUlV4UfqWGVkGPbIftXv0Ld3Sk5hLjcQQZ1BsDY329d+X1+DQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=wdc.com; dmarc=pass action=none header.from=wdc.com; dkim=pass
- header.d=wdc.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sharedspace.onmicrosoft.com; s=selector2-sharedspace-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8nRkcxVAyAVgErzy4y29tSdaJVgliKQGbUtVr3zQF/o=;
- b=cSrWn2pogdkQ0Ux9dhBCybNNwpHsBYRmXM0r1Ph2dnaoMsRHBSZfBL+FBUpAS+WZqL/THoPNLK3i21Up6tn7pE6SrcfYHi8pw8Yi8M9mvbCEQ8D62k3sMICOyiSgOug60yh4g0r+brdUa9fJjPSG3olhWZrFvFU9XlLLjs6PKfE=
-Received: from BY5PR04MB6724.namprd04.prod.outlook.com (2603:10b6:a03:219::15)
- by BY5PR04MB7091.namprd04.prod.outlook.com (2603:10b6:a03:227::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2921.25; Mon, 20 Apr
- 2020 04:20:40 +0000
-Received: from BY5PR04MB6724.namprd04.prod.outlook.com
- ([fe80::5591:a2e7:4fad:6b0c]) by BY5PR04MB6724.namprd04.prod.outlook.com
- ([fe80::5591:a2e7:4fad:6b0c%6]) with mapi id 15.20.2921.030; Mon, 20 Apr 2020
- 04:20:40 +0000
-From:   Atish Patra <Atish.Patra@wdc.com>
-To:     "atishp@atishpatra.org" <atishp@atishpatra.org>,
-        "ardb@kernel.org" <ardb@kernel.org>
-CC:     "masahiroy@kernel.org" <masahiroy@kernel.org>,
+        id S1725896AbgDTHEJ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 20 Apr 2020 03:04:09 -0400
+Received: from mail.kernel.org ([198.145.29.99]:49706 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725815AbgDTHEI (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Mon, 20 Apr 2020 03:04:08 -0400
+Received: from mail-il1-f169.google.com (mail-il1-f169.google.com [209.85.166.169])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 5E40821D82;
+        Mon, 20 Apr 2020 07:04:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1587366246;
+        bh=gQrI9pJBqZSkfw9joaJtBpUXbMBDQSFMbCsmZxSVRNU=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=oHM4rwysCjWvXF1YzMHGJXi8w0AcYTc4qJbti1pC7hbcPLpr8w8tubtI7s1NnsJDq
+         cLiXAhQZ+m58xDmoN4V3++ULc2yMpr+xshqpT/B4O0NXsyIsNrDcnq5eWZDRxX4qiA
+         CZj/DBHrmiEqvmeHE/7bw/lPon6O3kh1gRywLH3o=
+Received: by mail-il1-f169.google.com with SMTP id t10so8678260ilg.9;
+        Mon, 20 Apr 2020 00:04:06 -0700 (PDT)
+X-Gm-Message-State: AGi0PuZuN1PtkjS2PXNH/ehSM2or5K0ntWgwzfzK1iAPlCu93FR8b/Qv
+        Dxm3XPo3zHluuAA2S5/KPFLCP3AleeaR96RBsXE=
+X-Google-Smtp-Source: APiQypKKTTSUo7CkLbIpNFy3qkVp+fUuER2XGc1RL6wSU3Qqa5D6/fo+zf1MjNXOoFE76MjDtIQ43TE6UbFRs2IjCRg=
+X-Received: by 2002:a92:5a4c:: with SMTP id o73mr13184515ilb.218.1587366245525;
+ Mon, 20 Apr 2020 00:04:05 -0700 (PDT)
+MIME-Version: 1.0
+References: <20200415195422.19866-1-atish.patra@wdc.com> <20200415195422.19866-6-atish.patra@wdc.com>
+ <CAMj1kXFRqTYr7_M_j6oN1-xnQ6V4uCYK49yAbjvrf1BB823Cng@mail.gmail.com>
+ <CAOnJCUK3fqsR93ewYMUkanh+x1EJN_3QwkFjSDDZZr2MjzpnUQ@mail.gmail.com>
+ <CAMj1kXFOkARJ9k81pu-LuHEd7H7AZRRrquzVN-WQ3J239JUZTw@mail.gmail.com>
+ <CAMj1kXGv8XrXJ=Tx88O38a9UYM3iuBevg5NXRpMrny1XJZGB7A@mail.gmail.com>
+ <CAOnJCUJOY_84eesRreVyEQKjL2awkehcFi5ydMv0USNeaFHd6A@mail.gmail.com>
+ <CAMj1kXHLfXOp=JQhAeFx6oazFp=kqiS0TMTV06ZthTFg6QdzWw@mail.gmail.com> <b6a28d62be4d42319fca2adaad755612ef094667.camel@wdc.com>
+In-Reply-To: <b6a28d62be4d42319fca2adaad755612ef094667.camel@wdc.com>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Mon, 20 Apr 2020 09:03:54 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXEQVdQ4ysMoyJk+ue7iZApLLgkhy65Fm7JDPOjNyETx9Q@mail.gmail.com>
+Message-ID: <CAMj1kXEQVdQ4ysMoyJk+ue7iZApLLgkhy65Fm7JDPOjNyETx9Q@mail.gmail.com>
+Subject: Re: [v3 PATCH 5/5] RISC-V: Add EFI stub support.
+To:     Atish Patra <Atish.Patra@wdc.com>
+Cc:     "atishp@atishpatra.org" <atishp@atishpatra.org>,
+        "masahiroy@kernel.org" <masahiroy@kernel.org>,
         "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
         "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
         "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
@@ -71,383 +56,455 @@ CC:     "masahiroy@kernel.org" <masahiroy@kernel.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         "arnd@arndb.de" <arnd@arndb.de>,
         "will@kernel.org" <will@kernel.org>
-Subject: Re: [v3 PATCH 5/5] RISC-V: Add EFI stub support.
-Thread-Topic: [v3 PATCH 5/5] RISC-V: Add EFI stub support.
-Thread-Index: AQHWE1+28FOiVu5TgkiR99oyVUE/r6h7XhGAgALW74CAAILMgIAAHjUAgABv1oCAAAF7gIACJ+EA
-Date:   Mon, 20 Apr 2020 04:20:39 +0000
-Message-ID: <b6a28d62be4d42319fca2adaad755612ef094667.camel@wdc.com>
-References: <20200415195422.19866-1-atish.patra@wdc.com>
-         <20200415195422.19866-6-atish.patra@wdc.com>
-         <CAMj1kXFRqTYr7_M_j6oN1-xnQ6V4uCYK49yAbjvrf1BB823Cng@mail.gmail.com>
-         <CAOnJCUK3fqsR93ewYMUkanh+x1EJN_3QwkFjSDDZZr2MjzpnUQ@mail.gmail.com>
-         <CAMj1kXFOkARJ9k81pu-LuHEd7H7AZRRrquzVN-WQ3J239JUZTw@mail.gmail.com>
-         <CAMj1kXGv8XrXJ=Tx88O38a9UYM3iuBevg5NXRpMrny1XJZGB7A@mail.gmail.com>
-         <CAOnJCUJOY_84eesRreVyEQKjL2awkehcFi5ydMv0USNeaFHd6A@mail.gmail.com>
-         <CAMj1kXHLfXOp=JQhAeFx6oazFp=kqiS0TMTV06ZthTFg6QdzWw@mail.gmail.com>
-In-Reply-To: <CAMj1kXHLfXOp=JQhAeFx6oazFp=kqiS0TMTV06ZthTFg6QdzWw@mail.gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Evolution 3.34.4 
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=Atish.Patra@wdc.com; 
-x-originating-ip: [2601:641:500:3bd0:3a49:27ae:9617:88a2]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-ht: Tenant
-x-ms-office365-filtering-correlation-id: dd67f4c5-958c-405a-3049-08d7e4e22f23
-x-ms-traffictypediagnostic: BY5PR04MB7091:
-x-microsoft-antispam-prvs: <BY5PR04MB70913362A713AF6AF07FAFB4FAD40@BY5PR04MB7091.namprd04.prod.outlook.com>
-wdcipoutbound: EOP-TRUE
-x-ms-oob-tlc-oobclassifiers: OLM:7691;
-x-forefront-prvs: 03793408BA
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BY5PR04MB6724.namprd04.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(10019020)(4636009)(39860400002)(136003)(366004)(376002)(346002)(396003)(478600001)(53546011)(186003)(5660300002)(81156014)(30864003)(6506007)(8676002)(71200400001)(110136005)(54906003)(66946007)(66476007)(8936002)(76116006)(64756008)(66556008)(66446008)(2616005)(2906002)(4326008)(36756003)(6512007)(7416002)(6486002)(86362001)(316002);DIR:OUT;SFP:1102;
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: YppD5pevyxv90o7P2CpEt6v8AmF73gDRTGyQIr5MUb3MCDWQbhvE2UbjTM5I5FRr6WrxhFwTBXJ5aBRoiSC4ixGYVngn82IN86JQkuYMQQAhXxRzK6jvrFU544S8z55E+aa8zjLzIAkEXCqfWXBjHn7uTrVx3OXtBoIuy3fE76SnFILaDkb6GjrmbRBbH1LOY0eyY7Hh4j/1KggMOF6/XbAzAQUWrxqzeKR51URLnJP9VGanuG7UTT64UBpiGER+3I84yIFvx5dF38OGLwlBM64/N5QenZHuhQlmMdeTLDJV3n9ESX2AjmXXcjaTmqXIyGvdqq6Ll0WLsDRWOa8UPOLpJOUQVSjYIMiiT5m1Xcb2YyBsEeXHypXTfeXJjOgfiHsnGXzDtE/8Dw1Gm84SL3ibLv2YP0x7wTUFT7L9d3d9LMORYdIDXAw5znErWf/h
-x-ms-exchange-antispam-messagedata: cAMLuxC4Ket6+wHFYJD/GOb0yEz05wOiI3DA9R2p3RPlG8W9nXrLUlcYzdaBCg7E2v782tBpAyRI13crvwEtDQ4Pxi4l8/v7CYDWtzehV7fgQ7so41ydjhDnjnHVuA7CjCt2R4KEEuncP095dXq215JDV+EQUecBs3nV5rblxYcFH5kIYdp39zG0ZLyR1LShljyIoaYq2sTgMAbw1U/qaw==
-x-ms-exchange-transport-forked: True
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <0E26D5F32087334A8A420A389EACEE3F@namprd04.prod.outlook.com>
-Content-Transfer-Encoding: base64
-MIME-Version: 1.0
-X-OriginatorOrg: wdc.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: dd67f4c5-958c-405a-3049-08d7e4e22f23
-X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Apr 2020 04:20:39.8611
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: b61c8803-16f3-4c35-9b17-6f65f441df86
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 0WD4iNMFDV71+Mt1YvYm68VcIYWG8zB5jIwoT0FFBJ56vOh2H7MzeOXo/rIisdsg6EhLVFOTDC1Dre4Ug2pZsQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR04MB7091
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-T24gU2F0LCAyMDIwLTA0LTE4IGF0IDIxOjI0ICswMjAwLCBBcmQgQmllc2hldXZlbCB3cm90ZToN
-Cj4gT24gU2F0LCAxOCBBcHIgMjAyMCBhdCAyMToxOSwgQXRpc2ggUGF0cmEgPGF0aXNocEBhdGlz
-aHBhdHJhLm9yZz4NCj4gd3JvdGU6DQo+ID4gT24gU2F0LCBBcHIgMTgsIDIwMjAgYXQgNTozOSBB
-TSBBcmQgQmllc2hldXZlbCA8YXJkYkBrZXJuZWwub3JnPg0KPiA+IHdyb3RlOg0KPiA+ID4gT24g
-U2F0LCAxOCBBcHIgMjAyMCBhdCAxMjo1MSwgQXJkIEJpZXNoZXV2ZWwgPGFyZGJAa2VybmVsLm9y
-Zz4NCj4gPiA+IHdyb3RlOg0KPiA+ID4gPiBPbiBTYXQsIDE4IEFwciAyMDIwIGF0IDA1OjAzLCBB
-dGlzaCBQYXRyYSA8DQo+ID4gPiA+IGF0aXNocEBhdGlzaHBhdHJhLm9yZz4gd3JvdGU6DQo+ID4g
-PiA+ID4gT24gVGh1LCBBcHIgMTYsIDIwMjAgYXQgMTI6NDEgQU0gQXJkIEJpZXNoZXV2ZWwgPA0K
-PiA+ID4gPiA+IGFyZGJAa2VybmVsLm9yZz4gd3JvdGU6DQo+ID4gPiA+ID4gPiBPbiBXZWQsIDE1
-IEFwciAyMDIwIGF0IDIxOjU0LCBBdGlzaCBQYXRyYSA8DQo+ID4gPiA+ID4gPiBhdGlzaC5wYXRy
-YUB3ZGMuY29tPiB3cm90ZToNCj4gPiA+ID4gPiA+ID4gQWRkIGEgUklTQy1WIGFyY2hpdGVjdHVy
-ZSBzcGVjaWZpYyBzdHViIGNvZGUgdGhhdA0KPiA+ID4gPiA+ID4gPiBhY3R1YWxseSBjb3BpZXMg
-dGhlDQo+ID4gPiA+ID4gPiA+IGFjdHVhbCBrZXJuZWwgaW1hZ2UgdG8gYSB2YWxpZCBhZGRyZXNz
-IGFuZCBqdW1wIHRvIGl0DQo+ID4gPiA+ID4gPiA+IGFmdGVyIGJvb3Qgc2VydmljZXMNCj4gPiA+
-ID4gPiA+ID4gYXJlIHRlcm1pbmF0ZWQuIEVuYWJsZSBVRUZJIHJlbGF0ZWQga2VybmVsIGNvbmZp
-Z3MgYXMNCj4gPiA+ID4gPiA+ID4gd2VsbCBmb3IgUklTQy1WLg0KPiA+ID4gPiA+ID4gPiANCj4g
-PiA+ID4gPiA+ID4gU2lnbmVkLW9mZi1ieTogQXRpc2ggUGF0cmEgPGF0aXNoLnBhdHJhQHdkYy5j
-b20+DQo+ID4gPiA+ID4gPiA+IC0tLQ0KPiA+ID4gPiA+ID4gPiAgYXJjaC9yaXNjdi9LY29uZmln
-ICAgICAgICAgICAgICAgICAgICAgICAgfCAgMjAgKysrKw0KPiA+ID4gPiA+ID4gPiAgYXJjaC9y
-aXNjdi9NYWtlZmlsZSAgICAgICAgICAgICAgICAgICAgICAgfCAgIDEgKw0KPiA+ID4gPiA+ID4g
-PiAgYXJjaC9yaXNjdi9jb25maWdzL2RlZmNvbmZpZyAgICAgICAgICAgICAgfCAgIDEgKw0KPiA+
-ID4gPiA+ID4gPiAgYXJjaC9yaXNjdi9pbmNsdWRlL2FzbS9lZmkuaCAgICAgICAgICAgICAgfCAg
-NDQNCj4gPiA+ID4gPiA+ID4gKysrKysrKysrDQo+ID4gPiA+ID4gPiA+ICBkcml2ZXJzL2Zpcm13
-YXJlL2VmaS9LY29uZmlnICAgICAgICAgICAgICB8ICAgMiArLQ0KPiA+ID4gPiA+ID4gPiAgZHJp
-dmVycy9maXJtd2FyZS9lZmkvbGlic3R1Yi9NYWtlZmlsZSAgICAgfCAgIDcgKysNCj4gPiA+ID4g
-PiA+ID4gIGRyaXZlcnMvZmlybXdhcmUvZWZpL2xpYnN0dWIvcmlzY3Ytc3R1Yi5jIHwgMTExDQo+
-ID4gPiA+ID4gPiA+ICsrKysrKysrKysrKysrKysrKysrKysNCj4gPiA+ID4gPiA+ID4gIDcgZmls
-ZXMgY2hhbmdlZCwgMTg1IGluc2VydGlvbnMoKyksIDEgZGVsZXRpb24oLSkNCj4gPiA+ID4gPiA+
-ID4gIGNyZWF0ZSBtb2RlIDEwMDY0NCBhcmNoL3Jpc2N2L2luY2x1ZGUvYXNtL2VmaS5oDQo+ID4g
-PiA+ID4gPiA+ICBjcmVhdGUgbW9kZSAxMDA2NDQgZHJpdmVycy9maXJtd2FyZS9lZmkvbGlic3R1
-Yi9yaXNjdi0NCj4gPiA+ID4gPiA+ID4gc3R1Yi5jDQo+ID4gPiA+ID4gPiA+IA0KPiA+ID4gPiA+
-ID4gPiBkaWZmIC0tZ2l0IGEvYXJjaC9yaXNjdi9LY29uZmlnIGIvYXJjaC9yaXNjdi9LY29uZmln
-DQo+ID4gPiA+ID4gPiA+IGluZGV4IGYzOWUzMjZhN2E0Mi4uZWI0ZjQxYzhmM2NlIDEwMDY0NA0K
-PiA+ID4gPiA+ID4gPiAtLS0gYS9hcmNoL3Jpc2N2L0tjb25maWcNCj4gPiA+ID4gPiA+ID4gKysr
-IGIvYXJjaC9yaXNjdi9LY29uZmlnDQo+ID4gPiA+ID4gPiA+IEBAIC0zNzksMTAgKzM3OSwzMCBA
-QCBjb25maWcgQ01ETElORV9GT1JDRQ0KPiA+ID4gPiA+ID4gPiANCj4gPiA+ID4gPiA+ID4gIGVu
-ZGNob2ljZQ0KPiA+ID4gPiA+ID4gPiANCj4gPiA+ID4gPiA+ID4gK2NvbmZpZyBFRklfU1RVQg0K
-PiA+ID4gPiA+ID4gPiArICAgICAgIGJvb2wNCj4gPiA+ID4gPiA+ID4gKw0KPiA+ID4gPiA+ID4g
-PiArY29uZmlnIEVGSQ0KPiA+ID4gPiA+ID4gPiArICAgICAgIGJvb2wgIlVFRkkgcnVudGltZSBz
-dXBwb3J0Ig0KPiA+ID4gPiA+ID4gPiArICAgICAgIGRlcGVuZHMgb24gT0YNCj4gPiA+ID4gPiA+
-ID4gKyAgICAgICBzZWxlY3QgTElCRkRUDQo+ID4gPiA+ID4gPiA+ICsgICAgICAgc2VsZWN0IFVD
-UzJfU1RSSU5HDQo+ID4gPiA+ID4gPiA+ICsgICAgICAgc2VsZWN0IEVGSV9QQVJBTVNfRlJPTV9G
-RFQNCj4gPiA+ID4gPiA+ID4gKyAgICAgICBzZWxlY3QgRUZJX1NUVUINCj4gPiA+ID4gPiA+ID4g
-KyAgICAgICBzZWxlY3QgRUZJX0dFTkVSSUNfU1RVQg0KPiA+ID4gPiA+ID4gPiArICAgICAgIGRl
-ZmF1bHQgeQ0KPiA+ID4gPiA+ID4gPiArICAgICAgIGhlbHANCj4gPiA+ID4gPiA+ID4gKyAgICAg
-ICAgIFRoaXMgb3B0aW9uIHByb3ZpZGVzIHN1cHBvcnQgZm9yIHJ1bnRpbWUNCj4gPiA+ID4gPiA+
-ID4gc2VydmljZXMgcHJvdmlkZWQNCj4gPiA+ID4gPiA+ID4gKyAgICAgICAgIGJ5IFVFRkkgZmly
-bXdhcmUgKHN1Y2ggYXMgbm9uLXZvbGF0aWxlDQo+ID4gPiA+ID4gPiA+IHZhcmlhYmxlcywgcmVh
-bHRpbWUNCj4gPiA+ID4gPiA+ID4gKyAgICAgICAgICBjbG9jaywgYW5kIHBsYXRmb3JtIHJlc2V0
-KS4gQSBVRUZJIHN0dWIgaXMNCj4gPiA+ID4gPiA+ID4gYWxzbyBwcm92aWRlZCB0bw0KPiA+ID4g
-PiA+ID4gPiArICAgICAgICAgYWxsb3cgdGhlIGtlcm5lbCB0byBiZSBib290ZWQgYXMgYW4gRUZJ
-DQo+ID4gPiA+ID4gPiA+IGFwcGxpY2F0aW9uLiBUaGlzDQo+ID4gPiA+ID4gPiA+ICsgICAgICAg
-ICBpcyBvbmx5IHVzZWZ1bCBvbiBzeXN0ZW1zIHRoYXQgaGF2ZSBVRUZJDQo+ID4gPiA+ID4gPiA+
-IGZpcm13YXJlLg0KPiA+ID4gPiA+ID4gPiArDQo+ID4gPiA+ID4gPiA+ICBlbmRtZW51DQo+ID4g
-PiA+ID4gPiA+IA0KPiA+ID4gPiA+ID4gPiAgbWVudSAiUG93ZXIgbWFuYWdlbWVudCBvcHRpb25z
-Ig0KPiA+ID4gPiA+ID4gPiANCj4gPiA+ID4gPiA+ID4gIHNvdXJjZSAia2VybmVsL3Bvd2VyL0tj
-b25maWciDQo+ID4gPiA+ID4gPiA+ICtzb3VyY2UgImRyaXZlcnMvZmlybXdhcmUvS2NvbmZpZyIN
-Cj4gPiA+ID4gPiA+ID4gDQo+ID4gPiA+ID4gPiA+ICBlbmRtZW51DQo+ID4gPiA+ID4gPiA+IGRp
-ZmYgLS1naXQgYS9hcmNoL3Jpc2N2L01ha2VmaWxlIGIvYXJjaC9yaXNjdi9NYWtlZmlsZQ0KPiA+
-ID4gPiA+ID4gPiBpbmRleCBmYjZlMzdkYjgzNmQuLjA3OTQzNTgwNGQ2ZCAxMDA2NDQNCj4gPiA+
-ID4gPiA+ID4gLS0tIGEvYXJjaC9yaXNjdi9NYWtlZmlsZQ0KPiA+ID4gPiA+ID4gPiArKysgYi9h
-cmNoL3Jpc2N2L01ha2VmaWxlDQo+ID4gPiA+ID4gPiA+IEBAIC04MCw2ICs4MCw3IEBAIGhlYWQt
-eSA6PSBhcmNoL3Jpc2N2L2tlcm5lbC9oZWFkLm8NCj4gPiA+ID4gPiA+ID4gIGNvcmUteSArPSBh
-cmNoL3Jpc2N2Lw0KPiA+ID4gPiA+ID4gPiANCj4gPiA+ID4gPiA+ID4gIGxpYnMteSArPSBhcmNo
-L3Jpc2N2L2xpYi8NCj4gPiA+ID4gPiA+ID4gK2NvcmUtJChDT05GSUdfRUZJX1NUVUIpICs9DQo+
-ID4gPiA+ID4gPiA+ICQob2JqdHJlZSkvZHJpdmVycy9maXJtd2FyZS9lZmkvbGlic3R1Yi9saWIu
-YQ0KPiA+ID4gPiA+ID4gPiANCj4gPiA+ID4gPiA+ID4gIFBIT05ZICs9IHZkc29faW5zdGFsbA0K
-PiA+ID4gPiA+ID4gPiAgdmRzb19pbnN0YWxsOg0KPiA+ID4gPiA+ID4gPiBkaWZmIC0tZ2l0IGEv
-YXJjaC9yaXNjdi9jb25maWdzL2RlZmNvbmZpZw0KPiA+ID4gPiA+ID4gPiBiL2FyY2gvcmlzY3Yv
-Y29uZmlncy9kZWZjb25maWcNCj4gPiA+ID4gPiA+ID4gaW5kZXggNGRhNDg4NjI0NmE0Li5hZTY5
-ZTEyZDMwNmEgMTAwNjQ0DQo+ID4gPiA+ID4gPiA+IC0tLSBhL2FyY2gvcmlzY3YvY29uZmlncy9k
-ZWZjb25maWcNCj4gPiA+ID4gPiA+ID4gKysrIGIvYXJjaC9yaXNjdi9jb25maWdzL2RlZmNvbmZp
-Zw0KPiA+ID4gPiA+ID4gPiBAQCAtMTI5LDMgKzEyOSw0IEBAIENPTkZJR19ERUJVR19CTE9DS19F
-WFRfREVWVD15DQo+ID4gPiA+ID4gPiA+ICAjIENPTkZJR19SVU5USU1FX1RFU1RJTkdfTUVOVSBp
-cyBub3Qgc2V0DQo+ID4gPiA+ID4gPiA+ICBDT05GSUdfTUVNVEVTVD15DQo+ID4gPiA+ID4gPiA+
-ICAjIENPTkZJR19TWVNGU19TWVNDQUxMIGlzIG5vdCBzZXQNCj4gPiA+ID4gPiA+ID4gK0NPTkZJ
-R19FRkk9eQ0KPiA+ID4gPiA+ID4gPiBkaWZmIC0tZ2l0IGEvYXJjaC9yaXNjdi9pbmNsdWRlL2Fz
-bS9lZmkuaA0KPiA+ID4gPiA+ID4gPiBiL2FyY2gvcmlzY3YvaW5jbHVkZS9hc20vZWZpLmgNCj4g
-PiA+ID4gPiA+ID4gbmV3IGZpbGUgbW9kZSAxMDA2NDQNCj4gPiA+ID4gPiA+ID4gaW5kZXggMDAw
-MDAwMDAwMDAwLi42MmQ3ZDVlYWZlZDgNCj4gPiA+ID4gPiA+ID4gLS0tIC9kZXYvbnVsbA0KPiA+
-ID4gPiA+ID4gPiArKysgYi9hcmNoL3Jpc2N2L2luY2x1ZGUvYXNtL2VmaS5oDQo+ID4gPiA+ID4g
-PiA+IEBAIC0wLDAgKzEsNDQgQEANCj4gPiA+ID4gPiA+ID4gKy8qIFNQRFgtTGljZW5zZS1JZGVu
-dGlmaWVyOiBHUEwtMi4wICovDQo+ID4gPiA+ID4gPiA+ICsvKg0KPiA+ID4gPiA+ID4gPiArICog
-Q29weXJpZ2h0IChDKSAyMDIwIFdlc3Rlcm4gRGlnaXRhbCBDb3Jwb3JhdGlvbiBvciBpdHMNCj4g
-PiA+ID4gPiA+ID4gYWZmaWxpYXRlcy4NCj4gPiA+ID4gPiA+ID4gKyAqIEJhc2VkIG9uIGFyY2gv
-YXJtNjQvaW5jbHVkZS9hc20vZWZpLmgNCj4gPiA+ID4gPiA+ID4gKyAqLw0KPiA+ID4gPiA+ID4g
-PiArI2lmbmRlZiBfQVNNX0VGSV9IDQo+ID4gPiA+ID4gPiA+ICsjZGVmaW5lIF9BU01fRUZJX0gN
-Cj4gPiA+ID4gPiA+ID4gKw0KPiA+ID4gPiA+ID4gPiArI2luY2x1ZGUgPGFzbS9pby5oPg0KPiA+
-ID4gPiA+ID4gPiArI2luY2x1ZGUgPGFzbS9tbXVfY29udGV4dC5oPg0KPiA+ID4gPiA+ID4gPiAr
-I2luY2x1ZGUgPGFzbS9wdHJhY2UuaD4NCj4gPiA+ID4gPiA+ID4gKyNpbmNsdWRlIDxhc20vdGxi
-Zmx1c2guaD4NCj4gPiA+ID4gPiA+ID4gKw0KPiA+ID4gPiA+ID4gPiArI2RlZmluZSBWQV9CSVRT
-X01JTiAzOQ0KPiA+ID4gPiA+ID4gPiArDQo+ID4gPiA+ID4gPiA+ICsvKiBvbiBSSVNDLVYsIHRo
-ZSBGRFQgbWF5IGJlIGxvY2F0ZWQgYW55d2hlcmUgaW4gc3lzdGVtDQo+ID4gPiA+ID4gPiA+IFJB
-TSAqLw0KPiA+ID4gPiA+ID4gPiArc3RhdGljIGlubGluZSB1bnNpZ25lZCBsb25nDQo+ID4gPiA+
-ID4gPiA+IGVmaV9nZXRfbWF4X2ZkdF9hZGRyKHVuc2lnbmVkIGxvbmcgZHJhbV9iYXNlKQ0KPiA+
-ID4gPiA+ID4gPiArew0KPiA+ID4gPiA+ID4gPiArICAgICAgIHJldHVybiBVTE9OR19NQVg7DQo+
-ID4gPiA+ID4gPiA+ICt9DQo+ID4gPiA+ID4gPiA+ICsNCj4gPiA+ID4gPiA+ID4gKy8qIExvYWQg
-aW5pdHJkIGF0IGVub3VnaCBkaXN0YW5jZSBmcm9tIERSQU0gc3RhcnQgKi8NCj4gPiA+ID4gPiA+
-ID4gK3N0YXRpYyBpbmxpbmUgdW5zaWduZWQgbG9uZw0KPiA+ID4gPiA+ID4gPiBlZmlfZ2V0X21h
-eF9pbml0cmRfYWRkcih1bnNpZ25lZCBsb25nIGRyYW1fYmFzZSwNCj4gPiA+ID4gPiA+ID4gKyAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHVuc2lnDQo+
-ID4gPiA+ID4gPiA+IG5lZCBsb25nIGltYWdlX2FkZHIpDQo+ID4gPiA+ID4gPiA+ICt7DQo+ID4g
-PiA+ID4gPiA+ICsgICAgICAgcmV0dXJuIGRyYW1fYmFzZSArIFNaXzI1Nk07DQo+ID4gPiA+ID4g
-PiA+ICt9DQo+ID4gPiA+ID4gPiA+ICsNCj4gPiA+ID4gPiA+ID4gKyNkZWZpbmUgZWZpX2JzX2Nh
-bGwoZnVuYywgLi4uKSBlZmlfc3lzdGVtX3RhYmxlKCktDQo+ID4gPiA+ID4gPiA+ID5ib290dGlt
-ZS0+ZnVuYyhfX1ZBX0FSR1NfXykNCj4gPiA+ID4gPiA+ID4gKyNkZWZpbmUgZWZpX3J0X2NhbGwo
-ZnVuYywgLi4uKSBlZmlfc3lzdGVtX3RhYmxlKCktDQo+ID4gPiA+ID4gPiA+ID5ydW50aW1lLT5m
-dW5jKF9fVkFfQVJHU19fKQ0KPiA+ID4gPiA+ID4gPiArI2RlZmluZSBlZmlfaXNfbmF0aXZlKCkg
-ICAgICAgICAgICAgICAgKHRydWUpDQo+ID4gPiA+ID4gPiA+ICsNCj4gPiA+ID4gPiA+ID4gKyNk
-ZWZpbmUgZWZpX3RhYmxlX2F0dHIoaW5zdCwgYXR0cikgICAgIChpbnN0LT5hdHRyKQ0KPiA+ID4g
-PiA+ID4gPiArDQo+ID4gPiA+ID4gPiA+ICsjZGVmaW5lIGVmaV9jYWxsX3Byb3RvKGluc3QsIGZ1
-bmMsIC4uLikgaW5zdC0+ZnVuYyhpbnN0LCANCj4gPiA+ID4gPiA+ID4gIyNfX1ZBX0FSR1NfXykN
-Cj4gPiA+ID4gPiA+ID4gKw0KPiA+ID4gPiA+ID4gPiArI2RlZmluZQ0KPiA+ID4gPiA+ID4gPiBh
-bGxvY19zY3JlZW5faW5mbyh4Li4uKSAgICAgICAgICAgICAgICAoJnNjcmVlbl9pbmZvKQ0KPiA+
-ID4gPiA+ID4gPiArZXh0ZXJuIGNoYXIgc3RleHRfb2Zmc2V0W107DQo+ID4gPiA+ID4gPiA+ICsN
-Cj4gPiA+ID4gPiA+ID4gK3N0YXRpYyBpbmxpbmUgdm9pZCBmcmVlX3NjcmVlbl9pbmZvKHN0cnVj
-dCBzY3JlZW5faW5mbw0KPiA+ID4gPiA+ID4gPiAqc2kpDQo+ID4gPiA+ID4gPiA+ICt7DQo+ID4g
-PiA+ID4gPiA+ICt9DQo+ID4gPiA+ID4gPiA+ICsNCj4gPiA+ID4gPiA+ID4gKyNlbmRpZiAvKiBf
-QVNNX0VGSV9IICovDQo+ID4gPiA+ID4gPiA+IGRpZmYgLS1naXQgYS9kcml2ZXJzL2Zpcm13YXJl
-L2VmaS9LY29uZmlnDQo+ID4gPiA+ID4gPiA+IGIvZHJpdmVycy9maXJtd2FyZS9lZmkvS2NvbmZp
-Zw0KPiA+ID4gPiA+ID4gPiBpbmRleCAyYTJiMmI5NmExZGMuLmZjZGM3ODlkM2Y4NyAxMDA2NDQN
-Cj4gPiA+ID4gPiA+ID4gLS0tIGEvZHJpdmVycy9maXJtd2FyZS9lZmkvS2NvbmZpZw0KPiA+ID4g
-PiA+ID4gPiArKysgYi9kcml2ZXJzL2Zpcm13YXJlL2VmaS9LY29uZmlnDQo+ID4gPiA+ID4gPiA+
-IEBAIC0xMTEsNyArMTExLDcgQEAgY29uZmlnIEVGSV9HRU5FUklDX1NUVUINCj4gPiA+ID4gPiA+
-ID4gDQo+ID4gPiA+ID4gPiA+ICBjb25maWcgRUZJX0FSTVNUVUJfRFRCX0xPQURFUg0KPiA+ID4g
-PiA+ID4gPiAgICAgICAgIGJvb2wgIkVuYWJsZSB0aGUgRFRCIGxvYWRlciINCj4gPiA+ID4gPiA+
-ID4gLSAgICAgICBkZXBlbmRzIG9uIEVGSV9HRU5FUklDX1NUVUINCj4gPiA+ID4gPiA+ID4gKyAg
-ICAgICBkZXBlbmRzIG9uIEVGSV9HRU5FUklDX1NUVUIgJiYgIVJJU0NWDQo+ID4gPiA+ID4gPiA+
-ICAgICAgICAgZGVmYXVsdCB5DQo+ID4gPiA+ID4gPiA+ICAgICAgICAgaGVscA0KPiA+ID4gPiA+
-ID4gPiAgICAgICAgICAgU2VsZWN0IHRoaXMgY29uZmlnIG9wdGlvbiB0byBhZGQgc3VwcG9ydCBm
-b3INCj4gPiA+ID4gPiA+ID4gdGhlIGR0Yj0gY29tbWFuZA0KPiA+ID4gPiA+ID4gPiBkaWZmIC0t
-Z2l0IGEvZHJpdmVycy9maXJtd2FyZS9lZmkvbGlic3R1Yi9NYWtlZmlsZQ0KPiA+ID4gPiA+ID4g
-PiBiL2RyaXZlcnMvZmlybXdhcmUvZWZpL2xpYnN0dWIvTWFrZWZpbGUNCj4gPiA+ID4gPiA+ID4g
-aW5kZXggMmI0ZTA5YmY5ODdjLi43ZDQ2YjcwYjUxZjIgMTAwNjQ0DQo+ID4gPiA+ID4gPiA+IC0t
-LSBhL2RyaXZlcnMvZmlybXdhcmUvZWZpL2xpYnN0dWIvTWFrZWZpbGUNCj4gPiA+ID4gPiA+ID4g
-KysrIGIvZHJpdmVycy9maXJtd2FyZS9lZmkvbGlic3R1Yi9NYWtlZmlsZQ0KPiA+ID4gPiA+ID4g
-PiBAQCAtMjIsNiArMjIsOCBAQCBjZmxhZ3MtDQo+ID4gPiA+ID4gPiA+ICQoQ09ORklHX0FSTTY0
-KSAgICAgICAgICAgICAgICA6PSAkKHN1YnN0DQo+ID4gPiA+ID4gPiA+ICQoQ0NfRkxBR1NfRlRS
-QUNFKSwsJChLQlVJTERfQ0ZMQUdTKSkgXA0KPiA+ID4gPiA+ID4gPiAgY2ZsYWdzLSQoQ09ORklH
-X0FSTSkgICAgICAgICAgIDo9ICQoc3Vic3QNCj4gPiA+ID4gPiA+ID4gJChDQ19GTEFHU19GVFJB
-Q0UpLCwkKEtCVUlMRF9DRkxBR1MpKSBcDQo+ID4gPiA+ID4gPiA+ICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgLWZuby1idWlsdGluIC1mcGljIFwNCj4gPiA+ID4gPiA+ID4gICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAkKGNhbGwgY2Mtb3B0aW9uLC1tbm8tDQo+
-ID4gPiA+ID4gPiA+IHNpbmdsZS1waWMtYmFzZSkNCj4gPiA+ID4gPiA+ID4gK2NmbGFncy0kKENP
-TkZJR19SSVNDVikgICAgICAgICA6PSAkKHN1YnN0DQo+ID4gPiA+ID4gPiA+ICQoQ0NfRkxBR1Nf
-RlRSQUNFKSwsJChLQlVJTERfQ0ZMQUdTKSkgXA0KPiA+ID4gPiA+ID4gPiArICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgIC1mcGljDQo+ID4gPiA+ID4gPiA+IA0KPiA+ID4gPiA+ID4g
-PiAgY2ZsYWdzLSQoQ09ORklHX0VGSV9HRU5FUklDX1NUVUIpICAgICAgKz0NCj4gPiA+ID4gPiA+
-ID4gLUkkKHNyY3RyZWUpL3NjcmlwdHMvZHRjL2xpYmZkdA0KPiA+ID4gPiA+ID4gPiANCj4gPiA+
-ID4gPiA+ID4gQEAgLTU3LDYgKzU5LDcgQEAgbGliLQ0KPiA+ID4gPiA+ID4gPiAkKENPTkZJR19F
-RklfR0VORVJJQ19TVFVCKSAgICAgICAgICAgICAgICArPSBlZmktc3R1Yi5vDQo+ID4gPiA+ID4g
-PiA+IGZkdC5vIHN0cmluZy5vIFwNCj4gPiA+ID4gPiA+ID4gIGxpYi0kKENPTkZJR19BUk0pICAg
-ICAgICAgICAgICArPSBhcm0zMi1zdHViLm8NCj4gPiA+ID4gPiA+ID4gIGxpYi0kKENPTkZJR19B
-Uk02NCkgICAgICAgICAgICArPSBhcm02NC1zdHViLm8NCj4gPiA+ID4gPiA+ID4gIGxpYi0kKENP
-TkZJR19YODYpICAgICAgICAgICAgICArPSB4ODYtc3R1Yi5vDQo+ID4gPiA+ID4gPiA+ICtsaWIt
-JChDT05GSUdfUklTQ1YpICAgICAgICAgICAgKz0gcmlzY3Ytc3R1Yi5vDQo+ID4gPiA+ID4gPiA+
-ICBDRkxBR1NfYXJtMzItc3R1Yi5vICAgICAgICAgICAgOj0NCj4gPiA+ID4gPiA+ID4gLURURVhU
-X09GRlNFVD0kKFRFWFRfT0ZGU0VUKQ0KPiA+ID4gPiA+ID4gPiAgQ0ZMQUdTX2FybTY0LXN0dWIu
-byAgICAgICAgICAgIDo9DQo+ID4gPiA+ID4gPiA+IC1EVEVYVF9PRkZTRVQ9JChURVhUX09GRlNF
-VCkNCj4gPiA+ID4gPiA+ID4gDQo+ID4gPiA+ID4gPiA+IEBAIC04MSw2ICs4NCwxMCBAQCBTVFVC
-Q09QWV9GTEFHUy0NCj4gPiA+ID4gPiA+ID4gJChDT05GSUdfQVJNNjQpICAgICAgICs9IC0tcHJl
-Zml4LWFsbG9jLXNlY3Rpb25zPS5pbml0IFwNCj4gPiA+ID4gPiA+ID4gICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAtLXByZWZpeC0NCj4gPiA+ID4gPiA+ID4gc3ltYm9scz1fX2Vm
-aXN0dWJfDQo+ID4gPiA+ID4gPiA+ICBTVFVCQ09QWV9SRUxPQy0kKENPTkZJR19BUk02NCkgOj0g
-Ul9BQVJDSDY0X0FCUw0KPiA+ID4gPiA+ID4gPiANCj4gPiA+ID4gPiA+ID4gK1NUVUJDT1BZX0ZM
-QUdTLSQoQ09ORklHX1JJU0NWKSArPSAtLXByZWZpeC1hbGxvYy0NCj4gPiA+ID4gPiA+ID4gc2Vj
-dGlvbnM9LmluaXQgXA0KPiA+ID4gPiA+ID4gPiArICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgIC0tcHJlZml4LQ0KPiA+ID4gPiA+ID4gPiBzeW1ib2xzPV9fZWZpc3R1Yl8NCj4gPiA+
-ID4gPiA+ID4gK1NUVUJDT1BZX1JFTE9DLSQoQ09ORklHX1JJU0NWKSA6PSBSX1JJU0NWX0hJMjAN
-Cj4gPiA+ID4gPiA+ID4gKw0KPiA+ID4gPiA+ID4gPiAgJChvYmopLyUuc3R1Yi5vOiAkKG9iaikv
-JS5vIEZPUkNFDQo+ID4gPiA+ID4gPiA+ICAgICAgICAgJChjYWxsIGlmX2NoYW5nZWQsc3R1YmNv
-cHkpDQo+ID4gPiA+ID4gPiA+IA0KPiA+ID4gPiA+ID4gPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9m
-aXJtd2FyZS9lZmkvbGlic3R1Yi9yaXNjdi1zdHViLmMNCj4gPiA+ID4gPiA+ID4gYi9kcml2ZXJz
-L2Zpcm13YXJlL2VmaS9saWJzdHViL3Jpc2N2LXN0dWIuYw0KPiA+ID4gPiA+ID4gPiBuZXcgZmls
-ZSBtb2RlIDEwMDY0NA0KPiA+ID4gPiA+ID4gPiBpbmRleCAwMDAwMDAwMDAwMDAuLjY5ZDEzZTBl
-YmFlYQ0KPiA+ID4gPiA+ID4gPiAtLS0gL2Rldi9udWxsDQo+ID4gPiA+ID4gPiA+ICsrKyBiL2Ry
-aXZlcnMvZmlybXdhcmUvZWZpL2xpYnN0dWIvcmlzY3Ytc3R1Yi5jDQo+ID4gPiA+ID4gPiA+IEBA
-IC0wLDAgKzEsMTExIEBADQo+ID4gPiA+ID4gPiA+ICsvLyBTUERYLUxpY2Vuc2UtSWRlbnRpZmll
-cjogR1BMLTIuMA0KPiA+ID4gPiA+ID4gPiArLyoNCj4gPiA+ID4gPiA+ID4gKyAqIENvcHlyaWdo
-dCAoQykgMjAxMywgMjAxNCBMaW5hcm8gTHRkOyAgPA0KPiA+ID4gPiA+ID4gPiByb3kuZnJhbnpA
-bGluYXJvLm9yZz4NCj4gPiA+ID4gPiA+ID4gKyAqIENvcHlyaWdodCAoQykgMjAyMCBXZXN0ZXJu
-IERpZ2l0YWwgQ29ycG9yYXRpb24gb3IgaXRzDQo+ID4gPiA+ID4gPiA+IGFmZmlsaWF0ZXMuDQo+
-ID4gPiA+ID4gPiA+ICsgKg0KPiA+ID4gPiA+ID4gPiArICogVGhpcyBmaWxlIGltcGxlbWVudHMg
-dGhlIEVGSSBib290IHN0dWIgZm9yIHRoZSBSSVNDLVYgDQo+ID4gPiA+ID4gPiA+IGtlcm5lbC4N
-Cj4gPiA+ID4gPiA+ID4gKyAqIEFkYXB0ZWQgZnJvbSBBUk02NCB2ZXJzaW9uIGF0DQo+ID4gPiA+
-ID4gPiA+IGRyaXZlcnMvZmlybXdhcmUvZWZpL2xpYnN0dWIvYXJtNjQtc3R1Yi5jLg0KPiA+ID4g
-PiA+ID4gPiArICovDQo+ID4gPiA+ID4gPiA+ICsNCj4gPiA+ID4gPiA+ID4gKyNpbmNsdWRlIDxs
-aW51eC9lZmkuaD4NCj4gPiA+ID4gPiA+ID4gKyNpbmNsdWRlIDxsaW51eC9saWJmZHQuaD4NCj4g
-PiA+ID4gPiA+ID4gKyNpbmNsdWRlIDxsaW51eC9saWJmZHRfZW52Lmg+DQo+ID4gPiA+ID4gPiA+
-ICsjaW5jbHVkZSA8YXNtL2VmaS5oPg0KPiA+ID4gPiA+ID4gPiArI2luY2x1ZGUgPGFzbS9zZWN0
-aW9ucy5oPg0KPiA+ID4gPiA+ID4gPiArDQo+ID4gPiA+ID4gPiA+ICsjaW5jbHVkZSAiZWZpc3R1
-Yi5oIg0KPiA+ID4gPiA+ID4gPiArLyoNCj4gPiA+ID4gPiA+ID4gKyAqIFJJU0NWIHJlcXVpcmVz
-IHRoZSBrZXJuZWwgaW1hZ2UgdG8gcGxhY2VkIFRFWFRfT0ZGU0VUDQo+ID4gPiA+ID4gPiA+IGJ5
-dGVzIGJleW9uZCBhIDIgTUINCj4gPiA+ID4gPiA+ID4gKyAqIGFsaWduZWQgYmFzZSBmb3IgNjQg
-Yml0IGFuZCA0TUIgZm9yIDMyIGJpdC4NCj4gPiA+ID4gPiA+ID4gKyAqLw0KPiA+ID4gPiA+IA0K
-PiA+ID4gPiA+IEZpeGVkIHRoZSBjb21tZW50Lg0KPiA+ID4gPiA+IA0KPiA+ID4gPiA+ID4gPiAr
-I2lmZGVmIENPTkZJR182NEJJVA0KPiA+ID4gPiA+ID4gPiArI2RlZmluZSBNSU5fS0lNR19BTElH
-TiBTWl8yTQ0KPiA+ID4gPiA+ID4gPiArI2Vsc2UNCj4gPiA+ID4gPiA+ID4gKyNkZWZpbmUgTUlO
-X0tJTUdfQUxJR04gU1pfNE0NCj4gPiA+ID4gPiA+ID4gKyNlbmRpZg0KPiA+ID4gPiA+ID4gPiAr
-DQo+ID4gPiA+ID4gPiA+ICt0eXBlZGVmIF9fYXR0cmlidXRlX18oKG5vcmV0dXJuKSkgdm9pZA0K
-PiA+ID4gPiA+ID4gPiAoKmp1bXBfa2VybmVsX2Z1bmMpKHVuc2lnbmVkIGludCwNCj4gPiA+ID4g
-PiA+ID4gKyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgDQo+ID4gPiA+ID4gPiA+ICAgdW5zaWduZWQgbG9uZyk7DQo+ID4gPiA+ID4gPiA+ICtl
-Zmlfc3RhdHVzX3QgY2hlY2tfcGxhdGZvcm1fZmVhdHVyZXModm9pZCkNCj4gPiA+ID4gPiA+ID4g
-K3sNCj4gPiA+ID4gPiA+ID4gKyAgICAgICByZXR1cm4gRUZJX1NVQ0NFU1M7DQo+ID4gPiA+ID4g
-PiA+ICt9DQo+ID4gPiA+ID4gPiA+ICsNCj4gPiA+ID4gPiA+ID4gK3N0YXRpYyB1MzIgZ2V0X2Jv
-b3RfaGFydGlkX2Zyb21fZmR0KHVuc2lnbmVkIGxvbmcgZmR0KQ0KPiA+ID4gPiA+ID4gPiArew0K
-PiA+ID4gPiA+ID4gPiArICAgICAgIGludCBjaG9zZW5fbm9kZSwgbGVuOw0KPiA+ID4gPiA+ID4g
-PiArICAgICAgIGNvbnN0IGZkdDMyX3QgKnByb3A7DQo+ID4gPiA+ID4gPiA+ICsNCj4gPiA+ID4g
-PiA+ID4gKyAgICAgICBjaG9zZW5fbm9kZSA9IGZkdF9wYXRoX29mZnNldCgodm9pZCAqKWZkdCwN
-Cj4gPiA+ID4gPiA+ID4gIi9jaG9zZW4iKTsNCj4gPiA+ID4gPiA+ID4gKyAgICAgICBpZiAoY2hv
-c2VuX25vZGUgPCAwKQ0KPiA+ID4gPiA+ID4gPiArICAgICAgICAgICAgICAgcmV0dXJuIFUzMl9N
-QVg7DQo+ID4gPiA+ID4gPiA+ICsgICAgICAgcHJvcCA9IGZkdF9nZXRwcm9wKCh2b2lkICopZmR0
-LCBjaG9zZW5fbm9kZSwNCj4gPiA+ID4gPiA+ID4gImJvb3QtaGFydGlkIiwgJmxlbik7DQo+ID4g
-PiA+ID4gPiA+ICsgICAgICAgaWYgKCFwcm9wIHx8IGxlbiAhPSBzaXplb2YodTMyKSkNCj4gPiA+
-ID4gPiA+ID4gKyAgICAgICAgICAgICAgIHJldHVybiBVMzJfTUFYOw0KPiA+ID4gPiA+ID4gPiAr
-DQo+ID4gPiA+ID4gPiA+ICsgICAgICAgcmV0dXJuIGZkdDMyX3RvX2NwdSgqcHJvcCk7DQo+ID4g
-PiA+ID4gPiA+ICt9DQo+ID4gPiA+ID4gPiA+ICsNCj4gPiA+ID4gPiA+ID4gKy8qDQo+ID4gPiA+
-ID4gPiA+ICsgKiBKdW1wIHRvIHJlYWwga2VybmVsIGhlcmUgd2l0aCBmb2xsb3dpbmcgY29uc3Ry
-YWludHMuDQo+ID4gPiA+ID4gPiA+ICsgKiAxLiBNTVUgc2hvdWxkIGJlIGRpc2FibGVkLg0KPiA+
-ID4gPiA+ID4gPiArICogMi4gYTAgc2hvdWxkIGNvbnRhaW4gaGFydGlkDQo+ID4gPiA+ID4gPiA+
-ICsgKiAzLiBhMSBzaG91bGQgRFQgYWRkcmVzcw0KPiA+ID4gPiA+ID4gPiArICovDQo+ID4gPiA+
-ID4gPiA+ICt2b2lkIF9fbm9yZXR1cm4gZWZpX2VudGVyX2tlcm5lbCh1bnNpZ25lZCBsb25nDQo+
-ID4gPiA+ID4gPiA+IGVudHJ5cG9pbnQsIHVuc2lnbmVkIGxvbmcgZmR0LA0KPiA+ID4gPiA+ID4g
-PiArICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB1bnNpZ25lZCBsb25nIGZkdF9zaXpl
-KQ0KPiA+ID4gPiA+ID4gPiArew0KPiA+ID4gPiA+ID4gPiArICAgICAgIHVuc2lnbmVkIGxvbmcg
-a2VybmVsX2VudHJ5ID0gZW50cnlwb2ludCArDQo+ID4gPiA+ID4gPiA+ICh1bnNpZ25lZCBsb25n
-KXN0ZXh0X29mZnNldDsNCj4gPiA+ID4gPiA+ID4gKyAgICAgICBqdW1wX2tlcm5lbF9mdW5jIGp1
-bXBfa2VybmVsID0gKGp1bXBfa2VybmVsX2Z1bmMpDQo+ID4gPiA+ID4gPiA+IGtlcm5lbF9lbnRy
-eTsNCj4gPiA+ID4gPiA+ID4gKyAgICAgICB1MzIgaGFydGlkID0gZ2V0X2Jvb3RfaGFydGlkX2Zy
-b21fZmR0KGZkdCk7DQo+ID4gPiA+ID4gPiA+ICsNCj4gPiA+ID4gPiA+ID4gKyAgICAgICBpZiAo
-aGFydGlkID09IFUzMl9NQVgpDQo+ID4gPiA+ID4gPiA+ICsgICAgICAgICAgICAgICAvKiBXZSBj
-YW4gbm90IHVzZSBwYW5pYyBvciBCVUcgYXQgdGhpcw0KPiA+ID4gPiA+ID4gPiBwb2ludCAqLw0K
-PiA+ID4gPiA+ID4gPiArICAgICAgICAgICAgICAgX19hc21fXyBfX3ZvbGF0aWxlX18gKCJlYnJl
-YWsiKTsNCj4gPiA+ID4gPiA+ID4gKyAgICAgICAvKiBEaXNhYmxlIE1NVSAqLw0KPiA+ID4gPiA+
-ID4gPiArICAgICAgIGNzcl93cml0ZShDU1JfU0FUUCwgMCk7DQo+ID4gPiA+ID4gPiA+ICsgICAg
-ICAganVtcF9rZXJuZWwoaGFydGlkLCBmZHQpOw0KPiA+ID4gPiA+ID4gPiArfQ0KPiA+ID4gPiA+
-ID4gPiArDQo+ID4gPiA+ID4gPiA+ICtlZmlfc3RhdHVzX3QgaGFuZGxlX2tlcm5lbF9pbWFnZSh1
-bnNpZ25lZCBsb25nDQo+ID4gPiA+ID4gPiA+ICppbWFnZV9hZGRyLA0KPiA+ID4gPiA+ID4gPiAr
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB1bnNpZ25lZCBsb25nDQo+ID4gPiA+ID4g
-PiA+ICppbWFnZV9zaXplLA0KPiA+ID4gPiA+ID4gPiArICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICB1bnNpZ25lZCBsb25nDQo+ID4gPiA+ID4gPiA+ICpyZXNlcnZlX2FkZHIsDQo+ID4g
-PiA+ID4gPiA+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHVuc2lnbmVkIGxvbmcN
-Cj4gPiA+ID4gPiA+ID4gKnJlc2VydmVfc2l6ZSwNCj4gPiA+ID4gPiA+ID4gKyAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgdW5zaWduZWQgbG9uZyBkcmFtX2Jhc2UsDQo+ID4gPiA+ID4g
-PiA+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGVmaV9sb2FkZWRfaW1hZ2VfdA0K
-PiA+ID4gPiA+ID4gPiAqaW1hZ2UpDQo+ID4gPiA+ID4gPiA+ICt7DQo+ID4gPiA+ID4gPiA+ICsg
-ICAgICAgZWZpX3N0YXR1c190IHN0YXR1czsNCj4gPiA+ID4gPiA+ID4gKyAgICAgICB1bnNpZ25l
-ZCBsb25nIGtlcm5lbF9zaXplLCBrZXJuZWxfbWVtc2l6ZSA9IDA7DQo+ID4gPiA+ID4gPiA+ICsg
-ICAgICAgdW5zaWduZWQgbG9uZyBtYXhfYWxsb2NfYWRkcmVzczsNCj4gPiA+ID4gPiA+ID4gKw0K
-PiA+ID4gPiA+ID4gPiArICAgICAgIGlmIChpbWFnZS0+aW1hZ2VfYmFzZSAhPSBfc3RhcnQpDQo+
-ID4gPiA+ID4gPiA+ICsgICAgICAgICAgICAgICBwcl9lZmlfZXJyKCJGSVJNV0FSRSBCVUc6DQo+
-ID4gPiA+ID4gPiA+IGVmaV9sb2FkZWRfaW1hZ2VfdDo6aW1hZ2VfYmFzZSBoYXMgYm9ndXMgdmFs
-dWVcbiIpOw0KPiA+ID4gPiA+ID4gPiArDQo+ID4gPiA+ID4gPiANCj4gPiA+ID4gPiA+IEkgZG9u
-J3QgdGhpbmsgeW91IG5lZWQgdGhpcy4NCj4gPiA+ID4gPiA+IA0KPiA+ID4gPiA+IA0KPiA+ID4g
-PiA+IFN1cmUuIEkgd2lsbCByZW1vdmUgaXQuIEkgZ3Vlc3MgQVJNNjQgY29kZSBoYXMgdGhlIGVy
-cm9yDQo+ID4gPiA+ID4gcHJpbnQgZm9yDQo+ID4gPiA+ID4gbGVnYWN5IGxvYWRlciBjb2RlID8N
-Cj4gPiA+ID4gPiANCj4gPiA+ID4gDQo+ID4gPiA+IE5vLCBmb3IgYnJva2VuIGRpc3RybyB2ZXJz
-aW9ucyBvZiBHUlVCDQo+ID4gPiA+IA0KPiA+ID4gPiA+ID4gPiArICAgICAgIGtlcm5lbF9zaXpl
-ID0gX2VkYXRhIC0gX3N0YXJ0Ow0KPiA+ID4gPiA+ID4gPiArICAgICAgIGtlcm5lbF9tZW1zaXpl
-ID0ga2VybmVsX3NpemUgKyAoX2VuZCAtIF9lZGF0YSk7DQo+ID4gPiA+ID4gPiA+ICsgICAgICAg
-bWF4X2FsbG9jX2FkZHJlc3MgPSByb3VuZF91cChkcmFtX2Jhc2UsDQo+ID4gPiA+ID4gPiA+IE1J
-Tl9LSU1HX0FMSUdOKSArDQo+ID4gPiA+ID4gPiA+ICsgICAgICAgICAgICAgICAgICAgICAgICAg
-ICBrZXJuZWxfbWVtc2l6ZTsNCj4gPiA+ID4gPiA+ID4gKw0KPiA+ID4gPiA+ID4gDQo+ID4gPiA+
-ID4gPiBZb3Ugc2FpZCB0aGUga2VybmVsIGNvdWxkIGJlIGFueXdoZXJlIGluIG1lbW9yeSwgYXMg
-bG9uZyBhcw0KPiA+ID4gPiA+ID4gaXQgaXMNCj4gPiA+ID4gPiA+IGFsaWduZWQgY29ycmVjdGx5
-LCByaWdodD8NCj4gPiA+ID4gPiANCj4gPiA+ID4gPiBTb3JyeSBJIHdhcyB3cm9uZyBhYm91dCB0
-aGlzLiBSSVNDLVYga2VybmVsIG1hcHMgUEFHRV9PRkZTRVQNCj4gPiA+ID4gPiB2aXJ0dWFsDQo+
-ID4gPiA+ID4gYWRkcmVzcyB0byB0aGUNCj4gPiA+ID4gPiBwaHlzaWNhbCBhZGRyZXNzIDx4eXo+
-IHdoZXJlIGl0IGlzIGJvb3RlZC4gVGhhdCBtZWFucyBtZW1vcnkNCj4gPiA+ID4gPiBiZXR3ZWVu
-DQo+ID4gPiA+ID4gZHJhbSBzdGFydCBhbmQgYW5kIDx4eXo+IGFkZHJlc3MNCj4gPiA+ID4gPiB3
-aWxsIGJlIHVudXNhYmxlLg0KPiA+ID4gPiA+IA0KPiA+ID4gPiANCj4gPiA+ID4gT0sNCj4gPiA+
-ID4gDQo+ID4gPiA+ID4gSSBhbHNvIHJlYWxpemVkIHRoYXQgdGhlIGFib3ZlIGNvbXB1dGluZyBt
-YXhfYWRkcmVzcyBhcyBhYm92ZQ0KPiA+ID4gPiA+IGFsc28NCj4gPiA+ID4gPiB3b24ndCB3b3Jr
-IGZvciB0aGUgZm9sbG93aW5nIHJlYXNvbi4NCj4gPiA+ID4gPiBlZmlfYWxsb2NhdGVfcGFnZXNf
-YWxpZ25lZCBhY3R1YWxseSBBTElHTl9ET1dOIHRoZQ0KPiA+ID4gPiA+IG1heF9hZGRyZXNzLiBU
-aHVzLA0KPiA+ID4gPiA+IGVmaSB3b24ndCBmaW5kIGVub3VnaA0KPiA+ID4gPiA+IGZyZWUgbWVt
-b3J5IGluIHRoaXMgY2FzZSBpZiB0aGUgbWF4X2FkZHJlc3MgaXMgY29tcHV0ZWQgZnJvbQ0KPiA+
-ID4gPiA+IHRoZSBkcmFtX2Jhc2UuDQo+ID4gPiA+ID4gDQo+ID4gPiA+ID4gSXMgdGhlcmUgYW4g
-aW1wbGljaXQgcmVxdWlyZW1lbnQgZm9yDQo+ID4gPiA+ID4gZWZpX2FsbG9jYXRlX3BhZ2VzX2Fs
-aWduZWQgb3INCj4gPiA+ID4gPiBlZmlfbG93X2FsbG9jX2Fib3ZlIHNob3VsZCBiZSB0cmllZCBp
-biBjYXNlIG9mIGZhaWx1cmU/DQo+ID4gPiA+ID4gDQo+ID4gPiA+IA0KPiA+ID4gPiBObyBub3Qg
-cmVhbGx5LiBXaGF0IGV2ZXIgd29ya3MgZm9yIHlvdXIgcGFydGljdWxhciB1c2UgY2FzZSBpcw0K
-PiA+ID4gPiBhY2NlcHRhYmxlIHRvIG1lLg0KPiA+ID4gPiANCj4gPiA+ID4gPiA+IEluIHRoYXQg
-Y2FzZSwgeW91IGRvbid0IG5lZWQgdGhpcywgeW91IGNhbiBzaW1wbHkgcGFzcw0KPiA+ID4gPiA+
-ID4gVUxPTkdfTUFYIGFzDQo+ID4gPiA+ID4gPiB0aGUgbWF4IGFkZHJlc3MuDQo+ID4gPiA+ID4g
-PiANCj4gPiA+ID4gPiBBcyBSSVNDLVYgc2hvdWxkIGFsbG9jYXRlIG1lbW9yeSBhcyBsb3cgYXMg
-cG9zc2libGUgdG8gYXZvaWQNCj4gPiA+ID4gPiBtZW1vcnkNCj4gPiA+ID4gPiB3YXN0YWdlLCBJ
-IHRoaW5rIHRoZSBmb2xsb3dpbmcgc2hvdWxkIHdvcmsuDQo+ID4gPiA+ID4gDQo+ID4gPiA+ID4g
-ZWZpX2xvd19hbGxvY19hYm92ZSgqcmVzZXJ2ZV9zaXplLCBNSU5fS0lNR19BTElHTiwNCj4gPiA+
-ID4gPiByZXNlcnZlX2FkZHIsIGRyYW1fYmFzZSk7DQo+ID4gPiA+ID4gDQo+ID4gPiA+ID4gSWYg
-dGhpcyBsb29rcyBva2F5IHRvIHlvdSwgZWZpX2xvd19hbGxvY19hYm92ZSBzaG91bGQgYmUNCj4g
-PiA+ID4gPiBtb3ZlZCBiYWNrIHRvDQo+ID4gPiA+ID4gbWVtLmMgZnJvbSByZWxvY2F0ZS5jLg0K
-PiA+ID4gPiA+IFNob3VsZCBJIGRvIGl0IGluIGEgc2VwYXJhdGUgcGF0Y2ggb3IgdGhlIG9yaWdp
-bmFsIHBhdGNoDQo+ID4gPiA+ID4gc2hvdWxkIGJlDQo+ID4gPiA+ID4gbW9kaWZpZWQgc28gdGhh
-dCBlZmlfbG93X2FsbG9jX2Fib3ZlIHdhcyBuZXZlciBtb3ZlZCB0bw0KPiA+ID4gPiA+IHJlbG9j
-YXRlLmMNCj4gPiA+ID4gPiANCj4gPiA+ID4gDQo+ID4gPiA+IE5vLCBwbGVhc2Uga2VlcCBlZmlf
-bG93X2FsbG9jX2Fib3ZlKCkgd2hlcmUgaXQgaXMsIGJ1dCBkcm9wIHRoZQ0KPiA+ID4gPiBzdGF0
-aWMsIGFuZCBwdXQgYmFjayB0aGUgZGVjbGFyYXRpb24gaW4gZWZpc3R1Yi5oDQo+ID4gPiA+IA0K
-PiA+ID4gDQo+ID4gPiBBbHRlcm5hdGl2ZWx5LCBjYW4geW91IGNoZWNrIHdoZXRoZXIgZWZpX3Jl
-bG9jYXRlX2tlcm5lbCgpDQo+ID4gPiBhbHJlYWR5DQo+ID4gPiBkb2VzIHdoYXQgeW91IG5lZWQ/
-DQo+ID4gDQo+ID4gWWVhaC4gZWZpX3JlbG9jYXRlX2tlcm5lbCB3b3JrcyB0b28uIEl0J3MganVz
-dCB0aGF0DQo+ID4gZWZpX3JlbG9jYXRlX2tlcm5lbCBleHBlY3RzIGEgcHJlZmVycmVkIGFkZHJl
-c3MNCj4gPiB3aGljaCBSSVNDLVYgZG9lc24ndCBjYXJlIGFib3V0Lg0KPiANCj4gVGhlcmUgaXMg
-YSBwcmVmZXJyZWQgYWRkcmVzcywgbm8/IFRoZSBiYXNlIG9mIERSQU0/DQo+IA0KDQpJIGp1c3Qg
-cmVhbGl6ZWQgdGhhdCBteSByZXBseSBmcm9tIG15IGdtYWlsIG5ldmVyIGxhbmRlZCBpbiBhbnkg
-b2YgdGhlDQptYWlsaW5nIGxpc3RzLiBJZiB5b3UgaGF2ZSBhbHJlYWR5IHJlY2VpdmVkIGl0LCBz
-b3JyeSBmb3IgdGhlIHNwYW0uDQoNCiJJZiB0aGUgcHJlZmVycmVkIGFkZHJlc3MgaXMgc2V0IGFz
-IHRoZSBiYXNlIG9mIERSQU0sIGVmaV9ic19jYWxsIGlzDQpib3VuZCB0byBmYWlsIGFzIHdlbGwg
-YmVjYXVzZSB0aGUgYmFzZSBvZiBEUkFNIGlzIHJlc2VydmVkIGJ5IHRoZQ0KZmlybXdhcmUuIFNv
-IHRoZSBlZmkgbWVtb3J5IGFsbG9jYXRvciBjYW4ndCBhbGxvY2F0ZSBhdCB0aGF0IGFkZHJlc3Mu
-DQpUZWNobmljYWxseSwgaXQgd2lsbCB3b3JrIGJ1dCBpdCBpcyBubyBkaWZmZXJlbnQgdGhhbiBw
-YXNzaW5nDQpVTE9OR19NQVguIFNvIEkgdGhvdWdodCBVTE9OR19NQVggd2lsbCBhdm9pZCB0aGUg
-Y29uZnVzaW9uLg0KDQpXZSB0cnkgdG8gYWxsb2NhdGUgYXMgbG93IGFzIHBvc3NpYmxlIHNvIEkg
-YW0gcGFzc2luZyBkcmFtX2Jhc2UgYXMgdGhlDQptaW5pbXVtIGFkZHJlc3MgYW55d2F5cy4gQXMg
-dGhlIGZpcm13YXJlIHJlc2VydmVkIHRoZSBmaXJzdCBmZXcgS0JzLA0KDQoNCj4gPiBJIGNhbiBw
-YXNzIFVMT05HX01BWCBzbyB0aGF0DQo+ID4gZWZpX2JzX2NhbGwgd2lsbCBmYWlsIGFuZA0KPiA+
-IGVmaV9sb3dfYWxsb2NfYWJvdmUgd2lsbCBiZSBpbnZva2VkIGV2ZW50dWFsbHkuDQo+ID4gDQo+
-ID4gSSBhbSBhbHNvIHRoaW5raW5nIHRvIHB1dCBhIGNoZWNrIGluIHJlbG9jYXRlX2tlcm5lbCBm
-b3IgcHJlZmVycmVkDQo+ID4gYWRkcmVzcyAhPSBVTE9OR19NQVggdG8gYXZvaWQNCj4gPiBhbiBl
-eHRyYSBlZmlfYnNfY2FsbC4gVGhlIGV4dHJhIGNhbGwgZG9lc24ndCBhY3R1YWxseSBjcmVhdGUg
-YW4NCj4gPiBpc3N1ZSwNCj4gPiBqdXN0IGEgbWlub3Igb3B0aW1pemF0aW9uLg0KPiA+IEJ1dCBp
-ZiB0aGF0IGlzIG5vdCBhY2NlcHRhYmxlIGZvciBnZW5lcmljIGNvZGUsIHRoYXQgaXMgZmluZSBh
-cw0KPiA+IHdlbGwuDQo+ID4gDQo+ID4gVGhhbmtzIGZvciB5b3VyIHN1Z2dlc3Rpb25zIGFuZCB0
-aW1lLg0KPiA+IC0tDQo+ID4gUmVnYXJkcywNCj4gPiBBdGlzaA0KDQotLSANClJlZ2FyZHMsDQpB
-dGlzaA0K
+On Mon, 20 Apr 2020 at 06:20, Atish Patra <Atish.Patra@wdc.com> wrote:
+>
+> On Sat, 2020-04-18 at 21:24 +0200, Ard Biesheuvel wrote:
+> > On Sat, 18 Apr 2020 at 21:19, Atish Patra <atishp@atishpatra.org>
+> > wrote:
+> > > On Sat, Apr 18, 2020 at 5:39 AM Ard Biesheuvel <ardb@kernel.org>
+> > > wrote:
+> > > > On Sat, 18 Apr 2020 at 12:51, Ard Biesheuvel <ardb@kernel.org>
+> > > > wrote:
+> > > > > On Sat, 18 Apr 2020 at 05:03, Atish Patra <
+> > > > > atishp@atishpatra.org> wrote:
+> > > > > > On Thu, Apr 16, 2020 at 12:41 AM Ard Biesheuvel <
+> > > > > > ardb@kernel.org> wrote:
+> > > > > > > On Wed, 15 Apr 2020 at 21:54, Atish Patra <
+> > > > > > > atish.patra@wdc.com> wrote:
+> > > > > > > > Add a RISC-V architecture specific stub code that
+> > > > > > > > actually copies the
+> > > > > > > > actual kernel image to a valid address and jump to it
+> > > > > > > > after boot services
+> > > > > > > > are terminated. Enable UEFI related kernel configs as
+> > > > > > > > well for RISC-V.
+> > > > > > > >
+> > > > > > > > Signed-off-by: Atish Patra <atish.patra@wdc.com>
+> > > > > > > > ---
+> > > > > > > >  arch/riscv/Kconfig                        |  20 ++++
+> > > > > > > >  arch/riscv/Makefile                       |   1 +
+> > > > > > > >  arch/riscv/configs/defconfig              |   1 +
+> > > > > > > >  arch/riscv/include/asm/efi.h              |  44
+> > > > > > > > +++++++++
+> > > > > > > >  drivers/firmware/efi/Kconfig              |   2 +-
+> > > > > > > >  drivers/firmware/efi/libstub/Makefile     |   7 ++
+> > > > > > > >  drivers/firmware/efi/libstub/riscv-stub.c | 111
+> > > > > > > > ++++++++++++++++++++++
+> > > > > > > >  7 files changed, 185 insertions(+), 1 deletion(-)
+> > > > > > > >  create mode 100644 arch/riscv/include/asm/efi.h
+> > > > > > > >  create mode 100644 drivers/firmware/efi/libstub/riscv-
+> > > > > > > > stub.c
+> > > > > > > >
+> > > > > > > > diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+> > > > > > > > index f39e326a7a42..eb4f41c8f3ce 100644
+> > > > > > > > --- a/arch/riscv/Kconfig
+> > > > > > > > +++ b/arch/riscv/Kconfig
+> > > > > > > > @@ -379,10 +379,30 @@ config CMDLINE_FORCE
+> > > > > > > >
+> > > > > > > >  endchoice
+> > > > > > > >
+> > > > > > > > +config EFI_STUB
+> > > > > > > > +       bool
+> > > > > > > > +
+> > > > > > > > +config EFI
+> > > > > > > > +       bool "UEFI runtime support"
+> > > > > > > > +       depends on OF
+> > > > > > > > +       select LIBFDT
+> > > > > > > > +       select UCS2_STRING
+> > > > > > > > +       select EFI_PARAMS_FROM_FDT
+> > > > > > > > +       select EFI_STUB
+> > > > > > > > +       select EFI_GENERIC_STUB
+> > > > > > > > +       default y
+> > > > > > > > +       help
+> > > > > > > > +         This option provides support for runtime
+> > > > > > > > services provided
+> > > > > > > > +         by UEFI firmware (such as non-volatile
+> > > > > > > > variables, realtime
+> > > > > > > > +          clock, and platform reset). A UEFI stub is
+> > > > > > > > also provided to
+> > > > > > > > +         allow the kernel to be booted as an EFI
+> > > > > > > > application. This
+> > > > > > > > +         is only useful on systems that have UEFI
+> > > > > > > > firmware.
+> > > > > > > > +
+> > > > > > > >  endmenu
+> > > > > > > >
+> > > > > > > >  menu "Power management options"
+> > > > > > > >
+> > > > > > > >  source "kernel/power/Kconfig"
+> > > > > > > > +source "drivers/firmware/Kconfig"
+> > > > > > > >
+> > > > > > > >  endmenu
+> > > > > > > > diff --git a/arch/riscv/Makefile b/arch/riscv/Makefile
+> > > > > > > > index fb6e37db836d..079435804d6d 100644
+> > > > > > > > --- a/arch/riscv/Makefile
+> > > > > > > > +++ b/arch/riscv/Makefile
+> > > > > > > > @@ -80,6 +80,7 @@ head-y := arch/riscv/kernel/head.o
+> > > > > > > >  core-y += arch/riscv/
+> > > > > > > >
+> > > > > > > >  libs-y += arch/riscv/lib/
+> > > > > > > > +core-$(CONFIG_EFI_STUB) +=
+> > > > > > > > $(objtree)/drivers/firmware/efi/libstub/lib.a
+> > > > > > > >
+> > > > > > > >  PHONY += vdso_install
+> > > > > > > >  vdso_install:
+> > > > > > > > diff --git a/arch/riscv/configs/defconfig
+> > > > > > > > b/arch/riscv/configs/defconfig
+> > > > > > > > index 4da4886246a4..ae69e12d306a 100644
+> > > > > > > > --- a/arch/riscv/configs/defconfig
+> > > > > > > > +++ b/arch/riscv/configs/defconfig
+> > > > > > > > @@ -129,3 +129,4 @@ CONFIG_DEBUG_BLOCK_EXT_DEVT=y
+> > > > > > > >  # CONFIG_RUNTIME_TESTING_MENU is not set
+> > > > > > > >  CONFIG_MEMTEST=y
+> > > > > > > >  # CONFIG_SYSFS_SYSCALL is not set
+> > > > > > > > +CONFIG_EFI=y
+> > > > > > > > diff --git a/arch/riscv/include/asm/efi.h
+> > > > > > > > b/arch/riscv/include/asm/efi.h
+> > > > > > > > new file mode 100644
+> > > > > > > > index 000000000000..62d7d5eafed8
+> > > > > > > > --- /dev/null
+> > > > > > > > +++ b/arch/riscv/include/asm/efi.h
+> > > > > > > > @@ -0,0 +1,44 @@
+> > > > > > > > +/* SPDX-License-Identifier: GPL-2.0 */
+> > > > > > > > +/*
+> > > > > > > > + * Copyright (C) 2020 Western Digital Corporation or its
+> > > > > > > > affiliates.
+> > > > > > > > + * Based on arch/arm64/include/asm/efi.h
+> > > > > > > > + */
+> > > > > > > > +#ifndef _ASM_EFI_H
+> > > > > > > > +#define _ASM_EFI_H
+> > > > > > > > +
+> > > > > > > > +#include <asm/io.h>
+> > > > > > > > +#include <asm/mmu_context.h>
+> > > > > > > > +#include <asm/ptrace.h>
+> > > > > > > > +#include <asm/tlbflush.h>
+> > > > > > > > +
+> > > > > > > > +#define VA_BITS_MIN 39
+> > > > > > > > +
+> > > > > > > > +/* on RISC-V, the FDT may be located anywhere in system
+> > > > > > > > RAM */
+> > > > > > > > +static inline unsigned long
+> > > > > > > > efi_get_max_fdt_addr(unsigned long dram_base)
+> > > > > > > > +{
+> > > > > > > > +       return ULONG_MAX;
+> > > > > > > > +}
+> > > > > > > > +
+> > > > > > > > +/* Load initrd at enough distance from DRAM start */
+> > > > > > > > +static inline unsigned long
+> > > > > > > > efi_get_max_initrd_addr(unsigned long dram_base,
+> > > > > > > > +                                                   unsig
+> > > > > > > > ned long image_addr)
+> > > > > > > > +{
+> > > > > > > > +       return dram_base + SZ_256M;
+> > > > > > > > +}
+> > > > > > > > +
+> > > > > > > > +#define efi_bs_call(func, ...) efi_system_table()-
+> > > > > > > > >boottime->func(__VA_ARGS__)
+> > > > > > > > +#define efi_rt_call(func, ...) efi_system_table()-
+> > > > > > > > >runtime->func(__VA_ARGS__)
+> > > > > > > > +#define efi_is_native()                (true)
+> > > > > > > > +
+> > > > > > > > +#define efi_table_attr(inst, attr)     (inst->attr)
+> > > > > > > > +
+> > > > > > > > +#define efi_call_proto(inst, func, ...) inst->func(inst,
+> > > > > > > > ##__VA_ARGS__)
+> > > > > > > > +
+> > > > > > > > +#define
+> > > > > > > > alloc_screen_info(x...)                (&screen_info)
+> > > > > > > > +extern char stext_offset[];
+> > > > > > > > +
+> > > > > > > > +static inline void free_screen_info(struct screen_info
+> > > > > > > > *si)
+> > > > > > > > +{
+> > > > > > > > +}
+> > > > > > > > +
+> > > > > > > > +#endif /* _ASM_EFI_H */
+> > > > > > > > diff --git a/drivers/firmware/efi/Kconfig
+> > > > > > > > b/drivers/firmware/efi/Kconfig
+> > > > > > > > index 2a2b2b96a1dc..fcdc789d3f87 100644
+> > > > > > > > --- a/drivers/firmware/efi/Kconfig
+> > > > > > > > +++ b/drivers/firmware/efi/Kconfig
+> > > > > > > > @@ -111,7 +111,7 @@ config EFI_GENERIC_STUB
+> > > > > > > >
+> > > > > > > >  config EFI_ARMSTUB_DTB_LOADER
+> > > > > > > >         bool "Enable the DTB loader"
+> > > > > > > > -       depends on EFI_GENERIC_STUB
+> > > > > > > > +       depends on EFI_GENERIC_STUB && !RISCV
+> > > > > > > >         default y
+> > > > > > > >         help
+> > > > > > > >           Select this config option to add support for
+> > > > > > > > the dtb= command
+> > > > > > > > diff --git a/drivers/firmware/efi/libstub/Makefile
+> > > > > > > > b/drivers/firmware/efi/libstub/Makefile
+> > > > > > > > index 2b4e09bf987c..7d46b70b51f2 100644
+> > > > > > > > --- a/drivers/firmware/efi/libstub/Makefile
+> > > > > > > > +++ b/drivers/firmware/efi/libstub/Makefile
+> > > > > > > > @@ -22,6 +22,8 @@ cflags-
+> > > > > > > > $(CONFIG_ARM64)                := $(subst
+> > > > > > > > $(CC_FLAGS_FTRACE),,$(KBUILD_CFLAGS)) \
+> > > > > > > >  cflags-$(CONFIG_ARM)           := $(subst
+> > > > > > > > $(CC_FLAGS_FTRACE),,$(KBUILD_CFLAGS)) \
+> > > > > > > >                                    -fno-builtin -fpic \
+> > > > > > > >                                    $(call cc-option,-mno-
+> > > > > > > > single-pic-base)
+> > > > > > > > +cflags-$(CONFIG_RISCV)         := $(subst
+> > > > > > > > $(CC_FLAGS_FTRACE),,$(KBUILD_CFLAGS)) \
+> > > > > > > > +                                  -fpic
+> > > > > > > >
+> > > > > > > >  cflags-$(CONFIG_EFI_GENERIC_STUB)      +=
+> > > > > > > > -I$(srctree)/scripts/dtc/libfdt
+> > > > > > > >
+> > > > > > > > @@ -57,6 +59,7 @@ lib-
+> > > > > > > > $(CONFIG_EFI_GENERIC_STUB)                += efi-stub.o
+> > > > > > > > fdt.o string.o \
+> > > > > > > >  lib-$(CONFIG_ARM)              += arm32-stub.o
+> > > > > > > >  lib-$(CONFIG_ARM64)            += arm64-stub.o
+> > > > > > > >  lib-$(CONFIG_X86)              += x86-stub.o
+> > > > > > > > +lib-$(CONFIG_RISCV)            += riscv-stub.o
+> > > > > > > >  CFLAGS_arm32-stub.o            :=
+> > > > > > > > -DTEXT_OFFSET=$(TEXT_OFFSET)
+> > > > > > > >  CFLAGS_arm64-stub.o            :=
+> > > > > > > > -DTEXT_OFFSET=$(TEXT_OFFSET)
+> > > > > > > >
+> > > > > > > > @@ -81,6 +84,10 @@ STUBCOPY_FLAGS-
+> > > > > > > > $(CONFIG_ARM64)       += --prefix-alloc-sections=.init \
+> > > > > > > >                                    --prefix-
+> > > > > > > > symbols=__efistub_
+> > > > > > > >  STUBCOPY_RELOC-$(CONFIG_ARM64) := R_AARCH64_ABS
+> > > > > > > >
+> > > > > > > > +STUBCOPY_FLAGS-$(CONFIG_RISCV) += --prefix-alloc-
+> > > > > > > > sections=.init \
+> > > > > > > > +                                  --prefix-
+> > > > > > > > symbols=__efistub_
+> > > > > > > > +STUBCOPY_RELOC-$(CONFIG_RISCV) := R_RISCV_HI20
+> > > > > > > > +
+> > > > > > > >  $(obj)/%.stub.o: $(obj)/%.o FORCE
+> > > > > > > >         $(call if_changed,stubcopy)
+> > > > > > > >
+> > > > > > > > diff --git a/drivers/firmware/efi/libstub/riscv-stub.c
+> > > > > > > > b/drivers/firmware/efi/libstub/riscv-stub.c
+> > > > > > > > new file mode 100644
+> > > > > > > > index 000000000000..69d13e0ebaea
+> > > > > > > > --- /dev/null
+> > > > > > > > +++ b/drivers/firmware/efi/libstub/riscv-stub.c
+> > > > > > > > @@ -0,0 +1,111 @@
+> > > > > > > > +// SPDX-License-Identifier: GPL-2.0
+> > > > > > > > +/*
+> > > > > > > > + * Copyright (C) 2013, 2014 Linaro Ltd;  <
+> > > > > > > > roy.franz@linaro.org>
+> > > > > > > > + * Copyright (C) 2020 Western Digital Corporation or its
+> > > > > > > > affiliates.
+> > > > > > > > + *
+> > > > > > > > + * This file implements the EFI boot stub for the RISC-V
+> > > > > > > > kernel.
+> > > > > > > > + * Adapted from ARM64 version at
+> > > > > > > > drivers/firmware/efi/libstub/arm64-stub.c.
+> > > > > > > > + */
+> > > > > > > > +
+> > > > > > > > +#include <linux/efi.h>
+> > > > > > > > +#include <linux/libfdt.h>
+> > > > > > > > +#include <linux/libfdt_env.h>
+> > > > > > > > +#include <asm/efi.h>
+> > > > > > > > +#include <asm/sections.h>
+> > > > > > > > +
+> > > > > > > > +#include "efistub.h"
+> > > > > > > > +/*
+> > > > > > > > + * RISCV requires the kernel image to placed TEXT_OFFSET
+> > > > > > > > bytes beyond a 2 MB
+> > > > > > > > + * aligned base for 64 bit and 4MB for 32 bit.
+> > > > > > > > + */
+> > > > > >
+> > > > > > Fixed the comment.
+> > > > > >
+> > > > > > > > +#ifdef CONFIG_64BIT
+> > > > > > > > +#define MIN_KIMG_ALIGN SZ_2M
+> > > > > > > > +#else
+> > > > > > > > +#define MIN_KIMG_ALIGN SZ_4M
+> > > > > > > > +#endif
+> > > > > > > > +
+> > > > > > > > +typedef __attribute__((noreturn)) void
+> > > > > > > > (*jump_kernel_func)(unsigned int,
+> > > > > > > > +
+> > > > > > > >   unsigned long);
+> > > > > > > > +efi_status_t check_platform_features(void)
+> > > > > > > > +{
+> > > > > > > > +       return EFI_SUCCESS;
+> > > > > > > > +}
+> > > > > > > > +
+> > > > > > > > +static u32 get_boot_hartid_from_fdt(unsigned long fdt)
+> > > > > > > > +{
+> > > > > > > > +       int chosen_node, len;
+> > > > > > > > +       const fdt32_t *prop;
+> > > > > > > > +
+> > > > > > > > +       chosen_node = fdt_path_offset((void *)fdt,
+> > > > > > > > "/chosen");
+> > > > > > > > +       if (chosen_node < 0)
+> > > > > > > > +               return U32_MAX;
+> > > > > > > > +       prop = fdt_getprop((void *)fdt, chosen_node,
+> > > > > > > > "boot-hartid", &len);
+> > > > > > > > +       if (!prop || len != sizeof(u32))
+> > > > > > > > +               return U32_MAX;
+> > > > > > > > +
+> > > > > > > > +       return fdt32_to_cpu(*prop);
+> > > > > > > > +}
+> > > > > > > > +
+> > > > > > > > +/*
+> > > > > > > > + * Jump to real kernel here with following constraints.
+> > > > > > > > + * 1. MMU should be disabled.
+> > > > > > > > + * 2. a0 should contain hartid
+> > > > > > > > + * 3. a1 should DT address
+> > > > > > > > + */
+> > > > > > > > +void __noreturn efi_enter_kernel(unsigned long
+> > > > > > > > entrypoint, unsigned long fdt,
+> > > > > > > > +                                unsigned long fdt_size)
+> > > > > > > > +{
+> > > > > > > > +       unsigned long kernel_entry = entrypoint +
+> > > > > > > > (unsigned long)stext_offset;
+> > > > > > > > +       jump_kernel_func jump_kernel = (jump_kernel_func)
+> > > > > > > > kernel_entry;
+> > > > > > > > +       u32 hartid = get_boot_hartid_from_fdt(fdt);
+> > > > > > > > +
+> > > > > > > > +       if (hartid == U32_MAX)
+> > > > > > > > +               /* We can not use panic or BUG at this
+> > > > > > > > point */
+> > > > > > > > +               __asm__ __volatile__ ("ebreak");
+> > > > > > > > +       /* Disable MMU */
+> > > > > > > > +       csr_write(CSR_SATP, 0);
+> > > > > > > > +       jump_kernel(hartid, fdt);
+> > > > > > > > +}
+> > > > > > > > +
+> > > > > > > > +efi_status_t handle_kernel_image(unsigned long
+> > > > > > > > *image_addr,
+> > > > > > > > +                                unsigned long
+> > > > > > > > *image_size,
+> > > > > > > > +                                unsigned long
+> > > > > > > > *reserve_addr,
+> > > > > > > > +                                unsigned long
+> > > > > > > > *reserve_size,
+> > > > > > > > +                                unsigned long dram_base,
+> > > > > > > > +                                efi_loaded_image_t
+> > > > > > > > *image)
+> > > > > > > > +{
+> > > > > > > > +       efi_status_t status;
+> > > > > > > > +       unsigned long kernel_size, kernel_memsize = 0;
+> > > > > > > > +       unsigned long max_alloc_address;
+> > > > > > > > +
+> > > > > > > > +       if (image->image_base != _start)
+> > > > > > > > +               pr_efi_err("FIRMWARE BUG:
+> > > > > > > > efi_loaded_image_t::image_base has bogus value\n");
+> > > > > > > > +
+> > > > > > >
+> > > > > > > I don't think you need this.
+> > > > > > >
+> > > > > >
+> > > > > > Sure. I will remove it. I guess ARM64 code has the error
+> > > > > > print for
+> > > > > > legacy loader code ?
+> > > > > >
+> > > > >
+> > > > > No, for broken distro versions of GRUB
+> > > > >
+> > > > > > > > +       kernel_size = _edata - _start;
+> > > > > > > > +       kernel_memsize = kernel_size + (_end - _edata);
+> > > > > > > > +       max_alloc_address = round_up(dram_base,
+> > > > > > > > MIN_KIMG_ALIGN) +
+> > > > > > > > +                           kernel_memsize;
+> > > > > > > > +
+> > > > > > >
+> > > > > > > You said the kernel could be anywhere in memory, as long as
+> > > > > > > it is
+> > > > > > > aligned correctly, right?
+> > > > > >
+> > > > > > Sorry I was wrong about this. RISC-V kernel maps PAGE_OFFSET
+> > > > > > virtual
+> > > > > > address to the
+> > > > > > physical address <xyz> where it is booted. That means memory
+> > > > > > between
+> > > > > > dram start and and <xyz> address
+> > > > > > will be unusable.
+> > > > > >
+> > > > >
+> > > > > OK
+> > > > >
+> > > > > > I also realized that the above computing max_address as above
+> > > > > > also
+> > > > > > won't work for the following reason.
+> > > > > > efi_allocate_pages_aligned actually ALIGN_DOWN the
+> > > > > > max_address. Thus,
+> > > > > > efi won't find enough
+> > > > > > free memory in this case if the max_address is computed from
+> > > > > > the dram_base.
+> > > > > >
+> > > > > > Is there an implicit requirement for
+> > > > > > efi_allocate_pages_aligned or
+> > > > > > efi_low_alloc_above should be tried in case of failure?
+> > > > > >
+> > > > >
+> > > > > No not really. What ever works for your particular use case is
+> > > > > acceptable to me.
+> > > > >
+> > > > > > > In that case, you don't need this, you can simply pass
+> > > > > > > ULONG_MAX as
+> > > > > > > the max address.
+> > > > > > >
+> > > > > > As RISC-V should allocate memory as low as possible to avoid
+> > > > > > memory
+> > > > > > wastage, I think the following should work.
+> > > > > >
+> > > > > > efi_low_alloc_above(*reserve_size, MIN_KIMG_ALIGN,
+> > > > > > reserve_addr, dram_base);
+> > > > > >
+> > > > > > If this looks okay to you, efi_low_alloc_above should be
+> > > > > > moved back to
+> > > > > > mem.c from relocate.c.
+> > > > > > Should I do it in a separate patch or the original patch
+> > > > > > should be
+> > > > > > modified so that efi_low_alloc_above was never moved to
+> > > > > > relocate.c
+> > > > > >
+> > > > >
+> > > > > No, please keep efi_low_alloc_above() where it is, but drop the
+> > > > > static, and put back the declaration in efistub.h
+> > > > >
+> > > >
+> > > > Alternatively, can you check whether efi_relocate_kernel()
+> > > > already
+> > > > does what you need?
+> > >
+> > > Yeah. efi_relocate_kernel works too. It's just that
+> > > efi_relocate_kernel expects a preferred address
+> > > which RISC-V doesn't care about.
+> >
+> > There is a preferred address, no? The base of DRAM?
+> >
+>
+> I just realized that my reply from my gmail never landed in any of the
+> mailing lists. If you have already received it, sorry for the spam.
+>
+> "If the preferred address is set as the base of DRAM, efi_bs_call is
+> bound to fail as well because the base of DRAM is reserved by the
+> firmware. So the efi memory allocator can't allocate at that address.
+> Technically, it will work but it is no different than passing
+> ULONG_MAX. So I thought ULONG_MAX will avoid the confusion.
+>
+> We try to allocate as low as possible so I am passing dram_base as the
+> minimum address anyways. As the firmware reserved the first few KBs,
+>
+
+
+OK, so the preferred address *is* the base of DRAM (assuming it is 2
+MB aligned). However, in the general case, you keep some firmware
+state there (couple of KB) and so you typically end up at DRAM base
+plus 2 MB?
+
+So first question: why does the firmware put this stuff at the base of
+DRAM in the first place? Does it *have* to live there?
+
+Then, if the base of DRAM is guaranteed to be occupied, why not make
+the preferred address base of DRAM + 2 MB ? (or 4 MB for the 32-bit
+case)
