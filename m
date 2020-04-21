@@ -2,65 +2,65 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 476AF1B302C
-	for <lists+linux-efi@lfdr.de>; Tue, 21 Apr 2020 21:20:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 988851B302F
+	for <lists+linux-efi@lfdr.de>; Tue, 21 Apr 2020 21:20:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726541AbgDUTTj (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 21 Apr 2020 15:19:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37218 "EHLO
+        id S1726551AbgDUTTo (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 21 Apr 2020 15:19:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37228 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726168AbgDUTTi (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 21 Apr 2020 15:19:38 -0400
-Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com [IPv6:2607:f8b0:4864:20::541])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B02A3C0610D5
-        for <linux-efi@vger.kernel.org>; Tue, 21 Apr 2020 12:19:38 -0700 (PDT)
-Received: by mail-pg1-x541.google.com with SMTP id f20so995632pgl.12
-        for <linux-efi@vger.kernel.org>; Tue, 21 Apr 2020 12:19:38 -0700 (PDT)
+        by vger.kernel.org with ESMTP id S1726245AbgDUTTm (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 21 Apr 2020 15:19:42 -0400
+Received: from mail-pj1-x1042.google.com (mail-pj1-x1042.google.com [IPv6:2607:f8b0:4864:20::1042])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A5AFC0610D5
+        for <linux-efi@vger.kernel.org>; Tue, 21 Apr 2020 12:19:40 -0700 (PDT)
+Received: by mail-pj1-x1042.google.com with SMTP id kb16so1785149pjb.1
+        for <linux-efi@vger.kernel.org>; Tue, 21 Apr 2020 12:19:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=dabbelt-com.20150623.gappssmtp.com; s=20150623;
         h=date:subject:in-reply-to:cc:from:to:message-id:mime-version
          :content-transfer-encoding;
-        bh=zV3gw/uKi336nRCyLIo9GVBDExpx/8EbybbTlqONiC8=;
-        b=lQTdziWaWdVMMR7+Hgf+u1fu7sE66M6OwtGwtQkmfinY9mlGjvx5AgHISTGKmZEyyE
-         +JWjh0H5Cr7W6KNCChqBCCrDA/Paf/KhoaUXuKpdA0R45sIgOj09qiWWTvXpowF8akdb
-         IXZ+JZQVbry/QI9l0u1xPTLS+phfl+AOQioKWau0bJfrGMONJK9MtuM32HjAwtIaW+YR
-         uG8/8IdXyYCVCfD5BSuoXhgoqytP98crm5MwPYMFkZWhGz29nv5oofRpqARr9SRsUhGh
-         2VLb0HYWDOqVETYw9SSKqEu7MmXr2OEJO5M2E3ud77SML2s5I+kK37KeEJVuig4rtGus
-         SdIg==
+        bh=hPVhiHCru66F7M87+182p9Tvtpc85gfkzQRDqIRO1ko=;
+        b=r3C7ZPWnB+/BSMYac/cFV6GVQaCwnWAzI9frvjDJLQJR9jPwOhTonM3kEUjmpl4L+j
+         a3b25Q+Me2vR+TR33Cc9mp0t9k9AFV03JP9k6k2XYvuWbYyCHCZOWQGB3RYjMjGPpdsp
+         pr/Br9+xNw0bAaHb5zRMaYp0pSBSk3qkO7dyjVI54G40sbnt7iz3w1dHKBtMKl8Pqn0k
+         0rkFqLQ3FwTIn86ZUeObV+i+tZgjpGexmA5F+2PaDHBsF126dAzWbuh2xb6KYqkJKrGl
+         NVkZWpY0UrIl5iMLGM7D1P8IU6mGulUTyns47YhRZWP2kGD/vnVFoDzu9sXDhTS0X4vQ
+         W2Eg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:subject:in-reply-to:cc:from:to:message-id
          :mime-version:content-transfer-encoding;
-        bh=zV3gw/uKi336nRCyLIo9GVBDExpx/8EbybbTlqONiC8=;
-        b=DbzoEuUvNzO5A2Hzy6hrltzc17x2+xImrjLgnXtqiUjUoMYtYd82JksLHZCpAV+aHm
-         /uxVkObtCVfL5MBL8RgYXR01jXRIVddFm50L/EYa3usKeSyu0XtgzGqu5OHGYm2mEQdY
-         Xbz58XFs0+huI+mqWrG9fT0rxh0BOcnU0UVLMEDHZ5BJs+a9wJa1EtgkMwZFntdC3Ul9
-         sTSfsWTePN9ZzjDYLdCeQcueBjsRW4lRHCMBn5QNb+e0YG4GmgM9pptlpgDDOzjPQd0Q
-         dmdCdu5tF7Gnox8f54cXnjZ0MO3lL+EnAu7oseyc2KsaencTRobhTT+e3yi5T4d4BL2U
-         mjOw==
-X-Gm-Message-State: AGi0PuZwAQaK+tL627Ekdw6AzwqSFIXi09usgKNjBobBl1hbBdGRZ2c2
-        LdZ+68l6Pi1Zhlp3hUfJOM7BUA==
-X-Google-Smtp-Source: APiQypJeWmVIOit6du3j3KEdDat9GlbxkfiixP2PltpfTYsCcF/BTSesgtei5NYRwrtfb7Y3piTpkg==
-X-Received: by 2002:aa7:9f87:: with SMTP id z7mr3439600pfr.177.1587496777951;
-        Tue, 21 Apr 2020 12:19:37 -0700 (PDT)
+        bh=hPVhiHCru66F7M87+182p9Tvtpc85gfkzQRDqIRO1ko=;
+        b=J88ntgUUuo5U5XXzMqHCLxvfn0Xczgu6mgzwl0tp5zVpxN5VPx4YKd65rf6vkyO+/F
+         2L78rDrr19l2r1UcesbN0rgsMcyhV7ykFOk6m6gTbUYANmJLQmlu74ErrktQlukAqCrW
+         sBIx5JAGBCirp4DSfOoJiIawOZTkMzhZDfYQ43RzUykQJo0x/MT/xuMr1sHv8WMnBsue
+         WawdmIi5OCEdAb5emwBmSyw00odgXduSOCFQyKvaMniSFEixfVh1cXoMno52ByyzCXzn
+         Qv4sT1tTVGgWGn1h9F7ytg7kQ38QkFfCFZ+Onqr+cFyDqB0ZEzNrFRsfUho/4WxM8zvi
+         L+JA==
+X-Gm-Message-State: AGi0PuYkAQjY6cr0iRzQZLMSsNpnH2P+fLnBzhZ6YATT8Y3qeXqsaGQ6
+        UhOxFNvI7b7jEznUpy+IGF+RjQ==
+X-Google-Smtp-Source: APiQypJtA1GPjuyjU1rDoIKjs5ei8Wc2RGLVpz0+8Vkr8sWRjn179ks5m9kyaVeEtaU2mYrSUVbc1g==
+X-Received: by 2002:a17:902:aa94:: with SMTP id d20mr22883245plr.313.1587496779466;
+        Tue, 21 Apr 2020 12:19:39 -0700 (PDT)
 Received: from localhost (76-210-143-223.lightspeed.sntcca.sbcglobal.net. [76.210.143.223])
-        by smtp.gmail.com with ESMTPSA id h11sm3103183pfn.125.2020.04.21.12.19.37
+        by smtp.gmail.com with ESMTPSA id b11sm2934507pgj.92.2020.04.21.12.19.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Apr 2020 12:19:37 -0700 (PDT)
-Date:   Tue, 21 Apr 2020 12:19:37 -0700 (PDT)
-X-Google-Original-Date: Tue, 21 Apr 2020 12:16:54 PDT (-0700)
-Subject:     Re: [v2 PATCH 1/5] efi: Move arm-stub to a common file
-In-Reply-To: <20200413212907.29244-2-atish.patra@wdc.com>
+        Tue, 21 Apr 2020 12:19:38 -0700 (PDT)
+Date:   Tue, 21 Apr 2020 12:19:38 -0700 (PDT)
+X-Google-Original-Date: Tue, 21 Apr 2020 12:19:13 PDT (-0700)
+Subject:     Re: [v2 PATCH 3/5] RISC-V: Define fixmap bindings for generic early ioremap support
+In-Reply-To: <20200413212907.29244-4-atish.patra@wdc.com>
 CC:     linux-kernel@vger.kernel.org, Atish Patra <Atish.Patra@wdc.com>,
         ardb@kernel.org, Arnd Bergmann <arnd@arndb.de>,
         catalin.marinas@arm.com, Greg KH <gregkh@linuxfoundation.org>,
         mingo@kernel.org, linux-efi@vger.kernel.org,
         linux-riscv@lists.infradead.org,
         linux-arm-kernel@lists.infradead.org, masahiroy@kernel.org,
-        linux@armlinux.org.uk
+        linux@armlinux.org.uk, will@kernel.org
 From:   Palmer Dabbelt <palmer@dabbelt.com>
-To:     Atish Patra <Atish.Patra@wdc.com>, will@kernel.org
-Message-ID: <mhng-b521aadc-a209-48d6-886c-957c87f97367@palmerdabbelt-glaptop1>
+To:     Atish Patra <Atish.Patra@wdc.com>
+Message-ID: <mhng-bccab71a-2ee1-4f4b-a7c3-90c1340e525b@palmerdabbelt-glaptop1>
 Mime-Version: 1.0 (MHng)
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
@@ -69,116 +69,82 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Mon, 13 Apr 2020 14:29:03 PDT (-0700), Atish Patra wrote:
-> Most of the arm-stub code is written in an architecture independent manner.
-> As a result, RISC-V can reuse most of the arm-stub code.
->
-> Rename the arm-stub.c to efi-stub.c so that ARM, ARM64 and RISC-V can use it.
-> This patch doesn't introduce any functional changes.
+On Mon, 13 Apr 2020 14:29:05 PDT (-0700), Atish Patra wrote:
+> UEFI uses early IO or memory mappings for runtime services before
+> normal ioremap() is usable. This patch only adds minimum necessary
+> fixmap bindings and headers for generic ioremap support to work.
 >
 > Signed-off-by: Atish Patra <atish.patra@wdc.com>
-
-We'll need a bunch of Acked-bys for these, but I'm happy to take this in my
-tree.
-
+> Acked-by: Ard Biesheuvel <ardb@kernel.org>
 > ---
->  arch/arm/Kconfig                                     |  2 +-
->  arch/arm64/Kconfig                                   |  2 +-
->  drivers/firmware/efi/Kconfig                         |  4 ++--
->  drivers/firmware/efi/libstub/Makefile                | 12 ++++++------
->  .../firmware/efi/libstub/{arm-stub.c => efi-stub.c}  |  0
->  5 files changed, 10 insertions(+), 10 deletions(-)
->  rename drivers/firmware/efi/libstub/{arm-stub.c => efi-stub.c} (100%)
+>  arch/riscv/Kconfig              |  1 +
+>  arch/riscv/include/asm/Kbuild   |  1 +
+>  arch/riscv/include/asm/fixmap.h | 18 ++++++++++++++++++
+>  arch/riscv/include/asm/io.h     |  1 +
+>  4 files changed, 21 insertions(+)
 >
-> diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-> index 66a04f6f4775..165987aa5bcd 100644
-> --- a/arch/arm/Kconfig
-> +++ b/arch/arm/Kconfig
-> @@ -1954,7 +1954,7 @@ config EFI
->  	select UCS2_STRING
->  	select EFI_PARAMS_FROM_FDT
->  	select EFI_STUB
-> -	select EFI_ARMSTUB
-> +	select EFI_GENERIC_STUB
->  	select EFI_RUNTIME_WRAPPERS
->  	---help---
->  	  This option provides support for runtime services provided
-> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-> index 40fb05d96c60..32d818c5ccda 100644
-> --- a/arch/arm64/Kconfig
-> +++ b/arch/arm64/Kconfig
-> @@ -1785,7 +1785,7 @@ config EFI
->  	select EFI_PARAMS_FROM_FDT
->  	select EFI_RUNTIME_WRAPPERS
->  	select EFI_STUB
-> -	select EFI_ARMSTUB
-> +	select EFI_GENERIC_STUB
->  	default y
->  	help
->  	  This option provides support for runtime services provided
-> diff --git a/drivers/firmware/efi/Kconfig b/drivers/firmware/efi/Kconfig
-> index 613828d3f106..2a2b2b96a1dc 100644
-> --- a/drivers/firmware/efi/Kconfig
-> +++ b/drivers/firmware/efi/Kconfig
-> @@ -106,12 +106,12 @@ config EFI_PARAMS_FROM_FDT
->  config EFI_RUNTIME_WRAPPERS
->  	bool
+> diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+> index a197258595ef..f39e326a7a42 100644
+> --- a/arch/riscv/Kconfig
+> +++ b/arch/riscv/Kconfig
+> @@ -68,6 +68,7 @@ config RISCV
+>  	select ARCH_HAS_GCOV_PROFILE_ALL
+>  	select HAVE_COPY_THREAD_TLS
+>  	select HAVE_ARCH_KASAN if MMU && 64BIT
+> +	select GENERIC_EARLY_IOREMAP
 >
-> -config EFI_ARMSTUB
-> +config EFI_GENERIC_STUB
->  	bool
+>  config ARCH_MMAP_RND_BITS_MIN
+>  	default 18 if 64BIT
+> diff --git a/arch/riscv/include/asm/Kbuild b/arch/riscv/include/asm/Kbuild
+> index 3d9410bb4de0..59dd7be55005 100644
+> --- a/arch/riscv/include/asm/Kbuild
+> +++ b/arch/riscv/include/asm/Kbuild
+> @@ -1,4 +1,5 @@
+>  # SPDX-License-Identifier: GPL-2.0
+> +generic-y += early_ioremap.h
+>  generic-y += extable.h
+>  generic-y += flat.h
+>  generic-y += kvm_para.h
+> diff --git a/arch/riscv/include/asm/fixmap.h b/arch/riscv/include/asm/fixmap.h
+> index 2368d49eb4ef..ba5096d65fb0 100644
+> --- a/arch/riscv/include/asm/fixmap.h
+> +++ b/arch/riscv/include/asm/fixmap.h
+> @@ -30,6 +30,24 @@ enum fixed_addresses {
+>  	FIX_TEXT_POKE1,
+>  	FIX_TEXT_POKE0,
+>  	FIX_EARLYCON_MEM_BASE,
+> +	/*
+> +	 * Make sure that it is 2MB aligned.
+> +	 */
+> +#define NR_FIX_SZ_2M	(SZ_2M / PAGE_SIZE)
+> +	FIX_THOLE = NR_FIX_SZ_2M - FIX_PMD - 1,
+> +
+> +	__end_of_permanent_fixed_addresses,
+> +	/*
+> +	 * Temporary boot-time mappings, used by early_ioremap(),
+> +	 * before ioremap() is functional.
+> +	 */
+> +#define NR_FIX_BTMAPS		(SZ_256K / PAGE_SIZE)
+> +#define FIX_BTMAPS_SLOTS	7
+> +#define TOTAL_FIX_BTMAPS	(NR_FIX_BTMAPS * FIX_BTMAPS_SLOTS)
+> +
+> +	FIX_BTMAP_END = __end_of_permanent_fixed_addresses,
+> +	FIX_BTMAP_BEGIN = FIX_BTMAP_END + TOTAL_FIX_BTMAPS - 1,
+> +
+>  	__end_of_fixed_addresses
+>  };
 >
->  config EFI_ARMSTUB_DTB_LOADER
->  	bool "Enable the DTB loader"
-> -	depends on EFI_ARMSTUB
-> +	depends on EFI_GENERIC_STUB
->  	default y
->  	help
->  	  Select this config option to add support for the dtb= command
-> diff --git a/drivers/firmware/efi/libstub/Makefile b/drivers/firmware/efi/libstub/Makefile
-> index 094eabdecfe6..d590504541f6 100644
-> --- a/drivers/firmware/efi/libstub/Makefile
-> +++ b/drivers/firmware/efi/libstub/Makefile
-> @@ -23,7 +23,7 @@ cflags-$(CONFIG_ARM)		:= $(subst $(CC_FLAGS_FTRACE),,$(KBUILD_CFLAGS)) \
->  				   -fno-builtin -fpic \
->  				   $(call cc-option,-mno-single-pic-base)
+> diff --git a/arch/riscv/include/asm/io.h b/arch/riscv/include/asm/io.h
+> index 0f477206a4ed..047f414b6948 100644
+> --- a/arch/riscv/include/asm/io.h
+> +++ b/arch/riscv/include/asm/io.h
+> @@ -14,6 +14,7 @@
+>  #include <linux/types.h>
+>  #include <asm/mmiowb.h>
+>  #include <asm/pgtable.h>
+> +#include <asm/early_ioremap.h>
 >
-> -cflags-$(CONFIG_EFI_ARMSTUB)	+= -I$(srctree)/scripts/dtc/libfdt
-> +cflags-$(CONFIG_EFI_GENERIC_STUB)	+= -I$(srctree)/scripts/dtc/libfdt
->
->  KBUILD_CFLAGS			:= $(cflags-y) -DDISABLE_BRANCH_PROFILING \
->  				   -include $(srctree)/drivers/firmware/efi/libstub/hidden.h \
-> @@ -45,13 +45,13 @@ lib-y				:= efi-stub-helper.o gop.o secureboot.o tpm.o \
->  				   skip_spaces.o lib-cmdline.o lib-ctype.o
->
->  # include the stub's generic dependencies from lib/ when building for ARM/arm64
-> -arm-deps-y := fdt_rw.c fdt_ro.c fdt_wip.c fdt.c fdt_empty_tree.c fdt_sw.c
-> +efi-deps-y := fdt_rw.c fdt_ro.c fdt_wip.c fdt.c fdt_empty_tree.c fdt_sw.c
->
->  $(obj)/lib-%.o: $(srctree)/lib/%.c FORCE
->  	$(call if_changed_rule,cc_o_c)
->
-> -lib-$(CONFIG_EFI_ARMSTUB)	+= arm-stub.o fdt.o string.o \
-> -				   $(patsubst %.c,lib-%.o,$(arm-deps-y))
-> +lib-$(CONFIG_EFI_GENERIC_STUB)		+= efi-stub.o fdt.o string.o \
-> +				   $(patsubst %.c,lib-%.o,$(efi-deps-y))
->
->  lib-$(CONFIG_ARM)		+= arm32-stub.o
->  lib-$(CONFIG_ARM64)		+= arm64-stub.o
-> @@ -73,8 +73,8 @@ CFLAGS_arm64-stub.o		:= -DTEXT_OFFSET=$(TEXT_OFFSET)
->  # a verification pass to see if any absolute relocations exist in any of the
->  # object files.
->  #
-> -extra-$(CONFIG_EFI_ARMSTUB)	:= $(lib-y)
-> -lib-$(CONFIG_EFI_ARMSTUB)	:= $(patsubst %.o,%.stub.o,$(lib-y))
-> +extra-$(CONFIG_EFI_GENERIC_STUB)	:= $(lib-y)
-> +lib-$(CONFIG_EFI_GENERIC_STUB)	:= $(patsubst %.o,%.stub.o,$(lib-y))
->
->  STUBCOPY_FLAGS-$(CONFIG_ARM64)	+= --prefix-alloc-sections=.init \
->  				   --prefix-symbols=__efistub_
-> diff --git a/drivers/firmware/efi/libstub/arm-stub.c b/drivers/firmware/efi/libstub/efi-stub.c
-> similarity index 100%
-> rename from drivers/firmware/efi/libstub/arm-stub.c
-> rename to drivers/firmware/efi/libstub/efi-stub.c
+>  /*
+>   * MMIO access functions are separated out to break dependency cycles
 
 Reviewed-by: Palmer Dabbelt <palmerdabbelt@google.com>
