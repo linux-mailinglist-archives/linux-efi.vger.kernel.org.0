@@ -2,130 +2,93 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EAAB61B66F7
-	for <lists+linux-efi@lfdr.de>; Fri, 24 Apr 2020 00:43:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E3BB81B6790
+	for <lists+linux-efi@lfdr.de>; Fri, 24 Apr 2020 01:08:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726079AbgDWWnc (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 23 Apr 2020 18:43:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36506 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726071AbgDWWnb (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 23 Apr 2020 18:43:31 -0400
-Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com [IPv6:2607:f8b0:4864:20::444])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CAABEC09B042
-        for <linux-efi@vger.kernel.org>; Thu, 23 Apr 2020 15:43:31 -0700 (PDT)
-Received: by mail-pf1-x444.google.com with SMTP id 18so3756957pfx.6
-        for <linux-efi@vger.kernel.org>; Thu, 23 Apr 2020 15:43:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dabbelt-com.20150623.gappssmtp.com; s=20150623;
-        h=date:subject:in-reply-to:cc:from:to:message-id:mime-version
-         :content-transfer-encoding;
-        bh=N/UJzAr5dtehQTHBzXy34ZuA/CAq9RTQL58DIHmSsDU=;
-        b=jxWUUAHcZRLKkUCvwG3LxBUbKC0Gy7M7XkL63S5P+Xc5a3iB/dxyTwjsaiq4YSnhnt
-         nIliNPSoyS+0tv7rEPxJKt7d8S1w6c/T+RHiHtG22tL7VE5ho57cXV+QrFES49a64tsJ
-         BZ6PVIAu3W3xz8b0WQzrCxrf2DoTSi8VGlPxqsH9j/2/nJE3pj8A+EKCsXYC+jH4qEf8
-         Gg37qlnOEK3/IALDBKMZVl9POHEbSulN/OrRyrTizHNo2f30rBVjCawgISMTyrBzimDB
-         3YiXkmmIIMeQo17eMp9Tfm9Kz7wNhm1YB7QQ8LZX2coRgsw2xGX2ODlWk32ivaBvC1cU
-         ZnrQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:subject:in-reply-to:cc:from:to:message-id
-         :mime-version:content-transfer-encoding;
-        bh=N/UJzAr5dtehQTHBzXy34ZuA/CAq9RTQL58DIHmSsDU=;
-        b=N18u0PGUQESxc2FWSWZdQeeb1mnV/YGmeK3A7XtBAHr7H0G3bEIV44RViWqhv8r0vP
-         lC/30CglOnDY0KyJvnBiYdpcih+UU6v5UEL3a+zuXlaY8jRXCMMvegxY6KYOcoUjoM75
-         qGewMy6F8NVTr2FQoGBSo8oBOwTlFT04+JQNB43znFf7jJ8IY53B1jRQfCTk2I5JDjic
-         BTULyb5HD+ggZXI8+03LWNUp6Kimlu5Pl+mHWHbeFcLsdKOIUlNYmO4C+v8jZKSRyo2y
-         hvdwjoNfTiQjLwk0TKQbU6VQOMBdCmiGpkOz313TXIQ4oz7LQRJtvMCPQk6GxKoG2SU2
-         GRpg==
-X-Gm-Message-State: AGi0PuY3+hGtIwvkmKLRd7KbdYnqrUrNmcP2PUjfD3/7JQKbXGcikKJd
-        rstNusoLboEKATyTrmfEc5KGtxJ5W4n5hA==
-X-Google-Smtp-Source: APiQypK+qFJjBWZIM4JseuejIHzEpgez/1Eb2rNDWCq0/ARVphGcY6JqUI7zr0Fw6Lx1kMeyag+eTA==
-X-Received: by 2002:a62:25c6:: with SMTP id l189mr6346111pfl.28.1587681810670;
-        Thu, 23 Apr 2020 15:43:30 -0700 (PDT)
-Received: from localhost (76-210-143-223.lightspeed.sntcca.sbcglobal.net. [76.210.143.223])
-        by smtp.gmail.com with ESMTPSA id o9sm3280699pje.47.2020.04.23.15.43.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Apr 2020 15:43:29 -0700 (PDT)
-Date:   Thu, 23 Apr 2020 15:43:29 -0700 (PDT)
-X-Google-Original-Date: Thu, 23 Apr 2020 15:43:27 PDT (-0700)
-Subject:     Re: [PATCH v5 0/7] Add UEFI support for RISC-V
-In-Reply-To: <20200422172414.6662-1-ardb@kernel.org>
-CC:     linux-efi@vger.kernel.org, ardb@kernel.org,
-        Atish Patra <Atish.Patra@wdc.com>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        aou@eecs.berkeley.edu, linux-riscv@lists.infradead.org
-From:   Palmer Dabbelt <palmer@dabbelt.com>
-To:     ardb@kernel.org
-Message-ID: <mhng-f9b51803-74ca-494c-8433-59911c657b2f@palmerdabbelt-glaptop1>
-Mime-Version: 1.0 (MHng)
-Content-Type: text/plain; charset=utf-8; format=flowed
+        id S1728717AbgDWXHE (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 23 Apr 2020 19:07:04 -0400
+Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:51234 "EHLO
+        shadbolt.e.decadent.org.uk" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728709AbgDWXHE (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 23 Apr 2020 19:07:04 -0400
+Received: from [192.168.4.242] (helo=deadeye)
+        by shadbolt.decadent.org.uk with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.89)
+        (envelope-from <ben@decadent.org.uk>)
+        id 1jRkvU-0004hm-BW; Fri, 24 Apr 2020 00:06:36 +0100
+Received: from ben by deadeye with local (Exim 4.93)
+        (envelope-from <ben@decadent.org.uk>)
+        id 1jRkvR-00E6qI-Tl; Fri, 24 Apr 2020 00:06:33 +0100
+Content-Type: text/plain; charset="UTF-8"
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0
+From:   Ben Hutchings <ben@decadent.org.uk>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+CC:     akpm@linux-foundation.org, Denis Kirjanov <kda@linux-powerpc.org>,
+        "Arvind Sankar" <nivedita@alum.mit.edu>,
+        "Ingo Molnar" <mingo@kernel.org>,
+        "Ard Biesheuvel" <ardb@kernel.org>,
+        "Thomas Gleixner" <tglx@linutronix.de>,
+        "Peter Zijlstra" <peterz@infradead.org>,
+        "Hans de Goede" <hdegoede@redhat.com>,
+        "Linus Torvalds" <torvalds@linux-foundation.org>,
+        linux-efi@vger.kernel.org
+Date:   Fri, 24 Apr 2020 00:06:07 +0100
+Message-ID: <lsq.1587683028.856459089@decadent.org.uk>
+X-Mailer: LinuxStableQueue (scripts by bwh)
+X-Patchwork-Hint: ignore
+Subject: [PATCH 3.16 140/245] x86/efistub: Disable paging at mixed mode entry
+In-Reply-To: <lsq.1587683027.831233700@decadent.org.uk>
+X-SA-Exim-Connect-IP: 192.168.4.242
+X-SA-Exim-Mail-From: ben@decadent.org.uk
+X-SA-Exim-Scanned: No (on shadbolt.decadent.org.uk); SAEximRunCond expanded to false
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, 22 Apr 2020 10:24:07 PDT (-0700), ardb@kernel.org wrote:
-> This is a rework of Atish's series [0] to add EFI stub loader support
-> to the RISC-V port. The purpose is to split the code in a way that makes
-> it amenable to being merged via different trees during the same cycle.
-> While at it, I added a patch to disable initrd= loading for new ports,
-> given that it is deprecated and replaced with a method based on a
-> special UEFI device path.
->
-> My changes are logged in the individual patches.
->
-> I propose to take the first four patches via the EFI tree, and expose
-> them via a stable tag so that the RISC-V maintainers can merge it before
-> applying the remaining patches. That will ensure that both trees remain
-> in a buildable state, with working EFI stub support on the riscv branch.
+3.16.83-rc1 review patch.  If anyone has any objections, please let me know.
 
-Works for me.  Thanks!
+------------------
 
->
-> Cc: Atish Patra <atish.patra@wdc.com>
-> Cc: Palmer Dabbelt <palmer@dabbelt.com>
-> Cc: Paul Walmsley <paul.walmsley@sifive.com>
-> Cc: Albert Ou <aou@eecs.berkeley.edu>
-> Cc: linux-riscv@lists.infradead.org
->
-> Ard Biesheuvel (1):
->   efi/libstub: Make initrd file loader configurable
->
-> Atish Patra (6):
->   efi/libstub: Move arm-stub to a common file
->   efi/libstub/riscv: add arch specific efi.h header file
->   include: pe.h: Add RISC-V related PE definition
->   RISC-V: Define fixmap bindings for generic early ioremap support
->   RISC-V: Add PE/COFF header for EFI stub
->   RISC-V: Add EFI stub support.
->
->  arch/arm/Kconfig                              |   2 +-
->  arch/arm64/Kconfig                            |   2 +-
->  arch/riscv/Kconfig                            |  21 ++++
->  arch/riscv/Makefile                           |   1 +
->  arch/riscv/configs/defconfig                  |   1 +
->  arch/riscv/include/asm/Kbuild                 |   1 +
->  arch/riscv/include/asm/efi.h                  |  41 +++++++
->  arch/riscv/include/asm/fixmap.h               |  18 +++
->  arch/riscv/include/asm/io.h                   |   1 +
->  arch/riscv/include/asm/sections.h             |  13 +++
->  arch/riscv/kernel/Makefile                    |   4 +
->  arch/riscv/kernel/efi-header.S                | 100 ++++++++++++++++
->  arch/riscv/kernel/head.S                      |  16 +++
->  arch/riscv/kernel/image-vars.h                |  53 +++++++++
->  arch/riscv/kernel/vmlinux.lds.S               |  22 +++-
->  drivers/firmware/efi/Kconfig                  |  15 ++-
->  drivers/firmware/efi/libstub/Makefile         |  22 +++-
->  .../efi/libstub/{arm-stub.c => efi-stub.c}    |   0
->  drivers/firmware/efi/libstub/file.c           |   3 +
->  drivers/firmware/efi/libstub/riscv-stub.c     | 109 ++++++++++++++++++
->  include/linux/pe.h                            |   3 +
->  21 files changed, 436 insertions(+), 12 deletions(-)
->  create mode 100644 arch/riscv/include/asm/efi.h
->  create mode 100644 arch/riscv/include/asm/sections.h
->  create mode 100644 arch/riscv/kernel/efi-header.S
->  create mode 100644 arch/riscv/kernel/image-vars.h
->  rename drivers/firmware/efi/libstub/{arm-stub.c => efi-stub.c} (100%)
->  create mode 100644 drivers/firmware/efi/libstub/riscv-stub.c
+From: Ard Biesheuvel <ardb@kernel.org>
+
+commit 4911ee401b7ceff8f38e0ac597cbf503d71e690c upstream.
+
+The EFI mixed mode entry code goes through the ordinary startup_32()
+routine before jumping into the kernel's EFI boot code in 64-bit
+mode. The 32-bit startup code must be entered with paging disabled,
+but this is not documented as a requirement for the EFI handover
+protocol, and so we should disable paging explicitly when entering
+the kernel from 32-bit EFI firmware.
+
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Cc: Arvind Sankar <nivedita@alum.mit.edu>
+Cc: Hans de Goede <hdegoede@redhat.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: linux-efi@vger.kernel.org
+Link: https://lkml.kernel.org/r/20191224132909.102540-4-ardb@kernel.org
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
+---
+ arch/x86/boot/compressed/head_64.S | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+--- a/arch/x86/boot/compressed/head_64.S
++++ b/arch/x86/boot/compressed/head_64.S
+@@ -216,6 +216,11 @@ ENTRY(efi32_stub_entry)
+ 	leal	efi32_config(%ebp), %eax
+ 	movl	%eax, efi_config(%ebp)
+ 
++	/* Disable paging */
++	movl	%cr0, %eax
++	btrl	$X86_CR0_PG_BIT, %eax
++	movl	%eax, %cr0
++
+ 	jmp	startup_32
+ ENDPROC(efi32_stub_entry)
+ #endif
+
