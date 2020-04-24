@@ -2,93 +2,74 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E3BB81B6790
-	for <lists+linux-efi@lfdr.de>; Fri, 24 Apr 2020 01:08:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A192B1B72AE
+	for <lists+linux-efi@lfdr.de>; Fri, 24 Apr 2020 13:08:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728717AbgDWXHE (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 23 Apr 2020 19:07:04 -0400
-Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:51234 "EHLO
-        shadbolt.e.decadent.org.uk" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728709AbgDWXHE (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 23 Apr 2020 19:07:04 -0400
-Received: from [192.168.4.242] (helo=deadeye)
-        by shadbolt.decadent.org.uk with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.89)
-        (envelope-from <ben@decadent.org.uk>)
-        id 1jRkvU-0004hm-BW; Fri, 24 Apr 2020 00:06:36 +0100
-Received: from ben by deadeye with local (Exim 4.93)
-        (envelope-from <ben@decadent.org.uk>)
-        id 1jRkvR-00E6qI-Tl; Fri, 24 Apr 2020 00:06:33 +0100
-Content-Type: text/plain; charset="UTF-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+        id S1726806AbgDXLIq (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 24 Apr 2020 07:08:46 -0400
+Received: from mail.kernel.org ([198.145.29.99]:54168 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726829AbgDXLIq (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Fri, 24 Apr 2020 07:08:46 -0400
+Received: from mail-io1-f51.google.com (mail-io1-f51.google.com [209.85.166.51])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 80A9020736
+        for <linux-efi@vger.kernel.org>; Fri, 24 Apr 2020 11:08:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1587726525;
+        bh=MnUmGYZCMAXrwd9Wl8Sg0pLyPh749CA1ljHIriACt2A=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=Jnj5SANoBUUeCorqverdDXBjg8t7ipcS+zXEo3s1XcduJGjFq+j2TTNd7Apqwivbc
+         btfinDDDCWuikp/WDLyZnC6TvgyJCrKDpqtVMRmwcZxM24IdU88/kdfCIYQ3jcz2Rh
+         pq5wWGZOyJiQXLZB9+58rSy9T5zm27Nfiermab9o=
+Received: by mail-io1-f51.google.com with SMTP id w4so9894514ioc.6
+        for <linux-efi@vger.kernel.org>; Fri, 24 Apr 2020 04:08:45 -0700 (PDT)
+X-Gm-Message-State: AGi0PuY6airAoTdomz0tfp008WTi+HP7Wu/+sgh2+xm4NBKifu2Po4ru
+        RsUGGZUxVWQyoSJpLafh7f3GuK89LpIWx/tSqW4=
+X-Google-Smtp-Source: APiQypIUnt7TFxeHpKI1zpEX8iuyWx566eOngxlXKi72BOdbKYjwid5POj/g92SUU/MXl+TlKDzTYjGpWkLDD8VP3TA=
+X-Received: by 2002:a02:969a:: with SMTP id w26mr7461115jai.71.1587726524678;
+ Fri, 24 Apr 2020 04:08:44 -0700 (PDT)
 MIME-Version: 1.0
-From:   Ben Hutchings <ben@decadent.org.uk>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-CC:     akpm@linux-foundation.org, Denis Kirjanov <kda@linux-powerpc.org>,
-        "Arvind Sankar" <nivedita@alum.mit.edu>,
-        "Ingo Molnar" <mingo@kernel.org>,
-        "Ard Biesheuvel" <ardb@kernel.org>,
-        "Thomas Gleixner" <tglx@linutronix.de>,
-        "Peter Zijlstra" <peterz@infradead.org>,
-        "Hans de Goede" <hdegoede@redhat.com>,
-        "Linus Torvalds" <torvalds@linux-foundation.org>,
-        linux-efi@vger.kernel.org
-Date:   Fri, 24 Apr 2020 00:06:07 +0100
-Message-ID: <lsq.1587683028.856459089@decadent.org.uk>
-X-Mailer: LinuxStableQueue (scripts by bwh)
-X-Patchwork-Hint: ignore
-Subject: [PATCH 3.16 140/245] x86/efistub: Disable paging at mixed mode entry
-In-Reply-To: <lsq.1587683027.831233700@decadent.org.uk>
-X-SA-Exim-Connect-IP: 192.168.4.242
-X-SA-Exim-Mail-From: ben@decadent.org.uk
-X-SA-Exim-Scanned: No (on shadbolt.decadent.org.uk); SAEximRunCond expanded to false
+References: <20200422172414.6662-1-ardb@kernel.org> <mhng-f9b51803-74ca-494c-8433-59911c657b2f@palmerdabbelt-glaptop1>
+In-Reply-To: <mhng-f9b51803-74ca-494c-8433-59911c657b2f@palmerdabbelt-glaptop1>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Fri, 24 Apr 2020 13:08:33 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXFSKoK8CqzKkruGsne0Ht9xz1cfdyWGY6vu7Z1w7JcB=A@mail.gmail.com>
+Message-ID: <CAMj1kXFSKoK8CqzKkruGsne0Ht9xz1cfdyWGY6vu7Z1w7JcB=A@mail.gmail.com>
+Subject: Re: [PATCH v5 0/7] Add UEFI support for RISC-V
+To:     Palmer Dabbelt <palmer@dabbelt.com>
+Cc:     linux-efi <linux-efi@vger.kernel.org>,
+        Atish Patra <Atish.Patra@wdc.com>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        linux-riscv <linux-riscv@lists.infradead.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-3.16.83-rc1 review patch.  If anyone has any objections, please let me know.
+On Fri, 24 Apr 2020 at 00:43, Palmer Dabbelt <palmer@dabbelt.com> wrote:
+>
+> On Wed, 22 Apr 2020 10:24:07 PDT (-0700), ardb@kernel.org wrote:
+> > This is a rework of Atish's series [0] to add EFI stub loader support
+> > to the RISC-V port. The purpose is to split the code in a way that makes
+> > it amenable to being merged via different trees during the same cycle.
+> > While at it, I added a patch to disable initrd= loading for new ports,
+> > given that it is deprecated and replaced with a method based on a
+> > special UEFI device path.
+> >
+> > My changes are logged in the individual patches.
+> >
+> > I propose to take the first four patches via the EFI tree, and expose
+> > them via a stable tag so that the RISC-V maintainers can merge it before
+> > applying the remaining patches. That will ensure that both trees remain
+> > in a buildable state, with working EFI stub support on the riscv branch.
+>
+> Works for me.  Thanks!
+>
 
-------------------
-
-From: Ard Biesheuvel <ardb@kernel.org>
-
-commit 4911ee401b7ceff8f38e0ac597cbf503d71e690c upstream.
-
-The EFI mixed mode entry code goes through the ordinary startup_32()
-routine before jumping into the kernel's EFI boot code in 64-bit
-mode. The 32-bit startup code must be entered with paging disabled,
-but this is not documented as a requirement for the EFI handover
-protocol, and so we should disable paging explicitly when entering
-the kernel from 32-bit EFI firmware.
-
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Cc: Arvind Sankar <nivedita@alum.mit.edu>
-Cc: Hans de Goede <hdegoede@redhat.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: linux-efi@vger.kernel.org
-Link: https://lkml.kernel.org/r/20191224132909.102540-4-ardb@kernel.org
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
----
- arch/x86/boot/compressed/head_64.S | 5 +++++
- 1 file changed, 5 insertions(+)
-
---- a/arch/x86/boot/compressed/head_64.S
-+++ b/arch/x86/boot/compressed/head_64.S
-@@ -216,6 +216,11 @@ ENTRY(efi32_stub_entry)
- 	leal	efi32_config(%ebp), %eax
- 	movl	%eax, efi_config(%ebp)
- 
-+	/* Disable paging */
-+	movl	%cr0, %eax
-+	btrl	$X86_CR0_PG_BIT, %eax
-+	movl	%eax, %cr0
-+
- 	jmp	startup_32
- ENDPROC(efi32_stub_entry)
- #endif
-
+OK. I'll resend the final versions of the remaining patches (with the
+ISA_C tweak added) to be taken into the RISC-V tree once the first few
+patches have landed in tip/efi/core
