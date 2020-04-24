@@ -2,27 +2,27 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 816231B7654
-	for <lists+linux-efi@lfdr.de>; Fri, 24 Apr 2020 15:10:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 651331B7656
+	for <lists+linux-efi@lfdr.de>; Fri, 24 Apr 2020 15:10:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728132AbgDXNGx (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 24 Apr 2020 09:06:53 -0400
-Received: from mail.kernel.org ([198.145.29.99]:57430 "EHLO mail.kernel.org"
+        id S1728156AbgDXNG4 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 24 Apr 2020 09:06:56 -0400
+Received: from mail.kernel.org ([198.145.29.99]:57508 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728124AbgDXNGv (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Fri, 24 Apr 2020 09:06:51 -0400
+        id S1728142AbgDXNGy (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Fri, 24 Apr 2020 09:06:54 -0400
 Received: from e123331-lin.home (amontpellier-657-1-18-247.w109-210.abo.wanadoo.fr [109.210.65.247])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 9A6792087E;
-        Fri, 24 Apr 2020 13:06:49 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id C0BC82084D;
+        Fri, 24 Apr 2020 13:06:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1587733611;
-        bh=SRMy+oO2EF/+CFJMY2bNfExRnH7AZOgojjnqMOddHOM=;
+        s=default; t=1587733613;
+        bh=BUDRicBn8f0ZY8ppIfG0csRmOCIXJIw2tlzx7xNVDnw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Qe92GNKjj35bLagCXbhoTzNSSioHVDp7YxRHpIlR6QD/CCiNeZWrUAawhXXxH/QN3
-         yaaCkJ4md+Hg8c0jI6zx9OMA1q8V5Qdm4Zvoc8Oa4kxv2xUV6jgqQV4t8SV1aRAUNO
-         fB9KTJPbhlHqB/3vdqkiHl2PUeXwwYZISYrGZQa4=
+        b=oKl3xONkNiDUd2ZKrEORtN9Bk3G5TXp4RXuuOYmjrFEYRaILFHZHvVJuArYuOeTTZ
+         NCutFaTFElJ7as7jaccxAeg0UYCGUwJBRYceY1zZ9Ui9iWMCwe1ZCAfTv555D/0/iD
+         JOa+Ia/M6HJ464ejX0NslrN2dQpPmWmgI57ZH+8g=
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-efi@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
         Thomas Gleixner <tglx@linutronix.de>
@@ -31,9 +31,9 @@ Cc:     Ard Biesheuvel <ardb@kernel.org>, linux-kernel@vger.kernel.org,
         Atish Patra <atish.patra@wdc.com>,
         Palmer Dabbelt <palmerdabbelt@google.com>,
         Zou Wei <zou_wei@huawei.com>
-Subject: [PATCH 18/33] efi/gop: Allow automatically choosing the best mode
-Date:   Fri, 24 Apr 2020 15:05:16 +0200
-Message-Id: <20200424130531.30518-19-ardb@kernel.org>
+Subject: [PATCH 19/33] efi/libstub/random: Align allocate size to EFI_ALLOC_ALIGN
+Date:   Fri, 24 Apr 2020 15:05:17 +0200
+Message-Id: <20200424130531.30518-20-ardb@kernel.org>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200424130531.30518-1-ardb@kernel.org>
 References: <20200424130531.30518-1-ardb@kernel.org>
@@ -42,162 +42,49 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-From: Arvind Sankar <nivedita@alum.mit.edu>
+The EFI stub uses a per-architecture #define for the minimum base
+and size alignment of page allocations, which is set to 4 KB for
+all architecures except arm64, which uses 64 KB, to ensure that
+allocations can always be (un)mapped efficiently, regardless of
+the page size used by the kernel proper, which could be a kexec'ee
 
-Add the ability to automatically pick the highest resolution video mode
-(defined as the product of vertical and horizontal resolution) by using
-a command-line argument of the form
-	video=efifb:auto
+The API wrappers around page based allocations assume that this
+alignment is always taken into account, and so efi_free() will
+also round up its size argument to EFI_ALLOC_ALIGN.
 
-If there are multiple modes with the highest resolution, pick one with
-the highest color depth.
+Currently, efi_random_alloc() does not honour this alignment for
+the allocated size, and so freeing such an allocation may result
+in unrelated memory to be freed, potentially leading to issues
+after boot. So let's round up size in efi_random_alloc() as well.
 
-Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
-Link: https://lore.kernel.org/r/20200328160601.378299-2-nivedita@alum.mit.edu
+Fixes: 2ddbfc81eac84a29 ("efi: stub: add implementation of efi_random_alloc()")
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- Documentation/fb/efifb.rst         |  6 +++
- drivers/firmware/efi/libstub/gop.c | 84 +++++++++++++++++++++++++++++-
- 2 files changed, 89 insertions(+), 1 deletion(-)
+ drivers/firmware/efi/libstub/randomalloc.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/fb/efifb.rst b/Documentation/fb/efifb.rst
-index eca38466487a..519550517fd4 100644
---- a/Documentation/fb/efifb.rst
-+++ b/Documentation/fb/efifb.rst
-@@ -57,4 +57,10 @@ mode=n
-         "rgb" or "bgr" to match specifically those pixel formats, or a number
-         for a mode with matching bits per pixel.
+diff --git a/drivers/firmware/efi/libstub/randomalloc.c b/drivers/firmware/efi/libstub/randomalloc.c
+index 4578f59e160c..6200dfa650f5 100644
+--- a/drivers/firmware/efi/libstub/randomalloc.c
++++ b/drivers/firmware/efi/libstub/randomalloc.c
+@@ -74,6 +74,8 @@ efi_status_t efi_random_alloc(unsigned long size,
+ 	if (align < EFI_ALLOC_ALIGN)
+ 		align = EFI_ALLOC_ALIGN;
  
-+auto
-+        The EFI stub will choose the mode with the highest resolution (product
-+        of horizontal and vertical resolution). If there are multiple modes
-+        with the highest resolution, it will choose one with the highest color
-+        depth.
++	size = round_up(size, EFI_ALLOC_ALIGN);
 +
- Edgar Hucek <gimli@dark-green.com>
-diff --git a/drivers/firmware/efi/libstub/gop.c b/drivers/firmware/efi/libstub/gop.c
-index 848cb605a9c4..fa05a0b0adfd 100644
---- a/drivers/firmware/efi/libstub/gop.c
-+++ b/drivers/firmware/efi/libstub/gop.c
-@@ -18,7 +18,8 @@
- enum efi_cmdline_option {
- 	EFI_CMDLINE_NONE,
- 	EFI_CMDLINE_MODE_NUM,
--	EFI_CMDLINE_RES
-+	EFI_CMDLINE_RES,
-+	EFI_CMDLINE_AUTO
- };
+ 	/* count the suitable slots in each memory map entry */
+ 	for (map_offset = 0; map_offset < map_size; map_offset += desc_size) {
+ 		efi_memory_desc_t *md = (void *)memory_map + map_offset;
+@@ -109,7 +111,7 @@ efi_status_t efi_random_alloc(unsigned long size,
+ 		}
  
- static struct {
-@@ -86,6 +87,19 @@ static bool parse_res(char *option, char **next)
- 	return true;
- }
+ 		target = round_up(md->phys_addr, align) + target_slot * align;
+-		pages = round_up(size, EFI_PAGE_SIZE) / EFI_PAGE_SIZE;
++		pages = size / EFI_PAGE_SIZE;
  
-+static bool parse_auto(char *option, char **next)
-+{
-+	if (!strstarts(option, "auto"))
-+		return false;
-+	option += strlen("auto");
-+	if (*option && *option++ != ',')
-+		return false;
-+	cmdline.option = EFI_CMDLINE_AUTO;
-+
-+	*next = option;
-+	return true;
-+}
-+
- void efi_parse_option_graphics(char *option)
- {
- 	while (*option) {
-@@ -93,6 +107,8 @@ void efi_parse_option_graphics(char *option)
- 			continue;
- 		if (parse_res(option, &option))
- 			continue;
-+		if (parse_auto(option, &option))
-+			continue;
- 
- 		while (*option && *option++ != ',')
- 			;
-@@ -211,6 +227,69 @@ static u32 choose_mode_res(efi_graphics_output_protocol_t *gop)
- 	return cur_mode;
- }
- 
-+static u32 choose_mode_auto(efi_graphics_output_protocol_t *gop)
-+{
-+	efi_status_t status;
-+
-+	efi_graphics_output_protocol_mode_t *mode;
-+	efi_graphics_output_mode_info_t *info;
-+	unsigned long info_size;
-+
-+	u32 max_mode, cur_mode, best_mode, area;
-+	u8 depth;
-+	int pf;
-+	efi_pixel_bitmask_t pi;
-+	u32 m, w, h, a;
-+	u8 d;
-+
-+	mode = efi_table_attr(gop, mode);
-+
-+	cur_mode = efi_table_attr(mode, mode);
-+	max_mode = efi_table_attr(mode, max_mode);
-+
-+	info = efi_table_attr(mode, info);
-+
-+	pf = info->pixel_format;
-+	pi = info->pixel_information;
-+	w  = info->horizontal_resolution;
-+	h  = info->vertical_resolution;
-+
-+	best_mode = cur_mode;
-+	area = w * h;
-+	depth = pixel_bpp(pf, pi);
-+
-+	for (m = 0; m < max_mode; m++) {
-+		if (m == cur_mode)
-+			continue;
-+
-+		status = efi_call_proto(gop, query_mode, m,
-+					&info_size, &info);
-+		if (status != EFI_SUCCESS)
-+			continue;
-+
-+		pf = info->pixel_format;
-+		pi = info->pixel_information;
-+		w  = info->horizontal_resolution;
-+		h  = info->vertical_resolution;
-+
-+		efi_bs_call(free_pool, info);
-+
-+		if (pf == PIXEL_BLT_ONLY || pf >= PIXEL_FORMAT_MAX)
-+			continue;
-+		a = w * h;
-+		if (a < area)
-+			continue;
-+		d = pixel_bpp(pf, pi);
-+		if (a > area || d > depth) {
-+			best_mode = m;
-+			area = a;
-+			depth = d;
-+		}
-+	}
-+
-+	return best_mode;
-+}
-+
- static void set_mode(efi_graphics_output_protocol_t *gop)
- {
- 	efi_graphics_output_protocol_mode_t *mode;
-@@ -223,6 +302,9 @@ static void set_mode(efi_graphics_output_protocol_t *gop)
- 	case EFI_CMDLINE_RES:
- 		new_mode = choose_mode_res(gop);
- 		break;
-+	case EFI_CMDLINE_AUTO:
-+		new_mode = choose_mode_auto(gop);
-+		break;
- 	default:
- 		return;
- 	}
+ 		status = efi_bs_call(allocate_pages, EFI_ALLOCATE_ADDRESS,
+ 				     EFI_LOADER_DATA, pages, &target);
 -- 
 2.17.1
 
