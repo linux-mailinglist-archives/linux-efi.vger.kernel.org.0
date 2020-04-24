@@ -2,27 +2,27 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 936591B7634
-	for <lists+linux-efi@lfdr.de>; Fri, 24 Apr 2020 15:06:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8DC121B7636
+	for <lists+linux-efi@lfdr.de>; Fri, 24 Apr 2020 15:07:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727815AbgDXNGS (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 24 Apr 2020 09:06:18 -0400
-Received: from mail.kernel.org ([198.145.29.99]:56544 "EHLO mail.kernel.org"
+        id S1727838AbgDXNGU (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 24 Apr 2020 09:06:20 -0400
+Received: from mail.kernel.org ([198.145.29.99]:56638 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726489AbgDXNGR (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Fri, 24 Apr 2020 09:06:17 -0400
+        id S1727832AbgDXNGT (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Fri, 24 Apr 2020 09:06:19 -0400
 Received: from e123331-lin.home (amontpellier-657-1-18-247.w109-210.abo.wanadoo.fr [109.210.65.247])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 4D7F320736;
-        Fri, 24 Apr 2020 13:06:15 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 6F99C2087E;
+        Fri, 24 Apr 2020 13:06:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1587733577;
-        bh=/SaENcmpX64RmJ+qKH6iETdVCvEB9U8MqVfSzhEvTPI=;
+        s=default; t=1587733579;
+        bh=iIYZ6y+8fIMshb4sAwXsJgosnrRrQjMp48lwhrvqprE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hjNPec/KrHVaqtSvSomqAl53yyRYO2AwRQDDPRyx1Q6PcnRIXysgmdUy0krLrr47x
-         vRM0Sb+jjiKE1Zp2G8kSlKC7wMo9bq5E3JPulC6egKAQqjoIa59yguCnstYY8SsTQk
-         O2SiIgqV+xiaCofFeuNEwBqJvx/oixATG9ocb1bM=
+        b=mdymKzWHqFLfvy3tgc2lHOEMQSRrdacLw6CiymKLvF3tQI26m90j+KKpyV2eRiqPB
+         1gHRzAmUaV/yczHEPLYdixZA7V4WKgXgk51QzhgUXFzLNzS/wbgX+9YtceulekgseM
+         3/Q/DvwI6oJQs76/HlfGyi2sOH7vZKlofwO4USf4=
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-efi@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
         Thomas Gleixner <tglx@linutronix.de>
@@ -31,9 +31,9 @@ Cc:     Ard Biesheuvel <ardb@kernel.org>, linux-kernel@vger.kernel.org,
         Atish Patra <atish.patra@wdc.com>,
         Palmer Dabbelt <palmerdabbelt@google.com>,
         Zou Wei <zou_wei@huawei.com>
-Subject: [PATCH 02/33] efi/libstub: Make initrd file loader configurable
-Date:   Fri, 24 Apr 2020 15:05:00 +0200
-Message-Id: <20200424130531.30518-3-ardb@kernel.org>
+Subject: [PATCH 03/33] efi/libstub: Unify EFI call wrappers for non-x86
+Date:   Fri, 24 Apr 2020 15:05:01 +0200
+Message-Id: <20200424130531.30518-4-ardb@kernel.org>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200424130531.30518-1-ardb@kernel.org>
 References: <20200424130531.30518-1-ardb@kernel.org>
@@ -42,137 +42,85 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Loading an initrd passed via the kernel command line is deprecated: it
-is limited to files that reside in the same volume as the one the kernel
-itself was loaded from, and we have more flexible ways to achieve the
-same. So make it configurable so new architectures can decide not to
-enable it.
+We have wrappers around EFI calls so that x86 can define special
+versions for mixed mode, while all other architectures can use the
+same simple definition that just issues the call directly.
+In preparation for the arrival of yet another architecture that doesn't
+need anything special here (RISC-V), let's move the default definition
+into a shared header.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- drivers/firmware/efi/Kconfig           | 11 ++++++++
- drivers/firmware/efi/libstub/efistub.h | 38 ++++++++++++++++++++------
- drivers/firmware/efi/libstub/file.c    | 32 +++++-----------------
- 3 files changed, 47 insertions(+), 34 deletions(-)
+ arch/arm/include/asm/efi.h             |  8 --------
+ arch/arm64/include/asm/efi.h           |  8 --------
+ drivers/firmware/efi/libstub/efistub.h | 16 ++++++++++++++++
+ 3 files changed, 16 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/firmware/efi/Kconfig b/drivers/firmware/efi/Kconfig
-index 2a2b2b96a1dc..4e788dd55b03 100644
---- a/drivers/firmware/efi/Kconfig
-+++ b/drivers/firmware/efi/Kconfig
-@@ -124,6 +124,17 @@ config EFI_ARMSTUB_DTB_LOADER
- 	  functionality for bootloaders that do not have such support
- 	  this option is necessary.
+diff --git a/arch/arm/include/asm/efi.h b/arch/arm/include/asm/efi.h
+index 5ac46e2860bc..9383f236e795 100644
+--- a/arch/arm/include/asm/efi.h
++++ b/arch/arm/include/asm/efi.h
+@@ -50,14 +50,6 @@ void efi_virtmap_unload(void);
  
-+config EFI_GENERIC_STUB_INITRD_CMDLINE_LOADER
-+	bool "Enable the command line initrd loader"
-+	depends on EFI_GENERIC_STUB
-+	default y
-+	help
-+	  Select this config option to add support for the initrd= command
-+	  line parameter, allowing an initrd that resides on the same volume
-+	  as the kernel image to be loaded into memory.
-+
-+	  This method is deprecated.
-+
- config EFI_BOOTLOADER_CONTROL
- 	tristate "EFI Bootloader Control"
- 	depends on EFI_VARS
+ /* arch specific definitions used by the stub code */
+ 
+-#define efi_bs_call(func, ...)	efi_system_table()->boottime->func(__VA_ARGS__)
+-#define efi_rt_call(func, ...)	efi_system_table()->runtime->func(__VA_ARGS__)
+-#define efi_is_native()		(true)
+-
+-#define efi_table_attr(inst, attr)	(inst->attr)
+-
+-#define efi_call_proto(inst, func, ...) inst->func(inst, ##__VA_ARGS__)
+-
+ struct screen_info *alloc_screen_info(void);
+ void free_screen_info(struct screen_info *si);
+ 
+diff --git a/arch/arm64/include/asm/efi.h b/arch/arm64/include/asm/efi.h
+index 45e821222774..d4ab3f73e7a3 100644
+--- a/arch/arm64/include/asm/efi.h
++++ b/arch/arm64/include/asm/efi.h
+@@ -86,14 +86,6 @@ static inline unsigned long efi_get_max_initrd_addr(unsigned long dram_base,
+ 	return (image_addr & ~(SZ_1G - 1UL)) + (1UL << (VA_BITS_MIN - 1));
+ }
+ 
+-#define efi_bs_call(func, ...)	efi_system_table()->boottime->func(__VA_ARGS__)
+-#define efi_rt_call(func, ...)	efi_system_table()->runtime->func(__VA_ARGS__)
+-#define efi_is_native()		(true)
+-
+-#define efi_table_attr(inst, attr)	(inst->attr)
+-
+-#define efi_call_proto(inst, func, ...) inst->func(inst, ##__VA_ARGS__)
+-
+ #define alloc_screen_info(x...)		&screen_info
+ 
+ static inline void free_screen_info(struct screen_info *si)
 diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
-index 67d26949fd26..7517683b31e9 100644
+index 7517683b31e9..d9ad8582dbea 100644
 --- a/drivers/firmware/efi/libstub/efistub.h
 +++ b/drivers/firmware/efi/libstub/efistub.h
-@@ -651,15 +651,35 @@ efi_status_t efi_parse_options(char const *cmdline);
- efi_status_t efi_setup_gop(struct screen_info *si, efi_guid_t *proto,
- 			   unsigned long size);
+@@ -39,6 +39,22 @@ extern bool __pure novamap(void);
  
--efi_status_t efi_load_dtb(efi_loaded_image_t *image,
--			  unsigned long *load_addr,
--			  unsigned long *load_size);
--
--efi_status_t efi_load_initrd(efi_loaded_image_t *image,
--			     unsigned long *load_addr,
--			     unsigned long *load_size,
--			     unsigned long soft_limit,
--			     unsigned long hard_limit);
-+efi_status_t handle_cmdline_files(efi_loaded_image_t *image,
-+				  const efi_char16_t *optstr,
-+				  int optstr_size,
-+				  unsigned long soft_limit,
-+				  unsigned long hard_limit,
-+				  unsigned long *load_addr,
-+				  unsigned long *load_size);
-+
-+
-+static inline efi_status_t efi_load_dtb(efi_loaded_image_t *image,
-+					unsigned long *load_addr,
-+					unsigned long *load_size)
-+{
-+	return handle_cmdline_files(image, L"dtb=", sizeof(L"dtb=") - 2,
-+				    ULONG_MAX, ULONG_MAX, load_addr, load_size);
-+}
-+
-+static inline efi_status_t efi_load_initrd(efi_loaded_image_t *image,
-+					   unsigned long *load_addr,
-+					   unsigned long *load_size,
-+					   unsigned long soft_limit,
-+					   unsigned long hard_limit)
-+{
-+	if (!IS_ENABLED(CONFIG_EFI_GENERIC_STUB_INITRD_CMDLINE_LOADER))
-+		return EFI_SUCCESS;
-+
-+	return handle_cmdline_files(image, L"initrd=", sizeof(L"initrd=") - 2,
-+				    soft_limit, hard_limit, load_addr, load_size);
-+}
+ extern __pure efi_system_table_t  *efi_system_table(void);
  
- efi_status_t efi_load_initrd_dev_path(unsigned long *load_addr,
- 				      unsigned long *load_size,
-diff --git a/drivers/firmware/efi/libstub/file.c b/drivers/firmware/efi/libstub/file.c
-index ea66b1f16a79..27e014ea4459 100644
---- a/drivers/firmware/efi/libstub/file.c
-+++ b/drivers/firmware/efi/libstub/file.c
-@@ -121,13 +121,13 @@ static int find_file_option(const efi_char16_t *cmdline, int cmdline_len,
-  * We only support loading a file from the same filesystem as
-  * the kernel image.
-  */
--static efi_status_t handle_cmdline_files(efi_loaded_image_t *image,
--					 const efi_char16_t *optstr,
--					 int optstr_size,
--					 unsigned long soft_limit,
--					 unsigned long hard_limit,
--					 unsigned long *load_addr,
--					 unsigned long *load_size)
-+efi_status_t handle_cmdline_files(efi_loaded_image_t *image,
-+				  const efi_char16_t *optstr,
-+				  int optstr_size,
-+				  unsigned long soft_limit,
-+				  unsigned long hard_limit,
-+				  unsigned long *load_addr,
-+				  unsigned long *load_size)
- {
- 	const efi_char16_t *cmdline = image->load_options;
- 	int cmdline_len = image->load_options_size / 2;
-@@ -239,21 +239,3 @@ static efi_status_t handle_cmdline_files(efi_loaded_image_t *image,
- 	efi_free(alloc_size, alloc_addr);
- 	return status;
- }
--
--efi_status_t efi_load_dtb(efi_loaded_image_t *image,
--			  unsigned long *load_addr,
--			  unsigned long *load_size)
--{
--	return handle_cmdline_files(image, L"dtb=", sizeof(L"dtb=") - 2,
--				    ULONG_MAX, ULONG_MAX, load_addr, load_size);
--}
--
--efi_status_t efi_load_initrd(efi_loaded_image_t *image,
--			     unsigned long *load_addr,
--			     unsigned long *load_size,
--			     unsigned long soft_limit,
--			     unsigned long hard_limit)
--{
--	return handle_cmdline_files(image, L"initrd=", sizeof(L"initrd=") - 2,
--				    soft_limit, hard_limit, load_addr, load_size);
--}
++#ifndef efi_bs_call
++#define efi_bs_call(func, ...)	efi_system_table()->boottime->func(__VA_ARGS__)
++#endif
++#ifndef efi_rt_call
++#define efi_rt_call(func, ...)	efi_system_table()->runtime->func(__VA_ARGS__)
++#endif
++#ifndef efi_is_native
++#define efi_is_native()		(true)
++#endif
++#ifndef efi_table_attr
++#define efi_table_attr(inst, attr)	(inst->attr)
++#endif
++#ifndef efi_call_proto
++#define efi_call_proto(inst, func, ...) inst->func(inst, ##__VA_ARGS__)
++#endif
++
+ #define pr_efi(msg)		do {			\
+ 	if (!is_quiet()) efi_printk("EFI stub: "msg);	\
+ } while (0)
 -- 
 2.17.1
 
