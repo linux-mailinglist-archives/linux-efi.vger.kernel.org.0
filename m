@@ -2,91 +2,132 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A51B91B85A3
-	for <lists+linux-efi@lfdr.de>; Sat, 25 Apr 2020 12:27:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 593F41B88FC
+	for <lists+linux-efi@lfdr.de>; Sat, 25 Apr 2020 21:31:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726118AbgDYK07 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sat, 25 Apr 2020 06:26:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59810 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726059AbgDYK07 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sat, 25 Apr 2020 06:26:59 -0400
-Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com [IPv6:2a00:1450:4864:20::341])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08875C09B04A
-        for <linux-efi@vger.kernel.org>; Sat, 25 Apr 2020 03:26:59 -0700 (PDT)
-Received: by mail-wm1-x341.google.com with SMTP id z6so14571800wml.2
-        for <linux-efi@vger.kernel.org>; Sat, 25 Apr 2020 03:26:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=q7XxMj8XqUMmP/Zjv83N8e+6snMzzuvmgihACPBct28=;
-        b=oveUBlGkL0yGuOJyrcsWvNh+fO2M3VsSHvCifeSMbNdhz9qRBxww2NyY98zLOKk0a1
-         SW42l77JHWXxO8PMwn9zDgRlnM7uxTb3lM52647j9ffVp0+6AUo8RkLBDpaSqRjrVkM2
-         twRFfBYjs/mIytHv4+/1BRB2k+m1JEZZhpg5IPCvMX9d6ktyjPu7nYM9d2GZoFJsOvkU
-         dDPheWIL/Go/mIuPbuZXhjR9H3mnjp5XywqJFMMz/1wetw962q8k8XCa/Oqm/aV86Ebi
-         UtSuowekM0efI9mqQ2lJf84rft09ad+keexudYj6gaQbKYifpyYc+6fRcZ2Dr9msivXM
-         27nQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to:user-agent;
-        bh=q7XxMj8XqUMmP/Zjv83N8e+6snMzzuvmgihACPBct28=;
-        b=hqLYHC6U9mlQwZ7r9Ls/gEzK3KzlxNuQreNCbPVB4emgml2nJUU2sJsKoJIqnIokcU
-         xMV3wBL+5YjwSx43XIe8jXWeALd69Ts6zIlPF/tn/U9cYphakL39wQ27l8hKyz7maVG3
-         LYf+499EJjdwVvHnOtt8Y+LzvsVDVKBqbYYMceOugC9GcZdyfN5zTK/Roj9dJ1U2sri6
-         6ZSLkWcHxXP3QY//7YRClrxV3jSrKM5h4X3piwQkHQhnY4+AwSYhcpOFkUSAxw9FGhrI
-         tvpqXvYW7isl1VpwHd13IF7ajcaUdoCWG5+4mEDZKJDbadIMtMv7tUCnn3f1MtiyAP2y
-         rByA==
-X-Gm-Message-State: AGi0PuZJ35O6FBaUbAe5cxHrcs7qZqEG1nWguyhOaCLkQUb0KK+ZHVxl
-        T9umoQcGTT2OYSZhVDhB49k=
-X-Google-Smtp-Source: APiQypJMLOsp7xoJ2p94rjsKDsFEoDc7Un9KDJbXMZIELnpvLuAyP9/BU4lPmGnLYOva799UVNZQ8w==
-X-Received: by 2002:a7b:ce09:: with SMTP id m9mr14852887wmc.156.1587810417833;
-        Sat, 25 Apr 2020 03:26:57 -0700 (PDT)
-Received: from gmail.com (54033286.catv.pool.telekom.hu. [84.3.50.134])
-        by smtp.gmail.com with ESMTPSA id k184sm6729887wmf.9.2020.04.25.03.26.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 25 Apr 2020 03:26:57 -0700 (PDT)
-Date:   Sat, 25 Apr 2020 12:26:55 +0200
-From:   Ingo Molnar <mingo@kernel.org>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     linux-efi@vger.kernel.org
-Subject: Re: [PATCH] efi/libstub: Re-enable command line initrd loading for
- x86
-Message-ID: <20200425102655.GB12331@gmail.com>
-References: <20200425102204.2622-1-ardb@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200425102204.2622-1-ardb@kernel.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+        id S1726232AbgDYTbh (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 25 Apr 2020 15:31:37 -0400
+Received: from mail.kernel.org ([198.145.29.99]:45458 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726203AbgDYTbh (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Sat, 25 Apr 2020 15:31:37 -0400
+Received: from e123331-lin.home (amontpellier-657-1-18-247.w109-210.abo.wanadoo.fr [109.210.65.247])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 2F29B206D4;
+        Sat, 25 Apr 2020 19:31:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1587843096;
+        bh=bfmoVkdzNl4CYumx83A+qzJVqLVofgMrn9i8wxJ7kR8=;
+        h=From:To:Cc:Subject:Date:From;
+        b=GuiZWAd5gflELrH2ZHYAfGKgeEYTYCrnC4MORecUqKLiLc/+lsIgNzwNA/fJokDR8
+         Saax5ZX+e2jOjnjSqYqzg6bi/TiuyWlucXj3ug3kiQtxYFbV7xEdAVG67YZP3DrDJO
+         JXYRwnLnB2KAB9lmrPQFbxOwoCvQBMW+TPe8brQE=
+From:   Ard Biesheuvel <ardb@kernel.org>
+To:     linux-efi@vger.kernel.org
+Cc:     Atish Patra <atish.patra@wdc.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        linux-riscv@lists.infradead.org
+Subject: [GIT PULL] EFI stub loading support for RISC-V
+Date:   Sat, 25 Apr 2020 21:31:28 +0200
+Message-Id: <20200425193128.25638-1-ardb@kernel.org>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
+Palmer,
 
-* Ard Biesheuvel <ardb@kernel.org> wrote:
+As discussed, below are the changes for v5.8 that can be taken via the
+RISC-V tree to implement booting RISC-V Linux from EFI firmware.
 
-> Commit
-> 
->   cf6b83664895a5 ("efi/libstub: Make initrd file loader configurable")
-> 
-> inadvertently disabled support on x86 for loading an initrd passed via
-> the initrd= option on the kernel command line.
-> 
-> Add X86 to the newly introduced Kconfig option's title and depends
-> declarations, so it gets enabled by default, as before.
-> 
-> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> ---
-> 
-> Ingo,
-> 
-> Mind taking this directly into tip/efi/core? Thanks.
+You can fetch and merge the signed tag directly, or merge 22090f84bc3f80
+and cherry pick the 4 patches on top of it, if you see any need to do so
+(but please use a topic branch in that case)
 
-Sure, done!
+Please be aware (as is noted in the tag) that these changes are really
+the bare minimum that is needed to launch the kernel from EFI firmware.
+In the current state, you may be able to boot from Uboot in EFI mode,
+but Tianocore based boot will not work at all, unless you convert the
+EFI memory map back to DT memory nodes in the firmware implementation,
+and I can assure you that that is not something that will be accepted in
+upstream Tianocore.
 
-Thanks,
+So in summary, this is unfinished work, and I can only recommend merging
+these changes once there is a plan in place to complete the implementation.
 
-	Ingo
+-- 
+Ard.
+
+
+The following changes since commit 22090f84bc3f8081e0ec180ccaedc85820085376:
+
+  efi/libstub: unify EFI call wrappers for non-x86 (2020-04-23 20:15:06 +0200)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git tags/riscv-efi-for-v5.8
+
+for you to fetch changes up to 66b4ac6b9dd1fdbb8ac7a1f20a8d08066368245d:
+
+  RISC-V: Add EFI stub support. (2020-04-25 13:59:54 +0200)
+
+----------------------------------------------------------------
+EFI stub loading support for RISC-V
+
+This branch implements support for loading the RISC-V Linux kernel
+straight from EFI firmware, by adding PE/COFF metadata to the kernel
+image and incorporating the kernel's EFI stub.
+
+Note that this is the *bare* minimum that is needed to boot from EFI
+firmware. The following pieces are still missing at this point, and
+will be required for full interoperability with generic EFI firmware:
+- using the EFI memory map instead of the device tree to populate the
+  memblock tables
+- parsing and handling of generic EFI configuration tables (such as
+  SMBIOS), as well as architecture specific ones that may be defined
+  for RISC-V
+- runtime mapping of EFI runtime services memory and MMIO regions, and
+  support for EFI runtime services (get/set time, get/set variable, reset
+  system)
+
+----------------------------------------------------------------
+
+Cc: Atish Patra <atish.patra@wdc.com>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>
+Cc: Paul Walmsley <paul.walmsley@sifive.com>
+Cc: Albert Ou <aou@eecs.berkeley.edu>
+Cc: linux-riscv@lists.infradead.org
+
+Atish Patra (4):
+      include: pe.h: Add RISC-V related PE definition
+      RISC-V: Define fixmap bindings for generic early ioremap support
+      RISC-V: Add PE/COFF header for EFI stub
+      RISC-V: Add EFI stub support.
+
+ arch/riscv/Kconfig                        |  22 ++++++
+ arch/riscv/Makefile                       |   1 +
+ arch/riscv/configs/defconfig              |   1 +
+ arch/riscv/include/asm/Kbuild             |   1 +
+ arch/riscv/include/asm/efi.h              |  33 +++++++++
+ arch/riscv/include/asm/fixmap.h           |  18 +++++
+ arch/riscv/include/asm/io.h               |   1 +
+ arch/riscv/include/asm/sections.h         |  13 ++++
+ arch/riscv/kernel/Makefile                |   4 ++
+ arch/riscv/kernel/efi-header.S            | 100 +++++++++++++++++++++++++++
+ arch/riscv/kernel/head.S                  |  16 +++++
+ arch/riscv/kernel/image-vars.h            |  53 +++++++++++++++
+ arch/riscv/kernel/vmlinux.lds.S           |  22 +++++-
+ drivers/firmware/efi/Kconfig              |   3 +-
+ drivers/firmware/efi/libstub/Makefile     |  10 +++
+ drivers/firmware/efi/libstub/riscv-stub.c | 109 ++++++++++++++++++++++++++++++
+ include/linux/pe.h                        |   3 +
+ 17 files changed, 407 insertions(+), 3 deletions(-)
+ create mode 100644 arch/riscv/include/asm/efi.h
+ create mode 100644 arch/riscv/include/asm/sections.h
+ create mode 100644 arch/riscv/kernel/efi-header.S
+ create mode 100644 arch/riscv/kernel/image-vars.h
+ create mode 100644 drivers/firmware/efi/libstub/riscv-stub.c
