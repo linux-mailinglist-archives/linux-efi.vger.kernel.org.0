@@ -2,125 +2,104 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4ADB61BEA2F
-	for <lists+linux-efi@lfdr.de>; Wed, 29 Apr 2020 23:49:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 952B31BEA45
+	for <lists+linux-efi@lfdr.de>; Wed, 29 Apr 2020 23:51:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727773AbgD2Vs7 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 29 Apr 2020 17:48:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45936 "EHLO
+        id S1727068AbgD2VvN (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 29 Apr 2020 17:51:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46322 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726950AbgD2Vs6 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 29 Apr 2020 17:48:58 -0400
-Received: from mail-qk1-x744.google.com (mail-qk1-x744.google.com [IPv6:2607:f8b0:4864:20::744])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1FA13C03C1AE;
-        Wed, 29 Apr 2020 14:48:58 -0700 (PDT)
-Received: by mail-qk1-x744.google.com with SMTP id s63so3724201qke.4;
-        Wed, 29 Apr 2020 14:48:58 -0700 (PDT)
+        by vger.kernel.org with ESMTP id S1726554AbgD2VvN (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 29 Apr 2020 17:51:13 -0400
+Received: from mail-qk1-x743.google.com (mail-qk1-x743.google.com [IPv6:2607:f8b0:4864:20::743])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70B46C03C1AE;
+        Wed, 29 Apr 2020 14:51:11 -0700 (PDT)
+Received: by mail-qk1-x743.google.com with SMTP id s63so3729834qke.4;
+        Wed, 29 Apr 2020 14:51:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=sender:from:date:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to;
-        bh=thOleSHGhWbyHTDIvGgOd2/dGZB7Vh84eyjPoRKiWnQ=;
-        b=teeEESUmzLLMOEc90ylDqcqx+Qfva8yu1CNLVDB8LPlO/RdfYgYiynsCiHuZ6CSq7y
-         dd1Za8shoKcSXbm7Zn/9lrvmK7zgjCF8/tZa9M+lKNDDLM2nt4R6sG1LfMfL+uMEbUXB
-         JjkH4ijiD9kUoEUaDaHUzGSxmO/MiUPUvXUc3cQkGXMZRShlhI85bkhYt3FhBtFfePJT
-         77bsjgFMZNmZU6RZMbhyEUsaxx0EoxYBoRoTaNRJsTWVwKEp1Tu0/Dgg1bCL6kIwxbeD
-         kiD2ksYa3IqrKKcKB/jv+/EdlD94C3RcoeG6zjYoBJ0itB26K/jOccJwq07uS7FIrXEw
-         YrBg==
+        bh=yI4eOYJfhpsBqlg1PM3LtQp48NpgcJsBjjuzAmHhDUU=;
+        b=obgSTAYx8xvFZBa/lm1gbkdL7zfTMb0zKB+DZ6UgbMYY3FCi9VncqKfnWo4wCSSoxy
+         hUF4ttq8G0B0F0aAmNQOP8mfiRNDcwww9xtsykEZxWTxIVi/K6MjDkbqmZVVdAlxLuJ3
+         N1svbTiYK+CPufQYVkTPQ1AyggVG/I5SRWD61RtxGUwnOo7L43y+XqPJmF+roZdfvd91
+         Hk+sS9jLxHxFEtfsoNXWBneiaaisSf84/+DASsq8HQft5jNYymx0dTQxLAICPSqyRisl
+         A0eVZ3XkIOHh1dTxB133U/d6S0g3Mb0e/lWn6CVCrdZd2uAktOuFzAt2gKoSYwuLuUto
+         JbUg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:sender:from:date:to:cc:subject:message-id
          :references:mime-version:content-disposition:in-reply-to;
-        bh=thOleSHGhWbyHTDIvGgOd2/dGZB7Vh84eyjPoRKiWnQ=;
-        b=OcdKW/Ks8QbfSwhooXFb1qh1Hbj+xxNBs2/u4hUMj1RCOYHtUxr7V/CQ7azH0fa2Hc
-         zKN9vQ7PIyMbS4h796SigpPkJi/IFjg0NBF2F6YxIUNpJ/P/nUiuN281oteq2BiauYb+
-         0bBTRyTZJh5Pw3x8IvP+v8nQLUkj05KoETk5+8k3plhNcLFVTXc9vLJNmIZXJuuWUl9h
-         6K4a2nEi178tNSk56YZRqmp7SRMDlN5oJkFunnxw3GyLi5WXcPGviosv1qE/tQOxTk5j
-         biGvIy0otpCC/AkBtCl22RySX94mBMnLYrg1fyEy6KQO/74bBQ+bgGNW+1OsN075Qbg+
-         Kx5Q==
-X-Gm-Message-State: AGi0PuZB7Kk9O8YARiYiZKx7n7No8BVuODHVw1sLmrWYyoVXgPlO5uJn
-        7g/xqt+nUgZGz4vV2Z2iHh2HZqsGPxc=
-X-Google-Smtp-Source: APiQypKY/EdqZ/JiagMoO4/EeKVtAr0upVP5Aae4lmR3rSpX8iCJ5cmj6wANetfMh+g7taAwygienw==
-X-Received: by 2002:a37:6296:: with SMTP id w144mr574513qkb.310.1588196937327;
-        Wed, 29 Apr 2020 14:48:57 -0700 (PDT)
+        bh=yI4eOYJfhpsBqlg1PM3LtQp48NpgcJsBjjuzAmHhDUU=;
+        b=pZW+kJH4wEF8vK0YGft/XeWrEmohxioCixvXnrqSxJ8c9izWf5NLTXBZBdcVYCqV4x
+         M1cYDJch2FH+obU8aupy0QTpo2OUtfWBNUFoxM/qA1dpfJd9leBNBuO0lC3/+D9owaHC
+         0lkp9olptESDG7cekx9GzOOlyC1w/XTdSALRa3+rAUDrA7Zx7DTjdwpi0dqiYSHyeLIS
+         xd2N9fWT+W84ujRmxj2nkompdROiPx2UWpf20e+iPCOy/TCaMxLSV1sAIfgpC8DtL8jj
+         w6s65oFqrGG5DSuVR8Hw9fdPXzkxY32ZIdNtmvr7iXHwe2lxtSCcgfKshMXU2GXPG8kD
+         VsNg==
+X-Gm-Message-State: AGi0PuaJprwf8iepfbNOv/+jYA479TMWbEhJRv+DmGd6Xd+NN2F8h75p
+        XFRf0VXYRek1B8NgfrFUlAIOWG3n5XM=
+X-Google-Smtp-Source: APiQypJoAu+Fpbyj7std7PGrE6L8FhaqosDACdbBSy1HeEz4BOypNoQTTpm3Z8dGOCzynxfEj0z6qw==
+X-Received: by 2002:a37:9d8c:: with SMTP id g134mr562712qke.307.1588197069303;
+        Wed, 29 Apr 2020 14:51:09 -0700 (PDT)
 Received: from rani.riverdale.lan ([2001:470:1f07:5f3::b55f])
-        by smtp.gmail.com with ESMTPSA id p11sm309691qki.25.2020.04.29.14.48.56
+        by smtp.gmail.com with ESMTPSA id a3sm328391qka.61.2020.04.29.14.51.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Apr 2020 14:48:56 -0700 (PDT)
+        Wed, 29 Apr 2020 14:51:08 -0700 (PDT)
 From:   Arvind Sankar <nivedita@alum.mit.edu>
 X-Google-Original-From: Arvind Sankar <arvind@rani.riverdale.lan>
-Date:   Wed, 29 Apr 2020 17:48:55 -0400
+Date:   Wed, 29 Apr 2020 17:51:06 -0400
 To:     Ard Biesheuvel <ardb@kernel.org>
 Cc:     Arvind Sankar <nivedita@alum.mit.edu>,
+        Joe Perches <joe@perches.com>,
         linux-efi <linux-efi@vger.kernel.org>, X86 ML <x86@kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 09/10] efi/x86: Support builtin command line
-Message-ID: <20200429214855.GD1621173@rani.riverdale.lan>
+Subject: Re: [PATCH 03/10] efi/x86: Use pr_efi_err for error messages
+Message-ID: <20200429215106.GE1621173@rani.riverdale.lan>
 References: <20200429174120.1497212-1-nivedita@alum.mit.edu>
- <20200429174120.1497212-11-nivedita@alum.mit.edu>
- <CAMj1kXF_-ZA4ghy_8Gx831UcAwn0VjFmDub5L1_h28vV+sdPDw@mail.gmail.com>
- <20200429213944.GB1621173@rani.riverdale.lan>
- <CAMj1kXHf9bXX8uDeSEL46r39uPiBOPjfmvkcL_MFtf9ZAo8ZqQ@mail.gmail.com>
+ <20200429174120.1497212-5-nivedita@alum.mit.edu>
+ <f74fe4ad56c0471f863ce550869391c8811f9893.camel@perches.com>
+ <CAMj1kXGn70BmapKe=6sA17gMCcWRLCebQJFnyObwRbAefOcEng@mail.gmail.com>
+ <20200429214332.GC1621173@rani.riverdale.lan>
+ <CAMj1kXEwvtQoWj2GjMzLY+wnaMu9cUP8jRpwuQBC0fpEy31r_w@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <CAMj1kXHf9bXX8uDeSEL46r39uPiBOPjfmvkcL_MFtf9ZAo8ZqQ@mail.gmail.com>
+In-Reply-To: <CAMj1kXEwvtQoWj2GjMzLY+wnaMu9cUP8jRpwuQBC0fpEy31r_w@mail.gmail.com>
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, Apr 29, 2020 at 11:40:51PM +0200, Ard Biesheuvel wrote:
-> On Wed, 29 Apr 2020 at 23:39, Arvind Sankar <nivedita@alum.mit.edu> wrote:
+On Wed, Apr 29, 2020 at 11:45:17PM +0200, Ard Biesheuvel wrote:
+> On Wed, 29 Apr 2020 at 23:43, Arvind Sankar <nivedita@alum.mit.edu> wrote:
 > >
-> > On Wed, Apr 29, 2020 at 09:07:32PM +0200, Ard Biesheuvel wrote:
-> > > On Wed, 29 Apr 2020 at 19:41, Arvind Sankar <nivedita@alum.mit.edu> wrote:
+> > On Wed, Apr 29, 2020 at 08:49:21PM +0200, Ard Biesheuvel wrote:
+> > > On Wed, 29 Apr 2020 at 20:47, Joe Perches <joe@perches.com> wrote:
 > > > >
-> > > > Add support for the x86 CMDLINE_BOOL and CMDLINE_OVERRIDE configuration
-> > > > options.
+> > > > On Wed, 2020-04-29 at 13:41 -0400, Arvind Sankar wrote:
+> > > > > Use pr_efi_err instead of bare efi_printk for error messages.
 > > > >
-> > > > Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
-> > > > ---
-> > > >  drivers/firmware/efi/libstub/x86-stub.c | 12 ++++++++----
-> > > >  1 file changed, 8 insertions(+), 4 deletions(-)
+> > > > Perhaps it'd be better to rename pr_efi_err to eri_err
+> > > > to it's clearer it's a typical efi_ logging function.
 > > > >
-> > > > diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
-> > > > index 85a924fecc87..0faba30d6406 100644
-> > > > --- a/drivers/firmware/efi/libstub/x86-stub.c
-> > > > +++ b/drivers/firmware/efi/libstub/x86-stub.c
-> > > > @@ -680,7 +680,6 @@ unsigned long efi_main(efi_handle_t handle,
-> > > >         unsigned long buffer_start, buffer_end;
-> > > >         struct setup_header *hdr = &boot_params->hdr;
-> > > >         efi_status_t status;
-> > > > -       unsigned long cmdline_paddr;
+> > > > $ git grep -w --name-only pr_efi_err | \
+> > > >   xargs sed -i 's/\bpr_efi_err\b/efi_err/g'
 > > > >
-> > > >         efi_system_table = sys_table_arg;
-> > > >
-> > > > @@ -739,9 +738,14 @@ unsigned long efi_main(efi_handle_t handle,
-> > > >                 image_offset = 0;
-> > > >         }
-> > > >
-> > > > -       cmdline_paddr = ((u64)hdr->cmd_line_ptr |
-> > > > -                        ((u64)boot_params->ext_cmd_line_ptr << 32));
-> > > > -       efi_parse_options((char *)cmdline_paddr);
-> > > > +#ifdef CONFIG_CMDLINE_BOOL
-> > > > +       efi_parse_options(CONFIG_CMDLINE);
-> > > > +#endif
 > > >
-> > > Can we use IS_ENABLED() here as well?
+> > > Yeah, pr_efi_err() is probably not the best name
 > >
-> > Unfortunately on x86, CONFIG_CMDLINE is not defined if
-> > CONFIG_CMDLINE_BOOL isn't enabled. So turning this into an
-> > IS_ENABLED(CONFIG_CMDLINE_BOOL) causes a compile error when it's
-> > disabled due to CONFIG_CMDLINE being an undeclared symbol.
-> >
+> > Should I rename pr_efi/pr_efi_err to, say, efi_pr_info/efi_pr_error?
 > 
-> What about
-> 
-> efi_parse_options(CONFIG_CMDLINE "");
-> 
-> ?
+> If you don't mind spinning another couple of patches, yes, that would
+> be helpful.
 
-That's still a syntax error if CONFIG_CMDLINE is undefined, no? It's not
-defined to be empty -- it's undefined. IS_ENABLED doesn't work on
-string-valued options so I can't use IS_ENABLED(CONFIG_CMDLINE) either.
+No problem.
+
+> 
+> Let's use efi_pr_info and efi_pr_err to stay aligned with the ordinary
+> counterparts
+
+Right, for some reason I thought it was pr_error but it's actually
+pr_err.
