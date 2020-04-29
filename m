@@ -2,117 +2,188 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 31D6B1BEC04
-	for <lists+linux-efi@lfdr.de>; Thu, 30 Apr 2020 00:21:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 861B61BEC2A
+	for <lists+linux-efi@lfdr.de>; Thu, 30 Apr 2020 00:52:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726511AbgD2WVB (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 29 Apr 2020 18:21:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50946 "EHLO
+        id S1726481AbgD2WwO (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 29 Apr 2020 18:52:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55772 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726481AbgD2WVB (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 29 Apr 2020 18:21:01 -0400
-Received: from mail-qt1-x843.google.com (mail-qt1-x843.google.com [IPv6:2607:f8b0:4864:20::843])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34C73C03C1AE;
-        Wed, 29 Apr 2020 15:21:01 -0700 (PDT)
-Received: by mail-qt1-x843.google.com with SMTP id i68so3374993qtb.5;
-        Wed, 29 Apr 2020 15:21:01 -0700 (PDT)
+        by vger.kernel.org with ESMTP id S1726511AbgD2WwO (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 29 Apr 2020 18:52:14 -0400
+Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com [IPv6:2607:f8b0:4864:20::441])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 238E2C03C1AE
+        for <linux-efi@vger.kernel.org>; Wed, 29 Apr 2020 15:52:14 -0700 (PDT)
+Received: by mail-pf1-x441.google.com with SMTP id f7so1829304pfa.9
+        for <linux-efi@vger.kernel.org>; Wed, 29 Apr 2020 15:52:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:from:date:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=QlkVaiVcBOHNkB5ExNKJRxqXIe1PfFKILjvlG5hRlg0=;
-        b=iSYywjiPEaoZgqGWHWsYQtRoLNwu6veFylWlF6ZsYH4D2pE652/y3b0TG5vv7uPuS1
-         ssnE4Vw3meDDMdj62qMuqDD+V9w950rvXy8hPdN1Q8+/aeJ6nuJtIQzCB/y6PU27eucr
-         /nq4mT6lrPmHzOq9Y4Lv+nicLSAFI5zMDDMNhmG730hYmsEcamMSKV91Syf1IpACDDVW
-         yNY+t4469MPznK0HcvgR/Ry8Ayt2eFl3mWzVv/rdjbkmy9Utd8f50swv37v6kKrxxXBR
-         tncPDIdPoz5LC0ouj7mZ7Q4hzvODcgMfQ3cSRggPKlDnhT8Tl4F8QqdhAB/zcVxu3Cbx
-         ogJw==
+        d=dabbelt-com.20150623.gappssmtp.com; s=20150623;
+        h=date:subject:in-reply-to:cc:from:to:message-id:mime-version
+         :content-transfer-encoding;
+        bh=c28pVgVmN/oYLckIHDfxeZNbVKB9dmutdgpZ/ZKNVUE=;
+        b=QDM1bfH7SnhsG0nrQVYKjLFVhc4OAQQd5RESPdFxeQVb25X0P/pgW1RjESLmidczHn
+         CTLXmIhucruBvlFhMB1bSu9dnSTyeAFI/EbEw7HXo2JaEFiJS5fdPLfP5FYZ3AHxgLDH
+         3XdPDwd0xGRnpXoSh1f11gg5mZhJVaBPlKlqyN5n6zuCP8Sxol8wZMf2J9Xi787pUJri
+         mu+v3sCkn2EbgsLDicjele/GhLJ+7fMVKVzxFs3xmbJoFghze5SytmctHngc7XeAHLvM
+         cFNpbohWBa7DlHcPI/TlL7tjoDrTzOGKV/dASGYB3jU8kgBkb6hDIXyJ3VP5t5SEnu8s
+         D6qg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:from:date:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to;
-        bh=QlkVaiVcBOHNkB5ExNKJRxqXIe1PfFKILjvlG5hRlg0=;
-        b=YBVB1VeDSpOt1jJwb8nMAjbHdiFm38TT4dShVdP7tm8vwSbWsEbMiadwTXowBxn7rc
-         mqn+51LtSSJnu29J/K1yo5gSEY5ZdW5NsZGZUQDUif4S4FVkvnL6chE/C993qWCme4mT
-         p3rLv9zOI5q7thkOdmlHs7qxCoz4YKgH0bTtnrIMbUA/QPHlAH4TUK05qEn20BPvnusJ
-         VmZvMZyeTxci8hOFPRFkdBAFNfx8PZ//Vuhbi69z6brl+TrFpdahVikHuwDGcYCJr6pn
-         D73cSx4lTOFYpYtoWh8okFw4qWz2HJmyaXhDSu0G9Qd3MRDHl5ZVYlq0hrRzwV20INl8
-         Q9Hg==
-X-Gm-Message-State: AGi0Pub+UXdA6uatuisETw28Omkpqd9l4/xLLfpxr0AgDB+29zFiyfV6
-        VsSmG3YLFbZLMNEbQLxNdi5015JTCgU=
-X-Google-Smtp-Source: APiQypJtRbZMrEQXh43TsjlPJyH0lrH1FMh1wR7ThB/RYDQVccxT8lyADglxmV+Y2U5rD3wOrhTx3Q==
-X-Received: by 2002:ac8:4e45:: with SMTP id e5mr548115qtw.101.1588198860273;
-        Wed, 29 Apr 2020 15:21:00 -0700 (PDT)
-Received: from rani.riverdale.lan ([2001:470:1f07:5f3::b55f])
-        by smtp.gmail.com with ESMTPSA id y17sm359287qky.33.2020.04.29.15.20.59
+        h=x-gm-message-state:date:subject:in-reply-to:cc:from:to:message-id
+         :mime-version:content-transfer-encoding;
+        bh=c28pVgVmN/oYLckIHDfxeZNbVKB9dmutdgpZ/ZKNVUE=;
+        b=n76DYxKjFhR0cajbmTGT8APHGHd9S54F4LMhNiRx8/svdSCjCNrSrZDURLApQ7jwkr
+         ROTxek9gCyFYgGNatVbP6nbAxc0mjJflupiCu5a6UEy3U/Ju33GPoKJV++yTJEE/cMhE
+         dxVzxPeEw3E7f3jVEKv+MYKewMu//Vb0zL307AwG4wsVcI87A1/lDg5nuRvZudp/K06H
+         E8qb+Z6CqF5/z4smtAvvhGJ93AC6Wwt0er7a1mKsftZSV5VdyV/cIRxSJsEOfgDCIGaP
+         OVXnad2DhdzU/JvNjV/ZLTEDqQvFA6WEbsih9+JDpHZp1P4FUVXBq60zSTBwJqwtr8mx
+         AFVA==
+X-Gm-Message-State: AGi0PuZJybUtiZ91YBcZapf9ZIu2VBSEoFE/CTyBLgoEzUQU+QmezINc
+        GM8JD6UBApI3EVj24bo2lNkQR9V6vGxAqg==
+X-Google-Smtp-Source: APiQypLGg2gCMFW/uloNU+mOluima13GaheC/chkrJwl0yyRNT9/8uvr9XYBOjA98Ul+9DhDWiwsGw==
+X-Received: by 2002:aa7:81cf:: with SMTP id c15mr411430pfn.211.1588200732868;
+        Wed, 29 Apr 2020 15:52:12 -0700 (PDT)
+Received: from localhost (76-210-143-223.lightspeed.sntcca.sbcglobal.net. [76.210.143.223])
+        by smtp.gmail.com with ESMTPSA id v133sm1884552pfc.113.2020.04.29.15.52.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Apr 2020 15:20:59 -0700 (PDT)
-From:   Arvind Sankar <nivedita@alum.mit.edu>
-X-Google-Original-From: Arvind Sankar <arvind@rani.riverdale.lan>
-Date:   Wed, 29 Apr 2020 18:20:57 -0400
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     Joe Perches <joe@perches.com>,
-        Arvind Sankar <nivedita@alum.mit.edu>,
-        linux-efi <linux-efi@vger.kernel.org>, X86 ML <x86@kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 03/10] efi/x86: Use pr_efi_err for error messages
-Message-ID: <20200429222057.GA1645040@rani.riverdale.lan>
-References: <20200429174120.1497212-1-nivedita@alum.mit.edu>
- <20200429174120.1497212-5-nivedita@alum.mit.edu>
- <f74fe4ad56c0471f863ce550869391c8811f9893.camel@perches.com>
- <CAMj1kXGn70BmapKe=6sA17gMCcWRLCebQJFnyObwRbAefOcEng@mail.gmail.com>
- <20200429214332.GC1621173@rani.riverdale.lan>
- <31b23951ee2b8e2391f3208b60a7132df18be74e.camel@perches.com>
- <CAMj1kXFJfK=tspytknqdABRfYMhA23FWOs8QoasX1jZ6z=F3Gg@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CAMj1kXFJfK=tspytknqdABRfYMhA23FWOs8QoasX1jZ6z=F3Gg@mail.gmail.com>
+        Wed, 29 Apr 2020 15:52:12 -0700 (PDT)
+Date:   Wed, 29 Apr 2020 15:52:12 -0700 (PDT)
+X-Google-Original-Date: Wed, 29 Apr 2020 15:51:45 PDT (-0700)
+Subject:     Re: [GIT PULL] EFI stub loading support for RISC-V
+In-Reply-To: <CAOnJCUJp12H_QSbw9zcYQxeZtNGpNxQhu8mkzzxrFAUArf9qfg@mail.gmail.com>
+CC:     linux-efi@vger.kernel.org, Atish Patra <Atish.Patra@wdc.com>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        aou@eecs.berkeley.edu, linux-riscv@lists.infradead.org
+From:   Palmer Dabbelt <palmer@dabbelt.com>
+To:     ardb@kernel.org, atishp@atishpatra.org
+Message-ID: <mhng-970b2596-146b-456e-be2d-9b7291775df5@palmerdabbelt-glaptop1>
+Mime-Version: 1.0 (MHng)
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, Apr 29, 2020 at 11:55:04PM +0200, Ard Biesheuvel wrote:
-> On Wed, 29 Apr 2020 at 23:53, Joe Perches <joe@perches.com> wrote:
-> >
-> > On Wed, 2020-04-29 at 17:43 -0400, Arvind Sankar wrote:
-> > > On Wed, Apr 29, 2020 at 08:49:21PM +0200, Ard Biesheuvel wrote:
-> > > > On Wed, 29 Apr 2020 at 20:47, Joe Perches <joe@perches.com> wrote:
-> > > > > On Wed, 2020-04-29 at 13:41 -0400, Arvind Sankar wrote:
-> > > > > > Use pr_efi_err instead of bare efi_printk for error messages.
-> > > > >
-> > > > > Perhaps it'd be better to rename pr_efi_err to eri_err
-> > > > > so it's clearer it's a typical efi_ logging function.
-> > > > >
-> > > > > $ git grep -w --name-only pr_efi_err | \
-> > > > >   xargs sed -i 's/\bpr_efi_err\b/efi_err/g'
-> > > > >
-> > > >
-> > > > Yeah, pr_efi_err() is probably not the best name
-> > >
-> > > Should I rename pr_efi/pr_efi_err to, say, efi_pr_info/efi_pr_error?
-> >
-> > Perhaps not use pr_ in the name at all.
-> >
-> > I suggest:
-> >
-> > pr_efi          -> efi_info (or efi_debug or efi_dbg)
-> >                    (it is guarded by an efi_quiet flag, default: on)
-> > pr_efi_err      -> efi_err
-> >
-> 
-> Agreed. Shorter is better if there is no risk of confusion..
+On Tue, 28 Apr 2020 10:57:48 PDT (-0700), atishp@atishpatra.org wrote:
+> On Sun, Apr 26, 2020 at 12:52 PM Atish Patra <atishp@atishpatra.org> wrote:
+>>
+>> On Sat, Apr 25, 2020 at 12:31 PM Ard Biesheuvel <ardb@kernel.org> wrote:
+>> >
+>> > Palmer,
+>> >
+>> > As discussed, below are the changes for v5.8 that can be taken via the
+>> > RISC-V tree to implement booting RISC-V Linux from EFI firmware.
+>> >
+>> > You can fetch and merge the signed tag directly, or merge 22090f84bc3f80
+>> > and cherry pick the 4 patches on top of it, if you see any need to do so
+>> > (but please use a topic branch in that case)
+>> >
+>> > Please be aware (as is noted in the tag) that these changes are really
+>> > the bare minimum that is needed to launch the kernel from EFI firmware.
+>> > In the current state, you may be able to boot from Uboot in EFI mode,
+>> > but Tianocore based boot will not work at all, unless you convert the
+>> > EFI memory map back to DT memory nodes in the firmware implementation,
+>> > and I can assure you that that is not something that will be accepted in
+>> > upstream Tianocore.
+>> >
+>> > So in summary, this is unfinished work, and I can only recommend merging
+>> > these changes once there is a plan in place to complete the implementation.
+>> >
+>>
+>> I have started looking into this part. My initial plan was to start
+>> looking into it right after I got
+>> the boot time services working but other things took priority. Thanks
+>> for your review and
+>> suggestion throughout the process. I will coordinate with Abner/Daniel
+>> to test RISC-V UEFI
+>> runtime services(once implemented)  with tianocore.
+>> > --
+>> > Ard.
+>> >
+>> >
+>> > The following changes since commit 22090f84bc3f8081e0ec180ccaedc85820085376:
+>> >
+>> >   efi/libstub: unify EFI call wrappers for non-x86 (2020-04-23 20:15:06 +0200)
+>> >
+>> > are available in the Git repository at:
+>> >
+>> >   git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git tags/riscv-efi-for-v5.8
+>> >
+>> > for you to fetch changes up to 66b4ac6b9dd1fdbb8ac7a1f20a8d08066368245d:
+>> >
+>> >   RISC-V: Add EFI stub support. (2020-04-25 13:59:54 +0200)
+>> >
+>> > ----------------------------------------------------------------
+>> > EFI stub loading support for RISC-V
+>> >
+>> > This branch implements support for loading the RISC-V Linux kernel
+>> > straight from EFI firmware, by adding PE/COFF metadata to the kernel
+>> > image and incorporating the kernel's EFI stub.
+>> >
+>> > Note that this is the *bare* minimum that is needed to boot from EFI
+>> > firmware. The following pieces are still missing at this point, and
+>> > will be required for full interoperability with generic EFI firmware:
+>> > - using the EFI memory map instead of the device tree to populate the
+>> >   memblock tables
+>> > - parsing and handling of generic EFI configuration tables (such as
+>> >   SMBIOS), as well as architecture specific ones that may be defined
+>> >   for RISC-V
+>> > - runtime mapping of EFI runtime services memory and MMIO regions, and
+>> >   support for EFI runtime services (get/set time, get/set variable, reset
+>> >   system)
+>> >
+>> > ----------------------------------------------------------------
+>> >
+>> > Cc: Atish Patra <atish.patra@wdc.com>
+>> > Cc: Palmer Dabbelt <palmer@dabbelt.com>
+>> > Cc: Paul Walmsley <paul.walmsley@sifive.com>
+>> > Cc: Albert Ou <aou@eecs.berkeley.edu>
+>> > Cc: linux-riscv@lists.infradead.org
+>> >
+>> > Atish Patra (4):
+>> >       include: pe.h: Add RISC-V related PE definition
+>> >       RISC-V: Define fixmap bindings for generic early ioremap support
+>> >       RISC-V: Add PE/COFF header for EFI stub
+>> >       RISC-V: Add EFI stub support.
+>> >
+>> >  arch/riscv/Kconfig                        |  22 ++++++
+>> >  arch/riscv/Makefile                       |   1 +
+>> >  arch/riscv/configs/defconfig              |   1 +
+>> >  arch/riscv/include/asm/Kbuild             |   1 +
+>> >  arch/riscv/include/asm/efi.h              |  33 +++++++++
+>> >  arch/riscv/include/asm/fixmap.h           |  18 +++++
+>> >  arch/riscv/include/asm/io.h               |   1 +
+>> >  arch/riscv/include/asm/sections.h         |  13 ++++
+>> >  arch/riscv/kernel/Makefile                |   4 ++
+>> >  arch/riscv/kernel/efi-header.S            | 100 +++++++++++++++++++++++++++
+>> >  arch/riscv/kernel/head.S                  |  16 +++++
+>> >  arch/riscv/kernel/image-vars.h            |  53 +++++++++++++++
+>> >  arch/riscv/kernel/vmlinux.lds.S           |  22 +++++-
+>> >  drivers/firmware/efi/Kconfig              |   3 +-
+>> >  drivers/firmware/efi/libstub/Makefile     |  10 +++
+>> >  drivers/firmware/efi/libstub/riscv-stub.c | 109 ++++++++++++++++++++++++++++++
+>> >  include/linux/pe.h                        |   3 +
+>> >  17 files changed, 407 insertions(+), 3 deletions(-)
+>> >  create mode 100644 arch/riscv/include/asm/efi.h
+>> >  create mode 100644 arch/riscv/include/asm/sections.h
+>> >  create mode 100644 arch/riscv/kernel/efi-header.S
+>> >  create mode 100644 arch/riscv/kernel/image-vars.h
+>> >  create mode 100644 drivers/firmware/efi/libstub/riscv-stub.c
+>>
+>>
+>>
+>> --
+>> Regards,
+>> Atish
+>
+> Hi Palmer,
+> There were few build errors for all-yes config and nommu reported by
+> 0-day tests.
+> As some of the fixes require to add some dummy declarations for efi
+> runtime related functions,
+> Ard suggested that we should drop the series for now and merge with
+> full uefi support later.
 
-Ok, I'll use efi_info/efi_err. We could add debugging output as
-efi_debug later, enabled if efi=debug is specified.
-
-While we're here: most of the existing cases of pr_efi look like notice
-or info level, except maybe these two, which probably should be at least
-warnings?
-
-drivers/firmware/efi/libstub/arm64-stub.c
-62: pr_efi("EFI_RNG_PROTOCOL unavailable, no randomness supplied\n");
-
-drivers/firmware/efi/libstub/efi-stub.c
-254: pr_efi("Ignoring DTB from command line.\n");
+OK, I'll wait for another patch set.  That makes my life a bit easier as well,
+as we don't have to do the multi-tree merge in a single release.
