@@ -2,56 +2,64 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D84361BE6B9
-	for <lists+linux-efi@lfdr.de>; Wed, 29 Apr 2020 20:57:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F02181BE6C8
+	for <lists+linux-efi@lfdr.de>; Wed, 29 Apr 2020 20:59:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726481AbgD2S5E (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 29 Apr 2020 14:57:04 -0400
-Received: from smtprelay0019.hostedemail.com ([216.40.44.19]:33148 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726423AbgD2S5E (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 29 Apr 2020 14:57:04 -0400
-X-Greylist: delayed 553 seconds by postgrey-1.27 at vger.kernel.org; Wed, 29 Apr 2020 14:57:03 EDT
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay06.hostedemail.com (Postfix) with ESMTP id 4E9CB18224D66;
-        Wed, 29 Apr 2020 18:57:03 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:800:960:973:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1537:1566:1593:1594:1711:1714:1730:1747:1777:1792:2393:2553:2559:2562:2828:3138:3139:3140:3141:3142:3622:3865:3867:3870:3871:3872:4321:5007:7903:10004:10400:10848:11232:11658:11914:12296:12297:12740:12760:12895:13069:13311:13357:13439:14181:14659:14721:21080:21212:21324:21451:21627:21660:30012:30054:30060:30090:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:1,LUA_SUMMARY:none
-X-HE-Tag: table47_5a912d5982623
-X-Filterd-Recvd-Size: 1444
-Received: from XPS-9350.home (unknown [47.151.136.130])
-        (Authenticated sender: joe@perches.com)
-        by omf05.hostedemail.com (Postfix) with ESMTPA;
-        Wed, 29 Apr 2020 18:57:02 +0000 (UTC)
-Message-ID: <3fa8fba37f9339adc993cdb7afc77ed0e063967d.camel@perches.com>
+        id S1727099AbgD2S7n (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 29 Apr 2020 14:59:43 -0400
+Received: from mail.kernel.org ([198.145.29.99]:41886 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726519AbgD2S7m (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Wed, 29 Apr 2020 14:59:42 -0400
+Received: from mail-il1-f174.google.com (mail-il1-f174.google.com [209.85.166.174])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 4678020B80;
+        Wed, 29 Apr 2020 18:59:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1588186782;
+        bh=mCzgndZV9oSgYH3A5npWh8MPllIC/3Qa3Gd80PeFISk=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=CqWc7zHruZXF9PobL6vlCmR2JVxmu1hSKnbyUeP/6FvwejRNOemqRKiWdGBjaCK1Y
+         QLTjFAP9qDi3xbg6Dl4RFp2LVqEcN+w+oTHDzhY+niYQnunw9/5w0hXg6YBgLMth7S
+         ic2HSGgf4n+gR6SfcGhfCu0imLrIlRNILWD2R9xY=
+Received: by mail-il1-f174.google.com with SMTP id w6so3544692ilg.1;
+        Wed, 29 Apr 2020 11:59:42 -0700 (PDT)
+X-Gm-Message-State: AGi0Puba9cv/wpA1RGEcmQeAbJRBvnMeXyTVWFVWWFcHqwotOuXAnaBq
+        3xNWpWp59vKc0SabAq5yZS5vVdhdEVXs9x1MEZ4=
+X-Google-Smtp-Source: APiQypIMmAxIAz8HiXRShXUeJVDGv62oB+5s7tuAIyLsW6eHj+7cNblrdjh9dWJqmS+bsEUB2xAQPg6nP5AIHxGdDmE=
+X-Received: by 2002:a92:405:: with SMTP id 5mr31534493ile.279.1588186780730;
+ Wed, 29 Apr 2020 11:59:40 -0700 (PDT)
+MIME-Version: 1.0
+References: <20200429174120.1497212-1-nivedita@alum.mit.edu>
+ <20200429174120.1497212-5-nivedita@alum.mit.edu> <f74fe4ad56c0471f863ce550869391c8811f9893.camel@perches.com>
+ <CAMj1kXGn70BmapKe=6sA17gMCcWRLCebQJFnyObwRbAefOcEng@mail.gmail.com> <3fa8fba37f9339adc993cdb7afc77ed0e063967d.camel@perches.com>
+In-Reply-To: <3fa8fba37f9339adc993cdb7afc77ed0e063967d.camel@perches.com>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Wed, 29 Apr 2020 20:59:29 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXHN1j4+h-mTf_EpsaX3-ifAtKJOPmSSq9LvHoFUUg+0bw@mail.gmail.com>
+Message-ID: <CAMj1kXHN1j4+h-mTf_EpsaX3-ifAtKJOPmSSq9LvHoFUUg+0bw@mail.gmail.com>
 Subject: Re: [PATCH 03/10] efi/x86: Use pr_efi_err for error messages
-From:   Joe Perches <joe@perches.com>
-To:     Ard Biesheuvel <ardb@kernel.org>
+To:     Joe Perches <joe@perches.com>
 Cc:     Arvind Sankar <nivedita@alum.mit.edu>,
         linux-efi <linux-efi@vger.kernel.org>, X86 ML <x86@kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Date:   Wed, 29 Apr 2020 11:57:01 -0700
-In-Reply-To: <CAMj1kXGn70BmapKe=6sA17gMCcWRLCebQJFnyObwRbAefOcEng@mail.gmail.com>
-References: <20200429174120.1497212-1-nivedita@alum.mit.edu>
-         <20200429174120.1497212-5-nivedita@alum.mit.edu>
-         <f74fe4ad56c0471f863ce550869391c8811f9893.camel@perches.com>
-         <CAMj1kXGn70BmapKe=6sA17gMCcWRLCebQJFnyObwRbAefOcEng@mail.gmail.com>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.36.1-2 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, 2020-04-29 at 20:49 +0200, Ard Biesheuvel wrote:
-> On Wed, 29 Apr 2020 at 20:47, Joe Perches <joe@perches.com> wrote:
-> > Looking at code for efi_printk -> efi_char16_printk,
-> > it's somewhat difficult to see where the "output_string"
-> > function pointer is set.  Any clue?
-> It is set by the firmware.
+On Wed, 29 Apr 2020 at 20:57, Joe Perches <joe@perches.com> wrote:
+>
+> On Wed, 2020-04-29 at 20:49 +0200, Ard Biesheuvel wrote:
+> > On Wed, 29 Apr 2020 at 20:47, Joe Perches <joe@perches.com> wrote:
+> > > Looking at code for efi_printk -> efi_char16_printk,
+> > > it's somewhat difficult to see where the "output_string"
+> > > function pointer is set.  Any clue?
+> > It is set by the firmware.
+>
+> Sure, where in the code though?
+>
 
-Sure, where in the code though?
-
-
+In which code? The firmware code?
