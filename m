@@ -2,93 +2,220 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A4FDD1BE6E2
-	for <lists+linux-efi@lfdr.de>; Wed, 29 Apr 2020 21:02:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EF4FD1BE6EB
+	for <lists+linux-efi@lfdr.de>; Wed, 29 Apr 2020 21:06:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727840AbgD2TCD (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 29 Apr 2020 15:02:03 -0400
-Received: from mout.kundenserver.de ([212.227.126.187]:44269 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726511AbgD2TCD (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 29 Apr 2020 15:02:03 -0400
-Received: from threadripper.lan ([149.172.19.189]) by mrelayeu.kundenserver.de
- (mreue011 [212.227.15.129]) with ESMTPA (Nemesis) id
- 1MUY9w-1jcdPt3kW0-00QWZG; Wed, 29 Apr 2020 21:01:22 +0200
-From:   Arnd Bergmann <arnd@arndb.de>
-To:     Ard Biesheuvel <ardb@kernel.org>, Ingo Molnar <mingo@kernel.org>,
-        Jerry Snitselaar <jsnitsel@redhat.com>
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Ben Dooks <ben.dooks@codethink.co.uk>,
-        Dave Young <dyoung@redhat.com>,
-        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        Lukas Wunner <lukas@wunner.de>, Lyude Paul <lyude@redhat.com>,
-        Matthew Garrett <mjg59@google.com>,
-        Octavian Purdila <octavian.purdila@intel.com>,
-        Peter Jones <pjones@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Scott Talbert <swt@techie.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-efi@vger.kernel.org, linux-integrity@vger.kernel.org,
-        stable@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] efi/tpm: fix section mismatch warning
-Date:   Wed, 29 Apr 2020 21:01:08 +0200
-Message-Id: <20200429190119.43595-1-arnd@arndb.de>
-X-Mailer: git-send-email 2.26.0
+        id S1726921AbgD2TGE (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 29 Apr 2020 15:06:04 -0400
+Received: from mail.kernel.org ([198.145.29.99]:43872 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726423AbgD2TGE (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Wed, 29 Apr 2020 15:06:04 -0400
+Received: from mail-il1-f179.google.com (mail-il1-f179.google.com [209.85.166.179])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 697E7205C9;
+        Wed, 29 Apr 2020 19:06:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1588187162;
+        bh=WuJYQ53ZkuOkwgAjoJ5v5zI5lMg0jLRl2QUYDwYstGE=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=QAucFIjryzdTB3MyJ5PH8Cw2+3i0fw2jgIwjXRshQa4NuL1TApobXKBGF+uxTq5qr
+         P9kFV91tKxs3qSHVHy1elOWnyZRFM7VFSTxjlWWnqrkPitUmjtP791Ghd7hSFQm7Zp
+         sJooFnsXX0aLbR+XSN19tbDrDOLRQXmZNqrYxG50=
+Received: by mail-il1-f179.google.com with SMTP id u189so3539193ilc.4;
+        Wed, 29 Apr 2020 12:06:02 -0700 (PDT)
+X-Gm-Message-State: AGi0Pubc0M1wYmaimuQdSb4VSjv+uIZPMRLUKkJMbxQd12G8ANLi6AXH
+        ZQOwNGfTfilsTpkNbA+zmelKoEv61iV0aTo6tVw=
+X-Google-Smtp-Source: APiQypKWF7h0IYUs2F+80QDQY64o1jJn/LQ0m4ZctaBgGd+HchHNkvgxpxJ3zt+7YTF6UM0EZg+KdyYYte00vghL5Q0=
+X-Received: by 2002:a92:39dd:: with SMTP id h90mr4635659ilf.80.1588187161819;
+ Wed, 29 Apr 2020 12:06:01 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:ZQnTjnUaD3Ot3Nx9eVP2/03GaU0JA4GRDpusvqc79KiO4fUHV7z
- xbCc99Kr8a1zJJE/r4bO0Q47fh+gOYXqvMEruI2hqCMZW/f96D/07cYwGJnjvGbRf0QYvGa
- AMxgwBy1kWiVvyyalES1BaAtiU6NPyGlrSvjv+GzdcJsq9wtDZIW17AmoNdVJMst0obhgPq
- ZtBIEXgn3++a0vuwB8Rrg==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:eoASaEfANZA=:UKYNanq8Tate2hME67jf0h
- HFfVw5eEnAwV2ivqhWR10qdqEdCv1a/qH6+I1GUsQxdb5fSJg2p6lrkbKfR5fE+VkR1jStuAE
- vdlwseanNyzYnYPr/IK92xAXWRJsKbD8hzPQy+wW4OCnLKAu4mr7PZVANZ/2Vvyw9aAo+/kfv
- HOGPCihZSJ5NHcXqDB4sMDZnWEx4EFDNwPRN2zlmFMkWQpEt7qNQxV7Cko6eYgRTKPFKYw8ug
- luD8JtZccLzQ1F614k8UJnfxA/4Hm/lf2RrzFDzl6skwPh2C533wIsyYwh0kdjZb925DZIviL
- qkk+iKL0wG19l3fDIu8L5nKkjz4FqOV6qe3lbbV3PwZcZyF6EAdLuLHI+WtqQRHQaK42K36k+
- vfTQhNM6n1RRXh4GU4SDRXXr7rs1Q0+X2ygEeFZZ2zPdtMf1IbrvSIoI0b6eukMM7JuKCYGoR
- 62odyLSl1Mh+mEkFX9rq7IILGbbNuIM8m0xGW5OXbdVwgccDWLRwFPS48XvKePoM6uvfFIrJe
- VWLVZP99LysMhyAwj6vAP8nM1xuHPt0oYb2Z38d6GUZIpbo0VrQyqElgoNlHkXWgHoBvdu7Sy
- ssYDxqMdy3rDwOas9hhs04+3fSHEDkxcdkLIQdI3TfBNoYO10BFb52q5HynGfHvlBS7HypmOp
- Xzy8IVQOlKP42yNGNIXWOOq745r7tsoZOtd4hlQlnBd4bZf3bCZRVi8uBfE7NefGf3vG145yF
- VH/3/ipt6Udrv4zPUIsxu7sC36zEbaKDVaR9OxAi+Kdh25JO5JtPuaitxehAnkJSWdPU9BHAg
- hEn5TMsMst+vMlNCOwANobfLlaTMcLgSm+Prswy1rgbevxfr9U=
+References: <20200429174120.1497212-1-nivedita@alum.mit.edu> <20200429174120.1497212-10-nivedita@alum.mit.edu>
+In-Reply-To: <20200429174120.1497212-10-nivedita@alum.mit.edu>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Wed, 29 Apr 2020 21:05:51 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXFe0eEHnijuB3OGM2moHw0xH5viFvCiQ6Y0cLG7s=iHfg@mail.gmail.com>
+Message-ID: <CAMj1kXFe0eEHnijuB3OGM2moHw0xH5viFvCiQ6Y0cLG7s=iHfg@mail.gmail.com>
+Subject: Re: [PATCH 08/10] efi/x86: Drop soft_limit for x86 initrd loading
+To:     Arvind Sankar <nivedita@alum.mit.edu>
+Cc:     linux-efi <linux-efi@vger.kernel.org>, X86 ML <x86@kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Building with gcc-10 causes a harmless warning about a section mismatch:
+On Wed, 29 Apr 2020 at 19:41, Arvind Sankar <nivedita@alum.mit.edu> wrote:
+>
+> Currently the EFI stub attempts to load initrd(s) specified on the
+> command line below hdr->initrd_addr_max (2G) and if that fails, falls
+> back to allocating at an unrestricted address.
+>
+> The only case when loading at a low address helps is for the 32-bit
+> kernel, where the initrd must be copied by the kernel into lowmem if
+> it's not there already. The limit specified in hdr->initrd_addr_max is
+> insufficient to ensure this in any case, since lowmem by default will
+> extend to about 0.9G rather than 2G, and we don't attempt to load the
+> initrd in lowmem at all for the new device-path based initrd.
+>
+> Simplify the code by dropping this optimization for the command line
+> initrd(s) as well.
+>
+> Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
 
-WARNING: modpost: vmlinux.o(.text.unlikely+0x5e191): Section mismatch in reference from the function tpm2_calc_event_log_size() to the function .init.text:early_memunmap()
-The function tpm2_calc_event_log_size() references
-the function __init early_memunmap().
-This is often because tpm2_calc_event_log_size lacks a __init
-annotation or the annotation of early_memunmap is wrong.
+It is not really an optimization, unfortunately. Commit 47226ad4f4cfd
+has the details, but in short, loading above 4 GB broke some
+platforms, so below 4 GB had to remain the default.
 
-Add the missing annotation.
+This was 6 years ago, and so we might be able to revisit this, but
+characterising it as a mere optimization is inaccurate.
 
-Fixes: e658c82be556 ("efi/tpm: Only set 'efi_tpm_final_log_size' after successful event log parsing")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
- drivers/firmware/efi/tpm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/efi/tpm.c b/drivers/firmware/efi/tpm.c
-index 31f9f0e369b9..55b031d2c989 100644
---- a/drivers/firmware/efi/tpm.c
-+++ b/drivers/firmware/efi/tpm.c
-@@ -16,7 +16,7 @@
- int efi_tpm_final_log_size;
- EXPORT_SYMBOL(efi_tpm_final_log_size);
- 
--static int tpm2_calc_event_log_size(void *data, int count, void *size_info)
-+static int __init tpm2_calc_event_log_size(void *data, int count, void *size_info)
- {
- 	struct tcg_pcr_event2_head *header;
- 	int event_size, size = 0;
--- 
-2.26.0
-
+> ---
+>  drivers/firmware/efi/libstub/efi-stub-helper.c | 14 +++++---------
+>  drivers/firmware/efi/libstub/efi-stub.c        |  3 +--
+>  drivers/firmware/efi/libstub/efistub.h         |  8 +++-----
+>  drivers/firmware/efi/libstub/file.c            | 13 ++-----------
+>  drivers/firmware/efi/libstub/x86-stub.c        |  3 +--
+>  5 files changed, 12 insertions(+), 29 deletions(-)
+>
+> diff --git a/drivers/firmware/efi/libstub/efi-stub-helper.c b/drivers/firmware/efi/libstub/efi-stub-helper.c
+> index 2c0c2c34b4cc..32768fa04b32 100644
+> --- a/drivers/firmware/efi/libstub/efi-stub-helper.c
+> +++ b/drivers/firmware/efi/libstub/efi-stub-helper.c
+> @@ -378,8 +378,7 @@ static
+>  efi_status_t efi_load_initrd_cmdline(efi_loaded_image_t *image,
+>                                      unsigned long *load_addr,
+>                                      unsigned long *load_size,
+> -                                    unsigned long soft_limit,
+> -                                    unsigned long hard_limit)
+> +                                    unsigned long max)
+>  {
+>         if (!IS_ENABLED(CONFIG_EFI_GENERIC_STUB_INITRD_CMDLINE_LOADER) ||
+>             (IS_ENABLED(CONFIG_X86) && (!efi_is_native() || image == NULL))) {
+> @@ -388,27 +387,24 @@ efi_status_t efi_load_initrd_cmdline(efi_loaded_image_t *image,
+>         }
+>
+>         return handle_cmdline_files(image, L"initrd=", sizeof(L"initrd=") - 2,
+> -                                   soft_limit, hard_limit,
+> -                                   load_addr, load_size);
+> +                                   max, load_addr, load_size);
+>  }
+>
+>  efi_status_t efi_load_initrd(efi_loaded_image_t *image,
+>                              unsigned long *load_addr,
+>                              unsigned long *load_size,
+> -                            unsigned long soft_limit,
+> -                            unsigned long hard_limit)
+> +                            unsigned long max)
+>  {
+>         efi_status_t status;
+>
+>         if (!load_addr || !load_size)
+>                 return EFI_INVALID_PARAMETER;
+>
+> -       status = efi_load_initrd_dev_path(load_addr, load_size, hard_limit);
+> +       status = efi_load_initrd_dev_path(load_addr, load_size, max);
+>         if (status == EFI_SUCCESS) {
+>                 pr_efi("Loaded initrd from LINUX_EFI_INITRD_MEDIA_GUID device path\n");
+>         } else if (status == EFI_NOT_FOUND) {
+> -               status = efi_load_initrd_cmdline(image, load_addr, load_size,
+> -                                                soft_limit, hard_limit);
+> +               status = efi_load_initrd_cmdline(image, load_addr, load_size, max);
+>                 if (status == EFI_SUCCESS && *load_size > 0)
+>                         pr_efi("Loaded initrd from command line option\n");
+>         }
+> diff --git a/drivers/firmware/efi/libstub/efi-stub.c b/drivers/firmware/efi/libstub/efi-stub.c
+> index d8f24f5c91bd..930302d9415a 100644
+> --- a/drivers/firmware/efi/libstub/efi-stub.c
+> +++ b/drivers/firmware/efi/libstub/efi-stub.c
+> @@ -265,8 +265,7 @@ efi_status_t efi_entry(efi_handle_t handle, efi_system_table_t *sys_table_arg)
+>
+>         if (!efi_noinitrd) {
+>                 max_addr = efi_get_max_initrd_addr(dram_base, image_addr);
+> -               status = efi_load_initrd(image, &initrd_addr, &initrd_size,
+> -                                        ULONG_MAX, max_addr);
+> +               status = efi_load_initrd(image, &initrd_addr, &initrd_size, max_addr);
+>                 if (status != EFI_SUCCESS)
+>                         pr_efi_err("Failed to load initrd!\n");
+>         }
+> diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
+> index dfdd7954bf58..1ba0887818d9 100644
+> --- a/drivers/firmware/efi/libstub/efistub.h
+> +++ b/drivers/firmware/efi/libstub/efistub.h
+> @@ -663,8 +663,7 @@ efi_status_t efi_setup_gop(struct screen_info *si, efi_guid_t *proto,
+>  efi_status_t handle_cmdline_files(efi_loaded_image_t *image,
+>                                   const efi_char16_t *optstr,
+>                                   int optstr_size,
+> -                                 unsigned long soft_limit,
+> -                                 unsigned long hard_limit,
+> +                                 unsigned long max,
+>                                   unsigned long *load_addr,
+>                                   unsigned long *load_size);
+>
+> @@ -674,13 +673,12 @@ static inline efi_status_t efi_load_dtb(efi_loaded_image_t *image,
+>                                         unsigned long *load_size)
+>  {
+>         return handle_cmdline_files(image, L"dtb=", sizeof(L"dtb=") - 2,
+> -                                   ULONG_MAX, ULONG_MAX, load_addr, load_size);
+> +                                   ULONG_MAX, load_addr, load_size);
+>  }
+>
+>  efi_status_t efi_load_initrd(efi_loaded_image_t *image,
+>                              unsigned long *load_addr,
+>                              unsigned long *load_size,
+> -                            unsigned long soft_limit,
+> -                            unsigned long hard_limit);
+> +                            unsigned long max);
+>
+>  #endif
+> diff --git a/drivers/firmware/efi/libstub/file.c b/drivers/firmware/efi/libstub/file.c
+> index 50aaf15f9ad5..7dee3c5d81fb 100644
+> --- a/drivers/firmware/efi/libstub/file.c
+> +++ b/drivers/firmware/efi/libstub/file.c
+> @@ -124,8 +124,7 @@ static int find_file_option(const efi_char16_t *cmdline, int cmdline_len,
+>  efi_status_t handle_cmdline_files(efi_loaded_image_t *image,
+>                                   const efi_char16_t *optstr,
+>                                   int optstr_size,
+> -                                 unsigned long soft_limit,
+> -                                 unsigned long hard_limit,
+> +                                 unsigned long max,
+>                                   unsigned long *load_addr,
+>                                   unsigned long *load_size)
+>  {
+> @@ -181,15 +180,7 @@ efi_status_t handle_cmdline_files(efi_loaded_image_t *image,
+>                     round_up(alloc_size, EFI_ALLOC_ALIGN)) {
+>                         unsigned long old_addr = alloc_addr;
+>
+> -                       status = EFI_OUT_OF_RESOURCES;
+> -                       if (soft_limit < hard_limit)
+> -                               status = efi_allocate_pages(alloc_size + size,
+> -                                                           &alloc_addr,
+> -                                                           soft_limit);
+> -                       if (status == EFI_OUT_OF_RESOURCES)
+> -                               status = efi_allocate_pages(alloc_size + size,
+> -                                                           &alloc_addr,
+> -                                                           hard_limit);
+> +                       status = efi_allocate_pages(alloc_size + size, &alloc_addr, max);
+>                         if (status != EFI_SUCCESS) {
+>                                 pr_efi_err("Failed to allocate memory for files\n");
+>                                 goto err_close_file;
+> diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
+> index 1d3f94f1dafa..85a924fecc87 100644
+> --- a/drivers/firmware/efi/libstub/x86-stub.c
+> +++ b/drivers/firmware/efi/libstub/x86-stub.c
+> @@ -755,8 +755,7 @@ unsigned long efi_main(efi_handle_t handle,
+>         if (!efi_noinitrd) {
+>                 unsigned long addr, size;
+>
+> -               status = efi_load_initrd(image, &addr, &size,
+> -                                        hdr->initrd_addr_max, ULONG_MAX);
+> +               status = efi_load_initrd(image, &addr, &size, ULONG_MAX);
+>
+>                 if (status != EFI_SUCCESS) {
+>                         pr_efi_err("Failed to load initrd!\n");
+> --
+> 2.26.2
+>
