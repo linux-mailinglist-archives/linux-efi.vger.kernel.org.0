@@ -2,99 +2,64 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ED5A11BE719
-	for <lists+linux-efi@lfdr.de>; Wed, 29 Apr 2020 21:15:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4FD201BE79F
+	for <lists+linux-efi@lfdr.de>; Wed, 29 Apr 2020 21:47:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727027AbgD2TPd (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 29 Apr 2020 15:15:33 -0400
-Received: from mail.kernel.org ([198.145.29.99]:52894 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726921AbgD2TPd (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Wed, 29 Apr 2020 15:15:33 -0400
-Received: from mail-il1-f173.google.com (mail-il1-f173.google.com [209.85.166.173])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 09F18221EA;
-        Wed, 29 Apr 2020 19:15:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1588187733;
-        bh=8zGF7J5vU1aHCP5NVrkZGLyiOLpTgil37hVC6FyH4+g=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=CjXDKQe50JwPGFFd2wqJPBv40jTi+sCUJ4DaP44BJ0ffo0qDgF4CCT/up//grV+1X
-         H5XHXUf7VrgTddw49+fLsdqZbguhhBESE0/5YGZddRYiqx0Jo97WEX7mbcnqbaWpIj
-         irEoW5bcty8tZMIKiOKqEusZ2LpinmUtT10U5WJk=
-Received: by mail-il1-f173.google.com with SMTP id e8so3553189ilm.7;
-        Wed, 29 Apr 2020 12:15:33 -0700 (PDT)
-X-Gm-Message-State: AGi0PuZ+ljW/oxfpWo3Ry1qNXMbP9fExAPCpODxbdV1xTPROcNRtUrjN
-        ziOtRoYc71d5kEzDvg2Wgph/EW9B0BM7lyV2qT4=
-X-Google-Smtp-Source: APiQypJsnlAvQfc7irLT1YgR+mCRIPtINI2GxAyyU6DQsDAhz6atG1lWYITEEV+JOjR4au3GhCYE9ARuvXzpnDuZRd8=
-X-Received: by 2002:a92:39dd:: with SMTP id h90mr4677889ilf.80.1588187732438;
- Wed, 29 Apr 2020 12:15:32 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200429190119.43595-1-arnd@arndb.de>
-In-Reply-To: <20200429190119.43595-1-arnd@arndb.de>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Wed, 29 Apr 2020 21:15:21 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXE4DSOhN7+ydGytHwOCn+L=0VoxW4T76ERL8+_fjyNj7A@mail.gmail.com>
-Message-ID: <CAMj1kXE4DSOhN7+ydGytHwOCn+L=0VoxW4T76ERL8+_fjyNj7A@mail.gmail.com>
-Subject: Re: [PATCH] efi/tpm: fix section mismatch warning
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     Ingo Molnar <mingo@kernel.org>,
-        Jerry Snitselaar <jsnitsel@redhat.com>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Ben Dooks <ben.dooks@codethink.co.uk>,
-        Dave Young <dyoung@redhat.com>,
-        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        Lukas Wunner <lukas@wunner.de>, Lyude Paul <lyude@redhat.com>,
-        Matthew Garrett <mjg59@google.com>,
-        Octavian Purdila <octavian.purdila@intel.com>,
-        Peter Jones <pjones@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Scott Talbert <swt@techie.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        linux-integrity@vger.kernel.org, stable@vger.kernel.org,
+        id S1727789AbgD2TrI (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 29 Apr 2020 15:47:08 -0400
+Received: from smtprelay0067.hostedemail.com ([216.40.44.67]:50626 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726973AbgD2TrH (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 29 Apr 2020 15:47:07 -0400
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay02.hostedemail.com (Postfix) with ESMTP id EC3375820;
+        Wed, 29 Apr 2020 19:47:04 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:800:960:973:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1539:1593:1594:1711:1730:1747:1777:1792:2393:2553:2559:2562:2828:3138:3139:3140:3141:3142:3352:3622:3865:3867:3870:3871:3872:4321:5007:7903:10004:10400:10848:11232:11658:11914:12296:12297:12740:12760:12895:13069:13311:13357:13439:14181:14659:14721:21080:21212:21324:21451:21627:21660:30012:30054:30060:30090:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:1,LUA_SUMMARY:none
+X-HE-Tag: brain68_5acb823abe628
+X-Filterd-Recvd-Size: 1922
+Received: from XPS-9350.home (unknown [47.151.136.130])
+        (Authenticated sender: joe@perches.com)
+        by omf06.hostedemail.com (Postfix) with ESMTPA;
+        Wed, 29 Apr 2020 19:47:03 +0000 (UTC)
+Message-ID: <f53e716ac4da310d0d9ed7d211ac17ba8ec64699.camel@perches.com>
+Subject: Re: [PATCH 03/10] efi/x86: Use pr_efi_err for error messages
+From:   Joe Perches <joe@perches.com>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     Arvind Sankar <nivedita@alum.mit.edu>,
+        linux-efi <linux-efi@vger.kernel.org>, X86 ML <x86@kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Date:   Wed, 29 Apr 2020 12:47:02 -0700
+In-Reply-To: <CAMj1kXHN1j4+h-mTf_EpsaX3-ifAtKJOPmSSq9LvHoFUUg+0bw@mail.gmail.com>
+References: <20200429174120.1497212-1-nivedita@alum.mit.edu>
+         <20200429174120.1497212-5-nivedita@alum.mit.edu>
+         <f74fe4ad56c0471f863ce550869391c8811f9893.camel@perches.com>
+         <CAMj1kXGn70BmapKe=6sA17gMCcWRLCebQJFnyObwRbAefOcEng@mail.gmail.com>
+         <3fa8fba37f9339adc993cdb7afc77ed0e063967d.camel@perches.com>
+         <CAMj1kXHN1j4+h-mTf_EpsaX3-ifAtKJOPmSSq9LvHoFUUg+0bw@mail.gmail.com>
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.36.1-2 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, 29 Apr 2020 at 21:02, Arnd Bergmann <arnd@arndb.de> wrote:
->
-> Building with gcc-10 causes a harmless warning about a section mismatch:
->
-> WARNING: modpost: vmlinux.o(.text.unlikely+0x5e191): Section mismatch in reference from the function tpm2_calc_event_log_size() to the function .init.text:early_memunmap()
-> The function tpm2_calc_event_log_size() references
-> the function __init early_memunmap().
-> This is often because tpm2_calc_event_log_size lacks a __init
-> annotation or the annotation of early_memunmap is wrong.
->
-> Add the missing annotation.
->
-> Fixes: e658c82be556 ("efi/tpm: Only set 'efi_tpm_final_log_size' after successful event log parsing")
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+On Wed, 2020-04-29 at 20:59 +0200, Ard Biesheuvel wrote:
+> On Wed, 29 Apr 2020 at 20:57, Joe Perches <joe@perches.com> wrote:
+> > On Wed, 2020-04-29 at 20:49 +0200, Ard Biesheuvel wrote:
+> > > On Wed, 29 Apr 2020 at 20:47, Joe Perches <joe@perches.com> wrote:
+> > > > Looking at code for efi_printk -> efi_char16_printk,
+> > > > it's somewhat difficult to see where the "output_string"
+> > > > function pointer is set.  Any clue?
+> > > It is set by the firmware.
+> > 
+> > Sure, where in the code though?
+> > 
+> 
+> In which code? The firmware code?
 
-Thanks, I'll take it as a fix.
+I presume it's set from a struct received from hardware/firmware
+somewhere in drivers/firmware/efi, but it doesn't seem clear where.
 
-> ---
->  drivers/firmware/efi/tpm.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/firmware/efi/tpm.c b/drivers/firmware/efi/tpm.c
-> index 31f9f0e369b9..55b031d2c989 100644
-> --- a/drivers/firmware/efi/tpm.c
-> +++ b/drivers/firmware/efi/tpm.c
-> @@ -16,7 +16,7 @@
->  int efi_tpm_final_log_size;
->  EXPORT_SYMBOL(efi_tpm_final_log_size);
->
-> -static int tpm2_calc_event_log_size(void *data, int count, void *size_info)
-> +static int __init tpm2_calc_event_log_size(void *data, int count, void *size_info)
->  {
->         struct tcg_pcr_event2_head *header;
->         int event_size, size = 0;
-> --
-> 2.26.0
->
