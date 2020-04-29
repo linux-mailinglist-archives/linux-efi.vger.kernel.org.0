@@ -2,44 +2,44 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 405981BE572
-	for <lists+linux-efi@lfdr.de>; Wed, 29 Apr 2020 19:41:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 695861BE584
+	for <lists+linux-efi@lfdr.de>; Wed, 29 Apr 2020 19:41:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727105AbgD2RlZ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 29 Apr 2020 13:41:25 -0400
-Received: from mail-qt1-f195.google.com ([209.85.160.195]:44129 "EHLO
-        mail-qt1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727100AbgD2RlY (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 29 Apr 2020 13:41:24 -0400
-Received: by mail-qt1-f195.google.com with SMTP id c23so2558535qtp.11;
-        Wed, 29 Apr 2020 10:41:23 -0700 (PDT)
+        id S1727105AbgD2Rl5 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 29 Apr 2020 13:41:57 -0400
+Received: from mail-qt1-f194.google.com ([209.85.160.194]:44135 "EHLO
+        mail-qt1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727110AbgD2Rl0 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 29 Apr 2020 13:41:26 -0400
+Received: by mail-qt1-f194.google.com with SMTP id c23so2558652qtp.11;
+        Wed, 29 Apr 2020 10:41:26 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
         bh=P15viJAU+0RM8Psz28V6qOX0pe0sVwfTgVh2E8+aZ1I=;
-        b=MANmL+zmeZa1pfF1B0Bpp7e4xIJ3JlC65IE2PUW36JBPMNLGb87HV0yRWIqJRUfPsp
-         YmdQ69q52guz4lojrb8+8OxSUIYt911ZbJexu8sc05HtHaLBx5lTwwy1W8+0YY13sc44
-         RA21aj7edBDtH7PEtrTuSLxU2OKSk5KmcRawD1bOnQYna+JVh5gKIuCBFSG6QlZ3j6PW
-         hGFqq9A7HeQaBslvuuyvpjtvtfpLwguztoX+kW46VTdlTM3713wxJBtXwRPncXIWbtkQ
-         tGsR1JSX34uOJTwUf1GSd1Uk+6icL1g9LamLaJFohVd/1QJtv4RPjQ2YThOLoU5eerWU
-         FIjw==
-X-Gm-Message-State: AGi0PuascN9o69ycNpZ4OZEbhMZyRClW+K/ywgEhpaa1Zm+E2g+MzArA
-        efw0V+Arz8hqX1YlaesRHow=
-X-Google-Smtp-Source: APiQypIFC1kL1kHOsrK5LIv1m3ylQNsvj/MBPF5eIlzcnj6qkPG+1z6BoeD+s2IvNNgbmSe15xM/2g==
-X-Received: by 2002:ac8:3808:: with SMTP id q8mr35924404qtb.245.1588182083306;
-        Wed, 29 Apr 2020 10:41:23 -0700 (PDT)
+        b=W1lTv6GXfQd2qlyQppJZXG9l9O8AjfNisolBqNhiBd8w83xd/0/bZ1J4VbYNiMPS3p
+         24N4O/dDfsftmozwMK7dErXkvQPxbotqHCfY5CubdNExO/hnUTx/3ypmttvlhCQkGAfp
+         cnGJbmwRZmz7oUL6ZYkpSbsQCtZn5kneWBJUc/G6I06hDQCP3U1NycNr/EJ2fnrcFulY
+         jVpUNEZA4iUaXBhUzASVL3uHTRpAEW4v7mvk6P5uLnmTtN7BcI4ati724B+V04CrVBeA
+         zzgMRQFpYGDycztBj29UQFqAlfZDFIt+NAeH0aF5M495ulRQsvFEiNLdQ90TVAI5ly+d
+         QxFg==
+X-Gm-Message-State: AGi0PuYihttB6Mzdb4Y5x/bwH9OrL7+P3Ir9YbsXhLPaNYabCNJVPsDj
+        s1AXlGdRBaZYWd2fWKJwtt3njBatjsM=
+X-Google-Smtp-Source: APiQypLe+4jpQ+qS7PKJk8e2VSQm1eSPxJm5vUVmnMPPmL/uBVwecsnO45tZQkGoMUEeoekbZgJ/Bw==
+X-Received: by 2002:ac8:5048:: with SMTP id h8mr35932906qtm.189.1588182084129;
+        Wed, 29 Apr 2020 10:41:24 -0700 (PDT)
 Received: from rani.riverdale.lan ([2001:470:1f07:5f3::b55f])
-        by smtp.gmail.com with ESMTPSA id z1sm14766448qkz.3.2020.04.29.10.41.22
+        by smtp.gmail.com with ESMTPSA id z1sm14766448qkz.3.2020.04.29.10.41.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Apr 2020 10:41:22 -0700 (PDT)
+        Wed, 29 Apr 2020 10:41:23 -0700 (PDT)
 From:   Arvind Sankar <nivedita@alum.mit.edu>
 To:     Ard Biesheuvel <ardb@kernel.org>
 Cc:     linux-efi@vger.kernel.org, x86@kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH 02/10] efi: Add a helper function to split 64-bit values
-Date:   Wed, 29 Apr 2020 13:41:11 -0400
-Message-Id: <20200429174120.1497212-3-nivedita@alum.mit.edu>
+Subject: [PATCH 02/10] efi/libstub: Add a helper function to split 64-bit values
+Date:   Wed, 29 Apr 2020 13:41:12 -0400
+Message-Id: <20200429174120.1497212-4-nivedita@alum.mit.edu>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200429174120.1497212-1-nivedita@alum.mit.edu>
 References: <20200429174120.1497212-1-nivedita@alum.mit.edu>
