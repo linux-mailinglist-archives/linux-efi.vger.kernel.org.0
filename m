@@ -2,104 +2,99 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C92F21BFFD7
-	for <lists+linux-efi@lfdr.de>; Thu, 30 Apr 2020 17:14:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A65761C04B5
+	for <lists+linux-efi@lfdr.de>; Thu, 30 Apr 2020 20:28:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726702AbgD3POW (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 30 Apr 2020 11:14:22 -0400
-Received: from mail.kernel.org ([198.145.29.99]:58566 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726661AbgD3POV (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Thu, 30 Apr 2020 11:14:21 -0400
-Received: from mail-io1-f53.google.com (mail-io1-f53.google.com [209.85.166.53])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id EE1B320661;
-        Thu, 30 Apr 2020 15:14:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1588259661;
-        bh=KMGeU6nz29vrM1uYO0a3kTVAV4cJFx0s+w9L3Ywf0pI=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=TT7oatkHmj3/y+HBS5xZ+Qb8BlnZyRCmMd01I/Fi4IGDRianFaX2gJjieNuIOmDC8
-         zkgA6dPqNohx+byuPdjelqKTvqVCfOXa7jel5IBYvHPG9OHCSGRKmC3Z0YFhpcFUVs
-         KdRlWEddm8YUeJZT4UxoO6CCDl1cPPxmnhdsM1zg=
-Received: by mail-io1-f53.google.com with SMTP id b12so1826687ion.8;
-        Thu, 30 Apr 2020 08:14:20 -0700 (PDT)
-X-Gm-Message-State: AGi0PuaUlK6QwYD4xVFCEM7LS23VU52o2JbWtsh1DjuX/mTvzT82lCG5
-        l00xQmlcL9QO6eL+QYpuVBsVAQv6DC0Fxq3bf8Q=
-X-Google-Smtp-Source: APiQypISgwQ0ge6OQUtXTqQAtwh9HUtZQ4CGAaRQizRfjz+lvojsquMeqkYNr8DKAedRWB3z3tEWNdRBHjK1qZCKbiM=
-X-Received: by 2002:a5d:9b8a:: with SMTP id r10mr2356911iom.171.1588259660396;
- Thu, 30 Apr 2020 08:14:20 -0700 (PDT)
-MIME-Version: 1.0
+        id S1726520AbgD3S2r (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 30 Apr 2020 14:28:47 -0400
+Received: from mail-qv1-f68.google.com ([209.85.219.68]:38910 "EHLO
+        mail-qv1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726309AbgD3S2r (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 30 Apr 2020 14:28:47 -0400
+Received: by mail-qv1-f68.google.com with SMTP id t8so3516626qvw.5;
+        Thu, 30 Apr 2020 11:28:45 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=+sH54dpZ/XTFnXD/KKFyF1LiOzKMWBSjoCZ5Dsb+3EY=;
+        b=RKPOyiyfs8U0hNrvSiXt3Z7lD4sfCHj5juz4jIiAqB34P6pWyGsEWtRn3AB+3rbDUy
+         Dx2Tw3kLs9zfNde6k411qDIxwog+m4zf/KORaRTc3q3IN5i5WmnYD1yk2eHId1qIAHNM
+         AU9PrTiUApbnILS4SWGJ7Aj99pq+E2KTEwocOOtwSo+D+jdSPH5poNDSMk0gVIwIkSB2
+         gfMqQe0EhydSLNolonYjrBx49Aiyrgq7cFuF05fNU2JBt6Mkhf1KiSr0QSb4EcmZhLrm
+         4KJnfEhBmFWexi1xfQih4JPC3UvAlwsFCbIiiTASULsLvR3v5YoJuT0/miqBCmJc0IRm
+         XYxQ==
+X-Gm-Message-State: AGi0Pub64x5EWjLFaJr3S6ChsAHsYedX/+cWg32OBftkbuMuvkBR63Te
+        pqlSmIZ2WzqzgkLhReMs1bM=
+X-Google-Smtp-Source: APiQypLEi//txaBtHBr4GcYMFnL5EucvjV3e2izI4+SkcsU3fzOvBTRP6MSWAJaQZtxhN1OO6P5+jA==
+X-Received: by 2002:a05:6214:414:: with SMTP id z20mr197142qvx.242.1588271324862;
+        Thu, 30 Apr 2020 11:28:44 -0700 (PDT)
+Received: from rani.riverdale.lan ([2001:470:1f07:5f3::b55f])
+        by smtp.gmail.com with ESMTPSA id v27sm449785qtb.35.2020.04.30.11.28.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 30 Apr 2020 11:28:44 -0700 (PDT)
+From:   Arvind Sankar <nivedita@alum.mit.edu>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-efi@vger.kernel.org, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v2 00/11] efi: some cleanups/refactoring for efi/next
+Date:   Thu, 30 Apr 2020 14:28:32 -0400
+Message-Id: <20200430182843.2510180-1-nivedita@alum.mit.edu>
+X-Mailer: git-send-email 2.26.2
+In-Reply-To: <20200429174120.1497212-1-nivedita@alum.mit.edu>
 References: <20200429174120.1497212-1-nivedita@alum.mit.edu>
- <20200429174120.1497212-5-nivedita@alum.mit.edu> <f74fe4ad56c0471f863ce550869391c8811f9893.camel@perches.com>
- <CAMj1kXGn70BmapKe=6sA17gMCcWRLCebQJFnyObwRbAefOcEng@mail.gmail.com>
- <20200429214332.GC1621173@rani.riverdale.lan> <31b23951ee2b8e2391f3208b60a7132df18be74e.camel@perches.com>
- <CAMj1kXFJfK=tspytknqdABRfYMhA23FWOs8QoasX1jZ6z=F3Gg@mail.gmail.com> <20200429222057.GA1645040@rani.riverdale.lan>
-In-Reply-To: <20200429222057.GA1645040@rani.riverdale.lan>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Thu, 30 Apr 2020 17:14:09 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXGCetKOZ86JmTbPUL9koq7=n8fRcWtctf7Xzi5mWaP2Bg@mail.gmail.com>
-Message-ID: <CAMj1kXGCetKOZ86JmTbPUL9koq7=n8fRcWtctf7Xzi5mWaP2Bg@mail.gmail.com>
-Subject: Re: [PATCH 03/10] efi/x86: Use pr_efi_err for error messages
-To:     Arvind Sankar <nivedita@alum.mit.edu>
-Cc:     Joe Perches <joe@perches.com>,
-        linux-efi <linux-efi@vger.kernel.org>, X86 ML <x86@kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, 30 Apr 2020 at 00:21, Arvind Sankar <nivedita@alum.mit.edu> wrote:
->
-> On Wed, Apr 29, 2020 at 11:55:04PM +0200, Ard Biesheuvel wrote:
-> > On Wed, 29 Apr 2020 at 23:53, Joe Perches <joe@perches.com> wrote:
-> > >
-> > > On Wed, 2020-04-29 at 17:43 -0400, Arvind Sankar wrote:
-> > > > On Wed, Apr 29, 2020 at 08:49:21PM +0200, Ard Biesheuvel wrote:
-> > > > > On Wed, 29 Apr 2020 at 20:47, Joe Perches <joe@perches.com> wrote:
-> > > > > > On Wed, 2020-04-29 at 13:41 -0400, Arvind Sankar wrote:
-> > > > > > > Use pr_efi_err instead of bare efi_printk for error messages.
-> > > > > >
-> > > > > > Perhaps it'd be better to rename pr_efi_err to eri_err
-> > > > > > so it's clearer it's a typical efi_ logging function.
-> > > > > >
-> > > > > > $ git grep -w --name-only pr_efi_err | \
-> > > > > >   xargs sed -i 's/\bpr_efi_err\b/efi_err/g'
-> > > > > >
-> > > > >
-> > > > > Yeah, pr_efi_err() is probably not the best name
-> > > >
-> > > > Should I rename pr_efi/pr_efi_err to, say, efi_pr_info/efi_pr_error?
-> > >
-> > > Perhaps not use pr_ in the name at all.
-> > >
-> > > I suggest:
-> > >
-> > > pr_efi          -> efi_info (or efi_debug or efi_dbg)
-> > >                    (it is guarded by an efi_quiet flag, default: on)
-> > > pr_efi_err      -> efi_err
-> > >
-> >
-> > Agreed. Shorter is better if there is no risk of confusion..
->
-> Ok, I'll use efi_info/efi_err. We could add debugging output as
-> efi_debug later, enabled if efi=debug is specified.
->
-> While we're here: most of the existing cases of pr_efi look like notice
-> or info level, except maybe these two, which probably should be at least
-> warnings?
->
-> drivers/firmware/efi/libstub/arm64-stub.c
-> 62: pr_efi("EFI_RNG_PROTOCOL unavailable, no randomness supplied\n");
->
+This series is on top of efi/next.
 
-This should not be a warning. KASLR is enabled by default by the
-distros, and many systems don't implement this protocol at all.
+Patch 1 fixes the size allocated for x86 boot_params.
+Patch 2 refactors the setting of various hi/lo 32-bit fields, mainly on x86.
+Patch 3 renames pr_efi/pr_efi_err
+Patches 4-6 convert the remaining uses of efi_printk to print error
+messages to use efi_err instead.
+Patch 7 updates dtb= ignored message to efi_err.
+Patches 8-9 refactor initrd loading, moving it into efi-stub-helper.
+Patch 10 adds support for x86 builtin command line.
+Patch 11 adds error checking for efi_parse_options.
 
-> drivers/firmware/efi/libstub/efi-stub.c
-> 254: pr_efi("Ignoring DTB from command line.\n");
+Changes from v1:
+- Rename pr_efi/pr_efi_err
+- Drop the soft_limit-removing patch
+- Fix a couple of compile warnings
 
-That could be upgraded to an error.
+Arvind Sankar (11):
+  efi/x86: Use correct size for boot_params
+  efi/libstub: Add a helper function to split 64-bit values
+  efi/libstub: Move pr_efi/pr_efi_err into efi namespace
+  efi/x86: Use efi_err for error messages
+  efi/gop: Use efi_err for error messages
+  efi/tpm: Use efi_err for error messages
+  efi/libstub: Upgrade ignored dtb= argument message to error
+  efi/x86: Move command-line initrd loading to efi_main
+  efi/libstub: Unify initrd loading across architectures
+  efi/x86: Support builtin command line
+  efi/libstub: Check return value of efi_parse_options
+
+ drivers/firmware/efi/libstub/arm32-stub.c     |  12 +-
+ drivers/firmware/efi/libstub/arm64-stub.c     |  14 +-
+ .../firmware/efi/libstub/efi-stub-helper.c    |  46 ++++++-
+ drivers/firmware/efi/libstub/efi-stub.c       |  63 ++++-----
+ drivers/firmware/efi/libstub/efistub.h        |  32 ++---
+ drivers/firmware/efi/libstub/fdt.c            |  16 +--
+ drivers/firmware/efi/libstub/file.c           |  12 +-
+ drivers/firmware/efi/libstub/gop.c            |  16 +--
+ drivers/firmware/efi/libstub/pci.c            |   8 +-
+ drivers/firmware/efi/libstub/relocate.c       |   2 +-
+ drivers/firmware/efi/libstub/secureboot.c     |   4 +-
+ drivers/firmware/efi/libstub/tpm.c            |   2 +-
+ drivers/firmware/efi/libstub/x86-stub.c       | 122 ++++++++----------
+ 13 files changed, 186 insertions(+), 163 deletions(-)
+
+-- 
+2.26.2
+
