@@ -2,135 +2,269 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 831151C0948
-	for <lists+linux-efi@lfdr.de>; Thu, 30 Apr 2020 23:32:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8FE3C1C1AA2
+	for <lists+linux-efi@lfdr.de>; Fri,  1 May 2020 18:33:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727084AbgD3VcW (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 30 Apr 2020 17:32:22 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:37645 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1727077AbgD3VcW (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 30 Apr 2020 17:32:22 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1588282340;
-        h=from:from:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:in-reply-to:in-reply-to:  references:references;
-        bh=Jzrv5wRZ4K7XtvWDWWDISsbmjMxGQe+9BSaROBXcFYM=;
-        b=AgVmoz4kBlZy6j8mVFtcHDi/MREwcnra0ZYiYpOMC5tu4MtZQGh7al1TqkILD3YB6cmDsc
-        hrPfJGyUTh9oGLtbTLDw7hhJirXzaIHMcTPzo/qBFCnZ83iEtxGM541kxSKLF7QBNditQT
-        +xcJkbh3/EO0E91aGGanPmuemdVQ64M=
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
- [209.85.222.200]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-102-1XI36pRqNvmAxepgd5N_hg-1; Thu, 30 Apr 2020 17:32:18 -0400
-X-MC-Unique: 1XI36pRqNvmAxepgd5N_hg-1
-Received: by mail-qk1-f200.google.com with SMTP id x8so7956397qkf.3
-        for <linux-efi@vger.kernel.org>; Thu, 30 Apr 2020 14:32:18 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:reply-to
-         :mail-followup-to:references:mime-version:content-disposition
-         :in-reply-to;
-        bh=Jzrv5wRZ4K7XtvWDWWDISsbmjMxGQe+9BSaROBXcFYM=;
-        b=ElmWvS1a19zp4eF/o3AdQ120PngtUvgXn2DlQ2RKGxLu7yImNds4g6/2CstD51ecnf
-         zVs6i3ZkZjxRyew7NqItxQqqSSFOrsgxLApkMOBx+KkWky/lVVLx5i4F1tS8Bg+bKjUn
-         urKUvMoJ16sokWY/oCIhgMd4Nmnl7j7sI5y3e9MBlUTlI2CbXCT2bGzc0jQr47AHcoa3
-         iqKTBp5jX/huLkylt66OmSirRBP0ssLdthjs532n4RloOrh4LQ2XCjt3HJ2b+Prii9Ev
-         7KbfxrRS5muVfrU0Jaobby40EFwK/iCkRleT9dZj4sDzc7DSoPceIVX9GdODpNIy2x7m
-         oV0Q==
-X-Gm-Message-State: AGi0PuZyIJEJoDvL+uRnqkuLCTY/ibl7qIHGLUAkuM04m8Myg6ERx/in
-        nU4S6LmKthEeBDZfYhAh3eIw8CGzQpC0S5M9c5tQXDYG90LlH9OiPckO61sREAVRSsX72YbzK/G
-        owPP3wd0qA6rbcvXBvyP1
-X-Received: by 2002:a37:5846:: with SMTP id m67mr569350qkb.78.1588282338107;
-        Thu, 30 Apr 2020 14:32:18 -0700 (PDT)
-X-Google-Smtp-Source: APiQypJZ/+p/l03HZUTw9TAzxeelMsC2X0K+JlusH68UBd280GrosJOpL9Xmkh0soQ588iZsWL59bA==
-X-Received: by 2002:a37:5846:: with SMTP id m67mr569335qkb.78.1588282337907;
-        Thu, 30 Apr 2020 14:32:17 -0700 (PDT)
-Received: from localhost (ip70-163-223-149.ph.ph.cox.net. [70.163.223.149])
-        by smtp.gmail.com with ESMTPSA id x16sm1077258qkh.14.2020.04.30.14.32.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Apr 2020 14:32:17 -0700 (PDT)
-Date:   Thu, 30 Apr 2020 14:32:15 -0700
-From:   Jerry Snitselaar <jsnitsel@redhat.com>
+        id S1729658AbgEAQdp (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 1 May 2020 12:33:45 -0400
+Received: from mga02.intel.com ([134.134.136.20]:45124 "EHLO mga02.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728996AbgEAQdo (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Fri, 1 May 2020 12:33:44 -0400
+IronPort-SDR: gwlQwe+5G2gKnxrkOPHeeut9DVE4GQ6eKzBX/2e7Gml5NfWSBc1PVGzQIFOcuLoWL/hVBXI8Ml
+ mC3YwvWA09eg==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 May 2020 09:33:43 -0700
+IronPort-SDR: ghU2kMCT59+W3qjQICkA3QxrfLszHluh+LbHuRin3dtj7rja82UnQdfb5Eg/JrLxaU/e9gcJ6t
+ trghiXbKKN/Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.73,340,1583222400"; 
+   d="scan'208";a="276865309"
+Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
+  by orsmga002.jf.intel.com with ESMTP; 01 May 2020 09:33:41 -0700
+Received: from kbuild by lkp-server01 with local (Exim 4.89)
+        (envelope-from <lkp@intel.com>)
+        id 1jUYbd-000HMg-0j; Sat, 02 May 2020 00:33:41 +0800
+Date:   Sat, 02 May 2020 00:33:12 +0800
+From:   kbuild test robot <lkp@intel.com>
 To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     Arnd Bergmann <arnd@arndb.de>, Ingo Molnar <mingo@kernel.org>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Ben Dooks <ben.dooks@codethink.co.uk>,
-        Dave Young <dyoung@redhat.com>,
-        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        Lukas Wunner <lukas@wunner.de>, Lyude Paul <lyude@redhat.com>,
-        Matthew Garrett <mjg59@google.com>,
-        Octavian Purdila <octavian.purdila@intel.com>,
-        Peter Jones <pjones@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Scott Talbert <swt@techie.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        linux-integrity@vger.kernel.org,
-        "# 3.4.x" <stable@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] efi/tpm: fix section mismatch warning
-Message-ID: <20200430213215.jqt2rj452hawj3j7@cantor>
-Reply-To: Jerry Snitselaar <jsnitsel@redhat.com>
-Mail-Followup-To: Ard Biesheuvel <ardb@kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>, Ingo Molnar <mingo@kernel.org>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Ben Dooks <ben.dooks@codethink.co.uk>,
-        Dave Young <dyoung@redhat.com>,
-        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        Lukas Wunner <lukas@wunner.de>, Lyude Paul <lyude@redhat.com>,
-        Matthew Garrett <mjg59@google.com>,
-        Octavian Purdila <octavian.purdila@intel.com>,
-        Peter Jones <pjones@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Scott Talbert <swt@techie.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        linux-integrity@vger.kernel.org, "# 3.4.x" <stable@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <20200429190119.43595-1-arnd@arndb.de>
- <20200430211516.gkwaefjrzj2dypmr@cantor>
- <CAK8P3a1xk9b9Ntsf302EUP2Sp+yWe5UEsbf973=xmYRkiN1KuQ@mail.gmail.com>
- <CAMj1kXHc0uzzTKp7oj23_=X9ek2KNrKMq1gL09X7cTnjhV=nXQ@mail.gmail.com>
+Cc:     linux-efi@vger.kernel.org
+Subject: [efi:urgent] BUILD SUCCESS
+ 588af83485064eb5106d33ed7d033877db5a2f61
+Message-ID: <5eac4f48.qad6DkTPcJBf9Fnr%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Disposition: inline
-In-Reply-To: <CAMj1kXHc0uzzTKp7oj23_=X9ek2KNrKMq1gL09X7cTnjhV=nXQ@mail.gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu Apr 30 20, Ard Biesheuvel wrote:
->On Thu, 30 Apr 2020 at 23:21, Arnd Bergmann <arnd@arndb.de> wrote:
->>
->> On Thu, Apr 30, 2020 at 11:15 PM Jerry Snitselaar <jsnitsel@redhat.com> wrote:
->> >
->> > On Wed Apr 29 20, Arnd Bergmann wrote:
->> > >Building with gcc-10 causes a harmless warning about a section mismatch:
->> > >
->> > >WARNING: modpost: vmlinux.o(.text.unlikely+0x5e191): Section mismatch in reference from the function tpm2_calc_event_log_size() to the function .init.text:early_memunmap()
->> > >The function tpm2_calc_event_log_size() references
->> > >the function __init early_memunmap().
->> > >This is often because tpm2_calc_event_log_size lacks a __init
->> > >annotation or the annotation of early_memunmap is wrong.
->> > >
->> > >Add the missing annotation.
->> > >
->> > >Fixes: e658c82be556 ("efi/tpm: Only set 'efi_tpm_final_log_size' after successful event log parsing")
->> > >Signed-off-by: Arnd Bergmann <arnd@arndb.de>
->> >
->> > Minor thing, but should the Fixes be c46f3405692d ("tpm: Reserve the TPM final events table")? Or what am I missing
->> > about e658c82be556 that causes this? Just trying to understand what I did. :)
->>
->> You are right, I misread the git history. Can you fix it up when applying the
->> patch, or should I resend it?
->>
->
->I can fix it up, no worries.
->
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git  urgent
+branch HEAD: 588af83485064eb5106d33ed7d033877db5a2f61  efi/earlycon: Fix early printk for wider fonts
 
-With the fix applied:
+elapsed time: 1087m
 
-Reviewed-by: Jerry Snitselaar <jsnitsel@redhat.com>
+configs tested: 210
+configs skipped: 0
 
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+arm64                            allyesconfig
+arm                              allyesconfig
+arm64                            allmodconfig
+arm                              allmodconfig
+arm64                             allnoconfig
+arm                               allnoconfig
+arm                           efm32_defconfig
+arm                         at91_dt_defconfig
+arm                        shmobile_defconfig
+arm64                               defconfig
+arm                          exynos_defconfig
+arm                        multi_v5_defconfig
+arm                           sunxi_defconfig
+arm                        multi_v7_defconfig
+sparc                            allyesconfig
+powerpc                     ep8248e_defconfig
+i386                             alldefconfig
+riscv                            allmodconfig
+nds32                               defconfig
+ia64                          tiger_defconfig
+powerpc                             defconfig
+mips                            ar7_defconfig
+powerpc                  mpc866_ads_defconfig
+parisc                           allyesconfig
+openrisc                    or1ksim_defconfig
+s390                          debug_defconfig
+arc                              allyesconfig
+powerpc                      chrp32_defconfig
+ia64                                defconfig
+mips                malta_kvm_guest_defconfig
+csky                                defconfig
+i386                              allnoconfig
+m68k                       m5475evb_defconfig
+i386                             allyesconfig
+i386                                defconfig
+i386                              debian-10.3
+ia64                             allmodconfig
+ia64                              allnoconfig
+ia64                        generic_defconfig
+ia64                         bigsur_defconfig
+ia64                             allyesconfig
+ia64                             alldefconfig
+m68k                             allmodconfig
+m68k                       bvme6000_defconfig
+m68k                           sun3_defconfig
+m68k                          multi_defconfig
+nios2                         3c120_defconfig
+nios2                         10m50_defconfig
+c6x                        evmc6678_defconfig
+c6x                              allyesconfig
+openrisc                 simple_smp_defconfig
+nds32                             allnoconfig
+alpha                               defconfig
+h8300                       h8s-sim_defconfig
+h8300                     edosk2674_defconfig
+xtensa                          iss_defconfig
+h8300                    h8300h-sim_defconfig
+xtensa                       common_defconfig
+arc                                 defconfig
+microblaze                      mmu_defconfig
+microblaze                    nommu_defconfig
+mips                      fuloong2e_defconfig
+mips                      malta_kvm_defconfig
+mips                             allyesconfig
+mips                         64r6el_defconfig
+mips                              allnoconfig
+mips                           32r2_defconfig
+mips                             allmodconfig
+mips                         tb0287_defconfig
+mips                       capcella_defconfig
+mips                           ip32_defconfig
+mips                  decstation_64_defconfig
+mips                      loongson3_defconfig
+mips                          ath79_defconfig
+mips                        bcm63xx_defconfig
+parisc                            allnoconfig
+parisc                generic-64bit_defconfig
+parisc                generic-32bit_defconfig
+parisc                           allmodconfig
+powerpc                       holly_defconfig
+powerpc                       ppc64_defconfig
+powerpc                          rhel-kconfig
+powerpc                           allnoconfig
+powerpc                    amigaone_defconfig
+powerpc                    adder875_defconfig
+powerpc                          g5_defconfig
+powerpc                     mpc512x_defconfig
+parisc               randconfig-a001-20200430
+mips                 randconfig-a001-20200430
+m68k                 randconfig-a001-20200430
+riscv                randconfig-a001-20200430
+alpha                randconfig-a001-20200430
+nds32                randconfig-a001-20200430
+m68k                 randconfig-a001-20200501
+mips                 randconfig-a001-20200501
+nds32                randconfig-a001-20200501
+alpha                randconfig-a001-20200501
+parisc               randconfig-a001-20200501
+riscv                randconfig-a001-20200501
+microblaze           randconfig-a001-20200430
+nios2                randconfig-a001-20200430
+h8300                randconfig-a001-20200430
+c6x                  randconfig-a001-20200430
+sparc64              randconfig-a001-20200430
+s390                 randconfig-a001-20200430
+xtensa               randconfig-a001-20200430
+csky                 randconfig-a001-20200430
+openrisc             randconfig-a001-20200430
+sh                   randconfig-a001-20200430
+s390                 randconfig-a001-20200501
+xtensa               randconfig-a001-20200501
+sh                   randconfig-a001-20200501
+openrisc             randconfig-a001-20200501
+csky                 randconfig-a001-20200501
+i386                 randconfig-b003-20200501
+x86_64               randconfig-b002-20200501
+i386                 randconfig-b001-20200501
+x86_64               randconfig-b003-20200501
+x86_64               randconfig-b001-20200501
+i386                 randconfig-b002-20200501
+i386                 randconfig-b001-20200430
+i386                 randconfig-b002-20200430
+x86_64               randconfig-b001-20200430
+i386                 randconfig-b003-20200430
+x86_64               randconfig-b002-20200430
+x86_64               randconfig-b003-20200430
+x86_64               randconfig-c001-20200501
+x86_64               randconfig-c002-20200501
+i386                 randconfig-c002-20200501
+x86_64               randconfig-c003-20200501
+i386                 randconfig-c001-20200501
+i386                 randconfig-c003-20200501
+x86_64               randconfig-d002-20200430
+x86_64               randconfig-d001-20200430
+i386                 randconfig-d001-20200430
+i386                 randconfig-d003-20200430
+i386                 randconfig-d002-20200430
+x86_64               randconfig-d003-20200430
+x86_64               randconfig-e002-20200501
+x86_64               randconfig-e003-20200501
+i386                 randconfig-e003-20200501
+x86_64               randconfig-e001-20200501
+i386                 randconfig-e002-20200501
+i386                 randconfig-e001-20200501
+x86_64               randconfig-e002-20200430
+i386                 randconfig-e003-20200430
+x86_64               randconfig-e003-20200430
+i386                 randconfig-e002-20200430
+x86_64               randconfig-e001-20200430
+i386                 randconfig-e001-20200430
+i386                 randconfig-f003-20200501
+x86_64               randconfig-f001-20200501
+x86_64               randconfig-f003-20200501
+i386                 randconfig-f001-20200501
+i386                 randconfig-f002-20200501
+i386                 randconfig-g003-20200501
+i386                 randconfig-g002-20200501
+x86_64               randconfig-g002-20200501
+i386                 randconfig-g001-20200501
+x86_64               randconfig-a003-20200501
+x86_64               randconfig-a001-20200501
+i386                 randconfig-a003-20200501
+i386                 randconfig-a002-20200501
+i386                 randconfig-a001-20200501
+i386                 randconfig-h001-20200501
+i386                 randconfig-h002-20200501
+i386                 randconfig-h003-20200501
+x86_64               randconfig-h001-20200501
+x86_64               randconfig-h003-20200501
+i386                 randconfig-h002-20200430
+i386                 randconfig-h003-20200430
+x86_64               randconfig-h001-20200430
+x86_64               randconfig-h003-20200430
+i386                 randconfig-h001-20200430
+ia64                 randconfig-a001-20200501
+arc                  randconfig-a001-20200501
+powerpc              randconfig-a001-20200501
+arm                  randconfig-a001-20200501
+sparc                randconfig-a001-20200501
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+s390                       zfcpdump_defconfig
+s390                             allyesconfig
+s390                              allnoconfig
+s390                             allmodconfig
+s390                             alldefconfig
+s390                                defconfig
+sh                          rsk7269_defconfig
+sh                               allmodconfig
+sh                            titan_defconfig
+sh                  sh7785lcr_32bit_defconfig
+sh                                allnoconfig
+sparc                               defconfig
+sparc64                             defconfig
+sparc64                           allnoconfig
+sparc64                          allyesconfig
+sparc64                          allmodconfig
+um                           x86_64_defconfig
+um                             i386_defconfig
+um                                  defconfig
+x86_64                                   rhel
+x86_64                               rhel-7.6
+x86_64                    rhel-7.6-kselftests
+x86_64                         rhel-7.2-clear
+x86_64                                    lkp
+x86_64                              fedora-25
+x86_64                                  kexec
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
