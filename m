@@ -2,185 +2,200 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 324C41C48E2
-	for <lists+linux-efi@lfdr.de>; Mon,  4 May 2020 23:21:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 90F861C4963
+	for <lists+linux-efi@lfdr.de>; Tue,  5 May 2020 00:10:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726334AbgEDVV3 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 4 May 2020 17:21:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60230 "EHLO
+        id S1728134AbgEDWKM (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 4 May 2020 18:10:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39632 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726291AbgEDVV2 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 4 May 2020 17:21:28 -0400
-Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com [IPv6:2607:f8b0:4864:20::642])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB8D3C061A0E
-        for <linux-efi@vger.kernel.org>; Mon,  4 May 2020 14:21:28 -0700 (PDT)
-Received: by mail-pl1-x642.google.com with SMTP id f8so314821plt.2
-        for <linux-efi@vger.kernel.org>; Mon, 04 May 2020 14:21:28 -0700 (PDT)
+        by vger.kernel.org with ESMTP id S1726419AbgEDWKL (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 4 May 2020 18:10:11 -0400
+Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com [IPv6:2607:f8b0:4864:20::441])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95048C061A0E
+        for <linux-efi@vger.kernel.org>; Mon,  4 May 2020 15:10:11 -0700 (PDT)
+Received: by mail-pf1-x441.google.com with SMTP id r14so11400pfg.2
+        for <linux-efi@vger.kernel.org>; Mon, 04 May 2020 15:10:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=LfzIhBKyEYjnL3+PecsaPFI1mfT2dyojmCEB1Zt3J7E=;
-        b=AoW9DJtUY2hnoqS7o8O7IhkGL7aueMw2BOzOJFVoMkLpGUlbcQCIxJZmAX2JcdbUMy
-         bU9YVg3K9Y6P6Un3b0/ECTvE6EDFc3vVqDku+AHvRadT0eIok1D8dBkSrB/fIRXOhX8g
-         gqZPQt8fDb9bU/56Qth4yqDbDNTomDYBX+pGMu0fjMsccaO0q+4/MeByUqPOHJrJW+iC
-         VANL5jf026u1W1t8ygOputiklsDkiQSceWx/ZsErp9A1fld3UBmr/HH/Yd4t7LsssJs2
-         Yy6c4dS9XvaCf9ayckoIbfdFwfV/vzqYZ3kB3Fyq3emWdW6Oa1le3tnQUZ9tdiZT8d+j
-         viug==
+        d=dabbelt-com.20150623.gappssmtp.com; s=20150623;
+        h=date:subject:in-reply-to:cc:from:to:message-id:mime-version
+         :content-transfer-encoding;
+        bh=qXuUF5w7g6lC1n/G1lz2lM2QKdQ45opx2MhRpkEwDZw=;
+        b=lNcqGK492oKuELZ+zYOJ8tCM2rgWb0QYqBA6mHrjcG2ELqF3+5IOKNsYaCkK4c+rdR
+         RNYzBuk4iXqnG6zK/SZYkVGFPkIr/Rr58+6SlKC7OzQXePdDOUC1NeS+Gv7eswRi6xXm
+         zopB+GivActa4hEsrTK0EbvskRKHp6xBZFnNrdnzecZV0/x8N8ZCgSCloEYkYx3a11VO
+         5UCZZqIZcDzCUkYYWy9eSKp9YpOwtJ7VTSXmMdrwZPkL0JhiLNgWlYRb5xDxRUvzcgoE
+         Uwt0n5Uunaqffo7HutIbMmv6aEV3Rm6QJZHhjAVJWjuLznOeo56ru3+80saDRUWoxLIC
+         HoPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=LfzIhBKyEYjnL3+PecsaPFI1mfT2dyojmCEB1Zt3J7E=;
-        b=oPV03qVMlDu1VRL9R1LW5ILDKt5pk5TY4DB9ITj5reFPvo+peKxtIqdcK85ovS/Ma1
-         xXSZJ4GZXf00uUEIGa4FfjvxUL/qVisQDTqAHt8ubeKtSrq58bSbo21HAu6BytSWQ+Ih
-         cOgvdNnQQd7MACUIeOI9KU5Cxa9t6gm9wZxV+82FY6Jt4xLYj7Tx6wl3h7mtSUlEA3f6
-         RY6EwFBKKeFs54UVi/Hf1uijxrmya2jtdw/x68y/LPykDzMta40VXTUsXh9UU/FBpbr9
-         w0vSrRPcMS7/Tr1PCMl5V9qlEuxvF+UbyT1nbRqO75j2PvVyhxLy89PWG0XMwpSuXSEQ
-         xwlQ==
-X-Gm-Message-State: AGi0PubK7MmKHZSKJuc4Subxx26gYRDYJNZanT51l5e4khqHF7gclj5h
-        V6EIfP1dvQ+wepeBI3wDJVcfaQ==
-X-Google-Smtp-Source: APiQypLTnPOCIblicmo14QnUBspgu8ABvtDNcmUBtrph0GlCkSZ741zJlPy88looi5flHFiKAwGF/w==
-X-Received: by 2002:a17:902:8601:: with SMTP id f1mr126432plo.122.1588627288078;
-        Mon, 04 May 2020 14:21:28 -0700 (PDT)
-Received: from google.com ([2620:15c:2ce:0:9efe:9f1:9267:2b27])
-        by smtp.gmail.com with ESMTPSA id f30sm381557pje.29.2020.05.04.14.21.27
+        h=x-gm-message-state:date:subject:in-reply-to:cc:from:to:message-id
+         :mime-version:content-transfer-encoding;
+        bh=qXuUF5w7g6lC1n/G1lz2lM2QKdQ45opx2MhRpkEwDZw=;
+        b=rqPAMRiiHNxXhJl7lFeohtsVlx8jkWCxYN1ZlpzfO8E8CeNdyp03wClUoBvRJxgvU1
+         I3fYGdjOvtrhaB9TjlEuaIq91HIj8uAhaQCE+1LSbyAJ4/RqIb4lER4ufGXCDN86cixD
+         kgHr0mJAQM8uPHm2pIz6ph4AXf8EnydNWWg8dJgC0jbIPIgijE2L26nDfXocEKvlz81Q
+         vttfRpYCKl/teFFKKsBD7yC++hrTeDAGOdlaqxg0o6k/maDnZPExSZ0/cS465UaRcPmN
+         VZe5oIRvUs3EoSdn0ouv3nQmdfRAnTBHEPwP8BDT/plzgVcSAG15ky0GS6ub4cTyssAh
+         2dYA==
+X-Gm-Message-State: AGi0Puaxi9PBjUgw/vISYSfqCkCiFSNjwPjt1nlU2NPjWLMNT9zfHj8j
+        QJDaia669J73o7eKVBFvKlVdfg==
+X-Google-Smtp-Source: APiQypLoAUQvfl3jCgNmkTEiCsKB+3A79WO2BHbTvZJwWQGZmdM62j+IsCQgcN7nYGFaZ29Ie/jMVg==
+X-Received: by 2002:a62:e30f:: with SMTP id g15mr56001pfh.150.1588630210901;
+        Mon, 04 May 2020 15:10:10 -0700 (PDT)
+Received: from localhost (76-210-143-223.lightspeed.sntcca.sbcglobal.net. [76.210.143.223])
+        by smtp.gmail.com with ESMTPSA id v26sm67384pfe.121.2020.05.04.15.10.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 May 2020 14:21:27 -0700 (PDT)
-Date:   Mon, 4 May 2020 14:21:24 -0700
-From:   Fangrui Song <maskray@google.com>
-To:     Nick Desaulniers <ndesaulniers@google.com>
-Cc:     Ard Biesheuvel <ardb@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-        Peter Collingbourne <pcc@google.com>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        clang-built-linux <clang-built-linux@googlegroups.com>,
-        Sami Tolvanen <samitolvanen@google.com>
-Subject: Re: [PATCH] efi/libstub/x86: work around LLVM ELF quirk build
- regression
-Message-ID: <20200504212124.zse6eeinh3z3l2yi@google.com>
-References: <20200504081605.32624-1-ardb@kernel.org>
- <CAKwvOdkmXm9Md6ErKeF26M-9mtk_f2i23zndOwV_Z6G1yWmY3w@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <CAKwvOdkmXm9Md6ErKeF26M-9mtk_f2i23zndOwV_Z6G1yWmY3w@mail.gmail.com>
+        Mon, 04 May 2020 15:10:10 -0700 (PDT)
+Date:   Mon, 04 May 2020 15:10:10 -0700 (PDT)
+X-Google-Original-Date: Mon, 04 May 2020 15:08:02 PDT (-0700)
+Subject:     Re: [GIT PULL] EFI stub loading support for RISC-V
+In-Reply-To: <CAMj1kXHXaTP=GN8s9Q0DWGT7XtV+XnB_2R68yyuWguMqP3m3+w@mail.gmail.com>
+CC:     atishp@atishpatra.org, linux-efi@vger.kernel.org,
+        Atish Patra <Atish.Patra@wdc.com>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        aou@eecs.berkeley.edu, linux-riscv@lists.infradead.org
+From:   Palmer Dabbelt <palmer@dabbelt.com>
+To:     ardb@kernel.org
+Message-ID: <mhng-4513bd18-556a-4b92-a16a-04be757776ed@palmerdabbelt-glaptop1>
+Mime-Version: 1.0 (MHng)
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-
-On 2020-05-04, Nick Desaulniers wrote:
->On Mon, May 4, 2020 at 1:16 AM Ard Biesheuvel <ardb@kernel.org> wrote:
+On Thu, 30 Apr 2020 04:54:48 PDT (-0700), ardb@kernel.org wrote:
+> On Thu, 30 Apr 2020 at 00:52, Palmer Dabbelt <palmer@dabbelt.com> wrote:
 >>
->> When building the x86 EFI stub with Clang, the libstub Makefile rules
->> that manipulate the ELF object files may throw an error like:
+>> On Tue, 28 Apr 2020 10:57:48 PDT (-0700), atishp@atishpatra.org wrote:
+>> > On Sun, Apr 26, 2020 at 12:52 PM Atish Patra <atishp@atishpatra.org> wrote:
+>> >>
+>> >> On Sat, Apr 25, 2020 at 12:31 PM Ard Biesheuvel <ardb@kernel.org> wrote:
+>> >> >
+>> >> > Palmer,
+>> >> >
+>> >> > As discussed, below are the changes for v5.8 that can be taken via the
+>> >> > RISC-V tree to implement booting RISC-V Linux from EFI firmware.
+>> >> >
+>> >> > You can fetch and merge the signed tag directly, or merge 22090f84bc3f80
+>> >> > and cherry pick the 4 patches on top of it, if you see any need to do so
+>> >> > (but please use a topic branch in that case)
+>> >> >
+>> >> > Please be aware (as is noted in the tag) that these changes are really
+>> >> > the bare minimum that is needed to launch the kernel from EFI firmware.
+>> >> > In the current state, you may be able to boot from Uboot in EFI mode,
+>> >> > but Tianocore based boot will not work at all, unless you convert the
+>> >> > EFI memory map back to DT memory nodes in the firmware implementation,
+>> >> > and I can assure you that that is not something that will be accepted in
+>> >> > upstream Tianocore.
+>> >> >
+>> >> > So in summary, this is unfinished work, and I can only recommend merging
+>> >> > these changes once there is a plan in place to complete the implementation.
+>> >> >
+>> >>
+>> >> I have started looking into this part. My initial plan was to start
+>> >> looking into it right after I got
+>> >> the boot time services working but other things took priority. Thanks
+>> >> for your review and
+>> >> suggestion throughout the process. I will coordinate with Abner/Daniel
+>> >> to test RISC-V UEFI
+>> >> runtime services(once implemented)  with tianocore.
+>> >> > --
+>> >> > Ard.
+>> >> >
+>> >> >
+>> >> > The following changes since commit 22090f84bc3f8081e0ec180ccaedc85820085376:
+>> >> >
+>> >> >   efi/libstub: unify EFI call wrappers for non-x86 (2020-04-23 20:15:06 +0200)
+>> >> >
+>> >> > are available in the Git repository at:
+>> >> >
+>> >> >   git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git tags/riscv-efi-for-v5.8
+>> >> >
+>> >> > for you to fetch changes up to 66b4ac6b9dd1fdbb8ac7a1f20a8d08066368245d:
+>> >> >
+>> >> >   RISC-V: Add EFI stub support. (2020-04-25 13:59:54 +0200)
+>> >> >
+>> >> > ----------------------------------------------------------------
+>> >> > EFI stub loading support for RISC-V
+>> >> >
+>> >> > This branch implements support for loading the RISC-V Linux kernel
+>> >> > straight from EFI firmware, by adding PE/COFF metadata to the kernel
+>> >> > image and incorporating the kernel's EFI stub.
+>> >> >
+>> >> > Note that this is the *bare* minimum that is needed to boot from EFI
+>> >> > firmware. The following pieces are still missing at this point, and
+>> >> > will be required for full interoperability with generic EFI firmware:
+>> >> > - using the EFI memory map instead of the device tree to populate the
+>> >> >   memblock tables
+>> >> > - parsing and handling of generic EFI configuration tables (such as
+>> >> >   SMBIOS), as well as architecture specific ones that may be defined
+>> >> >   for RISC-V
+>> >> > - runtime mapping of EFI runtime services memory and MMIO regions, and
+>> >> >   support for EFI runtime services (get/set time, get/set variable, reset
+>> >> >   system)
+>> >> >
+>> >> > ----------------------------------------------------------------
+>> >> >
+>> >> > Cc: Atish Patra <atish.patra@wdc.com>
+>> >> > Cc: Palmer Dabbelt <palmer@dabbelt.com>
+>> >> > Cc: Paul Walmsley <paul.walmsley@sifive.com>
+>> >> > Cc: Albert Ou <aou@eecs.berkeley.edu>
+>> >> > Cc: linux-riscv@lists.infradead.org
+>> >> >
+>> >> > Atish Patra (4):
+>> >> >       include: pe.h: Add RISC-V related PE definition
+>> >> >       RISC-V: Define fixmap bindings for generic early ioremap support
+>> >> >       RISC-V: Add PE/COFF header for EFI stub
+>> >> >       RISC-V: Add EFI stub support.
+>> >> >
+>> >> >  arch/riscv/Kconfig                        |  22 ++++++
+>> >> >  arch/riscv/Makefile                       |   1 +
+>> >> >  arch/riscv/configs/defconfig              |   1 +
+>> >> >  arch/riscv/include/asm/Kbuild             |   1 +
+>> >> >  arch/riscv/include/asm/efi.h              |  33 +++++++++
+>> >> >  arch/riscv/include/asm/fixmap.h           |  18 +++++
+>> >> >  arch/riscv/include/asm/io.h               |   1 +
+>> >> >  arch/riscv/include/asm/sections.h         |  13 ++++
+>> >> >  arch/riscv/kernel/Makefile                |   4 ++
+>> >> >  arch/riscv/kernel/efi-header.S            | 100 +++++++++++++++++++++++++++
+>> >> >  arch/riscv/kernel/head.S                  |  16 +++++
+>> >> >  arch/riscv/kernel/image-vars.h            |  53 +++++++++++++++
+>> >> >  arch/riscv/kernel/vmlinux.lds.S           |  22 +++++-
+>> >> >  drivers/firmware/efi/Kconfig              |   3 +-
+>> >> >  drivers/firmware/efi/libstub/Makefile     |  10 +++
+>> >> >  drivers/firmware/efi/libstub/riscv-stub.c | 109 ++++++++++++++++++++++++++++++
+>> >> >  include/linux/pe.h                        |   3 +
+>> >> >  17 files changed, 407 insertions(+), 3 deletions(-)
+>> >> >  create mode 100644 arch/riscv/include/asm/efi.h
+>> >> >  create mode 100644 arch/riscv/include/asm/sections.h
+>> >> >  create mode 100644 arch/riscv/kernel/efi-header.S
+>> >> >  create mode 100644 arch/riscv/kernel/image-vars.h
+>> >> >  create mode 100644 drivers/firmware/efi/libstub/riscv-stub.c
+>> >>
+>> >>
+>> >>
+>> >> --
+>> >> Regards,
+>> >> Atish
+>> >
+>> > Hi Palmer,
+>> > There were few build errors for all-yes config and nommu reported by
+>> > 0-day tests.
+>> > As some of the fixes require to add some dummy declarations for efi
+>> > runtime related functions,
+>> > Ard suggested that we should drop the series for now and merge with
+>> > full uefi support later.
 >>
->>     STUBCPY drivers/firmware/efi/libstub/efi-stub-helper.stub.o
->>   strip: drivers/firmware/efi/libstub/efi-stub-helper.stub.o: Failed to find link section for section 10
->>   objcopy: drivers/firmware/efi/libstub/efi-stub-helper.stub.o: Failed to find link section for section 10
->>
->> This is the result of a LLVM 'feature' [0] where symbol references are
->> stored in a LLVM specific .llvm_addrsig section in a non-transparent way,
->> causing generic ELF tools such as strip or objcopy to choke on them.
->>
->> So drop the .llvm_addrsig section explicitly as well, to work around
->> this behavior.
->>
->> [0] https://sourceware.org/bugzilla/show_bug.cgi?id=23817
+>> OK, I'll wait for another patch set.  That makes my life a bit easier as well,
+>> as we don't have to do the multi-tree merge in a single release.
 >
->This page also has info about the extension:
->https://llvm.org/docs/Extensions.html#sht-llvm-addrsig-section-address-significance-table
->Peter, do you know if it's possible to prevent the emission of this
->section from clang?  Scanning through the sources, it looks like it's
->set unconditionally during LTO, but I couldn't find where else?  Is
->this section required for more than LTO?
+> Yeah. Apologies for the back and forth, but I really don't want to end
+> up in a place where I am juggling EFI fixes and have to care about
+> architectures that can't even use EFI in a meaningful way.
 
--faddrsig has been the default for many platforms since clang 7.
-You can find the current default state on various platforms here:
-
-https://github.com/llvm/llvm-project/blob/master/clang/lib/Driver/ToolChains/Clang.cpp#L6157
-
-The table may have other benefits but currently the only use case is lld
---icf=safe , which is safer and better than gold's --icf=safe (which
-relies on (hacky) relocation scanning).
-
-The current way things work:
-(1) clang always emits .llvm_addrsig
-(2) if the linker is lld and --icf=safe is specified, .llvm_addrsig is read to perform safe ICF
-
-makes it easy for people to try --icf=safe, otherwise people will need
-to change CFLAGS as well to try the linker size optimization.
-
-This section has nothing to do with LTO.
-
-I am a bit surprised that certain strip can error "Failed to find link section for section 10"
-They were expected to set sh_link to 0.
-
->We need a generic way to disable LLVM extensions when we're not using
->the LLVM binutils.  We have a couple cases where `-no-integrated-as`
->will prevent AsmStreamer from not using assembler extensions, but in
->this case it's the linker+objcopy+strip that don't work with the
->extensions.
-
-objcopy -R .llvm_addrsig can be used when it is difficult to pass -fno-addrsig
-
-(it is also used here
-https://sourceware.org/git/?p=glibc.git;a=blobdiff;f=csu/Makefile;h=7460bcb0cf1e6cb296cf76d6e8ed9e43044f89f9;hp=f3498960f89e3b31f7cda6969e6eb3393a305241;hb=3628670a04f9a53586bd91c01588c4462b5e01d3;hpb=b9dab9c53496a8cd5bb18342eceff8a584c37a3e
-)
-
-If possible, use -fno-addrsig instead.
-
->>
->> Cc: Nick Desaulniers <ndesaulniers@google.com>
->> Reported-by: Arnd Bergmann <arnd@arndb.de>
->
->Do you have a link to the configs or report so we can repro?
->
->Also, scripts/get_maintainer.pl should recommend our list for patches
->mentioning clang or llvm, which is a wider audience that can help test
->and review.  I've been out sick much of the past week, so I appreciate
->the shared help with code review.  Of course if your intention was to
->be more discreet, I'm sorry I may have just messed that up.
->
->> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
->> ---
->>  drivers/firmware/efi/libstub/Makefile | 5 +++--
->>  1 file changed, 3 insertions(+), 2 deletions(-)
->>
->> diff --git a/drivers/firmware/efi/libstub/Makefile b/drivers/firmware/efi/libstub/Makefile
->> index 8d246b51bd49..4d137615a666 100644
->> --- a/drivers/firmware/efi/libstub/Makefile
->> +++ b/drivers/firmware/efi/libstub/Makefile
->> @@ -66,7 +66,8 @@ CFLAGS_arm64-stub.o           := -DTEXT_OFFSET=$(TEXT_OFFSET)
->>  # .data section of the compressed kernel to ensure initialization. Rename the
->>  # .bss section here so it's easy to pick out in the linker script.
->>  #
->> -STUBCOPY_FLAGS-$(CONFIG_X86)   += --rename-section .bss=.bss.efistub,load,alloc
->> +STUBCOPY_FLAGS-$(CONFIG_X86)   += -R .llvm_addrsig \
->> +                                  --rename-section .bss=.bss.efistub,load,alloc
->
->Do we only observe this for x86, not ARM?
->
->>  STUBCOPY_RELOC-$(CONFIG_X86_32)        := R_386_32
->>  STUBCOPY_RELOC-$(CONFIG_X86_64)        := R_X86_64_64
->>
->> @@ -111,7 +112,7 @@ $(obj)/%.stub.o: $(obj)/%.o FORCE
->>  #
->>  quiet_cmd_stubcopy = STUBCPY $@
->>        cmd_stubcopy =                                                   \
->> -       $(STRIP) --strip-debug -o $@ $<;                                \
->> +       $(STRIP) --strip-debug -R .llvm_addrsig -o $@ $<;               \
->>         if $(OBJDUMP) -r $@ | grep $(STUBCOPY_RELOC-y); then            \
->>                 echo "$@: absolute symbol references not allowed in the EFI stub" >&2; \
->>                 /bin/false;                                             \
->> --
->> 2.17.1
->>
->
->In the absence of a linker script where we can use `DISCARD` rules,
->this looks like the best approach, though I'm still curious about ARM.
->Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
->-- 
->Thanks,
->~Nick Desaulniers
+No problem, I just wanted to make sure I understood correctly as it was going
+to be my first time trying to handle a multi-tree patch set like this so I'm a
+bit lost.
