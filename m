@@ -2,163 +2,148 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E9BE1C4FA0
-	for <lists+linux-efi@lfdr.de>; Tue,  5 May 2020 09:51:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6CC1A1C4FBF
+	for <lists+linux-efi@lfdr.de>; Tue,  5 May 2020 09:58:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728114AbgEEHvL (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 5 May 2020 03:51:11 -0400
-Received: from mail.kernel.org ([198.145.29.99]:43648 "EHLO mail.kernel.org"
+        id S1728121AbgEEH6n (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 5 May 2020 03:58:43 -0400
+Received: from mail.kernel.org ([198.145.29.99]:46682 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727784AbgEEHvK (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Tue, 5 May 2020 03:51:10 -0400
-Received: from mail-il1-f179.google.com (mail-il1-f179.google.com [209.85.166.179])
+        id S1725766AbgEEH6n (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Tue, 5 May 2020 03:58:43 -0400
+Received: from mail-io1-f48.google.com (mail-io1-f48.google.com [209.85.166.48])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A992E2075A;
-        Tue,  5 May 2020 07:51:09 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 6BD81206CC
+        for <linux-efi@vger.kernel.org>; Tue,  5 May 2020 07:58:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1588665069;
-        bh=jc+H61N9vNsq7z6RWa8sVHyNz5abdZOteKU9Ks7UD2o=;
+        s=default; t=1588665522;
+        bh=S2S1qMx2N/dRfni497FHhatfS4mgg7vbrn0vP7VTOPM=;
         h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=dT/T1VRCyX6urOLpGh8Qqe/AGU8FLYkvpxCqNRT3e/RZpEq7ubRnwEbK6KLodRQfK
-         rOeKTs2jOdGGJdtH2s5GSKH/adp6pSYpLR0DwLWszmd07GamjXiYb1VSaezS7ILqNj
-         tOHWJcBalmMJtTg35IVKzDL4yBMonGgY+JMCs38E=
-Received: by mail-il1-f179.google.com with SMTP id x2so147572ilp.13;
-        Tue, 05 May 2020 00:51:09 -0700 (PDT)
-X-Gm-Message-State: AGi0PuYFMrKZurVXdPr5nxygwduwmXzp/n9EvKDd3j9mE1YCVxew4gFu
-        nbQ+eHZHivmePQVnFEHLnNyTF8Ns22mz338miyY=
-X-Google-Smtp-Source: APiQypKmBGnftntz4dokwvJE/6EYRD4xwAb8w3zjNrSiqbYOWOIaqAG+92Pnmf8Y+LYP2xpDueVpen4xanrngfwBUFA=
-X-Received: by 2002:a92:405:: with SMTP id 5mr2256629ile.279.1588665069102;
- Tue, 05 May 2020 00:51:09 -0700 (PDT)
+        b=EVBIMQ0kpWssAkAO5wW7uDbTz/2/Ly8XhNqYEe3QTRs2gHiJAgdKxoTFxhPfJenMS
+         OFp5Jfzgrm8vi2axrflFTSNgnGSlhkoyOrWrJNGTGUmeCT0BJQb12GuqoC67ephwZg
+         4m243gJOEF44wHCR5MCxxPyrXoga4JuDrdEqILrc=
+Received: by mail-io1-f48.google.com with SMTP id i19so975128ioh.12
+        for <linux-efi@vger.kernel.org>; Tue, 05 May 2020 00:58:42 -0700 (PDT)
+X-Gm-Message-State: AGi0PuZ7AcB4gXp/h1sLCOqxRqBSEYQeF2uiTMae+l7aJbGqloqDVY79
+        diMKptH69/NKCYa3+HwbY0ptYlTG1w+w0J2kAuE=
+X-Google-Smtp-Source: APiQypJ40nSjWwEgGQ78HI1Ha/t4+220r8t0sJv06u2Mh13Cu395zNLoeP6VNhWGHGLmXERZtEPPik3BuSQgtg/ynwQ=
+X-Received: by 2002:a6b:ef03:: with SMTP id k3mr2131106ioh.203.1588665521836;
+ Tue, 05 May 2020 00:58:41 -0700 (PDT)
 MIME-Version: 1.0
-References: <091e3fc3bdbc5f480af7d3b3ac096d174a4480d0.1588273612.git.joe@perches.com>
- <ec53e67b3ac928922807db3cb1585e911971dadc.1588273612.git.joe@perches.com>
- <CAMj1kXHwdy3BTqt-q_qnezyz666BcqKiFxeumfsD+Qjy5qRzZA@mail.gmail.com> <f1926d434cdeb091405ef8c01a90c0140d296bed.camel@perches.com>
-In-Reply-To: <f1926d434cdeb091405ef8c01a90c0140d296bed.camel@perches.com>
+References: <CAMj1kXES5qXEdtHCUoV8Oy6ZukWL=iQh+ppVo777LNtRG+kH6A@mail.gmail.com>
+ <20200504150248.62482-1-nivedita@alum.mit.edu>
+In-Reply-To: <20200504150248.62482-1-nivedita@alum.mit.edu>
 From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Tue, 5 May 2020 09:50:58 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXGQ7dLNMnheWViBh7BnHd00kWw0AW2aF7i7S2wGti0qKg@mail.gmail.com>
-Message-ID: <CAMj1kXGQ7dLNMnheWViBh7BnHd00kWw0AW2aF7i7S2wGti0qKg@mail.gmail.com>
-Subject: Re: [trivial PATCH] efi/libstub: Reduce efi_printk object size
-To:     Joe Perches <joe@perches.com>
-Cc:     Arvind Sankar <nivedita@alum.mit.edu>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>, X86 ML <x86@kernel.org>
+Date:   Tue, 5 May 2020 09:58:30 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXGO89BcHHzbZvDF4f_Epe98xc6-qq+3m3ZVcWNRVxG=sQ@mail.gmail.com>
+Message-ID: <CAMj1kXGO89BcHHzbZvDF4f_Epe98xc6-qq+3m3ZVcWNRVxG=sQ@mail.gmail.com>
+Subject: Re: [PATCH v2] efi/libstub: Fix mixed mode boot issue after macro refactor
+To:     Arvind Sankar <nivedita@alum.mit.edu>
+Cc:     linux-efi <linux-efi@vger.kernel.org>,
+        Guenter Roeck <linux@roeck-us.net>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Mon, 4 May 2020 at 20:29, Joe Perches <joe@perches.com> wrote:
+On Mon, 4 May 2020 at 17:02, Arvind Sankar <nivedita@alum.mit.edu> wrote:
 >
-> Use a few more common kernel styles.
+> Commit
+>   22090f84bc3f ("efi/libstub: unify EFI call wrappers for non-x86")
 >
-> Trivially reduce efi_printk object size by using a dereference to
-> a temporary instead of multiple dereferences of the same object.
+> refactored the macros that are used to provide wrappers for mixed-mode
+> calls on x86, allowing us to boot a 64-bit kernel on 32-bit firmware.
 >
-> Use efi_printk(const char *str) and static or static const for its
-> internal variables.
+> Unfortunately, this broke mixed mode boot due to the fact that
+> efi_is_native() is not a macro on x86.
 >
-> Use the more common form of while instead of a for loop.
+> All of these macros should go together, so rather than testing each one
+> to see if it is defined, condition the generic macro definitions on a
+> new ARCH_HAS_EFISTUB_WRAPPERS, and remove the wrapper definitions on x86
+> as well if CONFIG_EFI_MIXED is not enabled.
 >
-> Change efi_char16_printk argument to const.
->
-> Signed-off-by: Joe Perches <joe@perches.com>
+> Fixes: 22090f84bc3f ("efi/libstub: unify EFI call wrappers for non-x86")
+> Reported-by: Guenter Roeck <linux@roeck-us.net>
+> Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
 
-Thanks Joe.
-
+Thanks Arvind, I've queued this up now.
 
 > ---
->  drivers/firmware/efi/libstub/efi-stub-helper.c | 16 ++++++++--------
->  drivers/firmware/efi/libstub/efistub.h         |  6 +++---
->  2 files changed, 11 insertions(+), 11 deletions(-)
+>  arch/x86/include/asm/efi.h             | 19 +++++++++++++++----
+>  drivers/firmware/efi/libstub/efistub.h | 14 ++++----------
+>  2 files changed, 19 insertions(+), 14 deletions(-)
 >
-> diff --git a/drivers/firmware/efi/libstub/efi-stub-helper.c b/drivers/firmware/efi/libstub/efi-stub-helper.c
-> index 1c92ac231f94..dfd72a4360ac 100644
-> --- a/drivers/firmware/efi/libstub/efi-stub-helper.c
-> +++ b/drivers/firmware/efi/libstub/efi-stub-helper.c
-> @@ -26,19 +26,19 @@ bool __pure __efi_soft_reserve_enabled(void)
->         return !efi_nosoftreserve;
->  }
+> diff --git a/arch/x86/include/asm/efi.h b/arch/x86/include/asm/efi.h
+> index cd0c3fbf6156..6b9ab0d8b2a7 100644
+> --- a/arch/x86/include/asm/efi.h
+> +++ b/arch/x86/include/asm/efi.h
+> @@ -225,13 +225,15 @@ efi_status_t efi_set_virtual_address_map(unsigned long memory_map_size,
 >
-> -void efi_printk(char *str)
-> +void efi_printk(const char *str)
+>  /* arch specific definitions used by the stub code */
+>
+> -extern const bool efi_is64;
+> +#ifdef CONFIG_EFI_MIXED
+> +
+> +#define ARCH_HAS_EFISTUB_WRAPPERS
+>
+>  static inline bool efi_is_64bit(void)
 >  {
-> -       char *s8;
-> +       char s8;
->
-> -       for (s8 = str; *s8; s8++) {
-> -               efi_char16_t ch[2] = { 0 };
-> +       while ((s8 = *str++)) {
-
-I'm not sure I prefer the assignment-as-truth-value construct over the
-original for () tbh
-
-> +               static efi_char16_t ch[2] = {0, 0};
->
-
-UEFI code could potentially be reentrant, so this should not be static.
-
-> -               ch[0] = *s8;
-> -               if (*s8 == '\n') {
-> -                       efi_char16_t nl[2] = { '\r', 0 };
-> +               if (s8 == '\n') {
-> +                       static const efi_char16_t nl[2] = { '\r', 0 };
->                         efi_char16_printk(nl);
-
-We cannot make this const, unfortunately (see below). But we can clean
-this up by using L"\r" as the initializer.
-
->                 }
->
-> +               ch[0] = s8;
->                 efi_char16_printk(ch);
->         }
->  }
-> @@ -284,7 +284,7 @@ void *get_efi_config_table(efi_guid_t guid)
->         return NULL;
+> -       if (IS_ENABLED(CONFIG_EFI_MIXED))
+> -               return efi_is64;
+> -       return IS_ENABLED(CONFIG_X86_64);
+> +       extern const bool efi_is64;
+> +
+> +       return efi_is64;
 >  }
 >
-> -void efi_char16_printk(efi_char16_t *str)
-> +void efi_char16_printk(const efi_char16_t *str)
->  {
->         efi_call_proto(efi_table_attr(efi_system_table, con_out),
->                        output_string, str);
+>  static inline bool efi_is_native(void)
+> @@ -356,6 +358,15 @@ static inline u32 efi64_convert_status(efi_status_t status)
+>                                                    runtime),            \
+>                                     func, __VA_ARGS__))
+>
+> +#else /* CONFIG_EFI_MIXED */
+> +
+> +static inline bool efi_is_64bit(void)
+> +{
+> +       return IS_ENABLED(CONFIG_X86_64);
+> +}
+> +
+> +#endif /* CONFIG_EFI_MIXED */
+> +
+>  extern bool efi_reboot_required(void);
+>  extern bool efi_is_table_address(unsigned long phys_addr);
+>
 > diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
-> index 5ff63230a1f1..a03a92c665f0 100644
+> index 874233cf8820..4f10a09563f3 100644
 > --- a/drivers/firmware/efi/libstub/efistub.h
 > +++ b/drivers/firmware/efi/libstub/efistub.h
-> @@ -251,7 +251,7 @@ union efi_simple_text_output_protocol {
->         struct {
->                 void *reset;
->                 efi_status_t (__efiapi *output_string)(efi_simple_text_output_protocol_t *,
-> -                                                      efi_char16_t *);
-> +                                                      const efi_char16_t *);
-
-This prototype comes straight from the UEFI specification, and even
-though it is dumb that they forgot about const-qualified pointers
-entirely, I would prefer not to deviate from this.
-
->                 void *test_string;
->         };
->         struct {
-> @@ -599,7 +599,7 @@ efi_status_t efi_exit_boot_services(void *handle,
->                                     void *priv,
->                                     efi_exit_boot_map_processing priv_func);
+> @@ -33,20 +33,14 @@ extern bool efi_novamap;
 >
-> -void efi_char16_printk(efi_char16_t *);
-> +void efi_char16_printk(const efi_char16_t *str);
+>  extern const efi_system_table_t *efi_system_table;
 >
->  efi_status_t allocate_new_fdt_and_exit_boot(void *handle,
->                                             unsigned long *new_fdt_addr,
-> @@ -624,7 +624,7 @@ efi_status_t check_platform_features(void);
+> -#ifndef efi_bs_call
+> +#ifndef ARCH_HAS_EFISTUB_WRAPPERS
+> +
+> +#define efi_is_native()                (true)
+>  #define efi_bs_call(func, ...) efi_system_table->boottime->func(__VA_ARGS__)
+> -#endif
+> -#ifndef efi_rt_call
+>  #define efi_rt_call(func, ...) efi_system_table->runtime->func(__VA_ARGS__)
+> -#endif
+> -#ifndef efi_is_native
+> -#define efi_is_native()                (true)
+> -#endif
+> -#ifndef efi_table_attr
+>  #define efi_table_attr(inst, attr)     (inst->attr)
+> -#endif
+> -#ifndef efi_call_proto
+>  #define efi_call_proto(inst, func, ...) inst->func(inst, ##__VA_ARGS__)
+> +
+>  #endif
 >
->  void *get_efi_config_table(efi_guid_t guid);
->
-> -void efi_printk(char *str);
-> +void efi_printk(const char *str);
->
->  void efi_free(unsigned long size, unsigned long addr);
->
+>  #define efi_info(msg)          do {                    \
+> --
+> 2.26.2
 >
