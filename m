@@ -2,87 +2,72 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F8501C5ECB
-	for <lists+linux-efi@lfdr.de>; Tue,  5 May 2020 19:29:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 16A591C608F
+	for <lists+linux-efi@lfdr.de>; Tue,  5 May 2020 21:00:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726350AbgEER3x (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 5 May 2020 13:29:53 -0400
-Received: from mga11.intel.com ([192.55.52.93]:32198 "EHLO mga11.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729199AbgEER3x (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Tue, 5 May 2020 13:29:53 -0400
-IronPort-SDR: UfNtvkx0+ZDbAXgyeWgJngehQpG0ihayTi5jKQhmzfKKQXHIe4SMX0qQiQB4sGY48wzrSvvpzH
- AZcFzEJxZ7/A==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 May 2020 10:29:53 -0700
-IronPort-SDR: Joq+Ga7yrJXIQhwK7vzXmzkreqAlxZjnjzLziJ+pcysRnaDmldzvGpqa71dn5r7QWsYaBxhkgO
- OdKPERvpjItw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.73,356,1583222400"; 
-   d="scan'208";a="338731655"
-Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
-  by orsmga001.jf.intel.com with ESMTP; 05 May 2020 10:29:51 -0700
-Received: from kbuild by lkp-server01 with local (Exim 4.89)
-        (envelope-from <lkp@intel.com>)
-        id 1jW1OB-000CU8-7N; Wed, 06 May 2020 01:29:51 +0800
-Date:   Wed, 6 May 2020 01:29:43 +0800
-From:   kbuild test robot <lkp@intel.com>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     kbuild-all@lists.01.org, linux-efi@vger.kernel.org
-Subject: [efi:next 14/14]
- drivers/firmware/efi/libstub/efi-stub-helper.c:35:43: sparse: sparse:
- incorrect type in argument 1 (different type sizes)
-Message-ID: <202005060139.iJDyIT5u%lkp@intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.10.1 (2018-07-13)
+        id S1729025AbgEETAZ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 5 May 2020 15:00:25 -0400
+Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:37241 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1727083AbgEETAZ (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 5 May 2020 15:00:25 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1588705224;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc; bh=R7YqtoNVOAoFKS6RM3wllcWxnGsaIeVUvLmMoQN3l6s=;
+        b=VN2sk+fuJdiPCK3DG8DTXvA0TQhVDkdF3M5DCCfu+vSBzP+LLEeqiN2gzaEQ0w72pT6/3S
+        I9SCVM+sxkVkr8yQxe9R1ovDpwh51RUw9RBVVGCMlUxTdaqkSMmmB38ld3LmoN1ClukNpe
+        c1KPdu5fRLkPxs7Q7LbUhTEDHQHLo/Q=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-316-QjKGPL5FP2uTIWb7k7g_vw-1; Tue, 05 May 2020 15:00:20 -0400
+X-MC-Unique: QjKGPL5FP2uTIWb7k7g_vw-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id D1AE91899527;
+        Tue,  5 May 2020 19:00:18 +0000 (UTC)
+Received: from lszubowi.redhat.com (unknown [10.10.110.69])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 8A51F19C4F;
+        Tue,  5 May 2020 19:00:17 +0000 (UTC)
+From:   Lenny Szubowicz <lszubowi@redhat.com>
+To:     ardb@kernel.org, eric.snowberg@oracle.com, mingo@kernel.org,
+        nivedita@alum.mit.edu, tglx@linutronix.de,
+        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] efi/libstub/x86: Free EFI map buffer in allocate_e820()
+Date:   Tue,  5 May 2020 15:00:16 -0400
+Message-Id: <20200505190016.4350-1-lszubowi@redhat.com>
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git next
-head:   0b8d9fc9953fde4ea3eb3191d986ca2d01eb783c
-commit: 0b8d9fc9953fde4ea3eb3191d986ca2d01eb783c [14/14] efi/libstub: Make efi_printk() input argument const char*
-reproduce:
-        # apt-get install sparse
-        # sparse version: v0.6.1-191-gc51a0382-dirty
-        git checkout 0b8d9fc9953fde4ea3eb3191d986ca2d01eb783c
-        make ARCH=x86_64 allmodconfig
-        make C=1 CF='-fdiagnostic-prefix -D__CHECK_ENDIAN__'
+In allocate_e820(), free the EFI map buffer that has been returned
+by efi_get_memory_map(). The returned size of the EFI map buffer
+is used to allocate an adequately sized e820ext buffer, if it's
+needed. But the contents of that EFI map buffer is not used at all
+and the local pointer to it is gone on return from allocate_e820().
 
-If you fix the issue, kindly add following tag as appropriate
-Reported-by: kbuild test robot <lkp@intel.com>
-
-
-sparse warnings: (new ones prefixed by >>)
-
->> drivers/firmware/efi/libstub/efi-stub-helper.c:35:43: sparse: sparse: incorrect type in argument 1 (different type sizes) @@    expected unsigned short [usertype] * @@    got ype] * @@
->> drivers/firmware/efi/libstub/efi-stub-helper.c:35:43: sparse:    expected unsigned short [usertype] *
-   drivers/firmware/efi/libstub/efi-stub-helper.c:35:43: sparse:    got char *
-   drivers/firmware/efi/libstub/efi-stub-helper.c:385:44: sparse: sparse: incorrect type in argument 2 (different type sizes) @@    expected unsigned short const [usertype] *optstr @@    got ype] *optstr @@
-   drivers/firmware/efi/libstub/efi-stub-helper.c:385:44: sparse:    expected unsigned short const [usertype] *optstr
-   drivers/firmware/efi/libstub/efi-stub-helper.c:385:44: sparse:    got char *
-
-vim +35 drivers/firmware/efi/libstub/efi-stub-helper.c
-
-    28	
-    29	void efi_printk(const char *str)
-    30	{
-    31		while (*str) {
-    32			efi_char16_t ch[] = { *str++, L'\0' };
-    33	
-    34			if (ch[0] == L'\n')
-  > 35				efi_char16_printk(L"\r\n");
-    36			else
-    37				efi_char16_printk(ch);
-    38		}
-    39	}
-    40	
-
+Signed-off-by: Lenny Szubowicz <lszubowi@redhat.com>
 ---
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+ drivers/firmware/efi/libstub/x86-stub.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
+index 05ccb229fb45..4efe3e7a218d 100644
+--- a/drivers/firmware/efi/libstub/x86-stub.c
++++ b/drivers/firmware/efi/libstub/x86-stub.c
+@@ -623,6 +623,9 @@ static efi_status_t allocate_e820(struct boot_params *params,
+ 	if (status != EFI_SUCCESS)
+ 		return status;
+ 
++	/* Allocated EFI map buf is not used here. Just need its size. */
++	efi_bs_call(free_pool, map);
++
+ 	nr_desc = buff_size / desc_size;
+ 
+ 	if (nr_desc > ARRAY_SIZE(params->e820_table)) {
+-- 
+2.18.4
+
