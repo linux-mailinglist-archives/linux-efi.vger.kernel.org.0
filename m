@@ -2,200 +2,270 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 90F861C4963
-	for <lists+linux-efi@lfdr.de>; Tue,  5 May 2020 00:10:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A60051C4B06
+	for <lists+linux-efi@lfdr.de>; Tue,  5 May 2020 02:24:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728134AbgEDWKM (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 4 May 2020 18:10:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39632 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726419AbgEDWKL (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 4 May 2020 18:10:11 -0400
-Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com [IPv6:2607:f8b0:4864:20::441])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95048C061A0E
-        for <linux-efi@vger.kernel.org>; Mon,  4 May 2020 15:10:11 -0700 (PDT)
-Received: by mail-pf1-x441.google.com with SMTP id r14so11400pfg.2
-        for <linux-efi@vger.kernel.org>; Mon, 04 May 2020 15:10:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dabbelt-com.20150623.gappssmtp.com; s=20150623;
-        h=date:subject:in-reply-to:cc:from:to:message-id:mime-version
-         :content-transfer-encoding;
-        bh=qXuUF5w7g6lC1n/G1lz2lM2QKdQ45opx2MhRpkEwDZw=;
-        b=lNcqGK492oKuELZ+zYOJ8tCM2rgWb0QYqBA6mHrjcG2ELqF3+5IOKNsYaCkK4c+rdR
-         RNYzBuk4iXqnG6zK/SZYkVGFPkIr/Rr58+6SlKC7OzQXePdDOUC1NeS+Gv7eswRi6xXm
-         zopB+GivActa4hEsrTK0EbvskRKHp6xBZFnNrdnzecZV0/x8N8ZCgSCloEYkYx3a11VO
-         5UCZZqIZcDzCUkYYWy9eSKp9YpOwtJ7VTSXmMdrwZPkL0JhiLNgWlYRb5xDxRUvzcgoE
-         Uwt0n5Uunaqffo7HutIbMmv6aEV3Rm6QJZHhjAVJWjuLznOeo56ru3+80saDRUWoxLIC
-         HoPg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:subject:in-reply-to:cc:from:to:message-id
-         :mime-version:content-transfer-encoding;
-        bh=qXuUF5w7g6lC1n/G1lz2lM2QKdQ45opx2MhRpkEwDZw=;
-        b=rqPAMRiiHNxXhJl7lFeohtsVlx8jkWCxYN1ZlpzfO8E8CeNdyp03wClUoBvRJxgvU1
-         I3fYGdjOvtrhaB9TjlEuaIq91HIj8uAhaQCE+1LSbyAJ4/RqIb4lER4ufGXCDN86cixD
-         kgHr0mJAQM8uPHm2pIz6ph4AXf8EnydNWWg8dJgC0jbIPIgijE2L26nDfXocEKvlz81Q
-         vttfRpYCKl/teFFKKsBD7yC++hrTeDAGOdlaqxg0o6k/maDnZPExSZ0/cS465UaRcPmN
-         VZe5oIRvUs3EoSdn0ouv3nQmdfRAnTBHEPwP8BDT/plzgVcSAG15ky0GS6ub4cTyssAh
-         2dYA==
-X-Gm-Message-State: AGi0Puaxi9PBjUgw/vISYSfqCkCiFSNjwPjt1nlU2NPjWLMNT9zfHj8j
-        QJDaia669J73o7eKVBFvKlVdfg==
-X-Google-Smtp-Source: APiQypLoAUQvfl3jCgNmkTEiCsKB+3A79WO2BHbTvZJwWQGZmdM62j+IsCQgcN7nYGFaZ29Ie/jMVg==
-X-Received: by 2002:a62:e30f:: with SMTP id g15mr56001pfh.150.1588630210901;
-        Mon, 04 May 2020 15:10:10 -0700 (PDT)
-Received: from localhost (76-210-143-223.lightspeed.sntcca.sbcglobal.net. [76.210.143.223])
-        by smtp.gmail.com with ESMTPSA id v26sm67384pfe.121.2020.05.04.15.10.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 May 2020 15:10:10 -0700 (PDT)
-Date:   Mon, 04 May 2020 15:10:10 -0700 (PDT)
-X-Google-Original-Date: Mon, 04 May 2020 15:08:02 PDT (-0700)
-Subject:     Re: [GIT PULL] EFI stub loading support for RISC-V
-In-Reply-To: <CAMj1kXHXaTP=GN8s9Q0DWGT7XtV+XnB_2R68yyuWguMqP3m3+w@mail.gmail.com>
-CC:     atishp@atishpatra.org, linux-efi@vger.kernel.org,
-        Atish Patra <Atish.Patra@wdc.com>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        aou@eecs.berkeley.edu, linux-riscv@lists.infradead.org
-From:   Palmer Dabbelt <palmer@dabbelt.com>
-To:     ardb@kernel.org
-Message-ID: <mhng-4513bd18-556a-4b92-a16a-04be757776ed@palmerdabbelt-glaptop1>
-Mime-Version: 1.0 (MHng)
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
+        id S1728374AbgEEAYW (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 4 May 2020 20:24:22 -0400
+Received: from mga03.intel.com ([134.134.136.65]:7543 "EHLO mga03.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727028AbgEEAYV (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Mon, 4 May 2020 20:24:21 -0400
+IronPort-SDR: QDIMHiPwLijgcJcqFbgQXZBQLNqGikPUdrhVOfsfbBtf7EsAiOVBJsKMGDLdHah/u2xwGnrS0t
+ icj6OgDkJ36Q==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 May 2020 17:24:20 -0700
+IronPort-SDR: m+eERlBJl78rZnTqzr75o27OvL6COBePnxkv07Gf5Xi+lRprTSQxmnxzDvSaIj0l8lnJtv3FXk
+ koxi2nibR2HA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.73,354,1583222400"; 
+   d="scan'208";a="406651287"
+Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
+  by orsmga004.jf.intel.com with ESMTP; 04 May 2020 17:24:19 -0700
+Received: from kbuild by lkp-server01 with local (Exim 4.89)
+        (envelope-from <lkp@intel.com>)
+        id 1jVlNi-000F7c-7d; Tue, 05 May 2020 08:24:18 +0800
+Date:   Tue, 05 May 2020 08:23:57 +0800
+From:   kbuild test robot <lkp@intel.com>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-efi@vger.kernel.org
+Subject: [efi:next] BUILD SUCCESS ac1261b64d4a1a1b6d90f303bd2fbf2680f32688
+Message-ID: <5eb0b21d.rW/pAG697C/t+2dP%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, 30 Apr 2020 04:54:48 PDT (-0700), ardb@kernel.org wrote:
-> On Thu, 30 Apr 2020 at 00:52, Palmer Dabbelt <palmer@dabbelt.com> wrote:
->>
->> On Tue, 28 Apr 2020 10:57:48 PDT (-0700), atishp@atishpatra.org wrote:
->> > On Sun, Apr 26, 2020 at 12:52 PM Atish Patra <atishp@atishpatra.org> wrote:
->> >>
->> >> On Sat, Apr 25, 2020 at 12:31 PM Ard Biesheuvel <ardb@kernel.org> wrote:
->> >> >
->> >> > Palmer,
->> >> >
->> >> > As discussed, below are the changes for v5.8 that can be taken via the
->> >> > RISC-V tree to implement booting RISC-V Linux from EFI firmware.
->> >> >
->> >> > You can fetch and merge the signed tag directly, or merge 22090f84bc3f80
->> >> > and cherry pick the 4 patches on top of it, if you see any need to do so
->> >> > (but please use a topic branch in that case)
->> >> >
->> >> > Please be aware (as is noted in the tag) that these changes are really
->> >> > the bare minimum that is needed to launch the kernel from EFI firmware.
->> >> > In the current state, you may be able to boot from Uboot in EFI mode,
->> >> > but Tianocore based boot will not work at all, unless you convert the
->> >> > EFI memory map back to DT memory nodes in the firmware implementation,
->> >> > and I can assure you that that is not something that will be accepted in
->> >> > upstream Tianocore.
->> >> >
->> >> > So in summary, this is unfinished work, and I can only recommend merging
->> >> > these changes once there is a plan in place to complete the implementation.
->> >> >
->> >>
->> >> I have started looking into this part. My initial plan was to start
->> >> looking into it right after I got
->> >> the boot time services working but other things took priority. Thanks
->> >> for your review and
->> >> suggestion throughout the process. I will coordinate with Abner/Daniel
->> >> to test RISC-V UEFI
->> >> runtime services(once implemented)  with tianocore.
->> >> > --
->> >> > Ard.
->> >> >
->> >> >
->> >> > The following changes since commit 22090f84bc3f8081e0ec180ccaedc85820085376:
->> >> >
->> >> >   efi/libstub: unify EFI call wrappers for non-x86 (2020-04-23 20:15:06 +0200)
->> >> >
->> >> > are available in the Git repository at:
->> >> >
->> >> >   git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git tags/riscv-efi-for-v5.8
->> >> >
->> >> > for you to fetch changes up to 66b4ac6b9dd1fdbb8ac7a1f20a8d08066368245d:
->> >> >
->> >> >   RISC-V: Add EFI stub support. (2020-04-25 13:59:54 +0200)
->> >> >
->> >> > ----------------------------------------------------------------
->> >> > EFI stub loading support for RISC-V
->> >> >
->> >> > This branch implements support for loading the RISC-V Linux kernel
->> >> > straight from EFI firmware, by adding PE/COFF metadata to the kernel
->> >> > image and incorporating the kernel's EFI stub.
->> >> >
->> >> > Note that this is the *bare* minimum that is needed to boot from EFI
->> >> > firmware. The following pieces are still missing at this point, and
->> >> > will be required for full interoperability with generic EFI firmware:
->> >> > - using the EFI memory map instead of the device tree to populate the
->> >> >   memblock tables
->> >> > - parsing and handling of generic EFI configuration tables (such as
->> >> >   SMBIOS), as well as architecture specific ones that may be defined
->> >> >   for RISC-V
->> >> > - runtime mapping of EFI runtime services memory and MMIO regions, and
->> >> >   support for EFI runtime services (get/set time, get/set variable, reset
->> >> >   system)
->> >> >
->> >> > ----------------------------------------------------------------
->> >> >
->> >> > Cc: Atish Patra <atish.patra@wdc.com>
->> >> > Cc: Palmer Dabbelt <palmer@dabbelt.com>
->> >> > Cc: Paul Walmsley <paul.walmsley@sifive.com>
->> >> > Cc: Albert Ou <aou@eecs.berkeley.edu>
->> >> > Cc: linux-riscv@lists.infradead.org
->> >> >
->> >> > Atish Patra (4):
->> >> >       include: pe.h: Add RISC-V related PE definition
->> >> >       RISC-V: Define fixmap bindings for generic early ioremap support
->> >> >       RISC-V: Add PE/COFF header for EFI stub
->> >> >       RISC-V: Add EFI stub support.
->> >> >
->> >> >  arch/riscv/Kconfig                        |  22 ++++++
->> >> >  arch/riscv/Makefile                       |   1 +
->> >> >  arch/riscv/configs/defconfig              |   1 +
->> >> >  arch/riscv/include/asm/Kbuild             |   1 +
->> >> >  arch/riscv/include/asm/efi.h              |  33 +++++++++
->> >> >  arch/riscv/include/asm/fixmap.h           |  18 +++++
->> >> >  arch/riscv/include/asm/io.h               |   1 +
->> >> >  arch/riscv/include/asm/sections.h         |  13 ++++
->> >> >  arch/riscv/kernel/Makefile                |   4 ++
->> >> >  arch/riscv/kernel/efi-header.S            | 100 +++++++++++++++++++++++++++
->> >> >  arch/riscv/kernel/head.S                  |  16 +++++
->> >> >  arch/riscv/kernel/image-vars.h            |  53 +++++++++++++++
->> >> >  arch/riscv/kernel/vmlinux.lds.S           |  22 +++++-
->> >> >  drivers/firmware/efi/Kconfig              |   3 +-
->> >> >  drivers/firmware/efi/libstub/Makefile     |  10 +++
->> >> >  drivers/firmware/efi/libstub/riscv-stub.c | 109 ++++++++++++++++++++++++++++++
->> >> >  include/linux/pe.h                        |   3 +
->> >> >  17 files changed, 407 insertions(+), 3 deletions(-)
->> >> >  create mode 100644 arch/riscv/include/asm/efi.h
->> >> >  create mode 100644 arch/riscv/include/asm/sections.h
->> >> >  create mode 100644 arch/riscv/kernel/efi-header.S
->> >> >  create mode 100644 arch/riscv/kernel/image-vars.h
->> >> >  create mode 100644 drivers/firmware/efi/libstub/riscv-stub.c
->> >>
->> >>
->> >>
->> >> --
->> >> Regards,
->> >> Atish
->> >
->> > Hi Palmer,
->> > There were few build errors for all-yes config and nommu reported by
->> > 0-day tests.
->> > As some of the fixes require to add some dummy declarations for efi
->> > runtime related functions,
->> > Ard suggested that we should drop the series for now and merge with
->> > full uefi support later.
->>
->> OK, I'll wait for another patch set.  That makes my life a bit easier as well,
->> as we don't have to do the multi-tree merge in a single release.
->
-> Yeah. Apologies for the back and forth, but I really don't want to end
-> up in a place where I am juggling EFI fixes and have to care about
-> architectures that can't even use EFI in a meaningful way.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git  next
+branch HEAD: ac1261b64d4a1a1b6d90f303bd2fbf2680f32688  efi/libstub/x86: Work around LLVM ELF quirk build regression
 
-No problem, I just wanted to make sure I understood correctly as it was going
-to be my first time trying to handle a multi-tree patch set like this so I'm a
-bit lost.
+elapsed time: 558m
+
+configs tested: 212
+configs skipped: 0
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+arm64                            allyesconfig
+arm                              allyesconfig
+arm64                            allmodconfig
+arm                              allmodconfig
+arm64                             allnoconfig
+arm                               allnoconfig
+arm                           efm32_defconfig
+arm                         at91_dt_defconfig
+arm                        shmobile_defconfig
+arm64                               defconfig
+arm                          exynos_defconfig
+arm                        multi_v5_defconfig
+arm                           sunxi_defconfig
+arm                        multi_v7_defconfig
+sparc                            allyesconfig
+parisc                            allnoconfig
+arc                              allyesconfig
+ia64                        generic_defconfig
+mips                            ar7_defconfig
+riscv                             allnoconfig
+parisc                           allmodconfig
+i386                              allnoconfig
+i386                             allyesconfig
+i386                             alldefconfig
+i386                                defconfig
+i386                              debian-10.3
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                              allnoconfig
+ia64                          tiger_defconfig
+ia64                         bigsur_defconfig
+ia64                             allyesconfig
+ia64                             alldefconfig
+m68k                       m5475evb_defconfig
+m68k                             allmodconfig
+m68k                       bvme6000_defconfig
+m68k                           sun3_defconfig
+m68k                          multi_defconfig
+nios2                         3c120_defconfig
+nios2                         10m50_defconfig
+c6x                        evmc6678_defconfig
+c6x                              allyesconfig
+openrisc                 simple_smp_defconfig
+openrisc                    or1ksim_defconfig
+nds32                               defconfig
+nds32                             allnoconfig
+csky                                defconfig
+alpha                               defconfig
+h8300                       h8s-sim_defconfig
+h8300                     edosk2674_defconfig
+xtensa                          iss_defconfig
+h8300                    h8300h-sim_defconfig
+xtensa                       common_defconfig
+arc                                 defconfig
+microblaze                      mmu_defconfig
+microblaze                    nommu_defconfig
+mips                      fuloong2e_defconfig
+mips                      malta_kvm_defconfig
+mips                             allyesconfig
+mips                         64r6el_defconfig
+mips                              allnoconfig
+mips                           32r2_defconfig
+mips                             allmodconfig
+mips                       capcella_defconfig
+mips                           ip32_defconfig
+mips                  decstation_64_defconfig
+mips                          ath79_defconfig
+mips                        bcm63xx_defconfig
+mips                malta_kvm_guest_defconfig
+mips                         tb0287_defconfig
+mips                      loongson3_defconfig
+parisc                generic-64bit_defconfig
+parisc                generic-32bit_defconfig
+parisc                           allyesconfig
+powerpc                      chrp32_defconfig
+powerpc                             defconfig
+powerpc                       holly_defconfig
+powerpc                       ppc64_defconfig
+powerpc                          rhel-kconfig
+powerpc                           allnoconfig
+powerpc                  mpc866_ads_defconfig
+powerpc                    amigaone_defconfig
+powerpc                    adder875_defconfig
+powerpc                     ep8248e_defconfig
+powerpc                          g5_defconfig
+powerpc                     mpc512x_defconfig
+m68k                 randconfig-a001-20200505
+mips                 randconfig-a001-20200505
+nds32                randconfig-a001-20200505
+parisc               randconfig-a001-20200505
+alpha                randconfig-a001-20200505
+riscv                randconfig-a001-20200505
+m68k                 randconfig-a001-20200503
+mips                 randconfig-a001-20200503
+nds32                randconfig-a001-20200503
+alpha                randconfig-a001-20200503
+parisc               randconfig-a001-20200503
+riscv                randconfig-a001-20200503
+h8300                randconfig-a001-20200503
+nios2                randconfig-a001-20200503
+microblaze           randconfig-a001-20200503
+c6x                  randconfig-a001-20200503
+sparc64              randconfig-a001-20200503
+s390                 randconfig-a001-20200504
+xtensa               randconfig-a001-20200504
+sh                   randconfig-a001-20200504
+openrisc             randconfig-a001-20200504
+csky                 randconfig-a001-20200504
+s390                 randconfig-a001-20200505
+xtensa               randconfig-a001-20200505
+sh                   randconfig-a001-20200505
+openrisc             randconfig-a001-20200505
+csky                 randconfig-a001-20200505
+s390                 randconfig-a001-20200430
+xtensa               randconfig-a001-20200430
+csky                 randconfig-a001-20200430
+openrisc             randconfig-a001-20200430
+sh                   randconfig-a001-20200430
+s390                 randconfig-a001-20200502
+xtensa               randconfig-a001-20200502
+sh                   randconfig-a001-20200502
+openrisc             randconfig-a001-20200502
+csky                 randconfig-a001-20200502
+i386                 randconfig-b003-20200503
+x86_64               randconfig-b002-20200503
+i386                 randconfig-b001-20200503
+x86_64               randconfig-b003-20200503
+x86_64               randconfig-b001-20200503
+i386                 randconfig-b002-20200503
+x86_64               randconfig-c002-20200502
+i386                 randconfig-c002-20200502
+i386                 randconfig-c001-20200502
+i386                 randconfig-c003-20200502
+x86_64               randconfig-c001-20200503
+x86_64               randconfig-c002-20200503
+i386                 randconfig-c002-20200503
+x86_64               randconfig-c003-20200503
+i386                 randconfig-c001-20200503
+i386                 randconfig-c003-20200503
+x86_64               randconfig-d001-20200503
+i386                 randconfig-d003-20200503
+x86_64               randconfig-d003-20200503
+i386                 randconfig-d001-20200503
+x86_64               randconfig-d002-20200503
+i386                 randconfig-d002-20200503
+x86_64               randconfig-e003-20200503
+x86_64               randconfig-e002-20200503
+i386                 randconfig-e003-20200503
+x86_64               randconfig-e001-20200503
+i386                 randconfig-e002-20200503
+i386                 randconfig-e001-20200503
+i386                 randconfig-f003-20200503
+x86_64               randconfig-f002-20200503
+i386                 randconfig-f001-20200503
+i386                 randconfig-f002-20200503
+i386                 randconfig-f003-20200505
+x86_64               randconfig-f001-20200505
+x86_64               randconfig-f003-20200505
+i386                 randconfig-f001-20200505
+i386                 randconfig-f002-20200505
+x86_64               randconfig-g003-20200503
+i386                 randconfig-g003-20200503
+i386                 randconfig-g002-20200503
+x86_64               randconfig-g001-20200503
+i386                 randconfig-g001-20200503
+x86_64               randconfig-a003-20200505
+x86_64               randconfig-a001-20200505
+i386                 randconfig-a001-20200505
+i386                 randconfig-a003-20200505
+i386                 randconfig-a002-20200505
+ia64                 randconfig-a001-20200503
+arm64                randconfig-a001-20200503
+arc                  randconfig-a001-20200503
+arm                  randconfig-a001-20200503
+sparc                randconfig-a001-20200503
+ia64                 randconfig-a001-20200505
+arc                  randconfig-a001-20200505
+powerpc              randconfig-a001-20200505
+arm                  randconfig-a001-20200505
+sparc                randconfig-a001-20200505
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+s390                       zfcpdump_defconfig
+s390                          debug_defconfig
+s390                             allyesconfig
+s390                              allnoconfig
+s390                             allmodconfig
+s390                             alldefconfig
+s390                                defconfig
+sh                          rsk7269_defconfig
+sh                               allmodconfig
+sh                            titan_defconfig
+sh                  sh7785lcr_32bit_defconfig
+sh                                allnoconfig
+sparc                               defconfig
+sparc64                             defconfig
+sparc64                           allnoconfig
+sparc64                          allyesconfig
+sparc64                          allmodconfig
+um                           x86_64_defconfig
+um                             i386_defconfig
+um                                  defconfig
+x86_64                                   rhel
+x86_64                               rhel-7.6
+x86_64                    rhel-7.6-kselftests
+x86_64                         rhel-7.2-clear
+x86_64                                    lkp
+x86_64                              fedora-25
+x86_64                                  kexec
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
