@@ -2,85 +2,91 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 439AF1C6A06
-	for <lists+linux-efi@lfdr.de>; Wed,  6 May 2020 09:24:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F04FF1C6B6B
+	for <lists+linux-efi@lfdr.de>; Wed,  6 May 2020 10:20:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727982AbgEFHYH (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 6 May 2020 03:24:07 -0400
-Received: from mail.kernel.org ([198.145.29.99]:33324 "EHLO mail.kernel.org"
+        id S1728844AbgEFITv (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 6 May 2020 04:19:51 -0400
+Received: from mail.kernel.org ([198.145.29.99]:51362 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727832AbgEFHYH (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Wed, 6 May 2020 03:24:07 -0400
-Received: from mail-io1-f43.google.com (mail-io1-f43.google.com [209.85.166.43])
+        id S1728839AbgEFITu (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Wed, 6 May 2020 04:19:50 -0400
+Received: from e123331-lin.nice.arm.com (amontpellier-657-1-18-247.w109-210.abo.wanadoo.fr [109.210.65.247])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 1542E2075A;
-        Wed,  6 May 2020 07:24:07 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 3152120714;
+        Wed,  6 May 2020 08:19:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1588749847;
-        bh=x7OyI4ujQqJw0j0GzC4hS3Aq2xvKqYQlLnWoJNviDjI=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=2dF/3JTTgUTXkPe00eAGP+i/UrEb6At13z6L8h0yfrl/xzNk2Y5LE5dG3bFPy3gsV
-         PanOXrzYPZqsVHdv4gTC1p54m9U/IrzFxdW0PPJ6mB4mrKWoHAmCzVMzr1tCUx8MbD
-         mgM6oToSjO1sRXefqDLWUFwvnbNkWAeT0wdLMaio=
-Received: by mail-io1-f43.google.com with SMTP id k18so1201848ion.0;
-        Wed, 06 May 2020 00:24:07 -0700 (PDT)
-X-Gm-Message-State: AGi0PuYoT4ZZstg3sPL6oQwiLuTiKNjIDIeCqxshoR6lAX/ZSnl3ww0A
-        /Pdf8tA7K/oPGQ8sXyaiAIwRFquy7Pnog8qw7fg=
-X-Google-Smtp-Source: APiQypIDZYGhT0LIyzlWMf02JIHTT0d22XLa8P8k+ofCUy3V1mbu/iTR9hb+bBCzJxHhbqT4z3ia2IzftQLl9LWc4FA=
-X-Received: by 2002:a02:8247:: with SMTP id q7mr6901558jag.68.1588749846416;
- Wed, 06 May 2020 00:24:06 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200505190016.4350-1-lszubowi@redhat.com>
-In-Reply-To: <20200505190016.4350-1-lszubowi@redhat.com>
+        s=default; t=1588753190;
+        bh=PWMM3kT0ABXGqymWpNLRYqWaQ9HTNg5EFVcVWwoEfTI=;
+        h=From:To:Cc:Subject:Date:From;
+        b=mCOBUa6HCaA8B2xUAoRUx93cdBJCOGSepe3slTife/7F580tWhjC9iUMC2WxrLqow
+         d1dS/bPUGt4ihEBPgM04D8q2vrmyDUvZJx/i5P3QUYKA7tRHC2Pez7VSUllhFMfQKR
+         cOPDZOIlobWcPQsEoAW4/M6N1vbOxKEyTFR89vr8=
 From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Wed, 6 May 2020 09:23:55 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXHsvy09V0rK2Qh0eiR4Vi5ZDn=5ordNvEBH4c-Xk00QgQ@mail.gmail.com>
-Message-ID: <CAMj1kXHsvy09V0rK2Qh0eiR4Vi5ZDn=5ordNvEBH4c-Xk00QgQ@mail.gmail.com>
-Subject: Re: [PATCH] efi/libstub/x86: Free EFI map buffer in allocate_e820()
-To:     Lenny Szubowicz <lszubowi@redhat.com>
-Cc:     eric.snowberg@oracle.com, Ingo Molnar <mingo@kernel.org>,
-        Arvind Sankar <nivedita@alum.mit.edu>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+To:     linux-efi@vger.kernel.org
+Cc:     linux-arm-kernel@lists.infradead.org,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Nicolas Pitre <nico@fluxnic.net>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Heinrich Schuchardt <xypron.glpk@gmx.de>
+Subject: [PATCH v3 0/5] ARM: simplify handover from UEFI to decompressor
+Date:   Wed,  6 May 2020 10:19:34 +0200
+Message-Id: <20200506081939.8986-1-ardb@kernel.org>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, 5 May 2020 at 21:00, Lenny Szubowicz <lszubowi@redhat.com> wrote:
->
-> In allocate_e820(), free the EFI map buffer that has been returned
-> by efi_get_memory_map(). The returned size of the EFI map buffer
-> is used to allocate an adequately sized e820ext buffer, if it's
-> needed. But the contents of that EFI map buffer is not used at all
-> and the local pointer to it is gone on return from allocate_e820().
->
-> Signed-off-by: Lenny Szubowicz <lszubowi@redhat.com>
-> ---
->  drivers/firmware/efi/libstub/x86-stub.c | 3 +++
->  1 file changed, 3 insertions(+)
->
-> diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
-> index 05ccb229fb45..4efe3e7a218d 100644
-> --- a/drivers/firmware/efi/libstub/x86-stub.c
-> +++ b/drivers/firmware/efi/libstub/x86-stub.c
-> @@ -623,6 +623,9 @@ static efi_status_t allocate_e820(struct boot_params *params,
->         if (status != EFI_SUCCESS)
->                 return status;
->
-> +       /* Allocated EFI map buf is not used here. Just need its size. */
-> +       efi_bs_call(free_pool, map);
-> +
+The EFI stub in the ARM kernel runs in the context of the firmware, which
+means it usually runs with the caches and MMU on. Currently, we relocate
+the zImage so it appears in the first 128 MiB, disable the MMU and caches
+and invoke the decompressor via its ordinary entry point. However, since we
+can pass the base of DRAM directly, there is no need to relocate the zImage,
+which also means there is no need to disable and re-enable the caches and
+create new page tables etc.
 
-Wouldn't it be better to call BS->GetMemoryMap() directly here, with a
-zero size for the input buffer?
+This simplification is implemented by patch #5. Patches #1 - #4 are
+prerequisite changes to permit the decompressor startup code to be invoked
+past its ordinary entry point, and execute from the offset where the UEFI
+firmware happened to load it.
 
->         nr_desc = buff_size / desc_size;
->
->         if (nr_desc > ARRAY_SIZE(params->e820_table)) {
-> --
-> 2.18.4
->
+Note that this applies onto rmk/for-next as of today.
+
+Changes since v2:
+- Set the LSB of the image address if we are entering with MMU and caches off,
+  so that the decompressor will install its own page tables as it usually
+  does. This might happen on U-Boot platforms that call 'bootefi' without
+  enabling the caches (which technically violates the UEFI spec, but might
+  be working fine today)
+- Add Nico's ack to the series
+
+Changes since v1:
+- Tweak some asm sequences in #2 to fix the Thumb2 build
+- Switch immediately to the new stack in #5
+
+Cc: Geert Uytterhoeven <geert+renesas@glider.be>
+Cc: Nicolas Pitre <nico@fluxnic.net>
+Cc: Linus Walleij <linus.walleij@linaro.org>
+Cc: Russell King <linux@armlinux.org.uk>
+Cc: Heinrich Schuchardt <xypron.glpk@gmx.de>
+
+Ard Biesheuvel (5):
+  ARM: decompressor: move headroom variable out of LC0
+  ARM: decompressor: split off _edata and stack base into separate
+    object
+  ARM: decompressor: defer loading of the contents of the LC0 structure
+  ARM: decompressor: move GOT into .data for EFI enabled builds
+  ARM: decompressor: run decompressor in place if loaded via UEFI
+
+ arch/arm/boot/compressed/head.S           | 91 ++++++++------------
+ arch/arm/boot/compressed/vmlinux.lds.S    |  5 ++
+ drivers/firmware/efi/libstub/arm32-stub.c | 45 ++--------
+ 3 files changed, 48 insertions(+), 93 deletions(-)
+
+-- 
+2.17.1
+
