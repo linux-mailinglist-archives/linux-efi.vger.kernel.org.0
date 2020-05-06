@@ -2,89 +2,206 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6325D1C71AA
-	for <lists+linux-efi@lfdr.de>; Wed,  6 May 2020 15:29:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C1ED1C79FE
+	for <lists+linux-efi@lfdr.de>; Wed,  6 May 2020 21:15:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728483AbgEFN3M (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 6 May 2020 09:29:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40698 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1728081AbgEFN3M (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 6 May 2020 09:29:12 -0400
-Received: from mail-ot1-x343.google.com (mail-ot1-x343.google.com [IPv6:2607:f8b0:4864:20::343])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B56AC061A0F
-        for <linux-efi@vger.kernel.org>; Wed,  6 May 2020 06:29:12 -0700 (PDT)
-Received: by mail-ot1-x343.google.com with SMTP id g19so1320641otk.5
-        for <linux-efi@vger.kernel.org>; Wed, 06 May 2020 06:29:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to:cc;
-        bh=c7SLmnE4klnpTd1SZ9Ht0REZux2oXpJ65WbnH469Wzg=;
-        b=CyVSzoYsWHRsoot5bAkYTiqb57hYNWb5+Dd9xwzDUIx/Pcl6qSLYMfZrCnTJi6cVNG
-         YDaQZKuJmL1pg/MWn5cCMzpseKihGeZR4YuHXDNJ/4x6zIwh2uR7a2y9CAMb8GCvDzml
-         W83I4ZZ1+Qjl//iY8JBSipxi749JJzrKLyUA8jEXOyFowGYZ1mIGXE2RtTQfubDpaaMb
-         KkEGpbp6VnL6IZVWNRXib/m7tm4eRe5QSAENM7m7xJfqSSc9g8NulqDvv04PUca9HbZm
-         GGHrlE160qyi0eleeZjQ9Em7cVo/QG+WeA9WUThCC09xNaPdiM6y65jVPPFTXt7JBcaA
-         jGWQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
-        bh=c7SLmnE4klnpTd1SZ9Ht0REZux2oXpJ65WbnH469Wzg=;
-        b=qkBRGj8b3qYCwqCHffjkVFJySqlGWOVaqM25gAGd26jOZcy/xwwt358GgxpLEkLqei
-         ousjbriEouu+Lmh7MW11CeSdZUyqOR8CLqDcFmXuspsqTcPdAK36riNt7qCX+5j36oNl
-         xje/4u78+deEWu5nmrDPg/g9HQqHCJ9XhDvQg0MuURs1505qmAJxwDdwAn0dQ05QV77h
-         RKoxh8xuk69spiaPqGgDdAG1fHzimhAZzJqnQ+MQ4bwnD3oewjb26+bis6heYFOwrpFp
-         i12Ip4yiR70r61LSN3Ok5Yglug71lYNwd+TvcvM20xovU56ChNQt38YZtfEVqyhXpbWe
-         PsaA==
-X-Gm-Message-State: AGi0PuZJhGf7l57bl2uwSJqb3CZYUROVF0h/wlFPMd0hLe9WFu/NkZRk
-        FWaqwI9HKoNA592zhiGIsluQddTbiMshB+kdMZqnqf90NiT2Ug==
-X-Google-Smtp-Source: APiQypLRAthXdsOm1L1Xh7fckzRMCkZLzZpR9SQjXlVr7x94zRagJ7zFM2NDPm0Kwe5zQXn5bpBqJHVjNustIe2fCwA=
-X-Received: by 2002:a9d:68c5:: with SMTP id i5mr916578oto.251.1588771751575;
- Wed, 06 May 2020 06:29:11 -0700 (PDT)
-MIME-Version: 1.0
-From:   =?UTF-8?B?5Lq/5LiA?= <teroincn@gmail.com>
-Date:   Wed, 6 May 2020 21:28:59 +0800
-Message-ID: <CANTwqXCzoejWKz+x=FnS6uk2THM0qZUW-3YjJpvfwjtuiPi7=w@mail.gmail.com>
-Subject: [BUG]is there a memleak in function efivar_create_sysfs_entry?
-To:     ardb@kernel.org
+        id S1728166AbgEFTPQ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 6 May 2020 15:15:16 -0400
+Received: from mga09.intel.com ([134.134.136.24]:49121 "EHLO mga09.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728106AbgEFTPQ (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Wed, 6 May 2020 15:15:16 -0400
+IronPort-SDR: yCi+srslW1LI+cuURAbH5os1VQQC+QXCVwhIJL1zSqBV/+3O04U9K8MmbQq2N5rhZhRYckALMZ
+ 9/gy3c0UkDUw==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2020 12:15:15 -0700
+IronPort-SDR: i+5nO5OPGU8wMUMUJ1WPZWcY2BHZn16R1JFOG1/rvTdyTw50mkQbqyCpTnEzDE4dRKRmiwjrFF
+ /WtftWfgAayg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.73,360,1583222400"; 
+   d="scan'208";a="263665711"
+Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
+  by orsmga006.jf.intel.com with ESMTP; 06 May 2020 12:15:13 -0700
+Received: from kbuild by lkp-server01 with local (Exim 4.89)
+        (envelope-from <lkp@intel.com>)
+        id 1jWPVh-00030p-4K; Thu, 07 May 2020 03:15:13 +0800
+Date:   Thu, 07 May 2020 03:14:22 +0800
+From:   kbuild test robot <lkp@intel.com>
+To:     Ard Biesheuvel <ardb@kernel.org>
 Cc:     linux-efi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Subject: [efi:next] BUILD SUCCESS 4026229934f6ca0cb44af7b9df00e647b2f1f787
+Message-ID: <5eb30c8e.nWYX6XiaQY9BB1Y3%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hi all,
-I notice that most of the usage of kobject_init_and_add in drivers are
-wrong, and now some drivers code has maken it right,
-please see commit dfb5394f804e (https://lkml.org/lkml/2020/4/11/282).
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git  next
+branch HEAD: 4026229934f6ca0cb44af7b9df00e647b2f1f787  efi/libstub: Correct comment typos
 
-function efivar_create_sysfs_entry() in drivers/firmware/efi/efivars.c may
-have the similar issue and leak kobject.
-if kobject_init_and_add() failed, the new_var->kobj may already
-increased it's refcnt and allocated memory to store it's name,
-so a kobject_put is need before return.
+elapsed time: 512m
 
-static int
-efivar_create_sysfs_entry(struct efivar_entry *new_var)
-{
+configs tested: 148
+configs skipped: 0
 
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-    ret = kobject_init_and_add(&new_var->kobj, &efivar_ktype,
-  NULL, "%s", short_name);
-    kfree(short_name);
-    if (ret)
-        return ret;
+arm64                            allyesconfig
+arm                              allyesconfig
+arm64                            allmodconfig
+arm                              allmodconfig
+arm                               allnoconfig
+arm64                             allnoconfig
+sparc                            allyesconfig
+m68k                             allyesconfig
+ia64                              allnoconfig
+um                               allyesconfig
+nds32                               defconfig
+ia64                             allmodconfig
+c6x                               allnoconfig
+csky                                defconfig
+ia64                             alldefconfig
+microblaze                        allnoconfig
+i386                                defconfig
+ia64                                defconfig
+riscv                            allyesconfig
+s390                             allyesconfig
+riscv                               defconfig
+i386                              allnoconfig
+i386                             allyesconfig
+i386                             alldefconfig
+i386                              debian-10.3
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                           sun3_defconfig
+m68k                          multi_defconfig
+m68k                                defconfig
+nios2                               defconfig
+nios2                            allyesconfig
+openrisc                            defconfig
+c6x                              allyesconfig
+openrisc                         allyesconfig
+nds32                             allnoconfig
+csky                             allyesconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+h8300                            allmodconfig
+xtensa                              defconfig
+arc                                 defconfig
+arc                              allyesconfig
+microblaze                       allyesconfig
+sh                               allmodconfig
+sh                                allnoconfig
+mips                             allyesconfig
+mips                         64r6el_defconfig
+mips                              allnoconfig
+mips                           32r2_defconfig
+mips                             allmodconfig
+parisc                            allnoconfig
+parisc                           allyesconfig
+parisc                           allmodconfig
+powerpc                             defconfig
+powerpc                          allyesconfig
+powerpc                          alldefconfig
+powerpc                          rhel-kconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+m68k                 randconfig-a001-20200506
+mips                 randconfig-a001-20200506
+nds32                randconfig-a001-20200506
+parisc               randconfig-a001-20200506
+alpha                randconfig-a001-20200506
+riscv                randconfig-a001-20200506
+h8300                randconfig-a001-20200506
+nios2                randconfig-a001-20200506
+microblaze           randconfig-a001-20200506
+c6x                  randconfig-a001-20200506
+sparc64              randconfig-a001-20200506
+s390                 randconfig-a001-20200506
+xtensa               randconfig-a001-20200506
+sh                   randconfig-a001-20200506
+openrisc             randconfig-a001-20200506
+csky                 randconfig-a001-20200506
+xtensa               randconfig-a001-20200507
+sh                   randconfig-a001-20200507
+openrisc             randconfig-a001-20200507
+csky                 randconfig-a001-20200507
+i386                 randconfig-b003-20200506
+i386                 randconfig-b001-20200506
+x86_64               randconfig-b001-20200506
+x86_64               randconfig-b003-20200506
+i386                 randconfig-b002-20200506
+x86_64               randconfig-a003-20200506
+x86_64               randconfig-a001-20200506
+x86_64               randconfig-a002-20200506
+i386                 randconfig-a001-20200506
+i386                 randconfig-a002-20200506
+i386                 randconfig-a003-20200506
+i386                 randconfig-d003-20200506
+i386                 randconfig-d001-20200506
+x86_64               randconfig-d002-20200506
+i386                 randconfig-d002-20200506
+i386                 randconfig-e003-20200506
+x86_64               randconfig-e003-20200506
+x86_64               randconfig-e001-20200506
+i386                 randconfig-e002-20200506
+i386                 randconfig-e001-20200506
+i386                 randconfig-f003-20200506
+x86_64               randconfig-f001-20200506
+x86_64               randconfig-f003-20200506
+x86_64               randconfig-f002-20200506
+i386                 randconfig-f001-20200506
+i386                 randconfig-f002-20200506
+x86_64               randconfig-g003-20200506
+i386                 randconfig-g003-20200506
+i386                 randconfig-g002-20200506
+x86_64               randconfig-g001-20200506
+i386                 randconfig-g001-20200506
+x86_64               randconfig-g002-20200506
+i386                 randconfig-h002-20200506
+i386                 randconfig-h001-20200506
+i386                 randconfig-h003-20200506
+x86_64               randconfig-h002-20200506
+x86_64               randconfig-h003-20200506
+x86_64               randconfig-h001-20200506
+ia64                 randconfig-a001-20200506
+arm64                randconfig-a001-20200506
+arc                  randconfig-a001-20200506
+powerpc              randconfig-a001-20200506
+arm                  randconfig-a001-20200506
+sparc                randconfig-a001-20200506
+riscv                             allnoconfig
+riscv                            allmodconfig
+s390                              allnoconfig
+s390                             allmodconfig
+s390                             alldefconfig
+s390                                defconfig
+sparc                               defconfig
+sparc64                             defconfig
+sparc64                           allnoconfig
+sparc64                          allyesconfig
+sparc64                          allmodconfig
+um                               allmodconfig
+um                           x86_64_defconfig
+um                             i386_defconfig
+um                                  defconfig
+x86_64                                   rhel
+x86_64                               rhel-7.6
+x86_64                    rhel-7.6-kselftests
+x86_64                         rhel-7.2-clear
+x86_64                                    lkp
+x86_64                              fedora-25
+x86_64                                  kexec
 
-kobject_uevent(&new_var->kobj, KOBJ_ADD);
-if (efivar_entry_add(new_var, &efivar_sysfs_list)) {
-    efivar_unregister(new_var);
-    return -EINTR;
-}
-
-    return 0;
-}
-
-
-Best regards,
-Lin Yi
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
