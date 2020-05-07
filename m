@@ -2,209 +2,141 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 05AA21C8083
-	for <lists+linux-efi@lfdr.de>; Thu,  7 May 2020 05:31:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DDF361C8C7F
+	for <lists+linux-efi@lfdr.de>; Thu,  7 May 2020 15:37:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725892AbgEGDbZ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 6 May 2020 23:31:25 -0400
-Received: from mo-csw1114.securemx.jp ([210.130.202.156]:48660 "EHLO
-        mo-csw.securemx.jp" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725809AbgEGDbZ (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 6 May 2020 23:31:25 -0400
-Received: by mo-csw.securemx.jp (mx-mo-csw1114) id 0473V11k016859; Thu, 7 May 2020 12:31:01 +0900
-X-Iguazu-Qid: 2wHHidEfDYx9vilE7l
-X-Iguazu-QSIG: v=2; s=0; t=1588822261; q=2wHHidEfDYx9vilE7l; m=6BRE7ZphtOumFxP7lJTmXQeCwrfuLxBXJdfkmmJii4E=
-Received: from imx12.toshiba.co.jp (imx12.toshiba.co.jp [61.202.160.132])
-        by relay.securemx.jp (mx-mr1113) id 0473UwSB030330;
-        Thu, 7 May 2020 12:30:59 +0900
-Received: from enc02.toshiba.co.jp ([61.202.160.51])
-        by imx12.toshiba.co.jp  with ESMTP id 0473UwHP018679;
-        Thu, 7 May 2020 12:30:58 +0900 (JST)
-Received: from hop101.toshiba.co.jp ([133.199.85.107])
-        by enc02.toshiba.co.jp  with ESMTP id 0473Uv3g003704;
-        Thu, 7 May 2020 12:30:58 +0900
-From:   Punit Agrawal <punit1.agrawal@toshiba.co.jp>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Borislav Petkov <bp@alien8.de>,
-        James Morse <james.morse@arm.com>, linux-acpi@vger.kernel.org,
-        linux-efi <linux-efi@vger.kernel.org>
-Subject: Re: [PATCH] efi: cper: Add support for printing Firmware Error Record Reference
-References: <20200427085242.2380614-1-punit1.agrawal@toshiba.co.jp>
-        <CAMj1kXFvaA0k7fZmWcWrjDEPu3rKUt2SM6y3pdROLQztjPKM=A@mail.gmail.com>
-Date:   Thu, 07 May 2020 12:30:56 +0900
-In-Reply-To: <CAMj1kXFvaA0k7fZmWcWrjDEPu3rKUt2SM6y3pdROLQztjPKM=A@mail.gmail.com>
-        (Ard Biesheuvel's message of "Thu, 30 Apr 2020 14:08:08 +0200")
-X-TSB-HOP: ON
-Message-ID: <877dxos9ov.fsf@kokedama.swc.toshiba.co.jp>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
-MIME-Version: 1.0
-Content-Type: text/plain
+        id S1726267AbgEGNhP (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 7 May 2020 09:37:15 -0400
+Received: from us-smtp-2.mimecast.com ([207.211.31.81]:49424 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1725879AbgEGNhO (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 7 May 2020 09:37:14 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1588858633;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc; bh=O3AKRuRPzjJT+CpU5kRHKo5Cn8muPZpj6Vd3OBhKeIM=;
+        b=Ojt3fQHlIoT+zlf/ctSOBsGt2Hcqh4U8f8g+vs0OXAay2bafc3VlkbjYi9J+joKt8SFtNI
+        th0cDiaLQWpDXnsz9l6i7wBtr7fOsz6Y+fV9oWvy5BOrIATkbQveCpyrmc0Gt3Uokcyb8x
+        esZWRDQ/iqQY4X9h+2p+IWb8z3sT8HI=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-277-E11N9G6-PR-QtmuWiG1amA-1; Thu, 07 May 2020 09:37:10 -0400
+X-MC-Unique: E11N9G6-PR-QtmuWiG1amA-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 5DC7F1005510;
+        Thu,  7 May 2020 13:37:09 +0000 (UTC)
+Received: from lszubowi.redhat.com (ovpn-64-2.rdu2.redhat.com [10.10.64.2])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 575CC649A9;
+        Thu,  7 May 2020 13:37:08 +0000 (UTC)
+From:   Lenny Szubowicz <lszubowi@redhat.com>
+To:     ardb@kernel.org, eric.snowberg@oracle.com, mingo@kernel.org,
+        nivedita@alum.mit.edu, tglx@linutronix.de,
+        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH V2] efi/libstub/x86: Avoid EFI map buffer alloc in allocate_e820()
+Date:   Thu,  7 May 2020 09:37:07 -0400
+Message-Id: <20200507133707.7123-1-lszubowi@redhat.com>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hi Ard,
+In allocate_e820(), call the EFI get_memory_map() service directly
+instead of indirectly via efi_get_memory_map(). This avoids allocation
+of a buffer and return of the full EFI memory map, which is not needed
+here and would otherwise need to be freed.
 
-Ard Biesheuvel <ardb@kernel.org> writes:
+Routine allocate_e820() only needs to know how many EFI memory
+descriptors there are in the map to allocate an adequately sized
+e820ext buffer, if it's needed. Note that since efi_get_memory_map()
+returns a memory map buffer sized with extra headroom, allocate_e820()
+now needs to explicitly factor that into the e820ext size calculation.
 
-> Hello Punit,
->
-> On Mon, 27 Apr 2020 at 11:03, Punit Agrawal
-> <punit1.agrawal@toshiba.co.jp> wrote:
->>
->> While debugging a boot failure, the following unknown error record was
->> seen in the boot logs.
->>
->>     <...>
->>     BERT: Error records from previous boot:
->>     [Hardware Error]: event severity: fatal
->>     [Hardware Error]:  Error 0, type: fatal
->>     [Hardware Error]:   section type: unknown, 81212a96-09ed-4996-9471-8d729c8e69ed
->>     [Hardware Error]:   section length: 0x290
->>     [Hardware Error]:   00000000: 00000001 00000000 00000000 00020002  ................
->>     [Hardware Error]:   00000010: 00020002 0000001f 00000320 00000000  ........ .......
->>     [Hardware Error]:   00000020: 00000000 00000000 00000000 00000000  ................
->>     [Hardware Error]:   00000030: 00000000 00000000 00000000 00000000  ................
->>     <...>
->>
->> On further investigation, it was found that the error record with
->> UUID (81212a96-09ed-4996-9471-8d729c8e69ed) has been defined in the
->> UEFI Specification at least since v2.4 and has recently had additional
->> fields defined in v2.7 Section N.2.10 Firmware Error Record Reference.
->>
->> Add support for parsing and printing the defined fields to give users
->> a chance to figure out what's went wrong.
->>
->> Signed-off-by: Punit Agrawal <punit1.agrawal@toshiba.co.jp>
->> Cc: Ard Biesheuvel <ardb@kernel.org>
->> Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
->> Cc: Borislav Petkov <bp@alien8.de>
->> Cc: James Morse <james.morse@arm.com>
->> Cc: linux-acpi@vger.kernel.org
->> Cc: linux-efi@vger.kernel.org
+Signed-off-by: Lenny Szubowicz <lszubowi@redhat.com>
+Suggested-by: Ard Biesheuvel <ardb@kernel.org>
+--
+v2:
+  - Instead of freeing the EFI memory map buffer allocated by
+    efi_get_memory_map(), avoid the allocation in the first place.
 
-[...]
+  - Changed the title of the patch because the v1 title no longer
+    applies. v1 ref:
+    https://lore.kernel.org/lkml/20200505190016.4350-1-lszubowi@redhat.com/
+--
+---
+ drivers/firmware/efi/libstub/efistub.h  |  2 ++
+ drivers/firmware/efi/libstub/mem.c      |  5 +++++
+ drivers/firmware/efi/libstub/x86-stub.c | 22 ++++++++--------------
+ 3 files changed, 15 insertions(+), 14 deletions(-)
 
->>  drivers/firmware/efi/cper.c | 49 +++++++++++++++++++++++++++++++++++++
->>  include/linux/cper.h        | 11 +++++++++
->>  2 files changed, 60 insertions(+)
->>
->> diff --git a/drivers/firmware/efi/cper.c b/drivers/firmware/efi/cper.c
->> index 9d2512913d25..153b95257e23 100644
->> --- a/drivers/firmware/efi/cper.c
->> +++ b/drivers/firmware/efi/cper.c
->> @@ -407,6 +407,46 @@ static void cper_print_pcie(const char *pfx, const struct cper_sec_pcie *pcie,
->>         }
->>  }
->>
->> +static const char * const fw_err_rec_type_strs[] = {
->> +       "IPF SAL Error Record",
->> +       "SOC Firmware Error Record Type1 (Legacy CrashLog Support)",
->> +       "SOC Firmware Error Record Type2",
->> +};
->> +
->> +static void cper_print_fw_err(const char *pfx,
->> +                             struct acpi_hest_generic_data *gdata,
->> +                             const struct cper_sec_fw_err_rec_ref *fw_err)
->> +{
->> +       void *buf = acpi_hest_get_payload(gdata);
->> +       u32 offset, length = gdata->error_data_length;
->> +
->> +       printk("%s""Firmware Error Record Type: %s\n", pfx,
->> +              fw_err->record_type < ARRAY_SIZE(fw_err_rec_type_strs) ?
->> +              fw_err_rec_type_strs[fw_err->record_type] : "unknown");
->> +
->> +       /* Record Type based on UEFI 2.7 */
->> +       if (fw_err->revision == 0)
->> +               printk("%s""Record Identifier: %08llx\n", pfx,
->> +                      fw_err->record_identifier);
->> +       else if (fw_err->revision == 2)
->> +               printk("%s""Record Identifier: %pUl\n", pfx,
->> +                      &fw_err->record_identifier_guid);
->> +
->
-> Please use {} for multi-line statements between the ifs
->
->> +       if (fw_err->revision == 0)
->> +               offset = offsetof(struct cper_sec_fw_err_rec_ref,
->> +                                 record_identifier_guid);
->> +       else if (fw_err->revision == 1)
->> +               offset = offsetof(struct cper_sec_fw_err_rec_ref,
->> +                                 record_identifier);
->> +       else
->> +               offset = sizeof(*fw_err);
->> +
->
-> This logic is slightly confusing, so it could do with a comment
-> regarding which part of the structure is being dumped and why.
->
->
->> +       buf += offset;
->> +       length -= offset;
->> +
->> +       print_hex_dump(pfx, "", DUMP_PREFIX_OFFSET, 16, 4, buf, length, true);
->> +}
->> +
->>  static void cper_print_tstamp(const char *pfx,
->>                                    struct acpi_hest_generic_data_v300 *gdata)
->>  {
->> @@ -494,6 +534,15 @@ cper_estatus_print_section(const char *pfx, struct acpi_hest_generic_data *gdata
->>                 else
->>                         goto err_section_too_small;
->>  #endif
->> +       } else if (guid_equal(sec_type, &CPER_SEC_FW_ERR_REC_REF)) {
->> +               struct cper_sec_fw_err_rec_ref *fw_err = acpi_hest_get_payload(gdata);
->> +
->> +               printk("%ssection_type: Firmware Error Record Reference\n",
->> +                      newpfx);
->> +               if (gdata->error_data_length >= sizeof(*fw_err))
->> +                       cper_print_fw_err(newpfx, gdata, fw_err);
->
-> This doesn't work for revision 0 structures unless they happen to have
-> some trailing data, which is not necessarily the case, right?
-
-Good catch. I will re-work this to avoid skipping revision 0 record.
-
->> +               else
->> +                       goto err_section_too_small;
->>         } else {
->>                 const void *err = acpi_hest_get_payload(gdata);
->>
->> diff --git a/include/linux/cper.h b/include/linux/cper.h
->> index 4f005d95ce88..5cb57e69df70 100644
->> --- a/include/linux/cper.h
->> +++ b/include/linux/cper.h
->> @@ -521,6 +521,17 @@ struct cper_sec_pcie {
->>         u8      aer_info[96];
->>  };
->>
->> +/* Firmware Error Record Reference, UEFI v2.7 sec N.2.10  */
->> +struct cper_sec_fw_err_rec_ref {
->> +       u8 record_type;
->> +       union {
->> +               u8 revision;
->> +               u8 reserved[7];
->> +       };
->
-> Even though the spec is slightly silly here, I think we can avoid the
-> union, and just have
->
->   u8 record_type;
->   u8 revision;
->   u8 reserved[6];
->
-> as the leading fields.
-
-That's a better interpretation of the spec. I will follow your
-suggestion and send a new version incorporating this and other
-suggestions.
-
-Thanks for taking a look.
-
-Punit
-
-[...]
+diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
+index 67d26949fd26..191468b771b6 100644
+--- a/drivers/firmware/efi/libstub/efistub.h
++++ b/drivers/firmware/efi/libstub/efistub.h
+@@ -616,6 +616,8 @@ void efi_printk(char *str);
+ 
+ void efi_free(unsigned long size, unsigned long addr);
+ 
++unsigned int efi_get_mmap_nr_slack_slots(void);
++
+ char *efi_convert_cmdline(efi_loaded_image_t *image, int *cmd_line_len,
+ 			  unsigned long max_addr);
+ 
+diff --git a/drivers/firmware/efi/libstub/mem.c b/drivers/firmware/efi/libstub/mem.c
+index 869a79c8946f..fc8b4fb08505 100644
+--- a/drivers/firmware/efi/libstub/mem.c
++++ b/drivers/firmware/efi/libstub/mem.c
+@@ -7,6 +7,11 @@
+ 
+ #define EFI_MMAP_NR_SLACK_SLOTS	8
+ 
++unsigned int efi_get_mmap_nr_slack_slots(void)
++{
++	return EFI_MMAP_NR_SLACK_SLOTS;
++}
++
+ static inline bool mmap_has_headroom(unsigned long buff_size,
+ 				     unsigned long map_size,
+ 				     unsigned long desc_size)
+diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
+index 05ccb229fb45..9a5ee0678434 100644
+--- a/drivers/firmware/efi/libstub/x86-stub.c
++++ b/drivers/firmware/efi/libstub/x86-stub.c
+@@ -606,24 +606,18 @@ static efi_status_t allocate_e820(struct boot_params *params,
+ 				  struct setup_data **e820ext,
+ 				  u32 *e820ext_size)
+ {
+-	unsigned long map_size, desc_size, buff_size;
+-	struct efi_boot_memmap boot_map;
+-	efi_memory_desc_t *map;
++	unsigned long map_size, desc_size;
+ 	efi_status_t status;
+ 	__u32 nr_desc;
+ 
+-	boot_map.map		= &map;
+-	boot_map.map_size	= &map_size;
+-	boot_map.desc_size	= &desc_size;
+-	boot_map.desc_ver	= NULL;
+-	boot_map.key_ptr	= NULL;
+-	boot_map.buff_size	= &buff_size;
++	/* Only need the size of the mem map and size of each mem descriptor */
++	map_size = 0;
++	status = efi_bs_call(get_memory_map, &map_size, NULL, NULL,
++			     &desc_size, NULL);
++	if (status != EFI_BUFFER_TOO_SMALL)
++		return (status != EFI_SUCCESS) ? status : EFI_UNSUPPORTED;
+ 
+-	status = efi_get_memory_map(&boot_map);
+-	if (status != EFI_SUCCESS)
+-		return status;
+-
+-	nr_desc = buff_size / desc_size;
++	nr_desc = map_size / desc_size + efi_get_mmap_nr_slack_slots();
+ 
+ 	if (nr_desc > ARRAY_SIZE(params->e820_table)) {
+ 		u32 nr_e820ext = nr_desc - ARRAY_SIZE(params->e820_table);
+-- 
+2.18.4
 
