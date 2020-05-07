@@ -2,153 +2,119 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A8EDD1C995D
-	for <lists+linux-efi@lfdr.de>; Thu,  7 May 2020 20:33:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ED90C1C9A80
+	for <lists+linux-efi@lfdr.de>; Thu,  7 May 2020 21:08:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726367AbgEGSdj (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 7 May 2020 14:33:39 -0400
-Received: from us-smtp-2.mimecast.com ([205.139.110.61]:59331 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726320AbgEGSdi (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 7 May 2020 14:33:38 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1588876417;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc; bh=pkfkngglHMgB29Wih8/yDRJONw7zEpxS+kgwQBqouk8=;
-        b=JWa9rZzxvaTrWZ1CB/vHm5ZI650jfwlMzZQhrYm1D7p8pN/Gu7sePv5n6BG1CcpCkwOaz6
-        bBvu9/t0TE/D7Q3bXXrYxeNqVlwit4Gie5l06ithZ3wUJVrT4u6mP58WKfnxtARj6jcFan
-        0p58km0tVSYtGMYuRojP7IAmVW/ofYg=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-246-eAJ9gQinPA-a9yzqSu712Q-1; Thu, 07 May 2020 14:33:35 -0400
-X-MC-Unique: eAJ9gQinPA-a9yzqSu712Q-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id E792B107ACCD;
-        Thu,  7 May 2020 18:33:33 +0000 (UTC)
-Received: from lszubowi.redhat.com (unknown [10.10.110.76])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id BDF585C1B0;
-        Thu,  7 May 2020 18:33:32 +0000 (UTC)
-From:   Lenny Szubowicz <lszubowi@redhat.com>
-To:     ardb@kernel.org, eric.snowberg@oracle.com, mingo@kernel.org,
-        nivedita@alum.mit.edu, tglx@linutronix.de,
-        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH V3] efi/libstub/x86: Avoid EFI map buffer alloc in allocate_e820()
-Date:   Thu,  7 May 2020 14:33:32 -0400
-Message-Id: <20200507183332.6153-1-lszubowi@redhat.com>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
+        id S1726367AbgEGTII (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 7 May 2020 15:08:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36302 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726320AbgEGTIH (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 7 May 2020 15:08:07 -0400
+Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com [IPv6:2607:f8b0:4864:20::641])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 765BEC05BD43
+        for <linux-efi@vger.kernel.org>; Thu,  7 May 2020 12:08:07 -0700 (PDT)
+Received: by mail-pl1-x641.google.com with SMTP id m7so2450111plt.5
+        for <linux-efi@vger.kernel.org>; Thu, 07 May 2020 12:08:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=XPfLy6zhX+Hjt5T8iZD4lv7tfdBWzHLW638s7QodkWI=;
+        b=BmMdI3YvSlhmgsYU6OV3eLKVWcNbbYKo9+rC4ymylw+qqvCnuEYnFoq1JB0G9W0epV
+         cqQxLRAm+5QGl7GWtTdUxCvXMRCThAXuz4NHoa89WhOTxfc5FJLsglL0dGgyFxKXPAe3
+         UMBMuwQOXDQWcIoNi370t+fPOtB4kjf3WTXknm1SOlmAEsKuVh1Gk/EkrwdWpVf/Souu
+         CYPQ+2ATPATEKbmTYRSK09cIR9vRn2pTClmuppzoy0QIG/p/ytcprhyf6peTJot7XWkF
+         A7qiIXJVhqaFDqOb0Yc5k56kH/qDeyN7vU0QH53gaQHkpdKBWQhd1pghOpFu39kSwJSm
+         rdMA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=XPfLy6zhX+Hjt5T8iZD4lv7tfdBWzHLW638s7QodkWI=;
+        b=e2oDSULt1JUNd64dE+eWThYULM8vJlJFN4GnhmTa/yfaMktgN2nxR00DxlUV+/nJqI
+         HxVrwggjzRZIh1o4xBNscCBKDr77tgGdCaeoK/f2Ibam2feSM6u+1EGw2OrmcOwtf4ao
+         5zXIe3gsA7tASA+9lTvPPNkWWfwqyjtogeKr/C0KFzjOHe1XvU9rNvx8F3qjmSOphEqm
+         zBE9MS5rP3p408xiSN2kQVIy0FpjSMIKwqwmpALCC69mKMHAvFdBMV5nx8HfO6E0tou+
+         Ur9ogYrbDY/2UByKb2cSoiWBYtpumSF+bWDWFT9cJYk9EmrBx+yQ4GOi0rJhm8HZYzuJ
+         h3bQ==
+X-Gm-Message-State: AGi0PuYLx6uGNZhKi1i9WqYQPqG04cGeEjM6k3eP2/1vKPoQRhuqnORi
+        RM36JNEC/iJzWgqO7UuXkecJhq08p6pt1LW2/3eXMQ==
+X-Google-Smtp-Source: APiQypKZU9EIkb+4leK/LEBbL8XLyxV1L0abX2tphsveIj+TkgEnYwPICwR+p8dJj8VHiE9case19uo8OSVq3oGggQc=
+X-Received: by 2002:a17:90a:6d03:: with SMTP id z3mr1731941pjj.32.1588878486596;
+ Thu, 07 May 2020 12:08:06 -0700 (PDT)
+MIME-Version: 1.0
+References: <20200505073054.22437-1-ardb@kernel.org>
+In-Reply-To: <20200505073054.22437-1-ardb@kernel.org>
+From:   Nick Desaulniers <ndesaulniers@google.com>
+Date:   Thu, 7 May 2020 12:07:55 -0700
+Message-ID: <CAKwvOdku_Yq29bThRw9FSNb2QKTr1PuAw_og4ag3MApPujkxOw@mail.gmail.com>
+Subject: Re: [PATCH v2] efi/libstub/x86: Work around LLVM ELF quirk build regression
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-efi <linux-efi@vger.kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        clang-built-linux <clang-built-linux@googlegroups.com>,
+        Fangrui Song <maskray@google.com>,
+        Peter Collingbourne <pcc@google.com>,
+        Sami Tolvanen <samitolvanen@google.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-In allocate_e820(), call the EFI get_memory_map() service directly
-instead of indirectly via efi_get_memory_map(). This avoids allocation
-of a buffer and return of the full EFI memory map, which is not needed
-here and would otherwise need to be freed.
+On Tue, May 5, 2020 at 12:31 AM Ard Biesheuvel <ardb@kernel.org> wrote:
+>
+> When building the x86 EFI stub with Clang, the libstub Makefile rules
+> that manipulate the ELF object files may throw an error like:
+>
+>     STUBCPY drivers/firmware/efi/libstub/efi-stub-helper.stub.o
+>   strip: drivers/firmware/efi/libstub/efi-stub-helper.stub.o: Failed to find link section for section 10
+>   objcopy: drivers/firmware/efi/libstub/efi-stub-helper.stub.o: Failed to find link section for section 10
+>
+> This is the result of a LLVM feature [0] where symbol references are
+> stored in a LLVM specific .llvm_addrsig section in a non-transparent way,
+> causing generic ELF tools such as strip or objcopy to choke on them.
+>
+> So force the compiler not to emit these sections, by passing the
+> appropriate command line option.
+>
+> [0] https://sourceware.org/bugzilla/show_bug.cgi?id=23817
+>
+> Cc: Nick Desaulniers <ndesaulniers@google.com>
+> Cc: Peter Collingbourne <pcc@google.com>
+> Cc: Sami Tolvanen <samitolvanen@google.com>
+> Reported-by: Arnd Bergmann <arnd@arndb.de>
+> Suggested-by: Fangrui Song <maskray@google.com>
+> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 
-Routine allocate_e820() only needs to know how many EFI memory
-descriptors there are in the map to allocate an adequately sized
-e820ext buffer, if it's needed. Note that since efi_get_memory_map()
-returns a memory map buffer sized with extra headroom, allocate_e820()
-now needs to explicitly factor that into the e820ext size calculation.
+I wonder if it's more appropriate to enable this globally for the
+kernel, or why we don't see the failure for other object files outside
+of libstub?  We might need to revisit that if we see such failures
+again, but this patch LGTM. Thanks Ard.
+Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
 
-Signed-off-by: Lenny Szubowicz <lszubowi@redhat.com>
-Suggested-by: Ard Biesheuvel <ardb@kernel.org>
---
-v3:
-  - Move define of EFI_MMAP_NR_SLACK_SLOTS to efistub.h instead
-    of providing a helper function to get it.
+> ---
+>  drivers/firmware/efi/libstub/Makefile | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/drivers/firmware/efi/libstub/Makefile b/drivers/firmware/efi/libstub/Makefile
+> index 8d246b51bd49..e5a49dc8e9bc 100644
+> --- a/drivers/firmware/efi/libstub/Makefile
+> +++ b/drivers/firmware/efi/libstub/Makefile
+> @@ -30,6 +30,7 @@ KBUILD_CFLAGS                 := $(cflags-y) -DDISABLE_BRANCH_PROFILING \
+>                                    -D__NO_FORTIFY \
+>                                    $(call cc-option,-ffreestanding) \
+>                                    $(call cc-option,-fno-stack-protector) \
+> +                                  $(call cc-option,-fno-addrsig) \
+>                                    -D__DISABLE_EXPORTS
+>
+>  GCOV_PROFILE                   := n
+> --
+> 2.17.1
+>
 
-v2:
-  - Instead of freeing the EFI memory map buffer allocated by
-    efi_get_memory_map(), avoid the allocation in the first place.
 
-  - Changed the title of the patch because the v1 title no longer
-    applies. v1 ref:
-    https://lore.kernel.org/lkml/20200505190016.4350-1-lszubowi@redhat.com/
---
----
- drivers/firmware/efi/libstub/efistub.h  | 13 +++++++++++++
- drivers/firmware/efi/libstub/mem.c      |  2 --
- drivers/firmware/efi/libstub/x86-stub.c | 22 ++++++++--------------
- 3 files changed, 21 insertions(+), 16 deletions(-)
-
-diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
-index 67d26949fd26..62943992f02f 100644
---- a/drivers/firmware/efi/libstub/efistub.h
-+++ b/drivers/firmware/efi/libstub/efistub.h
-@@ -92,6 +92,19 @@ extern __pure efi_system_table_t  *efi_system_table(void);
- #define EFI_LOCATE_BY_REGISTER_NOTIFY		1
- #define EFI_LOCATE_BY_PROTOCOL			2
- 
-+/*
-+ * An efi_boot_memmap is used by efi_get_memory_map() to return the
-+ * EFI memory map in a dynamically allocated buffer.
-+ *
-+ * The buffer allocated for the EFI memory map includes extra room for
-+ * a minimum of EFI_MMAP_NR_SLACK_SLOTS additional EFI memory descriptors.
-+ * This facilitates the reuse of the EFI memory map buffer when a second
-+ * call to ExitBootServices() is needed because of intervening changes to
-+ * the EFI memory map. Other related structures, e.g. x86 e820ext, need
-+ * to factor in this headroom requirement as well.
-+ */
-+#define EFI_MMAP_NR_SLACK_SLOTS	8
-+
- struct efi_boot_memmap {
- 	efi_memory_desc_t	**map;
- 	unsigned long		*map_size;
-diff --git a/drivers/firmware/efi/libstub/mem.c b/drivers/firmware/efi/libstub/mem.c
-index 869a79c8946f..09f4fa01914e 100644
---- a/drivers/firmware/efi/libstub/mem.c
-+++ b/drivers/firmware/efi/libstub/mem.c
-@@ -5,8 +5,6 @@
- 
- #include "efistub.h"
- 
--#define EFI_MMAP_NR_SLACK_SLOTS	8
--
- static inline bool mmap_has_headroom(unsigned long buff_size,
- 				     unsigned long map_size,
- 				     unsigned long desc_size)
-diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
-index 05ccb229fb45..a0aeb1cda8e3 100644
---- a/drivers/firmware/efi/libstub/x86-stub.c
-+++ b/drivers/firmware/efi/libstub/x86-stub.c
-@@ -606,24 +606,18 @@ static efi_status_t allocate_e820(struct boot_params *params,
- 				  struct setup_data **e820ext,
- 				  u32 *e820ext_size)
- {
--	unsigned long map_size, desc_size, buff_size;
--	struct efi_boot_memmap boot_map;
--	efi_memory_desc_t *map;
-+	unsigned long map_size, desc_size;
- 	efi_status_t status;
- 	__u32 nr_desc;
- 
--	boot_map.map		= &map;
--	boot_map.map_size	= &map_size;
--	boot_map.desc_size	= &desc_size;
--	boot_map.desc_ver	= NULL;
--	boot_map.key_ptr	= NULL;
--	boot_map.buff_size	= &buff_size;
-+	/* Only need the size of the mem map and size of each mem descriptor */
-+	map_size = 0;
-+	status = efi_bs_call(get_memory_map, &map_size, NULL, NULL,
-+			     &desc_size, NULL);
-+	if (status != EFI_BUFFER_TOO_SMALL)
-+		return (status != EFI_SUCCESS) ? status : EFI_UNSUPPORTED;
- 
--	status = efi_get_memory_map(&boot_map);
--	if (status != EFI_SUCCESS)
--		return status;
--
--	nr_desc = buff_size / desc_size;
-+	nr_desc = map_size / desc_size + EFI_MMAP_NR_SLACK_SLOTS;
- 
- 	if (nr_desc > ARRAY_SIZE(params->e820_table)) {
- 		u32 nr_e820ext = nr_desc - ARRAY_SIZE(params->e820_table);
 -- 
-2.18.4
-
+Thanks,
+~Nick Desaulniers
