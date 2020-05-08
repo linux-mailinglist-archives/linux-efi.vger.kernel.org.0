@@ -2,27 +2,27 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 679FF1CB684
-	for <lists+linux-efi@lfdr.de>; Fri,  8 May 2020 20:03:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A8E6E1CB683
+	for <lists+linux-efi@lfdr.de>; Fri,  8 May 2020 20:02:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727835AbgEHSC3 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 8 May 2020 14:02:29 -0400
-Received: from mail.kernel.org ([198.145.29.99]:47912 "EHLO mail.kernel.org"
+        id S1727832AbgEHSCb (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 8 May 2020 14:02:31 -0400
+Received: from mail.kernel.org ([198.145.29.99]:47982 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727832AbgEHSC3 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Fri, 8 May 2020 14:02:29 -0400
+        id S1727845AbgEHSCa (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Fri, 8 May 2020 14:02:30 -0400
 Received: from e123331-lin.nice.arm.com (amontpellier-657-1-18-247.w109-210.abo.wanadoo.fr [109.210.65.247])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 7017624954;
-        Fri,  8 May 2020 18:02:25 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id DE92D24955;
+        Fri,  8 May 2020 18:02:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1588960947;
-        bh=7vvZuiM9KrYW/pBwBCN/ASPFRHeoXAU4e8bF8cPtNAs=;
+        s=default; t=1588960950;
+        bh=aX7noN0CE3VZISjBSblgX/mv+dJHPf/z31kzvo4mAK0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fnJsgyoS0DlgPxcy5EWSCPGWjn6Yq/OUArKoxttxndKv4tKB8ZGOk0+6pB6GsOjpf
-         UZIhfAiXcRqPZH4HhJ4RZ+fMDNtbKL9qhmKEGlvTvx3oIBdTvfuO/Od2iGwmzjp6EX
-         I34MMhs+r1IkYZIGF0hbHEBY2/eaNSG/0rIlaGQg=
+        b=o3GfqbOUIUq3iwQXdxzX9boYtPcdBdZvDFAREN8j5894lgWAJHNwhnI4VSfTRTjtL
+         aYzmk/+od3X7Rb10GFTu/pdzKZAj/Y2tmJqISjF86+nF7N2+kqWnolKJT6nrp3FUxy
+         ytMcpU0fhhKVypXOqksnJTBC3JpatfYHwpk9LqnE=
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-efi@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
         Thomas Gleixner <tglx@linutronix.de>
@@ -31,9 +31,9 @@ Cc:     Ard Biesheuvel <ardb@kernel.org>, linux-kernel@vger.kernel.org,
         Arvind Sankar <nivedita@alum.mit.edu>,
         Guenter Roeck <linux@roeck-us.net>,
         Joe Perches <joe@perches.com>
-Subject: [PATCH 03/15] efi/libstub: Move pr_efi/pr_efi_err into efi namespace
-Date:   Fri,  8 May 2020 20:01:45 +0200
-Message-Id: <20200508180157.1816-4-ardb@kernel.org>
+Subject: [PATCH 04/15] efi/x86: Use efi_err for error messages
+Date:   Fri,  8 May 2020 20:01:46 +0200
+Message-Id: <20200508180157.1816-5-ardb@kernel.org>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200508180157.1816-1-ardb@kernel.org>
 References: <20200508180157.1816-1-ardb@kernel.org>
@@ -44,466 +44,124 @@ X-Mailing-List: linux-efi@vger.kernel.org
 
 From: Arvind Sankar <nivedita@alum.mit.edu>
 
-Rename pr_efi to efi_info and pr_efi_err to efi_err to make it more
-obvious that they are part of the EFI stub and not generic printk infra.
+Use efi_err instead of bare efi_printk for error messages.
 
-Suggested-by: Joe Perches <joe@perches.com>
 Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
-Link: https://lore.kernel.org/r/20200430182843.2510180-4-nivedita@alum.mit.edu
+Link: https://lore.kernel.org/r/20200430182843.2510180-5-nivedita@alum.mit.edu
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- drivers/firmware/efi/libstub/arm32-stub.c | 12 ++++-----
- drivers/firmware/efi/libstub/arm64-stub.c | 14 +++++-----
- drivers/firmware/efi/libstub/efi-stub.c   | 32 +++++++++++------------
- drivers/firmware/efi/libstub/efistub.h    |  4 +--
- drivers/firmware/efi/libstub/fdt.c        | 16 ++++++------
- drivers/firmware/efi/libstub/file.c       | 12 ++++-----
- drivers/firmware/efi/libstub/pci.c        |  8 +++---
- drivers/firmware/efi/libstub/relocate.c   |  2 +-
- drivers/firmware/efi/libstub/secureboot.c |  4 +--
- 9 files changed, 52 insertions(+), 52 deletions(-)
+ drivers/firmware/efi/libstub/x86-stub.c | 24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/firmware/efi/libstub/arm32-stub.c b/drivers/firmware/efi/libstub/arm32-stub.c
-index 7826553af2ba..b038afe2ee7a 100644
---- a/drivers/firmware/efi/libstub/arm32-stub.c
-+++ b/drivers/firmware/efi/libstub/arm32-stub.c
-@@ -18,7 +18,7 @@ efi_status_t check_platform_features(void)
- 	/* LPAE kernels need compatible hardware */
- 	block = cpuid_feature_extract(CPUID_EXT_MMFR0, 0);
- 	if (block < 5) {
--		pr_efi_err("This LPAE kernel is not supported by your CPU\n");
-+		efi_err("This LPAE kernel is not supported by your CPU\n");
- 		return EFI_UNSUPPORTED;
- 	}
- 	return EFI_SUCCESS;
-@@ -120,7 +120,7 @@ static efi_status_t reserve_kernel_base(unsigned long dram_base,
- 	 */
- 	status = efi_get_memory_map(&map);
+diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
+index f91d4aab0156..3800eb22232e 100644
+--- a/drivers/firmware/efi/libstub/x86-stub.c
++++ b/drivers/firmware/efi/libstub/x86-stub.c
+@@ -49,7 +49,7 @@ preserve_pci_rom_image(efi_pci_io_protocol_t *pci, struct pci_setup_rom **__rom)
+ 	status = efi_bs_call(allocate_pool, EFI_LOADER_DATA, size,
+ 			     (void **)&rom);
  	if (status != EFI_SUCCESS) {
--		pr_efi_err("reserve_kernel_base(): Unable to retrieve memory map.\n");
-+		efi_err("reserve_kernel_base(): Unable to retrieve memory map.\n");
+-		efi_printk("Failed to allocate memory for 'rom'\n");
++		efi_err("Failed to allocate memory for 'rom'\n");
  		return status;
  	}
  
-@@ -162,7 +162,7 @@ static efi_status_t reserve_kernel_base(unsigned long dram_base,
- 					     (end - start) / EFI_PAGE_SIZE,
- 					     &start);
- 			if (status != EFI_SUCCESS) {
--				pr_efi_err("reserve_kernel_base(): alloc failed.\n");
-+				efi_err("reserve_kernel_base(): alloc failed.\n");
- 				goto out;
- 			}
- 			break;
-@@ -219,7 +219,7 @@ efi_status_t handle_kernel_image(unsigned long *image_addr,
+@@ -65,7 +65,7 @@ preserve_pci_rom_image(efi_pci_io_protocol_t *pci, struct pci_setup_rom **__rom)
+ 				PCI_VENDOR_ID, 1, &rom->vendor);
  
- 	status = reserve_kernel_base(kernel_base, reserve_addr, reserve_size);
  	if (status != EFI_SUCCESS) {
--		pr_efi_err("Unable to allocate memory for uncompressed kernel.\n");
-+		efi_err("Unable to allocate memory for uncompressed kernel.\n");
- 		return status;
+-		efi_printk("Failed to read rom->vendor\n");
++		efi_err("Failed to read rom->vendor\n");
+ 		goto free_struct;
  	}
  
-@@ -232,7 +232,7 @@ efi_status_t handle_kernel_image(unsigned long *image_addr,
- 	status = efi_relocate_kernel(image_addr, *image_size, *image_size,
- 				     kernel_base + MAX_UNCOMP_KERNEL_SIZE, 0, 0);
+@@ -73,7 +73,7 @@ preserve_pci_rom_image(efi_pci_io_protocol_t *pci, struct pci_setup_rom **__rom)
+ 				PCI_DEVICE_ID, 1, &rom->devid);
+ 
  	if (status != EFI_SUCCESS) {
--		pr_efi_err("Failed to relocate kernel.\n");
-+		efi_err("Failed to relocate kernel.\n");
- 		efi_free(*reserve_size, *reserve_addr);
- 		*reserve_size = 0;
- 		return status;
-@@ -244,7 +244,7 @@ efi_status_t handle_kernel_image(unsigned long *image_addr,
- 	 * address at which the zImage is loaded.
- 	 */
- 	if (*image_addr + *image_size > dram_base + ZIMAGE_OFFSET_LIMIT) {
--		pr_efi_err("Failed to relocate kernel, no low memory available.\n");
-+		efi_err("Failed to relocate kernel, no low memory available.\n");
- 		efi_free(*reserve_size, *reserve_addr);
- 		*reserve_size = 0;
- 		efi_free(*image_size, *image_addr);
-diff --git a/drivers/firmware/efi/libstub/arm64-stub.c b/drivers/firmware/efi/libstub/arm64-stub.c
-index ba4db35015a3..7f6a57dec513 100644
---- a/drivers/firmware/efi/libstub/arm64-stub.c
-+++ b/drivers/firmware/efi/libstub/arm64-stub.c
-@@ -26,9 +26,9 @@ efi_status_t check_platform_features(void)
- 	tg = (read_cpuid(ID_AA64MMFR0_EL1) >> ID_AA64MMFR0_TGRAN_SHIFT) & 0xf;
- 	if (tg != ID_AA64MMFR0_TGRAN_SUPPORTED) {
- 		if (IS_ENABLED(CONFIG_ARM64_64K_PAGES))
--			pr_efi_err("This 64 KB granular kernel is not supported by your CPU\n");
-+			efi_err("This 64 KB granular kernel is not supported by your CPU\n");
- 		else
--			pr_efi_err("This 16 KB granular kernel is not supported by your CPU\n");
-+			efi_err("This 16 KB granular kernel is not supported by your CPU\n");
- 		return EFI_UNSUPPORTED;
- 	}
- 	return EFI_SUCCESS;
-@@ -59,18 +59,18 @@ efi_status_t handle_kernel_image(unsigned long *image_addr,
- 			status = efi_get_random_bytes(sizeof(phys_seed),
- 						      (u8 *)&phys_seed);
- 			if (status == EFI_NOT_FOUND) {
--				pr_efi("EFI_RNG_PROTOCOL unavailable, no randomness supplied\n");
-+				efi_info("EFI_RNG_PROTOCOL unavailable, no randomness supplied\n");
- 			} else if (status != EFI_SUCCESS) {
--				pr_efi_err("efi_get_random_bytes() failed\n");
-+				efi_err("efi_get_random_bytes() failed\n");
- 				return status;
- 			}
- 		} else {
--			pr_efi("KASLR disabled on kernel command line\n");
-+			efi_info("KASLR disabled on kernel command line\n");
- 		}
+-		efi_printk("Failed to read rom->devid\n");
++		efi_err("Failed to read rom->devid\n");
+ 		goto free_struct;
  	}
  
- 	if (image->image_base != _text)
--		pr_efi_err("FIRMWARE BUG: efi_loaded_image_t::image_base has bogus value\n");
-+		efi_err("FIRMWARE BUG: efi_loaded_image_t::image_base has bogus value\n");
- 
- 	kernel_size = _edata - _text;
- 	kernel_memsize = kernel_size + (_end - _edata);
-@@ -102,7 +102,7 @@ efi_status_t handle_kernel_image(unsigned long *image_addr,
- 						    ULONG_MAX, min_kimg_align);
+@@ -118,7 +118,7 @@ static void setup_efi_pci(struct boot_params *params)
+ 				     (void **)&pci_handle);
  
  		if (status != EFI_SUCCESS) {
--			pr_efi_err("Failed to relocate kernel\n");
-+			efi_err("Failed to relocate kernel\n");
- 			*reserve_size = 0;
- 			return status;
+-			efi_printk("Failed to allocate memory for 'pci_handle'\n");
++			efi_err("Failed to allocate memory for 'pci_handle'\n");
+ 			return;
  		}
-diff --git a/drivers/firmware/efi/libstub/efi-stub.c b/drivers/firmware/efi/libstub/efi-stub.c
-index ee225b323687..72ffd2670f99 100644
---- a/drivers/firmware/efi/libstub/efi-stub.c
-+++ b/drivers/firmware/efi/libstub/efi-stub.c
-@@ -69,7 +69,7 @@ static void install_memreserve_table(void)
- 	status = efi_bs_call(allocate_pool, EFI_LOADER_DATA, sizeof(*rsv),
- 			     (void **)&rsv);
- 	if (status != EFI_SUCCESS) {
--		pr_efi_err("Failed to allocate memreserve entry!\n");
-+		efi_err("Failed to allocate memreserve entry!\n");
+ 
+@@ -172,7 +172,7 @@ static void retrieve_apple_device_properties(struct boot_params *boot_params)
+ 		return;
+ 
+ 	if (efi_table_attr(p, version) != 0x10000) {
+-		efi_printk("Unsupported properties proto version\n");
++		efi_err("Unsupported properties proto version\n");
  		return;
  	}
  
-@@ -80,7 +80,7 @@ static void install_memreserve_table(void)
- 	status = efi_bs_call(install_configuration_table,
- 			     &memreserve_table_guid, rsv);
- 	if (status != EFI_SUCCESS)
--		pr_efi_err("Failed to install memreserve config table!\n");
-+		efi_err("Failed to install memreserve config table!\n");
- }
- 
- static unsigned long get_dram_base(void)
-@@ -182,13 +182,13 @@ efi_status_t efi_entry(efi_handle_t handle, efi_system_table_t *sys_table_arg)
- 	status = efi_system_table->boottime->handle_protocol(handle,
- 					&loaded_image_proto, (void *)&image);
- 	if (status != EFI_SUCCESS) {
--		pr_efi_err("Failed to get loaded image protocol\n");
-+		efi_err("Failed to get loaded image protocol\n");
- 		goto fail;
- 	}
- 
- 	dram_base = get_dram_base();
- 	if (dram_base == EFI_ERROR) {
--		pr_efi_err("Failed to find DRAM base\n");
-+		efi_err("Failed to find DRAM base\n");
- 		status = EFI_LOAD_ERROR;
- 		goto fail;
- 	}
-@@ -200,7 +200,7 @@ efi_status_t efi_entry(efi_handle_t handle, efi_system_table_t *sys_table_arg)
- 	 */
- 	cmdline_ptr = efi_convert_cmdline(image, &cmdline_size, ULONG_MAX);
- 	if (!cmdline_ptr) {
--		pr_efi_err("getting command line via LOADED_IMAGE_PROTOCOL\n");
-+		efi_err("getting command line via LOADED_IMAGE_PROTOCOL\n");
- 		status = EFI_OUT_OF_RESOURCES;
- 		goto fail;
- 	}
-@@ -213,7 +213,7 @@ efi_status_t efi_entry(efi_handle_t handle, efi_system_table_t *sys_table_arg)
- 	if (!IS_ENABLED(CONFIG_CMDLINE_FORCE) && cmdline_size > 0)
- 		efi_parse_options(cmdline_ptr);
- 
--	pr_efi("Booting Linux Kernel...\n");
-+	efi_info("Booting Linux Kernel...\n");
- 
- 	si = setup_graphics();
- 
-@@ -222,7 +222,7 @@ efi_status_t efi_entry(efi_handle_t handle, efi_system_table_t *sys_table_arg)
- 				     &reserve_size,
- 				     dram_base, image);
- 	if (status != EFI_SUCCESS) {
--		pr_efi_err("Failed to relocate kernel\n");
-+		efi_err("Failed to relocate kernel\n");
- 		goto fail_free_cmdline;
- 	}
- 
-@@ -241,42 +241,42 @@ efi_status_t efi_entry(efi_handle_t handle, efi_system_table_t *sys_table_arg)
- 	if (!IS_ENABLED(CONFIG_EFI_ARMSTUB_DTB_LOADER) ||
- 	     secure_boot != efi_secureboot_mode_disabled) {
- 		if (strstr(cmdline_ptr, "dtb="))
--			pr_efi("Ignoring DTB from command line.\n");
-+			efi_info("Ignoring DTB from command line.\n");
- 	} else {
- 		status = efi_load_dtb(image, &fdt_addr, &fdt_size);
- 
+@@ -185,7 +185,7 @@ static void retrieve_apple_device_properties(struct boot_params *boot_params)
+ 				     size + sizeof(struct setup_data),
+ 				     (void **)&new);
  		if (status != EFI_SUCCESS) {
--			pr_efi_err("Failed to load device tree!\n");
-+			efi_err("Failed to load device tree!\n");
- 			goto fail_free_image;
+-			efi_printk("Failed to allocate memory for 'properties'\n");
++			efi_err("Failed to allocate memory for 'properties'\n");
+ 			return;
  		}
+ 
+@@ -372,7 +372,7 @@ efi_status_t __efiapi efi_pe_entry(efi_handle_t handle,
+ 
+ 	status = efi_bs_call(handle_protocol, handle, &proto, (void **)&image);
+ 	if (status != EFI_SUCCESS) {
+-		efi_printk("Failed to get handle for LOADED_IMAGE_PROTOCOL\n");
++		efi_err("Failed to get handle for LOADED_IMAGE_PROTOCOL\n");
+ 		efi_exit(handle, status);
  	}
  
- 	if (fdt_addr) {
--		pr_efi("Using DTB from command line\n");
-+		efi_info("Using DTB from command line\n");
- 	} else {
- 		/* Look for a device tree configuration table entry. */
- 		fdt_addr = (uintptr_t)get_fdt(&fdt_size);
- 		if (fdt_addr)
--			pr_efi("Using DTB from configuration table\n");
-+			efi_info("Using DTB from configuration table\n");
+@@ -382,7 +382,7 @@ efi_status_t __efiapi efi_pe_entry(efi_handle_t handle,
+ 	status = efi_allocate_pages(sizeof(struct boot_params),
+ 				    (unsigned long *)&boot_params, ULONG_MAX);
+ 	if (status != EFI_SUCCESS) {
+-		efi_printk("Failed to allocate lowmem for boot params\n");
++		efi_err("Failed to allocate lowmem for boot params\n");
+ 		efi_exit(handle, status);
  	}
  
- 	if (!fdt_addr)
--		pr_efi("Generating empty DTB\n");
-+		efi_info("Generating empty DTB\n");
- 
- 	if (!efi_noinitrd) {
- 		max_addr = efi_get_max_initrd_addr(dram_base, image_addr);
- 		status = efi_load_initrd_dev_path(&initrd_addr, &initrd_size,
- 						  max_addr);
- 		if (status == EFI_SUCCESS) {
--			pr_efi("Loaded initrd from LINUX_EFI_INITRD_MEDIA_GUID device path\n");
-+			efi_info("Loaded initrd from LINUX_EFI_INITRD_MEDIA_GUID device path\n");
- 		} else if (status == EFI_NOT_FOUND) {
- 			status = efi_load_initrd(image, &initrd_addr, &initrd_size,
- 						 ULONG_MAX, max_addr);
- 			if (status == EFI_SUCCESS && initrd_size > 0)
--				pr_efi("Loaded initrd from command line option\n");
-+				efi_info("Loaded initrd from command line option\n");
- 		}
- 		if (status != EFI_SUCCESS)
--			pr_efi_err("Failed to load initrd!\n");
-+			efi_err("Failed to load initrd!\n");
- 	}
- 
- 	efi_random_get_seed();
-@@ -326,7 +326,7 @@ efi_status_t efi_entry(efi_handle_t handle, efi_system_table_t *sys_table_arg)
- 	/* not reached */
- 
- fail_free_initrd:
--	pr_efi_err("Failed to update FDT and exit boot services\n");
-+	efi_err("Failed to update FDT and exit boot services\n");
- 
- 	efi_free(initrd_size, initrd_addr);
- 	efi_free(fdt_size, fdt_addr);
-diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
-index e8aa70ba08d5..8c905a1be1b4 100644
---- a/drivers/firmware/efi/libstub/efistub.h
-+++ b/drivers/firmware/efi/libstub/efistub.h
-@@ -49,11 +49,11 @@ extern const efi_system_table_t *efi_system_table;
- #define efi_call_proto(inst, func, ...) inst->func(inst, ##__VA_ARGS__)
- #endif
- 
--#define pr_efi(msg)		do {			\
-+#define efi_info(msg)		do {			\
- 	if (!efi_quiet) efi_printk("EFI stub: "msg);	\
- } while (0)
- 
--#define pr_efi_err(msg) efi_printk("EFI stub: ERROR: "msg)
-+#define efi_err(msg) efi_printk("EFI stub: ERROR: "msg)
- 
- /* Helper macros for the usual case of using simple C variables: */
- #ifndef fdt_setprop_inplace_var
-diff --git a/drivers/firmware/efi/libstub/fdt.c b/drivers/firmware/efi/libstub/fdt.c
-index 3074a5e27c65..11ecf3c4640e 100644
---- a/drivers/firmware/efi/libstub/fdt.c
-+++ b/drivers/firmware/efi/libstub/fdt.c
-@@ -39,7 +39,7 @@ static efi_status_t update_fdt(void *orig_fdt, unsigned long orig_fdt_size,
- 	/* Do some checks on provided FDT, if it exists: */
- 	if (orig_fdt) {
- 		if (fdt_check_header(orig_fdt)) {
--			pr_efi_err("Device Tree header not valid!\n");
-+			efi_err("Device Tree header not valid!\n");
- 			return EFI_LOAD_ERROR;
+@@ -749,7 +749,7 @@ unsigned long efi_main(efi_handle_t handle,
+ 					     hdr->kernel_alignment,
+ 					     LOAD_PHYSICAL_ADDR);
+ 		if (status != EFI_SUCCESS) {
+-			efi_printk("efi_relocate_kernel() failed!\n");
++			efi_err("efi_relocate_kernel() failed!\n");
+ 			goto fail;
  		}
  		/*
-@@ -47,7 +47,7 @@ static efi_status_t update_fdt(void *orig_fdt, unsigned long orig_fdt_size,
- 		 * configuration table:
- 		 */
- 		if (orig_fdt_size && fdt_totalsize(orig_fdt) > orig_fdt_size) {
--			pr_efi_err("Truncated device tree! foo!\n");
-+			efi_err("Truncated device tree! foo!\n");
- 			return EFI_LOAD_ERROR;
+@@ -786,7 +786,7 @@ unsigned long efi_main(efi_handle_t handle,
+ 			efi_set_u64_split(size, &hdr->ramdisk_size,
+ 					  &boot_params->ext_ramdisk_size);
+ 		} else if (status != EFI_NOT_FOUND) {
+-			efi_printk("efi_load_initrd_dev_path() failed!\n");
++			efi_err("efi_load_initrd_dev_path() failed!\n");
+ 			goto fail;
  		}
  	}
-@@ -270,16 +270,16 @@ efi_status_t allocate_new_fdt_and_exit_boot(void *handle,
- 	 */
- 	status = efi_get_memory_map(&map);
- 	if (status != EFI_SUCCESS) {
--		pr_efi_err("Unable to retrieve UEFI memory map.\n");
-+		efi_err("Unable to retrieve UEFI memory map.\n");
- 		return status;
- 	}
+@@ -813,13 +813,13 @@ unsigned long efi_main(efi_handle_t handle,
  
--	pr_efi("Exiting boot services and installing virtual address map...\n");
-+	efi_info("Exiting boot services and installing virtual address map...\n");
- 
- 	map.map = &memory_map;
- 	status = efi_allocate_pages(MAX_FDT_SIZE, new_fdt_addr, max_addr);
+ 	status = exit_boot(boot_params, handle);
  	if (status != EFI_SUCCESS) {
--		pr_efi_err("Unable to allocate memory for new device tree.\n");
-+		efi_err("Unable to allocate memory for new device tree.\n");
+-		efi_printk("exit_boot() failed!\n");
++		efi_err("exit_boot() failed!\n");
  		goto fail;
  	}
  
-@@ -296,7 +296,7 @@ efi_status_t allocate_new_fdt_and_exit_boot(void *handle,
- 			    initrd_addr, initrd_size);
+ 	return bzimage_addr;
+ fail:
+-	efi_printk("efi_main() failed!\n");
++	efi_err("efi_main() failed!\n");
  
- 	if (status != EFI_SUCCESS) {
--		pr_efi_err("Unable to construct new device tree.\n");
-+		efi_err("Unable to construct new device tree.\n");
- 		goto fail_free_new_fdt;
- 	}
- 
-@@ -342,7 +342,7 @@ efi_status_t allocate_new_fdt_and_exit_boot(void *handle,
- 		return EFI_SUCCESS;
- 	}
- 
--	pr_efi_err("Exit boot services failed.\n");
-+	efi_err("Exit boot services failed.\n");
- 
- fail_free_new_fdt:
- 	efi_free(MAX_FDT_SIZE, *new_fdt_addr);
-@@ -363,7 +363,7 @@ void *get_fdt(unsigned long *fdt_size)
- 		return NULL;
- 
- 	if (fdt_check_header(fdt) != 0) {
--		pr_efi_err("Invalid header detected on UEFI supplied FDT, ignoring ...\n");
-+		efi_err("Invalid header detected on UEFI supplied FDT, ignoring ...\n");
- 		return NULL;
- 	}
- 	*fdt_size = fdt_totalsize(fdt);
-diff --git a/drivers/firmware/efi/libstub/file.c b/drivers/firmware/efi/libstub/file.c
-index 50aaf15f9ad5..cc177152d0df 100644
---- a/drivers/firmware/efi/libstub/file.c
-+++ b/drivers/firmware/efi/libstub/file.c
-@@ -46,7 +46,7 @@ static efi_status_t efi_open_file(efi_file_protocol_t *volume,
- 
- 	status = volume->open(volume, &fh, fi->filename, EFI_FILE_MODE_READ, 0);
- 	if (status != EFI_SUCCESS) {
--		pr_efi_err("Failed to open file: ");
-+		efi_err("Failed to open file: ");
- 		efi_char16_printk(fi->filename);
- 		efi_printk("\n");
- 		return status;
-@@ -55,7 +55,7 @@ static efi_status_t efi_open_file(efi_file_protocol_t *volume,
- 	info_sz = sizeof(struct finfo);
- 	status = fh->get_info(fh, &info_guid, &info_sz, fi);
- 	if (status != EFI_SUCCESS) {
--		pr_efi_err("Failed to get file info\n");
-+		efi_err("Failed to get file info\n");
- 		fh->close(fh);
- 		return status;
- 	}
-@@ -75,13 +75,13 @@ static efi_status_t efi_open_volume(efi_loaded_image_t *image,
- 	status = efi_bs_call(handle_protocol, image->device_handle, &fs_proto,
- 			     (void **)&io);
- 	if (status != EFI_SUCCESS) {
--		pr_efi_err("Failed to handle fs_proto\n");
-+		efi_err("Failed to handle fs_proto\n");
- 		return status;
- 	}
- 
- 	status = io->open_volume(io, fh);
- 	if (status != EFI_SUCCESS)
--		pr_efi_err("Failed to open volume\n");
-+		efi_err("Failed to open volume\n");
- 
- 	return status;
- }
-@@ -191,7 +191,7 @@ efi_status_t handle_cmdline_files(efi_loaded_image_t *image,
- 							    &alloc_addr,
- 							    hard_limit);
- 			if (status != EFI_SUCCESS) {
--				pr_efi_err("Failed to allocate memory for files\n");
-+				efi_err("Failed to allocate memory for files\n");
- 				goto err_close_file;
- 			}
- 
-@@ -215,7 +215,7 @@ efi_status_t handle_cmdline_files(efi_loaded_image_t *image,
- 
- 			status = file->read(file, &chunksize, addr);
- 			if (status != EFI_SUCCESS) {
--				pr_efi_err("Failed to read file\n");
-+				efi_err("Failed to read file\n");
- 				goto err_close_file;
- 			}
- 			addr += chunksize;
-diff --git a/drivers/firmware/efi/libstub/pci.c b/drivers/firmware/efi/libstub/pci.c
-index b025e59b94df..60af51bed573 100644
---- a/drivers/firmware/efi/libstub/pci.c
-+++ b/drivers/firmware/efi/libstub/pci.c
-@@ -28,21 +28,21 @@ void efi_pci_disable_bridge_busmaster(void)
- 
- 	if (status != EFI_BUFFER_TOO_SMALL) {
- 		if (status != EFI_SUCCESS && status != EFI_NOT_FOUND)
--			pr_efi_err("Failed to locate PCI I/O handles'\n");
-+			efi_err("Failed to locate PCI I/O handles'\n");
- 		return;
- 	}
- 
- 	status = efi_bs_call(allocate_pool, EFI_LOADER_DATA, pci_handle_size,
- 			     (void **)&pci_handle);
- 	if (status != EFI_SUCCESS) {
--		pr_efi_err("Failed to allocate memory for 'pci_handle'\n");
-+		efi_err("Failed to allocate memory for 'pci_handle'\n");
- 		return;
- 	}
- 
- 	status = efi_bs_call(locate_handle, EFI_LOCATE_BY_PROTOCOL, &pci_proto,
- 			     NULL, &pci_handle_size, pci_handle);
- 	if (status != EFI_SUCCESS) {
--		pr_efi_err("Failed to locate PCI I/O handles'\n");
-+		efi_err("Failed to locate PCI I/O handles'\n");
- 		goto free_handle;
- 	}
- 
-@@ -106,7 +106,7 @@ void efi_pci_disable_bridge_busmaster(void)
- 		status = efi_call_proto(pci, pci.write, EfiPciIoWidthUint16,
- 					PCI_COMMAND, 1, &command);
- 		if (status != EFI_SUCCESS)
--			pr_efi_err("Failed to disable PCI busmastering\n");
-+			efi_err("Failed to disable PCI busmastering\n");
- 	}
- 
- free_handle:
-diff --git a/drivers/firmware/efi/libstub/relocate.c b/drivers/firmware/efi/libstub/relocate.c
-index 1507d3c82884..93c04d6aaed1 100644
---- a/drivers/firmware/efi/libstub/relocate.c
-+++ b/drivers/firmware/efi/libstub/relocate.c
-@@ -157,7 +157,7 @@ efi_status_t efi_relocate_kernel(unsigned long *image_addr,
- 					     min_addr);
- 	}
- 	if (status != EFI_SUCCESS) {
--		pr_efi_err("Failed to allocate usable memory for kernel.\n");
-+		efi_err("Failed to allocate usable memory for kernel.\n");
- 		return status;
- 	}
- 
-diff --git a/drivers/firmware/efi/libstub/secureboot.c b/drivers/firmware/efi/libstub/secureboot.c
-index a765378ad18c..5efc524b14be 100644
---- a/drivers/firmware/efi/libstub/secureboot.c
-+++ b/drivers/firmware/efi/libstub/secureboot.c
-@@ -67,10 +67,10 @@ enum efi_secureboot_mode efi_get_secureboot(void)
- 		return efi_secureboot_mode_disabled;
- 
- secure_boot_enabled:
--	pr_efi("UEFI Secure Boot is enabled.\n");
-+	efi_info("UEFI Secure Boot is enabled.\n");
- 	return efi_secureboot_mode_enabled;
- 
- out_efi_err:
--	pr_efi_err("Could not determine UEFI Secure Boot status.\n");
-+	efi_err("Could not determine UEFI Secure Boot status.\n");
- 	return efi_secureboot_mode_unknown;
+ 	efi_exit(handle, status);
  }
 -- 
 2.17.1
