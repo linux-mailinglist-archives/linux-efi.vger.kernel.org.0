@@ -2,83 +2,81 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A2001CE10F
-	for <lists+linux-efi@lfdr.de>; Mon, 11 May 2020 19:02:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6655A1CE2CB
+	for <lists+linux-efi@lfdr.de>; Mon, 11 May 2020 20:30:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730629AbgEKRCA (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 11 May 2020 13:02:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35084 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729731AbgEKRB7 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 11 May 2020 13:01:59 -0400
-Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95EBEC061A0E
-        for <linux-efi@vger.kernel.org>; Mon, 11 May 2020 10:01:55 -0700 (PDT)
-Received: by mail-wr1-x444.google.com with SMTP id l11so5997754wru.0
-        for <linux-efi@vger.kernel.org>; Mon, 11 May 2020 10:01:55 -0700 (PDT)
+        id S1731014AbgEKSaU (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 11 May 2020 14:30:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48850 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1729836AbgEKSaU (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 11 May 2020 14:30:20 -0400
+Received: from mail-vs1-xe41.google.com (mail-vs1-xe41.google.com [IPv6:2607:f8b0:4864:20::e41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0BA30C061A0E
+        for <linux-efi@vger.kernel.org>; Mon, 11 May 2020 11:30:20 -0700 (PDT)
+Received: by mail-vs1-xe41.google.com with SMTP id x136so6242608vsx.2
+        for <linux-efi@vger.kernel.org>; Mon, 11 May 2020 11:30:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fireburn-co-uk.20150623.gappssmtp.com; s=20150623;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=mmdp25EQ8v0wuV4mVsq8FtF479Pr9MswXZ7O+Ch3s28=;
-        b=TI0vssJBeyHfKkJPorkVHrlz52YVSU/E3UCjFd1m7lHuGT9QoQxtjyQHUvUx+32lTT
-         TnayIuEewWH83ETvE+6HjPyKmVyxw/Qwp5496syBzsn6odOUhJCJnwoPNHt+BETnL609
-         j7t7wkPLHZuVBPt7wW97H5IYwYRUHdfcjEHeUUuZsGUfbhX4AhKuxe20tcFxhyjI3HP1
-         zu+Ndnby7fEYTZXWlgWQMxijIu/5Z2ylO17tYVaxpm0NuhpNL7fpCKy9TTfA2JdDWc+A
-         Z8tkX7UbTIAO5fFHJqGGWjVktr5cs/hmE4qtNS8eXVf1O4ycgeQ+3Oq7dJMqGXkgNOB+
-         2hiw==
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=CZOZ6zJl7K+CX7mG44VkFRrQ+i68m5YSb/XRoNfw+DM=;
+        b=LbarCSCy7ft6SndYsJOseGnYnOlsXtlazRIL6bJ0wQM/b2WfZIaptB7LENF4jbZi0b
+         V+j18TneinnkmDI3Xjd64XkYNnRudf3tYo2ezz//SHSFxKgi1z9Yritsmvx5/uhxqcpf
+         1zg4ixzVutme/BBmEN3/g3a9qHdYMlhEAyO2x+CbkUO+qmVUteE+bltL82KKc1+IzEOg
+         WzuOuBMWtElByKHLnzwP/FxBzM7AWL4fw+YjQFNS0XMK+O0RLHFJTbJJMtkxMLM333Tr
+         avXJi3utWSB2L/taI22OAXUtMXuHW2ie1ARFoRoJJuJM7ywUSjWf2hshxB4fiGZo/BnM
+         f4/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=mmdp25EQ8v0wuV4mVsq8FtF479Pr9MswXZ7O+Ch3s28=;
-        b=mnOYY1EVEA2CqvlyCHgQo3OGB09iLJiu2iOr9WV05lZiqB7gPVe26RfR+YvEKarJpU
-         41R6E1KGjjUo5X/fbyFIvlcBa3+XCj0sLEAlx7OnIFlW6uvxHIfQvX6H/uLa9PTF0mmD
-         wQsj+HozL60Z4zhVGFQ3VlQ10MC3eJzrD7i+lNq+TshEN7Nz1m/+qc7w1VOkniMUkC8T
-         Jr6rwsCbwVITqTlJoJpOy0Y/gcSIQrMpv7UaAssO7gW2M2dK7V66kEkkRQKhOWCfzGxF
-         0I42oagXr+xhGJRyJedRfpTZw8rhWXwhyxDESVYMKfaMBQlALpiFewwxWt9rVMT/AeOJ
-         UKkA==
-X-Gm-Message-State: AGi0Puby4Am00iKwR/PzPtsVCAvVUej3eHYOufV9nXhd8eu/plA0FNui
-        jj2pgjd2i++tz97OxXmN15qETh11YY1PFg==
-X-Google-Smtp-Source: APiQypJMAkUzfIFHSDDRuJ6ZptTUoB8Twc6PWnX1oRT4RX4dM5kexeDaRf54TEZ2T9NcIEm0IZstAA==
-X-Received: by 2002:adf:f1c4:: with SMTP id z4mr21486249wro.25.1589216513994;
-        Mon, 11 May 2020 10:01:53 -0700 (PDT)
-Received: from axion.fireburn.co.uk ([2a01:4b00:f40e:900::64c])
-        by smtp.gmail.com with ESMTPSA id p23sm21670792wmj.37.2020.05.11.10.01.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 May 2020 10:01:53 -0700 (PDT)
-From:   Mike Lothian <mike@fireburn.co.uk>
-To:     nivedita@alum.mit.edu, Ard Biesheuvel <ardb@kernel.org>
-Cc:     linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        x86@kernel.org, Mike Lothian <mike@fireburn.co.uk>
-Subject: Re: [PATCH v2 4/5] efi/x86: Remove extra headroom for setup block
-Date:   Mon, 11 May 2020 18:01:49 +0100
-Message-Id: <20200511170149.1363260-1-mike@fireburn.co.uk>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20200303221205.4048668-5-nivedita@alum.mit.edu>
-References: <20200303221205.4048668-5-nivedita@alum.mit.edu>
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=CZOZ6zJl7K+CX7mG44VkFRrQ+i68m5YSb/XRoNfw+DM=;
+        b=NVkFw7cGg9TbYj+VSCsj0gjkxZxI6RC44TAatPjCQ7jn1lwsDAgGK2PUXPTPx+WLNk
+         LSvo4+mv/MNUClMeJ08T7e3OLxH67CepeLwjXYdwoY8j8Wp6qcCRqUAc7/8tSGUnEVKE
+         bRxrOW4tN0uLCRrX90+G7iSqMHzks6WEq+4ixE0Yj2wfw9pypzaaW7iC9URZJ4JkytXH
+         3YRPrTNb3kZMy+KsECYlvATVk29Or+8FGIfgussw+zTXc7eaDIc5r9JfLy7+nwzUSyyA
+         GRP/1g42kn+KMjXve8+fO4tuGER97L/ElxIEmdvQcFdEw+DuwIbKjjb5F9Nf2JKRQyxG
+         tmVg==
+X-Gm-Message-State: AGi0PuYA8mp+x4Iw3W1zJs6LuuWkZ83EYkrYb4Ml8yJuZXvqBPB4xPxZ
+        SzkilJ39F7QmNIylVv1wfWu/azTQ3JVRGQfhB7I=
+X-Google-Smtp-Source: APiQypKNsi22xLOY/vHsU+h8CFH6M3MP/7vKafU7D4OHNVt5AGxzrdN/g7hBUaNvLnnIkf4ngQHO3cLMAJLt73mRQMg=
+X-Received: by 2002:a67:f258:: with SMTP id y24mr13332034vsm.112.1589221819166;
+ Mon, 11 May 2020 11:30:19 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Received: by 2002:ab0:2307:0:0:0:0:0 with HTTP; Mon, 11 May 2020 11:30:18
+ -0700 (PDT)
+Reply-To: azizdake0@gmail.com
+From:   Aziz Dake <barristerpaulwilliams62@gmail.com>
+Date:   Mon, 11 May 2020 11:30:18 -0700
+Message-ID: <CAKkeDRqJq_BjamuTEyqN7K3vbBhBr0zwXNKhUNsi4dm=fkOMRw@mail.gmail.com>
+Subject: From Honourable Barrister Aziz Dake.
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hi
+Attn: Sir/Madam
 
-This patch has been causing issues for me since switching to GCC 10.1:
+I am Honourable Barrister Aziz the personal resident Attorney here in
+Burkina Faso to Late Mr. Muammar Muhammad Abu Minyar al-Gaddafi of
+Libya c. 1942 =E2=80=93 20 October 2011.
 
-  CALL    scripts/checksyscalls.sh
-  CALL    scripts/atomic/check-atomics.sh
-  DESCEND  objtool
-  CHK     include/generated/compile.h
-  HOSTCC  arch/x86/boot/tools/build
-/usr/lib/gcc/x86_64-pc-linux-gnu/10.1.0/../../../../x86_64-pc-linux-gnu/bin/ld: error: linker defined: multiple definition of '_end'
-/usr/lib/gcc/x86_64-pc-linux-gnu/10.1.0/../../../../x86_64-pc-linux-gnu/bin/ld: /tmp/ccEkW0jM.o: previous definition here
-collect2: error: ld returned 1 exit status
-make[1]: *** [scripts/Makefile.host:103: arch/x86/boot/tools/build] Error 1
-make: *** [arch/x86/Makefile:303: bzImage] Error 2
+My client Late Mr. Muammar Muhammad Abu Minyar al-Gaddafi c. 1942 =E2=80=93=
+ 20
+October 2011, was having a deposit sum of {thirty million four Hundred
+thousand united state dollars} only ($30.4M USD) with a security
+finance firm affiliated with African development bank here in Burkina
+Faso.
 
-Cheers
+With the above explanation=E2=80=99s I want to move this money from Burkina
+Faso to your country, affidavit on your name, but note that this is a
+deal between me and you and should not be related to anybody until the
+deal is over for security reasons, please if interested reply as soon
+as possible.
 
-Mike
+Thanks,
+Honourable Barrister Aziz Dake.
