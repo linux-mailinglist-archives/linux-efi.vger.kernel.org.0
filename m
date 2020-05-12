@@ -2,128 +2,201 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BF5311CE8DF
-	for <lists+linux-efi@lfdr.de>; Tue, 12 May 2020 01:12:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A91201CEC35
+	for <lists+linux-efi@lfdr.de>; Tue, 12 May 2020 06:55:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725854AbgEKXMi (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 11 May 2020 19:12:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36494 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1725836AbgEKXMi (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 11 May 2020 19:12:38 -0400
-Received: from mail-qt1-x841.google.com (mail-qt1-x841.google.com [IPv6:2607:f8b0:4864:20::841])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74C7AC061A0E
-        for <linux-efi@vger.kernel.org>; Mon, 11 May 2020 16:12:38 -0700 (PDT)
-Received: by mail-qt1-x841.google.com with SMTP id g16so8814985qtp.11
-        for <linux-efi@vger.kernel.org>; Mon, 11 May 2020 16:12:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fireburn-co-uk.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=csemUG+Ws7y0HqXk83MvG8Thvpme39pvo0VkZNRmLXc=;
-        b=fzokSh7WiZFo8q6L5pePoTIAZFJir6Zga/NG9zxxbybfgcd1CQW2huCb+nrtEfEHxg
-         g4h0JTkB5lBnPRxfdX1rAQeFFkH1m3HdZKDQ/P3iOlL0UYS/mTjyWFpIRwnjDuvw32nP
-         3x2800pskSnAWdX5vy4XvICrArt0MvLzBiSajuMgwfDSVH5xmGDbbfki09K17vSN9g6b
-         tBYGvV20KYJZxrxZvPWl9RmWMBlsksLVWWWsJNZxFmEgUgdg41eTkLsMhs/XTx43jq6O
-         lN9DcWn4eIok/JsJl2bPISU03qjpzxM1QIDoYg2jURr67ErMid6zyPGjuldoQ4SgVQsM
-         l6QA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=csemUG+Ws7y0HqXk83MvG8Thvpme39pvo0VkZNRmLXc=;
-        b=g6PvoJhJ3Gde+jjFFLG+QV9XyGiZRi4c2TzfDzLjY3xowxPGWGIMx/c7mj0Kmh4q/v
-         dncWkBogcXK4vbtBxzumx21IQPWUZekG/vYhtxKYxBo7wcBw6ubtKJgyKh3SiQHrSMrx
-         KzcFTCNnEyup2sKflMHbbEmqbYFE84gA9g8snRGYx/mdE57e/4PG3nylbkdOJbeEesyx
-         S96uaYH5mGZHkC5212KHjPvmhftY7KWor/bxjfd/9b0iNgosVmn1m/Pdg8LKSBxdoCaR
-         byIAolBCuku5lg1FLp8+ZQFAcobR238QIidHRJpEAskX3bQpNBSO9Kg9tG1PvdFL5m4V
-         /dXw==
-X-Gm-Message-State: AGi0PuYYU4SL+0+zMwnun7s2iHA3j+ruekw0YymV5LlY9cMVBcToRqZl
-        jibo1+1+1dJv6azZnTfLXGYKmhhPzAqk86BhrlZN5Q==
-X-Google-Smtp-Source: APiQypJYYUE4mplfB1hqUJ5bDjw3xJwOop4c0BYWrp/iwgO+p19OIswihhZiWOKMBZioWG8Dx/CbHTOIqzKMfjBlcrY=
-X-Received: by 2002:ac8:6f75:: with SMTP id u21mr12718239qtv.161.1589238757632;
- Mon, 11 May 2020 16:12:37 -0700 (PDT)
+        id S1725874AbgELEzf (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 12 May 2020 00:55:35 -0400
+Received: from mo-csw1514.securemx.jp ([210.130.202.153]:48958 "EHLO
+        mo-csw.securemx.jp" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725868AbgELEzf (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 12 May 2020 00:55:35 -0400
+Received: by mo-csw.securemx.jp (mx-mo-csw1514) id 04C4tBCB028612; Tue, 12 May 2020 13:55:11 +0900
+X-Iguazu-Qid: 34trcFcTSdIJNcGUFe
+X-Iguazu-QSIG: v=2; s=0; t=1589259311; q=34trcFcTSdIJNcGUFe; m=lDCzbs4o132H/rv9S8n0JfYb3mfEtVjfQUawIKZ1uaI=
+Received: from imx2.toshiba.co.jp (imx2.toshiba.co.jp [106.186.93.51])
+        by relay.securemx.jp (mx-mr1510) id 04C4t9oB017332;
+        Tue, 12 May 2020 13:55:10 +0900
+Received: from enc01.localdomain ([106.186.93.100])
+        by imx2.toshiba.co.jp  with ESMTP id 04C4t9HT029314;
+        Tue, 12 May 2020 13:55:09 +0900 (JST)
+Received: from hop001.toshiba.co.jp ([133.199.164.63])
+        by enc01.localdomain  with ESMTP id 04C4t8Au032254;
+        Tue, 12 May 2020 13:55:09 +0900
+From:   Punit Agrawal <punit1.agrawal@toshiba.co.jp>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-kernel@vger.kernel.org,
+        Punit Agrawal <punit1.agrawal@toshiba.co.jp>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Borislav Petkov <bp@alien8.de>,
+        James Morse <james.morse@arm.com>, linux-acpi@vger.kernel.org,
+        linux-efi@vger.kernel.org
+Subject: [Patch v2] efi: cper: Add support for printing Firmware Error Record Reference
+Date:   Tue, 12 May 2020 13:55:02 +0900
+X-TSB-HOP: ON
+Message-Id: <20200512045502.3810339-1-punit1.agrawal@toshiba.co.jp>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-References: <20200511225324.GA1307788@rani.riverdale.lan> <20200511225849.1311869-1-nivedita@alum.mit.edu>
-In-Reply-To: <20200511225849.1311869-1-nivedita@alum.mit.edu>
-From:   Mike Lothian <mike@fireburn.co.uk>
-Date:   Tue, 12 May 2020 00:12:26 +0100
-Message-ID: <CAHbf0-HLKiq_+erhHfV9XqMhfchN2975nAsuya4-oXEOUNdhiw@mail.gmail.com>
-Subject: Re: [PATCH] x86/boot: Mark global variables as static
-To:     Arvind Sankar <nivedita@alum.mit.edu>
-Cc:     Ard Biesheuvel <ardb@kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        X86 ML <x86@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Feel free to add my tested by
+While debugging a boot failure, the following unknown error record was
+seen in the boot logs.
 
+    <...>
+    BERT: Error records from previous boot:
+    [Hardware Error]: event severity: fatal
+    [Hardware Error]:  Error 0, type: fatal
+    [Hardware Error]:   section type: unknown, 81212a96-09ed-4996-9471-8d729c8e69ed
+    [Hardware Error]:   section length: 0x290
+    [Hardware Error]:   00000000: 00000001 00000000 00000000 00020002  ................
+    [Hardware Error]:   00000010: 00020002 0000001f 00000320 00000000  ........ .......
+    [Hardware Error]:   00000020: 00000000 00000000 00000000 00000000  ................
+    [Hardware Error]:   00000030: 00000000 00000000 00000000 00000000  ................
+    <...>
 
-On Mon, 11 May 2020 at 23:58, Arvind Sankar <nivedita@alum.mit.edu> wrote:
->
-> Mike Lothian reports that after commit
->   964124a97b97 ("efi/x86: Remove extra headroom for setup block")
-> gcc 10.1.0 fails with
->
->   HOSTCC  arch/x86/boot/tools/build
->   /usr/lib/gcc/x86_64-pc-linux-gnu/10.1.0/../../../../x86_64-pc-linux-gnu/bin/ld:
->   error: linker defined: multiple definition of '_end'
->   /usr/lib/gcc/x86_64-pc-linux-gnu/10.1.0/../../../../x86_64-pc-linux-gnu/bin/ld:
->   /tmp/ccEkW0jM.o: previous definition here
->   collect2: error: ld returned 1 exit status
->   make[1]: *** [scripts/Makefile.host:103: arch/x86/boot/tools/build] Error 1
->   make: *** [arch/x86/Makefile:303: bzImage] Error 2
->
-> The issue is with the _end variable that was added, to hold the end of
-> the compressed kernel from zoffsets.h (ZO__end). The name clashes with
-> the linker-defined _end symbol that indicates the end of the build
-> program itself.
->
-> Even when there is no compile-time error, this causes build to use
-> memory past the end of its .bss section.
->
-> To solve this, mark _end as static, and for symmetry, mark the rest of
-> the variables that keep track of symbols from the compressed kernel as
-> static as well.
->
-> Fixes: 964124a97b97 ("efi/x86: Remove extra headroom for setup block")
-> Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
-> ---
->  arch/x86/boot/tools/build.c | 16 ++++++++--------
->  1 file changed, 8 insertions(+), 8 deletions(-)
->
-> diff --git a/arch/x86/boot/tools/build.c b/arch/x86/boot/tools/build.c
-> index 8f8c8e386cea..c8b8c1a8d1fc 100644
-> --- a/arch/x86/boot/tools/build.c
-> +++ b/arch/x86/boot/tools/build.c
-> @@ -59,14 +59,14 @@ u8 buf[SETUP_SECT_MAX*512];
->  #define PECOFF_COMPAT_RESERVE 0x0
->  #endif
->
-> -unsigned long efi32_stub_entry;
-> -unsigned long efi64_stub_entry;
-> -unsigned long efi_pe_entry;
-> -unsigned long efi32_pe_entry;
-> -unsigned long kernel_info;
-> -unsigned long startup_64;
-> -unsigned long _ehead;
-> -unsigned long _end;
-> +static unsigned long efi32_stub_entry;
-> +static unsigned long efi64_stub_entry;
-> +static unsigned long efi_pe_entry;
-> +static unsigned long efi32_pe_entry;
-> +static unsigned long kernel_info;
-> +static unsigned long startup_64;
-> +static unsigned long _ehead;
-> +static unsigned long _end;
->
->  /*----------------------------------------------------------------------*/
->
-> --
-> 2.26.2
->
+On further investigation, it was found that the error record with
+UUID (81212a96-09ed-4996-9471-8d729c8e69ed) has been defined in the
+UEFI Specification at least since v2.4 and has recently had additional
+fields defined in v2.7 Section N.2.10 Firmware Error Record Reference.
+
+Add support for parsing and printing the defined fields to give users
+a chance to figure out what went wrong.
+
+Signed-off-by: Punit Agrawal <punit1.agrawal@toshiba.co.jp>
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: James Morse <james.morse@arm.com>
+Cc: linux-acpi@vger.kernel.org
+Cc: linux-efi@vger.kernel.org
+---
+Hi Ard,
+
+I've updated the patch based on your feedback.
+
+As you noted, some aspects of the spec make it a bit tricky to support
+all revisions in a nice way (e.g., size check) but this version should
+fix existing issues.
+
+Thanks,
+Punit
+
+v1[0] -> v2:
+* Simplified error record structure definition
+* Fixed size check
+* Added comment to clarify offset calculation for dumped data
+* Style fixes for multiline if blocks
+
+[0] https://lkml.kernel.org/lkml/20200427085242.2380614-1-punit1.agrawal@toshiba.co.jp/
+---
+ drivers/firmware/efi/cper.c | 62 +++++++++++++++++++++++++++++++++++++
+ include/linux/cper.h        |  9 ++++++
+ 2 files changed, 71 insertions(+)
+
+diff --git a/drivers/firmware/efi/cper.c b/drivers/firmware/efi/cper.c
+index 9d2512913d25..f564e15fbc7e 100644
+--- a/drivers/firmware/efi/cper.c
++++ b/drivers/firmware/efi/cper.c
+@@ -407,6 +407,58 @@ static void cper_print_pcie(const char *pfx, const struct cper_sec_pcie *pcie,
+ 	}
+ }
+ 
++static const char * const fw_err_rec_type_strs[] = {
++	"IPF SAL Error Record",
++	"SOC Firmware Error Record Type1 (Legacy CrashLog Support)",
++	"SOC Firmware Error Record Type2",
++};
++
++static void cper_print_fw_err(const char *pfx,
++			      struct acpi_hest_generic_data *gdata,
++			      const struct cper_sec_fw_err_rec_ref *fw_err)
++{
++	void *buf = acpi_hest_get_payload(gdata);
++	u32 offset, length = gdata->error_data_length;
++
++	printk("%s""Firmware Error Record Type: %s\n", pfx,
++	       fw_err->record_type < ARRAY_SIZE(fw_err_rec_type_strs) ?
++	       fw_err_rec_type_strs[fw_err->record_type] : "unknown");
++	printk("%s""Revision: %d\n", pfx, fw_err->revision);
++
++	/* Record Type based on UEFI 2.7 */
++	if (fw_err->revision == 0) {
++		printk("%s""Record Identifier: %08llx\n", pfx,
++		       fw_err->record_identifier);
++	} else if (fw_err->revision == 2) {
++		printk("%s""Record Identifier: %pUl\n", pfx,
++		       &fw_err->record_identifier_guid);
++	}
++
++	/*
++	 * The FW error record may contain trailing data beyond the
++	 * structure defined by the specification. As the fields
++	 * defined (and hence the offset of any trailing data) vary
++	 * with the revision, set the offset to account for this
++	 * variation.
++	 */
++	if (fw_err->revision == 0) {
++		/* record_identifier_guid not defined */
++		offset = offsetof(struct cper_sec_fw_err_rec_ref,
++				  record_identifier_guid);
++	} else if (fw_err->revision == 1) {
++		/* record_identifier not defined */
++		offset = offsetof(struct cper_sec_fw_err_rec_ref,
++				  record_identifier);
++	} else {
++		offset = sizeof(*fw_err);
++	}
++
++	buf += offset;
++	length -= offset;
++
++	print_hex_dump(pfx, "", DUMP_PREFIX_OFFSET, 16, 4, buf, length, true);
++}
++
+ static void cper_print_tstamp(const char *pfx,
+ 				   struct acpi_hest_generic_data_v300 *gdata)
+ {
+@@ -494,6 +546,16 @@ cper_estatus_print_section(const char *pfx, struct acpi_hest_generic_data *gdata
+ 		else
+ 			goto err_section_too_small;
+ #endif
++	} else if (guid_equal(sec_type, &CPER_SEC_FW_ERR_REC_REF)) {
++		struct cper_sec_fw_err_rec_ref *fw_err = acpi_hest_get_payload(gdata);
++
++		printk("%ssection_type: Firmware Error Record Reference\n",
++		       newpfx);
++		/* The minimal FW Error Record contains 16 bytes */
++		if (gdata->error_data_length >= SZ_16)
++			cper_print_fw_err(newpfx, gdata, fw_err);
++		else
++			goto err_section_too_small;
+ 	} else {
+ 		const void *err = acpi_hest_get_payload(gdata);
+ 
+diff --git a/include/linux/cper.h b/include/linux/cper.h
+index 4f005d95ce88..8537e9282a65 100644
+--- a/include/linux/cper.h
++++ b/include/linux/cper.h
+@@ -521,6 +521,15 @@ struct cper_sec_pcie {
+ 	u8	aer_info[96];
+ };
+ 
++/* Firmware Error Record Reference, UEFI v2.7 sec N.2.10  */
++struct cper_sec_fw_err_rec_ref {
++	u8 record_type;
++	u8 revision;
++	u8 reserved[6];
++	u64 record_identifier;
++	guid_t record_identifier_guid;
++};
++
+ /* Reset to default packing */
+ #pragma pack()
+ 
+-- 
+2.26.2
+
