@@ -2,123 +2,110 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 10D6F1CF30C
-	for <lists+linux-efi@lfdr.de>; Tue, 12 May 2020 13:05:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4134E1D050D
+	for <lists+linux-efi@lfdr.de>; Wed, 13 May 2020 04:37:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729365AbgELLFe (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 12 May 2020 07:05:34 -0400
-Received: from mail.kernel.org ([198.145.29.99]:32922 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726891AbgELLFe (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Tue, 12 May 2020 07:05:34 -0400
-Received: from mail-il1-f176.google.com (mail-il1-f176.google.com [209.85.166.176])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 26E6D20722;
-        Tue, 12 May 2020 11:05:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1589281533;
-        bh=QcetHZ/WV7SzOJx7y3VtilFa5AxOHu2bW9ktZoVYN/8=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=g45yf8oAz8COKkI+/aNxUYoI8+RyfVkKuD/2x13IgI/2BtQix5kFieBTfvI6Q3X+a
-         Wbe4E+tvMvgSq1LGxSFgkBvIRSdnDuMc3Fa3HkwHeB6VTsLUQiadWSDzZROCKgkLur
-         7eHTpecphnAV/nINzUsnKsRXEZbDTMAVDTzd8w2w=
-Received: by mail-il1-f176.google.com with SMTP id m5so11771847ilj.10;
-        Tue, 12 May 2020 04:05:33 -0700 (PDT)
-X-Gm-Message-State: AGi0PuZtJwfq0YMFVrTFnACtn9xegIjVrOdVHsT8++UHpXal5LixxjIP
-        Al3PLeG8etkxMazHkzvw9E3shDiJpgFjhugvUTk=
-X-Google-Smtp-Source: APiQypJ87UPF7eEiYkWix4Qz1SdTjtsmUwKgHSVI39lmUIv19DKowo9AsBvtjj+BK5//JAqLu10TWJ1qAp9cXkFgP54=
-X-Received: by 2002:a05:6e02:673:: with SMTP id l19mr1147334ilt.218.1589281532506;
- Tue, 12 May 2020 04:05:32 -0700 (PDT)
+        id S1725967AbgEMChA (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 12 May 2020 22:37:00 -0400
+Received: from mo-csw1516.securemx.jp ([210.130.202.155]:56258 "EHLO
+        mo-csw.securemx.jp" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725898AbgEMChA (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 12 May 2020 22:37:00 -0400
+Received: by mo-csw.securemx.jp (mx-mo-csw1516) id 04D2ae54007140; Wed, 13 May 2020 11:36:40 +0900
+X-Iguazu-Qid: 34trDAmeIu11rkEjys
+X-Iguazu-QSIG: v=2; s=0; t=1589337400; q=34trDAmeIu11rkEjys; m=pK2KXljWZTLcH9XwqUT1Sc58njnMsc8wOqfGuj2Bpqo=
+Received: from imx2.toshiba.co.jp (imx2.toshiba.co.jp [106.186.93.51])
+        by relay.securemx.jp (mx-mr1513) id 04D2acok007719;
+        Wed, 13 May 2020 11:36:39 +0900
+Received: from enc01.localdomain ([106.186.93.100])
+        by imx2.toshiba.co.jp  with ESMTP id 04D2acj8000332;
+        Wed, 13 May 2020 11:36:38 +0900 (JST)
+Received: from hop001.toshiba.co.jp ([133.199.164.63])
+        by enc01.localdomain  with ESMTP id 04D2acCb026192;
+        Wed, 13 May 2020 11:36:38 +0900
+From:   Punit Agrawal <punit1.agrawal@toshiba.co.jp>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Borislav Petkov <bp@alien8.de>,
+        James Morse <james.morse@arm.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        linux-efi <linux-efi@vger.kernel.org>
+Subject: Re: [Patch v2] efi: cper: Add support for printing Firmware Error Record Reference
+References: <20200512045502.3810339-1-punit1.agrawal@toshiba.co.jp>
+        <CAMj1kXGNWptRShYVtDwoB7jL1_2M1ioroFV=veFt0MB=n6_-OQ@mail.gmail.com>
+Date:   Wed, 13 May 2020 11:36:37 +0900
+In-Reply-To: <CAMj1kXGNWptRShYVtDwoB7jL1_2M1ioroFV=veFt0MB=n6_-OQ@mail.gmail.com>
+        (Ard Biesheuvel's message of "Tue, 12 May 2020 12:47:59 +0200")
+X-TSB-HOP: ON
+Message-ID: <87v9l0o91m.fsf@kokedama.swc.toshiba.co.jp>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-References: <20200511225324.GA1307788@rani.riverdale.lan> <20200511225849.1311869-1-nivedita@alum.mit.edu>
- <CAHbf0-HLKiq_+erhHfV9XqMhfchN2975nAsuya4-oXEOUNdhiw@mail.gmail.com>
-In-Reply-To: <CAHbf0-HLKiq_+erhHfV9XqMhfchN2975nAsuya4-oXEOUNdhiw@mail.gmail.com>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Tue, 12 May 2020 13:05:21 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXGbUg3g-s5qoHgrYoBnoJLR9Oc7YrCO1xMHx-+Ys6=Tfg@mail.gmail.com>
-Message-ID: <CAMj1kXGbUg3g-s5qoHgrYoBnoJLR9Oc7YrCO1xMHx-+Ys6=Tfg@mail.gmail.com>
-Subject: Re: [PATCH] x86/boot: Mark global variables as static
-To:     Mike Lothian <mike@fireburn.co.uk>
-Cc:     Arvind Sankar <nivedita@alum.mit.edu>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        X86 ML <x86@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, 12 May 2020 at 01:12, Mike Lothian <mike@fireburn.co.uk> wrote:
->
-> Feel free to add my tested by
->
->
-> On Mon, 11 May 2020 at 23:58, Arvind Sankar <nivedita@alum.mit.edu> wrote:
-> >
-> > Mike Lothian reports that after commit
-> >   964124a97b97 ("efi/x86: Remove extra headroom for setup block")
-> > gcc 10.1.0 fails with
-> >
-> >   HOSTCC  arch/x86/boot/tools/build
-> >   /usr/lib/gcc/x86_64-pc-linux-gnu/10.1.0/../../../../x86_64-pc-linux-gnu/bin/ld:
-> >   error: linker defined: multiple definition of '_end'
-> >   /usr/lib/gcc/x86_64-pc-linux-gnu/10.1.0/../../../../x86_64-pc-linux-gnu/bin/ld:
-> >   /tmp/ccEkW0jM.o: previous definition here
-> >   collect2: error: ld returned 1 exit status
-> >   make[1]: *** [scripts/Makefile.host:103: arch/x86/boot/tools/build] Error 1
-> >   make: *** [arch/x86/Makefile:303: bzImage] Error 2
-> >
-> > The issue is with the _end variable that was added, to hold the end of
-> > the compressed kernel from zoffsets.h (ZO__end). The name clashes with
-> > the linker-defined _end symbol that indicates the end of the build
-> > program itself.
-> >
-> > Even when there is no compile-time error, this causes build to use
-> > memory past the end of its .bss section.
-> >
-> > To solve this, mark _end as static, and for symmetry, mark the rest of
-> > the variables that keep track of symbols from the compressed kernel as
-> > static as well.
-> >
-> > Fixes: 964124a97b97 ("efi/x86: Remove extra headroom for setup block")
-> > Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
+Ard Biesheuvel <ardb@kernel.org> writes:
 
-Thanks, I'll queue this as a fix.
+> On Tue, 12 May 2020 at 06:55, Punit Agrawal
+> <punit1.agrawal@toshiba.co.jp> wrote:
+>>
+>> While debugging a boot failure, the following unknown error record was
+>> seen in the boot logs.
+>>
+>>     <...>
+>>     BERT: Error records from previous boot:
+>>     [Hardware Error]: event severity: fatal
+>>     [Hardware Error]:  Error 0, type: fatal
+>>     [Hardware Error]:   section type: unknown, 81212a96-09ed-4996-9471-8d729c8e69ed
+>>     [Hardware Error]:   section length: 0x290
+>>     [Hardware Error]:   00000000: 00000001 00000000 00000000 00020002  ................
+>>     [Hardware Error]:   00000010: 00020002 0000001f 00000320 00000000  ........ .......
+>>     [Hardware Error]:   00000020: 00000000 00000000 00000000 00000000  ................
+>>     [Hardware Error]:   00000030: 00000000 00000000 00000000 00000000  ................
+>>     <...>
+>>
+>> On further investigation, it was found that the error record with
+>> UUID (81212a96-09ed-4996-9471-8d729c8e69ed) has been defined in the
+>> UEFI Specification at least since v2.4 and has recently had additional
+>> fields defined in v2.7 Section N.2.10 Firmware Error Record Reference.
+>>
+>> Add support for parsing and printing the defined fields to give users
+>> a chance to figure out what went wrong.
+>>
+>> Signed-off-by: Punit Agrawal <punit1.agrawal@toshiba.co.jp>
+>> Cc: Ard Biesheuvel <ardb@kernel.org>
+>> Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+>> Cc: Borislav Petkov <bp@alien8.de>
+>> Cc: James Morse <james.morse@arm.com>
+>> Cc: linux-acpi@vger.kernel.org
+>> Cc: linux-efi@vger.kernel.org
+>> ---
+>> Hi Ard,
+>>
+>> I've updated the patch based on your feedback.
+>>
+>> As you noted, some aspects of the spec make it a bit tricky to support
+>> all revisions in a nice way (e.g., size check) but this version should
+>> fix existing issues.
+>>
+>> Thanks,
+>> Punit
+>>
+>> v1[0] -> v2:
+>> * Simplified error record structure definition
+>> * Fixed size check
+>> * Added comment to clarify offset calculation for dumped data
+>> * Style fixes for multiline if blocks
+>
+> Thanks. I will queue this as a fix.
 
+Thanks!
 
-> > ---
-> >  arch/x86/boot/tools/build.c | 16 ++++++++--------
-> >  1 file changed, 8 insertions(+), 8 deletions(-)
-> >
-> > diff --git a/arch/x86/boot/tools/build.c b/arch/x86/boot/tools/build.c
-> > index 8f8c8e386cea..c8b8c1a8d1fc 100644
-> > --- a/arch/x86/boot/tools/build.c
-> > +++ b/arch/x86/boot/tools/build.c
-> > @@ -59,14 +59,14 @@ u8 buf[SETUP_SECT_MAX*512];
-> >  #define PECOFF_COMPAT_RESERVE 0x0
-> >  #endif
-> >
-> > -unsigned long efi32_stub_entry;
-> > -unsigned long efi64_stub_entry;
-> > -unsigned long efi_pe_entry;
-> > -unsigned long efi32_pe_entry;
-> > -unsigned long kernel_info;
-> > -unsigned long startup_64;
-> > -unsigned long _ehead;
-> > -unsigned long _end;
-> > +static unsigned long efi32_stub_entry;
-> > +static unsigned long efi64_stub_entry;
-> > +static unsigned long efi_pe_entry;
-> > +static unsigned long efi32_pe_entry;
-> > +static unsigned long kernel_info;
-> > +static unsigned long startup_64;
-> > +static unsigned long _ehead;
-> > +static unsigned long _end;
-> >
-> >  /*----------------------------------------------------------------------*/
-> >
-> > --
-> > 2.26.2
-> >
+Just for my understanding - are you planning to send this for v5.7 or
+v5.8? There's no rush, so I am fine either ways.
+
+[...]
+
