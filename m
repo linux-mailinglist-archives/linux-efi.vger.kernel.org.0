@@ -2,110 +2,162 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4134E1D050D
-	for <lists+linux-efi@lfdr.de>; Wed, 13 May 2020 04:37:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A68E1D0B63
+	for <lists+linux-efi@lfdr.de>; Wed, 13 May 2020 11:00:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725967AbgEMChA (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 12 May 2020 22:37:00 -0400
-Received: from mo-csw1516.securemx.jp ([210.130.202.155]:56258 "EHLO
-        mo-csw.securemx.jp" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725898AbgEMChA (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 12 May 2020 22:37:00 -0400
-Received: by mo-csw.securemx.jp (mx-mo-csw1516) id 04D2ae54007140; Wed, 13 May 2020 11:36:40 +0900
-X-Iguazu-Qid: 34trDAmeIu11rkEjys
-X-Iguazu-QSIG: v=2; s=0; t=1589337400; q=34trDAmeIu11rkEjys; m=pK2KXljWZTLcH9XwqUT1Sc58njnMsc8wOqfGuj2Bpqo=
-Received: from imx2.toshiba.co.jp (imx2.toshiba.co.jp [106.186.93.51])
-        by relay.securemx.jp (mx-mr1513) id 04D2acok007719;
-        Wed, 13 May 2020 11:36:39 +0900
-Received: from enc01.localdomain ([106.186.93.100])
-        by imx2.toshiba.co.jp  with ESMTP id 04D2acj8000332;
-        Wed, 13 May 2020 11:36:38 +0900 (JST)
-Received: from hop001.toshiba.co.jp ([133.199.164.63])
-        by enc01.localdomain  with ESMTP id 04D2acCb026192;
-        Wed, 13 May 2020 11:36:38 +0900
-From:   Punit Agrawal <punit1.agrawal@toshiba.co.jp>
+        id S1730603AbgEMI7y (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 13 May 2020 04:59:54 -0400
+Received: from mga17.intel.com ([192.55.52.151]:22869 "EHLO mga17.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730346AbgEMI7y (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Wed, 13 May 2020 04:59:54 -0400
+IronPort-SDR: dpl/nhUNfyVZrrk7lbjaPWFTJClGnsT1emoUploBaec4K1lXAH+Sl03OkYXkMbpmLMNKzovw1J
+ 4J9iZ7IEGg6g==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2020 01:59:54 -0700
+IronPort-SDR: 2x1s/RlxgMumuCPIUNTavEYN3H9Oj90rmWxU4wEzyo5rq7+2XDQwVUrD5I5YeSS46hm9RRQOLC
+ ddpDfjMvQePg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.73,387,1583222400"; 
+   d="scan'208";a="464060732"
+Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
+  by fmsmga006.fm.intel.com with ESMTP; 13 May 2020 01:59:53 -0700
+Received: from kbuild by lkp-server01 with local (Exim 4.89)
+        (envelope-from <lkp@intel.com>)
+        id 1jYnF2-00026M-CL; Wed, 13 May 2020 16:59:52 +0800
+Date:   Wed, 13 May 2020 16:59:35 +0800
+From:   kbuild test robot <lkp@intel.com>
 To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Borislav Petkov <bp@alien8.de>,
-        James Morse <james.morse@arm.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>
-Subject: Re: [Patch v2] efi: cper: Add support for printing Firmware Error Record Reference
-References: <20200512045502.3810339-1-punit1.agrawal@toshiba.co.jp>
-        <CAMj1kXGNWptRShYVtDwoB7jL1_2M1ioroFV=veFt0MB=n6_-OQ@mail.gmail.com>
-Date:   Wed, 13 May 2020 11:36:37 +0900
-In-Reply-To: <CAMj1kXGNWptRShYVtDwoB7jL1_2M1ioroFV=veFt0MB=n6_-OQ@mail.gmail.com>
-        (Ard Biesheuvel's message of "Tue, 12 May 2020 12:47:59 +0200")
-X-TSB-HOP: ON
-Message-ID: <87v9l0o91m.fsf@kokedama.swc.toshiba.co.jp>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+Cc:     linux-efi@vger.kernel.org
+Subject: [efi:urgent] BUILD SUCCESS
+ 84d262f05313532f227638745f161bfc02cc7802
+Message-ID: <5ebbb6f7.UjNcl4ILx7WtF28P%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Ard Biesheuvel <ardb@kernel.org> writes:
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git  urgent
+branch HEAD: 84d262f05313532f227638745f161bfc02cc7802  x86/boot: Mark global variables as static
 
-> On Tue, 12 May 2020 at 06:55, Punit Agrawal
-> <punit1.agrawal@toshiba.co.jp> wrote:
->>
->> While debugging a boot failure, the following unknown error record was
->> seen in the boot logs.
->>
->>     <...>
->>     BERT: Error records from previous boot:
->>     [Hardware Error]: event severity: fatal
->>     [Hardware Error]:  Error 0, type: fatal
->>     [Hardware Error]:   section type: unknown, 81212a96-09ed-4996-9471-8d729c8e69ed
->>     [Hardware Error]:   section length: 0x290
->>     [Hardware Error]:   00000000: 00000001 00000000 00000000 00020002  ................
->>     [Hardware Error]:   00000010: 00020002 0000001f 00000320 00000000  ........ .......
->>     [Hardware Error]:   00000020: 00000000 00000000 00000000 00000000  ................
->>     [Hardware Error]:   00000030: 00000000 00000000 00000000 00000000  ................
->>     <...>
->>
->> On further investigation, it was found that the error record with
->> UUID (81212a96-09ed-4996-9471-8d729c8e69ed) has been defined in the
->> UEFI Specification at least since v2.4 and has recently had additional
->> fields defined in v2.7 Section N.2.10 Firmware Error Record Reference.
->>
->> Add support for parsing and printing the defined fields to give users
->> a chance to figure out what went wrong.
->>
->> Signed-off-by: Punit Agrawal <punit1.agrawal@toshiba.co.jp>
->> Cc: Ard Biesheuvel <ardb@kernel.org>
->> Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
->> Cc: Borislav Petkov <bp@alien8.de>
->> Cc: James Morse <james.morse@arm.com>
->> Cc: linux-acpi@vger.kernel.org
->> Cc: linux-efi@vger.kernel.org
->> ---
->> Hi Ard,
->>
->> I've updated the patch based on your feedback.
->>
->> As you noted, some aspects of the spec make it a bit tricky to support
->> all revisions in a nice way (e.g., size check) but this version should
->> fix existing issues.
->>
->> Thanks,
->> Punit
->>
->> v1[0] -> v2:
->> * Simplified error record structure definition
->> * Fixed size check
->> * Added comment to clarify offset calculation for dumped data
->> * Style fixes for multiline if blocks
->
-> Thanks. I will queue this as a fix.
+elapsed time: 482m
 
-Thanks!
+configs tested: 103
+configs skipped: 4
 
-Just for my understanding - are you planning to send this for v5.7 or
-v5.8? There's no rush, so I am fine either ways.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-[...]
+arm                                 defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+arm                               allnoconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm64                            allmodconfig
+arm64                             allnoconfig
+m68k                             allyesconfig
+m68k                        stmark2_defconfig
+arm                  colibri_pxa300_defconfig
+c6x                        evmc6457_defconfig
+powerpc                     powernv_defconfig
+mips                 decstation_r4k_defconfig
+arm                              zx_defconfig
+m68k                         amcore_defconfig
+powerpc                      pmac32_defconfig
+arc                          axs103_defconfig
+arm64                            alldefconfig
+arm                        vexpress_defconfig
+m68k                        m5272c3_defconfig
+i386                             allyesconfig
+i386                                defconfig
+i386                              debian-10.3
+i386                              allnoconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                              allnoconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                              allnoconfig
+m68k                           sun3_defconfig
+m68k                                defconfig
+nios2                               defconfig
+nios2                            allyesconfig
+openrisc                            defconfig
+c6x                              allyesconfig
+c6x                               allnoconfig
+openrisc                         allyesconfig
+nds32                               defconfig
+nds32                             allnoconfig
+csky                             allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+h8300                            allmodconfig
+xtensa                              defconfig
+arc                                 defconfig
+arc                              allyesconfig
+sh                               allmodconfig
+sh                                allnoconfig
+microblaze                        allnoconfig
+mips                             allyesconfig
+mips                              allnoconfig
+mips                             allmodconfig
+parisc                            allnoconfig
+parisc                              defconfig
+parisc                           allyesconfig
+parisc                           allmodconfig
+powerpc                             defconfig
+powerpc                          allyesconfig
+powerpc                          rhel-kconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+i386                 randconfig-a006-20200512
+i386                 randconfig-a005-20200512
+i386                 randconfig-a003-20200512
+i386                 randconfig-a001-20200512
+i386                 randconfig-a004-20200512
+i386                 randconfig-a002-20200512
+i386                 randconfig-a012-20200512
+i386                 randconfig-a016-20200512
+i386                 randconfig-a014-20200512
+i386                 randconfig-a011-20200512
+i386                 randconfig-a013-20200512
+i386                 randconfig-a015-20200512
+riscv                            allyesconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                            allmodconfig
+s390                             allyesconfig
+s390                              allnoconfig
+s390                             allmodconfig
+s390                                defconfig
+sparc                            allyesconfig
+sparc                               defconfig
+sparc64                             defconfig
+sparc64                           allnoconfig
+sparc64                          allyesconfig
+sparc64                          allmodconfig
+um                               allmodconfig
+um                                allnoconfig
+um                               allyesconfig
+um                                  defconfig
+x86_64                                   rhel
+x86_64                               rhel-7.6
+x86_64                    rhel-7.6-kselftests
+x86_64                         rhel-7.2-clear
+x86_64                                    lkp
+x86_64                              fedora-25
+x86_64                                  kexec
 
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
