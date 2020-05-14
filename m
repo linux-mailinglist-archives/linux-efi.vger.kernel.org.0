@@ -2,136 +2,98 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C4E81D1789
-	for <lists+linux-efi@lfdr.de>; Wed, 13 May 2020 16:26:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E665D1D2AE2
+	for <lists+linux-efi@lfdr.de>; Thu, 14 May 2020 11:06:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388960AbgEMO0a (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 13 May 2020 10:26:30 -0400
-Received: from hqnvemgate24.nvidia.com ([216.228.121.143]:8391 "EHLO
-        hqnvemgate24.nvidia.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388827AbgEMO03 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 13 May 2020 10:26:29 -0400
-Received: from hqpgpgate102.nvidia.com (Not Verified[216.228.121.13]) by hqnvemgate24.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
-        id <B5ebc030c0000>; Wed, 13 May 2020 07:24:12 -0700
-Received: from hqmail.nvidia.com ([172.20.161.6])
-  by hqpgpgate102.nvidia.com (PGP Universal service);
-  Wed, 13 May 2020 07:26:28 -0700
-X-PGP-Universal: processed;
-        by hqpgpgate102.nvidia.com on Wed, 13 May 2020 07:26:28 -0700
-Received: from [10.40.103.138] (172.20.13.39) by HQMAIL107.nvidia.com
- (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Wed, 13 May
- 2020 14:26:19 +0000
-Subject: Re: RE: [PATCH v6 09/10] arm64: efi: Export screen_info
-To:     Michael Kelley <mikelley@microsoft.com>,
-        Arnd Bergmann <arnd@arndb.de>
-CC:     Will Deacon <will@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Marc Zyngier <maz@kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        gregkh <gregkh@linuxfoundation.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        "olaf@aepfle.de" <olaf@aepfle.de>,
-        Andy Whitcroft <apw@canonical.com>,
-        vkuznets <vkuznets@redhat.com>, Jason Wang <jasowang@redhat.com>,
-        "marcelo.cerri@canonical.com" <marcelo.cerri@canonical.com>,
-        KY Srinivasan <kys@microsoft.com>,
-        Sunil Muthuswamy <sunilmut@microsoft.com>,
-        Boqun Feng <boqun.feng@gmail.com>
-References: <1584200119-18594-1-git-send-email-mikelley@microsoft.com>
- <1584200119-18594-10-git-send-email-mikelley@microsoft.com>
- <CAK8P3a1YUjhaVUmjVC2pCoTTBTU408iN44Q=QZ0RDz8rmzJisQ@mail.gmail.com>
- <MW2PR2101MB10524254D2FE3EFC72329465D7F70@MW2PR2101MB1052.namprd21.prod.outlook.com>
- <CAK8P3a1YCtc3LJ-_3iT90_Srehb96gLHvTXsbJ0wT6NFYCG=TQ@mail.gmail.com>
- <MW2PR2101MB1052E413218D295EF24E5E05D7F40@MW2PR2101MB1052.namprd21.prod.outlook.com>
-From:   Nikhil Mahale <nmahale@nvidia.com>
-Message-ID: <f2b63853-24ae-d6b7-cd43-5792c0d4d31b@nvidia.com>
-Date:   Wed, 13 May 2020 19:56:14 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
+        id S1726033AbgENJGL (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 14 May 2020 05:06:11 -0400
+Received: from mail.kernel.org ([198.145.29.99]:33296 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725970AbgENJGL (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Thu, 14 May 2020 05:06:11 -0400
+Received: from mail-il1-f181.google.com (mail-il1-f181.google.com [209.85.166.181])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 9876320675;
+        Thu, 14 May 2020 09:06:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1589447170;
+        bh=a9zKcEcwX/U5AWN8Z2tVlAOpo48QZnatONbuVLLd7nc=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=Xb6qpGNWYMht0PHK8bOzrNf0LVIqYlpL+LvVGElkxt8cw97mcLjL9iY4aFFjkHhsr
+         O0BkApmXFSVkzFBaCQJo2jwdLnrjzZ2D5I2jHmaNrDKm9+o2wd37RH+WzLPHc7U9uu
+         eYxCUsGB8QxtzaPggWrb8x9EfmOM1ScG/Y4XqUjE=
+Received: by mail-il1-f181.google.com with SMTP id b71so2542210ilg.8;
+        Thu, 14 May 2020 02:06:10 -0700 (PDT)
+X-Gm-Message-State: AOAM532aG9b9oBX1/nHT+mBfr1Z3RWezLORFQwApmeZ9SYHW857DWbVQ
+        lZGIAE29ZlaFvSqgSCyDq+OXpRoxbAf1uHprffg=
+X-Google-Smtp-Source: ABdhPJxUY8qmQknQYvjuoNLqWGW1gmT+lBVl8yewXTfNDssK2v13BAUGPfAUrwUumsFRdibTsVDcu8Yz5UAiYTp8k18=
+X-Received: by 2002:a92:a312:: with SMTP id a18mr3693540ili.80.1589447169779;
+ Thu, 14 May 2020 02:06:09 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <MW2PR2101MB1052E413218D295EF24E5E05D7F40@MW2PR2101MB1052.namprd21.prod.outlook.com>
-X-Originating-IP: [172.20.13.39]
-X-ClientProxiedBy: HQMAIL107.nvidia.com (172.20.187.13) To
- HQMAIL107.nvidia.com (172.20.187.13)
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
-        t=1589379852; bh=x1UAKVn8+/u2cz6MzDi8dZRv1jolqDgwkL4uosH9XXA=;
-        h=X-PGP-Universal:Subject:To:CC:References:From:Message-ID:Date:
-         User-Agent:MIME-Version:In-Reply-To:X-Originating-IP:
-         X-ClientProxiedBy:Content-Type:Content-Language:
-         Content-Transfer-Encoding;
-        b=cW+1fl8Ga69Q1QXp46sGezHshzti2A6hHcqXU68jSAv0HbHLeJQvepipXJ0eSuDBo
-         51KMndVzf/sPPYlWVGm/bE21jU3XJS+EeiVEM2ruDJCnu64Jz80k49jv2OjlI7Vnjj
-         DhPtiz/99TQ94aCjvD+0pTQoBQQ/lwcbhEddYghMCPLZE9sM9eXPYXm18cFxeGfTO2
-         15ETxGo1tsLmjRLBCgkqhz7TYdryxI170K82U/Oez6e+yjci90BE8uVyGq0TXp/K63
-         ks9G06QTA88P3fNC9kzZfxZonCfJndFQz5TkuaWAKoONJmCQ+9rIQ5hxcdLWAb+Cng
-         7pKiTeecW804A==
+References: <20200508180157.1816-1-ardb@kernel.org>
+In-Reply-To: <20200508180157.1816-1-ardb@kernel.org>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Thu, 14 May 2020 11:05:58 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXHwj4SkoBH7Ft5Oa1DzL7jU0FhyTg2FUCz2aLaLXP91tw@mail.gmail.com>
+Message-ID: <CAMj1kXHwj4SkoBH7Ft5Oa1DzL7jU0FhyTg2FUCz2aLaLXP91tw@mail.gmail.com>
+Subject: Re: [GIT PULL 00/15] More EFI changes for v5.8
+To:     linux-efi <linux-efi@vger.kernel.org>,
+        Ingo Molnar <mingo@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Arvind Sankar <nivedita@alum.mit.edu>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Joe Perches <joe@perches.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 3/20/20 3:16 AM, Michael Kelley wrote:
-> From: Arnd Bergmann <arnd@arndb.de> Sent: Wednesday, March 18, 2020 2:27 AM
->>
->> On Wed, Mar 18, 2020 at 1:18 AM Michael Kelley <mikelley@microsoft.com> wrote:
->>> From: Arnd Bergmann <arnd@arndb.de>
->>>> On Sat, Mar 14, 2020 at 4:36 PM Michael Kelley <mikelley@microsoft.com> wrote:
->>>>>
->>>>> The Hyper-V frame buffer driver may be built as a module, and
->>>>> it needs access to screen_info. So export screen_info.
->>>>>
->>>>> Signed-off-by: Michael Kelley <mikelley@microsoft.com>
->>>>
->>>> Is there any chance of using a more modern KMS based driver for the screen
->>>> than the old fbdev subsystem? I had hoped to one day completely remove
->>>> support for the old CONFIG_VIDEO_FBDEV and screen_info from modern
->>>> architectures.
->>>>
->>>
->>> The current hyperv_fb.c driver is all we have today for the synthetic Hyper-V
->>> frame buffer device.  That driver builds and runs on both ARM64 and x86.
->>>
->>> I'm not knowledgeable about video/graphics drivers, but when you
->>> say "a more modern KMS based driver", are you meaning one based on
->>> DRM & KMS?  Does DRM make sense for a "dumb" frame buffer device?
->>> Are there any drivers that would be a good pattern to look at?
->>
->> It used to be a lot harder to write a DRM driver compared to an fbdev
->> driver, but this has changed to the opposite over the years.
->>
->> A fairly minimal example would be drivers/gpu/drm/pl111/pl111_drv.c
->> or anything in drivers/gpu/drm/tiny/, but you may want to look at the
->> other hypervisor platforms first, i.e drivers/gpu/drm/virtio/virtgpu_drv.c,
->> drivers/gpu/drm/vmwgfx/vmwgfx_drv.c, drivers/gpu/drm/xen/xen_drm_front.c,
->> drivers/gpu/drm/qxl/qxl_drv.c, and drivers/gpu/drm/bochs/bochs_drv.c.
->>
-> 
-> Thanks for the pointers, especially for the other hypervisors.
-> 
-Sorry if anybody in 'to' or 'cc' is receiving this reply multiple times.
-I had configured by email client incorrectly to reply.
+On Fri, 8 May 2020 at 20:02, Ard Biesheuvel <ardb@kernel.org> wrote:
+>
+> The following changes since commit 4da0b2b7e67524cc206067865666899bc02e1cb0:
+>
+>   efi/libstub: Re-enable command line initrd loading for x86 (2020-04-25 12:26:32 +0200)
+>
+> are available in the Git repository at:
+>
+>   git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git efi-next
+>
+> for you to fetch changes up to 4026229934f6ca0cb44af7b9df00e647b2f1f787:
+>
+>   efi/libstub: Correct comment typos (2020-05-06 11:27:55 +0200)
+>
+> ----------------------------------------------------------------
+> More EFI changes for v5.8:
+> - Rename pr_efi/pr_efi_err to efi_info/efi_err, and use them consistently
+> - Simplify and unify initrd loading
+> - Parse the builtin command line on x86 (if provided)
+> - Some fixes for issues introduced by the first batch of v5.8 changes
+>
+> ----------------------------------------------------------------
+> Ard Biesheuvel (2):
+>       efi/libstub/x86: Work around LLVM ELF quirk build regression
+>       efi/libstub: Make efi_printk() input argument const char*
+>
+> Arvind Sankar (12):
+>       efi/x86: Use correct size for boot_params
+>       efi/libstub: Add a helper function to split 64-bit values
+>       efi/libstub: Move pr_efi/pr_efi_err into efi namespace
+>       efi/x86: Use efi_err for error messages
+>       efi/gop: Use efi_err for error messages
+>       efi/tpm: Use efi_err for error messages
+>       efi/libstub: Upgrade ignored dtb= argument message to error
+>       efi/x86: Move command-line initrd loading to efi_main
+>       efi/libstub: Unify initrd loading across architectures
+>       efi/x86: Support builtin command line
+>       efi/libstub: Check return value of efi_parse_options
+>       efi/libstub: Fix mixed mode boot issue after macro refactor
+>
+> Joe Perches (1):
+>       efi/libstub: Correct comment typos
+>
 
-screen_info is still useful with a modern KMS-based driver.  It exposes
-the mode parameters that the GOP driver chose.  This information is
-needed to implement seamless or glitchless boot, by both ensuring that
-the scanout parameters don't change and being able to read back the
-scanout image to populate the initial contents of the new surface.
-
-This works today on arches which implement (U)EFI and export
-screen_info, including x86 and powerpc, but doesn't work on arm or
-arm64.  As arm64 systems that implement UEFI with real GOP drivers
-become more prevalent, it would be nice to be have these features there
-as well.
-
-Thanks,
-Nikhil Mahale
-
-> Michael
-> 
+Ping?
