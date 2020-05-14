@@ -2,98 +2,210 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E665D1D2AE2
-	for <lists+linux-efi@lfdr.de>; Thu, 14 May 2020 11:06:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3339C1D38A7
+	for <lists+linux-efi@lfdr.de>; Thu, 14 May 2020 19:51:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726033AbgENJGL (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 14 May 2020 05:06:11 -0400
-Received: from mail.kernel.org ([198.145.29.99]:33296 "EHLO mail.kernel.org"
+        id S1726027AbgENRvo (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 14 May 2020 13:51:44 -0400
+Received: from mga02.intel.com ([134.134.136.20]:44696 "EHLO mga02.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725970AbgENJGL (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Thu, 14 May 2020 05:06:11 -0400
-Received: from mail-il1-f181.google.com (mail-il1-f181.google.com [209.85.166.181])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 9876320675;
-        Thu, 14 May 2020 09:06:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1589447170;
-        bh=a9zKcEcwX/U5AWN8Z2tVlAOpo48QZnatONbuVLLd7nc=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=Xb6qpGNWYMht0PHK8bOzrNf0LVIqYlpL+LvVGElkxt8cw97mcLjL9iY4aFFjkHhsr
-         O0BkApmXFSVkzFBaCQJo2jwdLnrjzZ2D5I2jHmaNrDKm9+o2wd37RH+WzLPHc7U9uu
-         eYxCUsGB8QxtzaPggWrb8x9EfmOM1ScG/Y4XqUjE=
-Received: by mail-il1-f181.google.com with SMTP id b71so2542210ilg.8;
-        Thu, 14 May 2020 02:06:10 -0700 (PDT)
-X-Gm-Message-State: AOAM532aG9b9oBX1/nHT+mBfr1Z3RWezLORFQwApmeZ9SYHW857DWbVQ
-        lZGIAE29ZlaFvSqgSCyDq+OXpRoxbAf1uHprffg=
-X-Google-Smtp-Source: ABdhPJxUY8qmQknQYvjuoNLqWGW1gmT+lBVl8yewXTfNDssK2v13BAUGPfAUrwUumsFRdibTsVDcu8Yz5UAiYTp8k18=
-X-Received: by 2002:a92:a312:: with SMTP id a18mr3693540ili.80.1589447169779;
- Thu, 14 May 2020 02:06:09 -0700 (PDT)
+        id S1725965AbgENRvn (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Thu, 14 May 2020 13:51:43 -0400
+IronPort-SDR: g1WL7XOnWO4nVpc+NqqwrTyfOWCK5kL71ZL44Q7EkA8Ojy2/mvWkUCyDw8dIShqdxKcNST73oC
+ PSel8p4Rrozg==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 May 2020 10:51:43 -0700
+IronPort-SDR: LaspyfbQJ2i7Hij3GU273Odd82bcODNGHM9mEZR5ldOTfwCuW98Fa9RYKLKonRhyTFv/7n581o
+ 1zNrOHZu0xCg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.73,392,1583222400"; 
+   d="scan'208";a="266325763"
+Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
+  by orsmga006.jf.intel.com with ESMTP; 14 May 2020 10:51:41 -0700
+Received: from kbuild by lkp-server01 with local (Exim 4.89)
+        (envelope-from <lkp@intel.com>)
+        id 1jZI1F-0000Mj-2t; Fri, 15 May 2020 01:51:41 +0800
+Date:   Fri, 15 May 2020 01:50:46 +0800
+From:   kbuild test robot <lkp@intel.com>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-efi@vger.kernel.org
+Subject: [efi:urgent] BUILD SUCCESS
+ 6d18c58caf5b45ee8fb0cd90e4e109605ad7d5c4
+Message-ID: <5ebd84f6.eNc1RjPXl/o3/fCc%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-References: <20200508180157.1816-1-ardb@kernel.org>
-In-Reply-To: <20200508180157.1816-1-ardb@kernel.org>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Thu, 14 May 2020 11:05:58 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXHwj4SkoBH7Ft5Oa1DzL7jU0FhyTg2FUCz2aLaLXP91tw@mail.gmail.com>
-Message-ID: <CAMj1kXHwj4SkoBH7Ft5Oa1DzL7jU0FhyTg2FUCz2aLaLXP91tw@mail.gmail.com>
-Subject: Re: [GIT PULL 00/15] More EFI changes for v5.8
-To:     linux-efi <linux-efi@vger.kernel.org>,
-        Ingo Molnar <mingo@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Arvind Sankar <nivedita@alum.mit.edu>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Joe Perches <joe@perches.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, 8 May 2020 at 20:02, Ard Biesheuvel <ardb@kernel.org> wrote:
->
-> The following changes since commit 4da0b2b7e67524cc206067865666899bc02e1cb0:
->
->   efi/libstub: Re-enable command line initrd loading for x86 (2020-04-25 12:26:32 +0200)
->
-> are available in the Git repository at:
->
->   git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git efi-next
->
-> for you to fetch changes up to 4026229934f6ca0cb44af7b9df00e647b2f1f787:
->
->   efi/libstub: Correct comment typos (2020-05-06 11:27:55 +0200)
->
-> ----------------------------------------------------------------
-> More EFI changes for v5.8:
-> - Rename pr_efi/pr_efi_err to efi_info/efi_err, and use them consistently
-> - Simplify and unify initrd loading
-> - Parse the builtin command line on x86 (if provided)
-> - Some fixes for issues introduced by the first batch of v5.8 changes
->
-> ----------------------------------------------------------------
-> Ard Biesheuvel (2):
->       efi/libstub/x86: Work around LLVM ELF quirk build regression
->       efi/libstub: Make efi_printk() input argument const char*
->
-> Arvind Sankar (12):
->       efi/x86: Use correct size for boot_params
->       efi/libstub: Add a helper function to split 64-bit values
->       efi/libstub: Move pr_efi/pr_efi_err into efi namespace
->       efi/x86: Use efi_err for error messages
->       efi/gop: Use efi_err for error messages
->       efi/tpm: Use efi_err for error messages
->       efi/libstub: Upgrade ignored dtb= argument message to error
->       efi/x86: Move command-line initrd loading to efi_main
->       efi/libstub: Unify initrd loading across architectures
->       efi/x86: Support builtin command line
->       efi/libstub: Check return value of efi_parse_options
->       efi/libstub: Fix mixed mode boot issue after macro refactor
->
-> Joe Perches (1):
->       efi/libstub: Correct comment typos
->
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git  urgent
+branch HEAD: 6d18c58caf5b45ee8fb0cd90e4e109605ad7d5c4  tpm: check event log version before reading final events
 
-Ping?
+elapsed time: 483m
+
+configs tested: 151
+configs skipped: 10
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+arm                                 defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+arm                               allnoconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm64                            allmodconfig
+arm64                             allnoconfig
+sparc                            allyesconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                 nsimosci_hs_smp_defconfig
+mips                          malta_defconfig
+i386                                defconfig
+arm                          exynos_defconfig
+powerpc                      pmac32_defconfig
+powerpc                     mpc5200_defconfig
+arm                            qcom_defconfig
+sh                               alldefconfig
+arm                       aspeed_g5_defconfig
+arm                        vexpress_defconfig
+mips                         rt305x_defconfig
+arm                           corgi_defconfig
+m68k                       m5208evb_defconfig
+powerpc                       holly_defconfig
+arm                        oxnas_v6_defconfig
+powerpc                           allnoconfig
+sh                          sdk7780_defconfig
+riscv                            alldefconfig
+sh                             espt_defconfig
+m68k                         amcore_defconfig
+sh                          polaris_defconfig
+arc                     haps_hs_smp_defconfig
+mips                           jazz_defconfig
+ia64                              allnoconfig
+powerpc                          g5_defconfig
+arm                  colibri_pxa300_defconfig
+m68k                            q40_defconfig
+ia64                        generic_defconfig
+arm                        magician_defconfig
+arm                          imote2_defconfig
+s390                       zfcpdump_defconfig
+powerpc                       maple_defconfig
+sh                           se7722_defconfig
+sh                          r7785rp_defconfig
+h8300                            alldefconfig
+arc                          axs101_defconfig
+sh                            titan_defconfig
+s390                                defconfig
+ia64                             allmodconfig
+sh                 kfr2r09-romimage_defconfig
+c6x                        evmc6678_defconfig
+sh                            shmin_defconfig
+arm                        neponset_defconfig
+sh                         microdev_defconfig
+x86_64                              defconfig
+arm                         s3c2410_defconfig
+arm                        multi_v7_defconfig
+arm                        shmobile_defconfig
+sh                        sh7763rdp_defconfig
+arm                             ezx_defconfig
+powerpc                mpc7448_hpc2_defconfig
+mips                         cobalt_defconfig
+ia64                            zx1_defconfig
+sh                         ecovec24_defconfig
+mips                   sb1250_swarm_defconfig
+mips                      fuloong2e_defconfig
+m68k                          atari_defconfig
+m68k                          sun3x_defconfig
+mips                        jmr3927_defconfig
+arm                        cerfcube_defconfig
+ia64                         bigsur_defconfig
+sh                          rsk7264_defconfig
+m68k                        m5407c3_defconfig
+sh                ecovec24-romimage_defconfig
+riscv                    nommu_virt_defconfig
+i386                              allnoconfig
+i386                             allyesconfig
+i386                              debian-10.3
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                              allnoconfig
+m68k                           sun3_defconfig
+m68k                                defconfig
+nios2                            allyesconfig
+openrisc                            defconfig
+c6x                              allyesconfig
+c6x                               allnoconfig
+openrisc                         allyesconfig
+nds32                               defconfig
+nds32                             allnoconfig
+csky                             allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+h8300                            allmodconfig
+xtensa                              defconfig
+arc                                 defconfig
+arc                              allyesconfig
+sh                               allmodconfig
+sh                                allnoconfig
+microblaze                        allnoconfig
+mips                             allyesconfig
+mips                              allnoconfig
+mips                             allmodconfig
+parisc                            allnoconfig
+parisc                              defconfig
+parisc                           allyesconfig
+parisc                           allmodconfig
+powerpc                             defconfig
+powerpc                          allyesconfig
+powerpc                          rhel-kconfig
+powerpc                          allmodconfig
+x86_64               randconfig-a012-20200514
+x86_64               randconfig-a016-20200514
+x86_64               randconfig-a015-20200514
+x86_64               randconfig-a013-20200514
+x86_64               randconfig-a014-20200514
+x86_64               randconfig-a011-20200514
+i386                 randconfig-a012-20200514
+i386                 randconfig-a016-20200514
+i386                 randconfig-a014-20200514
+i386                 randconfig-a011-20200514
+i386                 randconfig-a013-20200514
+i386                 randconfig-a015-20200514
+riscv                            allyesconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                            allmodconfig
+s390                             allyesconfig
+s390                              allnoconfig
+s390                             allmodconfig
+sparc                               defconfig
+sparc64                             defconfig
+sparc64                           allnoconfig
+sparc64                          allyesconfig
+sparc64                          allmodconfig
+um                               allmodconfig
+um                                allnoconfig
+um                               allyesconfig
+um                                  defconfig
+x86_64                                   rhel
+x86_64                               rhel-7.6
+x86_64                    rhel-7.6-kselftests
+x86_64                         rhel-7.2-clear
+x86_64                                    lkp
+x86_64                              fedora-25
+x86_64                                  kexec
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
