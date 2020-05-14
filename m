@@ -2,210 +2,100 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3339C1D38A7
-	for <lists+linux-efi@lfdr.de>; Thu, 14 May 2020 19:51:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 127C61D3CA5
+	for <lists+linux-efi@lfdr.de>; Thu, 14 May 2020 21:16:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726027AbgENRvo (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 14 May 2020 13:51:44 -0400
-Received: from mga02.intel.com ([134.134.136.20]:44696 "EHLO mga02.intel.com"
+        id S1728662AbgENTI6 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 14 May 2020 15:08:58 -0400
+Received: from mail.kernel.org ([198.145.29.99]:51942 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725965AbgENRvn (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Thu, 14 May 2020 13:51:43 -0400
-IronPort-SDR: g1WL7XOnWO4nVpc+NqqwrTyfOWCK5kL71ZL44Q7EkA8Ojy2/mvWkUCyDw8dIShqdxKcNST73oC
- PSel8p4Rrozg==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 May 2020 10:51:43 -0700
-IronPort-SDR: LaspyfbQJ2i7Hij3GU273Odd82bcODNGHM9mEZR5ldOTfwCuW98Fa9RYKLKonRhyTFv/7n581o
- 1zNrOHZu0xCg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.73,392,1583222400"; 
-   d="scan'208";a="266325763"
-Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
-  by orsmga006.jf.intel.com with ESMTP; 14 May 2020 10:51:41 -0700
-Received: from kbuild by lkp-server01 with local (Exim 4.89)
-        (envelope-from <lkp@intel.com>)
-        id 1jZI1F-0000Mj-2t; Fri, 15 May 2020 01:51:41 +0800
-Date:   Fri, 15 May 2020 01:50:46 +0800
-From:   kbuild test robot <lkp@intel.com>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     linux-efi@vger.kernel.org
-Subject: [efi:urgent] BUILD SUCCESS
- 6d18c58caf5b45ee8fb0cd90e4e109605ad7d5c4
-Message-ID: <5ebd84f6.eNc1RjPXl/o3/fCc%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S1728547AbgENSxC (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Thu, 14 May 2020 14:53:02 -0400
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id E52BA206A5;
+        Thu, 14 May 2020 18:53:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1589482382;
+        bh=fgwqYlmvbIZhbZ+Axt+VfYBsWO6kKrxtHD5E8q5cdxI=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=f8Yrzbzlek2UMNCKMLplTFh581qWaX2/DdHsl7cQwi3Nvw2tF4+rHx9HSLi4v4aF4
+         VqdLedzKpfaPiD3P6YjxL+EB/yPIiv7qObu+VXiNyKl4S+3puZs+buYufL8s1ez8Sh
+         f54X65Sm59xr3Y/F/6UQRVdxAbPz+k/xMg1USFio=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Sasha Levin <sashal@kernel.org>, linux-efi@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.6 59/62] gcc-10: mark more functions __init to avoid section mismatch warnings
+Date:   Thu, 14 May 2020 14:51:44 -0400
+Message-Id: <20200514185147.19716-59-sashal@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20200514185147.19716-1-sashal@kernel.org>
+References: <20200514185147.19716-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git  urgent
-branch HEAD: 6d18c58caf5b45ee8fb0cd90e4e109605ad7d5c4  tpm: check event log version before reading final events
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-elapsed time: 483m
+[ Upstream commit e99332e7b4cda6e60f5b5916cf9943a79dbef902 ]
 
-configs tested: 151
-configs skipped: 10
+It seems that for whatever reason, gcc-10 ends up not inlining a couple
+of functions that used to be inlined before.  Even if they only have one
+single callsite - it looks like gcc may have decided that the code was
+unlikely, and not worth inlining.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+The code generation difference is harmless, but caused a few new section
+mismatch errors, since the (now no longer inlined) function wasn't in
+the __init section, but called other init functions:
 
-arm                                 defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-arm                               allnoconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm64                            allmodconfig
-arm64                             allnoconfig
-sparc                            allyesconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                 nsimosci_hs_smp_defconfig
-mips                          malta_defconfig
-i386                                defconfig
-arm                          exynos_defconfig
-powerpc                      pmac32_defconfig
-powerpc                     mpc5200_defconfig
-arm                            qcom_defconfig
-sh                               alldefconfig
-arm                       aspeed_g5_defconfig
-arm                        vexpress_defconfig
-mips                         rt305x_defconfig
-arm                           corgi_defconfig
-m68k                       m5208evb_defconfig
-powerpc                       holly_defconfig
-arm                        oxnas_v6_defconfig
-powerpc                           allnoconfig
-sh                          sdk7780_defconfig
-riscv                            alldefconfig
-sh                             espt_defconfig
-m68k                         amcore_defconfig
-sh                          polaris_defconfig
-arc                     haps_hs_smp_defconfig
-mips                           jazz_defconfig
-ia64                              allnoconfig
-powerpc                          g5_defconfig
-arm                  colibri_pxa300_defconfig
-m68k                            q40_defconfig
-ia64                        generic_defconfig
-arm                        magician_defconfig
-arm                          imote2_defconfig
-s390                       zfcpdump_defconfig
-powerpc                       maple_defconfig
-sh                           se7722_defconfig
-sh                          r7785rp_defconfig
-h8300                            alldefconfig
-arc                          axs101_defconfig
-sh                            titan_defconfig
-s390                                defconfig
-ia64                             allmodconfig
-sh                 kfr2r09-romimage_defconfig
-c6x                        evmc6678_defconfig
-sh                            shmin_defconfig
-arm                        neponset_defconfig
-sh                         microdev_defconfig
-x86_64                              defconfig
-arm                         s3c2410_defconfig
-arm                        multi_v7_defconfig
-arm                        shmobile_defconfig
-sh                        sh7763rdp_defconfig
-arm                             ezx_defconfig
-powerpc                mpc7448_hpc2_defconfig
-mips                         cobalt_defconfig
-ia64                            zx1_defconfig
-sh                         ecovec24_defconfig
-mips                   sb1250_swarm_defconfig
-mips                      fuloong2e_defconfig
-m68k                          atari_defconfig
-m68k                          sun3x_defconfig
-mips                        jmr3927_defconfig
-arm                        cerfcube_defconfig
-ia64                         bigsur_defconfig
-sh                          rsk7264_defconfig
-m68k                        m5407c3_defconfig
-sh                ecovec24-romimage_defconfig
-riscv                    nommu_virt_defconfig
-i386                              allnoconfig
-i386                             allyesconfig
-i386                              debian-10.3
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                              allnoconfig
-m68k                           sun3_defconfig
-m68k                                defconfig
-nios2                            allyesconfig
-openrisc                            defconfig
-c6x                              allyesconfig
-c6x                               allnoconfig
-openrisc                         allyesconfig
-nds32                               defconfig
-nds32                             allnoconfig
-csky                             allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-h8300                            allmodconfig
-xtensa                              defconfig
-arc                                 defconfig
-arc                              allyesconfig
-sh                               allmodconfig
-sh                                allnoconfig
-microblaze                        allnoconfig
-mips                             allyesconfig
-mips                              allnoconfig
-mips                             allmodconfig
-parisc                            allnoconfig
-parisc                              defconfig
-parisc                           allyesconfig
-parisc                           allmodconfig
-powerpc                             defconfig
-powerpc                          allyesconfig
-powerpc                          rhel-kconfig
-powerpc                          allmodconfig
-x86_64               randconfig-a012-20200514
-x86_64               randconfig-a016-20200514
-x86_64               randconfig-a015-20200514
-x86_64               randconfig-a013-20200514
-x86_64               randconfig-a014-20200514
-x86_64               randconfig-a011-20200514
-i386                 randconfig-a012-20200514
-i386                 randconfig-a016-20200514
-i386                 randconfig-a014-20200514
-i386                 randconfig-a011-20200514
-i386                 randconfig-a013-20200514
-i386                 randconfig-a015-20200514
-riscv                            allyesconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                            allmodconfig
-s390                             allyesconfig
-s390                              allnoconfig
-s390                             allmodconfig
-sparc                               defconfig
-sparc64                             defconfig
-sparc64                           allnoconfig
-sparc64                          allyesconfig
-sparc64                          allmodconfig
-um                               allmodconfig
-um                                allnoconfig
-um                               allyesconfig
-um                                  defconfig
-x86_64                                   rhel
-x86_64                               rhel-7.6
-x86_64                    rhel-7.6-kselftests
-x86_64                         rhel-7.2-clear
-x86_64                                    lkp
-x86_64                              fedora-25
-x86_64                                  kexec
+   Section mismatch in reference from the function kexec_free_initrd() to the function .init.text:free_initrd_mem()
+   Section mismatch in reference from the function tpm2_calc_event_log_size() to the function .init.text:early_memremap()
+   Section mismatch in reference from the function tpm2_calc_event_log_size() to the function .init.text:early_memunmap()
 
+So add the appropriate __init annotation to make modpost not complain.
+In both cases there were trivially just a single callsite from another
+__init function.
+
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+ drivers/firmware/efi/tpm.c | 2 +-
+ init/initramfs.c           | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/firmware/efi/tpm.c b/drivers/firmware/efi/tpm.c
+index 31f9f0e369b97..55b031d2c9890 100644
+--- a/drivers/firmware/efi/tpm.c
++++ b/drivers/firmware/efi/tpm.c
+@@ -16,7 +16,7 @@
+ int efi_tpm_final_log_size;
+ EXPORT_SYMBOL(efi_tpm_final_log_size);
+ 
+-static int tpm2_calc_event_log_size(void *data, int count, void *size_info)
++static int __init tpm2_calc_event_log_size(void *data, int count, void *size_info)
+ {
+ 	struct tcg_pcr_event2_head *header;
+ 	int event_size, size = 0;
+diff --git a/init/initramfs.c b/init/initramfs.c
+index 8ec1be4d7d512..7a38012e1af74 100644
+--- a/init/initramfs.c
++++ b/init/initramfs.c
+@@ -542,7 +542,7 @@ void __weak free_initrd_mem(unsigned long start, unsigned long end)
+ }
+ 
+ #ifdef CONFIG_KEXEC_CORE
+-static bool kexec_free_initrd(void)
++static bool __init kexec_free_initrd(void)
+ {
+ 	unsigned long crashk_start = (unsigned long)__va(crashk_res.start);
+ 	unsigned long crashk_end   = (unsigned long)__va(crashk_res.end);
+-- 
+2.20.1
+
