@@ -2,51 +2,51 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 66D431D6242
-	for <lists+linux-efi@lfdr.de>; Sat, 16 May 2020 17:37:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 362211D6246
+	for <lists+linux-efi@lfdr.de>; Sat, 16 May 2020 17:38:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727893AbgEPPhm (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        id S1727882AbgEPPhm (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
         Sat, 16 May 2020 11:37:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45256 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45260 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727822AbgEPPh0 (ORCPT
+        with ESMTP id S1727823AbgEPPh0 (ORCPT
         <rfc822;linux-efi@vger.kernel.org>); Sat, 16 May 2020 11:37:26 -0400
-Received: from mail-lf1-x143.google.com (mail-lf1-x143.google.com [IPv6:2a00:1450:4864:20::143])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E757DC05BD0A;
-        Sat, 16 May 2020 08:37:24 -0700 (PDT)
-Received: by mail-lf1-x143.google.com with SMTP id a4so4301943lfh.12;
-        Sat, 16 May 2020 08:37:24 -0700 (PDT)
+Received: from mail-lj1-x241.google.com (mail-lj1-x241.google.com [IPv6:2a00:1450:4864:20::241])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 464AEC05BD0B;
+        Sat, 16 May 2020 08:37:26 -0700 (PDT)
+Received: by mail-lj1-x241.google.com with SMTP id a21so5336509ljj.11;
+        Sat, 16 May 2020 08:37:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=9z0zvsiemKV3eDUGGe0WiR3Rjy6UyeJ7KNmNJhD4f2g=;
-        b=T2tDKW8KzQhm9/Yl2w2W/qMLvHBTdf1NdBiFq7qHXTJL5jxH+gyhbzgv5VrAhAIe4E
-         MrfmE+zW+JIyFsMdL2Lg7F2uySeJZ1vrQqCyLqIJiGSaNQHFPZZOkBncKVc64TC8msQT
-         jG7XmpNEiWcQXHhXIYS1jrvmwsdMX7PEN7u/4HNoqikrvtmtsKnK/B5Jq0gvNu8GEoD+
-         TfTnSpJzDAARExHV71AGH2W3Eq6T44CBloOABs7cDqqsSBgzzSixdrpmLor623+mBpcI
-         KI469HuebuaAaf7bIbI4E+M7Mv4jx5E863ejvxiFTnKIyOpf5/7lZ3mhDw2AmBnKUXRI
-         /nNA==
+        bh=VCfDgD0BOTw7K9rKkuVs5dDCTL68za+UymQx9p6OCAo=;
+        b=Tu95+p9LzkryZ16vSFZZQPj7/Fw+f6F4Qd52s6KxDrpoMlLM6glOlN/7FxCAdHIxgm
+         vSbowE8l/GmXrqZgkQ9FoNdCoCcXSr6WwbgF85fOMhy502POhoZcHbGULKcxZC7sLx+P
+         mF3xhaiD8ijbJVKjyhetN1hE3spflbHWTDgdr+WUvzISCsCl2y3gO036TN3A+R4l25WD
+         yN8kZHV5l7j1gtfJr/T9pqqsu7UB+OMCffo9W5wo/26Do1RLJjsWH4HxijkvhYsRlxAO
+         DQnxGCqvldqp3xRObAOuL80oefJfL6Hy+qF/K7RO8bz8FeRyAcSxzJsav1oBjLMxQYw6
+         VNLA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=9z0zvsiemKV3eDUGGe0WiR3Rjy6UyeJ7KNmNJhD4f2g=;
-        b=uMhJ2NuCFjaUqmAy1nOwDZx8ac32rNdhdvQmnOpwuCZwjuIkbFwCeRti2H1XKyHCT0
-         mS83Cbg53hI2moYKX1F2wwOBQbdVaO0dHi7BVil2vUEMnLQEWrKJHbvltIV//zB7+Nso
-         9TyDcE/iJe/QdVEPzLc69mgbSUJbE5nA8oVymU2u/jS9R0mafAsvboMS3TG+JWrwDI2+
-         mINBg2X9NRzKyMKLuyYXJdafBnXWege+VLcvs6bS4E8vaUP4+fE7aBSw4QTJxP+AK2XQ
-         O3C7cAe+IjRr2gIal/bHveYuubgC6vxVD40jx/mqhy3VL33XGsWgEYkElYb9mOOR67iw
-         4vzw==
-X-Gm-Message-State: AOAM532K+nLw46CJAufpHWH6eVqPxCHyf62lO2nBoNplNJ52jb6WO5MK
-        O0BMm8kZ/KoDJ15dyJ8JZTQ=
-X-Google-Smtp-Source: ABdhPJz8ZupxdxfcFg9ynTJ/j6AGwHzFUgWXUMM4giHIPmqk83hbupcd/oDqQJur7bp9gz+biC34vw==
-X-Received: by 2002:a05:6512:10cd:: with SMTP id k13mr6041250lfg.153.1589643443423;
-        Sat, 16 May 2020 08:37:23 -0700 (PDT)
+        bh=VCfDgD0BOTw7K9rKkuVs5dDCTL68za+UymQx9p6OCAo=;
+        b=un31ORivh+G4dUM4AxtVAIzISF765TxBUKxghU/sL+QWbf+0QaB/Y7hvXfRC9O9xMh
+         qnBXI5k8X1vXZk91ByfU5iIwuyCUP5MlH0WhboquzKeBKnHWOg7wdJ9zqvuJxoniu+Dq
+         aODQVmRPge0I3xplEcroSFcNur96nysiVo3TC5nq2hGxuxU4xmtAGCVz3B5/xm2oUNmA
+         S0MAhg7AzC9ONPDE0JQy1wQY0a+uibGeE5fp68aFEQgVWPCTuareZYqo8ff0mkyW2OEk
+         37kDaUX0PVMIppEdFUsZv3InhInU+gOVoubCV75s9TtiFTo/xQyt70iYrF9iFnftkIgc
+         fT0Q==
+X-Gm-Message-State: AOAM532ebaP/1Fp3S1DWHFyJrkxS8Jns3zsToNl3/mgWfc+loVjG9oLd
+        NDMuEmZslGzMSS9BIs/kqWw=
+X-Google-Smtp-Source: ABdhPJyjz6TSw1+Q50zR2PhQEFqRV9q4+gSgAVTNYqnkDFl5nbJo2ngLzGQ96G1iDJ8aI7KbZ9oO7w==
+X-Received: by 2002:a2e:3a10:: with SMTP id h16mr4897156lja.49.1589643444763;
+        Sat, 16 May 2020 08:37:24 -0700 (PDT)
 Received: from localhost.localdomain (ppp91-78-208-152.pppoe.mtu-net.ru. [91.78.208.152])
-        by smtp.gmail.com with ESMTPSA id a12sm2845356ljj.64.2020.05.16.08.37.22
+        by smtp.gmail.com with ESMTPSA id a12sm2845356ljj.64.2020.05.16.08.37.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 16 May 2020 08:37:22 -0700 (PDT)
+        Sat, 16 May 2020 08:37:24 -0700 (PDT)
 From:   Dmitry Osipenko <digetx@gmail.com>
 To:     Jens Axboe <axboe@kernel.dk>,
         Thierry Reding <thierry.reding@gmail.com>,
@@ -70,150 +70,203 @@ Cc:     linux-tegra@vger.kernel.org, linux-block@vger.kernel.org,
         linux-kernel@vger.kernel.org, Steve McIntyre <steve@einval.com>,
         Randy Dunlap <rdunlap@infradead.org>,
         linux-efi <linux-efi@vger.kernel.org>
-Subject: [PATCH v5 5/6] partitions/tegra: Support enforced GPT scanning
-Date:   Sat, 16 May 2020 18:36:43 +0300
-Message-Id: <20200516153644.13748-6-digetx@gmail.com>
+Subject: [PATCH v5 6/6] soc/tegra: Expose Boot Configuration Table via sysfs
+Date:   Sat, 16 May 2020 18:36:44 +0300
+Message-Id: <20200516153644.13748-7-digetx@gmail.com>
 X-Mailer: git-send-email 2.26.0
 In-Reply-To: <20200516153644.13748-1-digetx@gmail.com>
 References: <20200516153644.13748-1-digetx@gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Downstream NVIDIA bootloader provides gpt_sector=<sector> kernel command
-line option to the kernel. This option should instruct the GPT partition
-parser to look at the specified sector for a valid GPT header if the GPT
-is not found at the beginning or the end of a block device. Support of
-this feature is needed by Tegra-based devices that have TegraPT and GPT
-placed in inaccessible by kernel locations.  The GPT entry duplicates
-TegraPT partitions.
+It's quite useful to have unencrypted BCT exposed to userspace for
+debugging purposes, so let's expose it via sysfs.  The BCT data will be
+present in '/sys/tegra/boot_config_table' binary file if BCT is available.
 
-Secondly, some Tegra-based devices have bootloader that enforces the GPT
-scanning of the backup/alternative GPT entry by providing "gpt" cmdline
-option to the kernel, but doesn't provide the "gpt_sector" option.
-In this case GPT entry resides at a special offset from the end of eMMC
-storage.  It is a common situation for older bootloader versions.
-
-The offset is calculated as a total number of eMMC sectors minus number of
-eMMC boot sectors minus 1.  This equation is explicitly defined and used
-by the downstream Tegra kernels for locating GPT entry.
-
+Suggested-by: Michał Mirosław <mirq-linux@rere.qmqm.pl>
 Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
 ---
- block/partitions/check.h |  1 +
- block/partitions/core.c  |  1 +
- block/partitions/efi.c   |  6 +++++
- block/partitions/tegra.c | 57 ++++++++++++++++++++++++++++++++++++++++
- 4 files changed, 65 insertions(+)
+ arch/arm/mach-tegra/tegra.c  |  4 +++
+ drivers/soc/tegra/Makefile   |  1 +
+ drivers/soc/tegra/bootdata.c | 51 ++++++++++++++++++++++++++++++++++++
+ drivers/soc/tegra/common.c   | 17 ++++++++++++
+ include/soc/tegra/bootdata.h |  2 ++
+ include/soc/tegra/common.h   |  3 +++
+ 6 files changed, 78 insertions(+)
+ create mode 100644 drivers/soc/tegra/bootdata.c
 
-diff --git a/block/partitions/check.h b/block/partitions/check.h
-index 55acf6340e5b..1ce445d1c7f0 100644
---- a/block/partitions/check.h
-+++ b/block/partitions/check.h
-@@ -68,5 +68,6 @@ int osf_partition(struct parsed_partitions *state);
- int sgi_partition(struct parsed_partitions *state);
- int sun_partition(struct parsed_partitions *state);
- int sysv68_partition(struct parsed_partitions *state);
-+int tegra_partition_forced_gpt(struct parsed_partitions *state);
- int tegra_partition(struct parsed_partitions *state);
- int ultrix_partition(struct parsed_partitions *state);
-diff --git a/block/partitions/core.c b/block/partitions/core.c
-index 0b4720372f07..1931647d9742 100644
---- a/block/partitions/core.c
-+++ b/block/partitions/core.c
-@@ -83,6 +83,7 @@ static int (*check_part[])(struct parsed_partitions *) = {
- 	sysv68_partition,
- #endif
- #ifdef CONFIG_TEGRA_PARTITION
-+	tegra_partition_forced_gpt,
- 	tegra_partition,
- #endif
- 	NULL
-diff --git a/block/partitions/efi.c b/block/partitions/efi.c
-index 3af4660bc11f..4eb4496fbb1b 100644
---- a/block/partitions/efi.c
-+++ b/block/partitions/efi.c
-@@ -98,6 +98,12 @@ static int force_gpt;
- static int __init
- force_gpt_fn(char *str)
- {
-+	/* This check allows to parse "gpt gpt_sector=" properly since
-+	 * "gpt" overlaps with "gpt_sector", see tegra_gpt_sector_fn().
-+	 */
-+	if (force_gpt)
-+		return 0;
-+
- 	force_gpt = 1;
- 	return 1;
- }
-diff --git a/block/partitions/tegra.c b/block/partitions/tegra.c
-index d3a00ade145a..831dedb9a11c 100644
---- a/block/partitions/tegra.c
-+++ b/block/partitions/tegra.c
-@@ -565,3 +565,60 @@ int tegra_partition(struct parsed_partitions *state)
+diff --git a/arch/arm/mach-tegra/tegra.c b/arch/arm/mach-tegra/tegra.c
+index da6bcd85398b..5f40463f1b97 100644
+--- a/arch/arm/mach-tegra/tegra.c
++++ b/arch/arm/mach-tegra/tegra.c
+@@ -72,6 +72,7 @@ static void __init tegra_boot_config_table_init(void)
+ 	u32 iram_end   = TEGRA_IRAM_BASE + TEGRA_IRAM_SIZE;
+ 	u32 iram_start = TEGRA_IRAM_BASE;
+ 	u32 pt_addr, pt_size, bct_size;
++	void __iomem *bct_ptr;
  
- 	return ret;
+ 	t20_bit = IO_ADDRESS(TEGRA_IRAM_BASE);
+ 
+@@ -90,6 +91,7 @@ static void __init tegra_boot_config_table_init(void)
+ 
+ 		pt_addr = t20_bct->partition_table_logical_sector_address;
+ 		pt_size = t20_bct->partition_table_num_logical_sectors;
++		bct_ptr = t20_bct;
+ 
+ 	} else if (of_machine_is_compatible("nvidia,tegra30")) {
+ 		bct_size = sizeof(*t30_bct);
+@@ -106,12 +108,14 @@ static void __init tegra_boot_config_table_init(void)
+ 
+ 		pt_addr = t30_bct->partition_table_logical_sector_address;
+ 		pt_size = t30_bct->partition_table_num_logical_sectors;
++		bct_ptr = t30_bct;
+ 	} else {
+ 		return;
+ 	}
+ 
+ 	pr_info("%s: BCT found in IRAM\n", __func__);
+ 
++	tegra_bootdata_bct_setup(bct_ptr, bct_size);
+ 	tegra_partition_table_setup(pt_addr, pt_size);
  }
+ 
+diff --git a/drivers/soc/tegra/Makefile b/drivers/soc/tegra/Makefile
+index 9c809c1814bd..8be2bfb4d95d 100644
+--- a/drivers/soc/tegra/Makefile
++++ b/drivers/soc/tegra/Makefile
+@@ -1,6 +1,7 @@
+ # SPDX-License-Identifier: GPL-2.0
+ obj-y += fuse/
+ 
++obj-y += bootdata.o
+ obj-y += common.o
+ obj-$(CONFIG_SOC_TEGRA_FLOWCTRL) += flowctrl.o
+ obj-$(CONFIG_SOC_TEGRA_PMC) += pmc.o
+diff --git a/drivers/soc/tegra/bootdata.c b/drivers/soc/tegra/bootdata.c
+new file mode 100644
+index 000000000000..e18a27b74023
+--- /dev/null
++++ b/drivers/soc/tegra/bootdata.c
+@@ -0,0 +1,51 @@
++// SPDX-License-Identifier: GPL-2.0
++
++#include <linux/init.h>
++#include <linux/io.h>
++#include <linux/sizes.h>
++#include <linux/slab.h>
++#include <linux/sysfs.h>
++#include <linux/types.h>
++
++#include <soc/tegra/bootdata.h>
++#include <soc/tegra/common.h>
 +
 +/*
-+ * This allows a kernel command line option 'gpt_sector=<sector>' to
-+ * enable GPT header lookup at a non-standard location. This option
-+ * is provided to kernel by NVIDIA's proprietary bootloader.
++ * spare_bct[] will be released once kernel is booted, hence not wasting
++ * kernel space if BCT is missing. The tegra_bct can't be allocated during
++ * of BCT setting up because it's too early for the slab allocator.
 + */
-+static sector_t tegra_gpt_sector;
-+static int __init tegra_gpt_sector_fn(char *str)
++static u8 spare_bct[SZ_8K] __initdata;
++static u8 *tegra_bct;
++
++static ssize_t boot_config_table_read(struct file *filp,
++				      struct kobject *kobj,
++				      struct bin_attribute *bin_attr,
++				      char *buf, loff_t off, size_t count)
 +{
-+	WARN_ON(kstrtoull(str, 10, &tegra_gpt_sector) < 0);
-+	return 1;
++	memcpy(buf, tegra_bct + off, count);
++	return count;
 +}
-+__setup("gpt_sector=", tegra_gpt_sector_fn);
++static BIN_ATTR_RO(boot_config_table, 0);
 +
-+int tegra_partition_forced_gpt(struct parsed_partitions *state)
++static int __init tegra_bootdata_bct_sysfs_init(void)
 +{
-+	int ret = 0;
-+
-+#ifdef CONFIG_EFI_PARTITION
-+	struct tegra_partition_table_parser ptp = {};
-+
-+	if (!soc_is_tegra() || !tegra_boot_sdmmc)
++	if (!bin_attr_boot_config_table.size)
 +		return 0;
 +
-+	ptp.state = state;
++	tegra_bct = kmalloc(GFP_KERNEL, bin_attr_boot_config_table.size);
++	if (!tegra_bct)
++		return -ENOMEM;
 +
-+	ptp.boot_offset = tegra_partition_table_emmc_boot_offset(&ptp);
-+	if (ptp.boot_offset < 0)
++	memcpy(tegra_bct, spare_bct, bin_attr_boot_config_table.size);
++
++	return sysfs_create_bin_file(tegra_soc_kobj,
++				     &bin_attr_boot_config_table);
++}
++late_initcall(tegra_bootdata_bct_sysfs_init)
++
++void __init tegra_bootdata_bct_setup(void __iomem *bct_ptr, size_t bct_size)
++{
++	memcpy_fromio(spare_bct, bct_ptr, bct_size);
++	bin_attr_boot_config_table.size = bct_size;
++}
+diff --git a/drivers/soc/tegra/common.c b/drivers/soc/tegra/common.c
+index 3dc54f59cafe..2b4b49eacb2e 100644
+--- a/drivers/soc/tegra/common.c
++++ b/drivers/soc/tegra/common.c
+@@ -3,10 +3,15 @@
+  * Copyright (C) 2014 NVIDIA CORPORATION.  All rights reserved.
+  */
+ 
++#include <linux/init.h>
++#include <linux/kernel.h>
+ #include <linux/of.h>
++#include <linux/sysfs.h>
+ 
+ #include <soc/tegra/common.h>
+ 
++struct kobject *tegra_soc_kobj;
++
+ static const struct of_device_id tegra_machine_match[] = {
+ 	{ .compatible = "nvidia,tegra20", },
+ 	{ .compatible = "nvidia,tegra30", },
+@@ -31,3 +36,15 @@ bool soc_is_tegra(void)
+ 
+ 	return match != NULL;
+ }
++
++static int __init tegra_soc_sysfs_init(void)
++{
++	if (!soc_is_tegra())
 +		return 0;
 +
-+	/*
-+	 * Some Tegra devices do not use gpt_sector=<sector> kernel command
-+	 * line option. In this case these devices usually have a GPT entry
-+	 * at the end of the block device and the GPT entry address is
-+	 * calculated this way for eMMC:
-+	 *
-+	 * gpt_sector = ext_csd.sectors_num - ext_csd.boot_sectors_num - 1
-+	 *
-+	 * This algorithm is defined and used by NVIDIA in the downstream
-+	 * kernel of those devices.
-+	 *
-+	 * Please note that bootloader supplies the "gpt" cmdline option
-+	 * which enforces the GPT scanning, meaning that the scanning will
-+	 * be a NO-OP on devices that do not use GPT.
-+	 */
-+	if (tegra_gpt_sector) {
-+		state->force_gpt_sector = tegra_gpt_sector;
-+	} else {
-+		state->force_gpt_sector  = get_capacity(state->bdev->bd_disk);
-+		state->force_gpt_sector -= ptp.boot_offset + 1;
-+	}
++	tegra_soc_kobj = kobject_create_and_add("tegra", NULL);
++	WARN_ON(!tegra_soc_kobj);
 +
-+	ret = efi_partition(state);
-+	state->force_gpt_sector = 0;
-+#endif
-+	return ret;
++	return 0;
 +}
++arch_initcall(tegra_soc_sysfs_init)
+diff --git a/include/soc/tegra/bootdata.h b/include/soc/tegra/bootdata.h
+index 7be207cb2519..d5c7a251517d 100644
+--- a/include/soc/tegra/bootdata.h
++++ b/include/soc/tegra/bootdata.h
+@@ -43,4 +43,6 @@ struct tegra30_boot_config_table {
+ 	u32 unused_data[3];
+ } __packed;
+ 
++void tegra_bootdata_bct_setup(void __iomem *bct_ptr, size_t bct_size);
++
+ #endif /* __SOC_TEGRA_BOOTDATA_H__ */
+diff --git a/include/soc/tegra/common.h b/include/soc/tegra/common.h
+index 744280ecab5f..0bc11b45c98e 100644
+--- a/include/soc/tegra/common.h
++++ b/include/soc/tegra/common.h
+@@ -7,8 +7,11 @@
+ #define __SOC_TEGRA_COMMON_H__
+ 
+ #include <linux/types.h>
++#include <linux/sysfs.h>
+ 
+ #ifdef CONFIG_ARCH_TEGRA
++extern struct kobject *tegra_soc_kobj;
++
+ bool soc_is_tegra(void);
+ #else
+ static inline bool soc_is_tegra(void)
 -- 
 2.26.0
 
