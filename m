@@ -2,51 +2,51 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A6DBE1D6527
-	for <lists+linux-efi@lfdr.de>; Sun, 17 May 2020 04:13:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D3591D654D
+	for <lists+linux-efi@lfdr.de>; Sun, 17 May 2020 04:14:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726657AbgEQCNW (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sat, 16 May 2020 22:13:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59060 "EHLO
+        id S1727117AbgEQCNv (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 16 May 2020 22:13:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59068 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726004AbgEQCNW (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sat, 16 May 2020 22:13:22 -0400
-Received: from mail-lf1-x141.google.com (mail-lf1-x141.google.com [IPv6:2a00:1450:4864:20::141])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95463C05BD09;
-        Sat, 16 May 2020 19:13:21 -0700 (PDT)
-Received: by mail-lf1-x141.google.com with SMTP id c12so1535284lfc.10;
-        Sat, 16 May 2020 19:13:21 -0700 (PDT)
+        with ESMTP id S1726967AbgEQCNX (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sat, 16 May 2020 22:13:23 -0400
+Received: from mail-lj1-x243.google.com (mail-lj1-x243.google.com [IPv6:2a00:1450:4864:20::243])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF134C061A0C;
+        Sat, 16 May 2020 19:13:22 -0700 (PDT)
+Received: by mail-lj1-x243.google.com with SMTP id u6so6175203ljl.6;
+        Sat, 16 May 2020 19:13:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=hY+h+hQNft22sbR2GRHdulgy1g8os6lzLdmN2sCZ1lE=;
-        b=GPP3hSlo2wSqNyGaaNBBg/CYUQSC947sEWJo/EBTwgMA026FZUzYgtVzSp2ARC96Jr
-         BFpGSQj6LJP6JWmX9r0Vqg5IFui8pixqCgFa+kdcvLVX5RjRGnjMKzaULQf8GgXoOBE+
-         tTFUweVwUIL66wqPgTTrr5BrEnM7z3cNuoajF+HZZrDtoda3qOzwbxsnogoW4jUgR1GI
-         9lK33cRMOL0vePFs+VxvgIsnkvixTAqWrybucs1hFIK+I27ucvUO4xU1aqZMjDGNvYxe
-         LP7SJ9GpjD/LyBSINDeOeMJtDZOl30QazCK0wxUdHmMxjhyt+tU3xnYlystt1lMIgIRK
-         F3MA==
+        bh=xOq5yyY/u+0O8ZudKc0fLqZJ0PgNfXdMDM0w1gmW1jw=;
+        b=NdW+KTGePpb1F/7NPdBU6M0SLKqzKRvW1r5p/XS9cQwbJijB6jHoDQjYNRZXoveSEx
+         nX/L+YW5IMStWAijgpYsgBPI/oJBa9U/va0hjIUfBv7o+9YGMn2OFGKfMqMs6elL9gh+
+         oOeS0CZSAz8pBx3gg2VsGD53qnyd5G4bBVbNgj68JcvVSZQ19jCkUOqiXRXbEpA3IiBQ
+         JUMREOgMhkbyORHkbtFEaDk31oNVzyPrswIIjuQpnVzRGFcGT6+JnN/nUMW6+FNvOF/l
+         95rqW4TY55jJv0gOsJ2AGSgZSKY92ki6PrMz6ekt6myyJmZMHcl6jqndzZByRGaFnLvr
+         tbxA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=hY+h+hQNft22sbR2GRHdulgy1g8os6lzLdmN2sCZ1lE=;
-        b=OsC2w+5I72iPPYxkODBThKXZocqeQsZMnd1GKLV20UuI5I6Nde+qOmoap6acjxzo3O
-         1wQARU+YxwDe8a2laaPdaLglZlEke/4weJstx/+fdpdRSldhrrC2eR+yCPOy/WyZ1qQL
-         4761HYxNs3Ys5LN67P/kEkcosuE6joFv1oMHNcLNbBqfwrTXZb2X9Qe5hg+51wrmrkOe
-         zgTa58S2B5x/pCyI4ggIBQTMocB4jC13NXV+U7xwJRC3Ux9boCcWBs7UJ32nwailwpQf
-         9FZnkPc5t92bFWdbQBzi/Dxu3DWiz6jChQdWmcx+i3CtZ9I15V9zuyZOaR+r1UZKeHuV
-         IeoA==
-X-Gm-Message-State: AOAM533irX4Oqcc3iyeycjFltQ615zbiqJDfWkoArKpcfKu/rX/8tNGY
-        dYB8a0utywyiSSDM8udJJEQ=
-X-Google-Smtp-Source: ABdhPJzWLG4SrgwuLfMGrs1OkODqENpWxx7JLW4U+iqms6vvO/Le8pvVJpm+CkAYvRzKRl4BJhmqNA==
-X-Received: by 2002:ac2:48b2:: with SMTP id u18mr6825402lfg.122.1589681600108;
-        Sat, 16 May 2020 19:13:20 -0700 (PDT)
+        bh=xOq5yyY/u+0O8ZudKc0fLqZJ0PgNfXdMDM0w1gmW1jw=;
+        b=L8Rd9CdrvkseIE7wRyyOJP79mty9wgHU1E+VZYhVP+eABunTQJqTA3aXKBTCmCJapi
+         W6NKN3M7Ry09X8Q6BOQTa0lv5bg/AAnwW+YYInHXqqEm/pcCEPiJmEY7N7HLGNtsWR47
+         z/7Ey+dRXSCgVj8p5wJLqoB2Ri7dFRmleSQftZlHZgpz+FO1Ej4BuciiuvSoQZZRx4OZ
+         t836chwyJgSO6gNnSVykCjm52k4Dh6Q1pBcMtV97ViXycEK2MeqOp5Hwes8qSvhJ8fyw
+         LX0py7jQzF5u1XbvqHv99iLECRQhOU+8EDHnnpL7W++LJWa8Pb1AIGWCSXt0D03pCP44
+         hq8w==
+X-Gm-Message-State: AOAM533lW1IVexX2NjN1yqFTu+joNBnJnQUikQx+6BPr7KG7YojIutqj
+        50QxAa/6zcFMf0/QCwB2F6U=
+X-Google-Smtp-Source: ABdhPJwNTnCRnGEzwWDtys0C350gFVYZafJyGxx10kmH9E/ezrlftQ5uNzOWVv7fIQIj/73s/2utSg==
+X-Received: by 2002:a2e:700a:: with SMTP id l10mr6079423ljc.88.1589681601391;
+        Sat, 16 May 2020 19:13:21 -0700 (PDT)
 Received: from localhost.localdomain (ppp91-78-208-152.pppoe.mtu-net.ru. [91.78.208.152])
-        by smtp.gmail.com with ESMTPSA id z5sm3463149lji.30.2020.05.16.19.13.18
+        by smtp.gmail.com with ESMTPSA id z5sm3463149lji.30.2020.05.16.19.13.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 16 May 2020 19:13:19 -0700 (PDT)
+        Sat, 16 May 2020 19:13:20 -0700 (PDT)
 From:   Dmitry Osipenko <digetx@gmail.com>
 To:     Jens Axboe <axboe@kernel.dk>,
         Thierry Reding <thierry.reding@gmail.com>,
@@ -70,9 +70,9 @@ Cc:     linux-tegra@vger.kernel.org, linux-block@vger.kernel.org,
         Ryan Grachek <ryan@edited.us>, linux-mmc@vger.kernel.org,
         linux-kernel@vger.kernel.org, Steve McIntyre <steve@einval.com>,
         linux-efi <linux-efi@vger.kernel.org>
-Subject: [PATCH v6 1/7] mmc: core: Add raw_boot_mult field to mmc_ext_csd
-Date:   Sun, 17 May 2020 05:12:19 +0300
-Message-Id: <20200517021225.22890-2-digetx@gmail.com>
+Subject: [PATCH v6 2/7] mmc: block: Add mmc_bdev_to_card() helper
+Date:   Sun, 17 May 2020 05:12:20 +0300
+Message-Id: <20200517021225.22890-3-digetx@gmail.com>
 X-Mailer: git-send-email 2.26.0
 In-Reply-To: <20200517021225.22890-1-digetx@gmail.com>
 References: <20200517021225.22890-1-digetx@gmail.com>
@@ -83,43 +83,73 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-In order to support parsing of NVIDIA Tegra Partition Table format, we
-need to know the BOOT_SIZE_MULT value of the Extended CSD register because
-NVIDIA's bootloader linearizes the boot0/boot1/main partitions into a
-single virtual space, and thus, all partition addresses are shifted by
-the size of boot0 + boot1 partitions.
+NVIDIA Tegra Partition Table takes into account MMC card's BOOT_SIZE_MULT
+parameter, and thus, the partition parser needs to retrieve that EXT_CSD
+value from the block device.  There are also some other parts of struct
+mmc_card that are needed for the partition parser in order to calculate
+the eMMC offset and verify different things.  This patch introduces new
+helper which takes block device for the input argument and returns the
+corresponding MMC card.
 
 Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
 ---
- drivers/mmc/core/mmc.c   | 2 ++
- include/linux/mmc/card.h | 1 +
- 2 files changed, 3 insertions(+)
+ drivers/mmc/core/block.c   | 15 +++++++++++++++
+ include/linux/mmc/blkdev.h | 13 +++++++++++++
+ 2 files changed, 28 insertions(+)
+ create mode 100644 include/linux/mmc/blkdev.h
 
-diff --git a/drivers/mmc/core/mmc.c b/drivers/mmc/core/mmc.c
-index 4203303f946a..112edfb1eb1d 100644
---- a/drivers/mmc/core/mmc.c
-+++ b/drivers/mmc/core/mmc.c
-@@ -417,6 +417,8 @@ static int mmc_decode_ext_csd(struct mmc_card *card, u8 *ext_csd)
- 		ext_csd[EXT_CSD_ERASE_TIMEOUT_MULT];
- 	card->ext_csd.raw_hc_erase_grp_size =
- 		ext_csd[EXT_CSD_HC_ERASE_GRP_SIZE];
-+	card->ext_csd.raw_boot_mult =
-+		ext_csd[EXT_CSD_BOOT_MULT];
- 	if (card->ext_csd.rev >= 3) {
- 		u8 sa_shift = ext_csd[EXT_CSD_S_A_TIMEOUT];
- 		card->ext_csd.part_config = ext_csd[EXT_CSD_PART_CONFIG];
-diff --git a/include/linux/mmc/card.h b/include/linux/mmc/card.h
-index 7d46411ffaa2..cd6b58b66010 100644
---- a/include/linux/mmc/card.h
-+++ b/include/linux/mmc/card.h
-@@ -109,6 +109,7 @@ struct mmc_ext_csd {
- 	u8			raw_hc_erase_gap_size;	/* 221 */
- 	u8			raw_erase_timeout_mult;	/* 223 */
- 	u8			raw_hc_erase_grp_size;	/* 224 */
-+	u8			raw_boot_mult;		/* 226 */
- 	u8			raw_sec_trim_mult;	/* 229 */
- 	u8			raw_sec_erase_mult;	/* 230 */
- 	u8			raw_sec_feature_support;/* 231 */
+diff --git a/drivers/mmc/core/block.c b/drivers/mmc/core/block.c
+index c5367e2c8487..99298e888381 100644
+--- a/drivers/mmc/core/block.c
++++ b/drivers/mmc/core/block.c
+@@ -40,6 +40,7 @@
+ #include <linux/debugfs.h>
+ 
+ #include <linux/mmc/ioctl.h>
++#include <linux/mmc/blkdev.h>
+ #include <linux/mmc/card.h>
+ #include <linux/mmc/host.h>
+ #include <linux/mmc/mmc.h>
+@@ -305,6 +306,20 @@ static ssize_t force_ro_store(struct device *dev, struct device_attribute *attr,
+ 	return ret;
+ }
+ 
++struct mmc_card *mmc_bdev_to_card(struct block_device *bdev)
++{
++	struct mmc_blk_data *md;
++
++	if (bdev->bd_disk->major != MMC_BLOCK_MAJOR)
++		return NULL;
++
++	md = mmc_blk_get(bdev->bd_disk);
++	if (!md)
++		return NULL;
++
++	return md->queue.card;
++}
++
+ static int mmc_blk_open(struct block_device *bdev, fmode_t mode)
+ {
+ 	struct mmc_blk_data *md = mmc_blk_get(bdev->bd_disk);
+diff --git a/include/linux/mmc/blkdev.h b/include/linux/mmc/blkdev.h
+new file mode 100644
+index 000000000000..67608c58de70
+--- /dev/null
++++ b/include/linux/mmc/blkdev.h
+@@ -0,0 +1,13 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++/*
++ *  linux/include/linux/mmc/blkdev.h
++ */
++#ifndef LINUX_MMC_BLOCK_DEVICE_H
++#define LINUX_MMC_BLOCK_DEVICE_H
++
++struct block_device;
++struct mmc_card;
++
++struct mmc_card *mmc_bdev_to_card(struct block_device *bdev);
++
++#endif /* LINUX_MMC_BLOCK_DEVICE_H */
 -- 
 2.26.0
 
