@@ -2,27 +2,27 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6AF9D1D681C
-	for <lists+linux-efi@lfdr.de>; Sun, 17 May 2020 14:59:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B7821D6820
+	for <lists+linux-efi@lfdr.de>; Sun, 17 May 2020 14:59:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728079AbgEQM6y (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sun, 17 May 2020 08:58:54 -0400
-Received: from mail.kernel.org ([198.145.29.99]:51868 "EHLO mail.kernel.org"
+        id S1727910AbgEQM66 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sun, 17 May 2020 08:58:58 -0400
+Received: from mail.kernel.org ([198.145.29.99]:51956 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728035AbgEQM6y (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Sun, 17 May 2020 08:58:54 -0400
+        id S1728035AbgEQM65 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Sun, 17 May 2020 08:58:57 -0400
 Received: from e123331-lin.nice.arm.com (amontpellier-657-1-18-247.w109-210.abo.wanadoo.fr [109.210.65.247])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id CE478207D4;
-        Sun, 17 May 2020 12:58:48 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 7AB0420825;
+        Sun, 17 May 2020 12:58:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1589720332;
-        bh=6E68aEPOceXY2JUM2lcRV5fat0r6tb4MJlYatfkYf+Y=;
+        s=default; t=1589720336;
+        bh=oOhRo7vJXpfA5fYUJ8MfcQCIzfp14pkZq5YYCY2YfQk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=laqU9gqtBPCstQAPd6rlju5HVorbAE8W/dqgIdLM2JS5SeH9YIH8o9HlceqtZwo5u
-         JYs/MMdlkgD7hZEaC4N0M9/DtJ3XYeFyPhec9A285n3jJUK0kPkULQ11ImNQUkpRDG
-         mmAs2RG3zWCFq7g7hTPWOYdm58sUkzrWe2J3tpRc=
+        b=kPDf7YbdxbPax5Dz2wQzwEmVSWDMhDPpi8e+2b2+vjC2WaPVeu361iLSqaf3+MzNZ
+         UeD9vAY2NM3XvEVeeyo7SwvFRsAI/c0eMVTQsvSdo4pA7+Vuy3MrbXPenaI79ZB6a1
+         jokICm1lL/JnreJIIOGfiMOhW/hNlYLBuyc88bXM=
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-efi@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
         Thomas Gleixner <tglx@linutronix.de>
@@ -38,81 +38,65 @@ Cc:     Ard Biesheuvel <ardb@kernel.org>, linux-kernel@vger.kernel.org,
         Matthew Garrett <mjg59@google.com>,
         Mike Lothian <mike@fireburn.co.uk>,
         Punit Agrawal <punit1.agrawal@toshiba.co.jp>
-Subject: [PATCH 5/7] x86/boot: Mark global variables as static
-Date:   Sun, 17 May 2020 14:57:52 +0200
-Message-Id: <20200517125754.8934-6-ardb@kernel.org>
+Subject: [PATCH 6/7] efi: Pull up arch-specific prototype efi_systab_show_arch()
+Date:   Sun, 17 May 2020 14:57:53 +0200
+Message-Id: <20200517125754.8934-7-ardb@kernel.org>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200517125754.8934-1-ardb@kernel.org>
 References: <20200517125754.8934-1-ardb@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-From: Arvind Sankar <nivedita@alum.mit.edu>
+From: Benjamin Thiel <b.thiel@posteo.de>
 
-Mike Lothian reports that after commit
-  964124a97b97 ("efi/x86: Remove extra headroom for setup block")
-gcc 10.1.0 fails with
+Pull up arch-specific prototype efi_systab_show_arch() in order to
+fix a -Wmissing-prototypes warning:
 
-  HOSTCC  arch/x86/boot/tools/build
-  /usr/lib/gcc/x86_64-pc-linux-gnu/10.1.0/../../../../x86_64-pc-linux-gnu/bin/ld:
-  error: linker defined: multiple definition of '_end'
-  /usr/lib/gcc/x86_64-pc-linux-gnu/10.1.0/../../../../x86_64-pc-linux-gnu/bin/ld:
-  /tmp/ccEkW0jM.o: previous definition here
-  collect2: error: ld returned 1 exit status
-  make[1]: *** [scripts/Makefile.host:103: arch/x86/boot/tools/build] Error 1
-  make: *** [arch/x86/Makefile:303: bzImage] Error 2
+arch/x86/platform/efi/efi.c:957:7: warning: no previous prototype for
+‘efi_systab_show_arch’ [-Wmissing-prototypes]
+char *efi_systab_show_arch(char *str)
 
-The issue is with the _end variable that was added, to hold the end of
-the compressed kernel from zoffsets.h (ZO__end). The name clashes with
-the linker-defined _end symbol that indicates the end of the build
-program itself.
-
-Even when there is no compile-time error, this causes build to use
-memory past the end of its .bss section.
-
-To solve this, mark _end as static, and for symmetry, mark the rest of
-the variables that keep track of symbols from the compressed kernel as
-static as well.
-
-Fixes: 964124a97b97 ("efi/x86: Remove extra headroom for setup block")
-Reported-by: Mike Lothian <mike@fireburn.co.uk>
-Tested-by: Mike Lothian <mike@fireburn.co.uk>
-Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
-Link: https://lore.kernel.org/r/20200511225849.1311869-1-nivedita@alum.mit.edu
+Signed-off-by: Benjamin Thiel <b.thiel@posteo.de>
+Link: https://lore.kernel.org/r/20200516132647.14568-1-b.thiel@posteo.de
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/x86/boot/tools/build.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/firmware/efi/efi.c | 5 +----
+ include/linux/efi.h        | 2 ++
+ 2 files changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/boot/tools/build.c b/arch/x86/boot/tools/build.c
-index 8f8c8e386cea..c8b8c1a8d1fc 100644
---- a/arch/x86/boot/tools/build.c
-+++ b/arch/x86/boot/tools/build.c
-@@ -59,14 +59,14 @@ u8 buf[SETUP_SECT_MAX*512];
- #define PECOFF_COMPAT_RESERVE 0x0
- #endif
+diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
+index 911a2bd0f6b7..4e3055238f31 100644
+--- a/drivers/firmware/efi/efi.c
++++ b/drivers/firmware/efi/efi.c
+@@ -130,11 +130,8 @@ static ssize_t systab_show(struct kobject *kobj,
+ 	if (efi.smbios != EFI_INVALID_TABLE_ADDR)
+ 		str += sprintf(str, "SMBIOS=0x%lx\n", efi.smbios);
  
--unsigned long efi32_stub_entry;
--unsigned long efi64_stub_entry;
--unsigned long efi_pe_entry;
--unsigned long efi32_pe_entry;
--unsigned long kernel_info;
--unsigned long startup_64;
--unsigned long _ehead;
--unsigned long _end;
-+static unsigned long efi32_stub_entry;
-+static unsigned long efi64_stub_entry;
-+static unsigned long efi_pe_entry;
-+static unsigned long efi32_pe_entry;
-+static unsigned long kernel_info;
-+static unsigned long startup_64;
-+static unsigned long _ehead;
-+static unsigned long _end;
+-	if (IS_ENABLED(CONFIG_IA64) || IS_ENABLED(CONFIG_X86)) {
+-		extern char *efi_systab_show_arch(char *str);
+-
++	if (IS_ENABLED(CONFIG_IA64) || IS_ENABLED(CONFIG_X86))
+ 		str = efi_systab_show_arch(str);
+-	}
  
- /*----------------------------------------------------------------------*/
+ 	return str - buf;
+ }
+diff --git a/include/linux/efi.h b/include/linux/efi.h
+index 251f1f783cdf..9430d01c0c3d 100644
+--- a/include/linux/efi.h
++++ b/include/linux/efi.h
+@@ -1245,4 +1245,6 @@ struct linux_efi_memreserve {
  
+ void __init efi_arch_mem_reserve(phys_addr_t addr, u64 size);
+ 
++char *efi_systab_show_arch(char *str);
++
+ #endif /* _LINUX_EFI_H */
 -- 
 2.17.1
 
