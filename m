@@ -2,43 +2,43 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 30A5B1D87DF
-	for <lists+linux-efi@lfdr.de>; Mon, 18 May 2020 21:07:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B3531D87E2
+	for <lists+linux-efi@lfdr.de>; Mon, 18 May 2020 21:07:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726539AbgERTH3 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 18 May 2020 15:07:29 -0400
-Received: from mail-qk1-f193.google.com ([209.85.222.193]:39382 "EHLO
-        mail-qk1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726504AbgERTH0 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 18 May 2020 15:07:26 -0400
-Received: by mail-qk1-f193.google.com with SMTP id r187so8554327qkf.6
-        for <linux-efi@vger.kernel.org>; Mon, 18 May 2020 12:07:25 -0700 (PDT)
+        id S1726535AbgERTHa (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 18 May 2020 15:07:30 -0400
+Received: from mail-qt1-f195.google.com ([209.85.160.195]:46335 "EHLO
+        mail-qt1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726528AbgERTH1 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 18 May 2020 15:07:27 -0400
+Received: by mail-qt1-f195.google.com with SMTP id p12so9022363qtn.13
+        for <linux-efi@vger.kernel.org>; Mon, 18 May 2020 12:07:26 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=6R029e71hJTHox5v5rllTutY6nr/0P3QmyUf4o25p5o=;
-        b=fVoc4IRhqrod1FyvMR6ANOznG5WhYLQV85tm3z6TuqlbMyl2AKpIEgEYbxBGVbc/n8
-         iWx6UdlPckW6NZkVjVOLzJBB9v9RDK8MQp2Od9phPnw1PYSBP1UX7efBisBeVuNIHNr1
-         uNSTfLzPWGh3i9ftfDQX+1WpYnetPKeY8TTWhdMdWc25ByLqz48ZP3GpUdq6KE/3mFc/
-         DymSVzoHAfza8OEk3DG6twraYW3Ax6Ss/rB0SVicqR3BdWAGdGeScNjvtGxHpCcPhEl6
-         pKU6Jq7PMQGSmqZLDrMPDfcmBBMSv+8zzrenAG16hgc1GgzhbP31nq4Lo/NePWDDGXsk
-         kYBA==
-X-Gm-Message-State: AOAM530SjXpO0gieD0joD4jAN03bgigXHHuo+4uTJ5kGzB1wpOY23348
-        td0lOT+vIxssMSqo+Nkljk0=
-X-Google-Smtp-Source: ABdhPJzERaSumq5GEeVJjMzilKb5nlmuNcanNie6SVfGvBOsx6mZRmMdnDxU8XrMhkkG1JQM9rGkbQ==
-X-Received: by 2002:a37:742:: with SMTP id 63mr17060905qkh.361.1589828845482;
-        Mon, 18 May 2020 12:07:25 -0700 (PDT)
+        bh=0x0nqDDMF4dHcnE6V7iQ+GVCAY1e0HZWp+v/+DLW0rU=;
+        b=BgHZpkRe653+csAVUh8/XZIzPUPM4WOvWArA/zDxzwjz0une7vDJJIxmrZc+pJSVWK
+         w2gZAvYwJxU9qIEohNis16JCufZLgk6rnuTSzSDuHByRB9p1dGxIOZVOXNZxrCv4MypQ
+         HJCHe42C3SeqIzhbNlyyOh6KPra5Ntl0DeXPm5wdesjp2jxoHu84PNkaExc7I/76iQni
+         EAlLAQYXEG5botOviPwHD3mCws54PgZE/s+s3qOwnL6uqCUn7nRG3pqGyQ8rbkJy5uD1
+         7+wfe2PTMYo+CLNmba8fNhPJfE27N574baQxB981woU5SFJ4Vs2M0TtpftgFMzdN6C6g
+         ECkA==
+X-Gm-Message-State: AOAM530QSlLMhULeGJv7lTuh1NpSFOrDplm9gbM14REPKROzC8ibX9Dg
+        329yGPlz7nG/assvfyPE7DEewWUvTYw=
+X-Google-Smtp-Source: ABdhPJw04OQz/RB2aTGvOKSwk88p1M8cVq4LmbHL/sQi1Os7ZRp7T1TefvwRn0GPoYJsDMh9HJ7NEg==
+X-Received: by 2002:ac8:1c3d:: with SMTP id a58mr18618889qtk.52.1589828846296;
+        Mon, 18 May 2020 12:07:26 -0700 (PDT)
 Received: from rani.riverdale.lan ([2001:470:1f07:5f3::b55f])
-        by smtp.gmail.com with ESMTPSA id a1sm9862811qtj.65.2020.05.18.12.07.24
+        by smtp.gmail.com with ESMTPSA id a1sm9862811qtj.65.2020.05.18.12.07.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 May 2020 12:07:24 -0700 (PDT)
+        Mon, 18 May 2020 12:07:25 -0700 (PDT)
 From:   Arvind Sankar <nivedita@alum.mit.edu>
 To:     Ard Biesheuvel <ardb@kernel.org>
 Cc:     linux-efi@vger.kernel.org
-Subject: [PATCH 10/24] efi/printf: Merge 'p' with the integer formats
-Date:   Mon, 18 May 2020 15:07:02 -0400
-Message-Id: <20200518190716.751506-11-nivedita@alum.mit.edu>
+Subject: [PATCH 11/24] efi/printf: Factor out width/precision parsing
+Date:   Mon, 18 May 2020 15:07:03 -0400
+Message-Id: <20200518190716.751506-12-nivedita@alum.mit.edu>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200518190716.751506-1-nivedita@alum.mit.edu>
 References: <20200518190716.751506-1-nivedita@alum.mit.edu>
@@ -49,73 +49,111 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Treat 'p' as a hexadecimal integer with precision equal to the number of
-digits in void *.
+Factor out the width/precision parsing into a helper function.
 
 Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
 ---
- drivers/firmware/efi/libstub/vsprintf.c | 22 ++++++++--------------
- 1 file changed, 8 insertions(+), 14 deletions(-)
+ drivers/firmware/efi/libstub/vsprintf.c | 60 ++++++++++++++++---------
+ 1 file changed, 40 insertions(+), 20 deletions(-)
 
 diff --git a/drivers/firmware/efi/libstub/vsprintf.c b/drivers/firmware/efi/libstub/vsprintf.c
-index d7938e44f067..88c503077b92 100644
+index 88c503077b92..1b71651fe6bc 100644
 --- a/drivers/firmware/efi/libstub/vsprintf.c
 +++ b/drivers/firmware/efi/libstub/vsprintf.c
-@@ -295,9 +295,6 @@ int vsprintf(char *buf, const char *fmt, va_list args)
- 			}
- 		}
+@@ -230,7 +230,20 @@ int get_flags(const char **fmt)
+ 	} while (1);
+ }
  
--		/* default base */
--		base = 10;
--
- 		switch (*fmt) {
- 		case 'c':
- 			if (!(flags & LEFT))
-@@ -321,21 +318,15 @@ int vsprintf(char *buf, const char *fmt, va_list args)
- 				*str++ = ' ';
- 			continue;
+-int vsprintf(char *buf, const char *fmt, va_list args)
++static
++int get_int(const char **fmt, va_list *ap)
++{
++	if (isdigit(**fmt))
++		return skip_atoi(fmt);
++	if (**fmt == '*') {
++		++(*fmt);
++		/* it's the next argument */
++		return va_arg(*ap, int);
++	}
++	return 0;
++}
++
++int vsprintf(char *buf, const char *fmt, va_list ap)
+ {
+ 	int len;
+ 	unsigned long long num;
+@@ -245,6 +258,24 @@ int vsprintf(char *buf, const char *fmt, va_list args)
+ 				   number of chars for from string */
+ 	int qualifier;		/* 'h', 'hh', 'l' or 'll' for integer fields */
  
--		case 'p':
--			if (field_width == -1) {
--				field_width = 2 * sizeof(void *);
--				flags |= ZEROPAD;
++	va_list args;
++
++	/*
++	 * We want to pass our input va_list to helper functions by reference,
++	 * but there's an annoying edge case. If va_list was originally passed
++	 * to us by value, we could just pass &ap down to the helpers. This is
++	 * the case on, for example, X86_32.
++	 * However, on X86_64 (and possibly others), va_list is actually a
++	 * size-1 array containing a structure. Our function parameter ap has
++	 * decayed from T[1] to T*, and &ap has type T** rather than T(*)[1],
++	 * which is what will be expected by a function taking a va_list *
++	 * parameter.
++	 * One standard way to solve this mess is by creating a copy in a local
++	 * variable of type va_list and then passing a pointer to that local
++	 * copy instead, which is what we do here.
++	 */
++	va_copy(args, ap);
++
+ 	for (str = buf; *fmt; ++fmt) {
+ 		if (*fmt != '%' || *++fmt == '%') {
+ 			*str++ = *fmt;
+@@ -255,31 +286,17 @@ int vsprintf(char *buf, const char *fmt, va_list args)
+ 		flags = get_flags(&fmt);
+ 
+ 		/* get field width */
+-		field_width = -1;
+-		if (isdigit(*fmt))
+-			field_width = skip_atoi(&fmt);
+-		else if (*fmt == '*') {
+-			++fmt;
+-			/* it's the next argument */
+-			field_width = va_arg(args, int);
+-			if (field_width < 0) {
+-				field_width = -field_width;
+-				flags |= LEFT;
 -			}
--			str = number(str,
--				     (unsigned long)va_arg(args, void *), 16,
--				     field_width, precision, flags);
--			continue;
--
- 			/* integer number formats - set up the flags and "break" */
- 		case 'o':
- 			base = 8;
- 			break;
- 
-+		case 'p':
-+			if (precision < 0)
-+				precision = 2 * sizeof(void *);
-+			fallthrough;
- 		case 'x':
- 			flags |= SMALL;
- 			fallthrough;
-@@ -348,6 +339,7 @@ int vsprintf(char *buf, const char *fmt, va_list args)
- 			flags |= SIGN;
- 			fallthrough;
- 		case 'u':
-+			base = 10;
- 			break;
- 
- 		default:
-@@ -358,7 +350,9 @@ int vsprintf(char *buf, const char *fmt, va_list args)
- 				--fmt;
- 			continue;
++		field_width = get_int(&fmt, &args);
++		if (field_width < 0) {
++			field_width = -field_width;
++			flags |= LEFT;
  		}
--		if (flags & SIGN) {
-+		if (*fmt == 'p')
-+			num = (unsigned long)va_arg(args, void *);
-+		else if (flags & SIGN) {
- 			switch (qualifier) {
- 			case 'L':
- 				num = va_arg(args, long long);
+ 
+ 		/* get the precision */
+ 		precision = -1;
+ 		if (*fmt == '.') {
+ 			++fmt;
+-			if (isdigit(*fmt))
+-				precision = skip_atoi(&fmt);
+-			else if (*fmt == '*') {
+-				++fmt;
+-				/* it's the next argument */
+-				precision = va_arg(args, int);
+-			} else
+-				precision = 0;
++			precision = get_int(&fmt, &args);
+ 			if (precision >= 0)
+ 				flags &= ~ZEROPAD;
+ 		}
+@@ -390,6 +407,9 @@ int vsprintf(char *buf, const char *fmt, va_list args)
+ 		str = number(str, num, base, field_width, precision, flags);
+ 	}
+ 	*str = '\0';
++
++	va_end(args);
++
+ 	return str - buf;
+ }
+ 
 -- 
 2.26.2
 
