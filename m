@@ -2,43 +2,43 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A70B1D87E6
+	by mail.lfdr.de (Postfix) with ESMTP id 190941D87E5
 	for <lists+linux-efi@lfdr.de>; Mon, 18 May 2020 21:07:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726513AbgERTHe (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        id S1726595AbgERTHe (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
         Mon, 18 May 2020 15:07:34 -0400
-Received: from mail-qt1-f195.google.com ([209.85.160.195]:34133 "EHLO
-        mail-qt1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726553AbgERTHc (ORCPT
+Received: from mail-qt1-f196.google.com ([209.85.160.196]:37383 "EHLO
+        mail-qt1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726513AbgERTHc (ORCPT
         <rfc822;linux-efi@vger.kernel.org>); Mon, 18 May 2020 15:07:32 -0400
-Received: by mail-qt1-f195.google.com with SMTP id a23so3344057qto.1
+Received: by mail-qt1-f196.google.com with SMTP id 4so9073760qtb.4
         for <linux-efi@vger.kernel.org>; Mon, 18 May 2020 12:07:31 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=dm0AWhZq933OVtCzy7CiAJHP7WTrC8LBHUbou1f2eHs=;
-        b=SAVRkyK6f8yEfcHdMnO9Oy9T17yEDZWkIMUTLaY/SiEz8ihdd9G5Jb8RCPPq4zMb6M
-         WYNqEVYgnqgrA/xHpnO8WlpcEVfOozvHM0XcO4ep3qjaVfX8MX7xxbh/0s3hmbgs/OiD
-         v7gg5Z2SfZar2QBdDhaUtLX3+pTVEJGU+oK6a3Ro8OfG6464rUQ08QIXWr1DDeCztXFf
-         wyuBcQsKreSt/+K+q51AW7CkYoyHq92M0H8kg8o0yerFUIE1J6mc8hpPKro2xbX26db3
-         qCmUfGCYG9qcT69CWpT8JTVHsVnix8kLeMLM5DJE4BBO7aIZ0viz5M0PtY1XOvdwdINv
-         qJ5g==
-X-Gm-Message-State: AOAM5309Bd+v9by6bWBScU3H6zfp7KDWRfMar8664KatfdR6w5sZRRgs
-        3oqlwGKu/gBeQlrntE0/Kg0=
-X-Google-Smtp-Source: ABdhPJw3Sjojo555zD1ikEXymd8al7QJDECVe7hMym+WS8+1A+YSBiTsEBkerVQ3FVVSx4Rl8+9txA==
-X-Received: by 2002:ac8:3173:: with SMTP id h48mr18209305qtb.179.1589828850114;
+        bh=0U4lP2Gno2i2zMEA9MGcxzzT1Kesn7iBU88/MXxYkf8=;
+        b=T569DxNkc9M451w37xZsLg47km0J4dPqSszYiz3haeAljLVt/KP2ad/haGpwhmyzZt
+         gaDv3bj52ZCR2n6DAztuNUoihGq55mZCdLxPHVlGPZ1NQMom3LtJ9urnodf/3XTjE/Sm
+         DYMrVPSzZ023IaFrUAGay5/WInNknF2iVREE+pAB0SCAJoqxNuuOFfvDgBIm80vu44PK
+         BtxpXY32stRln520RKOTiARN8hbDY8vFlAnl7h0rixRmL48NM6MhSF57u9K8enA1CYdp
+         w9dWK1yLrmFWiUKcgFuwVAUbMHf2YQV2rWSz1OSNKVoSEdcpOUHcamiWaYBxQh6dRBSl
+         0VmQ==
+X-Gm-Message-State: AOAM532b75sUgCKuNPXZx37eojY7nAhYrgiU0tgidz4hEUNFwmctCJXX
+        q38/HMbnhkc07kwDmiVEFd/cXJMkFX0=
+X-Google-Smtp-Source: ABdhPJzek70I2WmZ1MqEqFaiqRgbIs/dPw2hDhEdiIVNZiSvo6Yi3ouk9/rKtxPRgeG11x4yToTqBA==
+X-Received: by 2002:ac8:4e16:: with SMTP id c22mr8381024qtw.281.1589828850695;
         Mon, 18 May 2020 12:07:30 -0700 (PDT)
 Received: from rani.riverdale.lan ([2001:470:1f07:5f3::b55f])
-        by smtp.gmail.com with ESMTPSA id a1sm9862811qtj.65.2020.05.18.12.07.29
+        by smtp.gmail.com with ESMTPSA id a1sm9862811qtj.65.2020.05.18.12.07.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 May 2020 12:07:29 -0700 (PDT)
+        Mon, 18 May 2020 12:07:30 -0700 (PDT)
 From:   Arvind Sankar <nivedita@alum.mit.edu>
 To:     Ard Biesheuvel <ardb@kernel.org>
 Cc:     linux-efi@vger.kernel.org
-Subject: [PATCH 16/24] efi/printf: Turn vsprintf into vsnprintf
-Date:   Mon, 18 May 2020 15:07:08 -0400
-Message-Id: <20200518190716.751506-17-nivedita@alum.mit.edu>
+Subject: [PATCH 17/24] efi/libstub: Implement printk-style logging
+Date:   Mon, 18 May 2020 15:07:09 -0400
+Message-Id: <20200518190716.751506-18-nivedita@alum.mit.edu>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200518190716.751506-1-nivedita@alum.mit.edu>
 References: <20200518190716.751506-1-nivedita@alum.mit.edu>
@@ -49,139 +49,118 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Implement vsnprintf instead of vsprintf to avoid the possibility of a
-buffer overflow.
+Use the efi_printk function in efi_info/efi_err, and add efi_debug. This
+allows formatted output at different log levels.
+
+Add the notion of a loglevel instead of just quiet/not-quiet, and
+parse the debug kernel parameter in addition to quiet.
 
 Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
 ---
- .../firmware/efi/libstub/efi-stub-helper.c    |  6 ++-
- drivers/firmware/efi/libstub/vsprintf.c       | 42 +++++++++++--------
- 2 files changed, 30 insertions(+), 18 deletions(-)
+ .../firmware/efi/libstub/efi-stub-helper.c    | 29 +++++++++++++++++--
+ drivers/firmware/efi/libstub/efistub.h        | 14 +++++----
+ 2 files changed, 35 insertions(+), 8 deletions(-)
 
 diff --git a/drivers/firmware/efi/libstub/efi-stub-helper.c b/drivers/firmware/efi/libstub/efi-stub-helper.c
-index 56b3b84fd3bd..5ecafc57619a 100644
+index 5ecafc57619a..c0278a8063b7 100644
 --- a/drivers/firmware/efi/libstub/efi-stub-helper.c
 +++ b/drivers/firmware/efi/libstub/efi-stub-helper.c
-@@ -60,10 +60,14 @@ int efi_printk(const char *fmt, ...)
- 	int printed;
+@@ -11,6 +11,7 @@
  
- 	va_start(args, fmt);
--	printed = vsprintf(printf_buf, fmt, args);
-+	printed = vsnprintf(printf_buf, sizeof(printf_buf), fmt, args);
- 	va_end(args);
- 
- 	efi_puts(printf_buf);
-+	if (printed >= sizeof(printf_buf)) {
-+		efi_puts("[Message truncated]\n");
-+		return -1;
-+	}
- 
- 	return printed;
- }
-diff --git a/drivers/firmware/efi/libstub/vsprintf.c b/drivers/firmware/efi/libstub/vsprintf.c
-index 7dcbc04498e7..36f2f4cf7434 100644
---- a/drivers/firmware/efi/libstub/vsprintf.c
-+++ b/drivers/firmware/efi/libstub/vsprintf.c
-@@ -17,6 +17,7 @@
+ #include <linux/efi.h>
  #include <linux/kernel.h>
- #include <linux/limits.h>
- #include <linux/string.h>
-+#include <linux/types.h>
++#include <linux/printk.h> /* For CONSOLE_LOGLEVEL_* */
+ #include <asm/efi.h>
  
- static
- int skip_atoi(const char **s)
-@@ -237,16 +238,22 @@ char get_sign(long long *num, int flags)
- 	return 0;
- }
+ #include "efistub.h"
+@@ -18,7 +19,7 @@
+ bool efi_nochunk;
+ bool efi_nokaslr;
+ bool efi_noinitrd;
+-bool efi_quiet;
++int efi_loglevel = CONSOLE_LOGLEVEL_DEFAULT;
+ bool efi_novamap;
  
--int vsprintf(char *buf, const char *fmt, va_list ap)
-+#define PUTC(c) \
-+do {				\
-+	if (pos < size)		\
-+		buf[pos] = (c);	\
-+	++pos;			\
-+} while (0);
-+
-+int vsnprintf(char *buf, size_t size, const char *fmt, va_list ap)
- {
- 	/* The maximum space required is to print a 64-bit number in octal */
- 	char tmp[(sizeof(unsigned long long) * 8 + 2) / 3];
- 	char *tmp_end = &tmp[ARRAY_SIZE(tmp)];
- 	long long num;
- 	int base;
--	char *str;
- 	const char *s;
--	int len;
-+	size_t len, pos;
- 	char sign;
- 
- 	int flags;		/* flags to number() */
-@@ -274,9 +281,9 @@ int vsprintf(char *buf, const char *fmt, va_list ap)
- 	 */
- 	va_copy(args, ap);
- 
--	for (str = buf; *fmt; ++fmt) {
-+	for (pos = 0; *fmt; ++fmt) {
- 		if (*fmt != '%' || *++fmt == '%') {
--			*str++ = *fmt;
-+			PUTC(*fmt);
- 			continue;
- 		}
- 
-@@ -415,40 +422,41 @@ int vsprintf(char *buf, const char *fmt, va_list ap)
- 		/* Leading padding with ' ' */
- 		if (!(flags & LEFT))
- 			while (field_width-- > 0)
--				*str++ = ' ';
-+				PUTC(' ');
- 		/* sign */
- 		if (sign)
--			*str++ = sign;
-+			PUTC(sign);
- 		/* 0x/0X for hexadecimal */
- 		if (flags & SPECIAL) {
--			*str++ = '0';
--			*str++ = 'X' | (flags & SMALL);
-+			PUTC('0');
-+			PUTC( 'X' | (flags & SMALL));
- 		}
- 		/* Zero padding and excess precision */
- 		while (precision-- > len)
--			*str++ = '0';
-+			PUTC('0');
- 		/* Actual output */
- 		while (len-- > 0)
--			*str++ = *s++;
-+			PUTC(*s++);
- 		/* Trailing padding with ' ' */
- 		while (field_width-- > 0)
--			*str++ = ' ';
-+			PUTC(' ');
- 	}
- fail:
--	*str = '\0';
--
- 	va_end(args);
- 
--	return str - buf;
-+	if (size)
-+		buf[min(pos, size-1)] = '\0';
-+
-+	return pos;
- }
- 
--int sprintf(char *buf, const char *fmt, ...)
-+int snprintf(char *buf, size_t size, const char *fmt, ...)
- {
+ static bool efi_nosoftreserve;
+@@ -58,6 +59,28 @@ int efi_printk(const char *fmt, ...)
+ 	char printf_buf[256];
  	va_list args;
- 	int i;
+ 	int printed;
++	int loglevel = printk_get_level(fmt);
++
++	switch (loglevel) {
++	case '0' ... '9':
++		loglevel -= '0';
++		break;
++	default:
++		/*
++		 * Use loglevel -1 for cases where we just want to print to
++		 * the screen.
++		 */
++		loglevel = -1;
++		break;
++	}
++
++	if (loglevel >= efi_loglevel)
++		return 0;
++
++	if (loglevel >= 0)
++		efi_puts("EFI stub: ");
++
++	fmt = printk_skip_level(fmt);
  
  	va_start(args, fmt);
--	i = vsprintf(buf, fmt, args);
-+	i = vsnprintf(buf, size, fmt, args);
- 	va_end(args);
- 	return i;
- }
+ 	printed = vsnprintf(printf_buf, sizeof(printf_buf), fmt, args);
+@@ -100,7 +123,9 @@ efi_status_t efi_parse_options(char const *cmdline)
+ 		if (!strcmp(param, "nokaslr")) {
+ 			efi_nokaslr = true;
+ 		} else if (!strcmp(param, "quiet")) {
+-			efi_quiet = true;
++			efi_loglevel = CONSOLE_LOGLEVEL_QUIET;
++		} else if (!strcmp(param, "debug")) {
++			efi_loglevel = CONSOLE_LOGLEVEL_DEBUG;
+ 		} else if (!strcmp(param, "noinitrd")) {
+ 			efi_noinitrd = true;
+ 		} else if (!strcmp(param, "efi") && val) {
+diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
+index caa7dcc71c69..3a323a009836 100644
+--- a/drivers/firmware/efi/libstub/efistub.h
++++ b/drivers/firmware/efi/libstub/efistub.h
+@@ -6,6 +6,7 @@
+ #include <linux/compiler.h>
+ #include <linux/efi.h>
+ #include <linux/kernel.h>
++#include <linux/kern_levels.h>
+ #include <linux/types.h>
+ #include <asm/efi.h>
+ 
+@@ -34,7 +35,7 @@
+ extern bool efi_nochunk;
+ extern bool efi_nokaslr;
+ extern bool efi_noinitrd;
+-extern bool efi_quiet;
++extern int efi_loglevel;
+ extern bool efi_novamap;
+ 
+ extern const efi_system_table_t *efi_system_table;
+@@ -49,11 +50,12 @@ extern const efi_system_table_t *efi_system_table;
+ 
+ #endif
+ 
+-#define efi_info(msg)		do {			\
+-	if (!efi_quiet) efi_puts("EFI stub: "msg);	\
+-} while (0)
+-
+-#define efi_err(msg) efi_puts("EFI stub: ERROR: "msg)
++#define efi_info(fmt, ...) \
++	efi_printk(KERN_INFO fmt, ##__VA_ARGS__)
++#define efi_err(fmt, ...) \
++	efi_printk(KERN_ERR "ERROR: " fmt, ##__VA_ARGS__)
++#define efi_debug(fmt, ...) \
++	efi_printk(KERN_DEBUG "DEBUG: " fmt, ##__VA_ARGS__)
+ 
+ /* Helper macros for the usual case of using simple C variables: */
+ #ifndef fdt_setprop_inplace_var
 -- 
 2.26.2
 
