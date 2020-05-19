@@ -2,27 +2,27 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5BF501D9C8B
-	for <lists+linux-efi@lfdr.de>; Tue, 19 May 2020 18:27:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F11181D9C8C
+	for <lists+linux-efi@lfdr.de>; Tue, 19 May 2020 18:27:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727904AbgESQ1F (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 19 May 2020 12:27:05 -0400
-Received: from mail.kernel.org ([198.145.29.99]:41210 "EHLO mail.kernel.org"
+        id S1728725AbgESQ1H (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 19 May 2020 12:27:07 -0400
+Received: from mail.kernel.org ([198.145.29.99]:41252 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728689AbgESQ1E (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Tue, 19 May 2020 12:27:04 -0400
+        id S1728689AbgESQ1G (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Tue, 19 May 2020 12:27:06 -0400
 Received: from e123331-lin.nice.arm.com (amontpellier-657-1-18-247.w109-210.abo.wanadoo.fr [109.210.65.247])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 9D06A20826;
-        Tue, 19 May 2020 16:27:02 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id C0249207FB;
+        Tue, 19 May 2020 16:27:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1589905624;
-        bh=Rnr1nZVVeFJ8Ie+KrJMA9hzs3cpYXGVP9cLvCfNZ5RE=;
+        s=default; t=1589905626;
+        bh=C7HgoJDn2kYqnmr2QmhsUs8JI2aan9kSJKl1W84BSOA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BaIcUPJO0UwNNr+BifsMlE6U9axBV/4+5mSQRLZxitMW5BasAfLi6BMOcFvXiyeZE
-         lU5+XmKS1kf/lUqb98vJFj17XHoTZi+oxWeqeu6Pwy5vgCQefBJxsIJxCaMCYqdHjx
-         RcwN7Atuv317jS60pgcG16sHDFKsmKEN3Aw/uejU=
+        b=1oBt2noI2iW40P3wwK0l9PNHZKrkxe+NIZa8eCEdhjgy0nFm8fNmlz3i1YWqaoh3z
+         momG0znFpyDre4CAVNy8I1vwWNBluT/ptuf9gKIaU5KZnmtx1M9muJ1T3wc4bgmdsm
+         oeo3et6vAyCfNgS+qQKm5jyJ1o4t4Cmt8PjWdZ5g=
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-arm-kernel@lists.infradead.org
 Cc:     linux-efi@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
@@ -31,9 +31,9 @@ Cc:     linux-efi@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
         Linus Walleij <linus.walleij@linaro.org>,
         Russell King <linux@armlinux.org.uk>,
         Heinrich Schuchardt <xypron.glpk@gmx.de>
-Subject: [PATCH v4 2/5] ARM: decompressor: split off _edata and stack base into separate object
-Date:   Tue, 19 May 2020 18:26:42 +0200
-Message-Id: <20200519162645.31065-3-ardb@kernel.org>
+Subject: [PATCH v4 3/5] ARM: decompressor: defer loading of the contents of the LC0 structure
+Date:   Tue, 19 May 2020 18:26:43 +0200
+Message-Id: <20200519162645.31065-4-ardb@kernel.org>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200519162645.31065-1-ardb@kernel.org>
 References: <20200519162645.31065-1-ardb@kernel.org>
@@ -42,70 +42,81 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-In preparation of moving the handling of the LC0 object to a later stage
-in the decompressor startup code, move out _edata and the initial value
-of the stack pointer, which are needed earlier than the remaining
-contents of LC0.
+The remaining contents of LC0 are only used after the point in the
+decompressor startup code where we enter via 'wont_overwrite'. So
+move the loading of the LC0 structure after it. This will allow us
+to jump to wont_overwrite directly from the EFI stub, and execute
+the decompressor in place at the offset it was loaded by the UEFI
+firmware.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Reviewed-by: Nicolas Pitre <nico@fluxnic.net>
 ---
- arch/arm/boot/compressed/head.S | 23 ++++++++++----------
- 1 file changed, 12 insertions(+), 11 deletions(-)
+ arch/arm/boot/compressed/head.S | 15 ++++-----------
+ 1 file changed, 4 insertions(+), 11 deletions(-)
 
 diff --git a/arch/arm/boot/compressed/head.S b/arch/arm/boot/compressed/head.S
-index 42b8d67beab6..5d712e2c0001 100644
+index 5d712e2c0001..ce442ec5028a 100644
 --- a/arch/arm/boot/compressed/head.S
 +++ b/arch/arm/boot/compressed/head.S
-@@ -293,22 +293,20 @@ not_angel:
- 		orrcc	r4, r4, #1		@ remember we skipped cache_on
- 		blcs	cache_on
+@@ -299,10 +299,6 @@ restart:	adr	r0, LC1
+ 		add	sp, sp, r0
+ 		add	r6, r6, r0
  
--restart:	adr	r0, LC0
--		ldmia	r0, {r1, r2, r3, r6, r11, r12}
--		ldr	sp, [r0, #24]
-+restart:	adr	r0, LC1
-+		ldr	sp, [r0]
-+		ldr	r6, [r0, #4]
-+		add	sp, sp, r0
-+		add	r6, r6, r0
- 
--		/*
--		 * We might be running at a different address.  We need
--		 * to fix up various pointers.
--		 */
-+		adr	r0, LC0
-+		ldmia	r0, {r1, r2, r3, r11, r12}
- 		sub	r0, r0, r1		@ calculate the delta offset
--		add	r6, r6, r0		@ _edata
- 
+-		adr	r0, LC0
+-		ldmia	r0, {r1, r2, r3, r11, r12}
+-		sub	r0, r0, r1		@ calculate the delta offset
+-
  		get_inflated_image_size	r9, r10, lr
  
  #ifndef CONFIG_ZBOOT_ROM
- 		/* malloc space is above the relocated stack (64k max) */
--		add	sp, sp, r0
- 		add	r10, sp, #0x10000
- #else
- 		/*
-@@ -660,12 +658,15 @@ not_relocated:	mov	r0, #0
- LC0:		.word	LC0			@ r1
- 		.word	__bss_start		@ r2
- 		.word	_end			@ r3
--		.word	_edata			@ r6
- 		.word	_got_start		@ r11
- 		.word	_got_end		@ ip
--		.word	.L_user_stack_end	@ sp
- 		.size	LC0, . - LC0
+@@ -320,9 +316,6 @@ restart:	adr	r0, LC1
+ 		mov	r5, #0			@ init dtb size to 0
+ #ifdef CONFIG_ARM_APPENDED_DTB
+ /*
+- *   r0  = delta
+- *   r2  = BSS start
+- *   r3  = BSS end
+  *   r4  = final kernel address (possibly with LSB set)
+  *   r5  = appended dtb size (still unknown)
+  *   r6  = _edata
+@@ -330,8 +323,6 @@ restart:	adr	r0, LC1
+  *   r8  = atags/device tree pointer
+  *   r9  = size of decompressed image
+  *   r10 = end of this image, including  bss/stack/malloc space if non XIP
+- *   r11 = GOT start
+- *   r12 = GOT end
+  *   sp  = stack pointer
+  *
+  * if there are device trees (dtb) appended to zImage, advance r10 so that the
+@@ -379,7 +370,6 @@ restart:	adr	r0, LC1
+ 		/* temporarily relocate the stack past the DTB work space */
+ 		add	sp, sp, r5
  
-+		.type	LC1, #object
-+LC1:		.word	.L_user_stack_end - LC1	@ sp
-+		.word	_edata - LC1		@ r6
-+		.size	LC1, . - LC1
+-		stmfd	sp!, {r0-r3, ip, lr}
+ 		mov	r0, r8
+ 		mov	r1, r6
+ 		mov	r2, r5
+@@ -398,7 +388,6 @@ restart:	adr	r0, LC1
+ 		mov	r2, r5
+ 		bleq	atags_to_fdt
+ 
+-		ldmfd	sp!, {r0-r3, ip, lr}
+ 		sub	sp, sp, r5
+ #endif
+ 
+@@ -535,6 +524,10 @@ dtb_check_done:
+ 		mov	pc, r0
+ 
+ wont_overwrite:
++		adr	r0, LC0
++		ldmia	r0, {r1, r2, r3, r11, r12}
++		sub	r0, r0, r1		@ calculate the delta offset
 +
- .Lheadroom:
- 		.word	_end - restart + 16384 + 1024*1024
- 
+ /*
+  * If delta is zero, we are running at the address we were linked at.
+  *   r0  = delta
 -- 
 2.17.1
 
