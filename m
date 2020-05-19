@@ -2,92 +2,200 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 62D181D9D19
-	for <lists+linux-efi@lfdr.de>; Tue, 19 May 2020 18:44:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 09EDA1DA14C
+	for <lists+linux-efi@lfdr.de>; Tue, 19 May 2020 21:50:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729254AbgESQok (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 19 May 2020 12:44:40 -0400
-Received: from mail.kernel.org ([198.145.29.99]:53508 "EHLO mail.kernel.org"
+        id S1726290AbgESTuI (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 19 May 2020 15:50:08 -0400
+Received: from mga11.intel.com ([192.55.52.93]:31602 "EHLO mga11.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728778AbgESQoj (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Tue, 19 May 2020 12:44:39 -0400
-Received: from mail-il1-f180.google.com (mail-il1-f180.google.com [209.85.166.180])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 15C7E207D8
-        for <linux-efi@vger.kernel.org>; Tue, 19 May 2020 16:44:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1589906679;
-        bh=qsGLGWwXZBmiJsy0h+6j5uh/Fa2hObxN527Jcx3V1qY=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=guiXTe9nT/JLBNJEouC+4xNi+ZtMzePN8wl0h86W9gqisLSbWxlG8rftKc0EHQRlb
-         PXeLj2fBwETo0rLUsHg/rOxO8ZlUNB4umtob1LBSdFUk8QGVvRJeStdGi9wJeMUjW+
-         iHGL6z8PC5MoVYnOM+YO5qdW+eyBrnCXQEm0QWyU=
-Received: by mail-il1-f180.google.com with SMTP id 4so47133ilg.1
-        for <linux-efi@vger.kernel.org>; Tue, 19 May 2020 09:44:39 -0700 (PDT)
-X-Gm-Message-State: AOAM5325fvpl6ui3k8eU2gkUOWsidruLXWTpCHUBgwpPIhgqARq4Iwfo
-        v8zSuLXH2cfTNt0HABOWP4ZWe106F3FAuKQMiaM=
-X-Google-Smtp-Source: ABdhPJwPQ6KEIlr+o8kUCqP8sUJoej1H6+9gedLKK8Dw1a+zPXz3w6Knsc3UfVr7i7cY6C6zuJ+Q5Vj0BP+M7kJPfKY=
-X-Received: by 2002:a92:3556:: with SMTP id c83mr20070171ila.218.1589906678491;
- Tue, 19 May 2020 09:44:38 -0700 (PDT)
+        id S1726059AbgESTuH (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Tue, 19 May 2020 15:50:07 -0400
+IronPort-SDR: STXlRy+9nEX7xX/8gscW0BUZ+MWT9MJBPeeTbg0hvKiQ5lMZ2FnGm68MI+7J4foVSN4RXnm1Eq
+ SssOsCWh2xew==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2020 12:50:07 -0700
+IronPort-SDR: vhOesVOFks9k6j3WqB6SV0zv2uIS2icxaj+/6PMo35zjPqx7Mvo8jRTK2pN4R1k1t/N6S+RsBN
+ gFp7bK+XkICA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.73,410,1583222400"; 
+   d="scan'208";a="411753494"
+Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
+  by orsmga004.jf.intel.com with ESMTP; 19 May 2020 12:50:05 -0700
+Received: from kbuild by lkp-server01 with local (Exim 4.89)
+        (envelope-from <lkp@intel.com>)
+        id 1jb8FW-000Cqf-Kg; Wed, 20 May 2020 03:50:02 +0800
+Date:   Wed, 20 May 2020 03:49:56 +0800
+From:   kbuild test robot <lkp@intel.com>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-efi@vger.kernel.org
+Subject: [efi:next] BUILD SUCCESS e5fbadd1179cdadeaa44d71a9ec068c5bc100524
+Message-ID: <5ec43864.k49PwbWiWW6m6JmK%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-References: <20200518190716.751506-1-nivedita@alum.mit.edu>
- <CAMj1kXE7EasnCLW0LrWP7f8A9dpTThSHJUP+iM-i0Tqrm=FoOA@mail.gmail.com> <20200519150629.GB1526900@rani.riverdale.lan>
-In-Reply-To: <20200519150629.GB1526900@rani.riverdale.lan>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Tue, 19 May 2020 18:44:27 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXGuM6sEE5HoAmGP7EZDnyUsW73FH+f2C_MvH76UCMYkpg@mail.gmail.com>
-Message-ID: <CAMj1kXGuM6sEE5HoAmGP7EZDnyUsW73FH+f2C_MvH76UCMYkpg@mail.gmail.com>
-Subject: Re: [PATCH 00/24] efi/libstub: Add printf implementation
-To:     Arvind Sankar <nivedita@alum.mit.edu>
-Cc:     linux-efi <linux-efi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, 19 May 2020 at 17:06, Arvind Sankar <nivedita@alum.mit.edu> wrote:
->
-> On Tue, May 19, 2020 at 09:53:47AM +0200, Ard Biesheuvel wrote:
-> >
-> > Thanks Arvind, this is looking really good!
-> >
-> > Did you use any test code for the printf() parsing? Given that the
-> > kernel command line is not covered by secure boot signing (or the
-> > initrd, come to think of it), I'd hate to open up a security hole
-> > here.
-> >
-> I only did basic functional testing, I haven't tried to actually break
-> it.
->
-> I think the code will be robust enough to avoid overflowing the buffer
-> passed to vsnprintf, even if the output ends up being garbage due to
-> bugs.
->
-> That said, one thing in efi_convert_cmdline is that we use int to hold
-> both options_chars and options_bytes. The size of load options is
-> limited to uint32, so int should be ok for options_chars but
-> options_bytes could theoretically overflow?
->
-> In any case, there's no point parsing beyond COMMAND_LINE_SIZE anyway,
-> so we should limit options_bytes to COMMAND_LINE_SIZE-1 + terminating
-> NUL, and if it's longer we can either truncate it (blindly or at
-> whitespace?) or ignore the options altogether. I can add that in v2.
->
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git  next
+branch HEAD: e5fbadd1179cdadeaa44d71a9ec068c5bc100524  efi/libstub: use pool allocation for the command line
 
-Anything that will make it more robust is good to have.
+i386-tinyconfig vmlinux size:
 
-> One more question -- since the first version of the stub, we truncate
-> the command line at the first newline character. Do you know if there's
-> something that actually needs that?
->
++-------+------------------------------------+--------------------------------------------------------------------------+
+| DELTA |               SYMBOL               |                                  COMMIT                                  |
++-------+------------------------------------+--------------------------------------------------------------------------+
+|   +96 | TOTAL                              | 4da0b2b7e675..e5fbadd1179c (ALL COMMITS)                                 |
+|   +96 | TOTAL                              | de8c55208c38 efi/libstub: Fix mixed mode boot issue after macro refactor |
+|   +96 | TEXT                               | de8c55208c38 efi/libstub: Fix mixed mode boot issue after macro refactor |
+| +1355 | balance_dirty_pages()              | de8c55208c38 efi/libstub: Fix mixed mode boot issue after macro refactor |
+|  +615 | __setup_rt_frame()                 | de8c55208c38 efi/libstub: Fix mixed mode boot issue after macro refactor |
+|  +136 | arch/x86/events/zhaoxin/built-in.* | de8c55208c38 efi/libstub: Fix mixed mode boot issue after macro refactor |
+|  +113 | klist_release()                    | de8c55208c38 efi/libstub: Fix mixed mode boot issue after macro refactor |
+|   +93 | change_clocksource()               | de8c55208c38 efi/libstub: Fix mixed mode boot issue after macro refactor |
+|   +86 | release_bdi()                      | de8c55208c38 efi/libstub: Fix mixed mode boot issue after macro refactor |
+|   +84 | kobject_release()                  | de8c55208c38 efi/libstub: Fix mixed mode boot issue after macro refactor |
+|   -68 | bdi_put()                          | de8c55208c38 efi/libstub: Fix mixed mode boot issue after macro refactor |
+|   -77 | kobject_put()                      | de8c55208c38 efi/libstub: Fix mixed mode boot issue after macro refactor |
+|   -79 | timekeeping_notify()               | de8c55208c38 efi/libstub: Fix mixed mode boot issue after macro refactor |
+|   -99 | klist_dec_and_del()                | de8c55208c38 efi/libstub: Fix mixed mode boot issue after macro refactor |
+|  -555 | do_signal()                        | de8c55208c38 efi/libstub: Fix mixed mode boot issue after macro refactor |
+| -1383 | balance_dirty_pages_ratelimited()  | de8c55208c38 efi/libstub: Fix mixed mode boot issue after macro refactor |
++-------+------------------------------------+--------------------------------------------------------------------------+
 
-Not that I am aware of.
+elapsed time: 592m
 
-> efibootmgr can actually even set up the load options as a series of
-> NUL-terminated strings if you miss putting them all inside quotes :)
+configs tested: 119
+configs skipped: 5
 
-Someone else may have thought of that already, so we can't simply
-start treating anything past the first newline or \0 as part of the
-command line.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+arm64                            allyesconfig
+arm64                               defconfig
+arm64                            allmodconfig
+arm64                             allnoconfig
+arm                                 defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+arm                               allnoconfig
+sparc                            allyesconfig
+mips                             allyesconfig
+m68k                             allyesconfig
+powerpc                  mpc866_ads_defconfig
+h8300                    h8300h-sim_defconfig
+arm                           sunxi_defconfig
+arm                        magician_defconfig
+sh                         microdev_defconfig
+mips                              allnoconfig
+arm                          exynos_defconfig
+riscv                             allnoconfig
+arm                       omap2plus_defconfig
+sh                                  defconfig
+sh                           se7722_defconfig
+powerpc64                           defconfig
+riscv                          rv32_defconfig
+arc                        nsimosci_defconfig
+arc                        vdk_hs38_defconfig
+sh                           se7751_defconfig
+arm                       netwinder_defconfig
+arm                          iop32x_defconfig
+mips                          ath25_defconfig
+mips                         tb0287_defconfig
+powerpc                      mgcoge_defconfig
+um                           x86_64_defconfig
+powerpc                  storcenter_defconfig
+sh                            shmin_defconfig
+powerpc                      tqm8xx_defconfig
+arm                        shmobile_defconfig
+arm                           stm32_defconfig
+powerpc                       holly_defconfig
+mips                         tb0226_defconfig
+i386                              allnoconfig
+i386                             allyesconfig
+i386                                defconfig
+i386                              debian-10.3
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                              allnoconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                              allnoconfig
+m68k                           sun3_defconfig
+m68k                                defconfig
+nds32                               defconfig
+nds32                             allnoconfig
+csky                             allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+h8300                            allmodconfig
+xtensa                              defconfig
+nios2                               defconfig
+nios2                            allyesconfig
+openrisc                            defconfig
+c6x                              allyesconfig
+c6x                               allnoconfig
+openrisc                         allyesconfig
+arc                                 defconfig
+arc                              allyesconfig
+sh                               allmodconfig
+sh                                allnoconfig
+microblaze                        allnoconfig
+mips                             allmodconfig
+parisc                            allnoconfig
+parisc                              defconfig
+parisc                           allyesconfig
+parisc                           allmodconfig
+powerpc                             defconfig
+powerpc                          allyesconfig
+powerpc                          rhel-kconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+i386                 randconfig-a006-20200519
+i386                 randconfig-a005-20200519
+i386                 randconfig-a001-20200519
+i386                 randconfig-a003-20200519
+i386                 randconfig-a004-20200519
+i386                 randconfig-a002-20200519
+i386                 randconfig-a012-20200519
+i386                 randconfig-a014-20200519
+i386                 randconfig-a016-20200519
+i386                 randconfig-a011-20200519
+i386                 randconfig-a015-20200519
+i386                 randconfig-a013-20200519
+x86_64               randconfig-a003-20200519
+riscv                            allyesconfig
+riscv                               defconfig
+riscv                            allmodconfig
+s390                             allyesconfig
+s390                              allnoconfig
+s390                             allmodconfig
+s390                                defconfig
+sparc                               defconfig
+sparc64                             defconfig
+sparc64                           allnoconfig
+sparc64                          allyesconfig
+sparc64                          allmodconfig
+um                               allmodconfig
+um                                allnoconfig
+um                                  defconfig
+um                               allyesconfig
+x86_64                                   rhel
+x86_64                               rhel-7.6
+x86_64                    rhel-7.6-kselftests
+x86_64                         rhel-7.2-clear
+x86_64                                    lkp
+x86_64                              fedora-25
+x86_64                                  kexec
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
