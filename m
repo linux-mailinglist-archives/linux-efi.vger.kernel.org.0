@@ -2,147 +2,111 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 727751DBBB8
-	for <lists+linux-efi@lfdr.de>; Wed, 20 May 2020 19:41:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A2A351DBC19
+	for <lists+linux-efi@lfdr.de>; Wed, 20 May 2020 19:57:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726727AbgETRlD (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 20 May 2020 13:41:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58104 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726691AbgETRlD (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 20 May 2020 13:41:03 -0400
-Received: from mail-qk1-x744.google.com (mail-qk1-x744.google.com [IPv6:2607:f8b0:4864:20::744])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2587AC061A0E
-        for <linux-efi@vger.kernel.org>; Wed, 20 May 2020 10:41:03 -0700 (PDT)
-Received: by mail-qk1-x744.google.com with SMTP id f83so4357078qke.13
-        for <linux-efi@vger.kernel.org>; Wed, 20 May 2020 10:41:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:from:date:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=URcpVJ4JyI57kr8iGfQFjLThhOWvhbh5pUatdFl6RX0=;
-        b=keV7XTh4eKjU5X7A4OB8uJlutr1YaW4DzruYCqDiJAHT+hlGdTCyWIR+tfp1bSHfg/
-         wb5RQ3bAzBnbrN2cG5JghiUKvNDPg+NcsWzfrbJHYP8QSXF6u46aLDHbCLWpbDOU5ADy
-         NF/E2x2JuElkMplS21QHAkhrlAOnw1Yz7aKS8ek6laWM5shmX07KcedVzjvch8UZN55Q
-         phg3KLdELXJ0loHNGlllX9mCz3jRENl54GT6OUZkYbm2aGs/hiZbNm+QGpFqgoeBtc6/
-         vHqz8hRF03ypgxQWcRvZ758mzIogDnFMbyxHHWRdXlWOkeic7OK0os1vX9UT7nX/oQYW
-         zcpw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:from:date:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to;
-        bh=URcpVJ4JyI57kr8iGfQFjLThhOWvhbh5pUatdFl6RX0=;
-        b=hCIC+S/4Lxp8lyN+tmy/7yKMZWztIXdJh/WdaJEN7yfzAf313+T3BtyiAORUCT1tCi
-         WbF8OAUR4lw5IF1gorTtJ6OpyGtjJQ+X8VSRIfT/SrEDb8qVFCdlHGxY+zsJzcllPzy3
-         2jgDUUaJeDFm/+WiMUeDnbnVt74Vi05xPsdDeNUvsYzfQzKEgr7tOC5oQgscAPWnJW5F
-         /c2nyY2bPdP6f5b7+35SxNd/xbWgQ2JFcULwFw9/NWp/9TCQp9GiXlBDq2Z5AGju7VcQ
-         UgJ5XWhesSf13f1D+Os9muklzUllKvRc0iP5kEGIl1+YfNNSZDUNSDhYVEiTLWZyhz60
-         ot2A==
-X-Gm-Message-State: AOAM5328IlPJ7bfvN5He3h2M+GKXN9aJaKEPsqLTj9p/Wnk4/nc5FxlM
-        kNlfaO9elWMI1j0gpvnyuWk=
-X-Google-Smtp-Source: ABdhPJxlTehEtmapECoCvCig3puREjMQ/z8NipxQnBEyp/X4jRrBCVOyD5IRRB8Bg84moopL/SM34A==
-X-Received: by 2002:a37:bd81:: with SMTP id n123mr5662348qkf.57.1589996462293;
-        Wed, 20 May 2020 10:41:02 -0700 (PDT)
-Received: from rani.riverdale.lan ([2001:470:1f07:5f3::b55f])
-        by smtp.gmail.com with ESMTPSA id 99sm2828391qte.93.2020.05.20.10.41.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 May 2020 10:41:01 -0700 (PDT)
-From:   Arvind Sankar <nivedita@alum.mit.edu>
-X-Google-Original-From: Arvind Sankar <arvind@rani.riverdale.lan>
-Date:   Wed, 20 May 2020 13:41:00 -0400
+        id S1726688AbgETR5G (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 20 May 2020 13:57:06 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:47022 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726576AbgETR5F (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 20 May 2020 13:57:05 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04KHltod092459;
+        Wed, 20 May 2020 17:56:58 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2020-01-29;
+ bh=yB+sRelD8Yf/aSv30BZHaKCU1UG7BPZ/0HtXQYWn5xs=;
+ b=wyrlqKfo3S/VpYOlW0fRofmnh3EG4lJIGY0jgiuiMDclu1eHGOk85Av/OGZZBl4hPOrc
+ a7uzR8I29QRtldHc9I9DFOHBoFLXLm+gtWKbvNqh75X3eQjJ5l5/eZZvWmj/OoRSu+vL
+ Yk37i+Ax+G1mGnlhLMPcdjq4RJ3puqQJOyFC9JIipHwN8fBLvSewOwOLgpdQE6ArWHkY
+ G64DX31tjSl7aB/5PIIzOGnxHhe34GOQg/aK08VrW8Wou1KTgo2ukAfxJ0FhfbOEtWi7
+ LhLbj4Q9t9ZxglU5owCOzzNrzjuXmMVd+5uzWBFvTexgpTYxFyL71I1i8Q5y6uenzPq7 rA== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by aserp2120.oracle.com with ESMTP id 31284m4jaq-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 20 May 2020 17:56:58 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04KHrCY9176547;
+        Wed, 20 May 2020 17:54:58 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by userp3020.oracle.com with ESMTP id 315020pkte-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 20 May 2020 17:54:57 +0000
+Received: from abhmp0002.oracle.com (abhmp0002.oracle.com [141.146.116.8])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 04KHsuWZ015729;
+        Wed, 20 May 2020 17:54:56 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Wed, 20 May 2020 10:54:55 -0700
+Date:   Wed, 20 May 2020 20:54:49 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
 To:     Arvind Sankar <nivedita@alum.mit.edu>
-Cc:     Fangrui Song <maskray@google.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        kbuild test robot <lkp@intel.com>, kbuild-all@lists.01.org,
-        clang-built-linux <clang-built-linux@googlegroups.com>,
-        linux-efi <linux-efi@vger.kernel.org>
-Subject: Re: [efi:next 22/40] ld.lld: warning:
- vsprintf.c:(.discard.unreachable+0x0): has non-ABS relocation R_X86_64_PC32
- against symbol ''
-Message-ID: <20200520174100.GB3365034@rani.riverdale.lan>
-References: <202005201012.pqmB8hA5%lkp@intel.com>
- <20200520155352.GB3184088@rani.riverdale.lan>
- <CAMj1kXGNmDPQRCCtRYFRa+0NW9kADnx327FzPbNge+MU+NFoVg@mail.gmail.com>
- <20200520173425.ovn4kvv2cvkdlrnn@google.com>
- <20200520173926.GA3365034@rani.riverdale.lan>
+Cc:     kbuild@lists.01.org, lkp@intel.com, kbuild-all@lists.01.org,
+        linux-efi@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>
+Subject: Re: [efi:next 39/40]
+ drivers/firmware/efi/libstub/efi-stub-helper.c:265 efi_convert_cmdline()
+ warn: qualifier 'l' ignored for %s specifier
+Message-ID: <20200520175449.GR3041@kadam>
+References: <20200520140903.GA30374@kadam>
+ <20200520154308.GA3184088@rani.riverdale.lan>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200520173926.GA3365034@rani.riverdale.lan>
+In-Reply-To: <20200520154308.GA3184088@rani.riverdale.lan>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9627 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 bulkscore=0 suspectscore=0 phishscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2005200145
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9627 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 mlxscore=0
+ cotscore=-2147483648 impostorscore=0 malwarescore=0 mlxlogscore=999
+ lowpriorityscore=0 phishscore=0 spamscore=0 bulkscore=0 adultscore=0
+ priorityscore=1501 clxscore=1015 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2004280000 definitions=main-2005200144
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, May 20, 2020 at 01:39:26PM -0400, Arvind Sankar wrote:
-> On Wed, May 20, 2020 at 10:34:25AM -0700, Fangrui Song wrote:
-> > On 2020-05-20, Ard Biesheuvel wrote:
-> > >On Wed, 20 May 2020 at 17:53, Arvind Sankar <nivedita@alum.mit.edu> wrote:
-> > >>
-> > >> On Wed, May 20, 2020 at 10:28:13AM +0800, kbuild test robot wrote:
-> > >> > tree:   https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git next
-> > >> > head:   e5fbadd1179cdadeaa44d71a9ec068c5bc100524
-> > >> > commit: ce5e3f909fc0ed67e58367b9c56a54c20a51080b [22/40] efi/printf: Add 64-bit and 8-bit integer support
-> > >> > config: x86_64-defconfig (attached as .config)
-> > >> > compiler: clang version 11.0.0 (https://github.com/llvm/llvm-project 135b877874fae96b4372c8a3fbfaa8ff44ff86e3)
-> > >> > reproduce:
-> > >> >         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-> > >> >         chmod +x ~/bin/make.cross
-> > >> >         # install x86_64 cross compiling tool for clang build
-> > >> >         # apt-get install binutils-x86-64-linux-gnu
-> > >> >         git checkout ce5e3f909fc0ed67e58367b9c56a54c20a51080b
-> > >> >         # save the attached .config to linux build tree
-> > >> >         COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross ARCH=x86_64
-> > >> >
-> > >> > If you fix the issue, kindly add following tag as appropriate
-> > >> > Reported-by: kbuild test robot <lkp@intel.com>
-> > >> >
-> > >> > All warnings (new ones prefixed by >>, old ones prefixed by <<):
-> > >> >
-> > >> > >> ld.lld: warning: vsprintf.c:(.discard.unreachable+0x0): has non-ABS relocation R_X86_64_PC32 against symbol ''
-> > >> >
-> > >> > ---
-> > >> > 0-DAY CI Kernel Test Service, Intel Corporation
-> > >> > https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
-> > >>
-> > >> Clang folk, is anything actually wrong here? This seems to result from
-> > >> use of unreachable() annotation, which generates these
-> > >> .discard.unreachable sections apparently to help objtool.
-> > >>
-> > >
-> > >This came up before, and IIRC, it has already been fixed, only this
-> > >branch is based on v5.7-rc2.
+On Wed, May 20, 2020 at 11:43:08AM -0400, Arvind Sankar wrote:
+> On Wed, May 20, 2020 at 05:09:03PM +0300, Dan Carpenter wrote:
+> > tree:   https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git next
+> > head:   e5fbadd1179cdadeaa44d71a9ec068c5bc100524
+> > commit: 85f5afd4322d294a7eca0d304744a1646113fbd9 [39/40] efi/libstub: Use snprintf with %ls to convert the command line
+> > config: x86_64-defconfig (attached as .config)
 > > 
-> > LLD reports the diagnostic because a PC-relative relocation referencing a
-> > SHF_ALLOC section from a non-SHF_ALLOC section (.discard.unreachable) cannot be
-> > reasonably represented. A non-SHF_ALLOC section is not part of the memory image, thus conceptually
-> > the distance between a non-SHF_ALLOC and a SHF_ALLOC is not a constant which can be resolved at linktime.
-> > This is actually a nice diagnostic which has caught a number of issues.
+> > If you fix the issue, kindly add following tag as appropriate
+> > Reported-by: kbuild test robot <lkp@intel.com>
+> > Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
 > > 
-> > % readelf -Wr drivers/firmware/efi/libstub/vsprintf.stub.o
-> > ..
-> > Relocation section '.rela.discard.unreachable' at offset 0xe38 contains 1 entry:
-> >      Offset             Info             Type               Symbol's Value  Symbol's Name + Addend
-> > 0000000000000000  0000000600000002 R_X86_64_PC32          0000000000000000 .text + ac0
+> > New smatch warnings:
+> > drivers/firmware/efi/libstub/efi-stub-helper.c:265 efi_convert_cmdline() warn: qualifier 'l' ignored for %s specifier
 > > 
-> > ---
+> > # https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git/commit/?id=85f5afd4322d294a7eca0d304744a1646113fbd9
+> > git remote add efi https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git
+> > git remote update efi
+> > git checkout 85f5afd4322d294a7eca0d304744a1646113fbd9
+> > vim +/l +265 drivers/firmware/efi/libstub/efi-stub-helper.c
 > > 
-> > The linker command line is:
-> > 
-> > % ld.lld -m elf_x86_64 -T arch/x86/boot/compressed/vmlinux.lds arch/x86/boot/compressed/kernel_info.o arch/x86/boot/compressed/head_64.o arch/x86/boot/compressed/misc.o arch/x86/boot/compressed/string.o arch/x86/boot/compressed/cmdline.o arch/x86/boot/compressed/error.o arch/x86/boot/compressed/piggy.o arch/x86/boot/compressed/cpuflags.o arch/x86/boot/compressed/early_serial_console.o arch/x86/boot/compressed/kaslr.o arch/x86/boot/compressed/kaslr_64.o arch/x86/boot/compressed/mem_encrypt.o arch/x86/boot/compressed/pgtable_64.o arch/x86/boot/compressed/acpi.o drivers/firmware/efi/libstub/lib.a arch/x86/boot/compressed/efi_thunk_64.o -o arch/x86/boot/compressed/vmlinux
-> > ld.lld: warning: vsprintf.c:(.discard.unreachable+0x0): has non-ABS relocation R_X86_64_PC32 against symbol ''
-> > 
-> > arch/x86/boot/compressed/vmlinux has an output section .discard.unreachable , which is likely desired.
+> > c625d1c203941f drivers/firmware/efi/efi-stub-helper.c         H. Peter Anvin 2013-09-20  258  	options_bytes++;	/* NUL termination */
+> > 9403e462fb5ffa drivers/firmware/efi/efi-stub-helper.c         Leif Lindholm  2014-04-04  259  
+> > 1e45bf7372c48c drivers/firmware/efi/libstub/efi-stub-helper.c Ard Biesheuvel 2020-02-10  260  	status = efi_allocate_pages(options_bytes, &cmdline_addr, max_addr);
+> > 5fef3870c572a3 drivers/firmware/efi/efi-stub-helper.c         Roy Franz      2013-09-22  261  	if (status != EFI_SUCCESS)
+> > 5fef3870c572a3 drivers/firmware/efi/efi-stub-helper.c         Roy Franz      2013-09-22  262  		return NULL;
+> > 5fef3870c572a3 drivers/firmware/efi/efi-stub-helper.c         Roy Franz      2013-09-22  263  
+> > 85f5afd4322d29 drivers/firmware/efi/libstub/efi-stub-helper.c Arvind Sankar  2020-05-18  264  	snprintf((char *)cmdline_addr, options_bytes, "%.*ls",
+> >                                                                                                                                                   ^
+> > The "l" doesn't make sense here?
 > 
-> You mean /not/ desired, right?
-> 
-> > 
-> > Note that arch/x86/kernel/vmlinux.lds.S has an output section description /DISCARD/ : { ... *(.discard.*) ... },
-> > but arch/x86/boot/compressed/vmlinux doesn't.
-> > 
-> > We can let arch/x86/boot/compressed/vmlinux reuse the /DISCARD/ to fix the issue.
-> 
-> Yep.
+> The previous patches add support for wide strings to the version of
+> snprintf used here.
 
-As an aside, how does one (should I) get onto kbuild-all? It keeps
-bouncing me as a non-list member currently.
+Ah.  Thanks.  I will update the Smatch check.
+
+regards,
+dan carpenter
+
