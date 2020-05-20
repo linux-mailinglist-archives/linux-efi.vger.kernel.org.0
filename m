@@ -2,111 +2,82 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A2A351DBC19
-	for <lists+linux-efi@lfdr.de>; Wed, 20 May 2020 19:57:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C8A5D1DBC14
+	for <lists+linux-efi@lfdr.de>; Wed, 20 May 2020 19:56:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726688AbgETR5G (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 20 May 2020 13:57:06 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:47022 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726576AbgETR5F (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 20 May 2020 13:57:05 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04KHltod092459;
-        Wed, 20 May 2020 17:56:58 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2020-01-29;
- bh=yB+sRelD8Yf/aSv30BZHaKCU1UG7BPZ/0HtXQYWn5xs=;
- b=wyrlqKfo3S/VpYOlW0fRofmnh3EG4lJIGY0jgiuiMDclu1eHGOk85Av/OGZZBl4hPOrc
- a7uzR8I29QRtldHc9I9DFOHBoFLXLm+gtWKbvNqh75X3eQjJ5l5/eZZvWmj/OoRSu+vL
- Yk37i+Ax+G1mGnlhLMPcdjq4RJ3puqQJOyFC9JIipHwN8fBLvSewOwOLgpdQE6ArWHkY
- G64DX31tjSl7aB/5PIIzOGnxHhe34GOQg/aK08VrW8Wou1KTgo2ukAfxJ0FhfbOEtWi7
- LhLbj4Q9t9ZxglU5owCOzzNrzjuXmMVd+5uzWBFvTexgpTYxFyL71I1i8Q5y6uenzPq7 rA== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by aserp2120.oracle.com with ESMTP id 31284m4jaq-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 20 May 2020 17:56:58 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04KHrCY9176547;
-        Wed, 20 May 2020 17:54:58 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by userp3020.oracle.com with ESMTP id 315020pkte-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 20 May 2020 17:54:57 +0000
-Received: from abhmp0002.oracle.com (abhmp0002.oracle.com [141.146.116.8])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 04KHsuWZ015729;
-        Wed, 20 May 2020 17:54:56 GMT
-Received: from kadam (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 20 May 2020 10:54:55 -0700
-Date:   Wed, 20 May 2020 20:54:49 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Arvind Sankar <nivedita@alum.mit.edu>
-Cc:     kbuild@lists.01.org, lkp@intel.com, kbuild-all@lists.01.org,
-        linux-efi@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>
-Subject: Re: [efi:next 39/40]
- drivers/firmware/efi/libstub/efi-stub-helper.c:265 efi_convert_cmdline()
- warn: qualifier 'l' ignored for %s specifier
-Message-ID: <20200520175449.GR3041@kadam>
-References: <20200520140903.GA30374@kadam>
- <20200520154308.GA3184088@rani.riverdale.lan>
+        id S1726754AbgETR4l (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 20 May 2020 13:56:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60528 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726576AbgETR4k (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 20 May 2020 13:56:40 -0400
+Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com [IPv6:2607:f8b0:4864:20::542])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7B64C061A0E
+        for <linux-efi@vger.kernel.org>; Wed, 20 May 2020 10:56:40 -0700 (PDT)
+Received: by mail-pg1-x542.google.com with SMTP id s10so1809091pgm.0
+        for <linux-efi@vger.kernel.org>; Wed, 20 May 2020 10:56:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=Pty6C2nrLJxasEr51wGRq0lQ2nqP2bOfYIiMHMUP8D4=;
+        b=sEj297nZW6hx12Of6Jrt2tzuj8Tydj3iqonbVwfnj8wMbBdLZwyqzlMMBPBF73QUz8
+         8usHo5Y5t0YB1HVGDsdsizXL8LvEga4tgkQztpHhHYutc2629WqAZ8enT5ePwRdxp/86
+         sMYRmmeFusUz0Meaaey/Q2du7Df9Ou69oR6XnoCpgzOtJPc12TrR6GxR7WuvTzMjvl7p
+         tCVjjwQCSNL/edZcUKMg9yc9gtHbGrf2yTqhk7u3ibGEXM5FhO/siy+jGmNNiZlI6o2v
+         g5KPQO+eB2zIY6+BNqwt6+YSGEFrwOki0BZBcFHgB+oQi9WbXBbntmEX3DUN9vyCLdKI
+         nYbg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Pty6C2nrLJxasEr51wGRq0lQ2nqP2bOfYIiMHMUP8D4=;
+        b=K5W7LXSyKrW6r3PHPnntwVv3Xtxv4dO59xryKl/5rksh4Iyk9WwkRmdKkto0j993aS
+         xXNNnreTr30YlbXBTM6Tyy/QEKdwaaE7b2N0HdGAkDAXm/FBwttkns5YpQWIEEtSU7g7
+         LIIqAXjoQSSmWAhMxwAhHxpZz7lmSIVX4EhZUbl68r8OCBCiDe90NJN0xw1+K6MSFCHH
+         HsI4M/Ooh+H3ndg9eJMGj6HfUkIqn9KFA4Mjk8rkwN+PLpxRd44mJP7dXOAiN+3z0E6E
+         7zr8T+4IMYuXbQM+Aga4XovmOSO/vgRn5AXar+C/DfdZ+01ITgca7qAhzqxiiDmIjbM5
+         ttMg==
+X-Gm-Message-State: AOAM531kPTFc0UT8vPdggQqusP7g1U8hx2ytaQOJaWsOBt7R1fHNcis5
+        BUxivEDl5te/IMyzLoIUtXcCmmnNdloAkSEmxb0X2Q==
+X-Google-Smtp-Source: ABdhPJz7f2ctcvowLB8POxF7O44Xzl0pcHw/Wjh4YQjO4B8g4KIXAQLFcp5F4S8dtKLWiqJILKDI+ym+AVAN8VG54Qc=
+X-Received: by 2002:a63:d010:: with SMTP id z16mr4949420pgf.381.1589997399878;
+ Wed, 20 May 2020 10:56:39 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200520154308.GA3184088@rani.riverdale.lan>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9627 signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxscore=0 mlxlogscore=999
- adultscore=0 bulkscore=0 suspectscore=0 phishscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2005200145
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9627 signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 mlxscore=0
- cotscore=-2147483648 impostorscore=0 malwarescore=0 mlxlogscore=999
- lowpriorityscore=0 phishscore=0 spamscore=0 bulkscore=0 adultscore=0
- priorityscore=1501 clxscore=1015 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2004280000 definitions=main-2005200144
+References: <202005201012.pqmB8hA5%lkp@intel.com> <20200520155352.GB3184088@rani.riverdale.lan>
+ <CAMj1kXGNmDPQRCCtRYFRa+0NW9kADnx327FzPbNge+MU+NFoVg@mail.gmail.com>
+ <20200520173425.ovn4kvv2cvkdlrnn@google.com> <20200520173926.GA3365034@rani.riverdale.lan>
+ <20200520174100.GB3365034@rani.riverdale.lan>
+In-Reply-To: <20200520174100.GB3365034@rani.riverdale.lan>
+From:   Nick Desaulniers <ndesaulniers@google.com>
+Date:   Wed, 20 May 2020 10:56:28 -0700
+Message-ID: <CAKwvOdns1LkmPNAGcOZRdXxD_2fTgbYzr0DndvsTVL-Zuuowgg@mail.gmail.com>
+Subject: Re: [efi:next 22/40] ld.lld: warning: vsprintf.c:(.discard.unreachable+0x0):
+ has non-ABS relocation R_X86_64_PC32 against symbol ''
+To:     Arvind Sankar <nivedita@alum.mit.edu>
+Cc:     Fangrui Song <maskray@google.com>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        kbuild test robot <lkp@intel.com>, kbuild-all@lists.01.org,
+        clang-built-linux <clang-built-linux@googlegroups.com>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        Philip Li <philip.li@intel.com>,
+        Chen Rong <rong.a.chen@intel.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, May 20, 2020 at 11:43:08AM -0400, Arvind Sankar wrote:
-> On Wed, May 20, 2020 at 05:09:03PM +0300, Dan Carpenter wrote:
-> > tree:   https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git next
-> > head:   e5fbadd1179cdadeaa44d71a9ec068c5bc100524
-> > commit: 85f5afd4322d294a7eca0d304744a1646113fbd9 [39/40] efi/libstub: Use snprintf with %ls to convert the command line
-> > config: x86_64-defconfig (attached as .config)
-> > 
-> > If you fix the issue, kindly add following tag as appropriate
-> > Reported-by: kbuild test robot <lkp@intel.com>
-> > Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
-> > 
-> > New smatch warnings:
-> > drivers/firmware/efi/libstub/efi-stub-helper.c:265 efi_convert_cmdline() warn: qualifier 'l' ignored for %s specifier
-> > 
-> > # https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git/commit/?id=85f5afd4322d294a7eca0d304744a1646113fbd9
-> > git remote add efi https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git
-> > git remote update efi
-> > git checkout 85f5afd4322d294a7eca0d304744a1646113fbd9
-> > vim +/l +265 drivers/firmware/efi/libstub/efi-stub-helper.c
-> > 
-> > c625d1c203941f drivers/firmware/efi/efi-stub-helper.c         H. Peter Anvin 2013-09-20  258  	options_bytes++;	/* NUL termination */
-> > 9403e462fb5ffa drivers/firmware/efi/efi-stub-helper.c         Leif Lindholm  2014-04-04  259  
-> > 1e45bf7372c48c drivers/firmware/efi/libstub/efi-stub-helper.c Ard Biesheuvel 2020-02-10  260  	status = efi_allocate_pages(options_bytes, &cmdline_addr, max_addr);
-> > 5fef3870c572a3 drivers/firmware/efi/efi-stub-helper.c         Roy Franz      2013-09-22  261  	if (status != EFI_SUCCESS)
-> > 5fef3870c572a3 drivers/firmware/efi/efi-stub-helper.c         Roy Franz      2013-09-22  262  		return NULL;
-> > 5fef3870c572a3 drivers/firmware/efi/efi-stub-helper.c         Roy Franz      2013-09-22  263  
-> > 85f5afd4322d29 drivers/firmware/efi/libstub/efi-stub-helper.c Arvind Sankar  2020-05-18  264  	snprintf((char *)cmdline_addr, options_bytes, "%.*ls",
-> >                                                                                                                                                   ^
-> > The "l" doesn't make sense here?
-> 
-> The previous patches add support for wide strings to the version of
-> snprintf used here.
+On Wed, May 20, 2020 at 10:41 AM Arvind Sankar <nivedita@alum.mit.edu> wrote:
+>
+> As an aside, how does one (should I) get onto kbuild-all? It keeps
+> bouncing me as a non-list member currently.
 
-Ah.  Thanks.  I will update the Smatch check.
-
-regards,
-dan carpenter
-
+Philip Li <philip.li@intel.com>
+Chen Rong <rong.a.chen@intel.com>
+are the two folks I always reference for 0day bot related questions. I
+haven't seen bounces, but I also don't recall subscribing to any
+related mailing lists.  Maybe I was added to one?
+-- 
+Thanks,
+~Nick Desaulniers
