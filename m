@@ -2,156 +2,131 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 066B01DE568
-	for <lists+linux-efi@lfdr.de>; Fri, 22 May 2020 13:32:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B15581DE79E
+	for <lists+linux-efi@lfdr.de>; Fri, 22 May 2020 15:06:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729658AbgEVLcZ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 22 May 2020 07:32:25 -0400
-Received: from mail.kernel.org ([198.145.29.99]:41558 "EHLO mail.kernel.org"
+        id S1729046AbgEVNGf (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 22 May 2020 09:06:35 -0400
+Received: from mail.kernel.org ([198.145.29.99]:46060 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728281AbgEVLcY (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Fri, 22 May 2020 07:32:24 -0400
-Received: from mail-io1-f50.google.com (mail-io1-f50.google.com [209.85.166.50])
+        id S1728898AbgEVNGe (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Fri, 22 May 2020 09:06:34 -0400
+Received: from mail-il1-f174.google.com (mail-il1-f174.google.com [209.85.166.174])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A756420825;
-        Fri, 22 May 2020 11:32:23 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 46EFA20825;
+        Fri, 22 May 2020 13:06:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1590147143;
-        bh=btO8dneIHmfPGOmIgBvqxryNd/NmrdBoDkXLictJqrk=;
+        s=default; t=1590152793;
+        bh=vjTmQw0BEnjuvo3CGKwGmgIAJmzCaayCTiJ5wxYbMsg=;
         h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=Rfh4SEbAEPtCnYXpk3OHCC/o+2FL9NyR+ypO4n1PpNFyghj99NyQgvlG0klOuTppN
-         sKe3uLE3Kz5n12u4Ni0xxikCCePD6wLj+NKO76W71TNMm0wbTCJJNdkiGIqjmd9Dr/
-         m0YsyCiXUxEUxbPEDwpSMKbnZ+40SMwiFOPeXDSw=
-Received: by mail-io1-f50.google.com with SMTP id d5so1478475ios.9;
-        Fri, 22 May 2020 04:32:23 -0700 (PDT)
-X-Gm-Message-State: AOAM530FMj5UZFelj7Un0Vlv2tFXurdDubcQlXJ3Z/zgdGNKANG1wLkP
-        EvEiLGYOzRNWU0f6y9gd2OeuQl8/eDxxYZqoxSg=
-X-Google-Smtp-Source: ABdhPJziirz1xLPrEZkdc4B9jJ2JPP+w7tJOZ9gU38sn1sSwxAM61EfRS+w88yUqIIEfub5x40aA+oT5SbrTfmAr6fI=
-X-Received: by 2002:a5d:81d7:: with SMTP id t23mr1676129iol.142.1590147142933;
- Fri, 22 May 2020 04:32:22 -0700 (PDT)
+        b=KyI0WSj4naqZfhMsfQ/SRzzEsQPFbfdOphOSoui+TLRiUJ+np9K3bJnN5DdMzWoEM
+         CnOGrIhyLn4x7NAgqdr7SBZGcligzmcnSwKgOkoxEsVY42aSvu/YUO9rp71MNayN6J
+         k+sycbum8ovl7BsceuWSe3PkYKXbLUtbbdVlFOfY=
+Received: by mail-il1-f174.google.com with SMTP id b15so10555141ilq.12;
+        Fri, 22 May 2020 06:06:33 -0700 (PDT)
+X-Gm-Message-State: AOAM530ZggOmiajxMrJ0uZT2OSGC9mO8BqQdE7V+AJtTjzjD1ZSTQfMl
+        Vn4XNOZh89WcYt/wuBtqDdmEtyQhwaf8kwQ71YA=
+X-Google-Smtp-Source: ABdhPJx+t33PpWpnU28e1lAYt0t2+lAZpwZin3BFlts0fUSJB9fnFcamPhk2uejVRy6ikVFS9nsVPMHg+sP9psveAYQ=
+X-Received: by 2002:a92:3556:: with SMTP id c83mr11937439ila.218.1590152792429;
+ Fri, 22 May 2020 06:06:32 -0700 (PDT)
 MIME-Version: 1.0
-References: <1584200119-18594-1-git-send-email-mikelley@microsoft.com>
- <1584200119-18594-10-git-send-email-mikelley@microsoft.com>
- <CAK8P3a1YUjhaVUmjVC2pCoTTBTU408iN44Q=QZ0RDz8rmzJisQ@mail.gmail.com>
- <MW2PR2101MB10524254D2FE3EFC72329465D7F70@MW2PR2101MB1052.namprd21.prod.outlook.com>
- <CAK8P3a1YCtc3LJ-_3iT90_Srehb96gLHvTXsbJ0wT6NFYCG=TQ@mail.gmail.com>
- <MW2PR2101MB1052E413218D295EF24E5E05D7F40@MW2PR2101MB1052.namprd21.prod.outlook.com>
- <f2b63853-24ae-d6b7-cd43-5792c0d4d31b@nvidia.com> <4202ea20-6e51-31d3-44b1-3861798a8158@nvidia.com>
- <CAMj1kXEpryfqk5eKxB5NrDcriEBRQKEHnDVZNBMfB4DY=708fw@mail.gmail.com> <e8850c9b-965a-9ed4-fb22-f41de5f72b60@nvidia.com>
-In-Reply-To: <e8850c9b-965a-9ed4-fb22-f41de5f72b60@nvidia.com>
+References: <20200517125754.8934-1-ardb@kernel.org>
+In-Reply-To: <20200517125754.8934-1-ardb@kernel.org>
 From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Fri, 22 May 2020 13:32:11 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXGFM020jUTh+D4dcyy2jxoDBB=FHgozRC4R3w_mpHETJQ@mail.gmail.com>
-Message-ID: <CAMj1kXGFM020jUTh+D4dcyy2jxoDBB=FHgozRC4R3w_mpHETJQ@mail.gmail.com>
-Subject: Re: [PATCH v6 09/10] arm64: efi: Export screen_info
-To:     Nikhil Mahale <nmahale@nvidia.com>
-Cc:     Michael Kelley <mikelley@microsoft.com>,
-        Arnd Bergmann <arnd@arndb.de>, Will Deacon <will@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Marc Zyngier <maz@kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        gregkh <gregkh@linuxfoundation.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        "olaf@aepfle.de" <olaf@aepfle.de>,
-        Andy Whitcroft <apw@canonical.com>,
-        vkuznets <vkuznets@redhat.com>, Jason Wang <jasowang@redhat.com>,
-        "marcelo.cerri@canonical.com" <marcelo.cerri@canonical.com>,
-        KY Srinivasan <kys@microsoft.com>,
-        Sunil Muthuswamy <sunilmut@microsoft.com>,
-        Boqun Feng <boqun.feng@gmail.com>
+Date:   Fri, 22 May 2020 15:06:20 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXGUxPuQCv9KPezqpLf1qLTbJh_j9JeVnnYZ=HbnL65=AQ@mail.gmail.com>
+Message-ID: <CAMj1kXGUxPuQCv9KPezqpLf1qLTbJh_j9JeVnnYZ=HbnL65=AQ@mail.gmail.com>
+Subject: Re: [GIT PULL 0/7] EFI fixes for v5.7
+To:     linux-efi <linux-efi@vger.kernel.org>,
+        Ingo Molnar <mingo@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Arvind Sankar <nivedita@alum.mit.edu>,
+        Benjamin Thiel <b.thiel@posteo.de>,
+        Borislav Petkov <bp@alien8.de>, Dave Young <dyoung@redhat.com>,
+        Heinrich Schuchardt <xypron.glpk@gmx.de>,
+        Javier Martinez Canillas <javierm@redhat.com>,
+        Jerry Snitselaar <jsnitsel@redhat.com>,
+        Lenny Szubowicz <lszubowi@redhat.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Loic Yhuel <loic.yhuel@gmail.com>,
+        Matthew Garrett <mjg59@google.com>,
+        Mike Lothian <mike@fireburn.co.uk>,
+        Punit Agrawal <punit1.agrawal@toshiba.co.jp>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, 22 May 2020 at 13:15, Nikhil Mahale <nmahale@nvidia.com> wrote:
+On Sun, 17 May 2020 at 14:58, Ard Biesheuvel <ardb@kernel.org> wrote:
 >
-> On 5/18/20 6:21 PM, Ard Biesheuvel wrote:
-> > External email: Use caution opening links or attachments
-> >
-> >
-> > On Mon, 18 May 2020 at 06:25, Nikhil Mahale <nmahale@nvidia.com> wrote:
-> >>
-> >> On 5/13/20 7:56 PM, Nikhil Mahale wrote:
-> >>> On 3/20/20 3:16 AM, Michael Kelley wrote:
-> >>>> From: Arnd Bergmann <arnd@arndb.de> Sent: Wednesday, March 18, 2020 2:27 AM
-> >>>>>
-> >>>>> On Wed, Mar 18, 2020 at 1:18 AM Michael Kelley <mikelley@microsoft.com> wrote:
-> >>>>>> From: Arnd Bergmann <arnd@arndb.de>
-> >>>>>>> On Sat, Mar 14, 2020 at 4:36 PM Michael Kelley <mikelley@microsoft.com> wrote:
-> >>>>>>>>
-> >>>>>>>> The Hyper-V frame buffer driver may be built as a module, and
-> >>>>>>>> it needs access to screen_info. So export screen_info.
-> >>>>>>>>
-> >>>>>>>> Signed-off-by: Michael Kelley <mikelley@microsoft.com>
-> >>>>>>>
-> >>>>>>> Is there any chance of using a more modern KMS based driver for the screen
-> >>>>>>> than the old fbdev subsystem? I had hoped to one day completely remove
-> >>>>>>> support for the old CONFIG_VIDEO_FBDEV and screen_info from modern
-> >>>>>>> architectures.
-> >>>>>>>
-> >>>>>>
-> >>>>>> The current hyperv_fb.c driver is all we have today for the synthetic Hyper-V
-> >>>>>> frame buffer device.  That driver builds and runs on both ARM64 and x86.
-> >>>>>>
-> >>>>>> I'm not knowledgeable about video/graphics drivers, but when you
-> >>>>>> say "a more modern KMS based driver", are you meaning one based on
-> >>>>>> DRM & KMS?  Does DRM make sense for a "dumb" frame buffer device?
-> >>>>>> Are there any drivers that would be a good pattern to look at?
-> >>>>>
-> >>>>> It used to be a lot harder to write a DRM driver compared to an fbdev
-> >>>>> driver, but this has changed to the opposite over the years.
-> >>>>>
-> >>>>> A fairly minimal example would be drivers/gpu/drm/pl111/pl111_drv.c
-> >>>>> or anything in drivers/gpu/drm/tiny/, but you may want to look at the
-> >>>>> other hypervisor platforms first, i.e drivers/gpu/drm/virtio/virtgpu_drv.c,
-> >>>>> drivers/gpu/drm/vmwgfx/vmwgfx_drv.c, drivers/gpu/drm/xen/xen_drm_front.c,
-> >>>>> drivers/gpu/drm/qxl/qxl_drv.c, and drivers/gpu/drm/bochs/bochs_drv.c.
-> >>>>>
-> >>>>
-> >>>> Thanks for the pointers, especially for the other hypervisors.
-> >>>>
-> >>> Sorry if anybody in 'to' or 'cc' is receiving this reply multiple times.
-> >>> I had configured by email client incorrectly to reply.
-> >>>
-> >>> screen_info is still useful with a modern KMS-based driver.  It exposes
-> >>> the mode parameters that the GOP driver chose.  This information is
-> >>> needed to implement seamless or glitchless boot, by both ensuring that
-> >>> the scanout parameters don't change and being able to read back the
-> >>> scanout image to populate the initial contents of the new surface.
-> >>>
-> >>> This works today on arches which implement (U)EFI and export
-> >>> screen_info, including x86 and powerpc, but doesn't work on arm or
-> >>> arm64.  As arm64 systems that implement UEFI with real GOP drivers
-> >>> become more prevalent, it would be nice to be have these features there
-> >>> as well.
-> >>
-> >> In addition to this, even if a driver doesn't implement a framebuffer
-> >> console, or if it does but has an option to disable it, the driver still
-> >> needs to know whether the EFI console is using resources on the GPU so
-> >> it can avoid clobbering them. For example screen_info provides information
-> >> like offset and size of EFI console, using this information driver can
-> >> reserve memory used by console and prevent corruption on it.
-> >>
-> >> I think arm64 should export screen_info.
-> >>
-> >
-> > If there are reasons why KMS or fbdev drivers may need to access the
-> > information in screen_info, it should be exported. I don't think that
-> > is under debate here.
-> >
+> The following changes since commit a088b858f16af85e3db359b6c6aaa92dd3bc09=
+21:
 >
-> Hi Ard, thanks for your feedback. If my understanding is correct,
-> you are agree to export screen_info. Can you provide guidance on how can
-> we proceed here? are you willing to accept this current patch as-is or
-> would you like me to re-submit the patch with the additional rationale
-> provided?
+>   efi/x86: Revert struct layout change to fix kexec boot regression (2020=
+-04-14 08:32:17 +0200)
 >
+> are available in the Git repository at:
+>
+>   git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git tags/efi-urge=
+nt
+>
+> for you to fetch changes up to b4f1874c62168159fdb419ced4afc77c1b51c475:
+>
+>   tpm: check event log version before reading final events (2020-05-17 11=
+:46:50 +0200)
+>
+> ----------------------------------------------------------------
+> EFI fixes for v5.7-rcX:
+> - fix EFI framebuffer earlycon for wide fonts
+> - avoid filling screen_info with garbage if the EFI framebuffer is not
+>   available
+> - fix a potential host tool build error due to a symbol clash on x86
+> - work around a EFI firmware bug regarding the binary format of the TPM
+>   final events table
+> - fix a missing memory free by reworking the E820 table sizing routine to
+>   not do the allocation in the first place
+> - add CPER parsing for firmware errors
+>
+> ----------------------------------------------------------------
+> Arvind Sankar (1):
+>       x86/boot: Mark global variables as static
+>
+> Benjamin Thiel (1):
+>       efi: Pull up arch-specific prototype efi_systab_show_arch()
+>
+> Dave Young (1):
+>       efi/earlycon: Fix early printk for wider fonts
+>
+> Heinrich Schuchardt (1):
+>       efi/libstub: Avoid returning uninitialized data from setup_graphics=
+()
+>
+> Lenny Szubowicz (1):
+>       efi/libstub/x86: Avoid EFI map buffer alloc in allocate_e820()
+>
+> Lo=C3=AFc Yhuel (1):
+>       tpm: check event log version before reading final events
+>
+> Punit Agrawal (1):
+>       efi: cper: Add support for printing Firmware Error Record Reference
+>
+>  arch/x86/boot/tools/build.c             | 16 ++++-----
+>  drivers/firmware/efi/cper.c             | 62 +++++++++++++++++++++++++++=
+++++++
+>  drivers/firmware/efi/earlycon.c         | 14 ++++----
+>  drivers/firmware/efi/efi.c              |  5 +--
+>  drivers/firmware/efi/libstub/arm-stub.c |  6 +++-
+>  drivers/firmware/efi/libstub/efistub.h  | 13 +++++++
+>  drivers/firmware/efi/libstub/mem.c      |  2 --
+>  drivers/firmware/efi/libstub/tpm.c      |  5 +--
+>  drivers/firmware/efi/libstub/x86-stub.c | 24 +++++--------
+>  drivers/firmware/efi/tpm.c              |  5 ++-
+>  include/linux/cper.h                    |  9 +++++
+>  include/linux/efi.h                     |  2 ++
+>  12 files changed, 124 insertions(+), 39 deletions(-)
 
-Please (re-)submit it along with the code that actually makes use of it.
+Ping?
