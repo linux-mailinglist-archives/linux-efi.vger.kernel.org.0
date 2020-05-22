@@ -2,132 +2,72 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9EFEB1DE7CD
-	for <lists+linux-efi@lfdr.de>; Fri, 22 May 2020 15:13:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 324171DE832
+	for <lists+linux-efi@lfdr.de>; Fri, 22 May 2020 15:40:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729563AbgEVNN1 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 22 May 2020 09:13:27 -0400
-Received: from mail.kernel.org ([198.145.29.99]:48784 "EHLO mail.kernel.org"
+        id S1729676AbgEVNkL (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 22 May 2020 09:40:11 -0400
+Received: from mail.skyhub.de ([5.9.137.197]:53156 "EHLO mail.skyhub.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729334AbgEVNN0 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Fri, 22 May 2020 09:13:26 -0400
-Received: from mail-io1-f44.google.com (mail-io1-f44.google.com [209.85.166.44])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        id S1729406AbgEVNkL (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Fri, 22 May 2020 09:40:11 -0400
+Received: from zn.tnic (p200300ec2f0d4900a503efeda57d2ecc.dip0.t-ipconnect.de [IPv6:2003:ec:2f0d:4900:a503:efed:a57d:2ecc])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 5B4FB206B6
-        for <linux-efi@vger.kernel.org>; Fri, 22 May 2020 13:13:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1590153206;
-        bh=4Ix3Yd4jxfj9dXNrnRqLAF0rlISJYziH1M/Nj5bJRuk=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=h3vtnMfIhHnHl6pG3Gn8dsinWuyfWuc6YqEd7xDT2mnidsV7gEDCfR5XGfrtUbqCt
-         tZOA/ifWP7Kknp7A6//5DQz5tVnFhkl4OjGiMfnRyhTh7pBT3X5wmaGLw43dWSmSIS
-         9Kbl0qcenGlk4WACfyLD3qHPtPDyZ2UOcWmNW08c=
-Received: by mail-io1-f44.google.com with SMTP id h10so11249385iob.10
-        for <linux-efi@vger.kernel.org>; Fri, 22 May 2020 06:13:26 -0700 (PDT)
-X-Gm-Message-State: AOAM532GKLivc8Pel4jtYJim/beUUuVqqIi93y7V4rWK8dS0uxmA/w5e
-        o8yckar6BTurLH9P5UhTY/t31Qay7K2tzJF5y0Y=
-X-Google-Smtp-Source: ABdhPJygKX0VbE7/2IrBNpx7XiupEjZeqrw/D8VhDHQV1vGvcazUBlENrGbPzK+8+1SYT/RIoPdKYsRRaVJN5UVcmCU=
-X-Received: by 2002:a05:6602:2dcd:: with SMTP id l13mr3014721iow.203.1590153205732;
- Fri, 22 May 2020 06:13:25 -0700 (PDT)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 07B341EC02DD;
+        Fri, 22 May 2020 15:40:10 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1590154810;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=Pw4qZddkN9GARxEt8dEIB/8bXHBWj3ikGLqk4GalsDI=;
+        b=OMXeKQ+lA5i44nvFQReQLVYF4u5t5YzXL+c9LW740nPyR9rd7bNT752oRFxrmq05fHnm2y
+        A9KklmoK6nbusEHZtzVRcWBa0d3ekTrHXUuDyYWz2tdqkDbspvDnn6VIGQfWFDiyKWoZML
+        Y1XxO57yR1hRM37VQwpeYIjqI92mO5c=
+Date:   Fri, 22 May 2020 15:40:04 +0200
+From:   Borislav Petkov <bp@alien8.de>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-efi <linux-efi@vger.kernel.org>,
+        Ingo Molnar <mingo@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Arvind Sankar <nivedita@alum.mit.edu>,
+        Benjamin Thiel <b.thiel@posteo.de>,
+        Dave Young <dyoung@redhat.com>,
+        Heinrich Schuchardt <xypron.glpk@gmx.de>,
+        Javier Martinez Canillas <javierm@redhat.com>,
+        Jerry Snitselaar <jsnitsel@redhat.com>,
+        Lenny Szubowicz <lszubowi@redhat.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Loic Yhuel <loic.yhuel@gmail.com>,
+        Matthew Garrett <mjg59@google.com>,
+        Mike Lothian <mike@fireburn.co.uk>,
+        Punit Agrawal <punit1.agrawal@toshiba.co.jp>
+Subject: Re: [GIT PULL 0/7] EFI fixes for v5.7
+Message-ID: <20200522134004.GF28750@zn.tnic>
+References: <20200517125754.8934-1-ardb@kernel.org>
+ <CAMj1kXGUxPuQCv9KPezqpLf1qLTbJh_j9JeVnnYZ=HbnL65=AQ@mail.gmail.com>
 MIME-Version: 1.0
-References: <CAMj1kXGuM6sEE5HoAmGP7EZDnyUsW73FH+f2C_MvH76UCMYkpg@mail.gmail.com>
- <20200521002921.69650-1-nivedita@alum.mit.edu>
-In-Reply-To: <20200521002921.69650-1-nivedita@alum.mit.edu>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Fri, 22 May 2020 15:13:14 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXFCfPiA+WMsuTVDRtVCib2n06aHasXCiewdsB=KsqinLA@mail.gmail.com>
-Message-ID: <CAMj1kXFCfPiA+WMsuTVDRtVCib2n06aHasXCiewdsB=KsqinLA@mail.gmail.com>
-Subject: Re: [PATCH] efi/libstub: Don't parse overlong command lines
-To:     Arvind Sankar <nivedita@alum.mit.edu>
-Cc:     linux-efi <linux-efi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAMj1kXGUxPuQCv9KPezqpLf1qLTbJh_j9JeVnnYZ=HbnL65=AQ@mail.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, 21 May 2020 at 02:29, Arvind Sankar <nivedita@alum.mit.edu> wrote:
->
-> Check if the command line passed in is larger than COMMAND_LINE_SIZE,
-> and truncate it to the last full argument if so.
->
-> Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
+On Fri, May 22, 2020 at 03:06:20PM +0200, Ard Biesheuvel wrote:
+> Ping?
 
-Queued up in efi/next, thanks.
+Did you want to make your tags unique from the next pull request onwards
+and I were supposed to pull this one as is?
 
-> ---
->  .../firmware/efi/libstub/efi-stub-helper.c    | 28 +++++++++++++++----
->  1 file changed, 23 insertions(+), 5 deletions(-)
->
-> diff --git a/drivers/firmware/efi/libstub/efi-stub-helper.c b/drivers/firmware/efi/libstub/efi-stub-helper.c
-> index 2a6aded4f2a9..89f075275300 100644
-> --- a/drivers/firmware/efi/libstub/efi-stub-helper.c
-> +++ b/drivers/firmware/efi/libstub/efi-stub-helper.c
-> @@ -9,10 +9,12 @@
->
->  #include <stdarg.h>
->
-> +#include <linux/ctype.h>
->  #include <linux/efi.h>
->  #include <linux/kernel.h>
->  #include <linux/printk.h> /* For CONSOLE_LOGLEVEL_* */
->  #include <asm/efi.h>
-> +#include <asm/setup.h>
->
->  #include "efistub.h"
->
-> @@ -216,22 +218,33 @@ char *efi_convert_cmdline(efi_loaded_image_t *image, int *cmd_line_len)
->         unsigned long cmdline_addr = 0;
->         int options_chars = efi_table_attr(image, load_options_size) / 2;
->         const u16 *options = efi_table_attr(image, load_options);
-> -       int options_bytes = 0;  /* UTF-8 bytes */
-> +       int options_bytes = 0, safe_options_bytes = 0;  /* UTF-8 bytes */
-> +       bool in_quote = false;
->         efi_status_t status;
->
->         if (options) {
->                 s2 = options;
-> -               while (options_chars--) {
-> +               while (options_bytes < COMMAND_LINE_SIZE && options_chars--) {
->                         u16 c = *s2++;
->
-> -                       if (c == L'\0' || c == L'\n')
-> -                               break;
-> +                       if (c < 0x80) {
-> +                               if (c == L'\0' || c == L'\n')
-> +                                       break;
-> +                               if (c == L'"')
-> +                                       in_quote = !in_quote;
-> +                               else if (!in_quote && isspace((char)c))
-> +                                       safe_options_bytes = options_bytes;
-> +
-> +                               options_bytes++;
-> +                               continue;
-> +                       }
-> +
->                         /*
->                          * Get the number of UTF-8 bytes corresponding to a
->                          * UTF-16 character.
->                          * The first part handles everything in the BMP.
->                          */
-> -                       options_bytes += 1 + (c >= 0x80) + (c >= 0x800);
-> +                       options_bytes += 2 + (c >= 0x800);
->                         /*
->                          * Add one more byte for valid surrogate pairs. Invalid
->                          * surrogates will be replaced with 0xfffd and take up
-> @@ -252,6 +265,11 @@ char *efi_convert_cmdline(efi_loaded_image_t *image, int *cmd_line_len)
->                                 }
->                         }
->                 }
-> +               if (options_bytes >= COMMAND_LINE_SIZE) {
-> +                       options_bytes = safe_options_bytes;
-> +                       efi_err("Command line is too long: truncated to %d bytes\n",
-> +                               options_bytes);
-> +               }
->         }
->
->         options_bytes++;        /* NUL termination */
-> --
-> 2.26.2
->
+Thx.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
