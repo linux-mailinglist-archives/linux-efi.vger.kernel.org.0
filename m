@@ -2,92 +2,109 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B5E2B1DDD4B
-	for <lists+linux-efi@lfdr.de>; Fri, 22 May 2020 04:42:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3325E1DE022
+	for <lists+linux-efi@lfdr.de>; Fri, 22 May 2020 08:51:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727020AbgEVCm7 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 21 May 2020 22:42:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56848 "EHLO
+        id S1728068AbgEVGvt (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 22 May 2020 02:51:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39094 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727004AbgEVCm7 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 21 May 2020 22:42:59 -0400
-Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com [IPv6:2607:f8b0:4864:20::441])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4579C061A0E
-        for <linux-efi@vger.kernel.org>; Thu, 21 May 2020 19:42:57 -0700 (PDT)
-Received: by mail-pf1-x441.google.com with SMTP id 145so4465854pfw.13
-        for <linux-efi@vger.kernel.org>; Thu, 21 May 2020 19:42:57 -0700 (PDT)
+        with ESMTP id S1728036AbgEVGvt (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 22 May 2020 02:51:49 -0400
+Received: from mail-io1-xd41.google.com (mail-io1-xd41.google.com [IPv6:2607:f8b0:4864:20::d41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FE85C061A0E
+        for <linux-efi@vger.kernel.org>; Thu, 21 May 2020 23:51:48 -0700 (PDT)
+Received: by mail-io1-xd41.google.com with SMTP id d5so780388ios.9
+        for <linux-efi@vger.kernel.org>; Thu, 21 May 2020 23:51:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=9r9+AoRulBVTVcXSeonVL+yRisP4PacBY1m16VwmigY=;
-        b=Ql4DdAx+Z6DwJjA83EV09jrKk68FZYu3Bm3rLke8pnfQ/Q7kXUTy3jvYPEop4/NXZl
-         K+IzbettpsGshyvxo7+xc9qLsQGgYAbRQrGQRDAfF9sMnYaiGJp0j0mQnbhWZdEp9AYD
-         JDqpc7g0LbNf42DLCJN1rwESbRnXACLWh9/9k=
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:reply-to:from:date:message-id
+         :subject:to:cc;
+        bh=xdvsxmwUKO7Fv5eHUB9PeRikncRekct95ZZzbVNJGJE=;
+        b=V6bu6wMyqFsGNsSUKD4b+ZkgKnhlhcieiGZs1OUQvH4dKN+7ftSRu+W6Mj7uiEGv2j
+         g9KWP4oi5uYlcae7imZ96CRRg5LFVx90dVVqio+XQPFT5Juayp2474mwkHuT5/2vTgpF
+         AL9Pua3bK7aVQQHbN58vPwa/Y2xOhIHOEYkxsNfO0DHh9JzIEIiNoeIrLLQ9yhIwTZ57
+         cV5oAmy3JgNIBXru6voreZRAgSU6fOeA+JQYd47cZpsezPxP4ZqKHxpOj/9H/QQ1GEtW
+         EG/3vaVuwvPEa+GSwC95Cb4meTM8I8JLASrKg6DEdqarvuEbGLdTUDYOvD3dpIwWdsuT
+         jX5g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=9r9+AoRulBVTVcXSeonVL+yRisP4PacBY1m16VwmigY=;
-        b=U9K6GOZwx0UGjg6EEvgTLGv4foPuFyY/Vei+J9gz7AX5qm9PFMrgmakpwAwJhybP+g
-         Vup6bojAdsVQVlPSniWXfFLxEhAq+SkJG5u0gDBBTz7H00NlPVup3h7OMYU2wR8sKKsc
-         PtIJGXIezk3/ZoFjpcRAyQLosOYhQorp5xANDNa42cKr3SwLuiWzFbj3zVaGPoku0tU8
-         iUJrq6sJh6ZXr6g7OIk0JfiCR0UVSXN+X2rdy3V3OvaPlUcldryabvyLQl+NXGTngBBg
-         9watffCT8E+F4UupE/YWcjelh/UlOV5clsvh4NfbmTdy2vnE85raJlEBU9j1uK3Fxe0/
-         X1TQ==
-X-Gm-Message-State: AOAM533VZVRFbJ90w2fBjg+w8d5oVeUxTuENmIPd79/2zsir1dZlnI37
-        S4QslytwUUZxHLNzfJzkpqI0KQ==
-X-Google-Smtp-Source: ABdhPJzmeDBf9HLHA2qDD0PNsu/oBjEzUL2rLcxQdzAZv2r6xmMyL/Z/Y+fl/h2GM064YdCGaa3pPg==
-X-Received: by 2002:a63:7e5a:: with SMTP id o26mr12055854pgn.134.1590115377175;
-        Thu, 21 May 2020 19:42:57 -0700 (PDT)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id u4sm9767336pjf.3.2020.05.21.19.42.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 May 2020 19:42:56 -0700 (PDT)
-Date:   Thu, 21 May 2020 19:42:55 -0700
-From:   Kees Cook <keescook@chromium.org>
-To:     Fangrui Song <maskray@google.com>
-Cc:     x86@kernel.org, Arvind Sankar <nivedita@alum.mit.edu>,
-        linux-efi@vger.kernel.org, clang-built-linux@googlegroups.com,
+        h=x-gm-message-state:mime-version:references:in-reply-to:reply-to
+         :from:date:message-id:subject:to:cc;
+        bh=xdvsxmwUKO7Fv5eHUB9PeRikncRekct95ZZzbVNJGJE=;
+        b=PqmKqjHKYYnd+a6eFArdpK6OHqHBrWjvU43Gm9WBSz2ONeE+T0YgB7l3L7gf/dAr4T
+         knV8AQt7aloNB0lRdGiKFSwc+wDFtckqgXNeIHO/0tIn7b7PqefFH/tRL9wl15waqcdA
+         YqLS3LboaqGaIl6aCEs/AKdOpR2TU54h0SDDWacSvndkXE6ymGV6MfTQPSuRelt4UGyF
+         vRYca73GjsbJbTwB2Rvw6Zsa30s1FloBEvp09mqOGbsJWRjl9QgqyUT6MychVLSIACBm
+         ljwVpEIlS4b5hADsWcKi0pELjeqrYXuYWRFulMMCIbgdhtdzzxbCjhiq3MKm6uvlLQYN
+         hjBA==
+X-Gm-Message-State: AOAM533EX95DHCyId3SU6tfty4MKloce0sng0AOT1jFCG7S3WctLOgAl
+        aXenSOtC0hKIc6D/ot2BZqtYW7pWBnk78nl/pUA=
+X-Google-Smtp-Source: ABdhPJzQwdhwl9jqrc5m+oV0AirdLJBaZlQruxsQVKjjpHd/1i5de1mhBZ9kLo7B6/z2SBQjtqrBRO5T9OJDA4S0Lyk=
+X-Received: by 2002:a05:6602:1616:: with SMTP id x22mr1967924iow.70.1590130307320;
+ Thu, 21 May 2020 23:51:47 -0700 (PDT)
+MIME-Version: 1.0
+References: <20200520182010.242489-1-maskray@google.com> <202005211942.6E5061433@keescook>
+In-Reply-To: <202005211942.6E5061433@keescook>
+Reply-To: sedat.dilek@gmail.com
+From:   Sedat Dilek <sedat.dilek@gmail.com>
+Date:   Fri, 22 May 2020 08:51:35 +0200
+Message-ID: <CA+icZUU58cY31rUYveXAwoQGmJjZf8C_zbBxA+8E5aquWQaScg@mail.gmail.com>
+Subject: Re: [PATCH] x86/boot: Discard .discard.unreachable for arch/x86/boot/compressed/vmlinux
+To:     Kees Cook <keescook@chromium.org>
+Cc:     Fangrui Song <maskray@google.com>, x86@kernel.org,
+        Arvind Sankar <nivedita@alum.mit.edu>,
+        linux-efi@vger.kernel.org,
+        Clang-Built-Linux ML <clang-built-linux@googlegroups.com>,
         Nick Desaulniers <ndesaulniers@google.com>,
         Ard Biesheuvel <ardb@kernel.org>,
         kbuild test robot <lkp@intel.com>
-Subject: Re: [PATCH] x86/boot: Discard .discard.unreachable for
- arch/x86/boot/compressed/vmlinux
-Message-ID: <202005211942.6E5061433@keescook>
-References: <20200520182010.242489-1-maskray@google.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200520182010.242489-1-maskray@google.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, May 20, 2020 at 11:20:10AM -0700, 'Fangrui Song' via Clang Built Linux wrote:
-> In the latest efi tree, ce5e3f909fc0ed67e58367b9c56a54c20a51080b
-> "efi/printf: Add 64-bit and 8-bit integer support",
-> arch/x86/boot/compressed/vmlinux may have an undesired
-> .discard.unreachable section from drivers/firmware/efi/libstub/vsprintf.stub.o
-> 
-> .discard.unreachable contains an R_X86_64_PC32 relocation, which will be
-> warned by LLD: a non-SHF_ALLOC section (.discard.unreachable) is not
-> part of the memory image, thus conceptually the distance between a
-> non-SHF_ALLOC and a SHF_ALLOC is not a constant which can be resolved at
-> link time.
-> 
-> % ld.lld -m elf_x86_64 -T arch/x86/boot/compressed/vmlinux.lds ... -o arch/x86/boot/compressed/vmlinux
-> ld.lld: warning: vsprintf.c:(.discard.unreachable+0x0): has non-ABS relocation R_X86_64_PC32 against symbol ''
-> 
-> Reuse the DISCARDS macro which includes .discard.* to drop .discard.unreachable
-> 
-> Reported-by: kbuild test robot <lkp@intel.com>
-> Signed-off-by: Fangrui Song <maskray@google.com>
+On Fri, May 22, 2020 at 4:43 AM Kees Cook <keescook@chromium.org> wrote:
+>
+> On Wed, May 20, 2020 at 11:20:10AM -0700, 'Fangrui Song' via Clang Built Linux wrote:
+> > In the latest efi tree, ce5e3f909fc0ed67e58367b9c56a54c20a51080b
+> > "efi/printf: Add 64-bit and 8-bit integer support",
+> > arch/x86/boot/compressed/vmlinux may have an undesired
+> > .discard.unreachable section from drivers/firmware/efi/libstub/vsprintf.stub.o
+> >
+> > .discard.unreachable contains an R_X86_64_PC32 relocation, which will be
+> > warned by LLD: a non-SHF_ALLOC section (.discard.unreachable) is not
+> > part of the memory image, thus conceptually the distance between a
+> > non-SHF_ALLOC and a SHF_ALLOC is not a constant which can be resolved at
+> > link time.
+> >
+> > % ld.lld -m elf_x86_64 -T arch/x86/boot/compressed/vmlinux.lds ... -o arch/x86/boot/compressed/vmlinux
+> > ld.lld: warning: vsprintf.c:(.discard.unreachable+0x0): has non-ABS relocation R_X86_64_PC32 against symbol ''
+> >
+> > Reuse the DISCARDS macro which includes .discard.* to drop .discard.unreachable
+> >
+> > Reported-by: kbuild test robot <lkp@intel.com>
+> > Signed-off-by: Fangrui Song <maskray@google.com>
+>
+> Yay macro usage! :)
+>
+> Reviewed-by: Kees Cook <keescook@chromium.org>
+>
 
-Yay macro usage! :)
+Feel free to add...
 
-Reviewed-by: Kees Cook <keescook@chromium.org>
+   Tested-by: Sedat Dilek <sedat.dilek@gmail.com> # build and boot on
+Linux v5.7-rc6+ with Clang and LLD v10.0.1-rc1
 
--- 
-Kees Cook
+...together with one more patches in the x86/boot area:
+
+x86/boot: Correct relocation destination on old linkers
+
+Next run will include:
+
+x86/boot: Add .text.startup to setup.ld (v2)
+
+- Sedat -
+
+[1] https://github.com/llvm/llvm-project/releases/tag/llvmorg-10.0.1-rc1
