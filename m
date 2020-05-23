@@ -2,201 +2,119 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 17EBD1DEF34
-	for <lists+linux-efi@lfdr.de>; Fri, 22 May 2020 20:30:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC9221DF69B
+	for <lists+linux-efi@lfdr.de>; Sat, 23 May 2020 12:27:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730935AbgEVSaX (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 22 May 2020 14:30:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35032 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730824AbgEVSaW (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 22 May 2020 14:30:22 -0400
-Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 494DDC061A0E;
-        Fri, 22 May 2020 11:30:22 -0700 (PDT)
-Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
-        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
-        (Exim 4.80)
-        (envelope-from <tip-bot2@linutronix.de>)
-        id 1jcCQz-0002l9-2V; Fri, 22 May 2020 20:30:17 +0200
-Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id B327F1C0475;
-        Fri, 22 May 2020 20:30:16 +0200 (CEST)
-Date:   Fri, 22 May 2020 18:30:16 -0000
-From:   "tip-bot2 for Punit Agrawal" <tip-bot2@linutronix.de>
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: efi/urgent] efi: cper: Add support for printing Firmware Error
- Record Reference
-Cc:     Punit Agrawal <punit1.agrawal@toshiba.co.jp>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Borislav Petkov <bp@alien8.de>,
-        James Morse <james.morse@arm.com>, linux-acpi@vger.kernel.org,
-        linux-efi@vger.kernel.org, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200512045502.3810339-1-punit1.agrawal@toshiba.co.jp>
-References: <20200512045502.3810339-1-punit1.agrawal@toshiba.co.jp>
-MIME-Version: 1.0
-Message-ID: <159017221661.17951.2040359767337422693.tip-bot2@tip-bot2>
-X-Mailer: tip-git-log-daemon
-Robot-ID: <tip-bot2.linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+        id S1725270AbgEWK13 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 23 May 2020 06:27:29 -0400
+Received: from mail.kernel.org ([198.145.29.99]:57336 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725268AbgEWK13 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Sat, 23 May 2020 06:27:29 -0400
+Received: from e123331-lin.nice.arm.com (amontpellier-657-1-18-247.w109-210.abo.wanadoo.fr [109.210.65.247])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 63A5F206DD;
+        Sat, 23 May 2020 10:27:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1590229648;
+        bh=O8/SmrbusiNZ6KQAn6HxseRVU9h8hE9qRipkbqeLJfQ=;
+        h=From:To:Cc:Subject:Date:From;
+        b=ubTxddSDyMsCuaTSz4dhrEMQVRGYdFa2XBIIo5BZT8BGtaMW8+AXnJywmDem2qTsG
+         v3DJDVeTG7TewoQROUylLJ1D2q8Qh1Dx5Qb8AxlWVc8LA4+m474w4C9kpTCBtOnp8L
+         0QVRaeEowHNjyb0aYtCBsiEZgpLFFkKI2D2Yo7Jg=
+From:   Ard Biesheuvel <ardb@kernel.org>
+To:     linux-efi@vger.kernel.org
+Cc:     Ard Biesheuvel <ardb@kernel.org>
+Subject: [PATCH] efi/libstub: Add missing prototype for PE/COFF entry point
+Date:   Sat, 23 May 2020 12:27:22 +0200
+Message-Id: <20200523102722.6347-1-ardb@kernel.org>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The following commit has been merged into the efi/urgent branch of tip:
+Fix a missing prototype warning by adding a forward declaration
+for the PE/COFF entrypoint, and while at it, align the function
+name between the x86 and ARM versions of the stub.
 
-Commit-ID:     3d8c11efd528d56972d44ed0de51c4e11a9a4fa9
-Gitweb:        https://git.kernel.org/tip/3d8c11efd528d56972d44ed0de51c4e11a9a4fa9
-Author:        Punit Agrawal <punit1.agrawal@toshiba.co.jp>
-AuthorDate:    Tue, 12 May 2020 13:55:02 +09:00
-Committer:     Ard Biesheuvel <ardb@kernel.org>
-CommitterDate: Thu, 14 May 2020 11:11:20 +02:00
-
-efi: cper: Add support for printing Firmware Error Record Reference
-
-While debugging a boot failure, the following unknown error record was
-seen in the boot logs.
-
-    <...>
-    BERT: Error records from previous boot:
-    [Hardware Error]: event severity: fatal
-    [Hardware Error]:  Error 0, type: fatal
-    [Hardware Error]:   section type: unknown, 81212a96-09ed-4996-9471-8d729c8e69ed
-    [Hardware Error]:   section length: 0x290
-    [Hardware Error]:   00000000: 00000001 00000000 00000000 00020002  ................
-    [Hardware Error]:   00000010: 00020002 0000001f 00000320 00000000  ........ .......
-    [Hardware Error]:   00000020: 00000000 00000000 00000000 00000000  ................
-    [Hardware Error]:   00000030: 00000000 00000000 00000000 00000000  ................
-    <...>
-
-On further investigation, it was found that the error record with
-UUID (81212a96-09ed-4996-9471-8d729c8e69ed) has been defined in the
-UEFI Specification at least since v2.4 and has recently had additional
-fields defined in v2.7 Section N.2.10 Firmware Error Record Reference.
-
-Add support for parsing and printing the defined fields to give users
-a chance to figure out what went wrong.
-
-Signed-off-by: Punit Agrawal <punit1.agrawal@toshiba.co.jp>
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: James Morse <james.morse@arm.com>
-Cc: linux-acpi@vger.kernel.org
-Cc: linux-efi@vger.kernel.org
-Link: https://lore.kernel.org/r/20200512045502.3810339-1-punit1.agrawal@toshiba.co.jp
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- drivers/firmware/efi/cper.c | 62 ++++++++++++++++++++++++++++++++++++-
- include/linux/cper.h        |  9 +++++-
- 2 files changed, 71 insertions(+)
+ arch/arm/boot/compressed/efi-header.S   | 2 +-
+ arch/arm64/kernel/efi-entry.S           | 2 +-
+ arch/arm64/kernel/efi-header.S          | 2 +-
+ drivers/firmware/efi/libstub/efi-stub.c | 3 ++-
+ drivers/firmware/efi/libstub/efistub.h  | 3 +++
+ 5 files changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/firmware/efi/cper.c b/drivers/firmware/efi/cper.c
-index 9d25129..f564e15 100644
---- a/drivers/firmware/efi/cper.c
-+++ b/drivers/firmware/efi/cper.c
-@@ -407,6 +407,58 @@ static void cper_print_pcie(const char *pfx, const struct cper_sec_pcie *pcie,
- 	}
- }
+diff --git a/arch/arm/boot/compressed/efi-header.S b/arch/arm/boot/compressed/efi-header.S
+index 62286da318e7..c0e7a745103e 100644
+--- a/arch/arm/boot/compressed/efi-header.S
++++ b/arch/arm/boot/compressed/efi-header.S
+@@ -60,7 +60,7 @@ optional_header:
+ 		.long	__pecoff_code_size		@ SizeOfCode
+ 		.long	__pecoff_data_size		@ SizeOfInitializedData
+ 		.long	0				@ SizeOfUninitializedData
+-		.long	efi_entry - start		@ AddressOfEntryPoint
++		.long	efi_pe_entry - start		@ AddressOfEntryPoint
+ 		.long	start_offset			@ BaseOfCode
+ 		.long	__pecoff_data_start - start	@ BaseOfData
  
-+static const char * const fw_err_rec_type_strs[] = {
-+	"IPF SAL Error Record",
-+	"SOC Firmware Error Record Type1 (Legacy CrashLog Support)",
-+	"SOC Firmware Error Record Type2",
-+};
-+
-+static void cper_print_fw_err(const char *pfx,
-+			      struct acpi_hest_generic_data *gdata,
-+			      const struct cper_sec_fw_err_rec_ref *fw_err)
-+{
-+	void *buf = acpi_hest_get_payload(gdata);
-+	u32 offset, length = gdata->error_data_length;
-+
-+	printk("%s""Firmware Error Record Type: %s\n", pfx,
-+	       fw_err->record_type < ARRAY_SIZE(fw_err_rec_type_strs) ?
-+	       fw_err_rec_type_strs[fw_err->record_type] : "unknown");
-+	printk("%s""Revision: %d\n", pfx, fw_err->revision);
-+
-+	/* Record Type based on UEFI 2.7 */
-+	if (fw_err->revision == 0) {
-+		printk("%s""Record Identifier: %08llx\n", pfx,
-+		       fw_err->record_identifier);
-+	} else if (fw_err->revision == 2) {
-+		printk("%s""Record Identifier: %pUl\n", pfx,
-+		       &fw_err->record_identifier_guid);
-+	}
-+
-+	/*
-+	 * The FW error record may contain trailing data beyond the
-+	 * structure defined by the specification. As the fields
-+	 * defined (and hence the offset of any trailing data) vary
-+	 * with the revision, set the offset to account for this
-+	 * variation.
-+	 */
-+	if (fw_err->revision == 0) {
-+		/* record_identifier_guid not defined */
-+		offset = offsetof(struct cper_sec_fw_err_rec_ref,
-+				  record_identifier_guid);
-+	} else if (fw_err->revision == 1) {
-+		/* record_identifier not defined */
-+		offset = offsetof(struct cper_sec_fw_err_rec_ref,
-+				  record_identifier);
-+	} else {
-+		offset = sizeof(*fw_err);
-+	}
-+
-+	buf += offset;
-+	length -= offset;
-+
-+	print_hex_dump(pfx, "", DUMP_PREFIX_OFFSET, 16, 4, buf, length, true);
-+}
-+
- static void cper_print_tstamp(const char *pfx,
- 				   struct acpi_hest_generic_data_v300 *gdata)
+diff --git a/arch/arm64/kernel/efi-entry.S b/arch/arm64/kernel/efi-entry.S
+index 1a03618df0df..5664af1e9260 100644
+--- a/arch/arm64/kernel/efi-entry.S
++++ b/arch/arm64/kernel/efi-entry.S
+@@ -14,7 +14,7 @@
+ 
+ SYM_CODE_START(efi_enter_kernel)
+ 	/*
+-	 * efi_entry() will have copied the kernel image if necessary and we
++	 * efi_pe_entry() will have copied the kernel image if necessary and we
+ 	 * end up here with device tree address in x1 and the kernel entry
+ 	 * point stored in x0. Save those values in registers which are
+ 	 * callee preserved.
+diff --git a/arch/arm64/kernel/efi-header.S b/arch/arm64/kernel/efi-header.S
+index 914999ccaf8a..f2457d4b76a4 100644
+--- a/arch/arm64/kernel/efi-header.S
++++ b/arch/arm64/kernel/efi-header.S
+@@ -27,7 +27,7 @@ optional_header:
+ 	.long	__initdata_begin - efi_header_end	// SizeOfCode
+ 	.long	__pecoff_data_size			// SizeOfInitializedData
+ 	.long	0					// SizeOfUninitializedData
+-	.long	__efistub_efi_entry - _head		// AddressOfEntryPoint
++	.long	__efistub_efi_pe_entry - _head		// AddressOfEntryPoint
+ 	.long	efi_header_end - _head			// BaseOfCode
+ 
+ extra_header_fields:
+diff --git a/drivers/firmware/efi/libstub/efi-stub.c b/drivers/firmware/efi/libstub/efi-stub.c
+index cc8d6f510a89..9b7634369158 100644
+--- a/drivers/firmware/efi/libstub/efi-stub.c
++++ b/drivers/firmware/efi/libstub/efi-stub.c
+@@ -140,7 +140,8 @@ asmlinkage void __noreturn efi_enter_kernel(unsigned long entrypoint,
+  * for both archictectures, with the arch-specific code provided in the
+  * handle_kernel_image() function.
+  */
+-efi_status_t efi_entry(efi_handle_t handle, efi_system_table_t *sys_table_arg)
++efi_status_t __efiapi efi_pe_entry(efi_handle_t handle,
++				   efi_system_table_t *sys_table_arg)
  {
-@@ -494,6 +546,16 @@ cper_estatus_print_section(const char *pfx, struct acpi_hest_generic_data *gdata
- 		else
- 			goto err_section_too_small;
- #endif
-+	} else if (guid_equal(sec_type, &CPER_SEC_FW_ERR_REC_REF)) {
-+		struct cper_sec_fw_err_rec_ref *fw_err = acpi_hest_get_payload(gdata);
+ 	efi_loaded_image_t *image;
+ 	efi_status_t status;
+diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
+index 1de8dc02529a..03f74608b963 100644
+--- a/drivers/firmware/efi/libstub/efistub.h
++++ b/drivers/firmware/efi/libstub/efistub.h
+@@ -40,6 +40,9 @@ extern bool efi_novamap;
+ 
+ extern const efi_system_table_t *efi_system_table;
+ 
++efi_status_t __efiapi efi_pe_entry(efi_handle_t handle,
++				   efi_system_table_t *sys_table_arg);
 +
-+		printk("%ssection_type: Firmware Error Record Reference\n",
-+		       newpfx);
-+		/* The minimal FW Error Record contains 16 bytes */
-+		if (gdata->error_data_length >= SZ_16)
-+			cper_print_fw_err(newpfx, gdata, fw_err);
-+		else
-+			goto err_section_too_small;
- 	} else {
- 		const void *err = acpi_hest_get_payload(gdata);
+ #ifndef ARCH_HAS_EFISTUB_WRAPPERS
  
-diff --git a/include/linux/cper.h b/include/linux/cper.h
-index 4f005d9..8537e92 100644
---- a/include/linux/cper.h
-+++ b/include/linux/cper.h
-@@ -521,6 +521,15 @@ struct cper_sec_pcie {
- 	u8	aer_info[96];
- };
- 
-+/* Firmware Error Record Reference, UEFI v2.7 sec N.2.10  */
-+struct cper_sec_fw_err_rec_ref {
-+	u8 record_type;
-+	u8 revision;
-+	u8 reserved[6];
-+	u64 record_identifier;
-+	guid_t record_identifier_guid;
-+};
-+
- /* Reset to default packing */
- #pragma pack()
- 
+ #define efi_is_native()		(true)
+-- 
+2.17.1
+
