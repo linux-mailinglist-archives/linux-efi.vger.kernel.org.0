@@ -2,27 +2,27 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 191C31DF708
-	for <lists+linux-efi@lfdr.de>; Sat, 23 May 2020 14:00:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A1341DF70A
+	for <lists+linux-efi@lfdr.de>; Sat, 23 May 2020 14:00:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731283AbgEWMAn (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sat, 23 May 2020 08:00:43 -0400
-Received: from mail.kernel.org ([198.145.29.99]:40976 "EHLO mail.kernel.org"
+        id S2387815AbgEWMAq (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 23 May 2020 08:00:46 -0400
+Received: from mail.kernel.org ([198.145.29.99]:41088 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728749AbgEWMAm (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Sat, 23 May 2020 08:00:42 -0400
+        id S2387814AbgEWMAo (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Sat, 23 May 2020 08:00:44 -0400
 Received: from localhost.localdomain (82-64-249-211.subs.proxad.net [82.64.249.211])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 6F10A2070A;
-        Sat, 23 May 2020 12:00:40 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 46FDF206C3;
+        Sat, 23 May 2020 12:00:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1590235241;
-        bh=I7jb6C1RNyVBMRZDsHgxpUAsckf/p1J+dg1wIdxLwNM=;
+        s=default; t=1590235243;
+        bh=y75yQmWflL5gb+Qr48qsUcaC4h/0vscQ5q/Ojnql+M8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=2rOBsM8RHaIn7cOcE4a+PyAz0kNYYJZWHbJo+cNmEEmpHXi7YRiJnVmBiuFAO5P2l
-         L5INBQtkgfUgJwvkip7ULW2/A3TBJ/68GXVQdBXcoKD2ZvMvlz8+JKJJNBYZR8id2Z
-         kjdkj7YjtKSPPZOl6nvSsK0l9a1QQrsWdCZL5dNw=
+        b=PmPtaA+ZH8/tAzmv3XJFqhmWH/kM/GlrNnwXlrSwpQF7iMGUT/KMMT0ti9H1ndhnW
+         m+qmScHb0cOFw638Aga1BG9jTA8gjQTEfpevUA8y44JSjyxg0FlFEqkCW0LyvJmkgB
+         /lLqVOTKc6zO7aWywVjA+kbG6lKXDHnOwPbDxHgk=
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-efi@vger.kernel.org
 Cc:     x86@kernel.org, linux-kernel@vger.kernel.org,
@@ -30,9 +30,9 @@ Cc:     x86@kernel.org, linux-kernel@vger.kernel.org,
         Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Arvind Sankar <nivedita@alum.mit.edu>
-Subject: [PATCH v2 2/3] x86/boot/compressed: force hidden visibility for all symbol references
-Date:   Sat, 23 May 2020 14:00:20 +0200
-Message-Id: <20200523120021.34996-3-ardb@kernel.org>
+Subject: [PATCH v2 3/3] x86/boot/compressed: get rid of GOT fixup code
+Date:   Sat, 23 May 2020 14:00:21 +0200
+Message-Id: <20200523120021.34996-4-ardb@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20200523120021.34996-1-ardb@kernel.org>
 References: <20200523120021.34996-1-ardb@kernel.org>
@@ -43,71 +43,165 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Eliminate all GOT entries in the decompressor binary, by forcing hidden
-visibility for all symbol references, which informs the compiler that
-such references will be resolved at link time without the need for
-allocating GOT entries.
-
-To ensure that no GOT entries will creep back in, add an assertion to
-the decompressor linker script that will fire if the .got section has
-a non-zero size.
+In a previous patch, we have eliminated GOT entries from the decompressor
+binary and added an assertion that the .got section is empty. This means
+that the GOT fixup routines that exist in both the 32-bit and 64-bit
+startup routines have become dead code, and can be removed.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/x86/boot/compressed/Makefile      |  1 +
- arch/x86/boot/compressed/hidden.h      | 19 +++++++++++++++++++
- arch/x86/boot/compressed/vmlinux.lds.S |  1 +
- 3 files changed, 21 insertions(+)
+ arch/x86/boot/compressed/head_32.S     | 22 ++------
+ arch/x86/boot/compressed/head_64.S     | 57 --------------------
+ arch/x86/boot/compressed/vmlinux.lds.S |  2 -
+ 3 files changed, 3 insertions(+), 78 deletions(-)
 
-diff --git a/arch/x86/boot/compressed/Makefile b/arch/x86/boot/compressed/Makefile
-index 5f7c262bcc99..aa9ed814e5fa 100644
---- a/arch/x86/boot/compressed/Makefile
-+++ b/arch/x86/boot/compressed/Makefile
-@@ -40,6 +40,7 @@ KBUILD_CFLAGS += $(call cc-disable-warning, gnu)
- KBUILD_CFLAGS += -Wno-pointer-sign
- KBUILD_CFLAGS += $(call cc-option,-fmacro-prefix-map=$(srctree)/=)
- KBUILD_CFLAGS += -fno-asynchronous-unwind-tables
-+KBUILD_CFLAGS += -include hidden.h
+diff --git a/arch/x86/boot/compressed/head_32.S b/arch/x86/boot/compressed/head_32.S
+index ab3307036ba4..dfa4131c65df 100644
+--- a/arch/x86/boot/compressed/head_32.S
++++ b/arch/x86/boot/compressed/head_32.S
+@@ -49,16 +49,13 @@
+  * Position Independent Executable (PIE) so that linker won't optimize
+  * R_386_GOT32X relocation to its fixed symbol address.  Older
+  * linkers generate R_386_32 relocations against locally defined symbols,
+- * _bss, _ebss, _got and _egot, in PIE.  It isn't wrong, just less
+- * optimal than R_386_RELATIVE.  But the x86 kernel fails to properly handle
++ * _bss, _ebss, in PIE.  It isn't wrong, just suboptimal compared
++ * to R_386_RELATIVE.  But the x86 kernel fails to properly handle
+  * R_386_32 relocations when relocating the kernel.  To generate
+- * R_386_RELATIVE relocations, we mark _bss, _ebss, _got and _egot as
+- * hidden:
++ * R_386_RELATIVE relocations, we mark _bss and _ebss as hidden:
+  */
+ 	.hidden _bss
+ 	.hidden _ebss
+-	.hidden _got
+-	.hidden _egot
  
- KBUILD_AFLAGS  := $(KBUILD_CFLAGS) -D__ASSEMBLY__
- GCOV_PROFILE := n
-diff --git a/arch/x86/boot/compressed/hidden.h b/arch/x86/boot/compressed/hidden.h
-new file mode 100644
-index 000000000000..49a17b6b5962
---- /dev/null
-+++ b/arch/x86/boot/compressed/hidden.h
-@@ -0,0 +1,19 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * When building position independent code with GCC using the -fPIC option,
-+ * (or even the -fPIE one on older versions), it will assume that we are
-+ * building a dynamic object (either a shared library or an executable) that
-+ * may have symbol references that can only be resolved at load time. For a
-+ * variety of reasons (ELF symbol preemption, the CoW footprint of the section
-+ * that is modified by the loader), this results in all references to symbols
-+ * with external linkage to go via entries in the Global Offset Table (GOT),
-+ * which carries absolute addresses which need to be fixed up when the
-+ * executable image is loaded at an offset which is different from its link
-+ * time offset.
-+ *
-+ * Fortunately, there is a way to inform the compiler that such symbol
-+ * references will be satisfied at link time rather than at load time, by
-+ * giving them 'hidden' visibility.
-+ */
-+
-+#pragma GCC visibility push(hidden)
+ 	__HEAD
+ SYM_FUNC_START(startup_32)
+@@ -191,19 +188,6 @@ SYM_FUNC_START_LOCAL_NOALIGN(.Lrelocated)
+ 	shrl	$2, %ecx
+ 	rep	stosl
+ 
+-/*
+- * Adjust our own GOT
+- */
+-	leal	_got(%ebx), %edx
+-	leal	_egot(%ebx), %ecx
+-1:
+-	cmpl	%ecx, %edx
+-	jae	2f
+-	addl	%ebx, (%edx)
+-	addl	$4, %edx
+-	jmp	1b
+-2:
+-
+ /*
+  * Do the extraction, and jump to the new kernel..
+  */
+diff --git a/arch/x86/boot/compressed/head_64.S b/arch/x86/boot/compressed/head_64.S
+index 4f7e6b84be07..706fbf6eef53 100644
+--- a/arch/x86/boot/compressed/head_64.S
++++ b/arch/x86/boot/compressed/head_64.S
+@@ -40,8 +40,6 @@
+  */
+ 	.hidden _bss
+ 	.hidden _ebss
+-	.hidden _got
+-	.hidden _egot
+ 
+ 	__HEAD
+ 	.code32
+@@ -344,25 +342,6 @@ SYM_CODE_START(startup_64)
+ 	/* Set up the stack */
+ 	leaq	boot_stack_end(%rbx), %rsp
+ 
+-	/*
+-	 * paging_prepare() and cleanup_trampoline() below can have GOT
+-	 * references. Adjust the table with address we are running at.
+-	 *
+-	 * Zero RAX for adjust_got: the GOT was not adjusted before;
+-	 * there's no adjustment to undo.
+-	 */
+-	xorq	%rax, %rax
+-
+-	/*
+-	 * Calculate the address the binary is loaded at and use it as
+-	 * a GOT adjustment.
+-	 */
+-	call	1f
+-1:	popq	%rdi
+-	subq	$1b, %rdi
+-
+-	call	.Ladjust_got
+-
+ 	/*
+ 	 * At this point we are in long mode with 4-level paging enabled,
+ 	 * but we might want to enable 5-level paging or vice versa.
+@@ -447,21 +426,6 @@ trampoline_return:
+ 	pushq	$0
+ 	popfq
+ 
+-	/*
+-	 * Previously we've adjusted the GOT with address the binary was
+-	 * loaded at. Now we need to re-adjust for relocation address.
+-	 *
+-	 * Calculate the address the binary is loaded at, so that we can
+-	 * undo the previous GOT adjustment.
+-	 */
+-	call	1f
+-1:	popq	%rax
+-	subq	$1b, %rax
+-
+-	/* The new adjustment is the relocation address */
+-	movq	%rbx, %rdi
+-	call	.Ladjust_got
+-
+ /*
+  * Copy the compressed kernel to the end of our buffer
+  * where decompression in place becomes safe.
+@@ -539,27 +503,6 @@ SYM_FUNC_START_LOCAL_NOALIGN(.Lrelocated)
+ 	jmp	*%rax
+ SYM_FUNC_END(.Lrelocated)
+ 
+-/*
+- * Adjust the global offset table
+- *
+- * RAX is the previous adjustment of the table to undo (use 0 if it's the
+- * first time we touch GOT).
+- * RDI is the new adjustment to apply.
+- */
+-.Ladjust_got:
+-	/* Walk through the GOT adding the address to the entries */
+-	leaq	_got(%rip), %rdx
+-	leaq	_egot(%rip), %rcx
+-1:
+-	cmpq	%rcx, %rdx
+-	jae	2f
+-	subq	%rax, (%rdx)	/* Undo previous adjustment */
+-	addq	%rdi, (%rdx)	/* Apply the new adjustment */
+-	addq	$8, %rdx
+-	jmp	1b
+-2:
+-	ret
+-
+ 	.code32
+ /*
+  * This is the 32-bit trampoline that will be copied over to low memory.
 diff --git a/arch/x86/boot/compressed/vmlinux.lds.S b/arch/x86/boot/compressed/vmlinux.lds.S
-index ce3fdfb93b57..60a99dfb9d72 100644
+index 60a99dfb9d72..d91fdda51aa8 100644
 --- a/arch/x86/boot/compressed/vmlinux.lds.S
 +++ b/arch/x86/boot/compressed/vmlinux.lds.S
-@@ -79,6 +79,7 @@ SECTIONS
- 	_end = .;
- }
- 
-+ASSERT (SIZEOF(.got) == 0, "Unexpected GOT entries detected!")
- #ifdef CONFIG_X86_64
- ASSERT (SIZEOF(.got.plt) == 0 || SIZEOF(.got.plt) == 0x18,
- 	"Unexpected GOT/PLT entries detected!")
+@@ -43,9 +43,7 @@ SECTIONS
+ 		_erodata = . ;
+ 	}
+ 	.got : {
+-		_got = .;
+ 		KEEP(*(.got))
+-		_egot = .;
+ 	}
+ 	.got.plt : {
+ 		KEEP(*(.got.plt))
 -- 
 2.20.1
 
