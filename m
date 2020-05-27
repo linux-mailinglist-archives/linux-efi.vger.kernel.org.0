@@ -2,161 +2,105 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F1491E2D8E
-	for <lists+linux-efi@lfdr.de>; Tue, 26 May 2020 21:24:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0FDC91E460B
+	for <lists+linux-efi@lfdr.de>; Wed, 27 May 2020 16:37:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404335AbgEZTVz (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 26 May 2020 15:21:55 -0400
-Received: from mga02.intel.com ([134.134.136.20]:41675 "EHLO mga02.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2404242AbgEZTVz (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Tue, 26 May 2020 15:21:55 -0400
-IronPort-SDR: KscUDsxxAPi22OHuUGqsJraZ7etgqzEbzlONwSGxgCot+LOg4/wSwD5Lw8J3konQo38tL3PfPu
- zlpQuTVq7dMw==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 May 2020 12:21:54 -0700
-IronPort-SDR: RGSKUejMbW2EiZKagvMUXgiFxn3Y5ExF6CVeeGUxcgOS0f42K9yrtZLWRDsu3LtXPWFVBgHLq6
- OwuiTtkhWRWg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.73,437,1583222400"; 
-   d="scan'208";a="468418523"
-Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
-  by fmsmga005.fm.intel.com with ESMTP; 26 May 2020 12:21:52 -0700
-Received: from kbuild by lkp-server01 with local (Exim 4.89)
-        (envelope-from <lkp@intel.com>)
-        id 1jdf95-000IGf-EP; Wed, 27 May 2020 03:21:51 +0800
-Date:   Wed, 27 May 2020 03:20:53 +0800
-From:   kbuild test robot <lkp@intel.com>
+        id S2389315AbgE0Og6 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 27 May 2020 10:36:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45614 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2389313AbgE0Og5 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 27 May 2020 10:36:57 -0400
+Received: from mail-qv1-xf43.google.com (mail-qv1-xf43.google.com [IPv6:2607:f8b0:4864:20::f43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6CB2C05BD1E;
+        Wed, 27 May 2020 07:36:53 -0700 (PDT)
+Received: by mail-qv1-xf43.google.com with SMTP id l3so11234155qvo.7;
+        Wed, 27 May 2020 07:36:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:from:date:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=M/Ui5N10MoWP25QkZD0joVeWRBDs+C5tf80CUmghzwI=;
+        b=PGIXthgPprHVZlHsny105w605Sd1gB4QZTpYrlxOq3UJ5SRdnxxv2HkC4XUz+sizjX
+         Lkpnq+1W5yP+SYim2ekNp+smjGuRwlgd3QovMAh/8UV61v8MH46E+TACFUI1+0E74nVG
+         EBRqzKaUxD2jctWZtSgKkdieSmSpXlJRVMwWW+tuCoXflNOT+3gbAYl1Ykt2kxwdyNIW
+         oEXwhTaL5S0dzKJyHZbuDeiNTU7YZb5zwAWbGGnLxmzyuqLPewIy41XKZDuNq6tp6jt2
+         a96Zw1DFViX0GKoUtQnOjxhQ7MvFHhWtxQVrK6Ws7L5tA7ZGL1Rs1VJ3ooFqlpGh9qYA
+         omEw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:from:date:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to;
+        bh=M/Ui5N10MoWP25QkZD0joVeWRBDs+C5tf80CUmghzwI=;
+        b=PX5PuwiDvc9Nt6WvQetptC16IaYMclvGpg3eUMgkdqjpgXWYu9lF/9PVR80DYc5/jY
+         T99tLw7Y9dkNEKr8Nk0Czg4bUdTg4yCAhTHwvkAYxwa3pa0yIRgsmfI55g95WF7IceBk
+         iiyTnYBr51JY73hxpVeUew1kB0XQWNG38rKZ8h+4CaQjVSQ5oatNopQ6Z0hXFUbyoujR
+         LNdrA7VjQNeeo1I9EktETFDTY7hAlZKjNdmMud7TzZst+h6BeF9hE2EuHfHf18kOhqiZ
+         XvXdmh9ZMccv2ZE86WmxAb2dS1uSo0ixdD57Vzmrs3QPKCQP894XXIlxneOnpY+wak1k
+         lUCg==
+X-Gm-Message-State: AOAM533L8uMGv4GTNm+iywcjj0zR5AH+9SfTdEzIiOTX5RrjvHZKw98+
+        re5UEC3L0FkZHPreWUVfc/n9Q/dQ
+X-Google-Smtp-Source: ABdhPJyMu12+V12ENpEF2IvmAVARuf8i7xe/1zWRe2s1RqcQQm7+ktBiyXEnpP/GhP3uGuwwJfYPfg==
+X-Received: by 2002:ad4:58cb:: with SMTP id dh11mr23547867qvb.211.1590590212778;
+        Wed, 27 May 2020 07:36:52 -0700 (PDT)
+Received: from rani.riverdale.lan ([2001:470:1f07:5f3::b55f])
+        by smtp.gmail.com with ESMTPSA id l2sm2620918qth.47.2020.05.27.07.36.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 27 May 2020 07:36:52 -0700 (PDT)
+From:   Arvind Sankar <nivedita@alum.mit.edu>
+X-Google-Original-From: Arvind Sankar <arvind@rani.riverdale.lan>
+Date:   Wed, 27 May 2020 10:36:50 -0400
 To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     linux-efi@vger.kernel.org
-Subject: [efi:next] BUILD SUCCESS 84780c5438efd96cfd27fc0d7722aee3b3fe44e6
-Message-ID: <5ecd6c15.yidUpQrE7zKn+GTD%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+Cc:     linux-efi@vger.kernel.org, x86@kernel.org,
+        linux-kernel@vger.kernel.org,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Arvind Sankar <nivedita@alum.mit.edu>
+Subject: Re: [PATCH v2 2/3] x86/boot/compressed: force hidden visibility for
+ all symbol references
+Message-ID: <20200527143650.GA3103408@rani.riverdale.lan>
+References: <20200523120021.34996-1-ardb@kernel.org>
+ <20200523120021.34996-3-ardb@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20200523120021.34996-3-ardb@kernel.org>
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git  next
-branch HEAD: 84780c5438efd96cfd27fc0d7722aee3b3fe44e6  x86/boot/compressed: Get rid of GOT fixup code
+On Sat, May 23, 2020 at 02:00:20PM +0200, Ard Biesheuvel wrote:
+> Eliminate all GOT entries in the decompressor binary, by forcing hidden
+> visibility for all symbol references, which informs the compiler that
+> such references will be resolved at link time without the need for
+> allocating GOT entries.
+> 
+> To ensure that no GOT entries will creep back in, add an assertion to
+> the decompressor linker script that will fire if the .got section has
+> a non-zero size.
+> 
+> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> ---
+>  arch/x86/boot/compressed/Makefile      |  1 +
+>  arch/x86/boot/compressed/hidden.h      | 19 +++++++++++++++++++
+>  arch/x86/boot/compressed/vmlinux.lds.S |  1 +
+>  3 files changed, 21 insertions(+)
+> 
+> diff --git a/arch/x86/boot/compressed/Makefile b/arch/x86/boot/compressed/Makefile
+> index 5f7c262bcc99..aa9ed814e5fa 100644
+> --- a/arch/x86/boot/compressed/Makefile
+> +++ b/arch/x86/boot/compressed/Makefile
+> @@ -40,6 +40,7 @@ KBUILD_CFLAGS += $(call cc-disable-warning, gnu)
+>  KBUILD_CFLAGS += -Wno-pointer-sign
+>  KBUILD_CFLAGS += $(call cc-option,-fmacro-prefix-map=$(srctree)/=)
+>  KBUILD_CFLAGS += -fno-asynchronous-unwind-tables
+> +KBUILD_CFLAGS += -include hidden.h
+>  
 
-elapsed time: 3066m
+Ard, from the other thread [1] in case you missed it -- the plain
+hidden.h fails to build in-tree. We need something like
+	KBUILD_CFLAGS += -include $(srctree)/$(src)/hidden.h
+instead.
 
-configs tested: 103
-configs skipped: 1
-
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-arm64                            allyesconfig
-arm64                               defconfig
-arm64                            allmodconfig
-arm64                             allnoconfig
-arm                                 defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-arm                               allnoconfig
-sh                           se7722_defconfig
-arc                        vdk_hs38_defconfig
-arm                          gemini_defconfig
-sh                          sdk7786_defconfig
-powerpc                      ppc64e_defconfig
-h8300                               defconfig
-i386                             allyesconfig
-i386                                defconfig
-i386                              debian-10.3
-i386                              allnoconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                              allnoconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                              allnoconfig
-m68k                           sun3_defconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-nios2                            allyesconfig
-openrisc                            defconfig
-c6x                              allyesconfig
-c6x                               allnoconfig
-openrisc                         allyesconfig
-nds32                               defconfig
-nds32                             allnoconfig
-csky                             allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-h8300                            allmodconfig
-xtensa                              defconfig
-arc                                 defconfig
-sh                               allmodconfig
-sh                                allnoconfig
-microblaze                        allnoconfig
-arc                              allyesconfig
-mips                             allyesconfig
-mips                              allnoconfig
-mips                             allmodconfig
-parisc                            allnoconfig
-parisc                              defconfig
-parisc                           allyesconfig
-parisc                           allmodconfig
-powerpc                             defconfig
-powerpc                          allyesconfig
-powerpc                          rhel-kconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-i386                 randconfig-a001-20200526
-i386                 randconfig-a004-20200526
-i386                 randconfig-a003-20200526
-i386                 randconfig-a006-20200526
-i386                 randconfig-a002-20200526
-i386                 randconfig-a005-20200526
-x86_64               randconfig-a015-20200526
-x86_64               randconfig-a013-20200526
-x86_64               randconfig-a016-20200526
-x86_64               randconfig-a012-20200526
-x86_64               randconfig-a014-20200526
-x86_64               randconfig-a011-20200526
-i386                 randconfig-a013-20200526
-i386                 randconfig-a015-20200526
-i386                 randconfig-a012-20200526
-i386                 randconfig-a011-20200526
-i386                 randconfig-a016-20200526
-i386                 randconfig-a014-20200526
-riscv                            allyesconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                            allmodconfig
-s390                             allyesconfig
-s390                              allnoconfig
-s390                             allmodconfig
-s390                                defconfig
-sparc                            allyesconfig
-sparc                               defconfig
-sparc64                             defconfig
-sparc64                           allnoconfig
-sparc64                          allyesconfig
-sparc64                          allmodconfig
-um                               allmodconfig
-um                                allnoconfig
-um                               allyesconfig
-um                                  defconfig
-x86_64                                   rhel
-x86_64                               rhel-7.6
-x86_64                    rhel-7.6-kselftests
-x86_64                         rhel-7.2-clear
-x86_64                                    lkp
-x86_64                              fedora-25
-x86_64                                  kexec
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+[1] https://lore.kernel.org/lkml/20200526153104.GC2190602@rani.riverdale.lan/
