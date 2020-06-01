@@ -2,145 +2,81 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B1C471E84DB
-	for <lists+linux-efi@lfdr.de>; Fri, 29 May 2020 19:32:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9081E1E9C0F
+	for <lists+linux-efi@lfdr.de>; Mon,  1 Jun 2020 05:37:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726487AbgE2RcY (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 29 May 2020 13:32:24 -0400
-Received: from mail.kernel.org ([198.145.29.99]:53766 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725839AbgE2RcY (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Fri, 29 May 2020 13:32:24 -0400
-Received: from embeddedor (unknown [189.207.59.248])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 9A8022072D;
-        Fri, 29 May 2020 17:32:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1590773543;
-        bh=1qy2XwZGp6bw0IMioTK3OHYDxNdjw6uX1yU4MFZqyEI=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=OqI/h7AsBu9I3eV7QBx+U2GmtaZbGtMR2lueZwwG2zrgxBaTzdr36ogU0oge2PwiG
-         AqvStkVV/3iFsl5cOb989SGXYRVMllbsqzQZfKw7sY0zbTHC6AKaDNJSMj3iI1b9RD
-         jMCuVD0DHQTc6TOPOPYoVeWqXxKsAoDby5dlqOsQ=
-Date:   Fri, 29 May 2020 12:37:22 -0500
-From:   "Gustavo A. R. Silva" <gustavoars@kernel.org>
-To:     Kees Cook <keescook@chromium.org>
-Cc:     Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-Subject: Re: [PATCH] efi: Replace zero-length array and use struct_size()
- helper
-Message-ID: <20200529173722.GB10051@embeddedor>
-References: <20200527171425.GA4053@embeddedor>
- <202005290131.4B104937C@keescook>
+        id S1726860AbgFADhU (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sun, 31 May 2020 23:37:20 -0400
+Received: from hs-162.6.buanalintas.co.id ([223.165.6.162]:38894 "EHLO
+        mx.bestprofit-futures.co.id" rhost-flags-OK-FAIL-OK-OK)
+        by vger.kernel.org with ESMTP id S1726002AbgFADhU (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sun, 31 May 2020 23:37:20 -0400
+X-Greylist: delayed 9295 seconds by postgrey-1.27 at vger.kernel.org; Sun, 31 May 2020 23:37:19 EDT
+Received: from localhost (localhost [127.0.0.1])
+        by mx.bestprofit-futures.co.id (Postfix) with ESMTP id 9A96B5229DF;
+        Mon,  1 Jun 2020 07:33:08 +0700 (WIB)
+Received: from mx.bestprofit-futures.co.id ([127.0.0.1])
+        by localhost (mx.bestprofit-futures.co.id [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id nvROJy7mvdDD; Mon,  1 Jun 2020 07:33:07 +0700 (WIB)
+Received: from localhost (localhost [127.0.0.1])
+        by mx.bestprofit-futures.co.id (Postfix) with ESMTP id C14F75227F3;
+        Mon,  1 Jun 2020 07:33:07 +0700 (WIB)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mx.bestprofit-futures.co.id C14F75227F3
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bestprofit-futures.co.id; s=4D3D1390-5211-11EA-8C0C-8C41A122B001;
+        t=1590971587; bh=zLTonXbKn6LYrnOZVETw9C2bepTvRzI70GQOlIiRCC0=;
+        h=MIME-Version:To:From:Date:Message-Id;
+        b=dhYNWWdSzgdXmniCYA2zVuEd+9M0zdPbw3YnBqcvobxP60cvM/jMEhd7LDqobvHit
+         r/idHI5GyB7sYmSsRVCTd2f0X/EkMPxJVc/Ple+Nt6G08o1U6Gzv1oYthiC0qfC1xF
+         noECN8iK1T8FryoMQjmVfa9hLeZ1Re8UKWiBABcHKM4KHXagP7UNOLBHbbT0DKpHzd
+         jBXmPhAS8JSbQWgtE7OsLxc/w+3QWXDFIQQ+/XkKYqC54G1qYeXhkaUI+1LQii5KQY
+         cFh+R8ouJTFlwut48/io1R/RqBQythcngnAXb2skIVtzrHCqQbucxsfOmtUhnCm0eI
+         MpATM/CMJ7Rqw==
+X-Virus-Scanned: amavisd-new at mx.bestprofit-futures.co.id
+Received: from mx.bestprofit-futures.co.id ([127.0.0.1])
+        by localhost (mx.bestprofit-futures.co.id [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id 0lKVak8-kyT5; Mon,  1 Jun 2020 07:33:07 +0700 (WIB)
+Received: from [10.81.249.6] (unknown [105.8.6.41])
+        by mx.bestprofit-futures.co.id (Postfix) with ESMTPSA id DB15F524DC3;
+        Mon,  1 Jun 2020 07:32:59 +0700 (WIB)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <202005290131.4B104937C@keescook>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: =?utf-8?q?Wohlt=C3=A4tigkeitsspende_von_2=2E000=2E000_Millionen_Euro?=
+To:     Recipients <yoshi@bestprofit-futures.co.id>
+From:   ''Tayeb Souami'' <yoshi@bestprofit-futures.co.id>
+Date:   Mon, 01 Jun 2020 02:32:52 +0200
+Reply-To: Tayebsouam.spende@gmail.com
+Message-Id: <20200601003259.DB15F524DC3@mx.bestprofit-futures.co.id>
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, May 29, 2020 at 01:31:54AM -0700, Kees Cook wrote:
-> On Wed, May 27, 2020 at 12:14:25PM -0500, Gustavo A. R. Silva wrote:
-> > The current codebase makes use of the zero-length array language
-> > extension to the C90 standard, but the preferred mechanism to declare
-> > variable-length types such as these ones is a flexible array member[1][2],
-> > introduced in C99:
-> > 
-> > struct foo {
-> >         int stuff;
-> >         struct boo array[];
-> > };
-> > 
-> > By making use of the mechanism above, we will get a compiler warning
-> > in case the flexible array does not occur last in the structure, which
-> > will help us prevent some kind of undefined behavior bugs from being
-> > inadvertently introduced[3] to the codebase from now on.
-> > 
-> > Also, notice that, dynamic memory allocations won't be affected by
-> > this change:
-> > 
-> > "Flexible array members have incomplete type, and so the sizeof operator
-> > may not be applied. As a quirk of the original implementation of
-> > zero-length arrays, sizeof evaluates to zero."[1]
-> > 
-> > sizeof(flexible-array-member) triggers a warning because flexible array
-> > members have incomplete type[1]. There are some instances of code in
-> > which the sizeof operator is being incorrectly/erroneously applied to
-> > zero-length arrays and the result is zero. Such instances may be hiding
-> > some bugs. So, this work (flexible-array member conversions) will also
-> > help to get completely rid of those sorts of issues.
-> > 
-> > Lastly, make use of the sizeof_field() helper instead of an open-coded
-> > version.
-> > 
-> > This issue was found with the help of Coccinelle and audited _manually_.
-> > 
-> > [1] https://gcc.gnu.org/onlinedocs/gcc/Zero-Length.html
-> > [2] https://github.com/KSPP/linux/issues/21
-> > [3] commit 76497732932f ("cxgb3/l2t: Fix undefined behaviour")
-> > 
-> > Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-> 
-> Reviewed-by: Kees Cook <keescook@chromium.org>
-> 
+Lieber Freund,
 
-Thanks :)
+Ich bin Herr Tayeb Souami, New Jersey, Vereinigte Staaten von Amerika, der =
+Mega-Gewinner von $ 315million In Mega Millions Jackpot, spende ich an 5 zu=
+f=C3=A4llige Personen, wenn Sie diese E-Mail erhalten, dann wurde Ihre E-Ma=
+il nach einem Spinball ausgew=C3=A4hlt.Ich habe den gr=C3=B6=C3=9Ften Teil =
+meines Verm=C3=B6gens auf eine Reihe von Wohlt=C3=A4tigkeitsorganisationen =
+und Organisationen verteilt.Ich habe mich freiwillig dazu entschieden, die =
+Summe von =E2=82=AC 2.000.000,00 an Sie als eine der ausgew=C3=A4hlten 5 zu=
+ spenden, um meine Gewinne zu =C3=BCberpr=C3=BCfen, sehen Sie bitte meine Y=
+ou Tube Seite unten.
 
-Please, see more comments below...
+UHR MICH HIER: https://www.youtube.com/watch?v=3DZ6ui8ZDQ6Ks
 
-> > ---
-> >  drivers/firmware/efi/efi.c | 3 ++-
-> >  include/linux/efi.h        | 7 ++-----
-> >  2 files changed, 4 insertions(+), 6 deletions(-)
-> > 
-> > diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
-> > index 7f1657b6c30df..edc5d36caf54e 100644
-> > --- a/drivers/firmware/efi/efi.c
-> > +++ b/drivers/firmware/efi/efi.c
-> > @@ -622,7 +622,8 @@ int __init efi_config_parse_tables(const efi_config_table_t *config_tables,
-> >  			rsv = (void *)(p + prsv % PAGE_SIZE);
-> >  
-> >  			/* reserve the entry itself */
-> > -			memblock_reserve(prsv, EFI_MEMRESERVE_SIZE(rsv->size));
-> > +			memblock_reserve(prsv,
-> > +					 struct_size(rsv, entry, rsv->size));
-> >  
-> >  			for (i = 0; i < atomic_read(&rsv->count); i++) {
-> >  				memblock_reserve(rsv->entry[i].base,
-> > diff --git a/include/linux/efi.h b/include/linux/efi.h
-> > index c45ac969ea4eb..328cc52a5fd45 100644
-> > --- a/include/linux/efi.h
-> > +++ b/include/linux/efi.h
-> > @@ -1234,14 +1234,11 @@ struct linux_efi_memreserve {
-> >  	struct {
-> >  		phys_addr_t	base;
-> >  		phys_addr_t	size;
-> > -	} entry[0];
-> > +	} entry[];
-> >  };
-> >  
-> > -#define EFI_MEMRESERVE_SIZE(count) (sizeof(struct linux_efi_memreserve) + \
-> > -	(count) * sizeof(((struct linux_efi_memreserve *)0)->entry[0]))
-> > -
-> >  #define EFI_MEMRESERVE_COUNT(size) (((size) - sizeof(struct linux_efi_memreserve)) \
-> > -	/ sizeof(((struct linux_efi_memreserve *)0)->entry[0]))
-> > +	/ sizeof_field(struct linux_efi_memreserve, entry[0]))
-> 
-> Whoa. This is kind of a "reverse struct_size()". I wonder if any other
-> places in the kernel do a similar calculation?
-> 
 
-So far this is the only intance of this I've run into. 
+Das ist dein Spendencode: [TS530342018]
 
-What I've found is that there are many instances of the open-coded
-version of sizeof_field() and offsetof(). I'm addressing them on the
-way.
 
-Thanks
---
-Gustavo
+Antworten Sie mit dem SPENDE-CODE an diese
+
+ E-Mail:Tayebsouam.spende@gmail.com
+
+Ich hoffe, Sie und Ihre Familie gl=C3=BCcklich zu machen.
+
+Gr=C3=BC=C3=9Fe
+Herr Tayeb Souami
