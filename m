@@ -2,91 +2,84 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 47DE01EFC28
-	for <lists+linux-efi@lfdr.de>; Fri,  5 Jun 2020 17:06:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B76481EFC36
+	for <lists+linux-efi@lfdr.de>; Fri,  5 Jun 2020 17:10:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726568AbgFEPGn (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 5 Jun 2020 11:06:43 -0400
-Received: from mail-qk1-f193.google.com ([209.85.222.193]:43637 "EHLO
-        mail-qk1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726541AbgFEPGn (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 5 Jun 2020 11:06:43 -0400
-Received: by mail-qk1-f193.google.com with SMTP id v79so9931512qkb.10;
-        Fri, 05 Jun 2020 08:06:41 -0700 (PDT)
+        id S1728071AbgFEPKl (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 5 Jun 2020 11:10:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57238 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728016AbgFEPKl (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 5 Jun 2020 11:10:41 -0400
+Received: from mail-qk1-x743.google.com (mail-qk1-x743.google.com [IPv6:2607:f8b0:4864:20::743])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 316DAC08C5C2;
+        Fri,  5 Jun 2020 08:10:40 -0700 (PDT)
+Received: by mail-qk1-x743.google.com with SMTP id c185so9965868qke.7;
+        Fri, 05 Jun 2020 08:10:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:from:date:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=BpK25pF9k97GQANrMAOM4ayOwz19XUu3M8Q+Bj7oXKA=;
+        b=rLqdynoxAjps7NUHRkjER++fW3GoX+ZXO37Ce4cYeD8aMWIGjznv+zFN8tNnw9+E97
+         LHqyFMlZZznMyQ0ckXIT8QJlZTFfRcVdqtb2nuaBR7peyZeEBsh5kgX8RH7rHrVhVZvR
+         ciWqatBHrllGlSqhGITbN0ESt4xt6hzZzvAvK6wK5YQ+PYsTDvM53W5wXPDZySZ51xqu
+         vuqBwbBptnb0/OiI4FgOFC4SwVezkDvnZYtMfVjGW+r722a8WqH9qd2aV89e4WHUiDJE
+         lO3Oq26noPy+byEgDpaqC7FjPGpTXIeI4f5rSLg8KwsE145lz8B5+hfdK8mqB54v42Cy
+         aymg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=E3Aey2hCctLUVtXPUILLI/+0YxyP0j2psyrkXc/MfyQ=;
-        b=GWEKckaOMxop4C+909X3+FSHfBi/FiGJt7wP3bHJmOM+xVnlrqbkV1eJke17jIv5yY
-         8237i40t92QK1u5CfMwUBjkjT64pYkXumWA84RNzATmeif/1Mqq6lYRhmoyPAsyCTe4d
-         reJQFqgHprrWBVmmonHfO00zAwJookMR442GjB0nXSrAevoL7iTXXvh7+I6qTtVoc6gs
-         tf/KfpCGKHhhYDEVR4B94ZG3z3w6MUa66vhjGCBXgFCpMXUQxpZyKFUxYsfa51+YGS97
-         WSTdFvtyx3Tq+9/B5Hf20fIG1uQskBO/7VNwso36Uy9NYM6HEqboSDTLYAaKIR6XRfY7
-         aZXw==
-X-Gm-Message-State: AOAM530oatul5jlNnR2a/JoGdpXUUKLGz1aJ4njHZYPdA9tVYZoflaR7
-        4WiNJxz/gjcDn+65pI8aeXQ=
-X-Google-Smtp-Source: ABdhPJzQVvaWzPe5L3NXYZvUl2LsIj1ARJRu0MKNhqtNR+G9RA9MB+/o/kOIo8nYLPwb1qD84FWcWQ==
-X-Received: by 2002:a37:6610:: with SMTP id a16mr9691954qkc.17.1591369600693;
-        Fri, 05 Jun 2020 08:06:40 -0700 (PDT)
+        h=x-gm-message-state:sender:from:date:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to;
+        bh=BpK25pF9k97GQANrMAOM4ayOwz19XUu3M8Q+Bj7oXKA=;
+        b=nni+aC7ulwY6S/SAearAl8fJ5hWxw7xUlX/QpPaLXAdsWbiBqPbm8MWeaRZ1+7ey0T
+         Ew15/JUSc1phYKW0XMezsfADXw4QexgAgc/DDHH53w0KiWOaXRQMSw36j2cZMxqenJKo
+         hytNwYYmNlSoVvDuM5+nC8JfWF8chj/4Enx3KOInK/dPIZzgmWJit7yJVMJJiIEz01IC
+         szLENfALszS7Hh9ddJ/dN5x+IrQ+F3INgoy+N7wmSMvPefCgCEC3j8QklQjjSf7pjgbz
+         RxpFWPbFFKQkVL2gzWNq5McGXa9Ai5f72PtPCcXOh6cXkeVq9slTU5Epwbz8kGNlLnOI
+         PiNg==
+X-Gm-Message-State: AOAM531JtLyCzAbm0kBtpV4fY6niCYB2f39AIlhN9RUNVPvyg42mDyvC
+        YpitLYykofj9MfM0dePaKK8=
+X-Google-Smtp-Source: ABdhPJzArTY56WDQJ3+DHB1F4wX+Auf5D5Y008s/ZKOntadub4jsgM/l7EUL8gRlU8W+phItoAlJgw==
+X-Received: by 2002:a37:ecc:: with SMTP id 195mr9652116qko.469.1591369839422;
+        Fri, 05 Jun 2020 08:10:39 -0700 (PDT)
 Received: from rani.riverdale.lan ([2001:470:1f07:5f3::b55f])
-        by smtp.gmail.com with ESMTPSA id d17sm7162555qke.101.2020.06.05.08.06.39
+        by smtp.gmail.com with ESMTPSA id g9sm4787qtq.66.2020.06.05.08.10.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 05 Jun 2020 08:06:39 -0700 (PDT)
+        Fri, 05 Jun 2020 08:10:38 -0700 (PDT)
 From:   Arvind Sankar <nivedita@alum.mit.edu>
-To:     Ard Biesheuvel <ardb@kernel.org>, Andrey Ignatov <rdna@fb.com>
-Cc:     linux-efi@vger.kernel.org, bpf@vger.kernel.org
-Subject: [PATCH] efi/x86: Fix build with gcc 4
-Date:   Fri,  5 Jun 2020 11:06:38 -0400
-Message-Id: <20200605150638.1011637-1-nivedita@alum.mit.edu>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20200605133232.GA616374@rani.riverdale.lan>
-References: <20200605133232.GA616374@rani.riverdale.lan>
+X-Google-Original-From: Arvind Sankar <arvind@rani.riverdale.lan>
+Date:   Fri, 5 Jun 2020 11:10:37 -0400
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     Arvind Sankar <nivedita@alum.mit.edu>,
+        Andrey Ignatov <rdna@fb.com>,
+        linux-efi <linux-efi@vger.kernel.org>, bpf@vger.kernel.org
+Subject: Re: [PATCH 05/24] efi/libstub: Optimize for size instead of speed
+Message-ID: <20200605151037.GA1011855@rani.riverdale.lan>
+References: <20200518190716.751506-1-nivedita@alum.mit.edu>
+ <20200518190716.751506-6-nivedita@alum.mit.edu>
+ <20200605003134.GA95743@rdna-mbp.dhcp.thefacebook.com>
+ <CAMj1kXGaQGaoiCqQpX4mdN6UQi25=EhqiNZn=sbcgi1YYuJwBA@mail.gmail.com>
+ <20200605131419.GA560594@rani.riverdale.lan>
+ <20200605133232.GA616374@rani.riverdale.lan>
+ <CAMj1kXG936NeN7+Mf42bL-7V5pRVjoNmCKmVT3EcB5EGh2y5fQ@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAMj1kXG936NeN7+Mf42bL-7V5pRVjoNmCKmVT3EcB5EGh2y5fQ@mail.gmail.com>
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Commit
-  bbf8e8b0fe04 ("efi/libstub: Optimize for size instead of speed")
+On Fri, Jun 05, 2020 at 04:53:59PM +0200, Ard Biesheuvel wrote:
+> I guess the logic that decides whether -maccumulate-outgoing-args is
+> enabled is somewhat opaque.
+> 
+> Could we perhaps back out the -Os change for 4.8 and earlier?
 
-changed the optimization level for the EFI stub to -Os from -O2.
+I just sent a patch to add the accumulate-outgoing-args option
+explicitly. That fixes 4.8.5 and doesn't seem to affect at least
+gcc-9.3.0, which presumably already enables it automatically.
 
-Andrey Ignatov reports that this breaks the build with gcc 4.8.5.
-
-Testing on godbolt.org, the combination of -Os,
--fno-asynchronous-unwind-tables, and ms_abi functions doesn't work,
-failing with the error:
-  sorry, unimplemented: ms_abi attribute requires
-  -maccumulate-outgoing-args or subtarget optimization implying it
-
-This does appear to work with gcc 4.9 onwards.
-
-Add -maccumulate-outgoing-args explicitly to unbreak the build with
-pre-4.9 versions of gcc.
-
-Reported-by: Andrey Ignatov <rdna@fb.com>
-Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
----
- drivers/firmware/efi/libstub/Makefile | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/firmware/efi/libstub/Makefile b/drivers/firmware/efi/libstub/Makefile
-index cce4a7436052..d67418de768c 100644
---- a/drivers/firmware/efi/libstub/Makefile
-+++ b/drivers/firmware/efi/libstub/Makefile
-@@ -6,7 +6,8 @@
- # enabled, even if doing so doesn't break the build.
- #
- cflags-$(CONFIG_X86_32)		:= -march=i386
--cflags-$(CONFIG_X86_64)		:= -mcmodel=small
-+cflags-$(CONFIG_X86_64)		:= -mcmodel=small \
-+				   $(call cc-option,-maccumulate-outgoing-args)
- cflags-$(CONFIG_X86)		+= -m$(BITS) -D__KERNEL__ \
- 				   -fPIC -fno-strict-aliasing -mno-red-zone \
- 				   -mno-mmx -mno-sse -fshort-wchar \
--- 
-2.26.2
-
+Thanks.
