@@ -2,180 +2,183 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 021AE1EF813
-	for <lists+linux-efi@lfdr.de>; Fri,  5 Jun 2020 14:39:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A20D61EF8B9
+	for <lists+linux-efi@lfdr.de>; Fri,  5 Jun 2020 15:14:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726456AbgFEMje (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 5 Jun 2020 08:39:34 -0400
-Received: from mail.kernel.org ([198.145.29.99]:42432 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726409AbgFEMjd (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Fri, 5 Jun 2020 08:39:33 -0400
-Received: from mail-ot1-f51.google.com (mail-ot1-f51.google.com [209.85.210.51])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B133A206DC
-        for <linux-efi@vger.kernel.org>; Fri,  5 Jun 2020 12:39:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1591360772;
-        bh=lrmwQwigYJIHtwdWmFVstgehot+bX/c2F/U0hfdY/IM=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=QG6M0yEUgO4zU7IpPttDpOynCE2wjfhTe5m6uXWYYLkgVKV47L7YOTE7Aux/bOfIZ
-         bBStMpH2yel06iOylz9WVsgYnWbSjWJEIUgDQSb5+8NTm1kjsrE3DnhbijpzKYmTAb
-         SzBA8UmhRYGuOUqY3nraqxj2DSivxZP4pUtVJ4AE=
-Received: by mail-ot1-f51.google.com with SMTP id e5so7444677ote.11
-        for <linux-efi@vger.kernel.org>; Fri, 05 Jun 2020 05:39:32 -0700 (PDT)
-X-Gm-Message-State: AOAM533+j+/yBn9vHV+4gKnmXopvHCwpmnudQjpN9YyOZE5A60smn1cO
-        mjxW+T2s7GdzyMtBA+3TyoMCoMS1jVH83jsIbUA=
-X-Google-Smtp-Source: ABdhPJxL1vpTKa4SiVHNF4jxlFEr/kwtXV7kNMCaO7IcFlH+CQxPRNa0YigyJ10hiIsizeJtJfVdoSbTavgA+E0IP80=
-X-Received: by 2002:a9d:476:: with SMTP id 109mr7998548otc.77.1591360771988;
- Fri, 05 Jun 2020 05:39:31 -0700 (PDT)
+        id S1726797AbgFENOX (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 5 Jun 2020 09:14:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38546 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726711AbgFENOX (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 5 Jun 2020 09:14:23 -0400
+Received: from mail-qt1-x842.google.com (mail-qt1-x842.google.com [IPv6:2607:f8b0:4864:20::842])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6037C08C5C2;
+        Fri,  5 Jun 2020 06:14:22 -0700 (PDT)
+Received: by mail-qt1-x842.google.com with SMTP id z1so8385535qtn.2;
+        Fri, 05 Jun 2020 06:14:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:from:date:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=IT+O1en9ajm4h/0bA78mh/qTFH2R4012BCps6CYwJ7Y=;
+        b=Th0/T9Uh8Di2JQdlUnRSqYBXiCATzWobgwdULkCKsJuBY93eDMJ2lhoutJQJDEEcCm
+         9hV2SaKZFyDcNpABLxcZXmcc0ncD2H4O+7RguxwMOr6BwtP2Iq73yUgBsOk2YVZBXAuI
+         bQMUiaqlzdMzHZrC9Ut+zaVKCCg8Y2wGsS9do9CB9KLaxbpm0Wku/7qeaLbeKn8Ph1Te
+         eUGNaqsBp2GRN942O0yE7SmwUT8UsiL6RwKKnPbdoRCTQWjNmsvTZTSVhYAC6BuKBh3X
+         chNMkSs+CZxxDhQt5wtQE5s9hvhK69MAS2awzrdX7dDFVpcwMFfHZP9ZERwgsrmeJFnz
+         sclg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:from:date:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to;
+        bh=IT+O1en9ajm4h/0bA78mh/qTFH2R4012BCps6CYwJ7Y=;
+        b=MlM4UgNT4OKBlh+ZANsGDobcaW4ulTxD+ZZAPsBRfKsFqUHbvFU6M2ZJzjNW5G1KeI
+         srSInqr6fXWnykElv0UEGPFKURhxJkW9zc3UIbkSknKMzcWIj34Lg0dGAYvrwjZA9U3e
+         nRiZSI6gwbaVr6xJVo6ZQ4TcmwDHyu5t/blDOwQf3xfuKtMUPuXwPFvrPl3n4PfMNy1M
+         o2DsmwaS13OFOwFdoY7QRu1NG5fnyIQt+dJXul0LXwEWkroEGL9z8uHvjRzw1L6b33OJ
+         moueusudIhN8hZsS+ioAfO3e5dQnPgC0ht43hJnOz4ljpP8ayzeUnMqJtgdF24id2/IN
+         4Eiw==
+X-Gm-Message-State: AOAM531GKUxuG3xFh+kWuCto2unFwQTOvP5E3KUjLt1AGzerMhH95QBE
+        LtOFjOJHdwGM4UcbZyBHfL8=
+X-Google-Smtp-Source: ABdhPJygk7BM6cSBayEwlckEM1TSKj7EZDuX1ulnxFip1Dzy1heWaLATzj0Eq8gAtdgZusUlEnP29A==
+X-Received: by 2002:ac8:7252:: with SMTP id l18mr9582690qtp.71.1591362861831;
+        Fri, 05 Jun 2020 06:14:21 -0700 (PDT)
+Received: from rani.riverdale.lan ([2001:470:1f07:5f3::b55f])
+        by smtp.gmail.com with ESMTPSA id h19sm6976040qkl.49.2020.06.05.06.14.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 05 Jun 2020 06:14:21 -0700 (PDT)
+From:   Arvind Sankar <nivedita@alum.mit.edu>
+X-Google-Original-From: Arvind Sankar <arvind@rani.riverdale.lan>
+Date:   Fri, 5 Jun 2020 09:14:19 -0400
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     Andrey Ignatov <rdna@fb.com>,
+        Arvind Sankar <nivedita@alum.mit.edu>,
+        linux-efi <linux-efi@vger.kernel.org>, bpf@vger.kernel.org
+Subject: Re: [PATCH 05/24] efi/libstub: Optimize for size instead of speed
+Message-ID: <20200605131419.GA560594@rani.riverdale.lan>
+References: <20200518190716.751506-1-nivedita@alum.mit.edu>
+ <20200518190716.751506-6-nivedita@alum.mit.edu>
+ <20200605003134.GA95743@rdna-mbp.dhcp.thefacebook.com>
+ <CAMj1kXGaQGaoiCqQpX4mdN6UQi25=EhqiNZn=sbcgi1YYuJwBA@mail.gmail.com>
 MIME-Version: 1.0
-References: <20200605115200.413921-1-ardb@kernel.org> <4498d910-f5cb-8559-afba-34710e9ca730@gmx.de>
-In-Reply-To: <4498d910-f5cb-8559-afba-34710e9ca730@gmx.de>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Fri, 5 Jun 2020 14:39:20 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXHS8AVczRPzySgzkkztD0yT1MXnCyMwmOt=ihZ9Bvo0vQ@mail.gmail.com>
-Message-ID: <CAMj1kXHS8AVczRPzySgzkkztD0yT1MXnCyMwmOt=ihZ9Bvo0vQ@mail.gmail.com>
-Subject: Re: [PATCH] efi/arm: decompressor: deal with HYP mode boot gracefully
-To:     Heinrich Schuchardt <xypron.glpk@gmx.de>
-Cc:     linux-efi <linux-efi@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Marc Zyngier <maz@kernel.org>,
-        Russell King <linux@armlinux.org.uk>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAMj1kXGaQGaoiCqQpX4mdN6UQi25=EhqiNZn=sbcgi1YYuJwBA@mail.gmail.com>
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, 5 Jun 2020 at 14:20, Heinrich Schuchardt <xypron.glpk@gmx.de> wrote:
->
-> On 05.06.20 13:52, Ard Biesheuvel wrote:
-> > EFI on ARM only supports short descriptors, and given that it mandates
-> > that the MMU and caches are on, it is implied that booting in HYP mode
-> > is not supported.
+On Fri, Jun 05, 2020 at 08:33:22AM +0200, Ard Biesheuvel wrote:
+> Hello Andrey,
+> 
+> On Fri, 5 Jun 2020 at 02:31, Andrey Ignatov <rdna@fb.com> wrote:
 > >
-> > However, implementations of EFI exist (i.e., U-Boot) that ignore this
-> > requirement, which is not entirely unreasonable, given that it does
-> > not make a lot of sense to begin with.
->
-> Hello Ard,
->
-> thanks for investigating the differences between EDK2 and U-Boot.
->
-> What I still do not understand is if there is a bug in U-Boot where
-> U-Boot does not conform to the UEFI specification? In this case I would
-> expect a fix in U-Boot.
->
-
-U-Boot violates the EFI spec, yes. The spec is very clear on how the
-MMU is configured, and this rules out booting with the caches off, or
-booting in HYP mode.
-
-However, given that this is the situation today, we still need to deal
-with it on the Linux side.
-In parallel, fixing it in U-boot may be appropriate. However, I think
-the EFI spec is too detailed here - instead of 'booting at the highest
-non-secure privilege mode', it tells you which exact bits to set in
-SCTLR, which seems overzealous to me. In other words, even though it
-violates the letter of the spec, I don't mind dealing with this
-exception in the Linux side, since the requirement is somewhat
-unreasonable to begin with.
-
-> Or is it simply a deficiency of Linux that it does not properly support
-> HYP/EL2 mode on 32-bit ARM?
->
-
-No, this is definitely not the fault of Linux.
-
-> Up to now I never experience a problem booting a 32bit board via U-Boot
-> -> GRUB-EFI -> Linux. Where did you have a problem when booting via
-> U-Boot's UEFI implementation and the current Linux kernel?
->
-
-I haven't managed to make it fail, but my only 32-bit HYP capable
-platform is QEMU. I am not 100% convinced that the EFI+HYP+U-Boot case
-is rock solid, and I may have gotten lucky with QEMU (which uses
-emulation not virtualization when running at HYP)
-
-Do you have any A7/A15 based boards that don't print 'WARNING: Caches
-not enabled' at boot?
-
-> Does this patch relate to the retirement of KVM on 32 ARM in Linux 5.7
-> 541ad0150ca4 ("arm: Remove 32bit KVM host support")? Without that patch
-> I would have expected Linux to work fine in HYP mode.
->
-
-Not really. The code still has to deal with booting at HYP mode,
-regardless of whether it is used in a useful way.
-
-I suppose simply dropping to SVC in the decompressor might make sense
-as well, given that booting the kernel at HYP doesn't buy you anything
-anymore in the first place. Marc may have some thoughts on that, but
-it is really a separate discussion.
-
-
->
+> > Arvind Sankar <nivedita@alum.mit.edu> [Wed, 1969-12-31 23:00 -0800]:
+> > > Reclaim the bloat from the addition of printf by optimizing the stub for
+> > > size. With gcc 9, the text size of the stub is:
+> > >
+> > > ARCH    before  +printf    -Os
+> > > arm      35197    37889  34638
+> > > arm64    34883    38159  34479
+> > > i386     18571    21657  17025
+> > > x86_64   25677    29328  22144
+> > >
+> > > Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
+> > > ---
+> > >  drivers/firmware/efi/libstub/Makefile | 4 ++--
+> > >  1 file changed, 2 insertions(+), 2 deletions(-)
+> > >
+> > > diff --git a/drivers/firmware/efi/libstub/Makefile b/drivers/firmware/efi/libstub/Makefile
+> > > index fb34c9d14a3c..034d71663b1e 100644
+> > > --- a/drivers/firmware/efi/libstub/Makefile
+> > > +++ b/drivers/firmware/efi/libstub/Makefile
+> > > @@ -7,7 +7,7 @@
+> > >  #
+> > >  cflags-$(CONFIG_X86_32)              := -march=i386
+> > >  cflags-$(CONFIG_X86_64)              := -mcmodel=small
+> > > -cflags-$(CONFIG_X86)         += -m$(BITS) -D__KERNEL__ -O2 \
+> > > +cflags-$(CONFIG_X86)         += -m$(BITS) -D__KERNEL__ \
+> > >                                  -fPIC -fno-strict-aliasing -mno-red-zone \
+> > >                                  -mno-mmx -mno-sse -fshort-wchar \
+> > >                                  -Wno-pointer-sign \
+> > > @@ -25,7 +25,7 @@ cflags-$(CONFIG_ARM)                := $(subst $(CC_FLAGS_FTRACE),,$(KBUILD_CFLAGS)) \
+> > >
+> > >  cflags-$(CONFIG_EFI_GENERIC_STUB) += -I$(srctree)/scripts/dtc/libfdt
+> > >
+> > > -KBUILD_CFLAGS                        := $(cflags-y) -DDISABLE_BRANCH_PROFILING \
+> > > +KBUILD_CFLAGS                        := $(cflags-y) -Os -DDISABLE_BRANCH_PROFILING \
+> > >                                  -include $(srctree)/drivers/firmware/efi/libstub/hidden.h \
+> > >                                  -D__NO_FORTIFY \
+> > >                                  $(call cc-option,-ffreestanding) \
 > >
-> > So let's make sure that we can deal with this condition gracefully.
-> > We already tolerate booting the EFI stub with the caches off (even
-> > though this violates the EFI spec as well), and so we should deal
-> > with HYP mode boot with MMU and caches either on or off.
+> > Hi Arvind,
 > >
-> > - When the MMU and caches are on, we can ignore the HYP stub altogether,
-> >   since we can just use the existing mappings, and just branch into
-> >   the decompressed kernel as usual after disabling MMU and caches.
+> > This patch breaks build for me:
 > >
-> > - When the MMU and caches are off, we have to drop to SVC mode so that
-> >   we can set up the page tables using short descriptors. In this case,
-> >   we need to install the HYP stub so that we can return to HYP mode
-> >   when handing over to the kernel proper.
+> > $>make -j32 -s bzImage
+> > drivers/firmware/efi/libstub/alignedmem.c: In function \x2018efi_allocate_pages_aligned\x2019:
+> > drivers/firmware/efi/libstub/alignedmem.c:38:9: sorry, unimplemented: ms_abi attribute requires -maccumulate-outgoing-args or subtarget optimization implying it
+> >   status = efi_bs_call(allocate_pages, EFI_ALLOCATE_MAX_ADDRESS,
+> >          ^
+> 
+> Which version of GCC are you using?
+
+gcc-4.8.5 from the config. I got a copy and can reproduce it. Just
+adding -maccumulate-outgoing-args appears to fix it, checking some more.
+
+> 
+> 
+> > In file included from drivers/firmware/efi/libstub/alignedmem.c:6:0:
+> > drivers/firmware/efi/libstub/efistub.h:49:64: sorry, unimplemented: ms_abi attribute requires -maccumulate-outgoing-args or subtarget optimization implying it
+> >  #define efi_bs_call(func, ...) efi_system_table->boottime->func(__VA_ARGS__)
+> >                                                                 ^
+> > drivers/firmware/efi/libstub/alignedmem.c:50:4: note: in expansion of macro \x2018efi_bs_call\x2019
+> >     efi_bs_call(free_pages, alloc_addr, slack - l + 1);
+> >     ^
+> > drivers/firmware/efi/libstub/alignedmem.c:50: confused by earlier errors, bailing out
+> > In file included from drivers/firmware/efi/libstub/efi-stub-helper.c:19:0:
+> > drivers/firmware/efi/libstub/efi-stub-helper.c: In function \x2018efi_char16_puts\x2019:
+> > drivers/firmware/efi/libstub/efistub.h:52:51: sorry, unimplemented: ms_abi attribute requires -maccumulate-outgoing-args or subtarget optimization implying it
+> >  #define efi_call_proto(inst, func, ...) inst->func(inst, ##__VA_ARGS__)
+> >                                                    ^
+> > drivers/firmware/efi/libstub/efi-stub-helper.c:37:2: note: in expansion of macro \x2018efi_call_proto\x2019
+> >   efi_call_proto(efi_table_attr(efi_system_table, con_out),
+> >   ^
+> > drivers/firmware/efi/libstub/efi-stub-helper.c:37: confused by earlier errors, bailing out
+> > drivers/firmware/efi/libstub/file.c: In function \x2018handle_cmdline_files\x2019:
+> > drivers/firmware/efi/libstub/file.c:73:9: sorry, unimplemented: ms_abi attribute requires -maccumulate-outgoing-args or subtarget optimization implying it
+> >   status = efi_bs_call(handle_protocol, image->device_handle, &fs_proto,
+> >          ^
+> > drivers/firmware/efi/libstub/file.c:73: confused by earlier errors, bailing out
+> > Preprocessed source stored into /tmp/ccc4T4FI.out file, please attach this to your bugreport.
+> > make[5]: *** [drivers/firmware/efi/libstub/alignedmem.o] Error 1
+> > make[5]: *** Waiting for unfinished jobs....
+> > drivers/firmware/efi/libstub/gop.c: In function \x2018efi_setup_gop\x2019:
+> > drivers/firmware/efi/libstub/gop.c:565:9: sorry, unimplemented: ms_abi attribute requires -maccumulate-outgoing-args or subtarget optimization implying it
+> >   status = efi_bs_call(allocate_pool, EFI_LOADER_DATA, size,
+> >          ^
+> > drivers/firmware/efi/libstub/gop.c:565: confused by earlier errors, bailing out
+> > Preprocessed source stored into /tmp/ccgQG7p4.out file, please attach this to your bugreport.
+> > make[5]: *** [drivers/firmware/efi/libstub/efi-stub-helper.o] Error 1
+> > Preprocessed source stored into /tmp/ccnqGnqG.out file, please attach this to your bugreport.
+> > make[5]: *** [drivers/firmware/efi/libstub/file.o] Error 1
+> > Preprocessed source stored into /tmp/ccle7n2N.out file, please attach this to your bugreport.
+> > make[5]: *** [drivers/firmware/efi/libstub/gop.o] Error 1
+> > make[4]: *** [drivers/firmware/efi/libstub] Error 2
+> > make[3]: *** [drivers/firmware/efi] Error 2
+> > make[2]: *** [drivers/firmware] Error 2
+> > make[2]: *** Waiting for unfinished jobs....
+> > make[1]: *** [drivers] Error 2
+> > make[1]: *** Waiting for unfinished jobs....
+> > make: *** [sub-make] Error 2
 > >
-> > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> > ---
-> >  arch/arm/boot/compressed/head.S | 29 +++++++++++++++++++++++++++++
-> >  1 file changed, 29 insertions(+)
+> > Either reverting the patch or disabling CONFIG_EFI_STUB fixes it.
 > >
-> > diff --git a/arch/arm/boot/compressed/head.S b/arch/arm/boot/compressed/head.S
-> > index c79db44ba128..986db86ba334 100644
-> > --- a/arch/arm/boot/compressed/head.S
-> > +++ b/arch/arm/boot/compressed/head.S
-> > @@ -1436,6 +1436,35 @@ ENTRY(efi_enter_kernel)
-> >               mrc     p15, 0, r0, c1, c0, 0   @ read SCTLR
-> >               tst     r0, #0x1                @ MMU enabled?
-> >               orreq   r4, r4, #1              @ set LSB if not
-> > +#ifdef CONFIG_ARM_VIRT_EXT
-> > +             @
-> > +             @ The EFI spec does not support booting on ARM in HYP mode,
-> > +             @ since it mandates that the MMU and caches are on, with all
-> > +             @ 32-bit addressable DRAM mapped 1:1 using short descriptors.
-> > +             @ While the EDK2 reference implementation adheres to this,
-> > +             @ U-Boot might decide to enter the EFI stub in HYP mode anyway,
-> > +             @ with the MMU and caches either on or off.
-> > +             @ In the former case, we're better off just carrying on using
-> > +             @ the cached 1:1 mapping that the firmware provided, and pretend
-> > +             @ that we are in SVC mode as far as the decompressor is
-> > +             @ concerned. However, if the caches are off, we need to drop
-> > +             @ into SVC mode now, and let the decompressor set up its cached
-> > +             @ 1:1 mapping as usual.
-> > +             @
-> > +             mov     r0, #SVC_MODE
-> > +             msr     spsr_cxsf, r0           @ record that we are in SVC mode
-> > +             bne     1f                      @ skip HYP stub install if MMU is on
-> > +
-> > +             mov     r9, r4                  @ preserve image base
-> > +             bl      __hyp_stub_install      @ returns boot mode in r4
-> > +             cmp     r4, #HYP_MODE           @ did we boot in HYP?
-> > +             bne     1f                      @ skip drop to SVC if we did not
-> > +
-> > +             safe_svcmode_maskall    r0
-> > +             msr     spsr_cxsf, r4           @ record boot mode
-> > +             mov     r4, r9                  @ restore image base
-> > +1:
-> > +#endif
+> > Initially I found it on bpf/bpf-next HEAD but same happens on
+> > torvalds/linux.
 > >
-> >               mov     r0, r8                  @ DT start
-> >               add     r1, r8, r2              @ DT end
+> > I attach the config I used.
 > >
->
+> > --
+> > Andrey Ignatov
