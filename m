@@ -2,43 +2,38 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D146F1F2919
-	for <lists+linux-efi@lfdr.de>; Tue,  9 Jun 2020 02:04:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 479231F2E52
+	for <lists+linux-efi@lfdr.de>; Tue,  9 Jun 2020 02:42:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729778AbgFHXWw (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 8 Jun 2020 19:22:52 -0400
-Received: from mail.kernel.org ([198.145.29.99]:47740 "EHLO mail.kernel.org"
+        id S1729143AbgFHXMd (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 8 Jun 2020 19:12:33 -0400
+Received: from mail.kernel.org ([198.145.29.99]:60090 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731382AbgFHXWv (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Mon, 8 Jun 2020 19:22:51 -0400
+        id S1729131AbgFHXMb (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Mon, 8 Jun 2020 19:12:31 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 129A2208C7;
-        Mon,  8 Jun 2020 23:22:49 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 8035220897;
+        Mon,  8 Jun 2020 23:12:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1591658571;
-        bh=MdW3KQHJFjrbPO/7LWBN3FFilQj3utVGrULWCGVyXAU=;
+        s=default; t=1591657951;
+        bh=7LvtuBEfEARJ4C3bAoCTpWgj4kiNyoFDh4ndTV3l0RA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=aFzj5DtNBC9rdXAHAq8LBeOGPZJb01xahgIsUFoff3dVSenc1QXKeDd9UuGK7S3X8
-         1RSxH1T1LRlZYYpmDwy3Vy/1aqLyD5j/4wstvYxYL991DTdz+04ebQOkKDDiS8N6oF
-         hSQ62adPTBoe5k8dp8KGBEzYmIVAtp7qzL+Ik0H4=
+        b=y2ncPrcJyYFmbitGDaC1Z9hSqsiTdmhXiBMyvriO+XKcdR+PoQL8/Ib8sfjfTpsBz
+         anuoUhbIAqFFqUgyMkxxWPBCVdH0X9MEXomtku7knBt+/m5dkH3CCTnJwx/lOb1X/d
+         eXcyh4AwCeVQYmGN0tJORTc5G1GZwDjUSWe6vqxM=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Ard Biesheuvel <ardb@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Peter Collingbourne <pcc@google.com>,
-        Sami Tolvanen <samitolvanen@google.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Fangrui Song <maskray@google.com>,
-        Sasha Levin <sashal@kernel.org>, linux-efi@vger.kernel.org,
-        clang-built-linux@googlegroups.com
-Subject: [PATCH AUTOSEL 4.19 010/106] efi/libstub/x86: Work around LLVM ELF quirk build regression
-Date:   Mon,  8 Jun 2020 19:21:02 -0400
-Message-Id: <20200608232238.3368589-10-sashal@kernel.org>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-efi@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.6 016/606] gcc-10: mark more functions __init to avoid section mismatch warnings
+Date:   Mon,  8 Jun 2020 19:02:21 -0400
+Message-Id: <20200608231211.3363633-16-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200608232238.3368589-1-sashal@kernel.org>
-References: <20200608232238.3368589-1-sashal@kernel.org>
+In-Reply-To: <20200608231211.3363633-1-sashal@kernel.org>
+References: <20200608231211.3363633-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -48,49 +43,60 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-[ Upstream commit f77767ed5f4d398b29119563155e4ece2dfeee13 ]
+commit e99332e7b4cda6e60f5b5916cf9943a79dbef902 upstream.
 
-When building the x86 EFI stub with Clang, the libstub Makefile rules
-that manipulate the ELF object files may throw an error like:
+It seems that for whatever reason, gcc-10 ends up not inlining a couple
+of functions that used to be inlined before.  Even if they only have one
+single callsite - it looks like gcc may have decided that the code was
+unlikely, and not worth inlining.
 
-    STUBCPY drivers/firmware/efi/libstub/efi-stub-helper.stub.o
-  strip: drivers/firmware/efi/libstub/efi-stub-helper.stub.o: Failed to find link section for section 10
-  objcopy: drivers/firmware/efi/libstub/efi-stub-helper.stub.o: Failed to find link section for section 10
+The code generation difference is harmless, but caused a few new section
+mismatch errors, since the (now no longer inlined) function wasn't in
+the __init section, but called other init functions:
 
-This is the result of a LLVM feature [0] where symbol references are
-stored in a LLVM specific .llvm_addrsig section in a non-transparent way,
-causing generic ELF tools such as strip or objcopy to choke on them.
+   Section mismatch in reference from the function kexec_free_initrd() to the function .init.text:free_initrd_mem()
+   Section mismatch in reference from the function tpm2_calc_event_log_size() to the function .init.text:early_memremap()
+   Section mismatch in reference from the function tpm2_calc_event_log_size() to the function .init.text:early_memunmap()
 
-So force the compiler not to emit these sections, by passing the
-appropriate command line option.
+So add the appropriate __init annotation to make modpost not complain.
+In both cases there were trivially just a single callsite from another
+__init function.
 
-[0] https://sourceware.org/bugzilla/show_bug.cgi?id=23817
-
-Cc: Nick Desaulniers <ndesaulniers@google.com>
-Cc: Peter Collingbourne <pcc@google.com>
-Cc: Sami Tolvanen <samitolvanen@google.com>
-Reported-by: Arnd Bergmann <arnd@arndb.de>
-Suggested-by: Fangrui Song <maskray@google.com>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firmware/efi/libstub/Makefile | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/firmware/efi/tpm.c | 2 +-
+ init/initramfs.c           | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/firmware/efi/libstub/Makefile b/drivers/firmware/efi/libstub/Makefile
-index d9845099635e..d3777d754984 100644
---- a/drivers/firmware/efi/libstub/Makefile
-+++ b/drivers/firmware/efi/libstub/Makefile
-@@ -28,6 +28,7 @@ KBUILD_CFLAGS			:= $(cflags-y) -DDISABLE_BRANCH_PROFILING \
- 				   -D__NO_FORTIFY \
- 				   $(call cc-option,-ffreestanding) \
- 				   $(call cc-option,-fno-stack-protector) \
-+				   $(call cc-option,-fno-addrsig) \
- 				   -D__DISABLE_EXPORTS
+diff --git a/drivers/firmware/efi/tpm.c b/drivers/firmware/efi/tpm.c
+index 31f9f0e369b9..55b031d2c989 100644
+--- a/drivers/firmware/efi/tpm.c
++++ b/drivers/firmware/efi/tpm.c
+@@ -16,7 +16,7 @@
+ int efi_tpm_final_log_size;
+ EXPORT_SYMBOL(efi_tpm_final_log_size);
  
- GCOV_PROFILE			:= n
+-static int tpm2_calc_event_log_size(void *data, int count, void *size_info)
++static int __init tpm2_calc_event_log_size(void *data, int count, void *size_info)
+ {
+ 	struct tcg_pcr_event2_head *header;
+ 	int event_size, size = 0;
+diff --git a/init/initramfs.c b/init/initramfs.c
+index 8ec1be4d7d51..7a38012e1af7 100644
+--- a/init/initramfs.c
++++ b/init/initramfs.c
+@@ -542,7 +542,7 @@ void __weak free_initrd_mem(unsigned long start, unsigned long end)
+ }
+ 
+ #ifdef CONFIG_KEXEC_CORE
+-static bool kexec_free_initrd(void)
++static bool __init kexec_free_initrd(void)
+ {
+ 	unsigned long crashk_start = (unsigned long)__va(crashk_res.start);
+ 	unsigned long crashk_end   = (unsigned long)__va(crashk_res.end);
 -- 
 2.25.1
 
