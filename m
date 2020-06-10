@@ -2,100 +2,83 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A06B41F4EAC
-	for <lists+linux-efi@lfdr.de>; Wed, 10 Jun 2020 09:14:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 88F6D1F4FCF
+	for <lists+linux-efi@lfdr.de>; Wed, 10 Jun 2020 09:58:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726276AbgFJHO6 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 10 Jun 2020 03:14:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52658 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726121AbgFJHO6 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 10 Jun 2020 03:14:58 -0400
-Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com [IPv6:2607:f8b0:4864:20::642])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1431CC03E96B;
-        Wed, 10 Jun 2020 00:14:57 -0700 (PDT)
-Received: by mail-pl1-x642.google.com with SMTP id v24so614920plo.6;
-        Wed, 10 Jun 2020 00:14:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=RQFi+lcF05CW4Ej031KV81/AVIbBtZMykD/fLL3QP5Y=;
-        b=bdKFjNSWC2yCB1RKei6u4m0vXXlkskpgU+WnywsEAkV95t09Oj0xHI6WJUTqGriyb7
-         Q+EKTxRFjo4dWUwcP1GlBX5ORj/+XYgaNalxQH0rr2fVfYe+PlZ+SpVfVu0w3wnPL0Dw
-         +Wj9ixr9/nqzWyZ8ijFC4hiO11RnAC5j/mzAzXlJoZzG2pcMORtzVAkD6bMGNZprBrdX
-         5bJFjQeLMb6QOIsGelnjJNrL3+fSgFni1jv+v3xG06p+V84P/dVpFoY/v2StxjGDYhAI
-         s2Vmr8n18JrIjgoY3c55ICVA0Y4Nulz49uMnLMffBiiwEP6K+Txj3L4MOWD/zoXdf2hC
-         XOkg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=RQFi+lcF05CW4Ej031KV81/AVIbBtZMykD/fLL3QP5Y=;
-        b=MmEtbGF+x9gvt7dNLW4x/mA2Y+YVze6M53iQ/8/6tYPnHk0YGJHcJ9L8vW8d/H6GfJ
-         KDjNUQnG8z6enfcMcmLOlt21q2QCsik4px56uQzgRddJku7uU5G6/O5dU6azLZW6Gb2S
-         G1KxT+EuM1Kj8uzQf4h66iojhZbYmfl94vMvXC+0w6h4CJ6X2BODjt2DBWDCfImI4C1Q
-         beWiZJkf2Tmr4TLDRz7K9EKOusUUAywKPms4Fp38Q5e0o/DzNLxmxJchjZwLFVrvydop
-         C2pIFrShz2FRtCe/rJktv8Gxh9AnDj1a3URN4FLwGwegHOurszZP/RAr6Z4JHHV/zxqv
-         Ysiw==
-X-Gm-Message-State: AOAM530lHPIfxkGkCUCwvawkDzZON1VAYUiTf6WqQzje2pFvLXlOmvta
-        f77nMc2VyZ0MsaPp6gILVRrGwrFF
-X-Google-Smtp-Source: ABdhPJxSIMHQUf8whPid8rW0EXwUfsfiMwZB6P1NTcxs2GVG4+xTOFaA56N8Uqefh7HHE+EFLV6XnQ==
-X-Received: by 2002:a17:902:a585:: with SMTP id az5mr1838022plb.207.1591773296946;
-        Wed, 10 Jun 2020 00:14:56 -0700 (PDT)
-Received: from ZB-PF114XEA.360buyad.local ([103.90.76.242])
-        by smtp.gmail.com with ESMTPSA id q92sm4455003pjh.12.2020.06.10.00.14.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Jun 2020 00:14:56 -0700 (PDT)
-From:   Zhenzhong Duan <zhenzhong.duan@gmail.com>
-To:     linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org
-Cc:     ardb@kernel.org, nivedita@alum.mit.edu, keescook@chromium.org,
-        mingo@kernel.org, Zhenzhong Duan <zhenzhong.duan@gmail.com>
-Subject: [PATCH] efi/libstub: Fix build error with libstub
-Date:   Wed, 10 Jun 2020 15:14:46 +0800
-Message-Id: <20200610071446.3737-1-zhenzhong.duan@gmail.com>
-X-Mailer: git-send-email 2.17.1
+        id S1726546AbgFJH6m (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 10 Jun 2020 03:58:42 -0400
+Received: from mail.kernel.org ([198.145.29.99]:37436 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726081AbgFJH6m (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Wed, 10 Jun 2020 03:58:42 -0400
+Received: from willie-the-truck (236.31.169.217.in-addr.arpa [217.169.31.236])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id B0220206C3;
+        Wed, 10 Jun 2020 07:58:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1591775921;
+        bh=l5Pz+5+fBVqy4h+8oU7TpZbl8q3eqsgxiHk9A3UrlTQ=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=iPcl4BZDzRuBHdNBgmoqY7NjYWKLVer39Rf1Q/S9Zmna+ay/ew2xJ1+/lS2IYp0no
+         LfBPo/LwfalSfF9i/iT6u3TnyEb2cGvnOxLjzZhAR3YYEgmCvI4x+OgJGX2M2MxT2a
+         2JFFJ/DFhLIRnce+HXSm99tY7ru2QY3Sjvtw3mOE=
+Date:   Wed, 10 Jun 2020 08:58:37 +0100
+From:   Will Deacon <will@kernel.org>
+To:     Masahiro Yamada <masahiroy@kernel.org>
+Cc:     Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] efi/libstub/arm64: link stub lib.a conditionally
+Message-ID: <20200610075837.GD15939@willie-the-truck>
+References: <20200604022031.164207-1-masahiroy@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200604022031.164207-1-masahiroy@kernel.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Got below error during build:
+On Thu, Jun 04, 2020 at 11:20:30AM +0900, Masahiro Yamada wrote:
+> Since commit 799c43415442 ("kbuild: thin archives make default for
+> all archs"), core-y is passed to the linker with --whole-archive.
+> Hence, the whole of stub library is linked to vmlinux.
+> 
+> Use libs-y so that lib.a is passed after --no-whole-archive for
+> conditional linking.
+> 
+> The unused drivers/firmware/efi/libstub/relocate.o will be dropped
+> for ARCH=arm64.
+> 
+> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+> ---
+> 
+> This patch touches under arch/arm64/, but
+> this is more related to efi.
+> I am sending this to Ard.
 
-  In file included from drivers/firmware/efi/libstub/efi-stub-helper.c:16:0:
-  drivers/firmware/efi/libstub/efi-stub-helper.c: In function ‘efi_char16_puts’:
-  arch/x86/include/asm/efi.h:355:3: sorry, unimplemented: ms_abi attribute requires -maccumulate-outgoing-args or subtarget optimization implying it
-     : __efi64_thunk_map(inst, func, inst, ##__VA_ARGS__))
-     ^
-  drivers/firmware/efi/libstub/efi-stub-helper.c:37:2: note: in expansion of macro ‘efi_call_proto’
-    efi_call_proto(efi_table_attr(efi_system_table, con_out),
-    ^
-  drivers/firmware/efi/libstub/efi-stub-helper.c:37: confused by earlier errors, bailing out
+Ok, I'll ignore this then. Ard -- please yell if you want me to do anything
+else with it.
 
-Fix it by adding -maccumulate-outgoing-args for efi libstub build
-as suggested by gcc.
+Will
 
-Signed-off-by: Zhenzhong Duan <zhenzhong.duan@gmail.com>
----
- drivers/firmware/efi/libstub/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/efi/libstub/Makefile b/drivers/firmware/efi/libstub/Makefile
-index cce4a74..25e5d02 100644
---- a/drivers/firmware/efi/libstub/Makefile
-+++ b/drivers/firmware/efi/libstub/Makefile
-@@ -6,7 +6,7 @@
- # enabled, even if doing so doesn't break the build.
- #
- cflags-$(CONFIG_X86_32)		:= -march=i386
--cflags-$(CONFIG_X86_64)		:= -mcmodel=small
-+cflags-$(CONFIG_X86_64)		:= -mcmodel=small -maccumulate-outgoing-args
- cflags-$(CONFIG_X86)		+= -m$(BITS) -D__KERNEL__ \
- 				   -fPIC -fno-strict-aliasing -mno-red-zone \
- 				   -mno-mmx -mno-sse -fshort-wchar \
--- 
-1.8.3.1
-
+> diff --git a/arch/arm64/Makefile b/arch/arm64/Makefile
+> index 650e1185c190..48a6afa774fc 100644
+> --- a/arch/arm64/Makefile
+> +++ b/arch/arm64/Makefile
+> @@ -145,7 +145,7 @@ export	TEXT_OFFSET
+>  
+>  core-y		+= arch/arm64/
+>  libs-y		:= arch/arm64/lib/ $(libs-y)
+> -core-$(CONFIG_EFI_STUB) += $(objtree)/drivers/firmware/efi/libstub/lib.a
+> +libs-$(CONFIG_EFI_STUB) += $(objtree)/drivers/firmware/efi/libstub/lib.a
+>  
+>  # Default target when executing plain make
+>  boot		:= arch/arm64/boot
+> -- 
+> 2.25.1
+> 
