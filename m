@@ -2,100 +2,134 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5269D1F70C8
-	for <lists+linux-efi@lfdr.de>; Fri, 12 Jun 2020 01:17:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F16A61F7708
+	for <lists+linux-efi@lfdr.de>; Fri, 12 Jun 2020 13:01:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726289AbgFKXRd (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 11 Jun 2020 19:17:33 -0400
-Received: from mail.kernel.org ([198.145.29.99]:52010 "EHLO mail.kernel.org"
+        id S1726335AbgFLLBs (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 12 Jun 2020 07:01:48 -0400
+Received: from mail.kernel.org ([198.145.29.99]:58748 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726285AbgFKXRc (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Thu, 11 Jun 2020 19:17:32 -0400
-Received: from mail-oi1-f172.google.com (mail-oi1-f172.google.com [209.85.167.172])
+        id S1726272AbgFLLBr (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Fri, 12 Jun 2020 07:01:47 -0400
+Received: from mail-ot1-f54.google.com (mail-ot1-f54.google.com [209.85.210.54])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 33B0B20878
-        for <linux-efi@vger.kernel.org>; Thu, 11 Jun 2020 23:17:32 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id B5CA620835
+        for <linux-efi@vger.kernel.org>; Fri, 12 Jun 2020 11:01:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1591917452;
-        bh=fOD6ezCkOVRyI6PhH1XLtKafgMyMH59Fa6W8i7UEx4I=;
+        s=default; t=1591959705;
+        bh=gTdOxYltRa2orZ59B53iuFiFWv6ZFKm8Cc04YTtf9os=;
         h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=d/+WzhbdWr95ZdrlKpo/cn+zbcmliZFuKxUpOP+UNioXWQN4kPCbr/eH0Sthcwn4c
-         S4tO7VaCtxahqhi5LpSTyB0+a72TjEAak7EXU+/Ijkx/qy6uv77nK3ECy2053Jwi1t
-         RuEFyBZuQH3jg3m1HEHEp+A8lU8Im3wO6KixChUI=
-Received: by mail-oi1-f172.google.com with SMTP id p70so7006666oic.12
-        for <linux-efi@vger.kernel.org>; Thu, 11 Jun 2020 16:17:32 -0700 (PDT)
-X-Gm-Message-State: AOAM531bOHRMI0Etu21rk+1YKRgYgEaA/RMnD2vuuyj3CTinR7gn1zgw
-        Q4HTwJTtEiJYDKkbY/zGwi8FSylDURZqtQGwyQw=
-X-Google-Smtp-Source: ABdhPJwNBnjYMi/5e8oSMsVn/eTYdFfpk/D9sszQWxQP+L3G14j9WhMMAckIZrE6+9/rdAlnTM0EftrQNlDT/RBbTBk=
-X-Received: by 2002:aca:6144:: with SMTP id v65mr278075oib.33.1591917451480;
- Thu, 11 Jun 2020 16:17:31 -0700 (PDT)
+        b=EoXaZ+DZ4qFhrjWptLpjRldsioAom0BGyAiuX0rsfOqtOYgcwS3Ehvb4CuApDgEvj
+         AxrTKFguFoom7lFwECKGh6Khjoi+iQ8VD9pSQXvGuODz/pNZt+dw1K91034cguilkJ
+         4qMQx35VOraoUErHNbXGjMllaV6feYP3b4t4So9g=
+Received: by mail-ot1-f54.google.com with SMTP id s13so7007886otd.7
+        for <linux-efi@vger.kernel.org>; Fri, 12 Jun 2020 04:01:45 -0700 (PDT)
+X-Gm-Message-State: AOAM532IFuWglteKi2ymrMm3VH/Urz9CK53BDPnO6RwzNR4JgMV7w5+p
+        mWJlhftQ/OvJeepkrNu3Xf4jVYKe5MI3o9HhhB4=
+X-Google-Smtp-Source: ABdhPJx4GIIYBXsYzIAVVQWTJro3FZxv1CO0MxRg7hPWHE0Lu38QDPVyzRB10ce38RrnYsGr29f96OtFhmg3Bwv/ghE=
+X-Received: by 2002:a9d:42e:: with SMTP id 43mr10314456otc.108.1591959705081;
+ Fri, 12 Jun 2020 04:01:45 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200607135834.898294-1-ardb@kernel.org> <20200607135834.898294-2-ardb@kernel.org>
- <96a36110-68e1-89e3-2d59-b16f01abae21@gmx.de> <CAMj1kXG9XTtsyLQ=njM8LPCYCE2tOrrYQtctU_acNAxLfe=5oQ@mail.gmail.com>
- <f8a485d2-1e00-1d02-58a4-2e1684bfbfb4@gmx.de> <CAMj1kXGLoKDLJAihThkkcYwNpr12inneEB3dMOqvcZFm9oR5_w@mail.gmail.com>
- <CAMj1kXFjuMy6+amsMmmepkNATCec4vsxeiVVFq9CFZ64wbmGaA@mail.gmail.com>
- <20200611223800.GZ1551@shell.armlinux.org.uk> <CAMj1kXE+y=Q+-wZaPT6ap278OfP2wbBM3CCvyHCL9K=AaBbO=A@mail.gmail.com>
- <20200611224334.GA1551@shell.armlinux.org.uk>
-In-Reply-To: <20200611224334.GA1551@shell.armlinux.org.uk>
+References: <1894249.ujS34B1uSo@linux-e202.suse.de>
+In-Reply-To: <1894249.ujS34B1uSo@linux-e202.suse.de>
 From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Fri, 12 Jun 2020 01:17:17 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXEEd5aO=xHUM901bM_JaJ3rEs6KQ0a20-AOdXUBwK=CEA@mail.gmail.com>
-Message-ID: <CAMj1kXEEd5aO=xHUM901bM_JaJ3rEs6KQ0a20-AOdXUBwK=CEA@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] efi/arm: decompressor: deal with HYP mode boot gracefully
-To:     Russell King - ARM Linux admin <linux@armlinux.org.uk>
-Cc:     Heinrich Schuchardt <xypron.glpk@gmx.de>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Marc Zyngier <maz@kernel.org>, Chen-Yu Tsai <wens@csie.org>
+Date:   Fri, 12 Jun 2020 13:01:33 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXHErV-tx+8GvvLmb-L0wXq1cVwzY+OEr4PEHDZWrB7Dpg@mail.gmail.com>
+Message-ID: <CAMj1kXHErV-tx+8GvvLmb-L0wXq1cVwzY+OEr4PEHDZWrB7Dpg@mail.gmail.com>
+Subject: Re: [PATCH] tpm: verify that it's actually an event log header before parsing
+To:     Fabian Vogt <fvogt@suse.de>
+Cc:     linux-efi <linux-efi@vger.kernel.org>,
+        "Lee, Chun-Yi" <jlee@suse.com>,
+        =?UTF-8?Q?Lo=C3=AFc_Yhuel?= <loic.yhuel@gmail.com>,
+        Matthew Garrett <matthewgarrett@google.com>,
+        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, 12 Jun 2020 at 00:43, Russell King - ARM Linux admin
-<linux@armlinux.org.uk> wrote:
+On Fri, 5 Jun 2020 at 16:22, Fabian Vogt <fvogt@suse.de> wrote:
 >
-> On Fri, Jun 12, 2020 at 12:39:08AM +0200, Ard Biesheuvel wrote:
-> > On Fri, 12 Jun 2020 at 00:38, Russell King - ARM Linux admin
-> > <linux@armlinux.org.uk> wrote:
-> > >
-> > > On Fri, Jun 12, 2020 at 12:18:43AM +0200, Ard Biesheuvel wrote:
-> > > > I've given this a spin myself on a RPi4 running 32-bit U-boot, and
-> > > > everything works as expected, both with and without the GRUB hack
-> > > > enabled.
-> > > >
-> > > > Russell, given that this only affects code inside #ifdef
-> > > > CONFIG_EFI_STUB, do you have any objections to me taking this as a fix
-> > > > via the EFI tree? I have a set of fixes I need to queue up and send
-> > > > out anyway, and I intend to do so early next week.
-> > >
-> > > Please don't, I'll be basing my branches off -rc1 (as normal), and if
-> > > you then submit this as a fix through the EFI tree for merging after
-> > > rc1, and then send me further EFI work to go through the ARM tree,
-> > > we'll end up in exactly the same merge issues as we did prior to this
-> > > merge window.
-> > >
-> >
-> > Fair enough. What do you suggest instead? Shall I drop this into the
-> > patch system?
+> It's possible that the first event in the log is not actually a log
+> header at all, but rather a normal event. This leads to the cast in
+> __calc_tpm2_event_size being an invalid conversion, which means that
+> the values read are effectively garbage. Depending on the first event's
+> contents, this leads either to apparently normal behaviour, a crash or
+> a freeze.
 >
-> Is it a regression?  If so, sending it prior to -rc1 is permissible.
-> If not, please drop it in the patch system.
+> While this behaviour of the firmware is not in accordance with the
+> TCG Client EFI Specification, this happens on a Dell Precision 5510
+> with the TPM enabled but hidden from the OS ("TPM On" disabled, state
+> otherwise untouched). The EFI claims that the TPM is present and active
+>  and supports the TCG 2.0 event log format.
 >
+> Fortunately, this can be worked around by simply checking the header
+> of the first event and the event log header signature itself.
+>
+> Commit b4f1874c6216 ("tpm: check event log version before reading final
+> events") addressed a similar issue also found on Dell models.
+>
+> Fixes: 6b0326190205 ("efi: Attempt to get the TCG2 event log in the boot stub")
+> Bugzilla: https://bugzilla.suse.com/show_bug.cgi?id=1165773
+> Signed-off-by: Fabian Vogt <fvogt@suse.de>
+> ---
+>  include/linux/tpm_eventlog.h | 14 +++++++++++++-
+>  1 file changed, 13 insertions(+), 1 deletion(-)
+>
+> diff --git a/include/linux/tpm_eventlog.h b/include/linux/tpm_eventlog.h
+> index 4f8c90c93c29..b913faeedcb5 100644
+> --- a/include/linux/tpm_eventlog.h
+> +++ b/include/linux/tpm_eventlog.h
+> @@ -81,6 +81,8 @@ struct tcg_efi_specid_event_algs {
+>         u16 digest_size;
+>  } __packed;
+>
+> +#define TCG_SPECID_SIG "Spec ID Event03"
+> +
+>  struct tcg_efi_specid_event_head {
+>         u8 signature[16];
+>         u32 platform_class;
+> @@ -171,6 +173,7 @@ static inline int __calc_tpm2_event_size(struct tcg_pcr_event2_head *event,
+>         int i;
+>         int j;
+>         u32 count, event_type;
+> +       const u8 zero_digest[sizeof(event_header->digest)] = {0};
+>
+>         marker = event;
+>         marker_start = marker;
+> @@ -198,10 +201,19 @@ static inline int __calc_tpm2_event_size(struct tcg_pcr_event2_head *event,
+>         count = READ_ONCE(event->count);
+>         event_type = READ_ONCE(event->event_type);
+>
+> +       /* Verify that it's the log header */
+> +       if (READ_ONCE(event_header->pcr_idx) != 0 ||
+> +           READ_ONCE(event_header->event_type) != NO_ACTION ||
 
-If you boot via the EFI stub in HYP mode with the caches off (or with
-U-boot's GRUB hack enabled which fiddles with the caches halfway
-through), it appears that you cannot boot current mainline. This is an
-oversight on my part - the EFI spec does not permit doing either of
-those things, and while EDK2 behaves in this regard, u-boot can be
-configured in various different non-conforming ways. (Note that v5.7
-and before will leave the MMU and caches enabled at HYP upon entering
-the kernel proper after booting via EFI, so this is not something that
-was 100% correct before, but at least it booted most of the time)
+Is the READ_ONCE() necessary here?
 
-So this is a regression, but since the EFI tree goes through -tip, I
-won't be able to get this fix in before -rc1 is released. Therefore, I
-will be dropping this into the patch system in any case, and leave it
-up to you to decide when it gets sent onwards.
+> +           memcmp(event_header->digest, zero_digest, sizeof(zero_digest))) {
+> +               size = 0;
+> +               goto out;
+> +       }
+> +
+>         efispecid = (struct tcg_efi_specid_event_head *)event_header->event;
+>
+>         /* Check if event is malformed. */
+> -       if (count > efispecid->num_algs) {
+> +       if (memcmp(efispecid->signature, TCG_SPECID_SIG,
+> +                  sizeof(TCG_SPECID_SIG)) || count > efispecid->num_algs) {
+
+So is it guaranteed that every well formed event starts with TCG_SPECID_SIG?
+
+
+>                 size = 0;
+>                 goto out;
+>         }
+> --
+> 2.25.1
+>
+>
+>
+>
