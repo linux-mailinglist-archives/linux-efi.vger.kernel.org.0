@@ -2,164 +2,157 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 35E931F941D
-	for <lists+linux-efi@lfdr.de>; Mon, 15 Jun 2020 11:59:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C5741F9424
+	for <lists+linux-efi@lfdr.de>; Mon, 15 Jun 2020 12:00:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729338AbgFOJ64 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 15 Jun 2020 05:58:56 -0400
-Received: from mail.kernel.org ([198.145.29.99]:50498 "EHLO mail.kernel.org"
+        id S1729308AbgFOKAW (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 15 Jun 2020 06:00:22 -0400
+Received: from mail.kernel.org ([198.145.29.99]:51180 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728369AbgFOJ64 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Mon, 15 Jun 2020 05:58:56 -0400
-Received: from mail-ot1-f53.google.com (mail-ot1-f53.google.com [209.85.210.53])
+        id S1729017AbgFOKAV (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Mon, 15 Jun 2020 06:00:21 -0400
+Received: from mail-oi1-f169.google.com (mail-oi1-f169.google.com [209.85.167.169])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 790602068E
-        for <linux-efi@vger.kernel.org>; Mon, 15 Jun 2020 09:58:55 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 1E0AD20714;
+        Mon, 15 Jun 2020 10:00:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1592215135;
-        bh=FT3s2B5eOyvh+aASlH/slbTcpITWTnoP9JUAT91ISiE=;
+        s=default; t=1592215221;
+        bh=00G+G40iLh/fz0ZoDfre7cPvPu8PXFNDupSAUY86Lvw=;
         h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=NrbwBq6cPs7VIfFBRWEgPX+QvzZqWMchuf8CzwVG0w+qDzcVGHTeMNifa+Wd9+J6J
-         JcHBiuPElINuyinV6QJ4d877DYyKb2XWcrvr+QGGOJ+AvG/gZh0K5NU2JjttBmJyCs
-         XfRnGp+inNccKklGYYqHWnPBTfxTVlytkbJ/WNp8=
-Received: by mail-ot1-f53.google.com with SMTP id n70so12646247ota.5
-        for <linux-efi@vger.kernel.org>; Mon, 15 Jun 2020 02:58:55 -0700 (PDT)
-X-Gm-Message-State: AOAM532dinLt6ugbOPNhsLx59OTfKk68lbHdufFl3pJdYn7HzvDLakn4
-        XgRMcxXRerdJzAmUNsBaBQ+DaUTjazPoFQce81g=
-X-Google-Smtp-Source: ABdhPJyZM+1CySjseKRDRrJYquI26bnjEeOwDZFO4EjxDj9IqiqKVk6e9CqaWQH/y27wGmvxuGurTGLWY3Cbgt3NBDg=
-X-Received: by 2002:a9d:42e:: with SMTP id 43mr20750650otc.108.1592215134802;
- Mon, 15 Jun 2020 02:58:54 -0700 (PDT)
+        b=15MPTThiFiuBGre6NKmQUmf7lBRfm5NBAyLEIkeijmEMZ2kWvGTAQVLZ4mTdSZ8TK
+         OIE7eU4azos03DmxpznByoh4CP/xnbp6jlqp4BKMO1d2d4tUECtI8NEs0arkc0j+G6
+         KfMZdv7ggoIWzQvzd+Zt3tiL2pxVQ5SaoXtqrmiw=
+Received: by mail-oi1-f169.google.com with SMTP id x202so15328039oix.11;
+        Mon, 15 Jun 2020 03:00:21 -0700 (PDT)
+X-Gm-Message-State: AOAM532mNQulw32ycf3foHJ3HOFc/80lhUffjPjq94xY6B8KQNDj6j/7
+        BejDowYLmTbRy/HgJz1K31c9REoMCKvns1X9ge8=
+X-Google-Smtp-Source: ABdhPJw3tdI8zwDBVzm2IE5Fc1IJYBRoBO9Vu7dfS8iQs1S3WvzDCbp3jBUnfOMao1V0VmclY1k4jJKLGRpqrW7v99o=
+X-Received: by 2002:aca:ba03:: with SMTP id k3mr1821642oif.33.1592215220452;
+ Mon, 15 Jun 2020 03:00:20 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200526170226.2371024-1-nivedita@alum.mit.edu> <20200526170226.2371024-2-nivedita@alum.mit.edu>
-In-Reply-To: <20200526170226.2371024-2-nivedita@alum.mit.edu>
+References: <20200527171425.GA4053@embeddedor> <202005290131.4B104937C@keescook>
+ <20200529173722.GB10051@embeddedor>
+In-Reply-To: <20200529173722.GB10051@embeddedor>
 From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Mon, 15 Jun 2020 11:58:43 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXFGubFssfb1K_KUGXHhwF1X-vsL+ENYHU4EtbEXCTsQXw@mail.gmail.com>
-Message-ID: <CAMj1kXFGubFssfb1K_KUGXHhwF1X-vsL+ENYHU4EtbEXCTsQXw@mail.gmail.com>
-Subject: Re: [PATCH 1/1] efi/x86: Use firmware stack for mixed-mode EFI stub
-To:     Arvind Sankar <nivedita@alum.mit.edu>
-Cc:     linux-efi <linux-efi@vger.kernel.org>
+Date:   Mon, 15 Jun 2020 12:00:09 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXGargNLdbuy0AhLUJS4j1eANGuMnvBpzWBTeVmr-9=-1g@mail.gmail.com>
+Message-ID: <CAMj1kXGargNLdbuy0AhLUJS4j1eANGuMnvBpzWBTeVmr-9=-1g@mail.gmail.com>
+Subject: Re: [PATCH] efi: Replace zero-length array and use struct_size() helper
+To:     "Gustavo A. R. Silva" <gustavoars@kernel.org>
+Cc:     Kees Cook <keescook@chromium.org>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "Gustavo A. R. Silva" <gustavo@embeddedor.com>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, 26 May 2020 at 19:02, Arvind Sankar <nivedita@alum.mit.edu> wrote:
+On Fri, 29 May 2020 at 19:32, Gustavo A. R. Silva <gustavoars@kernel.org> wrote:
 >
-> The UEFI specification requires a 128KiB stack during boot services. On
-> a native mode boot, the EFI stub executes on the firmware stack.
-> However, on a mixed-mode boot, startup_32 switches to the kernel's boot
-> stack, which is only 16KiB, and the EFI stub is executed with this
-> stack.
+> On Fri, May 29, 2020 at 01:31:54AM -0700, Kees Cook wrote:
+> > On Wed, May 27, 2020 at 12:14:25PM -0500, Gustavo A. R. Silva wrote:
+> > > The current codebase makes use of the zero-length array language
+> > > extension to the C90 standard, but the preferred mechanism to declare
+> > > variable-length types such as these ones is a flexible array member[1][2],
+> > > introduced in C99:
+> > >
+> > > struct foo {
+> > >         int stuff;
+> > >         struct boo array[];
+> > > };
+> > >
+> > > By making use of the mechanism above, we will get a compiler warning
+> > > in case the flexible array does not occur last in the structure, which
+> > > will help us prevent some kind of undefined behavior bugs from being
+> > > inadvertently introduced[3] to the codebase from now on.
+> > >
+> > > Also, notice that, dynamic memory allocations won't be affected by
+> > > this change:
+> > >
+> > > "Flexible array members have incomplete type, and so the sizeof operator
+> > > may not be applied. As a quirk of the original implementation of
+> > > zero-length arrays, sizeof evaluates to zero."[1]
+> > >
+> > > sizeof(flexible-array-member) triggers a warning because flexible array
+> > > members have incomplete type[1]. There are some instances of code in
+> > > which the sizeof operator is being incorrectly/erroneously applied to
+> > > zero-length arrays and the result is zero. Such instances may be hiding
+> > > some bugs. So, this work (flexible-array member conversions) will also
+> > > help to get completely rid of those sorts of issues.
+> > >
+> > > Lastly, make use of the sizeof_field() helper instead of an open-coded
+> > > version.
+> > >
+> > > This issue was found with the help of Coccinelle and audited _manually_.
+> > >
+> > > [1] https://gcc.gnu.org/onlinedocs/gcc/Zero-Length.html
+> > > [2] https://github.com/KSPP/linux/issues/21
+> > > [3] commit 76497732932f ("cxgb3/l2t: Fix undefined behaviour")
+> > >
+> > > Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+> >
+> > Reviewed-by: Kees Cook <keescook@chromium.org>
+> >
 >
-> To avoid any potential problems with running out of stack space, save
-> and restore the UEFI stack pointer in the mixed-mode entry, so that the
-> EFI stub can use the firmware stack in this case as well.
+> Thanks :)
 >
-> Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
 
-This does not apply onto v5.8-rc1, and I was going to take it as a fix.
-
-However, are we sure this is safe? Do we have a ballpark figure of how
-much stack we use in the stub?
-
-This is one of those things I am reluctant to change, given that we
-are not sure that firmware implementations conform to this, and IA32
-firmware was not designed to boot a 64-bit image (which might use more
-stack space?)
+Queued in efi/urgent, thanks
 
 
-> ---
->  arch/x86/boot/compressed/head_64.S | 46 ++++++++++++++++++++----------
->  1 file changed, 31 insertions(+), 15 deletions(-)
+> Please, see more comments below...
 >
-> diff --git a/arch/x86/boot/compressed/head_64.S b/arch/x86/boot/compressed/head_64.S
-> index 4b7ad1dfbea6..923e5c381804 100644
-> --- a/arch/x86/boot/compressed/head_64.S
-> +++ b/arch/x86/boot/compressed/head_64.S
-> @@ -237,21 +237,7 @@ SYM_FUNC_START(startup_32)
->          * used to perform that far jump.
->          */
->         pushl   $__KERNEL_CS
-> -       leal    rva(startup_64)(%ebp), %eax
-> -#ifdef CONFIG_EFI_MIXED
-> -       movl    rva(efi32_boot_args)(%ebp), %edi
-> -       cmp     $0, %edi
-> -       jz      1f
-> -       leal    rva(efi64_stub_entry)(%ebp), %eax
-> -       movl    rva(efi32_boot_args+4)(%ebp), %esi
-> -       movl    rva(efi32_boot_args+8)(%ebp), %edx      // saved bootparams pointer
-> -       cmpl    $0, %edx
-> -       jnz     1f
-> -       leal    rva(efi_pe_entry)(%ebp), %eax
-> -       movl    %edi, %ecx                      // MS calling convention
-> -       movl    %esi, %edx
-> -1:
-> -#endif
-> +       leal    rva(.L64bit)(%ebp), %eax
->         pushl   %eax
+> > > ---
+> > >  drivers/firmware/efi/efi.c | 3 ++-
+> > >  include/linux/efi.h        | 7 ++-----
+> > >  2 files changed, 4 insertions(+), 6 deletions(-)
+> > >
+> > > diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
+> > > index 7f1657b6c30df..edc5d36caf54e 100644
+> > > --- a/drivers/firmware/efi/efi.c
+> > > +++ b/drivers/firmware/efi/efi.c
+> > > @@ -622,7 +622,8 @@ int __init efi_config_parse_tables(const efi_config_table_t *config_tables,
+> > >                     rsv = (void *)(p + prsv % PAGE_SIZE);
+> > >
+> > >                     /* reserve the entry itself */
+> > > -                   memblock_reserve(prsv, EFI_MEMRESERVE_SIZE(rsv->size));
+> > > +                   memblock_reserve(prsv,
+> > > +                                    struct_size(rsv, entry, rsv->size));
+> > >
+> > >                     for (i = 0; i < atomic_read(&rsv->count); i++) {
+> > >                             memblock_reserve(rsv->entry[i].base,
+> > > diff --git a/include/linux/efi.h b/include/linux/efi.h
+> > > index c45ac969ea4eb..328cc52a5fd45 100644
+> > > --- a/include/linux/efi.h
+> > > +++ b/include/linux/efi.h
+> > > @@ -1234,14 +1234,11 @@ struct linux_efi_memreserve {
+> > >     struct {
+> > >             phys_addr_t     base;
+> > >             phys_addr_t     size;
+> > > -   } entry[0];
+> > > +   } entry[];
+> > >  };
+> > >
+> > > -#define EFI_MEMRESERVE_SIZE(count) (sizeof(struct linux_efi_memreserve) + \
+> > > -   (count) * sizeof(((struct linux_efi_memreserve *)0)->entry[0]))
+> > > -
+> > >  #define EFI_MEMRESERVE_COUNT(size) (((size) - sizeof(struct linux_efi_memreserve)) \
+> > > -   / sizeof(((struct linux_efi_memreserve *)0)->entry[0]))
+> > > +   / sizeof_field(struct linux_efi_memreserve, entry[0]))
+> >
+> > Whoa. This is kind of a "reverse struct_size()". I wonder if any other
+> > places in the kernel do a similar calculation?
+> >
 >
->         /* Enter paged protected Mode, activating Long Mode */
-> @@ -260,6 +246,31 @@ SYM_FUNC_START(startup_32)
+> So far this is the only intance of this I've run into.
 >
->         /* Jump from 32bit compatibility mode into 64bit mode. */
->         lret
-> +
-> +       .code64
-> +SYM_INNER_LABEL(.L64bit, SYM_L_LOCAL)
-> +#ifndef CONFIG_EFI_MIXED
-> +       jmp     startup_64
-> +#else
-> +       movl    efi32_boot_args(%rip), %edi
-> +       testl   %edi, %edi
-> +       jz      startup_64
-> +
-> +       /* Restore firmware stack pointer */
-> +       movl    efi32_boot_sp(%rip), %esp
-> +       /* and align it to 8 mod 16 */
-> +       andl    $~0xf, %esp
-> +       subl    $8, %esp
-> +
-> +       movl    efi32_boot_args+4(%rip), %esi
-> +       movl    efi32_boot_args+8(%rip), %edx   // saved bootparams pointer
-> +       testl   %edx, %edx
-> +       jnz     efi64_stub_entry
-> +       movl    %edi, %ecx                      // MS calling convention
-> +       movl    %esi, %edx
-> +       jmp     efi_pe_entry
-> +#endif
-> +       .code32
->  SYM_FUNC_END(startup_32)
+> What I've found is that there are many instances of the open-coded
+> version of sizeof_field() and offsetof(). I'm addressing them on the
+> way.
 >
->  #ifdef CONFIG_EFI_MIXED
-> @@ -285,6 +296,9 @@ SYM_INNER_LABEL(efi32_pe_stub_entry, SYM_L_LOCAL)
->         movw    %cs, rva(efi32_boot_cs)(%ebp)
->         movw    %ds, rva(efi32_boot_ds)(%ebp)
->
-> +       /* Save firmware stack pointer */
-> +       movl    %esp, rva(efi32_boot_sp)(%ebp)
-> +
->         /* Disable paging */
->         movl    %cr0, %eax
->         btrl    $X86_CR0_PG_BIT, %eax
-> @@ -648,6 +662,7 @@ SYM_DATA(image_offset, .long 0)
->
->  #ifdef CONFIG_EFI_MIXED
->  SYM_DATA_LOCAL(efi32_boot_args, .long 0, 0, 0)
-> +SYM_DATA_LOCAL(efi32_boot_sp, .long 0)
->  SYM_DATA(efi_is64, .byte 1)
->
->  #define ST32_boottime          60 // offsetof(efi_system_table_32_t, boottime)
-> @@ -710,6 +725,7 @@ SYM_FUNC_START(efi32_pe_entry)
->         movl    12(%ebp), %edx                  // sys_table
->         movl    -4(%ebp), %esi                  // loaded_image
->         movl    LI32_image_base(%esi), %esi     // loaded_image->image_base
-> +       leave                                   // clear stack frame
->         movl    %ebx, %ebp                      // startup_32 for efi32_pe_stub_entry
->         /*
->          * We need to set the image_offset variable here since startup_32() will
+> Thanks
 > --
-> 2.26.2
->
+> Gustavo
