@@ -2,157 +2,174 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C5741F9424
-	for <lists+linux-efi@lfdr.de>; Mon, 15 Jun 2020 12:00:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C4A71F9492
+	for <lists+linux-efi@lfdr.de>; Mon, 15 Jun 2020 12:26:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729308AbgFOKAW (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 15 Jun 2020 06:00:22 -0400
-Received: from mail.kernel.org ([198.145.29.99]:51180 "EHLO mail.kernel.org"
+        id S1728977AbgFOK06 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 15 Jun 2020 06:26:58 -0400
+Received: from mail.kernel.org ([198.145.29.99]:35616 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729017AbgFOKAV (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Mon, 15 Jun 2020 06:00:21 -0400
-Received: from mail-oi1-f169.google.com (mail-oi1-f169.google.com [209.85.167.169])
+        id S1728885AbgFOK05 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Mon, 15 Jun 2020 06:26:57 -0400
+Received: from mail-oi1-f172.google.com (mail-oi1-f172.google.com [209.85.167.172])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 1E0AD20714;
-        Mon, 15 Jun 2020 10:00:21 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 362A620738;
+        Mon, 15 Jun 2020 10:26:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1592215221;
-        bh=00G+G40iLh/fz0ZoDfre7cPvPu8PXFNDupSAUY86Lvw=;
+        s=default; t=1592216816;
+        bh=hyUqHVvXrvWswYdtXPunHqjbBKKNx9PKUnYIGDXg85Y=;
         h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=15MPTThiFiuBGre6NKmQUmf7lBRfm5NBAyLEIkeijmEMZ2kWvGTAQVLZ4mTdSZ8TK
-         OIE7eU4azos03DmxpznByoh4CP/xnbp6jlqp4BKMO1d2d4tUECtI8NEs0arkc0j+G6
-         KfMZdv7ggoIWzQvzd+Zt3tiL2pxVQ5SaoXtqrmiw=
-Received: by mail-oi1-f169.google.com with SMTP id x202so15328039oix.11;
-        Mon, 15 Jun 2020 03:00:21 -0700 (PDT)
-X-Gm-Message-State: AOAM532mNQulw32ycf3foHJ3HOFc/80lhUffjPjq94xY6B8KQNDj6j/7
-        BejDowYLmTbRy/HgJz1K31c9REoMCKvns1X9ge8=
-X-Google-Smtp-Source: ABdhPJw3tdI8zwDBVzm2IE5Fc1IJYBRoBO9Vu7dfS8iQs1S3WvzDCbp3jBUnfOMao1V0VmclY1k4jJKLGRpqrW7v99o=
-X-Received: by 2002:aca:ba03:: with SMTP id k3mr1821642oif.33.1592215220452;
- Mon, 15 Jun 2020 03:00:20 -0700 (PDT)
+        b=dxZlvUL6DUxfzWe0YuM1i6dHK8Oh0IgZFJCsi2GQ4Ssj6mW4ylhE3CcvG9c4O4R28
+         G7iat2uLRwcFzd3HB+Ox/FcVDIe2VJvc17Z9iQ4j7MkZz3PGWUN77FQXRSUodFFKRq
+         rprI0FQQjr9e7YBnjXkN1Tt7qpKk7PwYAqY1jt8g=
+Received: by mail-oi1-f172.google.com with SMTP id a3so15439700oid.4;
+        Mon, 15 Jun 2020 03:26:56 -0700 (PDT)
+X-Gm-Message-State: AOAM5306J15G22zR/p+/mD2cmadymmvD1jb2myyLzQHrW0q/Tg+/uteB
+        EbfRo9BAhLnbKBweNRKV6me0CPInSxVg+JI6OAM=
+X-Google-Smtp-Source: ABdhPJwFl0io0Eq+GPpq4WFiP9Xu+DdILz72bZT1brO1yijkO5duX1PIP3h6EN4mfEuni4hlMgQnqxUejHextMUFkNo=
+X-Received: by 2002:aca:ba03:: with SMTP id k3mr1896542oif.33.1592216815522;
+ Mon, 15 Jun 2020 03:26:55 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200527171425.GA4053@embeddedor> <202005290131.4B104937C@keescook>
- <20200529173722.GB10051@embeddedor>
-In-Reply-To: <20200529173722.GB10051@embeddedor>
+References: <20200604022031.164207-1-masahiroy@kernel.org> <20200604022031.164207-2-masahiroy@kernel.org>
+In-Reply-To: <20200604022031.164207-2-masahiroy@kernel.org>
 From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Mon, 15 Jun 2020 12:00:09 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXGargNLdbuy0AhLUJS4j1eANGuMnvBpzWBTeVmr-9=-1g@mail.gmail.com>
-Message-ID: <CAMj1kXGargNLdbuy0AhLUJS4j1eANGuMnvBpzWBTeVmr-9=-1g@mail.gmail.com>
-Subject: Re: [PATCH] efi: Replace zero-length array and use struct_size() helper
-To:     "Gustavo A. R. Silva" <gustavoars@kernel.org>
-Cc:     Kees Cook <keescook@chromium.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+Date:   Mon, 15 Jun 2020 12:26:43 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXEHDFnhgsz4w+6DuwPxcSZ5P8o0rMzQ504Nt4i31MXwJQ@mail.gmail.com>
+Message-ID: <CAMj1kXEHDFnhgsz4w+6DuwPxcSZ5P8o0rMzQ504Nt4i31MXwJQ@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] efi/libstub: refactor Makefile to not use lib-y syntax
+To:     Masahiro Yamada <masahiroy@kernel.org>
+Cc:     linux-efi <linux-efi@vger.kernel.org>,
+        Arvind Sankar <nivedita@alum.mit.edu>,
+        Atish Patra <atish.patra@wdc.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, 29 May 2020 at 19:32, Gustavo A. R. Silva <gustavoars@kernel.org> wrote:
+On Thu, 4 Jun 2020 at 04:20, Masahiro Yamada <masahiroy@kernel.org> wrote:
 >
-> On Fri, May 29, 2020 at 01:31:54AM -0700, Kees Cook wrote:
-> > On Wed, May 27, 2020 at 12:14:25PM -0500, Gustavo A. R. Silva wrote:
-> > > The current codebase makes use of the zero-length array language
-> > > extension to the C90 standard, but the preferred mechanism to declare
-> > > variable-length types such as these ones is a flexible array member[1][2],
-> > > introduced in C99:
-> > >
-> > > struct foo {
-> > >         int stuff;
-> > >         struct boo array[];
-> > > };
-> > >
-> > > By making use of the mechanism above, we will get a compiler warning
-> > > in case the flexible array does not occur last in the structure, which
-> > > will help us prevent some kind of undefined behavior bugs from being
-> > > inadvertently introduced[3] to the codebase from now on.
-> > >
-> > > Also, notice that, dynamic memory allocations won't be affected by
-> > > this change:
-> > >
-> > > "Flexible array members have incomplete type, and so the sizeof operator
-> > > may not be applied. As a quirk of the original implementation of
-> > > zero-length arrays, sizeof evaluates to zero."[1]
-> > >
-> > > sizeof(flexible-array-member) triggers a warning because flexible array
-> > > members have incomplete type[1]. There are some instances of code in
-> > > which the sizeof operator is being incorrectly/erroneously applied to
-> > > zero-length arrays and the result is zero. Such instances may be hiding
-> > > some bugs. So, this work (flexible-array member conversions) will also
-> > > help to get completely rid of those sorts of issues.
-> > >
-> > > Lastly, make use of the sizeof_field() helper instead of an open-coded
-> > > version.
-> > >
-> > > This issue was found with the help of Coccinelle and audited _manually_.
-> > >
-> > > [1] https://gcc.gnu.org/onlinedocs/gcc/Zero-Length.html
-> > > [2] https://github.com/KSPP/linux/issues/21
-> > > [3] commit 76497732932f ("cxgb3/l2t: Fix undefined behaviour")
-> > >
-> > > Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-> >
-> > Reviewed-by: Kees Cook <keescook@chromium.org>
-> >
+> Documentation/kbuild/makefiles.rst says:
 >
-> Thanks :)
+>   Use of lib-y is normally restricted to `lib/` and `arch/*/lib`.
 >
+> This is because lib-y is inteded to be hooked to KBUILD_VMLINUX_LIBS,
+> which is passed down to scripts/link-vmlinux.sh.
+>
+> Besides, lib-y is not so interesting because objects from lib-y are
+> mostly linked in normal usecases. For example, lib-y only saves 364
+> bytes for x86_64_defconfig. You can see the details in commit
+> 7273ad2b08f8 ("kbuild: link lib-y objects to vmlinux forcibly when
+> CONFIG_MODULES=y").
+>
+> I think we should consider to deprecate lib-y syntax at some point
+> because we should aim for better solution like dead code elimination
+> or LTO.
+>
+> Other than lib/ and arch/*/lib, this Makefile is the only user of
+> lib-y. Replace lib-y with a custom rule.
+>
+> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 
-Queued in efi/urgent, thanks
+Series queued in efi/urgent.
 
+Thanks
 
-> Please, see more comments below...
+> ---
 >
-> > > ---
-> > >  drivers/firmware/efi/efi.c | 3 ++-
-> > >  include/linux/efi.h        | 7 ++-----
-> > >  2 files changed, 4 insertions(+), 6 deletions(-)
-> > >
-> > > diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
-> > > index 7f1657b6c30df..edc5d36caf54e 100644
-> > > --- a/drivers/firmware/efi/efi.c
-> > > +++ b/drivers/firmware/efi/efi.c
-> > > @@ -622,7 +622,8 @@ int __init efi_config_parse_tables(const efi_config_table_t *config_tables,
-> > >                     rsv = (void *)(p + prsv % PAGE_SIZE);
-> > >
-> > >                     /* reserve the entry itself */
-> > > -                   memblock_reserve(prsv, EFI_MEMRESERVE_SIZE(rsv->size));
-> > > +                   memblock_reserve(prsv,
-> > > +                                    struct_size(rsv, entry, rsv->size));
-> > >
-> > >                     for (i = 0; i < atomic_read(&rsv->count); i++) {
-> > >                             memblock_reserve(rsv->entry[i].base,
-> > > diff --git a/include/linux/efi.h b/include/linux/efi.h
-> > > index c45ac969ea4eb..328cc52a5fd45 100644
-> > > --- a/include/linux/efi.h
-> > > +++ b/include/linux/efi.h
-> > > @@ -1234,14 +1234,11 @@ struct linux_efi_memreserve {
-> > >     struct {
-> > >             phys_addr_t     base;
-> > >             phys_addr_t     size;
-> > > -   } entry[0];
-> > > +   } entry[];
-> > >  };
-> > >
-> > > -#define EFI_MEMRESERVE_SIZE(count) (sizeof(struct linux_efi_memreserve) + \
-> > > -   (count) * sizeof(((struct linux_efi_memreserve *)0)->entry[0]))
-> > > -
-> > >  #define EFI_MEMRESERVE_COUNT(size) (((size) - sizeof(struct linux_efi_memreserve)) \
-> > > -   / sizeof(((struct linux_efi_memreserve *)0)->entry[0]))
-> > > +   / sizeof_field(struct linux_efi_memreserve, entry[0]))
-> >
-> > Whoa. This is kind of a "reverse struct_size()". I wonder if any other
-> > places in the kernel do a similar calculation?
-> >
+> Changes in v2:
+>   - Add more description
 >
-> So far this is the only intance of this I've run into.
+>  drivers/firmware/efi/libstub/Makefile | 49 +++++++++++++++------------
+>  1 file changed, 27 insertions(+), 22 deletions(-)
 >
-> What I've found is that there are many instances of the open-coded
-> version of sizeof_field() and offsetof(). I'm addressing them on the
-> way.
+> diff --git a/drivers/firmware/efi/libstub/Makefile b/drivers/firmware/efi/libstub/Makefile
+> index cce4a7436052..7d81dc45cadf 100644
+> --- a/drivers/firmware/efi/libstub/Makefile
+> +++ b/drivers/firmware/efi/libstub/Makefile
+> @@ -44,7 +44,7 @@ OBJECT_FILES_NON_STANDARD     := y
+>  # Prevents link failures: __sanitizer_cov_trace_pc() is not linked in.
+>  KCOV_INSTRUMENT                        := n
 >
-> Thanks
+> -lib-y                          := efi-stub-helper.o gop.o secureboot.o tpm.o \
+> +stub-obj-y                     := efi-stub-helper.o gop.o secureboot.o tpm.o \
+>                                    file.o mem.o random.o randomalloc.o pci.o \
+>                                    skip_spaces.o lib-cmdline.o lib-ctype.o \
+>                                    alignedmem.o relocate.o vsprintf.o
+> @@ -55,15 +55,19 @@ efi-deps-y := fdt_rw.c fdt_ro.c fdt_wip.c fdt.c fdt_empty_tree.c fdt_sw.c
+>  $(obj)/lib-%.o: $(srctree)/lib/%.c FORCE
+>         $(call if_changed_rule,cc_o_c)
+>
+> -lib-$(CONFIG_EFI_GENERIC_STUB) += efi-stub.o fdt.o string.o \
+> +stub-obj-$(CONFIG_EFI_GENERIC_STUB)    += efi-stub.o fdt.o string.o \
+>                                    $(patsubst %.c,lib-%.o,$(efi-deps-y))
+>
+> -lib-$(CONFIG_ARM)              += arm32-stub.o
+> -lib-$(CONFIG_ARM64)            += arm64-stub.o
+> -lib-$(CONFIG_X86)              += x86-stub.o
+> +stub-obj-$(CONFIG_ARM)         += arm32-stub.o
+> +stub-obj-$(CONFIG_ARM64)       += arm64-stub.o
+> +stub-obj-$(CONFIG_X86)         += x86-stub.o
+>  CFLAGS_arm32-stub.o            := -DTEXT_OFFSET=$(TEXT_OFFSET)
+>  CFLAGS_arm64-stub.o            := -DTEXT_OFFSET=$(TEXT_OFFSET)
+>
+> +targets                                += $(stub-obj-y)
+> +stub-obj-y                     := $(patsubst %.o,%.stub.o, $(stub-obj-y))
+> +targets                                += $(stub-obj-y)
+> +
+>  #
+>  # For x86, bootloaders like systemd-boot or grub-efi do not zero-initialize the
+>  # .bss section, so the .bss section of the EFI stub needs to be included in the
+> @@ -83,23 +87,6 @@ STUBCOPY_FLAGS-$(CONFIG_ARM) += --rename-section .data=.data.efistub \
+>                                    --rename-section .bss=.bss.efistub,load,alloc
+>  STUBCOPY_RELOC-$(CONFIG_ARM)   := R_ARM_ABS
+>
+> -#
+> -# arm64 puts the stub in the kernel proper, which will unnecessarily retain all
+> -# code indefinitely unless it is annotated as __init/__initdata/__initconst etc.
+> -# So let's apply the __init annotations at the section level, by prefixing
+> -# the section names directly. This will ensure that even all the inline string
+> -# literals are covered.
+> -# The fact that the stub and the kernel proper are essentially the same binary
+> -# also means that we need to be extra careful to make sure that the stub does
+> -# not rely on any absolute symbol references, considering that the virtual
+> -# kernel mapping that the linker uses is not active yet when the stub is
+> -# executing. So build all C dependencies of the EFI stub into libstub, and do
+> -# a verification pass to see if any absolute relocations exist in any of the
+> -# object files.
+> -#
+> -extra-y                                := $(lib-y)
+> -lib-y                          := $(patsubst %.o,%.stub.o,$(lib-y))
+> -
+>  STUBCOPY_FLAGS-$(CONFIG_ARM64) += --prefix-alloc-sections=.init \
+>                                    --prefix-symbols=__efistub_
+>  STUBCOPY_RELOC-$(CONFIG_ARM64) := R_AARCH64_ABS
+> @@ -121,3 +108,21 @@ quiet_cmd_stubcopy = STUBCPY $@
+>                 /bin/false;                                             \
+>         fi;                                                             \
+>         $(OBJCOPY) $(STUBCOPY_FLAGS-y) $< $@
+> +
+> +# arm64 puts the stub in the kernel proper, which will unnecessarily retain all
+> +# code indefinitely unless it is annotated as __init/__initdata/__initconst etc.
+> +# So let's apply the __init annotations at the section level, by prefixing
+> +# the section names directly. This will ensure that even all the inline string
+> +# literals are covered.
+> +# The fact that the stub and the kernel proper are essentially the same binary
+> +# also means that we need to be extra careful to make sure that the stub does
+> +# not rely on any absolute symbol references, considering that the virtual
+> +# kernel mapping that the linker uses is not active yet when the stub is
+> +# executing. So build all C dependencies of the EFI stub into libstub, and do
+> +# a verification pass to see if any absolute relocations exist in any of the
+> +# object files.
+> +#
+> +extra-y += lib.a
+> +
+> +$(obj)/lib.a: $(addprefix $(obj)/, $(stub-obj-y)) FORCE
+> +       $(call if_changed,ar)
 > --
-> Gustavo
+> 2.25.1
+>
