@@ -2,103 +2,113 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 168F91F93C4
-	for <lists+linux-efi@lfdr.de>; Mon, 15 Jun 2020 11:43:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 84F4C1F93E1
+	for <lists+linux-efi@lfdr.de>; Mon, 15 Jun 2020 11:49:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728852AbgFOJnp (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 15 Jun 2020 05:43:45 -0400
-Received: from mail.kernel.org ([198.145.29.99]:40942 "EHLO mail.kernel.org"
+        id S1729027AbgFOJtG (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 15 Jun 2020 05:49:06 -0400
+Received: from mail.kernel.org ([198.145.29.99]:44502 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728626AbgFOJno (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Mon, 15 Jun 2020 05:43:44 -0400
-Received: from mail-oi1-f182.google.com (mail-oi1-f182.google.com [209.85.167.182])
+        id S1726111AbgFOJtG (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Mon, 15 Jun 2020 05:49:06 -0400
+Received: from mail-oi1-f181.google.com (mail-oi1-f181.google.com [209.85.167.181])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 581C3206D7;
-        Mon, 15 Jun 2020 09:43:44 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 77C81206D7;
+        Mon, 15 Jun 2020 09:49:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1592214224;
-        bh=h9iDtTC155H8y8ijbYh/I4bXZWq8mQ2WmNzz0ZDQZ/8=;
+        s=default; t=1592214545;
+        bh=aqZT/dC6Wve5qO/VQrbYAItbuMUgPlaVWAx/VHhhRII=;
         h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=XST84rnMgFvKZeDuWzqxgqrBdT2hLemvqhFHD63KT7/4jDDa7+2xFZUOPOQwFxlAp
-         vvHTPt0XPsIBsD/wsZX5Ll+JPd2YcvTKvkeOHY6I2cuACJJ28Iw66CdHBdA3fqAPxW
-         EA/oYiIq9D80OxshpJcqBihTylNwbqGPepX2zE3s=
-Received: by mail-oi1-f182.google.com with SMTP id a21so15302319oic.8;
-        Mon, 15 Jun 2020 02:43:44 -0700 (PDT)
-X-Gm-Message-State: AOAM531Sh9/hKo2x8nHY6b9Fij+eW48/UwLaTNRw6r7dcW2Fe6kKOAhR
-        AM0CtWAW+JiqAcqG/AswsGp/5hOnkfZWwVntpl8=
-X-Google-Smtp-Source: ABdhPJwVOJVLzMhqyBugezrvFZeW6chSrziL0zpZxXsmNV5WBIk26t41KZmkOaXcDOZqsToD7/Dh55WNfXoel+o6EDM=
-X-Received: by 2002:aca:d0d:: with SMTP id 13mr1478325oin.174.1592214223750;
- Mon, 15 Jun 2020 02:43:43 -0700 (PDT)
+        b=LmWXsJtpJOzqqdfYw3rNIjyR3Qt+0mcOBIKwJcxOXttQ8+ha9zGkTcTZYSVTMX66c
+         X7Vk1to9nbgCldwGDt6fSFPOAfw6rMloIQpPKxmQmR+W+SY5nELh9UXiPzjqsAGlc8
+         AmlY66QzqgEZ2mzLeKESWS4tlNgyyNBSQJLZQXmY=
+Received: by mail-oi1-f181.google.com with SMTP id b8so15368287oic.1;
+        Mon, 15 Jun 2020 02:49:05 -0700 (PDT)
+X-Gm-Message-State: AOAM533GQMoZL/Xw/EYD3mNXfq/ixgZUm6jkvy9DLjepm6/w8T2rnwka
+        IWx3nJzdHrFQZWSUfcID9QnhnmsyXUNgszbY6d8=
+X-Google-Smtp-Source: ABdhPJz+sxVzmGdTU33ig2MwYbaOjlUG/qh6Hu4FlT2D8bHzbp8K0y07kpA9+hdp6o/spnUt/6fRRKH8yd2EMeilnLQ=
+X-Received: by 2002:aca:ba03:: with SMTP id k3mr1799842oif.33.1592214544820;
+ Mon, 15 Jun 2020 02:49:04 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200605133232.GA616374@rani.riverdale.lan> <20200605150638.1011637-1-nivedita@alum.mit.edu>
- <20200605160946.GA46739@rdna-mbp.dhcp.thefacebook.com>
-In-Reply-To: <20200605160946.GA46739@rdna-mbp.dhcp.thefacebook.com>
+References: <20200528183804.4497-1-wu000273@umn.edu> <CAMj1kXE7soPKnsRPjB5HfUZ4MhAVX_ejbidozyOFrj4AfROjPg@mail.gmail.com>
+ <CAMV6ehETfqcZS=e4Fk82neOwNJH8Qm+AXXihRQYAPfS4aqjVGg@mail.gmail.com>
+In-Reply-To: <CAMV6ehETfqcZS=e4Fk82neOwNJH8Qm+AXXihRQYAPfS4aqjVGg@mail.gmail.com>
 From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Mon, 15 Jun 2020 11:43:32 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXH+5MX5-Bn6tLBvFTKW4oh6L5D4DTxvEqcmrxQK8Yi8HA@mail.gmail.com>
-Message-ID: <CAMj1kXH+5MX5-Bn6tLBvFTKW4oh6L5D4DTxvEqcmrxQK8Yi8HA@mail.gmail.com>
-Subject: Re: [PATCH] efi/x86: Fix build with gcc 4
-To:     Andrey Ignatov <rdna@fb.com>
-Cc:     Arvind Sankar <nivedita@alum.mit.edu>,
-        linux-efi <linux-efi@vger.kernel.org>, bpf@vger.kernel.org
+Date:   Mon, 15 Jun 2020 11:48:53 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXHhu3Vpk9239v1QeiGVsG1JmYVvQm-4W+78=wq4aouPbw@mail.gmail.com>
+Message-ID: <CAMj1kXHhu3Vpk9239v1QeiGVsG1JmYVvQm-4W+78=wq4aouPbw@mail.gmail.com>
+Subject: Re: [PATCH] efi/esrt: Fix reference count leak in esre_create_sysfs_entry.
+To:     Qiushi Wu <wu000273@umn.edu>
+Cc:     Kangjie Lu <kjlu@umn.edu>, Peter Jones <pjones@redhat.com>,
+        Matt Fleming <matt.fleming@intel.com>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, 5 Jun 2020 at 18:09, Andrey Ignatov <rdna@fb.com> wrote:
+On Sat, 30 May 2020 at 06:23, Qiushi Wu <wu000273@umn.edu> wrote:
 >
-> Arvind Sankar <nivedita@alum.mit.edu> [Fri, 2020-06-05 08:06 -0700]:
-> > Commit
-> >   bbf8e8b0fe04 ("efi/libstub: Optimize for size instead of speed")
-> >
-> > changed the optimization level for the EFI stub to -Os from -O2.
-> >
-> > Andrey Ignatov reports that this breaks the build with gcc 4.8.5.
-> >
-> > Testing on godbolt.org, the combination of -Os,
-> > -fno-asynchronous-unwind-tables, and ms_abi functions doesn't work,
-> > failing with the error:
-> >   sorry, unimplemented: ms_abi attribute requires
-> >   -maccumulate-outgoing-args or subtarget optimization implying it
-> >
-> > This does appear to work with gcc 4.9 onwards.
-> >
-> > Add -maccumulate-outgoing-args explicitly to unbreak the build with
-> > pre-4.9 versions of gcc.
-> >
-> > Reported-by: Andrey Ignatov <rdna@fb.com>
-> > Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
+> Thanks for your reply!
+>  > Why are you removing this kfree() call?
 >
-> Thanks. I confirmed it fixes the problem on my setup with gcc 4.8.5 and
-> also works as before with clang 9.0.20190721.
+> Because  kobject_put(&entry->kobj) will call kobject_release(), which will call kobject_cleanup(), which will dynamically call get_ktype(kobj)->release(kobj); .
+> In this case, the "release" function is defined as:
+> static struct kobj_type esre1_ktype = {
+> .release = esre_release.
+> ...
+> };
+>
+> and esre_release() is defined as :
+> static void esre_release(struct kobject *kobj) {
+>            struct esre_entry *entry = to_entry(kobj);
+>            list_del(&entry->list);
+>            kfree(entry);
+> }
+>
+> In this case, if we call both kobject_put() and kfree(), a double-free will be introduced.
 >
 
-Queued in efi/urgent, thanks.
+Thanks for the explanation
 
-> > ---
-> >  drivers/firmware/efi/libstub/Makefile | 3 ++-
-> >  1 file changed, 2 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/firmware/efi/libstub/Makefile b/drivers/firmware/efi/libstub/Makefile
-> > index cce4a7436052..d67418de768c 100644
-> > --- a/drivers/firmware/efi/libstub/Makefile
-> > +++ b/drivers/firmware/efi/libstub/Makefile
-> > @@ -6,7 +6,8 @@
-> >  # enabled, even if doing so doesn't break the build.
-> >  #
-> >  cflags-$(CONFIG_X86_32)              := -march=i386
-> > -cflags-$(CONFIG_X86_64)              := -mcmodel=small
-> > +cflags-$(CONFIG_X86_64)              := -mcmodel=small \
-> > +                                $(call cc-option,-maccumulate-outgoing-args)
-> >  cflags-$(CONFIG_X86)         += -m$(BITS) -D__KERNEL__ \
-> >                                  -fPIC -fno-strict-aliasing -mno-red-zone \
-> >                                  -mno-mmx -mno-sse -fshort-wchar \
-> > --
-> > 2.26.2
-> >
->
-> --
-> Andrey Ignatov
+Queued in efi/urgent.
+
+> On Fri, May 29, 2020 at 12:00 PM Ard Biesheuvel <ardb@kernel.org> wrote:
+>>
+>> On Thu, 28 May 2020 at 20:38, <wu000273@umn.edu> wrote:
+>> >
+>> > From: Qiushi Wu <wu000273@umn.edu>
+>> >
+>> > kobject_init_and_add() takes reference even when it fails.
+>> > If this function returns an error, kobject_put() must be called to
+>> > properly clean up the memory associated with the object. Previous
+>> > commit "b8eb718348b8" fixed a similar problem.
+>> >
+>> > Fixes: 0bb549052d33 ("efi: Add esrt support")
+>> > Signed-off-by: Qiushi Wu <wu000273@umn.edu>
+>> > ---
+>> >  drivers/firmware/efi/esrt.c | 2 +-
+>> >  1 file changed, 1 insertion(+), 1 deletion(-)
+>> >
+>> > diff --git a/drivers/firmware/efi/esrt.c b/drivers/firmware/efi/esrt.c
+>> > index e3d692696583..d5915272141f 100644
+>> > --- a/drivers/firmware/efi/esrt.c
+>> > +++ b/drivers/firmware/efi/esrt.c
+>> > @@ -181,7 +181,7 @@ static int esre_create_sysfs_entry(void *esre, int entry_num)
+>> >                 rc = kobject_init_and_add(&entry->kobj, &esre1_ktype, NULL,
+>> >                                           "entry%d", entry_num);
+>> >                 if (rc) {
+>> > -                       kfree(entry);
+>>
+>> Why are you removing this kfree() call?
+>>
+>> > +                       kobject_put(&entry->kobj);
+>> >                         return rc;
+>> >                 }
+>> >         }
+>> > --
+>> > 2.17.1
+>> >
