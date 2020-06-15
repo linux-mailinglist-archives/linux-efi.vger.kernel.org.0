@@ -2,46 +2,45 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 84F4C1F93E1
-	for <lists+linux-efi@lfdr.de>; Mon, 15 Jun 2020 11:49:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA6281F93EA
+	for <lists+linux-efi@lfdr.de>; Mon, 15 Jun 2020 11:50:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729027AbgFOJtG (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 15 Jun 2020 05:49:06 -0400
-Received: from mail.kernel.org ([198.145.29.99]:44502 "EHLO mail.kernel.org"
+        id S1728773AbgFOJu7 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 15 Jun 2020 05:50:59 -0400
+Received: from mail.kernel.org ([198.145.29.99]:46206 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726111AbgFOJtG (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Mon, 15 Jun 2020 05:49:06 -0400
-Received: from mail-oi1-f181.google.com (mail-oi1-f181.google.com [209.85.167.181])
+        id S1728368AbgFOJu6 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Mon, 15 Jun 2020 05:50:58 -0400
+Received: from mail-ot1-f52.google.com (mail-ot1-f52.google.com [209.85.210.52])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 77C81206D7;
-        Mon, 15 Jun 2020 09:49:05 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 88F5320714;
+        Mon, 15 Jun 2020 09:50:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1592214545;
-        bh=aqZT/dC6Wve5qO/VQrbYAItbuMUgPlaVWAx/VHhhRII=;
+        s=default; t=1592214658;
+        bh=A26YdtcMO5EoTHkY2IHnWM1hBmnk9M6SQJKgiWRdLzE=;
         h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=LmWXsJtpJOzqqdfYw3rNIjyR3Qt+0mcOBIKwJcxOXttQ8+ha9zGkTcTZYSVTMX66c
-         X7Vk1to9nbgCldwGDt6fSFPOAfw6rMloIQpPKxmQmR+W+SY5nELh9UXiPzjqsAGlc8
-         AmlY66QzqgEZ2mzLeKESWS4tlNgyyNBSQJLZQXmY=
-Received: by mail-oi1-f181.google.com with SMTP id b8so15368287oic.1;
-        Mon, 15 Jun 2020 02:49:05 -0700 (PDT)
-X-Gm-Message-State: AOAM533GQMoZL/Xw/EYD3mNXfq/ixgZUm6jkvy9DLjepm6/w8T2rnwka
-        IWx3nJzdHrFQZWSUfcID9QnhnmsyXUNgszbY6d8=
-X-Google-Smtp-Source: ABdhPJz+sxVzmGdTU33ig2MwYbaOjlUG/qh6Hu4FlT2D8bHzbp8K0y07kpA9+hdp6o/spnUt/6fRRKH8yd2EMeilnLQ=
-X-Received: by 2002:aca:ba03:: with SMTP id k3mr1799842oif.33.1592214544820;
- Mon, 15 Jun 2020 02:49:04 -0700 (PDT)
+        b=q3DB+IJhQLY2steW72c+upqB6h4pCcWaC0dSfZ2Z/qUOs7w3FPw3+sK+ATQeIKVAC
+         jxb/+jvv49J21MH7gBhmi4oleIPN245oWmRA1HcUH3GwAD6LLT3yq4JxhrL9BAamv0
+         Nu/BKxPS+FrBiVewxPo5r7bV408dGYwHystmZLlk=
+Received: by mail-ot1-f52.google.com with SMTP id g7so12606614oti.13;
+        Mon, 15 Jun 2020 02:50:58 -0700 (PDT)
+X-Gm-Message-State: AOAM530cUj3PY2vr7nGzt4HeP8SYIfC/0h//ofwbEy7UpAtCuAQzgiaq
+        cfDNkQYpzhF6IXZDfgevlTYGo0LqGWQNGd1peT0=
+X-Google-Smtp-Source: ABdhPJzRYgBFibVOL7zsd1hhbsa+nVHN/DZnaqbXDkXqSMjIfxSX4zw6EmbZCy4MxgVdCCGifEFwKPqzzqUXTVMDdug=
+X-Received: by 2002:a9d:42e:: with SMTP id 43mr20732898otc.108.1592214657897;
+ Mon, 15 Jun 2020 02:50:57 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200528183804.4497-1-wu000273@umn.edu> <CAMj1kXE7soPKnsRPjB5HfUZ4MhAVX_ejbidozyOFrj4AfROjPg@mail.gmail.com>
- <CAMV6ehETfqcZS=e4Fk82neOwNJH8Qm+AXXihRQYAPfS4aqjVGg@mail.gmail.com>
-In-Reply-To: <CAMV6ehETfqcZS=e4Fk82neOwNJH8Qm+AXXihRQYAPfS4aqjVGg@mail.gmail.com>
+References: <20200528194905.690-1-tony.luck@intel.com>
+In-Reply-To: <20200528194905.690-1-tony.luck@intel.com>
 From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Mon, 15 Jun 2020 11:48:53 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXHhu3Vpk9239v1QeiGVsG1JmYVvQm-4W+78=wq4aouPbw@mail.gmail.com>
-Message-ID: <CAMj1kXHhu3Vpk9239v1QeiGVsG1JmYVvQm-4W+78=wq4aouPbw@mail.gmail.com>
-Subject: Re: [PATCH] efi/esrt: Fix reference count leak in esre_create_sysfs_entry.
-To:     Qiushi Wu <wu000273@umn.edu>
-Cc:     Kangjie Lu <kjlu@umn.edu>, Peter Jones <pjones@redhat.com>,
-        Matt Fleming <matt.fleming@intel.com>,
+Date:   Mon, 15 Jun 2020 11:50:46 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXGOpFP7TRLOFQ_KjPpbVBZP-yXdv_=9dEaTe9S9C-u6fA@mail.gmail.com>
+Message-ID: <CAMj1kXGOpFP7TRLOFQ_KjPpbVBZP-yXdv_=9dEaTe9S9C-u6fA@mail.gmail.com>
+Subject: Re: [PATCH 0/2] Couple of efivarfs fixes
+To:     Tony Luck <tony.luck@intel.com>
+Cc:     Matthew Garrett <matthew.garrett@nebula.com>,
+        Jeremy Kerr <jk@ozlabs.org>,
         linux-efi <linux-efi@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
@@ -50,65 +49,22 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Sat, 30 May 2020 at 06:23, Qiushi Wu <wu000273@umn.edu> wrote:
+On Thu, 28 May 2020 at 21:49, Tony Luck <tony.luck@intel.com> wrote:
 >
-> Thanks for your reply!
->  > Why are you removing this kfree() call?
+> 1) Some apps want to monitor changes in EFI variables, but reading the
+>    file and comparing is inefficient.  Just have Linnux update the
+>    modification time when a file is written
 >
-> Because  kobject_put(&entry->kobj) will call kobject_release(), which will call kobject_cleanup(), which will dynamically call get_ktype(kobj)->release(kobj); .
-> In this case, the "release" function is defined as:
-> static struct kobj_type esre1_ktype = {
-> .release = esre_release.
-> ...
-> };
+> 2) A rate limited read can return -EINTR ... very suprising to apps.
 >
-> and esre_release() is defined as :
-> static void esre_release(struct kobject *kobj) {
->            struct esre_entry *entry = to_entry(kobj);
->            list_del(&entry->list);
->            kfree(entry);
-> }
+> Tony Luck (2):
+>   efivarfs: Update inode modification time for successful writes
+>   efivarfs: Don't return -EINTR when rate-limiting reads
 >
-> In this case, if we call both kobject_put() and kfree(), a double-free will be introduced.
+>  fs/efivarfs/file.c | 7 +++----
+>  1 file changed, 3 insertions(+), 4 deletions(-)
 >
 
-Thanks for the explanation
+Queued in efi/urgent
 
-Queued in efi/urgent.
-
-> On Fri, May 29, 2020 at 12:00 PM Ard Biesheuvel <ardb@kernel.org> wrote:
->>
->> On Thu, 28 May 2020 at 20:38, <wu000273@umn.edu> wrote:
->> >
->> > From: Qiushi Wu <wu000273@umn.edu>
->> >
->> > kobject_init_and_add() takes reference even when it fails.
->> > If this function returns an error, kobject_put() must be called to
->> > properly clean up the memory associated with the object. Previous
->> > commit "b8eb718348b8" fixed a similar problem.
->> >
->> > Fixes: 0bb549052d33 ("efi: Add esrt support")
->> > Signed-off-by: Qiushi Wu <wu000273@umn.edu>
->> > ---
->> >  drivers/firmware/efi/esrt.c | 2 +-
->> >  1 file changed, 1 insertion(+), 1 deletion(-)
->> >
->> > diff --git a/drivers/firmware/efi/esrt.c b/drivers/firmware/efi/esrt.c
->> > index e3d692696583..d5915272141f 100644
->> > --- a/drivers/firmware/efi/esrt.c
->> > +++ b/drivers/firmware/efi/esrt.c
->> > @@ -181,7 +181,7 @@ static int esre_create_sysfs_entry(void *esre, int entry_num)
->> >                 rc = kobject_init_and_add(&entry->kobj, &esre1_ktype, NULL,
->> >                                           "entry%d", entry_num);
->> >                 if (rc) {
->> > -                       kfree(entry);
->>
->> Why are you removing this kfree() call?
->>
->> > +                       kobject_put(&entry->kobj);
->> >                         return rc;
->> >                 }
->> >         }
->> > --
->> > 2.17.1
->> >
+Thanks,
