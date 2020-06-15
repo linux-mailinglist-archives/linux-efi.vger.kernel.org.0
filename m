@@ -2,47 +2,45 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 522421F99CB
-	for <lists+linux-efi@lfdr.de>; Mon, 15 Jun 2020 16:15:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 72E4B1F99F9
+	for <lists+linux-efi@lfdr.de>; Mon, 15 Jun 2020 16:20:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730074AbgFOOPk (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 15 Jun 2020 10:15:40 -0400
-Received: from conssluserg-04.nifty.com ([210.131.2.83]:60952 "EHLO
-        conssluserg-04.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730022AbgFOOPi (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 15 Jun 2020 10:15:38 -0400
-Received: from mail-ua1-f41.google.com (mail-ua1-f41.google.com [209.85.222.41]) (authenticated)
-        by conssluserg-04.nifty.com with ESMTP id 05FEFFuc001841;
-        Mon, 15 Jun 2020 23:15:15 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-04.nifty.com 05FEFFuc001841
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
-        s=dec2015msa; t=1592230515;
-        bh=xmQzt5ozqUDfusz/+X9tTq5Zy7GppPGRYRP3NXmssX4=;
+        id S1730109AbgFOOUO (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 15 Jun 2020 10:20:14 -0400
+Received: from mail.kernel.org ([198.145.29.99]:43888 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729733AbgFOOUN (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Mon, 15 Jun 2020 10:20:13 -0400
+Received: from mail-ot1-f54.google.com (mail-ot1-f54.google.com [209.85.210.54])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 3316D2074D;
+        Mon, 15 Jun 2020 14:20:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1592230813;
+        bh=HUOCydLumSxottDevVSLTHdpEfx02efaglSNcqOyA1g=;
         h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=CoxsK5UqwzZtQIy2bAWA1dkV2aYZCFEcHX8OOVC/AC23vI4UYkamBipCyAwaQHsNC
-         W8Uf9NlwRq0KuMpuK4te2tLdIBt0Rs8NeTAJ6HMZne8e3XdKqsvtl0t3MMtOGTlO2K
-         WcvFtYLDrgQJKsEhRfJdytQl3exxC+rJ5nY53eYQ/Z+URmm3cUA31VG8eCM4oSy+21
-         OyRlAzPZEu3ycCxYygW1yiskY7999e3MOPdxa0fY1rmcEYjxoBUVfCX2j9IwPpMcUx
-         1I24NyNhJuTYLDGnEm286TqBe1C2O42phDlOZG+sHL5meVg+BGT2RRHFooVjmDA9pr
-         hPFphn4g44KpA==
-X-Nifty-SrcIP: [209.85.222.41]
-Received: by mail-ua1-f41.google.com with SMTP id i8so1122297uak.9;
-        Mon, 15 Jun 2020 07:15:15 -0700 (PDT)
-X-Gm-Message-State: AOAM530wGKXVt7v5anSk1Ekfnc1vXHT42S13QTOHeEa/GYX/HqPdaO9x
-        fgTZJQ4xAglZcyGiXYlCc0NF9L0A/yIBLydLLSw=
-X-Google-Smtp-Source: ABdhPJwGbVy/6TjyF65GLtUD4/lPeWjMrUoVu8Kl4lBNcgY1L1EifCammXZkd6BT/Cgh7HUPvFAO52Hed6qKoukOZRQ=
-X-Received: by 2002:ab0:156d:: with SMTP id p42mr19609339uae.121.1592230514499;
- Mon, 15 Jun 2020 07:15:14 -0700 (PDT)
+        b=rxrDTinJAYv67vU3pv3GEGSXu0O0GeIxA/gLRFYKN9K8aTIslE5/sL+ikA+jvg1ux
+         GnFsxHtvt1ZUS1ALBJBPVMd6UNCJBBmR4R/dLq/DUHREEr13PyFULm4FJB9p2lS2eU
+         gHEFHYUDOR64bxN0dtNHR5XTrtcOZnQoKHnz9imo=
+Received: by mail-ot1-f54.google.com with SMTP id g5so13219472otg.6;
+        Mon, 15 Jun 2020 07:20:13 -0700 (PDT)
+X-Gm-Message-State: AOAM530Iug82uYHhdbXmsUFZXm3CNMhfXfowu6B8uEYvLrIw86LXWvTJ
+        vlserVx5eBv3yrT3M1/QBwdjy/q4oMs9p6jfYYk=
+X-Google-Smtp-Source: ABdhPJy+z0D9ri9ngrVRxC0r0rgXl8LVweQQsGIwSrtgoyTVkc/8FuWCV9DKYpp5RO1CEDgKCleL16FZzI+PH3YLDeI=
+X-Received: by 2002:a9d:42e:: with SMTP id 43mr21620560otc.108.1592230812567;
+ Mon, 15 Jun 2020 07:20:12 -0700 (PDT)
 MIME-Version: 1.0
 References: <20200604022031.164207-1-masahiroy@kernel.org> <20200604022031.164207-2-masahiroy@kernel.org>
- <CAMj1kXEHDFnhgsz4w+6DuwPxcSZ5P8o0rMzQ504Nt4i31MXwJQ@mail.gmail.com> <CAMj1kXFhULbche0kbGr+mHofOYBU2WT8i7Bgx-qgz6Cp6AE8ow@mail.gmail.com>
-In-Reply-To: <CAMj1kXFhULbche0kbGr+mHofOYBU2WT8i7Bgx-qgz6Cp6AE8ow@mail.gmail.com>
-From:   Masahiro Yamada <masahiroy@kernel.org>
-Date:   Mon, 15 Jun 2020 23:14:37 +0900
-X-Gmail-Original-Message-ID: <CAK7LNARcq2O5redrnBnLuRXGs7HxyRxn_VSs2oRtDwOLkxLMdA@mail.gmail.com>
-Message-ID: <CAK7LNARcq2O5redrnBnLuRXGs7HxyRxn_VSs2oRtDwOLkxLMdA@mail.gmail.com>
+ <CAMj1kXEHDFnhgsz4w+6DuwPxcSZ5P8o0rMzQ504Nt4i31MXwJQ@mail.gmail.com>
+ <CAMj1kXFhULbche0kbGr+mHofOYBU2WT8i7Bgx-qgz6Cp6AE8ow@mail.gmail.com> <CAK7LNARcq2O5redrnBnLuRXGs7HxyRxn_VSs2oRtDwOLkxLMdA@mail.gmail.com>
+In-Reply-To: <CAK7LNARcq2O5redrnBnLuRXGs7HxyRxn_VSs2oRtDwOLkxLMdA@mail.gmail.com>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Mon, 15 Jun 2020 16:20:01 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXGg-w6N7jyG0pBJmeRctAhG2wWGoU=ryWj+Qi2UH-_m9Q@mail.gmail.com>
+Message-ID: <CAMj1kXGg-w6N7jyG0pBJmeRctAhG2wWGoU=ryWj+Qi2UH-_m9Q@mail.gmail.com>
 Subject: Re: [PATCH v2 2/2] efi/libstub: refactor Makefile to not use lib-y syntax
-To:     Ard Biesheuvel <ardb@kernel.org>
+To:     Masahiro Yamada <masahiroy@kernel.org>
 Cc:     linux-efi <linux-efi@vger.kernel.org>,
         Arvind Sankar <nivedita@alum.mit.edu>,
         Atish Patra <atish.patra@wdc.com>,
@@ -55,53 +53,52 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Mon, Jun 15, 2020 at 7:41 PM Ard Biesheuvel <ardb@kernel.org> wrote:
+On Mon, 15 Jun 2020 at 16:15, Masahiro Yamada <masahiroy@kernel.org> wrote:
 >
-> On Mon, 15 Jun 2020 at 12:26, Ard Biesheuvel <ardb@kernel.org> wrote:
+> On Mon, Jun 15, 2020 at 7:41 PM Ard Biesheuvel <ardb@kernel.org> wrote:
 > >
-> > On Thu, 4 Jun 2020 at 04:20, Masahiro Yamada <masahiroy@kernel.org> wrote:
+> > On Mon, 15 Jun 2020 at 12:26, Ard Biesheuvel <ardb@kernel.org> wrote:
 > > >
-> > > Documentation/kbuild/makefiles.rst says:
+> > > On Thu, 4 Jun 2020 at 04:20, Masahiro Yamada <masahiroy@kernel.org> wrote:
+> > > >
+> > > > Documentation/kbuild/makefiles.rst says:
+> > > >
+> > > >   Use of lib-y is normally restricted to `lib/` and `arch/*/lib`.
+> > > >
+> > > > This is because lib-y is inteded to be hooked to KBUILD_VMLINUX_LIBS,
+> > > > which is passed down to scripts/link-vmlinux.sh.
+> > > >
+> > > > Besides, lib-y is not so interesting because objects from lib-y are
+> > > > mostly linked in normal usecases. For example, lib-y only saves 364
+> > > > bytes for x86_64_defconfig. You can see the details in commit
+> > > > 7273ad2b08f8 ("kbuild: link lib-y objects to vmlinux forcibly when
+> > > > CONFIG_MODULES=y").
+> > > >
+> > > > I think we should consider to deprecate lib-y syntax at some point
+> > > > because we should aim for better solution like dead code elimination
+> > > > or LTO.
+> > > >
+> > > > Other than lib/ and arch/*/lib, this Makefile is the only user of
+> > > > lib-y. Replace lib-y with a custom rule.
+> > > >
+> > > > Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 > > >
-> > >   Use of lib-y is normally restricted to `lib/` and `arch/*/lib`.
+> > > Series queued in efi/urgent.
 > > >
-> > > This is because lib-y is inteded to be hooked to KBUILD_VMLINUX_LIBS,
-> > > which is passed down to scripts/link-vmlinux.sh.
-> > >
-> > > Besides, lib-y is not so interesting because objects from lib-y are
-> > > mostly linked in normal usecases. For example, lib-y only saves 364
-> > > bytes for x86_64_defconfig. You can see the details in commit
-> > > 7273ad2b08f8 ("kbuild: link lib-y objects to vmlinux forcibly when
-> > > CONFIG_MODULES=y").
-> > >
-> > > I think we should consider to deprecate lib-y syntax at some point
-> > > because we should aim for better solution like dead code elimination
-> > > or LTO.
-> > >
-> > > Other than lib/ and arch/*/lib, this Makefile is the only user of
-> > > lib-y. Replace lib-y with a custom rule.
-> > >
-> > > Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 > >
-> > Series queued in efi/urgent.
+> > Actually, I am seeing this now
 > >
+> > /home/ard/linux/scripts/Makefile.build:421: warning: overriding recipe
+> > for target 'drivers/firmware/efi/libstub/lib.a'
+> > /home/ard/linux/drivers/firmware/efi/libstub/Makefile:131: warning:
+> > ignoring old recipe for target 'drivers/firmware/efi/libstub/lib.a'
 >
-> Actually, I am seeing this now
 >
-> /home/ard/linux/scripts/Makefile.build:421: warning: overriding recipe
-> for target 'drivers/firmware/efi/libstub/lib.a'
-> /home/ard/linux/drivers/firmware/efi/libstub/Makefile:131: warning:
-> ignoring old recipe for target 'drivers/firmware/efi/libstub/lib.a'
+>
+> Sorry, please drop this patch for now.
+>
+> (Actually, it was working when I submitted it,
+> but is broken after e578edc72276280b8fae57f6bf79cb443ceee7a2)
+>
 
-
-
-Sorry, please drop this patch for now.
-
-(Actually, it was working when I submitted it,
-but is broken after e578edc72276280b8fae57f6bf79cb443ceee7a2)
-
-
-
--- 
-Best Regards
-Masahiro Yamada
+OK.
