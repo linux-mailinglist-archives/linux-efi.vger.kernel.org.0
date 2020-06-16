@@ -2,173 +2,125 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B99D1FB5FE
-	for <lists+linux-efi@lfdr.de>; Tue, 16 Jun 2020 17:22:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 01A611FBE72
+	for <lists+linux-efi@lfdr.de>; Tue, 16 Jun 2020 20:50:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729152AbgFPPWk (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 16 Jun 2020 11:22:40 -0400
-Received: from linux.microsoft.com ([13.77.154.182]:47596 "EHLO
-        linux.microsoft.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728919AbgFPPWk (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 16 Jun 2020 11:22:40 -0400
-Received: from sequoia (162-237-133-238.lightspeed.rcsntx.sbcglobal.net [162.237.133.238])
-        by linux.microsoft.com (Postfix) with ESMTPSA id 7571620B4780;
-        Tue, 16 Jun 2020 08:22:38 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 7571620B4780
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-        s=default; t=1592320959;
-        bh=bYENIh5GedrqWYBC1j3ZP9ozD3HNqpdatcHseK3/Bhc=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=BquU+tpQEmnqTALGYHLqisl8YefG8C6psRehVL+11NSxeC/A+i+j/KRlONbn42HyY
-         S8zxr2Sg1B4Ckll8k8yTThERyNooYDF7lEiDulR4/3JiIMzOBAo5HIyUgfOSBCWK/L
-         0xyZbVWkbDN0oiDppCGPKDblFxZ7zLFCwpnyETOU=
-Date:   Tue, 16 Jun 2020 10:22:28 -0500
-From:   Tyler Hicks <tyhicks@linux.microsoft.com>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     Matthew Garrett <mjg59@google.com>,
-        Peter Jones <pjones@redhat.com>,
-        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        Peter Huewe <peterhuewe@gmx.de>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        Petr Vandrovec <petr@vmware.com>,
-        Nayna Jain <nayna@linux.ibm.com>,
-        Thirupathaiah Annapureddy <thiruan@microsoft.com>,
-        linux-integrity <linux-integrity@vger.kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] tpm: Require that all digests are present in
- TCG_PCR_EVENT2 structures
-Message-ID: <20200616152228.GA1409697@sequoia>
-References: <20200615232504.1848159-1-tyhicks@linux.microsoft.com>
- <CAMj1kXHJbsxA2-jqpbLnUeeNfM0oC8Sh70+axOKoBCFMJ8+jKQ@mail.gmail.com>
+        id S1729173AbgFPSsf (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 16 Jun 2020 14:48:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46390 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726805AbgFPSsf (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 16 Jun 2020 14:48:35 -0400
+Received: from mail-qt1-x842.google.com (mail-qt1-x842.google.com [IPv6:2607:f8b0:4864:20::842])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB73DC061573
+        for <linux-efi@vger.kernel.org>; Tue, 16 Jun 2020 11:48:33 -0700 (PDT)
+Received: by mail-qt1-x842.google.com with SMTP id z1so16367372qtn.2
+        for <linux-efi@vger.kernel.org>; Tue, 16 Jun 2020 11:48:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:from:date:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=Q3XJdRkItXdTbVltIKOebTmbTaeIw+1QENo/OZhawig=;
+        b=pG1QjcUgmqqrFdOQ9o8wSUq5I6SjXdpzb+aRhzqFrYZmrxtnggUOl7ddNYS9cnIcAM
+         ylNwE0JNp98TPfcUzmzQmgyZXOyWQcMvorPsuW+uqT2Uz1NwVtQ0qsULdLWeiip1F0Xf
+         ehFnLLiteIxPs8xocby61HH+7m/vvAeV7C0t1sIfAjsAFFd6LtuxRGWxHjq6/HrY1KJQ
+         0JOK6HJQoFTl2Pja3qQEafH6rW43Ra83l00wlOMsB3bhJmDT9ATMEzk7viGqGOIhMuh9
+         7kcXXuDN+KFt28REVJuiKyt+g1EvDoES7b62QfasG/ef9bs8+VfjaBC3w8s4z/hR+VlI
+         VqEQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:from:date:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to;
+        bh=Q3XJdRkItXdTbVltIKOebTmbTaeIw+1QENo/OZhawig=;
+        b=lfNjLzdcsfTeeHFbxw0YZnYR9wspMJbN8TcZtsD2lnrAW1njRoYuFObdZCn70QQFO6
+         St0kab79hCyHU7SCuR6N+X80NOK6VjwhRbnt/D0R83prVpJOOrMu/9kEGZ86PeYG/4bJ
+         F9kEB24RnKm20LOeepXbsppHMSuvIoX/IT7CIMDLPifcqBNsTQVH94MeeOcxundxr+OC
+         ewdoFZdfcizK0khFweeo0By+5VTeLOvMos8LQV88RgMLJEIlkKoieQg7JLWJ9v2nzSh9
+         8i9DQUIgZwTdC2pU1H1QRhJjWb/8w3mw/AXIGTKyETa9tg4FjSaYAxTwgcUuWvXRK6Te
+         wx3A==
+X-Gm-Message-State: AOAM5328NWRZ566DkBZ4SMKBmyNwfzdqnDm+NLBOA23r39p4d+U1/i0y
+        dJgmlKpMLOZ/Ync7lGWR+wk=
+X-Google-Smtp-Source: ABdhPJz7U7lbdFjiYwMB1X2Y/ztnhaotBW5LLYx1jeJ3HYyrkpZf0q85HF2aIh/8m20uncpN/vK6bw==
+X-Received: by 2002:ac8:6bd3:: with SMTP id b19mr22019902qtt.27.1592333312866;
+        Tue, 16 Jun 2020 11:48:32 -0700 (PDT)
+Received: from rani.riverdale.lan ([2001:470:1f07:5f3::b55f])
+        by smtp.gmail.com with ESMTPSA id k7sm15172654qth.10.2020.06.16.11.48.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 16 Jun 2020 11:48:32 -0700 (PDT)
+From:   Arvind Sankar <nivedita@alum.mit.edu>
+X-Google-Original-From: Arvind Sankar <arvind@rani.riverdale.lan>
+Date:   Tue, 16 Jun 2020 14:48:30 -0400
+To:     Arvind Sankar <nivedita@alum.mit.edu>
+Cc:     Ard Biesheuvel <ardb@kernel.org>,
+        linux-efi <linux-efi@vger.kernel.org>
+Subject: Re: [PATCH 1/1] efi/x86: Use firmware stack for mixed-mode EFI stub
+Message-ID: <20200616184830.GA1581658@rani.riverdale.lan>
+References: <20200526170226.2371024-1-nivedita@alum.mit.edu>
+ <20200526170226.2371024-2-nivedita@alum.mit.edu>
+ <CAMj1kXFGubFssfb1K_KUGXHhwF1X-vsL+ENYHU4EtbEXCTsQXw@mail.gmail.com>
+ <20200615155605.GA672028@rani.riverdale.lan>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <CAMj1kXHJbsxA2-jqpbLnUeeNfM0oC8Sh70+axOKoBCFMJ8+jKQ@mail.gmail.com>
+In-Reply-To: <20200615155605.GA672028@rani.riverdale.lan>
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 2020-06-16 11:08:38, Ard Biesheuvel wrote:
-> (cc Matthew and Peter)
-
-Thanks!
-
-> On Tue, 16 Jun 2020 at 01:28, Tyler Hicks <tyhicks@linux.microsoft.com> wrote:
-> >
-> > Require that the TCG_PCR_EVENT2.digests.count value strictly matches the
-> > value of TCG_EfiSpecIdEvent.numberOfAlgorithms in the event field of the
-> > TCG_PCClientPCREvent event log header. Also require that
-> > TCG_EfiSpecIdEvent.numberOfAlgorithms is non-zero.
-> >
-> > The TCG PC Client Platform Firmware Profile Specification section 9.1
-> > (Family "2.0", Level 00 Revision 1.04) states:
-> >
-> >  For each Hash algorithm enumerated in the TCG_PCClientPCREvent entry,
-> >  there SHALL be a corresponding digest in all TCG_PCR_EVENT2 structures.
-> >  Note: This includes EV_NO_ACTION events which do not extend the PCR.
-> >
-> > Section 9.4.5.1 provides this description of
-> > TCG_EfiSpecIdEvent.numberOfAlgorithms:
-> >
-> >  The number of Hash algorithms in the digestSizes field. This field MUST
-> >  be set to a value of 0x01 or greater.
-> >
-> > Enforce these restrictions, as required by the above specification, in
-> > order to better identify and ignore invalid sequences of bytes at the
-> > end of an otherwise valid TPM2 event log. Firmware doesn't always have
-> > the means necessary to inform the kernel of the actual event log size so
-> > the kernel's event log parsing code should be stringent when parsing the
-> > event log for resiliency against firmware bugs. This is true, for
-> > example, when firmware passes the event log to the kernel via a reserved
-> > memory region described in device tree.
-> >
+On Mon, Jun 15, 2020 at 11:56:05AM -0400, Arvind Sankar wrote:
+> On Mon, Jun 15, 2020 at 11:58:43AM +0200, Ard Biesheuvel wrote:
+> > On Tue, 26 May 2020 at 19:02, Arvind Sankar <nivedita@alum.mit.edu> wrote:
+> > >
+> > > The UEFI specification requires a 128KiB stack during boot services. On
+> > > a native mode boot, the EFI stub executes on the firmware stack.
+> > > However, on a mixed-mode boot, startup_32 switches to the kernel's boot
+> > > stack, which is only 16KiB, and the EFI stub is executed with this
+> > > stack.
+> > >
+> > > To avoid any potential problems with running out of stack space, save
+> > > and restore the UEFI stack pointer in the mixed-mode entry, so that the
+> > > EFI stub can use the firmware stack in this case as well.
+> > >
+> > > Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
+> > 
+> > This does not apply onto v5.8-rc1, and I was going to take it as a fix.
+> > 
 > 
-> When does this happen? Do we have code in mainline that does this?
-
-We do. POWER and some ARM firmware that pass the firmware event log via
-"linux,sml-base" and "linux,sml-size" properties:
-
- https://open-power.github.io/skiboot/doc/device-tree/tpm.html
-
-The "linux,sml-size" property is the size of the memory region dedicated
-to the firmware event log and not the size of the firmware event log
-itself.
-
-tpm_read_log_of() in drivers/char/tpm/eventlog/of.c is where this
-property is used. At the end of that function, log->bios_event_log_end
-is pointing at the end of the reserved memory region. That's typically
-0x10000 bytes offset from "linux,sml-base", depending on what's defined
-in the device tree source.
-
-I suspect that ACPI event log support may be implemented similarly, from
-skimming tpm_read_log_acpi() and the TCG ACPI Specification, but I don't
-know for sure.
-
-
-Anyways, you wouldn't know from reading __calc_tpm2_event_size() but the
-only thing allowing the kernel's event log parser to work on these
-systems that don't inform the kernel of the actual firmware event log
-size is the following conditional and assignment in
-__calc_tpm2_event_size():
-
-	if (event_type == 0 && event_field->event_size == 0)
-		size = 0;
-
-If that wasn't there, __calc_tpm2_event_size() would think that a 16
-byte sequence of zeroes was a valid event.
-
-> > Prior to this patch, a single bit set in the offset corresponding to
-> > either the TCG_PCR_EVENT2.eventType or TCG_PCR_EVENT2.eventSize fields,
-> > after the last valid event log entry, could confuse the parser into
-> > thinking that an additional entry is present in the event log. This
-> > patch raises the bar on how difficult it is for stale memory to confuse
-> > the kernel's event log parser but there's still a reliance on firmware
-> > to properly initialize the remainder of the memory region reserved for
-> > the event log as the parser cannot be expected to detect a stale but
-> > otherwise properly formatted firmware event log entry.
-> >
-> > Fixes: fd5c78694f3f ("tpm: fix handling of the TPM 2.0 event logs")
-> > Signed-off-by: Tyler Hicks <tyhicks@linux.microsoft.com>
-> > ---
+> This was based on the runtime-relocation removing patch series (see
+> cover letter).
+> https://lore.kernel.org/linux-efi/20200526170226.2371024-1-nivedita@alum.mit.edu/
 > 
-> I am all for stringent checks, but this could potentially break
-> measured boot on systems that are working fine today, right?
+> I can rework it to apply on mainline if we decide this patch could be
+> useful.
+> 
+> > However, are we sure this is safe? Do we have a ballpark figure of how
+> > much stack we use in the stub?
+> > 
+> > This is one of those things I am reluctant to change, given that we
+> > are not sure that firmware implementations conform to this, and IA32
+> > firmware was not designed to boot a 64-bit image (which might use more
+> > stack space?)
+> > 
+> 
+> The EFI stub code itself doesn't use much stack. The largest frame is
+> 720 bytes and the rest are below 300, so it probably doesn't even reach
+> 4k. The risk is really that inside the firmware it uses stack space more
+> liberally given it can assume it has 128KiB available. A safer
+> alternative would be to switch to the firmware stack only when actually
+> calling the firmware, inside the mixed-mode thunk.
 
-Yes, I think there is some risk in breaking existing systems that aren't
-conforming to the spec. I'm no expert in this area so I can't say how
-high the risk is. I think __calc_tpm2_event_size() is only used for
-exposing the TPM2 firmware event log to userspace and then attestation
-services make use of it from there. Breakage would cause the kernel to
-not fully expose the firmware event log to userspace via
-/sys/kernel/security/tpm*/binary_bios_measurements and that could result
-in attestation failures that cause these systems to be marked as
-untrusted.
-
-I'm not in a hurry to get this merged and welcome as much feedback as
-possible on the risks involved as well as my understanding of the TCG PC
-Client Platform Firmware Profile Specification.
-
-Tyler
+So one thing that mostly mitigates this is that the boot heap, which at
+this time would be unused, is right below the stack and is at least
+64KiB in size. Taking that into account we really have 80KiB of stack
+available, so this might be fragile wrt future changes but right now
+it should be safe to run on the boot stack.
 
 > 
-> >  include/linux/tpm_eventlog.h | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/include/linux/tpm_eventlog.h b/include/linux/tpm_eventlog.h
-> > index 4f8c90c93c29..d83eb9fd5614 100644
-> > --- a/include/linux/tpm_eventlog.h
-> > +++ b/include/linux/tpm_eventlog.h
-> > @@ -201,7 +201,7 @@ static inline int __calc_tpm2_event_size(struct tcg_pcr_event2_head *event,
-> >         efispecid = (struct tcg_efi_specid_event_head *)event_header->event;
-> >
-> >         /* Check if event is malformed. */
-> > -       if (count > efispecid->num_algs) {
-> > +       if (!efispecid->num_algs || count != efispecid->num_algs) {
-> >                 size = 0;
-> >                 goto out;
-> >         }
-> > --
-> > 2.25.1
-> >
+> Also, this patch fixed up one other small issue, which is that when we
+> enter via the compat 32-bit entry, we will call efi_pe_entry with a
+> misaligned stack (0 mod 16 instead of 8 mod 16). It gets correctly
+> aligned once efi_pe_entry finishes and calls efi_stub_entry though, so
+> most of the stub will still execute with proper alignment.
+
+Should I do a patch just for the alignment thing then?
