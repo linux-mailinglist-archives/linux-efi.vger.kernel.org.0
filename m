@@ -2,111 +2,105 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 367ED1FBE76
-	for <lists+linux-efi@lfdr.de>; Tue, 16 Jun 2020 20:51:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D10F1FBF61
+	for <lists+linux-efi@lfdr.de>; Tue, 16 Jun 2020 21:49:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729103AbgFPSuy (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 16 Jun 2020 14:50:54 -0400
-Received: from mail.kernel.org ([198.145.29.99]:41300 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728561AbgFPSuy (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Tue, 16 Jun 2020 14:50:54 -0400
-Received: from mail-ot1-f49.google.com (mail-ot1-f49.google.com [209.85.210.49])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 11CE120707
-        for <linux-efi@vger.kernel.org>; Tue, 16 Jun 2020 18:50:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1592333454;
-        bh=O7vZuAmkBHyDfvXKfV7YeS+ulDpkeBw8K2YeQuTOSKI=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=cq5UcLyY4Rhm5B8kOgVPyoA0Az/5xswFziXVt0OczUOvTq2P+Ll51IhJALVBMn04t
-         L6oBJoglxV/Bg7RIqbu1v5r67EGd8hHdWlTg5nwy/BwdQVCqng91gAEnPkiBvNMvQj
-         E2whKvW5NoNxnsSlcuk39c+xZGgeT9LhjAUgKBkY=
-Received: by mail-ot1-f49.google.com with SMTP id 97so16794539otg.3
-        for <linux-efi@vger.kernel.org>; Tue, 16 Jun 2020 11:50:54 -0700 (PDT)
-X-Gm-Message-State: AOAM532OWhzj9Q3clplUzOZlYzv8I9lp9jKFjCD8Z8bmW6twSgnV8s19
-        TNKu/aponMy9vX0Wwt9x/5FgBmmrkfz1aM2ubdM=
-X-Google-Smtp-Source: ABdhPJxf/WqnONE16PqSfk11D474c0CwMMwZR2b6YqvQ3YBmuDiWdHZapBSW4vfN6yL1bmkA3F9LYKcMPtyaAHwcDvk=
-X-Received: by 2002:a9d:42e:: with SMTP id 43mr3696498otc.108.1592333453354;
- Tue, 16 Jun 2020 11:50:53 -0700 (PDT)
+        id S1731061AbgFPTsG (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 16 Jun 2020 15:48:06 -0400
+Received: from mail-qt1-f195.google.com ([209.85.160.195]:42033 "EHLO
+        mail-qt1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730609AbgFPTsF (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 16 Jun 2020 15:48:05 -0400
+Received: by mail-qt1-f195.google.com with SMTP id q14so16488329qtr.9
+        for <linux-efi@vger.kernel.org>; Tue, 16 Jun 2020 12:48:04 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=NH/TuqtXr+w9Q/kPHLpFEpBaSZJtZ3hL6C8nNtDhevI=;
+        b=Yc/q42T/8XgaiPcrmhGulXI9FMemvcewW/xFv7qx2kYDp3rCTiwtBb9hUyT+U5lHeS
+         vm5j/6CgupIUztsBXj6IwxPKKQqmz6uGKwf+G2XSwzIRgH/1zOtefSLupaFvmvlj5kji
+         iBgwgmx1FV2dFSHABcpCCtitI6D+1aQrVcFzPBkktfLrtl+1MNTHk/uQ5mNoWBG4gugo
+         4M/DsR4iBFpD6Q6Kkm40GIloLDCDaZYPIHDml7Xx9D/dXPrxl5Pgy8f9Iw1kT37Kyp0c
+         giEDxStIamMv4cEtQxV2FSy92oRNNBmUW7bg5QHQNDA5eDOxnqD3vlXZ7m9Tij94fKgL
+         cfUg==
+X-Gm-Message-State: AOAM530Yk4X1or7Bv0TBzHKlpHdJwaGoM30fmKaugoZy0eiLECM9yOXD
+        mRieHNxetIb0I96mK3vgXdvpOSCJ
+X-Google-Smtp-Source: ABdhPJwdh/m8dO1iwRxon3IE9aqX32L90sQH1onNROLjtBW9GLgryDxQHj5jerCOkUUNR3adsB/lYQ==
+X-Received: by 2002:aed:24db:: with SMTP id u27mr22546628qtc.256.1592336883511;
+        Tue, 16 Jun 2020 12:48:03 -0700 (PDT)
+Received: from rani.riverdale.lan ([2001:470:1f07:5f3::b55f])
+        by smtp.gmail.com with ESMTPSA id 10sm14959481qkv.136.2020.06.16.12.48.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 16 Jun 2020 12:48:03 -0700 (PDT)
+From:   Arvind Sankar <nivedita@alum.mit.edu>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-efi@vger.kernel.org, x86@kernel.org
+Subject: [PATCH] efi/x86: Setup stack correctly for efi_pe_entry
+Date:   Tue, 16 Jun 2020 15:48:02 -0400
+Message-Id: <20200616194802.1718902-1-nivedita@alum.mit.edu>
+X-Mailer: git-send-email 2.26.2
+In-Reply-To: <CAMj1kXELi+siUDH6g+_B3t77x3exobj2b1qQ-W4RMVY_DK1dhA@mail.gmail.com>
+References: <CAMj1kXELi+siUDH6g+_B3t77x3exobj2b1qQ-W4RMVY_DK1dhA@mail.gmail.com>
 MIME-Version: 1.0
-References: <20200526170226.2371024-1-nivedita@alum.mit.edu>
- <20200526170226.2371024-2-nivedita@alum.mit.edu> <CAMj1kXFGubFssfb1K_KUGXHhwF1X-vsL+ENYHU4EtbEXCTsQXw@mail.gmail.com>
- <20200615155605.GA672028@rani.riverdale.lan> <20200616184830.GA1581658@rani.riverdale.lan>
-In-Reply-To: <20200616184830.GA1581658@rani.riverdale.lan>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Tue, 16 Jun 2020 20:50:41 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXELi+siUDH6g+_B3t77x3exobj2b1qQ-W4RMVY_DK1dhA@mail.gmail.com>
-Message-ID: <CAMj1kXELi+siUDH6g+_B3t77x3exobj2b1qQ-W4RMVY_DK1dhA@mail.gmail.com>
-Subject: Re: [PATCH 1/1] efi/x86: Use firmware stack for mixed-mode EFI stub
-To:     Arvind Sankar <nivedita@alum.mit.edu>
-Cc:     linux-efi <linux-efi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, 16 Jun 2020 at 20:48, Arvind Sankar <nivedita@alum.mit.edu> wrote:
->
-> On Mon, Jun 15, 2020 at 11:56:05AM -0400, Arvind Sankar wrote:
-> > On Mon, Jun 15, 2020 at 11:58:43AM +0200, Ard Biesheuvel wrote:
-> > > On Tue, 26 May 2020 at 19:02, Arvind Sankar <nivedita@alum.mit.edu> wrote:
-> > > >
-> > > > The UEFI specification requires a 128KiB stack during boot services. On
-> > > > a native mode boot, the EFI stub executes on the firmware stack.
-> > > > However, on a mixed-mode boot, startup_32 switches to the kernel's boot
-> > > > stack, which is only 16KiB, and the EFI stub is executed with this
-> > > > stack.
-> > > >
-> > > > To avoid any potential problems with running out of stack space, save
-> > > > and restore the UEFI stack pointer in the mixed-mode entry, so that the
-> > > > EFI stub can use the firmware stack in this case as well.
-> > > >
-> > > > Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
-> > >
-> > > This does not apply onto v5.8-rc1, and I was going to take it as a fix.
-> > >
-> >
-> > This was based on the runtime-relocation removing patch series (see
-> > cover letter).
-> > https://lore.kernel.org/linux-efi/20200526170226.2371024-1-nivedita@alum.mit.edu/
-> >
-> > I can rework it to apply on mainline if we decide this patch could be
-> > useful.
-> >
-> > > However, are we sure this is safe? Do we have a ballpark figure of how
-> > > much stack we use in the stub?
-> > >
-> > > This is one of those things I am reluctant to change, given that we
-> > > are not sure that firmware implementations conform to this, and IA32
-> > > firmware was not designed to boot a 64-bit image (which might use more
-> > > stack space?)
-> > >
-> >
-> > The EFI stub code itself doesn't use much stack. The largest frame is
-> > 720 bytes and the rest are below 300, so it probably doesn't even reach
-> > 4k. The risk is really that inside the firmware it uses stack space more
-> > liberally given it can assume it has 128KiB available. A safer
-> > alternative would be to switch to the firmware stack only when actually
-> > calling the firmware, inside the mixed-mode thunk.
->
-> So one thing that mostly mitigates this is that the boot heap, which at
-> this time would be unused, is right below the stack and is at least
-> 64KiB in size. Taking that into account we really have 80KiB of stack
-> available, so this might be fragile wrt future changes but right now
-> it should be safe to run on the boot stack.
->
-> >
-> > Also, this patch fixed up one other small issue, which is that when we
-> > enter via the compat 32-bit entry, we will call efi_pe_entry with a
-> > misaligned stack (0 mod 16 instead of 8 mod 16). It gets correctly
-> > aligned once efi_pe_entry finishes and calls efi_stub_entry though, so
-> > most of the stub will still execute with proper alignment.
->
-> Should I do a patch just for the alignment thing then?
+Commit
+  17054f492dfd ("efi/x86: Implement mixed mode boot without the handover protocol")
+introduced a new entry point for the EFI stub to be booted in mixed mode
+on 32-bit firmware.
 
-Yes please. I am about to send some fixes to -tip so I'd like to
-include it. The other issue can be dealt with for the next merge
-window, and we can do some light testing first.
+When entered via efi32_pe_entry, control is first transferred to
+startup_32 to setup for the switch to long mode, and then the EFI stub
+proper is entered via efi_pe_entry. efi_pe_entry is an MS ABI function,
+and the ABI requires 32 bytes of shadow stack space to be allocated by
+the caller, as well as the stack being aligned to 8 mod 16 on entry.
+
+Allocate 40 bytes on the stack before switching to 64-bit mode when
+calling efi_pe_entry to account for this.
+
+Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
+---
+ arch/x86/boot/compressed/head_64.S | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
+
+diff --git a/arch/x86/boot/compressed/head_64.S b/arch/x86/boot/compressed/head_64.S
+index e821a7d7d5c4..d073e3c919dd 100644
+--- a/arch/x86/boot/compressed/head_64.S
++++ b/arch/x86/boot/compressed/head_64.S
+@@ -213,7 +213,6 @@ SYM_FUNC_START(startup_32)
+ 	 * We place all of the values on our mini stack so lret can
+ 	 * used to perform that far jump.
+ 	 */
+-	pushl	$__KERNEL_CS
+ 	leal	startup_64(%ebp), %eax
+ #ifdef CONFIG_EFI_MIXED
+ 	movl	efi32_boot_args(%ebp), %edi
+@@ -224,11 +223,20 @@ SYM_FUNC_START(startup_32)
+ 	movl	efi32_boot_args+8(%ebp), %edx	// saved bootparams pointer
+ 	cmpl	$0, %edx
+ 	jnz	1f
++	/*
++	 * efi_pe_entry uses MS calling convention, which requires 32 bytes of
++	 * shadow space on the stack even if all arguments are passed in
++	 * registers. We also need an additional 8 bytes for the space that
++	 * would be occupied by the return address, and this also results in
++	 * the correct stack alignment for entry.
++	 */
++	subl	$40, %esp
+ 	leal	efi_pe_entry(%ebp), %eax
+ 	movl	%edi, %ecx			// MS calling convention
+ 	movl	%esi, %edx
+ 1:
+ #endif
++	pushl	$__KERNEL_CS
+ 	pushl	%eax
+ 
+ 	/* Enter paged protected Mode, activating Long Mode */
+-- 
+2.26.2
+
