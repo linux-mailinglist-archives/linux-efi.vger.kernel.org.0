@@ -2,46 +2,53 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C4EE1FABB1
-	for <lists+linux-efi@lfdr.de>; Tue, 16 Jun 2020 10:56:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 00D1E1FABE9
+	for <lists+linux-efi@lfdr.de>; Tue, 16 Jun 2020 11:08:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726112AbgFPI4h (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 16 Jun 2020 04:56:37 -0400
-Received: from mail.kernel.org ([198.145.29.99]:37210 "EHLO mail.kernel.org"
+        id S1727966AbgFPJIv (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 16 Jun 2020 05:08:51 -0400
+Received: from mail.kernel.org ([198.145.29.99]:40766 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725896AbgFPI4h (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Tue, 16 Jun 2020 04:56:37 -0400
-Received: from mail-ot1-f52.google.com (mail-ot1-f52.google.com [209.85.210.52])
+        id S1727804AbgFPJIu (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Tue, 16 Jun 2020 05:08:50 -0400
+Received: from mail-oi1-f176.google.com (mail-oi1-f176.google.com [209.85.167.176])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 74C0D2078E;
-        Tue, 16 Jun 2020 08:56:36 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id C272A207DD;
+        Tue, 16 Jun 2020 09:08:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1592297796;
-        bh=rBOwbfQlkVz6vWaKmoDPTN+u6O4afwBYiXoOfNZH7/U=;
+        s=default; t=1592298529;
+        bh=mMcZbBKDIEf5QDbJvhcjb8NySIKsPG7Fhgc8LiSbKCo=;
         h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=jM0EWuAHFjhHe+qIlVfCbgnv9cNY6qqxj/IVagYZamKPTTXWRBMD/FJZMKk7BZHyh
-         LEUVXeV/IdoKxX7jGT2fxRDt4e4V+4IL5PWnQUnO4VHw598/Swyr/hwCub7g9h0/LX
-         d9GVykn/S5SJvXsdpP2DExvi10gD82QjnoOkJkCw=
-Received: by mail-ot1-f52.google.com with SMTP id g5so15365462otg.6;
-        Tue, 16 Jun 2020 01:56:36 -0700 (PDT)
-X-Gm-Message-State: AOAM530VGQ05SV0UD3BrHUu7ygA/RxOHxmUad/XRlIqgsw5PuJKcEz9n
-        AU6SX9VMadtsLxCPjNwl1k5vipG4QA97fWouZnI=
-X-Google-Smtp-Source: ABdhPJz9Gf5nGN9qT4RqdPcpDEjN+4pCbfa7gIokGgUT/p6lD4wo3psp5pXhRxuxfb9MAN6dut206seqYtE9bnvf4JE=
-X-Received: by 2002:a9d:476:: with SMTP id 109mr1699688otc.77.1592297795736;
- Tue, 16 Jun 2020 01:56:35 -0700 (PDT)
+        b=QAbJhmj34S2Fh7X92lHNNV0g9TgINhpbE+Xi01XOpZGNnKr1JQOzc8zJFa/Q/IWIE
+         KUXLzFRoNnTDPXxxfw5nMVDVRRo5OGfYUCr1Uu+PHiRMjg+ihC/RhWsE2s9n/dd3g0
+         4HFqrjPh5o76I0Mk0irL6v+qQWIW1zQYLLpbow1A=
+Received: by mail-oi1-f176.google.com with SMTP id a137so18611837oii.3;
+        Tue, 16 Jun 2020 02:08:49 -0700 (PDT)
+X-Gm-Message-State: AOAM532iBcwy8DQnU/c6AeEDsaRJC0okNSv1M7hOKPjTmTBuLeg5FPR0
+        tulR5SBG+4hKCDmeyhe9hKWIAUAr0/AYstUiE8M=
+X-Google-Smtp-Source: ABdhPJwa1K5xO9vLA3j1dAI/megl1vvVrIUpuNpiiEU3U5egWn6I8rCdX4OdQEugsG4Pg25O6pqrL++03BNz9mew+r8=
+X-Received: by 2002:aca:ba03:: with SMTP id k3mr2525490oif.33.1592298529095;
+ Tue, 16 Jun 2020 02:08:49 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200615234231.21059-1-xypron.glpk@gmx.de>
-In-Reply-To: <20200615234231.21059-1-xypron.glpk@gmx.de>
+References: <20200615232504.1848159-1-tyhicks@linux.microsoft.com>
+In-Reply-To: <20200615232504.1848159-1-tyhicks@linux.microsoft.com>
 From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Tue, 16 Jun 2020 10:56:24 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXEqFZ-0WYbnJm-LSYADH_ATtqJ_9eJxm=Q7pxAr7w7g4g@mail.gmail.com>
-Message-ID: <CAMj1kXEqFZ-0WYbnJm-LSYADH_ATtqJ_9eJxm=Q7pxAr7w7g4g@mail.gmail.com>
-Subject: Re: [PATCH 1/1] efi/libstub: descriptions for stub helper functions
-To:     Heinrich Schuchardt <xypron.glpk@gmx.de>
-Cc:     Ingo Molnar <mingo@kernel.org>,
-        Arvind Sankar <nivedita@alum.mit.edu>,
-        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+Date:   Tue, 16 Jun 2020 11:08:38 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXHJbsxA2-jqpbLnUeeNfM0oC8Sh70+axOKoBCFMJ8+jKQ@mail.gmail.com>
+Message-ID: <CAMj1kXHJbsxA2-jqpbLnUeeNfM0oC8Sh70+axOKoBCFMJ8+jKQ@mail.gmail.com>
+Subject: Re: [PATCH] tpm: Require that all digests are present in
+ TCG_PCR_EVENT2 structures
+To:     Tyler Hicks <tyhicks@linux.microsoft.com>,
+        Matthew Garrett <mjg59@google.com>,
+        Peter Jones <pjones@redhat.com>
+Cc:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        Peter Huewe <peterhuewe@gmx.de>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        Petr Vandrovec <petr@vmware.com>,
+        Nayna Jain <nayna@linux.ibm.com>,
+        Thirupathaiah Annapureddy <thiruan@microsoft.com>,
+        linux-integrity <linux-integrity@vger.kernel.org>,
         linux-efi <linux-efi@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
@@ -50,200 +57,73 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, 16 Jun 2020 at 01:42, Heinrich Schuchardt <xypron.glpk@gmx.de> wrote:
->
-> Provide missing descriptions for EFI stub helper functions.
-> Adjust formatting of existing descriptions to kernel style.
->
-> Signed-off-by: Heinrich Schuchardt <xypron.glpk@gmx.de>
+(cc Matthew and Peter)
 
-Queued as a fix, thanks.
+On Tue, 16 Jun 2020 at 01:28, Tyler Hicks <tyhicks@linux.microsoft.com> wrote:
+>
+> Require that the TCG_PCR_EVENT2.digests.count value strictly matches the
+> value of TCG_EfiSpecIdEvent.numberOfAlgorithms in the event field of the
+> TCG_PCClientPCREvent event log header. Also require that
+> TCG_EfiSpecIdEvent.numberOfAlgorithms is non-zero.
+>
+> The TCG PC Client Platform Firmware Profile Specification section 9.1
+> (Family "2.0", Level 00 Revision 1.04) states:
+>
+>  For each Hash algorithm enumerated in the TCG_PCClientPCREvent entry,
+>  there SHALL be a corresponding digest in all TCG_PCR_EVENT2 structures.
+>  Note: This includes EV_NO_ACTION events which do not extend the PCR.
+>
+> Section 9.4.5.1 provides this description of
+> TCG_EfiSpecIdEvent.numberOfAlgorithms:
+>
+>  The number of Hash algorithms in the digestSizes field. This field MUST
+>  be set to a value of 0x01 or greater.
+>
+> Enforce these restrictions, as required by the above specification, in
+> order to better identify and ignore invalid sequences of bytes at the
+> end of an otherwise valid TPM2 event log. Firmware doesn't always have
+> the means necessary to inform the kernel of the actual event log size so
+> the kernel's event log parsing code should be stringent when parsing the
+> event log for resiliency against firmware bugs. This is true, for
+> example, when firmware passes the event log to the kernel via a reserved
+> memory region described in device tree.
+>
 
+When does this happen? Do we have code in mainline that does this?
+
+> Prior to this patch, a single bit set in the offset corresponding to
+> either the TCG_PCR_EVENT2.eventType or TCG_PCR_EVENT2.eventSize fields,
+> after the last valid event log entry, could confuse the parser into
+> thinking that an additional entry is present in the event log. This
+> patch raises the bar on how difficult it is for stale memory to confuse
+> the kernel's event log parser but there's still a reliance on firmware
+> to properly initialize the remainder of the memory region reserved for
+> the event log as the parser cannot be expected to detect a stale but
+> otherwise properly formatted firmware event log entry.
+>
+> Fixes: fd5c78694f3f ("tpm: fix handling of the TPM 2.0 event logs")
+> Signed-off-by: Tyler Hicks <tyhicks@linux.microsoft.com>
 > ---
->  .../firmware/efi/libstub/efi-stub-helper.c    | 78 ++++++++++++++++---
->  drivers/firmware/efi/libstub/efistub.h        | 10 ++-
->  2 files changed, 75 insertions(+), 13 deletions(-)
+
+I am all for stringent checks, but this could potentially break
+measured boot on systems that are working fine today, right?
+
+>  include/linux/tpm_eventlog.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> diff --git a/drivers/firmware/efi/libstub/efi-stub-helper.c b/drivers/firmware/efi/libstub/efi-stub-helper.c
-> index 89f075275300..d40fd68c6bb2 100644
-> --- a/drivers/firmware/efi/libstub/efi-stub-helper.c
-> +++ b/drivers/firmware/efi/libstub/efi-stub-helper.c
-> @@ -32,6 +32,10 @@ bool __pure __efi_soft_reserve_enabled(void)
->         return !efi_nosoftreserve;
->  }
+> diff --git a/include/linux/tpm_eventlog.h b/include/linux/tpm_eventlog.h
+> index 4f8c90c93c29..d83eb9fd5614 100644
+> --- a/include/linux/tpm_eventlog.h
+> +++ b/include/linux/tpm_eventlog.h
+> @@ -201,7 +201,7 @@ static inline int __calc_tpm2_event_size(struct tcg_pcr_event2_head *event,
+>         efispecid = (struct tcg_efi_specid_event_head *)event_header->event;
 >
-> +/**
-> + * efi_char16_puts() - Write a UCS-2 encoded string to the console
-> + * @str:       UCS-2 encoded string
-> + */
->  void efi_char16_puts(efi_char16_t *str)
->  {
->         efi_call_proto(efi_table_attr(efi_system_table, con_out),
-> @@ -83,6 +87,10 @@ u32 utf8_to_utf32(const u8 **s8)
->         return c32;
->  }
->
-> +/**
-> + * efi_puts() - Write a UTF-8 encoded string to the console
-> + * @str:       UTF-8 encoded string
-> + */
->  void efi_puts(const char *str)
->  {
->         efi_char16_t buf[128];
-> @@ -113,6 +121,16 @@ void efi_puts(const char *str)
+>         /* Check if event is malformed. */
+> -       if (count > efispecid->num_algs) {
+> +       if (!efispecid->num_algs || count != efispecid->num_algs) {
+>                 size = 0;
+>                 goto out;
 >         }
->  }
->
-> +/**
-> + * efi_printk() - Print a kernel message
-> + * @fmt:       format string
-> + *
-> + * The first letter of the format string is used to determine the logging level
-> + * of the message. If the level is less then the current EFI logging level, the
-> + * message is suppressed. The message will be truncated to 255 bytes.
-> + *
-> + * Return:     number of printed characters
-> + */
->  int efi_printk(const char *fmt, ...)
->  {
->         char printf_buf[256];
-> @@ -154,13 +172,18 @@ int efi_printk(const char *fmt, ...)
->         return printed;
->  }
->
-> -/*
-> - * Parse the ASCII string 'cmdline' for EFI options, denoted by the efi=
-> +/**
-> + * efi_parse_options() - Parse EFI command line options
-> + * @cmdline:   kernel command line
-> + *
-> + * Parse the ASCII string @cmdline for EFI options, denoted by the efi=
->   * option, e.g. efi=nochunk.
->   *
->   * It should be noted that efi= is parsed in two very different
->   * environments, first in the early boot environment of the EFI boot
->   * stub, and subsequently during the kernel boot.
-> + *
-> + * Return:     status code
->   */
->  efi_status_t efi_parse_options(char const *cmdline)
->  {
-> @@ -286,13 +309,21 @@ char *efi_convert_cmdline(efi_loaded_image_t *image, int *cmd_line_len)
->         return (char *)cmdline_addr;
->  }
->
-> -/*
-> +/**
-> + * efi_exit_boot_services() - Exit boot services
-> + * @handle:    handle of the exiting image
-> + * @map:       pointer to receive the memory map
-> + * @priv:      argument to be passed to @priv_func
-> + * @priv_func: function to process the memory map before exiting boot services
-> + *
->   * Handle calling ExitBootServices according to the requirements set out by the
->   * spec.  Obtains the current memory map, and returns that info after calling
->   * ExitBootServices.  The client must specify a function to perform any
->   * processing of the memory map data prior to ExitBootServices.  A client
->   * specific structure may be passed to the function via priv.  The client
->   * function may be called multiple times.
-> + *
-> + * Return:     status code
->   */
->  efi_status_t efi_exit_boot_services(void *handle,
->                                     struct efi_boot_memmap *map,
-> @@ -361,6 +392,11 @@ efi_status_t efi_exit_boot_services(void *handle,
->         return status;
->  }
->
-> +/**
-> + * get_efi_config_table() - retrieve UEFI configuration table
-> + * @guid:      GUID of the configuration table to be retrieved
-> + * Return:     pointer to the configuration table or NULL
-> + */
->  void *get_efi_config_table(efi_guid_t guid)
->  {
->         unsigned long tables = efi_table_attr(efi_system_table, tables);
-> @@ -408,17 +444,18 @@ static const struct {
->  };
->
->  /**
-> - * efi_load_initrd_dev_path - load the initrd from the Linux initrd device path
-> + * efi_load_initrd_dev_path() - load the initrd from the Linux initrd device path
->   * @load_addr: pointer to store the address where the initrd was loaded
->   * @load_size: pointer to store the size of the loaded initrd
->   * @max:       upper limit for the initrd memory allocation
-> - * @return:    %EFI_SUCCESS if the initrd was loaded successfully, in which
-> - *             case @load_addr and @load_size are assigned accordingly
-> - *             %EFI_NOT_FOUND if no LoadFile2 protocol exists on the initrd
-> - *             device path
-> - *             %EFI_INVALID_PARAMETER if load_addr == NULL or load_size == NULL
-> - *             %EFI_OUT_OF_RESOURCES if memory allocation failed
-> - *             %EFI_LOAD_ERROR in all other cases
-> + *
-> + * Return:
-> + * * %EFI_SUCCESS if the initrd was loaded successfully, in which
-> + *   case @load_addr and @load_size are assigned accordingly
-> + * * %EFI_NOT_FOUND if no LoadFile2 protocol exists on the initrd device path
-> + * * %EFI_INVALID_PARAMETER if load_addr == NULL or load_size == NULL
-> + * * %EFI_OUT_OF_RESOURCES if memory allocation failed
-> + * * %EFI_LOAD_ERROR in all other cases
->   */
->  static
->  efi_status_t efi_load_initrd_dev_path(unsigned long *load_addr,
-> @@ -481,6 +518,16 @@ efi_status_t efi_load_initrd_cmdline(efi_loaded_image_t *image,
->                                     load_addr, load_size);
->  }
->
-> +/**
-> + * efi_load_initrd() - Load initial RAM disk
-> + * @image:     EFI loaded image protocol
-> + * @load_addr: pointer to loaded initrd
-> + * @load_size: size of loaded initrd
-> + * @soft_limit:        preferred size of allocated memory for loading the initrd
-> + * @hard_limit:        minimum size of allocated memory
-> + *
-> + * Return:     status code
-> + */
->  efi_status_t efi_load_initrd(efi_loaded_image_t *image,
->                              unsigned long *load_addr,
->                              unsigned long *load_size,
-> @@ -505,6 +552,15 @@ efi_status_t efi_load_initrd(efi_loaded_image_t *image,
->         return status;
->  }
->
-> +/**
-> + * efi_wait_for_key() - Wait for key stroke
-> + * @usec:      number of microseconds to wait for key stroke
-> + * @key:       key entered
-> + *
-> + * Wait for up to @usec microseconds for a key stroke.
-> + *
-> + * Return:     status code, EFI_SUCCESS if key received
-> + */
->  efi_status_t efi_wait_for_key(unsigned long usec, efi_input_key_t *key)
->  {
->         efi_event_t events[2], timer;
-> diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
-> index bcd8c0a785f0..ac756f1fdb1a 100644
-> --- a/drivers/firmware/efi/libstub/efistub.h
-> +++ b/drivers/firmware/efi/libstub/efistub.h
-> @@ -157,8 +157,14 @@ typedef void (__efiapi *efi_event_notify_t)(efi_event_t, void *);
->  #define EFI_EVT_NOTIFY_WAIT    0x00000100U
->  #define EFI_EVT_NOTIFY_SIGNAL  0x00000200U
->
-> -/*
-> - * boottime->wait_for_event takes an array of events as input.
-> +/**
-> + * efi_set_event_at() - add event to events array
-> + *
-> + * @events:    array of UEFI events
-> + * @ids:       index where to put the event in the array
-> + * @event:     event to add to the aray
-> + *
-> + * boottime->wait_for_event() takes an array of events as input.
->   * Provide a helper to set it up correctly for mixed mode.
->   */
->  static inline
 > --
-> 2.27.0
+> 2.25.1
 >
