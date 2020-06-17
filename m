@@ -2,177 +2,118 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1234D1FCAA5
-	for <lists+linux-efi@lfdr.de>; Wed, 17 Jun 2020 12:19:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A2591FCAF0
+	for <lists+linux-efi@lfdr.de>; Wed, 17 Jun 2020 12:33:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725964AbgFQKTc (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 17 Jun 2020 06:19:32 -0400
-Received: from mga18.intel.com ([134.134.136.126]:28942 "EHLO mga18.intel.com"
+        id S1725894AbgFQKdc (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 17 Jun 2020 06:33:32 -0400
+Received: from mail.kernel.org ([198.145.29.99]:46214 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725554AbgFQKTb (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Wed, 17 Jun 2020 06:19:31 -0400
-IronPort-SDR: C+iYU9fOxfXYRFCQuJ4nvlEKUd/gvSqmUVizZq9Lpei3k1lbOPYs6vHyBVdanBuwoRrO73WEMI
- qSx1PFjhwb+A==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jun 2020 03:19:30 -0700
-IronPort-SDR: JdUI2psWOjSJWj9gjH37QWoR7cBUPLKcesMCGRO8wcAPBEm3RHeDeAqgQyptpJVMT6GYNEF275
- SXPEyGek9YGg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.73,522,1583222400"; 
-   d="scan'208";a="352032605"
-Received: from lkp-server02.sh.intel.com (HELO acd172f646ee) ([10.239.97.151])
-  by orsmga001.jf.intel.com with ESMTP; 17 Jun 2020 03:19:29 -0700
-Received: from kbuild by acd172f646ee with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1jlVAF-00000z-7l; Wed, 17 Jun 2020 10:19:27 +0000
-Date:   Wed, 17 Jun 2020 18:19:15 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     linux-efi@vger.kernel.org
-Subject: [efi:urgent] BUILD SUCCESS
- 8133582a167a7bb811e7ff723ae5b76657989468
-Message-ID: <5ee9ee23.opKYHrwzEVMkxhWg%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S1725554AbgFQKdc (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Wed, 17 Jun 2020 06:33:32 -0400
+Received: from mail-ot1-f48.google.com (mail-ot1-f48.google.com [209.85.210.48])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 4109E208B3
+        for <linux-efi@vger.kernel.org>; Wed, 17 Jun 2020 10:33:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1592390011;
+        bh=X+CHsqSbVzTIE4t2FwIV8ECxOg7oyy78fJD979mqG5M=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=jFQvt3IcvfsRnX/LmTCcEHq1qyTzd98np7hyNRW6z5UQecvzxdqWu1CkKuIIeHVFw
+         7+PygrNkP6DuzWX6e0FIcR5vapz0CdkWobwxmtwEl6rTrZisAfgr0HnYI8EDDwEXRc
+         0IjqzozB+W6qCKYBbJ+i/wiinvcSBcLDgJb6jraM=
+Received: by mail-ot1-f48.google.com with SMTP id m2so1186559otr.12
+        for <linux-efi@vger.kernel.org>; Wed, 17 Jun 2020 03:33:31 -0700 (PDT)
+X-Gm-Message-State: AOAM531RCUfS1NuqjNmqIfKn9QzXYlDmKZf2PMHlY8+sDahwQ0UcWfRl
+        +ubeFL/eJ7prZrfpW3RAzYbYRAIZrU+D2rtJEBE=
+X-Google-Smtp-Source: ABdhPJyqXfnUY+wY8jbxp3yguyvHhC7yTgLhrSwvg9I5FD8nJFdAyBoCea48yw1rT3XkLgK1oHCOIR3FJ387NDXSj/k=
+X-Received: by 2002:a9d:5a12:: with SMTP id v18mr5960527oth.90.1592390010613;
+ Wed, 17 Jun 2020 03:33:30 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+References: <CAMj1kXELi+siUDH6g+_B3t77x3exobj2b1qQ-W4RMVY_DK1dhA@mail.gmail.com>
+ <20200616194802.1718902-1-nivedita@alum.mit.edu> <CAMj1kXH-QA1oH_9BHP_PtESnXFS0em-7wJA5Nt+3SaB+e2H_MA@mail.gmail.com>
+In-Reply-To: <CAMj1kXH-QA1oH_9BHP_PtESnXFS0em-7wJA5Nt+3SaB+e2H_MA@mail.gmail.com>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Wed, 17 Jun 2020 12:33:19 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXGovNeVTm3sSwpk6Lqk=JkBq_gV0t3WKd1=kJ11+C2e5g@mail.gmail.com>
+Message-ID: <CAMj1kXGovNeVTm3sSwpk6Lqk=JkBq_gV0t3WKd1=kJ11+C2e5g@mail.gmail.com>
+Subject: Re: [PATCH] efi/x86: Setup stack correctly for efi_pe_entry
+To:     Arvind Sankar <nivedita@alum.mit.edu>
+Cc:     linux-efi <linux-efi@vger.kernel.org>, X86 ML <x86@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git  urgent
-branch HEAD: 8133582a167a7bb811e7ff723ae5b76657989468  efi/x86: Setup stack correctly for efi_pe_entry
+On Wed, 17 Jun 2020 at 00:06, Ard Biesheuvel <ardb@kernel.org> wrote:
+>
+> On Tue, 16 Jun 2020 at 21:48, Arvind Sankar <nivedita@alum.mit.edu> wrote:
+> >
+> > Commit
+> >   17054f492dfd ("efi/x86: Implement mixed mode boot without the handover protocol")
+> > introduced a new entry point for the EFI stub to be booted in mixed mode
+> > on 32-bit firmware.
+> >
+> > When entered via efi32_pe_entry, control is first transferred to
+> > startup_32 to setup for the switch to long mode, and then the EFI stub
+> > proper is entered via efi_pe_entry. efi_pe_entry is an MS ABI function,
+> > and the ABI requires 32 bytes of shadow stack space to be allocated by
+> > the caller, as well as the stack being aligned to 8 mod 16 on entry.
+> >
+> > Allocate 40 bytes on the stack before switching to 64-bit mode when
+> > calling efi_pe_entry to account for this.
+> >
+> > Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
+>
+> Queued as a fix, thanks.
+>
 
-elapsed time: 726m
+Shouldn't boot_stack_end be 16 byte aligned for this to work reliably?
+This seems to work out in practice, as .bss is cacheline aligned, and
+the heap and stack happen to be emitted first. but it would be better
+to make this explicit.
 
-configs tested: 118
-configs skipped: 5
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-arm                                 defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-arm                               allnoconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm64                            allmodconfig
-arm64                             allnoconfig
-sh                                  defconfig
-xtensa                    xip_kc705_defconfig
-powerpc                      mgcoge_defconfig
-c6x                        evmc6678_defconfig
-arc                           tb10x_defconfig
-powerpc                      pasemi_defconfig
-mips                         bigsur_defconfig
-arm                       cns3420vb_defconfig
-xtensa                              defconfig
-sh                          urquell_defconfig
-mips                           mtx1_defconfig
-mips                       capcella_defconfig
-mips                  mips_paravirt_defconfig
-mips                      pistachio_defconfig
-mips                   sb1250_swarm_defconfig
-mips                           ip28_defconfig
-mips                           ip27_defconfig
-arm                       netwinder_defconfig
-sh                           se7721_defconfig
-m68k                          hp300_defconfig
-powerpc                    mvme5100_defconfig
-sh                          r7785rp_defconfig
-arm                        magician_defconfig
-arm                         ebsa110_defconfig
-powerpc                     mpc512x_defconfig
-sh                        sh7757lcr_defconfig
-arm                           sunxi_defconfig
-i386                              allnoconfig
-i386                             allyesconfig
-i386                                defconfig
-i386                              debian-10.3
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                              allnoconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                              allnoconfig
-m68k                           sun3_defconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-nios2                            allyesconfig
-openrisc                            defconfig
-c6x                              allyesconfig
-c6x                               allnoconfig
-openrisc                         allyesconfig
-nds32                               defconfig
-nds32                             allnoconfig
-csky                             allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-h8300                            allmodconfig
-arc                                 defconfig
-arc                              allyesconfig
-sh                               allmodconfig
-sh                                allnoconfig
-microblaze                        allnoconfig
-mips                             allyesconfig
-mips                              allnoconfig
-mips                             allmodconfig
-parisc                            allnoconfig
-parisc                              defconfig
-parisc                           allyesconfig
-parisc                           allmodconfig
-powerpc                          allyesconfig
-powerpc                          rhel-kconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-powerpc                             defconfig
-i386                 randconfig-a006-20200615
-i386                 randconfig-a002-20200615
-i386                 randconfig-a001-20200615
-i386                 randconfig-a004-20200615
-i386                 randconfig-a005-20200615
-i386                 randconfig-a003-20200615
-i386                 randconfig-a015-20200617
-i386                 randconfig-a011-20200617
-i386                 randconfig-a014-20200617
-i386                 randconfig-a016-20200617
-i386                 randconfig-a013-20200617
-i386                 randconfig-a012-20200617
-riscv                            allyesconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                            allmodconfig
-s390                             allyesconfig
-s390                              allnoconfig
-s390                             allmodconfig
-s390                                defconfig
-sparc                            allyesconfig
-sparc                               defconfig
-sparc64                             defconfig
-sparc64                           allnoconfig
-sparc64                          allyesconfig
-sparc64                          allmodconfig
-um                               allmodconfig
-um                                allnoconfig
-um                               allyesconfig
-um                                  defconfig
-x86_64                               rhel-7.6
-x86_64                    rhel-7.6-kselftests
-x86_64                               rhel-8.3
-x86_64                                  kexec
-x86_64                                   rhel
-x86_64                         rhel-7.2-clear
-x86_64                                    lkp
-x86_64                              fedora-25
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+>
+> > ---
+> >  arch/x86/boot/compressed/head_64.S | 10 +++++++++-
+> >  1 file changed, 9 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/arch/x86/boot/compressed/head_64.S b/arch/x86/boot/compressed/head_64.S
+> > index e821a7d7d5c4..d073e3c919dd 100644
+> > --- a/arch/x86/boot/compressed/head_64.S
+> > +++ b/arch/x86/boot/compressed/head_64.S
+> > @@ -213,7 +213,6 @@ SYM_FUNC_START(startup_32)
+> >          * We place all of the values on our mini stack so lret can
+> >          * used to perform that far jump.
+> >          */
+> > -       pushl   $__KERNEL_CS
+> >         leal    startup_64(%ebp), %eax
+> >  #ifdef CONFIG_EFI_MIXED
+> >         movl    efi32_boot_args(%ebp), %edi
+> > @@ -224,11 +223,20 @@ SYM_FUNC_START(startup_32)
+> >         movl    efi32_boot_args+8(%ebp), %edx   // saved bootparams pointer
+> >         cmpl    $0, %edx
+> >         jnz     1f
+> > +       /*
+> > +        * efi_pe_entry uses MS calling convention, which requires 32 bytes of
+> > +        * shadow space on the stack even if all arguments are passed in
+> > +        * registers. We also need an additional 8 bytes for the space that
+> > +        * would be occupied by the return address, and this also results in
+> > +        * the correct stack alignment for entry.
+> > +        */
+> > +       subl    $40, %esp
+> >         leal    efi_pe_entry(%ebp), %eax
+> >         movl    %edi, %ecx                      // MS calling convention
+> >         movl    %esi, %edx
+> >  1:
+> >  #endif
+> > +       pushl   $__KERNEL_CS
+> >         pushl   %eax
+> >
+> >         /* Enter paged protected Mode, activating Long Mode */
+> > --
+> > 2.26.2
+> >
