@@ -2,121 +2,109 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CD9021FCE5A
-	for <lists+linux-efi@lfdr.de>; Wed, 17 Jun 2020 15:27:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E4191FD959
+	for <lists+linux-efi@lfdr.de>; Thu, 18 Jun 2020 01:10:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726326AbgFQN0q (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 17 Jun 2020 09:26:46 -0400
-Received: from mail.kernel.org ([198.145.29.99]:36570 "EHLO mail.kernel.org"
+        id S1726845AbgFQXKH (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 17 Jun 2020 19:10:07 -0400
+Received: from mga02.intel.com ([134.134.136.20]:18187 "EHLO mga02.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725901AbgFQN0q (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Wed, 17 Jun 2020 09:26:46 -0400
-Received: from mail-ot1-f54.google.com (mail-ot1-f54.google.com [209.85.210.54])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C6EFF21532
-        for <linux-efi@vger.kernel.org>; Wed, 17 Jun 2020 13:26:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1592400405;
-        bh=SKniCMflRhalTaCXWNmSfHB7YiT4uqGUNa2ieDIogUw=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=AwP7uoPb9No48WRQH348/ITdvIhKV7MscO10DEMeUnWrJiFZSBMc61oC0SsYR/8O0
-         UFGM7XrV0YOmrcgeq3sMZ3sET5H27KJwbsWQH0Gaf3pTHebBn7L6rOv7RMJx84I2nd
-         Av+a6OcDocRx/rUOWb8G0bkmqWXH7PAKXD5WTfJc=
-Received: by mail-ot1-f54.google.com with SMTP id n5so1602299otj.1
-        for <linux-efi@vger.kernel.org>; Wed, 17 Jun 2020 06:26:45 -0700 (PDT)
-X-Gm-Message-State: AOAM530/RAsejRDbrSpjuAmjTksRByFWF9AKT1dnLV4wJV/bSi9EIU/V
-        68eqDF0tzgMFuoUjD8bfTFIN6YYmBvQaa51ny1A=
-X-Google-Smtp-Source: ABdhPJwPxUgMHR48huFgk1QJ5ABzqtKipAJiMGDYtNm9W47COpeh4wYl61hP+LONL7exW9O5SiiILxfBX7ti/zbW4us=
-X-Received: by 2002:a9d:476:: with SMTP id 109mr7188623otc.77.1592400405126;
- Wed, 17 Jun 2020 06:26:45 -0700 (PDT)
+        id S1726761AbgFQXKG (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Wed, 17 Jun 2020 19:10:06 -0400
+IronPort-SDR: BOApvUG5IKHXyrRMBb+iw+O9cAOTcYnrDPkbBdXW+9lpNXNCTdKR7s6L50ZqA6SfLkVG3ER3fN
+ QXNjm2WZaHzQ==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jun 2020 16:10:05 -0700
+IronPort-SDR: Xh1ebDmI2ePs5KOp7NfFQgx3PcIZQSKlrBspT7+i6hmvSQnE4h2j8LGD17Foz1au+O+snVSTRH
+ /DhIkrek56Xw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.73,523,1583222400"; 
+   d="scan'208";a="309638656"
+Received: from kleeve-mobl.ger.corp.intel.com (HELO localhost) ([10.252.50.166])
+  by fmsmga002.fm.intel.com with ESMTP; 17 Jun 2020 16:09:59 -0700
+Date:   Thu, 18 Jun 2020 02:09:58 +0300
+From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     Tyler Hicks <tyhicks@linux.microsoft.com>,
+        Matthew Garrett <mjg59@google.com>,
+        Peter Jones <pjones@redhat.com>,
+        Peter Huewe <peterhuewe@gmx.de>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        Petr Vandrovec <petr@vmware.com>,
+        Nayna Jain <nayna@linux.ibm.com>,
+        Thirupathaiah Annapureddy <thiruan@microsoft.com>,
+        linux-integrity <linux-integrity@vger.kernel.org>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] tpm: Require that all digests are present in
+ TCG_PCR_EVENT2 structures
+Message-ID: <20200617230958.GC62794@linux.intel.com>
+References: <20200615232504.1848159-1-tyhicks@linux.microsoft.com>
+ <CAMj1kXHJbsxA2-jqpbLnUeeNfM0oC8Sh70+axOKoBCFMJ8+jKQ@mail.gmail.com>
 MIME-Version: 1.0
-References: <CAMj1kXGovNeVTm3sSwpk6Lqk=JkBq_gV0t3WKd1=kJ11+C2e5g@mail.gmail.com>
- <20200617131957.2507632-1-nivedita@alum.mit.edu>
-In-Reply-To: <20200617131957.2507632-1-nivedita@alum.mit.edu>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Wed, 17 Jun 2020 15:26:33 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXGfSKmWhq=bbcgBTSY29Z8EA3yL1vDmgoHBUeG8Vej0mA@mail.gmail.com>
-Message-ID: <CAMj1kXGfSKmWhq=bbcgBTSY29Z8EA3yL1vDmgoHBUeG8Vej0mA@mail.gmail.com>
-Subject: Re: [PATCH v2] efi/x86: Setup stack correctly for efi_pe_entry
-To:     Arvind Sankar <nivedita@alum.mit.edu>
-Cc:     linux-efi <linux-efi@vger.kernel.org>, X86 ML <x86@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMj1kXHJbsxA2-jqpbLnUeeNfM0oC8Sh70+axOKoBCFMJ8+jKQ@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, 17 Jun 2020 at 15:20, Arvind Sankar <nivedita@alum.mit.edu> wrote:
->
-> Commit
->   17054f492dfd ("efi/x86: Implement mixed mode boot without the handover protocol")
-> introduced a new entry point for the EFI stub to be booted in mixed mode
-> on 32-bit firmware.
->
-> When entered via efi32_pe_entry, control is first transferred to
-> startup_32 to setup for the switch to long mode, and then the EFI stub
-> proper is entered via efi_pe_entry. efi_pe_entry is an MS ABI function,
-> and the ABI requires 32 bytes of shadow stack space to be allocated by
-> the caller, as well as the stack being aligned to 8 mod 16 on entry.
->
-> Allocate 40 bytes on the stack before switching to 64-bit mode when
-> calling efi_pe_entry to account for this.
->
-> For robustness, explicitly align boot_stack_end to 16 bytes. It is
-> currently implicitly aligned since .bss is cacheline-size aligned,
-> head_64.o is the first object file with a .bss section, and the heap and
-> boot sizes are aligned.
->
-> Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
+On Tue, Jun 16, 2020 at 11:08:38AM +0200, Ard Biesheuvel wrote:
+> (cc Matthew and Peter)
+> 
+> On Tue, 16 Jun 2020 at 01:28, Tyler Hicks <tyhicks@linux.microsoft.com> wrote:
+> >
+> > Require that the TCG_PCR_EVENT2.digests.count value strictly matches the
+> > value of TCG_EfiSpecIdEvent.numberOfAlgorithms in the event field of the
+> > TCG_PCClientPCREvent event log header. Also require that
+> > TCG_EfiSpecIdEvent.numberOfAlgorithms is non-zero.
+> >
+> > The TCG PC Client Platform Firmware Profile Specification section 9.1
+> > (Family "2.0", Level 00 Revision 1.04) states:
+> >
+> >  For each Hash algorithm enumerated in the TCG_PCClientPCREvent entry,
+> >  there SHALL be a corresponding digest in all TCG_PCR_EVENT2 structures.
+> >  Note: This includes EV_NO_ACTION events which do not extend the PCR.
+> >
+> > Section 9.4.5.1 provides this description of
+> > TCG_EfiSpecIdEvent.numberOfAlgorithms:
+> >
+> >  The number of Hash algorithms in the digestSizes field. This field MUST
+> >  be set to a value of 0x01 or greater.
+> >
+> > Enforce these restrictions, as required by the above specification, in
+> > order to better identify and ignore invalid sequences of bytes at the
+> > end of an otherwise valid TPM2 event log. Firmware doesn't always have
+> > the means necessary to inform the kernel of the actual event log size so
+> > the kernel's event log parsing code should be stringent when parsing the
+> > event log for resiliency against firmware bugs. This is true, for
+> > example, when firmware passes the event log to the kernel via a reserved
+> > memory region described in device tree.
+> >
+> 
+> When does this happen? Do we have code in mainline that does this?
+> 
+> > Prior to this patch, a single bit set in the offset corresponding to
+> > either the TCG_PCR_EVENT2.eventType or TCG_PCR_EVENT2.eventSize fields,
+> > after the last valid event log entry, could confuse the parser into
+> > thinking that an additional entry is present in the event log. This
+> > patch raises the bar on how difficult it is for stale memory to confuse
+> > the kernel's event log parser but there's still a reliance on firmware
+> > to properly initialize the remainder of the memory region reserved for
+> > the event log as the parser cannot be expected to detect a stale but
+> > otherwise properly formatted firmware event log entry.
+> >
+> > Fixes: fd5c78694f3f ("tpm: fix handling of the TPM 2.0 event logs")
+> > Signed-off-by: Tyler Hicks <tyhicks@linux.microsoft.com>
+> > ---
+> 
+> I am all for stringent checks, but this could potentially break
+> measured boot on systems that are working fine today, right?
 
-Cheers
+There would not be any sane reason to implement a TPM chip like that.
 
-> ---
->  arch/x86/boot/compressed/head_64.S | 11 ++++++++++-
->  1 file changed, 10 insertions(+), 1 deletion(-)
->
-> diff --git a/arch/x86/boot/compressed/head_64.S b/arch/x86/boot/compressed/head_64.S
-> index e821a7d7d5c4..97d37f0a34f5 100644
-> --- a/arch/x86/boot/compressed/head_64.S
-> +++ b/arch/x86/boot/compressed/head_64.S
-> @@ -213,7 +213,6 @@ SYM_FUNC_START(startup_32)
->          * We place all of the values on our mini stack so lret can
->          * used to perform that far jump.
->          */
-> -       pushl   $__KERNEL_CS
->         leal    startup_64(%ebp), %eax
->  #ifdef CONFIG_EFI_MIXED
->         movl    efi32_boot_args(%ebp), %edi
-> @@ -224,11 +223,20 @@ SYM_FUNC_START(startup_32)
->         movl    efi32_boot_args+8(%ebp), %edx   // saved bootparams pointer
->         cmpl    $0, %edx
->         jnz     1f
-> +       /*
-> +        * efi_pe_entry uses MS calling convention, which requires 32 bytes of
-> +        * shadow space on the stack even if all arguments are passed in
-> +        * registers. We also need an additional 8 bytes for the space that
-> +        * would be occupied by the return address, and this also results in
-> +        * the correct stack alignment for entry.
-> +        */
-> +       subl    $40, %esp
->         leal    efi_pe_entry(%ebp), %eax
->         movl    %edi, %ecx                      // MS calling convention
->         movl    %esi, %edx
->  1:
->  #endif
-> +       pushl   $__KERNEL_CS
->         pushl   %eax
->
->         /* Enter paged protected Mode, activating Long Mode */
-> @@ -784,6 +792,7 @@ SYM_DATA_LOCAL(boot_heap,   .fill BOOT_HEAP_SIZE, 1, 0)
->
->  SYM_DATA_START_LOCAL(boot_stack)
->         .fill BOOT_STACK_SIZE, 1, 0
-> +       .balign 16
->  SYM_DATA_END_LABEL(boot_stack, SYM_L_LOCAL, boot_stack_end)
->
->  /*
-> --
-> 2.26.2
->
+/Jarkko
