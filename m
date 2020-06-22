@@ -2,95 +2,58 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A8D31FFCD9
-	for <lists+linux-efi@lfdr.de>; Thu, 18 Jun 2020 22:44:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 85132203BF4
+	for <lists+linux-efi@lfdr.de>; Mon, 22 Jun 2020 18:02:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726278AbgFRUn2 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 18 Jun 2020 16:43:28 -0400
-Received: from mail-qk1-f194.google.com ([209.85.222.194]:40201 "EHLO
-        mail-qk1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730804AbgFRUnT (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 18 Jun 2020 16:43:19 -0400
-Received: by mail-qk1-f194.google.com with SMTP id c185so6946460qke.7
-        for <linux-efi@vger.kernel.org>; Thu, 18 Jun 2020 13:43:18 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=aFaPMB2tSBxEdI9eNZVWz8iq1mr37AhdNy5TZMgC9BU=;
-        b=ewUNP3U2adgW7nF2S5rTT0yQG/rbCNhTj+pqB31okvkzLOUbkn73VWtILqsPr2ecnc
-         SSYJOk/JQB8vejjB84RgBHkvCn9LJQERxgD7Ny01i3/BLT6J269PF/ThdJlZm4I4sSjf
-         y7MeTZTAgcDOsU5H311wD2aKPVuNrKPetoXYgs04rfJ22ba6mBdHYcSFfY6oZdrPWeAs
-         Oj+Uzgirr3Jwn/hEflp8Uv2IfJpCXZPTusdPm5zanfBVtj9KSuobmmn3MJL9snlfy3YQ
-         l1kMk7tMJnRH0JPYp6nGMsw4yAmY/7tNCfsgqkhM6kiT/BliSAt/4iNoIDtLU2mFW6xk
-         jFOQ==
-X-Gm-Message-State: AOAM532IBYEO5zvBJr0a9zeDFDFIFnFZjT3/ro08qOpuLme6gUP9JyUH
-        nMs1UhyalWA5QSw3s50TMwG66lCA
-X-Google-Smtp-Source: ABdhPJyCeD9MPufQogTXzVPLkFRK5wnDyIviiiuOmZS6rIKZ9gKK/ItcfWQLG+34Ps40lrB6vx5RZQ==
-X-Received: by 2002:a37:7786:: with SMTP id s128mr241244qkc.315.1592512997568;
-        Thu, 18 Jun 2020 13:43:17 -0700 (PDT)
-Received: from rani.riverdale.lan ([2001:470:1f07:5f3::b55f])
-        by smtp.gmail.com with ESMTPSA id l56sm4920451qtl.33.2020.06.18.13.43.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Jun 2020 13:43:16 -0700 (PDT)
-From:   Arvind Sankar <nivedita@alum.mit.edu>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     linux-efi@vger.kernel.org
-Subject: [PATCH] efi/x86: Only copy upto the end of setup_header
-Date:   Thu, 18 Jun 2020 16:43:15 -0400
-Message-Id: <20200618204315.3854787-1-nivedita@alum.mit.edu>
-X-Mailer: git-send-email 2.26.2
+        id S1729600AbgFVQCw (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 22 Jun 2020 12:02:52 -0400
+Received: from sonic302-21.consmr.mail.ne1.yahoo.com ([66.163.186.147]:37302
+        "EHLO sonic302-21.consmr.mail.ne1.yahoo.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1729576AbgFVQCW (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 22 Jun 2020 12:02:22 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1592841741; bh=cK2qy9Lv5SAgMg9nAvfVmkJPj46H3ss3vOVyjpHm6Nk=; h=Date:From:Reply-To:Subject:References:From:Subject; b=imnMzKvnrwdEkzevY9v55JCHWrS7mFcRp2xLflBpdsWBX5v32iTt1Jwj292Sqyxc6zTWfVf6UW3RltjDxv8H8ZAxxFg96tpPBoXA2f/GRkfTuiNcUr3yDzOGiHeT9IqR//B+9C8c9YoGDJPnAeuuKcQvLl1HS8J+STK4/r0WZ3jbtWFF0MKDjydg+AbeXShoRDHqwsqAaAi7D9jDq8wNDWBIR81puaAh7APGDPK32RqjpFS85hxXrbmotW59Gm/gC9SoLB52q4udtwMI++FS4HYmIHt+kUh9tNcMAsNUvFYo0HWMN59EiLf7lYGm/4AR40adfmghUfkmt4dYpTZmZQ==
+X-YMail-OSG: AhKkJLAVM1lDQ3XPPTTJWpEw.A_YPk4v7tBrtMEv9XTYrBN0vKxPyUyPokZyCLH
+ 0NPJEnbM.Ixt5u0eXkMwZesEBqS.rCtCLJgnod2Yg.I9TXOm0suNzcmJ92mBaA3mHgRFUusjI.6E
+ 3Gu4LEq019.le8uhDgpgUZ.YgtmiKAQJK6Bd4WPLqozbdEc8urSPipLpvwJTvKec65xmptWyRiVv
+ 5wejfhjut7ltVV2EWvbGnxpPsKrHXW63gZY0z7W.qC8yTTTM6xXIAPM6OYdYDYNn.6t5yJFWlC1P
+ OIdbZEYbWLsjaYGAZ3nhw68imywZs7JgVqTzxfR4ZQQxpuo3K8t9CM9O0hpOCt10FP__XXwyrmrD
+ TCoCE7B_Edu3G.zjOUn_rksR4jYB.m1Rp.1vZ_bLxnQwCiAul5Wqfj8PNdUGzT.zvxnBCUVqWq9J
+ 8hXM6oMyn8gklCF.R8KCTVo6NRJRq4thjGWIexrpJEGu0QolvkJTIALFEd6_slAReLmAOEup3xKy
+ .77XY9y0L2WZlQcf1QY4ryEv90HkLK9R59Zd1MxuC8qefRgY6y6xUFmVBWO8SDJCCjnQpB48PRDP
+ pRTSfD8hEjxrcMoyLQRR8ik6SRBEuL1N.zoJ2juJT7TtdJItukcqyaFlw7VOC6cm49vWb13NtnZ0
+ gQ2bWEWTG5v0uAlc54_ulltpKs.Fgm6hkagBtyzunEJ52PGAuturV.LPWyLoBYPiB1KC1HlV8gI8
+ yJqtTplsyPL2eALndgi_xv5WXRslUdVun50zfx9iDK5v_kT1lyZrnl7BpPa5N7roHYs5FCR3fGlt
+ 00HJ7sf.lnan3Im8PEbT96k38NwI6o6wqQk3XTx1x0TOib38VwKLgaWNY916uiRI1upzFCMVqmW6
+ hKW.i_z2qDWeeQaZVyBhDmfLTpSCKpEZXqJt.HWEa0uB7F6lyRoT1rQEzhMY_zbISz6YbRmtNDlq
+ VLlEzjYA6uILpMVD7EkmwXGP0XOJgDIix93HShigByDXDbmOlbnVPelpKvxPRFg3gnhpf.0Rc47i
+ 08Ic.liUMCD9zHGFCga9cXgoGaM8kFbRyDB3CB8uLHuuV8rIwOstkm24RLt0t3H1wtfuP85AC7r8
+ v042NbRsPX1Mj80LTxFt.KStV8ND4Dc1.IiPBslhVUpEA9f2YrGnkjCHG4.U4j0M0U489djAouYX
+ y9F8lECiGIH30pwUi5p9NUzViYBtaTM7ID67rbGjIKdkEdFs14rCm3KSzct0U2izLUB1NerwsRiF
+ IQWasnNhp61WOxqpf4zyo6bEJMCV1B8QkTG.8HvHCcJtAwYQhWHkE5SwAzxSGopkwGBC4.Xf9
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic302.consmr.mail.ne1.yahoo.com with HTTP; Mon, 22 Jun 2020 16:02:21 +0000
+Date:   Mon, 22 Jun 2020 16:02:19 +0000 (UTC)
+From:   Karim Zakari <kariim1960z@gmail.com>
+Reply-To: kzakari04@gmail.com
+Message-ID: <1507214802.1850985.1592841739314@mail.yahoo.com>
+Subject: URGENT REPLY.
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+References: <1507214802.1850985.1592841739314.ref@mail.yahoo.com>
+X-Mailer: WebService/1.1.16138 YMailNodin Mozilla/5.0 (Windows NT 6.1; ) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.106 Safari/537.36
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-When copying the setup_header into the boot_params buffer, only the data
-that is actually part of the setup_header should be copied.
 
-efi_pe_entry() currently copies the entire second sector, which
-initializes some of the fields in boot_params beyond the setup_header
-with garbage (i.e. part of the real-mode boot code gets copied into
-those fields).
 
-This does not cause any issues currently because the fields that are
-overwritten are padding, BIOS EDD information that won't get used, and
-the E820 table which will get properly filled in later.
+Good-Day Friend,
 
-Fix this to only copy data that is actually part of the setup_header
-structure.
+ Hope you are doing great Today. I have a proposed business deal worthy (US$16.5 Million Dollars) that will benefit both parties. This is legitimate' legal and your personality will not be compromised.
 
-Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
----
- drivers/firmware/efi/libstub/x86-stub.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+Waiting for your response for more details, As you are willing to execute this business opportunity with me.
 
-diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
-index 37e82bf397aa..3672539cb96e 100644
---- a/drivers/firmware/efi/libstub/x86-stub.c
-+++ b/drivers/firmware/efi/libstub/x86-stub.c
-@@ -8,6 +8,7 @@
- 
- #include <linux/efi.h>
- #include <linux/pci.h>
-+#include <linux/stddef.h>
- 
- #include <asm/efi.h>
- #include <asm/e820/types.h>
-@@ -388,8 +389,9 @@ efi_status_t __efiapi efi_pe_entry(efi_handle_t handle,
- 
- 	hdr = &boot_params->hdr;
- 
--	/* Copy the second sector to boot_params */
--	memcpy(&hdr->jump, image_base + 512, 512);
-+	/* Copy the setup header from the second sector to boot_params */
-+	memcpy(&hdr->jump, image_base + 512,
-+	       sizeof(struct setup_header) - offsetof(struct setup_header, jump));
- 
- 	/*
- 	 * Fill out some of the header fields ourselves because the
--- 
-2.26.2
-
+Sincerely Yours,
+Mr. Karim Zakari.
