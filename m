@@ -2,65 +2,67 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D2406205159
-	for <lists+linux-efi@lfdr.de>; Tue, 23 Jun 2020 13:53:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D2B30205589
+	for <lists+linux-efi@lfdr.de>; Tue, 23 Jun 2020 17:09:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732333AbgFWLx0 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 23 Jun 2020 07:53:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58500 "EHLO
+        id S1732910AbgFWPJn (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 23 Jun 2020 11:09:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60754 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732245AbgFWLx0 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 23 Jun 2020 07:53:26 -0400
-Received: from mail-io1-xd44.google.com (mail-io1-xd44.google.com [IPv6:2607:f8b0:4864:20::d44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D29AC061573
-        for <linux-efi@vger.kernel.org>; Tue, 23 Jun 2020 04:53:26 -0700 (PDT)
-Received: by mail-io1-xd44.google.com with SMTP id h4so15559538ior.5
-        for <linux-efi@vger.kernel.org>; Tue, 23 Jun 2020 04:53:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=7fNnQnFssZCc2Jtw2cUlJB4v7zrpRiQS682aXMZO9+Q=;
-        b=qiUy4C+IVNsg4n8BL+gum4JPtjKzQzNNodvne0Pj0hj7yEuA5ib55MfRc2QQ4AK28y
-         qMxaGPfw5iX9m0EusE8cd9Pz66oY1zOFKbMLKGVtvRYebQJbXLjwgp+TQFs3N/Z2dHZL
-         PJoSKocuI3ggtcdCtJuV/G49sxigl7tqzLlSy1l/ffpYKTAH8fbAQOTRGSnrcB2bt2DP
-         MubIroZUoluxl3d7CeRrTCOHn6sTr7dyB6OmZY4DPfQNd7AnBg1NnxjxBBSyrQTkt2JQ
-         V3nXhufwzTLlTL2gu0G+nGPHk544f+7AIaDRW/p9g2+6JjT041DKfcgq7TBrVV1RSeEQ
-         P4FQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=7fNnQnFssZCc2Jtw2cUlJB4v7zrpRiQS682aXMZO9+Q=;
-        b=SEppncqPY4dRQa8KNU7mlLoS3XxGPEMPTNWcjEFjVPorvH5+yCHpEKwQ3xCwVe3Zvd
-         w+XVIuOTcD56SHvyZDI6cvtAlzsDKfNPWw6H3QeiG5dFbsHGpgVmU7uhrLzXpabLnXFk
-         uePK/eibhLo+pneTkLVxwgiChyLWajNqLvnd0viW/H3USALbDuP9ZIhRTMrK6umW0TI4
-         oW8MlVBUTr+dwQr8O9shiJpzwfmgaj5ml4Ga0erhM05RsUJADjLnP74yoWbXxfpzzAMJ
-         SY/Kbpl6pb4oKUK8QLhtFKiYs/caCipzmv3dpyVv+nHysxKA35+7m/ZLs6Bs4nOd4Rgf
-         spdw==
-X-Gm-Message-State: AOAM5305Bs+F0HZQMzpXn5yutplrxKNSSu+zspkE3VTHEAqy5UIwF1SD
-        R5VMgF9dKL4tQldGcaYUizGxHG7auN0bBUmoIswWAb4v520=
-X-Google-Smtp-Source: ABdhPJwOwYRwV4vTkkpnlYJ9yk2HC1sj30IcOVyaXbyWOxYuXwiAvAXbYJbhaaL8jvsA/z7sSoAeX2RM4CaWM5fXYbo=
-X-Received: by 2002:a6b:f919:: with SMTP id j25mr24169728iog.185.1592913205410;
- Tue, 23 Jun 2020 04:53:25 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 2002:a92:290e:0:0:0:0:0 with HTTP; Tue, 23 Jun 2020 04:53:25
- -0700 (PDT)
-Reply-To: bektery@outlook.com
-From:   YAVUZ BEKTER <bariskims@gmail.com>
-Date:   Tue, 23 Jun 2020 04:53:25 -0700
-Message-ID: <CAC21a+oHrk2GOH3eX2+U1kRueYxXPhyGJgmW8dhhDy=qAVA3AQ@mail.gmail.com>
-Subject: Hello.
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+        with ESMTP id S1732908AbgFWPJm (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 23 Jun 2020 11:09:42 -0400
+Received: from laurent.telenet-ops.be (laurent.telenet-ops.be [IPv6:2a02:1800:110:4::f00:19])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F6E9C061755
+        for <linux-efi@vger.kernel.org>; Tue, 23 Jun 2020 08:09:42 -0700 (PDT)
+Received: from ramsan ([IPv6:2a02:1810:ac12:ed20:26:93a1:ff06:f8b0])
+        by laurent.telenet-ops.be with bizsmtp
+        id uf9h220034qCYS801f9hoj; Tue, 23 Jun 2020 17:09:41 +0200
+Received: from rox.of.borg ([192.168.97.57])
+        by ramsan with esmtp (Exim 4.90_1)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1jnkYO-0007jy-TP; Tue, 23 Jun 2020 17:09:40 +0200
+Received: from geert by rox.of.borg with local (Exim 4.90_1)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1jnkYO-0008Nr-Qd; Tue, 23 Jun 2020 17:09:40 +0200
+From:   Geert Uytterhoeven <geert+renesas@glider.be>
+To:     Ard Biesheuvel <ardb@kernel.org>, Ingo Molnar <mingo@kernel.org>,
+        Arvind Sankar <nivedita@alum.mit.edu>
+Cc:     linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: [PATCH] efi/libstub: EFI_GENERIC_STUB_INITRD_CMDLINE_LOADER should not default to yes
+Date:   Tue, 23 Jun 2020 17:09:35 +0200
+Message-Id: <20200623150935.32181-1-geert+renesas@glider.be>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-I am the foreign operations director of Bank of Turkey.
-My name is Mr, Yavuz. I have a sensitive investment project to discuss
-with you, please reply now.
-________________________
-Ik ben de directeur buitenlandse activiteiten van de Bank of Turkey.
-Mijn naam is meneer Yavuz. Ik moet een gevoelig investeringsproject bespreken
-met u, antwoord dan nu.
+EFI_GENERIC_STUB_INITRD_CMDLINE_LOADER is deprecated, so it should not
+be enabled by default.
+
+In light of commit 4da0b2b7e67524cc ("efi/libstub: Re-enable command
+line initrd loading for x86"), keep the default for X86.
+
+Fixes: cf6b83664895a5c7 ("efi/libstub: Make initrd file loader configurable")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+---
+ drivers/firmware/efi/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/firmware/efi/Kconfig b/drivers/firmware/efi/Kconfig
+index e6fc022bc87e03ab..56055c61904e49f4 100644
+--- a/drivers/firmware/efi/Kconfig
++++ b/drivers/firmware/efi/Kconfig
+@@ -127,7 +127,7 @@ config EFI_ARMSTUB_DTB_LOADER
+ config EFI_GENERIC_STUB_INITRD_CMDLINE_LOADER
+ 	bool "Enable the command line initrd loader" if !X86
+ 	depends on EFI_STUB && (EFI_GENERIC_STUB || X86)
+-	default y
++	default y if X86
+ 	help
+ 	  Select this config option to add support for the initrd= command
+ 	  line parameter, allowing an initrd that resides on the same volume
+-- 
+2.17.1
+
