@@ -2,46 +2,46 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CF3EC2069C0
-	for <lists+linux-efi@lfdr.de>; Wed, 24 Jun 2020 03:50:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CEE092069C2
+	for <lists+linux-efi@lfdr.de>; Wed, 24 Jun 2020 03:50:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388509AbgFXBtw (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 23 Jun 2020 21:49:52 -0400
+        id S2388569AbgFXBty (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 23 Jun 2020 21:49:54 -0400
 Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46730 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388535AbgFXBtu (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 23 Jun 2020 21:49:50 -0400
-Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com [IPv6:2607:f8b0:4864:20::443])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 806CFC061796
-        for <linux-efi@vger.kernel.org>; Tue, 23 Jun 2020 18:49:50 -0700 (PDT)
-Received: by mail-pf1-x443.google.com with SMTP id b16so344903pfi.13
-        for <linux-efi@vger.kernel.org>; Tue, 23 Jun 2020 18:49:50 -0700 (PDT)
+        with ESMTP id S2388535AbgFXBtw (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 23 Jun 2020 21:49:52 -0400
+Received: from mail-pj1-x1042.google.com (mail-pj1-x1042.google.com [IPv6:2607:f8b0:4864:20::1042])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40B54C061799
+        for <linux-efi@vger.kernel.org>; Tue, 23 Jun 2020 18:49:51 -0700 (PDT)
+Received: by mail-pj1-x1042.google.com with SMTP id jz3so418966pjb.0
+        for <linux-efi@vger.kernel.org>; Tue, 23 Jun 2020 18:49:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=4bArInUOY6/vKGVdecpLjfb0/2uC+GzWucHk89/LRTo=;
-        b=TXdY9FVpjgIhWRYoyXUuLGhQMeQ53VV4aKQM/q7y25nB8/JtVWIste/uTV5qFOVEAg
-         AiwFcvmIJkGaP01f+FxsRre0U1D530Nko+V2qMyhP3wgN3vMhwW/eYK/szMmI5u22cDZ
-         jsFw2NfSpjfdjBM4ANCXNfUIMmS92dojpKWDg=
+        bh=VSVwVb1orBbLFpFmeZIdSYi3mA1O04kaneM/R6F0kQA=;
+        b=jOZxT2PsX3nKe4zH42N/7mgdsHTdSxEFNsbLeqc6pGXimNBN5J3e1ZkCRvQrZu8na0
+         cWve30mGcnqoMlaLMT1Ce1TpJEMtZxmmZjcsXYz1KZNH95VEN1ccmVg7kI1Df/7OKFy6
+         dhDqrJzrptyGZivwT5bc3eEkH/YfH7b4ARBb8=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=4bArInUOY6/vKGVdecpLjfb0/2uC+GzWucHk89/LRTo=;
-        b=A5lJaWxVd5orSmOgP1ba9qaHifFA817tH5clrE5gXKNFFOQms1ZY6b8WOmK2RY0NwB
-         a5ci02JJQ5HTFb3EYDMmC4jH2qSawI59oT8kv6s6kMOeojDs4pTkGcXwXetWEPy19yGz
-         9N1OEgQ9Il224v2S1GrIR53AFFKfbtttkwdmgWcI+fS/4ZcM5Jqkp0hWjU3xkS61rKXY
-         FMWt4Sogb5iQe+6CXcM/GPV3B46MR7coJBvJUboIc+f+Hm2iAE6qgJXv3RQWUGLXVtFO
-         4AfFV0Z4fOC7UUJEnYQFWVbfMSKw1A2Rgi7g3sM6ysG6DzDjLYQCKwqK/9id7wHyTVmo
-         /01Q==
-X-Gm-Message-State: AOAM531I2vlM8heZuqVyg7zc9Xh8SzT/ar15HG7PNQvsE9xUvlrmiXn2
-        uCVyh+mp8TMpcfFSLHGeXSI+88lQPHg=
-X-Google-Smtp-Source: ABdhPJwP+OIipEHU1rtWwvydXUxFmj7C6Qtq9SLHZvGQi6oapb1adwvvBObqNVtv97LQal3R11cR2A==
-X-Received: by 2002:a62:2acf:: with SMTP id q198mr28740207pfq.48.1592963390089;
+        bh=VSVwVb1orBbLFpFmeZIdSYi3mA1O04kaneM/R6F0kQA=;
+        b=GUW6JQy0eEH6fv9tZ9KzuSEEqwlHahqAupwUShIN8p+Bs6Wbx4zouRLPzR8IHgWOM8
+         0bc6KJ+R8WpBEVNgRe1yy03nqFzq3A7HEdcquOVOlbolqpwLu9Zz3E/r6ZMOjZZErW4+
+         w08gJlxuu80FgarnJjRwId9HIvwHb/VWo7Dzva4jvyVZkbl2MBzqEcvCdH2NonnMvTo+
+         p10FH7/DokbHQLYRhCB4RIrv3nj4YWu+sQA6K3KrxcTC3mg8aH5WXNqLq/BruprokHlY
+         OWBhI9AZh4bjjZCiN5sxtLngVrrakfHhZhxm/G6qvK84FgQbkdkGTI6MyLFKlV3WxyKW
+         UQWg==
+X-Gm-Message-State: AOAM532AZ5m0vqLJczo36pzl0fUOS2Wvz5+B3HTcC+mFrd59JtH7FN5O
+        BL8GdUS6EVRCkybzR0wjD0SIgg==
+X-Google-Smtp-Source: ABdhPJzLaOL5AabR46i7dKIOpQgrWYhTN0r11reBT85HgNmb6nhvZaSkN85dJfkjWvQbtPthllw43w==
+X-Received: by 2002:a17:902:7408:: with SMTP id g8mr24719845pll.143.1592963390847;
         Tue, 23 Jun 2020 18:49:50 -0700 (PDT)
 Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id a33sm7555553pgl.75.2020.06.23.18.49.46
+        by smtp.gmail.com with ESMTPSA id y9sm17907206pfr.184.2020.06.23.18.49.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Tue, 23 Jun 2020 18:49:46 -0700 (PDT)
 From:   Kees Cook <keescook@chromium.org>
@@ -65,9 +65,9 @@ Cc:     Kees Cook <keescook@chromium.org>,
         clang-built-linux@googlegroups.com, linux-arch@vger.kernel.org,
         linux-efi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH v3 1/9] vmlinux.lds.h: Add .gnu.version* to DISCARDS
-Date:   Tue, 23 Jun 2020 18:49:32 -0700
-Message-Id: <20200624014940.1204448-2-keescook@chromium.org>
+Subject: [PATCH v3 2/9] vmlinux.lds.h: Add .symtab, .strtab, and .shstrtab to STABS_DEBUG
+Date:   Tue, 23 Jun 2020 18:49:33 -0700
+Message-Id: <20200624014940.1204448-3-keescook@chromium.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200624014940.1204448-1-keescook@chromium.org>
 References: <20200624014940.1204448-1-keescook@chromium.org>
@@ -78,35 +78,41 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-For vmlinux linking, no architecture uses the .gnu.version* sections,
-so remove it via the common DISCARDS macro in preparation for adding
---orphan-handling=warn more widely. This is a work-around for what
-appears to be a bug[1] in ld.bfd which warns for this synthetic section
-even when none is found in input objects, and even when no section is
-emitted for an output object[2].
+When linking vmlinux with LLD, the synthetic sections .symtab, .strtab,
+and .shstrtab are listed as orphaned. Add them to the STABS_DEBUG section
+so there will be no warnings when --orphan-handling=warn is used more
+widely. (They are added above comment as it is the more common
+order[1].)
 
-[1] https://sourceware.org/bugzilla/show_bug.cgi?id=26153
-[2] https://lore.kernel.org/lkml/202006221524.CEB86E036B@keescook/
+ld.lld: warning: <internal>:(.symtab) is being placed in '.symtab'
+ld.lld: warning: <internal>:(.shstrtab) is being placed in '.shstrtab'
+ld.lld: warning: <internal>:(.strtab) is being placed in '.strtab'
 
+[1] https://lore.kernel.org/lkml/20200622224928.o2a7jkq33guxfci4@google.com/
+
+Reported-by: Fangrui Song <maskray@google.com>
 Reviewed-by: Fangrui Song <maskray@google.com>
 Signed-off-by: Kees Cook <keescook@chromium.org>
 ---
- include/asm-generic/vmlinux.lds.h | 2 ++
- 1 file changed, 2 insertions(+)
+ include/asm-generic/vmlinux.lds.h | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
 diff --git a/include/asm-generic/vmlinux.lds.h b/include/asm-generic/vmlinux.lds.h
-index db600ef218d7..1248a206be8d 100644
+index 1248a206be8d..8e71757f485b 100644
 --- a/include/asm-generic/vmlinux.lds.h
 +++ b/include/asm-generic/vmlinux.lds.h
-@@ -934,6 +934,8 @@
- 	*(.discard)							\
- 	*(.discard.*)							\
- 	*(.modinfo)							\
-+	/* ld.bfd warns about .gnu.version* even when not emitted */	\
-+	*(.gnu.version*)						\
- 	}
+@@ -792,7 +792,10 @@
+ 		.stab.exclstr 0 : { *(.stab.exclstr) }			\
+ 		.stab.index 0 : { *(.stab.index) }			\
+ 		.stab.indexstr 0 : { *(.stab.indexstr) }		\
+-		.comment 0 : { *(.comment) }
++		.comment 0 : { *(.comment) }				\
++		.symtab 0 : { *(.symtab) }				\
++		.strtab 0 : { *(.strtab) }				\
++		.shstrtab 0 : { *(.shstrtab) }
  
- /**
+ #ifdef CONFIG_GENERIC_BUG
+ #define BUG_TABLE							\
 -- 
 2.25.1
 
