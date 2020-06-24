@@ -2,46 +2,46 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E7682069C8
-	for <lists+linux-efi@lfdr.de>; Wed, 24 Jun 2020 03:50:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F2AFD2069CC
+	for <lists+linux-efi@lfdr.de>; Wed, 24 Jun 2020 03:50:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388600AbgFXBt5 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 23 Jun 2020 21:49:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46722 "EHLO
+        id S2388594AbgFXBuH (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 23 Jun 2020 21:50:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46734 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388572AbgFXBty (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 23 Jun 2020 21:49:54 -0400
-Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com [IPv6:2607:f8b0:4864:20::444])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68741C061799
-        for <linux-efi@vger.kernel.org>; Tue, 23 Jun 2020 18:49:54 -0700 (PDT)
-Received: by mail-pf1-x444.google.com with SMTP id a127so347213pfa.12
+        with ESMTP id S2388584AbgFXBtz (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 23 Jun 2020 21:49:55 -0400
+Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com [IPv6:2607:f8b0:4864:20::642])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00F4AC061795
+        for <linux-efi@vger.kernel.org>; Tue, 23 Jun 2020 18:49:55 -0700 (PDT)
+Received: by mail-pl1-x642.google.com with SMTP id d12so345277ply.1
         for <linux-efi@vger.kernel.org>; Tue, 23 Jun 2020 18:49:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=r1CVChw5lv6qJCnYUjb6+Q15TOtyE7dXeIu2ryL/SHg=;
-        b=Xc9+JYeXrl67VMx0uVowsuIYnsATDq6ULZ939GoCguzhjaFWLLl4cD/FugiZrvwDVj
-         dcaX0DvDaFJH5IX/9il9Nhce+Nh90R/QQkoJjrHNRgS9PCSBBeYUl63RaVjs/jh4OgWA
-         bFr2LutY30k7TpbCrU6PqCwe82AQIBkSpbU8M=
+        bh=NMAZshRZgRqtOcF48FwBwSDWqy/EeeOlwf50Pbmu5Nk=;
+        b=j28MIPdYYt3rY4/fE2dihfZR9TtTRv8EMgAkzm1ilSN6UZi55d+226fwO0IcvhUj4K
+         vHHrxFoODLtRR/epcOqkEuSfW+ofLwENnqR5DFbYOepfBQg9RkNmTQqNF+kXA9wtnTS1
+         Tk9UTZMAwnTwdOtIjCCjIuRRK9aYxJ1pREKZs=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=r1CVChw5lv6qJCnYUjb6+Q15TOtyE7dXeIu2ryL/SHg=;
-        b=KyUQwYhVxx7KjjNdcMbW3lLBEorD2Th8ma8VczVli6khLmyfqSpwM7b//1+S9TQ3LV
-         nbo6btS6NmuzFWlNVW8FcvUt35VeAA/QcAHoIaj3N6QHyAET3ok6DvOK5homDvBfZtlt
-         nnqg+bpDki0p1zrsUQ2UM7HlE3gl6yBmUV+JJqAg77jLaoBK95B7rbEXDuDlQsEhVRPU
-         OtHWyaTsSGAO8uUdyRxUW4O0U8sGG/K63mtXc1DDSZ/kYm+7ndYCWSV5J12CKWKtmcMi
-         Xu8rrZPeGhgVH+ziy+h9ZyhCvMYnV/C6+bp/0wdpsfxxo3yuf42tLCx7nN7IsazEcHl6
-         rLxw==
-X-Gm-Message-State: AOAM5331yFDQPM53aneEGKTO7GiLqnOD0T0CxPgzf+T3CDRTbD3aLKgz
-        LAZ5C09tdCh1AzR3byhsizDAQQ==
-X-Google-Smtp-Source: ABdhPJwLyoPBCNvc6M7baPOo8YMhHaddUREkUy6nArCFg5rUy31c3O6TT7HTn6Prsx8Lzfg5bJwdKg==
-X-Received: by 2002:a62:8f8f:: with SMTP id n137mr12048606pfd.270.1592963393918;
-        Tue, 23 Jun 2020 18:49:53 -0700 (PDT)
+        bh=NMAZshRZgRqtOcF48FwBwSDWqy/EeeOlwf50Pbmu5Nk=;
+        b=fyvGa+HIObaCrySoZdlgfmc4pIiZs+mchsy+HCgx6TDSEnWl38bh49izS2ta4tLO80
+         2NnjUtRk3iM+waXxafiWm5lO90DqgQc50Ic8A+QmJqvzxwyI+y0VGZEVBgRZIKRm0Uo1
+         OMe0+BgD3oZty+1eVdt44gfmy8AeaxWv02reVIRAJCXBsu9wS4GgF/aBYJaHGi8nsCtg
+         wxT9T8rYanN5yAeEIlaR+8sc8vXtM4y3eFS4CAyxKUFxCtsIGGTmWA1GpJAWf74HXH97
+         3iLqIiEzEdT/a5K76CYa5n87+BiicXwNesW5gdi6E40jwENhL0bZLGinIKPDgFofpz6Y
+         arVA==
+X-Gm-Message-State: AOAM532XE3ITLStDtzojsog3i5Ht2llklQVo5N0zmibbOP5UY+UA28/5
+        wycx9YCow//CZ2GMLJwTLjnV6w==
+X-Google-Smtp-Source: ABdhPJx8Traz2lKjHxXn0KSX6VTp95qm0SkAntTLnpPXidTYMSKWi0+Ran7jdJt/zuP45e018upD0A==
+X-Received: by 2002:a17:90a:2843:: with SMTP id p3mr24514257pjf.187.1592963394576;
+        Tue, 23 Jun 2020 18:49:54 -0700 (PDT)
 Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id u200sm2497659pfc.43.2020.06.23.18.49.48
+        by smtp.gmail.com with ESMTPSA id cv3sm3283177pjb.45.2020.06.23.18.49.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Tue, 23 Jun 2020 18:49:50 -0700 (PDT)
 From:   Kees Cook <keescook@chromium.org>
@@ -64,9 +64,9 @@ Cc:     Kees Cook <keescook@chromium.org>,
         clang-built-linux@googlegroups.com, linux-arch@vger.kernel.org,
         linux-efi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH v3 7/9] arm/boot: Warn on orphan section placement
-Date:   Tue, 23 Jun 2020 18:49:38 -0700
-Message-Id: <20200624014940.1204448-8-keescook@chromium.org>
+Subject: [PATCH v3 8/9] arm64/build: Use common DISCARDS in linker script
+Date:   Tue, 23 Jun 2020 18:49:39 -0700
+Message-Id: <20200624014940.1204448-9-keescook@chromium.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200624014940.1204448-1-keescook@chromium.org>
 References: <20200624014940.1204448-1-keescook@chromium.org>
@@ -77,84 +77,40 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-We don't want to depend on the linker's orphan section placement
-heuristics as these can vary between linkers, and may change between
-versions. All sections need to be explicitly named in the linker
-script.
-
-Use common macros for debug sections, discards, and text stubs. Add
-discards for unwanted .note, and .rel sections. Finally, enable orphan
-section warning.
+Use the common DISCARDS rule for the linker script in an effort to
+regularize the linker script to prepare for warning on orphaned
+sections. Additionally clean up left-over no-op macros.
 
 Signed-off-by: Kees Cook <keescook@chromium.org>
+Acked-by: Will Deacon <will@kernel.org>
 ---
- arch/arm/boot/compressed/Makefile      |  2 ++
- arch/arm/boot/compressed/vmlinux.lds.S | 17 +++++++----------
- 2 files changed, 9 insertions(+), 10 deletions(-)
+ arch/arm64/kernel/vmlinux.lds.S | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/boot/compressed/Makefile b/arch/arm/boot/compressed/Makefile
-index 00602a6fba04..b8a97d81662d 100644
---- a/arch/arm/boot/compressed/Makefile
-+++ b/arch/arm/boot/compressed/Makefile
-@@ -128,6 +128,8 @@ endif
- LDFLAGS_vmlinux += --no-undefined
- # Delete all temporary local symbols
- LDFLAGS_vmlinux += -X
-+# Report orphan sections
-+LDFLAGS_vmlinux += --orphan-handling=warn
- # Next argument is a linker script
- LDFLAGS_vmlinux += -T
- 
-diff --git a/arch/arm/boot/compressed/vmlinux.lds.S b/arch/arm/boot/compressed/vmlinux.lds.S
-index 09ac33f52814..c2a8509f876f 100644
---- a/arch/arm/boot/compressed/vmlinux.lds.S
-+++ b/arch/arm/boot/compressed/vmlinux.lds.S
-@@ -2,6 +2,7 @@
- /*
-  *  Copyright (C) 2000 Russell King
+diff --git a/arch/arm64/kernel/vmlinux.lds.S b/arch/arm64/kernel/vmlinux.lds.S
+index 6827da7f3aa5..5427f502c3a6 100644
+--- a/arch/arm64/kernel/vmlinux.lds.S
++++ b/arch/arm64/kernel/vmlinux.lds.S
+@@ -6,6 +6,7 @@
   */
-+#include <asm/vmlinux.lds.h>
  
- #ifdef CONFIG_CPU_ENDIAN_BE8
- #define ZIMAGE_MAGIC(x) ( (((x) >> 24) & 0x000000ff) | \
-@@ -17,8 +18,11 @@ ENTRY(_start)
- SECTIONS
- {
-   /DISCARD/ : {
-+    ARM_COMMON_DISCARD
-     *(.ARM.exidx*)
-     *(.ARM.extab*)
-+    *(.note.*)
-+    *(.rel.*)
-     /*
-      * Discard any r/w data - this produces a link error if we have any,
-      * which is required for PIC decompression.  Local data generates
-@@ -36,9 +40,7 @@ SECTIONS
-     *(.start)
-     *(.text)
-     *(.text.*)
--    *(.gnu.warning)
--    *(.glue_7t)
--    *(.glue_7)
-+    ARM_STUBS_TEXT
-   }
-   .table : ALIGN(4) {
-     _table_start = .;
-@@ -128,12 +130,7 @@ SECTIONS
-   PROVIDE(__pecoff_data_size = ALIGN(512) - ADDR(.data));
-   PROVIDE(__pecoff_end = ALIGN(512));
+ #define RO_EXCEPTION_TABLE_ALIGN	8
++#define RUNTIME_DISCARD_EXIT
  
--  .stab 0		: { *(.stab) }
--  .stabstr 0		: { *(.stabstr) }
--  .stab.excl 0		: { *(.stab.excl) }
--  .stab.exclstr 0	: { *(.stab.exclstr) }
--  .stab.index 0		: { *(.stab.index) }
--  .stab.indexstr 0	: { *(.stab.indexstr) }
--  .comment 0		: { *(.comment) }
-+  STABS_DEBUG
-+  DWARF_DEBUG
- }
- ASSERT(_edata_real == _edata, "error: zImage file size is incorrect");
+ #include <asm-generic/vmlinux.lds.h>
+ #include <asm/cache.h>
+@@ -89,10 +90,8 @@ SECTIONS
+ 	 * matching the same input section name.  There is no documented
+ 	 * order of matching.
+ 	 */
++	DISCARDS
+ 	/DISCARD/ : {
+-		EXIT_CALL
+-		*(.discard)
+-		*(.discard.*)
+ 		*(.interp .dynamic)
+ 		*(.dynsym .dynstr .hash .gnu.hash)
+ 		*(.eh_frame)
 -- 
 2.25.1
 
