@@ -2,51 +2,55 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DA9A42069CE
-	for <lists+linux-efi@lfdr.de>; Wed, 24 Jun 2020 03:50:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A965A206AA4
+	for <lists+linux-efi@lfdr.de>; Wed, 24 Jun 2020 05:32:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388603AbgFXBuH (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 23 Jun 2020 21:50:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46754 "EHLO
+        id S2388665AbgFXDbr (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 23 Jun 2020 23:31:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34078 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388594AbgFXBt4 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 23 Jun 2020 21:49:56 -0400
-Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com [IPv6:2607:f8b0:4864:20::644])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 914E5C0617BA
-        for <linux-efi@vger.kernel.org>; Tue, 23 Jun 2020 18:49:55 -0700 (PDT)
-Received: by mail-pl1-x644.google.com with SMTP id bh7so322432plb.11
-        for <linux-efi@vger.kernel.org>; Tue, 23 Jun 2020 18:49:55 -0700 (PDT)
+        with ESMTP id S2388292AbgFXDbq (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 23 Jun 2020 23:31:46 -0400
+Received: from mail-pj1-x1044.google.com (mail-pj1-x1044.google.com [IPv6:2607:f8b0:4864:20::1044])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E9FCC061573
+        for <linux-efi@vger.kernel.org>; Tue, 23 Jun 2020 20:31:46 -0700 (PDT)
+Received: by mail-pj1-x1044.google.com with SMTP id a45so1797896pje.1
+        for <linux-efi@vger.kernel.org>; Tue, 23 Jun 2020 20:31:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=IXUgLosNUEP93cpEKoNn7oauK0Oksg2zT1r8iNc2N3M=;
-        b=ckmxDB65sTOYu6rx9OIJTqHdVaF3Rq0JK7kAA6vc5D+eoog4QFJCUkaQ7pr9Dbdqt8
-         TtXjq1UpX+tQQMj1dqLxz4cB6MRk2G2LEF5f5B4Oh7F/T4fCQlQiO3iYpi7PtQCLvvql
-         oPHshW80+ZhzYGTcFezjfbhx/X9l9btanp8ng=
+        d=google.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=IahJt8/KJJjCX5znAGwjVoLhoLAi5KgGttIopC9m27U=;
+        b=MvLV62bGP7HuCujPeBIHKz13XUI8YQmFtRra1vib+8tF+xHHQRVE/n3L2rgdukvz0W
+         tXgg5gRG56BP2uOmEc+oEMf47b4I2KLwUM3lCVukC+NRxgYxHqsxLKDUjSfA6R0sfqEo
+         TgggLZp03MNbl6iiR1g9B+Tdp9CA3YajVJsQpkFoRyIFXvFULZrBVh7rUaJHmg4R6nNH
+         1qsvb5gRGuCH3ZPUtMEqqFW/A+OofiC/qMD5DJlvOz7Ilyyt2ZStv6KM1sJPos9n372w
+         0UbUY406dJ7GN3qOL01soPCDMdymvlW2KSQp3fukKyBl3YvdOFBaJIjT8ZDn4ePN1mFb
+         xD6w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=IXUgLosNUEP93cpEKoNn7oauK0Oksg2zT1r8iNc2N3M=;
-        b=JJo5/Qp77NCUynOzaOO6jNDtj037sfZ9dxgJnw7sZsRZ6cgYZiH/S4OQgSrC0QyPiX
-         7ysv/fAy5TSy7+7BjfuVShsXwEtDU94ue+7QyepzoEFRKwjK6mgde/RF4ETotxAQG+MB
-         t5gemh18jn6FzcEX+lxHCDek2IaiugmyzF586B5exeUvlWc2AvqJsOJm3EjC/sjwRlvy
-         eoE5Qd6VmpV6WV3yot4hlss8D0fZqxaPYiMNIa7SY8e4i+CRQcRJzQnTf86PT3oOl/ev
-         lRTwDAQB8XhXXP0Q/ZYj0TDAcU9stwfDZ149deI0E6RwVjX78AEOSMiVAXnOA/iCp5RU
-         bYlA==
-X-Gm-Message-State: AOAM532kZvg3Q6igopB5fQbkO27+z4L3BlQQp3PKAsGxwYfqqIHZWypz
-        ZWjZ3Km5V+y8wyn+6TcsnhfkfQ==
-X-Google-Smtp-Source: ABdhPJwdum6Og6TIMupJ78tyY9GEfwXuR/37zHl5lfG7CPnDCX7KdCztzVd+hqJLR+uQSWvHTMGz/w==
-X-Received: by 2002:a17:90a:1117:: with SMTP id d23mr26427976pja.136.1592963395150;
-        Tue, 23 Jun 2020 18:49:55 -0700 (PDT)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id mp15sm3525013pjb.45.2020.06.23.18.49.50
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=IahJt8/KJJjCX5znAGwjVoLhoLAi5KgGttIopC9m27U=;
+        b=aQ3YPZZCfrjAKK2D5AmpW84lYoctOS/7QQADndw9NyCLHW4gv5Ty/pMeURk0FCvWDr
+         tq1XPCFXjkamHElXPpOD3kknuKLIigLSRZMoIcB0XVnPvDLRklL/EA4XKcparRwmtXBz
+         QaiQM6mATK+uzwkWgaFzx3EuGD1WN6peM7MocnrG1w0p8t6k45WcAXqddBbHMLQ8+wEN
+         vB5IbNfT6DbBzp686VAgNHFm9Am0VkSknHU6Ma/04Cp+TOj67nQpF657P3DF8tZxWJxA
+         byxaqxURg93Ulgs3gCs6U6hPpROvudnIf90bDjL+Nz3Q//FbaBqT7+/vpCsbybXcP66q
+         MLdA==
+X-Gm-Message-State: AOAM533dnayOlsmzPb62TxuHBIqlrFUg6Kc273CAn01+rbX9BjdOQJz9
+        Od7fWR4hvxJH6rRi9JxY8HtzjQ==
+X-Google-Smtp-Source: ABdhPJwO/hYz95xUwT1OWmJI4vtUw4+LYaBqYL3FPsRivwPfG7ygEmvTnhPAC6hvl2WpJppN7B6bFQ==
+X-Received: by 2002:a17:90a:1ac3:: with SMTP id p61mr27689014pjp.23.1592969505744;
+        Tue, 23 Jun 2020 20:31:45 -0700 (PDT)
+Received: from google.com ([2620:15c:2ce:0:9efe:9f1:9267:2b27])
+        by smtp.gmail.com with ESMTPSA id c2sm14702791pgk.77.2020.06.23.20.31.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 Jun 2020 18:49:51 -0700 (PDT)
-From:   Kees Cook <keescook@chromium.org>
-To:     Will Deacon <will@kernel.org>
-Cc:     Kees Cook <keescook@chromium.org>,
+        Tue, 23 Jun 2020 20:31:45 -0700 (PDT)
+Date:   Tue, 23 Jun 2020 20:31:42 -0700
+From:   Fangrui Song <maskray@google.com>
+To:     Kees Cook <keescook@chromium.org>
+Cc:     Will Deacon <will@kernel.org>,
         Catalin Marinas <catalin.marinas@arm.com>,
         Mark Rutland <mark.rutland@arm.com>,
         Ard Biesheuvel <ardb@kernel.org>,
@@ -64,152 +68,60 @@ Cc:     Kees Cook <keescook@chromium.org>,
         clang-built-linux@googlegroups.com, linux-arch@vger.kernel.org,
         linux-efi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH v3 9/9] arm64/build: Warn on orphan section placement
-Date:   Tue, 23 Jun 2020 18:49:40 -0700
-Message-Id: <20200624014940.1204448-10-keescook@chromium.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200624014940.1204448-1-keescook@chromium.org>
+Subject: Re: [PATCH v3 3/9] efi/libstub: Remove .note.gnu.property
+Message-ID: <20200624033142.cinvg6rbg252j46d@google.com>
 References: <20200624014940.1204448-1-keescook@chromium.org>
+ <20200624014940.1204448-4-keescook@chromium.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20200624014940.1204448-4-keescook@chromium.org>
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-We don't want to depend on the linker's orphan section placement
-heuristics as these can vary between linkers, and may change between
-versions. All sections need to be explicitly named in the linker
-script.
+On 2020-06-23, Kees Cook wrote:
+>In preparation for adding --orphan-handling=warn to more architectures,
+>make sure unwanted sections don't end up appearing under the .init
+>section prefix that libstub adds to itself during objcopy.
+>
+>Signed-off-by: Kees Cook <keescook@chromium.org>
+>---
+> drivers/firmware/efi/libstub/Makefile | 3 +++
+> 1 file changed, 3 insertions(+)
+>
+>diff --git a/drivers/firmware/efi/libstub/Makefile b/drivers/firmware/efi/libstub/Makefile
+>index 75daaf20374e..9d2d2e784bca 100644
+>--- a/drivers/firmware/efi/libstub/Makefile
+>+++ b/drivers/firmware/efi/libstub/Makefile
+>@@ -66,6 +66,9 @@ lib-$(CONFIG_X86)		+= x86-stub.o
+> CFLAGS_arm32-stub.o		:= -DTEXT_OFFSET=$(TEXT_OFFSET)
+> CFLAGS_arm64-stub.o		:= -DTEXT_OFFSET=$(TEXT_OFFSET)
+>
+>+# Remove unwanted sections first.
+>+STUBCOPY_FLAGS-y		+= --remove-section=.note.gnu.property
+>+
+> #
+> # For x86, bootloaders like systemd-boot or grub-efi do not zero-initialize the
+> # .bss section, so the .bss section of the EFI stub needs to be included in the
 
-Avoid .eh_frame* by making sure both -fno-asychronous-unwind-tables and
--fno-unwind-tables are present in both CFLAGS and AFLAGS. Remove one
-last instance of .eh_frame by removing the needless Call Frame Information
-annotations from arch/arm64/kernel/smccc-call.S.
+arch/arm64/Kconfig enables ARM64_PTR_AUTH by default. When the config is on
 
-Add .plt, .data.rel.ro, .igot.*, and .iplt to discards as they are not
-actually used. While .got.plt is also not used, it must be included
-otherwise ld.bfd will fail to link with the error:
+ifeq ($(CONFIG_ARM64_BTI_KERNEL),y)
+branch-prot-flags-$(CONFIG_CC_HAS_BRANCH_PROT_PAC_RET_BTI) := -mbranch-protection=pac-ret+leaf+bti
+else
+branch-prot-flags-$(CONFIG_CC_HAS_BRANCH_PROT_PAC_RET) := -mbranch-protection=pac-ret+leaf
+endif
 
-    aarch64-linux-gnu-ld: discarded output section: `.got.plt'
+This option creates .note.gnu.property:
 
-However, as it'd be better to validate that it stays effectively empty,
-add an assert.
+% readelf -n drivers/firmware/efi/libstub/efi-stub.o
 
-Explicitly include debug sections when they're present.
+Displaying notes found in: .note.gnu.property
+   Owner                Data size        Description
+   GNU                  0x00000010       NT_GNU_PROPERTY_TYPE_0
+       Properties: AArch64 feature: PAC
 
-Fix a case of needless quotes in __section(), which Clang doesn't like.
-
-Finally, enable orphan section warnings.
-
-Thanks to Ard Biesheuvel for many hints on correct ways to handle
-mysterious sections. :)
-
-Signed-off-by: Kees Cook <keescook@chromium.org>
----
- arch/arm64/Makefile             |  9 ++++++++-
- arch/arm64/kernel/smccc-call.S  |  2 --
- arch/arm64/kernel/vmlinux.lds.S | 11 ++++++++++-
- arch/arm64/mm/mmu.c             |  2 +-
- 4 files changed, 19 insertions(+), 5 deletions(-)
-
-diff --git a/arch/arm64/Makefile b/arch/arm64/Makefile
-index a0d94d063fa8..fb3aa2d7de4d 100644
---- a/arch/arm64/Makefile
-+++ b/arch/arm64/Makefile
-@@ -29,6 +29,10 @@ LDFLAGS_vmlinux	+= --fix-cortex-a53-843419
-   endif
- endif
- 
-+# We never want expected sections to be placed heuristically by the
-+# linker. All sections should be explicitly named in the linker script.
-+LDFLAGS_vmlinux += --orphan-handling=warn
-+
- ifeq ($(CONFIG_ARM64_USE_LSE_ATOMICS), y)
-   ifneq ($(CONFIG_ARM64_LSE_ATOMICS), y)
- $(warning LSE atomics not supported by binutils)
-@@ -47,13 +51,16 @@ endif
- 
- KBUILD_CFLAGS	+= -mgeneral-regs-only	\
- 		   $(compat_vdso) $(cc_has_k_constraint)
--KBUILD_CFLAGS	+= -fno-asynchronous-unwind-tables
- KBUILD_CFLAGS	+= $(call cc-disable-warning, psabi)
- KBUILD_AFLAGS	+= $(compat_vdso)
- 
- KBUILD_CFLAGS	+= $(call cc-option,-mabi=lp64)
- KBUILD_AFLAGS	+= $(call cc-option,-mabi=lp64)
- 
-+# Avoid generating .eh_frame* sections.
-+KBUILD_CFLAGS	+= -fno-asynchronous-unwind-tables -fno-unwind-tables
-+KBUILD_AFLAGS	+= -fno-asynchronous-unwind-tables -fno-unwind-tables
-+
- ifeq ($(CONFIG_STACKPROTECTOR_PER_TASK),y)
- prepare: stack_protector_prepare
- stack_protector_prepare: prepare0
-diff --git a/arch/arm64/kernel/smccc-call.S b/arch/arm64/kernel/smccc-call.S
-index 1f93809528a4..d62447964ed9 100644
---- a/arch/arm64/kernel/smccc-call.S
-+++ b/arch/arm64/kernel/smccc-call.S
-@@ -9,7 +9,6 @@
- #include <asm/assembler.h>
- 
- 	.macro SMCCC instr
--	.cfi_startproc
- 	\instr	#0
- 	ldr	x4, [sp]
- 	stp	x0, x1, [x4, #ARM_SMCCC_RES_X0_OFFS]
-@@ -21,7 +20,6 @@
- 	b.ne	1f
- 	str	x6, [x4, ARM_SMCCC_QUIRK_STATE_OFFS]
- 1:	ret
--	.cfi_endproc
- 	.endm
- 
- /*
-diff --git a/arch/arm64/kernel/vmlinux.lds.S b/arch/arm64/kernel/vmlinux.lds.S
-index 5427f502c3a6..f6c781768f83 100644
---- a/arch/arm64/kernel/vmlinux.lds.S
-+++ b/arch/arm64/kernel/vmlinux.lds.S
-@@ -94,7 +94,8 @@ SECTIONS
- 	/DISCARD/ : {
- 		*(.interp .dynamic)
- 		*(.dynsym .dynstr .hash .gnu.hash)
--		*(.eh_frame)
-+		*(.plt) *(.data.rel.ro)
-+		*(.igot.*) *(.iplt)
- 	}
- 
- 	. = KIMAGE_VADDR + TEXT_OFFSET;
-@@ -244,8 +245,16 @@ SECTIONS
- 	_end = .;
- 
- 	STABS_DEBUG
-+	DWARF_DEBUG
- 
- 	HEAD_SYMBOLS
-+
-+	/*
-+	 * Make sure that the .got.plt is either completely empty or it
-+	 * contains only the lazy dispatch entries.
-+	 */
-+	.got.plt (INFO) : { *(.got.plt) }
-+	ASSERT(SIZEOF(.got.plt) == 0 || SIZEOF(.got.plt) == 0x18, ".got.plt not empty")
- }
- 
- #include "image-vars.h"
-diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
-index 1df25f26571d..dce024ea6084 100644
---- a/arch/arm64/mm/mmu.c
-+++ b/arch/arm64/mm/mmu.c
-@@ -42,7 +42,7 @@
- u64 idmap_t0sz = TCR_T0SZ(VA_BITS);
- u64 idmap_ptrs_per_pgd = PTRS_PER_PGD;
- 
--u64 __section(".mmuoff.data.write") vabits_actual;
-+u64 __section(.mmuoff.data.write) vabits_actual;
- EXPORT_SYMBOL(vabits_actual);
- 
- u64 kimage_voffset __ro_after_init;
--- 
-2.25.1
-
+If .note.gnu.property is not desired in drivers/firmware/efi/libstub, specifying
+-mbranch-protection=none can override -mbranch-protection=pac-ret+leaf
