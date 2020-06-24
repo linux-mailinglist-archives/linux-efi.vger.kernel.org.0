@@ -2,148 +2,174 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C040C207A5F
-	for <lists+linux-efi@lfdr.de>; Wed, 24 Jun 2020 19:35:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C3E21207B6B
+	for <lists+linux-efi@lfdr.de>; Wed, 24 Jun 2020 20:23:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2405456AbgFXRfN (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 24 Jun 2020 13:35:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51314 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2404908AbgFXRfN (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 24 Jun 2020 13:35:13 -0400
-Received: from mail-qt1-x843.google.com (mail-qt1-x843.google.com [IPv6:2607:f8b0:4864:20::843])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C775EC061573;
-        Wed, 24 Jun 2020 10:35:12 -0700 (PDT)
-Received: by mail-qt1-x843.google.com with SMTP id o38so2354005qtf.6;
-        Wed, 24 Jun 2020 10:35:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:from:date:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=u71VLQWbO5DL23Y8K+qb6PrSXQwJENiQAs1O7511XBM=;
-        b=GKxzqjwIPzBqXbWSXbHl7RH/IyLS+yYlLaFyGMcmoEkNl2geelNInX2hhzjL00Z7HG
-         yGQV2zZSIRnXkEtNd8DyUVJiIkQ1jH+a5C8kmQ77/qsL7LLYtUg0m8nE/M0nCjfx8zho
-         eawIgP2Jik4cO0z6IWfLm6aGp5C8ZiSRQDq+R9gxF7Xrg4Wu+L7o1Cjhcv0QTmZuI7Ny
-         YiAI9Tvuzjf8kjOJYxFkof/jsj3qf2gamIyMO6Ak9Y22ItX4nzIm3fNmXAnazGsqZVp3
-         5doNYOpwD8Mp4iQbMItGvcv5PPLdcfQNa4VOdw0HHpvow7TXhAoteneD/7r5ZRRjszzT
-         R1Mg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:from:date:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to;
-        bh=u71VLQWbO5DL23Y8K+qb6PrSXQwJENiQAs1O7511XBM=;
-        b=a6QOk1DWBKkbukjYDPUjFulyyNvSEjXyBZPJQ6FngNn4XPijvdedBHc4o5vvoMgCqs
-         3TrNVsLhuObwn/3pOih4843C1mMtWJCMoW7ogBPSM9yvg4YlilAZqF8Zzu064nORCUNv
-         1RbbAadINesdMs7sJ6SzismTgasVkRSh7rpj5SinT8FzxRaX8uyCG3Kql59aKzJtUI96
-         PUy3ZO4k3TfFe+iJt7YZ7LI91Oo+IUFzcP0QnCYeacyOb4LRzumrL+9wq3nHkJobV6l7
-         3DbjDv5Qk3joKdCG8RaIanCI03RWbdulm3kQ4Dr4EgCz5b4HCPmZJlRFQ9B5KMzsynmn
-         /wNQ==
-X-Gm-Message-State: AOAM5327p+zNshOLNiYTMze49Yu/p/gMrhVSI1eJFbAvKUPDJlZeuaaX
-        PD9fQuGYrmuSaXjwmB049ng=
-X-Google-Smtp-Source: ABdhPJwbxrJtgWRCE11IF50EeMFqChIYm2W1jo8Xv+ODfidD8yDrf4K4eJF8mxRsbCJyvFUCCDnWUg==
-X-Received: by 2002:ac8:691:: with SMTP id f17mr7816140qth.60.1593020111983;
-        Wed, 24 Jun 2020 10:35:11 -0700 (PDT)
-Received: from rani.riverdale.lan ([2001:470:1f07:5f3::b55f])
-        by smtp.gmail.com with ESMTPSA id c191sm3620105qke.114.2020.06.24.10.35.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 24 Jun 2020 10:35:11 -0700 (PDT)
-From:   Arvind Sankar <nivedita@alum.mit.edu>
-X-Google-Original-From: Arvind Sankar <arvind@rani.riverdale.lan>
-Date:   Wed, 24 Jun 2020 13:35:09 -0400
-To:     Fangrui Song <maskray@google.com>
-Cc:     Arvind Sankar <nivedita@alum.mit.edu>,
-        Kees Cook <keescook@chromium.org>,
-        Will Deacon <will@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Peter Collingbourne <pcc@google.com>,
-        James Morse <james.morse@arm.com>,
-        Borislav Petkov <bp@suse.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Nathan Chancellor <natechancellor@gmail.com>,
-        Arnd Bergmann <arnd@arndb.de>, x86@kernel.org,
-        clang-built-linux@googlegroups.com, linux-arch@vger.kernel.org,
-        linux-efi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 2/9] vmlinux.lds.h: Add .symtab, .strtab, and
- .shstrtab to STABS_DEBUG
-Message-ID: <20200624173509.GA1460341@rani.riverdale.lan>
-References: <20200624014940.1204448-1-keescook@chromium.org>
- <20200624014940.1204448-3-keescook@chromium.org>
- <20200624153930.GA1337895@rani.riverdale.lan>
- <20200624161643.73x6navnwryckuit@google.com>
- <20200624171121.GA1377921@rani.riverdale.lan>
- <20200624172620.654hhjetiyzpgoxw@google.com>
+        id S2405820AbgFXSXR (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 24 Jun 2020 14:23:17 -0400
+Received: from mail.kernel.org ([198.145.29.99]:40988 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2405469AbgFXSXR (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Wed, 24 Jun 2020 14:23:17 -0400
+Received: from mail-ot1-f45.google.com (mail-ot1-f45.google.com [209.85.210.45])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id AE1A0207FC;
+        Wed, 24 Jun 2020 18:23:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1593022996;
+        bh=ZF4PxoE2gxKJKGHg1jFJn1yz5MUXPaZ030E8kTj+DE4=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=bRtaoBxn1ZeKTiqgV++Nwoq7bTRDmjNRHfzGTMcHitS7vaxi4jjIenOaMdghJ0Lfz
+         ifGlOYXyH8iHLUFM2rkvjpZsNxIbGgCiPqBnt/jE24sR8KMwcA/fP8VK+Pi+grXNI6
+         mwvMNKzv00Vqqm6/UINgackm2GJyjAIMDl3YyC9o=
+Received: by mail-ot1-f45.google.com with SMTP id 64so2838975oti.5;
+        Wed, 24 Jun 2020 11:23:16 -0700 (PDT)
+X-Gm-Message-State: AOAM530qVi7Xh97QvdMbB7klJEjxUxbq/Sbvx6YhL8z9pHMucAtd+AL3
+        kI/lO+qUUwIrVqWxf0rHFTnjW9weIp1atNh3FN8=
+X-Google-Smtp-Source: ABdhPJxn7sr9vg60DZs4/+nAKlWtVbggaKDrpGd7my5E+G25Lg0OQZbdJNnMqX44+SEMXoLbkHm+gWRhenYUuATy0hE=
+X-Received: by 2002:a4a:b34b:: with SMTP id n11mr24365561ooo.41.1593022995076;
+ Wed, 24 Jun 2020 11:23:15 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20200624172620.654hhjetiyzpgoxw@google.com>
+References: <20200624033142.cinvg6rbg252j46d@google.com> <202006232143.66828CD3@keescook>
+ <20200624104356.GA6134@willie-the-truck> <CAMj1kXHBT4ei0xhyL4jD7=CNRsn1rh7w6jeYDLjVOv4na0Z38Q@mail.gmail.com>
+ <202006240820.A3468F4@keescook> <CAMj1kXHck12juGi=E=P4hWP_8vQhQ+-x3vBMc3TGeRWdQ-XkxQ@mail.gmail.com>
+ <202006240844.7BE48D2B5@keescook> <CAMj1kXHqBs44uukRSdFwA_hcmX_yKVfjqdv9RoPbbu-6Wz+RaA@mail.gmail.com>
+ <20200624162919.GH25945@arm.com> <CAMj1kXE1zWCjVt8iS4fv2gQHzrTF6=Ggd16nm+4TNWAG3zSWAQ@mail.gmail.com>
+ <20200624171613.GJ25945@arm.com>
+In-Reply-To: <20200624171613.GJ25945@arm.com>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Wed, 24 Jun 2020 20:23:03 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXG+Xh=a1exFXuRJ9EYbT+0xnC=votGGX1dmzBgZgEaC-w@mail.gmail.com>
+Message-ID: <CAMj1kXG+Xh=a1exFXuRJ9EYbT+0xnC=votGGX1dmzBgZgEaC-w@mail.gmail.com>
+Subject: Re: [PATCH v3 3/9] efi/libstub: Remove .note.gnu.property
+To:     Dave Martin <Dave.Martin@arm.com>
+Cc:     Mark Rutland <mark.rutland@arm.com>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Arvind Sankar <nivedita@alum.mit.edu>,
+        Will Deacon <will@kernel.org>,
+        Nathan Chancellor <natechancellor@gmail.com>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        Fangrui Song <maskray@google.com>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        X86 ML <x86@kernel.org>, Russell King <linux@armlinux.org.uk>,
+        clang-built-linux <clang-built-linux@googlegroups.com>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@suse.de>,
+        Kees Cook <keescook@chromium.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Peter Collingbourne <pcc@google.com>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        James Morse <james.morse@arm.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, Jun 24, 2020 at 10:26:20AM -0700, Fangrui Song wrote:
-> 
-> On 2020-06-24, Arvind Sankar wrote:
-> >On Wed, Jun 24, 2020 at 09:16:43AM -0700, Fangrui Song wrote:
-> >>
-> >> On 2020-06-24, Arvind Sankar wrote:
-> >> >On Tue, Jun 23, 2020 at 06:49:33PM -0700, Kees Cook wrote:
-> >> >> When linking vmlinux with LLD, the synthetic sections .symtab, .strtab,
-> >> >> and .shstrtab are listed as orphaned. Add them to the STABS_DEBUG section
-> >> >> so there will be no warnings when --orphan-handling=warn is used more
-> >> >> widely. (They are added above comment as it is the more common
-> >> >
-> >> >Nit 1: is "after .comment" better than "above comment"? It's above in the
-> >> >sense of higher file offset, but it's below in readelf output.
-> >>
-> >> I mean this order:)
-> >>
-> >>    .comment
-> >>    .symtab
-> >>    .shstrtab
-> >>    .strtab
-> >>
-> >> This is the case in the absence of a linker script if at least one object file has .comment (mostly for GCC/clang version information) or the linker is LLD which adds a .comment
-> >>
-> >> >Nit 2: These aren't actually debugging sections, no? Is it better to add
-> >> >a new macro for it, and is there any plan to stop LLD from warning about
-> >> >them?
-> >>
-> >> https://reviews.llvm.org/D75149 "[ELF] --orphan-handling=: don't warn/error for unused synthesized sections"
-> >> described that .symtab .shstrtab .strtab are different in GNU ld.
-> >> Since many other GNU ld synthesized sections (.rela.dyn .plt ...) can be renamed or dropped
-> >> via output section descriptions, I don't understand why the 3 sections
-> >> can't be customized.
+On Wed, 24 Jun 2020 at 19:16, Dave Martin <Dave.Martin@arm.com> wrote:
+>
+> On Wed, Jun 24, 2020 at 06:40:48PM +0200, Ard Biesheuvel wrote:
+> > On Wed, 24 Jun 2020 at 18:29, Dave Martin <Dave.Martin@arm.com> wrote:
+> > >
+> > > On Wed, Jun 24, 2020 at 05:48:41PM +0200, Ard Biesheuvel wrote:
+> > > > On Wed, 24 Jun 2020 at 17:45, Kees Cook <keescook@chromium.org> wrote:
+> > > > >
+> > > > > On Wed, Jun 24, 2020 at 05:31:06PM +0200, Ard Biesheuvel wrote:
+> > > > > > On Wed, 24 Jun 2020 at 17:21, Kees Cook <keescook@chromium.org> wrote:
+> > > > > > >
+> > > > > > > On Wed, Jun 24, 2020 at 12:46:32PM +0200, Ard Biesheuvel wrote:
+> > > > > > > > I'm not sure if there is a point to having PAC and/or BTI in the EFI
+> > > > > > > > stub, given that it runs under the control of the firmware, with its
+> > > > > > > > memory mappings and PAC configuration etc.
+> > > > > > >
+> > > > > > > Is BTI being ignored when the firmware runs?
+> > > > > >
+> > > > > > Given that it requires the 'guarded' attribute to be set in the page
+> > > > > > tables, and the fact that the UEFI spec does not require it for
+> > > > > > executables that it invokes, nor describes any means of annotating
+> > > > > > such executables as having been built with BTI annotations, I think we
+> > > > > > can safely assume that the EFI stub will execute with BTI disabled in
+> > > > > > the foreseeable future.
+> > > > >
+> > > > > yaaaaaay. *sigh* How long until EFI catches up?
+> > > > >
+> > > > > That said, BTI shouldn't _hurt_, right? If EFI ever decides to enable
+> > > > > it, we'll be ready?
+> > > > >
+> > > >
+> > > > Sure. Although I anticipate that we'll need to set some flag in the
+> > > > PE/COFF header to enable it, and so any BTI opcodes we emit without
+> > > > that will never take effect in practice.
+> > >
+> > > In the meantime, it is possible to build all the in-tree parts of EFI
+> > > for BTI, and just turn it off for out-of-tree EFI binaries?
+> > >
 > >
-> >So IIUC, lld will now warn about .rela.dyn etc only if they're non-empty?
-> 
-> HEAD and future 11.0.0 will not warn about unused synthesized sections
-> like .rela.dyn
-> 
-> For most synthesized sections, empty = unused.
-> 
-> >>
-> >> I created a feature request: https://sourceware.org/bugzilla/show_bug.cgi?id=26168
-> >> (If this is supported, it is a consistent behavior to warn for orphan
-> >> .symtab/.strtab/.shstrtab
-> >>
-> >> There may be 50% chance that the maintainer decides that "LLD diverges"
-> >> I would disagree: there is no fundamental problems with .symtab/.strtab/.shstrtab which make them special in output section descriptions or orphan handling.)
-> >>
-> >
-> >.shstrtab is a little special in that it can't be discarded if the ELF
-> >file contains any sections at all. But yeah, there's no reason they
-> >can't be renamed or placed in a custom location in the file.
-> 
-> https://sourceware.org/pipermail/binutils/2020-March/000179.html
-> proposes -z nosectionheader. With this option, I believe .shstrtab is
-> not needed. /DISCARD/ : { *(.shstrtab) }  should achieve a similar effect.
+> > Not sure I understand the question. What do you mean by out-of-tree
+> > EFI binaries? And how would the firmware (which is out of tree itself,
+> > and is in charge of the page tables, vector table, timer interrupt etc
+> > when the EFI stub executes) distinguish such binaries from the EFI
+> > stub?
+>
+> I'm not an EFI expert, but I'm guessing that you configure EFI with
+> certain compiler flags and build it.
 
-oh wow.
+'EFI' is not something you build. It is a specification that describes
+how a conformant firmware implementation interfaces with a conformant
+OS.
+
+Sorry to be pedantic, but that is really quite relevant. By adhering
+to the EFI spec rigorously, we no longer have to care about who
+implements the opposite side, and how.
+
+So yes, of course there are ways to build the opposite side with BTI
+enabled, in a way that all its constituent pieces keep working as
+expected. A typical EDK2 based implementation of EFI consists of
+50-100 individual PE/COFF executables that all get loaded, relocated
+and started like ordinary user space programs.
+
+What we cannot do, though, is invent our own Linux specific way of
+decorating the kernel's PE/COFF header with an annotation that
+instructs a Linux specific EFI loader when to enable the GP bit for
+the .text pages.
+
+> Possibly some standalone EFI
+> executables are built out of the same tree and shipped with the
+> firmware from the same build, but I'm speculating.  If not, we can just
+> run all EFI executables with BTI off.
+>
+> > > If there's no easy way to do this though, I guess we should wait for /
+> > > push for a PE/COFF flag to describe this properly.
+> > >
+> >
+> > Yeah good point. I will take this to the forum.
+>
+> In the interim, we could set the GP bit in EFI's page tables for the
+> executable code from the firmware image if we want this protection, but
+> turn it off in pages mapping the executable code of EFI executables.
+> This is better than nothing.
+>
+
+We need to distinguish between the EFI stub and the EFI runtime services here.
+
+The EFI stub consists of kernel code that executes in the context of
+the firmware, at which point the loader has no control whatsoever over
+page tables, vector tables, etc. This is the stage where the loading
+and starting of PE/COFF images takes place. If we want to enable BTI
+for code running in this context, we need PE/COFF annotations, as
+discussed above.
+
+The EFI runtime services are firmware code that gets invoked by the OS
+at runtime. Whether or not such code is emitted with BTI annotations
+is a separate matter (but should also be taken to the forum
+nonetheless), and does not need any changes at the PE/COFF level.
+However, for this code, I'd like the sandboxing to be much more
+rigorous than it is today, to the point where the security it provides
+doesn't even matter deeply to the OS itself. (I had some patches a
+while ago that reused the KPTI infrastructure to unmap the entire
+kernel while EFI runtime services are in progress. There was also an
+intern in the team that implemented something similar on top of KVM)
