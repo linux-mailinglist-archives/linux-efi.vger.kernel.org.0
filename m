@@ -2,94 +2,113 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DCE0F20BA62
-	for <lists+linux-efi@lfdr.de>; Fri, 26 Jun 2020 22:37:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EE7E720BBF9
+	for <lists+linux-efi@lfdr.de>; Fri, 26 Jun 2020 23:56:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725900AbgFZUhD (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 26 Jun 2020 16:37:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43640 "EHLO
+        id S1725824AbgFZV4Z (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 26 Jun 2020 17:56:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56118 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725832AbgFZUhC (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 26 Jun 2020 16:37:02 -0400
-Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com [IPv6:2607:f8b0:4864:20::641])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E37CEC03E97B
-        for <linux-efi@vger.kernel.org>; Fri, 26 Jun 2020 13:37:02 -0700 (PDT)
-Received: by mail-pl1-x641.google.com with SMTP id g17so4659520plq.12
-        for <linux-efi@vger.kernel.org>; Fri, 26 Jun 2020 13:37:02 -0700 (PDT)
+        with ESMTP id S1725793AbgFZV4Y (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 26 Jun 2020 17:56:24 -0400
+Received: from mail-wm1-x344.google.com (mail-wm1-x344.google.com [IPv6:2a00:1450:4864:20::344])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69C7BC03E97A
+        for <linux-efi@vger.kernel.org>; Fri, 26 Jun 2020 14:56:24 -0700 (PDT)
+Received: by mail-wm1-x344.google.com with SMTP id t194so10693454wmt.4
+        for <linux-efi@vger.kernel.org>; Fri, 26 Jun 2020 14:56:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=nt/218p7v20WGusEjZTRWNofL1UTU7wXJpxnIwWbqck=;
-        b=LasIkQVyh7YOVLhmmWjNknLdRMiIhvmSIsX6upZZEv19wZkBLTDXThFG+IoJtTQ1DK
-         zcl6LQej91z8gS9IaBIyAs1OvHj/0GDMvNCjRsmmphnLs25aUBJeB2/1LelcaqiXTaN0
-         pdUtgwESOtklxyeVHayu+6UmjFTjibUVnEUdE=
+        d=atishpatra.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=s24mstSCNQlTFolgjec0iiKMpvfLNvCEazKvZzeEqpA=;
+        b=g+CAS8UlAQOOsv4s7ohlbFkbJmOpPZq5OC7QRzoSqEzhhgE34Acd5sfrAMN8Uu9C3O
+         WjP+DC/W4+0jp5qX9LvxioOw4eodRT/6RRpQpqrwVQ3/k7qf0G9GOfAGstoLym1Coe0G
+         Xph832bBIMuzUv0udF9hevqW5Jxiwdj/IOadY=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=nt/218p7v20WGusEjZTRWNofL1UTU7wXJpxnIwWbqck=;
-        b=KBZ4Jx3GrFz3aHZdwhiQbO2o1Ojvg9mGXeV+EZaVAwx4MoJdGur7vT4FKGb5It42hg
-         w4vOtewug+CTEg7+CAs/mEp4UjshpCjRu6Xywfa4NA8Bw7+pqF9Ks08cVhUpUIX5XzhD
-         sC5FanNsZ9DD6bG3nlITDEPDWM1zMxuR6b3067bttuVinXAA9kfyCYclXNzZu52sECkd
-         9Lmj9WAn4Y+Pvj9slPxbu7+Ixa1UJxNrzeKP0f0Wnv+dCcQJHagx7UVlKaXxHTBcp4Dh
-         Lc8a3I+VpztcRIUgCxJjPH1jUujYKXCSLbN/HihoQ6KLDhCEchQEsyLi3vv0LOx7iIDc
-         geiA==
-X-Gm-Message-State: AOAM530/aefcAbKgguTG54VTBlsMFve9q49wbah8kOFayrbtwwNypODT
-        dhk1VdwhXtj74k903Pyc+R/1d1B1lTE=
-X-Google-Smtp-Source: ABdhPJzRjBzSEkMCU+0/yeMZIBtu9OcMQa8md9tY/FMmEyvlXIZhD94nhAwv0QyEtFY0fbb9xk24ng==
-X-Received: by 2002:a17:902:7896:: with SMTP id q22mr3972740pll.338.1593203822398;
-        Fri, 26 Jun 2020 13:37:02 -0700 (PDT)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id r8sm27166377pfq.16.2020.06.26.13.37.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 26 Jun 2020 13:37:01 -0700 (PDT)
-Date:   Fri, 26 Jun 2020 13:37:00 -0700
-From:   Kees Cook <keescook@chromium.org>
-To:     Nick Desaulniers <ndesaulniers@google.com>
-Cc:     Masahiro Yamada <masahiroy@kernel.org>,
-        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
-        clang-built-linux <clang-built-linux@googlegroups.com>,
-        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 1/2] kbuild: remove cc-option test of -fno-stack-protector
-Message-ID: <202006261331.3A94DB7@keescook>
-References: <20200626185913.92890-1-masahiroy@kernel.org>
- <CAKwvOd=V_M43CP7G87K3TqSsxua2NcXPz6BnDt-z6167O2WAzQ@mail.gmail.com>
- <202006261319.F130204@keescook>
- <CAKwvOdmFpgSGow3X4AhEC1B-xWNORTgAFBXgYPQHLGyhgefddw@mail.gmail.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=s24mstSCNQlTFolgjec0iiKMpvfLNvCEazKvZzeEqpA=;
+        b=XvhT5lkGsJPR2Wno2MHMEfD8fvdKkgDM8l/43GCXIHNFv529bazG3H6aD0dN7Tqjgw
+         SrbbeLiYnJdVrdfGGlbTOb0Okx9IWPKk5sCRkUgSeTxiw1AyHbu1PMrESRx485/IFg4O
+         hJElhG3AR7JDPzJ3OVkqxZkgqH2UhHF9vPqfoQ82K36Snpn5dRYj7jNTfH5PNHftdTTI
+         1NNPVX3StAsYoPSYlE7GRzaChcq2ibE+ZJRk+Rmz/UbC4Ro6ij41LPKqHCFIKr0mNZFS
+         dAtZcIGDY0NYRKd8uZO+8PAe1V5wyRFzo2teeCc0rHXLmDezrCnaPVE70WQR+gWN3BB2
+         143Q==
+X-Gm-Message-State: AOAM533YCtlYlKrp+cAvyqZUNNotYJ3cV2wzZCgwcCjHsD/gsHpX+zNh
+        O1rrRbQKRT0O+JvB0wzvg++QE/FvIAg8Pwvsbk2C8ig=
+X-Google-Smtp-Source: ABdhPJxvUiPRna7ukmDfkDR7tOrY35okfuOqyyzB1yZ0cFFCHPw0NEqSkR/UuIDigPHl1bx2wJyIWsX7BstpN+VvZ3U=
+X-Received: by 2002:a1c:9d09:: with SMTP id g9mr5333593wme.31.1593208583105;
+ Fri, 26 Jun 2020 14:56:23 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAKwvOdmFpgSGow3X4AhEC1B-xWNORTgAFBXgYPQHLGyhgefddw@mail.gmail.com>
+References: <20200625234516.31406-1-atish.patra@wdc.com> <20200625234516.31406-2-atish.patra@wdc.com>
+ <5e2ce2ae-5458-8579-576a-76721f7d3b08@gmx.de>
+In-Reply-To: <5e2ce2ae-5458-8579-576a-76721f7d3b08@gmx.de>
+From:   Atish Patra <atishp@atishpatra.org>
+Date:   Fri, 26 Jun 2020 14:56:11 -0700
+Message-ID: <CAOnJCUKnB7kLdTh1-NaFNw4p6EammETzhUa-Uniq2rrC-7AaQg@mail.gmail.com>
+Subject: Re: [RFC PATCH 01/11] efi: Fix gcc error around __umoddi3 for 32 bit builds
+To:     Heinrich Schuchardt <xypron.glpk@gmx.de>
+Cc:     Atish Patra <atish.patra@wdc.com>,
+        "linux-kernel@vger.kernel.org List" <linux-kernel@vger.kernel.org>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        linux-riscv <linux-riscv@lists.infradead.org>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, Jun 26, 2020 at 01:25:27PM -0700, Nick Desaulniers wrote:
-> Ah, right. Thanks for pointing that out.  I'm still curious if the
-> CFLAGS_<file>.o rules get appended or overwrite all flags for that
-> translation unit?
+On Thu, Jun 25, 2020 at 7:43 PM Heinrich Schuchardt <xypron.glpk@gmx.de> wrote:
+>
+> On 6/26/20 1:45 AM, Atish Patra wrote:
+> > 32bit gcc doesn't support modulo operation on 64 bit data. It results in
+> > a __umoddi3 error while building EFI for 32 bit.
+> >
+> > Use bitwise operations instead of modulo operations to fix the issue.
+> >
+> > Signed-off-by: Atish Patra <atish.patra@wdc.com>
+> > ---
+> >  drivers/firmware/efi/libstub/alignedmem.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/firmware/efi/libstub/alignedmem.c b/drivers/firmware/efi/libstub/alignedmem.c
+> > index cc89c4d6196f..1de9878ddd3a 100644
+> > --- a/drivers/firmware/efi/libstub/alignedmem.c
+> > +++ b/drivers/firmware/efi/libstub/alignedmem.c
+> > @@ -44,7 +44,7 @@ efi_status_t efi_allocate_pages_aligned(unsigned long size, unsigned long *addr,
+> >       *addr = ALIGN((unsigned long)alloc_addr, align);
+> >
+> >       if (slack > 0) {
+> > -             int l = (alloc_addr % align) / EFI_PAGE_SIZE;
+> > +             int l = (alloc_addr & (align - 1)) / EFI_PAGE_SIZE;
+>
+> Here you rely on the compiler to silently convert the division by
+> EFI_PAGE_SIZE into a right shift. Wouldn't it be cleaner to use
+> EFI_PAGE_SHIFT to explicitly avoid a dependency on __udivdi3()?
+>
+> slack = (align >> EFI_PAGE_SHIFT) - 1;
+> ...
+> int l = (alloc_addr & (align - 1)) >> EFI_PAGE_SHIFT;
+>
 
-CFLAGS_file.o gets appended to the CFLAGS. For example, after my updated
-patch[1], the command line for syscall_64.o looks like this:
+Sure. I will update it in the next version. Thanks for the suggestion.
+> Best regards
+>
+> Heinrich
+>
+> >
+> >               if (l) {
+> >                       efi_bs_call(free_pages, alloc_addr, slack - l + 1);
+> >
+>
 
-gcc -Wp,-MMD,arch/x86/entry/.syscall_64.o.d  -nostdinc -isystem \
-...
--Wframe-larger-than=2048 -fstack-protector-strong \
-...
--fno-stack-protector -Wno-override-init \
--DKBUILD_MODFILE='"arch/x86/entry/syscall_64"' \
--DKBUILD_BASENAME='"syscall_64"' \
--DKBUILD_MODNAME='"syscall_64"' \
--c -o arch/x86/entry/syscall_64.o \
-arch/x86/entry/syscall_64.c
-
--Kees
-
-[1] https://lore.kernel.org/lkml/202006261333.585319CA6B@keescook/
 
 -- 
-Kees Cook
+Regards,
+Atish
