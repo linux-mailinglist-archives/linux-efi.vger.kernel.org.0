@@ -2,28 +2,28 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DBA0020AA7A
-	for <lists+linux-efi@lfdr.de>; Fri, 26 Jun 2020 04:43:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C29020AA91
+	for <lists+linux-efi@lfdr.de>; Fri, 26 Jun 2020 05:00:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728099AbgFZCnR (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 25 Jun 2020 22:43:17 -0400
-Received: from mout.gmx.net ([212.227.17.20]:42843 "EHLO mout.gmx.net"
+        id S1728236AbgFZDAh (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 25 Jun 2020 23:00:37 -0400
+Received: from mout.gmx.net ([212.227.17.20]:54461 "EHLO mout.gmx.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728132AbgFZCnQ (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Thu, 25 Jun 2020 22:43:16 -0400
+        id S1728169AbgFZDAg (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Thu, 25 Jun 2020 23:00:36 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1593139375;
-        bh=DYtHPfwpCJJKc0GqD63QONboqwpuMFw48ADI1vGBkfE=;
+        s=badeba3b8450; t=1593140426;
+        bh=kBlVHxyUp3+0RDOPOn69M6zoqhE1t52hPzBx23SEtCg=;
         h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=D9LBXStYT0ZyOfJPe078AUotHpvpwhf8u7T6/090nYLo4zv/t/yvuIaeB41sDEtHM
-         0X+58800Hz9TC1rg8vLQaLnznYmYYvELcnQEiXPqHOdIZ7MG6pfJQIVUbgUDRC7343
-         a8esRG8AVQ4orrqYxfty0FmLC0OBva/o8Ps0QObY=
+        b=B+D8ULdLAfyQIFdlt4F+q9ObaZkMv4A78fPemKtrGI2mupPwU/Qsxwq8n8yZjP5DG
+         27TOG+kUm85JT9QCT18m/PpCE8TYJdddpRuCDNItTTnFZjwAOkaXq6fSyK97+hc3tS
+         3B1u0jJA0H1ZW44Q6vfiU6lPPDc56UBkq51xVtZQ=
 X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
 Received: from [192.168.123.51] ([88.152.145.75]) by mail.gmx.com (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1N7zBb-1ikz0u2xTH-0153gH; Fri, 26
- Jun 2020 04:42:55 +0200
-Subject: Re: [RFC PATCH 01/11] efi: Fix gcc error around __umoddi3 for 32 bit
- builds
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MvsEx-1ix6D726FT-00sz8i; Fri, 26
+ Jun 2020 05:00:26 +0200
+Subject: Re: [RFC PATCH 10/11] efi: Rename arm-init to efi-init common for all
+ arch
 To:     Atish Patra <atish.patra@wdc.com>, linux-kernel@vger.kernel.org
 Cc:     Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org,
         linux-riscv@lists.infradead.org,
@@ -31,7 +31,7 @@ Cc:     Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org,
         Palmer Dabbelt <palmer@dabbelt.com>,
         linux-arm-kernel@lists.infradead.org
 References: <20200625234516.31406-1-atish.patra@wdc.com>
- <20200625234516.31406-2-atish.patra@wdc.com>
+ <20200625234516.31406-11-atish.patra@wdc.com>
 From:   Heinrich Schuchardt <xypron.glpk@gmx.de>
 Autocrypt: addr=xypron.glpk@gmx.de; prefer-encrypt=mutual; keydata=
  mQINBE2g3goBEACaikqtClH8OarLlauqv9d9CPndgghjEmi3vvPZJi4jvgrhmIUKwl7q79wG
@@ -75,82 +75,70 @@ Autocrypt: addr=xypron.glpk@gmx.de; prefer-encrypt=mutual; keydata=
  DDw0aNy1mlCv6KmJBRENfOIZBFUqXCtODPvO5TcduJV/5XuxbTR/33Zj7ez2uZkOEuTs/pPN
  oKMATC28qfg0qM59YjDrrkdXi/+iDe7qCX93XxdIxpA5YM/ZiqgwziJX8ZOKV7UDV+Ph5KwF
  lTPJMPdQZYXDOt5DjG5l5j0cQWqE05QtYR/V6g8un6V2PqOs9WzaT/RB12YFcaeWlusa8Iqs Eg==
-Message-ID: <5e2ce2ae-5458-8579-576a-76721f7d3b08@gmx.de>
-Date:   Fri, 26 Jun 2020 04:42:46 +0200
+Message-ID: <8b71b663-8a68-26f3-c806-a2873a6d8923@gmx.de>
+Date:   Fri, 26 Jun 2020 05:00:25 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.9.0
 MIME-Version: 1.0
-In-Reply-To: <20200625234516.31406-2-atish.patra@wdc.com>
+In-Reply-To: <20200625234516.31406-11-atish.patra@wdc.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:DNir3hMAMYmQ87pJwppxYJqIekpH3I3jRR832mYeUNJrc23wAOp
- HbPxmf10cNMzuii472N+t3Kj5r64eOm1lManQ01GefmPRkEx7/gDJlewZnR5XaDAczcFIVz
- pm2bNrbsZi9EavGXOCyDSgh5bazavfd3XZzPTIl+JGPvZYuS6sV2SmHuQlnjXp7dXXAlgZ7
- xpCbkt+5XAP2NRv/Zvb5A==
+X-Provags-ID: V03:K1:d8YfDH5rm/aIO6ZblpSCJcfvrT+bctc+tiI1/6xHvAvdC/Sqc1F
+ CuIXhmT2IwP7hla2TlaR62Jkuwsy6iQUrdBHhxAuf/Mb56aUi2l5xLdZhjhj546j9XTNHkf
+ YIIBM3rUjvH7ebu2Yf5c1k1ScTqK+9rPiLMIyn9DIL7cFoaZ9wq9UBug2b1vCk8izySugFa
+ NV4bwY2mL1LKS2rI4zD9Q==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:Xq8K61p4ypI=:fU2r66EwJMt+drFGGv2Ny/
- IocZxyE6K6ZixZ0rXD2jNMSWjOaS6hNqvRaeQpXiCBiWUA6ZxoTdhRBzJq/gO8xaOefbNDXjS
- 7evuYkpsRxnc5iJe31Qvr256OHjR85Lg0/dnar70YVNHt6GJl7YeB6Sui8mTlvzy9Y7ydb5l2
- g3PCW5HcKaNKgJdYo7MTxefe7NCiZjWadhO06t86x/XzSSLsU5gD67GzC5MDzX+hF1PMFbucP
- /B+iSJA2ylOMcOJ17KlQuSf0JJMYD1QpsmeGrq3rn8vruKqkh8CDPaYP6yBgAwDBnFpXOkrDw
- LK1TYKkLgsHV9ZKKMN8wxJgErkYGBB8EwPMe8diWGigebHsy1+VkCBatnA9ROs2r0cQZnA4sX
- uxygkKJROdXLW0nGaJuQywT6qIVlaHuirlFUI7sGAddCpVBV9Rk+VlASaMpRKbR6208hG/VTU
- NIdmSn9paIcZbJuTzfv+drOZ/jmysT6VzBxvEEloVcpDz5uFDAMvT4s43Yo091LuGS1AQu8oh
- sEK51ZQCdZQ2JSljiXPXsHwTl9O58QLze/yTILrhOp4GbXLNxyUlOkRe5Zyq6xdr25RhiML5J
- lxXXNZjlYaikX73NHIaDA3dupY7kakXf62qfzDlLlW17VQ/hZxu4QHhz0pgjQvLaRoFSJ/C+b
- mf6sGNRjXuZGip71whdUIsdarm7sohO2z2VBZaF3OJwJmEAFNl3rfH9r+BxqEuL7WF4auSOo/
- OvI6LUXXqUMFwoHowoLodsqpOT03EWgIZaeYS7ff/V97wI/w5I8R+SNjoSkK2X2UNHyzMT7Sr
- vl6qJLuF7wHXJMQEf1BxCmglTY344dxSG3n3ukjS7Jyz23SLdPioD+0rq2GAoXkij2HG+Q4fe
- +y9MfnO5oI2V7L1zhlIx41WQtfAbRo+p2mKSHHQEWWKEovokPVuYFeoxR2jIaxpnX0L4/WNtH
- hjOiwirrdy+v6irBzPhxy3ICQbgypxEoNvBY8KeNtAG8jZYOdePMJBr1jINcdSBJTOeEDV4FB
- iMiOe+mChG3fzIPp0Qf/bHyRleQgKl6e6ZDZdF2uZvrgrwl/YKJxS6FqHR/2LkHT7wZxaBQLU
- I4D5PfIiafYWcsn9UIKKsUqUjs27tIw51IVE3tak/ebB3Z8opl64OTvGbNxTFri2WL+C8lYxw
- 0T6Ht2YljGNLkPxKktXuUhfV4vZDZa4j8idoWlJcAMrHEC7lgwW+8PAp7BfEOI9XwHxIkJ4b+
- p1NBpPev7YIBV4/KK
+X-UI-Out-Filterresults: notjunk:1;V03:K0:+uf1dLeMudA=:zKokUI9878ek4/6pUBVw92
+ XI0JiV1GrkEaEbdT9qlI1glRS+mCpqlhi/CFgWzvdErXxbJZX0GewtoCR/H/b038f4ZO4q4iW
+ Uc4P1lk6tYpV8Mnoqt+qXC8wT9tT1JvwUDxII8tdQeV9I6J7emJW5wrBIqHUuYlG/8B0ZP57W
+ zAm4t0sqwr8fd2HWw56z0wkFjuiKwzkPgTel3PjqUJyp3t/3KmBwpyJQ221fFly2m3GrfHLA/
+ YuVnAdwWqqFdIfeTPmFjqU3d/YlUT9UR1cPIFl2uO3P9RxZScPmblzL1iq/HYgva2ssn5WzIa
+ 9fcxhfSdw2RRQ6tzO23wB6ds+WtaNKmhGFJ+yo6RYDXaHoE5XT5I/fImiQGIKOOkoa37Exgqj
+ gq5IsVoZy2kZtvgDKYJm9QUe/CwV+Q9+2VRJPS7GsHFjmL5e7fkxUYH9hxssitPJND3HSDPcp
+ Y2w3knc3z3w+fTGAoa39eyNfXJkDBWwk4cKPoWoa0Gxd8fTEnl8AQ04WzgpZP8NTTXP+qtT4A
+ C7OMuzLzs3lB4Gy7a9E4GklmU2XA5K15mVHyWs7tWSGihP6DPFZLxpXokeXX2e3roZgGT+OZA
+ 2R8ers1efV52j3evrX6d6FrvILRXvh91DaakypZ1nH2WI9FhjoN8EGtdJd17VnZQDjtHkf9K4
+ L/UlBY2mPtzn073t25mkyvO+7a6E3xdVrnBI6Sof/9hEGmdCJVCFxesLfkkXx782K50LW8nbX
+ CThv/x4bmPS8t2En1AdLxgP5YWZt2HSnAt2wu0ppNEtL+ZeRyZlrQ14ramXkG1R8drFcPaj0O
+ zqjcvoCqb064E3E4grvkkbhku+4NWDWkLaNzx+W5ifFWy6+bNHy/gyAlYfckwjVmQPIAM2VLE
+ 1mE2dIP0juXXH2JN4AYknISVvUewkxnd6krvPpHzZeyQdd4kIuaKY3aw872MLIFpkb5yySMQU
+ 2mUXlLiZJAO29qtLPMvRN36kBUt/F+e3qctD4R5dxB2o3hORn/SkoJLgenU5iiyZ7aFY2KglE
+ jaks5iC3OKlKo5tnZnabXYPHSVD4LnbARX8vHJxeTsi3qCm7KaYuYDxMe7fJJmMIlpu4CZ20h
+ Bk6S7nAjeqFReSf5cX3JZTRPxJXG8t0l+DsEwJre39F2+jcupQlWsJO/HwE/76Xv1paY+pnkJ
+ 6HesQRttpG+njtO+m3GrUMcbWBnZEAP7xDKL7JevCDuLPGyarlTJIb/QIQ2wOIM8B2J5g=
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
 On 6/26/20 1:45 AM, Atish Patra wrote:
-> 32bit gcc doesn't support modulo operation on 64 bit data. It results in
-> a __umoddi3 error while building EFI for 32 bit.
+> arm-init is responsible for setting up efi runtime and doesn't actually
+> do any ARM specific stuff. RISC-V can use the same source code as it is.
 >
-> Use bitwise operations instead of modulo operations to fix the issue.
+> Rename it to efi-init so that RISC-V can use it.
 >
 > Signed-off-by: Atish Patra <atish.patra@wdc.com>
 > ---
->  drivers/firmware/efi/libstub/alignedmem.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  drivers/firmware/efi/{arm-init.c =3D> efi-init.c} | 0
+>  1 file changed, 0 insertions(+), 0 deletions(-)
+>  rename drivers/firmware/efi/{arm-init.c =3D> efi-init.c} (100%)
 >
-> diff --git a/drivers/firmware/efi/libstub/alignedmem.c b/drivers/firmwar=
-e/efi/libstub/alignedmem.c
-> index cc89c4d6196f..1de9878ddd3a 100644
-> --- a/drivers/firmware/efi/libstub/alignedmem.c
-> +++ b/drivers/firmware/efi/libstub/alignedmem.c
-> @@ -44,7 +44,7 @@ efi_status_t efi_allocate_pages_aligned(unsigned long =
-size, unsigned long *addr,
->  	*addr =3D ALIGN((unsigned long)alloc_addr, align);
+> diff --git a/drivers/firmware/efi/arm-init.c b/drivers/firmware/efi/efi-=
+init.c
+> similarity index 100%
+> rename from drivers/firmware/efi/arm-init.c
+> rename to drivers/firmware/efi/efi-init.c
 >
->  	if (slack > 0) {
-> -		int l =3D (alloc_addr % align) / EFI_PAGE_SIZE;
-> +		int l =3D (alloc_addr & (align - 1)) / EFI_PAGE_SIZE;
 
-Here you rely on the compiler to silently convert the division by
-EFI_PAGE_SIZE into a right shift. Wouldn't it be cleaner to use
-EFI_PAGE_SHIFT to explicitly avoid a dependency on __udivdi3()?
+After each patch we should have code that builds. This helps when
+bisecting. Therefore I would have expected an adjustment of
+drivers/firmware/efi/Makefile in this patch and not in patch 11/11:
 
-slack =3D (align >> EFI_PAGE_SHIFT) - 1;
-...
-int l =3D (alloc_addr & (align - 1)) >> EFI_PAGE_SHIFT;
+-arm-obj-$(CONFIG_EFI)			:=3D arm-init.o arm-runtime.o
++arm-obj-$(CONFIG_EFI)			:=3D efi-init.o arm-runtime.o
 
 Best regards
 
 Heinrich
-
->
->  		if (l) {
->  			efi_bs_call(free_pages, alloc_addr, slack - l + 1);
->
 
