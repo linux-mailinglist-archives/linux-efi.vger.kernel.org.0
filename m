@@ -2,94 +2,129 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 276C320BC1B
-	for <lists+linux-efi@lfdr.de>; Sat, 27 Jun 2020 00:04:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 55FB320BFD2
+	for <lists+linux-efi@lfdr.de>; Sat, 27 Jun 2020 09:39:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725854AbgFZWD7 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 26 Jun 2020 18:03:59 -0400
-Received: from mail.kernel.org ([198.145.29.99]:45076 "EHLO mail.kernel.org"
+        id S1725926AbgF0HjQ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 27 Jun 2020 03:39:16 -0400
+Received: from mail.kernel.org ([198.145.29.99]:45578 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725803AbgFZWD7 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Fri, 26 Jun 2020 18:03:59 -0400
-Received: from mail-oi1-f179.google.com (mail-oi1-f179.google.com [209.85.167.179])
+        id S1725885AbgF0HjQ (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Sat, 27 Jun 2020 03:39:16 -0400
+Received: from mail-ot1-f49.google.com (mail-ot1-f49.google.com [209.85.210.49])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 631B02089D;
-        Fri, 26 Jun 2020 22:03:58 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id B3C4520706;
+        Sat, 27 Jun 2020 07:39:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1593209038;
-        bh=WOQTvXobQ4W5JjaUMq7kWZE0jMQeOGk5MGW4rZFNYmQ=;
+        s=default; t=1593243555;
+        bh=r4RD6Yj/wh2sz/DvMIH7PYJ2ZmuZh6S/3C/0plRZHQ4=;
         h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=FJoUvBwf+2SSHz2fr5vxPYd6aoefwHL0tlm86G/9+r8GmMcp2ZfwG8v/QP7defuDT
-         D6lsId8SoNK8CT/QFVljdlp7a2LKRNtj3CK7eEWI766szCKWXBke3IKnvh4VpFJvxX
-         DKoi6BJrlVFKVMovm4nd8G3e0rQBjBfAenxKjkPE=
-Received: by mail-oi1-f179.google.com with SMTP id k4so9332362oik.2;
-        Fri, 26 Jun 2020 15:03:58 -0700 (PDT)
-X-Gm-Message-State: AOAM5308w1Yb/XT7UKtcwSKFIgbRW2pJ7IzRgfo6kYgCPCk6Xf5Ao4AX
-        UZGQBxQW5rAu8k34QGjVdAF9JQLu2NuQ3QcpBUg=
-X-Google-Smtp-Source: ABdhPJyA7RXVNdsucLUlBYRk00ByTmKYmzuM59N4650Dy8dEYBHPZ8+pPQ4fBTN9TdwDgfB6PHfzTHaYzf0UmhXyeYs=
-X-Received: by 2002:aca:ba03:: with SMTP id k3mr4145023oif.33.1593209037748;
- Fri, 26 Jun 2020 15:03:57 -0700 (PDT)
+        b=WG3304fCrTrmJmQRNYNog6nBl+KU0DNsUIiKj8/w7U3rhj+ofgs7Y8SU9wSHpV8MO
+         BzWjh8ivi3P/Jxq+voVMcawJPpk/m0JdlwbDwoxcyhMjG3Br8J+9ReZG+pYec2eTXu
+         y+c0ZgpdA2pEvnfuoAThP5H5WqWcjENLfz9hX7ig=
+Received: by mail-ot1-f49.google.com with SMTP id n6so10792474otl.0;
+        Sat, 27 Jun 2020 00:39:15 -0700 (PDT)
+X-Gm-Message-State: AOAM531zf0cL8luvRStNUyqDR0HTqKnaE0LATXeHJfX47T8MWk7Sv0iA
+        wJa3qZl2wZWDd6MzD1V87eZjEph2if8RYgMdwpg=
+X-Google-Smtp-Source: ABdhPJzeBH5EvyZjQDcTyVYTObiSzPCIBclsABXsIUoqdBDzUWJ3e34H/Xvj4eW1+AEASg5Hn1rBFpCLMASWNOqaXs8=
+X-Received: by 2002:a9d:4a8f:: with SMTP id i15mr5881966otf.77.1593243555117;
+ Sat, 27 Jun 2020 00:39:15 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200625234516.31406-1-atish.patra@wdc.com> <20200625234516.31406-2-atish.patra@wdc.com>
- <5e2ce2ae-5458-8579-576a-76721f7d3b08@gmx.de> <CAOnJCUKnB7kLdTh1-NaFNw4p6EammETzhUa-Uniq2rrC-7AaQg@mail.gmail.com>
-In-Reply-To: <CAOnJCUKnB7kLdTh1-NaFNw4p6EammETzhUa-Uniq2rrC-7AaQg@mail.gmail.com>
+References: <20200626185913.92890-1-masahiroy@kernel.org> <20200626185913.92890-2-masahiroy@kernel.org>
+In-Reply-To: <20200626185913.92890-2-masahiroy@kernel.org>
 From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Sat, 27 Jun 2020 00:03:46 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXFyQiYPYB-81POq7agRW1ROt=2j3nN9wcpHGmr4YjmFCQ@mail.gmail.com>
-Message-ID: <CAMj1kXFyQiYPYB-81POq7agRW1ROt=2j3nN9wcpHGmr4YjmFCQ@mail.gmail.com>
-Subject: Re: [RFC PATCH 01/11] efi: Fix gcc error around __umoddi3 for 32 bit builds
-To:     Atish Patra <atishp@atishpatra.org>
-Cc:     Heinrich Schuchardt <xypron.glpk@gmx.de>,
-        Atish Patra <atish.patra@wdc.com>,
-        "linux-kernel@vger.kernel.org List" <linux-kernel@vger.kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        linux-riscv <linux-riscv@lists.infradead.org>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>
+Date:   Sat, 27 Jun 2020 09:39:03 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXGsJsU-zbsuWi4O46XqE71DRdKOX1MeC5ndnE+j9Nw7Cw@mail.gmail.com>
+Message-ID: <CAMj1kXGsJsU-zbsuWi4O46XqE71DRdKOX1MeC5ndnE+j9Nw7Cw@mail.gmail.com>
+Subject: Re: [PATCH 2/2] kbuild: remove cc-option test of -ffreestanding
+To:     Masahiro Yamada <masahiroy@kernel.org>
+Cc:     linux-kbuild@vger.kernel.org,
+        clang-built-linux <clang-built-linux@googlegroups.com>,
+        X86 ML <x86@kernel.org>, linux-efi <linux-efi@vger.kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, 26 Jun 2020 at 23:56, Atish Patra <atishp@atishpatra.org> wrote:
+On Fri, 26 Jun 2020 at 21:00, Masahiro Yamada <masahiroy@kernel.org> wrote:
 >
-> On Thu, Jun 25, 2020 at 7:43 PM Heinrich Schuchardt <xypron.glpk@gmx.de> wrote:
-> >
-> > On 6/26/20 1:45 AM, Atish Patra wrote:
-> > > 32bit gcc doesn't support modulo operation on 64 bit data. It results in
-> > > a __umoddi3 error while building EFI for 32 bit.
-> > >
-> > > Use bitwise operations instead of modulo operations to fix the issue.
-> > >
-> > > Signed-off-by: Atish Patra <atish.patra@wdc.com>
-> > > ---
-> > >  drivers/firmware/efi/libstub/alignedmem.c | 2 +-
-> > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > >
-> > > diff --git a/drivers/firmware/efi/libstub/alignedmem.c b/drivers/firmware/efi/libstub/alignedmem.c
-> > > index cc89c4d6196f..1de9878ddd3a 100644
-> > > --- a/drivers/firmware/efi/libstub/alignedmem.c
-> > > +++ b/drivers/firmware/efi/libstub/alignedmem.c
-> > > @@ -44,7 +44,7 @@ efi_status_t efi_allocate_pages_aligned(unsigned long size, unsigned long *addr,
-> > >       *addr = ALIGN((unsigned long)alloc_addr, align);
-> > >
-> > >       if (slack > 0) {
-> > > -             int l = (alloc_addr % align) / EFI_PAGE_SIZE;
-> > > +             int l = (alloc_addr & (align - 1)) / EFI_PAGE_SIZE;
-> >
-> > Here you rely on the compiler to silently convert the division by
-> > EFI_PAGE_SIZE into a right shift. Wouldn't it be cleaner to use
-> > EFI_PAGE_SHIFT to explicitly avoid a dependency on __udivdi3()?
-> >
-> > slack = (align >> EFI_PAGE_SHIFT) - 1;
-> > ...
-> > int l = (alloc_addr & (align - 1)) >> EFI_PAGE_SHIFT;
-> >
+> Some Makefiles already pass -ffreestanding unconditionally.
+> For example, arch/arm64/lib/Makefile, arch/x86/purgatory/Makefile.
+> No problem report so far about hard-coding this option. So, we can
+> assume all supported compilers know -ffreestanding.
 >
-> Sure. I will update it in the next version. Thanks for the suggestion.
+> I confirmed GCC 4.8 and Clang manuals document this option.
+>
+> Get rid of cc-option from -ffreestanding.
+>
+> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 
-Please don't. Dividing by EFI_PAGE_SIZE is perfectly fine, and is more readable.
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
+
+> ---
+>
+>  arch/s390/Makefile                    | 2 +-
+>  arch/x86/Makefile                     | 2 +-
+>  arch/x86/boot/compressed/Makefile     | 2 +-
+>  drivers/firmware/efi/libstub/Makefile | 2 +-
+>  4 files changed, 4 insertions(+), 4 deletions(-)
+>
+> diff --git a/arch/s390/Makefile b/arch/s390/Makefile
+> index 8dfa2cf1f05c..ba94b03c8b2f 100644
+> --- a/arch/s390/Makefile
+> +++ b/arch/s390/Makefile
+> @@ -27,7 +27,7 @@ KBUILD_CFLAGS_DECOMPRESSOR := $(CLANG_FLAGS) -m64 -O2
+>  KBUILD_CFLAGS_DECOMPRESSOR += -DDISABLE_BRANCH_PROFILING -D__NO_FORTIFY
+>  KBUILD_CFLAGS_DECOMPRESSOR += -fno-delete-null-pointer-checks -msoft-float
+>  KBUILD_CFLAGS_DECOMPRESSOR += -fno-asynchronous-unwind-tables
+> -KBUILD_CFLAGS_DECOMPRESSOR += $(call cc-option,-ffreestanding)
+> +KBUILD_CFLAGS_DECOMPRESSOR += -ffreestanding
+>  KBUILD_CFLAGS_DECOMPRESSOR += $(call cc-disable-warning, address-of-packed-member)
+>  KBUILD_CFLAGS_DECOMPRESSOR += $(if $(CONFIG_DEBUG_INFO),-g)
+>  KBUILD_CFLAGS_DECOMPRESSOR += $(if $(CONFIG_DEBUG_INFO_DWARF4), $(call cc-option, -gdwarf-4,))
+> diff --git a/arch/x86/Makefile b/arch/x86/Makefile
+> index 89c3cdfba753..edc68538a04e 100644
+> --- a/arch/x86/Makefile
+> +++ b/arch/x86/Makefile
+> @@ -36,7 +36,7 @@ REALMODE_CFLAGS       := $(M16_CFLAGS) -g -Os -DDISABLE_BRANCH_PROFILING \
+>                    -fno-strict-aliasing -fomit-frame-pointer -fno-pic \
+>                    -mno-mmx -mno-sse
+>
+> -REALMODE_CFLAGS += $(call __cc-option, $(CC), $(REALMODE_CFLAGS), -ffreestanding)
+> +REALMODE_CFLAGS += -ffreestanding
+>  REALMODE_CFLAGS += -fno-stack-protector
+>  REALMODE_CFLAGS += $(call __cc-option, $(CC), $(REALMODE_CFLAGS), -Wno-address-of-packed-member)
+>  REALMODE_CFLAGS += $(call __cc-option, $(CC), $(REALMODE_CFLAGS), $(cc_stack_align4))
+> diff --git a/arch/x86/boot/compressed/Makefile b/arch/x86/boot/compressed/Makefile
+> index c88a31569a5e..b7beabecef8a 100644
+> --- a/arch/x86/boot/compressed/Makefile
+> +++ b/arch/x86/boot/compressed/Makefile
+> @@ -35,7 +35,7 @@ cflags-$(CONFIG_X86_32) := -march=i386
+>  cflags-$(CONFIG_X86_64) := -mcmodel=small
+>  KBUILD_CFLAGS += $(cflags-y)
+>  KBUILD_CFLAGS += -mno-mmx -mno-sse
+> -KBUILD_CFLAGS += $(call cc-option,-ffreestanding)
+> +KBUILD_CFLAGS += -ffreestanding
+>  KBUILD_CFLAGS += -fno-stack-protector
+>  KBUILD_CFLAGS += $(call cc-disable-warning, address-of-packed-member)
+>  KBUILD_CFLAGS += $(call cc-disable-warning, gnu)
+> diff --git a/drivers/firmware/efi/libstub/Makefile b/drivers/firmware/efi/libstub/Makefile
+> index f8418763cd79..296b18fbd7a2 100644
+> --- a/drivers/firmware/efi/libstub/Makefile
+> +++ b/drivers/firmware/efi/libstub/Makefile
+> @@ -28,7 +28,7 @@ cflags-$(CONFIG_EFI_GENERIC_STUB) += -I$(srctree)/scripts/dtc/libfdt
+>  KBUILD_CFLAGS                  := $(cflags-y) -Os -DDISABLE_BRANCH_PROFILING \
+>                                    -include $(srctree)/drivers/firmware/efi/libstub/hidden.h \
+>                                    -D__NO_FORTIFY \
+> -                                  $(call cc-option,-ffreestanding) \
+> +                                  -ffreestanding \
+>                                    -fno-stack-protector \
+>                                    $(call cc-option,-fno-addrsig) \
+>                                    -D__DISABLE_EXPORTS
+> --
+> 2.25.1
+>
