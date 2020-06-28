@@ -2,98 +2,71 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B9D1120C9DC
-	for <lists+linux-efi@lfdr.de>; Sun, 28 Jun 2020 21:26:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 206E820C9E1
+	for <lists+linux-efi@lfdr.de>; Sun, 28 Jun 2020 21:34:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726675AbgF1T06 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sun, 28 Jun 2020 15:26:58 -0400
-Received: from mail.kernel.org ([198.145.29.99]:43064 "EHLO mail.kernel.org"
+        id S1726735AbgF1Te4 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sun, 28 Jun 2020 15:34:56 -0400
+Received: from mail.skyhub.de ([5.9.137.197]:40816 "EHLO mail.skyhub.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726668AbgF1T06 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Sun, 28 Jun 2020 15:26:58 -0400
-Received: from mail-ot1-f46.google.com (mail-ot1-f46.google.com [209.85.210.46])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        id S1726712AbgF1Te4 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Sun, 28 Jun 2020 15:34:56 -0400
+Received: from zn.tnic (p200300ec2f364000d578d82a00a34978.dip0.t-ipconnect.de [IPv6:2003:ec:2f36:4000:d578:d82a:a3:4978])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C2C82206C3;
-        Sun, 28 Jun 2020 19:26:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1593372417;
-        bh=eWgU1bHWpQJKynygq8SlOlQDfursoSl2F7Isuu/6Qus=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=LbyoDRpY+UhUHP6xya03mwMz6oDtFM2dPXfOeC95PU28nxzOnKyUOyAgvahh4SCoX
-         Oov1mfKve0EmU4KUD1PjpJWoSTNR2TtML4otIW6vXcr/mf5iEw/j4TNHJjnMf7bbwe
-         dr4C1qAOdf68dXjjTQqSjBhc8f+mkZDFTqtlEgMQ=
-Received: by mail-ot1-f46.google.com with SMTP id m2so13532549otr.12;
-        Sun, 28 Jun 2020 12:26:57 -0700 (PDT)
-X-Gm-Message-State: AOAM533Nihk3+ZORS+uoOpiboGCl8aHjYSSGOnPNWNfRsGVch7ICpvL3
-        jhkvtoRVG5mOjsdK9q/NO1/LhdOElw6Z4OVcAvs=
-X-Google-Smtp-Source: ABdhPJzHm78KxQmwfUdKJ61L9yWPm+1u8mItRetBQKMqn1UtdPfgN72AKu4cuwEHkE6DARtuG77pEUnsfaHlMpAsJVY=
-X-Received: by 2002:a9d:688:: with SMTP id 8mr10661896otx.108.1593372417154;
- Sun, 28 Jun 2020 12:26:57 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200628182601.GA84577@gmail.com> <CAHk-=wgD+q+oDdtukYC74_cDX5i0Ynf0GLhuNe2Faaokejj6fQ@mail.gmail.com>
-In-Reply-To: <CAHk-=wgD+q+oDdtukYC74_cDX5i0Ynf0GLhuNe2Faaokejj6fQ@mail.gmail.com>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Sun, 28 Jun 2020 21:26:45 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXFfLb44ifgNqBR9WM5T6sT6ekqS8cYdvbuhvs5mqcD+tw@mail.gmail.com>
-Message-ID: <CAMj1kXFfLb44ifgNqBR9WM5T6sT6ekqS8cYdvbuhvs5mqcD+tw@mail.gmail.com>
-Subject: Re: [GIT PULL] EFI fixes
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Ingo Molnar <mingo@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 9AA001EC0281;
+        Sun, 28 Jun 2020 21:34:54 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1593372894;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=Egwy2nAygP406z6NkgtK8coh3gIYkj0Hy/+KHc6DRXw=;
+        b=J82GBzH/ovJ0DEhuRstjisUR7KF3G5Hl4eM3VXZ9GPJvNW3MB3yblZFGJe9s96NBtz7OR3
+        0gtzTKKm6K2beyDo6RTtcy9HoR0cBaIA8sj8Tuw8EZUEHxtq5Bj0j9zsQd0iTwN4QRoHP0
+        qRfQLRYALwyAm5iDjHV17QRA7B+LCtg=
+Date:   Sun, 28 Jun 2020 21:34:48 +0200
+From:   Borislav Petkov <bp@alien8.de>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Ingo Molnar <mingo@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Borislav Petkov <bp@alien8.de>,
         Peter Zijlstra <a.p.zijlstra@chello.nl>,
         linux-efi <linux-efi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [GIT PULL] EFI fixes
+Message-ID: <20200628193448.GD18730@zn.tnic>
+References: <20200628182601.GA84577@gmail.com>
+ <CAHk-=wgD+q+oDdtukYC74_cDX5i0Ynf0GLhuNe2Faaokejj6fQ@mail.gmail.com>
+ <CAMj1kXFfLb44ifgNqBR9WM5T6sT6ekqS8cYdvbuhvs5mqcD+tw@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAMj1kXFfLb44ifgNqBR9WM5T6sT6ekqS8cYdvbuhvs5mqcD+tw@mail.gmail.com>
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Sun, 28 Jun 2020 at 20:57, Linus Torvalds
-<torvalds@linux-foundation.org> wrote:
->
-> On Sun, Jun 28, 2020 at 11:26 AM Ingo Molnar <mingo@kernel.org> wrote:
-> >
-> > - Fix build regression on v4.8 and older
->
-> Interesting.
->
-> It's perhaps yet another reason to just skip gcc-4.8 too, since
-> apparently 4.9 works.
->
+On Sun, Jun 28, 2020 at 09:26:45PM +0200, Ard Biesheuvel wrote:
+> Arnd may know more, but I know one of the reasons 4.8 is significant
+> is because RHEL 7 uses it, which will go EOL in 2024.
 
-+1
+Yeah, I always question the relevance of this argument because distros:
 
-> gcc-4.9 really has a lot of advantages. It's where (I think) gcc
-> basically supports all C11 things, including _Generic() but also
-> __auto_type.
->
-> So if we just say that we only care about gcc-4.9 upwards, it frees us
-> to clean up some (really) old constructions where we've been using
-> macros with sizeof and/or typeof, and make the code potentially rather
-> more readable and often more compact.
->
-> Yeah, I know we _just_ made the minimum compiler version be 4.8, but I
-> do get the feeling that we should just have bitten the bullet and gone
-> all the way to 4.9.
->
-> Arnd, what was the reason for 4.8 support? I'm assuming there's some
-> sad unfortunate distro that still uses that ancient compiler..
->
+* backport fixes for the compiler so gcc-4.8 in the distro is not always
+upstream gcc-4.8
 
-Arnd may know more, but I know one of the reasons 4.8 is significant
-is because RHEL 7 uses it, which will go EOL in 2024.
+* they build the distro kernel with that compiler and former is
+something old.
 
-> Ok, ok, 4.9 isn't exactly new either (4.9.0 released May 2014, and
-> final 4.9 release was 2016), but 4.9 really from a feature angle is a
-> much saner thing than 4.8.
->
-> Afaik, the main "interesting" part of gcc-4.8 was that it was when gcc
-> switched over to be built as C++. That's perhaps a huge milestone for
-> gcc itself, but not necessarily for the users..
->
-> Arnd? You're the one who tends to keep track of these things..
->
->              Linus
+Yeah, it can happen that some backported patch has trouble building with
+the distro compiler but that is kinda seldom.
+
+IMHO, of course.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
