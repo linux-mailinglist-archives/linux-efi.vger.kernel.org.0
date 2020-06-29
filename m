@@ -2,58 +2,57 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B48CC20DEDA
-	for <lists+linux-efi@lfdr.de>; Mon, 29 Jun 2020 23:53:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 739A720E15C
+	for <lists+linux-efi@lfdr.de>; Mon, 29 Jun 2020 23:58:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733310AbgF2U3v (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 29 Jun 2020 16:29:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55952 "EHLO
+        id S2389775AbgF2Uyy (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 29 Jun 2020 16:54:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60092 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732239AbgF2U3u (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 29 Jun 2020 16:29:50 -0400
-Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com [IPv6:2607:f8b0:4864:20::441])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D9D9C061755
-        for <linux-efi@vger.kernel.org>; Mon, 29 Jun 2020 13:29:50 -0700 (PDT)
-Received: by mail-pf1-x441.google.com with SMTP id u5so8386970pfn.7
-        for <linux-efi@vger.kernel.org>; Mon, 29 Jun 2020 13:29:50 -0700 (PDT)
+        with ESMTP id S1729267AbgF2Uyw (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 29 Jun 2020 16:54:52 -0400
+Received: from mail-qk1-x744.google.com (mail-qk1-x744.google.com [IPv6:2607:f8b0:4864:20::744])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5506C061755;
+        Mon, 29 Jun 2020 13:54:51 -0700 (PDT)
+Received: by mail-qk1-x744.google.com with SMTP id b4so16599606qkn.11;
+        Mon, 29 Jun 2020 13:54:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=1nXbjmGuO9YghPzUiSigrzs5/9GT5Q6NNhUBnZ5BL6o=;
-        b=eQJ4C1Og5DxGMyP8fWLcdR8Z3CwksZFnIGnuQop7YqAIDkKSYG4ONb22hCetVI2dMa
-         XlTHs1YnKZwKbNTsc1vYgLQApn6CEsy11cVvAH0W8MA9tpog/jILDFawLHvAbnz6wbLc
-         MOr/DpyFN5amUZuAcTF6xCkw3l5ZA5IZ2aVkLt4pQ4hbAulAODM2O4kjrlBTBDFdFrsk
-         HN+QhWO3ClmIpA86xpuWF6l/Rt/cKlJGag5/A6V0kEXZvqbq1uaiEQ7D74BMh9YiBgqt
-         uN/F18cFPt8yiVVK3bgo2KkS/XgGaS4veeK+BkZYPP8LfdLBnFFHKYruXHYXkltdQrqW
-         5tFQ==
+        d=gmail.com; s=20161025;
+        h=sender:from:date:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=9HwG2hptkvSOrRKZDzSfX9HShvoVlZLEE89Q4pxGwKg=;
+        b=s+op9n5qGA+glqVosZzqTbnD2UvIqP3N7tNJyJ/kireTnyE28fdGxODM2aWtaXNSAC
+         t29PEGKsQHLLcaLTDHrNrMGtDXQ8YlfqGe+c+vcrvwaDrgsSi88W6vRLEzpzcdDlh1g1
+         QHWPA5CGNY+wCzuiB7BwRCYt59ZK5WRsL+IHULDPubTQnwZk71cECIxPIFoh0bWOx0AX
+         /M+hABUsvTA9G3EtAnMYeuCjL++xxyOyaLYBGYECi236pOeEmU39iaMolrQnh8DN/7QZ
+         fLO9TQVNO2jTJAUWFk/FzhFWKlPslVJzS9+zm8yEdDZJyYFUieqf87rZqYhOeAHzoYly
+         n1Lg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=1nXbjmGuO9YghPzUiSigrzs5/9GT5Q6NNhUBnZ5BL6o=;
-        b=GdnjHE/eGEt3xhZvh2dxiwqb0hLDNUQQAlubkdKmDSZQhF9hrEZDoDhp0ea9YZUgcD
-         mHy9ioVp2D738uRyl6KS2DL77xQk46/QNaMGPuFJiD5ogk5n8DcOgVaezkJO7l+5mVy4
-         1ZldeWAo8X+OOI5sR9RYTi+rj46tWe1m01Ayfv9ZZrrSlWtQ0FJCw7U162rZSXPzIZY9
-         D9C9uIvYy6VnvNMYRWWDL7o5Lmadc+tdDqAszS/uuXhM931FYRJD9Ymuv4hsTQDybfV3
-         NFV1Sz4F145sjrgtCDdf5p/orx4mHaTBMq9hRUhL38vSYI1lnqalFhPpadQSAzjJwI+K
-         W0bQ==
-X-Gm-Message-State: AOAM531WssWU3ZoLwMaAbH4yDcohAa+rZYmZI31Z7+Vef+oLn69CsuWh
-        OAHlWQwI1MFdUYXaYbPr39ujIT/pGL2DavqAbucDEg==
-X-Google-Smtp-Source: ABdhPJwv6SUxAiJU3OMeQLtrnFcvI/h1iY82pIlt6qbyAGsh50kqhWEDWLaUBKiAJzLF7/INflMcJGpqQT2M4cbcb6s=
-X-Received: by 2002:a05:6a00:15ca:: with SMTP id o10mr16122175pfu.169.1593462589513;
- Mon, 29 Jun 2020 13:29:49 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200629061840.4065483-1-keescook@chromium.org>
- <20200629061840.4065483-9-keescook@chromium.org> <CAKwvOd=r6bsBfSZxVYrnbm1Utq==ApWBDjx+0Fxsm90Aq3Jghw@mail.gmail.com>
- <9b7f9c3aed7223e49def6e775d3b250aa780e562.camel@perches.com>
-In-Reply-To: <9b7f9c3aed7223e49def6e775d3b250aa780e562.camel@perches.com>
-From:   Nick Desaulniers <ndesaulniers@google.com>
-Date:   Mon, 29 Jun 2020 13:29:38 -0700
-Message-ID: <CAKwvOdnOCEZ8LUEY6+gVcTcNuaabRnj4hXG6-pcb_6fcQJsr6w@mail.gmail.com>
-Subject: Re: [PATCH v4 08/17] arm64/mm: Remove needless section quotes
-To:     Joe Perches <joe@perches.com>
-Cc:     Kees Cook <keescook@chromium.org>, Will Deacon <will@kernel.org>,
+        h=x-gm-message-state:sender:from:date:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to;
+        bh=9HwG2hptkvSOrRKZDzSfX9HShvoVlZLEE89Q4pxGwKg=;
+        b=a6P9aBw6ZvyY1aUxOAbqGC068wgG9pVGQ+NOs8CscNDMTkDpmw7E60UZUjtP5CQ/ar
+         86QhKW05giGa1LhLVhc50evPVW8NvD4qtHhToVPHAmHRnHmBZhAoxvyl7TObS6uovWM3
+         wb/Rcl9JLbbE28d52D4EnC9JU0/ld6CjfWWOG9WsodY1o66CGuydB4IbvLiWTycH+Gow
+         C9PEaz1SAkcjO7je2cjqvh9zHz5CEDZI+GwlFWzuOZ+teEWT8h5nrVv7+WXuJlcvyVJM
+         7p6pzWF5LgaJ/vT5MUp5jEXYcwmf5Wn1fgVjGgJRouHgIL30wwh3XclMUPiRgM1MEIUN
+         jyYg==
+X-Gm-Message-State: AOAM532F7a7ulxVRuSVLcI6Q09ce0RqPDjefG4bh3D14vO/dV3GNZBF0
+        0eHfUZb2UWUBl19HN1mqtXc=
+X-Google-Smtp-Source: ABdhPJzhU0UkI4NLmVT8XqBz5+IwnGuJPy0JQVzhW8zoa0QRRRLDmRVoyW3MbJrOFD6WdNnoAHaCyg==
+X-Received: by 2002:ae9:efc7:: with SMTP id d190mr16745385qkg.212.1593464090890;
+        Mon, 29 Jun 2020 13:54:50 -0700 (PDT)
+Received: from rani.riverdale.lan ([2001:470:1f07:5f3::b55f])
+        by smtp.gmail.com with ESMTPSA id i22sm964461qki.4.2020.06.29.13.54.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 29 Jun 2020 13:54:50 -0700 (PDT)
+From:   Arvind Sankar <nivedita@alum.mit.edu>
+X-Google-Original-From: Arvind Sankar <arvind@rani.riverdale.lan>
+Date:   Mon, 29 Jun 2020 16:54:48 -0400
+To:     Kees Cook <keescook@chromium.org>
+Cc:     Nick Desaulniers <ndesaulniers@google.com>,
+        Will Deacon <will@kernel.org>,
         Catalin Marinas <catalin.marinas@arm.com>,
         Mark Rutland <mark.rutland@arm.com>,
         Ard Biesheuvel <ardb@kernel.org>,
@@ -72,39 +71,71 @@ Cc:     Kees Cook <keescook@chromium.org>, Will Deacon <will@kernel.org>,
         linux-arch <linux-arch@vger.kernel.org>,
         linux-efi <linux-efi@vger.kernel.org>,
         Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        LKML <linux-kernel@vger.kernel.org>,
+        Joe Perches <joe@perches.com>
+Subject: Re: [PATCH v4 08/17] arm64/mm: Remove needless section quotes
+Message-ID: <20200629205448.GA1474367@rani.riverdale.lan>
+References: <20200629061840.4065483-1-keescook@chromium.org>
+ <20200629061840.4065483-9-keescook@chromium.org>
+ <CAKwvOd=r6bsBfSZxVYrnbm1Utq==ApWBDjx+0Fxsm90Aq3Jghw@mail.gmail.com>
+ <202006291301.46FEF3B7@keescook>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <202006291301.46FEF3B7@keescook>
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Mon, Jun 29, 2020 at 1:03 PM Joe Perches <joe@perches.com> wrote:
->
-> On Mon, 2020-06-29 at 12:53 -0700, Nick Desaulniers wrote:
+On Mon, Jun 29, 2020 at 01:04:31PM -0700, Kees Cook wrote:
+> On Mon, Jun 29, 2020 at 12:53:47PM -0700, Nick Desaulniers wrote:
 > > On Sun, Jun 28, 2020 at 11:18 PM Kees Cook <keescook@chromium.org> wrote:
+> > >
 > > > Fix a case of needless quotes in __section(), which Clang doesn't like.
 > > >
 > > > Acked-by: Will Deacon <will@kernel.org>
 > > > Signed-off-by: Kees Cook <keescook@chromium.org>
-> >
+> > 
 > > Yep, I remember bugs from this.  Probably should scan the kernel for
 > > other instances of this.  +Joe for checkpatch.pl validation.
+> 
+> I think the others are safe because they're in macros:
+
+Why does that make it safe -- the commit msg is a bit sparse, but I
+assume the problem is that it generates
+	__attribute__((__section__("\".foo\"")))
+from
+	__section(".foo")
+after preprocessing, and clang keeps the quotes in the section name when
+generating assembly, while gcc appears to strip them off.
+
+It does that even if nested in another macro, no?
+
+> 
+> $ git grep -4 '__section("'
+> include/linux/compiler.h-# define KENTRY(sym)                                           \
+
+Am I missing something, or is KENTRY unused in the tree?
+
+> include/linux/compiler.h-       extern typeof(sym) sym;                                 \
+> include/linux/compiler.h-       static const unsigned long __kentry_##sym               \
+> include/linux/compiler.h-       __used                                                  \
+> include/linux/compiler.h:       __section("___kentry" "+" #sym )                        \
+> include/linux/compiler.h-       = (unsigned long)&sym;
+> --
+> include/linux/export.h-#define __ksym_marker(sym)       \
+> include/linux/export.h: static int __ksym_marker_##sym[0] __section(".discard.ksym") __used
+> --
+> include/linux/srcutree.h-# define __DEFINE_SRCU(name, is_static)                                \
+> include/linux/srcutree.h-       is_static struct srcu_struct name;                              \
+> include/linux/srcutree.h-       struct srcu_struct * const __srcu_struct_##name                 \
+> include/linux/srcutree.h:               __section("___srcu_struct_ptrs") = &name
+> 
+> 
 > > Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
->
-> $ git grep -P -n '__section\s*\(\s*\"'
-> arch/arm64/mm/mmu.c:45:u64 __section(".mmuoff.data.write") vabits_actual;
-> include/linux/compiler.h:211:   __section("___kentry" "+" #sym )                        \
-> include/linux/export.h:133:     static int __ksym_marker_##sym[0] __section(".discard.ksym") __used
-> include/linux/srcutree.h:127:           __section("___srcu_struct_ptrs") = &name
->
-> My recollection is I submitted a patch
-> to _add_ quotes
->
-> https://lore.kernel.org/patchwork/patch/1125785/
-
-Hey, yeah!  Did you end up sending v2?
-
--- 
-Thanks,
-~Nick Desaulniers
+> 
+> Thanks!
+> 
+> -- 
+> Kees Cook
