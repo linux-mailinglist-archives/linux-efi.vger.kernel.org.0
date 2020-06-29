@@ -2,103 +2,72 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C01F820D7D6
-	for <lists+linux-efi@lfdr.de>; Mon, 29 Jun 2020 22:08:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F094C20D5FB
+	for <lists+linux-efi@lfdr.de>; Mon, 29 Jun 2020 22:04:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732303AbgF2TdT (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 29 Jun 2020 15:33:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46780 "EHLO
+        id S1728050AbgF2TQv (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 29 Jun 2020 15:16:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44004 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1733227AbgF2Tco (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 29 Jun 2020 15:32:44 -0400
-Received: from mail-qk1-x743.google.com (mail-qk1-x743.google.com [IPv6:2607:f8b0:4864:20::743])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5E64C0307AD;
-        Mon, 29 Jun 2020 08:54:04 -0700 (PDT)
-Received: by mail-qk1-x743.google.com with SMTP id c30so11812501qka.10;
-        Mon, 29 Jun 2020 08:54:04 -0700 (PDT)
+        with ESMTP id S1731887AbgF2TQC (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 29 Jun 2020 15:16:02 -0400
+Received: from mail-io1-xd42.google.com (mail-io1-xd42.google.com [IPv6:2607:f8b0:4864:20::d42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBF3BC08C5F4
+        for <linux-efi@vger.kernel.org>; Mon, 29 Jun 2020 12:16:01 -0700 (PDT)
+Received: by mail-io1-xd42.google.com with SMTP id f6so2782030ioj.5
+        for <linux-efi@vger.kernel.org>; Mon, 29 Jun 2020 12:16:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=sender:from:date:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=aJxCpiw45uiFCKFF/Aa3ZwVBKPmiXfb3oRMSPK0K9jk=;
-        b=BZU/9VIc2Y6E9fhw3s/Nvu9omCHAjFS6JaJV5N4AxmLYc8SJERh++jMh8hnkBkk5Rj
-         nj3dy4P+rSnq/nKutiHVABK5OvmhyQTpqlnRoybjbMehxbS3dchjXD/bXVVgiUic9uiX
-         9KEIZ9SFZNWU1A1IkKVOam+79epkd7faiaeumhjdsOfstN/OVNInEuKXfKQx/sEHHahv
-         RB+f8/hLrG2qOALMJ24yNYyH+tfgwNzIZCerrom8AQJZpijMe2n8a1SdwL5fPMpUqUXp
-         m3eWJnS1YrcNRqYOxz41DsFZ6fzDkWK87qnOzwnDRL2z6um5+Tphb3hwxdh4ZFbHTXGn
-         PBAA==
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=XdfoRVGuOCD2JOxmLnJxyvoO2f5zjf1xh4i//8cGLHs=;
+        b=E57soH+fAZU9oM/uuDn4bCNx2wALmvA7rwFsDeo/VdmyR4hSt+vRDMPW0qpAcJ9V/h
+         UbYJ9fIR9BUAZrS+1TfrEzBoFSxbLFUBB/IIzj7rfy4Y1SyxPmM/cs9fEremwVWV5m5u
+         b9v38myIgTBJNjasjLIOUO/K2CJS7vPJsURIlWBEC7RA0ax+vZbkexDjvFbqaAUgNm/w
+         yj4NkgHNxXLdKOO4AZsIv5vnXx8YMl4s3e1fTXh2Hp6rhwVI9k4nzVvvlc/OSvXrfpbl
+         +6DOlsrKa8IKCRxKxdcbetpm2uz+ZUKJBnziwlMhGJ11qW6bGQPIDGjYXF06+gry04Zz
+         3NGQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:from:date:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to;
-        bh=aJxCpiw45uiFCKFF/Aa3ZwVBKPmiXfb3oRMSPK0K9jk=;
-        b=O9/E2OtiXV98xAPz8iP+4nhN496omKmdK/qPb/ff+/UeCD9HW2E2PeD335lFT9q7IL
-         /0y3zcTGXlFdR+IZiMF8WGdOvCyL2Axpmi/uRE4eQVTdocDz9BUKcOoZmVtvkJtvgT0a
-         juAbkhRCW8dBASFE+lN2rYlNOY0hvvmuizoM5WGs96/tNnvQqLTtcHH7/wlR03vuOLm/
-         Lk6T0tOBLq7Ja0L/j+4i7LY8Giqyq6slIbzVhkLPzQhAMFYyGLxQnWnU32y/wYZ8G5Zm
-         1Xe2L6/pDeXArWHcwWkyrGV5MVHJIVcjSABtM7p0Hjv8z3n6HOo7444i1IyiZRLr5A6p
-         UsIA==
-X-Gm-Message-State: AOAM530/VDNixSidB90UlbtTb5L4Oc5o7lVq85ImQWw4Fxb48SUvMk/5
-        6m2j1b4sVtEY2aWNwvUNevM=
-X-Google-Smtp-Source: ABdhPJxwuEkyqc0Vgw+drYJAZii7afEIejnAVDgmQdUScCrDEFtKnUdsKQel/JRcOrIWioge2a+zKQ==
-X-Received: by 2002:a05:620a:c08:: with SMTP id l8mr15224938qki.239.1593446044131;
-        Mon, 29 Jun 2020 08:54:04 -0700 (PDT)
-Received: from rani.riverdale.lan ([2001:470:1f07:5f3::b55f])
-        by smtp.gmail.com with ESMTPSA id l46sm81965qtf.7.2020.06.29.08.54.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 Jun 2020 08:54:03 -0700 (PDT)
-From:   Arvind Sankar <nivedita@alum.mit.edu>
-X-Google-Original-From: Arvind Sankar <arvind@rani.riverdale.lan>
-Date:   Mon, 29 Jun 2020 11:54:01 -0400
-To:     Kees Cook <keescook@chromium.org>
-Cc:     Will Deacon <will@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Peter Collingbourne <pcc@google.com>,
-        James Morse <james.morse@arm.com>,
-        Borislav Petkov <bp@suse.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Arvind Sankar <nivedita@alum.mit.edu>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Nathan Chancellor <natechancellor@gmail.com>,
-        Arnd Bergmann <arnd@arndb.de>, x86@kernel.org,
-        clang-built-linux@googlegroups.com, linux-arch@vger.kernel.org,
-        linux-efi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 14/17] arm/build: Warn on orphan section placement
-Message-ID: <20200629155401.GB900899@rani.riverdale.lan>
-References: <20200629061840.4065483-1-keescook@chromium.org>
- <20200629061840.4065483-15-keescook@chromium.org>
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=XdfoRVGuOCD2JOxmLnJxyvoO2f5zjf1xh4i//8cGLHs=;
+        b=WvMwQaI2up/YsBAOP1S9IqAqOBoNzuyUs82l6C3L6D2MJ1QFuV1B4goeRESvXHgRRC
+         fwyaxHLAL/5wlrknD+BCZ6jMkwEjHih/lxx+oF38TpIKLrTp+vuhWHRwyYrMQ8TqVhSD
+         4Siia+S0Vr7tqlcEIion22eELw9zpRrHwJ1vXrwc00h/9g9ECYztcXhimclRhf2zSkL1
+         IFublQbIrjD+U8r44zJJI4h4lZW600TyPhEXX/GKSoDgbppgwUbEeMIeG27onNA/deKg
+         lszl624EheaSZfmli+38k/Z1QymiWsh7h7voAGO+z4T8A4WOMdBLZ7CI9aoC/rKAM9yz
+         qJSA==
+X-Gm-Message-State: AOAM533kE8GlMuinqkxhdmzOmrbLDlcuuL/VMTyH4QIjfRIsn0g2CYTZ
+        UwKDcjciduZh50/Jx6JpWlDcIhjR9TdLsmT7l9s=
+X-Google-Smtp-Source: ABdhPJyNR5zXZ8o09DSJzsSA3OSccnAxM/c9AxKQjYYOZlXvOMCiHs1YW/1gQi1Sa70TQ2VOPtabshfviWRkV7+ICnM=
+X-Received: by 2002:a6b:db17:: with SMTP id t23mr18236117ioc.4.1593458159284;
+ Mon, 29 Jun 2020 12:15:59 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20200629061840.4065483-15-keescook@chromium.org>
+Received: by 2002:a05:6602:1588:0:0:0:0 with HTTP; Mon, 29 Jun 2020 12:15:58
+ -0700 (PDT)
+Reply-To: mrs.victoria.alexander2@gmail.com
+From:   "mrs.victoria alexander" <markalexandermilley321@gmail.com>
+Date:   Mon, 29 Jun 2020 12:15:58 -0700
+Message-ID: <CAP7XNCwEGQ+-Q==u4yk4yvJdk1X+gsfSU6pUV_hROjmF=p-DHw@mail.gmail.com>
+Subject: Hello,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Sun, Jun 28, 2020 at 11:18:37PM -0700, Kees Cook wrote:
-> We don't want to depend on the linker's orphan section placement
-> heuristics as these can vary between linkers, and may change between
-> versions. All sections need to be explicitly named in the linker
-> script.
-> 
-> Specifically, this would have made a recently fixed bug very obvious:
-> 
-> ld: warning: orphan section `.fixup' from `arch/arm/lib/copy_from_user.o' being placed in section `.fixup'
-> 
-> Discard unneeded sections .iplt, .rel.iplt, .igot.plt, and .modinfo.
-> 
-> Add missing text stub sections .vfp11_veneer and .v4_bx.
-> 
-> Add debug sections explicitly.
-> 
-> Finally enable orphan section warning.
+Dear friend,
 
-This is unrelated to this patch as such, but I noticed that ARM32/64 places
-the .got section inside .text -- is that expected on ARM?
+
+I have a business container transaction what that some of( $13million dollars)
+
+ I would like to discuss with you. If you are interested, please
+contact my email
+
+address (mrs.victoria.alexander2@gmail.com)
+
+My WhatsApp number but only message (+19293737780)
+
+Please do not reply if you are not ready
+Thanks
