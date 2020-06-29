@@ -2,54 +2,54 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AF49220E1E5
-	for <lists+linux-efi@lfdr.de>; Mon, 29 Jun 2020 23:59:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E88F520E23A
+	for <lists+linux-efi@lfdr.de>; Tue, 30 Jun 2020 00:00:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729932AbgF2VAu (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 29 Jun 2020 17:00:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43366 "EHLO
+        id S1731142AbgF2VD1 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 29 Jun 2020 17:03:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43362 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731220AbgF2TM7 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 29 Jun 2020 15:12:59 -0400
-Received: from mail-pj1-x1044.google.com (mail-pj1-x1044.google.com [IPv6:2607:f8b0:4864:20::1044])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2409BC08EB03
-        for <linux-efi@vger.kernel.org>; Sun, 28 Jun 2020 23:18:51 -0700 (PDT)
-Received: by mail-pj1-x1044.google.com with SMTP id o22so2511031pjw.2
-        for <linux-efi@vger.kernel.org>; Sun, 28 Jun 2020 23:18:51 -0700 (PDT)
+        with ESMTP id S1731137AbgF2TMr (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 29 Jun 2020 15:12:47 -0400
+Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com [IPv6:2607:f8b0:4864:20::444])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89D0FC08EB0A
+        for <linux-efi@vger.kernel.org>; Sun, 28 Jun 2020 23:18:52 -0700 (PDT)
+Received: by mail-pf1-x444.google.com with SMTP id j1so7455468pfe.4
+        for <linux-efi@vger.kernel.org>; Sun, 28 Jun 2020 23:18:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=T0P/zigfbEYVemiv+chkLi1sxk82Ehd4Rswu0BvpDuE=;
-        b=G5louE6Uyd2kc+xV2J1VjkFKPj4o3+7iuP5vPYPCWk+r8gutkK73zgcof6KUBrCFWp
-         NA/YHDMZXOj7EKNzEtTGayNRzAljV3w+YWfaERiAi1wGVtDGv2A1+AtbnH1n8Rlsjznr
-         ZVcm+cqp/UVyef3E1570F2Ni4TsttMaQCB9Os=
+        bh=l2gkWNX3d66L/hKh2STsGvUucTtZJRcz4r/ewyLA14w=;
+        b=EwIeltjGnlLT7TimPFoW5tYhE4Etaftjgk0utIv1DERQIoaBLaCrzZdEMEbl2/ko2L
+         EIAKTruY9wYrBxsUO8J20gzMkX43dcOFiRkqGRmfq8OMnlhw0L7j5pNYBiu1NorElQCk
+         0rG1LKDuU8dxAvdd7b1IG3oEzj54pXm3LMXCA=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=T0P/zigfbEYVemiv+chkLi1sxk82Ehd4Rswu0BvpDuE=;
-        b=i1QHbBU+cXSektyTwD+flL+kbNQdGSGRUo7B9sci3ThRAZg3xFwg8VRrbcq0UKFkcX
-         BaKBdWG6IW83/wEFuQQ5ePBkjrqFfpxMh/tkeH1wAi2Gto7p2qx9wvrl6sR0J3LeiCow
-         EosLI7Zily34RcYon8RffGkKPQA4KFFOzPnxxdZOj/z/f1ey4OBG+ObK4puTPXfvse95
-         C1fDPs+ACb5nVbGj2IMGuqTRksbR8GblWXKJXQAuYdwJMp3pWZWeJUYlVv78DjrCe7CX
-         2vwz6+GcIkObrbdjcb2odNxGoVsxuq/tT2No4ouafWLoXl1izyQO00dQQsNnlZWimyeG
-         4gbg==
-X-Gm-Message-State: AOAM532RqBMwEAM1nXByHecoiRzVawDL2DnRQP58cQ/wLzg+PoXSq/5N
-        Jzuq+u32HSz4p7+q0nfmgtbOfA==
-X-Google-Smtp-Source: ABdhPJxGErTr5qdj/h+EXAH5O68jFfE2tqj+62XVCx45BXGt9Nz2IQt9L7atafYyKCZkdIT/G4UB5A==
-X-Received: by 2002:a17:90a:8a8b:: with SMTP id x11mr10404879pjn.127.1593411530770;
-        Sun, 28 Jun 2020 23:18:50 -0700 (PDT)
+        bh=l2gkWNX3d66L/hKh2STsGvUucTtZJRcz4r/ewyLA14w=;
+        b=b3SztbLP+Cy6WlsyhLmYljKjAN8+R4pfk0Od38pSRZDIEd80D1BtU2CKRarV+la9JD
+         Krok6P7kPUSqtMwEC/P9lhwO2S5OBDfOJ7AvKI5Xv+4tGz9uBYpIs6exqEmow4VhnQUV
+         610916bDPUpQdgvUOa2uGxlaq/FZDerUalt8fnBAU1JCa3LPcERu3/p7bMGwnZP/zl+P
+         borCt6y/eswZc7DpnrDIDz6fE9245Vj11L2PulXA0fNxzYJiDuCgLKdVIz4ORLVOwxsL
+         u0gf/v/D2GryTZesdfIl2XK0ZyxlNNyWMkWMHl945aPAiq8CYgT1b9OSZ7O7OwyiD0Hf
+         1PcA==
+X-Gm-Message-State: AOAM530Z/+RHa+ZE4o66wx7Xm5f6zZGDmoyg4eFFNmKGckRAZz+7jRQA
+        KH/XtOjmfacQOYPEEdIk8f45oQ==
+X-Google-Smtp-Source: ABdhPJzd+VgRMDjRj70nfxA/PtEMQQFRxNgIvA3+idrGBzG3XC8iwLb7Qy3efrxK+yKVlZZEtao0mA==
+X-Received: by 2002:a63:7802:: with SMTP id t2mr9139650pgc.421.1593411532102;
+        Sun, 28 Jun 2020 23:18:52 -0700 (PDT)
 Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id mp15sm17957978pjb.45.2020.06.28.23.18.46
+        by smtp.gmail.com with ESMTPSA id d25sm28162513pgn.2.2020.06.28.23.18.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 28 Jun 2020 23:18:47 -0700 (PDT)
+        Sun, 28 Jun 2020 23:18:48 -0700 (PDT)
 From:   Kees Cook <keescook@chromium.org>
 To:     Will Deacon <will@kernel.org>
 Cc:     Kees Cook <keescook@chromium.org>,
+        Ard Biesheuvel <ardb@kernel.org>,
         Catalin Marinas <catalin.marinas@arm.com>,
         Mark Rutland <mark.rutland@arm.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
         Peter Collingbourne <pcc@google.com>,
         James Morse <james.morse@arm.com>,
         Borislav Petkov <bp@suse.de>,
@@ -64,9 +64,9 @@ Cc:     Kees Cook <keescook@chromium.org>,
         clang-built-linux@googlegroups.com, linux-arch@vger.kernel.org,
         linux-efi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH v4 08/17] arm64/mm: Remove needless section quotes
-Date:   Sun, 28 Jun 2020 23:18:31 -0700
-Message-Id: <20200629061840.4065483-9-keescook@chromium.org>
+Subject: [PATCH v4 09/17] arm64/build: Remove .eh_frame* sections due to unwind tables
+Date:   Sun, 28 Jun 2020 23:18:32 -0700
+Message-Id: <20200629061840.4065483-10-keescook@chromium.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200629061840.4065483-1-keescook@chromium.org>
 References: <20200629061840.4065483-1-keescook@chromium.org>
@@ -77,27 +77,38 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Fix a case of needless quotes in __section(), which Clang doesn't like.
+Avoid .eh_frame* section generation by making sure both CFLAGS and AFLAGS
+contain -fno-asychronous-unwind-tables and -fno-unwind-tables.
 
+Suggested-by: Ard Biesheuvel <ardb@kernel.org>
 Acked-by: Will Deacon <will@kernel.org>
 Signed-off-by: Kees Cook <keescook@chromium.org>
 ---
- arch/arm64/mm/mmu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/Makefile | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
-index 1df25f26571d..dce024ea6084 100644
---- a/arch/arm64/mm/mmu.c
-+++ b/arch/arm64/mm/mmu.c
-@@ -42,7 +42,7 @@
- u64 idmap_t0sz = TCR_T0SZ(VA_BITS);
- u64 idmap_ptrs_per_pgd = PTRS_PER_PGD;
+diff --git a/arch/arm64/Makefile b/arch/arm64/Makefile
+index a0d94d063fa8..895486606f74 100644
+--- a/arch/arm64/Makefile
++++ b/arch/arm64/Makefile
+@@ -47,13 +47,16 @@ endif
  
--u64 __section(".mmuoff.data.write") vabits_actual;
-+u64 __section(.mmuoff.data.write) vabits_actual;
- EXPORT_SYMBOL(vabits_actual);
+ KBUILD_CFLAGS	+= -mgeneral-regs-only	\
+ 		   $(compat_vdso) $(cc_has_k_constraint)
+-KBUILD_CFLAGS	+= -fno-asynchronous-unwind-tables
+ KBUILD_CFLAGS	+= $(call cc-disable-warning, psabi)
+ KBUILD_AFLAGS	+= $(compat_vdso)
  
- u64 kimage_voffset __ro_after_init;
+ KBUILD_CFLAGS	+= $(call cc-option,-mabi=lp64)
+ KBUILD_AFLAGS	+= $(call cc-option,-mabi=lp64)
+ 
++# Avoid generating .eh_frame* sections.
++KBUILD_CFLAGS	+= -fno-asynchronous-unwind-tables -fno-unwind-tables
++KBUILD_AFLAGS	+= -fno-asynchronous-unwind-tables -fno-unwind-tables
++
+ ifeq ($(CONFIG_STACKPROTECTOR_PER_TASK),y)
+ prepare: stack_protector_prepare
+ stack_protector_prepare: prepare0
 -- 
 2.25.1
 
