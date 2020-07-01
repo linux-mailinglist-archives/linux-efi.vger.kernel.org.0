@@ -2,42 +2,42 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 91DD9210F0E
-	for <lists+linux-efi@lfdr.de>; Wed,  1 Jul 2020 17:24:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E76A210F16
+	for <lists+linux-efi@lfdr.de>; Wed,  1 Jul 2020 17:25:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731679AbgGAPYf (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 1 Jul 2020 11:24:35 -0400
-Received: from mail.kernel.org ([198.145.29.99]:54694 "EHLO mail.kernel.org"
+        id S1731797AbgGAPZR (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 1 Jul 2020 11:25:17 -0400
+Received: from mail.kernel.org ([198.145.29.99]:55392 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731586AbgGAPYe (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Wed, 1 Jul 2020 11:24:34 -0400
-Received: from mail-oi1-f175.google.com (mail-oi1-f175.google.com [209.85.167.175])
+        id S1731715AbgGAPZR (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Wed, 1 Jul 2020 11:25:17 -0400
+Received: from mail-yb1-f169.google.com (mail-yb1-f169.google.com [209.85.219.169])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id AEC7C208A7;
-        Wed,  1 Jul 2020 15:24:33 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 5F0D820899;
+        Wed,  1 Jul 2020 15:25:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1593617073;
-        bh=bO7Ihk/HS0/rvZ7NgpWVL3v41vS9CJ7TR7JSULgWAG4=;
+        s=default; t=1593617116;
+        bh=yRmjzMu9YWj+NOLepjKm+aB0pjmOhF8mZmELt36mcA0=;
         h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=KBL0tXamRa5xkBoTIymtjt/03noo1ylOoJa5IigXxtOy5W8cppvG2KmA3uheBWNVy
-         vUAgIzb8vmID0j0E/WfZc8Ih5Ipyx0BeEcdzCLKQ1f8cyAcjiMpBrd6nrI3r7XWviG
-         x+rVZ1tswlB0NS+QU/cYjjrCBiuLtwa/iAlGW4Uo=
-Received: by mail-oi1-f175.google.com with SMTP id k4so20934623oik.2;
-        Wed, 01 Jul 2020 08:24:33 -0700 (PDT)
-X-Gm-Message-State: AOAM531ZurMrboFIkVXNjHUskAtL2DYGUxTp5XMEdw1e7AtvcTHveNtE
-        si1KeO49k+SF9BcvqLGzRaJ+fLu7xv2Nz+4WRdM=
-X-Google-Smtp-Source: ABdhPJy1cz/ShrBpq94SUsalWMM/TfrGll8oCwZKb3ypsLE5U8A8cjgi0RPJTWJ83of+OTvxTXrQftDnUbA11/sSQTw=
-X-Received: by 2002:aca:f257:: with SMTP id q84mr6640957oih.174.1593617072798;
- Wed, 01 Jul 2020 08:24:32 -0700 (PDT)
+        b=YAjxA7qonfZicJTji5t6KrKshQc8SIIF1shTK/aOyeWiOJNB3+/YbRLfQA+BaC+qM
+         PJFwrSlA2jr7+HlaJAsBbo8TrE2pGeqol7bAH3Z1awMtGP8LQJJTZ1Nq1WrjvHz+bC
+         KU+tCPmVN0Du4tkFI1t50hITsOEHx26RR25GMYZs=
+Received: by mail-yb1-f169.google.com with SMTP id o4so12184547ybp.0;
+        Wed, 01 Jul 2020 08:25:16 -0700 (PDT)
+X-Gm-Message-State: AOAM530INUP0sylri8YwAYPWl2swvYGLZkkXBs9OJBfPpra4HtfLv1gb
+        0Xb8Ske1/ItWj4EbawTuQvW4SRvdb+I9ldDlLjA=
+X-Google-Smtp-Source: ABdhPJy9AKnU7TLcunRsA3LE7E5ZGLLHAN/4GGZWVlhQ9VRoyei2I2CxfreGz6IXtL350r2vzowvmiQuGW9yiXJrzBc=
+X-Received: by 2002:a9d:4a8f:: with SMTP id i15mr24502977otf.77.1593617115444;
+ Wed, 01 Jul 2020 08:25:15 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200701141731.377252388@hpe.com> <20200701141732.581935948@hpe.com>
-In-Reply-To: <20200701141732.581935948@hpe.com>
+References: <20200701141731.377252388@hpe.com> <20200701141732.706351085@hpe.com>
+In-Reply-To: <20200701141732.706351085@hpe.com>
 From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Wed, 1 Jul 2020 17:24:21 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXFm+HVORRtTWJtVKorE8rDJGi6FDOr2ZXSA3+ZG4u=LnQ@mail.gmail.com>
-Message-ID: <CAMj1kXFm+HVORRtTWJtVKorE8rDJGi6FDOr2ZXSA3+ZG4u=LnQ@mail.gmail.com>
-Subject: Re: [patch 09/13] Remove efi=old_map command line option
+Date:   Wed, 1 Jul 2020 17:25:04 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXE63uh2QhN1mrdSjwNM6yQqM7EY1kRnLBEmdeLovXYmSQ@mail.gmail.com>
+Message-ID: <CAMj1kXE63uh2QhN1mrdSjwNM6yQqM7EY1kRnLBEmdeLovXYmSQ@mail.gmail.com>
+Subject: Re: [patch 10/13] Delete SGI UV1 detection.
 To:     Steve Wahl <steve.wahl@hpe.com>
 Cc:     Jonathan Corbet <corbet@lwn.net>,
         Thomas Gleixner <tglx@linutronix.de>,
@@ -80,39 +80,61 @@ X-Mailing-List: linux-efi@vger.kernel.org
 
 On Wed, 1 Jul 2020 at 16:18, <steve.wahl@hpe.com> wrote:
 >
-> As a part of UV1 platform removal, delete the efi=old_map option,
-> which should no longer be needed.
+> As a part of UV1 platform removal, don't try to recognize the platform
+> through DMI to set the EFI_UV1_MEMMAP bit.
 >
 > Signed-off-by: Steve Wahl <steve.wahl@hpe.com>
 
-Noting that the diffstat does not reflect the patch, but this is
-explained in the cover letter.
-
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
+Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
 
 > ---
->  Documentation/admin-guide/kernel-parameters.txt |    4 +---
->  arch/x86/platform/uv/bios_uv.c                  |   14 --------------
->  2 files changed, 1 insertion(+), 17 deletions(-)
+>  arch/x86/platform/efi/quirks.c |   23 -----------------------
+>  1 file changed, 23 deletions(-)
 >
-> --- linux.orig/arch/x86/platform/uv/bios_uv.c   2020-06-18 16:26:33.963087219 -0500
-> +++ linux/arch/x86/platform/uv/bios_uv.c        2020-06-25 09:53:43.013835162 -0500
-> @@ -356,17 +356,3 @@ void __iomem *__init efi_ioremap(unsigne
->
->         return (void __iomem *)__va(phys_addr);
+> --- linux.orig/arch/x86/platform/efi/quirks.c   2020-06-17 14:29:45.510015978 -0500
+> +++ linux/arch/x86/platform/efi/quirks.c        2020-06-17 14:36:34.473414139 -0500
+> @@ -558,16 +558,6 @@ out:
+>         return ret;
 >  }
+>
+> -static const struct dmi_system_id sgi_uv1_dmi[] __initconst = {
+> -       { NULL, "SGI UV1",
+> -               {       DMI_MATCH(DMI_PRODUCT_NAME,     "Stoutland Platform"),
+> -                       DMI_MATCH(DMI_PRODUCT_VERSION,  "1.0"),
+> -                       DMI_MATCH(DMI_BIOS_VENDOR,      "SGI.COM"),
+> -               }
+> -       },
+> -       { } /* NULL entry stops DMI scanning */
+> -};
 > -
-> -static int __init arch_parse_efi_cmdline(char *str)
-> -{
-> -       if (!str) {
-> -               pr_warn("need at least one option\n");
-> -               return -EINVAL;
+>  void __init efi_apply_memmap_quirks(void)
+>  {
+>         /*
+> @@ -579,17 +569,6 @@ void __init efi_apply_memmap_quirks(void
+>                 pr_info("Setup done, disabling due to 32/64-bit mismatch\n");
+>                 efi_memmap_unmap();
+>         }
+> -
+> -       /* UV2+ BIOS has a fix for this issue.  UV1 still needs the quirk. */
+> -       if (dmi_check_system(sgi_uv1_dmi)) {
+> -               if (IS_ENABLED(CONFIG_X86_UV)) {
+> -                       set_bit(EFI_UV1_MEMMAP, &efi.flags);
+> -               } else {
+> -                       pr_warn("EFI runtime disabled, needs CONFIG_X86_UV=y on UV1\n");
+> -                       clear_bit(EFI_RUNTIME_SERVICES, &efi.flags);
+> -                       efi_memmap_unmap();
+> -               }
 > -       }
-> -
-> -       if (!efi_is_mixed() && parse_option_str(str, "old_map"))
-> -               set_bit(EFI_UV1_MEMMAP, &efi.flags);
-> -
-> -       return 0;
-> -}
-> -early_param("efi", arch_parse_efi_cmdline);
+>  }
+>
+>  /*
+> @@ -723,8 +702,6 @@ void efi_recover_from_page_fault(unsigne
+>
+>         /*
+>          * Make sure that an efi runtime service caused the page fault.
+> -        * "efi_mm" cannot be used to check if the page fault had occurred
+> -        * in the firmware context because the UV1 memmap doesn't use efi_pgd.
+>          */
+>         if (efi_rts_work.efi_rts_id == EFI_NONE)
+>                 return;
 >
