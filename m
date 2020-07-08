@@ -2,91 +2,84 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 83D84217F3A
-	for <lists+linux-efi@lfdr.de>; Wed,  8 Jul 2020 07:47:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F9032183EF
+	for <lists+linux-efi@lfdr.de>; Wed,  8 Jul 2020 11:37:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729437AbgGHFrx (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 8 Jul 2020 01:47:53 -0400
-Received: from mail.kernel.org ([198.145.29.99]:36646 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725794AbgGHFrx (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Wed, 8 Jul 2020 01:47:53 -0400
-Received: from mail-ot1-f46.google.com (mail-ot1-f46.google.com [209.85.210.46])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 90A2E2078B;
-        Wed,  8 Jul 2020 05:47:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1594187272;
-        bh=odr9trJsY+/VsC6Xosek0mSc+vQ6GbRDKEYdCCZMdSo=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=QdQj6NOXnMcIaEde9I8wnVhX5udKqmtjfCgAjEZarbwMx7wP1jDq6Mlf33L4TJqH4
-         ZxcsR5Xjg4pSyqPWParZr08LHAL9T2pI+rblZ2uZt92Gwmq0vFbocy33ZYi3qpz2WD
-         0FmZsuP+AWos9zMRlXTvxQ2FSgIiXfx4mRj7Wd5E=
-Received: by mail-ot1-f46.google.com with SMTP id 18so36064611otv.6;
-        Tue, 07 Jul 2020 22:47:52 -0700 (PDT)
-X-Gm-Message-State: AOAM532U/NIKnUm46iSMfhx/bj6F41s1DsSX4ZBUM3DPO5X6iPe37S4w
-        puFhB9MwTxiPSVZQPrZU6oodGvnFA6iuMrLAZp0=
-X-Google-Smtp-Source: ABdhPJxVYM8G/B91PuoHI3iKlcsxr9nlkQXIwunWm/EyQD8zmmYal7JTvWLeKxe5TkUvrvVN48Cl7uzrWGntQzgKkMs=
-X-Received: by 2002:a9d:6e85:: with SMTP id a5mr7858191otr.90.1594187271970;
- Tue, 07 Jul 2020 22:47:51 -0700 (PDT)
+        id S1728180AbgGHJhG (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 8 Jul 2020 05:37:06 -0400
+Received: from mail.elsol.com.pe ([170.231.82.35]:44527 "EHLO
+        mail.elsol.com.pe" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728263AbgGHJhG (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 8 Jul 2020 05:37:06 -0400
+X-Greylist: delayed 7692 seconds by postgrey-1.27 at vger.kernel.org; Wed, 08 Jul 2020 05:37:05 EDT
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by mail.elsol.com.pe (Postfix) with ESMTP id 969E46082B1;
+        Wed,  8 Jul 2020 02:11:22 -0500 (-05)
+Received: from mail.elsol.com.pe ([127.0.0.1])
+        by localhost (mail.elsol.com.pe [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id SKvwrgFkRRi3; Wed,  8 Jul 2020 02:11:22 -0500 (-05)
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by mail.elsol.com.pe (Postfix) with ESMTP id 4E2136082BA;
+        Wed,  8 Jul 2020 02:11:22 -0500 (-05)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mail.elsol.com.pe 4E2136082BA
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=elsol.com.pe;
+        s=17F39D2A-FFD0-11E7-BCBF-081969246B0E; t=1594192282;
+        bh=7Y6RtNhSVAIVHdJEU2gHHWYvaP8LRgEAhMNj0EoKaAA=;
+        h=MIME-Version:To:From:Date:Message-Id;
+        b=JEG6wyQ067PaMaPfZbpksq42yoamOiSEgByqa37mo1Jj3Otpg+olEKXtKn+Y9uv5D
+         dwy9Zie9ZD19ZKpvLXGGznP7EHAwXw/GeUxeuryPUFjKt6hs3lU0NEod5SliNOipvO
+         J9XaNoIW0rbLhr/a9IbCFJQy/hTLlkgLvVbl5y48khdu948H8U6hnDPtX8g7gSvCUa
+         dr7a8Ei6yGG8vtw//PGktfKM/ZlpE5WmuXQ2uQC9zgChl/4AnSP2fjCDuh8dVME4v4
+         daR8MAfTww+ECN6fPqWcT6Apxj1GBEUkUZ1i5nDCDKRCoG8cgz0857gdPHlCXrRlX2
+         vsZJxL9ELbl9g==
+X-Virus-Scanned: amavisd-new at elsol.com.pe
+Received: from mail.elsol.com.pe ([127.0.0.1])
+        by localhost (mail.elsol.com.pe [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id V7kN6hoCbBPK; Wed,  8 Jul 2020 02:11:22 -0500 (-05)
+Received: from [10.86.65.172] (unknown [105.8.7.225])
+        by mail.elsol.com.pe (Postfix) with ESMTPSA id A81C5605ACD;
+        Wed,  8 Jul 2020 02:11:11 -0500 (-05)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-References: <20200707185818.80177-1-ebiggers@kernel.org>
-In-Reply-To: <20200707185818.80177-1-ebiggers@kernel.org>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Wed, 8 Jul 2020 08:47:40 +0300
-X-Gmail-Original-Message-ID: <CAMj1kXHPazApxFDK9nz=1V+-dyu7dStiMOu=LdD=i9NXqxjY=g@mail.gmail.com>
-Message-ID: <CAMj1kXHPazApxFDK9nz=1V+-dyu7dStiMOu=LdD=i9NXqxjY=g@mail.gmail.com>
-Subject: Re: [PATCH 0/4] crypto: add sha256() function
-To:     Eric Biggers <ebiggers@kernel.org>
-Cc:     Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        ALSA development <alsa-devel@alsa-project.org>,
-        Cheng-Yi Chiang <cychiang@chromium.org>,
-        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
-        Guenter Roeck <groeck@chromium.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Mat Martineau <mathew.j.martineau@linux.intel.com>,
-        Matthieu Baerts <matthieu.baerts@tessares.net>,
-        mptcp@lists.01.org, Tzung-Bi Shih <tzungbi@google.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: =?utf-8?q?Covid_19_Wohlt=C3=A4tigkeitsfonds?=
+To:     Recipients <dreyes@elsol.com.pe>
+From:   ''Tayeb Souami'' <dreyes@elsol.com.pe>
+Date:   Wed, 08 Jul 2020 09:07:25 +0200
+Reply-To: Tayebsouam.spende@gmail.com
+Message-Id: <20200708071111.A81C5605ACD@mail.elsol.com.pe>
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, 7 Jul 2020 at 21:59, Eric Biggers <ebiggers@kernel.org> wrote:
->
-> This series adds a function sha256() to the sha256 library so that users
-> who want to compute a hash in one step can just call sha256() instead of
-> sha256_init() + sha256_update() + sha256_final().
->
-> Patches 2-4 then convert some users to use it.
->
-> Eric Biggers (4):
->   crypto: lib/sha256 - add sha256() function
->   efi: use sha256() instead of open coding
->   mptcp: use sha256() instead of open coding
->   ASoC: cros_ec_codec: use sha256() instead of open coding
->
+Lieber Freund,
 
-For the series,
+Ich bin Herr Tayeb Souami, New Jersey, Vereinigte Staaten von Amerika, der =
+Mega-Gewinner von $ 315million In Mega Millions Jackpot, spende ich an 5 zu=
+f=C3=A4llige Personen, wenn Sie diese E-Mail erhalten, dann wurde Ihre E-Ma=
+il nach einem Spinball ausgew=C3=A4hlt.Ich habe den gr=C3=B6=C3=9Ften Teil =
+meines Verm=C3=B6gens auf eine Reihe von Wohlt=C3=A4tigkeitsorganisationen =
+und Organisationen verteilt.Ich habe mich freiwillig dazu entschieden, die =
+Summe von =E2=82=AC 2.000.000,00 an Sie als eine der ausgew=C3=A4hlten 5 zu=
+ spenden, um meine Gewinne zu =C3=BCberpr=C3=BCfen, sehen Sie bitte meine Y=
+ou Tube Seite unten.
 
-Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
-
-Feel free to take the EFI patch through the crypto tree.
+UHR MICH HIER: https://www.youtube.com/watch?v=3DZ6ui8ZDQ6Ks
 
 
->  drivers/firmware/efi/embedded-firmware.c |  9 +++-----
->  include/crypto/sha.h                     |  1 +
->  lib/crypto/sha256.c                      | 10 +++++++++
->  net/mptcp/crypto.c                       | 15 +++----------
->  sound/soc/codecs/cros_ec_codec.c         | 27 ++----------------------
->  5 files changed, 19 insertions(+), 43 deletions(-)
->
->
-> base-commit: 57c8aa43b9f272c382c253573c82be5cb68fe22d
-> --
-> 2.27.0
->
+
+Das ist dein Spendencode: [TS530342018]
+
+
+
+Antworten Sie mit dem SPENDE-CODE an diese
+
+E-Mail:Tayebsouam.spende@gmail.com
+
+
+Ich hoffe, Sie und Ihre Familie gl=C3=BCcklich zu machen.
+
+Gr=C3=BC=C3=9Fe
+Herr Tayeb Souami
