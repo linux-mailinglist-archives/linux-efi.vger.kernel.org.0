@@ -2,113 +2,118 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A12D3218565
-	for <lists+linux-efi@lfdr.de>; Wed,  8 Jul 2020 13:01:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D0A02185F0
+	for <lists+linux-efi@lfdr.de>; Wed,  8 Jul 2020 13:19:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728466AbgGHLBl (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 8 Jul 2020 07:01:41 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:60838 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726110AbgGHLBk (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 8 Jul 2020 07:01:40 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1594206099;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=7mpwcBcVOqWo2vWhK3ZHzCBKqd/c7GeCFs8iwgkkI1Y=;
-        b=EE3TJ5WeC+RalkIyh1XUUWGBFOaeP5t/zclKYlyDQtC4lx/feGiGOcn0BmdeSgJh9iceWe
-        vrTM07rlwI/hSx9A56hCXQjtOr6rtULXDL9KvO7YPUuOYGNNpZT3ec92oOK3meDBK7svLV
-        ZEFKQYVZGW5fo2HXuGU3cOWg5k6dCek=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-477--pK3brCAO2qWWS0bk_2uPg-1; Wed, 08 Jul 2020 07:01:37 -0400
-X-MC-Unique: -pK3brCAO2qWWS0bk_2uPg-1
-Received: by mail-ed1-f69.google.com with SMTP id m12so57395830edv.3
-        for <linux-efi@vger.kernel.org>; Wed, 08 Jul 2020 04:01:37 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=7mpwcBcVOqWo2vWhK3ZHzCBKqd/c7GeCFs8iwgkkI1Y=;
-        b=SPg/depllqIrTuIaGYdDDSQ7QK0AFM0hQgYW8IkqkctSQny6JcIAFWU2cLgZbulh7H
-         Hp2vazcRW9mEQA3BiF3as+FobT5rF4R4VfeeyD8XT8iIGCfF1xqyF2jhfy4/OWTS3Vb6
-         vxI3wtgHDll2modRfYh1kl45i/7PK0q23nrX7EpIUyQ/4v8nIAXxl+C7unu/IAmZOXIM
-         ztwcAQOgttj2qzqZeL+Y3nQMrgex7ZILtRRSwSNPKROKS1+K0ZY6yuOuiv/6IjjCAhYi
-         MGq+Xor1k39FqYc9O88BDK+/Sq2uzVgLGJPR9RDdIsuGUNUk42f1LYkQOBH2PKK2wE7k
-         J3Wg==
-X-Gm-Message-State: AOAM530RgrW8cKlBg0KQzBMT7mmpCuxtFCk7cPNsvJMcubX7LjaCFYw7
-        BuQxkHZ1rHOMD2YUsWiKtlflQ5Lys11Opzl3Fe20ovmyTG9Ma852UrBYKTVS5hUlhzo2sjDUGhQ
-        I7APnmSiqxM8NsR3Bmmfu
-X-Received: by 2002:a05:6402:543:: with SMTP id i3mr45729397edx.182.1594206096306;
-        Wed, 08 Jul 2020 04:01:36 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJxQYOwlXd9z9b5GX8vCI0fodR5ilbW7iNNKfVwmUo6weDMlbUb4GtDXfKFHOnZT9ZrFR1YyRw==
-X-Received: by 2002:a05:6402:543:: with SMTP id i3mr45729373edx.182.1594206096112;
-        Wed, 08 Jul 2020 04:01:36 -0700 (PDT)
-Received: from x1.localdomain (2001-1c00-0c0c-fe00-d2ea-f29d-118b-24dc.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:d2ea:f29d:118b:24dc])
-        by smtp.gmail.com with ESMTPSA id dt22sm1881261ejc.104.2020.07.08.04.01.34
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 08 Jul 2020 04:01:35 -0700 (PDT)
-Subject: Re: [PATCH 0/4] crypto: add sha256() function
-To:     Eric Biggers <ebiggers@kernel.org>, linux-crypto@vger.kernel.org,
-        Herbert Xu <herbert@gondor.apana.org.au>
-Cc:     alsa-devel@alsa-project.org, Ard Biesheuvel <ardb@kernel.org>,
-        Cheng-Yi Chiang <cychiang@chromium.org>,
-        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
-        Guenter Roeck <groeck@chromium.org>, linux-efi@vger.kernel.org,
-        Mat Martineau <mathew.j.martineau@linux.intel.com>,
-        Matthieu Baerts <matthieu.baerts@tessares.net>,
-        mptcp@lists.01.org, Tzung-Bi Shih <tzungbi@google.com>
-References: <20200707185818.80177-1-ebiggers@kernel.org>
-From:   Hans de Goede <hdegoede@redhat.com>
-Message-ID: <7b5617f4-905f-5f27-9caf-3c842cbdb0d8@redhat.com>
-Date:   Wed, 8 Jul 2020 13:01:34 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.9.0
-MIME-Version: 1.0
-In-Reply-To: <20200707185818.80177-1-ebiggers@kernel.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+        id S1728854AbgGHLTp (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 8 Jul 2020 07:19:45 -0400
+Received: from mail.kernel.org ([198.145.29.99]:47336 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728763AbgGHLTp (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Wed, 8 Jul 2020 07:19:45 -0400
+Received: from e123331-lin.nice.arm.com (adsl-70.109.242.21.tellas.gr [109.242.21.70])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id DA24220772;
+        Wed,  8 Jul 2020 11:19:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1594207184;
+        bh=TQ4/v9He5PisiAykRGAtO5Ofn/lM8Ly5hwiFNMZhJTs=;
+        h=From:To:Cc:Subject:Date:From;
+        b=GdWelWsCN/xrkakLLru25GJBOSfYL9SC7J3+UfFiS2qJBRpzvt9VN8NJls/p7oR/K
+         HujYxTxxJlWOeiequAQY5F2apRngLJC/Hy6bqah4b2UDxmub0t7ApKzLOrrs10JZXM
+         Ygrj0Jn/XWpb/i9/r4BLW7xG8nPmooY5MKhGenFM=
+From:   Ard Biesheuvel <ardb@kernel.org>
+To:     linux-efi@vger.kernel.org
+Cc:     xypron.glpk@gmx.de, Ard Biesheuvel <ardb@kernel.org>,
+        Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Subject: [PATCH v2] fs/efivarfs: Permit read-only access on platforms that lack SetVariable
+Date:   Wed,  8 Jul 2020 14:19:38 +0300
+Message-Id: <20200708111938.20948-1-ardb@kernel.org>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hi,
+Commit
 
-On 7/7/20 8:58 PM, Eric Biggers wrote:
-> This series adds a function sha256() to the sha256 library so that users
-> who want to compute a hash in one step can just call sha256() instead of
-> sha256_init() + sha256_update() + sha256_final().
-> 
-> Patches 2-4 then convert some users to use it.
-> 
-> Eric Biggers (4):
->    crypto: lib/sha256 - add sha256() function
->    efi: use sha256() instead of open coding
->    mptcp: use sha256() instead of open coding
->    ASoC: cros_ec_codec: use sha256() instead of open coding
-> 
->   drivers/firmware/efi/embedded-firmware.c |  9 +++-----
->   include/crypto/sha.h                     |  1 +
->   lib/crypto/sha256.c                      | 10 +++++++++
->   net/mptcp/crypto.c                       | 15 +++----------
->   sound/soc/codecs/cros_ec_codec.c         | 27 ++----------------------
->   5 files changed, 19 insertions(+), 43 deletions(-)
-> 
-> 
-> base-commit: 57c8aa43b9f272c382c253573c82be5cb68fe22d
+  bf67fad19e493b ("efi: Use more granular check for availability for variable services")
 
-I've done some quick tests on this series to make sure that
-the efi embedded-firmware support did not regress.
-That still works fine, so this series is;
+introduced a check into the efivarfs init code that aborts loading of the
+module if not all three variable runtime services (GetVariable, SetVariable
+and GetNextVariable) are supported. However, this results in efivarfs being
+unavailable entirely if only SetVariable support is missing, which is only
+needed if you want to make any modifications.
 
-Tested-by: Hans de Goede <hdegoede@redhat.com>
+So let's relax this restriction, and only require the GetVariable services,
+but force efivarfs to be mounted read-only if SetVariable is unsupported.
 
-Regards,
+Since efivarfs relies on the internal 'efivars' abstraction, we should
+enable that as well for platforms that lack SetVariable support. However,
+such SetVariable() calls will simply return EFI_UNSUPPORTED when issued,
+and the efi-pstore and efivars sysfs driver perform their own checks for
+supported services anyway.
 
-Hans
+Cc: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Fixes: bf67fad19e493b ("efi: Use more granular check for availability for variable services")
+Reported-by: Heinrich Schuchardt <xypron.glpk@gmx.de>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+---
+v2: change efivars check as well
+
+ drivers/firmware/efi/efi.c | 6 ++++--
+ fs/efivarfs/super.c        | 6 +++++-
+ 2 files changed, 9 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
+index 5114cae4ec97..7b75efca0819 100644
+--- a/drivers/firmware/efi/efi.c
++++ b/drivers/firmware/efi/efi.c
+@@ -382,7 +382,8 @@ static int __init efisubsys_init(void)
+ 		return -ENOMEM;
+ 	}
+ 
+-	if (efi_rt_services_supported(EFI_RT_SUPPORTED_VARIABLE_SERVICES)) {
++	if (efi_rt_services_supported(EFI_RT_SUPPORTED_GET_VARIABLE |
++				      EFI_RT_SUPPORTED_GET_NEXT_VARIABLE_NAME)) {
+ 		efivar_ssdt_load();
+ 		error = generic_ops_register();
+ 		if (error)
+@@ -416,7 +417,8 @@ static int __init efisubsys_init(void)
+ err_remove_group:
+ 	sysfs_remove_group(efi_kobj, &efi_subsys_attr_group);
+ err_unregister:
+-	if (efi_rt_services_supported(EFI_RT_SUPPORTED_VARIABLE_SERVICES))
++	if (efi_rt_services_supported(EFI_RT_SUPPORTED_GET_VARIABLE |
++				      EFI_RT_SUPPORTED_GET_NEXT_VARIABLE_NAME))
+ 		generic_ops_unregister();
+ err_put:
+ 	kobject_put(efi_kobj);
+diff --git a/fs/efivarfs/super.c b/fs/efivarfs/super.c
+index 12c66f5d92dd..c12608f0dcd9 100644
+--- a/fs/efivarfs/super.c
++++ b/fs/efivarfs/super.c
+@@ -201,6 +201,9 @@ static int efivarfs_fill_super(struct super_block *sb, struct fs_context *fc)
+ 	sb->s_d_op		= &efivarfs_d_ops;
+ 	sb->s_time_gran         = 1;
+ 
++	if (!efi_rt_services_supported(EFI_RT_SUPPORTED_SET_VARIABLE))
++		sb->s_flags |= SB_RDONLY;
++
+ 	inode = efivarfs_get_inode(sb, NULL, S_IFDIR | 0755, 0, true);
+ 	if (!inode)
+ 		return -ENOMEM;
+@@ -252,7 +255,8 @@ static struct file_system_type efivarfs_type = {
+ 
+ static __init int efivarfs_init(void)
+ {
+-	if (!efi_rt_services_supported(EFI_RT_SUPPORTED_VARIABLE_SERVICES))
++	if (!efi_rt_services_supported(EFI_RT_SUPPORTED_GET_VARIABLE |
++				       EFI_RT_SUPPORTED_GET_NEXT_VARIABLE_NAME))
+ 		return -ENODEV;
+ 
+ 	if (!efivars_kobject())
+-- 
+2.17.1
 
