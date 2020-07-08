@@ -2,118 +2,95 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D0A02185F0
-	for <lists+linux-efi@lfdr.de>; Wed,  8 Jul 2020 13:19:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F45F218764
+	for <lists+linux-efi@lfdr.de>; Wed,  8 Jul 2020 14:33:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728854AbgGHLTp (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 8 Jul 2020 07:19:45 -0400
-Received: from mail.kernel.org ([198.145.29.99]:47336 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728763AbgGHLTp (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Wed, 8 Jul 2020 07:19:45 -0400
-Received: from e123331-lin.nice.arm.com (adsl-70.109.242.21.tellas.gr [109.242.21.70])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id DA24220772;
-        Wed,  8 Jul 2020 11:19:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1594207184;
-        bh=TQ4/v9He5PisiAykRGAtO5Ofn/lM8Ly5hwiFNMZhJTs=;
-        h=From:To:Cc:Subject:Date:From;
-        b=GdWelWsCN/xrkakLLru25GJBOSfYL9SC7J3+UfFiS2qJBRpzvt9VN8NJls/p7oR/K
-         HujYxTxxJlWOeiequAQY5F2apRngLJC/Hy6bqah4b2UDxmub0t7ApKzLOrrs10JZXM
-         Ygrj0Jn/XWpb/i9/r4BLW7xG8nPmooY5MKhGenFM=
-From:   Ard Biesheuvel <ardb@kernel.org>
-To:     linux-efi@vger.kernel.org
-Cc:     xypron.glpk@gmx.de, Ard Biesheuvel <ardb@kernel.org>,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>
-Subject: [PATCH v2] fs/efivarfs: Permit read-only access on platforms that lack SetVariable
-Date:   Wed,  8 Jul 2020 14:19:38 +0300
-Message-Id: <20200708111938.20948-1-ardb@kernel.org>
-X-Mailer: git-send-email 2.17.1
+        id S1728987AbgGHMdR (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 8 Jul 2020 08:33:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60234 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729162AbgGHMdL (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 8 Jul 2020 08:33:11 -0400
+Received: from mail-io1-xd44.google.com (mail-io1-xd44.google.com [IPv6:2607:f8b0:4864:20::d44])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08561C08EAC8
+        for <linux-efi@vger.kernel.org>; Wed,  8 Jul 2020 05:33:11 -0700 (PDT)
+Received: by mail-io1-xd44.google.com with SMTP id v8so46682916iox.2
+        for <linux-efi@vger.kernel.org>; Wed, 08 Jul 2020 05:33:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=/vBVbAxvijag95IA6OM26aTa2bKDnUtimRlc1mZm/7M=;
+        b=fRBxl+Jly3zkBGRbLPYyolv6RN+tGDu250AQgHs6wNMnBAQthZ90eOvUI9D0qLlG4W
+         v42kUn+2+5Bhw26pEmDj74BGKBtrXSLCiFAqJXVUU93wwrqcNnYOoDeh2T5ij7kcaTNU
+         vvcKIRhThwOH0A0t6UY9+McUAEh2KRZD3GjnqJSZzRCMKENBJA/2Rbl3FsOHTCJOajpC
+         LS3jwNeXQ97uwHdyAh1QxZJ+4mur60fdsDHmSVGsDvfJfv/rhvN3IA9Xg1IdoNbeETsr
+         ZvBshIQwT/207HPTgTPWcNeBBXKH0zzc3YF+Q8UUDd/gq8TtJ1D8/qpw4gRrvzFvycY2
+         qY/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=/vBVbAxvijag95IA6OM26aTa2bKDnUtimRlc1mZm/7M=;
+        b=QUh+IRcjQN5J4jq7BazrMgrg/WDcE3orW1jRdFqV4jSDR5qlH0k/qQ/+trbuG8D30K
+         rnfniH/08e4rknHH2aYjzKeci7VdULGasejDk4W9L5uD5tXpwuZMAeZnm793nv/96EoA
+         pJC6w+hZ3h3S3g2S/mCuYSeq9QW0Jto5BxLQ7KeMlkTWwmg3J0awTZ3m5WgrPfx1HCmp
+         N8TG1FdZ43M63rzpSVcUMn/6rFgxLePqdqbNbAALgHYR31exNUvartEsinaTY8moxioc
+         nHAygyxkYYEj1+1ax5GBSZu/2FwcLYqLUP3M7hB3bsyA12xP9DOlgD+D7OS5TvimQ3VR
+         zoPw==
+X-Gm-Message-State: AOAM5328F+XyiarxMNFb21uV7RgHiM68UtoMOFezQO/NHQFFedTOtEd2
+        1NCn93fAwsEnQYab6fS8vdhmzX8/fnFJJ50XwK8=
+X-Google-Smtp-Source: ABdhPJz+Yw/tRR3NYggdpI3xCJxdjZQQgovxkCgb7YeCM8zekh0rEvkzj7MEhsVQw3diu4X8+/vwvpSUXvtx+pQ6vnY=
+X-Received: by 2002:a05:6602:2c0a:: with SMTP id w10mr36231222iov.46.1594211588881;
+ Wed, 08 Jul 2020 05:33:08 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 2002:a05:6602:1582:0:0:0:0 with HTTP; Wed, 8 Jul 2020 05:33:07
+ -0700 (PDT)
+Reply-To: mmsafiatou057@gmail.com
+From:   "Mrs. Safitaou Zoungrana" <richardlaurentdr@gmail.com>
+Date:   Wed, 8 Jul 2020 12:33:07 +0000
+Message-ID: <CALJAiTWJsL=xj-+mKa2Ry1622htq4_Fbxq9sWotVPkJRo5P=pQ@mail.gmail.com>
+Subject: My Dear Beloved One,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Commit
+My Dear Beloved One,
 
-  bf67fad19e493b ("efi: Use more granular check for availability for variable services")
+I greet you in the name of God almighty the givers of all good things
+in life. Please kindly pardon me for any inconvenience this letter may
+cost you because I know it may come to you as a surprise as we have no
+previous correspondence.  I sent this mail praying for it to reach you
+in good health, since I myself are in a very critical health condition
+in which I sleep every night without knowing if I may be alive to see
+the next day.
 
-introduced a check into the efivarfs init code that aborts loading of the
-module if not all three variable runtime services (GetVariable, SetVariable
-and GetNextVariable) are supported. However, this results in efivarfs being
-unavailable entirely if only SetVariable support is missing, which is only
-needed if you want to make any modifications.
+I am Mrs. Safiatou Zoungrana,  the wife of late Engineer Ralph
+Alphonso Zoungrana from Paris France but based here in Burkina Faso
+West Africa since eight years ago as a business woman dealing with
+gold exportation and Sales. We have been married for years before his
+sudden death although we were childless. I have been diagnosed with
+ovarian cancer and I have been battling with the sickness when my late
+lovely husband of a blessed memory was alive. May his soul rest in
+peace, Amen.
 
-So let's relax this restriction, and only require the GetVariable services,
-but force efivarfs to be mounted read-only if SetVariable is unsupported.
+My late Husband left the sum of =E2=82=AC7.900.000.00 Seven Million Nine
+Hundred Thousand Euros in a fix/suspense account in one of the prime
+bank here in Burkina Faso. Recently, my Doctor told me that I have few
+days to live due to the cancer problem. The one that disturbs me most
+is my blood pressure sickness.
 
-Since efivarfs relies on the internal 'efivars' abstraction, we should
-enable that as well for platforms that lack SetVariable support. However,
-such SetVariable() calls will simply return EFI_UNSUPPORTED when issued,
-and the efi-pstore and efivars sysfs driver perform their own checks for
-supported services anyway.
+Having known my health condition I decided to seek for your kind
+assistance to transfer this fund into your account and you will use it
+to establish an orphanage home in my name. I will give you more
+details about the project as soon as I receive your reply in my
+private email (mmsafiatou057@gmail.com) to handle this project because
+I do not want to state all here until I see your reply, desire and
+commitment to handle this project.
 
-Cc: Ilias Apalodimas <ilias.apalodimas@linaro.org>
-Fixes: bf67fad19e493b ("efi: Use more granular check for availability for variable services")
-Reported-by: Heinrich Schuchardt <xypron.glpk@gmx.de>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
----
-v2: change efivars check as well
-
- drivers/firmware/efi/efi.c | 6 ++++--
- fs/efivarfs/super.c        | 6 +++++-
- 2 files changed, 9 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
-index 5114cae4ec97..7b75efca0819 100644
---- a/drivers/firmware/efi/efi.c
-+++ b/drivers/firmware/efi/efi.c
-@@ -382,7 +382,8 @@ static int __init efisubsys_init(void)
- 		return -ENOMEM;
- 	}
- 
--	if (efi_rt_services_supported(EFI_RT_SUPPORTED_VARIABLE_SERVICES)) {
-+	if (efi_rt_services_supported(EFI_RT_SUPPORTED_GET_VARIABLE |
-+				      EFI_RT_SUPPORTED_GET_NEXT_VARIABLE_NAME)) {
- 		efivar_ssdt_load();
- 		error = generic_ops_register();
- 		if (error)
-@@ -416,7 +417,8 @@ static int __init efisubsys_init(void)
- err_remove_group:
- 	sysfs_remove_group(efi_kobj, &efi_subsys_attr_group);
- err_unregister:
--	if (efi_rt_services_supported(EFI_RT_SUPPORTED_VARIABLE_SERVICES))
-+	if (efi_rt_services_supported(EFI_RT_SUPPORTED_GET_VARIABLE |
-+				      EFI_RT_SUPPORTED_GET_NEXT_VARIABLE_NAME))
- 		generic_ops_unregister();
- err_put:
- 	kobject_put(efi_kobj);
-diff --git a/fs/efivarfs/super.c b/fs/efivarfs/super.c
-index 12c66f5d92dd..c12608f0dcd9 100644
---- a/fs/efivarfs/super.c
-+++ b/fs/efivarfs/super.c
-@@ -201,6 +201,9 @@ static int efivarfs_fill_super(struct super_block *sb, struct fs_context *fc)
- 	sb->s_d_op		= &efivarfs_d_ops;
- 	sb->s_time_gran         = 1;
- 
-+	if (!efi_rt_services_supported(EFI_RT_SUPPORTED_SET_VARIABLE))
-+		sb->s_flags |= SB_RDONLY;
-+
- 	inode = efivarfs_get_inode(sb, NULL, S_IFDIR | 0755, 0, true);
- 	if (!inode)
- 		return -ENOMEM;
-@@ -252,7 +255,8 @@ static struct file_system_type efivarfs_type = {
- 
- static __init int efivarfs_init(void)
- {
--	if (!efi_rt_services_supported(EFI_RT_SUPPORTED_VARIABLE_SERVICES))
-+	if (!efi_rt_services_supported(EFI_RT_SUPPORTED_GET_VARIABLE |
-+				       EFI_RT_SUPPORTED_GET_NEXT_VARIABLE_NAME))
- 		return -ENODEV;
- 
- 	if (!efivars_kobject())
--- 
-2.17.1
-
+My Regards to your family.
+Mrs. Safiatou Zoungrana.
