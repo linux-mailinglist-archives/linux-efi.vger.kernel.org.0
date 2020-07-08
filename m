@@ -2,84 +2,85 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F9032183EF
-	for <lists+linux-efi@lfdr.de>; Wed,  8 Jul 2020 11:37:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ABA3D2184B0
+	for <lists+linux-efi@lfdr.de>; Wed,  8 Jul 2020 12:09:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728180AbgGHJhG (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 8 Jul 2020 05:37:06 -0400
-Received: from mail.elsol.com.pe ([170.231.82.35]:44527 "EHLO
-        mail.elsol.com.pe" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728263AbgGHJhG (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 8 Jul 2020 05:37:06 -0400
-X-Greylist: delayed 7692 seconds by postgrey-1.27 at vger.kernel.org; Wed, 08 Jul 2020 05:37:05 EDT
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by mail.elsol.com.pe (Postfix) with ESMTP id 969E46082B1;
-        Wed,  8 Jul 2020 02:11:22 -0500 (-05)
-Received: from mail.elsol.com.pe ([127.0.0.1])
-        by localhost (mail.elsol.com.pe [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id SKvwrgFkRRi3; Wed,  8 Jul 2020 02:11:22 -0500 (-05)
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by mail.elsol.com.pe (Postfix) with ESMTP id 4E2136082BA;
-        Wed,  8 Jul 2020 02:11:22 -0500 (-05)
-DKIM-Filter: OpenDKIM Filter v2.10.3 mail.elsol.com.pe 4E2136082BA
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=elsol.com.pe;
-        s=17F39D2A-FFD0-11E7-BCBF-081969246B0E; t=1594192282;
-        bh=7Y6RtNhSVAIVHdJEU2gHHWYvaP8LRgEAhMNj0EoKaAA=;
-        h=MIME-Version:To:From:Date:Message-Id;
-        b=JEG6wyQ067PaMaPfZbpksq42yoamOiSEgByqa37mo1Jj3Otpg+olEKXtKn+Y9uv5D
-         dwy9Zie9ZD19ZKpvLXGGznP7EHAwXw/GeUxeuryPUFjKt6hs3lU0NEod5SliNOipvO
-         J9XaNoIW0rbLhr/a9IbCFJQy/hTLlkgLvVbl5y48khdu948H8U6hnDPtX8g7gSvCUa
-         dr7a8Ei6yGG8vtw//PGktfKM/ZlpE5WmuXQ2uQC9zgChl/4AnSP2fjCDuh8dVME4v4
-         daR8MAfTww+ECN6fPqWcT6Apxj1GBEUkUZ1i5nDCDKRCoG8cgz0857gdPHlCXrRlX2
-         vsZJxL9ELbl9g==
-X-Virus-Scanned: amavisd-new at elsol.com.pe
-Received: from mail.elsol.com.pe ([127.0.0.1])
-        by localhost (mail.elsol.com.pe [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id V7kN6hoCbBPK; Wed,  8 Jul 2020 02:11:22 -0500 (-05)
-Received: from [10.86.65.172] (unknown [105.8.7.225])
-        by mail.elsol.com.pe (Postfix) with ESMTPSA id A81C5605ACD;
-        Wed,  8 Jul 2020 02:11:11 -0500 (-05)
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: =?utf-8?q?Covid_19_Wohlt=C3=A4tigkeitsfonds?=
-To:     Recipients <dreyes@elsol.com.pe>
-From:   ''Tayeb Souami'' <dreyes@elsol.com.pe>
-Date:   Wed, 08 Jul 2020 09:07:25 +0200
-Reply-To: Tayebsouam.spende@gmail.com
-Message-Id: <20200708071111.A81C5605ACD@mail.elsol.com.pe>
+        id S1726196AbgGHKJy (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 8 Jul 2020 06:09:54 -0400
+Received: from mail.kernel.org ([198.145.29.99]:57482 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725810AbgGHKJx (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Wed, 8 Jul 2020 06:09:53 -0400
+Received: from e123331-lin.nice.arm.com (adsl-70.109.242.21.tellas.gr [109.242.21.70])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 61E0B204EC;
+        Wed,  8 Jul 2020 10:09:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1594202993;
+        bh=3HPDilKqKFvfgsyDKY4U8Rmdl+pQHgRTapsfmcu1U64=;
+        h=From:To:Cc:Subject:Date:From;
+        b=YLHb6EhcvcSjbdA3EMvOU4ZCMtW07+FyLskA8GUwiUy4rnf8v6AbSmSBnooJUpRNa
+         4SAo0QFkhuHQwTVtliAlq8mSuUlaJXBVEpwEnf/HytKwVZvhGpCFUkF/hFz/SSBHIa
+         2b3D3Jx4NNjVrO/A0ve5VTI22VRJXSrbtkogESZc=
+From:   Ard Biesheuvel <ardb@kernel.org>
+To:     linux-efi@vger.kernel.org
+Cc:     xypron.glpk@gmx.de, Ard Biesheuvel <ardb@kernel.org>,
+        Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Subject: [PATCH] fs/efivarfs: Permit read-only access on platforms that lack SetVariable
+Date:   Wed,  8 Jul 2020 13:09:44 +0300
+Message-Id: <20200708100944.7213-1-ardb@kernel.org>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Lieber Freund,
+Commit
 
-Ich bin Herr Tayeb Souami, New Jersey, Vereinigte Staaten von Amerika, der =
-Mega-Gewinner von $ 315million In Mega Millions Jackpot, spende ich an 5 zu=
-f=C3=A4llige Personen, wenn Sie diese E-Mail erhalten, dann wurde Ihre E-Ma=
-il nach einem Spinball ausgew=C3=A4hlt.Ich habe den gr=C3=B6=C3=9Ften Teil =
-meines Verm=C3=B6gens auf eine Reihe von Wohlt=C3=A4tigkeitsorganisationen =
-und Organisationen verteilt.Ich habe mich freiwillig dazu entschieden, die =
-Summe von =E2=82=AC 2.000.000,00 an Sie als eine der ausgew=C3=A4hlten 5 zu=
- spenden, um meine Gewinne zu =C3=BCberpr=C3=BCfen, sehen Sie bitte meine Y=
-ou Tube Seite unten.
+  bf67fad19e493b ("efi: Use more granular check for availability for variable services")
 
-UHR MICH HIER: https://www.youtube.com/watch?v=3DZ6ui8ZDQ6Ks
+introduced a check into the efivarfs init code that aborts loading of the
+module if not all three variable runtime services (GetVariable, SetVariable
+and GetNextVariable) are supported. However, this results in efivarfs being
+unavailable entirely if only SetVariable support is missing, which is only
+needed if you want to make any modifications.
 
+So let's relax this restriction, and only require the GetVariable services,
+but force efivarfs to be mounted read-only if SetVariable is unsupported.
 
+Cc: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Fixes: bf67fad19e493b ("efi: Use more granular check for availability for variable services")
+Reported-by: Heinrich Schuchardt <xypron.glpk@gmx.de>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+---
+ fs/efivarfs/super.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-Das ist dein Spendencode: [TS530342018]
+diff --git a/fs/efivarfs/super.c b/fs/efivarfs/super.c
+index 12c66f5d92dd..c12608f0dcd9 100644
+--- a/fs/efivarfs/super.c
++++ b/fs/efivarfs/super.c
+@@ -201,6 +201,9 @@ static int efivarfs_fill_super(struct super_block *sb, struct fs_context *fc)
+ 	sb->s_d_op		= &efivarfs_d_ops;
+ 	sb->s_time_gran         = 1;
+ 
++	if (!efi_rt_services_supported(EFI_RT_SUPPORTED_SET_VARIABLE))
++		sb->s_flags |= SB_RDONLY;
++
+ 	inode = efivarfs_get_inode(sb, NULL, S_IFDIR | 0755, 0, true);
+ 	if (!inode)
+ 		return -ENOMEM;
+@@ -252,7 +255,8 @@ static struct file_system_type efivarfs_type = {
+ 
+ static __init int efivarfs_init(void)
+ {
+-	if (!efi_rt_services_supported(EFI_RT_SUPPORTED_VARIABLE_SERVICES))
++	if (!efi_rt_services_supported(EFI_RT_SUPPORTED_GET_VARIABLE |
++				       EFI_RT_SUPPORTED_GET_NEXT_VARIABLE_NAME))
+ 		return -ENODEV;
+ 
+ 	if (!efivars_kobject())
+-- 
+2.17.1
 
-
-
-Antworten Sie mit dem SPENDE-CODE an diese
-
-E-Mail:Tayebsouam.spende@gmail.com
-
-
-Ich hoffe, Sie und Ihre Familie gl=C3=BCcklich zu machen.
-
-Gr=C3=BC=C3=9Fe
-Herr Tayeb Souami
