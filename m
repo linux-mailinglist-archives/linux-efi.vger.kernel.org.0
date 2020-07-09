@@ -2,92 +2,163 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E0402218F68
-	for <lists+linux-efi@lfdr.de>; Wed,  8 Jul 2020 20:00:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9673521959D
+	for <lists+linux-efi@lfdr.de>; Thu,  9 Jul 2020 03:29:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725937AbgGHSAm (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 8 Jul 2020 14:00:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54762 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726298AbgGHSAl (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 8 Jul 2020 14:00:41 -0400
-Received: from mail-lj1-x244.google.com (mail-lj1-x244.google.com [IPv6:2a00:1450:4864:20::244])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2F2EC08C5C1
-        for <linux-efi@vger.kernel.org>; Wed,  8 Jul 2020 11:00:40 -0700 (PDT)
-Received: by mail-lj1-x244.google.com with SMTP id d17so40560619ljl.3
-        for <linux-efi@vger.kernel.org>; Wed, 08 Jul 2020 11:00:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=B5XIR15aEBjKzEA9W2lE8KNSZAO03DuL4VvK0HEZgj4=;
-        b=CAEGyWluUdS2/+/QxbS2adVKlj4rm4jaGfE9yPeCwHJLCQXNeRKWlsV7XWRfFALonl
-         EOEkSlDs9UoqbJsa8I93dW0z0TyrLzuvg3G9vZueD7j1TWG4dtUAPmKzg8A+e+XxVjM2
-         nwlMC//lFwzWKXwhEmZxrCOQCJEtFAfoiH78w=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=B5XIR15aEBjKzEA9W2lE8KNSZAO03DuL4VvK0HEZgj4=;
-        b=EFUZ4YELT/Jv9PaRaOdvXVKCWZ7K8SeHvZJOZnGPWEp4M9HCyaTqDRRKVWjUbqX/BR
-         boKFfQJK1Kwq4AXUZ1to+HYTzNItXkiz+4UciJSo1/GvknVR+0s12EQnuE29f9jng5aL
-         fWf83U1X5Pm9Rz26Yv4N78o2WWCIZs8sBKmYxwzG+n/+okbE2kQC3KfjL/HfWatcT7qV
-         oqpf/bLo5phvxTwgb+6wcU8QPeJmzNEWQqT1UBADFolzGOjsji5S5wfcrEK/iCL2nKwC
-         7nqwQbMvngmkAcevg5jrbiFc37BOd44sdW4xYHUCv9AouVuRgkm0lyQWOikyQnNLV5ax
-         oWxg==
-X-Gm-Message-State: AOAM532QfJv+ZhQ1XyCdipiceIwwhKvCaHbp/nhp/ArwmRKg2I6tGiyB
-        BAxYb3Zv6QHGlPRROg5bxZKOEIoxYtc=
-X-Google-Smtp-Source: ABdhPJyyRZItCb9pLPmiwBHgxrPCHa2IgO2Uf/N8T2/nwLCoA+NhR8eW6PVdMtS0Z3I9TbIaCe3s0g==
-X-Received: by 2002:a2e:b8c4:: with SMTP id s4mr33476493ljp.374.1594231238456;
-        Wed, 08 Jul 2020 11:00:38 -0700 (PDT)
-Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com. [209.85.208.178])
-        by smtp.gmail.com with ESMTPSA id k6sm156738lfm.89.2020.07.08.11.00.36
-        for <linux-efi@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 08 Jul 2020 11:00:36 -0700 (PDT)
-Received: by mail-lj1-f178.google.com with SMTP id r19so4241873ljn.12
-        for <linux-efi@vger.kernel.org>; Wed, 08 Jul 2020 11:00:36 -0700 (PDT)
-X-Received: by 2002:a2e:9c92:: with SMTP id x18mr28222464lji.70.1594231236141;
- Wed, 08 Jul 2020 11:00:36 -0700 (PDT)
+        id S1726072AbgGIB30 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 8 Jul 2020 21:29:26 -0400
+Received: from mga14.intel.com ([192.55.52.115]:56750 "EHLO mga14.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726044AbgGIB30 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Wed, 8 Jul 2020 21:29:26 -0400
+IronPort-SDR: lru2BPSMrSWOV8E8bgycmLqHy4VnUupdoMWKp4YqMNSw5uGSTkhNpXptHbgBoGUdFz9Pco0GhU
+ lSKL3PzPbUSw==
+X-IronPort-AV: E=McAfee;i="6000,8403,9676"; a="146997894"
+X-IronPort-AV: E=Sophos;i="5.75,330,1589266800"; 
+   d="scan'208";a="146997894"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2020 18:29:25 -0700
+IronPort-SDR: FmNXR2sXY1bNwxtt/apF2h3osdictYqoNyihb23hUn6RFHJ3jK/BDX+fe2mMjz3Z/kYuPpweze
+ bKE0soif0cqg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.75,330,1589266800"; 
+   d="scan'208";a="323090297"
+Received: from lkp-server01.sh.intel.com (HELO 6136dd46483e) ([10.239.97.150])
+  by FMSMGA003.fm.intel.com with ESMTP; 08 Jul 2020 18:29:24 -0700
+Received: from kbuild by 6136dd46483e with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1jtLNK-0000ME-H8; Thu, 09 Jul 2020 01:29:22 +0000
+Date:   Thu, 09 Jul 2020 09:28:44 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-efi@vger.kernel.org
+Subject: [efi:urgent] BUILD SUCCESS
+ e6082ffdb66b1c2bcf185434a091d82ab8264d97
+Message-ID: <5f0672cc.1+HH5+RY4kZUFOWy%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-References: <20200628182601.GA84577@gmail.com> <CAHk-=wgD+q+oDdtukYC74_cDX5i0Ynf0GLhuNe2Faaokejj6fQ@mail.gmail.com>
- <20200708162053.GU4800@hirez.programming.kicks-ass.net>
-In-Reply-To: <20200708162053.GU4800@hirez.programming.kicks-ass.net>
-From:   Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Wed, 8 Jul 2020 11:00:19 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wggLLv8dY7ViOm7rdHxVNKJUkZMuR90vXO307WkBT8qrw@mail.gmail.com>
-Message-ID: <CAHk-=wggLLv8dY7ViOm7rdHxVNKJUkZMuR90vXO307WkBT8qrw@mail.gmail.com>
-Subject: Re: [GIT PULL] EFI fixes
-To:     Peter Zijlstra <peterz@infradead.org>
-Cc:     Ingo Molnar <mingo@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Borislav Petkov <bp@alien8.de>,
-        linux-efi <linux-efi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, Jul 8, 2020 at 9:21 AM Peter Zijlstra <peterz@infradead.org> wrote:
-> >
-> > It's perhaps yet another reason to just skip gcc-4.8 too, since
-> > apparently 4.9 works.
-> >
-> > gcc-4.9 really has a lot of advantages. It's where (I think) gcc
-> > basically supports all C11 things, including _Generic() but also
-> > __auto_type.
->
-> +1
->
-> Anybody for nay, or should we just do this?
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git  urgent
+branch HEAD: e6082ffdb66b1c2bcf185434a091d82ab8264d97  fs/efivarfs: Permit read-only access on platforms that lack SetVariable
 
-I'll just do it. Let's see if anybody screams with a good reason. I
-hate the whole "support old compilers", it ends up not only making for
-complex code, it tends to cause these unnecessary kinds of "guys, we
-tested this really well, but that crazy compiler had a very particular
-odd issue, and it wasn't in any test box.
+elapsed time: 725m
 
-                Linus
+configs tested: 101
+configs skipped: 2
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+arm                                 defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+arm                               allnoconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm64                            allmodconfig
+arm64                             allnoconfig
+xtensa                         virt_defconfig
+parisc                            allnoconfig
+mips                      pic32mzda_defconfig
+arm                       netwinder_defconfig
+openrisc                 simple_smp_defconfig
+powerpc                      pasemi_defconfig
+arm                        cerfcube_defconfig
+xtensa                          iss_defconfig
+sh                           se7343_defconfig
+arm                          ixp4xx_defconfig
+sh                           se7780_defconfig
+m68k                             alldefconfig
+arc                      axs103_smp_defconfig
+arm                          prima2_defconfig
+sh                           sh2007_defconfig
+mips                      maltaaprp_defconfig
+i386                              allnoconfig
+i386                             allyesconfig
+i386                                defconfig
+i386                              debian-10.3
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                              allnoconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                              allnoconfig
+m68k                           sun3_defconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+nios2                            allyesconfig
+openrisc                            defconfig
+c6x                              allyesconfig
+c6x                               allnoconfig
+openrisc                         allyesconfig
+nds32                               defconfig
+nds32                             allnoconfig
+csky                             allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+h8300                            allmodconfig
+xtensa                              defconfig
+arc                                 defconfig
+arc                              allyesconfig
+sh                               allmodconfig
+sh                                allnoconfig
+microblaze                        allnoconfig
+mips                             allyesconfig
+mips                              allnoconfig
+mips                             allmodconfig
+parisc                              defconfig
+parisc                           allyesconfig
+parisc                           allmodconfig
+powerpc                             defconfig
+powerpc                          allyesconfig
+powerpc                          rhel-kconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+i386                 randconfig-a002-20200708
+i386                 randconfig-a001-20200708
+i386                 randconfig-a006-20200708
+i386                 randconfig-a005-20200708
+i386                 randconfig-a004-20200708
+i386                 randconfig-a003-20200708
+riscv                            allyesconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                            allmodconfig
+s390                             allyesconfig
+s390                              allnoconfig
+s390                             allmodconfig
+s390                                defconfig
+sparc                            allyesconfig
+sparc                               defconfig
+sparc64                             defconfig
+sparc64                           allnoconfig
+sparc64                          allyesconfig
+sparc64                          allmodconfig
+um                               allmodconfig
+um                                allnoconfig
+um                               allyesconfig
+um                                  defconfig
+x86_64                               rhel-7.6
+x86_64                    rhel-7.6-kselftests
+x86_64                               rhel-8.3
+x86_64                                  kexec
+x86_64                                   rhel
+x86_64                         rhel-7.2-clear
+x86_64                                    lkp
+x86_64                              fedora-25
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
