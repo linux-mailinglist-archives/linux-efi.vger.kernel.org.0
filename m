@@ -2,93 +2,80 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ABEE82198CE
-	for <lists+linux-efi@lfdr.de>; Thu,  9 Jul 2020 08:45:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5604D219AC7
+	for <lists+linux-efi@lfdr.de>; Thu,  9 Jul 2020 10:28:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726099AbgGIGpE (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 9 Jul 2020 02:45:04 -0400
-Received: from mail.kernel.org ([198.145.29.99]:47914 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726064AbgGIGpD (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Thu, 9 Jul 2020 02:45:03 -0400
-Received: from mail-oo1-f48.google.com (mail-oo1-f48.google.com [209.85.161.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 2CBCC206C3;
-        Thu,  9 Jul 2020 06:45:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1594277103;
-        bh=yqyv6h2XInBV1EY6m64ceNwhddRMrP8QNwYqF1Bx1zM=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=S27nB3x7AqgVsIDI5HG/zYaxeNuKyksZnZr+RRkqGY7MIo9S/41mt5nHh9O9jq+Vh
-         WPb/31fvxPOxVm42lKbgbpNAK2zK/XEvUv8NVrgN/JTAjVACfCwIShtBQ6i2g36f7G
-         +R/TjJuoZaqSWa9RFyQNPXRPr1oNSc6QkvyR6L58=
-Received: by mail-oo1-f48.google.com with SMTP id p26so157477oos.7;
-        Wed, 08 Jul 2020 23:45:03 -0700 (PDT)
-X-Gm-Message-State: AOAM532mePkfTX5CFgGA6T07np9+l8/JTQe3q8oJBDJp//JF903BcjlO
-        rNAwkpbLKYmuUuetP9ZnpSu6UvM9AVB3c/ULfNk=
-X-Google-Smtp-Source: ABdhPJxJg0zCtFdI6GkRc3m2LXwEKb/oojArjl7Y2J0R0eiIZ44Vv+yY/2C03uazutRVzLit4S54OK5Uwh8Pl/WqJ+0=
-X-Received: by 2002:a4a:de8d:: with SMTP id v13mr31588321oou.45.1594277102535;
- Wed, 08 Jul 2020 23:45:02 -0700 (PDT)
+        id S1726193AbgGII2R (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 9 Jul 2020 04:28:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47186 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726247AbgGII2Q (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 9 Jul 2020 04:28:16 -0400
+Received: from merlin.infradead.org (merlin.infradead.org [IPv6:2001:8b0:10b:1231::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69B9DC061A0B;
+        Thu,  9 Jul 2020 01:28:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=NWFj2V6cxUSTsKbsAmHW98rzpJRUzD2nP4IA25RU07o=; b=evyv0BMPkzrls+U4oHEFIIm/5d
+        TD/Km3xUwPwbZCUcVwwwz7vPggeDhTJ11FxTvBiZY6MZtGm1gzTL5rbMrNv3WrUlDZU++Qsu8R7O4
+        st0FsHJPKzf8Fuhn36dAu+tImp32tB7gBLjLgq/fvmFooY3NdpTYuGPzMxaSCHXT3IXt8MQPANU2z
+        lQkgokwtyTZavgftzkXGwn5ltdQSNcFwa8AraQgm8VBWwnqbjTDobhhu5hJUVK3XBtnvw4gyQAwoN
+        N4F0/yer/WDrIPOnEPXtoiVeMBpxrTwD0t+pAe49GnfDOj0TKYd/4a44ZCWqpd4SC+kz8x7Wdj8gP
+        c97q7xkg==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
+        by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1jtRuc-0001XH-Mw; Thu, 09 Jul 2020 08:28:10 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (Client did not present a certificate)
+        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 569C330047A;
+        Thu,  9 Jul 2020 10:28:08 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+        id 4CDBD29E916A7; Thu,  9 Jul 2020 10:28:08 +0200 (CEST)
+Date:   Thu, 9 Jul 2020 10:28:08 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     Ingo Molnar <mingo@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Borislav Petkov <bp@alien8.de>,
+        linux-efi <linux-efi@vger.kernel.org>
+Subject: Re: [GIT PULL] EFI fixes
+Message-ID: <20200709082808.GH597537@hirez.programming.kicks-ass.net>
+References: <20200628182601.GA84577@gmail.com>
+ <CAHk-=wgD+q+oDdtukYC74_cDX5i0Ynf0GLhuNe2Faaokejj6fQ@mail.gmail.com>
+ <20200708162053.GU4800@hirez.programming.kicks-ass.net>
+ <CAHk-=wggLLv8dY7ViOm7rdHxVNKJUkZMuR90vXO307WkBT8qrw@mail.gmail.com>
 MIME-Version: 1.0
-References: <20200623150935.32181-1-geert+renesas@glider.be> <CAMj1kXHY7b1nNoOU-LuXiriFPcTC4ZfMccivhJWJvAUGPhwMzQ@mail.gmail.com>
-In-Reply-To: <CAMj1kXHY7b1nNoOU-LuXiriFPcTC4ZfMccivhJWJvAUGPhwMzQ@mail.gmail.com>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Thu, 9 Jul 2020 09:44:51 +0300
-X-Gmail-Original-Message-ID: <CAMj1kXHHt7hBqnBrcvzVg9ShghpQqq-cR=pNcVMovon-uoP0xg@mail.gmail.com>
-Message-ID: <CAMj1kXHHt7hBqnBrcvzVg9ShghpQqq-cR=pNcVMovon-uoP0xg@mail.gmail.com>
-Subject: Re: [PATCH] efi/libstub: EFI_GENERIC_STUB_INITRD_CMDLINE_LOADER
- should not default to yes
-To:     Geert Uytterhoeven <geert+renesas@glider.be>
-Cc:     Ingo Molnar <mingo@kernel.org>,
-        Arvind Sankar <nivedita@alum.mit.edu>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHk-=wggLLv8dY7ViOm7rdHxVNKJUkZMuR90vXO307WkBT8qrw@mail.gmail.com>
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, 25 Jun 2020 at 19:11, Ard Biesheuvel <ardb@kernel.org> wrote:
->
-> On Tue, 23 Jun 2020 at 17:09, Geert Uytterhoeven
-> <geert+renesas@glider.be> wrote:
+On Wed, Jul 08, 2020 at 11:00:19AM -0700, Linus Torvalds wrote:
+> On Wed, Jul 8, 2020 at 9:21 AM Peter Zijlstra <peterz@infradead.org> wrote:
+> > >
+> > > It's perhaps yet another reason to just skip gcc-4.8 too, since
+> > > apparently 4.9 works.
+> > >
+> > > gcc-4.9 really has a lot of advantages. It's where (I think) gcc
+> > > basically supports all C11 things, including _Generic() but also
+> > > __auto_type.
 > >
-> > EFI_GENERIC_STUB_INITRD_CMDLINE_LOADER is deprecated, so it should not
-> > be enabled by default.
+> > +1
 > >
-> > In light of commit 4da0b2b7e67524cc ("efi/libstub: Re-enable command
-> > line initrd loading for x86"), keep the default for X86.
-> >
-> > Fixes: cf6b83664895a5c7 ("efi/libstub: Make initrd file loader configurable")
-> > Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
->
-> Queued as a fix, thanks.
->
+> > Anybody for nay, or should we just do this?
+> 
+> I'll just do it. Let's see if anybody screams with a good reason. I
+> hate the whole "support old compilers", it ends up not only making for
+> complex code, it tends to cause these unnecessary kinds of "guys, we
+> tested this really well, but that crazy compiler had a very particular
+> odd issue, and it wasn't in any test box.
 
-I am going to have to postpone this one - it appears kernelCI uses
-QEMU firmware that does not implement the new initrd loading protocol
-yet, so I will need to get that fixed first.
-
-
-> > ---
-> >  drivers/firmware/efi/Kconfig | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/firmware/efi/Kconfig b/drivers/firmware/efi/Kconfig
-> > index e6fc022bc87e03ab..56055c61904e49f4 100644
-> > --- a/drivers/firmware/efi/Kconfig
-> > +++ b/drivers/firmware/efi/Kconfig
-> > @@ -127,7 +127,7 @@ config EFI_ARMSTUB_DTB_LOADER
-> >  config EFI_GENERIC_STUB_INITRD_CMDLINE_LOADER
-> >         bool "Enable the command line initrd loader" if !X86
-> >         depends on EFI_STUB && (EFI_GENERIC_STUB || X86)
-> > -       default y
-> > +       default y if X86
-> >         help
-> >           Select this config option to add support for the initrd= command
-> >           line parameter, allowing an initrd that resides on the same volume
-> > --
-> > 2.17.1
-> >
+Excellent, thanks!
