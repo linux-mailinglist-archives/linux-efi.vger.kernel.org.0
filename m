@@ -2,187 +2,89 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ED1BC21B1C7
-	for <lists+linux-efi@lfdr.de>; Fri, 10 Jul 2020 10:56:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C52E21B2F3
+	for <lists+linux-efi@lfdr.de>; Fri, 10 Jul 2020 12:09:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726644AbgGJI4b (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 10 Jul 2020 04:56:31 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35278 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726615AbgGJI4b (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Fri, 10 Jul 2020 04:56:31 -0400
-Received: from mail-oo1-f49.google.com (mail-oo1-f49.google.com [209.85.161.49])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A990F207FC
-        for <linux-efi@vger.kernel.org>; Fri, 10 Jul 2020 08:56:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1594371390;
-        bh=lYDp2E50nf59zP+0Wbi1z2mLEL7lMEMhY1/xL0pzJ5w=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=HSGin+//iMRrvkr4G7epJBUb9LdyiG+3dd720v6vO+Z4CrSshfIw+qlywcTDqKZRT
-         mdpSsUUeAj2uH8ICDmmQ2sZkWKVfHOyu2tVVcCyyVhGT2UhygQp+/u19sNoe+C6ZPe
-         i2iJUl76txCzYb3Jgdp5c392GACGOzqVBXKJhEAg=
-Received: by mail-oo1-f49.google.com with SMTP id j1so865137oof.1
-        for <linux-efi@vger.kernel.org>; Fri, 10 Jul 2020 01:56:30 -0700 (PDT)
-X-Gm-Message-State: AOAM531o4uJdKZUg7QR663OQ32iU3p5kGurCIxbhuSEvBiJ01bpgDFsG
-        8s8ZsBw4xKTAxWn/r54amw4krwlprLVFAwGzduo=
-X-Google-Smtp-Source: ABdhPJz3VYS8s2zfQtHueEml5ibNYa4sdp5VWcca8z4evk+lJ6IevlfY5J3TADUXLI++0hPqaLrDIraD+PeRaOhjy7s=
-X-Received: by 2002:a4a:b34b:: with SMTP id n11mr58681303ooo.41.1594371389951;
- Fri, 10 Jul 2020 01:56:29 -0700 (PDT)
+        id S1726615AbgGJKJ4 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 10 Jul 2020 06:09:56 -0400
+Received: from mout.kundenserver.de ([212.227.126.133]:43081 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726496AbgGJKJ4 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 10 Jul 2020 06:09:56 -0400
+Received: from mail-qv1-f45.google.com ([209.85.219.45]) by
+ mrelayeu.kundenserver.de (mreue010 [212.227.15.129]) with ESMTPSA (Nemesis)
+ id 1MhDIw-1kY6TI29AI-00eK63; Fri, 10 Jul 2020 12:09:54 +0200
+Received: by mail-qv1-f45.google.com with SMTP id di5so2276762qvb.11;
+        Fri, 10 Jul 2020 03:09:54 -0700 (PDT)
+X-Gm-Message-State: AOAM532n3buQmTopmzjvj8DqP8b/9LM2Kgf0Yj3mynra1mbzcg1/8wQl
+        kkHX1qyVGxXv3O5z2d1kxBj+IPGA/z1nmkyMAOs=
+X-Google-Smtp-Source: ABdhPJz42eCmUaIZXAhF7p+bGv6J/eqTfJpUn8i64n/JP6ZF/QkNEGTvnQH4lELo6dycg+GyJ7Mr3FpMhnbMFtHAw/8=
+X-Received: by 2002:ad4:4c09:: with SMTP id bz9mr32958807qvb.210.1594375793273;
+ Fri, 10 Jul 2020 03:09:53 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200709211237.29455-1-will@kernel.org>
-In-Reply-To: <20200709211237.29455-1-will@kernel.org>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Fri, 10 Jul 2020 11:56:18 +0300
-X-Gmail-Original-Message-ID: <CAMj1kXGs38nfwNY9HSBDri3Uf5BXnkbYJA3obc_qqaYxvJts_g@mail.gmail.com>
-Message-ID: <CAMj1kXGs38nfwNY9HSBDri3Uf5BXnkbYJA3obc_qqaYxvJts_g@mail.gmail.com>
-Subject: Re: [RFC PATCH] efi/libstub/arm64: Retain 2MB kernel Image alignment
- if !KASLR
-To:     Will Deacon <will@kernel.org>
-Cc:     linux-efi <linux-efi@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Android Kernel Team <kernel-team@android.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Marc Zyngier <maz@kernel.org>,
-        David Brazdil <dbrazdil@google.com>
+References: <20200628182601.GA84577@gmail.com> <CAHk-=wgD+q+oDdtukYC74_cDX5i0Ynf0GLhuNe2Faaokejj6fQ@mail.gmail.com>
+ <20200708162053.GU4800@hirez.programming.kicks-ass.net> <CAHk-=wggLLv8dY7ViOm7rdHxVNKJUkZMuR90vXO307WkBT8qrw@mail.gmail.com>
+ <CAK8P3a1GFjM5-ENf7XL6jjUvRdJhgjzYpSGD5R7TmW6oWEhYRA@mail.gmail.com> <20200709103459.wenqhbp52vesr7e5@box>
+In-Reply-To: <20200709103459.wenqhbp52vesr7e5@box>
+From:   Arnd Bergmann <arnd@arndb.de>
+Date:   Fri, 10 Jul 2020 12:09:36 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a3Cd30gthLj-Kw8dsNa2Cse3YfUs9q8c=nc7fHtQ-QLSg@mail.gmail.com>
+Message-ID: <CAK8P3a3Cd30gthLj-Kw8dsNa2Cse3YfUs9q8c=nc7fHtQ-QLSg@mail.gmail.com>
+Subject: Re: [GIT PULL] EFI fixes
+To:     "Kirill A. Shutemov" <kirill@shutemov.name>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Ingo Molnar <mingo@kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Borislav Petkov <bp@alien8.de>,
+        linux-efi <linux-efi@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
+X-Provags-ID: V03:K1:gvF83ApGf8hKP2O1vP8zoFIwS44aCFiOT/QsD3dUR7syB2ayIEp
+ ZP7Wx3P2FeTmrlclGt64f46/6xp5Clr177EqCilknKtnxltjpM2k31rnCycFXG8iCDQg8l3
+ JAvGf8OuyBN2mGKhLpMDcurprWw9i0tQGcgPL+TUjK5CS62ODAefH9HrniLt5aowQ1mGspF
+ nGW79wKW1tkDiSFAiMnoQ==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:eBjNb/liNXQ=:qxrWFd//CZF+Zppew6fUEQ
+ dVYZdZJQuaaVtD1lxgukJTxZEXte6aYuaCUKlEXImGBWeSg2r36c1iu2M/4P5U62mojTMXV4s
+ MzLB74s/Dfhg6VagcRsKi8qNllt3pT/ikgrutvjatVjUFrpB72PzelAuYl0aSI04i2l/zOcnD
+ hKttWm9NPuCaEqtuC758tfbYuv57/dVNylaab5OPLBf5VCUfH0n1QZA3hnS57CQHLaURjrcb+
+ +FzTKBUnCrTUAwSQmFj3286SNgt2fyBSJvs/dm5opLhzuHTG0AC8Eeh2Wvr+9LZ/E3kCx8hJM
+ MX5P5HZZd0YFj6aRUsJcFpNfFJamq5UfVNfaxpqoLGU8poM7yUbFMM9ECy3Ca9y9T5XXFBJ/u
+ 7/f9bO5fVY2F3+DTgr/vdJGIyrw3/+lVUu7lM0/dyURm+Nyq6Oi9qcrt7p26OHEF1QnPz+XGU
+ YIn05ktBsK5JqDFb410SFQPxt3RwEsMrjdsOMCnysw4KCO35T2wSQKL/6Ja5BnEwuzwZVhOhg
+ prQ1YlYw+YpyrSEnMDT9A7OKPDmqYG9dBQpKcezIp9F8odsGcvm6dIBYazLKHNzpoboB9+tuX
+ RT5CcngsInSOM1QUAQEVIUpMlifrPUALnx+6kmLpyBm0n19jwQyyDV85VpoPeYL+bw50+EDZ2
+ yQ1QEckn8UAlhL/V/T+aqeVhEzwx+fPOmcpefALHJMYL/J7VguhSqhnkwRKEFeRxfuY2ubIvT
+ xjDJTeAW/+Y4NtAWmE/j2k7SaURwnVKEAdg6TvgFBxSstNS/kiahQh9r0+bnL8SkzwdJXEdwB
+ NDxRKaZjkFNEniF97LNKAcaqQmt8wl1SlrmnvHBn1pBg5qvCAD+yOAbqGd2m/Tfx/NR6A5A
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, 10 Jul 2020 at 00:12, Will Deacon <will@kernel.org> wrote:
+On Thu, Jul 9, 2020 at 12:35 PM Kirill A. Shutemov <kirill@shutemov.name> wrote:
 >
-> Since commit 82046702e288 ("efi/libstub/arm64: Replace 'preferred' offset
-> with alignment check"), loading a relocatable arm64 kernel at a physical
-> address which is not 2MB aligned and subsequently booting with EFI will
-> leave the Image in-place, relying on the kernel to relocate itself early
-> during boot. In conjunction with commit dd4bc6076587 ("arm64: warn on
-> incorrect placement of the kernel by the bootloader"), which enables
-> CONFIG_RELOCATABLE by default, this effectively means that entering an
-> arm64 kernel loaded at an alignment smaller than 2MB with EFI (e.g. using
-> QEMU) will result in silent relocation at runtime.
+> On Thu, Jul 09, 2020 at 11:30:27AM +0200, Arnd Bergmann wrote:
+> > The most interesting version to require in the future would be
+> > gcc-7, which IIRC is the point at which we can just use -std=gnu99
+> > or -std=gnu11 instead of -std=gnu89 without running into the
+> > problem with compound literals[1].
 >
-> Unfortunately, this has a subtle but confusing affect for developers
-> trying to inspect the PC value during a crash and comparing it to the
-> symbol addresses in vmlinux using tools such as 'nm' or 'addr2line';
-> all text addresses will be displaced by a sub-2MB offset, resulting in
-> the wrong symbol being identified in many cases. Passing "nokaslr" on
-> the command line or disabling "CONFIG_RANDOMIZE_BASE" does not help,
-> since the EFI stub only copies the kernel Image to a 2MB boundary if it
-> is not relocatable.
+> It is gcc-5, not gcc-7. This commit:
 >
-> Adjust the EFI stub for arm64 so that the minimum Image alignment is 2MB
-> unless KASLR is in use.
->
-> Cc: Ard Biesheuvel <ardb@kernel.org>
-> Cc: Mark Rutland <mark.rutland@arm.com>
-> Cc: Catalin Marinas <catalin.marinas@arm.com>
-> Cc: Marc Zyngier <maz@kernel.org>
-> Cc: David Brazdil <dbrazdil@google.com>
-> Signed-off-by: Will Deacon <will@kernel.org>
-> ---
->
-> Not massively happy with this patch, but also not massively happy that
-> addr2line is so misleading without it. Thoughts?
->
+> https://gcc.gnu.org/git/?p=gcc.git;a=commit;h=d303aeafa9b4
 
-I think the approach is fine, as disabling kaslr at compile time as
-well as at boot time will produce the desired results. The only reason
-we enabled relocatable kernels without kaslr in the first place was to
-work around broken non-efi loaders.
+Ok, glad I was wrong here. I confirmed that with gcc-5 or higher I
+can build a kernel with -std=gnu11 or -std=gnu99 instead of
+-std=gnu89, but gcc-4.9.4 fails with anything other than gnu89.
 
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
+I forgot why we care though -- is there any behavior of gnu11
+that we prefer over the gnu99 behavior, or is it just going with
+the times because it's the right thing to do? All the interesting
+features of c11 seem to also be available as extensions in
+gcc-4.9's gnu89, though I could not find a definite list of the
+differences.
 
->  drivers/firmware/efi/libstub/arm64-stub.c     | 25 +++++++++++--------
->  .../firmware/efi/libstub/efi-stub-helper.c    |  2 +-
->  2 files changed, 15 insertions(+), 12 deletions(-)
->
-> diff --git a/drivers/firmware/efi/libstub/arm64-stub.c b/drivers/firmware/efi/libstub/arm64-stub.c
-> index 7f6a57dec513..e5bfac79e5ac 100644
-> --- a/drivers/firmware/efi/libstub/arm64-stub.c
-> +++ b/drivers/firmware/efi/libstub/arm64-stub.c
-> @@ -35,13 +35,16 @@ efi_status_t check_platform_features(void)
->  }
->
->  /*
-> - * Relocatable kernels can fix up the misalignment with respect to
-> - * MIN_KIMG_ALIGN, so they only require a minimum alignment of EFI_KIMG_ALIGN
-> - * (which accounts for the alignment of statically allocated objects such as
-> - * the swapper stack.)
-> + * Although relocatable kernels can fix up the misalignment with respect to
-> + * MIN_KIMG_ALIGN, the resulting virtual text addresses are subtly out of
-> + * sync with those recorded in the vmlinux when kaslr is disabled but the
-> + * image required relocation anyway. Therefore retain 2M alignment unless
-> + * KASLR is in use.
->   */
-> -static const u64 min_kimg_align = IS_ENABLED(CONFIG_RELOCATABLE) ? EFI_KIMG_ALIGN
-> -                                                                : MIN_KIMG_ALIGN;
-> +static u64 min_kimg_align(void)
-> +{
-> +       return efi_nokaslr ? MIN_KIMG_ALIGN : EFI_KIMG_ALIGN;
-> +}
->
->  efi_status_t handle_kernel_image(unsigned long *image_addr,
->                                  unsigned long *image_size,
-> @@ -74,21 +77,21 @@ efi_status_t handle_kernel_image(unsigned long *image_addr,
->
->         kernel_size = _edata - _text;
->         kernel_memsize = kernel_size + (_end - _edata);
-> -       *reserve_size = kernel_memsize + TEXT_OFFSET % min_kimg_align;
-> +       *reserve_size = kernel_memsize + TEXT_OFFSET % min_kimg_align();
->
->         if (IS_ENABLED(CONFIG_RANDOMIZE_BASE) && phys_seed != 0) {
->                 /*
->                  * If KASLR is enabled, and we have some randomness available,
->                  * locate the kernel at a randomized offset in physical memory.
->                  */
-> -               status = efi_random_alloc(*reserve_size, min_kimg_align,
-> +               status = efi_random_alloc(*reserve_size, min_kimg_align(),
->                                           reserve_addr, phys_seed);
->         } else {
->                 status = EFI_OUT_OF_RESOURCES;
->         }
->
->         if (status != EFI_SUCCESS) {
-> -               if (IS_ALIGNED((u64)_text - TEXT_OFFSET, min_kimg_align)) {
-> +               if (IS_ALIGNED((u64)_text - TEXT_OFFSET, min_kimg_align())) {
->                         /*
->                          * Just execute from wherever we were loaded by the
->                          * UEFI PE/COFF loader if the alignment is suitable.
-> @@ -99,7 +102,7 @@ efi_status_t handle_kernel_image(unsigned long *image_addr,
->                 }
->
->                 status = efi_allocate_pages_aligned(*reserve_size, reserve_addr,
-> -                                                   ULONG_MAX, min_kimg_align);
-> +                                                   ULONG_MAX, min_kimg_align());
->
->                 if (status != EFI_SUCCESS) {
->                         efi_err("Failed to relocate kernel\n");
-> @@ -108,7 +111,7 @@ efi_status_t handle_kernel_image(unsigned long *image_addr,
->                 }
->         }
->
-> -       *image_addr = *reserve_addr + TEXT_OFFSET % min_kimg_align;
-> +       *image_addr = *reserve_addr + TEXT_OFFSET % min_kimg_align();
->         memcpy((void *)*image_addr, _text, kernel_size);
->
->         return EFI_SUCCESS;
-> diff --git a/drivers/firmware/efi/libstub/efi-stub-helper.c b/drivers/firmware/efi/libstub/efi-stub-helper.c
-> index d40fd68c6bb2..6bca70bbb43d 100644
-> --- a/drivers/firmware/efi/libstub/efi-stub-helper.c
-> +++ b/drivers/firmware/efi/libstub/efi-stub-helper.c
-> @@ -19,7 +19,7 @@
->  #include "efistub.h"
->
->  bool efi_nochunk;
-> -bool efi_nokaslr;
-> +bool efi_nokaslr = !IS_ENABLED(CONFIG_RANDOMIZE_BASE);
->  bool efi_noinitrd;
->  int efi_loglevel = CONSOLE_LOGLEVEL_DEFAULT;
->  bool efi_novamap;
-> --
-> 2.27.0.383.g050319c2ae-goog
->
+      Arnd
