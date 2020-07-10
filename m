@@ -2,83 +2,155 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2729921B89B
-	for <lists+linux-efi@lfdr.de>; Fri, 10 Jul 2020 16:27:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 557CA21BDA7
+	for <lists+linux-efi@lfdr.de>; Fri, 10 Jul 2020 21:30:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726832AbgGJO1Z (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 10 Jul 2020 10:27:25 -0400
-Received: from mail.kernel.org ([198.145.29.99]:33836 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726725AbgGJO1Z (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Fri, 10 Jul 2020 10:27:25 -0400
-Received: from mail-oo1-f43.google.com (mail-oo1-f43.google.com [209.85.161.43])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id DB264206E2;
-        Fri, 10 Jul 2020 14:27:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1594391245;
-        bh=z5GS7bzW3vt89ODcDbxTwcqTDUKbrhtLbUgZN/aPJks=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=udoNZF8P0ADm4fqn4Qy5x9C2vHCV2p9r+Ns+aU2CoUVQCPkWqe/5EBJWiz/+wZ+cB
-         ex+pS3L2z+DH2RCdK6ZdxCS5z+5yAfPJTi10+K61d8UR22uyLQCnmMaVnZGFU6P9C/
-         uuafWvzXw3P/2xm2EvwMJq+xrmLFHHZ/dRnwr/yQ=
-Received: by mail-oo1-f43.google.com with SMTP id t12so1024069ooc.10;
-        Fri, 10 Jul 2020 07:27:24 -0700 (PDT)
-X-Gm-Message-State: AOAM531jNgohfFBhdc7i2YIe5CYkagWdUJcejRmyIG9X5sxFRNDbFGz4
-        Zgtg9wwMmYEgZP2vb91GsIR4ywWoy02g6cXOBe8=
-X-Google-Smtp-Source: ABdhPJz6+EdbHPDvR54y8i1lkJirNkR+7jQgNft2XWsMwOMmyjZqITES3V6nwxYUU7/dFIw3al47o4ejMuE4Cv4kjXk=
-X-Received: by 2002:a4a:b34b:: with SMTP id n11mr59771293ooo.41.1594391244224;
- Fri, 10 Jul 2020 07:27:24 -0700 (PDT)
+        id S1728155AbgGJTaR (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 10 Jul 2020 15:30:17 -0400
+Received: from linux.microsoft.com ([13.77.154.182]:59976 "EHLO
+        linux.microsoft.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726867AbgGJTaQ (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 10 Jul 2020 15:30:16 -0400
+Received: from sequoia.work.tihix.com (162-237-133-238.lightspeed.rcsntx.sbcglobal.net [162.237.133.238])
+        by linux.microsoft.com (Postfix) with ESMTPSA id 5D7BA20B4908;
+        Fri, 10 Jul 2020 12:30:14 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 5D7BA20B4908
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+        s=default; t=1594409415;
+        bh=M5dLai7mNPTd3Wnd//DTj/dm1yHRr0oCnAgp9ujOkD8=;
+        h=From:To:Cc:Subject:Date:From;
+        b=YKZiudmmJuux776Gb7yQajdAQBsRCOW9jSfLOtuGDBimDfr16dcP7wKxKlh1pfVnR
+         zXv6BvtTcdmAc1TLEdlP+BdqQ5ysWYwSkUPZhK24zsl3qp9zpBY6rPQwCPxoX8FEUo
+         RAbZXYzjfCVhZzojdfIul0DSPnRoxpBlGHcIOBTU=
+From:   Tyler Hicks <tyhicks@linux.microsoft.com>
+To:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        Peter Huewe <peterhuewe@gmx.de>,
+        Ard Biesheuvel <ardb@kernel.org>
+Cc:     Jason Gunthorpe <jgg@ziepe.ca>, Petr Vandrovec <petr@vmware.com>,
+        Nayna Jain <nayna@linux.ibm.com>,
+        Thirupathaiah Annapureddy <thiruan@microsoft.com>,
+        linux-integrity@vger.kernel.org, linux-efi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Peter Jones <pjones@redhat.com>
+Subject: [PATCH v2] tpm: Require that all digests are present in TCG_PCR_EVENT2 structures
+Date:   Fri, 10 Jul 2020 14:29:55 -0500
+Message-Id: <20200710192955.23333-1-tyhicks@linux.microsoft.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-References: <20200710142253.28070-1-jgross@suse.com>
-In-Reply-To: <20200710142253.28070-1-jgross@suse.com>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Fri, 10 Jul 2020 17:27:13 +0300
-X-Gmail-Original-Message-ID: <CAMj1kXEdm8MrdWVLO0w_-LJLvpiUURHhazv4-B39L1Bbk8kqFw@mail.gmail.com>
-Message-ID: <CAMj1kXEdm8MrdWVLO0w_-LJLvpiUURHhazv4-B39L1Bbk8kqFw@mail.gmail.com>
-Subject: Re: [PATCH v2] efi: avoid error message when booting under Xen
-To:     Juergen Gross <jgross@suse.com>
-Cc:     xen-devel@lists.xenproject.org, linux-fbdev@vger.kernel.org,
-        dri-devel@lists.freedesktop.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Peter Jones <pjones@redhat.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, 10 Jul 2020 at 17:24, Juergen Gross <jgross@suse.com> wrote:
->
-> efifb_probe() will issue an error message in case the kernel is booted
-> as Xen dom0 from UEFI as EFI_MEMMAP won't be set in this case. Avoid
-> that message by calling efi_mem_desc_lookup() only if EFI_MEMMAP is set.
->
-> Fixes: 38ac0287b7f4 ("fbdev/efifb: Honour UEFI memory map attributes when mapping the FB")
-> Signed-off-by: Juergen Gross <jgross@suse.com>
+Require that the TCG_PCR_EVENT2.digests.count value strictly matches the
+value of TCG_EfiSpecIdEvent.numberOfAlgorithms in the event field of the
+TCG_PCClientPCREvent event log header. Also require that
+TCG_EfiSpecIdEvent.numberOfAlgorithms is non-zero.
 
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
+The TCG PC Client Platform Firmware Profile Specification section 9.1
+(Family "2.0", Level 00 Revision 1.04) states:
 
-> ---
->  drivers/video/fbdev/efifb.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/video/fbdev/efifb.c b/drivers/video/fbdev/efifb.c
-> index 65491ae74808..e57c00824965 100644
-> --- a/drivers/video/fbdev/efifb.c
-> +++ b/drivers/video/fbdev/efifb.c
-> @@ -453,7 +453,7 @@ static int efifb_probe(struct platform_device *dev)
->         info->apertures->ranges[0].base = efifb_fix.smem_start;
->         info->apertures->ranges[0].size = size_remap;
->
-> -       if (efi_enabled(EFI_BOOT) &&
-> +       if (efi_enabled(EFI_MEMMAP) &&
->             !efi_mem_desc_lookup(efifb_fix.smem_start, &md)) {
->                 if ((efifb_fix.smem_start + efifb_fix.smem_len) >
->                     (md.phys_addr + (md.num_pages << EFI_PAGE_SHIFT))) {
-> --
-> 2.26.2
->
+ For each Hash algorithm enumerated in the TCG_PCClientPCREvent entry,
+ there SHALL be a corresponding digest in all TCG_PCR_EVENT2 structures.
+ Note: This includes EV_NO_ACTION events which do not extend the PCR.
+
+Section 9.4.5.1 provides this description of
+TCG_EfiSpecIdEvent.numberOfAlgorithms:
+
+ The number of Hash algorithms in the digestSizes field. This field MUST
+ be set to a value of 0x01 or greater.
+
+Enforce these restrictions, as required by the above specification, in
+order to better identify and ignore invalid sequences of bytes at the
+end of an otherwise valid TPM2 event log. Firmware doesn't always have
+the means necessary to inform the kernel of the actual event log size so
+the kernel's event log parsing code should be stringent when parsing the
+event log for resiliency against firmware bugs. This is true, for
+example, when firmware passes the event log to the kernel via a reserved
+memory region described in device tree.
+
+POWER and some ARM systems use the "linux,sml-base" and "linux,sml-size"
+device tree properties to describe the memory region used to pass the
+event log from firmware to the kernel. Unfortunately, the
+"linux,sml-size" property describes the size of the entire reserved
+memory region rather than the size of the event long within the memory
+region and the event log format does not include information describing
+the size of the event log.
+
+tpm_read_log_of(), in drivers/char/tpm/eventlog/of.c, is where the
+"linux,sml-size" property is used. At the end of that function,
+log->bios_event_log_end is pointing at the end of the reserved memory
+region. That's typically 0x10000 bytes offset from "linux,sml-base",
+depending on what's defined in the device tree source.
+
+The firmware event log only fills a portion of those 0x10000 bytes and
+the rest of the memory region should be zeroed out by firmware. Even in
+the case of a properly zeroed bytes in the remainder of the memory
+region, the only thing allowing the kernel's event log parser to detect
+the end of the event log is the following conditional in
+__calc_tpm2_event_size():
+
+        if (event_type == 0 && event_field->event_size == 0)
+                size = 0;
+
+If that wasn't there, __calc_tpm2_event_size() would think that a 16
+byte sequence of zeroes, following an otherwise valid event log, was
+a valid event.
+
+However, problems can occur if a single bit is set in the offset
+corresponding to either the TCG_PCR_EVENT2.eventType or
+TCG_PCR_EVENT2.eventSize fields, after the last valid event log entry.
+This could confuse the parser into thinking that an additional entry is
+present in the event log and exposing this invalid entry to userspace in
+the /sys/kernel/security/tpm0/binary_bios_measurements file. Such
+problems have been seen if firmware does not fully zero the memory
+region upon a warm reboot.
+
+This patch significantly raises the bar on how difficult it is for
+stale/invalid memory to confuse the kernel's event log parser but
+there's still, ultimately, a reliance on firmware to properly initialize
+the remainder of the memory region reserved for the event log as the
+parser cannot be expected to detect a stale but otherwise properly
+formatted firmware event log entry.
+
+Fixes: fd5c78694f3f ("tpm: fix handling of the TPM 2.0 event logs")
+Signed-off-by: Tyler Hicks <tyhicks@linux.microsoft.com>
+---
+
+* v2
+  - Rebase the patch on top of the TPM next branch, commit 786a2aa281f4
+    ("Revert commit e918e570415c ("tpm_tis: Remove the HID IFX0102")")
+  - Expand on the technical reasoning for needing strict event
+    validation in the commit message
+  - Improve the inline comment explaining the need for detecting
+    malformed events
+
+ include/linux/tpm_eventlog.h | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
+
+diff --git a/include/linux/tpm_eventlog.h b/include/linux/tpm_eventlog.h
+index 64356b199e94..739ba9a03ec1 100644
+--- a/include/linux/tpm_eventlog.h
++++ b/include/linux/tpm_eventlog.h
+@@ -211,9 +211,16 @@ static inline int __calc_tpm2_event_size(struct tcg_pcr_event2_head *event,
+ 
+ 	efispecid = (struct tcg_efi_specid_event_head *)event_header->event;
+ 
+-	/* Check if event is malformed. */
++	/*
++	 * Perform validation of the event in order to identify malformed
++	 * events. This function may be asked to parse arbitrary byte sequences
++	 * immediately following a valid event log. The caller expects this
++	 * function to recognize that the byte sequence is not a valid event
++	 * and to return an event size of 0.
++	 */
+ 	if (memcmp(efispecid->signature, TCG_SPECID_SIG,
+-		   sizeof(TCG_SPECID_SIG)) || count > efispecid->num_algs) {
++		   sizeof(TCG_SPECID_SIG)) ||
++	    !efispecid->num_algs || count != efispecid->num_algs) {
+ 		size = 0;
+ 		goto out;
+ 	}
+-- 
+2.25.1
+
