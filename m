@@ -2,128 +2,112 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7FC142205DD
-	for <lists+linux-efi@lfdr.de>; Wed, 15 Jul 2020 09:09:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EB45222061D
+	for <lists+linux-efi@lfdr.de>; Wed, 15 Jul 2020 09:23:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726212AbgGOHIs (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 15 Jul 2020 03:08:48 -0400
-Received: from mail.kernel.org ([198.145.29.99]:58498 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729066AbgGOHIr (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Wed, 15 Jul 2020 03:08:47 -0400
-Received: from mail-ot1-f45.google.com (mail-ot1-f45.google.com [209.85.210.45])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B0A0D20663
-        for <linux-efi@vger.kernel.org>; Wed, 15 Jul 2020 07:08:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1594796926;
-        bh=o38AHONRvbSZa/7vyWi8nGWKAAstX2kcCW0/oYxo7vk=;
+        id S1729284AbgGOHWs (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 15 Jul 2020 03:22:48 -0400
+Received: from conssluserg-01.nifty.com ([210.131.2.80]:22991 "EHLO
+        conssluserg-01.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729247AbgGOHWr (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 15 Jul 2020 03:22:47 -0400
+Received: from mail-ua1-f48.google.com (mail-ua1-f48.google.com [209.85.222.48]) (authenticated)
+        by conssluserg-01.nifty.com with ESMTP id 06F7M7QO031597;
+        Wed, 15 Jul 2020 16:22:07 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-01.nifty.com 06F7M7QO031597
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1594797728;
+        bh=w3JbW09mtoeE98TWzXBL1LmtIUCrjbrYaU4GyXXoQ4A=;
         h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=xkQqfQDKPRapjh+LeXKfsWfv44dY7cQ0eoHdxiqQhipc10JwtuQb2EsXipECiIa51
-         WZdmWU4OTOtpE2cGu8heby2G3riC17YPQp1p5lSLCJVwgtqVZVcjKgDGspNOLZPZHW
-         g0/fEA47kkR5Dr0ZaJ7LaxJ4rAWLKQt5NmRGkmyo=
-Received: by mail-ot1-f45.google.com with SMTP id 95so687470otw.10
-        for <linux-efi@vger.kernel.org>; Wed, 15 Jul 2020 00:08:46 -0700 (PDT)
-X-Gm-Message-State: AOAM533ASAVJNnKaN5JEbS5qkZJ/tn7K0qnt8WzJ3O/b35Wtizfg7MZc
-        DsMpHdnX9LjJjGXrFLiJtAyavdjOTxfVNDVrZqs=
-X-Google-Smtp-Source: ABdhPJzEWmz/ajlWxXsvTJuPoRAwJDQ1Yl2dafhNgIyRsn0VBymMc/9p7ljJyNqVglnLBWgvIM2E4fHNooczHrv/Mp8=
-X-Received: by 2002:a9d:7553:: with SMTP id b19mr8009227otl.77.1594796926087;
- Wed, 15 Jul 2020 00:08:46 -0700 (PDT)
+        b=KE7n4oSkpr4uW9J+/oFTuVtoFLcgVoosn+86ciSZgCJ1HtPLFYm8CHSnvqnhfjUJC
+         5sf/Nc8t+ReC9oUEKvMQVFsDFgnYnE/HrO29qiI+P/ogTZTdxqhSoo0wnEUHIyDH9M
+         CmJ5+g4DLGNFsrBMvSzqOhTfJixzKqXhJfzhL8FTqBjg6ng+1/Hs9QBKCBaozSsawx
+         PzSHCqfb/9AAxEhT9bHlrGp2lgdyveQ0yH3eIPf11hWEs1K9dUaP7uGmdumdsCO3//
+         9f1UNKqdJQjDaTrJBQt9ussCzwf4C4w/3KMGxaEPzmUrTsBvJQCVHfrJnKLAEgOnhl
+         cOW7MuoJ7HcFQ==
+X-Nifty-SrcIP: [209.85.222.48]
+Received: by mail-ua1-f48.google.com with SMTP id g4so280210uaq.10;
+        Wed, 15 Jul 2020 00:22:07 -0700 (PDT)
+X-Gm-Message-State: AOAM53272+RRs5bisZutAcQknJrmeIJ8SC2MGFfb85CqyaVeFvd32zAs
+        Kj/2Nddz1ryStE/odyuWLVz4FTN+X8twzVfndvU=
+X-Google-Smtp-Source: ABdhPJzniKddUQu2JP4MRRzQSLJmu66OKv+Gt9OUATG6zNkhKWMie+WW0snL77VGMIYWVgVjhoN2r9IkM4IAsJ9NJ8Q=
+X-Received: by 2002:ab0:44e5:: with SMTP id n92mr6138229uan.121.1594797726600;
+ Wed, 15 Jul 2020 00:22:06 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200623165936.1545211-1-ardb@kernel.org> <20200624060538.GA2935909@linux.ibm.com>
-In-Reply-To: <20200624060538.GA2935909@linux.ibm.com>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Wed, 15 Jul 2020 10:08:35 +0300
-X-Gmail-Original-Message-ID: <CAMj1kXG-Ku7LdHJpCvgO9DSM11kpbTpLWExJOswCvpbpMa294Q@mail.gmail.com>
-Message-ID: <CAMj1kXG-Ku7LdHJpCvgO9DSM11kpbTpLWExJOswCvpbpMa294Q@mail.gmail.com>
-Subject: Re: [PATCH] ARM: mmu: fix crash in EFI calls due to p4d typo in create_mapping_late()
-To:     Mike Rapoport <rppt@linux.ibm.com>
-Cc:     linux-efi <linux-efi@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Marek Szyprowski <m.szyprowski@samsung.com>
+References: <20200715032631.1562882-1-nivedita@alum.mit.edu>
+In-Reply-To: <20200715032631.1562882-1-nivedita@alum.mit.edu>
+From:   Masahiro Yamada <masahiroy@kernel.org>
+Date:   Wed, 15 Jul 2020 16:21:30 +0900
+X-Gmail-Original-Message-ID: <CAK7LNARqLfYmEomDyzc9iXrk7hKKpGg-nKXpM22V4UYCrXzXAg@mail.gmail.com>
+Message-ID: <CAK7LNARqLfYmEomDyzc9iXrk7hKKpGg-nKXpM22V4UYCrXzXAg@mail.gmail.com>
+Subject: Re: [PATCH] arch/x86/boot: Don't add the EFI stub to targets
+To:     Arvind Sankar <nivedita@alum.mit.edu>
+Cc:     X86 ML <x86@kernel.org>,
+        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, 24 Jun 2020 at 09:05, Mike Rapoport <rppt@linux.ibm.com> wrote:
+On Wed, Jul 15, 2020 at 12:26 PM Arvind Sankar <nivedita@alum.mit.edu> wrote:
 >
-> On Tue, Jun 23, 2020 at 06:59:36PM +0200, Ard Biesheuvel wrote:
-> > Commit
-> >
-> >   84e6ffb2c49c7901 ("arm: add support for folded p4d page tables")
-> >
-> > updated create_mapping_late() to take folded P4Ds into account when
-> > creating mappings, but inverted the p4d_alloc() failure test, resulting
-> > in no mapping to be created at all.
-> >
-> > When the EFI rtc driver subsequently tries to invoke the EFI GetTime()
-> > service, the memory regions covering the EFI data structures are missing
-> > from the page tables, resulting in a crash like
-> >
-> >   Unable to handle kernel paging request at virtual address 5ae0cf28
-> >   pgd = (ptrval)
-> >   [5ae0cf28] *pgd=80000040205003, *pmd=00000000
-> >   Internal error: Oops: 207 [#1] SMP THUMB2
-> >   Modules linked in:
-> >   CPU: 0 PID: 7 Comm: kworker/u32:0 Not tainted 5.7.0+ #92
-> >   Hardware name: QEMU KVM Virtual Machine, BIOS 0.0.0 02/06/2015
-> >   Workqueue: efi_rts_wq efi_call_rts
-> >   PC is at efi_call_rts+0x94/0x294
-> >   LR is at efi_call_rts+0x83/0x294
-> >   pc : [<c0b4f098>]    lr : [<c0b4f087>]    psr: 30000033
-> >   sp : e6219ef0  ip : 00000000  fp : ffffe000
-> >   r10: 00000000  r9 : 00000000  r8 : 30000013
-> >   r7 : e6201dd0  r6 : e6201ddc  r5 : 00000000  r4 : c181f264
-> >   r3 : 5ae0cf10  r2 : 00000001  r1 : e6201dd0  r0 : e6201ddc
-> >   Flags: nzCV  IRQs on  FIQs on  Mode SVC_32  ISA Thumb  Segment none
-> >   Control: 70c5383d  Table: 661cc840  DAC: 00000001
-> >   Process kworker/u32:0 (pid: 7, stack limit = 0x(ptrval))
-> >   ...
-> >   [<c0b4f098>] (efi_call_rts) from [<c0448219>] (process_one_work+0x16d/0x3d8)
-> >   [<c0448219>] (process_one_work) from [<c0448581>] (worker_thread+0xfd/0x408)
-> >   [<c0448581>] (worker_thread) from [<c044ca7b>] (kthread+0x103/0x104)
-> >   ...
-> >
-> > Fixes: 84e6ffb2c49c7901 ("arm: add support for folded p4d page tables")
-> > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> > ---
-> >  arch/arm/mm/mmu.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/arch/arm/mm/mmu.c b/arch/arm/mm/mmu.c
-> > index 628028bfbb92..bcd82614c25d 100644
-> > --- a/arch/arm/mm/mmu.c
-> > +++ b/arch/arm/mm/mmu.c
-> > @@ -966,7 +966,7 @@ void __init create_mapping_late(struct mm_struct *mm, struct map_desc *md,
-> >       pud_t *pud;
-> >
-> >       p4d = p4d_alloc(mm, pgd_offset(mm, md->virtual), md->virtual);
-> > -     if (!WARN_ON(!p4d))
-> > +     if (WARN_ON(!p4d))
+> vmlinux-objs-y is added to targets, which currently means that the EFI
+> stub gets added to the targets as well. It shouldn't be added since it
+> is built elsewhere.
 >
-> It must have been cosmic radiation :)
+> This confuses Makefile.build which interprets the EFI stub as a target
+>         $(obj)/$(objtree)/drivers/firmware/efi/libstub/lib.a
+> and will create drivers/firmware/efi/libstub/ underneath
+> arch/x86/boot/compressed, to hold this supposed target, if building
+> out-of-tree. [0]
 >
-> Reviewed-by: Mike Rapoport <rppt@linux.ibm.com>
+> Fix this by pulling the stub out of vmlinux-objs-y into efi-obj-y.
 >
-
-Russell,
-
-I have put this patch into the patch system on the 24th of June, and
-it fixes a guaranteed boot crash on LPAE kernels booting via EFI.
-Could you please merge it as a fix?
+> [0] See scripts/Makefile.build near the end:
+>     # Create directories for object files if they do not exist
+>
+> Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
+> ---
 
 
-> >               return;
-> >       pud = pud_alloc(mm, p4d, md->virtual);
-> >       if (WARN_ON(!pud))
-> > --
-> > 2.27.0
-> >
+Reviewed-by: Masahiro Yamada <masahiroy@kernel.org>
+
+
+
+>  arch/x86/boot/compressed/Makefile | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 >
+> diff --git a/arch/x86/boot/compressed/Makefile b/arch/x86/boot/compressed/Makefile
+> index 7619742f91c9..5a828fde7a42 100644
+> --- a/arch/x86/boot/compressed/Makefile
+> +++ b/arch/x86/boot/compressed/Makefile
+> @@ -90,8 +90,8 @@ endif
+>
+>  vmlinux-objs-$(CONFIG_ACPI) += $(obj)/acpi.o
+>
+> -vmlinux-objs-$(CONFIG_EFI_STUB) += $(objtree)/drivers/firmware/efi/libstub/lib.a
+>  vmlinux-objs-$(CONFIG_EFI_MIXED) += $(obj)/efi_thunk_$(BITS).o
+> +efi-obj-$(CONFIG_EFI_STUB) = $(objtree)/drivers/firmware/efi/libstub/lib.a
+>
+>  # The compressed kernel is built with -fPIC/-fPIE so that a boot loader
+>  # can place it anywhere in memory and it will still run. However, since
+> @@ -115,7 +115,7 @@ endef
+>  quiet_cmd_check-and-link-vmlinux = LD      $@
+>        cmd_check-and-link-vmlinux = $(cmd_check_data_rel); $(cmd_ld)
+>
+> -$(obj)/vmlinux: $(vmlinux-objs-y) FORCE
+> +$(obj)/vmlinux: $(vmlinux-objs-y) $(efi-obj-y) FORCE
+>         $(call if_changed,check-and-link-vmlinux)
+>
+>  OBJCOPYFLAGS_vmlinux.bin :=  -R .comment -S
 > --
-> Sincerely yours,
-> Mike.
+> 2.26.2
+>
+
+
+-- 
+Best Regards
+Masahiro Yamada
