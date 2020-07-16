@@ -2,181 +2,206 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 937792229EC
-	for <lists+linux-efi@lfdr.de>; Thu, 16 Jul 2020 19:30:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A6F69222F33
+	for <lists+linux-efi@lfdr.de>; Fri, 17 Jul 2020 01:42:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728638AbgGPR3W (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 16 Jul 2020 13:29:22 -0400
-Received: from mga17.intel.com ([192.55.52.151]:7873 "EHLO mga17.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726986AbgGPR3W (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Thu, 16 Jul 2020 13:29:22 -0400
-IronPort-SDR: 5lkEt/OtzlznKix64NnEgSenDZYx3RCkGLA7VRg4XE1Va6cQPhqst127pjno1v4xpgGJSRVz0R
- 9BM7pxcQAtiQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9684"; a="129528319"
-X-IronPort-AV: E=Sophos;i="5.75,360,1589266800"; 
-   d="scan'208";a="129528319"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jul 2020 10:29:20 -0700
-IronPort-SDR: LfkWassbIM0gQ+aOB8sk9xJi8DHpeZamMBTkcgIhGtULyGynPL+RHxVQV0IaHHxq2giIvjCO4B
- 479HADX8Zzkw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.75,360,1589266800"; 
-   d="scan'208";a="325206120"
-Received: from unknown (HELO localhost) ([10.249.34.156])
-  by FMSMGA003.fm.intel.com with ESMTP; 16 Jul 2020 10:29:15 -0700
-Date:   Thu, 16 Jul 2020 20:29:13 +0300
-From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-To:     Tyler Hicks <tyhicks@linux.microsoft.com>
-Cc:     Peter Huewe <peterhuewe@gmx.de>, Ard Biesheuvel <ardb@kernel.org>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        Petr Vandrovec <petr@vmware.com>,
-        Nayna Jain <nayna@linux.ibm.com>,
-        Thirupathaiah Annapureddy <thiruan@microsoft.com>,
-        linux-integrity@vger.kernel.org, linux-efi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Peter Jones <pjones@redhat.com>
-Subject: Re: [PATCH v2] tpm: Require that all digests are present in
- TCG_PCR_EVENT2 structures
-Message-ID: <20200716172913.GC14135@linux.intel.com>
-References: <20200710192955.23333-1-tyhicks@linux.microsoft.com>
- <20200713205719.GA1419951@linux.intel.com>
- <20200715155053.GA3673@sequoia>
+        id S1726011AbgGPXlO (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 16 Jul 2020 19:41:14 -0400
+Received: from esa1.hgst.iphmx.com ([68.232.141.245]:7103 "EHLO
+        esa1.hgst.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725971AbgGPXlO (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 16 Jul 2020 19:41:14 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
+  t=1594942873; x=1626478873;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=kUG/HMv0nJnrst7Sns7/AKTyFHl/1SzBX+Bwh+vDZlA=;
+  b=DXKhZvSzvdjqPO4+0A0rP0JIMG6ednvd3evyD2Rtm0BMQN+8FS5MXGin
+   8RsHg5lQ+Fm8eJKffegxu902JUd0IrJvgk5DWXp6itR4n4dxxQn85Kits
+   AlddwWgWUMcuWnlihW/MpAFrFwMPAEx0hPTv866zyBv1kk5i+1hAcow0n
+   FNpcK4BEUnLB7MuWac1QBGM3TF+9abWDxxpDfTnJVPdOFSNuJSXjLQh2m
+   tjVb/rM+sST8WDcwp+Y007Rlo08v6vqdjSSMUOblDTDLyD12iNqZBbpfg
+   5aas2w8Nsc1frh6zLrXMSL5w0vqIq0/EnYtGWFn1AvIqCUxPEgGRJ6cDL
+   w==;
+IronPort-SDR: BLhPbpJhfWM0mZ2AZCcrovvwpscdA0fJAKvWT/ZtjSdVkLEF/JgT16fbV2WpnnuV9myM5+JKS2
+ ygLucAWc0G1LZGWwTJkn7uPfi/qvPFsxGj+AodjehVEah2QXDOk1xB9S/FM607JrdMC3+IlR5R
+ /hZ+hBp09C3tMWut3A2jgtC4KQCmMfynHoGSiMvoiC28O/qDa1QXp0ZMtROy5Fn9ZK+WfUnxc7
+ LVSMbKMc8pZ45vowO8EMpWvJN7BhIuJ/sAUYxRRNa049L8CRgoQoNUQIXB4H/lhUhnSQNHVoSv
+ mmk=
+X-IronPort-AV: E=Sophos;i="5.75,360,1589212800"; 
+   d="scan'208";a="251923186"
+Received: from h199-255-45-14.hgst.com (HELO uls-op-cesaep01.wdc.com) ([199.255.45.14])
+  by ob1.hgst.iphmx.com with ESMTP; 17 Jul 2020 07:41:12 +0800
+IronPort-SDR: Liner50EOfzMCfDauaVqS+LtS1USImzG17ygi0nCB7H+zerUnOw3tm6oUtnUU/lsdHbF/2lGyD
+ li60ZYIjb5tWi5yPE2P4g6SYJhdZEq46o=
+Received: from uls-op-cesaip02.wdc.com ([10.248.3.37])
+  by uls-op-cesaep01.wdc.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jul 2020 16:29:36 -0700
+IronPort-SDR: 2hT8GNbz2MtsskMAQMxU6lttS0NTqNVxNsn5ZJD2clmQGd0fWs1xQw22jaruo3+STJ4pgyDaD0
+ otrAU2Kc14/Q==
+WDCIronportException: Internal
+Received: from phd004806.ad.shared (HELO jedi-01.hgst.com) ([10.86.58.54])
+  by uls-op-cesaip02.wdc.com with ESMTP; 16 Jul 2020 16:41:12 -0700
+From:   Atish Patra <atish.patra@wdc.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     Atish Patra <atish.patra@wdc.com>, Anup Patel <anup.patel@wdc.com>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Greentime Hu <greentime.hu@sifive.com>,
+        Kees Cook <keescook@chromium.org>, linux-efi@vger.kernel.org,
+        linux-riscv@lists.infradead.org,
+        Mark Rutland <mark.rutland@arm.com>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Mike Rapoport <rppt@linux.ibm.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Will Deacon <will@kernel.org>, Zong Li <zong.li@sifive.com>,
+        Heinrich Schuchardt <xypron.glpk@gmx.de>,
+        linux-arm-kernel@lists.infradead.org
+Subject: [RFT PATCH v3 0/9] Add UEFI support for RISC-V
+Date:   Thu, 16 Jul 2020 16:40:55 -0700
+Message-Id: <20200716234104.29049-1-atish.patra@wdc.com>
+X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200715155053.GA3673@sequoia>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Transfer-Encoding: 8bit
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, Jul 15, 2020 at 10:50:53AM -0500, Tyler Hicks wrote:
-> On 2020-07-13 23:57:19, Jarkko Sakkinen wrote:
-> > On Fri, Jul 10, 2020 at 02:29:55PM -0500, Tyler Hicks wrote:
-> > > Require that the TCG_PCR_EVENT2.digests.count value strictly matches the
-> > > value of TCG_EfiSpecIdEvent.numberOfAlgorithms in the event field of the
-> > > TCG_PCClientPCREvent event log header. Also require that
-> > > TCG_EfiSpecIdEvent.numberOfAlgorithms is non-zero.
-> > > 
-> > > The TCG PC Client Platform Firmware Profile Specification section 9.1
-> > > (Family "2.0", Level 00 Revision 1.04) states:
-> > > 
-> > >  For each Hash algorithm enumerated in the TCG_PCClientPCREvent entry,
-> > >  there SHALL be a corresponding digest in all TCG_PCR_EVENT2 structures.
-> > >  Note: This includes EV_NO_ACTION events which do not extend the PCR.
-> > > 
-> > > Section 9.4.5.1 provides this description of
-> > > TCG_EfiSpecIdEvent.numberOfAlgorithms:
-> > > 
-> > >  The number of Hash algorithms in the digestSizes field. This field MUST
-> > >  be set to a value of 0x01 or greater.
-> > > 
-> > > Enforce these restrictions, as required by the above specification, in
-> > > order to better identify and ignore invalid sequences of bytes at the
-> > > end of an otherwise valid TPM2 event log. Firmware doesn't always have
-> > > the means necessary to inform the kernel of the actual event log size so
-> > > the kernel's event log parsing code should be stringent when parsing the
-> > > event log for resiliency against firmware bugs. This is true, for
-> > > example, when firmware passes the event log to the kernel via a reserved
-> > > memory region described in device tree.
-> > > 
-> > > POWER and some ARM systems use the "linux,sml-base" and "linux,sml-size"
-> > > device tree properties to describe the memory region used to pass the
-> > > event log from firmware to the kernel. Unfortunately, the
-> > > "linux,sml-size" property describes the size of the entire reserved
-> > > memory region rather than the size of the event long within the memory
-> > > region and the event log format does not include information describing
-> > > the size of the event log.
-> > > 
-> > > tpm_read_log_of(), in drivers/char/tpm/eventlog/of.c, is where the
-> > > "linux,sml-size" property is used. At the end of that function,
-> > > log->bios_event_log_end is pointing at the end of the reserved memory
-> > > region. That's typically 0x10000 bytes offset from "linux,sml-base",
-> > > depending on what's defined in the device tree source.
-> > > 
-> > > The firmware event log only fills a portion of those 0x10000 bytes and
-> > > the rest of the memory region should be zeroed out by firmware. Even in
-> > > the case of a properly zeroed bytes in the remainder of the memory
-> > > region, the only thing allowing the kernel's event log parser to detect
-> > > the end of the event log is the following conditional in
-> > > __calc_tpm2_event_size():
-> > > 
-> > >         if (event_type == 0 && event_field->event_size == 0)
-> > >                 size = 0;
-> > > 
-> > > If that wasn't there, __calc_tpm2_event_size() would think that a 16
-> > > byte sequence of zeroes, following an otherwise valid event log, was
-> > > a valid event.
-> > > 
-> > > However, problems can occur if a single bit is set in the offset
-> > > corresponding to either the TCG_PCR_EVENT2.eventType or
-> > > TCG_PCR_EVENT2.eventSize fields, after the last valid event log entry.
-> > > This could confuse the parser into thinking that an additional entry is
-> > > present in the event log and exposing this invalid entry to userspace in
-> > > the /sys/kernel/security/tpm0/binary_bios_measurements file. Such
-> > > problems have been seen if firmware does not fully zero the memory
-> > > region upon a warm reboot.
-> > > 
-> > > This patch significantly raises the bar on how difficult it is for
-> > > stale/invalid memory to confuse the kernel's event log parser but
-> > > there's still, ultimately, a reliance on firmware to properly initialize
-> > > the remainder of the memory region reserved for the event log as the
-> > > parser cannot be expected to detect a stale but otherwise properly
-> > > formatted firmware event log entry.
-> > > 
-> > > Fixes: fd5c78694f3f ("tpm: fix handling of the TPM 2.0 event logs")
-> > > Signed-off-by: Tyler Hicks <tyhicks@linux.microsoft.com>
-> > > ---
-> > > 
-> > > * v2
-> > >   - Rebase the patch on top of the TPM next branch, commit 786a2aa281f4
-> > >     ("Revert commit e918e570415c ("tpm_tis: Remove the HID IFX0102")")
-> > >   - Expand on the technical reasoning for needing strict event
-> > >     validation in the commit message
-> > >   - Improve the inline comment explaining the need for detecting
-> > >     malformed events
-> > > 
-> > >  include/linux/tpm_eventlog.h | 11 +++++++++--
-> > >  1 file changed, 9 insertions(+), 2 deletions(-)
-> > > 
-> > > diff --git a/include/linux/tpm_eventlog.h b/include/linux/tpm_eventlog.h
-> > > index 64356b199e94..739ba9a03ec1 100644
-> > > --- a/include/linux/tpm_eventlog.h
-> > > +++ b/include/linux/tpm_eventlog.h
-> > > @@ -211,9 +211,16 @@ static inline int __calc_tpm2_event_size(struct tcg_pcr_event2_head *event,
-> > >  
-> > >  	efispecid = (struct tcg_efi_specid_event_head *)event_header->event;
-> > >  
-> > > -	/* Check if event is malformed. */
-> > > +	/*
-> > > +	 * Perform validation of the event in order to identify malformed
-> > > +	 * events. This function may be asked to parse arbitrary byte sequences
-> > > +	 * immediately following a valid event log. The caller expects this
-> > > +	 * function to recognize that the byte sequence is not a valid event
-> > > +	 * and to return an event size of 0.
-> > > +	 */
-> > >  	if (memcmp(efispecid->signature, TCG_SPECID_SIG,
-> > > -		   sizeof(TCG_SPECID_SIG)) || count > efispecid->num_algs) {
-> > > +		   sizeof(TCG_SPECID_SIG)) ||
-> > > +	    !efispecid->num_algs || count != efispecid->num_algs) {
-> > >  		size = 0;
-> > >  		goto out;
-> > >  	}
-> > > -- 
-> > > 2.25.1
-> > > 
-> > 
-> > 
-> > Reviewed-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-> 
-> Thanks for the review. Do you plan to take this through the linux-tpmdd
-> tree or are you expecting someone else to pick up this patch?
-> 
-> Tyler
+This series adds UEFI support for RISC-V.
 
-I'll pick it up before I send 5.9 PR.
+Linux kernel: 5.8-rc5 + "mm & exception handing fixes" series
+U-Boot: master
+OpenSBI: master
 
-/Jarkko
+This series depends on earlier mm fixes series
+
+http://lists.infradead.org/pipermail/linux-riscv/2020-July/001208.html
+
+Patch 1-3 are generic riscv feature addition required for UEFI support.
+Patch 4-7 adds the efi stub support for RISC-V which was reviewed few months back.
+https://www.spinics.net/lists/linux-efi/msg19144.html
+Patch 8 just renames arm-init code so that it can be used across different
+architectures. Patch 11 adds the runtime services for RISC-V.
+
+The working set of patches can also be found in following git repo.
+https://github.com/atishp04/linux/tree/uefi_riscv_5.9_v3
+
+The patches have been verified on Qemu using bootefi command in U-Boot for both
+RV32 and RV64.
+
+For RV32, maximum allocated memory should be 1G as RISC-V kernel can not map
+beyond 1G of physical memory for RV32.
+
+EDK2 can boot quite far into Linux with current series. Currently, we are seeing
+some traps from drivers (spi/network). At first glance, they don't seem to be
+caused by efi. I thought it is better to get some early feedback on the series
+while EDK2 issue is being debugged.
+
+Runtime services have been verified with fwts. Here is the snippet of the result.
+
+***********************************************************************
+This test run on 16/07/20 at 17:54:53 on host Linux fedora-riscv
+5.8.0-rc5-00015-g5e61441080fd-dirty #938 SMP Thu Jul 16 14:50:11 PDT 2020
+riscv64.
+
+Command: "fwts uefirtvariable".
+Running tests: uefirtvariable.
+
+uefirtvariable: UEFI Runtime service variable interface tests.
+Test 1 of 9: Test UEFI RT service get variable interface.
+SKIPPED: Test 1, Skipping test, SetVariable runtime service is not supported on
+this platform.
+
+Test 2 of 9: Test UEFI RT service get next variable name interface.
+The runtime service GetNextVariableName interface function test.
+SKIPPED: Test 2, Skipping test, SetVariable runtime service is not supported on
+this platform.
+
+...
+
+Test 4 of 9: Test UEFI RT service query variable info interface.
+SKIPPED: Test 4, Not support the QueryVariableInfo UEFI runtime interface:
+cannot test.
+
+ADVICE: Firmware also needs to check if the revision of system table is correct
+or not. Linux kernel returns EFI_UNSUPPORTED as well, if the FirmwareRevision of
+system table is less than EFI_2_00_SYSTEM_TABLE_REVISION.
+
+...
+***********************************************************************
+
+Currently, U-Boot EFI implementation returns EFI_UNSUPPORTED for set_variable
+service. That's why all tests have been skipped but I manually verified the value
+returned from U-Boot not kernel :).
+
+Changes from v2->v3:
+1. Fixed few bugs in run time services page table mapping.
+2. Dropped patch 1 as it is already taken into efi-tree.
+3. Sent few generic mmu fixes as a separate series to ease the merge conflicts.
+
+Changes from v1->v2:
+1. Removed patch 1 as it is already taken into efi-tree.
+2. Fixed compilation issues with patch 9.
+3. Moved few function prototype declaration to header file to keep kbuild happy.
+
+Changes from previous version:
+1. Added full ioremap support.
+2. Added efi runtime services support.
+3. Fixes mm issues
+
+Anup Patel (1):
+RISC-V: Move DT mapping outof fixmap
+
+Atish Patra (8):
+RISC-V: Add early ioremap support
+RISC-V: Implement late mapping page table allocation functions
+include: pe.h: Add RISC-V related PE definition
+RISC-V: Add PE/COFF header for EFI stub
+RISC-V: Add EFI stub support.
+efi: Rename arm-init to efi-init common for all arch
+RISC-V: Add EFI runtime services
+RISC-V: Add page table dump support for uefi
+
+arch/riscv/Kconfig                            |  25 +++
+arch/riscv/Makefile                           |   1 +
+arch/riscv/configs/defconfig                  |   1 +
+arch/riscv/include/asm/Kbuild                 |   1 +
+arch/riscv/include/asm/efi.h                  |  56 +++++++
+arch/riscv/include/asm/fixmap.h               |  16 +-
+arch/riscv/include/asm/io.h                   |   1 +
+arch/riscv/include/asm/mmu.h                  |   2 +
+arch/riscv/include/asm/pgtable.h              |   4 +
+arch/riscv/include/asm/sections.h             |  13 ++
+arch/riscv/kernel/Makefile                    |   5 +
+arch/riscv/kernel/efi-header.S                | 104 +++++++++++++
+arch/riscv/kernel/efi.c                       | 105 +++++++++++++
+arch/riscv/kernel/head.S                      |  17 ++-
+arch/riscv/kernel/head.h                      |   2 -
+arch/riscv/kernel/image-vars.h                |  51 +++++++
+arch/riscv/kernel/setup.c                     |  16 +-
+arch/riscv/kernel/vmlinux.lds.S               |  22 ++-
+arch/riscv/mm/init.c                          | 100 ++++++++----
+arch/riscv/mm/ptdump.c                        |  48 +++++-
+drivers/firmware/efi/Kconfig                  |   3 +-
+drivers/firmware/efi/Makefile                 |   4 +-
+.../firmware/efi/{arm-init.c => efi-init.c}   |   0
+drivers/firmware/efi/libstub/Makefile         |  10 ++
+drivers/firmware/efi/libstub/efi-stub.c       |  11 +-
+drivers/firmware/efi/libstub/riscv-stub.c     | 110 ++++++++++++++
+drivers/firmware/efi/riscv-runtime.c          | 143 ++++++++++++++++++
+include/linux/pe.h                            |   3 +
+28 files changed, 823 insertions(+), 51 deletions(-)
+create mode 100644 arch/riscv/include/asm/efi.h
+create mode 100644 arch/riscv/include/asm/sections.h
+create mode 100644 arch/riscv/kernel/efi-header.S
+create mode 100644 arch/riscv/kernel/efi.c
+create mode 100644 arch/riscv/kernel/image-vars.h
+rename drivers/firmware/efi/{arm-init.c => efi-init.c} (100%)
+create mode 100644 drivers/firmware/efi/libstub/riscv-stub.c
+create mode 100644 drivers/firmware/efi/riscv-runtime.c
+
+--
+2.24.0
+
