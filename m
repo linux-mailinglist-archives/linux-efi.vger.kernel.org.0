@@ -2,92 +2,73 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 471D32234C7
-	for <lists+linux-efi@lfdr.de>; Fri, 17 Jul 2020 08:38:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 49B4C224475
+	for <lists+linux-efi@lfdr.de>; Fri, 17 Jul 2020 21:45:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727001AbgGQGiq (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 17 Jul 2020 02:38:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56176 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726250AbgGQGip (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 17 Jul 2020 02:38:45 -0400
-Received: from smtp.al2klimov.de (smtp.al2klimov.de [IPv6:2a01:4f8:c0c:1465::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F6D1C061755;
-        Thu, 16 Jul 2020 23:38:45 -0700 (PDT)
-Received: from authenticated-user (PRIMARY_HOSTNAME [PUBLIC_IP])
-        by smtp.al2klimov.de (Postfix) with ESMTPA id 364FCBC071;
-        Fri, 17 Jul 2020 06:38:41 +0000 (UTC)
-From:   "Alexander A. Klimov" <grandmaster@al2klimov.de>
-To:     dave@stgolabs.net, axboe@kernel.dk, linux-efi@vger.kernel.org,
-        linux-block@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     "Alexander A. Klimov" <grandmaster@al2klimov.de>
-Subject: [PATCH] partitions/efi: Replace HTTP links with HTTPS ones
-Date:   Fri, 17 Jul 2020 08:38:35 +0200
-Message-Id: <20200717063835.68492-1-grandmaster@al2klimov.de>
+        id S1728312AbgGQTp2 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 17 Jul 2020 15:45:28 -0400
+Received: from mail-qk1-f193.google.com ([209.85.222.193]:46734 "EHLO
+        mail-qk1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728183AbgGQTp2 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 17 Jul 2020 15:45:28 -0400
+Received: by mail-qk1-f193.google.com with SMTP id r22so9804632qke.13
+        for <linux-efi@vger.kernel.org>; Fri, 17 Jul 2020 12:45:27 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=hcECdrFszYL/rOTRUqTPv/QzKPYLUcZjtQN02ZRuFvE=;
+        b=LzoCP4V40r3fWvHKVV+kJkMFGRLHuAW8kGcsCBXHSsFXMJ6+VNJgE++WODx+yZ0AMC
+         NghR3cqeOkH0mTQ0fWgL+nYiVc4JoIMJUzjZXonzELf0184bWtyXli6zLfLIXq/xWuMJ
+         oVJHMic10SbKuGgMRHiKsn87HUEpCfY45gq0cBYv3B/LjucH/uWv4gkfj9XxGj27js0S
+         K7fTX08B21eEJffxzKjtREMFI2BXz+psIP1ZzJWgMrn1omJXZWJhQ1MFfAfXhMFXC3It
+         r4iQ7mSRWEiyKSas7jQPCrHdYjS5/xezyYQCotI/v1t4+e8jaByCRRftUihikWa3/OHI
+         Pu2A==
+X-Gm-Message-State: AOAM5324fUsh0V4XQ/Hq/53bffuU67P4OnFp7abTal09AUYLyJPtfk1k
+        zWuBk5sg/NcMH6IXJO8PqRURUTPcBuA=
+X-Google-Smtp-Source: ABdhPJzwpS5s9i+ppbl2vOFylREwgS4uGYkaKZyEb8Sq8FrT0ESbHXYZzz3+E1glJ6t5KajCOHuFOg==
+X-Received: by 2002:a37:a78c:: with SMTP id q134mr11022095qke.368.1595015127204;
+        Fri, 17 Jul 2020 12:45:27 -0700 (PDT)
+Received: from rani.riverdale.lan ([2001:470:1f07:5f3::b55f])
+        by smtp.gmail.com with ESMTPSA id g145sm10575617qke.17.2020.07.17.12.45.26
+        for <linux-efi@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 17 Jul 2020 12:45:26 -0700 (PDT)
+From:   Arvind Sankar <nivedita@alum.mit.edu>
+To:     linux-efi@vger.kernel.org
+Subject: [PATCH] efi/x86: Mark kernel rodata non-executable
+Date:   Fri, 17 Jul 2020 15:45:26 -0400
+Message-Id: <20200717194526.3452089-1-nivedita@alum.mit.edu>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Bar: +++++
-X-Spam-Level: *****
-Authentication-Results: smtp.al2klimov.de;
-        auth=pass smtp.auth=aklimov@al2klimov.de smtp.mailfrom=grandmaster@al2klimov.de
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Rationale:
-Reduces attack surface on kernel devs opening the links for MITM
-as HTTPS traffic is much harder to manipulate.
+When remapping the kernel rodata section RO in the EFI pagetables, the
+protection flags that were used for the text section are being reused,
+but the rodata section should not be marked executable.
 
-Deterministic algorithm:
-For each file:
-  If not .svg:
-    For each line:
-      If doesn't contain `\bxmlns\b`:
-        For each link, `\bhttp://[^# \t\r\n]*(?:\w|/)`:
-	  If neither `\bgnu\.org/license`, nor `\bmozilla\.org/MPL\b`:
-            If both the HTTP and HTTPS versions
-            return 200 OK and serve the same content:
-              Replace HTTP with HTTPS.
-
-Signed-off-by: Alexander A. Klimov <grandmaster@al2klimov.de>
+Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
 ---
- Continuing my work started at 93431e0607e5.
- See also: git log --oneline '--author=Alexander A. Klimov <grandmaster@al2klimov.de>' v5.7..master
+ arch/x86/platform/efi/efi_64.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
- If there are any URLs to be removed completely or at least not just HTTPSified:
- Just clearly say so and I'll *undo my change*.
- See also: https://lkml.org/lkml/2020/6/27/64
-
- If there are any valid, but yet not changed URLs:
- See: https://lkml.org/lkml/2020/6/26/837
-
- If you apply the patch, please let me know.
-
- Sorry again to all maintainers who complained about subject lines.
- Now I realized that you want an actually perfect prefixes,
- not just subsystem ones.
- I tried my best...
- And yes, *I could* (at least half-)automate it.
- Impossible is nothing! :)
-
-
- block/partitions/efi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/block/partitions/efi.c b/block/partitions/efi.c
-index b64bfdd4326c..15b353d0cb4f 100644
---- a/block/partitions/efi.c
-+++ b/block/partitions/efi.c
-@@ -3,7 +3,7 @@
-  * EFI GUID Partition Table handling
-  *
-  * http://www.uefi.org/specs/
-- * http://www.intel.com/technology/efi/
-+ * https://www.intel.com/technology/efi/
-  *
-  * efi.[ch] by Matt Domsch <Matt_Domsch@dell.com>
-  *   Copyright 2000,2001,2002,2004 Dell Inc.
+diff --git a/arch/x86/platform/efi/efi_64.c b/arch/x86/platform/efi/efi_64.c
+index 8e364c4c6768..7caa65837356 100644
+--- a/arch/x86/platform/efi/efi_64.c
++++ b/arch/x86/platform/efi/efi_64.c
+@@ -268,6 +268,8 @@ int __init efi_setup_page_tables(unsigned long pa_memmap, unsigned num_pages)
+ 	npages = (__end_rodata - __start_rodata) >> PAGE_SHIFT;
+ 	rodata = __pa(__start_rodata);
+ 	pfn = rodata >> PAGE_SHIFT;
++
++	pf = _PAGE_NX | _PAGE_ENC;
+ 	if (kernel_map_pages_in_pgd(pgd, pfn, rodata, npages, pf)) {
+ 		pr_err("Failed to map kernel rodata 1:1\n");
+ 		return 1;
 -- 
-2.27.0
+2.26.2
 
