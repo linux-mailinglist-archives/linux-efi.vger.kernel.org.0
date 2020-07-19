@@ -2,67 +2,53 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1782822584F
-	for <lists+linux-efi@lfdr.de>; Mon, 20 Jul 2020 09:21:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D0D622752E
+	for <lists+linux-efi@lfdr.de>; Tue, 21 Jul 2020 04:00:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727073AbgGTHUx (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 20 Jul 2020 03:20:53 -0400
-Received: from szxga07-in.huawei.com ([45.249.212.35]:35642 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725815AbgGTHUw (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Mon, 20 Jul 2020 03:20:52 -0400
-Received: from DGGEMS413-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id 921756D60384099ACE38;
-        Mon, 20 Jul 2020 15:20:47 +0800 (CST)
-Received: from huawei.com (10.175.104.57) by DGGEMS413-HUB.china.huawei.com
- (10.3.19.213) with Microsoft SMTP Server id 14.3.487.0; Mon, 20 Jul 2020
- 15:20:41 +0800
-From:   Li Heng <liheng40@huawei.com>
-To:     <ardb@kernel.org>
-CC:     <linux-efi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <rui.xiang@huawei.com>
-Subject: [PATCH] efi: add missed destroy_workqueue when efisubsys_init fails
-Date:   Mon, 20 Jul 2020 15:22:18 +0800
-Message-ID: <1595229738-10087-1-git-send-email-liheng40@huawei.com>
-X-Mailer: git-send-email 2.7.4
+        id S1728317AbgGUCA3 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 20 Jul 2020 22:00:29 -0400
+Received: from [211.196.21.11] ([211.196.21.11]:53116 "EHLO
+        iscure03.localdomain" rhost-flags-FAIL-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1728153AbgGUCA0 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 20 Jul 2020 22:00:26 -0400
+Received: from Shop01 (unknown [127.0.0.1])
+        by iscure03.localdomain (Postfix) with SMTP id 061772AE13B;
+        Mon, 20 Jul 2020 12:16:00 +0900 (KST)
+Received: from [229.141.241.102] by Shop01 id ud7dU1XDA1r0; Sun, 19 Jul 2020 12:13:41 -0400
+Message-ID: <p$j$$juj73lb2-kt@3ud.erf.a.16r>
+From:   "MOORE GATES LTD" <TEXT@TEXT.COM>
+Reply-To: "MOORE GATES LTD" <TEXT@TEXT.COM>
+To:     ling_1111@hotmail.com
+Subject: FROM MR. MOORE
+Date:   Sun, 19 Jul 20 12:13:41 GMT
+X-Mailer: eGroups Message Poster
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.175.104.57]
-X-CFilter-Loop: Reflected
+Content-Type: multipart/alternative;
+        boundary="D9F2D5A2__"
+X-Priority: 1
+X-MSMail-Priority: High
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-destroy_workqueue() should be called to destroy efi_rts_wq
-when efisubsys_init() init resources fails.
 
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: Li Heng <liheng40@huawei.com>
----
- drivers/firmware/efi/efi.c | 2 ++
- 1 file changed, 2 insertions(+)
+--D9F2D5A2__
+Content-Type: text/plain;
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
-index 5114cae..f8cce41 100644
---- a/drivers/firmware/efi/efi.c
-+++ b/drivers/firmware/efi/efi.c
-@@ -379,6 +379,7 @@ static int __init efisubsys_init(void)
- 	efi_kobj = kobject_create_and_add("efi", firmware_kobj);
- 	if (!efi_kobj) {
- 		pr_err("efi: Firmware registration failed.\n");
-+		destroy_workqueue(efi_rts_wq);
- 		return -ENOMEM;
- 	}
- 
-@@ -420,6 +421,7 @@ static int __init efisubsys_init(void)
- 		generic_ops_unregister();
- err_put:
- 	kobject_put(efi_kobj);
-+	destroy_workqueue(efi_rts_wq);
- 	return error;
- }
- 
--- 
-2.7.4
+Dear Beloved,
+Peace of the Lord be with you and family, I am Fitzpatrick Moore a
+United Kingdom Citizen, I have ($ 25M) Twenty five Million united
+states dollars with a finance House in United State. I will want you
+to help me collect this deposit and dispatch it to charity
+organizations. You will take out 30% of these funds for your
+assistance to help ME disburse this fund to charities. I will like you
+to acknowledge the receipt of this e-mail as soon as possible and
+treats with absolute confidentiality and sincerity. Please reply to my
+Email: (moorefitzpatrick@gmail.com)
+Yours Sincerely,
+Fitzpatrick Moore
+
+--D9F2D5A2__--
 
