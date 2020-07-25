@@ -2,70 +2,54 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EA62022D8DB
-	for <lists+linux-efi@lfdr.de>; Sat, 25 Jul 2020 19:20:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E11622DA35
+	for <lists+linux-efi@lfdr.de>; Sun, 26 Jul 2020 00:30:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726969AbgGYRUy (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sat, 25 Jul 2020 13:20:54 -0400
-Received: from mail.kernel.org ([198.145.29.99]:59712 "EHLO mail.kernel.org"
+        id S1728037AbgGYWaF (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 25 Jul 2020 18:30:05 -0400
+Received: from mail.kernel.org ([198.145.29.99]:58850 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726926AbgGYRUy (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Sat, 25 Jul 2020 13:20:54 -0400
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 62DC9206D8;
-        Sat, 25 Jul 2020 17:20:53 +0000 (UTC)
+        id S1728029AbgGYWaE (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Sat, 25 Jul 2020 18:30:04 -0400
+Subject: Re: [GIT PULL] EFI fixes
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1595697654;
-        bh=tsXknhVBYEmB2CJYeY9vU2qcrD5B43pPBPyaIHl7sCk=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=gRrUSykOt9EXcm6iUGecAcMKn8B+gQ2uDu91Esx9bYDK9fpRh7BzoCy5yk/EPvryl
-         PRKAUvqpxHPFfIfqOxCxoTdJ9FNBo7En15jyn746/g/l7ujY6HfgeXyylfYvO7FYU5
-         QHidFPL6+CVaAR5ojKH7ET3hoPO4f16GRUZsz4Hg=
-Date:   Sat, 25 Jul 2020 19:20:50 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Kees Cook <keescook@chromium.org>
-Cc:     stable@vger.kernel.org, Scott Branden <scott.branden@broadcom.com>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        Luis Chamberlain <mcgrof@kernel.org>,
-        Jessica Yu <jeyu@kernel.org>, SeongJae Park <sjpark@amazon.de>,
-        KP Singh <kpsingh@chromium.org>, linux-efi@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        linux-integrity@vger.kernel.org, selinux@vger.kernel.org,
-        linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 03/19] firmware_loader: EFI firmware loader must
- handle pre-allocated buffer
-Message-ID: <20200725172050.GA405510@kroah.com>
-References: <20200724213640.389191-1-keescook@chromium.org>
- <20200724213640.389191-4-keescook@chromium.org>
- <20200725100700.GB1073708@kroah.com>
- <202007250849.2B58CD3B@keescook>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <202007250849.2B58CD3B@keescook>
+        s=default; t=1595716204;
+        bh=5eei+xGbwhPCgRFXPyLEluUSF8hdPtvhc71bTraY59s=;
+        h=From:In-Reply-To:References:Date:To:Cc:From;
+        b=kMEYfnvczl/wZ6Te4igQs4l4weuNwqnpnXiGZk2z/pVblBXMjzrht7FyL5qQ7oFmi
+         BEntS77jkCD/s10QqCTpfe4GLuyhFbPgr5338a6lak4ladgvebIXoMA5vDu/dfY24N
+         qKLRHRUiWK3rekZo3zuyd40Q2VgQojLaEwt16F6k=
+From:   pr-tracker-bot@kernel.org
+In-Reply-To: <20200725103259.GA823698@gmail.com>
+References: <20200725103259.GA823698@gmail.com>
+X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
+X-PR-Tracked-Message-Id: <20200725103259.GA823698@gmail.com>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git
+ efi-urgent-2020-07-25
+X-PR-Tracked-Commit-Id: 74f85551666fe40bd739e95b5ecb20f53f8ad4df
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 17baa442864254cb2aadf3a4d668c0f81d2f07c5
+Message-Id: <159571620453.7388.11647176182336327209.pr-tracker-bot@kernel.org>
+Date:   Sat, 25 Jul 2020 22:30:04 +0000
+To:     Ingo Molnar <mingo@kernel.org>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
+        linux-efi@vger.kernel.org
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Sat, Jul 25, 2020 at 08:50:33AM -0700, Kees Cook wrote:
-> On Sat, Jul 25, 2020 at 12:07:00PM +0200, Greg Kroah-Hartman wrote:
-> > On Fri, Jul 24, 2020 at 02:36:24PM -0700, Kees Cook wrote:
-> > > The EFI platform firmware fallback would clobber any pre-allocated
-> > > buffers. Instead, correctly refuse to reallocate when too small (as
-> > > already done in the sysfs fallback), or perform allocation normally
-> > > when needed.
-> > > 
-> > > Fixes: e4c2c0ff00ec ("firmware: Add new platform fallback mechanism and firm ware_request_platform()")
-> > 
-> > "firmware_request_platform()" :)
-> 
-> Weird... I'm not sure where that mangling happened. Perhaps a bad
-> cut/paste at 80 columns? Hmpf; thanks for catching. I've updated it on
-> my end (I assume you fixed this manually, though?)
+The pull request you sent on Sat, 25 Jul 2020 12:32:59 +0200:
 
-Yes, I fixed it up already, no worries.
+> git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git efi-urgent-2020-07-25
 
-greg k-h
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/17baa442864254cb2aadf3a4d668c0f81d2f07c5
+
+Thank you!
+
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.wiki.kernel.org/userdoc/prtracker
