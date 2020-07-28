@@ -2,153 +2,140 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 789E2231303
-	for <lists+linux-efi@lfdr.de>; Tue, 28 Jul 2020 21:45:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AB1FB23133E
+	for <lists+linux-efi@lfdr.de>; Tue, 28 Jul 2020 21:56:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732997AbgG1TpB (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 28 Jul 2020 15:45:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56342 "EHLO
+        id S1728772AbgG1T4c (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 28 Jul 2020 15:56:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58186 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732973AbgG1Tox (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 28 Jul 2020 15:44:53 -0400
-Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com [IPv6:2607:f8b0:4864:20::644])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E84FEC0619D5
-        for <linux-efi@vger.kernel.org>; Tue, 28 Jul 2020 12:44:52 -0700 (PDT)
-Received: by mail-pl1-x644.google.com with SMTP id d1so10503243plr.8
-        for <linux-efi@vger.kernel.org>; Tue, 28 Jul 2020 12:44:52 -0700 (PDT)
+        with ESMTP id S1728861AbgG1T4a (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 28 Jul 2020 15:56:30 -0400
+Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com [IPv6:2607:f8b0:4864:20::543])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03575C0619D4
+        for <linux-efi@vger.kernel.org>; Tue, 28 Jul 2020 12:56:30 -0700 (PDT)
+Received: by mail-pg1-x543.google.com with SMTP id o13so12711647pgf.0
+        for <linux-efi@vger.kernel.org>; Tue, 28 Jul 2020 12:56:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=NjjWAW6FgXIfls/hqkrF/yquAYJxvalgxXMqC5yfkB8=;
-        b=KIalYCFnh0ooJeOFJkJKg6Aj3ezi1dT2pKr43ERudEvFuNaAJ3+4031cCKI/mpqsHN
-         jPODHusawyatNlhEIpveO4bRm2Qv8DouYUrTDu4x7sAqumvD4p0DaIwI9w47ua+Y+Lm8
-         r5WIEN2ftI2xGaXzPY44IJT2WhYYdppfLz2ds=
+        d=broadcom.com; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding:content-language;
+        bh=W7TAjFONgptqFsxFyzgmBB4VQ+xkKw4I12zGbCqhTiA=;
+        b=Lean4Ub7+oqAH2w7CSK/zhYBvH/03JGVymr9ikJ9a2S9xPJHpglUzMrPNOZXJzUyGt
+         AmUxkgKY1ag1xSJXgYTwH7XqjkRpVkfJ+feEI5EO2fkecOtj5CJ/n4M0s41a70h7J7Ul
+         DcaS/1VEwwD5xzcEmbQx9cHJbeYOMoK5Sgq2o=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=NjjWAW6FgXIfls/hqkrF/yquAYJxvalgxXMqC5yfkB8=;
-        b=hIfTtaelZrqR0IoaecaAPMcbkqdnFwW62oLvJulsWmnoaw1zi6jt/Icd52UzYbUyGY
-         XAs3akKXbnqqEAdvdmrnSAuDGpUqD4o7HDmVdPV5wNbGCtmDIjXYYj60kxFrI7dvqPPK
-         3PXMF6DqFqbREuBdq/5hQqp/Hn1RIWP579nnBCtLhMMkRey4vl23rBw0oHEKeMslVgZ0
-         QSeIP4n978JuYz2KBmCfrO8TIQ/Mf+k4Z8luHApmSSKqH0IxwreGHQdgy4qwGEbhXj0Q
-         CWOaLQYZQgAlC3chrIjIgJlywM5BlpQnmWMNeHEt23F8BM33FL9vmOsxgdbycfxyGU5c
-         AXxQ==
-X-Gm-Message-State: AOAM53042iG0pF+KlIOebfGAGNVoK9LQRCRzJolyv5m/N89V0PAPtoNb
-        IN0vw87h81fksj2x2ZU0Tu008Q==
-X-Google-Smtp-Source: ABdhPJzQr9cHayJZPGpWZHni51wQdtSr2aAnxIAMHwScc+g9u8gX4TqJT/xfpoMOHtZMCRUO5O3P+A==
-X-Received: by 2002:a17:902:7446:: with SMTP id e6mr7253416plt.267.1595965492443;
-        Tue, 28 Jul 2020 12:44:52 -0700 (PDT)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id m31sm4012561pjb.52.2020.07.28.12.44.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Jul 2020 12:44:51 -0700 (PDT)
-Date:   Tue, 28 Jul 2020 12:44:50 -0700
-From:   Kees Cook <keescook@chromium.org>
-To:     Mimi Zohar <zohar@kernel.org>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Scott Branden <scott.branden@broadcom.com>,
-        Luis Chamberlain <mcgrof@kernel.org>,
-        Jessica Yu <jeyu@kernel.org>, SeongJae Park <sjpark@amazon.de>,
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding
+         :content-language;
+        bh=W7TAjFONgptqFsxFyzgmBB4VQ+xkKw4I12zGbCqhTiA=;
+        b=Zz65KdbB4desxz6ehV6/ROObd26eytAieIs6t2QVLW71bT2XSAeeEGQWqbiIOg5xtP
+         R+7qhISJpiBTS7usvXUR7KtPOimfVVFJH9iKJGYv7PhSlo0RN92pf5/XhV2IPebPfqpV
+         kVG2QzP1qaaHlPtTEZ0J1rkqKxK7nPpDtc2msPjXUKvjoVwu/WrpwMSW+9rXYpEdNf7K
+         tuEQtcRFAEl1hJYDerTeS/mpwbVF27tYQRzeQmV32ACXvYx9uFUZ6xY94IalJMY4HcOu
+         emmt6N58c/o/FNl7crch89wwGrLfOemAkTxez+89OKOeb5rvD4SiKtQTJNEUTEXy5jqY
+         LEmg==
+X-Gm-Message-State: AOAM530UDHdJ8yeFnRi3gbJBH2IaSmXCn9fuHsEzXdoUv1YPDp3P4xKz
+        SRg64Dv4fmSh06Mmm4yB9pOu5g==
+X-Google-Smtp-Source: ABdhPJwDLC5Hcr91RvIycgAzmWKCoQjrO6zgvfd7kCTWGqeT9Jyjha673LcU5A/lZ6KCgphV9Abgfg==
+X-Received: by 2002:a65:594b:: with SMTP id g11mr27180683pgu.168.1595966189303;
+        Tue, 28 Jul 2020 12:56:29 -0700 (PDT)
+Received: from [10.136.13.65] ([192.19.228.250])
+        by smtp.gmail.com with ESMTPSA id p187sm18500429pfb.22.2020.07.28.12.56.22
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 28 Jul 2020 12:56:28 -0700 (PDT)
+Subject: Re: [PATCH v3 00/19] Introduce partial kernel_read_file() support
+To:     Mimi Zohar <zohar@linux.ibm.com>,
+        Kees Cook <keescook@chromium.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Luis Chamberlain <mcgrof@kernel.org>, Jessica Yu <jeyu@kernel.org>,
+        SeongJae Park <sjpark@amazon.de>,
         KP Singh <kpsingh@chromium.org>, linux-efi@vger.kernel.org,
         linux-security-module@vger.kernel.org,
         linux-integrity@vger.kernel.org, selinux@vger.kernel.org,
         linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 15/19] IMA: Add support for file reads without contents
-Message-ID: <202007281244.2F2681AE9@keescook>
 References: <20200724213640.389191-1-keescook@chromium.org>
- <20200724213640.389191-16-keescook@chromium.org>
- <1595856214.4841.86.camel@kernel.org>
+ <1595848589.4841.78.camel@kernel.org>
+ <1a46db6f-1c8a-3509-6371-7c77999833f2@broadcom.com>
+ <fa96a33641070b1580f21de86fedd5f8da5eff21.camel@linux.ibm.com>
+From:   Scott Branden <scott.branden@broadcom.com>
+Message-ID: <011f1a63-3935-7ad7-c56f-e1bdf831da73@broadcom.com>
+Date:   Tue, 28 Jul 2020 12:56:19 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+In-Reply-To: <fa96a33641070b1580f21de86fedd5f8da5eff21.camel@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <1595856214.4841.86.camel@kernel.org>
+Content-Language: en-CA
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Mon, Jul 27, 2020 at 09:23:34AM -0400, Mimi Zohar wrote:
-> On Fri, 2020-07-24 at 14:36 -0700, Kees Cook wrote:
-> > From: Scott Branden <scott.branden@broadcom.com>
-> > 
-> > When the kernel_read_file LSM hook is called with contents=false, IMA
-> > can appraise the file directly, without requiring a filled buffer. When
-> > such a buffer is available, though, IMA can continue to use it instead
-> > of forcing a double read here.
-> > 
-> > Signed-off-by: Scott Branden <scott.branden@broadcom.com>
-> > Link: https://lore.kernel.org/lkml/20200706232309.12010-10-scott.branden@broadcom.com/
-> > Signed-off-by: Kees Cook <keescook@chromium.org>
-> 
-> After adjusting the comment below.
-> 
-> Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
+Hi Mimi,
 
-Sure!
-
-Greg, shall I send a v4 with added Reviews and the comment change or is
-that minor enough that you're able to do it?
-
-Thanks for the reviews Mimi!
-
--Kees
-
-> 
-> > ---
-> >  security/integrity/ima/ima_main.c | 22 ++++++++++++++++------
-> >  1 file changed, 16 insertions(+), 6 deletions(-)
-> > 
-> > diff --git a/security/integrity/ima/ima_main.c b/security/integrity/ima/ima_main.c
-> > index dc4f90660aa6..459e50526a12 100644
-> > --- a/security/integrity/ima/ima_main.c
-> > +++ b/security/integrity/ima/ima_main.c
-> > @@ -613,11 +613,8 @@ void ima_post_path_mknod(struct dentry *dentry)
-> >  int ima_read_file(struct file *file, enum kernel_read_file_id read_id,
-> >  		  bool contents)
-> >  {
-> > -	/* Reject all partial reads during appraisal. */
-> > -	if (!contents) {
-> > -		if (ima_appraise & IMA_APPRAISE_ENFORCE)
-> > -			return -EACCES;
-> > -	}
-> > +	enum ima_hooks func;
-> > +	u32 secid;
-> >  
-> >  	/*
-> >  	 * Do devices using pre-allocated memory run the risk of the
-> > @@ -626,7 +623,20 @@ int ima_read_file(struct file *file, enum kernel_read_file_id read_id,
-> >  	 * buffers? It may be desirable to include the buffer address
-> >  	 * in this API and walk all the dma_map_single() mappings to check.
-> >  	 */
-> > -	return 0;
-> > +
-> > +	/*
-> > +	 * There will be a call made to ima_post_read_file() with
-> > +	 * a filled buffer, so we don't need to perform an extra
-> > +	 * read early here.
-> > +	 */
-> > +	if (contents)
-> > +		return 0;
-> > +
-> > +	/* Read entire file for all partial reads during appraisal. */
-> 
-> In addition to verifying the file signature, the file might be
-> included in the IMA measurement list or the file hash may be used to
-> augment the audit record.  Please remove "during appraisal" from the
-> comment.
-> 
-> > +	func = read_idmap[read_id] ?: FILE_CHECK;
-> > +	security_task_getsecid(current, &secid);
-> > +	return process_measurement(file, current_cred(), secid, NULL,
-> > +				   0, MAY_READ, func);
-> >  }
-> >  
-> >  const int read_idmap[READING_MAX_ID] = {
-> 
-
--- 
-Kees Cook
+On 2020-07-28 11:48 a.m., Mimi Zohar wrote:
+> On Mon, 2020-07-27 at 12:18 -0700, Scott Branden wrote:
+>> Hi Mimi/Kees,
+>>
+>> On 2020-07-27 4:16 a.m., Mimi Zohar wrote:
+>>> On Fri, 2020-07-24 at 14:36 -0700, Kees Cook wrote:
+>>>> v3:
+>>>> - add reviews/acks
+>>>> - add "IMA: Add support for file reads without contents" patch
+>>>> - trim CC list, in case that's why vger ignored v2
+>>>> v2: [missing from lkml archives! (CC list too long?) repeating changes
+>> here]
+>>>> - fix issues in firmware test suite
+>>>> - add firmware partial read patches
+>>>> - various bug fixes/cleanups
+>>>> v1: 
+>> https://lore.kernel.org/lkml/20200717174309.1164575-1-keescook@chromium.org/
+>>>> Hi,
+>>>>
+>>>> Here's my tree for adding partial read support in kernel_read_file(),
+>>>> which fixes a number of issues along the way. It's got Scott's firmware
+>>>> and IMA patches ported and everything tests cleanly for me (even with
+>>>> CONFIG_IMA_APPRAISE=y).
+>>> Thanks, Kees.  Other than my comments on the new
+>>> security_kernel_post_load_data() hook, the patch set is really nice.
+>>>
+>>> In addition to compiling with CONFIG_IMA_APPRAISE enabled, have you
+>>> booted the kernel with the ima_policy=tcb?  The tcb policy will add
+>>> measurements to the IMA measurement list and extend the TPM with the
+>>> file or buffer data digest.  Are you seeing the firmware measurements,
+>>> in particular the partial read measurement?
+>> I booted the kernel with ima_policy=tcb.
+>>
+>> Unfortunately after enabling the following, fw_run_tests.sh does not run.
+>>
+>> mkdir /sys/kernel/security
+>> mount -t securityfs securityfs /sys/kernel/security
+>> echo "measure func=FIRMWARE_CHECK" > /sys/kernel/security/ima/policy
+>> echo "appraise func=FIRMWARE_CHECK appraise_type=imasig" >
+>> /sys/kernel/security/ima/policy
+>> ./fw_run_tests.sh
+>>
+>> [ 1296.258052] test_firmware: loading 'test-firmware.bin'
+>> [ 1296.263903] misc test_firmware: loading /lib/firmware/test-firmware.bin
+>> failed with error -13
+>> [ 1296.263905] audit: type=1800 audit(1595905754.266:9): pid=5696 uid=0
+>> auid=4294967295 ses=4294967295 subj=kernel op=appraise_data cause=IMA-
+>> signature-required comm="fw_namespace" name="/lib/firmware/test-firmware.bin"
+>> dev="tmpfs" ino=4592 res=0
+>> [ 1296.297085] misc test_firmware: Direct firmware load for test-firmware.bin
+>> failed with error -13
+>> [ 1296.305947] test_firmware: load of 'test-firmware.bin' failed: -13
+> The "appraise" rule verifies the IMA signature.  Unless you signed the firmware
+> (evmctl) and load the public key on the IMA keyring, that's to be expected.  I
+> assume you are seeing firmware measurements in the IMA measuremenet log.
+Yes, I see the firmware measurements in the IMA measurement log.
+I have not signed the firmware nor loaded a public key on the IMA keyring.
+Therefore everything is working as expected.
+>
+> Mimi
+>
+Thanks,
+Â Scott
