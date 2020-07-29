@@ -2,49 +2,49 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 580CA232827
-	for <lists+linux-efi@lfdr.de>; Thu, 30 Jul 2020 01:36:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E089823282C
+	for <lists+linux-efi@lfdr.de>; Thu, 30 Jul 2020 01:37:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727115AbgG2Xgy (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 29 Jul 2020 19:36:54 -0400
-Received: from esa6.hgst.iphmx.com ([216.71.154.45]:22290 "EHLO
+        id S1728103AbgG2Xgz (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 29 Jul 2020 19:36:55 -0400
+Received: from esa6.hgst.iphmx.com ([216.71.154.45]:22294 "EHLO
         esa6.hgst.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726718AbgG2Xgx (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 29 Jul 2020 19:36:53 -0400
+        with ESMTP id S1727072AbgG2Xgy (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 29 Jul 2020 19:36:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
   d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
-  t=1596065812; x=1627601812;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=vaQcXC9di+Mc2s5KFNyp48HQd4ruw9ElPp3ceNLFrRM=;
-  b=SwH09PYsrvR/wU+kCitloWYsn8qjbgKWU19ELhvbfu8zMuTxFNC7MyWM
-   6K8H5ZO9QtM9msTRFPoMDAnSPwdMdtNEkDw00H7G6HeCYgBD3eVgarslL
-   NhvF+YWIHnf6LcqdMYgErGb33kn0LeswuEOqzZAwesByBVf7nphk3a4xw
-   tbavIXXYTNx1fiZJmdrJGa+w9lMauCZCd4HQ/eAcfh3VlqInoWReZshh1
-   i0C3Tws9J6PKbs1C837fqb9bJuBNpishmhL8ZowqdRLpC4vjtJ8D/iCBw
-   UTrXmBWHiXFB9NAVX/sGQcKBB4AQCrQhT61xfQ3VQ9I2Ipt06s9WnwewW
-   g==;
-IronPort-SDR: RA2wGNs+3wMdncVD5prlKtbgNNl4mnHvjWR8SZ82Q5POG/mLvXMcygWrsSNhVvNHxlr29g6WAG
- mTW96UHloXaezCs4r6F99P8wB5qo1Cu4AaxIY6MQxtOULvwEqyX/YwTUl+GdjdIgr39H/nwR3t
- m7HLD0YikvknI25WtI2Jqs8uVjgbF66rOPBN7O9LdpHEYqlTqmXyEQbhl08dSm9IWrkjJzc4TE
- G0t/qpCnWdh18CiLSLlELUOH2xskrTixTfWjmUFF1XctF6W5cVkz974hOFQJM/4eu410Qr7OvF
- W+Q=
+  t=1596065814; x=1627601814;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=26oXiLmEk//X+up29RI/EZbGFDEHEWmiWMJCIV9Ghqs=;
+  b=N0FEpTXpw3b/sDCTXkKiMqH3kjuemGNCsyq9ops+jBRpiCTmuqmLEzJV
+   UuH8GuXimWBq93Bt5leNDrUmrH4+GWM4Jf8zlPn+Z7g7s1lvuBBaeE+pz
+   cfRTXiaZltsrIMdLHxZD92CvquRL6tFH2o+m7oT6BJDtVQJuwg+Akh2za
+   MQiWKJQju8jWnwreP3Bjcyfk/7OZCTgOUnc28lUfhnISOqBIMhNmyUH4O
+   FQ/e04mi7GIUgxT835iNZMZhLl1SdUAsj+wV2UsSTrCIphY4FJhgDwkrf
+   UtVCfOVkFKyE9vD70Ldfq3JL+V0tCdumAQf4h22G70LKfdzq7nqMXKxhN
+   Q==;
+IronPort-SDR: dT3uTie+I0jrFFSB9FZv8fBqqzcv7eZlPTS4ltOSI0BC0g7sR4SkQsySRY+6O6TM5WfiRU6uF9
+ +o8qrvtLqxQfjJN3d2JiOkcgqD+EwS0DaBcNL3DgsFks08mNQ6au/F5Y/IO3DbKkbALIsNbGsF
+ 4QoOHW1TW3hCfmrdx3pjhgAaeRN0C36QMPNO26x3iez1/bzZZ3bdkf81rKSjEjAsl4DAGftcx+
+ 4hjsgSSZ6Y57+m7bLOeePxX6nJdj6Xy4AGZbfvzs+QxiR5epGmQsDJLRt3ggfyVGhSOnAkrc+M
+ cKU=
 X-IronPort-AV: E=Sophos;i="5.75,412,1589212800"; 
-   d="scan'208";a="144951782"
+   d="scan'208";a="144951789"
 Received: from h199-255-45-14.hgst.com (HELO uls-op-cesaep01.wdc.com) ([199.255.45.14])
-  by ob1.hgst.iphmx.com with ESMTP; 30 Jul 2020 07:36:52 +0800
-IronPort-SDR: mXSfk/sUruE2z0+OO8PWoyGLLGAVwwwpdBiE/5BnZfXUFAxKoxMbXNMA7gCUaGn6ehd95IRbvE
- kcjjUUTBkPqYBSqGrGX6azmai15Ax3J8o=
+  by ob1.hgst.iphmx.com with ESMTP; 30 Jul 2020 07:36:53 +0800
+IronPort-SDR: 9eTEuYeDyD+2NRF4sOveqLyuVllVpSKqadxReWCrOTIOi+hHZccqUPGIjBJewE1+oRQN1jWjSW
+ lAhfi5Nu93FJxt5vUXPi0f3kwoHtjGihw=
 Received: from uls-op-cesaip01.wdc.com ([10.248.3.36])
-  by uls-op-cesaep01.wdc.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jul 2020 16:24:59 -0700
-IronPort-SDR: cAK8YKv/xIcCDLCbQUt9z+oLhL3d8kz5nSiNkpu01AvlXXn7xtw5AUB4sT7uOC4yMr40YkMZMx
- TXsgvfR+HvPg==
+  by uls-op-cesaep01.wdc.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jul 2020 16:25:00 -0700
+IronPort-SDR: wGLdob+fziPPG6+IBCU1U2mEoOFmnY9rGsdTPoGHWFxZRMuLzlxIHDeR3rAo7j3h+0NIm9M90G
+ GlY4I3Sx9kNQ==
 WDCIronportException: Internal
 Received: from jpf009043.ad.shared (HELO jedi-01.hgst.com) ([10.86.58.210])
   by uls-op-cesaip01.wdc.com with ESMTP; 29 Jul 2020 16:36:52 -0700
 From:   Atish Patra <atish.patra@wdc.com>
 To:     linux-kernel@vger.kernel.org
-Cc:     Atish Patra <atish.patra@wdc.com>, Anup Patel <anup.patel@wdc.com>,
+Cc:     Anup Patel <anup.patel@wdc.com>, Atish Patra <atish.patra@wdc.com>,
         Ard Biesheuvel <ardb@kernel.org>,
         Arvind Sankar <nivedita@alum.mit.edu>,
         Greentime Hu <greentime.hu@sifive.com>,
@@ -61,10 +61,12 @@ Cc:     Atish Patra <atish.patra@wdc.com>, Anup Patel <anup.patel@wdc.com>,
         Thomas Gleixner <tglx@linutronix.de>,
         Will Deacon <will@kernel.org>,
         Yash Shah <yash.shah@sifive.com>, Zong Li <zong.li@sifive.com>
-Subject: [RFT PATCH v4 0/9] Add UEFI support for RISC-V
-Date:   Wed, 29 Jul 2020 16:36:26 -0700
-Message-Id: <20200729233635.14406-1-atish.patra@wdc.com>
+Subject: [RFT PATCH v4 1/9] RISC-V: Move DT mapping outof fixmap
+Date:   Wed, 29 Jul 2020 16:36:27 -0700
+Message-Id: <20200729233635.14406-2-atish.patra@wdc.com>
 X-Mailer: git-send-email 2.24.0
+In-Reply-To: <20200729233635.14406-1-atish.patra@wdc.com>
+References: <20200729233635.14406-1-atish.patra@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-efi-owner@vger.kernel.org
@@ -72,139 +74,183 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-This series adds UEFI support for RISC-V.
+From: Anup Patel <anup.patel@wdc.com>
 
-Linux kernel: 5.8-rc7 + 1 exception vector setup patch (queued for for-next) 
-U-Boot: v2020.07 
-OpenSBI: master
+Currently, RISC-V reserves 1MB of fixmap memory for device tree. However,
+it maps only single PMD (2MB) space for fixmap which leaves only < 1MB space
+left for other kernel features such as early ioremap which requires fixmap
+as well. The fixmap size can be increased by another 2MB but it brings
+additional complexity and changes the virtual memory layout as well.
+If we require some additional feature requiring fixmap again, it has to be
+moved again.
 
-This series depends on early setup of exeception vector patch
-http://lists.infradead.org/pipermail/linux-riscv/2020-July/001207.html
+Technically, DT doesn't need a fixmap as the memory occupied by the DT is
+only used during boot. That's why, We map device tree in early page table
+using two consecutive PGD mappings at lower addresses (< PAGE_OFFSET).
+This frees lot of space in fixmap and also makes maximum supported
+device tree size supported as PGDIR_SIZE. Thus, init memory section can be used
+for the same purpose as well. This simplifies fixmap implementation.
 
-Patch 1-3 are generic riscv feature addition required for UEFI support.
-Patch 4-7 adds the efi stub support for RISC-V which was reviewed few months back.
-https://www.spinics.net/lists/linux-efi/msg19144.html
-Patch 8 just renames arm-init code so that it can be used across different
-architectures. Patch 11 adds the runtime services for RISC-V.
+Signed-off-by: Anup Patel <anup.patel@wdc.com>
+Signed-off-by: Atish Patra <atish.patra@wdc.com>
+---
+ arch/riscv/include/asm/fixmap.h  |  3 ---
+ arch/riscv/include/asm/pgtable.h |  1 +
+ arch/riscv/kernel/head.S         |  1 -
+ arch/riscv/kernel/head.h         |  2 --
+ arch/riscv/kernel/setup.c        |  9 +++++++--
+ arch/riscv/mm/init.c             | 26 ++++++++++++--------------
+ 6 files changed, 20 insertions(+), 22 deletions(-)
 
-The working set of patches can also be found in following git repo.
-https://github.com/atishp04/linux/tree/uefi_riscv_5.9_v4
-
-The patches have been verified on Qemu/HiFive unleashed using bootefi command in
-U-Boot for both RV32 and RV64.
-
-For RV32, maximum allocated memory should be 1G as RISC-V kernel can not map
-beyond 1G of physical memory for RV32.
-
-Runtime services have been verified with fwts. Here is the snippet of the result.
-
-***********************************************************************
-This test run on 16/07/20 at 17:54:53 on host Linux fedora-riscv
-5.8.0-rc5-00015-g5e61441080fd-dirty #938 SMP Thu Jul 16 14:50:11 PDT 2020
-riscv64.
-
-Command: "fwts uefirtvariable".
-Running tests: uefirtvariable.
-
-uefirtvariable: UEFI Runtime service variable interface tests.
-Test 1 of 9: Test UEFI RT service get variable interface.
-SKIPPED: Test 1, Skipping test, SetVariable runtime service is not supported on
-this platform.
-
-Test 2 of 9: Test UEFI RT service get next variable name interface.
-The runtime service GetNextVariableName interface function test.
-SKIPPED: Test 2, Skipping test, SetVariable runtime service is not supported on
-this platform.
-
-...
-
-Test 4 of 9: Test UEFI RT service query variable info interface.
-SKIPPED: Test 4, Not support the QueryVariableInfo UEFI runtime interface:
-cannot test.
-
-ADVICE: Firmware also needs to check if the revision of system table is correct
-or not. Linux kernel returns EFI_UNSUPPORTED as well, if the FirmwareRevision of
-system table is less than EFI_2_00_SYSTEM_TABLE_REVISION.
-
-...
-***********************************************************************
-
-Currently, U-Boot EFI implementation returns EFI_UNSUPPORTED for set_variable
-service. That's why all tests have been skipped but I manually verified that the
-value is returned from U-Boot not kernel :).
-
-EDK2 can boot quite far into Linux with the current series. However, it crashes
-before userspace because of a possible memory corruption by EDK2.
-
-Changes from v3->v4:
-1. Used pgd mapping to avoid copying DT to bss.
-
-Changes from v2->v3:
-1. Fixed few bugs in run time services page table mapping.
-2. Dropped patch 1 as it is already taken into efi-tree.
-3. Sent few generic mmu fixes as a separate series to ease the merge conflicts.
-
-Changes from v1->v2:
-1. Removed patch 1 as it is already taken into efi-tree.
-2. Fixed compilation issues with patch 9.
-3. Moved few function prototype declaration to header file to keep kbuild happy.
-
-Changes from previous version:
-1. Added full ioremap support.
-2. Added efi runtime services support.
-3. Fixes mm issues
-
-Anup Patel (1):
-RISC-V: Move DT mapping outof fixmap
-
-Atish Patra (8):
-RISC-V: Add early ioremap support
-RISC-V: Implement late mapping page table allocation functions
-include: pe.h: Add RISC-V related PE definition
-RISC-V: Add PE/COFF header for EFI stub
-RISC-V: Add EFI stub support.
-efi: Rename arm-init to efi-init common for all arch
-RISC-V: Add EFI runtime services
-RISC-V: Add page table dump support for uefi
-
-arch/riscv/Kconfig                            |  25 +++
-arch/riscv/Makefile                           |   1 +
-arch/riscv/configs/defconfig                  |   1 +
-arch/riscv/include/asm/Kbuild                 |   1 +
-arch/riscv/include/asm/efi.h                  |  56 +++++++
-arch/riscv/include/asm/fixmap.h               |  16 +-
-arch/riscv/include/asm/io.h                   |   1 +
-arch/riscv/include/asm/mmu.h                  |   2 +
-arch/riscv/include/asm/pgtable.h              |   5 +
-arch/riscv/include/asm/sections.h             |  13 ++
-arch/riscv/kernel/Makefile                    |   5 +
-arch/riscv/kernel/efi-header.S                | 104 +++++++++++++
-arch/riscv/kernel/efi.c                       | 105 +++++++++++++
-arch/riscv/kernel/head.S                      |  17 ++-
-arch/riscv/kernel/head.h                      |   2 -
-arch/riscv/kernel/image-vars.h                |  51 +++++++
-arch/riscv/kernel/setup.c                     |  17 ++-
-arch/riscv/kernel/vmlinux.lds.S               |  22 ++-
-arch/riscv/mm/init.c                          |  90 ++++++++---
-arch/riscv/mm/ptdump.c                        |  48 +++++-
-drivers/firmware/efi/Kconfig                  |   3 +-
-drivers/firmware/efi/Makefile                 |   4 +-
-.../firmware/efi/{arm-init.c => efi-init.c}   |   0
-drivers/firmware/efi/libstub/Makefile         |  10 ++
-drivers/firmware/efi/libstub/efi-stub.c       |  11 +-
-drivers/firmware/efi/libstub/riscv-stub.c     | 110 ++++++++++++++
-drivers/firmware/efi/riscv-runtime.c          | 143 ++++++++++++++++++
-include/linux/pe.h                            |   3 +
-28 files changed, 825 insertions(+), 41 deletions(-)
-create mode 100644 arch/riscv/include/asm/efi.h
-create mode 100644 arch/riscv/include/asm/sections.h
-create mode 100644 arch/riscv/kernel/efi-header.S
-create mode 100644 arch/riscv/kernel/efi.c
-create mode 100644 arch/riscv/kernel/image-vars.h
-rename drivers/firmware/efi/{arm-init.c => efi-init.c} (100%)
-create mode 100644 drivers/firmware/efi/libstub/riscv-stub.c
-create mode 100644 drivers/firmware/efi/riscv-runtime.c
-
---
+diff --git a/arch/riscv/include/asm/fixmap.h b/arch/riscv/include/asm/fixmap.h
+index 1ff075a8dfc7..11613f38228a 100644
+--- a/arch/riscv/include/asm/fixmap.h
++++ b/arch/riscv/include/asm/fixmap.h
+@@ -22,9 +22,6 @@
+  */
+ enum fixed_addresses {
+ 	FIX_HOLE,
+-#define FIX_FDT_SIZE	SZ_1M
+-	FIX_FDT_END,
+-	FIX_FDT = FIX_FDT_END + FIX_FDT_SIZE / PAGE_SIZE - 1,
+ 	FIX_PTE,
+ 	FIX_PMD,
+ 	FIX_TEXT_POKE1,
+diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pgtable.h
+index eaea1f717010..815f8c959dd4 100644
+--- a/arch/riscv/include/asm/pgtable.h
++++ b/arch/riscv/include/asm/pgtable.h
+@@ -464,6 +464,7 @@ static inline void __kernel_map_pages(struct page *page, int numpages, int enabl
+ #define kern_addr_valid(addr)   (1) /* FIXME */
+ 
+ extern void *dtb_early_va;
++extern uintptr_t dtb_early_pa;
+ void setup_bootmem(void);
+ void paging_init(void);
+ 
+diff --git a/arch/riscv/kernel/head.S b/arch/riscv/kernel/head.S
+index d0c5c316e9bb..eb123eda3663 100644
+--- a/arch/riscv/kernel/head.S
++++ b/arch/riscv/kernel/head.S
+@@ -250,7 +250,6 @@ clear_bss_done:
+ #endif
+ 	/* Start the kernel */
+ 	call soc_early_init
+-	call parse_dtb
+ 	tail start_kernel
+ 
+ .Lsecondary_start:
+diff --git a/arch/riscv/kernel/head.h b/arch/riscv/kernel/head.h
+index 105fb0496b24..b48dda3d04f6 100644
+--- a/arch/riscv/kernel/head.h
++++ b/arch/riscv/kernel/head.h
+@@ -16,6 +16,4 @@ asmlinkage void __init setup_vm(uintptr_t dtb_pa);
+ extern void *__cpu_up_stack_pointer[];
+ extern void *__cpu_up_task_pointer[];
+ 
+-void __init parse_dtb(void);
+-
+ #endif /* __ASM_HEAD_H */
+diff --git a/arch/riscv/kernel/setup.c b/arch/riscv/kernel/setup.c
+index f04373be54a6..6a0ee2405813 100644
+--- a/arch/riscv/kernel/setup.c
++++ b/arch/riscv/kernel/setup.c
+@@ -49,8 +49,9 @@ atomic_t hart_lottery __section(.sdata);
+ unsigned long boot_cpu_hartid;
+ static DEFINE_PER_CPU(struct cpu, cpu_devices);
+ 
+-void __init parse_dtb(void)
++static void __init parse_dtb(void)
+ {
++	/* Early scan of device tree from init memory */
+ 	if (early_init_dt_scan(dtb_early_va))
+ 		return;
+ 
+@@ -63,6 +64,7 @@ void __init parse_dtb(void)
+ 
+ void __init setup_arch(char **cmdline_p)
+ {
++	parse_dtb();
+ 	init_mm.start_code = (unsigned long) _stext;
+ 	init_mm.end_code   = (unsigned long) _etext;
+ 	init_mm.end_data   = (unsigned long) _edata;
+@@ -77,7 +79,10 @@ void __init setup_arch(char **cmdline_p)
+ #if IS_ENABLED(CONFIG_BUILTIN_DTB)
+ 	unflatten_and_copy_device_tree();
+ #else
+-	unflatten_device_tree();
++	if (early_init_dt_verify(__va(dtb_early_pa)))
++		unflatten_device_tree();
++	else
++		pr_err("No DTB found in kernel mappings\n");
+ #endif
+ 	clint_init_boot_cpu();
+ 
+diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
+index 79e9d55bdf1a..9c5f3e35adc2 100644
+--- a/arch/riscv/mm/init.c
++++ b/arch/riscv/mm/init.c
+@@ -28,7 +28,9 @@ unsigned long empty_zero_page[PAGE_SIZE / sizeof(unsigned long)]
+ EXPORT_SYMBOL(empty_zero_page);
+ 
+ extern char _start[];
+-void *dtb_early_va;
++#define DTB_EARLY_BASE_VA      PGDIR_SIZE
++void *dtb_early_va __initdata;
++uintptr_t dtb_early_pa __initdata;
+ 
+ static void __init zone_sizes_init(void)
+ {
+@@ -141,8 +143,6 @@ static void __init setup_initrd(void)
+ }
+ #endif /* CONFIG_BLK_DEV_INITRD */
+ 
+-static phys_addr_t dtb_early_pa __initdata;
+-
+ void __init setup_bootmem(void)
+ {
+ 	struct memblock_region *reg;
+@@ -399,7 +399,7 @@ static uintptr_t __init best_map_size(phys_addr_t base, phys_addr_t size)
+ 
+ asmlinkage void __init setup_vm(uintptr_t dtb_pa)
+ {
+-	uintptr_t va, end_va;
++	uintptr_t va, pa, end_va;
+ 	uintptr_t load_pa = (uintptr_t)(&_start);
+ 	uintptr_t load_sz = (uintptr_t)(&_end) - load_pa;
+ 	uintptr_t map_size = best_map_size(load_pa, MAX_EARLY_MAPPING_SIZE);
+@@ -448,16 +448,13 @@ asmlinkage void __init setup_vm(uintptr_t dtb_pa)
+ 				   load_pa + (va - PAGE_OFFSET),
+ 				   map_size, PAGE_KERNEL_EXEC);
+ 
+-	/* Create fixed mapping for early FDT parsing */
+-	end_va = __fix_to_virt(FIX_FDT) + FIX_FDT_SIZE;
+-	for (va = __fix_to_virt(FIX_FDT); va < end_va; va += PAGE_SIZE)
+-		create_pte_mapping(fixmap_pte, va,
+-				   dtb_pa + (va - __fix_to_virt(FIX_FDT)),
+-				   PAGE_SIZE, PAGE_KERNEL);
+-
+-	/* Save pointer to DTB for early FDT parsing */
+-	dtb_early_va = (void *)fix_to_virt(FIX_FDT) + (dtb_pa & ~PAGE_MASK);
+-	/* Save physical address for memblock reservation */
++	/* Create two consecutive PGD mappings for FDT early scan */
++	pa = dtb_pa & ~(PGDIR_SIZE - 1);
++	create_pgd_mapping(early_pg_dir, DTB_EARLY_BASE_VA,
++			   pa, PGDIR_SIZE, PAGE_KERNEL);
++	create_pgd_mapping(early_pg_dir, DTB_EARLY_BASE_VA + PGDIR_SIZE,
++			   pa + PGDIR_SIZE, PGDIR_SIZE, PAGE_KERNEL);
++	dtb_early_va = (void *)DTB_EARLY_BASE_VA + (dtb_pa & (PGDIR_SIZE - 1));
+ 	dtb_early_pa = dtb_pa;
+ }
+ 
+@@ -516,6 +513,7 @@ asmlinkage void __init setup_vm(uintptr_t dtb_pa)
+ #else
+ 	dtb_early_va = (void *)dtb_pa;
+ #endif
++	dtb_early_pa = dtb_pa;
+ }
+ 
+ static inline void setup_vm_final(void)
+-- 
 2.24.0
 
