@@ -2,51 +2,52 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 64C12234E35
-	for <lists+linux-efi@lfdr.de>; Sat,  1 Aug 2020 01:12:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CA0D7234E30
+	for <lists+linux-efi@lfdr.de>; Sat,  1 Aug 2020 01:09:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727103AbgGaXIj (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 31 Jul 2020 19:08:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45752 "EHLO
+        id S1727812AbgGaXJt (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 31 Jul 2020 19:09:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45796 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727060AbgGaXIh (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 31 Jul 2020 19:08:37 -0400
-Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com [IPv6:2607:f8b0:4864:20::441])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4F94C06174A
-        for <linux-efi@vger.kernel.org>; Fri, 31 Jul 2020 16:08:37 -0700 (PDT)
-Received: by mail-pf1-x441.google.com with SMTP id u185so15191168pfu.1
-        for <linux-efi@vger.kernel.org>; Fri, 31 Jul 2020 16:08:37 -0700 (PDT)
+        with ESMTP id S1727790AbgGaXIl (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 31 Jul 2020 19:08:41 -0400
+Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com [IPv6:2607:f8b0:4864:20::1043])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA7A6C061757
+        for <linux-efi@vger.kernel.org>; Fri, 31 Jul 2020 16:08:40 -0700 (PDT)
+Received: by mail-pj1-x1043.google.com with SMTP id lx9so8520260pjb.2
+        for <linux-efi@vger.kernel.org>; Fri, 31 Jul 2020 16:08:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=trKW+y6QNGDib0LNTvVtHw5m6UTBgmGvLbmxtpBgaL0=;
-        b=De36nKOtpwsMqO/u4tRAWqVBvir2dLkSaohu1f53IavT3wv9lR7e0hWZSL83j1HWKZ
-         rY9B4gPBpbNmb8nPsaGi7A0vFOBYN9VMjC2dQMJB0cZqVHEEmlhv4MftBmYpUmCh97rG
-         af7Dn2HaS1FdHmrNihpjv3LcQzJOvb78J2620=
+        bh=p43AFz9HRqud3tDDBCvs6KJ6+7J0/pvbtdYqvC8Rrnc=;
+        b=QTiM18PSD/w0hkz6+49dNjYlKqnnSgsV4sS24WSmwXoRugebRp4LKDfQC7nvp6fYrV
+         gdiv/4zaHnvqjw3K3WBfdnbxIUyxILgPC3YvpRxpOfsr4hPlZh8d1/YuXCwOkuk052/e
+         SICsCW+maimc1NEbdloMesBJxS2DekZEi7UuM=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=trKW+y6QNGDib0LNTvVtHw5m6UTBgmGvLbmxtpBgaL0=;
-        b=Pb6WGMpyCOl3Vf9xPRayzKslfd4GQai0OGiBDTAn0rpibHTha7JVbleIQGdSZC5QKr
-         /MjIgL9LfkAp0yd9waCIEqz68jkB+N0TPQOoQ5ExGU5Glz7lBe6XQqlizAuKwrZ27O7Y
-         9la/L/Hgx/tczevLKv7mixAQAENmbE5glJKw80d6mtqY/gAk+YMdhx3qAlnEI8sEXSiw
-         DEOLcfggWCpRqRJzTplGliVNJnqMKnZ9Kbi0I9eIZ1/cqv1ZISt6LdpfD10HWmYp2PO4
-         JBvokV5OuVRIBH4ekfGmlR5povvedrNjm/mw+UadcnppdgPSIrh1fA94eWW1mLPjJLLe
-         nCqQ==
-X-Gm-Message-State: AOAM531cvfqt9HsXFxiUNeThYyClX97sMZ4xpeCcTQoqQzOzrWFo9aCS
-        8m/WKvZ2KiGEhO5b3D+AqajQFA==
-X-Google-Smtp-Source: ABdhPJxNYU1OV0bbGH5LVe0igil+VUHzo3wFC8ED7HbZKWsssjYo+rn362BnedNm2DgfjyOMkog94g==
-X-Received: by 2002:a05:6a00:2247:: with SMTP id i7mr5645713pfu.217.1596236917400;
-        Fri, 31 Jul 2020 16:08:37 -0700 (PDT)
+        bh=p43AFz9HRqud3tDDBCvs6KJ6+7J0/pvbtdYqvC8Rrnc=;
+        b=Cvb1AKo6BPV8BISS2Hsjx6Mq2ioWy7/7T/JhmD3mxwz6EV7jdDXHNPlyyZK6/Hx6uQ
+         H8PtXLs5y4O2mwEz5sDhkZBuONr2Uaruhjcq3dVlysmSaWC5lQUDSAk+rqNsSaiWURNn
+         2Ln6PopTkjLRDX155sB2cXcI5mAW0lf7S/DAJ48kaq5MPTfEOiWiYEZBzz7cwAm5yWgI
+         xhSLe95RXKsqMAPTovqW4tlPv/OBoP/eM4ybwyjsKjGtwyn/1Ipzl1gLhJjRFIwm7hvg
+         R0VSuJS8K3oTQ11hrQx55wM8eweg4EuCRBQmnw+gS8EXeEvT6K2tj76o4UqXGVIj0fFk
+         a6ug==
+X-Gm-Message-State: AOAM530PQv5mCIzk5rKhial/8HjucQCRQyEl20Q6YxXe19RNQYiC+Xoj
+        NL4sZ2KL5LQtWlN6AvNQFMaKrA==
+X-Google-Smtp-Source: ABdhPJzHq2tL5hzE6rKPhC7MtWzPIpAWUv5VmdLKt6SWnFsYwK4Xv7tulB57SY0c8ooBQQDIA3loyw==
+X-Received: by 2002:a17:902:8a85:: with SMTP id p5mr5440472plo.89.1596236920452;
+        Fri, 31 Jul 2020 16:08:40 -0700 (PDT)
 Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id p9sm11680681pgc.77.2020.07.31.16.08.33
+        by smtp.gmail.com with ESMTPSA id e26sm7106873pfj.197.2020.07.31.16.08.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 31 Jul 2020 16:08:35 -0700 (PDT)
+        Fri, 31 Jul 2020 16:08:36 -0700 (PDT)
 From:   Kees Cook <keescook@chromium.org>
 To:     Thomas Gleixner <tglx@linutronix.de>, Will Deacon <will@kernel.org>
 Cc:     Kees Cook <keescook@chromium.org>,
+        Fangrui Song <maskray@google.com>,
         Catalin Marinas <catalin.marinas@arm.com>,
         Mark Rutland <mark.rutland@arm.com>,
         Ard Biesheuvel <ardb@kernel.org>,
@@ -62,9 +63,9 @@ Cc:     Kees Cook <keescook@chromium.org>,
         clang-built-linux@googlegroups.com, linux-arch@vger.kernel.org,
         linux-efi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH v5 08/36] vmlinux.lds.h: Create COMMON_DISCARDS
-Date:   Fri, 31 Jul 2020 16:07:52 -0700
-Message-Id: <20200731230820.1742553-9-keescook@chromium.org>
+Subject: [PATCH v5 09/36] vmlinux.lds.h: Add .gnu.version* to COMMON_DISCARDS
+Date:   Fri, 31 Jul 2020 16:07:53 -0700
+Message-Id: <20200731230820.1742553-10-keescook@chromium.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200731230820.1742553-1-keescook@chromium.org>
 References: <20200731230820.1742553-1-keescook@chromium.org>
@@ -75,39 +76,37 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Collect the common DISCARD sections for architectures that need more
-specialized discard control than what the standard DISCARDS section
-provides.
+For vmlinux linking, no architecture uses the .gnu.version* sections,
+so remove it via the COMMON_DISCARDS macro in preparation for adding
+--orphan-handling=warn more widely. This is a work-around for what
+appears to be a bug[1] in ld.bfd which warns for this synthetic section
+even when none is found in input objects, and even when no section is
+emitted for an output object[2].
 
+[1] https://sourceware.org/bugzilla/show_bug.cgi?id=26153
+[2] https://lore.kernel.org/lkml/202006221524.CEB86E036B@keescook/
+
+Reviewed-by: Fangrui Song <maskray@google.com>
 Signed-off-by: Kees Cook <keescook@chromium.org>
 ---
- include/asm-generic/vmlinux.lds.h | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ include/asm-generic/vmlinux.lds.h | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/include/asm-generic/vmlinux.lds.h b/include/asm-generic/vmlinux.lds.h
-index 052e0f05a984..ff65a20faf4c 100644
+index ff65a20faf4c..22985cf02130 100644
 --- a/include/asm-generic/vmlinux.lds.h
 +++ b/include/asm-generic/vmlinux.lds.h
-@@ -930,13 +930,16 @@
- 	EXIT_DATA
- #endif
+@@ -933,7 +933,9 @@
+ #define COMMON_DISCARDS							\
+ 	*(.discard)							\
+ 	*(.discard.*)							\
+-	*(.modinfo)
++	*(.modinfo)							\
++	/* ld.bfd warns about .gnu.version* even when not emitted */	\
++	*(.gnu.version*)						\
  
-+#define COMMON_DISCARDS							\
-+	*(.discard)							\
-+	*(.discard.*)							\
-+	*(.modinfo)
-+
  #define DISCARDS							\
  	/DISCARD/ : {							\
- 	EXIT_DISCARDS							\
- 	EXIT_CALL							\
--	*(.discard)							\
--	*(.discard.*)							\
--	*(.modinfo)							\
-+	COMMON_DISCARDS							\
- 	}
- 
- /**
 -- 
 2.25.1
 
