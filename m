@@ -2,52 +2,51 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C96AE234E72
-	for <lists+linux-efi@lfdr.de>; Sat,  1 Aug 2020 01:19:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 20AC2234E6C
+	for <lists+linux-efi@lfdr.de>; Sat,  1 Aug 2020 01:19:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727867AbgGaXSe (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 31 Jul 2020 19:18:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47336 "EHLO
+        id S1727983AbgGaXS1 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 31 Jul 2020 19:18:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47320 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727850AbgGaXST (ORCPT
+        with ESMTP id S1727837AbgGaXST (ORCPT
         <rfc822;linux-efi@vger.kernel.org>); Fri, 31 Jul 2020 19:18:19 -0400
-Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com [IPv6:2607:f8b0:4864:20::642])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 461ACC06138E
-        for <linux-efi@vger.kernel.org>; Fri, 31 Jul 2020 16:18:18 -0700 (PDT)
-Received: by mail-pl1-x642.google.com with SMTP id b9so18106522plx.6
-        for <linux-efi@vger.kernel.org>; Fri, 31 Jul 2020 16:18:18 -0700 (PDT)
+Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com [IPv6:2607:f8b0:4864:20::643])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B987DC06174A
+        for <linux-efi@vger.kernel.org>; Fri, 31 Jul 2020 16:18:17 -0700 (PDT)
+Received: by mail-pl1-x643.google.com with SMTP id bh1so5009571plb.12
+        for <linux-efi@vger.kernel.org>; Fri, 31 Jul 2020 16:18:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=FPxMtdaVEuf/TmmMX8wDVhETGtH9LgUyfSDjSNQd8LQ=;
-        b=PtKKgTcchPWFwmNHCOELBCbedImXn8QMPZUx6BmT8IS2wiMXkAnvVSwandzH318pso
-         Hjyv+KSkEYyXk4GV2I31Nrts7XxM6cf+zk2+8PSOG4M9OnwOvFGW0i2HmWqrqkC4EY2C
-         U/pecA93OxRO8DIbgvcfQD7SYw3Ny8vnG8WlQ=
+        bh=ASfOQ/kuJ12Krf5ZSehq5O7QSVOARTcDMayUR4wNtMg=;
+        b=CBwwwhReWppNNFxkvHvxRIhoW1Pgu8rHz+Qem7CAjWQdaO5/GhluYGmbCsExNeTCUF
+         GWVGhVmhGtziej1K0jwGNK4TJgftLk6BkDTi/Z0ZxQWg/3ennjOq71gQNscUJvF+p4mD
+         yI8Dj9rogIG8+VxEZn7maN5u3Fg4sY5VJnsxM=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=FPxMtdaVEuf/TmmMX8wDVhETGtH9LgUyfSDjSNQd8LQ=;
-        b=AzZNtVfFQ20Pqabc1SZjn1hV7/130IQPuhFoeIZAgSsfoDtChdRAd16Wpqd8vi1Xu5
-         hQngjUyEAwsVMDKCP+e04VeFT7/YYos35RIuptReop40us9c0hussfaPMbv9jLEMEmbr
-         0r87fdiXVN1KEsRUWGOkhiSZq+oytBPGKbMULkfqe9ntklkxFMvECFRT+Sl5ybaiKm0M
-         /WYnGwsG8A6CUlrt5w7/C2XjqY9n8b23+7d8+02/haex+5mwDiXcRYRKUzoSJEtg7m4t
-         65D0PXjLZprUsYD+llQc7FwC0ONruXzkDjjkwBW7TIrrVtQ1JCOQHcV3RHyajJyzPELB
-         5uew==
-X-Gm-Message-State: AOAM532eGQju/LVD0M2BOnAbJXniw9HPWvHUrHX5O/K9FZo4ME/vEshk
-        cBcy8ySU8t7wu3VP866/9nH+Jg==
-X-Google-Smtp-Source: ABdhPJznb0jB8vv08BLZve0OvcyfCLdlXMgQKl4ItQYtZUCrXVmc6VSnzMZBZfdW62Kpwqwn9GzGMA==
-X-Received: by 2002:a17:902:9a96:: with SMTP id w22mr5577756plp.172.1596237497869;
+        bh=ASfOQ/kuJ12Krf5ZSehq5O7QSVOARTcDMayUR4wNtMg=;
+        b=pXj5WI/XgDHpUNwfkL137elHw2ItDUjsHR+luV92iGb+Ew7JwDx2RVHOtGa2IV4U5I
+         IH9rRWU1kvlMmQzMlF+3hPJjTQE4nl9/TG+pDHPMVDIdk9dRsNgvH/hrJ2ckEgwWPOL/
+         S8q0oYl0vSw7aCiM0jNYsy/u3MXMG5sOZX+O+V6IHy3Yr48X+6WBQ91aDgMz4BQLnI/R
+         zLZrbmXsabJMqMwheI3XpOoSQ/viBUQJt7/o0+4L+YTUz3Lybx9ekGZOVHYo1kx1UgsQ
+         y6qZ9OoK3DdiYT2gZ498BsJ9Ei6CytxGFe0aA84zpzKg9viyvWpdWBTZ48b1ZN1OKG81
+         Vz4Q==
+X-Gm-Message-State: AOAM531UGr4kQZ6GBU8PfaxqKC2RSsqlu4MXQC+y8vKWkP0RtMz/GPG5
+        qzaYdjADifyGoWO7Kjua8y5HGQ==
+X-Google-Smtp-Source: ABdhPJznKgXN1lBTUHP4lNeyH9aApE9G8kuG5iWIGXTxrA6qwoEEfymIgb4tSDTdVf2K5qllv9bpTQ==
+X-Received: by 2002:a17:90b:196:: with SMTP id t22mr6432467pjs.13.1596237497321;
         Fri, 31 Jul 2020 16:18:17 -0700 (PDT)
 Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id t1sm11510899pgq.66.2020.07.31.16.18.13
+        by smtp.gmail.com with ESMTPSA id l16sm10621043pff.167.2020.07.31.16.18.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Fri, 31 Jul 2020 16:18:14 -0700 (PDT)
 From:   Kees Cook <keescook@chromium.org>
 To:     Thomas Gleixner <tglx@linutronix.de>, Will Deacon <will@kernel.org>
 Cc:     Kees Cook <keescook@chromium.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
         Catalin Marinas <catalin.marinas@arm.com>,
         Mark Rutland <mark.rutland@arm.com>,
         Ard Biesheuvel <ardb@kernel.org>,
@@ -57,14 +56,15 @@ Cc:     Kees Cook <keescook@chromium.org>,
         Russell King <linux@armlinux.org.uk>,
         Masahiro Yamada <masahiroy@kernel.org>,
         Arvind Sankar <nivedita@alum.mit.edu>,
+        Nick Desaulniers <ndesaulniers@google.com>,
         Nathan Chancellor <natechancellor@gmail.com>,
         Arnd Bergmann <arnd@arndb.de>, x86@kernel.org,
         clang-built-linux@googlegroups.com, linux-arch@vger.kernel.org,
         linux-efi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH v5 25/36] arm/build: Warn on orphan section placement
-Date:   Fri, 31 Jul 2020 16:08:09 -0700
-Message-Id: <20200731230820.1742553-26-keescook@chromium.org>
+Subject: [PATCH v5 26/36] arm/boot: Handle all sections explicitly
+Date:   Fri, 31 Jul 2020 16:08:10 -0700
+Message-Id: <20200731230820.1742553-27-keescook@chromium.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200731230820.1742553-1-keescook@chromium.org>
 References: <20200731230820.1742553-1-keescook@chromium.org>
@@ -75,38 +75,68 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-We don't want to depend on the linker's orphan section placement
-heuristics as these can vary between linkers, and may change between
-versions. All sections need to be explicitly handled in the linker
-script.
+In preparation for warning on orphan sections, use common macros for
+debug sections, discards, and text stubs. Add discards for unwanted .note,
+and .rel sections.
 
-Specifically, this would have made a recently fixed bug very obvious:
-
-ld: warning: orphan section `.fixup' from `arch/arm/lib/copy_from_user.o' being placed in section `.fixup'
-
-With all sections handled, enable orphan section warning.
-
-Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
 Signed-off-by: Kees Cook <keescook@chromium.org>
 ---
- arch/arm/Makefile | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/arm/boot/compressed/vmlinux.lds.S | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/arch/arm/Makefile b/arch/arm/Makefile
-index 59fde2d598d8..e414e3732b3a 100644
---- a/arch/arm/Makefile
-+++ b/arch/arm/Makefile
-@@ -16,6 +16,10 @@ LDFLAGS_vmlinux	+= --be8
- KBUILD_LDFLAGS_MODULE	+= --be8
- endif
+diff --git a/arch/arm/boot/compressed/vmlinux.lds.S b/arch/arm/boot/compressed/vmlinux.lds.S
+index 09ac33f52814..b914be3a207b 100644
+--- a/arch/arm/boot/compressed/vmlinux.lds.S
++++ b/arch/arm/boot/compressed/vmlinux.lds.S
+@@ -2,6 +2,7 @@
+ /*
+  *  Copyright (C) 2000 Russell King
+  */
++#include <asm/vmlinux.lds.h>
  
-+# We never want expected sections to be placed heuristically by the
-+# linker. All sections should be explicitly named in the linker script.
-+LDFLAGS_vmlinux += --orphan-handling=warn
+ #ifdef CONFIG_CPU_ENDIAN_BE8
+ #define ZIMAGE_MAGIC(x) ( (((x) >> 24) & 0x000000ff) | \
+@@ -17,8 +18,11 @@ ENTRY(_start)
+ SECTIONS
+ {
+   /DISCARD/ : {
++    COMMON_DISCARDS
+     *(.ARM.exidx*)
+     *(.ARM.extab*)
++    *(.note.*)
++    *(.rel.*)
+     /*
+      * Discard any r/w data - this produces a link error if we have any,
+      * which is required for PIC decompression.  Local data generates
+@@ -36,9 +40,7 @@ SECTIONS
+     *(.start)
+     *(.text)
+     *(.text.*)
+-    *(.gnu.warning)
+-    *(.glue_7t)
+-    *(.glue_7)
++    ARM_STUBS_TEXT
+   }
+   .table : ALIGN(4) {
+     _table_start = .;
+@@ -128,12 +130,10 @@ SECTIONS
+   PROVIDE(__pecoff_data_size = ALIGN(512) - ADDR(.data));
+   PROVIDE(__pecoff_end = ALIGN(512));
+ 
+-  .stab 0		: { *(.stab) }
+-  .stabstr 0		: { *(.stabstr) }
+-  .stab.excl 0		: { *(.stab.excl) }
+-  .stab.exclstr 0	: { *(.stab.exclstr) }
+-  .stab.index 0		: { *(.stab.index) }
+-  .stab.indexstr 0	: { *(.stab.indexstr) }
+-  .comment 0		: { *(.comment) }
++  STABS_DEBUG
++  DWARF_DEBUG
++  ARM_DETAILS
 +
- ifeq ($(CONFIG_ARM_MODULE_PLTS),y)
- KBUILD_LDS_MODULE	+= $(srctree)/arch/arm/kernel/module.lds
- endif
++  ARM_ASSERTS
+ }
+ ASSERT(_edata_real == _edata, "error: zImage file size is incorrect");
 -- 
 2.25.1
 
