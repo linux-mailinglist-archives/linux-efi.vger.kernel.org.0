@@ -2,212 +2,232 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D28D62346D2
-	for <lists+linux-efi@lfdr.de>; Fri, 31 Jul 2020 15:26:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2608A234E44
+	for <lists+linux-efi@lfdr.de>; Sat,  1 Aug 2020 01:13:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730643AbgGaN0H (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 31 Jul 2020 09:26:07 -0400
-Received: from mail.kernel.org ([198.145.29.99]:37756 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728252AbgGaN0G (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Fri, 31 Jul 2020 09:26:06 -0400
-Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com [209.85.210.43])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 84AD522BF3;
-        Fri, 31 Jul 2020 13:26:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1596201965;
-        bh=kiABRkM+l4ig/cD2nH8sLh6Q2EQZatMUbedijCspTS8=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=HFIrJcQVIlRxhjRE5g2guG8BBTbB8gcY4mFfzRn6ftJBOOzaKG3r97YkZzZcFqWVp
-         C91LyF17sRKj0jnuP0iqt+z5BwQod9BugSBsC+vfz4fkLlcErxySo1ecxhoToH0Fqk
-         BO74fjI62dBL1TkQRhoodGL+PUFcPv9hattKw1yQ=
-Received: by mail-ot1-f43.google.com with SMTP id l26so6063664otj.4;
-        Fri, 31 Jul 2020 06:26:05 -0700 (PDT)
-X-Gm-Message-State: AOAM53117CMDtjJHTkpEY1UKjZmCK3IS+pkvOLSyFBOX0uT78rDCNntV
-        o5Igst0TboEHK2GAGX7GTBbpen2HKSY7JfIdRyI=
-X-Google-Smtp-Source: ABdhPJwqejim9uD7ymbbLYfkTjOqYSs8DwQcIR8vUokBpFtUDjoUc/mptlY54R9ubTh7sxn+dne50wJnW9nGTqi4byY=
-X-Received: by 2002:a05:6830:1094:: with SMTP id y20mr2790921oto.90.1596201964770;
- Fri, 31 Jul 2020 06:26:04 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200729233635.14406-1-atish.patra@wdc.com>
-In-Reply-To: <20200729233635.14406-1-atish.patra@wdc.com>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Fri, 31 Jul 2020 16:25:53 +0300
-X-Gmail-Original-Message-ID: <CAMj1kXFC-mQRrr+U_HRSzDEYsub-2Gb_F0r1Teh=MB0oJ-de2g@mail.gmail.com>
-Message-ID: <CAMj1kXFC-mQRrr+U_HRSzDEYsub-2Gb_F0r1Teh=MB0oJ-de2g@mail.gmail.com>
-Subject: Re: [RFT PATCH v4 0/9] Add UEFI support for RISC-V
-To:     Atish Patra <atish.patra@wdc.com>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Anup Patel <anup.patel@wdc.com>,
-        Arvind Sankar <nivedita@alum.mit.edu>,
-        Greentime Hu <greentime.hu@sifive.com>,
-        Ingo Molnar <mingo@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        linux-riscv <linux-riscv@lists.infradead.org>,
+        id S1726099AbgGaXNv (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 31 Jul 2020 19:13:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45738 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726977AbgGaXIe (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 31 Jul 2020 19:08:34 -0400
+Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com [IPv6:2607:f8b0:4864:20::644])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7179DC06174A
+        for <linux-efi@vger.kernel.org>; Fri, 31 Jul 2020 16:08:34 -0700 (PDT)
+Received: by mail-pl1-x644.google.com with SMTP id r4so7468052pls.2
+        for <linux-efi@vger.kernel.org>; Fri, 31 Jul 2020 16:08:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=gOuHhkP4k6lGlo9NwRnrjymhpQ+iLTcLVy67EHO0tLQ=;
+        b=NzZUDe7iAm67VQMOKpyD0BT7sJZoGjYuUhmzenDozFom2d1F/HRnlG/ZBJY5eawEvc
+         E0n37aArltq+4l4myD951tS6uvqRjvAXeMfP7eCStHMi5YUZaE/adhsWqgj43zn0ixh9
+         LahBtGMifU+Qbp9+BTdqhw8Sr92IcNsyJaTqo=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=gOuHhkP4k6lGlo9NwRnrjymhpQ+iLTcLVy67EHO0tLQ=;
+        b=Uvjgv/b5x8zdSuoyd4sFCcXttC79miixausepdaDOVqGlSytXam2iYv3yifesDuoQJ
+         EYKIE8Pjf1MAMxpMEFbEMlNtCSRYuqaguOwJz8vKsSpa65XrbJHhiW3U6j30U1I6Nqby
+         wx4/pC7oSm4fIi16jyicVQ7fjTu6+quswvWpCJ9foNoniQlaEh6C+8FrQBCAMrddFNli
+         nYcjsI1oD37qQGw0vnCaH4bNRbFea0bIi7cjGlM/7/WEpO0KWkw/4EQo5rX8Hx8av+SS
+         rG2dJwaYRPiUX0YADLNoMDwMmPcBF9OHVcw201rRYTu7Q6sDtKkbd+ZObeN00ONwfWDv
+         nAbg==
+X-Gm-Message-State: AOAM533UN+flKPUrFGcxb4wJq0JkqH1V1IKDN7ei4fvrk65gjpaqc7UG
+        0gXEBoOtyu5qCj5rSSxb64DFzg==
+X-Google-Smtp-Source: ABdhPJz3fXyytD9EO07YlzPodHLiEZDHHyttLv6MM7s5IQHc8USlFwFYwYDbELejqRupf7YkNtJmug==
+X-Received: by 2002:a17:90a:db53:: with SMTP id u19mr6145819pjx.13.1596236913938;
+        Fri, 31 Jul 2020 16:08:33 -0700 (PDT)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id b22sm9843691pju.26.2020.07.31.16.08.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 31 Jul 2020 16:08:30 -0700 (PDT)
+From:   Kees Cook <keescook@chromium.org>
+To:     Thomas Gleixner <tglx@linutronix.de>, Will Deacon <will@kernel.org>
+Cc:     Kees Cook <keescook@chromium.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
         Mark Rutland <mark.rutland@arm.com>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Peter Collingbourne <pcc@google.com>,
+        James Morse <james.morse@arm.com>,
+        Borislav Petkov <bp@suse.de>, Ingo Molnar <mingo@redhat.com>,
+        Russell King <linux@armlinux.org.uk>,
         Masahiro Yamada <masahiroy@kernel.org>,
-        Mike Rapoport <rppt@kernel.org>,
-        Nick Hu <nickhu@andestech.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Will Deacon <will@kernel.org>,
-        Yash Shah <yash.shah@sifive.com>, Zong Li <zong.li@sifive.com>
-Content-Type: text/plain; charset="UTF-8"
+        Arvind Sankar <nivedita@alum.mit.edu>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Nathan Chancellor <natechancellor@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>, x86@kernel.org,
+        clang-built-linux@googlegroups.com, linux-arch@vger.kernel.org,
+        linux-efi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v5 00/36] Warn on orphan section placement
+Date:   Fri, 31 Jul 2020 16:07:44 -0700
+Message-Id: <20200731230820.1742553-1-keescook@chromium.org>
+X-Mailer: git-send-email 2.25.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, 30 Jul 2020 at 02:36, Atish Patra <atish.patra@wdc.com> wrote:
->
-> This series adds UEFI support for RISC-V.
->
-> Linux kernel: 5.8-rc7 + 1 exception vector setup patch (queued for for-next)
-> U-Boot: v2020.07
-> OpenSBI: master
->
-> This series depends on early setup of exeception vector patch
-> http://lists.infradead.org/pipermail/linux-riscv/2020-July/001207.html
->
-> Patch 1-3 are generic riscv feature addition required for UEFI support.
-> Patch 4-7 adds the efi stub support for RISC-V which was reviewed few months back.
-> https://www.spinics.net/lists/linux-efi/msg19144.html
-> Patch 8 just renames arm-init code so that it can be used across different
-> architectures. Patch 11 adds the runtime services for RISC-V.
->
-> The working set of patches can also be found in following git repo.
-> https://github.com/atishp04/linux/tree/uefi_riscv_5.9_v4
->
+https://git.kernel.org/pub/scm/linux/kernel/git/kees/linux.git/log/?h=linker/orphans/warn/v5
+
+v5:
+- rebase from -rc2 to -rc7 to avoid build failures on Clang vs binutils
+- include Arvind's GOT fix-up series[3], since it touches many similar areas
+- add PGO/AutoFDO section patch[4]
+- split up x86 and arm changes into more digestable steps
+- move several sections out of DISCARD and into zero-size asserts
+- introduce COMMON_DISCARDS to improve ARM's linker scripts
+v4: https://lore.kernel.org/lkml/20200629061840.4065483-1-keescook@chromium.org/
+v3: https://lore.kernel.org/lkml/20200624014940.1204448-1-keescook@chromium.org/
+v2: https://lore.kernel.org/lkml/20200622205815.2988115-1-keescook@chromium.org/
+v1: https://lore.kernel.org/lkml/20200228002244.15240-1-keescook@chromium.org/
+
+A recent bug[1] was solved for builds linked with ld.lld, and tracking
+it down took way longer than it needed to (a year). Ultimately, it
+boiled down to differences between ld.bfd and ld.lld's handling of
+orphan sections. Similar situation have continued to recur, and it's
+clear the kernel build needs to be much more explicit about linker
+sections. Similarly, the recent FGKASLR series brought up orphan section
+handling too[2]. In all cases, it would have been nice if the linker was
+running with --orphan-handling=warn so that surprise sections wouldn't
+silently get mapped into the kernel image at locations up to the whim
+of the linker's orphan handling logic. Instead, all desired sections
+should be explicitly identified in the linker script (to be either kept,
+discarded, or verified to be zero-sized) with any orphans throwing a
+warning. The powerpc architecture has actually been doing this for some
+time, so this series just extends that coverage to x86, arm, and arm64.
+
+This has gotten sucecssful build testing under the following matrix:
+
+compiler/linker: gcc+ld.bfd, clang+ld.lld
+targets: defconfig, allmodconfig
+architectures: x86, i386, arm64, arm
+versions: v5.8-rc7, next-20200731 (with various build fixes[7][8])
+
+Two known-failure exceptions (unchanged by this series) being:
+- clang+arm/arm64 needs CONFIG_CPU_BIG_ENDIAN=n to pass allmodconfig[5]
+- clang+i386 only builds in -next, which was recently fixed[6]
+
+All three architectures depend on the first several commits to
+vmlinux.lds.h. x86 depends on Arvind's GOT series[3], so I collected it
+into this version of my series, as it hadn't been taken into -tip yet.
+arm64 depends on the efi/libstub patch. As such, I'd like to land this
+series as a whole. Given that two thirds of it is in the arm universe,
+perhaps this can land via the arm64 tree? If x86 -tip is preferred, that
+works too. If I don't hear otherwise, I will just carry this myself in
+-next. In all cases, I would really appreciate reviews/acks/etc. :)
+
+Thanks!
+
+-Kees
+
+[1] https://github.com/ClangBuiltLinux/linux/issues/282
+[2] https://lore.kernel.org/lkml/202002242122.AA4D1B8@keescook/
+[3] https://lore.kernel.org/lkml/20200715004133.1430068-1-nivedita@alum.mit.edu/
+[4] https://lore.kernel.org/lkml/20200625184752.73095-1-ndesaulniers@google.com/
+[5] https://github.com/ClangBuiltLinux/linux/issues/1071
+[6] https://github.com/ClangBuiltLinux/linux/issues/194
+[7] https://lore.kernel.org/lkml/1596166744-2954-2-git-send-email-neal.liu@mediatek.com/
+[8] https://lore.kernel.org/lkml/82f750c4-d423-1ed8-a158-e75153745e07@huawei.com/
 
 
-Thanks Atish.
+Ard Biesheuvel (3):
+  x86/boot/compressed: Move .got.plt entries out of the .got section
+  x86/boot/compressed: Force hidden visibility for all symbol references
+  x86/boot/compressed: Get rid of GOT fixup code
 
-I think these patches have now reached a state where you can stop
-sending out new revisions until you have something that works as
-expected in combination with EDK2 based firmware that implements  the
-UEFI runtime services fully.
+Arvind Sankar (4):
+  x86/boot: Add .text.* to setup.ld
+  x86/boot: Remove run-time relocations from .head.text code
+  x86/boot: Remove run-time relocations from head_{32,64}.S
+  x86/boot: Check that there are no run-time relocations
 
+Kees Cook (28):
+  vmlinux.lds.h: Create COMMON_DISCARDS
+  vmlinux.lds.h: Add .gnu.version* to COMMON_DISCARDS
+  vmlinux.lds.h: Avoid KASAN and KCSAN's unwanted sections
+  vmlinux.lds.h: Split ELF_DETAILS from STABS_DEBUG
+  vmlinux.lds.h: Add .symtab, .strtab, and .shstrtab to ELF_DETAILS
+  efi/libstub: Disable -mbranch-protection
+  arm64/mm: Remove needless section quotes
+  arm64/kernel: Remove needless Call Frame Information annotations
+  arm64/build: Remove .eh_frame* sections due to unwind tables
+  arm64/build: Use common DISCARDS in linker script
+  arm64/build: Add missing DWARF sections
+  arm64/build: Assert for unwanted sections
+  arm64/build: Warn on orphan section placement
+  arm/build: Refactor linker script headers
+  arm/build: Explicitly keep .ARM.attributes sections
+  arm/build: Add missing sections
+  arm/build: Warn on orphan section placement
+  arm/boot: Handle all sections explicitly
+  arm/boot: Warn on orphan section placement
+  x86/asm: Avoid generating unused kprobe sections
+  x86/build: Enforce an empty .got.plt section
+  x86/build: Assert for unwanted sections
+  x86/build: Warn on orphan section placement
+  x86/boot/compressed: Reorganize zero-size section asserts
+  x86/boot/compressed: Remove, discard, or assert for unwanted sections
+  x86/boot/compressed: Add missing debugging sections to output
+  x86/boot/compressed: Warn on orphan section placement
+  arm/build: Assert for unwanted sections
 
-> The patches have been verified on Qemu/HiFive unleashed using bootefi command in
-> U-Boot for both RV32 and RV64.
->
-> For RV32, maximum allocated memory should be 1G as RISC-V kernel can not map
-> beyond 1G of physical memory for RV32.
->
-> Runtime services have been verified with fwts. Here is the snippet of the result.
->
-> ***********************************************************************
-> This test run on 16/07/20 at 17:54:53 on host Linux fedora-riscv
-> 5.8.0-rc5-00015-g5e61441080fd-dirty #938 SMP Thu Jul 16 14:50:11 PDT 2020
-> riscv64.
->
-> Command: "fwts uefirtvariable".
-> Running tests: uefirtvariable.
->
-> uefirtvariable: UEFI Runtime service variable interface tests.
-> Test 1 of 9: Test UEFI RT service get variable interface.
-> SKIPPED: Test 1, Skipping test, SetVariable runtime service is not supported on
-> this platform.
->
-> Test 2 of 9: Test UEFI RT service get next variable name interface.
-> The runtime service GetNextVariableName interface function test.
-> SKIPPED: Test 2, Skipping test, SetVariable runtime service is not supported on
-> this platform.
->
-> ...
->
-> Test 4 of 9: Test UEFI RT service query variable info interface.
-> SKIPPED: Test 4, Not support the QueryVariableInfo UEFI runtime interface:
-> cannot test.
->
-> ADVICE: Firmware also needs to check if the revision of system table is correct
-> or not. Linux kernel returns EFI_UNSUPPORTED as well, if the FirmwareRevision of
-> system table is less than EFI_2_00_SYSTEM_TABLE_REVISION.
->
-> ...
-> ***********************************************************************
->
-> Currently, U-Boot EFI implementation returns EFI_UNSUPPORTED for set_variable
-> service. That's why all tests have been skipped but I manually verified that the
-> value is returned from U-Boot not kernel :).
->
-> EDK2 can boot quite far into Linux with the current series. However, it crashes
-> before userspace because of a possible memory corruption by EDK2.
->
-> Changes from v3->v4:
-> 1. Used pgd mapping to avoid copying DT to bss.
->
-> Changes from v2->v3:
-> 1. Fixed few bugs in run time services page table mapping.
-> 2. Dropped patch 1 as it is already taken into efi-tree.
-> 3. Sent few generic mmu fixes as a separate series to ease the merge conflicts.
->
-> Changes from v1->v2:
-> 1. Removed patch 1 as it is already taken into efi-tree.
-> 2. Fixed compilation issues with patch 9.
-> 3. Moved few function prototype declaration to header file to keep kbuild happy.
->
-> Changes from previous version:
-> 1. Added full ioremap support.
-> 2. Added efi runtime services support.
-> 3. Fixes mm issues
->
-> Anup Patel (1):
-> RISC-V: Move DT mapping outof fixmap
->
-> Atish Patra (8):
-> RISC-V: Add early ioremap support
-> RISC-V: Implement late mapping page table allocation functions
-> include: pe.h: Add RISC-V related PE definition
-> RISC-V: Add PE/COFF header for EFI stub
-> RISC-V: Add EFI stub support.
-> efi: Rename arm-init to efi-init common for all arch
-> RISC-V: Add EFI runtime services
-> RISC-V: Add page table dump support for uefi
->
-> arch/riscv/Kconfig                            |  25 +++
-> arch/riscv/Makefile                           |   1 +
-> arch/riscv/configs/defconfig                  |   1 +
-> arch/riscv/include/asm/Kbuild                 |   1 +
-> arch/riscv/include/asm/efi.h                  |  56 +++++++
-> arch/riscv/include/asm/fixmap.h               |  16 +-
-> arch/riscv/include/asm/io.h                   |   1 +
-> arch/riscv/include/asm/mmu.h                  |   2 +
-> arch/riscv/include/asm/pgtable.h              |   5 +
-> arch/riscv/include/asm/sections.h             |  13 ++
-> arch/riscv/kernel/Makefile                    |   5 +
-> arch/riscv/kernel/efi-header.S                | 104 +++++++++++++
-> arch/riscv/kernel/efi.c                       | 105 +++++++++++++
-> arch/riscv/kernel/head.S                      |  17 ++-
-> arch/riscv/kernel/head.h                      |   2 -
-> arch/riscv/kernel/image-vars.h                |  51 +++++++
-> arch/riscv/kernel/setup.c                     |  17 ++-
-> arch/riscv/kernel/vmlinux.lds.S               |  22 ++-
-> arch/riscv/mm/init.c                          |  90 ++++++++---
-> arch/riscv/mm/ptdump.c                        |  48 +++++-
-> drivers/firmware/efi/Kconfig                  |   3 +-
-> drivers/firmware/efi/Makefile                 |   4 +-
-> .../firmware/efi/{arm-init.c => efi-init.c}   |   0
-> drivers/firmware/efi/libstub/Makefile         |  10 ++
-> drivers/firmware/efi/libstub/efi-stub.c       |  11 +-
-> drivers/firmware/efi/libstub/riscv-stub.c     | 110 ++++++++++++++
-> drivers/firmware/efi/riscv-runtime.c          | 143 ++++++++++++++++++
-> include/linux/pe.h                            |   3 +
-> 28 files changed, 825 insertions(+), 41 deletions(-)
-> create mode 100644 arch/riscv/include/asm/efi.h
-> create mode 100644 arch/riscv/include/asm/sections.h
-> create mode 100644 arch/riscv/kernel/efi-header.S
-> create mode 100644 arch/riscv/kernel/efi.c
-> create mode 100644 arch/riscv/kernel/image-vars.h
-> rename drivers/firmware/efi/{arm-init.c => efi-init.c} (100%)
-> create mode 100644 drivers/firmware/efi/libstub/riscv-stub.c
-> create mode 100644 drivers/firmware/efi/riscv-runtime.c
->
-> --
-> 2.24.0
->
+Nick Desaulniers (1):
+  vmlinux.lds.h: add PGO and AutoFDO input sections
+
+ arch/alpha/kernel/vmlinux.lds.S               |   1 +
+ arch/arc/kernel/vmlinux.lds.S                 |   1 +
+ arch/arm/Makefile                             |   4 +
+ arch/arm/boot/compressed/Makefile             |   2 +
+ arch/arm/boot/compressed/vmlinux.lds.S        |  20 +--
+ .../arm/{kernel => include/asm}/vmlinux.lds.h |  29 ++-
+ arch/arm/kernel/vmlinux-xip.lds.S             |   8 +-
+ arch/arm/kernel/vmlinux.lds.S                 |   8 +-
+ arch/arm64/Makefile                           |   9 +-
+ arch/arm64/kernel/smccc-call.S                |   2 -
+ arch/arm64/kernel/vmlinux.lds.S               |  28 ++-
+ arch/arm64/mm/mmu.c                           |   2 +-
+ arch/csky/kernel/vmlinux.lds.S                |   1 +
+ arch/hexagon/kernel/vmlinux.lds.S             |   1 +
+ arch/ia64/kernel/vmlinux.lds.S                |   1 +
+ arch/mips/kernel/vmlinux.lds.S                |   1 +
+ arch/nds32/kernel/vmlinux.lds.S               |   1 +
+ arch/nios2/kernel/vmlinux.lds.S               |   1 +
+ arch/openrisc/kernel/vmlinux.lds.S            |   1 +
+ arch/parisc/boot/compressed/vmlinux.lds.S     |   1 +
+ arch/parisc/kernel/vmlinux.lds.S              |   1 +
+ arch/powerpc/kernel/vmlinux.lds.S             |   2 +-
+ arch/riscv/kernel/vmlinux.lds.S               |   1 +
+ arch/s390/kernel/vmlinux.lds.S                |   1 +
+ arch/sh/kernel/vmlinux.lds.S                  |   1 +
+ arch/sparc/kernel/vmlinux.lds.S               |   1 +
+ arch/um/kernel/dyn.lds.S                      |   2 +-
+ arch/um/kernel/uml.lds.S                      |   2 +-
+ arch/unicore32/kernel/vmlinux.lds.S           |   1 +
+ arch/x86/Makefile                             |   4 +
+ arch/x86/boot/compressed/Makefile             |  41 +----
+ arch/x86/boot/compressed/head_32.S            |  99 ++++-------
+ arch/x86/boot/compressed/head_64.S            | 165 +++++++-----------
+ arch/x86/boot/compressed/mkpiggy.c            |   6 +
+ arch/x86/boot/compressed/vmlinux.lds.S        |  48 ++++-
+ arch/x86/boot/setup.ld                        |   2 +-
+ arch/x86/include/asm/asm.h                    |   6 +-
+ arch/x86/kernel/vmlinux.lds.S                 |  39 ++++-
+ drivers/firmware/efi/libstub/Makefile         |  11 +-
+ drivers/firmware/efi/libstub/hidden.h         |   6 -
+ include/asm-generic/vmlinux.lds.h             |  49 +++++-
+ include/linux/hidden.h                        |  19 ++
+ 42 files changed, 377 insertions(+), 252 deletions(-)
+ rename arch/arm/{kernel => include/asm}/vmlinux.lds.h (84%)
+ delete mode 100644 drivers/firmware/efi/libstub/hidden.h
+ create mode 100644 include/linux/hidden.h
+
+-- 
+2.25.1
+
