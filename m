@@ -2,48 +2,48 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B772234E7F
-	for <lists+linux-efi@lfdr.de>; Sat,  1 Aug 2020 01:19:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C6CC234E18
+	for <lists+linux-efi@lfdr.de>; Sat,  1 Aug 2020 01:09:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727800AbgGaXSu (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 31 Jul 2020 19:18:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47300 "EHLO
+        id S1727941AbgGaXJU (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 31 Jul 2020 19:09:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45832 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727794AbgGaXSN (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 31 Jul 2020 19:18:13 -0400
-Received: from mail-pj1-x1042.google.com (mail-pj1-x1042.google.com [IPv6:2607:f8b0:4864:20::1042])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3906C061756
-        for <linux-efi@vger.kernel.org>; Fri, 31 Jul 2020 16:18:13 -0700 (PDT)
-Received: by mail-pj1-x1042.google.com with SMTP id t6so4689473pjr.0
-        for <linux-efi@vger.kernel.org>; Fri, 31 Jul 2020 16:18:13 -0700 (PDT)
+        with ESMTP id S1727902AbgGaXIq (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 31 Jul 2020 19:08:46 -0400
+Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com [IPv6:2607:f8b0:4864:20::1043])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E76AC0617AA
+        for <linux-efi@vger.kernel.org>; Fri, 31 Jul 2020 16:08:46 -0700 (PDT)
+Received: by mail-pj1-x1043.google.com with SMTP id ha11so8528070pjb.1
+        for <linux-efi@vger.kernel.org>; Fri, 31 Jul 2020 16:08:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=DcAsy2Kya2vQqvsN7ZPWA8EbcQkwVEcJexXEETLKJik=;
-        b=Acdhtx1taL3cJ0UonSyJvk6bfFnzMNMb/OtYeoW8WVgIkiBmz9TPNPTuYBMmsdYmlO
-         sAcW9XztYuDymTfimZLg8+HmpaYdTmmT8tF/BpBGfhsLUyvDHTtHASScwa7qJiTP1nko
-         Qv/5rrTmKuRHOM+nwd77xCgRKODhxuUNBL7Ro=
+        bh=nwDvJc+EBCTytPh4qqWJPqBQ1Pj/7rvDlMkI2+6l3fI=;
+        b=JOAqMVCWrPdajqN1Taychqd0iPhCdsc/6VYR99HVk3JsgeEiGpgjg2Z9E7W4gFUUmF
+         ee4C8x8jOufyDVX5njp8VPjBuIasRahkVmjaxpNMFWb6v49ohzPS9pBDXECueYvkiEJ/
+         W9bbijKixILXX2dC5o0Yg3bGNPJac4Scw7dkk=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=DcAsy2Kya2vQqvsN7ZPWA8EbcQkwVEcJexXEETLKJik=;
-        b=IVUi9SoYhqYi59BOOhvaKYq+q4mdHLyRKvvnuLK/CZiCgoOc52VNTTSuFObTElU5sg
-         yxj7BnX2Emb+ptkF/cSols6C+1+1W8VeaKv/XGi0mpunUkWxlJGWq3c71YBFyZYH/dwu
-         6j9yvNXu4Uo7HQRgKV3Px7nrNSX1F3epiqaxVtPiuimyKpkmDn2j6vjynQCzBBvmwGem
-         DiWF8qJNbcx8hi0rSM/4U76V66+6nV+cr9dNXKoUaZi9Q0/ehP4Tanis+95/E5ORs2iP
-         MZjOt4K7zGR0mVfPWHV5Gb0VhpEMtuBXp7hR9mc7kFvtHT/+uhBh/4KSeRiGpQuB/ui1
-         8NDw==
-X-Gm-Message-State: AOAM532APFEof80e5qdMDYUJmzC9nqvg3edgP4fDZKswohpWviOYOK+w
-        FadUByK0r+p6LIN3AlcRYcM35g==
-X-Google-Smtp-Source: ABdhPJyzzUS6jU3nY40Z2QdxjoOaZJ0MXEzHC7GLhL52i5IAnjsxzb7V9wPgftjtuphwT5Pu7c20Lw==
-X-Received: by 2002:a17:90a:8d06:: with SMTP id c6mr6370143pjo.137.1596237493405;
-        Fri, 31 Jul 2020 16:18:13 -0700 (PDT)
+        bh=nwDvJc+EBCTytPh4qqWJPqBQ1Pj/7rvDlMkI2+6l3fI=;
+        b=LscKRF839yix+BG2gjJtA68R1tF9bL8HkC7p04sWFiRLqrJ6PwzhgcXyNGW0MrolP+
+         qOg2maEhqt8IitbfJ+t+k05oYFqto3OHSUfG3nuaeUTQZk2hw/irhqsSySU6YkQJ+9qs
+         usaE5da8hMrwK3vBjwahTMHPt6lJijYbRASvgOhjfiHH8cVWM1m/joiIsvKv86h2MkCN
+         6RilI+izt4DlznY6RW+Kn1X+K+msO0ZHdhABWzUBv6nBm5ZhQLT+D19rufbVrPtEOIma
+         nfF5bv6Vn3YB/8jO5GDWf204jS648wPyJv/HYPAvkJ7kaWakwDPtFScjGBWL4lfLMLu0
+         xsjQ==
+X-Gm-Message-State: AOAM5322RAO36re1D+nqEyDvGwf3OCyUQbK0q7i4EQbXavHYldJdlNAO
+        QWi40zz4NpfWVd4pshQFbEOh5w==
+X-Google-Smtp-Source: ABdhPJyd3PIVImTfcm8vqmhCuvx32RaOUUUS9YkPvP10EV/gwv2je3TLyVou0UCk4tW9MggDonnqiA==
+X-Received: by 2002:a17:90b:514:: with SMTP id r20mr6354230pjz.82.1596236926030;
+        Fri, 31 Jul 2020 16:08:46 -0700 (PDT)
 Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id b21sm11163353pfp.172.2020.07.31.16.18.11
+        by smtp.gmail.com with ESMTPSA id h12sm7292673pfr.143.2020.07.31.16.08.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 31 Jul 2020 16:18:11 -0700 (PDT)
+        Fri, 31 Jul 2020 16:08:44 -0700 (PDT)
 From:   Kees Cook <keescook@chromium.org>
 To:     Thomas Gleixner <tglx@linutronix.de>, Will Deacon <will@kernel.org>
 Cc:     Kees Cook <keescook@chromium.org>,
@@ -62,9 +62,9 @@ Cc:     Kees Cook <keescook@chromium.org>,
         clang-built-linux@googlegroups.com, linux-arch@vger.kernel.org,
         linux-efi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH v5 29/36] x86/build: Enforce an empty .got.plt section
-Date:   Fri, 31 Jul 2020 16:08:13 -0700
-Message-Id: <20200731230820.1742553-30-keescook@chromium.org>
+Subject: [PATCH v5 30/36] x86/build: Assert for unwanted sections
+Date:   Fri, 31 Jul 2020 16:08:14 -0700
+Message-Id: <20200731230820.1742553-31-keescook@chromium.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200731230820.1742553-1-keescook@chromium.org>
 References: <20200731230820.1742553-1-keescook@chromium.org>
@@ -75,42 +75,57 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The .got.plt section should always be zero (or filled only with the
-linker-generated lazy dispatch entry). Enforce this with an assert and
-mark the section as NOLOAD. This is more sensitive than just blindly
-discarding the section.
+In preparation for warning on orphan sections, enforce other
+expected-to-be-zero-sized sections (since discarding them might hide
+problems with them suddenly gaining unexpected entries).
 
 Signed-off-by: Kees Cook <keescook@chromium.org>
 ---
- arch/x86/kernel/vmlinux.lds.S | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ arch/x86/kernel/vmlinux.lds.S | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
 diff --git a/arch/x86/kernel/vmlinux.lds.S b/arch/x86/kernel/vmlinux.lds.S
-index 0cc035cb15f1..7faffe7414d6 100644
+index 7faffe7414d6..d8792f9c536f 100644
 --- a/arch/x86/kernel/vmlinux.lds.S
 +++ b/arch/x86/kernel/vmlinux.lds.S
-@@ -414,8 +414,20 @@ SECTIONS
- 	ELF_DETAILS
+@@ -415,6 +415,15 @@ SECTIONS
  
  	DISCARDS
--}
  
 +	/*
-+	 * Make sure that the .got.plt is either completely empty or it
-+	 * contains only the lazy dispatch entries.
++	 * Sections that should stay zero sized, which is safer to
++	 * explicitly check instead of blindly discarding.
 +	 */
-+	.got.plt (NOLOAD) : { *(.got.plt) }
-+	ASSERT(SIZEOF(.got.plt) == 0 ||
-+#ifdef CONFIG_X86_64
-+	       SIZEOF(.got.plt) == 0x18,
-+#else
-+	       SIZEOF(.got.plt) == 0xc,
-+#endif
-+	       "Unexpected GOT/PLT entries detected!")
-+}
++	.got (NOLOAD) : {
++		*(.got) *(.igot.*)
++	}
++	ASSERT(SIZEOF(.got) == 0, "Unexpected GOT entries detected!")
++
+ 	/*
+ 	 * Make sure that the .got.plt is either completely empty or it
+ 	 * contains only the lazy dispatch entries.
+@@ -427,6 +436,21 @@ SECTIONS
+ 	       SIZEOF(.got.plt) == 0xc,
+ #endif
+ 	       "Unexpected GOT/PLT entries detected!")
++
++	.plt (NOLOAD) : {
++		*(.plt) *(.plt.*) *(.iplt)
++	}
++	ASSERT(SIZEOF(.plt) == 0, "Unexpected run-time procedure linkages detected!")
++
++	/* ld.lld does not like .rel* sections being made "NOLOAD". */
++	.rel.dyn : {
++		*(.rel.*) *(.rel_*)
++	}
++	ASSERT(SIZEOF(.rel.dyn) == 0, "Unexpected run-time relocations (.rel) detected!")
++	.rela.dyn : {
++		*(.rela.*) *(.rela_*)
++	}
++	ASSERT(SIZEOF(.rela.dyn) == 0, "Unexpected run-time relocations (.rela) detected!")
+ }
  
  #ifdef CONFIG_X86_32
- /*
 -- 
 2.25.1
 
