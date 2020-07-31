@@ -2,48 +2,48 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2FE4D234E1F
-	for <lists+linux-efi@lfdr.de>; Sat,  1 Aug 2020 01:09:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 90986234E76
+	for <lists+linux-efi@lfdr.de>; Sat,  1 Aug 2020 01:19:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728213AbgGaXJ2 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 31 Jul 2020 19:09:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45818 "EHLO
+        id S1727844AbgGaXSm (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 31 Jul 2020 19:18:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47330 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727061AbgGaXIo (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 31 Jul 2020 19:08:44 -0400
-Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com [IPv6:2607:f8b0:4864:20::541])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11812C06138F
-        for <linux-efi@vger.kernel.org>; Fri, 31 Jul 2020 16:08:43 -0700 (PDT)
-Received: by mail-pg1-x541.google.com with SMTP id t6so16797594pgq.1
-        for <linux-efi@vger.kernel.org>; Fri, 31 Jul 2020 16:08:43 -0700 (PDT)
+        with ESMTP id S1727834AbgGaXSS (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 31 Jul 2020 19:18:18 -0400
+Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com [IPv6:2607:f8b0:4864:20::443])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 155B9C0617AA
+        for <linux-efi@vger.kernel.org>; Fri, 31 Jul 2020 16:18:17 -0700 (PDT)
+Received: by mail-pf1-x443.google.com with SMTP id b186so4903545pfb.9
+        for <linux-efi@vger.kernel.org>; Fri, 31 Jul 2020 16:18:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=Y6H7F3yYvyF+nG4ZythWO1q4A4EGexkc0hsQxsFmb9Y=;
-        b=klOQguEyjL+W3pS7h757dA97Jss1XwCr9uiod+TUnQnifo+W8HZxqnhpghrEPuhfhz
-         orOov5palRtEjwarVacfnfixNz/3aBq8qsEHACSBEYKMfnct6CzEpn+hdJxpAimvvV6n
-         TfN5kHYecvHl4EkWHkAnabuO4KrAoCTvFJ6U4=
+        bh=dCXoZ6vwcRTLoMlYpWHYOqZEmN50vC99VSBByVG6tNg=;
+        b=gQ2kBPm9q0b4ouhPZ6T6zt99vNNF0eP14E7gJXRtWUIvU4j82+oxEfdDO2Pf/0XU4P
+         w09ztBEuvHLJCydLNM91dJEnFqfK0fQKKtDUFCjJ+figlvB7P/2cn3GD7GZ1HNX+R4jA
+         H1vOnXWTO7NByBLNOYfBGd1Dt2p269tjKBwrg=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=Y6H7F3yYvyF+nG4ZythWO1q4A4EGexkc0hsQxsFmb9Y=;
-        b=kwPP/b7AeaA6DxYJNbV32YAT4oT++Yuim4Ey2JAjU9vuxnC+22LQkxFCG1LE1SjPVU
-         RA+aXm+N0OjM0ag2AyzNzAy1mVo7adrDoNAiWUUwcpoKlV0XF5LmQVEJ/FsaHI9+sWMu
-         d5P2BgVm5WGN2yU6cHVv7TCP+iqLCYjxmuXIA0DKAcECW1LxGi2SpDCZJO+f1HH2rGST
-         eHYiYRPpVvPLUqazciJu4E1Wgf8yh6tdxnJ7JHM6N2UmFBugpn1Q0g4zgru0VrOeEGxY
-         sVvlmVIvvRt/uvIOwxn8eGb/KrLoyPiNc06yIwkAHa3KIupSvIzG2BX1sF4Fy+ijL09L
-         S0Ew==
-X-Gm-Message-State: AOAM530fQhjuAralwG1ilw0+gAUXZSG1P1GDlerw0ojw3+qANrfz1ArK
-        NduZ4ueIWsZVe1kpHNE7buMUEg==
-X-Google-Smtp-Source: ABdhPJz/K7Q0NhIe2TN23D0lBoo8o7R9UHhN6RM4BLn3KCwsvDLXrhht2x1eWmeoEfDbj/ppP75PXg==
-X-Received: by 2002:a65:408b:: with SMTP id t11mr5660099pgp.407.1596236922651;
-        Fri, 31 Jul 2020 16:08:42 -0700 (PDT)
+        bh=dCXoZ6vwcRTLoMlYpWHYOqZEmN50vC99VSBByVG6tNg=;
+        b=rolzuuiYJZ60qh426jyJrwYg29wud1teu6LvERY/bf+SpcifBBtMq3cCAlyIUpLvsy
+         Bb+teUyVzSItkmtdlhk+hWhfZsB5G+/5KuR9qufFhVp/I3uhsP8Fk8IjeJ9f9gImBwsv
+         NZfTDsXuGR2NYKnTmtHDJUxdRShnpLExzr7VhIoAt68rUrahK4WLZbOxxHY8Gp7FVh1a
+         rjxNWb+aOnBbQSJzqeGikFJQQp+b+JyhKthNSo6Estc4JNoubJotmiWMdnIWupHcl3IP
+         YvXAMhjHpjnwDhfAP4xkGS+VuOTapq0jih26GALOUFKE2m4DK8dXXMsfH2j4EwrTheGl
+         ukug==
+X-Gm-Message-State: AOAM530bswg5rKjCy7n+JGkT0kMvWsU8EZdxkz2ZIFnQd3iZnxkhTzRn
+        3csmPgFYbwHJpIEsyYe36yFzxA==
+X-Google-Smtp-Source: ABdhPJxykfNbyUgTzEuAmMvQ2SlDq9N1S3QBPoWqnwl2G3pY+OaKurGdTDKceGp+pjJPCmAQjYtSBA==
+X-Received: by 2002:a65:5c43:: with SMTP id v3mr5559806pgr.214.1596237496666;
+        Fri, 31 Jul 2020 16:18:16 -0700 (PDT)
 Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id m31sm10905376pjb.52.2020.07.31.16.08.37
+        by smtp.gmail.com with ESMTPSA id z11sm10923285pfk.46.2020.07.31.16.18.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 31 Jul 2020 16:08:42 -0700 (PDT)
+        Fri, 31 Jul 2020 16:18:14 -0700 (PDT)
 From:   Kees Cook <keescook@chromium.org>
 To:     Thomas Gleixner <tglx@linutronix.de>, Will Deacon <will@kernel.org>
 Cc:     Kees Cook <keescook@chromium.org>,
@@ -62,9 +62,9 @@ Cc:     Kees Cook <keescook@chromium.org>,
         clang-built-linux@googlegroups.com, linux-arch@vger.kernel.org,
         linux-efi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH v5 16/36] arm64/kernel: Remove needless Call Frame Information annotations
-Date:   Fri, 31 Jul 2020 16:08:00 -0700
-Message-Id: <20200731230820.1742553-17-keescook@chromium.org>
+Subject: [PATCH v5 17/36] arm64/build: Remove .eh_frame* sections due to unwind tables
+Date:   Fri, 31 Jul 2020 16:08:01 -0700
+Message-Id: <20200731230820.1742553-18-keescook@chromium.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200731230820.1742553-1-keescook@chromium.org>
 References: <20200731230820.1742553-1-keescook@chromium.org>
@@ -75,36 +75,55 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Remove last instance of an .eh_frame section by removing the needless Call
-Frame Information annotations which were likely leftovers from 32-bit arm.
+Avoid .eh_frame* section generation by making sure both CFLAGS and AFLAGS
+contain -fno-asychronous-unwind-tables and -fno-unwind-tables.
+
+With all sources of .eh_frame now removed from the build, drop this
+DISCARD so we can be alerted in the future if it returns unexpectedly
+once orphan section warnings have been enabled.
 
 Suggested-by: Ard Biesheuvel <ardb@kernel.org>
 Acked-by: Will Deacon <will@kernel.org>
 Signed-off-by: Kees Cook <keescook@chromium.org>
 ---
- arch/arm64/kernel/smccc-call.S | 2 --
- 1 file changed, 2 deletions(-)
+ arch/arm64/Makefile             | 5 ++++-
+ arch/arm64/kernel/vmlinux.lds.S | 1 -
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/kernel/smccc-call.S b/arch/arm64/kernel/smccc-call.S
-index 1f93809528a4..d62447964ed9 100644
---- a/arch/arm64/kernel/smccc-call.S
-+++ b/arch/arm64/kernel/smccc-call.S
-@@ -9,7 +9,6 @@
- #include <asm/assembler.h>
+diff --git a/arch/arm64/Makefile b/arch/arm64/Makefile
+index 70f5905954dd..35de43c29873 100644
+--- a/arch/arm64/Makefile
++++ b/arch/arm64/Makefile
+@@ -47,13 +47,16 @@ endif
  
- 	.macro SMCCC instr
--	.cfi_startproc
- 	\instr	#0
- 	ldr	x4, [sp]
- 	stp	x0, x1, [x4, #ARM_SMCCC_RES_X0_OFFS]
-@@ -21,7 +20,6 @@
- 	b.ne	1f
- 	str	x6, [x4, ARM_SMCCC_QUIRK_STATE_OFFS]
- 1:	ret
--	.cfi_endproc
- 	.endm
+ KBUILD_CFLAGS	+= -mgeneral-regs-only	\
+ 		   $(compat_vdso) $(cc_has_k_constraint)
+-KBUILD_CFLAGS	+= -fno-asynchronous-unwind-tables
+ KBUILD_CFLAGS	+= $(call cc-disable-warning, psabi)
+ KBUILD_AFLAGS	+= $(compat_vdso)
  
- /*
+ KBUILD_CFLAGS	+= $(call cc-option,-mabi=lp64)
+ KBUILD_AFLAGS	+= $(call cc-option,-mabi=lp64)
+ 
++# Avoid generating .eh_frame* sections.
++KBUILD_CFLAGS	+= -fno-asynchronous-unwind-tables -fno-unwind-tables
++KBUILD_AFLAGS	+= -fno-asynchronous-unwind-tables -fno-unwind-tables
++
+ ifeq ($(CONFIG_STACKPROTECTOR_PER_TASK),y)
+ prepare: stack_protector_prepare
+ stack_protector_prepare: prepare0
+diff --git a/arch/arm64/kernel/vmlinux.lds.S b/arch/arm64/kernel/vmlinux.lds.S
+index df2916b25ee0..b29081d16a70 100644
+--- a/arch/arm64/kernel/vmlinux.lds.S
++++ b/arch/arm64/kernel/vmlinux.lds.S
+@@ -95,7 +95,6 @@ SECTIONS
+ 		*(.discard.*)
+ 		*(.interp .dynamic)
+ 		*(.dynsym .dynstr .hash .gnu.hash)
+-		*(.eh_frame)
+ 	}
+ 
+ 	. = KIMAGE_VADDR + TEXT_OFFSET;
 -- 
 2.25.1
 
