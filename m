@@ -2,158 +2,128 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B701234DF9
-	for <lists+linux-efi@lfdr.de>; Sat,  1 Aug 2020 01:08:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BD354234E27
+	for <lists+linux-efi@lfdr.de>; Sat,  1 Aug 2020 01:09:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727098AbgGaXIr (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 31 Jul 2020 19:08:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45824 "EHLO
+        id S1727873AbgGaXJa (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 31 Jul 2020 19:09:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45800 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727878AbgGaXIp (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 31 Jul 2020 19:08:45 -0400
-Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com [IPv6:2607:f8b0:4864:20::544])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2771FC0617A2
-        for <linux-efi@vger.kernel.org>; Fri, 31 Jul 2020 16:08:45 -0700 (PDT)
-Received: by mail-pg1-x544.google.com with SMTP id s15so5237216pgc.8
-        for <linux-efi@vger.kernel.org>; Fri, 31 Jul 2020 16:08:45 -0700 (PDT)
+        with ESMTP id S1727855AbgGaXIo (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 31 Jul 2020 19:08:44 -0400
+Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com [IPv6:2607:f8b0:4864:20::444])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7AE05C061757
+        for <linux-efi@vger.kernel.org>; Fri, 31 Jul 2020 16:08:44 -0700 (PDT)
+Received: by mail-pf1-x444.google.com with SMTP id f193so4771200pfa.12
+        for <linux-efi@vger.kernel.org>; Fri, 31 Jul 2020 16:08:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=wsZ5gbKBfJpS0kEAhEgSsyY+vol7k0zdc2IVxjvZo+s=;
-        b=IPdfxoRvS6R1x5paoBrA7xxYsYLtGQVxRFU7dvuKabenpplKg1IEjvbhFySTmU+Zh2
-         pNWc8NWMXSOA09JW8gD/0su2yMzSuM6k8hmeNUhvpGyiw2SmpiBLNR4PFrXPpgojBRMR
-         hbzjAFfKzFOv7KayapCPYkLupuCPvPBt2/X9g=
+        bh=GiVQAgnHSmh3I5R0gtbyLBJa4hDaxzbWftSOld1BSI0=;
+        b=eXzbc1BPKkTHPMZyF8VMqMXApjwlt+Z0Q4rDhEXSO/t0UYVMGhVF2JvNEDOO9RLwvH
+         2iTlarNmR2z09AgsvCjkYUsb5PlzXqXLkM6GENu0SdaRyStQUuDsuPkPWsufjYyiDb2N
+         XwF2edaq78XYfUe1PD8t2h2H1ccKfVc9P+lhk=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=wsZ5gbKBfJpS0kEAhEgSsyY+vol7k0zdc2IVxjvZo+s=;
-        b=iNxxPQCX3yiDhRqRs/o6JhmsSero9ja5EMGYrQ+nR6G85iB8jeli6ZVDNyXJlHh2uC
-         LEWYulp3U4xe/wufdYlK+ksJaJjmp0Ub0nS/4igj/z6l/oh6rXW9e4zL6sIhd42wfHah
-         5N/WRLcAcGS60UoGPy9qrGRiLMkN5uJ5ggCXFAzgwKEm9KGY+bySsLrHymKSVUicH+V7
-         F6604fZ4OpgBxu2te+NG8inqoYFipczOjt2vlsMS8/ARTRCeXcSqAEf8uJapD8BxSLJy
-         D9CoIdnyqIaKkNXTWIFQigsYtFdyGUOz4quRU9JD4c/6t1rT2/EnI4F93712e+y7+Hqr
-         ePLA==
-X-Gm-Message-State: AOAM533EL7hoB//WNI+4WTwx+dU5jINaNYEXuDnBWLZWqMZ93G4doByi
-        ZcG2xQJYa7DGkGpRn6sogaBADA==
-X-Google-Smtp-Source: ABdhPJw+P56sPmrzKAh4KNkCFVEtBiUO7T0C8QAnvabXluMUkrjDoDQBKdjDkoM7tlMAV3f0yil7bg==
-X-Received: by 2002:a63:9246:: with SMTP id s6mr5522207pgn.22.1596236924597;
+        bh=GiVQAgnHSmh3I5R0gtbyLBJa4hDaxzbWftSOld1BSI0=;
+        b=kYW4RjetdsXDFTLiFC/CezgYjtoYBAPqg1f2yXaqhCks5Q05cX1AHKLXim1dKtSsic
+         mlmMMd6R+cLXcqF8iPezh+6EaX/Lj6YT3Q0gsryZw2h+Jz8w4y8zoG5DfAWLuMlz78+P
+         liEF9Pl/V64DkN3rQ0QcH5lkJmLzosth5GjYIciBEhGEDnfp6VZFnr4VVuXftOOzBYLm
+         ArK7mEkp2SZ4W7KHncTKZkex3/+DlKXHZeI0d2uRrp4cxBivY/vzBAIAD0IedkYSkgUR
+         A1WaTpX6jWfvFfpBhqTIZy1lCLQMdfJziq65mhSYYdFE6K5pdqZEudSVVYhXlrFDbkf0
+         w4yQ==
+X-Gm-Message-State: AOAM533LB+u7KHBnZMVFx8kRL7R1vr65IcZKiPlpNv0KygEsVr3Tb2/v
+        on+Yj1XA+xJ+uBj1VOTkfFcEfA==
+X-Google-Smtp-Source: ABdhPJyRco/+NDd+heFvXx5i5JyQetAJX+BYme+lc8pixFz7LH/UuTvXw+HXPYf+c6sJEWtGbRKmtQ==
+X-Received: by 2002:a63:6ca:: with SMTP id 193mr5786021pgg.269.1596236924037;
         Fri, 31 Jul 2020 16:08:44 -0700 (PDT)
 Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id x9sm10524734pgr.57.2020.07.31.16.08.36
+        by smtp.gmail.com with ESMTPSA id o23sm12166552pfd.126.2020.07.31.16.08.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Fri, 31 Jul 2020 16:08:39 -0700 (PDT)
 From:   Kees Cook <keescook@chromium.org>
 To:     Thomas Gleixner <tglx@linutronix.de>, Will Deacon <will@kernel.org>
 Cc:     Kees Cook <keescook@chromium.org>,
+        Arvind Sankar <nivedita@alum.mit.edu>,
+        Atish Patra <atish.patra@wdc.com>, linux-efi@vger.kernel.org,
+        Ard Biesheuvel <ardb@kernel.org>,
         Nick Desaulniers <ndesaulniers@google.com>,
-        Jian Cai <jiancai@google.com>,
-        =?UTF-8?q?F=C4=81ng-ru=C3=AC=20S=C3=B2ng?= <maskray@google.com>,
-        Luis Lozano <llozano@google.com>,
-        Manoj Gupta <manojgupta@google.com>, stable@vger.kernel.org,
         Catalin Marinas <catalin.marinas@arm.com>,
         Mark Rutland <mark.rutland@arm.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
         Peter Collingbourne <pcc@google.com>,
         James Morse <james.morse@arm.com>,
         Borislav Petkov <bp@suse.de>, Ingo Molnar <mingo@redhat.com>,
         Russell King <linux@armlinux.org.uk>,
         Masahiro Yamada <masahiroy@kernel.org>,
-        Arvind Sankar <nivedita@alum.mit.edu>,
         Nathan Chancellor <natechancellor@gmail.com>,
         Arnd Bergmann <arnd@arndb.de>, x86@kernel.org,
         clang-built-linux@googlegroups.com, linux-arch@vger.kernel.org,
-        linux-efi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v5 13/36] vmlinux.lds.h: add PGO and AutoFDO input sections
-Date:   Fri, 31 Jul 2020 16:07:57 -0700
-Message-Id: <20200731230820.1742553-14-keescook@chromium.org>
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v5 14/36] efi/libstub: Disable -mbranch-protection
+Date:   Fri, 31 Jul 2020 16:07:58 -0700
+Message-Id: <20200731230820.1742553-15-keescook@chromium.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200731230820.1742553-1-keescook@chromium.org>
 References: <20200731230820.1742553-1-keescook@chromium.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-From: Nick Desaulniers <ndesaulniers@google.com>
+In preparation for adding --orphan-handling=warn to more architectures,
+disable -mbranch-protection, as EFI does not yet support it[1].  This was
+noticed due to it producing unwanted .note.gnu.property sections (prefixed
+with .init due to the objcopy build step).
 
-Basically, consider .text.{hot|unlikely|unknown}.* part of .text, too.
+However, we must also work around a bug in Clang where the section is
+still emitted for code-less object files[2], so also remove the section
+during the objcopy.
 
-When compiling with profiling information (collected via PGO
-instrumentations or AutoFDO sampling), Clang will separate code into
-.text.hot, .text.unlikely, or .text.unknown sections based on profiling
-information. After D79600 (clang-11), these sections will have a
-trailing `.` suffix, ie.  .text.hot., .text.unlikely., .text.unknown..
+[1] https://lore.kernel.org/lkml/CAMj1kXHck12juGi=E=P4hWP_8vQhQ+-x3vBMc3TGeRWdQ-XkxQ@mail.gmail.com
+[2] https://bugs.llvm.org/show_bug.cgi?id=46480
 
-When using -ffunction-sections together with profiling infomation,
-either explicitly (FGKASLR) or implicitly (LTO), code may be placed in
-sections following the convention:
-.text.hot.<foo>, .text.unlikely.<bar>, .text.unknown.<baz>
-where <foo>, <bar>, and <baz> are functions.  (This produces one section
-per function; we generally try to merge these all back via linker script
-so that we don't have 50k sections).
-
-For the above cases, we need to teach our linker scripts that such
-sections might exist and that we'd explicitly like them grouped
-together, otherwise we can wind up with code outside of the
-_stext/_etext boundaries that might not be mapped properly for some
-architectures, resulting in boot failures.
-
-If the linker script is not told about possible input sections, then
-where the section is placed as output is a heuristic-laiden mess that's
-non-portable between linkers (ie. BFD and LLD), and has resulted in many
-hard to debug bugs.  Kees Cook is working on cleaning this up by adding
---orphan-handling=warn linker flag used in ARCH=powerpc to additional
-architectures. In the case of linker scripts, borrowing from the Zen of
-Python: explicit is better than implicit.
-
-Also, ld.bfd's internal linker script considers .text.hot AND
-.text.hot.* to be part of .text, as well as .text.unlikely and
-.text.unlikely.*. I didn't see support for .text.unknown.*, and didn't
-see Clang producing such code in our kernel builds, but I see code in
-LLVM that can produce such section names if profiling information is
-missing. That may point to a larger issue with generating or collecting
-profiles, but I would much rather be safe and explicit than have to
-debug yet another issue related to orphan section placement.
-
-Reported-by: Jian Cai <jiancai@google.com>
-Suggested-by: Fāng-ruì Sòng <maskray@google.com>
-Tested-by: Luis Lozano <llozano@google.com>
-Tested-by: Manoj Gupta <manojgupta@google.com>
-Acked-by: Kees Cook <keescook@chromium.org>
-Cc: stable@vger.kernel.org
-Link: https://sourceware.org/git/?p=binutils-gdb.git;a=commitdiff;h=add44f8d5c5c05e08b11e033127a744d61c26aee
-Link: https://sourceware.org/git/?p=binutils-gdb.git;a=commitdiff;h=1de778ed23ce7492c523d5850c6c6dbb34152655
-Link: https://reviews.llvm.org/D79600
-Link: https://bugs.chromium.org/p/chromium/issues/detail?id=1084760
-Debugged-by: Luis Lozano <llozano@google.com>
-Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
+Cc: Arvind Sankar <nivedita@alum.mit.edu>
+Cc: Atish Patra <atish.patra@wdc.com>
+Cc: linux-efi@vger.kernel.org
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
+Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
 Signed-off-by: Kees Cook <keescook@chromium.org>
 ---
- include/asm-generic/vmlinux.lds.h | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/firmware/efi/libstub/Makefile | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/include/asm-generic/vmlinux.lds.h b/include/asm-generic/vmlinux.lds.h
-index 2593957f6e8b..af5211ca857c 100644
---- a/include/asm-generic/vmlinux.lds.h
-+++ b/include/asm-generic/vmlinux.lds.h
-@@ -561,7 +561,10 @@
-  */
- #define TEXT_TEXT							\
- 		ALIGN_FUNCTION();					\
--		*(.text.hot TEXT_MAIN .text.fixup .text.unlikely)	\
-+		*(.text.hot .text.hot.*)				\
-+		*(TEXT_MAIN .text.fixup)				\
-+		*(.text.unlikely .text.unlikely.*)			\
-+		*(.text.unknown .text.unknown.*)			\
- 		NOINSTR_TEXT						\
- 		*(.text..refcount)					\
- 		*(.ref.text)						\
+diff --git a/drivers/firmware/efi/libstub/Makefile b/drivers/firmware/efi/libstub/Makefile
+index b4f8c80cc591..d7d395ede89f 100644
+--- a/drivers/firmware/efi/libstub/Makefile
++++ b/drivers/firmware/efi/libstub/Makefile
+@@ -18,7 +18,8 @@ cflags-$(CONFIG_X86)		+= -m$(BITS) -D__KERNEL__ \
+ # arm64 uses the full KBUILD_CFLAGS so it's necessary to explicitly
+ # disable the stackleak plugin
+ cflags-$(CONFIG_ARM64)		:= $(subst $(CC_FLAGS_FTRACE),,$(KBUILD_CFLAGS)) \
+-				   -fpie $(DISABLE_STACKLEAK_PLUGIN)
++				   -fpie $(DISABLE_STACKLEAK_PLUGIN) \
++				   $(call cc-option,-mbranch-protection=none)
+ cflags-$(CONFIG_ARM)		:= $(subst $(CC_FLAGS_FTRACE),,$(KBUILD_CFLAGS)) \
+ 				   -fno-builtin -fpic \
+ 				   $(call cc-option,-mno-single-pic-base)
+@@ -66,6 +67,12 @@ lib-$(CONFIG_X86)		+= x86-stub.o
+ CFLAGS_arm32-stub.o		:= -DTEXT_OFFSET=$(TEXT_OFFSET)
+ CFLAGS_arm64-stub.o		:= -DTEXT_OFFSET=$(TEXT_OFFSET)
+ 
++# Even when -mbranch-protection=none is set, Clang will generate a
++# .note.gnu.property for code-less object files (like lib/ctype.c),
++# so work around this by explicitly removing the unwanted section.
++# https://bugs.llvm.org/show_bug.cgi?id=46480
++STUBCOPY_FLAGS-y		+= --remove-section=.note.gnu.property
++
+ #
+ # For x86, bootloaders like systemd-boot or grub-efi do not zero-initialize the
+ # .bss section, so the .bss section of the EFI stub needs to be included in the
 -- 
 2.25.1
 
