@@ -2,161 +2,233 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9EFE02353C4
-	for <lists+linux-efi@lfdr.de>; Sat,  1 Aug 2020 19:27:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A62D239D22
+	for <lists+linux-efi@lfdr.de>; Mon,  3 Aug 2020 02:56:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726946AbgHAR1u (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sat, 1 Aug 2020 13:27:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43972 "EHLO
+        id S1725881AbgHCA4I (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sun, 2 Aug 2020 20:56:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48922 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726534AbgHAR1u (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sat, 1 Aug 2020 13:27:50 -0400
-Received: from mail-qv1-xf42.google.com (mail-qv1-xf42.google.com [IPv6:2607:f8b0:4864:20::f42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DEDC7C06174A;
-        Sat,  1 Aug 2020 10:27:49 -0700 (PDT)
-Received: by mail-qv1-xf42.google.com with SMTP id j10so8896624qvo.13;
-        Sat, 01 Aug 2020 10:27:49 -0700 (PDT)
+        with ESMTP id S1725863AbgHCA4I (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sun, 2 Aug 2020 20:56:08 -0400
+Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com [IPv6:2a00:1450:4864:20::343])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CC21C061756
+        for <linux-efi@vger.kernel.org>; Sun,  2 Aug 2020 17:56:07 -0700 (PDT)
+Received: by mail-wm1-x343.google.com with SMTP id f18so10074465wmc.0
+        for <linux-efi@vger.kernel.org>; Sun, 02 Aug 2020 17:56:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:from:date:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=sH4ZgoE2+krh+pccRrSZUcqU9PhKP/eT8yH9LsNvEAE=;
-        b=lDrKUAaQxNvYx4tI3nODZhJ8NcdsIkFV5oX3fhol8e4eN7e+SiVw939+t1R8UOsx01
-         NSBpVkU25zrVoic7dwx7vwPpt2Aoqluvpt9j57py3CrKQWNWRW/0ocBMD52snn+v8caX
-         M5EIHqZBjgjmuY1sMynhvFwF9WFUnBJY9U/R0onHK6bADrVu5jsdfo7KQi7I+b3rmiyH
-         I94kcHuWo7JSHfdbKTGM6SWqwPkurjVD4/oFL2UnQJjspmk2pVz1JyEb9FbK2c5RyjH8
-         e8Hlx4C+F+z+XQ3k78QRq/hE1RDG6ofkeYYFzko1A5R84bKXmrmY/eSIefXtxSAK4nDW
-         K76Q==
+        d=atishpatra.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=qA9bDintsX+Q8EZBsWXG8WyNthgYr4MQz6oX72nqeb4=;
+        b=bUhTRe00vl7YOj8vqszaVuYsqcGVtq4DWER9dXy7rlC3kFF0pxTrJv0z7uKhlLx1n/
+         2QNetlweCDeGLxidh+Da/Qus8uH1mT7dG0lFKz8upAfveGSn3heQjtetDloOW0O4m3uM
+         oIU7PriaJA2KZpeYqThrrU/9Ijd0NI2SCmKy4=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:from:date:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to;
-        bh=sH4ZgoE2+krh+pccRrSZUcqU9PhKP/eT8yH9LsNvEAE=;
-        b=MTPYBAxVbM1E8LjLl+ZvzGea48iUR/V7PiezQ6Q6mmlYL8nDAZFHUuFdvTipXQsVB9
-         ftPFXn4YSQgwuGziioJnk3B2SCfvQ0RxCqaL4SzxTlZFN/4PsNjZBOSTTNONl44im0ZO
-         fWQx8VJt3dHpL3eHmWpxvFaPv0KMpMw0xr1N5JLEj6oSmaBY67qk3hy3ZSHiIohninTi
-         MxUPm5RmDUok5fDdUnpgR+Va2vRqMJsaHscR1N83TvgnRoV2v6DEghs/iHtggByZGwn1
-         df8kRCpkISIjqWW3WhHueN37jduN+B07IqBVwXo8cwkoMsIkol/jqniJC2cjgktJwhlv
-         9gag==
-X-Gm-Message-State: AOAM530AK+4zEsGiJFJCjSZGvpEtVGqo3tJDBP1hvo74Y3M6VcHvbFZm
-        K2dkZRpuKmTx8fT0lkwFpvs=
-X-Google-Smtp-Source: ABdhPJzHOFdwhm3qJs8SrnZpWK+1UKvwkZdOAaQkwtzYxCu1nPpleYVo2pqxw+5n/1qFGKkbypbvDA==
-X-Received: by 2002:ad4:43c9:: with SMTP id o9mr9657897qvs.217.1596302868608;
-        Sat, 01 Aug 2020 10:27:48 -0700 (PDT)
-Received: from rani.riverdale.lan ([2001:470:1f07:5f3::b55f])
-        by smtp.gmail.com with ESMTPSA id z197sm13658960qkb.66.2020.08.01.10.27.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 01 Aug 2020 10:27:48 -0700 (PDT)
-From:   Arvind Sankar <nivedita@alum.mit.edu>
-X-Google-Original-From: Arvind Sankar <arvind@rani.riverdale.lan>
-Date:   Sat, 1 Aug 2020 13:27:46 -0400
-To:     Kees Cook <keescook@chromium.org>
-Cc:     Arvind Sankar <nivedita@alum.mit.edu>,
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=qA9bDintsX+Q8EZBsWXG8WyNthgYr4MQz6oX72nqeb4=;
+        b=sBhDdDSqIn1ohEZwurjlqxK8eYdtdBZa2dJkaNRiCHNSKbZWmGM6757ya/eQxzFK6y
+         gBevkeDY4ibUJM3DG3/ItuxLwNuhouVEZE+Jw/JUtlUVvpOzgBSpA34RDsUFndj6W9xz
+         i4YGHq4daErJ8gGszCEhy5zbNtWsBQ4SbG3bgi4hIUtJAYffibBHKKqeXJ+RaqTsRuLQ
+         BEj1ac0bp6hgSV5LBZKCnyq0X0DQTpYSVi1N3GH4rNl9Ih5CF1LenI/r0Z93FcAdkZSf
+         K0YwpWsDplSLASEvDWlHItT/E0uj/ZKAUXbdXGgt3DJMXI7PHxZDbEj+QXHyM1+oZPLU
+         Y88g==
+X-Gm-Message-State: AOAM531ObgMMTp2RoQCbs6Cnm16AF7J/NnIdqUq4NkBS6QNik5dlIanR
+        5qh+gxE6fUsMd/aehQXDN+2RI8nt+izUtcSCfgYK
+X-Google-Smtp-Source: ABdhPJyZ9W0Sd5f+gz87BrUQixHmSIdajqs0OlOU63PvYe+Ij4HULq8odDDUpG4V4tjANgSr5cQ98FxcLG7BYnqOw38=
+X-Received: by 2002:a1c:4d12:: with SMTP id o18mr236689wmh.55.1596416166182;
+ Sun, 02 Aug 2020 17:56:06 -0700 (PDT)
+MIME-Version: 1.0
+References: <20200729233635.14406-1-atish.patra@wdc.com> <20200729233635.14406-4-atish.patra@wdc.com>
+ <20200730091440.GA534153@kernel.org>
+In-Reply-To: <20200730091440.GA534153@kernel.org>
+From:   Atish Patra <atishp@atishpatra.org>
+Date:   Sun, 2 Aug 2020 17:55:55 -0700
+Message-ID: <CAOnJCUKS=QvQG5dBae96RD1CdevrXV+Jsfna2rfMWpw4Z=nDcw@mail.gmail.com>
+Subject: Re: [RFT PATCH v4 3/9] RISC-V: Implement late mapping page table
+ allocation functions
+To:     Mike Rapoport <rppt@kernel.org>
+Cc:     Atish Patra <atish.patra@wdc.com>,
+        "linux-kernel@vger.kernel.org List" <linux-kernel@vger.kernel.org>,
+        Anup Patel <anup.patel@wdc.com>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Arvind Sankar <nivedita@alum.mit.edu>,
+        Greentime Hu <greentime.hu@sifive.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        linux-riscv <linux-riscv@lists.infradead.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Nick Hu <nickhu@andestech.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        "Paul E. McKenney" <paulmck@kernel.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
         Thomas Gleixner <tglx@linutronix.de>,
         Will Deacon <will@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Jian Cai <jiancai@google.com>,
-        =?utf-8?B?RsSBbmctcnXDrCBTw7JuZw==?= <maskray@google.com>,
-        Luis Lozano <llozano@google.com>,
-        Manoj Gupta <manojgupta@google.com>, stable@vger.kernel.org,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Peter Collingbourne <pcc@google.com>,
-        James Morse <james.morse@arm.com>,
-        Borislav Petkov <bp@suse.de>, Ingo Molnar <mingo@redhat.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Nathan Chancellor <natechancellor@gmail.com>,
-        Arnd Bergmann <arnd@arndb.de>, x86@kernel.org,
-        clang-built-linux@googlegroups.com, linux-arch@vger.kernel.org,
-        linux-efi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, Andi Kleen <ak@linux.intel.com>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Kristen Carlson Accardi <kristen@linux.intel.com>
-Subject: Re: [PATCH v5 13/36] vmlinux.lds.h: add PGO and AutoFDO input
- sections
-Message-ID: <20200801172746.GC3249534@rani.riverdale.lan>
-References: <20200731230820.1742553-1-keescook@chromium.org>
- <20200731230820.1742553-14-keescook@chromium.org>
- <20200801035128.GB2800311@rani.riverdale.lan>
- <202007312237.4F385EB3@keescook>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <202007312237.4F385EB3@keescook>
+        Yash Shah <yash.shah@sifive.com>, Zong Li <zong.li@sifive.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, Jul 31, 2020 at 11:18:02PM -0700, Kees Cook wrote:
-> On Fri, Jul 31, 2020 at 11:51:28PM -0400, Arvind Sankar wrote:
-> > 
-> > This also changes the ordering to place all hot resp unlikely sections separate
-> > from other text, while currently it places the hot/unlikely bits of each file
-> > together with the rest of the code in that file. That seems like a reasonable
-> 
-> Oh, hmm, yes, we aren't explicitly using SORT() here. Does that mean the
-> input sections were entirely be ordered in compilation unit link order,
-> even in the case of orphan sections? (And I think either way, the answer
-> isn't the same between bfd and lld.) I actually thought the like-named
-> input sections were collected together first with lld, but bfd strictly
-> appended to the output section. I guess it's time for me to stare at -M
-> output from ld...
+On Thu, Jul 30, 2020 at 2:14 AM Mike Rapoport <rppt@kernel.org> wrote:
+>
+> Hi,
+>
+> On Wed, Jul 29, 2020 at 04:36:29PM -0700, Atish Patra wrote:
+> > Currently, page table setup is done during setup_va_final where fixmap can
+> > be used to create the temporary mappings. The physical frame is allocated
+> > from memblock_alloc_* functions. However, this won't work if page table
+> > mapping needs to be created for a different mm context (i.e. efi mm) at
+> > a later point of time.
+>
+> TBH, I'm not very happy to see pte/pmd allocations, but I don't see a
+> way to reuse the existing routines in this case.
+>
+> As a general wild idea, maybe it's worth using something like
+>
+> struct pt_alloc_ops {
+>         pte_t *(*get_pte_virt)(phys_addr_t pa);
+>         phys_addr_t (*alloc_pte)(uintptr_t va);
+>         ...
+> };
+>
+> and add there implementations: nommu, MMU early and MMU late.
+>
 
-I don't know what happened to the orphans previously. But .text.hot and
-.text.unlikely will now change ordering. It sounds from below like this
-wasn't intentional? Though it does seem to be how BFD's default linker
-scripts lay it out.
+Yeah. That will be much cleaner. Thanks. I will change it to have
+function pointers
+instead of if else blocks.
 
-> 
-> Regardless, this patch is attempting to fix the problem where bfd and lld
-> lay out the orphans differently (as mentioned above, lld seems to sort
-> them in a way that is not strictly appended, and bfd seems to sort them
-> strictly appended). In the case of being appended to the .text output
-> section, this would cause boot failures due to _etext not covering the
-> resulting sections (which this[1] also encountered and fixed to be more
-> robust for such appended collection -- that series actually _depends_ on
-> orphan handling doing the appending, because there is no current way
-> to map wildcard input sections to their own separate output sections).
-> 
-> > change and should be mentioned in the commit message.
-> > 
-> > However, the history of their being together comes from
-> > 
-> >   9bebe9e5b0f3 ("kbuild: Fix .text.unlikely placement")
-> > 
-> > which seems to indicate there was some problem with having them separated out,
-> > although I don't quite understand what the issue was from the commit message.
-> 
-> Looking at this again, I actually wonder if we have bigger issues here
-> with dead code elimination:
-> 
-> #ifdef CONFIG_LD_DEAD_CODE_DATA_ELIMINATION
-> #define TEXT_MAIN .text .text.[0-9a-zA-Z_]*
-> ...
-> 
-> that would catch: .text.hot .text.fixup .text.unlikely and .text.unknown
-> but not .text.hot.*, etc (i.e. the third dot isn't matched, which is,
-> I assume, why Clang switched to adding a trailing dot). However, this
-> patch lists .text.hot .text.hot.* first, so they'd get pulled to the
-> front correctly, but the trailing ones (with 2 dots) would not, since
-> they'd match the TEXT_MAIN wildcard first. (This problem actually existed
-> before this patch too, and is not the fault of 9bebe9e5b0f3, but rather
-> the addition of TEXT_MAIN, which could potentially match .text.unlikely
-> and .text.fixup)
+> Some more comments below.
+>
+> > Use generic kernel page allocation function & macros for any mapping
+> > after setup_vm_final.
+> >
+> > Signed-off-by: Atish Patra <atish.patra@wdc.com>
+> > ---
+> >  arch/riscv/mm/init.c | 29 ++++++++++++++++++++++++-----
+> >  1 file changed, 24 insertions(+), 5 deletions(-)
+> >
+> > diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
+> > index 68c608a0e91f..cba03fec08c1 100644
+> > --- a/arch/riscv/mm/init.c
+> > +++ b/arch/riscv/mm/init.c
+> > @@ -212,6 +212,7 @@ pgd_t swapper_pg_dir[PTRS_PER_PGD] __page_aligned_bss;
+> >  pgd_t trampoline_pg_dir[PTRS_PER_PGD] __page_aligned_bss;
+> >  pte_t fixmap_pte[PTRS_PER_PTE] __page_aligned_bss;
+> >  static bool mmu_enabled;
+> > +static bool late_mapping;
+> >
+> >  #define MAX_EARLY_MAPPING_SIZE       SZ_128M
+> >
+> > @@ -236,7 +237,9 @@ void __set_fixmap(enum fixed_addresses idx, phys_addr_t phys, pgprot_t prot)
+> >
+> >  static pte_t *__init get_pte_virt(phys_addr_t pa)
+> >  {
+> > -     if (mmu_enabled) {
+> > +     if (late_mapping)
+> > +             return (pte_t *) __va(pa);
+> > +     else if (mmu_enabled) {
+> >               clear_fixmap(FIX_PTE);
+> >               return (pte_t *)set_fixmap_offset(FIX_PTE, pa);
+> >       } else {
+> > @@ -246,13 +249,19 @@ static pte_t *__init get_pte_virt(phys_addr_t pa)
+> >
+> >  static phys_addr_t __init alloc_pte(uintptr_t va)
+> >  {
+> > +     unsigned long vaddr;
+> >       /*
+> >        * We only create PMD or PGD early mappings so we
+> >        * should never reach here with MMU disabled.
+> >        */
+> >       BUG_ON(!mmu_enabled);
+> > -
+> > -     return memblock_phys_alloc(PAGE_SIZE, PAGE_SIZE);
+> > +     if (late_mapping) {
+> > +             vaddr = __get_free_page(GFP_KERNEL);
+> > +             if (!vaddr || !pgtable_pte_page_ctor(virt_to_page(vaddr)))
+> > +                     BUG();
+>
+> Is BUG() here really necessary? If I understand correctly, this would be
+> used to enable mappings for EFI runtime services, so we probably want to
+> propagete the error to to caller and, if really necessary, BUG() there,
+> don't we?
+>
 
-The existing comment on TEXT_TEXT mentions that issue. However, note
-that the dead code stuff is only available currently on mips and ppc,
-and is hidden behind EXPERT for those, so I'm not sure if anyone
-actually uses it.
+If __get_free_page is failing here, something is seriously wrong and
+the system should panic.
+But I agree with you that this should happen in the caller rather than
+the callee.
+We need to change the signature of each create_*_mapping function
+in order to propagate the error to the caller. Do you see any issues with that ?
+As it will affect page table allocation for all three cases, should we
+consolidate all the BUG()
+cases in caller only ?
 
-9bebe9e5b0f3 predates LD_DEAD_CODE_DATA_ELIMINATION, and there were no
-wildcards I can see in .text at the time, which is why I don't
-understand what problem is referred to in the commit message.
+> > +             return __pa(vaddr);
+> > +     } else
+> > +             return memblock_phys_alloc(PAGE_SIZE, PAGE_SIZE);
+> >  }
+> >
+> >  static void __init create_pte_mapping(pte_t *ptep,
+> > @@ -281,7 +290,9 @@ pmd_t early_pmd[PTRS_PER_PMD * NUM_EARLY_PMDS] __initdata __aligned(PAGE_SIZE);
+> >
+> >  static pmd_t *__init get_pmd_virt(phys_addr_t pa)
+> >  {
+> > -     if (mmu_enabled) {
+> > +     if (late_mapping)
+> > +             return (pmd_t *) __va(pa);
+> > +     else if (mmu_enabled) {
+> >               clear_fixmap(FIX_PMD);
+> >               return (pmd_t *)set_fixmap_offset(FIX_PMD, pa);
+> >       } else {
+> > @@ -292,8 +303,13 @@ static pmd_t *__init get_pmd_virt(phys_addr_t pa)
+> >  static phys_addr_t __init alloc_pmd(uintptr_t va)
+> >  {
+> >       uintptr_t pmd_num;
+> > +     unsigned long vaddr;
+> >
+> > -     if (mmu_enabled)
+> > +     if (late_mapping) {
+> > +             vaddr = __get_free_page(GFP_KERNEL);
+> > +             BUG_ON(!vaddr);
+> > +             return __pa(vaddr);
+>
+> Does nommu also need to allocate a page for pmd?
+>
 
-Btw, for the FGKASLR stuff, instead of keeping the output sections per
-function, couldn't you generate a table of functions with sizes, and use
-that when randomizing the order? Then the sections themselves could be
-collected into .text explicitly.
+Not sure if I understand the question correctly. Before MMU is enabled,
+we are using statically allocated early_pmd.
+
+> > +     } else if (mmu_enabled)
+> >               return memblock_phys_alloc(PAGE_SIZE, PAGE_SIZE);
+> >
+> >       pmd_num = (va - PAGE_OFFSET) >> PGDIR_SHIFT;
+> > @@ -533,6 +549,9 @@ static void __init setup_vm_final(void)
+> >       /* Move to swapper page table */
+> >       csr_write(CSR_SATP, PFN_DOWN(__pa_symbol(swapper_pg_dir)) | SATP_MODE);
+> >       local_flush_tlb_all();
+> > +
+> > +     /* generic page allocation function must be used to setup page table */
+> > +     late_mapping = true;
+> >  }
+> >  #else
+> >  asmlinkage void __init setup_vm(uintptr_t dtb_pa)
+> > --
+> > 2.24.0
+> >
+>
+> --
+> Sincerely yours,
+> Mike.
+
+
+
+-- 
+Regards,
+Atish
