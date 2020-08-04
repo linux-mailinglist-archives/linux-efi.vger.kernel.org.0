@@ -2,98 +2,126 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B87BB23BB1B
-	for <lists+linux-efi@lfdr.de>; Tue,  4 Aug 2020 15:24:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F91323BDB8
+	for <lists+linux-efi@lfdr.de>; Tue,  4 Aug 2020 18:07:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728477AbgHDNYt (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 4 Aug 2020 09:24:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47394 "EHLO
+        id S1729217AbgHDQHm (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 4 Aug 2020 12:07:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44148 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728387AbgHDNYr (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 4 Aug 2020 09:24:47 -0400
-Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com [IPv6:2607:f8b0:4864:20::542])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A213C061756
-        for <linux-efi@vger.kernel.org>; Tue,  4 Aug 2020 06:24:46 -0700 (PDT)
-Received: by mail-pg1-x542.google.com with SMTP id o13so22132219pgf.0
-        for <linux-efi@vger.kernel.org>; Tue, 04 Aug 2020 06:24:46 -0700 (PDT)
+        with ESMTP id S1728745AbgHDQGx (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 4 Aug 2020 12:06:53 -0400
+Received: from mail-qv1-xf41.google.com (mail-qv1-xf41.google.com [IPv6:2607:f8b0:4864:20::f41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35577C06174A;
+        Tue,  4 Aug 2020 09:06:53 -0700 (PDT)
+Received: by mail-qv1-xf41.google.com with SMTP id cs12so1079776qvb.2;
+        Tue, 04 Aug 2020 09:06:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=LL7CVx3M+GnKSSe8eUQMx8d9kBXew/bFtxjaZTrFB4I=;
-        b=HNLlroBUqWnzQ0xGT6GTr/Id4TzheIch2ECQb//1Mh+eL1JbUWj7mgeq13LfdccS98
-         IS3DGtZa2HgV/RhIJuVePSKzqD3uwjzCS1qPt4Fito6mIqPvXraCYBmdo3L34332gOIm
-         WmfyL0evZGWgvDbKbmphDaCTUSc2DQbsN3FZIG1S/LRGxUsEGkoRmRKe10PFG0piz92M
-         AhSuxdBD/UQqupXICBkPfCSJFZTywgv3NvO04VK0i+G1rFdbd3XmQteUx1vj4/C5GbfW
-         pWOV7qnFTZRWi05TIryxjWTQNA2vc3vyZdMkk8iDFMuFXYFCkua4Y53lmW6gg4sBAf/7
-         0SyA==
+        d=gmail.com; s=20161025;
+        h=sender:from:date:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=m06IKFD+Y+zyRLVsGx/ScdWAMYbWtM8lfzX3TLDLqQM=;
+        b=k59NGMArZW/IVO5lr7VYQgHpHOKABoRYVH38jJDnL76HtOxMU2WW97srBYNJZXvEnM
+         CCSnkcKxJTchNS0UFV0HmDnGK0YonaUICzlqNZD4jahfj8pxq2H9dL4YDEO+4SQhEFNe
+         j873vmvHK52C+04qxmB9RF4SkRifztnBM87cifTAPPYhWQ3QZpsKZIKearzQ6cVADQVn
+         36xs8pwoKmlu+9xubKS0claygFJRomudE6cTBrc1gWJJl8aPalo+ofIM0ZEtwBvLEjfv
+         5oYtbZbYpahkW6zv2S7hsB1rHZ/Cvq3VR5bCYi37c5iSprz7jXwa2aTiXclrBFdF/bHO
+         2U3w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=LL7CVx3M+GnKSSe8eUQMx8d9kBXew/bFtxjaZTrFB4I=;
-        b=Y04H9AzKwDqo9OU2IawPCArqWLx9JuhqE8kTRxqOvUNn8mplnWeKpSbs/rYdhZyVAl
-         0D1aGVoTr9OYIDOGBM7S49PzXtWqvSSsAWa1spbTKjh3DKzC0VEdYBbzAJrZcO25FACH
-         6dOf25P1wm8BPNFRTjFLsrmPdXT/Z/YpO8NIZ2ySJcNQ1Qu23w39DsnzP3AVp/vwTvgH
-         0Fc6lLUb2DqOZEAP//sBohpQQYDGmoPARw6AG4geFZpfcI//fIYn8oCPEcDVxYhXVFlE
-         yLDjSnAY/upNw31o/A0zPbGWfsyiv4hy/dpTBeZuQQi0kBDf6dQ3kKlf0xYIo/umAjJl
-         owig==
-X-Gm-Message-State: AOAM5307Eh710far/H2RKYQLCXZlMeBBgQ21XN9/2ASMq90BMbsPIc5n
-        ovESGX05YrTQtCSJsd0nDMcC96HaBK+pAA7zw4NNWA==
-X-Google-Smtp-Source: ABdhPJx3jQKW6ryn3Y7C/EY3oYgP1FKFpU1S+iDkIFMexVg3zCcBg4JLu/mb7S7DJX/i24rr6RUB20iZPZdJ3KDAP60=
-X-Received: by 2002:a65:4bc7:: with SMTP id p7mr3313300pgr.440.1596547484618;
- Tue, 04 Aug 2020 06:24:44 -0700 (PDT)
-MIME-Version: 1.0
-References: <cover.1596544734.git.andreyknvl@google.com> <26fb6165a17abcf61222eda5184c030fb6b133d1.1596544734.git.andreyknvl@google.com>
- <20200804131939.GC31076@gaia>
-In-Reply-To: <20200804131939.GC31076@gaia>
-From:   Andrey Konovalov <andreyknvl@google.com>
-Date:   Tue, 4 Aug 2020 15:24:33 +0200
-Message-ID: <CAAeHK+wVpLvjcwGzD=0FyXiC0+tf6CU0uwh_vfzBXfaCpDyKPg@mail.gmail.com>
-Subject: Re: [PATCH v2 3/5] kasan, arm64: don't instrument functions that
- enable kasan
-To:     Catalin Marinas <catalin.marinas@arm.com>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        Andrey Ryabinin <aryabinin@virtuozzo.com>,
-        Alexander Potapenko <glider@google.com>,
-        Dmitry Vyukov <dvyukov@google.com>,
-        Marco Elver <elver@google.com>,
+        h=x-gm-message-state:sender:from:date:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to;
+        bh=m06IKFD+Y+zyRLVsGx/ScdWAMYbWtM8lfzX3TLDLqQM=;
+        b=DJvutGGuB26tABMUwFz7jhLLtNx0mPMKfFJwR2O19CChEJvpfB60Vgw70ujsWLROFF
+         hTn7nKCK4YiVBbLeLNx2CnxbcyHzxMpPvXXMpBOZG/mDAClL5XHKzt9pdwoiHe3afjbJ
+         zuYp01+1wmp5bY2bYa+F2h/3+VgonslPk3nPnsp705vZhJv37DlQpMNchXI3DtEIpxS5
+         LaubGF6VV+nTB+N0A784dNtJCOrREKFvTadsrcEMB62pZo4wb587cuRt/D8M92cLMi2+
+         CDJ3LDSpP7LwHTsKw4dS0JNEfYe70zXy1RT0N2ceDURRMy8pXMGnnaWIOfWFbau5K0YG
+         x64A==
+X-Gm-Message-State: AOAM531TZtJ/kn5A4/PoX4zkiMl11MISbK9TEMxckMOKFkeZ9SHuP66m
+        Ng2wpgPD0k/KN0OMUI9MVAk=
+X-Google-Smtp-Source: ABdhPJw2bGYPIUfHRQvq5E7+uSyeqHN5wJTlNWr7pWF5NPqZbUp6h4AcE6QeqyvyFrZTPl2dPt4rGw==
+X-Received: by 2002:a0c:99c8:: with SMTP id y8mr17347027qve.57.1596557212233;
+        Tue, 04 Aug 2020 09:06:52 -0700 (PDT)
+Received: from rani.riverdale.lan ([2001:470:1f07:5f3::b55f])
+        by smtp.gmail.com with ESMTPSA id l13sm23581582qth.77.2020.08.04.09.06.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 04 Aug 2020 09:06:51 -0700 (PDT)
+From:   Arvind Sankar <nivedita@alum.mit.edu>
+X-Google-Original-From: Arvind Sankar <arvind@rani.riverdale.lan>
+Date:   Tue, 4 Aug 2020 12:06:49 -0400
+To:     Andi Kleen <ak@linux.intel.com>
+Cc:     Arvind Sankar <nivedita@alum.mit.edu>,
+        Kees Cook <keescook@chromium.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Will Deacon <will@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Jian Cai <jiancai@google.com>,
+        =?utf-8?B?RsSBbmctcnXDrCBTw7JuZw==?= <maskray@google.com>,
+        Luis Lozano <llozano@google.com>,
+        Manoj Gupta <manojgupta@google.com>, stable@vger.kernel.org,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
         Ard Biesheuvel <ardb@kernel.org>,
-        Arvind Sankar <nivedita@alum.mit.edu>,
-        kasan-dev <kasan-dev@googlegroups.com>,
-        Linux Memory Management List <linux-mm@kvack.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Walter Wu <walter-zh.wu@mediatek.com>,
-        Elena Petrova <lenaptr@google.com>,
-        Vincenzo Frascino <vincenzo.frascino@arm.com>
-Content-Type: text/plain; charset="UTF-8"
+        Peter Collingbourne <pcc@google.com>,
+        James Morse <james.morse@arm.com>,
+        Borislav Petkov <bp@suse.de>, Ingo Molnar <mingo@redhat.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Nathan Chancellor <natechancellor@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>, x86@kernel.org,
+        clang-built-linux@googlegroups.com, linux-arch@vger.kernel.org,
+        linux-efi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org,
+        Michal Marek <michal.lkml@markovi.net>
+Subject: Re: [PATCH v5 13/36] vmlinux.lds.h: add PGO and AutoFDO input
+ sections
+Message-ID: <20200804160649.GA2409491@rani.riverdale.lan>
+References: <20200731230820.1742553-1-keescook@chromium.org>
+ <20200731230820.1742553-14-keescook@chromium.org>
+ <20200801035128.GB2800311@rani.riverdale.lan>
+ <20200803190506.GE1299820@tassilo.jf.intel.com>
+ <20200803201525.GA1351390@rani.riverdale.lan>
+ <20200804044532.GC1321588@tassilo.jf.intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20200804044532.GC1321588@tassilo.jf.intel.com>
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, Aug 4, 2020 at 3:19 PM Catalin Marinas <catalin.marinas@arm.com> wrote:
->
-> On Tue, Aug 04, 2020 at 02:41:26PM +0200, Andrey Konovalov wrote:
-> > This patch prepares Software Tag-Based KASAN for stack tagging support.
-> >
-> > With stack tagging enabled, KASAN tags stack variable in each function
-> > in its prologue. In start_kernel() stack variables get tagged before KASAN
-> > is enabled via setup_arch()->kasan_init(). As the result the tags for
-> > start_kernel()'s stack variables end up in the temporary shadow memory.
-> > Later when KASAN gets enabled, switched to normal shadow, and starts
-> > checking tags, this leads to false-positive reports, as proper tags are
-> > missing in normal shadow.
-> >
-> > Disable KASAN instrumentation for start_kernel(). Also disable it for
-> > arm64's setup_arch() as a precaution (it doesn't have any stack variables
-> > right now).
-> >
-> > Signed-off-by: Andrey Konovalov <andreyknvl@google.com>
->
-> I thought I acked this already. Either way:
->
-> Acked-by: Catalin Marinas <catalin.marinas@arm.com>
+On Mon, Aug 03, 2020 at 09:45:32PM -0700, Andi Kleen wrote:
+> > Why is that? Both .text and .text.hot have alignment of 2^4 (default
+> > function alignment on x86) by default, so it doesn't seem like it should
+> > matter for packing density.  Avoiding interspersing cold text among
+> 
+> You may lose part of a cache line on each unit boundary. Linux has 
+> a lot of units, some of them small. All these bytes add up.
 
-Sorry, I forgot to include that into v2. Thanks!
+Separating out .text.unlikely, which isn't aligned, slightly _reduces_
+this loss, but not by much -- just over 1K on a defconfig. More
+importantly, it moves cold code out of line (~320k on a defconfig),
+giving better code density for the hot code.
+
+For .text and .text.hot, you lose the alignment padding on every
+function boundary, not unit boundary, because of the 16-byte alignment.
+Whether .text.hot and .text are arranged by translation unit or not
+makes no difference.
+
+With *(.text.hot) *(.text) you get HHTT, with *(.text.hot .text) you get
+HTHT, but in both cases the individual chunks are already aligned to 16
+bytes. If .text.hot _had_ different alignment requirements to .text, the
+HHTT should actually give better packing in general, I think.
+
+> 
+> It's bad for TLB locality too. Sadly with all the fine grained protection
+> changes the 2MB coverage is eroding anyways, but this makes it even worse.
+> 
+
+Yes, that could be true for .text.hot, depending on whether the hot
+functions are called from all over the kernel (in which case putting
+them together ought to be better) or mostly from regular text within the
+unit in which they appeared (in which case it would be better together
+with that code).
