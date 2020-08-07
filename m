@@ -2,100 +2,221 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E9D1E23E517
-	for <lists+linux-efi@lfdr.de>; Fri,  7 Aug 2020 02:24:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C255523F292
+	for <lists+linux-efi@lfdr.de>; Fri,  7 Aug 2020 20:12:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725947AbgHGAYN (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 6 Aug 2020 20:24:13 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:10680 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725998AbgHGAYJ (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 6 Aug 2020 20:24:09 -0400
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 077038jc175593;
-        Thu, 6 Aug 2020 20:24:00 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- mime-version : content-transfer-encoding; s=pp1;
- bh=VsXvvS8VKmxXDht3q36Bubq+Zar3OcXZnhZAUZMQcnY=;
- b=osQlR8ck1rT5G162TuDnpSNrxODRJG3dxpkrNZqQCF2Cdp6JuubIveeoPTy+njFJIIe2
- D3MnSivYKh0I7ddKP5/HThN1K6l1LBTV37g0Nd9xv34NNSj2oHOPAnv4k2FSMck0UGG7
- Ro+ZwjFZYrRiTK0BDmljRTm1B3xzO00Ceu0PoXfamHku+958QyF+MTyLzsWUgvdJk7t3
- FmajTb+ccilDljclikn5Bm8ybta2w/Zx7xXKYHR2bswT72i1k9FkUGXsFQolYrk2gAEW
- ltYbBrvJSVQ0yEO8zoDDiYosFvmdbWSzy+F6beREbwYkci4JLqcbiz4vwt1OkMUT+Xm+ UQ== 
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 32rgnfn7rt-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 06 Aug 2020 20:24:00 -0400
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
-        by ppma04ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0770Jqde005199;
-        Fri, 7 Aug 2020 00:23:58 GMT
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
-        by ppma04ams.nl.ibm.com with ESMTP id 32n0185yyw-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 07 Aug 2020 00:23:58 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com [9.149.105.58])
-        by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 0770NuNi28246380
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 7 Aug 2020 00:23:56 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id F04DB4C04E;
-        Fri,  7 Aug 2020 00:23:55 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 1B2EB4C046;
-        Fri,  7 Aug 2020 00:23:53 +0000 (GMT)
-Received: from li-f45666cc-3089-11b2-a85c-c57d1a57929f.ibm.com (unknown [9.160.117.136])
-        by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-        Fri,  7 Aug 2020 00:23:52 +0000 (GMT)
-Message-ID: <1cdddf80e0b1ea46346edf8a1c0dc81aea095f15.camel@linux.ibm.com>
-Subject: Re: [PATCH v4 12/17] LSM: Add "contents" flag to kernel_read_file
- hook
-From:   Mimi Zohar <zohar@linux.ibm.com>
+        id S1726316AbgHGSMm (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 7 Aug 2020 14:12:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51546 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726175AbgHGSMl (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 7 Aug 2020 14:12:41 -0400
+Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com [IPv6:2607:f8b0:4864:20::643])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D447AC061757
+        for <linux-efi@vger.kernel.org>; Fri,  7 Aug 2020 11:12:41 -0700 (PDT)
+Received: by mail-pl1-x643.google.com with SMTP id z20so1437358plo.6
+        for <linux-efi@vger.kernel.org>; Fri, 07 Aug 2020 11:12:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=kL3mR5oBZa4t2i/MKwrasxeLRvGcBc/sHQnLPXjcDwY=;
+        b=qDDCzqQMNn82CNd4xcit662vHZMflfcl/cJjl2y6Rf2h/iJ2NYCm4uQUJpzhbCTiSM
+         Upi8GVx8qDBBIy7VW2aAlhkTAhgdCSF3EA4Tu77gjdit1+LwN4QDoKiA1ObOYgyjp9kN
+         t6gouN/unOljNDNCvakHHUz7sz6hdnpaT9YUS7AJMnMGCdUZ1OmKUfF9TaOJVz503CU+
+         H8G5muLfTUVHpQd9uoHosckOHKYXWEbaqaRwUTFxsDR7BfjbJ5K8DePBafMyUIAwuuM1
+         Aq3DYpyMSGZnVJeUj2RpcjoWOGoTGaNoFWMb2xWDtzfb77+fWq/WZxo9a1WpYNz6wjcT
+         8tvQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=kL3mR5oBZa4t2i/MKwrasxeLRvGcBc/sHQnLPXjcDwY=;
+        b=BHBOICEhZ/TPk9+ijj6oSqQ9VSyW5prXxlKy8qVi9nP1R7EW/1zCDNewN9fS/1AKpR
+         gy2kxA1CVqmw/Yl0GQbfnOXhGWTgJfEolZUVPxqveXIlCE4o1BpnPRWn7nj9nNzfh0eJ
+         slEFrpHk37HjqqRB8KPLlm0roBaIZgcBSzual5gKarmGaRk3kVnSL3vB16PYuA05sTov
+         d3U/nEzPCvbhu6T7UsHWNVsfqjFz5EVp+s1r7TnxHLMd7J01HGqRBAzuBUPd1Ac8yVvX
+         R5IHXzWy5hGHFl7w5L8LF5+aBKUx0EqxFSO5CJuWYN9HBe4mYQIbyFiAEVBxZUKU1orW
+         qhMw==
+X-Gm-Message-State: AOAM533Fj04OZzft2clpkpciuJkkwLMrNlC1YwM71VWEnuj6NF/imjUK
+        wJ7LmH3qCylJl0LwcDOuVMxUUndsusQmCQc7zxJykQ==
+X-Google-Smtp-Source: ABdhPJzUP9BycNEANV1ccydFSurHQBFr1fKt53c4Ly+onOxBQysLPnMNlFrz2Xmne8b9+/GR+N3sOSeUyLSCzZN+QsY=
+X-Received: by 2002:a17:902:cb91:: with SMTP id d17mr13384373ply.223.1596823960860;
+ Fri, 07 Aug 2020 11:12:40 -0700 (PDT)
+MIME-Version: 1.0
+References: <20200731230820.1742553-1-keescook@chromium.org> <20200731230820.1742553-7-keescook@chromium.org>
+In-Reply-To: <20200731230820.1742553-7-keescook@chromium.org>
+From:   Nick Desaulniers <ndesaulniers@google.com>
+Date:   Fri, 7 Aug 2020 11:12:29 -0700
+Message-ID: <CAKwvOd=mY5=SWjGKA_KpvKnOPmJky_qMcyBYeFhskx6J=aJmNA@mail.gmail.com>
+Subject: Re: [PATCH v5 06/36] x86/boot: Remove run-time relocations from head_{32,64}.S
 To:     Kees Cook <keescook@chromium.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Scott Branden <scott.branden@broadcom.com>,
-        Luis Chamberlain <mcgrof@kernel.org>,
-        Takashi Iwai <tiwai@suse.de>, Jessica Yu <jeyu@kernel.org>,
-        SeongJae Park <sjpark@amazon.de>,
-        KP Singh <kpsingh@chromium.org>, linux-efi@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        linux-integrity@vger.kernel.org, selinux@vger.kernel.org,
-        linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Date:   Thu, 06 Aug 2020 20:23:51 -0400
-In-Reply-To: <20200729175845.1745471-13-keescook@chromium.org>
-References: <20200729175845.1745471-1-keescook@chromium.org>
-         <20200729175845.1745471-13-keescook@chromium.org>
-Content-Type: text/plain; charset="ISO-8859-15"
-X-Mailer: Evolution 3.28.5 (3.28.5-12.el8) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235,18.0.687
- definitions=2020-08-06_17:2020-08-06,2020-08-06 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0
- priorityscore=1501 mlxlogscore=999 malwarescore=0 adultscore=0 mlxscore=0
- phishscore=0 suspectscore=0 clxscore=1015 impostorscore=0 bulkscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2008060156
+        Arvind Sankar <nivedita@alum.mit.edu>
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Will Deacon <will@kernel.org>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Fangrui Song <maskray@google.com>,
+        Sedat Dilek <sedat.dilek@gmail.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Peter Collingbourne <pcc@google.com>,
+        James Morse <james.morse@arm.com>,
+        Borislav Petkov <bp@suse.de>, Ingo Molnar <mingo@redhat.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Nathan Chancellor <natechancellor@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
+        clang-built-linux <clang-built-linux@googlegroups.com>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, 2020-07-29 at 10:58 -0700, Kees Cook wrote:
-> As with the kernel_load_data LSM hook, add a "contents" flag to the
-> kernel_read_file LSM hook that indicates whether the LSM can expect
-> a matching call to the kernel_post_read_file LSM hook with the full
-> contents of the file. With the coming addition of partial file read
-> support for kernel_read_file*() API, the LSM will no longer be able
-> to always see the entire contents of a file during the read calls.
-> 
-> For cases where the LSM must read examine the complete file contents,
-> it will need to do so on its own every time the kernel_read_file
-> hook is called with contents=false (or reject such cases). Adjust all
-> existing LSMs to retain existing behavior.
-> 
+On Fri, Jul 31, 2020 at 4:08 PM Kees Cook <keescook@chromium.org> wrote:
+>
+> From: Arvind Sankar <nivedita@alum.mit.edu>
+>
+> The BFD linker generates run-time relocations for z_input_len and
+> z_output_len, even though they are absolute symbols.
+>
+> This is fixed for binutils-2.35 [1]. Work around this for earlier
+> versions by defining two variables input_len and output_len in addition
+> to the symbols, and use them via position-independent references.
+>
+> This eliminates the last two run-time relocations in the head code and
+> allows us to drop the -z noreloc-overflow flag to the linker.
+>
+> Move the -pie and --no-dynamic-linker LDFLAGS to LDFLAGS_vmlinux instead
+> of KBUILD_LDFLAGS. There shouldn't be anything else getting linked, but
+> this is the more logical location for these flags, and modversions might
+> call the linker if an EXPORT_SYMBOL is left over accidentally in one of
+> the decompressors.
+>
+> [1] https://sourceware.org/bugzilla/show_bug.cgi?id=25754
+>
+> Tested-by: Nick Desaulniers <ndesaulniers@google.com>
+> Reviewed-by: Kees Cook <keescook@chromium.org>
+> Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
+> Reviewed-by: Fangrui Song <maskray@google.com>
+> Tested-by: Sedat Dilek <sedat.dilek@gmail.com>
+> Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
 > Signed-off-by: Kees Cook <keescook@chromium.org>
+> ---
+>  arch/x86/boot/compressed/Makefile  | 12 ++----------
+>  arch/x86/boot/compressed/head_32.S | 17 ++++++++---------
+>  arch/x86/boot/compressed/head_64.S |  4 ++--
+>  arch/x86/boot/compressed/mkpiggy.c |  6 ++++++
+>  4 files changed, 18 insertions(+), 21 deletions(-)
+>
+> diff --git a/arch/x86/boot/compressed/Makefile b/arch/x86/boot/compressed/Makefile
+> index 489fea16bcfb..7db0102a573d 100644
+> --- a/arch/x86/boot/compressed/Makefile
+> +++ b/arch/x86/boot/compressed/Makefile
+> @@ -51,16 +51,8 @@ UBSAN_SANITIZE :=n
+>  KBUILD_LDFLAGS := -m elf_$(UTS_MACHINE)
+>  # Compressed kernel should be built as PIE since it may be loaded at any
+>  # address by the bootloader.
+> -ifeq ($(CONFIG_X86_32),y)
+> -KBUILD_LDFLAGS += $(call ld-option, -pie) $(call ld-option, --no-dynamic-linker)
+> -else
+> -# To build 64-bit compressed kernel as PIE, we disable relocation
+> -# overflow check to avoid relocation overflow error with a new linker
+> -# command-line option, -z noreloc-overflow.
+> -KBUILD_LDFLAGS += $(shell $(LD) --help 2>&1 | grep -q "\-z noreloc-overflow" \
+> -       && echo "-z noreloc-overflow -pie --no-dynamic-linker")
+> -endif
+> -LDFLAGS_vmlinux := -T
+> +LDFLAGS_vmlinux := $(call ld-option, -pie) $(call ld-option, --no-dynamic-linker)
 
-Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
+Oh, do these still need ld-option?  bfd and lld both support these
+flags. (Though in their --help, they mention single hyphen and double
+hyphen respectively.  Also, if we don't build this as PIE because the
+linker doesn't support the option, we probably want to fail the build?
 
+> +LDFLAGS_vmlinux += -T
+>
+>  hostprogs      := mkpiggy
+>  HOST_EXTRACFLAGS += -I$(srctree)/tools/include
+> diff --git a/arch/x86/boot/compressed/head_32.S b/arch/x86/boot/compressed/head_32.S
+> index 8c1a4f5610f5..659fad53ca82 100644
+> --- a/arch/x86/boot/compressed/head_32.S
+> +++ b/arch/x86/boot/compressed/head_32.S
+> @@ -178,18 +178,17 @@ SYM_FUNC_START_LOCAL_NOALIGN(.Lrelocated)
+>  /*
+>   * Do the extraction, and jump to the new kernel..
+>   */
+> -                               /* push arguments for extract_kernel: */
+> -       pushl   $z_output_len   /* decompressed length, end of relocs */
+> +       /* push arguments for extract_kernel: */
+>
+> -       pushl   %ebp            /* output address */
+> -
+> -       pushl   $z_input_len    /* input_len */
+> +       pushl   output_len@GOTOFF(%ebx) /* decompressed length, end of relocs */
+> +       pushl   %ebp                    /* output address */
+> +       pushl   input_len@GOTOFF(%ebx)  /* input_len */
+>         leal    input_data@GOTOFF(%ebx), %eax
+> -       pushl   %eax            /* input_data */
+> +       pushl   %eax                    /* input_data */
+>         leal    boot_heap@GOTOFF(%ebx), %eax
+> -       pushl   %eax            /* heap area */
+> -       pushl   %esi            /* real mode pointer */
+> -       call    extract_kernel  /* returns kernel location in %eax */
+> +       pushl   %eax                    /* heap area */
+> +       pushl   %esi                    /* real mode pointer */
+> +       call    extract_kernel          /* returns kernel location in %eax */
+>         addl    $24, %esp
+>
+>  /*
+> diff --git a/arch/x86/boot/compressed/head_64.S b/arch/x86/boot/compressed/head_64.S
+> index 11429092c224..9e46729cf162 100644
+> --- a/arch/x86/boot/compressed/head_64.S
+> +++ b/arch/x86/boot/compressed/head_64.S
+> @@ -534,9 +534,9 @@ SYM_FUNC_START_LOCAL_NOALIGN(.Lrelocated)
+>         movq    %rsi, %rdi              /* real mode address */
+>         leaq    boot_heap(%rip), %rsi   /* malloc area for uncompression */
+>         leaq    input_data(%rip), %rdx  /* input_data */
+> -       movl    $z_input_len, %ecx      /* input_len */
+> +       movl    input_len(%rip), %ecx   /* input_len */
+>         movq    %rbp, %r8               /* output target address */
+> -       movl    $z_output_len, %r9d     /* decompressed length, end of relocs */
+> +       movl    output_len(%rip), %r9d  /* decompressed length, end of relocs */
+>         call    extract_kernel          /* returns kernel location in %rax */
+>         popq    %rsi
+>
+> diff --git a/arch/x86/boot/compressed/mkpiggy.c b/arch/x86/boot/compressed/mkpiggy.c
+> index 7e01248765b2..52aa56cdbacc 100644
+> --- a/arch/x86/boot/compressed/mkpiggy.c
+> +++ b/arch/x86/boot/compressed/mkpiggy.c
+> @@ -60,6 +60,12 @@ int main(int argc, char *argv[])
+>         printf(".incbin \"%s\"\n", argv[1]);
+>         printf("input_data_end:\n");
+>
+> +       printf(".section \".rodata\",\"a\",@progbits\n");
+> +       printf(".globl input_len\n");
+> +       printf("input_len:\n\t.long %lu\n", ilen);
+> +       printf(".globl output_len\n");
+> +       printf("output_len:\n\t.long %lu\n", (unsigned long)olen);
+> +
+>         retval = 0;
+>  bail:
+>         if (f)
+> --
+> 2.25.1
+>
+> --
+> You received this message because you are subscribed to the Google Groups "Clang Built Linux" group.
+> To unsubscribe from this group and stop receiving emails from it, send an email to clang-built-linux+unsubscribe@googlegroups.com.
+> To view this discussion on the web visit https://groups.google.com/d/msgid/clang-built-linux/20200731230820.1742553-7-keescook%40chromium.org.
+
+
+
+-- 
+Thanks,
+~Nick Desaulniers
