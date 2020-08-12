@@ -2,157 +2,214 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D94C923F3B0
-	for <lists+linux-efi@lfdr.de>; Fri,  7 Aug 2020 22:21:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F0148243176
+	for <lists+linux-efi@lfdr.de>; Thu, 13 Aug 2020 01:48:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726078AbgHGUVB (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 7 Aug 2020 16:21:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42956 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725893AbgHGUVB (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 7 Aug 2020 16:21:01 -0400
-Received: from mail-qt1-x844.google.com (mail-qt1-x844.google.com [IPv6:2607:f8b0:4864:20::844])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB045C061756;
-        Fri,  7 Aug 2020 13:21:00 -0700 (PDT)
-Received: by mail-qt1-x844.google.com with SMTP id o22so2233734qtt.13;
-        Fri, 07 Aug 2020 13:21:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:from:date:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=B7Fctmg3cVLvQt7Pqxb1gnXBcCgs6NDZ66tmQ5JI0zg=;
-        b=M6Snqi+5vU8MfS8JcxyXJ40DbOeNxstioyDIQ7RipbYSbN7JQ3Zh8YKulYvpWIfWMG
-         eUMR1fQ+G6brVpm3EcSR81uT1VEg6XoL0pSdXn7PToQ63fvzZRxpWr3J6buyDNMuckpG
-         4Z5Ya2CnVn4fwpk7BFvYU91TRFyq9H8Thqax+U+MjxCQvmHtoD/2PZSEZcgCzNmuIf4t
-         NnYgkjSYnqyQdRf/hbeSE358rBIHUE5LW0OvBTxreq4sKC88qCa34IlIHFrdpswidJ5/
-         WKci7ur3XnSKEEqXlCjTetdOmz8QPZzvjlK8a/y87yuY09ekPaVnHTsgldHwqdiuyOqL
-         PwrA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:from:date:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to;
-        bh=B7Fctmg3cVLvQt7Pqxb1gnXBcCgs6NDZ66tmQ5JI0zg=;
-        b=U8/hQL0wJVnRjYlu/1cCOnaDb2OLPOzCQ4maTGlE5ax0KKQBhdlB1eSPPc8k9FzUDY
-         gDYplOBwb+p1M8tJL1c8m9CxMCuFYKWbo/sTmcoxhxSKeJVnBkrQXZBwFFPYvsMKL1+5
-         byp62lEo9GB+nK9hwUDzTdpwfO+WIg/7kBVlx4dEhml0TL6C0G84C2pcxq+TDWBq0K1z
-         u62++guuKNfLHALFNBqRll54wMdHd21Z1Tv5szjphTbOPBFHvpKeIp05ODEZHXfRG4V0
-         G7yRwFVuJ96aKGyh0py03sklLeGWAJCZqF211gQb/YW1JHaPd9ykh9FIEtibJAHxXc8L
-         I4gQ==
-X-Gm-Message-State: AOAM530ZjET0FG0x8BiKmsW4q4RVz0RcIFpt6bnSl1xsTRBc6vrpT1NV
-        0cEOOfJFiex/uUFZ8woP8l4=
-X-Google-Smtp-Source: ABdhPJz/CW6PITmuhsKbBKT0FOoGWxKkovtopmDyC0lleFL8M8TfAO19eUhslQAEOHtMAH1StV6FdA==
-X-Received: by 2002:ac8:7152:: with SMTP id h18mr15653535qtp.44.1596831659768;
-        Fri, 07 Aug 2020 13:20:59 -0700 (PDT)
-Received: from rani.riverdale.lan ([2001:470:1f07:5f3::b55f])
-        by smtp.gmail.com with ESMTPSA id y26sm8158811qto.75.2020.08.07.13.20.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Aug 2020 13:20:59 -0700 (PDT)
-From:   Arvind Sankar <nivedita@alum.mit.edu>
-X-Google-Original-From: Arvind Sankar <arvind@rani.riverdale.lan>
-Date:   Fri, 7 Aug 2020 16:20:56 -0400
-To:     Nick Desaulniers <ndesaulniers@google.com>
-Cc:     Kees Cook <keescook@chromium.org>,
-        Arvind Sankar <nivedita@alum.mit.edu>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Will Deacon <will@kernel.org>,
+        id S1726518AbgHLXsc (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 12 Aug 2020 19:48:32 -0400
+Received: from esa3.hgst.iphmx.com ([216.71.153.141]:52574 "EHLO
+        esa3.hgst.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726078AbgHLXsb (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 12 Aug 2020 19:48:31 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
+  t=1597276112; x=1628812112;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=dEghlRySJv0naCSJ5pOthMzV6deTXTzywbu+fNT2jzI=;
+  b=BnPZCyJh5t6SZ2Lb3wgI4JoLaBzOmYRB/dYSXOWllEzGv4I0GndcoxBU
+   ApXS14xoila1RTUHCgCV/DS4J9SzzoKJCGevyd2031Kmc3XdUZpdHCBn6
+   /Ac7JTlfYSBd/tBtHfYngyCSn8GJzAVwtMkk+L1nM1VARKxDE6TqBQ030
+   1ovo3bWWhVKTJvjD5Bh/H8Zy7oujHJJi3v9LD7gVrSBhkoko+QOTXmpxL
+   klMF2yeNTWJmTmFIrAUsq6bJRPDYSUJIpjxpyoJr65oEbuGA2IboEWRzY
+   3UDcd9IgaE28h9fdF1eAEfRm27cjlUjAxLcVsiuBuaJ1wSre6yqZCcJ4B
+   g==;
+IronPort-SDR: Kh3XXGlx0LU3UXDWccd6Lk9Vyj21AZfQ5mPojpgSCxjfUY2/GdWE7ycU6C2cKvRQMWL4debcoJ
+ IJ3y+M2ER71DT57mEGjhV5ZsuwVboyUu1BvQULEelO5KOxsTbADrvKCddX52tVRG1nNc/DfzRJ
+ 23fQhgTEgDMnGX3zFhHoOL9gMTO02vn/o5yAJ56f1iuJcAelPsa57jqKN4kdRTXQvGraZCQxLd
+ ymaKZE2GMNUqx95Xq/anw4nfiAJBhyHQ22uTGSe8n4RZ+2YdTsacC9asDHtoG2vvjCW/6RehDh
+ JnQ=
+X-IronPort-AV: E=Sophos;i="5.76,305,1592841600"; 
+   d="scan'208";a="149145657"
+Received: from h199-255-45-15.hgst.com (HELO uls-op-cesaep02.wdc.com) ([199.255.45.15])
+  by ob1.hgst.iphmx.com with ESMTP; 13 Aug 2020 07:48:31 +0800
+IronPort-SDR: YG/YWOdaEpQCATfU3dHTdFu4ELRlhnINQqgh6mW+rBzjFXzmlb7a/nDoqYvGj96e7kHHlkitXn
+ IWsmrSiPy4HA==
+Received: from uls-op-cesaip01.wdc.com ([10.248.3.36])
+  by uls-op-cesaep02.wdc.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2020 16:35:38 -0700
+IronPort-SDR: klRBSoDYtECDlzD14I2TIC4BC0mHg70L9V5JGREARs9SNm4ppNZZYRgwcgpNouNh086ahnsrq+
+ 4c4dkAdFXdbg==
+WDCIronportException: Internal
+Received: from usa002576.ad.shared (HELO jedi-01.hgst.com) ([10.86.59.59])
+  by uls-op-cesaip01.wdc.com with ESMTP; 12 Aug 2020 16:48:28 -0700
+From:   Atish Patra <atish.patra@wdc.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     Atish Patra <atish.patra@wdc.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Alistair Francis <alistair.francis@wdc.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Anup Patel <anup.patel@wdc.com>,
         Ard Biesheuvel <ardb@kernel.org>,
-        Fangrui Song <maskray@google.com>,
-        Sedat Dilek <sedat.dilek@gmail.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Peter Collingbourne <pcc@google.com>,
-        James Morse <james.morse@arm.com>,
-        Borislav Petkov <bp@suse.de>, Ingo Molnar <mingo@redhat.com>,
-        Russell King <linux@armlinux.org.uk>,
+        Arvind Sankar <nivedita@alum.mit.edu>,
+        Borislav Petkov <bp@suse.de>,
+        Greentime Hu <greentime.hu@sifive.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        Kees Cook <keescook@chromium.org>, linux-efi@vger.kernel.org,
+        linux-riscv@lists.infradead.org, fwts-devel@lists.ubuntu.com,
+        Mao Han <han_mao@c-sky.com>,
         Masahiro Yamada <masahiroy@kernel.org>,
-        Nathan Chancellor <natechancellor@gmail.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
-        clang-built-linux <clang-built-linux@googlegroups.com>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v5 06/36] x86/boot: Remove run-time relocations from
- head_{32,64}.S
-Message-ID: <20200807202056.GA1454138@rani.riverdale.lan>
-References: <20200731230820.1742553-1-keescook@chromium.org>
- <20200731230820.1742553-7-keescook@chromium.org>
- <CAKwvOd=mY5=SWjGKA_KpvKnOPmJky_qMcyBYeFhskx6J=aJmNA@mail.gmail.com>
+        Michal Simek <michal.simek@xilinx.com>,
+        Mike Rapoport <rppt@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Steven Price <steven.price@arm.com>,
+        Waiman Long <longman@redhat.com>,
+        Will Deacon <will@kernel.org>,
+        Daniel Schaefer <daniel.schaefer@hpe.com>,
+        "abner.chang@hpe.com" <abner.chang@hpe.com>
+Subject: [PATCH v5 0/9] Add UEFI support for RISC-V
+Date:   Wed, 12 Aug 2020 16:47:49 -0700
+Message-Id: <20200812234758.3563-1-atish.patra@wdc.com>
+X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CAKwvOd=mY5=SWjGKA_KpvKnOPmJky_qMcyBYeFhskx6J=aJmNA@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, Aug 07, 2020 at 11:12:29AM -0700, Nick Desaulniers wrote:
-> On Fri, Jul 31, 2020 at 4:08 PM Kees Cook <keescook@chromium.org> wrote:
-> >
-> > From: Arvind Sankar <nivedita@alum.mit.edu>
-> >
-> > The BFD linker generates run-time relocations for z_input_len and
-> > z_output_len, even though they are absolute symbols.
-> >
-> > This is fixed for binutils-2.35 [1]. Work around this for earlier
-> > versions by defining two variables input_len and output_len in addition
-> > to the symbols, and use them via position-independent references.
-> >
-> > This eliminates the last two run-time relocations in the head code and
-> > allows us to drop the -z noreloc-overflow flag to the linker.
-> >
-> > Move the -pie and --no-dynamic-linker LDFLAGS to LDFLAGS_vmlinux instead
-> > of KBUILD_LDFLAGS. There shouldn't be anything else getting linked, but
-> > this is the more logical location for these flags, and modversions might
-> > call the linker if an EXPORT_SYMBOL is left over accidentally in one of
-> > the decompressors.
-> >
-> > [1] https://sourceware.org/bugzilla/show_bug.cgi?id=25754
-> >
-> > Tested-by: Nick Desaulniers <ndesaulniers@google.com>
-> > Reviewed-by: Kees Cook <keescook@chromium.org>
-> > Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
-> > Reviewed-by: Fangrui Song <maskray@google.com>
-> > Tested-by: Sedat Dilek <sedat.dilek@gmail.com>
-> > Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
-> > Signed-off-by: Kees Cook <keescook@chromium.org>
-> > ---
-> >  arch/x86/boot/compressed/Makefile  | 12 ++----------
-> >  arch/x86/boot/compressed/head_32.S | 17 ++++++++---------
-> >  arch/x86/boot/compressed/head_64.S |  4 ++--
-> >  arch/x86/boot/compressed/mkpiggy.c |  6 ++++++
-> >  4 files changed, 18 insertions(+), 21 deletions(-)
-> >
-> > diff --git a/arch/x86/boot/compressed/Makefile b/arch/x86/boot/compressed/Makefile
-> > index 489fea16bcfb..7db0102a573d 100644
-> > --- a/arch/x86/boot/compressed/Makefile
-> > +++ b/arch/x86/boot/compressed/Makefile
-> > @@ -51,16 +51,8 @@ UBSAN_SANITIZE :=n
-> >  KBUILD_LDFLAGS := -m elf_$(UTS_MACHINE)
-> >  # Compressed kernel should be built as PIE since it may be loaded at any
-> >  # address by the bootloader.
-> > -ifeq ($(CONFIG_X86_32),y)
-> > -KBUILD_LDFLAGS += $(call ld-option, -pie) $(call ld-option, --no-dynamic-linker)
-> > -else
-> > -# To build 64-bit compressed kernel as PIE, we disable relocation
-> > -# overflow check to avoid relocation overflow error with a new linker
-> > -# command-line option, -z noreloc-overflow.
-> > -KBUILD_LDFLAGS += $(shell $(LD) --help 2>&1 | grep -q "\-z noreloc-overflow" \
-> > -       && echo "-z noreloc-overflow -pie --no-dynamic-linker")
-> > -endif
-> > -LDFLAGS_vmlinux := -T
-> > +LDFLAGS_vmlinux := $(call ld-option, -pie) $(call ld-option, --no-dynamic-linker)
-> 
-> Oh, do these still need ld-option?  bfd and lld both support these
-> flags. (Though in their --help, they mention single hyphen and double
-> hyphen respectively.  Also, if we don't build this as PIE because the
-> linker doesn't support the option, we probably want to fail the build?
-> 
+This series adds UEFI support for RISC-V.
 
-The check for pie doesn't, it's dropped in the next patch and pie is
-used unconditionally.
+Linux kernel: master(00e4db51259a)
+U-Boot: v2020.07 
+OpenSBI: master
 
-no-dynamic-linker still needs the check as it was only supported from
-binutils-2.26.
+Patch 1-3 are generic riscv feature addition required for UEFI support.
+Patch 4-7 adds the efi stub support for RISC-V which was reviewed few months back.
+https://www.spinics.net/lists/linux-efi/msg19144.html
+Patch 8 just renames arm-init code so that it can be used across different
+architectures.
+Patch 9 adds the runtime services for RISC-V.
+
+The working set of patches can also be found in following git repo.
+https://github.com/atishp04/linux/tree/uefi_riscv_5.10_v5
+
+The patches have been verified on following platforms:
+1. Qemu (both RV32 & RV64) for the following bootflow
+   OpenSBI->U-Boot->Linux
+   EDK2->Linux
+2. HiFive unleashed using (RV64) for the following bootflow
+   OpenSBI->U-Boot->Linux
+   EDK2->Linux
+
+Thanks Abner & Daniel for all work done for EDK2.
+The EDK2 instructions are available here.
+https://github.com/JohnAZoidberg/riscv-edk2-docker/
+
+Note:
+1. Currently, EDK2 RISC-V port doesn't support OVMF package. That's why
+EFI_GENERIC_STUB_INITRD_CMDLINE_LOADER should be enabled to load initrd via
+commandline until OVMF patches are available.
+
+2. For RV32, maximum allocated memory should be 1G as RISC-V kernel can not map
+beyond 1G of physical memory for RV32.
+
+3. Runtime services have been verified with fwts on EDK2.
+
+***********************************************************************
+[root@fedora-riscv ~]# fwts uefirtvariable
+Running 1 tests, results appended to results.log
+Test: UEFI Runtime service variable interface tests.                        
+  Test UEFI RT service get variable interface.            1 passed             
+  Test UEFI RT service get next variable name interface.  4 passed             
+  Test UEFI RT service set variable interface.            7 passed, 1 warning  
+  Test UEFI RT service query variable info interface.     1 passed             
+  Test UEFI RT service variable interface stress test.    2 passed             
+  Test UEFI RT service set variable interface stress t..  4 passed             
+  Test UEFI RT service query variable info interface s..  1 passed             
+  Test UEFI RT service get variable interface, invalid..  5 passed             
+  Test UEFI RT variable services supported status.        1 skipped 
+
+Test           |Pass |Fail |Abort|Warn |Skip |Info |
+uefirtvariable |   25|     |     |    1|    1|     |
+Total:         |   25|    0|    0|    1|    1|    0|
+
+***********************************************************************
+
+Changes from v4->v5:
+1. Late mappings allocations are now done through function pointers.
+2. EFI run time services are verified using full linux boot and fwts using EDK2.
+
+Changes from v3->v4:
+1. Used pgd mapping to avoid copying DT to bss.
+
+Changes from v2->v3:
+1. Fixed few bugs in run time services page table mapping.
+2. Dropped patch 1 as it is already taken into efi-tree.
+3. Sent few generic mmu fixes as a separate series to ease the merge conflicts.
+
+Changes from v1->v2:
+1. Removed patch 1 as it is already taken into efi-tree.
+2. Fixed compilation issues with patch 9.
+3. Moved few function prototype declaration to header file to keep kbuild happy.
+
+Changes from previous version:
+1. Added full ioremap support.
+2. Added efi runtime services support.
+3. Fixes mm issues
+
+Anup Patel (1):
+RISC-V: Move DT mapping outof fixmap
+
+Atish Patra (8):
+RISC-V: Add early ioremap support
+RISC-V: Implement late mapping page table allocation functions
+include: pe.h: Add RISC-V related PE definition
+RISC-V: Add PE/COFF header for EFI stub
+RISC-V: Add EFI stub support.
+efi: Rename arm-init to efi-init common for all arch
+RISC-V: Add EFI runtime services
+RISC-V: Add page table dump support for uefi
+
+arch/riscv/Kconfig                            |  25 +++
+arch/riscv/Makefile                           |   1 +
+arch/riscv/configs/defconfig                  |   1 +
+arch/riscv/include/asm/Kbuild                 |   1 +
+arch/riscv/include/asm/efi.h                  |  56 +++++
+arch/riscv/include/asm/fixmap.h               |  16 +-
+arch/riscv/include/asm/io.h                   |   1 +
+arch/riscv/include/asm/mmu.h                  |   2 +
+arch/riscv/include/asm/pgtable.h              |   5 +
+arch/riscv/include/asm/sections.h             |  13 ++
+arch/riscv/kernel/Makefile                    |   5 +
+arch/riscv/kernel/efi-header.S                | 104 ++++++++++
+arch/riscv/kernel/efi.c                       | 105 ++++++++++
+arch/riscv/kernel/head.S                      |  17 +-
+arch/riscv/kernel/head.h                      |   2 -
+arch/riscv/kernel/image-vars.h                |  51 +++++
+arch/riscv/kernel/setup.c                     |  17 +-
+arch/riscv/kernel/vmlinux.lds.S               |  22 +-
+arch/riscv/mm/init.c                          | 191 +++++++++++++-----
+arch/riscv/mm/ptdump.c                        |  48 ++++-
+drivers/firmware/efi/Kconfig                  |   3 +-
+drivers/firmware/efi/Makefile                 |   4 +-
+.../firmware/efi/{arm-init.c => efi-init.c}   |   0
+drivers/firmware/efi/libstub/Makefile         |  10 +
+drivers/firmware/efi/libstub/efi-stub.c       |  11 +-
+drivers/firmware/efi/libstub/riscv-stub.c     | 110 ++++++++++
+drivers/firmware/efi/riscv-runtime.c          | 143 +++++++++++++
+include/linux/pe.h                            |   3 +
+28 files changed, 900 insertions(+), 67 deletions(-)
+create mode 100644 arch/riscv/include/asm/efi.h
+create mode 100644 arch/riscv/include/asm/sections.h
+create mode 100644 arch/riscv/kernel/efi-header.S
+create mode 100644 arch/riscv/kernel/efi.c
+create mode 100644 arch/riscv/kernel/image-vars.h
+rename drivers/firmware/efi/{arm-init.c => efi-init.c} (100%)
+create mode 100644 drivers/firmware/efi/libstub/riscv-stub.c
+create mode 100644 drivers/firmware/efi/riscv-runtime.c
+
+--
+2.24.0
+
