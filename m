@@ -2,62 +2,61 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F1ACF2436FE
-	for <lists+linux-efi@lfdr.de>; Thu, 13 Aug 2020 10:58:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 66B4524370B
+	for <lists+linux-efi@lfdr.de>; Thu, 13 Aug 2020 11:00:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726102AbgHMI6S (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 13 Aug 2020 04:58:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47812 "EHLO
+        id S1726072AbgHMJAu (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 13 Aug 2020 05:00:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48206 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726072AbgHMI6R (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 13 Aug 2020 04:58:17 -0400
+        with ESMTP id S1726192AbgHMJAt (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 13 Aug 2020 05:00:49 -0400
 Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com [IPv6:2a00:1450:4864:20::341])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 124C6C061383
-        for <linux-efi@vger.kernel.org>; Thu, 13 Aug 2020 01:58:16 -0700 (PDT)
-Received: by mail-wm1-x341.google.com with SMTP id t14so4349235wmi.3
-        for <linux-efi@vger.kernel.org>; Thu, 13 Aug 2020 01:58:16 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05A4FC061383
+        for <linux-efi@vger.kernel.org>; Thu, 13 Aug 2020 02:00:49 -0700 (PDT)
+Received: by mail-wm1-x341.google.com with SMTP id p14so4035276wmg.1
+        for <linux-efi@vger.kernel.org>; Thu, 13 Aug 2020 02:00:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=brainfault-org.20150623.gappssmtp.com; s=20150623;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=7ejOXH1LQTXrGTOxhVaMU2TYELrccVatdEWcGAK3Sjw=;
-        b=P0vxc039Nc76V/6Rh0lKYHO+QHOD59pM77+iDKGJHEdV1gXadGYcNlamm6GJok7Lcx
-         erNEgkh194Mu2P90joK7JlyIHPQxnUZW8mDcF2HS6T+L45gkx1fqoPO/GvKZ3D2yFBSc
-         kBnDZh31uDw6IJCEf9aP89Ee6TwK0F7xVcrUWFWeHGmk7BibunPOcqRp7ddlTdcbsEPp
-         uWeYrjGmuC3umaZYRvPVjAmViw67Fs8d1CUOuZnpGVyCZD8Po+bcK9HV7xqyAEATcXFy
-         HOTJ7a+qFjtIE3/Ldo5+Z1Yox4Y5EFnDve9qnTUVQ54+7jO7PfJHuhI4cb0dQn/Y7Aic
-         3qOA==
+        bh=Ily92RBIA0gCYaaItOKfOr0UCPH0JTHy6ebueRFMAbI=;
+        b=QeBKdlyI7zNq6ihcq1cAaaj1AdxeHWefsJ5YIKyu+WwyE0MWINJDOPfqMSn2arET8R
+         p7pNw44HU+Y1yNwa86vVtPDFBZgm3FPotU37Igcj5i5FkKZpOoGyLDylOXk1ypmeljel
+         6eVS+8g2VffyTbJn3WaVAe4i1/NEvAWq6BOZ2mlElFe2pgF4n9Cy3waJR/JkvtWW3iYr
+         K3J8SaCRX503vZnFvoqy9Y3JDSJtrWe+5N2yhRQZdswUZeGzenP010VpcB/fXLrhAwXU
+         BY1HDdc/ZAfKNkVepcLJ0KQOT3BhdbV/XRP3sqMxnS0IjsP9VH1iMSLnkprXFD4kXCDw
+         wO/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=7ejOXH1LQTXrGTOxhVaMU2TYELrccVatdEWcGAK3Sjw=;
-        b=E76ZXuKaepzGsnPck90Q1k5OGSXA3e+gr8mKRoZ3DRp0mkmN6EWr1pcwL2q6q2NBFN
-         C39qmQ1B4cdS1TB+Ts0UFmDGcuHLXLR7xUxn2f93cXz9xZDxdmXEyH3ndw9V2fFTIbut
-         f8SW5GIrZKeH5AsGyv6mbyrkrVP8jt++BnRYUIzAUJbGHvOK72ZDxd/gph/31VRhFNUU
-         uyfEX4774BsZA3m+5cjKt1AyzlvCdd1KGMG1PPP/JVWc70pvPb/If0cYSt2GuCTGbImA
-         XeaJuHK1Cz2XKLqBSyUP9/AG7Ffow4+dr1M1QdYN1Sit5wJtLa0Ps39jx/C0oVyhtJ2o
-         hyuA==
-X-Gm-Message-State: AOAM533zlgk6nCiEfA2USnEALiXTRkZoHgw9YTW9ywfFHffOPViCy+m/
-        YlvmdZJbY+89m9UNrH2sNz3TATqXe5ELIiu+X38IUQ==
-X-Google-Smtp-Source: ABdhPJydHDppTz/E+mk7vmLwdcwMEGXhikXzJOI8CfN3YTccGMRBhG08jWr2bhSuzMpdsnC0rgQs2DRZ3VOpfnSt+N0=
-X-Received: by 2002:a7b:c4d5:: with SMTP id g21mr3596831wmk.185.1597309095228;
- Thu, 13 Aug 2020 01:58:15 -0700 (PDT)
+        bh=Ily92RBIA0gCYaaItOKfOr0UCPH0JTHy6ebueRFMAbI=;
+        b=aKQGOamLEEL5aFHmFapNqvT4IVP4Cos1ArXO4Au5o3cRCiAZSdvSWMSCzCHD5MLzaA
+         UI8rjsj5BeV0jEE7rhrSdUb2GObE7uCQ/Zh74OD6eKf4mkDIk67I2zVXctVRIRueR4B3
+         3u9yRjmJlS1FLbg8TqMTK+zh2hz2PW33UwepFgpdPadnAw1wRmPLSj9r4lVzv4ak+gA9
+         izr6qGSz1KLNBLWFk/XmPRvdCNBpEoe2LADJrTrhLXZM2Rdq1UYeu85wQ7dwDWp4AJfo
+         qFA8aZ+TWpJZKWUGx2wB6meFV0QrS455FeqqX9wHLNcg6jICpWQq8TvfavFvi78AyJlW
+         B+WA==
+X-Gm-Message-State: AOAM533a97kBBGQ2OsvZ377pRfuw2Uboy04652iIjDbt9NieOpYG/LPh
+        rvy2GyAlS45t1cTvuFakafaGijdissGzCUJcrfGs7w==
+X-Google-Smtp-Source: ABdhPJzxdYnxCVkygWdQLurAleYTH1SAyOYzaK+QCZmvkBu1KX7DzxQepkzg9zoYl4Go78+QMG5nFFvpys1gytMMeRw=
+X-Received: by 2002:a1c:9c91:: with SMTP id f139mr3580422wme.134.1597309247442;
+ Thu, 13 Aug 2020 02:00:47 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200812234758.3563-1-atish.patra@wdc.com> <20200812234758.3563-4-atish.patra@wdc.com>
-In-Reply-To: <20200812234758.3563-4-atish.patra@wdc.com>
+References: <20200812234758.3563-1-atish.patra@wdc.com> <20200812234758.3563-6-atish.patra@wdc.com>
+In-Reply-To: <20200812234758.3563-6-atish.patra@wdc.com>
 From:   Anup Patel <anup@brainfault.org>
-Date:   Thu, 13 Aug 2020 14:28:03 +0530
-Message-ID: <CAAhSdy3AuDi=JZN9beo5rhNnUD+bng+7t9qVTNNLZY8Yr2+Qhg@mail.gmail.com>
-Subject: Re: [PATCH v5 3/9] RISC-V: Implement late mapping page table
- allocation functions
+Date:   Thu, 13 Aug 2020 14:30:35 +0530
+Message-ID: <CAAhSdy3R2Q2soNZcXMp_3uUjKPmFV_W_MX+gq-syUnJppz8YaA@mail.gmail.com>
+Subject: Re: [PATCH v5 5/9] RISC-V: Add PE/COFF header for EFI stub
 To:     Atish Patra <atish.patra@wdc.com>
 Cc:     "linux-kernel@vger.kernel.org List" <linux-kernel@vger.kernel.org>,
+        Ard Biesheuvel <ardb@kernel.org>,
         Albert Ou <aou@eecs.berkeley.edu>,
         Alistair Francis <alistair.francis@wdc.com>,
         Andrew Morton <akpm@linux-foundation.org>,
         Anup Patel <anup.patel@wdc.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
         Arvind Sankar <nivedita@alum.mit.edu>,
         Borislav Petkov <bp@suse.de>,
         Greentime Hu <greentime.hu@sifive.com>,
@@ -83,250 +82,341 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, Aug 13, 2020 at 5:19 AM Atish Patra <atish.patra@wdc.com> wrote:
+On Thu, Aug 13, 2020 at 5:18 AM Atish Patra <atish.patra@wdc.com> wrote:
 >
-> Currently, page table setup is done during setup_va_final where fixmap can
-> be used to create the temporary mappings. The physical frame is allocated
-> from memblock_alloc_* functions. However, this won't work if page table
-> mapping needs to be created for a different mm context (i.e. efi mm) at
-> a later point of time.
+> Linux kernel Image can appear as an EFI application With appropriate
+> PE/COFF header fields in the beginning of the Image header. An EFI
+> application loader can directly load a Linux kernel Image and an EFI
+> stub residing in kernel can boot Linux kernel directly.
 >
-> Use generic kernel page allocation function & macros for any mapping
-> after setup_vm_final.
+> Add the necessary PE/COFF header.
 >
 > Signed-off-by: Atish Patra <atish.patra@wdc.com>
+> Link: https://lore.kernel.org/r/20200421033336.9663-3-atish.patra@wdc.com
+> [ardb: - use C prefix for c.li to ensure the expected opcode is emitted
+>        - align all image sections according to PE/COFF section alignment ]
+> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 > ---
->  arch/riscv/mm/init.c | 130 ++++++++++++++++++++++++++++++++-----------
->  1 file changed, 99 insertions(+), 31 deletions(-)
+>  arch/riscv/include/asm/sections.h |  13 ++++
+>  arch/riscv/kernel/Makefile        |   4 ++
+>  arch/riscv/kernel/efi-header.S    | 104 ++++++++++++++++++++++++++++++
+>  arch/riscv/kernel/head.S          |  16 +++++
+>  arch/riscv/kernel/image-vars.h    |  51 +++++++++++++++
+>  arch/riscv/kernel/vmlinux.lds.S   |  22 ++++++-
+>  6 files changed, 208 insertions(+), 2 deletions(-)
+>  create mode 100644 arch/riscv/include/asm/sections.h
+>  create mode 100644 arch/riscv/kernel/efi-header.S
+>  create mode 100644 arch/riscv/kernel/image-vars.h
 >
-> diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
-> index b75ebe8e7a92..d238cdc501ee 100644
-> --- a/arch/riscv/mm/init.c
-> +++ b/arch/riscv/mm/init.c
-> @@ -32,6 +32,17 @@ extern char _start[];
->  void *dtb_early_va __initdata;
->  uintptr_t dtb_early_pa __initdata;
+> diff --git a/arch/riscv/include/asm/sections.h b/arch/riscv/include/asm/sections.h
+> new file mode 100644
+> index 000000000000..3a9971b1210f
+> --- /dev/null
+> +++ b/arch/riscv/include/asm/sections.h
+> @@ -0,0 +1,13 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+> +/*
+> + * Copyright (C) 2020 Western Digital Corporation or its affiliates.
+> + */
+> +#ifndef __ASM_SECTIONS_H
+> +#define __ASM_SECTIONS_H
+> +
+> +#include <asm-generic/sections.h>
+> +
+> +extern char _start[];
+> +extern char _start_kernel[];
+> +
+> +#endif /* __ASM_SECTIONS_H */
+> diff --git a/arch/riscv/kernel/Makefile b/arch/riscv/kernel/Makefile
+> index a5287ab9f7f2..eabec4dce50b 100644
+> --- a/arch/riscv/kernel/Makefile
+> +++ b/arch/riscv/kernel/Makefile
+> @@ -32,6 +32,10 @@ obj-y        += patch.o
+>  obj-$(CONFIG_MMU) += vdso.o vdso/
 >
-> +struct pt_alloc_ops {
-> +       pte_t *(*get_pte_virt)(phys_addr_t pa);
-> +       phys_addr_t (*alloc_pte)(uintptr_t va);
-> +#ifndef __PAGETABLE_PMD_FOLDED
-> +       pmd_t *(*get_pmd_virt)(phys_addr_t pa);
-> +       phys_addr_t (*alloc_pmd)(uintptr_t va);
+>  obj-$(CONFIG_RISCV_M_MODE)     += clint.o traps_misaligned.o
+> +OBJCOPYFLAGS := --prefix-symbols=__efistub_
+> +$(obj)/%.stub.o: $(obj)/%.o FORCE
+> +       $(call if_changed,objcopy)
+> +
+>  obj-$(CONFIG_FPU)              += fpu.o
+>  obj-$(CONFIG_SMP)              += smpboot.o
+>  obj-$(CONFIG_SMP)              += smp.o
+> diff --git a/arch/riscv/kernel/efi-header.S b/arch/riscv/kernel/efi-header.S
+> new file mode 100644
+> index 000000000000..822b4c9ff2bb
+> --- /dev/null
+> +++ b/arch/riscv/kernel/efi-header.S
+> @@ -0,0 +1,104 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+> +/*
+> + * Copyright (C) 2020 Western Digital Corporation or its affiliates.
+> + * Adapted from arch/arm64/kernel/efi-header.S
+> + */
+> +
+> +#include <linux/pe.h>
+> +#include <linux/sizes.h>
+> +
+> +       .macro  __EFI_PE_HEADER
+> +       .long   PE_MAGIC
+> +coff_header:
+> +#ifdef CONFIG_64BIT
+> +       .short  IMAGE_FILE_MACHINE_RISCV64              // Machine
+> +#else
+> +       .short  IMAGE_FILE_MACHINE_RISCV32              // Machine
 > +#endif
-> +};
+> +       .short  section_count                           // NumberOfSections
+> +       .long   0                                       // TimeDateStamp
+> +       .long   0                                       // PointerToSymbolTable
+> +       .long   0                                       // NumberOfSymbols
+> +       .short  section_table - optional_header         // SizeOfOptionalHeader
+> +       .short  IMAGE_FILE_DEBUG_STRIPPED | \
+> +               IMAGE_FILE_EXECUTABLE_IMAGE | \
+> +               IMAGE_FILE_LINE_NUMS_STRIPPED           // Characteristics
 > +
-> +struct pt_alloc_ops pt_ops;
+> +optional_header:
+> +       .short  PE_OPT_MAGIC_PE32PLUS                   // PE32+ format
+> +       .byte   0x02                                    // MajorLinkerVersion
+> +       .byte   0x14                                    // MinorLinkerVersion
+> +       .long   __pecoff_text_end - efi_header_end      // SizeOfCode
+> +       .long   __pecoff_data_virt_size                 // SizeOfInitializedData
+> +       .long   0                                       // SizeOfUninitializedData
+> +       .long   __efistub_efi_pe_entry - _start         // AddressOfEntryPoint
+> +       .long   efi_header_end - _start                 // BaseOfCode
 > +
->  static void __init zone_sizes_init(void)
->  {
->         unsigned long max_zone_pfns[MAX_NR_ZONES] = { 0, };
-> @@ -211,7 +222,6 @@ EXPORT_SYMBOL(pfn_base);
->  pgd_t swapper_pg_dir[PTRS_PER_PGD] __page_aligned_bss;
->  pgd_t trampoline_pg_dir[PTRS_PER_PGD] __page_aligned_bss;
->  pte_t fixmap_pte[PTRS_PER_PTE] __page_aligned_bss;
-> -static bool mmu_enabled;
->
->  #define MAX_EARLY_MAPPING_SIZE SZ_128M
->
-> @@ -234,27 +244,46 @@ void __set_fixmap(enum fixed_addresses idx, phys_addr_t phys, pgprot_t prot)
->         }
->  }
->
-> -static pte_t *__init get_pte_virt(phys_addr_t pa)
-> +static inline pte_t *__init get_pte_virt_early(phys_addr_t pa)
->  {
-> -       if (mmu_enabled) {
-> -               clear_fixmap(FIX_PTE);
-> -               return (pte_t *)set_fixmap_offset(FIX_PTE, pa);
-> -       } else {
-> -               return (pte_t *)((uintptr_t)pa);
-> -       }
-> +       return (pte_t *)((uintptr_t)pa);
->  }
->
-> -static phys_addr_t __init alloc_pte(uintptr_t va)
-> +static inline pte_t *__init get_pte_virt_fixmap(phys_addr_t pa)
-> +{
-> +       clear_fixmap(FIX_PTE);
-> +       return (pte_t *)set_fixmap_offset(FIX_PTE, pa);
-> +}
+> +extra_header_fields:
+> +       .quad   0                                       // ImageBase
+> +       .long   PECOFF_SECTION_ALIGNMENT                // SectionAlignment
+> +       .long   PECOFF_FILE_ALIGNMENT                   // FileAlignment
+> +       .short  0                                       // MajorOperatingSystemVersion
+> +       .short  0                                       // MinorOperatingSystemVersion
+> +       .short  LINUX_EFISTUB_MAJOR_VERSION             // MajorImageVersion
+> +       .short  LINUX_EFISTUB_MINOR_VERSION             // MinorImageVersion
+> +       .short  0                                       // MajorSubsystemVersion
+> +       .short  0                                       // MinorSubsystemVersion
+> +       .long   0                                       // Win32VersionValue
 > +
-> +static inline pte_t *get_pte_virt_late(phys_addr_t pa)
-> +{
-> +       return (pte_t *) __va(pa);
-> +}
+> +       .long   _end - _start                           // SizeOfImage
 > +
-> +static inline phys_addr_t __init alloc_pte_early(uintptr_t va)
->  {
->         /*
->          * We only create PMD or PGD early mappings so we
->          * should never reach here with MMU disabled.
+> +       // Everything before the kernel image is considered part of the header
+> +       .long   efi_header_end - _start                 // SizeOfHeaders
+> +       .long   0                                       // CheckSum
+> +       .short  IMAGE_SUBSYSTEM_EFI_APPLICATION         // Subsystem
+> +       .short  0                                       // DllCharacteristics
+> +       .quad   0                                       // SizeOfStackReserve
+> +       .quad   0                                       // SizeOfStackCommit
+> +       .quad   0                                       // SizeOfHeapReserve
+> +       .quad   0                                       // SizeOfHeapCommit
+> +       .long   0                                       // LoaderFlags
+> +       .long   (section_table - .) / 8                 // NumberOfRvaAndSizes
+> +
+> +       .quad   0                                       // ExportTable
+> +       .quad   0                                       // ImportTable
+> +       .quad   0                                       // ResourceTable
+> +       .quad   0                                       // ExceptionTable
+> +       .quad   0                                       // CertificationTable
+> +       .quad   0                                       // BaseRelocationTable
+> +
+> +       // Section table
+> +section_table:
+> +       .ascii  ".text\0\0\0"
+> +       .long   __pecoff_text_end - efi_header_end      // VirtualSize
+> +       .long   efi_header_end - _start                 // VirtualAddress
+> +       .long   __pecoff_text_end - efi_header_end      // SizeOfRawData
+> +       .long   efi_header_end - _start                 // PointerToRawData
+> +
+> +       .long   0                                       // PointerToRelocations
+> +       .long   0                                       // PointerToLineNumbers
+> +       .short  0                                       // NumberOfRelocations
+> +       .short  0                                       // NumberOfLineNumbers
+> +       .long   IMAGE_SCN_CNT_CODE | \
+> +               IMAGE_SCN_MEM_READ | \
+> +               IMAGE_SCN_MEM_EXECUTE                   // Characteristics
+> +
+> +       .ascii  ".data\0\0\0"
+> +       .long   __pecoff_data_virt_size                 // VirtualSize
+> +       .long   __pecoff_text_end - _start              // VirtualAddress
+> +       .long   __pecoff_data_raw_size                  // SizeOfRawData
+> +       .long   __pecoff_text_end - _start              // PointerToRawData
+> +
+> +       .long   0                                       // PointerToRelocations
+> +       .long   0                                       // PointerToLineNumbers
+> +       .short  0                                       // NumberOfRelocations
+> +       .short  0                                       // NumberOfLineNumbers
+> +       .long   IMAGE_SCN_CNT_INITIALIZED_DATA | \
+> +               IMAGE_SCN_MEM_READ | \
+> +               IMAGE_SCN_MEM_WRITE                     // Characteristics
+> +
+> +       .set    section_count, (. - section_table) / 40
+> +
+> +       .balign 0x1000
+> +efi_header_end:
+> +       .endm
+> diff --git a/arch/riscv/kernel/head.S b/arch/riscv/kernel/head.S
+> index a2f0cb3ca0a6..f5583473f41c 100644
+> --- a/arch/riscv/kernel/head.S
+> +++ b/arch/riscv/kernel/head.S
+> @@ -13,6 +13,7 @@
+>  #include <asm/csr.h>
+>  #include <asm/hwcap.h>
+>  #include <asm/image.h>
+> +#include "efi-header.S"
+>
+>  __HEAD
+>  ENTRY(_start)
+> @@ -22,10 +23,18 @@ ENTRY(_start)
+>          * Do not modify it without modifying the structure and all bootloaders
+>          * that expects this header format!!
 >          */
-> -       BUG_ON(!mmu_enabled);
-> +       BUG();
-> +}
->
-> +static inline phys_addr_t __init alloc_pte_fixmap(uintptr_t va)
-> +{
->         return memblock_phys_alloc(PAGE_SIZE, PAGE_SIZE);
->  }
->
-> +static phys_addr_t alloc_pte_late(uintptr_t va)
-> +{
-> +       unsigned long vaddr;
-> +
-> +       vaddr = __get_free_page(GFP_KERNEL);
-> +       if (!vaddr || !pgtable_pte_page_ctor(virt_to_page(vaddr)))
-> +               BUG();
-> +       return __pa(vaddr);
-> +}
-> +
->  static void __init create_pte_mapping(pte_t *ptep,
->                                       uintptr_t va, phys_addr_t pa,
->                                       phys_addr_t sz, pgprot_t prot)
-> @@ -279,28 +308,46 @@ pmd_t fixmap_pmd[PTRS_PER_PMD] __page_aligned_bss;
->  #endif
->  pmd_t early_pmd[PTRS_PER_PMD * NUM_EARLY_PMDS] __initdata __aligned(PAGE_SIZE);
->
-> -static pmd_t *__init get_pmd_virt(phys_addr_t pa)
-> +static pmd_t *__init get_pmd_virt_early(phys_addr_t pa)
->  {
-> -       if (mmu_enabled) {
-> -               clear_fixmap(FIX_PMD);
-> -               return (pmd_t *)set_fixmap_offset(FIX_PMD, pa);
-> -       } else {
-> -               return (pmd_t *)((uintptr_t)pa);
-> -       }
-> +       /* Before MMU is enabled */
-> +       return (pmd_t *)((uintptr_t)pa);
->  }
->
-> -static phys_addr_t __init alloc_pmd(uintptr_t va)
-> +static pmd_t *__init get_pmd_virt_fixmap(phys_addr_t pa)
->  {
-> -       uintptr_t pmd_num;
-> +       clear_fixmap(FIX_PMD);
-> +       return (pmd_t *)set_fixmap_offset(FIX_PMD, pa);
-> +}
-> +
-> +static pmd_t *get_pmd_virt_late(phys_addr_t pa)
-> +{
-> +       return (pmd_t *) __va(pa);
-> +}
->
-> -       if (mmu_enabled)
-> -               return memblock_phys_alloc(PAGE_SIZE, PAGE_SIZE);
-> +static phys_addr_t __init alloc_pmd_early(uintptr_t va)
-> +{
-> +       uintptr_t pmd_num;
->
->         pmd_num = (va - PAGE_OFFSET) >> PGDIR_SHIFT;
->         BUG_ON(pmd_num >= NUM_EARLY_PMDS);
->         return (uintptr_t)&early_pmd[pmd_num * PTRS_PER_PMD];
->  }
->
-> +static phys_addr_t __init alloc_pmd_fixmap(uintptr_t va)
-> +{
-> +       return memblock_phys_alloc(PAGE_SIZE, PAGE_SIZE);
-> +}
-> +
-> +static phys_addr_t alloc_pmd_late(uintptr_t va)
-> +{
-> +       unsigned long vaddr;
-> +
-> +       vaddr = __get_free_page(GFP_KERNEL);
-> +       BUG_ON(!vaddr);
-> +       return __pa(vaddr);
-> +}
-> +
->  static void __init create_pmd_mapping(pmd_t *pmdp,
->                                       uintptr_t va, phys_addr_t pa,
->                                       phys_addr_t sz, pgprot_t prot)
-> @@ -316,28 +363,28 @@ static void __init create_pmd_mapping(pmd_t *pmdp,
->         }
->
->         if (pmd_none(pmdp[pmd_idx])) {
-> -               pte_phys = alloc_pte(va);
-> +               pte_phys = pt_ops.alloc_pte(va);
->                 pmdp[pmd_idx] = pfn_pmd(PFN_DOWN(pte_phys), PAGE_TABLE);
-> -               ptep = get_pte_virt(pte_phys);
-> +               ptep = pt_ops.get_pte_virt(pte_phys);
->                 memset(ptep, 0, PAGE_SIZE);
->         } else {
->                 pte_phys = PFN_PHYS(_pmd_pfn(pmdp[pmd_idx]));
-> -               ptep = get_pte_virt(pte_phys);
-> +               ptep = pt_ops.get_pte_virt(pte_phys);
->         }
->
->         create_pte_mapping(ptep, va, pa, sz, prot);
->  }
->
->  #define pgd_next_t             pmd_t
-> -#define alloc_pgd_next(__va)   alloc_pmd(__va)
-> -#define get_pgd_next_virt(__pa)        get_pmd_virt(__pa)
-> +#define alloc_pgd_next(__va)   pt_ops.alloc_pmd(__va)
-> +#define get_pgd_next_virt(__pa)        pt_ops.get_pmd_virt(__pa)
->  #define create_pgd_next_mapping(__nextp, __va, __pa, __sz, __prot)     \
->         create_pmd_mapping(__nextp, __va, __pa, __sz, __prot)
->  #define fixmap_pgd_next                fixmap_pmd
->  #else
->  #define pgd_next_t             pte_t
-> -#define alloc_pgd_next(__va)   alloc_pte(__va)
-> -#define get_pgd_next_virt(__pa)        get_pte_virt(__pa)
-> +#define alloc_pgd_next(__va)   pt_ops.alloc_pte(__va)
-> +#define get_pgd_next_virt(__pa)        pt_ops.get_pte_virt(__pa)
->  #define create_pgd_next_mapping(__nextp, __va, __pa, __sz, __prot)     \
->         create_pte_mapping(__nextp, __va, __pa, __sz, __prot)
->  #define fixmap_pgd_next                fixmap_pte
-> @@ -421,6 +468,12 @@ asmlinkage void __init setup_vm(uintptr_t dtb_pa)
->         BUG_ON((load_pa % map_size) != 0);
->         BUG_ON(load_sz > MAX_EARLY_MAPPING_SIZE);
->
-> +       pt_ops.alloc_pte = alloc_pte_early;
-> +       pt_ops.get_pte_virt = get_pte_virt_early;
-> +#ifndef __PAGETABLE_PMD_FOLDED
-> +       pt_ops.alloc_pmd = alloc_pmd_early;
-> +       pt_ops.get_pmd_virt = get_pmd_virt_early;
-> +#endif
->         /* Setup early PGD for fixmap */
->         create_pgd_mapping(early_pg_dir, FIXADDR_START,
->                            (uintptr_t)fixmap_pgd_next, PGDIR_SIZE, PAGE_TABLE);
-> @@ -497,9 +550,16 @@ static void __init setup_vm_final(void)
->         phys_addr_t pa, start, end;
->         struct memblock_region *reg;
->
-> -       /* Set mmu_enabled flag */
-> -       mmu_enabled = true;
-> -
-> +       /**
-> +        * MMU is enabled at this point. But page table setup is not complete yet.
-> +        * fixmap page table alloc functions should be used at this point
+> +#ifdef CONFIG_EFI
+> +       /*
+> +        * This instruction decodes to "MZ" ASCII required by UEFI.
 > +        */
-> +       pt_ops.alloc_pte = alloc_pte_fixmap;
-> +       pt_ops.get_pte_virt = get_pte_virt_fixmap;
-> +#ifndef __PAGETABLE_PMD_FOLDED
-> +       pt_ops.alloc_pmd = alloc_pmd_fixmap;
-> +       pt_ops.get_pmd_virt = get_pmd_virt_fixmap;
+> +       c.li s4,-13
+> +       j _start_kernel
+> +#else
+>         /* jump to start kernel */
+>         j _start_kernel
+>         /* reserved */
+>         .word 0
 > +#endif
->         /* Setup swapper PGD for fixmap */
->         create_pgd_mapping(swapper_pg_dir, FIXADDR_START,
->                            __pa_symbol(fixmap_pgd_next),
-> @@ -533,6 +593,14 @@ static void __init setup_vm_final(void)
->         /* Move to swapper page table */
->         csr_write(CSR_SATP, PFN_DOWN(__pa_symbol(swapper_pg_dir)) | SATP_MODE);
->         local_flush_tlb_all();
+>         .balign 8
+>  #if __riscv_xlen == 64
+>         /* Image load offset(2MB) from start of RAM */
+> @@ -43,7 +52,14 @@ ENTRY(_start)
+>         .ascii RISCV_IMAGE_MAGIC
+>         .balign 4
+>         .ascii RISCV_IMAGE_MAGIC2
+> +#ifdef CONFIG_EFI
+> +       .word pe_head_start - _start
+> +pe_head_start:
 > +
-> +       /* generic page allocation functions must be used to setup page table */
-> +       pt_ops.alloc_pte = alloc_pte_late;
-> +       pt_ops.get_pte_virt = get_pte_virt_late;
-> +#ifndef __PAGETABLE_PMD_FOLDED
-> +       pt_ops.alloc_pmd = alloc_pmd_late;
-> +       pt_ops.get_pmd_virt = get_pmd_virt_late;
+> +       __EFI_PE_HEADER
+> +#else
+>         .word 0
 > +#endif
->  }
->  #else
->  asmlinkage void __init setup_vm(uintptr_t dtb_pa)
+>
+>  .align 2
+>  #ifdef CONFIG_MMU
+> diff --git a/arch/riscv/kernel/image-vars.h b/arch/riscv/kernel/image-vars.h
+> new file mode 100644
+> index 000000000000..8c212efb37a6
+> --- /dev/null
+> +++ b/arch/riscv/kernel/image-vars.h
+> @@ -0,0 +1,51 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+> +/*
+> + * Copyright (C) 2020 Western Digital Corporation or its affiliates.
+> + * Linker script variables to be set after section resolution, as
+> + * ld.lld does not like variables assigned before SECTIONS is processed.
+> + * Based on arch/arm64/kerne/image-vars.h
+> + */
+> +#ifndef __RISCV_KERNEL_IMAGE_VARS_H
+> +#define __RISCV_KERNEL_IMAGE_VARS_H
+> +
+> +#ifndef LINKER_SCRIPT
+> +#error This file should only be included in vmlinux.lds.S
+> +#endif
+> +
+> +#ifdef CONFIG_EFI
+> +
+> +/*
+> + * The EFI stub has its own symbol namespace prefixed by __efistub_, to
+> + * isolate it from the kernel proper. The following symbols are legally
+> + * accessed by the stub, so provide some aliases to make them accessible.
+> + * Only include data symbols here, or text symbols of functions that are
+> + * guaranteed to be safe when executed at another offset than they were
+> + * linked at. The routines below are all implemented in assembler in a
+> + * position independent manner
+> + */
+> +__efistub_memcmp               = memcmp;
+> +__efistub_memchr               = memchr;
+> +__efistub_memcpy               = memcpy;
+> +__efistub_memmove              = memmove;
+> +__efistub_memset               = memset;
+> +__efistub_strlen               = strlen;
+> +__efistub_strnlen              = strnlen;
+> +__efistub_strcmp               = strcmp;
+> +__efistub_strncmp              = strncmp;
+> +__efistub_strrchr              = strrchr;
+> +
+> +#ifdef CONFIG_KASAN
+> +__efistub___memcpy             = memcpy;
+> +__efistub___memmove            = memmove;
+> +__efistub___memset             = memset;
+> +#endif
+> +
+> +__efistub__start               = _start;
+> +__efistub__start_kernel                = _start_kernel;
+> +__efistub__end                 = _end;
+> +__efistub__edata               = _edata;
+> +__efistub_screen_info          = screen_info;
+> +
+> +#endif
+> +
+> +#endif /* __RISCV_KERNEL_IMAGE_VARS_H */
+> diff --git a/arch/riscv/kernel/vmlinux.lds.S b/arch/riscv/kernel/vmlinux.lds.S
+> index f3586e31ed1e..6dcf790282dd 100644
+> --- a/arch/riscv/kernel/vmlinux.lds.S
+> +++ b/arch/riscv/kernel/vmlinux.lds.S
+> @@ -10,6 +10,7 @@
+>  #include <asm/cache.h>
+>  #include <asm/thread_info.h>
+>  #include <asm/set_memory.h>
+> +#include "image-vars.h"
+>
+>  #include <linux/sizes.h>
+>  OUTPUT_ARCH(riscv)
+> @@ -17,6 +18,9 @@ ENTRY(_start)
+>
+>  jiffies = jiffies_64;
+>
+> +PECOFF_SECTION_ALIGNMENT = 0x1000;
+> +PECOFF_FILE_ALIGNMENT = 0x200;
+> +
+>  SECTIONS
+>  {
+>         /* Beginning of code and text segment */
+> @@ -76,6 +80,10 @@ SECTIONS
+>
+>         EXCEPTION_TABLE(0x10)
+>
+> +#ifdef CONFIG_EFI
+> +       . = ALIGN(PECOFF_SECTION_ALIGNMENT);
+> +       __pecoff_text_end = .;
+> +#endif
+>         . = ALIGN(SECTION_ALIGN);
+>         _data = .;
+>
+> @@ -83,16 +91,26 @@ SECTIONS
+>         .sdata : {
+>                 __global_pointer$ = . + 0x800;
+>                 *(.sdata*)
+> -               /* End of data section */
+> -               _edata = .;
+>         }
+>
+> +#ifdef CONFIG_EFI
+> +       .pecoff_edata_padding : { BYTE(0); . = ALIGN(PECOFF_FILE_ALIGNMENT); }
+> +       __pecoff_data_raw_size = ABSOLUTE(. - __pecoff_text_end);
+> +#endif
+> +
+> +       /* End of data section */
+> +       _edata = .;
+> +
+>         BSS_SECTION(PAGE_SIZE, PAGE_SIZE, 0)
+>
+>         .rel.dyn : {
+>                 *(.rel.dyn*)
+>         }
+>
+> +#ifdef CONFIG_EFI
+> +       . = ALIGN(PECOFF_SECTION_ALIGNMENT);
+> +       __pecoff_data_virt_size = ABSOLUTE(. - __pecoff_text_end);
+> +#endif
+>         _end = .;
+>
+>         STABS_DEBUG
 > --
 > 2.24.0
 >
