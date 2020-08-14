@@ -2,74 +2,70 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DFA5B244164
-	for <lists+linux-efi@lfdr.de>; Fri, 14 Aug 2020 00:44:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 78BAB244503
+	for <lists+linux-efi@lfdr.de>; Fri, 14 Aug 2020 08:29:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726522AbgHMWoH convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-efi@lfdr.de>); Thu, 13 Aug 2020 18:44:07 -0400
-Received: from [186.47.21.114] ([186.47.21.114]:51422 "EHLO mail.hmvi.gob.ec"
-        rhost-flags-FAIL-FAIL-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726205AbgHMWoG (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Thu, 13 Aug 2020 18:44:06 -0400
-X-Greylist: delayed 17450 seconds by postgrey-1.27 at vger.kernel.org; Thu, 13 Aug 2020 18:44:06 EDT
-Received: from localhost (localhost [127.0.0.1])
-        by mail.hmvi.gob.ec (Postfix) with ESMTP id 6BB79C035C579;
-        Thu, 13 Aug 2020 12:03:35 -0500 (-05)
-Received: from mail.hmvi.gob.ec ([127.0.0.1])
-        by localhost (mail.hmvi.gob.ec [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id BkFsBaBrgLMN; Thu, 13 Aug 2020 12:03:35 -0500 (-05)
-Received: from localhost (localhost [127.0.0.1])
-        by mail.hmvi.gob.ec (Postfix) with ESMTP id AE475C0355134;
-        Thu, 13 Aug 2020 11:57:24 -0500 (-05)
-X-Virus-Scanned: amavisd-new at hmvi.gob.ec
-Received: from mail.hmvi.gob.ec ([127.0.0.1])
-        by localhost (mail.hmvi.gob.ec [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id ZFoLOL8WVNsF; Thu, 13 Aug 2020 11:57:24 -0500 (-05)
-Received: from [10.73.80.190] (unknown [105.8.3.183])
-        by mail.hmvi.gob.ec (Postfix) with ESMTPSA id 35D5CC034418E;
-        Thu, 13 Aug 2020 11:50:15 -0500 (-05)
-Content-Type: text/plain; charset="utf-8"
+        id S1726124AbgHNG3E (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 14 Aug 2020 02:29:04 -0400
+Received: from mail.kernel.org ([198.145.29.99]:37074 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726006AbgHNG3E (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Fri, 14 Aug 2020 02:29:04 -0400
+Received: from mail-oo1-f46.google.com (mail-oo1-f46.google.com [209.85.161.46])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 17F8520791;
+        Fri, 14 Aug 2020 06:29:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1597386544;
+        bh=fc91yarCTH69Zspbg59v1kAG6yeSpGx3fAOjqMTPChg=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=V18J4pcBcdCcPtSyF0uEXxRQtdLTKmx7pEOZrJ/23cW/niZUEps9Dw7gYVjwGZ9Ax
+         GAUYT6LP2nKMm6EDQUsEkS7YZj3DpKiJVWEs4ghiSVLKY4VkifNbq2mbmEkpylbejW
+         CIabmmSklawld1ymXmOXpVtQ9r0EdgBG74MA+GCg=
+Received: by mail-oo1-f46.google.com with SMTP id g1so1715269oop.11;
+        Thu, 13 Aug 2020 23:29:04 -0700 (PDT)
+X-Gm-Message-State: AOAM530E7VRYiD+elXr+aMmN8p7V9QFxrIEQBlH9vWkxZf787p8YP24b
+        V4MyNJKQEZ9MxvnSix7MzWABoSWVDzLiLlTti9Q=
+X-Google-Smtp-Source: ABdhPJws8LyTKFi25MNWfpNV7vUpa0UMsbjSu95Uhsc10Q3iQ02/+cjRY0CrMDG+0ew42fMo8w9tjkkR89gq9jOAAVo=
+X-Received: by 2002:a4a:da4c:: with SMTP id f12mr681160oou.41.1597386543479;
+ Thu, 13 Aug 2020 23:29:03 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: =?utf-8?q?Covid_19_Wohlt=C3=A4tigkeitsfonds?=
-To:     Recipients <danny.puetate@mail.hmvi.gob.ec>
-From:   ''Tayeb Souami'' <danny.puetate@mail.hmvi.gob.ec>
-Date:   Thu, 13 Aug 2020 18:49:55 +0200
-Reply-To: Tayebsouam.spende@gmail.com
-Message-Id: <20200813165016.35D5CC034418E@mail.hmvi.gob.ec>
+References: <20200813185811.554051-1-nivedita@alum.mit.edu>
+In-Reply-To: <20200813185811.554051-1-nivedita@alum.mit.edu>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Fri, 14 Aug 2020 08:28:52 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXFm8xZ2Sk9r5XZQuRN2BoCGcysOaEq14MChS1T7zqj1PA@mail.gmail.com>
+Message-ID: <CAMj1kXFm8xZ2Sk9r5XZQuRN2BoCGcysOaEq14MChS1T7zqj1PA@mail.gmail.com>
+Subject: Re: [PATCH 0/3] Three small fixes to cmdline parsing
+To:     Arvind Sankar <nivedita@alum.mit.edu>
+Cc:     linux-efi <linux-efi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Lieber Freund,
+On Thu, 13 Aug 2020 at 20:58, Arvind Sankar <nivedita@alum.mit.edu> wrote:
+>
+> First 2 are resends:
+> https://lore.kernel.org/linux-efi/20200725155916.1376773-1-nivedita@alum.mit.edu/
+> https://lore.kernel.org/linux-efi/20200729193300.598448-1-nivedita@alum.mit.edu/
+>
+> Arvind Sankar (3):
+>   efi/libstub: Stop parsing arguments at "--"
+>   efi/libstub: Handle NULL cmdline
+>   efi/libstub: Handle unterminated cmdline
+>
 
-Ich bin Herr Tayeb Souami, New Jersey, Vereinigte Staaten von Amerika,
-der Mega-Gewinner von $ 315million In Mega Millions Jackpot, spende ich
-an 5 zufällige Personen, wenn Sie diese E-Mail erhalten, dann wurde Ihre
-E-Mail nach einem Spinball ausgewählt.Ich habe den größten Teil meines
-Vermögens auf eine Reihe von Wohltätigkeitsorganisationen und
-Organisationen verteilt.Ich habe mich freiwillig dazu entschieden, die
-Summe von € 2.000.000,00 an Sie als eine der ausgewählten 5 zu spenden,
-um meine Gewinne zu überprüfen, sehen Sie bitte meine You Tube Seite
-unten.
-
-
-UHR MICH HIER: https://www.youtube.com/watch?v=Z6ui8ZDQ6Ks
-
-
-Das ist dein Spendencode: [TS530342018]
+Thanks Arvind. I already applied #1 and #2 locally, so I will just
+pick up the last one.
 
 
-Antworten Sie mit dem SPENDE-CODE an diese
-
-E-Mail:Tayebsouam.spende@gmail.com
-
-
-Ich hoffe, Sie und Ihre Familie glücklich zu machen.
-
-
-Grüße
-
-Herr Tayeb Souami
+>  drivers/firmware/efi/libstub/efi-stub-helper.c | 12 ++++++++++--
+>  1 file changed, 10 insertions(+), 2 deletions(-)
+>
+> --
+> 2.26.2
+>
