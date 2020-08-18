@@ -2,167 +2,117 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A3C5C2479E6
-	for <lists+linux-efi@lfdr.de>; Tue, 18 Aug 2020 00:06:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C4AFD248417
+	for <lists+linux-efi@lfdr.de>; Tue, 18 Aug 2020 13:45:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729771AbgHQWGf (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 17 Aug 2020 18:06:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39444 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729765AbgHQWGe (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 17 Aug 2020 18:06:34 -0400
-Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com [IPv6:2607:f8b0:4864:20::644])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EAA18C061342
-        for <linux-efi@vger.kernel.org>; Mon, 17 Aug 2020 15:06:33 -0700 (PDT)
-Received: by mail-pl1-x644.google.com with SMTP id bh1so8227348plb.12
-        for <linux-efi@vger.kernel.org>; Mon, 17 Aug 2020 15:06:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=cWCid31trlwRX7XdfsbfwsYP5/XIk2QJn77x1TORX4M=;
-        b=NXzN4f82HnWfQkiCcF+SX5NXOiO4v+KrUeo/LrrpOV+3MGTS+4cyvz3PWtiz+gB6vr
-         QL0TK1sDFtGUtdMqdj8BplSJ+vL9el6/RVpkjy03Npgh44KcgW+WykjkSKy3c3yi7ve5
-         uZsoIrNDJcDgFuj7T3th5Mh3X9k5tHK5ZzPdGdH72PjjkYd8YGJrA2wHlgHoO6DtH3xJ
-         M9oNHiXVM/91ZencrMHLzl34yY6uSdOKyh3sRihaaxspFIRXrkkQQQiMDnG9cyZ2KvwO
-         EbA/uWWkwxeUvPGqI1GzFSzcml5KspjAgCsntz81TrfELRcidw7/keX+nZo0Z7ph9z7o
-         vnZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=cWCid31trlwRX7XdfsbfwsYP5/XIk2QJn77x1TORX4M=;
-        b=LAMwQkwlTM2VCIMwFkY7ES6b1flkl/FZKil1hqETm2VHxSFGgQwV/O6PJh8G81HAix
-         Aagzcral1cw6hsSBnpTkGZ3I6zs46X0244T893hY7NOIw2VGKaDp2bHuQHbzq1nUx4EX
-         AylpBhJ/pEyW/IVRWF8KANLONWWKLwKPj3kzNMJlso/czHxaHPTaGCMJr5i29ABFqk3y
-         cTlfme/K08+vZqCwNwdVWjjP/fHLSoDH3gbZQnbKlbtOg7mQKIXhho1EhvkZ5CcbvRw4
-         5mTPARTJofX4zC3BY4tUmlBFVNiZBSdgbpuX+/NOJjR1LjdABvglY1bWgWNjlob4VZvS
-         WZJg==
-X-Gm-Message-State: AOAM530xEFKlnBfeiFc8+RS0A1T22GjK8oNDH4a5XbaYTioRhz/f+qJT
-        oO5sRuojdUS+1RbDrgMLkTllxg==
-X-Google-Smtp-Source: ABdhPJyX2YqsEKBUUEhjY7AqW5QScCarLEIXr9eJDcVCFNHsKfKduPE6VRJ2uTT7E90j6XOcZsqfXA==
-X-Received: by 2002:a17:902:8210:: with SMTP id x16mr13374143pln.166.1597701993230;
-        Mon, 17 Aug 2020 15:06:33 -0700 (PDT)
-Received: from google.com ([2620:15c:2ce:0:a6ae:11ff:fe11:4abb])
-        by smtp.gmail.com with ESMTPSA id j142sm21983520pfd.100.2020.08.17.15.06.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Aug 2020 15:06:32 -0700 (PDT)
-Date:   Mon, 17 Aug 2020 15:06:29 -0700
-From:   Fangrui Song <maskray@google.com>
-To:     Nick Desaulniers <ndesaulniers@google.com>
-Cc:     Kees Cook <keescook@chromium.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Will Deacon <will@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Peter Collingbourne <pcc@google.com>,
-        James Morse <james.morse@arm.com>,
-        Borislav Petkov <bp@suse.de>, Ingo Molnar <mingo@redhat.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Arvind Sankar <nivedita@alum.mit.edu>,
-        Nathan Chancellor <natechancellor@gmail.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
-        clang-built-linux <clang-built-linux@googlegroups.com>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v5 23/36] arm/build: Explicitly keep .ARM.attributes
- sections
-Message-ID: <20200817220629.3pkabegeedomsaaz@google.com>
-References: <20200731230820.1742553-1-keescook@chromium.org>
- <20200731230820.1742553-24-keescook@chromium.org>
- <CAKwvOdn11z+iFQZC54JvQHC=NFX1FsoRMw2a-2P=5sQ6FKwbnw@mail.gmail.com>
+        id S1726391AbgHRLp1 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 18 Aug 2020 07:45:27 -0400
+Received: from wout1-smtp.messagingengine.com ([64.147.123.24]:58567 "EHLO
+        wout1-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726273AbgHRLpZ (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 18 Aug 2020 07:45:25 -0400
+Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
+        by mailout.west.internal (Postfix) with ESMTP id 152A0B70;
+        Tue, 18 Aug 2020 07:45:23 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute3.internal (MEProxy); Tue, 18 Aug 2020 07:45:23 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:content-type:date:from:in-reply-to
+        :message-id:mime-version:references:subject:to:x-me-proxy
+        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; bh=u0/uCy
+        /0jYOzVUR6bLEIJYYHx2p0pFbcL5YM13UhPbw=; b=kMS/bm7h9E8v793HxF5HlS
+        reFVSpsTJ9LRnb5in6cSE7CDNZCPkmoI5Gb+8ZAKAfCy4/Wrhlcc7S4gE842yc6t
+        37rYkXMerl4JbdInFdjeG0fM+9PYC4FgJViUnPTegInWSAdYPSqkjIZ6qmLv8264
+        RkT9CwBFBRlZFoprfE1155gOkgB8k3cifqfH3BwIB9A0lfIbsRZ/DrzzLrTbh429
+        hcoGlvsn/uP3JPxU/45N6XtsT6gREbGruWLEhuP1Z6WMQkCXzIpUp5xhUDHP/eSz
+        +MAU7UqNPVXDDWS9thoX7oe+dlq0ZwZeSZ8aqfXxAdwGQecyh5KnQx1rBfz+tNeg
+        ==
+X-ME-Sender: <xms:Ur87X731USiQLlJTdDBntxwlig2jdEDb0bLCC_JJVQjyZwY68_3igA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduiedruddtiedggeduucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvffukfhfgggtuggjsehgtderredttdejnecuhfhrohhmpeforghrvghk
+    ucforghrtgiihihkohifshhkihdqifpkrhgvtghkihcuoehmrghrmhgrrhgvkhesihhnvh
+    hishhisghlvghthhhinhhgshhlrggsrdgtohhmqeenucggtffrrghtthgvrhhnpeetveff
+    iefghfekhffggeeffffhgeevieektedthfehveeiheeiiedtudegfeetffenucfkpheple
+    durdeigedrudejtddrkeelnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehm
+    rghilhhfrhhomhepmhgrrhhmrghrvghksehinhhvihhsihgslhgvthhhihhnghhslhgrsg
+    drtghomh
+X-ME-Proxy: <xmx:Ur87X6GL34WQFUkFrb3xFf0fmNskIBHixMCifeOxvg7hF5YV-2l9EA>
+    <xmx:Ur87X75xbSUfYvUNU4Oyy8SAR2hmpqxqrcaqp2FH26vi_tUclutW0A>
+    <xmx:Ur87Xw2O1Schc_99pT6-FWa2nL-Lvf4X8PNMQmvxrIoYOwVlQryyMg>
+    <xmx:Ur87X5PIg2eleK1py02bENxJhXX4zDg0jcnduRdkQeC5FucSGTq2_w>
+Received: from mail-itl (ip5b40aa59.dynamic.kabel-deutschland.de [91.64.170.89])
+        by mail.messagingengine.com (Postfix) with ESMTPA id 512F23280065;
+        Tue, 18 Aug 2020 07:45:21 -0400 (EDT)
+Date:   Tue, 18 Aug 2020 13:45:18 +0200
+From:   Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= 
+        <marmarek@invisiblethingslab.com>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-efi <linux-efi@vger.kernel.org>, norbert.kaminski@3mdeb.com,
+        xen-devel@lists.xenproject.org,
+        open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] efi: discover ESRT table on Xen PV too
+Message-ID: <20200818114518.GA226001@mail-itl>
+References: <20200816001949.595424-1-marmarek@invisiblethingslab.com>
+ <CAMj1kXEQ2mpmcNke0K2MZPAAo9wGZ4h3pCmMg9Hm7CPXOCV7fQ@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="cWoXeonUoKmBZSoM"
 Content-Disposition: inline
-In-Reply-To: <CAKwvOdn11z+iFQZC54JvQHC=NFX1FsoRMw2a-2P=5sQ6FKwbnw@mail.gmail.com>
+In-Reply-To: <CAMj1kXEQ2mpmcNke0K2MZPAAo9wGZ4h3pCmMg9Hm7CPXOCV7fQ@mail.gmail.com>
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 2020-08-03, 'Nick Desaulniers' via Clang Built Linux wrote:
->On Fri, Jul 31, 2020 at 4:18 PM Kees Cook <keescook@chromium.org> wrote:
->>
->> In preparation for adding --orphan-handling=warn, explicitly keep the
->> .ARM.attributes section by expanding the existing ELF_DETAILS macro into
->> ARM_DETAILS.
->>
->> Suggested-by: Nick Desaulniers <ndesaulniers@google.com>
->> Link: https://lore.kernel.org/lkml/CAKwvOdk-racgq5pxsoGS6Vtifbtrk5fmkmnoLxrQMaOvV0nPWw@mail.gmail.com/
->> Signed-off-by: Kees Cook <keescook@chromium.org>
->> ---
->>  arch/arm/include/asm/vmlinux.lds.h | 4 ++++
->>  arch/arm/kernel/vmlinux-xip.lds.S  | 2 +-
->>  arch/arm/kernel/vmlinux.lds.S      | 2 +-
->>  3 files changed, 6 insertions(+), 2 deletions(-)
->>
->> diff --git a/arch/arm/include/asm/vmlinux.lds.h b/arch/arm/include/asm/vmlinux.lds.h
->> index a08f4301b718..c4af5182ab48 100644
->> --- a/arch/arm/include/asm/vmlinux.lds.h
->> +++ b/arch/arm/include/asm/vmlinux.lds.h
->> @@ -52,6 +52,10 @@
->>                 ARM_MMU_DISCARD(*(__ex_table))                          \
->>                 COMMON_DISCARDS
->>
->> +#define ARM_DETAILS                                                    \
->> +               ELF_DETAILS                                             \
->> +               .ARM.attributes 0 : { *(.ARM.attributes) }
->
->I had to look up what the `0` meant:
->https://sourceware.org/binutils/docs/ld/Output-Section-Attributes.html#Output-Section-Attributes
->mentions it's an "address" and
->https://ftp.gnu.org/old-gnu/Manuals/ld-2.9.1/html_chapter/ld_3.html#SEC21
->mentions it as "start" (an address).
->Unless we need those, can we drop them? (Sorry for the resulting churn
->that would cause).  I think the NO_LOAD stuff makes more sense, but
->I'm curious if the kernel checks for that.
 
-NOLOAD means SHT_NOBITS (usually SHF_ALLOC). .ARM.attributes is a
-non-SHF_ALLOC section.
+--cWoXeonUoKmBZSoM
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH] efi: discover ESRT table on Xen PV too
 
-An explicit 0 (output section address) is good - GNU ld's internal
-linker scripts (ld --verbose output) use 0 for such non-SHF_ALLOC sections.
-Without the 0, the section may get a non-zero address, which is not
-wrong - but probably does not look well. See https://reviews.llvm.org/D85867 for details.
+On Mon, Aug 17, 2020 at 10:16:07AM +0200, Ard Biesheuvel wrote:
+> > @@ -331,7 +333,8 @@ void __init efi_esrt_init(void)
+> >
+> >         end =3D esrt_data + size;
+> >         pr_info("Reserving ESRT space from %pa to %pa.\n", &esrt_data, =
+&end);
+> > -       if (md.type =3D=3D EFI_BOOT_SERVICES_DATA)
+> > +
+> > +       if (efi_enabled(EFI_MEMMAP) && md.type =3D=3D EFI_BOOT_SERVICES=
+_DATA)
+> >                 efi_mem_reserve(esrt_data, esrt_data_size);
+> >
+>=20
+> This does not look correct to me. Why doesn't the region need to be
+> reserved on a Xen boot? The OS may overwrite it otherwise.
 
+In case of Xen, it is Xen responsibility to do that. Otherwise even if dom0
+would not use it, Xen could allocate that physical memory to another
+guest.
 
-Reviewed-by: Fangrui Song <maskray@google.com>
+--=20
+Best Regards,
+Marek Marczykowski-G=C3=B3recki
+Invisible Things Lab
+A: Because it messes up the order in which people normally read text.
+Q: Why is top-posting such a bad thing?
 
->> +
->>  #define ARM_STUBS_TEXT                                                 \
->>                 *(.gnu.warning)                                         \
->>                 *(.glue_7)                                              \
->> diff --git a/arch/arm/kernel/vmlinux-xip.lds.S b/arch/arm/kernel/vmlinux-xip.lds.S
->> index 904c31fa20ed..57fcbf55f913 100644
->> --- a/arch/arm/kernel/vmlinux-xip.lds.S
->> +++ b/arch/arm/kernel/vmlinux-xip.lds.S
->> @@ -150,7 +150,7 @@ SECTIONS
->>         _end = .;
->>
->>         STABS_DEBUG
->> -       ELF_DETAILS
->> +       ARM_DETAILS
->>  }
->>
->>  /*
->> diff --git a/arch/arm/kernel/vmlinux.lds.S b/arch/arm/kernel/vmlinux.lds.S
->> index bb950c896a67..1d3d3b599635 100644
->> --- a/arch/arm/kernel/vmlinux.lds.S
->> +++ b/arch/arm/kernel/vmlinux.lds.S
->> @@ -149,7 +149,7 @@ SECTIONS
->>         _end = .;
->>
->>         STABS_DEBUG
->> -       ELF_DETAILS
->> +       ARM_DETAILS
->>  }
->>
->>  #ifdef CONFIG_STRICT_KERNEL_RWX
->> --
->> 2.25.1
->>
+--cWoXeonUoKmBZSoM
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEhrpukzGPukRmQqkK24/THMrX1ywFAl87v04ACgkQ24/THMrX
+1ywRDAgAgL6lTfIrcAbuddaDfuNoozejb/lFN0VlxjT6NKiJX9lpQRA/YRCe1TaL
+xq6ELDuC0y9T7tn8smiyhnZ4t1oXKvk85uQBGfozl2vW2Zb6EEsNQOwa7HQF2Eh0
+xvhMtxHrFWtWQk+KT0cVHnQHQ5lkNh0V4ARPUjN8Cbb4g285XMMo0DHzUYYUJOxj
+55eRZbrVZhCiQHgAXDcdjJVrhCoCEfXWhS9L++HWcCnR42elRBuaX5Mrzx6PrYIT
+xnWW37aUUO42wIeRiMw9unqAbyB6V34ApjF1zGGgvCKQDRES2I2mg7EidBkmMZaO
+fzRSp3FZxlTusI1ZV8EFQ+uAEAdEdg==
+=wVff
+-----END PGP SIGNATURE-----
+
+--cWoXeonUoKmBZSoM--
