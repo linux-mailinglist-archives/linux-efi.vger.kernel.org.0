@@ -2,163 +2,80 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 930E72491EB
-	for <lists+linux-efi@lfdr.de>; Wed, 19 Aug 2020 02:48:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D035249705
+	for <lists+linux-efi@lfdr.de>; Wed, 19 Aug 2020 09:21:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727061AbgHSAsF (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 18 Aug 2020 20:48:05 -0400
-Received: from mga18.intel.com ([134.134.136.126]:28308 "EHLO mga18.intel.com"
+        id S1727885AbgHSHVH (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 19 Aug 2020 03:21:07 -0400
+Received: from mx2.suse.de ([195.135.220.15]:54202 "EHLO mx2.suse.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726533AbgHSAsE (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Tue, 18 Aug 2020 20:48:04 -0400
-IronPort-SDR: 4h8vudYOkYmnqoJuZE8hx+S8IDfN0pOtTHIiABel3jvH6NJHZ5oLTte4s3us+nehS/NYTim1JR
- Curg34/U708Q==
-X-IronPort-AV: E=McAfee;i="6000,8403,9717"; a="142656766"
-X-IronPort-AV: E=Sophos;i="5.76,329,1592895600"; 
-   d="scan'208";a="142656766"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Aug 2020 17:48:03 -0700
-IronPort-SDR: wS9TZZYtSaQM7OsmWAZbCpxQdF2svthwC0iwumLqv7G4rCNXIqqNVhrvGHovW6pTI6Asn4fUHA
- OoSniDOV6w6w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.76,329,1592895600"; 
-   d="scan'208";a="278192551"
-Received: from lkp-server02.sh.intel.com (HELO 2f0d8b563e65) ([10.239.97.151])
-  by fmsmga007.fm.intel.com with ESMTP; 18 Aug 2020 17:48:02 -0700
-Received: from kbuild by 2f0d8b563e65 with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1k8CGn-0001UU-Pk; Wed, 19 Aug 2020 00:48:01 +0000
-Date:   Wed, 19 Aug 2020 08:46:45 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     linux-efi@vger.kernel.org
-Subject: [efi:urgent] BUILD SUCCESS
- 477ecfc4260135c7a37f18e7648f0b135dcd352a
-Message-ID: <5f3c7675.RC0hwwXH09lnbiMh%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S1727849AbgHSHVE (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Wed, 19 Aug 2020 03:21:04 -0400
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.221.27])
+        by mx2.suse.de (Postfix) with ESMTP id 804ADB5C3;
+        Wed, 19 Aug 2020 07:21:26 +0000 (UTC)
+Subject: Re: [PATCH] efi: discover ESRT table on Xen PV too
+To:     =?UTF-8?Q?Roger_Pau_Monn=c3=a9?= <roger.pau@citrix.com>
+Cc:     =?UTF-8?Q?Marek_Marczykowski-G=c3=b3recki?= 
+        <marmarek@invisiblethingslab.com>,
+        Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org,
+        norbert.kaminski@3mdeb.com, xen-devel@lists.xenproject.org,
+        open list <linux-kernel@vger.kernel.org>
+References: <20200816001949.595424-1-marmarek@invisiblethingslab.com>
+ <20200817090013.GN975@Air-de-Roger> <20200818120135.GK1679@mail-itl>
+ <20200818124710.GK828@Air-de-Roger>
+From:   Jan Beulich <jbeulich@suse.com>
+Message-ID: <c04fd081-2a13-93bb-fa0b-f9781062fb58@suse.com>
+Date:   Wed, 19 Aug 2020 09:20:59 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.11.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <20200818124710.GK828@Air-de-Roger>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git  urgent
-branch HEAD: 477ecfc4260135c7a37f18e7648f0b135dcd352a  Documentation: efi: remove description of efi=old_map
+On 18.08.2020 14:47, Roger Pau Monné wrote:
+> On Tue, Aug 18, 2020 at 02:01:35PM +0200, Marek Marczykowski-Górecki wrote:
+>> On Mon, Aug 17, 2020 at 11:00:13AM +0200, Roger Pau Monné wrote:
+>>> On Sun, Aug 16, 2020 at 02:19:49AM +0200, Marek Marczykowski-Górecki wrote:
+>>>> In case of Xen PV dom0, Xen passes along info about system tables (see
+>>>> arch/x86/xen/efi.c), but not the memory map from EFI.
+>>>
+>>> I think that's because the memory map returned by
+>>> XENMEM_machine_memory_map is in e820 form, and doesn't contain the
+>>> required information about the EFI regions due to the translation done
+>>> by efi_arch_process_memory_map in Xen?
+>>
+>> Yes, I think so.
+>>
+>>>> This makes sense
+>>>> as it is Xen responsible for managing physical memory address space.
+>>>> In this case, it doesn't make sense to condition using ESRT table on
+>>>> availability of EFI memory map, as it isn't Linux kernel responsible for
+>>>> it.
+>>>
+>>> PV dom0 is kind of special in that regard as it can create mappings to
+>>> (almost) any MMIO regions, and hence can change it's memory map
+>>> substantially.
+>>
+>> Do you mean PV dom0 should receive full EFI memory map? Jan already
+>> objected this as it would be a layering violation.
+> 
+> dom0 is already capable of getting the native e820 memory map using
+> XENMEM_machine_memory_map, I'm not sure why allowing to return the
+> memory map in EFI form would be any different (or a layering
+> violation in the PV dom0 case).
 
-elapsed time: 1974m
+The EFI memory map exposes more information than the E820 one, and
+this extra information should remain private to Xen if at all
+possible. I actually think that exposing the raw E820 map was a
+layering violation, too. Instead hypercalls should have been added
+for the specific legitimate uses that Dom0 may have for the memmap.
 
-configs tested: 101
-configs skipped: 9
-
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-sh                        apsh4ad0a_defconfig
-arm                            hisi_defconfig
-ia64                             allyesconfig
-powerpc                         ps3_defconfig
-h8300                     edosk2674_defconfig
-sh                          urquell_defconfig
-ia64                        generic_defconfig
-ia64                          tiger_defconfig
-csky                                defconfig
-mips                           rs90_defconfig
-powerpc                      ppc64e_defconfig
-sh                         ecovec24_defconfig
-sh                               allmodconfig
-sh                          rsk7264_defconfig
-m68k                          amiga_defconfig
-ia64                            zx1_defconfig
-ia64                             alldefconfig
-mips                      malta_kvm_defconfig
-sparc                            alldefconfig
-mips                       capcella_defconfig
-powerpc                      ppc6xx_defconfig
-arm                       omap2plus_defconfig
-arm                             mxs_defconfig
-mips                        omega2p_defconfig
-mips                       rbtx49xx_defconfig
-mips                         cobalt_defconfig
-m68k                          hp300_defconfig
-arm                        clps711x_defconfig
-mips                      pic32mzda_defconfig
-mips                      maltasmvp_defconfig
-arm                           sunxi_defconfig
-powerpc                       holly_defconfig
-riscv                    nommu_virt_defconfig
-powerpc                      pmac32_defconfig
-arm                      footbridge_defconfig
-mips                        nlm_xlr_defconfig
-microblaze                      mmu_defconfig
-arm                        oxnas_v6_defconfig
-ia64                             allmodconfig
-ia64                                defconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-c6x                              allyesconfig
-nds32                               defconfig
-nios2                            allyesconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-parisc                              defconfig
-s390                             allyesconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                             defconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-x86_64               randconfig-a006-20200817
-x86_64               randconfig-a001-20200817
-x86_64               randconfig-a005-20200817
-x86_64               randconfig-a003-20200817
-x86_64               randconfig-a002-20200817
-x86_64               randconfig-a004-20200817
-i386                 randconfig-a005-20200817
-i386                 randconfig-a001-20200817
-i386                 randconfig-a002-20200817
-i386                 randconfig-a003-20200817
-i386                 randconfig-a006-20200817
-i386                 randconfig-a004-20200817
-i386                 randconfig-a016-20200817
-i386                 randconfig-a011-20200817
-i386                 randconfig-a013-20200817
-i386                 randconfig-a015-20200817
-i386                 randconfig-a014-20200817
-i386                 randconfig-a012-20200817
-riscv                            allyesconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                            allmodconfig
-x86_64                                   rhel
-x86_64                           allyesconfig
-x86_64                    rhel-7.6-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                                  kexec
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+Jan
