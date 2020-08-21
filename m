@@ -2,48 +2,48 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 405D824E147
-	for <lists+linux-efi@lfdr.de>; Fri, 21 Aug 2020 21:54:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC88D24E133
+	for <lists+linux-efi@lfdr.de>; Fri, 21 Aug 2020 21:54:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726887AbgHUTyr (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 21 Aug 2020 15:54:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38298 "EHLO
+        id S1726624AbgHUTyD (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 21 Aug 2020 15:54:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38268 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726757AbgHUTyW (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 21 Aug 2020 15:54:22 -0400
-Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7E7CC0617AA
-        for <linux-efi@vger.kernel.org>; Fri, 21 Aug 2020 12:54:08 -0700 (PDT)
-Received: by mail-pl1-x636.google.com with SMTP id s14so1356103plp.4
-        for <linux-efi@vger.kernel.org>; Fri, 21 Aug 2020 12:54:08 -0700 (PDT)
+        with ESMTP id S1725831AbgHUTyB (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 21 Aug 2020 15:54:01 -0400
+Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com [IPv6:2607:f8b0:4864:20::641])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF086C061573
+        for <linux-efi@vger.kernel.org>; Fri, 21 Aug 2020 12:54:00 -0700 (PDT)
+Received: by mail-pl1-x641.google.com with SMTP id h2so1361103plr.0
+        for <linux-efi@vger.kernel.org>; Fri, 21 Aug 2020 12:54:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=qYY4BGMZpEUoUw6pwB0rAYIo+TQmYGtCQDuwjk0rFfA=;
-        b=UXMo0g81IhuQadz0t0IT637YY3O6sDavMlgOlN8BROJi+h21xme8wQSpHfKN4VSjs0
-         0zvn+K7mSlGI5ABhdq61uvamMUHMZX9mI8BGcLCW0h1nwgeZH2CIU7gdquipMxGV/X/g
-         LkXmXYJdkoUSQ1wvEfsI5FA5lu5Z42khMLWbU=
+        bh=DLGrXrQrOnwocgl0d2lDlCmyCMk0LzJNzAhGu1QupvY=;
+        b=TOCS9QXFvi2sKYKTRr7ee6kse0TEhswUvVuKqMoKi3tljAuSEAQbpwLZo0K9qaprrb
+         0bsJpMg221HwjQsJw+E3oqeYuH95C/KSW+y5f5cGNHh1HZGSHWEcRCqDGVat33dSK1xj
+         BvjA1iJ703xzao5ihIUvP0L+zcmeoM7uEoJQc=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=qYY4BGMZpEUoUw6pwB0rAYIo+TQmYGtCQDuwjk0rFfA=;
-        b=SolF1HIjzlyXVRQw1xBUofZi8INqYICq13GpkBdSpFWcgSPrB7CpmLx9Cf+0U0ZDKn
-         2H18gthU99CedWvKUdaxn/a8QpH+fn/rEoRonI5E08cHXSOptPPXSnWMV72mg6zXe+0Y
-         yQUoDYeuJ+vfncaDmh0fMBvsyPcUGiiWEyC76TANn6ZQMQOW6sIOTnve+CD+2UvzqaJG
-         WjA/Q4fg3U+8XZAScVSUUrBXtQOnPFV3Kfia9PoA01AcKxrg3/2Jy0FKtR6S6JDVtNhU
-         nyeTElbaW4Ec1+LwpUjVRF27bylTZA4BI12ZRfFWEOys2NFTyNESCyQFOdv1LFpy209m
-         BXDA==
-X-Gm-Message-State: AOAM53071b8yHjQ4pUVYsqLi8MuOpn9vw5Zu2qcBGVm6bOunlhOeycdZ
-        eDIBG/Fp2LAvsNMsvzRRTEMxDg==
-X-Google-Smtp-Source: ABdhPJzdBaK0lQXKTsLBcoY+gieqzSTMIlMFnB1R1B39G09fhcKe/Ne3I8UbPt7DQq2SxYcgDyyTKA==
-X-Received: by 2002:a17:902:b402:: with SMTP id x2mr88446plr.97.1598039646692;
-        Fri, 21 Aug 2020 12:54:06 -0700 (PDT)
+        bh=DLGrXrQrOnwocgl0d2lDlCmyCMk0LzJNzAhGu1QupvY=;
+        b=cKjxoeioMRFIAHio1jQ8cFv41b1psSrB9SQD6lt0ydQQ32WvNGsIP2ydqEnAWjls9Q
+         jDql5KtgRhWCGRVaU9xqatJ3sVQ2UF2RKOjluc2CGyi1KX7G6Ylj+2MuLqj/PORib65K
+         4hSZCwCuNYrfnf/+yYZJlCldRBUmH5OwtiOhWXG/GE4Ap9vBrwBFfIM2fj0cAi9heKF1
+         7Hvm8eryMaVAazaS5OhVVsnAH3+xXBZjJ+xYgNNs59IXzrrCQSW1GmJ1Xra5dGlvSNDd
+         RGXoil1zX+M6jaBOao9z9WFs91sxscC8cbAa6izryJJ5YvntZREYvo1v7/vvzmAoRHH1
+         zX/g==
+X-Gm-Message-State: AOAM532/sJbB0CNvmI/ZDsSub2YC1uiryWcNTQRYV+O+9Lq7qcj3tuOD
+        dj236WhRTz2lfp3clSZafrraHw==
+X-Google-Smtp-Source: ABdhPJxQwlh39B9Zs+13fgS+Mj5RyeBXBYwZUtq7yzKxm2wrKQBpH/KK+GuDxakqY9UBFLOVsfmNSw==
+X-Received: by 2002:a17:902:c211:: with SMTP id 17mr2292148pll.343.1598039640054;
+        Fri, 21 Aug 2020 12:54:00 -0700 (PDT)
 Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id x28sm3555441pfq.141.2020.08.21.12.54.02
+        by smtp.gmail.com with ESMTPSA id x26sm3139562pfn.218.2020.08.21.12.53.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Aug 2020 12:54:03 -0700 (PDT)
+        Fri, 21 Aug 2020 12:53:59 -0700 (PDT)
 From:   Kees Cook <keescook@chromium.org>
 To:     Ingo Molnar <mingo@kernel.org>
 Cc:     Kees Cook <keescook@chromium.org>,
@@ -62,9 +62,9 @@ Cc:     Kees Cook <keescook@chromium.org>,
         clang-built-linux@googlegroups.com, linux-arch@vger.kernel.org,
         linux-efi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH v6 27/29] x86/boot/compressed: Remove, discard, or assert for unwanted sections
-Date:   Fri, 21 Aug 2020 12:43:08 -0700
-Message-Id: <20200821194310.3089815-28-keescook@chromium.org>
+Subject: [PATCH v6 28/29] x86/boot/compressed: Add missing debugging sections to output
+Date:   Fri, 21 Aug 2020 12:43:09 -0700
+Message-Id: <20200821194310.3089815-29-keescook@chromium.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200821194310.3089815-1-keescook@chromium.org>
 References: <20200821194310.3089815-1-keescook@chromium.org>
@@ -75,67 +75,27 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-In preparation for warning on orphan sections, stop the linker from
-generating the .eh_frame* sections, discard unwanted non-zero-sized
-generated sections, and enforce other expected-to-be-zero-sized sections
-(since discarding them might hide problems with them suddenly gaining
-unexpected entries).
+Include the missing DWARF and STABS sections in the compressed image,
+when they are present.
 
 Signed-off-by: Kees Cook <keescook@chromium.org>
 ---
- arch/x86/boot/compressed/Makefile      |  1 +
- arch/x86/boot/compressed/vmlinux.lds.S | 14 ++++++++++++--
- 2 files changed, 13 insertions(+), 2 deletions(-)
+ arch/x86/boot/compressed/vmlinux.lds.S | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/x86/boot/compressed/Makefile b/arch/x86/boot/compressed/Makefile
-index 753d57266757..5b7f6e175b03 100644
---- a/arch/x86/boot/compressed/Makefile
-+++ b/arch/x86/boot/compressed/Makefile
-@@ -50,6 +50,7 @@ GCOV_PROFILE := n
- UBSAN_SANITIZE :=n
- 
- KBUILD_LDFLAGS := -m elf_$(UTS_MACHINE)
-+KBUILD_LDFLAGS += $(call ld-option,--no-ld-generated-unwind-info)
- # Compressed kernel should be built as PIE since it may be loaded at any
- # address by the bootloader.
- LDFLAGS_vmlinux := -pie $(call ld-option, --no-dynamic-linker)
 diff --git a/arch/x86/boot/compressed/vmlinux.lds.S b/arch/x86/boot/compressed/vmlinux.lds.S
-index ca544a16724b..02f6feb0e55b 100644
+index 02f6feb0e55b..112b2375d021 100644
 --- a/arch/x86/boot/compressed/vmlinux.lds.S
 +++ b/arch/x86/boot/compressed/vmlinux.lds.S
-@@ -72,6 +72,11 @@ SECTIONS
+@@ -69,6 +69,8 @@ SECTIONS
+ 	. = ALIGN(PAGE_SIZE);	/* keep ZO size page aligned */
+ 	_end = .;
+ 
++	STABS_DEBUG
++	DWARF_DEBUG
  	ELF_DETAILS
  
  	DISCARDS
-+	/DISCARD/ : {
-+		*(.dynamic) *(.dynsym) *(.dynstr) *(.dynbss)
-+		*(.hash) *(.gnu.hash)
-+		*(.note.*)
-+	}
- 
- 	.got.plt (INFO) : {
- 		*(.got.plt)
-@@ -93,13 +98,18 @@ SECTIONS
- 	}
- 	ASSERT(SIZEOF(.got) == 0, "Unexpected GOT entries detected!")
- 
-+	.plt : {
-+		*(.plt) *(.plt.*)
-+	}
-+	ASSERT(SIZEOF(.plt) == 0, "Unexpected run-time procedure linkages detected!")
-+
- 	.rel.dyn : {
--		*(.rel.*)
-+		*(.rel.*) *(.rel_*)
- 	}
- 	ASSERT(SIZEOF(.rel.dyn) == 0, "Unexpected run-time relocations (.rel) detected!")
- 
- 	.rela.dyn : {
--		*(.rela.*)
-+		*(.rela.*) *(.rela_*)
- 	}
- 	ASSERT(SIZEOF(.rela.dyn) == 0, "Unexpected run-time relocations (.rela) detected!")
- }
 -- 
 2.25.1
 
