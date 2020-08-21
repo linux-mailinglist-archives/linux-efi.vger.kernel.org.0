@@ -2,46 +2,46 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 701EE24E159
-	for <lists+linux-efi@lfdr.de>; Fri, 21 Aug 2020 21:55:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 334F524E151
+	for <lists+linux-efi@lfdr.de>; Fri, 21 Aug 2020 21:55:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726956AbgHUTzX (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 21 Aug 2020 15:55:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38290 "EHLO
+        id S1726750AbgHUTzL (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 21 Aug 2020 15:55:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38304 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726673AbgHUTyD (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 21 Aug 2020 15:54:03 -0400
-Received: from mail-pj1-x1044.google.com (mail-pj1-x1044.google.com [IPv6:2607:f8b0:4864:20::1044])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF8B2C061798
-        for <linux-efi@vger.kernel.org>; Fri, 21 Aug 2020 12:54:01 -0700 (PDT)
-Received: by mail-pj1-x1044.google.com with SMTP id ep8so1262049pjb.3
-        for <linux-efi@vger.kernel.org>; Fri, 21 Aug 2020 12:54:01 -0700 (PDT)
+        with ESMTP id S1726585AbgHUTyF (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 21 Aug 2020 15:54:05 -0400
+Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com [IPv6:2607:f8b0:4864:20::543])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1AA9FC06179F
+        for <linux-efi@vger.kernel.org>; Fri, 21 Aug 2020 12:54:03 -0700 (PDT)
+Received: by mail-pg1-x543.google.com with SMTP id s15so1478193pgc.8
+        for <linux-efi@vger.kernel.org>; Fri, 21 Aug 2020 12:54:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=vdQE3ckXVQaQMZctNKe7+WI4MMPWGnzLaa/Ga3pSK5c=;
-        b=iZ6STMhfCfnlcIksH6lFcgl1iRc5Ipz40ciRwj5/xUiB2quTrrBfw1cgVpJYFMbyFi
-         wLkm/B4u1iW579uXJIrcTAmAqLtJgXuQlTr0Jw8TE4vUm+lyJaDqm+THT2m14yyN/64A
-         qOkwxIhzTLvBmqaLWYpt/YgXsfKu4Nl9ZprsI=
+        bh=PeNFh808sp94203AedRRDxtBogHXBjPfBsBbm9/bM3w=;
+        b=KCpWIGu2/MoubKQjEEdpSZyLun4iQCojW3eL8PjI2Ey8IgO2OcGgVhrFyHJn60Oux1
+         fAkef240dPlqqfWatRfeUzI0UXYkuVBgt7cQxaJhM6IEUsH+zU6+dsXGqqDYhsj3l+/E
+         d+7ZofSbpYqxDUrDxEuyZZyHy5U/1ElZSYieo=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=vdQE3ckXVQaQMZctNKe7+WI4MMPWGnzLaa/Ga3pSK5c=;
-        b=XBjGbBlpDLHucCs72k6WZERqcX6Ekw8FXAKO4KtnCCrvJMBV+yMj+MSpGaeX8ali+y
-         mK985ppZcyrnqwSsN9Fz9EtIRL0hLcf50WPMdZfODwpLpGO/tv+PM/rA/U1iQGl7YqBq
-         THj78o8H26A86j6MyOSMiFTcAL9zS+bE/PYbUGF5ti66tAl30EYbmUD/r8+SVZXpT0LG
-         ML0bvEjT+v8uXBQdmeND0dv+r+UTQnBc+jfQJJ6i8y929LFZ6Vg+CGxw25cAdQSlXp4q
-         YxvSKBzFwqC3dazX1wzrfIgVUn9xMwyE+u4KLUvgkbx20ghnymplSoAwObDXALuBiZ8o
-         Mlqg==
-X-Gm-Message-State: AOAM530SON6zk9EI9uB15zUh25MwZCn5tCO05QUpu1RNzq3FAtxH2Fnw
-        YoT83o8taVjW2+89aAJ4splhYA==
-X-Google-Smtp-Source: ABdhPJx3+jtNnnJd5zpPHLfvhbuFAhJz5nokpNldUaNYUUJcrj2heuGLYxm1XOgYFBH0L7ukexa7gQ==
-X-Received: by 2002:a17:90b:238d:: with SMTP id mr13mr3515645pjb.132.1598039641368;
-        Fri, 21 Aug 2020 12:54:01 -0700 (PDT)
+        bh=PeNFh808sp94203AedRRDxtBogHXBjPfBsBbm9/bM3w=;
+        b=ptzENYVpSd3hdK6QoHI8Bwcv+lpEL1CRn7CONeTdQxmKJ/Gdjv61Qyq1RNz29JAyX4
+         R1bcQrUrL0e3ixSzlKNEuTQ5yFVlcuW+vIVipQhCACjozoLW8Dhkk5uLoUAHSyerXa/+
+         /SCCjOX0mNZmTGAVWdO6BYysvUBmK7DL3weBmiu7uv9+z+xgixSWEZCCZqtUaqXpB281
+         9mTQB4S9kJe5EqnanJsrVTwbX2bRABOZTI3eEC8Bj5xMlyvTjAF713IkyMlHunZ2nLz+
+         Jj3oNzWYV4a1yx8zzSiuBLpu0O0QKJUT+jU97mT2EQ91+qmGLzndn6ta6GmADavG0/6G
+         P8og==
+X-Gm-Message-State: AOAM533q7433VDZeYSWoRAq/b9Rqh/yOa2kXVNovyjWYkYNipIk1bw/l
+        xnHCowgm9iDcJ9Wsj8sgqzRUCw==
+X-Google-Smtp-Source: ABdhPJz2gpH4NA/nopyFe5T4J16P06sAq6mOjn6oaCK64m6qXX90A5MjjPsdZ/Av2ZQInlq5xfJc5g==
+X-Received: by 2002:aa7:8bd2:: with SMTP id s18mr3553849pfd.284.1598039642687;
+        Fri, 21 Aug 2020 12:54:02 -0700 (PDT)
 Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id l9sm3165356pgg.29.2020.08.21.12.53.58
+        by smtp.gmail.com with ESMTPSA id x11sm2748233pgl.65.2020.08.21.12.53.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Fri, 21 Aug 2020 12:53:59 -0700 (PDT)
 From:   Kees Cook <keescook@chromium.org>
@@ -62,9 +62,9 @@ Cc:     Kees Cook <keescook@chromium.org>,
         clang-built-linux@googlegroups.com, linux-arch@vger.kernel.org,
         linux-efi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH v6 21/29] arm/boot: Warn on orphan section placement
-Date:   Fri, 21 Aug 2020 12:43:02 -0700
-Message-Id: <20200821194310.3089815-22-keescook@chromium.org>
+Subject: [PATCH v6 22/29] x86/asm: Avoid generating unused kprobe sections
+Date:   Fri, 21 Aug 2020 12:43:03 -0700
+Message-Id: <20200821194310.3089815-23-keescook@chromium.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200821194310.3089815-1-keescook@chromium.org>
 References: <20200821194310.3089815-1-keescook@chromium.org>
@@ -75,30 +75,35 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-We don't want to depend on the linker's orphan section placement
-heuristics as these can vary between linkers, and may change between
-versions. All sections need to be explicitly handled in the linker script.
-
-With all sections now handled, enable orphan section warning.
+When !CONFIG_KPROBES, do not generate kprobe sections. This makes
+sure there are no unexpected sections encountered by the linker scripts.
 
 Signed-off-by: Kees Cook <keescook@chromium.org>
 ---
- arch/arm/boot/compressed/Makefile | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/x86/include/asm/asm.h | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/boot/compressed/Makefile b/arch/arm/boot/compressed/Makefile
-index b1147b7f2c8d..d6cd2688ad7e 100644
---- a/arch/arm/boot/compressed/Makefile
-+++ b/arch/arm/boot/compressed/Makefile
-@@ -123,6 +123,8 @@ endif
- LDFLAGS_vmlinux += --no-undefined
- # Delete all temporary local symbols
- LDFLAGS_vmlinux += -X
-+# Report orphan sections
-+LDFLAGS_vmlinux += --orphan-handling=warn
- # Next argument is a linker script
- LDFLAGS_vmlinux += -T
+diff --git a/arch/x86/include/asm/asm.h b/arch/x86/include/asm/asm.h
+index 5c15f95b1ba7..4712206c4325 100644
+--- a/arch/x86/include/asm/asm.h
++++ b/arch/x86/include/asm/asm.h
+@@ -138,11 +138,15 @@
+ # define _ASM_EXTABLE_FAULT(from, to)				\
+ 	_ASM_EXTABLE_HANDLE(from, to, ex_handler_fault)
  
+-# define _ASM_NOKPROBE(entry)					\
++# ifdef CONFIG_KPROBES
++#  define _ASM_NOKPROBE(entry)					\
+ 	.pushsection "_kprobe_blacklist","aw" ;			\
+ 	_ASM_ALIGN ;						\
+ 	_ASM_PTR (entry);					\
+ 	.popsection
++# else
++#  define _ASM_NOKPROBE(entry)
++# endif
+ 
+ #else /* ! __ASSEMBLY__ */
+ # define _EXPAND_EXTABLE_HANDLE(x) #x
 -- 
 2.25.1
 
