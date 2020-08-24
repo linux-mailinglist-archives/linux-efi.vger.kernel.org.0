@@ -2,33 +2,34 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A2D32507EA
-	for <lists+linux-efi@lfdr.de>; Mon, 24 Aug 2020 20:39:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A90CD25088D
+	for <lists+linux-efi@lfdr.de>; Mon, 24 Aug 2020 20:54:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726337AbgHXSjG (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 24 Aug 2020 14:39:06 -0400
-Received: from mout.kundenserver.de ([212.227.126.187]:55335 "EHLO
+        id S1726823AbgHXSyt (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 24 Aug 2020 14:54:49 -0400
+Received: from mout.kundenserver.de ([212.227.126.135]:44979 "EHLO
         mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725780AbgHXSjF (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 24 Aug 2020 14:39:05 -0400
-Received: from mail-qk1-f174.google.com ([209.85.222.174]) by
- mrelayeu.kundenserver.de (mreue010 [212.227.15.129]) with ESMTPSA (Nemesis)
- id 1MLAAs-1jtIiT1mMs-00IAPf; Mon, 24 Aug 2020 20:39:03 +0200
-Received: by mail-qk1-f174.google.com with SMTP id n129so8413650qkd.6;
-        Mon, 24 Aug 2020 11:39:02 -0700 (PDT)
-X-Gm-Message-State: AOAM533GoAksagaHXOg4j38Zr377VXxK0VxSW/leHWXNxC6eqapnHM1z
-        iG4S79KSG4/p6ImSRNgr5Yn6w61qnwbVzgcHoz4=
-X-Google-Smtp-Source: ABdhPJxJvbiLbhFh8vD057RbddB7UEJe4ClqG4b3m1sziovfYqvCJXHcrzaj91rVO8TT5jSK5crxBkQQA/dFlQR8EPo=
-X-Received: by 2002:ae9:f106:: with SMTP id k6mr5648402qkg.3.1598294342005;
- Mon, 24 Aug 2020 11:39:02 -0700 (PDT)
+        with ESMTP id S1726666AbgHXSys (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 24 Aug 2020 14:54:48 -0400
+Received: from mail-qt1-f173.google.com ([209.85.160.173]) by
+ mrelayeu.kundenserver.de (mreue012 [212.227.15.129]) with ESMTPSA (Nemesis)
+ id 1MoNMu-1kz3l80hKq-00opYx; Mon, 24 Aug 2020 20:54:46 +0200
+Received: by mail-qt1-f173.google.com with SMTP id 92so1608532qtb.6;
+        Mon, 24 Aug 2020 11:54:45 -0700 (PDT)
+X-Gm-Message-State: AOAM530Sw9XAS6eh/6Bc/mxp3dT9jsfY8uANLPNkEbpJC6LxRYGMsNgH
+        eaACAsCqP/1pYI7ylz8TGwT+MfUN2eSga6sDrv8=
+X-Google-Smtp-Source: ABdhPJxWBKCBtJZg7nLG3vXIdZFpSx+qr8JPd8D5R08h5RqUSqbkH8qTSGrOV5rDkZoZ134R/OrQyj0lwj9Wx9vY6dY=
+X-Received: by 2002:aed:33e7:: with SMTP id v94mr5942793qtd.18.1598295284718;
+ Mon, 24 Aug 2020 11:54:44 -0700 (PDT)
 MIME-Version: 1.0
-References: <1598287583-71762-1-git-send-email-mikelley@microsoft.com> <1598287583-71762-3-git-send-email-mikelley@microsoft.com>
-In-Reply-To: <1598287583-71762-3-git-send-email-mikelley@microsoft.com>
+References: <1598287583-71762-1-git-send-email-mikelley@microsoft.com> <1598287583-71762-6-git-send-email-mikelley@microsoft.com>
+In-Reply-To: <1598287583-71762-6-git-send-email-mikelley@microsoft.com>
 From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Mon, 24 Aug 2020 20:38:45 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a0qAZ5nGQ6eEjtAR4MD=CNnkU_uW1PsUdwJiZC1Hy+bpg@mail.gmail.com>
-Message-ID: <CAK8P3a0qAZ5nGQ6eEjtAR4MD=CNnkU_uW1PsUdwJiZC1Hy+bpg@mail.gmail.com>
-Subject: Re: [PATCH v7 02/10] arm64: hyperv: Add core Hyper-V include files
+Date:   Mon, 24 Aug 2020 20:54:28 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a1hDBVembCd+6=ENUWYFz=72JBTFMrKYZ2aFd+_Q04F+g@mail.gmail.com>
+Message-ID: <CAK8P3a1hDBVembCd+6=ENUWYFz=72JBTFMrKYZ2aFd+_Q04F+g@mail.gmail.com>
+Subject: Re: [PATCH v7 05/10] arm64: hyperv: Add interrupt handlers for VMbus
+ and stimer
 To:     Michael Kelley <mikelley@microsoft.com>
 Cc:     Will Deacon <will@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
         Catalin Marinas <catalin.marinas@arm.com>,
@@ -45,39 +46,66 @@ Cc:     Will Deacon <will@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
         Sunil Muthuswamy <sunilmut@microsoft.com>,
         Boqun Feng <boqun.feng@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:Lup994B9M/joDDHE/Mn9GCbY8qhexb9qrSZlYAxKE6BIofeZgWB
- AuCK0IbuyDRmWTwrhtMSEbsxr8qLCLryx4/dlzai8FKvB2tiFLSHX19ZKQZvT/LCyHhRS66
- wKp4vFX5WIEX8i94nh+kVNJQFZnnoxH/h8ZKvUfQpN15zLoB6sswHSXLsa6M4MBihzQN4h6
- JW4CWdv7IPsrQu/3FqZEg==
+X-Provags-ID: V03:K1:9q/x3Ahld8KtMCc0YtDFU7o7FSwuMFmzSpqjkOeeBGCz4uhJLvj
+ rIOAU8u1JrRton9OJG4K8PrJCVCmcxxLdAD53+JI9LLX344ZgQkn0l5A8RzwGc3IqFlxIY7
+ ZRcKLV8DzJ9GaouXST/HIyVj2t+r0orVWqFVizQP5d8YtnU6o+I1m2BJonF20knYQTyTUis
+ I0yqbkQHACw6Rut5Cre6A==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:wQqH2+rPVXY=:UsQCuOiBUDFWZBRrfbysfm
- 7skOXJpB1walSUF2fUxhtp5EUnP55ygZ7Vd/Sx2RKO7n7dZK/QuEG44rhSLId9tvuoISX5IWd
- V8QOW/I5OgI4RkO7tT1/uekPZ+GNifArPLTpo+CpDqhmco0wRvZGrJQmjOu4WB1EHv+CND/a2
- q80zhScWPA0PAmvVpSeoqsDMnMXjzsZHHWD2ettfSq+rxEZ0n1jcCSGBmEIACevgelF/WexNR
- QVGTH484tcoww/JAR8C4qI6Mq8Bb3trKNMHiakeexBAC/crNk56KjrQftP4HDUgpX5PhbcPm+
- MexxDHX6lwsZnEC1nMOR9RvhLl4omy+xafcvHeY6GHJlXfgh9e495UzbM8g5a0VT6bLIA44SN
- B1gL1vVIEc8VGQ8utMt8KeM6YnBgQ4JF16lGAZ/TIjoIfWhkIsRH3Pfr9DyTi4dqsRkzg5+81
- n+X69inUsERA/G1rdfBFZmHHlJpSq4aOR1DyO9bWVadBDqaYX+2nCsLhL8jUNHfO88lS92q6x
- NlRgfO3jub1dnEZaiMVyuh1fTvuGcNGS2QQFfxvOL39uIpyX2NzLkyQr9wd67Kwl+q7EflvGz
- 7f8rUOCogjg+WHUNPpqtVX8RxWuPZAsGa4VZ/bAC+QktJnXRzisqsYS7jAVS46vVP/UyRIkQ3
- Vqd6TxqDIUEh0XrAOWB9rcYSelnNpootlrxXSc6R0zILU7WF+4BNtW/gBmm/JZZY/B3TxHT54
- EpT1Lf/glHNsigxH4o5VEO/b0lxgSymqKUKczMnYX7ksR5834F+aMkicrQfVWCFtvxZCzlhLw
- 2HxsoWxDUYBAkS2nHVD5fdhOodq8fKH09yV48Jru982XeLVJgQ9Vq5LXluWLpCH8kOLwLFeVF
- Z0zLXKs3KjtSSTu+BRvf0GsZXHufZRC+JJWLdVeoJdchFoWCLOpNP8MfjTzYACePoI824Vb0U
- FS7R/TBvsvIkSEJNwLi+3Z2w4j0/IXYM9Aa/ZFFc2lhspwlhYh8dT
+X-UI-Out-Filterresults: notjunk:1;V03:K0:f0EUG/PVpFw=:r5JmOnE1KS9QdJf9FaRLqr
+ t2cv6uBFRjHM0tcA0sj3PNSgodKzc5y4agqj8piVvVzpJUgdfpaOioDu+xICSja3O7eNL8MRI
+ q6qgCQbeWGgyJ2NmbPwcDSYyYJRtqLw0GzFiueubgTWPCMRD1zJUzvsydwhYCRftAPTbp7hcj
+ TbSrcPOFDszW3BuNlXPDvTvOY4ZsPlT8CWDNd26NdokkBzRcuemMcAVZ4Kx48yIfbKlBJQu1s
+ dgbsTOfNYm+Vc0aGD6pL8n8RTpd6KdJhBbUl0bUnrmudr/ENR/xUTiltkcknD/OyBx/sleFDU
+ lmhWrYHMm8+JaY3XyzR+MSNEDGbmiPQi1xyb7MfM2LrvFL53HYxaRJdjEb92H9/8rBi4dx450
+ HPAfMlQbALoVDbkBltutf4sPQ2ryFdZdEhNpOpnu54TsEOKBepj50idC4MwNuYEJDLUf8n465
+ yVKZmnBA261hima0ocs+0+loUnuiEeJbB+FMx1SnidPeqtgw3IOicGlSssXbUwXll1Y/rb0cs
+ sZH7B4ExpoX8x+jxgzEcrfH4DslffxZmNBzHgnKk5vX9VP7EwgUbo2llFQaEkKGioUYmNzXjW
+ Z/39OyOm87aWqjKM8qHfsUWKXNAttay3XiEX6bCUUAw5vsLKQnG3f01B4vWZwZmJTBiOy0yEx
+ yvKZ9nLwE253wPtuQPRyTIACQe//r9IkD4DwRE6syaRmTzBOXOg2817xqBXoMnXhKZ+DGZmsI
+ B00FnBqsmnC2r+ilUz8PCDfozIPJV+tdhbU/BCuau2oit4o5mGxFNtUzk4Be1MT0S0V8LqO4H
+ DSsU9fVUl4gG2a65SE7yAuZr6y8pCm9n/f5cqeSFUgMXHbRj4FlBEvJSZm1yuwK5YphzKFMbR
+ RFfJaRODz8KI0L+71ehCLEU7SkCeUDrNxeSNL/Z0z6G09zAHSfuhEL93hQkCiUVWpt912cEkO
+ L06Tt0AaI41RHMR1sCfDc7eA0W3WehJXkAiwmkudgf6PE6Cy/kyeN
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Mon, Aug 24, 2020 at 6:47 PM Michael Kelley <mikelley@microsoft.com> wrote:
-> +
-> +#define hv_get_simp(val) (val = hv_get_vpreg(HV_REGISTER_SIPP))
-> +
-> +#define hv_get_siefp(val) (val = hv_get_vpreg(HV_REGISTER_SIFP))
+On Mon, Aug 24, 2020 at 6:46 PM Michael Kelley <mikelley@microsoft.com> wrote:
+>
+> Add ARM64-specific code to set up and handle the interrupts
+> generated by Hyper-V for VMbus messages and for stimer expiration.
+>
+> This code is architecture dependent and is mostly driven by
+> architecture independent code in the VMbus driver and the
+> Hyper-V timer clocksource driver.
+>
+> This code is built only when CONFIG_HYPERV is enabled.
+>
+> Signed-off-by: Michael Kelley <mikelley@microsoft.com>
+> ---
+>  arch/arm64/hyperv/Makefile        |   2 +-
+>  arch/arm64/hyperv/mshyperv.c      | 133 ++++++++++++++++++++++++++++++++++++++
+>  arch/arm64/include/asm/mshyperv.h |  70 ++++++++++++++++++++
 
-Macros that modify their arguments are generally a bad idea. Since each one
-of these only has a few callers, could you just redefine the x86 version to
-use function-style calling conventions and turn them into inline functions?
+I still have the feeling that most of the code in arch/arm64/hyperv/ is
+misplaced: the only callers are loadable modules in drivers/hv/, and the
+code is not really part of the architecture but part of the platform.
+
+For the arm64 architecture, we have a rule that platform specific
+code belongs into device drivers rather than into the architecture
+code as we used to do in the linux-2.6 days for arch/arm/.
+
+I don't see hyperv being virtual rather than an SoC as a differentiator
+either; it's still just one of many platforms. If you look at
+arch/arm64/xen/, you can see that they have managed to get
+to a much simpler implementation in comparison.
+
+I'm not sure what the correct solution should be, but what I'd try to
+do here is to move every function that just considers the platform
+rather than the architecture somewhere into drivers/hv where it
+can be linked into the same modules as the existing files when
+building for arm64, while trying to keep architecture specific code
+in the header file where it can be included from those modules.
 
       Arnd
