@@ -2,110 +2,98 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A90CD25088D
-	for <lists+linux-efi@lfdr.de>; Mon, 24 Aug 2020 20:54:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A11C251562
+	for <lists+linux-efi@lfdr.de>; Tue, 25 Aug 2020 11:30:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726823AbgHXSyt (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 24 Aug 2020 14:54:49 -0400
-Received: from mout.kundenserver.de ([212.227.126.135]:44979 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726666AbgHXSys (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 24 Aug 2020 14:54:48 -0400
-Received: from mail-qt1-f173.google.com ([209.85.160.173]) by
- mrelayeu.kundenserver.de (mreue012 [212.227.15.129]) with ESMTPSA (Nemesis)
- id 1MoNMu-1kz3l80hKq-00opYx; Mon, 24 Aug 2020 20:54:46 +0200
-Received: by mail-qt1-f173.google.com with SMTP id 92so1608532qtb.6;
-        Mon, 24 Aug 2020 11:54:45 -0700 (PDT)
-X-Gm-Message-State: AOAM530Sw9XAS6eh/6Bc/mxp3dT9jsfY8uANLPNkEbpJC6LxRYGMsNgH
-        eaACAsCqP/1pYI7ylz8TGwT+MfUN2eSga6sDrv8=
-X-Google-Smtp-Source: ABdhPJxWBKCBtJZg7nLG3vXIdZFpSx+qr8JPd8D5R08h5RqUSqbkH8qTSGrOV5rDkZoZ134R/OrQyj0lwj9Wx9vY6dY=
-X-Received: by 2002:aed:33e7:: with SMTP id v94mr5942793qtd.18.1598295284718;
- Mon, 24 Aug 2020 11:54:44 -0700 (PDT)
-MIME-Version: 1.0
-References: <1598287583-71762-1-git-send-email-mikelley@microsoft.com> <1598287583-71762-6-git-send-email-mikelley@microsoft.com>
-In-Reply-To: <1598287583-71762-6-git-send-email-mikelley@microsoft.com>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Mon, 24 Aug 2020 20:54:28 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a1hDBVembCd+6=ENUWYFz=72JBTFMrKYZ2aFd+_Q04F+g@mail.gmail.com>
-Message-ID: <CAK8P3a1hDBVembCd+6=ENUWYFz=72JBTFMrKYZ2aFd+_Q04F+g@mail.gmail.com>
-Subject: Re: [PATCH v7 05/10] arm64: hyperv: Add interrupt handlers for VMbus
- and stimer
-To:     Michael Kelley <mikelley@microsoft.com>
-Cc:     Will Deacon <will@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
+        id S1729460AbgHYJa0 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 25 Aug 2020 05:30:26 -0400
+Received: from imap3.hz.codethink.co.uk ([176.9.8.87]:33956 "EHLO
+        imap3.hz.codethink.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728543AbgHYJa0 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 25 Aug 2020 05:30:26 -0400
+X-Greylist: delayed 2596 seconds by postgrey-1.27 at vger.kernel.org; Tue, 25 Aug 2020 05:30:23 EDT
+Received: from cpc98990-stkp12-2-0-cust216.10-2.cable.virginm.net ([86.26.12.217] helo=[192.168.0.10])
+        by imap3.hz.codethink.co.uk with esmtpsa  (Exim 4.92 #3 (Debian))
+        id 1kAUbe-0002Te-3f; Tue, 25 Aug 2020 09:47:02 +0100
+Subject: Re: [PATCH v7 10/10] Drivers: hv: Enable Hyper-V code to be built on
+ ARM64
+To:     Ard Biesheuvel <ardb@kernel.org>,
+        Michael Kelley <mikelley@microsoft.com>
+Cc:     Will Deacon <will@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
         Catalin Marinas <catalin.marinas@arm.com>,
         Mark Rutland <mark.rutland@arm.com>,
         Marc Zyngier <maz@kernel.org>,
         Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        gregkh <gregkh@linuxfoundation.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         linux-hyperv@vger.kernel.org,
         linux-efi <linux-efi@vger.kernel.org>,
         linux-arch <linux-arch@vger.kernel.org>, wei.liu@kernel.org,
-        Vitaly Kuznetsov <vkuznets@redhat.com>,
-        "K. Y. Srinivasan" <kys@microsoft.com>,
+        vkuznets <vkuznets@redhat.com>,
+        KY Srinivasan <kys@microsoft.com>,
         Sunil Muthuswamy <sunilmut@microsoft.com>,
         Boqun Feng <boqun.feng@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:9q/x3Ahld8KtMCc0YtDFU7o7FSwuMFmzSpqjkOeeBGCz4uhJLvj
- rIOAU8u1JrRton9OJG4K8PrJCVCmcxxLdAD53+JI9LLX344ZgQkn0l5A8RzwGc3IqFlxIY7
- ZRcKLV8DzJ9GaouXST/HIyVj2t+r0orVWqFVizQP5d8YtnU6o+I1m2BJonF20knYQTyTUis
- I0yqbkQHACw6Rut5Cre6A==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:f0EUG/PVpFw=:r5JmOnE1KS9QdJf9FaRLqr
- t2cv6uBFRjHM0tcA0sj3PNSgodKzc5y4agqj8piVvVzpJUgdfpaOioDu+xICSja3O7eNL8MRI
- q6qgCQbeWGgyJ2NmbPwcDSYyYJRtqLw0GzFiueubgTWPCMRD1zJUzvsydwhYCRftAPTbp7hcj
- TbSrcPOFDszW3BuNlXPDvTvOY4ZsPlT8CWDNd26NdokkBzRcuemMcAVZ4Kx48yIfbKlBJQu1s
- dgbsTOfNYm+Vc0aGD6pL8n8RTpd6KdJhBbUl0bUnrmudr/ENR/xUTiltkcknD/OyBx/sleFDU
- lmhWrYHMm8+JaY3XyzR+MSNEDGbmiPQi1xyb7MfM2LrvFL53HYxaRJdjEb92H9/8rBi4dx450
- HPAfMlQbALoVDbkBltutf4sPQ2ryFdZdEhNpOpnu54TsEOKBepj50idC4MwNuYEJDLUf8n465
- yVKZmnBA261hima0ocs+0+loUnuiEeJbB+FMx1SnidPeqtgw3IOicGlSssXbUwXll1Y/rb0cs
- sZH7B4ExpoX8x+jxgzEcrfH4DslffxZmNBzHgnKk5vX9VP7EwgUbo2llFQaEkKGioUYmNzXjW
- Z/39OyOm87aWqjKM8qHfsUWKXNAttay3XiEX6bCUUAw5vsLKQnG3f01B4vWZwZmJTBiOy0yEx
- yvKZ9nLwE253wPtuQPRyTIACQe//r9IkD4DwRE6syaRmTzBOXOg2817xqBXoMnXhKZ+DGZmsI
- B00FnBqsmnC2r+ilUz8PCDfozIPJV+tdhbU/BCuau2oit4o5mGxFNtUzk4Be1MT0S0V8LqO4H
- DSsU9fVUl4gG2a65SE7yAuZr6y8pCm9n/f5cqeSFUgMXHbRj4FlBEvJSZm1yuwK5YphzKFMbR
- RFfJaRODz8KI0L+71ehCLEU7SkCeUDrNxeSNL/Z0z6G09zAHSfuhEL93hQkCiUVWpt912cEkO
- L06Tt0AaI41RHMR1sCfDc7eA0W3WehJXkAiwmkudgf6PE6Cy/kyeN
+References: <1598287583-71762-1-git-send-email-mikelley@microsoft.com>
+ <1598287583-71762-11-git-send-email-mikelley@microsoft.com>
+ <CAMj1kXHKDD5+Na7t=bbkqo2OaiidmnJg+RqermV-2=exj-P77A@mail.gmail.com>
+From:   Ben Dooks <ben.dooks@codethink.co.uk>
+Organization: Codethink Limited.
+Message-ID: <5e8af3c3-fe08-0a56-fe05-0527a6cae0dd@codethink.co.uk>
+Date:   Tue, 25 Aug 2020 09:47:00 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.11.0
+MIME-Version: 1.0
+In-Reply-To: <CAMj1kXHKDD5+Na7t=bbkqo2OaiidmnJg+RqermV-2=exj-P77A@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Mon, Aug 24, 2020 at 6:46 PM Michael Kelley <mikelley@microsoft.com> wrote:
->
-> Add ARM64-specific code to set up and handle the interrupts
-> generated by Hyper-V for VMbus messages and for stimer expiration.
->
-> This code is architecture dependent and is mostly driven by
-> architecture independent code in the VMbus driver and the
-> Hyper-V timer clocksource driver.
->
-> This code is built only when CONFIG_HYPERV is enabled.
->
-> Signed-off-by: Michael Kelley <mikelley@microsoft.com>
-> ---
->  arch/arm64/hyperv/Makefile        |   2 +-
->  arch/arm64/hyperv/mshyperv.c      | 133 ++++++++++++++++++++++++++++++++++++++
->  arch/arm64/include/asm/mshyperv.h |  70 ++++++++++++++++++++
+On 24/08/2020 18:24, Ard Biesheuvel wrote:
+> On Mon, 24 Aug 2020 at 18:48, Michael Kelley <mikelley@microsoft.com> wrote:
+>>
+>> Update drivers/hv/Kconfig so CONFIG_HYPERV can be selected on
+>> ARM64, causing the Hyper-V specific code to be built.
+>>
+>> Signed-off-by: Michael Kelley <mikelley@microsoft.com>
+>> ---
+>>   drivers/hv/Kconfig | 3 ++-
+>>   1 file changed, 2 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/hv/Kconfig b/drivers/hv/Kconfig
+>> index 79e5356..1113e49 100644
+>> --- a/drivers/hv/Kconfig
+>> +++ b/drivers/hv/Kconfig
+>> @@ -4,7 +4,8 @@ menu "Microsoft Hyper-V guest support"
+>>
+>>   config HYPERV
+>>          tristate "Microsoft Hyper-V client drivers"
+>> -       depends on X86 && ACPI && X86_LOCAL_APIC && HYPERVISOR_GUEST
+>> +       depends on ACPI && \
+>> +                       ((X86 && X86_LOCAL_APIC && HYPERVISOR_GUEST) || ARM64)
+>>          select PARAVIRT
+>>          select X86_HV_CALLBACK_VECTOR
+>>          help
+> 
+> Given the comment in a previous patch
+> 
+> +/*
+> + * All data structures defined in the TLFS that are shared between Hyper-V
+> + * and a guest VM use Little Endian byte ordering.  This matches the default
+> + * byte ordering of Linux running on ARM64, so no special handling is required.
+> + */
+> 
+> shouldn't this depend on !CONFIG_CPU_BIG_ENDIAN ?
 
-I still have the feeling that most of the code in arch/arm64/hyperv/ is
-misplaced: the only callers are loadable modules in drivers/hv/, and the
-code is not really part of the architecture but part of the platform.
+or mark the data __le and have the appropriate accessor functions do
+the swapping.
 
-For the arm64 architecture, we have a rule that platform specific
-code belongs into device drivers rather than into the architecture
-code as we used to do in the linux-2.6 days for arch/arm/.
 
-I don't see hyperv being virtual rather than an SoC as a differentiator
-either; it's still just one of many platforms. If you look at
-arch/arm64/xen/, you can see that they have managed to get
-to a much simpler implementation in comparison.
+-- 
+Ben Dooks				http://www.codethink.co.uk/
+Senior Engineer				Codethink - Providing Genius
 
-I'm not sure what the correct solution should be, but what I'd try to
-do here is to move every function that just considers the platform
-rather than the architecture somewhere into drivers/hv where it
-can be linked into the same modules as the existing files when
-building for arm64, while trying to keep architecture specific code
-in the header file where it can be included from those modules.
-
-      Arnd
+https://www.codethink.co.uk/privacy.html
