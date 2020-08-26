@@ -2,117 +2,126 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 75E732525E4
-	for <lists+linux-efi@lfdr.de>; Wed, 26 Aug 2020 05:45:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8868325283F
+	for <lists+linux-efi@lfdr.de>; Wed, 26 Aug 2020 09:15:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726751AbgHZDpZ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 25 Aug 2020 23:45:25 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:33162 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726802AbgHZDpR (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 25 Aug 2020 23:45:17 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1598413516;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:in-reply-to:in-reply-to:references:references;
-        bh=8T5WfWs/Tv1MkqhnVgGnky3bmtEaukh+fceB8s7dUAI=;
-        b=bPoRkC3UPeSIIHqx3+9eHw3G+Eqyp8o0m96RskYcGizz9NeOD/ABG9P8GX1XeVObWjRbWl
-        GAppN8CkvrBTGbVCeOhY4xO5aiyHHYNAVSsXYV8ikJdK2iAsgUgQ+0Vwp4AZLTus5Ox3Xv
-        aNkNK47KGYbJawAuD4NSzl9BqhNXT8M=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-293-MeUhVzXSOAKGS-OxOO4fTw-1; Tue, 25 Aug 2020 23:45:12 -0400
-X-MC-Unique: MeUhVzXSOAKGS-OxOO4fTw-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id AFA0F1DDE0;
-        Wed, 26 Aug 2020 03:45:10 +0000 (UTC)
-Received: from lszubowi.redhat.com (unknown [10.10.110.32])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 5588B5D9E4;
-        Wed, 26 Aug 2020 03:45:08 +0000 (UTC)
-From:   Lenny Szubowicz <lszubowi@redhat.com>
-To:     linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org,
-        linux-security-module@vger.kernel.org, ardb@kernel.org,
-        jmorris@namei.org, serge@hallyn.com, keescook@chromium.org,
-        zohar@linux.ibm.com, bp@alien8.de, pjones@redhat.com,
-        dhowells@redhat.com, prarit@redhat.com
-Subject: [PATCH 3/3] integrity: Load certs from the EFI MOK config table
-Date:   Tue, 25 Aug 2020 23:44:55 -0400
-Message-Id: <20200826034455.28707-4-lszubowi@redhat.com>
-In-Reply-To: <20200826034455.28707-1-lszubowi@redhat.com>
-References: <20200826034455.28707-1-lszubowi@redhat.com>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
+        id S1726749AbgHZHPA (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 26 Aug 2020 03:15:00 -0400
+Received: from mout.kundenserver.de ([212.227.126.135]:37389 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726698AbgHZHO7 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 26 Aug 2020 03:14:59 -0400
+Received: from mail-qt1-f179.google.com ([209.85.160.179]) by
+ mrelayeu.kundenserver.de (mreue010 [212.227.15.129]) with ESMTPSA (Nemesis)
+ id 1Mk0a0-1kvBwf1TTs-00kRea; Wed, 26 Aug 2020 09:14:57 +0200
+Received: by mail-qt1-f179.google.com with SMTP id 92so718948qtb.6;
+        Wed, 26 Aug 2020 00:14:56 -0700 (PDT)
+X-Gm-Message-State: AOAM532NZ91CydDDFgF41edtRYot+cE0wnTAgd3Y3/XaQn75w/CnIHtT
+        twhhN+OsckwUc6veJjV+2eqjMFd0Yt9uKLRZqQ8=
+X-Google-Smtp-Source: ABdhPJwLuGjkmlnft754xbUklzGWtHhgTglHwx7onxQfpdw4FEOyMnyaABTTrq89Agj1YnTZDmfbHPSjkpJNT1I0q7s=
+X-Received: by 2002:ac8:688e:: with SMTP id m14mr12988809qtq.7.1598426095918;
+ Wed, 26 Aug 2020 00:14:55 -0700 (PDT)
+MIME-Version: 1.0
+References: <1598287583-71762-1-git-send-email-mikelley@microsoft.com>
+ <1598287583-71762-6-git-send-email-mikelley@microsoft.com>
+ <CAK8P3a1hDBVembCd+6=ENUWYFz=72JBTFMrKYZ2aFd+_Q04F+g@mail.gmail.com> <MW2PR2101MB105201EF9EB186AA9BF31A74D7570@MW2PR2101MB1052.namprd21.prod.outlook.com>
+In-Reply-To: <MW2PR2101MB105201EF9EB186AA9BF31A74D7570@MW2PR2101MB1052.namprd21.prod.outlook.com>
+From:   Arnd Bergmann <arnd@arndb.de>
+Date:   Wed, 26 Aug 2020 09:14:39 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a0bCf7Fe5Ex=AHUM49UuvNk0KEpXJ3jgWmULa2eDOWBKA@mail.gmail.com>
+Message-ID: <CAK8P3a0bCf7Fe5Ex=AHUM49UuvNk0KEpXJ3jgWmULa2eDOWBKA@mail.gmail.com>
+Subject: Re: [PATCH v7 05/10] arm64: hyperv: Add interrupt handlers for VMbus
+ and stimer
+To:     Michael Kelley <mikelley@microsoft.com>
+Cc:     Will Deacon <will@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        "Mark.Rutland@arm.com" <Mark.Rutland@arm.com>,
+        Marc Zyngier <maz@kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        gregkh <gregkh@linuxfoundation.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        "wei.liu@kernel.org" <wei.liu@kernel.org>,
+        vkuznets <vkuznets@redhat.com>,
+        KY Srinivasan <kys@microsoft.com>,
+        Sunil Muthuswamy <sunilmut@microsoft.com>,
+        Boqun Feng <boqun.feng@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Provags-ID: V03:K1:CfQNSp9K2Sdd2RppPCh70mApHLnySRUQtQTPs+NNnr5FwrxVCng
+ AGs3F+IWIItB3FT7rCqPXYb5XyGGoFDhSK+bnnEr60dbVKDCRHARjKlBpi9MGbX9vXdpJbU
+ azeTOu7yxAaAs+27q0YE9uN75kTAtAWNeCuEW0hI9gtCn99zyIo1UbdlbrW44jnbuGDBVXK
+ MznMJZzDDYN2Qs5DfuJng==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:xO0XMxW3dlA=:vjc8OvsMhX2drfQa3Dri8w
+ oq47fIAjowurvD4ZZkt++2rnBezU79/Rzrl2CPXjVZ3RvhKchD4luPVKF0RsuCsaVJ6LQva0q
+ FMy/z3NyQyst0i9tHN/MfHjMpU9mf1VBQTa7RmkhfUXTQpMuo1uP7j7itn3rCJE7ixmqjoSBy
+ SNAGr8zxtJBQoorgvrwsjYaX0FVytV6ZQBlETXDbi3+qvQKDg+gYXlulRd9niBZ+pn5rlRgG0
+ wLjz8LpwEjE1UqKkJX8X9sVaHsSURyNOe78N+KO7fwZjTY/o9UJSzHMZlYovb/eNEBE5LveLp
+ +/n+C8IrI4FUR9Da86VkJSRKqTXynBnI1Rd6nLJ6Y6iJjbSFL3FssDtesh8y3osxThKWsiESz
+ O5NpdHIhQx8YrMovHWylmbB/Iizpaj51h+RTcmYFNFcO4dwZ97+oRTTAKx80+kTPqMtueaqqa
+ a4joAYmuzbQ9/0ZTfbEHecvdeXYS0Qs7k/ejk9em39qknATRFaEK4wfFvRoHUYVEpHby/p/Eq
+ zNnYZ7z1KGc2Ti9bJCG6UFLhwQa0VvtYi4A/1qkwDECB3MjvpGKjmSwSbHztJVYnIk9sNQxXm
+ Kzw5m5i40W0U8wwsHJUm3a1Q20GNdof1knYfMX77zXRJ4GMtaC2dUSnhaEFej7+YLdOrsEDK0
+ +AbCRXHPoN/phSj6191B5V+/jUIxsXPmeD5SyMl4/l17XfjJYWw9KGZglpFmqTdf6JsDD4v1x
+ YF9JL2OX7YX0nrJCDXmpF7mJVdihvVHe6fVmAFhTAJCbAO/ew/KCOtQ8Rh1vF5vmTzrxNfOyR
+ 5OIftf6uZV5xVzlzAgOG5KJ5w8zn9McySso6Gi1tWQSTXJyaykpM+Gie0fGL2fKLPQ1HlJC
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Because of system-specific EFI firmware limitations,
-EFI volatile variables may not be capable of holding the
-required contents of the Machine Owner Key (MOK) certificate
-store. Therefore, an EFI boot loader may pass the MOK certs
-via a EFI configuration table created specifically for this
-purpose to avoid this firmware limitation.
+On Wed, Aug 26, 2020 at 12:04 AM Michael Kelley <mikelley@microsoft.com> wrote:
+> From: Arnd Bergmann <arnd@arndb.de> Sent: Monday, August 24, 2020 11:54 AM
 
-An EFI configuration table is a much more primitive mechanism
-compared to EFI variables and is well suited for one-way passage
-of static information from a pre-OS environment to the kernel.
+> >
+> > I'm not sure what the correct solution should be, but what I'd try to
+> > do here is to move every function that just considers the platform
+> > rather than the architecture somewhere into drivers/hv where it
+> > can be linked into the same modules as the existing files when
+> > building for arm64, while trying to keep architecture specific code
+> > in the header file where it can be included from those modules.
+>
+> OK.  The concept of separating platform from architecture makes
+> sense to me.  The original separation of the Hyper-V code into
+> architecture independent portions and x86-specific portions could
+> use some tweaking now that we're dealing with n=2 architectures.  With
+> that tweaking, I can reduce the amount of Hyper-V code under arch/x86
+> and under arch/arm64.
+>
+> On the flip side, the Hyper-V implementation on x86 and ARM64 has
+> differences that are semi-related to the architecture.  For example, on
+> x86 Hyper-V uses synthetic MSRs for a lot of guest-hypervisor setup, while
+> hypercalls are required on ARM64.  So I'm assuming those differences
+> will end up in code under arch/x86 and arch/arm64.
 
-This patch adds the support to load certs from the MokListRT
-entry in the MOK variable configuration table, if it's present.
-The pre-existing support to load certs from the MokListRT EFI
-variable remains and is used if the EFI MOK configuration table
-isn't present or can't be successfully used.
+Yes, that absolutely makes sense.
 
-Signed-off-by: Lenny Szubowicz <lszubowi@redhat.com>
----
- security/integrity/platform_certs/load_uefi.c | 22 +++++++++++++++++++
- 1 file changed, 22 insertions(+)
+> Arguably, I could introduce a level of indirection (such as
+> CONFIG_HYPERV_USE_MSRS vs.
+> CONFIG_HYPERV_USE_HYPERCALLS) to distinguish the two behaviors.
+> The selection would be tied to the architecture, and then code in
+> drivers/hv can #ifdef the two cases.  But I wonder if getting code out of
+> arch/x86 and arch/arm64 is worth that additional messiness.
 
-diff --git a/security/integrity/platform_certs/load_uefi.c b/security/integrity/platform_certs/load_uefi.c
-index 547410d8ffa5..2c9c847d9b62 100644
---- a/security/integrity/platform_certs/load_uefi.c
-+++ b/security/integrity/platform_certs/load_uefi.c
-@@ -72,6 +72,9 @@ static __init void *get_cert_list(efi_char16_t *name, efi_guid_t *guid,
-  *
-  * Load the certs contained in the UEFI MokListRT database into the
-  * platform trusted keyring.
-+ *
-+ * This routine checks the EFI MOK config table first. If and only if
-+ * that fails, this routine uses the MokListRT ordinary UEFI variable.
-  */
- static int __init load_moklist_certs(void)
- {
-@@ -79,8 +82,27 @@ static int __init load_moklist_certs(void)
- 	void *mok = NULL;
- 	unsigned long moksize = 0;
- 	efi_status_t status;
-+	struct efi_mokvar_table_entry *mokvar_entry = NULL;
- 	int rc = 0;
- 
-+	/* First try to load certs from the EFI MOKvar config table.
-+	 * It's not an error if the MOKvar config table doesn't exist
-+	 * or the MokListRT entry is not found in it.
-+	 */
-+	mokvar_entry = efi_mokvar_entry_find("MokListRT");
-+	if (mokvar_entry) {
-+		rc = parse_efi_signature_list("UEFI:MokListRT (MOKvar table)",
-+					      mokvar_entry->data,
-+					      mokvar_entry->data_size,
-+					      get_handler_for_db);
-+		/* All done if that worked. */
-+		if (!rc)
-+			return rc;
-+
-+		pr_err("Couldn't parse MokListRT signatures from EFI MOKvar config table: %d\n",
-+		       rc);
-+	}
-+
- 	/* Get MokListRT. It might not exist, so it isn't an error
- 	 * if we can't get it.
- 	 */
--- 
-2.27.0
+No, I think that would take it a little too far, and conflicts with the
+generic rule that code under drivers/* should be written to be portable
+even if can only run on a particular target platform.
 
+> Looking at the Xen code in drivers/xen, it looks like a lot of the Xen functionality
+> is implemented in hypercalls that can be consistent across architectures,
+> though I was a bit surprised to see a dozen or so instances of #ifdef CONFIG_X86.
+> Xen also #ifdefs on PV vs. PVHVM, which may handle some architecture
+> differences implicitly.  But I'm assuming that doing #ifdef <architecture>
+> in the Hyper-V code in order to reduce code under arch/x86 or arch/arm64
+> is not the right way to go.
+
+In general that is true, adding a lot of #ifdefs makes code less readable and
+harder to test. OTOH there are cases where a single #ifdef can be useful when
+it avoids adding a larger amount of complexity elsewhere. Many subsystems
+try to restrict the #ifdef checks to header files while keeping the
+drivers/* code
+free of them.
+
+       Arnd
