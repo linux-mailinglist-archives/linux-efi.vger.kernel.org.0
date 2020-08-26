@@ -2,114 +2,112 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 20ECD252D16
-	for <lists+linux-efi@lfdr.de>; Wed, 26 Aug 2020 13:55:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D8FC9252E00
+	for <lists+linux-efi@lfdr.de>; Wed, 26 Aug 2020 14:08:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729224AbgHZLzk (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 26 Aug 2020 07:55:40 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:23922 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1729184AbgHZLzj (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 26 Aug 2020 07:55:39 -0400
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 07QBXJ7x021628;
-        Wed, 26 Aug 2020 07:55:20 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : to : date : in-reply-to : references : content-type : mime-version
- : content-transfer-encoding; s=pp1;
- bh=dHqlfOWSxjq+gaqjLFymI8135q9+O5+SFhB0cL1SeAg=;
- b=Ufg/BlL2bIQ4Z8Vs2bqLdfnFjNZRXOHuBIuvqOuxdB/L4XCegNlA+4KQuAat81knZc6v
- Xri75XdYAgIZTq5jBONqlcU2BPV8cggLx/F4OaG8lX12H6aNLaWrieeAGknTuGTiW43Z
- VWWJGAsOk0FVBryUHK649HimsSX/qkKY5SUMgwMz48t3EJzYSrwP5YDIBkr2qEgqMDwn
- lJ7WN1lEpnCyMHYzwh1c1ZbQ40k11fDV7Pj7RvIJrqZTJ+3w/KFj+8jAUS0EMi0hWRo8
- GkzT2UEap8iufCWz2cWHLZ0T3Ix5Tt5KoAXJ5RQ4Rf7187Rx8/tlebLr77O8A2tnNPDf rw== 
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 335pfn9gn4-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 26 Aug 2020 07:55:20 -0400
-Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
-        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 07QBYHm3025194;
-        Wed, 26 Aug 2020 07:55:19 -0400
-Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com [149.81.74.107])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 335pfn9gm4-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 26 Aug 2020 07:55:19 -0400
-Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
-        by ppma03fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 07QBr8Ul003672;
-        Wed, 26 Aug 2020 11:55:17 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
-        by ppma03fra.de.ibm.com with ESMTP id 332utq2rkv-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 26 Aug 2020 11:55:16 +0000
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com [9.149.105.232])
-        by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 07QBtENT26476832
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 26 Aug 2020 11:55:14 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 7A07352057;
-        Wed, 26 Aug 2020 11:55:14 +0000 (GMT)
-Received: from li-f45666cc-3089-11b2-a85c-c57d1a57929f.ibm.com (unknown [9.160.28.3])
-        by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id A618A52050;
-        Wed, 26 Aug 2020 11:55:11 +0000 (GMT)
-Message-ID: <6f63a0cf1349281ef2c407d95abedfba1f90345a.camel@linux.ibm.com>
-Subject: Re: [PATCH 0/3] integrity: Load certs from EFI MOK config table
-From:   Mimi Zohar <zohar@linux.ibm.com>
-To:     Lenny Szubowicz <lszubowi@redhat.com>,
-        linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org,
-        linux-security-module@vger.kernel.org, ardb@kernel.org,
-        jmorris@namei.org, serge@hallyn.com, keescook@chromium.org,
-        bp@alien8.de, pjones@redhat.com, dhowells@redhat.com,
-        prarit@redhat.com
-Date:   Wed, 26 Aug 2020 07:55:10 -0400
-In-Reply-To: <20200826034455.28707-1-lszubowi@redhat.com>
-References: <20200826034455.28707-1-lszubowi@redhat.com>
-Content-Type: text/plain; charset="ISO-8859-15"
-X-Mailer: Evolution 3.28.5 (3.28.5-12.el8) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235,18.0.687
- definitions=2020-08-26_08:2020-08-26,2020-08-26 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 clxscore=1011
- impostorscore=0 mlxlogscore=999 lowpriorityscore=0 priorityscore=1501
- mlxscore=0 malwarescore=0 adultscore=0 bulkscore=0 phishscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2008260094
+        id S1729645AbgHZMIf (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 26 Aug 2020 08:08:35 -0400
+Received: from mail.kernel.org ([198.145.29.99]:44992 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729789AbgHZMIa (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Wed, 26 Aug 2020 08:08:30 -0400
+Received: from mail-oi1-f170.google.com (mail-oi1-f170.google.com [209.85.167.170])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 6970E2087D;
+        Wed, 26 Aug 2020 12:08:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1598443709;
+        bh=LtLkAShyIGY4PhKwW6il8v3zv5EU8NYcrikGnC+ntT8=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=EKwiHOBEcwfHi77g0MzNXWtK1Ubhlp/WdnhtS9QSltgfUUVtCqPX+wWO7UTLIcPcF
+         iwrC9pggBzskvCXX0z7cnUC33cQExDdltwfXMKKx+VHp/xP88/JiG+qLhrNinKTR1L
+         0Kev3G/OZaHrJhJALb3DZAPUCuh3SLHyULX+LNNc=
+Received: by mail-oi1-f170.google.com with SMTP id v13so1258592oiv.13;
+        Wed, 26 Aug 2020 05:08:29 -0700 (PDT)
+X-Gm-Message-State: AOAM531ieJPET8RF0oRAA9Wni6w2msMK1zSbsNdVjKqqW1DNW06IqeZe
+        50R0CZux2jBQyuVGj+5oGu1ehGSILgndM28EG3o=
+X-Google-Smtp-Source: ABdhPJzzPq7S2H5rVGigyuue4pj1WV/eBXdUGRHi6dgNXRlZ8nZgWnELoCz7uNsTVW4mTpQmfHxfC71nLK9ZQYuGbc8=
+X-Received: by 2002:aca:d8c5:: with SMTP id p188mr3452457oig.47.1598443708834;
+ Wed, 26 Aug 2020 05:08:28 -0700 (PDT)
+MIME-Version: 1.0
+References: <20200826004607.7483-1-jlee@suse.com>
+In-Reply-To: <20200826004607.7483-1-jlee@suse.com>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Wed, 26 Aug 2020 14:08:18 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXHAmUVPs=P5ptb3J95+4epP5fQXkBZ_+vLP8xfxri8VBw@mail.gmail.com>
+Message-ID: <CAMj1kXHAmUVPs=P5ptb3J95+4epP5fQXkBZ_+vLP8xfxri8VBw@mail.gmail.com>
+Subject: Re: [PATCH v2] efi/efivars: Create efivars mount point via efivars abstraction
+To:     "Lee, Chun-Yi" <joeyli.kernel@gmail.com>
+Cc:     Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "Lee, Chun-Yi" <jlee@suse.com>,
+        Matthias Brugger <mbrugger@suse.com>,
+        Fabian Vogt <fvogt@suse.com>,
+        Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hi Lenny,
+On Wed, 26 Aug 2020 at 02:46, Lee, Chun-Yi <joeyli.kernel@gmail.com> wrote:
+>
+> This patch creates efivars mount point when active efivars abstraction
+> be set. It is useful for userland to determine the availability of efivars
+> filesystem.
+>
+> Cc: Matthias Brugger <mbrugger@suse.com>
+> Cc: Fabian Vogt <fvogt@suse.com>
+> Cc: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+> Cc: Ard Biesheuvel <ardb@kernel.org>
+> Signed-off-by: "Lee, Chun-Yi" <jlee@suse.com>
 
-On Tue, 2020-08-25 at 23:44 -0400, Lenny Szubowicz wrote:
-> Because of system-specific EFI firmware limitations,
-> EFI volatile variables may not be capable of holding the
-> required contents of the Machine Owner Key (MOK) certificate
-> store. Therefore, an EFI boot loader may pass the MOK certs
-> via a EFI configuration table created specifically for this
-> purpose to avoid this firmware limitation.
-> 
-> An EFI configuration table is a simpler and more robust mechanism
-> compared to EFI variables and is well suited for one-way passage
-> of static information from a pre-OS environment to the kernel.
-> 
-> This patch set does not remove the support for loading certs
-> from the EFI MOK variables into the platform key ring.
-> However, if both the EFI MOK config table and corresponding
-> EFI MOK variables are present, the MOK table is used as the
-> source of MOK certs.
-> 
-> The contents of the individual named MOK config table entries are
-> made available to user space via read-only sysfs binary files under:
-> 
-> 	/sys/firmware/efi/mok-variables/
+Apologies for not bringing this up before: while the patch seems fine,
+I wonder if we really need this if the purpose is to decide whether
+efivars is available or not. We already have the 'efivars' platform
+device for this, and so userland can simply check for the existence of
 
-Please include a security section in this cover letter with a
-comparison of the MoK variables and the EFI configuration table
-security (eg. same mechanism?).  Has mokutil been updated?  If so,
-please provide a link.
+/sys/devices/platform/efivars.0
 
-Mimi
+and so we don't need to make any changes for this.
 
+
+
+> ---
+>
+> v2:
+> Using efivars_kobject() helper instead of checking GetVariable or
+> GetNextVariable EFI runtime services. Because the efivarfs code could be
+> instantiated using a different efivars abstraction.
+>
+>  drivers/firmware/efi/efi.c | 12 +++++++-----
+>  1 file changed, 7 insertions(+), 5 deletions(-)
+>
+> diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
+> index 3aa07c3b5136..db483fc68501 100644
+> --- a/drivers/firmware/efi/efi.c
+> +++ b/drivers/firmware/efi/efi.c
+> @@ -405,11 +405,13 @@ static int __init efisubsys_init(void)
+>         if (error)
+>                 goto err_remove_group;
+>
+> -       /* and the standard mountpoint for efivarfs */
+> -       error = sysfs_create_mount_point(efi_kobj, "efivars");
+> -       if (error) {
+> -               pr_err("efivars: Subsystem registration failed.\n");
+> -               goto err_remove_group;
+> +       if (efivars_kobject()) {
+> +               /* and the standard mountpoint for efivarfs */
+> +               error = sysfs_create_mount_point(efi_kobj, "efivars");
+> +               if (error) {
+> +                       pr_err("efivars: Subsystem registration failed.\n");
+> +                       goto err_remove_group;
+> +               }
+>         }
+>
+>         if (efi_enabled(EFI_DBG) && efi_enabled(EFI_PRESERVE_BS_REGIONS))
+> --
+> 2.16.4
+>
