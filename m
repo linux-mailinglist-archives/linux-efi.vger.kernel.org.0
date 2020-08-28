@@ -2,200 +2,127 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D571255FA1
-	for <lists+linux-efi@lfdr.de>; Fri, 28 Aug 2020 19:22:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1FBB9256210
+	for <lists+linux-efi@lfdr.de>; Fri, 28 Aug 2020 22:34:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727831AbgH1RVo (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 28 Aug 2020 13:21:44 -0400
-Received: from esa4.hgst.iphmx.com ([216.71.154.42]:11687 "EHLO
-        esa4.hgst.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727101AbgH1RVW (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 28 Aug 2020 13:21:22 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
-  t=1598635281; x=1630171281;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=zACmpNxMVkpKW6XFtwU9imKwJIzxQN1bq0wJXy/9ILY=;
-  b=q/Cz+0+DeXs2uSHZJz9DzQFIHJ4IJNeCvNzhOsodlEY3/RaWQdMm/R8G
-   vwPTSiKt7uacfmZT3x+2kw6PLAR1He+7bpe6xrCaCSic5pvEYaMNaL7eL
-   G+LXT9z0OuF2rUc5qLwVlUy4f8E4gaxXr9eeKrdHXOTkH5Qw/BCisNKbA
-   ba6hv5sfpI3Efo5xoIYIS1IHuCkyIohpncYmwaYcAzeCBdYqpH5ylNHqR
-   lmqK8b3ZgNZpPnm+afnfEsHjyWcjmt9rjXzXOJviGwPSjpbFtCEreS3Dv
-   IOjp+ZKLqR5p9fv724RYpFp7xoZpKoCxMII8XW2hjGiKkKlkUit1B5i/V
-   Q==;
-IronPort-SDR: GjdafDz1RsK3ErUOQg4g2LQrrfuSwM2ry0RQSDy7tKBH2nSZKL3ugktRdkx5WFRRLQqeqokxuf
- qOLv7sG1FE2AT70HqLAfH2RHu7l4N5kkZuDAc8t8XL2XPjlDO99R+qJCe3GYtn3lVbXG2uBRqv
- 9ZMXc16SgqKJHMnwifZslcwE+6HJ+Q6+R8mpuMGsU8Y72hzgjRinajmsyMtQb2R24cmGV9Te+p
- c6NUcA+cuP7tU4bqZJk6bnT64LXJqA4DBuMcwEDGR0fYHsFSKHNhZAotZxPExDF93aNFzouo3J
- txo=
-X-IronPort-AV: E=Sophos;i="5.76,364,1592841600"; 
-   d="scan'208";a="146018528"
-Received: from h199-255-45-14.hgst.com (HELO uls-op-cesaep01.wdc.com) ([199.255.45.14])
-  by ob1.hgst.iphmx.com with ESMTP; 29 Aug 2020 01:20:48 +0800
-IronPort-SDR: 1mzc4SjoNpnp2xcLvvisjDPS4Gfos9mxE7wXUJltwDyvXHr8RvZYjzilA6FJBGnBVmX2ZbXZQq
- r7Fa3RqhY9Ig==
-Received: from uls-op-cesaip01.wdc.com ([10.248.3.36])
-  by uls-op-cesaep01.wdc.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Aug 2020 10:08:20 -0700
-IronPort-SDR: l258ELJoT28WLwZNYHFmJmSjuwFsyOrEsXSTZpwi5VfI7uzXgWZriyWxxOHaE3STpkfikRXKrQ
- moCtEqf0bz5Q==
-WDCIronportException: Internal
-Received: from 6hj08h2.ad.shared (HELO jedi-01.hgst.com) ([10.86.59.137])
-  by uls-op-cesaip01.wdc.com with ESMTP; 28 Aug 2020 10:20:47 -0700
-From:   Atish Patra <atish.patra@wdc.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     Atish Patra <atish.patra@wdc.com>,
-        Anup Patel <anup@brainfault.org>,
-        Alistair Francis <alistair.francis@wdc.com>,
-        Anup Patel <anup.patel@wdc.com>,
+        id S1726649AbgH1Ud6 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 28 Aug 2020 16:33:58 -0400
+Received: from mail-dm6nam10on2049.outbound.protection.outlook.com ([40.107.93.49]:31617
+        "EHLO NAM10-DM6-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726033AbgH1Ud4 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Fri, 28 Aug 2020 16:33:56 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=WTJ7EGU3MBrdduN8Txiv3OXTv4VFXh0YbK0suXyhCvrD0yOKS+AWD/8dWqzZcMbDeAWlNUnt5GJOy8E5Q4VnhqFzvyq9Hz7W4kelwr3VXgEjGHzUMd6anyFPlDri/pEwHE/7Eu14rIbzfPQP1R9QdNlp8BYBitySbVi4dfl7BhR0AmpLWxAC0ZXqj+a6FXIP/+FX/1KUhvv48/GKfBNqlfeAOgguz/Bp58XDoG/vutJTbWVoaaQB5iA3x308e7QT9a3GelC/Z7cJGdA77+jcncvyl577ULPi+Bv39S2tuag5gRVe1Il4EEHVO19VJHAJDnQJQbBJjDbqbdz/o4VHRA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=0ZwIlSKC9QKpsXkRg8yzuPvbllQOcG3DlSI7iOUMXQ4=;
+ b=MZqnnfgmJdJ+/SCax1YCXZXABbtF9ENZN7xCG8UGTaYgpT2pzqhl6bEXuy6iUOo5tiztlSF/DsNcyjMyKXAp58M2sn6fSvfJ6TBba4J233FKkBS34ofWU5f/aY2I8CaxENRB0f0u4OSgaRA/JS0TVNfei8GNgn9WXyTUp7o6Fub24uBIWxS/6ju/rAPdDlwJ99ARzgMHwf5xsQG4WRGA7GgCJYRPSZ76aJsgPvlu88IcNJ04K1Ecs8QRl2iYWiMvoJFK6rGZLZVSvqoLnzvVIdUocPWKsEoeSGqWf3O9SSRnVK/8DKXHn/S1Q3xFlSJJOTqYecAK2VvKDZFASMhNYw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=amdcloud.onmicrosoft.com; s=selector2-amdcloud-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=0ZwIlSKC9QKpsXkRg8yzuPvbllQOcG3DlSI7iOUMXQ4=;
+ b=ixtDeZ2oWGlp0/Hup4BcX7E/58O0JEvanhb6SHZawNeCG033lRPupjNlPjRrXdxJeGzfqfNE6CSeSI/w/IRK/8qY8boyKqel3itjcuqM/pbGEp6OL7GqaPTYydSVE+7QSGCjkfk7X8BftdvuKqapM0LIOrUGs0CBQW04MEXyr8k=
+Authentication-Results: kernel.org; dkim=none (message not signed)
+ header.d=none;kernel.org; dmarc=none action=none header.from=amd.com;
+Received: from SN6PR12MB2685.namprd12.prod.outlook.com (2603:10b6:805:67::33)
+ by SA0PR12MB4511.namprd12.prod.outlook.com (2603:10b6:806:95::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3326.19; Fri, 28 Aug
+ 2020 20:33:54 +0000
+Received: from SN6PR12MB2685.namprd12.prod.outlook.com
+ ([fe80::48e9:c9c:7cd7:de86]) by SN6PR12MB2685.namprd12.prod.outlook.com
+ ([fe80::48e9:c9c:7cd7:de86%5]) with mapi id 15.20.3326.019; Fri, 28 Aug 2020
+ 20:33:54 +0000
+From:   Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
+To:     x86@kernel.org, linux-kernel@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-edac@vger.kernel.org,
+        linux-efi@vger.kernel.org, linux-acpi@vger.kernel.org,
+        devel@acpica.org
+Cc:     Borislav Petkov <bp@alien8.de>, Tony Luck <tony.luck@intel.com>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <len.brown@intel.com>,
         Ard Biesheuvel <ardb@kernel.org>,
-        Arvind Sankar <nivedita@alum.mit.edu>,
-        Greentime Hu <greentime.hu@sifive.com>,
-        Ingo Molnar <mingo@kernel.org>, linux-efi@vger.kernel.org,
-        linux-riscv@lists.infradead.org,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Mike Rapoport <rppt@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Paul Walmsley <paul.walmsley@sifive.com>
-Subject: [PATCH v7 9/9] RISC-V: Add page table dump support for uefi
-Date:   Fri, 28 Aug 2020 10:20:36 -0700
-Message-Id: <20200828172036.8056-10-atish.patra@wdc.com>
-X-Mailer: git-send-email 2.24.0
-In-Reply-To: <20200828172036.8056-1-atish.patra@wdc.com>
-References: <20200828172036.8056-1-atish.patra@wdc.com>
+        Yazen Ghannam <yazen.ghannam@amd.com>,
+        Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
+Subject: [PATCH v2 0/2] Decode raw MSR values of MCA registers in BERT
+Date:   Fri, 28 Aug 2020 15:33:30 -0500
+Message-Id: <20200828203332.11129-1-Smita.KoralahalliChannabasappa@amd.com>
+X-Mailer: git-send-email 2.17.1
+Content-Type: text/plain
+X-ClientProxiedBy: SN4PR0501CA0143.namprd05.prod.outlook.com
+ (2603:10b6:803:2c::21) To SN6PR12MB2685.namprd12.prod.outlook.com
+ (2603:10b6:805:67::33)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from 255.255.255.255 (255.255.255.255) by SN4PR0501CA0143.namprd05.prod.outlook.com (2603:10b6:803:2c::21) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3348.5 via Frontend Transport; Fri, 28 Aug 2020 20:33:53 +0000
+X-Mailer: git-send-email 2.17.1
+X-Originating-IP: [165.204.78.1]
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-HT: Tenant
+X-MS-Office365-Filtering-Correlation-Id: 67f18010-e37b-4dd6-e787-08d84b91ae36
+X-MS-TrafficTypeDiagnostic: SA0PR12MB4511:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <SA0PR12MB4511FE44C5AEBCE95DF68D9890520@SA0PR12MB4511.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:8273;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 0KMzaLsHqIEaNqOvv8mOBZjDGmRzM3M9JE0XOvV6lVDEYRUrVYKz/qAq0iRapxoVTIAnLA1/uc3614nMtp1A+RUtYqPYcCACKHR1lwakcKBQRU78SKBcd4ClIxixZMJCtSoWl00NsWC/zQfIjlFGH5xFhtvAeweOwQ1G63CLO+fmL8UutF59sZFVSzrFQLMT15/S0fiuL0ShY1TEwz5bvecbPMXoscvUOINjUrMTcToSORZg3Lc5AoYaFM+/S4LCM7+SLUg0LPqs36UavPGCcqZcZGJO9vHdEGGeiTu8cJSN+D751ia77OpRlEPBJgfCyfqhMrT/X1I6PByMzesGozX4qD27Nu0v9uFvJE2c25TTKooGyNrjNqDtfQ9yg8Ds3GiUNAxkshBzLqlmwUugqg==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR12MB2685.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(39860400002)(376002)(136003)(366004)(346002)(396003)(5660300002)(8936002)(8676002)(6486002)(966005)(956004)(6666004)(2616005)(66556008)(1076003)(4326008)(7416002)(66946007)(66476007)(86362001)(83380400001)(26005)(36756003)(2906002)(186003)(52116002)(54906003)(478600001)(316002)(16576012);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData: dw19xaV0lTZ+DaDa5Yx1HfKPXeASmIpSddBYvoDs8S13qoYBEJt9lx4q4R1LF1BRdKrDTpljNrdpGbVTp0xEuURXD+6Pr3ee81wDKM2cdZZnIoGE6WvJPtoZNDgWZQdl4+DTaWZtJgbFX9vVYwpFLK/z08xG481Svq6fetNGmhdttV9pwVmJixRnq2jvUqrdxQxN9Vm7Hezu03rrvScVi6eTWD6fZFFnjO55FCGxoGO20R5e3+y473Y0sa7KfU4kARrPxSwcnGt8C9IuJlZcnFudEVoclhbPrj/llhc/TxzQZSEQYhzYFY7Nx0iwHuKYgNN5oNhJwYagZyms7omeni7hKVhM5UHKMHOzpEoXUAAcACqGNsXInnDiX5ND6T7I5gtivue+O+Qs4kT/j3NCFiMpIMkUizynHXFofD/90Wf2uTCvSXzHFZsxrAwVyvLEA9aJjlBi7bn5TgJTuJdP2eXzmUA0cv6DoURYFLvARdXQhLt3JyA1GxGR6rdy1yitlcJzazrb5nU6otX/fG5QqqR/PB+rim6rBOMTm23TSUlxmibiBWySILhStGm5CsyDR4PwtljEaYuccAmRvJ5u797rjMjAba4g/f8VBb6gSJBJWzzeBOW7DE5j9PUJ341vFRjLk946hsgGglgz6otggw==
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 67f18010-e37b-4dd6-e787-08d84b91ae36
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR12MB2685.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Aug 2020 20:33:53.9919
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 7LDTR7ke65y8i9RPGqof2VJ3mRDSuhTIRoNGGNWC7QNy0lTZGboZ4M9bKJPX1xhRHvAEPaYohTx0Jr7w+S6BQw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB4511
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Extend the current page table dump support in RISC-V to include efi
-pages as well.
+This series provides better decoding for SMCA specific raw MSR values in
+BERT reported using x86 Processor Error Common Platform Error Record
+(CPER) format.
 
-Here is the output of efi runtime page table mappings.
+Patch 1 extracts the raw MSR values of MCA registers in BERT and passes
+it through the MCA handling chain.
 
----[ UEFI runtime start ]---
-0x0000000020002000-0x0000000020003000 0x00000000be732000 4K PTE D A . . . W R V
-0x0000000020018000-0x0000000020019000 0x00000000be738000 4K PTE D A . . . W R V
-0x000000002002c000-0x000000002002d000 0x00000000be73c000 4K PTE D A . . . W R V
-0x0000000020031000-0x0000000020032000 0x00000000bff61000 4K PTE D A . . X W R V
----[ UEFI runtime end ]---
+Patch 2 provides a fix of missing error logs as observed in Patch 1.
 
-Signed-off-by: Atish Patra <atish.patra@wdc.com>
-Reviewed-by: Anup Patel <anup@brainfault.org>
----
- arch/riscv/mm/ptdump.c | 48 ++++++++++++++++++++++++++++++++++++------
- 1 file changed, 42 insertions(+), 6 deletions(-)
+Patch v2 provides a fix for the build error observed in Patch v1.
+As reported by kernel test robot, Patch 1 failed stating undefined
+reference to arch_apei_report_x86_error() in function cper_print_proc_ia.
+The failure is noticed when CONFIG_ACPI_APEI is not compiled into the
+kernel. Fix the error by returning error code if CONFIG_ACPI_APEI is not
+installed into the kernel.
 
-diff --git a/arch/riscv/mm/ptdump.c b/arch/riscv/mm/ptdump.c
-index 0831c2e61a8f..ace74dec7492 100644
---- a/arch/riscv/mm/ptdump.c
-+++ b/arch/riscv/mm/ptdump.c
-@@ -3,6 +3,7 @@
-  * Copyright (C) 2019 SiFive
-  */
- 
-+#include <linux/efi.h>
- #include <linux/init.h>
- #include <linux/debugfs.h>
- #include <linux/seq_file.h>
-@@ -49,6 +50,14 @@ struct addr_marker {
- 	const char *name;
- };
- 
-+/* Private information for debugfs */
-+struct ptd_mm_info {
-+	struct mm_struct		*mm;
-+	const struct addr_marker	*markers;
-+	unsigned long base_addr;
-+	unsigned long end;
-+};
-+
- static struct addr_marker address_markers[] = {
- #ifdef CONFIG_KASAN
- 	{KASAN_SHADOW_START,	"Kasan shadow start"},
-@@ -68,6 +77,28 @@ static struct addr_marker address_markers[] = {
- 	{-1, NULL},
- };
- 
-+static struct ptd_mm_info kernel_ptd_info = {
-+	.mm		= &init_mm,
-+	.markers	= address_markers,
-+	.base_addr	= KERN_VIRT_START,
-+	.end		= ULONG_MAX,
-+};
-+
-+#ifdef CONFIG_EFI
-+static struct addr_marker efi_addr_markers[] = {
-+		{ 0,		"UEFI runtime start" },
-+		{ SZ_1G,	"UEFI runtime end" },
-+		{ -1,		NULL }
-+};
-+
-+static struct ptd_mm_info efi_ptd_info = {
-+	.mm		= &efi_mm,
-+	.markers	= efi_addr_markers,
-+	.base_addr	= 0,
-+	.end		= SZ_2G,
-+};
-+#endif
-+
- /* Page Table Entry */
- struct prot_bits {
- 	u64 mask;
-@@ -245,22 +276,22 @@ static void note_page(struct ptdump_state *pt_st, unsigned long addr,
- 	}
- }
- 
--static void ptdump_walk(struct seq_file *s)
-+static void ptdump_walk(struct seq_file *s, struct ptd_mm_info *pinfo)
- {
- 	struct pg_state st = {
- 		.seq = s,
--		.marker = address_markers,
-+		.marker = pinfo->markers,
- 		.level = -1,
- 		.ptdump = {
- 			.note_page = note_page,
- 			.range = (struct ptdump_range[]) {
--				{KERN_VIRT_START, ULONG_MAX},
-+				{pinfo->base_addr, pinfo->end},
- 				{0, 0}
- 			}
- 		}
- 	};
- 
--	ptdump_walk_pgd(&st.ptdump, &init_mm, NULL);
-+	ptdump_walk_pgd(&st.ptdump, pinfo->mm, NULL);
- }
- 
- void ptdump_check_wx(void)
-@@ -293,7 +324,7 @@ void ptdump_check_wx(void)
- 
- static int ptdump_show(struct seq_file *m, void *v)
- {
--	ptdump_walk(m);
-+	ptdump_walk(m, m->private);
- 
- 	return 0;
- }
-@@ -308,8 +339,13 @@ static int ptdump_init(void)
- 		for (j = 0; j < ARRAY_SIZE(pte_bits); j++)
- 			pg_level[i].mask |= pte_bits[j].mask;
- 
--	debugfs_create_file("kernel_page_tables", 0400, NULL, NULL,
-+	debugfs_create_file("kernel_page_tables", 0400, NULL, &kernel_ptd_info,
- 			    &ptdump_fops);
-+#ifdef CONFIG_EFI
-+	if (efi_enabled(EFI_RUNTIME_SERVICES))
-+		debugfs_create_file("efi_page_tables", 0400, NULL, &efi_ptd_info,
-+				    &ptdump_fops);
-+#endif
- 
- 	return 0;
- }
+Links:
+https://lkml.kernel.org/r/20200825144710.23584-1-Smita.KoralahalliChannabasappa@amd.com
+https://lkml.kernel.org/r/20200825144710.23584-2-Smita.KoralahalliChannabasappa@amd.com
+https://lkml.kernel.org/r/20200825144710.23584-3-Smita.KoralahalliChannabasappa@amd.com
+
+Smita Koralahalli (2):
+  cper, apei, mce: Pass x86 CPER through the MCA handling chain
+  x86/mce/dev-mcelog: Fix updating kflags in AMD systems
+
+ arch/x86/include/asm/mce.h           |  3 +++
+ arch/x86/kernel/acpi/apei.c          |  9 +++++++
+ arch/x86/kernel/cpu/mce/apei.c       | 37 ++++++++++++++++++++++++++++
+ arch/x86/kernel/cpu/mce/dev-mcelog.c |  4 ++-
+ drivers/firmware/efi/cper-x86.c      | 10 +++++---
+ include/acpi/apei.h                  |  9 +++++++
+ 6 files changed, 67 insertions(+), 5 deletions(-)
+
 -- 
-2.24.0
+2.17.1
 
