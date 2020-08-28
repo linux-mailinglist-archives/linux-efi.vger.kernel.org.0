@@ -2,273 +2,210 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E9236254A53
-	for <lists+linux-efi@lfdr.de>; Thu, 27 Aug 2020 18:15:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE69F255F90
+	for <lists+linux-efi@lfdr.de>; Fri, 28 Aug 2020 19:20:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727790AbgH0QPH (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 27 Aug 2020 12:15:07 -0400
-Received: from de-smtp-delivery-102.mimecast.com ([62.140.7.102]:49403 "EHLO
-        de-smtp-delivery-102.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726395AbgH0QPB (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 27 Aug 2020 12:15:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=mimecast20200619;
-        t=1598544898;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=kwXRAFPcKE5bsBPfUSrIfN7z/A+5a3sdVt5OCi5/LUA=;
-        b=K0wOBPE6w5YRviXQOU8nv3ELke+A40HfjLSQssGvOYrZayVY3EunvhSGIS29PexzDKiI+X
-        aED8A9KWUs1BwGmRbRZ38oyV8rmViHFSFObJdu77CDJrFiGKKvxbiJsCmnrBaFpW8cUR2S
-        eUVsge2ezaai2s9AQtZKfNfGY0mY96E=
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com
- (mail-vi1eur05lp2170.outbound.protection.outlook.com [104.47.17.170])
- (Using TLS) by relay.mimecast.com with ESMTP id
- de-mta-14-LXwzhDAvOGi4PN0VEuMbBQ-2; Thu, 27 Aug 2020 18:14:57 +0200
-X-MC-Unique: LXwzhDAvOGi4PN0VEuMbBQ-2
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=NAIXFoflaxzsfmJ1y6WshCw/NGV95rdTu35TbGK97FXZj6WccF1DTxKR7ZLPskwhmQwTd3kD2H6C2eD/ptfEEtmGQ8upigC0ph6sCcjancjAi+arjIUW+1CAOA4isibK/WiYX+ougjczyG1sRYdDLobFKPosBquconHqZ1JADapYy8bxxkvUWXJoXXWAlNoHPvNiCrOAFiLjHWibBooJ/ryZiWS30QVks6HVL9FqYa1YiEeaYrcUjWk1XMPa3i2Y9WXit7rLacWoKOZ7UsSO8VpZpwwpbrmSZmgYmTy5FcTYX0FfkYhUoE+qz3HHOQQgU6zFbNkQcHoJ/zxXg2xbpg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=kwXRAFPcKE5bsBPfUSrIfN7z/A+5a3sdVt5OCi5/LUA=;
- b=JN3SLZKxE2ZEs5VF+P3Civ1bUQUMni54moqZDl9vFP1MXHTmzdk5PtDZKmWz5yDdTvrbOXxRrVfL2YbveDnJWSl2Jvl+43z54MiNGx7cFcnu5uRHSqiKKY9GIZXaj5zUY+iTsilnsHF9Sq2suHPJOHcS8E+DWETSuybCyInGRgbT+xU+mUXU6xJZAkQdaLYgKi1ukU0U+qni9l4PP23oE1gN1gY4gHJ097/Ea2xjX+maoDzZYuxDwD/KAFcrERGxKCTymNj2fk/znIaZEmPhSAVAs6d6Hcyns2IGoxn04c8pv2BqIw3gaf+D0dcEpAjEvnkijJZile/kJpCDIberWg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=suse.com; dmarc=pass action=none header.from=suse.com;
- dkim=pass header.d=suse.com; arc=none
-Authentication-Results: kernel.org; dkim=none (message not signed)
- header.d=none;kernel.org; dmarc=none action=none header.from=suse.com;
-Received: from VI1PR04MB7102.eurprd04.prod.outlook.com (2603:10a6:800:124::12)
- by VI1PR04MB4574.eurprd04.prod.outlook.com (2603:10a6:803:6f::28) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3305.24; Thu, 27 Aug
- 2020 16:14:54 +0000
-Received: from VI1PR04MB7102.eurprd04.prod.outlook.com
- ([fe80::c8e6:73d6:6e2e:9adf]) by VI1PR04MB7102.eurprd04.prod.outlook.com
- ([fe80::c8e6:73d6:6e2e:9adf%5]) with mapi id 15.20.3326.021; Thu, 27 Aug 2020
- 16:14:54 +0000
-Date:   Fri, 28 Aug 2020 00:14:41 +0800
-From:   joeyli <jlee@suse.com>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     "Lee, Chun-Yi" <joeyli.kernel@gmail.com>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Matthias Brugger <mbrugger@suse.com>,
-        Fabian Vogt <fvogt@suse.com>,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>
-Subject: Re: [PATCH v2] efi/efivars: Create efivars mount point via efivars
- abstraction
-Message-ID: <20200827161441.GH7501@linux-l9pv.suse>
-References: <20200826004607.7483-1-jlee@suse.com>
- <CAMj1kXHAmUVPs=P5ptb3J95+4epP5fQXkBZ_+vLP8xfxri8VBw@mail.gmail.com>
- <20200826155633.GC7501@linux-l9pv.suse>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200826155633.GC7501@linux-l9pv.suse>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-X-ClientProxiedBy: HK2P15301CA0021.APCP153.PROD.OUTLOOK.COM
- (2603:1096:202:1::31) To VI1PR04MB7102.eurprd04.prod.outlook.com
- (2603:10a6:800:124::12)
+        id S1726869AbgH1RUq (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 28 Aug 2020 13:20:46 -0400
+Received: from esa4.hgst.iphmx.com ([216.71.154.42]:11687 "EHLO
+        esa4.hgst.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725814AbgH1RUo (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 28 Aug 2020 13:20:44 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
+  t=1598635243; x=1630171243;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=gHenN6fwJGp5BObIYNPC3TZqcQqp7idU10NNnHU1wyQ=;
+  b=UBa1hdG6bp43Mw/CnhECggZqvNZgEnKqtCiEk+4IPyvJx0hotC8TDGkS
+   TjFcEdWgZN6Un/QYBEAEz9NjbEnF51zaZjNdkF7j70wv6H5y+7Hs5RX7i
+   yC7QqjxxniwvOllTD8/KKUU9d7khrS+gd3rsjkHS8uweZheD0HLQvUEiu
+   6m/BQziYBJPQnuJQgxNh75QaJHARVlDZVmAKjYWjHzKkTd6+VeQ4Mmk3P
+   d3vbUtIPa3gLfNDrWj6dYqwXMhNlY3uj18nBwdgnjMkZ2z+rYV/jwFGcv
+   MLg9DSwqd2s/FhViF4UTlPG1+DFhIsXVVLXUII81TasdpWsicU9T29Anj
+   Q==;
+IronPort-SDR: fH1d980RkWhep6zBYWJwaTYiIkILA6AOK/v199lCmiB5IlE6eRf1FWnuN9h1ZgQMsa5XPQOXhM
+ jAdsqitlHt6KhcVWVZKLvHjSM9xkqdYxxrTZtXczIew/T8CO3zpc5y8dd1Chiq0AY9TWQKy/Lu
+ br+2W22PPAXCqnj1cycc/OGaPAnDXu5d0pLyo0WShvPE9/1v1nxZt5FaYpyBKtu5eTtZci/a0k
+ einluRzs5J5YA9wp8gekC+jwIW6Wqh7xSO+1wOA1eBlUJVUmK/Ul4Aj4/lZYCh/DQHmwYExIKR
+ mro=
+X-IronPort-AV: E=Sophos;i="5.76,364,1592841600"; 
+   d="scan'208";a="146018507"
+Received: from h199-255-45-14.hgst.com (HELO uls-op-cesaep01.wdc.com) ([199.255.45.14])
+  by ob1.hgst.iphmx.com with ESMTP; 29 Aug 2020 01:20:42 +0800
+IronPort-SDR: nSEB2uzb2XynYpNU4eU9WA2NqldtnYuDDcw/LcavM3tCBKKfe07dN5XrkQq3Iex+1aI18RVdqx
+ pet5PfEzWA1A==
+Received: from uls-op-cesaip01.wdc.com ([10.248.3.36])
+  by uls-op-cesaep01.wdc.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Aug 2020 10:08:14 -0700
+IronPort-SDR: ldEYICpeaM843o92uGCkExcLgncDIk+5aq2ei6+za4TuMPcSGbsH5252HtlnN6bcwl8Uf7E4Dj
+ xbTV4ZcaT/5A==
+WDCIronportException: Internal
+Received: from 6hj08h2.ad.shared (HELO jedi-01.hgst.com) ([10.86.59.137])
+  by uls-op-cesaip01.wdc.com with ESMTP; 28 Aug 2020 10:20:41 -0700
+From:   Atish Patra <atish.patra@wdc.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     Atish Patra <atish.patra@wdc.com>,
+        Alistair Francis <alistair.francis@wdc.com>,
+        Anup Patel <anup.patel@wdc.com>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Arvind Sankar <nivedita@alum.mit.edu>,
+        Greentime Hu <greentime.hu@sifive.com>,
+        Ingo Molnar <mingo@kernel.org>, linux-efi@vger.kernel.org,
+        linux-riscv@lists.infradead.org,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Mike Rapoport <rppt@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Paul Walmsley <paul.walmsley@sifive.com>
+Subject: [PATCH v7 0/9] Add UEFI support for RISC-V
+Date:   Fri, 28 Aug 2020 10:20:27 -0700
+Message-Id: <20200828172036.8056-1-atish.patra@wdc.com>
+X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from linux-l9pv.suse (124.11.22.254) by HK2P15301CA0021.APCP153.PROD.OUTLOOK.COM (2603:1096:202:1::31) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3348.4 via Frontend Transport; Thu, 27 Aug 2020 16:14:51 +0000
-X-Originating-IP: [124.11.22.254]
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 9e262664-d86a-4b0f-c2e9-08d84aa45573
-X-MS-TrafficTypeDiagnostic: VI1PR04MB4574:
-X-LD-Processed: f7a17af6-1c5c-4a36-aa8b-f5be247aa4ba,ExtFwd
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <VI1PR04MB45747D3B144F24AD4E589D13A3550@VI1PR04MB4574.eurprd04.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:10000;
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: Z0bsbjChze4ZKXfvY8rY9nDeyPXJUVzgt19fz9j2Q9fMLAlPTJUH/enKWZ/cBpGGxvHxu+f6Abv3IZHHanWojJupqU1pYWgZEamRGSxcvK6NS3fMhTkAxBaOmg5qNA8MBr0iyNZj4fAH06uNr76hMOzfPGWTBuiGali4uv1Fp8x02vfKDt4LHLVgy3RujuDfDvEFuaMJdtN9nOJhLWs/ABKoVEriwWzndl3vA5pQPypwefmFTKUYm0peLN2X9grXMKLSavtZ2ZRyobmSs8Rw2m7nkUzjP2HDiDPuiLWBB+dokCJ6FH5TnynTutRT3Qdn9Q38LvawR2SUsGeAQ7xMm+YBzwN4hYseZsY5JZyN4E+8fVOA0hNA5EuysdkmkJ8V
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR04MB7102.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(366004)(346002)(136003)(396003)(39860400002)(376002)(2906002)(55016002)(8886007)(86362001)(6506007)(53546011)(52116002)(7696005)(4326008)(9686003)(33656002)(5660300002)(16526019)(83380400001)(186003)(36756003)(6666004)(8676002)(1076003)(6916009)(478600001)(26005)(956004)(66946007)(66556008)(8936002)(316002)(54906003)(66476007)(43062003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData: 1Pgu0Ss/DLi1W1okNnNPd9rzuHgoWRirqK4Wtr+gctBDHWh84tV2q0miQkHz9hHAxMexGK3I4zsTQscrlNmAY7IUsp4VMnkLOnlup+v0l3hgTskggQZc4Y2Tzlz4FLYqzt5ic6oNeVlc11EByfP9NtKhe9TYijodUfxRM1m+kLS/7czGXSxJIBhxYNrK/8DJK34s4uY3k+F4T0d8F13ISnbi150pFGOAa+2NNuL53PjLLuIMNPNkq3QpNkKbpn2TmxLE63wc6TddyYHAm9axU53sKPs1FQn9zVd1FJrXpMAs0azUhBGRRjo4XMHdQuRaEpfYI4N+f3ZcULxdWHxPxGo3w6snJ27eelDjVX/ZaqzLGMoDaxWRrnf7MXOCYz1HcGjIE143WrOh7BQuQFxWFkEGtro/6Fc2zLBdhpuBYNAZYI8iuK2xMk4emus+TJ9171IKLYJbTzuoUY3psy/o31c3SR+0YQ6P1uVhvSVDYFj6ZUffthohsz2FYqfWwPUbnsNOX+u16M4UuM6VuQNsFy7vlJl7XMYZvC5c1aEpai0M0bCgsIgAnpVjYWrX4Rrv2XfuN8WUd0eTUg/uMfTOcazZlLAYTdwIn/e797NLJ/XLz/L0jenQXF2Gm52Ol7Fcunr04j4gvR916d7cvTW7cg==
-X-OriginatorOrg: suse.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9e262664-d86a-4b0f-c2e9-08d84aa45573
-X-MS-Exchange-CrossTenant-AuthSource: VI1PR04MB7102.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Aug 2020 16:14:54.2931
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: f7a17af6-1c5c-4a36-aa8b-f5be247aa4ba
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: sNKCL3H5weRck9Ik+YgKEb8GtxWDP776OkqaUsTVT1Qa76VGEAVRO6QEfLvjFZGu
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB4574
+Content-Transfer-Encoding: 8bit
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, Aug 26, 2020 at 11:56:33PM +0800, Joey Lee wrote:
-> Hi Ard,
-> 
-> On Wed, Aug 26, 2020 at 02:08:18PM +0200, Ard Biesheuvel wrote:
-> > On Wed, 26 Aug 2020 at 02:46, Lee, Chun-Yi <joeyli.kernel@gmail.com> wrote:
-> > >
-> > > This patch creates efivars mount point when active efivars abstraction
-> > > be set. It is useful for userland to determine the availability of efivars
-> > > filesystem.
-> > >
-> > > Cc: Matthias Brugger <mbrugger@suse.com>
-> > > Cc: Fabian Vogt <fvogt@suse.com>
-> > > Cc: Ilias Apalodimas <ilias.apalodimas@linaro.org>
-> > > Cc: Ard Biesheuvel <ardb@kernel.org>
-> > > Signed-off-by: "Lee, Chun-Yi" <jlee@suse.com>
-> > 
-> > Apologies for not bringing this up before: while the patch seems fine,
-> > I wonder if we really need this if the purpose is to decide whether
-> > efivars is available or not. We already have the 'efivars' platform
-> > device for this, and so userland can simply check for the existence of
-> > 
-> > /sys/devices/platform/efivars.0
-> > 
-> > and so we don't need to make any changes for this.
-> > 
-> 
-> The platform device only be registered on generic EFI runtime services
-> platform. If the efivars abstraction is google gsmi, then userland can
-> not use efivars.0 to detectmine the availability of efivars filesystem.
-> 
-> If we only consider generic EFI platform, then efivars.0 is good enough.
-> But if the gsmi implementation joins this game, then my patch should not
-> blocks the creation of efivars mount point because gsmi_kobj is not
-> initialized yet.
-> 
-> Maybe the creation of efivars mount point can be moved to
-> efivars_register(), after the kobject be set. Then gsmi can also create
-> mount point. How do you think?
-> 
+This series adds UEFI support for RISC-V.
 
-Here is the patch for my concept. I simply tested on qemu-OVMF and
-qemu-uboot.
+Linux kernel: v5.9-rc2 
+U-Boot: v2020.07 
+OpenSBI: master
 
-From 7c81d3f058a177bb17c4589fe1863b79940f94c3 Mon Sep 17 00:00:00 2001
-From: "Lee, Chun-Yi" <jlee@suse.com>
-Date: Fri, 28 Aug 2020 00:05:22 +0800
-Subject: [PATCH] efi/efivars: Create efivars mount point in the registration
- of efivars abstraction
+Patch 1-3 are generic riscv feature addition required for UEFI support.
+Patch 4-7 adds the efi stub support for RISC-V which was reviewed few months back.
+https://www.spinics.net/lists/linux-efi/msg19144.html
+Patch 8 just renames arm-init code so that it can be used across different
+architectures.
+Patch 9 adds the runtime services for RISC-V.
 
-This patch moved the logic of creating efivars mount point to the registration
-of efivars abstraction. It is useful for userland to determine the availability
-of efivars filesystem by checking the existence of mount point.
+The working set of patches can also be found in following git repo.
+https://github.com/atishp04/linux/tree/uefi_riscv_5.10_v7
 
-Signed-off-by: Lee, Chun-Yi <jlee@suse.com>
----
- drivers/firmware/efi/efi.c  |  7 -------
- drivers/firmware/efi/vars.c | 17 +++++++++++++++++
- 2 files changed, 17 insertions(+), 7 deletions(-)
+The patches have been verified on following platforms:
+1. Qemu (both RV32 & RV64) for the following bootflow
+   OpenSBI->U-Boot->Linux
+   EDK2->Linux
+2. HiFive unleashed using (RV64) for the following bootflow
+   OpenSBI->U-Boot->Linux
+   EDK2->Linux
 
-diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
-index 3aa07c3b5136..23c11a2a3f4d 100644
---- a/drivers/firmware/efi/efi.c
-+++ b/drivers/firmware/efi/efi.c
-@@ -405,13 +405,6 @@ static int __init efisubsys_init(void)
- 	if (error)
- 		goto err_remove_group;
- 
--	/* and the standard mountpoint for efivarfs */
--	error = sysfs_create_mount_point(efi_kobj, "efivars");
--	if (error) {
--		pr_err("efivars: Subsystem registration failed.\n");
--		goto err_remove_group;
--	}
--
- 	if (efi_enabled(EFI_DBG) && efi_enabled(EFI_PRESERVE_BS_REGIONS))
- 		efi_debugfs_init();
- 
-diff --git a/drivers/firmware/efi/vars.c b/drivers/firmware/efi/vars.c
-index 973eef234b36..6fa7f288d635 100644
---- a/drivers/firmware/efi/vars.c
-+++ b/drivers/firmware/efi/vars.c
-@@ -1179,6 +1179,8 @@ int efivars_register(struct efivars *efivars,
- 		     const struct efivar_operations *ops,
- 		     struct kobject *kobject)
- {
-+	int error;
-+
- 	if (down_interruptible(&efivars_lock))
- 		return -EINTR;
- 
-@@ -1191,6 +1193,19 @@ int efivars_register(struct efivars *efivars,
- 
- 	up(&efivars_lock);
- 
-+	/* and the standard mountpoint for efivarfs */
-+	if (efi_kobj) {
-+		error = sysfs_create_mount_point(efi_kobj, "efivars");
-+		if (error) {
-+			if (down_interruptible(&efivars_lock))
-+				return -EINTR;
-+			__efivars = NULL;
-+			up(&efivars_lock);
-+			pr_err("efivars: Subsystem registration failed.\n");
-+			return error;
-+		}
-+	}
-+
- 	return 0;
- }
- EXPORT_SYMBOL_GPL(efivars_register);
-@@ -1222,6 +1237,8 @@ int efivars_unregister(struct efivars *efivars)
- 
- 	pr_info("Unregistered efivars operations\n");
- 	__efivars = NULL;
-+	if (efi_kobj)
-+		sysfs_remove_mount_point(efi_kobj, "efivars");
- 
- 	rv = 0;
- out:
--- 
-2.16.4
+Thanks Abner & Daniel for all work done for EDK2.
+The EDK2 instructions are available here.
+https://github.com/JohnAZoidberg/riscv-edk2-docker/
 
-Thanks a lot!
-Joey Lee
+Note:
+1. Currently, EDK2 RISC-V port doesn't support OVMF package. That's why
+EFI_GENERIC_STUB_INITRD_CMDLINE_LOADER should be enabled to load initrd via
+commandline until OVMF patches are available.
 
-> On the other hand, the efisubsys_init() does not unregister efivars.0
-> platform device in err_unregister block. It causes that efivars and
-> efi-pstore be loaded when no generic_ops.
-> 
-> Let me know if I miss understood any thing, please.
-> 
-> 
-> > 
-> > 
-> > > ---
-> > >
-> > > v2:
-> > > Using efivars_kobject() helper instead of checking GetVariable or
-> > > GetNextVariable EFI runtime services. Because the efivarfs code could be
-> > > instantiated using a different efivars abstraction.
-> > >
-> > >  drivers/firmware/efi/efi.c | 12 +++++++-----
-> > >  1 file changed, 7 insertions(+), 5 deletions(-)
-> > >
-> > > diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
-> > > index 3aa07c3b5136..db483fc68501 100644
-> > > --- a/drivers/firmware/efi/efi.c
-> > > +++ b/drivers/firmware/efi/efi.c
-> > > @@ -405,11 +405,13 @@ static int __init efisubsys_init(void)
-> > >         if (error)
-> > >                 goto err_remove_group;
-> > >
-> > > -       /* and the standard mountpoint for efivarfs */
-> > > -       error = sysfs_create_mount_point(efi_kobj, "efivars");
-> > > -       if (error) {
-> > > -               pr_err("efivars: Subsystem registration failed.\n");
-> > > -               goto err_remove_group;
-> > > +       if (efivars_kobject()) {
-> > > +               /* and the standard mountpoint for efivarfs */
-> > > +               error = sysfs_create_mount_point(efi_kobj, "efivars");
-> > > +               if (error) {
-> > > +                       pr_err("efivars: Subsystem registration failed.\n");
-> > > +                       goto err_remove_group;
-> > > +               }
-> > >         }
-> > >
-> > >         if (efi_enabled(EFI_DBG) && efi_enabled(EFI_PRESERVE_BS_REGIONS))
-> > > --
-> > > 2.16.4
-> > >
+2. For RV32, maximum allocated memory should be 1G as RISC-V kernel can not map
+beyond 1G of physical memory for RV32.
+
+3. Runtime services have been verified with fwts on EDK2.
+
+***********************************************************************
+[root@fedora-riscv ~]# fwts uefirtvariable
+Running 1 tests, results appended to results.log
+Test: UEFI Runtime service variable interface tests.                        
+  Test UEFI RT service get variable interface.            1 passed             
+  Test UEFI RT service get next variable name interface.  4 passed             
+  Test UEFI RT service set variable interface.            7 passed, 1 warning  
+  Test UEFI RT service query variable info interface.     1 passed             
+  Test UEFI RT service variable interface stress test.    2 passed             
+  Test UEFI RT service set variable interface stress t..  4 passed             
+  Test UEFI RT service query variable info interface s..  1 passed             
+  Test UEFI RT service get variable interface, invalid..  5 passed             
+  Test UEFI RT variable services supported status.        1 skipped 
+
+Test           |Pass |Fail |Abort|Warn |Skip |Info |
+uefirtvariable |   25|     |     |    1|    1|     |
+Total:         |   25|    0|    0|    1|    1|    0|
+
+***********************************************************************
+
+Changes from v6->v7:
+1. Fixed build error reported on linux-next for patch2.
+
+Changes from v5->v6:
+1. Fixed the static declaration for pt_ops.
+2. Added Reviewed/Acked-by.
+
+Changes from v4->v5:
+1. Late mappings allocations are now done through function pointers.
+2. EFI run time services are verified using full linux boot and fwts using EDK2.
+
+Changes from v3->v4:
+1. Used pgd mapping to avoid copying DT to bss.
+
+Changes from v2->v3:
+1. Fixed few bugs in run time services page table mapping.
+2. Dropped patch 1 as it is already taken into efi-tree.
+3. Sent few generic mmu fixes as a separate series to ease the merge conflicts.
+
+Changes from v1->v2:
+1. Removed patch 1 as it is already taken into efi-tree.
+2. Fixed compilation issues with patch 9.
+3. Moved few function prototype declaration to header file to keep kbuild happy.
+
+Changes from previous version:
+1. Added full ioremap support.
+2. Added efi runtime services support.
+3. Fixes mm issues
+
+Anup Patel (1):
+RISC-V: Move DT mapping outof fixmap
+
+Atish Patra (8):
+RISC-V: Add early ioremap support
+RISC-V: Implement late mapping page table allocation functions
+include: pe.h: Add RISC-V related PE definition
+RISC-V: Add PE/COFF header for EFI stub
+RISC-V: Add EFI stub support.
+efi: Rename arm-init to efi-init common for all arch
+RISC-V: Add EFI runtime services
+RISC-V: Add page table dump support for uefi
+
+arch/riscv/Kconfig                            |  25 +++
+arch/riscv/Makefile                           |   1 +
+arch/riscv/configs/defconfig                  |   1 +
+arch/riscv/include/asm/Kbuild                 |   1 +
+arch/riscv/include/asm/efi.h                  |  56 +++++
+arch/riscv/include/asm/fixmap.h               |  16 +-
+arch/riscv/include/asm/io.h                   |   1 +
+arch/riscv/include/asm/mmu.h                  |   2 +
+arch/riscv/include/asm/pgtable.h              |   5 +
+arch/riscv/include/asm/sections.h             |  13 ++
+arch/riscv/kernel/Makefile                    |   5 +
+arch/riscv/kernel/efi-header.S                | 104 ++++++++++
+arch/riscv/kernel/efi.c                       | 105 ++++++++++
+arch/riscv/kernel/head.S                      |  17 +-
+arch/riscv/kernel/head.h                      |   2 -
+arch/riscv/kernel/image-vars.h                |  51 +++++
+arch/riscv/kernel/setup.c                     |  18 +-
+arch/riscv/kernel/vmlinux.lds.S               |  22 +-
+arch/riscv/mm/init.c                          | 191 +++++++++++++-----
+arch/riscv/mm/ptdump.c                        |  48 ++++-
+drivers/firmware/efi/Kconfig                  |   3 +-
+drivers/firmware/efi/Makefile                 |   4 +-
+.../firmware/efi/{arm-init.c => efi-init.c}   |   0
+drivers/firmware/efi/libstub/Makefile         |  10 +
+drivers/firmware/efi/libstub/efi-stub.c       |  11 +-
+drivers/firmware/efi/libstub/riscv-stub.c     | 110 ++++++++++
+drivers/firmware/efi/riscv-runtime.c          | 143 +++++++++++++
+include/linux/pe.h                            |   3 +
+28 files changed, 901 insertions(+), 67 deletions(-)
+create mode 100644 arch/riscv/include/asm/efi.h
+create mode 100644 arch/riscv/include/asm/sections.h
+create mode 100644 arch/riscv/kernel/efi-header.S
+create mode 100644 arch/riscv/kernel/efi.c
+create mode 100644 arch/riscv/kernel/image-vars.h
+rename drivers/firmware/efi/{arm-init.c => efi-init.c} (100%)
+create mode 100644 drivers/firmware/efi/libstub/riscv-stub.c
+create mode 100644 drivers/firmware/efi/riscv-runtime.c
+
+--
+2.24.0
 
