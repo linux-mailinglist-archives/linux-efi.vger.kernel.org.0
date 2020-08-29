@@ -2,130 +2,105 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AAF56256218
-	for <lists+linux-efi@lfdr.de>; Fri, 28 Aug 2020 22:34:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1DD272564DB
+	for <lists+linux-efi@lfdr.de>; Sat, 29 Aug 2020 07:30:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726877AbgH1UeU (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 28 Aug 2020 16:34:20 -0400
-Received: from mail-dm6nam10on2055.outbound.protection.outlook.com ([40.107.93.55]:27873
-        "EHLO NAM10-DM6-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726797AbgH1UeL (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Fri, 28 Aug 2020 16:34:11 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=SZJQ9iJHZiYuW7m5e8gbhdpTQS2zUZS5P/ZaODH6VuPe8TlbEhURayYSmdx1pY9dHKpHIwHtH/Q/oqANXTX55U+kmFaiJtZo/lGIbXpw3Xfo5gD9AJgmjLzjJfoFNkqMoB6Y6dArrnNGYojP7Hzcd+EYfjK2KaT2fyPXo4qG8Z3mT0Qr3++NQYxMdRec4wAKME2PDDarOP7dqzqFk0KFqyUCnllXKFbP5qf4nmYQoYuCebrBt5iIFxY+gHeMMhPswB5u7vC2bfemcd0nrH15yZif4bZzCHG6KuPdylmrLn4qydUjLgcBsJodi6mlt1BVh1P9vPz2rZ17hsihtQjwtw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=p19DD4AlfjlaKQ/B6lMTKHLNGQAO319keFtPMDiG+SQ=;
- b=iwStTC5Pe++xvWvoU84DsknsH+bac6V/zWKwejMz5RFLLO7o7RJzLm/slhh3Br3CbIUxJgFzbULN/HjnHq1MfadoHSYvvtlIX/pzSH05bCMSmvnE5tViqlp/6aUB9u0mDE8r4rfciK733BODXCx9lispc2sqUoxwCWed7ImAme9dheUJEu4Juuh+JMBoanYqlU+ZGPfVcpRo6ozLQNzq77YpEpuKqt5xrI7FmcN3HyI0vSoiVlkf2HW5xKvSNK+B7I7yCv1TyeapC65lg11totBUrUrNISKc1rGm194r9O9Wgytmw5HVHK5glH+v/b8MlsxzB25pMfYmEI4EB8hGzQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=amdcloud.onmicrosoft.com; s=selector2-amdcloud-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=p19DD4AlfjlaKQ/B6lMTKHLNGQAO319keFtPMDiG+SQ=;
- b=CqTeAfA6UDNf9ik3VzkVEjdowTmsfDVZt8VQJC9JGcgKfrDAPWju1aBe0YTyv/iQtT6QrK6vj2vrvKar6Zx4mKD4wHvlBlUlvdy1gtFsOcfR24G1wykYKB9Utnv+VcyFjfNAmZoGei+4ul4xVsFz4xkCfKkobyM4CnwH572E0CI=
-Authentication-Results: kernel.org; dkim=none (message not signed)
- header.d=none;kernel.org; dmarc=none action=none header.from=amd.com;
-Received: from SN6PR12MB2685.namprd12.prod.outlook.com (2603:10b6:805:67::33)
- by SA0PR12MB4511.namprd12.prod.outlook.com (2603:10b6:806:95::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3326.19; Fri, 28 Aug
- 2020 20:33:59 +0000
-Received: from SN6PR12MB2685.namprd12.prod.outlook.com
- ([fe80::48e9:c9c:7cd7:de86]) by SN6PR12MB2685.namprd12.prod.outlook.com
- ([fe80::48e9:c9c:7cd7:de86%5]) with mapi id 15.20.3326.019; Fri, 28 Aug 2020
- 20:33:59 +0000
-From:   Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
-To:     x86@kernel.org, linux-kernel@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-edac@vger.kernel.org,
-        linux-efi@vger.kernel.org, linux-acpi@vger.kernel.org,
-        devel@acpica.org
-Cc:     Borislav Petkov <bp@alien8.de>, Tony Luck <tony.luck@intel.com>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <len.brown@intel.com>,
+        id S1725886AbgH2FaM (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 29 Aug 2020 01:30:12 -0400
+Received: from condef-08.nifty.com ([202.248.20.73]:42000 "EHLO
+        condef-08.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725901AbgH2FaK (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sat, 29 Aug 2020 01:30:10 -0400
+X-Greylist: delayed 480 seconds by postgrey-1.27 at vger.kernel.org; Sat, 29 Aug 2020 01:30:09 EDT
+Received: from conuserg-12.nifty.com ([10.126.8.75])by condef-08.nifty.com with ESMTP id 07T5Gkdn022885;
+        Sat, 29 Aug 2020 14:16:46 +0900
+Received: from oscar.flets-west.jp (softbank126090211135.bbtec.net [126.90.211.135]) (authenticated)
+        by conuserg-12.nifty.com with ESMTP id 07T5FRB7012582;
+        Sat, 29 Aug 2020 14:15:28 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-12.nifty.com 07T5FRB7012582
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1598678128;
+        bh=LVsIE8pOMnNIR6mtGLK7uU0ZbQuhigKtOBoHF9Cro6g=;
+        h=From:To:Cc:Subject:Date:From;
+        b=p2mhvfjq+pNdkZEq+VGJVU+MKYFBXjXGA6p0PU8N2KD08IuRIrcGbrjA8zQ+af9Nf
+         GazXaKt4Yx4PGQJyVKgvcwvj148TORAz3mEJn9VSHaOGxg/qWkCbbjEENE474n0Mzr
+         Q7aprxpqwjPAIbx5f/JNcAl1+hB+gQBkiuxgtctnc8YzRSoMy93rNGaTGMMRg96dxT
+         qXZifa8f+9nL1aj1ewlKHvbjaVzYBKNro/fhiu4X4u8btqWj+5BvmplGWwWQPla31r
+         8AJmuCoG11Ra5LFdzDTVCA5Sh8/Sm1ijoBmv1YrpXbRlEktPKeuORJGCDFThf4f8zH
+         RdPnFXgZKdj+g==
+X-Nifty-SrcIP: [126.90.211.135]
+From:   Masahiro Yamada <masahiroy@kernel.org>
+To:     Tony Luck <tony.luck@intel.com>, Fenghua Yu <fenghua.yu@intel.com>,
+        linux-ia64@vger.kernel.org
+Cc:     Randy Dunlap <rdunlap@infradead.org>, linux-kbuild@vger.kernel.org,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
         Ard Biesheuvel <ardb@kernel.org>,
-        Yazen Ghannam <yazen.ghannam@amd.com>,
-        Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
-Subject: [PATCH v2 2/2] x86/mce/dev-mcelog: Fix updating kflags in AMD systems
-Date:   Fri, 28 Aug 2020 15:33:32 -0500
-Message-Id: <20200828203332.11129-3-Smita.KoralahalliChannabasappa@amd.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200828203332.11129-1-Smita.KoralahalliChannabasappa@amd.com>
-References: <20200828203332.11129-1-Smita.KoralahalliChannabasappa@amd.com>
-Content-Type: text/plain
-X-ClientProxiedBy: SN4PR0501CA0143.namprd05.prod.outlook.com
- (2603:10b6:803:2c::21) To SN6PR12MB2685.namprd12.prod.outlook.com
- (2603:10b6:805:67::33)
+        Arnd Bergmann <arnd@arndb.de>,
+        Dmitry Safonov <0x7f454c46@gmail.com>,
+        afzal mohammed <afzal.mohd.ma@gmail.com>,
+        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH 0/3] ia64: clean-up header dependency and build process, fix build warning
+Date:   Sat, 29 Aug 2020 14:15:21 +0900
+Message-Id: <20200829051524.706585-1-masahiroy@kernel.org>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from 255.255.255.255 (255.255.255.255) by SN4PR0501CA0143.namprd05.prod.outlook.com (2603:10b6:803:2c::21) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3348.5 via Frontend Transport; Fri, 28 Aug 2020 20:33:58 +0000
-X-Mailer: git-send-email 2.17.1
-X-Originating-IP: [165.204.78.1]
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-HT: Tenant
-X-MS-Office365-Filtering-Correlation-Id: 287fd341-5c60-46b9-b8b8-08d84b91b185
-X-MS-TrafficTypeDiagnostic: SA0PR12MB4511:
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <SA0PR12MB451160E6AF1CED559F70E5F290520@SA0PR12MB4511.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:7691;
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: SxlCE4EY+cGEA9MyDo7mpAv4rV2TIrbHTplPncE3hY3tsaeKc2sVhCG0wec1q2YR78PxtbZmVu55QCcbGAt3M1WRTTclXpjM3aRdLyfEOCzlB0IfBcE+KeoBI53jsaDAu9l3fkdS/RjPTmdYjmVPWT5b3BqVzOe6zaNifmGok6H1v4nRAj5ZxHQAmeHbCiBKVnvLavS+zpHOCCVGuwMeIazmqR2sQRd+ej1IIL5uNvy85V0sA/JjhAtVjPi5DYqnq/1i12opF8YiXFfewFIwlkHdYu9t1ls4kpYUpR/v5yysYfhZ6zApEhMx/MxFBjzIm/k6vEP5RUzuK7gmyF3dVA==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR12MB2685.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(39860400002)(376002)(136003)(366004)(346002)(396003)(5660300002)(8936002)(8676002)(6486002)(956004)(6666004)(2616005)(66556008)(1076003)(4326008)(7416002)(66946007)(66476007)(86362001)(83380400001)(26005)(36756003)(2906002)(186003)(52116002)(54906003)(478600001)(316002)(16576012);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData: XTTWkPNXZXfe9bQVlzQU5pj7OEa75q+XQuTI+i6SFrr5+YeEZk06qi8TSIzZVfsU5a2700E2QWKdmWwaYdBE0vK64FuHtZlRJuwbmPFoIDYVIdu4bmT4K/ZARMaCfFZMikAP7vp72+Sg3qfur1V7uTZ4bZuZahBWV3VA8sE1+QBPcb2zroqfbdAgfFWPDo3vm8W1FM/ju87eg6xf0Wgam2yfHHq7ox49cov2DpzawuiOoxLKCigAYwIpMABUKBcZhCk2nMBThgrWjkL8+/BcYf4s9ygLvOUeC62wWN9UmV7oCH6q9jSFAdhHPg3P8Ay9DUm+NlPzO/TTTUu8OjWnNhP8yZuLLt8PBIv5XGFEsepWH8R8FlJMbJzEBEtyMkj/1h6HKOAQvIsoe6wHxJ3urBLbk0S4DkUcjgQIf0zD9LlPEYux4LB+mxUHx+d/0KQZRA3x4C4Qb81BWYdd2DGw0Jfx/5/G4TGPCGWMTUVYU+AsvwvN1M8P+19cYVfC+xGZBP55O+MK3+OxtmhKwlpNqbn7BsHlh2cuFhEKVG/PDdjdpCRbi8hcdeFGxY0YAU2zbwC+OSqxu+zpho0/opAahF61FO5iMpCxYytPdbXQcAlI/Z1ZfAveuLdnHzb3+OdtDDqWbaCMnbRholQ5qhSWAg==
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 287fd341-5c60-46b9-b8b8-08d84b91b185
-X-MS-Exchange-CrossTenant-AuthSource: SN6PR12MB2685.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Aug 2020 20:33:59.6035
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: JM/d5Vwlfes0nSAmeGntqCybX8VWC17agw2O2axsJWE7yWtxQOW0zFn0+PMTLq6ILTVUWmbPduN319Gh8J9BtQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB4511
+Content-Transfer-Encoding: 8bit
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The mcelog utility is not commonly used on AMD systems. Therefore, errors
-logged only by the dev_mce_log() notifier will be missed. This may occur
-if the EDAC modules are not loaded in which case it's preferable to print
-the error record by the default notifier.
 
-However, the mce->kflags set by dev_mce_log() notifier makes the default
-notifier to skip over the errors assuming they are processed by
-dev_mce_log().
+Randy Dunlap reports the following warning with CONFIG_IA64_PALINFO=m:
 
-Do not update kflags in the dev_mce_log() notifier on AMD systems.
+../scripts/Makefile.build:68: 'arch/ia64/kernel/palinfo.ko' will not be built even though obj-m is specified.
+../scripts/Makefile.build:69: You cannot use subdir-y/m to visit a module Makefile. Use obj-y/m instead.
 
-Signed-off-by: Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
----
-v2:
-	No change
+This comes from the fact Kbuild descends into arch/ia64/kernel/ twice.
 
- arch/x86/kernel/cpu/mce/dev-mcelog.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+First, to generate <generated/nr-irqs.h>,
+Second, to build kernel and module objects.
 
-diff --git a/arch/x86/kernel/cpu/mce/dev-mcelog.c b/arch/x86/kernel/cpu/mce/dev-mcelog.c
-index 03e51053592a..100fbeebdc72 100644
---- a/arch/x86/kernel/cpu/mce/dev-mcelog.c
-+++ b/arch/x86/kernel/cpu/mce/dev-mcelog.c
-@@ -67,7 +67,9 @@ static int dev_mce_log(struct notifier_block *nb, unsigned long val,
- unlock:
- 	mutex_unlock(&mce_chrdev_read_mutex);
- 
--	mce->kflags |= MCE_HANDLED_MCELOG;
-+	if (boot_cpu_data.x86_vendor != X86_VENDOR_AMD)
-+		mce->kflags |= MCE_HANDLED_MCELOG;
-+
- 	return NOTIFY_OK;
- }
- 
+The warning is emitted in the first descend because it is not the
+intended usage.
+
+I looked into the code closely, and noticed arch/ia64/kernel/nr-irqs.c
+was not needed in the first place.
+
+It was separated out of arch/ia64/kernel/asm-offsets.c just because
+<asm/mca.h> was including too many bogus headers.
+
+IA64 is not actively maintained, and there exists unneeded obsolete code.
+
+The first two patches are the outcome when I played with ARCH=ia64 builds,
+but not prerequisites for 3/3. Anyway I believe they are nice cleanups
+and folded in this patch set.
+
+3/3 is the important one to fix the false positive warning,
+and it is a nice cleanup too.
+
+
+
+Masahiro Yamada (3):
+  ia64: do not typedef struct pal_min_state_area_s
+  ia64: remove unneeded header includes from <asm/mca.h>
+  ia64: remove generated/nr-irqs.h generation to fix build warning
+
+ arch/ia64/Makefile             |  6 ------
+ arch/ia64/include/asm/irq.h    |  4 +++-
+ arch/ia64/include/asm/mca.h    | 11 ++++-------
+ arch/ia64/include/asm/pal.h    |  4 ++--
+ arch/ia64/include/asm/sal.h    |  2 +-
+ arch/ia64/kernel/Makefile      |  5 -----
+ arch/ia64/kernel/asm-offsets.c | 18 +++++++++---------
+ arch/ia64/kernel/efi.c         |  1 +
+ arch/ia64/kernel/mca.c         |  5 +++--
+ arch/ia64/kernel/mca_drv.c     |  2 +-
+ arch/ia64/kernel/nr-irqs.c     | 22 ----------------------
+ 11 files changed, 24 insertions(+), 56 deletions(-)
+ delete mode 100644 arch/ia64/kernel/nr-irqs.c
+
 -- 
-2.17.1
+2.25.1
 
