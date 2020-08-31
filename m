@@ -2,92 +2,154 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E093F2569A7
-	for <lists+linux-efi@lfdr.de>; Sat, 29 Aug 2020 20:21:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D7A4257347
+	for <lists+linux-efi@lfdr.de>; Mon, 31 Aug 2020 07:28:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728333AbgH2SVK (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sat, 29 Aug 2020 14:21:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60160 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728265AbgH2SVI (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sat, 29 Aug 2020 14:21:08 -0400
-Received: from merlin.infradead.org (merlin.infradead.org [IPv6:2001:8b0:10b:1231::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BD04C061236;
-        Sat, 29 Aug 2020 11:21:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=merlin.20170209; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
-        :Reply-To:Content-ID:Content-Description;
-        bh=wM+3aUTCfqWWlQ1tJHVnOtNIBFAHIEvD/50Kk8jfavo=; b=MxZoREBsaBXG6+jt9ukV047v5Q
-        XxKgvNn4fbCZZ14UAO7X0JIWw4Rkdqw87w7xo91fqNDwEae81IntJ9bQmzZH5vLAeaABDngfPIIWO
-        Z4gI+dq8a8qu/Ezvmcs52pX52VRnNp/aTGZyZzCBNIR6y85WRcW09ga12FU4InFdcA5x+7UgsevZn
-        qnXPfXWsrOT7j7Ilkd+TlmXqakOeskDPfMUlFeT1AwvjmpIjkqHcJEvmS3mLcAMLyPxoVY2LigNvn
-        kga8QessGsBG3qdRJz6WkJhNno2tu1+yDN/R6y3NZGtaP2EohcVR+XbvWJn1MtJmMCw6BQEU77B96
-        RO2HVuBQ==;
-Received: from [2601:1c0:6280:3f0::19c2]
-        by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1kC5TL-0007at-2k; Sat, 29 Aug 2020 18:21:03 +0000
-Subject: Re: [PATCH 2/3] ia64: remove unneeded header includes from
- <asm/mca.h>
-To:     Masahiro Yamada <masahiroy@kernel.org>,
+        id S1726131AbgHaF2B (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 31 Aug 2020 01:28:01 -0400
+Received: from mo-csw-fb1516.securemx.jp ([210.130.202.172]:36154 "EHLO
+        mo-csw-fb.securemx.jp" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725446AbgHaF2A (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 31 Aug 2020 01:28:00 -0400
+X-Greylist: delayed 1319 seconds by postgrey-1.27 at vger.kernel.org; Mon, 31 Aug 2020 01:27:58 EDT
+Received: by mo-csw-fb.securemx.jp (mx-mo-csw-fb1516) id 07V55xjM028905; Mon, 31 Aug 2020 14:06:00 +0900
+Received: by mo-csw.securemx.jp (mx-mo-csw1516) id 07V55N5u031198; Mon, 31 Aug 2020 14:05:24 +0900
+X-Iguazu-Qid: 34tMd2lTgy70XwD4cl
+X-Iguazu-QSIG: v=2; s=0; t=1598850323; q=34tMd2lTgy70XwD4cl; m=Eo+lI7ZGnqBRi8KYw8EQ/Q4YFSXKrGQSVifG045e3U8=
+Received: from imx12.toshiba.co.jp (imx12.toshiba.co.jp [61.202.160.132])
+        by relay.securemx.jp (mx-mr1511) id 07V55LQQ032861;
+        Mon, 31 Aug 2020 14:05:21 +0900
+Received: from enc02.toshiba.co.jp ([61.202.160.51])
+        by imx12.toshiba.co.jp  with ESMTP id 07V55K93009887;
+        Mon, 31 Aug 2020 14:05:20 +0900 (JST)
+Received: from hop101.toshiba.co.jp ([133.199.85.107])
+        by enc02.toshiba.co.jp  with ESMTP id 07V55Krc022628;
+        Mon, 31 Aug 2020 14:05:20 +0900
+From:   Punit Agrawal <punit1.agrawal@toshiba.co.jp>
+To:     Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
+Cc:     <x86@kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-pm@vger.kernel.org>, <linux-edac@vger.kernel.org>,
+        <linux-efi@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+        <devel@acpica.org>, Borislav Petkov <bp@alien8.de>,
         Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>, linux-ia64@vger.kernel.org
-Cc:     linux-kbuild@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Dmitry Safonov <0x7f454c46@gmail.com>,
-        afzal mohammed <afzal.mohd.ma@gmail.com>,
-        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20200829051524.706585-1-masahiroy@kernel.org>
- <20200829051524.706585-3-masahiroy@kernel.org>
-From:   Randy Dunlap <rdunlap@infradead.org>
-Message-ID: <e3dabd8d-352f-7471-3e4a-4d24d74e715b@infradead.org>
-Date:   Sat, 29 Aug 2020 11:20:57 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.11.0
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <len.brown@intel.com>,
+        "Ard Biesheuvel" <ardb@kernel.org>,
+        Yazen Ghannam <yazen.ghannam@amd.com>
+Subject: Re: [PATCH v2 1/2] cper, apei, mce: Pass x86 CPER through the MCA handling chain
+References: <20200828203332.11129-1-Smita.KoralahalliChannabasappa@amd.com>
+        <20200828203332.11129-2-Smita.KoralahalliChannabasappa@amd.com>
+Date:   Mon, 31 Aug 2020 14:05:18 +0900
+In-Reply-To: <20200828203332.11129-2-Smita.KoralahalliChannabasappa@amd.com>
+        (Smita Koralahalli's message of "Fri, 28 Aug 2020 15:33:31 -0500")
+X-TSB-HOP: ON
+Message-ID: <878sdvv20h.fsf@kokedama.swc.toshiba.co.jp>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.3 (gnu/linux)
 MIME-Version: 1.0
-In-Reply-To: <20200829051524.706585-3-masahiroy@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 8/28/20 10:15 PM, Masahiro Yamada wrote:
-> <asm/mca.h> includes too many unneeded headers.
-> 
-> This commit cuts off a lot of header includes.
-> 
-> What we need to include are:
-> 
->  - <linux/percpu.h> for DECLARE_PER_CPU(u64, ia64_mca_pal_base)
->  - <linux/threads.h> for NR_CPUS
->  - <linux/types.h> for u8, u64, size_t, etc.
->  - <asm/ptrace.h> for KERNEL_STACK_SIZE
-> 
-> The other header includes are actually unneeded.
-> 
-> <asm/mca.h> previously included 436 headers, and now it includes
-> only 138. I confirmed <asm/mca.h> is still self-contained.
+Hi Smita,
 
-Nice!
+A couple of comments below -
 
-> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com> writes:
 
-Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
-
+> Linux Kernel uses ACPI Boot Error Record Table (BERT) to report fatal
+> errors that occurred in a previous boot. The MCA errors in the BERT are
+> reported using the x86 Processor Error Common Platform Error Record (CPER)
+> format. Currently, the record prints out the raw MSR values and AMD relies
+> on the raw record to provide MCA information.
+>
+> Extract the raw MSR values of MCA registers from the BERT and feed it into
+> the standard mce_log() function through the existing x86/MCA RAS
+> infrastructure. This will result in better decoding from the EDAC MCE
+> decoder or the default notifier.
+>
+> The implementation is SMCA specific as the raw MCA register values are
+> given in the register offset order of the MCAX address space.
+>
+> Reported-by: kernel test robot <lkp@intel.com>
+> Signed-off-by: Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
 > ---
-> 
->  arch/ia64/include/asm/mca.h | 9 +++------
->  arch/ia64/kernel/efi.c      | 1 +
->  arch/ia64/kernel/mca.c      | 1 +
->  3 files changed, 5 insertions(+), 6 deletions(-)
-> 
+
+[...]
 
 
-thanks.
--- 
-~Randy
+> diff --git a/drivers/firmware/efi/cper-x86.c b/drivers/firmware/efi/cper-x86.c
+> index 2531de49f56c..374b8e18552a 100644
+> --- a/drivers/firmware/efi/cper-x86.c
+> +++ b/drivers/firmware/efi/cper-x86.c
+> @@ -1,7 +1,7 @@
+>  // SPDX-License-Identifier: GPL-2.0
+>  // Copyright (C) 2018, Advanced Micro Devices, Inc.
+>  
+> -#include <linux/cper.h>
 
+Why is the include dropped? AFAICT, the definitions from there are still
+being used after this patch.
+
+> +#include <acpi/apei.h>
+>  
+>  /*
+>   * We don't need a "CPER_IA" prefix since these are all locally defined.
+> @@ -347,9 +347,11 @@ void cper_print_proc_ia(const char *pfx, const struct cper_sec_proc_ia *proc)
+>  			       ctx_info->mm_reg_addr);
+>  		}
+>  
+> -		printk("%sRegister Array:\n", newpfx);
+> -		print_hex_dump(newpfx, "", DUMP_PREFIX_OFFSET, 16, groupsize,
+> -			       (ctx_info + 1), ctx_info->reg_arr_size, 0);
+> +		if (arch_apei_report_x86_error(ctx_info, proc->lapic_id)) {
+> +			printk("%sRegister Array:\n", newpfx);
+> +			print_hex_dump(newpfx, "", DUMP_PREFIX_OFFSET, 16, groupsize,
+> +				       (ctx_info + 1), ctx_info->reg_arr_size, 0);
+> +		}
+>  
+>  		ctx_info = (struct cper_ia_proc_ctx *)((long)ctx_info + size);
+>  	}
+> diff --git a/include/acpi/apei.h b/include/acpi/apei.h
+> index 680f80960c3d..44d4d08acce0 100644
+> --- a/include/acpi/apei.h
+> +++ b/include/acpi/apei.h
+> @@ -33,8 +33,15 @@ extern bool ghes_disable;
+>  
+>  #ifdef CONFIG_ACPI_APEI
+>  void __init acpi_hest_init(void);
+> +int arch_apei_report_x86_error(struct cper_ia_proc_ctx *ctx_info,
+> +			       u64 lapic_id);
+>  #else
+>  static inline void acpi_hest_init(void) { return; }
+> +static inline int arch_apei_report_x86_error(struct cper_ia_proc_ctx *ctx_info,
+> +					     u64 lapic_id)
+> +{
+> +	return -EINVAL;
+> +}
+>  #endif
+
+Adding the declaration to this include violates the separation of
+generic and architecture specific code.
+
+Can this be moved to the appropriate architecture specific header?
+Perhaps arch/x86/include/asm/apei.h.
+
+>  typedef int (*apei_hest_func_t)(struct acpi_hest_header *hest_hdr, void *data);
+> @@ -51,6 +58,8 @@ int erst_clear(u64 record_id);
+>  
+>  int arch_apei_enable_cmcff(struct acpi_hest_header *hest_hdr, void *data);
+>  void arch_apei_report_mem_error(int sev, struct cper_sec_mem_err *mem_err);
+> +int arch_apei_report_x86_error(struct cper_ia_proc_ctx *ctx_info,
+> +			       u64 lapic_id);
+
+
+Why is the additional declaration needed?
+
+Thanks,
+Punit
+
+>  
+>  #endif
+>  #endif
