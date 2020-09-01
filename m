@@ -2,51 +2,59 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CF90925A1D7
-	for <lists+linux-efi@lfdr.de>; Wed,  2 Sep 2020 01:18:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B486025A213
+	for <lists+linux-efi@lfdr.de>; Wed,  2 Sep 2020 01:54:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726301AbgIAXSJ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 1 Sep 2020 19:18:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41814 "EHLO
+        id S1725949AbgIAXyY (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 1 Sep 2020 19:54:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47316 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726124AbgIAXSI (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 1 Sep 2020 19:18:08 -0400
-Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com [IPv6:2607:f8b0:4864:20::641])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A45CBC061245
-        for <linux-efi@vger.kernel.org>; Tue,  1 Sep 2020 16:18:08 -0700 (PDT)
-Received: by mail-pl1-x641.google.com with SMTP id a8so1342831plm.2
-        for <linux-efi@vger.kernel.org>; Tue, 01 Sep 2020 16:18:08 -0700 (PDT)
+        with ESMTP id S1726167AbgIAXyV (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 1 Sep 2020 19:54:21 -0400
+Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com [IPv6:2607:f8b0:4864:20::442])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B5A0C061245
+        for <linux-efi@vger.kernel.org>; Tue,  1 Sep 2020 16:54:21 -0700 (PDT)
+Received: by mail-pf1-x442.google.com with SMTP id o20so1779262pfp.11
+        for <linux-efi@vger.kernel.org>; Tue, 01 Sep 2020 16:54:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=4iyrZMhsm50EAs3g2KnI7xhSNv02uS5mIc/bNi5tMhA=;
-        b=h1W3rhK11Ac2ULHxITQVWk+mYa5KEEodEYvcXH6ZBK0sVGUcKUNSYh5WpmAqVdJ4uM
-         laH+r/2+ofVbyxPYxM/BYCZTO3d1jcstILzzhKlZMC4jxxBsADHZmsJZMYMsDLc0Xqts
-         f/ywKAW1F2cWVr+Ovsyf3pu5q6m5rdIcz38XA=
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=vr/GRpBoEYmMuCS63slKe/6FyD7UiqC7EOcVZHXrpYc=;
+        b=uz93oa+cmzW9oTnATL428U6pMu17BMVfzmaMjK4fk6Pr50aa1EJBroz8GVphFXX1DC
+         xakDt5YXF7xxpRdVUQJBBYUnHHokCsCzD409wTF48swCZaPGPBw8N/Eu1/iDvX+LwOHT
+         /ZV87MKvTEGAyHhk5QguI3zXGk7KdqaDBxsVyNc8bquF02gR+FcCUuQtoqaAmY6eF1Ox
+         YST9d4Rsw5ptQHBz/JbuP6UFlPBmOqzGa3RDnTuZedLKppgnemVaQeUSGg4TKX9/guQd
+         sqjqZBf0mJY9HM1qcuiWhfcK+8/e7DJnSmsSSRZVq1yEjOyQ8y0mqq/E3jnqnuv8Tnfv
+         itdA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=4iyrZMhsm50EAs3g2KnI7xhSNv02uS5mIc/bNi5tMhA=;
-        b=k7oFR3LRCWzfDW8dXhxqQxhua0+2m6hBpjCiF/0IvZqo6t7r977DuY5N4GjaHHMrmk
-         eaaGIQIy+npRayy3pr/5uchgJrxgzCK/m4QyNbamI+VJU4CpceZp8uYakBk0dVdUiyJi
-         Wzz4jmIwnBfhwv8HpKGQhssBwawoPnTZhxFOC9hv0WTywlvHxgYxS911VSC/T8fGwRCW
-         LsyT+2gPWFKtGN1eLzLVpWrnpxZL48pOQtjYIwR9qycfvKOHMlq5pCaOtvDkyqeuqKP5
-         7j0l+E3+FscjmLGPSIh5iWVTUuCTigPojO3yDY3KRawQIlfsLTNUGXzrcisxh6agHYG8
-         VHBQ==
-X-Gm-Message-State: AOAM531uP12/yfm3N05FOV/tOGH2LNrSGHk1SQTvxb8RDSAr1cO5nAZ/
-        4VYyO3i5m2p0StpC7fvPdEcCLw==
-X-Google-Smtp-Source: ABdhPJygBwAH2kY44WcP2KmDZ++JT1L7dvXf2P1Gp3pBp8hQP0G/2rd4h4BS1PltNzQUpbBUJyzvFQ==
-X-Received: by 2002:a17:902:7404:: with SMTP id g4mr2271545pll.176.1599002287789;
-        Tue, 01 Sep 2020 16:18:07 -0700 (PDT)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id l22sm3506944pfc.27.2020.09.01.16.18.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Sep 2020 16:18:06 -0700 (PDT)
-Date:   Tue, 1 Sep 2020 16:18:05 -0700
-From:   Kees Cook <keescook@chromium.org>
-To:     Nick Desaulniers <ndesaulniers@google.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=vr/GRpBoEYmMuCS63slKe/6FyD7UiqC7EOcVZHXrpYc=;
+        b=n53YxTXkGSV91IepR/Vv1WfSqLs/PFwzxJ1mDdf6b0L9MqRFPCMe8majrjR0RZfXbN
+         dOrV76cuPiKEp25T89qvwkzm4J3lMEF7hdvDQ7yBxRQt5JzFrgTlusUpM9oy0Vrf6NCa
+         5YPGyRselbJM2ia4PJFv89UHiHemZYuEP6dpYCW2Yb/7B+JMuCNYh9GqG/Eo68WV7WH5
+         xWwlDh14wJw2r06ySEkoZEkdnY0eW1Y/0HH+h1IvLI/LpljilcxV95VOuiFjCPYMK+CU
+         h2TqRMd7mcga1MJpmV6et3xPAbZNNwwZk9RXKYNpG4VOqza2bGz2rc1CkVtWir9zrtDQ
+         Fjjg==
+X-Gm-Message-State: AOAM533zJWGFoDaOLBSIW+1EyubK5k8yoPwpruFyNgMkPSts21ZRhgfq
+        VHLcGABpiV6vPrq8vaRbfkKjnQ4GuRWFuEpXI1oWAA==
+X-Google-Smtp-Source: ABdhPJxTACSixKp/ZU9Zg50XGHk3ByA89yXDEzS29Y6IrN6+Y6W0mcsXbJ1k3kHy2PmcQKLZUI3aPxQZ5rHcknTWv7M=
+X-Received: by 2002:a62:19cd:: with SMTP id 196mr621969pfz.143.1599004460212;
+ Tue, 01 Sep 2020 16:54:20 -0700 (PDT)
+MIME-Version: 1.0
+References: <20200821194310.3089815-1-keescook@chromium.org>
+ <202008311240.9F94A39@keescook> <20200901071133.GA3577996@gmail.com>
+ <20200901075937.GA3602433@gmail.com> <20200901081647.GB3602433@gmail.com>
+ <202009010816.80F4692@keescook> <CAKwvOdnn3wxYdJomvnveyD_njwRku3fABWT_bS92duihhywLJQ@mail.gmail.com>
+ <202009011616.E6DC7D54EF@keescook>
+In-Reply-To: <202009011616.E6DC7D54EF@keescook>
+From:   Nick Desaulniers <ndesaulniers@google.com>
+Date:   Tue, 1 Sep 2020 16:54:08 -0700
+Message-ID: <CAKwvOdnDMvECAhKcTVEqcgM9QAUX05Gj27q7fZCbudANX-GWDg@mail.gmail.com>
+Subject: Re: [PATCH v6 00/29] Warn on orphan section placement
+To:     Kees Cook <keescook@chromium.org>
 Cc:     Michael Ellerman <mpe@ellerman.id.au>,
         Masahiro Yamada <masahiroy@kernel.org>,
         Nicholas Piggin <npiggin@gmail.com>,
@@ -67,50 +75,30 @@ Cc:     Michael Ellerman <mpe@ellerman.id.au>,
         linux-efi <linux-efi@vger.kernel.org>,
         Linux ARM <linux-arm-kernel@lists.infradead.org>,
         LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v6 00/29] Warn on orphan section placement
-Message-ID: <202009011616.E6DC7D54EF@keescook>
-References: <20200821194310.3089815-1-keescook@chromium.org>
- <202008311240.9F94A39@keescook>
- <20200901071133.GA3577996@gmail.com>
- <20200901075937.GA3602433@gmail.com>
- <20200901081647.GB3602433@gmail.com>
- <202009010816.80F4692@keescook>
- <CAKwvOdnn3wxYdJomvnveyD_njwRku3fABWT_bS92duihhywLJQ@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAKwvOdnn3wxYdJomvnveyD_njwRku3fABWT_bS92duihhywLJQ@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, Sep 01, 2020 at 11:02:02AM -0700, Nick Desaulniers wrote:
-> On Tue, Sep 1, 2020 at 8:17 AM Kees Cook <keescook@chromium.org> wrote:
-> >
-> > On Tue, Sep 01, 2020 at 10:16:47AM +0200, Ingo Molnar wrote:
-> > > > This is with:
-> > > >
-> > > >   GNU ld version 2.25-17.fc23
-> >
-> > (At best, this is from 2015 ... but yes, min binutils in 2.23.)
-> 
-> Ah, crap! Indeed arch/powerpc/Makefile wraps this in ld-option.
+On Tue, Sep 1, 2020 at 4:18 PM Kees Cook <keescook@chromium.org> wrote:
+>
+> On Tue, Sep 01, 2020 at 11:02:02AM -0700, Nick Desaulniers wrote:
+> > Uh oh, the ppc vdso uses cc-ldoption which was removed! (I think by
+> > me; let me send patches)  How is that not an error?  Yes, guilty,
+> > officer.
+> > commit 055efab3120b ("kbuild: drop support for cc-ldoption").
+> > Did I not know how to use grep, or?  No, it is
+> > commit f2af201002a8 ("powerpc/build: vdso linker warning for orphan sections")
+> > that is wrong.
+>
+> Eek, yeah, the vdso needs fixing; whoops. Lucky for my series, I only need
+> ld-option! ;)
+>
 
-Yeah, I totally missed that too. :)
-
-> Uh oh, the ppc vdso uses cc-ldoption which was removed! (I think by
-> me; let me send patches)  How is that not an error?  Yes, guilty,
-> officer.
-> commit 055efab3120b ("kbuild: drop support for cc-ldoption").
-> Did I not know how to use grep, or?  No, it is
-> commit f2af201002a8 ("powerpc/build: vdso linker warning for orphan sections")
-> that is wrong.
-
-Eek, yeah, the vdso needs fixing; whoops. Lucky for my series, I only need
-ld-option! ;)
-
-(Doing test builds now...)
-
+I didn't cc everyone here on that thread, but here's the series I sent
+for it: https://lore.kernel.org/lkml/20200901222523.1941988-1-ndesaulniers@google.com/T/#u
+.
 -- 
-Kees Cook
+Thanks,
+~Nick Desaulniers
