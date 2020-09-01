@@ -2,52 +2,52 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A01B12589EE
-	for <lists+linux-efi@lfdr.de>; Tue,  1 Sep 2020 09:59:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 90279258A2E
+	for <lists+linux-efi@lfdr.de>; Tue,  1 Sep 2020 10:16:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726050AbgIAH7n (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 1 Sep 2020 03:59:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41032 "EHLO
+        id S1726020AbgIAIQx (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 1 Sep 2020 04:16:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43694 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726044AbgIAH7m (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 1 Sep 2020 03:59:42 -0400
-Received: from mail-ed1-x543.google.com (mail-ed1-x543.google.com [IPv6:2a00:1450:4864:20::543])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CF33C061244;
-        Tue,  1 Sep 2020 00:59:42 -0700 (PDT)
-Received: by mail-ed1-x543.google.com with SMTP id q21so538352edv.1;
-        Tue, 01 Sep 2020 00:59:42 -0700 (PDT)
+        with ESMTP id S1725993AbgIAIQw (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 1 Sep 2020 04:16:52 -0400
+Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com [IPv6:2a00:1450:4864:20::541])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 017F8C061244;
+        Tue,  1 Sep 2020 01:16:51 -0700 (PDT)
+Received: by mail-ed1-x541.google.com with SMTP id c8so574692edv.5;
+        Tue, 01 Sep 2020 01:16:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=sender:date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to;
-        bh=1tUkMsxqX+EmvRrvz0z84bC2IgPMV2uqRkretCUGwiQ=;
-        b=qkxZLlPRV+HvJ1qB5AZTMRDPW93Z/gzTs0x18/F1NW5XRe5b7fQSGM/dUk5AQ+7TY+
-         L+3oJiEQCjjswVwRkAz8MEGaDpWxIlfKhvbV9ByS3B9z0US62lCR1AXO9dN33RXqYtLI
-         sWaSYa87lhOHVY3YpM/I8IWuhM1Wp+v18UI7NVByfcIETSsKma+jN6GunmH5vZMiq8xb
-         2XkoSC7T3ntj3r1ELFyVnvnThVv9kyg/H59v0XtjkvUao8wRKWBr/KZBYUpQ0UJHgbKJ
-         pY1xbx9gralqUwLbXi1wyERRawpucmFuYlfp/6cgHsg2xDKgiOwg9X3rzhbVckmAIHcR
-         8Z2w==
+        bh=swNovB3+fcrt09IBXHVDolTV6/eIXMyoTVYnepRz3fU=;
+        b=pABpQ7tZu55e1f7KIWPfqDj7rsSVuHqj7SJd/BNyJtUBlGl3fCXeatZv2VT0Jd7GMy
+         CRWI47ko52llmTPN8DSc/qdPwBoeMA0kOw7DyMGgCxAkIFd6Da80nZoAGw17JUz/x6MT
+         gEp/23jWYkPvQGV8ouufw/AZF9MYGxg1UBsX0uZImngKkWcDopJtQJ31oT+y2oO6bhsM
+         EPbyUx3Go/apQcYolTzEse8P/AnQM2q8YWBROfWcWpGuuRT0kncwn2ORUu1OGGaK4IfZ
+         0Ky33sQw/xRKFZjyGNb4ePn/yWz/Digj/WlMevz33aRyx4Q+lqjX4Qx8xt6C+V+qE7Jw
+         0azg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
          :references:mime-version:content-disposition:in-reply-to;
-        bh=1tUkMsxqX+EmvRrvz0z84bC2IgPMV2uqRkretCUGwiQ=;
-        b=BaSg72Ke5DnTW6obA0cNTSMX/z3a/m/p92s952Q2h2yFIed/ALKXxIMa9pXTpYmZGY
-         7jMd6A4GuWBTIHaRzW0lBbARHxxsy7C9pPVqhy9meAh1cWQtcQPRPLmoQR3QkK2a9Chh
-         1mIxEsQXf8p9woCdhpxLTcvpO72yc0IAFcN7Bteq9lYSN82KhRYZzGCknfdPL4O0LPTS
-         WCgvAfKT+criMdPx9sNjxtj6e46hNiujQ+DqIPAuyxZNDa/rYU/n4QbBpn6GvSp3sJ/3
-         x1AeHpLhZbMv6pIYEd2Xb5LqaGIB7wzxA1bKzxxbRPg8epHNHxYKcWNRln+tnYLgxqiz
-         YCtg==
-X-Gm-Message-State: AOAM530ty+EMbS8NMrPyvFqAlOLgw5gZ+vA/BbWVoNpvfTgJcKLbjJRE
-        lmeKbyQ3PrOaE2n+PadyhBY=
-X-Google-Smtp-Source: ABdhPJzeDWymrCPJVQGGseKzqQGGkA79Su6T6BnnuBxUsnIU8yb3Ft7Lc0UMjmZqTp7y2AROzPerXQ==
-X-Received: by 2002:a50:8881:: with SMTP id d1mr689496edd.306.1598947180775;
-        Tue, 01 Sep 2020 00:59:40 -0700 (PDT)
+        bh=swNovB3+fcrt09IBXHVDolTV6/eIXMyoTVYnepRz3fU=;
+        b=EQ96BH/ZVLgRZBmrq7fNXQXDkZ5z75NrzuXy2a3gSuztAPdj7/G+9QXowatIN7jK28
+         i6EvRaSr7CLFOfmbnj8Xzck8fV5J4OpkGyWACTsCTwRHrelijOvAdNGxpnKaaFrtreck
+         1O/GH2An3CR2vpVstjdNE39ZKobura9V5A9/IbKIyx6JJmd/IXU7ZTSmQ61uW/0HjA+V
+         vhalr5sF8BuQoq6APoAiKmYjxdxwyl3jYGDeFG59relYgxfQqKWOVuYXJyfaAkd9OTIY
+         A/w6MlIBSb9Qc2Q5KNPXeblipftCPg8jNIwQ7SiINcLRIEoAX63EO6dc+7ESOtGduESA
+         mM1A==
+X-Gm-Message-State: AOAM530Y2jFYXBkbg5e0XitaxR5oIXGOtDvNggJkm2N3Zw82qDAy7iMI
+        h7FptDurSsMzuIn4Rd/Fpvc=
+X-Google-Smtp-Source: ABdhPJx2ptuL7kkygWDLtZF4JRxA4A4z1gr2neF5/3bsbYzIVwapfuJUGyH19AxYNzkhui1xtmfaiw==
+X-Received: by 2002:a50:d942:: with SMTP id u2mr802309edj.0.1598948210504;
+        Tue, 01 Sep 2020 01:16:50 -0700 (PDT)
 Received: from gmail.com (54033286.catv.pool.telekom.hu. [84.3.50.134])
-        by smtp.gmail.com with ESMTPSA id qu11sm511021ejb.15.2020.09.01.00.59.39
+        by smtp.gmail.com with ESMTPSA id k10sm507731ejj.108.2020.09.01.01.16.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Sep 2020 00:59:40 -0700 (PDT)
-Date:   Tue, 1 Sep 2020 09:59:37 +0200
+        Tue, 01 Sep 2020 01:16:49 -0700 (PDT)
+Date:   Tue, 1 Sep 2020 10:16:47 +0200
 From:   Ingo Molnar <mingo@kernel.org>
 To:     Kees Cook <keescook@chromium.org>
 Cc:     Borislav Petkov <bp@suse.de>,
@@ -67,14 +67,15 @@ Cc:     Borislav Petkov <bp@suse.de>,
         linux-efi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-kernel@vger.kernel.org
 Subject: Re: [PATCH v6 00/29] Warn on orphan section placement
-Message-ID: <20200901075937.GA3602433@gmail.com>
+Message-ID: <20200901081647.GB3602433@gmail.com>
 References: <20200821194310.3089815-1-keescook@chromium.org>
  <202008311240.9F94A39@keescook>
  <20200901071133.GA3577996@gmail.com>
+ <20200901075937.GA3602433@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200901071133.GA3577996@gmail.com>
+In-Reply-To: <20200901075937.GA3602433@gmail.com>
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
@@ -84,32 +85,47 @@ X-Mailing-List: linux-efi@vger.kernel.org
 * Ingo Molnar <mingo@kernel.org> wrote:
 
 > 
-> * Kees Cook <keescook@chromium.org> wrote:
+> * Ingo Molnar <mingo@kernel.org> wrote:
 > 
-> > On Fri, Aug 21, 2020 at 12:42:41PM -0700, Kees Cook wrote:
-> > > Hi Ingo,
+> > 
+> > * Kees Cook <keescook@chromium.org> wrote:
+> > 
+> > > On Fri, Aug 21, 2020 at 12:42:41PM -0700, Kees Cook wrote:
+> > > > Hi Ingo,
+> > > > 
+> > > > Based on my testing, this is ready to go. I've reviewed the feedback on
+> > > > v5 and made a few small changes, noted below.
 > > > 
-> > > Based on my testing, this is ready to go. I've reviewed the feedback on
-> > > v5 and made a few small changes, noted below.
+> > > If no one objects, I'll pop this into my tree for -next. I'd prefer it
+> > > go via -tip though! :)
+> > > 
+> > > Thanks!
 > > 
-> > If no one objects, I'll pop this into my tree for -next. I'd prefer it
-> > go via -tip though! :)
-> > 
-> > Thanks!
+> > I'll pick it up today, it all looks very good now!
 > 
-> I'll pick it up today, it all looks very good now!
+> One thing I found in testing is that it doesn't handler older LD 
+> versions well enough:
+> 
+>   ld: unrecognized option '--orphan-handling=warn'
+> 
+> Could we just detect the availability of this flag, and emit a warning 
+> if it doesn't exist but otherwise not abort the build?
+> 
+> This is with:
+> 
+>   GNU ld version 2.25-17.fc23
 
-One thing I found in testing is that it doesn't handler older LD 
-versions well enough:
+I've resolved this for now by not applying the 5 patches that add the 
+actual orphan section warnings:
 
-  ld: unrecognized option '--orphan-handling=warn'
+  arm64/build: Warn on orphan section placement
+  arm/build: Warn on orphan section placement
+  arm/boot: Warn on orphan section placement
+  x86/build: Warn on orphan section placement
+  x86/boot/compressed: Warn on orphan section placement
 
-Could we just detect the availability of this flag, and emit a warning 
-if it doesn't exist but otherwise not abort the build?
-
-This is with:
-
-  GNU ld version 2.25-17.fc23
+The new asserts plus the actual fixes/enhancements are enough changes 
+to test for now in any case. :-)
 
 Thanks,
 
