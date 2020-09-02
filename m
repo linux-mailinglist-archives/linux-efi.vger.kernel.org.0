@@ -2,147 +2,127 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D5C225A717
-	for <lists+linux-efi@lfdr.de>; Wed,  2 Sep 2020 09:55:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C03E25B43A
+	for <lists+linux-efi@lfdr.de>; Wed,  2 Sep 2020 21:04:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726512AbgIBHzn (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 2 Sep 2020 03:55:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36632 "EHLO
+        id S1728089AbgIBTEr (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 2 Sep 2020 15:04:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54952 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726167AbgIBHzi (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 2 Sep 2020 03:55:38 -0400
-Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com [IPv6:2607:f8b0:4864:20::643])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 802EAC061244;
-        Wed,  2 Sep 2020 00:55:38 -0700 (PDT)
-Received: by mail-pl1-x643.google.com with SMTP id q3so1906061pls.11;
-        Wed, 02 Sep 2020 00:55:38 -0700 (PDT)
+        with ESMTP id S1728016AbgIBTEp (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 2 Sep 2020 15:04:45 -0400
+Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com [IPv6:2607:f8b0:4864:20::544])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88647C061246
+        for <linux-efi@vger.kernel.org>; Wed,  2 Sep 2020 12:04:45 -0700 (PDT)
+Received: by mail-pg1-x544.google.com with SMTP id 5so148261pgl.4
+        for <linux-efi@vger.kernel.org>; Wed, 02 Sep 2020 12:04:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
+        d=google.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=Vv9wafYlcRndezilwjOVw+Uvg14avW3QcJVd3Hrp9X0=;
-        b=dUhRbwVRhGDqCmPDJulA9D1NH7C7y9XHVxD2cCdGOWci+8hb5IympO9z/mRng67H8/
-         EdOTtIbOUtlS0mzLi//6vD4CigO1owTjoWyCjHgRxEoqhFi1zxwgFApN05D3L06ODh+s
-         AVvnjlPrW+HYJTAL/8YojwCSWZA0hmWlOyI4Z0ujWxLb7QaZJHPkmOvkknBkjULMUk8O
-         vZCA+YksoU5lSSMLMuTxe0RWE+SopR/Bz0y9IzEH472wSI8+jrXlqe5BwxCUUpZ/v2qU
-         95IpUaWjKi1whSEN6uAGZZ96PnIq+fl78D9OB6zeF8Yss0rzX0NdmyXMSAg8XGrUO6+9
-         /VDg==
+        bh=mbvYxT8uYxty8dNjUEj6f2xpfkVHdqq7oce2X4nNcd0=;
+        b=iRP4fz5N8zXBPyKNAgNfPmXCcxrmonkm0Os8not5I3SkTH+uCEvtntcSzwpjmUH5Ew
+         fJ53jdwnD1OmSm2/LLlE9h3yEA3384P9xBIx1fM5B8WvPo8eT5i8XW74TzOZSJCiVhIQ
+         t8yPjErzTguaK5SK/lPFV6JrgE+zApxHY7n4T9h0IFgeVDfPSLH9i4Igh1E1y1VUrZdk
+         Qg7e+ShQRcDa4r6b5/n24liH+AW0DosuNG55yaEmh6cl88S64ZokJ0z50525m3rjaIIP
+         mYAZj935dcrmRet9hObLhGeVLVc7w/6Lgr7OBukbh6zJ3YwQfJx6ajWrb4RHKGYufli4
+         4/3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=Vv9wafYlcRndezilwjOVw+Uvg14avW3QcJVd3Hrp9X0=;
-        b=IRLT6+5EpSjhCNN2Y+fuqxvT2I7RU50cwxBbtEOS8deSGrJwEGlRdPApKzPES+ZLyO
-         SFnp5iWtdGg8iIFlyjQXPH++EoPKxfbxZv5RGcYNc0oEYbru4GZwC/1QqaogidogrYgh
-         gABgTyJvETFXBA65OhtSvaPW08EmiHELT5adZqNP267l2b6+KAkFfUNQ7bj3YP0JJoVN
-         pXQh0FaX2pI/zblAIl+lz24ALGt6c38x1X9kL7nNmYpanp8pZDEM2bG9dEvD8i0VQtZ6
-         CpZBvw1AObVOEwFuoUxmH7dGSMQo51ZXaFY2WMeSept7X+IBO3t+sg1IftDnDOoziV0T
-         O/ZQ==
-X-Gm-Message-State: AOAM532Gw5cmG/vr2kwCptWuwxHS4t3hqvTTpVUb3dnMSu6fyjGqjIxc
-        RAVGU/Z2oW5Fzh/AIiF60mnxwt+NnnH5bZuPAWkmNH2bPx8=
-X-Google-Smtp-Source: ABdhPJxNZ9O3Sj7OvHiGloTdmPJ7LxTz4zR2Er8HbAv/pmqjuckAEtpUdzJasMFcDiKbP+NTn6IiUaUkABxel3cBWdE=
-X-Received: by 2002:a17:902:b715:: with SMTP id d21mr1104159pls.92.1599033338028;
- Wed, 02 Sep 2020 00:55:38 -0700 (PDT)
+        bh=mbvYxT8uYxty8dNjUEj6f2xpfkVHdqq7oce2X4nNcd0=;
+        b=Tw9YzHjuInb11yN6zzqPR3C3v9HletYcg/mRBidSi9ecDo3vrirZe3G0ZPelIKxScA
+         rXhxf/2JsieHXsFwxwTDMkv2DzGTXZl87BudqtB0yHVxpdDtVrzVN0s47X40vx0SPpME
+         6UttFO/VZIWHb3ZiWPqhFJedQsJf2Wfj4pvK0V33q2tC5gJipEa18Nj96uadfXZgIUq4
+         KGBQ0uobG5yWtoLwcQhxko1EdJrhDT/+TJ1F3Z3twW6zZ3Ckt/0pv2jzVDdgjRnqmWRo
+         01Owfopav36TyEhSb574FitvfXo4BPgQIY7roGt6SXkAn0NIQ0wUve5wCnm9TQIFTsRj
+         Be9A==
+X-Gm-Message-State: AOAM530KSAjLwqqNP17T7XZa+398+Q8aE8Kz50omMNXUdicIzCvXzPo5
+        UEwRQIUVbIxUGMWNCVDDOILH7DzzX9gqGshoayQB8Q==
+X-Google-Smtp-Source: ABdhPJwtTfyrpkBmwDaLJ+GfXiTisNqMpq2rz/OkurrFhQR8CPZaebvC/gVhdDeDVHmXMpt9IxQQan8xa319O8Ek0ZQ=
+X-Received: by 2002:a62:1896:: with SMTP id 144mr3540419pfy.143.1599073484594;
+ Wed, 02 Sep 2020 12:04:44 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200826034455.28707-1-lszubowi@redhat.com> <20200826034455.28707-3-lszubowi@redhat.com>
-In-Reply-To: <20200826034455.28707-3-lszubowi@redhat.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Wed, 2 Sep 2020 10:55:21 +0300
-Message-ID: <CAHp75Vec0a3LC7dGY6wacQu0brc+Zjfowt6kGdcZ9sfMzoDR9g@mail.gmail.com>
-Subject: Re: [PATCH 2/3] integrity: Move import of MokListRT certs to a
- separate routine
-To:     Lenny Szubowicz <lszubowi@redhat.com>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Platform Driver <platform-driver-x86@vger.kernel.org>,
-        linux-security-module <linux-security-module@vger.kernel.org>,
+References: <20200902025347.2504702-1-keescook@chromium.org>
+In-Reply-To: <20200902025347.2504702-1-keescook@chromium.org>
+From:   Nick Desaulniers <ndesaulniers@google.com>
+Date:   Wed, 2 Sep 2020 12:04:33 -0700
+Message-ID: <CAKwvOd=r8X1UeBRgYMcjUoQX_nbOEbXCQYGX6n7kMnJhGXis=Q@mail.gmail.com>
+Subject: Re: [PATCH v7 0/5] Warn on orphan section placement
+To:     Kees Cook <keescook@chromium.org>
+Cc:     Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@suse.de>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
         Ard Biesheuvel <ardb@kernel.org>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        Kees Cook <keescook@chromium.org>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Peter Jones <pjones@redhat.com>,
-        David Howells <dhowells@redhat.com>,
-        Prarit Bhargava <prarit@redhat.com>
+        Peter Collingbourne <pcc@google.com>,
+        James Morse <james.morse@arm.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Arvind Sankar <nivedita@alum.mit.edu>,
+        Nathan Chancellor <natechancellor@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
+        clang-built-linux <clang-built-linux@googlegroups.com>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        LKML <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, Aug 26, 2020 at 6:45 AM Lenny Szubowicz <lszubowi@redhat.com> wrote:
+On Tue, Sep 1, 2020 at 7:53 PM Kees Cook <keescook@chromium.org> wrote:
 >
-> Move the loading of certs from the UEFI MokListRT into a separate
-> routine to facilitate additional MokList functionality.
+> Hi Ingo,
 >
-> There is no visible functional change as a result of this patch.
-> Although the UEFI dbx certs are now loaded before the MokList certs,
-> they are loaded onto different key rings. So the order of the keys
-> on their respective key rings is the same.
+> The ever-shortening series. ;) Here is "v7", which is just the remaining
+> Makefile changes to enable orphan section warnings, now updated to
+> include ld-option calls.
+>
+> Thanks for getting this all into -tip!
 
-...
+For the series,
+Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
 
->  /*
-> + * load_moklist_certs() - Load MokList certs
-> + *
-> + * Returns:    Summary error status
-> + *
-> + * Load the certs contained in the UEFI MokListRT database into the
-> + * platform trusted keyring.
-> + */
+As the recent ppc vdso boogaloo exposed, what about the vdsos?
+* arch/x86/entry/vdso/Makefile
+* arch/arm/vdso/Makefile
+* arch/arm64/kernel/vdso/Makefile
+* arch/arm64/kernel/vdso32/Makefile
 
-Hmm... Is it intentionally kept out of kernel doc format?
+>
+> -Kees
+>
+> v6: https://lore.kernel.org/lkml/20200821194310.3089815-1-keescook@chromium.org/
+> v5: https://lore.kernel.org/lkml/20200731230820.1742553-1-keescook@chromium.org/
+> v4: https://lore.kernel.org/lkml/20200629061840.4065483-1-keescook@chromium.org/
+> v3: https://lore.kernel.org/lkml/20200624014940.1204448-1-keescook@chromium.org/
+> v2: https://lore.kernel.org/lkml/20200622205815.2988115-1-keescook@chromium.org/
+> v1: https://lore.kernel.org/lkml/20200228002244.15240-1-keescook@chromium.org/
+>
+> Kees Cook (5):
+>   arm64/build: Warn on orphan section placement
+>   arm/build: Warn on orphan section placement
+>   arm/boot: Warn on orphan section placement
+>   x86/build: Warn on orphan section placement
+>   x86/boot/compressed: Warn on orphan section placement
+>
+>  arch/arm/Makefile                 | 4 ++++
+>  arch/arm/boot/compressed/Makefile | 2 ++
+>  arch/arm64/Makefile               | 4 ++++
+>  arch/x86/Makefile                 | 4 ++++
+>  arch/x86/boot/compressed/Makefile | 1 +
+>  5 files changed, 15 insertions(+)
+>
+> --
+> 2.25.1
+>
 
-> +static int __init load_moklist_certs(void)
-> +{
-> +       efi_guid_t mok_var = EFI_SHIM_LOCK_GUID;
-> +       void *mok = NULL;
-> +       unsigned long moksize = 0;
-> +       efi_status_t status;
-> +       int rc = 0;
-
-Redundant assignment (see below).
-
-> +       /* Get MokListRT. It might not exist, so it isn't an error
-> +        * if we can't get it.
-> +        */
-> +       mok = get_cert_list(L"MokListRT", &mok_var, &moksize, &status);
-
-> +       if (!mok) {
-
-Why not positive conditional? Sometimes ! is hard to notice.
-
-> +               if (status == EFI_NOT_FOUND)
-> +                       pr_debug("MokListRT variable wasn't found\n");
-> +               else
-> +                       pr_info("Couldn't get UEFI MokListRT\n");
-> +       } else {
-> +               rc = parse_efi_signature_list("UEFI:MokListRT",
-> +                                             mok, moksize, get_handler_for_db);
-> +               if (rc)
-> +                       pr_err("Couldn't parse MokListRT signatures: %d\n", rc);
-> +               kfree(mok);
-
- kfree(...)
- if (rc)
-  ...
- return rc;
-
-And with positive conditional there will be no need to have redundant
-'else' followed by additional level of indentation.
-
-> +       }
-
-> +       return rc;
-
-return 0;
-
-> +}
-
-P.S. Yes, I see that the above was in the original code, so, consider
-my comments as suggestions to improve the code.
 
 -- 
-With Best Regards,
-Andy Shevchenko
+Thanks,
+~Nick Desaulniers
