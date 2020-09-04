@@ -2,95 +2,120 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 92E9225DE7C
-	for <lists+linux-efi@lfdr.de>; Fri,  4 Sep 2020 17:50:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E9C525E171
+	for <lists+linux-efi@lfdr.de>; Fri,  4 Sep 2020 20:20:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727965AbgIDPum (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 4 Sep 2020 11:50:42 -0400
-Received: from mout.gmx.net ([212.227.15.15]:46143 "EHLO mout.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727784AbgIDPul (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Fri, 4 Sep 2020 11:50:41 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1599234634;
-        bh=jUo1rcy8Vk2NuZDY7J5rwMK5KzvoLjBx6pfXZJ2n7Ts=;
-        h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
-        b=BoOoqmq8X8mImNpc2Qxhh4W3343M4PBod5v0WS+79D/YHOu+NJ4lLK/39D8GnUj/2
-         r1e+otD0HUauwi/LH0zgZPM0rKX7tlS8VlRqdEASUnnmE5GkorbhYzCCXC4UKirpKP
-         ffX7LEJb7SSy8JAmUnKD0CNAzHF/TAL6gfXQE0k8=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from workstation4.fritz.box ([178.202.41.107]) by mail.gmx.com
- (mrgmx005 [212.227.17.184]) with ESMTPSA (Nemesis) id
- 1MWRRZ-1k2s6s3RPP-00Xqnv; Fri, 04 Sep 2020 17:50:33 +0200
-From:   Heinrich Schuchardt <xypron.glpk@gmx.de>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     Ingo Molnar <mingo@kernel.org>,
+        id S1726621AbgIDSUs (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 4 Sep 2020 14:20:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39628 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726208AbgIDSUr (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 4 Sep 2020 14:20:47 -0400
+Received: from mail-pj1-x1044.google.com (mail-pj1-x1044.google.com [IPv6:2607:f8b0:4864:20::1044])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D246FC061244
+        for <linux-efi@vger.kernel.org>; Fri,  4 Sep 2020 11:20:45 -0700 (PDT)
+Received: by mail-pj1-x1044.google.com with SMTP id mm21so3583603pjb.4
+        for <linux-efi@vger.kernel.org>; Fri, 04 Sep 2020 11:20:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=HGsb6HyUfkAH720RyRI2xnBGVpFj14UXqV80lfeeAHQ=;
+        b=Il3Jp+GbZKeQBVyig5AB6ptKPeBzRng/54pElXbWFgDDwVZtfonwW/fIvn12LwA16M
+         q+/RGW9N8udNPgZyH15iLM+vRSiGyHrin+pGX1aElmkbmidG8ekkDrYXabwm5ci/epUm
+         czoHI1JGeVOuHvY1/0vF8Z8gvengMt1dzX9XM=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=HGsb6HyUfkAH720RyRI2xnBGVpFj14UXqV80lfeeAHQ=;
+        b=OUg74/Np/FhxFVTvy6RPHlsR501sgTV4r08jjQWGP+cmhcMVPsM/N5D+QvQTvYZvUY
+         nlYTFPTw7B6W8Pvb5SsOBhKoJX4uP3Xnzds/pHhYxBHzY3Y9riT+Q0+YIClah2rurrfe
+         m4Jl2m3KhvFYohCE4OsHptUnlbNF381MuWkQ+wbdk5Mr7umU4EV9+0mF1091SM4vHBkL
+         T5Uto0Q1oxwjxoqd0ygNGVkzu8C7lX1qK7EU1+uaoR7lv2HlXxPCOpUX1BHhWOVbK+NX
+         z6tp2xStmAz1qa328wuLdFlSMxmdtYrTSLpv4TmIswr15B0FgyUCRfkdS0I7hIB/tSts
+         2+hg==
+X-Gm-Message-State: AOAM532ctmNhcgya45lwSlMmtOdTn3SRCKvXJBDkaz0XW1uwPmeAps81
+        HSYu8W/fFUvQxPSq57oF6FCvsA==
+X-Google-Smtp-Source: ABdhPJw3OHa/KfnDP1eX5u9yPnVXyHpsyvjqvNAIiJCIEcH0n6a9Xn4DsL9UahB90tHSeMz9ICNHhA==
+X-Received: by 2002:a17:902:bc44:: with SMTP id t4mr8920312plz.77.1599243645065;
+        Fri, 04 Sep 2020 11:20:45 -0700 (PDT)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id gm3sm5689028pjb.31.2020.09.04.11.20.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 04 Sep 2020 11:20:44 -0700 (PDT)
+Date:   Fri, 4 Sep 2020 11:20:43 -0700
+From:   Kees Cook <keescook@chromium.org>
+To:     Ingo Molnar <mingo@kernel.org>
+Cc:     Nick Desaulniers <ndesaulniers@google.com>,
+        Borislav Petkov <bp@suse.de>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Peter Collingbourne <pcc@google.com>,
+        James Morse <james.morse@arm.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Masahiro Yamada <masahiroy@kernel.org>,
         Arvind Sankar <nivedita@alum.mit.edu>,
-        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Maxim Uvarov <maxim.uvarov@linaro.org>,
-        Jens Wiklander <jens.wiklander@linaro.org>,
-        Heinrich Schuchardt <xypron.glpk@gmx.de>
-Subject: [PATCH 1/1] efi/libstub: DRAM base calculation
-Date:   Fri,  4 Sep 2020 17:50:25 +0200
-Message-Id: <20200904155025.55718-1-xypron.glpk@gmx.de>
-X-Mailer: git-send-email 2.28.0
+        Nathan Chancellor <natechancellor@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
+        clang-built-linux <clang-built-linux@googlegroups.com>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        LKML <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v7 0/5] Warn on orphan section placement
+Message-ID: <202009041117.5EAC7C242@keescook>
+References: <20200902025347.2504702-1-keescook@chromium.org>
+ <CAKwvOd=r8X1UeBRgYMcjUoQX_nbOEbXCQYGX6n7kMnJhGXis=Q@mail.gmail.com>
+ <20200904055825.GA2779622@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:doqmB75RmQWNmTYciFl4XKtt9DbYeZi24qbKJZtWpVckGRC+xkp
- C2aj+6lhw2Csq6CtdQGvwNc+69X52a4l1JQwun8QOcPFy0GNT5S5QwYuzneTFVYLS/vEF0H
- Eo0a6wOvY/caOT+e4sEvnG7/k3gQGvVYiFjewgJa5WD2ABQ45NipTekj2F1fsSfOyIOC0AF
- TzrRlmSMs4kbfTUyshv5A==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:SWwrOPPkoRk=:q29LpSorYGyKX0iflRUA06
- JME5mWcahjucKCi3cUm2cmJX1qdWbg6CSmFLtWLhbGAfru5lGpLIqtW3txlBltKZh2qAab0OB
- ODstMPG+W2T5lwXalzZEghXAl646l4pinyacgC/8tnWkw4zE3u7Xm0+RkRB/pmfBpQe8VkGh3
- GfnHmVgVmElH3zQm9VwejUOlYwT2NeU7ST/Rt8xQOxI9G2wYoOuOgJF2FU2Fw7cYsp5LuMXyr
- 5sssYuAxtVPgsBDDldR+i51xKXdwDRzc3E3Zqt/DaQbAU8Dbv84E/YpYUlC3jU5n0bHsDmSrq
- YNavxuSHbi0W3UxQ+Xa4XQ+g9tc9buSw5VdsJb2EFoRO64BjJnFzWLV5MNAWoc2Jpmr/Lv3Jl
- 4/H8e+kmKeotR0q/aTEz5kYtJhueJvIg7Wtwi+hl0nbUDb4o+LknLh1zDBw5NPX4PNk7NyH6I
- /EWa+9wbnWOzMiKRx5xwJ+F3wlL/eYheHGznQR3R5vcG+Koj2AJ8DZovjOqtxA1+6cA5bXXpI
- FpPSHjpZ2pMSRteb0EkTk0hL7JkHavs76b9lRzbOLl6vgNyYOmy2JLxz5/xS6Y8d8RfGHYMZD
- hBgQi/ocaOAD1PfpHkeiH+4HnXM8w2oNjBY3b9qskQN846PAQkLKiwA3wsXbaO7wcdUWML4MY
- PCY2nnqI3HD0zj3Mnbxx6eO2qSJBHNxqKgNW8A+h2Oh+kGOXWVNgXMARgyxAik+3ApwZWkahx
- krT5DhXadToVv6yOsvqHI7QpU2IPM5s0fi2gx1OrV7nxZOsvv5lwuWzjCRcpmcyCz3EvSbrMM
- cOLJwR7OcopuFb/ttL4ZFCZAQlfk3B/qyN6py2mO5yWL84+921Od/LD0kgqxG3Hi3aP/Pm816
- ZHYj9cUIge7TzimWYnk8nsxic3JKVFbzNao2wi6AFViFL/UW6ADWNCX8UhniRHTxK4w+i9EvV
- 8+l09LXNhyOC3OZQOfCKtfaQ4iKoXEvKtLOsyzfc5ORw3cTcsVhrBxtwmu/37/fqgYmdDfJ+X
- kMESqzhJRjbIFin1Q5Avma6/yfC138l0K7e5PGGvD4WSmtj90rOy0pflV2PZ+gPyRp5jx0Wuh
- TuJmqPTxZzIADNgWCxEaCsZsizsJJtgtUGB8ihfCapRqLzmNZlg+W/a3rKcA56ak3TvF6zLtW
- yCEgLJBe2GRLXL29zN7Snl+z8HjRA5K00Ba845grDmWfzpMa0VEVb1m08hA1+apmjpZYzewc7
- TUIA6liQdeiDRsNVDyIYQJIVcAFy8YLXQzCi3ig==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200904055825.GA2779622@gmail.com>
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-In the memory map the regions with the lowest addresses may be of type
-EFI_RESERVED_TYPE. The reserved areas may be discontinuous relative to the
-rest of the memory. So for calculating the maximum loading address for the
-device tree and the initial ramdisk image these reserved areas should not
-be taken into account.
+On Fri, Sep 04, 2020 at 07:58:25AM +0200, Ingo Molnar wrote:
+> 
+> * Nick Desaulniers <ndesaulniers@google.com> wrote:
+> 
+> > On Tue, Sep 1, 2020 at 7:53 PM Kees Cook <keescook@chromium.org> wrote:
+> > >
+> > > Hi Ingo,
+> > >
+> > > The ever-shortening series. ;) Here is "v7", which is just the remaining
+> > > Makefile changes to enable orphan section warnings, now updated to
+> > > include ld-option calls.
+> > >
+> > > Thanks for getting this all into -tip!
+> > 
+> > For the series,
+> > Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
+> > 
+> > As the recent ppc vdso boogaloo exposed, what about the vdsos?
+> > * arch/x86/entry/vdso/Makefile
+> > * arch/arm/vdso/Makefile
+> > * arch/arm64/kernel/vdso/Makefile
+> > * arch/arm64/kernel/vdso32/Makefile
+> 
+> Kees, will these patches DTRT for the vDSO builds? I will be unable to test 
+> these patches on that old system until tomorrow the earliest.
 
-Signed-off-by: Heinrich Schuchardt <xypron.glpk@gmx.de>
-=2D--
- drivers/firmware/efi/libstub/efi-stub.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+I would like to see VDSO done next, but it's entirely separate from
+this series. This series only touches the core kernel build (i.e. via the
+interactions with scripts/link-vmlinux.sh) or the boot stubs. So there
+is no impact on VDSO linking.
 
-diff --git a/drivers/firmware/efi/libstub/efi-stub.c b/drivers/firmware/ef=
-i/libstub/efi-stub.c
-index c2484bf75c5d..13058ac75765 100644
-=2D-- a/drivers/firmware/efi/libstub/efi-stub.c
-+++ b/drivers/firmware/efi/libstub/efi-stub.c
-@@ -106,7 +106,8 @@ static unsigned long get_dram_base(void)
- 	map.map_end =3D map.map + map_size;
+> I'm keeping these latest changes in WIP.core/build for now.
 
- 	for_each_efi_memory_desc_in_map(&map, md) {
--		if (md->attribute & EFI_MEMORY_WB) {
-+		if (md->attribute & EFI_MEMORY_WB &&
-+		    md->type !=3D EFI_RESERVED_TYPE) {
- 			if (membase > md->phys_addr)
- 				membase =3D md->phys_addr;
- 		}
-=2D-
-2.28.0
+They should be safe to land in -next, which is important so we can shake
+out any other sneaky sections that all our existing testing hasn't
+found. :)
 
+-- 
+Kees Cook
