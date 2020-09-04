@@ -2,144 +2,113 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 76BB925BB1B
-	for <lists+linux-efi@lfdr.de>; Thu,  3 Sep 2020 08:35:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 37C0125D107
+	for <lists+linux-efi@lfdr.de>; Fri,  4 Sep 2020 07:58:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726109AbgICGeW (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 3 Sep 2020 02:34:22 -0400
-Received: from mo-csw1114.securemx.jp ([210.130.202.156]:52200 "EHLO
-        mo-csw.securemx.jp" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725986AbgICGeW (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 3 Sep 2020 02:34:22 -0400
-Received: by mo-csw.securemx.jp (mx-mo-csw1114) id 0836XqkV026096; Thu, 3 Sep 2020 15:33:52 +0900
-X-Iguazu-Qid: 2wGqimZzpdodzp3qKb
-X-Iguazu-QSIG: v=2; s=0; t=1599114831; q=2wGqimZzpdodzp3qKb; m=3lD5yTuNA9UipE4IT4HqtHJpMosJZhyi/NRwtDEowSQ=
-Received: from imx12.toshiba.co.jp (imx12.toshiba.co.jp [61.202.160.132])
-        by relay.securemx.jp (mx-mr1111) id 0836Xnhn027327;
-        Thu, 3 Sep 2020 15:33:49 +0900
-Received: from enc02.toshiba.co.jp ([61.202.160.51])
-        by imx12.toshiba.co.jp  with ESMTP id 0836XnKm019408;
-        Thu, 3 Sep 2020 15:33:49 +0900 (JST)
-Received: from hop101.toshiba.co.jp ([133.199.85.107])
-        by enc02.toshiba.co.jp  with ESMTP id 0836XmiJ027896;
-        Thu, 3 Sep 2020 15:33:48 +0900
-From:   Punit Agrawal <punit1.agrawal@toshiba.co.jp>
-To:     Smita Koralahalli Channabasappa <skoralah@amd.com>
-Cc:     <x86@kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-pm@vger.kernel.org>, <linux-edac@vger.kernel.org>,
-        <linux-efi@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
-        <devel@acpica.org>, Borislav Petkov <bp@alien8.de>,
-        Tony Luck <tony.luck@intel.com>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <len.brown@intel.com>,
+        id S1726114AbgIDF6b (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 4 Sep 2020 01:58:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37858 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725812AbgIDF6a (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 4 Sep 2020 01:58:30 -0400
+Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com [IPv6:2a00:1450:4864:20::541])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE36AC061244;
+        Thu,  3 Sep 2020 22:58:29 -0700 (PDT)
+Received: by mail-ed1-x541.google.com with SMTP id l17so4894303edq.12;
+        Thu, 03 Sep 2020 22:58:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=86/hDza+7M+cBpbx4SYN2mNKlPBD4Khd4N7abYdp5es=;
+        b=INFYiCzmKU5iRQe53yQOFtmJQLAE0oYHTB6GP7SpNat6APmdvxU7CFfVGsOjm0Zto8
+         +Y0XjZoAfwtJDOhvF5OsWU5oQQyUQmfpjTt6n+Fqok+l/YzBvTHtkz3WvNmO9f9WZ6Tl
+         Vi+vUgPP+WzubQlb3Pf5wQQ/2vK1sk4vD8dWEznnxJx9IkBNSKmQriauqGWDzRLo0gG7
+         VI8z/rIRvNRpB6Q/YL8rsM5fb6sHUBf/mf3N0+adBR3VyjGcnVJgZxmKyMSBx6ICd4VF
+         S35cHKZhRM5s64mDTpYHaob7cWV4fflraLlbLhMcl51PorbbNws+VWiGnRpQ3VeZCAqn
+         NFhA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to;
+        bh=86/hDza+7M+cBpbx4SYN2mNKlPBD4Khd4N7abYdp5es=;
+        b=fLuNSmmNZADVY1sNl92nu1EJ4dYiKpiVbAY86gPZ3nw5eYT6UV6Y3FgcJlc1KZ/lD3
+         2fIH9YirPDpDvRvGOxNfXw6HoSfBCoCG3YSu3gMRlX/UPOaTKuDKkbAIhb7BhDkxPQq1
+         seYe27Q974iG661ulR1j3hu7T+qpM4UKlGQzt1n3xn3DiDNugzKExIyqgMi2E4petdA0
+         9HiA97kwuFFIQoLwdWUeTsAcU3bEb9X3c5qQTZJE3pjv/sKSiOP22WLCNpZiIN6E+9SD
+         OIVcJaS5ZOGYDp9rCsquxWro384wDgMGR+Pq+2KRE8DCUN4VTyMsTU/av4pvH/PzVYQ1
+         wRUA==
+X-Gm-Message-State: AOAM532+pH35DUz6M+0zcy5j87NBeI6WqLWpumtB8Gis2fObnpGSHikH
+        OVBcYKEneqVZhyyZnzKB0Hw=
+X-Google-Smtp-Source: ABdhPJwWt7ZQxHXwfHlIAvDC4aqzZ2345pSsFoI7PTTwHE6eLo8+11eQMMVi7nzT7RaJhdxO9p5+OA==
+X-Received: by 2002:a50:fd19:: with SMTP id i25mr6926242eds.142.1599199108527;
+        Thu, 03 Sep 2020 22:58:28 -0700 (PDT)
+Received: from gmail.com (563BA415.dsl.pool.telekom.hu. [86.59.164.21])
+        by smtp.gmail.com with ESMTPSA id c8sm5158129ejp.30.2020.09.03.22.58.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 03 Sep 2020 22:58:27 -0700 (PDT)
+Date:   Fri, 4 Sep 2020 07:58:25 +0200
+From:   Ingo Molnar <mingo@kernel.org>
+To:     Nick Desaulniers <ndesaulniers@google.com>,
+        Kees Cook <keescook@chromium.org>
+Cc:     Kees Cook <keescook@chromium.org>, Borislav Petkov <bp@suse.de>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
         Ard Biesheuvel <ardb@kernel.org>,
-        Yazen Ghannam <yazen.ghannam@amd.com>
-Subject: Re: [PATCH v2 1/2] cper, apei, mce: Pass x86 CPER through the MCA handling chain
-References: <20200828203332.11129-1-Smita.KoralahalliChannabasappa@amd.com>
-        <20200828203332.11129-2-Smita.KoralahalliChannabasappa@amd.com>
-        <878sdvv20h.fsf@kokedama.swc.toshiba.co.jp>
-        <102d0c75-d642-8f8b-68c7-792499c2a62a@amd.com>
-Date:   Thu, 03 Sep 2020 15:33:47 +0900
-In-Reply-To: <102d0c75-d642-8f8b-68c7-792499c2a62a@amd.com> (Smita Koralahalli
-        Channabasappa's message of "Wed, 2 Sep 2020 14:29:28 -0500")
-X-TSB-HOP: ON
-Message-ID: <87a6y7qshg.fsf@kokedama.swc.toshiba.co.jp>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.3 (gnu/linux)
+        Peter Collingbourne <pcc@google.com>,
+        James Morse <james.morse@arm.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Arvind Sankar <nivedita@alum.mit.edu>,
+        Nathan Chancellor <natechancellor@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
+        clang-built-linux <clang-built-linux@googlegroups.com>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        LKML <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v7 0/5] Warn on orphan section placement
+Message-ID: <20200904055825.GA2779622@gmail.com>
+References: <20200902025347.2504702-1-keescook@chromium.org>
+ <CAKwvOd=r8X1UeBRgYMcjUoQX_nbOEbXCQYGX6n7kMnJhGXis=Q@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAKwvOd=r8X1UeBRgYMcjUoQX_nbOEbXCQYGX6n7kMnJhGXis=Q@mail.gmail.com>
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hi Smita,
 
-Smita Koralahalli Channabasappa <skoralah@amd.com> writes:
+* Nick Desaulniers <ndesaulniers@google.com> wrote:
 
-> On 8/31/20 12:05 AM, Punit Agrawal wrote:
->
->> Hi Smita,
->>
->> A couple of comments below -
->>
->> Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com> writes:
->>
->> [...]
->>
->>
->>> diff --git a/drivers/firmware/efi/cper-x86.c b/drivers/firmware/efi/cper-x86.c
->>> index 2531de49f56c..374b8e18552a 100644
->>> --- a/drivers/firmware/efi/cper-x86.c
->>> +++ b/drivers/firmware/efi/cper-x86.c
->>> @@ -1,7 +1,7 @@
->>>   // SPDX-License-Identifier: GPL-2.0
->>>   // Copyright (C) 2018, Advanced Micro Devices, Inc.
->>>   -#include <linux/cper.h>
->> Why is the include dropped? AFAICT, the definitions from there are still
->> being used after this patch.
->
-> Dropped because <acpi/apei.h> already includes <linux/cper.h>
+> On Tue, Sep 1, 2020 at 7:53 PM Kees Cook <keescook@chromium.org> wrote:
+> >
+> > Hi Ingo,
+> >
+> > The ever-shortening series. ;) Here is "v7", which is just the remaining
+> > Makefile changes to enable orphan section warnings, now updated to
+> > include ld-option calls.
+> >
+> > Thanks for getting this all into -tip!
+> 
+> For the series,
+> Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
+> 
+> As the recent ppc vdso boogaloo exposed, what about the vdsos?
+> * arch/x86/entry/vdso/Makefile
+> * arch/arm/vdso/Makefile
+> * arch/arm64/kernel/vdso/Makefile
+> * arch/arm64/kernel/vdso32/Makefile
 
-Generally, you want to follow the rule that if a declaration from a
-header file is being used, it should show up in the includes. The same
-applies to both source as well as header files.
+Kees, will these patches DTRT for the vDSO builds? I will be unable to test 
+these patches on that old system until tomorrow the earliest.
 
-It doesn't matter if another include in the source file in turn ends up
-including the same header again; the #ifdef guards are there to prevent
-duplicate declarations.
-
-The rationale is that if future changes remove the usage of
-<acpi/apei.h>, the C file can still be compiled after dropping the
-include; there should be no need to then re-introduce <linux/cper.h> at
-that point.
-
-Hope that makes sense.
+I'm keeping these latest changes in WIP.core/build for now.
 
 Thanks,
-Punit
 
->>> +#include <acpi/apei.h>
->
-> [...]
->
->>> diff --git a/include/acpi/apei.h b/include/acpi/apei.h
->>> index 680f80960c3d..44d4d08acce0 100644
->>> --- a/include/acpi/apei.h
->>> +++ b/include/acpi/apei.h
->>> @@ -33,8 +33,15 @@ extern bool ghes_disable;
->>>     #ifdef CONFIG_ACPI_APEI
->>>   void __init acpi_hest_init(void);
->>> +int arch_apei_report_x86_error(struct cper_ia_proc_ctx *ctx_info,
->>> +			       u64 lapic_id);
->>>   #else
->>>   static inline void acpi_hest_init(void) { return; }
->>> +static inline int arch_apei_report_x86_error(struct cper_ia_proc_ctx *ctx_info,
->>> +					     u64 lapic_id)
->>> +{
->>> +	return -EINVAL;
->>> +}
->>>   #endif
->> Adding the declaration to this include violates the separation of
->> generic and architecture specific code.
->>
->> Can this be moved to the appropriate architecture specific header?
->> Perhaps arch/x86/include/asm/apei.h.
->
-> Yes, I have fixed this and moved into arch/x86/include/asm/acpi.h.
->
->>>   typedef int (*apei_hest_func_t)(struct acpi_hest_header *hest_hdr, void *data);
->>> @@ -51,6 +58,8 @@ int erst_clear(u64 record_id);
->>>     int arch_apei_enable_cmcff(struct acpi_hest_header *hest_hdr,
->>> void *data);
->>>   void arch_apei_report_mem_error(int sev, struct cper_sec_mem_err *mem_err);
->>> +int arch_apei_report_x86_error(struct cper_ia_proc_ctx *ctx_info,
->>> +			       u64 lapic_id);
->>
->> Why is the additional declaration needed?
->
-> Will fix in the next revision.
->
-> Thanks,
-> Smita
->
-> [...]
+	Ingo
