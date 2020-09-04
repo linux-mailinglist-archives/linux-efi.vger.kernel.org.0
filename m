@@ -2,177 +2,95 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B88725D7C0
-	for <lists+linux-efi@lfdr.de>; Fri,  4 Sep 2020 13:47:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 92E9225DE7C
+	for <lists+linux-efi@lfdr.de>; Fri,  4 Sep 2020 17:50:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729659AbgIDLrb (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 4 Sep 2020 07:47:31 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:53672 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1729297AbgIDLr3 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 4 Sep 2020 07:47:29 -0400
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 084BX1Mu180994;
-        Fri, 4 Sep 2020 07:47:14 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- mime-version : content-transfer-encoding; s=pp1;
- bh=4Sbnt809dMBXF6cKluyEYXfuJYTsWdN/zlL8Yb9u6rY=;
- b=E8HMmcq7MTFKqRrv7/lvPB7s8oTwc6WBUQ6cz2ETXBs29yrBiUN5azhCdUKrfM5O0duc
- M5c7wjfZRPpw+lin9pmpfOED8q5Ti6TuomZtDJ2Evb+uJkLd28japrdPH95Uhe4hggxA
- YRWJpSciy3IfJT/5u+m7DN9F71oIPxo74nKHtUSt+irBwVG85OuGKASRjAJgTkMxj4ve
- jhty50GvknBZDPKd+GgRzwFugbaQtrX95KJDh11dDRk0avcPU+vmjfSxZG1hxkp6mqBx
- neuQK+dyYmugDeGglXZ+zpPW6WesdT+JzR7dVJFItyOqy8dn8RVZtfHZFDEPyTJLF835 Rg== 
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 33bmh5rtvu-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 04 Sep 2020 07:47:14 -0400
-Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
-        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 084BX1FF180986;
-        Fri, 4 Sep 2020 07:47:14 -0400
-Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com [159.122.73.72])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 33bmh5rtuy-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 04 Sep 2020 07:47:13 -0400
-Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
-        by ppma06fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 084BfjPk029412;
-        Fri, 4 Sep 2020 11:47:11 GMT
-Received: from b06cxnps3075.portsmouth.uk.ibm.com (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
-        by ppma06fra.de.ibm.com with ESMTP id 337e9h46es-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 04 Sep 2020 11:47:11 +0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com [9.149.105.62])
-        by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 084Bl8lV32112904
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 4 Sep 2020 11:47:08 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id B684FAE053;
-        Fri,  4 Sep 2020 11:47:08 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 76F45AE045;
-        Fri,  4 Sep 2020 11:47:06 +0000 (GMT)
-Received: from li-f45666cc-3089-11b2-a85c-c57d1a57929f.ibm.com (unknown [9.160.87.223])
-        by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-        Fri,  4 Sep 2020 11:47:06 +0000 (GMT)
-Message-ID: <f18986930ddc2823994b549f1ff1cd742706e188.camel@linux.ibm.com>
-Subject: Re: [PATCH 5/6] arm64/ima: add ima arch support
-From:   Mimi Zohar <zohar@linux.ibm.com>
-To:     Chester Lin <clin@suse.com>, ardb@kernel.org,
-        catalin.marinas@arm.com, will@kernel.org,
-        dmitry.kasatkin@gmail.com, corbet@lwn.net, mark.rutland@arm.com,
-        vincenzo.frascino@arm.com, samitolvanen@google.com,
-        masahiroy@kernel.org, mingo@kernel.org
-Cc:     linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-integrity@vger.kernel.org, linux-doc@vger.kernel.org,
-        jlee@suse.com
-Date:   Fri, 04 Sep 2020 07:47:05 -0400
-In-Reply-To: <20200904072905.25332-6-clin@suse.com>
-References: <20200904072905.25332-1-clin@suse.com>
-         <20200904072905.25332-6-clin@suse.com>
-Content-Type: text/plain; charset="ISO-8859-15"
-X-Mailer: Evolution 3.28.5 (3.28.5-12.el8) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235,18.0.687
- definitions=2020-09-04_06:2020-09-04,2020-09-04 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 spamscore=0
- lowpriorityscore=0 bulkscore=0 priorityscore=1501 mlxlogscore=999
- adultscore=0 suspectscore=0 clxscore=1011 phishscore=0 impostorscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2009040106
+        id S1727965AbgIDPum (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 4 Sep 2020 11:50:42 -0400
+Received: from mout.gmx.net ([212.227.15.15]:46143 "EHLO mout.gmx.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727784AbgIDPul (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Fri, 4 Sep 2020 11:50:41 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1599234634;
+        bh=jUo1rcy8Vk2NuZDY7J5rwMK5KzvoLjBx6pfXZJ2n7Ts=;
+        h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
+        b=BoOoqmq8X8mImNpc2Qxhh4W3343M4PBod5v0WS+79D/YHOu+NJ4lLK/39D8GnUj/2
+         r1e+otD0HUauwi/LH0zgZPM0rKX7tlS8VlRqdEASUnnmE5GkorbhYzCCXC4UKirpKP
+         ffX7LEJb7SSy8JAmUnKD0CNAzHF/TAL6gfXQE0k8=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from workstation4.fritz.box ([178.202.41.107]) by mail.gmx.com
+ (mrgmx005 [212.227.17.184]) with ESMTPSA (Nemesis) id
+ 1MWRRZ-1k2s6s3RPP-00Xqnv; Fri, 04 Sep 2020 17:50:33 +0200
+From:   Heinrich Schuchardt <xypron.glpk@gmx.de>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     Ingo Molnar <mingo@kernel.org>,
+        Arvind Sankar <nivedita@alum.mit.edu>,
+        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Maxim Uvarov <maxim.uvarov@linaro.org>,
+        Jens Wiklander <jens.wiklander@linaro.org>,
+        Heinrich Schuchardt <xypron.glpk@gmx.de>
+Subject: [PATCH 1/1] efi/libstub: DRAM base calculation
+Date:   Fri,  4 Sep 2020 17:50:25 +0200
+Message-Id: <20200904155025.55718-1-xypron.glpk@gmx.de>
+X-Mailer: git-send-email 2.28.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:doqmB75RmQWNmTYciFl4XKtt9DbYeZi24qbKJZtWpVckGRC+xkp
+ C2aj+6lhw2Csq6CtdQGvwNc+69X52a4l1JQwun8QOcPFy0GNT5S5QwYuzneTFVYLS/vEF0H
+ Eo0a6wOvY/caOT+e4sEvnG7/k3gQGvVYiFjewgJa5WD2ABQ45NipTekj2F1fsSfOyIOC0AF
+ TzrRlmSMs4kbfTUyshv5A==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:SWwrOPPkoRk=:q29LpSorYGyKX0iflRUA06
+ JME5mWcahjucKCi3cUm2cmJX1qdWbg6CSmFLtWLhbGAfru5lGpLIqtW3txlBltKZh2qAab0OB
+ ODstMPG+W2T5lwXalzZEghXAl646l4pinyacgC/8tnWkw4zE3u7Xm0+RkRB/pmfBpQe8VkGh3
+ GfnHmVgVmElH3zQm9VwejUOlYwT2NeU7ST/Rt8xQOxI9G2wYoOuOgJF2FU2Fw7cYsp5LuMXyr
+ 5sssYuAxtVPgsBDDldR+i51xKXdwDRzc3E3Zqt/DaQbAU8Dbv84E/YpYUlC3jU5n0bHsDmSrq
+ YNavxuSHbi0W3UxQ+Xa4XQ+g9tc9buSw5VdsJb2EFoRO64BjJnFzWLV5MNAWoc2Jpmr/Lv3Jl
+ 4/H8e+kmKeotR0q/aTEz5kYtJhueJvIg7Wtwi+hl0nbUDb4o+LknLh1zDBw5NPX4PNk7NyH6I
+ /EWa+9wbnWOzMiKRx5xwJ+F3wlL/eYheHGznQR3R5vcG+Koj2AJ8DZovjOqtxA1+6cA5bXXpI
+ FpPSHjpZ2pMSRteb0EkTk0hL7JkHavs76b9lRzbOLl6vgNyYOmy2JLxz5/xS6Y8d8RfGHYMZD
+ hBgQi/ocaOAD1PfpHkeiH+4HnXM8w2oNjBY3b9qskQN846PAQkLKiwA3wsXbaO7wcdUWML4MY
+ PCY2nnqI3HD0zj3Mnbxx6eO2qSJBHNxqKgNW8A+h2Oh+kGOXWVNgXMARgyxAik+3ApwZWkahx
+ krT5DhXadToVv6yOsvqHI7QpU2IPM5s0fi2gx1OrV7nxZOsvv5lwuWzjCRcpmcyCz3EvSbrMM
+ cOLJwR7OcopuFb/ttL4ZFCZAQlfk3B/qyN6py2mO5yWL84+921Od/LD0kgqxG3Hi3aP/Pm816
+ ZHYj9cUIge7TzimWYnk8nsxic3JKVFbzNao2wi6AFViFL/UW6ADWNCX8UhniRHTxK4w+i9EvV
+ 8+l09LXNhyOC3OZQOfCKtfaQ4iKoXEvKtLOsyzfc5ORw3cTcsVhrBxtwmu/37/fqgYmdDfJ+X
+ kMESqzhJRjbIFin1Q5Avma6/yfC138l0K7e5PGGvD4WSmtj90rOy0pflV2PZ+gPyRp5jx0Wuh
+ TuJmqPTxZzIADNgWCxEaCsZsizsJJtgtUGB8ihfCapRqLzmNZlg+W/a3rKcA56ak3TvF6zLtW
+ yCEgLJBe2GRLXL29zN7Snl+z8HjRA5K00Ba845grDmWfzpMa0VEVb1m08hA1+apmjpZYzewc7
+ TUIA6liQdeiDRsNVDyIYQJIVcAFy8YLXQzCi3ig==
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, 2020-09-04 at 15:29 +0800, Chester Lin wrote:
-> Add arm64 IMA arch support. The arch policy is inherited from x86.
-> 
-> Signed-off-by: Chester Lin <clin@suse.com>
+In the memory map the regions with the lowest addresses may be of type
+EFI_RESERVED_TYPE. The reserved areas may be discontinuous relative to the
+rest of the memory. So for calculating the maximum loading address for the
+device tree and the initial ramdisk image these reserved areas should not
+be taken into account.
 
-The "secureboot arch rules" comment should be updated to reflect that
-the policy is both "secure and trusted boot arch rules", both here and
-in x86.
+Signed-off-by: Heinrich Schuchardt <xypron.glpk@gmx.de>
+=2D--
+ drivers/firmware/efi/libstub/efi-stub.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
+diff --git a/drivers/firmware/efi/libstub/efi-stub.c b/drivers/firmware/ef=
+i/libstub/efi-stub.c
+index c2484bf75c5d..13058ac75765 100644
+=2D-- a/drivers/firmware/efi/libstub/efi-stub.c
++++ b/drivers/firmware/efi/libstub/efi-stub.c
+@@ -106,7 +106,8 @@ static unsigned long get_dram_base(void)
+ 	map.map_end =3D map.map + map_size;
 
-thanks,
-
-Mimi
-
-> ---
->  arch/arm64/Kconfig           |  1 +
->  arch/arm64/kernel/Makefile   |  2 ++
->  arch/arm64/kernel/ima_arch.c | 37 ++++++++++++++++++++++++++++++++++++
->  3 files changed, 40 insertions(+)
->  create mode 100644 arch/arm64/kernel/ima_arch.c
-> 
-> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-> index 6d232837cbee..b5518e7b604d 100644
-> --- a/arch/arm64/Kconfig
-> +++ b/arch/arm64/Kconfig
-> @@ -196,6 +196,7 @@ config ARM64
->  	select SWIOTLB
->  	select SYSCTL_EXCEPTION_TRACE
->  	select THREAD_INFO_IN_TASK
-> +	imply IMA_SECURE_AND_OR_TRUSTED_BOOT    if EFI
->  	help
->  	  ARM 64-bit (AArch64) Linux support.
->  
-> diff --git a/arch/arm64/kernel/Makefile b/arch/arm64/kernel/Makefile
-> index a561cbb91d4d..0300ab60785d 100644
-> --- a/arch/arm64/kernel/Makefile
-> +++ b/arch/arm64/kernel/Makefile
-> @@ -71,3 +71,5 @@ extra-y					+= $(head-y) vmlinux.lds
->  ifeq ($(CONFIG_DEBUG_EFI),y)
->  AFLAGS_head.o += -DVMLINUX_PATH="\"$(realpath $(objtree)/vmlinux)\""
->  endif
-> +
-> +obj-$(CONFIG_IMA_SECURE_AND_OR_TRUSTED_BOOT)	+= ima_arch.o
-> diff --git a/arch/arm64/kernel/ima_arch.c b/arch/arm64/kernel/ima_arch.c
-> new file mode 100644
-> index 000000000000..46f5641c3da5
-> --- /dev/null
-> +++ b/arch/arm64/kernel/ima_arch.c
-> @@ -0,0 +1,37 @@
-> +/* SPDX-License-Identifier: GPL-2.0+ */
-> +/*
-> + * Copyright (C) 2018 IBM Corporation
-> + */
-> +#include <linux/efi.h>
-> +#include <linux/module.h>
-> +
-> +bool arch_ima_get_secureboot(void)
-> +{
-> +	if (efi_enabled(EFI_SECURE_BOOT))
-> +		return true;
-> +
-> +	return false;
-> +}
-> +
-> +/* secureboot arch rules */
-> +static const char * const sb_arch_rules[] = {
-> +#if !IS_ENABLED(CONFIG_KEXEC_SIG)
-> +	"appraise func=KEXEC_KERNEL_CHECK appraise_type=imasig",
-> +#endif /* CONFIG_KEXEC_SIG */
-> +	"measure func=KEXEC_KERNEL_CHECK",
-> +#if !IS_ENABLED(CONFIG_MODULE_SIG)
-> +	"appraise func=MODULE_CHECK appraise_type=imasig",
-> +#endif
-> +	"measure func=MODULE_CHECK",
-> +	NULL
-> +};
-> +
-> +const char * const *arch_get_ima_policy(void)
-> +{
-> +	if (IS_ENABLED(CONFIG_IMA_ARCH_POLICY) && arch_ima_get_secureboot()) {
-> +		if (IS_ENABLED(CONFIG_MODULE_SIG))
-> +			set_module_sig_enforced();
-> +		return sb_arch_rules;
-> +	}
-> +	return NULL;
-> +}
-
+ 	for_each_efi_memory_desc_in_map(&map, md) {
+-		if (md->attribute & EFI_MEMORY_WB) {
++		if (md->attribute & EFI_MEMORY_WB &&
++		    md->type !=3D EFI_RESERVED_TYPE) {
+ 			if (membase > md->phys_addr)
+ 				membase =3D md->phys_addr;
+ 		}
+=2D-
+2.28.0
 
