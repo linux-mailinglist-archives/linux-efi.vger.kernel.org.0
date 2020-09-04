@@ -2,189 +2,177 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 504FC25D27A
-	for <lists+linux-efi@lfdr.de>; Fri,  4 Sep 2020 09:30:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B88725D7C0
+	for <lists+linux-efi@lfdr.de>; Fri,  4 Sep 2020 13:47:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728507AbgIDHae (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 4 Sep 2020 03:30:34 -0400
-Received: from de-smtp-delivery-102.mimecast.com ([51.163.158.102]:35589 "EHLO
-        de-smtp-delivery-102.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1729765AbgIDH3r (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 4 Sep 2020 03:29:47 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=mimecast20200619;
-        t=1599204584;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=KMwzl/DFU5QVU1c3TC0j+2xuvQVhQLCy2L6n4az4kc0=;
-        b=Up0PJggF+/lJ8xyt4GyuCI1eYnJN2R5jnnOJGFKUsd+oha8vKuK7HNf/Nnlj0vr4+UrCKR
-        4OcBMh7cLnXNbpVh/2oPyIKNCgPZi2aV9U848cbzud4z8zFWz4SIXzHD/sEmy4kT11aJxX
-        c24e/WVRzW/9sIePP2ZxIMpNJTSFLP8=
-Received: from EUR04-VI1-obe.outbound.protection.outlook.com
- (mail-vi1eur04lp2052.outbound.protection.outlook.com [104.47.14.52]) (Using
- TLS) by relay.mimecast.com with ESMTP id
- de-mta-19-3omLnChZP3C5OR4cARrjwA-1; Fri, 04 Sep 2020 09:29:42 +0200
-X-MC-Unique: 3omLnChZP3C5OR4cARrjwA-1
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=QA0cLtl6rainHpGlWqUlypt8FBdwQZbRGZeNr7Aeqb5+5xYTv25cFl4Mj6T5WLEbx+rhz9MYAvO+IZsj4kjx3pbnAcClIrMZfCKiUQ6SjvbDQGclDqbS+C4YUz4NizL353VSX7ZbVapkLLdhf+vTJp2cgA30CbQ4vY4Rf2Psnh/WDBYYE+u3Y5tEZbXUuAvVyZ5Gica0mnsFrue1ETe13p5NeyUVvHItu4zPwKqlJMk2J1pD1IMJlP2KSgEtwreoGcz+IXtiRPAfVQkw3IRHiBIPgUUTFS6xyPw1xiPNLJHdFkP9fEwAL4Eb7yUCv/00/hGNq+tVcjXhYq1yj+jElg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=YEYlWLpOl/XRQn0kyzMOn7W6PG7RxQna7dkoagYegxc=;
- b=noRUmguEfZ25ALH8opU8r/Dt7wRrr4Ty0ZozpmUifKQ6jJSundZpabIE+LDEeDVI//tRY1bw3J7LPwqTdflRnwTjSrvS+huMlOtmZQWf7ieouk5tUs9mtx8NwiyQfipjwJE2reuq3bazgcDcfqaosGztYDU0OB/OVbxTLudhZVYnWlPanmOxIumIQ+/RDWxC0PJYt9NqP5Y3dPL17IRFiMWnWTl9bz7PMLD1evTfB99k0U83K5CECN2n8Cje+tx8z0TLYXDV3PhZI+9bQIunQDwl7CIckzgEsLYUBRowJlQDwADBcH0g8mn7sfmLXIPq81w05rmkyn5iIPDoMlGsHA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=suse.com; dmarc=pass action=none header.from=suse.com;
- dkim=pass header.d=suse.com; arc=none
-Authentication-Results: kernel.org; dkim=none (message not signed)
- header.d=none;kernel.org; dmarc=none action=none header.from=suse.com;
-Received: from VI1PR04MB4928.eurprd04.prod.outlook.com (2603:10a6:803:57::13)
- by VI1PR04MB5534.eurprd04.prod.outlook.com (2603:10a6:803:d2::32) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3348.16; Fri, 4 Sep
- 2020 07:29:41 +0000
-Received: from VI1PR04MB4928.eurprd04.prod.outlook.com
- ([fe80::859b:fe60:4cfd:efa3]) by VI1PR04MB4928.eurprd04.prod.outlook.com
- ([fe80::859b:fe60:4cfd:efa3%2]) with mapi id 15.20.3348.016; Fri, 4 Sep 2020
- 07:29:41 +0000
-From:   Chester Lin <clin@suse.com>
-To:     ardb@kernel.org, catalin.marinas@arm.com, will@kernel.org,
-        zohar@linux.ibm.com, dmitry.kasatkin@gmail.com, corbet@lwn.net,
-        mark.rutland@arm.com, vincenzo.frascino@arm.com,
-        samitolvanen@google.com, masahiroy@kernel.org, mingo@kernel.org
-CC:     linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
+        id S1729659AbgIDLrb (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 4 Sep 2020 07:47:31 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:53672 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1729297AbgIDLr3 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 4 Sep 2020 07:47:29 -0400
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 084BX1Mu180994;
+        Fri, 4 Sep 2020 07:47:14 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ mime-version : content-transfer-encoding; s=pp1;
+ bh=4Sbnt809dMBXF6cKluyEYXfuJYTsWdN/zlL8Yb9u6rY=;
+ b=E8HMmcq7MTFKqRrv7/lvPB7s8oTwc6WBUQ6cz2ETXBs29yrBiUN5azhCdUKrfM5O0duc
+ M5c7wjfZRPpw+lin9pmpfOED8q5Ti6TuomZtDJ2Evb+uJkLd28japrdPH95Uhe4hggxA
+ YRWJpSciy3IfJT/5u+m7DN9F71oIPxo74nKHtUSt+irBwVG85OuGKASRjAJgTkMxj4ve
+ jhty50GvknBZDPKd+GgRzwFugbaQtrX95KJDh11dDRk0avcPU+vmjfSxZG1hxkp6mqBx
+ neuQK+dyYmugDeGglXZ+zpPW6WesdT+JzR7dVJFItyOqy8dn8RVZtfHZFDEPyTJLF835 Rg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 33bmh5rtvu-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 04 Sep 2020 07:47:14 -0400
+Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 084BX1FF180986;
+        Fri, 4 Sep 2020 07:47:14 -0400
+Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com [159.122.73.72])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 33bmh5rtuy-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 04 Sep 2020 07:47:13 -0400
+Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
+        by ppma06fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 084BfjPk029412;
+        Fri, 4 Sep 2020 11:47:11 GMT
+Received: from b06cxnps3075.portsmouth.uk.ibm.com (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
+        by ppma06fra.de.ibm.com with ESMTP id 337e9h46es-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 04 Sep 2020 11:47:11 +0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com [9.149.105.62])
+        by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 084Bl8lV32112904
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 4 Sep 2020 11:47:08 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id B684FAE053;
+        Fri,  4 Sep 2020 11:47:08 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 76F45AE045;
+        Fri,  4 Sep 2020 11:47:06 +0000 (GMT)
+Received: from li-f45666cc-3089-11b2-a85c-c57d1a57929f.ibm.com (unknown [9.160.87.223])
+        by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Fri,  4 Sep 2020 11:47:06 +0000 (GMT)
+Message-ID: <f18986930ddc2823994b549f1ff1cd742706e188.camel@linux.ibm.com>
+Subject: Re: [PATCH 5/6] arm64/ima: add ima arch support
+From:   Mimi Zohar <zohar@linux.ibm.com>
+To:     Chester Lin <clin@suse.com>, ardb@kernel.org,
+        catalin.marinas@arm.com, will@kernel.org,
+        dmitry.kasatkin@gmail.com, corbet@lwn.net, mark.rutland@arm.com,
+        vincenzo.frascino@arm.com, samitolvanen@google.com,
+        masahiroy@kernel.org, mingo@kernel.org
+Cc:     linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org,
         linux-integrity@vger.kernel.org, linux-doc@vger.kernel.org,
-        jlee@suse.com, clin@suse.com
-Subject: [PATCH 1/6] efistub: pass uefi secureboot flag via fdt params
-Date:   Fri,  4 Sep 2020 15:29:00 +0800
-Message-ID: <20200904072905.25332-2-clin@suse.com>
-X-Mailer: git-send-email 2.26.1
-In-Reply-To: <20200904072905.25332-1-clin@suse.com>
+        jlee@suse.com
+Date:   Fri, 04 Sep 2020 07:47:05 -0400
+In-Reply-To: <20200904072905.25332-6-clin@suse.com>
 References: <20200904072905.25332-1-clin@suse.com>
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain
-X-ClientProxiedBy: AM0PR02CA0073.eurprd02.prod.outlook.com
- (2603:10a6:208:154::14) To VI1PR04MB4928.eurprd04.prod.outlook.com
- (2603:10a6:803:57::13)
-MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from linux-8mug.suse.de (114.24.10.103) by AM0PR02CA0073.eurprd02.prod.outlook.com (2603:10a6:208:154::14) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3348.15 via Frontend Transport; Fri, 4 Sep 2020 07:29:36 +0000
-X-Mailer: git-send-email 2.26.1
-X-Originating-IP: [114.24.10.103]
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 56b8656e-1d6f-4dd3-2aca-08d850a44995
-X-MS-TrafficTypeDiagnostic: VI1PR04MB5534:
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <VI1PR04MB5534BE18DA387DF2B17B8061AD2D0@VI1PR04MB5534.eurprd04.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:4714;
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: /XXOKfKx8lqrr12MHzSzqLfCXrTwnXAclEcd5/3Rs4AN9GIayomQ89+wjxha8IIucM9LO36JUfcM3mwo/Wj20K0dRrittiAEpBCYmFcY1ZNRdnJdchyxN6GF3nPCToXjN/iit0b6KmObeyciWR6Bsggu3LZShdSjbdNqvPxX91FBAnQxtk4VLuQr7ozuEP1Ilfb/QVRINHi7mPE/RX6bnLh+zf7/OD5AhcU7nCkOPUwfBE1vGMh/5yaerY9Uj9wVfsB+XFs3dMq+Jy0eKibMKmlSGa9Zuto7Azt0suySCXegJWXZYG3hykfhxnP4Xxn07LJSZloSDykL5CEccidOAQdbjJwiOQuohSBXejSDNBo=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR04MB4928.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(346002)(376002)(136003)(39860400002)(366004)(396003)(5660300002)(2906002)(956004)(316002)(66476007)(66946007)(107886003)(66556008)(6506007)(36756003)(8676002)(16526019)(52116002)(186003)(7416002)(83380400001)(6512007)(1076003)(4326008)(8936002)(26005)(2616005)(478600001)(6666004)(86362001)(6486002)(921003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData: NABScR6D6u20RkZ6fnWEh2qfvIS6BGuc+qhgX4q2sajgvTIaGRatvDlxmCMZ3z4kUZCcvKK8xdgVh0JMezdFQh/VUi7CM1kRWIlv6CmipTR7HyLldhoViRtEjM+9JzrHO8pnI3OCKb49ABEw0OMtyw0elrogYu8aNb2Lg0gbbbHV7LF096qu2g0LNZkOYnXc9CENsII5XF7ZqU5UFjb9bbVeG8pOby99ebGaOMdwj8VJ3SXO/CH5PIrP/075+bBhOYesU/fwagm9FaYmPx0uLyDLF3I+eLJm2sr1liscWHzN1T8UZ1beZdk3DcVjojN/7uANoo4A+3CHMcxyOrS6hjuYOyLzWbBZXAM4EiKaP/EL2sd8g5YVYaNtkzEYdVhvn0jKhY/hvvBCsyeZHCTEc3MQ8mlSwVoQKHjcD5OXkVou+XbO4jQ4rzo2K8nKtP4tq2U7O7pJCGJ1y7JRAEdXdcx2kTnbOsiYUckyQhTsPfjT8XDHyf3SIefF4KSkCxseZmmVaeDS35h3NHRV5bsz2CyTJGy3ztktWjG+vrzXULRN0QjwtWNbf35tmtvBlUVVJwP0jRPxSCqcXzc77HT6VIzyhC+JQG/VVhVMak5t9jCOODNCWMpAzq2UjlPAr8Td/nYxhAEA4DGr2klgaqezfg==
-X-OriginatorOrg: suse.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 56b8656e-1d6f-4dd3-2aca-08d850a44995
-X-MS-Exchange-CrossTenant-AuthSource: VI1PR04MB4928.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Sep 2020 07:29:41.5804
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: f7a17af6-1c5c-4a36-aa8b-f5be247aa4ba
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: +APCQ5UJnImSaveX4hl/DnXuN7DzM65Kjw+H8p2+BE+1B8f3j+pnROJIxGPSkBTq
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB5534
+         <20200904072905.25332-6-clin@suse.com>
+Content-Type: text/plain; charset="ISO-8859-15"
+X-Mailer: Evolution 3.28.5 (3.28.5-12.el8) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235,18.0.687
+ definitions=2020-09-04_06:2020-09-04,2020-09-04 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 spamscore=0
+ lowpriorityscore=0 bulkscore=0 priorityscore=1501 mlxlogscore=999
+ adultscore=0 suspectscore=0 clxscore=1011 phishscore=0 impostorscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2009040106
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Add a new UEFI parameter: "linux,uefi-secure-boot" in fdt boot params
-as other architectures have done in their own boot data. For example,
-the boot_params->secure_boot in x86.
+On Fri, 2020-09-04 at 15:29 +0800, Chester Lin wrote:
+> Add arm64 IMA arch support. The arch policy is inherited from x86.
+> 
+> Signed-off-by: Chester Lin <clin@suse.com>
 
-Signed-off-by: Chester Lin <clin@suse.com>
----
- drivers/firmware/efi/libstub/fdt.c | 39 +++++++++++++++++++++++++++++-
- 1 file changed, 38 insertions(+), 1 deletion(-)
+The "secureboot arch rules" comment should be updated to reflect that
+the policy is both "secure and trusted boot arch rules", both here and
+in x86.
 
-diff --git a/drivers/firmware/efi/libstub/fdt.c b/drivers/firmware/efi/libs=
-tub/fdt.c
-index 11ecf3c4640e..c9a341e4715f 100644
---- a/drivers/firmware/efi/libstub/fdt.c
-+++ b/drivers/firmware/efi/libstub/fdt.c
-@@ -136,6 +136,10 @@ static efi_status_t update_fdt(void *orig_fdt, unsigne=
-d long orig_fdt_size,
- 	if (status)
- 		goto fdt_set_fail;
-=20
-+	status =3D fdt_setprop_var(fdt, node, "linux,uefi-secure-boot", fdt_val32=
-);
-+	if (status)
-+		goto fdt_set_fail;
-+
- 	if (IS_ENABLED(CONFIG_RANDOMIZE_BASE)) {
- 		efi_status_t efi_status;
-=20
-@@ -199,6 +203,24 @@ static efi_status_t update_fdt_memmap(void *fdt, struc=
-t efi_boot_memmap *map)
- 	return EFI_SUCCESS;
- }
-=20
-+static efi_status_t update_fdt_secboot(void *fdt, u32 secboot)
-+{
-+	int node =3D fdt_path_offset(fdt, "/chosen");
-+	u32 fdt_val32;
-+	int err;
-+
-+	if (node < 0)
-+		return EFI_LOAD_ERROR;
-+
-+	fdt_val32 =3D cpu_to_fdt32(secboot);
-+
-+	err =3D fdt_setprop_inplace_var(fdt, node, "linux,uefi-secure-boot", fdt_=
-val32);
-+	if (err)
-+		return EFI_LOAD_ERROR;
-+
-+	return EFI_SUCCESS;
-+}
-+
- struct exit_boot_struct {
- 	efi_memory_desc_t	*runtime_map;
- 	int			*runtime_entry_count;
-@@ -208,6 +230,9 @@ struct exit_boot_struct {
- static efi_status_t exit_boot_func(struct efi_boot_memmap *map,
- 				   void *priv)
- {
-+	efi_status_t status;
-+	enum efi_secureboot_mode secboot_status;
-+	u32 secboot_var =3D 0;
- 	struct exit_boot_struct *p =3D priv;
- 	/*
- 	 * Update the memory map with virtual addresses. The function will also
-@@ -217,7 +242,19 @@ static efi_status_t exit_boot_func(struct efi_boot_mem=
-map *map,
- 	efi_get_virtmap(*map->map, *map->map_size, *map->desc_size,
- 			p->runtime_map, p->runtime_entry_count);
-=20
--	return update_fdt_memmap(p->new_fdt_addr, map);
-+	status =3D update_fdt_memmap(p->new_fdt_addr, map);
-+
-+	if (status !=3D EFI_SUCCESS)
-+		return status;
-+
-+	secboot_status =3D efi_get_secureboot();
-+
-+	if (secboot_status =3D=3D efi_secureboot_mode_enabled)
-+		secboot_var =3D 1;
-+
-+	status =3D update_fdt_secboot(p->new_fdt_addr, secboot_var);
-+
-+	return status;
- }
-=20
- #ifndef MAX_FDT_SIZE
---=20
-2.26.1
+Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
+
+thanks,
+
+Mimi
+
+> ---
+>  arch/arm64/Kconfig           |  1 +
+>  arch/arm64/kernel/Makefile   |  2 ++
+>  arch/arm64/kernel/ima_arch.c | 37 ++++++++++++++++++++++++++++++++++++
+>  3 files changed, 40 insertions(+)
+>  create mode 100644 arch/arm64/kernel/ima_arch.c
+> 
+> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+> index 6d232837cbee..b5518e7b604d 100644
+> --- a/arch/arm64/Kconfig
+> +++ b/arch/arm64/Kconfig
+> @@ -196,6 +196,7 @@ config ARM64
+>  	select SWIOTLB
+>  	select SYSCTL_EXCEPTION_TRACE
+>  	select THREAD_INFO_IN_TASK
+> +	imply IMA_SECURE_AND_OR_TRUSTED_BOOT    if EFI
+>  	help
+>  	  ARM 64-bit (AArch64) Linux support.
+>  
+> diff --git a/arch/arm64/kernel/Makefile b/arch/arm64/kernel/Makefile
+> index a561cbb91d4d..0300ab60785d 100644
+> --- a/arch/arm64/kernel/Makefile
+> +++ b/arch/arm64/kernel/Makefile
+> @@ -71,3 +71,5 @@ extra-y					+= $(head-y) vmlinux.lds
+>  ifeq ($(CONFIG_DEBUG_EFI),y)
+>  AFLAGS_head.o += -DVMLINUX_PATH="\"$(realpath $(objtree)/vmlinux)\""
+>  endif
+> +
+> +obj-$(CONFIG_IMA_SECURE_AND_OR_TRUSTED_BOOT)	+= ima_arch.o
+> diff --git a/arch/arm64/kernel/ima_arch.c b/arch/arm64/kernel/ima_arch.c
+> new file mode 100644
+> index 000000000000..46f5641c3da5
+> --- /dev/null
+> +++ b/arch/arm64/kernel/ima_arch.c
+> @@ -0,0 +1,37 @@
+> +/* SPDX-License-Identifier: GPL-2.0+ */
+> +/*
+> + * Copyright (C) 2018 IBM Corporation
+> + */
+> +#include <linux/efi.h>
+> +#include <linux/module.h>
+> +
+> +bool arch_ima_get_secureboot(void)
+> +{
+> +	if (efi_enabled(EFI_SECURE_BOOT))
+> +		return true;
+> +
+> +	return false;
+> +}
+> +
+> +/* secureboot arch rules */
+> +static const char * const sb_arch_rules[] = {
+> +#if !IS_ENABLED(CONFIG_KEXEC_SIG)
+> +	"appraise func=KEXEC_KERNEL_CHECK appraise_type=imasig",
+> +#endif /* CONFIG_KEXEC_SIG */
+> +	"measure func=KEXEC_KERNEL_CHECK",
+> +#if !IS_ENABLED(CONFIG_MODULE_SIG)
+> +	"appraise func=MODULE_CHECK appraise_type=imasig",
+> +#endif
+> +	"measure func=MODULE_CHECK",
+> +	NULL
+> +};
+> +
+> +const char * const *arch_get_ima_policy(void)
+> +{
+> +	if (IS_ENABLED(CONFIG_IMA_ARCH_POLICY) && arch_ima_get_secureboot()) {
+> +		if (IS_ENABLED(CONFIG_MODULE_SIG))
+> +			set_module_sig_enforced();
+> +		return sb_arch_rules;
+> +	}
+> +	return NULL;
+> +}
+
 
