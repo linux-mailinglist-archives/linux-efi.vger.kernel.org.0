@@ -2,118 +2,118 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A3EDB25E4E9
-	for <lists+linux-efi@lfdr.de>; Sat,  5 Sep 2020 03:31:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D03825EB8C
+	for <lists+linux-efi@lfdr.de>; Sun,  6 Sep 2020 00:48:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726317AbgIEBbZ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 4 Sep 2020 21:31:25 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:57359 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1728314AbgIEBbX (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 4 Sep 2020 21:31:23 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1599269481;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:in-reply-to:in-reply-to:references:references;
-        bh=56H+gXfee7U8YXNawyPLT9TUduDM0fpkpixvNpfSl0w=;
-        b=ZpeJdZx0Ri8sZC1MdVdEcAx3UXW9w+Mf9kCpnYCAx0cK1nL1ivgYiw/x0FI70C/v6jJp9b
-        c5i9BCONiWlrm2hxPSDY38rkYtH9sO4oD6WROWe7+s8m0E+PkMaitRplxRxW7XeJEdoBM/
-        3c9jJAPYfDu4jMREFu+BOKmyHkO1bq4=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-161-SzlX9EhXOOyQIHFR2fvwbA-1; Fri, 04 Sep 2020 21:31:17 -0400
-X-MC-Unique: SzlX9EhXOOyQIHFR2fvwbA-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 9F0E72FD01;
-        Sat,  5 Sep 2020 01:31:15 +0000 (UTC)
-Received: from lszubowi.redhat.com (ovpn-65-66.rdu2.redhat.com [10.10.65.66])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 62F1F5D9CC;
-        Sat,  5 Sep 2020 01:31:14 +0000 (UTC)
-From:   Lenny Szubowicz <lszubowi@redhat.com>
-To:     linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org,
-        linux-security-module@vger.kernel.org, andy.shevchenko@gmail.com,
-        ardb@kernel.org, jmorris@namei.org, serge@hallyn.com,
-        keescook@chromium.org, zohar@linux.ibm.com, bp@alien8.de,
-        pjones@redhat.com, dhowells@redhat.com, prarit@redhat.com
-Subject: [PATCH V2 3/3] integrity: Load certs from the EFI MOK config table
-Date:   Fri,  4 Sep 2020 21:31:07 -0400
-Message-Id: <20200905013107.10457-4-lszubowi@redhat.com>
-In-Reply-To: <20200905013107.10457-1-lszubowi@redhat.com>
-References: <20200905013107.10457-1-lszubowi@redhat.com>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
+        id S1728491AbgIEWso (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 5 Sep 2020 18:48:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46526 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728103AbgIEWsn (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sat, 5 Sep 2020 18:48:43 -0400
+Received: from mail-qt1-x841.google.com (mail-qt1-x841.google.com [IPv6:2607:f8b0:4864:20::841])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47227C061244;
+        Sat,  5 Sep 2020 15:48:42 -0700 (PDT)
+Received: by mail-qt1-x841.google.com with SMTP id n10so7512097qtv.3;
+        Sat, 05 Sep 2020 15:48:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:from:date:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=dYL37oonxahMiERY6M7bI0fQzZLAfl7INM1zulnY34U=;
+        b=i2sjWJ41j0LCW9MSNR1r+BVTos+aNU/sQNRWMGLG3Xma5GsC0JJOMnRi2RFJtAuqeZ
+         0lHzhBvxAsBMOF3NMXNMwQD+MuIZx5VzzycZN/qia173TCug2EPrmCp/1flJHsFHFloR
+         3VwMI8lSCupizstJ9n/tk5eH9GL5wojfKV9z2jtfNZI2gEbcRbZlgndrrSdimkuu3NM1
+         I50PNYQ9ZRV5w6K1nEe5yUUyjb+54T0D1PA3Cyds+//mrHOpI0X1ugO2t6yIT4THAprZ
+         PEySoMqWEQwDcQTH3SGaEir1HOXMu+jm+kXFGkB+kxz9Qk3oB/KbAa6ykOY2+TF9iqFW
+         JmZQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:from:date:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to;
+        bh=dYL37oonxahMiERY6M7bI0fQzZLAfl7INM1zulnY34U=;
+        b=QnwAFk0CzywhDdZCTVa/+JbDIw6qTFDrx0zcZcfuG9PNe0v1prSs+zDHlGTS8ib/Cy
+         unyfaUHpi8TNoPR6v/cPBCSNPEK75aocpHFgmRO8KW8r6bojukmH9A9LLkjFyN23LVzj
+         es/Er+Slgg+N6uNkkVCALL/b9N2ivYbgvFdb0/TPtVojNkiqMO2qMCJLRKMCf6XJaDSJ
+         LV9GtzXUNFfenGChalHT+uh12c5eCQrXHi+nsDr6vYkDWricqcU8yqteU+rR9mk1WkB/
+         g9CMROa6Tdg68FJKyruB+fl6OOLdta4fy6AWph+wHbNH5NvxJvVPnPgakcWL5OGcpXq8
+         xhHA==
+X-Gm-Message-State: AOAM533oSOXN+wjvzlBVtvuWgoQCsu1rtCD4Z0AyIEJxE5pT9SSYTJqx
+        xs382JY9+oe9u4m8hWqdyHo=
+X-Google-Smtp-Source: ABdhPJzozlDPhyXr6JOZFagjTaiEP3QCjS39SNNHLMhx0wYBQR2VlcAzn6ysX8qJ/+qxrT46u/KrJA==
+X-Received: by 2002:ac8:fbb:: with SMTP id b56mr14999497qtk.307.1599346118622;
+        Sat, 05 Sep 2020 15:48:38 -0700 (PDT)
+Received: from rani.riverdale.lan ([2001:470:1f07:5f3::b55f])
+        by smtp.gmail.com with ESMTPSA id d16sm8184604qte.19.2020.09.05.15.48.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 05 Sep 2020 15:48:38 -0700 (PDT)
+From:   Arvind Sankar <nivedita@alum.mit.edu>
+X-Google-Original-From: Arvind Sankar <arvind@rani.riverdale.lan>
+Date:   Sat, 5 Sep 2020 18:48:35 -0400
+To:     Kees Cook <keescook@chromium.org>
+Cc:     Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@suse.de>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Peter Collingbourne <pcc@google.com>,
+        James Morse <james.morse@arm.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Arvind Sankar <nivedita@alum.mit.edu>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Nathan Chancellor <natechancellor@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>, x86@kernel.org,
+        clang-built-linux@googlegroups.com, linux-arch@vger.kernel.org,
+        linux-efi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v7 4/5] x86/build: Warn on orphan section placement
+Message-ID: <20200905224835.GA1500331@rani.riverdale.lan>
+References: <20200902025347.2504702-1-keescook@chromium.org>
+ <20200902025347.2504702-5-keescook@chromium.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20200902025347.2504702-5-keescook@chromium.org>
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Because of system-specific EFI firmware limitations, EFI volatile
-variables may not be capable of holding the required contents of
-the Machine Owner Key (MOK) certificate store when the certificate
-list grows above some size. Therefore, an EFI boot loader may pass
-the MOK certs via a EFI configuration table created specifically for
-this purpose to avoid this firmware limitation.
+On Tue, Sep 01, 2020 at 07:53:46PM -0700, Kees Cook wrote:
+> We don't want to depend on the linker's orphan section placement
+> heuristics as these can vary between linkers, and may change between
+> versions. All sections need to be explicitly handled in the linker script.
+> 
+> Now that all sections are explicitly handled, enable orphan section
+> warnings.
+> 
+> Signed-off-by: Kees Cook <keescook@chromium.org>
+> ---
+>  arch/x86/Makefile | 4 ++++
+>  1 file changed, 4 insertions(+)
+> 
+> diff --git a/arch/x86/Makefile b/arch/x86/Makefile
+> index 4346ffb2e39f..154259f18b8b 100644
+> --- a/arch/x86/Makefile
+> +++ b/arch/x86/Makefile
+> @@ -209,6 +209,10 @@ ifdef CONFIG_X86_64
+>  LDFLAGS_vmlinux += -z max-page-size=0x200000
+>  endif
+>  
+> +# We never want expected sections to be placed heuristically by the
+> +# linker. All sections should be explicitly named in the linker script.
+> +LDFLAGS_vmlinux += $(call ld-option, --orphan-handling=warn)
+> +
+>  archscripts: scripts_basic
+>  	$(Q)$(MAKE) $(build)=arch/x86/tools relocs
+>  
+> -- 
+> 2.25.1
+> 
 
-An EFI configuration table is a much more primitive mechanism
-compared to EFI variables and is well suited for one-way passage
-of static information from a pre-OS environment to the kernel.
+With LLVM=1 and GCOV_KERNEL/GCOV_PROFILE_ALL enabled, there are
+.eh_frame sections created. I see that KASAN and KCSAN currently discard
+them. Does GCOV actually need them or should it also discard?
 
-This patch adds the support to load certs from the MokListRT
-entry in the MOK variable configuration table, if it's present.
-The pre-existing support to load certs from the MokListRT EFI
-variable remains and is used if the EFI MOK configuration table
-isn't present or can't be successfully used.
-
-Signed-off-by: Lenny Szubowicz <lszubowi@redhat.com>
----
- security/integrity/platform_certs/load_uefi.c | 22 +++++++++++++++++++
- 1 file changed, 22 insertions(+)
-
-diff --git a/security/integrity/platform_certs/load_uefi.c b/security/integrity/platform_certs/load_uefi.c
-index c1c622b4dc78..ee4b4c666854 100644
---- a/security/integrity/platform_certs/load_uefi.c
-+++ b/security/integrity/platform_certs/load_uefi.c
-@@ -71,16 +71,38 @@ static __init void *get_cert_list(efi_char16_t *name, efi_guid_t *guid,
-  * Load the certs contained in the UEFI MokListRT database into the
-  * platform trusted keyring.
-  *
-+ * This routine checks the EFI MOK config table first. If and only if
-+ * that fails, this routine uses the MokListRT ordinary UEFI variable.
-+ *
-  * Return:	Status
-  */
- static int __init load_moklist_certs(void)
- {
-+	struct efi_mokvar_table_entry *mokvar_entry;
- 	efi_guid_t mok_var = EFI_SHIM_LOCK_GUID;
- 	void *mok;
- 	unsigned long moksize;
- 	efi_status_t status;
- 	int rc;
- 
-+	/* First try to load certs from the EFI MOKvar config table.
-+	 * It's not an error if the MOKvar config table doesn't exist
-+	 * or the MokListRT entry is not found in it.
-+	 */
-+	mokvar_entry = efi_mokvar_entry_find("MokListRT");
-+	if (mokvar_entry) {
-+		rc = parse_efi_signature_list("UEFI:MokListRT (MOKvar table)",
-+					      mokvar_entry->data,
-+					      mokvar_entry->data_size,
-+					      get_handler_for_db);
-+		/* All done if that worked. */
-+		if (!rc)
-+			return rc;
-+
-+		pr_err("Couldn't parse MokListRT signatures from EFI MOKvar config table: %d\n",
-+		       rc);
-+	}
-+
- 	/* Get MokListRT. It might not exist, so it isn't an error
- 	 * if we can't get it.
- 	 */
--- 
-2.27.0
-
+Thanks.
