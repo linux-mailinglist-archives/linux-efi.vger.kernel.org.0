@@ -2,120 +2,154 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E9C525E171
-	for <lists+linux-efi@lfdr.de>; Fri,  4 Sep 2020 20:20:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A850C25E4C5
+	for <lists+linux-efi@lfdr.de>; Sat,  5 Sep 2020 02:58:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726621AbgIDSUs (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 4 Sep 2020 14:20:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39628 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726208AbgIDSUr (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 4 Sep 2020 14:20:47 -0400
-Received: from mail-pj1-x1044.google.com (mail-pj1-x1044.google.com [IPv6:2607:f8b0:4864:20::1044])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D246FC061244
-        for <linux-efi@vger.kernel.org>; Fri,  4 Sep 2020 11:20:45 -0700 (PDT)
-Received: by mail-pj1-x1044.google.com with SMTP id mm21so3583603pjb.4
-        for <linux-efi@vger.kernel.org>; Fri, 04 Sep 2020 11:20:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=HGsb6HyUfkAH720RyRI2xnBGVpFj14UXqV80lfeeAHQ=;
-        b=Il3Jp+GbZKeQBVyig5AB6ptKPeBzRng/54pElXbWFgDDwVZtfonwW/fIvn12LwA16M
-         q+/RGW9N8udNPgZyH15iLM+vRSiGyHrin+pGX1aElmkbmidG8ekkDrYXabwm5ci/epUm
-         czoHI1JGeVOuHvY1/0vF8Z8gvengMt1dzX9XM=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=HGsb6HyUfkAH720RyRI2xnBGVpFj14UXqV80lfeeAHQ=;
-        b=OUg74/Np/FhxFVTvy6RPHlsR501sgTV4r08jjQWGP+cmhcMVPsM/N5D+QvQTvYZvUY
-         nlYTFPTw7B6W8Pvb5SsOBhKoJX4uP3Xnzds/pHhYxBHzY3Y9riT+Q0+YIClah2rurrfe
-         m4Jl2m3KhvFYohCE4OsHptUnlbNF381MuWkQ+wbdk5Mr7umU4EV9+0mF1091SM4vHBkL
-         T5Uto0Q1oxwjxoqd0ygNGVkzu8C7lX1qK7EU1+uaoR7lv2HlXxPCOpUX1BHhWOVbK+NX
-         z6tp2xStmAz1qa328wuLdFlSMxmdtYrTSLpv4TmIswr15B0FgyUCRfkdS0I7hIB/tSts
-         2+hg==
-X-Gm-Message-State: AOAM532ctmNhcgya45lwSlMmtOdTn3SRCKvXJBDkaz0XW1uwPmeAps81
-        HSYu8W/fFUvQxPSq57oF6FCvsA==
-X-Google-Smtp-Source: ABdhPJw3OHa/KfnDP1eX5u9yPnVXyHpsyvjqvNAIiJCIEcH0n6a9Xn4DsL9UahB90tHSeMz9ICNHhA==
-X-Received: by 2002:a17:902:bc44:: with SMTP id t4mr8920312plz.77.1599243645065;
-        Fri, 04 Sep 2020 11:20:45 -0700 (PDT)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id gm3sm5689028pjb.31.2020.09.04.11.20.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 04 Sep 2020 11:20:44 -0700 (PDT)
-Date:   Fri, 4 Sep 2020 11:20:43 -0700
-From:   Kees Cook <keescook@chromium.org>
-To:     Ingo Molnar <mingo@kernel.org>
-Cc:     Nick Desaulniers <ndesaulniers@google.com>,
-        Borislav Petkov <bp@suse.de>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Peter Collingbourne <pcc@google.com>,
-        James Morse <james.morse@arm.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Arvind Sankar <nivedita@alum.mit.edu>,
-        Nathan Chancellor <natechancellor@gmail.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
-        clang-built-linux <clang-built-linux@googlegroups.com>,
-        linux-arch <linux-arch@vger.kernel.org>,
+        id S1726277AbgIEA6F (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 4 Sep 2020 20:58:05 -0400
+Received: from us-smtp-1.mimecast.com ([207.211.31.81]:29477 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726208AbgIEA6F (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 4 Sep 2020 20:58:05 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1599267483;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=kNBOhuEZgb11jNzVin4vW86ugipWCO8mBgoUlZPaXM0=;
+        b=i6gn08PEoU5xuO+NBHdc2FEx5RAo9Kv1DxZ2bfIQKzaBFXGECy6e0x2DtMoAoZ5tebTWs0
+        y4eSh51Io7Bn3BwR1XnD0w978S1r63Ilca/0B/JKeDG7XW0QQ8lNoWwtUZj1e3tdw1quvm
+        Upb+wcSyhQdkuf14L/m2dWAvO03Vthc=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-537-uF9XtEZ6OV2bD6ZgtSTOhQ-1; Fri, 04 Sep 2020 20:58:01 -0400
+X-MC-Unique: uF9XtEZ6OV2bD6ZgtSTOhQ-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id EEF211DDEA;
+        Sat,  5 Sep 2020 00:57:59 +0000 (UTC)
+Received: from [10.10.65.66] (ovpn-65-66.rdu2.redhat.com [10.10.65.66])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id ADE3460C05;
+        Sat,  5 Sep 2020 00:57:57 +0000 (UTC)
+Subject: Re: [PATCH 2/3] integrity: Move import of MokListRT certs to a
+ separate routine
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         linux-efi <linux-efi@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v7 0/5] Warn on orphan section placement
-Message-ID: <202009041117.5EAC7C242@keescook>
-References: <20200902025347.2504702-1-keescook@chromium.org>
- <CAKwvOd=r8X1UeBRgYMcjUoQX_nbOEbXCQYGX6n7kMnJhGXis=Q@mail.gmail.com>
- <20200904055825.GA2779622@gmail.com>
+        Platform Driver <platform-driver-x86@vger.kernel.org>,
+        linux-security-module <linux-security-module@vger.kernel.org>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Kees Cook <keescook@chromium.org>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Peter Jones <pjones@redhat.com>,
+        David Howells <dhowells@redhat.com>,
+        Prarit Bhargava <prarit@redhat.com>
+References: <20200826034455.28707-1-lszubowi@redhat.com>
+ <20200826034455.28707-3-lszubowi@redhat.com>
+ <CAHp75Vec0a3LC7dGY6wacQu0brc+Zjfowt6kGdcZ9sfMzoDR9g@mail.gmail.com>
+From:   Lenny Szubowicz <lszubowi@redhat.com>
+Message-ID: <ada8f771-5717-58f1-8352-feffea8703b4@redhat.com>
+Date:   Fri, 4 Sep 2020 20:57:57 -0400
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.11.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200904055825.GA2779622@gmail.com>
+In-Reply-To: <CAHp75Vec0a3LC7dGY6wacQu0brc+Zjfowt6kGdcZ9sfMzoDR9g@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, Sep 04, 2020 at 07:58:25AM +0200, Ingo Molnar wrote:
+On 9/2/20 3:55 AM, Andy Shevchenko wrote:
+> On Wed, Aug 26, 2020 at 6:45 AM Lenny Szubowicz <lszubowi@redhat.com> wrote:
+>>
+>> Move the loading of certs from the UEFI MokListRT into a separate
+>> routine to facilitate additional MokList functionality.
+>>
+>> There is no visible functional change as a result of this patch.
+>> Although the UEFI dbx certs are now loaded before the MokList certs,
+>> they are loaded onto different key rings. So the order of the keys
+>> on their respective key rings is the same.
 > 
-> * Nick Desaulniers <ndesaulniers@google.com> wrote:
+> ...
 > 
-> > On Tue, Sep 1, 2020 at 7:53 PM Kees Cook <keescook@chromium.org> wrote:
-> > >
-> > > Hi Ingo,
-> > >
-> > > The ever-shortening series. ;) Here is "v7", which is just the remaining
-> > > Makefile changes to enable orphan section warnings, now updated to
-> > > include ld-option calls.
-> > >
-> > > Thanks for getting this all into -tip!
-> > 
-> > For the series,
-> > Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
-> > 
-> > As the recent ppc vdso boogaloo exposed, what about the vdsos?
-> > * arch/x86/entry/vdso/Makefile
-> > * arch/arm/vdso/Makefile
-> > * arch/arm64/kernel/vdso/Makefile
-> > * arch/arm64/kernel/vdso32/Makefile
+>>   /*
+>> + * load_moklist_certs() - Load MokList certs
+>> + *
+>> + * Returns:    Summary error status
+>> + *
+>> + * Load the certs contained in the UEFI MokListRT database into the
+>> + * platform trusted keyring.
+>> + */
 > 
-> Kees, will these patches DTRT for the vDSO builds? I will be unable to test 
-> these patches on that old system until tomorrow the earliest.
+> Hmm... Is it intentionally kept out of kernel doc format?
 
-I would like to see VDSO done next, but it's entirely separate from
-this series. This series only touches the core kernel build (i.e. via the
-interactions with scripts/link-vmlinux.sh) or the boot stubs. So there
-is no impact on VDSO linking.
+Yes. Since this is a static local routine, I thought that it
+shouldn't be included by kerneldoc. But I wanted to generally adhere
+to the kernel doc conventions for a routine header. To that end,
+in V2 I move the "Return:" section to come after the short description.
 
-> I'm keeping these latest changes in WIP.core/build for now.
+> 
+>> +static int __init load_moklist_certs(void)
+>> +{
+>> +       efi_guid_t mok_var = EFI_SHIM_LOCK_GUID;
+>> +       void *mok = NULL;
+>> +       unsigned long moksize = 0;
+>> +       efi_status_t status;
+>> +       int rc = 0;
+> 
+> Redundant assignment (see below).
+> 
+>> +       /* Get MokListRT. It might not exist, so it isn't an error
+>> +        * if we can't get it.
+>> +        */
+>> +       mok = get_cert_list(L"MokListRT", &mok_var, &moksize, &status);
+> 
+>> +       if (!mok) {
+> 
+> Why not positive conditional? Sometimes ! is hard to notice.
+> 
+>> +               if (status == EFI_NOT_FOUND)
+>> +                       pr_debug("MokListRT variable wasn't found\n");
+>> +               else
+>> +                       pr_info("Couldn't get UEFI MokListRT\n");
+>> +       } else {
+>> +               rc = parse_efi_signature_list("UEFI:MokListRT",
+>> +                                             mok, moksize, get_handler_for_db);
+>> +               if (rc)
+>> +                       pr_err("Couldn't parse MokListRT signatures: %d\n", rc);
+>> +               kfree(mok);
+> 
+>   kfree(...)
+>   if (rc)
+>    ...
+>   return rc;
+> 
+> And with positive conditional there will be no need to have redundant
+> 'else' followed by additional level of indentation.
+> 
+>> +       }
+> 
+>> +       return rc;
+> 
+> return 0;
+> 
+>> +}
+> 
+> P.S. Yes, I see that the above was in the original code, so, consider
+> my comments as suggestions to improve the code.
+> 
 
-They should be safe to land in -next, which is important so we can shake
-out any other sneaky sections that all our existing testing hasn't
-found. :)
+I agree that your suggestions improve the code. I've incorporated this
+into V2.
 
--- 
-Kees Cook
+                        -Lenny.
+
