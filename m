@@ -2,34 +2,35 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 812F725E4E5
-	for <lists+linux-efi@lfdr.de>; Sat,  5 Sep 2020 03:31:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 099B125E4F2
+	for <lists+linux-efi@lfdr.de>; Sat,  5 Sep 2020 03:31:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728211AbgIEBbP (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 4 Sep 2020 21:31:15 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:50305 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726456AbgIEBbP (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 4 Sep 2020 21:31:15 -0400
+        id S1728339AbgIEBbe (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 4 Sep 2020 21:31:34 -0400
+Received: from us-smtp-1.mimecast.com ([207.211.31.81]:38066 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1728298AbgIEBbV (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 4 Sep 2020 21:31:21 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1599269474;
+        s=mimecast20190719; t=1599269478;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc; bh=c4xOVGv6dzGHbs85EUGdfRfdzpWmagCZJlIPXPkfsX8=;
-        b=ixzmQu2qo698TtkZFcbCEzOvK8HiTpomqNqNMc1iEwJlUvtrdt13I0NW2AcVIfXqAYpSRr
-        nbG3U0J58JGIw15w9YfvdOW4e4Xr1TGONYfh6m9/I4FqEUXw0CwiiuZbSzTSFSeE41mm8v
-        00i5emU1r7Zu9h8bvwZJZXErgbaTGw4=
+         to:to:cc:in-reply-to:in-reply-to:references:references;
+        bh=kPhpAGOrwqJGW+G8NzWh6o6fTELZeHQemSS7JgldNV0=;
+        b=Hahqx4HDPSoj7J380OK/kYJJ3F7oq4BeTjgyP+nL6B4VYFtn6jM8teP4iA1VhlDIuPHTLB
+        LPQOLbNIWhjnSOGFS6EDM4OLgD9F8Iex2FgE5tzLLOlECabgYBsDF8Rmmdx7V3cl/rVzSq
+        VmJeA8QDWAsTVnF45lGdL0XaKK7CfWs=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-565-fc1BfPfoNOeiRs3-aDTr8g-1; Fri, 04 Sep 2020 21:31:10 -0400
-X-MC-Unique: fc1BfPfoNOeiRs3-aDTr8g-1
+ us-mta-39-lw947SNvPwCX4MzjqJ3GEg-1; Fri, 04 Sep 2020 21:31:14 -0400
+X-MC-Unique: lw947SNvPwCX4MzjqJ3GEg-1
 Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 00453801ABB;
-        Sat,  5 Sep 2020 01:31:09 +0000 (UTC)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id E002D801ABB;
+        Sat,  5 Sep 2020 01:31:12 +0000 (UTC)
 Received: from lszubowi.redhat.com (ovpn-65-66.rdu2.redhat.com [10.10.65.66])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 819AA5D9CC;
-        Sat,  5 Sep 2020 01:31:07 +0000 (UTC)
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 266F05D9CC;
+        Sat,  5 Sep 2020 01:31:09 +0000 (UTC)
 From:   Lenny Szubowicz <lszubowi@redhat.com>
 To:     linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
         platform-driver-x86@vger.kernel.org,
@@ -37,9 +38,11 @@ To:     linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
         ardb@kernel.org, jmorris@namei.org, serge@hallyn.com,
         keescook@chromium.org, zohar@linux.ibm.com, bp@alien8.de,
         pjones@redhat.com, dhowells@redhat.com, prarit@redhat.com
-Subject: [PATCH V2 0/3] integrity: Load certs from EFI MOK config table
-Date:   Fri,  4 Sep 2020 21:31:04 -0400
-Message-Id: <20200905013107.10457-1-lszubowi@redhat.com>
+Subject: [PATCH V2 1/3] efi: Support for MOK variable config table
+Date:   Fri,  4 Sep 2020 21:31:05 -0400
+Message-Id: <20200905013107.10457-2-lszubowi@redhat.com>
+In-Reply-To: <20200905013107.10457-1-lszubowi@redhat.com>
+References: <20200905013107.10457-1-lszubowi@redhat.com>
 X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
@@ -53,68 +56,532 @@ list grows above some size. Therefore, an EFI boot loader may pass
 the MOK certs via a EFI configuration table created specifically for
 this purpose to avoid this firmware limitation.
 
-An EFI configuration table is a simpler and more robust mechanism
+An EFI configuration table is a much more primitive mechanism
 compared to EFI variables and is well suited for one-way passage
 of static information from a pre-OS environment to the kernel.
 
-Entries in the MOK variable configuration table are named key/value
-pairs. Therefore the shim boot loader can create a MokListRT named
-entry in the MOK configuration table that contains exactly the same
-data as the MokListRT UEFI variable does or would otherwise contain.
-As such, the kernel can load certs from the data in the MokListRT
-configuration table entry data in the same way that it loads certs
-from the data returned by the EFI GetVariable() runtime call for the
-MokListRT variable.
+This patch adds initial kernel support to recognize, parse,
+and validate the EFI MOK configuration table, where named
+entries contain the same data that would otherwise be provided
+in similarly named EFI variables.
 
-This patch set does not remove the support for loading certs from the
-EFI MOK variables into the platform key ring. However, if both the EFI
-MOK configuration table and corresponding EFI MOK variables are present,
-the MOK table is used as the source of MOK certs.
+Additionally, this patch creates a sysfs binary file for each
+EFI MOK configuration table entry found. These files are read-only
+to root and are provided for use by user space utilities such as
+mokutil.
 
-The contents of the individual named MOK config table entries are
-made available to user space as individual sysfs binary files,
-which are read-only to root, under:
+A subsequent patch will load MOK certs into the trusted platform
+key ring using this infrastructure.
 
-	/sys/firmware/efi/mok-variables/
-
-This enables an updated mokutil to provide support for:
-
-	mokutil --list-enrolled
-
-such that it can provide accurate information regardless of whether
-the MOK configuration table or MOK EFI variables were the source
-for certs. Note that all modifications of MOK related state are still
-initiated by mokutil via EFI variables.
-
-V2: Incorporate feedback from V1
-  Patch 01: efi: Support for MOK variable config table
-  - Minor update to change log; no code changes
-  Patch 02: integrity: Move import of MokListRT certs to a separate routine
-  - Clean up code flow in code moved to load_moklist_certs()
-  - Remove some unnecessary initialization of variables
-  Patch 03: integrity: Load certs from the EFI MOK config table
-  - Update required due to changes in patch 02.
-  - Remove unnecessary init of mokvar_entry in load_moklist_certs() 
-
-V1:
-  https://lore.kernel.org/lkml/20200826034455.28707-1-lszubowi@redhat.com/
-
-Lenny Szubowicz (3):
-  efi: Support for MOK variable config table
-  integrity: Move import of MokListRT certs to a separate routine
-  integrity: Load certs from the EFI MOK config table
-
- arch/x86/kernel/setup.c                       |   1 +
- arch/x86/platform/efi/efi.c                   |   3 +
- drivers/firmware/efi/Makefile                 |   1 +
- drivers/firmware/efi/arm-init.c               |   1 +
- drivers/firmware/efi/efi.c                    |   6 +
- drivers/firmware/efi/mokvar-table.c           | 360 ++++++++++++++++++
- include/linux/efi.h                           |  34 ++
- security/integrity/platform_certs/load_uefi.c |  85 ++++-
- 8 files changed, 472 insertions(+), 19 deletions(-)
+Signed-off-by: Lenny Szubowicz <lszubowi@redhat.com>
+---
+ arch/x86/kernel/setup.c             |   1 +
+ arch/x86/platform/efi/efi.c         |   3 +
+ drivers/firmware/efi/Makefile       |   1 +
+ drivers/firmware/efi/arm-init.c     |   1 +
+ drivers/firmware/efi/efi.c          |   6 +
+ drivers/firmware/efi/mokvar-table.c | 360 ++++++++++++++++++++++++++++
+ include/linux/efi.h                 |  34 +++
+ 7 files changed, 406 insertions(+)
  create mode 100644 drivers/firmware/efi/mokvar-table.c
 
+diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
+index 3511736fbc74..d41be0df72f8 100644
+--- a/arch/x86/kernel/setup.c
++++ b/arch/x86/kernel/setup.c
+@@ -1077,6 +1077,7 @@ void __init setup_arch(char **cmdline_p)
+ 	efi_fake_memmap();
+ 	efi_find_mirror();
+ 	efi_esrt_init();
++	efi_mokvar_table_init();
+ 
+ 	/*
+ 	 * The EFI specification says that boot service code won't be
+diff --git a/arch/x86/platform/efi/efi.c b/arch/x86/platform/efi/efi.c
+index d37ebe6e70d7..8a26e705cb06 100644
+--- a/arch/x86/platform/efi/efi.c
++++ b/arch/x86/platform/efi/efi.c
+@@ -90,6 +90,9 @@ static const unsigned long * const efi_tables[] = {
+ 	&efi.tpm_log,
+ 	&efi.tpm_final_log,
+ 	&efi_rng_seed,
++#ifdef CONFIG_LOAD_UEFI_KEYS
++	&efi.mokvar_table,
++#endif
+ };
+ 
+ u64 efi_setup;		/* efi setup_data physical address */
+diff --git a/drivers/firmware/efi/Makefile b/drivers/firmware/efi/Makefile
+index 7a216984552b..03964e2d27c5 100644
+--- a/drivers/firmware/efi/Makefile
++++ b/drivers/firmware/efi/Makefile
+@@ -28,6 +28,7 @@ obj-$(CONFIG_EFI_DEV_PATH_PARSER)	+= dev-path-parser.o
+ obj-$(CONFIG_APPLE_PROPERTIES)		+= apple-properties.o
+ obj-$(CONFIG_EFI_RCI2_TABLE)		+= rci2-table.o
+ obj-$(CONFIG_EFI_EMBEDDED_FIRMWARE)	+= embedded-firmware.o
++obj-$(CONFIG_LOAD_UEFI_KEYS)		+= mokvar-table.o
+ 
+ fake_map-y				+= fake_mem.o
+ fake_map-$(CONFIG_X86)			+= x86_fake_mem.o
+diff --git a/drivers/firmware/efi/arm-init.c b/drivers/firmware/efi/arm-init.c
+index 71c445d20258..f55a92ff12c0 100644
+--- a/drivers/firmware/efi/arm-init.c
++++ b/drivers/firmware/efi/arm-init.c
+@@ -236,6 +236,7 @@ void __init efi_init(void)
+ 
+ 	reserve_regions();
+ 	efi_esrt_init();
++	efi_mokvar_table_init();
+ 
+ 	memblock_reserve(data.phys_map & PAGE_MASK,
+ 			 PAGE_ALIGN(data.size + (data.phys_map & ~PAGE_MASK)));
+diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
+index 3aa07c3b5136..3d4daf215e19 100644
+--- a/drivers/firmware/efi/efi.c
++++ b/drivers/firmware/efi/efi.c
+@@ -43,6 +43,9 @@ struct efi __read_mostly efi = {
+ 	.esrt			= EFI_INVALID_TABLE_ADDR,
+ 	.tpm_log		= EFI_INVALID_TABLE_ADDR,
+ 	.tpm_final_log		= EFI_INVALID_TABLE_ADDR,
++#ifdef CONFIG_LOAD_UEFI_KEYS
++	.mokvar_table		= EFI_INVALID_TABLE_ADDR,
++#endif
+ };
+ EXPORT_SYMBOL(efi);
+ 
+@@ -518,6 +521,9 @@ static const efi_config_table_type_t common_tables[] __initconst = {
+ 	{EFI_RT_PROPERTIES_TABLE_GUID,		&rt_prop,		"RTPROP"	},
+ #ifdef CONFIG_EFI_RCI2_TABLE
+ 	{DELLEMC_EFI_RCI2_TABLE_GUID,		&rci2_table_phys			},
++#endif
++#ifdef CONFIG_LOAD_UEFI_KEYS
++	{LINUX_EFI_MOK_VARIABLE_TABLE_GUID,	&efi.mokvar_table,	"MOKvar"	},
+ #endif
+ 	{},
+ };
+diff --git a/drivers/firmware/efi/mokvar-table.c b/drivers/firmware/efi/mokvar-table.c
+new file mode 100644
+index 000000000000..f12f1710f5d9
+--- /dev/null
++++ b/drivers/firmware/efi/mokvar-table.c
+@@ -0,0 +1,360 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * mokvar-table.c
++ *
++ * Copyright (c) 2020 Red Hat
++ * Author: Lenny Szubowicz <lszubowi@redhat.com>
++ *
++ * This module contains the kernel support for the Linux EFI Machine
++ * Owner Key (MOK) variable configuration table, which is identified by
++ * the LINUX_EFI_MOK_VARIABLE_TABLE_GUID.
++ *
++ * This EFI configuration table provides a more robust alternative to
++ * EFI volatile variables by which an EFI boot loader can pass the
++ * contents of the Machine Owner Key (MOK) certificate stores to the
++ * kernel during boot. If both the EFI MOK config table and corresponding
++ * EFI MOK variables are present, the table should be considered as
++ * more authoritative.
++ *
++ * This module includes code that validates and maps the EFI MOK table,
++ * if it's presence was detected very early in boot.
++ *
++ * Kernel interface routines are provided to walk through all the
++ * entries in the MOK config table or to search for a specific named
++ * entry.
++ *
++ * The contents of the individual named MOK config table entries are
++ * made available to user space via read-only sysfs binary files under:
++ *
++ * /sys/firmware/efi/mok-variables/
++ *
++ */
++#define pr_fmt(fmt) "mokvar: " fmt
++
++#include <linux/capability.h>
++#include <linux/efi.h>
++#include <linux/init.h>
++#include <linux/io.h>
++#include <linux/kernel.h>
++#include <linux/kobject.h>
++#include <linux/list.h>
++#include <linux/slab.h>
++
++/*
++ * The LINUX_EFI_MOK_VARIABLE_TABLE_GUID config table is a packed
++ * sequence of struct efi_mokvar_table_entry, one for each named
++ * MOK variable. The sequence is terminated by an entry with a
++ * completely NULL name and 0 data size.
++ *
++ * efi_mokvar_table_size is set to the computed size of the
++ * MOK config table by efi_mokvar_table_init(). This will be
++ * non-zero if and only if the table if present and has been
++ * validated by efi_mokvar_table_init().
++ */
++static size_t efi_mokvar_table_size;
++
++/*
++ * efi_mokvar_table_va is the kernel virtual address at which the
++ * EFI MOK config table has been mapped by efi_mokvar_sysfs_init().
++ */
++static struct efi_mokvar_table_entry *efi_mokvar_table_va;
++
++/*
++ * Each /sys/firmware/efi/mok-variables/ sysfs file is represented by
++ * an instance of struct efi_mokvar_sysfs_attr on efi_mokvar_sysfs_list.
++ * bin_attr.private points to the associated EFI MOK config table entry.
++ *
++ * This list is created during boot and then remains unchanged.
++ * So no sychronization is currently required to walk the list.
++ */
++struct efi_mokvar_sysfs_attr {
++	struct bin_attribute bin_attr;
++	struct list_head node;
++};
++
++static LIST_HEAD(efi_mokvar_sysfs_list);
++static struct kobject *mokvar_kobj;
++
++/*
++ * efi_mokvar_table_init() - Early boot validation of EFI MOK config table
++ *
++ * If present, validate and compute the size of the EFI MOK variable
++ * configuration table. This table may be provided by an EFI boot loader
++ * as an alternative to ordinary EFI variables, due to platform-dependent
++ * limitations. The memory occupied by this table is marked as reserved.
++ *
++ * This routine must be called before efi_free_boot_services() in order
++ * to guarantee that it can mark the table as reserved.
++ *
++ * Implicit inputs:
++ * efi.mokvar_table:	Physical address of EFI MOK variable config table
++ *			or special value that indicates no such table.
++ *
++ * Implicit outputs:
++ * efi_mokvar_table_size: Computed size of EFI MOK variable config table.
++ *			The table is considered present and valid if this
++ *			is non-zero.
++ */
++void __init efi_mokvar_table_init(void)
++{
++	efi_memory_desc_t md;
++	u64 end_pa;
++	void *va = NULL;
++	size_t cur_offset = 0;
++	size_t offset_limit;
++	size_t map_size = 0;
++	size_t map_size_needed = 0;
++	size_t size;
++	struct efi_mokvar_table_entry *mokvar_entry;
++	int err = -EINVAL;
++
++	if (!efi_enabled(EFI_MEMMAP))
++		return;
++
++	if (efi.mokvar_table == EFI_INVALID_TABLE_ADDR)
++		return;
++	/*
++	 * The EFI MOK config table must fit within a single EFI memory
++	 * descriptor range.
++	 */
++	err = efi_mem_desc_lookup(efi.mokvar_table, &md);
++	if (err) {
++		pr_warn("EFI MOKvar config table is not within the EFI memory map\n");
++		return;
++	}
++	end_pa = efi_mem_desc_end(&md);
++	if (efi.mokvar_table >= end_pa) {
++		pr_err("EFI memory descriptor containing MOKvar config table is invalid\n");
++		return;
++	}
++	offset_limit = end_pa - efi.mokvar_table;
++	/*
++	 * Validate the MOK config table. Since there is no table header
++	 * from which we could get the total size of the MOK config table,
++	 * we compute the total size as we validate each variably sized
++	 * entry, remapping as necessary.
++	 */
++	while (cur_offset + sizeof(*mokvar_entry) <= offset_limit) {
++		mokvar_entry = va + cur_offset;
++		map_size_needed = cur_offset + sizeof(*mokvar_entry);
++		if (map_size_needed > map_size) {
++			if (va)
++				early_memunmap(va, map_size);
++			/*
++			 * Map a little more than the fixed size entry
++			 * header, anticipating some data. It's safe to
++			 * do so as long as we stay within current memory
++			 * descriptor.
++			 */
++			map_size = min(map_size_needed + 2*EFI_PAGE_SIZE,
++				       offset_limit);
++			va = early_memremap(efi.mokvar_table, map_size);
++			if (!va) {
++				pr_err("Failed to map EFI MOKvar config table pa=0x%lx, size=%zu.\n",
++				       efi.mokvar_table, map_size);
++				return;
++			}
++			mokvar_entry = va + cur_offset;
++		}
++
++		/* Check for last sentinel entry */
++		if (mokvar_entry->name[0] == '\0') {
++			if (mokvar_entry->data_size != 0)
++				break;
++			err = 0;
++			break;
++		}
++
++		/* Sanity check that the name is null terminated */
++		size = strnlen(mokvar_entry->name,
++			       sizeof(mokvar_entry->name));
++		if (size >= sizeof(mokvar_entry->name))
++			break;
++
++		/* Advance to the next entry */
++		cur_offset = map_size_needed + mokvar_entry->data_size;
++	}
++
++	if (va)
++		early_memunmap(va, map_size);
++	if (err) {
++		pr_err("EFI MOKvar config table is not valid\n");
++		return;
++	}
++	efi_mem_reserve(efi.mokvar_table, map_size_needed);
++	efi_mokvar_table_size = map_size_needed;
++}
++
++/*
++ * efi_mokvar_entry_next() - Get next entry in the EFI MOK config table
++ *
++ * mokvar_entry:	Pointer to current EFI MOK config table entry
++ *			or null. Null indicates get first entry.
++ *			Passed by reference. This is updated to the
++ *			same value as the return value.
++ *
++ * Returns:		Pointer to next EFI MOK config table entry
++ *			or null, if there are no more entries.
++ *			Same value is returned in the mokvar_entry
++ *			parameter.
++ *
++ * This routine depends on the EFI MOK config table being entirely
++ * mapped with it's starting virtual address in efi_mokvar_table_va.
++ */
++struct efi_mokvar_table_entry *efi_mokvar_entry_next(
++			struct efi_mokvar_table_entry **mokvar_entry)
++{
++	struct efi_mokvar_table_entry *mokvar_cur;
++	struct efi_mokvar_table_entry *mokvar_next;
++	size_t size_cur;
++
++	mokvar_cur = *mokvar_entry;
++	*mokvar_entry = NULL;
++
++	if (efi_mokvar_table_va == NULL)
++		return NULL;
++
++	if (mokvar_cur == NULL) {
++		mokvar_next = efi_mokvar_table_va;
++	} else {
++		if (mokvar_cur->name[0] == '\0')
++			return NULL;
++		size_cur = sizeof(*mokvar_cur) + mokvar_cur->data_size;
++		mokvar_next = (void *)mokvar_cur + size_cur;
++	}
++
++	if (mokvar_next->name[0] == '\0')
++		return NULL;
++
++	*mokvar_entry = mokvar_next;
++	return mokvar_next;
++}
++
++/*
++ * efi_mokvar_entry_find() - Find EFI MOK config entry by name
++ *
++ * name:	Name of the entry to look for.
++ *
++ * Returns:	Pointer to EFI MOK config table entry if found;
++ *		null otherwise.
++ *
++ * This routine depends on the EFI MOK config table being entirely
++ * mapped with it's starting virtual address in efi_mokvar_table_va.
++ */
++struct efi_mokvar_table_entry *efi_mokvar_entry_find(const char *name)
++{
++	struct efi_mokvar_table_entry *mokvar_entry = NULL;
++
++	while (efi_mokvar_entry_next(&mokvar_entry)) {
++		if (!strncmp(name, mokvar_entry->name,
++			     sizeof(mokvar_entry->name)))
++			return mokvar_entry;
++	}
++	return NULL;
++}
++
++/*
++ * efi_mokvar_sysfs_read() - sysfs binary file read routine
++ *
++ * Returns:	Count of bytes read.
++ *
++ * Copy EFI MOK config table entry data for this mokvar sysfs binary file
++ * to the supplied buffer, starting at the specified offset into mokvar table
++ * entry data, for the specified count bytes. The copy is limited by the
++ * amount of data in this mokvar config table entry.
++ */
++static ssize_t efi_mokvar_sysfs_read(struct file *file, struct kobject *kobj,
++				 struct bin_attribute *bin_attr, char *buf,
++				 loff_t off, size_t count)
++{
++	struct efi_mokvar_table_entry *mokvar_entry = bin_attr->private;
++
++	if (!capable(CAP_SYS_ADMIN))
++		return 0;
++
++	if (off >= mokvar_entry->data_size)
++		return 0;
++	if (count >  mokvar_entry->data_size - off)
++		count = mokvar_entry->data_size - off;
++
++	memcpy(buf, mokvar_entry->data + off, count);
++	return count;
++}
++
++/*
++ * efi_mokvar_sysfs_init() - Map EFI MOK config table and create sysfs
++ *
++ * Map the EFI MOK variable config table for run-time use by the kernel
++ * and create the sysfs entries in /sys/firmware/efi/mok-variables/
++ *
++ * This routine just returns if a valid EFI MOK variable config table
++ * was not found earlier during boot.
++ *
++ * This routine must be called during a "middle" initcall phase, i.e.
++ * after efi_mokvar_table_init() but before UEFI certs are loaded
++ * during late init.
++ *
++ * Implicit inputs:
++ * efi.mokvar_table:	Physical address of EFI MOK variable config table
++ *			or special value that indicates no such table.
++ *
++ * efi_mokvar_table_size: Computed size of EFI MOK variable config table.
++ *			The table is considered present and valid if this
++ *			is non-zero.
++ *
++ * Implicit outputs:
++ * efi_mokvar_table_va:	Start virtual address of the EFI MOK config table.
++ */
++static int __init efi_mokvar_sysfs_init(void)
++{
++	void *config_va;
++	struct efi_mokvar_table_entry *mokvar_entry = NULL;
++	struct efi_mokvar_sysfs_attr *mokvar_sysfs = NULL;
++	int err = 0;
++
++	if (efi_mokvar_table_size == 0)
++		return -ENOENT;
++
++	config_va = memremap(efi.mokvar_table, efi_mokvar_table_size,
++			     MEMREMAP_WB);
++	if (!config_va) {
++		pr_err("Failed to map EFI MOKvar config table\n");
++		return -ENOMEM;
++	}
++	efi_mokvar_table_va = config_va;
++
++	mokvar_kobj = kobject_create_and_add("mok-variables", efi_kobj);
++	if (!mokvar_kobj) {
++		pr_err("Failed to create EFI mok-variables sysfs entry\n");
++		return -ENOMEM;
++	}
++
++	while (efi_mokvar_entry_next(&mokvar_entry)) {
++		mokvar_sysfs = kzalloc(sizeof(*mokvar_sysfs), GFP_KERNEL);
++		if (!mokvar_sysfs) {
++			err = -ENOMEM;
++			break;
++		}
++
++		sysfs_bin_attr_init(&mokvar_sysfs->bin_attr);
++		mokvar_sysfs->bin_attr.private = mokvar_entry;
++		mokvar_sysfs->bin_attr.attr.name = mokvar_entry->name;
++		mokvar_sysfs->bin_attr.attr.mode = 0400;
++		mokvar_sysfs->bin_attr.size = mokvar_entry->data_size;
++		mokvar_sysfs->bin_attr.read = efi_mokvar_sysfs_read;
++
++		err = sysfs_create_bin_file(mokvar_kobj,
++					   &mokvar_sysfs->bin_attr);
++		if (err)
++			break;
++
++		list_add_tail(&mokvar_sysfs->node, &efi_mokvar_sysfs_list);
++	}
++
++	if (err) {
++		pr_err("Failed to create some EFI mok-variables sysfs entries\n");
++		kfree(mokvar_sysfs);
++	}
++	return err;
++}
++device_initcall(efi_mokvar_sysfs_init);
+diff --git a/include/linux/efi.h b/include/linux/efi.h
+index 73db1ae04cef..4a2332f146eb 100644
+--- a/include/linux/efi.h
++++ b/include/linux/efi.h
+@@ -357,6 +357,7 @@ void efi_native_runtime_setup(void);
+ #define LINUX_EFI_TPM_FINAL_LOG_GUID		EFI_GUID(0x1e2ed096, 0x30e2, 0x4254,  0xbd, 0x89, 0x86, 0x3b, 0xbe, 0xf8, 0x23, 0x25)
+ #define LINUX_EFI_MEMRESERVE_TABLE_GUID		EFI_GUID(0x888eb0c6, 0x8ede, 0x4ff5,  0xa8, 0xf0, 0x9a, 0xee, 0x5c, 0xb9, 0x77, 0xc2)
+ #define LINUX_EFI_INITRD_MEDIA_GUID		EFI_GUID(0x5568e427, 0x68fc, 0x4f3d,  0xac, 0x74, 0xca, 0x55, 0x52, 0x31, 0xcc, 0x68)
++#define LINUX_EFI_MOK_VARIABLE_TABLE_GUID	EFI_GUID(0xc451ed2b, 0x9694, 0x45d3,  0xba, 0xba, 0xed, 0x9f, 0x89, 0x88, 0xa3, 0x89)
+ 
+ /* OEM GUIDs */
+ #define DELLEMC_EFI_RCI2_TABLE_GUID		EFI_GUID(0x2d9f28a2, 0xa886, 0x456a,  0x97, 0xa8, 0xf1, 0x1e, 0xf2, 0x4f, 0xf4, 0x55)
+@@ -546,6 +547,7 @@ extern struct efi {
+ 	unsigned long			esrt;			/* ESRT table */
+ 	unsigned long			tpm_log;		/* TPM2 Event Log table */
+ 	unsigned long			tpm_final_log;		/* TPM2 Final Events Log table */
++	unsigned long			mokvar_table;		/* MOK variable config table */
+ 
+ 	efi_get_time_t			*get_time;
+ 	efi_set_time_t			*set_time;
+@@ -1252,4 +1254,36 @@ void __init efi_arch_mem_reserve(phys_addr_t addr, u64 size);
+ 
+ char *efi_systab_show_arch(char *str);
+ 
++/*
++ * The LINUX_EFI_MOK_VARIABLE_TABLE_GUID config table can be provided
++ * to the kernel by an EFI boot loader. The table contains a packed
++ * sequence of these entries, one for each named MOK variable.
++ * The sequence is terminated by an entry with a completely NULL
++ * name and 0 data size.
++ */
++struct efi_mokvar_table_entry {
++	char name[256];
++	u64 data_size;
++	u8 data[];
++} __attribute((packed));
++
++#ifdef CONFIG_LOAD_UEFI_KEYS
++extern void __init efi_mokvar_table_init(void);
++extern struct efi_mokvar_table_entry *efi_mokvar_entry_next(
++			struct efi_mokvar_table_entry **mokvar_entry);
++extern struct efi_mokvar_table_entry *efi_mokvar_entry_find(const char *name);
++#else
++static inline void efi_mokvar_table_init(void) { }
++static inline struct efi_mokvar_table_entry *efi_mokvar_entry_next(
++			struct efi_mokvar_table_entry **mokvar_entry)
++{
++	return NULL;
++}
++static inline struct efi_mokvar_table_entry *efi_mokvar_entry_find(
++			const char *name)
++{
++	return NULL;
++}
++#endif
++
+ #endif /* _LINUX_EFI_H */
 -- 
 2.27.0
 
