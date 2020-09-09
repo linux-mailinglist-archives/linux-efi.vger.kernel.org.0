@@ -2,125 +2,182 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 51504263458
-	for <lists+linux-efi@lfdr.de>; Wed,  9 Sep 2020 19:19:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 189F12634B9
+	for <lists+linux-efi@lfdr.de>; Wed,  9 Sep 2020 19:35:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729911AbgIIRTU (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 9 Sep 2020 13:19:20 -0400
-Received: from mail.kernel.org ([198.145.29.99]:54606 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729789AbgIIP1Y (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Wed, 9 Sep 2020 11:27:24 -0400
-Received: from e123331-lin.nice.arm.com (adsl-204.109.242.29.tellas.gr [109.242.29.204])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A636422269;
-        Wed,  9 Sep 2020 15:16:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1599664618;
-        bh=dBf3kT0+IU1h02iNcg1o94zReimfahA8wuaiLSo0fhs=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dPe4pGxLiN3gkvZppqhigagtgKy6YWfDjJDJNWKM1COef61kJRWvXRmQOodnWV/pG
-         mmBxCi+fGWoQXvbcWYszlUIYMe4py5b9uDOejI5OKGOL3yWz+C3UkJEXz4a8a+8uLw
-         5Cs085rzV9uOgKWN9qtgpriPC6Nqiihf1LNj7eLk=
-From:   Ard Biesheuvel <ardb@kernel.org>
-To:     linux-efi@vger.kernel.org
-Cc:     linux-arm-kernel@lists.infradead.org,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Maxim Uvarov <maxim.uvarov@linaro.org>,
-        Heinrich Schuchardt <xypron.glpk@gmx.de>,
-        Atish Patra <atish.patra@wdc.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Jens Wiklander <jens.wiklander@linaro.org>,
-        Francois Ozog <francois.ozog@linaro.org>,
-        Etienne CARRIERE <etienne.carriere@st.com>,
-        Takahiro Akashi <takahiro.akashi@linaro.org>,
-        Patrice CHOTARD <patrice.chotard@st.com>,
-        Sumit Garg <sumit.garg@linaro.org>,
-        Grant Likely <Grant.Likely@arm.com>,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-        Christophe Priouzeau <christophe.priouzeau@linaro.org>,
-        Rouven Czerwinski <r.czerwinski@pengutronix.de>,
-        Patrick DELAUNAY <patrick.delaunay@st.com>
-Subject: [PATCH RFC/RFT 3/3] efi/libstub: base FDT and initrd placement on image address not DRAM base
-Date:   Wed,  9 Sep 2020 18:16:23 +0300
-Message-Id: <20200909151623.16153-4-ardb@kernel.org>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200909151623.16153-1-ardb@kernel.org>
-References: <20200909151623.16153-1-ardb@kernel.org>
+        id S1729941AbgIIRfU (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 9 Sep 2020 13:35:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38790 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726415AbgIIRfS (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 9 Sep 2020 13:35:18 -0400
+Received: from mail-lj1-x244.google.com (mail-lj1-x244.google.com [IPv6:2a00:1450:4864:20::244])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD954C061755
+        for <linux-efi@vger.kernel.org>; Wed,  9 Sep 2020 10:35:16 -0700 (PDT)
+Received: by mail-lj1-x244.google.com with SMTP id k25so4675387ljk.0
+        for <linux-efi@vger.kernel.org>; Wed, 09 Sep 2020 10:35:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=DqFOTGjWCbditxbgpQ8IyRDxYky7yNBzoJozO0vswEQ=;
+        b=UToeSBmunsVhylm35nwGeM3cA3zsMBS6lOQy1CzptlQQ0cfeKjtMVl69HKhS9cyZNv
+         E6hlL75w/Gj9vqAtBbm0k7mY8b+Qkc0oMrQbp1/HV3fORCWZ3vJrlr4FhfEWyE/IcbhB
+         5R4E630CYlfnhzE+TPRPf+AKGPqSRFS7xn+jrtU9B37xL/JKM+UaDjaX6j/qITM3KbxJ
+         fleUJdvhaAHMLZ+6uA2BWekQEGXX+hF94yURKXxsqVcfbW71Kd7AD7U7xiT8muglirql
+         jEF4l9e8CwfLOZg0bxBelkRwbtU0j3sLew0IuLSdxCwfvFptXvQBz6guLrGIleT6OP97
+         V8Ew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=DqFOTGjWCbditxbgpQ8IyRDxYky7yNBzoJozO0vswEQ=;
+        b=KxG1PvKkDivZZ8qd4NHwmbi2rxJLsESfPIGs8uz8Tlto95q1J9F/7vSC8nlDFuKtSh
+         0z80qSWWoJk7D1YgeF3Yes6OEQ9upV+bdtohnzn8Yznp8C3I+l8PvvOSq5n69v2U3gN8
+         tA9eLG0b+IGyitLI1hOC/c7vLjlqiO+3eKVEZ4eECFRCsmV2xCOAs18a+GOFa5Bl5MwD
+         oNsaSliBPC4eefX7V+w3hzgVL6zMQCy7AhzROhPEpJYpvCxZGvMy3V/UcUF/mh6+dhD5
+         23FtAou0bbZ5Z0xjq+TDUwgCUuxEBOZ4Rlmn82YsS0h3tck36EXo+JrBC1mkcmiHJWSL
+         OLcg==
+X-Gm-Message-State: AOAM530qpDzUKBPcJkXDeSLYcYbdgh/foaPJ3fF+u1VJOPJGLBzvtciG
+        3S6OYVp9lwd6THYEvYJIJHTwd1g5UXyZnRb6lWfpG0P8uR8=
+X-Google-Smtp-Source: ABdhPJxQcq56BqsqIIrIcQRmmh/WJmWhy8kQj3j/RwIH5HE6Plmujyu21VWVfua9tArX4YTmjmxZYt+1pCY+VZp8y1I=
+X-Received: by 2002:a2e:9948:: with SMTP id r8mr2368530ljj.126.1599672912361;
+ Wed, 09 Sep 2020 10:35:12 -0700 (PDT)
+MIME-Version: 1.0
+References: <CAO18KQgxfCBFacLxpLZJZ6iDmEA83DUwG2kjfPyJmPZHPQZ5vQ@mail.gmail.com>
+ <20200907170021.GA2284449@rani.riverdale.lan> <CAO18KQg9wLFF8KxZdP4fVv-vk_CpfV+_v38WnCJ-uqEAJ3FNwA@mail.gmail.com>
+ <20200908223255.GA276578@rani.riverdale.lan>
+In-Reply-To: <20200908223255.GA276578@rani.riverdale.lan>
+From:   Jacobo Pantoja <jacobopantoja@gmail.com>
+Date:   Wed, 9 Sep 2020 19:34:59 +0200
+Message-ID: <CAO18KQgPJu2uZzBuCTsKOJydnbgsNM+EMvcJRDBE3UhSKHtpfw@mail.gmail.com>
+Subject: Re: EFISTUB arguments in Dell BIOS
+To:     Arvind Sankar <nivedita@alum.mit.edu>
+Cc:     ardb@kernel.org, linux-efi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The way we use the base of DRAM in the EFI stub is problematic as it
-is ill defined what the base of DRAM actually means. There are some
-restrictions on the placement of FDT and initrd which are defined in
-terms of dram_base, but given that the placement of the kernel in
-memory is what defines these boundaries, it is better to use the image
-address in these cases, and disregard dram_base altogether.
+On Wed, 9 Sep 2020 at 00:32, Arvind Sankar <nivedita@alum.mit.edu> wrote:
+>
+> On Wed, Sep 09, 2020 at 12:12:35AM +0200, Jacobo Pantoja wrote:
+> > >
+> > > Just to check, are you directly booting from firmware into the EFI stub,
+> > > or do you have something (grub2/systemd-boot/refind etc) in between?
+> > > Which kernel version are you using, and are you able to compile your own
+> > > kernel with patches for testing? If so, we should be able to add in some
+> > > debug statements in the EFI stub itself to see what the firmware passed
+> > > it as the command line, and if it's getting truncated or something.
+> > >
+> > Yes I'm booting directly from firmware into EFI stub, no
+> > grub2/systemd-boot/refind
+> > involved. My current kernel is 5.8.5.
+> > I'm able to compile kernel with patches, no problem.
+> > As a side note, the exact same kernel with the exact same efibootmgr command
+> > is booting in other machines (different models).
+>
+> Great. Can you test the patch below? It should dump the options passed
+> to the EFI stub, before/after converting from UTF-16 to UTF-8, and then
+> wait for a key. If you can take a picture of the screen it should show
+> what's going on, hopefully.
 
-In a future patch, we should be able to get rid of dram_base entirely,
-but at the moment, RISC-V support is in flight in another tree, so we
-keep it around for now.
+Result saved as image:
+https://ibb.co/vcz48vC
 
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
----
- arch/arm/include/asm/efi.h              | 6 +++---
- arch/arm64/include/asm/efi.h            | 2 +-
- drivers/firmware/efi/libstub/efi-stub.c | 2 +-
- 3 files changed, 5 insertions(+), 5 deletions(-)
-
-diff --git a/arch/arm/include/asm/efi.h b/arch/arm/include/asm/efi.h
-index 5dcf3c6011b7..9e481b362227 100644
---- a/arch/arm/include/asm/efi.h
-+++ b/arch/arm/include/asm/efi.h
-@@ -75,16 +75,16 @@ static inline void efifb_setup_from_dmi(struct screen_info *si, const char *opt)
- #define MIN_ZIMAGE_OFFSET	MAX_UNCOMP_KERNEL_SIZE
- 
- /* on ARM, the FDT should be located in the first 128 MB of RAM */
--static inline unsigned long efi_get_max_fdt_addr(unsigned long dram_base)
-+static inline unsigned long efi_get_max_fdt_addr(unsigned long image_addr)
- {
--	return dram_base + ZIMAGE_OFFSET_LIMIT;
-+	return image_addr + ZIMAGE_OFFSET_LIMIT;
- }
- 
- /* on ARM, the initrd should be loaded in a lowmem region */
- static inline unsigned long efi_get_max_initrd_addr(unsigned long dram_base,
- 						    unsigned long image_addr)
- {
--	return dram_base + SZ_512M;
-+	return image_addr + SZ_512M;
- }
- 
- struct efi_arm_entry_state {
-diff --git a/arch/arm64/include/asm/efi.h b/arch/arm64/include/asm/efi.h
-index d4ab3f73e7a3..27c2e8959ab6 100644
---- a/arch/arm64/include/asm/efi.h
-+++ b/arch/arm64/include/asm/efi.h
-@@ -65,7 +65,7 @@ efi_status_t __efi_rt_asm_wrapper(void *, const char *, ...);
- 	(SEGMENT_ALIGN > THREAD_ALIGN ? SEGMENT_ALIGN : THREAD_ALIGN)
- 
- /* on arm64, the FDT may be located anywhere in system RAM */
--static inline unsigned long efi_get_max_fdt_addr(unsigned long dram_base)
-+static inline unsigned long efi_get_max_fdt_addr(unsigned long image_addr)
- {
- 	return ULONG_MAX;
- }
-diff --git a/drivers/firmware/efi/libstub/efi-stub.c b/drivers/firmware/efi/libstub/efi-stub.c
-index a5a405d8ab44..76ce60065f10 100644
---- a/drivers/firmware/efi/libstub/efi-stub.c
-+++ b/drivers/firmware/efi/libstub/efi-stub.c
-@@ -306,7 +306,7 @@ efi_status_t __efiapi efi_pe_entry(efi_handle_t handle,
- 	install_memreserve_table();
- 
- 	status = allocate_new_fdt_and_exit_boot(handle, &fdt_addr,
--						efi_get_max_fdt_addr(dram_base),
-+						efi_get_max_fdt_addr(image_addr),
- 						initrd_addr, initrd_size,
- 						cmdline_ptr, fdt_addr, fdt_size);
- 	if (status != EFI_SUCCESS)
--- 
-2.17.1
-
+>
+> > >
+> > > If you boot directly from firmware, the EFI stub is what would load the
+> > > initramfs, and at least the initrd= argument should be in /proc/cmdline
+> > > after boot.
+> > >
+> > That is weird; I can see the difference between including initrd arg or not
+> > including, but "cat /proc/cmdline" returns a blank line. Hexdump reveals
+> > that it is really 0x01 0x0a. I'm 100% sure the initramfs is being loaded when
+> > passed as an argument, although the cmdline does not reflect it.
+>
+> The 0x0a I think is added by /proc/cmdline, so the cmdline is just 0x01.
+> The only thing I can think of is that the conversion from UTF-16 to
+> UTF-8 in the EFI stub went wrong somehow: the initrd= argument is
+> processed directly from the UTF-16 cmdline, but the UTF-8 converted
+> version is what is passed to the kernel.
+>
+> > Yes, I'm including here my efibootmgr command, and the output after calling
+> > with -v. Line breaks are simply for the email readability.
+> >
+> > $ efibootmgr --disk /dev/disk/by-id/ata-(...) --part 1 --create
+> > --label "ArchLinux" \
+> >   --loader /vmlinuz-linux --unicode "root=LABEL=ArchRoot rw quiet \
+> >   initrd=\intel-ucode.img initrd=\initramfs-linux.img intel_iommu=on audit=0"
+> >
+> > $ efibootmgr -v
+> > Boot0000* ArchLinux
+> > HD(1,GPT,b0fd4cf1-1566-4c71-b214-c3c0c5924fea,0x800,0xfa000)/File(\vmlinuz-linux)r.o.o.t.=.L.A.B.E.L.=.A.r.c.h.R.o.o.t.
+> > .r.w. .q.u.i.e.t. .i.n.i.t.r.d.=.\.i.n.t.e.l.-.u.c.o.d.e...i.m.g.
+> > .i.n.i.t.r.d.=.\.i.n.i.t.r.a.m.f.s.-.l.i.n.u.x...i.m.g.
+> > .i.n.t.e.l._.i.o.m.m.u.=.o.n. .a.u.d.i.t.=.0.
+> >
+> > I've just checked right after a power cycle, with the exact same result:
+> > 1) No parameters appended in efibootmgr => black screen
+> > 2) Parameters appended in efibootmgr => boots to rescue shell
+> >
+>
+> diff --git a/drivers/firmware/efi/libstub/efi-stub-helper.c b/drivers/firmware/efi/libstub/efi-stub-helper.c
+> index f735db55adc0..084cf4812a02 100644
+> --- a/drivers/firmware/efi/libstub/efi-stub-helper.c
+> +++ b/drivers/firmware/efi/libstub/efi-stub-helper.c
+> @@ -252,6 +252,11 @@ char *efi_convert_cmdline(efi_loaded_image_t *image, int *cmd_line_len)
+>         int options_bytes = 0, safe_options_bytes = 0;  /* UTF-8 bytes */
+>         bool in_quote = false;
+>         efi_status_t status;
+> +       const char *cmdline;
+> +       size_t i;
+> +       efi_input_key_t key;
+> +
+> +       efi_info("Load options: %08x @ %p\n", efi_table_attr(image, load_options_size), options);
+>
+>         if (options) {
+>                 s2 = options;
+> @@ -313,6 +318,41 @@ char *efi_convert_cmdline(efi_loaded_image_t *image, int *cmd_line_len)
+>         snprintf((char *)cmdline_addr, options_bytes, "%.*ls",
+>                  options_bytes - 1, options);
+>
+> +       efi_info("%.*ls\n", options_bytes - 1, options);
+> +       /* Hex dump */
+> +       efi_info("UTF-16:\n");
+> +       options_chars = efi_table_attr(image, load_options_size)/2;
+> +       i = 0;
+> +       do {
+> +               size_t j;
+> +               efi_info("%p: ", options + i);
+> +               for (j = i; j < options_chars && j < i + 8; j++)
+> +                       efi_printk("%04x ", options[j]);
+> +               for (; j < i + 8; j++)
+> +                       efi_printk("%4c ", ' ');
+> +               for (j = i; j < options_chars && j < i + 8; j++)
+> +                       efi_printk("%lc", options[j]);
+> +               efi_printk("\n");
+> +               i += 8;
+> +       } while (i < options_chars);
+> +       efi_info("UTF-8:\n");
+> +       cmdline = (const char *)cmdline_addr;
+> +       i = 0;
+> +       do {
+> +               size_t j;
+> +               efi_info("%p: ", cmdline + i);
+> +               for (j = i; j < options_bytes && j < i + 8; j++)
+> +                       efi_printk("%02x ", cmdline[j]);
+> +               for (; j < i + 8; j++)
+> +                       efi_printk("%2c ", ' ');
+> +               for (j = i; j < options_bytes && j < i + 8; j++)
+> +                       efi_printk("%c", cmdline[j]);
+> +               efi_printk("\n");
+> +               i += 8;
+> +       } while (i < options_bytes);
+> +
+> +       efi_wait_for_key(120 * 1000000, &key);
+> +
+>         *cmd_line_len = options_bytes;
+>         return (char *)cmdline_addr;
+>  }
