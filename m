@@ -2,119 +2,93 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1319426365A
-	for <lists+linux-efi@lfdr.de>; Wed,  9 Sep 2020 21:00:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C43B626365D
+	for <lists+linux-efi@lfdr.de>; Wed,  9 Sep 2020 21:01:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726184AbgIITAp (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 9 Sep 2020 15:00:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52016 "EHLO
+        id S1726399AbgIITBt (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 9 Sep 2020 15:01:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52176 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725772AbgIITAm (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 9 Sep 2020 15:00:42 -0400
+        with ESMTP id S1725772AbgIITBo (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 9 Sep 2020 15:01:44 -0400
 Received: from mail-qk1-x744.google.com (mail-qk1-x744.google.com [IPv6:2607:f8b0:4864:20::744])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93FFEC061573
-        for <linux-efi@vger.kernel.org>; Wed,  9 Sep 2020 12:00:42 -0700 (PDT)
-Received: by mail-qk1-x744.google.com with SMTP id w16so3500911qkj.7
-        for <linux-efi@vger.kernel.org>; Wed, 09 Sep 2020 12:00:42 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3E54C061573
+        for <linux-efi@vger.kernel.org>; Wed,  9 Sep 2020 12:01:44 -0700 (PDT)
+Received: by mail-qk1-x744.google.com with SMTP id q5so3532564qkc.2
+        for <linux-efi@vger.kernel.org>; Wed, 09 Sep 2020 12:01:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=sender:from:date:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to;
-        bh=qAoIKiwXi6phenhWsqlKW55AbXovegeH302mDh8ivC8=;
-        b=qFwEhxTM8S/EN5lYUD436Fq3HmIo/cBq4hxCWUrdbHjJm0jjZEhCONPatYlbcUi77N
-         w/uusOsOiqYhZD5W3bjJOL3rwimgdgDSa/Oq9qQA2IDOTLt4J/lbuzaVIVgOxkNBfXUZ
-         ugNUgMCTgV766m1pVTiwdgZM1zI01ue0EGU/wIDrlLAWcJhTuuaCruJ1HohXwN5adDqa
-         9LTQX8QhF7FNOx4nHjYZFjak8va5XKtfXNjax0ZiotrjTX9CMzDL4Etq89fKw6d8kaA2
-         ViDiehQe04k8mgrYP+P207fm4rzrOg2PtSqj+tKKKK9YktE78t/x9gogqHVtiMJgdAB4
-         NjCQ==
+        bh=NiGQxnp6N0Dal7ah98TgS7PY3ur8gDhTDux8zigTqTE=;
+        b=uyR5CB4V8T7MA65u/V7dw7USaZ4NCQdJtQcUzlAIZQrk959gk59aGkQFPFu4vYgt9I
+         wJFTrIL46wjdmtVjKSvBvHRe+dCowFKYj0CCC2pfPt0A8KgGpPIdT8mRDdCmCyGdlcGE
+         1amqaA1K/2LaPE4/As2nmGqQA+CPKR73DRdBfrco107aoteB8lNNGZuR0LO6GI12IUTA
+         SDOQRERNVVtzdPVXovnrvQCWtREIed5E67dj8WwZV8SAeEIXalwMAuF47l0zJegmmX8g
+         891zjBuNL8x723tvhDNlFMHJuTuWZUbd5LG5kP/N/eHeaKtldgIpALmd+Kr3ftTocyIR
+         0Mjg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:sender:from:date:to:cc:subject:message-id
          :references:mime-version:content-disposition:in-reply-to;
-        bh=qAoIKiwXi6phenhWsqlKW55AbXovegeH302mDh8ivC8=;
-        b=kW5yvBA8daXKkqfPT9+3F7KWt7lDK+Ipor85qHWbEYKBWmchvfSsH/0d1BewjauDKx
-         Yq2dwj+N0mvok6ePxlgV84id8+pfZK/2RfLbiab7sOrWb9XGzi4fMLluOdvl93dDohNc
-         5ZzYWzBRBhEhYNx2yPdKTRjV/mdZm5XhdMwOVCG6QRrjjF/i1dhDXQ2nlHFceY255wu+
-         TyBBHnWB6mUFsxPzH+EG2JIJiOkTXBOot8mAY9kW4ijfv6gVjQgLfgn2baKXnM3BFJJc
-         nn/Y7RxQSwPYB/IWPfltI6qNnEpJuIJZvdkchsLZ3+yGDMwcl+vH8kRm3WgcC5CNkF6l
-         QoOw==
-X-Gm-Message-State: AOAM531Lvn2PyPuuAcMoXsdyuSi2Nq7/8HnUy5pGt16efUxg63Y0clme
-        E2uhqGxvg7lz8K8VeSxLgaU=
-X-Google-Smtp-Source: ABdhPJyzb2vFUf5tsHJLX94BAOMT0ZT3Iom+Kq8i6NpD2gpii3bSwSBEDU10zgMfdlKOQhb7Ln5X6w==
-X-Received: by 2002:a37:b806:: with SMTP id i6mr4719826qkf.333.1599678041662;
-        Wed, 09 Sep 2020 12:00:41 -0700 (PDT)
+        bh=NiGQxnp6N0Dal7ah98TgS7PY3ur8gDhTDux8zigTqTE=;
+        b=UL1oqC2qhh3lEXwG6YUBlYjMnBcI9Pjb1iy5vRlPX9UOAh0oL9sEFUGc0ezKcJiyNh
+         nIrVs6BsBo62hIUkB1CyML9KkTfW11XiEJeB0j06IdDaxxy/ljhSuOQ+Lx8QEz/sdj12
+         O/VIl+b2C14fCm5JC0LznnB9BG2T1Sk/dwri7i+FbH9i/PUYM7qGQzLIJgPiXD1obD9s
+         ZSav/PfkYsFHF6QY5hLlUihZ81cQtTSD2Xc2ixGyL0FtzDkroUBGLLvFKmkD5c6GUcNH
+         tuFca3krDmOPFI8U0DE5DIOk+CiIYtbky5fOGTNHerD4cDDm11xcb//YB6Z6SAXJLqS4
+         nh3w==
+X-Gm-Message-State: AOAM531ZwmwDBZQhnwxPmr8EUHNQE/qZtPfTc505n0OivWHO02PB2Byx
+        FZ9/k0YcjUV7nwiwDJbHlf0=
+X-Google-Smtp-Source: ABdhPJw6pxv6I3/cNcepS8OBiqFxwT9OQSph4Cy+lrA7252B69B5ThXG/LZb7SuzAeZaVl+6V9PH+A==
+X-Received: by 2002:a37:d91:: with SMTP id 139mr4552973qkn.455.1599678103904;
+        Wed, 09 Sep 2020 12:01:43 -0700 (PDT)
 Received: from rani.riverdale.lan ([2001:470:1f07:5f3::b55f])
-        by smtp.gmail.com with ESMTPSA id p63sm3521537qkc.4.2020.09.09.12.00.39
+        by smtp.gmail.com with ESMTPSA id m36sm4043254qtd.10.2020.09.09.12.01.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Sep 2020 12:00:40 -0700 (PDT)
+        Wed, 09 Sep 2020 12:01:43 -0700 (PDT)
 From:   Arvind Sankar <nivedita@alum.mit.edu>
 X-Google-Original-From: Arvind Sankar <arvind@rani.riverdale.lan>
-Date:   Wed, 9 Sep 2020 15:00:38 -0400
-To:     Jacobo Pantoja <jacobopantoja@gmail.com>
-Cc:     Arvind Sankar <nivedita@alum.mit.edu>, ardb@kernel.org,
-        linux-efi@vger.kernel.org
-Subject: Re: EFISTUB arguments in Dell BIOS
-Message-ID: <20200909190038.GA474185@rani.riverdale.lan>
-References: <CAO18KQgxfCBFacLxpLZJZ6iDmEA83DUwG2kjfPyJmPZHPQZ5vQ@mail.gmail.com>
- <20200907170021.GA2284449@rani.riverdale.lan>
- <CAO18KQg9wLFF8KxZdP4fVv-vk_CpfV+_v38WnCJ-uqEAJ3FNwA@mail.gmail.com>
- <20200908223255.GA276578@rani.riverdale.lan>
- <CAO18KQgPJu2uZzBuCTsKOJydnbgsNM+EMvcJRDBE3UhSKHtpfw@mail.gmail.com>
+Date:   Wed, 9 Sep 2020 15:01:42 -0400
+To:     Tian Tao <tiantao6@hisilicon.com>
+Cc:     ardb@kernel.org, nivedita@alum.mit.edu, linux-efi@vger.kernel.org,
+        linuxarm@huawei.com
+Subject: Re: [PATCH] efi/printf: remove unneeded semicolon
+Message-ID: <20200909190142.GB474185@rani.riverdale.lan>
+References: <1599633872-36784-1-git-send-email-tiantao6@hisilicon.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <CAO18KQgPJu2uZzBuCTsKOJydnbgsNM+EMvcJRDBE3UhSKHtpfw@mail.gmail.com>
+In-Reply-To: <1599633872-36784-1-git-send-email-tiantao6@hisilicon.com>
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, Sep 09, 2020 at 07:34:59PM +0200, Jacobo Pantoja wrote:
-> On Wed, 9 Sep 2020 at 00:32, Arvind Sankar <nivedita@alum.mit.edu> wrote:
-> >
-> > On Wed, Sep 09, 2020 at 12:12:35AM +0200, Jacobo Pantoja wrote:
-> > > >
-> > > > Just to check, are you directly booting from firmware into the EFI stub,
-> > > > or do you have something (grub2/systemd-boot/refind etc) in between?
-> > > > Which kernel version are you using, and are you able to compile your own
-> > > > kernel with patches for testing? If so, we should be able to add in some
-> > > > debug statements in the EFI stub itself to see what the firmware passed
-> > > > it as the command line, and if it's getting truncated or something.
-> > > >
-> > > Yes I'm booting directly from firmware into EFI stub, no
-> > > grub2/systemd-boot/refind
-> > > involved. My current kernel is 5.8.5.
-> > > I'm able to compile kernel with patches, no problem.
-> > > As a side note, the exact same kernel with the exact same efibootmgr command
-> > > is booting in other machines (different models).
-> >
-> > Great. Can you test the patch below? It should dump the options passed
-> > to the EFI stub, before/after converting from UTF-16 to UTF-8, and then
-> > wait for a key. If you can take a picture of the screen it should show
-> > what's going on, hopefully.
+On Wed, Sep 09, 2020 at 02:44:32PM +0800, Tian Tao wrote:
+> Fix the warning below.
+> efi/libstub/vsprintf.c:135:2-3: Unneeded semicolon
 > 
-> Result saved as image:
-> https://ibb.co/vcz48vC
+> Signed-off-by: Tian Tao <tiantao6@hisilicon.com>
+> ---
+>  drivers/firmware/efi/libstub/vsprintf.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/firmware/efi/libstub/vsprintf.c b/drivers/firmware/efi/libstub/vsprintf.c
+> index e65ef49..1088e28 100644
+> --- a/drivers/firmware/efi/libstub/vsprintf.c
+> +++ b/drivers/firmware/efi/libstub/vsprintf.c
+> @@ -135,7 +135,7 @@ char *number(char *end, unsigned long long num, int base, char locase)
+>  		break;
+>  	default:
+>  		unreachable();
+> -	};
+> +	}
+>  
+>  	return end;
+>  }
+> -- 
+> 2.7.4
 > 
 
-Thanks.
-
-It looks like the firmware is passing the entire contents of the
-Boot0000 variable, rather than just the load options part: I think that
-dump will be identical to the output of
-
-	od -t x2z /sys/firmware/efi/efivars/Boot0000*
-
-The start of it is structured data with some attributes, the label, and
-the path to the linux image, and all this is then followed by the actual
-load options. The EFI stub conversion routine assumes only the load
-options will get passed to it (that's what the UEFI spec states), and so
-treats the first two words (0x0001 0x0000) as forming a complete string
-for the command line when converting. The initrd= processing on the
-other hand is pretty rudimentary and just scans the entire load options
-for initrd=, and so happens to work.
-
-Ard, do you think we could quirk the conversion to check if the passed
-in size was bigger than the parsed command line, and if so check to see
-if the bytes 0x7f 0xff 0x0004 (End Device Path) occur somewhere, and
-treat the stuff after that as the actual command line?
+Acked-by: Arvind Sankar <nivedita@alum.mit.edu>
