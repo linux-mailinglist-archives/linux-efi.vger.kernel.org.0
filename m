@@ -2,121 +2,123 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 66D5126378C
-	for <lists+linux-efi@lfdr.de>; Wed,  9 Sep 2020 22:37:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D0BF26378E
+	for <lists+linux-efi@lfdr.de>; Wed,  9 Sep 2020 22:38:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726535AbgIIUhF (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 9 Sep 2020 16:37:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38620 "EHLO
+        id S1726440AbgIIUio (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 9 Sep 2020 16:38:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38866 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726426AbgIIUhE (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 9 Sep 2020 16:37:04 -0400
-Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com [IPv6:2a00:1450:4864:20::343])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C87CC061573
-        for <linux-efi@vger.kernel.org>; Wed,  9 Sep 2020 13:37:03 -0700 (PDT)
-Received: by mail-wm1-x343.google.com with SMTP id q9so3560762wmj.2
-        for <linux-efi@vger.kernel.org>; Wed, 09 Sep 2020 13:37:03 -0700 (PDT)
+        with ESMTP id S1726414AbgIIUij (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 9 Sep 2020 16:38:39 -0400
+Received: from mail-qk1-x735.google.com (mail-qk1-x735.google.com [IPv6:2607:f8b0:4864:20::735])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C0ABC061573
+        for <linux-efi@vger.kernel.org>; Wed,  9 Sep 2020 13:38:39 -0700 (PDT)
+Received: by mail-qk1-x735.google.com with SMTP id w186so3844395qkd.1
+        for <linux-efi@vger.kernel.org>; Wed, 09 Sep 2020 13:38:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=atishpatra.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=IxpDQzrsNIx5XK9835G9janE/xMpHUZ2uvG496EzU4c=;
-        b=uS92XPYqpRhOsmDhb/M+bZTwgExe+1thV6iqBUozWBfXEodWAvbPKaUV5OpnDhj4sV
-         d7TuGytPDfhScP3DSI91yHgQO9DxEPrMvU5abRcxLH8qsOQDmhxfL5bh+rlxACEs28g6
-         0nQhSHTHwstThwSDMpF5uqpI054HHm5VIWYpQ=
+        d=gmail.com; s=20161025;
+        h=sender:from:date:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=uNt//lBNkPwmtVjixMakSaLrRCZ9lM12RoovflxgjoE=;
+        b=UNE6Mrx7AxT6LDZrht1mUWsXnrWV5a761DomqwE6QlPBwfxD5dBnwx06jAGLrHEfzZ
+         g9Lz0a+NIn7yecVaL5qtbZZyJhYGMk8gMw3kkxpJ9ex9lX/3tfMfjR72mzqeg8vLc33B
+         Wcj1luBz7g1heEF4eqDPieeaUzGvEjRYR0j78wfTCkOhZARhJo7tffCfpVeE8o2XK+sX
+         plO79q1yZEGUV83YydgeDY318pi54Ak0Xbs4aNZmBKC1eO58UphOtdHSdKN75hb+ppVG
+         RvPHW1umxMqMZokvu+LRo7vfKMqZGiNDf0r+k7OCYtKRkABVo/YIyYB8PrLfNn8CzWBc
+         Y/jg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=IxpDQzrsNIx5XK9835G9janE/xMpHUZ2uvG496EzU4c=;
-        b=Ph3+cjf6V52EqgBOzPrW2amy/rOrk2M2rh+D/YNvi8fvSzh0DoAgSNixFNi+QpbYfd
-         Mcmnnv/J8nNLhgfvM+48eXk5X6YleiKvXwMYQXgIRiif+5Nss0j9AnQQweSHuJHLZIhP
-         gJR1wBP1S4aFrHvsw4HTiqjb+qtacL6T3U86w2LUzJGJjqoalIjukPeMh7Mpe5pCVCb6
-         nec5M+/3tu7B/wskgmFGHatqO1mlFPnFMc4vEJhq6MisNaUXu4/BcaFMqtUPMMb4CT2b
-         +pz8hadFZzW2B1Du0qAxOPxBRNs6n+pWSSbD3QrIpcUtrCChVoV0V9YQCJ1ZfB8D9iPO
-         5hYw==
-X-Gm-Message-State: AOAM530wYEO62zTxzcAQKDxzVzQaE9lVjF8BrnmbasfUqBWhdtpv1G0t
-        XYNtMG6iT6W2Ia43sp/5yw7sm4tgJF0iRnS6xL4FABq+U+yl
-X-Google-Smtp-Source: ABdhPJw3GyYdapemtMoD/isRBkb5ObOYz1AcU+f6/9csJEhiDM94T1DsJyix98xT46tRec5a5gXYrpNP18spkqk0yKc=
-X-Received: by 2002:a1c:c20a:: with SMTP id s10mr5235421wmf.55.1599683821370;
- Wed, 09 Sep 2020 13:37:01 -0700 (PDT)
+        h=x-gm-message-state:sender:from:date:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to;
+        bh=uNt//lBNkPwmtVjixMakSaLrRCZ9lM12RoovflxgjoE=;
+        b=unjdtersRxd+ze8ekt+h60PEm6eiGEqZhwjnRpwg4ljdF+KPQNa/kHv3JRurtx4zHT
+         qIN3YmF+OCDxwqhaqo7Oed0rxI/m4hDXIBfngvatf2ldnzBp6EBe1N0+m01INOZH/i7X
+         wcYrz1PoMIADKmkxcLb2BdthLk8AL3IQbI2fYA5h6pqvPEKdIYtj3TLHATPCHPfJ+HjC
+         VkWv14T5nctDhamDDnMJIjFJynjFELZUWWXpMLjNzDCCY8thYaFv+rC3WWS3n2wbzd9Q
+         CrEXNPJDYPYI/yh5q6pS72rhBOj5VbyFvJol+UFfTNcXpfwP9i5xIVO8tMc42rKKbFOY
+         PRNQ==
+X-Gm-Message-State: AOAM530IujAhemvC002k6AComy+TXaw2fXrfMG/XAaxsq7W27ej2k3BO
+        HbVDNZsxbaLo4BDCLPrkxts=
+X-Google-Smtp-Source: ABdhPJyNquSWG3SmYpaZPF9/DEudcpHbTNyaHrL1zG6VoVYGrl/b+Fq9KSQTNbt4vdojVXRssDj0wQ==
+X-Received: by 2002:a37:e401:: with SMTP id y1mr4003004qkf.150.1599683912390;
+        Wed, 09 Sep 2020 13:38:32 -0700 (PDT)
+Received: from rani.riverdale.lan ([2001:470:1f07:5f3::b55f])
+        by smtp.gmail.com with ESMTPSA id o188sm3437358qke.83.2020.09.09.13.38.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 09 Sep 2020 13:38:31 -0700 (PDT)
+From:   Arvind Sankar <nivedita@alum.mit.edu>
+X-Google-Original-From: Arvind Sankar <arvind@rani.riverdale.lan>
+Date:   Wed, 9 Sep 2020 16:38:30 -0400
+To:     Jacobo Pantoja <jacobopantoja@gmail.com>
+Cc:     Arvind Sankar <nivedita@alum.mit.edu>, ardb@kernel.org,
+        linux-efi@vger.kernel.org
+Subject: Re: EFISTUB arguments in Dell BIOS
+Message-ID: <20200909203830.GA490605@rani.riverdale.lan>
+References: <CAO18KQgxfCBFacLxpLZJZ6iDmEA83DUwG2kjfPyJmPZHPQZ5vQ@mail.gmail.com>
+ <20200907170021.GA2284449@rani.riverdale.lan>
+ <CAO18KQg9wLFF8KxZdP4fVv-vk_CpfV+_v38WnCJ-uqEAJ3FNwA@mail.gmail.com>
+ <20200908223255.GA276578@rani.riverdale.lan>
+ <CAO18KQgPJu2uZzBuCTsKOJydnbgsNM+EMvcJRDBE3UhSKHtpfw@mail.gmail.com>
+ <20200909190038.GA474185@rani.riverdale.lan>
+ <CAO18KQjGdcZD8bts36GuicJO8_iprbryXdh5vM+-GfAbcKV==Q@mail.gmail.com>
 MIME-Version: 1.0
-References: <20200904155025.55718-1-xypron.glpk@gmx.de> <CAMj1kXGYpMMrQPgL-SNde75EbDX8RZBDrboEuMcjJ7-cyEJUXg@mail.gmail.com>
-In-Reply-To: <CAMj1kXGYpMMrQPgL-SNde75EbDX8RZBDrboEuMcjJ7-cyEJUXg@mail.gmail.com>
-From:   Atish Patra <atishp@atishpatra.org>
-Date:   Wed, 9 Sep 2020 13:36:50 -0700
-Message-ID: <CAOnJCU+DrXt=Fvq08dMJX=Nn0bEJr_V_1nPJvh6sRA-GqgV3OQ@mail.gmail.com>
-Subject: Re: [PATCH 1/1] efi/libstub: DRAM base calculation
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     Heinrich Schuchardt <xypron.glpk@gmx.de>,
-        Atish Patra <atish.patra@wdc.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Ingo Molnar <mingo@kernel.org>,
-        Arvind Sankar <nivedita@alum.mit.edu>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Maxim Uvarov <maxim.uvarov@linaro.org>,
-        Jens Wiklander <jens.wiklander@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAO18KQjGdcZD8bts36GuicJO8_iprbryXdh5vM+-GfAbcKV==Q@mail.gmail.com>
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, Sep 9, 2020 at 1:17 AM Ard Biesheuvel <ardb@kernel.org> wrote:
->
-> (+ Atish, Palmer)
->
-> On Fri, 4 Sep 2020 at 18:50, Heinrich Schuchardt <xypron.glpk@gmx.de> wrote:
+On Wed, Sep 09, 2020 at 09:37:02PM +0200, Jacobo Pantoja wrote:
+> > >
+> > > Result saved as image:
+> > > https://ibb.co/vcz48vC
+> > >
 > >
-> > In the memory map the regions with the lowest addresses may be of type
-> > EFI_RESERVED_TYPE. The reserved areas may be discontinuous relative to the
-> > rest of the memory. So for calculating the maximum loading address for the
-> > device tree and the initial ramdisk image these reserved areas should not
-> > be taken into account.
+> > Thanks.
 > >
-> > Signed-off-by: Heinrich Schuchardt <xypron.glpk@gmx.de>
-> > ---
-> >  drivers/firmware/efi/libstub/efi-stub.c | 3 ++-
-> >  1 file changed, 2 insertions(+), 1 deletion(-)
+> > It looks like the firmware is passing the entire contents of the
+> > Boot0000 variable, rather than just the load options part: I think that
+> > dump will be identical to the output of
 > >
-> > diff --git a/drivers/firmware/efi/libstub/efi-stub.c b/drivers/firmware/efi/libstub/efi-stub.c
-> > index c2484bf75c5d..13058ac75765 100644
-> > --- a/drivers/firmware/efi/libstub/efi-stub.c
-> > +++ b/drivers/firmware/efi/libstub/efi-stub.c
-> > @@ -106,7 +106,8 @@ static unsigned long get_dram_base(void)
-> >         map.map_end = map.map + map_size;
+> >         od -t x2z /sys/firmware/efi/efivars/Boot0000*
 > >
-> >         for_each_efi_memory_desc_in_map(&map, md) {
-> > -               if (md->attribute & EFI_MEMORY_WB) {
-> > +               if (md->attribute & EFI_MEMORY_WB &&
-> > +                   md->type != EFI_RESERVED_TYPE) {
-> >                         if (membase > md->phys_addr)
-> >                                 membase = md->phys_addr;
-> >                 }
-> > --
-> > 2.28.0
-> >
->
-> This is not the right fix - on RPi2, for instance, which has some
-> reserved memory at the base of DRAM, this change will result in the
-> first 16 MB of memory to be wasted.
->
-> What I would prefer to do is get rid of get_dram_base() entirely -
-> arm64 does not use its return value in the first place, and for ARM,
-> the only reason we need it is so that we can place the uncompressed
-> kernel image as low in memory as possible, and there are probably
-> better ways to do that. RISC-V just started using it too, but only
-> passes it from handle_kernel_image() to efi_relocate_kernel(), and
-> afaict, passing 0x0 there instead would not cause any problems.
+> 
+> It is almost identical. The efivar you mentioned starts with 0x0007 0x0000,
+> and after that, the dump is identical to the one displayed in the debug text
+> 
 
-Yes. Passing 0x0 to efi_relocate_kernel will result in a failure in
-efi_bs_call and it will fallback to
-efi_low_alloc_above which will try to assign the lowest possible
-available memory with 2MB alignment restriction.
-The only disadvantage is an extra unnecessary call to UEFI firmware
-which should be okay as it is not in the hotpath.
+Right, sorry: the first 4 bytes in the sysfs file are the attributes of
+the variable (in this case indicating it is non-volatile, and accessible
+both before and after ExitBootServices). The rest is the actual data.
 
--- 
-Regards,
-Atish
+> >
+> > Ard, do you think we could quirk the conversion to check if the passed
+> > in size was bigger than the parsed command line, and if so check to see
+> > if the bytes 0x7f 0xff 0x0004 (End Device Path) occur somewhere, and
+> > treat the stuff after that as the actual command line?
+> 
+> To be honest, if this is an incompliance with UEFI, Dell should fix this.
+> Independently of whether we setup a quirk or not, I'll contact them, in the
+> past I've already got some BIOS bugs fixed (although the process is slow).
+> Obviously I can continue doing whatever testing you may wish.
+> 
+> Thank you very much
+
+Ok, this is laid out in section 3.1 of the spec which defines the format
+of the EFI_LOAD_OPTION descriptor. Dell's BIOS is passing the entire
+descriptor instead of just the OptionalData part.
+
+OptionalData	The remaining bytes in the load option descriptor are a
+		binary data buffer that is passed to the loaded image.
+		If the field is zero bytes long, a Null pointer is
+		passed to the loaded image. The number of bytes in
+		OptionalData can be computed by subtracting the starting
+		offset of OptionalData from total size in bytes of the
+		EFI_LOAD_OPTION.
+
+https://uefi.org/sites/default/files/resources/UEFI_Spec_2_8_final.pdf
+
+Thanks.
