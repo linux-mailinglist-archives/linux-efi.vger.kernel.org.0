@@ -2,31 +2,82 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8780E26308B
-	for <lists+linux-efi@lfdr.de>; Wed,  9 Sep 2020 17:29:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C49222630C4
+	for <lists+linux-efi@lfdr.de>; Wed,  9 Sep 2020 17:42:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729251AbgIIP3M (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 9 Sep 2020 11:29:12 -0400
-Received: from mail.kernel.org ([198.145.29.99]:54560 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729691AbgIIP1Z (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Wed, 9 Sep 2020 11:27:25 -0400
-Received: from e123331-lin.nice.arm.com (adsl-204.109.242.29.tellas.gr [109.242.29.204])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 85C1A2226B;
-        Wed,  9 Sep 2020 15:16:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1599664613;
-        bh=PnbFTr3DTAVHLV/Zp4Z5GFMApu7cekP2Ty8raISft1c=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EMu7XqLOkj8vCZ+4T7O79KhKzp96wTRlSa+XNM1URMcJutEbDTxHeUmWE/O+VkWtH
-         XR7M1gsqbTvbEpkEUVSXMCAJFlhiHm7VQEMwUGy8b3uXhrIkoVkuuzdQaEF5BIJP+V
-         mjjeO+sl56ODukfrR55WCbwuDvFlv6/RHQvjZDZQ=
-From:   Ard Biesheuvel <ardb@kernel.org>
-To:     linux-efi@vger.kernel.org
+        id S1729449AbgIIPmd (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 9 Sep 2020 11:42:33 -0400
+Received: from mail-am6eur05on2080.outbound.protection.outlook.com ([40.107.22.80]:65217
+        "EHLO EUR05-AM6-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1730413AbgIIPlp (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Wed, 9 Sep 2020 11:41:45 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=armh.onmicrosoft.com;
+ s=selector2-armh-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=CFrH/6NKWIqWEQPwpPwuNSWlJbA+aKsUvES/mkmMYcA=;
+ b=jByNQsxq3O/bDjARyYwOde1TJcjRu2SHRFDoNins5fVLDymORWy7iYOVO7x6WlHg/eVyh58KqnmkdmNi8m93vFX2eua85rcxqceuBdC8r70KCJDqUS/QRhiCea8qUyQ6CAecfaKaPAeH7uK6rrZXSTe3mbZ6ToQp+YvQ/OfpU5U=
+Received: from DB6PR07CA0102.eurprd07.prod.outlook.com (2603:10a6:6:2c::16) by
+ VE1PR08MB4750.eurprd08.prod.outlook.com (2603:10a6:802:a2::23) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.3348.15; Wed, 9 Sep 2020 15:25:59 +0000
+Received: from DB5EUR03FT051.eop-EUR03.prod.protection.outlook.com
+ (2603:10a6:6:2c:cafe::75) by DB6PR07CA0102.outlook.office365.com
+ (2603:10a6:6:2c::16) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3391.5 via Frontend
+ Transport; Wed, 9 Sep 2020 15:25:59 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 63.35.35.123)
+ smtp.mailfrom=arm.com; vger.kernel.org; dkim=pass (signature was verified)
+ header.d=armh.onmicrosoft.com;vger.kernel.org; dmarc=bestguesspass
+ action=none header.from=arm.com;
+Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
+ 63.35.35.123 as permitted sender) receiver=protection.outlook.com;
+ client-ip=63.35.35.123; helo=64aa7808-outbound-1.mta.getcheckrecipient.com;
+Received: from 64aa7808-outbound-1.mta.getcheckrecipient.com (63.35.35.123) by
+ DB5EUR03FT051.mail.protection.outlook.com (10.152.21.19) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.3370.16 via Frontend Transport; Wed, 9 Sep 2020 15:25:59 +0000
+Received: ("Tessian outbound 34b830c8a0ef:v64"); Wed, 09 Sep 2020 15:25:59 +0000
+X-CheckRecipientChecked: true
+X-CR-MTA-CID: a6bcfa01693a2049
+X-CR-MTA-TID: 64aa7808
+Received: from d5360866c24d.1
+        by 64aa7808-outbound-1.mta.getcheckrecipient.com id 9015DB74-66C0-4351-A159-55DAD22CC4A4.1;
+        Wed, 09 Sep 2020 15:25:43 +0000
+Received: from EUR05-VI1-obe.outbound.protection.outlook.com
+    by 64aa7808-outbound-1.mta.getcheckrecipient.com with ESMTPS id d5360866c24d.1
+    (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384);
+    Wed, 09 Sep 2020 15:25:43 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=fit//n6TztDj7vrJKSxPCCEdPu9e3LC+jbDGNhYb/CO5WOzteEq6ODCbPksVxZmHH01GqUOsY7rT8x8i37UAa16w50AlU6GOj7DLOZIoB+JtUwl5xfZwIi+Radszq2DxUTRamJCyPRFFtrRmgfp668/Fhb1WIPwEl8oCfnKIinO+ADFOjpLD1ggDbYUTgizIqskZ/pJWs/UuoF8o7iQKGFinIePgOpf3RK3z0T2txZClh5hvyFVHyHQH9wz59PKs2GwvcCnnmX3DhRcadA9zSdalX4YGvmSjnZWtt4/PS/5OeKYdJaIQuHkmRGRgKAMCxnKgV9kgZMs9c8HWNSVfJA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=CFrH/6NKWIqWEQPwpPwuNSWlJbA+aKsUvES/mkmMYcA=;
+ b=nrI394J902SR/avhW19MFz75uJwb1TsI+tB83ahgRDaGF/i1tBKZjy9x/dfVAqCFDkDZm4Gmg2/uweTCsj2KLDaQKldzB/BS+TdaqwF0GkFROoapJKR+iw/I6+p6jHMGCtOX9jlnbND/fjNOw1dlbdNb1/DYSx6aVBtSFy0/u4AjhE08PWZ5eWUg1GyFdH7ABqdSZlJluj+3ZqwR+OIIjv6ZyHufzszoVqTMzhI6AkTEKI1TqXWFaUFlGxdQ3zPNnmzuR77PAJs1kdRpG8p/4PC6qHFuTR6fIGVQLTJVO2IGw/8cP5LO013f7VWkcGUUU/ek3Csjaz+IiYjWx/b7rQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
+ header.d=arm.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=armh.onmicrosoft.com;
+ s=selector2-armh-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=CFrH/6NKWIqWEQPwpPwuNSWlJbA+aKsUvES/mkmMYcA=;
+ b=jByNQsxq3O/bDjARyYwOde1TJcjRu2SHRFDoNins5fVLDymORWy7iYOVO7x6WlHg/eVyh58KqnmkdmNi8m93vFX2eua85rcxqceuBdC8r70KCJDqUS/QRhiCea8qUyQ6CAecfaKaPAeH7uK6rrZXSTe3mbZ6ToQp+YvQ/OfpU5U=
+Authentication-Results-Original: arm.com; dkim=none (message not signed)
+ header.d=none;arm.com; dmarc=none action=none header.from=arm.com;
+Received: from DB8PR08MB4010.eurprd08.prod.outlook.com (2603:10a6:10:ab::15)
+ by DB8PR08MB4986.eurprd08.prod.outlook.com (2603:10a6:10:e0::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3370.16; Wed, 9 Sep
+ 2020 15:25:40 +0000
+Received: from DB8PR08MB4010.eurprd08.prod.outlook.com
+ ([fe80::2d77:cba8:3fc8:3d4f]) by DB8PR08MB4010.eurprd08.prod.outlook.com
+ ([fe80::2d77:cba8:3fc8:3d4f%3]) with mapi id 15.20.3370.016; Wed, 9 Sep 2020
+ 15:25:40 +0000
+Subject: Re: [PATCH RFC/RFT 0/3] efi/libstub: arm32: Remove dependency on
+ dram_base
+To:     Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org
 Cc:     linux-arm-kernel@lists.infradead.org,
-        Ard Biesheuvel <ardb@kernel.org>,
         Maxim Uvarov <maxim.uvarov@linaro.org>,
         Heinrich Schuchardt <xypron.glpk@gmx.de>,
         Atish Patra <atish.patra@wdc.com>,
@@ -37,256 +88,115 @@ Cc:     linux-arm-kernel@lists.infradead.org,
         Takahiro Akashi <takahiro.akashi@linaro.org>,
         Patrice CHOTARD <patrice.chotard@st.com>,
         Sumit Garg <sumit.garg@linaro.org>,
-        Grant Likely <Grant.Likely@arm.com>,
         Ilias Apalodimas <ilias.apalodimas@linaro.org>,
         Christophe Priouzeau <christophe.priouzeau@linaro.org>,
         Rouven Czerwinski <r.czerwinski@pengutronix.de>,
-        Patrick DELAUNAY <patrick.delaunay@st.com>
-Subject: [PATCH RFC/RFT 2/3] efi/libstub: Use low allocation for the uncompressed kernel
-Date:   Wed,  9 Sep 2020 18:16:22 +0300
-Message-Id: <20200909151623.16153-3-ardb@kernel.org>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200909151623.16153-1-ardb@kernel.org>
+        Patrick DELAUNAY <patrick.delaunay@st.com>, nd <nd@arm.com>
 References: <20200909151623.16153-1-ardb@kernel.org>
+From:   Grant Likely <grant.likely@arm.com>
+Message-ID: <5b4c9d0f-d0c1-4627-d000-3bdf093b252a@arm.com>
+Date:   Wed, 9 Sep 2020 16:25:36 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.12.0
+In-Reply-To: <20200909151623.16153-1-ardb@kernel.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: LO2P265CA0201.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:9e::21) To DB8PR08MB4010.eurprd08.prod.outlook.com
+ (2603:10a6:10:ab::15)
+MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from [192.168.16.178] (188.30.219.21) by LO2P265CA0201.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:9e::21) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3370.16 via Frontend Transport; Wed, 9 Sep 2020 15:25:38 +0000
+X-Originating-IP: [188.30.219.21]
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-HT: Tenant
+X-MS-Office365-Filtering-Correlation-Id: dd4799af-5365-43d1-06d7-08d854d4a76f
+X-MS-TrafficTypeDiagnostic: DB8PR08MB4986:|VE1PR08MB4750:
+X-Microsoft-Antispam-PRVS: <VE1PR08MB47506A85E1BAFD7585F110B495260@VE1PR08MB4750.eurprd08.prod.outlook.com>
+x-checkrecipientrouted: true
+NoDisclaimer: true
+X-MS-Oob-TLC-OOBClassifiers: OLM:8273;OLM:8273;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam-Untrusted: BCL:0;
+X-Microsoft-Antispam-Message-Info-Original: 1dxJQ0mc8mYhaPouiuLPMoeKsZpGXUyJBRnxdyH97E89PLdZhW9zK2uX15WLn7E5N5dhlvClaC1mfLiyREQfze7G50Qz+46zV1+XXOMAcv4VaskBvRCvT3RYTH2vw+q98cN3+Dkwm7FM2AUG14tCSDvuSVRo5FhdTJBiMbWw2FuhdlhKoBYAMHou8nQVa1KlQY7RsGIOYk7Mw1hHtq10VuLYXpVJunHYMRqx2kmJAE3PdyRwMj1Fix0wF6tcxSTDKJ+WLWSjTm2OFqg64dx8inDWAy2NHHxoJ89+Hogt2DQ/LN5gQ7jPKMgfipF7fTRCg1iCsret2uuoHTgBwopnBjvCtuIkdsEYQlpK4F3y7B/FVvzTY7t28CnZrvAygcRj
+X-Forefront-Antispam-Report-Untrusted: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB8PR08MB4010.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(396003)(136003)(366004)(346002)(39860400002)(376002)(316002)(2906002)(55236004)(44832011)(8676002)(52116002)(26005)(478600001)(6486002)(956004)(5660300002)(53546011)(83380400001)(31696002)(16576012)(2616005)(186003)(4326008)(54906003)(86362001)(8936002)(31686004)(36756003)(7416002)(66476007)(16526019)(66556008)(66946007)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData: 9Aa5Xaj2Ldzk24jhgqx3srw2cMQAJGYqlhLdbiXEJW8w8JXzIgLKsXwDGbh6tEuBA6kU0B0uXhiD/uCG9Sw1BhIv/65aRS6kEMjEc6VJYCdcagILdDJ8zt7UGVq231N3EbiKHh8pq6xhiuaGJhcRoSUAW0P2/McWFGckEo0+p/xNOKVZMCfpx9Eh/8QIgIDlCBLil4JbLvn6ym0LnobWKCyayLEr+y4Zp5FUFhssvp30LVEGjtaqZYB8kqdcm3zdnBf3fR7cA5E9Hws1L/+0hUiPRUXMtxrM+iD2LDYM+eQx/KFM5/TbBIOWlPVPfK+OXhmVVa2pIsa2khMbuqEKfVHv8X1Qo8Gl1oP0heATevbwumwJnPgN0ZhVBjMwT3BXNL2G61Rym89VpO9DWQ/ji9YL+o/p/tEGBbuCHC7Vr3/7acz1NhkVUAkyXbYyvF5kITKqkAj1QdVd50oclqkbr1hSx90yPQlVZjMMmWnrU9dJAC/lIvvL3ZvQJ6FnXoW3oakrM9m7ke4/KnOndZFiww9xK0LIwNimsilBe140Vz5tqOn91mDlwFdpqGbAgTTIDpWb6jWgXA2XToNpMjSbPaHy556eXoUOAoiVR2KmVPrdXHRF2mmOOKGFBrNWrSm49/HKpx4E89sxUSuhO8Oyqg==
+X-MS-Exchange-Transport-Forked: True
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR08MB4986
+Original-Authentication-Results: arm.com; dkim=none (message not signed)
+ header.d=none;arm.com; dmarc=none action=none header.from=arm.com;
+X-EOPAttributedMessage: 0
+X-MS-Exchange-Transport-CrossTenantHeadersStripped: DB5EUR03FT051.eop-EUR03.prod.protection.outlook.com
+X-MS-Office365-Filtering-Correlation-Id-Prvs: f4d31406-9afe-4ea4-cdfc-08d854d49c21
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: /5VJ5rkLhs8xwK9dxB9fcS46rdUz1aPR9H07R0tP/op5ScEfvkWWFag/ASO0FCdSmAfla1IzAUsgp0GQvrvplqVgZq3ovCj950SrDiGKQrwTiMQaNsLGGZiMGqGWRSJKA3RoDjXpK01tFxb+jo0fZoYtcIBmCBL4T9pNid7jnCET184YxBFgqSeY1UEz01GIg4FpEO2lDxbVNv0pXsdLjRuR7vJMITzi2wLyGRimVPrlaNquhB+N7qG/A9ZfZrA+RWcKbsOITY4SfZzwarZecvVRIRxRE2CTNlxrlBjDVuUVfg67tjppddLYhn6SXBHcW6CdfVblpjZM/xncYz8nbZ5Y8xll2in84nwTAVGL4JIbOp1s+BK6vtOTsapjWFBdtXF55Bw0H+DP2iUMTtssFPi4Y980AfE3+kdKXkUYQjLR8YhCohSfwJ3ApZ8TIW0N
+X-Forefront-Antispam-Report: CIP:63.35.35.123;CTRY:IE;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:64aa7808-outbound-1.mta.getcheckrecipient.com;PTR:ec2-63-35-35-123.eu-west-1.compute.amazonaws.com;CAT:NONE;SFS:(4636009)(376002)(346002)(396003)(136003)(39860400002)(46966005)(26005)(4326008)(55236004)(6486002)(956004)(44832011)(2616005)(8936002)(47076004)(8676002)(2906002)(16576012)(36756003)(83380400001)(316002)(478600001)(16526019)(336012)(53546011)(82310400003)(82740400003)(186003)(54906003)(31686004)(70206006)(86362001)(31696002)(5660300002)(356005)(70586007)(81166007)(43740500002);DIR:OUT;SFP:1101;
+X-OriginatorOrg: arm.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Sep 2020 15:25:59.1686
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: dd4799af-5365-43d1-06d7-08d854d4a76f
+X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[63.35.35.123];Helo=[64aa7808-outbound-1.mta.getcheckrecipient.com]
+X-MS-Exchange-CrossTenant-AuthSource: DB5EUR03FT051.eop-EUR03.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR08MB4750
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Before commit
 
-  d0f9ca9be11f25ef ("ARM: decompressor: run decompressor in place if loaded via UEFI")
 
-we were rather limited in the choice of base address for the uncompressed
-kernel, as we were relying on the logic in the decompressor that blindly
-rounds down the decompressor execution address to the next multiple of 128
-MiB, and decompresses the kernel there. For this reason, we have a lot of
-complicated memory region handling code, to ensure that this memory window
-is available, even though it could be occupied by reserved regions or
-other allocations that may or may not collide with the uncompressed image.
+On 09/09/2020 16:16, Ard Biesheuvel wrote:
+> Maxim reports boot failures on platforms that describe reserved memory
+> regions in DT that are disjoint from system DRAM, and which are converted
+> to EfiReservedMemory regions by the EFI subsystem in u-boot.
+> 
+> As it turns out, the whole notion of discovering the base of DRAM is
+> problematic, and it would be better to simply rely on the EFI memory
+> allocation routines instead, and derive the FDT and initrd allocation
+> limits from the actual placement of the kernel (which is what defines
+> the start of the linear region anyway)
+> 
+> Finally, we should be able to get rid of get_dram_base() entirely.
+> However, as RISC-V only just started using it, we will need to address
+> that at a later time.
 
-Today, we simply pass the target address for the decompressed image to the
-decompressor directly, and so we can choose a suitable window just by
-finding a 16 MiB aligned region, while taking TEXT_OFFSET and the region
-for the swapper page tables into account.
+Looks reasonable to me. Presumably all special cases (platform specific 
+spin tables, etc) are covered as reserved in the UEFI memory map, correct?
 
-So let's get rid of the complicated logic, and instead, use the existing
-bottom up allocation routine to allocate a suitable window as low as
-possible, and carve out a memory region that has the right properties.
+g.
 
-Note that this removes any dependencies on the 'dram_base' argument to
-handle_kernel_image(), which we will hopefully be able to remove entirely
-in a future patch.
-
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
----
- drivers/firmware/efi/libstub/arm32-stub.c | 177 ++++----------------
- 1 file changed, 37 insertions(+), 140 deletions(-)
-
-diff --git a/drivers/firmware/efi/libstub/arm32-stub.c b/drivers/firmware/efi/libstub/arm32-stub.c
-index d08e5d55838c..a9a4da98c7a0 100644
---- a/drivers/firmware/efi/libstub/arm32-stub.c
-+++ b/drivers/firmware/efi/libstub/arm32-stub.c
-@@ -113,134 +113,6 @@ void free_screen_info(struct screen_info *si)
- 	efi_bs_call(free_pool, si);
- }
- 
--static efi_status_t reserve_kernel_base(unsigned long dram_base,
--					unsigned long *reserve_addr,
--					unsigned long *reserve_size)
--{
--	efi_physical_addr_t alloc_addr;
--	efi_memory_desc_t *memory_map;
--	unsigned long nr_pages, map_size, desc_size, buff_size;
--	efi_status_t status;
--	unsigned long l;
--
--	struct efi_boot_memmap map = {
--		.map		= &memory_map,
--		.map_size	= &map_size,
--		.desc_size	= &desc_size,
--		.desc_ver	= NULL,
--		.key_ptr	= NULL,
--		.buff_size	= &buff_size,
--	};
--
--	/*
--	 * Reserve memory for the uncompressed kernel image. This is
--	 * all that prevents any future allocations from conflicting
--	 * with the kernel. Since we can't tell from the compressed
--	 * image how much DRAM the kernel actually uses (due to BSS
--	 * size uncertainty) we allocate the maximum possible size.
--	 * Do this very early, as prints can cause memory allocations
--	 * that may conflict with this.
--	 */
--	alloc_addr = dram_base + MAX_UNCOMP_KERNEL_SIZE;
--	nr_pages = MAX_UNCOMP_KERNEL_SIZE / EFI_PAGE_SIZE;
--	status = efi_bs_call(allocate_pages, EFI_ALLOCATE_MAX_ADDRESS,
--			     EFI_BOOT_SERVICES_DATA, nr_pages, &alloc_addr);
--	if (status == EFI_SUCCESS) {
--		if (alloc_addr == dram_base) {
--			*reserve_addr = alloc_addr;
--			*reserve_size = MAX_UNCOMP_KERNEL_SIZE;
--			return EFI_SUCCESS;
--		}
--		/*
--		 * If we end up here, the allocation succeeded but starts below
--		 * dram_base. This can only occur if the real base of DRAM is
--		 * not a multiple of 128 MB, in which case dram_base will have
--		 * been rounded up. Since this implies that a part of the region
--		 * was already occupied, we need to fall through to the code
--		 * below to ensure that the existing allocations don't conflict.
--		 * For this reason, we use EFI_BOOT_SERVICES_DATA above and not
--		 * EFI_LOADER_DATA, which we wouldn't able to distinguish from
--		 * allocations that we want to disallow.
--		 */
--	}
--
--	/*
--	 * If the allocation above failed, we may still be able to proceed:
--	 * if the only allocations in the region are of types that will be
--	 * released to the OS after ExitBootServices(), the decompressor can
--	 * safely overwrite them.
--	 */
--	status = efi_get_memory_map(&map);
--	if (status != EFI_SUCCESS) {
--		efi_err("reserve_kernel_base(): Unable to retrieve memory map.\n");
--		return status;
--	}
--
--	for (l = 0; l < map_size; l += desc_size) {
--		efi_memory_desc_t *desc;
--		u64 start, end;
--
--		desc = (void *)memory_map + l;
--		start = desc->phys_addr;
--		end = start + desc->num_pages * EFI_PAGE_SIZE;
--
--		/* Skip if entry does not intersect with region */
--		if (start >= dram_base + MAX_UNCOMP_KERNEL_SIZE ||
--		    end <= dram_base)
--			continue;
--
--		switch (desc->type) {
--		case EFI_BOOT_SERVICES_CODE:
--		case EFI_BOOT_SERVICES_DATA:
--			/* Ignore types that are released to the OS anyway */
--			continue;
--
--		case EFI_CONVENTIONAL_MEMORY:
--			/* Skip soft reserved conventional memory */
--			if (efi_soft_reserve_enabled() &&
--			    (desc->attribute & EFI_MEMORY_SP))
--				continue;
--
--			/*
--			 * Reserve the intersection between this entry and the
--			 * region.
--			 */
--			start = max(start, (u64)dram_base);
--			end = min(end, (u64)dram_base + MAX_UNCOMP_KERNEL_SIZE);
--
--			status = efi_bs_call(allocate_pages,
--					     EFI_ALLOCATE_ADDRESS,
--					     EFI_LOADER_DATA,
--					     (end - start) / EFI_PAGE_SIZE,
--					     &start);
--			if (status != EFI_SUCCESS) {
--				efi_err("reserve_kernel_base(): alloc failed.\n");
--				goto out;
--			}
--			break;
--
--		case EFI_LOADER_CODE:
--		case EFI_LOADER_DATA:
--			/*
--			 * These regions may be released and reallocated for
--			 * another purpose (including EFI_RUNTIME_SERVICE_DATA)
--			 * at any time during the execution of the OS loader,
--			 * so we cannot consider them as safe.
--			 */
--		default:
--			/*
--			 * Treat any other allocation in the region as unsafe */
--			status = EFI_OUT_OF_RESOURCES;
--			goto out;
--		}
--	}
--
--	status = EFI_SUCCESS;
--out:
--	efi_bs_call(free_pool, memory_map);
--	return status;
--}
--
- efi_status_t handle_kernel_image(unsigned long *image_addr,
- 				 unsigned long *image_size,
- 				 unsigned long *reserve_addr,
-@@ -248,27 +120,52 @@ efi_status_t handle_kernel_image(unsigned long *image_addr,
- 				 unsigned long dram_base,
- 				 efi_loaded_image_t *image)
- {
--	unsigned long kernel_base;
-+	const int slack = TEXT_OFFSET - 5 * PAGE_SIZE;
-+	int alloc_size = MAX_UNCOMP_KERNEL_SIZE + SZ_16M + slack;
-+	unsigned long alloc_base, kernel_base;
- 	efi_status_t status;
- 
--	/* use a 16 MiB aligned base for the decompressed kernel */
--	kernel_base = round_up(dram_base, SZ_16M) + TEXT_OFFSET;
--
- 	/*
--	 * Note that some platforms (notably, the Raspberry Pi 2) put
--	 * spin-tables and other pieces of firmware at the base of RAM,
--	 * abusing the fact that the window of TEXT_OFFSET bytes at the
--	 * base of the kernel image is only partially used at the moment.
--	 * (Up to 5 pages are used for the swapper page tables)
-+	 * Allocate space for the decompressed kernel as low as possible.
-+	 * The region should be 16 MiB aligned, but the first 'slack' bytes
-+	 * are not used by Linux, so we allow those to be occupied by the
-+	 * firmware.
- 	 */
--	status = reserve_kernel_base(kernel_base - 5 * PAGE_SIZE, reserve_addr,
--				     reserve_size);
-+	status = efi_low_alloc_above(alloc_size, EFI_PAGE_SIZE, &alloc_base, 0x0);
- 	if (status != EFI_SUCCESS) {
- 		efi_err("Unable to allocate memory for uncompressed kernel.\n");
- 		return status;
- 	}
- 
--	*image_addr = kernel_base;
-+	if ((alloc_base % SZ_16M) > slack) {
-+		/*
-+		 * More than 'slack' bytes are already occupied at the base of
-+		 * the allocation, so we need to advance to the next 16 MiB block.
-+		 */
-+		kernel_base = round_up(alloc_base, SZ_16M);
-+		efi_info("Free memory starts at 0x%lx, setting kernel_base to 0x%lx\n",
-+			 alloc_base, kernel_base);
-+	} else {
-+		kernel_base = round_down(alloc_base, SZ_16M);
-+	}
-+
-+	*reserve_addr = kernel_base + slack;
-+	*reserve_size = MAX_UNCOMP_KERNEL_SIZE;
-+
-+	/* now free the parts that we will not use */
-+	if (*reserve_addr > alloc_base) {
-+		efi_bs_call(free_pages, alloc_base,
-+			    (*reserve_addr - alloc_base) / EFI_PAGE_SIZE);
-+		alloc_size -= *reserve_addr - alloc_base;
-+	}
-+	efi_bs_call(free_pages, *reserve_addr + MAX_UNCOMP_KERNEL_SIZE,
-+		    (alloc_size - MAX_UNCOMP_KERNEL_SIZE) / EFI_PAGE_SIZE);
-+
-+	*image_addr = kernel_base + TEXT_OFFSET;
- 	*image_size = 0;
-+
-+	efi_debug("image addr == 0x%lx, reserve_addr == 0x%lx\n",
-+		  *image_addr, *reserve_addr);
-+
- 	return EFI_SUCCESS;
- }
--- 
-2.17.1
-
+> 
+> Cc: Maxim Uvarov <maxim.uvarov@linaro.org>
+> Cc: Heinrich Schuchardt <xypron.glpk@gmx.de>
+> Cc: Atish Patra <atish.patra@wdc.com>
+> Cc: Palmer Dabbelt <palmer@dabbelt.com>
+> Cc: Jens Wiklander <jens.wiklander@linaro.org>
+> Cc: Francois Ozog <francois.ozog@linaro.org>
+> Cc: Etienne CARRIERE <etienne.carriere@st.com>
+> Cc: Takahiro Akashi <takahiro.akashi@linaro.org>
+> Cc: Patrice CHOTARD <patrice.chotard@st.com>
+> Cc: Sumit Garg <sumit.garg@linaro.org>
+> Cc: Grant Likely <Grant.Likely@arm.com>
+> Cc: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+> Cc: Christophe Priouzeau <christophe.priouzeau@linaro.org>
+> Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+> Cc: Patrick DELAUNAY <patrick.delaunay@st.com>
+> 
+> Ard Biesheuvel (3):
+>    efi/libstub: Export efi_low_alloc_above() to other units
+>    efi/libstub: Use low allocation for the uncompressed kernel
+>    efi/libstub: base FDT and initrd placement on image address not DRAM
+>      base
+> 
+>   arch/arm/include/asm/efi.h                |   6 +-
+>   arch/arm64/include/asm/efi.h              |   2 +-
+>   drivers/firmware/efi/libstub/arm32-stub.c | 177 ++++----------------
+>   drivers/firmware/efi/libstub/efi-stub.c   |   2 +-
+>   drivers/firmware/efi/libstub/efistub.h    |   3 +
+>   drivers/firmware/efi/libstub/relocate.c   |   4 +-
+>   6 files changed, 47 insertions(+), 147 deletions(-)
+> 
