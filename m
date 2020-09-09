@@ -2,27 +2,27 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C4F76263461
-	for <lists+linux-efi@lfdr.de>; Wed,  9 Sep 2020 19:19:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D674A263460
+	for <lists+linux-efi@lfdr.de>; Wed,  9 Sep 2020 19:19:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730116AbgIIRTv (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 9 Sep 2020 13:19:51 -0400
-Received: from mail.kernel.org ([198.145.29.99]:54044 "EHLO mail.kernel.org"
+        id S1728971AbgIIRTu (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 9 Sep 2020 13:19:50 -0400
+Received: from mail.kernel.org ([198.145.29.99]:54046 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729529AbgIIP1W (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        id S1730116AbgIIP1W (ORCPT <rfc822;linux-efi@vger.kernel.org>);
         Wed, 9 Sep 2020 11:27:22 -0400
 Received: from e123331-lin.nice.arm.com (adsl-204.109.242.29.tellas.gr [109.242.29.204])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 5B6BA22240;
-        Wed,  9 Sep 2020 15:16:38 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 712642226A;
+        Wed,  9 Sep 2020 15:16:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1599664602;
-        bh=vLcbpNnan0Q9ikoYUFHXD8BV6Bv0VtlMkv6yFnjnxqo=;
-        h=From:To:Cc:Subject:Date:From;
-        b=bC20eOwYllY4VpagoF1zjyK8WcH8S9wOtNszc9xFAJvY1uyGUUDUGkYzgNa4og026
-         EhZXztxmYuG4m/x6HWyrpkGtF3oJinzLDcTyozTaa21LsPHEwAQGdBuptkfOgpdUL0
-         6Vsl13MHMhZ09SnVu5jdZYxT/xZ50Jz7Ub0Dyd/I=
+        s=default; t=1599664608;
+        bh=j8vJl1ywEzmd2fl0OyqRb55B0LHSNpXDxq3MpWw+2Ro=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=MfswMFxxpoeNhNBwXRQ8HeNN5wAhq9WMSYVNE1w01BAqMGZJOxQXT3Z5uSPJUFsfv
+         tVrQfGXs6rzn4Iq4Y8o/ZkbKuDlnwubTQ3cnLJ/gHa/qRqNHuVSzttxsqFQtMldB7o
+         bJBfKnvhoQeDemks+OrCl9pBuUF9FG6cnWMFqz34=
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-efi@vger.kernel.org
 Cc:     linux-arm-kernel@lists.infradead.org,
@@ -42,59 +42,55 @@ Cc:     linux-arm-kernel@lists.infradead.org,
         Christophe Priouzeau <christophe.priouzeau@linaro.org>,
         Rouven Czerwinski <r.czerwinski@pengutronix.de>,
         Patrick DELAUNAY <patrick.delaunay@st.com>
-Subject: [PATCH RFC/RFT 0/3] efi/libstub: arm32: Remove dependency on dram_base
-Date:   Wed,  9 Sep 2020 18:16:20 +0300
-Message-Id: <20200909151623.16153-1-ardb@kernel.org>
+Subject: [PATCH RFC/RFT 1/3] efi/libstub: Export efi_low_alloc_above() to other units
+Date:   Wed,  9 Sep 2020 18:16:21 +0300
+Message-Id: <20200909151623.16153-2-ardb@kernel.org>
 X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20200909151623.16153-1-ardb@kernel.org>
+References: <20200909151623.16153-1-ardb@kernel.org>
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Maxim reports boot failures on platforms that describe reserved memory
-regions in DT that are disjoint from system DRAM, and which are converted
-to EfiReservedMemory regions by the EFI subsystem in u-boot.
+Permit arm32-stub.c to access efi_low_alloc_above() in a subsequent
+patch by giving it external linkage and declaring it in efistub.h.
 
-As it turns out, the whole notion of discovering the base of DRAM is
-problematic, and it would be better to simply rely on the EFI memory
-allocation routines instead, and derive the FDT and initrd allocation
-limits from the actual placement of the kernel (which is what defines
-the start of the linear region anyway)
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+---
+ drivers/firmware/efi/libstub/efistub.h  | 3 +++
+ drivers/firmware/efi/libstub/relocate.c | 4 ++--
+ 2 files changed, 5 insertions(+), 2 deletions(-)
 
-Finally, we should be able to get rid of get_dram_base() entirely.
-However, as RISC-V only just started using it, we will need to address
-that at a later time.
-
-Cc: Maxim Uvarov <maxim.uvarov@linaro.org>
-Cc: Heinrich Schuchardt <xypron.glpk@gmx.de>
-Cc: Atish Patra <atish.patra@wdc.com>
-Cc: Palmer Dabbelt <palmer@dabbelt.com>
-Cc: Jens Wiklander <jens.wiklander@linaro.org>
-Cc: Francois Ozog <francois.ozog@linaro.org>
-Cc: Etienne CARRIERE <etienne.carriere@st.com>
-Cc: Takahiro Akashi <takahiro.akashi@linaro.org>
-Cc: Patrice CHOTARD <patrice.chotard@st.com>
-Cc: Sumit Garg <sumit.garg@linaro.org>
-Cc: Grant Likely <Grant.Likely@arm.com>
-Cc: Ilias Apalodimas <ilias.apalodimas@linaro.org>
-Cc: Christophe Priouzeau <christophe.priouzeau@linaro.org>
-Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Cc: Patrick DELAUNAY <patrick.delaunay@st.com>
-
-Ard Biesheuvel (3):
-  efi/libstub: Export efi_low_alloc_above() to other units
-  efi/libstub: Use low allocation for the uncompressed kernel
-  efi/libstub: base FDT and initrd placement on image address not DRAM
-    base
-
- arch/arm/include/asm/efi.h                |   6 +-
- arch/arm64/include/asm/efi.h              |   2 +-
- drivers/firmware/efi/libstub/arm32-stub.c | 177 ++++----------------
- drivers/firmware/efi/libstub/efi-stub.c   |   2 +-
- drivers/firmware/efi/libstub/efistub.h    |   3 +
- drivers/firmware/efi/libstub/relocate.c   |   4 +-
- 6 files changed, 47 insertions(+), 147 deletions(-)
-
+diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
+index 85050f5a1b28..158f86f1f9fc 100644
+--- a/drivers/firmware/efi/libstub/efistub.h
++++ b/drivers/firmware/efi/libstub/efistub.h
+@@ -740,6 +740,9 @@ efi_status_t efi_allocate_pages(unsigned long size, unsigned long *addr,
+ efi_status_t efi_allocate_pages_aligned(unsigned long size, unsigned long *addr,
+ 					unsigned long max, unsigned long align);
+ 
++efi_status_t efi_low_alloc_above(unsigned long size, unsigned long align,
++				 unsigned long *addr, unsigned long min);
++
+ efi_status_t efi_relocate_kernel(unsigned long *image_addr,
+ 				 unsigned long image_size,
+ 				 unsigned long alloc_size,
+diff --git a/drivers/firmware/efi/libstub/relocate.c b/drivers/firmware/efi/libstub/relocate.c
+index 9b1aaf8b123f..8ee9eb2b9039 100644
+--- a/drivers/firmware/efi/libstub/relocate.c
++++ b/drivers/firmware/efi/libstub/relocate.c
+@@ -20,8 +20,8 @@
+  *
+  * Return:	status code
+  */
+-static efi_status_t efi_low_alloc_above(unsigned long size, unsigned long align,
+-					unsigned long *addr, unsigned long min)
++efi_status_t efi_low_alloc_above(unsigned long size, unsigned long align,
++				 unsigned long *addr, unsigned long min)
+ {
+ 	unsigned long map_size, desc_size, buff_size;
+ 	efi_memory_desc_t *map;
 -- 
 2.17.1
 
