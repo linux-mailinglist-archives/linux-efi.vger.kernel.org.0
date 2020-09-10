@@ -2,190 +2,118 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 88E30264341
-	for <lists+linux-efi@lfdr.de>; Thu, 10 Sep 2020 12:06:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B5DFC264367
+	for <lists+linux-efi@lfdr.de>; Thu, 10 Sep 2020 12:11:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730567AbgIJKGn (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 10 Sep 2020 06:06:43 -0400
-Received: from mail.kernel.org ([198.145.29.99]:39116 "EHLO mail.kernel.org"
+        id S1726738AbgIJKLw (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 10 Sep 2020 06:11:52 -0400
+Received: from mail.kernel.org ([198.145.29.99]:57022 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730523AbgIJKGh (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Thu, 10 Sep 2020 06:06:37 -0400
-Received: from mail-oi1-f173.google.com (mail-oi1-f173.google.com [209.85.167.173])
+        id S1725913AbgIJKLp (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Thu, 10 Sep 2020 06:11:45 -0400
+Received: from mail-ot1-f42.google.com (mail-ot1-f42.google.com [209.85.210.42])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8197B21D80;
-        Thu, 10 Sep 2020 10:06:36 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 5997E214F1
+        for <linux-efi@vger.kernel.org>; Thu, 10 Sep 2020 10:11:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1599732396;
-        bh=PsgV3/p7HeIxS4BDkyn1Hz8uhnBf8EDv0rx5idJ+6iw=;
+        s=default; t=1599732705;
+        bh=xRo2ncH8IrtfXMJt+7+ag5JBiTgrTe6vFVGBN33zcD4=;
         h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=EOhIebwwXUwe3ifWsLdqeXcJhzZ+u4e9RHyS20FYpNjUUKBPmQot4iV18AtmUEfW0
-         Eu7gtA6IrHE75kCgs8wEzO0Qu3kLUYp5V8vqHa/a8mikB2age+7TlSynQUDdeKHWm0
-         3+heFSxPgS61ZpmRclX9kbCkBoNHhkyqQAXkL9mg=
-Received: by mail-oi1-f173.google.com with SMTP id c13so5379944oiy.6;
-        Thu, 10 Sep 2020 03:06:36 -0700 (PDT)
-X-Gm-Message-State: AOAM533egzEjdWIocBhHDtGSAEivtFBQA92IwPuZJ5XwnywEUacpg8mo
-        5hTtwlPTNIfkFJuN+trsXGq5I49Li1ZR3M+pUL0=
-X-Google-Smtp-Source: ABdhPJz2vXLwznJzG7G9XegKF0TCGXzgUeoxI4CtyIa3q99Kdzxypfv6JDuj8TZ9L0IMAIjb7rdHepQhNcigO8z75gI=
-X-Received: by 2002:aca:d845:: with SMTP id p66mr3033135oig.47.1599732395679;
- Thu, 10 Sep 2020 03:06:35 -0700 (PDT)
+        b=xmnCrnruHTrLFDASCRAeX66Rx6L2Q5IjPo/H/y/XuvwXVS/5MRAYdWTZMGQ2b/Sk/
+         jGvReeOUmgP2p8IEU+zQpO+/lVdc4+qogAV0e+sI3QNMzS+ieTmwGXj7/MW+OXZoQk
+         SS6oWML0YJI6aRqnCL2PaEpqLf7Ol8uyHDbdju4E=
+Received: by mail-ot1-f42.google.com with SMTP id y5so4878400otg.5
+        for <linux-efi@vger.kernel.org>; Thu, 10 Sep 2020 03:11:45 -0700 (PDT)
+X-Gm-Message-State: AOAM530AJjmn1ZDzjA61v6jHVrD429R/BxuEgOVKqx4BnN4xfwjGWUyJ
+        i0lkfr3VNABLLctG+wNK/ec4A2JK+OaIBDhHk5Q=
+X-Google-Smtp-Source: ABdhPJwq1VzM+VimsvhUfDBYIRIQAEfLltXjh4lLMIXyn0mfSoj88YEMP/pnBGAZsj60fzBWARm16E/U8bVSMCHPJxY=
+X-Received: by 2002:a9d:69c9:: with SMTP id v9mr3245295oto.90.1599732704551;
+ Thu, 10 Sep 2020 03:11:44 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200909225354.3118328-1-keescook@chromium.org>
-In-Reply-To: <20200909225354.3118328-1-keescook@chromium.org>
+References: <CAO18KQgxfCBFacLxpLZJZ6iDmEA83DUwG2kjfPyJmPZHPQZ5vQ@mail.gmail.com>
+ <20200907170021.GA2284449@rani.riverdale.lan> <CAO18KQg9wLFF8KxZdP4fVv-vk_CpfV+_v38WnCJ-uqEAJ3FNwA@mail.gmail.com>
+ <20200908223255.GA276578@rani.riverdale.lan> <CAO18KQgPJu2uZzBuCTsKOJydnbgsNM+EMvcJRDBE3UhSKHtpfw@mail.gmail.com>
+ <20200909190038.GA474185@rani.riverdale.lan> <CAO18KQjGdcZD8bts36GuicJO8_iprbryXdh5vM+-GfAbcKV==Q@mail.gmail.com>
+ <20200909203830.GA490605@rani.riverdale.lan>
+In-Reply-To: <20200909203830.GA490605@rani.riverdale.lan>
 From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Thu, 10 Sep 2020 13:06:24 +0300
-X-Gmail-Original-Message-ID: <CAMj1kXGP_EH661xYXKydo5ph5BKLhs9DeLrgr9gtxeXrwBSCLg@mail.gmail.com>
-Message-ID: <CAMj1kXGP_EH661xYXKydo5ph5BKLhs9DeLrgr9gtxeXrwBSCLg@mail.gmail.com>
-Subject: Re: [PATCH v5] test_firmware: Test platform fw loading on non-EFI systems
-To:     Kees Cook <keescook@chromium.org>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "# 3.4.x" <stable@vger.kernel.org>,
-        Luis Chamberlain <mcgrof@kernel.org>,
-        Scott Branden <scott.branden@broadcom.com>,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        Hans de Goede <hdegoede@redhat.com>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Date:   Thu, 10 Sep 2020 13:11:33 +0300
+X-Gmail-Original-Message-ID: <CAMj1kXEAkR9_tN_o0m30e+HY_F_xf3wY_uSDUiWYOkaugcvoNw@mail.gmail.com>
+Message-ID: <CAMj1kXEAkR9_tN_o0m30e+HY_F_xf3wY_uSDUiWYOkaugcvoNw@mail.gmail.com>
+Subject: Re: EFISTUB arguments in Dell BIOS
+To:     Arvind Sankar <nivedita@alum.mit.edu>,
+        Peter Jones <pjones@redhat.com>, mario.limonciello@dell.com
+Cc:     Jacobo Pantoja <jacobopantoja@gmail.com>,
+        linux-efi <linux-efi@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, 10 Sep 2020 at 01:54, Kees Cook <keescook@chromium.org> wrote:
+(adding Peter and Mario)
+
+On Wed, 9 Sep 2020 at 23:38, Arvind Sankar <nivedita@alum.mit.edu> wrote:
 >
-> On non-EFI systems, it wasn't possible to test the platform firmware
-> loader because it will have never set "checked_fw" during __init.
-> Instead, allow the test code to override this check. Additionally split
-> the declarations into a private symbol namespace so there is greater
-> enforcement of the symbol visibility.
+> On Wed, Sep 09, 2020 at 09:37:02PM +0200, Jacobo Pantoja wrote:
+> > > >
+> > > > Result saved as image:
+> > > > https://ibb.co/vcz48vC
+> > > >
+> > >
+> > > Thanks.
+> > >
+> > > It looks like the firmware is passing the entire contents of the
+> > > Boot0000 variable, rather than just the load options part: I think that
+> > > dump will be identical to the output of
+> > >
+> > >         od -t x2z /sys/firmware/efi/efivars/Boot0000*
+> > >
+> >
+> > It is almost identical. The efivar you mentioned starts with 0x0007 0x0000,
+> > and after that, the dump is identical to the one displayed in the debug text
+> >
 >
-> Fixes: 548193cba2a7 ("test_firmware: add support for firmware_request_platform")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Kees Cook <keescook@chromium.org>
-> ---
-> This is split out from the larger kernel_read_file series:
->     https://lore.kernel.org/lkml/20200729175845.1745471-1-keescook@chromium.org/
-> specifically this was:
->     https://lore.kernel.org/lkml/20200729175845.1745471-2-keescook@chromium.org/
+> Right, sorry: the first 4 bytes in the sysfs file are the attributes of
+> the variable (in this case indicating it is non-volatile, and accessible
+> both before and after ExitBootServices). The rest is the actual data.
 >
-> I've dropped the review tags, since this is changing the "how" of the patch...
-> ---
->  drivers/firmware/efi/embedded-firmware.c | 10 +++++-----
->  include/linux/efi_embedded_fw.h          |  6 ++----
->  lib/test_firmware.c                      |  9 +++++++++
->  3 files changed, 16 insertions(+), 9 deletions(-)
+> > >
+> > > Ard, do you think we could quirk the conversion to check if the passed
+> > > in size was bigger than the parsed command line, and if so check to see
+> > > if the bytes 0x7f 0xff 0x0004 (End Device Path) occur somewhere, and
+> > > treat the stuff after that as the actual command line?
+> >
+> > To be honest, if this is an incompliance with UEFI, Dell should fix this.
+> > Independently of whether we setup a quirk or not, I'll contact them, in the
+> > past I've already got some BIOS bugs fixed (although the process is slow).
+> > Obviously I can continue doing whatever testing you may wish.
+> >
+> > Thank you very much
+>
+> Ok, this is laid out in section 3.1 of the spec which defines the format
+> of the EFI_LOAD_OPTION descriptor. Dell's BIOS is passing the entire
+> descriptor instead of just the OptionalData part.
+>
+> OptionalData    The remaining bytes in the load option descriptor are a
+>                 binary data buffer that is passed to the loaded image.
+>                 If the field is zero bytes long, a Null pointer is
+>                 passed to the loaded image. The number of bytes in
+>                 OptionalData can be computed by subtracting the starting
+>                 offset of OptionalData from total size in bytes of the
+>                 EFI_LOAD_OPTION.
+>
+> https://uefi.org/sites/default/files/resources/UEFI_Spec_2_8_final.pdf
 >
 
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
+This vaguely rings a bell so I have cc'ed some folks who may have run
+into this in the past. Complete thread can be found at [0]
 
-> diff --git a/drivers/firmware/efi/embedded-firmware.c b/drivers/firmware/efi/embedded-firmware.c
-> index a1b199de9006..84e32634ed6c 100644
-> --- a/drivers/firmware/efi/embedded-firmware.c
-> +++ b/drivers/firmware/efi/embedded-firmware.c
-> @@ -16,9 +16,9 @@
->
->  /* Exported for use by lib/test_firmware.c only */
->  LIST_HEAD(efi_embedded_fw_list);
-> -EXPORT_SYMBOL_GPL(efi_embedded_fw_list);
-> -
-> -static bool checked_for_fw;
-> +EXPORT_SYMBOL_NS_GPL(efi_embedded_fw_list, TEST_FIRMWARE);
-> +bool efi_embedded_fw_checked;
-> +EXPORT_SYMBOL_NS_GPL(efi_embedded_fw_checked, TEST_FIRMWARE);
->
->  static const struct dmi_system_id * const embedded_fw_table[] = {
->  #ifdef CONFIG_TOUCHSCREEN_DMI
-> @@ -119,14 +119,14 @@ void __init efi_check_for_embedded_firmwares(void)
->                 }
->         }
->
-> -       checked_for_fw = true;
-> +       efi_embedded_fw_checked = true;
->  }
->
->  int efi_get_embedded_fw(const char *name, const u8 **data, size_t *size)
->  {
->         struct efi_embedded_fw *iter, *fw = NULL;
->
-> -       if (!checked_for_fw) {
-> +       if (!efi_embedded_fw_checked) {
->                 pr_warn("Warning %s called while we did not check for embedded fw\n",
->                         __func__);
->                 return -ENOENT;
-> diff --git a/include/linux/efi_embedded_fw.h b/include/linux/efi_embedded_fw.h
-> index 57eac5241303..a97a12bb2c9e 100644
-> --- a/include/linux/efi_embedded_fw.h
-> +++ b/include/linux/efi_embedded_fw.h
-> @@ -8,8 +8,8 @@
->  #define EFI_EMBEDDED_FW_PREFIX_LEN             8
->
->  /*
-> - * This struct and efi_embedded_fw_list are private to the efi-embedded fw
-> - * implementation they are in this header for use by lib/test_firmware.c only!
-> + * This struct is private to the efi-embedded fw implementation.
-> + * They are in this header for use by lib/test_firmware.c only!
->   */
->  struct efi_embedded_fw {
->         struct list_head list;
-> @@ -18,8 +18,6 @@ struct efi_embedded_fw {
->         size_t length;
->  };
->
-> -extern struct list_head efi_embedded_fw_list;
-> -
->  /**
->   * struct efi_embedded_fw_desc - This struct is used by the EFI embedded-fw
->   *                               code to search for embedded firmwares.
-> diff --git a/lib/test_firmware.c b/lib/test_firmware.c
-> index 9fee2b93a8d1..06c955057756 100644
-> --- a/lib/test_firmware.c
-> +++ b/lib/test_firmware.c
-> @@ -26,6 +26,8 @@
->  #include <linux/vmalloc.h>
->  #include <linux/efi_embedded_fw.h>
->
-> +MODULE_IMPORT_NS(TEST_FIRMWARE);
-> +
->  #define TEST_FIRMWARE_NAME     "test-firmware.bin"
->  #define TEST_FIRMWARE_NUM_REQS 4
->  #define TEST_FIRMWARE_BUF_SIZE SZ_1K
-> @@ -489,6 +491,9 @@ static ssize_t trigger_request_store(struct device *dev,
->  static DEVICE_ATTR_WO(trigger_request);
->
->  #ifdef CONFIG_EFI_EMBEDDED_FIRMWARE
-> +extern struct list_head efi_embedded_fw_list;
-> +extern bool efi_embedded_fw_checked;
-> +
->  static ssize_t trigger_request_platform_store(struct device *dev,
->                                               struct device_attribute *attr,
->                                               const char *buf, size_t count)
-> @@ -501,6 +506,7 @@ static ssize_t trigger_request_platform_store(struct device *dev,
->         };
->         struct efi_embedded_fw efi_embedded_fw;
->         const struct firmware *firmware = NULL;
-> +       bool saved_efi_embedded_fw_checked;
->         char *name;
->         int rc;
->
-> @@ -513,6 +519,8 @@ static ssize_t trigger_request_platform_store(struct device *dev,
->         efi_embedded_fw.data = (void *)test_data;
->         efi_embedded_fw.length = sizeof(test_data);
->         list_add(&efi_embedded_fw.list, &efi_embedded_fw_list);
-> +       saved_efi_embedded_fw_checked = efi_embedded_fw_checked;
-> +       efi_embedded_fw_checked = true;
->
->         pr_info("loading '%s'\n", name);
->         rc = firmware_request_platform(&firmware, name, dev);
-> @@ -530,6 +538,7 @@ static ssize_t trigger_request_platform_store(struct device *dev,
->         rc = count;
->
->  out:
-> +       efi_embedded_fw_checked = saved_efi_embedded_fw_checked;
->         release_firmware(firmware);
->         list_del(&efi_embedded_fw.list);
->         kfree(name);
-> --
-> 2.25.1
->
+The firmware is obviously passing the wrong data, and I am reluctant
+to quirk this out, since we'd have to interpret the contents of these
+UEFI variables, and given the amount of 'value add' by the BIOS
+vendors in this area, we may end up breaking things on other
+platforms.
+
+[0] https://lore.kernel.org/linux-efi/20200909203830.GA490605@rani.riverdale.lan/
