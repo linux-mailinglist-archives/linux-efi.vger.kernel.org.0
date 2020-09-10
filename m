@@ -2,189 +2,198 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BAAE22647FF
-	for <lists+linux-efi@lfdr.de>; Thu, 10 Sep 2020 16:30:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C2F9126510C
+	for <lists+linux-efi@lfdr.de>; Thu, 10 Sep 2020 22:40:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730633AbgIJO3m (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 10 Sep 2020 10:29:42 -0400
-Received: from mail.kernel.org ([198.145.29.99]:47060 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730919AbgIJO0R (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Thu, 10 Sep 2020 10:26:17 -0400
-Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com [209.85.210.43])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 9155D221E7
-        for <linux-efi@vger.kernel.org>; Thu, 10 Sep 2020 14:08:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1599746899;
-        bh=o6jITo9j0vlFOqdHWJ8IKz1ixVrEwcsvWX82SkJ2Mio=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=Af4hZ6iXRJR6UWmS8YgahEzDy0d/BEwyXSnXjq+IOLYt9e6F8Eed+8ZQwnGp9sK3z
-         bHZyJhS/sijfaFY7XaKSM3nBOL1C0NCxOys97rDWatBVHU/N2IGdLbLiMiOeaUAUYN
-         QFaHivAq59TSr2Ke6vxpYB232XZcy1xJxlKuuwJQ=
-Received: by mail-ot1-f43.google.com with SMTP id c10so5414456otm.13
-        for <linux-efi@vger.kernel.org>; Thu, 10 Sep 2020 07:08:19 -0700 (PDT)
-X-Gm-Message-State: AOAM530CefwX+LXmgBzhp2h4JVLv2ICfXj+6N4bEX1sQPyARhNbJoaPN
-        flEJd6Goi+Dam90MSVY04v0FK8a0sEb8SzQWU60=
-X-Google-Smtp-Source: ABdhPJx0cMK97/bkYQbVJyvEXgLm1S+9JAQSfVADRfPqk+E+nBa//idLydW3G0/+IobK1wc+vHKeuYp155RaiwzL87A=
-X-Received: by 2002:a9d:69c9:: with SMTP id v9mr3846378oto.90.1599746898795;
- Thu, 10 Sep 2020 07:08:18 -0700 (PDT)
+        id S1727107AbgIJUkv (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 10 Sep 2020 16:40:51 -0400
+Received: from mx0b-00154904.pphosted.com ([148.163.137.20]:9150 "EHLO
+        mx0b-00154904.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726928AbgIJUke (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 10 Sep 2020 16:40:34 -0400
+Received: from pps.filterd (m0170398.ppops.net [127.0.0.1])
+        by mx0b-00154904.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 08AKZA3b017623;
+        Thu, 10 Sep 2020 16:40:09 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dell.com; h=from : to : cc :
+ subject : date : message-id : references : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=smtpout1;
+ bh=iV3gaE4qnWy/rXXm/neg0iZkM5NZbbB/VBpacpuI8q8=;
+ b=v5GWtINSdy5Js/PGkPIRHBzLXP9beIJ252LOvi8UB5w+1d47K0Ttb9Rd8fO7Xj1Ysm8/
+ vimcBsBiccCildM3WHz3j9kskJxlzekRDVKVI+AW7Q7+MWJ0WraiZlnOZ138wBXFJRTt
+ 0b45KFWw4s0TlaaRa6prG9xXT+JApfXLGEo2RqDmaIa/0cXW5lr4QDI3vNHO2uI2KzWo
+ XRegheOCFSiO2kdvGt2n1Eqh3laMP36Fbu+NasULCLabApri4QOOs6q1rH9/8mVrUwtC
+ Qjdh7nTHgG5Rvou9hvChZRryjZ7v6NcZ7Y452ngiS2gw5BZFCrXgLDpUZPXYksyS6aGC +Q== 
+Received: from mx0a-00154901.pphosted.com (mx0a-00154901.pphosted.com [67.231.149.39])
+        by mx0b-00154904.pphosted.com with ESMTP id 33fqdj0x9b-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 10 Sep 2020 16:40:09 -0400
+Received: from pps.filterd (m0142693.ppops.net [127.0.0.1])
+        by mx0a-00154901.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 08AKV73A140178;
+        Thu, 10 Sep 2020 16:40:08 -0400
+Received: from nam02-cy1-obe.outbound.protection.outlook.com (mail-cys01nam02lp2057.outbound.protection.outlook.com [104.47.37.57])
+        by mx0a-00154901.pphosted.com with ESMTP id 33fhvp1rbs-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 10 Sep 2020 16:40:08 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Ck6hAhQ6S2FnjezwAL4T1vC7mwfFQidxL1C6DI1FpHsSgXU0Wc0Pcsnhq5ntCYhIftyK1FsP+5XPGRs/Tw06uM0QtGQqJpinivsnYCwG8BJXZG0LblKMhFjsmDpG7V/xnZ2xQClovBajS5coetPZDauNOqU3xGw7WPk4W6Xgd/2ucsOGt+7d34Ok4XbuWmW2O9ESGtRLxqowY8grJq1CO1qjPrnABicVUe5OonQT//ZCM7PrPS5mIhonnX3V5tltWwqaYKHlHp4K27Uz+TUPlnBMhg+D/2oUkbCqJesFAhT+Vqxe3Ldb9sdUCG7/ewi1P9GDa2aSLGIZY/zOx5/gjw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=iV3gaE4qnWy/rXXm/neg0iZkM5NZbbB/VBpacpuI8q8=;
+ b=C4xUjW5jp5SxJjIaFtE9s3gfiJ5ZED5B9u9cFe7JsVDDhue4NPGy057FVMG1dRu8E6f1bAWbN8PHaRmg3bkVMIjGo1RVI3aGPAlKwdEzpzEMSDqTWy8TmVhVdB/MdaUBzi8JnrVodIf+yR56x6Tzgb4bocCTDP587Z5vFzjTkB7xxaW2F+k71KiV6bogbVvqitvx6bzfWszm61/h+APDG6V20DvneKVIJRVWWYEB8fmZOAsmeHAWI+8AbehEJOvAvGGzHbz36L1mfp/KR3svBYE8fTykxiFXlbBEQCQqjIEiL8OQ629qYA5Z0uBxax5MGYouNApqVsxZbnrSD979yw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=dell.com; dmarc=pass action=none header.from=dell.com;
+ dkim=pass header.d=dell.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Dell.onmicrosoft.com;
+ s=selector1-Dell-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=iV3gaE4qnWy/rXXm/neg0iZkM5NZbbB/VBpacpuI8q8=;
+ b=W98kTj2wjEqd5nwi90AvWpeKc1vN8VT3cYhMEyWKaGksSPJXv6ojgyNagy/3xC73scKZifF3jj69WvRchvatBpJ13vpHhre+7wu2IgVrYBlwbkmHcac3RkG8fSaSZprKkvo8N6Cwd9vAVrQaVEae2Z4wlxBHblKSdA1x8SXrn48=
+Received: from DM6PR19MB2636.namprd19.prod.outlook.com (2603:10b6:5:15f::15)
+ by DM5PR19MB1034.namprd19.prod.outlook.com (2603:10b6:3:27::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3348.17; Thu, 10 Sep
+ 2020 20:40:06 +0000
+Received: from DM6PR19MB2636.namprd19.prod.outlook.com
+ ([fe80::a4b8:d5c9:29da:39b2]) by DM6PR19MB2636.namprd19.prod.outlook.com
+ ([fe80::a4b8:d5c9:29da:39b2%4]) with mapi id 15.20.3370.016; Thu, 10 Sep 2020
+ 20:40:06 +0000
+From:   "Limonciello, Mario" <Mario.Limonciello@dell.com>
+To:     Ard Biesheuvel <ardb@kernel.org>,
+        Arvind Sankar <nivedita@alum.mit.edu>,
+        Peter Jones <pjones@redhat.com>
+CC:     Jacobo Pantoja <jacobopantoja@gmail.com>,
+        linux-efi <linux-efi@vger.kernel.org>
+Subject: RE: EFISTUB arguments in Dell BIOS
+Thread-Topic: EFISTUB arguments in Dell BIOS
+Thread-Index: AQHWh1rakaIV+ox6skSrEBsPAF/koKliOdJQ
+Date:   Thu, 10 Sep 2020 20:40:06 +0000
+Message-ID: <DM6PR19MB2636BAC48CDC12B08BF611D3FA270@DM6PR19MB2636.namprd19.prod.outlook.com>
+References: <CAO18KQgxfCBFacLxpLZJZ6iDmEA83DUwG2kjfPyJmPZHPQZ5vQ@mail.gmail.com>
+ <20200907170021.GA2284449@rani.riverdale.lan>
+ <CAO18KQg9wLFF8KxZdP4fVv-vk_CpfV+_v38WnCJ-uqEAJ3FNwA@mail.gmail.com>
+ <20200908223255.GA276578@rani.riverdale.lan>
+ <CAO18KQgPJu2uZzBuCTsKOJydnbgsNM+EMvcJRDBE3UhSKHtpfw@mail.gmail.com>
+ <20200909190038.GA474185@rani.riverdale.lan>
+ <CAO18KQjGdcZD8bts36GuicJO8_iprbryXdh5vM+-GfAbcKV==Q@mail.gmail.com>
+ <20200909203830.GA490605@rani.riverdale.lan>
+ <CAMj1kXEAkR9_tN_o0m30e+HY_F_xf3wY_uSDUiWYOkaugcvoNw@mail.gmail.com>
+In-Reply-To: <CAMj1kXEAkR9_tN_o0m30e+HY_F_xf3wY_uSDUiWYOkaugcvoNw@mail.gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+msip_labels: MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_Enabled=True;
+ MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_SiteId=945c199a-83a2-4e80-9f8c-5a91be5752dd;
+ MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_Owner=Mario_Limonciello@Dell.com;
+ MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_SetDate=2020-09-10T19:15:00.6663464Z;
+ MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_Name=External Public;
+ MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_Application=Microsoft Azure
+ Information Protection;
+ MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_ActionId=401ee68d-d2f0-4727-8399-06b346e6f17c;
+ MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_Extended_MSFT_Method=Manual
+authentication-results: kernel.org; dkim=none (message not signed)
+ header.d=none;kernel.org; dmarc=none action=none header.from=Dell.com;
+x-originating-ip: [76.251.167.31]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 3ce1b729-f48f-4d05-b37b-08d855c9b3e7
+x-ms-traffictypediagnostic: DM5PR19MB1034:
+x-microsoft-antispam-prvs: <DM5PR19MB1034C5CFB1651E104926654FFA270@DM5PR19MB1034.namprd19.prod.outlook.com>
+x-exotenant: 2khUwGVqB6N9v58KS13ncyUmMJd8q4
+x-ms-oob-tlc-oobclassifiers: OLM:10000;
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: XSjMzFWC6spSy977xaraY//IwTfQ43tcnimz1PAE6SCoSgd/V+lRkBfehm85LuoJcYLsV2gxVYUigbB2pwzgUIKIV+NWY8f62O0xciSFPire6aoerG/n5pSAeAr/+uFEBS5jqYiIKXLU0189wj0NE1tmvenumCCdW9JOBIPvG0OlyRcFik0lpuvjf7064v0B5txtKfuXPS4msK/Kw8c67KR0C1/68mukgR6y7cHQrWjeaAO+GlBdSI2Je0pGjkfmxJ5E+o/X9lLQu9x32FpLriBP05398P4e/kA7MmQu1jmfS9iZU3YXezPJ9LQs7VetHRGWvp7U7bQ07VyeeXc4WLWmgE/xUTFpeZf0wnAr4G+78WLiqUp558/ebSRDdflvjj5bvLmsjhrLuYmyTfm2NQ==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR19MB2636.namprd19.prod.outlook.com;PTR:;CAT:NONE;SFS:(366004)(376002)(346002)(136003)(396003)(39860400002)(186003)(478600001)(55016002)(76116006)(66946007)(71200400001)(66476007)(26005)(64756008)(5660300002)(6506007)(7696005)(66446008)(66556008)(9686003)(86362001)(316002)(52536014)(110136005)(4326008)(33656002)(8676002)(54906003)(2906002)(8936002)(786003)(966005);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata: tG8wTazyrFS2NhyvnBOalUw0csSfvvtZRc/FqjP3zdljQQ+gpi7oCJgzquZGas9F+1gXrkl2CaHkVF8bskFlYLAKNtft7XMdsbeOnZxxlU+p/sz4H8asxrO8n9x1GWikbjuwCml4SuMVx+hXyNcWq7LNFHxYOah1mqbM3Ku2ulzXoKcTtRbQlhUcrtp6J3aXa+rnyHoguO4rPlWyX3IBBeOmCd741Z7GStcZZMEYhqCazmvyaPX7jGvGF8+NeeeuARw5cQo2NdI/q5Vcm+5oJT1tZ9w1rcOXTe57O2+GoSv8QuaLSJmM0JmOBPChwb3oankX5j4KBxCq7H0oZU10N919/iBf1NENOQg82zJW0p1cZMF2zTBmhDKp/dnnKE3pHgamK+xQYKOPuPfEJzR5Cix+/Xt8YP31Wv543IxbwlsFFemojx7VSxptgIk/34DBrE60paVdQW0Dcf94hsJzzQzFcTdmC43kQkhiPDfU346rDuT99vDzVAHysC+5BtEPPJiqbPxIq7SE7i0vf/u2IMtXVNuku/oYc4fHgyEwCE9tgtA3v7jqEQH0Cy9fvFyGBoyBFqcF95dX2wRggNhkT1+SPj8kVTnsgzrcP0gWVzl0JHDvtdWZqG4YCYsjmdEq14vsQ0ylSyPG9nVe674NLg==
+x-ms-exchange-transport-forked: True
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-References: <20200909151623.16153-1-ardb@kernel.org> <mhng-8fe8da11-e991-494e-bfc7-fd3e563dad75@palmerdabbelt-glaptop1>
- <CAOnJCUL+NietRhAvcGhqrdUOvxxsOpb5zAJLnXRekTv0g7o4yg@mail.gmail.com>
- <CAOnJCULe5+dJmJuCJanMrYj_CX2BRN5=6VWYEZ6vyg8Y6jBWSw@mail.gmail.com> <CAMj1kXGNJmZ92Epjvpd0wbMTknDtqU3moRna9weLtutJpy2qzA@mail.gmail.com>
-In-Reply-To: <CAMj1kXGNJmZ92Epjvpd0wbMTknDtqU3moRna9weLtutJpy2qzA@mail.gmail.com>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Thu, 10 Sep 2020 17:08:07 +0300
-X-Gmail-Original-Message-ID: <CAMj1kXG6VRXOPRhHmeyiPP06BVByEYsqYE001BZYyRDqtvyDBg@mail.gmail.com>
-Message-ID: <CAMj1kXG6VRXOPRhHmeyiPP06BVByEYsqYE001BZYyRDqtvyDBg@mail.gmail.com>
-Subject: Re: [PATCH RFC/RFT 0/3] efi/libstub: arm32: Remove dependency on dram_base
-To:     Atish Patra <atishp@atishpatra.org>
-Cc:     Palmer Dabbelt <palmer@dabbelt.com>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        Maxim Uvarov <maxim.uvarov@linaro.org>,
-        Heinrich Schuchardt <xypron.glpk@gmx.de>,
-        Atish Patra <Atish.Patra@wdc.com>,
-        Jens Wiklander <jens.wiklander@linaro.org>,
-        =?UTF-8?Q?Fran=C3=A7ois_Ozog?= <francois.ozog@linaro.org>,
-        Etienne CARRIERE <etienne.carriere@st.com>,
-        AKASHI Takahiro <takahiro.akashi@linaro.org>,
-        Patrice CHOTARD <patrice.chotard@st.com>,
-        Sumit Garg <sumit.garg@linaro.org>,
-        Grant Likely <Grant.Likely@arm.com>,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-        Christophe Priouzeau <christophe.priouzeau@linaro.org>,
-        Rouven Czerwinski <r.czerwinski@pengutronix.de>,
-        Patrick Delaunay <patrick.delaunay@st.com>
-Content-Type: text/plain; charset="UTF-8"
+X-OriginatorOrg: Dell.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR19MB2636.namprd19.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3ce1b729-f48f-4d05-b37b-08d855c9b3e7
+X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Sep 2020 20:40:06.6789
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 945c199a-83a2-4e80-9f8c-5a91be5752dd
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: gMCsl85xX5g4uWObN9vy5S04g2XrOuvyuYE+woJaGSzmOU+k/bjvrAmjn013nTRDwswN9iqyP/lrZ7sDxdOC2RuH5/4mEnE2BiH+eWMBhIY=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM5PR19MB1034
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235,18.0.687
+ definitions=2020-09-10_09:2020-09-10,2020-09-10 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ impostorscore=0 suspectscore=0 adultscore=0 spamscore=0 phishscore=0
+ mlxlogscore=999 malwarescore=0 bulkscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2006250000 definitions=main-2009100184
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 bulkscore=0
+ suspectscore=0 adultscore=0 phishscore=0 mlxscore=0 spamscore=0
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2009100184
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, 10 Sep 2020 at 13:04, Ard Biesheuvel <ardb@kernel.org> wrote:
->
-> On Thu, 10 Sep 2020 at 04:34, Atish Patra <atishp@atishpatra.org> wrote:
-> >
-> > On Wed, Sep 9, 2020 at 2:44 PM Atish Patra <atishp@atishpatra.org> wrote:
-> > >
-> > > On Wed, Sep 9, 2020 at 1:52 PM Palmer Dabbelt <palmer@dabbelt.com> wrote:
-> > > >
-> > > > On Wed, 09 Sep 2020 08:16:20 PDT (-0700), ardb@kernel.org wrote:
-> > > > > Maxim reports boot failures on platforms that describe reserved memory
-> > > > > regions in DT that are disjoint from system DRAM, and which are converted
-> > > > > to EfiReservedMemory regions by the EFI subsystem in u-boot.
-> > > > >
-> > > > > As it turns out, the whole notion of discovering the base of DRAM is
-> > > > > problematic, and it would be better to simply rely on the EFI memory
-> > > > > allocation routines instead, and derive the FDT and initrd allocation
-> > > > > limits from the actual placement of the kernel (which is what defines
-> > > > > the start of the linear region anyway)
-> > > > >
-> > > > > Finally, we should be able to get rid of get_dram_base() entirely.
-> > > > > However, as RISC-V only just started using it, we will need to address
-> > > > > that at a later time.
-> > > >
-> > > > Looks like we're using dram_base to derive two argumets to
-> > > > efi_relocate_kernel(): the preferred load address and the minimum load address.
-> > > > I don't see any reason why we can't use the same PAGE_OFFSET-like logic that
-> > > > x86 uses for the minimum load address, but I don't think we have any mechanism
-> > > > like "struct boot_params" so we'd need to come up with something.
-> > > >
-> > >
-> > > As discussed in the other thread
-> > > (https://www.spinics.net/lists/linux-efi/msg20262.html),
-> > > we don't need to do anything special. efi_relocate_kernel can just
-> > > take preferred address as 0
-> > > so that efi_bs_alloc will fail and efi_low_alloc_above will be used to
-> > > allocate 2MB/4MB aligned address as per requirement.
-> > >
-> > > I don't think the other changes in this series will cause any issue
-> > > for RISC-V. I will test it and update anyways.
-> > >
-> > > > > Cc: Maxim Uvarov <maxim.uvarov@linaro.org>
-> > > > > Cc: Heinrich Schuchardt <xypron.glpk@gmx.de>
-> > > > > Cc: Atish Patra <atish.patra@wdc.com>
-> > > > > Cc: Palmer Dabbelt <palmer@dabbelt.com>
-> > > > > Cc: Jens Wiklander <jens.wiklander@linaro.org>
-> > > > > Cc: Francois Ozog <francois.ozog@linaro.org>
-> > > > > Cc: Etienne CARRIERE <etienne.carriere@st.com>
-> > > > > Cc: Takahiro Akashi <takahiro.akashi@linaro.org>
-> > > > > Cc: Patrice CHOTARD <patrice.chotard@st.com>
-> > > > > Cc: Sumit Garg <sumit.garg@linaro.org>
-> > > > > Cc: Grant Likely <Grant.Likely@arm.com>
-> > > > > Cc: Ilias Apalodimas <ilias.apalodimas@linaro.org>
-> > > > > Cc: Christophe Priouzeau <christophe.priouzeau@linaro.org>
-> > > > > Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-> > > > > Cc: Patrick DELAUNAY <patrick.delaunay@st.com>
-> > > > >
-> > > > > Ard Biesheuvel (3):
-> > > > >   efi/libstub: Export efi_low_alloc_above() to other units
-> > > > >   efi/libstub: Use low allocation for the uncompressed kernel
-> > > > >   efi/libstub: base FDT and initrd placement on image address not DRAM
-> > > > >     base
-> > > > >
-> > > > >  arch/arm/include/asm/efi.h                |   6 +-
-> > > > >  arch/arm64/include/asm/efi.h              |   2 +-
-> > > > >  drivers/firmware/efi/libstub/arm32-stub.c | 177 ++++----------------
-> > > > >  drivers/firmware/efi/libstub/efi-stub.c   |   2 +-
-> > > > >  drivers/firmware/efi/libstub/efistub.h    |   3 +
-> > > > >  drivers/firmware/efi/libstub/relocate.c   |   4 +-
-> > > > >  6 files changed, 47 insertions(+), 147 deletions(-)
-> > >
-> >
-> > I verified the above patches along with the following RISC-V specific changes.
-> >
-> > diff --git a/arch/riscv/include/asm/efi.h b/arch/riscv/include/asm/efi.h
-> > index 93c305a638f4..dd6ceea9d548 100644
-> > --- a/arch/riscv/include/asm/efi.h
-> > +++ b/arch/riscv/include/asm/efi.h
-> > @@ -37,7 +37,7 @@ static inline unsigned long
-> > efi_get_max_fdt_addr(unsigned long dram_base)
-> >  static inline unsigned long efi_get_max_initrd_addr(unsigned long dram_base,
-> >                                                     unsigned long image_addr)
-> >  {
-> > -       return dram_base + SZ_256M;
-> > +       return image_addr + SZ_256M;
-> >  }
-> >
->
-> Ah yes, we need this change as well - this is a bit unfortunate since
-> that creates a conflict with the RISC-V tree.
->
-> > --- a/drivers/firmware/efi/libstub/riscv-stub.c
-> > +++ b/drivers/firmware/efi/libstub/riscv-stub.c
-> > @@ -100,7 +100,7 @@ efi_status_t handle_kernel_image(unsigned long *image_addr,
-> >          */
-> >         preferred_addr = round_up(dram_base, MIN_KIMG_ALIGN) + MIN_KIMG_ALIGN;
-> >         status = efi_relocate_kernel(image_addr, kernel_size, *image_size,
-> > -                                    preferred_addr, MIN_KIMG_ALIGN, dram_base);
-> > +                                    0, MIN_KIMG_ALIGN, 0);
-> >
-> > FWIW: Tested-by: Atish Patra <atish.patra@wdc.com>
->
-> Thanks for confirming.
-
-OK,
-
-So, just to annoy Palmer and you more than I already have up to this
-point: any chance we could do a final respin of the RISC-V code on top
-of these changes? They are important for ARM, and I would prefer these
-to be merged in a way that makes it easy to backport them to -stable
-if needed.
-
-So what I would suggest is:
-- I will create a new 'shared-efi' tag/stable branch containing the
-existing two patches, as well as these changes (in a slightly updated
-form)
-- Palmer creates a new topic branch in the riscv repo based on this
-shared tag, and applies the [updated] RISC-V patches on top
-- Palmer drops the current version of the riscv patches from
-riscv/for-next, and merges the topic branch into it instead.
-
-Again, sorry to be a pain, but I think this is the cleanest way to get
-these changes queued up for v5.10 without painting ourselves into a
-corner too much when it comes to future follow-up changes.
+PiA+DQo+ID4gT2ssIHRoaXMgaXMgbGFpZCBvdXQgaW4gc2VjdGlvbiAzLjEgb2YgdGhlIHNwZWMg
+d2hpY2ggZGVmaW5lcyB0aGUgZm9ybWF0DQo+ID4gb2YgdGhlIEVGSV9MT0FEX09QVElPTiBkZXNj
+cmlwdG9yLiBEZWxsJ3MgQklPUyBpcyBwYXNzaW5nIHRoZSBlbnRpcmUNCj4gPiBkZXNjcmlwdG9y
+IGluc3RlYWQgb2YganVzdCB0aGUgT3B0aW9uYWxEYXRhIHBhcnQuDQo+ID4NCj4gPiBPcHRpb25h
+bERhdGEgICAgVGhlIHJlbWFpbmluZyBieXRlcyBpbiB0aGUgbG9hZCBvcHRpb24gZGVzY3JpcHRv
+ciBhcmUgYQ0KPiA+ICAgICAgICAgICAgICAgICBiaW5hcnkgZGF0YSBidWZmZXIgdGhhdCBpcyBw
+YXNzZWQgdG8gdGhlIGxvYWRlZCBpbWFnZS4NCj4gPiAgICAgICAgICAgICAgICAgSWYgdGhlIGZp
+ZWxkIGlzIHplcm8gYnl0ZXMgbG9uZywgYSBOdWxsIHBvaW50ZXIgaXMNCj4gPiAgICAgICAgICAg
+ICAgICAgcGFzc2VkIHRvIHRoZSBsb2FkZWQgaW1hZ2UuIFRoZSBudW1iZXIgb2YgYnl0ZXMgaW4N
+Cj4gPiAgICAgICAgICAgICAgICAgT3B0aW9uYWxEYXRhIGNhbiBiZSBjb21wdXRlZCBieSBzdWJ0
+cmFjdGluZyB0aGUgc3RhcnRpbmcNCj4gPiAgICAgICAgICAgICAgICAgb2Zmc2V0IG9mIE9wdGlv
+bmFsRGF0YSBmcm9tIHRvdGFsIHNpemUgaW4gYnl0ZXMgb2YgdGhlDQo+ID4gICAgICAgICAgICAg
+ICAgIEVGSV9MT0FEX09QVElPTi4NCj4gPg0KPiA+IGh0dHBzOi8vdWVmaS5vcmcvc2l0ZXMvZGVm
+YXVsdC9maWxlcy9yZXNvdXJjZXMvVUVGSV9TcGVjXzJfOF9maW5hbC5wZGYNCj4gPg0KPiANCj4g
+VGhpcyB2YWd1ZWx5IHJpbmdzIGEgYmVsbCBzbyBJIGhhdmUgY2MnZWQgc29tZSBmb2xrcyB3aG8g
+bWF5IGhhdmUgcnVuDQo+IGludG8gdGhpcyBpbiB0aGUgcGFzdC4gQ29tcGxldGUgdGhyZWFkIGNh
+biBiZSBmb3VuZCBhdCBbMF0NCj4gDQoNClRoYW5rcyBmb3Igc2hhcmluZyB0aGUgY29udGV4dC4g
+IFRoaXMgcmluZ3MgYSBiZWxsIGZvciBtZSB3aXRoIHRoZSBsYXN0IHRpbWUNCkkgcmVjYWxsIHdv
+cnJ5aW5nIGFib3V0IHRoZSBMb2FkIE9wdGlvbnMgYW5kIHRoaXMgY29tbWl0IGluIHNoaW0gY29t
+ZXMgdG8NCm1pbmQ6DQoNCmh0dHBzOi8vZ2l0aHViLmNvbS9yaGJvb3Qvc2hpbS9jb21taXQvMzMy
+MjI1N2U2MTFlMjAwMGY3OTcyNmQyOTViYjQ4NDViYmU0NDllNw0KDQpJdCBzZWVtcyB0byBtZSB0
+aGUgc2hpbSBhcHByb2FjaCB0byB0aGUgcHJvYmxlbSBpc24ndCB0b28gYmlnIG9mIGEgZGVhbDoN
+CmNvdW50IHRoZSBudW1iZXIgb2Ygc3RyaW5ncyBhbmQgaWYgaXQncyBncmVhdGVyIG9yIGVxdWFs
+IHRvIDIsIHRoZW4gdGhyb3cNCm91dCB0aGUgZmlyc3Qgb25lLiAgSXQncyBhbHNvIGFscmVhZHkg
+YmVlbiB1c2VkIGluIHByb2R1Y3Rpb24gY29kZSBhY3Jvc3MgYSANCnRvbiBvZiBwbGF0Zm9ybXMg
+Zm9yIHNldmVyYWwgeWVhcnMsIHNvIGlmIHRoZXJlIHdhcyBtYWpvciBicmVha2FnZXMgSSB3b3Vs
+ZA0KZXhwZWN0IHRoZXkncmUgY292ZXJlZCBpbiB0aGF0IGNvZGUgdG9vIGJ5IG5vdy4NCg0KPiBU
+aGUgZmlybXdhcmUgaXMgb2J2aW91c2x5IHBhc3NpbmcgdGhlIHdyb25nIGRhdGEsIGFuZCBJIGFt
+IHJlbHVjdGFudA0KPiB0byBxdWlyayB0aGlzIG91dCwgc2luY2Ugd2UnZCBoYXZlIHRvIGludGVy
+cHJldCB0aGUgY29udGVudHMgb2YgdGhlc2UNCj4gVUVGSSB2YXJpYWJsZXMsIGFuZCBnaXZlbiB0
+aGUgYW1vdW50IG9mICd2YWx1ZSBhZGQnIGJ5IHRoZSBCSU9TDQo+IHZlbmRvcnMgaW4gdGhpcyBh
+cmVhLCB3ZSBtYXkgZW5kIHVwIGJyZWFraW5nIHRoaW5ncyBvbiBvdGhlcg0KPiBwbGF0Zm9ybXMu
+DQo+IA0KPiBbMF0gaHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvbGludXgtDQo+IGVmaS8yMDIwMDkw
+OTIwMzgzMC5HQTQ5MDYwNUByYW5pLnJpdmVyZGFsZS5sYW4vDQoNCkluIHRoZSBkZWZlbnNlIG9m
+IG90aGVycyB3aG8gaGF2ZSBpbnRlcnByZXRlZCB0aGUgc3BlYywgYXMgSSdtIHJlYWRpbmcgaXQg
+SSdtDQpub3QgY29udmluY2VkIHRoYXQgaXQgZXhwbGljaXRseSBjYWxscyBvdXQgd2hhdCBkYXRh
+IHNob3VsZCBiZSBwYXNzZWQuIEluDQpzZWN0aW9uIDcuNCB3aGljaCBleHBsYWlucyBob3cgTG9h
+ZEltYWdlKCkgYmVoYXZlcy4NCg0KYGBgDQpPbmNlIHRoZSBpbWFnZSBpcyBsb2FkZWQsIGZpcm13
+YXJlIGNyZWF0ZXMgYW5kIHJldHVybnMgYW4gRUZJX0hBTkRMRSB0aGF0IGlkZW50aWZpZXMgdGhl
+IGltYWdlIGFuZA0Kc3VwcG9ydHMgRUZJX0xPQURFRF9JTUFHRV9QUk9UT0NPTCBhbmQgdGhlIEVG
+SV9MT0FERURfSU1BR0VfREVWSUNFX1BBVEhfUFJPVE9DT0wuDQpUaGUgY2FsbGVyIG1heSBmaWxs
+IGluIHRoZSBpbWFnZeKAmXMg4oCcbG9hZCBvcHRpb25z4oCdIGRhdGENCmBgYA0KDQpJbiB0aGlz
+IGNvbnRleHQgdGhlIGNhbGxlciBpcyBtb3N0IGxpa2VseSBCRFMsIGFuZCBpdCdzICJvcHRpb25h
+bCIgdG8gbG9hZA0KY29udGVudCBpbi4gIFdpdGhpbiBzZWN0aW9uIDkuMSB3aGljaCBkZXNjcmli
+ZXMgdGhlIGxvYWRlZCBpbWFnZSBwcm90b2NvbCB0aGUgZXhhY3QNCmZvcm1hdCBvZiB0aGUgY29u
+dGVudCBvZiAiTG9hZE9wdGlvbnMiIGlzIG5vdCBkZXNjcmliZWQuICBJIGNhbiBzZWUgYW4gaW50
+ZXJwcmV0YXRpb24NCml0IHNob3VsZCBiZSB0aGUgZnVsbCBkZXNjcmlwdG9yIG9yIHRoYXQgaXQg
+Y2FuIGJlIHRoZSBPcHRpb25hbERhdGEuDQoNCkFuZCBhY3R1YWxseSBpZiB5b3UgbG9va3MgaW4g
+aGlzdG9yeSBmcm9tIEVESyBjb2RlLCB5b3UgY2FuIHNlZSB0aGF0IGl0J3MgYmVlbiBkb25lIHRo
+YXQgd2F5IHRoZXJlIHRvbyBhdCBsZWFzdCBhdCBvbmUgdGltZToNCmh0dHBzOi8vZ2l0aHViLmNv
+bS90aWFub2NvcmUvZWRrMi9ibG9iL2I4ZDA2MjkzY2FhMTIyZjljM2JkMmFlMzJhNmMzZjc5MGEw
+NTRlMDMvSW50ZWxGcmFtZXdvcmtNb2R1bGVQa2cvTGlicmFyeS9HZW5lcmljQmRzTGliL0Jkc0Jv
+b3QuYyNMMjQzMw0KDQoNCkphY29ibywNCg0KQ2FuIHlvdSBwcm92aWRlIHNvbWUgbW9yZSBkZXRh
+aWxzIG9uIHlvdXIgc3lzdGVtIHRoYXQgaXMgcmVwcm9kdWNpbmcNCnRoaXM/ICBNb2RlbCBudW1i
+ZXIsIEZXIHZlcnNpb24gd291bGQgYmUgdXNlZnVsLg0KVGhlIGxpbmtzIHByb3ZpZGVkIGVhcmxp
+ZXIgb24gYXJlIG9uIHByZXR0eSBvbGQgc3R1ZmYsIHNvIGtub3dpbmcgdGhhdCB0aGlzDQppcyBh
+IHByb2JsZW0gb24gc29tZXRoaW5nIG1vcmUgY3VycmVudCB3b3VsZCBiZSBnb29kLg0KDQpJIGd1
+ZXNzIHRoZSBvdGhlciBvcHRpb24gaWYgQXJkIGNob29zZXMgbm90IHRvIGFkb3B0IGEgcXVpcmsg
+Zm9yIHRoaXMNCmRlc2NyaWJlZCBiZWhhdmlvciBpcyB0byB1c2Ugc2hpbSB0byBsb2FkIHRoZSBr
+ZXJuZWwgZWZpc3R1YiwgYW5kIGxldA0KaXQgZG8gdGhlIHNwbGl0IGZvciB5b3UuDQo=
