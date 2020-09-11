@@ -2,236 +2,407 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E9961265DCF
-	for <lists+linux-efi@lfdr.de>; Fri, 11 Sep 2020 12:27:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1FD7A26611A
+	for <lists+linux-efi@lfdr.de>; Fri, 11 Sep 2020 16:22:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725836AbgIKK13 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 11 Sep 2020 06:27:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43792 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725710AbgIKK11 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 11 Sep 2020 06:27:27 -0400
-Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com [IPv6:2607:f8b0:4864:20::542])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14A86C061573
-        for <linux-efi@vger.kernel.org>; Fri, 11 Sep 2020 03:27:27 -0700 (PDT)
-Received: by mail-pg1-x542.google.com with SMTP id 67so6315635pgd.12
-        for <linux-efi@vger.kernel.org>; Fri, 11 Sep 2020 03:27:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=iZukon98544uKMJxuSYOk+tTtmLWIDBAaxjb6julkA0=;
-        b=gtPAJhHyaE+Y1Vl3eeuU3fp++hJQHPQ0ALhsXj5ATr8xe3IpcvXHGGq3NGNrwNUCEM
-         b5m0CqrUwWjZf6DdtzZHTlad6T2240PuhfSSEiL01hCMsjl6gPh+OJ+VjV59nKv6uxbu
-         CK95niZqq4na1EK6hcQpbXBS4+JZLBYfm3MnkqWnQx2VhgPUC2NSEI0KHwRpgY3h7ngV
-         FfuP6o3eVs49RhUQ441tQZ8l+Gq6t6NHLW7PW03qhEODAV7Tpnw44Pfpt73kKJ42AfZo
-         j3BxCDVnWPdrNXpSRwwjzbuZ/hbIcRWqK1SREFpODB0hQbCShLGEJ+DEc6d8m69/BtH0
-         bhBg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=iZukon98544uKMJxuSYOk+tTtmLWIDBAaxjb6julkA0=;
-        b=da4QISvRCfEmYyQB/mb0Z4AfqKkS5hNlqUT0JczaDCgqkIATrR4112yQZwBLqndLRw
-         r6HjV/9ibyR8aJAejRjUTNRHdbmVuh+5xKzfUF6vBBDu5r3Gy88koeTMiumNJa2kL4TD
-         ol5mP6DTpyzHmqtJtw4mrTE3McVxfJzDqg/22JKmniQO9k5meBtrpZ82kY/GpuqZNgFp
-         avJWqeMRZwQDXMCe7uxVkOMicOVp11DHMLv9wrgbOFivQCNc7CFUBdufEgpf2FGwNQ20
-         MSSUUGvY9DPGL+aCk0GeIgGApX8blJAGpiufrsACxAG39uoToStXzPaHfFrJSRy9bwXw
-         HLWg==
-X-Gm-Message-State: AOAM5328pYiT5sJA1OlJQEV/tctmKIE0gtpOsOTz1fhWQDextIfW7vHB
-        Bass8gzaWegl+cdNi+fcc16khbAS3b4z5L1eEsTxaw==
-X-Google-Smtp-Source: ABdhPJyzjD+TUN0KJe7I5di5orbsKmFIizF3csoFZlUvf/fHDcTNJhUkiIrtoN8SQ6LK6N5mV0SSYhxcVrEZQR1QMAk=
-X-Received: by 2002:a17:902:82c1:: with SMTP id u1mr1467390plz.38.1599820046560;
- Fri, 11 Sep 2020 03:27:26 -0700 (PDT)
+        id S1726259AbgIKOWn (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 11 Sep 2020 10:22:43 -0400
+Received: from mail.kernel.org ([198.145.29.99]:56028 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726163AbgIKNMB (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Fri, 11 Sep 2020 09:12:01 -0400
+Received: from mail-ot1-f53.google.com (mail-ot1-f53.google.com [209.85.210.53])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 17A08222B6;
+        Fri, 11 Sep 2020 13:09:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1599829768;
+        bh=S9PcerItKM6Cw2ZD8pFOea9n8/bLmZUNu5udVH7a+p0=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=YhcyaookAPDw51Q990U/H4iHSkes7SAV///xeaEFkONJm6DmW0cXVVWV3LXDSdum8
+         ycr1CXu+zS721bXn5D9sJLbBskbbgkfYbKYIVgK2Rrw5MjhrGuBiGi2BobWRIKGOk5
+         UV6U3HkzjGkvyXbUuNntJg+h8XKU9wmhd9VT8/SA=
+Received: by mail-ot1-f53.google.com with SMTP id e23so8272298otk.7;
+        Fri, 11 Sep 2020 06:09:28 -0700 (PDT)
+X-Gm-Message-State: AOAM532VyW06cYhNW/r3H/dlrMGep7fQ6qsywGUTeXwgjKUQcxpIAyBm
+        KWMQut79MVBQnpdhea8kVAFzOkgtkSwMNkV6i/k=
+X-Google-Smtp-Source: ABdhPJytyBe4sZU6viXs7xUNVRFVi70nft+TJUekfBR3rj23zgOVrBavkhlO4VjwFFWqd5hvTTRqDBvo0Cw6Zw+MsuI=
+X-Received: by 2002:a9d:6193:: with SMTP id g19mr1130295otk.108.1599829767136;
+ Fri, 11 Sep 2020 06:09:27 -0700 (PDT)
 MIME-Version: 1.0
-References: <CAMj1kXG6VRXOPRhHmeyiPP06BVByEYsqYE001BZYyRDqtvyDBg@mail.gmail.com>
- <mhng-f3ca14fc-58f7-423e-8abe-a85de1a2d55b@palmerdabbelt-glaptop1> <CAMj1kXH5pA-9uWCRzvN2OKzxTr0mG8knZZnpuOPn+b5BBAn4dw@mail.gmail.com>
-In-Reply-To: <CAMj1kXH5pA-9uWCRzvN2OKzxTr0mG8knZZnpuOPn+b5BBAn4dw@mail.gmail.com>
-From:   Maxim Uvarov <maxim.uvarov@linaro.org>
-Date:   Fri, 11 Sep 2020 13:27:15 +0300
-Message-ID: <CAD8XO3YQfWQv_WxWuJ0ur_chfK-iSjDwhWA4KWXP85VOYCi_qQ@mail.gmail.com>
-Subject: Re: [PATCH RFC/RFT 0/3] efi/libstub: arm32: Remove dependency on dram_base
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     Palmer Dabbelt <palmer@dabbelt.com>,
-        Atish Patra <atishp@atishpatra.org>,
+References: <20200828172036.8056-1-atish.patra@wdc.com> <20200828172036.8056-6-atish.patra@wdc.com>
+In-Reply-To: <20200828172036.8056-6-atish.patra@wdc.com>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Fri, 11 Sep 2020 16:09:15 +0300
+X-Gmail-Original-Message-ID: <CAMj1kXH82MGDLNkyWae=wqNxZY7ZMvrDU3gNAOSF+m9YFGe7aw@mail.gmail.com>
+Message-ID: <CAMj1kXH82MGDLNkyWae=wqNxZY7ZMvrDU3gNAOSF+m9YFGe7aw@mail.gmail.com>
+Subject: Re: [PATCH v7 5/9] RISC-V: Add PE/COFF header for EFI stub
+To:     Atish Patra <atish.patra@wdc.com>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Anup Patel <anup@brainfault.org>,
+        Alistair Francis <alistair.francis@wdc.com>,
+        Anup Patel <anup.patel@wdc.com>,
+        Arvind Sankar <nivedita@alum.mit.edu>,
+        Greentime Hu <greentime.hu@sifive.com>,
+        Ingo Molnar <mingo@kernel.org>,
         linux-efi <linux-efi@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Heinrich Schuchardt <xypron.glpk@gmx.de>,
-        Atish Patra <Atish.Patra@wdc.com>,
-        Jens Wiklander <jens.wiklander@linaro.org>,
-        =?UTF-8?Q?Fran=C3=A7ois_Ozog?= <francois.ozog@linaro.org>,
-        Etienne CARRIERE <etienne.carriere@st.com>,
-        Takahiro Akashi <takahiro.akashi@linaro.org>,
-        Patrice CHOTARD <patrice.chotard@st.com>,
-        Sumit Garg <sumit.garg@linaro.org>,
-        Grant Likely <Grant.Likely@arm.com>,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-        Christophe Priouzeau <christophe.priouzeau@linaro.org>,
-        Rouven Czerwinski <r.czerwinski@pengutronix.de>,
-        Patrick Delaunay <patrick.delaunay@st.com>
+        linux-riscv <linux-riscv@lists.infradead.org>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Mike Rapoport <rppt@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Paul Walmsley <paul.walmsley@sifive.com>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Changes look fine for and should fix booting, while I can test them in
-my environment next week.
+On Fri, 28 Aug 2020 at 20:20, Atish Patra <atish.patra@wdc.com> wrote:
+>
+> Linux kernel Image can appear as an EFI application With appropriate
+> PE/COFF header fields in the beginning of the Image header. An EFI
+> application loader can directly load a Linux kernel Image and an EFI
+> stub residing in kernel can boot Linux kernel directly.
+>
+> Add the necessary PE/COFF header.
+>
+> Signed-off-by: Atish Patra <atish.patra@wdc.com>
+> Link: https://lore.kernel.org/r/20200421033336.9663-3-atish.patra@wdc.com
+> [ardb: - use C prefix for c.li to ensure the expected opcode is emitted
+>        - align all image sections according to PE/COFF section alignment ]
+> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> Reviewed-by: Anup Patel <anup@brainfault.org>
 
-Thanks,
-Maxim.
+Since you need to respin this anyway, one comment below on a thing
+that I spotted while revisiting these patches.
 
-On Fri, 11 Sep 2020 at 10:56, Ard Biesheuvel <ardb@kernel.org> wrote:
+> ---
+>  arch/riscv/include/asm/sections.h |  13 ++++
+>  arch/riscv/kernel/Makefile        |   4 ++
+>  arch/riscv/kernel/efi-header.S    | 104 ++++++++++++++++++++++++++++++
+>  arch/riscv/kernel/head.S          |  16 +++++
+>  arch/riscv/kernel/image-vars.h    |  51 +++++++++++++++
+>  arch/riscv/kernel/vmlinux.lds.S   |  22 ++++++-
+>  6 files changed, 208 insertions(+), 2 deletions(-)
+>  create mode 100644 arch/riscv/include/asm/sections.h
+>  create mode 100644 arch/riscv/kernel/efi-header.S
+>  create mode 100644 arch/riscv/kernel/image-vars.h
 >
-> On Fri, 11 Sep 2020 at 05:16, Palmer Dabbelt <palmer@dabbelt.com> wrote:
-> >
-> > On Thu, 10 Sep 2020 07:08:07 PDT (-0700), ardb@kernel.org wrote:
-> > > On Thu, 10 Sep 2020 at 13:04, Ard Biesheuvel <ardb@kernel.org> wrote:
-> > >>
-> > >> On Thu, 10 Sep 2020 at 04:34, Atish Patra <atishp@atishpatra.org> wrote:
-> > >> >
-> > >> > On Wed, Sep 9, 2020 at 2:44 PM Atish Patra <atishp@atishpatra.org> wrote:
-> > >> > >
-> > >> > > On Wed, Sep 9, 2020 at 1:52 PM Palmer Dabbelt <palmer@dabbelt.com> wrote:
-> > >> > > >
-> > >> > > > On Wed, 09 Sep 2020 08:16:20 PDT (-0700), ardb@kernel.org wrote:
-> > >> > > > > Maxim reports boot failures on platforms that describe reserved memory
-> > >> > > > > regions in DT that are disjoint from system DRAM, and which are converted
-> > >> > > > > to EfiReservedMemory regions by the EFI subsystem in u-boot.
-> > >> > > > >
-> > >> > > > > As it turns out, the whole notion of discovering the base of DRAM is
-> > >> > > > > problematic, and it would be better to simply rely on the EFI memory
-> > >> > > > > allocation routines instead, and derive the FDT and initrd allocation
-> > >> > > > > limits from the actual placement of the kernel (which is what defines
-> > >> > > > > the start of the linear region anyway)
-> > >> > > > >
-> > >> > > > > Finally, we should be able to get rid of get_dram_base() entirely.
-> > >> > > > > However, as RISC-V only just started using it, we will need to address
-> > >> > > > > that at a later time.
-> > >> > > >
-> > >> > > > Looks like we're using dram_base to derive two argumets to
-> > >> > > > efi_relocate_kernel(): the preferred load address and the minimum load address.
-> > >> > > > I don't see any reason why we can't use the same PAGE_OFFSET-like logic that
-> > >> > > > x86 uses for the minimum load address, but I don't think we have any mechanism
-> > >> > > > like "struct boot_params" so we'd need to come up with something.
-> > >> > > >
-> > >> > >
-> > >> > > As discussed in the other thread
-> > >> > > (https://www.spinics.net/lists/linux-efi/msg20262.html),
-> > >> > > we don't need to do anything special. efi_relocate_kernel can just
-> > >> > > take preferred address as 0
-> > >> > > so that efi_bs_alloc will fail and efi_low_alloc_above will be used to
-> > >> > > allocate 2MB/4MB aligned address as per requirement.
-> > >> > >
-> > >> > > I don't think the other changes in this series will cause any issue
-> > >> > > for RISC-V. I will test it and update anyways.
-> > >> > >
-> > >> > > > > Cc: Maxim Uvarov <maxim.uvarov@linaro.org>
-> > >> > > > > Cc: Heinrich Schuchardt <xypron.glpk@gmx.de>
-> > >> > > > > Cc: Atish Patra <atish.patra@wdc.com>
-> > >> > > > > Cc: Palmer Dabbelt <palmer@dabbelt.com>
-> > >> > > > > Cc: Jens Wiklander <jens.wiklander@linaro.org>
-> > >> > > > > Cc: Francois Ozog <francois.ozog@linaro.org>
-> > >> > > > > Cc: Etienne CARRIERE <etienne.carriere@st.com>
-> > >> > > > > Cc: Takahiro Akashi <takahiro.akashi@linaro.org>
-> > >> > > > > Cc: Patrice CHOTARD <patrice.chotard@st.com>
-> > >> > > > > Cc: Sumit Garg <sumit.garg@linaro.org>
-> > >> > > > > Cc: Grant Likely <Grant.Likely@arm.com>
-> > >> > > > > Cc: Ilias Apalodimas <ilias.apalodimas@linaro.org>
-> > >> > > > > Cc: Christophe Priouzeau <christophe.priouzeau@linaro.org>
-> > >> > > > > Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-> > >> > > > > Cc: Patrick DELAUNAY <patrick.delaunay@st.com>
-> > >> > > > >
-> > >> > > > > Ard Biesheuvel (3):
-> > >> > > > >   efi/libstub: Export efi_low_alloc_above() to other units
-> > >> > > > >   efi/libstub: Use low allocation for the uncompressed kernel
-> > >> > > > >   efi/libstub: base FDT and initrd placement on image address not DRAM
-> > >> > > > >     base
-> > >> > > > >
-> > >> > > > >  arch/arm/include/asm/efi.h                |   6 +-
-> > >> > > > >  arch/arm64/include/asm/efi.h              |   2 +-
-> > >> > > > >  drivers/firmware/efi/libstub/arm32-stub.c | 177 ++++----------------
-> > >> > > > >  drivers/firmware/efi/libstub/efi-stub.c   |   2 +-
-> > >> > > > >  drivers/firmware/efi/libstub/efistub.h    |   3 +
-> > >> > > > >  drivers/firmware/efi/libstub/relocate.c   |   4 +-
-> > >> > > > >  6 files changed, 47 insertions(+), 147 deletions(-)
-> > >> > >
-> > >> >
-> > >> > I verified the above patches along with the following RISC-V specific changes.
-> > >> >
-> > >> > diff --git a/arch/riscv/include/asm/efi.h b/arch/riscv/include/asm/efi.h
-> > >> > index 93c305a638f4..dd6ceea9d548 100644
-> > >> > --- a/arch/riscv/include/asm/efi.h
-> > >> > +++ b/arch/riscv/include/asm/efi.h
-> > >> > @@ -37,7 +37,7 @@ static inline unsigned long
-> > >> > efi_get_max_fdt_addr(unsigned long dram_base)
-> > >> >  static inline unsigned long efi_get_max_initrd_addr(unsigned long dram_base,
-> > >> >                                                     unsigned long image_addr)
-> > >> >  {
-> > >> > -       return dram_base + SZ_256M;
-> > >> > +       return image_addr + SZ_256M;
-> > >> >  }
-> > >> >
-> > >>
-> > >> Ah yes, we need this change as well - this is a bit unfortunate since
-> > >> that creates a conflict with the RISC-V tree.
-> > >>
-> > >> > --- a/drivers/firmware/efi/libstub/riscv-stub.c
-> > >> > +++ b/drivers/firmware/efi/libstub/riscv-stub.c
-> > >> > @@ -100,7 +100,7 @@ efi_status_t handle_kernel_image(unsigned long *image_addr,
-> > >> >          */
-> > >> >         preferred_addr = round_up(dram_base, MIN_KIMG_ALIGN) + MIN_KIMG_ALIGN;
-> > >> >         status = efi_relocate_kernel(image_addr, kernel_size, *image_size,
-> > >> > -                                    preferred_addr, MIN_KIMG_ALIGN, dram_base);
-> > >> > +                                    0, MIN_KIMG_ALIGN, 0);
-> > >> >
-> > >> > FWIW: Tested-by: Atish Patra <atish.patra@wdc.com>
-> > >>
-> > >> Thanks for confirming.
-> > >
-> > > OK,
-> > >
-> > > So, just to annoy Palmer and you more than I already have up to this
-> > > point: any chance we could do a final respin of the RISC-V code on top
-> > > of these changes? They are important for ARM, and I would prefer these
-> > > to be merged in a way that makes it easy to backport them to -stable
-> > > if needed.
-> > >
-> > > So what I would suggest is:
-> > > - I will create a new 'shared-efi' tag/stable branch containing the
-> > > existing two patches, as well as these changes (in a slightly updated
-> > > form)
-> > > - Palmer creates a new topic branch in the riscv repo based on this
-> > > shared tag, and applies the [updated] RISC-V patches on top
-> > > - Palmer drops the current version of the riscv patches from
-> > > riscv/for-next, and merges the topic branch into it instead.
-> > >
-> > > Again, sorry to be a pain, but I think this is the cleanest way to get
-> > > these changes queued up for v5.10 without painting ourselves into a
-> > > corner too much when it comes to future follow-up changes.
-> >
-> > That's fine for me.
+> diff --git a/arch/riscv/include/asm/sections.h b/arch/riscv/include/asm/sections.h
+> new file mode 100644
+> index 000000000000..3a9971b1210f
+> --- /dev/null
+> +++ b/arch/riscv/include/asm/sections.h
+> @@ -0,0 +1,13 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+> +/*
+> + * Copyright (C) 2020 Western Digital Corporation or its affiliates.
+> + */
+> +#ifndef __ASM_SECTIONS_H
+> +#define __ASM_SECTIONS_H
+> +
+> +#include <asm-generic/sections.h>
+> +
+> +extern char _start[];
+> +extern char _start_kernel[];
+> +
+> +#endif /* __ASM_SECTIONS_H */
+> diff --git a/arch/riscv/kernel/Makefile b/arch/riscv/kernel/Makefile
+> index dc93710f0b2f..41e3895a3192 100644
+> --- a/arch/riscv/kernel/Makefile
+> +++ b/arch/riscv/kernel/Makefile
+> @@ -31,6 +31,10 @@ obj-y        += cacheinfo.o
+>  obj-y  += patch.o
+>  obj-$(CONFIG_MMU) += vdso.o vdso/
 >
-> Excellent.
+> +OBJCOPYFLAGS := --prefix-symbols=__efistub_
+> +$(obj)/%.stub.o: $(obj)/%.o FORCE
+> +       $(call if_changed,objcopy)
+> +
+>  obj-$(CONFIG_RISCV_M_MODE)     += traps_misaligned.o
+>  obj-$(CONFIG_FPU)              += fpu.o
+>  obj-$(CONFIG_SMP)              += smpboot.o
+> diff --git a/arch/riscv/kernel/efi-header.S b/arch/riscv/kernel/efi-header.S
+> new file mode 100644
+> index 000000000000..822b4c9ff2bb
+> --- /dev/null
+> +++ b/arch/riscv/kernel/efi-header.S
+> @@ -0,0 +1,104 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+> +/*
+> + * Copyright (C) 2020 Western Digital Corporation or its affiliates.
+> + * Adapted from arch/arm64/kernel/efi-header.S
+> + */
+> +
+> +#include <linux/pe.h>
+> +#include <linux/sizes.h>
+> +
+> +       .macro  __EFI_PE_HEADER
+> +       .long   PE_MAGIC
+> +coff_header:
+> +#ifdef CONFIG_64BIT
+> +       .short  IMAGE_FILE_MACHINE_RISCV64              // Machine
+> +#else
+> +       .short  IMAGE_FILE_MACHINE_RISCV32              // Machine
+> +#endif
+> +       .short  section_count                           // NumberOfSections
+> +       .long   0                                       // TimeDateStamp
+> +       .long   0                                       // PointerToSymbolTable
+> +       .long   0                                       // NumberOfSymbols
+> +       .short  section_table - optional_header         // SizeOfOptionalHeader
+> +       .short  IMAGE_FILE_DEBUG_STRIPPED | \
+> +               IMAGE_FILE_EXECUTABLE_IMAGE | \
+> +               IMAGE_FILE_LINE_NUMS_STRIPPED           // Characteristics
+> +
+> +optional_header:
+> +       .short  PE_OPT_MAGIC_PE32PLUS                   // PE32+ format
+
+Are you sure both riscv32 and riscv64 use PE32+? IIUC, 32-bit
+architectures use PE32 not PE32+ (but I could be wrong)
+
+> +       .byte   0x02                                    // MajorLinkerVersion
+> +       .byte   0x14                                    // MinorLinkerVersion
+> +       .long   __pecoff_text_end - efi_header_end      // SizeOfCode
+> +       .long   __pecoff_data_virt_size                 // SizeOfInitializedData
+> +       .long   0                                       // SizeOfUninitializedData
+> +       .long   __efistub_efi_pe_entry - _start         // AddressOfEntryPoint
+> +       .long   efi_header_end - _start                 // BaseOfCode
+> +
+> +extra_header_fields:
+> +       .quad   0                                       // ImageBase
+> +       .long   PECOFF_SECTION_ALIGNMENT                // SectionAlignment
+> +       .long   PECOFF_FILE_ALIGNMENT                   // FileAlignment
+> +       .short  0                                       // MajorOperatingSystemVersion
+> +       .short  0                                       // MinorOperatingSystemVersion
+> +       .short  LINUX_EFISTUB_MAJOR_VERSION             // MajorImageVersion
+> +       .short  LINUX_EFISTUB_MINOR_VERSION             // MinorImageVersion
+> +       .short  0                                       // MajorSubsystemVersion
+> +       .short  0                                       // MinorSubsystemVersion
+> +       .long   0                                       // Win32VersionValue
+> +
+> +       .long   _end - _start                           // SizeOfImage
+> +
+> +       // Everything before the kernel image is considered part of the header
+> +       .long   efi_header_end - _start                 // SizeOfHeaders
+> +       .long   0                                       // CheckSum
+> +       .short  IMAGE_SUBSYSTEM_EFI_APPLICATION         // Subsystem
+> +       .short  0                                       // DllCharacteristics
+> +       .quad   0                                       // SizeOfStackReserve
+> +       .quad   0                                       // SizeOfStackCommit
+> +       .quad   0                                       // SizeOfHeapReserve
+> +       .quad   0                                       // SizeOfHeapCommit
+> +       .long   0                                       // LoaderFlags
+> +       .long   (section_table - .) / 8                 // NumberOfRvaAndSizes
+> +
+> +       .quad   0                                       // ExportTable
+> +       .quad   0                                       // ImportTable
+> +       .quad   0                                       // ResourceTable
+> +       .quad   0                                       // ExceptionTable
+> +       .quad   0                                       // CertificationTable
+> +       .quad   0                                       // BaseRelocationTable
+> +
+> +       // Section table
+> +section_table:
+> +       .ascii  ".text\0\0\0"
+> +       .long   __pecoff_text_end - efi_header_end      // VirtualSize
+> +       .long   efi_header_end - _start                 // VirtualAddress
+> +       .long   __pecoff_text_end - efi_header_end      // SizeOfRawData
+> +       .long   efi_header_end - _start                 // PointerToRawData
+> +
+> +       .long   0                                       // PointerToRelocations
+> +       .long   0                                       // PointerToLineNumbers
+> +       .short  0                                       // NumberOfRelocations
+> +       .short  0                                       // NumberOfLineNumbers
+> +       .long   IMAGE_SCN_CNT_CODE | \
+> +               IMAGE_SCN_MEM_READ | \
+> +               IMAGE_SCN_MEM_EXECUTE                   // Characteristics
+> +
+> +       .ascii  ".data\0\0\0"
+> +       .long   __pecoff_data_virt_size                 // VirtualSize
+> +       .long   __pecoff_text_end - _start              // VirtualAddress
+> +       .long   __pecoff_data_raw_size                  // SizeOfRawData
+> +       .long   __pecoff_text_end - _start              // PointerToRawData
+> +
+> +       .long   0                                       // PointerToRelocations
+> +       .long   0                                       // PointerToLineNumbers
+> +       .short  0                                       // NumberOfRelocations
+> +       .short  0                                       // NumberOfLineNumbers
+> +       .long   IMAGE_SCN_CNT_INITIALIZED_DATA | \
+> +               IMAGE_SCN_MEM_READ | \
+> +               IMAGE_SCN_MEM_WRITE                     // Characteristics
+> +
+> +       .set    section_count, (. - section_table) / 40
+> +
+> +       .balign 0x1000
+> +efi_header_end:
+> +       .endm
+> diff --git a/arch/riscv/kernel/head.S b/arch/riscv/kernel/head.S
+> index c6a37e8231a8..3631147732ee 100644
+> --- a/arch/riscv/kernel/head.S
+> +++ b/arch/riscv/kernel/head.S
+> @@ -13,6 +13,7 @@
+>  #include <asm/csr.h>
+>  #include <asm/hwcap.h>
+>  #include <asm/image.h>
+> +#include "efi-header.S"
 >
-> I have created a signed tag efi-riscv-shared-for-v5.10 in the EFI repo
-> [0], which is based on v5.9-rc1. Please merge that at the start of
-> your for-next/efi topic branch, and apply the reworked EFI for RISC-V
-> series on top.
+>  __HEAD
+>  ENTRY(_start)
+> @@ -22,10 +23,18 @@ ENTRY(_start)
+>          * Do not modify it without modifying the structure and all bootloaders
+>          * that expects this header format!!
+>          */
+> +#ifdef CONFIG_EFI
+> +       /*
+> +        * This instruction decodes to "MZ" ASCII required by UEFI.
+> +        */
+> +       c.li s4,-13
+> +       j _start_kernel
+> +#else
+>         /* jump to start kernel */
+>         j _start_kernel
+>         /* reserved */
+>         .word 0
+> +#endif
+>         .balign 8
+>  #if __riscv_xlen == 64
+>         /* Image load offset(2MB) from start of RAM */
+> @@ -43,7 +52,14 @@ ENTRY(_start)
+>         .ascii RISCV_IMAGE_MAGIC
+>         .balign 4
+>         .ascii RISCV_IMAGE_MAGIC2
+> +#ifdef CONFIG_EFI
+> +       .word pe_head_start - _start
+> +pe_head_start:
+> +
+> +       __EFI_PE_HEADER
+> +#else
+>         .word 0
+> +#endif
 >
-> I have created a preliminary version of that branch as 'riscv-tmp' on
-> [1], incorporating some changes that are needed for the rebase. Note
-> that I applied some other tweaks as well - one is in a separate patch
-> on top, the other is that I omitted the Makefile rule for .stub.o
-> objects under arch/riscv/Makefile, as it is not actually used.
+>  .align 2
+>  #ifdef CONFIG_MMU
+> diff --git a/arch/riscv/kernel/image-vars.h b/arch/riscv/kernel/image-vars.h
+> new file mode 100644
+> index 000000000000..8c212efb37a6
+> --- /dev/null
+> +++ b/arch/riscv/kernel/image-vars.h
+> @@ -0,0 +1,51 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+> +/*
+> + * Copyright (C) 2020 Western Digital Corporation or its affiliates.
+> + * Linker script variables to be set after section resolution, as
+> + * ld.lld does not like variables assigned before SECTIONS is processed.
+> + * Based on arch/arm64/kerne/image-vars.h
+> + */
+> +#ifndef __RISCV_KERNEL_IMAGE_VARS_H
+> +#define __RISCV_KERNEL_IMAGE_VARS_H
+> +
+> +#ifndef LINKER_SCRIPT
+> +#error This file should only be included in vmlinux.lds.S
+> +#endif
+> +
+> +#ifdef CONFIG_EFI
+> +
+> +/*
+> + * The EFI stub has its own symbol namespace prefixed by __efistub_, to
+> + * isolate it from the kernel proper. The following symbols are legally
+> + * accessed by the stub, so provide some aliases to make them accessible.
+> + * Only include data symbols here, or text symbols of functions that are
+> + * guaranteed to be safe when executed at another offset than they were
+> + * linked at. The routines below are all implemented in assembler in a
+> + * position independent manner
+> + */
+> +__efistub_memcmp               = memcmp;
+> +__efistub_memchr               = memchr;
+> +__efistub_memcpy               = memcpy;
+> +__efistub_memmove              = memmove;
+> +__efistub_memset               = memset;
+> +__efistub_strlen               = strlen;
+> +__efistub_strnlen              = strnlen;
+> +__efistub_strcmp               = strcmp;
+> +__efistub_strncmp              = strncmp;
+> +__efistub_strrchr              = strrchr;
+> +
+> +#ifdef CONFIG_KASAN
+> +__efistub___memcpy             = memcpy;
+> +__efistub___memmove            = memmove;
+> +__efistub___memset             = memset;
+> +#endif
+> +
+> +__efistub__start               = _start;
+> +__efistub__start_kernel                = _start_kernel;
+> +__efistub__end                 = _end;
+> +__efistub__edata               = _edata;
+> +__efistub_screen_info          = screen_info;
+> +
+> +#endif
+> +
+> +#endif /* __RISCV_KERNEL_IMAGE_VARS_H */
+> diff --git a/arch/riscv/kernel/vmlinux.lds.S b/arch/riscv/kernel/vmlinux.lds.S
+> index f3586e31ed1e..6dcf790282dd 100644
+> --- a/arch/riscv/kernel/vmlinux.lds.S
+> +++ b/arch/riscv/kernel/vmlinux.lds.S
+> @@ -10,6 +10,7 @@
+>  #include <asm/cache.h>
+>  #include <asm/thread_info.h>
+>  #include <asm/set_memory.h>
+> +#include "image-vars.h"
 >
-> Atish - please pick whatever seems useful to you from that branch when
-> you do the respin.
+>  #include <linux/sizes.h>
+>  OUTPUT_ARCH(riscv)
+> @@ -17,6 +18,9 @@ ENTRY(_start)
 >
-> Thanks,
-> Ard.
+>  jiffies = jiffies_64;
 >
+> +PECOFF_SECTION_ALIGNMENT = 0x1000;
+> +PECOFF_FILE_ALIGNMENT = 0x200;
+> +
+>  SECTIONS
+>  {
+>         /* Beginning of code and text segment */
+> @@ -76,6 +80,10 @@ SECTIONS
 >
+>         EXCEPTION_TABLE(0x10)
 >
-> [0] git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git
-> [1] git://git.kernel.org/pub/scm/linux/kernel/git/ardb/linux.git
+> +#ifdef CONFIG_EFI
+> +       . = ALIGN(PECOFF_SECTION_ALIGNMENT);
+> +       __pecoff_text_end = .;
+> +#endif
+>         . = ALIGN(SECTION_ALIGN);
+>         _data = .;
+>
+> @@ -83,16 +91,26 @@ SECTIONS
+>         .sdata : {
+>                 __global_pointer$ = . + 0x800;
+>                 *(.sdata*)
+> -               /* End of data section */
+> -               _edata = .;
+>         }
+>
+> +#ifdef CONFIG_EFI
+> +       .pecoff_edata_padding : { BYTE(0); . = ALIGN(PECOFF_FILE_ALIGNMENT); }
+> +       __pecoff_data_raw_size = ABSOLUTE(. - __pecoff_text_end);
+> +#endif
+> +
+> +       /* End of data section */
+> +       _edata = .;
+> +
+>         BSS_SECTION(PAGE_SIZE, PAGE_SIZE, 0)
+>
+>         .rel.dyn : {
+>                 *(.rel.dyn*)
+>         }
+>
+> +#ifdef CONFIG_EFI
+> +       . = ALIGN(PECOFF_SECTION_ALIGNMENT);
+> +       __pecoff_data_virt_size = ABSOLUTE(. - __pecoff_text_end);
+> +#endif
+>         _end = .;
+>
+>         STABS_DEBUG
+> --
+> 2.24.0
+>
