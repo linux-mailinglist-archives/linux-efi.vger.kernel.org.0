@@ -2,198 +2,220 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 554AA2656E8
-	for <lists+linux-efi@lfdr.de>; Fri, 11 Sep 2020 04:16:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D6002658F7
+	for <lists+linux-efi@lfdr.de>; Fri, 11 Sep 2020 07:54:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725385AbgIKCQn (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 10 Sep 2020 22:16:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53248 "EHLO
+        id S1725613AbgIKFyL (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 11 Sep 2020 01:54:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58234 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725306AbgIKCQm (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 10 Sep 2020 22:16:42 -0400
-Received: from mail-pj1-x1041.google.com (mail-pj1-x1041.google.com [IPv6:2607:f8b0:4864:20::1041])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A395C061573
-        for <linux-efi@vger.kernel.org>; Thu, 10 Sep 2020 19:16:40 -0700 (PDT)
-Received: by mail-pj1-x1041.google.com with SMTP id q4so955084pjh.5
-        for <linux-efi@vger.kernel.org>; Thu, 10 Sep 2020 19:16:40 -0700 (PDT)
+        with ESMTP id S1725468AbgIKFyJ (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 11 Sep 2020 01:54:09 -0400
+Received: from mail-lj1-x244.google.com (mail-lj1-x244.google.com [IPv6:2a00:1450:4864:20::244])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B95CFC061573
+        for <linux-efi@vger.kernel.org>; Thu, 10 Sep 2020 22:54:08 -0700 (PDT)
+Received: by mail-lj1-x244.google.com with SMTP id k25so11135323ljg.9
+        for <linux-efi@vger.kernel.org>; Thu, 10 Sep 2020 22:54:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dabbelt-com.20150623.gappssmtp.com; s=20150623;
-        h=date:subject:in-reply-to:cc:from:to:message-id:mime-version
-         :content-transfer-encoding;
-        bh=n4v/8rr4VkLsCE+CfY9rCVTARECuJFIXohdPd2zyXTQ=;
-        b=WleHAgg9vWTEvgdLvDghO2BkCqWqrk1JEDuvlC1o4sEkaBomsTKalfNPsUZxQ2ruZr
-         gqLjYegWIW+CkUeqJj4EblGKIFPjluIkv2ODcrrFZzatS/cbvOCNEvmOzqRzB3lsPD5M
-         I/87nVkWdeWCpi9vPuouMuMwniw1oYt6QOpTMnbEHP+3+StzYHYtuPzdjDkuQZ6WxGxV
-         t6DSa94u4zoYuOmforKM8oKFkw8+xlM2hHwUBjhdLs0Rc2qBIqVA/5uqFot5zcKwDAaV
-         49MkQXdHSZHNs18LH8TYqEcoFHMStN8awZq/zCegLgE2FZ3KcFxkNp53aBeEIAO8o0NN
-         FDMw==
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=/u/E67lFQ/DRW8U14sqwm3fdUVJhfpCM8MC4WHkqngc=;
+        b=VRzd63RIk2KzCwGb6SJFKM8u1pn/we9cUOFTPjLXD25+QnaCPqNZ9N7zkcvwO1RMDs
+         p5On/vvc1epy0Ya6XAICLlWMtsuoMJHnLygppcjGZsuBztvgFwrrHXdwqhBS9ewZdGJB
+         eVGzCE4avdd2OVsEfIz2Hqb98Geg+5V/2xa3p7BHZoHp00wVfMb9ltSSY8oOGwlTCirx
+         nPezCOc+r0/rT1z86p6rgWjzWTGU6vBAogX/7uSiQWPsZRUlxtOoszaUqJoigzAqdScJ
+         Nz2HFojc6yFs/K/j0nUzbYq0VGP/lHcoXJ4wsI9ryMt6D2RYBX+dNQQ7m3DGOkv5YFu5
+         DpiQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:subject:in-reply-to:cc:from:to:message-id
-         :mime-version:content-transfer-encoding;
-        bh=n4v/8rr4VkLsCE+CfY9rCVTARECuJFIXohdPd2zyXTQ=;
-        b=ujcft75qhFXFRdse9YIWCNQsYCtrjH6SHJUtA4qaMS5xxKj9mg9WPwp+sZIV+++PIa
-         KPx1xek3ej41sc7mpxGkcnfT3AXdK4enP8JELrbzKGabGW3ImPqEI2z4G9lH1Gz04rYn
-         ixvlZv40YZLOL6WcOcw8ohcA88Lf7CVYebbkAFe5Av07xUehs4pzb+aHNwUoRZy2lCkI
-         sfmcOTrxnywG8RaVT45D0OOyyehdUwQx0ZNsCRNieNmNpUpflxkCWOBChfWN7PuNjU2F
-         teGXeofj488v0C3z6dA17zocidrTvVIqbbdao03tns/93C1S6a9hBsQMWO4gsarqOaDo
-         DLzA==
-X-Gm-Message-State: AOAM530WrD0KaAgidpFu6xkCTiNl/RbpQCs5LKpJYzHYXPYm85Pd0CmW
-        tZZ2St+yhPzJnDPC6o5u/dNxcyXnscBnWQ==
-X-Google-Smtp-Source: ABdhPJwGtM8lnuFyTNYcmWKTWl78+u1+1Wp/vKfr2wpUYejVt8g10MPZsXyb4QavLxLQnh/UiGyV7w==
-X-Received: by 2002:a17:90a:f117:: with SMTP id cc23mr97942pjb.155.1599790599306;
-        Thu, 10 Sep 2020 19:16:39 -0700 (PDT)
-Received: from localhost (76-210-143-223.lightspeed.sntcca.sbcglobal.net. [76.210.143.223])
-        by smtp.gmail.com with ESMTPSA id v26sm266958pgo.83.2020.09.10.19.16.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Sep 2020 19:16:38 -0700 (PDT)
-Date:   Thu, 10 Sep 2020 19:16:38 -0700 (PDT)
-X-Google-Original-Date: Thu, 10 Sep 2020 19:16:37 PDT (-0700)
-Subject:     Re: [PATCH RFC/RFT 0/3] efi/libstub: arm32: Remove dependency on dram_base
-In-Reply-To: <CAMj1kXG6VRXOPRhHmeyiPP06BVByEYsqYE001BZYyRDqtvyDBg@mail.gmail.com>
-CC:     atishp@atishpatra.org, linux-efi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, maxim.uvarov@linaro.org,
-        xypron.glpk@gmx.de, Atish Patra <Atish.Patra@wdc.com>,
-        jens.wiklander@linaro.org, francois.ozog@linaro.org,
-        etienne.carriere@st.com, takahiro.akashi@linaro.org,
-        patrice.chotard@st.com, sumit.garg@linaro.org,
-        Grant.Likely@arm.com, ilias.apalodimas@linaro.org,
-        christophe.priouzeau@linaro.org, r.czerwinski@pengutronix.de,
-        patrick.delaunay@st.com
-From:   Palmer Dabbelt <palmer@dabbelt.com>
-To:     ardb@kernel.org
-Message-ID: <mhng-f3ca14fc-58f7-423e-8abe-a85de1a2d55b@palmerdabbelt-glaptop1>
-Mime-Version: 1.0 (MHng)
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=/u/E67lFQ/DRW8U14sqwm3fdUVJhfpCM8MC4WHkqngc=;
+        b=IE21W7kRqmn4pzQVeK88v6kH5nJf6qOMo8m5/NMKmLYBtfWhtGiQRppZJE306k3nKX
+         nK/WhJG8Pth7lkECVaarImB1C24VW4lQdDYBZItvvUCVaByqNoSm6PiO7pA8TN9IgJyQ
+         34/RNe7zplY8xY2sCI28x4vewW9TwVENsYqLYBamQr5sx73iYYXDHoALREIuLzIvheGC
+         2ZroXMQ3OgWUFok5+qyeWeGOWNNBuAXDnORz4hTp7M/7DQFIvhw1WpdcLrYLTSbg/KFP
+         yYV24uVtEF1pv1nIMLh619EIo5ztytGgX3+8kvbBAxNb++jqg2N87ysDiyREx31vU/DO
+         8vWQ==
+X-Gm-Message-State: AOAM530MTYYSzDRbEz15Oi1XIxvFIc3WvIFGpBaoPiu8wKpHxzduEljw
+        vdMXFF8cBBIgAR5sIYQEM/3Rfo6p/yZBxHXQ+mE=
+X-Google-Smtp-Source: ABdhPJzB7P4hVIsZODE3GP3z4XE1IenGGaYSt/Gp/uvbDgrLe/eHSSQRjMuyM/12SK7lL9aM5an2ARw81VaGRM/XydM=
+X-Received: by 2002:a2e:b615:: with SMTP id r21mr105446ljn.341.1599803647065;
+ Thu, 10 Sep 2020 22:54:07 -0700 (PDT)
+MIME-Version: 1.0
+References: <CAO18KQgxfCBFacLxpLZJZ6iDmEA83DUwG2kjfPyJmPZHPQZ5vQ@mail.gmail.com>
+ <20200907170021.GA2284449@rani.riverdale.lan> <CAO18KQg9wLFF8KxZdP4fVv-vk_CpfV+_v38WnCJ-uqEAJ3FNwA@mail.gmail.com>
+ <20200908223255.GA276578@rani.riverdale.lan> <CAO18KQgPJu2uZzBuCTsKOJydnbgsNM+EMvcJRDBE3UhSKHtpfw@mail.gmail.com>
+ <20200909190038.GA474185@rani.riverdale.lan> <CAO18KQjGdcZD8bts36GuicJO8_iprbryXdh5vM+-GfAbcKV==Q@mail.gmail.com>
+ <20200909203830.GA490605@rani.riverdale.lan> <CAMj1kXEAkR9_tN_o0m30e+HY_F_xf3wY_uSDUiWYOkaugcvoNw@mail.gmail.com>
+ <DM6PR19MB2636BAC48CDC12B08BF611D3FA270@DM6PR19MB2636.namprd19.prod.outlook.com>
+ <20200911000401.GA877093@rani.riverdale.lan>
+In-Reply-To: <20200911000401.GA877093@rani.riverdale.lan>
+From:   Jacobo Pantoja <jacobopantoja@gmail.com>
+Date:   Fri, 11 Sep 2020 07:53:53 +0200
+Message-ID: <CAO18KQhucsmzxTXqq9jW53PhaSYmvdE3FmO_Og278XeawBeQTQ@mail.gmail.com>
+Subject: Re: EFISTUB arguments in Dell BIOS
+To:     Arvind Sankar <nivedita@alum.mit.edu>
+Cc:     "Limonciello, Mario" <Mario.Limonciello@dell.com>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Peter Jones <pjones@redhat.com>,
+        linux-efi <linux-efi@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, 10 Sep 2020 07:08:07 PDT (-0700), ardb@kernel.org wrote:
-> On Thu, 10 Sep 2020 at 13:04, Ard Biesheuvel <ardb@kernel.org> wrote:
->>
->> On Thu, 10 Sep 2020 at 04:34, Atish Patra <atishp@atishpatra.org> wrote:
->> >
->> > On Wed, Sep 9, 2020 at 2:44 PM Atish Patra <atishp@atishpatra.org> wrote:
->> > >
->> > > On Wed, Sep 9, 2020 at 1:52 PM Palmer Dabbelt <palmer@dabbelt.com> wrote:
->> > > >
->> > > > On Wed, 09 Sep 2020 08:16:20 PDT (-0700), ardb@kernel.org wrote:
->> > > > > Maxim reports boot failures on platforms that describe reserved memory
->> > > > > regions in DT that are disjoint from system DRAM, and which are converted
->> > > > > to EfiReservedMemory regions by the EFI subsystem in u-boot.
->> > > > >
->> > > > > As it turns out, the whole notion of discovering the base of DRAM is
->> > > > > problematic, and it would be better to simply rely on the EFI memory
->> > > > > allocation routines instead, and derive the FDT and initrd allocation
->> > > > > limits from the actual placement of the kernel (which is what defines
->> > > > > the start of the linear region anyway)
->> > > > >
->> > > > > Finally, we should be able to get rid of get_dram_base() entirely.
->> > > > > However, as RISC-V only just started using it, we will need to address
->> > > > > that at a later time.
->> > > >
->> > > > Looks like we're using dram_base to derive two argumets to
->> > > > efi_relocate_kernel(): the preferred load address and the minimum load address.
->> > > > I don't see any reason why we can't use the same PAGE_OFFSET-like logic that
->> > > > x86 uses for the minimum load address, but I don't think we have any mechanism
->> > > > like "struct boot_params" so we'd need to come up with something.
->> > > >
->> > >
->> > > As discussed in the other thread
->> > > (https://www.spinics.net/lists/linux-efi/msg20262.html),
->> > > we don't need to do anything special. efi_relocate_kernel can just
->> > > take preferred address as 0
->> > > so that efi_bs_alloc will fail and efi_low_alloc_above will be used to
->> > > allocate 2MB/4MB aligned address as per requirement.
->> > >
->> > > I don't think the other changes in this series will cause any issue
->> > > for RISC-V. I will test it and update anyways.
->> > >
->> > > > > Cc: Maxim Uvarov <maxim.uvarov@linaro.org>
->> > > > > Cc: Heinrich Schuchardt <xypron.glpk@gmx.de>
->> > > > > Cc: Atish Patra <atish.patra@wdc.com>
->> > > > > Cc: Palmer Dabbelt <palmer@dabbelt.com>
->> > > > > Cc: Jens Wiklander <jens.wiklander@linaro.org>
->> > > > > Cc: Francois Ozog <francois.ozog@linaro.org>
->> > > > > Cc: Etienne CARRIERE <etienne.carriere@st.com>
->> > > > > Cc: Takahiro Akashi <takahiro.akashi@linaro.org>
->> > > > > Cc: Patrice CHOTARD <patrice.chotard@st.com>
->> > > > > Cc: Sumit Garg <sumit.garg@linaro.org>
->> > > > > Cc: Grant Likely <Grant.Likely@arm.com>
->> > > > > Cc: Ilias Apalodimas <ilias.apalodimas@linaro.org>
->> > > > > Cc: Christophe Priouzeau <christophe.priouzeau@linaro.org>
->> > > > > Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
->> > > > > Cc: Patrick DELAUNAY <patrick.delaunay@st.com>
->> > > > >
->> > > > > Ard Biesheuvel (3):
->> > > > >   efi/libstub: Export efi_low_alloc_above() to other units
->> > > > >   efi/libstub: Use low allocation for the uncompressed kernel
->> > > > >   efi/libstub: base FDT and initrd placement on image address not DRAM
->> > > > >     base
->> > > > >
->> > > > >  arch/arm/include/asm/efi.h                |   6 +-
->> > > > >  arch/arm64/include/asm/efi.h              |   2 +-
->> > > > >  drivers/firmware/efi/libstub/arm32-stub.c | 177 ++++----------------
->> > > > >  drivers/firmware/efi/libstub/efi-stub.c   |   2 +-
->> > > > >  drivers/firmware/efi/libstub/efistub.h    |   3 +
->> > > > >  drivers/firmware/efi/libstub/relocate.c   |   4 +-
->> > > > >  6 files changed, 47 insertions(+), 147 deletions(-)
->> > >
->> >
->> > I verified the above patches along with the following RISC-V specific changes.
->> >
->> > diff --git a/arch/riscv/include/asm/efi.h b/arch/riscv/include/asm/efi.h
->> > index 93c305a638f4..dd6ceea9d548 100644
->> > --- a/arch/riscv/include/asm/efi.h
->> > +++ b/arch/riscv/include/asm/efi.h
->> > @@ -37,7 +37,7 @@ static inline unsigned long
->> > efi_get_max_fdt_addr(unsigned long dram_base)
->> >  static inline unsigned long efi_get_max_initrd_addr(unsigned long dram_base,
->> >                                                     unsigned long image_addr)
->> >  {
->> > -       return dram_base + SZ_256M;
->> > +       return image_addr + SZ_256M;
->> >  }
->> >
->>
->> Ah yes, we need this change as well - this is a bit unfortunate since
->> that creates a conflict with the RISC-V tree.
->>
->> > --- a/drivers/firmware/efi/libstub/riscv-stub.c
->> > +++ b/drivers/firmware/efi/libstub/riscv-stub.c
->> > @@ -100,7 +100,7 @@ efi_status_t handle_kernel_image(unsigned long *image_addr,
->> >          */
->> >         preferred_addr = round_up(dram_base, MIN_KIMG_ALIGN) + MIN_KIMG_ALIGN;
->> >         status = efi_relocate_kernel(image_addr, kernel_size, *image_size,
->> > -                                    preferred_addr, MIN_KIMG_ALIGN, dram_base);
->> > +                                    0, MIN_KIMG_ALIGN, 0);
->> >
->> > FWIW: Tested-by: Atish Patra <atish.patra@wdc.com>
->>
->> Thanks for confirming.
+On Fri, 11 Sep 2020 at 02:04, Arvind Sankar <nivedita@alum.mit.edu> wrote:
 >
-> OK,
+> On Thu, Sep 10, 2020 at 08:40:06PM +0000, Limonciello, Mario wrote:
+> > > >
+> > > > Ok, this is laid out in section 3.1 of the spec which defines the f=
+ormat
+> > > > of the EFI_LOAD_OPTION descriptor. Dell's BIOS is passing the entir=
+e
+> > > > descriptor instead of just the OptionalData part.
+> > > >
+> > > > OptionalData    The remaining bytes in the load option descriptor a=
+re a
+> > > >                 binary data buffer that is passed to the loaded ima=
+ge.
+> > > >                 If the field is zero bytes long, a Null pointer is
+> > > >                 passed to the loaded image. The number of bytes in
+> > > >                 OptionalData can be computed by subtracting the sta=
+rting
+> > > >                 offset of OptionalData from total size in bytes of =
+the
+> > > >                 EFI_LOAD_OPTION.
+> > > >
+> > > > https://uefi.org/sites/default/files/resources/UEFI_Spec_2_8_final.=
+pdf
+> > > >
+> > >
+> > > This vaguely rings a bell so I have cc'ed some folks who may have run
+> > > into this in the past. Complete thread can be found at [0]
+> > >
+> >
+> > Thanks for sharing the context.  This rings a bell for me with the last=
+ time
+> > I recall worrying about the Load Options and this commit in shim comes =
+to
+> > mind:
+> >
+> > https://github.com/rhboot/shim/commit/3322257e611e2000f79726d295bb4845b=
+be449e7
+> >
+> > It seems to me the shim approach to the problem isn't too big of a deal=
+:
+> > count the number of strings and if it's greater or equal to 2, then thr=
+ow
+> > out the first one.  It's also already been used in production code acro=
+ss a
+> > ton of platforms for several years, so if there was major breakages I w=
+ould
+> > expect they're covered in that code too by now.
 >
-> So, just to annoy Palmer and you more than I already have up to this
-> point: any chance we could do a final respin of the RISC-V code on top
-> of these changes? They are important for ARM, and I would prefer these
-> to be merged in a way that makes it easy to backport them to -stable
-> if needed.
+> AFAICT, the >=3D 2 check is for seeing if it was invoked by the shell, an=
+d
+> if so, skipping the first word (which would be the name of the
+> executable). For handling the case we're running into here, it's
+> checking if loadoptions is valid UCS-2, though its idea of valid seems
+> to be that it must consist of characters < 0x100; and if not, trying to
+> parse it as a complete EFI_LOAD_OPTION.
 >
-> So what I would suggest is:
-> - I will create a new 'shared-efi' tag/stable branch containing the
-> existing two patches, as well as these changes (in a slightly updated
-> form)
-> - Palmer creates a new topic branch in the riscv repo based on this
-> shared tag, and applies the [updated] RISC-V patches on top
-> - Palmer drops the current version of the riscv patches from
-> riscv/for-next, and merges the topic branch into it instead.
+> >
+> > > The firmware is obviously passing the wrong data, and I am reluctant
+> > > to quirk this out, since we'd have to interpret the contents of these
+> > > UEFI variables, and given the amount of 'value add' by the BIOS
+> > > vendors in this area, we may end up breaking things on other
+> > > platforms.
+> > >
+> > > [0] https://lore.kernel.org/linux-
+> > > efi/20200909203830.GA490605@rani.riverdale.lan/
+> >
+> > In the defense of others who have interpreted the spec, as I'm reading =
+it I'm
+> > not convinced that it explicitly calls out what data should be passed. =
+In
+> > section 7.4 which explains how LoadImage() behaves.
+> >
+> > ```
+> > Once the image is loaded, firmware creates and returns an EFI_HANDLE th=
+at identifies the image and
+> > supports EFI_LOADED_IMAGE_PROTOCOL and the EFI_LOADED_IMAGE_DEVICE_PATH=
+_PROTOCOL.
+> > The caller may fill in the image=E2=80=99s =E2=80=9Cload options=E2=80=
+=9D data
+> > ```
+> >
+> > In this context the caller is most likely BDS, and it's "optional" to l=
+oad
+> > content in.  Within section 9.1 which describes the loaded image protoc=
+ol the exact
+> > format of the content of "LoadOptions" is not described.  I can see an =
+interpretation
+> > it should be the full descriptor or that it can be the OptionalData.
 >
-> Again, sorry to be a pain, but I think this is the cleanest way to get
-> these changes queued up for v5.10 without painting ourselves into a
-> corner too much when it comes to future follow-up changes.
+> LoadImage() is a general library function, it can be called by the
+> firmware boot manager, but also by any other EFI application during boot
+> services. In this context, LoadOptions is arbitrary data to be filled in
+> by the caller of LoadImage() if it wants to.
+>
+> Section 3.1 is what describes how the Boot#### variables are to be
+> handled by the boot manager, and that is explicit about what gets
+> passed by the boot manager to the loaded image.
+>
+> >
+> > And actually if you looks in history from EDK code, you can see that it=
+'s been done that way there too at least at one time:
+> > https://github.com/tianocore/edk2/blob/b8d06293caa122f9c3bd2ae32a6c3f79=
+0a054e03/IntelFrameworkModulePkg/Library/GenericBdsLib/BdsBoot.c#L2433
+> >
+>
+> I don't think that's passing the whole Boot#### variable. "Option" there
+> is a BDS_COMMON_OPTION, and that is created from the Boot#### variable
+> using BdsLibVariableToOption, which copies just the OptionalData into
+> BDS_COMMON_OPTION.LoadOptions.
+>
+> https://github.com/tianocore/edk2/blob/b8d06293caa122f9c3bd2ae32a6c3f790a=
+054e03/IntelFrameworkModulePkg/Library/GenericBdsLib/BdsMisc.c#L598
+>
+> >
+> > Jacobo,
+> >
+> > Can you provide some more details on your system that is reproducing
+> > this?  Model number, FW version would be useful.
+> > The links provided earlier on are on pretty old stuff, so knowing that =
+this
+> > is a problem on something more current would be good.
 
-That's fine for me.
+Hi Mario, thanks for joining the conversation.
+The system in which I'm testing is a Precision T3620 with the very last
+firmware 2.15.0 (published in mid 2020). It seems that this is affecting a =
+lot
+of Dell's BIOSes:
+[1]: https://www.dell.com/community/Linux-Developer-Systems/Linux-EFISTUB/t=
+d-p/4586378
+[2]: https://www.dell.com/community/Laptops-General-Read-Only/Dell-UEFI-imp=
+lementation-does-not-support-Linux-Kernel-EFISTUB/td-p/5185272
+[3]: https://bbs.archlinux.org/viewtopic.php?pid=3D1753169#p1753169
+[4]: https://github.com/xdever/arch-efiboot
+
+> >
+> > I guess the other option if Ard chooses not to adopt a quirk for this
+> > described behavior is to use shim to load the kernel efistub, and let
+> > it do the split for you.
+
+We can circumvent this bug in several ways (using GRUB, packing
+kernel plus initrd into a single EFI file, etc.) but honestly, I'd like to =
+have
+the same loading scheme in all my machines. As Arvin stated, and I share
+his statement, section 3.1.3 of the UEFI standard is clear:
+"The remaining bytes in the load option descriptor are a binary data buffer
+that is passed to the loaded image. If the field is zero bytes long, a NULL
+pointer is passed to the loaded image. The number of bytes in OptionalData
+can be computed by subtracting the starting offset of OptionalData from tot=
+al
+size in bytes of the EFI_LOAD_OPTION".
