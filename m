@@ -2,407 +2,178 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1FD7A26611A
-	for <lists+linux-efi@lfdr.de>; Fri, 11 Sep 2020 16:22:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4664E2661F7
+	for <lists+linux-efi@lfdr.de>; Fri, 11 Sep 2020 17:19:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726259AbgIKOWn (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 11 Sep 2020 10:22:43 -0400
-Received: from mail.kernel.org ([198.145.29.99]:56028 "EHLO mail.kernel.org"
+        id S1726254AbgIKPTE (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 11 Sep 2020 11:19:04 -0400
+Received: from mail.kernel.org ([198.145.29.99]:53404 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726163AbgIKNMB (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Fri, 11 Sep 2020 09:12:01 -0400
-Received: from mail-ot1-f53.google.com (mail-ot1-f53.google.com [209.85.210.53])
+        id S1726454AbgIKPRj (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Fri, 11 Sep 2020 11:17:39 -0400
+Received: from mail-ot1-f41.google.com (mail-ot1-f41.google.com [209.85.210.41])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 17A08222B6;
-        Fri, 11 Sep 2020 13:09:28 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 7CFB7223BD;
+        Fri, 11 Sep 2020 15:02:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1599829768;
-        bh=S9PcerItKM6Cw2ZD8pFOea9n8/bLmZUNu5udVH7a+p0=;
+        s=default; t=1599836562;
+        bh=6nL6VORoOL0XE1BB6SwMAH9ldlMzieej9aulUv5ApCU=;
         h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=YhcyaookAPDw51Q990U/H4iHSkes7SAV///xeaEFkONJm6DmW0cXVVWV3LXDSdum8
-         ycr1CXu+zS721bXn5D9sJLbBskbbgkfYbKYIVgK2Rrw5MjhrGuBiGi2BobWRIKGOk5
-         UV6U3HkzjGkvyXbUuNntJg+h8XKU9wmhd9VT8/SA=
-Received: by mail-ot1-f53.google.com with SMTP id e23so8272298otk.7;
-        Fri, 11 Sep 2020 06:09:28 -0700 (PDT)
-X-Gm-Message-State: AOAM532VyW06cYhNW/r3H/dlrMGep7fQ6qsywGUTeXwgjKUQcxpIAyBm
-        KWMQut79MVBQnpdhea8kVAFzOkgtkSwMNkV6i/k=
-X-Google-Smtp-Source: ABdhPJytyBe4sZU6viXs7xUNVRFVi70nft+TJUekfBR3rj23zgOVrBavkhlO4VjwFFWqd5hvTTRqDBvo0Cw6Zw+MsuI=
-X-Received: by 2002:a9d:6193:: with SMTP id g19mr1130295otk.108.1599829767136;
- Fri, 11 Sep 2020 06:09:27 -0700 (PDT)
+        b=VxvX7lXdShMpWUUnXfTtcj9IvJa72g4/FGW8OseJYt0DbFmq4GGZDgTBQJkfrmLPz
+         GGAV0wbezdq+tR210aKWkXdicHLdFVA9brSAM/CbsGHjjCLuY2UI/VMiGkt98AiLPd
+         OftjZDFmAWc1SWtzHwa6NUWqubaF54my5DB2yVBU=
+Received: by mail-ot1-f41.google.com with SMTP id o8so892311otl.4;
+        Fri, 11 Sep 2020 08:02:42 -0700 (PDT)
+X-Gm-Message-State: AOAM531a0dHCcTj/pIDE6fBFPaXvv36nL+7qNSEqp+JUKNLORspKaI8s
+        0peRTFsYMa4nAaDXHDQmU+djZtMlxTYPCtwKGcs=
+X-Google-Smtp-Source: ABdhPJw07czxiY1a68IYlOpS8V9p84gFMT12gE8YbqAz3XuZxMaBeP7+1oa02tUZjq4T/SCm2P4T+6GhCfFPI6RBSNU=
+X-Received: by 2002:a9d:6193:: with SMTP id g19mr1430262otk.108.1599836561839;
+ Fri, 11 Sep 2020 08:02:41 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200828172036.8056-1-atish.patra@wdc.com> <20200828172036.8056-6-atish.patra@wdc.com>
-In-Reply-To: <20200828172036.8056-6-atish.patra@wdc.com>
+References: <20200905013107.10457-1-lszubowi@redhat.com> <20200905013107.10457-3-lszubowi@redhat.com>
+In-Reply-To: <20200905013107.10457-3-lszubowi@redhat.com>
 From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Fri, 11 Sep 2020 16:09:15 +0300
-X-Gmail-Original-Message-ID: <CAMj1kXH82MGDLNkyWae=wqNxZY7ZMvrDU3gNAOSF+m9YFGe7aw@mail.gmail.com>
-Message-ID: <CAMj1kXH82MGDLNkyWae=wqNxZY7ZMvrDU3gNAOSF+m9YFGe7aw@mail.gmail.com>
-Subject: Re: [PATCH v7 5/9] RISC-V: Add PE/COFF header for EFI stub
-To:     Atish Patra <atish.patra@wdc.com>
+Date:   Fri, 11 Sep 2020 18:02:27 +0300
+X-Gmail-Original-Message-ID: <CAMj1kXEdkdeE8VSZqEzhd__Kb7_ZmG2af6iBpbY3=nsj1-phYw@mail.gmail.com>
+Message-ID: <CAMj1kXEdkdeE8VSZqEzhd__Kb7_ZmG2af6iBpbY3=nsj1-phYw@mail.gmail.com>
+Subject: Re: [PATCH V2 2/3] integrity: Move import of MokListRT certs to a
+ separate routine
+To:     Lenny Szubowicz <lszubowi@redhat.com>
 Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Anup Patel <anup@brainfault.org>,
-        Alistair Francis <alistair.francis@wdc.com>,
-        Anup Patel <anup.patel@wdc.com>,
-        Arvind Sankar <nivedita@alum.mit.edu>,
-        Greentime Hu <greentime.hu@sifive.com>,
-        Ingo Molnar <mingo@kernel.org>,
         linux-efi <linux-efi@vger.kernel.org>,
-        linux-riscv <linux-riscv@lists.infradead.org>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Mike Rapoport <rppt@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Paul Walmsley <paul.walmsley@sifive.com>
+        platform-driver-x86@vger.kernel.org,
+        linux-security-module@vger.kernel.org, andy.shevchenko@gmail.com,
+        James Morris <jmorris@namei.org>, serge@hallyn.com,
+        Kees Cook <keescook@chromium.org>, zohar@linux.ibm.com,
+        Borislav Petkov <bp@alien8.de>,
+        Peter Jones <pjones@redhat.com>,
+        David Howells <dhowells@redhat.com>, prarit@redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, 28 Aug 2020 at 20:20, Atish Patra <atish.patra@wdc.com> wrote:
+On Sat, 5 Sep 2020 at 04:31, Lenny Szubowicz <lszubowi@redhat.com> wrote:
 >
-> Linux kernel Image can appear as an EFI application With appropriate
-> PE/COFF header fields in the beginning of the Image header. An EFI
-> application loader can directly load a Linux kernel Image and an EFI
-> stub residing in kernel can boot Linux kernel directly.
+> Move the loading of certs from the UEFI MokListRT into a separate
+> routine to facilitate additional MokList functionality.
 >
-> Add the necessary PE/COFF header.
+> There is no visible functional change as a result of this patch.
+> Although the UEFI dbx certs are now loaded before the MokList certs,
+> they are loaded onto different key rings. So the order of the keys
+> on their respective key rings is the same.
 >
-> Signed-off-by: Atish Patra <atish.patra@wdc.com>
-> Link: https://lore.kernel.org/r/20200421033336.9663-3-atish.patra@wdc.com
-> [ardb: - use C prefix for c.li to ensure the expected opcode is emitted
->        - align all image sections according to PE/COFF section alignment ]
-> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> Reviewed-by: Anup Patel <anup@brainfault.org>
+> Signed-off-by: Lenny Szubowicz <lszubowi@redhat.com>
 
-Since you need to respin this anyway, one comment below on a thing
-that I spotted while revisiting these patches.
+Why did you drop Mimi's reviewed-by from this patch?
 
 > ---
->  arch/riscv/include/asm/sections.h |  13 ++++
->  arch/riscv/kernel/Makefile        |   4 ++
->  arch/riscv/kernel/efi-header.S    | 104 ++++++++++++++++++++++++++++++
->  arch/riscv/kernel/head.S          |  16 +++++
->  arch/riscv/kernel/image-vars.h    |  51 +++++++++++++++
->  arch/riscv/kernel/vmlinux.lds.S   |  22 ++++++-
->  6 files changed, 208 insertions(+), 2 deletions(-)
->  create mode 100644 arch/riscv/include/asm/sections.h
->  create mode 100644 arch/riscv/kernel/efi-header.S
->  create mode 100644 arch/riscv/kernel/image-vars.h
+>  security/integrity/platform_certs/load_uefi.c | 63 +++++++++++++------
+>  1 file changed, 44 insertions(+), 19 deletions(-)
 >
-> diff --git a/arch/riscv/include/asm/sections.h b/arch/riscv/include/asm/sections.h
-> new file mode 100644
-> index 000000000000..3a9971b1210f
-> --- /dev/null
-> +++ b/arch/riscv/include/asm/sections.h
-> @@ -0,0 +1,13 @@
-> +/* SPDX-License-Identifier: GPL-2.0-only */
-> +/*
-> + * Copyright (C) 2020 Western Digital Corporation or its affiliates.
+> diff --git a/security/integrity/platform_certs/load_uefi.c b/security/integrity/platform_certs/load_uefi.c
+> index 253fb9a7fc98..c1c622b4dc78 100644
+> --- a/security/integrity/platform_certs/load_uefi.c
+> +++ b/security/integrity/platform_certs/load_uefi.c
+> @@ -66,6 +66,43 @@ static __init void *get_cert_list(efi_char16_t *name, efi_guid_t *guid,
+>  }
+>
+>  /*
+> + * load_moklist_certs() - Load MokList certs
+> + *
+> + * Load the certs contained in the UEFI MokListRT database into the
+> + * platform trusted keyring.
+> + *
+> + * Return:     Status
 > + */
-> +#ifndef __ASM_SECTIONS_H
-> +#define __ASM_SECTIONS_H
+> +static int __init load_moklist_certs(void)
+> +{
+> +       efi_guid_t mok_var = EFI_SHIM_LOCK_GUID;
+> +       void *mok;
+> +       unsigned long moksize;
+> +       efi_status_t status;
+> +       int rc;
 > +
-> +#include <asm-generic/sections.h>
-> +
-> +extern char _start[];
-> +extern char _start_kernel[];
-> +
-> +#endif /* __ASM_SECTIONS_H */
-> diff --git a/arch/riscv/kernel/Makefile b/arch/riscv/kernel/Makefile
-> index dc93710f0b2f..41e3895a3192 100644
-> --- a/arch/riscv/kernel/Makefile
-> +++ b/arch/riscv/kernel/Makefile
-> @@ -31,6 +31,10 @@ obj-y        += cacheinfo.o
->  obj-y  += patch.o
->  obj-$(CONFIG_MMU) += vdso.o vdso/
->
-> +OBJCOPYFLAGS := --prefix-symbols=__efistub_
-> +$(obj)/%.stub.o: $(obj)/%.o FORCE
-> +       $(call if_changed,objcopy)
-> +
->  obj-$(CONFIG_RISCV_M_MODE)     += traps_misaligned.o
->  obj-$(CONFIG_FPU)              += fpu.o
->  obj-$(CONFIG_SMP)              += smpboot.o
-> diff --git a/arch/riscv/kernel/efi-header.S b/arch/riscv/kernel/efi-header.S
-> new file mode 100644
-> index 000000000000..822b4c9ff2bb
-> --- /dev/null
-> +++ b/arch/riscv/kernel/efi-header.S
-> @@ -0,0 +1,104 @@
-> +/* SPDX-License-Identifier: GPL-2.0-only */
-> +/*
-> + * Copyright (C) 2020 Western Digital Corporation or its affiliates.
-> + * Adapted from arch/arm64/kernel/efi-header.S
-> + */
-> +
-> +#include <linux/pe.h>
-> +#include <linux/sizes.h>
-> +
-> +       .macro  __EFI_PE_HEADER
-> +       .long   PE_MAGIC
-> +coff_header:
-> +#ifdef CONFIG_64BIT
-> +       .short  IMAGE_FILE_MACHINE_RISCV64              // Machine
-> +#else
-> +       .short  IMAGE_FILE_MACHINE_RISCV32              // Machine
-> +#endif
-> +       .short  section_count                           // NumberOfSections
-> +       .long   0                                       // TimeDateStamp
-> +       .long   0                                       // PointerToSymbolTable
-> +       .long   0                                       // NumberOfSymbols
-> +       .short  section_table - optional_header         // SizeOfOptionalHeader
-> +       .short  IMAGE_FILE_DEBUG_STRIPPED | \
-> +               IMAGE_FILE_EXECUTABLE_IMAGE | \
-> +               IMAGE_FILE_LINE_NUMS_STRIPPED           // Characteristics
-> +
-> +optional_header:
-> +       .short  PE_OPT_MAGIC_PE32PLUS                   // PE32+ format
-
-Are you sure both riscv32 and riscv64 use PE32+? IIUC, 32-bit
-architectures use PE32 not PE32+ (but I could be wrong)
-
-> +       .byte   0x02                                    // MajorLinkerVersion
-> +       .byte   0x14                                    // MinorLinkerVersion
-> +       .long   __pecoff_text_end - efi_header_end      // SizeOfCode
-> +       .long   __pecoff_data_virt_size                 // SizeOfInitializedData
-> +       .long   0                                       // SizeOfUninitializedData
-> +       .long   __efistub_efi_pe_entry - _start         // AddressOfEntryPoint
-> +       .long   efi_header_end - _start                 // BaseOfCode
-> +
-> +extra_header_fields:
-> +       .quad   0                                       // ImageBase
-> +       .long   PECOFF_SECTION_ALIGNMENT                // SectionAlignment
-> +       .long   PECOFF_FILE_ALIGNMENT                   // FileAlignment
-> +       .short  0                                       // MajorOperatingSystemVersion
-> +       .short  0                                       // MinorOperatingSystemVersion
-> +       .short  LINUX_EFISTUB_MAJOR_VERSION             // MajorImageVersion
-> +       .short  LINUX_EFISTUB_MINOR_VERSION             // MinorImageVersion
-> +       .short  0                                       // MajorSubsystemVersion
-> +       .short  0                                       // MinorSubsystemVersion
-> +       .long   0                                       // Win32VersionValue
-> +
-> +       .long   _end - _start                           // SizeOfImage
-> +
-> +       // Everything before the kernel image is considered part of the header
-> +       .long   efi_header_end - _start                 // SizeOfHeaders
-> +       .long   0                                       // CheckSum
-> +       .short  IMAGE_SUBSYSTEM_EFI_APPLICATION         // Subsystem
-> +       .short  0                                       // DllCharacteristics
-> +       .quad   0                                       // SizeOfStackReserve
-> +       .quad   0                                       // SizeOfStackCommit
-> +       .quad   0                                       // SizeOfHeapReserve
-> +       .quad   0                                       // SizeOfHeapCommit
-> +       .long   0                                       // LoaderFlags
-> +       .long   (section_table - .) / 8                 // NumberOfRvaAndSizes
-> +
-> +       .quad   0                                       // ExportTable
-> +       .quad   0                                       // ImportTable
-> +       .quad   0                                       // ResourceTable
-> +       .quad   0                                       // ExceptionTable
-> +       .quad   0                                       // CertificationTable
-> +       .quad   0                                       // BaseRelocationTable
-> +
-> +       // Section table
-> +section_table:
-> +       .ascii  ".text\0\0\0"
-> +       .long   __pecoff_text_end - efi_header_end      // VirtualSize
-> +       .long   efi_header_end - _start                 // VirtualAddress
-> +       .long   __pecoff_text_end - efi_header_end      // SizeOfRawData
-> +       .long   efi_header_end - _start                 // PointerToRawData
-> +
-> +       .long   0                                       // PointerToRelocations
-> +       .long   0                                       // PointerToLineNumbers
-> +       .short  0                                       // NumberOfRelocations
-> +       .short  0                                       // NumberOfLineNumbers
-> +       .long   IMAGE_SCN_CNT_CODE | \
-> +               IMAGE_SCN_MEM_READ | \
-> +               IMAGE_SCN_MEM_EXECUTE                   // Characteristics
-> +
-> +       .ascii  ".data\0\0\0"
-> +       .long   __pecoff_data_virt_size                 // VirtualSize
-> +       .long   __pecoff_text_end - _start              // VirtualAddress
-> +       .long   __pecoff_data_raw_size                  // SizeOfRawData
-> +       .long   __pecoff_text_end - _start              // PointerToRawData
-> +
-> +       .long   0                                       // PointerToRelocations
-> +       .long   0                                       // PointerToLineNumbers
-> +       .short  0                                       // NumberOfRelocations
-> +       .short  0                                       // NumberOfLineNumbers
-> +       .long   IMAGE_SCN_CNT_INITIALIZED_DATA | \
-> +               IMAGE_SCN_MEM_READ | \
-> +               IMAGE_SCN_MEM_WRITE                     // Characteristics
-> +
-> +       .set    section_count, (. - section_table) / 40
-> +
-> +       .balign 0x1000
-> +efi_header_end:
-> +       .endm
-> diff --git a/arch/riscv/kernel/head.S b/arch/riscv/kernel/head.S
-> index c6a37e8231a8..3631147732ee 100644
-> --- a/arch/riscv/kernel/head.S
-> +++ b/arch/riscv/kernel/head.S
-> @@ -13,6 +13,7 @@
->  #include <asm/csr.h>
->  #include <asm/hwcap.h>
->  #include <asm/image.h>
-> +#include "efi-header.S"
->
->  __HEAD
->  ENTRY(_start)
-> @@ -22,10 +23,18 @@ ENTRY(_start)
->          * Do not modify it without modifying the structure and all bootloaders
->          * that expects this header format!!
->          */
-> +#ifdef CONFIG_EFI
-> +       /*
-> +        * This instruction decodes to "MZ" ASCII required by UEFI.
+> +       /* Get MokListRT. It might not exist, so it isn't an error
+> +        * if we can't get it.
 > +        */
-> +       c.li s4,-13
-> +       j _start_kernel
-> +#else
->         /* jump to start kernel */
->         j _start_kernel
->         /* reserved */
->         .word 0
-> +#endif
->         .balign 8
->  #if __riscv_xlen == 64
->         /* Image load offset(2MB) from start of RAM */
-> @@ -43,7 +52,14 @@ ENTRY(_start)
->         .ascii RISCV_IMAGE_MAGIC
->         .balign 4
->         .ascii RISCV_IMAGE_MAGIC2
-> +#ifdef CONFIG_EFI
-> +       .word pe_head_start - _start
-> +pe_head_start:
-> +
-> +       __EFI_PE_HEADER
-> +#else
->         .word 0
-> +#endif
->
->  .align 2
->  #ifdef CONFIG_MMU
-> diff --git a/arch/riscv/kernel/image-vars.h b/arch/riscv/kernel/image-vars.h
-> new file mode 100644
-> index 000000000000..8c212efb37a6
-> --- /dev/null
-> +++ b/arch/riscv/kernel/image-vars.h
-> @@ -0,0 +1,51 @@
-> +/* SPDX-License-Identifier: GPL-2.0-only */
-> +/*
-> + * Copyright (C) 2020 Western Digital Corporation or its affiliates.
-> + * Linker script variables to be set after section resolution, as
-> + * ld.lld does not like variables assigned before SECTIONS is processed.
-> + * Based on arch/arm64/kerne/image-vars.h
-> + */
-> +#ifndef __RISCV_KERNEL_IMAGE_VARS_H
-> +#define __RISCV_KERNEL_IMAGE_VARS_H
-> +
-> +#ifndef LINKER_SCRIPT
-> +#error This file should only be included in vmlinux.lds.S
-> +#endif
-> +
-> +#ifdef CONFIG_EFI
+> +       mok = get_cert_list(L"MokListRT", &mok_var, &moksize, &status);
+> +       if (mok) {
+> +               rc = parse_efi_signature_list("UEFI:MokListRT",
+> +                                             mok, moksize, get_handler_for_db);
+> +               kfree(mok);
+> +               if (rc)
+> +                       pr_err("Couldn't parse MokListRT signatures: %d\n", rc);
+> +               return rc;
+> +       }
+> +       if (status == EFI_NOT_FOUND)
+> +               pr_debug("MokListRT variable wasn't found\n");
+> +       else
+> +               pr_info("Couldn't get UEFI MokListRT\n");
+> +       return 0;
+> +}
 > +
 > +/*
-> + * The EFI stub has its own symbol namespace prefixed by __efistub_, to
-> + * isolate it from the kernel proper. The following symbols are legally
-> + * accessed by the stub, so provide some aliases to make them accessible.
-> + * Only include data symbols here, or text symbols of functions that are
-> + * guaranteed to be safe when executed at another offset than they were
-> + * linked at. The routines below are all implemented in assembler in a
-> + * position independent manner
-> + */
-> +__efistub_memcmp               = memcmp;
-> +__efistub_memchr               = memchr;
-> +__efistub_memcpy               = memcpy;
-> +__efistub_memmove              = memmove;
-> +__efistub_memset               = memset;
-> +__efistub_strlen               = strlen;
-> +__efistub_strnlen              = strnlen;
-> +__efistub_strcmp               = strcmp;
-> +__efistub_strncmp              = strncmp;
-> +__efistub_strrchr              = strrchr;
-> +
-> +#ifdef CONFIG_KASAN
-> +__efistub___memcpy             = memcpy;
-> +__efistub___memmove            = memmove;
-> +__efistub___memset             = memset;
-> +#endif
-> +
-> +__efistub__start               = _start;
-> +__efistub__start_kernel                = _start_kernel;
-> +__efistub__end                 = _end;
-> +__efistub__edata               = _edata;
-> +__efistub_screen_info          = screen_info;
-> +
-> +#endif
-> +
-> +#endif /* __RISCV_KERNEL_IMAGE_VARS_H */
-> diff --git a/arch/riscv/kernel/vmlinux.lds.S b/arch/riscv/kernel/vmlinux.lds.S
-> index f3586e31ed1e..6dcf790282dd 100644
-> --- a/arch/riscv/kernel/vmlinux.lds.S
-> +++ b/arch/riscv/kernel/vmlinux.lds.S
-> @@ -10,6 +10,7 @@
->  #include <asm/cache.h>
->  #include <asm/thread_info.h>
->  #include <asm/set_memory.h>
-> +#include "image-vars.h"
->
->  #include <linux/sizes.h>
->  OUTPUT_ARCH(riscv)
-> @@ -17,6 +18,9 @@ ENTRY(_start)
->
->  jiffies = jiffies_64;
->
-> +PECOFF_SECTION_ALIGNMENT = 0x1000;
-> +PECOFF_FILE_ALIGNMENT = 0x200;
-> +
->  SECTIONS
+> + * load_uefi_certs() - Load certs from UEFI sources
+> + *
+>   * Load the certs contained in the UEFI databases into the platform trusted
+>   * keyring and the UEFI blacklisted X.509 cert SHA256 hashes into the blacklist
+>   * keyring.
+> @@ -73,17 +110,16 @@ static __init void *get_cert_list(efi_char16_t *name, efi_guid_t *guid,
+>  static int __init load_uefi_certs(void)
 >  {
->         /* Beginning of code and text segment */
-> @@ -76,6 +80,10 @@ SECTIONS
+>         efi_guid_t secure_var = EFI_IMAGE_SECURITY_DATABASE_GUID;
+> -       efi_guid_t mok_var = EFI_SHIM_LOCK_GUID;
+> -       void *db = NULL, *dbx = NULL, *mok = NULL;
+> -       unsigned long dbsize = 0, dbxsize = 0, moksize = 0;
+> +       void *db = NULL, *dbx = NULL;
+> +       unsigned long dbsize = 0, dbxsize = 0;
+>         efi_status_t status;
+>         int rc = 0;
 >
->         EXCEPTION_TABLE(0x10)
+>         if (!efi_rt_services_supported(EFI_RT_SUPPORTED_GET_VARIABLE))
+>                 return false;
 >
-> +#ifdef CONFIG_EFI
-> +       . = ALIGN(PECOFF_SECTION_ALIGNMENT);
-> +       __pecoff_text_end = .;
-> +#endif
->         . = ALIGN(SECTION_ALIGN);
->         _data = .;
->
-> @@ -83,16 +91,26 @@ SECTIONS
->         .sdata : {
->                 __global_pointer$ = . + 0x800;
->                 *(.sdata*)
-> -               /* End of data section */
-> -               _edata = .;
+> -       /* Get db, MokListRT, and dbx.  They might not exist, so it isn't
+> -        * an error if we can't get them.
+> +       /* Get db and dbx.  They might not exist, so it isn't an error
+> +        * if we can't get them.
+>          */
+>         if (!uefi_check_ignore_db()) {
+>                 db = get_cert_list(L"db", &secure_var, &dbsize, &status);
+> @@ -102,20 +138,6 @@ static int __init load_uefi_certs(void)
+>                 }
 >         }
 >
-> +#ifdef CONFIG_EFI
-> +       .pecoff_edata_padding : { BYTE(0); . = ALIGN(PECOFF_FILE_ALIGNMENT); }
-> +       __pecoff_data_raw_size = ABSOLUTE(. - __pecoff_text_end);
-> +#endif
-> +
-> +       /* End of data section */
-> +       _edata = .;
-> +
->         BSS_SECTION(PAGE_SIZE, PAGE_SIZE, 0)
->
->         .rel.dyn : {
->                 *(.rel.dyn*)
+> -       mok = get_cert_list(L"MokListRT", &mok_var, &moksize, &status);
+> -       if (!mok) {
+> -               if (status == EFI_NOT_FOUND)
+> -                       pr_debug("MokListRT variable wasn't found\n");
+> -               else
+> -                       pr_info("Couldn't get UEFI MokListRT\n");
+> -       } else {
+> -               rc = parse_efi_signature_list("UEFI:MokListRT",
+> -                                             mok, moksize, get_handler_for_db);
+> -               if (rc)
+> -                       pr_err("Couldn't parse MokListRT signatures: %d\n", rc);
+> -               kfree(mok);
+> -       }
+> -
+>         dbx = get_cert_list(L"dbx", &secure_var, &dbxsize, &status);
+>         if (!dbx) {
+>                 if (status == EFI_NOT_FOUND)
+> @@ -131,6 +153,9 @@ static int __init load_uefi_certs(void)
+>                 kfree(dbx);
 >         }
 >
-> +#ifdef CONFIG_EFI
-> +       . = ALIGN(PECOFF_SECTION_ALIGNMENT);
-> +       __pecoff_data_virt_size = ABSOLUTE(. - __pecoff_text_end);
-> +#endif
->         _end = .;
->
->         STABS_DEBUG
+> +       /* Load the MokListRT certs */
+> +       rc = load_moklist_certs();
+> +
+>         return rc;
+>  }
+>  late_initcall(load_uefi_certs);
 > --
-> 2.24.0
+> 2.27.0
 >
