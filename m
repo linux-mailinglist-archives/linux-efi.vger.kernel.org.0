@@ -2,231 +2,103 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 124F3266860
-	for <lists+linux-efi@lfdr.de>; Fri, 11 Sep 2020 20:45:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5636226688E
+	for <lists+linux-efi@lfdr.de>; Fri, 11 Sep 2020 21:09:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725822AbgIKSpi (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 11 Sep 2020 14:45:38 -0400
-Received: from mail.kernel.org ([198.145.29.99]:43978 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725802AbgIKSpg (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Fri, 11 Sep 2020 14:45:36 -0400
-Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com [209.85.210.43])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A523B20855
-        for <linux-efi@vger.kernel.org>; Fri, 11 Sep 2020 18:45:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1599849935;
-        bh=m3SxIHaRooc6dcQZEQkcjG3xaDFk0B9swfuaiLC8SuA=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=BRZMm2WoEojJZGRjl4Tzc5xo8uIsj/Xd4RbmXBZ/wvh3mmulATgK3yZBQuF4ANx6w
-         YSgPs/rD+/5JShWpU28AKGXpP4KnjhQ1VgM0th0ITP2957s9Y6vAt99BgxweH+1MSd
-         m5v7C76nW0Qa2oBBQgJDfBa7Yk38Z8cC9Yyf+Vbo=
-Received: by mail-ot1-f43.google.com with SMTP id c10so9145413otm.13
-        for <linux-efi@vger.kernel.org>; Fri, 11 Sep 2020 11:45:35 -0700 (PDT)
-X-Gm-Message-State: AOAM533W2WK5DD/z8Y20nQJjFDCLLQ0xVW+WB6VMcIrPXhqQJ0QMG4ph
-        Nt4JK9fAoYcp5iA0T1C8C0v77qxTz/YS/gs96MU=
-X-Google-Smtp-Source: ABdhPJzXIjJNj8Sx1lpfkDCDdDm+nRxlYAiXrfdOMT4m7fBWbrSZzR1ygDm/z8jCG9fX3sBma+bu34KT5S3H6d2MYS4=
-X-Received: by 2002:a9d:69c9:: with SMTP id v9mr1928969oto.90.1599849934966;
- Fri, 11 Sep 2020 11:45:34 -0700 (PDT)
-MIME-Version: 1.0
-References: <CAMj1kXG6VRXOPRhHmeyiPP06BVByEYsqYE001BZYyRDqtvyDBg@mail.gmail.com>
- <mhng-f3ca14fc-58f7-423e-8abe-a85de1a2d55b@palmerdabbelt-glaptop1>
- <CAMj1kXH5pA-9uWCRzvN2OKzxTr0mG8knZZnpuOPn+b5BBAn4dw@mail.gmail.com> <CAD8XO3YQfWQv_WxWuJ0ur_chfK-iSjDwhWA4KWXP85VOYCi_qQ@mail.gmail.com>
-In-Reply-To: <CAD8XO3YQfWQv_WxWuJ0ur_chfK-iSjDwhWA4KWXP85VOYCi_qQ@mail.gmail.com>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Fri, 11 Sep 2020 21:45:23 +0300
-X-Gmail-Original-Message-ID: <CAMj1kXECRr+E4=r+7fuaRAXQUyLi5Z1_HgNWgLGZVHdPSABE0A@mail.gmail.com>
-Message-ID: <CAMj1kXECRr+E4=r+7fuaRAXQUyLi5Z1_HgNWgLGZVHdPSABE0A@mail.gmail.com>
-Subject: Re: [PATCH RFC/RFT 0/3] efi/libstub: arm32: Remove dependency on dram_base
-To:     Maxim Uvarov <maxim.uvarov@linaro.org>
-Cc:     Palmer Dabbelt <palmer@dabbelt.com>,
-        Atish Patra <atishp@atishpatra.org>,
+        id S1725817AbgIKTJC (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 11 Sep 2020 15:09:02 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:27334 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725730AbgIKTJA (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 11 Sep 2020 15:09:00 -0400
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 08BJ3pA0135511;
+        Fri, 11 Sep 2020 15:08:47 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ mime-version : content-transfer-encoding; s=pp1;
+ bh=8jEx563BrMVT+19G9TowoPShp91w2ilK5GNGgfLV120=;
+ b=QZ04DitK+0lZdNOLKV7awEI4LN3LSkNHCLnMu1At/8aJqbh82+7KQwGr3goFbEapCZca
+ tN298/p7BZLMsgtQujXDRl12rDi+vm92R7W2xQ5ih9REpUZOrtvqOec2harRSIVVOljT
+ 2M1uElWyUMJ4LYLb0qnjefUgY5qSoAV3rnuWykZ0RfZVUL1xNTuynY8Bb08jScsU5dQJ
+ DmFe1h1gDSWxkxb26un54JdUdlYyBZ3N+kcXyAwlUQjIzBMkKN6TVZ4ccYkQHQXS778i
+ yQ7GccvQYe2lDveKz5Rw856URwV3pphWePhnmPwPNSJKpuaZ7x632JCHpWmf3enDUxFB 5g== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 33gf2j04cm-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 11 Sep 2020 15:08:47 -0400
+Received: from m0098404.ppops.net (m0098404.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 08BJ5Bu2144825;
+        Fri, 11 Sep 2020 15:08:47 -0400
+Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com [149.81.74.107])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 33gf2j04as-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 11 Sep 2020 15:08:46 -0400
+Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
+        by ppma03fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 08BJ7FlU011806;
+        Fri, 11 Sep 2020 19:08:44 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+        by ppma03fra.de.ibm.com with ESMTP id 33c2a8c97b-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 11 Sep 2020 19:08:43 +0000
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com [9.149.105.232])
+        by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 08BJ8feS59638190
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 11 Sep 2020 19:08:41 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id B28995204E;
+        Fri, 11 Sep 2020 19:08:41 +0000 (GMT)
+Received: from sig-9-65-251-51.ibm.com (unknown [9.65.251.51])
+        by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id E9AF25204F;
+        Fri, 11 Sep 2020 19:08:38 +0000 (GMT)
+Message-ID: <06ea64fec71ebd18f0c5ed6b0d9b5a7d8f1d4775.camel@linux.ibm.com>
+Subject: Re: [PATCH V2 2/3] integrity: Move import of MokListRT certs to a
+ separate routine
+From:   Mimi Zohar <zohar@linux.ibm.com>
+To:     Ard Biesheuvel <ardb@kernel.org>,
+        Lenny Szubowicz <lszubowi@redhat.com>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         linux-efi <linux-efi@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Heinrich Schuchardt <xypron.glpk@gmx.de>,
-        Atish Patra <Atish.Patra@wdc.com>,
-        Jens Wiklander <jens.wiklander@linaro.org>,
-        =?UTF-8?Q?Fran=C3=A7ois_Ozog?= <francois.ozog@linaro.org>,
-        Etienne CARRIERE <etienne.carriere@st.com>,
-        Takahiro Akashi <takahiro.akashi@linaro.org>,
-        Patrice CHOTARD <patrice.chotard@st.com>,
-        Sumit Garg <sumit.garg@linaro.org>,
-        Grant Likely <Grant.Likely@arm.com>,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-        Christophe Priouzeau <christophe.priouzeau@linaro.org>,
-        Rouven Czerwinski <r.czerwinski@pengutronix.de>,
-        Patrick Delaunay <patrick.delaunay@st.com>
-Content-Type: text/plain; charset="UTF-8"
+        platform-driver-x86@vger.kernel.org,
+        linux-security-module@vger.kernel.org, andy.shevchenko@gmail.com,
+        James Morris <jmorris@namei.org>, serge@hallyn.com,
+        Kees Cook <keescook@chromium.org>,
+        Borislav Petkov <bp@alien8.de>,
+        Peter Jones <pjones@redhat.com>,
+        David Howells <dhowells@redhat.com>, prarit@redhat.com
+Date:   Fri, 11 Sep 2020 15:08:38 -0400
+In-Reply-To: <CAMj1kXEz8y+X6KjqWWFD=38dDowqXDBvnPbgeh30+o83KpmKrg@mail.gmail.com>
+References: <20200905013107.10457-1-lszubowi@redhat.com>
+         <20200905013107.10457-3-lszubowi@redhat.com>
+         <CAMj1kXEdkdeE8VSZqEzhd__Kb7_ZmG2af6iBpbY3=nsj1-phYw@mail.gmail.com>
+         <f0a079b1-5f02-8618-fdfe-aea2278113c9@redhat.com>
+         <cb8b4ebaa35d79eba65b011d042d20a991adf540.camel@linux.ibm.com>
+         <394190b9-59bd-5cb3-317e-736852f190f4@redhat.com>
+         <CAMj1kXEz8y+X6KjqWWFD=38dDowqXDBvnPbgeh30+o83KpmKrg@mail.gmail.com>
+Content-Type: text/plain; charset="ISO-8859-15"
+X-Mailer: Evolution 3.28.5 (3.28.5-12.el8) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235,18.0.687
+ definitions=2020-09-11_10:2020-09-10,2020-09-11 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0
+ priorityscore=1501 mlxscore=0 mlxlogscore=859 adultscore=0 malwarescore=0
+ suspectscore=3 lowpriorityscore=0 spamscore=0 clxscore=1015
+ impostorscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2006250000 definitions=main-2009110152
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, 11 Sep 2020 at 13:27, Maxim Uvarov <maxim.uvarov@linaro.org> wrote:
->
-> Changes look fine for and should fix booting, while I can test them in
-> my environment next week.
->
+On Fri, 2020-09-11 at 21:16 +0300, Ard Biesheuvel wrote:
+> I think we can just merge the patches as they are, with Mimi's R-b carried over.
 
-Thanks
+Other than the comments beginning on the "/*" line as opposed to the
+subsequent line, the updated 2/2 and 3/3 patches look fine.
 
-Please use the version below for testing:
-https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git/tag/?h=efi-riscv-shared-for-v5.10
+thanks,
 
+Mimi
 
-> On Fri, 11 Sep 2020 at 10:56, Ard Biesheuvel <ardb@kernel.org> wrote:
-> >
-> > On Fri, 11 Sep 2020 at 05:16, Palmer Dabbelt <palmer@dabbelt.com> wrote:
-> > >
-> > > On Thu, 10 Sep 2020 07:08:07 PDT (-0700), ardb@kernel.org wrote:
-> > > > On Thu, 10 Sep 2020 at 13:04, Ard Biesheuvel <ardb@kernel.org> wrote:
-> > > >>
-> > > >> On Thu, 10 Sep 2020 at 04:34, Atish Patra <atishp@atishpatra.org> wrote:
-> > > >> >
-> > > >> > On Wed, Sep 9, 2020 at 2:44 PM Atish Patra <atishp@atishpatra.org> wrote:
-> > > >> > >
-> > > >> > > On Wed, Sep 9, 2020 at 1:52 PM Palmer Dabbelt <palmer@dabbelt.com> wrote:
-> > > >> > > >
-> > > >> > > > On Wed, 09 Sep 2020 08:16:20 PDT (-0700), ardb@kernel.org wrote:
-> > > >> > > > > Maxim reports boot failures on platforms that describe reserved memory
-> > > >> > > > > regions in DT that are disjoint from system DRAM, and which are converted
-> > > >> > > > > to EfiReservedMemory regions by the EFI subsystem in u-boot.
-> > > >> > > > >
-> > > >> > > > > As it turns out, the whole notion of discovering the base of DRAM is
-> > > >> > > > > problematic, and it would be better to simply rely on the EFI memory
-> > > >> > > > > allocation routines instead, and derive the FDT and initrd allocation
-> > > >> > > > > limits from the actual placement of the kernel (which is what defines
-> > > >> > > > > the start of the linear region anyway)
-> > > >> > > > >
-> > > >> > > > > Finally, we should be able to get rid of get_dram_base() entirely.
-> > > >> > > > > However, as RISC-V only just started using it, we will need to address
-> > > >> > > > > that at a later time.
-> > > >> > > >
-> > > >> > > > Looks like we're using dram_base to derive two argumets to
-> > > >> > > > efi_relocate_kernel(): the preferred load address and the minimum load address.
-> > > >> > > > I don't see any reason why we can't use the same PAGE_OFFSET-like logic that
-> > > >> > > > x86 uses for the minimum load address, but I don't think we have any mechanism
-> > > >> > > > like "struct boot_params" so we'd need to come up with something.
-> > > >> > > >
-> > > >> > >
-> > > >> > > As discussed in the other thread
-> > > >> > > (https://www.spinics.net/lists/linux-efi/msg20262.html),
-> > > >> > > we don't need to do anything special. efi_relocate_kernel can just
-> > > >> > > take preferred address as 0
-> > > >> > > so that efi_bs_alloc will fail and efi_low_alloc_above will be used to
-> > > >> > > allocate 2MB/4MB aligned address as per requirement.
-> > > >> > >
-> > > >> > > I don't think the other changes in this series will cause any issue
-> > > >> > > for RISC-V. I will test it and update anyways.
-> > > >> > >
-> > > >> > > > > Cc: Maxim Uvarov <maxim.uvarov@linaro.org>
-> > > >> > > > > Cc: Heinrich Schuchardt <xypron.glpk@gmx.de>
-> > > >> > > > > Cc: Atish Patra <atish.patra@wdc.com>
-> > > >> > > > > Cc: Palmer Dabbelt <palmer@dabbelt.com>
-> > > >> > > > > Cc: Jens Wiklander <jens.wiklander@linaro.org>
-> > > >> > > > > Cc: Francois Ozog <francois.ozog@linaro.org>
-> > > >> > > > > Cc: Etienne CARRIERE <etienne.carriere@st.com>
-> > > >> > > > > Cc: Takahiro Akashi <takahiro.akashi@linaro.org>
-> > > >> > > > > Cc: Patrice CHOTARD <patrice.chotard@st.com>
-> > > >> > > > > Cc: Sumit Garg <sumit.garg@linaro.org>
-> > > >> > > > > Cc: Grant Likely <Grant.Likely@arm.com>
-> > > >> > > > > Cc: Ilias Apalodimas <ilias.apalodimas@linaro.org>
-> > > >> > > > > Cc: Christophe Priouzeau <christophe.priouzeau@linaro.org>
-> > > >> > > > > Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-> > > >> > > > > Cc: Patrick DELAUNAY <patrick.delaunay@st.com>
-> > > >> > > > >
-> > > >> > > > > Ard Biesheuvel (3):
-> > > >> > > > >   efi/libstub: Export efi_low_alloc_above() to other units
-> > > >> > > > >   efi/libstub: Use low allocation for the uncompressed kernel
-> > > >> > > > >   efi/libstub: base FDT and initrd placement on image address not DRAM
-> > > >> > > > >     base
-> > > >> > > > >
-> > > >> > > > >  arch/arm/include/asm/efi.h                |   6 +-
-> > > >> > > > >  arch/arm64/include/asm/efi.h              |   2 +-
-> > > >> > > > >  drivers/firmware/efi/libstub/arm32-stub.c | 177 ++++----------------
-> > > >> > > > >  drivers/firmware/efi/libstub/efi-stub.c   |   2 +-
-> > > >> > > > >  drivers/firmware/efi/libstub/efistub.h    |   3 +
-> > > >> > > > >  drivers/firmware/efi/libstub/relocate.c   |   4 +-
-> > > >> > > > >  6 files changed, 47 insertions(+), 147 deletions(-)
-> > > >> > >
-> > > >> >
-> > > >> > I verified the above patches along with the following RISC-V specific changes.
-> > > >> >
-> > > >> > diff --git a/arch/riscv/include/asm/efi.h b/arch/riscv/include/asm/efi.h
-> > > >> > index 93c305a638f4..dd6ceea9d548 100644
-> > > >> > --- a/arch/riscv/include/asm/efi.h
-> > > >> > +++ b/arch/riscv/include/asm/efi.h
-> > > >> > @@ -37,7 +37,7 @@ static inline unsigned long
-> > > >> > efi_get_max_fdt_addr(unsigned long dram_base)
-> > > >> >  static inline unsigned long efi_get_max_initrd_addr(unsigned long dram_base,
-> > > >> >                                                     unsigned long image_addr)
-> > > >> >  {
-> > > >> > -       return dram_base + SZ_256M;
-> > > >> > +       return image_addr + SZ_256M;
-> > > >> >  }
-> > > >> >
-> > > >>
-> > > >> Ah yes, we need this change as well - this is a bit unfortunate since
-> > > >> that creates a conflict with the RISC-V tree.
-> > > >>
-> > > >> > --- a/drivers/firmware/efi/libstub/riscv-stub.c
-> > > >> > +++ b/drivers/firmware/efi/libstub/riscv-stub.c
-> > > >> > @@ -100,7 +100,7 @@ efi_status_t handle_kernel_image(unsigned long *image_addr,
-> > > >> >          */
-> > > >> >         preferred_addr = round_up(dram_base, MIN_KIMG_ALIGN) + MIN_KIMG_ALIGN;
-> > > >> >         status = efi_relocate_kernel(image_addr, kernel_size, *image_size,
-> > > >> > -                                    preferred_addr, MIN_KIMG_ALIGN, dram_base);
-> > > >> > +                                    0, MIN_KIMG_ALIGN, 0);
-> > > >> >
-> > > >> > FWIW: Tested-by: Atish Patra <atish.patra@wdc.com>
-> > > >>
-> > > >> Thanks for confirming.
-> > > >
-> > > > OK,
-> > > >
-> > > > So, just to annoy Palmer and you more than I already have up to this
-> > > > point: any chance we could do a final respin of the RISC-V code on top
-> > > > of these changes? They are important for ARM, and I would prefer these
-> > > > to be merged in a way that makes it easy to backport them to -stable
-> > > > if needed.
-> > > >
-> > > > So what I would suggest is:
-> > > > - I will create a new 'shared-efi' tag/stable branch containing the
-> > > > existing two patches, as well as these changes (in a slightly updated
-> > > > form)
-> > > > - Palmer creates a new topic branch in the riscv repo based on this
-> > > > shared tag, and applies the [updated] RISC-V patches on top
-> > > > - Palmer drops the current version of the riscv patches from
-> > > > riscv/for-next, and merges the topic branch into it instead.
-> > > >
-> > > > Again, sorry to be a pain, but I think this is the cleanest way to get
-> > > > these changes queued up for v5.10 without painting ourselves into a
-> > > > corner too much when it comes to future follow-up changes.
-> > >
-> > > That's fine for me.
-> >
-> > Excellent.
-> >
-> > I have created a signed tag efi-riscv-shared-for-v5.10 in the EFI repo
-> > [0], which is based on v5.9-rc1. Please merge that at the start of
-> > your for-next/efi topic branch, and apply the reworked EFI for RISC-V
-> > series on top.
-> >
-> > I have created a preliminary version of that branch as 'riscv-tmp' on
-> > [1], incorporating some changes that are needed for the rebase. Note
-> > that I applied some other tweaks as well - one is in a separate patch
-> > on top, the other is that I omitted the Makefile rule for .stub.o
-> > objects under arch/riscv/Makefile, as it is not actually used.
-> >
-> > Atish - please pick whatever seems useful to you from that branch when
-> > you do the respin.
-> >
-> > Thanks,
-> > Ard.
-> >
-> >
-> >
-> > [0] git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git
-> > [1] git://git.kernel.org/pub/scm/linux/kernel/git/ardb/linux.git
