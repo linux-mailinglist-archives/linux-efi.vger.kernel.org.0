@@ -2,165 +2,323 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4EFD92694D2
-	for <lists+linux-efi@lfdr.de>; Mon, 14 Sep 2020 20:27:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D788C2694DF
+	for <lists+linux-efi@lfdr.de>; Mon, 14 Sep 2020 20:30:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726023AbgINS1q (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 14 Sep 2020 14:27:46 -0400
-Received: from mail.kernel.org ([198.145.29.99]:48508 "EHLO mail.kernel.org"
+        id S1726004AbgINSa4 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 14 Sep 2020 14:30:56 -0400
+Received: from mail.kernel.org ([198.145.29.99]:49486 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726009AbgINS1m (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Mon, 14 Sep 2020 14:27:42 -0400
-Received: from mail-oi1-f177.google.com (mail-oi1-f177.google.com [209.85.167.177])
+        id S1725994AbgINSav (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Mon, 14 Sep 2020 14:30:51 -0400
+Received: from mail-ot1-f49.google.com (mail-ot1-f49.google.com [209.85.210.49])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 5D3E421974
-        for <linux-efi@vger.kernel.org>; Mon, 14 Sep 2020 18:27:39 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 8838F2193E
+        for <linux-efi@vger.kernel.org>; Mon, 14 Sep 2020 18:30:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1600108059;
-        bh=9zQyAdaFrGUUQcLYXuH5+uMSf+npN1mAx2Zcifw74OY=;
+        s=default; t=1600108248;
+        bh=hp2wD32HuoavSR68s651qlveHIifz3unzD/J/Ufs13I=;
         h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=GCTsQnJScrYqKDuvULAAKyFuShwxgrGxtPilx4zYepxfBLYz7LhP7cEBxVRQyxSf+
-         6k7kMrAtIYfLNg9cCF1/IEkBUHhM+NX3ZwI1GEAvcXy4Q4dSHXcd4fXCIGoPsrE5D9
-         l9niMYoNU47nToNlDL0Vf+hvqv6dE2M7SxEWmFzE=
-Received: by mail-oi1-f177.google.com with SMTP id i17so860831oig.10
-        for <linux-efi@vger.kernel.org>; Mon, 14 Sep 2020 11:27:39 -0700 (PDT)
-X-Gm-Message-State: AOAM530RM/Ovyozzyen4UJNrwxMuFFzjfkNYPqX6UBMKNbmfguww019w
-        LcDurNrIXguzazX8TFHMqaog1ENt0oITPH1LZ3E=
-X-Google-Smtp-Source: ABdhPJwliVfikFe9Ge/DB+qMo4KZOH/wzBCGHdVkTZb0I+s77o85GNgg+kIVrzixihaMscTLMDh7E7+hxWXoZn4ymIg=
-X-Received: by 2002:aca:d845:: with SMTP id p66mr418694oig.47.1600108058712;
- Mon, 14 Sep 2020 11:27:38 -0700 (PDT)
+        b=G9Op10LcLMZJ8Jtzex8xHX/N9ja1G4ATvDHYFAehtF101W2dF34eEotGRDq6HxUV8
+         M9hbAs9vpXq2xZUZsWTgxZlJDvb25S1JEIF8pccw2r3mR6m4m6k67l9ksbp8UvMsez
+         0VsszgoXHVHjlB4y8mrWn51owly0SB7GTSkWXx0Q=
+Received: by mail-ot1-f49.google.com with SMTP id u25so814020otq.6
+        for <linux-efi@vger.kernel.org>; Mon, 14 Sep 2020 11:30:48 -0700 (PDT)
+X-Gm-Message-State: AOAM530jq150vS2ARQO+KeZ0tOfcjkG+TCBOMPJeytVIbyIq6EbBVH0N
+        EnA97XaHUrxGOPdUzxVAQHtI49H1DT6AFjaKuDI=
+X-Google-Smtp-Source: ABdhPJw18FfkFXn0BsixUj1FdQ6AWgDIdh8Fe2Nb0T8kIRiGzC+50xX035MXAIxmhZ5Vf3rpHNXDSGRfc+fqmq5aTXM=
+X-Received: by 2002:a9d:69c9:: with SMTP id v9mr9546580oto.90.1600108247771;
+ Mon, 14 Sep 2020 11:30:47 -0700 (PDT)
 MIME-Version: 1.0
-References: <AE217103-C96F-4AFC-8417-83EC11962004@gmail.com>
-In-Reply-To: <AE217103-C96F-4AFC-8417-83EC11962004@gmail.com>
+References: <DM6PR19MB2636D9FB53FD32BC8F3FFFE4FA240@DM6PR19MB2636.namprd19.prod.outlook.com>
+ <20200912175105.2085299-1-nivedita@alum.mit.edu> <20200912175105.2085299-2-nivedita@alum.mit.edu>
+ <DM6PR19MB26366FAF28A730412DC505EDFA230@DM6PR19MB2636.namprd19.prod.outlook.com>
+In-Reply-To: <DM6PR19MB26366FAF28A730412DC505EDFA230@DM6PR19MB2636.namprd19.prod.outlook.com>
 From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Mon, 14 Sep 2020 21:27:27 +0300
-X-Gmail-Original-Message-ID: <CAMj1kXEmw08Sed7CfgzBcjD1-WSNW9=Z27-0m4UKdfR5VCmFGg@mail.gmail.com>
-Message-ID: <CAMj1kXEmw08Sed7CfgzBcjD1-WSNW9=Z27-0m4UKdfR5VCmFGg@mail.gmail.com>
-Subject: Re: EFI regression for efi=noruntime support
-To:     Branden Sherrell <sherrellbc@gmail.com>
-Cc:     linux-efi <linux-efi@vger.kernel.org>
+Date:   Mon, 14 Sep 2020 21:30:36 +0300
+X-Gmail-Original-Message-ID: <CAMj1kXFueikQBrv1xS-Csz+kHfjA+diaZ4ut2FZSO9JXxBPPhA@mail.gmail.com>
+Message-ID: <CAMj1kXFueikQBrv1xS-Csz+kHfjA+diaZ4ut2FZSO9JXxBPPhA@mail.gmail.com>
+Subject: Re: [RFC PATCH 1/2] efi/x86: Add a quirk to support command line
+ arguments on Dell EFI firmware
+To:     "Limonciello, Mario" <Mario.Limonciello@dell.com>
+Cc:     Arvind Sankar <nivedita@alum.mit.edu>,
+        Jacobo Pantoja <jacobopantoja@gmail.com>,
+        Peter Jones <pjones@redhat.com>,
+        linux-efi <linux-efi@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Mon, 14 Sep 2020 at 20:15, Branden Sherrell <sherrellbc@gmail.com> wrote=
-:
+On Mon, 14 Sep 2020 at 19:57, Limonciello, Mario
+<Mario.Limonciello@dell.com> wrote:
 >
-> An EFI-related regression appears to have made its way in from f88814cc25=
-78c121e6edef686365036db72af0ed:
+> > -----Original Message-----
+> > From: Arvind Sankar <nivedita@alum.mit.edu>
+> > Sent: Saturday, September 12, 2020 12:51
+> > To: Jacobo Pantoja
+> > Cc: Limonciello, Mario; Ard Biesheuvel; Peter Jones; linux-efi
+> > Subject: [RFC PATCH 1/2] efi/x86: Add a quirk to support command line
+> > arguments on Dell EFI firmware
+> >
+> >
+> > [EXTERNAL EMAIL]
+> >
+> > At least some versions of Dell EFI firmware pass the entire
+> > EFI_LOAD_OPTION descriptor, rather than just the OptionalData part, to
+> > the loaded image.
+> >
+> > To handle this, add a quirk to check if the options look like a valid
+> > EFI_LOAD_OPTION descriptor, and if so, use the OptionalData part as the
+> > command line.
 >
-> Author: Ard Biesheuvel <ardb@kernel.org> Date: Wed Jul 8 13:01:57 2020 +0=
-300 efi/efivars:
-> Expose RT service availability via efivars abstraction
->
->
-> On the RockChip rk3399 (ARMv8) port the EFI subsystem claims the reboot c=
-allback despite no runtime support. Ordinarily one might use efi=3Dnoruntim=
-e or noefi to disable this, but the boot augment appears to now be outright=
- ignored (on this system, at least). You might imagine this causes issue on=
- a uboot'd system that does not have runtime services. The manifestation of=
- this bug is an iabt with PC=3D0 originating in efivar_entry_set_safe. This=
- function eventually attempts to call the NULL entry ops->set_variable.
->
-> [   41.231673] Unable to handle kernel NULL pointer dereference at virtua=
-l address 0000000000000000
-> [   41.232436] Mem abort info:
-> [   41.232682]   ESR =3D 0x86000004
-> [   41.232951]   EC =3D 0x21: IABT (current EL), IL =3D 32 bits
-> [   41.233413]   SET =3D 0, FnV =3D 0
-> [   41.233681]   EA =3D 0, S1PTW =3D 0
-> [   41.233956] user pgtable: 4k pages, 48-bit VAs, pgdp=3D00000000f02eb00=
-0
-> [   41.234516] [0000000000000000] pgd=3D0000000000000000, p4d=3D000000000=
-0000000
-> [   41.235111] Internal error: Oops: 86000004 [#1] SMP
-> [   41.235536] Modules linked in: rt2800usb rt2x00usb rt2800lib rt2x00lib=
- rc_cec mac80211 snd_soc_hdmi_codec dw_hdmi_i2s_audio dw_hdmi_cec rockchipd=
-rm realtek dw_mipi_dsi hantro_vpu(C) dw_hdmi hci_uart rockchip_vdec(C) rock=
-chip_rga analogix_dp cfg80211 cec btqca btbcm v4l2_h264 videobuf2_dma_sg pw=
-m_fan btintel rc_core v4l2_mem2mem videobuf2_vmalloc videobuf2_dma_contig b=
-luetooth dwmac_rk videobuf2_memops videobuf2_v4l2 stmmac_platform videobuf2=
-_common libarc4 drm_kms_helper snd_soc_audio_graph_card snd_soc_simple_card=
- stmmac snd_soc_simple_card_utils syscopyarea sysfillrect sysimgblt panfros=
-t fb_sys_fops ecdh_generic mdio_xpcs videodev phylink gpu_sched ecc snd_soc=
-_rockchip_i2s rfkill mc snd_soc_rockchip_pcm dw_wdt rockchip_thermal rtc_rk=
-808 rockchip_saradc drm gpio_keys
-> [   41.241462] CPU: 5 PID: 1 Comm: shutdown Tainted: G         C        5=
-.8.8-1-ARCH #1
-> [   41.242135] Hardware name: pine64 rockpro64_rk3399/rockpro64_rk3399, B=
-IOS 2020.10-rc4-dirty 09/11/2020
-> [   41.242944] pstate: 00000005 (nzcv daif -PAN -UAO BTYPE=3D--)
-> [   41.243431] pc : 0x0
-> [   41.243631] lr : efivar_entry_set_safe+0xc8/0x1a0
-> [   41.244041] sp : ffff80001254bbe0
-> [   41.244331] x29: ffff80001254bbe0 x28: ffff0000f2f8e3c0
-> [   41.244794] x27: 0000000000000000 x26: ffff0000f11af418
-> [   41.245257] x25: ffff8000124c0000 x24: ffff8000124c0b50
-> [   41.245720] x23: ffff0000f11af418 x22: ffff800012387230
-> [   41.246183] x21: 0000000000000007 x20: ffff0000f11af000
-> [   41.246646] x19: 000000000000000e x18: 0000000000000030
-> [   41.247109] x17: 0000000000000000 x16: 0000000000000000
-> [   41.247572] x15: ffff0000f2f8e8e0 x14: ffffffffffffffff
-> [   41.248034] x13: ffff80009254b9e7 x12: 0000000000000030
-> [   41.248497] x11: 0101010101010101 x10: 7f7f7f7f7f7f7f7f
-> [   41.248960] x9 : ffff800010d8bb94 x8 : 41cf0a4c4a67b082
-> [   41.249423] x7 : ffff8000124c0b78 x6 : ffff0000f11af418
-> [   41.249886] x5 : 0000000000000000 x4 : ffff0000f11af418
-> [   41.250349] x3 : 000000000000000e x2 : 0000000000000007
-> [   41.250811] x1 : ffff80001254bc30 x0 : ffff0000f11af000
-> [   41.251275] Call trace:
-> [   41.251491]  0x0
-> [   41.251655]  efibc_set_variable+0xf0/0x170
-> [   41.252013]  efibc_reboot_notifier_call+0x44/0x80
-> [   41.252427]  blocking_notifier_call_chain+0x78/0xb0
-> [   41.252852]  __do_sys_reboot+0x1cc/0x290
-> [   41.253195]  __arm64_sys_reboot+0x30/0x40
-> [   41.253547]  el0_svc_common.constprop.0+0x7c/0x140
-> [   41.253965]  do_el0_svc+0x28/0xb0
-> [   41.254257]  el0_sync_handler+0x98/0x278
-> [   41.254599]  el0_sync+0x158/0x180
-> [   41.254891] Code: bad PC value
-> [   41.255160] ---[ end trace 1fafcf21a783a644 ]---
-> [   41.255617] Kernel panic - not syncing: Attempted to kill init! exitco=
-de=3D0x0000000b
-> [   41.256283] SMP: stopping secondary CPUs
-> [   41.256735] Kernel Offset: disabled
-> [   41.257040] CPU features: 0x240022,21006008
-> [   41.257406] Memory Limit: none
-> [   41.257681] ---[ end Kernel panic - not syncing: Attempted to kill ini=
-t! exitcode=3D0x0000000b ]---
->
-> I did not spend too much time poking around, but I did note that if one b=
-uilds a kernel that forces the efibc_init to return ENODEV to prevent reboo=
-t registration, the system will properly consult PSCI to handle the event (=
-as is expected for the rk3399 per the device tree). This observed behavior =
-is accurate at least through 5.9.0-rc4. A test of the previous commit (8778=
-eb0927ddcd3f431805c37b78fa56481aeed9) confirms an uneventful reboot for thi=
-s device.
-> The board configuration is the RockPro64, which has a device tree present=
- in the kernel sources. My configuration in particular was using the latest=
- Grub to EFI boot Linux after having itself been loaded by uboot.
->
+> I think it would be useful to document in the commit message the specifics
+> of at least the failure reported by Jacobo (Precision T3620 FW 2.15.0).
 >
 
-This looks like an oversight in the efibc driver.
+Agreed.
 
-Does the change below fix your issue?
+> >
+> > Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
+> > Reported-by: Jacobo Pantoja <jacobopantoja@gmail.com>
+> > Link: https://lore.kernel.org/linux-
+> > efi/20200907170021.GA2284449@rani.riverdale.lan/
+> > ---
+> >  .../firmware/efi/libstub/efi-stub-helper.c    | 99 ++++++++++++++++++-
+> >  drivers/firmware/efi/libstub/efistub.h        | 31 ++++++
+> >  drivers/firmware/efi/libstub/file.c           |  5 +-
+> >  3 files changed, 133 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/drivers/firmware/efi/libstub/efi-stub-helper.c
+> > b/drivers/firmware/efi/libstub/efi-stub-helper.c
+> > index f735db55adc0..294958ff1ee6 100644
+> > --- a/drivers/firmware/efi/libstub/efi-stub-helper.c
+> > +++ b/drivers/firmware/efi/libstub/efi-stub-helper.c
+> > @@ -238,6 +238,100 @@ efi_status_t efi_parse_options(char const *cmdline)
+> >       return EFI_SUCCESS;
+> >  }
+> >
+> > +/*
+> > + * The EFI_LOAD_OPTION descriptor has the following layout:
+> > + *   u32 Attributes;
+> > + *   u16 FilePathListLength;
+> > + *   u16 Description[];
+> > + *   efi_device_path_protocol_t FilePathList[];
+> > + *   u8 OptionalData[];
+> > + *
+> > + * This function validates and unpacks the variable-size data fields.
+> > + */
+> > +static
+> > +bool efi_load_option_unpack(efi_load_option_unpacked_t *dest,
+> > +                         const efi_load_option_t *src, size_t size)
+> > +{
+> > +
+> > +     const void *pos;
+> > +     u16 c;
+> > +     efi_device_path_protocol_t header;
+> > +     const efi_char16_t *description;
+> > +     const efi_device_path_protocol_t *file_path_list;
+>
+> Should re-order to reverse xmas tree order.
+>
 
-diff --git a/drivers/firmware/efi/efibc.c b/drivers/firmware/efi/efibc.c
-index 35dccc88ac0a..15a47539dc56 100644
---- a/drivers/firmware/efi/efibc.c
-+++ b/drivers/firmware/efi/efibc.c
-@@ -84,7 +84,7 @@ static int __init efibc_init(void)
- {
-        int ret;
+We have no such requirement in the EFI subsystem.
 
--       if (!efi_enabled(EFI_RUNTIME_SERVICES))
-+       if (!efivars_kobject() || !efivar_supports_writes())
-                return -ENODEV;
+> > +
+> > +     if (size < offsetof(efi_load_option_t, variable_data))
+> > +             return false;
+> > +     pos = src->variable_data;
+> > +     size -= offsetof(efi_load_option_t, variable_data);
+> > +
+> > +     if ((src->attributes & ~EFI_LOAD_OPTION_MASK) != 0)
+> > +             return false;
+> > +
+> > +     /* Scan description. */
+> > +     description = pos;
+> > +     do {
+> > +             if (size < sizeof(c))
+> > +                     return false;
+> > +             c = *(const u16 *)pos;
+> > +             pos += sizeof(c);
+> > +             size -= sizeof(c);
+> > +     } while (c != L'\0');
+> > +
+> > +     /* Scan file_path_list. */
+> > +     file_path_list = pos;
+> > +     do {
+> > +             if (size < sizeof(header))
+> > +                     return false;
+> > +             header = *(const efi_device_path_protocol_t *)pos;
+> > +             if (header.length < sizeof(header))
+> > +                     return false;
+> > +             if (size < header.length)
+> > +                     return false;
+> > +             pos += header.length;
+> > +             size -= header.length;
+> > +     } while ((header.type != EFI_DEV_END_PATH && header.type !=
+> > EFI_DEV_END_PATH2) ||
+> > +              (header.sub_type != EFI_DEV_END_ENTIRE));
+> > +     if (pos != (const void *)file_path_list + src->file_path_list_length)
+> > +             return false;
+> > +
+> > +     dest->attributes = src->attributes;
+> > +     dest->file_path_list_length = src->file_path_list_length;
+> > +     dest->description = description;
+> > +     dest->file_path_list = file_path_list;
+> > +     dest->optional_data_size = size;
+> > +     dest->optional_data = size ? pos : NULL;
+> > +
+> > +     return true;
+> > +}
+> > +
+> > +/*
+> > + * At least some versions of Dell firmware pass the entire contents of the
+> > + * Boot#### variable, i.e. the EFI_LOAD_OPTION descriptor, rather than just
+> > the
+> > + * OptionalData field.
+> > + *
+> > + * Detect this case and extract OptionalData.
+> > + */
+> > +void efi_apply_loadoptions_quirk(const void **load_options, int
+> > *load_options_size)
+> > +{
+> > +     const efi_load_option_t *load_option = *load_options;
+> > +     efi_load_option_unpacked_t load_option_unpacked;
+> > +
+> > +     if (!IS_ENABLED(CONFIG_X86))
+> > +             return;
+> > +     if (!load_option)
+> > +             return;
+> > +     if (*load_options_size < sizeof(*load_option))
+> > +             return;
+> > +     if ((load_option->attributes & ~EFI_LOAD_OPTION_BOOT_MASK) != 0)
+> > +             return;
+> > +
+> > +     if (!efi_load_option_unpack(&load_option_unpacked, load_option,
+> > *load_options_size))
+> > +             return;
+> > +
+>
+> In case this was ever to be attributed to a cause for someone to fail to
+> boot, it may be useful to drop a pr_debug here that could be easily turned
+> on.
+>
 
-        ret =3D register_reboot_notifier(&efibc_reboot_notifier);
+Agree that adding a efi_info() here makes sense, not only for
+potential failures, but also simply to have some confirmation that the
+quirk is taking effect.
+
+Note that I am not 100% convinced yet that we need this change to
+begin with. How large is the intersection of the set of affected
+systems and the set of systems that are likely to run future kernels
+that carry this quirk?
+
+
+> > +     *load_options = load_option_unpacked.optional_data;
+> > +     *load_options_size = load_option_unpacked.optional_data_size;
+> > +}
+> > +
+> >  /*
+> >   * Convert the unicode UEFI command line to ASCII to pass to kernel.
+> >   * Size of memory allocated return in *cmd_line_len.
+> > @@ -247,12 +341,15 @@ char *efi_convert_cmdline(efi_loaded_image_t *image, int
+> > *cmd_line_len)
+> >  {
+> >       const u16 *s2;
+> >       unsigned long cmdline_addr = 0;
+> > -     int options_chars = efi_table_attr(image, load_options_size) / 2;
+> > +     int options_chars = efi_table_attr(image, load_options_size);
+> >       const u16 *options = efi_table_attr(image, load_options);
+> >       int options_bytes = 0, safe_options_bytes = 0;  /* UTF-8 bytes */
+> >       bool in_quote = false;
+> >       efi_status_t status;
+> >
+> > +     efi_apply_loadoptions_quirk((const void **)&options, &options_chars);
+> > +     options_chars /= sizeof(*options);
+> > +
+> >       if (options) {
+> >               s2 = options;
+> >               while (options_bytes < COMMAND_LINE_SIZE && options_chars--) {
+> > diff --git a/drivers/firmware/efi/libstub/efistub.h
+> > b/drivers/firmware/efi/libstub/efistub.h
+> > index 85050f5a1b28..589d07acb22d 100644
+> > --- a/drivers/firmware/efi/libstub/efistub.h
+> > +++ b/drivers/firmware/efi/libstub/efistub.h
+> > @@ -688,6 +688,35 @@ union efi_load_file_protocol {
+> >       } mixed_mode;
+> >  };
+> >
+> > +typedef struct {
+> > +     u32 attributes;
+> > +     u16 file_path_list_length;
+> > +     u8 variable_data[];
+> > +     // efi_char16_t description[];
+> > +     // efi_device_path_protocol_t file_path_list[];
+> > +     // u8 optional_data[];
+> > +} __packed efi_load_option_t;
+> > +
+> > +#define EFI_LOAD_OPTION_ACTIVE               0x0001U
+> > +#define EFI_LOAD_OPTION_FORCE_RECONNECT      0x0002U
+> > +#define EFI_LOAD_OPTION_HIDDEN               0x0008U
+> > +#define EFI_LOAD_OPTION_CATEGORY     0x1f00U
+> > +#define   EFI_LOAD_OPTION_CATEGORY_BOOT      0x0000U
+> > +#define   EFI_LOAD_OPTION_CATEGORY_APP       0x0100U
+> > +
+> > +#define EFI_LOAD_OPTION_BOOT_MASK \
+> > +     (EFI_LOAD_OPTION_ACTIVE|EFI_LOAD_OPTION_HIDDEN|EFI_LOAD_OPTION_CATEGORY)
+> > +#define EFI_LOAD_OPTION_MASK
+> > (EFI_LOAD_OPTION_FORCE_RECONNECT|EFI_LOAD_OPTION_BOOT_MASK)
+> > +
+> > +typedef struct {
+> > +     u32 attributes;
+> > +     u16 file_path_list_length;
+> > +     const efi_char16_t *description;
+> > +     const efi_device_path_protocol_t *file_path_list;
+> > +     size_t optional_data_size;
+> > +     const void *optional_data;
+> > +} efi_load_option_unpacked_t;
+> > +
+> >  void efi_pci_disable_bridge_busmaster(void);
+> >
+> >  typedef efi_status_t (*efi_exit_boot_map_processing)(
+> > @@ -730,6 +759,8 @@ __printf(1, 2) int efi_printk(char const *fmt, ...);
+> >
+> >  void efi_free(unsigned long size, unsigned long addr);
+> >
+> > +void efi_apply_loadoptions_quirk(const void **load_options, int
+> > *load_options_size);
+> > +
+> >  char *efi_convert_cmdline(efi_loaded_image_t *image, int *cmd_line_len);
+> >
+> >  efi_status_t efi_get_memory_map(struct efi_boot_memmap *map);
+> > diff --git a/drivers/firmware/efi/libstub/file.c
+> > b/drivers/firmware/efi/libstub/file.c
+> > index 630caa6b1f4c..4e81c6077188 100644
+> > --- a/drivers/firmware/efi/libstub/file.c
+> > +++ b/drivers/firmware/efi/libstub/file.c
+> > @@ -136,7 +136,7 @@ efi_status_t handle_cmdline_files(efi_loaded_image_t
+> > *image,
+> >                                 unsigned long *load_size)
+> >  {
+> >       const efi_char16_t *cmdline = image->load_options;
+> > -     int cmdline_len = image->load_options_size / 2;
+> > +     int cmdline_len = image->load_options_size;
+> >       unsigned long efi_chunk_size = ULONG_MAX;
+> >       efi_file_protocol_t *volume = NULL;
+> >       efi_file_protocol_t *file;
+> > @@ -148,6 +148,9 @@ efi_status_t handle_cmdline_files(efi_loaded_image_t
+> > *image,
+> >       if (!load_addr || !load_size)
+> >               return EFI_INVALID_PARAMETER;
+> >
+> > +     efi_apply_loadoptions_quirk((const void **)&cmdline, &cmdline_len);
+> > +     cmdline_len /= sizeof(*cmdline);
+> > +
+> >       if (IS_ENABLED(CONFIG_X86) && !efi_nochunk)
+> >               efi_chunk_size = EFI_READ_CHUNK_SIZE;
+> >
+> > --
+> > 2.26.2
+>
