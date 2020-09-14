@@ -2,127 +2,216 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 95E64268CD5
-	for <lists+linux-efi@lfdr.de>; Mon, 14 Sep 2020 16:06:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A953A268FF1
+	for <lists+linux-efi@lfdr.de>; Mon, 14 Sep 2020 17:30:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726709AbgINOG1 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 14 Sep 2020 10:06:27 -0400
-Received: from pb-smtp20.pobox.com ([173.228.157.52]:51850 "EHLO
-        pb-smtp20.pobox.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726837AbgINOGX (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 14 Sep 2020 10:06:23 -0400
-Received: from pb-smtp20.pobox.com (unknown [127.0.0.1])
-        by pb-smtp20.pobox.com (Postfix) with ESMTP id 19278101F31;
-        Mon, 14 Sep 2020 10:06:17 -0400 (EDT)
-        (envelope-from nico@fluxnic.net)
-DKIM-Signature: v=1; a=rsa-sha1; c=relaxed; d=pobox.com; h=date:from:to
-        :cc:subject:in-reply-to:message-id:references:mime-version
-        :content-type; s=sasl; bh=jnog3bZtEiooO2inDTRS7fkVXb8=; b=Q5v4zd
-        jzX+ZjDgse6NdbUytzw/2ws+pAojfbpase15OOY9ppOWuVLI0lyygzJ4ycfMl1Wa
-        5HTkX5M2nO6Assw1Q86Ksq2rUL41zBJqYNv9nnQmrV4EpoV8xtMVn9wNZgrp+qP4
-        cIDwH/yPUc9y9u2Tm/g5YlbG4/8QM1DlFBef4=
-Received: from pb-smtp20.sea.icgroup.com (unknown [127.0.0.1])
-        by pb-smtp20.pobox.com (Postfix) with ESMTP id 107C5101F30;
-        Mon, 14 Sep 2020 10:06:17 -0400 (EDT)
-        (envelope-from nico@fluxnic.net)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed; d=fluxnic.net;
- h=date:from:to:cc:subject:in-reply-to:message-id:references:mime-version:content-type; s=2016-12.pbsmtp; bh=H3743/bOvCp/robf4PLfXUhicryWbuIMyIlA/xDwS5c=; b=0m+PRHJ4CRW2omxP53j6k2it4393SyKgmzB1pZvOcdQ0D8qlEScdWGcCCRXzKskZkXNPQijm+pei5ibHc5NMbEyTdv+tfF08Llu6rX5Af1oJES3bs5q3WLWmQhXCwww867+iAjNGIGat1OLKUyNniS1rdqtY4EcZxKCQqchcrrw=
-Received: from yoda.home (unknown [24.203.50.76])
+        id S1725961AbgINPas (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 14 Sep 2020 11:30:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47444 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726057AbgINPad (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 14 Sep 2020 11:30:33 -0400
+Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A52FC061788;
+        Mon, 14 Sep 2020 08:30:32 -0700 (PDT)
+Received: from zn.tnic (p200300ec2f09260028f4716b73cc78b7.dip0.t-ipconnect.de [IPv6:2003:ec:2f09:2600:28f4:716b:73cc:78b7])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by pb-smtp20.pobox.com (Postfix) with ESMTPSA id 734A6101F2F;
-        Mon, 14 Sep 2020 10:06:13 -0400 (EDT)
-        (envelope-from nico@fluxnic.net)
-Received: from xanadu.home (xanadu.home [192.168.2.2])
-        by yoda.home (Postfix) with ESMTPSA id 716392DA0C6E;
-        Mon, 14 Sep 2020 10:06:11 -0400 (EDT)
-Date:   Mon, 14 Sep 2020 10:06:11 -0400 (EDT)
-From:   Nicolas Pitre <nico@fluxnic.net>
-To:     Ard Biesheuvel <ardb@kernel.org>
-cc:     linux-efi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        Russell King <linux@armlinux.org.uk>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Stefan Agner <stefan@agner.ch>,
-        Peter Smith <Peter.Smith@arm.com>,
-        Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>
-Subject: Re: [PATCH 00/12] ARM: use adr_l/ldr_l macros for PC-relative
- references
-In-Reply-To: <20200914095706.3985-1-ardb@kernel.org>
-Message-ID: <nycvar.YSQ.7.78.906.2009141003360.4095746@knanqh.ubzr>
-References: <20200914095706.3985-1-ardb@kernel.org>
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 4FF221EC058B;
+        Mon, 14 Sep 2020 17:30:30 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1600097430;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=IO3nJCxiAaLTozpIMPP+zcFAu5QWr1+m3yLnakXhZ/c=;
+        b=qdH3yHi18x7LvT7GDCEl2cq+OXEBSOlCfo/k+7Z4tyANVhlIri1j9CGyFZM/8Kl4GAlqY0
+        uhVStXSphAV1KQPDcmFuYz/SFHRMoZ1zmSJMlbrsqc5j2iSTmwu18Kzfz67/9DAFSk2M9f
+        W6viYl3K2oRHuas9qQ8EqtgGAMzJa9Y=
+Date:   Mon, 14 Sep 2020 17:30:24 +0200
+From:   Borislav Petkov <bp@alien8.de>
+To:     Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
+Cc:     x86@kernel.org, linux-kernel@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-edac@vger.kernel.org,
+        linux-efi@vger.kernel.org, linux-acpi@vger.kernel.org,
+        devel@acpica.org, Tony Luck <tony.luck@intel.com>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <len.brown@intel.com>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Yazen Ghannam <yazen.ghannam@amd.com>
+Subject: Re: [PATCH v3 1/2] cper, apei, mce: Pass x86 CPER through the MCA
+ handling chain
+Message-ID: <20200914153024.GC680@zn.tnic>
+References: <20200903234531.162484-1-Smita.KoralahalliChannabasappa@amd.com>
+ <20200903234531.162484-2-Smita.KoralahalliChannabasappa@amd.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Pobox-Relay-ID: 72CD1E1C-F693-11EA-A8E8-F0EA2EB3C613-78420484!pb-smtp20.pobox.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20200903234531.162484-2-Smita.KoralahalliChannabasappa@amd.com>
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Mon, 14 Sep 2020, Ard Biesheuvel wrote:
+On Thu, Sep 03, 2020 at 06:45:30PM -0500, Smita Koralahalli wrote:
+> Linux Kernel uses ACPI Boot Error Record Table (BERT) to report fatal
+> errors that occurred in a previous boot. The MCA errors in the BERT are
+> reported using the x86 Processor Error Common Platform Error Record (CPER)
+> format. Currently, the record prints out the raw MSR values and AMD relies
+> on the raw record to provide MCA information.
+> 
+> Extract the raw MSR values of MCA registers from the BERT and feed it into
+> the standard mce_log() function through the existing x86/MCA RAS
+> infrastructure. This will result in better decoding from the EDAC MCE
+> decoder or the default notifier.
+> 
+> The implementation is SMCA specific as the raw MCA register values are
+> given in the register offset order of the MCAX address space.
+> 
+> Reported-by: kernel test robot <lkp@intel.com>
 
-> This is a respin of the adr_l/ldr_l code I wrote some years ago in the
-> context of my KASLR proof of concept for 32-bit ARM.
-> 
-> A new use case came up, in the form of Clang, which does not implement
-> the 'adrl' pseudo-instruction in its assembler, and so for PC-relative
-> references that don't fit into a ARM adr instruction, we need something
-> else. Patch #2 addresses an actual Clang build issue of this nature, by
-> replacing an occurrence of adrl with adr_l.
-> 
-> I have included my existing cleanup patches that were built on top of the
-> adr_l macro, which replace several occurrences of open coded arithmetic to
-> calculate runtime addresses based on link time virtual addresses stored
-> in literals.
-> 
-> Note that all of these patches with the exception of #2 were reviewed or
-> acked by Nico before, but given that this was a while ago (and the fact
+What's that Reported-by for?
 
-Certainly it must have been, as I didn't remember much of it.
+Pls put in [] brackets over it what the 0day robot has reported.
 
-> that neither of us work for Linaro anymore), I have dropped these. Note
-> that only patch #1 deviates significantly from the last version that I
-> sent out, the remaining ones were just freshened up (and their commit
-> logs slightly expanded).
+> Signed-off-by: Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
+> ---
+> Link:
+> https://lkml.kernel.org/r/20200828203332.11129-2-Smita.KoralahalliChannabasappa@amd.com
+> 
+> v3:
+> 	Moved arch specific declarations from generic header file to arch
+> 	specific header file.
+> 	Cleaned additional declarations which are unnecessary.
+> 	Included the check for context type.
+> 	Added a check to verify for the first MSR address in the register
+> 	layout.
+> v2:
+> 	Fixed build error reported by kernel test robot.
+> 	Passed struct variable as function argument instead of entire struct
+> ---
+>  arch/x86/include/asm/acpi.h     | 11 +++++++++
+>  arch/x86/include/asm/mce.h      |  3 +++
+>  arch/x86/kernel/acpi/apei.c     |  9 +++++++
+>  arch/x86/kernel/cpu/mce/apei.c  | 42 +++++++++++++++++++++++++++++++++
+>  drivers/firmware/efi/cper-x86.c | 10 +++++---
+>  5 files changed, 72 insertions(+), 3 deletions(-)
 
-Reviewed-by: Nicolas Pitre <nico@fluxnic.net>
+...
 
-> Cc: Russell King <linux@armlinux.org.uk>
-> Cc: Linus Walleij <linus.walleij@linaro.org>
-> Cc: Nicolas Pitre <nico@fluxnic.net>
-> Cc: Nick Desaulniers <ndesaulniers@google.com>
-> Cc: Stefan Agner <stefan@agner.ch>
-> Cc: Peter Smith <Peter.Smith@arm.com>
-> Cc: Marc Zyngier <maz@kernel.org>
-> Cc: Will Deacon <will@kernel.org>
-> 
-> Ard Biesheuvel (12):
->   ARM: assembler: introduce adr_l, ldr_l and str_l macros
->   ARM: efistub: replace adrl pseudo-op with adr_l macro invocation
->   ARM: module: add support for place relative relocations
->   ARM: head-common.S: use PC-relative insn sequence for __proc_info
->   ARM: head-common.S: use PC-relative insn sequence for idmap creation
->   ARM: head.S: use PC-relative insn sequence for secondary_data
->   ARM: kernel: use relative references for UP/SMP alternatives
->   ARM: head: use PC-relative insn sequence for __smp_alt
->   ARM: sleep.S: use PC-relative insn sequence for
->     sleep_save_sp/mpidr_hash
->   ARM: head.S: use PC-relative insn sequences for __fixup_pv_table
->   ARM: head.S: use PC relative insn sequence to calculate PHYS_OFFSET
->   ARM: kvm: replace open coded VA->PA calculations with adr_l call
-> 
->  arch/arm/boot/compressed/head.S  | 18 +---
->  arch/arm/include/asm/assembler.h | 88 ++++++++++++++++++-
->  arch/arm/include/asm/elf.h       |  5 ++
->  arch/arm/include/asm/processor.h |  2 +-
->  arch/arm/kernel/head-common.S    | 22 ++---
->  arch/arm/kernel/head.S           | 90 +++++---------------
->  arch/arm/kernel/hyp-stub.S       | 27 +++---
->  arch/arm/kernel/module.c         | 20 ++++-
->  arch/arm/kernel/sleep.S          | 19 ++---
->  9 files changed, 159 insertions(+), 132 deletions(-)
-> 
-> -- 
-> 2.17.1
-> 
-> 
+> diff --git a/arch/x86/kernel/acpi/apei.c b/arch/x86/kernel/acpi/apei.c
+> index c22fb55abcfd..13d60a91eaa0 100644
+> --- a/arch/x86/kernel/acpi/apei.c
+> +++ b/arch/x86/kernel/acpi/apei.c
+> @@ -43,3 +43,12 @@ void arch_apei_report_mem_error(int sev, struct cper_sec_mem_err *mem_err)
+>  	apei_mce_report_mem_error(sev, mem_err);
+>  #endif
+>  }
+> +
+> +int arch_apei_report_x86_error(struct cper_ia_proc_ctx *ctx_info, u64 lapic_id)
+> +{
+> +	int err = -EINVAL;
+> +#ifdef CONFIG_X86_MCE
+> +	err = apei_mce_report_x86_error(ctx_info, lapic_id);
+> +#endif
+> +	return err;
+> +}
+
+Add a stub for apei_mce_report_x86_error() in
+arch/x86/include/asm/mce.h, in one of the !CONFIG_X86_MCE ifdeffery
+which returns -EINVAL and get rid of this ifdeffery and simply do:
+
+	return apei_mce_report_x86_error(ctx_info, lapic_id);
+
+here.
+
+If you wanna fix the above apei_mce_report_mem_error() too, you can do
+that in a separate patch.
+
+> diff --git a/arch/x86/kernel/cpu/mce/apei.c b/arch/x86/kernel/cpu/mce/apei.c
+> index af8d37962586..65001d342302 100644
+> --- a/arch/x86/kernel/cpu/mce/apei.c
+> +++ b/arch/x86/kernel/cpu/mce/apei.c
+> @@ -26,6 +26,8 @@
+>  
+>  #include "internal.h"
+>  
+> +#define MASK_MCA_STATUS 0xC0002001
+
+What does that mask mean? Either here or where it is used needs a
+comment.
+
+>  void apei_mce_report_mem_error(int severity, struct cper_sec_mem_err *mem_err)
+>  {
+>  	struct mce m;
+> @@ -51,6 +53,46 @@ void apei_mce_report_mem_error(int severity, struct cper_sec_mem_err *mem_err)
+>  }
+>  EXPORT_SYMBOL_GPL(apei_mce_report_mem_error);
+>  
+> +int apei_mce_report_x86_error(struct cper_ia_proc_ctx *ctx_info, u64 lapic_id)
+> +{
+> +	const u64 *i_mce = ((const void *) (ctx_info + 1));
+> +	unsigned int cpu;
+> +	struct mce m;
+> +
+> +	if (!boot_cpu_has(X86_FEATURE_SMCA))
+
+If this function you're adding is SMCA-specific, then its name cannot be
+as generic as it is now.
+
+> +		return -EINVAL;
+> +
+> +	if ((ctx_info->msr_addr & MASK_MCA_STATUS) != MASK_MCA_STATUS)
+> +		return -EINVAL;
+> +
+> +	mce_setup(&m);
+> +
+> +	m.extcpu = -1;
+> +	m.socketid = -1;
+> +
+> +	for_each_possible_cpu(cpu) {
+> +		if (cpu_data(cpu).initial_apicid == lapic_id) {
+
+I don't like that but I don't think we have a reverse mapping from LAPIC
+ID to logical CPU numbers in the kernel...
+
+> +			m.extcpu = cpu;
+> +			m.socketid = cpu_data(m.extcpu).phys_proc_id;
+
+			m.socketid = cpu_data(cpu).phys_proc_id;
+
+> +			break;
+> +		}
+> +	}
+> +
+> +	m.apicid = lapic_id;
+> +	m.bank = (ctx_info->msr_addr >> 4) & 0xFF;
+> +	m.status = *i_mce;
+> +	m.addr = *(i_mce + 1);
+> +	m.misc = *(i_mce + 2);
+> +	/* Skipping MCA_CONFIG */
+> +	m.ipid = *(i_mce + 4);
+> +	m.synd = *(i_mce + 5);
+
+Is that structure after cper_ia_proc_ctx defined somewhere in the UEFI
+spec so that you can cast to it directly instead of doing this ugly
+pointer arithmetic?
+
+> +
+> +	mce_log(&m);
+> +
+> +	return 0;
+> +}
+> +EXPORT_SYMBOL_GPL(apei_mce_report_x86_error);
+
+Why is this function exported?
+
+If "no reason", you can fix the above one too, with a separate commit.
+
+Thx.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
