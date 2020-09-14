@@ -2,439 +2,306 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 363842694E9
-	for <lists+linux-efi@lfdr.de>; Mon, 14 Sep 2020 20:32:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 62FC3269526
+	for <lists+linux-efi@lfdr.de>; Mon, 14 Sep 2020 20:45:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725951AbgINSct (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 14 Sep 2020 14:32:49 -0400
-Received: from mail.kernel.org ([198.145.29.99]:50934 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725978AbgINSch (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Mon, 14 Sep 2020 14:32:37 -0400
-Received: from mail-oo1-f54.google.com (mail-oo1-f54.google.com [209.85.161.54])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8558221D7E;
-        Mon, 14 Sep 2020 18:32:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1600108355;
-        bh=+yvukRg7EzNH2haF4QwVMJONmZtj4liSgeyRP0PGKWA=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=mCcdtJGOclc/eZq3fo5/vtGjTgv8x1GMWj/AFrOZz/v/lf5perhrR8hrhfPS7uFyP
-         M/hXlz7KnzN7u1JzIlrOVzUys3Es9ms5wh7Ic2pDThfmpirQcn/PD0JbWGRMFsH9JN
-         hQMezUv/Qsq/duM5aiZrCXznBT+9dZDVeE7XwsoE=
-Received: by mail-oo1-f54.google.com with SMTP id 4so103753ooh.11;
-        Mon, 14 Sep 2020 11:32:35 -0700 (PDT)
-X-Gm-Message-State: AOAM532wtnfeajdXvdegvpEYMuricEgzMH64NVTEIJSU0u3UVpRqTB/S
-        HjDE3TFPpx2Y4bLrSN5A4TQ5HhrDYzwN5p0Hxz0=
-X-Google-Smtp-Source: ABdhPJyG/PePd6j9W+RuHl2CGNX0GWKReIwvTzvgNJc0TBjIhvuT19o7oVCgn9iZYzW6x6OzZHY/eJhKwEEEA0a6Kgg=
-X-Received: by 2002:a4a:c541:: with SMTP id j1mr11175843ooq.13.1600108354689;
- Mon, 14 Sep 2020 11:32:34 -0700 (PDT)
+        id S1725984AbgINSpz (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 14 Sep 2020 14:45:55 -0400
+Received: from mx0a-00154904.pphosted.com ([148.163.133.20]:51364 "EHLO
+        mx0a-00154904.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725953AbgINSpi (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 14 Sep 2020 14:45:38 -0400
+Received: from pps.filterd (m0170392.ppops.net [127.0.0.1])
+        by mx0a-00154904.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 08EIURoH011247;
+        Mon, 14 Sep 2020 14:45:28 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dell.com; h=from : to : cc :
+ subject : date : message-id : references : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=smtpout1;
+ bh=BrQTKfApcKJIR0xqPMe+TJ/r9fGsTRlxmZMkkIzp0Lw=;
+ b=f9YhtEHTPLqvw08wkmMqvEIOAThC9lMSoN7/9ZJY1IIBvPdLP+ruWkxG/OPkDvQEQ76p
+ ooBBUrNjjKYGqUVKBg1swtUSI7N2rJ3Aua+xspkEcrKHn4c1bLhaz7Vm8mPe4P38e1u1
+ FVExX4wQFoEbPRDsUEHd2qlejYGdBZH2tlq5Lcps3C/Fd6J9PvCl+/q+pJuMJiXGDejo
+ 9ljwMfOksZCVgEae3O2YWWbsQ1dtW34O+YT8XfO6+qu7NcuwtLPpUMNhZ1kQeuPv0dwt
+ N9+FDsFYYTnfPO5uoH/w8B5w7BkO5i+2j545sbXGXRNHlaZzi2o271WgtBTf/T6cJ5fp Ew== 
+Received: from mx0b-00154901.pphosted.com (mx0a-00154901.pphosted.com [67.231.149.39])
+        by mx0a-00154904.pphosted.com with ESMTP id 33gsgde3fy-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 14 Sep 2020 14:45:27 -0400
+Received: from pps.filterd (m0090350.ppops.net [127.0.0.1])
+        by mx0b-00154901.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 08EIe5X8196445;
+        Mon, 14 Sep 2020 14:45:27 -0400
+Received: from nam12-dm6-obe.outbound.protection.outlook.com (mail-dm6nam12lp2168.outbound.protection.outlook.com [104.47.59.168])
+        by mx0b-00154901.pphosted.com with ESMTP id 33jdfugm37-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 14 Sep 2020 14:45:27 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=fC+QU3VX5NFqr0gQ2X2lskAOYGvHbOS9K7l5a84mtd9Z3DkssvY7baeVU8ygxlIekSguzMI24htVPlz752cKoW+o/++vd/9/NOcPOxGMEG3fb4QK5r9PR1Zelwgqgb5ULlLaMEWdr6FhANxIFT6aZrG/RYU8wK85kuPWNY4YuzO6tlRDOHAbs0Hjk94joVQ+V6Q7DoA1O0PVw8K5tob49n+XFvsQV6GNvdC1yKJlaxLX79T5uT4+8RwrKV+NpUhiWRxh5Rl/WTARAYvC0LTjI76p/WNVKD//DcS8xQpZuGyicgoutBWkYivMDv5ONv8dcSFTm+Fv47kt3ooYpm0wXA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=BrQTKfApcKJIR0xqPMe+TJ/r9fGsTRlxmZMkkIzp0Lw=;
+ b=HmjewlDuiXWPGJ2lgkQwhEdxQSQjKKddMNH0+3bnWf9K+tgqBAzUioUDX7kOOpJup7gfX0J+83wXOVbZsRvzZg7HQ+FDFZO0q1LRpio7dc12HOaQ86NA68lO0Z1hBz7q6PZqw3+oyl3GaVHafj9IaO2T4lmo2kLzcuPMGbUS+y2/WKXjC9vZ9ZC1jdah5dWXA2+evHv1L6Sp/Skbk0fd5LeAD1oT57kWmR4yg5vUd6FKPbPDl9aY8tE1jrR922r2EGaYDuGXpDNs1HiHN3Qi+3hebicJnk4J/WmQYB909FdZ5TeTVkG5CvquYCc7vlAJxqEvtcnK6T/eXZq/JucBhA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=dell.com; dmarc=pass action=none header.from=dell.com;
+ dkim=pass header.d=dell.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Dell.onmicrosoft.com;
+ s=selector1-Dell-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=BrQTKfApcKJIR0xqPMe+TJ/r9fGsTRlxmZMkkIzp0Lw=;
+ b=im7ixRpZyu0rQ3iPM/eIcBBBhbe9nYf9K5Zfe3erd6TwKu2fH6+9O7d0q2b/OcGOA6osFPy+jBObNvi1GCjsRwAA9I2mxtB11W63w9Y5Jp/n4ObURUdrKLCJ0FFi+Ll88fA0I5BHs9ED973JdgcF14V9edlE02nQdnHqgzRSpVM=
+Received: from DM6PR19MB2636.namprd19.prod.outlook.com (2603:10b6:5:15f::15)
+ by DM5PR19MB0028.namprd19.prod.outlook.com (2603:10b6:4:61::25) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3370.16; Mon, 14 Sep
+ 2020 18:45:24 +0000
+Received: from DM6PR19MB2636.namprd19.prod.outlook.com
+ ([fe80::a4b8:d5c9:29da:39b2]) by DM6PR19MB2636.namprd19.prod.outlook.com
+ ([fe80::a4b8:d5c9:29da:39b2%4]) with mapi id 15.20.3370.019; Mon, 14 Sep 2020
+ 18:45:24 +0000
+From:   "Limonciello, Mario" <Mario.Limonciello@dell.com>
+To:     Ard Biesheuvel <ardb@kernel.org>
+CC:     Arvind Sankar <nivedita@alum.mit.edu>,
+        Jacobo Pantoja <jacobopantoja@gmail.com>,
+        Peter Jones <pjones@redhat.com>,
+        linux-efi <linux-efi@vger.kernel.org>
+Subject: RE: [RFC PATCH 1/2] efi/x86: Add a quirk to support command line
+ arguments on Dell EFI firmware
+Thread-Topic: [RFC PATCH 1/2] efi/x86: Add a quirk to support command line
+ arguments on Dell EFI firmware
+Thread-Index: AQHWiS1NRxKz7Ka8wkKNd8qkUMWbaqloW/rwgAAb8gCAAAEO8A==
+Date:   Mon, 14 Sep 2020 18:45:23 +0000
+Message-ID: <DM6PR19MB26362CC36DB96AEFC7C1AC4BFA230@DM6PR19MB2636.namprd19.prod.outlook.com>
+References: <DM6PR19MB2636D9FB53FD32BC8F3FFFE4FA240@DM6PR19MB2636.namprd19.prod.outlook.com>
+ <20200912175105.2085299-1-nivedita@alum.mit.edu>
+ <20200912175105.2085299-2-nivedita@alum.mit.edu>
+ <DM6PR19MB26366FAF28A730412DC505EDFA230@DM6PR19MB2636.namprd19.prod.outlook.com>
+ <CAMj1kXFueikQBrv1xS-Csz+kHfjA+diaZ4ut2FZSO9JXxBPPhA@mail.gmail.com>
+In-Reply-To: <CAMj1kXFueikQBrv1xS-Csz+kHfjA+diaZ4ut2FZSO9JXxBPPhA@mail.gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+msip_labels: MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_Enabled=True;
+ MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_SiteId=945c199a-83a2-4e80-9f8c-5a91be5752dd;
+ MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_Owner=Mario_Limonciello@Dell.com;
+ MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_SetDate=2020-09-14T18:45:21.4726763Z;
+ MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_Name=External Public;
+ MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_Application=Microsoft Azure
+ Information Protection;
+ MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_ActionId=36e2bf94-a7e5-4981-91c3-da4e18a78d8f;
+ MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_Extended_MSFT_Method=Manual
+authentication-results: kernel.org; dkim=none (message not signed)
+ header.d=none;kernel.org; dmarc=none action=none header.from=Dell.com;
+x-originating-ip: [76.251.167.31]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 14e989da-8031-4532-e2f4-08d858de5739
+x-ms-traffictypediagnostic: DM5PR19MB0028:
+x-microsoft-antispam-prvs: <DM5PR19MB0028DE83A803EEDE275D1540FA230@DM5PR19MB0028.namprd19.prod.outlook.com>
+x-exotenant: 2khUwGVqB6N9v58KS13ncyUmMJd8q4
+x-ms-oob-tlc-oobclassifiers: OLM:10000;
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: 56eOX7yEP+4X79FgaQJ/iM1X/7us3soDZHRRhu0t6kq0dFtdGtJ0/kkNoZJXU5KVjPlR+JdXYw2qNsBEedJaJsa1BwtFaf/xzTMAqASGuEQnjUotM8wRogMFqIMq6Sqo3A2GMomZrK2LicfDMp6ZPykov6qeWkfTG9u4o9xwbdAQVhHjlOPQ3k8K32Fip/3Vt07cbKDShp2Q5ayQAbgSPrJctpK58QNIUXkHETZLeHf3arj2t3TlRgYAmlK1O+HZrColLa0UhTYAuOGPboplZ7jbP/sSQ8WU431PAb8JajrHfLoD69bdDA/nQWrd9y64J1+KZDWD1dWtaKspRlQmwzDNXYY/NWdyOp9LzyfaTA3JikcOm4s5eiygNM6Y9qw2fubM6a99hpjBiXMUuvsSGw==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR19MB2636.namprd19.prod.outlook.com;PTR:;CAT:NONE;SFS:(39860400002)(396003)(346002)(366004)(136003)(376002)(316002)(8936002)(786003)(2906002)(4326008)(966005)(76116006)(64756008)(66476007)(66556008)(6916009)(66946007)(66446008)(86362001)(186003)(478600001)(71200400001)(5660300002)(26005)(9686003)(83380400001)(6506007)(7696005)(52536014)(54906003)(33656002)(8676002)(55016002);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata: vklRpaAUMsbHWflAhfxxtGESK+knCDI4T8oSX3V20qqRx8Dv2kkemTNso/QmlUnScS4UwKVVXEOnAc6Vk6fDmPh5pjOxDIuk7i0GREPD3tG+l3ZO7T9lZpwC3qYx0oNw8QU6LYyC62uonuUr+Z8EXc0AuMLw2jDkTHlwHCBUuM3Ao3uu5vO5YgsArdcQlcpUi5shxR4bN8DjQd1WM6MlARq5757hxyEjeJlnsi13Wyf8LqGTcUiDfhmwEn52oIluBiPrMpxg1nnfsIOKqW+KEcgHEXHK+FgNniWw7dz0Jwe9hKPNMF7pekXDgVyqd1NOJ1bN1XVEWLK0saqSuNFnCQvgyY5tDlAa4FlpOq1tHZQwJNj3F8dh9VzEZ/bzdjY95KqH0P8qp3XPj3H/2vkKKN3R2lB5RKORCojW0jT5pH/TNNg2ZaE90F7YBRWyYwNemsonpEMhDI8EhQ6LrDWC0fV7eyZFoehlndKTc7irgooQ/nKvWuEv4bz3DHD8vK5kxtur9hRn9FI7IOqd4bRa3r61T/n9o6HorjQ9mpOu24nfnsn3yxfnCZWz5y9qEfNrGOyIKVr9y6emQio80zah129mjaVVSJ7wtOv//7RSh1gd3bcjZvqWPr33vSFxAyPor0j+ebnY/uUVTYJdOy3Hnw==
+x-ms-exchange-transport-forked: True
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-References: <20200828172036.8056-1-atish.patra@wdc.com> <20200828172036.8056-6-atish.patra@wdc.com>
- <CAMj1kXH82MGDLNkyWae=wqNxZY7ZMvrDU3gNAOSF+m9YFGe7aw@mail.gmail.com> <CAOnJCUJhxLVNi74F7n6+ZaqkL36urh+4oybozmK4ypgD0-=Cxw@mail.gmail.com>
-In-Reply-To: <CAOnJCUJhxLVNi74F7n6+ZaqkL36urh+4oybozmK4ypgD0-=Cxw@mail.gmail.com>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Mon, 14 Sep 2020 21:32:23 +0300
-X-Gmail-Original-Message-ID: <CAMj1kXE1qi1zKZiXpEB+z5bQORRKz4ampNAVK2XiSawgq5zc+g@mail.gmail.com>
-Message-ID: <CAMj1kXE1qi1zKZiXpEB+z5bQORRKz4ampNAVK2XiSawgq5zc+g@mail.gmail.com>
-Subject: Re: [PATCH v7 5/9] RISC-V: Add PE/COFF header for EFI stub
-To:     Atish Patra <atishp@atishpatra.org>
-Cc:     Atish Patra <atish.patra@wdc.com>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Anup Patel <anup@brainfault.org>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Anup Patel <anup.patel@wdc.com>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Arvind Sankar <nivedita@alum.mit.edu>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Alistair Francis <alistair.francis@wdc.com>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Greentime Hu <greentime.hu@sifive.com>,
-        linux-riscv <linux-riscv@lists.infradead.org>,
-        Ingo Molnar <mingo@kernel.org>, Mike Rapoport <rppt@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+X-OriginatorOrg: Dell.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR19MB2636.namprd19.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 14e989da-8031-4532-e2f4-08d858de5739
+X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Sep 2020 18:45:24.0881
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 945c199a-83a2-4e80-9f8c-5a91be5752dd
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: KsQtay7r9m7o1Cad8Cz+RJGjrQ9Z94/JHNOeSKvDonPHoNamsBne48zv4qMeE4qMNsF3okoEphOICYhb9GWBZMhbydoqyZ0mUoYZ6x0J4eU=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM5PR19MB0028
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235,18.0.687
+ definitions=2020-09-14_07:2020-09-14,2020-09-14 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ adultscore=0 malwarescore=0 phishscore=0 mlxlogscore=999 impostorscore=0
+ suspectscore=0 bulkscore=0 clxscore=1015 spamscore=0 mlxscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2009140146
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 spamscore=0 bulkscore=0
+ mlxlogscore=999 phishscore=0 malwarescore=0 mlxscore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2009140146
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Sat, 12 Sep 2020 at 05:04, Atish Patra <atishp@atishpatra.org> wrote:
->
-> On Fri, Sep 11, 2020 at 6:09 AM Ard Biesheuvel <ardb@kernel.org> wrote:
-> >
-> > On Fri, 28 Aug 2020 at 20:20, Atish Patra <atish.patra@wdc.com> wrote:
-> > >
-> > > Linux kernel Image can appear as an EFI application With appropriate
-> > > PE/COFF header fields in the beginning of the Image header. An EFI
-> > > application loader can directly load a Linux kernel Image and an EFI
-> > > stub residing in kernel can boot Linux kernel directly.
-> > >
-> > > Add the necessary PE/COFF header.
-> > >
-> > > Signed-off-by: Atish Patra <atish.patra@wdc.com>
-> > > Link: https://lore.kernel.org/r/20200421033336.9663-3-atish.patra@wdc.com
-> > > [ardb: - use C prefix for c.li to ensure the expected opcode is emitted
-> > >        - align all image sections according to PE/COFF section alignment ]
-> > > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> > > Reviewed-by: Anup Patel <anup@brainfault.org>
-> >
-> > Since you need to respin this anyway, one comment below on a thing
-> > that I spotted while revisiting these patches.
-> >
-> > > ---
-> > >  arch/riscv/include/asm/sections.h |  13 ++++
-> > >  arch/riscv/kernel/Makefile        |   4 ++
-> > >  arch/riscv/kernel/efi-header.S    | 104 ++++++++++++++++++++++++++++++
-> > >  arch/riscv/kernel/head.S          |  16 +++++
-> > >  arch/riscv/kernel/image-vars.h    |  51 +++++++++++++++
-> > >  arch/riscv/kernel/vmlinux.lds.S   |  22 ++++++-
-> > >  6 files changed, 208 insertions(+), 2 deletions(-)
-> > >  create mode 100644 arch/riscv/include/asm/sections.h
-> > >  create mode 100644 arch/riscv/kernel/efi-header.S
-> > >  create mode 100644 arch/riscv/kernel/image-vars.h
-> > >
-> > > diff --git a/arch/riscv/include/asm/sections.h b/arch/riscv/include/asm/sections.h
-> > > new file mode 100644
-> > > index 000000000000..3a9971b1210f
-> > > --- /dev/null
-> > > +++ b/arch/riscv/include/asm/sections.h
-> > > @@ -0,0 +1,13 @@
-> > > +/* SPDX-License-Identifier: GPL-2.0-only */
-> > > +/*
-> > > + * Copyright (C) 2020 Western Digital Corporation or its affiliates.
-> > > + */
-> > > +#ifndef __ASM_SECTIONS_H
-> > > +#define __ASM_SECTIONS_H
-> > > +
-> > > +#include <asm-generic/sections.h>
-> > > +
-> > > +extern char _start[];
-> > > +extern char _start_kernel[];
-> > > +
-> > > +#endif /* __ASM_SECTIONS_H */
-> > > diff --git a/arch/riscv/kernel/Makefile b/arch/riscv/kernel/Makefile
-> > > index dc93710f0b2f..41e3895a3192 100644
-> > > --- a/arch/riscv/kernel/Makefile
-> > > +++ b/arch/riscv/kernel/Makefile
-> > > @@ -31,6 +31,10 @@ obj-y        += cacheinfo.o
-> > >  obj-y  += patch.o
-> > >  obj-$(CONFIG_MMU) += vdso.o vdso/
-> > >
-> > > +OBJCOPYFLAGS := --prefix-symbols=__efistub_
-> > > +$(obj)/%.stub.o: $(obj)/%.o FORCE
-> > > +       $(call if_changed,objcopy)
-> > > +
-> > >  obj-$(CONFIG_RISCV_M_MODE)     += traps_misaligned.o
-> > >  obj-$(CONFIG_FPU)              += fpu.o
-> > >  obj-$(CONFIG_SMP)              += smpboot.o
-> > > diff --git a/arch/riscv/kernel/efi-header.S b/arch/riscv/kernel/efi-header.S
-> > > new file mode 100644
-> > > index 000000000000..822b4c9ff2bb
-> > > --- /dev/null
-> > > +++ b/arch/riscv/kernel/efi-header.S
-> > > @@ -0,0 +1,104 @@
-> > > +/* SPDX-License-Identifier: GPL-2.0-only */
-> > > +/*
-> > > + * Copyright (C) 2020 Western Digital Corporation or its affiliates.
-> > > + * Adapted from arch/arm64/kernel/efi-header.S
-> > > + */
-> > > +
-> > > +#include <linux/pe.h>
-> > > +#include <linux/sizes.h>
-> > > +
-> > > +       .macro  __EFI_PE_HEADER
-> > > +       .long   PE_MAGIC
-> > > +coff_header:
-> > > +#ifdef CONFIG_64BIT
-> > > +       .short  IMAGE_FILE_MACHINE_RISCV64              // Machine
-> > > +#else
-> > > +       .short  IMAGE_FILE_MACHINE_RISCV32              // Machine
-> > > +#endif
-> > > +       .short  section_count                           // NumberOfSections
-> > > +       .long   0                                       // TimeDateStamp
-> > > +       .long   0                                       // PointerToSymbolTable
-> > > +       .long   0                                       // NumberOfSymbols
-> > > +       .short  section_table - optional_header         // SizeOfOptionalHeader
-> > > +       .short  IMAGE_FILE_DEBUG_STRIPPED | \
-> > > +               IMAGE_FILE_EXECUTABLE_IMAGE | \
-> > > +               IMAGE_FILE_LINE_NUMS_STRIPPED           // Characteristics
-> > > +
-> > > +optional_header:
-> > > +       .short  PE_OPT_MAGIC_PE32PLUS                   // PE32+ format
-> >
-> > Are you sure both riscv32 and riscv64 use PE32+? IIUC, 32-bit
-> > architectures use PE32 not PE32+ (but I could be wrong)
-> >
->
-> Ahh yes. You are correct. Thanks for noticing it.
-> I just followed the U-Boot implementation [1]. I will update this in
-> the next revision and update the U-Boot code as well.
->
-> As per the specification, we also need to add a BaseOfData[2] entry for RV32.
-> Does any of the efi application loader actually use BaseOfData or can
-> we set it to zero for RV32 ?
->
-
-Just do whatever ARM and 32-bit x86 do.
-
-
-> [1] https://gitlab.denx.de/u-boot/custodians/u-boot-amlogic/-/blob/u-boot-amlogic/arch/riscv/lib/crt0_riscv_efi.S#L51
-> [2] https://docs.microsoft.com/en-us/windows/win32/debug/pe-format
->
-> > > +       .byte   0x02                                    // MajorLinkerVersion
-> > > +       .byte   0x14                                    // MinorLinkerVersion
-> > > +       .long   __pecoff_text_end - efi_header_end      // SizeOfCode
-> > > +       .long   __pecoff_data_virt_size                 // SizeOfInitializedData
-> > > +       .long   0                                       // SizeOfUninitializedData
-> > > +       .long   __efistub_efi_pe_entry - _start         // AddressOfEntryPoint
-> > > +       .long   efi_header_end - _start                 // BaseOfCode
-> > > +
-> > > +extra_header_fields:
-> > > +       .quad   0                                       // ImageBase
-> > > +       .long   PECOFF_SECTION_ALIGNMENT                // SectionAlignment
-> > > +       .long   PECOFF_FILE_ALIGNMENT                   // FileAlignment
-> > > +       .short  0                                       // MajorOperatingSystemVersion
-> > > +       .short  0                                       // MinorOperatingSystemVersion
-> > > +       .short  LINUX_EFISTUB_MAJOR_VERSION             // MajorImageVersion
-> > > +       .short  LINUX_EFISTUB_MINOR_VERSION             // MinorImageVersion
-> > > +       .short  0                                       // MajorSubsystemVersion
-> > > +       .short  0                                       // MinorSubsystemVersion
-> > > +       .long   0                                       // Win32VersionValue
-> > > +
-> > > +       .long   _end - _start                           // SizeOfImage
-> > > +
-> > > +       // Everything before the kernel image is considered part of the header
-> > > +       .long   efi_header_end - _start                 // SizeOfHeaders
-> > > +       .long   0                                       // CheckSum
-> > > +       .short  IMAGE_SUBSYSTEM_EFI_APPLICATION         // Subsystem
-> > > +       .short  0                                       // DllCharacteristics
-> > > +       .quad   0                                       // SizeOfStackReserve
-> > > +       .quad   0                                       // SizeOfStackCommit
-> > > +       .quad   0                                       // SizeOfHeapReserve
-> > > +       .quad   0                                       // SizeOfHeapCommit
-> > > +       .long   0                                       // LoaderFlags
-> > > +       .long   (section_table - .) / 8                 // NumberOfRvaAndSizes
-> > > +
-> > > +       .quad   0                                       // ExportTable
-> > > +       .quad   0                                       // ImportTable
-> > > +       .quad   0                                       // ResourceTable
-> > > +       .quad   0                                       // ExceptionTable
-> > > +       .quad   0                                       // CertificationTable
-> > > +       .quad   0                                       // BaseRelocationTable
-> > > +
-> > > +       // Section table
-> > > +section_table:
-> > > +       .ascii  ".text\0\0\0"
-> > > +       .long   __pecoff_text_end - efi_header_end      // VirtualSize
-> > > +       .long   efi_header_end - _start                 // VirtualAddress
-> > > +       .long   __pecoff_text_end - efi_header_end      // SizeOfRawData
-> > > +       .long   efi_header_end - _start                 // PointerToRawData
-> > > +
-> > > +       .long   0                                       // PointerToRelocations
-> > > +       .long   0                                       // PointerToLineNumbers
-> > > +       .short  0                                       // NumberOfRelocations
-> > > +       .short  0                                       // NumberOfLineNumbers
-> > > +       .long   IMAGE_SCN_CNT_CODE | \
-> > > +               IMAGE_SCN_MEM_READ | \
-> > > +               IMAGE_SCN_MEM_EXECUTE                   // Characteristics
-> > > +
-> > > +       .ascii  ".data\0\0\0"
-> > > +       .long   __pecoff_data_virt_size                 // VirtualSize
-> > > +       .long   __pecoff_text_end - _start              // VirtualAddress
-> > > +       .long   __pecoff_data_raw_size                  // SizeOfRawData
-> > > +       .long   __pecoff_text_end - _start              // PointerToRawData
-> > > +
-> > > +       .long   0                                       // PointerToRelocations
-> > > +       .long   0                                       // PointerToLineNumbers
-> > > +       .short  0                                       // NumberOfRelocations
-> > > +       .short  0                                       // NumberOfLineNumbers
-> > > +       .long   IMAGE_SCN_CNT_INITIALIZED_DATA | \
-> > > +               IMAGE_SCN_MEM_READ | \
-> > > +               IMAGE_SCN_MEM_WRITE                     // Characteristics
-> > > +
-> > > +       .set    section_count, (. - section_table) / 40
-> > > +
-> > > +       .balign 0x1000
-> > > +efi_header_end:
-> > > +       .endm
-> > > diff --git a/arch/riscv/kernel/head.S b/arch/riscv/kernel/head.S
-> > > index c6a37e8231a8..3631147732ee 100644
-> > > --- a/arch/riscv/kernel/head.S
-> > > +++ b/arch/riscv/kernel/head.S
-> > > @@ -13,6 +13,7 @@
-> > >  #include <asm/csr.h>
-> > >  #include <asm/hwcap.h>
-> > >  #include <asm/image.h>
-> > > +#include "efi-header.S"
-> > >
-> > >  __HEAD
-> > >  ENTRY(_start)
-> > > @@ -22,10 +23,18 @@ ENTRY(_start)
-> > >          * Do not modify it without modifying the structure and all bootloaders
-> > >          * that expects this header format!!
-> > >          */
-> > > +#ifdef CONFIG_EFI
-> > > +       /*
-> > > +        * This instruction decodes to "MZ" ASCII required by UEFI.
-> > > +        */
-> > > +       c.li s4,-13
-> > > +       j _start_kernel
-> > > +#else
-> > >         /* jump to start kernel */
-> > >         j _start_kernel
-> > >         /* reserved */
-> > >         .word 0
-> > > +#endif
-> > >         .balign 8
-> > >  #if __riscv_xlen == 64
-> > >         /* Image load offset(2MB) from start of RAM */
-> > > @@ -43,7 +52,14 @@ ENTRY(_start)
-> > >         .ascii RISCV_IMAGE_MAGIC
-> > >         .balign 4
-> > >         .ascii RISCV_IMAGE_MAGIC2
-> > > +#ifdef CONFIG_EFI
-> > > +       .word pe_head_start - _start
-> > > +pe_head_start:
-> > > +
-> > > +       __EFI_PE_HEADER
-> > > +#else
-> > >         .word 0
-> > > +#endif
-> > >
-> > >  .align 2
-> > >  #ifdef CONFIG_MMU
-> > > diff --git a/arch/riscv/kernel/image-vars.h b/arch/riscv/kernel/image-vars.h
-> > > new file mode 100644
-> > > index 000000000000..8c212efb37a6
-> > > --- /dev/null
-> > > +++ b/arch/riscv/kernel/image-vars.h
-> > > @@ -0,0 +1,51 @@
-> > > +/* SPDX-License-Identifier: GPL-2.0-only */
-> > > +/*
-> > > + * Copyright (C) 2020 Western Digital Corporation or its affiliates.
-> > > + * Linker script variables to be set after section resolution, as
-> > > + * ld.lld does not like variables assigned before SECTIONS is processed.
-> > > + * Based on arch/arm64/kerne/image-vars.h
-> > > + */
-> > > +#ifndef __RISCV_KERNEL_IMAGE_VARS_H
-> > > +#define __RISCV_KERNEL_IMAGE_VARS_H
-> > > +
-> > > +#ifndef LINKER_SCRIPT
-> > > +#error This file should only be included in vmlinux.lds.S
-> > > +#endif
-> > > +
-> > > +#ifdef CONFIG_EFI
-> > > +
-> > > +/*
-> > > + * The EFI stub has its own symbol namespace prefixed by __efistub_, to
-> > > + * isolate it from the kernel proper. The following symbols are legally
-> > > + * accessed by the stub, so provide some aliases to make them accessible.
-> > > + * Only include data symbols here, or text symbols of functions that are
-> > > + * guaranteed to be safe when executed at another offset than they were
-> > > + * linked at. The routines below are all implemented in assembler in a
-> > > + * position independent manner
-> > > + */
-> > > +__efistub_memcmp               = memcmp;
-> > > +__efistub_memchr               = memchr;
-> > > +__efistub_memcpy               = memcpy;
-> > > +__efistub_memmove              = memmove;
-> > > +__efistub_memset               = memset;
-> > > +__efistub_strlen               = strlen;
-> > > +__efistub_strnlen              = strnlen;
-> > > +__efistub_strcmp               = strcmp;
-> > > +__efistub_strncmp              = strncmp;
-> > > +__efistub_strrchr              = strrchr;
-> > > +
-> > > +#ifdef CONFIG_KASAN
-> > > +__efistub___memcpy             = memcpy;
-> > > +__efistub___memmove            = memmove;
-> > > +__efistub___memset             = memset;
-> > > +#endif
-> > > +
-> > > +__efistub__start               = _start;
-> > > +__efistub__start_kernel                = _start_kernel;
-> > > +__efistub__end                 = _end;
-> > > +__efistub__edata               = _edata;
-> > > +__efistub_screen_info          = screen_info;
-> > > +
-> > > +#endif
-> > > +
-> > > +#endif /* __RISCV_KERNEL_IMAGE_VARS_H */
-> > > diff --git a/arch/riscv/kernel/vmlinux.lds.S b/arch/riscv/kernel/vmlinux.lds.S
-> > > index f3586e31ed1e..6dcf790282dd 100644
-> > > --- a/arch/riscv/kernel/vmlinux.lds.S
-> > > +++ b/arch/riscv/kernel/vmlinux.lds.S
-> > > @@ -10,6 +10,7 @@
-> > >  #include <asm/cache.h>
-> > >  #include <asm/thread_info.h>
-> > >  #include <asm/set_memory.h>
-> > > +#include "image-vars.h"
-> > >
-> > >  #include <linux/sizes.h>
-> > >  OUTPUT_ARCH(riscv)
-> > > @@ -17,6 +18,9 @@ ENTRY(_start)
-> > >
-> > >  jiffies = jiffies_64;
-> > >
-> > > +PECOFF_SECTION_ALIGNMENT = 0x1000;
-> > > +PECOFF_FILE_ALIGNMENT = 0x200;
-> > > +
-> > >  SECTIONS
-> > >  {
-> > >         /* Beginning of code and text segment */
-> > > @@ -76,6 +80,10 @@ SECTIONS
-> > >
-> > >         EXCEPTION_TABLE(0x10)
-> > >
-> > > +#ifdef CONFIG_EFI
-> > > +       . = ALIGN(PECOFF_SECTION_ALIGNMENT);
-> > > +       __pecoff_text_end = .;
-> > > +#endif
-> > >         . = ALIGN(SECTION_ALIGN);
-> > >         _data = .;
-> > >
-> > > @@ -83,16 +91,26 @@ SECTIONS
-> > >         .sdata : {
-> > >                 __global_pointer$ = . + 0x800;
-> > >                 *(.sdata*)
-> > > -               /* End of data section */
-> > > -               _edata = .;
-> > >         }
-> > >
-> > > +#ifdef CONFIG_EFI
-> > > +       .pecoff_edata_padding : { BYTE(0); . = ALIGN(PECOFF_FILE_ALIGNMENT); }
-> > > +       __pecoff_data_raw_size = ABSOLUTE(. - __pecoff_text_end);
-> > > +#endif
-> > > +
-> > > +       /* End of data section */
-> > > +       _edata = .;
-> > > +
-> > >         BSS_SECTION(PAGE_SIZE, PAGE_SIZE, 0)
-> > >
-> > >         .rel.dyn : {
-> > >                 *(.rel.dyn*)
-> > >         }
-> > >
-> > > +#ifdef CONFIG_EFI
-> > > +       . = ALIGN(PECOFF_SECTION_ALIGNMENT);
-> > > +       __pecoff_data_virt_size = ABSOLUTE(. - __pecoff_text_end);
-> > > +#endif
-> > >         _end = .;
-> > >
-> > >         STABS_DEBUG
-> > > --
-> > > 2.24.0
-> > >
-> >
-> > _______________________________________________
-> > linux-riscv mailing list
-> > linux-riscv@lists.infradead.org
-> > http://lists.infradead.org/mailman/listinfo/linux-riscv
->
->
->
-> --
-> Regards,
-> Atish
+PiA+IFNob3VsZCByZS1vcmRlciB0byByZXZlcnNlIHhtYXMgdHJlZSBvcmRlci4NCj4gPg0KPiAN
+Cj4gV2UgaGF2ZSBubyBzdWNoIHJlcXVpcmVtZW50IGluIHRoZSBFRkkgc3Vic3lzdGVtLg0KPiAN
+Cg0KTXkgYXBvbG9naWVzLCBJIGRpZG4ndCByZWFsaXplIHRoYXQgdGhpcyBzdWJzeXN0ZW0gZGlk
+bid0IHVzZSB0aGF0Lg0KDQo+ID4gPiArDQo+ID4gPiArICAgICBpZiAoc2l6ZSA8IG9mZnNldG9m
+KGVmaV9sb2FkX29wdGlvbl90LCB2YXJpYWJsZV9kYXRhKSkNCj4gPiA+ICsgICAgICAgICAgICAg
+cmV0dXJuIGZhbHNlOw0KPiA+ID4gKyAgICAgcG9zID0gc3JjLT52YXJpYWJsZV9kYXRhOw0KPiA+
+ID4gKyAgICAgc2l6ZSAtPSBvZmZzZXRvZihlZmlfbG9hZF9vcHRpb25fdCwgdmFyaWFibGVfZGF0
+YSk7DQo+ID4gPiArDQo+ID4gPiArICAgICBpZiAoKHNyYy0+YXR0cmlidXRlcyAmIH5FRklfTE9B
+RF9PUFRJT05fTUFTSykgIT0gMCkNCj4gPiA+ICsgICAgICAgICAgICAgcmV0dXJuIGZhbHNlOw0K
+PiA+ID4gKw0KPiA+ID4gKyAgICAgLyogU2NhbiBkZXNjcmlwdGlvbi4gKi8NCj4gPiA+ICsgICAg
+IGRlc2NyaXB0aW9uID0gcG9zOw0KPiA+ID4gKyAgICAgZG8gew0KPiA+ID4gKyAgICAgICAgICAg
+ICBpZiAoc2l6ZSA8IHNpemVvZihjKSkNCj4gPiA+ICsgICAgICAgICAgICAgICAgICAgICByZXR1
+cm4gZmFsc2U7DQo+ID4gPiArICAgICAgICAgICAgIGMgPSAqKGNvbnN0IHUxNiAqKXBvczsNCj4g
+PiA+ICsgICAgICAgICAgICAgcG9zICs9IHNpemVvZihjKTsNCj4gPiA+ICsgICAgICAgICAgICAg
+c2l6ZSAtPSBzaXplb2YoYyk7DQo+ID4gPiArICAgICB9IHdoaWxlIChjICE9IEwnXDAnKTsNCj4g
+PiA+ICsNCj4gPiA+ICsgICAgIC8qIFNjYW4gZmlsZV9wYXRoX2xpc3QuICovDQo+ID4gPiArICAg
+ICBmaWxlX3BhdGhfbGlzdCA9IHBvczsNCj4gPiA+ICsgICAgIGRvIHsNCj4gPiA+ICsgICAgICAg
+ICAgICAgaWYgKHNpemUgPCBzaXplb2YoaGVhZGVyKSkNCj4gPiA+ICsgICAgICAgICAgICAgICAg
+ICAgICByZXR1cm4gZmFsc2U7DQo+ID4gPiArICAgICAgICAgICAgIGhlYWRlciA9ICooY29uc3Qg
+ZWZpX2RldmljZV9wYXRoX3Byb3RvY29sX3QgKilwb3M7DQo+ID4gPiArICAgICAgICAgICAgIGlm
+IChoZWFkZXIubGVuZ3RoIDwgc2l6ZW9mKGhlYWRlcikpDQo+ID4gPiArICAgICAgICAgICAgICAg
+ICAgICAgcmV0dXJuIGZhbHNlOw0KPiA+ID4gKyAgICAgICAgICAgICBpZiAoc2l6ZSA8IGhlYWRl
+ci5sZW5ndGgpDQo+ID4gPiArICAgICAgICAgICAgICAgICAgICAgcmV0dXJuIGZhbHNlOw0KPiA+
+ID4gKyAgICAgICAgICAgICBwb3MgKz0gaGVhZGVyLmxlbmd0aDsNCj4gPiA+ICsgICAgICAgICAg
+ICAgc2l6ZSAtPSBoZWFkZXIubGVuZ3RoOw0KPiA+ID4gKyAgICAgfSB3aGlsZSAoKGhlYWRlci50
+eXBlICE9IEVGSV9ERVZfRU5EX1BBVEggJiYgaGVhZGVyLnR5cGUgIT0NCj4gPiA+IEVGSV9ERVZf
+RU5EX1BBVEgyKSB8fA0KPiA+ID4gKyAgICAgICAgICAgICAgKGhlYWRlci5zdWJfdHlwZSAhPSBF
+RklfREVWX0VORF9FTlRJUkUpKTsNCj4gPiA+ICsgICAgIGlmIChwb3MgIT0gKGNvbnN0IHZvaWQg
+KilmaWxlX3BhdGhfbGlzdCArIHNyYy0NCj4gPmZpbGVfcGF0aF9saXN0X2xlbmd0aCkNCj4gPiA+
+ICsgICAgICAgICAgICAgcmV0dXJuIGZhbHNlOw0KPiA+ID4gKw0KPiA+ID4gKyAgICAgZGVzdC0+
+YXR0cmlidXRlcyA9IHNyYy0+YXR0cmlidXRlczsNCj4gPiA+ICsgICAgIGRlc3QtPmZpbGVfcGF0
+aF9saXN0X2xlbmd0aCA9IHNyYy0+ZmlsZV9wYXRoX2xpc3RfbGVuZ3RoOw0KPiA+ID4gKyAgICAg
+ZGVzdC0+ZGVzY3JpcHRpb24gPSBkZXNjcmlwdGlvbjsNCj4gPiA+ICsgICAgIGRlc3QtPmZpbGVf
+cGF0aF9saXN0ID0gZmlsZV9wYXRoX2xpc3Q7DQo+ID4gPiArICAgICBkZXN0LT5vcHRpb25hbF9k
+YXRhX3NpemUgPSBzaXplOw0KPiA+ID4gKyAgICAgZGVzdC0+b3B0aW9uYWxfZGF0YSA9IHNpemUg
+PyBwb3MgOiBOVUxMOw0KPiA+ID4gKw0KPiA+ID4gKyAgICAgcmV0dXJuIHRydWU7DQo+ID4gPiAr
+fQ0KPiA+ID4gKw0KPiA+ID4gKy8qDQo+ID4gPiArICogQXQgbGVhc3Qgc29tZSB2ZXJzaW9ucyBv
+ZiBEZWxsIGZpcm13YXJlIHBhc3MgdGhlIGVudGlyZSBjb250ZW50cyBvZg0KPiB0aGUNCj4gPiA+
+ICsgKiBCb290IyMjIyB2YXJpYWJsZSwgaS5lLiB0aGUgRUZJX0xPQURfT1BUSU9OIGRlc2NyaXB0
+b3IsIHJhdGhlciB0aGFuDQo+IGp1c3QNCj4gPiA+IHRoZQ0KPiA+ID4gKyAqIE9wdGlvbmFsRGF0
+YSBmaWVsZC4NCj4gPiA+ICsgKg0KPiA+ID4gKyAqIERldGVjdCB0aGlzIGNhc2UgYW5kIGV4dHJh
+Y3QgT3B0aW9uYWxEYXRhLg0KPiA+ID4gKyAqLw0KPiA+ID4gK3ZvaWQgZWZpX2FwcGx5X2xvYWRv
+cHRpb25zX3F1aXJrKGNvbnN0IHZvaWQgKipsb2FkX29wdGlvbnMsIGludA0KPiA+ID4gKmxvYWRf
+b3B0aW9uc19zaXplKQ0KPiA+ID4gK3sNCj4gPiA+ICsgICAgIGNvbnN0IGVmaV9sb2FkX29wdGlv
+bl90ICpsb2FkX29wdGlvbiA9ICpsb2FkX29wdGlvbnM7DQo+ID4gPiArICAgICBlZmlfbG9hZF9v
+cHRpb25fdW5wYWNrZWRfdCBsb2FkX29wdGlvbl91bnBhY2tlZDsNCj4gPiA+ICsNCj4gPiA+ICsg
+ICAgIGlmICghSVNfRU5BQkxFRChDT05GSUdfWDg2KSkNCj4gPiA+ICsgICAgICAgICAgICAgcmV0
+dXJuOw0KPiA+ID4gKyAgICAgaWYgKCFsb2FkX29wdGlvbikNCj4gPiA+ICsgICAgICAgICAgICAg
+cmV0dXJuOw0KPiA+ID4gKyAgICAgaWYgKCpsb2FkX29wdGlvbnNfc2l6ZSA8IHNpemVvZigqbG9h
+ZF9vcHRpb24pKQ0KPiA+ID4gKyAgICAgICAgICAgICByZXR1cm47DQo+ID4gPiArICAgICBpZiAo
+KGxvYWRfb3B0aW9uLT5hdHRyaWJ1dGVzICYgfkVGSV9MT0FEX09QVElPTl9CT09UX01BU0spICE9
+IDApDQo+ID4gPiArICAgICAgICAgICAgIHJldHVybjsNCj4gPiA+ICsNCj4gPiA+ICsgICAgIGlm
+ICghZWZpX2xvYWRfb3B0aW9uX3VucGFjaygmbG9hZF9vcHRpb25fdW5wYWNrZWQsIGxvYWRfb3B0
+aW9uLA0KPiA+ID4gKmxvYWRfb3B0aW9uc19zaXplKSkNCj4gPiA+ICsgICAgICAgICAgICAgcmV0
+dXJuOw0KPiA+ID4gKw0KPiA+DQo+ID4gSW4gY2FzZSB0aGlzIHdhcyBldmVyIHRvIGJlIGF0dHJp
+YnV0ZWQgdG8gYSBjYXVzZSBmb3Igc29tZW9uZSB0byBmYWlsIHRvDQo+ID4gYm9vdCwgaXQgbWF5
+IGJlIHVzZWZ1bCB0byBkcm9wIGEgcHJfZGVidWcgaGVyZSB0aGF0IGNvdWxkIGJlIGVhc2lseSB0
+dXJuZWQNCj4gPiBvbi4NCj4gPg0KPiANCj4gQWdyZWUgdGhhdCBhZGRpbmcgYSBlZmlfaW5mbygp
+IGhlcmUgbWFrZXMgc2Vuc2UsIG5vdCBvbmx5IGZvcg0KPiBwb3RlbnRpYWwgZmFpbHVyZXMsIGJ1
+dCBhbHNvIHNpbXBseSB0byBoYXZlIHNvbWUgY29uZmlybWF0aW9uIHRoYXQgdGhlDQo+IHF1aXJr
+IGlzIHRha2luZyBlZmZlY3QuDQoNClNob3VsZCBhIGNoYW5nZSBiZSBkZXZlbG9wZWQgaW4gdGhl
+IGZpcm13YXJlIHNpZGUgdG8gcmVzb2x2ZSBpdCwgaXQncyBhIG5pY2Ugd2F5IHRvDQpjb25maXJt
+IHRoYXQgaXQgbGFuZGVkIHByb3Blcmx5IHRvbywgYW5kIHRvIGNvbWUgdXAgd2l0aCBhIHRpbWVs
+aW5lIHRvIGV2ZW50dWFsbHkNCnN1bnNldCB0aGlzIHR5cGUgb2YgcXVpcmsuDQoNClRoaXMgaXMg
+c29tZSBwcmVjZWRlbmNlIG9mIHB1dHRpbmcgc3R1ZmYgbGlrZSB0aGlzIHdoaWNoIExpbnV4IGtl
+cm5lbCBoYXMgd29ya2VkIGFyb3VuZA0Kd2hhdCBpcyBnZW5lcmFsbHkgdmlld2VkIGFzIGEgZmly
+bXdhcmUgYnVnIGFzIHByX25vdGljZV9vbmNlICgqKToNCmh0dHBzOi8vZ2l0aHViLmNvbS90b3J2
+YWxkcy9saW51eC9ibG9iLzg5ZDU3ZGRkZDdkMzE5ZGVkMDA0MTU3OTBhMGJiM2M5NTRiN2UzODYv
+ZHJpdmVycy9hY3BpL29zaS5jI0w3Nw0KDQpTdHVmZiBvZiB0aGUgbGlrZSBjYW4gZmxvdyBpbnRv
+IHRlc3QgdG9vbHMgbGlrZSB0aGUgZmlybXdhcmUgdGVzdCBzdWl0ZSAoRldUUykgd2hpY2ggY2Fu
+DQpoZWxwIGlkZW50aWZ5IHRoZW0gZWFybGllciBhbmQgdG8gcmVzb2x2ZSBkdXJpbmcgZGV2ZWxv
+cG1lbnQgYmVmb3JlIGNvZGViYXNlcyBnZW5lcmFsbHkgbG9jayBkb3duLg0KDQo+IA0KPiBOb3Rl
+IHRoYXQgSSBhbSBub3QgMTAwJSBjb252aW5jZWQgeWV0IHRoYXQgd2UgbmVlZCB0aGlzIGNoYW5n
+ZSB0bw0KPiBiZWdpbiB3aXRoLiBIb3cgbGFyZ2UgaXMgdGhlIGludGVyc2VjdGlvbiBvZiB0aGUg
+c2V0IG9mIGFmZmVjdGVkDQo+IHN5c3RlbXMgYW5kIHRoZSBzZXQgb2Ygc3lzdGVtcyB0aGF0IGFy
+ZSBsaWtlbHkgdG8gcnVuIGZ1dHVyZSBrZXJuZWxzDQo+IHRoYXQgY2FycnkgdGhpcyBxdWlyaz8N
+Cg0KUmlnaHQgbm93IHRoZXJlIGlzIG5vIGNvbmZpcm1hdGlvbiB0aGF0ICJjdXJyZW50IiBzeXN0
+ZW1zIGhhdmUgYmVlbiBmaXhlZCBpbiB0aGUNCmN1cnJlbnQgZmlybXdhcmUgY29kZWJhc2UuICBJ
+IGRvbid0IGhhdmUgYWNjZXNzIHRvIHRoYXQgY29kZWJhc2UsIHNvIEkgaGF2ZSBzb21lIGlucXVp
+cmllcw0KdG8gdGhvc2UgdGhhdCBkby4NClNvIGl0J3MgYW55d2hlcmUgaW4gYmV0d2VlbiAiYWxs
+IERlbGwgWDg2IGNsaWVudCBzeXN0ZW1zIG1hbnVmYWN0dXJlZCBpbiAyMDE3IGFuZCBvbGRlciIg
+dG8NCiJhbGwgRGVsbCBzeXN0ZW1zIHVwIHVudGlsIDIwMjAtMjAyMSB3aGVuL2lmIHRoaXMgYmVo
+YXZpb3IgaXMgY2hhbmdlZCIuDQoNCkEgbG90IG9mIGRpc3RyaWJ1dGlvbnMgdXNlcyBvdGhlciBi
+b290bG9hZGVycywgYW5kIHdvbid0IGJlIGFmZmVjdGVkIGJ5IHRoaXMuDQoNCkV2ZW4gaWYgaXQg
+ZG9lcyBnZXQgZml4ZWQgaW4gZmlybXdhcmUgKHdoaWNoIEknbGwgbG9iYnkgZm9yIGludGVybmFs
+bHkgaWYgaXQncyBzdGlsbCBhIHByb2JsZW0pDQpJIHdvdWxkIHBlcnNvbmFsbHkgcmF0aGVyIHNl
+ZSB0aGUgcXVpcmsgbGFuZCBhcyBJIHRoaW5rIGl0J3MgaGFyZGVyIHRvIHNlZSBkaXN0cmlidXRp
+b25zIGhhdmUNCnRoZSBwb3RlbnRpYWwgdG8gbWlncmF0ZSBhd2F5IGZyb20gR1JVQiB0byBvdGhl
+ciBzb2x1dGlvbnMgd2l0aCBsYXJnZSBudW1iZXJzIG9mIGtub3duIG1hY2hpbmVzDQppbiB0aGUg
+ZmllbGQgdGhhdCBjYW4ndCBib290IHRoZSBvdGhlciBzb2x1dGlvbi4NCg0KPiANCj4gDQo+ID4g
+PiArICAgICAqbG9hZF9vcHRpb25zID0gbG9hZF9vcHRpb25fdW5wYWNrZWQub3B0aW9uYWxfZGF0
+YTsNCj4gPiA+ICsgICAgICpsb2FkX29wdGlvbnNfc2l6ZSA9IGxvYWRfb3B0aW9uX3VucGFja2Vk
+Lm9wdGlvbmFsX2RhdGFfc2l6ZTsNCj4gPiA+ICt9DQo+ID4gPiArDQo+ID4gPiAgLyoNCj4gPiA+
+ICAgKiBDb252ZXJ0IHRoZSB1bmljb2RlIFVFRkkgY29tbWFuZCBsaW5lIHRvIEFTQ0lJIHRvIHBh
+c3MgdG8ga2VybmVsLg0KPiA+ID4gICAqIFNpemUgb2YgbWVtb3J5IGFsbG9jYXRlZCByZXR1cm4g
+aW4gKmNtZF9saW5lX2xlbi4NCj4gPiA+IEBAIC0yNDcsMTIgKzM0MSwxNSBAQCBjaGFyICplZmlf
+Y29udmVydF9jbWRsaW5lKGVmaV9sb2FkZWRfaW1hZ2VfdCAqaW1hZ2UsDQo+IGludA0KPiA+ID4g
+KmNtZF9saW5lX2xlbikNCj4gPiA+ICB7DQo+ID4gPiAgICAgICBjb25zdCB1MTYgKnMyOw0KPiA+
+ID4gICAgICAgdW5zaWduZWQgbG9uZyBjbWRsaW5lX2FkZHIgPSAwOw0KPiA+ID4gLSAgICAgaW50
+IG9wdGlvbnNfY2hhcnMgPSBlZmlfdGFibGVfYXR0cihpbWFnZSwgbG9hZF9vcHRpb25zX3NpemUp
+IC8gMjsNCj4gPiA+ICsgICAgIGludCBvcHRpb25zX2NoYXJzID0gZWZpX3RhYmxlX2F0dHIoaW1h
+Z2UsIGxvYWRfb3B0aW9uc19zaXplKTsNCj4gPiA+ICAgICAgIGNvbnN0IHUxNiAqb3B0aW9ucyA9
+IGVmaV90YWJsZV9hdHRyKGltYWdlLCBsb2FkX29wdGlvbnMpOw0KPiA+ID4gICAgICAgaW50IG9w
+dGlvbnNfYnl0ZXMgPSAwLCBzYWZlX29wdGlvbnNfYnl0ZXMgPSAwOyAgLyogVVRGLTggYnl0ZXMg
+Ki8NCj4gPiA+ICAgICAgIGJvb2wgaW5fcXVvdGUgPSBmYWxzZTsNCj4gPiA+ICAgICAgIGVmaV9z
+dGF0dXNfdCBzdGF0dXM7DQo+ID4gPg0KPiA+ID4gKyAgICAgZWZpX2FwcGx5X2xvYWRvcHRpb25z
+X3F1aXJrKChjb25zdCB2b2lkICoqKSZvcHRpb25zLA0KPiAmb3B0aW9uc19jaGFycyk7DQo+ID4g
+PiArICAgICBvcHRpb25zX2NoYXJzIC89IHNpemVvZigqb3B0aW9ucyk7DQo+ID4gPiArDQo+ID4g
+PiAgICAgICBpZiAob3B0aW9ucykgew0KPiA+ID4gICAgICAgICAgICAgICBzMiA9IG9wdGlvbnM7
+DQo+ID4gPiAgICAgICAgICAgICAgIHdoaWxlIChvcHRpb25zX2J5dGVzIDwgQ09NTUFORF9MSU5F
+X1NJWkUgJiYgb3B0aW9uc19jaGFycy0tKQ0KPiB7DQo+ID4gPiBkaWZmIC0tZ2l0IGEvZHJpdmVy
+cy9maXJtd2FyZS9lZmkvbGlic3R1Yi9lZmlzdHViLmgNCj4gPiA+IGIvZHJpdmVycy9maXJtd2Fy
+ZS9lZmkvbGlic3R1Yi9lZmlzdHViLmgNCj4gPiA+IGluZGV4IDg1MDUwZjVhMWIyOC4uNTg5ZDA3
+YWNiMjJkIDEwMDY0NA0KPiA+ID4gLS0tIGEvZHJpdmVycy9maXJtd2FyZS9lZmkvbGlic3R1Yi9l
+ZmlzdHViLmgNCj4gPiA+ICsrKyBiL2RyaXZlcnMvZmlybXdhcmUvZWZpL2xpYnN0dWIvZWZpc3R1
+Yi5oDQo+ID4gPiBAQCAtNjg4LDYgKzY4OCwzNSBAQCB1bmlvbiBlZmlfbG9hZF9maWxlX3Byb3Rv
+Y29sIHsNCj4gPiA+ICAgICAgIH0gbWl4ZWRfbW9kZTsNCj4gPiA+ICB9Ow0KPiA+ID4NCj4gPiA+
+ICt0eXBlZGVmIHN0cnVjdCB7DQo+ID4gPiArICAgICB1MzIgYXR0cmlidXRlczsNCj4gPiA+ICsg
+ICAgIHUxNiBmaWxlX3BhdGhfbGlzdF9sZW5ndGg7DQo+ID4gPiArICAgICB1OCB2YXJpYWJsZV9k
+YXRhW107DQo+ID4gPiArICAgICAvLyBlZmlfY2hhcjE2X3QgZGVzY3JpcHRpb25bXTsNCj4gPiA+
+ICsgICAgIC8vIGVmaV9kZXZpY2VfcGF0aF9wcm90b2NvbF90IGZpbGVfcGF0aF9saXN0W107DQo+
+ID4gPiArICAgICAvLyB1OCBvcHRpb25hbF9kYXRhW107DQo+ID4gPiArfSBfX3BhY2tlZCBlZmlf
+bG9hZF9vcHRpb25fdDsNCj4gPiA+ICsNCj4gPiA+ICsjZGVmaW5lIEVGSV9MT0FEX09QVElPTl9B
+Q1RJVkUgICAgICAgICAgICAgICAweDAwMDFVDQo+ID4gPiArI2RlZmluZSBFRklfTE9BRF9PUFRJ
+T05fRk9SQ0VfUkVDT05ORUNUICAgICAgMHgwMDAyVQ0KPiA+ID4gKyNkZWZpbmUgRUZJX0xPQURf
+T1BUSU9OX0hJRERFTiAgICAgICAgICAgICAgIDB4MDAwOFUNCj4gPiA+ICsjZGVmaW5lIEVGSV9M
+T0FEX09QVElPTl9DQVRFR09SWSAgICAgMHgxZjAwVQ0KPiA+ID4gKyNkZWZpbmUgICBFRklfTE9B
+RF9PUFRJT05fQ0FURUdPUllfQk9PVCAgICAgIDB4MDAwMFUNCj4gPiA+ICsjZGVmaW5lICAgRUZJ
+X0xPQURfT1BUSU9OX0NBVEVHT1JZX0FQUCAgICAgICAweDAxMDBVDQo+ID4gPiArDQo+ID4gPiAr
+I2RlZmluZSBFRklfTE9BRF9PUFRJT05fQk9PVF9NQVNLIFwNCj4gPiA+ICsNCj4gKEVGSV9MT0FE
+X09QVElPTl9BQ1RJVkV8RUZJX0xPQURfT1BUSU9OX0hJRERFTnxFRklfTE9BRF9PUFRJT05fQ0FU
+RUdPUlkpDQo+ID4gPiArI2RlZmluZSBFRklfTE9BRF9PUFRJT05fTUFTSw0KPiA+ID4gKEVGSV9M
+T0FEX09QVElPTl9GT1JDRV9SRUNPTk5FQ1R8RUZJX0xPQURfT1BUSU9OX0JPT1RfTUFTSykNCj4g
+PiA+ICsNCj4gPiA+ICt0eXBlZGVmIHN0cnVjdCB7DQo+ID4gPiArICAgICB1MzIgYXR0cmlidXRl
+czsNCj4gPiA+ICsgICAgIHUxNiBmaWxlX3BhdGhfbGlzdF9sZW5ndGg7DQo+ID4gPiArICAgICBj
+b25zdCBlZmlfY2hhcjE2X3QgKmRlc2NyaXB0aW9uOw0KPiA+ID4gKyAgICAgY29uc3QgZWZpX2Rl
+dmljZV9wYXRoX3Byb3RvY29sX3QgKmZpbGVfcGF0aF9saXN0Ow0KPiA+ID4gKyAgICAgc2l6ZV90
+IG9wdGlvbmFsX2RhdGFfc2l6ZTsNCj4gPiA+ICsgICAgIGNvbnN0IHZvaWQgKm9wdGlvbmFsX2Rh
+dGE7DQo+ID4gPiArfSBlZmlfbG9hZF9vcHRpb25fdW5wYWNrZWRfdDsNCj4gPiA+ICsNCj4gPiA+
+ICB2b2lkIGVmaV9wY2lfZGlzYWJsZV9icmlkZ2VfYnVzbWFzdGVyKHZvaWQpOw0KPiA+ID4NCj4g
+PiA+ICB0eXBlZGVmIGVmaV9zdGF0dXNfdCAoKmVmaV9leGl0X2Jvb3RfbWFwX3Byb2Nlc3Npbmcp
+KA0KPiA+ID4gQEAgLTczMCw2ICs3NTksOCBAQCBfX3ByaW50ZigxLCAyKSBpbnQgZWZpX3ByaW50
+ayhjaGFyIGNvbnN0ICpmbXQsIC4uLik7DQo+ID4gPg0KPiA+ID4gIHZvaWQgZWZpX2ZyZWUodW5z
+aWduZWQgbG9uZyBzaXplLCB1bnNpZ25lZCBsb25nIGFkZHIpOw0KPiA+ID4NCj4gPiA+ICt2b2lk
+IGVmaV9hcHBseV9sb2Fkb3B0aW9uc19xdWlyayhjb25zdCB2b2lkICoqbG9hZF9vcHRpb25zLCBp
+bnQNCj4gPiA+ICpsb2FkX29wdGlvbnNfc2l6ZSk7DQo+ID4gPiArDQo+ID4gPiAgY2hhciAqZWZp
+X2NvbnZlcnRfY21kbGluZShlZmlfbG9hZGVkX2ltYWdlX3QgKmltYWdlLCBpbnQgKmNtZF9saW5l
+X2xlbik7DQo+ID4gPg0KPiA+ID4gIGVmaV9zdGF0dXNfdCBlZmlfZ2V0X21lbW9yeV9tYXAoc3Ry
+dWN0IGVmaV9ib290X21lbW1hcCAqbWFwKTsNCj4gPiA+IGRpZmYgLS1naXQgYS9kcml2ZXJzL2Zp
+cm13YXJlL2VmaS9saWJzdHViL2ZpbGUuYw0KPiA+ID4gYi9kcml2ZXJzL2Zpcm13YXJlL2VmaS9s
+aWJzdHViL2ZpbGUuYw0KPiA+ID4gaW5kZXggNjMwY2FhNmIxZjRjLi40ZTgxYzYwNzcxODggMTAw
+NjQ0DQo+ID4gPiAtLS0gYS9kcml2ZXJzL2Zpcm13YXJlL2VmaS9saWJzdHViL2ZpbGUuYw0KPiA+
+ID4gKysrIGIvZHJpdmVycy9maXJtd2FyZS9lZmkvbGlic3R1Yi9maWxlLmMNCj4gPiA+IEBAIC0x
+MzYsNyArMTM2LDcgQEAgZWZpX3N0YXR1c190IGhhbmRsZV9jbWRsaW5lX2ZpbGVzKGVmaV9sb2Fk
+ZWRfaW1hZ2VfdA0KPiA+ID4gKmltYWdlLA0KPiA+ID4gICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICB1bnNpZ25lZCBsb25nICpsb2FkX3NpemUpDQo+ID4gPiAgew0KPiA+ID4gICAgICAg
+Y29uc3QgZWZpX2NoYXIxNl90ICpjbWRsaW5lID0gaW1hZ2UtPmxvYWRfb3B0aW9uczsNCj4gPiA+
+IC0gICAgIGludCBjbWRsaW5lX2xlbiA9IGltYWdlLT5sb2FkX29wdGlvbnNfc2l6ZSAvIDI7DQo+
+ID4gPiArICAgICBpbnQgY21kbGluZV9sZW4gPSBpbWFnZS0+bG9hZF9vcHRpb25zX3NpemU7DQo+
+ID4gPiAgICAgICB1bnNpZ25lZCBsb25nIGVmaV9jaHVua19zaXplID0gVUxPTkdfTUFYOw0KPiA+
+ID4gICAgICAgZWZpX2ZpbGVfcHJvdG9jb2xfdCAqdm9sdW1lID0gTlVMTDsNCj4gPiA+ICAgICAg
+IGVmaV9maWxlX3Byb3RvY29sX3QgKmZpbGU7DQo+ID4gPiBAQCAtMTQ4LDYgKzE0OCw5IEBAIGVm
+aV9zdGF0dXNfdCBoYW5kbGVfY21kbGluZV9maWxlcyhlZmlfbG9hZGVkX2ltYWdlX3QNCj4gPiA+
+ICppbWFnZSwNCj4gPiA+ICAgICAgIGlmICghbG9hZF9hZGRyIHx8ICFsb2FkX3NpemUpDQo+ID4g
+PiAgICAgICAgICAgICAgIHJldHVybiBFRklfSU5WQUxJRF9QQVJBTUVURVI7DQo+ID4gPg0KPiA+
+ID4gKyAgICAgZWZpX2FwcGx5X2xvYWRvcHRpb25zX3F1aXJrKChjb25zdCB2b2lkICoqKSZjbWRs
+aW5lLCAmY21kbGluZV9sZW4pOw0KPiA+ID4gKyAgICAgY21kbGluZV9sZW4gLz0gc2l6ZW9mKCpj
+bWRsaW5lKTsNCj4gPiA+ICsNCj4gPiA+ICAgICAgIGlmIChJU19FTkFCTEVEKENPTkZJR19YODYp
+ICYmICFlZmlfbm9jaHVuaykNCj4gPiA+ICAgICAgICAgICAgICAgZWZpX2NodW5rX3NpemUgPSBF
+RklfUkVBRF9DSFVOS19TSVpFOw0KPiA+ID4NCj4gPiA+IC0tDQo+ID4gPiAyLjI2LjINCj4gPg0K
