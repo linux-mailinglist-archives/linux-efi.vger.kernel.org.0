@@ -2,172 +2,164 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 01F552688E7
-	for <lists+linux-efi@lfdr.de>; Mon, 14 Sep 2020 11:58:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5AB65268C52
+	for <lists+linux-efi@lfdr.de>; Mon, 14 Sep 2020 15:37:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726267AbgINJ6O (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 14 Sep 2020 05:58:14 -0400
-Received: from mail.kernel.org ([198.145.29.99]:49422 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726302AbgINJ6N (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Mon, 14 Sep 2020 05:58:13 -0400
-Received: from e123331-lin.nice.arm.com (unknown [37.6.197.50])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        id S1726729AbgINNhk (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 14 Sep 2020 09:37:40 -0400
+Received: from pb-smtp1.pobox.com ([64.147.108.70]:62184 "EHLO
+        pb-smtp1.pobox.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726743AbgINNfu (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 14 Sep 2020 09:35:50 -0400
+Received: from pb-smtp1.pobox.com (unknown [127.0.0.1])
+        by pb-smtp1.pobox.com (Postfix) with ESMTP id 64E7D8EBF9;
+        Mon, 14 Sep 2020 09:35:43 -0400 (EDT)
+        (envelope-from nico@fluxnic.net)
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed; d=pobox.com; h=date:from:to
+        :cc:subject:in-reply-to:message-id:references:mime-version
+        :content-type; s=sasl; bh=gSnim3mvAbAq2/22ImdJ8Ncy4z0=; b=IZ1WSt
+        52EikCvmW8ze9ObkgKD8H2wkwg9Imjn+eo2ubahnXKQrQiSQVtZrNbB5Bzwq9CiT
+        LxvjaDXoTI/MZGsKChDkSzRNMBVS7WXJ+E00M5jTLJlV6j1q8z4nxwlqWvaMp+y2
+        upkDWzLbyP9Q7dcQNPum3FqLEtT6LUU5hYRuw=
+Received: from pb-smtp1.nyi.icgroup.com (unknown [127.0.0.1])
+        by pb-smtp1.pobox.com (Postfix) with ESMTP id 5B16E8EBF8;
+        Mon, 14 Sep 2020 09:35:43 -0400 (EDT)
+        (envelope-from nico@fluxnic.net)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed; d=fluxnic.net;
+ h=date:from:to:cc:subject:in-reply-to:message-id:references:mime-version:content-type; s=2016-12.pbsmtp; bh=IZ7EAS46+FsvRZnCXtAQuyRWQoQ1eBtWYOICABO6/G0=; b=iDbjhYF/aFjpTPdEG7b+2tOkdk5DtNkej9A5QqqUMt/KG/l2EugX6eSaWBae+hl6Rd1PdCcrYo6P7MzuWA+PLJs5/SAcczlkJaNX3YYRkOiXAb6djg4Yxukc2h/BMjY5j6RIlRgPWctAA6SItxhRbZICx1B0TY1I+CnG3pdNMjA=
+Received: from yoda.home (unknown [24.203.50.76])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 3061D20735;
-        Mon, 14 Sep 2020 09:58:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1600077492;
-        bh=77RIzJYqzlmKEeo4Ksd7J+ddgYyfqCTidiKyeJAjbLY=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=s5+J05zaCKdaonqfYWnG4GkCswxWHBEuzx5BYysTrZ70lqnJ3BUi0EfnVSklZQQm+
-         UPGfiLWoRjv2Ssntm0x9ov2aChKYUgdVUX5nBksu7OSNAObD9TFN3ILNvBdFlKpHM2
-         TqC1fdWrQqxdjfg/hHOhIVTtC+kQN42qp1xsqmnM=
-From:   Ard Biesheuvel <ardb@kernel.org>
-To:     linux-efi@vger.kernel.org
-Cc:     linux-arm-kernel@lists.infradead.org,
-        Ard Biesheuvel <ardb@kernel.org>,
+        by pb-smtp1.pobox.com (Postfix) with ESMTPSA id B4C688EBF6;
+        Mon, 14 Sep 2020 09:35:42 -0400 (EDT)
+        (envelope-from nico@fluxnic.net)
+Received: from xanadu.home (xanadu.home [192.168.2.2])
+        by yoda.home (Postfix) with ESMTPSA id CF3E62DA0C6E;
+        Mon, 14 Sep 2020 09:35:41 -0400 (EDT)
+Date:   Mon, 14 Sep 2020 09:35:41 -0400 (EDT)
+From:   Nicolas Pitre <nico@fluxnic.net>
+To:     Ard Biesheuvel <ardb@kernel.org>
+cc:     linux-efi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         Russell King <linux@armlinux.org.uk>,
         Linus Walleij <linus.walleij@linaro.org>,
-        Nicolas Pitre <nico@fluxnic.net>,
         Nick Desaulniers <ndesaulniers@google.com>,
         Stefan Agner <stefan@agner.ch>,
         Peter Smith <Peter.Smith@arm.com>,
         Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>
-Subject: [PATCH 12/12] ARM: kvm: replace open coded VA->PA calculations with adr_l call
-Date:   Mon, 14 Sep 2020 12:57:06 +0300
-Message-Id: <20200914095706.3985-13-ardb@kernel.org>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200914095706.3985-1-ardb@kernel.org>
-References: <20200914095706.3985-1-ardb@kernel.org>
+Subject: Re: [PATCH 03/12] ARM: module: add support for place relative
+ relocations
+In-Reply-To: <20200914095706.3985-4-ardb@kernel.org>
+Message-ID: <nycvar.YSQ.7.78.906.2009140927490.4095746@knanqh.ubzr>
+References: <20200914095706.3985-1-ardb@kernel.org> <20200914095706.3985-4-ardb@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+X-Pobox-Relay-ID: 2F9A3A70-F68F-11EA-89BB-01D9BED8090B-78420484!pb-smtp1.pobox.com
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Replace the open coded calculations of the actual physical address
-of the KVM stub vector table with a single adr_l invocation.
+On Mon, 14 Sep 2020, Ard Biesheuvel wrote:
 
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
----
- arch/arm/boot/compressed/head.S | 15 ++---------
- arch/arm/kernel/hyp-stub.S      | 27 +++++++++-----------
- 2 files changed, 14 insertions(+), 28 deletions(-)
+> When using the new adr_l/ldr_l/str_l macros to refer to external symbols
+> from modules, the linker may emit place relative ELF relocations that
+> need to be fixed up by the module loader. So add support for these.
 
-diff --git a/arch/arm/boot/compressed/head.S b/arch/arm/boot/compressed/head.S
-index 6a430d1f4d31..ab800f7e0dc1 100644
---- a/arch/arm/boot/compressed/head.S
-+++ b/arch/arm/boot/compressed/head.S
-@@ -472,15 +472,10 @@ dtb_check_done:
- 
- 		/*
- 		 * Compute the address of the hyp vectors after relocation.
--		 * This requires some arithmetic since we cannot directly
--		 * reference __hyp_stub_vectors in a PC-relative way.
- 		 * Call __hyp_set_vectors with the new address so that we
- 		 * can HVC again after the copy.
- 		 */
--0:		adr	r0, 0b
--		movw	r1, #:lower16:__hyp_stub_vectors - 0b
--		movt	r1, #:upper16:__hyp_stub_vectors - 0b
--		add	r0, r0, r1
-+		adr_l	r0, __hyp_stub_vectors
- 		sub	r0, r0, r5
- 		add	r0, r0, r10
- 		bl	__hyp_set_vectors
-@@ -631,17 +626,11 @@ not_relocated:	mov	r0, #0
- 		cmp	r0, #HYP_MODE		@ if not booted in HYP mode...
- 		bne	__enter_kernel		@ boot kernel directly
- 
--		adr	r12, .L__hyp_reentry_vectors_offset
--		ldr	r0, [r12]
--		add	r0, r0, r12
--
-+		adr_l	r0, __hyp_reentry_vectors
- 		bl	__hyp_set_vectors
- 		__HVC(0)			@ otherwise bounce to hyp mode
- 
- 		b	.			@ should never be reached
--
--		.align	2
--.L__hyp_reentry_vectors_offset:	.long	__hyp_reentry_vectors - .
- #else
- 		b	__enter_kernel
- #endif
-diff --git a/arch/arm/kernel/hyp-stub.S b/arch/arm/kernel/hyp-stub.S
-index 26d8e03b1dd3..103d0bdb2b7e 100644
---- a/arch/arm/kernel/hyp-stub.S
-+++ b/arch/arm/kernel/hyp-stub.S
-@@ -24,41 +24,38 @@ ENTRY(__boot_cpu_mode)
- .text
- 
- 	/*
--	 * Save the primary CPU boot mode. Requires 3 scratch registers.
-+	 * Save the primary CPU boot mode. Requires 2 scratch registers.
- 	 */
--	.macro	store_primary_cpu_mode	reg1, reg2, reg3
-+	.macro	store_primary_cpu_mode	reg1, reg2
- 	mrs	\reg1, cpsr
- 	and	\reg1, \reg1, #MODE_MASK
--	adr	\reg2, .L__boot_cpu_mode_offset
--	ldr	\reg3, [\reg2]
--	str	\reg1, [\reg2, \reg3]
-+	str_l	\reg1, __boot_cpu_mode, \reg2
- 	.endm
- 
- 	/*
- 	 * Compare the current mode with the one saved on the primary CPU.
- 	 * If they don't match, record that fact. The Z bit indicates
- 	 * if there's a match or not.
--	 * Requires 3 additionnal scratch registers.
-+	 * Requires 2 additional scratch registers.
- 	 */
--	.macro	compare_cpu_mode_with_primary mode, reg1, reg2, reg3
--	adr	\reg2, .L__boot_cpu_mode_offset
--	ldr	\reg3, [\reg2]
--	ldr	\reg1, [\reg2, \reg3]
-+	.macro	compare_cpu_mode_with_primary mode, reg1, reg2
-+	adr_l	\reg2, __boot_cpu_mode
-+	ldr	\reg1, [\reg2]
- 	cmp	\mode, \reg1		@ matches primary CPU boot mode?
- 	orrne	\reg1, \reg1, #BOOT_CPU_MODE_MISMATCH
--	strne	\reg1, [\reg2, \reg3]	@ record what happened and give up
-+	strne	\reg1, [\reg2]		@ record what happened and give up
- 	.endm
- 
- #else	/* ZIMAGE */
- 
--	.macro	store_primary_cpu_mode	reg1:req, reg2:req, reg3:req
-+	.macro	store_primary_cpu_mode	reg1:req, reg2:req
- 	.endm
- 
- /*
-  * The zImage loader only runs on one CPU, so we don't bother with mult-CPU
-  * consistency checking:
-  */
--	.macro	compare_cpu_mode_with_primary mode, reg1, reg2, reg3
-+	.macro	compare_cpu_mode_with_primary mode, reg1, reg2
- 	cmp	\mode, \mode
- 	.endm
- 
-@@ -73,7 +70,7 @@ ENTRY(__boot_cpu_mode)
-  */
- @ Call this from the primary CPU
- ENTRY(__hyp_stub_install)
--	store_primary_cpu_mode	r4, r5, r6
-+	store_primary_cpu_mode	r4, r5
- ENDPROC(__hyp_stub_install)
- 
- 	@ fall through...
-@@ -87,7 +84,7 @@ ENTRY(__hyp_stub_install_secondary)
- 	 * If the secondary has booted with a different mode, give up
- 	 * immediately.
- 	 */
--	compare_cpu_mode_with_primary	r4, r5, r6, r7
-+	compare_cpu_mode_with_primary	r4, r5, r6
- 	retne	lr
- 
- 	/*
--- 
-2.17.1
+Just wondering if that capability requirement should be added to the 
+module signature somehow...?
 
+Maybe not. The MODULE_ARCH_VERMAGIC definition only contains things that 
+are configurable for a given build.
+
+
+> 
+> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> ---
+>  arch/arm/include/asm/elf.h |  5 +++++
+>  arch/arm/kernel/module.c   | 20 ++++++++++++++++++--
+>  2 files changed, 23 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/arm/include/asm/elf.h b/arch/arm/include/asm/elf.h
+> index b078d992414b..0ac62a54b73c 100644
+> --- a/arch/arm/include/asm/elf.h
+> +++ b/arch/arm/include/asm/elf.h
+> @@ -51,6 +51,7 @@ typedef struct user_fp elf_fpregset_t;
+>  #define R_ARM_NONE		0
+>  #define R_ARM_PC24		1
+>  #define R_ARM_ABS32		2
+> +#define R_ARM_REL32		3
+>  #define R_ARM_CALL		28
+>  #define R_ARM_JUMP24		29
+>  #define R_ARM_TARGET1		38
+> @@ -58,11 +59,15 @@ typedef struct user_fp elf_fpregset_t;
+>  #define R_ARM_PREL31		42
+>  #define R_ARM_MOVW_ABS_NC	43
+>  #define R_ARM_MOVT_ABS		44
+> +#define R_ARM_MOVW_PREL_NC	45
+> +#define R_ARM_MOVT_PREL		46
+>  
+>  #define R_ARM_THM_CALL		10
+>  #define R_ARM_THM_JUMP24	30
+>  #define R_ARM_THM_MOVW_ABS_NC	47
+>  #define R_ARM_THM_MOVT_ABS	48
+> +#define R_ARM_THM_MOVW_PREL_NC	49
+> +#define R_ARM_THM_MOVT_PREL	50
+>  
+>  /*
+>   * These are used to set parameters in the core dumps.
+> diff --git a/arch/arm/kernel/module.c b/arch/arm/kernel/module.c
+> index e15444b25ca0..beac45e89ba6 100644
+> --- a/arch/arm/kernel/module.c
+> +++ b/arch/arm/kernel/module.c
+> @@ -185,14 +185,24 @@ apply_relocate(Elf32_Shdr *sechdrs, const char *strtab, unsigned int symindex,
+>  			*(u32 *)loc |= offset & 0x7fffffff;
+>  			break;
+>  
+> +		case R_ARM_REL32:
+> +			*(u32 *)loc += sym->st_value - loc;
+> +			break;
+> +
+>  		case R_ARM_MOVW_ABS_NC:
+>  		case R_ARM_MOVT_ABS:
+> +		case R_ARM_MOVW_PREL_NC:
+> +		case R_ARM_MOVT_PREL:
+>  			offset = tmp = __mem_to_opcode_arm(*(u32 *)loc);
+>  			offset = ((offset & 0xf0000) >> 4) | (offset & 0xfff);
+>  			offset = (offset ^ 0x8000) - 0x8000;
+>  
+>  			offset += sym->st_value;
+> -			if (ELF32_R_TYPE(rel->r_info) == R_ARM_MOVT_ABS)
+> +			if (ELF32_R_TYPE(rel->r_info) == R_ARM_MOVT_PREL ||
+> +			    ELF32_R_TYPE(rel->r_info) == R_ARM_MOVW_PREL_NC)
+> +				offset -= loc;
+> +			if (ELF32_R_TYPE(rel->r_info) == R_ARM_MOVT_ABS ||
+> +			    ELF32_R_TYPE(rel->r_info) == R_ARM_MOVT_PREL)
+>  				offset >>= 16;
+>  
+>  			tmp &= 0xfff0f000;
+> @@ -283,6 +293,8 @@ apply_relocate(Elf32_Shdr *sechdrs, const char *strtab, unsigned int symindex,
+>  
+>  		case R_ARM_THM_MOVW_ABS_NC:
+>  		case R_ARM_THM_MOVT_ABS:
+> +		case R_ARM_THM_MOVW_PREL_NC:
+> +		case R_ARM_THM_MOVT_PREL:
+>  			upper = __mem_to_opcode_thumb16(*(u16 *)loc);
+>  			lower = __mem_to_opcode_thumb16(*(u16 *)(loc + 2));
+>  
+> @@ -302,7 +314,11 @@ apply_relocate(Elf32_Shdr *sechdrs, const char *strtab, unsigned int symindex,
+>  			offset = (offset ^ 0x8000) - 0x8000;
+>  			offset += sym->st_value;
+>  
+> -			if (ELF32_R_TYPE(rel->r_info) == R_ARM_THM_MOVT_ABS)
+> +			if (ELF32_R_TYPE(rel->r_info) == R_ARM_THM_MOVT_PREL ||
+> +			    ELF32_R_TYPE(rel->r_info) == R_ARM_THM_MOVW_PREL_NC)
+> +				offset -= loc;
+> +			if (ELF32_R_TYPE(rel->r_info) == R_ARM_THM_MOVT_ABS ||
+> +			    ELF32_R_TYPE(rel->r_info) == R_ARM_THM_MOVT_PREL)
+>  				offset >>= 16;
+>  
+>  			upper = (u16)((upper & 0xfbf0) |
+> -- 
+> 2.17.1
+> 
+> 
