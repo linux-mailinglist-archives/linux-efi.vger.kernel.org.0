@@ -2,387 +2,168 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EBAD5269244
-	for <lists+linux-efi@lfdr.de>; Mon, 14 Sep 2020 18:57:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C4A59269378
+	for <lists+linux-efi@lfdr.de>; Mon, 14 Sep 2020 19:33:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726112AbgINQ5j (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 14 Sep 2020 12:57:39 -0400
-Received: from mx0b-00154904.pphosted.com ([148.163.137.20]:45378 "EHLO
-        mx0b-00154904.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725976AbgINQ5E (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 14 Sep 2020 12:57:04 -0400
-Received: from pps.filterd (m0170394.ppops.net [127.0.0.1])
-        by mx0b-00154904.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 08EGocsu002055;
-        Mon, 14 Sep 2020 12:56:56 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dell.com; h=from : to : cc :
- subject : date : message-id : references : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=smtpout1;
- bh=1FqYqIa8MlTZrjnSSKkbFf+EehSwouFL4c45obeHkoY=;
- b=hZRhvSZ08ygf8Zdmjt5MMGxCkFctgeQmzRrZ6gcJrJ71o0kOpADYeezm3cQqn2KfpdMq
- a4oaKZMXlXQpK+r9nByeV4HBoKoydxjfWA7kgHdGdaL5T78gwxaNbuY+YP/pOWTeDzhg
- CTs6ZyL16cRU9S6FfQiDmEmfZCKLkeeg2Y5KWIcbzBp8QxdaWJwpZzFHzITz2fL2D8ar
- wuH+z0lZDUTC4sf9BER8j1lF3YrED6JYVktXVrX/qHaLqWAxxv9l80FSGCm1bOqo1WlO
- 1N/Tzc9QiKm+lwKOxmqEC9SBUquPkEdBBeMWRwWrN1oalV1t4gbHxYgP5aRA19bNuz02 KA== 
-Received: from mx0a-00154901.pphosted.com (mx0a-00154901.pphosted.com [67.231.149.39])
-        by mx0b-00154904.pphosted.com with ESMTP id 33grw6drc5-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 14 Sep 2020 12:56:55 -0400
-Received: from pps.filterd (m0134746.ppops.net [127.0.0.1])
-        by mx0a-00154901.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 08EGsT7l087193;
-        Mon, 14 Sep 2020 12:56:55 -0400
-Received: from nam12-bn8-obe.outbound.protection.outlook.com (mail-bn8nam12lp2168.outbound.protection.outlook.com [104.47.55.168])
-        by mx0a-00154901.pphosted.com with ESMTP id 33jceqr143-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 14 Sep 2020 12:56:54 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=iJdBPb2ONsT0XfcigwrdBDy3Yst03QjwCy25vT7PDj3QUNurN6Nz3BXsVgk2+pofk1vDnULjty5tTYnjago10iox/WQOZE+iffn+CqTDaK2bwQMRDgl2NJFmtQlve4lL9g+m5xo86p8M/YDnSvYTrDTsPFGs22OWGIiMg/PqyvYzDYV6ROQ+p0gEQhRvPjpR5SPGp9AX+vwrBwn1ItMihLvfzT9lcga7AYIvbD2LVDNsnD6CqZSlKkbpUzjHNH/FQdAjlu92YdYStfmuubeub0SHTsyTGZ6DHBWSmSdFhkMgeRPEl36DlgZJcfp/iw2zFsJOOq100I8xnROt64hb2Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1FqYqIa8MlTZrjnSSKkbFf+EehSwouFL4c45obeHkoY=;
- b=hytN3A31gjbjAYzO/zQqaHJXqUO+wdG4Oi4gmZzBXx15nFOWzEmyKmWJGa/L2US37yeRr7hAwld2hGi1CunVlBfxUGQ4lpKT/4PrxXMARkCXeHuFkXvhDRfPrcbQHEe+fE++IvUAPPj5rNyf6GixXU+ed0MFt46kTW2mIz9Yk4QnxRWn5xpzW3GVD5Emrt0ic1jXsw23sERUUH21M77TIp/KacuYowY8lvQXFlUJR7SKjjCXf02RqqlQs3yInEtFqWznqFlPh48wIwUMMy37ORMtmx4kea1CJsJDbq4qO36F4V16TbDb5SfW3hoK0/D8hiJakv9UHGoj6ZKY9i9tFw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=dell.com; dmarc=pass action=none header.from=dell.com;
- dkim=pass header.d=dell.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Dell.onmicrosoft.com;
- s=selector1-Dell-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1FqYqIa8MlTZrjnSSKkbFf+EehSwouFL4c45obeHkoY=;
- b=Mznn5/Z5CYoy3hYM6fYX70IDKrZx+hZGiFIQitqhHwOYAwTkU9y6cdjrTGQXcmN+xcJTxh2W4SlY36AN+T1AuJkoEUOaRRTZZEycvPFTWTi6v7VJn+f4Dv1CO9NVmzVexAcGeoBQbBYHnnElsuh6X9YZy1W6piAxqkiCa9HxtXk=
-Received: from DM6PR19MB2636.namprd19.prod.outlook.com (2603:10b6:5:15f::15)
- by DM6PR19MB3066.namprd19.prod.outlook.com (2603:10b6:5:187::28) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3370.16; Mon, 14 Sep
- 2020 16:56:52 +0000
-Received: from DM6PR19MB2636.namprd19.prod.outlook.com
- ([fe80::a4b8:d5c9:29da:39b2]) by DM6PR19MB2636.namprd19.prod.outlook.com
- ([fe80::a4b8:d5c9:29da:39b2%4]) with mapi id 15.20.3370.019; Mon, 14 Sep 2020
- 16:56:52 +0000
-From:   "Limonciello, Mario" <Mario.Limonciello@dell.com>
-To:     Arvind Sankar <nivedita@alum.mit.edu>,
-        Jacobo Pantoja <jacobopantoja@gmail.com>
-CC:     Ard Biesheuvel <ardb@kernel.org>, Peter Jones <pjones@redhat.com>,
-        linux-efi <linux-efi@vger.kernel.org>
-Subject: RE: [RFC PATCH 1/2] efi/x86: Add a quirk to support command line
- arguments on Dell EFI firmware
-Thread-Topic: [RFC PATCH 1/2] efi/x86: Add a quirk to support command line
- arguments on Dell EFI firmware
-Thread-Index: AQHWiS1NRxKz7Ka8wkKNd8qkUMWbaqloW/rw
-Date:   Mon, 14 Sep 2020 16:56:52 +0000
-Message-ID: <DM6PR19MB26366FAF28A730412DC505EDFA230@DM6PR19MB2636.namprd19.prod.outlook.com>
-References: <DM6PR19MB2636D9FB53FD32BC8F3FFFE4FA240@DM6PR19MB2636.namprd19.prod.outlook.com>
- <20200912175105.2085299-1-nivedita@alum.mit.edu>
- <20200912175105.2085299-2-nivedita@alum.mit.edu>
-In-Reply-To: <20200912175105.2085299-2-nivedita@alum.mit.edu>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-msip_labels: MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_Enabled=True;
- MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_SiteId=945c199a-83a2-4e80-9f8c-5a91be5752dd;
- MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_Owner=Mario_Limonciello@Dell.com;
- MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_SetDate=2020-09-14T16:56:50.6041932Z;
- MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_Name=External Public;
- MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_Application=Microsoft Azure
- Information Protection;
- MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_ActionId=de525b41-cbc6-4ba5-8ab4-4aaed0929b57;
- MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_Extended_MSFT_Method=Manual
-authentication-results: alum.mit.edu; dkim=none (message not signed)
- header.d=none;alum.mit.edu; dmarc=none action=none header.from=Dell.com;
-x-originating-ip: [76.251.167.31]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: b2fc5f64-4628-47d4-aa50-08d858cf2dc8
-x-ms-traffictypediagnostic: DM6PR19MB3066:
-x-microsoft-antispam-prvs: <DM6PR19MB306651E4CE6C8B0D22BF1C9BFA230@DM6PR19MB3066.namprd19.prod.outlook.com>
-x-exotenant: 2khUwGVqB6N9v58KS13ncyUmMJd8q4
-x-ms-oob-tlc-oobclassifiers: OLM:8882;
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: KajRmEGiSa2DU9Z0xmj7OdhFCepIwmKNnJ76HhlCMYFLWAkr8iQ36eA5uMu0N4dRUcTyj0koFIsllKcn6VeoItSN7uwgPgu2yCZKHFqI0II8bZc+RteLC4G1bu1snZKG75apLRIwmFH5mX0PFR1nHcdQTgqCqF3BcH0HzXbE0Tk85M/pkULUD5v+rsAzK+zJ5pfA4zc9R5hZOlDS7r0Kp50zjyJhG+ufz9jeN3gqTeqkxygWjgFlGc8nHGYROJ3eWD1Z9+g3CKiMQEYPrALE5q9E9qkLLtkLwBSVOaXDRywUxHwYcQmTpVx/ftLIeQN8uMQsyLTCTIEZTbiFxuOXNIOnFoGO4aPsC7WiGfQBlL+TcM2kxjJLHGAiXAkn892R7GpmJP8Ct9T/F3VDpfe/LA==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR19MB2636.namprd19.prod.outlook.com;PTR:;CAT:NONE;SFS:(376002)(366004)(136003)(346002)(39860400002)(396003)(71200400001)(786003)(316002)(52536014)(66446008)(64756008)(66556008)(66476007)(7696005)(53546011)(6506007)(66946007)(76116006)(9686003)(26005)(2906002)(478600001)(186003)(5660300002)(33656002)(55016002)(54906003)(8936002)(4326008)(86362001)(110136005)(966005)(8676002)(83380400001);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata: 9m9sun1A1WD7Iy9efGNRVwRY6dNyS9D+vHBQlF4IN+cyu3RC88pqTYHQPNoA8qJbLoS3ZG2hHKLujuoVzjy9MNeWDyRO661X8UBeo/VHVZQoZ23FaZ3NHEYqKGoY1jDWIt7DL1PtG0wDmEiy72y+D7unZ0uGQAhkw0I8H0lUablZyAH0Jyx92pyCC+aQGlagTbZgvF8PRCKnxs55+l4Q3pfbrlzADiRW7xe/8NMNfeTjzJrIe6h1GaWIrfxvg4Bo6iYewd90U5mQEfDRKUw9oAEhY7uZTyL4jUbgni1bHGNWU8glrfZp/IGteg4xcznmqmZwIwG/zvkhyLWK7GcFKx11BqSZlXZAUPhy5p+i3i6YuZWjk6/GEcvweDWpMoETA9LY678iW4EUwPLJsNJRH8XNki968qdLcXvOxn/HHlLpRu2juxfUIoQEecjYULHYAg3n8Oq2db7W4huTuYD1qgEhDCYEZUEHG+SlwPao5fNyl1tmptjt4jiU7Qm/H/6aiD2z3Ugd1VRVvFda32GDrYE6z+9swwdlhjTcGmrQQuVerUQDqKk0tXChwjvSiavJdv82KDNpRgdbpsIMy3iMXyBfuPm1voVzovHBUNqmuXKAcTQ0v0MMsfk1DdUTBXPvh1Hy9o5unwPTP1MefqONQg==
-x-ms-exchange-transport-forked: True
-Content-Type: text/plain; charset="us-ascii"
+        id S1726062AbgINRb4 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 14 Sep 2020 13:31:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38032 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726058AbgINRbf (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 14 Sep 2020 13:31:35 -0400
+Received: from mail-qv1-xf2b.google.com (mail-qv1-xf2b.google.com [IPv6:2607:f8b0:4864:20::f2b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED511C06174A
+        for <linux-efi@vger.kernel.org>; Mon, 14 Sep 2020 10:31:34 -0700 (PDT)
+Received: by mail-qv1-xf2b.google.com with SMTP id f11so135089qvw.3
+        for <linux-efi@vger.kernel.org>; Mon, 14 Sep 2020 10:31:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:mime-version:from:resent-cc:resent-from:date:cc
+         :content-transfer-encoding:resent-date:message-id:resent-to:to;
+        bh=9hxQBJdnEIDrBMpOjZY8Ogdy7rFdJrp5P+gbTAcsTFQ=;
+        b=oBfRABZy5iVJUrMZKb+RN8CXxx6EbrWSHD0u5LzXuKlG9QozUiYzedKI1b8PWbnaXF
+         lgUMwwz5JRJk6vewFbrqelhCsa/Zyt1QDMD2o9o6ulM/h+fnwCsxz2oWU/f8+pwkQS1r
+         B0g5nCjGuznWU9a0aVJuiu4NghUTUHSS5diuOo3iEhNh6S4h7xcWFUd8vfCI6XPj0Ffd
+         y2YPki7HszvBnkMiorfXFag02fwV43FSK59H4Zukveh5l2BY4hQCdGU5VjiPfq/Mp0tU
+         aD56OYQW3yo4MDruLs1FLy6uLJQn6nH5zxejMwhCMLl7inuAi6JxGyI2rIwl/vwxp5ft
+         UfCA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:mime-version:from:resent-cc:resent-from
+         :date:cc:content-transfer-encoding:resent-date:message-id:resent-to
+         :to;
+        bh=9hxQBJdnEIDrBMpOjZY8Ogdy7rFdJrp5P+gbTAcsTFQ=;
+        b=hbiC5Ju+nViOyJTBnxu8x4zDCmRGmuNtIHsPdqBd3FDXpxQiDD0tnqHMnxjI++33F2
+         pv+ZWzLecOE6qolQau3pbS/2CRohVeRq1OPNWjAq7jq99BlWldYYJygrdjnh0tWMuDq5
+         RCPWls8MHjyEkwFmXtJGFUGvLABZC2aYtGnvqDkzMwGKzZl7duhhXss7mz9+ydHi7ynD
+         VTZHPtXc9P6pWiGAIArI5y8TU4RxPI+TqXsm7hLeaRbO0Jh1iaADfijSwpiBmJNq+fo3
+         7uMFV/1biq4ZcF7pXhTT+OrqgaZQxwSmNPcwl7bvWMx35sNwtJKZIDI4ktyIaGe6SGNh
+         EPQQ==
+X-Gm-Message-State: AOAM5335Bo/39nJWbBxZF7b9FJz+PlCPluELyHA3JUjetGNW9s0p2jE7
+        cfDbTcKrrIerpRPhyxTdC5IaB/mL7flIDw==
+X-Google-Smtp-Source: ABdhPJwRxujFmuX1SoAa21NvXAWM4Pz/za/I8MgAKpLMFjsrH4Oi2XpsnLFzyhSHTPXVvxKvuU+Kjw==
+X-Received: by 2002:a0c:b691:: with SMTP id u17mr14866151qvd.20.1600104692889;
+        Mon, 14 Sep 2020 10:31:32 -0700 (PDT)
+Received: from ?IPv6:2601:14a:c300:64e:44da:ed5:a569:62ca? ([2601:14a:c300:64e:44da:ed5:a569:62ca])
+        by smtp.gmail.com with ESMTPSA id h199sm14397468qke.112.2020.09.14.10.31.32
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 14 Sep 2020 10:31:32 -0700 (PDT)
+Subject: EFI regression for efi=noruntime support
+Mime-Version: 1.0 (Mac OS X Mail 13.4 \(3608.120.23.2.1\))
+Content-Type: text/plain;
+        charset=utf-8
+From:   Branden Sherrell <sherrellbc@gmail.com>
+Date:   Mon, 14 Sep 2020 13:15:12 -0400
+Cc:     linux-efi@vger.kernel.org
 Content-Transfer-Encoding: quoted-printable
-MIME-Version: 1.0
-X-OriginatorOrg: Dell.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DM6PR19MB2636.namprd19.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b2fc5f64-4628-47d4-aa50-08d858cf2dc8
-X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Sep 2020 16:56:52.1285
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 945c199a-83a2-4e80-9f8c-5a91be5752dd
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: L54813wd0GjBjSW/JN+OZftlGPjH6WLrDcm8c0+JUM3GiKui7+PiGdcINZPtTwit28OVdu50Q0/+aJlOoXkP/5UsARip1R0ta5k14f5e2Kk=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR19MB3066
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235,18.0.687
- definitions=2020-09-14_06:2020-09-14,2020-09-14 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 clxscore=1015
- adultscore=0 impostorscore=0 malwarescore=0 bulkscore=0 spamscore=0
- mlxscore=0 lowpriorityscore=0 priorityscore=1501 phishscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2009140136
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 phishscore=0
- suspectscore=0 spamscore=0 bulkscore=0 mlxscore=0 adultscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2009140136
+Message-Id: <AE217103-C96F-4AFC-8417-83EC11962004@gmail.com>
+To:     ardb@kernel.org
+X-Mailer: Apple Mail (2.3608.120.23.2.1)
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-> -----Original Message-----
-> From: Arvind Sankar <nivedita@alum.mit.edu>
-> Sent: Saturday, September 12, 2020 12:51
-> To: Jacobo Pantoja
-> Cc: Limonciello, Mario; Ard Biesheuvel; Peter Jones; linux-efi
-> Subject: [RFC PATCH 1/2] efi/x86: Add a quirk to support command line
-> arguments on Dell EFI firmware
->=20
->=20
-> [EXTERNAL EMAIL]
->=20
-> At least some versions of Dell EFI firmware pass the entire
-> EFI_LOAD_OPTION descriptor, rather than just the OptionalData part, to
-> the loaded image.
->=20
-> To handle this, add a quirk to check if the options look like a valid
-> EFI_LOAD_OPTION descriptor, and if so, use the OptionalData part as the
-> command line.
+An EFI-related regression appears to have made its way in from =
+f88814cc2578c121e6edef686365036db72af0ed:
 
-I think it would be useful to document in the commit message the specifics
-of at least the failure reported by Jacobo (Precision T3620 FW 2.15.0).
+	Author: Ard Biesheuvel <ardb@kernel.org> Date: Wed Jul 8 =
+13:01:57 2020 +0300 efi/efivars:
+		Expose RT service availability via efivars abstraction
 
->=20
-> Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
-> Reported-by: Jacobo Pantoja <jacobopantoja@gmail.com>
-> Link: https://lore.kernel.org/linux-
-> efi/20200907170021.GA2284449@rani.riverdale.lan/
-> ---
->  .../firmware/efi/libstub/efi-stub-helper.c    | 99 ++++++++++++++++++-
->  drivers/firmware/efi/libstub/efistub.h        | 31 ++++++
->  drivers/firmware/efi/libstub/file.c           |  5 +-
->  3 files changed, 133 insertions(+), 2 deletions(-)
->=20
-> diff --git a/drivers/firmware/efi/libstub/efi-stub-helper.c
-> b/drivers/firmware/efi/libstub/efi-stub-helper.c
-> index f735db55adc0..294958ff1ee6 100644
-> --- a/drivers/firmware/efi/libstub/efi-stub-helper.c
-> +++ b/drivers/firmware/efi/libstub/efi-stub-helper.c
-> @@ -238,6 +238,100 @@ efi_status_t efi_parse_options(char const *cmdline)
->  	return EFI_SUCCESS;
->  }
->=20
-> +/*
-> + * The EFI_LOAD_OPTION descriptor has the following layout:
-> + *	u32 Attributes;
-> + *	u16 FilePathListLength;
-> + *	u16 Description[];
-> + *	efi_device_path_protocol_t FilePathList[];
-> + *	u8 OptionalData[];
-> + *
-> + * This function validates and unpacks the variable-size data fields.
-> + */
-> +static
-> +bool efi_load_option_unpack(efi_load_option_unpacked_t *dest,
-> +			    const efi_load_option_t *src, size_t size)
-> +{
-> +
-> +	const void *pos;
-> +	u16 c;
-> +	efi_device_path_protocol_t header;
-> +	const efi_char16_t *description;
-> +	const efi_device_path_protocol_t *file_path_list;
 
-Should re-order to reverse xmas tree order.
+On the RockChip rk3399 (ARMv8) port the EFI subsystem claims the reboot =
+callback despite no runtime support. Ordinarily one might use =
+efi=3Dnoruntime or noefi to disable this, but the boot augment appears =
+to now be outright ignored (on this system, at least). You might imagine =
+this causes issue on a uboot'd system that does not have runtime =
+services. The manifestation of this bug is an iabt with PC=3D0 =
+originating in efivar_entry_set_safe. This function eventually attempts =
+to call the NULL entry ops->set_variable.
 
-> +
-> +	if (size < offsetof(efi_load_option_t, variable_data))
-> +		return false;
-> +	pos =3D src->variable_data;
-> +	size -=3D offsetof(efi_load_option_t, variable_data);
-> +
-> +	if ((src->attributes & ~EFI_LOAD_OPTION_MASK) !=3D 0)
-> +		return false;
-> +
-> +	/* Scan description. */
-> +	description =3D pos;
-> +	do {
-> +		if (size < sizeof(c))
-> +			return false;
-> +		c =3D *(const u16 *)pos;
-> +		pos +=3D sizeof(c);
-> +		size -=3D sizeof(c);
-> +	} while (c !=3D L'\0');
-> +
-> +	/* Scan file_path_list. */
-> +	file_path_list =3D pos;
-> +	do {
-> +		if (size < sizeof(header))
-> +			return false;
-> +		header =3D *(const efi_device_path_protocol_t *)pos;
-> +		if (header.length < sizeof(header))
-> +			return false;
-> +		if (size < header.length)
-> +			return false;
-> +		pos +=3D header.length;
-> +		size -=3D header.length;
-> +	} while ((header.type !=3D EFI_DEV_END_PATH && header.type !=3D
-> EFI_DEV_END_PATH2) ||
-> +		 (header.sub_type !=3D EFI_DEV_END_ENTIRE));
-> +	if (pos !=3D (const void *)file_path_list + src->file_path_list_length)
-> +		return false;
-> +
-> +	dest->attributes =3D src->attributes;
-> +	dest->file_path_list_length =3D src->file_path_list_length;
-> +	dest->description =3D description;
-> +	dest->file_path_list =3D file_path_list;
-> +	dest->optional_data_size =3D size;
-> +	dest->optional_data =3D size ? pos : NULL;
-> +
-> +	return true;
-> +}
-> +
-> +/*
-> + * At least some versions of Dell firmware pass the entire contents of t=
-he
-> + * Boot#### variable, i.e. the EFI_LOAD_OPTION descriptor, rather than j=
-ust
-> the
-> + * OptionalData field.
-> + *
-> + * Detect this case and extract OptionalData.
-> + */
-> +void efi_apply_loadoptions_quirk(const void **load_options, int
-> *load_options_size)
-> +{
-> +	const efi_load_option_t *load_option =3D *load_options;
-> +	efi_load_option_unpacked_t load_option_unpacked;
-> +
-> +	if (!IS_ENABLED(CONFIG_X86))
-> +		return;
-> +	if (!load_option)
-> +		return;
-> +	if (*load_options_size < sizeof(*load_option))
-> +		return;
-> +	if ((load_option->attributes & ~EFI_LOAD_OPTION_BOOT_MASK) !=3D 0)
-> +		return;
-> +
-> +	if (!efi_load_option_unpack(&load_option_unpacked, load_option,
-> *load_options_size))
-> +		return;
-> +
+[   41.231673] Unable to handle kernel NULL pointer dereference at =
+virtual address 0000000000000000
+[   41.232436] Mem abort info:
+[   41.232682]   ESR =3D 0x86000004
+[   41.232951]   EC =3D 0x21: IABT (current EL), IL =3D 32 bits
+[   41.233413]   SET =3D 0, FnV =3D 0
+[   41.233681]   EA =3D 0, S1PTW =3D 0
+[   41.233956] user pgtable: 4k pages, 48-bit VAs, pgdp=3D00000000f02eb000=
 
-In case this was ever to be attributed to a cause for someone to fail to
-boot, it may be useful to drop a pr_debug here that could be easily turned
-on.
+[   41.234516] [0000000000000000] pgd=3D0000000000000000, =
+p4d=3D0000000000000000
+[   41.235111] Internal error: Oops: 86000004 [#1] SMP
+[   41.235536] Modules linked in: rt2800usb rt2x00usb rt2800lib =
+rt2x00lib rc_cec mac80211 snd_soc_hdmi_codec dw_hdmi_i2s_audio =
+dw_hdmi_cec rockchipdrm realtek dw_mipi_dsi hantro_vpu(C) dw_hdmi =
+hci_uart rockchip_vdec(C) rockchip_rga analogix_dp cfg80211 cec btqca =
+btbcm v4l2_h264 videobuf2_dma_sg pwm_fan btintel rc_core v4l2_mem2mem =
+videobuf2_vmalloc videobuf2_dma_contig bluetooth dwmac_rk =
+videobuf2_memops videobuf2_v4l2 stmmac_platform videobuf2_common libarc4 =
+drm_kms_helper snd_soc_audio_graph_card snd_soc_simple_card stmmac =
+snd_soc_simple_card_utils syscopyarea sysfillrect sysimgblt panfrost =
+fb_sys_fops ecdh_generic mdio_xpcs videodev phylink gpu_sched ecc =
+snd_soc_rockchip_i2s rfkill mc snd_soc_rockchip_pcm dw_wdt =
+rockchip_thermal rtc_rk808 rockchip_saradc drm gpio_keys
+[   41.241462] CPU: 5 PID: 1 Comm: shutdown Tainted: G         C        =
+5.8.8-1-ARCH #1
+[   41.242135] Hardware name: pine64 rockpro64_rk3399/rockpro64_rk3399, =
+BIOS 2020.10-rc4-dirty 09/11/2020
+[   41.242944] pstate: 00000005 (nzcv daif -PAN -UAO BTYPE=3D--)
+[   41.243431] pc : 0x0
+[   41.243631] lr : efivar_entry_set_safe+0xc8/0x1a0
+[   41.244041] sp : ffff80001254bbe0
+[   41.244331] x29: ffff80001254bbe0 x28: ffff0000f2f8e3c0
+[   41.244794] x27: 0000000000000000 x26: ffff0000f11af418
+[   41.245257] x25: ffff8000124c0000 x24: ffff8000124c0b50
+[   41.245720] x23: ffff0000f11af418 x22: ffff800012387230
+[   41.246183] x21: 0000000000000007 x20: ffff0000f11af000
+[   41.246646] x19: 000000000000000e x18: 0000000000000030
+[   41.247109] x17: 0000000000000000 x16: 0000000000000000
+[   41.247572] x15: ffff0000f2f8e8e0 x14: ffffffffffffffff
+[   41.248034] x13: ffff80009254b9e7 x12: 0000000000000030
+[   41.248497] x11: 0101010101010101 x10: 7f7f7f7f7f7f7f7f
+[   41.248960] x9 : ffff800010d8bb94 x8 : 41cf0a4c4a67b082
+[   41.249423] x7 : ffff8000124c0b78 x6 : ffff0000f11af418
+[   41.249886] x5 : 0000000000000000 x4 : ffff0000f11af418
+[   41.250349] x3 : 000000000000000e x2 : 0000000000000007
+[   41.250811] x1 : ffff80001254bc30 x0 : ffff0000f11af000
+[   41.251275] Call trace:
+[   41.251491]  0x0
+[   41.251655]  efibc_set_variable+0xf0/0x170
+[   41.252013]  efibc_reboot_notifier_call+0x44/0x80
+[   41.252427]  blocking_notifier_call_chain+0x78/0xb0
+[   41.252852]  __do_sys_reboot+0x1cc/0x290
+[   41.253195]  __arm64_sys_reboot+0x30/0x40
+[   41.253547]  el0_svc_common.constprop.0+0x7c/0x140
+[   41.253965]  do_el0_svc+0x28/0xb0
+[   41.254257]  el0_sync_handler+0x98/0x278
+[   41.254599]  el0_sync+0x158/0x180
+[   41.254891] Code: bad PC value
+[   41.255160] ---[ end trace 1fafcf21a783a644 ]---
+[   41.255617] Kernel panic - not syncing: Attempted to kill init! =
+exitcode=3D0x0000000b
+[   41.256283] SMP: stopping secondary CPUs
+[   41.256735] Kernel Offset: disabled
+[   41.257040] CPU features: 0x240022,21006008
+[   41.257406] Memory Limit: none
+[   41.257681] ---[ end Kernel panic - not syncing: Attempted to kill =
+init! exitcode=3D0x0000000b ]=E2=80=94
 
-> +	*load_options =3D load_option_unpacked.optional_data;
-> +	*load_options_size =3D load_option_unpacked.optional_data_size;
-> +}
-> +
->  /*
->   * Convert the unicode UEFI command line to ASCII to pass to kernel.
->   * Size of memory allocated return in *cmd_line_len.
-> @@ -247,12 +341,15 @@ char *efi_convert_cmdline(efi_loaded_image_t *image=
-, int
-> *cmd_line_len)
->  {
->  	const u16 *s2;
->  	unsigned long cmdline_addr =3D 0;
-> -	int options_chars =3D efi_table_attr(image, load_options_size) / 2;
-> +	int options_chars =3D efi_table_attr(image, load_options_size);
->  	const u16 *options =3D efi_table_attr(image, load_options);
->  	int options_bytes =3D 0, safe_options_bytes =3D 0;  /* UTF-8 bytes */
->  	bool in_quote =3D false;
->  	efi_status_t status;
->=20
-> +	efi_apply_loadoptions_quirk((const void **)&options, &options_chars);
-> +	options_chars /=3D sizeof(*options);
-> +
->  	if (options) {
->  		s2 =3D options;
->  		while (options_bytes < COMMAND_LINE_SIZE && options_chars--) {
-> diff --git a/drivers/firmware/efi/libstub/efistub.h
-> b/drivers/firmware/efi/libstub/efistub.h
-> index 85050f5a1b28..589d07acb22d 100644
-> --- a/drivers/firmware/efi/libstub/efistub.h
-> +++ b/drivers/firmware/efi/libstub/efistub.h
-> @@ -688,6 +688,35 @@ union efi_load_file_protocol {
->  	} mixed_mode;
->  };
->=20
-> +typedef struct {
-> +	u32 attributes;
-> +	u16 file_path_list_length;
-> +	u8 variable_data[];
-> +	// efi_char16_t description[];
-> +	// efi_device_path_protocol_t file_path_list[];
-> +	// u8 optional_data[];
-> +} __packed efi_load_option_t;
-> +
-> +#define EFI_LOAD_OPTION_ACTIVE		0x0001U
-> +#define EFI_LOAD_OPTION_FORCE_RECONNECT	0x0002U
-> +#define EFI_LOAD_OPTION_HIDDEN		0x0008U
-> +#define EFI_LOAD_OPTION_CATEGORY	0x1f00U
-> +#define   EFI_LOAD_OPTION_CATEGORY_BOOT	0x0000U
-> +#define   EFI_LOAD_OPTION_CATEGORY_APP	0x0100U
-> +
-> +#define EFI_LOAD_OPTION_BOOT_MASK \
-> +	(EFI_LOAD_OPTION_ACTIVE|EFI_LOAD_OPTION_HIDDEN|EFI_LOAD_OPTION_CATEGORY=
-)
-> +#define EFI_LOAD_OPTION_MASK
-> (EFI_LOAD_OPTION_FORCE_RECONNECT|EFI_LOAD_OPTION_BOOT_MASK)
-> +
-> +typedef struct {
-> +	u32 attributes;
-> +	u16 file_path_list_length;
-> +	const efi_char16_t *description;
-> +	const efi_device_path_protocol_t *file_path_list;
-> +	size_t optional_data_size;
-> +	const void *optional_data;
-> +} efi_load_option_unpacked_t;
-> +
->  void efi_pci_disable_bridge_busmaster(void);
->=20
->  typedef efi_status_t (*efi_exit_boot_map_processing)(
-> @@ -730,6 +759,8 @@ __printf(1, 2) int efi_printk(char const *fmt, ...);
->=20
->  void efi_free(unsigned long size, unsigned long addr);
->=20
-> +void efi_apply_loadoptions_quirk(const void **load_options, int
-> *load_options_size);
-> +
->  char *efi_convert_cmdline(efi_loaded_image_t *image, int *cmd_line_len);
->=20
->  efi_status_t efi_get_memory_map(struct efi_boot_memmap *map);
-> diff --git a/drivers/firmware/efi/libstub/file.c
-> b/drivers/firmware/efi/libstub/file.c
-> index 630caa6b1f4c..4e81c6077188 100644
-> --- a/drivers/firmware/efi/libstub/file.c
-> +++ b/drivers/firmware/efi/libstub/file.c
-> @@ -136,7 +136,7 @@ efi_status_t handle_cmdline_files(efi_loaded_image_t
-> *image,
->  				  unsigned long *load_size)
->  {
->  	const efi_char16_t *cmdline =3D image->load_options;
-> -	int cmdline_len =3D image->load_options_size / 2;
-> +	int cmdline_len =3D image->load_options_size;
->  	unsigned long efi_chunk_size =3D ULONG_MAX;
->  	efi_file_protocol_t *volume =3D NULL;
->  	efi_file_protocol_t *file;
-> @@ -148,6 +148,9 @@ efi_status_t handle_cmdline_files(efi_loaded_image_t
-> *image,
->  	if (!load_addr || !load_size)
->  		return EFI_INVALID_PARAMETER;
->=20
-> +	efi_apply_loadoptions_quirk((const void **)&cmdline, &cmdline_len);
-> +	cmdline_len /=3D sizeof(*cmdline);
-> +
->  	if (IS_ENABLED(CONFIG_X86) && !efi_nochunk)
->  		efi_chunk_size =3D EFI_READ_CHUNK_SIZE;
->=20
-> --
-> 2.26.2
+TI did not spend too much time poking around, but I did note that if one =
+builds a kernel that forces the efibc_init to return ENODEV to prevent =
+reboot registration, the system will properly consult PSCI to handle the =
+event (as is expected for the rk3399 per the device tree). This observed =
+behavior is accurate at least through 5.9.0-rc4. A test of the previous =
+commit (8778eb0927ddcd3f431805c37b78fa56481aeed9) confirms an uneventful =
+reboot for this device.
+
+The board configuration is the RockPro64, which has a device tree =
+present in the kernel sources. My configuration in particular was using =
+the latest Grub to EFI boot Linux after having itself been loaded by =
+uboot.=20
+
+Branden
+(sent again due to mailing reject on original)
+
 
