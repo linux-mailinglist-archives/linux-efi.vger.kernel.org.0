@@ -2,88 +2,83 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 285F526B097
-	for <lists+linux-efi@lfdr.de>; Wed, 16 Sep 2020 00:15:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0FB4D26B30B
+	for <lists+linux-efi@lfdr.de>; Wed, 16 Sep 2020 00:59:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727724AbgIOWO7 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 15 Sep 2020 18:14:59 -0400
-Received: from mail.skyhub.de ([5.9.137.197]:36306 "EHLO mail.skyhub.de"
+        id S1727081AbgIOW7K (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 15 Sep 2020 18:59:10 -0400
+Received: from mail.kernel.org ([198.145.29.99]:34454 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727725AbgIOQhQ (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Tue, 15 Sep 2020 12:37:16 -0400
-Received: from zn.tnic (p200300ec2f0e42006096e946d741c4e4.dip0.t-ipconnect.de [IPv6:2003:ec:2f0e:4200:6096:e946:d741:c4e4])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        id S1727426AbgIOPIQ (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Tue, 15 Sep 2020 11:08:16 -0400
+Received: from mail-oi1-f169.google.com (mail-oi1-f169.google.com [209.85.167.169])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 647901EC0328;
-        Tue, 15 Sep 2020 18:36:15 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1600187775;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=R4/KSvJodDTPWe9S1DH/Kj79tEBFBh4DMsZtvtyhfGw=;
-        b=pwO1UNl/PLU5GDJTdKWXGaCYxEwToe9U7hjjH5lJkbChNV5MIMN61ccu0A20tPkPka5BKU
-        ISR/sTdxp6j4xaIittEDYB5sH3SC6GDNNaH2QEHQPH2cZnIqotUSQpxHrdsUdZhd28ZEzz
-        doCBRc/L0h1jjgluquSCjcyuhG775XM=
-Date:   Tue, 15 Sep 2020 18:36:13 +0200
-From:   Borislav Petkov <bp@alien8.de>
-To:     Alex Kluver <alex.kluver@hpe.com>
-Cc:     linux-edac@vger.kernel.org, linux-efi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, ardb@kernel.org, mchehab@kernel.org,
-        russ.anderson@hpe.com, dimitri.sivanich@hpe.com,
-        kluveralex@gmail.com
-Subject: Re: [PATCH v2 2/2] cper,edac,efi: Memory Error Record: bank
- group/address and chip id
-Message-ID: <20200915163613.GP14436@zn.tnic>
-References: <20200819143544.155096-1-alex.kluver@hpe.com>
- <20200819143544.155096-3-alex.kluver@hpe.com>
+        by mail.kernel.org (Postfix) with ESMTPSA id 0974F20735;
+        Tue, 15 Sep 2020 15:08:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1600182485;
+        bh=0xyXwfxoIK/ZtHtyv1UhPApx13+V3AjswVKHmWQ82cw=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=ygYgM9m/bn66TFThps3RBp45NivF6dFd2IrQJ/yJlDwq+o3zu/o2aXDe6+eKuDFFz
+         PLLsQ5OEiyl8vcGmQlSZWp4uw3iOkasAeQDPaNPVyDxLa52lXu5nBpOszYtGNCwRIM
+         hbR9tQ38wmTvZhW+cfAbHF0TeKDmXRRnJU7erbZk=
+Received: by mail-oi1-f169.google.com with SMTP id w16so4261576oia.2;
+        Tue, 15 Sep 2020 08:08:05 -0700 (PDT)
+X-Gm-Message-State: AOAM531F8ap7J0dJU1XWJGrxggT/aZsMubkyEK7G88FkSdI52fQMwtVC
+        IhP+FTEgkEB01Kq2blNlwyg3KC5Nca4ZU26xqdM=
+X-Google-Smtp-Source: ABdhPJzAG3ESL6xwQvsmKw3etkopo2FiMleIRFHatfSzighPVWG+gBwRKvRcbxo96nRRSLkkjrR7A+yRyZJlrGpN1hs=
+X-Received: by 2002:a54:4517:: with SMTP id l23mr3918280oil.174.1600182484304;
+ Tue, 15 Sep 2020 08:08:04 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20200819143544.155096-3-alex.kluver@hpe.com>
+References: <20200819143544.155096-1-alex.kluver@hpe.com>
+In-Reply-To: <20200819143544.155096-1-alex.kluver@hpe.com>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Tue, 15 Sep 2020 18:07:53 +0300
+X-Gmail-Original-Message-ID: <CAMj1kXHHJD3cAvHiYbyj_BjVeeF6Oq3Fu92rZng_QE0BMsxOJw@mail.gmail.com>
+Message-ID: <CAMj1kXHHJD3cAvHiYbyj_BjVeeF6Oq3Fu92rZng_QE0BMsxOJw@mail.gmail.com>
+Subject: Re: [PATCH v2 0/2] UEFI v2.8 Memory Error Record Updates
+To:     Alex Kluver <alex.kluver@hpe.com>
+Cc:     linux-edac@vger.kernel.org, linux-efi <linux-efi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        mchehab@kernel.org, Borislav Petkov <bp@alien8.de>,
+        russ.anderson@hpe.com, Dimitri Sivanich <dimitri.sivanich@hpe.com>,
+        kluveralex@gmail.com
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, Aug 19, 2020 at 09:35:44AM -0500, Alex Kluver wrote:
-> Updates to the UEFI 2.8 Memory Error Record allow splitting the bank field
-> into bank address and bank group, and using the last 3 bits of the extended
-> field as a chip identifier.
-> 
-> When needed, print correct version of bank field, bank group, and chip
-> identification
-> 
-> Based on UEFI 2.8 Table 299. Memory Error Record
-
-Whoever commits this - those last two sentences need fullstops.
-
-> Reviewed-by: Steve Wahl <steve.wahl@hpe.com>
-> Reviewed-by: Kyle Meyer <kyle.meyer@hpe.com>
-> Reviewed-by: Russ Anderson <russ.anderson@hpe.com>
-> Signed-off-by: Alex Kluver <alex.kluver@hpe.com>
+On Wed, 19 Aug 2020 at 17:36, Alex Kluver <alex.kluver@hpe.com> wrote:
+>
+> The UEFI Specification v2.8, Table 299, Memory Error Record has
+> several changes from previous versions. Bits 18 through 21 have been
+> added to the memory validation bits to include an extended version
+> of row, an option to print bank address and group separately, and chip id.
+> These patches implement bits 18 through 21 into the Memory Error Record.
+>
+> Change reserved field to extended field in cper_sec_mem_err structure
+> and added the extended field to the cper_mem_err_compact structure.
+>
+> Print correct versions of row, bank, and chip ID.
 > ---
-> 
 > v1 -> v2:
->    * Add static inline cper_get_mem_extension() to make it
->     more readable, as suggested by Borislav Petkov.
-> 
+>    * Add static inline cper_get_mem_extension to make
+>      it more readable, as suggested by Borislav Petkov
+>
 >    * Add second patch for bank field, bank group, and chip id.
-> 
 > ---
->  drivers/edac/ghes_edac.c    | 9 +++++++++
->  drivers/firmware/efi/cper.c | 9 +++++++++
->  include/linux/cper.h        | 8 ++++++++
->  3 files changed, 26 insertions(+)
+> Alex Kluver (2):
+>   edac,ghes,cper: Add Row Extension to Memory Error Record
+>   cper,edac,efi: Memory Error Record: bank group/address and chip id
+>
+>  drivers/edac/ghes_edac.c    | 17 +++++++++++++++--
+>  drivers/firmware/efi/cper.c | 18 ++++++++++++++++--
+>  include/linux/cper.h        | 24 ++++++++++++++++++++++--
+>  3 files changed, 53 insertions(+), 6 deletions(-)
+>
 
-For the EDAC bits:
+For the series,
 
-Acked-by: Borislav Petkov <bp@suse.de>
-
-Thx.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
