@@ -2,73 +2,127 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3482A26C949
-	for <lists+linux-efi@lfdr.de>; Wed, 16 Sep 2020 21:06:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F80D26C944
+	for <lists+linux-efi@lfdr.de>; Wed, 16 Sep 2020 21:06:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727402AbgIPTGR (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 16 Sep 2020 15:06:17 -0400
-Received: from mail.kernel.org ([198.145.29.99]:36646 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727401AbgIPRpm (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Wed, 16 Sep 2020 13:45:42 -0400
-Received: from mail-ot1-f42.google.com (mail-ot1-f42.google.com [209.85.210.42])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id CB2BB22284;
-        Wed, 16 Sep 2020 13:09:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1600261787;
-        bh=HXKmEB+gVrlnCwL4jhYUdk21Fx+cEGbZ7v9sMWjklP8=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=uQO56onJR6+k5d43NMLAzyz6MEFicSp6F7461G5ZQ2b5GldA75myUsfICEmpy0J9I
-         lkVENS4IZJjYTFRXZaD8JdU1nppQ5lIYQ+uQ9gkMfbgrN7Kwv9RwWo6ouMipQvVHxV
-         p2wAZQ6gyFTVO85A82cU+ZwQmlS0lQN3B0tHpGWg=
-Received: by mail-ot1-f42.google.com with SMTP id e23so6622457otk.7;
-        Wed, 16 Sep 2020 06:09:47 -0700 (PDT)
-X-Gm-Message-State: AOAM530TLHYkYzkGLarrX3x4bX98t+0eBIv2EI03Eyyxgn/Wy8ARCA3x
-        RC69pw/yjWCu5a6gaseDSKPW5Glbt/xPZxjC7Bw=
-X-Google-Smtp-Source: ABdhPJzWXGjnWT4sGj/Dszvt19cOxly0HZeAV+QlcRdZunOCvR5gkuzck5v/O3RtX241uYgNwOf7IQwEUMe0MfHJdzM=
-X-Received: by 2002:a9d:335:: with SMTP id 50mr2259149otv.90.1600261787088;
- Wed, 16 Sep 2020 06:09:47 -0700 (PDT)
+        id S1727418AbgIPTGB (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 16 Sep 2020 15:06:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35338 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727415AbgIPRqR (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 16 Sep 2020 13:46:17 -0400
+Received: from mail-qk1-x742.google.com (mail-qk1-x742.google.com [IPv6:2607:f8b0:4864:20::742])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90343C06174A
+        for <linux-efi@vger.kernel.org>; Wed, 16 Sep 2020 10:45:54 -0700 (PDT)
+Received: by mail-qk1-x742.google.com with SMTP id f142so9013770qke.13
+        for <linux-efi@vger.kernel.org>; Wed, 16 Sep 2020 10:45:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:from:date:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=7nA9P7m0k+Qtks0jy0tjUYx5rLMpxFUcNHQdGm0Klos=;
+        b=F4fv9FdXaZcaZZ5aEByrFvjaSyUjpJ4+OQniaTEyxffU+KrbPaNsAX3VCl15+8vWi3
+         fE7ORl2qrD8omW+OxaXABzmDdsJO55pk8CdYD6kegUhsGL77T1UruhQSQEa5wfBeDB0X
+         LrDdr+dv3Xt6DLlrrv5UpKFkdB5+M+uG/t0yx+s0ZRllOftqJXfBgoErAPSEuk8LLuxc
+         ZPFjhsp0j2flHQPmF3kXcupfz4ZkIC7Tb7FSzk+7PSGiTiTj+6tX+isQtl+3ygDFyLEC
+         uMngujGRDfBzy96YfMMjAas1frlY6uiyS1cpTXd1H1PXh8aLglJS6/ciIkzuU72Ki7E7
+         ud1g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:from:date:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to;
+        bh=7nA9P7m0k+Qtks0jy0tjUYx5rLMpxFUcNHQdGm0Klos=;
+        b=tgqckrvyHtNRROdP1D/pGigXNh/2jmgm0cxMFARnSRxSkVpYq6zyuK9LX+Te9UQMAz
+         6DJUX/wMuN1YGC3J07byhNNbuGidSi3sH5Ln5MZ5/INLzU/SF+U7y+NoYya2poEoyQH4
+         axtdQQSpO1F1NZvcMrtW/Gvovm9U4Zb+aTufj94qf5AAzCcaXISgoIi31+t00irfrDfk
+         O4YmvNmHBQuGsTHRAqwyEIuvquCr+rqO750b9po0AKBfcnk3P6dhO+xqMgE7RBXAOvVO
+         WTdhbYC2SoX2mVxKOxCgW2yb0pelpgODqHhZk+K+PHgOtqeOxhtMRh6ztU4pL7MrsdIl
+         rdUQ==
+X-Gm-Message-State: AOAM533+GCS0mh51tPjWybSsecQ1xCRzEAfWzB7T1w2HcqNWda8YpNPE
+        nF5NQyY2rTid8gWDKJxSWJM=
+X-Google-Smtp-Source: ABdhPJyRXsHXbs/hhSIlxoig6IAB0qjfL1CLpftUscXgBveYYl8oNYPPW84PEUaHZjTwBK2Nr7UoWQ==
+X-Received: by 2002:a37:6848:: with SMTP id d69mr23001770qkc.80.1600278352942;
+        Wed, 16 Sep 2020 10:45:52 -0700 (PDT)
+Received: from rani.riverdale.lan ([2001:470:1f07:5f3::b55f])
+        by smtp.gmail.com with ESMTPSA id w94sm19451442qte.93.2020.09.16.10.45.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 16 Sep 2020 10:45:52 -0700 (PDT)
+From:   Arvind Sankar <nivedita@alum.mit.edu>
+X-Google-Original-From: Arvind Sankar <arvind@rani.riverdale.lan>
+Date:   Wed, 16 Sep 2020 13:45:50 -0400
+To:     Jacobo Pantoja <jacobopantoja@gmail.com>
+Cc:     Ard Biesheuvel <ardb@kernel.org>,
+        Arvind Sankar <nivedita@alum.mit.edu>,
+        "Limonciello, Mario" <Mario.Limonciello@dell.com>,
+        Peter Jones <pjones@redhat.com>,
+        linux-efi <linux-efi@vger.kernel.org>
+Subject: Re: [PATCH 2/2] efi/x86: Add a quirk to support command line
+ arguments on Dell EFI firmware
+Message-ID: <20200916174550.GA1281480@rani.riverdale.lan>
+References: <20200914213535.933454-1-nivedita@alum.mit.edu>
+ <20200914213535.933454-2-nivedita@alum.mit.edu>
+ <CAMj1kXHy4d6zEJhJtdkHyYx-jnhJJzJ4Xi+qyawhjg6hXhAQgw@mail.gmail.com>
+ <CAO18KQi9icju0YJ-dGe70NC8oFN0GL0hM1_fn8xE9dEkcrU_8A@mail.gmail.com>
 MIME-Version: 1.0
-References: <20200819143544.155096-1-alex.kluver@hpe.com> <20200819143544.155096-2-alex.kluver@hpe.com>
- <20200915163312.GO14436@zn.tnic> <CAMj1kXHmVhB88qZc-1mHAD1ovNJQnWRBncmQJTR_4+kV0fXG5w@mail.gmail.com>
- <CAMj1kXGvfiqZz-j5=LU0Z6yYCkr24pCz6aJS62QL8cBYUP_S=w@mail.gmail.com> <20200915171910.GQ14436@zn.tnic>
-In-Reply-To: <20200915171910.GQ14436@zn.tnic>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Wed, 16 Sep 2020 16:09:36 +0300
-X-Gmail-Original-Message-ID: <CAMj1kXE6PKb==h_154hRKwZLr3Ek+4z4A8FdTHx=co18ww5d3Q@mail.gmail.com>
-Message-ID: <CAMj1kXE6PKb==h_154hRKwZLr3Ek+4z4A8FdTHx=co18ww5d3Q@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] edac,ghes,cper: Add Row Extension to Memory Error Record
-To:     Borislav Petkov <bp@alien8.de>
-Cc:     Alex Kluver <alex.kluver@hpe.com>, linux-edac@vger.kernel.org,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        mchehab@kernel.org, russ.anderson@hpe.com,
-        Dimitri Sivanich <dimitri.sivanich@hpe.com>,
-        kluveralex@gmail.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAO18KQi9icju0YJ-dGe70NC8oFN0GL0hM1_fn8xE9dEkcrU_8A@mail.gmail.com>
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, 15 Sep 2020 at 20:19, Borislav Petkov <bp@alien8.de> wrote:
->
-> On Tue, Sep 15, 2020 at 08:12:31PM +0300, Ard Biesheuvel wrote:
-> > Boris - do you anticipate any conflicts? If so, please take these via
-> > the EDAC tree - the CPER code is mostly self contained so I don't
-> > expect any conflicts with the EFI tree in that case.
->
-> None so far, and I applied them for testing ontop of my EDAC queue for
-> 5.10 so it should be all good. But if you want me, I can test-merge your
-> branch once ready, just in case...
->
+On Wed, Sep 16, 2020 at 06:50:15PM +0200, Jacobo Pantoja wrote:
+> Hi, I'd like to update my testing and share my thoughts.
+> 
+> Regarding the patches:
+> 1) The patches in email 1/2 (the functions "efi_warn", etc.) are not working
+> properly. I got some suggestions for testing from Ard in a separate email.
+>   3a. If, in this 2nd patch, I switch the "efi_warn_once" with an
+> "efi_printk", the
+>   messages appear.
+>   1a. I've set CONFIG_CONSOLE_LOGLEVEL_DEFAULT=5, same result
+>   2a. I've switched from "efi_warn_once" to "efi_warn", same result.
 
-I managed to apply these patches by using a different base and
-cherrypicking them into efi/next
+I had tested on QEMU, and the messages appear there. Not sure what might
+cause efi_warn to not work if efi_printk is working.
 
-I expect to send out a couple of PRs tomorrow, once the bots have had
-a go at building the branches. In the meantime, you can take a look at
+> 2) Even if they would be working, since it is not logged anywhere, I
+> don't really
+> think these messages make sense. Idk if these can be made available to dmesg.
 
-git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git next
+They're useful mostly in the case the boot hangs in the EFI stub. If the
+boot works, they will generally disappear very quickly, making them
+difficult to notice/read.
+
+> 3) The function "efi_apply_loadoptions_quirk" is called twice, it seems to me
+> that calling it from the "file.c" is redundant, but probably I'm
+> missing something.
+
+file.c reads the original UTF-16 command line. It's possible to refactor
+the code so it doesn't have to quirk twice, but this was the smallest
+change for now.
+
+> 
+> Regarding the quirk itself, in my opinion we should wait for Mario's
+> news, since,
+> again in my opinion, this is something that should be fixed in the
+> firmware itself.
+> Being Dell a serious company, I think it is feasible that, at least
+> for their enterprise
+> products, they might fix it.
+> 
+> On Tue, 15 Sep 2020 at 17:09, Ard Biesheuvel <ardb@kernel.org> wrote:
+> >
+> > On Tue, 15 Sep 2020 at 00:35, Arvind Sankar <nivedita@alum.mit.edu> wrote:
+> > >
+> > > At least some versions of Dell EFI firmware pass the entire
+> > > EFI_LOAD_OPTION descriptor, rather than just the OptionalData part, to
+> > > the loaded image. This was verified with firmware revision 2.15.0 on a
+> > > Dell Precision T3620 by Jacobo Pontaja.
+> 
+> Please be so kind to correct my name, if it's being included in the commit msg.
+
+Oops, sorry about that. Ard, can you fix that up?
+
+Thanks.
