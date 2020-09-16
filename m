@@ -2,127 +2,114 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F80D26C944
-	for <lists+linux-efi@lfdr.de>; Wed, 16 Sep 2020 21:06:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0657026CA45
+	for <lists+linux-efi@lfdr.de>; Wed, 16 Sep 2020 21:53:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727418AbgIPTGB (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 16 Sep 2020 15:06:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35338 "EHLO
+        id S1727245AbgIPTxe (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 16 Sep 2020 15:53:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55320 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727415AbgIPRqR (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 16 Sep 2020 13:46:17 -0400
-Received: from mail-qk1-x742.google.com (mail-qk1-x742.google.com [IPv6:2607:f8b0:4864:20::742])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90343C06174A
-        for <linux-efi@vger.kernel.org>; Wed, 16 Sep 2020 10:45:54 -0700 (PDT)
-Received: by mail-qk1-x742.google.com with SMTP id f142so9013770qke.13
-        for <linux-efi@vger.kernel.org>; Wed, 16 Sep 2020 10:45:54 -0700 (PDT)
+        with ESMTP id S1727138AbgIPTxV (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 16 Sep 2020 15:53:21 -0400
+Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com [IPv6:2607:f8b0:4864:20::541])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 486C7C06174A
+        for <linux-efi@vger.kernel.org>; Wed, 16 Sep 2020 12:53:21 -0700 (PDT)
+Received: by mail-pg1-x541.google.com with SMTP id s65so4532716pgb.0
+        for <linux-efi@vger.kernel.org>; Wed, 16 Sep 2020 12:53:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:from:date:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=7nA9P7m0k+Qtks0jy0tjUYx5rLMpxFUcNHQdGm0Klos=;
-        b=F4fv9FdXaZcaZZ5aEByrFvjaSyUjpJ4+OQniaTEyxffU+KrbPaNsAX3VCl15+8vWi3
-         fE7ORl2qrD8omW+OxaXABzmDdsJO55pk8CdYD6kegUhsGL77T1UruhQSQEa5wfBeDB0X
-         LrDdr+dv3Xt6DLlrrv5UpKFkdB5+M+uG/t0yx+s0ZRllOftqJXfBgoErAPSEuk8LLuxc
-         ZPFjhsp0j2flHQPmF3kXcupfz4ZkIC7Tb7FSzk+7PSGiTiTj+6tX+isQtl+3ygDFyLEC
-         uMngujGRDfBzy96YfMMjAas1frlY6uiyS1cpTXd1H1PXh8aLglJS6/ciIkzuU72Ki7E7
-         ud1g==
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=wdKPr4vaZGLgDdf4fb4YJOAXZq3KUMm99avxu6Rq8RM=;
+        b=b6z8nNImPhp5pYkPNUfMkURdmGurmqIgJLQlvvSF0aZm2LX4hjUwxs8WDAPiQcOZXq
+         sj1xnTc4hkeXtUiFem+jeTsVAOdBzreyEL2RlLeRdYQjkAhWnBWpQYm8ydvcKfx9UlcQ
+         fRq7C6yO6wizXg05wdGW+B8IjU4Zo4WYagQO92Oud1iv0eA4hXRdPYGa0PZ/OeflGrG7
+         CpBDVWMlkfJSnHDk5rNh1LpRFtxKvplTDLScvTK34Xb31NLH3Qd9HRDHFLrFAghKUBZU
+         610PYfE1ungfT9hljbcfHtXGdOr3ofDkJhkxu4xTCUIQ0zT0uChD6ygZt609vtxYSsrF
+         FpSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:from:date:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to;
-        bh=7nA9P7m0k+Qtks0jy0tjUYx5rLMpxFUcNHQdGm0Klos=;
-        b=tgqckrvyHtNRROdP1D/pGigXNh/2jmgm0cxMFARnSRxSkVpYq6zyuK9LX+Te9UQMAz
-         6DJUX/wMuN1YGC3J07byhNNbuGidSi3sH5Ln5MZ5/INLzU/SF+U7y+NoYya2poEoyQH4
-         axtdQQSpO1F1NZvcMrtW/Gvovm9U4Zb+aTufj94qf5AAzCcaXISgoIi31+t00irfrDfk
-         O4YmvNmHBQuGsTHRAqwyEIuvquCr+rqO750b9po0AKBfcnk3P6dhO+xqMgE7RBXAOvVO
-         WTdhbYC2SoX2mVxKOxCgW2yb0pelpgODqHhZk+K+PHgOtqeOxhtMRh6ztU4pL7MrsdIl
-         rdUQ==
-X-Gm-Message-State: AOAM533+GCS0mh51tPjWybSsecQ1xCRzEAfWzB7T1w2HcqNWda8YpNPE
-        nF5NQyY2rTid8gWDKJxSWJM=
-X-Google-Smtp-Source: ABdhPJyRXsHXbs/hhSIlxoig6IAB0qjfL1CLpftUscXgBveYYl8oNYPPW84PEUaHZjTwBK2Nr7UoWQ==
-X-Received: by 2002:a37:6848:: with SMTP id d69mr23001770qkc.80.1600278352942;
-        Wed, 16 Sep 2020 10:45:52 -0700 (PDT)
-Received: from rani.riverdale.lan ([2001:470:1f07:5f3::b55f])
-        by smtp.gmail.com with ESMTPSA id w94sm19451442qte.93.2020.09.16.10.45.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Sep 2020 10:45:52 -0700 (PDT)
-From:   Arvind Sankar <nivedita@alum.mit.edu>
-X-Google-Original-From: Arvind Sankar <arvind@rani.riverdale.lan>
-Date:   Wed, 16 Sep 2020 13:45:50 -0400
-To:     Jacobo Pantoja <jacobopantoja@gmail.com>
-Cc:     Ard Biesheuvel <ardb@kernel.org>,
-        Arvind Sankar <nivedita@alum.mit.edu>,
-        "Limonciello, Mario" <Mario.Limonciello@dell.com>,
-        Peter Jones <pjones@redhat.com>,
-        linux-efi <linux-efi@vger.kernel.org>
-Subject: Re: [PATCH 2/2] efi/x86: Add a quirk to support command line
- arguments on Dell EFI firmware
-Message-ID: <20200916174550.GA1281480@rani.riverdale.lan>
-References: <20200914213535.933454-1-nivedita@alum.mit.edu>
- <20200914213535.933454-2-nivedita@alum.mit.edu>
- <CAMj1kXHy4d6zEJhJtdkHyYx-jnhJJzJ4Xi+qyawhjg6hXhAQgw@mail.gmail.com>
- <CAO18KQi9icju0YJ-dGe70NC8oFN0GL0hM1_fn8xE9dEkcrU_8A@mail.gmail.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=wdKPr4vaZGLgDdf4fb4YJOAXZq3KUMm99avxu6Rq8RM=;
+        b=eWeebW2RiV/3Xj/rFuI1sY7uAIRKgULXzy0+KvrHCFBCAx+6HmWIzf0LI9wfcQ7Ziz
+         DqWmMOeh06hOv6H6t0cZbVk13kLIFxsrFEGb7qHmfz1GsOuI/vXsEugb5m35rbhSVdRC
+         yXAOtYJ8W6vw6ijo9Czbjy5E1Qfb2agv4yhqm19i5K2pc/o2I1uzm1mCg/T21tLoM0Vn
+         MOdChGHx76sPw77C/HsHUMuw/+t4Yrbko0geZKxVARvF5mGef9WKkkTozI5b84uTbXd9
+         fRrT/nUNqZ2XcDJ/lzpOTMbacLKrQsXgDj3fqYxbZcDz6pbjM3/CzvrCEGwDDyeBClni
+         pkFw==
+X-Gm-Message-State: AOAM531v58YRVCgoGgW7ljN9EmRmyeVxEF/GAAWGs4krAV/aC5xCAOA8
+        8yvXfEtJ7gE/+XQHd4lsD8PUTEG2q4+jOfYpMf5VTn12XRwNnw==
+X-Google-Smtp-Source: ABdhPJxkl3GKV7PCMxAgQTcubKJT4ctNlVxoQuThW5Mrl+cuX3F4q4Pf9aASZoGWvdvQtt3scBojckQLMi5V8O2Fi6w=
+X-Received: by 2002:a62:5586:0:b029:13e:d13d:a108 with SMTP id
+ j128-20020a6255860000b029013ed13da108mr23650516pfb.36.1600286000566; Wed, 16
+ Sep 2020 12:53:20 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CAO18KQi9icju0YJ-dGe70NC8oFN0GL0hM1_fn8xE9dEkcrU_8A@mail.gmail.com>
+References: <20200914095706.3985-1-ardb@kernel.org> <CAKwvOdmSXm7cV3hB_Yp=DD0RwwDHtPzzDBU8Xj5kBREn3xqYdA@mail.gmail.com>
+ <CAMj1kXGuFFUyT48EYvzFmjCP4QZi_Sk_GpBrBCaHjP7HKLhjBA@mail.gmail.com>
+ <CAKwvOdmkNgi_+kfauTSLwtpVChipW851_KGJG+gBbhwRxJJORA@mail.gmail.com> <CAMj1kXHTkP7-8xscGZGXN_0Sq=BCSnt3zWqkcm8xdO11xmditA@mail.gmail.com>
+In-Reply-To: <CAMj1kXHTkP7-8xscGZGXN_0Sq=BCSnt3zWqkcm8xdO11xmditA@mail.gmail.com>
+From:   Nick Desaulniers <ndesaulniers@google.com>
+Date:   Wed, 16 Sep 2020 12:53:09 -0700
+Message-ID: <CAKwvOd=G2Rr3StUJ=oWu1L4b5y615m+uYNW-Y5sis13uqBvrYQ@mail.gmail.com>
+Subject: Re: [PATCH 00/12] ARM: use adr_l/ldr_l macros for PC-relative references
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-efi <linux-efi@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Nicolas Pitre <nico@fluxnic.net>,
+        Stefan Agner <stefan@agner.ch>,
+        Peter Smith <Peter.Smith@arm.com>,
+        Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>,
+        clang-built-linux <clang-built-linux@googlegroups.com>,
+        Jian Cai <jiancai@google.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-efi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, Sep 16, 2020 at 06:50:15PM +0200, Jacobo Pantoja wrote:
-> Hi, I'd like to update my testing and share my thoughts.
-> 
-> Regarding the patches:
-> 1) The patches in email 1/2 (the functions "efi_warn", etc.) are not working
-> properly. I got some suggestions for testing from Ard in a separate email.
->   3a. If, in this 2nd patch, I switch the "efi_warn_once" with an
-> "efi_printk", the
->   messages appear.
->   1a. I've set CONFIG_CONSOLE_LOGLEVEL_DEFAULT=5, same result
->   2a. I've switched from "efi_warn_once" to "efi_warn", same result.
-
-I had tested on QEMU, and the messages appear there. Not sure what might
-cause efi_warn to not work if efi_printk is working.
-
-> 2) Even if they would be working, since it is not logged anywhere, I
-> don't really
-> think these messages make sense. Idk if these can be made available to dmesg.
-
-They're useful mostly in the case the boot hangs in the EFI stub. If the
-boot works, they will generally disappear very quickly, making them
-difficult to notice/read.
-
-> 3) The function "efi_apply_loadoptions_quirk" is called twice, it seems to me
-> that calling it from the "file.c" is redundant, but probably I'm
-> missing something.
-
-file.c reads the original UTF-16 command line. It's possible to refactor
-the code so it doesn't have to quirk twice, but this was the smallest
-change for now.
-
-> 
-> Regarding the quirk itself, in my opinion we should wait for Mario's
-> news, since,
-> again in my opinion, this is something that should be fixed in the
-> firmware itself.
-> Being Dell a serious company, I think it is feasible that, at least
-> for their enterprise
-> products, they might fix it.
-> 
-> On Tue, 15 Sep 2020 at 17:09, Ard Biesheuvel <ardb@kernel.org> wrote:
+On Tue, Sep 15, 2020 at 10:55 PM Ard Biesheuvel <ardb@kernel.org> wrote:
+>
+> On Wed, 16 Sep 2020 at 02:31, Nick Desaulniers <ndesaulniers@google.com> wrote:
 > >
-> > On Tue, 15 Sep 2020 at 00:35, Arvind Sankar <nivedita@alum.mit.edu> wrote:
+> > On Tue, Sep 15, 2020 at 2:30 PM Ard Biesheuvel <ardb@kernel.org> wrote:
 > > >
-> > > At least some versions of Dell EFI firmware pass the entire
-> > > EFI_LOAD_OPTION descriptor, rather than just the OptionalData part, to
-> > > the loaded image. This was verified with firmware revision 2.15.0 on a
-> > > Dell Precision T3620 by Jacobo Pontaja.
-> 
-> Please be so kind to correct my name, if it's being included in the commit msg.
+> > > Excellent, thanks for testing. Do you have any coverage for Thumb2
+> > > builds as well? (CONFIG_THUMB2_KERNEL=y)
+> >
+> > Ah, right, manually testing ARCH=arm defconfig with
+> > CONFIG_THUMB2_KERNEL enabled via menuconfig:
+> >
+> > Builds and boots for clang.
+> >
+> > (Also needed https://lore.kernel.org/lkml/20200915225751.274531-1-ndesaulniers@google.com/T/#u
+> > for an unrelated issue).
+> >
+> > For GCC, I observe:
+> >
+> > arch/arm/vfp/vfphw.o: in function `vfp_support_entry':
+> > (.text+0xa): relocation truncated to fit: R_ARM_THM_JUMP19 against
+> > symbol `vfp_kmode_exception' defined in .text.unlikely section in
+> > arch/arm/vfp/vfpmodule.o
+> >
+>
+> Interesting. And this is using ld.bfd ?
 
-Oops, sorry about that. Ard, can you fix that up?
+$ arm-linux-gnueabihf-ld --version
+GNU ld (GNU Binutils for Debian) 2.34
 
-Thanks.
+.text.unlikely reminds me of the sections created when profiling data
+is present.  That's obviously not the case here, so maybe there's
+other ways this section can be created by GCC?  I may have added a
+patch recently for placing this section explicitly, which was a
+prerequisite for Kees' series explicitly placing all sections.
+https://lore.kernel.org/lkml/159896087937.20229.4955362311782724603.tip-bot2@tip-bot2/
+Maybe that can be improved?
+
+IIRC, LLD is able to emit range extension thunks for these cases, but
+BFD does not.
+-- 
+Thanks,
+~Nick Desaulniers
