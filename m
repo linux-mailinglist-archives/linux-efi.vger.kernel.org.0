@@ -2,249 +2,244 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0EE7F26CE57
-	for <lists+linux-efi@lfdr.de>; Thu, 17 Sep 2020 00:08:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C244A26CEFD
+	for <lists+linux-efi@lfdr.de>; Thu, 17 Sep 2020 00:42:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726321AbgIPWIL (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 16 Sep 2020 18:08:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47956 "EHLO
+        id S1726592AbgIPWm5 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 16 Sep 2020 18:42:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53504 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726344AbgIPWH7 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 16 Sep 2020 18:07:59 -0400
-Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com [IPv6:2a00:1450:4864:20::341])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5F72C0698D1
-        for <linux-efi@vger.kernel.org>; Wed, 16 Sep 2020 15:01:42 -0700 (PDT)
-Received: by mail-wm1-x341.google.com with SMTP id d4so55000wmd.5
-        for <linux-efi@vger.kernel.org>; Wed, 16 Sep 2020 15:01:42 -0700 (PDT)
+        with ESMTP id S1726247AbgIPWm4 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 16 Sep 2020 18:42:56 -0400
+Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com [IPv6:2607:f8b0:4864:20::544])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D677C06121C
+        for <linux-efi@vger.kernel.org>; Wed, 16 Sep 2020 14:25:20 -0700 (PDT)
+Received: by mail-pg1-x544.google.com with SMTP id u13so93563pgh.1
+        for <linux-efi@vger.kernel.org>; Wed, 16 Sep 2020 14:25:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=atishpatra.org; s=google;
+        d=google.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=SN6RiB4o2MzC4l1lG/yPrjNlwIKhhqB59HmWJS3je2k=;
-        b=q2XU9HciJvT4MP9uW9xEBL1KT7w2VALqyNPRlGUFJQNXVlyT/oojrbqbjcVA48lEMd
-         FqoYRXl+zIa00//bJK5QBl55bYploczWKViasiZWd8uOduOywcjECO2cWR+jrM+Cl+CE
-         XYKHUf51JD4O7OOZouR4OoN1hVj8yTqrS5UCo=
+        bh=mOkNOFfQJrUlhWQa8kQ06dyQgaREkYxwhsPkU7zYbwQ=;
+        b=viAlPyH1PR42vHsbrEjFqG6/BP7VyTVrM9iQgNsMOG5B2OX3PE01kkKtR5oTxPLB1o
+         0t0xNzP3WC5I4F+C7K2vESPVD4GifAEwNkhIM3lbzCTLzSVERSHhXcS3lZGf5qOMqOxa
+         p/hSfysscJxeH/s65CbRXwz+UBb1Y8b7/Sn2MERpyZj4K5qm+YhQq2CwcN09mvtFqpvz
+         AIEp6eEtEAKQdb3ELeVk/5KY37UAIA8qbVn1nsG1JUXY59iKxV4FqDJ0vCWPgPz8lF+j
+         ToavnX1jLoSvWk+x4w+jQbKACXISZckC+JQJzlS4WNmPWhDyOA80CRDhvvESGx80KIcw
+         viCw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=SN6RiB4o2MzC4l1lG/yPrjNlwIKhhqB59HmWJS3je2k=;
-        b=s1pSMHhKVf7K0zRVEIiDwkeJf6kBG9BbNg5uucXlUGz+FcbbmX96N6DJdbivPMZM/p
-         oPxZtpezrGJ7Z2frZYnNJSLfnG9U8YdqcxT74yViZQVlt+OMmRw0dbKqXnprCnU/xMiQ
-         +xKmYRiI/cbutQnAhCYGJxwk/g4KGCmMUWJrNeN85HV4lfFk3hQGYTVfWtUT8DhvGpDR
-         zYWyhRMXg6vRLn8KfMTO73su2sDnEdBC5W1NwsqVDOiMFSeCe9xbNPqtNxJkskI3yERV
-         5F024fZp4n56j0QkJhZRCYcbWWB24kz22q2ItxAPJAA3fK4Veq9BOY3Oz5pZMh9EJpRG
-         B0FQ==
-X-Gm-Message-State: AOAM531qFhoCqnlJoToy4KdTafTx8KVL3fJrK3EfTHgIzHGszaz5BYK7
-        NdwbV2ZCxq4gGV3eJHZMIWGK76hCcNf119V8fC7E
-X-Google-Smtp-Source: ABdhPJyPXHEJrbl59s5VH/jFwTINKCwMfVxSu/2Y7w074CJ755i9oh8QpNFd9coF/chc74gAIP3E7sbevnqGUSoKgtc=
-X-Received: by 2002:a1c:7308:: with SMTP id d8mr6236490wmb.55.1600293701081;
- Wed, 16 Sep 2020 15:01:41 -0700 (PDT)
+        bh=mOkNOFfQJrUlhWQa8kQ06dyQgaREkYxwhsPkU7zYbwQ=;
+        b=d7ZwXBTwPHucvrmkfYCXy9jCMoQWLG31gxOZVnj0BUxupmjcnjgQWem2jA82pUdgMF
+         c0FIlSOHfJGrggOBpEXCcjtDen+hrt4szeJn32Y8Ehrf1laJFlZiOyYnJXlXbqXC9vgm
+         Mdb14tNFpqvFpypumt9nn6Ji9E82dDQwDk14Am1dQjvw32E4DBYE+yRRYF2mEcoLBQXU
+         cNOFYNnItcafCSJOrJUkv0ZxLfAMNyeAfJNdpdcDqNoSDgqTfnnAN+Xw/vd7MxKO5QFf
+         4kvClAlM9i/LhyI5uaJYokgHXI7cxk11lY9Qvru6RsyhxS17dfRwnUl9qDztqWq4fHvu
+         nTxw==
+X-Gm-Message-State: AOAM533j0hYzQqzkM2h9rkQWwHeCNUjC6e5zY1diCu+ol07RdF5GnkKk
+        Mm3a42iECJlr8HJw/Um4OMU8uYBllIEOJBZrI7mxbw==
+X-Google-Smtp-Source: ABdhPJy4e8N3oHCsCwkNw37qx3daGlfgTK1wvFJOTYOkv72rr43CUM4PK5wJo6llo3yVUF+rQ/kLy2drFJ30kbxU2Mc=
+X-Received: by 2002:a65:5a4c:: with SMTP id z12mr19781281pgs.10.1600291519788;
+ Wed, 16 Sep 2020 14:25:19 -0700 (PDT)
 MIME-Version: 1.0
-References: <CAMj1kXG6VRXOPRhHmeyiPP06BVByEYsqYE001BZYyRDqtvyDBg@mail.gmail.com>
- <mhng-f3ca14fc-58f7-423e-8abe-a85de1a2d55b@palmerdabbelt-glaptop1>
- <CAMj1kXH5pA-9uWCRzvN2OKzxTr0mG8knZZnpuOPn+b5BBAn4dw@mail.gmail.com> <CAMj1kXHLkhTKy0jx3hxXPCD7aMu8Y1zWfTcrc-y1by+x-h_JLg@mail.gmail.com>
-In-Reply-To: <CAMj1kXHLkhTKy0jx3hxXPCD7aMu8Y1zWfTcrc-y1by+x-h_JLg@mail.gmail.com>
-From:   Atish Patra <atishp@atishpatra.org>
-Date:   Wed, 16 Sep 2020 15:01:29 -0700
-Message-ID: <CAOnJCUL+i2hiT0uoeX4J6TKz0agMWmLDFKfCs-e=aNpAsGSLZQ@mail.gmail.com>
-Subject: Re: [PATCH RFC/RFT 0/3] efi/libstub: arm32: Remove dependency on dram_base
+References: <20200914095706.3985-1-ardb@kernel.org> <CAKwvOdmSXm7cV3hB_Yp=DD0RwwDHtPzzDBU8Xj5kBREn3xqYdA@mail.gmail.com>
+ <CAMj1kXGuFFUyT48EYvzFmjCP4QZi_Sk_GpBrBCaHjP7HKLhjBA@mail.gmail.com>
+ <CAKwvOdmkNgi_+kfauTSLwtpVChipW851_KGJG+gBbhwRxJJORA@mail.gmail.com>
+ <CAMj1kXHTkP7-8xscGZGXN_0Sq=BCSnt3zWqkcm8xdO11xmditA@mail.gmail.com>
+ <CAKwvOd=G2Rr3StUJ=oWu1L4b5y615m+uYNW-Y5sis13uqBvrYQ@mail.gmail.com> <CAMj1kXHEpPc0MSoMrCxEkyb44AkLM2NJJGtOXLpr6kxBHS0vfA@mail.gmail.com>
+In-Reply-To: <CAMj1kXHEpPc0MSoMrCxEkyb44AkLM2NJJGtOXLpr6kxBHS0vfA@mail.gmail.com>
+From:   Nick Desaulniers <ndesaulniers@google.com>
+Date:   Wed, 16 Sep 2020 14:25:07 -0700
+Message-ID: <CAKwvOd=Sq3XOquw4ACEi+cYCQp0-LW-JXoecFt+yy+jtmtuhiQ@mail.gmail.com>
+Subject: Re: [PATCH 00/12] ARM: use adr_l/ldr_l macros for PC-relative references
 To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     Palmer Dabbelt <palmer@dabbelt.com>,
-        linux-efi <linux-efi@vger.kernel.org>,
+Cc:     linux-efi <linux-efi@vger.kernel.org>,
         Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Maxim Uvarov <maxim.uvarov@linaro.org>,
-        Heinrich Schuchardt <xypron.glpk@gmx.de>,
-        Atish Patra <Atish.Patra@wdc.com>,
-        Jens Wiklander <jens.wiklander@linaro.org>,
-        =?UTF-8?Q?Fran=C3=A7ois_Ozog?= <francois.ozog@linaro.org>,
-        Etienne CARRIERE <etienne.carriere@st.com>,
-        Takahiro Akashi <takahiro.akashi@linaro.org>,
-        Patrice CHOTARD <patrice.chotard@st.com>,
-        Sumit Garg <sumit.garg@linaro.org>,
-        Grant Likely <Grant.Likely@arm.com>,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-        Christophe Priouzeau <christophe.priouzeau@linaro.org>,
-        Rouven Czerwinski <r.czerwinski@pengutronix.de>,
-        Patrick Delaunay <patrick.delaunay@st.com>
+        Russell King <linux@armlinux.org.uk>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Nicolas Pitre <nico@fluxnic.net>,
+        Stefan Agner <stefan@agner.ch>,
+        Peter Smith <Peter.Smith@arm.com>,
+        Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>,
+        clang-built-linux <clang-built-linux@googlegroups.com>,
+        Jian Cai <jiancai@google.com>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, Sep 16, 2020 at 9:02 AM Ard Biesheuvel <ardb@kernel.org> wrote:
+On Wed, Sep 16, 2020 at 1:45 PM Ard Biesheuvel <ardb@kernel.org> wrote:
 >
-> On Fri, 11 Sep 2020 at 10:56, Ard Biesheuvel <ardb@kernel.org> wrote:
+> On Wed, 16 Sep 2020 at 22:53, Nick Desaulniers <ndesaulniers@google.com> wrote:
 > >
-> > On Fri, 11 Sep 2020 at 05:16, Palmer Dabbelt <palmer@dabbelt.com> wrote:
+> > On Tue, Sep 15, 2020 at 10:55 PM Ard Biesheuvel <ardb@kernel.org> wrote:
 > > >
-> > > On Thu, 10 Sep 2020 07:08:07 PDT (-0700), ardb@kernel.org wrote:
-> > > > On Thu, 10 Sep 2020 at 13:04, Ard Biesheuvel <ardb@kernel.org> wrote:
-> > > >>
-> > > >> On Thu, 10 Sep 2020 at 04:34, Atish Patra <atishp@atishpatra.org> wrote:
-> > > >> >
-> > > >> > On Wed, Sep 9, 2020 at 2:44 PM Atish Patra <atishp@atishpatra.org> wrote:
-> > > >> > >
-> > > >> > > On Wed, Sep 9, 2020 at 1:52 PM Palmer Dabbelt <palmer@dabbelt.com> wrote:
-> > > >> > > >
-> > > >> > > > On Wed, 09 Sep 2020 08:16:20 PDT (-0700), ardb@kernel.org wrote:
-> > > >> > > > > Maxim reports boot failures on platforms that describe reserved memory
-> > > >> > > > > regions in DT that are disjoint from system DRAM, and which are converted
-> > > >> > > > > to EfiReservedMemory regions by the EFI subsystem in u-boot.
-> > > >> > > > >
-> > > >> > > > > As it turns out, the whole notion of discovering the base of DRAM is
-> > > >> > > > > problematic, and it would be better to simply rely on the EFI memory
-> > > >> > > > > allocation routines instead, and derive the FDT and initrd allocation
-> > > >> > > > > limits from the actual placement of the kernel (which is what defines
-> > > >> > > > > the start of the linear region anyway)
-> > > >> > > > >
-> > > >> > > > > Finally, we should be able to get rid of get_dram_base() entirely.
-> > > >> > > > > However, as RISC-V only just started using it, we will need to address
-> > > >> > > > > that at a later time.
-> > > >> > > >
-> > > >> > > > Looks like we're using dram_base to derive two argumets to
-> > > >> > > > efi_relocate_kernel(): the preferred load address and the minimum load address.
-> > > >> > > > I don't see any reason why we can't use the same PAGE_OFFSET-like logic that
-> > > >> > > > x86 uses for the minimum load address, but I don't think we have any mechanism
-> > > >> > > > like "struct boot_params" so we'd need to come up with something.
-> > > >> > > >
-> > > >> > >
-> > > >> > > As discussed in the other thread
-> > > >> > > (https://www.spinics.net/lists/linux-efi/msg20262.html),
-> > > >> > > we don't need to do anything special. efi_relocate_kernel can just
-> > > >> > > take preferred address as 0
-> > > >> > > so that efi_bs_alloc will fail and efi_low_alloc_above will be used to
-> > > >> > > allocate 2MB/4MB aligned address as per requirement.
-> > > >> > >
-> > > >> > > I don't think the other changes in this series will cause any issue
-> > > >> > > for RISC-V. I will test it and update anyways.
-> > > >> > >
-> > > >> > > > > Cc: Maxim Uvarov <maxim.uvarov@linaro.org>
-> > > >> > > > > Cc: Heinrich Schuchardt <xypron.glpk@gmx.de>
-> > > >> > > > > Cc: Atish Patra <atish.patra@wdc.com>
-> > > >> > > > > Cc: Palmer Dabbelt <palmer@dabbelt.com>
-> > > >> > > > > Cc: Jens Wiklander <jens.wiklander@linaro.org>
-> > > >> > > > > Cc: Francois Ozog <francois.ozog@linaro.org>
-> > > >> > > > > Cc: Etienne CARRIERE <etienne.carriere@st.com>
-> > > >> > > > > Cc: Takahiro Akashi <takahiro.akashi@linaro.org>
-> > > >> > > > > Cc: Patrice CHOTARD <patrice.chotard@st.com>
-> > > >> > > > > Cc: Sumit Garg <sumit.garg@linaro.org>
-> > > >> > > > > Cc: Grant Likely <Grant.Likely@arm.com>
-> > > >> > > > > Cc: Ilias Apalodimas <ilias.apalodimas@linaro.org>
-> > > >> > > > > Cc: Christophe Priouzeau <christophe.priouzeau@linaro.org>
-> > > >> > > > > Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-> > > >> > > > > Cc: Patrick DELAUNAY <patrick.delaunay@st.com>
-> > > >> > > > >
-> > > >> > > > > Ard Biesheuvel (3):
-> > > >> > > > >   efi/libstub: Export efi_low_alloc_above() to other units
-> > > >> > > > >   efi/libstub: Use low allocation for the uncompressed kernel
-> > > >> > > > >   efi/libstub: base FDT and initrd placement on image address not DRAM
-> > > >> > > > >     base
-> > > >> > > > >
-> > > >> > > > >  arch/arm/include/asm/efi.h                |   6 +-
-> > > >> > > > >  arch/arm64/include/asm/efi.h              |   2 +-
-> > > >> > > > >  drivers/firmware/efi/libstub/arm32-stub.c | 177 ++++----------------
-> > > >> > > > >  drivers/firmware/efi/libstub/efi-stub.c   |   2 +-
-> > > >> > > > >  drivers/firmware/efi/libstub/efistub.h    |   3 +
-> > > >> > > > >  drivers/firmware/efi/libstub/relocate.c   |   4 +-
-> > > >> > > > >  6 files changed, 47 insertions(+), 147 deletions(-)
-> > > >> > >
-> > > >> >
-> > > >> > I verified the above patches along with the following RISC-V specific changes.
-> > > >> >
-> > > >> > diff --git a/arch/riscv/include/asm/efi.h b/arch/riscv/include/asm/efi.h
-> > > >> > index 93c305a638f4..dd6ceea9d548 100644
-> > > >> > --- a/arch/riscv/include/asm/efi.h
-> > > >> > +++ b/arch/riscv/include/asm/efi.h
-> > > >> > @@ -37,7 +37,7 @@ static inline unsigned long
-> > > >> > efi_get_max_fdt_addr(unsigned long dram_base)
-> > > >> >  static inline unsigned long efi_get_max_initrd_addr(unsigned long dram_base,
-> > > >> >                                                     unsigned long image_addr)
-> > > >> >  {
-> > > >> > -       return dram_base + SZ_256M;
-> > > >> > +       return image_addr + SZ_256M;
-> > > >> >  }
-> > > >> >
-> > > >>
-> > > >> Ah yes, we need this change as well - this is a bit unfortunate since
-> > > >> that creates a conflict with the RISC-V tree.
-> > > >>
-> > > >> > --- a/drivers/firmware/efi/libstub/riscv-stub.c
-> > > >> > +++ b/drivers/firmware/efi/libstub/riscv-stub.c
-> > > >> > @@ -100,7 +100,7 @@ efi_status_t handle_kernel_image(unsigned long *image_addr,
-> > > >> >          */
-> > > >> >         preferred_addr = round_up(dram_base, MIN_KIMG_ALIGN) + MIN_KIMG_ALIGN;
-> > > >> >         status = efi_relocate_kernel(image_addr, kernel_size, *image_size,
-> > > >> > -                                    preferred_addr, MIN_KIMG_ALIGN, dram_base);
-> > > >> > +                                    0, MIN_KIMG_ALIGN, 0);
-> > > >> >
-> > > >> > FWIW: Tested-by: Atish Patra <atish.patra@wdc.com>
-> > > >>
-> > > >> Thanks for confirming.
+> > > On Wed, 16 Sep 2020 at 02:31, Nick Desaulniers <ndesaulniers@google.com> wrote:
 > > > >
-> > > > OK,
+> > > > On Tue, Sep 15, 2020 at 2:30 PM Ard Biesheuvel <ardb@kernel.org> wrote:
+> > > > >
+> > > > > Excellent, thanks for testing. Do you have any coverage for Thumb2
+> > > > > builds as well? (CONFIG_THUMB2_KERNEL=y)
 > > > >
-> > > > So, just to annoy Palmer and you more than I already have up to this
-> > > > point: any chance we could do a final respin of the RISC-V code on top
-> > > > of these changes? They are important for ARM, and I would prefer these
-> > > > to be merged in a way that makes it easy to backport them to -stable
-> > > > if needed.
+> > > > Ah, right, manually testing ARCH=arm defconfig with
+> > > > CONFIG_THUMB2_KERNEL enabled via menuconfig:
 > > > >
-> > > > So what I would suggest is:
-> > > > - I will create a new 'shared-efi' tag/stable branch containing the
-> > > > existing two patches, as well as these changes (in a slightly updated
-> > > > form)
-> > > > - Palmer creates a new topic branch in the riscv repo based on this
-> > > > shared tag, and applies the [updated] RISC-V patches on top
-> > > > - Palmer drops the current version of the riscv patches from
-> > > > riscv/for-next, and merges the topic branch into it instead.
+> > > > Builds and boots for clang.
 > > > >
-> > > > Again, sorry to be a pain, but I think this is the cleanest way to get
-> > > > these changes queued up for v5.10 without painting ourselves into a
-> > > > corner too much when it comes to future follow-up changes.
+> > > > (Also needed https://lore.kernel.org/lkml/20200915225751.274531-1-ndesaulniers@google.com/T/#u
+> > > > for an unrelated issue).
+> > > >
+> > > > For GCC, I observe:
+> > > >
+> > > > arch/arm/vfp/vfphw.o: in function `vfp_support_entry':
+> > > > (.text+0xa): relocation truncated to fit: R_ARM_THM_JUMP19 against
+> > > > symbol `vfp_kmode_exception' defined in .text.unlikely section in
+> > > > arch/arm/vfp/vfpmodule.o
+> > > >
 > > >
-> > > That's fine for me.
+> > > Interesting. And this is using ld.bfd ?
 > >
-> > Excellent.
+> > $ arm-linux-gnueabihf-ld --version
+> > GNU ld (GNU Binutils for Debian) 2.34
 > >
-> > I have created a signed tag efi-riscv-shared-for-v5.10 in the EFI repo
-> > [0], which is based on v5.9-rc1. Please merge that at the start of
-> > your for-next/efi topic branch, and apply the reworked EFI for RISC-V
-> > series on top.
+> > .text.unlikely reminds me of the sections created when profiling data
+> > is present.  That's obviously not the case here, so maybe there's
+> > other ways this section can be created by GCC?  I may have added a
+> > patch recently for placing this section explicitly, which was a
+> > prerequisite for Kees' series explicitly placing all sections.
+> > https://lore.kernel.org/lkml/159896087937.20229.4955362311782724603.tip-bot2@tip-bot2/
+> > Maybe that can be improved?
 > >
+> > IIRC, LLD is able to emit range extension thunks for these cases, but
+> > BFD does not.
 >
-> Since this tag has not appeared in the riscv repo yet, and Atish's
-> rebase was not sent to the list yet either, I have pushed a new
-> version of this tag just now.
+> ld.bfd will usually emit veneers for branches that turn out to be out
+> of range in the final link stage.
 >
-Thanks. I rebased my series on top of it and addressed all the concerns.
-The patches are hosted in github[1]. I am just waiting for 0-day bot results
-before posting the series to the mailing list to avoid any more churns.
-
-[1] https://github.com/atishp04/linux/pull/new/uefi_riscv_5.10_v8
-
-> If you want, I can send you a formal PR separately.
+> Does the following help?
 >
+> diff --git a/arch/arm/vfp/vfphw.S b/arch/arm/vfp/vfphw.S
+> index 4fcff9f59947..f1468702fbc9 100644
+> --- a/arch/arm/vfp/vfphw.S
+> +++ b/arch/arm/vfp/vfphw.S
+> @@ -82,6 +82,7 @@ ENTRY(vfp_support_entry)
+>         ldr     r3, [sp, #S_PSR]        @ Neither lazy restore nor FP exceptions
+>         and     r3, r3, #MODE_MASK      @ are supported in kernel mode
+>         teq     r3, #USR_MODE
+> +THUMB( it      ne                      )
+>         bne     vfp_kmode_exception     @ Returns through lr
 >
-> > I have created a preliminary version of that branch as 'riscv-tmp' on
-> > [1], incorporating some changes that are needed for the rebase. Note
-> > that I applied some other tweaks as well - one is in a separate patch
-> > on top, the other is that I omitted the Makefile rule for .stub.o
-> > objects under arch/riscv/Makefile, as it is not actually used.
-> >
-> > Atish - please pick whatever seems useful to you from that branch when
-> > you do the respin.
-> >
-> > Thanks,
-> > Ard.
-> >
-> >
-> >
-> > [0] git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git
-> > [1] git://git.kernel.org/pub/scm/linux/kernel/git/ardb/linux.git
+>         VFPFMRX r1, FPEXC               @ Is the VFP enabled?
 
+Yes, it does!  I'm curious why though?  I've seen the "it prefixes"
+before (is that what they're called?), but I don't recall what they're
+for.  How come that solves this issue?
 
+(Feel free to use my tested by tag on a subsequent resulting patch
+that uses that).  That fix is irrespective of this series, so you
+should send it maybe separately?
 
+Also, it looks like the GCC build of milbeaut_m10v_defconfig fails to
+boot for me in QEMU; so maybe not just a Clang bug (or maybe, more
+than one bug).  (or maybe one of my command line params to QEMU is
+wrong).
+
+Stepping through start_kernel(), the call to setup_arch() seems to
+hang in qemu.  For both GCC and Clang builds. A breakpoint in panic()
+never gets hit.  Looks like the deepest I can get is:
+
+Looks like:
+#0  memblock_alloc_try_nid (size=108, align=4, min_addr=0, max_addr=0,
+nid=-1) at mm/memblock.c:1601
+#1  0xc060f0b4 in memblock_alloc (size=<optimized out>,
+align=<optimized out>) at ./include/linux/memblock.h:409
+#2  cma_init_reserved_mem (base=1543503872, size=67108864,
+order_per_bit=0, name=0xc04b9240 "reserved", res_cma=0xc07ccbdc
+<dma_contiguous_default_area>) at mm/cma.c:190
+#3  0xc060f2c0 in cma_declare_contiguous_nid (base=1543503872,
+size=67108864, limit=1610612736, alignment=8388608, order_per_bit=0,
+fixed=false, name=0xc04b9240 "reserved",
+    res_cma=0xc07ccbdc <dma_contiguous_default_area>, nid=-1) at mm/cma.c:352
+#4  0xc0608cb6 in cma_declare_contiguous (alignment=<optimized out>,
+order_per_bit=<optimized out>, name=<optimized out>,
+res_cma=<optimized out>, fixed=<optimized out>,
+    limit=<optimized out>, size=<optimized out>, base=<optimized out>)
+at ./include/linux/cma.h:28
+#5  dma_contiguous_reserve_area (size=<optimized out>, base=<optimized
+out>, limit=<optimized out>, res_cma=0xc07ccbdc
+<dma_contiguous_default_area>, fixed=false)
+    at kernel/dma/contiguous.c:201
+#6  0xc0608d22 in dma_contiguous_reserve (limit=<optimized out>) at
+kernel/dma/contiguous.c:171
+#7  0xc0604584 in arm_memblock_init (mdesc=0xc061bfe8
+<__mach_desc_GENERIC_DT.35641>) at arch/arm/mm/init.c:230
+#8  0xc060302c in setup_arch (cmdline_p=<optimized out>) at
+arch/arm/kernel/setup.c:1132
+#9  0xc06007d2 in start_kernel () at init/main.c:857
+
+there's a call to memset that seems to hang.  I wonder if memset() was
+defined in terms of __builtin_memset, which oft can result in infinite
+loops?  (IIRC there's an AEABI related memset; this kind of thing has
+hit android userspace before).
+
+(gdb) layout asm
+
+shows that the source call to memset is transformed into a call to mmioset.
+
+(gdb) bt
+#0  mmioset () at arch/arm/lib/memset.S:19
+#1  0xc060e2dc in memblock_alloc_try_nid (size=108, align=<optimized
+out>, min_addr=0, max_addr=0, nid=-1) at mm/memblock.c:1602
+#2  0xc060f0b4 in memblock_alloc (size=<optimized out>,
+align=<optimized out>) at ./include/linux/memblock.h:409
+#3  cma_init_reserved_mem (base=1543503872, size=67108864,
+order_per_bit=0, name=0xc04b9240 "reserved", res_cma=0xc07ccbdc
+<dma_contiguous_default_area>) at mm/cma.c:190
+#4  0xc060f2c0 in cma_declare_contiguous_nid (base=1543503872,
+size=67108864, limit=1610612736, alignment=8388608, order_per_bit=0,
+fixed=false, name=0xc04b9240 "reserved",
+    res_cma=0xc07ccbdc <dma_contiguous_default_area>, nid=-1) at mm/cma.c:352
+#5  0xc0608cb6 in cma_declare_contiguous (alignment=<optimized out>,
+order_per_bit=<optimized out>, name=<optimized out>,
+res_cma=<optimized out>, fixed=<optimized out>,
+    limit=<optimized out>, size=<optimized out>, base=<optimized out>)
+at ./include/linux/cma.h:28
+#6  dma_contiguous_reserve_area (size=<optimized out>, base=<optimized
+out>, limit=<optimized out>, res_cma=0xc07ccbdc
+<dma_contiguous_default_area>, fixed=false)
+    at kernel/dma/contiguous.c:201
+#7  0xc0608d22 in dma_contiguous_reserve (limit=<optimized out>) at
+kernel/dma/contiguous.c:171
+#8  0xc0604584 in arm_memblock_init (mdesc=0xc061bfe8
+<__mach_desc_GENERIC_DT.35641>) at arch/arm/mm/init.c:230
+#9  0xc060302c in setup_arch (cmdline_p=<optimized out>) at
+arch/arm/kernel/setup.c:1132
+#10 0xc06007d2 in start_kernel () at init/main.c:857
+
+Using `si` in gdb, it looks like we maybe hit an exception vector?
+x   1202                .section .vectors, "ax", %progbits
+
+                                            x
+x   1203        .L__vectors_start:
+
+                                            x
+x   1204                W(b)    vector_rst
+
+                                            x
+x   1205                W(b)    vector_und
+
+                                            x
+x   1206                W(ldr)  pc, .L__vectors_start + 0x1000
+
+                                            x
+x  >1207                W(b)    vector_pabt
+
+Is the last thing I see, then `si` stops working.  Not sure if `pabt`
+is a recognizable acronym to anyone more familiar with ARM?
+
+Happens regardless of your series, FWIW.
 -- 
-Regards,
-Atish
+Thanks,
+~Nick Desaulniers
