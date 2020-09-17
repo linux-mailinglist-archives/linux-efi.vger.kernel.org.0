@@ -2,61 +2,33 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 68F0D26CFE5
-	for <lists+linux-efi@lfdr.de>; Thu, 17 Sep 2020 02:23:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6370326D309
+	for <lists+linux-efi@lfdr.de>; Thu, 17 Sep 2020 07:25:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726121AbgIQAXC (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 16 Sep 2020 20:23:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40684 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726054AbgIQAXB (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 16 Sep 2020 20:23:01 -0400
-Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com [IPv6:2607:f8b0:4864:20::642])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90009C061351
-        for <linux-efi@vger.kernel.org>; Wed, 16 Sep 2020 17:16:45 -0700 (PDT)
-Received: by mail-pl1-x642.google.com with SMTP id u9so155753plk.4
-        for <linux-efi@vger.kernel.org>; Wed, 16 Sep 2020 17:16:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=t30BCd28IpMtt2qLE4ImjPuy6xE6W4R5dgzTNyxUB0A=;
-        b=KF608qK6N95hYFw+6BxnATTKXOOsgdn1XBqeTRLciNzQh7GxNcZs/XrWzI6INrrdnr
-         GXq1WJH4RkHRt80h0VE+WkUisTAQ6d6DjaK3UO47KcOjLgb8EEDw1pq6W3vEsSOIC3Oj
-         T6MhRGCNmgEc0iMi8/HuRff5kZkRS0prtwYKykIVLeJ/k0q+wKYME1dMdAS9etGg4Y0F
-         6y/odJGbzBMB9BMiqM36lgL3Knp3CBdcoY5fnKVSsuNktWYO7tdu9X4H/JqGtC5f41VK
-         j0gYZdzeVhTXN5IxRKkZOhBeNmuXWUzAa8sUTEEuN7cj/VVjUH0is+k2LfI6tcXpRnDI
-         vpbg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=t30BCd28IpMtt2qLE4ImjPuy6xE6W4R5dgzTNyxUB0A=;
-        b=aLIXQLdRmHJkkhB7xSzdPc/1Ct/QLpdFdwH2qfuN34/drVZsCrKsRMUVaWVJzTOJ+s
-         RqAu7MNX5Qj8IizlrI0aVD9DhERNWpEQ6tRZacXXnQKcWKjbMc0daKJLEc764SvsAsTa
-         O3Ao/sMR9mkolOWDlvb/Cb78QgeKXn6cAbAOYt8XKp7poq1/zwbUUTKiVIKbOkprGFG7
-         1cQw/Z4Hgt+T9DNRnGSHqyPIu7B5PGUB3GBdhK1OYRNIskPfDPT00vqA6YbYMv32Q6rr
-         Iz9M2yz1oB/QiZVJWpU/FIBPrXq+E+uAu8MCzdFORlArfG7ClJBv2SWXfJq9OP9LOOs/
-         ptHQ==
-X-Gm-Message-State: AOAM5318KInqp4VUu7foWKCY+DDSMHt3+V0eXpZRLSwCIPnsF+Oxxk5f
-        chdXUw01P4pHSXpyldeUkn/0gmagxLndlOBVUzBrPLlK9syIZg==
-X-Google-Smtp-Source: ABdhPJx27WAt8PRzNQrSr/yBhkb0QXIzQ1LSjAFu5hHZ5w1bh85GswwDmdAjJTKxAE6kZNQH9COcB+9y7tiGIocPHwI=
-X-Received: by 2002:a17:90a:e517:: with SMTP id t23mr5847320pjy.25.1600301804525;
- Wed, 16 Sep 2020 17:16:44 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200914095706.3985-1-ardb@kernel.org> <CAKwvOdmSXm7cV3hB_Yp=DD0RwwDHtPzzDBU8Xj5kBREn3xqYdA@mail.gmail.com>
- <CAMj1kXGuFFUyT48EYvzFmjCP4QZi_Sk_GpBrBCaHjP7HKLhjBA@mail.gmail.com>
- <CAKwvOdmkNgi_+kfauTSLwtpVChipW851_KGJG+gBbhwRxJJORA@mail.gmail.com>
- <CAMj1kXHTkP7-8xscGZGXN_0Sq=BCSnt3zWqkcm8xdO11xmditA@mail.gmail.com>
- <CAKwvOd=G2Rr3StUJ=oWu1L4b5y615m+uYNW-Y5sis13uqBvrYQ@mail.gmail.com>
- <CAMj1kXHEpPc0MSoMrCxEkyb44AkLM2NJJGtOXLpr6kxBHS0vfA@mail.gmail.com> <CAKwvOd=Sq3XOquw4ACEi+cYCQp0-LW-JXoecFt+yy+jtmtuhiQ@mail.gmail.com>
-In-Reply-To: <CAKwvOd=Sq3XOquw4ACEi+cYCQp0-LW-JXoecFt+yy+jtmtuhiQ@mail.gmail.com>
-From:   Nick Desaulniers <ndesaulniers@google.com>
-Date:   Wed, 16 Sep 2020 17:16:32 -0700
-Message-ID: <CAKwvOd=CmiZ72yVmhX6LubObC6nUxjhwHhexjzW25j_8bpn_KA@mail.gmail.com>
-Subject: Re: [PATCH 00/12] ARM: use adr_l/ldr_l macros for PC-relative references
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     linux-efi <linux-efi@vger.kernel.org>,
+        id S1726112AbgIQFZb (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 17 Sep 2020 01:25:31 -0400
+Received: from mail.kernel.org ([198.145.29.99]:51822 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726072AbgIQFZa (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Thu, 17 Sep 2020 01:25:30 -0400
+X-Greylist: delayed 336 seconds by postgrey-1.27 at vger.kernel.org; Thu, 17 Sep 2020 01:25:30 EDT
+Received: from kernel.org (unknown [87.71.73.56])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 38D71206C3;
+        Thu, 17 Sep 2020 05:19:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1600319993;
+        bh=LQAOJ6T9kBFVpgSoZo/1UMJGmpXRbmDEcvqaS+t/aUA=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=nUxgf4XQ4VhQQj1qTiPIpZ1BdDJGpLUBLjLArIadmyhDC1bwCI2Ce5Gxnx7hr9i1c
+         lu2MlZ7ectxebuu0hGymY6QkMWKm2qEetRgwyRF9vl/LUUy99tWTROSA7nbTl5XRFq
+         ZR7Pae+Aa+MQekWUmReapezKvbgAXWXFXLv1Z36s=
+Date:   Thu, 17 Sep 2020 08:19:45 +0300
+From:   Mike Rapoport <rppt@kernel.org>
+To:     Nick Desaulniers <ndesaulniers@google.com>
+Cc:     Ard Biesheuvel <ardb@kernel.org>,
+        linux-efi <linux-efi@vger.kernel.org>,
         Linux ARM <linux-arm-kernel@lists.infradead.org>,
         Russell King <linux@armlinux.org.uk>,
         Linus Walleij <linus.walleij@linaro.org>,
@@ -66,149 +38,78 @@ Cc:     linux-efi <linux-efi@vger.kernel.org>,
         Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>,
         clang-built-linux <clang-built-linux@googlegroups.com>,
         Jian Cai <jiancai@google.com>, song.bao.hua@hisilicon.com,
-        Anders Roxell <anders.roxell@linaro.org>, rppt@kernel.org,
-        Naresh Kamboju <naresh.kamboju@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
+        Anders Roxell <anders.roxell@linaro.org>,
+        Naresh Kamboju <naresh.kamboju@linaro.org>,
+        Mike Kravetz <mike.kravetz@oracle.com>
+Subject: Re: [PATCH 00/12] ARM: use adr_l/ldr_l macros for PC-relative
+ references
+Message-ID: <20200917051945.GM2142832@kernel.org>
+References: <20200914095706.3985-1-ardb@kernel.org>
+ <CAKwvOdmSXm7cV3hB_Yp=DD0RwwDHtPzzDBU8Xj5kBREn3xqYdA@mail.gmail.com>
+ <CAMj1kXGuFFUyT48EYvzFmjCP4QZi_Sk_GpBrBCaHjP7HKLhjBA@mail.gmail.com>
+ <CAKwvOdmkNgi_+kfauTSLwtpVChipW851_KGJG+gBbhwRxJJORA@mail.gmail.com>
+ <CAMj1kXHTkP7-8xscGZGXN_0Sq=BCSnt3zWqkcm8xdO11xmditA@mail.gmail.com>
+ <CAKwvOd=G2Rr3StUJ=oWu1L4b5y615m+uYNW-Y5sis13uqBvrYQ@mail.gmail.com>
+ <CAMj1kXHEpPc0MSoMrCxEkyb44AkLM2NJJGtOXLpr6kxBHS0vfA@mail.gmail.com>
+ <CAKwvOd=Sq3XOquw4ACEi+cYCQp0-LW-JXoecFt+yy+jtmtuhiQ@mail.gmail.com>
+ <CAKwvOd=CmiZ72yVmhX6LubObC6nUxjhwHhexjzW25j_8bpn_KA@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAKwvOd=CmiZ72yVmhX6LubObC6nUxjhwHhexjzW25j_8bpn_KA@mail.gmail.com>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, Sep 16, 2020 at 2:25 PM Nick Desaulniers
-<ndesaulniers@google.com> wrote:
->
-> Also, it looks like the GCC build of milbeaut_m10v_defconfig fails to
-> boot for me in QEMU; so maybe not just a Clang bug (or maybe, more
-> than one bug).  (or maybe one of my command line params to QEMU is
-> wrong).
->
-> Stepping through start_kernel(), the call to setup_arch() seems to
-> hang in qemu.  For both GCC and Clang builds. A breakpoint in panic()
-> never gets hit.  Looks like the deepest I can get is:
->
-> Looks like:
-> #0  memblock_alloc_try_nid (size=108, align=4, min_addr=0, max_addr=0,
-> nid=-1) at mm/memblock.c:1601
-> #1  0xc060f0b4 in memblock_alloc (size=<optimized out>,
-> align=<optimized out>) at ./include/linux/memblock.h:409
-> #2  cma_init_reserved_mem (base=1543503872, size=67108864,
-> order_per_bit=0, name=0xc04b9240 "reserved", res_cma=0xc07ccbdc
-> <dma_contiguous_default_area>) at mm/cma.c:190
-> #3  0xc060f2c0 in cma_declare_contiguous_nid (base=1543503872,
-> size=67108864, limit=1610612736, alignment=8388608, order_per_bit=0,
-> fixed=false, name=0xc04b9240 "reserved",
->     res_cma=0xc07ccbdc <dma_contiguous_default_area>, nid=-1) at mm/cma.c:352
-> #4  0xc0608cb6 in cma_declare_contiguous (alignment=<optimized out>,
-> order_per_bit=<optimized out>, name=<optimized out>,
-> res_cma=<optimized out>, fixed=<optimized out>,
->     limit=<optimized out>, size=<optimized out>, base=<optimized out>)
-> at ./include/linux/cma.h:28
-> #5  dma_contiguous_reserve_area (size=<optimized out>, base=<optimized
-> out>, limit=<optimized out>, res_cma=0xc07ccbdc
-> <dma_contiguous_default_area>, fixed=false)
->     at kernel/dma/contiguous.c:201
-> #6  0xc0608d22 in dma_contiguous_reserve (limit=<optimized out>) at
-> kernel/dma/contiguous.c:171
-> #7  0xc0604584 in arm_memblock_init (mdesc=0xc061bfe8
-> <__mach_desc_GENERIC_DT.35641>) at arch/arm/mm/init.c:230
-> #8  0xc060302c in setup_arch (cmdline_p=<optimized out>) at
-> arch/arm/kernel/setup.c:1132
-> #9  0xc06007d2 in start_kernel () at init/main.c:857
->
-> there's a call to memset that seems to hang.  I wonder if memset() was
-> defined in terms of __builtin_memset, which oft can result in infinite
-> loops?  (IIRC there's an AEABI related memset; this kind of thing has
-> hit android userspace before).
->
-> (gdb) layout asm
->
-> shows that the source call to memset is transformed into a call to mmioset.
->
-> (gdb) bt
-> #0  mmioset () at arch/arm/lib/memset.S:19
-> #1  0xc060e2dc in memblock_alloc_try_nid (size=108, align=<optimized
-> out>, min_addr=0, max_addr=0, nid=-1) at mm/memblock.c:1602
-> #2  0xc060f0b4 in memblock_alloc (size=<optimized out>,
-> align=<optimized out>) at ./include/linux/memblock.h:409
-> #3  cma_init_reserved_mem (base=1543503872, size=67108864,
-> order_per_bit=0, name=0xc04b9240 "reserved", res_cma=0xc07ccbdc
-> <dma_contiguous_default_area>) at mm/cma.c:190
-> #4  0xc060f2c0 in cma_declare_contiguous_nid (base=1543503872,
-> size=67108864, limit=1610612736, alignment=8388608, order_per_bit=0,
-> fixed=false, name=0xc04b9240 "reserved",
->     res_cma=0xc07ccbdc <dma_contiguous_default_area>, nid=-1) at mm/cma.c:352
-> #5  0xc0608cb6 in cma_declare_contiguous (alignment=<optimized out>,
-> order_per_bit=<optimized out>, name=<optimized out>,
-> res_cma=<optimized out>, fixed=<optimized out>,
->     limit=<optimized out>, size=<optimized out>, base=<optimized out>)
-> at ./include/linux/cma.h:28
-> #6  dma_contiguous_reserve_area (size=<optimized out>, base=<optimized
-> out>, limit=<optimized out>, res_cma=0xc07ccbdc
-> <dma_contiguous_default_area>, fixed=false)
->     at kernel/dma/contiguous.c:201
-> #7  0xc0608d22 in dma_contiguous_reserve (limit=<optimized out>) at
-> kernel/dma/contiguous.c:171
-> #8  0xc0604584 in arm_memblock_init (mdesc=0xc061bfe8
-> <__mach_desc_GENERIC_DT.35641>) at arch/arm/mm/init.c:230
-> #9  0xc060302c in setup_arch (cmdline_p=<optimized out>) at
-> arch/arm/kernel/setup.c:1132
-> #10 0xc06007d2 in start_kernel () at init/main.c:857
->
-> Using `si` in gdb, it looks like we maybe hit an exception vector?
-> x   1202                .section .vectors, "ax", %progbits
->
->                                             x
-> x   1203        .L__vectors_start:
->
->                                             x
-> x   1204                W(b)    vector_rst
->
->                                             x
-> x   1205                W(b)    vector_und
->
->                                             x
-> x   1206                W(ldr)  pc, .L__vectors_start + 0x1000
->
->                                             x
-> x  >1207                W(b)    vector_pabt
->
-> Is the last thing I see, then `si` stops working.  Not sure if `pabt`
-> is a recognizable acronym to anyone more familiar with ARM?
->
-> Happens regardless of your series, FWIW.
+(added Mike K.)
 
-It seems this is affecting the ARCH=arm defconfig (regardless of
-toolchain) of linux-next today.  I know you've warned me about testing
-on -next before...
+On Wed, Sep 16, 2020 at 05:16:32PM -0700, Nick Desaulniers wrote:
+> On Wed, Sep 16, 2020 at 2:25 PM Nick Desaulniers
+> <ndesaulniers@google.com> wrote:
 
-Maybe this is: https://lore.kernel.org/linux-next/20200916140437.GL2142832@kernel.org/
-? That looks arm64 specific though.  Maybe 32b ARM needs the same or a
-similar fix?  Oh man, this boots, total shot in the dark:
+...
+ 
+> Maybe this is: https://lore.kernel.org/linux-next/20200916140437.GL2142832@kernel.org/
+> ? That looks arm64 specific though.  Maybe 32b ARM needs the same or a
+> similar fix?  Oh man, this boots, total shot in the dark:
 
-diff --git a/arch/arm/mm/init.c b/arch/arm/mm/init.c
-index 45f9d5ec2360..7118b98c1f5f 100644
---- a/arch/arm/mm/init.c
-+++ b/arch/arm/mm/init.c
-@@ -226,9 +226,6 @@ void __init arm_memblock_init(const struct
-machine_desc *mdesc)
-        early_init_fdt_reserve_self();
-        early_init_fdt_scan_reserved_mem();
+The CMA change is the problem IMO and it's now removed from -mm and
+-next trees. 
 
--       /* reserve memory for DMA contiguous allocations */
--       dma_contiguous_reserve(arm_dma_limit);
--
-        arm_memblock_steal_permitted = false;
-        memblock_dump_all();
- }
-@@ -248,6 +245,9 @@ void __init bootmem_init(void)
-         */
-        sparse_init();
+> diff --git a/arch/arm/mm/init.c b/arch/arm/mm/init.c
+> index 45f9d5ec2360..7118b98c1f5f 100644
+> --- a/arch/arm/mm/init.c
+> +++ b/arch/arm/mm/init.c
+> @@ -226,9 +226,6 @@ void __init arm_memblock_init(const struct
+> machine_desc *mdesc)
+>         early_init_fdt_reserve_self();
+>         early_init_fdt_scan_reserved_mem();
+> 
+> -       /* reserve memory for DMA contiguous allocations */
+> -       dma_contiguous_reserve(arm_dma_limit);
+> -
+>         arm_memblock_steal_permitted = false;
+>         memblock_dump_all();
+>  }
+> @@ -248,6 +245,9 @@ void __init bootmem_init(void)
+>          */
+>         sparse_init();
+> 
+> +       /* reserve memory for DMA contiguous allocations */
+> +       dma_contiguous_reserve(arm_dma_limit);
+> +
 
-+       /* reserve memory for DMA contiguous allocations */
-+       dma_contiguous_reserve(arm_dma_limit);
-+
-        /*
-         * Now free the memory - free_area_init needs
-         * the sparse mem_map arrays initialized by sparse_init()
+This might be too late for ARM because in paging_init() it calls
+dma_contiguous_remap() which presumes that the CMA area is already
+reserved.
+
+dma_contiguous_remap() might be NOP, so your fix will boot until it
+fails eventually :) 
+
+>         /*
+>          * Now free the memory - free_area_init needs
+>          * the sparse mem_map arrays initialized by sparse_init()
+
 -- 
-Thanks,
-~Nick Desaulniers
+Sincerely yours,
+Mike.
