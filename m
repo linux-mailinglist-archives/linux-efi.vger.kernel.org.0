@@ -2,115 +2,66 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6697B26D519
-	for <lists+linux-efi@lfdr.de>; Thu, 17 Sep 2020 09:49:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1342326D51B
+	for <lists+linux-efi@lfdr.de>; Thu, 17 Sep 2020 09:49:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726219AbgIQHtM (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 17 Sep 2020 03:49:12 -0400
-Received: from mail.kernel.org ([198.145.29.99]:41394 "EHLO mail.kernel.org"
+        id S1726239AbgIQHt1 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 17 Sep 2020 03:49:27 -0400
+Received: from mail.kernel.org ([198.145.29.99]:41456 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726382AbgIQHtK (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Thu, 17 Sep 2020 03:49:10 -0400
+        id S1726153AbgIQHtM (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Thu, 17 Sep 2020 03:49:12 -0400
 Received: from e123331-lin.nice.arm.com (unknown [91.140.120.15])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 949BB21973;
-        Thu, 17 Sep 2020 07:49:08 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id A4C3921D41;
+        Thu, 17 Sep 2020 07:49:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1600328950;
-        bh=fe11vJ5nLDhnnc4YY1V5J/gS9a1wAD9qSfRvYWpSuvE=;
-        h=From:To:Cc:Subject:Date:From;
-        b=pu1BCGWlwYO8B+Q4lU/mxkOdVO/qioHCtSB0z0prW9mm/h2qpIx9E0swFUZS2PyRl
-         rVG8FAHhbn+PqblBvagU0EDw39/6e510awzMqxKJy+ls+LalBcATVC29hJXfuas8y0
-         aR6bOpGXBpj3mUeTQ3sf6pS+SN9Cj95ezoowtnuY=
+        s=default; t=1600328952;
+        bh=ESzv/yznbo3osqOliFruv56tCFJ4lz5ErMjvAhhJBXQ=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=pekohuTImsOB47B8pOQJccupMwaipWXrJOX4zHSDN7lFHjkcFOz1OEDCtIyLItcLg
+         YhfBNz/gBI0IQIYih0ITWaghLyd8TJy9eGE5Nn3WOdSbXINEvmEP3JYtaX4hYmMsug
+         rG1ZtzWOgKUS070++CEB0zhXf3IEnMRBuAUEqybs=
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-efi@vger.kernel.org
 Cc:     Ingo Molnar <mingo@redhat.com>,
         Thomas Gleixner <tglx@linutronix.de>,
         Borislav Petkov <bp@alien8.de>
-Subject: [GIT PULL] EFI changes for v5.10
-Date:   Thu, 17 Sep 2020 10:49:03 +0300
-Message-Id: <20200917074904.15816-1-ardb@kernel.org>
+Subject: [GIT PULL] EFI fixes for v5.9-rc5
+Date:   Thu, 17 Sep 2020 10:49:04 +0300
+Message-Id: <20200917074904.15816-2-ardb@kernel.org>
 X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20200917074904.15816-1-ardb@kernel.org>
+References: <20200917074904.15816-1-ardb@kernel.org>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The following changes since commit 9123e3a74ec7b934a4a099e98af6a61c2f80bbf5:
+The following changes since commit fb1201aececc59990b75ef59fca93ae4aa1e1444:
 
-  Linux 5.9-rc1 (2020-08-16 13:04:57 -0700)
+  Documentation: efi: remove description of efi=old_map (2020-08-20 11:18:36 +0200)
 
 are available in the Git repository at:
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git tags/efi-next-for-v5.10
+  git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git tags/efi-urgent-for-v5.9-rc5
 
-for you to fetch changes up to 612b5d506d066cdf0a739963e7cd28642d500ec1:
+for you to fetch changes up to 46908326c6b801201f1e46f5ed0db6e85bef74ae:
 
-  cper,edac,efi: Memory Error Record: bank group/address and chip id (2020-09-17 10:19:52 +0300)
+  efi: efibc: check for efivars write capability (2020-09-15 18:22:47 +0300)
 
 Cc: Ingo Molnar <mingo@redhat.com>
 Cc: Thomas Gleixner <tglx@linutronix.de>
 Cc: Borislav Petkov <bp@alien8.de>
 
 ----------------------------------------------------------------
-EFI changes for v5.10:
-- some preliminary changes related to RISC-V support - the bulk of it
-  will arrive via the riscv tree
-- relax decompressed image placement rules for 32-bit ARM
-- add support for passing MOK certificate table contents via a config table
-  rather than a EFI variable
-- work around broken Dell firmware that passes the entire Boot#### variable
-  contents as the command line
-- add support for 18 bit DIMM row IDs in the CPER records.
+Single EFI fix for v5.9-rc:
+- ensure that the EFI bootloader control module only probes successfully
+  on systems that support the EFI SetVariable runtime service
 
 ----------------------------------------------------------------
-Alex Kluver (2):
-      edac,ghes,cper: Add Row Extension to Memory Error Record
-      cper,edac,efi: Memory Error Record: bank group/address and chip id
+Ard Biesheuvel (1):
+      efi: efibc: check for efivars write capability
 
-Ard Biesheuvel (3):
-      efi/libstub: arm32: Base FDT and initrd placement on image address
-      efi/libstub: Export efi_low_alloc_above() to other units
-      efi/libstub: arm32: Use low allocation for the uncompressed kernel
-
-Arvind Sankar (2):
-      efi/libstub: Add efi_warn and *_once logging helpers
-      efi/x86: Add a quirk to support command line arguments on Dell EFI firmware
-
-Atish Patra (2):
-      include: pe.h: Add RISC-V related PE definition
-      efi: Rename arm-init to efi-init common for all arch
-
-Lenny Szubowicz (3):
-      efi: Support for MOK variable config table
-      integrity: Move import of MokListRT certs to a separate routine
-      integrity: Load certs from the EFI MOK config table
-
-Tian Tao (1):
-      efi/printf: remove unneeded semicolon
-
- arch/arm/include/asm/efi.h                      |  23 +-
- arch/arm64/include/asm/efi.h                    |   5 +-
- arch/x86/kernel/setup.c                         |   1 +
- arch/x86/platform/efi/efi.c                     |   3 +
- drivers/edac/ghes_edac.c                        |  17 +-
- drivers/firmware/efi/Makefile                   |   3 +-
- drivers/firmware/efi/cper.c                     |  18 +-
- drivers/firmware/efi/{arm-init.c => efi-init.c} |   1 +
- drivers/firmware/efi/efi.c                      |   6 +
- drivers/firmware/efi/libstub/arm32-stub.c       | 178 +++---------
- drivers/firmware/efi/libstub/arm64-stub.c       |   1 -
- drivers/firmware/efi/libstub/efi-stub-helper.c  | 101 ++++++-
- drivers/firmware/efi/libstub/efi-stub.c         |  48 +---
- drivers/firmware/efi/libstub/efistub.h          |  61 +++-
- drivers/firmware/efi/libstub/file.c             |   5 +-
- drivers/firmware/efi/libstub/relocate.c         |   4 +-
- drivers/firmware/efi/libstub/vsprintf.c         |   2 +-
- drivers/firmware/efi/mokvar-table.c             | 360 ++++++++++++++++++++++++
- include/linux/cper.h                            |  24 +-
- include/linux/efi.h                             |  34 +++
- include/linux/pe.h                              |   3 +
- security/integrity/platform_certs/load_uefi.c   |  85 ++++--
- 22 files changed, 746 insertions(+), 237 deletions(-)
- rename drivers/firmware/efi/{arm-init.c => efi-init.c} (99%)
- create mode 100644 drivers/firmware/efi/mokvar-table.c
+ drivers/firmware/efi/efibc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
