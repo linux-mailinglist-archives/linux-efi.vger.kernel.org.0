@@ -2,39 +2,39 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3928A26EF8D
-	for <lists+linux-efi@lfdr.de>; Fri, 18 Sep 2020 04:37:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 13D8E26F3BE
+	for <lists+linux-efi@lfdr.de>; Fri, 18 Sep 2020 05:10:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727969AbgIRCg2 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 17 Sep 2020 22:36:28 -0400
-Received: from mail.kernel.org ([198.145.29.99]:39634 "EHLO mail.kernel.org"
+        id S1727038AbgIRDJG (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 17 Sep 2020 23:09:06 -0400
+Received: from mail.kernel.org ([198.145.29.99]:49086 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726878AbgIRCMy (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Thu, 17 Sep 2020 22:12:54 -0400
+        id S1726973AbgIRCDK (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Thu, 17 Sep 2020 22:03:10 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 7A07923787;
-        Fri, 18 Sep 2020 02:12:52 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id B98D0221EC;
+        Fri, 18 Sep 2020 02:03:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1600395173;
-        bh=a88otNJhDTJyCx7NRds2kgdy21mZiyTTfLnXkegmgek=;
+        s=default; t=1600394587;
+        bh=U9M+zpFCNePno53yzOpfFRwLAW3GwH5HlPJWAMAnOPI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=08kagoJTzV9Ib33KFMUeJ1AWW8zB0Dj8HPznbH/vBjao3/CdfU3wPIAQ2Elk7emWN
-         Xg4jCMXcv38Lj71KrtS08/pu9zI9hwb3R4g2BHhqy38B168+tQqtMIQuJylTmYtIAG
-         rEUPPGcSp8La1DL9Kkwi9xU9jpeVfd8ncWr22yds=
+        b=cFQQILCZxrcqQ98kYeYKOFV6cZsa3rwkCH4+aIj1hOjEkfymcpnjY7Q/UxXopPzy2
+         zHKHJbE5kVE/0ZmKA6rwptQMPLAfasFV9p+qnE682GydMv3BM21s/BWL+xgVdiaLDF
+         tvHAoZbSS8OK+0MrIWKi7iRR/wEwCEmw8lYSpVMg=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Ard Biesheuvel <ardb@kernel.org>,
         Saravana Kannan <saravanak@google.com>,
         Ingo Molnar <mingo@kernel.org>,
         Sasha Levin <sashal@kernel.org>, linux-efi@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 029/127] efi/arm: Defer probe of PCIe backed efifb on DT systems
-Date:   Thu, 17 Sep 2020 22:10:42 -0400
-Message-Id: <20200918021220.2066485-29-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 096/330] efi/arm: Defer probe of PCIe backed efifb on DT systems
+Date:   Thu, 17 Sep 2020 21:57:16 -0400
+Message-Id: <20200918020110.2063155-96-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200918021220.2066485-1-sashal@kernel.org>
-References: <20200918021220.2066485-1-sashal@kernel.org>
+In-Reply-To: <20200918020110.2063155-1-sashal@kernel.org>
+References: <20200918020110.2063155-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -70,10 +70,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 103 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/firmware/efi/arm-init.c b/drivers/firmware/efi/arm-init.c
-index 312f9f32e1683..7d4cb9583bf4f 100644
+index 311cd349a8628..f136b77e13d98 100644
 --- a/drivers/firmware/efi/arm-init.c
 +++ b/drivers/firmware/efi/arm-init.c
-@@ -14,10 +14,12 @@
+@@ -10,10 +10,12 @@
  #define pr_fmt(fmt)	"efi: " fmt
  
  #include <linux/efi.h>
@@ -86,7 +86,7 @@ index 312f9f32e1683..7d4cb9583bf4f 100644
  #include <linux/of_fdt.h>
  #include <linux/platform_device.h>
  #include <linux/screen_info.h>
-@@ -271,15 +273,112 @@ void __init efi_init(void)
+@@ -267,15 +269,112 @@ void __init efi_init(void)
  		efi_memmap_unmap();
  }
  
