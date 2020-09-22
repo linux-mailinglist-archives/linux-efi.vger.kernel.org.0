@@ -2,43 +2,43 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D58A1273F17
-	for <lists+linux-efi@lfdr.de>; Tue, 22 Sep 2020 12:00:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 13B01273F87
+	for <lists+linux-efi@lfdr.de>; Tue, 22 Sep 2020 12:23:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726419AbgIVKA3 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 22 Sep 2020 06:00:29 -0400
-Received: from mail.kernel.org ([198.145.29.99]:47446 "EHLO mail.kernel.org"
+        id S1726424AbgIVKXg (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 22 Sep 2020 06:23:36 -0400
+Received: from mail.kernel.org ([198.145.29.99]:53410 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726353AbgIVKA2 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Tue, 22 Sep 2020 06:00:28 -0400
-Received: from mail-oi1-f178.google.com (mail-oi1-f178.google.com [209.85.167.178])
+        id S1726419AbgIVKXg (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Tue, 22 Sep 2020 06:23:36 -0400
+Received: from mail-oo1-f44.google.com (mail-oo1-f44.google.com [209.85.161.44])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 20C41238A1
-        for <linux-efi@vger.kernel.org>; Tue, 22 Sep 2020 10:00:28 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 09317239D4
+        for <linux-efi@vger.kernel.org>; Tue, 22 Sep 2020 10:23:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1600768828;
-        bh=XwNjZd1KT0Bq1tYNPxSB5WlmPxjC67ZecncYcuP04Fo=;
+        s=default; t=1600770215;
+        bh=NeXvFecT8aTgw0zCdF9cp4inWyvJZOnMwHOhGJP6iDU=;
         h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=Dmg0Sz61YTCcwBY7SLbK1E10/CoicQwE95QMiNPTfUf3W/JNHsIQ2ZaOHvEAmFYUe
-         l0pPpPfg8W77HSYIFadxoRCR74uaNlGoafio6hYOHkPcKkwQ0g/s61ZpbdmXYR6/u/
-         2wSs/oZT6lQ3oJyxMbz6zPjpV5ntxgmas1swjZkQ=
-Received: by mail-oi1-f178.google.com with SMTP id u126so20376216oif.13
-        for <linux-efi@vger.kernel.org>; Tue, 22 Sep 2020 03:00:28 -0700 (PDT)
-X-Gm-Message-State: AOAM532mlfVtW2+4ASXEfX5ZL4RcEqT8bwpfMFlJ9BkLkm8pze2mjLUm
-        Ox2KqVIqgzmPeJneAuvTFTD2LSHJHu47eOMvvgA=
-X-Google-Smtp-Source: ABdhPJwjLsT6FYhaw3eWOA1H2yEpTz9h0rbfTM3ahe6+GIJoH1glgtoSM+ReI6OJ+swkJJTxygefqOITRNi0TSyB5+8=
-X-Received: by 2002:aca:d845:: with SMTP id p66mr1993448oig.47.1600768827405;
- Tue, 22 Sep 2020 03:00:27 -0700 (PDT)
+        b=e+SL+DXggSP/6soXg7zk2CDEEvqiGP/lAe04i+Q25eGqSdPSDFhD8pPS4xV6Rwjbf
+         /TE9bX8chsZba4HPjgMCgMUF3JYhgD0XQzMAxSciUoxqAlOKmhYizkukSiJXjU8Ez0
+         avRyHQLjY+qmLS3Cfz6oUSXvqJ2Y+ISpi3e8muEg=
+Received: by mail-oo1-f44.google.com with SMTP id h8so4001473ooc.12
+        for <linux-efi@vger.kernel.org>; Tue, 22 Sep 2020 03:23:35 -0700 (PDT)
+X-Gm-Message-State: AOAM531NFMpvQCEOEK9yct5OM0kTG9zQLfkWOGKhVCMXuJ2A6K7vDkPJ
+        WoB21nxrx3UI3lBDWfHt3j+6RhorJgGwC0MLUtM=
+X-Google-Smtp-Source: ABdhPJzvWk8bQPIcG5qAI1/Kp+gerV/zdiJuc5LOXIslLEVyYJHWKvr+Kzk8kWOrdzpJmw4afIQc4F89EOXnCzJbcgU=
+X-Received: by 2002:a4a:4910:: with SMTP id z16mr2443658ooa.41.1600770214224;
+ Tue, 22 Sep 2020 03:23:34 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200921154117.757-1-ardb@kernel.org> <20200921154117.757-6-ardb@kernel.org>
- <CACRpkdactgVcSsm8wpqSDg=JkSM102GkeS4EM2YRr7y_hDDRFg@mail.gmail.com>
-In-Reply-To: <CACRpkdactgVcSsm8wpqSDg=JkSM102GkeS4EM2YRr7y_hDDRFg@mail.gmail.com>
+References: <20200921154117.757-1-ardb@kernel.org> <20200921154117.757-11-ardb@kernel.org>
+ <CACRpkda=P-Kc=-ZhZo8vtW9CrFfCiBvfkqwfdipz4WO2Gb2L_g@mail.gmail.com>
+In-Reply-To: <CACRpkda=P-Kc=-ZhZo8vtW9CrFfCiBvfkqwfdipz4WO2Gb2L_g@mail.gmail.com>
 From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Tue, 22 Sep 2020 12:00:16 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXFo4xX+-b9cLYXqnJmKfQ0R+HQyjQrJ6XvHRo0P2YBWZg@mail.gmail.com>
-Message-ID: <CAMj1kXFo4xX+-b9cLYXqnJmKfQ0R+HQyjQrJ6XvHRo0P2YBWZg@mail.gmail.com>
-Subject: Re: [PATCH v2 05/10] ARM: p2v: factor out BE8 handling
+Date:   Tue, 22 Sep 2020 12:23:23 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXG+XuauH93OuQzx_2huWrUca+S6SKwqogXiaR2sQB727w@mail.gmail.com>
+Message-ID: <CAMj1kXG+XuauH93OuQzx_2huWrUca+S6SKwqogXiaR2sQB727w@mail.gmail.com>
+Subject: Re: [PATCH v2 10/10] ARM: p2v: reduce p2v alignment requirement to 2 MiB
 To:     Linus Walleij <linus.walleij@linaro.org>
 Cc:     Linux ARM <linux-arm-kernel@lists.infradead.org>,
         linux-efi <linux-efi@vger.kernel.org>,
@@ -50,24 +50,65 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, 22 Sep 2020 at 10:51, Linus Walleij <linus.walleij@linaro.org> wrote:
+On Tue, 22 Sep 2020 at 11:11, Linus Walleij <linus.walleij@linaro.org> wrote:
 >
 > On Mon, Sep 21, 2020 at 5:41 PM Ard Biesheuvel <ardb@kernel.org> wrote:
 >
-> > The big and little endian versions of the ARM p2v patching routine only
-> > differ in the values of the constants, so factor those out into macros
-> > so that we only have one version of the logic sequence to maintain.
+> > Update the p2v patching code so we can deal with displacements that are
+> > not a multiple of 16 MiB but of 2 MiB, to prevent wasting of up to 14 MiB
+> > of physical RAM when running on a platform where the start of memory is
+> > not correctly aligned.
 > >
+> > For the ARM code path, this simply comes down to using two add/sub
+> > instructions instead of one for the carryless version, and patching
+> > each of them with the correct immediate depending on the rotation
+> > field. For the LPAE calculation, it patches the MOVW instruction with
+> > up to 12 bits of offset.
+> >
+> > For the Thumb2 code path, patching more than 11 bits off displacement
+> > is somewhat cumbersome, and given that 11 bits produce a minimum
+> > alignment of 2 MiB, which is also the granularity for LPAE block
+> > mappings, it makes sense to stick to 2 MiB for the new p2v requirement.
+> >
+> > Suggested-by: Zhen Lei <thunder.leizhen@huawei.com>
 > > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 >
-> Since you had patch 1 fixing up BE on LPAE I suppose
-> it is implicit in the commit that this was tested with BE
-> on classic MMU and LPAE. Very nice patch!
+> My understanding of what is going on is limited to the high
+> level of things, and being able to do this is just a great thing
+> so FWIW:
+> Acked-by: Linus Walleij <linus.walleij@linaro.org>
 >
-> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+> If you or Russell need more thorough review I can sit down
+> and try to understand at the bit granularity what is going on
+> but it requires a bunch of time. Just tell me if you need this.
 >
 
-I tested this to the extent possible on the hardware I have available,
-but this does not include Keystone2, which does the funky remapping of
-the physical mapping of DRAM. I don't think we have such hardware in
-kernelci though ...
+Just to summarize the intent of this code: the ARM kernel's linear map
+starts at PAGE_OFFSET, which maps to a physical address (PHYS_OFFSET)
+that is platform specific, and is discovered at boot. Since we don't
+want to slow down translations between physical and virtual addresses
+by keeping the offset in a variable in memory, we implement this by
+patching the code performing the translation, and putting the offset
+between PAGE_OFFSET and the start of physical RAM directly into the
+instruction opcodes.
+
+Currently, we only patch up to 8 bits of offset, which gives us 4 GiB
+>> 8 == 16 MiB of granularity, and so if the start of physical RAM is
+not a multiple of 16 MiB, we have to round it up to the next multiple.
+This wastes some physical RAM, since the memory you skipped will now
+live below PAGE_OFFSET, making it inaccessible to the kernel.
+
+By changing the patchable sequences and the patching logic to carry
+more bits of offset, we can improve this: 11 bits gives us 4 GiB >> 11
+== 2 MiB granularity, and so you never waste more than that amount by
+rounding up the physical start of DRAM to the next multiple of 2 MiB.
+(Note that 2 MiB granularity guarantees that the linear mapping can be
+created efficiently, whereas less than 2 MiB may result in the linear
+mapping needing another level of page tables)
+
+This helps Zhen Lei's scenario, where the start of DRAM is known to be
+occupied. It also helps EFI boot, which relies on the firmware's page
+allocator to allocate space for the decompressed kernel as low as
+possible. And if the KASLR patches ever land for 32-bit, it will give
+us 3 more bits of randomization of the placement of the kernel inside
+the linear region.
