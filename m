@@ -2,27 +2,27 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 72AFB275D1B
+	by mail.lfdr.de (Postfix) with ESMTP id E2DA5275D1C
 	for <lists+linux-efi@lfdr.de>; Wed, 23 Sep 2020 18:15:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726826AbgIWQPL (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        id S1726824AbgIWQPL (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
         Wed, 23 Sep 2020 12:15:11 -0400
-Received: from mail.kernel.org ([198.145.29.99]:42008 "EHLO mail.kernel.org"
+Received: from mail.kernel.org ([198.145.29.99]:42036 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726671AbgIWQPD (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Wed, 23 Sep 2020 12:15:03 -0400
+        id S1726727AbgIWQPF (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Wed, 23 Sep 2020 12:15:05 -0400
 Received: from e123331-lin.nice.arm.com (lfbn-nic-1-188-42.w2-15.abo.wanadoo.fr [2.15.37.42])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D20CA208E4;
-        Wed, 23 Sep 2020 16:15:00 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 07EFC221EF;
+        Wed, 23 Sep 2020 16:15:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1600877702;
-        bh=zH8OvFJ+fXzumd6pJoYf17znejCcgokbBvxOXA2Qu6o=;
+        s=default; t=1600877704;
+        bh=mSwhGjWwRcUITwEDcMNnwemJl4eKgnir10Nm9DDTW/A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IJs2SHH2GjcCxCBHHBwNf4JfP7EA6WiHfspmHY5goymDdEmNvF3dP+ckTa8LwWtTo
-         +EloX/RvBlwx+5glhDKHTl24r5yfq3o15eJoqWnuDlGDrl6bOMeYlEZDDauV5c4+p7
-         PXyyRFOLxTNBCi7g/7YF2vyesYxma3T7kZ+3pd5U=
+        b=uGFfHb4kVusgZ/YTlY7ZvoeXP4XxFdYHq19r831O6CCVEASKcGBOtkxEAd1HMFzwv
+         +9q+X9SSJwOuG+u9PG1MpW87wVx7x8hQf3F90S6t8b8owJg6MMni+ecoDDPhdcCZLX
+         /kZPU6+STiAv8Kf0swxTsqbH/gCj/SeV2EK2QX0k=
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     linux-efi@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
@@ -32,9 +32,9 @@ Cc:     linux-efi@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
         Anton Vorontsov <anton@enomsg.org>,
         Colin Cross <ccross@android.com>,
         Tony Luck <tony.luck@intel.com>
-Subject: [PATCH 3/7] efi: efivars: un-export efivars_sysfs_init()
-Date:   Wed, 23 Sep 2020 18:14:00 +0200
-Message-Id: <20200923161404.17811-4-ardb@kernel.org>
+Subject: [PATCH 4/7] efi: gsmi: fix false dependency on CONFIG_EFI_VARS
+Date:   Wed, 23 Sep 2020 18:14:01 +0200
+Message-Id: <20200923161404.17811-5-ardb@kernel.org>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200923161404.17811-1-ardb@kernel.org>
 References: <20200923161404.17811-1-ardb@kernel.org>
@@ -42,51 +42,71 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-efivars_sysfs_init() is only used locally in the source file that
-defines it, so make it static and unexport it.
+The gsmi code does not actually rely on CONFIG_EFI_VARS, since it only
+uses the efivars abstraction that is included unconditionally when
+CONFIG_EFI is defined. CONFIG_EFI_VARS controls the inclusion of the
+code that exposes the sysfs entries, and which has been deprecated for
+some time.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- drivers/firmware/efi/efivars.c | 3 +--
- include/linux/efi.h            | 4 ----
- 2 files changed, 1 insertion(+), 6 deletions(-)
+ drivers/firmware/google/Kconfig | 2 +-
+ drivers/firmware/google/gsmi.c  | 8 ++++----
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/firmware/efi/efivars.c b/drivers/firmware/efi/efivars.c
-index f39321dbc29f..a76f50e15e6d 100644
---- a/drivers/firmware/efi/efivars.c
-+++ b/drivers/firmware/efi/efivars.c
-@@ -638,7 +638,7 @@ static void efivars_sysfs_exit(void)
- 	kset_unregister(efivars_kset);
+diff --git a/drivers/firmware/google/Kconfig b/drivers/firmware/google/Kconfig
+index a3a6ca659ffa..97968aece54f 100644
+--- a/drivers/firmware/google/Kconfig
++++ b/drivers/firmware/google/Kconfig
+@@ -15,7 +15,7 @@ config GOOGLE_SMI
+ 	help
+ 	  Say Y here if you want to enable SMI callbacks for Google
+ 	  platforms.  This provides an interface for writing to and
+-	  clearing the event log.  If EFI_VARS is also enabled this
++	  clearing the event log.  If CONFIG_EFI is also enabled this
+ 	  driver provides an interface for reading and writing NVRAM
+ 	  variables.
+ 
+diff --git a/drivers/firmware/google/gsmi.c b/drivers/firmware/google/gsmi.c
+index 5b2011ebbe26..7d9367b22010 100644
+--- a/drivers/firmware/google/gsmi.c
++++ b/drivers/firmware/google/gsmi.c
+@@ -302,7 +302,7 @@ static int gsmi_exec(u8 func, u8 sub)
+ 	return rc;
  }
  
--int efivars_sysfs_init(void)
-+static int efivars_sysfs_init(void)
- {
- 	struct kobject *parent_kobj = efivars_kobject();
- 	int error = 0;
-@@ -666,7 +666,6 @@ int efivars_sysfs_init(void)
+-#ifdef CONFIG_EFI_VARS
++#ifdef CONFIG_EFI
  
- 	return 0;
- }
--EXPORT_SYMBOL_GPL(efivars_sysfs_init);
+ static struct efivars efivars;
  
- module_init(efivars_sysfs_init);
- module_exit(efivars_sysfs_exit);
-diff --git a/include/linux/efi.h b/include/linux/efi.h
-index 8ae64c2a384b..7defdc456dc0 100644
---- a/include/linux/efi.h
-+++ b/include/linux/efi.h
-@@ -1035,10 +1035,6 @@ bool efivar_validate(efi_guid_t vendor, efi_char16_t *var_name, u8 *data,
- bool efivar_variable_is_removable(efi_guid_t vendor, const char *name,
- 				  size_t len);
+@@ -483,7 +483,7 @@ static const struct efivar_operations efivar_ops = {
+ 	.get_next_variable = gsmi_get_next_variable,
+ };
  
--#if defined(CONFIG_EFI_VARS) || defined(CONFIG_EFI_VARS_MODULE)
--int efivars_sysfs_init(void);
--
 -#endif /* CONFIG_EFI_VARS */
- extern bool efi_capsule_pending(int *reset_type);
++#endif /* CONFIG_EFI */
  
- extern int efi_capsule_supported(efi_guid_t guid, u32 flags,
+ static ssize_t eventlog_write(struct file *filp, struct kobject *kobj,
+ 			       struct bin_attribute *bin_attr,
+@@ -1007,7 +1007,7 @@ static __init int gsmi_init(void)
+ 		goto out_remove_bin_file;
+ 	}
+ 
+-#ifdef CONFIG_EFI_VARS
++#ifdef CONFIG_EFI
+ 	ret = efivars_register(&efivars, &efivar_ops, gsmi_kobj);
+ 	if (ret) {
+ 		printk(KERN_INFO "gsmi: Failed to register efivars\n");
+@@ -1047,7 +1047,7 @@ static void __exit gsmi_exit(void)
+ 	unregister_die_notifier(&gsmi_die_notifier);
+ 	atomic_notifier_chain_unregister(&panic_notifier_list,
+ 					 &gsmi_panic_notifier);
+-#ifdef CONFIG_EFI_VARS
++#ifdef CONFIG_EFI
+ 	efivars_unregister(&efivars);
+ #endif
+ 
 -- 
 2.17.1
 
