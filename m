@@ -2,69 +2,72 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 34555274534
-	for <lists+linux-efi@lfdr.de>; Tue, 22 Sep 2020 17:26:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A74727505C
+	for <lists+linux-efi@lfdr.de>; Wed, 23 Sep 2020 07:40:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726643AbgIVP0M (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 22 Sep 2020 11:26:12 -0400
-Received: from mail.kernel.org ([198.145.29.99]:54600 "EHLO mail.kernel.org"
+        id S1726943AbgIWFku (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 23 Sep 2020 01:40:50 -0400
+Received: from hermes.cta.br ([161.24.235.5]:48168 "EHLO hermes.cta.br"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726614AbgIVP0L (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Tue, 22 Sep 2020 11:26:11 -0400
-Received: from mail-oi1-f181.google.com (mail-oi1-f181.google.com [209.85.167.181])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C9E2B2075E
-        for <linux-efi@vger.kernel.org>; Tue, 22 Sep 2020 15:26:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1600788370;
-        bh=fdkOB95sADWwZavkaqHQDRTo4xEzI9y1dh3A7VyjwSI=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=DRW07Ck0X54oFXooGluPImpJUQxiJrEZX8SydAwcJNDEit4ZPd7aNeh3WCed3IVw1
-         5Z/HwBzre6kfvpeYn9hXZTtGtsalWCynzLQp+B4QvZJudeW2SQUOgvzQPh0ZG2p2Cq
-         CZAHKu2jPTlYbeKY3ep9GS03P/Limp0tLviwbfwQ=
-Received: by mail-oi1-f181.google.com with SMTP id x69so21412105oia.8
-        for <linux-efi@vger.kernel.org>; Tue, 22 Sep 2020 08:26:10 -0700 (PDT)
-X-Gm-Message-State: AOAM533KWrZBqO+8uLa2w4w5hiPnhBSr53ubeMF70A1dOqKmSecUuSRa
-        xxSfDAl/hQX43G0WtePs0SQVKTacVhgDv/pWiBA=
-X-Google-Smtp-Source: ABdhPJx4ZqpTpDgW9K+kE6zyVU+cMw2Ul74cPwv6oTbT77zPxP5Al0VlHBd3f9rh7ymVVCrOZYe5DhCFYfQYCgV7whc=
-X-Received: by 2002:a54:4517:: with SMTP id l23mr3082701oil.174.1600788370154;
- Tue, 22 Sep 2020 08:26:10 -0700 (PDT)
+        id S1726925AbgIWFku (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Wed, 23 Sep 2020 01:40:50 -0400
+X-Greylist: delayed 2956 seconds by postgrey-1.27 at vger.kernel.org; Wed, 23 Sep 2020 01:40:49 EDT
+Received: from localhost (localhost [127.0.0.1])
+        by hermes.cta.br (Postfix) with ESMTP id 25F8616282AA;
+        Wed, 23 Sep 2020 01:38:27 -0300 (-03)
+Received: from hermes.cta.br ([127.0.0.1])
+        by localhost (hermes.cta.br [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id nKs2hqDwD-aT; Wed, 23 Sep 2020 01:38:26 -0300 (-03)
+Received: from localhost (localhost [127.0.0.1])
+        by hermes.cta.br (Postfix) with ESMTP id 91D9916E83A2;
+        Wed, 23 Sep 2020 01:19:39 -0300 (-03)
+DKIM-Filter: OpenDKIM Filter v2.10.3 hermes.cta.br 91D9916E83A2
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cta.br;
+        s=50824260-A46F-11E8-B5E3-16F5207DEC71; t=1600834780;
+        bh=PEgy+RpcsckcVXxslQn6d+tc//P81+6V7lvSU9dRFp0=;
+        h=MIME-Version:To:From:Date:Message-Id;
+        b=yJ2BxexoLamwQS3fcp4/70CIodufoo9eakSB+AukdzgzMKA6b/pKeOwlcNCxcSIOq
+         ysInzP2qgJTnyp4L8IPZBs62VQdHyLX9JV9res5JoAsf1qq6vOOGxum/dhbSHP0xBb
+         mGk2mv/+TzWv9JW6GQ0l17HrAqrOQuCKquJ9QsA406wH+hHxwrBUPPgPQdePIGGPv8
+         JRrU7FnMnxV2zvdW5TfNXyXcH5aGfHXUIvyM5pp7gZXnIZlwRD6gBdFW/JSs2H0Erq
+         cNy2ya3m4vonxwC2xdwh4JugfTfDXekAOc0ahsp26Hizcz99HZqkDadMdTOz16G9MQ
+         S2LO+7j3oH91g==
+X-Virus-Scanned: amavisd-new at cta.br
+Received: from hermes.cta.br ([127.0.0.1])
+        by localhost (hermes.cta.br [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id TrB8miAiUy-y; Wed, 23 Sep 2020 01:19:39 -0300 (-03)
+Received: from [10.120.212.214] (unknown [105.12.3.179])
+        by hermes.cta.br (Postfix) with ESMTPSA id CCA1A16E709A;
+        Wed, 23 Sep 2020 01:11:09 -0300 (-03)
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-References: <20200921154117.757-1-ardb@kernel.org> <20200921154117.757-11-ardb@kernel.org>
- <CACRpkda=P-Kc=-ZhZo8vtW9CrFfCiBvfkqwfdipz4WO2Gb2L_g@mail.gmail.com>
- <CAMj1kXG+XuauH93OuQzx_2huWrUca+S6SKwqogXiaR2sQB727w@mail.gmail.com> <nycvar.YSQ.7.78.906.2009221109510.2680@knanqh.ubzr>
-In-Reply-To: <nycvar.YSQ.7.78.906.2009221109510.2680@knanqh.ubzr>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Tue, 22 Sep 2020 17:25:59 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXHgwan4gjHRwxwis9315rwFHkKM4WGinm7u--R+uarGXQ@mail.gmail.com>
-Message-ID: <CAMj1kXHgwan4gjHRwxwis9315rwFHkKM4WGinm7u--R+uarGXQ@mail.gmail.com>
-Subject: Re: [PATCH v2 10/10] ARM: p2v: reduce p2v alignment requirement to 2 MiB
-To:     Nicolas Pitre <nico@fluxnic.net>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Zhen Lei <thunder.leizhen@huawei.com>,
-        Russell King <rmk+kernel@armlinux.org.uk>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: spende von 2,000,000 euro
+To:     Recipients <scco@cta.br>
+From:   ''Tayeb souami'' <scco@cta.br>
+Date:   Wed, 23 Sep 2020 06:13:27 +0200
+Reply-To: Tayebsouam.spende@gmail.com
+Message-Id: <20200923041109.CCA1A16E709A@hermes.cta.br>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, 22 Sep 2020 at 17:12, Nicolas Pitre <nico@fluxnic.net> wrote:
->
-> On Tue, 22 Sep 2020, Ard Biesheuvel wrote:
->
-> > By changing the patchable sequences and the patching logic to carry
-> > more bits of offset, we can improve this: 11 bits gives us 4 GiB >> 11
-> > == 2 MiB granularity, and so you never waste more than that amount by
-> > rounding up the physical start of DRAM to the next multiple of 2 MiB.
-> > (Note that 2 MiB granularity guarantees that the linear mapping can be
-> > created efficiently, whereas less than 2 MiB may result in the linear
-> > mapping needing another level of page tables)
->
-> That is IMHO the top argument for limiting it to 2 MiB.
-> It would be worth making this explicit in the commit log.
->
+Hallo mein lieber Freund
+                                  Mein Name ist Tayeb Souami aus New Jersey=
+ in Amerika und ich habe den America Lottery Jackpot von 315 Millionen Euro=
+ gewonnen. Ich habe mich entschlossen, die Summe von 2.000.000 Euro an f=FC=
+nf gl=FCckliche Personen zu spenden, und Sie wurden als einer der Beg=FCnst=
+igten ausgew=E4hlt. Bitte klicken Sie auf diesen Link, um mehr =FCber meine=
+n Gewinn zu erfahren.
 
-OK, I will merge this paragraph into the commit log.
+
+UHR MICH HIER: https://www.youtube.com/watch?v=3DZ6ui8ZDQ6Ks
+
+Bitte kontaktieren Sie mich =FCber diese E-Mail: Tayebsouam.spende@gmail.com
+
+
+Ich hoffe, Sie und Ihre Familie gl=FCcklich zu machen.
+
+Gr=FC=DFe
+Herr Tayeb Souami
