@@ -2,115 +2,150 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BA5142762B8
-	for <lists+linux-efi@lfdr.de>; Wed, 23 Sep 2020 23:02:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A71C02764DA
+	for <lists+linux-efi@lfdr.de>; Thu, 24 Sep 2020 02:03:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726600AbgIWVCw (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 23 Sep 2020 17:02:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37816 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726562AbgIWVCw (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 23 Sep 2020 17:02:52 -0400
-Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com [IPv6:2607:f8b0:4864:20::641])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C573C0613D1
-        for <linux-efi@vger.kernel.org>; Wed, 23 Sep 2020 14:02:52 -0700 (PDT)
-Received: by mail-pl1-x641.google.com with SMTP id f1so358987plo.13
-        for <linux-efi@vger.kernel.org>; Wed, 23 Sep 2020 14:02:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=CUC9K3dEL2hB4V0jU6qeK75cHX30YcxDUaS7J9CEnqw=;
-        b=ZWKjzla4G0Whff6qOnJmf4q4ZgSR4pu+SYJyHD4rChnqXiftmthkZtMCryFYJ+AgKm
-         /P3bITmJAoIv1aDo7J6i59wz2BgytVCxY5BDyZyF5tO12iu5WuxBvdplIhhvXFLmdW6U
-         AwikORFojCAMGSwoGpo7cVAgWVvujGTSvdRU0=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=CUC9K3dEL2hB4V0jU6qeK75cHX30YcxDUaS7J9CEnqw=;
-        b=K4M8MBkSaZuL4zdjWuLR8pJCI/YN9tqAyWHW9BGvAExbkK9MBlkd79o6COIfjsLezV
-         0i9V4xXrrAYxVxXxF3dNG5mF+cXjy59fs6tJ8ZKq/QV6JKx1S26OhlvF6W2NiROylRMY
-         M5s7w9iNgvl6gT9azw+aZyGwrNjfJm88PnnH1LuuJ7ajUMrhL+UFOTMS4QC3Hu3Vo7U1
-         IxidDprTlan82JChTsgXeXcRE+5dM6XDhbPcdO3khds+iYhB/ZWJd9O3gnffQuE6uPn1
-         0gxUucETt9dPBMkCcCO/I5yAl/zElMZLHeaBuypujWARZOyddACBrGPuYkZ+LLhC3foJ
-         +YCA==
-X-Gm-Message-State: AOAM5324v2yiHMYozEYAe2p+iaRWlDDN8/BJmNQw68XLTNBQwNQP9bV+
-        t7mChWBJeRYA6QPF2BjHx5kouQ==
-X-Google-Smtp-Source: ABdhPJz6YlD1PTJXLmB5RxC4afNF/67V7gCRw8d5CRd7/y/DXsELp3q9+x7e/mU97/M4umQHW8P3Cg==
-X-Received: by 2002:a17:90b:1812:: with SMTP id lw18mr994545pjb.133.1600894971623;
-        Wed, 23 Sep 2020 14:02:51 -0700 (PDT)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id u15sm534468pfm.61.2020.09.23.14.02.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Sep 2020 14:02:50 -0700 (PDT)
-Date:   Wed, 23 Sep 2020 14:02:49 -0700
-From:   Kees Cook <keescook@chromium.org>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Matthew Garrett <mjg59@google.com>,
-        Peter Jones <pjones@redhat.com>,
-        Anton Vorontsov <anton@enomsg.org>,
-        Colin Cross <ccross@android.com>,
-        Tony Luck <tony.luck@intel.com>
-Subject: Re: [PATCH 1/7] efi: pstore: disentangle from deprecated efivars
- module
-Message-ID: <202009231400.E52D1C7E7@keescook>
-References: <20200923161404.17811-1-ardb@kernel.org>
- <20200923161404.17811-2-ardb@kernel.org>
- <202009231140.B4648C6@keescook>
- <CAMj1kXFFs2rLMn5kdY9CGsz32ctBshb93iN7yBtZNHYwW2mWnw@mail.gmail.com>
+        id S1726596AbgIXADP (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 23 Sep 2020 20:03:15 -0400
+Received: from mo-csw1516.securemx.jp ([210.130.202.155]:44786 "EHLO
+        mo-csw.securemx.jp" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726562AbgIXADP (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 23 Sep 2020 20:03:15 -0400
+Received: by mo-csw.securemx.jp (mx-mo-csw1516) id 08O02lcW002993; Thu, 24 Sep 2020 09:02:47 +0900
+X-Iguazu-Qid: 34trYbPuXK3Y6WokyV
+X-Iguazu-QSIG: v=2; s=0; t=1600905766; q=34trYbPuXK3Y6WokyV; m=0KDuZXTtA84FWvgU79W3hotyFURS5UbU6LM7nkZ0KNg=
+Received: from imx2.toshiba.co.jp (imx2.toshiba.co.jp [106.186.93.51])
+        by relay.securemx.jp (mx-mr1511) id 08O02iHp036909;
+        Thu, 24 Sep 2020 09:02:44 +0900
+Received: from enc01.toshiba.co.jp ([106.186.93.100])
+        by imx2.toshiba.co.jp  with ESMTP id 08O02iOw020352;
+        Thu, 24 Sep 2020 09:02:44 +0900 (JST)
+Received: from hop001.toshiba.co.jp ([133.199.164.63])
+        by enc01.toshiba.co.jp  with ESMTP id 08O02h4O023471;
+        Thu, 24 Sep 2020 09:02:43 +0900
+From:   Punit Agrawal <punit1.agrawal@toshiba.co.jp>
+To:     Borislav Petkov <bp@alien8.de>
+Cc:     Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>,
+        x86@kernel.org, linux-kernel@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-edac@vger.kernel.org,
+        linux-efi@vger.kernel.org, linux-acpi@vger.kernel.org,
+        devel@acpica.org, Tony Luck <tony.luck@intel.com>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <len.brown@intel.com>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Yazen Ghannam <yazen.ghannam@amd.com>
+Subject: Re: [PATCH v4] cper, apei, mce: Pass x86 CPER through the MCA handling chain
+References: <20200904140444.161291-1-Smita.KoralahalliChannabasappa@amd.com>
+        <87wo0kiz6y.fsf@kokedama.swc.toshiba.co.jp>
+        <20200923140512.GJ28545@zn.tnic>
+Date:   Thu, 24 Sep 2020 09:02:42 +0900
+In-Reply-To: <20200923140512.GJ28545@zn.tnic> (Borislav Petkov's message of
+        "Wed, 23 Sep 2020 16:05:12 +0200")
+X-TSB-HOP: ON
+Message-ID: <87pn6chwil.fsf@kokedama.swc.toshiba.co.jp>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.3 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAMj1kXFFs2rLMn5kdY9CGsz32ctBshb93iN7yBtZNHYwW2mWnw@mail.gmail.com>
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, Sep 23, 2020 at 08:43:21PM +0200, Ard Biesheuvel wrote:
-> On Wed, 23 Sep 2020 at 20:41, Kees Cook <keescook@chromium.org> wrote:
-> >
-> > On Wed, Sep 23, 2020 at 06:13:58PM +0200, Ard Biesheuvel wrote:
-> > > The EFI pstore implementation relies on the 'efivars' abstraction,
-> > > which encapsulates the EFI variable store in a way that can be
-> > > overridden by other backing stores, like the Google SMI one.
-> > >
-> > > On top of that, the EFI pstore implementation also relies on the
-> > > efivars.ko module, which is a separate layer built on top of the
-> > > 'efivars' abstraction that exposes the [deprecated] sysfs entries
-> > > for each variable that exists in the backing store.
-> > >
-> > > Since the efivars.ko module is deprecated, and all users appear to
-> > > have moved to the efivarfs file system instead, let's prepare for
-> > > its removal, by removing EFI pstore's dependency on it.
-> > >
-> > > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> >
-> > With this and the other pstore patch, do the pstore self-tests still
-> > pass on an EFI system?
-> >
-> > If so, please consider both:
-> >
-> > Acked-by: Kees Cook <keescook@chromium.org>
-> >
-> 
-> Selftests? Excellent! Are they documented too?
+Borislav Petkov <bp@alien8.de> writes:
 
-Not really, but they're pretty simple:
+> Smita,
+>
+> pls sync the time of the box where you create the patch:
+>
+>  Date: Fri,  4 Sep 2020 09:04:44 -0500
+>
+> but your mail headers have:
+>
+>  Received: from ... with mapi id 15.20.3370.019; Fri, 18 Sep 2020 14:49:12 +0000
+>  						^^^^^^^^^^^^^^^^^^
+>
+> On Wed, Sep 23, 2020 at 07:07:17PM +0900, Punit Agrawal wrote:
+>> I know Boris asked you to add the reason for the Reported-by, but
+>> usually we don't track version differences in the committed patch.
+>> 
+>> Boris, can you confirm if you want the Reported-by to be retained?
+>
+> How else would you explain what the Reported-by: tag is for on a patch
+> which adds a feature?
 
-cd tools/testing/selftests/pstore
-*double-check "config" against running kernel config*
-./pstore_tests
-./pstore_crash_test
-*wait for system to reboot*
-cd tools/testing/selftests/pstore
-./pstore_post_reboot_tests
+As Ard clarified, I was questioning the inclusion of the Reported-by:
+tag in the patch itself. But I also don't have enough of a strong
+opinion to obsess about it.
 
-(though please test before/after, just to make sure other deltas haven't
-broken things before your series -- I don't test EFI pstore with high
-frequency)
+[ Aside: One interesting consequence of this though is that by the same
+argument, changes resulting from comments on earlier versions are also
+legitimate content for the final patch. Not saying I agree. ]
 
--- 
-Kees Cook
+>
+>> > + * The first expected register in the register layout of MCAX address space.
+>> > + * The address defined must match with the first MSR address extracted from
+>> > + * BERT which in SMCA systems is the bank's MCA_STATUS register.
+>> > + *
+>> > + * Note that the decoding of the raw MSR values in BERT is implementation
+>> > + * specific and follows register offset order of MCAX address space.
+>> > + */
+>> > +#define MASK_MCA_STATUS 0xC0002001
+>> 
+>> The macro value is already defined in mce.h as
+>> MSR_AMD64_SMCA_MC0_STATUS.  Is there any reason to not use it?
+>
+> Good point.
+>
+>> You can move the comment to where you check the status register.
+>
+> No need if he really wants to use the first MCi_STATUS address.
+>
+>> > +	m.apicid = lapic_id;
+>> > +	m.bank = (ctx_info->msr_addr >> 4) & 0xFF;
+>> > +	m.status = *i_mce;
+>> > +	m.addr = *(i_mce + 1);
+>> > +	m.misc = *(i_mce + 2);
+>> > +	/* Skipping MCA_CONFIG */
+>> > +	m.ipid = *(i_mce + 4);
+>> > +	m.synd = *(i_mce + 5);
+>> 
+>> Instead of using the raw pointer arithmetic, it is better to define a
+>> structure for the MCA registers? Something like -
+>> 
+>>     struct {
+>>         u64 addr;
+>>         u64 misc;
+>>         u64 config;
+>>         u64 ipid;
+>>         ...
+>>     }
+>> 
+>> Checking back, this was mentioned in the previous review comments as
+>> well. Please address all comments before posting a new version - either
+>> by following the suggestion or explaining why it is not a good idea.
+>
+> Well, that was addressed in his reply last time:
+>
+> https://lkml.kernel.org/r/a28aa613-8353-0052-31f6-34bc733abf59@amd.com
+
+Oops. My bad - sorry I missed the response.
+
+Copying the relevant comment here for discussion -
+
+>>> The registers here are implementation specific and applies only for
+>>> SMCA systems. So I have used pointer arithmetic as it is not defined
+>>> in the spec.
+
+Even though it's not defined in the UEFI spec, it doesn't mean a
+structure definition cannot be created. After all, the patch is relying
+on some guarantee of the meaning of the values and their ordering.
+
+If the patch is relying on the definitions in the SMCA spec it is a good
+idea to reference it here - both for review and providing relevant
+context for future developers.
+
+> You might've missed it because you weren't CCed directly.
+
+Indeed, I missed it. Thanks for the pointer.
+
+Cheers,
+Punit
