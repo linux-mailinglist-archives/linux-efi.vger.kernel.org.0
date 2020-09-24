@@ -2,115 +2,126 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 70623276DB5
-	for <lists+linux-efi@lfdr.de>; Thu, 24 Sep 2020 11:45:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6EC2C276DDB
+	for <lists+linux-efi@lfdr.de>; Thu, 24 Sep 2020 11:51:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726522AbgIXJpY (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 24 Sep 2020 05:45:24 -0400
-Received: from mail.kernel.org ([198.145.29.99]:42980 "EHLO mail.kernel.org"
+        id S1726442AbgIXJvl (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 24 Sep 2020 05:51:41 -0400
+Received: from mail.kernel.org ([198.145.29.99]:45490 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726442AbgIXJpX (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Thu, 24 Sep 2020 05:45:23 -0400
-Received: from mail-ot1-f51.google.com (mail-ot1-f51.google.com [209.85.210.51])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        id S1726380AbgIXJvl (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Thu, 24 Sep 2020 05:51:41 -0400
+Received: from localhost (83-86-74-64.cable.dynamic.v4.ziggo.nl [83.86.74.64])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C253823977;
-        Thu, 24 Sep 2020 09:45:22 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id BB8DE2396E;
+        Thu, 24 Sep 2020 09:51:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1600940722;
-        bh=yxZaR8oHCKmbjvofeBI7154Pzfy5ckgYTMwdIng5lfc=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=DpMHvs/+ynAjvKVx5Aj3p/dwAFZejJzwsOMF/qi81GBlcMl7MYV3/F2PzydqyMbPD
-         as6wT9rJsSAsrri9EkAaA+hvf7onEy/YXw6ESMBr/SPWeMCckfOa2x0nG5YihA4VXl
-         fgy64/b/73LPl/1kb9s3m1c603dfvjz7AXhmWuaE=
-Received: by mail-ot1-f51.google.com with SMTP id y5so2571579otg.5;
-        Thu, 24 Sep 2020 02:45:22 -0700 (PDT)
-X-Gm-Message-State: AOAM532JrB0yWDJZi/lOmCeE0B5r3Tqpi8erXj0KfpKQI3+AA7HaFbIn
-        9XSFlgKmt/80+z8VPEhzGplGG+LWa3QXmgNaxek=
-X-Google-Smtp-Source: ABdhPJxoellXIpyU0LHX8I0XsNYx3OIWNYU0Klr4nYoPB5A75M1KYnpRpffRjnqMc5d/R8WVBiDyUMG8J33nChSQM7M=
-X-Received: by 2002:a9d:335:: with SMTP id 50mr2389727otv.90.1600940722000;
- Thu, 24 Sep 2020 02:45:22 -0700 (PDT)
+        s=default; t=1600941100;
+        bh=TgimIo4LtMHR70zUjNJMS20tf+W7300XmLWfy8v9sGY=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=RaSEtGHdwDuOalyNKwB4D+91VvPEZc8LHgmr9sFNvoDdAPXoF3w0tfJMTegCsgM2H
+         z3uJSjoFYs6jjZdCcVArtbadiz6gWj7UnEiZ2En6DgEAiUNfLliPgsN+TkKE+mblIy
+         3l9o03DLJkf296TIgFeZFDWP64uGgBQJti7GKwZU=
+Date:   Thu, 24 Sep 2020 11:51:57 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     "Lee, Chun-Yi" <joeyli.kernel@gmail.com>
+Cc:     Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        "Lee, Chun-Yi" <jlee@suse.com>, Ard Biesheuvel <ardb@kernel.org>,
+        Matthias Brugger <mbrugger@suse.com>,
+        Fabian Vogt <fvogt@suse.com>,
+        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+        Arthur Heymans <arthur@aheymans.xyz>,
+        Patrick Rudolph <patrick.rudolph@9elements.com>
+Subject: Re: [PATCH] efi/efivars: Create efivars mount point in the
+ registration of efivars abstraction
+Message-ID: <20200924095157.GA304421@kroah.com>
+References: <20200924082833.12722-1-jlee@suse.com>
 MIME-Version: 1.0
-References: <20200923161404.17811-1-ardb@kernel.org> <20200923161404.17811-2-ardb@kernel.org>
- <202009231140.B4648C6@keescook> <CAMj1kXFFs2rLMn5kdY9CGsz32ctBshb93iN7yBtZNHYwW2mWnw@mail.gmail.com>
- <202009231400.E52D1C7E7@keescook>
-In-Reply-To: <202009231400.E52D1C7E7@keescook>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Thu, 24 Sep 2020 11:45:11 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXGGk2v69u+67LAyiyCTCteWxuMoRmVmWFGNdFbMPm6hCA@mail.gmail.com>
-Message-ID: <CAMj1kXGGk2v69u+67LAyiyCTCteWxuMoRmVmWFGNdFbMPm6hCA@mail.gmail.com>
-Subject: Re: [PATCH 1/7] efi: pstore: disentangle from deprecated efivars module
-To:     Kees Cook <keescook@chromium.org>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Matthew Garrett <mjg59@google.com>,
-        Peter Jones <pjones@redhat.com>,
-        Anton Vorontsov <anton@enomsg.org>,
-        Colin Cross <ccross@android.com>,
-        Tony Luck <tony.luck@intel.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200924082833.12722-1-jlee@suse.com>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, 23 Sep 2020 at 23:02, Kees Cook <keescook@chromium.org> wrote:
->
-> On Wed, Sep 23, 2020 at 08:43:21PM +0200, Ard Biesheuvel wrote:
-> > On Wed, 23 Sep 2020 at 20:41, Kees Cook <keescook@chromium.org> wrote:
-> > >
-> > > On Wed, Sep 23, 2020 at 06:13:58PM +0200, Ard Biesheuvel wrote:
-> > > > The EFI pstore implementation relies on the 'efivars' abstraction,
-> > > > which encapsulates the EFI variable store in a way that can be
-> > > > overridden by other backing stores, like the Google SMI one.
-> > > >
-> > > > On top of that, the EFI pstore implementation also relies on the
-> > > > efivars.ko module, which is a separate layer built on top of the
-> > > > 'efivars' abstraction that exposes the [deprecated] sysfs entries
-> > > > for each variable that exists in the backing store.
-> > > >
-> > > > Since the efivars.ko module is deprecated, and all users appear to
-> > > > have moved to the efivarfs file system instead, let's prepare for
-> > > > its removal, by removing EFI pstore's dependency on it.
-> > > >
-> > > > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> > >
-> > > With this and the other pstore patch, do the pstore self-tests still
-> > > pass on an EFI system?
-> > >
-> > > If so, please consider both:
-> > >
-> > > Acked-by: Kees Cook <keescook@chromium.org>
-> > >
-> >
-> > Selftests? Excellent! Are they documented too?
->
-> Not really, but they're pretty simple:
->
-> cd tools/testing/selftests/pstore
-> *double-check "config" against running kernel config*
-> ./pstore_tests
-> ./pstore_crash_test
-> *wait for system to reboot*
-> cd tools/testing/selftests/pstore
-> ./pstore_post_reboot_tests
->
-> (though please test before/after, just to make sure other deltas haven't
-> broken things before your series -- I don't test EFI pstore with high
-> frequency)
->
+On Thu, Sep 24, 2020 at 04:28:33PM +0800, Lee, Chun-Yi wrote:
+> This patch moved the logic of creating efivars mount point to the
+> registration of efivars abstraction. It's useful for userland to
+> determine the availability of efivars filesystem by checking the
+> existence of mount point.
 
-I have done the 'before' test on three different EFI Linux systems
-(x86, arm64 and ARM), and they all give me something like the below
+Why not do what all other tools do, and look in /proc/filesystems?
 
-=== Pstore unit tests (pstore_tests) ===
-UUID=109d02e6-9395-4274-9554-2c078e87a662
-Checking pstore backend is registered ... ok
-  backend=efi
-  cmdline=BOOT_IMAGE=/vmlinuz-5.3.0-59-generic
-root=/dev/mapper/crypt-root ro quiet splash vt.handoff=1
-Checking pstore console is registered ... FAIL
-Checking /dev/pmsg0 exists ... FAIL
-Writing unique string to /dev/pmsg0 ... FAIL
+Why is efivars "special" in this way?  What tool isn't properly looking
+for the filesystem in that way today?
 
-So I'm not sure if there is any point to doing the 'after' test if
-this is the baseline.
+> The 'efivars' platform device be created on generic EFI runtime services
+> platform, so it can be used to determine the availability of efivarfs.
+> But this approach is not available for google gsmi efivars abstraction.
+
+I do not understand this last sentence, can you try to explain it
+better?
+
+> This patch be tested on Here on qemu-OVMF and qemu-uboot.
+
+How about real hardware?  :)
+
+> 
+> Cc: Ard Biesheuvel <ardb@kernel.org>
+> Cc: Matthias Brugger <mbrugger@suse.com>
+> Cc: Fabian Vogt <fvogt@suse.com>
+> Cc: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: Arthur Heymans <arthur@aheymans.xyz>
+> Cc: Patrick Rudolph <patrick.rudolph@9elements.com>
+> Signed-off-by: "Lee, Chun-Yi" <jlee@suse.com>
+> ---
+>  drivers/firmware/efi/efi.c  |  7 -------
+>  drivers/firmware/efi/vars.c | 17 +++++++++++++++++
+>  2 files changed, 17 insertions(+), 7 deletions(-)
+> 
+> diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
+> index 3aa07c3b5136..23c11a2a3f4d 100644
+> --- a/drivers/firmware/efi/efi.c
+> +++ b/drivers/firmware/efi/efi.c
+> @@ -405,13 +405,6 @@ static int __init efisubsys_init(void)
+>  	if (error)
+>  		goto err_remove_group;
+>  
+> -	/* and the standard mountpoint for efivarfs */
+> -	error = sysfs_create_mount_point(efi_kobj, "efivars");
+> -	if (error) {
+> -		pr_err("efivars: Subsystem registration failed.\n");
+> -		goto err_remove_group;
+> -	}
+> -
+>  	if (efi_enabled(EFI_DBG) && efi_enabled(EFI_PRESERVE_BS_REGIONS))
+>  		efi_debugfs_init();
+>  
+> diff --git a/drivers/firmware/efi/vars.c b/drivers/firmware/efi/vars.c
+> index 973eef234b36..6fa7f288d635 100644
+> --- a/drivers/firmware/efi/vars.c
+> +++ b/drivers/firmware/efi/vars.c
+> @@ -1179,6 +1179,8 @@ int efivars_register(struct efivars *efivars,
+>  		     const struct efivar_operations *ops,
+>  		     struct kobject *kobject)
+>  {
+> +	int error;
+> +
+>  	if (down_interruptible(&efivars_lock))
+>  		return -EINTR;
+>  
+> @@ -1191,6 +1193,19 @@ int efivars_register(struct efivars *efivars,
+>  
+>  	up(&efivars_lock);
+>  
+> +	/* and the standard mountpoint for efivarfs */
+> +	if (efi_kobj) {
+
+Why test for this?  Can it race?
+
+thanks,
+
+greg k-h
