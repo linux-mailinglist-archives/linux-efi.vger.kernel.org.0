@@ -2,119 +2,205 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EB9E4277D3D
-	for <lists+linux-efi@lfdr.de>; Fri, 25 Sep 2020 02:54:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 067FC277E43
+	for <lists+linux-efi@lfdr.de>; Fri, 25 Sep 2020 04:57:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726808AbgIYAyi (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 24 Sep 2020 20:54:38 -0400
-Received: from mo-csw1516.securemx.jp ([210.130.202.155]:34964 "EHLO
-        mo-csw.securemx.jp" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726700AbgIYAyi (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 24 Sep 2020 20:54:38 -0400
-Received: by mo-csw.securemx.jp (mx-mo-csw1516) id 08P0sBXU010109; Fri, 25 Sep 2020 09:54:11 +0900
-X-Iguazu-Qid: 34trJYZuoCRlJhwH8R
-X-Iguazu-QSIG: v=2; s=0; t=1600995250; q=34trJYZuoCRlJhwH8R; m=5x7FASoPHBhzBBc9o2Kptvc5cYFjVXPhl+ozBC+N1SU=
-Received: from imx12.toshiba.co.jp (imx12.toshiba.co.jp [61.202.160.132])
-        by relay.securemx.jp (mx-mr1511) id 08P0s84l004113;
-        Fri, 25 Sep 2020 09:54:08 +0900
-Received: from enc02.toshiba.co.jp ([61.202.160.51])
-        by imx12.toshiba.co.jp  with ESMTP id 08P0s72w005008;
-        Fri, 25 Sep 2020 09:54:07 +0900 (JST)
-Received: from hop101.toshiba.co.jp ([133.199.85.107])
-        by enc02.toshiba.co.jp  with ESMTP id 08P0s7NM011090;
-        Fri, 25 Sep 2020 09:54:07 +0900
-From:   Punit Agrawal <punit1.agrawal@toshiba.co.jp>
-To:     Borislav Petkov <bp@alien8.de>
-Cc:     Smita Koralahalli Channabasappa <skoralah@amd.com>,
-        Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>,
-        x86@kernel.org, linux-kernel@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-edac@vger.kernel.org,
-        linux-efi@vger.kernel.org, linux-acpi@vger.kernel.org,
-        devel@acpica.org, Tony Luck <tony.luck@intel.com>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <len.brown@intel.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Yazen Ghannam <yazen.ghannam@amd.com>
-Subject: Re: [PATCH v4] cper, apei, mce: Pass x86 CPER through the MCA handling chain
-References: <20200904140444.161291-1-Smita.KoralahalliChannabasappa@amd.com>
-        <87wo0kiz6y.fsf@kokedama.swc.toshiba.co.jp>
-        <20200923140512.GJ28545@zn.tnic>
-        <87pn6chwil.fsf@kokedama.swc.toshiba.co.jp>
-        <52c50f37-a86c-57ad-30e0-dac0857e4ef7@amd.com>
-        <20200924175023.GN5030@zn.tnic>
-Date:   Fri, 25 Sep 2020 09:54:06 +0900
-In-Reply-To: <20200924175023.GN5030@zn.tnic> (Borislav Petkov's message of
-        "Thu, 24 Sep 2020 19:50:23 +0200")
-X-TSB-HOP: ON
-Message-ID: <877dsiislt.fsf@kokedama.swc.toshiba.co.jp>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.3 (gnu/linux)
+        id S1726706AbgIYC5m (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 24 Sep 2020 22:57:42 -0400
+Received: from mga07.intel.com ([134.134.136.100]:57124 "EHLO mga07.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726676AbgIYC5l (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Thu, 24 Sep 2020 22:57:41 -0400
+IronPort-SDR: EOZNVtmYcSTxtSha8DNXGdFotDFi8Au+bGTTfsmTtg9Sg2xwz4TQ4MRHpwEoWrJj1LU3E01d8l
+ Jt8nXZOV/HbA==
+X-IronPort-AV: E=McAfee;i="6000,8403,9754"; a="225561000"
+X-IronPort-AV: E=Sophos;i="5.77,300,1596524400"; 
+   d="scan'208";a="225561000"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Sep 2020 19:57:40 -0700
+IronPort-SDR: rI5RcLtiQX6Nx9ntj94Tk0FCcbyv8dOo5j8/rVbuDxs8ksjByWD65zJEihyWNxtUiwY62aePw/
+ B3bxoMCtKBYA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.77,300,1596524400"; 
+   d="scan'208";a="343227992"
+Received: from lkp-server01.sh.intel.com (HELO 8db25767daa8) ([10.239.97.150])
+  by fmsmga002.fm.intel.com with ESMTP; 24 Sep 2020 19:57:39 -0700
+Received: from kbuild by 8db25767daa8 with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1kLdvX-00000Y-10; Fri, 25 Sep 2020 02:57:39 +0000
+Date:   Fri, 25 Sep 2020 10:56:46 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-efi@vger.kernel.org
+Subject: [efi:urgent] BUILD SUCCESS
+ 3c77989f2e7b8869b475031d99b892e0baf42739
+Message-ID: <5f6d5c6e.jwC0D8vVl5ugduRy%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Borislav Petkov <bp@alien8.de> writes:
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git  urgent
+branch HEAD: 3c77989f2e7b8869b475031d99b892e0baf42739  efi: Delete deprecated parameter comments
 
-> On Thu, Sep 24, 2020 at 12:23:27PM -0500, Smita Koralahalli Channabasappa wrote:
->> > Even though it's not defined in the UEFI spec, it doesn't mean a
->> > structure definition cannot be created.
->
-> Created for what? That structure better have a big fat comment above it, what
-> firmware generates its layout.
+elapsed time: 722m
 
-Maybe I could've used a better choice of words - I meant to define a
-structure with meaningful member names to replace the *(ptr + i)
-accesses in the patch.
+configs tested: 141
+configs skipped: 4
 
-The requirement for documenting the record layout doesn't change -
-whether using raw pointer arithmetic vs a structure definition.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
->> > After all, the patch is relying on some guarantee of the meaning of
->> > the values and their ordering.
->
-> AFAICT, this looks like an ad-hoc definition and the moment they change
-> it in some future revision, that struct of yours becomes invalid so we'd
-> need to add another one.
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+sh                          r7780mp_defconfig
+sh                          r7785rp_defconfig
+arm                            xcep_defconfig
+arm                          badge4_defconfig
+mips                  maltasmvp_eva_defconfig
+m68k                         apollo_defconfig
+mips                      bmips_stb_defconfig
+arc                     nsimosci_hs_defconfig
+sh                ecovec24-romimage_defconfig
+arm                           u8500_defconfig
+powerpc                        warp_defconfig
+arm                         assabet_defconfig
+sh                          rsk7201_defconfig
+i386                             allyesconfig
+sh                          rsk7269_defconfig
+ia64                                defconfig
+microblaze                    nommu_defconfig
+arm                     davinci_all_defconfig
+m68k                       m5275evb_defconfig
+powerpc                     tqm8548_defconfig
+arm                         nhk8815_defconfig
+mips                         rt305x_defconfig
+arm                       mainstone_defconfig
+powerpc64                           defconfig
+xtensa                              defconfig
+m68k                        stmark2_defconfig
+arm                            qcom_defconfig
+powerpc                       ebony_defconfig
+xtensa                    smp_lx200_defconfig
+m68k                        m5272c3_defconfig
+openrisc                         alldefconfig
+powerpc                 mpc8313_rdb_defconfig
+powerpc                     pseries_defconfig
+m68k                          hp300_defconfig
+sparc                            allyesconfig
+sparc                       sparc32_defconfig
+powerpc                 mpc837x_mds_defconfig
+arc                      axs103_smp_defconfig
+powerpc                 linkstation_defconfig
+arm                     am200epdkit_defconfig
+ia64                      gensparse_defconfig
+powerpc                     tqm8541_defconfig
+powerpc                    socrates_defconfig
+arm                         s3c6400_defconfig
+mips                        omega2p_defconfig
+h8300                               defconfig
+sh                           se7705_defconfig
+powerpc                    amigaone_defconfig
+arc                        nsim_700_defconfig
+arm                         axm55xx_defconfig
+sh                          polaris_defconfig
+sh                          lboxre2_defconfig
+nds32                             allnoconfig
+csky                                defconfig
+ia64                             allmodconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+c6x                              allyesconfig
+nds32                               defconfig
+nios2                            allyesconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+parisc                           allyesconfig
+s390                                defconfig
+sparc                               defconfig
+i386                                defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+i386                 randconfig-a002-20200924
+i386                 randconfig-a006-20200924
+i386                 randconfig-a003-20200924
+i386                 randconfig-a004-20200924
+i386                 randconfig-a005-20200924
+i386                 randconfig-a001-20200924
+i386                 randconfig-a002-20200923
+i386                 randconfig-a006-20200923
+i386                 randconfig-a003-20200923
+i386                 randconfig-a004-20200923
+i386                 randconfig-a005-20200923
+i386                 randconfig-a001-20200923
+x86_64               randconfig-a011-20200923
+x86_64               randconfig-a013-20200923
+x86_64               randconfig-a014-20200923
+x86_64               randconfig-a015-20200923
+x86_64               randconfig-a012-20200923
+x86_64               randconfig-a016-20200923
+i386                 randconfig-a012-20200923
+i386                 randconfig-a014-20200923
+i386                 randconfig-a016-20200923
+i386                 randconfig-a013-20200923
+i386                 randconfig-a011-20200923
+i386                 randconfig-a015-20200923
+i386                 randconfig-a012-20200924
+i386                 randconfig-a014-20200924
+i386                 randconfig-a016-20200924
+i386                 randconfig-a013-20200924
+i386                 randconfig-a011-20200924
+i386                 randconfig-a015-20200924
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+x86_64                                   rhel
+x86_64                           allyesconfig
+x86_64                    rhel-7.6-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                                  kexec
 
-If there's no spec backing the current layout, then it'll indeed be an
-ad-hoc definition of a structure in the kernel. But considering that
-it's part of firmware / OS interface for an important part of the RAS
-story I would hope that the code is based on a spec - having that
-reference included would help maintainability.
+clang tested configs:
+x86_64               randconfig-a005-20200923
+x86_64               randconfig-a003-20200923
+x86_64               randconfig-a004-20200923
+x86_64               randconfig-a002-20200923
+x86_64               randconfig-a006-20200923
+x86_64               randconfig-a001-20200923
+x86_64               randconfig-a005-20200925
+x86_64               randconfig-a003-20200925
+x86_64               randconfig-a004-20200925
+x86_64               randconfig-a002-20200925
+x86_64               randconfig-a006-20200925
+x86_64               randconfig-a001-20200925
 
-Incompatible changes will indeed break the assumptions in the kernel and
-code will need to be updated - regardless of the choice of kernel
-implementation; pointer arithmetic, structure definition - ad-hoc or
-spec provided.
-
-Having versioning will allow running older kernels on newer hardware and
-vice versa - but I don't see why that is important only when using a
-structure based access.
-
->
->> > If the patch is relying on the definitions in the SMCA spec it is a good
->
-> Yes, what SMCA spec is that?
->
->> > idea to reference it here - both for review and providing relevant
->> > context for future developers.
->> 
->> Okay, I agree the structure definition will make the code less arbitrary
->> and provides relevant context compared to pointer arithmetic. I did not
->> think this way. I can try this out if no objections.
->
-> Again, this struct better have "versioning" info because the moment your
-> fw people change it in some future platform, this code needs touching
-> again.
->
-> It probably would need touching even with the offsets if those offsets
-> change but at least not having it adhere to some slow-moving spec is
-> probably easier in case they wanna add/change fields.
->
-> So Smita, you probably should talk to fw people about how stable that
-> layout at ctx_info + 1 is going to be wrt future platforms so that
-> we make sure we only access the correct offsets, now and on future
-> platforms.
->
-> Thx.
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
