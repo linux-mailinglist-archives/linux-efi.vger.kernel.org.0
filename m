@@ -2,79 +2,156 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E90C827A934
-	for <lists+linux-efi@lfdr.de>; Mon, 28 Sep 2020 10:01:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 542F027A94A
+	for <lists+linux-efi@lfdr.de>; Mon, 28 Sep 2020 10:07:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726540AbgI1IB3 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 28 Sep 2020 04:01:29 -0400
-Received: from sonic306-19.consmr.mail.ir2.yahoo.com ([77.238.176.205]:44742
-        "EHLO sonic306-19.consmr.mail.ir2.yahoo.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726461AbgI1IB3 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 28 Sep 2020 04:01:29 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1601280087; bh=MWL01jPVJXuBFzguUnxzZVCMkBAhTvIWLeZZqdlFV60=; h=Date:From:Reply-To:Subject:References:From:Subject; b=hAWbRGiyUoBiCBfuJnSDc6LrDp+B6FyMZqEUxGLdERJ2Ug9ChEtqq6t41h5rWv4aVcD7+UEN4fBu9MdCjki8k9jcEyXasqgHlL3nx1rgdwyriGRjSHjAn1iRM629tkkRP1KmDCNK7O3lNbyGK9jkwXcnJ6dKfe+1fHrK1lYu1k5+6NXpF5Xg0F+4ZCf0kakPqdxCyEgptDw9LkxWYuSbLM8NER6XZbQ3iY+177zW73J4h2MA3eroodVMT+s1V8QcLGsibUbolaOcD6oXA1KsHo90ABx9pynh1LP2PJD98uZ3MJqjlNwku5UaipHAG8kEtk+lhzQY8gZ5dvd002fWvw==
-X-YMail-OSG: Ulbq1ykVM1kit9dG3YGdVzGqO1QbRRvKZ2GIsPGcz2Rv.aBGl6Fa2.sVjuSfO8y
- wO_0Hu0u5R7.CFxMRsSMAai6AEaa_XpDH6uEDfFrDK2ZSqShsEL2KM1_ayG9zVmcvUfds_vWgPOt
- kJXMzprBILiCfLhrm3zNzcNFYheKBtu.LaWvHLBjDsMf7b2W1XMriAwCc7rgliWRjgLdcdFA5kVu
- wtPtSCD7i9zjAegroSPWeUTQ0vdoNVqvvl3MRYY663T_G0ddPSpSmabQEpEj23NoSKalqU1O6TBp
- yw3XOupdIuDJAX2GdZITccw2DTBZyQuu1ONH_ersPijPTxIWicYdLHA6z7K0x1Hv6ebJo502292B
- Xw2Hg9qww789TcgWaj5QusUKaY8GM8nRjbKNbrCsGvG3.8P.fE9XDtIwZLIMBcQp311CdoWzjODh
- iSJna6BPj6MSXasJZo05iux3_p3v33y8dRdbcRtlpDUvb95Ypb5z4XSvr5ggY1MJ3KZSH.vBrfUf
- vKmtVAM7iZEfllI0PesR1b8dZXSP8XG6gGp00pLi7fU9jthuEd5pRR77talapy_jCZ_9_587isgo
- EFAW09KlrW8W9j6mMCYHrNCb5Dd_oQ6z5PDGvBfv3RVhd9gFNl57L9Fu5JQe_uDTW5_LUgHz7ENc
- 5q72WklV1TMHZlJGI7bfT5f0I3Erf5D1bjP1PG947MJwY6_XvQGPoZ7mhqgD5Nm8xZUgXCkYqU_P
- OHOJ4WncwUid1XNu2k_jjt3cVYz81IeYw76bW_JFo5t1Tf0tG7xbcy5W2XoSLP9iP9jeP5yDcMCI
- i4vEyfVE3IsheKS.wO1PPv33nL1xPxrllXD6JM43GJt6bYRXaOIWob.asbFHvFvMgDhJxIoQzDMd
- NAXEULxMP_ZdMiYDHo9g2EjbLlfARtxpXezdzw0AtwqPAz.gVD7G.97dcteWfSBtMkvjp2w62r1n
- 6GRhb2fo.7IbgWe_Oaswl6mh05ekrOzpzDCKtx39Uk2wahiEsT0tEeKDVWQAHJ5RtxdZR20Hz.AO
- zzuctwjEqfB4WMqoskIIeh5J7QG2KC_YhEVIfp6G3p2MANhKIZXBLwR_s8MzU.hGMRBYLiRbV0FR
- PNKCfx8qtCcWTgE8cMSVS.TwXnXrwIi9Bkl4u7ms5UYzWxSsNIK9fQeo1OlPg9oWwSwdPksITwYg
- aA0E9OpZnelDxjzZOl7F0tAdu8rkiYChbPkV_ttGTJAlCFKd5OKMF1n4MyGB3TYafwq.WCvyN04E
- RCMknf7DWM2GDodwic76Y6B56ynZJH_IWCkJv9KB_RtJxJ_JmXdwB0hFPgl1wRstOqaxiFk7zO26
- 6FFmrAehkRjcnd96Eip0rPVfDCnXHqidEP2pm6HhyMUfK0VRrDoS6tMWZMS_S0kR8FIul7iE5bRM
- e5EJy3_Fv.efQltv3sbGLMp_xb.rxhlyRXresbn3RMLUz93mV3n5WFvecpdbEWw_WSf1Vs_ia
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic306.consmr.mail.ir2.yahoo.com with HTTP; Mon, 28 Sep 2020 08:01:27 +0000
-Date:   Mon, 28 Sep 2020 08:01:22 +0000 (UTC)
-From:   mcompola <visacarddapartbf@gmail.com>
-Reply-To: mcompola444@gmail.com
-Message-ID: <1047269090.2251379.1601280082699@mail.yahoo.com>
-Subject: Dear Friend, My present internet connection is very slow in case
- you
+        id S1726630AbgI1IHR (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 28 Sep 2020 04:07:17 -0400
+Received: from mo-csw1114.securemx.jp ([210.130.202.156]:50596 "EHLO
+        mo-csw.securemx.jp" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726328AbgI1IHR (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 28 Sep 2020 04:07:17 -0400
+Received: by mo-csw.securemx.jp (mx-mo-csw1114) id 08S86hJQ020143; Mon, 28 Sep 2020 17:06:43 +0900
+X-Iguazu-Qid: 2wHHD8Mc0ow5N7A8gs
+X-Iguazu-QSIG: v=2; s=0; t=1601280402; q=2wHHD8Mc0ow5N7A8gs; m=wyJW3X7i3huENYMQ7/lLyT141B4MpZI3/qHSzRMZx5Y=
+Received: from imx2.toshiba.co.jp (imx2.toshiba.co.jp [106.186.93.51])
+        by relay.securemx.jp (mx-mr1112) id 08S86eGE006235;
+        Mon, 28 Sep 2020 17:06:40 +0900
+Received: from enc01.toshiba.co.jp ([106.186.93.100])
+        by imx2.toshiba.co.jp  with ESMTP id 08S86elB000843;
+        Mon, 28 Sep 2020 17:06:40 +0900 (JST)
+Received: from hop001.toshiba.co.jp ([133.199.164.63])
+        by enc01.toshiba.co.jp  with ESMTP id 08S86c4l003317;
+        Mon, 28 Sep 2020 17:06:39 +0900
+From:   Punit Agrawal <punit1.agrawal@toshiba.co.jp>
+To:     Yazen Ghannam <yazen.ghannam@amd.com>
+Cc:     Borislav Petkov <bp@alien8.de>,
+        Smita Koralahalli Channabasappa <skoralah@amd.com>,
+        Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>,
+        <x86@kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-pm@vger.kernel.org>, <linux-edac@vger.kernel.org>,
+        <linux-efi@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+        <devel@acpica.org>, Tony Luck <tony.luck@intel.com>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <len.brown@intel.com>,
+        Ard Biesheuvel <ardb@kernel.org>
+Subject: Re: [PATCH v4] cper, apei, mce: Pass x86 CPER through the MCA handling chain
+References: <20200904140444.161291-1-Smita.KoralahalliChannabasappa@amd.com>
+        <87wo0kiz6y.fsf@kokedama.swc.toshiba.co.jp>
+        <20200923140512.GJ28545@zn.tnic>
+        <87pn6chwil.fsf@kokedama.swc.toshiba.co.jp>
+        <52c50f37-a86c-57ad-30e0-dac0857e4ef7@amd.com>
+        <20200924175023.GN5030@zn.tnic>
+        <877dsiislt.fsf@kokedama.swc.toshiba.co.jp>
+        <20200925161940.GA21194@yaz-nikka.amd.com>
+Date:   Mon, 28 Sep 2020 17:06:36 +0900
+X-TSB-HOP: ON
+Message-ID: <87lfgugwab.fsf@kokedama.swc.toshiba.co.jp>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.3 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-References: <1047269090.2251379.1601280082699.ref@mail.yahoo.com>
-X-Mailer: WebService/1.1.16674 YMailNodin Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:80.0) Gecko/20100101 Firefox/80.0
-To:     unlisted-recipients:; (no To-header on input)
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
+Yazen Ghannam <yazen.ghannam@amd.com> writes:
 
+> On Fri, Sep 25, 2020 at 09:54:06AM +0900, Punit Agrawal wrote:
+>> Borislav Petkov <bp@alien8.de> writes:
+>> 
+>> > On Thu, Sep 24, 2020 at 12:23:27PM -0500, Smita Koralahalli Channabasappa wrote:
+>> >> > Even though it's not defined in the UEFI spec, it doesn't mean a
+>> >> > structure definition cannot be created.
+>> >
+>> > Created for what? That structure better have a big fat comment above it, what
+>> > firmware generates its layout.
+>> 
+>> Maybe I could've used a better choice of words - I meant to define a
+>> structure with meaningful member names to replace the *(ptr + i)
+>> accesses in the patch.
+>> 
+>> The requirement for documenting the record layout doesn't change -
+>> whether using raw pointer arithmetic vs a structure definition.
+>> 
+>> >> > After all, the patch is relying on some guarantee of the meaning of
+>> >> > the values and their ordering.
+>> >
+>> > AFAICT, this looks like an ad-hoc definition and the moment they change
+>> > it in some future revision, that struct of yours becomes invalid so we'd
+>> > need to add another one.
+>> 
+>> If there's no spec backing the current layout, then it'll indeed be an
+>> ad-hoc definition of a structure in the kernel. But considering that
+>> it's part of firmware / OS interface for an important part of the RAS
+>> story I would hope that the code is based on a spec - having that
+>> reference included would help maintainability.
+>> 
+>> Incompatible changes will indeed break the assumptions in the kernel and
+>> code will need to be updated - regardless of the choice of kernel
+>> implementation; pointer arithmetic, structure definition - ad-hoc or
+>> spec provided.
+>> 
+>> Having versioning will allow running older kernels on newer hardware and
+>> vice versa - but I don't see why that is important only when using a
+>> structure based access.
+>>
+>
+> There is no versioning option for the x86 context info structure in the
+> UEFI spec, so I don't think there'd be a clean way to include version
+> information.
+>
+> The format of the data in the context info is not totally ad-hoc, and it
+> does follow the UEFI spec. The "Register Array" field is raw data. This
+> may follow one of the predefined formats in the UEFI spec like the "X64
+> Register State", etc. Or, in the case of MSR and Memory Mapped
+> Registers, this is a raw dump of the registers starting from the address
+> shown in the structure. The two values that can be changed are the
+> starting address and the array size. These two together provide a window
+> to the registers. The registers are fixed, so a single context info
+> struture should include a single contiguous range of registers. Multiple
+> context info structures can be provided to include registers from
+> different, non-contiguous ranges.
+>
+> This patch is checking if an MSR context info structure lines up with
+> the MCAX register space used on Scalable MCA systems. This register
+> space is defined in the AMD Processor Programming Reference for various
+> products. This is considered a hardware feature extension, so the
+> existing register layout won't change though new registers may be added.
+> A layout change would require moving to another register space which is
+> what happened going from legacy MCA (starting at address 0x400) to MCAX
+> (starting at address 0xC0002000) registers.
 
-Dear Friend, My present internet connection is very slow in case you
-received my email in your spam
+Thanks for the SMCA related background.
+>
+> The only two things firmware can change are from what address does the
+> info start and where does the info end. So the implementation-specific
+> details here are that currently the starting address is MCA_STATUS (in
+> MCAX space) for a bank and the remaining info includes the other MCA
+> registers for this bank.
+>
+> So I think the kernel can be strict with this format, i.e. the two
+> variables match what we're looking for. This patch already has a check
+> on the starting address. It should also include a check that "Register
+> Array Size" is large enough to include all the registers we want to
+> extract. If the format doesn't match, then we fall back to a raw dump
+> of the data like we have today.
+>
+> Or the kernel can be more flexible and try to find the window of
+> registers based on the starting address. I think this is really
+> open-ended though.
 
-How are you today?.With due respect to your person and much sincerity
-of purpose,Well it is a pleasure to contact you on this regard and i
-pray that this will turn out to be everlasting relationship for both
-of us. However it's just my urgent need for a Foreign partner that
-made me to contact you for this Transaction,I got your contact from
-internet, while searching for a reliable someone that I can go into
-partnership with. I am Mrs.mcompola, from BURKINA FASO, West
-Africa .Presently i work in the Bank as bill and exchange manager.
+I think I understand the hesitancy here if the firmware can arbitrarily
+move the starting address. Though I hope that doesn't happen as it would
+break the feature introduced in $SUBJECT.
 
-I have the opportunity of transferring the left over fund $5.4 Million
-us dollars of one of my Bank clients who died in the collapsing of the
-world trade center on september 11th 2001.I have placed this fund to
-and escrow account without name of beneficiary.i will use my position
-here in the bank to effect a hitch free transfer of the fund to your
-bank account and there will be no trace.
+The way I read the code / spec led me to believe that the MSR context
+info records in the SMCA space are just encoding the layout of MC Bank
+registers[0] and making it explicit can only help.
 
-I agree that 40% of this money will be for you as my foriegn
-partner,50% for me while 10% will be for the expenses that will occur
-in this transaction .If you are really interested in my proposal
-further details of the Transfer will be forwarded unto you as soon as
-I receive your willingness mail for successful transfer.
+But Boris seems to think the current approach is good enough. So no
+objections from me.
 
-Yours Faithfully,
-mrs.mcompola333@gmail.com
+Thanks,
+Punit
+
+[0] AMD Processor Programming Reference for Family 17H, Sec 3.1.5
