@@ -2,73 +2,79 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D50A527D494
-	for <lists+linux-efi@lfdr.de>; Tue, 29 Sep 2020 19:36:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E301D27D5B2
+	for <lists+linux-efi@lfdr.de>; Tue, 29 Sep 2020 20:24:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729506AbgI2Rg5 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 29 Sep 2020 13:36:57 -0400
-Received: from mail.kernel.org ([198.145.29.99]:56974 "EHLO mail.kernel.org"
+        id S1728129AbgI2SYN (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 29 Sep 2020 14:24:13 -0400
+Received: from mail.kernel.org ([198.145.29.99]:57842 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725554AbgI2Rg5 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Tue, 29 Sep 2020 13:36:57 -0400
-Received: from mail-oo1-f52.google.com (mail-oo1-f52.google.com [209.85.161.52])
+        id S1727605AbgI2SYL (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Tue, 29 Sep 2020 14:24:11 -0400
+Received: from e123331-lin.nice.arm.com (lfbn-nic-1-188-42.w2-15.abo.wanadoo.fr [2.15.37.42])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 4F6792076B
-        for <linux-efi@vger.kernel.org>; Tue, 29 Sep 2020 17:36:56 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 7671E208B8;
+        Tue, 29 Sep 2020 18:24:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1601401016;
-        bh=R+BspxoVDllk+vporK/akvNxcNaeF4A2h++L1ZRNi0w=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=D2UUYAi+2lcJ8xExnvOjTC2zmDUTrqwPpl9fzOasOpDGJS23/aljBA/EsKpiqlAzw
-         xSmZzqM9+56hqMawvVDPZDPmFwDzKg5RjsNxcIV4bRf/PzJT6PhivJDumrFTKY6ykG
-         V9Rsfua19f2R66oRhPGgrKHM0yo9rBYOavkCf7H4=
-Received: by mail-oo1-f52.google.com with SMTP id w25so1486255oos.10
-        for <linux-efi@vger.kernel.org>; Tue, 29 Sep 2020 10:36:56 -0700 (PDT)
-X-Gm-Message-State: AOAM533UAyY/B0auuPghY09OXK12O1RPr5EtSKLtsHhHx/kPpnUlfj55
-        c5FW1C1mRWcjYzb1gmfEyM7T272bfXjPKrlIe4E=
-X-Google-Smtp-Source: ABdhPJzFWLyZIBvBT9/otONtvk/yewBOTnMqvBPr0tZp/rWSLpTjpNi4ONepcr8ZBf54tWGR1PUJ0JSICVAAz1B6cDc=
-X-Received: by 2002:a4a:b443:: with SMTP id h3mr5423163ooo.45.1601401015532;
- Tue, 29 Sep 2020 10:36:55 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200924160546.8967-1-ardb@kernel.org> <20200929165840.GI21110@zn.tnic>
-In-Reply-To: <20200929165840.GI21110@zn.tnic>
+        s=default; t=1601403850;
+        bh=6lduulYFraRHs/1LQJ/Vl3zGXyqQMTPuf2V084eAFm8=;
+        h=From:To:Cc:Subject:Date:From;
+        b=u832ybqpug0O15ld/h4ZEGhP7r0hSmzAxy2bcF1Pm3d8jiy4EjD8YCjA7LtUlyMMU
+         OBolKLc36ik7e65xmwTBZUPOMOE2KYEM/tTKiRxeKpDzJduTx6rFwPeK6LIMNZ7t3H
+         jcwqv8Ga9VbboubNG1QIpuSoKVfguxYN1yRo2goI=
 From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Tue, 29 Sep 2020 19:36:44 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXHP7NjXd9gzKCYW2jsHE67PdmxGwGTTBD1o_301Sts-yw@mail.gmail.com>
-Message-ID: <CAMj1kXHP7NjXd9gzKCYW2jsHE67PdmxGwGTTBD1o_301Sts-yw@mail.gmail.com>
-Subject: Re: [PATCH] efi: mokvar-table: fix some issues in new code
-To:     Borislav Petkov <bp@alien8.de>
-Cc:     linux-efi <linux-efi@vger.kernel.org>,
-        Lenny Szubowicz <lszubowi@redhat.com>,
-        Arvind Sankar <nivedita@alum.mit.edu>
-Content-Type: text/plain; charset="UTF-8"
+To:     linux-efi@vger.kernel.org
+Cc:     ardb@kernel.org, Ingo Molnar <mingo@redhat.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Borislav Petkov <bp@alien8.de>
+Subject: [GIT PULL] More EFI changes for v5.10
+Date:   Tue, 29 Sep 2020 20:24:05 +0200
+Message-Id: <20200929182405.31809-1-ardb@kernel.org>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, 29 Sep 2020 at 18:58, Borislav Petkov <bp@alien8.de> wrote:
->
-> On Thu, Sep 24, 2020 at 06:05:46PM +0200, Ard Biesheuvel wrote:
-> > Fix a couple of issues in the new mokvar-table handling code, as
-> > pointed out by Arvind and Boris:
-> > - don't bother checking the end of the physical region against the start
-> >   address of the mokvar table,
-> > - ensure that we enter the loop with err = -EINVAL,
-> > - replace size_t with unsigned long to appease pedantic type equality
-> >   checks.
-> >
-> > Cc: Lenny Szubowicz <lszubowi@redhat.com>
-> > Cc: Borislav Petkov <bp@alien8.de>
-> > Cc: Arvind Sankar <nivedita@alum.mit.edu>
-> > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> > ---
-> >  drivers/firmware/efi/mokvar-table.c | 25 +++++++++++--------------
-> >  1 file changed, 11 insertions(+), 14 deletions(-)
->
-> i386 allmodconfig looks good.
->
-> Tested-by: Borislav Petkov <bp@suse.de>
->
+The following changes since commit 612b5d506d066cdf0a739963e7cd28642d500ec1:
 
-Thanks Boris. I'll have a PR out shortly.
+  cper,edac,efi: Memory Error Record: bank group/address and chip id (2020-09-17 10:19:52 +0300)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git tags/efi-next-for-v5.10-2
+
+for you to fetch changes up to 963fabf37f6a94214a823df0a785e653cb8ad6ea:
+
+  efi: efivars: limit availability to X86 builds (2020-09-29 19:40:57 +0200)
+
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Borislav Petkov <bp@alien8.de>
+
+----------------------------------------------------------------
+Second batch of EFI updates for v5.10:
+- followup fix for the new MOKvar table code
+- split efi-pstore from the deprecated efivars sysfs code, so we can
+  disable the latter on !x86
+
+----------------------------------------------------------------
+Ard Biesheuvel (7):
+      efi: mokvar-table: fix some issues in new code
+      efi: pstore: disentangle from deprecated efivars module
+      efi: pstore: move workqueue handling out of efivars
+      efi: efivars: un-export efivars_sysfs_init()
+      efi: gsmi: fix false dependency on CONFIG_EFI_VARS
+      efi: remove some false dependencies on CONFIG_EFI_VARS
+      efi: efivars: limit availability to X86 builds
+
+ Documentation/arm/uefi.rst          |  2 +-
+ drivers/firmware/efi/Kconfig        | 18 +++-----
+ drivers/firmware/efi/efi-pstore.c   | 83 ++++++++++++++++++++++++++++++++++---
+ drivers/firmware/efi/efivars.c      | 45 +-------------------
+ drivers/firmware/efi/mokvar-table.c | 25 +++++------
+ drivers/firmware/efi/vars.c         | 21 ----------
+ drivers/firmware/google/Kconfig     |  2 +-
+ drivers/firmware/google/gsmi.c      |  8 ++--
+ include/linux/efi.h                 | 11 -----
+ 9 files changed, 102 insertions(+), 113 deletions(-)
