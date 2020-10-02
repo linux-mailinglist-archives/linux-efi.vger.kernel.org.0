@@ -2,140 +2,144 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2034A281918
-	for <lists+linux-efi@lfdr.de>; Fri,  2 Oct 2020 19:22:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 47EA128197A
+	for <lists+linux-efi@lfdr.de>; Fri,  2 Oct 2020 19:38:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387957AbgJBRWG (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 2 Oct 2020 13:22:06 -0400
-Received: from mail.kernel.org ([198.145.29.99]:36330 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726175AbgJBRWG (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Fri, 2 Oct 2020 13:22:06 -0400
-Received: from mail-ot1-f44.google.com (mail-ot1-f44.google.com [209.85.210.44])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 0847020679;
-        Fri,  2 Oct 2020 17:22:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1601659326;
-        bh=8B3ajfrrr/Rm5NpX3zNhjHSB7gg5E+Rs6FLpsOjO7i4=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=lWZyzOJpapjQpA455YXsIZVL7VqaXMbB/A2IqiEutsdg98DBHFjMpTSTw2TkXaG3H
-         pORFQt+baBV+E6jK5QUiWsRroyRBYIGPTsDYUi89B7Ld1yFod0e5MKxjNG3ngBwsqO
-         7rvys/97/D/WV0YPu4gQUgMn3DQbrTDO2VIospe0=
-Received: by mail-ot1-f44.google.com with SMTP id 60so2098486otw.3;
-        Fri, 02 Oct 2020 10:22:06 -0700 (PDT)
-X-Gm-Message-State: AOAM531LPb8j0iBMggxMunQOxLAsojH9m1eeRP6UABhYREdxoJpnGM4G
-        DDlfeQCV/I4i1ZGEvf+owvEa5Pn/EC/gHQwPg4w=
-X-Google-Smtp-Source: ABdhPJzGwYam8D7RzG6/2OxiOvDt5Rogji+L7HVZMzs+te3CDO0AywQrFo8JqpB2vzN3MK8VypeeMuyxliVhhB+QE5A=
-X-Received: by 2002:a9d:335:: with SMTP id 50mr2353365otv.90.1601659325331;
- Fri, 02 Oct 2020 10:22:05 -0700 (PDT)
+        id S2388367AbgJBRii (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 2 Oct 2020 13:38:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55786 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388342AbgJBRih (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 2 Oct 2020 13:38:37 -0400
+Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com [IPv6:2607:f8b0:4864:20::1043])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33B85C0613AE
+        for <linux-efi@vger.kernel.org>; Fri,  2 Oct 2020 10:38:36 -0700 (PDT)
+Received: by mail-pj1-x1043.google.com with SMTP id kk9so1231981pjb.2
+        for <linux-efi@vger.kernel.org>; Fri, 02 Oct 2020 10:38:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=49NcK3Fme0jYUKwd2j3ovAlb1goyRmSbkHCdODdIeDc=;
+        b=B2AcK2G2Zh3IWqw0qnXXSEyovKhS81QCGmrhMZ3ce/zFAH8Sg5udPHdnENJ50X13Ny
+         mEJHMqIwsp/h8jMADbLs/i5ewGbAbYqXGdprV6QTunJ845w4WHhNz8T8QGab64x5e6+Q
+         YLHO8obovOngL6OSrlrGgaARlZ7WxNMPSsEac=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=49NcK3Fme0jYUKwd2j3ovAlb1goyRmSbkHCdODdIeDc=;
+        b=CpskCRLyU5AOiQpsopQlRu1ZCaPbLchsJN2mbDZQDlL9uTH07AUqRRy4hPteFYYjs4
+         nolCcCQH214BTnClt1+tAUBCNR6bkxx1W0TqERRmSg6oeabx4CEzyNrfhJqaEHwd9erx
+         L7qY7SXoiHN9lkS693PhaJwbmLQ5JEwbylW8I6vldzWHEJszTxSrFrj7BMs7/IUjylLr
+         UKGEbpHITfdnR1FGBpe0uBfKOoatFlngzaoU1U91d3JjMeR3XT7VY8FmMMjxpNKhYigC
+         YjdtpKz9whteOEekkZKzgRNe8D+/dO8OFJXjhx+3y82p8mFNWBlCFwIti59OX2heQYSk
+         1qkA==
+X-Gm-Message-State: AOAM530j5RFU/u8Wyn0VnMnLbIkPl2M0Za4wjfAjxqvNl6WvwnOprUg/
+        lAXUroV6OsecNENvee8jkqPJqA==
+X-Google-Smtp-Source: ABdhPJzd49fqaj3jNCPJ5+x9jDSGu4Py3vop91Y7k3rEOOPzUXlaVdJLNBBHCW5hBUb3EGuK0nLHtQ==
+X-Received: by 2002:a17:90a:71c2:: with SMTP id m2mr4004540pjs.34.1601660315767;
+        Fri, 02 Oct 2020 10:38:35 -0700 (PDT)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id q65sm2660305pfq.219.2020.10.02.10.38.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 02 Oct 2020 10:38:33 -0700 (PDT)
+From:   Kees Cook <keescook@chromium.org>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Kees Cook <keescook@chromium.org>,
+        Scott Branden <scott.branden@broadcom.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        Luis Chamberlain <mcgrof@kernel.org>,
+        Takashi Iwai <tiwai@suse.de>, Jessica Yu <jeyu@kernel.org>,
+        SeongJae Park <sjpark@amazon.de>,
+        KP Singh <kpsingh@chromium.org>, linux-efi@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        linux-integrity@vger.kernel.org, selinux@vger.kernel.org,
+        linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v5 00/16] Introduce partial kernel_read_file() support
+Date:   Fri,  2 Oct 2020 10:38:12 -0700
+Message-Id: <20201002173828.2099543-1-keescook@chromium.org>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-References: <20201002171112.22738-1-xypron.glpk@gmx.de>
-In-Reply-To: <20201002171112.22738-1-xypron.glpk@gmx.de>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Fri, 2 Oct 2020 19:21:54 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXHsGcAX-DqfcpgxzZY3M+JzY-Ef9OdJ+JdysNnx1fK6zg@mail.gmail.com>
-Message-ID: <CAMj1kXHsGcAX-DqfcpgxzZY3M+JzY-Ef9OdJ+JdysNnx1fK6zg@mail.gmail.com>
-Subject: Re: [PATCH 1/1] docs: admin-guide: fdt and initrd load in EFI stub
-To:     Heinrich Schuchardt <xypron.glpk@gmx.de>
-Cc:     Jonathan Corbet <corbet@lwn.net>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        =?UTF-8?Q?Fran=C3=A7ois_Ozog?= <francois.ozog@linaro.org>,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hi Heinrich,
+v5:
+- add more reviews (thank you!)
+- add "description" string to post_load_data API (mimi)
+- drop bug fix that got taken already
+v4: https://lore.kernel.org/lkml/20200729175845.1745471-1-keescook@chromium.org/
+v3: https://lore.kernel.org/lkml/20200724213640.389191-1-keescook@chromium.org/
+v2: lost to the ether
+v1: https://lore.kernel.org/lkml/20200717174309.1164575-1-keescook@chromium.org/
 
-Thanks for documenting this.
+Hi,
 
+Here's my tree for adding partial read support in kernel_read_file(),
+which fixes a number of issues along the way. It's got Scott's firmware
+and IMA patches ported and everything tests cleanly for me (even with
+CONFIG_IMA_APPRAISE=y), and now appears to pass 0day. :)
 
-On Fri, 2 Oct 2020 at 19:11, Heinrich Schuchardt <xypron.glpk@gmx.de> wrote:
->
-> Describe how a device tree and an initial RAM disk can be passed to the EFI
-> Boot Stub.
->
-> Signed-off-by: Heinrich Schuchardt <xypron.glpk@gmx.de>
-> ---
->  Documentation/admin-guide/efi-stub.rst | 35 ++++++++++++++++++++++++++
->  1 file changed, 35 insertions(+)
->
-> diff --git a/Documentation/admin-guide/efi-stub.rst b/Documentation/admin-guide/efi-stub.rst
-> index 833edb0d0bc4..86f50a33884c 100644
-> --- a/Documentation/admin-guide/efi-stub.rst
-> +++ b/Documentation/admin-guide/efi-stub.rst
-> @@ -38,6 +38,34 @@ arch/arm/boot/zImage should be copied to the system partition, and it
->  may not need to be renamed. Similarly for arm64, arch/arm64/boot/Image
->  should be copied but not necessarily renamed.
->
-> +Passing an initial RAM disk to the EFI Boot Stub
-> +------------------------------------------------
-> +
-> +The following means sorted by decreasing priority can be used to provide an
-> +initial RAM disk to the EFI Boot Stub:
-> +
-> +* The firmware may provide a UEFI Load File 2 Protocol. The stub will try to
-> +  load the RAM disk by calling the LoadFile() service of the protocol using
-> +  a vendor device path with the vendor GUID
-> +  5568e427-0x68fc-4f3d-ac74-ca555231cc68.
-> +* Next the EFI stub will try to load the file indicated by the "initrd=" command
-> +  line parameter.
-> +* The prior boot stage may pass the location of the initial RAM disk via the
-> +  "linux,initrd-start" and "linux,initrd-end" properties of the "/chosen" node
-> +  of the device-tree.
-> +
+The intention is for this to go via Greg's tree since Scott's driver
+code will depend on it.
 
-On x86, the boot_params struct is used to pass the address and size of
-the initrd in memory. Maybe include that for completeness?
+Thanks,
 
-> +The first two items are inhibited by the "noinitrd" command line parameter.
-> +
+-Kees
 
-Interesting. Are you saying noinitrd is ignored by the kernel itself?
+Kees Cook (12):
+  fs/kernel_read_file: Remove FIRMWARE_PREALLOC_BUFFER enum
+  fs/kernel_read_file: Remove FIRMWARE_EFI_EMBEDDED enum
+  fs/kernel_read_file: Split into separate source file
+  fs/kernel_read_file: Remove redundant size argument
+  fs/kernel_read_file: Switch buffer size arg to size_t
+  fs/kernel_read_file: Add file_size output argument
+  LSM: Introduce kernel_post_load_data() hook
+  firmware_loader: Use security_post_load_data()
+  module: Call security_kernel_post_load_data()
+  LSM: Add "contents" flag to kernel_read_file hook
+  fs/kernel_file_read: Add "offset" arg for partial reads
+  firmware: Store opt_flags in fw_priv
 
-Looking at the code, it might only work for preventing the load of old
-style initrd ramdisks, whereas initramfs images are handled
-separately.
+Scott Branden (4):
+  fs/kernel_read_file: Split into separate include file
+  IMA: Add support for file reads without contents
+  firmware: Add request_partial_firmware_into_buf()
+  test_firmware: Test partial read support
 
-This is something that we should probably fix one way or the other.
+ drivers/base/firmware_loader/fallback.c       |  19 +-
+ drivers/base/firmware_loader/fallback.h       |   5 +-
+ .../base/firmware_loader/fallback_platform.c  |  12 +-
+ drivers/base/firmware_loader/firmware.h       |   7 +-
+ drivers/base/firmware_loader/main.c           | 135 ++++++++++---
+ fs/Makefile                                   |   3 +-
+ fs/exec.c                                     | 132 +-----------
+ fs/kernel_read_file.c                         | 189 ++++++++++++++++++
+ include/linux/firmware.h                      |  12 ++
+ include/linux/fs.h                            |  39 ----
+ include/linux/ima.h                           |  20 +-
+ include/linux/kernel_read_file.h              |  55 +++++
+ include/linux/lsm_hook_defs.h                 |   6 +-
+ include/linux/lsm_hooks.h                     |  13 ++
+ include/linux/security.h                      |  21 +-
+ kernel/kexec.c                                |   2 +-
+ kernel/kexec_file.c                           |  19 +-
+ kernel/module.c                               |  24 ++-
+ lib/test_firmware.c                           | 154 ++++++++++++--
+ security/integrity/digsig.c                   |   8 +-
+ security/integrity/ima/ima_fs.c               |  10 +-
+ security/integrity/ima/ima_main.c             |  73 +++++--
+ security/integrity/ima/ima_policy.c           |   1 +
+ security/loadpin/loadpin.c                    |  17 +-
+ security/security.c                           |  28 ++-
+ security/selinux/hooks.c                      |   8 +-
+ .../selftests/firmware/fw_filesystem.sh       |  91 +++++++++
+ 27 files changed, 807 insertions(+), 296 deletions(-)
+ create mode 100644 fs/kernel_read_file.c
+ create mode 100644 include/linux/kernel_read_file.h
 
+-- 
+2.25.1
 
-> +Passing a device-tree to the EFI Boot Stub
-> +------------------------------------------
-> +
-> +A device-tree can be passed to the EFI Boot Stub in decreasing priority using
-> +
-> +* command line option dtb=
-> +* a UEFI configuration table with GUID b1b621d5-f19c-41a5-830b-d9152c69aae0.
-> +
-> +The command line option is only available if CONFIG_EFI_ARMSTUB_DTB_LOADER=y
-> +and secure boot is disabled.
->
->  Passing kernel parameters from the EFI shell
->  --------------------------------------------
-> @@ -46,6 +74,10 @@ Arguments to the kernel can be passed after bzImage.efi, e.g.::
->
->         fs0:> bzImage.efi console=ttyS0 root=/dev/sda4
->
-> +The "noinitrd" option
-> +---------------------
-> +
-> +The "noinitrd" option stops the EFI stub from loading an initial RAM disk.
->
->  The "initrd=" option
->  --------------------
-> @@ -98,3 +130,6 @@ CONFIGURATION TABLE.
->
->  "dtb=" is processed in the same manner as the "initrd=" option that is
->  described above.
-> +
-> +This option is only available if CONFIG_EFI_ARMSTUB_DTB_LOADER=y and secure
-> +boot is disabled.
-> --
-> 2.28.0
->
