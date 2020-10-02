@@ -2,27 +2,26 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 14F27281A3E
-	for <lists+linux-efi@lfdr.de>; Fri,  2 Oct 2020 19:55:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0BABF281B69
+	for <lists+linux-efi@lfdr.de>; Fri,  2 Oct 2020 21:14:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388237AbgJBRzu (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 2 Oct 2020 13:55:50 -0400
-Received: from mout.gmx.net ([212.227.17.21]:56939 "EHLO mout.gmx.net"
+        id S2387688AbgJBTOo (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 2 Oct 2020 15:14:44 -0400
+Received: from mout.gmx.net ([212.227.17.22]:41759 "EHLO mout.gmx.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726096AbgJBRzu (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Fri, 2 Oct 2020 13:55:50 -0400
-X-Greylist: delayed 305 seconds by postgrey-1.27 at vger.kernel.org; Fri, 02 Oct 2020 13:55:48 EDT
+        id S1726224AbgJBTOo (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Fri, 2 Oct 2020 15:14:44 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1601661347;
-        bh=eL7JBhoz2JAsNQSLXLYFbl1LIBlnoiLRV7VFXGdcSh8=;
+        s=badeba3b8450; t=1601666073;
+        bh=Sy2B/SYJ+REfZ+jbX0KoviIYB4kGV6qqYVDCiZS1fDU=;
         h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=V41u6yxajc7EQVyp3OOC23a8iT6HOGkTlqv0uIIc/0KpTuwpcdO+H/QaGsmXSZVHW
-         DjeZCJ3RLjSLNVIq+Mnk2tp9tYoDKyzarOT8ybdG1Qb4jGYtJ6/kmhi7ubuOocDhzJ
-         YIQPGpuMkp/UFlb6dnqCp5MB6Ta3yM3L554Qztbc=
+        b=S+DpdWfLKuy7m6X/+NOv7DffkM1KrnEUs1aVv+zcXMKsSCpRd/88DDP+b3M85wspq
+         RRqrIz4Rq2i2ua6JWlC0UOGu/IhP76gaYuwoM7sKSiPaaBRTtoHuJuqGz8jsTLOG5n
+         bE+4/7LC/E9RB5VlRlPsmfnLJ4hIN9ihOGSLWXu0=
 X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [192.168.123.70] ([178.202.41.107]) by mail.gmx.com (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MxDou-1kdskl2AJc-00xcR4; Fri, 02
- Oct 2020 19:50:35 +0200
+Received: from [192.168.123.51] ([178.202.41.107]) by mail.gmx.com (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1M1ps8-1kQcMq3FG4-002CcP; Fri, 02
+ Oct 2020 21:14:32 +0200
 Subject: Re: [PATCH 1/1] docs: admin-guide: fdt and initrd load in EFI stub
 To:     Ard Biesheuvel <ardb@kernel.org>
 Cc:     Jonathan Corbet <corbet@lwn.net>,
@@ -76,8 +75,8 @@ Autocrypt: addr=xypron.glpk@gmx.de; prefer-encrypt=mutual; keydata=
  DDw0aNy1mlCv6KmJBRENfOIZBFUqXCtODPvO5TcduJV/5XuxbTR/33Zj7ez2uZkOEuTs/pPN
  oKMATC28qfg0qM59YjDrrkdXi/+iDe7qCX93XxdIxpA5YM/ZiqgwziJX8ZOKV7UDV+Ph5KwF
  lTPJMPdQZYXDOt5DjG5l5j0cQWqE05QtYR/V6g8un6V2PqOs9WzaT/RB12YFcaeWlusa8Iqs Eg==
-Message-ID: <e272840e-d097-0476-1827-ea948cdfad63@gmx.de>
-Date:   Fri, 2 Oct 2020 19:50:33 +0200
+Message-ID: <9899cc58-c856-38ca-3a89-4b545c973a4f@gmx.de>
+Date:   Fri, 2 Oct 2020 21:14:27 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.12.0
 MIME-Version: 1.0
@@ -85,35 +84,35 @@ In-Reply-To: <CAMj1kXHsGcAX-DqfcpgxzZY3M+JzY-Ef9OdJ+JdysNnx1fK6zg@mail.gmail.com
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:rMYBeFJ6gKllVZl69fPnc4RDZH7lOvdbzwihXS6AWamAWUvSMEh
- A5o0rltp/6TNN0K3RdOA/C8iMzJImCxlMmyABNlcuL5gGfMhYQTaOtW6VyLrbaJj1L0k8lg
- 8qcEToKi8fBROiRk6+3N3CgzwEjrx/LCORVVDel/ZEaKlmmKX9vaIu9wy15Intbpvco7NzJ
- Cti/79uBsIzn8OrqvucvA==
+X-Provags-ID: V03:K1:724UyNOKGYPb1IJ5kUKzYNMR0vZOtFT+DwpyyQzH0N39gm4/EBh
+ rvrPnWbHkO4LNZpg58wd+IH1twB02OPylC5q8fJt897DG4rulIeAYxSTsUFUGFqGVxTOpXg
+ 9vLhY9fNvLg0KBERcHbW5e4Y7r5ev4rUmrh8g3R/7oy3t+/a+BQ8XBeuWE7ELCSU6g2vcdu
+ 2SXr6P7vXIh/TuWxl/YDw==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:APT0gqF5AtA=:94YK69IYJi901UJOjz1721
- Dn6BDFNUr8okpeojJOBL4ymdoDNLOkfFJiEFCC2MPWHrMta28iTMOnBxpC8q8rKsj1TAAJ6F+
- 8ZVi6yIZYAMgBDfDFst8rqRjL0OpuSu4BG3XQ9+rC21mQ5nbRwsJvk7oSuF6G+V1tgwaiKIgj
- 6pps7qp88T/IbOSyNhs+W7YDV/M2UCdEl8l5ND5eut/WnXBWMXM9cSn9K9ZlGm3ZNqQ9W2zSf
- N7Vx10nmk7GygEn3XUpfDrulJ/XQuodNTZvxlBiL4sIo/J854GeUwqeBWHxEUBKSWIW76x8ZW
- H5z6djIDVJ0/dKvQmX4MKXNA/EqB/KEDPgW+wiXHnEZQMy2ht+ECR3DXjNjpfLrI4M/m8WXN0
- ywyKm+GoaqQjJm7FhRLUNo0/Rgy6jK82kgc+vO3QYmlbGKPb5Lb6XY1uiDWjDVvzGRRlsMslF
- Erj45UQT5C/i3Kb6t+RHrJKGzuA1bNUBy+umnJ6N7S71/502gxrG1V6RqW0ikFmwPDG71r/JM
- XcGMgpHD3dijxEc+yDXLyP44GKe4EoeBmKpAhnlKQ+gt/MHTuCUUu4TqBhXurMQpHnrr+jpB4
- Ntf6BQXKRJaLU3cGlFaOP+FHKxsSKkjHbYdnnQNsjggjlZsbTPr6jlm3BXTYNTiWkui6EBmR5
- o/79x2TLZETLvSbhQBWl+LV26Yz4MOkA+fuEM1/AD3Ma0HmAGxd8/roonmCtRfWZq/MBh4D4D
- zMsLCwhFLILOfGcIRDC0yaSHxAhuI42wTqMWbRFKaUCJgYfzyNrQGtqW504J+io0/k03SfvpT
- EgU5thtp6lVJJk/hYHx2XYaWy5O5ux/dMJ0OuA9xMqu4gwFZwZcOxbU4syZzzP9KPubRWiEV4
- jnQqTsCjDOv5jzngNEE2VXWGW4EawR2M+3DmzDptxr3D3SaqzIUE4RQE2ZsM8XhUrmxiv3/Xn
- HuWW3LjXaDyDYAihYhBLf5Od4TGxzMEIB0HXkE36LCndunTDUi4k1a7OCRIXOS+W//L4jEKVz
- i4qEA6a96YY/UftjlBMkE5jQOUToV/8xsWnH2CWbGjIs7rDEpP0r244yb1b5+r97f8jrDj3H6
- Asqc29nrpZOLRwC/KifWUxOy2CSkmtYpriBeyGBjgXjVXrwiNo5kElcZ1WLXmILLcUNz1Zzpa
- Ttd0rAawRWqteEqAACK5aD/DX5i8fxw8h8jZwKYp8MxETgDJBE3gfsv29Y90/JoLKgs8xO1h5
- kp9qkxzTA6cmXbwzT8PGxfB+8teDW7TYdMezAag==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:r2xR0hsG9JE=:4sy91rgrDlFHDlWPzvHgxv
+ gP/wdN7w5ePiyfgNa4fcIZQshdVAikp/YtKZ6R0TEffD+F41MLlnFMD/PM4t/0JdJSeyOdEPb
+ piEOTMCQcx4GK3uIweoYkWvVfKbu/4kbGsWvSv/JZK6XYZwNvQ+p+MECSyNAL69WB6dgxFHS/
+ VZlwJfbw2rquVTdU238l6ywQ8xeFdg3DXjBb8ktq3F4o56Q+NTUDFf+JIlkGNRxSB0rJ03efX
+ AQSMwQSt40V4TvmaFDSts9EqLWIcrZMzvqsj3kizN5V2rDQAO62YKi2D/Kyr/qDzTzIqbKiBi
+ 82hXUrhzdw8dzCDukHa2Z7Z3DA/R1v+gydahzZmuywxHvLmvoak7CIQdI4Pz1XqnQlIrpQsum
+ Wxd7bm2MHLLNikoswGWFjGKQkK4jMPeDIH8XADxlPp4xBkhbtkdebav3ma86ulwJ/sfwNSBVF
+ /gi6/yywTxEEOs0tRlVSVfRakCx7wjTWAJ66yMziiSk16gjBNsFoC4ROlp5qofVkbZ+6l+tJC
+ Yce6Xr6MaiNDahJyJLJQzfosbWhI5tuf8WI/MXMsMp6TyyfJZWsieYPdFGckripD6J2P3yncv
+ dHCeDQRIBLx+MW/ONmPz8liaV5x6UNq4oNR+IS1H/D/dW5Elv8p1IIXXmU36rS7w42lFuT/BA
+ lZGEPSfe6rxNHGd3oidhrPKTPP0Eh5jwJGmsanu5ImRQh9L1tKFvlf/lgoMGouMoHw10I3FZ4
+ RSpE9YB+JbQ0IaZChzuX4HeZWt3dS6v5tmnK9TRu8OP2xxnaRZyO4gjaVPwmakVzujTYK6LhB
+ 1rv5mTVPexthimhY7eqGbk7I1Kw2SN8/2rOaqtIB6UiCN19mAOtEkk/T81r6C4dkhTPYFReEM
+ 9cAnGK/fSKYWpUbvyihRceSgb2spyrrGkPF3rBXmoXPAf9iFQgCLXY82OwcwTIjdJVWMFstRr
+ gyNtl8lz43ds1ozwTjUuivyCpycQPuw1+UoruiEy1htXqzM13GWljhREXCDq4/P45Lf69+Qwi
+ 3mp2lhitQnvBRd6qItVt1dI37cZypJKWO3nhIWXJFfh1c0t20SKPLOVUTOi9BCRkC4WDlRgM2
+ sg6M9ne5XjCjhigI4NK5hAs+Fo6tfN+eyoUAw0a99FmseFT5iB4CFtU56Vnr4lRuj7RPC9jtI
+ e0J8TarrEYw2t2HiGONp0gBrDeTdXW0+/NZZ036LMxd7e6odNbd3WpCdC1KW4aPzp1eAonor7
+ ivWLGerFDFEHP8LFjm7H0J2KhCJaUwxMtcdeu2w==
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 02.10.20 19:21, Ard Biesheuvel wrote:
+On 10/2/20 7:21 PM, Ard Biesheuvel wrote:
 > Hi Heinrich,
 >
 > Thanks for documenting this.
@@ -167,7 +166,25 @@ en" node
 > On x86, the boot_params struct is used to pass the address and size of
 > the initrd in memory. Maybe include that for completeness?
 
-Sure we should add it. But I will just wait for more review comments.
+On x86 boot_params is set in function efi_pe_entry() after loading the
+file indicated by the initrd=3D command line.
+
+boot_params is not accessible by a caller of the EFI stub but is a
+structure used at the interface between EFI stub and main kernel. This
+interface is not in the scope of the admin-guide.
+
+The main Linux entry point is already described in
+Documentation/x86/boot.rst and ./Documentation/x86/zero-page.rst.
+
+We can add Sphinx style documentation for function efi_pe_entry()
+mentioning that it fills in boot_params.
+drivers/firmware/efi/libstub/x86-stub.c then can be added to
+Documentation/driver-api/firmware/efi/index.rst in an x86 chapter. But
+these will be separate patches.
+
+Best regards
+
+Heinrich
 
 >
 >> +The first two items are inhibited by the "noinitrd" command line param=
@@ -182,23 +199,6 @@ eter.
 >
 > This is something that we should probably fix one way or the other.
 >
-
-initrd_load() seems to depend on the value and will not create /dev/ram
-if "noinitrd" is set.
-init/do_mounts_initrd.o is compiled for ARMv8.
-
-But my ARMv8 Odroid C2 boots fine via U-Boot->GRUB->EFI stub->Linux with:
-
-[  +0.000000] Kernel command line: BOOT_IMAGE=3D/vmlinuz-5.9.0-rc6-arm64+
-root=3DUUID=3D.. ro earlycon=3Dmeson,0xc81004c0,115200n8 noinitrd
-
-So I assume initrd_load() is either not called or at least not needed
-for the FDT case.
-
-Best regards
-
-Heinrich
-
 >
 >> +Passing a device-tree to the EFI Boot Stub
 >> +------------------------------------------
