@@ -2,57 +2,67 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F1BD28512B
-	for <lists+linux-efi@lfdr.de>; Tue,  6 Oct 2020 19:48:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7DAC7285D67
+	for <lists+linux-efi@lfdr.de>; Wed,  7 Oct 2020 12:52:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726590AbgJFRsi (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 6 Oct 2020 13:48:38 -0400
-Received: from namei.org ([65.99.196.166]:33334 "EHLO namei.org"
+        id S1728157AbgJGKwB convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-efi@lfdr.de>); Wed, 7 Oct 2020 06:52:01 -0400
+Received: from mx.metalurgs.lv ([81.198.125.103]:61402 "EHLO mx.metalurgs.lv"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725925AbgJFRsi (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Tue, 6 Oct 2020 13:48:38 -0400
-X-Greylist: delayed 1828 seconds by postgrey-1.27 at vger.kernel.org; Tue, 06 Oct 2020 13:48:35 EDT
-Received: from localhost (localhost [127.0.0.1])
-        by namei.org (8.14.4/8.14.4) with ESMTP id 096HJreu007613;
-        Tue, 6 Oct 2020 17:19:53 GMT
-Date:   Wed, 7 Oct 2020 04:19:53 +1100 (AEDT)
-From:   James Morris <jmorris@namei.org>
-To:     Kees Cook <keescook@chromium.org>
-cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        KP Singh <kpsingh@google.com>, Jessica Yu <jeyu@kernel.org>,
-        Scott Branden <scott.branden@broadcom.com>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        Luis Chamberlain <mcgrof@kernel.org>,
-        Takashi Iwai <tiwai@suse.de>, SeongJae Park <sjpark@amazon.de>,
-        KP Singh <kpsingh@chromium.org>, linux-efi@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        linux-integrity@vger.kernel.org, selinux@vger.kernel.org,
-        linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 10/16] module: Call security_kernel_post_load_data()
-In-Reply-To: <20201002173828.2099543-11-keescook@chromium.org>
-Message-ID: <alpine.LRH.2.21.2010070419420.18879@namei.org>
-References: <20201002173828.2099543-1-keescook@chromium.org> <20201002173828.2099543-11-keescook@chromium.org>
-User-Agent: Alpine 2.21 (LRH 202 2017-01-01)
+        id S1728055AbgJGKwB (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Wed, 7 Oct 2020 06:52:01 -0400
+Received: from mx.metalurgs.lv (localhost [127.0.0.1])
+        by mx.metalurgs.lv (Postfix) with ESMTP id CFF5C5EBBE
+        for <linux-efi@vger.kernel.org>; Wed,  7 Oct 2020 13:50:35 +0300 (EEST)
+Received: from kas30pipe.localhost (localhost [127.0.0.1])
+        by mx.metalurgs.lv (Postfix) with ESMTP id 1E6A25E3E8
+        for <linux-efi@vger.kernel.org>; Wed,  7 Oct 2020 13:50:35 +0300 (EEST)
+Received: by mx.metalurgs.lv (Postfix, from userid 1005)
+        id 8D87C5D9FB; Wed,  7 Oct 2020 13:50:34 +0300 (EEST)
+Received: from [100.64.1.74] (unknown [190.15.125.55])
+        (Authenticated sender: admin)
+        by mx.metalurgs.lv (Postfix) with ESMTPA id 92C606276D;
+        Wed,  7 Oct 2020 13:50:28 +0300 (EEST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Description: Mail message body
+To:     Recipients <financialcapability6@gmail.com>
+From:   "Mr. Hashim Bin" <financialcapability6@gmail.com>
+Date:   Wed, 07 Oct 2020 07:50:21 -0300
+Reply-To: hmurrah39@gmail.com
+X-SpamTest-Envelope-From: financialcapability6@gmail.com
+X-SpamTest-Group-ID: 00000000
+X-SpamTest-Info: Profiles 71303 [Jan 01 2015]
+X-SpamTest-Info: {TO: forged address, i.e. recipient, investors, public, etc.}
+X-SpamTest-Info: {DATE: unreal year}
+X-SpamTest-Method: none
+X-SpamTest-Rate: 55
+X-SpamTest-Status: Not detected
+X-SpamTest-Status-Extended: not_detected
+X-SpamTest-Version: SMTP-Filter Version 3.0.0 [0284], KAS30/Release
+Message-ID: <20201007105034.8D87C5D9FB@mx.metalurgs.lv>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8BIT
+Subject: Low Rate Loan./mmm,
+X-Anti-Virus: Kaspersky Anti-Virus for Linux Mail Server 5.6.39/RELEASE,
+         bases: 20140401 #7726142, check: 20201007 notchecked
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, 2 Oct 2020, Kees Cook wrote:
-
-> Now that there is an API for checking loaded contents for modules
-> loaded without a file, call into the LSM hooks.
-> 
-> Signed-off-by: Kees Cook <keescook@chromium.org>
-> Reviewed-by: KP Singh <kpsingh@google.com>
-> Acked-by: Jessica Yu <jeyu@kernel.org>
+Hello Dear,
 
 
-Reviewed-by: James Morris <jamorris@linux.microsoft.com>
+We are Base Investment Company offering Corporate and Personal Loan at 3% Interest Rate for a duration of 10Years.
 
 
--- 
-James Morris
-<jmorris@namei.org>
+We also pay 1% commission to brokers, who introduce project owners for finance or other opportunities.
 
+
+Please get back to me if you are interested for more
+
+details.
+
+
+Yours faithfully,
+
+Hashim Murrah
