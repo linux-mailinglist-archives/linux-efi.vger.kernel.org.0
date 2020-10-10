@@ -2,36 +2,60 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A43D289E6C
-	for <lists+linux-efi@lfdr.de>; Sat, 10 Oct 2020 06:49:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 20FAB28A3C9
+	for <lists+linux-efi@lfdr.de>; Sun, 11 Oct 2020 01:11:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728603AbgJJEq1 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sat, 10 Oct 2020 00:46:27 -0400
-Received: from out01.mta.xmission.com ([166.70.13.231]:59176 "EHLO
-        out01.mta.xmission.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726886AbgJJEn7 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sat, 10 Oct 2020 00:43:59 -0400
-X-Greylist: delayed 3548 seconds by postgrey-1.27 at vger.kernel.org; Sat, 10 Oct 2020 00:43:28 EDT
-Received: from in02.mta.xmission.com ([166.70.13.52])
-        by out01.mta.xmission.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.93)
-        (envelope-from <ebiederm@xmission.com>)
-        id 1kR5ma-003qSe-1R; Fri, 09 Oct 2020 21:42:56 -0600
-Received: from ip68-227-160-95.om.om.cox.net ([68.227.160.95] helo=x220.xmission.com)
-        by in02.mta.xmission.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.87)
-        (envelope-from <ebiederm@xmission.com>)
-        id 1kR5mZ-0002tO-03; Fri, 09 Oct 2020 21:42:55 -0600
-From:   ebiederm@xmission.com (Eric W. Biederman)
+        id S1729982AbgJJWz5 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 10 Oct 2020 18:55:57 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:7768 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1730382AbgJJSvK (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sat, 10 Oct 2020 14:51:10 -0400
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 09ABX3WU131897
+        for <linux-efi@vger.kernel.org>; Sat, 10 Oct 2020 07:36:56 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=in-reply-to : subject :
+ from : to : cc : date : mime-version : references :
+ content-transfer-encoding : content-type : message-id; s=pp1;
+ bh=NiDLo4pOxkTOHNh379y2lMt59tGJeK9BGhibE+AHe30=;
+ b=fFl+sWZ60CJNW5vj7Uw0QdIFBZaJLDIK+TmFY7+uXdPQEExbAUVKU05YhKg5dS5u6J9M
+ gRTcbWK1ehAiHgiW0QiEErv4vh+5MOV1iJMmz3AgZqVrCWi+Nh1nNGlGLl5qNxYu9TT3
+ rsErWvzJTnT/TvD/yGmIkQ5cIJnW2dxyfP5KEerqQF50430xLTdRCdzrzGOBj/IVBjpb
+ ZIGntFQpbgC01amsKXwfy1cB65UwCiqnbdgLT6Z6Qd+CSe7yV4n3BXy+qSd8xdiYdQTK
+ an7SA2yY6csjDSnstIEkYdPhg6mYvKJGwGGY1NoLkcuzdqKyvDxx/5UGYpv3tzPn6Oq9 ZA== 
+Received: from smtp.notes.na.collabserv.com (smtp.notes.na.collabserv.com [192.155.248.91])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 343c36r51e-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <linux-efi@vger.kernel.org>; Sat, 10 Oct 2020 07:36:56 -0400
+Received: from localhost
+        by smtp.notes.na.collabserv.com with smtp.notes.na.collabserv.com ESMTP
+        for <linux-efi@vger.kernel.org> from <BMT@zurich.ibm.com>;
+        Sat, 10 Oct 2020 11:36:55 -0000
+Received: from us1a3-smtp05.a3.dal06.isc4sb.com (10.146.71.159)
+        by smtp.notes.na.collabserv.com (10.106.227.143) with smtp.notes.na.collabserv.com ESMTP;
+        Sat, 10 Oct 2020 11:36:50 -0000
+Received: from us1a3-mail162.a3.dal06.isc4sb.com ([10.146.71.4])
+          by us1a3-smtp05.a3.dal06.isc4sb.com
+          with ESMTP id 2020101011364991-175970 ;
+          Sat, 10 Oct 2020 11:36:49 +0000 
+In-Reply-To: <20201009195033.3208459-11-ira.weiny@intel.com>
+Subject: Re: [PATCH RFC PKS/PMEM 10/58] drivers/rdma: Utilize new kmap_thread()
+From:   "Bernard Metzler" <BMT@zurich.ibm.com>
 To:     ira.weiny@intel.com
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Andy Lutomirski <luto@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>, x86@kernel.org,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>, linux-doc@vger.kernel.org,
+Cc:     "Andrew Morton" <akpm@linux-foundation.org>,
+        "Thomas Gleixner" <tglx@linutronix.de>,
+        "Ingo Molnar" <mingo@redhat.com>, "Borislav Petkov" <bp@alien8.de>,
+        "Andy Lutomirski" <luto@kernel.org>,
+        "Peter Zijlstra" <peterz@infradead.org>,
+        "Mike Marciniszyn" <mike.marciniszyn@intel.com>,
+        "Dennis Dalessandro" <dennis.dalessandro@intel.com>,
+        "Doug Ledford" <dledford@redhat.com>,
+        "Jason Gunthorpe" <jgg@ziepe.ca>,
+        "Faisal Latif" <faisal.latif@intel.com>,
+        "Shiraz Saleem" <shiraz.saleem@intel.com>, x86@kernel.org,
+        "Dave Hansen" <dave.hansen@linux.intel.com>,
+        "Dan Williams" <dan.j.williams@intel.com>,
+        "Fenghua Yu" <fenghua.yu@intel.com>, linux-doc@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org,
         linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
         linux-kselftest@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
@@ -49,115 +73,253 @@ Cc:     Andrew Morton <akpm@linux-foundation.org>,
         linux-nilfs@vger.kernel.org, cluster-devel@redhat.com,
         ecryptfs@vger.kernel.org, linux-cifs@vger.kernel.org,
         linux-btrfs@vger.kernel.org, linux-afs@lists.infradead.org,
-        linux-rdma@vger.kernel.org, amd-gfx@lists.freedesktop.org,
+        linux-rdma@vger.kernel.org, amd-gfx@lists.freed.esktop.org,
         dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
-        drbd-dev@lists.linbit.com, linux-block@vger.kernel.org,
+        drbd-dev@tron.linbit.com, linux-block@vger.kernel.org,
         xen-devel@lists.xenproject.org, linux-cachefs@redhat.com,
         samba-technical@lists.samba.org, intel-wired-lan@lists.osuosl.org
-References: <20201009195033.3208459-1-ira.weiny@intel.com>
-        <20201009195033.3208459-52-ira.weiny@intel.com>
-Date:   Fri, 09 Oct 2020 22:43:15 -0500
-In-Reply-To: <20201009195033.3208459-52-ira.weiny@intel.com> (ira weiny's
-        message of "Fri, 9 Oct 2020 12:50:26 -0700")
-Message-ID: <87k0vysq3w.fsf@x220.int.ebiederm.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+Date:   Sat, 10 Oct 2020 11:36:49 +0000
 MIME-Version: 1.0
-Content-Type: text/plain
-X-XM-SPF: eid=1kR5mZ-0002tO-03;;;mid=<87k0vysq3w.fsf@x220.int.ebiederm.org>;;;hst=in02.mta.xmission.com;;;ip=68.227.160.95;;;frm=ebiederm@xmission.com;;;spf=neutral
-X-XM-AID: U2FsdGVkX1+M6Nwc1eevosTTnX6IxBw6BnHTGm05YjI=
-X-SA-Exim-Connect-IP: 68.227.160.95
-X-SA-Exim-Mail-From: ebiederm@xmission.com
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on sa05.xmission.com
-X-Spam-Level: *
-X-Spam-Status: No, score=1.5 required=8.0 tests=ALL_TRUSTED,BAYES_50,
-        DCC_CHECK_NEGATIVE,T_TM2_M_HEADER_IN_MSG,T_TooManySym_01,
-        T_TooManySym_02,T_TooManySym_03,T_XMDrugObfuBody_08,XMSubLong
-        autolearn=disabled version=3.4.2
-X-Spam-Report: * -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  0.7 XMSubLong Long Subject
-        *  0.0 T_TM2_M_HEADER_IN_MSG BODY: No description available.
-        * -0.0 DCC_CHECK_NEGATIVE Not listed in DCC
-        *      [sa05 1397; Body=1 Fuz1=1 Fuz2=1]
-        *  0.0 T_TooManySym_01 4+ unique symbols in subject
-        *  1.0 T_XMDrugObfuBody_08 obfuscated drug references
-        *  0.0 T_TooManySym_02 5+ unique symbols in subject
-        *  0.0 T_TooManySym_03 6+ unique symbols in subject
-X-Spam-DCC: XMission; sa05 1397; Body=1 Fuz1=1 Fuz2=1 
-X-Spam-Combo: *;ira.weiny@intel.com
-X-Spam-Relay-Country: 
-X-Spam-Timing: total 512 ms - load_scoreonly_sql: 0.07 (0.0%),
-        signal_user_changed: 13 (2.5%), b_tie_ro: 11 (2.2%), parse: 1.72
-        (0.3%), extract_message_metadata: 23 (4.4%), get_uri_detail_list: 2.3
-        (0.5%), tests_pri_-1000: 25 (4.8%), tests_pri_-950: 1.65 (0.3%),
-        tests_pri_-900: 1.39 (0.3%), tests_pri_-90: 81 (15.8%), check_bayes:
-        78 (15.3%), b_tokenize: 16 (3.2%), b_tok_get_all: 9 (1.8%),
-        b_comp_prob: 2.3 (0.5%), b_tok_touch_all: 47 (9.1%), b_finish: 1.06
-        (0.2%), tests_pri_0: 332 (64.8%), check_dkim_signature: 0.75 (0.1%),
-        check_dkim_adsp: 18 (3.5%), poll_dns_idle: 0.34 (0.1%), tests_pri_10:
-        4.5 (0.9%), tests_pri_500: 25 (5.0%), rewrite_mail: 0.00 (0.0%)
-Subject: Re: [PATCH RFC PKS/PMEM 51/58] kernel: Utilize new kmap_thread()
-X-Spam-Flag: No
-X-SA-Exim-Version: 4.2.1 (built Thu, 05 May 2016 13:38:54 -0600)
-X-SA-Exim-Scanned: Yes (on in02.mta.xmission.com)
+Sensitivity: 
+Importance: Normal
+X-Priority: 3 (Normal)
+References: <20201009195033.3208459-11-ira.weiny@intel.com>,<20201009195033.3208459-1-ira.weiny@intel.com>
+X-Mailer: IBM iNotes ($HaikuForm 1054.1) | IBM Domino Build
+ SCN1812108_20180501T0841_FP65 April 15, 2020 at 09:48
+X-LLNOutbound: False
+X-Disclaimed: 59823
+X-TNEFEvaluated: 1
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+x-cbid: 20101011-2475-0000-0000-0000044A0339
+X-IBM-SpamModules-Scores: BY=0.233045; FL=0; FP=0; FZ=0; HX=0; KW=0; PH=0;
+ SC=0.421684; ST=0; TS=0; UL=0; ISC=; MB=0.000000
+X-IBM-SpamModules-Versions: BY=3.00013982; HX=3.00000242; KW=3.00000007;
+ PH=3.00000004; SC=3.00000295; SDB=6.01447073; UDB=6.00777937; IPR=6.01229775;
+ MB=3.00034472; MTD=3.00000008; XFM=3.00000015; UTC=2020-10-10 11:36:54
+X-IBM-AV-DETECTION: SAVI=unsuspicious REMOTE=unsuspicious XFE=unused
+X-IBM-AV-VERSION: SAVI=2020-10-10 06:57:40 - 6.00011937
+x-cbparentid: 20101011-2476-0000-0000-0000DAA5035B
+Message-Id: <OF849D92D8.F4735ECA-ON002585FD.003F5F27-002585FD.003FCBD6@notes.na.collabserv.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235,18.0.687
+ definitions=2020-10-10_07:2020-10-09,2020-10-10 signatures=0
+X-Proofpoint-Spam-Reason: orgsafe
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-ira.weiny@intel.com writes:
+-----ira.weiny@intel.com wrote: -----
 
-> From: Ira Weiny <ira.weiny@intel.com>
+>To: "Andrew Morton" <akpm@linux-foundation.org>, "Thomas Gleixner"
+><tglx@linutronix.de>, "Ingo Molnar" <mingo@redhat.com>, "Borislav
+>Petkov" <bp@alien8.de>, "Andy Lutomirski" <luto@kernel.org>, "Peter
+>Zijlstra" <peterz@infradead.org>
+>From: ira.weiny@intel.com
+>Date: 10/09/2020 09:52PM
+>Cc: "Ira Weiny" <ira.weiny@intel.com>, "Mike Marciniszyn"
+><mike.marciniszyn@intel.com>, "Dennis Dalessandro"
+><dennis.dalessandro@intel.com>, "Doug Ledford" <dledford@redhat.com>,
+>"Jason Gunthorpe" <jgg@ziepe.ca>, "Faisal Latif"
+><faisal.latif@intel.com>, "Shiraz Saleem" <shiraz.saleem@intel.com>,
+>"Bernard Metzler" <bmt@zurich.ibm.com>, x86@kernel.org, "Dave Hansen"
+><dave.hansen@linux.intel.com>, "Dan Williams"
+><dan.j.williams@intel.com>, "Fenghua Yu" <fenghua.yu@intel.com>,
+>linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+>linux-nvdimm@lists.01.org, linux-fsdevel@vger.kernel.org,
+>linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+>linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+>netdev@vger.kernel.org, bpf@vger.kernel.org,
+>kexec@lists.infradead.org, linux-bcache@vger.kernel.org,
+>linux-mtd@lists.infradead.org, devel@driverdev.osuosl.org,
+>linux-efi@vger.kernel.org, linux-mmc@vger.kernel.org,
+>linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
+>linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org,
+>linux-ext4@vger.kernel.org, linux-aio@kvack.org,
+>io-uring@vger.kernel.org, linux-erofs@lists.ozlabs.org,
+>linux-um@lists.infradead.org, linux-ntfs-dev@lists.sourceforge.net,
+>reiserfs-devel@vger.kernel.org,
+>linux-f2fs-devel@lists.sourceforge.net, linux-nilfs@vger.kernel.org,
+>cluster-devel@redhat.com, ecryptfs@vger.kernel.org,
+>linux-cifs@vger.kernel.org, linux-btrfs@vger.kernel.org,
+>linux-afs@lists.infradead.org, linux-rdma@vger.kernel.org,
+>amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+>intel-gfx@lists.freedesktop.org, drbd-dev@tron.linbit.com,
+>linux-block@vger.kernel.org, xen-devel@lists.xenproject.org,
+>linux-cachefs@redhat.com, samba-technical@lists.samba.org,
+>intel-wired-lan@lists.osuosl.org
+>Subject: [EXTERNAL] [PATCH RFC PKS/PMEM 10/58] drivers/rdma: Utilize
+>new kmap=5Fthread()
 >
-> This kmap() call is localized to a single thread.  To avoid the over
-> head of global PKRS updates use the new kmap_thread() call.
+>From: Ira Weiny <ira.weiny@intel.com>
+>
+>The kmap() calls in these drivers are localized to a single thread.
+>To
+>avoid the over head of global PKRS updates use the new kmap=5Fthread()
+>call.
+>
+>Cc: Mike Marciniszyn <mike.marciniszyn@intel.com>
+>Cc: Dennis Dalessandro <dennis.dalessandro@intel.com>
+>Cc: Doug Ledford <dledford@redhat.com>
+>Cc: Jason Gunthorpe <jgg@ziepe.ca>
+>Cc: Faisal Latif <faisal.latif@intel.com>
+>Cc: Shiraz Saleem <shiraz.saleem@intel.com>
+>Cc: Bernard Metzler <bmt@zurich.ibm.com>
+>Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+>---
+> drivers/infiniband/hw/hfi1/sdma.c      |  4 ++--
+> drivers/infiniband/hw/i40iw/i40iw=5Fcm.c | 10 +++++-----
+> drivers/infiniband/sw/siw/siw=5Fqp=5Ftx.c  | 14 +++++++-------
+> 3 files changed, 14 insertions(+), 14 deletions(-)
+>
+>diff --git a/drivers/infiniband/hw/hfi1/sdma.c
+>b/drivers/infiniband/hw/hfi1/sdma.c
+>index 04575c9afd61..09d206e3229a 100644
+>--- a/drivers/infiniband/hw/hfi1/sdma.c
+>+++ b/drivers/infiniband/hw/hfi1/sdma.c
+>@@ -3130,7 +3130,7 @@ int ext=5Fcoal=5Fsdma=5Ftx=5Fdescs(struct hfi1=5Fdev=
+data
+>*dd, struct sdma=5Ftxreq *tx,
+> 		}
+>=20
+> 		if (type =3D=3D SDMA=5FMAP=5FPAGE) {
+>-			kvaddr =3D kmap(page);
+>+			kvaddr =3D kmap=5Fthread(page);
+> 			kvaddr +=3D offset;
+> 		} else if (WARN=5FON(!kvaddr)) {
+> 			=5F=5Fsdma=5Ftxclean(dd, tx);
+>@@ -3140,7 +3140,7 @@ int ext=5Fcoal=5Fsdma=5Ftx=5Fdescs(struct hfi1=5Fdev=
+data
+>*dd, struct sdma=5Ftxreq *tx,
+> 		memcpy(tx->coalesce=5Fbuf + tx->coalesce=5Fidx, kvaddr, len);
+> 		tx->coalesce=5Fidx +=3D len;
+> 		if (type =3D=3D SDMA=5FMAP=5FPAGE)
+>-			kunmap(page);
+>+			kunmap=5Fthread(page);
+>=20
+> 		/* If there is more data, return */
+> 		if (tx->tlen - tx->coalesce=5Fidx)
+>diff --git a/drivers/infiniband/hw/i40iw/i40iw=5Fcm.c
+>b/drivers/infiniband/hw/i40iw/i40iw=5Fcm.c
+>index a3b95805c154..122d7a5642a1 100644
+>--- a/drivers/infiniband/hw/i40iw/i40iw=5Fcm.c
+>+++ b/drivers/infiniband/hw/i40iw/i40iw=5Fcm.c
+>@@ -3721,7 +3721,7 @@ int i40iw=5Faccept(struct iw=5Fcm=5Fid *cm=5Fid, str=
+uct
+>iw=5Fcm=5Fconn=5Fparam *conn=5Fparam)
+> 		ibmr->device =3D iwpd->ibpd.device;
+> 		iwqp->lsmm=5Fmr =3D ibmr;
+> 		if (iwqp->page)
+>-			iwqp->sc=5Fqp.qp=5Fuk.sq=5Fbase =3D kmap(iwqp->page);
+>+			iwqp->sc=5Fqp.qp=5Fuk.sq=5Fbase =3D kmap=5Fthread(iwqp->page);
+> 		dev->iw=5Fpriv=5Fqp=5Fops->qp=5Fsend=5Flsmm(&iwqp->sc=5Fqp,
+> 							iwqp->ietf=5Fmem.va,
+> 							(accept.size + conn=5Fparam->private=5Fdata=5Flen),
+>@@ -3729,12 +3729,12 @@ int i40iw=5Faccept(struct iw=5Fcm=5Fid *cm=5Fid,
+>struct iw=5Fcm=5Fconn=5Fparam *conn=5Fparam)
+>=20
+> 	} else {
+> 		if (iwqp->page)
+>-			iwqp->sc=5Fqp.qp=5Fuk.sq=5Fbase =3D kmap(iwqp->page);
+>+			iwqp->sc=5Fqp.qp=5Fuk.sq=5Fbase =3D kmap=5Fthread(iwqp->page);
+> 		dev->iw=5Fpriv=5Fqp=5Fops->qp=5Fsend=5Flsmm(&iwqp->sc=5Fqp, NULL, 0, 0);
+> 	}
+>=20
+> 	if (iwqp->page)
+>-		kunmap(iwqp->page);
+>+		kunmap=5Fthread(iwqp->page);
+>=20
+> 	iwqp->cm=5Fid =3D cm=5Fid;
+> 	cm=5Fnode->cm=5Fid =3D cm=5Fid;
+>@@ -4102,10 +4102,10 @@ static void i40iw=5Fcm=5Fevent=5Fconnected(struct
+>i40iw=5Fcm=5Fevent *event)
+> 	i40iw=5Fcm=5Finit=5Ftsa=5Fconn(iwqp, cm=5Fnode);
+> 	read0 =3D (cm=5Fnode->send=5Frdma0=5Fop =3D=3D SEND=5FRDMA=5FREAD=5FZERO=
+);
+> 	if (iwqp->page)
+>-		iwqp->sc=5Fqp.qp=5Fuk.sq=5Fbase =3D kmap(iwqp->page);
+>+		iwqp->sc=5Fqp.qp=5Fuk.sq=5Fbase =3D kmap=5Fthread(iwqp->page);
+> 	dev->iw=5Fpriv=5Fqp=5Fops->qp=5Fsend=5Frtt(&iwqp->sc=5Fqp, read0);
+> 	if (iwqp->page)
+>-		kunmap(iwqp->page);
+>+		kunmap=5Fthread(iwqp->page);
+>=20
+> 	memset(&attr, 0, sizeof(attr));
+> 	attr.qp=5Fstate =3D IB=5FQPS=5FRTS;
+>diff --git a/drivers/infiniband/sw/siw/siw=5Fqp=5Ftx.c
+>b/drivers/infiniband/sw/siw/siw=5Fqp=5Ftx.c
+>index d19d8325588b..4ed37c328d02 100644
+>--- a/drivers/infiniband/sw/siw/siw=5Fqp=5Ftx.c
+>+++ b/drivers/infiniband/sw/siw/siw=5Fqp=5Ftx.c
+>@@ -76,7 +76,7 @@ static int siw=5Ftry=5F1seg(struct siw=5Fiwarp=5Ftx *c=
+=5Ftx,
+>void *paddr)
+> 			if (unlikely(!p))
+> 				return -EFAULT;
+>=20
+>-			buffer =3D kmap(p);
+>+			buffer =3D kmap=5Fthread(p);
+>=20
+> 			if (likely(PAGE=5FSIZE - off >=3D bytes)) {
+> 				memcpy(paddr, buffer + off, bytes);
+>@@ -84,7 +84,7 @@ static int siw=5Ftry=5F1seg(struct siw=5Fiwarp=5Ftx *c=
+=5Ftx,
+>void *paddr)
+> 				unsigned long part =3D bytes - (PAGE=5FSIZE - off);
+>=20
+> 				memcpy(paddr, buffer + off, part);
+>-				kunmap(p);
+>+				kunmap=5Fthread(p);
+>=20
+> 				if (!mem->is=5Fpbl)
+> 					p =3D siw=5Fget=5Fupage(mem->umem,
+>@@ -96,10 +96,10 @@ static int siw=5Ftry=5F1seg(struct siw=5Fiwarp=5Ftx
+>*c=5Ftx, void *paddr)
+> 				if (unlikely(!p))
+> 					return -EFAULT;
+>=20
+>-				buffer =3D kmap(p);
+>+				buffer =3D kmap=5Fthread(p);
+> 				memcpy(paddr + part, buffer, bytes - part);
+> 			}
+>-			kunmap(p);
+>+			kunmap=5Fthread(p);
+> 		}
+> 	}
+> 	return (int)bytes;
+>@@ -505,7 +505,7 @@ static int siw=5Ftx=5Fhdt(struct siw=5Fiwarp=5Ftx *c=
+=5Ftx,
+>struct socket *s)
+> 				page=5Farray[seg] =3D p;
+>=20
+> 				if (!c=5Ftx->use=5Fsendpage) {
+>-					iov[seg].iov=5Fbase =3D kmap(p) + fp=5Foff;
+>+					iov[seg].iov=5Fbase =3D kmap=5Fthread(p) + fp=5Foff;
 
-Acked-by: "Eric W. Biederman" <ebiederm@xmission.com>
+This misses a corresponding kunmap=5Fthread() in siw=5Funmap=5Fpages()
+(pls change line 403 in siw=5Fqp=5Ftx.c as well)
 
+Thanks,
+Bernard.
+
+> 					iov[seg].iov=5Flen =3D plen;
+>=20
+> 					/* Remember for later kunmap() */
+>@@ -518,9 +518,9 @@ static int siw=5Ftx=5Fhdt(struct siw=5Fiwarp=5Ftx *c=
+=5Ftx,
+>struct socket *s)
+> 							plen);
+> 				} else if (do=5Fcrc) {
+> 					crypto=5Fshash=5Fupdate(c=5Ftx->mpa=5Fcrc=5Fhd,
+>-							    kmap(p) + fp=5Foff,
+>+							    kmap=5Fthread(p) + fp=5Foff,
+> 							    plen);
+>-					kunmap(p);
+>+					kunmap=5Fthread(p);
+> 				}
+> 			} else {
+> 				u64 va =3D sge->laddr + sge=5Foff;
+>--=20
+>2.28.0.rc0.12.gb6a658bd00c9
 >
-> Cc: Eric Biederman <ebiederm@xmission.com>
-> Signed-off-by: Ira Weiny <ira.weiny@intel.com>
-> ---
->  kernel/kexec_core.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
 >
-> diff --git a/kernel/kexec_core.c b/kernel/kexec_core.c
-> index c19c0dad1ebe..272a9920c0d6 100644
-> --- a/kernel/kexec_core.c
-> +++ b/kernel/kexec_core.c
-> @@ -815,7 +815,7 @@ static int kimage_load_normal_segment(struct kimage *image,
->  		if (result < 0)
->  			goto out;
->  
-> -		ptr = kmap(page);
-> +		ptr = kmap_thread(page);
->  		/* Start with a clear page */
->  		clear_page(ptr);
->  		ptr += maddr & ~PAGE_MASK;
-> @@ -828,7 +828,7 @@ static int kimage_load_normal_segment(struct kimage *image,
->  			memcpy(ptr, kbuf, uchunk);
->  		else
->  			result = copy_from_user(ptr, buf, uchunk);
-> -		kunmap(page);
-> +		kunmap_thread(page);
->  		if (result) {
->  			result = -EFAULT;
->  			goto out;
-> @@ -879,7 +879,7 @@ static int kimage_load_crash_segment(struct kimage *image,
->  			goto out;
->  		}
->  		arch_kexec_post_alloc_pages(page_address(page), 1, 0);
-> -		ptr = kmap(page);
-> +		ptr = kmap_thread(page);
->  		ptr += maddr & ~PAGE_MASK;
->  		mchunk = min_t(size_t, mbytes,
->  				PAGE_SIZE - (maddr & ~PAGE_MASK));
-> @@ -895,7 +895,7 @@ static int kimage_load_crash_segment(struct kimage *image,
->  		else
->  			result = copy_from_user(ptr, buf, uchunk);
->  		kexec_flush_icache_page(page);
-> -		kunmap(page);
-> +		kunmap_thread(page);
->  		arch_kexec_pre_free_pages(page_address(page), 1);
->  		if (result) {
->  			result = -EFAULT;
+
