@@ -2,80 +2,100 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B6EA28A7BE
-	for <lists+linux-efi@lfdr.de>; Sun, 11 Oct 2020 16:20:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8985328A97D
+	for <lists+linux-efi@lfdr.de>; Sun, 11 Oct 2020 20:52:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730144AbgJKOUP (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sun, 11 Oct 2020 10:20:15 -0400
-Received: from mail-qv1-f65.google.com ([209.85.219.65]:34847 "EHLO
-        mail-qv1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725863AbgJKOUO (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sun, 11 Oct 2020 10:20:14 -0400
-Received: by mail-qv1-f65.google.com with SMTP id cv1so7176393qvb.2;
-        Sun, 11 Oct 2020 07:20:14 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=dWyWLnrnb2GKJhVjWNu3IOOiUQzNVrzCmOlIX/sAMcY=;
-        b=GJPlKJua3KDevZdfJUVtjmT8HhiLLcw0xoUzMvLyiSpdFekrhfV3eB9jeFM5dbcBNq
-         0jBWudI373iUP3CPhd7BrWWUyKpKhuSix9vGVF4PhA2YI+/4oYdef8xoHQ3BCyaxTSOt
-         xGT0SP1N8zhalQRo5M34YVIf6yOnj3/DGNG8RNrOGUgpP1QADS0pew1wRqriWxr0Yfb6
-         jdoQwojmj95dsNXib6i3O2iUeVruxJt8hQHzjM/yad5kYyZF1yvohfFOAzbDBwXDXLDq
-         K3a7ucJpIxASeCnYrBsm48xSVfDFkqkGeSubvoOe31MpA5/szTVWK0evvUSYBrQGSWTf
-         go7g==
-X-Gm-Message-State: AOAM532Gg9zEIbCZ+ZNaqqUfjy6pdXhyQn57Ua/7X3VI4xqxRSy2uD+d
-        JaItZJuIX15Vm5uz3Y7vRetvbMp84RoB2w==
-X-Google-Smtp-Source: ABdhPJysz1vjU2SOWAzZar8gr++J9DH9Y2B1ACIS+9wquQ1pZUwbr0Mv3hMx0YHqjhwW20fMy301JA==
-X-Received: by 2002:a05:6214:17d3:: with SMTP id cu19mr4799236qvb.12.1602426013403;
-        Sun, 11 Oct 2020 07:20:13 -0700 (PDT)
-Received: from rani.riverdale.lan ([2001:470:1f07:5f3::b55f])
-        by smtp.gmail.com with ESMTPSA id f189sm10175147qkd.20.2020.10.11.07.20.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 11 Oct 2020 07:20:12 -0700 (PDT)
-From:   Arvind Sankar <nivedita@alum.mit.edu>
-To:     linux-efi@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org
-Subject: [PATCH] efi/x86: Only copy the compressed kernel image in efi_relocate_kernel()
-Date:   Sun, 11 Oct 2020 10:20:12 -0400
-Message-Id: <20201011142012.96493-1-nivedita@alum.mit.edu>
-X-Mailer: git-send-email 2.26.2
+        id S1728314AbgJKSwx (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sun, 11 Oct 2020 14:52:53 -0400
+Received: from mail.kernel.org ([198.145.29.99]:59818 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728004AbgJKSwx (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Sun, 11 Oct 2020 14:52:53 -0400
+Received: from mail-ot1-f42.google.com (mail-ot1-f42.google.com [209.85.210.42])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 14EBE22251
+        for <linux-efi@vger.kernel.org>; Sun, 11 Oct 2020 18:52:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1602442373;
+        bh=tRIq1TBsb9XtqTEBac1D0dLSa2St4HZX45tcrJ3NB2s=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=I6paUIOKPeMuJ0MBPgc5KLBZLk1FE0QzjrkT18IXc6JLMAFXuhIsd8P+ycpKRcZgK
+         3n6EgA84apOjq98oD7kQKxYOlQkTZZdle0ZcWjLnlJBf5sCAnYRRcXSJRhU4mztw0N
+         zAkYxoarJ8r9fT6j594ZMGxfBWklRTQuSE9iMwaw=
+Received: by mail-ot1-f42.google.com with SMTP id q21so13821809ota.8
+        for <linux-efi@vger.kernel.org>; Sun, 11 Oct 2020 11:52:53 -0700 (PDT)
+X-Gm-Message-State: AOAM530zpS9pMejOaNnJG8c8a8CzEH+DQbsyOCcoDdBAA6WU528WC4M/
+        cnhFrNBXk140tIylU5nGczsQOTNiJABr535qON4=
+X-Google-Smtp-Source: ABdhPJwgqxGW/GtVPWrqw5Q4dQICMppCw3b2LnJ6K7tp1EiGAsTeeIaeT+W61NxzGv812A16ADWw/KZVkVw1Rw62LJI=
+X-Received: by 2002:a9d:6a85:: with SMTP id l5mr16900814otq.77.1602442372432;
+ Sun, 11 Oct 2020 11:52:52 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20200929182412.31858-1-ardb@kernel.org>
+In-Reply-To: <20200929182412.31858-1-ardb@kernel.org>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Sun, 11 Oct 2020 20:52:41 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXHuSThL1aYUC3E7uAGhOJ3g5=5O9Qmw9p6XqXq0UsyHhA@mail.gmail.com>
+Message-ID: <CAMj1kXHuSThL1aYUC3E7uAGhOJ3g5=5O9Qmw9p6XqXq0UsyHhA@mail.gmail.com>
+Subject: Re: [GIT PULL] EFI fixes for v5.9
+To:     linux-efi <linux-efi@vger.kernel.org>
+Cc:     Ingo Molnar <mingo@redhat.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Borislav Petkov <bp@alien8.de>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The image_size argument to efi_relocate_kernel() is currently specified
-as init_size, but this is unnecessarily large. The compressed kernel is
-much smaller, in fact, its image only extends up to the start of _bss,
-since at this point, the .bss section is still uninitialized.
+On Tue, 29 Sep 2020 at 20:24, Ard Biesheuvel <ardb@kernel.org> wrote:
+>
+> The following changes since commit 46908326c6b801201f1e46f5ed0db6e85bef74ae:
+>
+>   efi: efibc: check for efivars write capability (2020-09-15 18:22:47 +0300)
+>
+> are available in the Git repository at:
+>
+>   git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git tags/efi-urgent-for-v5.9-rc7
+>
+> for you to fetch changes up to d32de9130f6c79533508e2c7879f18997bfbe2a0:
+>
+>   efi/arm64: libstub: Deal gracefully with EFI_RNG_PROTOCOL failure (2020-09-29 15:41:52 +0200)
+>
+> Cc: Ingo Molnar <mingo@redhat.com>
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Borislav Petkov <bp@alien8.de>
+>
+> ----------------------------------------------------------------
+> EFI fixes for v5.9:
+> - add definition of the EFI_MEMORY_CPU_CRYPTO memory attribute so we can
+>   identify it in the memory map listings
+> - don't abort the boot on arm64 if the EFI RNG protocol is available but
+>   returns with an error
+> - replace slashes with exclamation marks in efivarfs file names
+> - a couple of cosmetic fixups
+>
+> ----------------------------------------------------------------
+> Ard Biesheuvel (2):
+>       efi: Add definition of EFI_MEMORY_CPU_CRYPTO and ability to report it
+>       efi/arm64: libstub: Deal gracefully with EFI_RNG_PROTOCOL failure
+>
+> Michael Schaller (1):
+>       efivarfs: Replace invalid slashes with exclamation marks in dentries.
+>
+> Tian Tao (2):
+>       efi/libstub: Fix missing-prototypes in string.c
+>       efi: Delete deprecated parameter comments
+>
 
-Depending on compression level, this can reduce the amount of data
-copied by 4-5x.
+What is the status of this PR? It went into tip afaict but it appears
+to be stuck there.
 
-Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
----
- drivers/firmware/efi/libstub/x86-stub.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
-index 3672539cb96e..f14c4ff5839f 100644
---- a/drivers/firmware/efi/libstub/x86-stub.c
-+++ b/drivers/firmware/efi/libstub/x86-stub.c
-@@ -715,8 +715,11 @@ unsigned long efi_main(efi_handle_t handle,
- 	    (IS_ENABLED(CONFIG_X86_32) && buffer_end > KERNEL_IMAGE_SIZE)    ||
- 	    (IS_ENABLED(CONFIG_X86_64) && buffer_end > MAXMEM_X86_64_4LEVEL) ||
- 	    (image_offset == 0)) {
-+		extern char _bss[];
-+
- 		status = efi_relocate_kernel(&bzimage_addr,
--					     hdr->init_size, hdr->init_size,
-+					     (unsigned long)_bss - bzimage_addr,
-+					     hdr->init_size,
- 					     hdr->pref_address,
- 					     hdr->kernel_alignment,
- 					     LOAD_PHYSICAL_ADDR);
--- 
-2.26.2
-
+>  drivers/firmware/efi/efi.c                | 47 ++++++++++++++++---------------
+>  drivers/firmware/efi/libstub/arm64-stub.c |  8 ++++--
+>  drivers/firmware/efi/libstub/fdt.c        |  4 +--
+>  drivers/firmware/efi/libstub/string.c     |  1 +
+>  drivers/firmware/efi/vars.c               |  1 -
+>  fs/efivarfs/super.c                       |  3 ++
+>  include/linux/efi.h                       |  1 +
+>  7 files changed, 35 insertions(+), 30 deletions(-)
