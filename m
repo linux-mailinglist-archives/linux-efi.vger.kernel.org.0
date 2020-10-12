@@ -2,35 +2,35 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5226328BE4F
-	for <lists+linux-efi@lfdr.de>; Mon, 12 Oct 2020 18:45:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D768B28C1B4
+	for <lists+linux-efi@lfdr.de>; Mon, 12 Oct 2020 21:54:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2403964AbgJLQoy (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 12 Oct 2020 12:44:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59702 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2390257AbgJLQox (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 12 Oct 2020 12:44:53 -0400
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BED7C0613D0;
-        Mon, 12 Oct 2020 09:44:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=l9dol8BjF52rFe8mzz85c9RZmeAYDZ2M1zPXpY3Bxec=; b=cjGmRDHB+K+xo1zaI46uR/JWZM
-        mu6b6OfRoAYfgdNA5Kf5Iurex6D1FcBZ+mRQhj12vLi3isoy7f1JrMIQOIfa61TejqqWEwpL43yKb
-        2mAeiG7QIg8Vb+ajA0gepoKbc6o17WQEzV+UWJKTyQWQStoFHb/kNJEfYbWmPc27vxrcwV1GpTL/g
-        cqcPit9vRB3f1Zs6upmREd44qhzYUWIO5sf13vXmWctx364S7GYQlJM4ZaGSBTPIwUKM8imQUHEl+
-        YU7Gj26Vo02zH0C4u7a3/EscApIpoLOe+KQejmiwTcRHTR/bJWdX/slhogDIyA7BDVBafjowKFz4j
-        1dyYxPzg==;
-Received: from willy by casper.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1kS0wA-0004gO-8Q; Mon, 12 Oct 2020 16:44:38 +0000
-Date:   Mon, 12 Oct 2020 17:44:38 +0100
-From:   Matthew Wilcox <willy@infradead.org>
-To:     Dave Hansen <dave.hansen@intel.com>
-Cc:     Eric Biggers <ebiggers@kernel.org>,
-        Ira Weiny <ira.weiny@intel.com>,
+        id S2388608AbgJLTx7 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 12 Oct 2020 15:53:59 -0400
+Received: from mga09.intel.com ([134.134.136.24]:29002 "EHLO mga09.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726676AbgJLTx5 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Mon, 12 Oct 2020 15:53:57 -0400
+IronPort-SDR: sHEBSwDrhTzQU2S1NEllE7XlTU+xF+PhbrOIMhK+ymP1xuGREJ/BLRLAOafpJKPLRy0iKRj28m
+ +ZZbJv87UD9w==
+X-IronPort-AV: E=McAfee;i="6000,8403,9772"; a="165907662"
+X-IronPort-AV: E=Sophos;i="5.77,367,1596524400"; 
+   d="scan'208";a="165907662"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Oct 2020 12:53:55 -0700
+IronPort-SDR: fkO3cV1AstS50IlWJFeIR7IMIWTUvxOVu0RxBH9tBAb2aFjzmjvlioAsa4gAQcEu3X0zxNtHVX
+ KqidbmrXoAPg==
+X-IronPort-AV: E=Sophos;i="5.77,367,1596524400"; 
+   d="scan'208";a="530096227"
+Received: from iweiny-desk2.sc.intel.com (HELO localhost) ([10.3.52.147])
+  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Oct 2020 12:53:54 -0700
+Date:   Mon, 12 Oct 2020 12:53:54 -0700
+From:   Ira Weiny <ira.weiny@intel.com>
+To:     Matthew Wilcox <willy@infradead.org>
+Cc:     Dave Hansen <dave.hansen@intel.com>,
+        Eric Biggers <ebiggers@kernel.org>,
         Andrew Morton <akpm@linux-foundation.org>,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
@@ -63,7 +63,7 @@ Cc:     Eric Biggers <ebiggers@kernel.org>,
         linux-fsdevel@vger.kernel.org, bpf@vger.kernel.org,
         linuxppc-dev@lists.ozlabs.org, linux-btrfs@vger.kernel.org
 Subject: Re: [PATCH RFC PKS/PMEM 22/58] fs/f2fs: Utilize new kmap_thread()
-Message-ID: <20201012164438.GA20115@casper.infradead.org>
+Message-ID: <20201012195354.GC2046448@iweiny-DESK2.sc.intel.com>
 References: <20201009195033.3208459-1-ira.weiny@intel.com>
  <20201009195033.3208459-23-ira.weiny@intel.com>
  <20201009213434.GA839@sol.localdomain>
@@ -72,23 +72,48 @@ References: <20201009195033.3208459-1-ira.weiny@intel.com>
  <20201012065635.GB2046448@iweiny-DESK2.sc.intel.com>
  <20201012161946.GA858@sol.localdomain>
  <5d621db9-23d4-e140-45eb-d7fca2093d2b@intel.com>
+ <20201012164438.GA20115@casper.infradead.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <5d621db9-23d4-e140-45eb-d7fca2093d2b@intel.com>
+In-Reply-To: <20201012164438.GA20115@casper.infradead.org>
+User-Agent: Mutt/1.11.1 (2018-12-01)
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Mon, Oct 12, 2020 at 09:28:29AM -0700, Dave Hansen wrote:
-> kmap_atomic() is always preferred over kmap()/kmap_thread().
-> kmap_atomic() is _much_ more lightweight since its TLB invalidation is
-> always CPU-local and never broadcast.
+On Mon, Oct 12, 2020 at 05:44:38PM +0100, Matthew Wilcox wrote:
+> On Mon, Oct 12, 2020 at 09:28:29AM -0700, Dave Hansen wrote:
+> > kmap_atomic() is always preferred over kmap()/kmap_thread().
+> > kmap_atomic() is _much_ more lightweight since its TLB invalidation is
+> > always CPU-local and never broadcast.
+> > 
+> > So, basically, unless you *must* sleep while the mapping is in place,
+> > kmap_atomic() is preferred.
 > 
-> So, basically, unless you *must* sleep while the mapping is in place,
-> kmap_atomic() is preferred.
+> But kmap_atomic() disables preemption, so the _ideal_ interface would map
+> it only locally, then on preemption make it global.  I don't even know
+> if that _can_ be done.  But this email makes it seem like kmap_atomic()
+> has no downsides.
 
-But kmap_atomic() disables preemption, so the _ideal_ interface would map
-it only locally, then on preemption make it global.  I don't even know
-if that _can_ be done.  But this email makes it seem like kmap_atomic()
-has no downsides.
+And that is IIUC what Thomas was trying to solve.
+
+Also, Linus brought up that kmap_atomic() has quirks in nesting.[1]
+
+From what I can see all of these discussions support the need to have something
+between kmap() and kmap_atomic().
+
+However, the reason behind converting call sites to kmap_thread() are different
+between Thomas' patch set and mine.  Both require more kmap granularity.
+However, they do so with different reasons and underlying implementations but
+with the _same_ resulting semantics; a thread local mapping which is
+preemptable.[2]  Therefore they each focus on changing different call sites.
+
+While this patch set is huge I think it serves a valuable purpose to identify a
+large number of call sites which are candidates for this new semantic.
+
+Ira
+
+[1] https://lore.kernel.org/lkml/CAHk-=wgbmwsTOKs23Z=71EBTrULoeaH2U3TNqT2atHEWvkBKdw@mail.gmail.com/
+[2] It is important to note these implementations are not incompatible with
+each other.  So I don't see yet another 'kmap_something()' being required.
