@@ -2,120 +2,147 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7124928AFF9
-	for <lists+linux-efi@lfdr.de>; Mon, 12 Oct 2020 10:20:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7BAA628B057
+	for <lists+linux-efi@lfdr.de>; Mon, 12 Oct 2020 10:36:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726524AbgJLIUa (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 12 Oct 2020 04:20:30 -0400
-Received: from mail.kernel.org ([198.145.29.99]:51904 "EHLO mail.kernel.org"
+        id S1726130AbgJLIgo (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 12 Oct 2020 04:36:44 -0400
+Received: from mail.kernel.org ([198.145.29.99]:57714 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726098AbgJLIU3 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Mon, 12 Oct 2020 04:20:29 -0400
-Received: from mail-oo1-f49.google.com (mail-oo1-f49.google.com [209.85.161.49])
+        id S1726104AbgJLIgn (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Mon, 12 Oct 2020 04:36:43 -0400
+Received: from e123331-lin.nice.arm.com (lfbn-nic-1-188-42.w2-15.abo.wanadoo.fr [2.15.37.42])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id AE3872173E;
-        Mon, 12 Oct 2020 08:20:28 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 3A12B20714;
+        Mon, 12 Oct 2020 08:36:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1602490828;
-        bh=EyzO8tMJTCC+XyN3KqgvVYGrtb1TyCbmbp+zSz7Ppb8=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=MK0Oh3MqDgB9koAAuMRnltl0pM4teX6nvEbpJ8eTuCY4Ggb6RJkrfQuKryQEnkujO
-         cRs9QYAesP58e8cpB3x/UynzJ84dbIIpfCCvp8guHgBATm5jFZRQ4TIaa11tnHce83
-         LO5hd35DYO0JYp4pgONIK9qaZz8LdV3m0ec96GxY=
-Received: by mail-oo1-f49.google.com with SMTP id w25so3875330oos.10;
-        Mon, 12 Oct 2020 01:20:28 -0700 (PDT)
-X-Gm-Message-State: AOAM531feG3SP0ZMvNpwJpBG+8ZKzOx2k9CeB3eBm+qY/9hMbIFtEtWc
-        2cRg6O5g7KmyEHZUJli/AmfwYA/bGdoBURldPyY=
-X-Google-Smtp-Source: ABdhPJz18oAbSZB6d6XIsdsJGA0aS3dlg/rVP/cn+P035DH9wUktgzqk1T3Vckd4dT99S0gHURmYGdxdLHe5gZ9haKc=
-X-Received: by 2002:a4a:c3ca:: with SMTP id e10mr17802185ooq.41.1602490827863;
- Mon, 12 Oct 2020 01:20:27 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200904072905.25332-1-clin@suse.com> <20200904072905.25332-2-clin@suse.com>
- <CAMj1kXEXvmO5mrTcKpqYUASBAQB-1=xLa0vg7KwmvOHMjaQ34w@mail.gmail.com>
- <20200914080522.GA26718@linux-8mug> <20201005022014.GA5112@linux-8mug>
-In-Reply-To: <20201005022014.GA5112@linux-8mug>
+        s=default; t=1602491803;
+        bh=xGcSgxMYQFxatWCkytqqmruYRAdLAQg4c++Ihzfeilk=;
+        h=From:To:Cc:Subject:Date:From;
+        b=bPmPBhsiqQe/SZalLiOr6kMou1sPqsknAquA/3ICQz/fvbGe+NAiqnOKRNyekagSF
+         7wtZRPFd6l0AOUH5qxtDcsAi4pbXb+AT6Fr010MvyvLoKBmzZtnmAKV3t/4yrzodUw
+         kX7eT2VZ/6i2icJJWPo90BGu4reJThTOWQZLl/w8=
 From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Mon, 12 Oct 2020 10:20:15 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXErMjbvwuP6YhgaZ4M47vzhYkFJb2kYC+h7Odr4Zu3eSA@mail.gmail.com>
-Message-ID: <CAMj1kXErMjbvwuP6YhgaZ4M47vzhYkFJb2kYC+h7Odr4Zu3eSA@mail.gmail.com>
-Subject: Re: [PATCH 1/6] efistub: pass uefi secureboot flag via fdt params
-To:     Chester Lin <clin@suse.com>
-Cc:     Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Mimi Zohar <zohar@linux.ibm.com>, dmitry.kasatkin@gmail.com,
-        Jonathan Corbet <corbet@lwn.net>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Vincenzo Frascino <vincenzo.frascino@arm.com>,
-        Sami Tolvanen <samitolvanen@google.com>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Ingo Molnar <mingo@kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linux-integrity <linux-integrity@vger.kernel.org>,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        "Lee, Chun-Yi" <jlee@suse.com>
-Content-Type: text/plain; charset="UTF-8"
+To:     linux-efi@vger.kernel.org
+Cc:     linux-integrity@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        Ard Biesheuvel <ardb@kernel.org>, Chester Lin <clin@suse.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>
+Subject: [PATCH] ima: defer arch_ima_get_secureboot() call to IMA init time
+Date:   Mon, 12 Oct 2020 10:36:31 +0200
+Message-Id: <20201012083631.12724-1-ardb@kernel.org>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Mon, 5 Oct 2020 at 04:20, Chester Lin <clin@suse.com> wrote:
->
-> On Mon, Sep 14, 2020 at 04:05:22PM +0800, Chester Lin wrote:
-> > Hi Ard,
-> >
-> > On Fri, Sep 11, 2020 at 06:01:09PM +0300, Ard Biesheuvel wrote:
-> > > On Fri, 4 Sep 2020 at 10:29, Chester Lin <clin@suse.com> wrote:
-> > > >
-> > > > Add a new UEFI parameter: "linux,uefi-secure-boot" in fdt boot params
-> > > > as other architectures have done in their own boot data. For example,
-> > > > the boot_params->secure_boot in x86.
-> > > >
-> > > > Signed-off-by: Chester Lin <clin@suse.com>
-> > >
-> > > Why do we need this flag? Can't the OS simply check the variable directly?
-> > >
-> >
-> > In fact, there's a difficulty to achieve this.
-> >
-> > When linux kernel is booting on ARM, the runtime services are enabled later on.
-> > It's done by arm_enable_runtime_services(), which is registered as an early_initcall.
-> > Before it calls efi_native_runtime_setup(), all EFI runtime callbacks are still
-> > NULL so calling efi.get_variable() will cause NULL pointer dereference.
-> >
-> > There's a case that arch_ima_get_secureboot() can be called in early boot stage.
-> > For example, when you try to set "ima_appraise=off" in kernel command line, it's
-> > actually handled early:
-> >
-> > [    0.000000] Kernel command line: BOOT_IMAGE=/boot/Image-5.9.0-rc3-9.gdd61cda-
-> > vanilla root=UUID=a88bfb80-8abb-425c-a0f3-ad317465c28b splash=silent mitigations
-> > =auto ignore_loglevel earlycon=pl011,mmio,0x9000000 console=ttyAMA0 ima_appraise=off
-> > [    0.000000] ima: Secure boot enabled: ignoring ima_appraise=off boot parameter option
-> > [    0.000000] Dentry cache hash table entries: 1048576 (order: 11, 8388608 bytes, linear)
-> >
-> > However EFI services are remapped and enabled afterwards.
-> >
-> > [    0.082286] rcu: Hierarchical SRCU implementation.
-> > [    0.089592] Remapping and enabling EFI services.
-> > [    0.097509] smp: Bringing up secondary CPUs ...
-> >
-> > Another problem is that efi_rts_wq is created in subsys_initcall so we have to
-> > wait for both EFI services mapping and the workqueue get initiated before calling
-> > efi.get_variable() on ARM.
-> >
-> > The only way I can think of is to put a flag via fdt params. May I have your
-> > suggestions? I will appreciate if there's any better approach.
-> >
-> > Thanks,
-> > Chester
->
-> Ping. May I have some suggestions here?
->
+Chester reports that it is necessary to introduce a new way to pass
+the EFI secure boot status between the EFI stub and the core kernel
+on ARM systems. The usual way of obtaining this information is by
+checking the SecureBoot and SetupMode EFI variables, but this can
+only be done after the EFI variable workqueue is created, which
+occurs in a subsys_initcall(), whereas arch_ima_get_secureboot()
+is called much earlier by the IMA framework.
 
-IMA itself is initialized as a late initcall. The only reason you see
-this message early is because this is where the parsing of the command
-line parameter happens.
+However, the IMA framework itself is started as a late_initcall,
+and the only reason the call to arch_ima_get_secureboot() occurs
+so early is because it happens in the context of a __setup()
+callback that parses the ima_appraise= command line parameter.
 
-I'll send out a patch with a proposed solution for this issue.
+So let's refactor this code a little bit, by using a core_param()
+callback to capture the command line argument, and deferring any
+reasoning based on its contents to the IMA init routine.
+
+Cc: Chester Lin <clin@suse.com>
+Cc: Mimi Zohar <zohar@linux.ibm.com>
+Cc: Dmitry Kasatkin <dmitry.kasatkin@gmail.com>
+Cc: James Morris <jmorris@namei.org>
+Cc: "Serge E. Hallyn" <serge@hallyn.com>
+Link: https://lore.kernel.org/linux-arm-kernel/20200904072905.25332-2-clin@suse.com/
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+---
+ include/linux/ima.h                   |  6 +++++
+ security/integrity/ima/ima_appraise.c | 24 +++++++++++---------
+ security/integrity/ima/ima_main.c     |  1 +
+ 3 files changed, 20 insertions(+), 11 deletions(-)
+
+diff --git a/include/linux/ima.h b/include/linux/ima.h
+index d15100de6cdd..8aefee9c36ab 100644
+--- a/include/linux/ima.h
++++ b/include/linux/ima.h
+@@ -27,6 +27,12 @@ extern void ima_post_path_mknod(struct dentry *dentry);
+ extern int ima_file_hash(struct file *file, char *buf, size_t buf_size);
+ extern void ima_kexec_cmdline(int kernel_fd, const void *buf, int size);
+ 
++#ifdef CONFIG_IMA_APPRAISE_BOOTPARAM
++extern void ima_appraise_parse_cmdline(void);
++#else
++static inline void ima_appraise_parse_cmdline(void) {}
++#endif
++
+ #ifdef CONFIG_IMA_KEXEC
+ extern void ima_add_kexec_buffer(struct kimage *image);
+ #endif
+diff --git a/security/integrity/ima/ima_appraise.c b/security/integrity/ima/ima_appraise.c
+index b8848f53c8cc..a0135dbf2a64 100644
+--- a/security/integrity/ima/ima_appraise.c
++++ b/security/integrity/ima/ima_appraise.c
+@@ -16,26 +16,28 @@
+ 
+ #include "ima.h"
+ 
+-static int __init default_appraise_setup(char *str)
+-{
+ #ifdef CONFIG_IMA_APPRAISE_BOOTPARAM
++static char *ima_appraise_cmdline_default __initdata;
++core_param(ima_appraise, ima_appraise_cmdline_default, charp, 0);
++
++void __init ima_appraise_parse_cmdline(void)
++{
++	if (!ima_appraise_cmdline_default)
++		return;
+ 	if (arch_ima_get_secureboot()) {
+ 		pr_info("Secure boot enabled: ignoring ima_appraise=%s boot parameter option",
+-			str);
+-		return 1;
++			ima_appraise_cmdline_default);
++		return;
+ 	}
+ 
+-	if (strncmp(str, "off", 3) == 0)
++	if (strncmp(ima_appraise_cmdline_default, "off", 3) == 0)
+ 		ima_appraise = 0;
+-	else if (strncmp(str, "log", 3) == 0)
++	else if (strncmp(ima_appraise_cmdline_default, "log", 3) == 0)
+ 		ima_appraise = IMA_APPRAISE_LOG;
+-	else if (strncmp(str, "fix", 3) == 0)
++	else if (strncmp(ima_appraise_cmdline_default, "fix", 3) == 0)
+ 		ima_appraise = IMA_APPRAISE_FIX;
+-#endif
+-	return 1;
+ }
+-
+-__setup("ima_appraise=", default_appraise_setup);
++#endif
+ 
+ /*
+  * is_ima_appraise_enabled - return appraise status
+diff --git a/security/integrity/ima/ima_main.c b/security/integrity/ima/ima_main.c
+index 8a91711ca79b..31d72cf04768 100644
+--- a/security/integrity/ima/ima_main.c
++++ b/security/integrity/ima/ima_main.c
+@@ -850,6 +850,7 @@ static int __init init_ima(void)
+ {
+ 	int error;
+ 
++	ima_appraise_parse_cmdline();
+ 	ima_init_template_list();
+ 	hash_setup(CONFIG_IMA_DEFAULT_HASH);
+ 	error = ima_init();
+-- 
+2.17.1
+
