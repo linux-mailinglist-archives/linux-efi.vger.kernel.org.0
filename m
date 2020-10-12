@@ -2,152 +2,120 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2AA2028AF50
-	for <lists+linux-efi@lfdr.de>; Mon, 12 Oct 2020 09:41:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7124928AFF9
+	for <lists+linux-efi@lfdr.de>; Mon, 12 Oct 2020 10:20:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728363AbgJLHlR (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 12 Oct 2020 03:41:17 -0400
-Received: from mx2.suse.de ([195.135.220.15]:44468 "EHLO mx2.suse.de"
+        id S1726524AbgJLIUa (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 12 Oct 2020 04:20:30 -0400
+Received: from mail.kernel.org ([198.145.29.99]:51904 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727722AbgJLHk4 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Mon, 12 Oct 2020 03:40:56 -0400
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.221.27])
-        by mx2.suse.de (Postfix) with ESMTP id 3DEE1AC1D;
-        Mon, 12 Oct 2020 07:40:52 +0000 (UTC)
-Subject: Re: [PATCH RFC PKS/PMEM 48/58] drivers/md: Utilize new kmap_thread()
-To:     Ira Weiny <ira.weiny@intel.com>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Andy Lutomirski <luto@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Kent Overstreet <kent.overstreet@gmail.com>, x86@kernel.org,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org,
-        linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-        linux-kselftest@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        kvm@vger.kernel.org, netdev@vger.kernel.org, bpf@vger.kernel.org,
-        kexec@lists.infradead.org, linux-bcache@vger.kernel.org,
-        linux-mtd@lists.infradead.org, devel@driverdev.osuosl.org,
-        linux-efi@vger.kernel.org, linux-mmc@vger.kernel.org,
-        linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
-        linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org,
-        linux-ext4@vger.kernel.org, linux-aio@kvack.org,
-        io-uring@vger.kernel.org, linux-erofs@lists.ozlabs.org,
-        linux-um@lists.infradead.org, linux-ntfs-dev@lists.sourceforge.net,
-        reiserfs-devel@vger.kernel.org,
-        linux-f2fs-devel@lists.sourceforge.net,
-        linux-nilfs@vger.kernel.org, cluster-devel@redhat.com,
-        ecryptfs@vger.kernel.org, linux-cifs@vger.kernel.org,
-        linux-btrfs@vger.kernel.org, linux-afs@lists.infradead.org,
-        linux-rdma@vger.kernel.org, amd-gfx@lists.freedesktop.org,
-        dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
-        drbd-dev@lists.linbit.com, linux-block@vger.kernel.org,
-        xen-devel@lists.xenproject.org, linux-cachefs@redhat.com,
-        samba-technical@lists.samba.org, intel-wired-lan@lists.osuosl.org
-References: <20201009195033.3208459-1-ira.weiny@intel.com>
- <20201009195033.3208459-49-ira.weiny@intel.com>
- <c802fbf4-f67a-b205-536d-9c71b440f9c8@suse.de>
- <20201012052817.GZ2046448@iweiny-DESK2.sc.intel.com>
-From:   Coly Li <colyli@suse.de>
-Autocrypt: addr=colyli@suse.de; keydata=
- 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
-Message-ID: <026a7658-6c43-6510-a8b5-32f29de7b281@suse.de>
-Date:   Mon, 12 Oct 2020 15:40:27 +0800
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:68.0)
- Gecko/20100101 Thunderbird/68.12.1
+        id S1726098AbgJLIU3 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Mon, 12 Oct 2020 04:20:29 -0400
+Received: from mail-oo1-f49.google.com (mail-oo1-f49.google.com [209.85.161.49])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id AE3872173E;
+        Mon, 12 Oct 2020 08:20:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1602490828;
+        bh=EyzO8tMJTCC+XyN3KqgvVYGrtb1TyCbmbp+zSz7Ppb8=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=MK0Oh3MqDgB9koAAuMRnltl0pM4teX6nvEbpJ8eTuCY4Ggb6RJkrfQuKryQEnkujO
+         cRs9QYAesP58e8cpB3x/UynzJ84dbIIpfCCvp8guHgBATm5jFZRQ4TIaa11tnHce83
+         LO5hd35DYO0JYp4pgONIK9qaZz8LdV3m0ec96GxY=
+Received: by mail-oo1-f49.google.com with SMTP id w25so3875330oos.10;
+        Mon, 12 Oct 2020 01:20:28 -0700 (PDT)
+X-Gm-Message-State: AOAM531feG3SP0ZMvNpwJpBG+8ZKzOx2k9CeB3eBm+qY/9hMbIFtEtWc
+        2cRg6O5g7KmyEHZUJli/AmfwYA/bGdoBURldPyY=
+X-Google-Smtp-Source: ABdhPJz18oAbSZB6d6XIsdsJGA0aS3dlg/rVP/cn+P035DH9wUktgzqk1T3Vckd4dT99S0gHURmYGdxdLHe5gZ9haKc=
+X-Received: by 2002:a4a:c3ca:: with SMTP id e10mr17802185ooq.41.1602490827863;
+ Mon, 12 Oct 2020 01:20:27 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20201012052817.GZ2046448@iweiny-DESK2.sc.intel.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <20200904072905.25332-1-clin@suse.com> <20200904072905.25332-2-clin@suse.com>
+ <CAMj1kXEXvmO5mrTcKpqYUASBAQB-1=xLa0vg7KwmvOHMjaQ34w@mail.gmail.com>
+ <20200914080522.GA26718@linux-8mug> <20201005022014.GA5112@linux-8mug>
+In-Reply-To: <20201005022014.GA5112@linux-8mug>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Mon, 12 Oct 2020 10:20:15 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXErMjbvwuP6YhgaZ4M47vzhYkFJb2kYC+h7Odr4Zu3eSA@mail.gmail.com>
+Message-ID: <CAMj1kXErMjbvwuP6YhgaZ4M47vzhYkFJb2kYC+h7Odr4Zu3eSA@mail.gmail.com>
+Subject: Re: [PATCH 1/6] efistub: pass uefi secureboot flag via fdt params
+To:     Chester Lin <clin@suse.com>
+Cc:     Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Mimi Zohar <zohar@linux.ibm.com>, dmitry.kasatkin@gmail.com,
+        Jonathan Corbet <corbet@lwn.net>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Vincenzo Frascino <vincenzo.frascino@arm.com>,
+        Sami Tolvanen <samitolvanen@google.com>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Ingo Molnar <mingo@kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-integrity <linux-integrity@vger.kernel.org>,
+        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        "Lee, Chun-Yi" <jlee@suse.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 2020/10/12 13:28, Ira Weiny wrote:
-> On Sat, Oct 10, 2020 at 10:20:34AM +0800, Coly Li wrote:
->> On 2020/10/10 03:50, ira.weiny@intel.com wrote:
->>> From: Ira Weiny <ira.weiny@intel.com>
->>>
->>> These kmap() calls are localized to a single thread.  To avoid the over
->>> head of global PKRS updates use the new kmap_thread() call.
->>>
->>
->> Hi Ira,
->>
->> There were a number of options considered.
->>
->> 1) Attempt to change all the thread local kmap() calls to kmap_atomic()
->> 2) Introduce a flags parameter to kmap() to indicate if the mapping
->> should be global or not
->> 3) Change ~20-30 call sites to 'kmap_global()' to indicate that they
->> require a global mapping of the pages
->> 4) Change ~209 call sites to 'kmap_thread()' to indicate that the
->> mapping is to be used within that thread of execution only
->>
->>
->> I copied the above information from patch 00/58 to this message. The
->> idea behind kmap_thread() is fine to me, but as you said the new api is
->> very easy to be missed in new code (even for me). I would like to be
->> supportive to option 2) introduce a flag to kmap(), then we won't forget
->> the new thread-localized kmap method, and people won't ask why a
->> _thread() function is called but no kthread created.
-> 
-> Thanks for the feedback.
-> 
-> I'm going to hold off making any changes until others weigh in.  FWIW, I kind
-> of like option 2 as well.  But there is already kmap_atomic() so it seemed like
-> kmap_XXXX() was more in line with the current API.
+On Mon, 5 Oct 2020 at 04:20, Chester Lin <clin@suse.com> wrote:
+>
+> On Mon, Sep 14, 2020 at 04:05:22PM +0800, Chester Lin wrote:
+> > Hi Ard,
+> >
+> > On Fri, Sep 11, 2020 at 06:01:09PM +0300, Ard Biesheuvel wrote:
+> > > On Fri, 4 Sep 2020 at 10:29, Chester Lin <clin@suse.com> wrote:
+> > > >
+> > > > Add a new UEFI parameter: "linux,uefi-secure-boot" in fdt boot params
+> > > > as other architectures have done in their own boot data. For example,
+> > > > the boot_params->secure_boot in x86.
+> > > >
+> > > > Signed-off-by: Chester Lin <clin@suse.com>
+> > >
+> > > Why do we need this flag? Can't the OS simply check the variable directly?
+> > >
+> >
+> > In fact, there's a difficulty to achieve this.
+> >
+> > When linux kernel is booting on ARM, the runtime services are enabled later on.
+> > It's done by arm_enable_runtime_services(), which is registered as an early_initcall.
+> > Before it calls efi_native_runtime_setup(), all EFI runtime callbacks are still
+> > NULL so calling efi.get_variable() will cause NULL pointer dereference.
+> >
+> > There's a case that arch_ima_get_secureboot() can be called in early boot stage.
+> > For example, when you try to set "ima_appraise=off" in kernel command line, it's
+> > actually handled early:
+> >
+> > [    0.000000] Kernel command line: BOOT_IMAGE=/boot/Image-5.9.0-rc3-9.gdd61cda-
+> > vanilla root=UUID=a88bfb80-8abb-425c-a0f3-ad317465c28b splash=silent mitigations
+> > =auto ignore_loglevel earlycon=pl011,mmio,0x9000000 console=ttyAMA0 ima_appraise=off
+> > [    0.000000] ima: Secure boot enabled: ignoring ima_appraise=off boot parameter option
+> > [    0.000000] Dentry cache hash table entries: 1048576 (order: 11, 8388608 bytes, linear)
+> >
+> > However EFI services are remapped and enabled afterwards.
+> >
+> > [    0.082286] rcu: Hierarchical SRCU implementation.
+> > [    0.089592] Remapping and enabling EFI services.
+> > [    0.097509] smp: Bringing up secondary CPUs ...
+> >
+> > Another problem is that efi_rts_wq is created in subsys_initcall so we have to
+> > wait for both EFI services mapping and the workqueue get initiated before calling
+> > efi.get_variable() on ARM.
+> >
+> > The only way I can think of is to put a flag via fdt params. May I have your
+> > suggestions? I will appreciate if there's any better approach.
+> >
+> > Thanks,
+> > Chester
+>
+> Ping. May I have some suggestions here?
+>
 
-I understand it now, the idea is fine to me.
+IMA itself is initialized as a late initcall. The only reason you see
+this message early is because this is where the parsing of the command
+line parameter happens.
 
-Acked-by: Coly Li <colyli@suse.de>
-
-Thanks.
-
-Coly Li
+I'll send out a patch with a proposed solution for this issue.
