@@ -2,101 +2,141 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E97028D2B7
-	for <lists+linux-efi@lfdr.de>; Tue, 13 Oct 2020 18:59:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 99BF128D3B9
+	for <lists+linux-efi@lfdr.de>; Tue, 13 Oct 2020 20:37:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728702AbgJMQ7e (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 13 Oct 2020 12:59:34 -0400
-Received: from mail.kernel.org ([198.145.29.99]:36052 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728680AbgJMQ7e (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Tue, 13 Oct 2020 12:59:34 -0400
-Received: from mail-oi1-f171.google.com (mail-oi1-f171.google.com [209.85.167.171])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        id S2387783AbgJMShD (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 13 Oct 2020 14:37:03 -0400
+Received: from pb-sasl-trial2.pobox.com ([64.147.108.86]:58403 "EHLO
+        pb-sasl-trial2.pobox.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731459AbgJMShD (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 13 Oct 2020 14:37:03 -0400
+Received: from pb-sasl-trial2.pobox.com (localhost.local [127.0.0.1])
+        by pb-sasl-trial2.pobox.com (Postfix) with ESMTP id B35092F08C;
+        Tue, 13 Oct 2020 14:36:58 -0400 (EDT)
+        (envelope-from nico@fluxnic.net)
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed; d=pobox.com; h=date:from:to
+        :cc:subject:in-reply-to:message-id:references:mime-version
+        :content-type; s=sasl; bh=1qdRcPgrMg9PaaTRWeHMHkWBgn4=; b=Epy+q5
+        ans9ahJwXxlQvxdjICPrBYTo3ECIn9AzWxzmuo835zX7Go5RA+la+QVdJswbYHqY
+        OA9uOWP+RHqwo1f/1Hjwskkbh9itwsmr5IKrZUme2Q4YRp5bQABuumhmd/Yh0NKM
+        sMhZUgbkZQs79wJJn2wtIPZ7EN0v5uRSG8bTQ=
+Received: from pb-smtp1.nyi.icgroup.com (pb-smtp1.pobox.com [10.90.30.53])
+        by pb-sasl-trial2.pobox.com (Postfix) with ESMTP id 7910C2F08B;
+        Tue, 13 Oct 2020 14:36:58 -0400 (EDT)
+        (envelope-from nico@fluxnic.net)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed; d=fluxnic.net;
+ h=date:from:to:cc:subject:in-reply-to:message-id:references:mime-version:content-type; s=2016-12.pbsmtp; bh=/xoWviDLFg5PKRQ9rObRWDXVC++pmZtYhfbDb0DFq7E=; b=v5OoWtflZD131TYsBl2A9g0L/PCRe2nu6sy2IJY2ys8stI3sGPGydjk9hbVpZeTUKIjemrnRhLwKFlAM+dXEIGXz5t0LfwSiRA8m7hrB4WLH79+9F2ww8ICEhYu0fLjFgoDc1lKWqG4ZKNRDYjtbn/p6CJBipu1Te7ZvLuk/HMw=
+Received: from yoda.home (unknown [24.203.50.76])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 65A0F25307;
-        Tue, 13 Oct 2020 16:59:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1602608373;
-        bh=osZ8tJsN1XJAdwSi1ibvFjOI4ppbEHzl507BtoRa3RY=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=BVgO/RpFUbXU0rUhiHQ4PV7seCBjZCA5VZpjLt9fb7pnoZxE7/J2v8gFkpMq7al/x
-         NMjFN0+OeJ/sVOOsN2LLPY3YNMD8GoZ5ncaUEdxxceVdpuik78E54GRrZLBAYex/Fk
-         VhTmOSSHk5b6rOkFbDuFk7NR3TEllYJasaYjeEQ4=
-Received: by mail-oi1-f171.google.com with SMTP id w141so131382oia.2;
-        Tue, 13 Oct 2020 09:59:33 -0700 (PDT)
-X-Gm-Message-State: AOAM53068MuKC1W0RBsGNaXD3pm6HByvtGHd5jULBpD0WfPpugzEmdRB
-        /I4FkeYKFV9kJPZw9a+CW92m5ZqI07k3yU5Vums=
-X-Google-Smtp-Source: ABdhPJyCyAZiLNWtZEpxTAWgjVYup7xXC2n8Dw2lOiZtXYQDhs3t2O/klyNtVYYJ8v1GO87o7QPqDtWtI4WZYBPYbfs=
-X-Received: by 2002:aca:d845:: with SMTP id p66mr382549oig.47.1602608372672;
- Tue, 13 Oct 2020 09:59:32 -0700 (PDT)
+        by pb-smtp1.pobox.com (Postfix) with ESMTPSA id CD98F955F4;
+        Tue, 13 Oct 2020 14:36:57 -0400 (EDT)
+        (envelope-from nico@fluxnic.net)
+Received: from xanadu.home (xanadu.home [192.168.2.2])
+        by yoda.home (Postfix) with ESMTPSA id CF7492DA0BC7;
+        Tue, 13 Oct 2020 14:36:56 -0400 (EDT)
+Date:   Tue, 13 Oct 2020 14:36:56 -0400 (EDT)
+From:   Nicolas Pitre <nico@fluxnic.net>
+To:     Ira Weiny <ira.weiny@intel.com>
+cc:     Andrew Morton <akpm@linux-foundation.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Andy Lutomirski <luto@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>, x86@kernel.org,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org,
+        linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+        linux-kselftest@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        kvm@vger.kernel.org, netdev@vger.kernel.org, bpf@vger.kernel.org,
+        kexec@lists.infradead.org, linux-bcache@vger.kernel.org,
+        linux-mtd@lists.infradead.org, devel@driverdev.osuosl.org,
+        linux-efi@vger.kernel.org, linux-mmc@vger.kernel.org,
+        linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
+        linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org,
+        linux-ext4@vger.kernel.org, linux-aio@kvack.org,
+        io-uring@vger.kernel.org, linux-erofs@lists.ozlabs.org,
+        linux-um@lists.infradead.org, linux-ntfs-dev@lists.sourceforge.net,
+        reiserfs-devel@vger.kernel.org,
+        linux-f2fs-devel@lists.sourceforge.net,
+        linux-nilfs@vger.kernel.org, cluster-devel@redhat.com,
+        ecryptfs@vger.kernel.org, linux-cifs@vger.kernel.org,
+        linux-btrfs@vger.kernel.org, linux-afs@lists.infradead.org,
+        linux-rdma@vger.kernel.org, amd-gfx@lists.freedesktop.org,
+        dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+        drbd-dev@lists.linbit.com, linux-block@vger.kernel.org,
+        xen-devel@lists.xenproject.org, linux-cachefs@redhat.com,
+        samba-technical@lists.samba.org, intel-wired-lan@lists.osuosl.org
+Subject: Re: [PATCH RFC PKS/PMEM 33/58] fs/cramfs: Utilize new
+ kmap_thread()
+In-Reply-To: <20201009195033.3208459-34-ira.weiny@intel.com>
+Message-ID: <nycvar.YSQ.7.78.906.2010131436200.2184@knanqh.ubzr>
+References: <20201009195033.3208459-1-ira.weiny@intel.com> <20201009195033.3208459-34-ira.weiny@intel.com>
 MIME-Version: 1.0
-References: <20201013081804.17332-1-ardb@kernel.org> <ae9ab2560f6d7b114726efb1ec26f0a36f695335.camel@linux.ibm.com>
-In-Reply-To: <ae9ab2560f6d7b114726efb1ec26f0a36f695335.camel@linux.ibm.com>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Tue, 13 Oct 2020 18:59:21 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXFZVR46_oeYTxJ59q-7u+zFCFtOQuSQoiEzKLhXzpydow@mail.gmail.com>
-Message-ID: <CAMj1kXFZVR46_oeYTxJ59q-7u+zFCFtOQuSQoiEzKLhXzpydow@mail.gmail.com>
-Subject: Re: [PATCH v2] ima: defer arch_ima_get_secureboot() call to IMA init time
-To:     Mimi Zohar <zohar@linux.ibm.com>
-Cc:     linux-efi <linux-efi@vger.kernel.org>,
-        linux-integrity <linux-integrity@vger.kernel.org>,
-        linux-security-module@vger.kernel.org, Chester Lin <clin@suse.com>,
-        Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        "open list:LINUX FOR POWERPC (32-BIT AND 64-BIT)" 
-        <linuxppc-dev@lists.ozlabs.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII
+X-Pobox-Relay-ID: 13301A02-0D83-11EB-84D0-D152C8D8090B-78420484!pb-smtp1.pobox.com
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, 13 Oct 2020 at 18:46, Mimi Zohar <zohar@linux.ibm.com> wrote:
->
-> [Cc'ing linuxppc-dev@lists.ozlabs.org]
->
-> On Tue, 2020-10-13 at 10:18 +0200, Ard Biesheuvel wrote:
-> > Chester reports that it is necessary to introduce a new way to pass
-> > the EFI secure boot status between the EFI stub and the core kernel
-> > on ARM systems. The usual way of obtaining this information is by
-> > checking the SecureBoot and SetupMode EFI variables, but this can
-> > only be done after the EFI variable workqueue is created, which
-> > occurs in a subsys_initcall(), whereas arch_ima_get_secureboot()
-> > is called much earlier by the IMA framework.
-> >
-> > However, the IMA framework itself is started as a late_initcall,
-> > and the only reason the call to arch_ima_get_secureboot() occurs
-> > so early is because it happens in the context of a __setup()
-> > callback that parses the ima_appraise= command line parameter.
-> >
-> > So let's refactor this code a little bit, by using a core_param()
-> > callback to capture the command line argument, and deferring any
-> > reasoning based on its contents to the IMA init routine.
-> >
-> > Cc: Chester Lin <clin@suse.com>
-> > Cc: Mimi Zohar <zohar@linux.ibm.com>
-> > Cc: Dmitry Kasatkin <dmitry.kasatkin@gmail.com>
-> > Cc: James Morris <jmorris@namei.org>
-> > Cc: "Serge E. Hallyn" <serge@hallyn.com>
-> > Link: https://lore.kernel.org/linux-arm-kernel/20200904072905.25332-2-clin@suse.com/
-> > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> > ---
-> > v2: rebase onto series 'integrity: improve user feedback for invalid bootparams'
->
-> Thanks, Ard.  Based on my initial, limited testing on Power, it looks
-> good, but I'm hesistant to include it in the integrity 5.10 pull
-> request without it having been in linux-next and some additional
-> testing.  It's now queued in the next-integrity-testing branch awaiting
-> some tags.
->
+On Fri, 9 Oct 2020, ira.weiny@intel.com wrote:
 
-Thanks. No rush as far as I am concerned, although I suppose Chester
-may want to rebase his arm64 IMA enablement series on this.
+> From: Ira Weiny <ira.weiny@intel.com>
+> 
+> The kmap() calls in this FS are localized to a single thread.  To avoid
+> the over head of global PKRS updates use the new kmap_thread() call.
+> 
+> Cc: Nicolas Pitre <nico@fluxnic.net>
+> Signed-off-by: Ira Weiny <ira.weiny@intel.com>
 
-Suggestion: can we take the get_sb_mode() code from ima_arch.c in
-arch/x86, and generalize it for all EFI architectures? That way, we
-can enable 32-bit ARM and RISC-V seamlessly once someone gets around
-to enabling IMA on those platforms. In fact, get_sb_mode() itself
-should probably be factored out into a generic helper for use outside
-of IMA as well (Xen/x86 has code that does roughly the same already)
+Acked-by: Nicolas Pitre <nico@fluxnic.net>
+
+>  fs/cramfs/inode.c | 10 +++++-----
+>  1 file changed, 5 insertions(+), 5 deletions(-)
+> 
+> diff --git a/fs/cramfs/inode.c b/fs/cramfs/inode.c
+> index 912308600d39..003c014a42ed 100644
+> --- a/fs/cramfs/inode.c
+> +++ b/fs/cramfs/inode.c
+> @@ -247,8 +247,8 @@ static void *cramfs_blkdev_read(struct super_block *sb, unsigned int offset,
+>  		struct page *page = pages[i];
+>  
+>  		if (page) {
+> -			memcpy(data, kmap(page), PAGE_SIZE);
+> -			kunmap(page);
+> +			memcpy(data, kmap_thread(page), PAGE_SIZE);
+> +			kunmap_thread(page);
+>  			put_page(page);
+>  		} else
+>  			memset(data, 0, PAGE_SIZE);
+> @@ -826,7 +826,7 @@ static int cramfs_readpage(struct file *file, struct page *page)
+>  
+>  	maxblock = (inode->i_size + PAGE_SIZE - 1) >> PAGE_SHIFT;
+>  	bytes_filled = 0;
+> -	pgdata = kmap(page);
+> +	pgdata = kmap_thread(page);
+>  
+>  	if (page->index < maxblock) {
+>  		struct super_block *sb = inode->i_sb;
+> @@ -914,13 +914,13 @@ static int cramfs_readpage(struct file *file, struct page *page)
+>  
+>  	memset(pgdata + bytes_filled, 0, PAGE_SIZE - bytes_filled);
+>  	flush_dcache_page(page);
+> -	kunmap(page);
+> +	kunmap_thread(page);
+>  	SetPageUptodate(page);
+>  	unlock_page(page);
+>  	return 0;
+>  
+>  err:
+> -	kunmap(page);
+> +	kunmap_thread(page);
+>  	ClearPageUptodate(page);
+>  	SetPageError(page);
+>  	unlock_page(page);
+> -- 
+> 2.28.0.rc0.12.gb6a658bd00c9
+> 
+> 
