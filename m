@@ -2,41 +2,31 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BC05F295941
-	for <lists+linux-efi@lfdr.de>; Thu, 22 Oct 2020 09:33:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 49B3429628C
+	for <lists+linux-efi@lfdr.de>; Thu, 22 Oct 2020 18:20:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2502403AbgJVHda (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 22 Oct 2020 03:33:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53680 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2441599AbgJVHda (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 22 Oct 2020 03:33:30 -0400
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30FC2C0613CE;
-        Thu, 22 Oct 2020 00:33:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=JbI0bflC8HQp7NYmkplX8khPFM4YNdFK0FBEU2KovRA=; b=lMsJhYJGc3BhDxJe68Hgu906om
-        8Qon8SVUIOhCVFuRh77uHlceHn4dW4RO1HFDbxJpb/Sk9mzOY+XWXyTgrQqS2EoDdglvOg8WVe9MJ
-        0N8c+ERqyETP4BuQ2qpnicSgJF4qro87FMpPt4G8VWiqvBj9nXYRhLIbKNNyxSVJRJBtcMoDTxKC1
-        Uyu1v2J+K/vCxRtKmxxi6Hl4iirCl7pCaSOWmLIAezfrHRAS2pAtWZ9xKLDUgBZ9xclunQAUFM6bI
-        PPWvYBw+4GGlfLjNCyByVldTQ/emii876kndho+qdxv0hvvZHqveaESL6Y3+55wsXV2XLq7zJn4Xb
-        b/00Gw6g==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
-        by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1kVV5w-00028b-Mt; Thu, 22 Oct 2020 07:33:08 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id A8B873011C6;
-        Thu, 22 Oct 2020 09:33:07 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id 94AE72BB9BA76; Thu, 22 Oct 2020 09:33:07 +0200 (CEST)
-Date:   Thu, 22 Oct 2020 09:33:07 +0200
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     Joe Perches <joe@perches.com>
+        id S2896798AbgJVQUj (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 22 Oct 2020 12:20:39 -0400
+Received: from smtprelay0126.hostedemail.com ([216.40.44.126]:59308 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S2896796AbgJVQUj (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 22 Oct 2020 12:20:39 -0400
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay02.hostedemail.com (Postfix) with ESMTP id 5284912EE;
+        Thu, 22 Oct 2020 16:20:38 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 10,1,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:800:967:968:973:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1540:1593:1594:1711:1730:1747:1777:1792:2198:2199:2393:2525:2553:2561:2564:2682:2685:2828:2859:2933:2937:2939:2942:2945:2947:2951:2954:3022:3138:3139:3140:3141:3142:3352:3622:3865:3866:3867:3868:3870:3871:3934:3936:3938:3941:3944:3947:3950:3953:3956:3959:4321:5007:6248:6742:8985:9025:10004:10400:11232:11658:11914:12043:12219:12297:12438:12555:12663:12740:12760:12895:12986:13069:13255:13311:13357:13439:13845:14096:14097:14181:14659:14721:14777:21080:21324:21433:21451:21627:21788:21811:21889:30029:30054:30070:30074:30090:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:2,LUA_SUMMARY:none
+X-HE-Tag: juice98_4f032d527252
+X-Filterd-Recvd-Size: 2328
+Received: from XPS-9350.home (unknown [47.151.133.149])
+        (Authenticated sender: joe@perches.com)
+        by omf17.hostedemail.com (Postfix) with ESMTPA;
+        Thu, 22 Oct 2020 16:20:35 +0000 (UTC)
+Message-ID: <133aa0c8c5e2cbc862df109200b982e89046dbc0.camel@perches.com>
+Subject: Re: [PATCH -next] treewide: Remove stringification from __alias
+ macro definition
+From:   Joe Perches <joe@perches.com>
+To:     Peter Zijlstra <peterz@infradead.org>
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Borislav Petkov <bp@alien8.de>, x86@kernel.org,
         "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
@@ -52,24 +42,40 @@ Cc:     Thomas Gleixner <tglx@linutronix.de>,
         linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
         kasan-dev@googlegroups.com, linux-crypto@vger.kernel.org,
         linux-mm <linux-mm@kvack.org>
-Subject: Re: [PATCH -next] treewide: Remove stringification from __alias
- macro definition
-Message-ID: <20201022073307.GP2628@hirez.programming.kicks-ass.net>
+Date:   Thu, 22 Oct 2020 09:20:34 -0700
+In-Reply-To: <20201022073307.GP2628@hirez.programming.kicks-ass.net>
 References: <e9b1ba517f06b81bd24e54c84f5e44d81c27c566.camel@perches.com>
+         <20201022073307.GP2628@hirez.programming.kicks-ass.net>
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.36.4-0ubuntu1 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e9b1ba517f06b81bd24e54c84f5e44d81c27c566.camel@perches.com>
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, Oct 21, 2020 at 11:58:25AM -0700, Joe Perches wrote:
-> Like the __section macro, the __alias macro uses
-> macro # stringification to create quotes around
-> the section name used in the __attribute__.
+On Thu, 2020-10-22 at 09:33 +0200, Peter Zijlstra wrote:
+> On Wed, Oct 21, 2020 at 11:58:25AM -0700, Joe Perches wrote:
+> > Like the __section macro, the __alias macro uses
+> > macro # stringification to create quotes around
+> > the section name used in the __attribute__.
+> > 
+> > Remove the stringification and add quotes or a
+> > stringification to the uses instead.
 > 
-> Remove the stringification and add quotes or a
-> stringification to the uses instead.
+> There's a complete lack of rationale for this change.
 
-There's a complete lack of rationale for this change.
+I'll eventually post V2.
+I'm waiting to see if there are more comments.
+
+As I wrote in reply to Ard:
+
+https://lore.kernel.org/lkml/1cecfbfc853b2e71a96ab58661037c28a2f9280e.camel@perches.com/
+
+Using quotes in __section caused/causes differences
+between clang and gcc.
+
+https://lkml.org/lkml/2020/9/29/2187
+
+Using common styles for details like this is good.
+
