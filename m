@@ -2,102 +2,72 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E02B8296DFB
-	for <lists+linux-efi@lfdr.de>; Fri, 23 Oct 2020 13:54:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4BD54296E30
+	for <lists+linux-efi@lfdr.de>; Fri, 23 Oct 2020 14:08:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S463219AbgJWLyq (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 23 Oct 2020 07:54:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33590 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S463215AbgJWLyp (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 23 Oct 2020 07:54:45 -0400
-Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com [IPv6:2607:f8b0:4864:20::541])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBBE8C0613CE;
-        Fri, 23 Oct 2020 04:54:44 -0700 (PDT)
-Received: by mail-pg1-x541.google.com with SMTP id s22so1039492pga.9;
-        Fri, 23 Oct 2020 04:54:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
-         :user-agent;
-        bh=08FxWPaHOZfE7vb8PUbzmWXfr0VHNirhD4p1dQWe7f8=;
-        b=HIBBt/puogeHvSvzCMXjQXsQgSaRU3Y65wcmIEES6DFYsPJ9NIPvuUdOWI+IP+ITXc
-         v3I36L7CxFXMul1PTDIPZoPoSQjR45g2PeSu2yQjixGNHkWtBQydLavAdKvx5E8FlXbc
-         u3Rx7IkRpLEnd9Poa4m+SxxWvx5Odzq3SHYcbNvOHGhwfD0XqTtNTQAaoxOKWiOC4oIF
-         J/HpJcRMlVfJKUQhudLBfRqcxf/gfEovbGhfnvEb96kJee6vmYKhuiwbV+DuQDgqIMv6
-         o6HXuoglMZXAzn5HRXoYq0MDsaJp+R+7SzRcj4dl8ZKbP79dcP+h75aKhIW/yOHvaPca
-         v/Nw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
-         :content-disposition:user-agent;
-        bh=08FxWPaHOZfE7vb8PUbzmWXfr0VHNirhD4p1dQWe7f8=;
-        b=RigfmX68P6AkHA0aozJH20Z+zyHFquSXn//JRD5a+1q+u50iztB8K5JiwfYBeQtNok
-         2jkxyAFy8w0CjuBDaAOzrocK6dZ3X+zjrzalkZ9AgE8zt+nsw5UoxaOSnCZAGo/A1+HA
-         jzE8SJoxfAGGyhU0JL+IszX0Wq5h49H94MfkGpOJaWL0wb3ODZBQk/TxrBgm5m1aeI6H
-         FH/Pq3P+S4bk4eOHiJWrV6H8IwpT4jzkXkr5U0uIY5BNqzKMIj6qgCQv6RRIqeUcZPFs
-         RQrftDWrRh0IMDZewP1KXSki27JaiLFN+VGkSlC8GRyeR2Pl2FW300C5NJ/c2cN8i54P
-         L0kw==
-X-Gm-Message-State: AOAM532kAHUhqbl89VUhmCjQWd4XEYPvftfwUR03363U7kWt/nsLjsJW
-        gnavYSM2qP12TF+g0nKe9p10hblDtKc=
-X-Google-Smtp-Source: ABdhPJyxxJf8RIPJtC70buGn5yiDFudcz3rMy2wb94QjGYSyyE9/w8cJm2EE5WVI4Lj2ejzFogJlAg==
-X-Received: by 2002:a17:90a:7788:: with SMTP id v8mr2199447pjk.8.1603454084224;
-        Fri, 23 Oct 2020 04:54:44 -0700 (PDT)
-Received: from cosmos ([103.113.142.250])
-        by smtp.gmail.com with ESMTPSA id s8sm2080852pjn.46.2020.10.23.04.54.42
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 23 Oct 2020 04:54:43 -0700 (PDT)
-Date:   Fri, 23 Oct 2020 17:24:39 +0530
-From:   Vamshi K Sthambamkadi <vamshi.k.sthambamkadi@gmail.com>
-To:     matthew.garrett@nebula.com, jk@ozlabs.org, ardb@kernel.org
-Cc:     linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] efivarfs: fix memory leak in efivarfs_create()
-Message-ID: <20201023115429.GA2479@cosmos>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.24 (2015-08-30)
+        id S463440AbgJWMIc (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 23 Oct 2020 08:08:32 -0400
+Received: from foss.arm.com ([217.140.110.172]:50716 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S463439AbgJWMIc (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Fri, 23 Oct 2020 08:08:32 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A4555101E;
+        Fri, 23 Oct 2020 05:08:31 -0700 (PDT)
+Received: from e123331-lin.nice.arm.com (unknown [10.37.8.102])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3FD373F66B;
+        Fri, 23 Oct 2020 05:08:30 -0700 (PDT)
+From:   Ard Biesheuvel <ard.biesheuvel@arm.com>
+To:     linux-efi@vger.kernel.org
+Cc:     Ard Biesheuvel <ard.biesheuvel@arm.com>, grub-devel@gnu.org,
+        daniel.kiper@oracle.com, leif@nuviainc.com
+Subject: [PATCH 0/4] linux: implement LoadFile2 initrd loading
+Date:   Fri, 23 Oct 2020 14:08:21 +0200
+Message-Id: <20201023120825.30466-1-ard.biesheuvel@arm.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-kmemleak report:
-  unreferenced object 0xffff9b8915fcb000 (size 4096):
-  comm "efivarfs.sh", pid 2360, jiffies 4294920096 (age 48.264s)
-  hex dump (first 32 bytes):
-    2d 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  -...............
-    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-  backtrace:
-    [<00000000cc4d897c>] kmem_cache_alloc_trace+0x155/0x4b0
-    [<000000007d1dfa72>] efivarfs_create+0x6e/0x1a0
-    [<00000000e6ee18fc>] path_openat+0xe4b/0x1120
-    [<000000000ad0414f>] do_filp_open+0x91/0x100
-    [<00000000ce93a198>] do_sys_openat2+0x20c/0x2d0
-    [<000000002a91be6d>] do_sys_open+0x46/0x80
-    [<000000000a854999>] __x64_sys_openat+0x20/0x30
-    [<00000000c50d89c9>] do_syscall_64+0x38/0x90
-    [<00000000cecd6b5f>] entry_SYSCALL_64_after_hwframe+0x44/0xa9
+This implements the LoadFile2 initrd loading protocol, which is
+essentially a callback face into the bootloader to load the initrd
+data into a caller provided buffer. This means the bootloader no
+longer has to contain any policy regarding where to load the initrd
+(which differs between architectures and kernel versions) and no
+longer has to manipulate arch specific data structures such as DT
+or struct bootparams to inform the OS where the initrd resides in
+memory.
 
-In efivarfs_create(), inode->i_private is setup with efivar_entry
-object which is never freed.
+Sample output from booting a recent Linux/arm64 kernel:
 
-Signed-off-by: Vamshi K Sthambamkadi <vamshi.k.sthambamkadi@gmail.com>
----
- fs/efivarfs/super.c | 1 +
- 1 file changed, 1 insertion(+)
+  grub> insmod part_msdos
+  grub> linux (hd0,msdos1)/Image
+  grub> initrd (hd0,msdos1)/initrd.img
+  grub> boot
+  EFI stub: Booting Linux Kernel...
+  EFI stub: EFI_RNG_PROTOCOL unavailable, KASLR will be disabled
+  EFI stub: Generating empty DTB
+  EFI stub: Loaded initrd from LINUX_EFI_INITRD_MEDIA_GUID device path
+  EFI stub: Exiting boot services and installing virtual address map...
+  [    0.000000] Booting Linux on physical CPU 0x0000000000 [0x411fd070]
 
-diff --git a/fs/efivarfs/super.c b/fs/efivarfs/super.c
-index 15880a6..f943fd0 100644
---- a/fs/efivarfs/super.c
-+++ b/fs/efivarfs/super.c
-@@ -21,6 +21,7 @@ LIST_HEAD(efivarfs_list);
- static void efivarfs_evict_inode(struct inode *inode)
- {
- 	clear_inode(inode);
-+	kfree(inode->i_private);
- }
- 
- static const struct super_operations efivarfs_ops = {
+Cc: grub-devel@gnu.org
+Cc: daniel.kiper@oracle.com
+Cc: leif@nuviainc.com
+
+Ard Biesheuvel (4):
+  loader/linux: permit NULL argument for argv[] in grub_initrd_load()
+  efi: add definition of LoadFile2 protocol
+  efi: implemented LoadFile2 initr loading protocol for Linux
+  linux: ignore FDT unless we need to modify it
+
+ grub-core/commands/efi/lsefi.c |   1 +
+ grub-core/loader/arm64/linux.c | 139 ++++++++++++++++++--
+ grub-core/loader/efi/fdt.c     |   7 +-
+ grub-core/loader/linux.c       |   2 +-
+ include/grub/efi/api.h         |  15 +++
+ 5 files changed, 149 insertions(+), 15 deletions(-)
+
 -- 
-2.7.4
+2.17.1
 
