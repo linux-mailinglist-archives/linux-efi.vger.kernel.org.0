@@ -2,155 +2,118 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C1D5296FAB
-	for <lists+linux-efi@lfdr.de>; Fri, 23 Oct 2020 14:47:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D1EA9296FB6
+	for <lists+linux-efi@lfdr.de>; Fri, 23 Oct 2020 14:50:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S464040AbgJWMrQ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 23 Oct 2020 08:47:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41796 "EHLO
+        id S464088AbgJWMu7 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 23 Oct 2020 08:50:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42382 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S464023AbgJWMrP (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 23 Oct 2020 08:47:15 -0400
-Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3EA93C0613CE
-        for <linux-efi@vger.kernel.org>; Fri, 23 Oct 2020 05:47:14 -0700 (PDT)
-Received: by mail-wr1-x443.google.com with SMTP id b8so1690536wrn.0
-        for <linux-efi@vger.kernel.org>; Fri, 23 Oct 2020 05:47:14 -0700 (PDT)
+        with ESMTP id S464037AbgJWMu6 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 23 Oct 2020 08:50:58 -0400
+Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com [IPv6:2a00:1450:4864:20::341])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91E3CC0613CE
+        for <linux-efi@vger.kernel.org>; Fri, 23 Oct 2020 05:50:58 -0700 (PDT)
+Received: by mail-wm1-x341.google.com with SMTP id w23so240999wmi.4
+        for <linux-efi@vger.kernel.org>; Fri, 23 Oct 2020 05:50:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=nuviainc-com.20150623.gappssmtp.com; s=20150623;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to:user-agent;
-        bh=teGfWDMc4tg7gJOc+NSlRBxm4270R4Ay0Auhg+Y3mzw=;
-        b=E8S0rwEEKUkP2HNzt3RXe0oKSRVKMF3HTz3pn2TnQe61AJyteKi8U80dJJ9wakCSSS
-         U2vO2jP7FSEKw5FOnNR3bNe33Mh7bTCkDLizYPn/wa3+dPo/gKEEmi4PZ9u2yTwAZuVJ
-         4cq1662XFrKB4Iw/yRyGubkSW5wyZGqusrI5lUwt+1jdF4HhZg1tvoOZ88dpB6NZmsNK
-         8N1NZ7XSQg3m12xZLZjHbX9/eI2ivyyAMPY2d9SnU/M4RcrProoE6EvPnbZwnQEnm7HI
-         I4W9SnpHEltZN3vUElKPpZtYmM+/V1+dkbcOz0fyeM3iVxmf9qIOovCsM3MCnpVVnMgk
-         0J5Q==
+        bh=vbqBP2ZY0xMRiExVfDd/v/5KCD0Phk5xDcE5NH6SedY=;
+        b=iT6ZcR4xHwI0htv/Hr6Bn3r2nZJnsuNmX3/jLRMt1NHDvU8EsWs7TXggWyBG8sWOlO
+         JooF5vC5QVMQnwC6pKrL268GFHgHbcMxct2Nibeu8VrtSI1cqZZbC1Pr6ujQKQheuvpk
+         l0ycHHvRcyLhJBSnj8yYskwb6AGPj6DmC3Z0I+T8+Gogc4bmXXfmayJpSutPWGRrFvsu
+         Hc91bIP4sT9NZHsDLquJymTTQ88BgpFr5cGuc5jKk50JvsXMExliLq7lBiF1NxU5ZV4V
+         rMF5xJVcFVSCrEX1yNukj0T3zdxDGDp8gCD0f7vcCMwBQZ2Vit7EiMSGvZLICbxFjINK
+         Uo3g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=teGfWDMc4tg7gJOc+NSlRBxm4270R4Ay0Auhg+Y3mzw=;
-        b=tksYnhwqxgMbYxWzncwbQA/6nNxRJv13TGMrjSsO2CuvS3gMM/eYTHqigXx/D55clm
-         x9iuMZi3mXpwPDqwcnTvQOUIILNPHHJJH5qa16VIyQ9ga/xZ88NSzBGA55G5pC0NF3rC
-         BdRs/x1RNHM7uUj70pEz6ih8CioqCLRbBH0ZQm+fmVS7yxJnWNvADPLQ5i0h88hzccMk
-         1cBQpoVTXfrReAD+fk4ppxura3H97G+QLVoAuSH6W4QlzGR1I2T8gwY3vBw0MOJv4vG+
-         JBUk44tlBBHVqAEWL+Ku6ll3O19xCA4F+/wQVgqaiXWUcELZeHSOX0g3q9XKVJBByYj2
-         ug9Q==
-X-Gm-Message-State: AOAM5338TaXJkN4ctJk6nVDhQcVzOHhAuprWZsmcUAaRGX6hbtTDIzPq
-        aHOhWeSHjZRpcyidaz/yY+Ah0A==
-X-Google-Smtp-Source: ABdhPJwuBzIbPqKO25sGmGQnl8kjVxQGYVYB+7Kno95ik/SbbKHOylDjwCxmisOyTeIzd4H700QQgQ==
-X-Received: by 2002:adf:fc8b:: with SMTP id g11mr2454658wrr.300.1603457232984;
-        Fri, 23 Oct 2020 05:47:12 -0700 (PDT)
+        bh=vbqBP2ZY0xMRiExVfDd/v/5KCD0Phk5xDcE5NH6SedY=;
+        b=ZrzZZODPvo1N4zMLJegKbRFUbqD39j/crCGkNupU/8fIMRRavIpIuPeQRFAhUk2gEr
+         n8V2taDrzramw3b3OvXc+bZIccEt3bo5kTnZE1MXllT+32yHrbAl18rUNJdScsWHYLy3
+         UiFIfVqPR9NhJ1E5dC9mWLo+1msxXKDtJd4kGUDR+kfDMYHKzjwLLFMvd7GV0SCWW2ov
+         uVKXXEbOwrb4t2Kdx5RU0Pnhm4ELUbfyffbFpW1TPs8D7FZ0mEVk4CDbIhwRCrNlRkvb
+         ZgHivmCBT0mhvEOt3igBctXPwdy01jaoB7o7JiJ+csRwQqGjN8A/mOrnQDZsz/z1efVP
+         48bA==
+X-Gm-Message-State: AOAM530EaZMeI4yLTsqr2fV/asPi9Rj9VdH8VC2jKbbHbhAdIdjHRvDl
+        MCksJKsUNpQRupUDStuJNdfnFA==
+X-Google-Smtp-Source: ABdhPJy3I8Yv9/uoYEbyTIU4d3WSSDnYgVeU2dOwWCl6BKvsgNZKhk6uptko2VkEIR7O+hG8X7UhUA==
+X-Received: by 2002:a1c:2283:: with SMTP id i125mr2090245wmi.41.1603457457273;
+        Fri, 23 Oct 2020 05:50:57 -0700 (PDT)
 Received: from vanye (cpc92880-cmbg19-2-0-cust79.5-4.cable.virginm.net. [82.27.104.80])
-        by smtp.gmail.com with ESMTPSA id i33sm3189489wri.79.2020.10.23.05.47.12
+        by smtp.gmail.com with ESMTPSA id z191sm3275978wme.30.2020.10.23.05.50.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 23 Oct 2020 05:47:12 -0700 (PDT)
-Date:   Fri, 23 Oct 2020 13:47:10 +0100
+        Fri, 23 Oct 2020 05:50:56 -0700 (PDT)
+Date:   Fri, 23 Oct 2020 13:50:55 +0100
 From:   Leif Lindholm <leif@nuviainc.com>
 To:     Ard Biesheuvel <ard.biesheuvel@arm.com>
 Cc:     linux-efi@vger.kernel.org, grub-devel@gnu.org,
         daniel.kiper@oracle.com
-Subject: Re: [PATCH 4/4] linux: ignore FDT unless we need to modify it
-Message-ID: <20201023124710.GD1664@vanye>
+Subject: Re: [PATCH 0/4] linux: implement LoadFile2 initrd loading
+Message-ID: <20201023125055.GE1664@vanye>
 References: <20201023120825.30466-1-ard.biesheuvel@arm.com>
- <20201023120825.30466-5-ard.biesheuvel@arm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20201023120825.30466-5-ard.biesheuvel@arm.com>
+In-Reply-To: <20201023120825.30466-1-ard.biesheuvel@arm.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, Oct 23, 2020 at 14:08:25 +0200, Ard Biesheuvel wrote:
-> Now that we implemented supported for the LoadFile2 protocol for initrd
-> loading, there is no longer a need to pass the initrd parameters via
-> the device tree. This means there is no longer a reason to update the
-> device tree in the first place, and so we can ignore it entirely.
+On Fri, Oct 23, 2020 at 14:08:21 +0200, Ard Biesheuvel wrote:
+> This implements the LoadFile2 initrd loading protocol, which is
+> essentially a callback face into the bootloader to load the initrd
+> data into a caller provided buffer. This means the bootloader no
+> longer has to contain any policy regarding where to load the initrd
+> (which differs between architectures and kernel versions) and no
+> longer has to manipulate arch specific data structures such as DT
+> or struct bootparams to inform the OS where the initrd resides in
+> memory.
+> 
+> Sample output from booting a recent Linux/arm64 kernel:
+> 
+>   grub> insmod part_msdos
+>   grub> linux (hd0,msdos1)/Image
+>   grub> initrd (hd0,msdos1)/initrd.img
+>   grub> boot
+>   EFI stub: Booting Linux Kernel...
+>   EFI stub: EFI_RNG_PROTOCOL unavailable, KASLR will be disabled
+>   EFI stub: Generating empty DTB
+>   EFI stub: Loaded initrd from LINUX_EFI_INITRD_MEDIA_GUID device path
+>   EFI stub: Exiting boot services and installing virtual address map...
+>   [    0.000000] Booting Linux on physical CPU 0x0000000000 [0x411fd070]
 
-There is a change in behaviour here which I don't think matters, but
-I'll call it out anyway:
-If there was ever a kernel out there with an EFI stub that depended on
-a chosen node existing in the DT, and the one provide by firmware did
-not contain one, that setup would break from this *if* it didn't use
-an initrd.
+I don't review enough grub code to be certain I've caught all aspects
+of style adherence, so with that in mind, for 1-2/4:
+Reviewed-by: Leif Lindholm <leif@nuviainc.com>
+
+For 3-4/4, I did have some minor comments, but this is a really great
+feature and I would like to see it merged.
 
 /
     Leif
 
-> The only remaining reason to deal with the devicetree is if we are
-> using the 'devicetree' command to load one from disk, so tweak the
-> logic in grub_fdt_install() to take that into account.
+> Cc: grub-devel@gnu.org
+> Cc: daniel.kiper@oracle.com
+> Cc: leif@nuviainc.com
 > 
-> Signed-off-by: Ard Biesheuvel <ard.biesheuvel@arm.com>
-> ---
->  grub-core/loader/arm64/linux.c | 22 ++++++++++----------
->  grub-core/loader/efi/fdt.c     |  7 +++++--
->  2 files changed, 16 insertions(+), 13 deletions(-)
+> Ard Biesheuvel (4):
+>   loader/linux: permit NULL argument for argv[] in grub_initrd_load()
+>   efi: add definition of LoadFile2 protocol
+>   efi: implemented LoadFile2 initr loading protocol for Linux
+>   linux: ignore FDT unless we need to modify it
 > 
-> diff --git a/grub-core/loader/arm64/linux.c b/grub-core/loader/arm64/linux.c
-> index 285422c7bd43..9e282b6660fe 100644
-> --- a/grub-core/loader/arm64/linux.c
-> +++ b/grub-core/loader/arm64/linux.c
-> @@ -93,21 +93,21 @@ finalize_params_linux (void)
->  
->    void *fdt;
->  
-> -  fdt = grub_fdt_load (GRUB_EFI_LINUX_FDT_EXTRA_SPACE);
-> +  /* Set initrd info */
-> +  if (initrd_start && initrd_end > initrd_start)
-> +    {
-> +      fdt = grub_fdt_load (GRUB_EFI_LINUX_FDT_EXTRA_SPACE);
->  
-> -  if (!fdt)
-> -    goto failure;
-> +      if (!fdt)
-> +	goto failure;
->  
-> -  node = grub_fdt_find_subnode (fdt, 0, "chosen");
-> -  if (node < 0)
-> -    node = grub_fdt_add_subnode (fdt, 0, "chosen");
-> +      node = grub_fdt_find_subnode (fdt, 0, "chosen");
-> +      if (node < 0)
-> +	node = grub_fdt_add_subnode (fdt, 0, "chosen");
->  
-> -  if (node < 1)
-> -    goto failure;
-> +      if (node < 1)
-> +	goto failure;
->  
-> -  /* Set initrd info */
-> -  if (initrd_start && initrd_end > initrd_start)
-> -    {
->        grub_dprintf ("linux", "Initrd @ %p-%p\n",
->  		    (void *) initrd_start, (void *) initrd_end);
->  
-> diff --git a/grub-core/loader/efi/fdt.c b/grub-core/loader/efi/fdt.c
-> index ee9c5592c700..ab900b27d927 100644
-> --- a/grub-core/loader/efi/fdt.c
-> +++ b/grub-core/loader/efi/fdt.c
-> @@ -85,13 +85,16 @@ grub_fdt_install (void)
->    grub_efi_guid_t fdt_guid = GRUB_EFI_DEVICE_TREE_GUID;
->    grub_efi_status_t status;
->  
-> +  if (!fdt && !loaded_fdt)
-> +    return GRUB_ERR_NONE;
-> +
->    b = grub_efi_system_table->boot_services;
-> -  status = b->install_configuration_table (&fdt_guid, fdt);
-> +  status = b->install_configuration_table (&fdt_guid, fdt ?: loaded_fdt);
->    if (status != GRUB_EFI_SUCCESS)
->      return grub_error (GRUB_ERR_IO, "failed to install FDT");
->  
->    grub_dprintf ("fdt", "Installed/updated FDT configuration table @ %p\n",
-> -		fdt);
-> +		fdt ?: loaded_fdt);
->    return GRUB_ERR_NONE;
->  }
->  
+>  grub-core/commands/efi/lsefi.c |   1 +
+>  grub-core/loader/arm64/linux.c | 139 ++++++++++++++++++--
+>  grub-core/loader/efi/fdt.c     |   7 +-
+>  grub-core/loader/linux.c       |   2 +-
+>  include/grub/efi/api.h         |  15 +++
+>  5 files changed, 149 insertions(+), 15 deletions(-)
+> 
 > -- 
 > 2.17.1
 > 
