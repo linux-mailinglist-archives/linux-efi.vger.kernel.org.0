@@ -2,111 +2,103 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F20E2981F8
-	for <lists+linux-efi@lfdr.de>; Sun, 25 Oct 2020 14:50:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C0600298274
+	for <lists+linux-efi@lfdr.de>; Sun, 25 Oct 2020 17:19:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1416434AbgJYNuG (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sun, 25 Oct 2020 09:50:06 -0400
-Received: from foss.arm.com ([217.140.110.172]:46358 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1416433AbgJYNuG (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Sun, 25 Oct 2020 09:50:06 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B428B12FC;
-        Sun, 25 Oct 2020 06:50:05 -0700 (PDT)
-Received: from e123331-lin.nice.arm.com (unknown [172.31.20.19])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9A0023F68F;
-        Sun, 25 Oct 2020 06:50:04 -0700 (PDT)
-From:   Ard Biesheuvel <ard.biesheuvel@arm.com>
-To:     linux-efi@vger.kernel.org
-Cc:     Ard Biesheuvel <ard.biesheuvel@arm.com>, grub-devel@gnu.org,
-        daniel.kiper@oracle.com, leif@nuviainc.com
-Subject: [PATCH v2 8/8] linux: ignore FDT unless we need to modify it
-Date:   Sun, 25 Oct 2020 14:49:41 +0100
-Message-Id: <20201025134941.4805-9-ard.biesheuvel@arm.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20201025134941.4805-1-ard.biesheuvel@arm.com>
-References: <20201025134941.4805-1-ard.biesheuvel@arm.com>
+        id S1417111AbgJYQTf (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sun, 25 Oct 2020 12:19:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36718 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732567AbgJYQTe (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sun, 25 Oct 2020 12:19:34 -0400
+Received: from mail-qk1-x743.google.com (mail-qk1-x743.google.com [IPv6:2607:f8b0:4864:20::743])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4150C0613CE;
+        Sun, 25 Oct 2020 09:19:34 -0700 (PDT)
+Received: by mail-qk1-x743.google.com with SMTP id q199so6188886qke.10;
+        Sun, 25 Oct 2020 09:19:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:from:date:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=5TC2MzYj0vw5zKi0k5pd4CHQhZMyt3O4BrEFePzGKh0=;
+        b=XEbDGN0tqcGAVApVEzDBIKI2pKYnkpeO7n+MN0tp+YnOSEJTzk8vLKoL58HqRXqbVt
+         iOXPBXuOxyvvyftL+kuVxQRAfzR4OgZtRxEgAZVbFgNRbB6gtVp4HRATyuQxt3pd7/oG
+         MTvgGwkCwoml7aFhZp4Dkky24rgaNNl02CTmLnbtIrPWpgCMp/ZworgFKCdsf90EvLYl
+         vCJCgTZNrGXca1O+1xRCPUT5MepNuyPX4WEhanCbF04rXJAkBWwmePGSVOZN7YZeh/Wr
+         F1x/Mxy0/yQLvGj10GT9fChbMZr3DLA4fS0gf9U6ZRC9bEE7ZioWekv2UI+WsQwn707m
+         QaKQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:from:date:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to;
+        bh=5TC2MzYj0vw5zKi0k5pd4CHQhZMyt3O4BrEFePzGKh0=;
+        b=MYh1i54MhehIMFdIdXa0OwvYouvJ6efohIu6HiLZ5+NhVqWoSJYJRW7OthUF1lcp9P
+         3Au/PHSWUX3M1EEXl40vfBi60zL4rA0fvDHzv4XHt4j176BpjMFp68W28wRc16mSacMe
+         XH7dOwZ+5VV63QtNcRWWgbb1xu1fWn1aEGTN1cONtpUX+4af6PdQw3IiZLOi5urw0udo
+         +Bpg394L5Yi1idjb2EFiV2B36dmQpgwjHyHbuhJ/hEe7ZgQU4KxNDfEssF6crjm4MX7d
+         xUCKZ9mM76ItF48q/9fNR9FUCmt/Pbv/xuvt8Ic+WgRDFa+jtyEp9l80YDtBRe+hkYOd
+         dLmw==
+X-Gm-Message-State: AOAM530jixo3T62XHc5pbCqZF1bfJRNvqSW4U2vbXm2uEBLZUPU72e9i
+        XLRc9+GGBvsUvJM2d+Y89eMAcgVAizWLgQ==
+X-Google-Smtp-Source: ABdhPJy5QqtudNP0xh8eA/OHC75nI+p4uT/Q8roWcv3KxQKqX50H4a+OOAp5vmCFs+7/55rpsbjLQQ==
+X-Received: by 2002:a37:b9c3:: with SMTP id j186mr13207723qkf.327.1603642773594;
+        Sun, 25 Oct 2020 09:19:33 -0700 (PDT)
+Received: from rani.riverdale.lan ([2001:470:1f07:5f3::b55f])
+        by smtp.gmail.com with ESMTPSA id v13sm4781315qkv.113.2020.10.25.09.19.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 25 Oct 2020 09:19:32 -0700 (PDT)
+Sender: Arvind Sankar <niveditas98@gmail.com>
+From:   Arvind Sankar <nivedita@alum.mit.edu>
+X-Google-Original-From: Arvind Sankar <arvind@rani.riverdale.lan>
+Date:   Sun, 25 Oct 2020 12:19:31 -0400
+To:     Arvind Sankar <nivedita@alum.mit.edu>
+Cc:     linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] efi/x86: Only copy the compressed kernel image in
+ efi_relocate_kernel()
+Message-ID: <20201025161931.GA1119983@rani.riverdale.lan>
+References: <20201011142012.96493-1-nivedita@alum.mit.edu>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20201011142012.96493-1-nivedita@alum.mit.edu>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Now that we implemented support for the LoadFile2 protocol for initrd
-loading, there is no longer a need to pass the initrd parameters via
-the device tree. This means there is no longer a reason to update the
-device tree in the first place, and so we can ignore it entirely.
+On Sun, Oct 11, 2020 at 10:20:12AM -0400, Arvind Sankar wrote:
+> The image_size argument to efi_relocate_kernel() is currently specified
+> as init_size, but this is unnecessarily large. The compressed kernel is
+> much smaller, in fact, its image only extends up to the start of _bss,
+> since at this point, the .bss section is still uninitialized.
+> 
+> Depending on compression level, this can reduce the amount of data
+> copied by 4-5x.
+> 
+> Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
 
-The only remaining reason to deal with the devicetree is if we are
-using the 'devicetree' command to load one from disk, so tweak the
-logic in grub_fdt_install() to take that into account.
+Ping
 
-Signed-off-by: Ard Biesheuvel <ard.biesheuvel@arm.com>
-Reviewed-by: Leif Lindholm <leif@nuviainc.com>
----
- grub-core/loader/arm64/linux.c | 22 ++++++++++----------
- grub-core/loader/efi/fdt.c     |  7 +++++--
- 2 files changed, 16 insertions(+), 13 deletions(-)
-
-diff --git a/grub-core/loader/arm64/linux.c b/grub-core/loader/arm64/linux.c
-index c6a95e1f0c43..248277c753b6 100644
---- a/grub-core/loader/arm64/linux.c
-+++ b/grub-core/loader/arm64/linux.c
-@@ -107,21 +107,21 @@ finalize_params_linux (void)
- 
-   void *fdt;
- 
--  fdt = grub_fdt_load (GRUB_EFI_LINUX_FDT_EXTRA_SPACE);
-+  /* Set initrd info */
-+  if (initrd_start && initrd_end > initrd_start)
-+    {
-+      fdt = grub_fdt_load (GRUB_EFI_LINUX_FDT_EXTRA_SPACE);
- 
--  if (!fdt)
--    goto failure;
-+      if (!fdt)
-+	goto failure;
- 
--  node = grub_fdt_find_subnode (fdt, 0, "chosen");
--  if (node < 0)
--    node = grub_fdt_add_subnode (fdt, 0, "chosen");
-+      node = grub_fdt_find_subnode (fdt, 0, "chosen");
-+      if (node < 0)
-+	node = grub_fdt_add_subnode (fdt, 0, "chosen");
- 
--  if (node < 1)
--    goto failure;
-+      if (node < 1)
-+	goto failure;
- 
--  /* Set initrd info */
--  if (initrd_start && initrd_end > initrd_start)
--    {
-       grub_dprintf ("linux", "Initrd @ %p-%p\n",
- 		    (void *) initrd_start, (void *) initrd_end);
- 
-diff --git a/grub-core/loader/efi/fdt.c b/grub-core/loader/efi/fdt.c
-index ee9c5592c700..ab900b27d927 100644
---- a/grub-core/loader/efi/fdt.c
-+++ b/grub-core/loader/efi/fdt.c
-@@ -85,13 +85,16 @@ grub_fdt_install (void)
-   grub_efi_guid_t fdt_guid = GRUB_EFI_DEVICE_TREE_GUID;
-   grub_efi_status_t status;
- 
-+  if (!fdt && !loaded_fdt)
-+    return GRUB_ERR_NONE;
-+
-   b = grub_efi_system_table->boot_services;
--  status = b->install_configuration_table (&fdt_guid, fdt);
-+  status = b->install_configuration_table (&fdt_guid, fdt ?: loaded_fdt);
-   if (status != GRUB_EFI_SUCCESS)
-     return grub_error (GRUB_ERR_IO, "failed to install FDT");
- 
-   grub_dprintf ("fdt", "Installed/updated FDT configuration table @ %p\n",
--		fdt);
-+		fdt ?: loaded_fdt);
-   return GRUB_ERR_NONE;
- }
- 
--- 
-2.17.1
-
+> ---
+>  drivers/firmware/efi/libstub/x86-stub.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
+> index 3672539cb96e..f14c4ff5839f 100644
+> --- a/drivers/firmware/efi/libstub/x86-stub.c
+> +++ b/drivers/firmware/efi/libstub/x86-stub.c
+> @@ -715,8 +715,11 @@ unsigned long efi_main(efi_handle_t handle,
+>  	    (IS_ENABLED(CONFIG_X86_32) && buffer_end > KERNEL_IMAGE_SIZE)    ||
+>  	    (IS_ENABLED(CONFIG_X86_64) && buffer_end > MAXMEM_X86_64_4LEVEL) ||
+>  	    (image_offset == 0)) {
+> +		extern char _bss[];
+> +
+>  		status = efi_relocate_kernel(&bzimage_addr,
+> -					     hdr->init_size, hdr->init_size,
+> +					     (unsigned long)_bss - bzimage_addr,
+> +					     hdr->init_size,
+>  					     hdr->pref_address,
+>  					     hdr->kernel_alignment,
+>  					     LOAD_PHYSICAL_ADDR);
+> -- 
+> 2.26.2
+> 
