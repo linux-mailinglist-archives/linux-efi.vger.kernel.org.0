@@ -2,95 +2,163 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2539B298747
-	for <lists+linux-efi@lfdr.de>; Mon, 26 Oct 2020 08:16:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8AC4D298CE1
+	for <lists+linux-efi@lfdr.de>; Mon, 26 Oct 2020 13:29:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1768974AbgJZHQM (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 26 Oct 2020 03:16:12 -0400
-Received: from mail.kernel.org ([198.145.29.99]:47958 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1768973AbgJZHQM (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Mon, 26 Oct 2020 03:16:12 -0400
-Received: from mail-oi1-f173.google.com (mail-oi1-f173.google.com [209.85.167.173])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 21DA92231B;
-        Mon, 26 Oct 2020 07:16:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1603696571;
-        bh=CQ9MMeJK8IiX2zTHx9I5QZWhpOCCMI9BEx0OR7BGlV0=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=fMZevWHapQ+IQJUhp9b/w1z5DkxjzivvG0u6Zcgox+bp7unovt8UTgUQqHd8X8LaO
-         TvsBd9RK29T/gAI4KM+4/0tr0H3tN2TQZ9ObKOB+MbYrtq3hYb4BPOlci+OoMYrQIb
-         eVDYiB2vzvbUg1apuU2cgn1ZwCjIi3ItzUSRrWmE=
-Received: by mail-oi1-f173.google.com with SMTP id m128so9579001oig.7;
-        Mon, 26 Oct 2020 00:16:11 -0700 (PDT)
-X-Gm-Message-State: AOAM531T67i5FqYpUnfjORoZ9V5JnfZnB9p4Luq7iwlMOBeGpulIRQPF
-        rr4wPGhZiDwGxiFf6vue1lk30BZYfBZmVmipxic=
-X-Google-Smtp-Source: ABdhPJwNVKiSePeVxbGMzgURAguH0pxG3OyFiSVvclR/g+b4rsKvJeTpvjZxloBNXXkV/PnQ7CxNzWcYxsjCEBL1lco=
-X-Received: by 2002:aca:d64f:: with SMTP id n76mr13038005oig.174.1603696570431;
- Mon, 26 Oct 2020 00:16:10 -0700 (PDT)
+        id S1775122AbgJZM3h (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 26 Oct 2020 08:29:37 -0400
+Received: from mail-ot1-f67.google.com ([209.85.210.67]:46782 "EHLO
+        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1775119AbgJZM3g (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 26 Oct 2020 08:29:36 -0400
+Received: by mail-ot1-f67.google.com with SMTP id j21so2690120ota.13;
+        Mon, 26 Oct 2020 05:29:34 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=0trfHgi8OBfd5iB69j5LL8jeOJ1Nb/421IvjhePhaus=;
+        b=P+zlDX8Hgk/S9xxcgd506ahxBtu8rxysyBTc4iPdrjvaUKbAIYNXAzklq2sAXHfcdT
+         4zOl+sJ2I4EsX+ysfwgaFtIp72UAzGYVSLOPvF+7rEaf7n2sNg49vN9xroPjX9W7ix/w
+         WE4/Am7rq952ISK+5wgv41hBKbfGPpC12JbSi0QdtNGx3Z24DWvMShNR6iLwpMmIld/V
+         Cl3vz8QU7l24bWJe5h+7EEnnfzMMNiE2I3HTK173CU7NJkOwH2R7GA/Cp9j8Ft8XvQ3O
+         NS6eW1NQBUzx0XKvJy/3hq0kCaG9seTK3IeK/3Rzb0LxjhtrTxyU0xRs1LlbIkzZmDnW
+         y5xg==
+X-Gm-Message-State: AOAM531eY9L/FwrZLkaV9J3oHAKbC/BsZQCvHwKqpupJ1LbS0AUInOks
+        1iPCyBSNeiZM0MrFucyCj7d0TsG3BsDmzzs2Luw=
+X-Google-Smtp-Source: ABdhPJyBweNoUQCltnRnsquxLRWEfPnJGEis2BPFL9CWHQhByaLq9YhLr+yqM3AxsL8UQGje3+jKX3bZuCidiISTg8s=
+X-Received: by 2002:a05:6830:210a:: with SMTP id i10mr13055312otc.145.1603715374142;
+ Mon, 26 Oct 2020 05:29:34 -0700 (PDT)
 MIME-Version: 1.0
-References: <20201023115429.GA2479@cosmos>
-In-Reply-To: <20201023115429.GA2479@cosmos>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Mon, 26 Oct 2020 08:15:59 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXEaLF7kvWORrTF+UM8qCbgzXzr4WLtOTM_aDm8Ggyao5Q@mail.gmail.com>
-Message-ID: <CAMj1kXEaLF7kvWORrTF+UM8qCbgzXzr4WLtOTM_aDm8Ggyao5Q@mail.gmail.com>
-Subject: Re: [PATCH] efivarfs: fix memory leak in efivarfs_create()
-To:     Vamshi K Sthambamkadi <vamshi.k.sthambamkadi@gmail.com>
-Cc:     Matthew Garrett <matthew.garrett@nebula.com>,
-        Jeremy Kerr <jk@ozlabs.org>,
+References: <20200821194310.3089815-1-keescook@chromium.org> <20200821194310.3089815-14-keescook@chromium.org>
+In-Reply-To: <20200821194310.3089815-14-keescook@chromium.org>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Mon, 26 Oct 2020 13:29:22 +0100
+Message-ID: <CAMuHMdUg0WJHEcq6to0-eODpXPOywLot6UD2=GFHpzoj_hCoBQ@mail.gmail.com>
+Subject: Re: [PATCH v6 13/29] arm64/build: Assert for unwanted sections
+To:     Kees Cook <keescook@chromium.org>
+Cc:     Ingo Molnar <mingo@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Peter Collingbourne <pcc@google.com>,
+        James Morse <james.morse@arm.com>,
+        Borislav Petkov <bp@suse.de>, Ingo Molnar <mingo@redhat.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Arvind Sankar <nivedita@alum.mit.edu>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Nathan Chancellor <natechancellor@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        "the arch/x86 maintainers" <x86@kernel.org>,
+        clang-built-linux <clang-built-linux@googlegroups.com>,
+        Linux-Arch <linux-arch@vger.kernel.org>,
         linux-efi <linux-efi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, 23 Oct 2020 at 13:54, Vamshi K Sthambamkadi
-<vamshi.k.sthambamkadi@gmail.com> wrote:
->
-> kmemleak report:
->   unreferenced object 0xffff9b8915fcb000 (size 4096):
->   comm "efivarfs.sh", pid 2360, jiffies 4294920096 (age 48.264s)
->   hex dump (first 32 bytes):
->     2d 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  -...............
->     00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
->   backtrace:
->     [<00000000cc4d897c>] kmem_cache_alloc_trace+0x155/0x4b0
->     [<000000007d1dfa72>] efivarfs_create+0x6e/0x1a0
->     [<00000000e6ee18fc>] path_openat+0xe4b/0x1120
->     [<000000000ad0414f>] do_filp_open+0x91/0x100
->     [<00000000ce93a198>] do_sys_openat2+0x20c/0x2d0
->     [<000000002a91be6d>] do_sys_open+0x46/0x80
->     [<000000000a854999>] __x64_sys_openat+0x20/0x30
->     [<00000000c50d89c9>] do_syscall_64+0x38/0x90
->     [<00000000cecd6b5f>] entry_SYSCALL_64_after_hwframe+0x44/0xa9
->
-> In efivarfs_create(), inode->i_private is setup with efivar_entry
-> object which is never freed.
->
-> Signed-off-by: Vamshi K Sthambamkadi <vamshi.k.sthambamkadi@gmail.com>
+Hi Kees,
 
-Queued as a fix, thanks!
-
-> ---
->  fs/efivarfs/super.c | 1 +
->  1 file changed, 1 insertion(+)
+On Fri, Aug 21, 2020 at 9:56 PM Kees Cook <keescook@chromium.org> wrote:
+> In preparation for warning on orphan sections, discard
+> unwanted non-zero-sized generated sections, and enforce other
+> expected-to-be-zero-sized sections (since discarding them might hide
+> problems with them suddenly gaining unexpected entries).
 >
-> diff --git a/fs/efivarfs/super.c b/fs/efivarfs/super.c
-> index 15880a6..f943fd0 100644
-> --- a/fs/efivarfs/super.c
-> +++ b/fs/efivarfs/super.c
-> @@ -21,6 +21,7 @@ LIST_HEAD(efivarfs_list);
->  static void efivarfs_evict_inode(struct inode *inode)
->  {
->         clear_inode(inode);
-> +       kfree(inode->i_private);
+> Suggested-by: Ard Biesheuvel <ardb@kernel.org>
+> Signed-off-by: Kees Cook <keescook@chromium.org>
+
+This is now commit be2881824ae9eb92 ("arm64/build: Assert for unwanted
+sections") in v5.10-rc1, and is causing the following error with
+renesas_defconfig[1]:
+
+    aarch64-linux-gnu-ld: warning: orphan section `.eh_frame' from
+`kernel/bpf/core.o' being placed in section `.eh_frame'
+    aarch64-linux-gnu-ld: Unexpected GOT/PLT entries detected!
+    aarch64-linux-gnu-ld: Unexpected run-time procedure linkages detected!
+
+I cannot reproduce this with the standard arm64 defconfig.
+
+I bisected the error to the aforementioned commit, but understand this
+is not the real reason.  If I revert this commit, I still get:
+
+    aarch64-linux-gnu-ld: warning: orphan section `.got.plt' from
+`arch/arm64/kernel/head.o' being placed in section `.got.plt'
+    aarch64-linux-gnu-ld: warning: orphan section `.plt' from
+`arch/arm64/kernel/head.o' being placed in section `.plt'
+    aarch64-linux-gnu-ld: warning: orphan section `.data.rel.ro' from
+`arch/arm64/kernel/head.o' being placed in section `.data.rel.ro'
+    aarch64-linux-gnu-ld: warning: orphan section `.eh_frame' from
+`kernel/bpf/core.o' being placed in section `.eh_frame'
+
+I.e. including the ".eh_frame" warning. I have tried bisecting that
+warning (i.e. with be2881824ae9eb92 reverted), but that leads me to
+commit b3e5d80d0c48c0cc ("arm64/build: Warn on orphan section
+placement"), which is another red herring.
+
+Note that even on plain be2881824ae9eb92, I get:
+
+    aarch64-linux-gnu-ld: Unexpected GOT/PLT entries detected!
+    aarch64-linux-gnu-ld: Unexpected run-time procedure linkages detected!
+
+The parent commit obviously doesn't show that (but probably still has
+the problem).
+
+Do you have a clue!
+
+Thanks!
+
+> --- a/arch/arm64/kernel/vmlinux.lds.S
+> +++ b/arch/arm64/kernel/vmlinux.lds.S
+> @@ -121,6 +121,14 @@ SECTIONS
+>                 *(.got)                 /* Global offset table          */
+>         }
+>
+> +       /*
+> +        * Make sure that the .got.plt is either completely empty or it
+> +        * contains only the lazy dispatch entries.
+> +        */
+> +       .got.plt : { *(.got.plt) }
+> +       ASSERT(SIZEOF(.got.plt) == 0 || SIZEOF(.got.plt) == 0x18,
+> +              "Unexpected GOT/PLT entries detected!")
+> +
+>         . = ALIGN(SEGMENT_ALIGN);
+>         _etext = .;                     /* End of text section */
+>
+> @@ -243,6 +251,18 @@ SECTIONS
+>         ELF_DETAILS
+>
+>         HEAD_SYMBOLS
+> +
+> +       /*
+> +        * Sections that should stay zero sized, which is safer to
+> +        * explicitly check instead of blindly discarding.
+> +        */
+> +       .plt : {
+> +               *(.plt) *(.plt.*) *(.iplt) *(.igot)
+> +       }
+> +       ASSERT(SIZEOF(.plt) == 0, "Unexpected run-time procedure linkages detected!")
+> +
+> +       .data.rel.ro : { *(.data.rel.ro) }
+> +       ASSERT(SIZEOF(.data.rel.ro) == 0, "Unexpected RELRO detected!")
 >  }
 >
->  static const struct super_operations efivarfs_ops = {
-> --
-> 2.7.4
->
+>  #include "image-vars.h"
+
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/geert/renesas-devel.git/log/?h=topic/renesas-defconfig
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
