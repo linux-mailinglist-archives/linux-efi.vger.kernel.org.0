@@ -2,44 +2,46 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 51E472991B2
-	for <lists+linux-efi@lfdr.de>; Mon, 26 Oct 2020 17:02:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DA9C2299405
+	for <lists+linux-efi@lfdr.de>; Mon, 26 Oct 2020 18:38:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1784673AbgJZQCK (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 26 Oct 2020 12:02:10 -0400
-Received: from mail-ot1-f66.google.com ([209.85.210.66]:40191 "EHLO
-        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1773890AbgJZQBh (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 26 Oct 2020 12:01:37 -0400
-Received: by mail-ot1-f66.google.com with SMTP id f97so8452527otb.7;
-        Mon, 26 Oct 2020 09:01:36 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=asUJBtXsqUx3cRgU1NNSgl2otnJ/rjwe37VOtYFH0nY=;
-        b=WyuQhwHY0btZowk4UvP2KtA00bvttBpF6ZCVn2YlBFAZGx/aVnuYQlzEYejda8I/tw
-         /UMvlHtz0S4Ccx8f9J0iYSJMCeJgjYQ7FyhO33HARqMO338327lkHnCjluPAnlnInYl7
-         fsHMv2rIewlaMw7C4QEAiFGeJCwPCq4GHhOO/iRZnSjCx1ZtVWccOhXJ0pfx6G83UG39
-         WkAR/TuSS2c5J3CoM6cjztr0ZyPOgw12FVXSDpz1D2f6YBbyXPiVRXavNBDTglxYDyKw
-         ocGPhCXBysJD1IawsPlcNpzB4+s8tq0vSfHyEJ/Viyy4Uq5vgXvI1xsj4nDb4QSUcG33
-         6tVg==
-X-Gm-Message-State: AOAM533ww+RT/DBROtZHoIsZcbjqxcNOm0NP1M/AhXwlkIvKGHF4Nklr
-        lJCxwIuYmKBbuJJDcAm6sxD+uwuUShKORexkxjc=
-X-Google-Smtp-Source: ABdhPJxPI+usSlZbZdx1IIlBwkjAFNrQaHoxsJAFSYYUxD2jVsGeXmh3ZzBEHoa089xtWunX1BF5lEiWHp0IZeVW1xM=
-X-Received: by 2002:a9d:5e14:: with SMTP id d20mr11342816oti.107.1603728095846;
- Mon, 26 Oct 2020 09:01:35 -0700 (PDT)
+        id S1788052AbgJZRi7 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 26 Oct 2020 13:38:59 -0400
+Received: from mail.kernel.org ([198.145.29.99]:39980 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1788049AbgJZRi6 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Mon, 26 Oct 2020 13:38:58 -0400
+Received: from mail-oi1-f182.google.com (mail-oi1-f182.google.com [209.85.167.182])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id B55F722242;
+        Mon, 26 Oct 2020 17:38:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1603733937;
+        bh=4hsLrGtQdAKvGeJzi/vIk47xvKfHSh+S6XD3mbba3qk=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=Ki915xzFGnRs6mbfsJxyz6VrVipsqoFJfxPyFxN9QyX5SW+ozpyDKZx/5NHQAJVbo
+         5bS3+tK0zctHNpZ+vQ/2VCGSj1wSWwMbehU3KGahed2dzr++z2eeAZw7gNhvmsPDHV
+         9vjJ8VJb2Ae7N7VWu1JyBj5srwfzQhCXsZLlZUNs=
+Received: by mail-oi1-f182.google.com with SMTP id k27so11267406oij.11;
+        Mon, 26 Oct 2020 10:38:57 -0700 (PDT)
+X-Gm-Message-State: AOAM530Zbfg6Ejawhe+gHMtf6rJWgxTc4zcZMP24olWv6cjd0fRz2Lfs
+        Pvs7vFYnsdGSQdAU7fvoQikI+VWEgXp4R4Sexb8=
+X-Google-Smtp-Source: ABdhPJys++sp9LWSs9r1c2XSNx2zB7VYH2ScNF9Mo1eSnVB/rKDXCqHiQFOfh3AQmf1CassoG7sGyWZRDjTFxZxfKxk=
+X-Received: by 2002:aca:d64f:: with SMTP id n76mr15186195oig.174.1603733937001;
+ Mon, 26 Oct 2020 10:38:57 -0700 (PDT)
 MIME-Version: 1.0
 References: <20200821194310.3089815-1-keescook@chromium.org>
  <20200821194310.3089815-14-keescook@chromium.org> <CAMuHMdUg0WJHEcq6to0-eODpXPOywLot6UD2=GFHpzoj_hCoBQ@mail.gmail.com>
- <CAMuHMdUw9KwC=EVB60yjg7mA7Fg-efOiKE7577p+uEdGJVS2OQ@mail.gmail.com>
-In-Reply-To: <CAMuHMdUw9KwC=EVB60yjg7mA7Fg-efOiKE7577p+uEdGJVS2OQ@mail.gmail.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Mon, 26 Oct 2020 17:01:24 +0100
-Message-ID: <CAMuHMdUJFEt3LxWHk73AsLDGhjzBvJGAML76UAxeGzb4zOf96w@mail.gmail.com>
+ <CAMuHMdUw9KwC=EVB60yjg7mA7Fg-efOiKE7577p+uEdGJVS2OQ@mail.gmail.com> <CAMuHMdUJFEt3LxWHk73AsLDGhjzBvJGAML76UAxeGzb4zOf96w@mail.gmail.com>
+In-Reply-To: <CAMuHMdUJFEt3LxWHk73AsLDGhjzBvJGAML76UAxeGzb4zOf96w@mail.gmail.com>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Mon, 26 Oct 2020 18:38:46 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXHXk3BX6mz6X_03sj_pSLj9Ck-=1S57tV3__N9JQOcDEw@mail.gmail.com>
+Message-ID: <CAMj1kXHXk3BX6mz6X_03sj_pSLj9Ck-=1S57tV3__N9JQOcDEw@mail.gmail.com>
 Subject: Re: [PATCH v6 13/29] arm64/build: Assert for unwanted sections
-To:     Kees Cook <keescook@chromium.org>
-Cc:     Ingo Molnar <mingo@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     Kees Cook <keescook@chromium.org>, Ingo Molnar <mingo@kernel.org>,
         Catalin Marinas <catalin.marinas@arm.com>,
         Mark Rutland <mark.rutland@arm.com>,
         Peter Collingbourne <pcc@google.com>,
@@ -63,73 +65,75 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Mon, Oct 26, 2020 at 2:29 PM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
-> On Mon, Oct 26, 2020 at 1:29 PM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
-> > On Fri, Aug 21, 2020 at 9:56 PM Kees Cook <keescook@chromium.org> wrote:
-> > > In preparation for warning on orphan sections, discard
-> > > unwanted non-zero-sized generated sections, and enforce other
-> > > expected-to-be-zero-sized sections (since discarding them might hide
-> > > problems with them suddenly gaining unexpected entries).
+On Mon, 26 Oct 2020 at 17:01, Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+>
+> On Mon, Oct 26, 2020 at 2:29 PM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+> > On Mon, Oct 26, 2020 at 1:29 PM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+> > > On Fri, Aug 21, 2020 at 9:56 PM Kees Cook <keescook@chromium.org> wrote:
+> > > > In preparation for warning on orphan sections, discard
+> > > > unwanted non-zero-sized generated sections, and enforce other
+> > > > expected-to-be-zero-sized sections (since discarding them might hide
+> > > > problems with them suddenly gaining unexpected entries).
+> > > >
+> > > > Suggested-by: Ard Biesheuvel <ardb@kernel.org>
+> > > > Signed-off-by: Kees Cook <keescook@chromium.org>
 > > >
-> > > Suggested-by: Ard Biesheuvel <ardb@kernel.org>
-> > > Signed-off-by: Kees Cook <keescook@chromium.org>
+> > > This is now commit be2881824ae9eb92 ("arm64/build: Assert for unwanted
+> > > sections") in v5.10-rc1, and is causing the following error with
+> > > renesas_defconfig[1]:
+> > >
+> > >     aarch64-linux-gnu-ld: warning: orphan section `.eh_frame' from
+> > > `kernel/bpf/core.o' being placed in section `.eh_frame'
+> > >     aarch64-linux-gnu-ld: Unexpected GOT/PLT entries detected!
+> > >     aarch64-linux-gnu-ld: Unexpected run-time procedure linkages detected!
+> > >
+> > > I cannot reproduce this with the standard arm64 defconfig.
+> > >
+> > > I bisected the error to the aforementioned commit, but understand this
+> > > is not the real reason.  If I revert this commit, I still get:
+> > >
+> > >     aarch64-linux-gnu-ld: warning: orphan section `.got.plt' from
+> > > `arch/arm64/kernel/head.o' being placed in section `.got.plt'
+> > >     aarch64-linux-gnu-ld: warning: orphan section `.plt' from
+> > > `arch/arm64/kernel/head.o' being placed in section `.plt'
+> > >     aarch64-linux-gnu-ld: warning: orphan section `.data.rel.ro' from
+> > > `arch/arm64/kernel/head.o' being placed in section `.data.rel.ro'
+> > >     aarch64-linux-gnu-ld: warning: orphan section `.eh_frame' from
+> > > `kernel/bpf/core.o' being placed in section `.eh_frame'
+> > >
+> > > I.e. including the ".eh_frame" warning. I have tried bisecting that
+> > > warning (i.e. with be2881824ae9eb92 reverted), but that leads me to
+> > > commit b3e5d80d0c48c0cc ("arm64/build: Warn on orphan section
+> > > placement"), which is another red herring.
 > >
-> > This is now commit be2881824ae9eb92 ("arm64/build: Assert for unwanted
-> > sections") in v5.10-rc1, and is causing the following error with
-> > renesas_defconfig[1]:
+> > kernel/bpf/core.o is the only file containing an eh_frame section,
+> > causing the warning.
+> > If I compile core.c with "-g" added, like arm64 defconfig does, the
+> > eh_frame section is no longer emitted.
 > >
-> >     aarch64-linux-gnu-ld: warning: orphan section `.eh_frame' from
-> > `kernel/bpf/core.o' being placed in section `.eh_frame'
-> >     aarch64-linux-gnu-ld: Unexpected GOT/PLT entries detected!
-> >     aarch64-linux-gnu-ld: Unexpected run-time procedure linkages detected!
+> > Hence setting CONFIG_DEBUG_INFO=y, cfr. arm64 defconfig, the warning
+> > is gone, but I'm back to the the "Unexpected GOT/PLT entries" below...
 > >
-> > I cannot reproduce this with the standard arm64 defconfig.
-> >
-> > I bisected the error to the aforementioned commit, but understand this
-> > is not the real reason.  If I revert this commit, I still get:
-> >
-> >     aarch64-linux-gnu-ld: warning: orphan section `.got.plt' from
-> > `arch/arm64/kernel/head.o' being placed in section `.got.plt'
-> >     aarch64-linux-gnu-ld: warning: orphan section `.plt' from
-> > `arch/arm64/kernel/head.o' being placed in section `.plt'
-> >     aarch64-linux-gnu-ld: warning: orphan section `.data.rel.ro' from
-> > `arch/arm64/kernel/head.o' being placed in section `.data.rel.ro'
-> >     aarch64-linux-gnu-ld: warning: orphan section `.eh_frame' from
-> > `kernel/bpf/core.o' being placed in section `.eh_frame'
-> >
-> > I.e. including the ".eh_frame" warning. I have tried bisecting that
-> > warning (i.e. with be2881824ae9eb92 reverted), but that leads me to
-> > commit b3e5d80d0c48c0cc ("arm64/build: Warn on orphan section
-> > placement"), which is another red herring.
+> > > Note that even on plain be2881824ae9eb92, I get:
+> > >
+> > >     aarch64-linux-gnu-ld: Unexpected GOT/PLT entries detected!
+> > >     aarch64-linux-gnu-ld: Unexpected run-time procedure linkages detected!
+> > >
+> > > The parent commit obviously doesn't show that (but probably still has
+> > > the problem).
 >
-> kernel/bpf/core.o is the only file containing an eh_frame section,
-> causing the warning.
-> If I compile core.c with "-g" added, like arm64 defconfig does, the
-> eh_frame section is no longer emitted.
+> Reverting both
+> b3e5d80d0c48c0cc ("arm64/build: Warn on orphan section placement")
+> be2881824ae9eb92 ("arm64/build: Assert for unwanted sections")
+> seems to solve my problems, without any ill effects?
 >
-> Hence setting CONFIG_DEBUG_INFO=y, cfr. arm64 defconfig, the warning
-> is gone, but I'm back to the the "Unexpected GOT/PLT entries" below...
->
-> > Note that even on plain be2881824ae9eb92, I get:
-> >
-> >     aarch64-linux-gnu-ld: Unexpected GOT/PLT entries detected!
-> >     aarch64-linux-gnu-ld: Unexpected run-time procedure linkages detected!
-> >
-> > The parent commit obviously doesn't show that (but probably still has
-> > the problem).
 
-Reverting both
-b3e5d80d0c48c0cc ("arm64/build: Warn on orphan section placement")
-be2881824ae9eb92 ("arm64/build: Assert for unwanted sections")
-seems to solve my problems, without any ill effects?
+I cannot reproduce the issue here with my distro GCC+binutils (Debian 8.3.0)
 
-Gr{oetje,eeting}s,
+The presence of .data.rel.ro and .got.plt sections suggests that the
+toolchain is using -fpie and/or -z relro to build shared objects
+rather than a fully linked bare metal binary.
 
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Which toolchain are you using? Does adding -fno-pie to the compiler
+command line and/or adding -z norelro to the linker command line make
+any difference?
