@@ -2,232 +2,183 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CF94B2999BF
-	for <lists+linux-efi@lfdr.de>; Mon, 26 Oct 2020 23:36:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 10AFE29A6B1
+	for <lists+linux-efi@lfdr.de>; Tue, 27 Oct 2020 09:38:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2394550AbgJZWgy (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 26 Oct 2020 18:36:54 -0400
-Received: from mga14.intel.com ([192.55.52.115]:59308 "EHLO mga14.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2394549AbgJZWgy (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Mon, 26 Oct 2020 18:36:54 -0400
-IronPort-SDR: k62iMxMBceaSFxVXSMMi8+Yi77/pMYJI9pm8LxXczfg4gXKiJS7kC7yDyPhaNh8M/wNxtuLQZc
- kSsf9XaAA1aQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9786"; a="167215162"
-X-IronPort-AV: E=Sophos;i="5.77,421,1596524400"; 
-   d="scan'208";a="167215162"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Oct 2020 15:36:53 -0700
-IronPort-SDR: DsXw1Dn10CNPHrnAwOleX2E4r+496inil8nf5OR8pJ4Z4NGRpdU+rBZKAU0B/yfOhTxBIfj5lD
- rA9V9FppHVlg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.77,421,1596524400"; 
-   d="scan'208";a="322705686"
-Received: from lkp-server01.sh.intel.com (HELO ca9e3ad0a302) ([10.239.97.150])
-  by orsmga006.jf.intel.com with ESMTP; 26 Oct 2020 15:36:52 -0700
-Received: from kbuild by ca9e3ad0a302 with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1kXB6h-0000Be-Ce; Mon, 26 Oct 2020 22:36:51 +0000
-Date:   Tue, 27 Oct 2020 06:36:05 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     linux-efi@vger.kernel.org
-Subject: [efi:next] BUILD SUCCESS 688eb28211abdf82a3f51e8997f1c8137947227d
-Message-ID: <5f974f55.gXtWewi6JJREAN8r%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S2895008AbgJ0Ihz (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 27 Oct 2020 04:37:55 -0400
+Received: from mail-oi1-f193.google.com ([209.85.167.193]:38745 "EHLO
+        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2895002AbgJ0Ihy (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 27 Oct 2020 04:37:54 -0400
+Received: by mail-oi1-f193.google.com with SMTP id h10so493654oie.5;
+        Tue, 27 Oct 2020 01:37:51 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=CPOwLhlXLOT2UZd39wDStOTHkcJ+bIgNaCGTA5V1Xlc=;
+        b=HfOFnHuwmTe/Yk8v+YeF+wpMvQy/FWhZq5DeHoZI6YbXfbtamGoBxCulIroZz+1PKN
+         ur/4RRG2bIGH2UQlZxkZhGGPX9z3wXAJ/1gXyZgpVRQzdm0TbJKnFYOMatIPwRsneV/U
+         ++mnftgLVDRJK9bjOaUiFiD2HzRCtoAOS2XaalxiZYwrpdZ2T263xvFOcFjoNWBCd7S3
+         evso65ol8brc2jp5DM1tX7DBkMrY/GN++VKI3PrcDtERFAlgRIla877uzfT5U0I6gzhX
+         768iSS85mXcZPjizCJTYkBGnHJ9HO7UVzoge2X7uma3NpMXESS7GnoW0p+VxwL6tRTqQ
+         M+KA==
+X-Gm-Message-State: AOAM530lhTvisSi845iSup0L4DDWpNusPv/rpVno4+CgJYlf1Rgknaxj
+        B5nlaEE8u3+2Pna92dqlNg7LZSegEypvY8geAFg=
+X-Google-Smtp-Source: ABdhPJwaTB2iVr+7OU3MtN9ar0oiQ89rb++59/AFQW7IOWauPeDmlmQaVq9ehknOXiewJFiM95SLhML4FAiQRXDDJOc=
+X-Received: by 2002:aca:f203:: with SMTP id q3mr657056oih.148.1603787871413;
+ Tue, 27 Oct 2020 01:37:51 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+References: <20200821194310.3089815-1-keescook@chromium.org>
+ <20200821194310.3089815-14-keescook@chromium.org> <CAMuHMdUg0WJHEcq6to0-eODpXPOywLot6UD2=GFHpzoj_hCoBQ@mail.gmail.com>
+ <CAMuHMdUw9KwC=EVB60yjg7mA7Fg-efOiKE7577p+uEdGJVS2OQ@mail.gmail.com>
+ <CAMuHMdUJFEt3LxWHk73AsLDGhjzBvJGAML76UAxeGzb4zOf96w@mail.gmail.com>
+ <CAMj1kXHXk3BX6mz6X_03sj_pSLj9Ck-=1S57tV3__N9JQOcDEw@mail.gmail.com>
+ <CAMuHMdV4jKccjKkoj38EFC-5yN99pBvthFyrX81EG4GpassZwA@mail.gmail.com>
+ <CAKwvOdkq3ZwW+FEui1Wtj_dWBevi0Mrt4fHa4oiMZTUZKOMi3g@mail.gmail.com> <CAMuHMdX+PSdT02jxA+dJCjyT5Kktn+NnVsk0563XCLnn1fazgQ@mail.gmail.com>
+In-Reply-To: <CAMuHMdX+PSdT02jxA+dJCjyT5Kktn+NnVsk0563XCLnn1fazgQ@mail.gmail.com>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Tue, 27 Oct 2020 09:37:37 +0100
+Message-ID: <CAMuHMdW+JTtzpa6mCQ7_H__T-LWD7bF27WY78Wt9RfNeLDSu7w@mail.gmail.com>
+Subject: Re: [PATCH v6 13/29] arm64/build: Assert for unwanted sections
+To:     Nick Desaulniers <ndesaulniers@google.com>
+Cc:     Ard Biesheuvel <ardb@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Ingo Molnar <mingo@kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Peter Collingbourne <pcc@google.com>,
+        James Morse <james.morse@arm.com>,
+        Borislav Petkov <bp@suse.de>, Ingo Molnar <mingo@redhat.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Arvind Sankar <nivedita@alum.mit.edu>,
+        Nathan Chancellor <natechancellor@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        "the arch/x86 maintainers" <x86@kernel.org>,
+        clang-built-linux <clang-built-linux@googlegroups.com>,
+        Linux-Arch <linux-arch@vger.kernel.org>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git  next
-branch HEAD: 688eb28211abdf82a3f51e8997f1c8137947227d  efi/x86: Only copy the compressed kernel image in efi_relocate_kernel()
+Hi Nick,
 
-elapsed time: 722m
+On Mon, Oct 26, 2020 at 6:53 PM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+> On Mon, Oct 26, 2020 at 6:49 PM Nick Desaulniers
+> <ndesaulniers@google.com> wrote:
+> > On Mon, Oct 26, 2020 at 10:44 AM Geert Uytterhoeven
+> > <geert@linux-m68k.org> wrote:
+> > > On Mon, Oct 26, 2020 at 6:39 PM Ard Biesheuvel <ardb@kernel.org> wrote:
+> > > > On Mon, 26 Oct 2020 at 17:01, Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+> > > > > On Mon, Oct 26, 2020 at 2:29 PM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+> > > > > > On Mon, Oct 26, 2020 at 1:29 PM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+> > > > > > > On Fri, Aug 21, 2020 at 9:56 PM Kees Cook <keescook@chromium.org> wrote:
+> > > > > > > > In preparation for warning on orphan sections, discard
+> > > > > > > > unwanted non-zero-sized generated sections, and enforce other
+> > > > > > > > expected-to-be-zero-sized sections (since discarding them might hide
+> > > > > > > > problems with them suddenly gaining unexpected entries).
+> > > > > > > >
+> > > > > > > > Suggested-by: Ard Biesheuvel <ardb@kernel.org>
+> > > > > > > > Signed-off-by: Kees Cook <keescook@chromium.org>
+> > > > > > >
+> > > > > > > This is now commit be2881824ae9eb92 ("arm64/build: Assert for unwanted
+> > > > > > > sections") in v5.10-rc1, and is causing the following error with
+> > > > > > > renesas_defconfig[1]:
+> > > > > > >
+> > > > > > >     aarch64-linux-gnu-ld: warning: orphan section `.eh_frame' from
+> > > > > > > `kernel/bpf/core.o' being placed in section `.eh_frame'
+> > > > > > >     aarch64-linux-gnu-ld: Unexpected GOT/PLT entries detected!
+> > > > > > >     aarch64-linux-gnu-ld: Unexpected run-time procedure linkages detected!
+> > > > > > >
+> > > > > > > I cannot reproduce this with the standard arm64 defconfig.
+> > > > > > >
+> > > > > > > I bisected the error to the aforementioned commit, but understand this
+> > > > > > > is not the real reason.  If I revert this commit, I still get:
+> > > > > > >
+> > > > > > >     aarch64-linux-gnu-ld: warning: orphan section `.got.plt' from
+> > > > > > > `arch/arm64/kernel/head.o' being placed in section `.got.plt'
+> > > > > > >     aarch64-linux-gnu-ld: warning: orphan section `.plt' from
+> > > > > > > `arch/arm64/kernel/head.o' being placed in section `.plt'
+> > > > > > >     aarch64-linux-gnu-ld: warning: orphan section `.data.rel.ro' from
+> > > > > > > `arch/arm64/kernel/head.o' being placed in section `.data.rel.ro'
+> > > > > > >     aarch64-linux-gnu-ld: warning: orphan section `.eh_frame' from
+> > > > > > > `kernel/bpf/core.o' being placed in section `.eh_frame'
+> > > > > > >
+> > > > > > > I.e. including the ".eh_frame" warning. I have tried bisecting that
+> > > > > > > warning (i.e. with be2881824ae9eb92 reverted), but that leads me to
+> > > > > > > commit b3e5d80d0c48c0cc ("arm64/build: Warn on orphan section
+> > > > > > > placement"), which is another red herring.
+> > > > > >
+> > > > > > kernel/bpf/core.o is the only file containing an eh_frame section,
+> > > > > > causing the warning.
+> >
+> > When I see .eh_frame, I think -fno-asynchronous-unwind-tables is
+> > missing from someone's KBUILD_CFLAGS.
+> > But I don't see anything curious in kernel/bpf/Makefile, unless
+> > cc-disable-warning is somehow broken.
+>
+> Yeah, I noticed it's added in arch/arm64/Makefile, and verified that it is
+> actually passed when building kernel/bpf/core.o.
+>
+> > > > > > If I compile core.c with "-g" added, like arm64 defconfig does, the
+> > > > > > eh_frame section is no longer emitted.
+> > > > > >
+> > > > > > Hence setting CONFIG_DEBUG_INFO=y, cfr. arm64 defconfig, the warning
+> > > > > > is gone, but I'm back to the the "Unexpected GOT/PLT entries" below...
+> > > > > >
+> > > > > > > Note that even on plain be2881824ae9eb92, I get:
+> > > > > > >
+> > > > > > >     aarch64-linux-gnu-ld: Unexpected GOT/PLT entries detected!
+> > > > > > >     aarch64-linux-gnu-ld: Unexpected run-time procedure linkages detected!
+> > > > > > >
+> > > > > > > The parent commit obviously doesn't show that (but probably still has
+> > > > > > > the problem).
+> > > > >
+> > > > > Reverting both
+> > > > > b3e5d80d0c48c0cc ("arm64/build: Warn on orphan section placement")
+> > > > > be2881824ae9eb92 ("arm64/build: Assert for unwanted sections")
+> > > > > seems to solve my problems, without any ill effects?
+> > > > >
+> > > >
+> > > > I cannot reproduce the issue here with my distro GCC+binutils (Debian 8.3.0)
+> > > >
+> > > > The presence of .data.rel.ro and .got.plt sections suggests that the
+> > > > toolchain is using -fpie and/or -z relro to build shared objects
+> > > > rather than a fully linked bare metal binary.
+> > > >
+> > > > Which toolchain are you using? Does adding -fno-pie to the compiler
+> > >
+> > > gcc version 9.3.0 (Ubuntu 9.3.0-17ubuntu1~20.04)  from Ubuntu 20.04LTS.
+> > >
+> > > > command line and/or adding -z norelro to the linker command line make
+> > > > any difference?
+> > >
+> > > I'll give that a try later...
+> >
+> > This patch just got picked up into the for-next branch of the arm64
+> > tree; it enables `-z norelro` regardless of configs.
+> > https://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git/commit/?h=for-next/core&id=3b92fa7485eba16b05166fddf38ab42f2ff6ab95
+> > If you apply that, that should help you test `-z norelro` quickly.
+>
+> Thanks, will give that a try, too.
 
-configs tested: 169
-configs skipped: 3
+Commit 3b92fa7485eba16b05166fddf38ab42f2ff6ab95 is part of v5.10-rc1,
+so it was already included, and thus doesn't fix the issue.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Gr{oetje,eeting}s,
 
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-arm                            zeus_defconfig
-arm                         ebsa110_defconfig
-arm                        shmobile_defconfig
-sparc                            allyesconfig
-powerpc                     sequoia_defconfig
-arm                          moxart_defconfig
-arc                 nsimosci_hs_smp_defconfig
-powerpc                        fsp2_defconfig
-powerpc                       maple_defconfig
-mips                           gcw0_defconfig
-alpha                            allyesconfig
-arm                          ixp4xx_defconfig
-mips                         cobalt_defconfig
-sh                           se7705_defconfig
-arm                        spear6xx_defconfig
-arm                              zx_defconfig
-mips                          malta_defconfig
-alpha                               defconfig
-arm                         mv78xx0_defconfig
-sh                   secureedge5410_defconfig
-mips                       rbtx49xx_defconfig
-sh                     sh7710voipgw_defconfig
-powerpc                 mpc85xx_cds_defconfig
-mips                         tb0287_defconfig
-mips                        workpad_defconfig
-ia64                                defconfig
-m68k                         amcore_defconfig
-arm                          badge4_defconfig
-powerpc                     stx_gp3_defconfig
-sh                          rsk7264_defconfig
-riscv                            allyesconfig
-powerpc                     sbc8548_defconfig
-arm                          exynos_defconfig
-mips                         db1xxx_defconfig
-mips                       bmips_be_defconfig
-h8300                    h8300h-sim_defconfig
-nios2                         10m50_defconfig
-mips                     decstation_defconfig
-arm                       aspeed_g5_defconfig
-arm                        realview_defconfig
-mips                          ath79_defconfig
-nios2                            alldefconfig
-arm                            lart_defconfig
-mips                            e55_defconfig
-microblaze                          defconfig
-arc                          axs103_defconfig
-arm                         shannon_defconfig
-nds32                               defconfig
-arm                         s3c6400_defconfig
-arm                         assabet_defconfig
-sh                            shmin_defconfig
-mips                           ip28_defconfig
-c6x                        evmc6678_defconfig
-m68k                       m5275evb_defconfig
-powerpc                      makalu_defconfig
-arm                         socfpga_defconfig
-sh                        sh7763rdp_defconfig
-arm                        mini2440_defconfig
-arm                           spitz_defconfig
-m68k                          multi_defconfig
-arm                      jornada720_defconfig
-powerpc                    gamecube_defconfig
-ia64                            zx1_defconfig
-microblaze                      mmu_defconfig
-powerpc                     kilauea_defconfig
-sh                        edosk7705_defconfig
-x86_64                           allyesconfig
-powerpc                      walnut_defconfig
-c6x                        evmc6472_defconfig
-mips                        nlm_xlp_defconfig
-arc                        nsimosci_defconfig
-sh                           se7780_defconfig
-xtensa                generic_kc705_defconfig
-sh                          polaris_defconfig
-powerpc                      ep88xc_defconfig
-sh                          rsk7269_defconfig
-m68k                       bvme6000_defconfig
-mips                      pistachio_defconfig
-sh                   sh7724_generic_defconfig
-powerpc                 linkstation_defconfig
-powerpc                      pmac32_defconfig
-arm                          collie_defconfig
-sh                          r7780mp_defconfig
-m68k                        m5407c3_defconfig
-riscv                            alldefconfig
-xtensa                          iss_defconfig
-mips                           ip22_defconfig
-mips                malta_kvm_guest_defconfig
-sh                           se7750_defconfig
-powerpc                   bluestone_defconfig
-powerpc                   lite5200b_defconfig
-xtensa                              defconfig
-arm                         cm_x300_defconfig
-powerpc                     rainier_defconfig
-powerpc                     pseries_defconfig
-powerpc                      chrp32_defconfig
-sh                          rsk7203_defconfig
-powerpc64                           defconfig
-sh                        dreamcast_defconfig
-arm                      integrator_defconfig
-arm                              alldefconfig
-arm                           stm32_defconfig
-ia64                             allmodconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-c6x                              allyesconfig
-nios2                            allyesconfig
-csky                                defconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                               defconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-i386                 randconfig-a002-20201026
-i386                 randconfig-a003-20201026
-i386                 randconfig-a005-20201026
-i386                 randconfig-a001-20201026
-i386                 randconfig-a006-20201026
-i386                 randconfig-a004-20201026
-x86_64               randconfig-a011-20201026
-x86_64               randconfig-a013-20201026
-x86_64               randconfig-a016-20201026
-x86_64               randconfig-a015-20201026
-x86_64               randconfig-a012-20201026
-x86_64               randconfig-a014-20201026
-i386                 randconfig-a016-20201026
-i386                 randconfig-a015-20201026
-i386                 randconfig-a014-20201026
-i386                 randconfig-a012-20201026
-i386                 randconfig-a013-20201026
-i386                 randconfig-a011-20201026
-riscv                    nommu_k210_defconfig
-riscv                    nommu_virt_defconfig
-riscv                          rv32_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                            allmodconfig
-x86_64                                   rhel
-x86_64                    rhel-7.6-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                                  kexec
+                        Geert
 
-clang tested configs:
-x86_64               randconfig-a001-20201026
-x86_64               randconfig-a003-20201026
-x86_64               randconfig-a002-20201026
-x86_64               randconfig-a006-20201026
-x86_64               randconfig-a004-20201026
-x86_64               randconfig-a005-20201026
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
