@@ -2,45 +2,45 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B9C629CA05
-	for <lists+linux-efi@lfdr.de>; Tue, 27 Oct 2020 21:20:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AEC0329CA24
+	for <lists+linux-efi@lfdr.de>; Tue, 27 Oct 2020 21:29:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1831131AbgJ0USI (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 27 Oct 2020 16:18:08 -0400
-Received: from mail-pj1-f66.google.com ([209.85.216.66]:53770 "EHLO
-        mail-pj1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1831130AbgJ0USI (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 27 Oct 2020 16:18:08 -0400
-Received: by mail-pj1-f66.google.com with SMTP id m17so436960pjz.3
-        for <linux-efi@vger.kernel.org>; Tue, 27 Oct 2020 13:18:07 -0700 (PDT)
+        id S1729111AbgJ0U2Q (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 27 Oct 2020 16:28:16 -0400
+Received: from mail-pl1-f196.google.com ([209.85.214.196]:38496 "EHLO
+        mail-pl1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2409133AbgJ0U2P (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 27 Oct 2020 16:28:15 -0400
+Received: by mail-pl1-f196.google.com with SMTP id f21so1375209plr.5
+        for <linux-efi@vger.kernel.org>; Tue, 27 Oct 2020 13:28:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=i1Sa4pOklTVSBDn1gBaNdBfK+3lXBzX6RjisxK7EZK0=;
-        b=YWQRdPDOE/u+vucTsLTHMVDd0xCZ/ZqYuYBbMMaVwfrCEi30oBxPzNwfA+hIJg/kAi
-         Hvpl9C5lBhGAl/BiWW0xixUeyIqHLqlZn4iRKvZITtltWdYUlHZge9jjfusHSv/UIOsP
-         ThXOycdvIkrnLRN/h7K1b5dnl1PZQe1VrZFX46noaZVrULb79H1AvqQiGYbEOEW3iU+0
-         Z3U8e4pC3Y/KLsiw+/pCXK3+u7MjzIBsSA7L3Sm6NcgtRWFkwaqK8NCUQmIn+7bJf1z1
-         L2h9MUabimjWEHUS3n5gK2kd2WpDVvu2TSAZ1f2iq71hAT9rUsN64bMj98JX15V3bDqp
-         EiIg==
+        bh=3vH0jRuNNXMpR78OFAIDC7FB9qzF1hw7amK8Jt/4qu8=;
+        b=VXmwLNHkl1EQMa3ojhAOzOZ1iCXl1R0QLtIn5hFJWYUl1BY1w1EjDDacbbwVF2fbFV
+         1jtKFk1JIx4U0zv05G+t6hzW/0UvF/d3Fu7tBVQud1Qm1aR2LBe0UMmY3v4DsSo6prOY
+         p1GjHdRLZJZ/wZtM5IF/CC2SQmPpHuDgoqQG2+AtYQ2RFFokVeKDbV8YPskCuRfqdD2z
+         5oKrHpJLmiK9jcEH24Fqe64u3TgRdHyqXvPx7KH/LmTce8SPunhfV/rw7HsCHjFilGHK
+         fuKigJutJyb3OE5ZFmUIUMVigMq0aNYvfWQb9YeQnriQbq1oen9xjESap/Q6vNOH1ryI
+         vg/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=i1Sa4pOklTVSBDn1gBaNdBfK+3lXBzX6RjisxK7EZK0=;
-        b=WxJOxYcIVifyBteuxyGSRhFLAs/AkoVv+CeC69vDEEW099eQ7pcIQmLdjNfmVTvZ4k
-         lUL4whOWVj/xOMhCe/y5Dx53hRpvNGwjXs8LeqnKSvnc5gvrXGdTlPu46D5U6fWWtdol
-         7rWujFRjihErmdaziqCt851Y6C9rqAHpQaKUFHWOAfjLb5voOajyenZ2P0nvA0V3coQM
-         ukpjawJ6nqpj0Fx6srE8m6jrCIOIj68RzO/ETfMhgZi76TijVtDIbfVH4iKr0XduMSRU
-         YGB5p72d5m4yutypM/zmi/7AyDWQjV0nWc0yhs41nYnKwtUWk8AjLeYH+eOTKHUVaptW
-         RWuQ==
-X-Gm-Message-State: AOAM532oQEx1YG2jZh6LSEHgkwcMqm4aDTKMzFDkcErXbIESHW5B9Z+l
-        +CGz0G4xicELyQpIjb0E8V+bO9bJIWOWL7j5m1ZIkA==
-X-Google-Smtp-Source: ABdhPJywIjgcBV8qXcoNqM7Ed4H7EaNmCfoq2mAz/vgmUAzc6HfUFJTb7scXcDgK4JpIdX27+zaHnJ3FgMPaCTSILwc=
-X-Received: by 2002:a17:902:8a8b:b029:d5:f871:92bd with SMTP id
- p11-20020a1709028a8bb02900d5f87192bdmr4163850plo.10.1603829886728; Tue, 27
- Oct 2020 13:18:06 -0700 (PDT)
+        bh=3vH0jRuNNXMpR78OFAIDC7FB9qzF1hw7amK8Jt/4qu8=;
+        b=jjJ76SZG9+j2OR8nmOFIfzz+A5HD+ucw90PFkK5QYDIL53YDY2/GmpaPqK3i+0rVnu
+         bjxkVt7nJckTWzmqNZMC9k9zG3HqG47m0WKYu/yI2ZjqjWWwAGIzRZNfN60x3Wo/v0k3
+         OoABsZyACqmGaQdSTrwXPpC0Q4GUOHCD1jzJEQ+K8YJNcSY5H+ghcadfkntIXljt4Cih
+         +n5o3XEXS6KpTYfNxut3HXfYgYo++2/ukiJ39N8726C05senpp/6DlRSNZ6IWn1a9aKU
+         c2GH5vKgltVpD+t4s9AUc6rN+5LGiLoq0CNVOO/Ebo9E6fvyljRlVk2SBQ6uGqfzUJs7
+         Vv1A==
+X-Gm-Message-State: AOAM531W9/D3Ko0escC5h/mJ2q/Br0Uf+z3qrHxKswJLO8qqCUXcQrrU
+        nxudJyFOnMygs99bPDmkPnpGjzkDDSOPWGNu1X72tg==
+X-Google-Smtp-Source: ABdhPJwtWq+fPDoXFMIEUSHj2IQQyPW/GQMita0JdCsSRf1LUuJr91DBxmx+m/1QfLVp6NmiRz0L4v6uJ7TN9TYFE78=
+X-Received: by 2002:a17:902:db82:b029:d6:3fe4:9825 with SMTP id
+ m2-20020a170902db82b02900d63fe49825mr3848830pld.29.1603830494061; Tue, 27 Oct
+ 2020 13:28:14 -0700 (PDT)
 MIME-Version: 1.0
 References: <20200821194310.3089815-1-keescook@chromium.org>
  <20200821194310.3089815-14-keescook@chromium.org> <CAMuHMdUg0WJHEcq6to0-eODpXPOywLot6UD2=GFHpzoj_hCoBQ@mail.gmail.com>
@@ -53,8 +53,8 @@ References: <20200821194310.3089815-1-keescook@chromium.org>
  <CAKwvOdkE=ViGOhvoBRcV=9anjowC_vb4Vtefp9010+sC4c_+Sw@mail.gmail.com> <CAMj1kXEhcQ_ngNVWddV76NqEz6d0tDhfStYGd5diydefzVLvdQ@mail.gmail.com>
 In-Reply-To: <CAMj1kXEhcQ_ngNVWddV76NqEz6d0tDhfStYGd5diydefzVLvdQ@mail.gmail.com>
 From:   Nick Desaulniers <ndesaulniers@google.com>
-Date:   Tue, 27 Oct 2020 13:17:55 -0700
-Message-ID: <CAKwvOd=8YO3Vm0DuaWpDigMiwni+fVdrpagZtsROGziinjLvig@mail.gmail.com>
+Date:   Tue, 27 Oct 2020 13:28:02 -0700
+Message-ID: <CAKwvOdm9kuKoVnQoVo7T91gRb9QiCTp2G_PnwbdPM=o710Lx5A@mail.gmail.com>
 Subject: Re: [PATCH v6 13/29] arm64/build: Assert for unwanted sections
 To:     Ard Biesheuvel <ardb@kernel.org>
 Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
@@ -78,12 +78,16 @@ Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
         Josh Poimboeuf <jpoimboe@redhat.com>,
-        kernel-toolchains@vger.kernel.org,
-        Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+        Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+        linux-toolchains@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
+
+(+ right linux-toolchains mailing list, apologies for adding the wrong
+one, I'm forever doomed to have gmail autocomplete to the wrong one
+now that I've sent to it before)
 
 On Tue, Oct 27, 2020 at 1:15 PM Ard Biesheuvel <ardb@kernel.org> wrote:
 >
@@ -143,30 +147,13 @@ On Tue, Oct 27, 2020 at 1:15 PM Ard Biesheuvel <ardb@kernel.org> wrote:
 > Fixes: e55a73251da3 ("bpf: Fix ORC unwinding in non-JIT BPF code")
 >
 > and mentions objtool and CONFIG_RETPOLINE.
->
-> >  (I feel the same about there
-> > being an empty asm(); statement in the definition of asm_volatile_goto
-> > for compiler-gcc.h).  Might be time to "fix the compiler."
-> >
-> > (It sounds like Arvind is both in agreement with my sentiment, and has
-> > the root cause).
-> >
->
-> I agree that the __no_fgcse hack is terrible. Does Clang support the
-> following pragmas?
->
-> #pragma GCC push_options
-> #pragma GCC optimize ("-fno-gcse")
-> #pragma GCC pop_options
->
-> ?
 
-Put it in godbolt.org.  Pretty sure it's `#pragma clang` though.
-`#pragma GCC` might be supported in clang or silently ignored, but
-IIRC pragmas were a bit of a compat nightmare.  I think Arnd wrote
-some macros to set pragmas based on toolchain.  (Uses _Pragma, for
-pragmas in macros, IIRC).
-
+Thanks for the context.  It might be time to revisit the above commit.
+If I revert it (small conflict that's easy to fixup),
+kernel/bpf/core.o builds cleanly with defconfig+GCC-9.3, so maybe
+obtool did get smart enough to handle that case?  Probably regresses
+the performance of that main dispatch loop for BPF, but not sure what
+folks are expecting when retpolines are enabled.
 -- 
 Thanks,
 ~Nick Desaulniers
