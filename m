@@ -2,76 +2,157 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2192729DB56
-	for <lists+linux-efi@lfdr.de>; Thu, 29 Oct 2020 00:52:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2848929DC2C
+	for <lists+linux-efi@lfdr.de>; Thu, 29 Oct 2020 01:22:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389280AbgJ1XwA (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 28 Oct 2020 19:52:00 -0400
-Received: from leibniz.telenet-ops.be ([195.130.137.77]:54450 "EHLO
-        leibniz.telenet-ops.be" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389277AbgJ1Xv7 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 28 Oct 2020 19:51:59 -0400
-X-Greylist: delayed 4201 seconds by postgrey-1.27 at vger.kernel.org; Wed, 28 Oct 2020 19:51:58 EDT
-Received: from michel.telenet-ops.be (michel.telenet-ops.be [IPv6:2a02:1800:110:4::f00:18])
-        by leibniz.telenet-ops.be (Postfix) with ESMTPS id 4CLt0F15k1zMyShy
-        for <linux-efi@vger.kernel.org>; Wed, 28 Oct 2020 16:34:05 +0100 (CET)
-Received: from ramsan.of.borg ([84.195.186.194])
-        by michel.telenet-ops.be with bizsmtp
-        id lTa42300Q4C55Sk06Ta4mw; Wed, 28 Oct 2020 16:34:04 +0100
-Received: from rox.of.borg ([192.168.97.57])
-        by ramsan.of.borg with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.93)
-        (envelope-from <geert@linux-m68k.org>)
-        id 1kXnSe-000pOh-6j; Wed, 28 Oct 2020 16:34:04 +0100
-Received: from geert by rox.of.borg with local (Exim 4.93)
-        (envelope-from <geert@linux-m68k.org>)
-        id 1kXnSd-007HeQ-O3; Wed, 28 Oct 2020 16:34:03 +0100
-From:   Geert Uytterhoeven <geert+renesas@glider.be>
-To:     Ard Biesheuvel <ardb@kernel.org>, Ingo Molnar <mingo@kernel.org>,
-        Arvind Sankar <nivedita@alum.mit.edu>
-Cc:     linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH v2] efi/libstub: EFI_GENERIC_STUB_INITRD_CMDLINE_LOADER should not default to yes
-Date:   Wed, 28 Oct 2020 16:34:02 +0100
-Message-Id: <20201028153402.1736103-1-geert+renesas@glider.be>
-X-Mailer: git-send-email 2.25.1
+        id S2390801AbgJ2AWN (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 28 Oct 2020 20:22:13 -0400
+Received: from hqnvemgate24.nvidia.com ([216.228.121.143]:1415 "EHLO
+        hqnvemgate24.nvidia.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388929AbgJ1WiG (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 28 Oct 2020 18:38:06 -0400
+Received: from hqmail.nvidia.com (Not Verified[216.228.121.13]) by hqnvemgate24.nvidia.com (using TLS: TLSv1.2, AES256-SHA)
+        id <B5f99be410000>; Wed, 28 Oct 2020 11:53:53 -0700
+Received: from HQMAIL111.nvidia.com (172.20.187.18) by HQMAIL107.nvidia.com
+ (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Wed, 28 Oct
+ 2020 18:53:44 +0000
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (104.47.58.169)
+ by HQMAIL111.nvidia.com (172.20.187.18) with Microsoft SMTP Server (TLS) id
+ 15.0.1473.3 via Frontend Transport; Wed, 28 Oct 2020 18:53:44 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=LcFPQ+Lu8NRGsc0hU3VO841M6CUgCNfePBWPOyr7Mu/ITaRg2qLdcBVDaBoutJ+MJi+YnWPhqsLNdgqM6x3VTBPBmw45KJSnqz8+wchby8vCzGUm+0F/K4IswCk0mqK2Hsg9bQcGF0cxc8Uu2nCpLe6qKBZ0qwsEll/Nci5LiAn62B7M4avwENduf3soVOTritN5icZ7Jvcb+cozk1Uj4oIHOtFRxwij20ALkyvzNw1dc14FHEMqSmYkG4ONHobLPcl+UQOn8VVMvA2oartzz8E+/PLvirZERbw2ExSyNuUsjV8dkrA5Ajg/nIPuGkdKSCocxGssNS1iaOYOEcX3Yg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=YjnFmVRHDs222kZEwa4GZhPlUPzdcatFGZwVKM3UH1Y=;
+ b=aIEJI9uCEee88f8BU0RUGu7nWdd4BSPP0LFdsbBZ9ib94UrfDpsqSzuQea2A/2vQ+KNZf61BLe3m8v3vd7wG453WyzYz/3oSPC89IyluEnDBlHleBqFaiZyQScRUKzWO7YkH565z2vDjDa2mCwtysSVVjarxPk+vwpsOSMf5By/C1UY1SZUw3zH+hthoFvKkaYWh9eo4pCnVBicrf8DVYRTL3pH6rF1h362uuXGWd3D+lJ+mK2GBxD49luzoB28vqU4lCYSYP68BH/IZrQr6w8jokg+RdEwaWcn4EE1S4SURejyK3YOHVtdQkRc9JKvXksfCa6Wr7xHbL3yS/JYsRw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+Received: from DM6PR12MB3834.namprd12.prod.outlook.com (2603:10b6:5:14a::12)
+ by DM5PR12MB1659.namprd12.prod.outlook.com (2603:10b6:4:11::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3477.25; Wed, 28 Oct
+ 2020 18:53:42 +0000
+Received: from DM6PR12MB3834.namprd12.prod.outlook.com
+ ([fe80::cdbe:f274:ad65:9a78]) by DM6PR12MB3834.namprd12.prod.outlook.com
+ ([fe80::cdbe:f274:ad65:9a78%7]) with mapi id 15.20.3499.027; Wed, 28 Oct 2020
+ 18:53:42 +0000
+From:   Jason Gunthorpe <jgg@nvidia.com>
+To:     <linux-mm@kvack.org>, Andrew Morton <akpm@linux-foundation.org>,
+        "Tom Lendacky" <thomas.lendacky@amd.com>
+CC:     Arnd Bergmann <arnd@arndb.de>,
+        Andrey Ryabinin <aryabinin@virtuozzo.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Brijesh Singh <brijesh.singh@amd.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Dmitry Vyukov <dvyukov@google.com>,
+        "Dave Young" <dyoung@redhat.com>,
+        Alexander Potapenko <glider@google.com>,
+        <kasan-dev@googlegroups.com>,
+        Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+        <kvm@vger.kernel.org>, <linux-arch@vger.kernel.org>,
+        <linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-efi@vger.kernel.org>, Andy Lutomirski <luto@kernel.org>,
+        Larry Woodman <lwoodman@redhat.com>,
+        Matt Fleming <matt@codeblueprint.co.uk>,
+        Ingo Molnar <mingo@kernel.org>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Rik van Riel <riel@redhat.com>,
+        =?utf-8?b?UmFkaW0gS3LEjW3DocWZ?= <rkrcmar@redhat.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Toshimitsu Kani <toshi.kani@hpe.com>
+Subject: [PATCH rc] mm: always have io_remap_pfn_range() set pgprot_decrypted()
+Date:   Wed, 28 Oct 2020 15:53:40 -0300
+Message-ID: <0-v1-025d64bdf6c4+e-amd_sme_fix_jgg@nvidia.com>
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-ClientProxiedBy: MN2PR11CA0021.namprd11.prod.outlook.com
+ (2603:10b6:208:23b::26) To DM6PR12MB3834.namprd12.prod.outlook.com
+ (2603:10b6:5:14a::12)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from mlx.ziepe.ca (156.34.48.30) by MN2PR11CA0021.namprd11.prod.outlook.com (2603:10b6:208:23b::26) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3499.19 via Frontend Transport; Wed, 28 Oct 2020 18:53:42 +0000
+Received: from jgg by mlx with local (Exim 4.94)        (envelope-from <jgg@nvidia.com>)        id 1kXqZo-00Aqpy-KK; Wed, 28 Oct 2020 15:53:40 -0300
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
+        t=1603911233; bh=yzNe+Ngjn17ZkMrMdUy/PH/+E8Zp+x0w7K5TfBboL80=;
+        h=ARC-Seal:ARC-Message-Signature:ARC-Authentication-Results:From:To:
+         CC:Subject:Date:Message-ID:Content-Transfer-Encoding:Content-Type:
+         X-ClientProxiedBy:MIME-Version:
+         X-MS-Exchange-MessageSentRepresentingType;
+        b=GxQ9oqbWOYZZc4FRlIve/II9FoO+eC5e+4xuITgZ3PmGB86vTMQ/Q/wrJ8oFhRMWk
+         Tly5ybe6SFyveDQbbQ5RWRjONuTlTmeowg8WlhfqF8gnj50hvcJ+bT/TKT48c5V/0u
+         Fp5I1x7yeeK+jo6QjsG3NU/qh5cD6GVom0/mW7bAIDTRehIM9Gh/beB6Q0vknkQRf9
+         c2FLFuf30TFvgyBug/9yPLk33pvZFe/E4MwbYg/WBD9z8tkV2eaXByI6MSN3F7bk9O
+         N9lKPYUTMBxJF0FjPsI7NlCcaLL1OtPOkLuIqKVM5tHtrBfK9qb3LscKXWuC3oVWJl
+         ql2RTwL8QmW/w==
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-EFI_GENERIC_STUB_INITRD_CMDLINE_LOADER is deprecated, so it should not
-be enabled by default.
+The purpose of io_remap_pfn_range() is to map IO memory, such as a memory
+mapped IO exposed through a PCI BAR. IO devices do not understand
+encryption, so this memory must always be decrypted. Automatically call
+pgprot_decrypted() as part of the generic implementation.
 
-In light of commit 4da0b2b7e67524cc ("efi/libstub: Re-enable command
-line initrd loading for x86"), keep the default for X86.
+This fixes a bug where enabling AMD SME causes subsystems, such as RDMA,
+using io_remap_pfn_range() to expose BAR pages to user space to fail. The
+CPU will encrypt access to those BAR pages instead of passing unencrypted
+IO directly to the device.
 
-Fixes: cf6b83664895a5c7 ("efi/libstub: Make initrd file loader configurable")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Places not mapping IO should use remap_pfn_range().
+
+Cc: stable@kernel.org
+Fixes: aca20d546214 ("x86/mm: Add support to make use of Secure Memory Encr=
+yption")
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 ---
-Hopefully kernelCI has updated its QEMU firmware since v1 was posted...
+ include/linux/mm.h      | 9 +++++++++
+ include/linux/pgtable.h | 4 ----
+ 2 files changed, 9 insertions(+), 4 deletions(-)
 
-v2:
-  - Rebase on top of commit d7071743db31b4f6 ("RISC-V: Add EFI stub
-    support.") in v5.10-rc1.
----
- drivers/firmware/efi/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I have a few other patches after this to remove some now-redundant pgprot_d=
+ecrypted()
+and to update vfio-pci to call io_remap_pfn_range()
 
-diff --git a/drivers/firmware/efi/Kconfig b/drivers/firmware/efi/Kconfig
-index 36ec1f7188934ca4..b452cfa2100b401c 100644
---- a/drivers/firmware/efi/Kconfig
-+++ b/drivers/firmware/efi/Kconfig
-@@ -122,7 +122,7 @@ config EFI_ARMSTUB_DTB_LOADER
- config EFI_GENERIC_STUB_INITRD_CMDLINE_LOADER
- 	bool "Enable the command line initrd loader" if !X86
- 	depends on EFI_STUB && (EFI_GENERIC_STUB || X86)
--	default y
-+	default y if X86
- 	depends on !RISCV
- 	help
- 	  Select this config option to add support for the initrd= command
--- 
-2.25.1
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index ef360fe70aafcf..db6ae4d3fb4edc 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -2759,6 +2759,15 @@ static inline vm_fault_t vmf_insert_page(struct vm_a=
+rea_struct *vma,
+ 	return VM_FAULT_NOPAGE;
+ }
+=20
++#ifndef io_remap_pfn_range
++static inline int io_remap_pfn_range(struct vm_area_struct *vma,
++				     unsigned long addr, unsigned long pfn,
++				     unsigned long size, pgprot_t prot)
++{
++	return remap_pfn_range(vma, addr, pfn, size, pgprot_decrypted(prot));
++}
++#endif
++
+ static inline vm_fault_t vmf_error(int err)
+ {
+ 	if (err =3D=3D -ENOMEM)
+diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+index 38c33eabea8942..71125a4676c4a6 100644
+--- a/include/linux/pgtable.h
++++ b/include/linux/pgtable.h
+@@ -1427,10 +1427,6 @@ typedef unsigned int pgtbl_mod_mask;
+=20
+ #endif /* !__ASSEMBLY__ */
+=20
+-#ifndef io_remap_pfn_range
+-#define io_remap_pfn_range remap_pfn_range
+-#endif
+-
+ #ifndef has_transparent_hugepage
+ #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+ #define has_transparent_hugepage() 1
+--=20
+2.28.0
 
