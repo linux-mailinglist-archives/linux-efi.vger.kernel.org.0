@@ -2,157 +2,176 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2848929DC2C
-	for <lists+linux-efi@lfdr.de>; Thu, 29 Oct 2020 01:22:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D78FD29E246
+	for <lists+linux-efi@lfdr.de>; Thu, 29 Oct 2020 03:12:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390801AbgJ2AWN (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 28 Oct 2020 20:22:13 -0400
-Received: from hqnvemgate24.nvidia.com ([216.228.121.143]:1415 "EHLO
-        hqnvemgate24.nvidia.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388929AbgJ1WiG (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 28 Oct 2020 18:38:06 -0400
-Received: from hqmail.nvidia.com (Not Verified[216.228.121.13]) by hqnvemgate24.nvidia.com (using TLS: TLSv1.2, AES256-SHA)
-        id <B5f99be410000>; Wed, 28 Oct 2020 11:53:53 -0700
-Received: from HQMAIL111.nvidia.com (172.20.187.18) by HQMAIL107.nvidia.com
- (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Wed, 28 Oct
- 2020 18:53:44 +0000
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (104.47.58.169)
- by HQMAIL111.nvidia.com (172.20.187.18) with Microsoft SMTP Server (TLS) id
- 15.0.1473.3 via Frontend Transport; Wed, 28 Oct 2020 18:53:44 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=LcFPQ+Lu8NRGsc0hU3VO841M6CUgCNfePBWPOyr7Mu/ITaRg2qLdcBVDaBoutJ+MJi+YnWPhqsLNdgqM6x3VTBPBmw45KJSnqz8+wchby8vCzGUm+0F/K4IswCk0mqK2Hsg9bQcGF0cxc8Uu2nCpLe6qKBZ0qwsEll/Nci5LiAn62B7M4avwENduf3soVOTritN5icZ7Jvcb+cozk1Uj4oIHOtFRxwij20ALkyvzNw1dc14FHEMqSmYkG4ONHobLPcl+UQOn8VVMvA2oartzz8E+/PLvirZERbw2ExSyNuUsjV8dkrA5Ajg/nIPuGkdKSCocxGssNS1iaOYOEcX3Yg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=YjnFmVRHDs222kZEwa4GZhPlUPzdcatFGZwVKM3UH1Y=;
- b=aIEJI9uCEee88f8BU0RUGu7nWdd4BSPP0LFdsbBZ9ib94UrfDpsqSzuQea2A/2vQ+KNZf61BLe3m8v3vd7wG453WyzYz/3oSPC89IyluEnDBlHleBqFaiZyQScRUKzWO7YkH565z2vDjDa2mCwtysSVVjarxPk+vwpsOSMf5By/C1UY1SZUw3zH+hthoFvKkaYWh9eo4pCnVBicrf8DVYRTL3pH6rF1h362uuXGWd3D+lJ+mK2GBxD49luzoB28vqU4lCYSYP68BH/IZrQr6w8jokg+RdEwaWcn4EE1S4SURejyK3YOHVtdQkRc9JKvXksfCa6Wr7xHbL3yS/JYsRw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-Received: from DM6PR12MB3834.namprd12.prod.outlook.com (2603:10b6:5:14a::12)
- by DM5PR12MB1659.namprd12.prod.outlook.com (2603:10b6:4:11::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3477.25; Wed, 28 Oct
- 2020 18:53:42 +0000
-Received: from DM6PR12MB3834.namprd12.prod.outlook.com
- ([fe80::cdbe:f274:ad65:9a78]) by DM6PR12MB3834.namprd12.prod.outlook.com
- ([fe80::cdbe:f274:ad65:9a78%7]) with mapi id 15.20.3499.027; Wed, 28 Oct 2020
- 18:53:42 +0000
-From:   Jason Gunthorpe <jgg@nvidia.com>
-To:     <linux-mm@kvack.org>, Andrew Morton <akpm@linux-foundation.org>,
-        "Tom Lendacky" <thomas.lendacky@amd.com>
-CC:     Arnd Bergmann <arnd@arndb.de>,
-        Andrey Ryabinin <aryabinin@virtuozzo.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Brijesh Singh <brijesh.singh@amd.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Dmitry Vyukov <dvyukov@google.com>,
-        "Dave Young" <dyoung@redhat.com>,
-        Alexander Potapenko <glider@google.com>,
-        <kasan-dev@googlegroups.com>,
-        Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
-        <kvm@vger.kernel.org>, <linux-arch@vger.kernel.org>,
-        <linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-efi@vger.kernel.org>, Andy Lutomirski <luto@kernel.org>,
-        Larry Woodman <lwoodman@redhat.com>,
-        Matt Fleming <matt@codeblueprint.co.uk>,
+        id S1727700AbgJ2CMI (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 28 Oct 2020 22:12:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46308 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726821AbgJ1Vgb (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 28 Oct 2020 17:36:31 -0400
+Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com [IPv6:2607:f8b0:4864:20::441])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3287C0613CF;
+        Wed, 28 Oct 2020 14:36:30 -0700 (PDT)
+Received: by mail-pf1-x441.google.com with SMTP id j18so558159pfa.0;
+        Wed, 28 Oct 2020 14:36:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=w1z4WmWcLWyyqsDJon/u9K8bQjOmOpYyTbSE3GXlbcE=;
+        b=KmnzLyn6+i47a2oCXFfbgt2Tl8Pl3YHx/z1ecMXZptZN4+33a97ws0FeT7y7jVKJOV
+         JkZrCjLxHhLLjhAObO34l1ZOruX9V27jywR7gnnYUyENTcDmOFnHqs17aihRwsZCin92
+         WBmDtijEWJEifi1t8tBx8Ox4uhm/3p+ZrnbKqjs8eVcrZROtMAjXBdYVV6OqpxKaebr5
+         4yf+pklO5ndbVUsQwkvo9hqWmfV+pkzJ2HnHyHDOE6Yb5rjoe8pYoM7FK97ileQiaS6t
+         zQnbU14uXJfXVT2cqwSXYdHjFcUQRZc7SanlIjeBTz9uOTVyv0kREmVrfrxVtq6a0nrP
+         e4Jg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=w1z4WmWcLWyyqsDJon/u9K8bQjOmOpYyTbSE3GXlbcE=;
+        b=jZ1+G0s5fDIHAM1T4xx6AzuzqNQR+DbQOulcwZonrhBx+wwBDGiV8g3pCXi2ksWOOj
+         jOiTqkHTC/ktKDPETJJ0tz1jGNWa5hOZPmNnq2mlEtRL/cv3FyFMwAcYMkZyLUGqejxH
+         54ab2fDe+y2RTasa4GZ3wRE49G80ciNLseJ985fzxesyvSeVhF7NZURNe+l9x9VwKKYI
+         E/U0EB9h3oO58es2tisCMgo/Z3gqZPRD1doSYEfGY59E91XVOOMk2OZmvlNSU5KeTU5B
+         HlHaUVrUFSeIQa1BhpT1GCnyCb42ditzkAO3DsVK7BIIJMIY8gHZpKyufaA4kClab+D6
+         3K8g==
+X-Gm-Message-State: AOAM53358mIZqQTHA3g1YMbaeP1rUWVLXRKPxkGE7lyx20rMGaZMmMwN
+        5EvXE7VjNaOVirTaMc8U4zk=
+X-Google-Smtp-Source: ABdhPJzc8SV3mCeTDsHSaTgxv1uPpdKkvU4mR2f4hj7joD1tL0pet8MnLxwK4NjP52rxZMSdgkeKnw==
+X-Received: by 2002:a17:90b:1043:: with SMTP id gq3mr873181pjb.213.1603920990427;
+        Wed, 28 Oct 2020 14:36:30 -0700 (PDT)
+Received: from ast-mbp.dhcp.thefacebook.com ([2620:10d:c090:400::4:1c8])
+        by smtp.gmail.com with ESMTPSA id 189sm511557pfw.215.2020.10.28.14.36.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 28 Oct 2020 14:36:29 -0700 (PDT)
+Date:   Wed, 28 Oct 2020 14:36:14 -0700
+From:   Alexei Starovoitov <alexei.starovoitov@gmail.com>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     Nick Desaulniers <ndesaulniers@google.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Kees Cook <keescook@chromium.org>,
         Ingo Molnar <mingo@kernel.org>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Rik van Riel <riel@redhat.com>,
-        =?utf-8?b?UmFkaW0gS3LEjW3DocWZ?= <rkrcmar@redhat.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Toshimitsu Kani <toshi.kani@hpe.com>
-Subject: [PATCH rc] mm: always have io_remap_pfn_range() set pgprot_decrypted()
-Date:   Wed, 28 Oct 2020 15:53:40 -0300
-Message-ID: <0-v1-025d64bdf6c4+e-amd_sme_fix_jgg@nvidia.com>
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain
-X-ClientProxiedBy: MN2PR11CA0021.namprd11.prod.outlook.com
- (2603:10b6:208:23b::26) To DM6PR12MB3834.namprd12.prod.outlook.com
- (2603:10b6:5:14a::12)
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Peter Collingbourne <pcc@google.com>,
+        James Morse <james.morse@arm.com>,
+        Borislav Petkov <bp@suse.de>, Ingo Molnar <mingo@redhat.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Arvind Sankar <nivedita@alum.mit.edu>,
+        Nathan Chancellor <natechancellor@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        the arch/x86 maintainers <x86@kernel.org>,
+        clang-built-linux <clang-built-linux@googlegroups.com>,
+        Linux-Arch <linux-arch@vger.kernel.org>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+        Josh Poimboeuf <jpoimboe@redhat.com>,
+        kernel-toolchains@vger.kernel.org,
+        Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Subject: Re: [PATCH v6 13/29] arm64/build: Assert for unwanted sections
+Message-ID: <20201028213614.kqk7atvk6fcjely4@ast-mbp.dhcp.thefacebook.com>
+References: <20200821194310.3089815-14-keescook@chromium.org>
+ <CAMuHMdUg0WJHEcq6to0-eODpXPOywLot6UD2=GFHpzoj_hCoBQ@mail.gmail.com>
+ <CAMuHMdUw9KwC=EVB60yjg7mA7Fg-efOiKE7577p+uEdGJVS2OQ@mail.gmail.com>
+ <CAMuHMdUJFEt3LxWHk73AsLDGhjzBvJGAML76UAxeGzb4zOf96w@mail.gmail.com>
+ <CAMj1kXHXk3BX6mz6X_03sj_pSLj9Ck-=1S57tV3__N9JQOcDEw@mail.gmail.com>
+ <CAMuHMdV4jKccjKkoj38EFC-5yN99pBvthFyrX81EG4GpassZwA@mail.gmail.com>
+ <CAKwvOdkq3ZwW+FEui1Wtj_dWBevi0Mrt4fHa4oiMZTUZKOMi3g@mail.gmail.com>
+ <CAMuHMdUDOzJbzf=0jom9dnSzkC+dkMdkyY_BOBMAivbJfF+Gmg@mail.gmail.com>
+ <CAKwvOdkE=ViGOhvoBRcV=9anjowC_vb4Vtefp9010+sC4c_+Sw@mail.gmail.com>
+ <CAMj1kXEhcQ_ngNVWddV76NqEz6d0tDhfStYGd5diydefzVLvdQ@mail.gmail.com>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from mlx.ziepe.ca (156.34.48.30) by MN2PR11CA0021.namprd11.prod.outlook.com (2603:10b6:208:23b::26) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3499.19 via Frontend Transport; Wed, 28 Oct 2020 18:53:42 +0000
-Received: from jgg by mlx with local (Exim 4.94)        (envelope-from <jgg@nvidia.com>)        id 1kXqZo-00Aqpy-KK; Wed, 28 Oct 2020 15:53:40 -0300
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
-        t=1603911233; bh=yzNe+Ngjn17ZkMrMdUy/PH/+E8Zp+x0w7K5TfBboL80=;
-        h=ARC-Seal:ARC-Message-Signature:ARC-Authentication-Results:From:To:
-         CC:Subject:Date:Message-ID:Content-Transfer-Encoding:Content-Type:
-         X-ClientProxiedBy:MIME-Version:
-         X-MS-Exchange-MessageSentRepresentingType;
-        b=GxQ9oqbWOYZZc4FRlIve/II9FoO+eC5e+4xuITgZ3PmGB86vTMQ/Q/wrJ8oFhRMWk
-         Tly5ybe6SFyveDQbbQ5RWRjONuTlTmeowg8WlhfqF8gnj50hvcJ+bT/TKT48c5V/0u
-         Fp5I1x7yeeK+jo6QjsG3NU/qh5cD6GVom0/mW7bAIDTRehIM9Gh/beB6Q0vknkQRf9
-         c2FLFuf30TFvgyBug/9yPLk33pvZFe/E4MwbYg/WBD9z8tkV2eaXByI6MSN3F7bk9O
-         N9lKPYUTMBxJF0FjPsI7NlCcaLL1OtPOkLuIqKVM5tHtrBfK9qb3LscKXWuC3oVWJl
-         ql2RTwL8QmW/w==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMj1kXEhcQ_ngNVWddV76NqEz6d0tDhfStYGd5diydefzVLvdQ@mail.gmail.com>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The purpose of io_remap_pfn_range() is to map IO memory, such as a memory
-mapped IO exposed through a PCI BAR. IO devices do not understand
-encryption, so this memory must always be decrypted. Automatically call
-pgprot_decrypted() as part of the generic implementation.
+On Tue, Oct 27, 2020 at 09:15:17PM +0100, Ard Biesheuvel wrote:
+> On Tue, 27 Oct 2020 at 21:12, Nick Desaulniers <ndesaulniers@google.com> wrote:
+> >
+> > On Tue, Oct 27, 2020 at 12:25 PM Geert Uytterhoeven
+> > <geert@linux-m68k.org> wrote:
+> > >
+> > > Hi Nick,
+> > >
+> > > CC Josh
+> > >
+> > > On Mon, Oct 26, 2020 at 6:49 PM Nick Desaulniers
+> > > <ndesaulniers@google.com> wrote:
+> > > > On Mon, Oct 26, 2020 at 10:44 AM Geert Uytterhoeven
+> > > > <geert@linux-m68k.org> wrote:
+> > > > > On Mon, Oct 26, 2020 at 6:39 PM Ard Biesheuvel <ardb@kernel.org> wrote:
+> > > > > > On Mon, 26 Oct 2020 at 17:01, Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+> > > > > > > On Mon, Oct 26, 2020 at 2:29 PM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+> > > > > > > > On Mon, Oct 26, 2020 at 1:29 PM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+> > > > > > > > > I.e. including the ".eh_frame" warning. I have tried bisecting that
+> > > > > > > > > warning (i.e. with be2881824ae9eb92 reverted), but that leads me to
+> > > > > > > > > commit b3e5d80d0c48c0cc ("arm64/build: Warn on orphan section
+> > > > > > > > > placement"), which is another red herring.
+> > > > > > > >
+> > > > > > > > kernel/bpf/core.o is the only file containing an eh_frame section,
+> > > > > > > > causing the warning.
+> > > >
+> > > > When I see .eh_frame, I think -fno-asynchronous-unwind-tables is
+> > > > missing from someone's KBUILD_CFLAGS.
+> > > > But I don't see anything curious in kernel/bpf/Makefile, unless
+> > > > cc-disable-warning is somehow broken.
+> > >
+> > > I tracked it down to kernel/bpf/core.c:___bpf_prog_run() being tagged
+> > > with __no_fgcse aka __attribute__((optimize("-fno-gcse"))).
+> > >
+> > > Even if the function is trivially empty ("return 0;"), a ".eh_frame" section
+> > > is generated.  Removing the __no_fgcse tag fixes that.
+> >
+> > That's weird.  I feel pretty strongly that unless we're working around
+> > a well understood compiler bug with a comment that links to a
+> > submitted bug report, turning off rando compiler optimizations is a
+> > terrible hack for which one must proceed straight to jail; do not pass
+> > go; do not collect $200.  But maybe I'd feel differently for this case
+> > given the context of the change that added it.  (Ard mentions
+> > retpolines+orc+objtool; can someone share the relevant SHA if you have
+> > it handy so I don't have to go digging?)
+> 
+> commit 3193c0836f203a91bef96d88c64cccf0be090d9c
+> Author: Josh Poimboeuf <jpoimboe@redhat.com>
+> Date:   Wed Jul 17 20:36:45 2019 -0500
+> 
+>     bpf: Disable GCC -fgcse optimization for ___bpf_prog_run()
+> 
+> has
+> 
+> Fixes: e55a73251da3 ("bpf: Fix ORC unwinding in non-JIT BPF code")
 
-This fixes a bug where enabling AMD SME causes subsystems, such as RDMA,
-using io_remap_pfn_range() to expose BAR pages to user space to fail. The
-CPU will encrypt access to those BAR pages instead of passing unencrypted
-IO directly to the device.
+That commit is broken.
+I had this patch in my queue:
+-#define __no_fgcse __attribute__((optimize("-fno-gcse")))
++#define __no_fgcse __attribute__((optimize("-fno-gcse,-fno-omit-frame-pointer")))
 
-Places not mapping IO should use remap_pfn_range().
+Sounds like you want to add -fno-asynchronous-unwind-tables to the above list?
 
-Cc: stable@kernel.org
-Fixes: aca20d546214 ("x86/mm: Add support to make use of Secure Memory Encr=
-yption")
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
----
- include/linux/mm.h      | 9 +++++++++
- include/linux/pgtable.h | 4 ----
- 2 files changed, 9 insertions(+), 4 deletions(-)
+> and mentions objtool and CONFIG_RETPOLINE.
+> 
+> >  (I feel the same about there
+> > being an empty asm(); statement in the definition of asm_volatile_goto
+> > for compiler-gcc.h).  Might be time to "fix the compiler."
+> >
+> > (It sounds like Arvind is both in agreement with my sentiment, and has
+> > the root cause).
+> >
+> 
+> I agree that the __no_fgcse hack is terrible. Does Clang support the
+> following pragmas?
+> 
+> #pragma GCC push_options
+> #pragma GCC optimize ("-fno-gcse")
+> #pragma GCC pop_options
 
-I have a few other patches after this to remove some now-redundant pgprot_d=
-ecrypted()
-and to update vfio-pci to call io_remap_pfn_range()
-
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index ef360fe70aafcf..db6ae4d3fb4edc 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -2759,6 +2759,15 @@ static inline vm_fault_t vmf_insert_page(struct vm_a=
-rea_struct *vma,
- 	return VM_FAULT_NOPAGE;
- }
-=20
-+#ifndef io_remap_pfn_range
-+static inline int io_remap_pfn_range(struct vm_area_struct *vma,
-+				     unsigned long addr, unsigned long pfn,
-+				     unsigned long size, pgprot_t prot)
-+{
-+	return remap_pfn_range(vma, addr, pfn, size, pgprot_decrypted(prot));
-+}
-+#endif
-+
- static inline vm_fault_t vmf_error(int err)
- {
- 	if (err =3D=3D -ENOMEM)
-diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-index 38c33eabea8942..71125a4676c4a6 100644
---- a/include/linux/pgtable.h
-+++ b/include/linux/pgtable.h
-@@ -1427,10 +1427,6 @@ typedef unsigned int pgtbl_mod_mask;
-=20
- #endif /* !__ASSEMBLY__ */
-=20
--#ifndef io_remap_pfn_range
--#define io_remap_pfn_range remap_pfn_range
--#endif
--
- #ifndef has_transparent_hugepage
- #ifdef CONFIG_TRANSPARENT_HUGEPAGE
- #define has_transparent_hugepage() 1
---=20
-2.28.0
-
+That will work too, but optimize("-fno...,-fno..,-fno..") is imo cleaner.
