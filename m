@@ -2,97 +2,76 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5682129DA66
-	for <lists+linux-efi@lfdr.de>; Thu, 29 Oct 2020 00:21:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2192729DB56
+	for <lists+linux-efi@lfdr.de>; Thu, 29 Oct 2020 00:52:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390134AbgJ1XV0 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 28 Oct 2020 19:21:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36048 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2390167AbgJ1XVW (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 28 Oct 2020 19:21:22 -0400
-Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com [IPv6:2607:f8b0:4864:20::543])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3C6BC0613CF
-        for <linux-efi@vger.kernel.org>; Wed, 28 Oct 2020 16:21:21 -0700 (PDT)
-Received: by mail-pg1-x543.google.com with SMTP id t14so803453pgg.1
-        for <linux-efi@vger.kernel.org>; Wed, 28 Oct 2020 16:21:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=zdxUWMWXTEs/zs0LJh1bxLoOHpDg1k5nkLimqXptzik=;
-        b=EU4BIg2azI6KrFeXdN2S9ddBMfs8nFlUQWD4DaTqFAq7JE2BQDNKRiA9dqT+tVWlQu
-         sUNcc4FeHsjQ4h/PMP4txU0t8MRAuBwqkWKiJbAkKHON6+RlMpcIGqnBHLdCUkl3Wqpc
-         FbJNpSru7Rm5DUQOyvlweGFT9CrmgO5kN0imfN/dwU9Wnf988RKaI0f2l0G2UJ4RjNer
-         2Qxq7ACeCgjrsyB5e5qt1FrHtsTBiVpCKGfBoFbEsnu7CbiQ+JbqP7fKDXahm4Kz/0TO
-         ZKkFOpd8HQ/0BRHh95yEqIB+30ksAxph+vgLpdGfDyUO7uFVktFTSaQ2esuzqwULSZUg
-         eyjQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=zdxUWMWXTEs/zs0LJh1bxLoOHpDg1k5nkLimqXptzik=;
-        b=t8S8OXO6MZFJWCgreMZy8rO5UI41idxU6dELueXDdUHTzl6oduNh8VTFRFWZ4Xlkoc
-         LlRsXEiL8ZKY9yJt2lzwuyFXE63HCEWNf/MWMV/pWYTPi2Lmuw3qBACRl7jPvthoUQzQ
-         Dq0fdBhzF4+norsD9MjYeLHFLnnWanheoMga/Db1wDGQ06OiN7h8CwA9BVwf27s8dKvm
-         OsRr/Ht9T4hbNBTzxVfjr1v6Le6Mx3WKDaL+ngDainokyKlfCWq+9L4yPsEfJk7W1fqo
-         vdClJ9RzDAT/16h8t4n6oD8GfJYLxuZz5ci5T71S+kh5CI1UXHxqI5TTS/kV5KC5VXay
-         Geyw==
-X-Gm-Message-State: AOAM531GtIASx3+a3QJx+yIOcWM8yoHsUYlNsy8VNMevfjOETr2zqYh/
-        Hby2dr9y+e2p4++cQ3yowKOAz+R9XPxHwnQ78b1AjmwHvu4=
-X-Google-Smtp-Source: ABdhPJzrHP5MThI6p/9pMIeUhVkRtrkk9dnFrBKzSB6lf3jQhUB4QRf9ML2/oPPjMylBNsOXZHFp3eXZTXZRVzpwCZA=
-X-Received: by 2002:a05:6602:160b:: with SMTP id x11mr5231997iow.170.1603879091246;
- Wed, 28 Oct 2020 02:58:11 -0700 (PDT)
+        id S2389280AbgJ1XwA (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 28 Oct 2020 19:52:00 -0400
+Received: from leibniz.telenet-ops.be ([195.130.137.77]:54450 "EHLO
+        leibniz.telenet-ops.be" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2389277AbgJ1Xv7 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 28 Oct 2020 19:51:59 -0400
+X-Greylist: delayed 4201 seconds by postgrey-1.27 at vger.kernel.org; Wed, 28 Oct 2020 19:51:58 EDT
+Received: from michel.telenet-ops.be (michel.telenet-ops.be [IPv6:2a02:1800:110:4::f00:18])
+        by leibniz.telenet-ops.be (Postfix) with ESMTPS id 4CLt0F15k1zMyShy
+        for <linux-efi@vger.kernel.org>; Wed, 28 Oct 2020 16:34:05 +0100 (CET)
+Received: from ramsan.of.borg ([84.195.186.194])
+        by michel.telenet-ops.be with bizsmtp
+        id lTa42300Q4C55Sk06Ta4mw; Wed, 28 Oct 2020 16:34:04 +0100
+Received: from rox.of.borg ([192.168.97.57])
+        by ramsan.of.borg with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.93)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1kXnSe-000pOh-6j; Wed, 28 Oct 2020 16:34:04 +0100
+Received: from geert by rox.of.borg with local (Exim 4.93)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1kXnSd-007HeQ-O3; Wed, 28 Oct 2020 16:34:03 +0100
+From:   Geert Uytterhoeven <geert+renesas@glider.be>
+To:     Ard Biesheuvel <ardb@kernel.org>, Ingo Molnar <mingo@kernel.org>,
+        Arvind Sankar <nivedita@alum.mit.edu>
+Cc:     linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: [PATCH v2] efi/libstub: EFI_GENERIC_STUB_INITRD_CMDLINE_LOADER should not default to yes
+Date:   Wed, 28 Oct 2020 16:34:02 +0100
+Message-Id: <20201028153402.1736103-1-geert+renesas@glider.be>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Received: by 2002:a6b:d301:0:0:0:0:0 with HTTP; Wed, 28 Oct 2020 02:58:10
- -0700 (PDT)
-Reply-To: ayishagddafio@mail.ru
-From:   AISHA GADDAFI <fred.kim0099@gmail.com>
-Date:   Wed, 28 Oct 2020 02:58:10 -0700
-Message-ID: <CAKfKxnP-Bm=4b2_zj=691561=kwm2WBWy9h+K5E+t1yWgRVLgw@mail.gmail.com>
-Subject: Lieber Freund (Assalamu Alaikum),?
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
---=20
-Lieber Freund (Assalamu Alaikum),
+EFI_GENERIC_STUB_INITRD_CMDLINE_LOADER is deprecated, so it should not
+be enabled by default.
 
-Ich bin vor einer privaten Suche auf Ihren E-Mail-Kontakt gesto=C3=9Fen
-Ihre Hilfe. Mein Name ist Aisha Al-Qaddafi, eine alleinerziehende
-Mutter und eine Witwe
-mit drei Kindern. Ich bin die einzige leibliche Tochter des Sp=C3=A4tlibysc=
-hen
-Pr=C3=A4sident (verstorbener Oberst Muammar Gaddafi).
+In light of commit 4da0b2b7e67524cc ("efi/libstub: Re-enable command
+line initrd loading for x86"), keep the default for X86.
 
-Ich habe Investmentfonds im Wert von siebenundzwanzig Millionen
-f=C3=BCnfhunderttausend
-United State Dollar ($ 27.500.000.00) und ich brauche eine
-vertrauensw=C3=BCrdige Investition
-Manager / Partner aufgrund meines aktuellen Fl=C3=BCchtlingsstatus bin ich =
-jedoch
-M=C3=B6glicherweise interessieren Sie sich f=C3=BCr die Unterst=C3=BCtzung =
-von
-Investitionsprojekten in Ihrem Land
-Von dort aus k=C3=B6nnen wir in naher Zukunft Gesch=C3=A4ftsbeziehungen auf=
-bauen.
+Fixes: cf6b83664895a5c7 ("efi/libstub: Make initrd file loader configurable")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+---
+Hopefully kernelCI has updated its QEMU firmware since v1 was posted...
 
-Ich bin bereit, mit Ihnen =C3=BCber das Verh=C3=A4ltnis zwischen Investitio=
-n und
-Unternehmensgewinn zu verhandeln
-Basis f=C3=BCr die zuk=C3=BCnftige Investition Gewinne zu erzielen.
+v2:
+  - Rebase on top of commit d7071743db31b4f6 ("RISC-V: Add EFI stub
+    support.") in v5.10-rc1.
+---
+ drivers/firmware/efi/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Wenn Sie bereit sind, dieses Projekt in meinem Namen zu bearbeiten,
-antworten Sie bitte dringend
-Damit ich Ihnen mehr Informationen =C3=BCber die Investmentfonds geben kann=
-.
+diff --git a/drivers/firmware/efi/Kconfig b/drivers/firmware/efi/Kconfig
+index 36ec1f7188934ca4..b452cfa2100b401c 100644
+--- a/drivers/firmware/efi/Kconfig
++++ b/drivers/firmware/efi/Kconfig
+@@ -122,7 +122,7 @@ config EFI_ARMSTUB_DTB_LOADER
+ config EFI_GENERIC_STUB_INITRD_CMDLINE_LOADER
+ 	bool "Enable the command line initrd loader" if !X86
+ 	depends on EFI_STUB && (EFI_GENERIC_STUB || X86)
+-	default y
++	default y if X86
+ 	depends on !RISCV
+ 	help
+ 	  Select this config option to add support for the initrd= command
+-- 
+2.25.1
 
-Ihre dringende Antwort wird gesch=C3=A4tzt. schreibe mir an diese email adr=
-esse (
-ayishagddafio@mail.ru ) zur weiteren Diskussion.
-
-Freundliche Gr=C3=BC=C3=9Fe
-Frau Aisha Al-Qaddafi
