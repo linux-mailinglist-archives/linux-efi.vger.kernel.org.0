@@ -2,109 +2,163 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D76629F521
-	for <lists+linux-efi@lfdr.de>; Thu, 29 Oct 2020 20:28:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 75D5629FA50
+	for <lists+linux-efi@lfdr.de>; Fri, 30 Oct 2020 02:07:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726615AbgJ2T1l (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 29 Oct 2020 15:27:41 -0400
-Received: from out5-smtp.messagingengine.com ([66.111.4.29]:50841 "EHLO
-        out5-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726692AbgJ2T1k (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 29 Oct 2020 15:27:40 -0400
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-        by mailout.nyi.internal (Postfix) with ESMTP id 9539D5C0070;
-        Thu, 29 Oct 2020 15:27:39 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute4.internal (MEProxy); Thu, 29 Oct 2020 15:27:39 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=
-        date:from:to:cc:subject:message-id:references:mime-version
-        :content-type:in-reply-to; s=fm2; bh=AbTQFUKDGdfS5TDNU/XsAllmZFy
-        xssNt+OazgWOyrZw=; b=NPEDrda1m/i0J3jYfam97uP6XRr4h17mk4KPonNGEDY
-        W7xSzJ17UIWLd8DQXyFmGjfx/Z36KoCfJI0Ux0ZGXaUokmJoQpYTl9Q1ivo75whW
-        DBCr6NCdMzV9YCL+yloljOd0sRG2ZMF926K0x2bgqe2IO5XMTsm0Ht3/JO4gwzYB
-        /Sonx/scWYkQC3ntM9nkxRv79Duz2Uhd7nG8sKJ7P9+3dIH8qZ/XvPlk1Y7LVDi6
-        g66Eq1fpsqQbHL4EkvfCAmN3ZNKrYTfdnRHLEK4Xuay/WI3pD+thT0M1Qtvziwqu
-        8EIPZ8gTVX84KlIJQAkDQH6n7lpWb6+rXwwxUITff/A==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:content-type:date:from:in-reply-to
-        :message-id:mime-version:references:subject:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; bh=AbTQFU
-        KDGdfS5TDNU/XsAllmZFyxssNt+OazgWOyrZw=; b=gT9NCDNH/c8iKZlX5DtvOK
-        P0HdPoJqyHaH1Py6XBJycaBz+hDR0WamCzCmfUut//Ad+qKghIVmJ8LMcnnkgUrH
-        Dj/yIujZ0DLq7TcClayoHiv3k9A1+2TsINAoPQlPJJipcqAekuYB3AQaO7UPs3bz
-        s5aJCng4MgJscPXSbc8G+7v8n/ZcORNie1yPtwFgLM/LXTEzJ73CVph9eCjC0N1d
-        bFQ9jPUCooiLKJ+kxjP503vWT9x4PrIv++txr6m+DmtSWzA5IDtk1Tc20MF1aCZB
-        UAxDbHz8rDhomAWSm9EWsgSWxZMnj0USzQy7L3txqLu1uoOI5ohkAE94Nb3h4P6A
-        ==
-X-ME-Sender: <xms:qxebX--VuzieevRhCVeKHxWK7K1vaRto1AvUL7ez6auP3a1Z5BS6kw>
-    <xme:qxebX-us3XLy8_MlsWvJppkPFGnEcM4b86PWRcryF-sZYwjAqjiiLmoTkLmckmXHR
-    9isnahkYqqy0A>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedujedrleefgdduvdegucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvffukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefirhgvghcu
-    mffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpeeuleeltd
-    ehkeeltefhleduuddvhfffuedvffduveegheekgeeiffevheegfeetgfenucffohhmrghi
-    nhepkhgvrhhnvghlrdhorhhgnecukfhppeekfedrkeeirdejgedrieegnecuvehluhhsth
-    gvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepghhrvghgsehkrhhorghh
-    rdgtohhm
-X-ME-Proxy: <xmx:qxebX0Aawju4IG0wOz2bmSx4GdXNiPlP1A-4mEkbgibKBB4qzt1ZOQ>
-    <xmx:qxebX2cZHs2XSUB_01W5FHd_Xx3Nypb7dPG9iyCoDrW13XgfDpPeJw>
-    <xmx:qxebXzMf21n6cKE0obEq4bFK0V_hiatay-nWOg8Qgh1eibMRTXsqiA>
-    <xmx:qxebX4p1fbt4wIytngd_jbLqeHpm0-nIp0KLpeEQ55UnYO7DwlXWWg>
-Received: from localhost (83-86-74-64.cable.dynamic.v4.ziggo.nl [83.86.74.64])
-        by mail.messagingengine.com (Postfix) with ESMTPA id BA5923280066;
-        Thu, 29 Oct 2020 15:27:38 -0400 (EDT)
-Date:   Thu, 29 Oct 2020 20:28:27 +0100
-From:   Greg KH <greg@kroah.com>
-To:     dann frazier <dann.frazier@canonical.com>
-Cc:     stable@vger.kernel.org, Michael Schaller <misch@google.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Matthew Garrett <matthew.garrett@nebula.com>,
-        Jeremy Kerr <jk@ozlabs.org>, linux-efi@vger.kernel.org
-Subject: Re: [PATCH 4.4-5.9] efivarfs: Replace invalid slashes with
- exclamation marks in dentries.
-Message-ID: <20201029192827.GA992564@kroah.com>
-References: <20201029175442.564282-1-dann.frazier@canonical.com>
- <20201029191923.GB988039@kroah.com>
- <CALdTtnuh9=JMwZ8LhBQwAFtLSg_kbB=5ctz21KkMwGRCNmwOMg@mail.gmail.com>
+        id S1726046AbgJ3BHj (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 29 Oct 2020 21:07:39 -0400
+Received: from mga12.intel.com ([192.55.52.136]:18186 "EHLO mga12.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725926AbgJ3BHj (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Thu, 29 Oct 2020 21:07:39 -0400
+IronPort-SDR: PHcue9SXPJFLI6UWpIuuKB4XaNAV3AZp4vQUJo67z83L7kB5NtM1NQDjFiytejlye9z2w+bWsg
+ umWoX9s4NHjA==
+X-IronPort-AV: E=McAfee;i="6000,8403,9789"; a="147824534"
+X-IronPort-AV: E=Sophos;i="5.77,431,1596524400"; 
+   d="scan'208";a="147824534"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2020 18:07:38 -0700
+IronPort-SDR: vncBeTfQv6hpRSi6CtUK/8CINbdKjDZtw9SSnf6I66R03LCz0XfApQxDhsage+NGMiurZERYj/
+ 5n3S3a+5qzUg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.77,431,1596524400"; 
+   d="scan'208";a="356449247"
+Received: from lkp-server01.sh.intel.com (HELO c01187be935a) ([10.239.97.150])
+  by fmsmga002.fm.intel.com with ESMTP; 29 Oct 2020 18:07:37 -0700
+Received: from kbuild by c01187be935a with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1kYItE-0000Jr-IL; Fri, 30 Oct 2020 01:07:36 +0000
+Date:   Fri, 30 Oct 2020 09:07:13 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-efi@vger.kernel.org
+Subject: [efi:next] BUILD SUCCESS 6edcf9dc2e1aff3aa1f5a69ee420fb30dd0e968a
+Message-ID: <5f9b6741.te7QcMNB9YUrabDD%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CALdTtnuh9=JMwZ8LhBQwAFtLSg_kbB=5ctz21KkMwGRCNmwOMg@mail.gmail.com>
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, Oct 29, 2020 at 01:20:06PM -0600, dann frazier wrote:
-> On Thu, Oct 29, 2020 at 1:18 PM Greg KH <greg@kroah.com> wrote:
-> >
-> > On Thu, Oct 29, 2020 at 11:54:42AM -0600, dann frazier wrote:
-> > > From: Michael Schaller <misch@google.com>
-> > >
-> > > commit 336af6a4686d885a067ecea8c3c3dd129ba4fc75 upstream
-> > >
-> > > Without this patch efivarfs_alloc_dentry creates dentries with slashes in
-> > > their name if the respective EFI variable has slashes in its name. This in
-> > > turn causes EIO on getdents64, which prevents a complete directory listing
-> > > of /sys/firmware/efi/efivars/.
-> > >
-> > > This patch replaces the invalid shlashes with exclamation marks like
-> > > kobject_set_name_vargs does for /sys/firmware/efi/vars/ to have consistently
-> > > named dentries under /sys/firmware/efi/vars/ and /sys/firmware/efi/efivars/.
-> > >
-> > > Signed-off-by: Michael Schaller <misch@google.com>
-> > > Link: https://lore.kernel.org/r/20200925074502.150448-1-misch@google.com
-> > > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> >
-> > Any reason you are not signing off on this?
-> 
-> No, sorry:
-> 
-> Signed-off-by: dann frazier <dann.frazier@canonical.com>
-> 
-> Easier if I send a v2?
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git  next
+branch HEAD: 6edcf9dc2e1aff3aa1f5a69ee420fb30dd0e968a  efi/libstub: EFI_GENERIC_STUB_INITRD_CMDLINE_LOADER should not default to yes
 
-Nah, I can take that, thanks.
+elapsed time: 727m
 
-greg k-h
+configs tested: 100
+configs skipped: 2
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+arm                         hackkit_defconfig
+arm                          gemini_defconfig
+powerpc                 mpc8313_rdb_defconfig
+sparc                       sparc64_defconfig
+sh                        dreamcast_defconfig
+sh                        edosk7705_defconfig
+powerpc                 mpc8540_ads_defconfig
+m68k                        m5407c3_defconfig
+arm                        keystone_defconfig
+ia64                            zx1_defconfig
+powerpc                     tqm8540_defconfig
+arm                          pxa168_defconfig
+powerpc                  mpc885_ads_defconfig
+sh                          rsk7264_defconfig
+sh                             sh03_defconfig
+arm                          prima2_defconfig
+mips                       capcella_defconfig
+c6x                              alldefconfig
+mips                malta_kvm_guest_defconfig
+sh                          sdk7780_defconfig
+arm                              zx_defconfig
+ia64                          tiger_defconfig
+mips                       rbtx49xx_defconfig
+arm                           sama5_defconfig
+sh                        apsh4ad0a_defconfig
+sh                           se7343_defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+c6x                              allyesconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+i386                 randconfig-a002-20201029
+i386                 randconfig-a005-20201029
+i386                 randconfig-a003-20201029
+i386                 randconfig-a001-20201029
+i386                 randconfig-a004-20201029
+i386                 randconfig-a006-20201029
+x86_64               randconfig-a001-20201029
+x86_64               randconfig-a002-20201029
+x86_64               randconfig-a003-20201029
+x86_64               randconfig-a006-20201029
+x86_64               randconfig-a005-20201029
+x86_64               randconfig-a004-20201029
+i386                 randconfig-a016-20201029
+i386                 randconfig-a014-20201029
+i386                 randconfig-a015-20201029
+i386                 randconfig-a013-20201029
+i386                 randconfig-a012-20201029
+i386                 randconfig-a011-20201029
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+x86_64                                   rhel
+x86_64                           allyesconfig
+x86_64                    rhel-7.6-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                                  kexec
+
+clang tested configs:
+x86_64               randconfig-a011-20201029
+x86_64               randconfig-a013-20201029
+x86_64               randconfig-a016-20201029
+x86_64               randconfig-a015-20201029
+x86_64               randconfig-a012-20201029
+x86_64               randconfig-a014-20201029
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
