@@ -2,51 +2,51 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EDD552A2457
-	for <lists+linux-efi@lfdr.de>; Mon,  2 Nov 2020 06:31:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C87E2A2518
+	for <lists+linux-efi@lfdr.de>; Mon,  2 Nov 2020 08:20:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727121AbgKBFax (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 2 Nov 2020 00:30:53 -0500
-Received: from de-smtp-delivery-102.mimecast.com ([51.163.158.102]:37822 "EHLO
+        id S1728066AbgKBHU2 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 2 Nov 2020 02:20:28 -0500
+Received: from de-smtp-delivery-102.mimecast.com ([62.140.7.102]:40722 "EHLO
         de-smtp-delivery-102.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727059AbgKBFav (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 2 Nov 2020 00:30:51 -0500
+        by vger.kernel.org with ESMTP id S1728056AbgKBHU0 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 2 Nov 2020 02:20:26 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=mimecast20200619;
-        t=1604295046;
+        t=1604301622;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          in-reply-to:in-reply-to:references:references;
-        bh=XedrgsPWHSVjUUGO8ZU81QjTkXW6pQHWB272YdGVruc=;
-        b=DpDVGJyXeDkFG1DumF+WPhH4Cd+xyqxx10lhVMVdl+xwNf6L0JpqcCEhJgKkeudlsPSRJT
-        SrQfU8hIB/kQ8jiMvojRKiFTPSTSurEIbaaj0vpI2oIdbg0a97l7XnTQhCF+w7VAascWxD
-        NkIz6JWivbvdt45TXA/2iXCyvmOsXCM=
-Received: from EUR02-VE1-obe.outbound.protection.outlook.com
- (mail-ve1eur02lp2058.outbound.protection.outlook.com [104.47.6.58]) (Using
+        bh=O0trEpG2sN257wR2RvkfWGl585lf1+T0Fk27eYcf2jk=;
+        b=WmRMFphRqKpHfJL4gRC4dzKx29/pOuBVsO7fgyoXt3dyjTTJev8grhZyLx7LqkABjEut89
+        eYjbPrsm+TH1Rm196MceSpmvjOOf7Rjn6N2Nppw6rXfKmxGeBhjLWgbotX0/hISkxuHzwO
+        c06ogy0aHqc0Gov2Le8qmi3JqAy3MiQ=
+Received: from EUR01-HE1-obe.outbound.protection.outlook.com
+ (mail-he1eur01lp2058.outbound.protection.outlook.com [104.47.0.58]) (Using
  TLS) by relay.mimecast.com with ESMTP id
- de-mta-13-y9Isd1hJNseHwfZTyl_4QA-1; Mon, 02 Nov 2020 06:30:45 +0100
-X-MC-Unique: y9Isd1hJNseHwfZTyl_4QA-1
+ de-mta-32-HythFZkAM7u-5tgq2bSGMA-1; Mon, 02 Nov 2020 08:20:20 +0100
+X-MC-Unique: HythFZkAM7u-5tgq2bSGMA-1
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=UmOtjZBVB4yfVADobCb9lx4VDBBlMF+FumbiZG2SMD+e+brZVdyF0soGcDUyJVNFX2G1REPthXCUmhaVvLj58S8Er65LHBpLVxvAiar4sBzBUgoGQO1G+uTjmG94Cxem4QSuXatt+RhgqRUX9wZlA03VEiDVZrAt7DkUrh8nGrZnqwtJXzw+HQFktl2cYdKcc6mlQBmgHDK0rJWyRvCGQ7VN2yQPNdtbU9IDoP7y7ZrnWVb+bSjxP+q9WN4GQeVDsn0YYU3PyWNH5agpXwqlOcMPUIjQE4U9tLaqSpflwJbItOG87Iosm2bFJcgwHkaiVHvTdx0mHIaMbud7OwUfOA==
+ b=QxRGOWdlE7UvyrnKF+Sz4GZvnASYJplpGhFV1/PjuhD7D0yUZDls7Ctpt5bdqMedgfm6BMC2WynypDfQEVpfDPBrj9eaVSwywrlIaQCyLAdqY9V1QBSOid38lAbRTrC6Tiwj78F68GZrM289TGoZ5ytOp51XZfD90KdhelE6p29R6hSWaWHQsPpsoiiohc4X6Ny6lybOs0MozKFqGhKptU6XeXRm7xoezUDJ+mSKsjruN2mda8GMnB62pBU1ZxhdmKEG4ahYeIPHnyg8Z9r+MMOzIfdAUb49TaOKSSxPv7mXNw15uXNWCuHwmwrTDY6YyBgoVMZQ3LIhmDJyTV953g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=XedrgsPWHSVjUUGO8ZU81QjTkXW6pQHWB272YdGVruc=;
- b=Z4wroomFwBQ/8kPTzzmSXDspYbiZRJXVI8RTcbjGo4zBIdG8q6XEtcL1DB9efDYhtgKLvoQCFQE1nhoAfGx9Xy9s8PmGS32O+yD5R59mGozn7w1rTrGi9ld7NfMSVmBxV9g02MnPL3VOWXYEFXt1ToWiD8G9BRb/AzjOLrUWadvBNHn4oGURNrWddS+qFoEsZyIJd0urrl+Xy8puvLSd7coiPlCW2N5oSg+pt5xIjH4gJJp1clvNGyJ3QT86jowWwJHjAqdqXNcJfauSahue4Vrb2c2qtLlbowsrUD5KFaafTrqSDMgZyt1mBM+U9tVDEg493FhLmtm2zHIGmnD0aw==
+ bh=O0trEpG2sN257wR2RvkfWGl585lf1+T0Fk27eYcf2jk=;
+ b=OtQWnilw9AzHssgVKTsFQu8E4oAECJmwaUwzhQSHHE7vwXHqtSypqyZOiri5KUn+QpBfrBZsOdirxHo9HelzoGpDjeM046qX07WZ5N+yzugRCTpZp1mJC01YMIDZHYyVzzWBibXpONmTOQ02ZDS7s/jrVDpgVvsuARRRFJCfUZS5xOTjfs1vSqPtSxzi7WS1u/we8XJ12Ycajwcddm1sOaGSHkXJzw2LaA+c1tciIxJmFeivO2C+nKMj6EcpR2ps8rXeCECiI8IHdRWA5/pRYUTjKydRDsYKtWqpfwDSXPhsl+qlFKnDYR53yUjJ2gT6sZaopZIz1/PccMItixZrUw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=suse.com; dmarc=pass action=none header.from=suse.com;
  dkim=pass header.d=suse.com; arc=none
 Authentication-Results: kernel.org; dkim=none (message not signed)
  header.d=none;kernel.org; dmarc=none action=none header.from=suse.com;
 Received: from VI1PR04MB4928.eurprd04.prod.outlook.com (2603:10a6:803:57::13)
- by VI1PR04MB4286.eurprd04.prod.outlook.com (2603:10a6:803:46::24) with
+ by VI1PR04MB4926.eurprd04.prod.outlook.com (2603:10a6:803:51::16) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3499.18; Mon, 2 Nov
- 2020 05:30:42 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3499.29; Mon, 2 Nov
+ 2020 07:20:18 +0000
 Received: from VI1PR04MB4928.eurprd04.prod.outlook.com
  ([fe80::255b:d25c:3a2b:1e8f]) by VI1PR04MB4928.eurprd04.prod.outlook.com
  ([fe80::255b:d25c:3a2b:1e8f%7]) with mapi id 15.20.3499.030; Mon, 2 Nov 2020
- 05:30:42 +0000
-Date:   Mon, 2 Nov 2020 13:30:25 +0800
+ 07:20:18 +0000
+Date:   Mon, 2 Nov 2020 15:20:05 +0800
 From:   Chester Lin <clin@suse.com>
 To:     Ard Biesheuvel <ardb@kernel.org>
 Cc:     Mimi Zohar <zohar@linux.ibm.com>, James Morris <jmorris@namei.org>,
@@ -63,316 +63,152 @@ Cc:     Mimi Zohar <zohar@linux.ibm.com>, James Morris <jmorris@namei.org>,
         linux-integrity <linux-integrity@vger.kernel.org>,
         linux-security-module@vger.kernel.org, X86 ML <x86@kernel.org>,
         "Lee, Chun-Yi" <jlee@suse.com>
-Subject: Re: [PATCH v3 1/3] efi: generalize efi_get_secureboot
-Message-ID: <20201102052907.GA31148@linux-8mug>
+Subject: Re: [PATCH v3 3/3] arm64/ima: add ima_arch support
+Message-ID: <20201102072005.GB31148@linux-8mug>
 References: <20201030060840.1810-1-clin@suse.com>
- <20201030060840.1810-2-clin@suse.com>
- <CAMj1kXFaARnhvnSKSFvAXXY1TKfv=_hG3z=B2j=G3p7qLeQaYw@mail.gmail.com>
+ <20201030060840.1810-4-clin@suse.com>
+ <CAMj1kXFhZEHP37_tkzzHHhkk-Ej+eRcCinMv-tOdp7vvb1d1mQ@mail.gmail.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAMj1kXFaARnhvnSKSFvAXXY1TKfv=_hG3z=B2j=G3p7qLeQaYw@mail.gmail.com>
+In-Reply-To: <CAMj1kXFhZEHP37_tkzzHHhkk-Ej+eRcCinMv-tOdp7vvb1d1mQ@mail.gmail.com>
 X-Originating-IP: [118.166.48.44]
-X-ClientProxiedBy: AM4PR0701CA0042.eurprd07.prod.outlook.com
- (2603:10a6:200:42::52) To VI1PR04MB4928.eurprd04.prod.outlook.com
+X-ClientProxiedBy: HK2PR04CA0069.apcprd04.prod.outlook.com
+ (2603:1096:202:15::13) To VI1PR04MB4928.eurprd04.prod.outlook.com
  (2603:10a6:803:57::13)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from linux-8mug (118.166.48.44) by AM4PR0701CA0042.eurprd07.prod.outlook.com (2603:10a6:200:42::52) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3541.10 via Frontend Transport; Mon, 2 Nov 2020 05:30:36 +0000
+Received: from linux-8mug (118.166.48.44) by HK2PR04CA0069.apcprd04.prod.outlook.com (2603:1096:202:15::13) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3499.19 via Frontend Transport; Mon, 2 Nov 2020 07:20:13 +0000
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: a516c1f8-f034-49f0-7b5f-08d87ef07081
-X-MS-TrafficTypeDiagnostic: VI1PR04MB4286:
+X-MS-Office365-Filtering-Correlation-Id: 63d31d46-2327-44c5-4f8b-08d87effc033
+X-MS-TrafficTypeDiagnostic: VI1PR04MB4926:
 X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <VI1PR04MB4286318FC6E9D387C9CD87AEAD100@VI1PR04MB4286.eurprd04.prod.outlook.com>
+X-Microsoft-Antispam-PRVS: <VI1PR04MB4926ECF61AE1CFA8D9094AB7AD100@VI1PR04MB4926.eurprd04.prod.outlook.com>
 X-MS-Oob-TLC-OOBClassifiers: OLM:10000;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: EaalbUSbgYOjpuIQ5wVdgze7usyJu+OSoBZ5vBGDMhgiX749AL3H4QihPWAt4f/M6qFxfBjCICAc7X49EfpHlRnN5GejTZMTGeomn+3uBK8xQh2L+ultOEhQ8uwVZEtuKnNUslk/4oP3ImKOTQUWF+nNpwdUEI2XgyHmNOz0631ipVNI2noIYK+YAX+9zn6WGVglZYr96u+1zYTlu5sp+DmAAIZx92ayjILl4wNAOnMLscejQvUNr8xnvy3Od9wORJBPueXL96tpyCadAkPdkETp92tKAEaXZhKiTHYcNTYNEzKFdQUf0wK0Qfy/DNYoF9SZoUC2TLVaLvfca+5/+g==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR04MB4928.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(39860400002)(396003)(136003)(366004)(346002)(376002)(8936002)(956004)(55016002)(66476007)(16526019)(7416002)(4326008)(83380400001)(66556008)(1076003)(8676002)(6916009)(55236004)(478600001)(45080400002)(5660300002)(6666004)(52116002)(33656002)(26005)(186003)(86362001)(54906003)(9686003)(316002)(2906002)(33716001)(6496006)(66946007)(107886003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData: 3NzWc5yUPGemi0SFl1yRPSTQbBfzYducL39IfcLmNmPI5kaznMKdTGALKqz4YVUJz6JlYcc83KglhK9cgM3u+yTz1fXbKFtTZC6URjfBVhBcsY1wSon/8JylBd0LYNJ2dOGTo6KI6bOKkQp4kBS8nP7hOLP/oD8CHzLbuokm3s2VE/undNSljJ8ps4Tu6T0s1nI/AoiDoQO8smziU7ollo1xs6SZqLbhtDTIZ6lbMJ0N5JhoRd+5x92d696p+bEKYNFQruVWk5hjVnrOck9M52d6L1Yeq2e6ASlJOwUws+Bp6wnsQ0NaSotFpMhrJMjwz6J1juETtu0GjeKFgCa4R66gWpTvNhuNKYXyJ05XhNCfR0J9eOiIFX2IZi6k12WsPmlfkOPX9cm9DGM8NPfgifbq6WYbQsE0mSTlUtvFKk0pGJGLHjvszG2+1PG2RIiwKTyamnLjThSCpxa00Y588q9+R5tJucLuGSX7Y3qUyVfdJ8n6DWHPjuHS4VLbZuKLEIaUb8OT0e27nPgYD0ijaaQUTssLQdn+d091YiVTjExAqyOEKt7VWvJml/Q852nIjSjoJ9W6FEQ7T0CHAHfR0qXWY0Wz15YnxQTnNE+HDkBAjy1Ocddjvlo0s0+K108M/y99ifKEijoGJ5/9zj5h3Q==
+X-Microsoft-Antispam-Message-Info: hsnBgRZ/wlPG3uyWFhjx8lFvxfmm62rTgmwzeA9VDcojR5/o166y0SAbxe3TI8MMvtVjj6kIBN1ruf77jD/wKeljEQ+1zXC+O6eMoUcePQMJRFox2K67VsTb3xuHdA3LXwuylxAlqK7YXAwEUa3bSbT3Shw653gfDuJxfm/R73Vyd9ZDOJn5zAiVHk2O8L/y+KhBsGw3D+FchJkFrblZW+fkLXENtJMaRR0E/Xpn9Y4svU62PmunhW4hiPSPE/sANncE44v7Lieky+LyGU+zWDBMfaGEjDAzcumSshiWD/q3uhYgDZRkrnBC6wDQZQQSUoZKCRcKhEchoKzTRp5p8w==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR04MB4928.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(39860400002)(376002)(136003)(346002)(396003)(366004)(316002)(66476007)(66556008)(55236004)(66946007)(52116002)(8936002)(33656002)(1076003)(956004)(8676002)(478600001)(6496006)(33716001)(54906003)(5660300002)(4326008)(107886003)(83380400001)(6666004)(2906002)(55016002)(7416002)(6916009)(86362001)(26005)(186003)(16526019)(9686003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData: qusgbbVtyPHVuQferDuJwtJHYweURFxUegCpxtZuvAu+OEUecf9kBygDwCXn/CQa0gP6RVfVj0pBjBZI4VrHbzmorrpDQqMgqs9701NGUOreAGwYbz4RuENIK2XuNmoEfQzCLqtPXjfu/GObi4H97ZDNw8HuOf1pZeWWbAD7qfpn2nDS0e7lcVQtTTATAQBehkW+ucCVLy9DaqNmcDXZ+uuk0+Yr7haISIAlChlBKaF+g+KidclI3h1rqBo5swwH7H+uE+HQeZyF3ik2XPTTBgnL1OcQtdgAVgeeZ+OkWnR670+UwnC/jL+SS6Un/xPK+T1UaMg4ldd8G+vjeMKGewqVR4ktoLPh94uqIGrafKUjAUVAmvDVPYnzSjT7ytudvcH4OyF0M4106J3FfgfIgshX0wZd3hhmTFgRAXjQZPtmWy+USLSwQ0efUd7FbPS8CLHyp0IRcVfX+mKVn5HHeJB2O8VJIg5avMSPid5clM4yNBMRsKZPU4hqYlTMhlfxWG776/E9F8hdp015Y5bFoLJOoHN+PvyEkHrYY1a+WHuN3m5c62XoF5KmSfsIGz+sCJ40QzHcq9oSAmio1y2s8kGR71ZVXw7UPQd7TnbQ5QIsaV2ET57/MLs1sthRFdh4V8NLeCtds30rmhbQYIorfg==
 X-OriginatorOrg: suse.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a516c1f8-f034-49f0-7b5f-08d87ef07081
+X-MS-Exchange-CrossTenant-Network-Message-Id: 63d31d46-2327-44c5-4f8b-08d87effc033
 X-MS-Exchange-CrossTenant-AuthSource: VI1PR04MB4928.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Nov 2020 05:30:42.6664
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Nov 2020 07:20:18.4530
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: f7a17af6-1c5c-4a36-aa8b-f5be247aa4ba
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: w3VL8/k6SjTkDU2dfTvXnwf67nE2Pvj941YBUtiOidZ15eBCgvnf0/Dpk/tn0LKj
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB4286
+X-MS-Exchange-CrossTenant-UserPrincipalName: 7uEaRmGkssMRqWFY09/qPMctr9YjN9oJSDGEaE0Mp9ndTECKgXmAeBZMx74rKq0t
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB4926
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hi Ard,
-
-Thanks for your time and reviewing.
-
-On Fri, Oct 30, 2020 at 12:51:10PM +0100, Ard Biesheuvel wrote:
-> Hello Chester,
-> 
-> Thanks again for looking into this.
-> 
+On Fri, Oct 30, 2020 at 12:53:25PM +0100, Ard Biesheuvel wrote:
 > On Fri, 30 Oct 2020 at 07:09, Chester Lin <clin@suse.com> wrote:
 > >
-> > Generalize the efi_get_secureboot() function so not only efistub but also
-> > other subsystems can use it.
+> > Add arm64 IMA arch support. The code and arch policy is mainly inherited
+> > from x86.
 > >
 > > Signed-off-by: Chester Lin <clin@suse.com>
 > > ---
-> >  drivers/firmware/efi/libstub/Makefile     |  2 +-
-> >  drivers/firmware/efi/libstub/efi-stub.c   |  2 +-
-> >  drivers/firmware/efi/libstub/efistub.h    | 22 ++++---
-> >  drivers/firmware/efi/libstub/secureboot.c | 76 -----------------------
-> >  drivers/firmware/efi/libstub/x86-stub.c   |  2 +-
-> >  include/linux/efi.h                       | 41 +++++++++++-
-> >  6 files changed, 57 insertions(+), 88 deletions(-)
-> >  delete mode 100644 drivers/firmware/efi/libstub/secureboot.c
+> >  arch/arm64/Kconfig           |  1 +
+> >  arch/arm64/kernel/Makefile   |  2 ++
+> >  arch/arm64/kernel/ima_arch.c | 43 ++++++++++++++++++++++++++++++++++++
+> >  3 files changed, 46 insertions(+)
+> >  create mode 100644 arch/arm64/kernel/ima_arch.c
 > >
-> > diff --git a/drivers/firmware/efi/libstub/Makefile b/drivers/firmware/efi/libstub/Makefile
-> > index 8a94388e38b3..88e47b0ca09d 100644
-> > --- a/drivers/firmware/efi/libstub/Makefile
-> > +++ b/drivers/firmware/efi/libstub/Makefile
-> > @@ -49,7 +49,7 @@ OBJECT_FILES_NON_STANDARD     := y
-> >  # Prevents link failures: __sanitizer_cov_trace_pc() is not linked in.
-> >  KCOV_INSTRUMENT                        := n
+> > diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+> > index a42e8d13cc88..496a4a26afc6 100644
+> > --- a/arch/arm64/Kconfig
+> > +++ b/arch/arm64/Kconfig
+> > @@ -201,6 +201,7 @@ config ARM64
+> >         select SWIOTLB
+> >         select SYSCTL_EXCEPTION_TRACE
+> >         select THREAD_INFO_IN_TASK
+> > +       imply IMA_SECURE_AND_OR_TRUSTED_BOOT if EFI
+> >         help
+> >           ARM 64-bit (AArch64) Linux support.
 > >
-> > -lib-y                          := efi-stub-helper.o gop.o secureboot.o tpm.o \
-> > +lib-y                          := efi-stub-helper.o gop.o tpm.o \
-> >                                    file.o mem.o random.o randomalloc.o pci.o \
-> >                                    skip_spaces.o lib-cmdline.o lib-ctype.o \
-> >                                    alignedmem.o relocate.o vsprintf.o
-> > diff --git a/drivers/firmware/efi/libstub/efi-stub.c b/drivers/firmware/efi/libstub/efi-stub.c
-> > index 914a343c7785..ad96f1d786a9 100644
-> > --- a/drivers/firmware/efi/libstub/efi-stub.c
-> > +++ b/drivers/firmware/efi/libstub/efi-stub.c
-> > @@ -196,7 +196,7 @@ efi_status_t __efiapi efi_pe_entry(efi_handle_t handle,
-> >         /* Ask the firmware to clear memory on unclean shutdown */
-> >         efi_enable_reset_attack_mitigation();
-> >
-> > -       secure_boot = efi_get_secureboot();
-> > +       secure_boot = efi_get_secureboot(get_efi_var);
-> >
-> >         /*
-> >          * Unauthenticated device tree data is a security hazard, so ignore
-> > diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
-> > index 2d7abcd99de9..b1833b51e6d6 100644
-> > --- a/drivers/firmware/efi/libstub/efistub.h
-> > +++ b/drivers/firmware/efi/libstub/efistub.h
-> > @@ -91,14 +91,6 @@ efi_status_t __efiapi efi_pe_entry(efi_handle_t handle,
-> >         fdt_setprop((fdt), (node_offset), (name), &(var), sizeof(var))
-> >  #endif
-> >
-> > -#define get_efi_var(name, vendor, ...)                         \
-> > -       efi_rt_call(get_variable, (efi_char16_t *)(name),       \
-> > -                   (efi_guid_t *)(vendor), __VA_ARGS__)
-> > -
-> > -#define set_efi_var(name, vendor, ...)                         \
-> > -       efi_rt_call(set_variable, (efi_char16_t *)(name),       \
-> > -                   (efi_guid_t *)(vendor), __VA_ARGS__)
-> > -
-> >  #define efi_get_handle_at(array, idx)                                  \
-> >         (efi_is_native() ? (array)[idx]                                 \
-> >                 : (efi_handle_t)(unsigned long)((u32 *)(array))[idx])
-> > @@ -112,6 +104,20 @@ efi_status_t __efiapi efi_pe_entry(efi_handle_t handle,
-> >                 ((handle = efi_get_handle_at((array), i)) || true);     \
-> >              i++)
-> >
-> > +static inline
-> > +efi_status_t get_efi_var(efi_char16_t *name, efi_guid_t *vendor, u32 *attr,
-> > +                        unsigned long *size, void *data)
+> > diff --git a/arch/arm64/kernel/Makefile b/arch/arm64/kernel/Makefile
+> > index bbaf0bc4ad60..0f6cbb50668c 100644
+> > --- a/arch/arm64/kernel/Makefile
+> > +++ b/arch/arm64/kernel/Makefile
+> > @@ -69,3 +69,5 @@ extra-y                                       += $(head-y) vmlinux.lds
+> >  ifeq ($(CONFIG_DEBUG_EFI),y)
+> >  AFLAGS_head.o += -DVMLINUX_PATH="\"$(realpath $(objtree)/vmlinux)\""
+> >  endif
+> > +
+> > +obj-$(CONFIG_IMA_SECURE_AND_OR_TRUSTED_BOOT)   += ima_arch.o
+> > diff --git a/arch/arm64/kernel/ima_arch.c b/arch/arm64/kernel/ima_arch.c
+> > new file mode 100644
+> > index 000000000000..564236d77adc
+> > --- /dev/null
+> > +++ b/arch/arm64/kernel/ima_arch.c
+> > @@ -0,0 +1,43 @@
+> > +// SPDX-License-Identifier: GPL-2.0+
+> > +/*
+> > + * Copyright (C) 2018 IBM Corporation
+> > + */
+> > +#include <linux/efi.h>
+> > +#include <linux/module.h>
+> > +#include <linux/ima.h>
+> > +
+> > +bool arch_ima_get_secureboot(void)
 > > +{
-> > +       return efi_rt_call(get_variable, name, vendor, attr, size, data);
+> > +       static bool sb_enabled;
+> > +       static bool initialized;
+> > +
+> > +       if (!initialized & efi_enabled(EFI_BOOT)) {
+> > +               sb_enabled = ima_get_efi_secureboot();
+> > +               initialized = true;
+> > +       }
+> > +
+> > +       return sb_enabled;
 > > +}
 > > +
-> > +static inline
-> > +efi_status_t set_efi_var(efi_char16_t *name, efi_guid_t *vendor, u32 attr,
-> > +                        unsigned long size, void *data)
+> > +/* secure and trusted boot arch rules */
+> > +static const char * const sb_arch_rules[] = {
+> > +#if !IS_ENABLED(CONFIG_KEXEC_SIG)
+> > +       "appraise func=KEXEC_KERNEL_CHECK appraise_type=imasig",
+> > +#endif /* CONFIG_KEXEC_SIG */
+> > +       "measure func=KEXEC_KERNEL_CHECK",
+> > +#if !IS_ENABLED(CONFIG_MODULE_SIG)
+> > +       "appraise func=MODULE_CHECK appraise_type=imasig",
+> > +#endif
+> > +       "measure func=MODULE_CHECK",
+> > +       NULL
+> > +};
+> > +
+> > +const char * const *arch_get_ima_policy(void)
 > > +{
-> > +       return efi_rt_call(set_variable, name, vendor, attr, size, data);
+> > +       if (IS_ENABLED(CONFIG_IMA_ARCH_POLICY) && arch_ima_get_secureboot()) {
+> > +               if (IS_ENABLED(CONFIG_MODULE_SIG))
+> > +                       set_module_sig_enforced();
+> > +               return sb_arch_rules;
+> > +       }
+> > +       return NULL;
 > > +}
-> > +
-> >  static inline
-> >  void efi_set_u64_split(u64 data, u32 *lo, u32 *hi)
-> >  {
-> > diff --git a/drivers/firmware/efi/libstub/secureboot.c b/drivers/firmware/efi/libstub/secureboot.c
-> > deleted file mode 100644
-> > index 5efc524b14be..000000000000
-> > --- a/drivers/firmware/efi/libstub/secureboot.c
-> > +++ /dev/null
-> 
-> Please keep this file (see below)
-> 
-> > @@ -1,76 +0,0 @@
-> > -// SPDX-License-Identifier: GPL-2.0
-> > -/*
-> > - * Secure boot handling.
-> > - *
-> > - * Copyright (C) 2013,2014 Linaro Limited
-> > - *     Roy Franz <roy.franz@linaro.org
-> > - * Copyright (C) 2013 Red Hat, Inc.
-> > - *     Mark Salter <msalter@redhat.com>
-> > - */
-> > -#include <linux/efi.h>
-> > -#include <asm/efi.h>
-> > -
-> > -#include "efistub.h"
-> > -
-> > -/* BIOS variables */
-> > -static const efi_guid_t efi_variable_guid = EFI_GLOBAL_VARIABLE_GUID;
-> > -static const efi_char16_t efi_SecureBoot_name[] = L"SecureBoot";
-> > -static const efi_char16_t efi_SetupMode_name[] = L"SetupMode";
-> > -
-> > -/* SHIM variables */
-> > -static const efi_guid_t shim_guid = EFI_SHIM_LOCK_GUID;
-> > -static const efi_char16_t shim_MokSBState_name[] = L"MokSBState";
-> > -
-> > -/*
-> > - * Determine whether we're in secure boot mode.
-> > - *
-> > - * Please keep the logic in sync with
-> > - * arch/x86/xen/efi.c:xen_efi_get_secureboot().
-> > - */
-> > -enum efi_secureboot_mode efi_get_secureboot(void)
-> > -{
-> > -       u32 attr;
-> > -       u8 secboot, setupmode, moksbstate;
-> > -       unsigned long size;
-> > -       efi_status_t status;
-> > -
-> > -       size = sizeof(secboot);
-> > -       status = get_efi_var(efi_SecureBoot_name, &efi_variable_guid,
-> > -                            NULL, &size, &secboot);
-> > -       if (status == EFI_NOT_FOUND)
-> > -               return efi_secureboot_mode_disabled;
-> > -       if (status != EFI_SUCCESS)
-> > -               goto out_efi_err;
-> > -
-> > -       size = sizeof(setupmode);
-> > -       status = get_efi_var(efi_SetupMode_name, &efi_variable_guid,
-> > -                            NULL, &size, &setupmode);
-> > -       if (status != EFI_SUCCESS)
-> > -               goto out_efi_err;
-> > -
-> > -       if (secboot == 0 || setupmode == 1)
-> > -               return efi_secureboot_mode_disabled;
-> > -
-> > -       /*
-> > -        * See if a user has put the shim into insecure mode. If so, and if the
-> > -        * variable doesn't have the runtime attribute set, we might as well
-> > -        * honor that.
-> > -        */
-> > -       size = sizeof(moksbstate);
-> > -       status = get_efi_var(shim_MokSBState_name, &shim_guid,
-> > -                            &attr, &size, &moksbstate);
-> > -
-> 
-> MokSBState is a boot time variable, so we cannot access it when
-> running under the OS. Xen also has a code flow similar to this one,
-> but it looks at MokSbStateRt instead (which may be a mistake but let's
-> forget about that for now)
-> 
-> So what we will need to do is factor out only the top part of this
-> function (which, incidentally, is the only part that IMA uses in the
-i> first place)
-> 
-
-Thanks for the reminder. I will take this change into next revision.
-
-> > -       /* If it fails, we don't care why. Default to secure */
-> > -       if (status != EFI_SUCCESS)
-> > -               goto secure_boot_enabled;
-> > -       if (!(attr & EFI_VARIABLE_RUNTIME_ACCESS) && moksbstate == 1)
-> > -               return efi_secureboot_mode_disabled;
-> > -
-> > -secure_boot_enabled:
-> > -       efi_info("UEFI Secure Boot is enabled.\n");
-> > -       return efi_secureboot_mode_enabled;
-> > -
-> > -out_efi_err:
-> > -       efi_err("Could not determine UEFI Secure Boot status.\n");
-> > -       return efi_secureboot_mode_unknown;
-> > -}
-> 
-> So let's keep this file, and also, let's put a wrapper function around
-> get_efi_var() here, of which you can take the address and pass to the
-> static inline function.
-
-If I understand correctly, that means it's better to define a new wrapper
-function around the get_efi_var() rather than changing it from a macro to
-an inline function. Please feel free to let me know if I misunderstand it.
-
-> 
-> > diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
-> > index 3672539cb96e..3f9b492c566b 100644
-> > --- a/drivers/firmware/efi/libstub/x86-stub.c
-> > +++ b/drivers/firmware/efi/libstub/x86-stub.c
-> > @@ -781,7 +781,7 @@ unsigned long efi_main(efi_handle_t handle,
-> >          * otherwise we ask the BIOS.
-> >          */
-> >         if (boot_params->secure_boot == efi_secureboot_mode_unset)
-> > -               boot_params->secure_boot = efi_get_secureboot();
-> > +               boot_params->secure_boot = efi_get_secureboot(get_efi_var);
-> >
-> >         /* Ask the firmware to clear memory on unclean shutdown */
-> >         efi_enable_reset_attack_mitigation();
-> > diff --git a/include/linux/efi.h b/include/linux/efi.h
-> > index d7c0e73af2b9..cc2d3de39031 100644
-> > --- a/include/linux/efi.h
-> > +++ b/include/linux/efi.h
-> > @@ -1089,7 +1089,46 @@ enum efi_secureboot_mode {
-> >         efi_secureboot_mode_disabled,
-> >         efi_secureboot_mode_enabled,
-> >  };
-> > -enum efi_secureboot_mode efi_get_secureboot(void);
-> > +
-> > +static inline enum efi_secureboot_mode efi_get_secureboot(efi_get_variable_t *get_var)
-> > +{
-> > +       efi_guid_t var_guid = EFI_GLOBAL_VARIABLE_GUID;
-> > +       efi_guid_t shim_guid = EFI_SHIM_LOCK_GUID;
-> > +       efi_status_t status;
-> > +       unsigned long size;
-> > +       u8 secboot, setupmode, moksbstate;
-> > +       u32 attr;
-> > +
-> > +       size = sizeof(secboot);
-> > +       status = get_var(L"SecureBoot", &var_guid, NULL, &size, &secboot);
-> > +
-> > +       if (status == EFI_NOT_FOUND)
-> > +               return efi_secureboot_mode_disabled;
-> > +       if (status != EFI_SUCCESS)
-> > +               return efi_secureboot_mode_unknown;
-> > +
-> > +       size = sizeof(setupmode);
-> > +       status = get_var(L"SetupMode", &var_guid, NULL, &size, &setupmode);
-> > +
-> > +       if (status != EFI_SUCCESS)
-> > +               return efi_secureboot_mode_unknown;
-> > +       if (secboot == 0 || setupmode == 1)
-> > +               return efi_secureboot_mode_disabled;
-> > +
-> 
-> So keep until here and move the rest back into the .c file
-> 
-> > +       /*
-> > +        * See if a user has put the shim into insecure mode. If so, and if the
-> > +        * variable doesn't have the runtime attribute set, we might as well
-> > +        * honor that.
-> > +        */
-> > +       size = sizeof(moksbstate);
-> > +       status = get_var(L"MokSBState", &shim_guid, &attr, &size, &moksbstate);
-> > +       /* If it fails, we don't care why. Default to secure */
-> > +       if (status == EFI_SUCCESS && moksbstate == 1
-> > +           && !(attr & EFI_VARIABLE_RUNTIME_ACCESS))
-> > +               return efi_secureboot_mode_disabled;
-> > +
-> > +       return efi_secureboot_mode_enabled;
-> > +}
-> >
-> >  #ifdef CONFIG_RESET_ATTACK_MITIGATION
-> >  void efi_enable_reset_attack_mitigation(void);
 > > --
 > > 2.28.0
 > >
 > 
+> Can we move all this stuff into security/integrity/ima/ima_efi.c instead?
+>
+Actually I hesitated to move all this stuff into ima_efi.c when coding v3
+because I haven't figured out a clear picture to achieve it. Since each
+architecture could still have different details to trigger secure boot detection
+and define their arch-specific rules [e.g. Having boot_params in x86_64 creates
+more conditions that need to be determined before calling get_sb_mode()], moving
+all this stuff seems to decrease the flexibility. Besides, it might also affect
+the consistency of ima_arch as well, for example, ppc and s390 still use these
+function prototypes defined in ima.h. Since these functions are already referred
+by non-EFI architectures, why don't we still reuse these prototypes? For example,
+we could remain a smaller arch_ima_get_secureboot() and the arch-specific rules
+but move the major part of arch_get_ima_policy() into ima_efi.c. For example,
+we could implement an efi_ima_policy() for arch_get_ima_policy() to call so that
+the arch_get_ima_policy() doesn't have to know some details such as checking
+conditions or calling set_module_sig_enforced().
+
+Please feel free to let me know if any suggestions.
 
