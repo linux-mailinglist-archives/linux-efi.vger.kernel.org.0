@@ -2,133 +2,103 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 79A8F2A30E3
-	for <lists+linux-efi@lfdr.de>; Mon,  2 Nov 2020 18:07:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F07792A345A
+	for <lists+linux-efi@lfdr.de>; Mon,  2 Nov 2020 20:39:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727520AbgKBRHG (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 2 Nov 2020 12:07:06 -0500
-Received: from mail.kernel.org ([198.145.29.99]:59350 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727265AbgKBRHG (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Mon, 2 Nov 2020 12:07:06 -0500
-Received: from e123331-lin.nice.arm.com (lfbn-nic-1-188-42.w2-15.abo.wanadoo.fr [2.15.37.42])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 18D4D20786;
-        Mon,  2 Nov 2020 17:07:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1604336826;
-        bh=Tnt4XyZOR83rloFTE9j3o926aXONz+ceZy2Utv5nUSk=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=D6hfnfXRlAAVGkr1XVaI3eecb5HY/hqY7qEjUiNf8cbEDNgdvuT0swJ1qff4ocm8u
-         H7+nR4zgOsbgrwb9Dwp7gwSiOUfB1Uia1azIcaoScEz9wJkH4wR4wsunz37n7poniC
-         aTj5bNmSjTGDomRWG2lQNdeCS5PvthL2pdvtz7iY=
-From:   Ard Biesheuvel <ardb@kernel.org>
-To:     linux-efi@vger.kernel.org
-Cc:     Ard Biesheuvel <ardb@kernel.org>, Peter Jones <pjones@redhat.com>,
+        id S1726752AbgKBTjd (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 2 Nov 2020 14:39:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41292 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725980AbgKBTjc (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 2 Nov 2020 14:39:32 -0500
+Received: from mail-io1-xd43.google.com (mail-io1-xd43.google.com [IPv6:2607:f8b0:4864:20::d43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59253C0617A6
+        for <linux-efi@vger.kernel.org>; Mon,  2 Nov 2020 11:39:31 -0800 (PST)
+Received: by mail-io1-xd43.google.com with SMTP id n12so4430641ioc.2
+        for <linux-efi@vger.kernel.org>; Mon, 02 Nov 2020 11:39:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=LPolsNW/zAAbJ+UkM+kxnB1XuZ8Lbiwy2vfx3k7sQlM=;
+        b=tiQOre8cy177Vl1NXwD+rWVtyq6rgiM6KUgYxsHNMBuGg81aHGmW/u0+EQdniihZbO
+         5gzKqm/eL82h+umS9J1aPghQsIjY38GkDNBV3XgmXaNdPJHJIg995ajc7QWfXt5EwjtB
+         JbGWwATh4p4C5eBFWddRdXpaw6l0Mm6K3R3FGTX9j0o7ZZlZQ0FWOwAF0x+nEp4cbfhJ
+         x8n15NjaMLQ5tyPC7GLN3FCuOjG9KB+YHTkdHiUtmcME+883W8FJTiiHIy8SERlzl0ur
+         uOWIojPaRjwi9d1lYz7nNcBOSPD4Sk/CDQGJhyk8iVA3NWc+hCubJ9cX1cX5pIwo9FMN
+         JQ1Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=LPolsNW/zAAbJ+UkM+kxnB1XuZ8Lbiwy2vfx3k7sQlM=;
+        b=d+cdscaktj9U8csSJZuLUvUwxqRAoa5LSNbaiSNryuHBvkjBGs17RBMqbkeP1JQsuv
+         XskCk7sS/ot1pxhDH8BOFRZQClbisppD2r0lHpdwmJxA0LN8hWs3dR1ait/H+xVsuEEr
+         Z1P1rIhRv5REl/MSlZxPERm7D30tJB6m0+xICA+OoxOzuAm1H6EwH7eYtOlB7B6EmlXc
+         kbsWIUVqS8xzWf8KWO+7iZ6UZD3oFCUkikH5k7g8W3F/GlPS9X0lyWYBH+xSELE9jvF9
+         QXara8kTsQGfOaC8+n4piuBMEOXOsLgoVbojZp+qgdh5zkFJGs3Brl+h9vd/0/pBLGUf
+         hvEg==
+X-Gm-Message-State: AOAM532kxHJizsx/9yivCpCG01OBJh24sBc4DeKmWadSlj4miE+QgwJv
+        cJQqB814KD44olwLhhguMuWCKntPdObYjA0doNSGxjK4bb8=
+X-Google-Smtp-Source: ABdhPJzdCkM+KM1lnUKLBzZCp0zlDwHobk6GAAk3NzfCBuvyjuxhiGUvOeSj44QE5zCpL7AxwObDv7pxXl8OuMk9eRU=
+X-Received: by 2002:a02:cc77:: with SMTP id j23mr11373434jaq.20.1604345970427;
+ Mon, 02 Nov 2020 11:39:30 -0800 (PST)
+MIME-Version: 1.0
+References: <20201102170634.20575-1-ardb@kernel.org>
+In-Reply-To: <20201102170634.20575-1-ardb@kernel.org>
+From:   Matthew Garrett <mjg59@google.com>
+Date:   Mon, 2 Nov 2020 11:39:19 -0800
+Message-ID: <CACdnJuvC3EjQb5ZfOBynNzMPOwUm3w5CnXDCYGd10w_AW+_efw@mail.gmail.com>
+Subject: Re: [RFC PATCH 0/7] efi/libstub: measurement initrd data loaded by
+ the EFI stub
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-efi <linux-efi@vger.kernel.org>,
+        Peter Jones <pjones@redhat.com>,
         Leif Lindholm <leif@nuviainc.com>,
         Arvind Sankar <nivedita@alum.mit.edu>,
-        Matthew Garrett <mjg59@google.com>,
         Daniel Kiper <daniel.kiper@oracle.com>,
         Ilias Apalodimas <ilias.apalodimas@linaro.org>
-Subject: [RFC PATCH 7/7] efi/libstub: measure loaded initrd info into the TPM
-Date:   Mon,  2 Nov 2020 18:06:34 +0100
-Message-Id: <20201102170634.20575-8-ardb@kernel.org>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20201102170634.20575-1-ardb@kernel.org>
-References: <20201102170634.20575-1-ardb@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Modify the initrd loading sequence so that the contents of the initrd
-loaded by the EFI stub are measured into the TPM. Note that this also
-includes the measurement of a zero sized input if the stub's initrd
-loader fails for any reason, or simply succeeds with no result, which
-it does for legacy reasons when using the initrd= command line option.
+On Mon, Nov 2, 2020 at 9:06 AM Ard Biesheuvel <ardb@kernel.org> wrote:
 
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
----
- drivers/firmware/efi/libstub/efi-stub-helper.c | 53 +++++++++++++++-----
- 1 file changed, 40 insertions(+), 13 deletions(-)
+> This is posted as an RFC since it is mostly an invitation to discuss how
+> we can fit this into a longer term strategy for arch-agnostic secure and
+> measured boot that does not hinge on the Shim+GRUB tandem, or on deep
+> knowledge on the part of the bootloader regarding device trees, bootparams
+> structs, allocation and placement policies of various artifacts etc etc
 
-diff --git a/drivers/firmware/efi/libstub/efi-stub-helper.c b/drivers/firmware/efi/libstub/efi-stub-helper.c
-index 72a7e7c4d403..d8cf1911171a 100644
---- a/drivers/firmware/efi/libstub/efi-stub-helper.c
-+++ b/drivers/firmware/efi/libstub/efi-stub-helper.c
-@@ -625,6 +625,22 @@ efi_status_t efi_load_initrd_cmdline(efi_loaded_image_t *image,
- 				    load_addr, load_size);
- }
- 
-+static const struct {
-+	efi_tcg2_event_t	event_data;
-+	u8			description[];
-+} initrd_tcg2_event = {
-+	{
-+		sizeof(initrd_tcg2_event),
-+		{
-+			sizeof(initrd_tcg2_event.event_data.event_header),
-+			EFI_TCG2_EVENT_HEADER_VERSION,
-+			0,
-+			0
-+		},
-+	},
-+	"Linux initrd"
-+};
-+
- /**
-  * efi_load_initrd() - Load initial RAM disk
-  * @image:	EFI loaded image protocol
-@@ -641,25 +657,36 @@ efi_status_t efi_load_initrd(efi_loaded_image_t *image,
- 			     unsigned long soft_limit,
- 			     unsigned long hard_limit)
- {
-+	efi_guid_t tcg2_guid = EFI_TCG2_PROTOCOL_GUID;
-+	efi_tcg2_protocol_t *tcg2 = NULL;
- 	efi_status_t status;
- 
- 	if (efi_noinitrd) {
- 		*load_addr = *load_size = 0;
--		return EFI_SUCCESS;
-+		status = EFI_SUCCESS;
-+	} else {
-+		status = efi_load_initrd_dev_path(load_addr, load_size, hard_limit);
-+		if (status == EFI_SUCCESS) {
-+			efi_info("Loaded initrd from LINUX_EFI_INITRD_MEDIA_GUID device path\n");
-+		} else if (status == EFI_NOT_FOUND) {
-+			status = efi_load_initrd_cmdline(image, load_addr, load_size,
-+							 soft_limit, hard_limit);
-+			if (status == EFI_SUCCESS && *load_size > 0)
-+				efi_info("Loaded initrd from command line option\n");
-+		}
-+		if (status != EFI_SUCCESS) {
-+			efi_err("Failed to load initrd: 0x%lx\n", status);
-+			*load_addr = *load_size = 0;
-+		}
- 	}
- 
--	status = efi_load_initrd_dev_path(load_addr, load_size, hard_limit);
--	if (status == EFI_SUCCESS) {
--		efi_info("Loaded initrd from LINUX_EFI_INITRD_MEDIA_GUID device path\n");
--	} else if (status == EFI_NOT_FOUND) {
--		status = efi_load_initrd_cmdline(image, load_addr, load_size,
--						 soft_limit, hard_limit);
--		if (status == EFI_SUCCESS && *load_size > 0)
--			efi_info("Loaded initrd from command line option\n");
--	}
--	if (status != EFI_SUCCESS) {
--		efi_err("Failed to load initrd: 0x%lx\n", status);
--		*load_addr = *load_size = 0;
-+	efi_bs_call(locate_protocol, &tcg2_guid, NULL, (void **)&tcg2);
-+	if (tcg2) {
-+		efi_status_t s = efi_call_proto(tcg2, hash_log_extend_event,
-+						0, *load_addr, *load_size,
-+						&initrd_tcg2_event.event_data);
-+		if (s != EFI_SUCCESS)
-+			efi_warn("Failed to measure initrd data into PCR #xx: 0x%lx\n", s);
- 	}
- 	return status;
- }
--- 
-2.17.1
+My initial concern was that we'd potentially do double measurement if
+a separate bootloader loaded the initrd and then called the EFI entry
+point, but it looks like you'll only measure if the stub loaded the
+initrd itself, in which case this seems fine.
 
+> Open questions:
+> - Should we do this?
+
+I think so. The initramfs is clearly part of our initial TCB.
+
+> - Are Linux systems in the field using PCR value prediction when updating the
+>   initrd? Does this approach interfere with that?
+
+I'm not aware of any distro that's tried to solve this problem. I do
+have an idea for how to (basically, build a generic initramfs and then
+allow the bootloader to override specific configuration files - grub
+has support for reading files and creating an additional cpio on the
+fly), but handwave.
+
+> - Which PCR and event type to use
+
+Grub is measuring the initramfs (and all binaries) into PCR 9 with EV_IPL.
+
+> - Is a separator event needed here, given that the initrd measurement is
+>   recorded even if no initrd was loaded by the stub?
+
+I think probably, but we should probably have a longer discussion
+around when we should be logging separators (grub doesn't generate any
+at the moment, and I don't think shim does either, and that's
+definitely suboptimal for the PCR 7 case). We should probably look at
+what Windows is doing here.
