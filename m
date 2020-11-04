@@ -2,56 +2,57 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 22A682A7176
-	for <lists+linux-efi@lfdr.de>; Thu,  5 Nov 2020 00:26:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 038E42A7172
+	for <lists+linux-efi@lfdr.de>; Thu,  5 Nov 2020 00:24:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732813AbgKDXYP (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        id S1732815AbgKDXYP (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
         Wed, 4 Nov 2020 18:24:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44864 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44878 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732803AbgKDXYK (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 4 Nov 2020 18:24:10 -0500
-Received: from mail-qv1-xf49.google.com (mail-qv1-xf49.google.com [IPv6:2607:f8b0:4864:20::f49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 738D9C0613D3
-        for <linux-efi@vger.kernel.org>; Wed,  4 Nov 2020 15:24:10 -0800 (PST)
-Received: by mail-qv1-xf49.google.com with SMTP id x10so9131773qvo.22
-        for <linux-efi@vger.kernel.org>; Wed, 04 Nov 2020 15:24:10 -0800 (PST)
+        with ESMTP id S1732817AbgKDXYN (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 4 Nov 2020 18:24:13 -0500
+Received: from mail-qt1-x849.google.com (mail-qt1-x849.google.com [IPv6:2607:f8b0:4864:20::849])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6B2FC0613D3
+        for <linux-efi@vger.kernel.org>; Wed,  4 Nov 2020 15:24:12 -0800 (PST)
+Received: by mail-qt1-x849.google.com with SMTP id h16so71886qtr.8
+        for <linux-efi@vger.kernel.org>; Wed, 04 Nov 2020 15:24:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20161025;
         h=sender:date:in-reply-to:message-id:mime-version:references:subject
          :from:to:cc;
-        bh=mDVvKrGHCP/3KBqD6Y+81Awc8s23VoJcXWEM4lmGqQk=;
-        b=UrcXOwPS8nM7/ikskpgkXlxdwbC7fRg65vxlDw6UBrphzbOZujaNWx+XnNzrdvfUG/
-         /zmaPWK7O35YUG+60QYL1UALaOrJ6CfR6nAGsV2hplG8Yf26liCR0ccZzdSHdbBupXXJ
-         rY2CqHrp20pwo/CTtzIxcuqLuKGrA14ZoXu6KCts9HWKDuYEOTfNM63I0dPMDajm9Wzp
-         jWtQomAP9PBmL8GgNtu0xnEm8BEEHQKYoQ6NMZMN7wSfQLGLJ+qokqu6ep05laZoVOK9
-         pgZxS63+uVe2nNyTrMSxZTqlRYb3DosJhQyFFGylNr7KUnAU0tLAXJQV4z2s8Hl7PYzA
-         Pi8w==
+        bh=u5wayZ9AVFMGS2ijaBJPPdXKpeLHXYLicPYl2nj1shI=;
+        b=iVIITovvfmdqa7ENQHfnvmD7E7Q89Vqx621sZYGic9iXL2Yt4kyuIGXc0RlopwO7eF
+         lMDFCTi295lj6kNhA98o6Zr8zYdKlcMltOwo0dfKAi9YEyQKs+nE2yXjekyLbllbELIj
+         XOJbSndFOfrxPkQaMFyE4+3GqLIp0+PMRJ31QE2eBw4/rjyfOBCwzCNzqlxsMw+/J0Ka
+         v9tyd9lhBbSnQ1BPj2z2kKMquvyq1DnDjrwCjfogbkKy/s2KInZ/EykovZhbmuijp9HT
+         3iDehlrdMA9rygPnHkxRgqbrIjoJf/sGBxoyn/J3CjHx5DAdyBhChRxqhNcejq090UIq
+         eMoQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:sender:date:in-reply-to:message-id:mime-version
          :references:subject:from:to:cc;
-        bh=mDVvKrGHCP/3KBqD6Y+81Awc8s23VoJcXWEM4lmGqQk=;
-        b=FDI0gC17iWkqNRteYjEkQAtazidZZOwR9Y9GCpUB0YalSMkoVA3AZ57LugixAox2dK
-         kb5QTVINh6/sc188035+XfuZMY7ZMpHOgrjZXJCUNhOWWy58HAgAxSjaKrMjKJug1ios
-         BbEY0BsAZWc5WOlp/3q2rIK4NgDP3Zp31q+qaB7W13yFMmtrfYY8cPX7Cj9qSDIoQUSz
-         aYvJX/MK8PjWpPsIvgn1nsfkZPV8lXVMHdjo1nUlcmhdDxrob4LFx2vtPL4DWmXwtMjT
-         J/5Km0OEsPwUYWjnM/6Z2dXMBAOluUD4ictx5gT/iFAXyJWbzTQs3uzeIfzFVS2L28G6
-         9Mdw==
-X-Gm-Message-State: AOAM533eiaJh3G9QSrISlPNB9JA73kz6QFv/5HHkZJVwQ2P5MHxs3INN
-        KIbkRQBQtpmDTwuND46YF+kePeQe48jfQ48=
-X-Google-Smtp-Source: ABdhPJznoHrAzCZtFLgjYhiJnzq1jZvYLPBro0eYGGwHHgz+egObOJnpHGOf9HuWhTEgl/sUfC0vy14swG3g6NM=
+        bh=u5wayZ9AVFMGS2ijaBJPPdXKpeLHXYLicPYl2nj1shI=;
+        b=rH2EyxIa5PNLl8XdPTjgFBdQu3uPBEZZf3xVPFjfu+QXNgXE5Bg0FgUHetuw8dZYBA
+         Ru0ZmxTbeYHlLEaqwuT5SBo4yu3DDXIKOPc6q+p+SHqNXunzsEpyQfZC13XiFZ0oJ4j1
+         dV1OjVLR1UGmT2MHfyR7HGsKLgyrmB67MnyedK2H2HxNf0Kzaa4oeCICruZarpNa1AcK
+         UYMLLlf8to4WWIwGXv7KymMTLmLGwXVqbSEe4lj6gZN1NlYEZXGOHErJCnm2LcyW9ND7
+         zL0jM+2w7MziAhhyt2LuXUNrtSJUcML8REN2Dz/z68+2hl6sclaA2ksPh2bgniYdXt2p
+         5Oyg==
+X-Gm-Message-State: AOAM5305fWClpwuE0ei8wOyq0jWcMOlbTemt+hQoZnMgU6IEFwEbWtoX
+        D4yPAZEVUHCq0Ja+E3yYW7UioLzFRIfCYyQ=
+X-Google-Smtp-Source: ABdhPJwjKo0cRX9EmzXQSkYgc/ChZZniluSDDdAeEjXvu1+EPop/QjPtY/4CxN+WF6Ie5LvnM2VAnbfDX7ilMx4=
 Sender: "saravanak via sendgmr" <saravanak@saravanak.san.corp.google.com>
 X-Received: from saravanak.san.corp.google.com ([2620:15c:2d:3:7220:84ff:fe09:fedc])
- (user=saravanak job=sendgmr) by 2002:ad4:4205:: with SMTP id
- k5mr310786qvp.10.1604532249490; Wed, 04 Nov 2020 15:24:09 -0800 (PST)
-Date:   Wed,  4 Nov 2020 15:23:41 -0800
+ (user=saravanak job=sendgmr) by 2002:a0c:e346:: with SMTP id
+ a6mr179397qvm.9.1604532252026; Wed, 04 Nov 2020 15:24:12 -0800 (PST)
+Date:   Wed,  4 Nov 2020 15:23:42 -0800
 In-Reply-To: <20201104232356.4038506-1-saravanak@google.com>
-Message-Id: <20201104232356.4038506-5-saravanak@google.com>
+Message-Id: <20201104232356.4038506-6-saravanak@google.com>
 Mime-Version: 1.0
 References: <20201104232356.4038506-1-saravanak@google.com>
 X-Mailer: git-send-email 2.29.1.341.ge80a0c044ae-goog
-Subject: [PATCH v1 04/18] Revert "driver core: Remove check in driver_deferred_probe_force_trigger()"
+Subject: [PATCH v1 05/18] Revert "of: platform: Batch fwnode parsing when
+ adding all top level devices"
 From:   Saravana Kannan <saravanak@google.com>
 To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
@@ -74,27 +75,27 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-This reverts commit fefcfc968723caf93318613a08e1f3ad07a6154f.
+This reverts commit 93d2e4322aa74c1ad1e8c2160608eb9a960d69ff.
 
 Signed-off-by: Saravana Kannan <saravanak@google.com>
 ---
- drivers/base/dd.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/of/platform.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/base/dd.c b/drivers/base/dd.c
-index 008724f8edf1..ec67b5ffa06d 100644
---- a/drivers/base/dd.c
-+++ b/drivers/base/dd.c
-@@ -172,6 +172,9 @@ static void driver_deferred_probe_trigger(void)
+diff --git a/drivers/of/platform.c b/drivers/of/platform.c
+index b557a0fcd4ba..79bd5f5a1bf1 100644
+--- a/drivers/of/platform.c
++++ b/drivers/of/platform.c
+@@ -538,9 +538,7 @@ static int __init of_platform_default_populate_init(void)
+ 	}
  
- void driver_deferred_probe_force_trigger(void)
- {
-+	if (!driver_deferred_probe_enable)
-+		return;
-+
- 	/*
- 	 * A successful probe means that all the devices in the pending list
- 	 * should be triggered to be reprobed.  Move all the deferred devices
+ 	/* Populate everything else. */
+-	fw_devlink_pause();
+ 	of_platform_default_populate(NULL, NULL, NULL);
+-	fw_devlink_resume();
+ 
+ 	return 0;
+ }
 -- 
 2.29.1.341.ge80a0c044ae-goog
 
