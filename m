@@ -2,56 +2,56 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B20A82A71AB
-	for <lists+linux-efi@lfdr.de>; Thu,  5 Nov 2020 00:26:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E2EDB2A71A7
+	for <lists+linux-efi@lfdr.de>; Thu,  5 Nov 2020 00:26:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732879AbgKDXZd (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 4 Nov 2020 18:25:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44954 "EHLO
+        id S1732978AbgKDXZ1 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 4 Nov 2020 18:25:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44966 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1733043AbgKDXYZ (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 4 Nov 2020 18:24:25 -0500
-Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA2AEC0613D4
-        for <linux-efi@vger.kernel.org>; Wed,  4 Nov 2020 15:24:25 -0800 (PST)
-Received: by mail-yb1-xb49.google.com with SMTP id w8so395166ybj.14
-        for <linux-efi@vger.kernel.org>; Wed, 04 Nov 2020 15:24:25 -0800 (PST)
+        with ESMTP id S1733054AbgKDXY2 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 4 Nov 2020 18:24:28 -0500
+Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C2C0C0613D3
+        for <linux-efi@vger.kernel.org>; Wed,  4 Nov 2020 15:24:28 -0800 (PST)
+Received: by mail-yb1-xb4a.google.com with SMTP id w4so376590ybq.21
+        for <linux-efi@vger.kernel.org>; Wed, 04 Nov 2020 15:24:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20161025;
         h=sender:date:in-reply-to:message-id:mime-version:references:subject
          :from:to:cc;
-        bh=5sRZ6jhZ+T/gutzXbCBa2cQYYZrY2SCzTIYgh1jQP+0=;
-        b=KPEQ4VrOxtoTLDuFgJFdWk6KRPwrcI/ihNJCiTdUkBKEYu92xvhA4SXzdybwWdc4ge
-         8mbUKDP9DwLAgVQ9LoAveXPNRdT77u4tYK7hgrUwH1DDg69Exao6g4YGTrFlNI7Q/w4S
-         F8eYHA6zVlAyFDxBjALghjyzMRvz5/b3Lh8CbxzbmV/WJZuXmDbovzL4rwSNauCh0lBn
-         UR471uUcXqLneNOPe1RoDFHZxIQpmAzGHUT2zgAzJHIf6ztVlw6QTzchqb6yWo3fum7e
-         8VY4oETIv6BIGaO+kuZw29D2uy/y5j6ySRsmxLo8TPojkay576ZnBosMBOA31raHLxDC
-         oTjQ==
+        bh=eEB1sRKmOhyKT2s+qdOFoinbYDGAwcO7NeYhfFMxg+Q=;
+        b=tUt9OmDwJhcPPhrZNj/nqogKhaEd+90/qdGhb2nTA+Yz2dfpD3noSnHhMam2QzHPjo
+         9qQ5kwHjM9vLUYpIr7v/CJdtGPmYJF1F9ydUaH4foaY72lus5HdCCq1ZIuU/mN1WiLQY
+         Rrmabtm+iFFUQLIHiC/CR8s53IYF8R3pqCP65NUS7O7coMjWE4Gi0OUhK1LawZAYrjAr
+         LNWhrQdANyVNdGRQ4+lXoU03/4t+zBhZkSb9LJtFWyQ2RjmF6L74Et5xHuwPRcJOMP1Z
+         rv3lHcS4gvr/Tmn8+aT/QZWr3/8fKJeA+W5S/l+iPmK7Q6tS1+T/ImK9dzpcjai2Eamh
+         ZJAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:sender:date:in-reply-to:message-id:mime-version
          :references:subject:from:to:cc;
-        bh=5sRZ6jhZ+T/gutzXbCBa2cQYYZrY2SCzTIYgh1jQP+0=;
-        b=g/j0UTjFhW0A2TV15DS+7eHCZ1s9uIkL71mNlMkrflBbbGWNylhvMOwdZ5qSImpnJq
-         5c0hboxWTTFGz30qujudRLzCeajoBMYxLm22TZ/3vfzWk/N7aFryt3XMzlPM8Xm9PmXL
-         gD8ppLSiaG2fWAG1XIX+sCFaifpwELAeBDTF+cGL9C3y5pt7Y1/WeHtCkN/bPEAR649V
-         GmMcHbWKAKZEOYG5mhKmlle7P75QBvjmAn5x9vL6Qzu+CRC6T5etZbUuTBYmtaGIkgzG
-         2maN8qT1PKYe2uz4SG7BMZPk/OqdQDYGoFKoxsfaj/Z/Pm5FcMzgQ5mafnq1vFTWYztu
-         M0oA==
-X-Gm-Message-State: AOAM531kchRV3ycNLsidufKKc0g2W8ud1bkBPbfPj0iyxUKLKCynqOtV
-        DyjiPwQVgdrLKthmh+ezX3B8ZpICUkkAM3A=
-X-Google-Smtp-Source: ABdhPJz+alC8yp9zBJND6Vgcoky5QjmGBoY1he5RZG8ZuTerdEihYnn+YQqUYKoT1Mk3I8zQzC9AhaaEWWckVQ4=
+        bh=eEB1sRKmOhyKT2s+qdOFoinbYDGAwcO7NeYhfFMxg+Q=;
+        b=AXQu746nFqTCm7MTJWCmWVKVkJPTXlFx/U8kHSpGN1WlKtumqsqW/vHF1uPimmYEuR
+         i1bif30IPgVInoSjaLVPpqCLtYlr73oN32+cZR2mlVWha2rVkZacNyvKhAdeW3/aby42
+         yVmK0Ag9evu7d3yP+C7U3LCwbp0FdIDpKStrlFeqljlUXwgFOXJnRZbf7ZDny7KR5y4A
+         tkPy7hzz49uNf2PLLfJec1PeQOeKbTKhnn/V5pn2vghC01UETd9gYxI9e0DG3rewJsqa
+         zksr3UYfAnsQPR8cSObxNNOwJeDcMT3Ti2qxUzYOH193V8mu+Bkkob1oeXonD+TiPG8V
+         ku6g==
+X-Gm-Message-State: AOAM532tQgdHciwzg8mjzBtWNorW3PSryWZpaFokT+NR40kcJw1RQHr5
+        fPqw2/94wFq0tbjFgZWrm9HElPhDafRFvTw=
+X-Google-Smtp-Source: ABdhPJyWG5sGSzNmiRsHspbl4ooUVxIy7YNp80HOw5IVvMiRQ3hDfPGnRagU2OxiQKt1apMgzfktCFp+7Ba3Uuo=
 Sender: "saravanak via sendgmr" <saravanak@saravanak.san.corp.google.com>
 X-Received: from saravanak.san.corp.google.com ([2620:15c:2d:3:7220:84ff:fe09:fedc])
- (user=saravanak job=sendgmr) by 2002:a5b:389:: with SMTP id
- k9mr265028ybp.75.1604532264967; Wed, 04 Nov 2020 15:24:24 -0800 (PST)
-Date:   Wed,  4 Nov 2020 15:23:47 -0800
+ (user=saravanak job=sendgmr) by 2002:a25:b792:: with SMTP id
+ n18mr294244ybh.93.1604532267406; Wed, 04 Nov 2020 15:24:27 -0800 (PST)
+Date:   Wed,  4 Nov 2020 15:23:48 -0800
 In-Reply-To: <20201104232356.4038506-1-saravanak@google.com>
-Message-Id: <20201104232356.4038506-11-saravanak@google.com>
+Message-Id: <20201104232356.4038506-12-saravanak@google.com>
 Mime-Version: 1.0
 References: <20201104232356.4038506-1-saravanak@google.com>
 X-Mailer: git-send-email 2.29.1.341.ge80a0c044ae-goog
-Subject: [PATCH v1 10/18] device property: Add fwnode_is_ancestor_of()
+Subject: [PATCH v1 11/18] driver core: Redefine the meaning of fwnode_operations.add_links()
 From:   Saravana Kannan <saravanak@google.com>
 To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
@@ -74,66 +74,78 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Add a helper function to check if a fwnode is an ancestor of another
-fwnode. This will be useful for fw_devlink feature.
+Change the meaning of fwnode_operations.add_links() to just create
+fwnode links by parsing the properties of a given fwnode.
+
+This patch doesn't actually make any code changes. To keeps things more
+digestable, the actual functional changes come in later patches in this
+series.
 
 Signed-off-by: Saravana Kannan <saravanak@google.com>
 ---
- drivers/base/property.c  | 27 +++++++++++++++++++++++++++
- include/linux/property.h |  2 ++
- 2 files changed, 29 insertions(+)
+ include/linux/fwnode.h | 42 +++---------------------------------------
+ 1 file changed, 3 insertions(+), 39 deletions(-)
 
-diff --git a/drivers/base/property.c b/drivers/base/property.c
-index 4c43d30145c6..2569ebd52e6b 100644
---- a/drivers/base/property.c
-+++ b/drivers/base/property.c
-@@ -660,6 +660,33 @@ struct fwnode_handle *fwnode_get_nth_parent(struct fwnode_handle *fwnode,
- }
- EXPORT_SYMBOL_GPL(fwnode_get_nth_parent);
+diff --git a/include/linux/fwnode.h b/include/linux/fwnode.h
+index afde643f37a2..ec02e1e939cc 100644
+--- a/include/linux/fwnode.h
++++ b/include/linux/fwnode.h
+@@ -78,44 +78,8 @@ struct fwnode_reference_args {
+  *			       endpoint node.
+  * @graph_get_port_parent: Return the parent node of a port node.
+  * @graph_parse_endpoint: Parse endpoint for port and endpoint id.
+- * @add_links:	Called after the device corresponding to the fwnode is added
+- *		using device_add(). The function is expected to create device
+- *		links to all the suppliers of the device that are available at
+- *		the time this function is called.  The function must NOT stop
+- *		at the first failed device link if other unlinked supplier
+- *		devices are present in the system.  This is necessary for the
+- *		driver/bus sync_state() callbacks to work correctly.
+- *
+- *		For example, say Device-C depends on suppliers Device-S1 and
+- *		Device-S2 and the dependency is listed in that order in the
+- *		firmware.  Say, S1 gets populated from the firmware after
+- *		late_initcall_sync().  Say S2 is populated and probed way
+- *		before that in device_initcall(). When C is populated, if this
+- *		add_links() function doesn't continue past a "failed linking to
+- *		S1" and continue linking C to S2, then S2 will get a
+- *		sync_state() callback before C is probed. This is because from
+- *		the perspective of S2, C was never a consumer when its
+- *		sync_state() evaluation is done. To avoid this, the add_links()
+- *		function has to go through all available suppliers of the
+- *		device (that corresponds to this fwnode) and link to them
+- *		before returning.
+- *
+- *		If some suppliers are not yet available (indicated by an error
+- *		return value), this function will be called again when other
+- *		devices are added to allow creating device links to any newly
+- *		available suppliers.
+- *
+- *		Return 0 if device links have been successfully created to all
+- *		the known suppliers of this device or if the supplier
+- *		information is not known.
+- *
+- *		Return -ENODEV if the suppliers needed for probing this device
+- *		have not been registered yet (because device links can only be
+- *		created to devices registered with the driver core).
+- *
+- *		Return -EAGAIN if some of the suppliers of this device have not
+- *		been registered yet, but none of those suppliers are necessary
+- *		for probing the device.
++ * @add_links:	Create fwnode links to all the suppliers of the fwnode. Return
++ *		zero on success, a negative error code otherwise.
+  */
+ struct fwnode_operations {
+ 	struct fwnode_handle *(*get)(struct fwnode_handle *fwnode);
+@@ -155,7 +119,7 @@ struct fwnode_operations {
+ 	(*graph_get_port_parent)(struct fwnode_handle *fwnode);
+ 	int (*graph_parse_endpoint)(const struct fwnode_handle *fwnode,
+ 				    struct fwnode_endpoint *endpoint);
+-	int (*add_links)(const struct fwnode_handle *fwnode,
++	int (*add_links)(struct fwnode_handle *fwnode,
+ 			 struct device *dev);
+ };
  
-+/**
-+ * fwnode_is_ancestor_of - Test if @test_ancestor is ancestor of @test_child
-+ * @test_ancestor: Firmware which is tested for being an ancestor
-+ * @test_child: Firmware which is tested for being the child
-+ *
-+ * A node is considered an ancestor of itself too.
-+ *
-+ * Returns true if @test_ancestor is an ancestor of @test_child.
-+ * Otherwise, returns false.
-+ */
-+bool fwnode_is_ancestor_of(struct fwnode_handle *test_ancestor,
-+				  struct fwnode_handle *test_child)
-+{
-+	if (!test_ancestor)
-+		return false;
-+
-+	fwnode_handle_get(test_child);
-+	while (test_child) {
-+		if (test_child == test_ancestor) {
-+			fwnode_handle_put(test_child);
-+			return true;
-+		}
-+		test_child = fwnode_get_next_parent(test_child);
-+	}
-+	return false;
-+}
-+
- /**
-  * fwnode_get_next_child_node - Return the next child node handle for a node
-  * @fwnode: Firmware node to find the next child node for.
-diff --git a/include/linux/property.h b/include/linux/property.h
-index 2d4542629d80..2e5eed3ddf1c 100644
---- a/include/linux/property.h
-+++ b/include/linux/property.h
-@@ -88,6 +88,8 @@ struct fwnode_handle *fwnode_get_next_parent(
- unsigned int fwnode_count_parents(const struct fwnode_handle *fwn);
- struct fwnode_handle *fwnode_get_nth_parent(struct fwnode_handle *fwn,
- 					    unsigned int depth);
-+bool fwnode_is_ancestor_of(struct fwnode_handle *test_ancestor,
-+				  struct fwnode_handle *test_child);
- struct fwnode_handle *fwnode_get_next_child_node(
- 	const struct fwnode_handle *fwnode, struct fwnode_handle *child);
- struct fwnode_handle *fwnode_get_next_available_child_node(
 -- 
 2.29.1.341.ge80a0c044ae-goog
 
