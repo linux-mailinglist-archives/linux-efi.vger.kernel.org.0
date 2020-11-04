@@ -2,61 +2,99 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CAFCB2A5CB9
-	for <lists+linux-efi@lfdr.de>; Wed,  4 Nov 2020 03:31:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C5D52A63F2
+	for <lists+linux-efi@lfdr.de>; Wed,  4 Nov 2020 13:12:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730576AbgKDCbB (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 3 Nov 2020 21:31:01 -0500
-Received: from l2mail1.panix.com ([166.84.1.75]:59879 "EHLO l2mail1.panix.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730663AbgKDCa5 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Tue, 3 Nov 2020 21:30:57 -0500
-X-Greylist: delayed 1129 seconds by postgrey-1.27 at vger.kernel.org; Tue, 03 Nov 2020 21:30:55 EST
-Received: from mailbackend.panix.com (mailbackend.panix.com [166.84.1.89])
-        by l2mail1.panix.com (Postfix) with ESMTPS id 4CQqsg1724zDQw;
-        Tue,  3 Nov 2020 21:12:07 -0500 (EST)
-Received: from xps-7390 (cpe-23-242-39-94.socal.res.rr.com [23.242.39.94])
-        by mailbackend.panix.com (Postfix) with ESMTPSA id 4CQqsc1WXfz1dBF;
-        Tue,  3 Nov 2020 21:12:04 -0500 (EST)
-Date:   Tue, 3 Nov 2020 18:12:02 -0800 (PST)
-From:   "Kenneth R. Crudup" <kenny@panix.com>
-Reply-To: "Kenneth R. Crudup" <kenny@panix.com>
-To:     Tyler Hicks <tyhicks@linux.microsoft.com>
-cc:     Kai-Heng Feng <kai.heng.feng@canonical.com>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        Peter Huewe <peterhuewe@gmx.de>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-efi@vger.kernel.org,
-        =?ISO-8859-15?Q?Thi=E9baud_Weksteen?= <tweek@google.com>,
-        Ard Biesheuvel <ardb@kernel.org>
-Subject: Re: [PATCH] tpm: efi: Don't create binary_bios_measurements file
- for an empty log
-In-Reply-To: <20201028173958.GA4624@sequoia>
-Message-ID: <f4e72061-35e-cc4a-c8b7-cfbf5ef42e4@panix.com>
-References: <E1FDCCCB-CA51-4AEE-AC83-9CDE995EAE52@canonical.com> <20201028154102.9595-1-tyhicks@linux.microsoft.com> <20201028163002.GA5150@sequoia> <20201028173958.GA4624@sequoia>
+        id S1729536AbgKDMLw (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 4 Nov 2020 07:11:52 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51508 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726344AbgKDMLv (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 4 Nov 2020 07:11:51 -0500
+Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0D03C0613D3
+        for <linux-efi@vger.kernel.org>; Wed,  4 Nov 2020 04:11:49 -0800 (PST)
+Received: by mail-wr1-x444.google.com with SMTP id c17so2427631wrc.11
+        for <linux-efi@vger.kernel.org>; Wed, 04 Nov 2020 04:11:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=nuviainc-com.20150623.gappssmtp.com; s=20150623;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=EWBXgJnP6ZMmAVaJhl+iR2yivrPLX4y7qTlVADqn+sQ=;
+        b=02EU0SugVCvcNv5FZKpz4AouKz2Hd0mP5NCdXYWBe8Ow8wnnu2Gb9V3HBWS3pkIqC2
+         AaSSsxieSHboL/jsVD4YWTW+VTwa2z1i5whvLZFzVz/J2tMQFok6LxDslPK1Fen7v2WL
+         Lcxm8dOiLEPzA1M1Il0a4ehrzZHUagIq63dawoeay9OQ5FHV1ElKgHHAWghWtdwhgyrF
+         KVLiV0cIdoOhLWDz2xdht4cMrsekFZsxIVcVORqeWNsEpJx9C1zTAjYaOyL3RZyN49kL
+         A9DD+L3R8MmUqOMl3An3C3g6rHPi6nOeP2PTAMmkHMCBLEbiWuBlrwepvZavkDtjwFVn
+         BDLg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=EWBXgJnP6ZMmAVaJhl+iR2yivrPLX4y7qTlVADqn+sQ=;
+        b=Mrz0GBx3l3E51n2ZWieZ911kEa1YgdEXbSkb+vfnqLHq3YKrxr8/ztUwSckgQM1mZZ
+         2aE75UAa4MWPw8dW+wmJeDLV2xIlksk8m4EVhPK8RRKQY+eHKXGln1XG8O+4hKoRdS/L
+         eDO2tEcH56KqWWTFU+LX+rKWQB4Uqw6xkyEyuPXGTS48moG+orXk0qo0M15xnwMnQaVs
+         vYyCXhjtF/1myDnm/fp/sPs7T1bahK8apEmEkjYzGHP3VhaORpB6tYouKMobV/8NUKph
+         GLSC5/cg4yfxkFBOARh7BegKE279eAwteL96Asm9Z6r1rKetUbp7xA8NQL0LQR5EnxVr
+         HQrQ==
+X-Gm-Message-State: AOAM531nYD3jDGdxEmL7JbUZRjH98aEjqUtwUyVGb8J/3knHqz9NltoX
+        yR5gzn2RrkdS3y3QfSM2A/T98w==
+X-Google-Smtp-Source: ABdhPJwcW7xxOT2fCMTy+ARJtIrMwVEjH9MT8L56YudRzFer8fExYnGFG+7EcvahcnaTdASFqcPtcw==
+X-Received: by 2002:adf:f1c1:: with SMTP id z1mr32315036wro.331.1604491908650;
+        Wed, 04 Nov 2020 04:11:48 -0800 (PST)
+Received: from vanye (cpc92880-cmbg19-2-0-cust79.5-4.cable.virginm.net. [82.27.104.80])
+        by smtp.gmail.com with ESMTPSA id u15sm2133387wrm.77.2020.11.04.04.11.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Nov 2020 04:11:48 -0800 (PST)
+Date:   Wed, 4 Nov 2020 12:11:46 +0000
+From:   Leif Lindholm <leif@nuviainc.com>
+To:     Ard Biesheuvel <ard.biesheuvel@arm.com>
+Cc:     linux-efi@vger.kernel.org, grub-devel@gnu.org,
+        daniel.kiper@oracle.com
+Subject: Re: [PATCH v2 1/8] linux/arm: fix ARM Linux header layout
+Message-ID: <20201104121146.GT1664@vanye>
+References: <20201025134941.4805-1-ard.biesheuvel@arm.com>
+ <20201025134941.4805-2-ard.biesheuvel@arm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201025134941.4805-2-ard.biesheuvel@arm.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
+On Sun, Oct 25, 2020 at 14:49:34 +0100, Ard Biesheuvel wrote:
+> The hdr_offset member of the ARM Linux image header appears at
+> offset 0x3c, matching the PE/COFF spec's placement of the COFF
+> header offset in the MS-DOS header. We're currently off by four,
+> so fix that.
+> 
+> Signed-off-by: Ard Biesheuvel <ard.biesheuvel@arm.com>
+> ---
+>  include/grub/arm/linux.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/include/grub/arm/linux.h b/include/grub/arm/linux.h
+> index 2e98a6689696..bcd5a7eb186e 100644
+> --- a/include/grub/arm/linux.h
+> +++ b/include/grub/arm/linux.h
+> @@ -30,7 +30,7 @@ struct linux_arm_kernel_header {
+>    grub_uint32_t magic;
+>    grub_uint32_t start; /* _start */
+>    grub_uint32_t end;   /* _edata */
+> -  grub_uint32_t reserved2[4];
+> +  grub_uint32_t reserved2[3];
+>    grub_uint32_t hdr_offset;
 
-On Wed, 28 Oct 2020, Tyler Hicks wrote:
+How did this ever work?
 
-> Hi Kai, Kenneth, and Mimi - could one or two of you please follow these
-> steps:
-...
+/
+    Leif
 
-OK, I built a kernel with the two patches applied, and with and without commit
-7f3d176f5f7e, and when I run "sudo fwupdtpmevlog" (which normally causes a
-panic() when 7f3d176f5f7e is in place) and the results are:
-
-- With 7f3d176f5f7e reverted, no WARNs of any kind
-- With 7f3d176f5f7e in place, same, I just get "UEFI TPM log area empty"
-
-	-Kenny
-
--- 
-Kenneth R. Crudup  Sr. SW Engineer, Scott County Consulting, Orange County CA
+>  };
+>  
+> -- 
+> 2.17.1
+> 
