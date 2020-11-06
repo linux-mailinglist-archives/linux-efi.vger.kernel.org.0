@@ -2,69 +2,66 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DC73E2A9149
-	for <lists+linux-efi@lfdr.de>; Fri,  6 Nov 2020 09:30:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 841D12A919A
+	for <lists+linux-efi@lfdr.de>; Fri,  6 Nov 2020 09:36:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725830AbgKFIaE (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 6 Nov 2020 03:30:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43816 "EHLO
+        id S1726707AbgKFIgq (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 6 Nov 2020 03:36:46 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44850 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726121AbgKFIaE (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 6 Nov 2020 03:30:04 -0500
-Received: from mail-yb1-xb44.google.com (mail-yb1-xb44.google.com [IPv6:2607:f8b0:4864:20::b44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0AEE1C0613CF
-        for <linux-efi@vger.kernel.org>; Fri,  6 Nov 2020 00:30:04 -0800 (PST)
-Received: by mail-yb1-xb44.google.com with SMTP id s89so437555ybi.12
-        for <linux-efi@vger.kernel.org>; Fri, 06 Nov 2020 00:30:04 -0800 (PST)
+        with ESMTP id S1726694AbgKFIgp (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 6 Nov 2020 03:36:45 -0500
+Received: from mail-yb1-xb43.google.com (mail-yb1-xb43.google.com [IPv6:2607:f8b0:4864:20::b43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D0FAC0613D4
+        for <linux-efi@vger.kernel.org>; Fri,  6 Nov 2020 00:36:45 -0800 (PST)
+Received: by mail-yb1-xb43.google.com with SMTP id h196so476544ybg.4
+        for <linux-efi@vger.kernel.org>; Fri, 06 Nov 2020 00:36:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=rD9/ZK7971oPQsgTQDh0lNY/GvvQHJh4mKJIEvE3uW4=;
-        b=swGAdYh9B4UcdKFMGOCYdOwSbZ937eS+baY29gHnJVzue1i6yqXwQF+5BKXpvKHr4Z
-         RUmRrSbxIH9BqZJTbba/OvEVoirIt9d4jzAHqxguCotfDN1/W40/GMutFHguG2mUwzhi
-         M4uq4gk+4QW2Ba7xpUV83eZSWr8OAGFvs+oJFFb6ym0AFvmVFkWocz+me2nV5VLsF+xA
-         CaJMSqO+80UsA+xoFLE7I95pNMW3c4O9qWTgJBC5dOKZGc1+v9vPFzDgWjdMlQn1vHF0
-         cPyugi+aPoE2+5RhsKIIn37Ics5Kgj0P4Cerj20T/T4lcehFRB/jWr2wp0dbMGqKlhM3
-         Unxw==
+        bh=qEZLCwayVmjTSz55WLFDrASQyKwm9AzKbv8zrefCiDk=;
+        b=Ji/jXL4wApkUI69Y5av8UFEa6ZvMG8Mm7sMdeBuZf7EoU4V1ZJLIvyslti7xbYYgOo
+         7sI5169sAiOnVjscRjwLSG5mTCDgJbsvvoyW7NaM+rXP+TANNYM9GzJTJeHzh5IJBSn6
+         jCu4ranqabbyvqfRRUp8VUmP12hOGnUWANJ2MHUcQuqSD+QuRogFeUpnHgYeTln5Ymb2
+         IxW851j1Otp0qXE2KbajHox2eLThi38VBbZU7+cZkmlqcN1NRpsNCkHTGxZofwDuILfd
+         YJVqD/sCpYRPLK+Qa+6GsSNblgKHxW6x/FkEn9nScueY9kHi8mFdGrFX2iHrBlCcY0aX
+         0Zzg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=rD9/ZK7971oPQsgTQDh0lNY/GvvQHJh4mKJIEvE3uW4=;
-        b=KpvzScIX54V9mm94a9X1S1bHXoQdCw2BsnZSoUkceIuDXIPBdF9644W3OSqLU2Sms4
-         hpLDmSrRTjyC0yRAbKdZV3xLfxIAhBA66Jy7fovK2Uo1X0SCC05GpVAjtE7a9zW3KWIb
-         7ympnbc5Klp8EIFCfqba5oIUQ25MFzuAZoRE8m/M8daq3/YGKwzqSHxP9ERfhba2mBoQ
-         M29SS2Hn1bjeq5dr7tkPnDjBwUC6KPeISyN59vMaQK5k0d1qzgzFeyZJhfO75Hgv++zu
-         /1H3k0hhqoUuT4iIb1reA/pl9xvZIAb8oDMku0GJe8kirxklHLOkP0I3C3XaoU2erLjF
-         T1iQ==
-X-Gm-Message-State: AOAM532xZbRf9ap+BaAkuIzD8qRP7OistqGh6s04Rn3EAk8N7k4XimBh
-        8RbgdOJOrhLRJ1VHeoRzV9AgqfloTd5KbGZxKr4lgg==
-X-Google-Smtp-Source: ABdhPJwpd/q7RalIXkxlcZXBgsLbLVH8dlZ2vdkcPOrnPviYs7G3l0dFWmp/wsONIlbvLar8/0m7H/olvn4jVk0vsL4=
-X-Received: by 2002:a25:3:: with SMTP id 3mr1306315yba.412.1604651403053; Fri,
- 06 Nov 2020 00:30:03 -0800 (PST)
+        bh=qEZLCwayVmjTSz55WLFDrASQyKwm9AzKbv8zrefCiDk=;
+        b=gJxfUA/oNijKk6d5KW1lqwGlNT5BLuDXUYhpfkRsZay0KaSKm2Ys4E/NMdgCowb1ys
+         bjKP7LujcoXakyxqDuoZp4e0o1Szz8oKRNW54vfASdYbmHRviRr1irqMZxhyEKSPQTV1
+         6C5AQja7sL04F7QA6HvimCENOzL8p6LGZiorfoKUVVY0OFZCXSXSkR9kTe1gTdOPTv/7
+         31ay7HVN17XYOInbI37eS+jk1TVpjOgSJFcKoIzUfrWScMdIzQyGcquXGY8b52YUBhv/
+         +8NYGMbb+x09tYxsokf+j/wyh3zYMc1vh69gknaQwciJfDSgIG1iopBP1W+TYLxOs0nw
+         2LbA==
+X-Gm-Message-State: AOAM531tCD9eBhSlX2t553AhqhMHaFW6TtUaKiejRUZGdXsjJL6rVJkK
+        j7X/OdMg218q4Stkm+Z4Y6Rd78juAX3gMUHRlHBK7Q==
+X-Google-Smtp-Source: ABdhPJzvDcNdXHjO7nYfSMx7aYo6WWdRNoKpDm3K2m0Ae6MfNyULyjym/ptGih8ndA11+PnN2rHt+iT8lQNTMQ3Kip0=
+X-Received: by 2002:a25:d2c5:: with SMTP id j188mr1358442ybg.32.1604651804489;
+ Fri, 06 Nov 2020 00:36:44 -0800 (PST)
 MIME-Version: 1.0
-References: <20201104232356.4038506-1-saravanak@google.com>
- <20201104232356.4038506-16-saravanak@google.com> <20201105094228.GE3439341@kroah.com>
- <CAGETcx-0TPte6g3Cf5F3WJwdW-9yUptLDj3AcEdvWN0YJ2H4qg@mail.gmail.com>
- <20201106072247.GB2614221@kroah.com> <CAGETcx_tQboQPWuoj9hi38-1n=mAQihCi2b475z2r_9s_rXhNg@mail.gmail.com>
- <20201106075148.GA2619937@kroah.com>
-In-Reply-To: <20201106075148.GA2619937@kroah.com>
+References: <20201104232356.4038506-1-saravanak@google.com> <20201106050940.GG16469@pendragon.ideasonboard.com>
+In-Reply-To: <20201106050940.GG16469@pendragon.ideasonboard.com>
 From:   Saravana Kannan <saravanak@google.com>
-Date:   Fri, 6 Nov 2020 00:29:27 -0800
-Message-ID: <CAGETcx9LNWAXmbbzp3_LMeA515jwOibBfrzcadAcsNTJPHVnnQ@mail.gmail.com>
-Subject: Re: [PATCH v1 15/18] of: property: Update implementation of
- add_links() to create fwnode links
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Date:   Fri, 6 Nov 2020 00:36:08 -0800
+Message-ID: <CAGETcx-rvTuEmJUsf6qP3WkPLOh6m6cy8E_LsJPoGejNOXrdcw@mail.gmail.com>
+Subject: Re: [PATCH v1 00/18] Refactor fw_devlink to significantly improve
+ boot time
+To:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Ard Biesheuvel <ardb@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
         Frank Rowand <frowand.list@gmail.com>,
         Marc Zyngier <maz@kernel.org>,
         Thomas Gleixner <tglx@linutronix.de>,
         Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
         Grygorii Strashko <grygorii.strashko@ti.com>,
         Android Kernel Team <kernel-team@android.com>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
@@ -77,135 +74,77 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, Nov 5, 2020 at 11:51 PM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
+On Thu, Nov 5, 2020 at 9:09 PM Laurent Pinchart
+<laurent.pinchart@ideasonboard.com> wrote:
 >
-> On Thu, Nov 05, 2020 at 11:41:20PM -0800, Saravana Kannan wrote:
-> > On Thu, Nov 5, 2020 at 11:22 PM Greg Kroah-Hartman
-> > <gregkh@linuxfoundation.org> wrote:
-> > >
-> > > On Thu, Nov 05, 2020 at 03:25:56PM -0800, Saravana Kannan wrote:
-> > > > On Thu, Nov 5, 2020 at 1:41 AM Greg Kroah-Hartman
-> > > > <gregkh@linuxfoundation.org> wrote:
-> > > > >
-> > > > > On Wed, Nov 04, 2020 at 03:23:52PM -0800, Saravana Kannan wrote:
-> > > > > > The semantics of add_links() has changed from creating device link
-> > > > > > between devices to creating fwnode links between fwnodes. So, update the
-> > > > > > implementation of add_links() to match the new semantics.
-> > > > > >
-> > > > > > Signed-off-by: Saravana Kannan <saravanak@google.com>
-> > > > > > ---
-> > > > > >  drivers/of/property.c | 150 ++++++++++++------------------------------
-> > > > > >  1 file changed, 41 insertions(+), 109 deletions(-)
-> > > > > >
-> > > > > > diff --git a/drivers/of/property.c b/drivers/of/property.c
-> > > > > > index 408a7b5f06a9..86303803f1b3 100644
-> > > > > > --- a/drivers/of/property.c
-> > > > > > +++ b/drivers/of/property.c
-> > > > > > @@ -1038,33 +1038,9 @@ static bool of_is_ancestor_of(struct device_node *test_ancestor,
-> > > > > >  }
-> > > > > >
-> > > > > >  /**
-> > > > > > - * of_get_next_parent_dev - Add device link to supplier from supplier phandle
-> > > > > > - * @np: device tree node
-> > > > > > - *
-> > > > > > - * Given a device tree node (@np), this function finds its closest ancestor
-> > > > > > - * device tree node that has a corresponding struct device.
-> > > > > > - *
-> > > > > > - * The caller of this function is expected to call put_device() on the returned
-> > > > > > - * device when they are done.
-> > > > > > - */
-> > > > > > -static struct device *of_get_next_parent_dev(struct device_node *np)
-> > > > > > -{
-> > > > > > -     struct device *dev = NULL;
-> > > > > > -
-> > > > > > -     of_node_get(np);
-> > > > > > -     do {
-> > > > > > -             np = of_get_next_parent(np);
-> > > > > > -             if (np)
-> > > > > > -                     dev = get_dev_from_fwnode(&np->fwnode);
-> > > > > > -     } while (np && !dev);
-> > > > > > -     of_node_put(np);
-> > > > > > -     return dev;
-> > > > > > -}
-> > > > > > -
-> > > > > > -/**
-> > > > > > - * of_link_to_phandle - Add device link to supplier from supplier phandle
-> > > > > > - * @dev: consumer device
-> > > > > > - * @sup_np: phandle to supplier device tree node
-> > > > > > + * of_link_to_phandle - Add fwnode link to supplier from supplier phandle
-> > > > > > + * @con_np: consumer device tree node
-> > > > > > + * @sup_np: supplier device tree node
-> > > > > >   *
-> > > > > >   * Given a phandle to a supplier device tree node (@sup_np), this function
-> > > > > >   * finds the device that owns the supplier device tree node and creates a
-> > > > > > @@ -1074,16 +1050,14 @@ static struct device *of_get_next_parent_dev(struct device_node *np)
-> > > > > >   * cases, it returns an error.
-> > > > > >   *
-> > > > > >   * Returns:
-> > > > > > - * - 0 if link successfully created to supplier
-> > > > > > - * - -EAGAIN if linking to the supplier should be reattempted
-> > > > > > + * - 0 if fwnode link successfully created to supplier
-> > > > > >   * - -EINVAL if the supplier link is invalid and should not be created
-> > > > > > - * - -ENODEV if there is no device that corresponds to the supplier phandle
-> > > > > > + * - -ENODEV if struct device will never be create for supplier
-> > > > > >   */
-> > > > > > -static int of_link_to_phandle(struct device *dev, struct device_node *sup_np,
-> > > > > > -                           u32 dl_flags)
-> > > > > > +static int of_link_to_phandle(struct device_node *con_np,
-> > > > > > +                           struct device_node *sup_np)
-> > > > > >  {
-> > > > > > -     struct device *sup_dev, *sup_par_dev;
-> > > > > > -     int ret = 0;
-> > > > > > +     struct device *sup_dev;
-> > > > > >       struct device_node *tmp_np = sup_np;
-> > > > > >
-> > > > > >       of_node_get(sup_np);
-> > > > > > @@ -1106,7 +1080,8 @@ static int of_link_to_phandle(struct device *dev, struct device_node *sup_np,
-> > > > > >       }
-> > > > > >
-> > > > > >       if (!sup_np) {
-> > > > > > -             dev_dbg(dev, "Not linking to %pOFP - No device\n", tmp_np);
-> > > > > > +             pr_debug("Not linking %pOFP to %pOFP - No device\n",
-> > > > > > +                      con_np, tmp_np);
-> > > > >
-> > > > > Who is calling this function without a valid dev pointer?
-> > > >
-> > > > Sorry, I plan to delete the "dev" parameter as it's not really used
-> > > > anywhere. I'm trying to do that without causing build time errors and
-> > > > making the series into digestible small patches.
-> > > >
-> > > > I can do the deletion of the parameter as a Patch 19/19. Will that work?
-> > >
-> > > That's fine, but why get rid of dev?  The driver core works on these
-> > > things, and we want errors/messages/warnings to spit out what device is
-> > > causing those issues.  It is fine to drag around a struct device pointer
-> > > just for messages, that's to be expected, and is good.
-> >
-> > In general I agree. If the fwnode being parsed is related to the dev,
-> > it's nice to have the dev name in the logs.
-> >
-> > But in this instance I feel it's analogous to printing the PID that's
-> > parsing the fwnode -- kinda irrelevant. The device in question can
-> > appear very random and it'll just cause more confusion than be of help
-> > if it shows up in the logs.
-> >
-> > For example it can be something like:
-> > <gpio device name>: linking <wifi fwnode> to <iommu fwnode>
-> >
-> > If the device was actually that of the wifi fwnode of the iommu
-> > fwnode, I agree it'll be useful to carry around the dev even if it's
-> > just for logs.
-> >
-> > Hope that makes sense.
+> Hi Saravana,
 >
-> Not really, as the device here should be the one that is doing the
-> linking, so why doesn't that matter?
+> Thank you for working on this !
+>
+> On Wed, Nov 04, 2020 at 03:23:37PM -0800, Saravana Kannan wrote:
+> > The current implementation of fw_devlink is very inefficient because it
+> > tries to get away without creating fwnode links in the name of saving
+> > memory usage. Past attempts to optimize runtime at the cost of memory
+> > usage were blocked with request for data showing that the optimization
+> > made significant improvement for real world scenarios.
+> >
+> > We have those scenarios now. There have been several reports of boot
+> > time increase in the order of seconds in this thread [1]. Several OEMs
+> > and SoC manufacturers have also privately reported significant
+> > (350-400ms) increase in boot time due to all the parsing done by
+> > fw_devlink.
+> >
+> > So this patch series refactors fw_devlink to be more efficient. The key
+> > difference now is the addition of support for fwnode links -- just a few
+> > simple APIs. This also allows most of the code to be moved out of
+> > firmware specific (DT mostly) code into driver core.
+> >
+> > This brings the following benefits:
+> > - Instead of parsing the device tree multiple times (complexity was
+> >   close to O(N^3) where N in the number of properties) during bootup,
+> >   fw_devlink parses each fwnode node/property only once and creates
+> >   fwnode links. The rest of the fw_devlink code then just looks at these
+> >   fwnode links to do rest of the work.
+> >
+> > - Makes it much easier to debug probe issue due to fw_devlink in the
+> >   future. fw_devlink=on blocks the probing of devices if they depend on
+> >   a device that hasn't been added yet. With this refactor, it'll be very
+> >   easy to tell what that device is because we now have a reference to
+> >   the fwnode of the device.
+> >
+> > - Much easier to add fw_devlink support to ACPI and other firmware
+> >   types. A refactor to move the common bits from DT specific code to
+> >   driver core was in my TODO list as a prerequisite to adding ACPI
+> >   support to fw_devlink. This series gets that done.
+> >
+> > Tomi/Laurent/Grygorii,
+> >
+> > If you can test this series, that'd be great!
+>
+> I gave it a try, rebasing my branch from v5.9 to v5.10-rc2 first. On
+> v5.10-rc2 the kernel dies when booting due to a deadlock (reported by
+> lockdep, so hopefully not too hard to debug). *sigh*. Fortunately, it
+> dies after the fw_devlink initialization, so I can still report results.
 
-No, the links being created here are fwnode links. Also, when a fwnode
-is parsed (because the device corresponding to it is added), the whole
-fwnode tree under it is also parsed. So the device in question won't
-be either the consumer or the supplier when the log is printed. So the
-device will just be some random ancestor up the parent chain.
+Phew! For a sec I thought you said fw_devlink was causing a deadlock.
+
+>
+> Before your series:
+>
+> [    0.743065] cpuidle: using governor menu
+> [   13.350259] No ATAGs?
+>
+> With your series applied:
+>
+> [    0.722670] cpuidle: using governor menu
+> [    1.135859] No ATAGs?
+>
+> That's a very clear improvement :-)
+
+Thanks for testing. Great to hear it's helping!
+
+> Tested-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+
+I'll add it to my v2 series.
 
 -Saravana
