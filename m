@@ -2,56 +2,57 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B63C32A8ACE
-	for <lists+linux-efi@lfdr.de>; Fri,  6 Nov 2020 00:32:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2438B2A8C0C
+	for <lists+linux-efi@lfdr.de>; Fri,  6 Nov 2020 02:25:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732430AbgKEXcm (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 5 Nov 2020 18:32:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45010 "EHLO
+        id S1730246AbgKFBZ1 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 5 Nov 2020 20:25:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34298 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732181AbgKEXcm (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 5 Nov 2020 18:32:42 -0500
+        with ESMTP id S1730414AbgKFBZ1 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 5 Nov 2020 20:25:27 -0500
 Received: from mail-yb1-xb42.google.com (mail-yb1-xb42.google.com [IPv6:2607:f8b0:4864:20::b42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6ECF8C0613D2
-        for <linux-efi@vger.kernel.org>; Thu,  5 Nov 2020 15:32:42 -0800 (PST)
-Received: by mail-yb1-xb42.google.com with SMTP id i186so2852756ybc.11
-        for <linux-efi@vger.kernel.org>; Thu, 05 Nov 2020 15:32:42 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA072C0613D4
+        for <linux-efi@vger.kernel.org>; Thu,  5 Nov 2020 17:25:26 -0800 (PST)
+Received: by mail-yb1-xb42.google.com with SMTP id o70so3083327ybc.1
+        for <linux-efi@vger.kernel.org>; Thu, 05 Nov 2020 17:25:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=ZlNXU8L3sc+m7lobXj6lchl7ijTptw1kaCcOIcaSPgI=;
-        b=R+M6ljMb9p4EF+j7hVsSP50JIlCK4OhEmIi3kc0Oh9OJR5LX1PxyfNuxHV7xoDEaYE
-         YdpO4m2sYjOBPMJz6KzYkTcEoROM/DNnXLCHIfFI/SmCDRg/sEqQVeXbtbEBup48wOxi
-         Aohr3p8VnAHrN05tjYwRRNOQWEbjpjZNas1UOYx/fXIKTv5CY4SZDEpu7crHEP/b/RZp
-         7cQlnjQgz2Fmpom7VisiX7UsijfBXNZT6Nlx68P+BvmK4p8szYCBc65XhRXujuBf4vm0
-         arAC3YN02XoSO+Z01CbvIYBuFPshAZgA8jhXGU4p6aK6qD2dAI9kMysBuLdftf+BSuh6
-         bqSg==
+        bh=lzV9usbcyvrZBezSzuliRNMORjroXFiHCPOIQMppm20=;
+        b=mFp6wXmb3dx9Iz2MBUFPuVyhUmTP9lVcgCQyveXhQC419PlTNsEI22yTsPSMZG3kax
+         nCA+1dWmdyC3cWpzU49fyRrvZeCLfP1DG4UmaQghxfel1tj/ATOuawBGgVV7u7rd3IXM
+         B3nOHiSCZ0UVphZueGqjVfoII+u+8CgPeywRQoPZiN90fLMexZ4OTiIWWVcJZpGuww0b
+         5i1H1jHOQRmOezoZJCcZrJFBPQxgzXBPiRWAD7uMqyCVSeIAy0hKx54ImBx5TMTl5tM1
+         ODvAV2PnmUPZgqwW3qnqbwsT2wQij3uP3CiH3p3nXpvFTtKUXi+vJi/c3j/+B8DEr9kj
+         uBQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=ZlNXU8L3sc+m7lobXj6lchl7ijTptw1kaCcOIcaSPgI=;
-        b=GPV2HE8IhHEB9wGMwQDNNt4B82nCmjyB/Izbtl3CWHgiUBKjky7Jg6j9hAFz0F83za
-         3piqE3UwtnfCwPsSeWDmgP/WJSX84StbZpkp1yrKOZESUPSnoOUXjeWn7QNdXF9Hpt0T
-         08z/svFFYsDaWWdh8KnfDiBMMZ5S2sdSwSLz+vMidTFXV5uN+M/NV3b7hiUWuY7kZSMc
-         yTtXGlXPgANSOzA3J/QgkDniDGLL+z6CD/C/qzPkUq6UUKp5pJKFhsakJq3yOD5/CgwI
-         2jFEzVHlNZoHthr00RE0jz2JSVutCOpx5RAnk8iZ7Zabvnbm9e48mGnlZI6ULwreGrHO
-         PIDg==
-X-Gm-Message-State: AOAM532mvrQ/WtxbfHMIplZM/4LEta/ulFGoTMrP5PCtN+cujtZCYcWk
-        bvKBZ6+cxYmKBC8qQ/Ok4M3vpvNlsrt4MDUYd0CLcA==
-X-Google-Smtp-Source: ABdhPJzzCr4BmURLVuAhnOzfU3X5o0Y4eA3x9j/YnSiCup69qb3WT2w/EdMw5wqJ7dawJsOTC6R4sqZFiyjNF8xV/bc=
-X-Received: by 2002:a25:f817:: with SMTP id u23mr7312436ybd.466.1604619161422;
- Thu, 05 Nov 2020 15:32:41 -0800 (PST)
+        bh=lzV9usbcyvrZBezSzuliRNMORjroXFiHCPOIQMppm20=;
+        b=XlHhEdAjLcJjl9Z/5OxaDSnF8GuJ2kumsZ3qFuH8GQRR+lK1Xs0ymXQ+lFRzQBSRqn
+         RfW6BSIdNWEAky+9li2UNpHl3YqKTAhdIBlyezb5+CXNWTOUVgNfyLw2AS+9RNpkfr/N
+         GItLwwlGHub90XL+oLZHfjYGQjZ4BeyMZ5YdQsT/bmUMXtKF5WRF9tPQXYRMecgcZQM0
+         39GTSULR1hU2Mmsb2j+u31SUMIdzlinZHMgwcLiKLDy88rDQohcGuQFKx5Glup4oZ6h8
+         8HOZ8w5RlHyJICLxt70CbyXYSysun2XxEMDH+7G7YKlp0Y/7Gh29rjcqslP7AE4z4ZcO
+         vh/Q==
+X-Gm-Message-State: AOAM531cLqVkO4AgoncY4xLEKJQgY3j4iHYCzoVYb8ejMleYLTM8aujv
+        CBvrevgHyUPFHWdqtVvqpvQQPnSdhhmpAVZrLORA+w==
+X-Google-Smtp-Source: ABdhPJyYHml/89uqvPtNmXYMF2Pm87o8/A6MHGqILFDdIGr3l1sb+4jGsYPEXHB+yaFTcNWWksQrzvjmCxCbmsk95lA=
+X-Received: by 2002:a25:9c02:: with SMTP id c2mr7063033ybo.228.1604625925368;
+ Thu, 05 Nov 2020 17:25:25 -0800 (PST)
 MIME-Version: 1.0
 References: <20201104232356.4038506-1-saravanak@google.com>
- <20201104232356.4038506-18-saravanak@google.com> <20201105094350.GG3439341@kroah.com>
-In-Reply-To: <20201105094350.GG3439341@kroah.com>
+ <20201104232356.4038506-16-saravanak@google.com> <20201105094228.GE3439341@kroah.com>
+ <CAGETcx-0TPte6g3Cf5F3WJwdW-9yUptLDj3AcEdvWN0YJ2H4qg@mail.gmail.com>
+In-Reply-To: <CAGETcx-0TPte6g3Cf5F3WJwdW-9yUptLDj3AcEdvWN0YJ2H4qg@mail.gmail.com>
 From:   Saravana Kannan <saravanak@google.com>
-Date:   Thu, 5 Nov 2020 15:32:05 -0800
-Message-ID: <CAGETcx--D_KCpvK3b9NAQbMgWxzYT6MGEav1h2M8V7f=wK5L6A@mail.gmail.com>
-Subject: Re: [PATCH v1 17/18] driver core: Add helper functions to convert
- fwnode links to device links
+Date:   Thu, 5 Nov 2020 17:24:49 -0800
+Message-ID: <CAGETcx-AcCk2c4Jq9HGfxUcCdnpWb5d_ubNd=r6KciHCFUdAVw@mail.gmail.com>
+Subject: Re: [PATCH v1 15/18] of: property: Update implementation of
+ add_links() to create fwnode links
 To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
@@ -74,44 +75,100 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, Nov 5, 2020 at 1:43 AM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
+On Thu, Nov 5, 2020 at 3:25 PM Saravana Kannan <saravanak@google.com> wrote:
 >
-> On Wed, Nov 04, 2020 at 03:23:54PM -0800, Saravana Kannan wrote:
-> > Add helper functions __fw_devlink_link_to_consumers() and
-> > __fw_devlink_link_to_suppliers() that convert fwnode links to device
-> > links.
+> On Thu, Nov 5, 2020 at 1:41 AM Greg Kroah-Hartman
+> <gregkh@linuxfoundation.org> wrote:
 > >
-> > __fw_devlink_link_to_consumers() is for creating:
-> > - Device links between a newly added device and all its consumer devices
-> >   that have been added to driver core.
-> > - Proxy SYNC_STATE_ONLY device links between the newly added device and
-> >   the parent devices of all its consumers that have not been added to
-> >   driver core yet.
+> > On Wed, Nov 04, 2020 at 03:23:52PM -0800, Saravana Kannan wrote:
+> > > The semantics of add_links() has changed from creating device link
+> > > between devices to creating fwnode links between fwnodes. So, update the
+> > > implementation of add_links() to match the new semantics.
+> > >
+> > > Signed-off-by: Saravana Kannan <saravanak@google.com>
+> > > ---
+> > >  drivers/of/property.c | 150 ++++++++++++------------------------------
+> > >  1 file changed, 41 insertions(+), 109 deletions(-)
+> > >
+> > > diff --git a/drivers/of/property.c b/drivers/of/property.c
+> > > index 408a7b5f06a9..86303803f1b3 100644
+> > > --- a/drivers/of/property.c
+> > > +++ b/drivers/of/property.c
+> > > @@ -1038,33 +1038,9 @@ static bool of_is_ancestor_of(struct device_node *test_ancestor,
+> > >  }
+> > >
+> > >  /**
+> > > - * of_get_next_parent_dev - Add device link to supplier from supplier phandle
+> > > - * @np: device tree node
+> > > - *
+> > > - * Given a device tree node (@np), this function finds its closest ancestor
+> > > - * device tree node that has a corresponding struct device.
+> > > - *
+> > > - * The caller of this function is expected to call put_device() on the returned
+> > > - * device when they are done.
+> > > - */
+> > > -static struct device *of_get_next_parent_dev(struct device_node *np)
+> > > -{
+> > > -     struct device *dev = NULL;
+> > > -
+> > > -     of_node_get(np);
+> > > -     do {
+> > > -             np = of_get_next_parent(np);
+> > > -             if (np)
+> > > -                     dev = get_dev_from_fwnode(&np->fwnode);
+> > > -     } while (np && !dev);
+> > > -     of_node_put(np);
+> > > -     return dev;
+> > > -}
+> > > -
+> > > -/**
+> > > - * of_link_to_phandle - Add device link to supplier from supplier phandle
+> > > - * @dev: consumer device
+> > > - * @sup_np: phandle to supplier device tree node
+> > > + * of_link_to_phandle - Add fwnode link to supplier from supplier phandle
+> > > + * @con_np: consumer device tree node
+> > > + * @sup_np: supplier device tree node
+> > >   *
+> > >   * Given a phandle to a supplier device tree node (@sup_np), this function
+> > >   * finds the device that owns the supplier device tree node and creates a
+> > > @@ -1074,16 +1050,14 @@ static struct device *of_get_next_parent_dev(struct device_node *np)
+> > >   * cases, it returns an error.
+> > >   *
+> > >   * Returns:
+> > > - * - 0 if link successfully created to supplier
+> > > - * - -EAGAIN if linking to the supplier should be reattempted
+> > > + * - 0 if fwnode link successfully created to supplier
+> > >   * - -EINVAL if the supplier link is invalid and should not be created
+> > > - * - -ENODEV if there is no device that corresponds to the supplier phandle
+> > > + * - -ENODEV if struct device will never be create for supplier
+> > >   */
+> > > -static int of_link_to_phandle(struct device *dev, struct device_node *sup_np,
+> > > -                           u32 dl_flags)
+> > > +static int of_link_to_phandle(struct device_node *con_np,
+> > > +                           struct device_node *sup_np)
+> > >  {
+> > > -     struct device *sup_dev, *sup_par_dev;
+> > > -     int ret = 0;
+> > > +     struct device *sup_dev;
+> > >       struct device_node *tmp_np = sup_np;
+> > >
+> > >       of_node_get(sup_np);
+> > > @@ -1106,7 +1080,8 @@ static int of_link_to_phandle(struct device *dev, struct device_node *sup_np,
+> > >       }
+> > >
+> > >       if (!sup_np) {
+> > > -             dev_dbg(dev, "Not linking to %pOFP - No device\n", tmp_np);
+> > > +             pr_debug("Not linking %pOFP to %pOFP - No device\n",
+> > > +                      con_np, tmp_np);
 > >
-> > __fw_devlink_link_to_suppliers() is for creating:
-> > - Device links between a newly added device and all its supplier devices
-> > - Proxy SYNC_STATE_ONLY device links between the newly added device and
-> >   all the supplier devices of its child device nodes.
-> >
-> > Signed-off-by: Saravana Kannan <saravanak@google.com>
+> > Who is calling this function without a valid dev pointer?
 >
-> Did you just add build warnings with these static functions that no one
-> calls?
+> Sorry, I plan to delete the "dev" parameter as it's not really used
+> anywhere. I'm trying to do that without causing build time errors and
+> making the series into digestible small patches.
 
-The next patch in this series uses it. I'm just splitting it up into a
-separate patch so that it's digestible and I can provide more details
-in the commit text.
-
-Couple of options:
-1. Drop the static in this patch and add it back when it's used in patch 18/18.
-2. Drop the commit text and squash this with 18/18 if you think the
-function documentation is clear enough and it won't make patch 18/18
-too hard to review.
-
-Please let me know which one you'd prefer or if you have other
-options. I don't have a strong opinion on how the patches are split up
-as long as it's easy for the reviewers and future folks who look at
-git log to understand stuff.
+*facepalm* for my earlier response. You'll notice that I've already
+deleted the "dev" input param to this function. That's why I can't use
+it here :)
 
 -Saravana
