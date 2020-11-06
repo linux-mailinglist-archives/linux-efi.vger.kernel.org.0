@@ -2,99 +2,116 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A29992A8FA0
-	for <lists+linux-efi@lfdr.de>; Fri,  6 Nov 2020 07:45:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AAA772A8FF6
+	for <lists+linux-efi@lfdr.de>; Fri,  6 Nov 2020 08:06:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726264AbgKFGpI (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 6 Nov 2020 01:45:08 -0500
-Received: from mail.kernel.org ([198.145.29.99]:38702 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725842AbgKFGpH (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Fri, 6 Nov 2020 01:45:07 -0500
-Received: from localhost (83-86-74-64.cable.dynamic.v4.ziggo.nl [83.86.74.64])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id E3532206B2;
-        Fri,  6 Nov 2020 06:45:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1604645106;
-        bh=gSrHcJPj/8i6uoEotdwklqj12Wa4bQLC0DC3nlOvvX4=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=fqCwGQQooVimXHzYmO7cAz4NdXlOMrQUsSVT8WS0kLlV7zYpTh5L6yALgqgkVEIir
-         wqFoj8Rwnf5YtDUNtkRONC9AeT5Q8ce1vHaVwdlmxhbEwaznloYSfrrVD2txQBfElX
-         rGYohEflm6ap2RJAX2b6h39mD4p2ez8fJ6vew7VU=
-Date:   Fri, 6 Nov 2020 07:45:03 +0100
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Saravana Kannan <saravanak@google.com>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Marc Zyngier <maz@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Android Kernel Team <kernel-team@android.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>
-Subject: Re: [PATCH v1 16/18] efi: Update implementation of add_links() to
- create fwnode links
-Message-ID: <20201106064503.GB697514@kroah.com>
-References: <20201104232356.4038506-1-saravanak@google.com>
- <20201104232356.4038506-17-saravanak@google.com>
- <20201105094318.GF3439341@kroah.com>
- <CAGETcx_Kh32AjVoUB3uiYBRhB+24JrceTp+HxG6vK6Ks=-e26w@mail.gmail.com>
+        id S1726560AbgKFHFq (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 6 Nov 2020 02:05:46 -0500
+Received: from mo-csw-fb1115.securemx.jp ([210.130.202.174]:60624 "EHLO
+        mo-csw-fb.securemx.jp" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726524AbgKFHFl (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 6 Nov 2020 02:05:41 -0500
+X-Greylist: delayed 5290 seconds by postgrey-1.27 at vger.kernel.org; Fri, 06 Nov 2020 02:05:39 EST
+Received: by mo-csw-fb.securemx.jp (mx-mo-csw-fb1115) id 0A65bTgp005425; Fri, 6 Nov 2020 14:37:29 +0900
+Received: by mo-csw.securemx.jp (mx-mo-csw1115) id 0A65arFR018126; Fri, 6 Nov 2020 14:36:53 +0900
+X-Iguazu-Qid: 2wHHmca9fb4omt8CsG
+X-Iguazu-QSIG: v=2; s=0; t=1604641012; q=2wHHmca9fb4omt8CsG; m=8omBj8jo2qzV/WJteuWe7FJml1+CQgKYuaV4OIgz5TE=
+Received: from imx12.toshiba.co.jp (imx12.toshiba.co.jp [61.202.160.132])
+        by relay.securemx.jp (mx-mr1110) id 0A65ao5p023434;
+        Fri, 6 Nov 2020 14:36:51 +0900
+Received: from enc02.toshiba.co.jp ([61.202.160.51])
+        by imx12.toshiba.co.jp  with ESMTP id 0A65aov5024147;
+        Fri, 6 Nov 2020 14:36:50 +0900 (JST)
+Received: from hop101.toshiba.co.jp ([133.199.85.107])
+        by enc02.toshiba.co.jp  with ESMTP id 0A65anXV001086;
+        Fri, 6 Nov 2020 14:36:50 +0900
+From:   Punit Agrawal <punit1.agrawal@toshiba.co.jp>
+To:     Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
+Cc:     <x86@kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-pm@vger.kernel.org>, <linux-edac@vger.kernel.org>,
+        <linux-efi@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+        Borislav Petkov <bp@alien8.de>,
+        Tony Luck <tony.luck@intel.com>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <len.brown@intel.com>,
+        "Ard Biesheuvel" <ardb@kernel.org>,
+        Yazen Ghannam <yazen.ghannam@amd.com>
+Subject: Re: [PATCH v5] cper, apei, mce: Pass x86 CPER through the MCA handling chain
+References: <20201103164952.5126-1-Smita.KoralahalliChannabasappa@amd.com>
+Date:   Fri, 06 Nov 2020 14:36:46 +0900
+In-Reply-To: <20201103164952.5126-1-Smita.KoralahalliChannabasappa@amd.com>
+        (Smita Koralahalli's message of "Tue, 3 Nov 2020 10:49:52 -0600")
+X-TSB-HOP: ON
+Message-ID: <87a6vv9hch.fsf@kokedama.swc.toshiba.co.jp>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.3 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAGETcx_Kh32AjVoUB3uiYBRhB+24JrceTp+HxG6vK6Ks=-e26w@mail.gmail.com>
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, Nov 05, 2020 at 03:27:52PM -0800, Saravana Kannan wrote:
-> On Thu, Nov 5, 2020 at 1:42 AM Greg Kroah-Hartman
-> <gregkh@linuxfoundation.org> wrote:
-> >
-> > On Wed, Nov 04, 2020 at 03:23:53PM -0800, Saravana Kannan wrote:
-> > > The semantics of add_links() has changed from creating device link
-> > > between devices to creating fwnode links between fwnodes. So, update the
-> > > implementation of add_links() to match the new semantics.
-> > >
-> > > Signed-off-by: Saravana Kannan <saravanak@google.com>
-> > > ---
-> > >  drivers/firmware/efi/efi-init.c | 23 ++---------------------
-> > >  1 file changed, 2 insertions(+), 21 deletions(-)
-> > >
-> > > diff --git a/drivers/firmware/efi/efi-init.c b/drivers/firmware/efi/efi-init.c
-> > > index b148f1459fb3..c0c3d4c3837a 100644
-> > > --- a/drivers/firmware/efi/efi-init.c
-> > > +++ b/drivers/firmware/efi/efi-init.c
-> > > @@ -316,11 +316,10 @@ static struct device_node *find_pci_overlap_node(void)
-> > >   * resource reservation conflict on the memory window that the efifb
-> > >   * framebuffer steals from the PCIe host bridge.
-> > >   */
-> > > -static int efifb_add_links(const struct fwnode_handle *fwnode,
-> > > +static int efifb_add_links(struct fwnode_handle *fwnode,
-> > >                          struct device *dev)
-> >
-> > So you are fixing the build warning you added a few patches ago here?
-> > Please fix up the function signatures when you made that change, not
-> > here later on.
-> 
-> I'm trying not to have a mega patcht that changes a lot of code.
-> 
-> I guess I can drop this "const" diff from this patch and then merge it
-> with the earlier patch that removes the const. But still leave the
-> rest of the changes in this patch as is. Does that work for you?
+Hi Smita,
 
-Yes, that's fine, you just can't add build warnings along the way.
+Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com> writes:
 
-thanks,
+> Linux Kernel uses ACPI Boot Error Record Table (BERT) to report fatal
+> errors that occurred in a previous boot. The MCA errors in the BERT are
+> reported using the x86 Processor Error Common Platform Error Record (CPER)
+> format. Currently, the record prints out the raw MSR values and AMD relies
+> on the raw record to provide MCA information.
+>
+> Extract the raw MSR values of MCA registers from the BERT and feed it into
+> the standard mce_log() function through the existing x86/MCA RAS
+> infrastructure. This will result in better decoding from the EDAC MCE
+> decoder or the default notifier.
+>
+> The implementation is SMCA specific as the raw MCA register values are
+> given in the register offset order of the MCAX address space.
+>
+> [ Fix a build breakage in patch v1. ]
+> Reported-by: kernel test robot <lkp@intel.com>
+> Signed-off-by: Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
 
-greg k-h
+[...]
+
+> diff --git a/drivers/firmware/efi/cper-x86.c b/drivers/firmware/efi/cper-x86.c
+> index 2531de49f56c..438ed9eff6d0 100644
+> --- a/drivers/firmware/efi/cper-x86.c
+> +++ b/drivers/firmware/efi/cper-x86.c
+> @@ -2,6 +2,7 @@
+>  // Copyright (C) 2018, Advanced Micro Devices, Inc.
+>  
+>  #include <linux/cper.h>
+> +#include <linux/acpi.h>
+
+Did you mean to include <asm/acpi.h>?
+
+>  
+>  /*
+>   * We don't need a "CPER_IA" prefix since these are all locally defined.
+> @@ -347,9 +348,13 @@ void cper_print_proc_ia(const char *pfx, const struct cper_sec_proc_ia *proc)
+>  			       ctx_info->mm_reg_addr);
+>  		}
+>  
+> -		printk("%sRegister Array:\n", newpfx);
+> -		print_hex_dump(newpfx, "", DUMP_PREFIX_OFFSET, 16, groupsize,
+> -			       (ctx_info + 1), ctx_info->reg_arr_size, 0);
+> +		if (ctx_info->reg_ctx_type != CTX_TYPE_MSR ||
+> +		    arch_apei_report_x86_error(ctx_info, proc->lapic_id)) {
+> +			printk("%sRegister Array:\n", newpfx);
+> +			print_hex_dump(newpfx, "", DUMP_PREFIX_OFFSET, 16,
+> +				       groupsize, (ctx_info + 1),
+> +				       ctx_info->reg_arr_size, 0);
+> +		}
+>  
+>  		ctx_info = (struct cper_ia_proc_ctx *)((long)ctx_info + size);
+>  	}
+
+With that addressed,
+
+FWIW,
+
+Reviewed-by: Punit Agrawal <punit1.agrawal@toshiba.co.jp>
+
+Thanks,
+Punit
