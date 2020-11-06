@@ -2,159 +2,200 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 617C52A8E94
-	for <lists+linux-efi@lfdr.de>; Fri,  6 Nov 2020 06:09:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 42EC12A8F88
+	for <lists+linux-efi@lfdr.de>; Fri,  6 Nov 2020 07:40:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725979AbgKFFJp (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 6 Nov 2020 00:09:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40894 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725776AbgKFFJp (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 6 Nov 2020 00:09:45 -0500
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [IPv6:2001:4b98:dc2:55:216:3eff:fef7:d647])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24F14C0613CF;
-        Thu,  5 Nov 2020 21:09:45 -0800 (PST)
-Received: from pendragon.ideasonboard.com (62-78-145-57.bb.dnainternet.fi [62.78.145.57])
-        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 9BE333D;
-        Fri,  6 Nov 2020 06:09:43 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-        s=mail; t=1604639383;
-        bh=72/KUrhMBGIoUetzc6guWYFWopnI5c0uHM8v4HvuRPc=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=ezicyJe3TH8q8Ejj8OJ4o9ti4tZBl8nP0nWdq3cOvkoDRGPrmeo4/M6VqLD7PYK44
-         9UF8TtdfQpkYyEDrqEMG7KTEdsRoZGs5g8ssxNGacB5T1tVM05IYsjcpRedN3Auqs2
-         QN7HhTIBAHZG/EsFOmyKA0hho5RSOtc5Rn93tW6Y=
-Date:   Fri, 6 Nov 2020 07:09:40 +0200
-From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To:     Saravana Kannan <saravanak@google.com>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Marc Zyngier <maz@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        kernel-team@android.com, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
-        devicetree@vger.kernel.org
-Subject: Re: [PATCH v1 00/18] Refactor fw_devlink to significantly improve
- boot time
-Message-ID: <20201106050940.GG16469@pendragon.ideasonboard.com>
-References: <20201104232356.4038506-1-saravanak@google.com>
+        id S1726302AbgKFGkK (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 6 Nov 2020 01:40:10 -0500
+Received: from mail.kernel.org ([198.145.29.99]:36270 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725830AbgKFGkJ (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Fri, 6 Nov 2020 01:40:09 -0500
+Received: from mail-ot1-f47.google.com (mail-ot1-f47.google.com [209.85.210.47])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 7634A22201;
+        Fri,  6 Nov 2020 06:40:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1604644808;
+        bh=SQKeBkZ2isgcvoxSo2OmHHl9Wlamd/5zewsvuW6C5aM=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=GjLbMaj35t1H45rqVLWoIpkjtWeZFUpvWaPcSfWuXgpXQrZFmy9ncOnFqD9OC+Uyj
+         Erm0YEXwTj/V6l/EJYtdVIIUBJvvz0kcIu33vqPxpIKD6gXDp7GZtoz455Yd4M+sCe
+         MZ6HEnWY6cOKMcl5351epBKPKhIFWL7O0lIJiHsA=
+Received: by mail-ot1-f47.google.com with SMTP id j14so394736ots.1;
+        Thu, 05 Nov 2020 22:40:08 -0800 (PST)
+X-Gm-Message-State: AOAM5317GOLcVc1e3Z70kzpm4oxnl/LKD8fjCuQ6vJ/svKkq8TfgUpTU
+        ZYlBvoPrXwRNUtUrNFXz+tdi4/z9lR90eQLm8+g=
+X-Google-Smtp-Source: ABdhPJwrMmD9A+79eX7AnUYuMzeESBobMtgE80HoPemJxzHqomRuxEHk79KRmR5SnRJUN2E5E4zf1S+OMh17RA+aFXs=
+X-Received: by 2002:a9d:62c1:: with SMTP id z1mr239034otk.108.1604644807584;
+ Thu, 05 Nov 2020 22:40:07 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20201104232356.4038506-1-saravanak@google.com>
+References: <20201102223800.12181-1-ardb@kernel.org> <20201102223800.12181-3-ardb@kernel.org>
+ <20201106034126.GA17818@linux-8mug>
+In-Reply-To: <20201106034126.GA17818@linux-8mug>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Fri, 6 Nov 2020 07:39:55 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXFYimf3vPp5N8xvrJTPf6AN-BCTLkGR4zYtNQWfF04OkA@mail.gmail.com>
+Message-ID: <CAMj1kXFYimf3vPp5N8xvrJTPf6AN-BCTLkGR4zYtNQWfF04OkA@mail.gmail.com>
+Subject: Re: [PATCH v4 2/3] ima: generalize x86/EFI arch glue for other EFI architectures
+To:     Chester Lin <clin@suse.com>
+Cc:     linux-efi <linux-efi@vger.kernel.org>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, X86 ML <x86@kernel.org>,
+        "Lee, Chun-Yi" <jlee@suse.com>,
+        linux-integrity <linux-integrity@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hi Saravana,
+On Fri, 6 Nov 2020 at 04:41, Chester Lin <clin@suse.com> wrote:
+>
+> Hi Ard,
+>
+> On Mon, Nov 02, 2020 at 11:37:59PM +0100, Ard Biesheuvel wrote:
+> > From: Chester Lin <clin@suse.com>
+> >
+> > Move the x86 IMA arch code into security/integrity/ima/ima_efi.c,
+> > so that we will be able to wire it up for arm64 in a future patch.
+> >
+> > Co-developed-by: Chester Lin <clin@suse.com>
+> > Signed-off-by: Chester Lin <clin@suse.com>
+> > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> > ---
+> >  arch/x86/include/asm/efi.h                                     |  3 ++
+> >  arch/x86/kernel/Makefile                                       |  2 -
+> >  security/integrity/ima/Makefile                                |  4 ++
+> >  arch/x86/kernel/ima_arch.c => security/integrity/ima/ima_efi.c | 45 ++++++--------------
+> >  4 files changed, 19 insertions(+), 35 deletions(-)
+> >
+> > diff --git a/arch/x86/include/asm/efi.h b/arch/x86/include/asm/efi.h
+> > index 7673dc833232..c98f78330b09 100644
+> > --- a/arch/x86/include/asm/efi.h
+> > +++ b/arch/x86/include/asm/efi.h
+> > @@ -380,4 +380,7 @@ static inline void efi_fake_memmap_early(void)
+> >  }
+> >  #endif
+> >
+> > +#define arch_ima_efi_boot_mode       \
+> > +     ({ extern struct boot_params boot_params; boot_params.secure_boot; })
+> > +
+> >  #endif /* _ASM_X86_EFI_H */
+> > diff --git a/arch/x86/kernel/Makefile b/arch/x86/kernel/Makefile
+> > index 68608bd892c0..5eeb808eb024 100644
+> > --- a/arch/x86/kernel/Makefile
+> > +++ b/arch/x86/kernel/Makefile
+> > @@ -161,5 +161,3 @@ ifeq ($(CONFIG_X86_64),y)
+> >       obj-$(CONFIG_MMCONF_FAM10H)     += mmconf-fam10h_64.o
+> >       obj-y                           += vsmp_64.o
+> >  endif
+> > -
+> > -obj-$(CONFIG_IMA_SECURE_AND_OR_TRUSTED_BOOT) += ima_arch.o
+> > diff --git a/security/integrity/ima/Makefile b/security/integrity/ima/Makefile
+> > index 67dabca670e2..2499f2485c04 100644
+> > --- a/security/integrity/ima/Makefile
+> > +++ b/security/integrity/ima/Makefile
+> > @@ -14,3 +14,7 @@ ima-$(CONFIG_HAVE_IMA_KEXEC) += ima_kexec.o
+> >  ima-$(CONFIG_IMA_BLACKLIST_KEYRING) += ima_mok.o
+> >  ima-$(CONFIG_IMA_MEASURE_ASYMMETRIC_KEYS) += ima_asymmetric_keys.o
+> >  ima-$(CONFIG_IMA_QUEUE_EARLY_BOOT_KEYS) += ima_queue_keys.o
+> > +
+> > +ifeq ($(CONFIG_EFI),y)
+> > +ima-$(CONFIG_IMA_SECURE_AND_OR_TRUSTED_BOOT) += ima_efi.o
+> > +endif
+> > diff --git a/arch/x86/kernel/ima_arch.c b/security/integrity/ima/ima_efi.c
+> > similarity index 60%
+> > rename from arch/x86/kernel/ima_arch.c
+> > rename to security/integrity/ima/ima_efi.c
+> > index 7dfb1e808928..233627a9d4b8 100644
+> > --- a/arch/x86/kernel/ima_arch.c
+> > +++ b/security/integrity/ima/ima_efi.c
+> > @@ -5,50 +5,29 @@
+> >  #include <linux/efi.h>
+> >  #include <linux/module.h>
+> >  #include <linux/ima.h>
+> > +#include <asm/efi.h>
+> >
+> > -extern struct boot_params boot_params;
+> > +#ifndef arch_ima_efi_boot_mode
+> > +#define arch_ima_efi_boot_mode efi_secureboot_mode_unknown
+>
+> I think this should be "efi_secureboot_mode_unset" otherwise the get_sb_mode()
+> will never be called. The others look good to me, thanks for your help.
+>
 
-Thank you for working on this !
+Thanks Chester! I will fix that up.
 
-On Wed, Nov 04, 2020 at 03:23:37PM -0800, Saravana Kannan wrote:
-> The current implementation of fw_devlink is very inefficient because it
-> tries to get away without creating fwnode links in the name of saving
-> memory usage. Past attempts to optimize runtime at the cost of memory
-> usage were blocked with request for data showing that the optimization
-> made significant improvement for real world scenarios.
-> 
-> We have those scenarios now. There have been several reports of boot
-> time increase in the order of seconds in this thread [1]. Several OEMs
-> and SoC manufacturers have also privately reported significant
-> (350-400ms) increase in boot time due to all the parsing done by
-> fw_devlink.
-> 
-> So this patch series refactors fw_devlink to be more efficient. The key
-> difference now is the addition of support for fwnode links -- just a few
-> simple APIs. This also allows most of the code to be moved out of
-> firmware specific (DT mostly) code into driver core.
-> 
-> This brings the following benefits:
-> - Instead of parsing the device tree multiple times (complexity was
->   close to O(N^3) where N in the number of properties) during bootup,
->   fw_devlink parses each fwnode node/property only once and creates
->   fwnode links. The rest of the fw_devlink code then just looks at these
->   fwnode links to do rest of the work.
-> 
-> - Makes it much easier to debug probe issue due to fw_devlink in the
->   future. fw_devlink=on blocks the probing of devices if they depend on
->   a device that hasn't been added yet. With this refactor, it'll be very
->   easy to tell what that device is because we now have a reference to
->   the fwnode of the device.
-> 
-> - Much easier to add fw_devlink support to ACPI and other firmware
->   types. A refactor to move the common bits from DT specific code to
->   driver core was in my TODO list as a prerequisite to adding ACPI
->   support to fw_devlink. This series gets that done.
-> 
-> Tomi/Laurent/Grygorii,
-> 
-> If you can test this series, that'd be great!
 
-I gave it a try, rebasing my branch from v5.9 to v5.10-rc2 first. On
-v5.10-rc2 the kernel dies when booting due to a deadlock (reported by
-lockdep, so hopefully not too hard to debug). *sigh*. Fortunately, it
-dies after the fw_devlink initialization, so I can still report results.
-
-Before your series:
-
-[    0.743065] cpuidle: using governor menu
-[   13.350259] No ATAGs?
-
-With your series applied:
-
-[    0.722670] cpuidle: using governor menu
-[    1.135859] No ATAGs?
-
-That's a very clear improvement :-)
-
-Tested-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-
-> [1] - https://lore.kernel.org/linux-pm/CAGETcx-aiW251dhEXT1GNb9bi6YcX8W=jLBrro5CnPuEjGL09g@mail.gmail.com/
-> 
-> Saravana Kannan (18):
->   Revert "driver core: Avoid deferred probe due to fw_devlink_pause/resume()"
->   Revert "driver core: Rename dev_links_info.defer_sync to defer_hook"
->   Revert "driver core: Don't do deferred probe in parallel with kernel_init thread"
->   Revert "driver core: Remove check in driver_deferred_probe_force_trigger()"
->   Revert "of: platform: Batch fwnode parsing when adding all top level devices"
->   Revert "driver core: fw_devlink: Add support for batching fwnode parsing"
->   driver core: Add fwnode_init()
->   driver core: Add fwnode link support
->   driver core: Allow only unprobed consumers for SYNC_STATE_ONLY device links
->   device property: Add fwnode_is_ancestor_of()
->   driver core: Redefine the meaning of fwnode_operations.add_links()
->   driver core: Add fw_devlink_parse_fwtree()
->   driver core: Add fwnode_get_next_parent_dev() helper function
->   driver core: Use device's fwnode to check if it is waiting for suppliers
->   of: property: Update implementation of add_links() to create fwnode links
->   efi: Update implementation of add_links() to create fwnode links
->   driver core: Add helper functions to convert fwnode links to device links
->   driver core: Refactor fw_devlink feature
-> 
->  drivers/acpi/property.c         |   2 +-
->  drivers/acpi/scan.c             |   2 +-
->  drivers/base/core.c             | 584 +++++++++++++++++++++-----------
->  drivers/base/property.c         |  27 ++
->  drivers/base/swnode.c           |   2 +-
->  drivers/firmware/efi/efi-init.c |  31 +-
->  drivers/of/dynamic.c            |   1 +
->  drivers/of/platform.c           |   2 -
->  drivers/of/property.c           | 150 +++-----
->  include/linux/device.h          |  10 +-
->  include/linux/fwnode.h          |  66 ++--
->  include/linux/of.h              |   2 +-
->  include/linux/property.h        |   2 +
->  kernel/irq/irqdomain.c          |   2 +-
->  14 files changed, 490 insertions(+), 393 deletions(-)
-
--- 
-Regards,
-
-Laurent Pinchart
+> > +#endif
+> >
+> >  static enum efi_secureboot_mode get_sb_mode(void)
+> >  {
+> > -     efi_guid_t efi_variable_guid = EFI_GLOBAL_VARIABLE_GUID;
+> > -     efi_status_t status;
+> > -     unsigned long size;
+> > -     u8 secboot, setupmode;
+> > -
+> > -     size = sizeof(secboot);
+> > +     enum efi_secureboot_mode mode;
+> >
+> >       if (!efi_rt_services_supported(EFI_RT_SUPPORTED_GET_VARIABLE)) {
+> >               pr_info("ima: secureboot mode unknown, no efi\n");
+> >               return efi_secureboot_mode_unknown;
+> >       }
+> >
+> > -     /* Get variable contents into buffer */
+> > -     status = efi.get_variable(L"SecureBoot", &efi_variable_guid,
+> > -                               NULL, &size, &secboot);
+> > -     if (status == EFI_NOT_FOUND) {
+> > +     mode = efi_get_secureboot_mode(efi.get_variable);
+> > +     if (mode == efi_secureboot_mode_disabled)
+> >               pr_info("ima: secureboot mode disabled\n");
+> > -             return efi_secureboot_mode_disabled;
+> > -     }
+> > -
+> > -     if (status != EFI_SUCCESS) {
+> > +     else if (mode == efi_secureboot_mode_unknown)
+> >               pr_info("ima: secureboot mode unknown\n");
+> > -             return efi_secureboot_mode_unknown;
+> > -     }
+> > -
+> > -     size = sizeof(setupmode);
+> > -     status = efi.get_variable(L"SetupMode", &efi_variable_guid,
+> > -                               NULL, &size, &setupmode);
+> > -
+> > -     if (status != EFI_SUCCESS)      /* ignore unknown SetupMode */
+> > -             setupmode = 0;
+> > -
+> > -     if (secboot == 0 || setupmode == 1) {
+> > -             pr_info("ima: secureboot mode disabled\n");
+> > -             return efi_secureboot_mode_disabled;
+> > -     }
+> > -
+> > -     pr_info("ima: secureboot mode enabled\n");
+> > -     return efi_secureboot_mode_enabled;
+> > +     else
+> > +             pr_info("ima: secureboot mode enabled\n");
+> > +     return mode;
+> >  }
+> >
+> >  bool arch_ima_get_secureboot(void)
+> > @@ -57,7 +36,7 @@ bool arch_ima_get_secureboot(void)
+> >       static bool initialized;
+> >
+> >       if (!initialized && efi_enabled(EFI_BOOT)) {
+> > -             sb_mode = boot_params.secure_boot;
+> > +             sb_mode = arch_ima_efi_boot_mode;
+> >
+> >               if (sb_mode == efi_secureboot_mode_unset)
+> >                       sb_mode = get_sb_mode();
+> > --
+> > 2.17.1
+> >
+>
