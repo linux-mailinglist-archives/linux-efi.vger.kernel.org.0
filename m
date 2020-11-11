@@ -2,119 +2,105 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8881C2AE1FA
-	for <lists+linux-efi@lfdr.de>; Tue, 10 Nov 2020 22:44:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E54F02AE98C
+	for <lists+linux-efi@lfdr.de>; Wed, 11 Nov 2020 08:19:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731780AbgKJVo1 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 10 Nov 2020 16:44:27 -0500
-Received: from mail.kernel.org ([198.145.29.99]:42318 "EHLO mail.kernel.org"
+        id S1725828AbgKKHT1 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 11 Nov 2020 02:19:27 -0500
+Received: from mail.kernel.org ([198.145.29.99]:39160 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730254AbgKJVoE (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Tue, 10 Nov 2020 16:44:04 -0500
-Received: from mail-ot1-f41.google.com (mail-ot1-f41.google.com [209.85.210.41])
+        id S1726038AbgKKHT1 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Wed, 11 Nov 2020 02:19:27 -0500
+Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com [209.85.210.43])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 2179B20731;
-        Tue, 10 Nov 2020 21:44:03 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 573D721D7F;
+        Wed, 11 Nov 2020 07:19:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1605044643;
-        bh=46dE3uxlicE3osaLmLW8QlqUGPvGAKXg+kLAh3iwlLI=;
+        s=default; t=1605079166;
+        bh=CAQVZqtxtSOwUyW8EqmnyD/K8yMmd2zuMQylnTG3pAg=;
         h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=YJoaJTVB+FKeY6LZTu3f/y88KKbLsb1w6WL/39zyi8SSy/3Rup5L/jbMWz2lnGdW8
-         03LAV1WCPbHSJ0YVsXkiH/uDWuFbgxrZEwO8ckY22f0r2UONdHa67gBR7/Pj48WIH0
-         Gt73rUkX7uaGdstBrmh0QEvoRLjTmDhUb1nARh9o=
-Received: by mail-ot1-f41.google.com with SMTP id a15so183170otf.5;
-        Tue, 10 Nov 2020 13:44:03 -0800 (PST)
-X-Gm-Message-State: AOAM532MO+EK2LKef054NpwEB/gUSlsEcevbGn8g3JGm5uoQVqXEonX4
-        gA+j7dSOIrbOCFVVrWE716pbTAQGgtbeNXIWN34=
-X-Google-Smtp-Source: ABdhPJyrTPvtp8t6wnOxXl5egrbWqYa12xf2alJX2eBHLIyV03BkLyc1ALzUSV5UDT6m1Lw07UCsMYzsusYoBGDIahY=
-X-Received: by 2002:a05:6830:214c:: with SMTP id r12mr6107152otd.90.1605044642464;
- Tue, 10 Nov 2020 13:44:02 -0800 (PST)
+        b=guq6CmAiRLq4R57MddTf3q6FwEUAeGMSddkiHps3KcyrTTkyZgtGjcSmcOIsYZj0M
+         RIXnQSaNESRz5bdvVKxisfCpa82vtPflR7f31OGH6AfHdtg9UUX+aLE+fkQkqYSZm9
+         ibIc3iuUQl0WCalegb6OGnkKiHD0ZFDeAI5/tccU=
+Received: by mail-ot1-f43.google.com with SMTP id i18so1301416ots.0;
+        Tue, 10 Nov 2020 23:19:26 -0800 (PST)
+X-Gm-Message-State: AOAM531102nF+TmYgHnqKLijp4Ay8DngYbSXrdz5bO/NrSJ9+SJv0zhU
+        Q32FXfif3rTNKqT927zHMOBOHCbDykmPTOvtOQQ=
+X-Google-Smtp-Source: ABdhPJy/FX3/haQPkbbnTxCEyFCfcbR6nBwOK2StlreaD3AMalrsdDe04JmnBGrk4RF2qWP6H6cn3ss1V/mpW5hPHIQ=
+X-Received: by 2002:a05:6830:214c:: with SMTP id r12mr7308063otd.90.1605079165545;
+ Tue, 10 Nov 2020 23:19:25 -0800 (PST)
 MIME-Version: 1.0
-References: <20201110163919.1134431-1-nivedita@alum.mit.edu>
-In-Reply-To: <20201110163919.1134431-1-nivedita@alum.mit.edu>
+References: <e9b1ba517f06b81bd24e54c84f5e44d81c27c566.camel@perches.com>
+ <20201022073307.GP2628@hirez.programming.kicks-ass.net> <133aa0c8c5e2cbc862df109200b982e89046dbc0.camel@perches.com>
+In-Reply-To: <133aa0c8c5e2cbc862df109200b982e89046dbc0.camel@perches.com>
 From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Tue, 10 Nov 2020 22:43:59 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXEZAOh6A1xcURNN48=f-LL6tFv4FEaTLyMLBTLwgTt4wA@mail.gmail.com>
-Message-ID: <CAMj1kXEZAOh6A1xcURNN48=f-LL6tFv4FEaTLyMLBTLwgTt4wA@mail.gmail.com>
-Subject: Re: [PATCH] efi/x86: Free efi_pgd with free_pages()
-To:     Arvind Sankar <nivedita@alum.mit.edu>
-Cc:     linux-efi <linux-efi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Date:   Wed, 11 Nov 2020 08:19:13 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXF_0_bu0nbJyUU-yBDCOAirRvGkX-V8kQPVh_GHO2WM-g@mail.gmail.com>
+Message-ID: <CAMj1kXF_0_bu0nbJyUU-yBDCOAirRvGkX-V8kQPVh_GHO2WM-g@mail.gmail.com>
+Subject: Re: [PATCH -next] treewide: Remove stringification from __alias macro definition
+To:     Joe Perches <joe@perches.com>, Russell King <linux@armlinux.org.uk>
+Cc:     Peter Zijlstra <peterz@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Borislav Petkov <bp@alien8.de>, X86 ML <x86@kernel.org>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+        Marco Elver <elver@google.com>,
+        Dmitry Vyukov <dvyukov@google.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>,
+        Andrey Ryabinin <aryabinin@virtuozzo.com>,
+        Alexander Potapenko <glider@google.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        kasan-dev <kasan-dev@googlegroups.com>,
+        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
+        linux-mm <linux-mm@kvack.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, 10 Nov 2020 at 17:39, Arvind Sankar <nivedita@alum.mit.edu> wrote:
->
-> Commit
->   d9e9a6418065 ("x86/mm/pti: Allocate a separate user PGD")
-> changed the PGD allocation to allocate PGD_ALLOCATION_ORDER pages, so in
-> the error path it should be freed using free_pages() rather than
-> free_page().
->
-> Commit
->   06ace26f4e6f ("x86/efi: Free efi_pgd with free_pages()")
-> fixed one instance of this, but missed another.
->
-> Move the freeing out-of-line to avoid code duplication and fix this bug.
->
-> Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
-> Fixes: d9e9a6418065 ("x86/mm/pti: Allocate a separate user PGD")
+(+ Russell)
 
-Thanks Arvind. I'll queue this as a fix.
+On Thu, 22 Oct 2020 at 18:20, Joe Perches <joe@perches.com> wrote:
+>
+> On Thu, 2020-10-22 at 09:33 +0200, Peter Zijlstra wrote:
+> > On Wed, Oct 21, 2020 at 11:58:25AM -0700, Joe Perches wrote:
+> > > Like the __section macro, the __alias macro uses
+> > > macro # stringification to create quotes around
+> > > the section name used in the __attribute__.
+> > >
+> > > Remove the stringification and add quotes or a
+> > > stringification to the uses instead.
+> >
+> > There's a complete lack of rationale for this change.
+>
+> I'll eventually post V2.
+> I'm waiting to see if there are more comments.
+>
+> As I wrote in reply to Ard:
+>
+> https://lore.kernel.org/lkml/1cecfbfc853b2e71a96ab58661037c28a2f9280e.camel@perches.com/
+>
+> Using quotes in __section caused/causes differences
+> between clang and gcc.
+>
+> https://lkml.org/lkml/2020/9/29/2187
+>
+> Using common styles for details like this is good.
+>
 
-> ---
->  arch/x86/platform/efi/efi_64.c | 24 +++++++++++++-----------
->  1 file changed, 13 insertions(+), 11 deletions(-)
->
-> diff --git a/arch/x86/platform/efi/efi_64.c b/arch/x86/platform/efi/efi_64.c
-> index 8f5759df7776..e1e8d4e3a213 100644
-> --- a/arch/x86/platform/efi/efi_64.c
-> +++ b/arch/x86/platform/efi/efi_64.c
-> @@ -78,28 +78,30 @@ int __init efi_alloc_page_tables(void)
->         gfp_mask = GFP_KERNEL | __GFP_ZERO;
->         efi_pgd = (pgd_t *)__get_free_pages(gfp_mask, PGD_ALLOCATION_ORDER);
->         if (!efi_pgd)
-> -               return -ENOMEM;
-> +               goto fail;
->
->         pgd = efi_pgd + pgd_index(EFI_VA_END);
->         p4d = p4d_alloc(&init_mm, pgd, EFI_VA_END);
-> -       if (!p4d) {
-> -               free_page((unsigned long)efi_pgd);
-> -               return -ENOMEM;
-> -       }
-> +       if (!p4d)
-> +               goto free_pgd;
->
->         pud = pud_alloc(&init_mm, p4d, EFI_VA_END);
-> -       if (!pud) {
-> -               if (pgtable_l5_enabled())
-> -                       free_page((unsigned long) pgd_page_vaddr(*pgd));
-> -               free_pages((unsigned long)efi_pgd, PGD_ALLOCATION_ORDER);
-> -               return -ENOMEM;
-> -       }
-> +       if (!pud)
-> +               goto free_p4d;
->
->         efi_mm.pgd = efi_pgd;
->         mm_init_cpumask(&efi_mm);
->         init_new_context(NULL, &efi_mm);
->
->         return 0;
-> +
-> +free_p4d:
-> +       if (pgtable_l5_enabled())
-> +               free_page((unsigned long)pgd_page_vaddr(*pgd));
-> +free_pgd:
-> +       free_pages((unsigned long)efi_pgd, PGD_ALLOCATION_ORDER);
-> +fail:
-> +       return -ENOMEM;
->  }
->
->  /*
-> --
-> 2.26.2
->
+This patch is now causing problems in the ARM tree, because some new
+uses of __alias() have been queued (for KASAN), and since this is a
+non-backwards compatible change, we have to choose between breaking
+the maintainer's tree or breaking -next (given that the change has
+been pulled in there now)
+
+I am still not convinced we need this change, as I don't see how the
+concerns regarding __section apply to __alias. But if we do, can we
+please use the same approach, i.e., revert the current patch, and
+queue it again after v5.11-rc1 with all new occurrences covered as
+well?
