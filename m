@@ -2,79 +2,111 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1472F2B0823
-	for <lists+linux-efi@lfdr.de>; Thu, 12 Nov 2020 16:08:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BB64D2B13F2
+	for <lists+linux-efi@lfdr.de>; Fri, 13 Nov 2020 02:41:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728220AbgKLPIE (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 12 Nov 2020 10:08:04 -0500
-Received: from mail.kernel.org ([198.145.29.99]:39356 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727035AbgKLPIA (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Thu, 12 Nov 2020 10:08:00 -0500
-Received: from e123331-lin.nice.arm.com (lfbn-nic-1-188-42.w2-15.abo.wanadoo.fr [2.15.37.42])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 878E322201;
-        Thu, 12 Nov 2020 15:07:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1605193680;
-        bh=NY4kvmcMsgAmA89/9KafLtsAhyX3OahPXXsZr1N6j6I=;
-        h=From:To:Cc:Subject:Date:From;
-        b=R+H/6WHDXJCUb/E10YWsHAKVatnsEqWu6f45RP/xUXeAsRk/0RX/LcHMzE6bbNSff
-         96WMdOZ7TJbpKo5MkmTDsnyZfT6RNHkeEGmhpegp0CtjQv/iJNSxa5JbwQdVBz7sRc
-         jKChwxY5hIVrzCU6JUcIZ436WW4RKH4qFj8+eMTA=
-From:   Ard Biesheuvel <ardb@kernel.org>
-To:     linux-efi@vger.kernel.org
-Cc:     linux-arm-kernel@lists.infradead.org,
-        Ard Biesheuvel <ardb@kernel.org>
-Subject: [PATCH] efi: arm: reduce minimum alignment of uncompressed kernel
-Date:   Thu, 12 Nov 2020 16:07:52 +0100
-Message-Id: <20201112150752.4770-1-ardb@kernel.org>
-X-Mailer: git-send-email 2.17.1
+        id S1726112AbgKMBlT convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-efi@lfdr.de>); Thu, 12 Nov 2020 20:41:19 -0500
+Received: from mo-csw1515.securemx.jp ([210.130.202.154]:44126 "EHLO
+        mo-csw.securemx.jp" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725965AbgKMBlT (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 12 Nov 2020 20:41:19 -0500
+Received: by mo-csw.securemx.jp (mx-mo-csw1515) id 0AD1evdt031978; Fri, 13 Nov 2020 10:40:57 +0900
+X-Iguazu-Qid: 34trXZNYeNEyzvpCth
+X-Iguazu-QSIG: v=2; s=0; t=1605231656; q=34trXZNYeNEyzvpCth; m=woCVqhSyszefYnXa0h+3xqIDuJphGUkqWVHEK5sBHa8=
+Received: from imx12.toshiba.co.jp (imx12.toshiba.co.jp [61.202.160.132])
+        by relay.securemx.jp (mx-mr1513) id 0AD1etNG000808;
+        Fri, 13 Nov 2020 10:40:55 +0900
+Received: from enc02.toshiba.co.jp ([61.202.160.51])
+        by imx12.toshiba.co.jp  with ESMTP id 0AD1esrr025901;
+        Fri, 13 Nov 2020 10:40:54 +0900 (JST)
+Received: from hop101.toshiba.co.jp ([133.199.85.107])
+        by enc02.toshiba.co.jp  with ESMTP id 0AD1es0E028816;
+        Fri, 13 Nov 2020 10:40:54 +0900
+From:   Punit Agrawal <punit1.agrawal@toshiba.co.jp>
+To:     Smita Koralahalli Channabasappa <skoralah@amd.com>
+Cc:     Borislav Petkov <bp@alien8.de>,
+        Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>,
+        <x86@kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-pm@vger.kernel.org>, <linux-edac@vger.kernel.org>,
+        <linux-efi@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+        Tony Luck <tony.luck@intel.com>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <len.brown@intel.com>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Yazen Ghannam <yazen.ghannam@amd.com>
+Subject: Re: [PATCH v5] cper, apei, mce: Pass x86 CPER through the MCA handling chain
+References: <20201103164952.5126-1-Smita.KoralahalliChannabasappa@amd.com>
+        <87a6vv9hch.fsf@kokedama.swc.toshiba.co.jp>
+        <20201106120950.GC14914@zn.tnic>
+        <874klz9vk9.fsf@kokedama.swc.toshiba.co.jp>
+        <982e0243-b144-f8b6-d69d-45af94ed8bb9@amd.com>
+        <651b7dba-d36a-d4db-4a0f-fd67aa9b985f@amd.com>
+Date:   Fri, 13 Nov 2020 10:40:50 +0900
+In-Reply-To: <651b7dba-d36a-d4db-4a0f-fd67aa9b985f@amd.com> (Smita Koralahalli
+        Channabasappa's message of "Wed, 11 Nov 2020 14:37:29 -0600")
+X-TSB-HOP: ON
+Message-ID: <87361e8259.fsf@kokedama.swc.toshiba.co.jp>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.3 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Now that we reduced the minimum relative alignment between PHYS_OFFSET
-and PAGE_OFFSET to 2 MiB, we can take this into account when allocating
-memory for the decompressed kernel when booting via EFI. This minimizes
-the amount of unusable memory we may end up with due to the base of DRAM
-being occupied by firmware.
+Smita Koralahalli Channabasappa <skoralah@amd.com> writes:
 
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
----
- arch/arm/include/asm/efi.h | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+> Punit,
+>
+> On 11/9/20 1:05 PM, Smita Koralahalli Channabasappa wrote:
+>
+>> On 11/8/20 7:18 PM, Punit Agrawal wrote:
+>>> Borislav Petkov <bp@alien8.de> writes:
+>>>> On Fri, Nov 06, 2020 at 02:36:46PM +0900, Punit Agrawal wrote:
+>>>>>> diff --git a/drivers/firmware/efi/cper-x86.c b/drivers/firmware/efi/cper-x86.c
+>>>>>> index 2531de49f56c..438ed9eff6d0 100644
+>>>>>> --- a/drivers/firmware/efi/cper-x86.c
+>>>>>> +++ b/drivers/firmware/efi/cper-x86.c
+>>>>>> @@ -2,6 +2,7 @@
+>>>>>>    // Copyright (C) 2018, Advanced Micro Devices, Inc.
+>>>>>>      #include <linux/cper.h>
+>>>>>> +#include <linux/acpi.h>
+>>>>> Did you mean to include <asm/acpi.h>?
+>>>> Why?
+>>> Because arch_apei_report_x86_error() used in the patch is defined
+>>> there. The indirect include works but pulls in additional definitions
+>>> not needed by the patch.
+>>>
+>>> Do you prefer the more generic include?
+>> I agree, it's generally a good practice to avoid pulling up additional
+>> definitions. I had this when I made the declaration in generic header
+>> file and may be I did not consider it changing initially as my build
+>> didn't break after moving the declaration from generic header to arch
+>> specific header file.
+>> I will take care henceforth and make the changes as required.
+>
+> The asm specific include throws out a warning when I run checkpatch.pl
+>
+> WARNING: Use #include <linux/acpi.h> instead of <asm/acpi.h>
+> #215: FILE: drivers/firmware/efi/cper-x86.c:5:
+> +#include <asm/acpi.h>
+>
+> Should I just keep the generic include?
 
-diff --git a/arch/arm/include/asm/efi.h b/arch/arm/include/asm/efi.h
-index 0496bc96a092..dd1736372de2 100644
---- a/arch/arm/include/asm/efi.h
-+++ b/arch/arm/include/asm/efi.h
-@@ -66,18 +66,17 @@ static inline void efifb_setup_from_dmi(struct screen_info *si, const char *opt)
- #define MAX_UNCOMP_KERNEL_SIZE	SZ_32M
- 
- /*
-- * phys-to-virt patching requires that the physical to virtual offset fits
-- * into the immediate field of an add/sub instruction, which comes down to the
-- * 24 least significant bits being zero, and so the offset should be a multiple
-- * of 16 MB. Since PAGE_OFFSET itself is a multiple of 16 MB, the physical
-- * base should be aligned to 16 MB as well.
-+ * phys-to-virt patching requires that the physical to virtual offset is a
-+ * multiple of 2 MiB. However, using an alignment smaller than TEXT_OFFSET
-+ * here throws off the memory allocation logic, so let's use the lowest power
-+ * of two greater than 2 MiB and greater than TEXT_OFFSET.
-  */
--#define EFI_PHYS_ALIGN		SZ_16M
-+#define EFI_PHYS_ALIGN		max(SZ_2M, roundup_pow_of_two(TEXT_OFFSET))
- 
- /* on ARM, the initrd should be loaded in a lowmem region */
- static inline unsigned long efi_get_max_initrd_addr(unsigned long image_addr)
- {
--	return round_down(image_addr, EFI_PHYS_ALIGN) + SZ_512M;
-+	return round_down(image_addr, SZ_4M) + SZ_512M;
- }
- 
- struct efi_arm_entry_state {
--- 
-2.17.1
+Thanks for checking.
 
+I had a quick look at checkpatch to understand the reason for the
+warning. It seems to warn when "asm" includes are used when a suitable
+"linux" include exists[0].
+
+I am not convinced that the rationale for that check applies in this
+case as the function being used is indeed an architecture specific one
+but also don't feel strongly enough to object.
+
+Feel free to pick up the "Reviewed-by" tag in either case.
+
+Thanks,
+Punit
+
+[0] https://github.com/torvalds/linux/blob/master/scripts/checkpatch.pl#L5333
