@@ -2,111 +2,160 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BB64D2B13F2
-	for <lists+linux-efi@lfdr.de>; Fri, 13 Nov 2020 02:41:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5EB4D2B180F
+	for <lists+linux-efi@lfdr.de>; Fri, 13 Nov 2020 10:19:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726112AbgKMBlT convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-efi@lfdr.de>); Thu, 12 Nov 2020 20:41:19 -0500
-Received: from mo-csw1515.securemx.jp ([210.130.202.154]:44126 "EHLO
-        mo-csw.securemx.jp" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725965AbgKMBlT (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 12 Nov 2020 20:41:19 -0500
-Received: by mo-csw.securemx.jp (mx-mo-csw1515) id 0AD1evdt031978; Fri, 13 Nov 2020 10:40:57 +0900
-X-Iguazu-Qid: 34trXZNYeNEyzvpCth
-X-Iguazu-QSIG: v=2; s=0; t=1605231656; q=34trXZNYeNEyzvpCth; m=woCVqhSyszefYnXa0h+3xqIDuJphGUkqWVHEK5sBHa8=
-Received: from imx12.toshiba.co.jp (imx12.toshiba.co.jp [61.202.160.132])
-        by relay.securemx.jp (mx-mr1513) id 0AD1etNG000808;
-        Fri, 13 Nov 2020 10:40:55 +0900
-Received: from enc02.toshiba.co.jp ([61.202.160.51])
-        by imx12.toshiba.co.jp  with ESMTP id 0AD1esrr025901;
-        Fri, 13 Nov 2020 10:40:54 +0900 (JST)
-Received: from hop101.toshiba.co.jp ([133.199.85.107])
-        by enc02.toshiba.co.jp  with ESMTP id 0AD1es0E028816;
-        Fri, 13 Nov 2020 10:40:54 +0900
-From:   Punit Agrawal <punit1.agrawal@toshiba.co.jp>
-To:     Smita Koralahalli Channabasappa <skoralah@amd.com>
-Cc:     Borislav Petkov <bp@alien8.de>,
-        Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>,
-        <x86@kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-pm@vger.kernel.org>, <linux-edac@vger.kernel.org>,
-        <linux-efi@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
-        Tony Luck <tony.luck@intel.com>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <len.brown@intel.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Yazen Ghannam <yazen.ghannam@amd.com>
-Subject: Re: [PATCH v5] cper, apei, mce: Pass x86 CPER through the MCA handling chain
-References: <20201103164952.5126-1-Smita.KoralahalliChannabasappa@amd.com>
-        <87a6vv9hch.fsf@kokedama.swc.toshiba.co.jp>
-        <20201106120950.GC14914@zn.tnic>
-        <874klz9vk9.fsf@kokedama.swc.toshiba.co.jp>
-        <982e0243-b144-f8b6-d69d-45af94ed8bb9@amd.com>
-        <651b7dba-d36a-d4db-4a0f-fd67aa9b985f@amd.com>
-Date:   Fri, 13 Nov 2020 10:40:50 +0900
-In-Reply-To: <651b7dba-d36a-d4db-4a0f-fd67aa9b985f@amd.com> (Smita Koralahalli
-        Channabasappa's message of "Wed, 11 Nov 2020 14:37:29 -0600")
-X-TSB-HOP: ON
-Message-ID: <87361e8259.fsf@kokedama.swc.toshiba.co.jp>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.3 (gnu/linux)
+        id S1726382AbgKMJTS (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 13 Nov 2020 04:19:18 -0500
+Received: from mga05.intel.com ([192.55.52.43]:29625 "EHLO mga05.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726181AbgKMJTQ (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Fri, 13 Nov 2020 04:19:16 -0500
+IronPort-SDR: xwgaRedxZRwoa569nX/F4DqKYw4VL4dU2kn24+c0ZdqUBqmRhMIDA0GFLO6tlqvCzYF3zc3Pqu
+ ZvG3J8k6rGYw==
+X-IronPort-AV: E=McAfee;i="6000,8403,9803"; a="255157138"
+X-IronPort-AV: E=Sophos;i="5.77,475,1596524400"; 
+   d="scan'208";a="255157138"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Nov 2020 01:19:13 -0800
+IronPort-SDR: 8n+GAYOobawYLL7sFrjX0xAvrJmESU8ukN0G6IRVRZ2nOSTXYbiebU6IjG9h2irM+Vraz1hCb9
+ Hj7/5s4BRiIg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.77,475,1596524400"; 
+   d="scan'208";a="309545879"
+Received: from lkp-server02.sh.intel.com (HELO 697932c29306) ([10.239.97.151])
+  by fmsmga007.fm.intel.com with ESMTP; 13 Nov 2020 01:19:12 -0800
+Received: from kbuild by 697932c29306 with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1kdVEd-0000Bd-NQ; Fri, 13 Nov 2020 09:19:11 +0000
+Date:   Fri, 13 Nov 2020 17:18:55 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-efi@vger.kernel.org
+Subject: [efi:next] BUILD SUCCESS 6548316ad15bfbe63a66ec61bc4d1b98bf06bbaa
+Message-ID: <5fae4f7f.BgT5vpYOmsnFCACZ%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Smita Koralahalli Channabasappa <skoralah@amd.com> writes:
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git  next
+branch HEAD: 6548316ad15bfbe63a66ec61bc4d1b98bf06bbaa  efi: efivars: remove deprecated sysfs interface
 
-> Punit,
->
-> On 11/9/20 1:05 PM, Smita Koralahalli Channabasappa wrote:
->
->> On 11/8/20 7:18 PM, Punit Agrawal wrote:
->>> Borislav Petkov <bp@alien8.de> writes:
->>>> On Fri, Nov 06, 2020 at 02:36:46PM +0900, Punit Agrawal wrote:
->>>>>> diff --git a/drivers/firmware/efi/cper-x86.c b/drivers/firmware/efi/cper-x86.c
->>>>>> index 2531de49f56c..438ed9eff6d0 100644
->>>>>> --- a/drivers/firmware/efi/cper-x86.c
->>>>>> +++ b/drivers/firmware/efi/cper-x86.c
->>>>>> @@ -2,6 +2,7 @@
->>>>>>    // Copyright (C) 2018, Advanced Micro Devices, Inc.
->>>>>>      #include <linux/cper.h>
->>>>>> +#include <linux/acpi.h>
->>>>> Did you mean to include <asm/acpi.h>?
->>>> Why?
->>> Because arch_apei_report_x86_error() used in the patch is defined
->>> there. The indirect include works but pulls in additional definitions
->>> not needed by the patch.
->>>
->>> Do you prefer the more generic include?
->> I agree, it's generally a good practice to avoid pulling up additional
->> definitions. I had this when I made the declaration in generic header
->> file and may be I did not consider it changing initially as my build
->> didn't break after moving the declaration from generic header to arch
->> specific header file.
->> I will take care henceforth and make the changes as required.
->
-> The asm specific include throws out a warning when I run checkpatch.pl
->
-> WARNING: Use #include <linux/acpi.h> instead of <asm/acpi.h>
-> #215: FILE: drivers/firmware/efi/cper-x86.c:5:
-> +#include <asm/acpi.h>
->
-> Should I just keep the generic include?
+elapsed time: 725m
 
-Thanks for checking.
+configs tested: 97
+configs skipped: 2
 
-I had a quick look at checkpatch to understand the reason for the
-warning. It seems to warn when "asm" includes are used when a suitable
-"linux" include exists[0].
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-I am not convinced that the rationale for that check applies in this
-case as the function being used is indeed an architecture specific one
-but also don't feel strongly enough to object.
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+arm                       imx_v4_v5_defconfig
+sh                                  defconfig
+powerpc                    adder875_defconfig
+m68k                       m5208evb_defconfig
+mips                            gpr_defconfig
+arm                           efm32_defconfig
+mips                         tb0287_defconfig
+powerpc                      arches_defconfig
+c6x                         dsk6455_defconfig
+powerpc                     kmeter1_defconfig
+mips                malta_kvm_guest_defconfig
+i386                             alldefconfig
+mips                        maltaup_defconfig
+powerpc                        warp_defconfig
+arm                         mv78xx0_defconfig
+powerpc                      obs600_defconfig
+arm64                            alldefconfig
+powerpc                 mpc832x_mds_defconfig
+powerpc                     tqm8548_defconfig
+sh                        sh7785lcr_defconfig
+arm                         orion5x_defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+c6x                              allyesconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+i386                 randconfig-a006-20201111
+i386                 randconfig-a005-20201111
+i386                 randconfig-a002-20201111
+i386                 randconfig-a001-20201111
+i386                 randconfig-a003-20201111
+i386                 randconfig-a004-20201111
+x86_64               randconfig-a015-20201111
+x86_64               randconfig-a011-20201111
+x86_64               randconfig-a014-20201111
+x86_64               randconfig-a013-20201111
+x86_64               randconfig-a016-20201111
+x86_64               randconfig-a012-20201111
+i386                 randconfig-a012-20201111
+i386                 randconfig-a014-20201111
+i386                 randconfig-a016-20201111
+i386                 randconfig-a011-20201111
+i386                 randconfig-a015-20201111
+i386                 randconfig-a013-20201111
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+x86_64                                   rhel
+x86_64                           allyesconfig
+x86_64                    rhel-7.6-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                                  kexec
 
-Feel free to pick up the "Reviewed-by" tag in either case.
+clang tested configs:
+x86_64               randconfig-a003-20201111
+x86_64               randconfig-a005-20201111
+x86_64               randconfig-a003-20201113
+x86_64               randconfig-a005-20201113
+x86_64               randconfig-a004-20201113
+x86_64               randconfig-a002-20201113
+x86_64               randconfig-a006-20201113
+x86_64               randconfig-a001-20201113
 
-Thanks,
-Punit
-
-[0] https://github.com/torvalds/linux/blob/master/scripts/checkpatch.pl#L5333
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
