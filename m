@@ -2,41 +2,40 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 04E342B4A1E
-	for <lists+linux-efi@lfdr.de>; Mon, 16 Nov 2020 16:58:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AE9FE2B4A86
+	for <lists+linux-efi@lfdr.de>; Mon, 16 Nov 2020 17:16:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730427AbgKPP52 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 16 Nov 2020 10:57:28 -0500
-Received: from mail-oi1-f196.google.com ([209.85.167.196]:45419 "EHLO
-        mail-oi1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730473AbgKPP51 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 16 Nov 2020 10:57:27 -0500
-Received: by mail-oi1-f196.google.com with SMTP id k19so10649382oic.12;
-        Mon, 16 Nov 2020 07:57:27 -0800 (PST)
+        id S1731682AbgKPQQZ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 16 Nov 2020 11:16:25 -0500
+Received: from mail-oi1-f193.google.com ([209.85.167.193]:39065 "EHLO
+        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731584AbgKPQQY (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 16 Nov 2020 11:16:24 -0500
+Received: by mail-oi1-f193.google.com with SMTP id f11so5657823oij.6;
+        Mon, 16 Nov 2020 08:16:22 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=a0EALgO/iHdkJfCGgD7QPEg0Ns+sovLzKtBhiiye9yc=;
-        b=GEG1JXD1xFDHwLqBfktkhibBPunMuy9lSd1mV9y9Xl+sXRXYTDEsD/mmfdPfklEQD0
-         7+jCHtpwKdrawdWNjcdqMvr19JvcT4kY0aOR4V8haw+/DqdnQB9ddfr9rUfNuN/aDduf
-         q5XQb9R4ygo1cnRLQJIhhN8RSmPYWcC1rY0ty529TGGHezvjR/Ve07gSRLwX1qoYAFAr
-         zKT8pTExo0cM4u7LnDy1pajmRWGH/vSA0y30zZ2HmFzPXcq/NKqx5lV1BOg5kb34W1ml
-         owAm4SL+oGu7i4kCe6TyggntWYQVFSiLZmrcCw73ljkaT/p+tiYJFt8392987/SYrlRl
-         otNg==
-X-Gm-Message-State: AOAM531dcQMWUwMAnT4JcFyCRc5oqwkIglgMDoULAXsDe+wsr1CFZ67d
-        X7dBN6HOQ7UJ+3WG0BHX5tMbpRQ9dryFjoAuAFs=
-X-Google-Smtp-Source: ABdhPJwWZwAQFC3+TfMVq7Mp20QMGFtCLh1JEt1ACvAt6CB+xKVyxfDezXlr6XYrO/QfmP3uWddeWGq7i2O+RgNMlig=
-X-Received: by 2002:aca:c4c9:: with SMTP id u192mr69296oif.69.1605542246780;
- Mon, 16 Nov 2020 07:57:26 -0800 (PST)
+        bh=RulTdcnrDdgWwh+nP28RdtMK+5PSTx7xbD183jhCfRg=;
+        b=gsvre2nrqUc2qHrHJ7e+IBWvTGItUadsk0q0QUSnd1wXx5U3IJfIMIYRVxrSJYVuiO
+         kzIA1pPaqoGxfvVvr+IMSpXFrv5NDw+BXKM+RpjesjANrZczMS1L51laOFYgc3eq68Pr
+         zB11YaAMuFSfMCSRYMyufkUgTp9uXKB2Q6VeFXLEYWQQGBcPzax3eTY3yUSdBdFuhQMw
+         8ywZNqBCyzOZgFeygRKCv1EjphnoTnKaHAh+h5/Sbb0deIuA2uwsCjKGrDXeYFiMPOtd
+         FOjbGTSMNuJFgEBjW5wPomk6qc2IgSK3N6VmGxvD2ndgpLNsGOuR6QxzcUqunNGqOlTp
+         O89w==
+X-Gm-Message-State: AOAM531EiHlTqbVyEpMSDDqSxifbX9m86ZVqTq8r5pX4h57B0RKos7Cu
+        r3+TVgL0fZX+/l/e0mzjw+VOUMzOBcGueKVafJ6oYv73
+X-Google-Smtp-Source: ABdhPJxsHoEXWLRAORs5wepqnqHAJYHejMJqY+2GjEKGW2k5uWBE2yOHAhuQvULJijVttPy9eq/yXXN3AAcA8pzR3b8=
+X-Received: by 2002:aca:c4c9:: with SMTP id u192mr142060oif.69.1605543381818;
+ Mon, 16 Nov 2020 08:16:21 -0800 (PST)
 MIME-Version: 1.0
-References: <20201104232356.4038506-1-saravanak@google.com> <20201104232356.4038506-10-saravanak@google.com>
-In-Reply-To: <20201104232356.4038506-10-saravanak@google.com>
+References: <20201104232356.4038506-1-saravanak@google.com> <20201104232356.4038506-12-saravanak@google.com>
+In-Reply-To: <20201104232356.4038506-12-saravanak@google.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 16 Nov 2020 16:57:15 +0100
-Message-ID: <CAJZ5v0h31RrsrU4F1tjZKQ1O8BFWtkDJxkwyWoKBzm_kyknxVQ@mail.gmail.com>
-Subject: Re: [PATCH v1 09/18] driver core: Allow only unprobed consumers for
- SYNC_STATE_ONLY device links
+Date:   Mon, 16 Nov 2020 17:16:10 +0100
+Message-ID: <CAJZ5v0hxdq2prUUkoPwpW5+crAD096eYQAQ7PZ2oaFKT7_gcHA@mail.gmail.com>
+Subject: Re: [PATCH v1 11/18] driver core: Redefine the meaning of fwnode_operations.add_links()
 To:     Saravana Kannan <saravanak@google.com>
 Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
@@ -62,49 +61,83 @@ X-Mailing-List: linux-efi@vger.kernel.org
 
 On Thu, Nov 5, 2020 at 12:24 AM Saravana Kannan <saravanak@google.com> wrote:
 >
-> SYNC_STATE_ONLY device links only affect the behavior of sync_state()
-> callbacks. Specifically, they prevent sync_state() only callbacks from
-> being called on a device if one or more of its consumers haven't probed.
+> Change the meaning of fwnode_operations.add_links() to just create
+> fwnode links by parsing the properties of a given fwnode.
 >
-> So, creating a SYNC_STATE_ONLY device link from an already probed
-> consumer is useless. So, don't allow creating such device links.
-
-I'm wondering why this needs to be part of the series?
-
-It looks like it could go in separately, couldn't it?
-
+> This patch doesn't actually make any code changes. To keeps things more
+> digestable, the actual functional changes come in later patches in this
+> series.
 >
 > Signed-off-by: Saravana Kannan <saravanak@google.com>
 > ---
->  drivers/base/core.c | 11 +++++++++++
->  1 file changed, 11 insertions(+)
+>  include/linux/fwnode.h | 42 +++---------------------------------------
+>  1 file changed, 3 insertions(+), 39 deletions(-)
 >
-> diff --git a/drivers/base/core.c b/drivers/base/core.c
-> index 1a1d9a55645c..4a0907574646 100644
-> --- a/drivers/base/core.c
-> +++ b/drivers/base/core.c
-> @@ -646,6 +646,17 @@ struct device_link *device_link_add(struct device *consumer,
->                 goto out;
->         }
+> diff --git a/include/linux/fwnode.h b/include/linux/fwnode.h
+> index afde643f37a2..ec02e1e939cc 100644
+> --- a/include/linux/fwnode.h
+> +++ b/include/linux/fwnode.h
+> @@ -78,44 +78,8 @@ struct fwnode_reference_args {
+>   *                            endpoint node.
+>   * @graph_get_port_parent: Return the parent node of a port node.
+>   * @graph_parse_endpoint: Parse endpoint for port and endpoint id.
+> - * @add_links: Called after the device corresponding to the fwnode is added
+> - *             using device_add(). The function is expected to create device
+> - *             links to all the suppliers of the device that are available at
+> - *             the time this function is called.  The function must NOT stop
+> - *             at the first failed device link if other unlinked supplier
+> - *             devices are present in the system.  This is necessary for the
+> - *             driver/bus sync_state() callbacks to work correctly.
+> - *
+> - *             For example, say Device-C depends on suppliers Device-S1 and
+> - *             Device-S2 and the dependency is listed in that order in the
+> - *             firmware.  Say, S1 gets populated from the firmware after
+> - *             late_initcall_sync().  Say S2 is populated and probed way
+> - *             before that in device_initcall(). When C is populated, if this
+> - *             add_links() function doesn't continue past a "failed linking to
+> - *             S1" and continue linking C to S2, then S2 will get a
+> - *             sync_state() callback before C is probed. This is because from
+> - *             the perspective of S2, C was never a consumer when its
+> - *             sync_state() evaluation is done. To avoid this, the add_links()
+> - *             function has to go through all available suppliers of the
+> - *             device (that corresponds to this fwnode) and link to them
+> - *             before returning.
+> - *
+> - *             If some suppliers are not yet available (indicated by an error
+> - *             return value), this function will be called again when other
+> - *             devices are added to allow creating device links to any newly
+> - *             available suppliers.
+> - *
+> - *             Return 0 if device links have been successfully created to all
+> - *             the known suppliers of this device or if the supplier
+> - *             information is not known.
+> - *
+> - *             Return -ENODEV if the suppliers needed for probing this device
+> - *             have not been registered yet (because device links can only be
+> - *             created to devices registered with the driver core).
+> - *
+> - *             Return -EAGAIN if some of the suppliers of this device have not
+> - *             been registered yet, but none of those suppliers are necessary
+> - *             for probing the device.
+> + * @add_links: Create fwnode links to all the suppliers of the fwnode. Return
+> + *             zero on success, a negative error code otherwise.
+
+I'd say something like "Create fwnode links to all nodes that
+represent devices supplying resources to the device represented by the
+current fwnode.  Return ..., or a negative ... on failure."
+
+>   */
+>  struct fwnode_operations {
+>         struct fwnode_handle *(*get)(struct fwnode_handle *fwnode);
+> @@ -155,7 +119,7 @@ struct fwnode_operations {
+>         (*graph_get_port_parent)(struct fwnode_handle *fwnode);
+>         int (*graph_parse_endpoint)(const struct fwnode_handle *fwnode,
+>                                     struct fwnode_endpoint *endpoint);
+> -       int (*add_links)(const struct fwnode_handle *fwnode,
+> +       int (*add_links)(struct fwnode_handle *fwnode,
+>                          struct device *dev);
+>  };
 >
-> +       /*
-> +        * SYNC_STATE_ONLY links are useless once a consumer device has probed.
-> +        * So, only create it if the consumer hasn't probed yet.
-> +        */
-> +       if (flags & DL_FLAG_SYNC_STATE_ONLY &&
-> +           consumer->links.status != DL_DEV_NO_DRIVER &&
-> +           consumer->links.status != DL_DEV_PROBING) {
-> +               link = NULL;
-> +               goto out;
-> +       }
-
-Returning NULL at this point may be confusing if there is a link
-between these devices already.
-
-> +
->         /*
->          * DL_FLAG_AUTOREMOVE_SUPPLIER indicates that the link will be needed
->          * longer than for DL_FLAG_AUTOREMOVE_CONSUMER and setting them both
 > --
 > 2.29.1.341.ge80a0c044ae-goog
 >
