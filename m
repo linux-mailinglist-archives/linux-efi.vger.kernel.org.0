@@ -2,41 +2,41 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E14402B4B46
-	for <lists+linux-efi@lfdr.de>; Mon, 16 Nov 2020 17:34:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C9BC12B4BDA
+	for <lists+linux-efi@lfdr.de>; Mon, 16 Nov 2020 17:59:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732135AbgKPQex (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 16 Nov 2020 11:34:53 -0500
-Received: from mail-ot1-f65.google.com ([209.85.210.65]:35195 "EHLO
-        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731373AbgKPQex (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 16 Nov 2020 11:34:53 -0500
-Received: by mail-ot1-f65.google.com with SMTP id n11so16620120ota.2;
-        Mon, 16 Nov 2020 08:34:52 -0800 (PST)
+        id S1731224AbgKPQ56 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 16 Nov 2020 11:57:58 -0500
+Received: from mail-ot1-f68.google.com ([209.85.210.68]:45415 "EHLO
+        mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730972AbgKPQ56 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 16 Nov 2020 11:57:58 -0500
+Received: by mail-ot1-f68.google.com with SMTP id k3so16627219otp.12;
+        Mon, 16 Nov 2020 08:57:57 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=X6r+TMuXBaWk+0YlYimRvQ3UQLh6IAXQbc5v0U3Ytpw=;
-        b=A/DkBwv36Hx6eCE6p6k/oGdOq0EEGvqZclZxkTMKgpsYXugw1mZuN1cvSArmh+RYB5
-         XnJgD5puOt/KJa7SHqx9KZYIs26Aijf130/jVnb3TskkADMLbyaI+f73STB/7xAOTfaO
-         4c7q8HUSqoy5c6ecqpwkQtYBXe7miWSzzIQSH1pity7dRc3y4A5vXlxs1BwoKOvhtGdV
-         iBPyeftuz26XlvPyp2iie4WZrbLamxZAxHOywFrXAXEjIejzOVw2uiVGXRtLNYeiTCyH
-         sNK2CQ15VIldWXrcBCtGflwlp6dZ94lG5hLvFptc67fZbhjAUCGiK9sJzSce2jlGI9SH
-         xXkw==
-X-Gm-Message-State: AOAM532yd+kgi/LYm3iywxQm2CuycEWT79lmHYJhnw9sLK65kPmZgog4
-        ex+YqYCTcPalEFLG7PZ0IdairCTbWJrTeqMQZOQ9AyJzSAU=
-X-Google-Smtp-Source: ABdhPJxXfOjX8Lhy1wwWUe392JncSbAGxcKFQfRzrNKGlBugUCM6FToKHQOVyMbEwnMz2xffTepsuPCWMTdjBP+D1T8=
-X-Received: by 2002:a9d:222f:: with SMTP id o44mr46532ota.321.1605544492320;
- Mon, 16 Nov 2020 08:34:52 -0800 (PST)
+        bh=LmtwyIbPmAPFs/gTz0w7XLIu0QzTRgivfbqX2mV6WSg=;
+        b=YoeR5r7wx46nBnVd3P6g4PaJ702Mw42Z7ztSOwz+Y6mV8q6uUMV6kTBcdgIkJC9jUX
+         DWyTMstyq9d5jbm8KlaGo3q3/qkaEwLEn8JUxdQ1mH0VD/Zxw86UlNgVIVdzM9s4Z5DH
+         idiRHu/aLKJp9JzJHIo0uokft2Cude7vi11tacWC0EPckfiyxLAojto4qSSQKpY020kW
+         b1bA7slfqBp8H6/P7cULW/udSCIRQLMBOxgSzm2g2JcNu+6VquD96w3rj62zXcC7hW9x
+         Po2dPzgpeaXDrHRGNHSNvhzkACBd5CZS8di/IYYHtxPnpJfNgjV8fs1nGn4pMMxUGXPw
+         Hlzg==
+X-Gm-Message-State: AOAM530//XY7yg4WMlPF+tKkwe1c4vV9AeqXlYgtJpw30uq7SJZ104xa
+        o82lcq2Nw+P9gHzRkMHn6KzmelNzm3RfFP+8/cWaRBXyOME=
+X-Google-Smtp-Source: ABdhPJwzUipjfGFxVCrhvhtd3iWbpG5HY2UufOmg4YHucTU4fyui3Q0NiJjfauMdUE2y7HszNgi/GgQE+5gzMaBW5yQ=
+X-Received: by 2002:a9d:222f:: with SMTP id o44mr124071ota.321.1605545876901;
+ Mon, 16 Nov 2020 08:57:56 -0800 (PST)
 MIME-Version: 1.0
-References: <20201104232356.4038506-1-saravanak@google.com> <20201104232356.4038506-15-saravanak@google.com>
-In-Reply-To: <20201104232356.4038506-15-saravanak@google.com>
+References: <20201104232356.4038506-1-saravanak@google.com> <20201104232356.4038506-18-saravanak@google.com>
+In-Reply-To: <20201104232356.4038506-18-saravanak@google.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 16 Nov 2020 17:34:41 +0100
-Message-ID: <CAJZ5v0hQFRo8DzA=RFV8_L7_feiZF=7XMT8vVXgG5VtbLPEJ5Q@mail.gmail.com>
-Subject: Re: [PATCH v1 14/18] driver core: Use device's fwnode to check if it
- is waiting for suppliers
+Date:   Mon, 16 Nov 2020 17:57:45 +0100
+Message-ID: <CAJZ5v0gALooTYTLr9JOynHTT=Bqvzp1iTdpQ+SfQn+2u__w-0w@mail.gmail.com>
+Subject: Re: [PATCH v1 17/18] driver core: Add helper functions to convert
+ fwnode links to device links
 To:     Saravana Kannan <saravanak@google.com>
 Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
@@ -62,85 +62,307 @@ X-Mailing-List: linux-efi@vger.kernel.org
 
 On Thu, Nov 5, 2020 at 12:24 AM Saravana Kannan <saravanak@google.com> wrote:
 >
-> To check if a device is still waiting for its supplier devices to be
-> added, we used to check if the devices is in a global
-> waiting_for_suppliers list. Since the global list will be deleted in
-> subsequent patches, this patch stops using this check.
-
-My kind of educated guess is that you want to drop
-waiting_for_suppliers and that's why you want to use supplier links
-here.
-
+> Add helper functions __fw_devlink_link_to_consumers() and
+> __fw_devlink_link_to_suppliers() that convert fwnode links to device
+> links.
 >
-> Instead, this patch uses a more device specific check. It checks if the
-> device's fwnode has any fwnode links that haven't been converted to
-> device links yet.
+> __fw_devlink_link_to_consumers() is for creating:
+> - Device links between a newly added device and all its consumer devices
+>   that have been added to driver core.
+> - Proxy SYNC_STATE_ONLY device links between the newly added device and
+>   the parent devices of all its consumers that have not been added to
+>   driver core yet.
+>
+> __fw_devlink_link_to_suppliers() is for creating:
+> - Device links between a newly added device and all its supplier devices
+> - Proxy SYNC_STATE_ONLY device links between the newly added device and
+>   all the supplier devices of its child device nodes.
 >
 > Signed-off-by: Saravana Kannan <saravanak@google.com>
 > ---
->  drivers/base/core.c | 18 ++++++++----------
->  1 file changed, 8 insertions(+), 10 deletions(-)
+>  drivers/base/core.c | 228 ++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 228 insertions(+)
 >
 > diff --git a/drivers/base/core.c b/drivers/base/core.c
-> index 4ae5f2885ac5..d51dd564add1 100644
+> index d51dd564add1..0c87ff949d81 100644
 > --- a/drivers/base/core.c
 > +++ b/drivers/base/core.c
-> @@ -51,6 +51,7 @@ static DEFINE_MUTEX(wfs_lock);
->  static LIST_HEAD(deferred_sync);
->  static unsigned int defer_sync_state_count = 1;
->  static DEFINE_MUTEX(fwnode_link_lock);
-> +static bool fw_devlink_is_permissive(void);
->
->  /**
->   * fwnode_link_add - Create a link between two fwnode_handles.
-> @@ -994,13 +995,13 @@ int device_links_check_suppliers(struct device *dev)
->          * Device waiting for supplier to become available is not allowed to
->          * probe.
->          */
-> -       mutex_lock(&wfs_lock);
-> -       if (!list_empty(&dev->links.needs_suppliers) &&
-> -           dev->links.need_for_probe) {
-> -               mutex_unlock(&wfs_lock);
-> +       mutex_lock(&fwnode_link_lock);
-> +       if (dev->fwnode && !list_empty(&dev->fwnode->suppliers) &&
-> +           !fw_devlink_is_permissive()) {
-> +               mutex_unlock(&fwnode_link_lock);
->                 return -EPROBE_DEFER;
->         }
-> -       mutex_unlock(&wfs_lock);
-> +       mutex_unlock(&fwnode_link_lock);
->
->         device_links_write_lock();
->
-> @@ -1166,10 +1167,7 @@ static ssize_t waiting_for_supplier_show(struct device *dev,
->         bool val;
->
->         device_lock(dev);
-> -       mutex_lock(&wfs_lock);
-> -       val = !list_empty(&dev->links.needs_suppliers)
-> -             && dev->links.need_for_probe;
-> -       mutex_unlock(&wfs_lock);
-
-Why isn't the lock needed any more?
-
-Or maybe it wasn't needed previously too?
-
-> +       val = !list_empty(&dev->fwnode->suppliers);
->         device_unlock(dev);
->         return sysfs_emit(buf, "%u\n", val);
+> @@ -1585,6 +1585,234 @@ static struct device *fwnode_get_next_parent_dev(struct fwnode_handle *fwnode)
+>         return dev;
 >  }
-> @@ -2226,7 +2224,7 @@ static int device_add_attrs(struct device *dev)
->                         goto err_remove_dev_groups;
->         }
 >
-> -       if (fw_devlink_flags && !fw_devlink_is_permissive()) {
-> +       if (fw_devlink_flags && !fw_devlink_is_permissive() && dev->fwnode) {
+> +/**
+> + * fw_devlink_create_devlink - Create a device link from a consumer to fwnode
 
-And why is this change needed?
+Have you considered renaming "fw_devlink" to "fwnode_link"?
 
->                 error = device_create_file(dev, &dev_attr_waiting_for_supplier);
->                 if (error)
->                         goto err_remove_dev_online;
+That would be much less confusing IMO and the name of this function
+would be clearer.
+
+> + * @con - Consumer device for the device link
+> + * @sup - fwnode handle of supplier
+> + *
+> + * This function will try to create a device link between the consumer and the
+> + * supplier devices.
+
+"... between consumer device @con and the supplier device represented
+by @sup" (and see below).
+
+> + *
+> + * The supplier has to be provided as a fwnode because incorrect cycles in
+> + * fwnode links can sometimes cause the supplier device to never be created.
+> + * This function detects such cases and returns an error if a device link being
+> + * created in invalid.
+
+"... returns an error if it cannot create a device link from the
+consumer to a missing supplier."
+
+> + *
+> + * Returns,
+> + * 0 on successfully creating a device link
+> + * -EINVAL if the device link being attempted is invalid
+
+"if the device link cannot be created as expected"
+
+> + * -EAGAIN if the device link needs to be attempted again in the future
+
+"if the device link cannot be created right now, but it may be
+possible to do that in the future."
+
+> + */
+> +static int fw_devlink_create_devlink(struct device *con,
+> +                                    struct fwnode_handle *sup, u32 flags)
+
+I'd call the second arg sup_handle to indicate that it is not a struct device.
+
+> +{
+> +       struct device *sup_dev, *sup_par_dev;
+> +       int ret = 0;
+> +
+> +       sup_dev = get_dev_from_fwnode(sup);
+> +       /*
+> +        * If we can't find the supplier device from its fwnode, it might be
+> +        * due to a cyclic dependcy between fwnodes. Some of these cycles can
+
+dependency
+
+> +        * be broken by applying logic. Check for these types of cycles and
+> +        * break them so that devices in the cycle probe properly.
+> +        */
+
+I would do
+
+if (sup_dev) {
+        if (!device_link_add(con, sup_dev, flags))
+                ret = -EINVAL;
+
+        put_device(sup_dev);
+        return ret;
+}
+
+here and the cycle detection (error code path) below, possibly using
+the same dev pointer.
+
+> +       if (!sup_dev) {
+> +               /*
+> +                * DL_FLAG_SYNC_STATE_ONLY doesn't block probing and supports
+> +                * cycles. So cycle detection isn't necessary and shouldn't be
+> +                * done.
+> +                */
+> +               if (flags & DL_FLAG_SYNC_STATE_ONLY)
+> +                       return -EAGAIN;
+> +
+> +               sup_par_dev = fwnode_get_next_parent_dev(sup);
+> +
+> +               /*
+> +                * If the supplier's parent is dependent on the consumer, then
+> +                * the consumer-supplier dependency is a false dependency. So,
+> +                * treat it as an invalid link.
+> +                */
+> +               if (sup_par_dev && device_is_dependent(con, sup_par_dev)) {
+> +                       dev_dbg(con, "Not linking to %pfwP - False link\n",
+> +                               sup);
+> +                       ret = -EINVAL;
+> +               } else {
+> +                       /*
+> +                        * Can't check for cycles or no cycles. So let's try
+> +                        * again later.
+> +                        */
+> +                       ret = -EAGAIN;
+> +               }
+> +
+> +               put_device(sup_par_dev);
+> +               return ret;
+> +       }
+> +
+> +       /*
+> +        * If we get this far and fail, this is due to cycles in device links.
+> +        * Just give up on this link and treat it as invalid.
+> +        */
+> +       if (!device_link_add(con, sup_dev, flags))
+> +               ret = -EINVAL;
+> +       put_device(sup_dev);
+> +
+> +       return ret;
+> +}
+> +
+> +/**
+> + * __fw_devlink_link_to_consumers - Create device links to consumers of a device
+> + * @dev - Device that needs to be linked to its consumers
+> + *
+> + * This function looks at all the consumer fwnodes of @dev and creates device
+> + * links between the consumer device and @dev (supplier).
+> + *
+> + * If the consumer device has not been added yet, then this function creates a
+> + * SYNC_STATE_ONLY link between @dev (supplier) and the closest ancestor device
+> + * of the consumer fwnode. This is necessary to make sure @dev doesn't get a
+> + * sync_state() callback before the real consumer device gets to be added and
+> + * then probed.
+> + *
+> + * Once device links are created from the real consumer to @dev (supplier), the
+> + * fwnode links are deleted.
+> + */
+> +static void __fw_devlink_link_to_consumers(struct device *dev)
+> +{
+> +       struct fwnode_handle *fwnode = dev->fwnode;
+> +       struct fwnode_link *link, *tmp;
+> +
+> +       list_for_each_entry_safe(link, tmp, &fwnode->consumers, s_hook) {
+> +               u32 dl_flags = fw_devlink_get_flags();
+> +               struct device *con_dev;
+> +               bool own_link = true;
+> +               int ret;
+> +
+> +               con_dev = get_dev_from_fwnode(link->consumer);
+> +               /*
+> +                * If consumer device is not available yet, make a "proxy"
+> +                * SYNC_STATE_ONLY link from the consumer's parent device to
+> +                * the supplier device. This is necessary to make sure the
+> +                * supplier doesn't get a sync_state() callback before the real
+> +                * consumer can create a device link to the supplier.
+> +                *
+> +                * This proxy link step is needed to handle the case where the
+> +                * consumer's parent device is added before the supplier.
+> +                */
+> +               if (!con_dev) {
+> +                       con_dev = fwnode_get_next_parent_dev(link->consumer);
+> +                       /*
+> +                        * However, if the consumer's parent device is also the
+> +                        * parent of the supplier, don't create a
+> +                        * consumer-supplier link from the parent to its child
+> +                        * device. Such a dependency is impossible.
+> +                        */
+> +                       if (con_dev &&
+> +                           fwnode_is_ancestor_of(con_dev->fwnode, fwnode)) {
+> +                               put_device(con_dev);
+> +                               con_dev = NULL;
+> +                       } else {
+> +                               own_link = false;
+> +                               dl_flags = DL_FLAG_SYNC_STATE_ONLY;
+> +                       }
+> +               }
+> +
+> +               if (!con_dev)
+> +                       continue;
+> +
+> +               ret = fw_devlink_create_devlink(con_dev, fwnode, dl_flags);
+> +               put_device(con_dev);
+> +               if (!own_link || ret == -EAGAIN)
+> +                       continue;
+> +
+> +               list_del(&link->s_hook);
+> +               list_del(&link->c_hook);
+> +               kfree(link);
+> +       }
+> +}
+> +
+> +/**
+> + * __fw_devlink_link_to_suppliers - Create device links to suppliers of a device
+> + * @dev - The consumer device that needs to be linked to its suppliers
+> + * @fwnode - Root of the fwnode tree that is used to create device links
+> + *
+> + * This function looks at all the supplier fwnodes of fwnode tree rooted at
+> + * @fwnode and creates device links between @dev (consumer) and all the
+> + * supplier devices of the entire fwnode tree at @fwnode. See
+> + * fw_devlink_create_devlink() for more details.
+> + *
+> + * The function creates normal (non-SYNC_STATE_ONLY) device links between @dev
+> + * and the real suppliers of @dev. Once these device links are created, the
+> + * fwnode links are deleted. When such device links are successfully created,
+> + * this function is called recursively on those supplier devices. This is
+> + * needed to detect and break some invalid cycles in fwnode links.
+> + *
+> + * In addition, it also looks at all the suppliers of the entire fwnode tree
+> + * because some of the child devices of @dev that have not been added yet
+> + * (because @dev hasn't probed) might already have their suppliers added to
+> + * driver core. So, this function creates SYNC_STATE_ONLY device links between
+> + * @dev (consumer) and these suppliers to make sure they don't execute their
+> + * sync_state() callbacks before these child devices have a chance to create
+> + * their device links. The fwnode links that correspond to the child devices
+> + * aren't delete because they are needed later to create the device links
+> + * between the real consumer and supplier devices.
+> + */
+> +static void __fw_devlink_link_to_suppliers(struct device *dev,
+> +                                          struct fwnode_handle *fwnode)
+> +{
+> +       bool own_link = (dev->fwnode == fwnode);
+> +       struct fwnode_link *link, *tmp;
+> +       struct fwnode_handle *child = NULL;
+> +       u32 dl_flags;
+> +
+> +       if (own_link)
+> +               dl_flags = fw_devlink_get_flags();
+> +       else
+> +               dl_flags = DL_FLAG_SYNC_STATE_ONLY;
+> +
+> +       list_for_each_entry_safe(link, tmp, &fwnode->suppliers, c_hook) {
+> +               int ret;
+> +               struct device *sup_dev;
+> +               struct fwnode_handle *sup = link->supplier;
+> +
+> +               ret = fw_devlink_create_devlink(dev, sup, dl_flags);
+> +               if (!own_link || ret == -EAGAIN)
+> +                       continue;
+> +
+> +               list_del(&link->s_hook);
+> +               list_del(&link->c_hook);
+> +               kfree(link);
+> +
+> +               /* If no device link was created, nothing more to do. */
+> +               if (ret)
+> +                       continue;
+> +
+> +               /*
+> +                * If a device link was successfully created to a supplier, we
+> +                * now need to try and link the supplier to all its suppliers.
+> +                *
+> +                * This is needed to detect and delete false dependencies in
+> +                * fwnode links that haven't been converted to a device link
+> +                * yet. See comments in fw_devlink_create_devlink() for more
+> +                * details on the false dependency.
+> +                *
+> +                * Without deleting these false dependencies, some devices will
+> +                * never probe because they'll keep waiting for their false
+> +                * dependency fwnode links to be converted to device links.
+> +                */
+> +               sup_dev = get_dev_from_fwnode(sup);
+> +               __fw_devlink_link_to_suppliers(sup_dev, sup_dev->fwnode);
+> +               put_device(sup_dev);
+> +       }
+> +
+> +       /*
+> +        * Make "proxy" SYNC_STATE_ONLY device links to represent the needs of
+> +        * all the descendants. This proxy link step is needed to handle the
+> +        * case where the supplier is added before the consumer's parent device
+> +        * (@dev).
+> +        */
+> +       while ((child = fwnode_get_next_available_child_node(fwnode, child)))
+> +               __fw_devlink_link_to_suppliers(dev, child);
+> +}
+> +
+>  static void fw_devlink_link_device(struct device *dev)
+>  {
+>         int fw_ret;
 > --
 > 2.29.1.341.ge80a0c044ae-goog
 >
