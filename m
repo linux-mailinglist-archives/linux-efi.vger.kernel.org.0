@@ -2,40 +2,40 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AE9FE2B4A86
-	for <lists+linux-efi@lfdr.de>; Mon, 16 Nov 2020 17:16:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B7E772B4AFA
+	for <lists+linux-efi@lfdr.de>; Mon, 16 Nov 2020 17:27:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731682AbgKPQQZ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 16 Nov 2020 11:16:25 -0500
-Received: from mail-oi1-f193.google.com ([209.85.167.193]:39065 "EHLO
-        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731584AbgKPQQY (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 16 Nov 2020 11:16:24 -0500
-Received: by mail-oi1-f193.google.com with SMTP id f11so5657823oij.6;
-        Mon, 16 Nov 2020 08:16:22 -0800 (PST)
+        id S1732064AbgKPQZp (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 16 Nov 2020 11:25:45 -0500
+Received: from mail-ot1-f66.google.com ([209.85.210.66]:34562 "EHLO
+        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731416AbgKPQZo (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 16 Nov 2020 11:25:44 -0500
+Received: by mail-ot1-f66.google.com with SMTP id j14so16589322ots.1;
+        Mon, 16 Nov 2020 08:25:43 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=RulTdcnrDdgWwh+nP28RdtMK+5PSTx7xbD183jhCfRg=;
-        b=gsvre2nrqUc2qHrHJ7e+IBWvTGItUadsk0q0QUSnd1wXx5U3IJfIMIYRVxrSJYVuiO
-         kzIA1pPaqoGxfvVvr+IMSpXFrv5NDw+BXKM+RpjesjANrZczMS1L51laOFYgc3eq68Pr
-         zB11YaAMuFSfMCSRYMyufkUgTp9uXKB2Q6VeFXLEYWQQGBcPzax3eTY3yUSdBdFuhQMw
-         8ywZNqBCyzOZgFeygRKCv1EjphnoTnKaHAh+h5/Sbb0deIuA2uwsCjKGrDXeYFiMPOtd
-         FOjbGTSMNuJFgEBjW5wPomk6qc2IgSK3N6VmGxvD2ndgpLNsGOuR6QxzcUqunNGqOlTp
-         O89w==
-X-Gm-Message-State: AOAM531EiHlTqbVyEpMSDDqSxifbX9m86ZVqTq8r5pX4h57B0RKos7Cu
-        r3+TVgL0fZX+/l/e0mzjw+VOUMzOBcGueKVafJ6oYv73
-X-Google-Smtp-Source: ABdhPJxsHoEXWLRAORs5wepqnqHAJYHejMJqY+2GjEKGW2k5uWBE2yOHAhuQvULJijVttPy9eq/yXXN3AAcA8pzR3b8=
-X-Received: by 2002:aca:c4c9:: with SMTP id u192mr142060oif.69.1605543381818;
- Mon, 16 Nov 2020 08:16:21 -0800 (PST)
+        bh=1Nc27M9ki9nKK3SIKwkHCnsf1A8616+iJpgisEL0zo4=;
+        b=ihWUupm7LNY6quJsfIwPiAH98FIeUh4boKu5Y5ptabQAh4xA4JavBtrVCGUpO56bLf
+         VMRx69ePxkDRGQ4Bt17xPqQGSh0F0oJBdvoBODOlZRK8T+KtcVtek09uUAv3cv/buMs9
+         KMvuXOVoDrwVgLXKhQSJh4FOlsipo71F7Y8oEe1eXDIWYF5BDSvtyzbZcsJXtgAXBl0s
+         eMqimhASylpvN6YdSt+FnNtYCNcG12mjrhRqVnYuzljSLsQEk3JWZeL3WYsC+FoeC7yD
+         60nzkpE+MPXygNgYhpPdH/5VGTly5lcBNvSufmCedpwV+sr1GY6a5/iDdS1NEx8hgAi5
+         zeCQ==
+X-Gm-Message-State: AOAM5300NB1LYG98CRkYLEzZfZ0mCV1WgfllYORH6dX2EU2ap+/uO0Hg
+        je0KtKrlh1zlefuElJGEf6SMiWD4DOvDNPdqrJw=
+X-Google-Smtp-Source: ABdhPJwkIGRT8KJ1R50oN/HYp+g+UTL1v50WX4tmwPKkYgyP3a0+sWiF5eWeqZBT3UMgTvZ/iOm+4l1OeljlMxM0GpI=
+X-Received: by 2002:a9d:222f:: with SMTP id o44mr15316ota.321.1605543943606;
+ Mon, 16 Nov 2020 08:25:43 -0800 (PST)
 MIME-Version: 1.0
-References: <20201104232356.4038506-1-saravanak@google.com> <20201104232356.4038506-12-saravanak@google.com>
-In-Reply-To: <20201104232356.4038506-12-saravanak@google.com>
+References: <20201104232356.4038506-1-saravanak@google.com> <20201104232356.4038506-13-saravanak@google.com>
+In-Reply-To: <20201104232356.4038506-13-saravanak@google.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 16 Nov 2020 17:16:10 +0100
-Message-ID: <CAJZ5v0hxdq2prUUkoPwpW5+crAD096eYQAQ7PZ2oaFKT7_gcHA@mail.gmail.com>
-Subject: Re: [PATCH v1 11/18] driver core: Redefine the meaning of fwnode_operations.add_links()
+Date:   Mon, 16 Nov 2020 17:25:32 +0100
+Message-ID: <CAJZ5v0hM9cUeW58OMRRWfAfY+_GYuXy=Dt8bssU+TCufuhukmw@mail.gmail.com>
+Subject: Re: [PATCH v1 12/18] driver core: Add fw_devlink_parse_fwtree()
 To:     Saravana Kannan <saravanak@google.com>
 Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
@@ -61,83 +61,90 @@ X-Mailing-List: linux-efi@vger.kernel.org
 
 On Thu, Nov 5, 2020 at 12:24 AM Saravana Kannan <saravanak@google.com> wrote:
 >
-> Change the meaning of fwnode_operations.add_links() to just create
-> fwnode links by parsing the properties of a given fwnode.
+> This function is a wrapper around fwnode_operations.add_links().
 >
-> This patch doesn't actually make any code changes. To keeps things more
-> digestable, the actual functional changes come in later patches in this
-> series.
+> This function parses each node in a fwnode tree and create fwnode links
+> for each of those nodes. The information for creating the fwnode links
+> (the supplier and consumer fwnode) is obtained by parsing the properties
+> in each of the fwnodes.
+>
+> This function also ensures that no fwnode is parsed more than once by
+> marking the fwnodes as parsed.
 >
 > Signed-off-by: Saravana Kannan <saravanak@google.com>
 > ---
->  include/linux/fwnode.h | 42 +++---------------------------------------
->  1 file changed, 3 insertions(+), 39 deletions(-)
+>  drivers/base/core.c    | 19 +++++++++++++++++++
+>  include/linux/fwnode.h |  3 +++
+>  2 files changed, 22 insertions(+)
 >
+> diff --git a/drivers/base/core.c b/drivers/base/core.c
+> index 4a0907574646..ee28d8c7ee85 100644
+> --- a/drivers/base/core.c
+> +++ b/drivers/base/core.c
+> @@ -1543,6 +1543,25 @@ static bool fw_devlink_is_permissive(void)
+>         return fw_devlink_flags == DL_FLAG_SYNC_STATE_ONLY;
+>  }
+>
+> +static void fw_devlink_parse_fwnode(struct fwnode_handle *fwnode)
+> +{
+> +       if (fwnode->flags & FWNODE_FLAG_LINKS_ADDED)
+> +               return;
+
+Why is the flag needed?
+
+Duplicate links won't be created anyway and it doesn't cause the tree
+walk to be terminated.
+
+> +
+> +       fwnode_call_int_op(fwnode, add_links, NULL);
+> +       fwnode->flags |= FWNODE_FLAG_LINKS_ADDED;
+> +}
+> +
+> +static void fw_devlink_parse_fwtree(struct fwnode_handle *fwnode)
+> +{
+> +       struct fwnode_handle *child = NULL;
+> +
+> +       fw_devlink_parse_fwnode(fwnode);
+> +
+> +       while ((child = fwnode_get_next_available_child_node(fwnode, child)))
+
+I'd prefer
+
+for (child = NULL; child; child =
+fwnode_get_next_available_child_node(fwnode, child))
+
+> +               fw_devlink_parse_fwtree(child);
+> +}
+> +
+>  static void fw_devlink_link_device(struct device *dev)
+>  {
+>         int fw_ret;
 > diff --git a/include/linux/fwnode.h b/include/linux/fwnode.h
-> index afde643f37a2..ec02e1e939cc 100644
+> index ec02e1e939cc..9aaf9e4f3994 100644
 > --- a/include/linux/fwnode.h
 > +++ b/include/linux/fwnode.h
-> @@ -78,44 +78,8 @@ struct fwnode_reference_args {
->   *                            endpoint node.
->   * @graph_get_port_parent: Return the parent node of a port node.
->   * @graph_parse_endpoint: Parse endpoint for port and endpoint id.
-> - * @add_links: Called after the device corresponding to the fwnode is added
-> - *             using device_add(). The function is expected to create device
-> - *             links to all the suppliers of the device that are available at
-> - *             the time this function is called.  The function must NOT stop
-> - *             at the first failed device link if other unlinked supplier
-> - *             devices are present in the system.  This is necessary for the
-> - *             driver/bus sync_state() callbacks to work correctly.
-> - *
-> - *             For example, say Device-C depends on suppliers Device-S1 and
-> - *             Device-S2 and the dependency is listed in that order in the
-> - *             firmware.  Say, S1 gets populated from the firmware after
-> - *             late_initcall_sync().  Say S2 is populated and probed way
-> - *             before that in device_initcall(). When C is populated, if this
-> - *             add_links() function doesn't continue past a "failed linking to
-> - *             S1" and continue linking C to S2, then S2 will get a
-> - *             sync_state() callback before C is probed. This is because from
-> - *             the perspective of S2, C was never a consumer when its
-> - *             sync_state() evaluation is done. To avoid this, the add_links()
-> - *             function has to go through all available suppliers of the
-> - *             device (that corresponds to this fwnode) and link to them
-> - *             before returning.
-> - *
-> - *             If some suppliers are not yet available (indicated by an error
-> - *             return value), this function will be called again when other
-> - *             devices are added to allow creating device links to any newly
-> - *             available suppliers.
-> - *
-> - *             Return 0 if device links have been successfully created to all
-> - *             the known suppliers of this device or if the supplier
-> - *             information is not known.
-> - *
-> - *             Return -ENODEV if the suppliers needed for probing this device
-> - *             have not been registered yet (because device links can only be
-> - *             created to devices registered with the driver core).
-> - *
-> - *             Return -EAGAIN if some of the suppliers of this device have not
-> - *             been registered yet, but none of those suppliers are necessary
-> - *             for probing the device.
-> + * @add_links: Create fwnode links to all the suppliers of the fwnode. Return
-> + *             zero on success, a negative error code otherwise.
+> @@ -15,12 +15,15 @@
+>  struct fwnode_operations;
+>  struct device;
+>
 
-I'd say something like "Create fwnode links to all nodes that
-represent devices supplying resources to the device represented by the
-current fwnode.  Return ..., or a negative ... on failure."
+Description here, please.
 
->   */
->  struct fwnode_operations {
->         struct fwnode_handle *(*get)(struct fwnode_handle *fwnode);
-> @@ -155,7 +119,7 @@ struct fwnode_operations {
->         (*graph_get_port_parent)(struct fwnode_handle *fwnode);
->         int (*graph_parse_endpoint)(const struct fwnode_handle *fwnode,
->                                     struct fwnode_endpoint *endpoint);
-> -       int (*add_links)(const struct fwnode_handle *fwnode,
-> +       int (*add_links)(struct fwnode_handle *fwnode,
->                          struct device *dev);
+> +#define FWNODE_FLAG_LINKS_ADDED                BIT(0)
+> +
+>  struct fwnode_handle {
+>         struct fwnode_handle *secondary;
+>         const struct fwnode_operations *ops;
+>         struct device *dev;
+>         struct list_head suppliers;
+>         struct list_head consumers;
+> +       u32 flags;
+
+That's a bit wasteful.  Maybe u8 would suffice for the time being?
+
 >  };
 >
+>  struct fwnode_link {
 > --
 > 2.29.1.341.ge80a0c044ae-goog
 >
