@@ -2,91 +2,158 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E6E792B6732
-	for <lists+linux-efi@lfdr.de>; Tue, 17 Nov 2020 15:15:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E11E2B73D3
+	for <lists+linux-efi@lfdr.de>; Wed, 18 Nov 2020 02:42:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728176AbgKQOO5 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 17 Nov 2020 09:14:57 -0500
-Received: from mail.kernel.org ([198.145.29.99]:52016 "EHLO mail.kernel.org"
+        id S1726205AbgKRBl2 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 17 Nov 2020 20:41:28 -0500
+Received: from mga11.intel.com ([192.55.52.93]:55080 "EHLO mga11.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726809AbgKQOO4 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Tue, 17 Nov 2020 09:14:56 -0500
-Received: from e123331-lin.nice.arm.com (lfbn-nic-1-188-42.w2-15.abo.wanadoo.fr [2.15.37.42])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A9043221E2;
-        Tue, 17 Nov 2020 14:14:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1605622495;
-        bh=JHKDFdVAM65VQv1M5oyNpRamQODWBhBgrKxGPnOefZM=;
-        h=From:To:Cc:Subject:Date:From;
-        b=KIS2keMc81ZmypyKhmKTl+VbR7ySN3HOgF+Lqa089fn16HpEVv1hV2f3qWRDm9jFY
-         ljaEy3B0bzbmEi5D3p2N305Ly7T5xiwLXa80cOrHyO+qi+smXudzaIU5wgw+uhe3Uc
-         Ce4uqlLJxUGyhTc5oiXmHHOEs7T94Ui5nG0ZEJUk=
-From:   Ard Biesheuvel <ardb@kernel.org>
-To:     linux-efi@vger.kernel.org
-Cc:     ardb@kernel.org, Ingo Molnar <mingo@redhat.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Borislav Petkov <bp@alien8.de>
-Subject: [GIT PULL] EFI updates for v5.11
-Date:   Tue, 17 Nov 2020 15:14:49 +0100
-Message-Id: <20201117141449.32674-1-ardb@kernel.org>
-X-Mailer: git-send-email 2.17.1
+        id S1725767AbgKRBl2 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Tue, 17 Nov 2020 20:41:28 -0500
+IronPort-SDR: 3xdbOYEemAGTsibl2kxBU+T9oJGrKkxi2lFn8dJ0zu8M7HpkzOkzKc3jNRQhp90EhuRT/JxCkW
+ KjkIEaInLNtA==
+X-IronPort-AV: E=McAfee;i="6000,8403,9808"; a="167537728"
+X-IronPort-AV: E=Sophos;i="5.77,486,1596524400"; 
+   d="scan'208";a="167537728"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Nov 2020 17:41:27 -0800
+IronPort-SDR: tFSK/cEdR4m2TLVOhtPz8+RFClsVPZMnaaOp5z90rm6qhAvXqYSrUdNv+w/STdzn/8ndl26h+r
+ eBA6Lf6XbL2A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.77,486,1596524400"; 
+   d="scan'208";a="359129325"
+Received: from lkp-server01.sh.intel.com (HELO d102174a0e0d) ([10.239.97.150])
+  by fmsmga004.fm.intel.com with ESMTP; 17 Nov 2020 17:41:26 -0800
+Received: from kbuild by d102174a0e0d with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1kfCTN-0000Ep-PQ; Wed, 18 Nov 2020 01:41:25 +0000
+Date:   Wed, 18 Nov 2020 09:40:56 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-efi@vger.kernel.org
+Subject: [efi:next] BUILD SUCCESS 006405b324c071ebdcb5f6ebdc853edf8a8b7690
+Message-ID: <5fb47ba8.pCB0CLlbzI9tNtsL%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The following changes since commit 3650b228f83adda7e5ee532e2b90429c03f7b9ec:
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git  next
+branch HEAD: 006405b324c071ebdcb5f6ebdc853edf8a8b7690  ARM: head.S: explicitly map DT even if it lives in the first physical section
 
-  Linux 5.10-rc1 (2020-10-25 15:14:11 -0700)
+elapsed time: 721m
 
-are available in the Git repository at:
+configs tested: 95
+configs skipped: 2
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git efi-next-for-v5.11
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-for you to fetch changes up to b283477d394ac41ca59ee20eb9293ae9002eb1d7:
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+nios2                         10m50_defconfig
+powerpc                       eiger_defconfig
+m68k                        mvme147_defconfig
+xtensa                          iss_defconfig
+mips                           ci20_defconfig
+arm                         axm55xx_defconfig
+arm                         lpc18xx_defconfig
+arm                          moxart_defconfig
+arm                           u8500_defconfig
+m68k                            mac_defconfig
+arm                              alldefconfig
+m68k                          hp300_defconfig
+arm                          gemini_defconfig
+arm                      tct_hammer_defconfig
+mips                        bcm47xx_defconfig
+powerpc                     tqm8541_defconfig
+powerpc                 mpc832x_rdb_defconfig
+arc                        nsim_700_defconfig
+powerpc                      pmac32_defconfig
+mips                         mpc30x_defconfig
+powerpc                     skiroot_defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+c6x                              allyesconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+i386                 randconfig-a006-20201117
+i386                 randconfig-a005-20201117
+i386                 randconfig-a001-20201117
+i386                 randconfig-a002-20201117
+i386                 randconfig-a004-20201117
+i386                 randconfig-a003-20201117
+x86_64               randconfig-a015-20201117
+x86_64               randconfig-a011-20201117
+x86_64               randconfig-a014-20201117
+x86_64               randconfig-a013-20201117
+x86_64               randconfig-a016-20201117
+x86_64               randconfig-a012-20201117
+i386                 randconfig-a012-20201117
+i386                 randconfig-a014-20201117
+i386                 randconfig-a016-20201117
+i386                 randconfig-a011-20201117
+i386                 randconfig-a015-20201117
+i386                 randconfig-a013-20201117
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+x86_64                                   rhel
+x86_64                           allyesconfig
+x86_64                    rhel-7.6-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                                  kexec
 
-  efi: x86/xen: switch to efi_get_secureboot_mode helper (2020-11-17 15:09:32 +0100)
+clang tested configs:
+x86_64               randconfig-a003-20201117
+x86_64               randconfig-a005-20201117
+x86_64               randconfig-a004-20201117
+x86_64               randconfig-a002-20201117
+x86_64               randconfig-a001-20201117
+x86_64               randconfig-a006-20201117
 
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Borislav Petkov <bp@alien8.de>
-
-----------------------------------------------------------------
-EFI updates for v5.11:
-- don't move BSS section around pointlessly (x86 decompressor)
-- refactor helper for discovering the EFI secure boot mode
-- wire up EFI secure boot to IMA for arm64
-
-----------------------------------------------------------------
-Ard Biesheuvel (1):
-      efi: x86/xen: switch to efi_get_secureboot_mode helper
-
-Arvind Sankar (1):
-      efi/x86: Only copy the compressed kernel image in efi_relocate_kernel()
-
-Chester Lin (3):
-      efi: generalize efi_get_secureboot
-      ima: generalize x86/EFI arch glue for other EFI architectures
-      arm64/ima: add ima_arch support
-
-Geert Uytterhoeven (1):
-      efi/libstub: EFI_GENERIC_STUB_INITRD_CMDLINE_LOADER should not default to yes
-
-Heinrich Schuchardt (1):
-      efi/libstub/x86: simplify efi_is_native()
-
- arch/arm64/Kconfig                                 |  1 +
- arch/x86/boot/compressed/Makefile                  |  2 +-
- arch/x86/include/asm/efi.h                         |  5 ++-
- arch/x86/kernel/Makefile                           |  2 -
- arch/x86/xen/efi.c                                 | 37 +++++-------------
- drivers/firmware/efi/Kconfig                       |  2 +-
- drivers/firmware/efi/libstub/efistub.h             |  2 +
- drivers/firmware/efi/libstub/secureboot.c          | 44 ++++++++-------------
- drivers/firmware/efi/libstub/x86-stub.c            |  5 ++-
- include/linux/efi.h                                | 23 ++++++++++-
- security/integrity/ima/Makefile                    |  4 ++
- .../ima_arch.c => security/integrity/ima/ima_efi.c | 45 ++++++----------------
- 12 files changed, 74 insertions(+), 98 deletions(-)
- rename arch/x86/kernel/ima_arch.c => security/integrity/ima/ima_efi.c (60%)
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
