@@ -2,55 +2,56 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 23ADE2BBBC6
-	for <lists+linux-efi@lfdr.de>; Sat, 21 Nov 2020 03:02:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E5BAE2BBBCA
+	for <lists+linux-efi@lfdr.de>; Sat, 21 Nov 2020 03:02:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726656AbgKUCAt (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 20 Nov 2020 21:00:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54968 "EHLO
+        id S1726701AbgKUCBH (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 20 Nov 2020 21:01:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55026 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726629AbgKUCAs (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 20 Nov 2020 21:00:48 -0500
-Received: from mail-yb1-xb43.google.com (mail-yb1-xb43.google.com [IPv6:2607:f8b0:4864:20::b43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E651DC061A47
-        for <linux-efi@vger.kernel.org>; Fri, 20 Nov 2020 18:00:47 -0800 (PST)
-Received: by mail-yb1-xb43.google.com with SMTP id s8so10307459yba.13
-        for <linux-efi@vger.kernel.org>; Fri, 20 Nov 2020 18:00:47 -0800 (PST)
+        with ESMTP id S1726704AbgKUCBG (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 20 Nov 2020 21:01:06 -0500
+Received: from mail-yb1-xb41.google.com (mail-yb1-xb41.google.com [IPv6:2607:f8b0:4864:20::b41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0D42C061A47
+        for <linux-efi@vger.kernel.org>; Fri, 20 Nov 2020 18:01:06 -0800 (PST)
+Received: by mail-yb1-xb41.google.com with SMTP id o71so10354683ybc.2
+        for <linux-efi@vger.kernel.org>; Fri, 20 Nov 2020 18:01:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=j2wWUWZqYKnQ8zyB+N3c82zv7RQJgeeS1mhMIBzqBbs=;
-        b=Hn9e9Va7VU3kQCVvYW94zaiI0ssP/bahrUDyg+we8Uf5fpBld+4Zb9pVNeSB94QuCR
-         ueyC+rhR/83c0G0FHJWCSQT6wubY/9Fh7mnt/yDEuOL1q7j+tq2SkU3q47D5DVsW8fbm
-         JIzgYzKyCbTSqr7PAsZWGOgFV52SY0BaoievmbUe0sVrZ+ESavXqBdhdyHx8PiTEA+tD
-         howQO/65LTMCkAS/v6MfIJSicSq4gOyzQHiox526RKrP4EYzjCDyB6bdGKZjhtQHYj05
-         d2/nO3fNjoDZLIy5qkrlRinpX3f097uRM5QxNVHRsRNdte/0ZGOYSOZvHmwPU3JaH/29
-         2iNg==
+        bh=K1DTYgzh1PTbt5Dy4OfYWtoZOqwKhfMyLvJRd1nKZqU=;
+        b=OWTrmrFhgMKOD4nQ/pwBJ9g35AYS3uNk81qFnTGjAdORh6DQtZwbJDpzryS7hYSdfG
+         ZfclUmgvHq2KAyNE3vPPPnAdFiTPZD++Ay29kDZZVVcFXH3HFKUq3hpP96QhSC4f3WUP
+         tN7QyhbFxnOXMxQVXZJsWKrtjCr8QpsIfK4XUitTpDVkCCpLX8CmeKtE8uHLPzMzLzH8
+         nlcSAqn29YDGud9qmji88sgxJhdVQZIIHrFp5kaayrn+yLZmvJt0psTbeCzogFX50wth
+         +zljqvHjn1XdsaDxtg2fm1zMp+iGxB8cqhRS9nWTigDeSpF3bM8AZ/UyNIcXTNV4GIZF
+         cSNg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=j2wWUWZqYKnQ8zyB+N3c82zv7RQJgeeS1mhMIBzqBbs=;
-        b=Z5mJgA9qfgJyP7RBRl5jdD/9/KrIGfScuAdCvugp6vVAwDccXJpVsSR3O9aHXgxzWH
-         vBaM1YU0vexPnZoZvNqTPIoF+zJm+P/zCLNZCcBje85Ddlgbuh+SoPWg6XYoDP/SNG+D
-         cqbcceJXDuz871+McO4qrErRD/uNe/TCgjiShJn9IWPDrvU2DOgFjw5Lzpj5Ioo/JhXa
-         5+fs4lCK3s5Piz7QF6umBzYUgKcYJ5UZAksDHxPX33ReElnABbzatBWqNJYOhU33rYxu
-         WC0RSvY5yA5SBnejm96+eXttZAXnsCBukQseEM01Mlr1ye+/YnEOBWS7tDqSr8IFEFDQ
-         Tpfg==
-X-Gm-Message-State: AOAM5319gr07jL3qhcYZR/h+2cFCSAmBmJ6DThkLe3cW+PbJe31XXHkM
-        4kphIDNHcqVTQoxY+55/o7RO5dq9NZ1vbKfV9zWd2A==
-X-Google-Smtp-Source: ABdhPJyvwTxSbO8UktNx9w1dInoBL/DB/rklOZuS30YiPBNmF94x5zjdboDH7Drkq+bARi73mxzx9vI1xKTs/rMjwaQ=
-X-Received: by 2002:a25:df05:: with SMTP id w5mr36113642ybg.20.1605924046981;
- Fri, 20 Nov 2020 18:00:46 -0800 (PST)
+        bh=K1DTYgzh1PTbt5Dy4OfYWtoZOqwKhfMyLvJRd1nKZqU=;
+        b=ZFEhHzsHRifpKIOZb425VhZ06yRnC+KLFCV4axG5/P1uzoXo6RghZUKq4rb5LPcKIu
+         gS51lxVv0U6yY5OP8DEPrQOYCoVcYOgoqgrJH6tNmHLyr3Ez040twk8xiXwTFwEtRZJH
+         FP6yjp7tIqviq7nopGx3Ki+HnXE58YyoJ9uAopTyFj/FQywMT2JxzUIrotusMex4HcPK
+         vHLx4IIWJlz04CAoXRwwPXSkg9SWw2mpZ+CCYQeTgmlryFcdzhWrrHIw0gDUh08VMgrG
+         vDGU58S1IannrysliicfBwEiHUJSpfw9Si+7fqLoGX1EN9mWKW2v80suZsM1j3qMPLv3
+         nA/w==
+X-Gm-Message-State: AOAM532AY9PJq29+QnfpECzdAFYsX2pMAfwF/9V2rp/nMWr7IFpW/uCY
+        RiA3OGTwM8AMGWF1S9D9JnBMQvCYwvH/VqDNq9e6Cw==
+X-Google-Smtp-Source: ABdhPJyaUd7orwxD63L9YPrdxfBc6vqRk8ovK/YWzUfH+pt8qh68rGG+nqHyaKxR4F41T+ZWt5vk0rTg+/kfNtg6Qxc=
+X-Received: by 2002:a25:b090:: with SMTP id f16mr25884519ybj.466.1605924065704;
+ Fri, 20 Nov 2020 18:01:05 -0800 (PST)
 MIME-Version: 1.0
 References: <20201104232356.4038506-1-saravanak@google.com>
- <20201104232356.4038506-13-saravanak@google.com> <CAJZ5v0hM9cUeW58OMRRWfAfY+_GYuXy=Dt8bssU+TCufuhukmw@mail.gmail.com>
-In-Reply-To: <CAJZ5v0hM9cUeW58OMRRWfAfY+_GYuXy=Dt8bssU+TCufuhukmw@mail.gmail.com>
+ <20201104232356.4038506-15-saravanak@google.com> <CAJZ5v0hQFRo8DzA=RFV8_L7_feiZF=7XMT8vVXgG5VtbLPEJ5Q@mail.gmail.com>
+In-Reply-To: <CAJZ5v0hQFRo8DzA=RFV8_L7_feiZF=7XMT8vVXgG5VtbLPEJ5Q@mail.gmail.com>
 From:   Saravana Kannan <saravanak@google.com>
-Date:   Fri, 20 Nov 2020 18:00:11 -0800
-Message-ID: <CAGETcx_7b-mUumRTqT7R9zDWANtJnzkPWFyeU1Z6Tw4jK_gdmA@mail.gmail.com>
-Subject: Re: [PATCH v1 12/18] driver core: Add fw_devlink_parse_fwtree()
+Date:   Fri, 20 Nov 2020 18:00:30 -0800
+Message-ID: <CAGETcx8BZVfZo7Yd-gNCcRgYErsTPdUSSRwBPQN39vVCMFQCnA@mail.gmail.com>
+Subject: Re: [PATCH v1 14/18] driver core: Use device's fwnode to check if it
+ is waiting for suppliers
 To:     "Rafael J. Wysocki" <rafael@kernel.org>
 Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         Len Brown <lenb@kernel.org>,
@@ -73,116 +74,98 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Mon, Nov 16, 2020 at 8:25 AM Rafael J. Wysocki <rafael@kernel.org> wrote:
+On Mon, Nov 16, 2020 at 8:34 AM Rafael J. Wysocki <rafael@kernel.org> wrote:
 >
 > On Thu, Nov 5, 2020 at 12:24 AM Saravana Kannan <saravanak@google.com> wrote:
 > >
-> > This function is a wrapper around fwnode_operations.add_links().
+> > To check if a device is still waiting for its supplier devices to be
+> > added, we used to check if the devices is in a global
+> > waiting_for_suppliers list. Since the global list will be deleted in
+> > subsequent patches, this patch stops using this check.
+>
+> My kind of educated guess is that you want to drop
+> waiting_for_suppliers and that's why you want to use supplier links
+> here.
+
+Yes, and a device would never be added waiting_for_suppliers list.
+
 > >
-> > This function parses each node in a fwnode tree and create fwnode links
-> > for each of those nodes. The information for creating the fwnode links
-> > (the supplier and consumer fwnode) is obtained by parsing the properties
-> > in each of the fwnodes.
-> >
-> > This function also ensures that no fwnode is parsed more than once by
-> > marking the fwnodes as parsed.
+> > Instead, this patch uses a more device specific check. It checks if the
+> > device's fwnode has any fwnode links that haven't been converted to
+> > device links yet.
 > >
 > > Signed-off-by: Saravana Kannan <saravanak@google.com>
 > > ---
-> >  drivers/base/core.c    | 19 +++++++++++++++++++
-> >  include/linux/fwnode.h |  3 +++
-> >  2 files changed, 22 insertions(+)
+> >  drivers/base/core.c | 18 ++++++++----------
+> >  1 file changed, 8 insertions(+), 10 deletions(-)
 > >
 > > diff --git a/drivers/base/core.c b/drivers/base/core.c
-> > index 4a0907574646..ee28d8c7ee85 100644
+> > index 4ae5f2885ac5..d51dd564add1 100644
 > > --- a/drivers/base/core.c
 > > +++ b/drivers/base/core.c
-> > @@ -1543,6 +1543,25 @@ static bool fw_devlink_is_permissive(void)
-> >         return fw_devlink_flags == DL_FLAG_SYNC_STATE_ONLY;
+> > @@ -51,6 +51,7 @@ static DEFINE_MUTEX(wfs_lock);
+> >  static LIST_HEAD(deferred_sync);
+> >  static unsigned int defer_sync_state_count = 1;
+> >  static DEFINE_MUTEX(fwnode_link_lock);
+> > +static bool fw_devlink_is_permissive(void);
+> >
+> >  /**
+> >   * fwnode_link_add - Create a link between two fwnode_handles.
+> > @@ -994,13 +995,13 @@ int device_links_check_suppliers(struct device *dev)
+> >          * Device waiting for supplier to become available is not allowed to
+> >          * probe.
+> >          */
+> > -       mutex_lock(&wfs_lock);
+> > -       if (!list_empty(&dev->links.needs_suppliers) &&
+> > -           dev->links.need_for_probe) {
+> > -               mutex_unlock(&wfs_lock);
+> > +       mutex_lock(&fwnode_link_lock);
+> > +       if (dev->fwnode && !list_empty(&dev->fwnode->suppliers) &&
+> > +           !fw_devlink_is_permissive()) {
+> > +               mutex_unlock(&fwnode_link_lock);
+> >                 return -EPROBE_DEFER;
+> >         }
+> > -       mutex_unlock(&wfs_lock);
+> > +       mutex_unlock(&fwnode_link_lock);
+> >
+> >         device_links_write_lock();
+> >
+> > @@ -1166,10 +1167,7 @@ static ssize_t waiting_for_supplier_show(struct device *dev,
+> >         bool val;
+> >
+> >         device_lock(dev);
+> > -       mutex_lock(&wfs_lock);
+> > -       val = !list_empty(&dev->links.needs_suppliers)
+> > -             && dev->links.need_for_probe;
+> > -       mutex_unlock(&wfs_lock);
+>
+> Why isn't the lock needed any more?
+>
+> Or maybe it wasn't needed previously too?
+
+Yeah, I sent a separate patch for dropping this lock [1]. But I didn't
+want to wait for that to land to write this series. The lock wasn't
+needed in the first place and it was causing a lockdep warning.
+
+>
+> > +       val = !list_empty(&dev->fwnode->suppliers);
+> >         device_unlock(dev);
+> >         return sysfs_emit(buf, "%u\n", val);
 > >  }
+> > @@ -2226,7 +2224,7 @@ static int device_add_attrs(struct device *dev)
+> >                         goto err_remove_dev_groups;
+> >         }
 > >
-> > +static void fw_devlink_parse_fwnode(struct fwnode_handle *fwnode)
-> > +{
-> > +       if (fwnode->flags & FWNODE_FLAG_LINKS_ADDED)
-> > +               return;
+> > -       if (fw_devlink_flags && !fw_devlink_is_permissive()) {
+> > +       if (fw_devlink_flags && !fw_devlink_is_permissive() && dev->fwnode) {
 >
-> Why is the flag needed?
->
-> Duplicate links won't be created anyway and it doesn't cause the tree
-> walk to be terminated.
+> And why is this change needed?
 
-To avoid parsing a fwnode more than once. The cumulative impact of the
-repeated parsing is actually quite high.
-
-And I intentionally didn't do this check at the tree walk level
-because DT overlay can add/remove/change individual fwnodes and I want
-to reparse those when they are added while avoiding parsing other
-nodes that have already been parsed and not changed by DT overlay.
-
->
-> > +
-> > +       fwnode_call_int_op(fwnode, add_links, NULL);
-> > +       fwnode->flags |= FWNODE_FLAG_LINKS_ADDED;
-> > +}
-> > +
-> > +static void fw_devlink_parse_fwtree(struct fwnode_handle *fwnode)
-> > +{
-> > +       struct fwnode_handle *child = NULL;
-> > +
-> > +       fw_devlink_parse_fwnode(fwnode);
-> > +
-> > +       while ((child = fwnode_get_next_available_child_node(fwnode, child)))
->
-> I'd prefer
->
-> for (child = NULL; child; child =
-> fwnode_get_next_available_child_node(fwnode, child))
-
-I was about to change to this and then realized it won't work. It
-would have to be
-
-for (child = fwnode_get_next_available_child_node(fwnode, NULL));
-       child;
-       child = fwnode_get_next_available_child_node(fwnode, child))
-
-Is that really better? The while() seems a lot more readable to me. I
-don't have a strong opinion, so I'll go with whatever you say after
-reading this.
-
->
-> > +               fw_devlink_parse_fwtree(child);
-> > +}
-> > +
-> >  static void fw_devlink_link_device(struct device *dev)
-> >  {
-> >         int fw_ret;
-> > diff --git a/include/linux/fwnode.h b/include/linux/fwnode.h
-> > index ec02e1e939cc..9aaf9e4f3994 100644
-> > --- a/include/linux/fwnode.h
-> > +++ b/include/linux/fwnode.h
-> > @@ -15,12 +15,15 @@
-> >  struct fwnode_operations;
-> >  struct device;
-> >
->
-> Description here, please.
-
-Ack
-
->
-> > +#define FWNODE_FLAG_LINKS_ADDED                BIT(0)
-> > +
-> >  struct fwnode_handle {
-> >         struct fwnode_handle *secondary;
-> >         const struct fwnode_operations *ops;
-> >         struct device *dev;
-> >         struct list_head suppliers;
-> >         struct list_head consumers;
-> > +       u32 flags;
->
-> That's a bit wasteful.  Maybe u8 would suffice for the time being?
-
-Ack.
-
+Because if a device doesn't have a fwnode, it can't ever be waiting on
+a supplier. Also, the "show" function dereferences
+dev->fwnode->suppliers.
 
 -Saravana
+
+[1] - https://lore.kernel.org/lkml/20201104205431.3795207-1-saravanak@google.com/
+Ignore the 1/2 thing. There's only 1 relevant patch.
