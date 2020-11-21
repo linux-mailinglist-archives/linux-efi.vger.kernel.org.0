@@ -2,56 +2,57 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DF1D22BBBFE
-	for <lists+linux-efi@lfdr.de>; Sat, 21 Nov 2020 03:06:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D6842BBC01
+	for <lists+linux-efi@lfdr.de>; Sat, 21 Nov 2020 03:06:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727358AbgKUCDT (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 20 Nov 2020 21:03:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55476 "EHLO
+        id S1727356AbgKUCDV (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 20 Nov 2020 21:03:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55488 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727309AbgKUCDS (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 20 Nov 2020 21:03:18 -0500
-Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57358C061A47
-        for <linux-efi@vger.kernel.org>; Fri, 20 Nov 2020 18:03:16 -0800 (PST)
-Received: by mail-yb1-xb49.google.com with SMTP id w8so14386485ybq.4
-        for <linux-efi@vger.kernel.org>; Fri, 20 Nov 2020 18:03:16 -0800 (PST)
+        with ESMTP id S1727353AbgKUCDT (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 20 Nov 2020 21:03:19 -0500
+Received: from mail-qk1-x749.google.com (mail-qk1-x749.google.com [IPv6:2607:f8b0:4864:20::749])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C265CC061A04
+        for <linux-efi@vger.kernel.org>; Fri, 20 Nov 2020 18:03:18 -0800 (PST)
+Received: by mail-qk1-x749.google.com with SMTP id 143so9516521qkg.20
+        for <linux-efi@vger.kernel.org>; Fri, 20 Nov 2020 18:03:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20161025;
         h=sender:date:in-reply-to:message-id:mime-version:references:subject
          :from:to:cc;
-        bh=kkvUYmRSkidNjkTq5GwniBTGKUzDD8tYACZuHPPCtMw=;
-        b=C0huOxQfOFIYkmZ5+j5wBG0r+aPmC4/UZ/pyjY13Gqsre385QtU5zpSWQqtLiSK4EC
-         DJG49WcUPSMz92mQT8T6Zxckt93Reu6GEAXQO+yNjstfjcXyxQjhricoR5vmJydKCcqT
-         W4clRYgmd/+H2PBfwwmEL54kIktmgWsA2vP0leAI328J0tvhKucVE1oyV3otEuzsze0Q
-         VxogMphFyQZJGHwXst43+T9wmNbXvyaJUnMaHAlVZFg7Dlf369VoYCx4YlanCeqOPXku
-         rlUsaqd6kIfaZWYKUJgQQ6H994f73Sx5bSOOmMPSW62bBO/93wbtorcE7/iH0aY3VEOj
-         CZdg==
+        bh=TDH6sKF+25uJe3sYo1DkxQ2WsvdJDRIVI/Vx11qvHv0=;
+        b=CRhGb2ssFoN8jV9EKkRfvLzAyT6vs0pAPoP3mlKKlfYL8xfFLIGkhUDuQS7xxtgbym
+         N6/C1nnKo2saz/AAZpqUmzqximqL94cyCamjx8A6LvmQqYh6DhIkSveqAFRFwJhaNGIS
+         dAwX7NRQd4MzarcH1nQ4zLVN4NpiWj8VTe/Qn2ArYNnLkwvnNreUGNmU52gEbt2c3Hu/
+         Qq2sWaXZr7nBByFFHlUjRhb/fRmMFeImX9ez71sBAiQlULSGW/3fDUGcuWdeZruFXPYX
+         KEEJZ/5S3aZInGZtCBB58vZV4/osfC7OrwljZ1WSEyfLr3lEOPzjEFOY/nYMX0Lk4cz2
+         eTkw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:sender:date:in-reply-to:message-id:mime-version
          :references:subject:from:to:cc;
-        bh=kkvUYmRSkidNjkTq5GwniBTGKUzDD8tYACZuHPPCtMw=;
-        b=Sv91sTw4SLTQwex09kjY3GKFVkPLNM5vNesSW+CzbyX3AEBbzB5vODMUgUdIe/FyI1
-         PqLZcD4L+BP1LHgzSnazDr7Y6dhf1dAHMv4F617mI0rkqkk12RfIDc6qzGZm8ZwIsty2
-         YxGNcjHZc4iSNtIPAsjOqddT2bfhq59edASL3f/gxa+8XzcmmM+O/J4t+SW71E/XGFMZ
-         0UfXmzrvtHgWB8DY2mRb6cc/yvz3Cl0Z/xdGQte3wH9sFsrBRW/bFouSzRFxyiEAV0Rc
-         oxrxbG4l6Ama2BW5KwaDq81DMeZXacop8JoFk2RT6/RlDl5SqSS59M8sTjUG0dChOzvZ
-         zKOA==
-X-Gm-Message-State: AOAM532XJGv9hfMkivjpVJiCP1r7i88vy4uv5fs1ChVLkUE04hgZIP8p
-        HrVkH07r1HpJVFQUBxxs7P/2H9N8XGD+xhk=
-X-Google-Smtp-Source: ABdhPJyV9Uoir3KqyP3MamhCm8qYOnpgbNbEd6xLZ5JjffYqgi0HKnViyZWiFepF+7Lo7+787hyZ2uVL7R2L6mw=
+        bh=TDH6sKF+25uJe3sYo1DkxQ2WsvdJDRIVI/Vx11qvHv0=;
+        b=uL4d8tdMfbJxZ6ziI0BZJW4qu1lTVZ1P1HD+N9JWpXwsa7dC2IFyP4mf57rCT9s1bW
+         TN7kSFRgbeIXlFomXG07KRun2eSdtVvdceLwCBq19ZmoN73Hv7Zw/Y5BZVE06PEosvwF
+         5FRZCCjxokShqKoj5IURDPDdjQfHudm072OVOQl4vnHAx33X4qLkHs00LVNUjbxIZt9p
+         O7ILr/q/LaoZf7Tezr7rZyPr0C+6tAqXf9aUfi2JG6Kpkssw3DwCHjp+opEse3jrqA+b
+         0bsl3lj92+AxXhEjTSQ5w/02S1lzFMF8ltAN36j5GVQy1G7DTbXO1pmNz6Tp+/DYvnqz
+         qRTg==
+X-Gm-Message-State: AOAM531tcu7HesbzuX8rgN9M66UwII5VysdmruFmoD4sjoznWegeGYe7
+        0yajaQbffB41pNpjiERb96mG++qwFzXov3A=
+X-Google-Smtp-Source: ABdhPJx51C0SU2lAydPfKuJ16S1v5AwFANmnRet4R5tmtjmVrjb7V9OqzMmQprV4NxbyZQlfBM442vd1HdoXKYE=
 Sender: "saravanak via sendgmr" <saravanak@saravanak.san.corp.google.com>
 X-Received: from saravanak.san.corp.google.com ([2620:15c:2d:3:7220:84ff:fe09:fedc])
- (user=saravanak job=sendgmr) by 2002:a25:2a4b:: with SMTP id
- q72mr34851917ybq.385.1605924195519; Fri, 20 Nov 2020 18:03:15 -0800 (PST)
-Date:   Fri, 20 Nov 2020 18:02:27 -0800
+ (user=saravanak job=sendgmr) by 2002:a0c:c78e:: with SMTP id
+ k14mr19214638qvj.5.1605924197961; Fri, 20 Nov 2020 18:03:17 -0800 (PST)
+Date:   Fri, 20 Nov 2020 18:02:28 -0800
 In-Reply-To: <20201121020232.908850-1-saravanak@google.com>
-Message-Id: <20201121020232.908850-13-saravanak@google.com>
+Message-Id: <20201121020232.908850-14-saravanak@google.com>
 Mime-Version: 1.0
 References: <20201121020232.908850-1-saravanak@google.com>
 X-Mailer: git-send-email 2.29.2.454.gaff20da3a2-goog
-Subject: [PATCH v2 12/17] driver core: Add fw_devlink_parse_fwtree()
+Subject: [PATCH v2 13/17] driver core: Use device's fwnode to check if it is
+ waiting for suppliers
 From:   Saravana Kannan <saravanak@google.com>
 To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
@@ -74,77 +75,72 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-This function is a wrapper around fwnode_operations.add_links().
+To check if a device is still waiting for its supplier devices to be
+added, we used to check if the devices is in a global
+waiting_for_suppliers list. Since the global list will be deleted in
+subsequent patches, this patch stops using this check.
 
-This function parses each node in a fwnode tree and create fwnode links
-for each of those nodes. The information for creating the fwnode links
-(the supplier and consumer fwnode) is obtained by parsing the properties
-in each of the fwnodes.
-
-This function also ensures that no fwnode is parsed more than once by
-marking the fwnodes as parsed.
+Instead, this patch uses a more device specific check. It checks if the
+device's fwnode has any fwnode links that haven't been converted to
+device links yet.
 
 Signed-off-by: Saravana Kannan <saravanak@google.com>
 ---
- drivers/base/core.c    | 19 +++++++++++++++++++
- include/linux/fwnode.h |  8 ++++++++
- 2 files changed, 27 insertions(+)
+ drivers/base/core.c | 18 ++++++++----------
+ 1 file changed, 8 insertions(+), 10 deletions(-)
 
 diff --git a/drivers/base/core.c b/drivers/base/core.c
-index 215ce9e72790..395dece1c83a 100644
+index 395dece1c83a..1873cecb0cc4 100644
 --- a/drivers/base/core.c
 +++ b/drivers/base/core.c
-@@ -1544,6 +1544,25 @@ static bool fw_devlink_is_permissive(void)
- 	return fw_devlink_flags == DL_FLAG_SYNC_STATE_ONLY;
+@@ -51,6 +51,7 @@ static DEFINE_MUTEX(wfs_lock);
+ static LIST_HEAD(deferred_sync);
+ static unsigned int defer_sync_state_count = 1;
+ static DEFINE_MUTEX(fwnode_link_lock);
++static bool fw_devlink_is_permissive(void);
+ 
+ /**
+  * fwnode_link_add - Create a link between two fwnode_handles.
+@@ -995,13 +996,13 @@ int device_links_check_suppliers(struct device *dev)
+ 	 * Device waiting for supplier to become available is not allowed to
+ 	 * probe.
+ 	 */
+-	mutex_lock(&wfs_lock);
+-	if (!list_empty(&dev->links.needs_suppliers) &&
+-	    dev->links.need_for_probe) {
+-		mutex_unlock(&wfs_lock);
++	mutex_lock(&fwnode_link_lock);
++	if (dev->fwnode && !list_empty(&dev->fwnode->suppliers) &&
++	    !fw_devlink_is_permissive()) {
++		mutex_unlock(&fwnode_link_lock);
+ 		return -EPROBE_DEFER;
+ 	}
+-	mutex_unlock(&wfs_lock);
++	mutex_unlock(&fwnode_link_lock);
+ 
+ 	device_links_write_lock();
+ 
+@@ -1167,10 +1168,7 @@ static ssize_t waiting_for_supplier_show(struct device *dev,
+ 	bool val;
+ 
+ 	device_lock(dev);
+-	mutex_lock(&wfs_lock);
+-	val = !list_empty(&dev->links.needs_suppliers)
+-	      && dev->links.need_for_probe;
+-	mutex_unlock(&wfs_lock);
++	val = !list_empty(&dev->fwnode->suppliers);
+ 	device_unlock(dev);
+ 	return sysfs_emit(buf, "%u\n", val);
  }
+@@ -2202,7 +2200,7 @@ static int device_add_attrs(struct device *dev)
+ 			goto err_remove_dev_groups;
+ 	}
  
-+static void fw_devlink_parse_fwnode(struct fwnode_handle *fwnode)
-+{
-+	if (fwnode->flags & FWNODE_FLAG_LINKS_ADDED)
-+		return;
-+
-+	fwnode_call_int_op(fwnode, add_links, NULL);
-+	fwnode->flags |= FWNODE_FLAG_LINKS_ADDED;
-+}
-+
-+static void fw_devlink_parse_fwtree(struct fwnode_handle *fwnode)
-+{
-+	struct fwnode_handle *child = NULL;
-+
-+	fw_devlink_parse_fwnode(fwnode);
-+
-+	while ((child = fwnode_get_next_available_child_node(fwnode, child)))
-+		fw_devlink_parse_fwtree(child);
-+}
-+
- static void fw_devlink_link_device(struct device *dev)
- {
- 	int fw_ret;
-diff --git a/include/linux/fwnode.h b/include/linux/fwnode.h
-index 942a6bb18201..ffa9129182a6 100644
---- a/include/linux/fwnode.h
-+++ b/include/linux/fwnode.h
-@@ -15,12 +15,20 @@
- struct fwnode_operations;
- struct device;
- 
-+/*
-+ * fwnode link flags
-+ *
-+ * LINKS_ADDED: The fwnode has already be parsed to add fwnode links.
-+ */
-+#define FWNODE_FLAG_LINKS_ADDED		BIT(0)
-+
- struct fwnode_handle {
- 	struct fwnode_handle *secondary;
- 	const struct fwnode_operations *ops;
- 	struct device *dev;
- 	struct list_head suppliers;
- 	struct list_head consumers;
-+	u8 flags;
- };
- 
- struct fwnode_link {
+-	if (fw_devlink_flags && !fw_devlink_is_permissive()) {
++	if (fw_devlink_flags && !fw_devlink_is_permissive() && dev->fwnode) {
+ 		error = device_create_file(dev, &dev_attr_waiting_for_supplier);
+ 		if (error)
+ 			goto err_remove_dev_online;
 -- 
 2.29.2.454.gaff20da3a2-goog
 
