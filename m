@@ -2,56 +2,58 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B9AD52BBBD8
-	for <lists+linux-efi@lfdr.de>; Sat, 21 Nov 2020 03:06:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 753372BBBDE
+	for <lists+linux-efi@lfdr.de>; Sat, 21 Nov 2020 03:06:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727071AbgKUCCs (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 20 Nov 2020 21:02:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55316 "EHLO
+        id S1727104AbgKUCCv (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 20 Nov 2020 21:02:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55326 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725913AbgKUCCs (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 20 Nov 2020 21:02:48 -0500
-Received: from mail-qt1-x849.google.com (mail-qt1-x849.google.com [IPv6:2607:f8b0:4864:20::849])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B95C4C061A48
-        for <linux-efi@vger.kernel.org>; Fri, 20 Nov 2020 18:02:47 -0800 (PST)
-Received: by mail-qt1-x849.google.com with SMTP id e22so8886515qte.22
-        for <linux-efi@vger.kernel.org>; Fri, 20 Nov 2020 18:02:47 -0800 (PST)
+        with ESMTP id S1727100AbgKUCCv (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 20 Nov 2020 21:02:51 -0500
+Received: from mail-pf1-x449.google.com (mail-pf1-x449.google.com [IPv6:2607:f8b0:4864:20::449])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16620C061A04
+        for <linux-efi@vger.kernel.org>; Fri, 20 Nov 2020 18:02:50 -0800 (PST)
+Received: by mail-pf1-x449.google.com with SMTP id c24so114442pfd.13
+        for <linux-efi@vger.kernel.org>; Fri, 20 Nov 2020 18:02:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20161025;
         h=sender:date:in-reply-to:message-id:mime-version:references:subject
          :from:to:cc;
-        bh=1MIEjHYAUOmtfDtnN00T8oexuLD0a1GaxYDVE08u5Wg=;
-        b=WRnGMJKiRCk+glHvgvynNYZv8x92G9pyeda7gKEvfbRpg9wlzldzuLg06cUuDtlwLU
-         XVUNn90Kf8v22rIHed41Qj+nv4l1ynOtpQEApSlJD/2mZ9F9RPkrAKTTcXsYnS3+lPlt
-         HM70l30j1V3rlsBytAQMz5JtXe/w2lKBJPIAr8bnoYQYNXB6mESh3Mo2ZYmyNjr0x4fn
-         VKgHJwd7OYW2tCam3CHhiEs3oMmKgqTAuDvvPdsNAYdXPb6RH5p6eDoC6vbY6Rw/IMKZ
-         dGrXBwzFvOl0lod6guKxN2S6Z/b1qG/OwhAojwkGMGNgWr4rlq9Mnww0d82Q2IA4ImNZ
-         UlwA==
+        bh=C0bHKb1/iWiLgdtF9sSmjqtEvvSI0v807amqNyJzdNU=;
+        b=oVICUpmkGZYeD7GCm7OHZePNr0D7oNE9MGHDeA14TlrhsrfYTroblrGIZDXkuUvKJy
+         1xmlgXXXtOvWXNsWsBLt4bjiHDWfOXdlI7nWqGRa/D++ATibv0GyA81LGS2AyZV2uvhZ
+         x1VfPlF7j5GZQUE6NdUdZj40qx2f51YwrtoiBrZdlrx7qx0MrmlCwAe5UWli6SN7FtbP
+         bLbzo5MqzQ4xydQHAZfNdgDtBArIgPU44e6eGAm5wOsWzo6Xx/5rTfinOOyVkJkMiID9
+         bH+2ZhrIwEgzDXXX/v946bSvkc4YQrqI7kbnnhnitJIohJMixgsYDLl0FdY66/cdy6V9
+         cocg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:sender:date:in-reply-to:message-id:mime-version
          :references:subject:from:to:cc;
-        bh=1MIEjHYAUOmtfDtnN00T8oexuLD0a1GaxYDVE08u5Wg=;
-        b=oth8oRI6IHavDG+oVxKLklzZbR6GbNKZcdeZrNJNsL8w/9fRHtzxK5OmdJHMBA7yDD
-         b7BGDFXebLDhjnX++Nx8x1kTZ4KQHoHI9kOGlidE4zf1hLR0H2SqBwQ/zWofqkgb11IG
-         9WmdkvivRtiir7ldV+8YDixBqyeG391L134gDR9Jnd2ky195khh8hxMcLYGwrRNnLtlM
-         /rliGxCeh98YB6Xs2+OhhuF4rIDmhM8ZI7mGi+VIO8uPT1sgeTbYecW1GEbM/Wa6WlGY
-         +G5OyhJv3KX4VZf8bwGAOjAItZ1lP18BJiN6WAtdcTdIBQ1N4ajEyAdt2yNZbVAFP25j
-         cPGw==
-X-Gm-Message-State: AOAM530ZvoI0atMNgPSCT5Jjk8cRkRryzWy0lnQt66SOx5M1Yqh9sg+U
-        H0sb5MAytMeAp7mxqgq/U9fLufI9jCyW2R0=
-X-Google-Smtp-Source: ABdhPJwsK6KYV3vtcuQpWlijpToTJEH99q4w1i+0OrCZcZTmMCpUf85uz7XbU4cltly1bkZZXZr1IPTfDIdhv7A=
+        bh=C0bHKb1/iWiLgdtF9sSmjqtEvvSI0v807amqNyJzdNU=;
+        b=Nsubxjt6h5+qVOxDAoKMiTkbU26Fx6J/McUSCZjjGnT7ZIo3OM5hTWW3uASaGrwunt
+         SsZ1wGn6TFhI6VihASCufmcP3+gJtgmg7YecuCcHwsh8Sxw9IZVN/uClv3zQjy9/yhkG
+         wrgBBYsE1E4CqJdD/LwDgmkFEhpIj1QkGxLtwJdKX5mCqiiWxUa0AUUk1btlnWKUXFDr
+         +I9e1/7WJRF+1bEsO7haPremxD5Jz2eVUNDxj8rogmJkxtDgcDYfPOSyiN9NqOfUpg4K
+         YyU7ARt3fcgIBZpbWSshUotcQOpaSe5BLhmxgsrghH29/dK1nRiGUdZPqzuJii6ayPis
+         BQpg==
+X-Gm-Message-State: AOAM531Q9MXBFcrDE+lG8a0Kd6moabFPBj6yg3TtjB19uzkj1yXrxPVV
+        JUU0c5cLfbGYDRRPAinsT2bJiFH+l+VspNs=
+X-Google-Smtp-Source: ABdhPJwkoh7gsKp85NKgP+D91F1jQ8SL7LKV9shZgwbKa77TXviiL3HDVdSCd11fSTpospmRJjxFmFG2oPfHfGM=
 Sender: "saravanak via sendgmr" <saravanak@saravanak.san.corp.google.com>
 X-Received: from saravanak.san.corp.google.com ([2620:15c:2d:3:7220:84ff:fe09:fedc])
- (user=saravanak job=sendgmr) by 2002:ad4:5587:: with SMTP id
- e7mr19801981qvx.33.1605924166877; Fri, 20 Nov 2020 18:02:46 -0800 (PST)
-Date:   Fri, 20 Nov 2020 18:02:16 -0800
+ (user=saravanak job=sendgmr) by 2002:aa7:8552:0:b029:18e:f030:e514 with SMTP
+ id y18-20020aa785520000b029018ef030e514mr15787534pfn.2.1605924169466; Fri, 20
+ Nov 2020 18:02:49 -0800 (PST)
+Date:   Fri, 20 Nov 2020 18:02:17 -0800
 In-Reply-To: <20201121020232.908850-1-saravanak@google.com>
-Message-Id: <20201121020232.908850-2-saravanak@google.com>
+Message-Id: <20201121020232.908850-3-saravanak@google.com>
 Mime-Version: 1.0
 References: <20201121020232.908850-1-saravanak@google.com>
 X-Mailer: git-send-email 2.29.2.454.gaff20da3a2-goog
-Subject: [PATCH v2 01/17] Revert "driver core: Avoid deferred probe due to fw_devlink_pause/resume()"
+Subject: [PATCH v2 02/17] Revert "driver core: Rename dev_links_info.defer_sync
+ to defer_hook"
 From:   Saravana Kannan <saravanak@google.com>
 To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
@@ -74,88 +76,115 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-This reverts commit 2451e746478a6a6e981cfa66b62b791ca93b90c8.
+This reverts commit ec7bd78498f29680f536451fbdf9464e851273ed.
 
-fw_devlink_pause/resume() was an incomplete attempt at boot time
-optimization. That's going to get replaced by a much better optimization
-at the end of the series. Since fw_devlink_pause/resume() is going away,
-changes made for that can also go away.
+This field rename was done to reuse defer_syc list head for multiple
+lists. That's not needed anymore and this list head will only be used
+for defer sync. So revert this patch to avoid conflicts with the other
+reverts coming after this.
 
 Signed-off-by: Saravana Kannan <saravanak@google.com>
 ---
- drivers/base/core.c    | 21 ---------------------
- include/linux/device.h |  3 +--
- 2 files changed, 1 insertion(+), 23 deletions(-)
+ drivers/base/core.c    | 22 +++++++++++-----------
+ include/linux/device.h |  4 ++--
+ 2 files changed, 13 insertions(+), 13 deletions(-)
 
 diff --git a/drivers/base/core.c b/drivers/base/core.c
-index d661ada1518f..b202fe54f46a 100644
+index b202fe54f46a..c91ff2546247 100644
 --- a/drivers/base/core.c
 +++ b/drivers/base/core.c
-@@ -51,7 +51,6 @@ static DEFINE_MUTEX(wfs_lock);
- static LIST_HEAD(deferred_sync);
- static unsigned int defer_sync_state_count = 1;
- static unsigned int defer_fw_devlink_count;
--static LIST_HEAD(deferred_fw_devlink);
- static DEFINE_MUTEX(defer_fw_devlink_lock);
- static bool fw_devlink_is_permissive(void);
+@@ -959,11 +959,11 @@ static void __device_links_queue_sync_state(struct device *dev,
+ 	 */
+ 	dev->state_synced = true;
  
-@@ -1470,12 +1469,6 @@ static void fw_devlink_link_device(struct device *dev)
- 			fw_ret = -EAGAIN;
- 	} else {
- 		fw_ret = -ENODEV;
--		/*
--		 * defer_hook is not used to add device to deferred_sync list
--		 * until device is bound. Since deferred fw devlink also blocks
--		 * probing, same list hook can be used for deferred_fw_devlink.
--		 */
--		list_add_tail(&dev->links.defer_hook, &deferred_fw_devlink);
- 	}
+-	if (WARN_ON(!list_empty(&dev->links.defer_hook)))
++	if (WARN_ON(!list_empty(&dev->links.defer_sync)))
+ 		return;
  
- 	if (fw_ret == -ENODEV)
-@@ -1544,9 +1537,6 @@ void fw_devlink_pause(void)
-  */
- void fw_devlink_resume(void)
+ 	get_device(dev);
+-	list_add_tail(&dev->links.defer_hook, list);
++	list_add_tail(&dev->links.defer_sync, list);
+ }
+ 
+ /**
+@@ -981,8 +981,8 @@ static void device_links_flush_sync_list(struct list_head *list,
  {
--	struct device *dev, *tmp;
--	LIST_HEAD(probe_list);
--
- 	mutex_lock(&defer_fw_devlink_lock);
- 	if (!defer_fw_devlink_count) {
- 		WARN(true, "Unmatched fw_devlink pause/resume!");
-@@ -1558,19 +1548,8 @@ void fw_devlink_resume(void)
+ 	struct device *dev, *tmp;
+ 
+-	list_for_each_entry_safe(dev, tmp, list, links.defer_hook) {
+-		list_del_init(&dev->links.defer_hook);
++	list_for_each_entry_safe(dev, tmp, list, links.defer_sync) {
++		list_del_init(&dev->links.defer_sync);
+ 
+ 		if (dev != dont_lock_dev)
+ 			device_lock(dev);
+@@ -1020,12 +1020,12 @@ void device_links_supplier_sync_state_resume(void)
+ 	if (defer_sync_state_count)
  		goto out;
  
- 	device_link_add_missing_supplier_links();
--	list_splice_tail_init(&deferred_fw_devlink, &probe_list);
- out:
- 	mutex_unlock(&defer_fw_devlink_lock);
--
--	/*
--	 * bus_probe_device() can cause new devices to get added and they'll
--	 * try to grab defer_fw_devlink_lock. So, this needs to be done outside
--	 * the defer_fw_devlink_lock.
--	 */
--	list_for_each_entry_safe(dev, tmp, &probe_list, links.defer_hook) {
+-	list_for_each_entry_safe(dev, tmp, &deferred_sync, links.defer_hook) {
++	list_for_each_entry_safe(dev, tmp, &deferred_sync, links.defer_sync) {
+ 		/*
+ 		 * Delete from deferred_sync list before queuing it to
+-		 * sync_list because defer_hook is used for both lists.
++		 * sync_list because defer_sync is used for both lists.
+ 		 */
 -		list_del_init(&dev->links.defer_hook);
--		bus_probe_device(dev);
--	}
- }
- /* Device links support end. */
++		list_del_init(&dev->links.defer_sync);
+ 		__device_links_queue_sync_state(dev, &sync_list);
+ 	}
+ out:
+@@ -1043,8 +1043,8 @@ late_initcall(sync_state_resume_initcall);
  
+ static void __device_links_supplier_defer_sync(struct device *sup)
+ {
+-	if (list_empty(&sup->links.defer_hook) && dev_has_sync_state(sup))
+-		list_add_tail(&sup->links.defer_hook, &deferred_sync);
++	if (list_empty(&sup->links.defer_sync) && dev_has_sync_state(sup))
++		list_add_tail(&sup->links.defer_sync, &deferred_sync);
+ }
+ 
+ static void device_link_drop_managed(struct device_link *link)
+@@ -1274,7 +1274,7 @@ void device_links_driver_cleanup(struct device *dev)
+ 		WRITE_ONCE(link->status, DL_STATE_DORMANT);
+ 	}
+ 
+-	list_del_init(&dev->links.defer_hook);
++	list_del_init(&dev->links.defer_sync);
+ 	__device_links_no_driver(dev);
+ 
+ 	device_links_write_unlock();
+@@ -2407,7 +2407,7 @@ void device_initialize(struct device *dev)
+ 	INIT_LIST_HEAD(&dev->links.consumers);
+ 	INIT_LIST_HEAD(&dev->links.suppliers);
+ 	INIT_LIST_HEAD(&dev->links.needs_suppliers);
+-	INIT_LIST_HEAD(&dev->links.defer_hook);
++	INIT_LIST_HEAD(&dev->links.defer_sync);
+ 	dev->links.status = DL_DEV_NO_DRIVER;
+ }
+ EXPORT_SYMBOL_GPL(device_initialize);
 diff --git a/include/linux/device.h b/include/linux/device.h
-index 5ed101be7b2e..da00f8e449bb 100644
+index da00f8e449bb..1e771ea4dca6 100644
 --- a/include/linux/device.h
 +++ b/include/linux/device.h
-@@ -352,8 +352,7 @@ enum dl_dev_state {
+@@ -352,7 +352,7 @@ enum dl_dev_state {
   * @suppliers: List of links to supplier devices.
   * @consumers: List of links to consumer devices.
   * @needs_suppliers: Hook to global list of devices waiting for suppliers.
-- * @defer_hook: Hook to global list of devices that have deferred sync_state or
-- *		deferred fw_devlink.
-+ * @defer_hook: Hook to global list of devices that have deferred sync_state.
+- * @defer_hook: Hook to global list of devices that have deferred sync_state.
++ * @defer_sync: Hook to global list of devices that have deferred sync_state.
   * @need_for_probe: If needs_suppliers is on a list, this indicates if the
   *		    suppliers are needed for probe or not.
   * @status: Driver status information.
+@@ -361,7 +361,7 @@ struct dev_links_info {
+ 	struct list_head suppliers;
+ 	struct list_head consumers;
+ 	struct list_head needs_suppliers;
+-	struct list_head defer_hook;
++	struct list_head defer_sync;
+ 	bool need_for_probe;
+ 	enum dl_dev_state status;
+ };
 -- 
 2.29.2.454.gaff20da3a2-goog
 
