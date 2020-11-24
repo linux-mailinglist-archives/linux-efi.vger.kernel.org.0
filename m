@@ -2,79 +2,66 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0EB592C30A2
-	for <lists+linux-efi@lfdr.de>; Tue, 24 Nov 2020 20:17:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D5E922C32F7
+	for <lists+linux-efi@lfdr.de>; Tue, 24 Nov 2020 22:33:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391008AbgKXTQx (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 24 Nov 2020 14:16:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59624 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2390959AbgKXTQx (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 24 Nov 2020 14:16:53 -0500
-Received: from baptiste.telenet-ops.be (baptiste.telenet-ops.be [IPv6:2a02:1800:120:4::f00:13])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40A3FC0613D6
-        for <linux-efi@vger.kernel.org>; Tue, 24 Nov 2020 11:16:53 -0800 (PST)
-Received: from ramsan.of.borg ([84.195.186.194])
-        by baptiste.telenet-ops.be with bizsmtp
-        id wKGo2300Y4C55Sk01KGpEU; Tue, 24 Nov 2020 20:16:51 +0100
-Received: from rox.of.borg ([192.168.97.57])
-        by ramsan.of.borg with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.93)
-        (envelope-from <geert@linux-m68k.org>)
-        id 1khdo0-005XKS-NH; Tue, 24 Nov 2020 20:16:48 +0100
-Received: from geert by rox.of.borg with local (Exim 4.93)
-        (envelope-from <geert@linux-m68k.org>)
-        id 1khdnz-00Ew4C-S7; Tue, 24 Nov 2020 20:16:47 +0100
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     Alexander Graf <agraf@suse.de>, Ingo Molnar <mingo@kernel.org>,
-        Damien Le Moal <damien.lemoal@wdc.com>,
-        linux-efi@vger.kernel.org, linux-riscv@lists.infradead.org,
-        linux-kernel@vger.kernel.org,
-        Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: [PATCH] efi: EFI_EARLYCON should depend on EFI
-Date:   Tue, 24 Nov 2020 20:16:46 +0100
-Message-Id: <20201124191646.3559757-1-geert@linux-m68k.org>
-X-Mailer: git-send-email 2.25.1
+        id S1732484AbgKXVcJ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 24 Nov 2020 16:32:09 -0500
+Received: from vulcan.natalenko.name ([104.207.131.136]:46980 "EHLO
+        vulcan.natalenko.name" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732361AbgKXVcJ (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 24 Nov 2020 16:32:09 -0500
+X-Greylist: delayed 458 seconds by postgrey-1.27 at vger.kernel.org; Tue, 24 Nov 2020 16:32:08 EST
+Received: from mail.natalenko.name (vulcan.natalenko.name [IPv6:fe80::5400:ff:fe0c:dfa0])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by vulcan.natalenko.name (Postfix) with ESMTPSA id 0FD6F8AAF01;
+        Tue, 24 Nov 2020 22:24:28 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=natalenko.name;
+        s=dkim-20170712; t=1606253068;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=Ef6cqFP5rtCRJRsC0pbk1fWvr/gryXZqDbAGKXuGsf0=;
+        b=YemTNNq45rDxGydtNUuLfNISH2jCVhRnhFHbWWaQkIHyBHC8z5H2mHBnJJgQgB3Yu8chNo
+        QHt/ssDLKmNm+6NK2wW1maqb6n4VypVcLAjoQRoROic98FDJzj+inNcewLtxuhOXD22zTT
+        4KnZC8NDVQfOTy9/M4k7aLYpgQAY+qc=
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Date:   Tue, 24 Nov 2020 22:24:27 +0100
+From:   Oleksandr Natalenko <oleksandr@natalenko.name>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     David Laight <David.Laight@aculab.com>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        kernel list <linux-kernel@vger.kernel.org>,
+        matthew.garrett@nebula.com, jk@ozlabs.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: Re: Oops (probably) unmounting /oldroot/firmware/efi/efivars.
+In-Reply-To: <CAMj1kXHhetomAx4Kd5McnvZQev9j1d-C1Og7h+J7V009WTiwxA@mail.gmail.com>
+References: <5f31cde519b941308412b3849197ee7c@AcuMS.aculab.com>
+ <CAMj1kXHhetomAx4Kd5McnvZQev9j1d-C1Og7h+J7V009WTiwxA@mail.gmail.com>
+User-Agent: Roundcube Webmail/1.4.9
+Message-ID: <c4c57a4b65d57bb7b2e87870a92558a5@natalenko.name>
+X-Sender: oleksandr@natalenko.name
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-CONFIG_EFI_EARLYCON defaults to yes, and thus is enabled on systems that
-do not support EFI, or do not have EFI support enabled, but do satisfy
-the symbol's other dependencies.
+Hi.
 
-While drivers/firmware/efi/ won't be entered during the build phase if
-CONFIG_EFI=n, and drivers/firmware/efi/earlycon.c itself thus won't be
-built, enabling EFI_EARLYCON does force-enable CONFIG_FONT_SUPPORT and
-CONFIG_ARCH_USE_MEMREMAP_PROT, and CONFIG_FONT_8x16, which is
-undesirable.
+On 24.11.2020 15:23, Ard Biesheuvel wrote:
+> Surely caused by
+> 
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/fs/efivarfs?id=fe5186cf12e30facfe261e9be6c7904a170bd822
 
-Fix this by making CONFIG_EFI_EARLYCON depend on CONFIG_EFI.
+This also soaked through the stable queue into v5.9.11, and now the same 
+BUG is triggered in the latest stable kernel.
 
-This reduces kernel size on headless systems by more than 4 KiB.
+/cc Greg
 
-Fixes: 69c1f396f25b805a ("efi/x86: Convert x86 EFI earlyprintk into generic earlycon implementation")
-Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
----
- drivers/firmware/efi/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/firmware/efi/Kconfig b/drivers/firmware/efi/Kconfig
-index b452cfa2100b401c..1dd1f7784f0888ff 100644
---- a/drivers/firmware/efi/Kconfig
-+++ b/drivers/firmware/efi/Kconfig
-@@ -270,7 +270,7 @@ config EFI_DEV_PATH_PARSER
- 
- config EFI_EARLYCON
- 	def_bool y
--	depends on SERIAL_EARLYCON && !ARM && !IA64
-+	depends on EFI && SERIAL_EARLYCON && !ARM && !IA64
- 	select FONT_SUPPORT
- 	select ARCH_USE_MEMREMAP_PROT
- 
 -- 
-2.25.1
-
+   Oleksandr Natalenko (post-factum)
