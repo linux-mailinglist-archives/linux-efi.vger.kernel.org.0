@@ -2,87 +2,79 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B37B2C2EA0
-	for <lists+linux-efi@lfdr.de>; Tue, 24 Nov 2020 18:33:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0EB592C30A2
+	for <lists+linux-efi@lfdr.de>; Tue, 24 Nov 2020 20:17:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390887AbgKXRdF (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 24 Nov 2020 12:33:05 -0500
-Received: from mail.kernel.org ([198.145.29.99]:45620 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2390791AbgKXRdF (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Tue, 24 Nov 2020 12:33:05 -0500
-Received: from mail-oi1-f169.google.com (mail-oi1-f169.google.com [209.85.167.169])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 91BDD206F7;
-        Tue, 24 Nov 2020 17:33:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1606239184;
-        bh=3edk/P+TSki7lqmQHf7lfC61UtOdi+d/ymZ/f3SXmKs=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=IdXapJqSYv+TxTI1vd1Q5szmXdxi4D3e1G8QO7S4RC5PVbUMfFWFXicR966BI8xRY
-         AXSbYcy8n6tKXcbjpfAIFq4dKtIXSKeeFAcdPbhBQcvV8Y8HvvrSyVvd/xa1ciRrUO
-         EP4NHLfTwitwbUlliGVC7Gm8DyPlCzof2XV9bJXQ=
-Received: by mail-oi1-f169.google.com with SMTP id h3so1080387oie.8;
-        Tue, 24 Nov 2020 09:33:04 -0800 (PST)
-X-Gm-Message-State: AOAM532zfAYWP3vS6Agadc+3ImnLe0JBXDP1VBrcRj+ri2doXFXi87IF
-        46/UD7ND+9QVEkh/kP8f5j9N3UIhYpEkH2zBxQA=
-X-Google-Smtp-Source: ABdhPJzz/FWGkiYxtnxUMLOPkCf0nLFXF4z0bduoCXU5Rvh/5Bvw1Axe3VZKmpPmAt9Kf9tbxBelsjeqFuk/g3xqYjU=
-X-Received: by 2002:aca:c657:: with SMTP id w84mr3253782oif.47.1606239183818;
- Tue, 24 Nov 2020 09:33:03 -0800 (PST)
+        id S2391008AbgKXTQx (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 24 Nov 2020 14:16:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59624 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2390959AbgKXTQx (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 24 Nov 2020 14:16:53 -0500
+Received: from baptiste.telenet-ops.be (baptiste.telenet-ops.be [IPv6:2a02:1800:120:4::f00:13])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40A3FC0613D6
+        for <linux-efi@vger.kernel.org>; Tue, 24 Nov 2020 11:16:53 -0800 (PST)
+Received: from ramsan.of.borg ([84.195.186.194])
+        by baptiste.telenet-ops.be with bizsmtp
+        id wKGo2300Y4C55Sk01KGpEU; Tue, 24 Nov 2020 20:16:51 +0100
+Received: from rox.of.borg ([192.168.97.57])
+        by ramsan.of.borg with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.93)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1khdo0-005XKS-NH; Tue, 24 Nov 2020 20:16:48 +0100
+Received: from geert by rox.of.borg with local (Exim 4.93)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1khdnz-00Ew4C-S7; Tue, 24 Nov 2020 20:16:47 +0100
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     Alexander Graf <agraf@suse.de>, Ingo Molnar <mingo@kernel.org>,
+        Damien Le Moal <damien.lemoal@wdc.com>,
+        linux-efi@vger.kernel.org, linux-riscv@lists.infradead.org,
+        linux-kernel@vger.kernel.org,
+        Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: [PATCH] efi: EFI_EARLYCON should depend on EFI
+Date:   Tue, 24 Nov 2020 20:16:46 +0100
+Message-Id: <20201124191646.3559757-1-geert@linux-m68k.org>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-References: <cab88111-e8a8-5460-bf67-055d3562da10@molgen.mpg.de>
-In-Reply-To: <cab88111-e8a8-5460-bf67-055d3562da10@molgen.mpg.de>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Tue, 24 Nov 2020 18:32:53 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXE08bux+ZJYjq4hCcs3LGRMUNZfJ65ip_f2HPd+fot=bg@mail.gmail.com>
-Message-ID: <CAMj1kXE08bux+ZJYjq4hCcs3LGRMUNZfJ65ip_f2HPd+fot=bg@mail.gmail.com>
-Subject: Re: What to do with `BERT: Error records from previous boot`?
-To:     Paul Menzel <pmenzel@molgen.mpg.de>
-Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, 24 Nov 2020 at 17:24, Paul Menzel <pmenzel@molgen.mpg.de> wrote:
->
-> Dear Linux folks,
->
->
-> On the Intel Tiger Lake Dell XPS 13 9310 Linux 5.9.9 from Debian
-> sid/unstable logged the messages below. Please find the whole log in the
-> Linux bug tracker [1].
->
-> ```
-> kernel: BERT: Error records from previous boot:
-> kernel: [Hardware Error]: event severity: fatal
-> kernel: [Hardware Error]:  Error 0, type: fatal
-> kernel: [Hardware Error]:   section_type: Firmware Error Record Reference
-> kernel: [Hardware Error]:   Firmware Error Record Type: SOC Firmware
-> Error Record Type2
-> kernel: [Hardware Error]:   Revision: 2
-> kernel: [Hardware Error]:   Record Identifier:
-> 8f87f311-c998-4d9e-a0c4-6065518c4f6d
-> kernel: [Hardware Error]:   00000000: 0100a306 00000280 ca5824d3
-> 000003ab  .........$X.....
-> [=E2=80=A6]
-> ```
->
-> How can I decode that error to understand what happened?
->
+CONFIG_EFI_EARLYCON defaults to yes, and thus is enabled on systems that
+do not support EFI, or do not have EFI support enabled, but do satisfy
+the symbol's other dependencies.
 
-Dell or Intel should be able to provide that information, although
-getting them to do so may be difficult.
+While drivers/firmware/efi/ won't be entered during the build phase if
+CONFIG_EFI=n, and drivers/firmware/efi/earlycon.c itself thus won't be
+built, enabling EFI_EARLYCON does force-enable CONFIG_FONT_SUPPORT and
+CONFIG_ARCH_USE_MEMREMAP_PROT, and CONFIG_FONT_8x16, which is
+undesirable.
 
+Fix this by making CONFIG_EFI_EARLYCON depend on CONFIG_EFI.
 
->
-> Kind regards,
->
-> Paul
->
->
-> [1]: https://bugzilla.kernel.org/show_bug.cgi?id=3D210347
+This reduces kernel size on headless systems by more than 4 KiB.
+
+Fixes: 69c1f396f25b805a ("efi/x86: Convert x86 EFI earlyprintk into generic earlycon implementation")
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+---
+ drivers/firmware/efi/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/firmware/efi/Kconfig b/drivers/firmware/efi/Kconfig
+index b452cfa2100b401c..1dd1f7784f0888ff 100644
+--- a/drivers/firmware/efi/Kconfig
++++ b/drivers/firmware/efi/Kconfig
+@@ -270,7 +270,7 @@ config EFI_DEV_PATH_PARSER
+ 
+ config EFI_EARLYCON
+ 	def_bool y
+-	depends on SERIAL_EARLYCON && !ARM && !IA64
++	depends on EFI && SERIAL_EARLYCON && !ARM && !IA64
+ 	select FONT_SUPPORT
+ 	select ARCH_USE_MEMREMAP_PROT
+ 
+-- 
+2.25.1
+
