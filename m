@@ -2,94 +2,110 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D1B8E2C3D8C
-	for <lists+linux-efi@lfdr.de>; Wed, 25 Nov 2020 11:19:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B05842C3D9E
+	for <lists+linux-efi@lfdr.de>; Wed, 25 Nov 2020 11:29:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728477AbgKYKSL (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 25 Nov 2020 05:18:11 -0500
-Received: from mga01.intel.com ([192.55.52.88]:41942 "EHLO mga01.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727498AbgKYKSL (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Wed, 25 Nov 2020 05:18:11 -0500
-IronPort-SDR: YQz9Fu+ZYuh0WobzYa7tAC926AVqyWRSDpSpLiZha2vf+AMxxdPpAoO+HBHCZyLAbhckvtBulI
- C/zuTYZIACCA==
-X-IronPort-AV: E=McAfee;i="6000,8403,9815"; a="190243536"
-X-IronPort-AV: E=Sophos;i="5.78,368,1599548400"; 
-   d="scan'208";a="190243536"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2020 02:18:10 -0800
-IronPort-SDR: W/i4NbF5ocQe80xIq5poJW1+3vwD/cpqDETWGTnl0l9mhaA3OjVGP0Ko7DaYqJCyeq2lpRFS3d
- BmMsES/vjebg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.78,368,1599548400"; 
-   d="scan'208";a="432910852"
-Received: from irsmsx606.ger.corp.intel.com ([163.33.146.139])
-  by fmsmga001.fm.intel.com with ESMTP; 25 Nov 2020 02:18:09 -0800
-Received: from irsmsx601.ger.corp.intel.com (163.33.146.7) by
- IRSMSX606.ger.corp.intel.com (163.33.146.139) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1713.5; Wed, 25 Nov 2020 10:18:09 +0000
-Received: from irsmsx601.ger.corp.intel.com ([163.33.146.7]) by
- irsmsx601.ger.corp.intel.com ([163.33.146.7]) with mapi id 15.01.1713.004;
- Wed, 25 Nov 2020 10:18:09 +0000
-From:   "Rojewski, Cezary" <cezary.rojewski@intel.com>
-To:     Ard Biesheuvel <ardb@kernel.org>
-CC:     linux-efi <linux-efi@vger.kernel.org>,
-        =?utf-8?B?QW1hZGV1c3ogU8WCYXdpxYRza2k=?= 
-        <amadeuszx.slawinski@linux.intel.com>
-Subject: RE: [PATCH] efi/efivars: Set generic ops before loading SSDT
-Thread-Topic: [PATCH] efi/efivars: Set generic ops before loading SSDT
-Thread-Index: AQHWwar76Ck8rjZFGk+4rxJ9QUEbBKnWU6IAgAJQkeA=
-Date:   Wed, 25 Nov 2020 10:18:09 +0000
-Message-ID: <e20e4ae680184d808a48312233415b0d@intel.com>
-References: <20201123172817.124146-1-amadeuszx.slawinski@linux.intel.com>
- <CAMj1kXEY14MWoCnMHTzGpyC7V8=dF3fxT44tDqzRXZtXRRf87w@mail.gmail.com>
-In-Reply-To: <CAMj1kXEY14MWoCnMHTzGpyC7V8=dF3fxT44tDqzRXZtXRRf87w@mail.gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-dlp-product: dlpe-windows
-dlp-reaction: no-action
-dlp-version: 11.5.1.3
-x-originating-ip: [163.33.253.164]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        id S1725989AbgKYK1g (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 25 Nov 2020 05:27:36 -0500
+Received: from vulcan.natalenko.name ([104.207.131.136]:58060 "EHLO
+        vulcan.natalenko.name" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726242AbgKYK1g (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 25 Nov 2020 05:27:36 -0500
+Received: from mail.natalenko.name (vulcan.natalenko.name [IPv6:fe80::5400:ff:fe0c:dfa0])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by vulcan.natalenko.name (Postfix) with ESMTPSA id 706608AB64A;
+        Wed, 25 Nov 2020 11:27:31 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=natalenko.name;
+        s=dkim-20170712; t=1606300051;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=TSezgXHWQ2NR0n8DvwevLMAGe0d1kqEYfdPd0tKN9C4=;
+        b=Qpz15R9ZqwsP4h4FnS01pUM9CbkRKO1f8/X55jPVLDizaKv6W2wXSc7pAkqVVRNfuvKM6X
+        a9syJVYyMACEkTtb62EgPwHNNgJA8+ZWsJ8D3oIhmk0+ZGykxRbfCfGKRrF+cSpOvven5J
+        gzGV+Gs7piLA9iN4Y6iSMIDv7WYEFDQ=
 MIME-Version: 1.0
+Date:   Wed, 25 Nov 2020 11:27:31 +0100
+From:   Oleksandr Natalenko <oleksandr@natalenko.name>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-efi@vger.kernel.org, jk@ozlabs.org, mjg59@google.com,
+        David.Laight@aculab.com,
+        Vamshi K Sthambamkadi <vamshi.k.sthambamkadi@gmail.com>
+Subject: Re: [PATCH] efivarfs: revert "fix memory leak in efivarfs_create()"
+In-Reply-To: <20201125075303.3963-1-ardb@kernel.org>
+References: <20201125075303.3963-1-ardb@kernel.org>
+User-Agent: Roundcube Webmail/1.4.9
+Message-ID: <309bd3399d042ca94e5bab35980d661c@natalenko.name>
+X-Sender: oleksandr@natalenko.name
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-T24gMjAyMC0xMS0yMyAxMTo1MyBQTSwgQXJkIEJpZXNoZXV2ZWwgd3JvdGU6DQo+IE9uIE1vbiwg
-MjMgTm92IDIwMjAgYXQgMTY6MTEsIEFtYWRldXN6IFPFgmF3acWEc2tpDQo+IDxhbWFkZXVzengu
-c2xhd2luc2tpQGxpbnV4LmludGVsLmNvbT4gd3JvdGU6DQo+Pg0KPj4gRWZpdmFyIGFsbG93cyBm
-b3Igb3ZlcnJpZGluZyBvZiBTU0RUIHRhYmxlcywgaG93ZXZlciBzdGFydGluZyB3aXRoDQo+PiBj
-b21taXQgYmY2N2ZhZDE5ZTQ5M2IgKCJlZmk6IFVzZSBtb3JlIGdyYW51bGFyIGNoZWNrIGZvciBh
-dmFpbGFiaWxpdHkgZm9yIHZhcmlhYmxlIHNlcnZpY2VzIikNCj4+IHRoaXMgdXNlIGNhc2UgaXMg
-YnJva2VuLiBXaGVuIGxvYWRpbmcgU1NEVCBnZW5lcmljIG9wcyBzaG91bGQgYmUgc2V0DQo+PiBm
-aXJzdCwgaG93ZXZlciBtZW50aW9uZWQgY29tbWl0IHJldmVyc2VkIG9yZGVyIG9mIG9wZXJhdGlv
-bnMuIEZpeCB0aGlzDQo+PiBieSByZXN0b3Jpbmcgb3JpZ2luYWwgb3JkZXIgb2Ygb3BlcmF0aW9u
-cy4NCj4+DQo+PiBGaXhlczogYmY2N2ZhZDE5ZTQ5M2IgKCJlZmk6IFVzZSBtb3JlIGdyYW51bGFy
-IGNoZWNrIGZvciBhdmFpbGFiaWxpdHkgZm9yIHZhcmlhYmxlIHNlcnZpY2VzIikNCj4+IFNpZ25l
-ZC1vZmYtYnk6IEFtYWRldXN6IFPFgmF3acWEc2tpIDxhbWFkZXVzenguc2xhd2luc2tpQGxpbnV4
-LmludGVsLmNvbT4NCj4+IC0tLQ0KPj4gICBkcml2ZXJzL2Zpcm13YXJlL2VmaS9lZmkuYyB8IDIg
-Ky0NCj4+ICAgMSBmaWxlIGNoYW5nZWQsIDEgaW5zZXJ0aW9uKCspLCAxIGRlbGV0aW9uKC0pDQo+
-Pg0KPj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvZmlybXdhcmUvZWZpL2VmaS5jIGIvZHJpdmVycy9m
-aXJtd2FyZS9lZmkvZWZpLmMNCj4+IGluZGV4IDVlNTQ4MGEwYTMyZC4uNmM2ZWVjMDQ0YTk3IDEw
-MDY0NA0KPj4gLS0tIGEvZHJpdmVycy9maXJtd2FyZS9lZmkvZWZpLmMNCj4+ICsrKyBiL2RyaXZl
-cnMvZmlybXdhcmUvZWZpL2VmaS5jDQo+PiBAQCAtMzkwLDEwICszOTAsMTAgQEAgc3RhdGljIGlu
-dCBfX2luaXQgZWZpc3Vic3lzX2luaXQodm9pZCkNCj4+DQo+PiAgICAgICAgICBpZiAoZWZpX3J0
-X3NlcnZpY2VzX3N1cHBvcnRlZChFRklfUlRfU1VQUE9SVEVEX0dFVF9WQVJJQUJMRSB8DQo+PiAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBFRklfUlRfU1VQUE9SVEVEX0dF
-VF9ORVhUX1ZBUklBQkxFX05BTUUpKSB7DQo+PiAtICAgICAgICAgICAgICAgZWZpdmFyX3NzZHRf
-bG9hZCgpOw0KPj4gICAgICAgICAgICAgICAgICBlcnJvciA9IGdlbmVyaWNfb3BzX3JlZ2lzdGVy
-KCk7DQo+PiAgICAgICAgICAgICAgICAgIGlmIChlcnJvcikNCj4+ICAgICAgICAgICAgICAgICAg
-ICAgICAgICBnb3RvIGVycl9wdXQ7DQo+PiArICAgICAgICAgICAgICAgZWZpdmFyX3NzZHRfbG9h
-ZCgpOw0KPj4gICAgICAgICAgICAgICAgICBwbGF0Zm9ybV9kZXZpY2VfcmVnaXN0ZXJfc2ltcGxl
-KCJlZml2YXJzIiwgMCwgTlVMTCwgMCk7DQo+PiAgICAgICAgICB9DQo+Pg0KPiANCj4gVGhhbmtz
-LiBRdWV1ZWQgYXMgYSBmaXguDQo+IA0KDQpTb3JyeSBmb3IgdGhlIGxhdGUgcmVwbHkuIFRoaXMg
-aXMgYSBnb29kIGZpbmRpbmcgYnkgQW1hZGVvLiBJZiBpbiBhbnkNCmNhc2UgeW91IG5lZWQgbW9y
-ZSBjcmVkaWJpbGl0eSwgZmVlbCBmcmVlIHRvIGFwcGx5IG15Og0KDQpUZXN0ZWQtYnk6IENlemFy
-eSBSb2pld3NraSA8Y2V6YXJ5LnJvamV3c2tpQGludGVsLmNvbT4NCg0KQ3phcmVrDQoNCg==
+On 25.11.2020 08:53, Ard Biesheuvel wrote:
+> The memory leak addressed by commit fe5186cf12e3 is a false positive:
+> all allocations are recorded in a linked list, and freed when the
+> filesystem is unmounted. This leads to double frees, and as reported
+> by David, leads to crashes if SLUB is configured to self destruct when
+> double frees occur.
+> 
+> So drop the redundant kfree() again, and instead, mark the offending
+> pointer variable so the allocation is ignored by kmemleak.
+> 
+> Cc: Vamshi K Sthambamkadi <vamshi.k.sthambamkadi@gmail.com>
+> Fixes: fe5186cf12e3 ("efivarfs: fix memory leak in efivarfs_create()")
+> Reported-by: David Laight <David.Laight@aculab.com>
+> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> ---
+>  fs/efivarfs/inode.c | 1 +
+>  fs/efivarfs/super.c | 1 -
+>  2 files changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/fs/efivarfs/inode.c b/fs/efivarfs/inode.c
+> index 96c0c86f3fff..38324427a2b3 100644
+> --- a/fs/efivarfs/inode.c
+> +++ b/fs/efivarfs/inode.c
+> @@ -103,6 +103,7 @@ static int efivarfs_create(struct inode *dir,
+> struct dentry *dentry,
+>  	var->var.VariableName[i] = '\0';
+> 
+>  	inode->i_private = var;
+> +	kmemleak_ignore(var);
+
+Do we need to do this as well:
+
+#include <linux/kmemleak.h>
+
+?
+
+Because otherwise for 5.9 I get:
+
+[  148s] fs/efivarfs/inode.c: In function 'efivarfs_create':
+[  148s] fs/efivarfs/inode.c:106:2: error: implicit declaration of 
+function 'kmemleak_ignore' [-Werror=implicit-function-declaration]
+[  148s]   106 |  kmemleak_ignore(var);
+[  148s]       |  ^~~~~~~~~~~~~~~
+
+> 
+>  	err = efivar_entry_add(var, &efivarfs_list);
+>  	if (err)
+> diff --git a/fs/efivarfs/super.c b/fs/efivarfs/super.c
+> index f943fd0b0699..15880a68faad 100644
+> --- a/fs/efivarfs/super.c
+> +++ b/fs/efivarfs/super.c
+> @@ -21,7 +21,6 @@ LIST_HEAD(efivarfs_list);
+>  static void efivarfs_evict_inode(struct inode *inode)
+>  {
+>  	clear_inode(inode);
+> -	kfree(inode->i_private);
+>  }
+> 
+>  static const struct super_operations efivarfs_ops = {
+
+-- 
+   Oleksandr Natalenko (post-factum)
