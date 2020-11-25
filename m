@@ -2,66 +2,82 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D5E922C32F7
-	for <lists+linux-efi@lfdr.de>; Tue, 24 Nov 2020 22:33:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D5952C3A5A
+	for <lists+linux-efi@lfdr.de>; Wed, 25 Nov 2020 08:54:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732484AbgKXVcJ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 24 Nov 2020 16:32:09 -0500
-Received: from vulcan.natalenko.name ([104.207.131.136]:46980 "EHLO
-        vulcan.natalenko.name" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732361AbgKXVcJ (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 24 Nov 2020 16:32:09 -0500
-X-Greylist: delayed 458 seconds by postgrey-1.27 at vger.kernel.org; Tue, 24 Nov 2020 16:32:08 EST
-Received: from mail.natalenko.name (vulcan.natalenko.name [IPv6:fe80::5400:ff:fe0c:dfa0])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        id S1728074AbgKYHxT (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 25 Nov 2020 02:53:19 -0500
+Received: from mail.kernel.org ([198.145.29.99]:53944 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726407AbgKYHxT (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Wed, 25 Nov 2020 02:53:19 -0500
+Received: from e123331-lin.nice.arm.com (lfbn-nic-1-188-42.w2-15.abo.wanadoo.fr [2.15.37.42])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by vulcan.natalenko.name (Postfix) with ESMTPSA id 0FD6F8AAF01;
-        Tue, 24 Nov 2020 22:24:28 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=natalenko.name;
-        s=dkim-20170712; t=1606253068;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=Ef6cqFP5rtCRJRsC0pbk1fWvr/gryXZqDbAGKXuGsf0=;
-        b=YemTNNq45rDxGydtNUuLfNISH2jCVhRnhFHbWWaQkIHyBHC8z5H2mHBnJJgQgB3Yu8chNo
-        QHt/ssDLKmNm+6NK2wW1maqb6n4VypVcLAjoQRoROic98FDJzj+inNcewLtxuhOXD22zTT
-        4KnZC8NDVQfOTy9/M4k7aLYpgQAY+qc=
-MIME-Version: 1.0
-Date:   Tue, 24 Nov 2020 22:24:27 +0100
-From:   Oleksandr Natalenko <oleksandr@natalenko.name>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     David Laight <David.Laight@aculab.com>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        kernel list <linux-kernel@vger.kernel.org>,
-        matthew.garrett@nebula.com, jk@ozlabs.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: Oops (probably) unmounting /oldroot/firmware/efi/efivars.
-In-Reply-To: <CAMj1kXHhetomAx4Kd5McnvZQev9j1d-C1Og7h+J7V009WTiwxA@mail.gmail.com>
-References: <5f31cde519b941308412b3849197ee7c@AcuMS.aculab.com>
- <CAMj1kXHhetomAx4Kd5McnvZQev9j1d-C1Og7h+J7V009WTiwxA@mail.gmail.com>
-User-Agent: Roundcube Webmail/1.4.9
-Message-ID: <c4c57a4b65d57bb7b2e87870a92558a5@natalenko.name>
-X-Sender: oleksandr@natalenko.name
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
+        by mail.kernel.org (Postfix) with ESMTPSA id CBF4220857;
+        Wed, 25 Nov 2020 07:53:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1606290798;
+        bh=zWaKhFGSMXCY/b+jLfMpt5Moxe0TRFeN///Em3HdlxU=;
+        h=From:To:Cc:Subject:Date:From;
+        b=V8hV5Vl+Gli0KSdSNUhK6CZIIdYDilT16Qu8EzxfiLLpwdnm59umKi3DZ0OdMHGd7
+         8TJ5bzp2mYeqtXXN8KJBgIvCo/pB7r2cJ5CflRGpLTd60FSXMk+4cwUBqBdZCE4mGL
+         O20VL2EYfg/qhNmlsQ9V5U7WfoXF74wFJFlkIgWM=
+From:   Ard Biesheuvel <ardb@kernel.org>
+To:     linux-efi@vger.kernel.org
+Cc:     oleksandr@natalenko.name, jk@ozlabs.org, mjg59@google.com,
+        David.Laight@aculab.com, Ard Biesheuvel <ardb@kernel.org>,
+        Vamshi K Sthambamkadi <vamshi.k.sthambamkadi@gmail.com>
+Subject: [PATCH] efivarfs: revert "fix memory leak in efivarfs_create()"
+Date:   Wed, 25 Nov 2020 08:53:03 +0100
+Message-Id: <20201125075303.3963-1-ardb@kernel.org>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hi.
+The memory leak addressed by commit fe5186cf12e3 is a false positive:
+all allocations are recorded in a linked list, and freed when the
+filesystem is unmounted. This leads to double frees, and as reported
+by David, leads to crashes if SLUB is configured to self destruct when
+double frees occur.
 
-On 24.11.2020 15:23, Ard Biesheuvel wrote:
-> Surely caused by
-> 
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/fs/efivarfs?id=fe5186cf12e30facfe261e9be6c7904a170bd822
+So drop the redundant kfree() again, and instead, mark the offending
+pointer variable so the allocation is ignored by kmemleak.
 
-This also soaked through the stable queue into v5.9.11, and now the same 
-BUG is triggered in the latest stable kernel.
+Cc: Vamshi K Sthambamkadi <vamshi.k.sthambamkadi@gmail.com>
+Fixes: fe5186cf12e3 ("efivarfs: fix memory leak in efivarfs_create()")
+Reported-by: David Laight <David.Laight@aculab.com>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+---
+ fs/efivarfs/inode.c | 1 +
+ fs/efivarfs/super.c | 1 -
+ 2 files changed, 1 insertion(+), 1 deletion(-)
 
-/cc Greg
-
+diff --git a/fs/efivarfs/inode.c b/fs/efivarfs/inode.c
+index 96c0c86f3fff..38324427a2b3 100644
+--- a/fs/efivarfs/inode.c
++++ b/fs/efivarfs/inode.c
+@@ -103,6 +103,7 @@ static int efivarfs_create(struct inode *dir, struct dentry *dentry,
+ 	var->var.VariableName[i] = '\0';
+ 
+ 	inode->i_private = var;
++	kmemleak_ignore(var);
+ 
+ 	err = efivar_entry_add(var, &efivarfs_list);
+ 	if (err)
+diff --git a/fs/efivarfs/super.c b/fs/efivarfs/super.c
+index f943fd0b0699..15880a68faad 100644
+--- a/fs/efivarfs/super.c
++++ b/fs/efivarfs/super.c
+@@ -21,7 +21,6 @@ LIST_HEAD(efivarfs_list);
+ static void efivarfs_evict_inode(struct inode *inode)
+ {
+ 	clear_inode(inode);
+-	kfree(inode->i_private);
+ }
+ 
+ static const struct super_operations efivarfs_ops = {
 -- 
-   Oleksandr Natalenko (post-factum)
+2.17.1
+
