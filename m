@@ -2,88 +2,135 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 303B92C6A4A
-	for <lists+linux-efi@lfdr.de>; Fri, 27 Nov 2020 17:59:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D2FFA2C6C6E
+	for <lists+linux-efi@lfdr.de>; Fri, 27 Nov 2020 21:10:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731196AbgK0Q7X (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 27 Nov 2020 11:59:23 -0500
-Received: from vulcan.natalenko.name ([104.207.131.136]:59820 "EHLO
-        vulcan.natalenko.name" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730786AbgK0Q7W (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 27 Nov 2020 11:59:22 -0500
-Received: from localhost (home.natalenko.name [151.237.229.131])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        id S1731854AbgK0UJ1 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 27 Nov 2020 15:09:27 -0500
+Received: from mail.kernel.org ([198.145.29.99]:39704 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1731779AbgK0UHw (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Fri, 27 Nov 2020 15:07:52 -0500
+Received: from mail-ot1-f49.google.com (mail-ot1-f49.google.com [209.85.210.49])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by vulcan.natalenko.name (Postfix) with ESMTPSA id B18CD8AFFEE;
-        Fri, 27 Nov 2020 17:59:20 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=natalenko.name;
-        s=dkim-20170712; t=1606496360;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=Jicsug5dPakoEQZY49Hp26352m6/XQS82XZ2tDNeoI0=;
-        b=a6QteInLg6H930OKsD+Edr58VisLNIJgeihw5boko9yQY0x6acdFY+N8weK4YfGBnuEkW9
-        0cgzgLqQyGjRFUAvplIAotuWyZMs3ygeRMgqEzI09HJJSASmnAdPMRPx5hvvrLyIPXnPfT
-        zJLsZ5Fp8mmVmVbHF2XXeNdc7GIClZk=
-Date:   Fri, 27 Nov 2020 17:59:20 +0100
-From:   Oleksandr Natalenko <oleksandr@natalenko.name>
-To:     Jonathon Fernyhough <jonathon@m2x.dev>
-Cc:     Ard Biesheuvel <ardb@kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Jeremy Kerr <jk@ozlabs.org>,
-        Matthew Garrett <mjg59@google.com>,
-        David Laight <David.Laight@aculab.com>,
-        Vamshi K Sthambamkadi <vamshi.k.sthambamkadi@gmail.com>
-Subject: Re: [PATCH] efivarfs: revert "fix memory leak in efivarfs_create()"
-Message-ID: <20201127165920.kaewzyz4ocx4lnrl@spock.localdomain>
-References: <20201125075303.3963-1-ardb@kernel.org>
- <309bd3399d042ca94e5bab35980d661c@natalenko.name>
- <CAMj1kXHHW2MSUb1emSnDPqffBVFinAO2=w5Si3toEvqXZUBY2Q@mail.gmail.com>
- <a07e1520-f08b-2456-a954-707e0c3bcb4a@m2x.dev>
+        by mail.kernel.org (Postfix) with ESMTPSA id 5D2EC24124;
+        Fri, 27 Nov 2020 19:29:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1606505378;
+        bh=8QymvV5Hnh6tFqtBLh0j3rJoBCVR1S8omUbfnSVDUeg=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=oLLIUYhA6GpbhNj2qR7MD4psdVtsmBPseexX/GY2TFosrpuEPbpwsT2G0SCF4846R
+         Fptt4olt4YE28inoYnnVg6/DEtn4trVGGQNAp603+RsVNAoJ4QhA39uLlqt7dI8bM/
+         rS1NkODIQ8Hn+pojhY6qo7/a4/UnN0VzVz4jzdRI=
+Received: by mail-ot1-f49.google.com with SMTP id h39so5566433otb.5;
+        Fri, 27 Nov 2020 11:29:38 -0800 (PST)
+X-Gm-Message-State: AOAM532J6wv/fAkAQt3OlFPnQ7oVWzTxSPjY/bWmQoOGhKNrK+uiXj+S
+        bGskCWazF8d9afIPY/udXMs1WWcV3MDwp3yBXgU=
+X-Google-Smtp-Source: ABdhPJxcQfyG8b5MTqOyTrK4rfOhSVdRZ+KuSazB0xNflwCE1YFEDJEnpF1r+2Dxy4l8nzC63Zt0IswN/eMtn4GNX2M=
+X-Received: by 2002:a05:6830:214c:: with SMTP id r12mr7274707otd.90.1606505377691;
+ Fri, 27 Nov 2020 11:29:37 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a07e1520-f08b-2456-a954-707e0c3bcb4a@m2x.dev>
+References: <20201127192051.1430-1-xypron.glpk@gmx.de> <98faddb2-5acc-c228-d002-71341d1c558e@canonical.com>
+In-Reply-To: <98faddb2-5acc-c228-d002-71341d1c558e@canonical.com>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Fri, 27 Nov 2020 20:29:26 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXFNtCJEvbhZpO9p96UNGuo-r2dXQPm0TRjmQuF4TLBUcg@mail.gmail.com>
+Message-ID: <CAMj1kXFNtCJEvbhZpO9p96UNGuo-r2dXQPm0TRjmQuF4TLBUcg@mail.gmail.com>
+Subject: Re: ACK: [PATCH 1/1] efi/efi_test: read RuntimeServicesSupported
+To:     Colin Ian King <colin.king@canonical.com>
+Cc:     Heinrich Schuchardt <xypron.glpk@gmx.de>,
+        Ivan Hu <ivan.hu@canonical.com>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        fwts-devel@lists.ubuntu.com
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hi.
+On Fri, 27 Nov 2020 at 20:28, Colin Ian King <colin.king@canonical.com> wrote:
+>
+> On 27/11/2020 19:20, Heinrich Schuchardt wrote:
+> > Since the UEFI 2.8A specification the UEFI enabled firmware provides a
+> > configuration table EFI_RT_PROPERTIES_TABLE which indicates which runtime
+> > services are enabled. The EFI stub reads this table and saves the value of
+> > the field RuntimeServicesSupported internally.
+> >
+> > The Firmware Test Suite requires the value to determine if UEFI runtime
+> > services are correctly implemented.
+> >
+> > With this patch an IOCTL call is provided to read the value of the field
+> > RuntimeServicesSupported, e.g.
+> >
+> >     #define EFI_RUNTIME_GET_SUPPORTED_MASK \
+> >             _IOR('p', 0x0C, unsigned int)
+> >     unsigned int mask;
+> >     fd = open("/dev/efi_test", O_RDWR);
+> >     ret = ioctl(fd, EFI_RUNTIME_GET_SUPPORTED_MASK, &mask);
+> >
+> > Signed-off-by: Heinrich Schuchardt <xypron.glpk@gmx.de>
+> > ---
+> >  drivers/firmware/efi/test/efi_test.c | 16 ++++++++++++++++
+> >  drivers/firmware/efi/test/efi_test.h |  3 +++
+> >  2 files changed, 19 insertions(+)
+> >
+> > diff --git a/drivers/firmware/efi/test/efi_test.c b/drivers/firmware/efi/test/efi_test.c
+> > index ddf9eae396fe..47d67bb0a516 100644
+> > --- a/drivers/firmware/efi/test/efi_test.c
+> > +++ b/drivers/firmware/efi/test/efi_test.c
+> > @@ -663,6 +663,19 @@ static long efi_runtime_query_capsulecaps(unsigned long arg)
+> >       return rv;
+> >  }
+> >
+> > +static long efi_runtime_get_supported_mask(unsigned long arg)
+> > +{
+> > +     unsigned int __user *supported_mask;
+> > +     int rv = 0;
+> > +
+> > +     supported_mask = (unsigned int *)arg;
+> > +
+> > +     if (put_user(efi.runtime_supported_mask, supported_mask))
+> > +             rv = -EFAULT;
+> > +
+> > +     return rv;
+> > +}
+> > +
+> >  static long efi_test_ioctl(struct file *file, unsigned int cmd,
+> >                                                       unsigned long arg)
+> >  {
+> > @@ -699,6 +712,9 @@ static long efi_test_ioctl(struct file *file, unsigned int cmd,
+> >
+> >       case EFI_RUNTIME_RESET_SYSTEM:
+> >               return efi_runtime_reset_system(arg);
+> > +
+> > +     case EFI_RUNTIME_GET_SUPPORTED_MASK:
+> > +             return efi_runtime_get_supported_mask(arg);
+> >       }
+> >
+> >       return -ENOTTY;
+> > diff --git a/drivers/firmware/efi/test/efi_test.h b/drivers/firmware/efi/test/efi_test.h
+> > index f2446aa1c2e3..117349e57993 100644
+> > --- a/drivers/firmware/efi/test/efi_test.h
+> > +++ b/drivers/firmware/efi/test/efi_test.h
+> > @@ -118,4 +118,7 @@ struct efi_resetsystem {
+> >  #define EFI_RUNTIME_RESET_SYSTEM \
+> >       _IOW('p', 0x0B, struct efi_resetsystem)
+> >
+> > +#define EFI_RUNTIME_GET_SUPPORTED_MASK \
+> > +     _IOR('p', 0x0C, unsigned int)
+> > +
+> >  #endif /* _DRIVERS_FIRMWARE_EFI_TEST_H_ */
+> > --
+> > 2.29.2
+> >
+>
+> Looks good to me. Thanks Heinrich.
+>
+> The EFI driver needs to be also updated in the linux kernel - has that
+> fix been submitted or do you require the fwts team to do that?
+>
 
-On Fri, Nov 27, 2020 at 04:50:34PM +0000, Jonathon Fernyhough wrote:
-> On 25/11/2020 10:28, Ard Biesheuvel wrote:
-> > On Wed, 25 Nov 2020 at 11:27, Oleksandr Natalenko
-> > <oleksandr@natalenko.name> wrote:
-> >>
-> >> On 25.11.2020 08:53, Ard Biesheuvel wrote:
-> --snip--
-> >>
-> >> Do we need to do this as well:
-> >>
-> >> #include <linux/kmemleak.h>
-> >>
-> >> ?
-> >>
-> >> Because otherwise for 5.9 I get:
-> >>
-> >> [  148s] fs/efivarfs/inode.c: In function 'efivarfs_create':
-> >> [  148s] fs/efivarfs/inode.c:106:2: error: implicit declaration of
-> >> function 'kmemleak_ignore' [-Werror=implicit-function-declaration]
-> >> [  148s]   106 |  kmemleak_ignore(var);
-> >> [  148s]       |  ^~~~~~~~~~~~~~~
-> >>
-> > 
-> > Ah yes, thanks for the report. I will add the include to the patch.
-> > 
-> > 
-> 
-> Is this necessary if CONFIG_DEBUG_KMEMLEAK is not enabled in the kernel
-> config? e.g. should there be an #ifdef CONFIG_DEBUG_KMEMLEAK somewhere
-> in there?
+This /is/ the EFI driver.
 
-kmemleak_ignore() is a noop if CONFIG_DEBUG_KMEMLEAK is not set. See
-include/linux/kmemleak.h. Thus no extra condition is needed here.
-
--- 
-  Oleksandr Natalenko (post-factum)
+I'll take this as an acked-by but I'd like Ivan to chime in as well.
