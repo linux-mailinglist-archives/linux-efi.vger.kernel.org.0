@@ -2,96 +2,54 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 174AF2CF387
-	for <lists+linux-efi@lfdr.de>; Fri,  4 Dec 2020 19:04:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1DCDA2CF832
+	for <lists+linux-efi@lfdr.de>; Sat,  5 Dec 2020 01:48:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727966AbgLDSCv (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 4 Dec 2020 13:02:51 -0500
-Received: from bedivere.hansenpartnership.com ([96.44.175.130]:58148 "EHLO
-        bedivere.hansenpartnership.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727178AbgLDSCv (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 4 Dec 2020 13:02:51 -0500
-Received: from localhost (localhost [127.0.0.1])
-        by bedivere.hansenpartnership.com (Postfix) with ESMTP id 30E731280B75;
-        Fri,  4 Dec 2020 10:02:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=hansenpartnership.com; s=20151216; t=1607104931;
-        bh=kOups0pd4uEFpCdetzEgznZGlD3//AIfOfCED5b+e0I=;
-        h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-        b=SiyMTvReH4FFSnovORg1mgYJBXbQmz/EXo22Lk8D5z2wtCvENwSAtBEIHEiCXFl1t
-         nljLJqzX8eXkbedHoO8YmiwVnuUQoA8j/Q/Zd/XBzlgqBx37g8ObxbAQZwhKyvm7PC
-         +prnLWheDZKgb+CN/mZm5rHurR2QiODgOte/SiZs=
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
-        by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id DX3AvhYmf693; Fri,  4 Dec 2020 10:02:11 -0800 (PST)
-Received: from jarvis.int.hansenpartnership.com (unknown [IPv6:2601:600:8280:66d1::527])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id CEB241280B74;
-        Fri,  4 Dec 2020 10:02:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=hansenpartnership.com; s=20151216; t=1607104930;
-        bh=kOups0pd4uEFpCdetzEgznZGlD3//AIfOfCED5b+e0I=;
-        h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-        b=ii7hqO3wVrD7YJMrWWfA626JSjOnYCNm/166zh3ZIrM1IFDN5xaeSbegcjY5SD7mu
-         tX4mnvACJxDjafeBfIf2FcqzG+AKgxddsX4e+i1r2nXwrND5x68i65ou4gVGGQKVWK
-         ejQ2qzALaSse6ukjejDyu3G9yo3wBVaEh7mAXvWI=
-Message-ID: <ab769a5188394cd3379cc627d14a0222050a1367.camel@HansenPartnership.com>
-Subject: Re: [RFC PATCH v1 07/12] efi: Replace strstarts() by
- str_has_prefix().
-From:   James Bottomley <James.Bottomley@HansenPartnership.com>
-To:     Ard Biesheuvel <ardb@kernel.org>,
-        laniel_francis@privacyrequired.com
-Cc:     linux-efi <linux-efi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Date:   Fri, 04 Dec 2020 10:02:09 -0800
-In-Reply-To: <CAMj1kXEQhT_LF5FDBO3-S7pBn55wG59bQUVr2q58A4FhqodY8Q@mail.gmail.com>
-References: <20201204170319.20383-1-laniel_francis@privacyrequired.com>
-         <20201204170319.20383-8-laniel_francis@privacyrequired.com>
-         <CAMj1kXEQhT_LF5FDBO3-S7pBn55wG59bQUVr2q58A4FhqodY8Q@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.4 
+        id S1730904AbgLEAq7 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 4 Dec 2020 19:46:59 -0500
+Received: from vsm-gw.hyogo-dai.ac.jp ([202.244.76.12]:49526 "EHLO
+        vsm-gw.hyogo-dai.ac.jp" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726485AbgLEAq5 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 4 Dec 2020 19:46:57 -0500
+X-Greylist: delayed 14573 seconds by postgrey-1.27 at vger.kernel.org; Fri, 04 Dec 2020 19:46:41 EST
+Received: from humans-kc.hyogo-dai.ac.jp (humans-kc.hyogo-dai.ac.jp [202.244.77.11])
+        by vsm-gw.hyogo-dai.ac.jp (Postfix) with ESMTP id 274A31A5589;
+        Sat,  5 Dec 2020 04:44:55 +0900 (JST)
+Received: from humans-kc.hyogo-dai.ac.jp (humans-kc.hyogo-dai.ac.jp [127.0.0.1])
+        by postfix.imss71 (Postfix) with ESMTP id E5C39838858;
+        Sat,  5 Dec 2020 04:44:54 +0900 (JST)
+Received: from hyogo-dai.ac.jp (unknown [202.244.77.11])
+        by humans-kc.hyogo-dai.ac.jp (Postfix) with SMTP id B84F6838260;
+        Sat,  5 Dec 2020 04:44:54 +0900 (JST)
 MIME-Version: 1.0
+Message-ID: <20201204194454.00002B21.0147@hyogo-dai.ac.jp>
+Date:   Sat, 05 Dec 2020 04:44:54 +0900
+From:   "Dr.Raymond" <tabata@hyogo-dai.ac.jp>
+To:     <infocarferr1@aim.com>
+Reply-To: <infocarfer@aim.com>
+Subject: I am Vice Chairman of Hang Seng Bank, Dr. Raymond Chien
+         Kuo Fung I have Important Matter to Discuss with you concerning
+         my late client. Died without a NEXT OF KIN. Send me your private
+         email for full details information. 
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MAILER: Active! mail
+X-TM-AS-MML: disable
+X-TM-AS-Product-Ver: IMSS-7.1.0.1808-8.2.0.1013-25446.007
+X-TM-AS-Result: No--4.326-5.0-31-10
+X-imss-scan-details: No--4.326-5.0-31-10
+X-TM-AS-User-Approved-Sender: No
+X-TMASE-MatchedRID: +T4Z3mpR0x5ITndh1lLRASsOycAMAhSTkCM77ifYafsBLhz6t76Ce/bj
+        Enpjm61/Gf23dqZJjE4Erxo5p8V1/E1+zyfzlN7y/sToY2qzpx7w5nZ/qYg41XEWw1TkKAjcYff
+        qdBtG2ocgOkCKsW/kbuunGEBqPil++coAzulIP8gMTyJMXCOBhj9BWL7GG0LsKrauXd3MZDUZaR
+        NzIP3XI5u3uLPgwbAMH5RdHnhWfwyq9gpuf+A6coDeeVSgzszVDx5n520Z3eZyT7DDRtYlKaWBy
+        ZE9nSaC/rhfyjvqkZu/pNa4BidtZEMMprcbiest
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, 2020-12-04 at 18:07 +0100, Ard Biesheuvel wrote:
-> On Fri, 4 Dec 2020 at 18:06, <laniel_francis@privacyrequired.com>
-> wrote:
-> > From: Francis Laniel <laniel_francis@privacyrequired.com>
-> > 
-> > The two functions indicates if a string begins with a given prefix.
-> > The only difference is that strstarts() returns a bool while
-> > str_has_prefix()
-> > returns the length of the prefix if the string begins with it or 0
-> > otherwise.
-> > 
-> 
-> Why? 
+infocarfer@aim.com
 
-I think I can answer that.  If the conversion were done properly (which
-it's not) you could get rid of the double strings in the code which are
-error prone if you update one and forget another.  This gives a good
-example: 3d739c1f6156 ("tracing: Use the return of str_has_prefix() to
-remove open coded numbers"). so in your code you'd replace things like
-
-    if (strstarts(option, "rgb")) {
-        option += strlen("rgb");
-        ...
-
-with 
-
-    len = str_has_prefix(option, "rgb");
-    if (len) {
-        option += len
-        ...
- 
-Obviously you also have cases where strstart is used as a boolean with
-no need to know the length ... I think there's no value to converting
-those.
-
-James
 
 
