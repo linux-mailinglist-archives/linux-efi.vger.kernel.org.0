@@ -2,129 +2,130 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B508E2CDE77
-	for <lists+linux-efi@lfdr.de>; Thu,  3 Dec 2020 20:08:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D18892CE7DB
+	for <lists+linux-efi@lfdr.de>; Fri,  4 Dec 2020 06:56:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726923AbgLCTGn (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 3 Dec 2020 14:06:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54992 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726042AbgLCTGn (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 3 Dec 2020 14:06:43 -0500
-Received: from mail-yb1-xb43.google.com (mail-yb1-xb43.google.com [IPv6:2607:f8b0:4864:20::b43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6E1DC061A4E
-        for <linux-efi@vger.kernel.org>; Thu,  3 Dec 2020 11:06:02 -0800 (PST)
-Received: by mail-yb1-xb43.google.com with SMTP id k65so3033181ybk.5
-        for <linux-efi@vger.kernel.org>; Thu, 03 Dec 2020 11:06:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=zY1/UVNK1lpCKgo46pv7M4xtEHqMkdRqZiYe+oaE/HI=;
-        b=kBXK6rf2l4HvR3AS0yI+1werbY73mRV1JLVfNayiYB24G4hZ+mMX9KhAe6rtLui6wT
-         l+lgZE+6rx2soFftZ/7j+GPO2PmOscV4Vbqt0Ff03wqQ5toUTRKCyOAdLNdoDa1pKbjg
-         7j4e4l749WlmL7AXqJPQOVJjPkHPHSs6J2y+ZCElAN/sF033I+N/QZot64Qd+YYYqF+d
-         8RqTgH/KtpaMY9PolKpcFzZMTF/JbjDk/O7PXIUOxQ6Ryo2icN6J5B9PqMJ6eC7uVBTJ
-         DXSm2kocF3znjF9z9rF3V7J2WMpCDm+VePuBTnXeflnecy2J7uOGs4/nlDeDyjlCGIhO
-         fE/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=zY1/UVNK1lpCKgo46pv7M4xtEHqMkdRqZiYe+oaE/HI=;
-        b=lcO5OHYRwRQOCNtSAe7mEeAtrBtlycEqfcqIWrUhO6mLEBp8K9FSf3WLuwGZ4xNeUM
-         hAJNvaj9l1c8O3wtR0G9lyo+VsYh+RMKFxf0X66Y/boRPeoLVz1meBFSdvw/jDux+TV2
-         VILqzW0VCvLEryh+IuLIYfDJUvenA35gBm8aH3fLqvzK22AXAPPb4SUbyFTZpOemuy8n
-         dtRgTjvvphdqDrVMd1maUjdRWK45PodqblGf792YmEsToNo1oKwT80yeaa0MwbnvcWSc
-         lDWbiVRJX7jLFplOTS1NiEUJCA1HcHqUfn0LZBMuxhe0va2P9vGlgKXDmr+vgV2uj1CH
-         qStQ==
-X-Gm-Message-State: AOAM532qjAQocSPVPlv6GE3VqRMEgfB0H2L4Hnz3xc8Eu5X6nej25iWa
-        +QXZvxOm2/UZqRloXDv/PrTUEldSNZ7BeBSTo6GMWA==
-X-Google-Smtp-Source: ABdhPJyByVU3U6UwdjEq6N0aHqjYPPhLQgY+wiLEv+vExlD872m6k9m3aMBysR1FSGFum9W802/y/aH7VgFItnp+7lI=
-X-Received: by 2002:a25:8401:: with SMTP id u1mr969238ybk.96.1607022361930;
- Thu, 03 Dec 2020 11:06:01 -0800 (PST)
+        id S1726796AbgLDF4o (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 4 Dec 2020 00:56:44 -0500
+Received: from condef-08.nifty.com ([202.248.20.73]:64071 "EHLO
+        condef-08.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725819AbgLDF4n (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 4 Dec 2020 00:56:43 -0500
+X-Greylist: delayed 391 seconds by postgrey-1.27 at vger.kernel.org; Fri, 04 Dec 2020 00:56:42 EST
+Received: from conssluserg-03.nifty.com ([10.126.8.82])by condef-08.nifty.com with ESMTP id 0B45jJwI002208;
+        Fri, 4 Dec 2020 14:45:19 +0900
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179]) (authenticated)
+        by conssluserg-03.nifty.com with ESMTP id 0B45iOHK014725;
+        Fri, 4 Dec 2020 14:44:24 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-03.nifty.com 0B45iOHK014725
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1607060664;
+        bh=GxQOUZTbjpTLY9LjOb5fkHKriTuvaD4ieHcqMtD0zU0=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=R/YJZpM2TUDt4msXhrrmCenmQFK0SPqfC9vbu3g9nS1uDiYEMIty1jmuSbtOd2vYq
+         oEYaisN/8FFUyC5kXvxyzAADam3yAGSM8Jv4U9iTASPKnyjhyopf5Q+b39tIHTGSCU
+         KZ7J4dN8tnT06VbKOQ2ZprJsDd8Cv5pswud7Nh/uWxRgxXts+naYIWjIADLIcO7s5K
+         Ej8G5+pa9LOo7URiBg4yREvuAij+MGPvFS5oXHYYGpclLh27KCxc8ZZUlGKiQWf522
+         EHVl1iaoIuUMext3AHN9LGrV0uf0SPa8lD1TjlonnkYekjiibvR+J9arhCRKRvkC19
+         33escYa1CP/5Q==
+X-Nifty-SrcIP: [209.85.210.179]
+Received: by mail-pf1-f179.google.com with SMTP id x24so2944563pfn.6;
+        Thu, 03 Dec 2020 21:44:24 -0800 (PST)
+X-Gm-Message-State: AOAM532j3L5ujb0DxJ0+eDemsbIyiqWVmXq3grIzkhgMm+7hust/FdBR
+        Zxjv1Ss0sQDVJMP8aFNMHg6/6SKLcPDAcHvCZq4=
+X-Google-Smtp-Source: ABdhPJwSYF2cWdLfL5qZiKxAtQSsH8nHXtNTwO15tGB6CNOA8wl/q/O5NzJ1suMu/FAzPoErqTxsjO3rMshMsV8gl/4=
+X-Received: by 2002:a62:e519:0:b029:197:bcec:7c0c with SMTP id
+ n25-20020a62e5190000b0290197bcec7c0cmr2396899pff.63.1607060663618; Thu, 03
+ Dec 2020 21:44:23 -0800 (PST)
 MIME-Version: 1.0
-References: <20201121020232.908850-1-saravanak@google.com> <758a1b59-1033-b0ae-2549-84c8eeea4b11@ti.com>
-In-Reply-To: <758a1b59-1033-b0ae-2549-84c8eeea4b11@ti.com>
-From:   Saravana Kannan <saravanak@google.com>
-Date:   Thu, 3 Dec 2020 11:05:26 -0800
-Message-ID: <CAGETcx_CzrPDZA_C+8JvCeL-bSPB814jfDLscEEe+TLiHhBxjA@mail.gmail.com>
-Subject: Re: [PATCH v2 00/17] Refactor fw_devlink to significantly improve
- boot time
-To:     Tomi Valkeinen <tomi.valkeinen@ti.com>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+References: <20200829051524.706585-1-masahiroy@kernel.org>
+In-Reply-To: <20200829051524.706585-1-masahiroy@kernel.org>
+From:   Masahiro Yamada <masahiroy@kernel.org>
+Date:   Fri, 4 Dec 2020 14:43:46 +0900
+X-Gmail-Original-Message-ID: <CAK7LNARL88XGMuNSxAVKsTw+s74PY2GCU+QNJCh02ZKG5s9TNw@mail.gmail.com>
+Message-ID: <CAK7LNARL88XGMuNSxAVKsTw+s74PY2GCU+QNJCh02ZKG5s9TNw@mail.gmail.com>
+Subject: Re: [PATCH 0/3] ia64: clean-up header dependency and build process,
+ fix build warning
+To:     Tony Luck <tony.luck@intel.com>, Fenghua Yu <fenghua.yu@intel.com>,
+        linux-ia64@vger.kernel.org
+Cc:     Randy Dunlap <rdunlap@infradead.org>,
+        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
         Ard Biesheuvel <ardb@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Marc Zyngier <maz@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Android Kernel Team <kernel-team@android.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Dmitry Safonov <0x7f454c46@gmail.com>,
+        afzal mohammed <afzal.mohd.ma@gmail.com>,
         linux-efi <linux-efi@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, Nov 24, 2020 at 12:29 AM 'Tomi Valkeinen' via kernel-team
-<kernel-team@android.com> wrote:
->
-> Hi,
->
-> On 21/11/2020 04:02, Saravana Kannan wrote:
-> > The current implementation of fw_devlink is very inefficient because it
-> > tries to get away without creating fwnode links in the name of saving
-> > memory usage. Past attempts to optimize runtime at the cost of memory
-> > usage were blocked with request for data showing that the optimization
-> > made significant improvement for real world scenarios.
-> >
-> > We have those scenarios now. There have been several reports of boot
-> > time increase in the order of seconds in this thread [1]. Several OEMs
-> > and SoC manufacturers have also privately reported significant
-> > (350-400ms) increase in boot time due to all the parsing done by
-> > fw_devlink.
-> >
-> > So this patch series refactors fw_devlink to be more efficient. The key
-> > difference now is the addition of support for fwnode links -- just a few
-> > simple APIs. This also allows most of the code to be moved out of
-> > firmware specific (DT mostly) code into driver core.
-> >
-> > This brings the following benefits:
-> > - Instead of parsing the device tree multiple times (complexity was
-> >   close to O(N^3) where N in the number of properties) during bootup,
-> >   fw_devlink parses each fwnode node/property only once and creates
-> >   fwnode links. The rest of the fw_devlink code then just looks at these
-> >   fwnode links to do rest of the work.
-> >
-> > - Makes it much easier to debug probe issue due to fw_devlink in the
-> >   future. fw_devlink=on blocks the probing of devices if they depend on
-> >   a device that hasn't been added yet. With this refactor, it'll be very
-> >   easy to tell what that device is because we now have a reference to
-> >   the fwnode of the device.
-> >
-> > - Much easier to add fw_devlink support to ACPI and other firmware
-> >   types. A refactor to move the common bits from DT specific code to
-> >   driver core was in my TODO list as a prerequisite to adding ACPI
-> >   support to fw_devlink. This series gets that done.
-> >
-> > Laurent and Grygorii tested the v1 series and they saw boot time
-> > improvment of about 12 seconds and 3 seconds, respectively.
->
-> Tested v2 on OMAP4 SDP. With my particular config, boot time to starting init went from 18.5 seconds
-> to 12.5 seconds.
->
->  Tomi
+Hi, IA64 maintainers,
 
-Rafael,
+Could you check this series, please?
+The build warning is still remaining.
 
-Friendly reminder for a review.
 
--Saravana
+
+On Sat, Aug 29, 2020 at 2:16 PM Masahiro Yamada <masahiroy@kernel.org> wrote:
+>
+>
+> Randy Dunlap reports the following warning with CONFIG_IA64_PALINFO=m:
+>
+> ../scripts/Makefile.build:68: 'arch/ia64/kernel/palinfo.ko' will not be built even though obj-m is specified.
+> ../scripts/Makefile.build:69: You cannot use subdir-y/m to visit a module Makefile. Use obj-y/m instead.
+>
+> This comes from the fact Kbuild descends into arch/ia64/kernel/ twice.
+>
+> First, to generate <generated/nr-irqs.h>,
+> Second, to build kernel and module objects.
+>
+> The warning is emitted in the first descend because it is not the
+> intended usage.
+>
+> I looked into the code closely, and noticed arch/ia64/kernel/nr-irqs.c
+> was not needed in the first place.
+>
+> It was separated out of arch/ia64/kernel/asm-offsets.c just because
+> <asm/mca.h> was including too many bogus headers.
+>
+> IA64 is not actively maintained, and there exists unneeded obsolete code.
+>
+> The first two patches are the outcome when I played with ARCH=ia64 builds,
+> but not prerequisites for 3/3. Anyway I believe they are nice cleanups
+> and folded in this patch set.
+>
+> 3/3 is the important one to fix the false positive warning,
+> and it is a nice cleanup too.
+>
+>
+>
+> Masahiro Yamada (3):
+>   ia64: do not typedef struct pal_min_state_area_s
+>   ia64: remove unneeded header includes from <asm/mca.h>
+>   ia64: remove generated/nr-irqs.h generation to fix build warning
+>
+>  arch/ia64/Makefile             |  6 ------
+>  arch/ia64/include/asm/irq.h    |  4 +++-
+>  arch/ia64/include/asm/mca.h    | 11 ++++-------
+>  arch/ia64/include/asm/pal.h    |  4 ++--
+>  arch/ia64/include/asm/sal.h    |  2 +-
+>  arch/ia64/kernel/Makefile      |  5 -----
+>  arch/ia64/kernel/asm-offsets.c | 18 +++++++++---------
+>  arch/ia64/kernel/efi.c         |  1 +
+>  arch/ia64/kernel/mca.c         |  5 +++--
+>  arch/ia64/kernel/mca_drv.c     |  2 +-
+>  arch/ia64/kernel/nr-irqs.c     | 22 ----------------------
+>  11 files changed, 24 insertions(+), 56 deletions(-)
+>  delete mode 100644 arch/ia64/kernel/nr-irqs.c
+>
+> --
+> 2.25.1
+>
+
+
+-- 
+Best Regards
+Masahiro Yamada
