@@ -2,130 +2,145 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D18892CE7DB
-	for <lists+linux-efi@lfdr.de>; Fri,  4 Dec 2020 06:56:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A846C2CF2A4
+	for <lists+linux-efi@lfdr.de>; Fri,  4 Dec 2020 18:06:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726796AbgLDF4o (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 4 Dec 2020 00:56:44 -0500
-Received: from condef-08.nifty.com ([202.248.20.73]:64071 "EHLO
-        condef-08.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725819AbgLDF4n (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 4 Dec 2020 00:56:43 -0500
-X-Greylist: delayed 391 seconds by postgrey-1.27 at vger.kernel.org; Fri, 04 Dec 2020 00:56:42 EST
-Received: from conssluserg-03.nifty.com ([10.126.8.82])by condef-08.nifty.com with ESMTP id 0B45jJwI002208;
-        Fri, 4 Dec 2020 14:45:19 +0900
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179]) (authenticated)
-        by conssluserg-03.nifty.com with ESMTP id 0B45iOHK014725;
-        Fri, 4 Dec 2020 14:44:24 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-03.nifty.com 0B45iOHK014725
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
-        s=dec2015msa; t=1607060664;
-        bh=GxQOUZTbjpTLY9LjOb5fkHKriTuvaD4ieHcqMtD0zU0=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=R/YJZpM2TUDt4msXhrrmCenmQFK0SPqfC9vbu3g9nS1uDiYEMIty1jmuSbtOd2vYq
-         oEYaisN/8FFUyC5kXvxyzAADam3yAGSM8Jv4U9iTASPKnyjhyopf5Q+b39tIHTGSCU
-         KZ7J4dN8tnT06VbKOQ2ZprJsDd8Cv5pswud7Nh/uWxRgxXts+naYIWjIADLIcO7s5K
-         Ej8G5+pa9LOo7URiBg4yREvuAij+MGPvFS5oXHYYGpclLh27KCxc8ZZUlGKiQWf522
-         EHVl1iaoIuUMext3AHN9LGrV0uf0SPa8lD1TjlonnkYekjiibvR+J9arhCRKRvkC19
-         33escYa1CP/5Q==
-X-Nifty-SrcIP: [209.85.210.179]
-Received: by mail-pf1-f179.google.com with SMTP id x24so2944563pfn.6;
-        Thu, 03 Dec 2020 21:44:24 -0800 (PST)
-X-Gm-Message-State: AOAM532j3L5ujb0DxJ0+eDemsbIyiqWVmXq3grIzkhgMm+7hust/FdBR
-        Zxjv1Ss0sQDVJMP8aFNMHg6/6SKLcPDAcHvCZq4=
-X-Google-Smtp-Source: ABdhPJwSYF2cWdLfL5qZiKxAtQSsH8nHXtNTwO15tGB6CNOA8wl/q/O5NzJ1suMu/FAzPoErqTxsjO3rMshMsV8gl/4=
-X-Received: by 2002:a62:e519:0:b029:197:bcec:7c0c with SMTP id
- n25-20020a62e5190000b0290197bcec7c0cmr2396899pff.63.1607060663618; Thu, 03
- Dec 2020 21:44:23 -0800 (PST)
-MIME-Version: 1.0
-References: <20200829051524.706585-1-masahiroy@kernel.org>
-In-Reply-To: <20200829051524.706585-1-masahiroy@kernel.org>
-From:   Masahiro Yamada <masahiroy@kernel.org>
-Date:   Fri, 4 Dec 2020 14:43:46 +0900
-X-Gmail-Original-Message-ID: <CAK7LNARL88XGMuNSxAVKsTw+s74PY2GCU+QNJCh02ZKG5s9TNw@mail.gmail.com>
-Message-ID: <CAK7LNARL88XGMuNSxAVKsTw+s74PY2GCU+QNJCh02ZKG5s9TNw@mail.gmail.com>
-Subject: Re: [PATCH 0/3] ia64: clean-up header dependency and build process,
- fix build warning
-To:     Tony Luck <tony.luck@intel.com>, Fenghua Yu <fenghua.yu@intel.com>,
-        linux-ia64@vger.kernel.org
-Cc:     Randy Dunlap <rdunlap@infradead.org>,
-        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
+        id S2388521AbgLDRFr (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 4 Dec 2020 12:05:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33422 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388510AbgLDRFq (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 4 Dec 2020 12:05:46 -0500
+Received: from latitanza.investici.org (latitanza.investici.org [IPv6:2001:888:2000:56::19])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1612C08E85E;
+        Fri,  4 Dec 2020 09:04:50 -0800 (PST)
+Received: from mx3.investici.org (unknown [127.0.0.1])
+        by latitanza.investici.org (Postfix) with ESMTP id 4CnfF12X1nz8shk;
+        Fri,  4 Dec 2020 17:04:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=privacyrequired.com;
+        s=stigmate; t=1607101445;
+        bh=CNSPo3rU73iLufUhzAAlkyJdrqDxV3HykhrbciRVVqg=;
+        h=From:To:Cc:Subject:Date:From;
+        b=CAj2903IlbaunC80bM+z7sehEdvvySRvMXF2B7QVSeGl9c1o2+R49o1Johhg6BSQ4
+         Q4EMyEP3bIuGgoqirMK1uT98XPrJ1OTptjksAJf1V5Duw6RhXyRn+MKAiMRbwunKkr
+         vE228J0uaZtyVw5ECCzsQr3hgtGk8lvECyg5M/Pg=
+Received: from [82.94.249.234] (mx3.investici.org [82.94.249.234]) (Authenticated sender: laniel_francis@privacyrequired.com) by localhost (Postfix) with ESMTPSA id 4CnfDy1SRgz8sfb;
+        Fri,  4 Dec 2020 17:04:02 +0000 (UTC)
+From:   laniel_francis@privacyrequired.com
+To:     Russell King <linux@armlinux.org.uk>,
+        Hauke Mehrtens <hauke@hauke-m.de>,
+        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        bcm-kernel-feedback-list@broadcom.com,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>,
         Ard Biesheuvel <ardb@kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Dmitry Safonov <0x7f454c46@gmail.com>,
-        afzal mohammed <afzal.mohd.ma@gmail.com>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        Tomi Valkeinen <tomi.valkeinen@ti.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
+        Alasdair Kergon <agk@redhat.com>,
+        Mike Snitzer <snitzer@redhat.com>, dm-devel@redhat.com,
+        Bin Liu <b-liu@ti.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jessica Yu <jeyu@kernel.org>
+Cc:     Francis Laniel <laniel_francis@privacyrequired.com>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-crypto@vger.kernel.org,
+        linux-efi@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-renesas-soc@vger.kernel.org, linux-ide@vger.kernel.org,
+        linux-usb@vger.kernel.org
+Subject: [RFC PATCH v1 00/12] Replace strstarts() by str_has_prefix()
+Date:   Fri,  4 Dec 2020 18:03:06 +0100
+Message-Id: <20201204170319.20383-1-laniel_francis@privacyrequired.com>
+X-Mailer: git-send-email 2.20.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hi, IA64 maintainers,
+From: Francis Laniel <laniel_francis@privacyrequired.com>
 
-Could you check this series, please?
-The build warning is still remaining.
-
+Hi.
 
 
-On Sat, Aug 29, 2020 at 2:16 PM Masahiro Yamada <masahiroy@kernel.org> wrote:
->
->
-> Randy Dunlap reports the following warning with CONFIG_IA64_PALINFO=m:
->
-> ../scripts/Makefile.build:68: 'arch/ia64/kernel/palinfo.ko' will not be built even though obj-m is specified.
-> ../scripts/Makefile.build:69: You cannot use subdir-y/m to visit a module Makefile. Use obj-y/m instead.
->
-> This comes from the fact Kbuild descends into arch/ia64/kernel/ twice.
->
-> First, to generate <generated/nr-irqs.h>,
-> Second, to build kernel and module objects.
->
-> The warning is emitted in the first descend because it is not the
-> intended usage.
->
-> I looked into the code closely, and noticed arch/ia64/kernel/nr-irqs.c
-> was not needed in the first place.
->
-> It was separated out of arch/ia64/kernel/asm-offsets.c just because
-> <asm/mca.h> was including too many bogus headers.
->
-> IA64 is not actively maintained, and there exists unneeded obsolete code.
->
-> The first two patches are the outcome when I played with ARCH=ia64 builds,
-> but not prerequisites for 3/3. Anyway I believe they are nice cleanups
-> and folded in this patch set.
->
-> 3/3 is the important one to fix the false positive warning,
-> and it is a nice cleanup too.
->
->
->
-> Masahiro Yamada (3):
->   ia64: do not typedef struct pal_min_state_area_s
->   ia64: remove unneeded header includes from <asm/mca.h>
->   ia64: remove generated/nr-irqs.h generation to fix build warning
->
->  arch/ia64/Makefile             |  6 ------
->  arch/ia64/include/asm/irq.h    |  4 +++-
->  arch/ia64/include/asm/mca.h    | 11 ++++-------
->  arch/ia64/include/asm/pal.h    |  4 ++--
->  arch/ia64/include/asm/sal.h    |  2 +-
->  arch/ia64/kernel/Makefile      |  5 -----
->  arch/ia64/kernel/asm-offsets.c | 18 +++++++++---------
->  arch/ia64/kernel/efi.c         |  1 +
->  arch/ia64/kernel/mca.c         |  5 +++--
->  arch/ia64/kernel/mca_drv.c     |  2 +-
->  arch/ia64/kernel/nr-irqs.c     | 22 ----------------------
->  11 files changed, 24 insertions(+), 56 deletions(-)
->  delete mode 100644 arch/ia64/kernel/nr-irqs.c
->
-> --
-> 2.25.1
->
+First, I hope you are fine and the same for your relatives.
 
+In this patch set, I replaced all calls to strstarts() by calls to
+str_has_prefix().
+Indeed, the kernel has two functions to test if a string begins with an other:
+1. strstarts() which returns a bool, so 1 if the string begins with the prefix,
+0 otherwise.
+2. str_has_prefix() which returns the length of the prefix or 0.
+
+str_has_prefix() was introduced later than strstarts(), in commit 495d714ad140
+which also stated that str_has_prefix() should replace strstarts().
+This is what this patch set does.
+
+Concerning the patches, the modifications cover different areas of the kernel.
+I compiled all of them and they compile smoothly.
+Unfortunately, I did not test all of them, so here are the status of the patches
+regarding test:
+1. Tested with qemu-system-arm using insmod.
+2. I do not have access to a bcm47xx MIPS CPU an qemu-system-mips does not
+emulate this board.
+3. Tested with qemu-system-x86_64 calling
+crypto_alloc_skcipher("essiv(authenc(hmac(sha256),cbc(aes)),sha256)", 0, 0)
+through LKDTM.
+4. Tested with qemu-system-x86_64 using crypsetup.
+5. I do not have access to a renesas board and I lack some context to test it
+with qemu-system-arm.
+6. I do not have access to an OMAP board and I lack some context to test it with
+qemu-system-arm.
+7. I did not find how to boot from the EFI_STUB with qemu. If you know how to
+do, I would be happy to try running this code.
+8. I ran qemu-system-x86_64 with a floppy disk attached but impossible to go
+through this module code...
+9. I do not have access to a bcm63xx MIPS CPU an qemu-system-mips does not
+emulate this board.
+10. Tested with qemu-system-x86_64 using insmod.
+11. I do not have access to an AM335x or DA8xx platforms and I lack some context
+to test it with qemu-system-arm.
+
+If you see a way to improve the patches or if I did something wrong with the
+mail do not hesitate to ask.
+
+
+Best regards.
+
+Francis Laniel (12):
+  arm: Replace strstarts() by str_has_prefix().
+  mips: Replace strstarts() by str_has_prefix().
+  crypto: Replace strstarts() by str_has_prefix().
+  device-mapper: Replace strstarts() by str_has_prefix().
+  renesas: Replace strstarts() by str_has_prefix().
+  omap: Replace strstarts() by str_has_prefix().
+  efi: Replace strstarts() by str_has_prefix().
+  ide: Replace strstarts() by str_has_prefix().
+  mips: Replace strstarts() by str_has_prefix().
+  module: Replace strstarts() by str_has_prefix().
+  musb: Replace strstarts() by str_has_prefix().
+  string.h: Remove strstarts().
+
+ arch/arm/kernel/module.c                      | 12 +++++------
+ arch/mips/bcm47xx/board.c                     |  4 ++--
+ arch/mips/bcm63xx/boards/board_bcm963xx.c     |  2 +-
+ crypto/essiv.c                                |  2 +-
+ .../firmware/efi/libstub/efi-stub-helper.c    |  2 +-
+ drivers/firmware/efi/libstub/gop.c            | 10 +++++-----
+ drivers/gpu/drm/omapdrm/dss/base.c            |  2 +-
+ drivers/gpu/drm/rcar-du/rcar_du_crtc.c        |  2 +-
+ drivers/ide/ide-floppy.c                      |  4 ++--
+ drivers/md/dm-crypt.c                         |  4 ++--
+ drivers/usb/musb/musb_cppi41.c                |  4 ++--
+ drivers/usb/musb/musb_debugfs.c               | 20 +++++++++----------
+ include/linux/string.h                        | 10 ----------
+ kernel/module.c                               |  6 +++---
+ 14 files changed, 37 insertions(+), 47 deletions(-)
 
 -- 
-Best Regards
-Masahiro Yamada
+2.20.1
+
