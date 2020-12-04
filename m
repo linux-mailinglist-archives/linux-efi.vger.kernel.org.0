@@ -2,71 +2,53 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 391E12CF372
-	for <lists+linux-efi@lfdr.de>; Fri,  4 Dec 2020 18:58:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 174AF2CF387
+	for <lists+linux-efi@lfdr.de>; Fri,  4 Dec 2020 19:04:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726929AbgLDR5m (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 4 Dec 2020 12:57:42 -0500
-Received: from bedivere.hansenpartnership.com ([96.44.175.130]:57236 "EHLO
+        id S1727966AbgLDSCv (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 4 Dec 2020 13:02:51 -0500
+Received: from bedivere.hansenpartnership.com ([96.44.175.130]:58148 "EHLO
         bedivere.hansenpartnership.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726021AbgLDR5m (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 4 Dec 2020 12:57:42 -0500
+        by vger.kernel.org with ESMTP id S1727178AbgLDSCv (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 4 Dec 2020 13:02:51 -0500
 Received: from localhost (localhost [127.0.0.1])
-        by bedivere.hansenpartnership.com (Postfix) with ESMTP id EFE5C12806D3;
-        Fri,  4 Dec 2020 09:57:00 -0800 (PST)
+        by bedivere.hansenpartnership.com (Postfix) with ESMTP id 30E731280B75;
+        Fri,  4 Dec 2020 10:02:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=hansenpartnership.com; s=20151216; t=1607104620;
-        bh=j/eiQ9XC4YVyXHPaGvnixXqre38vTxKbe7IysEXG/gQ=;
+        d=hansenpartnership.com; s=20151216; t=1607104931;
+        bh=kOups0pd4uEFpCdetzEgznZGlD3//AIfOfCED5b+e0I=;
         h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-        b=LJv6d585fMMbsbl72vwxEil6yGk8n+dpPg0+K0c9QGLI6z2Tnb35IajlkkZ/poYVt
-         Apwk3JR5UaJjDvC46VLJvsCb+SFQ5eqvWGVnU98pT0RQI8tTzpuqlku09Jz0OireDV
-         CvQHnAFrsu77RWt/AkDGWfrret+uJBj5l78JAyzI=
+        b=SiyMTvReH4FFSnovORg1mgYJBXbQmz/EXo22Lk8D5z2wtCvENwSAtBEIHEiCXFl1t
+         nljLJqzX8eXkbedHoO8YmiwVnuUQoA8j/Q/Zd/XBzlgqBx37g8ObxbAQZwhKyvm7PC
+         +prnLWheDZKgb+CN/mZm5rHurR2QiODgOte/SiZs=
 Received: from bedivere.hansenpartnership.com ([127.0.0.1])
         by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id INp-1Jb0T2J6; Fri,  4 Dec 2020 09:57:00 -0800 (PST)
+        with ESMTP id DX3AvhYmf693; Fri,  4 Dec 2020 10:02:11 -0800 (PST)
 Received: from jarvis.int.hansenpartnership.com (unknown [IPv6:2601:600:8280:66d1::527])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 92AB012806D2;
-        Fri,  4 Dec 2020 09:56:59 -0800 (PST)
+        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id CEB241280B74;
+        Fri,  4 Dec 2020 10:02:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=hansenpartnership.com; s=20151216; t=1607104620;
-        bh=j/eiQ9XC4YVyXHPaGvnixXqre38vTxKbe7IysEXG/gQ=;
+        d=hansenpartnership.com; s=20151216; t=1607104930;
+        bh=kOups0pd4uEFpCdetzEgznZGlD3//AIfOfCED5b+e0I=;
         h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-        b=LJv6d585fMMbsbl72vwxEil6yGk8n+dpPg0+K0c9QGLI6z2Tnb35IajlkkZ/poYVt
-         Apwk3JR5UaJjDvC46VLJvsCb+SFQ5eqvWGVnU98pT0RQI8tTzpuqlku09Jz0OireDV
-         CvQHnAFrsu77RWt/AkDGWfrret+uJBj5l78JAyzI=
-Message-ID: <d706cdbcc4eba3fb3fe17453017a6623f1ec80dc.camel@HansenPartnership.com>
-Subject: Re: [RFC PATCH v1 00/12] Replace strstarts() by str_has_prefix()
+        b=ii7hqO3wVrD7YJMrWWfA626JSjOnYCNm/166zh3ZIrM1IFDN5xaeSbegcjY5SD7mu
+         tX4mnvACJxDjafeBfIf2FcqzG+AKgxddsX4e+i1r2nXwrND5x68i65ou4gVGGQKVWK
+         ejQ2qzALaSse6ukjejDyu3G9yo3wBVaEh7mAXvWI=
+Message-ID: <ab769a5188394cd3379cc627d14a0222050a1367.camel@HansenPartnership.com>
+Subject: Re: [RFC PATCH v1 07/12] efi: Replace strstarts() by
+ str_has_prefix().
 From:   James Bottomley <James.Bottomley@HansenPartnership.com>
-To:     laniel_francis@privacyrequired.com,
-        Russell King <linux@armlinux.org.uk>,
-        Hauke Mehrtens <hauke@hauke-m.de>,
-        =?UTF-8?Q?Rafa=C5=82_Mi=C5=82ecki?= <zajec5@gmail.com>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        bcm-kernel-feedback-list@broadcom.com,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
-        Alasdair Kergon <agk@redhat.com>,
-        Mike Snitzer <snitzer@redhat.com>, dm-devel@redhat.com,
-        Bin Liu <b-liu@ti.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jessica Yu <jeyu@kernel.org>
-Cc:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-crypto@vger.kernel.org,
-        linux-efi@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-renesas-soc@vger.kernel.org, linux-ide@vger.kernel.org,
-        linux-usb@vger.kernel.org
-Date:   Fri, 04 Dec 2020 09:56:58 -0800
-In-Reply-To: <20201204170319.20383-1-laniel_francis@privacyrequired.com>
+To:     Ard Biesheuvel <ardb@kernel.org>,
+        laniel_francis@privacyrequired.com
+Cc:     linux-efi <linux-efi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Date:   Fri, 04 Dec 2020 10:02:09 -0800
+In-Reply-To: <CAMj1kXEQhT_LF5FDBO3-S7pBn55wG59bQUVr2q58A4FhqodY8Q@mail.gmail.com>
 References: <20201204170319.20383-1-laniel_francis@privacyrequired.com>
+         <20201204170319.20383-8-laniel_francis@privacyrequired.com>
+         <CAMj1kXEQhT_LF5FDBO3-S7pBn55wG59bQUVr2q58A4FhqodY8Q@mail.gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 User-Agent: Evolution 3.34.4 
 MIME-Version: 1.0
@@ -75,28 +57,40 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, 2020-12-04 at 18:03 +0100, laniel_francis@privacyrequired.com
-wrote:
-> In this patch set, I replaced all calls to strstarts() by calls to
-> str_has_prefix(). Indeed, the kernel has two functions to test if a
-> string begins with an other:
-> 1. strstarts() which returns a bool, so 1 if the string begins with
-> the prefix,0 otherwise.
-> 2. str_has_prefix() which returns the length of the prefix or 0.
+On Fri, 2020-12-04 at 18:07 +0100, Ard Biesheuvel wrote:
+> On Fri, 4 Dec 2020 at 18:06, <laniel_francis@privacyrequired.com>
+> wrote:
+> > From: Francis Laniel <laniel_francis@privacyrequired.com>
+> > 
+> > The two functions indicates if a string begins with a given prefix.
+> > The only difference is that strstarts() returns a bool while
+> > str_has_prefix()
+> > returns the length of the prefix if the string begins with it or 0
+> > otherwise.
+> > 
 > 
-> str_has_prefix() was introduced later than strstarts(), in commit
-> 495d714ad140 which also stated that str_has_prefix() should replace
-> strstarts(). This is what this patch set does.
+> Why? 
 
-What's the reason why?  If you look at the use cases for the
-replacement of strstart()  they're all cases where we need to know the
-length we're skipping and this is hard coded, leading to potential
-errors later.  This is a classic example:  3d739c1f6156 ("tracing: Use
-the return of str_has_prefix() to remove open coded numbers").  However
-you're not doing this transformation in the conversion, so the
-conversion is pretty useless.  I also see no case for replacing
-strstart() where we're using it simply as a boolean without needing to
-know the length of the prefix.
+I think I can answer that.  If the conversion were done properly (which
+it's not) you could get rid of the double strings in the code which are
+error prone if you update one and forget another.  This gives a good
+example: 3d739c1f6156 ("tracing: Use the return of str_has_prefix() to
+remove open coded numbers"). so in your code you'd replace things like
+
+    if (strstarts(option, "rgb")) {
+        option += strlen("rgb");
+        ...
+
+with 
+
+    len = str_has_prefix(option, "rgb");
+    if (len) {
+        option += len
+        ...
+ 
+Obviously you also have cases where strstart is used as a boolean with
+no need to know the length ... I think there's no value to converting
+those.
 
 James
 
