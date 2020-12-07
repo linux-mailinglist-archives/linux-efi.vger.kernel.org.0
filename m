@@ -2,82 +2,111 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4462A2D1D37
-	for <lists+linux-efi@lfdr.de>; Mon,  7 Dec 2020 23:23:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F1322D1D3B
+	for <lists+linux-efi@lfdr.de>; Mon,  7 Dec 2020 23:23:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727903AbgLGWVI (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 7 Dec 2020 17:21:08 -0500
-Received: from mail-oi1-f195.google.com ([209.85.167.195]:41416 "EHLO
-        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727281AbgLGWVI (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 7 Dec 2020 17:21:08 -0500
-Received: by mail-oi1-f195.google.com with SMTP id 15so6068283oix.8;
-        Mon, 07 Dec 2020 14:20:52 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=N4iKD2cvPfWP8BOC5nJukrS6VHQfTTSGGzYSJk7vjgU=;
-        b=OamNyrtZ8pE4HTNcvtH7FRdoAS4E8f1zhcJHt6Il0jgL7LV8uPhaNIPW2lNGJA/gbx
-         /bMMC8TuKsPmFjWybM2nJQQ6T4aImqKw7FXF8VTcQKIUajHPRaI9rOS4cYkMm2TrvbP7
-         lroeHZ2eJwVyw4QTqVkxXULMdaRtKmTTtz6GNx9sGWQ5rUNwy8zMAsgREzVFMl5kV17O
-         kXdH2h2w5CIE03d12vUcvhSphAfjQ4MuJPFoBEUo5bZJCc9Yo5ySzxd8ENRZfHm4ucgu
-         EeAn4PaxuKyKKFUxE0WHbzwzYmRez8jWgFlvLx8uB0lVm8hp15OwxC17RWbmTPzRN3lg
-         i/MA==
-X-Gm-Message-State: AOAM530SiXh6NSAo6+rSjIwhErsCcpERxJFtcM/IEvE19g4kjVxRirG9
-        3gOG5diU+o01zshfrw8CJg==
-X-Google-Smtp-Source: ABdhPJwO0mM0n1+C8W31A2E9d9xa/LAspOLZXI3PugQ7Orrrat5gR7u20pkJ7POkklqTxyA/XVXuzg==
-X-Received: by 2002:aca:ad50:: with SMTP id w77mr698007oie.41.1607379626982;
-        Mon, 07 Dec 2020 14:20:26 -0800 (PST)
-Received: from xps15 (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.gmail.com with ESMTPSA id k63sm3256595oif.12.2020.12.07.14.20.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Dec 2020 14:20:26 -0800 (PST)
-Received: (nullmailer pid 942087 invoked by uid 1000);
-        Mon, 07 Dec 2020 22:20:24 -0000
-Date:   Mon, 7 Dec 2020 16:20:24 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Saravana Kannan <saravanak@google.com>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Len Brown <lenb@kernel.org>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        kernel-team@android.com, Ard Biesheuvel <ardb@kernel.org>,
-        Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        linux-efi@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-        linux-acpi@vger.kernel.org, Marc Zyngier <maz@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>
-Subject: Re: [PATCH v2 07/17] driver core: Add fwnode_init()
-Message-ID: <20201207222024.GA942036@robh.at.kernel.org>
-References: <20201121020232.908850-1-saravanak@google.com>
- <20201121020232.908850-8-saravanak@google.com>
+        id S1727942AbgLGWVw (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 7 Dec 2020 17:21:52 -0500
+Received: from mail.kernel.org ([198.145.29.99]:57834 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726732AbgLGWVv (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Mon, 7 Dec 2020 17:21:51 -0500
+X-Gm-Message-State: AOAM530Y4RPNG7ATFF7QlizZ8f8VkolG0qFPBQr26xnfY+Hvf1lKFAIq
+        oEHGMWCSw4PXD4wfhSanfkmjWZY/Wvze8RPGzQg=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1607379670;
+        bh=sCcJWpX0VD2x5M0ltVav0fWl+0sJfwPhBIjWWJfpkN4=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=bVTkd4MnyNNYU994HaUZmZE3ixj4WvbM/FYdDX/9BQfbbRUimJD8h5MacZdKQJ043
+         lCajon207vmafr0LKcu1QKPilFuaaRIFAS+Awf5U9qt+QoCXwwtJr20LRC8zT4U2bI
+         5yz5iIYrzZOu8pn1a/k5abgsfYzWk7RZyNutgdNydVQLDaKgdTTcDH4FxPoaFMsCvt
+         pfjfQsi1dEJ6MBqSXe51VUm7TfRrDIktlX8NFeVoVDe0hngzOcoKi7rwD3PYmZoQoc
+         r/K42iE84gtmFNBIOcL0QjWgKiAKC5ywmLT6TGsDj8ZXk0N4jlJaI6Uxyemg1lcjh5
+         DJ7z2eruLIKMw==
+X-Google-Smtp-Source: ABdhPJwYygf8qrTUBOO+Wa5ueaT8l0OO95kQFOnCCs59qFKZ8iFSeajVaUu5jMPZiOMxEtjWolWDy7+tP3Rb83ATiJQ=
+X-Received: by 2002:a9d:62c1:: with SMTP id z1mr14353388otk.108.1607379670012;
+ Mon, 07 Dec 2020 14:21:10 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201121020232.908850-8-saravanak@google.com>
+References: <X8yoWHNzfl7vHVRA@kroah.com> <20201207172625.2888810-1-dann.frazier@canonical.com>
+ <CAMj1kXHdqaso9Vkm3KeKFntMBQeRTkY-fU1GW8K8rcxBbQbKBA@mail.gmail.com>
+ <CALdTtnv6VCBjvS-rtUTdhmLHkiJJrY+m4CLW4F8F89NEpZYF7A@mail.gmail.com>
+ <CAMj1kXFAn2bJgwpN+SkGQSzXVdssaZ0Sjpspn8n0QQn4MDk5CA@mail.gmail.com> <CALdTtnuT7fVJ17C2nq8kks_rFRGtDySx61tWpt8b+roajyi7vg@mail.gmail.com>
+In-Reply-To: <CALdTtnuT7fVJ17C2nq8kks_rFRGtDySx61tWpt8b+roajyi7vg@mail.gmail.com>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Mon, 7 Dec 2020 23:20:59 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXEPJZTwpM3kWUAsmJDdfsUpBJbuCiDLX9xgfvy4NPb4hQ@mail.gmail.com>
+Message-ID: <CAMj1kXEPJZTwpM3kWUAsmJDdfsUpBJbuCiDLX9xgfvy4NPb4hQ@mail.gmail.com>
+Subject: Re: [PATCH 4.4] Revert "crypto: arm64/sha - avoid non-standard inline
+ asm tricks"
+To:     dann frazier <dann.frazier@canonical.com>
+Cc:     "# 3.4.x" <stable@vger.kernel.org>,
+        Michael Schaller <misch@google.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Matthew Garrett <matthew.garrett@nebula.com>,
+        Jeremy Kerr <jk@ozlabs.org>,
+        linux-efi <linux-efi@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, 20 Nov 2020 18:02:22 -0800, Saravana Kannan wrote:
-> There are multiple locations in the kernel where a struct fwnode_handle
-> is initialized. Add fwnode_init() so that we have one way of
-> initializing a fwnode_handle.
-> 
-> Signed-off-by: Saravana Kannan <saravanak@google.com>
-> ---
->  drivers/acpi/property.c         | 2 +-
->  drivers/acpi/scan.c             | 2 +-
->  drivers/base/swnode.c           | 2 +-
->  drivers/firmware/efi/efi-init.c | 8 ++++----
->  include/linux/fwnode.h          | 6 ++++++
->  include/linux/of.h              | 2 +-
->  kernel/irq/irqdomain.c          | 2 +-
->  7 files changed, 15 insertions(+), 9 deletions(-)
-> 
+On Mon, 7 Dec 2020 at 21:36, dann frazier <dann.frazier@canonical.com> wrote:
+>
+> On Mon, Dec 7, 2020 at 11:29 AM Ard Biesheuvel <ardb@kernel.org> wrote:
+> >
+> > On Mon, 7 Dec 2020 at 19:08, dann frazier <dann.frazier@canonical.com> wrote:
+> > >
+> > > On Mon, Dec 7, 2020 at 10:50 AM Ard Biesheuvel <ardb@kernel.org> wrote:
+> > > >
+> > > > On Mon, 7 Dec 2020 at 18:26, dann frazier <dann.frazier@canonical.com> wrote:
+> > > > >
+> > > > > This reverts commit c042dd600f4e89b6e7bdffa00aea4d1d3c1e9686.
+> > > > >
+> > > > > This caused the build to emit ADR_PREL_PG_HI21 relocations in the sha{1,2}_ce
+> > > > > modules. This relocation type is not supported by the linux-4.4.y kernel
+> > > > > module loader when CONFIG_ARM64_ERRATUM_843419=y, which we have enabled, so
+> > > > > these modules now fail to load:
+> > > > >
+> > > > >   [   37.866250] module sha1_ce: unsupported RELA relocation: 275
+> > > > >
+> > > > > This issue does not exist with the backport to 4.9+. Bisection shows that
+> > > > > this is due to those kernels also having a backport of
+> > > > > commit 41c066f ("arm64: assembler: make adr_l work in modules under KASLR")
+> > > >
+> > > > Hi Dann,
+> > > >
+> > > > Would it be an option to backport 41c066f as well?
+> > >
+> > > Hi Ard,
+> > >
+> > > That was attempted before, but caused a build failure which would
+> > > still happen today:
+> > >   https://www.spinics.net/lists/stable/msg179709.html
+> > > Specifically, head.S still has a 3 argument usage of adr_l. I'm not
+> > > sure how to safely fix that up myself.
+> > >
+> >
+> > Given that the original reason for reverting the backport of 41c066f
+> > no longer holds (as there are other users of adr_l in v4.4 now), I
+> > think the best solution is to backport it again, but with the hunk
+> > below folded in. (This just replaces the macro invocation with its
+> > output when called with the 3 arguments in question, so the generated
+> > code is identical)
+> >
+> > --- a/arch/arm64/kernel/head.S
+> > +++ b/arch/arm64/kernel/head.S
+> > @@ -424,7 +424,8 @@ __mmap_switched:
+> >         str     xzr, [x6], #8                   // Clear BSS
+> >         b       1b
+> >  2:
+> > -       adr_l   sp, initial_sp, x4
+> > +       adrp    x4, initial_sp
+> > +       add     sp, x4, :lo12:initial_sp
+> >         str_l   x21, __fdt_pointer, x5          // Save FDT pointer
+> >         str_l   x24, memstart_addr, x6          // Save PHYS_OFFSET
+> >         mov     x29, #0
+>
+> Thanks Ard - that works. I'll follow-up with a backport patch.
+>
 
-Acked-by: Rob Herring <robh@kernel.org>
+Excellent.
