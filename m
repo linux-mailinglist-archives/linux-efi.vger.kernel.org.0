@@ -2,112 +2,80 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2678A2D1AAB
-	for <lists+linux-efi@lfdr.de>; Mon,  7 Dec 2020 21:41:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 164D12D1D2B
+	for <lists+linux-efi@lfdr.de>; Mon,  7 Dec 2020 23:20:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726147AbgLGUiH (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 7 Dec 2020 15:38:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41254 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726891AbgLGUiH (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 7 Dec 2020 15:38:07 -0500
-Received: from mail-yb1-xb43.google.com (mail-yb1-xb43.google.com [IPv6:2607:f8b0:4864:20::b43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE132C06179C
-        for <linux-efi@vger.kernel.org>; Mon,  7 Dec 2020 12:37:20 -0800 (PST)
-Received: by mail-yb1-xb43.google.com with SMTP id j17so5978875ybt.9
-        for <linux-efi@vger.kernel.org>; Mon, 07 Dec 2020 12:37:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=vKsYEQO+hXoC+O9fuIS3DOCrttBDvhwXSXCIpw/9d8w=;
-        b=Eu3YUZ+efcTSPiMjldpqNT8TmByKdSe/auRkmzbcXUYTE9qktC3CcbXxyvz44SanH1
-         0eGhoxAUqRvGek4HcRUVUMnibJnk9EH7MPI4yJG+fU6MsMlD33UrKBZ4+tFxQ5hkKEM8
-         +kzCEl4nlVK81rnB73uBY/z6lg2jpLuxIAvzF6gskk/AovHFKE+1uEGNxbQ495q7b5qn
-         KfnC/cf6OyXu1MPtHNBG+Su3rKPcnqIaJeiZ79v4c5J66B1H5Nx+MMRxLAwhmazt5aUU
-         voP89YpE/HWtLPWZ0D4q45WpURi1h8mtDfrnGNO41lNnCax/2dWhShADQC5qYnR3BbfA
-         r3+A==
+        id S1727550AbgLGWTm (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 7 Dec 2020 17:19:42 -0500
+Received: from mail-ot1-f67.google.com ([209.85.210.67]:41292 "EHLO
+        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726231AbgLGWTm (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 7 Dec 2020 17:19:42 -0500
+Received: by mail-ot1-f67.google.com with SMTP id x13so6556419oto.8;
+        Mon, 07 Dec 2020 14:19:26 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=vKsYEQO+hXoC+O9fuIS3DOCrttBDvhwXSXCIpw/9d8w=;
-        b=b0duDA6T90ERXegssmZxv+QnKNTEKWMY5lx4AZXpJWxUK2fHPKr1n3XojLIY4jx+Su
-         rxm3AJLAQRwf32af+6fVHi+mrYzxd2sy6hYbi90QHYF4mZj27rBIA4jYQ+IiII4L2KLs
-         An7p2IDbOcluiFBA1tRvQxrFU2+X4tF47u8ELvIhv3FlhkUcZChKig2oYsViJaOkP+tN
-         054uqo9wDQek+FRtmDR6TASw6150wwpct7lLYrPbWTd1Kbuk4bej7bGTMKzglUaxaA8b
-         2+WHxVn8Yr7JH1MjIcswQB+ie76Pz+iNkvD5BBnBfe7ZyrhYLdIvyfJUcGkh3DOBnVhr
-         K1Ww==
-X-Gm-Message-State: AOAM531tpLdgktoU14aN+iyO1ZK0gOtSntzHBT3u9Ze6IlKXRHpPSttc
-        2k6QVtwpxBBwtgIZGeL32PBHW/Iq/y1E6fC2mXdd6Q==
-X-Google-Smtp-Source: ABdhPJyJLUT7BtS2KbRGhO5/i+SqLWUVWG+N3s91L0Aio7l+Ry1j4uRMoKYqXkaJbXx0oor/SXMSyVMMmpneEAH4JXA=
-X-Received: by 2002:a25:8401:: with SMTP id u1mr26690361ybk.96.1607373439718;
- Mon, 07 Dec 2020 12:37:19 -0800 (PST)
-MIME-Version: 1.0
-References: <20201121020232.908850-1-saravanak@google.com> <20201121020232.908850-8-saravanak@google.com>
- <20201206072621.GA687065@unreal> <CAGETcx9L0f5HPgunTf_WRsr9yeaYK1Ku5ESzeb0A1pkn3Yy2aw@mail.gmail.com>
- <20201207195357.GF693271@unreal>
-In-Reply-To: <20201207195357.GF693271@unreal>
-From:   Saravana Kannan <saravanak@google.com>
-Date:   Mon, 7 Dec 2020 12:36:43 -0800
-Message-ID: <CAGETcx-Y6qdyt7xGfoGg=z9B7VE30AZjodMZzy9hQrDAEd8uYw@mail.gmail.com>
-Subject: Re: [PATCH v2 07/17] driver core: Add fwnode_init()
-To:     Leon Romanovsky <leon@kernel.org>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Ard Biesheuvel <ardb@kernel.org>,
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=yZKhfx3NhHu0s9VdxWbSkTcdq8RyzWd1eXTRURQA42U=;
+        b=uNC1fYjhRe1nGN577P3WRT07TfwKGd/31SpBqklbUfI8+cch/1Lcq1JQiAiKL4wQaZ
+         XxT0Jc5VasP5McXldj0Zo/oSE5wslXmSeF756dpik3GTCPaxH+XRYJA4RR/4fjSS287c
+         oRKMVaisTq8N4I7BUfCzUgVrtUqhRZfqIyfGmD2FeXx5fky2lCS+IuFT6UnT1rJMnAbJ
+         hMEXYGen0zMtXWg+tuvjmolXugduz/PYw8h5loqYrhAA4dU80YWPgcRwd7JX6XVebGEa
+         t0uZoaVN/9GMaFJQYwjIK4nAUgvbVUE0QfcdN1H9/sadGjh+GErevNTia+A+703BkAFG
+         WqkQ==
+X-Gm-Message-State: AOAM532vAop2MeFNK18u5jxhDkqhm2O0/5l41fZUbJ+hrzFfnRGPBogq
+        Bd4rnTA7OW/TwrGHXqOltpEX4a7wLA==
+X-Google-Smtp-Source: ABdhPJxHXRa3j5HUGgK15izJhjWf/NygJzk2HZBGz7xU8L8umdpNwW5068ob9RSfwRlp6q70jttHPA==
+X-Received: by 2002:a9d:5613:: with SMTP id e19mr14470041oti.153.1607379541557;
+        Mon, 07 Dec 2020 14:19:01 -0800 (PST)
+Received: from xps15 (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id y21sm2960829oti.21.2020.12.07.14.18.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 07 Dec 2020 14:19:00 -0800 (PST)
+Received: (nullmailer pid 939846 invoked by uid 1000);
+        Mon, 07 Dec 2020 22:18:59 -0000
+Date:   Mon, 7 Dec 2020 16:18:59 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Saravana Kannan <saravanak@google.com>
+Cc:     Len Brown <lenb@kernel.org>, devicetree@vger.kernel.org,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         Rob Herring <robh+dt@kernel.org>,
         Frank Rowand <frowand.list@gmail.com>,
+        linux-kernel@vger.kernel.org, kernel-team@android.com,
+        Tomi Valkeinen <tomi.valkeinen@ti.com>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        linux-acpi@vger.kernel.org, linux-efi@vger.kernel.org,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
         Marc Zyngier <maz@kernel.org>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Android Kernel Team <kernel-team@android.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        Ard Biesheuvel <ardb@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Subject: Re: [PATCH v2 05/17] Revert "of: platform: Batch fwnode parsing when
+ adding all top level devices"
+Message-ID: <20201207221859.GA939790@robh.at.kernel.org>
+References: <20201121020232.908850-1-saravanak@google.com>
+ <20201121020232.908850-6-saravanak@google.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201121020232.908850-6-saravanak@google.com>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Mon, Dec 7, 2020 at 11:54 AM Leon Romanovsky <leon@kernel.org> wrote:
->
-> On Mon, Dec 07, 2020 at 11:25:15AM -0800, Saravana Kannan wrote:
-> > On Sat, Dec 5, 2020 at 11:26 PM Leon Romanovsky <leon@kernel.org> wrote:
-> > >
-> > > On Fri, Nov 20, 2020 at 06:02:22PM -0800, Saravana Kannan wrote:
-> > > > There are multiple locations in the kernel where a struct fwnode_handle
-> > > > is initialized. Add fwnode_init() so that we have one way of
-> > > > initializing a fwnode_handle.
-> > > >
-> > > > Signed-off-by: Saravana Kannan <saravanak@google.com>
-> > > > ---
-> > > >  drivers/acpi/property.c         | 2 +-
-> > > >  drivers/acpi/scan.c             | 2 +-
-> > > >  drivers/base/swnode.c           | 2 +-
-> > > >  drivers/firmware/efi/efi-init.c | 8 ++++----
-> > > >  include/linux/fwnode.h          | 6 ++++++
-> > > >  include/linux/of.h              | 2 +-
-> > > >  kernel/irq/irqdomain.c          | 2 +-
-> > > >  7 files changed, 15 insertions(+), 9 deletions(-)
-> > >
-> > > In this series, I didn't find any extension of fwnode_init() to be it more
-> > > than simple assignment. This change looks to me like unnecessary churn and
-> > > obfuscation rather than improvement.
-> > >
-> > > "...ops = &...;" is pretty standard in the kernel to initialize ops
-> > > structures.
-> >
-> > Subsequent patches make fwnode_init() do more stuff.
->
-> But not in this series, right?
+On Fri, 20 Nov 2020 18:02:20 -0800, Saravana Kannan wrote:
+> This reverts commit 93d2e4322aa74c1ad1e8c2160608eb9a960d69ff.
+> 
+> The fw_devlink_pause/resume() optimization attempt is getting replaced
+> with a much more robust optimization by the end of this series. So, stop
+> using those APIs.
+> 
+> Signed-off-by: Saravana Kannan <saravanak@google.com>
+> ---
+>  drivers/of/platform.c | 2 --
+>  1 file changed, 2 deletions(-)
+> 
 
-In this series. The very next patch - Patch 8/17 :)
-
--Saravana
+Acked-by: Rob Herring <robh@kernel.org>
