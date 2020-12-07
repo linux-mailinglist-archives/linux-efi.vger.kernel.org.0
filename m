@@ -2,100 +2,132 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F1B3F2D188C
-	for <lists+linux-efi@lfdr.de>; Mon,  7 Dec 2020 19:31:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D67682D196D
+	for <lists+linux-efi@lfdr.de>; Mon,  7 Dec 2020 20:27:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726419AbgLGSaW (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 7 Dec 2020 13:30:22 -0500
-Received: from mail.kernel.org ([198.145.29.99]:34406 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726063AbgLGSaV (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Mon, 7 Dec 2020 13:30:21 -0500
-X-Gm-Message-State: AOAM532tsoxq/R48QyWIAeb+uB75LYCnyRle5GglVjtDS3STvx9k2r6k
-        ArxEsm2/maRQ3nfgo0M3cr60ch1+bKfwjy+2tio=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1607365781;
-        bh=MA7FgPccgZL6WwM+Y4wFov9Rd/yPPPscsW59iho9K4o=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=ZCayfsEmXXIHj7XGPY35pWqBOXVmXQ0S17a0eR9EXCL21m2Ej2DIa9I3EO0sP6o+Z
-         Iw4VX+jQ7Btei9WCGN3Uwg97kA6zJdCEfxWOAu6mDX8AVbSDsdHJUF3QpmX+CXaX4Q
-         LUDB79jGo18+XhKxGJtdnby3W/LOg8jCghSa64SNfoCbRjyx5/06MFCWxUJU7IOIYq
-         hLWJRwN9tUQStAdjH+P9jZaY1XKLeLiL0FAOSR6w4nhNTKXVSacYf9hxl+M1Rn4D5+
-         pFg/e1RdtyuHcDKtl96RIAW/eknOGxJt8XRvDXrqf0AdtTDobv0e32imISOP7E95KY
-         yjfWzWt1aU5fA==
-X-Google-Smtp-Source: ABdhPJwU5+W121tEZT1/y66641Bv1Jk4VBbYCIZc9Q7sWrEOvmEva2bmQ1JQLCQHwtvq9sF0ct1+3NOhPVWV8ssBVFg=
-X-Received: by 2002:aca:b809:: with SMTP id i9mr112937oif.174.1607365780166;
- Mon, 07 Dec 2020 10:29:40 -0800 (PST)
+        id S1725877AbgLGT0V (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 7 Dec 2020 14:26:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58268 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725814AbgLGT0V (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 7 Dec 2020 14:26:21 -0500
+Received: from mail-yb1-xb42.google.com (mail-yb1-xb42.google.com [IPv6:2607:f8b0:4864:20::b42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA03BC061794
+        for <linux-efi@vger.kernel.org>; Mon,  7 Dec 2020 11:25:40 -0800 (PST)
+Received: by mail-yb1-xb42.google.com with SMTP id k78so5118047ybf.12
+        for <linux-efi@vger.kernel.org>; Mon, 07 Dec 2020 11:25:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=dzi60D45rWQuaA2cHr5rB8Qrg2wnEyiFvWItg7Nmx+A=;
+        b=v+WQqOx59N4nA+TR3LOO4M4W3N8UUxCd0mi3VCA8QhjuDwo4lIM2+KUjXY4FldkutS
+         N3bExgP4Ogg8B3b0uktbNmwWg7AQmW0STl6R4EvJlNkfllvx3u4GnKCMfiMy6ZPF5DCT
+         ZWIK6jyLgazQ3AjLbIkw1Slu7PeW/Ol5A0PDEi3EAgvI75uo5+oh4xkSm1s2hZbvnjFQ
+         cKgVdvDiXo0sp5k0CAO4kTZ947dYA48KsKA/oO2ZGVPGIC3/sCveX07WRqK7ML6yxNrx
+         AbvIxSQFUZJNZslcFFXo+40ytrrNOS21ihYbAMPkDbuMkp/Eoe9k8fsa3M/0rkagkaCn
+         WkvQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=dzi60D45rWQuaA2cHr5rB8Qrg2wnEyiFvWItg7Nmx+A=;
+        b=pDrab7vMfo/ENKS5NPNFvDyH3YI5U5HBohvfcMA0h2RR99sG07PcGvzlW9gBhiq+4l
+         6iVcggpJsa5mA3B4nVNEUxU1AhELEhol1weSjSvCRP3DfzxrsXVEuCXm+qHYYCj8Y0Yt
+         hUcoUC6sy8j1d7l2RP8L/8q7BeKapGDaJhLfiNKYJeT3TRwH5cpkZaZHyXg1kZkCdE+/
+         VrbmPIZmMLZd+6LqRUJPGjTE6UQcCOQLBzRvKGR0+370C5ZGloCxuVLsDKKRv/5uTD76
+         psG3eZAIvu1pdewDx1JpEytupOi2GX9tf4N2NI4PaZTi7HlFFi1zjxgBjumNvDQCykuD
+         LqWw==
+X-Gm-Message-State: AOAM532sMv6OjSINX9H64/tU9rTzy6tOXBpkO9VU2aBUmIwKfIOD/U1f
+        Gd5I4JQyv3eUwKEue+NSG8o+gv+2sBkJ1HiVTtnw8Q==
+X-Google-Smtp-Source: ABdhPJzh94uQucZym0EJ/OhT0eAxJs+lEBfZI5tn0VwSrzUilb89QB7ghzACx8BH7y0+Q9uP9BQEqVPCQXCZ16NCfhM=
+X-Received: by 2002:a25:1383:: with SMTP id 125mr22570950ybt.32.1607369139748;
+ Mon, 07 Dec 2020 11:25:39 -0800 (PST)
 MIME-Version: 1.0
-References: <X8yoWHNzfl7vHVRA@kroah.com> <20201207172625.2888810-1-dann.frazier@canonical.com>
- <CAMj1kXHdqaso9Vkm3KeKFntMBQeRTkY-fU1GW8K8rcxBbQbKBA@mail.gmail.com> <CALdTtnv6VCBjvS-rtUTdhmLHkiJJrY+m4CLW4F8F89NEpZYF7A@mail.gmail.com>
-In-Reply-To: <CALdTtnv6VCBjvS-rtUTdhmLHkiJJrY+m4CLW4F8F89NEpZYF7A@mail.gmail.com>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Mon, 7 Dec 2020 19:29:29 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXFAn2bJgwpN+SkGQSzXVdssaZ0Sjpspn8n0QQn4MDk5CA@mail.gmail.com>
-Message-ID: <CAMj1kXFAn2bJgwpN+SkGQSzXVdssaZ0Sjpspn8n0QQn4MDk5CA@mail.gmail.com>
-Subject: Re: [PATCH 4.4] Revert "crypto: arm64/sha - avoid non-standard inline
- asm tricks"
-To:     dann frazier <dann.frazier@canonical.com>
-Cc:     "# 3.4.x" <stable@vger.kernel.org>,
-        Michael Schaller <misch@google.com>,
+References: <20201121020232.908850-1-saravanak@google.com> <20201121020232.908850-9-saravanak@google.com>
+ <20201206074840.GB687065@unreal>
+In-Reply-To: <20201206074840.GB687065@unreal>
+From:   Saravana Kannan <saravanak@google.com>
+Date:   Mon, 7 Dec 2020 11:25:03 -0800
+Message-ID: <CAGETcx8296K_v1p2-KAW7ABQjB02P63sBzz2aZoRW3E3WHb4Dg@mail.gmail.com>
+Subject: Re: [PATCH v2 08/17] driver core: Add fwnode link support
+To:     Leon Romanovsky <leon@kernel.org>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Matthew Garrett <matthew.garrett@nebula.com>,
-        Jeremy Kerr <jk@ozlabs.org>,
-        linux-efi <linux-efi@vger.kernel.org>
+        Ard Biesheuvel <ardb@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Marc Zyngier <maz@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Tomi Valkeinen <tomi.valkeinen@ti.com>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Android Kernel Team <kernel-team@android.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Mon, 7 Dec 2020 at 19:08, dann frazier <dann.frazier@canonical.com> wrote:
+On Sat, Dec 5, 2020 at 11:48 PM Leon Romanovsky <leon@kernel.org> wrote:
 >
-> On Mon, Dec 7, 2020 at 10:50 AM Ard Biesheuvel <ardb@kernel.org> wrote:
+> On Fri, Nov 20, 2020 at 06:02:23PM -0800, Saravana Kannan wrote:
+> > Add support for creating supplier-consumer links between fwnodes.  It is
+> > intended for internal use the driver core and generic firmware support
+> > code (eg. Device Tree, ACPI), so it is simple by design and the API
+> > provided is limited.
 > >
-> > On Mon, 7 Dec 2020 at 18:26, dann frazier <dann.frazier@canonical.com> wrote:
-> > >
-> > > This reverts commit c042dd600f4e89b6e7bdffa00aea4d1d3c1e9686.
-> > >
-> > > This caused the build to emit ADR_PREL_PG_HI21 relocations in the sha{1,2}_ce
-> > > modules. This relocation type is not supported by the linux-4.4.y kernel
-> > > module loader when CONFIG_ARM64_ERRATUM_843419=y, which we have enabled, so
-> > > these modules now fail to load:
-> > >
-> > >   [   37.866250] module sha1_ce: unsupported RELA relocation: 275
-> > >
-> > > This issue does not exist with the backport to 4.9+. Bisection shows that
-> > > this is due to those kernels also having a backport of
-> > > commit 41c066f ("arm64: assembler: make adr_l work in modules under KASLR")
+> > Signed-off-by: Saravana Kannan <saravanak@google.com>
+> > ---
+> >  drivers/base/core.c    | 98 ++++++++++++++++++++++++++++++++++++++++++
+> >  drivers/of/dynamic.c   |  1 +
+> >  include/linux/fwnode.h | 14 ++++++
+> >  3 files changed, 113 insertions(+)
 > >
-> > Hi Dann,
-> >
-> > Would it be an option to backport 41c066f as well?
+> > diff --git a/drivers/base/core.c b/drivers/base/core.c
+> > index 401fa7e3505c..e2b246a44d1a 100644
+> > --- a/drivers/base/core.c
+> > +++ b/drivers/base/core.c
+> > @@ -50,6 +50,104 @@ static LIST_HEAD(wait_for_suppliers);
+> >  static DEFINE_MUTEX(wfs_lock);
+> >  static LIST_HEAD(deferred_sync);
+> >  static unsigned int defer_sync_state_count = 1;
+> > +static DEFINE_MUTEX(fwnode_link_lock);
+> > +
+> > +/**
+> > + * fwnode_link_add - Create a link between two fwnode_handles.
+> > + * @con: Consumer end of the link.
+> > + * @sup: Supplier end of the link.
+> > + *
+> > + * Create a fwnode link between fwnode handles @con and @sup. The fwnode link
+> > + * represents the detail that the firmware lists @sup fwnode as supplying a
+> > + * resource to @con.
+> > + *
+> > + * The driver core will use the fwnode link to create a device link between the
+> > + * two device objects corresponding to @con and @sup when they are created. The
+> > + * driver core will automatically delete the fwnode link between @con and @sup
+> > + * after doing that.
+> > + *
+> > + * Attempts to create duplicate links between the same pair of fwnode handles
+> > + * are ignored and there is no reference counting.
 >
-> Hi Ard,
->
-> That was attempted before, but caused a build failure which would
-> still happen today:
->   https://www.spinics.net/lists/stable/msg179709.html
-> Specifically, head.S still has a 3 argument usage of adr_l. I'm not
-> sure how to safely fix that up myself.
->
+> Sorry to ask, but why is that?
+> Isn't this a programmer error?
 
-Given that the original reason for reverting the backport of 41c066f
-no longer holds (as there are other users of adr_l in v4.4 now), I
-think the best solution is to backport it again, but with the hunk
-below folded in. (This just replaces the macro invocation with its
-output when called with the 3 arguments in question, so the generated
-code is identical)
+No, not a programmer error.
 
---- a/arch/arm64/kernel/head.S
-+++ b/arch/arm64/kernel/head.S
-@@ -424,7 +424,8 @@ __mmap_switched:
-        str     xzr, [x6], #8                   // Clear BSS
-        b       1b
- 2:
--       adr_l   sp, initial_sp, x4
-+       adrp    x4, initial_sp
-+       add     sp, x4, :lo12:initial_sp
-        str_l   x21, __fdt_pointer, x5          // Save FDT pointer
-        str_l   x24, memstart_addr, x6          // Save PHYS_OFFSET
-        mov     x29, #0
+One firmware node can point to the same supplier many times. For
+example, the consumer can be using multiple clocks from the same
+supplier clock controller. In the context of fw_devlink, there's no
+reason to keep track of each clock dependency separately because we'll
+be creating only one device link from fwnode link. So multiple fwnode
+link attempts between the same two devices are just treated as one
+instance of dependency. I hope that clarifies things.
+
+-Saravana
