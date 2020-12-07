@@ -2,111 +2,80 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F1322D1D3B
+	by mail.lfdr.de (Postfix) with ESMTP id E7F742D1D3D
 	for <lists+linux-efi@lfdr.de>; Mon,  7 Dec 2020 23:23:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727942AbgLGWVw (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 7 Dec 2020 17:21:52 -0500
-Received: from mail.kernel.org ([198.145.29.99]:57834 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726732AbgLGWVv (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Mon, 7 Dec 2020 17:21:51 -0500
-X-Gm-Message-State: AOAM530Y4RPNG7ATFF7QlizZ8f8VkolG0qFPBQr26xnfY+Hvf1lKFAIq
-        oEHGMWCSw4PXD4wfhSanfkmjWZY/Wvze8RPGzQg=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1607379670;
-        bh=sCcJWpX0VD2x5M0ltVav0fWl+0sJfwPhBIjWWJfpkN4=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=bVTkd4MnyNNYU994HaUZmZE3ixj4WvbM/FYdDX/9BQfbbRUimJD8h5MacZdKQJ043
-         lCajon207vmafr0LKcu1QKPilFuaaRIFAS+Awf5U9qt+QoCXwwtJr20LRC8zT4U2bI
-         5yz5iIYrzZOu8pn1a/k5abgsfYzWk7RZyNutgdNydVQLDaKgdTTcDH4FxPoaFMsCvt
-         pfjfQsi1dEJ6MBqSXe51VUm7TfRrDIktlX8NFeVoVDe0hngzOcoKi7rwD3PYmZoQoc
-         r/K42iE84gtmFNBIOcL0QjWgKiAKC5ywmLT6TGsDj8ZXk0N4jlJaI6Uxyemg1lcjh5
-         DJ7z2eruLIKMw==
-X-Google-Smtp-Source: ABdhPJwYygf8qrTUBOO+Wa5ueaT8l0OO95kQFOnCCs59qFKZ8iFSeajVaUu5jMPZiOMxEtjWolWDy7+tP3Rb83ATiJQ=
-X-Received: by 2002:a9d:62c1:: with SMTP id z1mr14353388otk.108.1607379670012;
- Mon, 07 Dec 2020 14:21:10 -0800 (PST)
-MIME-Version: 1.0
-References: <X8yoWHNzfl7vHVRA@kroah.com> <20201207172625.2888810-1-dann.frazier@canonical.com>
- <CAMj1kXHdqaso9Vkm3KeKFntMBQeRTkY-fU1GW8K8rcxBbQbKBA@mail.gmail.com>
- <CALdTtnv6VCBjvS-rtUTdhmLHkiJJrY+m4CLW4F8F89NEpZYF7A@mail.gmail.com>
- <CAMj1kXFAn2bJgwpN+SkGQSzXVdssaZ0Sjpspn8n0QQn4MDk5CA@mail.gmail.com> <CALdTtnuT7fVJ17C2nq8kks_rFRGtDySx61tWpt8b+roajyi7vg@mail.gmail.com>
-In-Reply-To: <CALdTtnuT7fVJ17C2nq8kks_rFRGtDySx61tWpt8b+roajyi7vg@mail.gmail.com>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Mon, 7 Dec 2020 23:20:59 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXEPJZTwpM3kWUAsmJDdfsUpBJbuCiDLX9xgfvy4NPb4hQ@mail.gmail.com>
-Message-ID: <CAMj1kXEPJZTwpM3kWUAsmJDdfsUpBJbuCiDLX9xgfvy4NPb4hQ@mail.gmail.com>
-Subject: Re: [PATCH 4.4] Revert "crypto: arm64/sha - avoid non-standard inline
- asm tricks"
-To:     dann frazier <dann.frazier@canonical.com>
-Cc:     "# 3.4.x" <stable@vger.kernel.org>,
-        Michael Schaller <misch@google.com>,
+        id S1727896AbgLGWVy (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 7 Dec 2020 17:21:54 -0500
+Received: from mail-oi1-f195.google.com ([209.85.167.195]:32816 "EHLO
+        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726732AbgLGWVy (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 7 Dec 2020 17:21:54 -0500
+Received: by mail-oi1-f195.google.com with SMTP id d27so9723101oic.0;
+        Mon, 07 Dec 2020 14:21:38 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=39td7MWAI1dABVTePGs2wjZlZAtxzRyqb3mgk1Ytfpo=;
+        b=D9QfnFc/Vk8xvILdIBa2S8jv9qMIHd5y+icL0ViHU+3RZ03kZtwdlMlLE2tuvr//La
+         /PItErjcYv+AGEhLehxfpGkJWZNML0KdX95QVgz2H9/4QbcRVzkZTCcaE9J8kjQZC/iv
+         /I/8n4Nj8Fr3Oq3qd4Ba0bRRFjaDCqZgc2k33r2zeNb60w8eBnZPoBG0yNglxyVaqOmX
+         B0Ls9VaxAJwQ2bNIF9yzzuSFmEicrdH8lS4FdaNiVe5gGIl5I/QsyOptPe43NUJjOfyN
+         duQaRV6COkcdjZPSqV9ljH0pksahujFdLO8wpUBKsryazlGTBsHsClnHZqLVQPOut8eA
+         Rs0g==
+X-Gm-Message-State: AOAM532fJzeoqZeghW1g3j3KGSSBkpWmza4FEeE53ABoM9jreaTdSj0Y
+        4jB+LraAfPCC4VUYqeNksg==
+X-Google-Smtp-Source: ABdhPJxi9QKOrQ7Wrnovkp/De8mp/bzEqu6JAct0eOqh7QO49YsGLaDZWFStImqMukaXKcN63qLJ4Q==
+X-Received: by 2002:aca:ef03:: with SMTP id n3mr699440oih.75.1607379673230;
+        Mon, 07 Dec 2020 14:21:13 -0800 (PST)
+Received: from xps15 (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id n13sm1247490otk.58.2020.12.07.14.21.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 07 Dec 2020 14:21:12 -0800 (PST)
+Received: (nullmailer pid 943398 invoked by uid 1000);
+        Mon, 07 Dec 2020 22:21:10 -0000
+Date:   Mon, 7 Dec 2020 16:21:10 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Saravana Kannan <saravanak@google.com>
+Cc:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        linux-efi@vger.kernel.org,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Matthew Garrett <matthew.garrett@nebula.com>,
-        Jeremy Kerr <jk@ozlabs.org>,
-        linux-efi <linux-efi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        linux-acpi@vger.kernel.org,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Marc Zyngier <maz@kernel.org>, Len Brown <lenb@kernel.org>,
+        Tomi Valkeinen <tomi.valkeinen@ti.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Ard Biesheuvel <ardb@kernel.org>, kernel-team@android.com,
+        Frank Rowand <frowand.list@gmail.com>
+Subject: Re: [PATCH v2 08/17] driver core: Add fwnode link support
+Message-ID: <20201207222110.GA943340@robh.at.kernel.org>
+References: <20201121020232.908850-1-saravanak@google.com>
+ <20201121020232.908850-9-saravanak@google.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201121020232.908850-9-saravanak@google.com>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Mon, 7 Dec 2020 at 21:36, dann frazier <dann.frazier@canonical.com> wrote:
->
-> On Mon, Dec 7, 2020 at 11:29 AM Ard Biesheuvel <ardb@kernel.org> wrote:
-> >
-> > On Mon, 7 Dec 2020 at 19:08, dann frazier <dann.frazier@canonical.com> wrote:
-> > >
-> > > On Mon, Dec 7, 2020 at 10:50 AM Ard Biesheuvel <ardb@kernel.org> wrote:
-> > > >
-> > > > On Mon, 7 Dec 2020 at 18:26, dann frazier <dann.frazier@canonical.com> wrote:
-> > > > >
-> > > > > This reverts commit c042dd600f4e89b6e7bdffa00aea4d1d3c1e9686.
-> > > > >
-> > > > > This caused the build to emit ADR_PREL_PG_HI21 relocations in the sha{1,2}_ce
-> > > > > modules. This relocation type is not supported by the linux-4.4.y kernel
-> > > > > module loader when CONFIG_ARM64_ERRATUM_843419=y, which we have enabled, so
-> > > > > these modules now fail to load:
-> > > > >
-> > > > >   [   37.866250] module sha1_ce: unsupported RELA relocation: 275
-> > > > >
-> > > > > This issue does not exist with the backport to 4.9+. Bisection shows that
-> > > > > this is due to those kernels also having a backport of
-> > > > > commit 41c066f ("arm64: assembler: make adr_l work in modules under KASLR")
-> > > >
-> > > > Hi Dann,
-> > > >
-> > > > Would it be an option to backport 41c066f as well?
-> > >
-> > > Hi Ard,
-> > >
-> > > That was attempted before, but caused a build failure which would
-> > > still happen today:
-> > >   https://www.spinics.net/lists/stable/msg179709.html
-> > > Specifically, head.S still has a 3 argument usage of adr_l. I'm not
-> > > sure how to safely fix that up myself.
-> > >
-> >
-> > Given that the original reason for reverting the backport of 41c066f
-> > no longer holds (as there are other users of adr_l in v4.4 now), I
-> > think the best solution is to backport it again, but with the hunk
-> > below folded in. (This just replaces the macro invocation with its
-> > output when called with the 3 arguments in question, so the generated
-> > code is identical)
-> >
-> > --- a/arch/arm64/kernel/head.S
-> > +++ b/arch/arm64/kernel/head.S
-> > @@ -424,7 +424,8 @@ __mmap_switched:
-> >         str     xzr, [x6], #8                   // Clear BSS
-> >         b       1b
-> >  2:
-> > -       adr_l   sp, initial_sp, x4
-> > +       adrp    x4, initial_sp
-> > +       add     sp, x4, :lo12:initial_sp
-> >         str_l   x21, __fdt_pointer, x5          // Save FDT pointer
-> >         str_l   x24, memstart_addr, x6          // Save PHYS_OFFSET
-> >         mov     x29, #0
->
-> Thanks Ard - that works. I'll follow-up with a backport patch.
->
+On Fri, 20 Nov 2020 18:02:23 -0800, Saravana Kannan wrote:
+> Add support for creating supplier-consumer links between fwnodes.  It is
+> intended for internal use the driver core and generic firmware support
+> code (eg. Device Tree, ACPI), so it is simple by design and the API
+> provided is limited.
+> 
+> Signed-off-by: Saravana Kannan <saravanak@google.com>
+> ---
+>  drivers/base/core.c    | 98 ++++++++++++++++++++++++++++++++++++++++++
+>  drivers/of/dynamic.c   |  1 +
+>  include/linux/fwnode.h | 14 ++++++
+>  3 files changed, 113 insertions(+)
+> 
 
-Excellent.
+Acked-by: Rob Herring <robh@kernel.org>
