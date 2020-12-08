@@ -2,154 +2,98 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F5232D1FBE
-	for <lists+linux-efi@lfdr.de>; Tue,  8 Dec 2020 02:11:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 098F62D23AC
+	for <lists+linux-efi@lfdr.de>; Tue,  8 Dec 2020 07:35:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726207AbgLHBLb (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 7 Dec 2020 20:11:31 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:53245 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725877AbgLHBLa (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 7 Dec 2020 20:11:30 -0500
-Received: from 2.general.dannf.us.vpn ([10.172.65.1] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <dann.frazier@canonical.com>)
-        id 1kmRWh-0005Ox-52; Tue, 08 Dec 2020 01:10:47 +0000
-From:   dann frazier <dann.frazier@canonical.com>
-To:     stable@vger.kernel.org, Michael Schaller <misch@google.com>,
+        id S1726243AbgLHGfL (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 8 Dec 2020 01:35:11 -0500
+Received: from mail.kernel.org ([198.145.29.99]:53258 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725874AbgLHGfK (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Tue, 8 Dec 2020 01:35:10 -0500
+Date:   Tue, 8 Dec 2020 08:34:23 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1607409270;
+        bh=rKSac2+EH/DLhYum2uVJtbfylBmSPHvYtIfaooxgTk4=;
+        h=From:To:Cc:Subject:References:In-Reply-To:From;
+        b=VDjXV5r6lBUiuY3EiYrTC9ugOJ24Ecpg2lOS7t6v6scKlhy0RQ52bDRoUfvNU+NJw
+         gldifHNRt3N77atBSG9UL2+Uh21LaAlyHvL/to6PKqJq3xgR18G81zjGmKVAdTR5kB
+         a4uHYltFmtL654QoIoaLtm43y8e1S5s+Nq08oSchqV2rLEg4Fm8UTVG7CgdPrx1ZY1
+         KlbUlHfbFw/8MxDOhp7S2tjeJVBI7GSfTiFJ3f2Yyp7QK0Lp6HV4GVpDF1txw95LTt
+         hcggpi7tA288nNZpEAETmNQWFnKOD8KDa0hmE6j92Np+oTvnt9JKr2FqS22RMvHhtg
+         UycP62nY8qr5Q==
+From:   Leon Romanovsky <leon@kernel.org>
+To:     Saravana Kannan <saravanak@google.com>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Ard Biesheuvel <ardb@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Matthew Garrett <matthew.garrett@nebula.com>,
-        Jeremy Kerr <jk@ozlabs.org>, linux-efi@vger.kernel.org
-Subject: [PATCH 4.4] arm64: assembler: make adr_l work in modules under KASLR
-Date:   Mon,  7 Dec 2020 18:10:34 -0700
-Message-Id: <20201208011034.3015079-1-dann.frazier@canonical.com>
-X-Mailer: git-send-email 2.29.2
-In-Reply-To: <CALdTtnuT7fVJ17C2nq8kks_rFRGtDySx61tWpt8b+roajyi7vg@mail.gmail.com>
-References: <CALdTtnuT7fVJ17C2nq8kks_rFRGtDySx61tWpt8b+roajyi7vg@mail.gmail.com>
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Marc Zyngier <maz@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Tomi Valkeinen <tomi.valkeinen@ti.com>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Android Kernel Team <kernel-team@android.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>
+Subject: Re: [PATCH v2 07/17] driver core: Add fwnode_init()
+Message-ID: <20201208063423.GB4430@unreal>
+References: <20201121020232.908850-1-saravanak@google.com>
+ <20201121020232.908850-8-saravanak@google.com>
+ <20201206072621.GA687065@unreal>
+ <CAGETcx9L0f5HPgunTf_WRsr9yeaYK1Ku5ESzeb0A1pkn3Yy2aw@mail.gmail.com>
+ <20201207195357.GF693271@unreal>
+ <CAGETcx-Y6qdyt7xGfoGg=z9B7VE30AZjodMZzy9hQrDAEd8uYw@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAGETcx-Y6qdyt7xGfoGg=z9B7VE30AZjodMZzy9hQrDAEd8uYw@mail.gmail.com>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-From: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+On Mon, Dec 07, 2020 at 12:36:43PM -0800, Saravana Kannan wrote:
+> On Mon, Dec 7, 2020 at 11:54 AM Leon Romanovsky <leon@kernel.org> wrote:
+> >
+> > On Mon, Dec 07, 2020 at 11:25:15AM -0800, Saravana Kannan wrote:
+> > > On Sat, Dec 5, 2020 at 11:26 PM Leon Romanovsky <leon@kernel.org> wrote:
+> > > >
+> > > > On Fri, Nov 20, 2020 at 06:02:22PM -0800, Saravana Kannan wrote:
+> > > > > There are multiple locations in the kernel where a struct fwnode_handle
+> > > > > is initialized. Add fwnode_init() so that we have one way of
+> > > > > initializing a fwnode_handle.
+> > > > >
+> > > > > Signed-off-by: Saravana Kannan <saravanak@google.com>
+> > > > > ---
+> > > > >  drivers/acpi/property.c         | 2 +-
+> > > > >  drivers/acpi/scan.c             | 2 +-
+> > > > >  drivers/base/swnode.c           | 2 +-
+> > > > >  drivers/firmware/efi/efi-init.c | 8 ++++----
+> > > > >  include/linux/fwnode.h          | 6 ++++++
+> > > > >  include/linux/of.h              | 2 +-
+> > > > >  kernel/irq/irqdomain.c          | 2 +-
+> > > > >  7 files changed, 15 insertions(+), 9 deletions(-)
+> > > >
+> > > > In this series, I didn't find any extension of fwnode_init() to be it more
+> > > > than simple assignment. This change looks to me like unnecessary churn and
+> > > > obfuscation rather than improvement.
+> > > >
+> > > > "...ops = &...;" is pretty standard in the kernel to initialize ops
+> > > > structures.
+> > >
+> > > Subsequent patches make fwnode_init() do more stuff.
+> >
+> > But not in this series, right?
+>
+> In this series. The very next patch - Patch 8/17 :)
 
-commit 41c066f2c4d436c535616fe182331766c57838f0 upstream
+Thanks, sorry for the noise.
 
-When CONFIG_RANDOMIZE_MODULE_REGION_FULL=y, the offset between loaded
-modules and the core kernel may exceed 4 GB, putting symbols exported
-by the core kernel out of the reach of the ordinary adrp/add instruction
-pairs used to generate relative symbol references. So make the adr_l
-macro emit a movz/movk sequence instead when executing in module context.
-
-While at it, remove the pointless special case for the stack pointer.
-
-Acked-by: Mark Rutland <mark.rutland@arm.com>
-Acked-by: Will Deacon <will.deacon@arm.com>
-Signed-off-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-[ dannf: backported to v4.4 by replacing the 3-arg adr_l macro in head.S
-  with it's output, as this commit drops the 3-arg variant ]
-Fixes: c042dd600f4e ("crypto: arm64/sha - avoid non-standard inline asm tricks")
-Signed-off-by: dann frazier <dann.frazier@canonical.com>
----
- arch/arm64/include/asm/assembler.h | 36 +++++++++++++++++++++++++++---------
- arch/arm64/kernel/head.S           |  3 ++-
- 2 files changed, 29 insertions(+), 10 deletions(-)
-
-diff --git a/arch/arm64/include/asm/assembler.h b/arch/arm64/include/asm/assembler.h
-index f68abb1..7c28791 100644
---- a/arch/arm64/include/asm/assembler.h
-+++ b/arch/arm64/include/asm/assembler.h
-@@ -148,22 +148,25 @@ lr	.req	x30		// link register
- 
- /*
-  * Pseudo-ops for PC-relative adr/ldr/str <reg>, <symbol> where
-- * <symbol> is within the range +/- 4 GB of the PC.
-+ * <symbol> is within the range +/- 4 GB of the PC when running
-+ * in core kernel context. In module context, a movz/movk sequence
-+ * is used, since modules may be loaded far away from the kernel
-+ * when KASLR is in effect.
-  */
- 	/*
- 	 * @dst: destination register (64 bit wide)
- 	 * @sym: name of the symbol
--	 * @tmp: optional scratch register to be used if <dst> == sp, which
--	 *       is not allowed in an adrp instruction
- 	 */
--	.macro	adr_l, dst, sym, tmp=
--	.ifb	\tmp
-+	.macro	adr_l, dst, sym
-+#ifndef MODULE
- 	adrp	\dst, \sym
- 	add	\dst, \dst, :lo12:\sym
--	.else
--	adrp	\tmp, \sym
--	add	\dst, \tmp, :lo12:\sym
--	.endif
-+#else
-+	movz	\dst, #:abs_g3:\sym
-+	movk	\dst, #:abs_g2_nc:\sym
-+	movk	\dst, #:abs_g1_nc:\sym
-+	movk	\dst, #:abs_g0_nc:\sym
-+#endif
- 	.endm
- 
- 	/*
-@@ -174,6 +177,7 @@ lr	.req	x30		// link register
- 	 *       the address
- 	 */
- 	.macro	ldr_l, dst, sym, tmp=
-+#ifndef MODULE
- 	.ifb	\tmp
- 	adrp	\dst, \sym
- 	ldr	\dst, [\dst, :lo12:\sym]
-@@ -181,6 +185,15 @@ lr	.req	x30		// link register
- 	adrp	\tmp, \sym
- 	ldr	\dst, [\tmp, :lo12:\sym]
- 	.endif
-+#else
-+	.ifb	\tmp
-+	adr_l	\dst, \sym
-+	ldr	\dst, [\dst]
-+	.else
-+	adr_l	\tmp, \sym
-+	ldr	\dst, [\tmp]
-+	.endif
-+#endif
- 	.endm
- 
- 	/*
-@@ -190,8 +203,13 @@ lr	.req	x30		// link register
- 	 *       while <src> needs to be preserved.
- 	 */
- 	.macro	str_l, src, sym, tmp
-+#ifndef MODULE
- 	adrp	\tmp, \sym
- 	str	\src, [\tmp, :lo12:\sym]
-+#else
-+	adr_l	\tmp, \sym
-+	str	\src, [\tmp]
-+#endif
- 	.endm
- 
- /*
-diff --git a/arch/arm64/kernel/head.S b/arch/arm64/kernel/head.S
-index 6299a8a..504bcc3 100644
---- a/arch/arm64/kernel/head.S
-+++ b/arch/arm64/kernel/head.S
-@@ -424,7 +424,8 @@ __mmap_switched:
- 	str	xzr, [x6], #8			// Clear BSS
- 	b	1b
- 2:
--	adr_l	sp, initial_sp, x4
-+	adrp	x4, initial_sp
-+	add	sp, x4, :lo12:initial_sp
- 	str_l	x21, __fdt_pointer, x5		// Save FDT pointer
- 	str_l	x24, memstart_addr, x6		// Save PHYS_OFFSET
- 	mov	x29, #0
--- 
-2.7.4
-
+>
+> -Saravana
