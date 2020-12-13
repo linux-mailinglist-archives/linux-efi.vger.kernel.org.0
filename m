@@ -2,99 +2,101 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 504762D8221
-	for <lists+linux-efi@lfdr.de>; Fri, 11 Dec 2020 23:32:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 59B042D8D6D
+	for <lists+linux-efi@lfdr.de>; Sun, 13 Dec 2020 14:53:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2406927AbgLKWbP (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 11 Dec 2020 17:31:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34234 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2406944AbgLKWbN (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 11 Dec 2020 17:31:13 -0500
-Received: from mail-yb1-xb44.google.com (mail-yb1-xb44.google.com [IPv6:2607:f8b0:4864:20::b44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC9AEC0613D6
-        for <linux-efi@vger.kernel.org>; Fri, 11 Dec 2020 14:30:32 -0800 (PST)
-Received: by mail-yb1-xb44.google.com with SMTP id v67so9488949ybi.1
-        for <linux-efi@vger.kernel.org>; Fri, 11 Dec 2020 14:30:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=DP4u3vyOK1sWRkeFBHWzyC0Qo+Tg4a0hdWg9PLXt3LI=;
-        b=dQ+wUD6qOEbwif75TWsTM+enWTSOPm3SNDSssvHnd0zoAJo1h7QfGOOoD9syKnkLVl
-         C27SrGgxPVqok7to50/jRSkqMmigLyVJ20yuhqtreHsjd9pPRkV7fJG3ksl1tlEBU0qv
-         72q2WYPDiMk3NFLxaHWu0hykAN8QuyjAWDOVTrTGBZa27IZf4OWtQOFJpkaGcqmTkpum
-         u+COznp6nvTukB//0hKmDAim1qAaV7Lr7QpNlnZXCjXm54type681d1kg/EjrrGwXUea
-         ZxxlI/o2703XOzBWDWdewwdgCimXj/sCvoilcoN/rQp7Nrb0SYX6WNuQO+8BGsQeCbv7
-         yXsw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=DP4u3vyOK1sWRkeFBHWzyC0Qo+Tg4a0hdWg9PLXt3LI=;
-        b=gaoKla0RD3cXoky2QGwpsKu4vhNg4QRi8AJ6DbUMJkS31NBBzwWm6G8SGruf4Dke6B
-         PouvhInHA5yUcJJW4YenMtU6TIj3+7bo4XVhyDflxkEKaRyCdpI67jjWLan6/bOh3BRJ
-         d7itN0q3LPtaCNFwnavBM7cXT1p6aDfAODlnZHGXe5wM/VJgW1x6QcAgFoWtSLraQv1W
-         Wnznu1JKFTw45fqDN0gg9VfLl1jbKBJYYsHBgBZWR9OhRPMwud3cTJSy1K5KCZTyfhgQ
-         b4GfrlIRTQX1RFAn6yGQ89YaDp/zKd6kim0sIglRuQqWtXqfbceN5x/Ej3/azjNQQmZk
-         scAw==
-X-Gm-Message-State: AOAM533+gWH6DTDkhusFMCSt75VVR9W7U3NXO7Z7/IfSP9HjZwtEzU3x
-        RYfvjii3yuoxM0fz6WMIH0Fx2xeDRMuIicJSj5umTw==
-X-Google-Smtp-Source: ABdhPJwi1KxiLbsYZDLOGSqH5Ut1oteRY1ce66tvlhetU1GnU1dasj0j9yrAzoEUGAb6ZstqFJ/R8Ja8XFgNVbOXVFA=
-X-Received: by 2002:a5b:b49:: with SMTP id b9mr20504737ybr.310.1607725831810;
- Fri, 11 Dec 2020 14:30:31 -0800 (PST)
+        id S2394736AbgLMNxF (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sun, 13 Dec 2020 08:53:05 -0500
+Received: from mail.kernel.org ([198.145.29.99]:59984 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2387999AbgLMNxF (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Sun, 13 Dec 2020 08:53:05 -0500
+From:   Ard Biesheuvel <ardb@kernel.org>
+Authentication-Results: mail.kernel.org; dkim=permerror (bad message/signature format)
+To:     linux-efi@vger.kernel.org
+Cc:     tony.luck@intel.com, Ard Biesheuvel <ardb@kernel.org>
+Subject: [PATCH] efi: ia64: disable the capsule loader
+Date:   Sun, 13 Dec 2020 14:52:14 +0100
+Message-Id: <20201213135214.85360-1-ardb@kernel.org>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-References: <20201121020232.908850-1-saravanak@google.com> <20201121020232.908850-17-saravanak@google.com>
- <02e7047071f0b54b046ac472adeeb3fafabc643c.camel@redhat.com>
- <788ee1c7-0ea2-33ec-658e-50707f7515a6@arm.com> <CAGETcx-MsNyWWT=s1H6hDK+=QvibBLQrT9rM51y5bkomV_+G6g@mail.gmail.com>
- <813b3fbd80ad4dfee7ff8517d4829a1f@kernel.org> <CAGETcx_hPVv1iTt6q3gLmBN=q+_O6vTwxeS5Nj55Smm3FNk24Q@mail.gmail.com>
- <caf7719771210fb91565d105bd9c7e4b@kernel.org>
-In-Reply-To: <caf7719771210fb91565d105bd9c7e4b@kernel.org>
-From:   Saravana Kannan <saravanak@google.com>
-Date:   Fri, 11 Dec 2020 14:29:55 -0800
-Message-ID: <CAGETcx8Fjr-0S5kjUxYytncgQ9ZtMoeey_P680R6RPFk7-haZQ@mail.gmail.com>
-Subject: Re: [PATCH v2 16/17] driver core: Refactor fw_devlink feature
-To:     Marc Zyngier <maz@kernel.org>
-Cc:     Robin Murphy <robin.murphy@arm.com>, Qian Cai <qcai@redhat.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Android Kernel Team <kernel-team@android.com>,
-        Linux Next Mailing List <linux-next@vger.kernel.org>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, Dec 11, 2020 at 11:07 AM Marc Zyngier <maz@kernel.org> wrote:
->
-> On 2020-12-11 18:20, Saravana Kannan wrote:
->
-> > Lol, my only contribution to the patch will be the commit text. I'll
-> > send them with reported-by, suggested-by and tested-by if no one less
-> > beats me to it.
->
-> Teamwork!
->
->          M.
+EFI capsule loading is a feature that was introduced into EFI long after
+its initial introduction on Itanium, and it is highly unlikely that IA64
+systems are receiving firmware updates in the first place, let alone
+using EFI capsules.
 
-Forgot to CC most of the folks/lists here, but patch has been sent.
+So let's disable capsule support altogether on IA64. This fixes a build
+error on IA64 due to a recent change that added an unconditional
+include of asm/efi.h, which IA64 does not provide.
 
-https://lore.kernel.org/lkml/20201211202629.2164655-1-saravanak@google.com/
+While at it, tweak the make rules a bit so that the EFI capsule
+component that is always builtin (even if the EFI capsule loader itself
+is built as a module) is omitted for all architectures if the module is
+not enabled in the build.
 
--Saravana
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+---
+ drivers/firmware/efi/Kconfig  | 2 +-
+ drivers/firmware/efi/Makefile | 5 ++++-
+ include/linux/efi.h           | 4 ++++
+ 3 files changed, 9 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/firmware/efi/Kconfig b/drivers/firmware/efi/Kconfig
+index b452cfa2100b..5ac2a37ed025 100644
+--- a/drivers/firmware/efi/Kconfig
++++ b/drivers/firmware/efi/Kconfig
+@@ -147,7 +147,7 @@ config EFI_BOOTLOADER_CONTROL
+ 
+ config EFI_CAPSULE_LOADER
+ 	tristate "EFI capsule loader"
+-	depends on EFI
++	depends on EFI && !IA64
+ 	help
+ 	  This option exposes a loader interface "/dev/efi_capsule_loader" for
+ 	  users to load EFI capsules. This driver requires working runtime
+diff --git a/drivers/firmware/efi/Makefile b/drivers/firmware/efi/Makefile
+index d6ca2da19339..467e94259679 100644
+--- a/drivers/firmware/efi/Makefile
++++ b/drivers/firmware/efi/Makefile
+@@ -12,7 +12,10 @@ KASAN_SANITIZE_runtime-wrappers.o	:= n
+ 
+ obj-$(CONFIG_ACPI_BGRT) 		+= efi-bgrt.o
+ obj-$(CONFIG_EFI)			+= efi.o vars.o reboot.o memattr.o tpm.o
+-obj-$(CONFIG_EFI)			+= capsule.o memmap.o
++obj-$(CONFIG_EFI)			+= memmap.o
++ifneq ($(CONFIG_EFI_CAPSULE_LOADER),)
++obj-$(CONFIG_EFI)			+= capsule.o
++endif
+ obj-$(CONFIG_EFI_PARAMS_FROM_FDT)	+= fdtparams.o
+ obj-$(CONFIG_EFI_VARS)			+= efivars.o
+ obj-$(CONFIG_EFI_ESRT)			+= esrt.o
+diff --git a/include/linux/efi.h b/include/linux/efi.h
+index 1cd5d91d8ca1..b5943a88d690 100644
+--- a/include/linux/efi.h
++++ b/include/linux/efi.h
+@@ -1038,6 +1038,7 @@ bool efivar_validate(efi_guid_t vendor, efi_char16_t *var_name, u8 *data,
+ bool efivar_variable_is_removable(efi_guid_t vendor, const char *name,
+ 				  size_t len);
+ 
++#ifdef CONFIG_EFI_CAPSULE_LOADER
+ extern bool efi_capsule_pending(int *reset_type);
+ 
+ extern int efi_capsule_supported(efi_guid_t guid, u32 flags,
+@@ -1045,6 +1046,9 @@ extern int efi_capsule_supported(efi_guid_t guid, u32 flags,
+ 
+ extern int efi_capsule_update(efi_capsule_header_t *capsule,
+ 			      phys_addr_t *pages);
++#else
++static inline bool efi_capsule_pending(int *reset_type) { return false; }
++#endif
+ 
+ #ifdef CONFIG_EFI_RUNTIME_MAP
+ int efi_runtime_map_init(struct kobject *);
+-- 
+2.20.1
+
