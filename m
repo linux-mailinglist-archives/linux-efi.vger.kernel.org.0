@@ -2,142 +2,123 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 00C7B2D9DFA
-	for <lists+linux-efi@lfdr.de>; Mon, 14 Dec 2020 18:41:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DB7AE2D9E33
+	for <lists+linux-efi@lfdr.de>; Mon, 14 Dec 2020 18:53:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2502444AbgLNRlL (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 14 Dec 2020 12:41:11 -0500
-Received: from mout.gmx.net ([212.227.17.21]:37099 "EHLO mout.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2502436AbgLNRlD (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Mon, 14 Dec 2020 12:41:03 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1607967565;
-        bh=fE365REupbgYxc8nQoVLvXgiulsh6OYALjchxhRI9Rg=;
-        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=j+4q+QOxoxS7jA2ncqSYZ6E/i/94K3+DcMibnl4/ABz20agfc8W+St9wnNFwj+TAs
-         gSOfCIsau7ks8tbP61JJZ+qIaJzwHqsgkTFjXLwp1+m5rCLCEHsKISZSPM7370yBRB
-         yDN/2V9ixA/1ij9tr2lAYMLpHb6GKp5FTaebuVHo=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [192.168.123.70] ([62.143.246.89]) by mail.gmx.com (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1N1wpt-1k8hQj3NqD-012JK3; Mon, 14
- Dec 2020 18:39:24 +0100
-Subject: Re: [PATCH] efi/libstub: Allow EFI_NOT_FOUND on LOAD_FILE2_PROTOCOL
- calls for initrd
-To:     Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-        ard.biesheuvel@arm.com
-Cc:     Ard Biesheuvel <ardb@kernel.org>,
+        id S1729832AbgLNRtx (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 14 Dec 2020 12:49:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47738 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2439426AbgLNRtZ (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 14 Dec 2020 12:49:25 -0500
+Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com [IPv6:2a00:1450:4864:20::441])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E0B9C061793
+        for <linux-efi@vger.kernel.org>; Mon, 14 Dec 2020 09:48:45 -0800 (PST)
+Received: by mail-wr1-x441.google.com with SMTP id 91so17294300wrj.7
+        for <linux-efi@vger.kernel.org>; Mon, 14 Dec 2020 09:48:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=x6MJJWYnbLurSucwkvQN40DA7gXHouhO+MnPaJhZ0uE=;
+        b=xOa4385hO46H8KPHEQqJaGVXnb3ulUEVMV4t2wWE2U8iWnG6Op7c7NU7kWaewyHCfF
+         rnsNTQb1fwMR9GX17FCUdLIzkFr3QS+MpdAco18pwrXjRdXTI74QWiz4LGJIoGFKEeRw
+         bcfJwsxxGfygKaja4+IypDw+oj92BiEL2ZS04/D9CiIBlPSAASo52uSMPHXG6c5q6BTG
+         hOBK9qSSqDZQuwbHc9vBqwlNFAQUdqYwNXWfcBMGmC4aqKrvvOVdx3FdBH4K1k4ZLe/O
+         eb7BTDna7o2qRJMv3QcogwO0WTqhADszeufXdd7pHYc+X+YTrgDHyKo7pu+dx78XiZ30
+         2Bqw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=x6MJJWYnbLurSucwkvQN40DA7gXHouhO+MnPaJhZ0uE=;
+        b=efD0hSG5neuKFk01l7Fu1IpGtHIW+ksca5NKSil76+3e39hFkeMPsvZwbO2xQ3GJtZ
+         NyuXwaRtQvmoEmhOgng63DQfw2iDg8J+zVGbUIuiBYZ4MThG04Gy3G02fHX3yMLUOfN+
+         agZIMp/ADDi3Y/YDyfGxr5CN/OH3R13ShvJ6jQ2+ZVnMlAa6+0UDhUPIMC52zf1pVbkN
+         wGnN2cNDy7l919ImNh1FynHUuFmcMs2eDixvWlPUe9XG3WlGW/1G49JSBSIbGeKhPeXo
+         9Z8HBYkCzb08j9HY08IW+76Jc0YFfbkMuYEJD4YTr475snq6zZmUPtGbZyOLNLhWVyDD
+         a1ZQ==
+X-Gm-Message-State: AOAM530JHHRxC3FKYxdyGWKWNTxGMI3d5m8bPRrO3zpY6IlK2mFadaCP
+        VA8iuhUc+3dWNZJznEo88po5vA==
+X-Google-Smtp-Source: ABdhPJzTrk3umS/6GpkJSSULoPX1cp5IeLfFpImjzWrU7zYs2OZfyO0b2SEi/enC5dkKPppRfo4dwQ==
+X-Received: by 2002:adf:a3ca:: with SMTP id m10mr30303663wrb.228.1607968123791;
+        Mon, 14 Dec 2020 09:48:43 -0800 (PST)
+Received: from apalos.home (athedsl-4484548.home.otenet.gr. [94.71.57.204])
+        by smtp.gmail.com with ESMTPSA id q73sm33043980wme.44.2020.12.14.09.48.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 14 Dec 2020 09:48:43 -0800 (PST)
+Date:   Mon, 14 Dec 2020 19:48:40 +0200
+From:   Ilias Apalodimas <ilias.apalodimas@linaro.org>
+To:     Heinrich Schuchardt <xypron.glpk@gmx.de>
+Cc:     ard.biesheuvel@arm.com, Ard Biesheuvel <ardb@kernel.org>,
         Arvind Sankar <nivedita@alum.mit.edu>,
         Ingo Molnar <mingo@kernel.org>, linux-efi@vger.kernel.org,
         linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] efi/libstub: Allow EFI_NOT_FOUND on LOAD_FILE2_PROTOCOL
+ calls for initrd
+Message-ID: <X9eleMqn6Ron/myG@apalos.home>
 References: <20201214170122.4569-1-ilias.apalodimas@linaro.org>
-From:   Heinrich Schuchardt <xypron.glpk@gmx.de>
-Message-ID: <aa66cc54-f987-cdcd-05a7-4b63aa8b422d@gmx.de>
-Date:   Mon, 14 Dec 2020 18:39:21 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.5.1
+ <aa66cc54-f987-cdcd-05a7-4b63aa8b422d@gmx.de>
 MIME-Version: 1.0
-In-Reply-To: <20201214170122.4569-1-ilias.apalodimas@linaro.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:jdbcBDoawV7Vk4m69xIUURrrCr1h+zA2ME/jMSiXgk8x+AYisGG
- ZyqLwP2mUMLy7+YLQQUf90TKHHLHDERajN0O/n48f68dwL6n41nQJzfjuUDx6JenFhDJzkn
- tVtE/ATifebHcQgVfHhrMxAOod0w92nJLf0az5Bg77jK39Va7ALqOKvpwuKPjtGsUhNeMjC
- xgC4hNr6fHffl4QkVvR+Q==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:ehcb61pPR2E=:rDwXLneOJImPnwwy7lzM8J
- TZOoZEN6el0j8fY4gkyHzl3wixv3VheBfAIchiSvKniwgoh2oW2lz+5dKvVpnm9nGsa7eD/kc
- V+vew09AqsrQy677Z/HIKAtReMzwhRtDNn1+p4WNG0KuEO6uxjfTn1NzCPyuWcx6qhdUXq4vD
- Hfau31Vn+mVWJ+MjvzxlpGfNHj7hJEmws6a0CjAmme5d4gUsVw0WBlM9hy01fEQQRHspwssuP
- lIXXap/3coc1wo7ZarJ/q9a8gEWvEPbXZWZW7b910P39ZIdNOp4V3eLorue8JrnnFTE6Hb29z
- CFnEDs1FzK1zSsM+g3U7I3RFUHdDip3y+5hIbkTNbvrYlv2BDqOp8bU0teDTc5JDrWstg+7m5
- pb+2S1kPgfUz3iqUZjwOQFcpwlyCAF+RHWEvoLfwfZpQKgr6idGU/CHUYfVd1g6nDpEdL1Fsa
- 9tI9K5fB6BS4ijpwq6ZXQ/cYEWxG/GZJSiYC6lK8OtXUrC5mkGYec4xpNHPowsZEnJnh/qXm6
- YNtPW1MPdt/2385WbJz1hM4Em9/sW4iIKQ+zxL8I2hTP152/fdmJKZywd3AhOYB347ygCKk4d
- Ezf66PAD/jW5y4xf6qEAQEK90XSAlNu0ZumBx9w5NyFiNogB8/yzuQWbHFY5rOA2/sndhboHj
- fo4jryEFHkjsjSN/Av5TjCWrU/ma+dleLV9VSb9aOmMTNjF4wnyeSG6mgE1WYFE0/rljqy1Ze
- Eyp+Uy1OrBF/9Cgk+1DAhJyDiMpPUcqrkgcvpXQ7lyuRjTR2ml7OrVpHdDR8ZA23qLyxk9Gv3
- N2yv8sPz+5cM/MYVxZO0+Tz+s7z+GVQROLcKwTc3+hYWH6ybuZBQUaQ8nID7zTbS54VjoK1kX
- qd5yIVqokWLzGXx7TkUg==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aa66cc54-f987-cdcd-05a7-4b63aa8b422d@gmx.de>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 14.12.20 18:01, Ilias Apalodimas wrote:
-> At the moment the EFI stub tries to load an initrd from the
-> cmdline provided option only if the LoadFile2 protocol does not exist
-> on the initrd device path.
->
-> This might prove problematic for EFI installers that need their own
-> version of initrd to start the installation process and the firmware
+On Mon, Dec 14, 2020 at 06:39:21PM +0100, Heinrich Schuchardt wrote:
+> On 14.12.20 18:01, Ilias Apalodimas wrote:
+> > At the moment the EFI stub tries to load an initrd from the
+> > cmdline provided option only if the LoadFile2 protocol does not exist
+> > on the initrd device path.
+> >
+> > This might prove problematic for EFI installers that need their own
+> > version of initrd to start the installation process and the firmware
+> 
+> Did you hit a real world case?
+> 
 
-Did you hit a real world case?
+Yes while trying to install debian with U-boot, in which I enabled LoadFile2
+protocol
 
-> installs the protocol but doesn't have a file to back it up (yet).
-> Although some firmware implementations return EFI_NOT_FOUND, we
-> currently return EFI_LOAD_ERROR in efi_load_initrd_dev_path() which
-> stops the cmdline provided initrd to load.
->
-> So let's change the behavior slightly here and explicitly respect the
-> firmware in case it returns EFI_NOT_FOUND. This way we can load the
-> cmdline provided initrd.
->
-> Signed-off-by: Ilias Apalodimas <ilias.apalodimas@linaro.org>
-> ---
->  drivers/firmware/efi/libstub/efi-stub-helper.c | 10 +++++++++-
->  1 file changed, 9 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/firmware/efi/libstub/efi-stub-helper.c b/drivers/fi=
-rmware/efi/libstub/efi-stub-helper.c
-> index aa8da0a49829..391aae2f0cde 100644
-> --- a/drivers/firmware/efi/libstub/efi-stub-helper.c
-> +++ b/drivers/firmware/efi/libstub/efi-stub-helper.c
-> @@ -560,6 +560,7 @@ static const struct {
->   * * %EFI_SUCCESS if the initrd was loaded successfully, in which
->   *   case @load_addr and @load_size are assigned accordingly
->   * * %EFI_NOT_FOUND if no LoadFile2 protocol exists on the initrd devic=
-e path
-> + *   or if the firmware provides LoadFile2 but can't find a file to loa=
-d
->   * * %EFI_INVALID_PARAMETER if load_addr =3D=3D NULL or load_size =3D=
-=3D NULL
->   * * %EFI_OUT_OF_RESOURCES if memory allocation failed
->   * * %EFI_LOAD_ERROR in all other cases
-> @@ -599,7 +600,14 @@ efi_status_t efi_load_initrd_dev_path(unsigned long=
- *load_addr,
->  				(void *)initrd_addr);
->  	if (status !=3D EFI_SUCCESS) {
->  		efi_free(initrd_size, initrd_addr);
-> -		return EFI_LOAD_ERROR;
-> +		/*
-> +		 * Some firmware implementations might install the EFI
+[...]
+> > @@ -599,7 +600,14 @@ efi_status_t efi_load_initrd_dev_path(unsigned long *load_addr,
+> >  				(void *)initrd_addr);
+> >  	if (status != EFI_SUCCESS) {
+> >  		efi_free(initrd_size, initrd_addr);
+> > -		return EFI_LOAD_ERROR;
+> > +		/*
+> > +		 * Some firmware implementations might install the EFI
+> 
+> In U-Boot the filename is set a compile time. As the path may relate to
+> a removable medium, it would not make sense to check the existence of
+> the file when installing the protocol.
+> 
 
-In U-Boot the filename is set a compile time. As the path may relate to
-a removable medium, it would not make sense to check the existence of
-the file when installing the protocol.
+Agree. That's why I am trying to change the behavior of the stub slightly
+and respect the firmware's return value on this.
+More over the whole idea is to load the file exactly when requested, rather
+than store it in memory and wait until someone requests it.
 
-> +		 * protocol without checking the file is present and return
-> +		 * EFI_NOT_FOUND when trying to load the file.
-> +		 * If that's the case, allow the cmdline defined initrd to
-> +		 * load.
+> > +		 * protocol without checking the file is present and return
+> > +		 * EFI_NOT_FOUND when trying to load the file.
+> > +		 * If that's the case, allow the cmdline defined initrd to
+> > +		 * load.
+> 
+> U-Boot's implementation could also return EFI_NO_MEDIA if
+> CONFIG_EFI_INITRD_FILESPEC relates to a non-existent partition.
+> 
+> Why should we fall back to the command line in this case?
+> 
+> The whole idea of this protocol is to disallow the specification of an
+> initrd via the command line.
 
-U-Boot's implementation could also return EFI_NO_MEDIA if
-CONFIG_EFI_INITRD_FILESPEC relates to a non-existent partition.
+We are not falling back in that case. We only allow a fallback if 
+EFI_NOT_FOUND is explicitly returned. 
 
-Why should we fall back to the command line in this case?
+That being said my check is wrong. I need to check it on the first invocation
+of load file, not the last one. I'll send a V2
 
-The whole idea of this protocol is to disallow the specification of an
-initrd via the command line.
-
-Best regards
-
-Heinrich
-
-> +		 */
-> +		return status =3D=3D EFI_NOT_FOUND ? status : EFI_LOAD_ERROR;
->  	}
->
->  	*load_addr =3D initrd_addr;
->
-
+Regards
+/Ilias
