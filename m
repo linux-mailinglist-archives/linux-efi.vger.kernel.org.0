@@ -2,88 +2,106 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 67F512E70C5
-	for <lists+linux-efi@lfdr.de>; Tue, 29 Dec 2020 14:03:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CE6B02E7E0E
+	for <lists+linux-efi@lfdr.de>; Thu, 31 Dec 2020 06:20:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726156AbgL2NCd (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 29 Dec 2020 08:02:33 -0500
-Received: from mail.kernel.org ([198.145.29.99]:38110 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725979AbgL2NCc (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Tue, 29 Dec 2020 08:02:32 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id CB15D20867;
-        Tue, 29 Dec 2020 13:01:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1609246911;
-        bh=jxRpIBnA/TEFkDnlujeZKbR7yvaeen/RJzbWpxWgWM4=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=kopjODYjeXAmGXlUnbd4m4aCDTVFEJduxJVBUaBVXJ+j7qnjkzjuR3SttK0rbGIPX
-         frB8RJ3sAI+Vxj3XB12K27KpeLhiXqV9ezF5h+gTAeqmGi0U1fv03cGeIGiUxjx/Yc
-         Moqin18iQ8pSUMzIg/sGLqFUpY4qfNiBlqIlCuf6E9e00LcdEfGHsturpizJOj4SdL
-         ScH0Zs8r5hLaQGwES1ewuIWhCc4WbYeLSI1dQUTOT90igNksAYhCuavZGJVx6oGEG+
-         a7FzuQwwX8B+uyKvAwqswtwhRuU+8yy3b1RZPrjNCD4jL4GQd0mtk61gMHUXFPQlcQ
-         gOzxmZcwQV33Q==
-Received: by mail-ot1-f42.google.com with SMTP id i6so11777315otr.2;
-        Tue, 29 Dec 2020 05:01:51 -0800 (PST)
-X-Gm-Message-State: AOAM530bM7jNoy2Nxo7kwoDgHoEGTwcObhlRvC1Jc+wHkLsPbeO8RhI/
-        eYaV2Lgm135s8R7VcoeBEoz1GqpZpbt1EXzxZFM=
-X-Google-Smtp-Source: ABdhPJygobuwVqLYHz+mRLLv/+yv9CqwMo2io2KJO1VT0oj3eyR6h7lf/PPz5ghGQBVZWrHxCoB5FIHqCSGRNRYmb5o=
-X-Received: by 2002:a9d:12c:: with SMTP id 41mr35377364otu.77.1609246911170;
- Tue, 29 Dec 2020 05:01:51 -0800 (PST)
-MIME-Version: 1.0
-References: <20201127192051.1430-1-xypron.glpk@gmx.de> <bb31dcbe-cf19-64c5-daa0-5eb84f1a3583@gmx.de>
-In-Reply-To: <bb31dcbe-cf19-64c5-daa0-5eb84f1a3583@gmx.de>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Tue, 29 Dec 2020 14:01:40 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXERVcY5myjAxSgqVf99Pr10utyoQF4N=06508cXd9EEPQ@mail.gmail.com>
-Message-ID: <CAMj1kXERVcY5myjAxSgqVf99Pr10utyoQF4N=06508cXd9EEPQ@mail.gmail.com>
-Subject: Re: [PATCH 1/1] efi/efi_test: read RuntimeServicesSupported
-To:     Heinrich Schuchardt <xypron.glpk@gmx.de>
-Cc:     Ivan Hu <ivan.hu@canonical.com>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Colin King <colin.king@canonical.com>,
-        fwts-devel@lists.ubuntu.com
-Content-Type: text/plain; charset="UTF-8"
+        id S1726037AbgLaFTo (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 31 Dec 2020 00:19:44 -0500
+Received: from mailout3.hostsharing.net ([176.9.242.54]:57059 "EHLO
+        mailout3.hostsharing.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726264AbgLaFTo (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 31 Dec 2020 00:19:44 -0500
+X-Greylist: delayed 502 seconds by postgrey-1.27 at vger.kernel.org; Thu, 31 Dec 2020 00:19:43 EST
+Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (Client CN "*.hostsharing.net", Issuer "COMODO RSA Domain Validation Secure Server CA" (not verified))
+        by mailout3.hostsharing.net (Postfix) with ESMTPS id 3458A101E6A85;
+        Thu, 31 Dec 2020 06:10:37 +0100 (CET)
+Received: from localhost (unknown [89.246.108.87])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by h08.hostsharing.net (Postfix) with ESMTPSA id DDD3A60B908A;
+        Thu, 31 Dec 2020 06:10:36 +0100 (CET)
+X-Mailbox-Line: From be958bda75331a011d53c696d1deec8dccd06fd2 Mon Sep 17 00:00:00 2001
+Message-Id: <be958bda75331a011d53c696d1deec8dccd06fd2.1609388549.git.lukas@wunner.de>
+From:   Lukas Wunner <lukas@wunner.de>
+Date:   Thu, 31 Dec 2020 06:10:32 +0100
+Subject: [PATCH v2] efi/apple-properties: Reinstate support for boolean
+ properties
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-efi@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Sat, 26 Dec 2020 at 11:16, Heinrich Schuchardt <xypron.glpk@gmx.de> wrote:
->
-> On 11/27/20 8:20 PM, Heinrich Schuchardt wrote:
-> > Since the UEFI 2.8A specification the UEFI enabled firmware provides a
-> > configuration table EFI_RT_PROPERTIES_TABLE which indicates which runtime
-> > services are enabled. The EFI stub reads this table and saves the value of
-> > the field RuntimeServicesSupported internally.
-> >
-> > The Firmware Test Suite requires the value to determine if UEFI runtime
-> > services are correctly implemented.
-> >
-> > With this patch an IOCTL call is provided to read the value of the field
-> > RuntimeServicesSupported, e.g.
-> >
-> >      #define EFI_RUNTIME_GET_SUPPORTED_MASK \
-> >              _IOR('p', 0x0C, unsigned int)
-> >      unsigned int mask;
-> >      fd = open("/dev/efi_test", O_RDWR);
-> >      ret = ioctl(fd, EFI_RUNTIME_GET_SUPPORTED_MASK, &mask);
-> >
-> > Signed-off-by: Heinrich Schuchardt <xypron.glpk@gmx.de>
->
-> Hello Ard,
->
-> the patch has now been admitted to Linus' branch.
->
-> Could we, please, have this patch applied to the 5.10 long term release,
-> too.
->
+Since commit 4466bf82821b ("efi/apple-properties: use
+PROPERTY_ENTRY_U8_ARRAY_LEN"), my MacBook Pro issues a -ENODATA error
+when trying to assign EFI properties to the discrete GPU:
 
-If you think this patch needs to go to -stable, please send an email
-to stable@vger.kernel.org containing the commit title and SHA1, and a
-short motivation why this patch needs to be backported.
+pci 0000:01:00.0: assigning 56 device properties
+pci 0000:01:00.0: error -61 assigning properties
 
-If the stable maintainers are willing to take it, I won't object to it.
+That's because some of the properties have no value.  They're booleans
+whose presence can be checked by drivers, e.g. "use-backlight-blanking".
 
-Thanks,
-Ard.
+Commit 6e98503dba64 ("efi/apple-properties: Remove redundant attribute
+initialization from unmarshal_key_value_pairs()") employed a trick to
+store such booleans as u8 arrays (which is the data type used for all
+other EFI properties on Macs):  It cleared the property_entry's
+"is_array" flag, thereby denoting that the value is stored inline in the
+property_entry.
+
+Commit 4466bf82821b erroneously removed that trick.  It was probably a
+little fragile to begin with.
+
+Reinstate support for boolean properties by explicitly invoking the
+PROPERTY_ENTRY_BOOL() initializer for properties with zero-length value.
+
+Fixes: 4466bf82821b ("efi/apple-properties: use PROPERTY_ENTRY_U8_ARRAY_LEN")
+Signed-off-by: Lukas Wunner <lukas@wunner.de>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: stable@vger.kernel.org # v5.5+
+Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+---
+v1 -> v2: Check for entry_len instead of !entry_len. (Andy)
+
+ drivers/firmware/efi/apple-properties.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/firmware/efi/apple-properties.c b/drivers/firmware/efi/apple-properties.c
+index 34f53d898acb..e1926483ae2f 100644
+--- a/drivers/firmware/efi/apple-properties.c
++++ b/drivers/firmware/efi/apple-properties.c
+@@ -3,8 +3,9 @@
+  * apple-properties.c - EFI device properties on Macs
+  * Copyright (C) 2016 Lukas Wunner <lukas@wunner.de>
+  *
+- * Note, all properties are considered as u8 arrays.
+- * To get a value of any of them the caller must use device_property_read_u8_array().
++ * Properties are stored either as:
++ * u8 arrays which can be retrieved with device_property_read_u8_array() or
++ * booleans which can be queried with device_property_present().
+  */
+ 
+ #define pr_fmt(fmt) "apple-properties: " fmt
+@@ -88,8 +89,12 @@ static void __init unmarshal_key_value_pairs(struct dev_header *dev_header,
+ 
+ 		entry_data = ptr + key_len + sizeof(val_len);
+ 		entry_len = val_len - sizeof(val_len);
+-		entry[i] = PROPERTY_ENTRY_U8_ARRAY_LEN(key, entry_data,
+-						       entry_len);
++		if (entry_len)
++			entry[i] = PROPERTY_ENTRY_U8_ARRAY_LEN(key, entry_data,
++							       entry_len);
++		else
++			entry[i] = PROPERTY_ENTRY_BOOL(key);
++
+ 		if (dump_properties) {
+ 			dev_info(dev, "property: %s\n", key);
+ 			print_hex_dump(KERN_INFO, pr_fmt(), DUMP_PREFIX_OFFSET,
+-- 
+2.29.2
+
