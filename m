@@ -2,165 +2,104 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E41CB2E82A7
-	for <lists+linux-efi@lfdr.de>; Fri,  1 Jan 2021 00:24:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A53A2E9E70
+	for <lists+linux-efi@lfdr.de>; Mon,  4 Jan 2021 21:00:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727038AbgLaXYY (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 31 Dec 2020 18:24:24 -0500
-Received: from mga02.intel.com ([134.134.136.20]:31950 "EHLO mga02.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726630AbgLaXYX (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Thu, 31 Dec 2020 18:24:23 -0500
-IronPort-SDR: t5Rz6lQDKTFbKwL3cuUY+n2bKyTQjyvzyQKRQHKpKS767eisdJwYURQhz4A3A/ared9LGPMNAN
- yefqco5YnE9w==
-X-IronPort-AV: E=McAfee;i="6000,8403,9851"; a="163812579"
-X-IronPort-AV: E=Sophos;i="5.78,464,1599548400"; 
-   d="scan'208";a="163812579"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Dec 2020 15:23:41 -0800
-IronPort-SDR: c7qcJ2TUbfdMoXVFKTj19QgcLK6G7Nqc0vOXUN+6JVACNSOYfXlFcYVvwwB/FN3FlXGZxC/A96
- ZfN6qkptoh8A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.78,464,1599548400"; 
-   d="scan'208";a="401028870"
-Received: from lkp-server02.sh.intel.com (HELO 4242b19f17ef) ([10.239.97.151])
-  by FMSMGA003.fm.intel.com with ESMTP; 31 Dec 2020 15:23:39 -0800
-Received: from kbuild by 4242b19f17ef with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1kv7IB-0005EF-87; Thu, 31 Dec 2020 23:23:39 +0000
-Date:   Fri, 01 Jan 2021 07:23:34 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     linux-efi@vger.kernel.org
-Subject: [efi:urgent] BUILD SUCCESS
- 355845b738e76445c8522802552146d96cb4afa7
-Message-ID: <5fee5d76.hESoUCEK32lq7B8n%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S1726497AbhADT7j (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 4 Jan 2021 14:59:39 -0500
+Received: from relay4-d.mail.gandi.net ([217.70.183.196]:38829 "EHLO
+        relay4-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726253AbhADT7j (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 4 Jan 2021 14:59:39 -0500
+X-Originating-IP: 90.112.190.212
+Received: from debian.home (lfbn-gre-1-231-212.w90-112.abo.wanadoo.fr [90.112.190.212])
+        (Authenticated sender: alex@ghiti.fr)
+        by relay4-d.mail.gandi.net (Postfix) with ESMTPSA id 7DD92E0009;
+        Mon,  4 Jan 2021 19:58:53 +0000 (UTC)
+From:   Alexandre Ghiti <alex@ghiti.fr>
+To:     Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Zong Li <zong.li@sifive.com>, Anup Patel <anup@brainfault.org>,
+        Christoph Hellwig <hch@lst.de>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>, linux-efi@vger.kernel.org,
+        linux-arch@vger.kernel.org, linux-riscv@lists.infradead.org,
+        linux-kernel@vger.kernel.org
+Cc:     Alexandre Ghiti <alex@ghiti.fr>
+Subject: [RFC PATCH 00/12] Introduce sv48 support without relocable kernel
+Date:   Mon,  4 Jan 2021 14:58:28 -0500
+Message-Id: <20210104195840.1593-1-alex@ghiti.fr>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git  urgent
-branch HEAD: 355845b738e76445c8522802552146d96cb4afa7  efi/apple-properties: Reinstate support for boolean properties
+This patchset, contrary to the previous versions, allows to have a single        
+kernel for sv39 and sv48 without being relocatable.                              
+                                                                                 
+The idea comes from Arnd Bergmann who suggested to do the same as x86,           
+that is mapping the kernel to the end of the address space, which allows         
+the kernel to be linked at the same address for both sv39 and sv48 and           
+then does not require to be relocated at runtime.                                
+                                                                                 
+This is an RFC because I need to at least rebase a few commits and add           
+documentation. The most interesting patches where I expect feedbacks are         
+1/12, 2/12 and 8/12. Note that moving the kernel out of the linear
+mapping and sv48 support can be separate patchsets, I share them together
+today to show that it works (this patchset is rebased on top of v5.10). 
 
-elapsed time: 720m
+If we agree about the overall idea, I'll rebase my relocatable patchset
+on top of that and then KASLR implementation from Zong will be greatly
+simplified since moving the kernel out of the linear mapping will avoid
+to copy the kernel physically. 
+                                                                                 
+This implements sv48 support at runtime. The kernel will try to                  
+boot with 4-level page table and will fallback to 3-level if the HW does not     
+support it. Folding the 4th level into a 3-level page table has almost no        
+cost at runtime.                                                                 
+                                                                                 
+Finally, the user can now ask for sv39 explicitly by using the device-tree       
+which will reduce memory footprint and reduce the number of memory accesses      
+in case of TLB miss.   
 
-configs tested: 103
-configs skipped: 2
+Alexandre Ghiti (12):
+  riscv: Move kernel mapping outside of linear mapping
+  riscv: Protect the kernel linear mapping
+  riscv: Get rid of compile time logic with MAX_EARLY_MAPPING_SIZE
+  riscv: Allow to dynamically define VA_BITS
+  riscv: Simplify MAXPHYSMEM config
+  riscv: Prepare ptdump for vm layout dynamic addresses
+  asm-generic: Prepare for riscv use of pud_alloc_one and pud_free
+  riscv: Implement sv48 support
+  riscv: Allow user to downgrade to sv39 when hw supports sv48
+  riscv: Use pgtable_l4_enabled to output mmu type in cpuinfo
+  riscv: Explicit comment about user virtual address space size
+  riscv: Improve virtual kernel memory layout dump
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+ arch/riscv/Kconfig                      |  34 +--
+ arch/riscv/boot/loader.lds.S            |   3 +-
+ arch/riscv/include/asm/csr.h            |   3 +-
+ arch/riscv/include/asm/fixmap.h         |   3 +
+ arch/riscv/include/asm/page.h           |  33 ++-
+ arch/riscv/include/asm/pgalloc.h        |  40 +++
+ arch/riscv/include/asm/pgtable-64.h     | 104 ++++++-
+ arch/riscv/include/asm/pgtable.h        |  68 +++--
+ arch/riscv/include/asm/sparsemem.h      |   6 +-
+ arch/riscv/kernel/cpu.c                 |  23 +-
+ arch/riscv/kernel/head.S                |   6 +-
+ arch/riscv/kernel/module.c              |   4 +-
+ arch/riscv/kernel/vmlinux.lds.S         |   3 +-
+ arch/riscv/mm/context.c                 |   2 +-
+ arch/riscv/mm/init.c                    | 376 ++++++++++++++++++++----
+ arch/riscv/mm/physaddr.c                |   2 +-
+ arch/riscv/mm/ptdump.c                  |  56 +++-
+ drivers/firmware/efi/libstub/efi-stub.c |   2 +-
+ include/asm-generic/pgalloc.h           |  24 +-
+ include/linux/sizes.h                   |   3 +-
+ 20 files changed, 648 insertions(+), 147 deletions(-)
 
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-nios2                            alldefconfig
-sh                          r7785rp_defconfig
-mips                      bmips_stb_defconfig
-arm                           omap1_defconfig
-powerpc                     tqm8548_defconfig
-arm                          pxa3xx_defconfig
-arc                        vdk_hs38_defconfig
-ia64                          tiger_defconfig
-mips                          malta_defconfig
-arm                           sunxi_defconfig
-powerpc                     akebono_defconfig
-m68k                          amiga_defconfig
-mips                     loongson1c_defconfig
-arm                          lpd270_defconfig
-arm                          collie_defconfig
-sh                   sh7724_generic_defconfig
-mips                      pic32mzda_defconfig
-arm                       aspeed_g5_defconfig
-arm                           spitz_defconfig
-powerpc                     tqm8540_defconfig
-m68k                                defconfig
-m68k                       m5475evb_defconfig
-powerpc                 canyonlands_defconfig
-arm                           corgi_defconfig
-mips                       bmips_be_defconfig
-arm                      integrator_defconfig
-arc                     nsimosci_hs_defconfig
-powerpc                 mpc836x_mds_defconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-c6x                              allyesconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-parisc                           allyesconfig
-s390                                defconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                             allyesconfig
-i386                               tinyconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-x86_64               randconfig-a015-20201231
-x86_64               randconfig-a014-20201231
-x86_64               randconfig-a011-20201231
-x86_64               randconfig-a016-20201231
-x86_64               randconfig-a013-20201231
-x86_64               randconfig-a012-20201231
-i386                 randconfig-a016-20201231
-i386                 randconfig-a014-20201231
-i386                 randconfig-a012-20201231
-i386                 randconfig-a015-20201231
-i386                 randconfig-a011-20201231
-i386                 randconfig-a013-20201231
-riscv                    nommu_k210_defconfig
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-x86_64                                   rhel
-x86_64                           allyesconfig
-x86_64                    rhel-7.6-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                      rhel-8.3-kbuiltin
-x86_64                                  kexec
+-- 
+2.20.1
 
-clang tested configs:
-x86_64               randconfig-a015-20201230
-x86_64               randconfig-a014-20201230
-x86_64               randconfig-a016-20201230
-x86_64               randconfig-a011-20201230
-x86_64               randconfig-a013-20201230
-x86_64               randconfig-a012-20201230
-x86_64               randconfig-a005-20201231
-x86_64               randconfig-a006-20201231
-x86_64               randconfig-a001-20201231
-x86_64               randconfig-a002-20201231
-x86_64               randconfig-a004-20201231
-x86_64               randconfig-a003-20201231
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
