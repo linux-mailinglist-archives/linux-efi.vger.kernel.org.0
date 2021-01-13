@@ -2,65 +2,83 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E192B2F5344
-	for <lists+linux-efi@lfdr.de>; Wed, 13 Jan 2021 20:27:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 457902F5560
+	for <lists+linux-efi@lfdr.de>; Thu, 14 Jan 2021 01:00:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728485AbhAMTZ1 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 13 Jan 2021 14:25:27 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:34393 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728601AbhAMTZ0 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 13 Jan 2021 14:25:26 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1610565840;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=HcC8AUhgxB2nKsEbFplqxs+UaFp2Qy31anNGiuGduMU=;
-        b=GgDhEAv7MWhdCqZTvFUEc0eDSNFTjsJgztsO0lmHXiLSGXojnuLZfbjNrWkIGxjwj/t+8M
-        Srv3KvyHIgz8YZkeuu5rSAMANwjbtBAS4002RxYgfDoFlTyfoiFNyBBxFX8KUeNgeaQ4Km
-        vopiDSUVHgBatOctM2rHRoSwtv6kv6k=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-150-AHAiIQ4VPOmJHO8dvXQUzg-1; Wed, 13 Jan 2021 14:23:56 -0500
-X-MC-Unique: AHAiIQ4VPOmJHO8dvXQUzg-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        id S1726019AbhAMX7P (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 13 Jan 2021 18:59:15 -0500
+Received: from bedivere.hansenpartnership.com ([96.44.175.130]:35902 "EHLO
+        bedivere.hansenpartnership.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1729673AbhAMX5X (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 13 Jan 2021 18:57:23 -0500
+Received: from localhost (localhost [127.0.0.1])
+        by bedivere.hansenpartnership.com (Postfix) with ESMTP id 111BD1280967;
+        Wed, 13 Jan 2021 15:56:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+        d=hansenpartnership.com; s=20151216; t=1610582202;
+        bh=q5pGq2KcrqVHwr6DWLs6LIeKvtAYhp7bGGEZNqwZjhA=;
+        h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+        b=Fb1S1Sj1vVDOa8OxYc5R9qH8TRZd5VQvkWgxjsrU2sJEryQQQoDch3DyLYrfN281v
+         bI5z3QYMnYVemMDu86I3X100EFxB1EAJVIUR02Xihe86r64x4MJeouFIyHw0ohSzrI
+         bM/2Oynq3kvIyhuqzpAZaAGBidcDsJdJmUEJ8ULo=
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+        by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id 8xhLw8ix8LKo; Wed, 13 Jan 2021 15:56:42 -0800 (PST)
+Received: from jarvis.int.hansenpartnership.com (unknown [IPv6:2601:600:8280:66d1::c447])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 3114D107ACF7;
-        Wed, 13 Jan 2021 19:23:55 +0000 (UTC)
-Received: from warthog.procyon.org.uk (ovpn-112-8.rdu2.redhat.com [10.10.112.8])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 7BF1810023B3;
-        Wed, 13 Jan 2021 19:23:51 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-        Kingdom.
-        Registered in England and Wales under Company Registration No. 3798903
-From:   David Howells <dhowells@redhat.com>
-In-Reply-To: <2660556.1610545213@warthog.procyon.org.uk>
-References: <2660556.1610545213@warthog.procyon.org.uk>
-To:     torvalds@linux-foundation.org
-Cc:     dhowells@redhat.com, jarkko@kernel.org, eric.snowberg@oracle.com,
+        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 1FEF31280965;
+        Wed, 13 Jan 2021 15:56:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+        d=hansenpartnership.com; s=20151216; t=1610582201;
+        bh=q5pGq2KcrqVHwr6DWLs6LIeKvtAYhp7bGGEZNqwZjhA=;
+        h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+        b=jLQW+vdSzE4xCQJ+JTZQykAi09eeeVzkgHVIoIp5SUG+44q2hoeTq6UkuWrtniITW
+         PyjfWOXdnY1ftmGa9xni5xHmB/ud3y9NIDVsV6eUNwR+sHAjRklliGxjVtpwMufHWy
+         QvPNy1NKP0phQ0OUpfhZxyd/wrjjusO+nnHRD4qQ=
+Message-ID: <c33c8e3839a41e9654f41cc92c7231104931b1d7.camel@HansenPartnership.com>
+Subject: Re: [PATCH] certs: Add EFI_CERT_X509_GUID support for dbx entries
+From:   James Bottomley <James.Bottomley@HansenPartnership.com>
+To:     David Howells <dhowells@redhat.com>, torvalds@linux-foundation.org
+Cc:     jarkko@kernel.org, eric.snowberg@oracle.com,
         ard.biesheuvel@linaro.org, keyrings@vger.kernel.org,
         linux-crypto@vger.kernel.org,
         linux-security-module@vger.kernel.org, linux-efi@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] certs: Add EFI_CERT_X509_GUID support for dbx entries
+Date:   Wed, 13 Jan 2021 15:56:39 -0800
+In-Reply-To: <2660556.1610545213@warthog.procyon.org.uk>
+References: <2660556.1610545213@warthog.procyon.org.uk>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.34.4 
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <2688930.1610565830.1@warthog.procyon.org.uk>
-Date:   Wed, 13 Jan 2021 19:23:50 +0000
-Message-ID: <2688931.1610565830@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-David Howells <dhowells@redhat.com> wrote:
+On Wed, 2021-01-13 at 13:40 +0000, David Howells wrote:
+> Hi Linus,
+> 
+> Are you willing to take this between merge windows - or does it need
+> to wait for the next merge window?  It's not technically a bug fix to
+> the kernel, but it does have a CVE attached to it.
+> 
+> Note that I've also updated Jarkko's address in his Reviewed-by since
+> his Intel address no longer works.
 
->     This fixes CVE-2020-26541.
+Sorry, late to the party.
 
-Note that I added the CVE number, not Eric.
+I suppose I lost the argument that we shouldn't really be trusting any
+certs from db when shim is in operation because they're all EFI binary
+signing ones and will usually simply be the microsoft certificate and
+possibly an OEM platform one and we're usually pivoting the root of
+trust to the certificates in the MokList.
 
-David
+However, if we are going to do this, we should also be blacklisting the
+certificates in MokListX which the OS sees through MokListXRT.  Since
+MokListX is an essential piece of our revocation infrastructure it
+should have been mentioned in the CVE but wasn't for some reason.
+
+James
+
 
