@@ -2,220 +2,162 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 73B5C2FA060
-	for <lists+linux-efi@lfdr.de>; Mon, 18 Jan 2021 13:51:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 728852FAB65
+	for <lists+linux-efi@lfdr.de>; Mon, 18 Jan 2021 21:27:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404323AbhARMuZ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 18 Jan 2021 07:50:25 -0500
-Received: from mail.kernel.org ([198.145.29.99]:55132 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2387746AbhARMuF (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Mon, 18 Jan 2021 07:50:05 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 42DD222286;
-        Mon, 18 Jan 2021 12:49:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1610974164;
-        bh=L7XN53THx60L8nc9yyjr8F8pae87hzBdUTyX8cbOp5I=;
-        h=From:To:Cc:Subject:Date:From;
-        b=hptA74NAYipXruKNzAGJWvHtYwnopF2ste0lVM2ztAz3NPkaxCA8uRAN7PJl8ZIzg
-         +bwpZsTEk9Yv2XIf0JjvZx+TqSPi7hXipWx+Np+JJaFgXxpRhDGUsutEDeiz/4p98R
-         aI4GKRFCHujm9EfaEm4gxOOeRWwFp/TqaDgZaqXEAMxJM6sjVtkStJC7z6NooDUMpr
-         Jq8Wa0ec9/31aspTuU7LdmpVI4KQDHjOoz6/wHNYfJhyDz6fdmTeoDur/M182OfQ6g
-         /emermT8PEVNcjJWHO97f8iantx8p55SX92xnCf57y+jplo0Mk6YHldNqX3rKshI58
-         wNyyHEqdnY0Hw==
-From:   Ard Biesheuvel <ardb@kernel.org>
-To:     linux-efi@vger.kernel.org
-Cc:     linux-ia64@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>
-Subject: [PATCH] efi: ia64: move IA64-only declarations to new asm/efi.h header
-Date:   Mon, 18 Jan 2021 13:49:13 +0100
-Message-Id: <20210118124913.1555-1-ardb@kernel.org>
-X-Mailer: git-send-email 2.17.1
+        id S2437908AbhARUZO (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 18 Jan 2021 15:25:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45992 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2437212AbhARUY6 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 18 Jan 2021 15:24:58 -0500
+Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D76EC061573;
+        Mon, 18 Jan 2021 12:24:15 -0800 (PST)
+Received: from zn.tnic (p200300ec2f069f0062c4736095b963a8.dip0.t-ipconnect.de [IPv6:2003:ec:2f06:9f00:62c4:7360:95b9:63a8])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id E31721EC0283;
+        Mon, 18 Jan 2021 21:24:13 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1611001454;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=wg2C2nBbuOIoS8W3mFG5ELiW7MV2Ki338+OxxUJ5xdQ=;
+        b=RtFIAxXornjPEFiX1Srlbb2t6bk2lF+oLnAzkcRMedV6rByl6aIGIv/lKOkbyBG70ahfWT
+        jcHHlCmbrEyksnKcBp4vR2ZTQMgMan9kbBCDRpY/7cIv5QGBbkuj5DUKkrFVBT1UKjUmso
+        QU0sy23k/qpjfFqEM3DWGBmXEpVwoK4=
+Date:   Mon, 18 Jan 2021 21:24:09 +0100
+From:   Borislav Petkov <bp@alien8.de>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     Arvind Sankar <nivedita@alum.mit.edu>,
+        Arnd Bergmann <arnd@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, X86 ML <x86@kernel.org>,
+        Nathan Chancellor <natechancellor@gmail.com>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        platform-driver-x86@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        clang-built-linux <clang-built-linux@googlegroups.com>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Subject: Re: [PATCH] x86: efi: avoid BUILD_BUG_ON() for non-constant p4d_index
+Message-ID: <20210118202409.GG30090@zn.tnic>
+References: <20210107223424.4135538-1-arnd@kernel.org>
+ <YAHoB4ODvxSqNhsq@rani.riverdale.lan>
+ <YAH6r3lak/F2wndp@rani.riverdale.lan>
+ <CAMj1kXGZFZciN1_KruCr=g6GANNpRrCLR48b3q13+QfK481C7Q@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAMj1kXGZFZciN1_KruCr=g6GANNpRrCLR48b3q13+QfK481C7Q@mail.gmail.com>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Move some EFI related declarations that are only referenced on IA64 to
-a new asm/efi.h arch header.
+On Sat, Jan 16, 2021 at 05:34:27PM +0100, Ard Biesheuvel wrote:
+> On Fri, 15 Jan 2021 at 21:27, Arvind Sankar <nivedita@alum.mit.edu> wrote:
+> >
+> > On Fri, Jan 15, 2021 at 02:07:51PM -0500, Arvind Sankar wrote:
+> > > On Thu, Jan 07, 2021 at 11:34:15PM +0100, Arnd Bergmann wrote:
+> > > > From: Arnd Bergmann <arnd@arndb.de>
+> > > >
+> > > > When 5-level page tables are enabled, clang triggers a BUILD_BUG_ON():
+> > > >
+> > > > x86_64-linux-ld: arch/x86/platform/efi/efi_64.o: in function `efi_sync_low_kernel_mappings':
+> > > > efi_64.c:(.text+0x22c): undefined reference to `__compiletime_assert_354'
+> > > >
+> > > > Use the same method as in commit c65e774fb3f6 ("x86/mm: Make PGDIR_SHIFT
+> > > > and PTRS_PER_P4D variable") and change it to MAYBE_BUILD_BUG_ON(),
+> > > > so it only triggers for constant input.
+> > > >
+> > > > Link: https://github.com/ClangBuiltLinux/linux/issues/256
+> > > > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> > > > ---
+> > > >  arch/x86/platform/efi/efi_64.c | 4 ++--
+> > > >  1 file changed, 2 insertions(+), 2 deletions(-)
+> > > >
+> > > > diff --git a/arch/x86/platform/efi/efi_64.c b/arch/x86/platform/efi/efi_64.c
+> > > > index e1e8d4e3a213..62bb1616b4a5 100644
+> > > > --- a/arch/x86/platform/efi/efi_64.c
+> > > > +++ b/arch/x86/platform/efi/efi_64.c
+> > > > @@ -137,8 +137,8 @@ void efi_sync_low_kernel_mappings(void)
+> > > >      * As with PGDs, we share all P4D entries apart from the one entry
+> > > >      * that covers the EFI runtime mapping space.
+> > > >      */
+> > > > -   BUILD_BUG_ON(p4d_index(EFI_VA_END) != p4d_index(MODULES_END));
+> > > > -   BUILD_BUG_ON((EFI_VA_START & P4D_MASK) != (EFI_VA_END & P4D_MASK));
+> > > > +   MAYBE_BUILD_BUG_ON(p4d_index(EFI_VA_END) != p4d_index(MODULES_END));
+> > > > +   MAYBE_BUILD_BUG_ON((EFI_VA_START & P4D_MASK) != (EFI_VA_END & P4D_MASK));
+> > > >
+> > > >     pgd_efi = efi_pgd + pgd_index(EFI_VA_END);
+> > > >     pgd_k = pgd_offset_k(EFI_VA_END);
+> > > > --
+> > > > 2.29.2
+> > > >
+> > >
+> > > I think this needs more explanation as to why clang is triggering this.
+> > > The issue mentions clang not inline p4d_index(), and I guess not
+> > > performing inter-procedural analysis either?
+> > >
+> > > For the second assertion there, everything is always constant AFAICT:
+> > > EFI_VA_START, EFI_VA_END and P4D_MASK are all constants regardless of
+> > > CONFIG_5LEVEL.
+> > >
+> > > For the first assertion, it isn't technically constant, but if
+> > > p4d_index() gets inlined, the compiler should be able to see that the
+> > > two are always equal, even though ptrs_per_p4d is not constant:
+> > >       EFI_VA_END >> 39 == MODULES_END >> 39
+> > > so the masking with ptrs_per_p4d-1 doesn't matter for the comparison.
+> > >
+> > > As a matter of fact, it seems like the four assertions could be combined
+> > > into:
+> > >       BUILD_BUG_ON((EFI_VA_END & P4D_MASK) != (MODULES_END & P4D_MASK));
+> > >       BUILD_BUG_ON((EFI_VA_START & P4D_MASK) != (EFI_VA_END & P4D_MASK));
+> > > instead of separately asserting they're the same PGD entry and the same
+> > > P4D entry.
+> > >
+> > > Thanks.
+> >
+> > I actually don't quite get the MODULES_END check -- Ard, do you know
+> > what that's for?
+> >
+> 
+> Maybe Boris remembers? He wrote the original code for the 'new' EFI
+> page table layout.
 
-Cc: Tony Luck <tony.luck@intel.com>
-Cc: Fenghua Yu <fenghua.yu@intel.com>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
----
- arch/ia64/include/asm/efi.h      | 13 +++++++++++++
- arch/ia64/kernel/efi.c           |  1 +
- arch/ia64/kernel/machine_kexec.c |  1 +
- arch/ia64/kernel/mca.c           |  1 +
- arch/ia64/kernel/smpboot.c       |  1 +
- arch/ia64/kernel/time.c          |  1 +
- arch/ia64/kernel/uncached.c      |  4 +---
- arch/ia64/mm/contig.c            |  1 +
- arch/ia64/mm/discontig.c         |  1 +
- arch/ia64/mm/init.c              |  1 +
- include/linux/efi.h              |  6 ------
- 11 files changed, 22 insertions(+), 9 deletions(-)
- create mode 100644 arch/ia64/include/asm/efi.h
+That was added by Kirill for 5-level pgtables:
 
-diff --git a/arch/ia64/include/asm/efi.h b/arch/ia64/include/asm/efi.h
-new file mode 100644
-index 000000000000..6a4a50d8f19a
---- /dev/null
-+++ b/arch/ia64/include/asm/efi.h
-@@ -0,0 +1,13 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef _ASM_EFI_H
-+#define _ASM_EFI_H
-+
-+typedef int (*efi_freemem_callback_t) (u64 start, u64 end, void *arg);
-+
-+void *efi_get_pal_addr(void);
-+void efi_map_pal_code(void);
-+void efi_memmap_walk(efi_freemem_callback_t, void *);
-+void efi_memmap_walk_uc(efi_freemem_callback_t, void *);
-+void efi_gettimeofday(struct timespec64 *ts);
-+
-+#endif
-diff --git a/arch/ia64/kernel/efi.c b/arch/ia64/kernel/efi.c
-index f932b25fb817..dd7fd750bb93 100644
---- a/arch/ia64/kernel/efi.c
-+++ b/arch/ia64/kernel/efi.c
-@@ -34,6 +34,7 @@
- #include <linux/kexec.h>
- #include <linux/mm.h>
- 
-+#include <asm/efi.h>
- #include <asm/io.h>
- #include <asm/kregs.h>
- #include <asm/meminit.h>
-diff --git a/arch/ia64/kernel/machine_kexec.c b/arch/ia64/kernel/machine_kexec.c
-index efc9b568401c..af310dc8a356 100644
---- a/arch/ia64/kernel/machine_kexec.c
-+++ b/arch/ia64/kernel/machine_kexec.c
-@@ -16,6 +16,7 @@
- #include <linux/numa.h>
- #include <linux/mmzone.h>
- 
-+#include <asm/efi.h>
- #include <asm/numa.h>
- #include <asm/mmu_context.h>
- #include <asm/setup.h>
-diff --git a/arch/ia64/kernel/mca.c b/arch/ia64/kernel/mca.c
-index 2703f7795672..0fea266b4d39 100644
---- a/arch/ia64/kernel/mca.c
-+++ b/arch/ia64/kernel/mca.c
-@@ -91,6 +91,7 @@
- #include <linux/gfp.h>
- 
- #include <asm/delay.h>
-+#include <asm/efi.h>
- #include <asm/meminit.h>
- #include <asm/page.h>
- #include <asm/ptrace.h>
-diff --git a/arch/ia64/kernel/smpboot.c b/arch/ia64/kernel/smpboot.c
-index 093040f7e626..49b488580939 100644
---- a/arch/ia64/kernel/smpboot.c
-+++ b/arch/ia64/kernel/smpboot.c
-@@ -45,6 +45,7 @@
- #include <asm/cache.h>
- #include <asm/current.h>
- #include <asm/delay.h>
-+#include <asm/efi.h>
- #include <asm/io.h>
- #include <asm/irq.h>
- #include <asm/mca.h>
-diff --git a/arch/ia64/kernel/time.c b/arch/ia64/kernel/time.c
-index ed9fc3d057a6..a37f161a66b1 100644
---- a/arch/ia64/kernel/time.c
-+++ b/arch/ia64/kernel/time.c
-@@ -26,6 +26,7 @@
- #include <linux/sched/cputime.h>
- 
- #include <asm/delay.h>
-+#include <asm/efi.h>
- #include <asm/hw_irq.h>
- #include <asm/ptrace.h>
- #include <asm/sal.h>
-diff --git a/arch/ia64/kernel/uncached.c b/arch/ia64/kernel/uncached.c
-index 0750f367837d..51883a66aeb5 100644
---- a/arch/ia64/kernel/uncached.c
-+++ b/arch/ia64/kernel/uncached.c
-@@ -20,14 +20,12 @@
- #include <linux/genalloc.h>
- #include <linux/gfp.h>
- #include <linux/pgtable.h>
-+#include <asm/efi.h>
- #include <asm/page.h>
- #include <asm/pal.h>
- #include <linux/atomic.h>
- #include <asm/tlbflush.h>
- 
--
--extern void __init efi_memmap_walk_uc(efi_freemem_callback_t, void *);
--
- struct uncached_pool {
- 	struct gen_pool *pool;
- 	struct mutex add_chunk_mutex;	/* serialize adding a converted chunk */
-diff --git a/arch/ia64/mm/contig.c b/arch/ia64/mm/contig.c
-index bfc4ecd0a2ab..62fe80a16f42 100644
---- a/arch/ia64/mm/contig.c
-+++ b/arch/ia64/mm/contig.c
-@@ -21,6 +21,7 @@
- #include <linux/swap.h>
- #include <linux/sizes.h>
- 
-+#include <asm/efi.h>
- #include <asm/meminit.h>
- #include <asm/sections.h>
- #include <asm/mca.h>
-diff --git a/arch/ia64/mm/discontig.c b/arch/ia64/mm/discontig.c
-index c7311131156e..03b3a02375ff 100644
---- a/arch/ia64/mm/discontig.c
-+++ b/arch/ia64/mm/discontig.c
-@@ -24,6 +24,7 @@
- #include <linux/efi.h>
- #include <linux/nodemask.h>
- #include <linux/slab.h>
-+#include <asm/efi.h>
- #include <asm/tlb.h>
- #include <asm/meminit.h>
- #include <asm/numa.h>
-diff --git a/arch/ia64/mm/init.c b/arch/ia64/mm/init.c
-index 9b5acf8fb092..24583a39fa1b 100644
---- a/arch/ia64/mm/init.c
-+++ b/arch/ia64/mm/init.c
-@@ -27,6 +27,7 @@
- #include <linux/swiotlb.h>
- 
- #include <asm/dma.h>
-+#include <asm/efi.h>
- #include <asm/io.h>
- #include <asm/numa.h>
- #include <asm/patch.h>
-diff --git a/include/linux/efi.h b/include/linux/efi.h
-index b1ca1903b483..a81ff5047859 100644
---- a/include/linux/efi.h
-+++ b/include/linux/efi.h
-@@ -167,8 +167,6 @@ struct capsule_info {
- 
- int __efi_capsule_setup_info(struct capsule_info *cap_info);
- 
--typedef int (*efi_freemem_callback_t) (u64 start, u64 end, void *arg);
--
- /*
-  * Types and defines for Time Services
-  */
-@@ -605,10 +603,6 @@ efi_guid_to_str(efi_guid_t *guid, char *out)
- }
- 
- extern void efi_init (void);
--extern void *efi_get_pal_addr (void);
--extern void efi_map_pal_code (void);
--extern void efi_memmap_walk (efi_freemem_callback_t callback, void *arg);
--extern void efi_gettimeofday (struct timespec64 *ts);
- #ifdef CONFIG_EFI
- extern void efi_enter_virtual_mode (void);	/* switch EFI to virtual mode, if possible */
- #else
+  e981316f5604 ("x86/efi: Add 5-level paging support")
+
+ Documentation/x86/x86_64/mm.rst should explain the pagetable layout:
+
+   ffffff8000000000 | -512    GB | ffffffeeffffffff |  444 GB | ... unused hole
+   ffffffef00000000 |  -68    GB | fffffffeffffffff |   64 GB | EFI region mapping space
+   ffffffff00000000 |   -4    GB | ffffffff7fffffff |    2 GB | ... unused hole
+   ffffffff80000000 |   -2    GB | ffffffff9fffffff |  512 MB | kernel text mapping, mapped to physical address 0
+   ffffffff80000000 |-2048    MB |                  |         |
+   ffffffffa0000000 |-1536    MB | fffffffffeffffff | 1520 MB | module mapping space
+   ffffffffff000000 |  -16    MB |                  |         |
+      FIXADDR_START | ~-11    MB | ffffffffff5fffff | ~0.5 MB | kernel-internal fixmap range, variable size and offset
+
+That thing which starts at -512 GB above is the last PGD on the
+pagetable. In it, between -4G and -68G there are 64G which are the EFI
+region mapping space for runtime services.
+
+Frankly I'm not sure what this thing is testing because the EFI VA range
+is hardcoded and I can't imagine it being somewhere else *except* in the
+last PGD.
+
+Lemme add Kirill for clarification.
+
 -- 
-2.17.1
+Regards/Gruss,
+    Boris.
 
+https://people.kernel.org/tglx/notes-about-netiquette
