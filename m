@@ -2,36 +2,58 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 728852FAB65
-	for <lists+linux-efi@lfdr.de>; Mon, 18 Jan 2021 21:27:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9BC802FACEB
+	for <lists+linux-efi@lfdr.de>; Mon, 18 Jan 2021 22:44:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2437908AbhARUZO (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 18 Jan 2021 15:25:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45992 "EHLO
+        id S2388973AbhARVni (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 18 Jan 2021 16:43:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34542 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2437212AbhARUY6 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 18 Jan 2021 15:24:58 -0500
-Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D76EC061573;
-        Mon, 18 Jan 2021 12:24:15 -0800 (PST)
-Received: from zn.tnic (p200300ec2f069f0062c4736095b963a8.dip0.t-ipconnect.de [IPv6:2003:ec:2f06:9f00:62c4:7360:95b9:63a8])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id E31721EC0283;
-        Mon, 18 Jan 2021 21:24:13 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1611001454;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=wg2C2nBbuOIoS8W3mFG5ELiW7MV2Ki338+OxxUJ5xdQ=;
-        b=RtFIAxXornjPEFiX1Srlbb2t6bk2lF+oLnAzkcRMedV6rByl6aIGIv/lKOkbyBG70ahfWT
-        jcHHlCmbrEyksnKcBp4vR2ZTQMgMan9kbBCDRpY/7cIv5QGBbkuj5DUKkrFVBT1UKjUmso
-        QU0sy23k/qpjfFqEM3DWGBmXEpVwoK4=
-Date:   Mon, 18 Jan 2021 21:24:09 +0100
-From:   Borislav Petkov <bp@alien8.de>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     Arvind Sankar <nivedita@alum.mit.edu>,
+        with ESMTP id S2389022AbhARVnE (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 18 Jan 2021 16:43:04 -0500
+Received: from mail-qv1-xf2b.google.com (mail-qv1-xf2b.google.com [IPv6:2607:f8b0:4864:20::f2b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B1D8C061574;
+        Mon, 18 Jan 2021 13:42:24 -0800 (PST)
+Received: by mail-qv1-xf2b.google.com with SMTP id d11so8207910qvo.11;
+        Mon, 18 Jan 2021 13:42:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:from:date:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=7WHZONqXFgXEk6ISoZzpiq15kU0W8eyDeH2IAM8jdzk=;
+        b=hYi/lsRjquukXojQzQJwLZq7VF5OWZ5OAhY28p2GNWRDhpFvVWB5TsUx5s2KQBgq4y
+         IJghQq7PPfKwSnoJi7rVpbbHAaK19Vrs6ARsjeMht6pgPvsPXnIiCt//x/enj2DxuR00
+         4yV51OKn7ZijY9yYtgkmQO8sqbv+V5qt6Jy9dsIfwKCUBQBYCH+Dj7w8OJ9QDaUj6o10
+         SZSOU9I6v3BqUOr1dM4kodBFCcRzQLcyrI7IkDFT0aHpQsEkdSLHnlML5NTccuqB/q7D
+         OKMJaw9z5pesJeFPxcpxl2iilM5u9MOOa6S/UwyrQOjL77+gXog02WZVh4vTXB/k/Yam
+         ATlw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:from:date:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to;
+        bh=7WHZONqXFgXEk6ISoZzpiq15kU0W8eyDeH2IAM8jdzk=;
+        b=JbzoBqksOE4iMbu17rBzzmAXGx3hSBDzyFuDRup/5GkyfOBw2At+/9NomldnQhx6P8
+         zgQc4F7zxv4tJdk4YsMk9g1zhzOHv1ICddOZILZz5HyZcYnsLXPHA3akapcvOaUq8jgZ
+         6wJ8BNpe0icNlRHg2YYuzErsTT7GlDykN52XTMySVg4Y8jkjqn5f4c9Ed7KZ+tuxxARI
+         HOm4I+VbHs26s1LtNnF734kPBG99mBVUf+aWqi4MymGwaR0Xa1anYAtJVzDZOZElqD4Z
+         I1Px/IdCslWe6upl2h3W5emAdG9Cd+B006QcO2K3Lsqh4bKWSgmJMtD3SbwoLiK2uaU1
+         /H+g==
+X-Gm-Message-State: AOAM532K8+UedWOGhwjW5jlH/Ycite4PMeIplE/1h+WI7+48fiCA9aJ+
+        w6KAmh54He6hhOnYwVoFCQw=
+X-Google-Smtp-Source: ABdhPJz8yYg54fLQaQgOsJbMnT4/t60m1mZqZ979bZmxy4q+LDKeOnK5XdZdJkqZzRGo/9/vqz9Yrg==
+X-Received: by 2002:ad4:59d2:: with SMTP id el18mr1664166qvb.35.1611006143640;
+        Mon, 18 Jan 2021 13:42:23 -0800 (PST)
+Received: from rani.riverdale.lan ([2001:470:1f07:5f3::b55f])
+        by smtp.gmail.com with ESMTPSA id h75sm11354276qke.130.2021.01.18.13.42.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 18 Jan 2021 13:42:22 -0800 (PST)
+Sender: Arvind Sankar <niveditas98@gmail.com>
+From:   Arvind Sankar <nivedita@alum.mit.edu>
+X-Google-Original-From: Arvind Sankar <arvind@rani.riverdale.lan>
+Date:   Mon, 18 Jan 2021 16:42:20 -0500
+To:     Borislav Petkov <bp@alien8.de>
+Cc:     Ard Biesheuvel <ardb@kernel.org>,
+        Arvind Sankar <nivedita@alum.mit.edu>,
         Arnd Bergmann <arnd@kernel.org>,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>, X86 ML <x86@kernel.org>,
@@ -47,117 +69,88 @@ Cc:     Arvind Sankar <nivedita@alum.mit.edu>,
         clang-built-linux <clang-built-linux@googlegroups.com>,
         "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 Subject: Re: [PATCH] x86: efi: avoid BUILD_BUG_ON() for non-constant p4d_index
-Message-ID: <20210118202409.GG30090@zn.tnic>
+Message-ID: <YAYAvBARSRSg8z8G@rani.riverdale.lan>
 References: <20210107223424.4135538-1-arnd@kernel.org>
  <YAHoB4ODvxSqNhsq@rani.riverdale.lan>
  <YAH6r3lak/F2wndp@rani.riverdale.lan>
  <CAMj1kXGZFZciN1_KruCr=g6GANNpRrCLR48b3q13+QfK481C7Q@mail.gmail.com>
+ <20210118202409.GG30090@zn.tnic>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <CAMj1kXGZFZciN1_KruCr=g6GANNpRrCLR48b3q13+QfK481C7Q@mail.gmail.com>
+In-Reply-To: <20210118202409.GG30090@zn.tnic>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Sat, Jan 16, 2021 at 05:34:27PM +0100, Ard Biesheuvel wrote:
-> On Fri, 15 Jan 2021 at 21:27, Arvind Sankar <nivedita@alum.mit.edu> wrote:
-> >
-> > On Fri, Jan 15, 2021 at 02:07:51PM -0500, Arvind Sankar wrote:
-> > > On Thu, Jan 07, 2021 at 11:34:15PM +0100, Arnd Bergmann wrote:
-> > > > From: Arnd Bergmann <arnd@arndb.de>
+On Mon, Jan 18, 2021 at 09:24:09PM +0100, Borislav Petkov wrote:
+> > > > As a matter of fact, it seems like the four assertions could be combined
+> > > > into:
+> > > >       BUILD_BUG_ON((EFI_VA_END & P4D_MASK) != (MODULES_END & P4D_MASK));
+> > > >       BUILD_BUG_ON((EFI_VA_START & P4D_MASK) != (EFI_VA_END & P4D_MASK));
+> > > > instead of separately asserting they're the same PGD entry and the same
+> > > > P4D entry.
 > > > >
-> > > > When 5-level page tables are enabled, clang triggers a BUILD_BUG_ON():
-> > > >
-> > > > x86_64-linux-ld: arch/x86/platform/efi/efi_64.o: in function `efi_sync_low_kernel_mappings':
-> > > > efi_64.c:(.text+0x22c): undefined reference to `__compiletime_assert_354'
-> > > >
-> > > > Use the same method as in commit c65e774fb3f6 ("x86/mm: Make PGDIR_SHIFT
-> > > > and PTRS_PER_P4D variable") and change it to MAYBE_BUILD_BUG_ON(),
-> > > > so it only triggers for constant input.
-> > > >
-> > > > Link: https://github.com/ClangBuiltLinux/linux/issues/256
-> > > > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> > > > ---
-> > > >  arch/x86/platform/efi/efi_64.c | 4 ++--
-> > > >  1 file changed, 2 insertions(+), 2 deletions(-)
-> > > >
-> > > > diff --git a/arch/x86/platform/efi/efi_64.c b/arch/x86/platform/efi/efi_64.c
-> > > > index e1e8d4e3a213..62bb1616b4a5 100644
-> > > > --- a/arch/x86/platform/efi/efi_64.c
-> > > > +++ b/arch/x86/platform/efi/efi_64.c
-> > > > @@ -137,8 +137,8 @@ void efi_sync_low_kernel_mappings(void)
-> > > >      * As with PGDs, we share all P4D entries apart from the one entry
-> > > >      * that covers the EFI runtime mapping space.
-> > > >      */
-> > > > -   BUILD_BUG_ON(p4d_index(EFI_VA_END) != p4d_index(MODULES_END));
-> > > > -   BUILD_BUG_ON((EFI_VA_START & P4D_MASK) != (EFI_VA_END & P4D_MASK));
-> > > > +   MAYBE_BUILD_BUG_ON(p4d_index(EFI_VA_END) != p4d_index(MODULES_END));
-> > > > +   MAYBE_BUILD_BUG_ON((EFI_VA_START & P4D_MASK) != (EFI_VA_END & P4D_MASK));
-> > > >
-> > > >     pgd_efi = efi_pgd + pgd_index(EFI_VA_END);
-> > > >     pgd_k = pgd_offset_k(EFI_VA_END);
-> > > > --
-> > > > 2.29.2
-> > > >
+> > > > Thanks.
 > > >
-> > > I think this needs more explanation as to why clang is triggering this.
-> > > The issue mentions clang not inline p4d_index(), and I guess not
-> > > performing inter-procedural analysis either?
+> > > I actually don't quite get the MODULES_END check -- Ard, do you know
+> > > what that's for?
 > > >
-> > > For the second assertion there, everything is always constant AFAICT:
-> > > EFI_VA_START, EFI_VA_END and P4D_MASK are all constants regardless of
-> > > CONFIG_5LEVEL.
-> > >
-> > > For the first assertion, it isn't technically constant, but if
-> > > p4d_index() gets inlined, the compiler should be able to see that the
-> > > two are always equal, even though ptrs_per_p4d is not constant:
-> > >       EFI_VA_END >> 39 == MODULES_END >> 39
-> > > so the masking with ptrs_per_p4d-1 doesn't matter for the comparison.
-> > >
-> > > As a matter of fact, it seems like the four assertions could be combined
-> > > into:
-> > >       BUILD_BUG_ON((EFI_VA_END & P4D_MASK) != (MODULES_END & P4D_MASK));
-> > >       BUILD_BUG_ON((EFI_VA_START & P4D_MASK) != (EFI_VA_END & P4D_MASK));
-> > > instead of separately asserting they're the same PGD entry and the same
-> > > P4D entry.
-> > >
-> > > Thanks.
-> >
-> > I actually don't quite get the MODULES_END check -- Ard, do you know
-> > what that's for?
-> >
+> > 
+> > Maybe Boris remembers? He wrote the original code for the 'new' EFI
+> > page table layout.
 > 
-> Maybe Boris remembers? He wrote the original code for the 'new' EFI
-> page table layout.
+> That was added by Kirill for 5-level pgtables:
+> 
+>   e981316f5604 ("x86/efi: Add 5-level paging support")
 
-That was added by Kirill for 5-level pgtables:
+That just duplicates the existing pgd_index() check for the p4d_index()
+as well. It looks like the original commit adding
+efi_sync_low_kernel_mappings() used to copy upto the PGD entry including
+MODULES_END:
+  d2f7cbe7b26a7 ("x86/efi: Runtime services virtual mapping")
+and then Matt changed that when creating efi_mm:
+  67a9108ed4313 ("x86/efi: Build our own page table structures")
+to use EFI_VA_END instead but have a check that EFI_VA_END is in the
+same entry as MODULES_END.
 
-  e981316f5604 ("x86/efi: Add 5-level paging support")
+AFAICT, MODULES_END is only relevant as being something that happens to
+be in the top 512GiB, and -1ul would be clearer.
 
- Documentation/x86/x86_64/mm.rst should explain the pagetable layout:
+> 
+>  Documentation/x86/x86_64/mm.rst should explain the pagetable layout:
+> 
+>    ffffff8000000000 | -512    GB | ffffffeeffffffff |  444 GB | ... unused hole
+>    ffffffef00000000 |  -68    GB | fffffffeffffffff |   64 GB | EFI region mapping space
+>    ffffffff00000000 |   -4    GB | ffffffff7fffffff |    2 GB | ... unused hole
+>    ffffffff80000000 |   -2    GB | ffffffff9fffffff |  512 MB | kernel text mapping, mapped to physical address 0
+>    ffffffff80000000 |-2048    MB |                  |         |
+>    ffffffffa0000000 |-1536    MB | fffffffffeffffff | 1520 MB | module mapping space
+>    ffffffffff000000 |  -16    MB |                  |         |
+>       FIXADDR_START | ~-11    MB | ffffffffff5fffff | ~0.5 MB | kernel-internal fixmap range, variable size and offset
+> 
+> That thing which starts at -512 GB above is the last PGD on the
+> pagetable. In it, between -4G and -68G there are 64G which are the EFI
+> region mapping space for runtime services.
+> 
+> Frankly I'm not sure what this thing is testing because the EFI VA range
+> is hardcoded and I can't imagine it being somewhere else *except* in the
+> last PGD.
 
-   ffffff8000000000 | -512    GB | ffffffeeffffffff |  444 GB | ... unused hole
-   ffffffef00000000 |  -68    GB | fffffffeffffffff |   64 GB | EFI region mapping space
-   ffffffff00000000 |   -4    GB | ffffffff7fffffff |    2 GB | ... unused hole
-   ffffffff80000000 |   -2    GB | ffffffff9fffffff |  512 MB | kernel text mapping, mapped to physical address 0
-   ffffffff80000000 |-2048    MB |                  |         |
-   ffffffffa0000000 |-1536    MB | fffffffffeffffff | 1520 MB | module mapping space
-   ffffffffff000000 |  -16    MB |                  |         |
-      FIXADDR_START | ~-11    MB | ffffffffff5fffff | ~0.5 MB | kernel-internal fixmap range, variable size and offset
+It's just so that someone doesn't just change the #define's for
+EFI_VA_END/START and think that it will work, I guess.
 
-That thing which starts at -512 GB above is the last PGD on the
-pagetable. In it, between -4G and -68G there are 64G which are the EFI
-region mapping space for runtime services.
+Another reasonable option, for example, would be to reserve an entire
+PGD entry, allowing everything but the PGD level to be shared, and
+adding the EFI PGD to the pgd_list and getting rid of
+efi_sync_low_kernel_mappings() altogether. There aren't that many PGD
+entries still unused though, so this is probably not worth it.
 
-Frankly I'm not sure what this thing is testing because the EFI VA range
-is hardcoded and I can't imagine it being somewhere else *except* in the
-last PGD.
-
-Lemme add Kirill for clarification.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+> 
+> Lemme add Kirill for clarification.
+> 
+> -- 
+> Regards/Gruss,
+>     Boris.
+> 
+> https://people.kernel.org/tglx/notes-about-netiquette
