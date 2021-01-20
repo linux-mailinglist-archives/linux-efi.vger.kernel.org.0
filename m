@@ -2,98 +2,132 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E3F532FCCE6
-	for <lists+linux-efi@lfdr.de>; Wed, 20 Jan 2021 09:44:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CFF432FCECD
+	for <lists+linux-efi@lfdr.de>; Wed, 20 Jan 2021 12:08:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730650AbhATIks (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 20 Jan 2021 03:40:48 -0500
-Received: from mail.kernel.org ([198.145.29.99]:57554 "EHLO mail.kernel.org"
+        id S1729190AbhATLGz (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 20 Jan 2021 06:06:55 -0500
+Received: from mail.kernel.org ([198.145.29.99]:43144 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730960AbhATIkX (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Wed, 20 Jan 2021 03:40:23 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 25D23225AA
-        for <linux-efi@vger.kernel.org>; Wed, 20 Jan 2021 08:39:39 +0000 (UTC)
+        id S1731474AbhATJes (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Wed, 20 Jan 2021 04:34:48 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 226462333B;
+        Wed, 20 Jan 2021 09:33:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1611131979;
-        bh=sszSjZ3LO3VSlgmeu0qVt/nqN9HznY3qWh7fkY/5+Us=;
+        s=k20201202; t=1611135235;
+        bh=O0F6nt2qctM6JqozhShXeHZqpZiqCUOY7pO9GCVxo5o=;
         h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=i5efAGJWVTEF4LY4OMukEl5HR5Qsabjk1Bi1vyxkSfD11272PBeYzzQYmMGf5t72m
-         JMg/Elnmq1c5nPb8l9mL9/BWDu0XWuK5KNbnM81rWx/RJaXWemjXadIKMpiPa2h+oH
-         Krgj65ZOwbVPWxl7aetNIKqW23N170k1lXtDRx83vMymUpG8MaKjZ/3RprXLM0TeFp
-         mw/IbO3Iz9RH36O5Jpvq1UafXmnJG2B98xw6YZLuvsMQ/d6IPuF3Sofbm9o/j/0pXv
-         dadPQlnHpvI0unpxbkigYUD5zVdqn5/Jsw6wsFTioerZBTpWe4HQS1yi/Hh0a+wV9n
-         WwY+t1mSGB3Kw==
-Received: by mail-oi1-f175.google.com with SMTP id p5so24253116oif.7
-        for <linux-efi@vger.kernel.org>; Wed, 20 Jan 2021 00:39:39 -0800 (PST)
-X-Gm-Message-State: AOAM531iS1H+bciOhZHOAGVf5MLOP1QciTkvBs/1x8LTuq0CwQLRwTSZ
-        s9dZd+61LPACSrkRPf8VlVXpuk55Pzoh5SvN0Pg=
-X-Google-Smtp-Source: ABdhPJwFl3U5t1Gl0RMB5Y+QeQgkFcdkx3GZsTPMRral+e44nvJ8BPhPp0MwvLhf2KoX2zRZLzp3oVdGIMkMSagFnKY=
-X-Received: by 2002:aca:dd03:: with SMTP id u3mr2281018oig.47.1611131978425;
- Wed, 20 Jan 2021 00:39:38 -0800 (PST)
+        b=CCjy0SVbpAtcByDd1IMtGHULHpLqtMb8gFB5aY1lDIayFYaFPEPbjuDW8JNWwnoeb
+         L2UP27ytyXnviDUCM+Uldc00x60S7SqE/P7joTTZrbhK0v4RYmmwjdQRz7q+aw2vnD
+         VIQI1Q+CKb+D9tgWzfBTkQHmBo0O0z+540uuxs2OoUfPxgjwH1BKEnd4RmMepa9mVO
+         tE0SgtMQxTPPskS2ztxwsvHN/UhHFV3cRmhE16G1yfO23bDSUEkJzJQUZxPKOtcviX
+         8C0zatABwh5r074MkfjRiR5HJb83QMqTUBvBSo9mqMItbdcjJGQ//nVWg7DQmXTuyq
+         hX1jqMTcqnb8A==
+Received: by mail-ot1-f46.google.com with SMTP id 63so323602oty.0;
+        Wed, 20 Jan 2021 01:33:55 -0800 (PST)
+X-Gm-Message-State: AOAM530l+kZtB+M8tXKhOwzPuCXLuncr1tciMmJ5rWCQqqF/wnCu9ZIu
+        UXAynud88xoL01gAZ9yUwLvXE+T229EnibRCSm4=
+X-Google-Smtp-Source: ABdhPJywCSz0cSQIAbQzZBztskNWdBoBCF7hq+5suaHcdUDckUTiZ8fWUBzFLZabRqU1JMMnKGOySz8xRqtDsx+2TYE=
+X-Received: by 2002:a05:6830:1614:: with SMTP id g20mr656140otr.77.1611135234286;
+ Wed, 20 Jan 2021 01:33:54 -0800 (PST)
 MIME-Version: 1.0
-References: <20210119170742.20969-1-broonie@kernel.org>
-In-Reply-To: <20210119170742.20969-1-broonie@kernel.org>
+References: <20210107223424.4135538-1-arnd@kernel.org> <YAHoB4ODvxSqNhsq@rani.riverdale.lan>
+ <YAH6r3lak/F2wndp@rani.riverdale.lan> <CAMj1kXGZFZciN1_KruCr=g6GANNpRrCLR48b3q13+QfK481C7Q@mail.gmail.com>
+ <20210118202409.GG30090@zn.tnic> <YAYAvBARSRSg8z8G@rani.riverdale.lan>
+In-Reply-To: <YAYAvBARSRSg8z8G@rani.riverdale.lan>
 From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Wed, 20 Jan 2021 09:39:27 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXEryUp9eo3cufS2G+=zBdqNbLUwGTzYjLQGBx1EtXeRTQ@mail.gmail.com>
-Message-ID: <CAMj1kXEryUp9eo3cufS2G+=zBdqNbLUwGTzYjLQGBx1EtXeRTQ@mail.gmail.com>
-Subject: Re: [PATCH] efi/arm64: Update debug prints to reflect other entropy sources
-To:     Mark Brown <broonie@kernel.org>
-Cc:     linux-efi <linux-efi@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>
+Date:   Wed, 20 Jan 2021 10:33:43 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXHM98-iDYpAozaWEv-qxhZ0-CUMwSdG532x2d+55gXDhQ@mail.gmail.com>
+Message-ID: <CAMj1kXHM98-iDYpAozaWEv-qxhZ0-CUMwSdG532x2d+55gXDhQ@mail.gmail.com>
+Subject: Re: [PATCH] x86: efi: avoid BUILD_BUG_ON() for non-constant p4d_index
+To:     Arvind Sankar <nivedita@alum.mit.edu>
+Cc:     Borislav Petkov <bp@alien8.de>, Arnd Bergmann <arnd@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, X86 ML <x86@kernel.org>,
+        Nathan Chancellor <natechancellor@gmail.com>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        platform-driver-x86@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        clang-built-linux <clang-built-linux@googlegroups.com>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, 19 Jan 2021 at 19:26, Mark Brown <broonie@kernel.org> wrote:
+On Mon, 18 Jan 2021 at 22:42, Arvind Sankar <nivedita@alum.mit.edu> wrote:
 >
-> Currently the EFI stub prints a diagnostic on boot saying that KASLR will
-> be disabled if it is unable to use the EFI RNG protocol to obtain a seed
-> for KASLR. When this code was originally added there were no other entropy
-> sources which KASLR would be able to obtain entropy from so this was
-> accurate but with the addition of support of v8.5-RNG and the SMCCC RNG
-> protocol it is now possible for KASLR to obtain entropy even if the EFI
-> RNG protocol is unsupported in the system. This has been seen in emulated
-> systems with EFI.
+> On Mon, Jan 18, 2021 at 09:24:09PM +0100, Borislav Petkov wrote:
+> > > > > As a matter of fact, it seems like the four assertions could be combined
+> > > > > into:
+> > > > >       BUILD_BUG_ON((EFI_VA_END & P4D_MASK) != (MODULES_END & P4D_MASK));
+> > > > >       BUILD_BUG_ON((EFI_VA_START & P4D_MASK) != (EFI_VA_END & P4D_MASK));
+> > > > > instead of separately asserting they're the same PGD entry and the same
+> > > > > P4D entry.
+> > > > >
+> > > > > Thanks.
+> > > >
+> > > > I actually don't quite get the MODULES_END check -- Ard, do you know
+> > > > what that's for?
+> > > >
+> > >
+> > > Maybe Boris remembers? He wrote the original code for the 'new' EFI
+> > > page table layout.
+> >
+> > That was added by Kirill for 5-level pgtables:
+> >
+> >   e981316f5604 ("x86/efi: Add 5-level paging support")
 >
-> Weaken the diagnostic to reflect the fact that KASLR may not be disabled,
-> the warning is still useful as other sources may not be available and newer
-> versions of both SBBR and EBBR require the RNG protocol and recommend that
-> it be able to provide sufficient entropy for seeding KASLR.
+> That just duplicates the existing pgd_index() check for the p4d_index()
+> as well. It looks like the original commit adding
+> efi_sync_low_kernel_mappings() used to copy upto the PGD entry including
+> MODULES_END:
+>   d2f7cbe7b26a7 ("x86/efi: Runtime services virtual mapping")
+> and then Matt changed that when creating efi_mm:
+>   67a9108ed4313 ("x86/efi: Build our own page table structures")
+> to use EFI_VA_END instead but have a check that EFI_VA_END is in the
+> same entry as MODULES_END.
 >
-> Signed-off-by: Mark Brown <broonie@kernel.org>
-> ---
->  drivers/firmware/efi/libstub/arm64-stub.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+> AFAICT, MODULES_END is only relevant as being something that happens to
+> be in the top 512GiB, and -1ul would be clearer.
 >
-> diff --git a/drivers/firmware/efi/libstub/arm64-stub.c b/drivers/firmware/efi/libstub/arm64-stub.c
-> index 22ece1ad68a8..94ade08b1054 100644
-> --- a/drivers/firmware/efi/libstub/arm64-stub.c
-> +++ b/drivers/firmware/efi/libstub/arm64-stub.c
-> @@ -61,10 +61,10 @@ efi_status_t handle_kernel_image(unsigned long *image_addr,
->                         status = efi_get_random_bytes(sizeof(phys_seed),
->                                                       (u8 *)&phys_seed);
->                         if (status == EFI_NOT_FOUND) {
-> -                               efi_info("EFI_RNG_PROTOCOL unavailable, KASLR will be disabled\n");
-> +                               efi_info("EFI_RNG_PROTOCOL unavailable, KASLR may be disabled\n");
->                                 efi_nokaslr = true;
->                         } else if (status != EFI_SUCCESS) {
-> -                               efi_err("efi_get_random_bytes() failed (0x%lx), KASLR will be disabled\n",
-> +                               efi_err("efi_get_random_bytes() failed (0x%lx), KASLR may be disabled\n",
->                                         status);
->                                 efi_nokaslr = true;
->                         }
-> --
-> 2.20.1
+> >
+> >  Documentation/x86/x86_64/mm.rst should explain the pagetable layout:
+> >
+> >    ffffff8000000000 | -512    GB | ffffffeeffffffff |  444 GB | ... unused hole
+> >    ffffffef00000000 |  -68    GB | fffffffeffffffff |   64 GB | EFI region mapping space
+> >    ffffffff00000000 |   -4    GB | ffffffff7fffffff |    2 GB | ... unused hole
+> >    ffffffff80000000 |   -2    GB | ffffffff9fffffff |  512 MB | kernel text mapping, mapped to physical address 0
+> >    ffffffff80000000 |-2048    MB |                  |         |
+> >    ffffffffa0000000 |-1536    MB | fffffffffeffffff | 1520 MB | module mapping space
+> >    ffffffffff000000 |  -16    MB |                  |         |
+> >       FIXADDR_START | ~-11    MB | ffffffffff5fffff | ~0.5 MB | kernel-internal fixmap range, variable size and offset
+> >
+> > That thing which starts at -512 GB above is the last PGD on the
+> > pagetable. In it, between -4G and -68G there are 64G which are the EFI
+> > region mapping space for runtime services.
+> >
+> > Frankly I'm not sure what this thing is testing because the EFI VA range
+> > is hardcoded and I can't imagine it being somewhere else *except* in the
+> > last PGD.
+>
+> It's just so that someone doesn't just change the #define's for
+> EFI_VA_END/START and think that it will work, I guess.
+>
+> Another reasonable option, for example, would be to reserve an entire
+> PGD entry, allowing everything but the PGD level to be shared, and
+> adding the EFI PGD to the pgd_list and getting rid of
+> efi_sync_low_kernel_mappings() altogether. There aren't that many PGD
+> entries still unused though, so this is probably not worth it.
 >
 
-The EFI stub randomizes the physical placement of the kernel as well,
-and this is no longer possible by the time we reach early_kaslr_init()
-in the kernel proper, so this is not something RNDR et al can make up
-for.
+The churn doesn't seem to be worth it, tbh.
 
-So perhaps change this to 'physical placement will not be randomized'
-or something along those lines? Or alternatively, just remove the
-second part of the sentence - we have better reporting of the KASLR
-state now anyway.
+So could we get rid of the complexity here, and only build_bug() on
+the start address of the EFI region being outside the topmost p4d?
+That should make the PGD test redundant as well.
