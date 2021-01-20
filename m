@@ -2,96 +2,171 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F02C92FD600
-	for <lists+linux-efi@lfdr.de>; Wed, 20 Jan 2021 17:49:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CA2E22FD8B7
+	for <lists+linux-efi@lfdr.de>; Wed, 20 Jan 2021 19:47:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2403894AbhATQsv (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 20 Jan 2021 11:48:51 -0500
-Received: from mail.kernel.org ([198.145.29.99]:54444 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2403876AbhATQsm (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Wed, 20 Jan 2021 11:48:42 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id C2CB023358
-        for <linux-efi@vger.kernel.org>; Wed, 20 Jan 2021 16:47:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1611161279;
-        bh=wlHr8FSIakTSJg6k7/Rj6OgjenxviMEpS89F+nfClzA=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=R0E8ikE5D0HJ9NTcB2oHyx7SxYf6ZZCWayPBdal9q+r1GAMQ/P0EvY/usm7x6eV2M
-         TrSx1X+b/eVKHyaZiK76PML1PONWz/JelWjuG1NpzsapoMr13uke5t87Y55EvJVok/
-         tMIURlMLBusm0BH9ZCBQW5jOYwsJPdCESR1nCT8v76JApNCUm8mLKrfcK9fvNVBkb8
-         VCIxMtOzj2oDWU9y8Os4bzBtM/PJBkYHaqEQoQS6eWM8q8Usqy6XZ7mcC80rNN2nRe
-         IZ+wlxVKwhKRyn2W4UOWBrai9UmI45P6w1S0WIzT+HLKkP8M4+6nW36Rmmli8foAjg
-         TvKEas+aP0E9A==
-Received: by mail-oi1-f177.google.com with SMTP id d189so25654249oig.11
-        for <linux-efi@vger.kernel.org>; Wed, 20 Jan 2021 08:47:59 -0800 (PST)
-X-Gm-Message-State: AOAM530A5wzKFlmhoJ0TIcgHeY1yd7T5tBHtwNaFLgOocyPZtzSfurGj
-        cUjWvzI6FkCSEXOZ8Fn3X4oZGJ7fFPg/xe0upjs=
-X-Google-Smtp-Source: ABdhPJypqczqO8KufT6AwejIsvsF5rA48VwtCCWqBuCWef8VOkwYSmWuB2bgAV3tdKJqKssbQsV+0Ddj5frpRVyoXqw=
-X-Received: by 2002:aca:210f:: with SMTP id 15mr3398826oiz.174.1611161279159;
- Wed, 20 Jan 2021 08:47:59 -0800 (PST)
+        id S2387562AbhATSrB (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 20 Jan 2021 13:47:01 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:47962 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S2387643AbhATRjp (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 20 Jan 2021 12:39:45 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1611164298;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=A108kjHRUQdQY86++G1ojoBlN5bivr2NbhXvZVQXIjs=;
+        b=A6yANgMW6HyJbpYRpd0ZGupej0qEAAdqYEopjBHmQU74lVJAtugb+7NzYfSdI+yccCvidO
+        FGcfXPKv+q+nqcylhmmun1S+k+zW1pIqeZQuMe3k+K4rGJO9c407vcPM9VN1qprCWJNRY7
+        3VhznynDdxLB+AKvcA7rYkMq/onoAew=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-475-bki5L-AeP8u0eZV9ednh6Q-1; Wed, 20 Jan 2021 12:38:04 -0500
+X-MC-Unique: bki5L-AeP8u0eZV9ednh6Q-1
+Received: by mail-wm1-f72.google.com with SMTP id j133so1433607wma.4
+        for <linux-efi@vger.kernel.org>; Wed, 20 Jan 2021 09:38:04 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=A108kjHRUQdQY86++G1ojoBlN5bivr2NbhXvZVQXIjs=;
+        b=OxvMHlZNwAbHL5fYpuf5+J9cC77qcjDwRMjGVTdLV+r1xQCPGpnHgUb1tSFM1/rW/a
+         OIXZznbchESUsPcF2P/U9PtKmtExB3brWDfkDym6mLpXBHbmTsdtzkRvZPOJqvaTivLY
+         ClBybbUuwZxzPPJO/5o8kSqop5Py3T2MEPIVJf7xlt0vsdN4FNsDSXyPGSH6azCqbYhg
+         lXb4ZveN6G6tjKOymLxzk2U5E0E8Jr5MaOBGjb5LGCzn8fmUjKZT7Xn4CPVqO48jRSXm
+         Yig4E3UO+leiH38iiJC8a66Sfc6AuTJSNSGbWMN6j2ClsnTqyDGLUojbCB9nIcMMwN5T
+         I9IQ==
+X-Gm-Message-State: AOAM530Sj/xqgaPl/w1gegyqAwEP0tj+8ZxqyaCJlqpqb+znz1hWrGVG
+        /IPYdhUiUjq8e66qT8wA7p9wEa1nkKamlHG/L6BktApEkRpEeVNiSwcT9rhXLsTduGkHUD6BdU7
+        xxgZBnd0jTAAd3JtA3BvB
+X-Received: by 2002:a05:6000:1565:: with SMTP id 5mr10630088wrz.109.1611164283634;
+        Wed, 20 Jan 2021 09:38:03 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJxHore5PrQor0sfd+uGXcmG2lRqPQ/wDMgFvw29tveC12LEpMiYbOmQdf62PWPDL7v7WxO8/w==
+X-Received: by 2002:a05:6000:1565:: with SMTP id 5mr10630076wrz.109.1611164283494;
+        Wed, 20 Jan 2021 09:38:03 -0800 (PST)
+Received: from redfedo.redhat.com ([2a01:cb14:499:3d00:cd47:f651:9d80:157a])
+        by smtp.gmail.com with ESMTPSA id x11sm4948325wmi.4.2021.01.20.09.38.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 20 Jan 2021 09:38:03 -0800 (PST)
+From:   Julien Thierry <jthierry@redhat.com>
+To:     linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Cc:     catalin.marinas@arm.com, will@kernel.org, ardb@kernel.org,
+        masahiroy@kernel.org, keescook@chromium.org,
+        michal.lkml@markovi.net, jpoimboe@redhat.com, peterz@infradead.org,
+        mark.rutland@arm.com, broonie@kernel.org,
+        linux-efi@vger.kernel.org, linux-hardening@vger.kernel.org,
+        Julien Thierry <jthierry@redhat.com>
+Subject: [RFC PATCH 00/17] objtool: add base support for arm64
+Date:   Wed, 20 Jan 2021 18:37:43 +0100
+Message-Id: <20210120173800.1660730-1-jthierry@redhat.com>
+X-Mailer: git-send-email 2.25.4
 MIME-Version: 1.0
-References: <20210120163810.14973-1-broonie@kernel.org>
-In-Reply-To: <20210120163810.14973-1-broonie@kernel.org>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Wed, 20 Jan 2021 17:47:48 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXFVRzvBX40sf=ue0=5ndd5gW6u+=OD-VAMGqaErd5wHYw@mail.gmail.com>
-Message-ID: <CAMj1kXFVRzvBX40sf=ue0=5ndd5gW6u+=OD-VAMGqaErd5wHYw@mail.gmail.com>
-Subject: Re: [PATCH v2] efi/arm64: Update debug prints to reflect other
- entropy sources
-To:     Mark Brown <broonie@kernel.org>
-Cc:     linux-efi <linux-efi@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, 20 Jan 2021 at 17:38, Mark Brown <broonie@kernel.org> wrote:
->
-> Currently the EFI stub prints a diagnostic on boot saying that KASLR will
-> be disabled if it is unable to use the EFI RNG protocol to obtain a seed
-> for KASLR.  With the addition of support for v8.5-RNG and the SMCCC RNG
-> protocol it is now possible for KASLR to obtain entropy even if the EFI
-> RNG protocol is unsupported in the system, and the main kernel now
-> explicitly says if KASLR is active itself.  This can result in a boot
-> log where the stub says KASLR has been disabled and the main kernel says
-> that it is enabled which is confusing for users.
->
-> Remove the explicit reference to KASLR from the diagnostics, the warnings
-> are still useful as EFI is the only source of entropy the stub uses when
-> randomizing the physical address of the kernel and the other sources may
-> not be available.
->
-> Signed-off-by: Mark Brown <broonie@kernel.org>
-> ---
->
-> v2: Remove all reference to KASLR from the log messages and clarify
->     physical address randomization use of the EFI RNG seed.
->
+Hi,
 
-Thanks Mark. I will merge this in efi/next
+This series enables objtool to start doing stack validation on arm64
+kernel builds. It relies on the previous series I sent, refactoring
+the arm64 decoder [1].
 
->  drivers/firmware/efi/libstub/arm64-stub.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/firmware/efi/libstub/arm64-stub.c b/drivers/firmware/efi/libstub/arm64-stub.c
-> index 22ece1ad68a8..b69d63143e0d 100644
-> --- a/drivers/firmware/efi/libstub/arm64-stub.c
-> +++ b/drivers/firmware/efi/libstub/arm64-stub.c
-> @@ -61,10 +61,10 @@ efi_status_t handle_kernel_image(unsigned long *image_addr,
->                         status = efi_get_random_bytes(sizeof(phys_seed),
->                                                       (u8 *)&phys_seed);
->                         if (status == EFI_NOT_FOUND) {
-> -                               efi_info("EFI_RNG_PROTOCOL unavailable, KASLR will be disabled\n");
-> +                               efi_info("EFI_RNG_PROTOCOL unavailable\n");
->                                 efi_nokaslr = true;
->                         } else if (status != EFI_SUCCESS) {
-> -                               efi_err("efi_get_random_bytes() failed (0x%lx), KASLR will be disabled\n",
-> +                               efi_err("efi_get_random_bytes() failed (0x%lx)\n",
->                                         status);
->                                 efi_nokaslr = true;
->                         }
-> --
-> 2.20.1
->
+First, the aarch64 instruction decoder needed to be made available
+to code under tools/. This is done in a similar manner to x86
+instruction decoded. One limitation I encountered there is that most
+of aarch64 instruction decoder is __kprobe annotated. To bypass that
+it remove the kprobe include and had to add an empty __kprobe
+definition, but I'd welcome a proper solution to that.
+
+Then instruction semantics are progressively added so objtool can track
+the stack state through the execution flow.
+There are a few things that needed consideration:
+- Generation of constants within executable sections, these either
+  caused objtool to fail decoding or to wrongly decode constants
+  as jumps or other instructions affecting execution flow and
+  causing confusion. To solve this, tracking locations referenced
+  by instructions using literals was needed.
+- Jump tables from switch statements in aarch64 don't have enough
+  information to link branches with the branch instruction leading to
+  them. For this, we use a gcc plugin to add some information to establish
+  those missing links in a format that is already supported by objtool
+
+With this, there are still some errors when building with objtool. A
+number of cleanups/annotations are needed on the arm64, as well as
+handling SYM_DATA objects in objtool.
+
+Those changes can be found on top of this branch here:
+git clone https://github.com/julien-thierry/linux.git -b objtoolxarm64-latest
+
+But it would be nice to have some feedback on this before I start submitting everyting.
+
+[1] https://lkml.org/lkml/2021/1/20/791
+
+Thanks,
+
+Julien
+
+-->
+
+Julien Thierry (15):
+  tools: Add some generic functions and headers
+  tools: arm64: Make aarch64 instruction decoder available to tools
+  tools: bug: Remove duplicate definition
+  objtool: arm64: Add base definition for arm64 backend
+  objtool: arm64: Decode add/sub instructions
+  objtool: arm64: Decode jump and call related instructions
+  objtool: arm64: Decode other system instructions
+  objtool: arm64: Decode load/store instructions
+  objtool: arm64: Decode LDR instructions
+  objtool: arm64: Accept padding in code sections
+  efi: libstub: Ignore relocations for .discard sections
+  objtool: arm64: Implement functions to add switch tables alternatives
+  objtool: arm64: Cache section with switch table information
+  objtool: arm64: Handle supported relocations in alternatives
+  objtool: arm64: Ignore replacement section for alternative callback
+
+Raphael Gault (2):
+  gcc-plugins: objtool: Add plugin to detect switch table on arm64
+  objtool: arm64: Enable stack validation for arm64
+
+ arch/arm64/Kconfig                            |    2 +
+ drivers/firmware/efi/libstub/Makefile         |    2 +-
+ scripts/Makefile.gcc-plugins                  |    2 +
+ scripts/gcc-plugins/Kconfig                   |    4 +
+ .../arm64_switch_table_detection_plugin.c     |   85 +
+ tools/arch/arm64/include/asm/aarch64-insn.h   |  551 +++++++
+ tools/arch/arm64/lib/aarch64-insn.c           | 1425 +++++++++++++++++
+ tools/include/asm-generic/bitops/__ffs.h      |   11 +
+ tools/include/linux/bug.h                     |    6 +-
+ tools/include/linux/kernel.h                  |   21 +
+ tools/include/linux/printk.h                  |   40 +
+ tools/objtool/Makefile                        |    5 +
+ tools/objtool/arch/arm64/Build                |    8 +
+ tools/objtool/arch/arm64/decode.c             |  471 ++++++
+ .../arch/arm64/include/arch/cfi_regs.h        |   14 +
+ tools/objtool/arch/arm64/include/arch/elf.h   |    6 +
+ .../arch/arm64/include/arch/endianness.h      |    9 +
+ .../objtool/arch/arm64/include/arch/special.h |   23 +
+ tools/objtool/arch/arm64/special.c            |  134 ++
+ tools/objtool/arch/x86/decode.c               |    5 +
+ tools/objtool/check.c                         |    6 +
+ tools/objtool/include/objtool/arch.h          |    3 +
+ tools/objtool/sync-check.sh                   |    5 +
+ 23 files changed, 2832 insertions(+), 6 deletions(-)
+ create mode 100644 scripts/gcc-plugins/arm64_switch_table_detection_plugin.c
+ create mode 100644 tools/arch/arm64/include/asm/aarch64-insn.h
+ create mode 100644 tools/arch/arm64/lib/aarch64-insn.c
+ create mode 100644 tools/include/linux/printk.h
+ create mode 100644 tools/objtool/arch/arm64/Build
+ create mode 100644 tools/objtool/arch/arm64/decode.c
+ create mode 100644 tools/objtool/arch/arm64/include/arch/cfi_regs.h
+ create mode 100644 tools/objtool/arch/arm64/include/arch/elf.h
+ create mode 100644 tools/objtool/arch/arm64/include/arch/endianness.h
+ create mode 100644 tools/objtool/arch/arm64/include/arch/special.h
+ create mode 100644 tools/objtool/arch/arm64/special.c
+
+--
+2.25.4
+
