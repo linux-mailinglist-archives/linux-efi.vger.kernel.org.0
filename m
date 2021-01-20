@@ -2,54 +2,54 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F1E12FD8B9
-	for <lists+linux-efi@lfdr.de>; Wed, 20 Jan 2021 19:47:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BED592FD8C0
+	for <lists+linux-efi@lfdr.de>; Wed, 20 Jan 2021 19:50:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388711AbhATSrJ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 20 Jan 2021 13:47:09 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:20795 "EHLO
+        id S1732223AbhATSrt (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 20 Jan 2021 13:47:49 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:44646 "EHLO
         us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S2388426AbhATRj6 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 20 Jan 2021 12:39:58 -0500
+        by vger.kernel.org with ESMTP id S2390112AbhATRkO (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 20 Jan 2021 12:40:14 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1611164308;
+        s=mimecast20190719; t=1611164318;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=SLYnG2np6zR1YTUi6SYwuFsGaDYy69xYRKMeP5onVfI=;
-        b=BH+Mq+om61isFKXPAO6czL7qRnSkQdVUt14pQpV5xXjTjxGDjxmU9oMRBq+smfmUaIyP+j
-        XFniDxP6gx482SzAKyGl85PXOBjai70d5ZPHeCWh0YERB69m+tyCLpM+t5l2yIPtA6vVfa
-        HJGh9JMOI4b/a7rY1Y8LMfv21rVnHOE=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-270-0IETbB0pMOW8PMvX7qS_JQ-1; Wed, 20 Jan 2021 12:38:26 -0500
-X-MC-Unique: 0IETbB0pMOW8PMvX7qS_JQ-1
-Received: by mail-wm1-f69.google.com with SMTP id 5so997778wmq.0
-        for <linux-efi@vger.kernel.org>; Wed, 20 Jan 2021 09:38:26 -0800 (PST)
+        bh=HHhNdzHCl7p80Y/M7nY7DxKk34o5+fUa+j9rxomz5s4=;
+        b=ZggiUkzsz3LLmNMwGw4MR9ModJKot9da7BJxWVJPIbDaAzDMwll3mLXVyCHsb4gCk1Kihy
+        trMfI/1/ZhpVQFyZ/JUEY53DZ7a0lIaNQXker32jV2or7ol1brSOS4hYR5djJ/pPXRFpZY
+        vZv+c5wgt4fknxqEoJFvQa1q22xboUk=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-404-ZdZmG3OsM32cb4tRupA6PQ-1; Wed, 20 Jan 2021 12:38:37 -0500
+X-MC-Unique: ZdZmG3OsM32cb4tRupA6PQ-1
+Received: by mail-wm1-f72.google.com with SMTP id k67so1829279wmk.5
+        for <linux-efi@vger.kernel.org>; Wed, 20 Jan 2021 09:38:36 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=SLYnG2np6zR1YTUi6SYwuFsGaDYy69xYRKMeP5onVfI=;
-        b=FSo+Dgzjpxlx79mbPiHyyEklHVcBVZriYFoOZIkqDiMu/KjG/pGjBM3JWO10CMGXfQ
-         CIcqfaacbXr9OyLwRTHaIMgrAUedLxK3KPmCHooAlXS3kK5IBCgiJC1fGn1fAQ1fKVRY
-         y2L74meu9OPEmNlZLprDe4r1dBeM3X0/9smmZ+o743/895pfTj2VPjpUYY3i6Za6eRKS
-         Ttexb+j1uSCMoKDhb3u/QCb+zg1unwTY3uuEF+4wIJx4F9/ng5Oayv2L+TOHijfKK3Wj
-         16gUwAezXGTic/8MfS2svqXxpl1HcKl+bqPAYeplr+VIVI9ScghD8SGteo2Qp96wCjzX
-         GHWQ==
-X-Gm-Message-State: AOAM5327YkY70sH8XGS/gEPBUvBUlt3CUoOYgGWFbFnCAwd9wOcYixb+
-        Bc8KmqvGTr3/RelRb2mEeYLBod60ByTwp2TKw6fYJHOrq+xLPMxlOhMTgttLY3ks74qetJbykLZ
-        Vg5n3n81MhhfkyF+O+Ruj
-X-Received: by 2002:adf:d187:: with SMTP id v7mr10468647wrc.50.1611164305257;
-        Wed, 20 Jan 2021 09:38:25 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJwXI5rY8SF1/vD1xUKEd0IWosD2vQICkqK1CgWZpdLBSm0Mws61ej9sdam8XkbTpo9ZQuIaXQ==
-X-Received: by 2002:adf:d187:: with SMTP id v7mr10468627wrc.50.1611164305073;
-        Wed, 20 Jan 2021 09:38:25 -0800 (PST)
+        bh=HHhNdzHCl7p80Y/M7nY7DxKk34o5+fUa+j9rxomz5s4=;
+        b=PR+87OqL+8MsnsHpIx3qYKcg/zKvCKCIEYVx0ttryStIBhkVDHXNfNFbocP7prtEQT
+         QJe2gnYDsiz4ar9MJIOSK4Mlsx7RiX4LfQ1ut5qE6qJyYhqyk3TRYoklXjVQaT85sv9B
+         J/pr7K7lzwb+mPGIsXi9zhcw48o/P8itathDBgh6ORb20JuoSG/ekclrJZSvXY8uleII
+         dV5G6cxgZ0NFwOKGpUv/qw5JokqRmIz1VYGvoGyfHMuUBkCniZC7QVp+mRdWecij/EnI
+         GfWiPpVyidnibRZ2cdoC9GdQiWJroCHcOlIFTZeEHT6m8n6rfovXDkyegXYqcK4zEJ/q
+         Y/7g==
+X-Gm-Message-State: AOAM5303tOwDXSEozJBZ54IKmRSTyBjkgDzY3l/nbrQRJi8ZceeoebZo
+        yME4qXVc8dNMtckwz//FesrhMxu0C6XWb0AHfAFAVcAj0RUeYKSqufwl/MNnxC9IasH5uGIqeQI
+        ApiVC8rfY4BUHLhSoBP/t
+X-Received: by 2002:a5d:40d2:: with SMTP id b18mr10109908wrq.369.1611164315798;
+        Wed, 20 Jan 2021 09:38:35 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJwjV6xTRe8CsL12wyOOS7WHO27yHrkDMb/ei4CrUSn1wqWS6eScNSd6CJ15BCe3ivDz3BoWUQ==
+X-Received: by 2002:a5d:40d2:: with SMTP id b18mr10109889wrq.369.1611164315617;
+        Wed, 20 Jan 2021 09:38:35 -0800 (PST)
 Received: from redfedo.redhat.com ([2a01:cb14:499:3d00:cd47:f651:9d80:157a])
-        by smtp.gmail.com with ESMTPSA id x11sm4948325wmi.4.2021.01.20.09.38.23
+        by smtp.gmail.com with ESMTPSA id x11sm4948325wmi.4.2021.01.20.09.38.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 Jan 2021 09:38:24 -0800 (PST)
+        Wed, 20 Jan 2021 09:38:35 -0800 (PST)
 From:   Julien Thierry <jthierry@redhat.com>
 To:     linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
 Cc:     catalin.marinas@arm.com, will@kernel.org, ardb@kernel.org,
@@ -57,10 +57,11 @@ Cc:     catalin.marinas@arm.com, will@kernel.org, ardb@kernel.org,
         michal.lkml@markovi.net, jpoimboe@redhat.com, peterz@infradead.org,
         mark.rutland@arm.com, broonie@kernel.org,
         linux-efi@vger.kernel.org, linux-hardening@vger.kernel.org,
+        Raphael Gault <raphael.gault@arm.com>,
         Julien Thierry <jthierry@redhat.com>
-Subject: [RFC PATCH 09/17] objtool: arm64: Decode LDR instructions
-Date:   Wed, 20 Jan 2021 18:37:52 +0100
-Message-Id: <20210120173800.1660730-10-jthierry@redhat.com>
+Subject: [RFC PATCH 12/17] gcc-plugins: objtool: Add plugin to detect switch table on arm64
+Date:   Wed, 20 Jan 2021 18:37:55 +0100
+Message-Id: <20210120173800.1660730-13-jthierry@redhat.com>
 X-Mailer: git-send-email 2.25.4
 In-Reply-To: <20210120173800.1660730-1-jthierry@redhat.com>
 References: <20210120173800.1660730-1-jthierry@redhat.com>
@@ -70,173 +71,156 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Load literal instructions can generate constants inside code sections.
-Record the locations of the constants in order to be able to remove
-their corresponding "struct instruction".
+From: Raphael Gault <raphael.gault@arm.com>
 
+This plugins comes into play before the final 2 RTL passes of GCC and
+detects switch-tables that are to be outputed in the ELF and writes
+information in an ".discard.switch_table_info" section which will be
+used by objtool.
+
+Signed-off-by: Raphael Gault <raphael.gault@arm.com>
+[J.T.: Change section name to store switch table information,
+       Make plugin Kconfig be selected rather than opt-in by user,
+       Add a relocation in the switch_table_info that points to
+       the jump operation itself]
 Signed-off-by: Julien Thierry <jthierry@redhat.com>
 ---
- tools/objtool/arch/arm64/decode.c    | 86 ++++++++++++++++++++++++++++
- tools/objtool/arch/x86/decode.c      |  5 ++
- tools/objtool/check.c                |  3 +
- tools/objtool/include/objtool/arch.h |  3 +
- 4 files changed, 97 insertions(+)
+ arch/arm64/Kconfig                            |  1 +
+ scripts/Makefile.gcc-plugins                  |  2 +
+ scripts/gcc-plugins/Kconfig                   |  4 +
+ .../arm64_switch_table_detection_plugin.c     | 85 +++++++++++++++++++
+ 4 files changed, 92 insertions(+)
+ create mode 100644 scripts/gcc-plugins/arm64_switch_table_detection_plugin.c
 
-diff --git a/tools/objtool/arch/arm64/decode.c b/tools/objtool/arch/arm64/decode.c
-index 1087ede67bcd..b4d4d5b051b0 100644
---- a/tools/objtool/arch/arm64/decode.c
-+++ b/tools/objtool/arch/arm64/decode.c
-@@ -30,6 +30,73 @@ static unsigned long sign_extend(unsigned long x, int nbits)
- 	return ((~0UL + (sign_bit ^ 1)) << nbits) | x;
- }
+diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+index 05e17351e4f3..93a320cc8e03 100644
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -100,6 +100,7 @@ config ARM64
+ 	select DMA_DIRECT_REMAP
+ 	select EDAC_SUPPORT
+ 	select FRAME_POINTER
++	select GCC_PLUGIN_SWITCH_TABLES if STACK_VALIDATION
+ 	select GENERIC_ALLOCATOR
+ 	select GENERIC_ARCH_TOPOLOGY
+ 	select GENERIC_CLOCKEVENTS_BROADCAST
+diff --git a/scripts/Makefile.gcc-plugins b/scripts/Makefile.gcc-plugins
+index 952e46876329..8af322311f6b 100644
+--- a/scripts/Makefile.gcc-plugins
++++ b/scripts/Makefile.gcc-plugins
+@@ -46,6 +46,8 @@ ifdef CONFIG_GCC_PLUGIN_ARM_SSP_PER_TASK
+ endif
+ export DISABLE_ARM_SSP_PER_TASK_PLUGIN
  
-+struct insn_loc {
-+	const struct section *sec;
-+	unsigned long offset;
-+	struct hlist_node hnode;
-+	bool ignorable;
-+};
++gcc-plugin-$(CONFIG_GCC_PLUGIN_SWITCH_TABLES)	+= arm64_switch_table_detection_plugin.so
 +
-+DEFINE_HASHTABLE(invalid_insns, 16);
+ # All the plugin CFLAGS are collected here in case a build target needs to
+ # filter them out of the KBUILD_CFLAGS.
+ GCC_PLUGINS_CFLAGS := $(strip $(addprefix -fplugin=$(objtree)/scripts/gcc-plugins/, $(gcc-plugin-y)) $(gcc-plugin-cflags-y))
+diff --git a/scripts/gcc-plugins/Kconfig b/scripts/gcc-plugins/Kconfig
+index ab9eb4cbe33a..76efbb97d223 100644
+--- a/scripts/gcc-plugins/Kconfig
++++ b/scripts/gcc-plugins/Kconfig
+@@ -104,4 +104,8 @@ config GCC_PLUGIN_ARM_SSP_PER_TASK
+ 	bool
+ 	depends on GCC_PLUGINS && ARM
+ 
++config GCC_PLUGIN_SWITCH_TABLES
++	bool
++	depends on GCC_PLUGINS && ARM64
 +
-+static int record_invalid_insn(const struct section *sec,
-+			       unsigned long offset,
-+			       bool ignore)
+ endif
+diff --git a/scripts/gcc-plugins/arm64_switch_table_detection_plugin.c b/scripts/gcc-plugins/arm64_switch_table_detection_plugin.c
+new file mode 100644
+index 000000000000..60ef00ff2c5b
+--- /dev/null
++++ b/scripts/gcc-plugins/arm64_switch_table_detection_plugin.c
+@@ -0,0 +1,85 @@
++// SPDX-License-Identifier: GPL-2.0
++
++#include <stdio.h>
++#include "gcc-common.h"
++
++__visible int plugin_is_GPL_compatible;
++
++#define GEN_QUAD(rtx)	assemble_integer_with_op(".quad ", rtx)
++
++/*
++ * Create an array of metadata for each jump table found in the rtl.
++ * The metadata contains:
++ * - A reference to first instruction part of the RTL expanded into an
++ *   acutal jump
++ * - The number of entries in the table of offsets
++ * - A reference to each possible jump target
++ *
++ * Separate each entry with a null quad word.
++ */
++static unsigned int arm64_switchtbl_rtl_execute(void)
 +{
-+	struct insn_loc *loc;
-+	struct hlist_head *l;
++	rtx_insn *insn;
++	rtx_insn *labelp = NULL;
++	rtx_jump_table_data *tablep = NULL;
++	section *swt_sec;
++	section *curr_sec = current_function_section();
 +
-+	l = &invalid_insns[hash_min(offset, HASH_BITS(invalid_insns))];
-+	if (!hlist_empty(l)) {
-+		loc = hlist_entry(l->first, struct insn_loc, hnode);
-+		loc->ignorable |= ignore;
-+		return 0;
++	swt_sec = get_section(".discard.switch_table_info",
++			      SECTION_DEBUG | SECTION_EXCLUDE, NULL);
++
++	for (insn = get_insns(); insn; insn = NEXT_INSN(insn)) {
++		/*
++		 * Find a tablejump_p INSN (using a dispatch table)
++		 */
++		if (!tablejump_p(insn, &labelp, &tablep))
++			continue;
++
++		if (labelp && tablep) {
++			rtx_code_label *label_to_jump;
++			rtvec jump_labels = tablep->get_labels();
++			int nr_labels = GET_NUM_ELEM(jump_labels);
++			int i;
++
++			label_to_jump = gen_label_rtx();
++			SET_LABEL_KIND(label_to_jump, LABEL_NORMAL);
++			emit_label_before(label_to_jump, insn);
++			LABEL_PRESERVE_P(label_to_jump) = 1;
++
++			switch_to_section(swt_sec);
++			GEN_QUAD(GEN_INT(0)); // mark separation between rela tables
++			GEN_QUAD(gen_rtx_LABEL_REF(Pmode, label_to_jump));
++			GEN_QUAD(GEN_INT(nr_labels));
++			for (i = 0; i < nr_labels; i++)
++				GEN_QUAD(gen_rtx_LABEL_REF(Pmode,
++							   label_ref_label(RTVEC_ELT(jump_labels, i))));
++			switch_to_section(curr_sec);
++			delete_insn(label_to_jump);
++		}
 +	}
-+
-+	loc = malloc(sizeof(*loc));
-+	if (!loc) {
-+		WARN("malloc failed");
-+		return -1;
-+	}
-+
-+	loc->sec = sec;
-+	loc->offset = offset;
-+	loc->ignorable = ignore;
-+
-+	hash_add(invalid_insns, &loc->hnode, loc->offset);
-+
 +	return 0;
 +}
 +
-+int arch_post_process_instructions(struct objtool_file *file)
++#define PASS_NAME arm64_switchtbl_rtl
++
++#define NO_GATE
++#include "gcc-generate-rtl-pass.h"
++
++__visible int plugin_init(struct plugin_name_args *plugin_info,
++			  struct plugin_gcc_version *version)
 +{
-+	struct hlist_node *tmp;
-+	struct insn_loc *loc;
-+	unsigned int bkt;
-+	int res = 0;
++	const char * const plugin_name = plugin_info->base_name;
 +
-+	hash_for_each_safe(invalid_insns, bkt, tmp, loc, hnode) {
-+		struct instruction *insn;
-+
-+		insn = find_insn(file, (struct section *) loc->sec, loc->offset);
-+		if (insn) {
-+			if (loc->ignorable) {
-+				list_del(&insn->list);
-+				hash_del(&insn->hash);
-+				free(insn);
-+			} else {
-+				WARN_FUNC("can't decode instruction", insn->sec, insn->offset);
-+				return -1;
-+			}
-+		}
-+
-+		hash_del(&loc->hnode);
-+		free(loc);
++	if (!plugin_default_version_check(version, &gcc_version)) {
++		error(G_("incompatible gcc/plugin versions"));
++		return 1;
 +	}
 +
-+	return res;
-+}
++	PASS_INFO(arm64_switchtbl_rtl, "final", 1,
++		  PASS_POS_INSERT_BEFORE);
 +
- bool arch_callee_saved_reg(unsigned char reg)
- {
- 	switch (reg) {
-@@ -359,6 +426,25 @@ int arch_decode_instruction(const struct elf *elf, const struct section *sec,
- 	case AARCH64_INSN_CLS_LDST:
- 		if (arm_decode_load_store(insn, type, immediate, ops_list))
- 			break;
-+		if (aarch64_insn_is_ldr_lit(insn)) {
-+			long pc_offset;
++	register_callback(plugin_info->base_name, PLUGIN_PASS_MANAGER_SETUP,
++			  NULL, &arm64_switchtbl_rtl_pass_info);
 +
-+			pc_offset = insn & GENMASK(23, 5);
-+			/* Sign extend and multiply by 4 */
-+			pc_offset = (pc_offset << (64 - 23));
-+			pc_offset = ((pc_offset >> (64 - 23)) >> 5) << 2;
-+
-+			if (record_invalid_insn(sec, offset + pc_offset, true))
-+				return -1;
-+
-+			/* 64-bit literal */
-+			if (insn & BIT(30)) {
-+				if (record_invalid_insn(sec,
-+							offset + pc_offset + 4,
-+							true))
-+					return -1;
-+			}
-+		}
- 		*type = INSN_OTHER;
- 		break;
- 	default:
-diff --git a/tools/objtool/arch/x86/decode.c b/tools/objtool/arch/x86/decode.c
-index 6baa22732ca6..e76d987ce3c7 100644
---- a/tools/objtool/arch/x86/decode.c
-+++ b/tools/objtool/arch/x86/decode.c
-@@ -549,6 +549,11 @@ int arch_decode_instruction(const struct elf *elf, const struct section *sec,
- 	return 0;
- }
- 
-+int arch_post_process_instructions(struct objtool_file *file)
-+{
 +	return 0;
 +}
-+
- void arch_initial_func_cfi_state(struct cfi_init_state *state)
- {
- 	int i;
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index 270b507e7098..d902697a388e 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -319,6 +319,9 @@ static int decode_instructions(struct objtool_file *file)
- 	if (stats)
- 		printf("nr_insns: %lu\n", nr_insns);
- 
-+	if (arch_post_process_instructions(file))
-+		return -1;
-+
- 	return 0;
- 
- err:
-diff --git a/tools/objtool/include/objtool/arch.h b/tools/objtool/include/objtool/arch.h
-index 6ff0685f5cc5..456d0465b676 100644
---- a/tools/objtool/include/objtool/arch.h
-+++ b/tools/objtool/include/objtool/arch.h
-@@ -66,6 +66,7 @@ struct stack_op {
- 	struct list_head list;
- };
- 
-+struct objtool_file;
- struct instruction;
- 
- void arch_initial_func_cfi_state(struct cfi_init_state *state);
-@@ -76,6 +77,8 @@ int arch_decode_instruction(const struct elf *elf, const struct section *sec,
- 			    unsigned long *immediate,
- 			    struct list_head *ops_list);
- 
-+int arch_post_process_instructions(struct objtool_file *file);
-+
- bool arch_callee_saved_reg(unsigned char reg);
- 
- unsigned long arch_jump_destination(struct instruction *insn);
 -- 
 2.25.4
 
