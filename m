@@ -2,31 +2,47 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2892C300A1B
-	for <lists+linux-efi@lfdr.de>; Fri, 22 Jan 2021 18:47:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F3B98300A80
+	for <lists+linux-efi@lfdr.de>; Fri, 22 Jan 2021 19:00:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729691AbhAVRpk (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 22 Jan 2021 12:45:40 -0500
-Received: from mail.kernel.org ([198.145.29.99]:52692 "EHLO mail.kernel.org"
+        id S1729606AbhAVR7M (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 22 Jan 2021 12:59:12 -0500
+Received: from mail.kernel.org ([198.145.29.99]:54306 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729636AbhAVRpG (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Fri, 22 Jan 2021 12:45:06 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 2A71E23A68;
-        Fri, 22 Jan 2021 17:44:21 +0000 (UTC)
+        id S1730010AbhAVRzk (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Fri, 22 Jan 2021 12:55:40 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id ECA2423AC8;
+        Fri, 22 Jan 2021 17:54:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1611337462;
-        bh=Fbw7hbg4eFinWbI+ufZKhLlJam1o9Uua400X/NfxFCE=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=tX8UzS/eD1cr7yrQUJIL18lkdaJbV4NkcQq6ejfOaQuFv2hdvx2Dk2NxHKCELL+tm
-         gB5LH/E2jHzoODl+l5pC9LnH4BX3C8cNb+HMFLlzVvs2z9GeO5N2HamAgsoag69397
-         xM9GyS+b9vSwcmDLtnJqh2UqiyZe/LtRxD0SvL15ZIehVGJ/1nwh5tcC5zdIfDSuTg
-         UA9DbMktYrr+7xDQjw+RV13CbEuXa78wQrGoTQX5eF7DP8NsrLjY+eWMkokeOdrx4s
-         IdtW124T7EH7s2t0LQV2LfAo+FSU6r0qSwCHNJSxp+ByPvpWcJ+fa8vzlsM7HV6JE0
-         Wj6V1sT2vNblg==
-Date:   Fri, 22 Jan 2021 17:43:42 +0000
-From:   Mark Brown <broonie@kernel.org>
-To:     Josh Poimboeuf <jpoimboe@redhat.com>
-Cc:     Ard Biesheuvel <ardb@kernel.org>,
+        s=k20201202; t=1611338096;
+        bh=AYFiX4zVoFw1zc21BTNTrpcrcdxIXokJIpPNH+bgg4o=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=M/RdoYta0yYvxyxrVm1MwF9jMowYeci9nw51o8xr81Rrjxay9o6aIN0uHyLNYLz23
+         jqVK5Evzma3qJfNbOgcyeEqy3QqtoqYYOl9GXHIc/IkjzjRhOZpljDFyAcV24iAJq5
+         o8wT+0ox1CBYBIFCBppwxMBmQgNoLdzN28/VcW5lBj7pyNbCaKeN0B2kvFGGuxdim1
+         OQiNbQVwuLvpEP37uUJFjsXM0U/ZGtjvEwVRGsHoYeFJe03N4tQbb1kh3Rd+uo0OTD
+         M5fQ+embtPzr1N7lS4XBBkAsM1fcBJ/5SYH77ZFIo/HArEQSlVq3yBgZc/6u12BBxl
+         Ft29gIcXrW0Fg==
+Received: by mail-ot1-f43.google.com with SMTP id 36so5914549otp.2;
+        Fri, 22 Jan 2021 09:54:55 -0800 (PST)
+X-Gm-Message-State: AOAM533AH0+us2U3skTvQu9mNZa0SmmQLesuX1jQBfmDa8IikwSSi589
+        zAWxi20wc2K/3w2/yh2EY1MCwkBp8YeKRKQhmf0=
+X-Google-Smtp-Source: ABdhPJx0hc/N3OuLdXaocPstvcNOS7WFFfWzpNbqXVjBFk/Ywwb2F+cfkQeYh8iEnYVpre/A5EJl/hugMJ1hMmEibHA=
+X-Received: by 2002:a05:6830:1158:: with SMTP id x24mr4118875otq.108.1611338095288;
+ Fri, 22 Jan 2021 09:54:55 -0800 (PST)
+MIME-Version: 1.0
+References: <20210120173800.1660730-1-jthierry@redhat.com> <CAMj1kXHO0wgcZ4ZDxj1vS9s7Szfpz8Nz=SAW_=Dnnjy+S9AtyQ@mail.gmail.com>
+ <186bb660-6e70-6bbf-4e96-1894799c79ce@redhat.com> <CAMj1kXHznGnN2UEai1c2UgyKuTFCS5SZ+qGR6VJwyCuccViw_A@mail.gmail.com>
+ <YAlkOFwkb6/hFm1Q@hirez.programming.kicks-ass.net> <CAMj1kXE+675mbS66kteKHNfcrco84WTaEL6ncVkkV7tQgbMpFw@mail.gmail.com>
+ <20210121185452.fxoz4ehqfv75bdzq@treble> <20210122174342.GG6391@sirena.org.uk>
+In-Reply-To: <20210122174342.GG6391@sirena.org.uk>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Fri, 22 Jan 2021 18:54:44 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXF31FxCTbo4M8MX0aaegaq7AQXMUdCtsm6xrKUFSpkzjA@mail.gmail.com>
+Message-ID: <CAMj1kXF31FxCTbo4M8MX0aaegaq7AQXMUdCtsm6xrKUFSpkzjA@mail.gmail.com>
+Subject: Re: [RFC PATCH 00/17] objtool: add base support for arm64
+To:     Mark Brown <broonie@kernel.org>
+Cc:     Josh Poimboeuf <jpoimboe@redhat.com>,
         Peter Zijlstra <peterz@infradead.org>,
         Julien Thierry <jthierry@redhat.com>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
@@ -39,56 +55,31 @@ Cc:     Ard Biesheuvel <ardb@kernel.org>,
         Mark Rutland <mark.rutland@arm.com>,
         linux-efi <linux-efi@vger.kernel.org>,
         linux-hardening@vger.kernel.org, live-patching@vger.kernel.org
-Subject: Re: [RFC PATCH 00/17] objtool: add base support for arm64
-Message-ID: <20210122174342.GG6391@sirena.org.uk>
-References: <20210120173800.1660730-1-jthierry@redhat.com>
- <CAMj1kXHO0wgcZ4ZDxj1vS9s7Szfpz8Nz=SAW_=Dnnjy+S9AtyQ@mail.gmail.com>
- <186bb660-6e70-6bbf-4e96-1894799c79ce@redhat.com>
- <CAMj1kXHznGnN2UEai1c2UgyKuTFCS5SZ+qGR6VJwyCuccViw_A@mail.gmail.com>
- <YAlkOFwkb6/hFm1Q@hirez.programming.kicks-ass.net>
- <CAMj1kXE+675mbS66kteKHNfcrco84WTaEL6ncVkkV7tQgbMpFw@mail.gmail.com>
- <20210121185452.fxoz4ehqfv75bdzq@treble>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="z9ECzHErBrwFF8sy"
-Content-Disposition: inline
-In-Reply-To: <20210121185452.fxoz4ehqfv75bdzq@treble>
-X-Cookie: 98% lean.
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
+On Fri, 22 Jan 2021 at 18:44, Mark Brown <broonie@kernel.org> wrote:
+>
+> On Thu, Jan 21, 2021 at 12:54:52PM -0600, Josh Poimboeuf wrote:
+>
+> > 2) The shadow stack idea sounds promising -- how hard would it be to
+> >    make a prototype reliable unwinder?
+>
+> In theory it doesn't look too hard and I can't see a particular reason
+> not to try doing this - there's going to be edge cases but hopefully for
+> reliable stack trace they're all in areas where we would be happy to
+> just decide the stack isn't reliable anyway, things like nesting which
+> allocates separate shadow stacks for each nested level for example.
+> I'll take a look.
 
---z9ECzHErBrwFF8sy
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+This reminds me - a while ago, I had a stab at writing a rudimentary
+GCC plugin that pushes/pops return addresses to a shadow call stack
+pointed to by x18 [0]
+I am by no means suggesting that we should rely on a GCC plugin for
+this, only that it does seem rather straight-forward for the compiler
+to manage a stack with return addresses like that (although the devil
+is probably in the details, as usual)
 
-On Thu, Jan 21, 2021 at 12:54:52PM -0600, Josh Poimboeuf wrote:
-
-> 2) The shadow stack idea sounds promising -- how hard would it be to
->    make a prototype reliable unwinder?
-
-In theory it doesn't look too hard and I can't see a particular reason
-not to try doing this - there's going to be edge cases but hopefully for
-reliable stack trace they're all in areas where we would be happy to
-just decide the stack isn't reliable anyway, things like nesting which
-allocates separate shadow stacks for each nested level for example.
-I'll take a look.
-
---z9ECzHErBrwFF8sy
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmALDs0ACgkQJNaLcl1U
-h9D+zggAgtOONPllLfslr6X/wB/43FjYYsgGfKtPctsQgrbSMbqrDXOu8z6jJTT9
-WfzvJoic373/eZzXRIu2mQIAjMNLC9bsYKFSjL3YdM4QN17TuvxyawY6GTMi+7HK
-p+wANJD/JE0Hze6QtsM4uyVUd3t16oHVTaJ7wn7bc9CThv4wtj7BMD7Lrj98OGJ2
-BDwZKSWLroBkd1DBUdEnS1ROAlVq/QFvZ6VcqbrFobcsGsSoBiC9XgpEYzF68cW9
-ywYhjF1o3mdhCtJF2actzFz6at/aWkfGWa0O93EZsRjON6DEklJLMVBf2ylexGBY
-MoROeAM/bDf4oj3hrKxGNKy4Zm+C6w==
-=6hN/
------END PGP SIGNATURE-----
-
---z9ECzHErBrwFF8sy--
+[0] https://git.kernel.org/pub/scm/linux/kernel/git/ardb/linux.git/log/?h=arm64-scs-gcc
