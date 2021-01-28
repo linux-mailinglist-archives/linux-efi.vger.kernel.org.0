@@ -2,100 +2,147 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0CF04307F39
-	for <lists+linux-efi@lfdr.de>; Thu, 28 Jan 2021 21:11:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9180F3080F2
+	for <lists+linux-efi@lfdr.de>; Thu, 28 Jan 2021 23:11:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231124AbhA1UJx (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 28 Jan 2021 15:09:53 -0500
-Received: from spe6-3.ucebox.co.za ([197.242.159.209]:33672 "EHLO
-        spe6-3.ucebox.co.za" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231351AbhA1UH4 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 28 Jan 2021 15:07:56 -0500
-X-Greylist: delayed 6416 seconds by postgrey-1.27 at vger.kernel.org; Thu, 28 Jan 2021 15:07:02 EST
-Received: from cornucopia.aserv.co.za ([154.0.175.203])
-        by spe4.ucebox.co.za with esmtps (TLSv1.2:AES128-GCM-SHA256:128)
-        (Exim 4.92)
-        (envelope-from <manornutgrovemanor@gmail.com>)
-        id 1l5Brs-0002Dc-Q5; Thu, 28 Jan 2021 20:18:43 +0200
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by cornucopia.aserv.co.za (Postfix) with ESMTPA id 37618C1250;
-        Thu, 28 Jan 2021 20:17:07 +0200 (SAST)
+        id S229774AbhA1WLg (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 28 Jan 2021 17:11:36 -0500
+Received: from linux.microsoft.com ([13.77.154.182]:34908 "EHLO
+        linux.microsoft.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229677AbhA1WLe (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 28 Jan 2021 17:11:34 -0500
+Received: from [192.168.254.32] (unknown [47.187.219.45])
+        by linux.microsoft.com (Postfix) with ESMTPSA id 7F77920B7192;
+        Thu, 28 Jan 2021 14:10:52 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 7F77920B7192
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+        s=default; t=1611871853;
+        bh=ZA2oSM80w+RdJ/gENbHPlEraVHFQ5GUGuDOI84otWqQ=;
+        h=From:Subject:To:Cc:References:Date:In-Reply-To:From;
+        b=b1XGVIJ11p8YrFEjhTOOsWPkgVJ1pwfcR9jZ+MllQtZMHIWyYefW7DKgPJatPai+7
+         Dz7hbE72mu7+23aHXEWklEXI7+cnEwZ1vcsBxJ9nq7MlZTar2idPNvNO9c86/AYmH4
+         78ogAZo3+o5tEXQX2VNOWZoF16HDXD/bYTvewRCs=
+From:   "Madhavan T. Venkataraman" <madvenka@linux.microsoft.com>
+Subject: Re: [RFC PATCH 00/17] objtool: add base support for arm64
+To:     Mark Brown <broonie@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Julien Thierry <jthierry@redhat.com>,
+        Josh Poimboeuf <jpoimboe@redhat.com>
+Cc:     Ard Biesheuvel <ardb@kernel.org>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        linux-hardening@vger.kernel.org, live-patching@vger.kernel.org,
+        Will Deacon <will@kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Kees Cook <keescook@chromium.org>
+References: <20210120173800.1660730-1-jthierry@redhat.com>
+ <CAMj1kXHO0wgcZ4ZDxj1vS9s7Szfpz8Nz=SAW_=Dnnjy+S9AtyQ@mail.gmail.com>
+ <186bb660-6e70-6bbf-4e96-1894799c79ce@redhat.com>
+ <CAMj1kXHznGnN2UEai1c2UgyKuTFCS5SZ+qGR6VJwyCuccViw_A@mail.gmail.com>
+ <YAlkOFwkb6/hFm1Q@hirez.programming.kicks-ass.net>
+ <CAMj1kXE+675mbS66kteKHNfcrco84WTaEL6ncVkkV7tQgbMpFw@mail.gmail.com>
+ <20210121185452.fxoz4ehqfv75bdzq@treble>
+ <20210122174342.GG6391@sirena.org.uk>
+ <CAMj1kXF31FxCTbo4M8MX0aaegaq7AQXMUdCtsm6xrKUFSpkzjA@mail.gmail.com>
+Message-ID: <c8f0cfec-b23e-dc84-0c43-feb9d892ea26@linux.microsoft.com>
+Date:   Thu, 28 Jan 2021 16:10:51 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
+In-Reply-To: <CAMj1kXF31FxCTbo4M8MX0aaegaq7AQXMUdCtsm6xrKUFSpkzjA@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-Date:   Thu, 28 Jan 2021 20:17:07 +0200
-From:   Nut Grove Manor <manornutgrovemanor@gmail.com>
-To:     undisclosed-recipients:;
-Subject: Invitation To Quote
-User-Agent: Roundcube Webmail/1.4.1
-Message-ID: <b09951c581c69bcd4c3d48c21f6885b3@gmail.com>
-X-Sender: manornutgrovemanor@gmail.com
-X-Originating-IP: 154.0.175.203
-X-Afrihost-Domain: pesci.aserv.co.za
-X-Afrihost-Username: 154.0.175.203
-Authentication-Results: ucebox.co.za; auth=pass smtp.auth=154.0.175.203@pesci.aserv.co.za
-X-Afrihost-Outgoing-Class: unsure
-X-Afrihost-Outgoing-Evidence: Combined (0.71)
-X-Recommended-Action: accept
-X-Filter-ID: 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
- F2m4bBx/YCvbzEWyHpfJdFJnGm+sTRDggxgVxQ==
-X-Report-Abuse-To: spam@spe1.ucebox.co.za
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Good Day Sir
+Hi,
 
-We are please to invite you/your company to quote the following item
-listed
-below:
+I sent this suggestion to linux-arm-kernel in response to the Reliable Stacktrace RFC from Mark Brown
+and Mark Rutland. I am repeating it here for two reasons:
 
-Product/Model No: TM9653 PRESSURE REGULATOR
-Product Name:MEKO
-Qty. 30 units
+- It involves objtool.
 
-Compulsory,Kindly send your quotation
-for immediate approval.
+- There are many more recipients in this thread that may be interested in this topic.
 
-Kind Regards,
-Albert Bourla
-PFIZER B.V Supply Chain Manager
-Tel: +31(0)208080 880
-ADDRESS: Rivium Westlaan 142, 2909 LD
-Capelle aan den IJssel, Netherlands
+Please let me know if this suggestion is acceptable. If it is not, please let me know why.
+Thanks.
+
+Also, I apologize to all of you who have received this more than once.
+
+FP and no-FP functions
+=====================
+
+I have a suggestion for objtool and the unwinder for ARM64.
+
+IIUC, objtool is responsible for walking all the code paths (except unreachable
+and ignored ones) and making sure that every function has proper frame pointer
+code (prolog, epilog, etc). If a function is found to not have it, the kernel
+build is failed. Is this understanding correct?
+
+If so, can we take a different approach for ARM64?
+
+Instead of failing the kernel build, can we just mark the functions as:
+
+	FP	Functions that have proper FP code
+	no-FP	Functions that don't
+
+May be, we can add an "FP" flag in the symbol table entry for this.
+
+Then, the unwinder can check the functions it encounters in the stack trace and
+inform the caller if it found any no-FP functions. The caller of the unwinder can
+decide what he wants to do with that information.
+
+	- the caller can ignore it
+
+	- the caller can print the stack trace with a warning that no-FP functions
+	  were found
+
+	- if the caller is livepatch, the caller can retry until the no-FP functions
+	  disappear from the stack trace. This way, we can have live patching even
+	  when some of the functions in the kernel are no-FP.
+
+Does this make any sense? Is this acceptable? What are the pitfalls?
+
+If we can do this, the unwinder could detect cases such as:
+
+- If gcc thinks that a function is a leaf function but the function contains
+  inline assembly code that calls another function.
+
+- If a call to a function bounces through some intermediate code such as a
+  trampoline.
+
+- etc.
+
+For specific no-FP functions, the unwinder might be able to deduce the original
+caller. In these cases, the stack trace would still be reliable. For all the others,
+the stack trace would be considered unreliable.
+
+Compiler instead of objtool
+===========================
+
+If the above suggestion is acceptable, I have another suggestion.
+
+It is a lot of work for every new architecture to add frame pointer verification
+support in objtool. Can we get some help from the compiler?
+
+The compiler knows which C functions it generates the FP prolog and epilog for. It can
+mark those functions as FP. As for assembly functions, kernel developers could manually
+annotate functions that have proper FP code. The compiler/assembler would mark them
+as FP. Only a small subset of assembly functions would even have FP prolog and epilog.
+
+Is this acceptable? What are the pitfalls?
+
+This can be implemented easily for all architectures for which the compiler generates
+FP code.
+
+Can this be implemented using a GCC plugin? I know squat about GCC plugins.
+
+Thanks!
+
+Madhavan
