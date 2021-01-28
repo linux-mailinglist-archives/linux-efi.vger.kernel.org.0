@@ -2,92 +2,100 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 428213067E4
-	for <lists+linux-efi@lfdr.de>; Thu, 28 Jan 2021 00:30:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0CF04307F39
+	for <lists+linux-efi@lfdr.de>; Thu, 28 Jan 2021 21:11:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233301AbhA0X3l (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 27 Jan 2021 18:29:41 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:59685 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S233679AbhA0X23 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 27 Jan 2021 18:28:29 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1611790023;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=UmZtO9S6cUQ2CC3kIdExR5VZtUZQ7YeAA3zNA2d3Y68=;
-        b=V5Hf+EOsAZRBIwUwUvGVXehgBzfCp1Gf5G+xVqGPNklmZ69PNoEEnmet9tBbpUcv4BLFsS
-        7T1p9AzDDYNOaDWe+dUg22cNpu3XxYb4uUNsSXrNYFaVOQwPwDVfeci4CnTIVzibYlSioy
-        w+UJtwVrowqc8Wf6MZRLxRouwsoPfV0=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-508-yX2crCwSMlywEzTRrvJlVw-1; Wed, 27 Jan 2021 18:27:00 -0500
-X-MC-Unique: yX2crCwSMlywEzTRrvJlVw-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 25DAC911E3;
-        Wed, 27 Jan 2021 23:26:57 +0000 (UTC)
-Received: from treble (ovpn-120-118.rdu2.redhat.com [10.10.120.118])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id 6681D10016FA;
-        Wed, 27 Jan 2021 23:26:53 +0000 (UTC)
-Date:   Wed, 27 Jan 2021 17:26:51 -0600
-From:   Josh Poimboeuf <jpoimboe@redhat.com>
-To:     Nick Desaulniers <ndesaulniers@google.com>
-Cc:     jthierry@redhat.com, ardb@kernel.org, broonie@kernel.org,
-        catalin.marinas@arm.com, keescook@chromium.org,
-        linux-arm-kernel@lists.infradead.org, linux-efi@vger.kernel.org,
-        linux-hardening@vger.kernel.org, linux-kernel@vger.kernel.org,
-        mark.rutland@arm.com, masahiroy@kernel.org,
-        michal.lkml@markovi.net, peterz@infradead.org,
-        raphael.gault@arm.com, will@kernel.org,
-        clang-built-linux@googlegroups.com
-Subject: Re: [RFC PATCH 12/17] gcc-plugins: objtool: Add plugin to detect
- switch table on arm64
-Message-ID: <20210127232651.rj3mo7c2oqh4ytsr@treble>
-References: <20210120173800.1660730-13-jthierry@redhat.com>
- <20210127221557.1119744-1-ndesaulniers@google.com>
+        id S231124AbhA1UJx (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 28 Jan 2021 15:09:53 -0500
+Received: from spe6-3.ucebox.co.za ([197.242.159.209]:33672 "EHLO
+        spe6-3.ucebox.co.za" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231351AbhA1UH4 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 28 Jan 2021 15:07:56 -0500
+X-Greylist: delayed 6416 seconds by postgrey-1.27 at vger.kernel.org; Thu, 28 Jan 2021 15:07:02 EST
+Received: from cornucopia.aserv.co.za ([154.0.175.203])
+        by spe4.ucebox.co.za with esmtps (TLSv1.2:AES128-GCM-SHA256:128)
+        (Exim 4.92)
+        (envelope-from <manornutgrovemanor@gmail.com>)
+        id 1l5Brs-0002Dc-Q5; Thu, 28 Jan 2021 20:18:43 +0200
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by cornucopia.aserv.co.za (Postfix) with ESMTPA id 37618C1250;
+        Thu, 28 Jan 2021 20:17:07 +0200 (SAST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20210127221557.1119744-1-ndesaulniers@google.com>
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Thu, 28 Jan 2021 20:17:07 +0200
+From:   Nut Grove Manor <manornutgrovemanor@gmail.com>
+To:     undisclosed-recipients:;
+Subject: Invitation To Quote
+User-Agent: Roundcube Webmail/1.4.1
+Message-ID: <b09951c581c69bcd4c3d48c21f6885b3@gmail.com>
+X-Sender: manornutgrovemanor@gmail.com
+X-Originating-IP: 154.0.175.203
+X-Afrihost-Domain: pesci.aserv.co.za
+X-Afrihost-Username: 154.0.175.203
+Authentication-Results: ucebox.co.za; auth=pass smtp.auth=154.0.175.203@pesci.aserv.co.za
+X-Afrihost-Outgoing-Class: unsure
+X-Afrihost-Outgoing-Evidence: Combined (0.71)
+X-Recommended-Action: accept
+X-Filter-ID: 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
+ F2m4bBx/YCvbzEWyHpfJdFJnGm+sTRDggxgVxQ==
+X-Report-Abuse-To: spam@spe1.ucebox.co.za
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, Jan 27, 2021 at 02:15:57PM -0800, Nick Desaulniers wrote:
-> > From: Raphael Gault <raphael.gault@arm.com>
-> > 
-> > This plugins comes into play before the final 2 RTL passes of GCC and
-> > detects switch-tables that are to be outputed in the ELF and writes
-> > information in an ".discard.switch_table_info" section which will be
-> > used by objtool.
-> > 
-> > Signed-off-by: Raphael Gault <raphael.gault@arm.com>
-> > [J.T.: Change section name to store switch table information,
-> >        Make plugin Kconfig be selected rather than opt-in by user,
-> >        Add a relocation in the switch_table_info that points to
-> >        the jump operation itself]
-> > Signed-off-by: Julien Thierry <jthierry@redhat.com>
-> 
-> Rather than tightly couple this feature to a particular toolchain via
-> plugin, it might be nice to consider what features could be spec'ed out
-> for toolchains to implement (perhaps via a -f flag).
+Good Day Sir
 
-The problem is being able to detect switch statement jump table vectors.
+We are please to invite you/your company to quote the following item
+listed
+below:
 
-For a given indirect branch (due to a switch statement), what are all
-the corresponding jump targets?
+Product/Model No: TM9653 PRESSURE REGULATOR
+Product Name:MEKO
+Qty. 30 units
 
-We would need the compiler to annotate that information somehow.
+Compulsory,Kindly send your quotation
+for immediate approval.
 
-> Distributions (like Android, CrOS) wont be able to use such a feature as
-> is.
-
-Would a Clang plugin be out of the question?
-
--- 
-Josh
-
+Kind Regards,
+Albert Bourla
+PFIZER B.V Supply Chain Manager
+Tel: +31(0)208080 880
+ADDRESS: Rivium Westlaan 142, 2909 LD
+Capelle aan den IJssel, Netherlands
