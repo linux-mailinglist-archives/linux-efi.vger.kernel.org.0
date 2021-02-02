@@ -2,123 +2,96 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E17BA30BBDC
-	for <lists+linux-efi@lfdr.de>; Tue,  2 Feb 2021 11:15:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C2FF30C19B
+	for <lists+linux-efi@lfdr.de>; Tue,  2 Feb 2021 15:30:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229849AbhBBKNj (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 2 Feb 2021 05:13:39 -0500
-Received: from mail.kernel.org ([198.145.29.99]:46568 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229590AbhBBKNh (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Tue, 2 Feb 2021 05:13:37 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 4D1AC64EE2;
-        Tue,  2 Feb 2021 10:12:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1612260775;
-        bh=a9JpeLTPXuDOqgu+ithu1Vjt2uPFzg7y0tFXGXpxM34=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=2G7Sa2W2ilSNpuWlzi5xy2tjO1cPC84KVISQKCBmXkdFncJ0agNWmtpKRNGXthS7M
-         rd2RAlsEu/8qmLpx/S4Q9Tb4/zkCloMzc6hNLmvZhgw4B4eBq90pJ8K/CHAPqsTO5q
-         /uTrJLoBQx5z3FubOBQqvQ5cnYa4wvWYyC/ml7P8=
-Date:   Tue, 2 Feb 2021 11:12:53 +0100
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Masahiro Yamada <masahiroy@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, Petr Mladek <pmladek@suse.com>,
-        Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        John Ogness <john.ogness@linutronix.de>,
-        Andy Shevchenko <andy@infradead.org>,
+        id S234462AbhBBO2E (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 2 Feb 2021 09:28:04 -0500
+Received: from eu-smtp-delivery-151.mimecast.com ([207.82.80.151]:58846 "EHLO
+        eu-smtp-delivery-151.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S234326AbhBBO02 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 2 Feb 2021 09:26:28 -0500
+Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
+ TLS) by relay.mimecast.com with ESMTP id
+ uk-mta-274-flNrt4sAPICkZEemnUm5Og-1; Tue, 02 Feb 2021 14:24:34 +0000
+X-MC-Unique: flNrt4sAPICkZEemnUm5Og-1
+Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) by
+ AcuMS.aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) with Microsoft SMTP
+ Server (TLS) id 15.0.1347.2; Tue, 2 Feb 2021 14:24:32 +0000
+Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
+ AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000;
+ Tue, 2 Feb 2021 14:24:32 +0000
+From:   David Laight <David.Laight@ACULAB.COM>
+To:     'Josh Poimboeuf' <jpoimboe@redhat.com>,
+        Nick Desaulniers <ndesaulniers@google.com>
+CC:     Julien Thierry <jthierry@redhat.com>,
         Ard Biesheuvel <ardb@kernel.org>,
-        Borislav Petkov <bp@alien8.de>,
-        Darren Hart <dvhart@infradead.org>,
-        Dimitri Sivanich <dimitri.sivanich@hpe.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Mike Travis <mike.travis@hpe.com>,
-        Peter Jones <pjones@redhat.com>,
-        Russ Anderson <russ.anderson@hpe.com>,
-        Steve Wahl <steve.wahl@hpe.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        dri-devel@lists.freedesktop.org, linux-efi@vger.kernel.org,
-        linux-fbdev@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        x86@kernel.org
-Subject: Re: [PATCH 1/3] printk: use CONFIG_CONSOLE_LOGLEVEL_* directly
-Message-ID: <YBklpQ1PrVc5iEQl@kroah.com>
-References: <20210202070218.856847-1-masahiroy@kernel.org>
+        Mark Brown <broonie@kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Kees Cook <keescook@chromium.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        "linux-hardening@vger.kernel.org" <linux-hardening@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        "Mark Rutland" <mark.rutland@arm.com>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Peter Zijlstra <peterz@infradead.org>,
+        "raphael.gault@arm.com" <raphael.gault@arm.com>,
+        Will Deacon <will@kernel.org>,
+        clang-built-linux <clang-built-linux@googlegroups.com>,
+        Bill Wendling <morbo@google.com>
+Subject: RE: [RFC PATCH 12/17] gcc-plugins: objtool: Add plugin to detect
+ switch table on arm64
+Thread-Topic: [RFC PATCH 12/17] gcc-plugins: objtool: Add plugin to detect
+ switch table on arm64
+Thread-Index: AQHW+Pb1TwqrTbfiDUONrIh7m3kiG6pE6I/Q
+Date:   Tue, 2 Feb 2021 14:24:32 +0000
+Message-ID: <7c14b5b8b11241cd8271ba5b3f785c51@AcuMS.aculab.com>
+References: <20210120173800.1660730-13-jthierry@redhat.com>
+ <20210127221557.1119744-1-ndesaulniers@google.com>
+ <20210127232651.rj3mo7c2oqh4ytsr@treble>
+ <CAKwvOdkOeENcM5X7X926sv2Xmtko=_nOPeKZ2+51s13CW1QAjw@mail.gmail.com>
+ <20210201214423.dhsma73k7ccscovm@treble>
+ <CAKwvOdmgNPSpY2oPHFr8EKGXYJbm7K9gySKFgyn4FERa9nTXmw@mail.gmail.com>
+ <20210202000203.rk7lh5mx4aflgkwr@treble>
+In-Reply-To: <20210202000203.rk7lh5mx4aflgkwr@treble>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210202070218.856847-1-masahiroy@kernel.org>
+Authentication-Results: relay.mimecast.com;
+        auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, Feb 02, 2021 at 04:02:16PM +0900, Masahiro Yamada wrote:
-> CONSOLE_LOGLEVEL_DEFAULT is nothing more than a shorthand of
-> CONFIG_CONSOLE_LOGLEVEL_DEFAULT.
-> 
-> When you change CONFIG_CONSOLE_LOGLEVEL_DEFAULT from Kconfig, almost
-> all objects are rebuilt because CONFIG_CONSOLE_LOGLEVEL_DEFAULT is
-> used in <linux/printk.h>, which is included from most of source files.
-> 
-> In fact, there are only 4 users of CONSOLE_LOGLEVEL_DEFAULT:
-> 
->   arch/x86/platform/uv/uv_nmi.c
->   drivers/firmware/efi/libstub/efi-stub-helper.c
->   drivers/tty/sysrq.c
->   kernel/printk/printk.c
-> 
-> So, when you change CONFIG_CONSOLE_LOGLEVEL_DEFAULT and rebuild the
-> kernel, it is enough to recompile those 4 files.
-> 
-> Remove the CONSOLE_LOGLEVEL_DEFAULT definition from <linux/printk.h>,
-> and use CONFIG_CONSOLE_LOGLEVEL_DEFAULT directly.
-> 
-> With this, the build system will rebuild the minimal number of objects.
-> 
-> Steps to confirm it:
-> 
->   [1] Do the full build
->   [2] Change CONFIG_CONSOLE_LOGLEVEL_DEFAULT from 'make menuconfig' etc.
->   [3] Rebuild
-> 
->   $ make
->     SYNC    include/config/auto.conf
->     CALL    scripts/checksyscalls.sh
->     CALL    scripts/atomic/check-atomics.sh
->     DESCEND  objtool
->     CHK     include/generated/compile.h
->     CC      kernel/printk/printk.o
->     AR      kernel/printk/built-in.a
->     AR      kernel/built-in.a
->     CC      drivers/tty/sysrq.o
->     AR      drivers/tty/built-in.a
->     CC      drivers/firmware/efi/libstub/efi-stub-helper.o
->     STUBCPY drivers/firmware/efi/libstub/efi-stub-helper.stub.o
->     AR      drivers/firmware/efi/libstub/lib.a
->     AR      drivers/built-in.a
->     GEN     .version
->     CHK     include/generated/compile.h
->     UPD     include/generated/compile.h
->     CC      init/version.o
->     AR      init/built-in.a
->     LD      vmlinux.o
->     ...
-> 
-> For the same reason, do likewise for CONSOLE_LOGLEVEL_QUIET and
-> MESSAGE_LOGLEVEL_DEFAULT.
-> 
-> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-> ---
-> 
->  arch/x86/platform/uv/uv_nmi.c                  |  2 +-
->  drivers/firmware/efi/libstub/efi-stub-helper.c |  6 +++---
->  drivers/tty/sysrq.c                            |  4 ++--
->  drivers/video/fbdev/core/fbcon.c               |  2 +-
->  drivers/video/fbdev/efifb.c                    |  2 +-
->  include/linux/printk.h                         | 10 ----------
->  init/main.c                                    |  2 +-
->  kernel/printk/printk.c                         |  6 +++---
->  8 files changed, 12 insertions(+), 22 deletions(-)
+U3RpcnJpbmcgbW9yZSBnb29wIGludG8gdGhlIGhvbGUgLi4uLg0KDQpSZXF1aXJpbmcgZ2NjLXBs
+dWdpbnMsIG1hdGNoaW5nIGNvbXBpbGVyIHZlcnNpb25zIGFuZCB0aGUNCnNhbWUgJ2R3YXJmJyBm
+b3JtYXQgZm9yIE9PVCBtb2R1bGVzIGlzIHByb2JhYmx5IHZlcnkgcGFpbmZ1bC4NCg0KSW4gbWFu
+eSBjYXNlcyAoYW5kIHRoaXMgbWF5IGluY2x1ZGUgZHJpdmVycyByZWxlYXNlZCBieSBzb21lDQpk
+aXN0cmlidXRpb25zKSBhbiBPT1QgZHJpdmVyIGhhcyB0d28gc2VwYXJhdGUgcGFydHMuDQoNCk9u
+ZSBwYXJ0IGlzIEMgc291cmNlIHRoYXQgaXMgY29tcGlsZWQgd2hlbiB0aGUgbW9kdWxlIGlzIGJ1
+aWx0DQpvbiB0aGUgdGFyZ2V0IHN5c3RlbSBhbmQgYWdhaW5zdCB0aGUgaW5zdGFsbGVkIGtlcm5l
+bCBoZWFkZXJzLg0KR2V0dGluZyB0aGlzIHRvIG1hdGNoICdqdXN0JyByZWxpZXMgb24gaGF2aW5n
+IHRoZSBjb3JyZWN0DQpjb21waWxlciAoZXRjKSBpbnN0YWxsZWQgYW5kIGluICRQQVRILg0KDQpU
+aGUgc2Vjb25kIHBhcnQgaXMgbXVjaCBtb3JlIHByb2JsZW1hdGljLg0KVGhpcyBpcyBqdXN0IGFu
+IG9iamVjdCBmaWxlIGNvbXBpbGVkIGJ5IGEgdGhpcmQgcGFydHkuDQpJdCBkb2Vzbid0IGRpcmVj
+dGx5IGRlcGVuZCBvbiBhbnl0aGluZyBkZWZpbmVkIGluIHRoZQ0Ka2VybmVsIGhlYWRlcnMgLSBz
+byBjYW4gKGN1cnJlbnRseSkgYmUgbGlua2VkIGludG8gYW55DQprZXJuZWwgdmVyc2lvbi4NCg0K
+SW4gdGhlIHBhc3Qgc29tZSBncmFwaGljcyBkcml2ZXJzIGhhdmUgaGFkIGEgdGhpcmQgcGFydHkN
+Cm9iamVjdCBmaWxlLg0KSSB0aGluayBzb21lIG9mIHRoZSBsYXB0b3Agd2lmaSBkcml2ZXJzIG1p
+Z2h0IGFzIHdlbGwuDQoNCk5vdyBJIHNvbWUgcGVvcGxlIHRoaW5rIGV2ZXJ5dGhpbmcgc2hvdWxk
+IGJlIGZyZWUgc291cmNlLg0KQnV0IHRoZXJlIGFyZSB2YXJpb3VzIGNvbW1lcmNpYWwgYW5kIHBy
+YWN0aWNhbCByZWFzb25zDQpmb3IgYm90aCBPT1QgZHJpdmVycyBhbmQgb2JqZWN0IGZpbGUgJ2Js
+b2JzJyBpbiBPT1QgZHJpdmVycy4NCg0KCURhdmlkDQoNCi0NClJlZ2lzdGVyZWQgQWRkcmVzcyBM
+YWtlc2lkZSwgQnJhbWxleSBSb2FkLCBNb3VudCBGYXJtLCBNaWx0b24gS2V5bmVzLCBNSzEgMVBU
+LCBVSw0KUmVnaXN0cmF0aW9uIE5vOiAxMzk3Mzg2IChXYWxlcykNCg==
 
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
