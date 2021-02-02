@@ -2,162 +2,211 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EC44930CF9C
-	for <lists+linux-efi@lfdr.de>; Wed,  3 Feb 2021 00:06:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F6E030CFF1
+	for <lists+linux-efi@lfdr.de>; Wed,  3 Feb 2021 00:39:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233464AbhBBXF5 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 2 Feb 2021 18:05:57 -0500
-Received: from conssluserg-05.nifty.com ([210.131.2.90]:22160 "EHLO
-        conssluserg-05.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233050AbhBBXF4 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 2 Feb 2021 18:05:56 -0500
-X-Greylist: delayed 57464 seconds by postgrey-1.27 at vger.kernel.org; Tue, 02 Feb 2021 18:05:53 EST
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177]) (authenticated)
-        by conssluserg-05.nifty.com with ESMTP id 112N4khF003133;
-        Wed, 3 Feb 2021 08:04:46 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-05.nifty.com 112N4khF003133
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
-        s=dec2015msa; t=1612307086;
-        bh=UGA0Rplim8ZfC6e4whP20xTht9RzqhbWWxLaXhzWRUA=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=tOBe0hEHHf9tvmT3rHNnjBL9ugZuudIECWVtYvCik/AC2pP1I4bqBET4RIJ/vBKSB
-         0aRw/i7F91TD/PzkclnU2rVRXFMEw6JAzCx93I17/rKXeFG7l0py1WRGJG2fQCZQLj
-         q99jD6spPDWOLAzyv0+yHJdvetuJ0mv8N9l2T+24C2KTXwMzAOnAFXBCq1xn8EfdZh
-         EqvYL29bZ/OMZE6jEBXdHTulk62/GRSs0uLVCRks7bcTqFsH9kUUbnniWFdepR5nay
-         nVRHIn7crbFdyzki6dQc69GxxIU1dobMhHCeavZav8fqc5flWT+QiFEmuYa9o3WH3Q
-         4bzZRX2Ms/k9g==
-X-Nifty-SrcIP: [209.85.214.177]
-Received: by mail-pl1-f177.google.com with SMTP id u11so13344353plg.13;
-        Tue, 02 Feb 2021 15:04:46 -0800 (PST)
-X-Gm-Message-State: AOAM532yuR3F6Vl6z+NNFjFuGpuWcQl1WLAEmHtTkrLsMp8b4+WdKjrw
-        hQrJrSp9A9DIdg9f51DuZe3ED7EZv7t5beQT7aU=
-X-Google-Smtp-Source: ABdhPJxvtHfeu+crGL+CyXAo0FUYVHkXnleiaiv+dMA4n8+oso6WU2K79gP3aD12VFT56j8XRv47GWHWmTyr4FAXNxk=
-X-Received: by 2002:a17:90b:1b50:: with SMTP id nv16mr88481pjb.153.1612307085830;
- Tue, 02 Feb 2021 15:04:45 -0800 (PST)
-MIME-Version: 1.0
-References: <20210202070218.856847-1-masahiroy@kernel.org> <YBkk0cZXdwYdXIcD@jagdpanzerIV.localdomain>
-In-Reply-To: <YBkk0cZXdwYdXIcD@jagdpanzerIV.localdomain>
-From:   Masahiro Yamada <masahiroy@kernel.org>
-Date:   Wed, 3 Feb 2021 08:04:08 +0900
-X-Gmail-Original-Message-ID: <CAK7LNAQh=bMuyEinKzr6t28E2TuSWAhYU=M+jeJ+HiNhjQN=3A@mail.gmail.com>
-Message-ID: <CAK7LNAQh=bMuyEinKzr6t28E2TuSWAhYU=M+jeJ+HiNhjQN=3A@mail.gmail.com>
-Subject: Re: [PATCH 1/3] printk: use CONFIG_CONSOLE_LOGLEVEL_* directly
-To:     Sergey Senozhatsky <sergey.senozhatsky@gmail.com>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Petr Mladek <pmladek@suse.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        John Ogness <john.ogness@linutronix.de>,
-        Andy Shevchenko <andy@infradead.org>,
+        id S229846AbhBBXid (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 2 Feb 2021 18:38:33 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:45432 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S229731AbhBBXiT (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 2 Feb 2021 18:38:19 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1612309011;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=jss9BHM8ER2sH3J1Y701o3PQpwb7W/xqsNFGP2giOhw=;
+        b=h5rAIlrfwxa0SE2lGNn0XlDSuwNf3NDU40jVlPUo9OErv2rTnt9KUTI8D0oswAwjSE964K
+        /0qMN33KfeV8ZSAB6RAzU+m6l3XeGYYBfWFUrnCuH+x9RDgGuURQbztsz2yY6TCJoQs9st
+        DuYxgRqxV5zwvxoUju0viSEz/mgQnZs=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-533-sH3jKwTvP9a0zdxKzgF-SA-1; Tue, 02 Feb 2021 18:36:49 -0500
+X-MC-Unique: sH3jKwTvP9a0zdxKzgF-SA-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 58CD51015C80;
+        Tue,  2 Feb 2021 23:36:46 +0000 (UTC)
+Received: from treble (ovpn-120-118.rdu2.redhat.com [10.10.120.118])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id 9A89B6E510;
+        Tue,  2 Feb 2021 23:36:43 +0000 (UTC)
+Date:   Tue, 2 Feb 2021 17:36:36 -0600
+From:   Josh Poimboeuf <jpoimboe@redhat.com>
+To:     Nick Desaulniers <ndesaulniers@google.com>
+Cc:     Julien Thierry <jthierry@redhat.com>,
         Ard Biesheuvel <ardb@kernel.org>,
-        Borislav Petkov <bp@alien8.de>,
-        Darren Hart <dvhart@infradead.org>,
-        Dimitri Sivanich <dimitri.sivanich@hpe.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Mike Travis <mike.travis@hpe.com>,
-        Peter Jones <pjones@redhat.com>,
-        Russ Anderson <russ.anderson@hpe.com>,
-        Steve Wahl <steve.wahl@hpe.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
+        Mark Brown <broonie@kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Kees Cook <keescook@chromium.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
         linux-efi <linux-efi@vger.kernel.org>,
-        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
-        platform-driver-x86@vger.kernel.org, X86 ML <x86@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        linux-hardening@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Peter Zijlstra <peterz@infradead.org>, raphael.gault@arm.com,
+        Will Deacon <will@kernel.org>,
+        clang-built-linux <clang-built-linux@googlegroups.com>,
+        Bill Wendling <morbo@google.com>, swine@google.com,
+        yonghyun@google.com, live-patching@vger.kernel.org
+Subject: Re: [RFC PATCH 12/17] gcc-plugins: objtool: Add plugin to detect
+ switch table on arm64
+Message-ID: <20210202233636.nvbl6wivgnhacbvg@treble>
+References: <20210120173800.1660730-13-jthierry@redhat.com>
+ <20210127221557.1119744-1-ndesaulniers@google.com>
+ <20210127232651.rj3mo7c2oqh4ytsr@treble>
+ <CAKwvOdkOeENcM5X7X926sv2Xmtko=_nOPeKZ2+51s13CW1QAjw@mail.gmail.com>
+ <20210201214423.dhsma73k7ccscovm@treble>
+ <CAKwvOdmgNPSpY2oPHFr8EKGXYJbm7K9gySKFgyn4FERa9nTXmw@mail.gmail.com>
+ <20210202000203.rk7lh5mx4aflgkwr@treble>
+ <CAKwvOd=R_ELec5Q3+oe9zuYXrwSGfLkqomAPOTr=UH=SZPtKUw@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAKwvOd=R_ELec5Q3+oe9zuYXrwSGfLkqomAPOTr=UH=SZPtKUw@mail.gmail.com>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, Feb 2, 2021 at 7:09 PM Sergey Senozhatsky
-<sergey.senozhatsky@gmail.com> wrote:
->
-> On (21/02/02 16:02), Masahiro Yamada wrote:
+On Tue, Feb 02, 2021 at 02:33:38PM -0800, Nick Desaulniers wrote:
+> On Mon, Feb 1, 2021 at 4:02 PM Josh Poimboeuf <jpoimboe@redhat.com> wrote:
 > >
-> > CONSOLE_LOGLEVEL_DEFAULT is nothing more than a shorthand of
-> > CONFIG_CONSOLE_LOGLEVEL_DEFAULT.
+> > On Mon, Feb 01, 2021 at 03:17:40PM -0800, Nick Desaulniers wrote:
+> > > On the earlier thread, Julien writes:
+> > >
+> > > >> I think most people interested in livepatching are using GCC built
+> > > >> kernels, but I could be mistaken (althought in the long run, both
+> > > >> compilers should be supported, and yes, I realize the objtool solution
+> > > >> currently only would support GCC).
+> > >
+> > > Google's production kernels are using livepatching and are built with
+> > > Clang.  Getting similar functionality working for arm64 would be of
+> > > interest.
 > >
-> > When you change CONFIG_CONSOLE_LOGLEVEL_DEFAULT from Kconfig, almost
-> > all objects are rebuilt because CONFIG_CONSOLE_LOGLEVEL_DEFAULT is
-> > used in <linux/printk.h>, which is included from most of source files.
+> > Well, that's cool.  I had no idea.
 > >
-> > In fact, there are only 4 users of CONSOLE_LOGLEVEL_DEFAULT:
+> > I'm curious how they're generating livepatch modules?  Because
+> > kpatch-build doesn't support Clang (AFAIK), and if they're not using
+> > kpatch-build then there are some traps to look out for.
+> 
+> Ok, I just met with a bunch of folks that are actively working on
+> this.  Let me intro
+> Yonghyun Hwang <yonghyun@google.com>
+> Pete Swain <swine@google.com>
+> who will be the folks on point for this from Google.
+
+Nice to meet you all.  Adding the live-patching ML sub-thread.
+
+> My understanding after some clarifications today is that Google is
+> currently using a proprietary kernel patching mechanism that developed
+> around a decade ago, "pre-ksplice Oracle acquisition."  But we are
+> looking to transition to kpatch, and help towards supporting arm64.
+> Live patching is important for deploying kernel fixes faster than
+> predetermined scheduled draining of jobs in clusters.
+> 
+> The first steps for kpatch transition is supporting builds with Clang.
+> Yonghyun is working on that and my hope is he will have patches for
+> you for that soon.
+
+That would be great!
+
+> Curiously, the proprietary mechanism doesn't rely on stack validation.
+
+If this proprietary mechanism relies on stack traces, that could
+problematic.  Livepatch originally made the same assumption, but it was
+shot down quickly:
+
+  https://lwn.net/Articles/634649/
+  https://lwn.net/Articles/658333/
+
+> I think that such dependency was questioned on the cover letter
+> patch's thread as well.
+
+Yes, though it's generally agreed that unvalidated compiler-generated
+unwinder metadata isn't going to be robust enough for kernel live
+patching.
+
+> Maybe there's "some traps to look out for" you're referring to there?
+
+The "traps" are more about how the patches are generated.  If they're
+built with source code, like a normal kernel module, you have to be
+extra careful because of function ABI nastiness.  kpatch-build avoids
+this problem.  Unfortunately this still isn't documented.
+
+> I'm not privy to the details, though I would guess it has to do with
+> ensuring kernel threads aren't executing (or planning to return
+> through) code regions that are trying to be patched/unpatched.
+
+Right.  There are some good details in
+Documentation/livepatch/livepatch.rst.
+
+> I am curious about frame pointers never being omitted for arm64; is
+> frame pointer chasing is unreliable in certain contexts?
+
+Yes, problematic areas are interrupts, exceptions, inline asm,
+hand-coded asm.  A nice document was recently added in
+Documentation/livepatch/reliable-stacktrace.rst which covers a lot of
+this stuff.
+
+> The internal functionality has been used heavily in production for
+> almost a decade, though without it being public or supporting arm64;
+> I'm not sure precisely how they solve such issues (or how others might
+> review such an approach).
+
+Very impressive to run it in production that long.  Their experience and
+expertise is definitely welcome.
+
+> Either way, the dependencies for live patching are less important, so
+> long as they are toolchain portable.  The ability to live patch kernel
+> images is ___important___ to Google.
+> 
+> > > Objtool support on arm64 is interesting to me though, because it has
+> > > found bugs in LLVM codegen. That alone is extremely valuable.  But not
+> > > it's not helpful if it's predicated or tightly coupled to GCC, as this
+> > > series appears to do.
 > >
-> >   arch/x86/platform/uv/uv_nmi.c
-> >   drivers/firmware/efi/libstub/efi-stub-helper.c
-> >   drivers/tty/sysrq.c
-> >   kernel/printk/printk.c
+> > I agree 100%, if there are actual Clang livepatch users (which it sounds
+> > like there are) then we should target both compilers.
+> 
+> Or will be. (Sorry, I didn't know we hadn't completed the transition
+> to kpatch yet.  It is "the opposite side of the house" from where I
+> work; I literally have 8 bosses, not kidding).
+> 
+> Though if kpatch moves to requiring GCC plugins for architectures we
+> use extensively or would like to use more of, that's probably going to
+> throw a wrench in multiple transition plans.  (The fleet's transition
+> to Clang is done, I'm not worried about that).
+
+Hopefully we can just forget the GCC plugin idea.
+
+It would be really nice to see some performance numbers for
+-fno-jump-tables so we can justify doing that instead, at least in the
+short-term.  I'd suspect the difference isn't measurable in the real
+world.
+
+(In the case of GCC+retpolines, it would be a performance improvement.)
+
+> > And yes, objtool has been pretty good at finding compiler bugs, so the
+> > more coverage the better.
+> > > The idea of rebuilding control flow from binary analysis and using
+> > > that to find codegen bugs is a really cool idea (novel, even? idk),
+> > > and I wish we had some analog for userspace binaries that could
+> > > perform similar checks.
 > >
-> > So, when you change CONFIG_CONSOLE_LOGLEVEL_DEFAULT and rebuild the
-> > kernel, it is enough to recompile those 4 files.
->
-> Do you change CONFIG_CONSOLE_LOGLEVEL_DEFAULT so often that it becomes a
-> problem?
->
->         -ss
+> > Objtool is generic in many ways -- in fact I recently heard from a PhD
+> > candidate who used it successfully on another kernel for an ORC
+> > unwinder.
+> 
+> That's pretty cool!  Reuse outside the initial context is always a
+> good sign that something was designed right.
 
+So basically you're saying objtool is both useful and well-designed.  I
+will quote you on that!
 
+-- 
+Josh
 
-<linux/printk.h> is one of most included headers,
-so it is worth downsizing.
-
-CONSOLE_LOGLEVEL_DEFAULT is not such a parameter
-that printk() users need to know.
-
-Changing CONFIG_CONSOLE_LOGLEVEL_DEFAULT results in
-the rebuilds of the entire tree, which is a flag of
-bad code structure.
-
-So, this is not only CONSOLE_LOGLEVEL_DEFAULT.
-<linux/printk.h> contains parameters
-and func declarations that printk() users
-do not need to know.
-
-Examples:
-CONSOLE_LOGLEVEL_DEFAULT
-log_buf_addr_get()
-log_buf_len_get()
-oops_in_progress
-...
-
-
-They are only needed for those who want
-to more closely get access to
-the printk internals.
-
-
-Ideally, such parameters and func
-declarations can go to the subsystems'
-local header (kernel/printk/internal.h)
-but when it is not possible,
-they can be separated out to
-a different header.
-
-
-I can see a similar idea in the consumer/provider
-model in several subsystems.
-
-Consumers and providers are often orthogonal,
-and de-coupling them clarifies
-who needs what.
-
-See other subsystems, for example,
-
-<linux/clk.h>           -  clk consumer
-<linux/clk-provider.h>  -  clk provider
-
-
-
-
-
-
-
-
-
-
-
-
-
---
-Best Regards
-Masahiro Yamada
