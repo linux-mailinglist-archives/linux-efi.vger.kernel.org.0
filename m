@@ -2,53 +2,26 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 08F8630BBCD
-	for <lists+linux-efi@lfdr.de>; Tue,  2 Feb 2021 11:11:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E17BA30BBDC
+	for <lists+linux-efi@lfdr.de>; Tue,  2 Feb 2021 11:15:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229731AbhBBKKQ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 2 Feb 2021 05:10:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56426 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229883AbhBBKKF (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 2 Feb 2021 05:10:05 -0500
-Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com [IPv6:2607:f8b0:4864:20::62b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA393C0613D6;
-        Tue,  2 Feb 2021 02:09:25 -0800 (PST)
-Received: by mail-pl1-x62b.google.com with SMTP id b8so12181506plh.12;
-        Tue, 02 Feb 2021 02:09:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=FYeJLFgukpjjaiX0ohZ3jkdwwwc8rHopLauzuSIyIdw=;
-        b=tV+v78ppPBh5j1qozvGytXqYRH3YTJdedkA+I8BKPM/+ZtmYvrTzBWbeVfXbArKUSM
-         iN4DyO4rLEKMayZ/QM19bmkFz6e2qX/7WaBp+PIDYEig7nWtknkexxzua6XvFhgpHqne
-         lMEJZfTOQk7alc33ttk1hifGy5+zTtIrFKaHTSf6mg9Tfz5AO0tqYi4erZkvNM02mM7F
-         34qhUEHyyimt6uvazTjZyHv98SSh3Jyu5L4GyjX35aHc1AQuPb7R2MgE/5cvZaUS1c2/
-         oW/pTvabA1T2TAr4fqG1xQ9yyF5eenOs5p6igNbRJQAuRb/uXxQJoOvzreh2AVCzW5ld
-         4Zkg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=FYeJLFgukpjjaiX0ohZ3jkdwwwc8rHopLauzuSIyIdw=;
-        b=bOIzmPHvRpzgmS1MmP9MuyPEs2lHHMSPd5xHbplR/n2Nkuoow4i8P7LrCQQXSCeBS1
-         QvNEFeKzRbFhC6uC12aL5DJtv1XUUVGpZ3pvo/aD+YB1GW3KheCp70vakvw2UOeHTMI8
-         m8zvpgXyhpfjg2go7ZtNRWUnja84KPvwMWfX/ntL59ar6A4MAFRRmifjg1194UOWYQmZ
-         TO48u5iO/2tHoiwEbDQXds+4SPq4RhWUov2Rj9DXUTOGwebtl3a2Xj91Do65PGYJXQRA
-         LoThXRCR0PF8rrB4Aqhe2LXlpB/duLiDGceGSBlArcWt9GyXEKNwjokHvvnIeobRMGPY
-         mYaA==
-X-Gm-Message-State: AOAM530B6XEA5phDOS5fsxDvc4l8ytxSDmE/WxwxWGcs/xP4Q7NFpd1R
-        RdRQ8vWY/zKTKkDk7GCE5dqcHAMlQE5jlw==
-X-Google-Smtp-Source: ABdhPJzOiwWh5mPPYa1i19XPG4Fp5MvPpEcfOWz0ooMRC2HOki3phGTorM9UmMcRGoRVm4K5OTM51w==
-X-Received: by 2002:a17:90a:d02:: with SMTP id t2mr3397288pja.130.1612260565335;
-        Tue, 02 Feb 2021 02:09:25 -0800 (PST)
-Received: from localhost ([2409:10:2e40:5100:6e29:95ff:fe2d:8f34])
-        by smtp.gmail.com with ESMTPSA id l2sm21403893pga.65.2021.02.02.02.09.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 02 Feb 2021 02:09:24 -0800 (PST)
-Date:   Tue, 2 Feb 2021 19:09:21 +0900
-From:   Sergey Senozhatsky <sergey.senozhatsky@gmail.com>
+        id S229849AbhBBKNj (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 2 Feb 2021 05:13:39 -0500
+Received: from mail.kernel.org ([198.145.29.99]:46568 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229590AbhBBKNh (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Tue, 2 Feb 2021 05:13:37 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 4D1AC64EE2;
+        Tue,  2 Feb 2021 10:12:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1612260775;
+        bh=a9JpeLTPXuDOqgu+ithu1Vjt2uPFzg7y0tFXGXpxM34=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=2G7Sa2W2ilSNpuWlzi5xy2tjO1cPC84KVISQKCBmXkdFncJ0agNWmtpKRNGXthS7M
+         rd2RAlsEu/8qmLpx/S4Q9Tb4/zkCloMzc6hNLmvZhgw4B4eBq90pJ8K/CHAPqsTO5q
+         /uTrJLoBQx5z3FubOBQqvQ5cnYa4wvWYyC/ml7P8=
+Date:   Tue, 2 Feb 2021 11:12:53 +0100
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     Masahiro Yamada <masahiroy@kernel.org>
 Cc:     linux-kernel@vger.kernel.org, Petr Mladek <pmladek@suse.com>,
         Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
@@ -59,7 +32,6 @@ Cc:     linux-kernel@vger.kernel.org, Petr Mladek <pmladek@suse.com>,
         Borislav Petkov <bp@alien8.de>,
         Darren Hart <dvhart@infradead.org>,
         Dimitri Sivanich <dimitri.sivanich@hpe.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
         Jiri Slaby <jirislaby@kernel.org>,
         Mike Travis <mike.travis@hpe.com>,
@@ -71,7 +43,7 @@ Cc:     linux-kernel@vger.kernel.org, Petr Mladek <pmladek@suse.com>,
         linux-fbdev@vger.kernel.org, platform-driver-x86@vger.kernel.org,
         x86@kernel.org
 Subject: Re: [PATCH 1/3] printk: use CONFIG_CONSOLE_LOGLEVEL_* directly
-Message-ID: <YBkk0cZXdwYdXIcD@jagdpanzerIV.localdomain>
+Message-ID: <YBklpQ1PrVc5iEQl@kroah.com>
 References: <20210202070218.856847-1-masahiroy@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -81,8 +53,7 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On (21/02/02 16:02), Masahiro Yamada wrote:
-> 
+On Tue, Feb 02, 2021 at 04:02:16PM +0900, Masahiro Yamada wrote:
 > CONSOLE_LOGLEVEL_DEFAULT is nothing more than a shorthand of
 > CONFIG_CONSOLE_LOGLEVEL_DEFAULT.
 > 
@@ -99,8 +70,55 @@ On (21/02/02 16:02), Masahiro Yamada wrote:
 > 
 > So, when you change CONFIG_CONSOLE_LOGLEVEL_DEFAULT and rebuild the
 > kernel, it is enough to recompile those 4 files.
+> 
+> Remove the CONSOLE_LOGLEVEL_DEFAULT definition from <linux/printk.h>,
+> and use CONFIG_CONSOLE_LOGLEVEL_DEFAULT directly.
+> 
+> With this, the build system will rebuild the minimal number of objects.
+> 
+> Steps to confirm it:
+> 
+>   [1] Do the full build
+>   [2] Change CONFIG_CONSOLE_LOGLEVEL_DEFAULT from 'make menuconfig' etc.
+>   [3] Rebuild
+> 
+>   $ make
+>     SYNC    include/config/auto.conf
+>     CALL    scripts/checksyscalls.sh
+>     CALL    scripts/atomic/check-atomics.sh
+>     DESCEND  objtool
+>     CHK     include/generated/compile.h
+>     CC      kernel/printk/printk.o
+>     AR      kernel/printk/built-in.a
+>     AR      kernel/built-in.a
+>     CC      drivers/tty/sysrq.o
+>     AR      drivers/tty/built-in.a
+>     CC      drivers/firmware/efi/libstub/efi-stub-helper.o
+>     STUBCPY drivers/firmware/efi/libstub/efi-stub-helper.stub.o
+>     AR      drivers/firmware/efi/libstub/lib.a
+>     AR      drivers/built-in.a
+>     GEN     .version
+>     CHK     include/generated/compile.h
+>     UPD     include/generated/compile.h
+>     CC      init/version.o
+>     AR      init/built-in.a
+>     LD      vmlinux.o
+>     ...
+> 
+> For the same reason, do likewise for CONSOLE_LOGLEVEL_QUIET and
+> MESSAGE_LOGLEVEL_DEFAULT.
+> 
+> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+> ---
+> 
+>  arch/x86/platform/uv/uv_nmi.c                  |  2 +-
+>  drivers/firmware/efi/libstub/efi-stub-helper.c |  6 +++---
+>  drivers/tty/sysrq.c                            |  4 ++--
+>  drivers/video/fbdev/core/fbcon.c               |  2 +-
+>  drivers/video/fbdev/efifb.c                    |  2 +-
+>  include/linux/printk.h                         | 10 ----------
+>  init/main.c                                    |  2 +-
+>  kernel/printk/printk.c                         |  6 +++---
+>  8 files changed, 12 insertions(+), 22 deletions(-)
 
-Do you change CONFIG_CONSOLE_LOGLEVEL_DEFAULT so often that it becomes a
-problem?
-
-	-ss
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
