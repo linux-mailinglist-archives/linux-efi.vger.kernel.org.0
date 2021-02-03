@@ -2,45 +2,33 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A74D30D954
-	for <lists+linux-efi@lfdr.de>; Wed,  3 Feb 2021 12:59:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 500DA30DA97
+	for <lists+linux-efi@lfdr.de>; Wed,  3 Feb 2021 14:06:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234132AbhBCL6Z (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 3 Feb 2021 06:58:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50746 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233972AbhBCL6Y (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 3 Feb 2021 06:58:24 -0500
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EACABC0613ED;
-        Wed,  3 Feb 2021 03:57:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=qV09Im9zStsEDN3aK7Y5tK1FdFUYhtdI63Y+lrzaDhc=; b=oMNuAy5gx4vP9iN+v48oFdTUkz
-        Zd119CdRuTFGy4J6KaIHwrSvqGRhBCUXcw48dXLfprFp7AhMoGA7J8U/m6cL4eFUNV4KoF5qFu7m5
-        u0ByNkvAtdaPxi74AU0eX4aldWXbd29MVqbwM+o4jEqDd86uC86Pa3gcLnidkZ5MYpaUEGUbnwti+
-        rSoPd478W8MmCcAkXBm5+Tq2wUHdhd/VbJ5lD4NmQoyjs3a8FkbDDcE2Le4xNW+Ub9vTHVWYNH+Y5
-        yEL1PpTgyO8DmWyL8uJIhF4yhH50wNruWO9eYAZSrhTBtDoeyFuD50umDOLd23EcLthyyfxgxDrt8
-        o8CzFQeg==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
-        by casper.infradead.org with esmtpsa (Exim 4.94 #2 (Red Hat Linux))
-        id 1l7Gml-00GmtO-US; Wed, 03 Feb 2021 11:57:29 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 412043003D8;
-        Wed,  3 Feb 2021 12:57:27 +0100 (CET)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id 2A5702364E363; Wed,  3 Feb 2021 12:57:27 +0100 (CET)
-Date:   Wed, 3 Feb 2021 12:57:27 +0100
-From:   Peter Zijlstra <peterz@infradead.org>
+        id S231274AbhBCNGZ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 3 Feb 2021 08:06:25 -0500
+Received: from mail.kernel.org ([198.145.29.99]:51372 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229500AbhBCNGY (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Wed, 3 Feb 2021 08:06:24 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 89FE964E38;
+        Wed,  3 Feb 2021 13:05:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1612357542;
+        bh=OSBHuUI8og5Vfp1FBOELDBA9lFmC6WOrg2hzohSc4Ko=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=bE3VV0lsArjMZgba11em/bAn62/vpuKCIk3rBNO0syg2HdcvQ7i/ApMC6sC5QKKCV
+         WDQE7DA5yWLZxF8/CTMufJKH9eifbJslYZ7ZRHtuY1y5m3WuoiW+AfmhJQKoUOlKRq
+         TSHLPkiWb1BPJxPlnX2BjP4m5ocPnsl2HsZGu/GSSQRtOU4SM4HflfziC8yYMeV6OO
+         yzvFKIaHdXMBIzrmWVJsAClnGAqh5wJqScIOKN1GeDC2cprQg9Ynw2sqzJ+CgN6XUn
+         aKS/0P//pyCfY/ymysil2/T1msQSjHlso2GZBNGlqp+mAEWEEII72CAcRf+sZlyyXH
+         DBUEofTmHtYfw==
+Date:   Wed, 3 Feb 2021 13:04:53 +0000
+From:   Mark Brown <broonie@kernel.org>
 To:     Josh Poimboeuf <jpoimboe@redhat.com>
 Cc:     Nick Desaulniers <ndesaulniers@google.com>,
         Julien Thierry <jthierry@redhat.com>,
         Ard Biesheuvel <ardb@kernel.org>,
-        Mark Brown <broonie@kernel.org>,
         Catalin Marinas <catalin.marinas@arm.com>,
         Kees Cook <keescook@chromium.org>,
         Linux ARM <linux-arm-kernel@lists.infradead.org>,
@@ -49,14 +37,15 @@ Cc:     Nick Desaulniers <ndesaulniers@google.com>,
         LKML <linux-kernel@vger.kernel.org>,
         Mark Rutland <mark.rutland@arm.com>,
         Masahiro Yamada <masahiroy@kernel.org>,
-        Michal Marek <michal.lkml@markovi.net>, raphael.gault@arm.com,
+        Michal Marek <michal.lkml@markovi.net>,
+        Peter Zijlstra <peterz@infradead.org>, raphael.gault@arm.com,
         Will Deacon <will@kernel.org>,
         clang-built-linux <clang-built-linux@googlegroups.com>,
         Bill Wendling <morbo@google.com>, swine@google.com,
         yonghyun@google.com
 Subject: Re: [RFC PATCH 12/17] gcc-plugins: objtool: Add plugin to detect
  switch table on arm64
-Message-ID: <YBqPp53EM/E+o5TA@hirez.programming.kicks-ass.net>
+Message-ID: <20210203130453.GB4880@sirena.org.uk>
 References: <20210120173800.1660730-13-jthierry@redhat.com>
  <20210127221557.1119744-1-ndesaulniers@google.com>
  <20210127232651.rj3mo7c2oqh4ytsr@treble>
@@ -67,30 +56,48 @@ References: <20210120173800.1660730-13-jthierry@redhat.com>
  <CAKwvOdkqWyDbAvMJAd6gkc2QAEL7DiZg6_uRJ6NUE4tCip4Jvw@mail.gmail.com>
  <20210203001414.idjrcrki7wmhndre@treble>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="NMuMz9nt05w80d4+"
 Content-Disposition: inline
 In-Reply-To: <20210203001414.idjrcrki7wmhndre@treble>
+X-Cookie: Who was that masked man?
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
+
+--NMuMz9nt05w80d4+
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
 On Tue, Feb 02, 2021 at 06:14:14PM -0600, Josh Poimboeuf wrote:
-> > Sure, but this is what production unwinders do, and they don't require
-> > compiler plugins, right?
-> 
-> What do you mean by "production unwinders"?  Generally unwinders rely on
-> either frame pointers or DWARF, but (without validation) those aren't
-> robust enough for live patching in the kernel, so I'm not sure how this
-> is relevant.
+> On Tue, Feb 02, 2021 at 03:01:22PM -0800, Nick Desaulniers wrote:
 
-Not to mention that DWARF and consequently it's unders are horribly
-large, complex and above all fragile things.
+> > I wonder if PAC or BTI also make this slightly more complex?  PAC at
+> > least has implications for unwinders, IIUC.
 
-There's a reason ORC got invented, DWARF is simlpy unacceptable and
-inadequate.
+> What is PAC/BTI?
 
-Now, one avenue that has been mentioned in the past, but I've not seen
-recently, is to have objtool use DWARF as input to help it understand
-the code. At least in userspace we can rely on DWARF libs. But I'm
-fairly sure people aren't jumping up and down for having to always build
-their kernel with DWARFs on, compile speed etc..
+PAC and BTI are ARM architecture extensions.  PAC uses a tag in pointers
+to sign and verify them, presenting a barrier to ROP, and when BTI is
+active only specific instructions can be branched to.  Since PAC
+modifies pointers when it is active the unwinder has to undo the tagging
+to understand what's being pointed to, that's already there.
+
+--NMuMz9nt05w80d4+
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmAan3UACgkQJNaLcl1U
+h9CR6Af/a+hTHn/OAxEoRg8U3FQ8sbGU1efy2c412xJU7ZqPnGW5l96P6lNt4mXY
+85GyLjKkQYBjZkC4t20+ug13zhghrfPoQt6sN+8nBjswZiOPqd/Zpwsznos8Eut/
+8On39npKp4ur2GziLiDkTXZT77zknCoDVtH/gpEhAURL7mDcnhmesHIqEKcgbM9S
+3WvuL6K8FFnXfECt09m1s6qP8jD9h/l4CV6dIhz/Ievk6hLOpX4ucTcJGVduTqjv
+qa5xuLBioxKOC5PHo0iob9HaJClu9F5vCyPj8RdTxsyJs0TO6pW299UemUoOj40T
+Dw4EtudvTIp662frrw8FTbvr930r3Q==
+=DA8Q
+-----END PGP SIGNATURE-----
+
+--NMuMz9nt05w80d4+--
