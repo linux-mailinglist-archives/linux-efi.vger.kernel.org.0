@@ -2,100 +2,105 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4675730DC0E
-	for <lists+linux-efi@lfdr.de>; Wed,  3 Feb 2021 15:01:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6AF8830DE0B
+	for <lists+linux-efi@lfdr.de>; Wed,  3 Feb 2021 16:24:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232138AbhBCN7R (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 3 Feb 2021 08:59:17 -0500
-Received: from foss.arm.com ([217.140.110.172]:40636 "EHLO foss.arm.com"
+        id S234132AbhBCPYN (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 3 Feb 2021 10:24:13 -0500
+Received: from mx2.suse.de ([195.135.220.15]:45120 "EHLO mx2.suse.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231869AbhBCN7Q (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Wed, 3 Feb 2021 08:59:16 -0500
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8148F13D5;
-        Wed,  3 Feb 2021 05:58:29 -0800 (PST)
-Received: from C02TD0UTHF1T.local (unknown [10.57.11.206])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A40443F73B;
-        Wed,  3 Feb 2021 05:58:25 -0800 (PST)
-Date:   Wed, 3 Feb 2021 13:58:22 +0000
-From:   Mark Rutland <mark.rutland@arm.com>
-To:     Josh Poimboeuf <jpoimboe@redhat.com>
-Cc:     Nick Desaulniers <ndesaulniers@google.com>,
-        Julien Thierry <jthierry@redhat.com>,
+        id S234095AbhBCPXy (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Wed, 3 Feb 2021 10:23:54 -0500
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+        t=1612365787; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=v5tD1P3GbXfYcO2FuGCpuZb4rnW2teCslHj/hQe3lGs=;
+        b=rdZk0jcdjjKRvFrQGiajPlzLmPJM6hW7+HYHGXxd21KVeaifUuqZKh5B8+YDOd5rG/VHNx
+        K6UStUoIZI943Dj37YcjQ7hvx/HTjszR6fq+v4bPw/0EHsi1X24UEdACN4/U1LExMJFYc5
+        +dnswT0SuF/EyPD8eQRsmYS3+D5QUEI=
+Received: from relay2.suse.de (unknown [195.135.221.27])
+        by mx2.suse.de (Postfix) with ESMTP id 3DFA8AC55;
+        Wed,  3 Feb 2021 15:23:07 +0000 (UTC)
+Date:   Wed, 3 Feb 2021 16:23:06 +0100
+From:   Petr Mladek <pmladek@suse.com>
+To:     John Ogness <john.ogness@linutronix.de>
+Cc:     Masahiro Yamada <masahiroy@kernel.org>,
+        linux-kernel@vger.kernel.org,
+        Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Andy Shevchenko <andy@infradead.org>,
         Ard Biesheuvel <ardb@kernel.org>,
-        Mark Brown <broonie@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Kees Cook <keescook@chromium.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        linux-hardening@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Peter Zijlstra <peterz@infradead.org>, raphael.gault@arm.com,
-        Will Deacon <will@kernel.org>,
-        clang-built-linux <clang-built-linux@googlegroups.com>,
-        Bill Wendling <morbo@google.com>, swine@google.com,
-        yonghyun@google.com
-Subject: Re: [RFC PATCH 12/17] gcc-plugins: objtool: Add plugin to detect
- switch table on arm64
-Message-ID: <20210203135822.GN55896@C02TD0UTHF1T.local>
-References: <20210120173800.1660730-13-jthierry@redhat.com>
- <20210127221557.1119744-1-ndesaulniers@google.com>
- <20210127232651.rj3mo7c2oqh4ytsr@treble>
- <CAKwvOdkOeENcM5X7X926sv2Xmtko=_nOPeKZ2+51s13CW1QAjw@mail.gmail.com>
- <20210201214423.dhsma73k7ccscovm@treble>
- <CAKwvOdmgNPSpY2oPHFr8EKGXYJbm7K9gySKFgyn4FERa9nTXmw@mail.gmail.com>
- <671f1aa9-975e-1bda-6768-259adbdc24c8@redhat.com>
- <CAKwvOdkqWyDbAvMJAd6gkc2QAEL7DiZg6_uRJ6NUE4tCip4Jvw@mail.gmail.com>
- <20210203001414.idjrcrki7wmhndre@treble>
+        Borislav Petkov <bp@alien8.de>,
+        Darren Hart <dvhart@infradead.org>,
+        Dimitri Sivanich <dimitri.sivanich@hpe.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        Mike Travis <mike.travis@hpe.com>,
+        Peter Jones <pjones@redhat.com>,
+        Russ Anderson <russ.anderson@hpe.com>,
+        Steve Wahl <steve.wahl@hpe.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        dri-devel@lists.freedesktop.org, linux-efi@vger.kernel.org,
+        linux-fbdev@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        x86@kernel.org
+Subject: Re: [PATCH 1/3] printk: use CONFIG_CONSOLE_LOGLEVEL_* directly
+Message-ID: <YBq/2ojccc4ZZp9y@alley>
+References: <20210202070218.856847-1-masahiroy@kernel.org>
+ <87eehy27b5.fsf@jogness.linutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210203001414.idjrcrki7wmhndre@treble>
+In-Reply-To: <87eehy27b5.fsf@jogness.linutronix.de>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, Feb 02, 2021 at 06:14:14PM -0600, Josh Poimboeuf wrote:
-> On Tue, Feb 02, 2021 at 03:01:22PM -0800, Nick Desaulniers wrote:
-> > > >> Thus far we've been able to successfully reverse engineer it on x86,
-> > > >> though it hasn't been easy.
-> > > >>
-> > > >> There were some particulars for arm64 which made doing so impossible.
-> > > >> (I don't remember the details.)
-> > >
-> > > The main issue is that the tables for arm64 have more indirection than x86.
-> > 
-> > I wonder if PAC or BTI also make this slightly more complex?  PAC at
-> > least has implications for unwinders, IIUC.
+On Tue 2021-02-02 09:44:22, John Ogness wrote:
+> On 2021-02-02, Masahiro Yamada <masahiroy@kernel.org> wrote:
+> > CONSOLE_LOGLEVEL_DEFAULT is nothing more than a shorthand of
+> > CONFIG_CONSOLE_LOGLEVEL_DEFAULT.
+> >
+> > When you change CONFIG_CONSOLE_LOGLEVEL_DEFAULT from Kconfig, almost
+> > all objects are rebuilt because CONFIG_CONSOLE_LOGLEVEL_DEFAULT is
+> > used in <linux/printk.h>, which is included from most of source files.
+> >
+> > In fact, there are only 4 users of CONSOLE_LOGLEVEL_DEFAULT:
+> >
+> >   arch/x86/platform/uv/uv_nmi.c
+> >   drivers/firmware/efi/libstub/efi-stub-helper.c
+> >   drivers/tty/sysrq.c
+> >   kernel/printk/printk.c
+> >
+> > So, when you change CONFIG_CONSOLE_LOGLEVEL_DEFAULT and rebuild the
+> > kernel, it is enough to recompile those 4 files.
+> >
+> > Remove the CONSOLE_LOGLEVEL_DEFAULT definition from <linux/printk.h>,
+> > and use CONFIG_CONSOLE_LOGLEVEL_DEFAULT directly.
 > 
-> What is PAC/BTI?
+> With commit a8fe19ebfbfd ("kernel/printk: use symbolic defines for
+> console loglevels") it can be seen that various drivers used to
+> hard-code their own values. The introduction of the macros in an
+> intuitive location (include/linux/printk.h) made it easier for authors
+> to find/use the various available printk settings and thresholds.
+> 
+> Technically there is no problem using Kconfig macros directly. But will
+> authors bother to hunt down available Kconfig settings? Or will they
+> only look in printk.h to see what is available?
+> 
+> IMHO if code wants to use settings from a foreign subsystem, it should
+> be taking those from headers of that subsystem, rather than using some
+> Kconfig settings from that subsystem. Headers exist to make information
+> available to external code. Kconfig (particularly for a subsystem) exist
+> to configure that subsystem.
 
-PAC is "Pointer Authentication Codes". The gist is that we munge some
-bits in pointers when they get stored in memory (called "signing"), and
-undo that with a check (called "authentication") when reading from
-memory, in order to detect unexpected modification. There's some new
-instructions that may exist in function prologues and epilogues, etc.
+I agree with this this view.
 
-There's a basic introduction at:
+What about using default_console_loglevel() in the external code?
+It reads the value from an array. This value is initialized to
+CONSOLE_LOGLEVEL_DEFAULT and never modified later.
 
-https://events.static.linuxfound.org/sites/events/files/slides/slides_23.pdf
-https://www.kernel.org/doc/html/latest/arm64/pointer-authentication.html
-
-Return address signing/authentication uses the SP as an input, so
-without knowing the SP something was signed against it's not possible to
-alter it reliably (or to check it). The arm64 unwinder ignores the PAC
-bits, and ftrace uses patchable-function-entry so that we don't have to
-do anything special to manipulate the return address.
-
-Today the ABI used by the kernel doesn't mess with the pointers used in
-jump tables, but that may come in future as toolchain folk are working
-to define an ABI that might.
-
-BTI is "Branch Target Identification", which is a bit like CET's
-indirect branch tracking -- indirect branches need to land on a specific
-instruction, or they'll raise an exception.
-
-Thanks,
-Mark.
+Best Regards,
+Petr
