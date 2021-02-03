@@ -2,40 +2,34 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 500DA30DA97
-	for <lists+linux-efi@lfdr.de>; Wed,  3 Feb 2021 14:06:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4675730DC0E
+	for <lists+linux-efi@lfdr.de>; Wed,  3 Feb 2021 15:01:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231274AbhBCNGZ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 3 Feb 2021 08:06:25 -0500
-Received: from mail.kernel.org ([198.145.29.99]:51372 "EHLO mail.kernel.org"
+        id S232138AbhBCN7R (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 3 Feb 2021 08:59:17 -0500
+Received: from foss.arm.com ([217.140.110.172]:40636 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229500AbhBCNGY (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Wed, 3 Feb 2021 08:06:24 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 89FE964E38;
-        Wed,  3 Feb 2021 13:05:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1612357542;
-        bh=OSBHuUI8og5Vfp1FBOELDBA9lFmC6WOrg2hzohSc4Ko=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=bE3VV0lsArjMZgba11em/bAn62/vpuKCIk3rBNO0syg2HdcvQ7i/ApMC6sC5QKKCV
-         WDQE7DA5yWLZxF8/CTMufJKH9eifbJslYZ7ZRHtuY1y5m3WuoiW+AfmhJQKoUOlKRq
-         TSHLPkiWb1BPJxPlnX2BjP4m5ocPnsl2HsZGu/GSSQRtOU4SM4HflfziC8yYMeV6OO
-         yzvFKIaHdXMBIzrmWVJsAClnGAqh5wJqScIOKN1GeDC2cprQg9Ynw2sqzJ+CgN6XUn
-         aKS/0P//pyCfY/ymysil2/T1msQSjHlso2GZBNGlqp+mAEWEEII72CAcRf+sZlyyXH
-         DBUEofTmHtYfw==
-Date:   Wed, 3 Feb 2021 13:04:53 +0000
-From:   Mark Brown <broonie@kernel.org>
+        id S231869AbhBCN7Q (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Wed, 3 Feb 2021 08:59:16 -0500
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8148F13D5;
+        Wed,  3 Feb 2021 05:58:29 -0800 (PST)
+Received: from C02TD0UTHF1T.local (unknown [10.57.11.206])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A40443F73B;
+        Wed,  3 Feb 2021 05:58:25 -0800 (PST)
+Date:   Wed, 3 Feb 2021 13:58:22 +0000
+From:   Mark Rutland <mark.rutland@arm.com>
 To:     Josh Poimboeuf <jpoimboe@redhat.com>
 Cc:     Nick Desaulniers <ndesaulniers@google.com>,
         Julien Thierry <jthierry@redhat.com>,
         Ard Biesheuvel <ardb@kernel.org>,
+        Mark Brown <broonie@kernel.org>,
         Catalin Marinas <catalin.marinas@arm.com>,
         Kees Cook <keescook@chromium.org>,
         Linux ARM <linux-arm-kernel@lists.infradead.org>,
         linux-efi <linux-efi@vger.kernel.org>,
         linux-hardening@vger.kernel.org,
         LKML <linux-kernel@vger.kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
         Masahiro Yamada <masahiroy@kernel.org>,
         Michal Marek <michal.lkml@markovi.net>,
         Peter Zijlstra <peterz@infradead.org>, raphael.gault@arm.com,
@@ -45,7 +39,7 @@ Cc:     Nick Desaulniers <ndesaulniers@google.com>,
         yonghyun@google.com
 Subject: Re: [RFC PATCH 12/17] gcc-plugins: objtool: Add plugin to detect
  switch table on arm64
-Message-ID: <20210203130453.GB4880@sirena.org.uk>
+Message-ID: <20210203135822.GN55896@C02TD0UTHF1T.local>
 References: <20210120173800.1660730-13-jthierry@redhat.com>
  <20210127221557.1119744-1-ndesaulniers@google.com>
  <20210127232651.rj3mo7c2oqh4ytsr@treble>
@@ -56,48 +50,52 @@ References: <20210120173800.1660730-13-jthierry@redhat.com>
  <CAKwvOdkqWyDbAvMJAd6gkc2QAEL7DiZg6_uRJ6NUE4tCip4Jvw@mail.gmail.com>
  <20210203001414.idjrcrki7wmhndre@treble>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="NMuMz9nt05w80d4+"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <20210203001414.idjrcrki7wmhndre@treble>
-X-Cookie: Who was that masked man?
-User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-
---NMuMz9nt05w80d4+
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
 On Tue, Feb 02, 2021 at 06:14:14PM -0600, Josh Poimboeuf wrote:
 > On Tue, Feb 02, 2021 at 03:01:22PM -0800, Nick Desaulniers wrote:
-
+> > > >> Thus far we've been able to successfully reverse engineer it on x86,
+> > > >> though it hasn't been easy.
+> > > >>
+> > > >> There were some particulars for arm64 which made doing so impossible.
+> > > >> (I don't remember the details.)
+> > >
+> > > The main issue is that the tables for arm64 have more indirection than x86.
+> > 
 > > I wonder if PAC or BTI also make this slightly more complex?  PAC at
 > > least has implications for unwinders, IIUC.
-
+> 
 > What is PAC/BTI?
 
-PAC and BTI are ARM architecture extensions.  PAC uses a tag in pointers
-to sign and verify them, presenting a barrier to ROP, and when BTI is
-active only specific instructions can be branched to.  Since PAC
-modifies pointers when it is active the unwinder has to undo the tagging
-to understand what's being pointed to, that's already there.
+PAC is "Pointer Authentication Codes". The gist is that we munge some
+bits in pointers when they get stored in memory (called "signing"), and
+undo that with a check (called "authentication") when reading from
+memory, in order to detect unexpected modification. There's some new
+instructions that may exist in function prologues and epilogues, etc.
 
---NMuMz9nt05w80d4+
-Content-Type: application/pgp-signature; name="signature.asc"
+There's a basic introduction at:
 
------BEGIN PGP SIGNATURE-----
+https://events.static.linuxfound.org/sites/events/files/slides/slides_23.pdf
+https://www.kernel.org/doc/html/latest/arm64/pointer-authentication.html
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmAan3UACgkQJNaLcl1U
-h9CR6Af/a+hTHn/OAxEoRg8U3FQ8sbGU1efy2c412xJU7ZqPnGW5l96P6lNt4mXY
-85GyLjKkQYBjZkC4t20+ug13zhghrfPoQt6sN+8nBjswZiOPqd/Zpwsznos8Eut/
-8On39npKp4ur2GziLiDkTXZT77zknCoDVtH/gpEhAURL7mDcnhmesHIqEKcgbM9S
-3WvuL6K8FFnXfECt09m1s6qP8jD9h/l4CV6dIhz/Ievk6hLOpX4ucTcJGVduTqjv
-qa5xuLBioxKOC5PHo0iob9HaJClu9F5vCyPj8RdTxsyJs0TO6pW299UemUoOj40T
-Dw4EtudvTIp662frrw8FTbvr930r3Q==
-=DA8Q
------END PGP SIGNATURE-----
+Return address signing/authentication uses the SP as an input, so
+without knowing the SP something was signed against it's not possible to
+alter it reliably (or to check it). The arm64 unwinder ignores the PAC
+bits, and ftrace uses patchable-function-entry so that we don't have to
+do anything special to manipulate the return address.
 
---NMuMz9nt05w80d4+--
+Today the ABI used by the kernel doesn't mess with the pointers used in
+jump tables, but that may come in future as toolchain folk are working
+to define an ABI that might.
+
+BTI is "Branch Target Identification", which is a bit like CET's
+indirect branch tracking -- indirect branches need to land on a specific
+instruction, or they'll raise an exception.
+
+Thanks,
+Mark.
