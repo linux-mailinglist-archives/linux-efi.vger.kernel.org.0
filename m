@@ -2,61 +2,39 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8782530D003
-	for <lists+linux-efi@lfdr.de>; Wed,  3 Feb 2021 00:53:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3988630D031
+	for <lists+linux-efi@lfdr.de>; Wed,  3 Feb 2021 01:16:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230518AbhBBXxC (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 2 Feb 2021 18:53:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36282 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230388AbhBBXw4 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 2 Feb 2021 18:52:56 -0500
-Received: from mail-pg1-x52e.google.com (mail-pg1-x52e.google.com [IPv6:2607:f8b0:4864:20::52e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89480C06174A
-        for <linux-efi@vger.kernel.org>; Tue,  2 Feb 2021 15:52:16 -0800 (PST)
-Received: by mail-pg1-x52e.google.com with SMTP id s23so14739267pgh.11
-        for <linux-efi@vger.kernel.org>; Tue, 02 Feb 2021 15:52:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=lvyHIYmrAMfcUjU2HzXYuSfOiDXorFLduwgI7Bqj73I=;
-        b=ez8LC3AcVzaauh80wZJxetxlLZ6TgAOQqSwwJ2SGb/oU6fKeES9x1dM3ZnQGS2dcyJ
-         Zyq6D94tw+fLjWZUcs++s/sgnWI1xd7d/M96o/4zF2Nqf1JfWdCCDxusCsP2gX5KGifG
-         uwsdM7QhFXi3ZMyRtUXLqQiOyvNjJzWtltNQCw7UYjZEYEFE8R3bXMZRpqNE52nrZYou
-         zIJH+MCzSTe6STPq15rmfpHT6HjFCzG1KTPZr1CZHb/FvfUs17qfTGDcCgly8KkVAgqL
-         bp+8RJvtd/jc10ajrYGdEnlh6Y+qcEyy0YP8SzbhKyMu/Xe+LYwVm4mzA1AechxkgGcE
-         mA4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=lvyHIYmrAMfcUjU2HzXYuSfOiDXorFLduwgI7Bqj73I=;
-        b=si8y8won+fcu4C5zg5688QaW2r5XCzsFHbHWk0nwTpnlMPh4oTWvmlOK5F7o8bxbhT
-         s3g9axfjGU0jSiLzb4rrhQs1dBfqNAGYUt0H/jZrN5D5pmfx0j7A6YPhXAYGwlxuCkZL
-         zFsgGhkhztSN8vJrSj4aYtN62UrduUCiZEevzzCFYXhXqGJYAvwHhBukRgImnqa3kEbg
-         OyOK+sbc+U1mEarVxALv2nJzOtF3XgHcWrF2SjkJhomFjsv4A8hT9NENXCed8eIZdpZP
-         RW9DfkC0rR9ZGndjsQJZi3FExpOgrCp3CSa84cW9isUHMFwfGE+f/c9bQB2wItMOMFdE
-         tJkQ==
-X-Gm-Message-State: AOAM530kRSYsTWlAdA1uR9Fwgux1QFogB547uig9aVJBSuOMkv9yY5lH
-        GkgHpK3R6rB3nKwMmDOtaAfFAmX+/R4/3kYERqWiww==
-X-Google-Smtp-Source: ABdhPJyQ+VhM9DJvj4MIbfNfTV9TUVCg0FT7/uAsDWYVJdwDBx4dEvMAL2wmpyU68vRtlTmCwnnXfpK72UT0OfpWNwg=
-X-Received: by 2002:a65:4201:: with SMTP id c1mr590436pgq.10.1612309935701;
- Tue, 02 Feb 2021 15:52:15 -0800 (PST)
-MIME-Version: 1.0
-References: <20210120173800.1660730-13-jthierry@redhat.com>
- <20210127221557.1119744-1-ndesaulniers@google.com> <20210127232651.rj3mo7c2oqh4ytsr@treble>
- <CAKwvOdkOeENcM5X7X926sv2Xmtko=_nOPeKZ2+51s13CW1QAjw@mail.gmail.com>
- <20210201214423.dhsma73k7ccscovm@treble> <CAKwvOdmgNPSpY2oPHFr8EKGXYJbm7K9gySKFgyn4FERa9nTXmw@mail.gmail.com>
- <20210202000203.rk7lh5mx4aflgkwr@treble> <CAKwvOd=R_ELec5Q3+oe9zuYXrwSGfLkqomAPOTr=UH=SZPtKUw@mail.gmail.com>
- <20210202233636.nvbl6wivgnhacbvg@treble>
-In-Reply-To: <20210202233636.nvbl6wivgnhacbvg@treble>
-From:   Nick Desaulniers <ndesaulniers@google.com>
-Date:   Tue, 2 Feb 2021 15:52:04 -0800
-Message-ID: <CAKwvOdnr5LcVbv2=2h+j8-ekvoB6PezmSOWhPzZdMaDG6eniag@mail.gmail.com>
-Subject: Re: [RFC PATCH 12/17] gcc-plugins: objtool: Add plugin to detect
- switch table on arm64
-To:     Josh Poimboeuf <jpoimboe@redhat.com>
+        id S231438AbhBCAQD (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 2 Feb 2021 19:16:03 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:28143 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S231436AbhBCAQB (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 2 Feb 2021 19:16:01 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1612311272;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=SiaraPMcWlUGQ15HgWRnEvPFg5Cm3xwMPN0LwTOYT8c=;
+        b=agnhJAtKz8i+bQHm7wdMz5h/NXs6tovDFJwpKl0z+dpqphbDlfLTuZhVcPnrfZnyxCjKOT
+        Cf3Iza4Do3Ow9KDabPg5tQ+0Lb0XYkiYVwPLdqKtpz3NiH/F9GvAk28P6QSHTPC2yhxrbJ
+        Z8x1S8sGffXtNjUT6doz1c2tJaERPVw=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-566-6TM_tgRuO0-KZsWk2A-z2Q-1; Tue, 02 Feb 2021 19:14:28 -0500
+X-MC-Unique: 6TM_tgRuO0-KZsWk2A-z2Q-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 59E9E801817;
+        Wed,  3 Feb 2021 00:14:26 +0000 (UTC)
+Received: from treble (ovpn-120-118.rdu2.redhat.com [10.10.120.118])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id 0CD7118993;
+        Wed,  3 Feb 2021 00:14:21 +0000 (UTC)
+Date:   Tue, 2 Feb 2021 18:14:14 -0600
+From:   Josh Poimboeuf <jpoimboe@redhat.com>
+To:     Nick Desaulniers <ndesaulniers@google.com>
 Cc:     Julien Thierry <jthierry@redhat.com>,
         Ard Biesheuvel <ardb@kernel.org>,
         Mark Brown <broonie@kernel.org>,
@@ -72,51 +50,129 @@ Cc:     Julien Thierry <jthierry@redhat.com>,
         Peter Zijlstra <peterz@infradead.org>, raphael.gault@arm.com,
         Will Deacon <will@kernel.org>,
         clang-built-linux <clang-built-linux@googlegroups.com>,
-        Bill Wendling <morbo@google.com>,
-        Pete Swain <swine@google.com>,
-        Yonghyun Hwang <yonghyun@google.com>,
-        live-patching@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+        Bill Wendling <morbo@google.com>, swine@google.com,
+        yonghyun@google.com
+Subject: Re: [RFC PATCH 12/17] gcc-plugins: objtool: Add plugin to detect
+ switch table on arm64
+Message-ID: <20210203001414.idjrcrki7wmhndre@treble>
+References: <20210120173800.1660730-13-jthierry@redhat.com>
+ <20210127221557.1119744-1-ndesaulniers@google.com>
+ <20210127232651.rj3mo7c2oqh4ytsr@treble>
+ <CAKwvOdkOeENcM5X7X926sv2Xmtko=_nOPeKZ2+51s13CW1QAjw@mail.gmail.com>
+ <20210201214423.dhsma73k7ccscovm@treble>
+ <CAKwvOdmgNPSpY2oPHFr8EKGXYJbm7K9gySKFgyn4FERa9nTXmw@mail.gmail.com>
+ <671f1aa9-975e-1bda-6768-259adbdc24c8@redhat.com>
+ <CAKwvOdkqWyDbAvMJAd6gkc2QAEL7DiZg6_uRJ6NUE4tCip4Jvw@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAKwvOdkqWyDbAvMJAd6gkc2QAEL7DiZg6_uRJ6NUE4tCip4Jvw@mail.gmail.com>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, Feb 2, 2021 at 3:36 PM Josh Poimboeuf <jpoimboe@redhat.com> wrote:
->
-> On Tue, Feb 02, 2021 at 02:33:38PM -0800, Nick Desaulniers wrote:
-> > On Mon, Feb 1, 2021 at 4:02 PM Josh Poimboeuf <jpoimboe@redhat.com> wrote:
-> > >
-> > > On Mon, Feb 01, 2021 at 03:17:40PM -0800, Nick Desaulniers wrote:
-> > > And yes, objtool has been pretty good at finding compiler bugs, so the
-> > > more coverage the better.
-> > > > The idea of rebuilding control flow from binary analysis and using
-> > > > that to find codegen bugs is a really cool idea (novel, even? idk),
-> > > > and I wish we had some analog for userspace binaries that could
-> > > > perform similar checks.
-> > >
-> > > Objtool is generic in many ways -- in fact I recently heard from a PhD
-> > > candidate who used it successfully on another kernel for an ORC
-> > > unwinder.
+On Tue, Feb 02, 2021 at 03:01:22PM -0800, Nick Desaulniers wrote:
+> > >> Thus far we've been able to successfully reverse engineer it on x86,
+> > >> though it hasn't been easy.
+> > >>
+> > >> There were some particulars for arm64 which made doing so impossible.
+> > >> (I don't remember the details.)
 > >
-> > That's pretty cool!  Reuse outside the initial context is always a
-> > good sign that something was designed right.
->
-> So basically you're saying objtool is both useful and well-designed.  I
-> will quote you on that!
+> > The main issue is that the tables for arm64 have more indirection than x86.
+> 
+> I wonder if PAC or BTI also make this slightly more complex?  PAC at
+> least has implications for unwinders, IIUC.
 
-Haha, all I'm saying is that while I'm not proud that it did find bugs
-in LLVM (and I do have existing bugs found by it to fix on my plate),
-I don't see who else or how else those would have been spotted, and I
-can appreciate that.  I think the tools given to us are broken (by
-design, perhaps), so anything that can help us spot issues might help
-our code live longer than we do.
+What is PAC/BTI?
 
-I also think that there's room for improvement and experimentation in
-debug info formats, though there is currently a proliferation to
-support.  Live patching and eBPF seem to have some functional overlap
-IIUC, strengths/weaknesses, and their own unique debug info formats to
-go with it.  Supporting each one does require some level of toolchain
-support or coordination (or complexity, even).
+> > On x86, the dispatching jump instruction fetches the target address from
+> > a contiguous array of addresses based on a given offset. So the list of
+> > potential targets of the jump is neatly organized in a table (and sure,
+> > before link time these are just relocation, but still processable).
+> >
+> > On arm64 (with GCC at least), what is stored in a table is an array of
+> > candidate offsets from the jump instruction. And because arm64 is
+> > limited to 32bit instructions, the encoding often requires multiple
+> > instructions to compute the target address:
+> >
+> > ldr<*>  x_offset, [x_offsets_table, x_index, ...]  // load offset
+> > adr     x_dest_base, <addr>          // load target branch for offset 0
+> > add     x_dest, x_target_base, x_offset, ...  // compute final address
+> > br      x_dest        // jump
+> >
+> > Where this gets trickier is that (with GCC) the offsets stored in the
+> > table might or might not be signed constants (and this can be seen in
+> > GCC intermediate representations, but I do not believe this information
+> > is output in the final object file). And on top of that, GCC might
+> > decide to use offsets that are seen as unsigned during intermediate
+> > representation as signed offset by sign extending them in the add
+> > instruction.
+> >
+> > So, to handle this we'd have to track the different operation done with
+> > the offset, from the load to the final jump, decoding the instructions
+> > and deducing the potential target instructions from the table of offsets.
+> >
+> > But that is error prone as we don't really know how many instructions
+> > can be between the ones doing the address computation, and I remember
+> > some messy case of a jump table inside a jump table where tracking the
+> > instruction touching one or the other offset would need a lot of corner
+> > case handling.
+> >
+> > And this of course is just for GCC, I haven't looked at what it all
+> > looks like on Clang's end.
+> 
+> Sure, but this is what production unwinders do, and they don't require
+> compiler plugins, right?
+
+What do you mean by "production unwinders"?  Generally unwinders rely on
+either frame pointers or DWARF, but (without validation) those aren't
+robust enough for live patching in the kernel, so I'm not sure how this
+is relevant.
+
+> > > I think the details are pertinent to finding a portable solution.  The
+> > > commit message of this commit in particular doesn't document such
+> > > details, such as why such an approach is necessary or how the data is
+> > > laid out for objtool to consume it.
+> > >
+> >
+> > Sorry, I will need to make that clearer. The next patch explains it a
+> > bit [1]
+> >
+> > Basically, for simplicity, the plugin creates a new section containing
+> 
+> Right, this takes a focus on simplicity, at the cost of alienating a toolchain.
+> 
+> Ard's point about 3193c0836f20 relating to -fgcse is that when
+> presented with tricky cases to unwind, the simplest approach is taken.
+> There it was disabling a compiler specific compiler optimization, here
+> it's either a compiler specific compiler plugin (or disabling another
+> compiler optimization).  The pattern seems to be "Objtool isn't smart
+> enough" ... "compiler optimization disabled" or "compiler plugin
+> dependency."
+
+You're taking the two absolute worst case scenarios (one of which is
+just a patch which doesn't look like it's going to get merged anyway)
+and drawing a false narrative.
+
+In this case the simplest approach would have been to just give up and
+disable jump tables.
+
+We try as hard as possible (beyond turning objtool into a full emulator)
+to avoid doing that kind of thing because objtool isn't supposed to
+dictate kernel optimizations.  Otherwise we would have disabled jump
+tables (even for non-retpolines) a long time ago, because that's been a
+serious PITA.
+
+You might not like the plugin -- I don't like it either -- but the goal
+was to avoid penalizing the kernel with "objtool-friendly"
+optimizations.
+
+That said, jump tables are such a pain for objtool (and currently
+impossible to deal with for arm64) that I'm completely open to just
+disabling them if they're shown to have negligible benefit for the
+kernel.
+
 -- 
-Thanks,
-~Nick Desaulniers
+Josh
+
