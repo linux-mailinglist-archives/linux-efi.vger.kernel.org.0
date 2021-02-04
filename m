@@ -2,40 +2,32 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B415E30FF79
-	for <lists+linux-efi@lfdr.de>; Thu,  4 Feb 2021 22:47:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A5C330FFF6
+	for <lists+linux-efi@lfdr.de>; Thu,  4 Feb 2021 23:15:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229646AbhBDVoo (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 4 Feb 2021 16:44:44 -0500
-Received: from mail-qv1-f54.google.com ([209.85.219.54]:41058 "EHLO
-        mail-qv1-f54.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229586AbhBDVom (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 4 Feb 2021 16:44:42 -0500
-Received: by mail-qv1-f54.google.com with SMTP id h21so2497571qvb.8;
-        Thu, 04 Feb 2021 13:44:26 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=pKT1129goorIBDoVw07+oNDIAL0ruSPyAoYmTeYA4JM=;
-        b=Bn4a9GTTajo10p4tP/SXrggABMPkJiStl+9Rl154EHydZPM0sccgLHJBGlGUeXzuWR
-         n9ylZkthg6+C7NMtJrc5HylZAK3vlgmlZQMxAeyBATSzWDAGhdD3fzk7CZL8Sb7Oj8jM
-         njs8NZ2udBguOEgzT8/psSTweXcv+UbFQXmxWCK1/KP5APvKiuSt9EM0ZKIWuV59nJex
-         psAGevQyiZ1KpYlZYVOtSP4U8dW/8yU2D9ffU7GwQAWsyrfLfSfTvZCf/Ee1BB8Gqj9z
-         nfvwW7yx2SaUHds+sfC+l9+Q4dEjWvfOBTRJOLXNbzX3n4VHJiL3JuIqgOWVwBsMMK+5
-         ZjGg==
-X-Gm-Message-State: AOAM533a0v1fk95TsoUMhENJjzfLrGtuR+Jx5ur+4B/UQrOOsem+FaRk
-        2VoB0yhR2b18N0xauOHu+Kg=
-X-Google-Smtp-Source: ABdhPJz2GAyRB5K1dve72PPvUvmzJgXl6kFeOkPJ4uljCE4HZUquh+9dhzFcCpdxEuS+c3JQWtBHqg==
-X-Received: by 2002:a05:6214:a4f:: with SMTP id ee15mr1429073qvb.10.1612475041219;
-        Thu, 04 Feb 2021 13:44:01 -0800 (PST)
-Received: from rani.riverdale.lan ([2001:470:1f07:5f3::b55f])
-        by smtp.gmail.com with ESMTPSA id p22sm6267413qkk.128.2021.02.04.13.43.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Feb 2021 13:44:00 -0800 (PST)
-Date:   Thu, 4 Feb 2021 16:43:58 -0500
-From:   Arvind Sankar <nivedita@alum.mit.edu>
-To:     Borislav Petkov <bp@alien8.de>
+        id S229876AbhBDWOE (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 4 Feb 2021 17:14:04 -0500
+Received: from mail.skyhub.de ([5.9.137.197]:47090 "EHLO mail.skyhub.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229611AbhBDWOC (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Thu, 4 Feb 2021 17:14:02 -0500
+Received: from zn.tnic (p200300ec2f0c7e0006ca03b6d355ef00.dip0.t-ipconnect.de [IPv6:2003:ec:2f0c:7e00:6ca:3b6:d355:ef00])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id F35AF1EC03C1;
+        Thu,  4 Feb 2021 23:13:20 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1612476801;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=qUcBmX7dmaTykemYNBo1gvegAj0QB+Et810B66xa7FI=;
+        b=RMPqKhZGJ2bsiL2depyJvChrKeZSRXFqHO1SPI2325gfkUEJ6lEUVP3xOpz9fuOUPhtXIP
+        DSpjZAgR5lyHa4OQyWPjDntaH0rAGuEcgsqomb6ErD2IoSb1wztiyB0kIgcOqrWwuJtRn7
+        XHMmPJxqnj/GX8ybRcZtbX2XyPKQARA=
+Date:   Thu, 4 Feb 2021 23:13:18 +0100
+From:   Borislav Petkov <bp@alien8.de>
+To:     Arvind Sankar <nivedita@alum.mit.edu>
 Cc:     Ard Biesheuvel <ardb@kernel.org>,
         Nathan Chancellor <nathan@kernel.org>,
         Arnd Bergmann <arnd@kernel.org>,
@@ -53,9 +45,8 @@ Cc:     Ard Biesheuvel <ardb@kernel.org>,
         clang-built-linux <clang-built-linux@googlegroups.com>,
         "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 Subject: Re: [PATCH] x86: efi: avoid BUILD_BUG_ON() for non-constant p4d_index
-Message-ID: <YBxqnosGDroAnpio@rani.riverdale.lan>
-References: <20210107223424.4135538-1-arnd@kernel.org>
- <YAHoB4ODvxSqNhsq@rani.riverdale.lan>
+Message-ID: <20210204221318.GI32255@zn.tnic>
+References: <YAHoB4ODvxSqNhsq@rani.riverdale.lan>
  <YAH6r3lak/F2wndp@rani.riverdale.lan>
  <CAMj1kXGZFZciN1_KruCr=g6GANNpRrCLR48b3q13+QfK481C7Q@mail.gmail.com>
  <20210118202409.GG30090@zn.tnic>
@@ -64,86 +55,36 @@ References: <20210107223424.4135538-1-arnd@kernel.org>
  <20210203185148.GA1711888@localhost>
  <CAMj1kXFPOvkcw573wzKzMQOgT-nddFcAZo9M4Lk+idn_1UBbnA@mail.gmail.com>
  <20210204105155.GA32255@zn.tnic>
+ <YBxqnosGDroAnpio@rani.riverdale.lan>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20210204105155.GA32255@zn.tnic>
+In-Reply-To: <YBxqnosGDroAnpio@rani.riverdale.lan>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, Feb 04, 2021 at 11:51:55AM +0100, Borislav Petkov wrote:
-> On Wed, Feb 03, 2021 at 09:29:18PM +0100, Ard Biesheuvel wrote:
-> > I think we have agreement on the approach but it is unclear who is
-> > going to write the patch.
-> 
-> How's that below?
-> 
-> And frankly, I'd even vote for removing those assertions altogether. If
-> somehow the EFI pgd lands somewhere else, the kernel will crash'n'burn
-> spectacularly and quickly so it's not like we won't catch it...
+On Thu, Feb 04, 2021 at 04:43:58PM -0500, Arvind Sankar wrote:
+> This should check EFI_VA_END instead of EFI_VA_START, and maybe throw in
+> a BUG_ON if EFI_VA_END >= EFI_VA_START.
 
-Removing altogether should be fine, but see below if we don't.
+No need:
 
-> 
-> ---
-> diff --git a/arch/x86/include/asm/pgtable_64_types.h b/arch/x86/include/asm/pgtable_64_types.h
-> index 91ac10654570..b6be19c09841 100644
-> --- a/arch/x86/include/asm/pgtable_64_types.h
-> +++ b/arch/x86/include/asm/pgtable_64_types.h
-> @@ -156,8 +156,8 @@ extern unsigned int ptrs_per_p4d;
->  #define CPU_ENTRY_AREA_PGD	_AC(-4, UL)
->  #define CPU_ENTRY_AREA_BASE	(CPU_ENTRY_AREA_PGD << P4D_SHIFT)
->  
-> -#define EFI_VA_START		( -4 * (_AC(1, UL) << 30))
-> -#define EFI_VA_END		(-68 * (_AC(1, UL) << 30))
-> +#define EFI_VA_START		( -4UL * (_AC(1, UL) << 30))
-> +#define EFI_VA_END		(-68UL * (_AC(1, UL) << 30))
+        if (efi_va < EFI_VA_END) {
+                pr_warn(FW_WARN "VA address range overflow!\n");
+                return;
+        }
 
-This doesn't have any effect right? And the reason for the _AC() stuff
-in there is to allow the #define to be used in assembler -- this
-particular one isn't, but it makes no sense to use the UL suffix as well
-as _AC() in the same macro.
+We already check we're not going over at map time. And our runtime
+services range is hardcoded. And we're switching to that PGD on each
+runtime services call.
 
->  
->  #define EARLY_DYNAMIC_PAGE_TABLES	64
->  
-> diff --git a/arch/x86/platform/efi/efi_64.c b/arch/x86/platform/efi/efi_64.c
-> index e1e8d4e3a213..56fdc0bbb554 100644
-> --- a/arch/x86/platform/efi/efi_64.c
-> +++ b/arch/x86/platform/efi/efi_64.c
-> @@ -123,9 +123,7 @@ void efi_sync_low_kernel_mappings(void)
->  	 * only span a single PGD entry and that the entry also maps
->  	 * other important kernel regions.
->  	 */
-> -	MAYBE_BUILD_BUG_ON(pgd_index(EFI_VA_END) != pgd_index(MODULES_END));
-> -	MAYBE_BUILD_BUG_ON((EFI_VA_START & PGDIR_MASK) !=
-> -			(EFI_VA_END & PGDIR_MASK));
-> +	MAYBE_BUILD_BUG_ON((EFI_VA_START & PGDIR_MASK) != PGDIR_MASK);
+So I don't see the point for keeping any of the assertions.
 
-This check is superfluous. Just do the P4D one.
+Unless you have other valid arguments for keeping them...
 
->  
->  	pgd_efi = efi_pgd + pgd_index(PAGE_OFFSET);
->  	pgd_k = pgd_offset_k(PAGE_OFFSET);
-> @@ -137,8 +135,7 @@ void efi_sync_low_kernel_mappings(void)
->  	 * As with PGDs, we share all P4D entries apart from the one entry
->  	 * that covers the EFI runtime mapping space.
->  	 */
-> -	BUILD_BUG_ON(p4d_index(EFI_VA_END) != p4d_index(MODULES_END));
-> -	BUILD_BUG_ON((EFI_VA_START & P4D_MASK) != (EFI_VA_END & P4D_MASK));
-> +	BUILD_BUG_ON((EFI_VA_START & P4D_MASK) != P4D_MASK);
+-- 
+Regards/Gruss,
+    Boris.
 
-This should check EFI_VA_END instead of EFI_VA_START, and maybe throw in
-a BUG_ON if EFI_VA_END >= EFI_VA_START.
-
->  
->  	pgd_efi = efi_pgd + pgd_index(EFI_VA_END);
->  	pgd_k = pgd_offset_k(EFI_VA_END);
-> 
-> 
-> -- 
-> Regards/Gruss,
->     Boris.
-> 
-> https://people.kernel.org/tglx/notes-about-netiquette
+https://people.kernel.org/tglx/notes-about-netiquette
