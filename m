@@ -2,155 +2,125 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D3AD530F04C
-	for <lists+linux-efi@lfdr.de>; Thu,  4 Feb 2021 11:17:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B347730F141
+	for <lists+linux-efi@lfdr.de>; Thu,  4 Feb 2021 11:54:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235333AbhBDKQt (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 4 Feb 2021 05:16:49 -0500
-Received: from mx2.suse.de ([195.135.220.15]:45166 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235298AbhBDKQs (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Thu, 4 Feb 2021 05:16:48 -0500
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-        t=1612433761; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=YQZOldqCtjkPupLVxZdZt2KMNRlzizKTv66MNg9zXPI=;
-        b=eG3gMKWPwUW01tBEcoF29Eq8Y2qgWWLBNZ4+YaIbBZueMMVpDTfz8dCp+gPebXm6bb9Uyr
-        5KShIQZ5qKE24SnDt53w84yolfaTNcLWCnwArKLdZ6BnyxhVhsi0OUrlmnGKLhqto6NEKb
-        y18uDsei/XZXTChu+NYikcxbz/ke1mQ=
-Received: from relay2.suse.de (unknown [195.135.221.27])
-        by mx2.suse.de (Postfix) with ESMTP id 478AFAC97;
-        Thu,  4 Feb 2021 10:16:01 +0000 (UTC)
-Date:   Thu, 4 Feb 2021 11:16:00 +0100
-From:   Petr Mladek <pmladek@suse.com>
-To:     Masahiro Yamada <masahiroy@kernel.org>
-Cc:     John Ogness <john.ogness@linutronix.de>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Borislav Petkov <bp@alien8.de>,
-        Darren Hart <dvhart@infradead.org>,
-        Dimitri Sivanich <dimitri.sivanich@hpe.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Mike Travis <mike.travis@hpe.com>,
-        Peter Jones <pjones@redhat.com>,
-        Russ Anderson <russ.anderson@hpe.com>,
-        Steve Wahl <steve.wahl@hpe.com>,
+        id S235503AbhBDKwq (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 4 Feb 2021 05:52:46 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35852 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234873AbhBDKwp (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 4 Feb 2021 05:52:45 -0500
+Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33233C061573;
+        Thu,  4 Feb 2021 02:52:05 -0800 (PST)
+Received: from zn.tnic (p200300ec2f0c7e00dc348a22cc2c06fb.dip0.t-ipconnect.de [IPv6:2003:ec:2f0c:7e00:dc34:8a22:cc2c:6fb])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id A80071EC00F8;
+        Thu,  4 Feb 2021 11:52:01 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1612435921;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=x+q7M5BysVCq0z73BCA5GL6K1zhxLeh9Ep6YuQ1rvpw=;
+        b=NkbeH0s9FBLOV+Wse/Y6c3Vc6CDqAD5AEy6ZGsLflQepqjqCjWV3lxVgMi6lbhBpftYVew
+        9QtP+ljkKRefd9fZoY1dFln9/Q9e2nFNnzMC/0s/gZU154j1HyoOWlWHrCTQqsJfebf8Q9
+        FrVVybE3qHTptJdYnKQsjd6ae3frQgg=
+Date:   Thu, 4 Feb 2021 11:51:55 +0100
+From:   Borislav Petkov <bp@alien8.de>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     Nathan Chancellor <nathan@kernel.org>,
+        Arvind Sankar <nivedita@alum.mit.edu>,
+        Arnd Bergmann <arnd@kernel.org>,
         Thomas Gleixner <tglx@linutronix.de>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
+        Ingo Molnar <mingo@redhat.com>, X86 ML <x86@kernel.org>,
+        Nathan Chancellor <natechancellor@gmail.com>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        "H. Peter Anvin" <hpa@zytor.com>,
         linux-efi <linux-efi@vger.kernel.org>,
-        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
-        platform-driver-x86@vger.kernel.org, X86 ML <x86@kernel.org>
-Subject: Re: [PATCH 1/3] printk: use CONFIG_CONSOLE_LOGLEVEL_* directly
-Message-ID: <YBvJYHW7iVhtlJfh@alley>
-References: <20210202070218.856847-1-masahiroy@kernel.org>
- <87eehy27b5.fsf@jogness.linutronix.de>
- <YBq/2ojccc4ZZp9y@alley>
- <CAK7LNAQyV-asWNY6CK6MWze9sFZS3CgXxtH2LEht5e=kjrLu7w@mail.gmail.com>
+        platform-driver-x86@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        clang-built-linux <clang-built-linux@googlegroups.com>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Subject: Re: [PATCH] x86: efi: avoid BUILD_BUG_ON() for non-constant p4d_index
+Message-ID: <20210204105155.GA32255@zn.tnic>
+References: <20210107223424.4135538-1-arnd@kernel.org>
+ <YAHoB4ODvxSqNhsq@rani.riverdale.lan>
+ <YAH6r3lak/F2wndp@rani.riverdale.lan>
+ <CAMj1kXGZFZciN1_KruCr=g6GANNpRrCLR48b3q13+QfK481C7Q@mail.gmail.com>
+ <20210118202409.GG30090@zn.tnic>
+ <YAYAvBARSRSg8z8G@rani.riverdale.lan>
+ <CAMj1kXHM98-iDYpAozaWEv-qxhZ0-CUMwSdG532x2d+55gXDhQ@mail.gmail.com>
+ <20210203185148.GA1711888@localhost>
+ <CAMj1kXFPOvkcw573wzKzMQOgT-nddFcAZo9M4Lk+idn_1UBbnA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <CAK7LNAQyV-asWNY6CK6MWze9sFZS3CgXxtH2LEht5e=kjrLu7w@mail.gmail.com>
+In-Reply-To: <CAMj1kXFPOvkcw573wzKzMQOgT-nddFcAZo9M4Lk+idn_1UBbnA@mail.gmail.com>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu 2021-02-04 06:51:09, Masahiro Yamada wrote:
-> On Thu, Feb 4, 2021 at 12:23 AM Petr Mladek <pmladek@suse.com> wrote:
-> >
-> > On Tue 2021-02-02 09:44:22, John Ogness wrote:
-> > > On 2021-02-02, Masahiro Yamada <masahiroy@kernel.org> wrote:
-> > > > CONSOLE_LOGLEVEL_DEFAULT is nothing more than a shorthand of
-> > > > CONFIG_CONSOLE_LOGLEVEL_DEFAULT.
-> > > >
-> > > > When you change CONFIG_CONSOLE_LOGLEVEL_DEFAULT from Kconfig, almost
-> > > > all objects are rebuilt because CONFIG_CONSOLE_LOGLEVEL_DEFAULT is
-> > > > used in <linux/printk.h>, which is included from most of source files.
-> > > >
-> > > > In fact, there are only 4 users of CONSOLE_LOGLEVEL_DEFAULT:
-> > > >
-> > > >   arch/x86/platform/uv/uv_nmi.c
-> > > >   drivers/firmware/efi/libstub/efi-stub-helper.c
-> > > >   drivers/tty/sysrq.c
-> > > >   kernel/printk/printk.c
-> > > >
-> > > > So, when you change CONFIG_CONSOLE_LOGLEVEL_DEFAULT and rebuild the
-> > > > kernel, it is enough to recompile those 4 files.
-> > > >
-> > > > Remove the CONSOLE_LOGLEVEL_DEFAULT definition from <linux/printk.h>,
-> > > > and use CONFIG_CONSOLE_LOGLEVEL_DEFAULT directly.
-> > >
-> > > With commit a8fe19ebfbfd ("kernel/printk: use symbolic defines for
-> > > console loglevels") it can be seen that various drivers used to
-> > > hard-code their own values. The introduction of the macros in an
-> > > intuitive location (include/linux/printk.h) made it easier for authors
-> > > to find/use the various available printk settings and thresholds.
-> > >
-> > > Technically there is no problem using Kconfig macros directly. But will
-> > > authors bother to hunt down available Kconfig settings? Or will they
-> > > only look in printk.h to see what is available?
-> > >
-> > > IMHO if code wants to use settings from a foreign subsystem, it should
-> > > be taking those from headers of that subsystem, rather than using some
-> > > Kconfig settings from that subsystem. Headers exist to make information
-> > > available to external code. Kconfig (particularly for a subsystem) exist
-> > > to configure that subsystem.
-> >
-> > I agree with this this view.
-> 
-> 
-> I have never seen a policy to restrict
-> the use of CONFIG options in relevant
-> subsystem headers.
+On Wed, Feb 03, 2021 at 09:29:18PM +0100, Ard Biesheuvel wrote:
+> I think we have agreement on the approach but it is unclear who is
+> going to write the patch.
 
-I would say that it is a common sense. But I admit that I did not look
-at the code in detail. See below.
+How's that below?
 
-> > What about using default_console_loglevel() in the external code?
-> > It reads the value from an array. This value is initialized to
-> > CONSOLE_LOGLEVEL_DEFAULT and never modified later.
-> 
-> I do not think default_console_loglevel()
-> is a perfect constant
-> because it can be modified via
-> /proc/sys/kernel/printk
+And frankly, I'd even vote for removing those assertions altogether. If
+somehow the EFI pgd lands somewhere else, the kernel will crash'n'burn
+spectacularly and quickly so it's not like we won't catch it...
 
-And that is the problem. I somehow expected that the external code
-wanted to have the currently valid value and not the prebuilt one.
-
-When I look closely:
-
-  + arch/x86/platform/uv/uv_nmi.c
-  + drivers/firmware/efi/libstub/efi-stub-helper.c
-
-    These use the value to statically initialize global variables that
-    might later be modified by subsystem-specific kernel parameters.
-
-    CONFIG_CONSOLE_LOGLEVEL_DEFAULT is acceptable here from my POV.
-    The build dependency sucks. And it is not worth any too complicated
-    solution.
+---
+diff --git a/arch/x86/include/asm/pgtable_64_types.h b/arch/x86/include/asm/pgtable_64_types.h
+index 91ac10654570..b6be19c09841 100644
+--- a/arch/x86/include/asm/pgtable_64_types.h
++++ b/arch/x86/include/asm/pgtable_64_types.h
+@@ -156,8 +156,8 @@ extern unsigned int ptrs_per_p4d;
+ #define CPU_ENTRY_AREA_PGD	_AC(-4, UL)
+ #define CPU_ENTRY_AREA_BASE	(CPU_ENTRY_AREA_PGD << P4D_SHIFT)
+ 
+-#define EFI_VA_START		( -4 * (_AC(1, UL) << 30))
+-#define EFI_VA_END		(-68 * (_AC(1, UL) << 30))
++#define EFI_VA_START		( -4UL * (_AC(1, UL) << 30))
++#define EFI_VA_END		(-68UL * (_AC(1, UL) << 30))
+ 
+ #define EARLY_DYNAMIC_PAGE_TABLES	64
+ 
+diff --git a/arch/x86/platform/efi/efi_64.c b/arch/x86/platform/efi/efi_64.c
+index e1e8d4e3a213..56fdc0bbb554 100644
+--- a/arch/x86/platform/efi/efi_64.c
++++ b/arch/x86/platform/efi/efi_64.c
+@@ -123,9 +123,7 @@ void efi_sync_low_kernel_mappings(void)
+ 	 * only span a single PGD entry and that the entry also maps
+ 	 * other important kernel regions.
+ 	 */
+-	MAYBE_BUILD_BUG_ON(pgd_index(EFI_VA_END) != pgd_index(MODULES_END));
+-	MAYBE_BUILD_BUG_ON((EFI_VA_START & PGDIR_MASK) !=
+-			(EFI_VA_END & PGDIR_MASK));
++	MAYBE_BUILD_BUG_ON((EFI_VA_START & PGDIR_MASK) != PGDIR_MASK);
+ 
+ 	pgd_efi = efi_pgd + pgd_index(PAGE_OFFSET);
+ 	pgd_k = pgd_offset_k(PAGE_OFFSET);
+@@ -137,8 +135,7 @@ void efi_sync_low_kernel_mappings(void)
+ 	 * As with PGDs, we share all P4D entries apart from the one entry
+ 	 * that covers the EFI runtime mapping space.
+ 	 */
+-	BUILD_BUG_ON(p4d_index(EFI_VA_END) != p4d_index(MODULES_END));
+-	BUILD_BUG_ON((EFI_VA_START & P4D_MASK) != (EFI_VA_END & P4D_MASK));
++	BUILD_BUG_ON((EFI_VA_START & P4D_MASK) != P4D_MASK);
+ 
+ 	pgd_efi = efi_pgd + pgd_index(EFI_VA_END);
+ 	pgd_k = pgd_offset_k(EFI_VA_END);
 
 
-  + drivers/tty/sysrq.c
+-- 
+Regards/Gruss,
+    Boris.
 
-    The intention here is to use the highest console loglevel so that
-    people really see them. It used to be hardcoded "7". sysrq is
-    typically the last chance to get some information from the system.
-
-    We actually want to use the hardcoded "7" here. But we should
-    define it via a macro in printk.h, e.g.
-
-     #define CONSOLE_LOGLEVEL_ALL_NORMAL 7 /* all non-debugging messages */
-
-     or
-
-     #define CONSOLE_LOGLEVEL_NO_DEBUG 7  /* all non-debugging messages */
-
-Best Regards,
-Petr
+https://people.kernel.org/tglx/notes-about-netiquette
