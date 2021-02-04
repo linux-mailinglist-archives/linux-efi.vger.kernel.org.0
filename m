@@ -2,32 +2,42 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C116730FC6C
-	for <lists+linux-efi@lfdr.de>; Thu,  4 Feb 2021 20:18:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B415E30FF79
+	for <lists+linux-efi@lfdr.de>; Thu,  4 Feb 2021 22:47:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239723AbhBDTRv (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 4 Feb 2021 14:17:51 -0500
-Received: from mail.kernel.org ([198.145.29.99]:52700 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S239763AbhBDTRN (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Thu, 4 Feb 2021 14:17:13 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 18E0E64DF0;
-        Thu,  4 Feb 2021 19:16:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1612466192;
-        bh=8S5BexxzoontSYmnpurHcAgfrHRcphSuCnzRExkPd30=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=KBQdU9OfAeDFvPjximv/0NbVnU0DxHB1PLhQ16or8xmdZTZ87nHnQXFXmN3z5Yl0A
-         W4HupY6kmmKxzcSXR8mVbo555bJ8ob6P+YQadMaR2ZzBc1MJKU0B54bmnSONqw3OoZ
-         iEUixgEKA22YQrEegQ/Z6gR0Pz+z5Off1quJyrHnLzPpGBsFXztckjECDJsLiVQgD+
-         KImAtVJVC5UBzKmA3R4nACk2n+7PTeGH01KT4HjLQWZfNwFvKoR8FGZ8WEXTUqeIPe
-         eMJbBbkj2Rd2I/ml7kl0MOMhJOabvlOigP1cXUjbVTdUf4ZJ18LJvlVKT/jKyqXBoT
-         wWReByK6uWk8w==
-Date:   Thu, 4 Feb 2021 12:16:28 -0700
-From:   Nathan Chancellor <nathan@kernel.org>
+        id S229646AbhBDVoo (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 4 Feb 2021 16:44:44 -0500
+Received: from mail-qv1-f54.google.com ([209.85.219.54]:41058 "EHLO
+        mail-qv1-f54.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229586AbhBDVom (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 4 Feb 2021 16:44:42 -0500
+Received: by mail-qv1-f54.google.com with SMTP id h21so2497571qvb.8;
+        Thu, 04 Feb 2021 13:44:26 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=pKT1129goorIBDoVw07+oNDIAL0ruSPyAoYmTeYA4JM=;
+        b=Bn4a9GTTajo10p4tP/SXrggABMPkJiStl+9Rl154EHydZPM0sccgLHJBGlGUeXzuWR
+         n9ylZkthg6+C7NMtJrc5HylZAK3vlgmlZQMxAeyBATSzWDAGhdD3fzk7CZL8Sb7Oj8jM
+         njs8NZ2udBguOEgzT8/psSTweXcv+UbFQXmxWCK1/KP5APvKiuSt9EM0ZKIWuV59nJex
+         psAGevQyiZ1KpYlZYVOtSP4U8dW/8yU2D9ffU7GwQAWsyrfLfSfTvZCf/Ee1BB8Gqj9z
+         nfvwW7yx2SaUHds+sfC+l9+Q4dEjWvfOBTRJOLXNbzX3n4VHJiL3JuIqgOWVwBsMMK+5
+         ZjGg==
+X-Gm-Message-State: AOAM533a0v1fk95TsoUMhENJjzfLrGtuR+Jx5ur+4B/UQrOOsem+FaRk
+        2VoB0yhR2b18N0xauOHu+Kg=
+X-Google-Smtp-Source: ABdhPJz2GAyRB5K1dve72PPvUvmzJgXl6kFeOkPJ4uljCE4HZUquh+9dhzFcCpdxEuS+c3JQWtBHqg==
+X-Received: by 2002:a05:6214:a4f:: with SMTP id ee15mr1429073qvb.10.1612475041219;
+        Thu, 04 Feb 2021 13:44:01 -0800 (PST)
+Received: from rani.riverdale.lan ([2001:470:1f07:5f3::b55f])
+        by smtp.gmail.com with ESMTPSA id p22sm6267413qkk.128.2021.02.04.13.43.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 04 Feb 2021 13:44:00 -0800 (PST)
+Date:   Thu, 4 Feb 2021 16:43:58 -0500
+From:   Arvind Sankar <nivedita@alum.mit.edu>
 To:     Borislav Petkov <bp@alien8.de>
 Cc:     Ard Biesheuvel <ardb@kernel.org>,
-        Arvind Sankar <nivedita@alum.mit.edu>,
+        Nathan Chancellor <nathan@kernel.org>,
         Arnd Bergmann <arnd@kernel.org>,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>, X86 ML <x86@kernel.org>,
@@ -43,7 +53,7 @@ Cc:     Ard Biesheuvel <ardb@kernel.org>,
         clang-built-linux <clang-built-linux@googlegroups.com>,
         "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 Subject: Re: [PATCH] x86: efi: avoid BUILD_BUG_ON() for non-constant p4d_index
-Message-ID: <20210204191628.GC2991903@localhost>
+Message-ID: <YBxqnosGDroAnpio@rani.riverdale.lan>
 References: <20210107223424.4135538-1-arnd@kernel.org>
  <YAHoB4ODvxSqNhsq@rani.riverdale.lan>
  <YAH6r3lak/F2wndp@rani.riverdale.lan>
@@ -55,7 +65,7 @@ References: <20210107223424.4135538-1-arnd@kernel.org>
  <CAMj1kXFPOvkcw573wzKzMQOgT-nddFcAZo9M4Lk+idn_1UBbnA@mail.gmail.com>
  <20210204105155.GA32255@zn.tnic>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 In-Reply-To: <20210204105155.GA32255@zn.tnic>
 Precedence: bulk
@@ -72,17 +82,11 @@ On Thu, Feb 04, 2021 at 11:51:55AM +0100, Borislav Petkov wrote:
 > And frankly, I'd even vote for removing those assertions altogether. If
 > somehow the EFI pgd lands somewhere else, the kernel will crash'n'burn
 > spectacularly and quickly so it's not like we won't catch it...
+
+Removing altogether should be fine, but see below if we don't.
+
 > 
 > ---
-
-This resolves the issue initially reported in this thread. Obviously
-removing the assertions will do that as well. Feel free to carry
-forward
-
-Tested-by: Nathan Chancellor <nathan@kernel.org>
-
-on a patch if you send it out.
-
 > diff --git a/arch/x86/include/asm/pgtable_64_types.h b/arch/x86/include/asm/pgtable_64_types.h
 > index 91ac10654570..b6be19c09841 100644
 > --- a/arch/x86/include/asm/pgtable_64_types.h
@@ -95,6 +99,12 @@ on a patch if you send it out.
 > -#define EFI_VA_END		(-68 * (_AC(1, UL) << 30))
 > +#define EFI_VA_START		( -4UL * (_AC(1, UL) << 30))
 > +#define EFI_VA_END		(-68UL * (_AC(1, UL) << 30))
+
+This doesn't have any effect right? And the reason for the _AC() stuff
+in there is to allow the #define to be used in assembler -- this
+particular one isn't, but it makes no sense to use the UL suffix as well
+as _AC() in the same macro.
+
 >  
 >  #define EARLY_DYNAMIC_PAGE_TABLES	64
 >  
@@ -110,6 +120,9 @@ on a patch if you send it out.
 > -	MAYBE_BUILD_BUG_ON((EFI_VA_START & PGDIR_MASK) !=
 > -			(EFI_VA_END & PGDIR_MASK));
 > +	MAYBE_BUILD_BUG_ON((EFI_VA_START & PGDIR_MASK) != PGDIR_MASK);
+
+This check is superfluous. Just do the P4D one.
+
 >  
 >  	pgd_efi = efi_pgd + pgd_index(PAGE_OFFSET);
 >  	pgd_k = pgd_offset_k(PAGE_OFFSET);
@@ -120,6 +133,10 @@ on a patch if you send it out.
 > -	BUILD_BUG_ON(p4d_index(EFI_VA_END) != p4d_index(MODULES_END));
 > -	BUILD_BUG_ON((EFI_VA_START & P4D_MASK) != (EFI_VA_END & P4D_MASK));
 > +	BUILD_BUG_ON((EFI_VA_START & P4D_MASK) != P4D_MASK);
+
+This should check EFI_VA_END instead of EFI_VA_START, and maybe throw in
+a BUG_ON if EFI_VA_END >= EFI_VA_START.
+
 >  
 >  	pgd_efi = efi_pgd + pgd_index(EFI_VA_END);
 >  	pgd_k = pgd_offset_k(EFI_VA_END);
