@@ -2,34 +2,47 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0BA1C310ACF
-	for <lists+linux-efi@lfdr.de>; Fri,  5 Feb 2021 13:02:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C7103311052
+	for <lists+linux-efi@lfdr.de>; Fri,  5 Feb 2021 19:50:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232093AbhBEMA5 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 5 Feb 2021 07:00:57 -0500
-Received: from mail.kernel.org ([198.145.29.99]:36698 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232047AbhBEL6c (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Fri, 5 Feb 2021 06:58:32 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 0C1B964FD0;
-        Fri,  5 Feb 2021 11:57:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1612526271;
-        bh=U9so/rHyR0hVc2xX6oY2l2vg5J61lAZH93MEbQPViNE=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=eglJi6jjeEmj9f+pc/aEPV2ah17Yn/ZUE8jr61fZIMavlMHKFbw/701G3R9gnxqus
-         sdPX49nlbeCYFlHHRkWzB9+Plfqnaxon83sb6WgDWX0npsQRaDn1Bkl/DZYK0wHtnL
-         ckluspV5lBz6/SkyYDfeBroj4vYEpgjNJTQlDvpkcP4S7vQ2zmXLSmP/ZqZb6t/4YX
-         fGwdCxwTCoWe7lEOC7V/EogPqeENVKIutiaUZoOPwwQZoE05BUELOCQHVs5LfN73Nd
-         inI/TVzxAuLiKR3nJEi7MthQhZOqzVUoxspFm596bXlH/zE2lTFQuXXYegbYqCk6c3
-         pCWuDyBexhV1g==
-Received: by mail-oi1-f179.google.com with SMTP id j25so7181111oii.0;
-        Fri, 05 Feb 2021 03:57:50 -0800 (PST)
-X-Gm-Message-State: AOAM530ENH4y0fD9UFNh3n8fAxguAqwg3JjMNGMyV3jSJD6MpfIv6I9S
-        T0kyiXAjbsHp2UNbsk9XCcCCbvBIUpffsCkbB/A=
-X-Google-Smtp-Source: ABdhPJyV4g662YXr7ocDc4gykAJEjrn19g2q8oK2R4Y25T0vh1HA/SyiXDBxxAruYDekqRHeoVIb3cd7YxKxDb08/N0=
-X-Received: by 2002:aca:ea0b:: with SMTP id i11mr2772699oih.33.1612526270014;
- Fri, 05 Feb 2021 03:57:50 -0800 (PST)
+        id S232793AbhBERHl (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 5 Feb 2021 12:07:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42472 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233454AbhBEQdN (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 5 Feb 2021 11:33:13 -0500
+Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0649C061574
+        for <linux-efi@vger.kernel.org>; Fri,  5 Feb 2021 10:14:54 -0800 (PST)
+Received: by mail-lf1-x130.google.com with SMTP id v24so11175979lfr.7
+        for <linux-efi@vger.kernel.org>; Fri, 05 Feb 2021 10:14:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=YriR2p78K/vHHtzWx/ItCRdYg1dmwwp3GdKREBar06I=;
+        b=pqEFA3lIa3yN9nngQaWfiywwo2ZSDn5+1d2EQ/LbVfpfSw8GKliTCeol1YB15k8RJP
+         Ir0WxrNpHIu3ngNu9WGdluyljKt8YcRDQnYrXcNyEoXt51y0A59WtXDMpe06xAvpfhVR
+         iotsqfiXp0umQpKe5zXAJMbsHN7t/9u3dZ7Czxa0dG9s4/Y6S/sZjFX9UdRU76a1ZoVE
+         /hq+DBp8hpE+VHJhvZRdhqdJ2CdEP/xzUJB6nHeZ5nC+oEAM1o28suAV7rKf7R96a5mg
+         XuNBeZT0UE5QUBSRaliFcZZxFR1LR/+yOpgBC8xC1d2uYqejLXQJIKUzSFqAPxcC5CNm
+         2WYQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=YriR2p78K/vHHtzWx/ItCRdYg1dmwwp3GdKREBar06I=;
+        b=oPJUK49QR0SeV+8uNobrCMp2M2LjdboeJ0RCQU8zusbL5MBMSYKFUukGATDv/IUwfg
+         Vrvcel/1ymtVpl70oMgFO87g9o3q0Fc9VjHC71Kcqi4LrCYAz4tt76lQEscmb2D8xsob
+         gk7WkxGQMlXzaHZKVMaUTiSog2LD2RoYgp6aUrtX+gq/DkhnVtNil8+61oOA9hZtmsui
+         nva4KWmzl60xSZg2iyT9Hbu9EXa3omPR09mYr9jGqp5nf09HQMXOBgCEIG9HUSWaoI+B
+         A1A/EkWVR7xiJl+jMlo4Tz9VbW8E42hDH1tr0xNr+84zFiyXHgkVrBc2YQ40zOHFBjgx
+         dugg==
+X-Gm-Message-State: AOAM5329q3PICDkgEzXHFVmYWUJQzAEPunEYkMCIHpQG87LpyKMzW8KB
+        ryH6GjOkjR1GQqjToxl02qK5ILYG8oq3AGR8KUHCHQ==
+X-Google-Smtp-Source: ABdhPJzSGO5tZcOtelk/HyR2Ol1kqQCS3E+C+04PZWXnAHFrL6NFakA7BLPSeI4FoggUaddjEgr95Af4UTWMScUF5PM=
+X-Received: by 2002:ac2:5622:: with SMTP id b2mr3121608lff.297.1612548892948;
+ Fri, 05 Feb 2021 10:14:52 -0800 (PST)
 MIME-Version: 1.0
 References: <CAMj1kXGZFZciN1_KruCr=g6GANNpRrCLR48b3q13+QfK481C7Q@mail.gmail.com>
  <20210118202409.GG30090@zn.tnic> <YAYAvBARSRSg8z8G@rani.riverdale.lan>
@@ -38,19 +51,18 @@ References: <CAMj1kXGZFZciN1_KruCr=g6GANNpRrCLR48b3q13+QfK481C7Q@mail.gmail.com>
  <20210204105155.GA32255@zn.tnic> <YBxqnosGDroAnpio@rani.riverdale.lan>
  <20210204221318.GI32255@zn.tnic> <YByMdh/qDEwreq6S@rani.riverdale.lan> <20210205113930.GD17488@zn.tnic>
 In-Reply-To: <20210205113930.GD17488@zn.tnic>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Fri, 5 Feb 2021 12:57:38 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXEpNuMyotUN5ojoFUjvAdx--OxqDqN030S2RmdONn3a6g@mail.gmail.com>
-Message-ID: <CAMj1kXEpNuMyotUN5ojoFUjvAdx--OxqDqN030S2RmdONn3a6g@mail.gmail.com>
+From:   Nick Desaulniers <ndesaulniers@google.com>
+Date:   Fri, 5 Feb 2021 10:14:40 -0800
+Message-ID: <CAKwvOdkyk_AejhxhasBggxYtSJi+3T-tjCExe+nAM5iJJ5_1aQ@mail.gmail.com>
 Subject: Re: [PATCH] x86/efi: Remove EFI PGD build time checks
 To:     Borislav Petkov <bp@alien8.de>
 Cc:     Arvind Sankar <nivedita@alum.mit.edu>,
+        Ard Biesheuvel <ardb@kernel.org>,
         Nathan Chancellor <nathan@kernel.org>,
         Arnd Bergmann <arnd@kernel.org>,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>, X86 ML <x86@kernel.org>,
         Nathan Chancellor <natechancellor@gmail.com>,
-        Nick Desaulniers <ndesaulniers@google.com>,
         Arnd Bergmann <arnd@arndb.de>,
         Darren Hart <dvhart@infradead.org>,
         Andy Shevchenko <andy@infradead.org>,
@@ -65,7 +77,7 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, 5 Feb 2021 at 12:39, Borislav Petkov <bp@alien8.de> wrote:
+On Fri, Feb 5, 2021 at 3:39 AM Borislav Petkov <bp@alien8.de> wrote:
 >
 > From: Borislav Petkov <bp@suse.de>
 >
@@ -102,7 +114,15 @@ On Fri, 5 Feb 2021 at 12:39, Borislav Petkov <bp@alien8.de> wrote:
 > Link: http://lkml.kernel.org/r/20210107223424.4135538-1-arnd@kernel.org
 > Signed-off-by: Borislav Petkov <bp@suse.de>
 
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
+Thanks, this fixes the failed assertion for me.
+
+Tested-by: Nick Desaulniers <ndesaulniers@google.com>
+
+(https://lore.kernel.org/lkml/20201230154104.522605-1-arnd@kernel.org/
+is needed to finish a build of that configuration; going to chase that
+next)
+
+(consider applying Arvind's+Ard's suggested by tag)
 
 > ---
 >  arch/x86/platform/efi/efi_64.c | 19 -------------------
@@ -152,3 +172,9 @@ Acked-by: Ard Biesheuvel <ardb@kernel.org>
 >     Boris.
 >
 > https://people.kernel.org/tglx/notes-about-netiquette
+
+
+
+-- 
+Thanks,
+~Nick Desaulniers
