@@ -2,97 +2,67 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C67331015A
-	for <lists+linux-efi@lfdr.de>; Fri,  5 Feb 2021 01:10:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 30E6B31032E
+	for <lists+linux-efi@lfdr.de>; Fri,  5 Feb 2021 04:11:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231638AbhBEAJH (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 4 Feb 2021 19:09:07 -0500
-Received: from mail-qv1-f42.google.com ([209.85.219.42]:45927 "EHLO
-        mail-qv1-f42.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231565AbhBEAJG (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 4 Feb 2021 19:09:06 -0500
-Received: by mail-qv1-f42.google.com with SMTP id w11so2648134qvz.12;
-        Thu, 04 Feb 2021 16:08:51 -0800 (PST)
+        id S229989AbhBEDJQ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 4 Feb 2021 22:09:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48474 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229692AbhBEDJK (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 4 Feb 2021 22:09:10 -0500
+Received: from mail-wm1-x32c.google.com (mail-wm1-x32c.google.com [IPv6:2a00:1450:4864:20::32c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12302C06178A;
+        Thu,  4 Feb 2021 19:08:30 -0800 (PST)
+Received: by mail-wm1-x32c.google.com with SMTP id j11so4806535wmi.3;
+        Thu, 04 Feb 2021 19:08:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=message-id:sender:from:mime-version:content-transfer-encoding
+         :content-description:subject:to:date:reply-to;
+        bh=hqf55dXwvcYwwL4sAkoYuOM6RPu6wxeec88n5sMRYiY=;
+        b=qKV6lK/xTrI0xWZI/8Vwj4HWtece1YWaUDe9sPcNOebT0x9iH9t9HcfJIQkpWQqu4j
+         9tLsV973I65GjSCqyS40JivInipCupY+1WZAfBNpdOynDt+97z63FrcpdVze5raYfFI1
+         ELiZ/G9wyN0fnfIjx/4fXB0vrZdvzQZF98iXIaty+2RnmRohcZKyquzcoEI7HJVOKKX+
+         EiIOfD4L+JHLtQCVKSDCCxXZVCK4MxNFtPjEIW4ZVaTqiXLcosgUnVu2mpqrz5slCIU6
+         OojTwfk4ppz8i2nlpZs6lLbHMceui26pWhk6A71VZRttpKbJam5k9i/jzM4/k1VhIFAv
+         //BQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=WJYooe3xF7/mefKhohc7tEDBTk22wMNA7vkmjEV5aGE=;
-        b=OEkbXOfMnCzy05c/wZUaypq6cpFZOBRTTfB0QhmONB2ki24Ik/LazMbkuGGGeoujyS
-         Vc+Np2E/MI6O56y0Z1r6sPMNpUE3UawLqAs584joedES5a/3tsMjQdiwkoq/vfKmxUSp
-         9Q10qxfMmlr+7Eb7El5ESiVLk1TQKYNahGjloFePRkVkJkO9fQPtLQkg+YHK7VwnLE7p
-         GQQ/BhKh19K5puW+BykRU+bavOqEL4XmeDhGMu6BcRQXeaqRadVFQjlNheTUOBvnnLSy
-         U8Df5miijD04exYYpkPmC345hLkPYhOnF+vdaLCF8L1bTkEOpUWzQfqT5kkCmP28HrFJ
-         Hfcg==
-X-Gm-Message-State: AOAM532VE9UvYiljfivfyR4VDz4SdMxKxQCAzcadApq6IgR0X/xTpOnq
-        zazN9sMndhUIaJgrFnMMulI=
-X-Google-Smtp-Source: ABdhPJyHm7vD6eXZdsWo92cvHMgU/gTpRmlLbMh6iK8rT+gWJiA/44WTJ27OShRPGQts3nIAOL9cDQ==
-X-Received: by 2002:a05:6214:446:: with SMTP id cc6mr2003665qvb.31.1612483705438;
-        Thu, 04 Feb 2021 16:08:25 -0800 (PST)
-Received: from rani.riverdale.lan ([2001:470:1f07:5f3::b55f])
-        by smtp.gmail.com with ESMTPSA id e15sm3360111qtq.43.2021.02.04.16.08.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Feb 2021 16:08:24 -0800 (PST)
-Date:   Thu, 4 Feb 2021 19:08:22 -0500
-From:   Arvind Sankar <nivedita@alum.mit.edu>
-To:     Borislav Petkov <bp@alien8.de>
-Cc:     Ard Biesheuvel <ardb@kernel.org>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Arnd Bergmann <arnd@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, X86 ML <x86@kernel.org>,
-        Nathan Chancellor <natechancellor@gmail.com>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Darren Hart <dvhart@infradead.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        platform-driver-x86@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        clang-built-linux <clang-built-linux@googlegroups.com>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: Re: [PATCH] x86: efi: avoid BUILD_BUG_ON() for non-constant p4d_index
-Message-ID: <YByMdh/qDEwreq6S@rani.riverdale.lan>
-References: <YAH6r3lak/F2wndp@rani.riverdale.lan>
- <CAMj1kXGZFZciN1_KruCr=g6GANNpRrCLR48b3q13+QfK481C7Q@mail.gmail.com>
- <20210118202409.GG30090@zn.tnic>
- <YAYAvBARSRSg8z8G@rani.riverdale.lan>
- <CAMj1kXHM98-iDYpAozaWEv-qxhZ0-CUMwSdG532x2d+55gXDhQ@mail.gmail.com>
- <20210203185148.GA1711888@localhost>
- <CAMj1kXFPOvkcw573wzKzMQOgT-nddFcAZo9M4Lk+idn_1UBbnA@mail.gmail.com>
- <20210204105155.GA32255@zn.tnic>
- <YBxqnosGDroAnpio@rani.riverdale.lan>
- <20210204221318.GI32255@zn.tnic>
+        h=x-gm-message-state:message-id:sender:from:mime-version
+         :content-transfer-encoding:content-description:subject:to:date
+         :reply-to;
+        bh=hqf55dXwvcYwwL4sAkoYuOM6RPu6wxeec88n5sMRYiY=;
+        b=fGZY9xPP13GVBXXMytLVmy4dUT3ZCBl7ro2iO2tzQB9V6NtlHlU1WIffRCKLZpGpFs
+         TunlGsH4Zvq3K0GInppg3DWQ6nFY9zo9OCTlLbfqbcT/PQPkayTxHnhgG2AAoU5/1HfN
+         VVucPa+R3cd9on/7Iwf4zdH1ndpzYsxtKOnL6VSymQawxuZsW8hrz9e2OeLzl/dgaQK9
+         HWox4Vg3ubaB7uc8Cr/eNL0mbPl41XDD6k59/uPPLfyvGi2GihpvQ5611x2QMqQ2sXYc
+         SWixN9YRCcnHIfjyWkM9XdAjD15+wAcu2Pbtukm6aIqL6TRZflV0fIny7xopeB0Td1ei
+         oFpg==
+X-Gm-Message-State: AOAM530acKnINW+aC3ADGhAO15HtsmlJf59mPZLjJWA5yurPXOhlWe0j
+        flfCEAyHDuKpQDhkTU0jfxbUDMcg6nY66w==
+X-Google-Smtp-Source: ABdhPJzMvxq+Dz6Cd25sA4YjrzKq+MpOJZGous+0kvBheLF8WnJDbF6X9Nj/FnREqpI7o/SY4LFdpA==
+X-Received: by 2002:a1c:3185:: with SMTP id x127mr1593295wmx.117.1612494508861;
+        Thu, 04 Feb 2021 19:08:28 -0800 (PST)
+Received: from [192.168.1.6] ([154.124.28.35])
+        by smtp.gmail.com with ESMTPSA id n9sm10836813wrq.41.2021.02.04.19.08.24
+        (version=TLS1 cipher=AES128-SHA bits=128/128);
+        Thu, 04 Feb 2021 19:08:27 -0800 (PST)
+Message-ID: <601cb6ab.1c69fb81.5ea54.2ea9@mx.google.com>
+Sender: Skylar Anderson <barr.markimmbayie@gmail.com>
+From:   calantha camara <sgt.andersonskylar0@gmail.com>
+X-Google-Original-From: calantha camara
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20210204221318.GI32255@zn.tnic>
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: hi dear
+To:     Recipients <calantha@vger.kernel.org>
+Date:   Fri, 05 Feb 2021 03:08:17 +0000
+Reply-To: calanthac20@gmail.com
+X-Mailer: cdcaafe51be8cdb99a1c85906066cad3d0e60e273541515a58395093a7c4e1f0eefb01d7fc4e6278706e9fb8c4dad093c3263345202970888b6b4d817f9e998c032e7d59
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, Feb 04, 2021 at 11:13:18PM +0100, Borislav Petkov wrote:
-> On Thu, Feb 04, 2021 at 04:43:58PM -0500, Arvind Sankar wrote:
-> > This should check EFI_VA_END instead of EFI_VA_START, and maybe throw in
-> > a BUG_ON if EFI_VA_END >= EFI_VA_START.
-> 
-> No need:
-> 
->         if (efi_va < EFI_VA_END) {
->                 pr_warn(FW_WARN "VA address range overflow!\n");
->                 return;
->         }
-> 
-> We already check we're not going over at map time. And our runtime
-> services range is hardcoded. And we're switching to that PGD on each
-> runtime services call.
-> 
-> So I don't see the point for keeping any of the assertions.
-> 
-> Unless you have other valid arguments for keeping them...
-> 
-
-No, I don't have any objections to removing them altogether. All the
-comments other than the one about changing the #define's only apply if
-it's decided to keep them.
+do you speak Eglish
