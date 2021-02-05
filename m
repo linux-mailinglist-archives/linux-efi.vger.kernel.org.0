@@ -2,67 +2,119 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 30E6B31032E
-	for <lists+linux-efi@lfdr.de>; Fri,  5 Feb 2021 04:11:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B6DF310947
+	for <lists+linux-efi@lfdr.de>; Fri,  5 Feb 2021 11:40:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229989AbhBEDJQ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 4 Feb 2021 22:09:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48474 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229692AbhBEDJK (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 4 Feb 2021 22:09:10 -0500
-Received: from mail-wm1-x32c.google.com (mail-wm1-x32c.google.com [IPv6:2a00:1450:4864:20::32c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12302C06178A;
-        Thu,  4 Feb 2021 19:08:30 -0800 (PST)
-Received: by mail-wm1-x32c.google.com with SMTP id j11so4806535wmi.3;
-        Thu, 04 Feb 2021 19:08:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=message-id:sender:from:mime-version:content-transfer-encoding
-         :content-description:subject:to:date:reply-to;
-        bh=hqf55dXwvcYwwL4sAkoYuOM6RPu6wxeec88n5sMRYiY=;
-        b=qKV6lK/xTrI0xWZI/8Vwj4HWtece1YWaUDe9sPcNOebT0x9iH9t9HcfJIQkpWQqu4j
-         9tLsV973I65GjSCqyS40JivInipCupY+1WZAfBNpdOynDt+97z63FrcpdVze5raYfFI1
-         ELiZ/G9wyN0fnfIjx/4fXB0vrZdvzQZF98iXIaty+2RnmRohcZKyquzcoEI7HJVOKKX+
-         EiIOfD4L+JHLtQCVKSDCCxXZVCK4MxNFtPjEIW4ZVaTqiXLcosgUnVu2mpqrz5slCIU6
-         OojTwfk4ppz8i2nlpZs6lLbHMceui26pWhk6A71VZRttpKbJam5k9i/jzM4/k1VhIFAv
-         //BQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:message-id:sender:from:mime-version
-         :content-transfer-encoding:content-description:subject:to:date
-         :reply-to;
-        bh=hqf55dXwvcYwwL4sAkoYuOM6RPu6wxeec88n5sMRYiY=;
-        b=fGZY9xPP13GVBXXMytLVmy4dUT3ZCBl7ro2iO2tzQB9V6NtlHlU1WIffRCKLZpGpFs
-         TunlGsH4Zvq3K0GInppg3DWQ6nFY9zo9OCTlLbfqbcT/PQPkayTxHnhgG2AAoU5/1HfN
-         VVucPa+R3cd9on/7Iwf4zdH1ndpzYsxtKOnL6VSymQawxuZsW8hrz9e2OeLzl/dgaQK9
-         HWox4Vg3ubaB7uc8Cr/eNL0mbPl41XDD6k59/uPPLfyvGi2GihpvQ5611x2QMqQ2sXYc
-         SWixN9YRCcnHIfjyWkM9XdAjD15+wAcu2Pbtukm6aIqL6TRZflV0fIny7xopeB0Td1ei
-         oFpg==
-X-Gm-Message-State: AOAM530acKnINW+aC3ADGhAO15HtsmlJf59mPZLjJWA5yurPXOhlWe0j
-        flfCEAyHDuKpQDhkTU0jfxbUDMcg6nY66w==
-X-Google-Smtp-Source: ABdhPJzMvxq+Dz6Cd25sA4YjrzKq+MpOJZGous+0kvBheLF8WnJDbF6X9Nj/FnREqpI7o/SY4LFdpA==
-X-Received: by 2002:a1c:3185:: with SMTP id x127mr1593295wmx.117.1612494508861;
-        Thu, 04 Feb 2021 19:08:28 -0800 (PST)
-Received: from [192.168.1.6] ([154.124.28.35])
-        by smtp.gmail.com with ESMTPSA id n9sm10836813wrq.41.2021.02.04.19.08.24
-        (version=TLS1 cipher=AES128-SHA bits=128/128);
-        Thu, 04 Feb 2021 19:08:27 -0800 (PST)
-Message-ID: <601cb6ab.1c69fb81.5ea54.2ea9@mx.google.com>
-Sender: Skylar Anderson <barr.markimmbayie@gmail.com>
-From:   calantha camara <sgt.andersonskylar0@gmail.com>
-X-Google-Original-From: calantha camara
-Content-Type: text/plain; charset="iso-8859-1"
+        id S231518AbhBEKip (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 5 Feb 2021 05:38:45 -0500
+Received: from mail.skyhub.de ([5.9.137.197]:43168 "EHLO mail.skyhub.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231380AbhBEKfq (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Fri, 5 Feb 2021 05:35:46 -0500
+Received: from zn.tnic (p200300ec2f0bad000b74c3ca4e4ea61e.dip0.t-ipconnect.de [IPv6:2003:ec:2f0b:ad00:b74:c3ca:4e4e:a61e])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id B044D1EC04DF;
+        Fri,  5 Feb 2021 11:35:00 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1612521300;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=mpQ2H03vRziBvKFdKZ6tUIGAARtxtvomCBNzTQhxNf4=;
+        b=WvoLruU+FJx9oOsfBOQwESy/LzPtM5fuXxYRrxKyg2J3ZIJoKMGA6UCqtGykPujB7eGHCP
+        CE43nzJ9O5fKaW0l9aiIQXwVgIfdePyE9JH+TBeUwj7RwBidSDOO+K8MSst2DcREHXcZA2
+        yNNV8rz8NpYhP3dQO7OwMudKDRYQmI0=
+Date:   Fri, 5 Feb 2021 11:34:57 +0100
+From:   Borislav Petkov <bp@alien8.de>
+To:     Nathan Chancellor <nathan@kernel.org>
+Cc:     Ard Biesheuvel <ardb@kernel.org>,
+        Arvind Sankar <nivedita@alum.mit.edu>,
+        Arnd Bergmann <arnd@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, X86 ML <x86@kernel.org>,
+        Nathan Chancellor <natechancellor@gmail.com>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        platform-driver-x86@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        clang-built-linux <clang-built-linux@googlegroups.com>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Subject: Re: [PATCH] x86: efi: avoid BUILD_BUG_ON() for non-constant p4d_index
+Message-ID: <20210205103457.GC17488@zn.tnic>
+References: <20210107223424.4135538-1-arnd@kernel.org>
+ <YAHoB4ODvxSqNhsq@rani.riverdale.lan>
+ <YAH6r3lak/F2wndp@rani.riverdale.lan>
+ <CAMj1kXGZFZciN1_KruCr=g6GANNpRrCLR48b3q13+QfK481C7Q@mail.gmail.com>
+ <20210118202409.GG30090@zn.tnic>
+ <YAYAvBARSRSg8z8G@rani.riverdale.lan>
+ <CAMj1kXHM98-iDYpAozaWEv-qxhZ0-CUMwSdG532x2d+55gXDhQ@mail.gmail.com>
+ <20210203185148.GA1711888@localhost>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: hi dear
-To:     Recipients <calantha@vger.kernel.org>
-Date:   Fri, 05 Feb 2021 03:08:17 +0000
-Reply-To: calanthac20@gmail.com
-X-Mailer: cdcaafe51be8cdb99a1c85906066cad3d0e60e273541515a58395093a7c4e1f0eefb01d7fc4e6278706e9fb8c4dad093c3263345202970888b6b4d817f9e998c032e7d59
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20210203185148.GA1711888@localhost>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-do you speak Eglish
+On Wed, Feb 03, 2021 at 11:51:48AM -0700, Nathan Chancellor wrote:
+> x86_64 all{mod,yes}config with clang are going to ship broken in 5.11.
+
+Dunno, it is still broken here even with those build assertions removed. And it
+ain't even an all{mod,yes}config - just my machine's config with
+
+CONFIG_ARCH_HAS_UBSAN_SANITIZE_ALL=y
+CONFIG_UBSAN=y
+# CONFIG_UBSAN_TRAP is not set
+CONFIG_CC_HAS_UBSAN_BOUNDS=y
+CONFIG_CC_HAS_UBSAN_ARRAY_BOUNDS=y
+CONFIG_UBSAN_BOUNDS=y
+CONFIG_UBSAN_ARRAY_BOUNDS=y
+CONFIG_UBSAN_SHIFT=y
+CONFIG_UBSAN_DIV_ZERO=y
+CONFIG_UBSAN_SIGNED_OVERFLOW=y
+CONFIG_UBSAN_UNSIGNED_OVERFLOW=y
+CONFIG_UBSAN_OBJECT_SIZE=y
+CONFIG_UBSAN_BOOL=y
+CONFIG_UBSAN_ENUM=y
+CONFIG_UBSAN_ALIGNMENT=y
+CONFIG_UBSAN_SANITIZE_ALL=y
+# CONFIG_TEST_UBSAN is not set
+
+and clang-10:
+
+lib/strncpy_from_user.o: warning: objtool: strncpy_from_user()+0x253: call to __ubsan_handle_add_overflow() with UACCESS enabled
+lib/strnlen_user.o: warning: objtool: strnlen_user()+0x244: call to __ubsan_handle_add_overflow() with UACCESS enabled
+ld: init/main.o: in function `kmalloc':
+/home/boris/kernel/linux/./include/linux/slab.h:557: undefined reference to `__ubsan_handle_alignment_assumption'
+ld: init/initramfs.o: in function `kmalloc':
+/home/boris/kernel/linux/./include/linux/slab.h:552: undefined reference to `__ubsan_handle_alignment_assumption'
+ld: init/initramfs.o: in function `kmalloc_large':
+/home/boris/kernel/linux/./include/linux/slab.h:481: undefined reference to `__ubsan_handle_alignment_assumption'
+ld: init/initramfs.o: in function `kmalloc':
+/home/boris/kernel/linux/./include/linux/slab.h:552: undefined reference to `__ubsan_handle_alignment_assumption'
+ld: /home/boris/kernel/linux/./include/linux/slab.h:552: undefined reference to `__ubsan_handle_alignment_assumption'
+ld: init/initramfs.o:/home/boris/kernel/linux/./include/linux/slab.h:552: more undefined references to `__ubsan_handle_alignment_assumption' follow
+ld: mm/mremap.o: in function `get_extent':
+/home/boris/kernel/linux/mm/mremap.c:355: undefined reference to `__compiletime_assert_327'
+ld: mm/rmap.o: in function `anon_vma_chain_alloc':
+/home/boris/kernel/linux/mm/rmap.c:136: undefined reference to `__ubsan_handle_alignment_assumption'
+ld: mm/rmap.o: in function `anon_vma_alloc':
+/home/boris/kernel/linux/mm/rmap.c:89: undefined reference to `__ubsan_handle_alignment_assumption'
+ld: mm/rmap.o: in function `anon_vma_chain_alloc':
+/home/boris/kernel/linux/mm/rmap.c:136: undefined reference to `__ubsan_handle_alignment_assumption'
+ld: /home/boris/kernel/linux/mm/rmap.c:136: undefined reference to `__ubsan_handle_alignment_assumption'
+ld: /home/boris/kernel/linux/mm/rmap.c:136: undefined reference to `__ubsan_handle_alignment_assumption'
+ld: mm/vmalloc.o:/home/boris/kernel/linux/mm/vmalloc.c:1213: more undefined references to `__ubsan_handle_alignment_assumption' follow
+make: *** [Makefile:1164: vmlinux] Error 1
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
