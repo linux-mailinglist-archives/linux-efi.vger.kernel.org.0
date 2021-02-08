@@ -2,131 +2,185 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ACDF0313C5D
-	for <lists+linux-efi@lfdr.de>; Mon,  8 Feb 2021 19:07:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 349F9314176
+	for <lists+linux-efi@lfdr.de>; Mon,  8 Feb 2021 22:16:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235422AbhBHSF7 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 8 Feb 2021 13:05:59 -0500
-Received: from mail.kernel.org ([198.145.29.99]:46598 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235119AbhBHSCl (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Mon, 8 Feb 2021 13:02:41 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 3983864ECB;
-        Mon,  8 Feb 2021 17:58:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1612807137;
-        bh=MwE0dRe4FlkiHM4UEKZwi9NyT1H5uA6kVgZ45xrrRhw=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XabMr1QwJGKzQfPAvLkSR+Q02JW41Xwn9yW+y9iFm+AMxEolwaazADOhCXb2rh/Ip
-         n5EncEqiPNWgZFc1ctphzvpnG2Go17pG4SqZU9trLWipG5TA3yiZwzlZ8DX2B1h1xc
-         Kg4q/qAhBp4xUFZNb2PRxC7662dmx21IrJiRpMv5nuo96/aMni71o/nh0u6EEsHJ12
-         h9UBSRZiSA5tBk7yvJwISSo+lGHcCPgOXEhg0t6hxiJ2fw0LqTS4fDLSun1R9el8OF
-         CqP+V7ETDB69aXcBp5f15X05HwRtVb+HeGskvlyaIdFIAKjhcDvbhM02T3evefIXoM
-         ONJl5AH25u45A==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Borislav Petkov <bp@suse.de>, Arnd Bergmann <arnd@arndb.de>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Sasha Levin <sashal@kernel.org>, linux-efi@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org, x86@kernel.org,
-        clang-built-linux@googlegroups.com
-Subject: [PATCH AUTOSEL 5.10 36/36] x86/efi: Remove EFI PGD build time checks
-Date:   Mon,  8 Feb 2021 12:58:06 -0500
-Message-Id: <20210208175806.2091668-36-sashal@kernel.org>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20210208175806.2091668-1-sashal@kernel.org>
-References: <20210208175806.2091668-1-sashal@kernel.org>
+        id S231132AbhBHVPf (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 8 Feb 2021 16:15:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45384 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236327AbhBHVO6 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 8 Feb 2021 16:14:58 -0500
+Received: from mail-io1-xd31.google.com (mail-io1-xd31.google.com [IPv6:2607:f8b0:4864:20::d31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE323C06178B
+        for <linux-efi@vger.kernel.org>; Mon,  8 Feb 2021 13:14:17 -0800 (PST)
+Received: by mail-io1-xd31.google.com with SMTP id e24so747650ioc.1
+        for <linux-efi@vger.kernel.org>; Mon, 08 Feb 2021 13:14:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=atishpatra.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=3FeiA79iLSDi0k0ZMiFHmOL8NHbfXhIuWSoTn/fGVeY=;
+        b=ZclT1m870hHFi+lNdB6+VkCpGEahDMU00K4AuTfI994iegwXHwBXf6+iWDUUY1LGyR
+         XFQH3YCADT7wCjJhqwG6cxOmKdutCmhDRQTxpSaqhujCxhiAqHojoEXzcYSryf/Aa+ym
+         WgChKCCtgJxmsswJzN5qFl0y+bHQj0H5ecmf0=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=3FeiA79iLSDi0k0ZMiFHmOL8NHbfXhIuWSoTn/fGVeY=;
+        b=AT9lgNeU6RFbqkkxWLyuj2+3uMacO68fsNtTiTeBnn3K4cgcO+8WZsLaZn5lES5Ck4
+         UsLTiTphsxKj5yyJKfwlVS+h9dG32Cy59lbQg/6vPfSba8xxEvdxe7s/dgFGzxf41UA1
+         v9rfpx52iC2mtuku9mMtXVQbCTlk860J1KBXwZGhw+05Z3s7xrMME/w8Emn7iJ6V8kfa
+         WijHb2xxSP1VhfJGvospgnBSajIDBvuF36XG/fu8+5svOXRPJqR+hw6KT18jceEPbTnN
+         z320KKExeFB0TYVA4EvxTqL/nra0Sk8Xe6pzha2BYcfQdlSOq3+7lx9d2rquzRovt5tS
+         pctA==
+X-Gm-Message-State: AOAM531ilUYahEg1T+8z6UEDE4QZx5P7TMngKL1QaliIUwPywtlgeMv1
+        0tFgKEL6/WsMeij/aHNuxCQjmayPq90fysYcCeyW
+X-Google-Smtp-Source: ABdhPJy0kax2flx8hj7WBbhdgj5nWwuM1G6DARrTIESg+pfqzKkTAS3xb9t2X4Tbcm8zJFirRtRmlKFMR1eDtkR0g5M=
+X-Received: by 2002:a05:6602:2d4d:: with SMTP id d13mr16157926iow.0.1612818857262;
+ Mon, 08 Feb 2021 13:14:17 -0800 (PST)
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+References: <20210206100115.58074-1-xypron.glpk@gmx.de>
+In-Reply-To: <20210206100115.58074-1-xypron.glpk@gmx.de>
+From:   Atish Patra <atishp@atishpatra.org>
+Date:   Mon, 8 Feb 2021 13:14:06 -0800
+Message-ID: <CAOnJCUJ+CvBHt1MXzGn2Hmc2J-NZYdxf4MGka7sh1SmozTbWCg@mail.gmail.com>
+Subject: Re: [PATCH] docs: update EFI stub description
+To:     Heinrich Schuchardt <xypron.glpk@gmx.de>
+Cc:     Ard Biesheuvel <ardb@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org List" <linux-kernel@vger.kernel.org>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        linux-riscv <linux-riscv@lists.infradead.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-From: Borislav Petkov <bp@suse.de>
+On Sat, Feb 6, 2021 at 2:02 AM Heinrich Schuchardt <xypron.glpk@gmx.de> wrote:
+>
+> * Mention RISC-V.
+> * Update code references.
+> * initrd= does not specify a path relative on the ESP but to the partition
+>   from which the EFI stub was loaded (as specified in the loaded image
+>   protocol).
+> * Mention that ACPI tables and device trees are alternatives.
+> * Provide the FDT GUID.
+>
+> Signed-off-by: Heinrich Schuchardt <xypron.glpk@gmx.de>
+> ---
+>  Documentation/admin-guide/efi-stub.rst | 47 +++++++++++++++-----------
+>  1 file changed, 27 insertions(+), 20 deletions(-)
+>
+> diff --git a/Documentation/admin-guide/efi-stub.rst b/Documentation/admin-guide/efi-stub.rst
+> index 833edb0d0bc4..9e1bb79e8655 100644
+> --- a/Documentation/admin-guide/efi-stub.rst
+> +++ b/Documentation/admin-guide/efi-stub.rst
+> @@ -8,15 +8,20 @@ it as an EFI executable. The code that modifies the bzImage header,
+>  along with the EFI-specific entry point that the firmware loader
+>  jumps to are collectively known as the "EFI boot stub", and live in
+>  arch/x86/boot/header.S and arch/x86/boot/compressed/eboot.c,
+> -respectively. For ARM the EFI stub is implemented in
+> -arch/arm/boot/compressed/efi-header.S and
+> -arch/arm/boot/compressed/efi-stub.c. EFI stub code that is shared
+> -between architectures is in drivers/firmware/efi/libstub.
+> +respectively. For ARM the EFI stub entry point is implemented in
+> +arch/arm/boot/compressed/efi-header.S.
+>
+> -For arm64, there is no compressed kernel support, so the Image itself
+> -masquerades as a PE/COFF image and the EFI stub is linked into the
+> -kernel. The arm64 EFI stub lives in arch/arm64/kernel/efi-entry.S
+> -and drivers/firmware/efi/libstub/arm64-stub.c.
+> +For ARM64 and RISC-V, there is no compressed kernel support, so the Image
+> +itself masquerades as a PE/COFF image and the EFI stub is linked into the
+> +kernel. The EFI stub entry point is in  arch/ARM64/kernel/efi-entry.S for
+> +ARM64 and in arch/riscv/kernel/efi-header.S for RISC-V.
+> +
+> +EFI stub code that is shared between architectures is in
+> +drivers/firmware/efi/libstub.
+> +
+> +The common secondary entry point efi_pe_entry() for ARM, ARM64, and RISC-V
+> +into the stub is in drivers/firmware/efi/libstub/efi-stub.c while x86 uses
+> +drivers/firmware/efi/libstub/x86-stub.c.
+>
+>  By using the EFI boot stub it's possible to boot a Linux kernel
+>  without the use of a conventional EFI boot loader, such as grub or
+> @@ -35,7 +40,7 @@ the extension the EFI firmware loader will refuse to execute it. It's
+>  not possible to execute bzImage.efi from the usual Linux file systems
+>  because EFI firmware doesn't have support for them. For ARM the
+>  arch/arm/boot/zImage should be copied to the system partition, and it
+> -may not need to be renamed. Similarly for arm64, arch/arm64/boot/Image
+> +may not need to be renamed. Similarly for ARM64, arch/arm64/boot/Image
+>  should be copied but not necessarily renamed.
+>
 
-[ Upstream commit 816ef8d7a2c4182e19bc06ab65751cb9e3951e94 ]
+Should we change the title of the paragraph to something like "How to
+install EFI image"
+ RISC-V image location can be added as well.
+>
+> @@ -55,10 +60,11 @@ multiple initrd files using the "initrd=" option. This is the only EFI
+>  stub-specific command line parameter, everything else is passed to the
+>  kernel when it boots.
+>
+> -The path to the initrd file must be an absolute path from the
+> -beginning of the ESP, relative path names do not work. Also, the path
+> -is an EFI-style path and directory elements must be separated with
+> -backslashes (\). For example, given the following directory layout::
+> +The path to the initrd file must be an absolute path from the beginning of
+> +the partition from which the kernel was loaded, relative path names do not
+> +work. Also, the path is an EFI-style path and directory elements must be
+> +separated with backslashes (\). For example, given the following directory
+> +layout::
+>
+>    fs0:>
+>         Kernels\
+> @@ -83,18 +89,19 @@ is passed to bzImage.efi.
+>  The "dtb=" option
+>  -----------------
+>
+> -For the ARM and arm64 architectures, a device tree must be provided to
+> -the kernel. Normally firmware shall supply the device tree via the
+> -EFI CONFIGURATION TABLE. However, the "dtb=" command line option can
+> -be used to override the firmware supplied device tree, or to supply
+> -one when firmware is unable to.
+> +If ACPI tables are not available, a device tree must be provided to the
+> +kernel. Normally the firmware shall supply the device tree as an EFI
+> +configuration table with GUID b1b621d5-f19c-41a5-830b-d9152c69aae0.
+> +However, the "dtb=" command line option can be used to override the
+> +firmware supplied device tree, or to supply one when firmware is unable
+> +to.
+>
+>  Please note: Firmware adds runtime configuration information to the
+>  device tree before booting the kernel. If dtb= is used to override
+>  the device tree, then any runtime data provided by firmware will be
+>  lost. The dtb= option should only be used either as a debug tool, or
+> -as a last resort when a device tree is not provided in the EFI
+> -CONFIGURATION TABLE.
+> +as a last resort when a device tree is not provided as an EFI
+> +configuration table.
+>
 
-With CONFIG_X86_5LEVEL, CONFIG_UBSAN and CONFIG_UBSAN_UNSIGNED_OVERFLOW
-enabled, clang fails the build with
+Some more clarification is required here as this option is only
+enabled with EFI_ARMSTUB_DTB_LOADER.
+That config option is not enabled for RISC-V to avoid legacy.
 
-  x86_64-linux-ld: arch/x86/platform/efi/efi_64.o: in function `efi_sync_low_kernel_mappings':
-  efi_64.c:(.text+0x22c): undefined reference to `__compiletime_assert_354'
+>  "dtb=" is processed in the same manner as the "initrd=" option that is
+>  described above.
+> --
+> 2.30.0
+>
+>
+> _______________________________________________
+> linux-riscv mailing list
+> linux-riscv@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/linux-riscv
 
-which happens due to -fsanitize=unsigned-integer-overflow being enabled:
 
-  -fsanitize=unsigned-integer-overflow: Unsigned integer overflow, where
-  the result of an unsigned integer computation cannot be represented
-  in its type. Unlike signed integer overflow, this is not undefined
-  behavior, but it is often unintentional. This sanitizer does not check
-  for lossy implicit conversions performed before such a computation
-  (see -fsanitize=implicit-conversion).
 
-and that fires when the (intentional) EFI_VA_START/END defines overflow
-an unsigned long, leading to the assertion expressions not getting
-optimized away (on GCC they do)...
-
-However, those checks are superfluous: the runtime services mapping
-code already makes sure the ranges don't overshoot EFI_VA_END as the
-EFI mapping range is hardcoded. On each runtime services call, it is
-switched to the EFI-specific PGD and even if mappings manage to escape
-that last PGD, this won't remain unnoticed for long.
-
-So rip them out.
-
-See https://github.com/ClangBuiltLinux/linux/issues/256 for more info.
-
-Reported-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
-Tested-by: Nick Desaulniers <ndesaulniers@google.com>
-Tested-by: Nathan Chancellor <nathan@kernel.org>
-Link: http://lkml.kernel.org/r/20210107223424.4135538-1-arnd@kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/x86/platform/efi/efi_64.c | 19 -------------------
- 1 file changed, 19 deletions(-)
-
-diff --git a/arch/x86/platform/efi/efi_64.c b/arch/x86/platform/efi/efi_64.c
-index e1e8d4e3a2139..8efd003540cae 100644
---- a/arch/x86/platform/efi/efi_64.c
-+++ b/arch/x86/platform/efi/efi_64.c
-@@ -115,31 +115,12 @@ void efi_sync_low_kernel_mappings(void)
- 	pud_t *pud_k, *pud_efi;
- 	pgd_t *efi_pgd = efi_mm.pgd;
- 
--	/*
--	 * We can share all PGD entries apart from the one entry that
--	 * covers the EFI runtime mapping space.
--	 *
--	 * Make sure the EFI runtime region mappings are guaranteed to
--	 * only span a single PGD entry and that the entry also maps
--	 * other important kernel regions.
--	 */
--	MAYBE_BUILD_BUG_ON(pgd_index(EFI_VA_END) != pgd_index(MODULES_END));
--	MAYBE_BUILD_BUG_ON((EFI_VA_START & PGDIR_MASK) !=
--			(EFI_VA_END & PGDIR_MASK));
--
- 	pgd_efi = efi_pgd + pgd_index(PAGE_OFFSET);
- 	pgd_k = pgd_offset_k(PAGE_OFFSET);
- 
- 	num_entries = pgd_index(EFI_VA_END) - pgd_index(PAGE_OFFSET);
- 	memcpy(pgd_efi, pgd_k, sizeof(pgd_t) * num_entries);
- 
--	/*
--	 * As with PGDs, we share all P4D entries apart from the one entry
--	 * that covers the EFI runtime mapping space.
--	 */
--	BUILD_BUG_ON(p4d_index(EFI_VA_END) != p4d_index(MODULES_END));
--	BUILD_BUG_ON((EFI_VA_START & P4D_MASK) != (EFI_VA_END & P4D_MASK));
--
- 	pgd_efi = efi_pgd + pgd_index(EFI_VA_END);
- 	pgd_k = pgd_offset_k(EFI_VA_END);
- 	p4d_efi = p4d_offset(pgd_efi, 0);
 -- 
-2.27.0
-
+Regards,
+Atish
