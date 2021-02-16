@@ -2,94 +2,56 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5FBA431B98D
-	for <lists+linux-efi@lfdr.de>; Mon, 15 Feb 2021 13:45:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C2F7C31CD16
+	for <lists+linux-efi@lfdr.de>; Tue, 16 Feb 2021 16:43:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229870AbhBOMpJ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 15 Feb 2021 07:45:09 -0500
-Received: from mx2.suse.de ([195.135.220.15]:40960 "EHLO mx2.suse.de"
+        id S229585AbhBPPmq (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 16 Feb 2021 10:42:46 -0500
+Received: from post.mbm-mab.com ([176.123.3.212]:38724 "EHLO post.mbm-mab.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230307AbhBOMpF (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Mon, 15 Feb 2021 07:45:05 -0500
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.221.27])
-        by mx2.suse.de (Postfix) with ESMTP id C3C9FAC32;
-        Mon, 15 Feb 2021 12:44:23 +0000 (UTC)
-Date:   Mon, 15 Feb 2021 13:44:26 +0100
-From:   Borislav Petkov <bp@suse.de>
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     x86-ml <x86@kernel.org>, linux-efi <linux-efi@vger.kernel.org>,
-        lkml <linux-kernel@vger.kernel.org>
-Subject: [GIT PULL] EFI updates for v5.12
-Message-ID: <20210215124426.GG7265@zn.tnic>
+        id S229572AbhBPPmp (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Tue, 16 Feb 2021 10:42:45 -0500
+X-Greylist: delayed 2266 seconds by postgrey-1.27 at vger.kernel.org; Tue, 16 Feb 2021 10:42:45 EST
+Received: from mbm-mab.com (unknown [105.112.120.183])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by post.mbm-mab.com (Postfix) with ESMTPSA id 0B2B51EB146
+        for <linux-efi@vger.kernel.org>; Tue, 16 Feb 2021 16:47:07 +0200 (EET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mbm-mab.com;
+        s=default; t=1613486828;
+        bh=L/NdPWFC4GwCQAEAmZBrR4bFkRE2KFFjxxbdZ8jLvek=;
+        h=From:To:Subject:Date;
+        b=DvLDywJ1bdGnpxqHFsYsTXG4dWLJV3rb0Zjc8T66XXAAY/IVsmAvxhW8rHxaCvBFB
+         xZZNJZ8mUKi0eyb/NX3ufIbkRiNmMWqHg/DfxFw4tPDy7AbxnIFTs14Tyf82cEx1Hz
+         uuAsgp3P6Z32U2yZilHuxjE0/rWDJGKry0SFhLso=
+From:   Albert Bourla <no_reply@mbm-mab.com>
+To:     linux-efi@vger.kernel.org
+Subject: Bidding invitation
+Date:   16 Feb 2021 15:47:07 +0100
+Message-ID: <20210216154707.D36A3E24869E0BFF@mbm-mab.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain;
+        charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hi Linus,
+Good Day Sir/Ms.,
 
-please pull the forwarded pile of EFI updates for v5.12.
+We are pleased to invite you/your company to quote the following=20
+item listed below:
+=C2=A0
+Product/Model No: TM9653 PRESSURE REGULATOR
+Product Name:MEKO
+Qty. 30 units
 
-Thx.
+Compulsory, kindly send your quotation to: quotation@procurement-
+pfizer.com for immediate approval.
 
----
-
-The following changes since commit 5c8fe583cce542aa0b84adc939ce85293de36e5e:
-
-  Linux 5.11-rc1 (2020-12-27 15:30:22 -0800)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git tags/efi-next-for-v5.12
-
-for you to fetch changes up to 1c761ee9da1ac6ba7e40d14457fac94c87eaff35:
-
-  efi/arm64: Update debug prints to reflect other entropy sources (2021-01-21 10:54:08 +0100)
-
-----------------------------------------------------------------
-EFI updates for v5.12
-
-A few cleanups left and right, some of which were part of a initrd
-measured boot series that needs some more work, and so only the cleanup
-patches have been included for this release.
-
-----------------------------------------------------------------
-Ard Biesheuvel (6):
-      efi: ia64: move IA64-only declarations to new asm/efi.h header
-      efi/libstub: whitespace cleanup
-      efi/libstub: fix prototype of efi_tcg2_protocol::get_event_log()
-      efi/libstub: move TPM related prototypes into efistub.h
-      efi: x86: move mixed mode stack PA variable out of 'efi_scratch'
-      efi: x86: clean up previous struct mm switching
-
-Mark Brown (1):
-      efi/arm64: Update debug prints to reflect other entropy sources
-
- arch/ia64/include/asm/efi.h               | 13 +++++++++++++
- arch/ia64/kernel/efi.c                    |  1 +
- arch/ia64/kernel/machine_kexec.c          |  1 +
- arch/ia64/kernel/mca.c                    |  1 +
- arch/ia64/kernel/smpboot.c                |  1 +
- arch/ia64/kernel/time.c                   |  1 +
- arch/ia64/kernel/uncached.c               |  4 +---
- arch/ia64/mm/contig.c                     |  1 +
- arch/ia64/mm/discontig.c                  |  1 +
- arch/ia64/mm/init.c                       |  1 +
- arch/x86/include/asm/efi.h                | 20 ++++++--------------
- arch/x86/platform/efi/efi_64.c            | 29 ++++++++++++++++-------------
- arch/x86/platform/efi/efi_thunk_64.S      |  6 +++++-
- drivers/firmware/efi/libstub/arm64-stub.c |  4 ++--
- drivers/firmware/efi/libstub/efistub.h    | 11 ++++++++++-
- include/linux/efi.h                       | 19 ++-----------------
- 16 files changed, 63 insertions(+), 51 deletions(-)
- create mode 100644 arch/ia64/include/asm/efi.h
-
--- 
-Regards/Gruss,
-    Boris.
-
-SUSE Software Solutions Germany GmbH, GF: Felix Imendörffer, HRB 36809, AG Nürnberg
+Kind Regards,
+Albert Bourla
+PFIZER B.V Supply Chain Manager
+Tel: +31(0)208080 880
+ADDRESS: Rivium Westlaan 142, 2909 LD
+Capelle aan den IJssel, Netherlands
