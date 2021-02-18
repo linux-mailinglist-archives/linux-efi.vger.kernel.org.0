@@ -2,56 +2,60 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C2F7C31CD16
-	for <lists+linux-efi@lfdr.de>; Tue, 16 Feb 2021 16:43:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6EAA931F025
+	for <lists+linux-efi@lfdr.de>; Thu, 18 Feb 2021 20:44:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229585AbhBPPmq (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 16 Feb 2021 10:42:46 -0500
-Received: from post.mbm-mab.com ([176.123.3.212]:38724 "EHLO post.mbm-mab.com"
+        id S232697AbhBRTlx (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 18 Feb 2021 14:41:53 -0500
+Received: from mail.jvpinto.com ([65.49.11.60]:54042 "EHLO mail.JVPinto.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229572AbhBPPmp (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Tue, 16 Feb 2021 10:42:45 -0500
-X-Greylist: delayed 2266 seconds by postgrey-1.27 at vger.kernel.org; Tue, 16 Feb 2021 10:42:45 EST
-Received: from mbm-mab.com (unknown [105.112.120.183])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by post.mbm-mab.com (Postfix) with ESMTPSA id 0B2B51EB146
-        for <linux-efi@vger.kernel.org>; Tue, 16 Feb 2021 16:47:07 +0200 (EET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mbm-mab.com;
-        s=default; t=1613486828;
-        bh=L/NdPWFC4GwCQAEAmZBrR4bFkRE2KFFjxxbdZ8jLvek=;
-        h=From:To:Subject:Date;
-        b=DvLDywJ1bdGnpxqHFsYsTXG4dWLJV3rb0Zjc8T66XXAAY/IVsmAvxhW8rHxaCvBFB
-         xZZNJZ8mUKi0eyb/NX3ufIbkRiNmMWqHg/DfxFw4tPDy7AbxnIFTs14Tyf82cEx1Hz
-         uuAsgp3P6Z32U2yZilHuxjE0/rWDJGKry0SFhLso=
-From:   Albert Bourla <no_reply@mbm-mab.com>
-To:     linux-efi@vger.kernel.org
-Subject: Bidding invitation
-Date:   16 Feb 2021 15:47:07 +0100
-Message-ID: <20210216154707.D36A3E24869E0BFF@mbm-mab.com>
+        id S233972AbhBRTNA (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Thu, 18 Feb 2021 14:13:00 -0500
+Received: from RW-EXC1.JVPinto.com (2002:ac20:10d::ac20:10d) by
+ RW-EXC1.JVPinto.com (2002:ac20:10d::ac20:10d) with Microsoft SMTP Server
+ (TLS) id 15.0.1497.2; Thu, 18 Feb 2021 11:12:15 -0800
+Received: from User (20.48.109.21) by RW-EXC1.JVPinto.com (172.32.1.13) with
+ Microsoft SMTP Server id 15.0.1497.2 via Frontend Transport; Thu, 18 Feb 2021
+ 11:12:03 -0800
+Reply-To: <ms.reem@yandex.com>
+From:   "Ms. Reem" <johnpinto@jvpinto.com>
+Subject: Re:ok
+Date:   Thu, 18 Feb 2021 19:12:14 +0000
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="Windows-1251"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+Message-ID: <ab5238a09b984825a50d7b0428610a74@RW-EXC1.JVPinto.com>
+To:     Undisclosed recipients:;
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Good Day Sir/Ms.,
+Hello,
 
-We are pleased to invite you/your company to quote the following=20
-item listed below:
-=C2=A0
-Product/Model No: TM9653 PRESSURE REGULATOR
-Product Name:MEKO
-Qty. 30 units
+My name is Ms. Reem Ebrahim Al-Hashimi, I am the "Minister of state
+and Petroleum" also "Minister of State for International Cooperation"
+in UAE. I write to you on behalf of my other "three (3) colleagues"
+who has approved me to solicit for your "partnership in claiming of
+{us$47=Million}" from a Financial Home in Cambodia on their behalf and
+for our "Mutual Benefits".
 
-Compulsory, kindly send your quotation to: quotation@procurement-
-pfizer.com for immediate approval.
+The Fund {us$47=Million} is our share from the (over-invoiced) Oil/Gas
+deal with Cambodian/Vietnam Government within 2013/2014, however, we
+don't want our government to know about the fund. If this proposal
+interests you, let me know, by sending me an email and I will send to
+you detailed information on how this business would be successfully
+transacted. Be informed that nobody knows about the secret of this
+fund except us, and we know how to carry out the entire transaction.
+So I am compelled to ask, that you will stand on our behalf and
+receive this fund into any account that is solely controlled by you.
 
-Kind Regards,
-Albert Bourla
-PFIZER B.V Supply Chain Manager
-Tel: +31(0)208080 880
-ADDRESS: Rivium Westlaan 142, 2909 LD
-Capelle aan den IJssel, Netherlands
+We will compensate you with 15% of the total amount involved as
+gratification for being our partner in this transaction. Reply to:
+ms.reem@yandex.com
+
+Regards,
+Ms. Reem.
