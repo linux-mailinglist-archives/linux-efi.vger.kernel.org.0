@@ -2,33 +2,33 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CF97931F40D
-	for <lists+linux-efi@lfdr.de>; Fri, 19 Feb 2021 03:37:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3259E31F484
+	for <lists+linux-efi@lfdr.de>; Fri, 19 Feb 2021 05:44:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229474AbhBSChJ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 18 Feb 2021 21:37:09 -0500
-Received: from mga11.intel.com ([192.55.52.93]:14915 "EHLO mga11.intel.com"
+        id S229587AbhBSEoY (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 18 Feb 2021 23:44:24 -0500
+Received: from mga02.intel.com ([134.134.136.20]:63624 "EHLO mga02.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229468AbhBSChI (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Thu, 18 Feb 2021 21:37:08 -0500
-IronPort-SDR: lzxZOVpEWI03fQuB9GiSf188Wf2Y3eU/5DRnD3B2IFLGZ4IZZUurb1D6WR2REI9zWVXNkSA1XI
- wWWvy1TL6K8A==
-X-IronPort-AV: E=McAfee;i="6000,8403,9899"; a="180204368"
-X-IronPort-AV: E=Sophos;i="5.81,187,1610438400"; 
-   d="gz'50?scan'50,208,50";a="180204368"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Feb 2021 18:36:25 -0800
-IronPort-SDR: Wh97JIFBMnaZhnEndqtIbYsNJQ8Xfk9k1hMgcF/WclqabDN6ZYUiRyisBh2uMq7v3DoSZdGhU+
- uCIiQ6I6JUbw==
+        id S229544AbhBSEoV (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Thu, 18 Feb 2021 23:44:21 -0500
+IronPort-SDR: cSqgtTVgQhGi/OJnTJ9G6Lu2gOPpeT+kOHlhVVdKlcUuDeu0h3MVzEZFMK4hfLLzLuV2OnBKMx
+ upDx1gUtGthA==
+X-IronPort-AV: E=McAfee;i="6000,8403,9899"; a="170871224"
+X-IronPort-AV: E=Sophos;i="5.81,189,1610438400"; 
+   d="gz'50?scan'50,208,50";a="170871224"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Feb 2021 20:40:32 -0800
+IronPort-SDR: GUUPiVOwHjLmVXLtkxwUsHaNM0q/d8jyJEUqxWwDYeBYZekyCTzqnEddkJaYNQMHlIHHJsUVSf
+ 8iYaO3srOwuA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.81,187,1610438400"; 
-   d="gz'50?scan'50,208,50";a="362782360"
+X-IronPort-AV: E=Sophos;i="5.81,189,1610438400"; 
+   d="gz'50?scan'50,208,50";a="365086659"
 Received: from lkp-server02.sh.intel.com (HELO cd560a204411) ([10.239.97.151])
-  by orsmga003.jf.intel.com with ESMTP; 18 Feb 2021 18:36:21 -0800
+  by orsmga006.jf.intel.com with ESMTP; 18 Feb 2021 20:40:27 -0800
 Received: from kbuild by cd560a204411 with local (Exim 4.92)
         (envelope-from <lkp@intel.com>)
-        id 1lCveW-000A3R-DE; Fri, 19 Feb 2021 02:36:20 +0000
-Date:   Fri, 19 Feb 2021 10:35:21 +0800
+        id 1lCxac-000A7W-HY; Fri, 19 Feb 2021 04:40:26 +0000
+Date:   Fri, 19 Feb 2021 12:40:21 +0800
 From:   kernel test robot <lkp@intel.com>
 To:     Michael Kelley <mikelley@microsoft.com>, will@kernel.org,
         catalin.marinas@arm.com, mark.rutland@arm.com,
@@ -38,10 +38,10 @@ To:     Michael Kelley <mikelley@microsoft.com>, will@kernel.org,
 Cc:     kbuild-all@lists.01.org
 Subject: Re: [PATCH v8 2/6] arm64: hyperv: Add Hyper-V clocksource/clockevent
  support
-Message-ID: <202102191012.pKpGg0ub-lkp@intel.com>
+Message-ID: <202102191235.fqlKoyfg-lkp@intel.com>
 References: <1613690194-102905-3-git-send-email-mikelley@microsoft.com>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="IJpNTDwzlM2Ie8A6"
+Content-Type: multipart/mixed; boundary="2fHTh5uZTiUOsy+g"
 Content-Disposition: inline
 In-Reply-To: <1613690194-102905-3-git-send-email-mikelley@microsoft.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
@@ -50,16 +50,16 @@ List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
 
---IJpNTDwzlM2Ie8A6
+--2fHTh5uZTiUOsy+g
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
 Hi Michael,
 
-Thank you for the patch! Perhaps something to improve:
+Thank you for the patch! Yet something to improve:
 
-[auto build test WARNING on arm64/for-next/core]
-[also build test WARNING on tip/timers/core efi/next linus/master v5.11 next-20210218]
+[auto build test ERROR on arm64/for-next/core]
+[also build test ERROR on tip/timers/core efi/next linus/master v5.11 next-20210218]
 [If your patch is applied to the wrong git tree, kindly drop us a note.
 And when submitting patch, we suggest to use '--base' as documented in
 https://git-scm.com/docs/git-format-patch]
@@ -79,13 +79,13 @@ reproduce (this is a W=1 build):
 If you fix the issue, kindly add following tag as appropriate
 Reported-by: kernel test robot <lkp@intel.com>
 
-All warnings (new ones prefixed by >>):
+All errors (new ones prefixed by >>):
 
->> drivers/clocksource/hyperv_timer.c:478:44: warning: 'struct acpi_table_header' declared inside parameter list will not be visible outside of this definition or declaration
+   drivers/clocksource/hyperv_timer.c:478:44: warning: 'struct acpi_table_header' declared inside parameter list will not be visible outside of this definition or declaration
      478 | static int __init hyperv_timer_init(struct acpi_table_header *table)
          |                                            ^~~~~~~~~~~~~~~~~
    drivers/clocksource/hyperv_timer.c: In function 'hyperv_timer_init':
-   drivers/clocksource/hyperv_timer.c:484:6: error: too many arguments to function 'hv_stimer_alloc'
+>> drivers/clocksource/hyperv_timer.c:484:6: error: too many arguments to function 'hv_stimer_alloc'
      484 |  if (hv_stimer_alloc(true))
          |      ^~~~~~~~~~~~~~~
    drivers/clocksource/hyperv_timer.c:173:5: note: declared here
@@ -94,7 +94,7 @@ All warnings (new ones prefixed by >>):
    In file included from include/linux/clockchips.h:14,
                     from drivers/clocksource/hyperv_timer.c:16:
    drivers/clocksource/hyperv_timer.c: At top level:
-   include/linux/clocksource.h:283:50: error: expected ')' before numeric constant
+>> include/linux/clocksource.h:283:50: error: expected ')' before numeric constant
      283 |  ACPI_DECLARE_PROBE_ENTRY(timer, name, table_id, 0, NULL, 0, fn)
          |                                                  ^
    drivers/clocksource/hyperv_timer.c:489:1: note: in expansion of macro 'TIMER_ACPI_DECLARE'
@@ -105,22 +105,28 @@ All warnings (new ones prefixed by >>):
          |                   ^~~~~~~~~~~~~~~~~
 
 
-vim +478 drivers/clocksource/hyperv_timer.c
+vim +/hv_stimer_alloc +484 drivers/clocksource/hyperv_timer.c
 
    476	
    477	/* Initialize everything on ARM64 */
- > 478	static int __init hyperv_timer_init(struct acpi_table_header *table)
+   478	static int __init hyperv_timer_init(struct acpi_table_header *table)
+   479	{
+   480		if (!hv_is_hyperv_initialized())
+   481			return -EINVAL;
+   482	
+   483		hv_init_clocksource();
+ > 484		if (hv_stimer_alloc(true))
 
 ---
 0-DAY CI Kernel Test Service, Intel Corporation
 https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
 
---IJpNTDwzlM2Ie8A6
+--2fHTh5uZTiUOsy+g
 Content-Type: application/gzip
 Content-Disposition: attachment; filename=".config.gz"
 Content-Transfer-Encoding: base64
 
-H4sICG4ZL2AAAy5jb25maWcAjFxLdxw3rt7nV/RxNskiGT0sjXPu0YLNYlVzul4mq/qhDY8i
+H4sICCcyL2AAAy5jb25maWcAjFxLdxw3rt7nV/RxNskiGT0sjXPu0YLNYlVzul4mq/qhDY8i
 tz06kaVMS5rE//4CZD1IFqo9WTgqAnyDwAcQ7B9/+HHB3l6fv969PtzfPT5+W3w5PB2Od6+H
 T4vPD4+H/1sk1aKsmoVIZPMrMOcPT29//+Ph8sP14urX8/Nfz3453r9frA/Hp8Pjgj8/fX74
 8gbVH56ffvjxB16VqcwM52YjlJZVaRqxa27efbm//+W3xU/J4feHu6fFb79eQjPnVz+7v955
@@ -666,4 +672,4 @@ WePEtuhOA3Nd01eUevO2R3ELdYrw5T+b3fqBRFtdNBk18JA/9WWUDTZf9hVM3Mjt6hzMCivZ
 okfq1LIJPlvIuLPf1aU2YU8pT0TryUSNZkUsHTsh6qa4r417DlLqPSj1YX7d7fzCDPYGXBwf
 v2qliUizVrYy4EAeWULnLFclUKnr4LQ5nnPqhez/AC7rtbFe0AEA
 
---IJpNTDwzlM2Ie8A6--
+--2fHTh5uZTiUOsy+g--
