@@ -2,76 +2,60 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 041FD321403
-	for <lists+linux-efi@lfdr.de>; Mon, 22 Feb 2021 11:22:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E1DA73229E3
+	for <lists+linux-efi@lfdr.de>; Tue, 23 Feb 2021 13:01:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230077AbhBVKVi (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 22 Feb 2021 05:21:38 -0500
-Received: from mail-wm1-f47.google.com ([209.85.128.47]:52328 "EHLO
-        mail-wm1-f47.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229549AbhBVKVi (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 22 Feb 2021 05:21:38 -0500
-Received: by mail-wm1-f47.google.com with SMTP id p3so2835909wmc.2;
-        Mon, 22 Feb 2021 02:21:21 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=jqrZ9o2ASN5akD88hAC25nkBz+M3fdiYTEO2MDdzKQE=;
-        b=EltAjHHrDhCWuvvepWB334bmL2nekHymABVwrA58UiNIXcEUtlZC1jSXL/TBoc9hwt
-         CNyR0epgofOEwA6DycbjKEYODfS963tdNQ6fGZT9lDBjT9KPqlw+rfImcaeBIl9lFlBj
-         RzcWypSVwfFNsOGdtX8gmYqWMjtrUA1OkzE67oAbmDLdaVYnn+g8NBZ2dlL4qLEjeWj/
-         sdrmyqjNkJX1UMiAvmF4sEbsJUeCSqCP+y1pcnCu/62ySect9K6VpKNYvNVdKYErGLI5
-         Z8YK7WX/x5lRG1JbUAJ4YvNDli7ge+L+ZUlrvogOa7v2B12vBOIkbgjHNMH6otZsLw9S
-         bS/w==
-X-Gm-Message-State: AOAM530qaYHDQYcoPR3OJpXXVlSEYL92zMPdkrqy/+MzTAkHk7hG+RL0
-        LUN4XPhLeseZBDSK5sgNkmQ=
-X-Google-Smtp-Source: ABdhPJz6cUY0N/jr2N6r9cNHbFyBBPKLgGXIicBYbLYdkyrpqWdneK8zmyzgqA+XPnNl8ArCLJFTWw==
-X-Received: by 2002:a05:600c:19c6:: with SMTP id u6mr9172317wmq.65.1613989256338;
-        Mon, 22 Feb 2021 02:20:56 -0800 (PST)
-Received: from liuwe-devbox-debian-v2 ([51.145.34.42])
-        by smtp.gmail.com with ESMTPSA id t16sm10088771wrq.53.2021.02.22.02.20.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 22 Feb 2021 02:20:55 -0800 (PST)
-Date:   Mon, 22 Feb 2021 10:20:54 +0000
-From:   Wei Liu <wei.liu@kernel.org>
-To:     Michael Kelley <mikelley@microsoft.com>
-Cc:     will@kernel.org, catalin.marinas@arm.com, mark.rutland@arm.com,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-hyperv@vger.kernel.org, linux-efi@vger.kernel.org,
-        arnd@arndb.de, wei.liu@kernel.org, ardb@kernel.org,
-        daniel.lezcano@linaro.org, kys@microsoft.com
-Subject: Re: [PATCH v8 1/6] arm64: hyperv: Add Hyper-V hypercall and register
- access utilities
-Message-ID: <20210222102054.7ktopdg2jcao7itz@liuwe-devbox-debian-v2>
-References: <1613690194-102905-1-git-send-email-mikelley@microsoft.com>
- <1613690194-102905-2-git-send-email-mikelley@microsoft.com>
+        id S232671AbhBWL4g (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 23 Feb 2021 06:56:36 -0500
+Received: from mail.jvpinto.com ([65.49.11.60]:54491 "EHLO mail.JVPinto.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232501AbhBWLyb (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Tue, 23 Feb 2021 06:54:31 -0500
+Received: from RW-EXC1.JVPinto.com (2002:ac20:10d::ac20:10d) by
+ RW-EXC1.JVPinto.com (2002:ac20:10d::ac20:10d) with Microsoft SMTP Server
+ (TLS) id 15.0.1497.2; Tue, 23 Feb 2021 03:52:35 -0800
+Received: from User (52.231.198.195) by RW-EXC1.JVPinto.com (172.32.1.13) with
+ Microsoft SMTP Server id 15.0.1497.2 via Frontend Transport; Tue, 23 Feb 2021
+ 03:52:20 -0800
+Reply-To: <ms.reem@yandex.com>
+From:   "Ms. Reem" <johnpinto@jvpinto.com>
+Subject: Hello okay
+Date:   Tue, 23 Feb 2021 11:52:34 +0000
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1613690194-102905-2-git-send-email-mikelley@microsoft.com>
+Content-Type: text/plain; charset="Windows-1251"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+Message-ID: <933f089f49b04946b97b7d0f2a305064@RW-EXC1.JVPinto.com>
+To:     Undisclosed recipients:;
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, Feb 18, 2021 at 03:16:29PM -0800, Michael Kelley wrote:
-> hyperv-tlfs.h defines Hyper-V interfaces from the Hyper-V Top Level
-> Functional Spec (TLFS), and #includes the architecture-independent
-> part of hyperv-tlfs.h in include/asm-generic.  The published TLFS
-> is distinctly oriented to x86/x64, so the ARM64-specific
-> hyperv-tlfs.h includes information for ARM64 that is not yet formally
-> published. The TLFS is available here:
-> 
->   docs.microsoft.com/en-us/virtualization/hyper-v-on-windows/reference/tlfs
-> 
-> mshyperv.h defines Linux-specific structures and routines for
-> interacting with Hyper-V on ARM64, and #includes the architecture-
-> independent part of mshyperv.h in include/asm-generic.
-> 
-> Use these definitions to provide utility functions to make
-> Hyper-V hypercalls and to get and set Hyper-V provided
-> registers associated with a virtual processor.
-> 
-> Signed-off-by: Michael Kelley <mikelley@microsoft.com>
+Hello,
 
-Reviewed-by: Wei Liu <wei.liu@kernel.org>
+My name is Ms. Reem Ebrahim Al-Hashimi, I am the "Minister of state
+and Petroleum" also "Minister of State for International Cooperation"
+in UAE. I write to you on behalf of my other "three (3) colleagues"
+who has approved me to solicit for your "partnership in claiming of
+{us$47=Million}" from a Financial Home in Cambodia on their behalf and
+for our "Mutual Benefits".
+
+The Fund {us$47=Million} is our share from the (over-invoiced) Oil/Gas
+deal with Cambodian/Vietnam Government within 2013/2014, however, we
+don't want our government to know about the fund. If this proposal
+interests you, let me know, by sending me an email and I will send to
+you detailed information on how this business would be successfully
+transacted. Be informed that nobody knows about the secret of this
+fund except us, and we know how to carry out the entire transaction.
+So I am compelled to ask, that you will stand on our behalf and
+receive this fund into any account that is solely controlled by you.
+
+We will compensate you with 15% of the total amount involved as
+gratification for being our partner in this transaction. Reply to:
+ms.reem@yandex.com
+
+Regards,
+Ms. Reem.
