@@ -2,204 +2,130 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 419403235D0
-	for <lists+linux-efi@lfdr.de>; Wed, 24 Feb 2021 03:38:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 876AA3243F1
+	for <lists+linux-efi@lfdr.de>; Wed, 24 Feb 2021 19:46:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232464AbhBXCii (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 23 Feb 2021 21:38:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44556 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232343AbhBXCih (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 23 Feb 2021 21:38:37 -0500
-Received: from mail-qk1-x72f.google.com (mail-qk1-x72f.google.com [IPv6:2607:f8b0:4864:20::72f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4E4BC06174A;
-        Tue, 23 Feb 2021 18:37:57 -0800 (PST)
-Received: by mail-qk1-x72f.google.com with SMTP id 204so837084qke.11;
-        Tue, 23 Feb 2021 18:37:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=Gew/d97c74HBNGUJfx+Rk0cvl8/ZTJmIMUjr9vTVx7M=;
-        b=Ba9GMlCINUM+zY2JrGDsVLEbfP5OL5LB5Lw8Zm/phXQTYxBbGx1KE8j1zohBruOQKI
-         O0/tmltbBWlopzuFvEvxtJioRfKWXhrusxsyjarp2eL2szg6ZMZJ7o9J+lgTvTOFa2WI
-         Ulwcafe8tfBPsjfdWBRQM0tyAatPbS2YClRL1zMjwXGwMaOo6gY7aPG3ACfHQhcWFuSw
-         Q+5YkT04eJI5IZJhj/RX/meMx4pTWC5xkLcA33T9HuGWo9gjzPlfLFqe1IoNIpxg9A+B
-         ifTmRqN/+mNOc/gqTLAf40Tr4UifQF4DwB2IT1VGfqA/Z0WP83q8OzfvfASkL1hpBU8W
-         /I4g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=Gew/d97c74HBNGUJfx+Rk0cvl8/ZTJmIMUjr9vTVx7M=;
-        b=awpdtZWA/rwDRiemHnGnbmfA21ymMGtnxc1yneEycSnbyPO2tuD2LHTLS5el+Hstmq
-         C4as51ybmOhCUx12O618bWuo6L6/M2ZAQ3NZJt/Ts1q6q3g4sugLdqJzhrb2fKc1Kq1x
-         s8wSXqBcqogyReJEs2x8Pw9hjCfP3moHZ/+kMrG21OtVksnMG8DiIZl19y5H0jG4KKKB
-         J6VdZOxPPeXZ7+xS/Y3Ir2AwpPtYnRUwWUv9ABA+QaTv02DmLnKpn6WBY8q9MNQa55Fo
-         9e6JyVSFAgM2HDyB0ZYFxaUmPwwcoSS4v7il9vsMGDTGftzT+lyZsR7V0j1qHJmvL2+u
-         8JIA==
-X-Gm-Message-State: AOAM5324nqDf5+Z5O6Rihj6B1zLGd/DeiJIM/t3SdFl9hjkpoKxq/Cbk
-        aImdOFOvxqNVU6GVCuF6bbo=
-X-Google-Smtp-Source: ABdhPJyv6fSMmxXyLVhqw8VjDlG1wwoFJhAdl2rxOscK1Ck0FT3LMmAZ/S0HMcFZ+aoVAWLm+IdRLg==
-X-Received: by 2002:a37:389:: with SMTP id 131mr29684614qkd.177.1614134276886;
-        Tue, 23 Feb 2021 18:37:56 -0800 (PST)
-Received: from auth2-smtp.messagingengine.com (auth2-smtp.messagingengine.com. [66.111.4.228])
-        by smtp.gmail.com with ESMTPSA id v187sm578477qkd.50.2021.02.23.18.37.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 Feb 2021 18:37:56 -0800 (PST)
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-        by mailauth.nyi.internal (Postfix) with ESMTP id 7279727C0054;
-        Tue, 23 Feb 2021 21:37:54 -0500 (EST)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute5.internal (MEProxy); Tue, 23 Feb 2021 21:37:55 -0500
-X-ME-Sender: <xms:Abw1YGSm55fnSS2IfXVEjvsQALZDXT2FmLIttNcYUAw0Z0MwU_Mw9A>
-    <xme:Abw1YLzMRTFXxC7z7CfA7r8GcSwRcw_f19HGYHT6dr3FbAPJhUzqjoOOOjXrTWfrn
-    3enMbm6IplhWDNt_w>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduledrkeeigdeghecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpeffhffvuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhunhcu
-    hfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrghtth
-    gvrhhnpedvleeigedugfegveejhfejveeuveeiteejieekvdfgjeefudehfefhgfegvdeg
-    jeenucfkphepudefuddruddtjedrudegjedruddvieenucevlhhushhtvghrufhiiigvpe
-    dtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhp
-    vghrshhonhgrlhhithihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrd
-    hfvghngheppehgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghmvg
-X-ME-Proxy: <xmx:Arw1YD1sWW2t4jgDSfqyNdFYBIOr7SaDAgN6qla8ivhjUpPMTEcXxA>
-    <xmx:Arw1YCBQcdnpuDWsZaon4mpyVs4atIGfgN2rLIEMQMsM_fI11vcuRw>
-    <xmx:Arw1YPih_zyVxAy6eYnGJKRRqwEz5_d54XlulvrXBC5fEmhz3UnQHg>
-    <xmx:Arw1YCoEIJbHHyoZglKSFZlK1BF5Ua1lvOjIB4gjzOLZ-ti4rLk2dIOe1tQ>
-Received: from localhost (unknown [131.107.147.126])
-        by mail.messagingengine.com (Postfix) with ESMTPA id C334A108005C;
-        Tue, 23 Feb 2021 21:37:53 -0500 (EST)
-Date:   Wed, 24 Feb 2021 10:37:16 +0800
-From:   Boqun Feng <boqun.feng@gmail.com>
-To:     Michael Kelley <mikelley@microsoft.com>
-Cc:     will@kernel.org, catalin.marinas@arm.com, mark.rutland@arm.com,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-hyperv@vger.kernel.org, linux-efi@vger.kernel.org,
-        arnd@arndb.de, wei.liu@kernel.org, ardb@kernel.org,
-        daniel.lezcano@linaro.org, kys@microsoft.com
-Subject: Re: [PATCH v8 1/6] arm64: hyperv: Add Hyper-V hypercall and register
- access utilities
-Message-ID: <YDW73Oh//1iAGTka@boqun-archlinux>
-References: <1613690194-102905-1-git-send-email-mikelley@microsoft.com>
- <1613690194-102905-2-git-send-email-mikelley@microsoft.com>
+        id S234187AbhBXSpT (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 24 Feb 2021 13:45:19 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:31468 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S232417AbhBXSpS (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 24 Feb 2021 13:45:18 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1614192232;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=7Pi1Huj1io0WE2uM4yhK/jodNm0pVYNEApXxjjAhh1M=;
+        b=AqTxEPEtpN+32azjkwdSrb2ESGSVe/L0qp7oOSXf0jIW8VnDIjwyHtVrAiR5XQIUtc/gs+
+        fM3RBx5bLoBcJZMllPJmjoKDsNl7CroU4mOp3djA53JG2BssNYDP7Qo898aOcgtEJi40gp
+        gSkkiSfI8A1bGkdxJasL8C4v7X1VxwE=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-397-QyaVNpYHNeG8QgMWw6_86Q-1; Wed, 24 Feb 2021 13:43:47 -0500
+X-MC-Unique: QyaVNpYHNeG8QgMWw6_86Q-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id B0D7180196E;
+        Wed, 24 Feb 2021 18:43:46 +0000 (UTC)
+Received: from kasong-rh-laptop.intra.hackret.com (ovpn-12-86.pek2.redhat.com [10.72.12.86])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id BF40C5D6AD;
+        Wed, 24 Feb 2021 18:43:44 +0000 (UTC)
+From:   Kairui Song <kasong@redhat.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     linux-efi@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Kairui Song <kasong@redhat.com>
+Subject: [PATCH] efi: memmap insertion should adjust the vaddr as well
+Date:   Thu, 25 Feb 2021 02:43:08 +0800
+Message-Id: <20210224184308.1416903-1-kasong@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1613690194-102905-2-git-send-email-mikelley@microsoft.com>
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, Feb 18, 2021 at 03:16:29PM -0800, Michael Kelley wrote:
-[...]
-> +
-> +/*
-> + * Get the value of a single VP register.  One version
-> + * returns just 64 bits and another returns the full 128 bits.
-> + * The two versions are separate to avoid complicating the
-> + * calling sequence for the more frequently used 64 bit version.
-> + */
-> +
-> +void __hv_get_vpreg_128(u32 msr,
-> +			struct hv_get_vp_registers_input  *input,
-> +			struct hv_get_vp_registers_output *res)
-> +{
-> +	u64	status;
-> +
-> +	input->header.partitionid = HV_PARTITION_ID_SELF;
-> +	input->header.vpindex = HV_VP_INDEX_SELF;
-> +	input->header.inputvtl = 0;
-> +	input->element[0].name0 = msr;
-> +	input->element[0].name1 = 0;
-> +
-> +
-> +	status = hv_do_hypercall(
-> +		HVCALL_GET_VP_REGISTERS | HV_HYPERCALL_REP_COMP_1,
-> +		input, res);
-> +
-> +	/*
-> +	 * Something is fundamentally broken in the hypervisor if
-> +	 * getting a VP register fails. There's really no way to
-> +	 * continue as a guest VM, so panic.
-> +	 */
-> +	BUG_ON((status & HV_HYPERCALL_RESULT_MASK) != HV_STATUS_SUCCESS);
-> +}
-> +
-> +u64 hv_get_vpreg(u32 msr)
-> +{
-> +	struct hv_get_vp_registers_input	*input;
-> +	struct hv_get_vp_registers_output	*output;
-> +	u64					result;
-> +
-> +	/*
-> +	 * Allocate a power of 2 size so alignment to that size is
-> +	 * guaranteed, since the hypercall input and output areas
-> +	 * must not cross a page boundary.
-> +	 */
-> +	input = kzalloc(roundup_pow_of_two(sizeof(input->header) +
-> +				sizeof(input->element[0])), GFP_ATOMIC);
-> +	output = kmalloc(roundup_pow_of_two(sizeof(*output)), GFP_ATOMIC);
-> +
+Currently when efi_memmap_insert is called, only the
+physical memory addresses are re-calculated. The virt
+addresses of the split entries are untouched.
 
-Do we need to BUG_ON(!input || !output)? Or we expect the page fault
-(for input being NULL) or the failure of hypercall (for output being
-NULL) to tell us the allocation failed?
+If any later operation depends on the virt_addaress info, things
+will go wrong. One case it may fail is kexec on x86, after kexec,
+efi is already in virtual mode, kernel simply do fixed mapping
+reuse the recorded virt address. If the virt address is incorrect,
+the mapping will be invalid.
 
-Hmm.. think a bit more on this, maybe we'd better retry the allocation
-if it failed. Because say we are under memory pressusre, and only have
-memory enough for doing one hvcall, and one thread allocates that memory
-but gets preempted by another thread trying to do another hvcall:
+Update the virt_addaress as well when inserting a memmap entry to
+fix this potential issue.
 
-	<thread 1>
-	hv_get_vpreg():
-	  input = kzalloc(...);
-	  output = kmalloc(...);
-	<preempted and switch to thread 2>
-	hv_get_vpreg():
-	  intput = kzalloc(...); // allocation fails, but actually if
-	                         // we wait for thread 1 to finish its
-				 // hvcall, we can get enough memory.
+Signed-off-by: Kairui Song <kasong@redhat.com>
+---
+ drivers/firmware/efi/memmap.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
-, in this case, if thread 2 retried, it might get the enough memory,
-therefore there is no need to BUG_ON() on allocation failure. That said,
-I don't think this is likely to happen, and there may be better
-solutions for this, so maybe we can keep it as it is (assuming that
-memory allocation for hvcall never fails) and improve later.
+diff --git a/drivers/firmware/efi/memmap.c b/drivers/firmware/efi/memmap.c
+index 2ff1883dc788..de5c545b2074 100644
+--- a/drivers/firmware/efi/memmap.c
++++ b/drivers/firmware/efi/memmap.c
+@@ -292,7 +292,7 @@ void __init efi_memmap_insert(struct efi_memory_map *old_memmap, void *buf,
+ {
+ 	u64 m_start, m_end, m_attr;
+ 	efi_memory_desc_t *md;
+-	u64 start, end;
++	u64 start, end, virt_offset;
+ 	void *old, *new;
+ 
+ 	/* modifying range */
+@@ -321,6 +321,11 @@ void __init efi_memmap_insert(struct efi_memory_map *old_memmap, void *buf,
+ 		start = md->phys_addr;
+ 		end = md->phys_addr + (md->num_pages << EFI_PAGE_SHIFT) - 1;
+ 
++		if (md->virt_addr)
++			virt_offset = md->virt_addr - md->phys_addr;
++		else
++			virt_offset = -1;
++
+ 		if (m_start <= start && end <= m_end)
+ 			md->attribute |= m_attr;
+ 
+@@ -337,6 +342,8 @@ void __init efi_memmap_insert(struct efi_memory_map *old_memmap, void *buf,
+ 			md->phys_addr = m_end + 1;
+ 			md->num_pages = (end - md->phys_addr + 1) >>
+ 				EFI_PAGE_SHIFT;
++			if (virt_offset != -1)
++				md->virt_addr = md->phys_addr + virt_offset;
+ 		}
+ 
+ 		if ((start < m_start && m_start < end) && m_end < end) {
+@@ -351,6 +358,8 @@ void __init efi_memmap_insert(struct efi_memory_map *old_memmap, void *buf,
+ 			md->phys_addr = m_start;
+ 			md->num_pages = (m_end - m_start + 1) >>
+ 				EFI_PAGE_SHIFT;
++			if (virt_offset != -1)
++				md->virt_addr = md->phys_addr + virt_offset;
+ 			/* last part */
+ 			new += old_memmap->desc_size;
+ 			memcpy(new, old, old_memmap->desc_size);
+@@ -358,6 +367,8 @@ void __init efi_memmap_insert(struct efi_memory_map *old_memmap, void *buf,
+ 			md->phys_addr = m_end + 1;
+ 			md->num_pages = (end - m_end) >>
+ 				EFI_PAGE_SHIFT;
++			if (virt_offset != -1)
++				md->virt_addr = md->phys_addr + virt_offset;
+ 		}
+ 
+ 		if ((start < m_start && m_start < end) &&
+@@ -373,6 +384,8 @@ void __init efi_memmap_insert(struct efi_memory_map *old_memmap, void *buf,
+ 			md->num_pages = (end - md->phys_addr + 1) >>
+ 				EFI_PAGE_SHIFT;
+ 			md->attribute |= m_attr;
++			if (virt_offset != -1)
++				md->virt_addr = md->phys_addr + virt_offset;
+ 		}
+ 	}
+ }
+-- 
+2.29.2
 
-Regards,
-Boqun
-
-> +	__hv_get_vpreg_128(msr, input, output);
-> +
-> +	result = output->as64.low;
-> +	kfree(input);
-> +	kfree(output);
-> +	return result;
-> +}
-> +EXPORT_SYMBOL_GPL(hv_get_vpreg);
-> +
-> +void hv_get_vpreg_128(u32 msr, struct hv_get_vp_registers_output *res)
-> +{
-> +	struct hv_get_vp_registers_input	*input;
-> +	struct hv_get_vp_registers_output	*output;
-> +
-> +	/*
-> +	 * Allocate a power of 2 size so alignment to that size is
-> +	 * guaranteed, since the hypercall input and output areas
-> +	 * must not cross a page boundary.
-> +	 */
-> +	input = kzalloc(roundup_pow_of_two(sizeof(input->header) +
-> +				sizeof(input->element[0])), GFP_ATOMIC);
-> +	output = kmalloc(roundup_pow_of_two(sizeof(*output)), GFP_ATOMIC);
-> +
-> +	__hv_get_vpreg_128(msr, input, output);
-> +
-> +	res->as64.low = output->as64.low;
-> +	res->as64.high = output->as64.high;
-> +	kfree(input);
-> +	kfree(output);
-> +}
-[...]
