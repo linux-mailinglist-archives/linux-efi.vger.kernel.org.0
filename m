@@ -2,130 +2,94 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 876AA3243F1
-	for <lists+linux-efi@lfdr.de>; Wed, 24 Feb 2021 19:46:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 10A77326B58
+	for <lists+linux-efi@lfdr.de>; Sat, 27 Feb 2021 04:31:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234187AbhBXSpT (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 24 Feb 2021 13:45:19 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:31468 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S232417AbhBXSpS (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 24 Feb 2021 13:45:18 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1614192232;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=7Pi1Huj1io0WE2uM4yhK/jodNm0pVYNEApXxjjAhh1M=;
-        b=AqTxEPEtpN+32azjkwdSrb2ESGSVe/L0qp7oOSXf0jIW8VnDIjwyHtVrAiR5XQIUtc/gs+
-        fM3RBx5bLoBcJZMllPJmjoKDsNl7CroU4mOp3djA53JG2BssNYDP7Qo898aOcgtEJi40gp
-        gSkkiSfI8A1bGkdxJasL8C4v7X1VxwE=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-397-QyaVNpYHNeG8QgMWw6_86Q-1; Wed, 24 Feb 2021 13:43:47 -0500
-X-MC-Unique: QyaVNpYHNeG8QgMWw6_86Q-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id B0D7180196E;
-        Wed, 24 Feb 2021 18:43:46 +0000 (UTC)
-Received: from kasong-rh-laptop.intra.hackret.com (ovpn-12-86.pek2.redhat.com [10.72.12.86])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id BF40C5D6AD;
-        Wed, 24 Feb 2021 18:43:44 +0000 (UTC)
-From:   Kairui Song <kasong@redhat.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     linux-efi@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Kairui Song <kasong@redhat.com>
-Subject: [PATCH] efi: memmap insertion should adjust the vaddr as well
-Date:   Thu, 25 Feb 2021 02:43:08 +0800
-Message-Id: <20210224184308.1416903-1-kasong@redhat.com>
+        id S230001AbhB0Dah (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 26 Feb 2021 22:30:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49172 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229745AbhB0Dag (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 26 Feb 2021 22:30:36 -0500
+Received: from mail-qk1-x736.google.com (mail-qk1-x736.google.com [IPv6:2607:f8b0:4864:20::736])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99BFBC06174A;
+        Fri, 26 Feb 2021 19:29:56 -0800 (PST)
+Received: by mail-qk1-x736.google.com with SMTP id v206so11307059qkb.3;
+        Fri, 26 Feb 2021 19:29:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=c5d+9yX8djWzr6OniWWyp1eF0oq4CO81f7/Et4QLr2Y=;
+        b=lt+8w3C9pXrzvS95kNZBSeqac4sFKEV79SA61gYVPpd+Zgg0kUdpI9QBvRc/i9FXBJ
+         v2mhK3D/mRSw/RaJ5/aqssbf8uprSFaUO66u1dU0VGu3SHr4V4U1YEulWysdwd1719b4
+         C4sRfP4yZQbpT5YTfvlbnPD4cFcD6pAH7aCqHDFMSRSNFZc5sGI7yud2+VWjrz3L1gEu
+         oks/atDPq0FvmDzZmmggVWbUkt8Yf4QtVYAKAq1CoIMny9S8s4/n7M0dlXux3tD71JtY
+         4YJyCcLaSUu3NDnt1wxPGjduH/jkWvunXhcXkp1lPPykgJKZ+N+ECThZAjRWJtvvJ3EG
+         eq5w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
+         :mime-version:content-transfer-encoding;
+        bh=c5d+9yX8djWzr6OniWWyp1eF0oq4CO81f7/Et4QLr2Y=;
+        b=gY5fksewR3rI6HDOSgodyRKYBpHdrGq2jczq0RbDGiR3mcnkDzz+PBTG4yTHjovq3g
+         KLsXP416nJMUj7FiigwZUtd3NVf+ogeDAexATQWZnXQITuJy7tqK+rNGXuGJEvehNOV4
+         +OSSEqczF70VkWJyQsjlkp6ocRC3zTdCqzMwb7R2LYt3X439V+tqkv2ptMxvua7B2J7b
+         wBvnJnsoixrRttYVqO4009Cz0fPGCvYXZOcqi8V++9YqkyYTsLq5VihMLnJnq4Xe7UPD
+         d1HJEFyr1+kAYBloWhfnXNEGfZvH0/JIIjqFPadXBIFPXW9c/zDqts810y3fsbap+g6/
+         igVQ==
+X-Gm-Message-State: AOAM532Rf1riD8WTD0f0ckW/rdfra9fSZ2ovN0GebrIH3+SDtbgYvrJT
+        SJtDIM+qZs+GFTOayx3zT4Y=
+X-Google-Smtp-Source: ABdhPJxP2HGVHl+jPFirc3us57XKt1SAqfE1rQa5/D20ER2F97+09z2WdCDUT4g2Bve6a8qRPEVL6g==
+X-Received: by 2002:a37:a30c:: with SMTP id m12mr3183549qke.300.1614396595626;
+        Fri, 26 Feb 2021 19:29:55 -0800 (PST)
+Received: from localhost.localdomain (2603-9001-0308-0800-2fc5-b80d-c946-eeda.inf6.spectrum.com. [2603:9001:308:800:2fc5:b80d:c946:eeda])
+        by smtp.gmail.com with ESMTPSA id 184sm7979359qki.97.2021.02.26.19.29.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 26 Feb 2021 19:29:55 -0800 (PST)
+Sender: Julian Braha <julian.braha@gmail.com>
+From:   Julian Braha <julianbraha@gmail.com>
+To:     ardb@kernel.org
+Cc:     linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] drivers: firmware: efi: fix Kconfig dependency on CRYPTO
+Date:   Fri, 26 Feb 2021 22:29:49 -0500
+Message-Id: <20210227032949.31977-1-julianbraha@gmail.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Currently when efi_memmap_insert is called, only the
-physical memory addresses are re-calculated. The virt
-addresses of the split entries are untouched.
+When EFI_EMBEDDED_FIRMWARE is enabled, and CRYPTO is not enabled,
+Kbuild gives the following warning:
 
-If any later operation depends on the virt_addaress info, things
-will go wrong. One case it may fail is kexec on x86, after kexec,
-efi is already in virtual mode, kernel simply do fixed mapping
-reuse the recorded virt address. If the virt address is incorrect,
-the mapping will be invalid.
+WARNING: unmet direct dependencies detected for CRYPTO_LIB_SHA256
+  Depends on [n]: CRYPTO [=n]
+  Selected by [y]:
+  - EFI_EMBEDDED_FIRMWARE [=y] && EFI [=y]
 
-Update the virt_addaress as well when inserting a memmap entry to
-fix this potential issue.
+This is because EFI_EMBEDDED_FIRMWARE selects CRYPTO_LIB_SHA256
+without selecting or depending on CRYPTO, despite CRYPTO_LIB_SHA256
+depending on CRYPTO.
 
-Signed-off-by: Kairui Song <kasong@redhat.com>
+Signed-off-by: Julian Braha <julianbraha@gmail.com>
 ---
- drivers/firmware/efi/memmap.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ drivers/firmware/efi/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/firmware/efi/memmap.c b/drivers/firmware/efi/memmap.c
-index 2ff1883dc788..de5c545b2074 100644
---- a/drivers/firmware/efi/memmap.c
-+++ b/drivers/firmware/efi/memmap.c
-@@ -292,7 +292,7 @@ void __init efi_memmap_insert(struct efi_memory_map *old_memmap, void *buf,
- {
- 	u64 m_start, m_end, m_attr;
- 	efi_memory_desc_t *md;
--	u64 start, end;
-+	u64 start, end, virt_offset;
- 	void *old, *new;
+diff --git a/drivers/firmware/efi/Kconfig b/drivers/firmware/efi/Kconfig
+index 2c3dac5ecb36..f914da9845ac 100644
+--- a/drivers/firmware/efi/Kconfig
++++ b/drivers/firmware/efi/Kconfig
+@@ -248,6 +248,7 @@ endmenu
+ config EFI_EMBEDDED_FIRMWARE
+ 	bool
+ 	depends on EFI
++	select CRYPTO
+ 	select CRYPTO_LIB_SHA256
  
- 	/* modifying range */
-@@ -321,6 +321,11 @@ void __init efi_memmap_insert(struct efi_memory_map *old_memmap, void *buf,
- 		start = md->phys_addr;
- 		end = md->phys_addr + (md->num_pages << EFI_PAGE_SHIFT) - 1;
- 
-+		if (md->virt_addr)
-+			virt_offset = md->virt_addr - md->phys_addr;
-+		else
-+			virt_offset = -1;
-+
- 		if (m_start <= start && end <= m_end)
- 			md->attribute |= m_attr;
- 
-@@ -337,6 +342,8 @@ void __init efi_memmap_insert(struct efi_memory_map *old_memmap, void *buf,
- 			md->phys_addr = m_end + 1;
- 			md->num_pages = (end - md->phys_addr + 1) >>
- 				EFI_PAGE_SHIFT;
-+			if (virt_offset != -1)
-+				md->virt_addr = md->phys_addr + virt_offset;
- 		}
- 
- 		if ((start < m_start && m_start < end) && m_end < end) {
-@@ -351,6 +358,8 @@ void __init efi_memmap_insert(struct efi_memory_map *old_memmap, void *buf,
- 			md->phys_addr = m_start;
- 			md->num_pages = (m_end - m_start + 1) >>
- 				EFI_PAGE_SHIFT;
-+			if (virt_offset != -1)
-+				md->virt_addr = md->phys_addr + virt_offset;
- 			/* last part */
- 			new += old_memmap->desc_size;
- 			memcpy(new, old, old_memmap->desc_size);
-@@ -358,6 +367,8 @@ void __init efi_memmap_insert(struct efi_memory_map *old_memmap, void *buf,
- 			md->phys_addr = m_end + 1;
- 			md->num_pages = (end - m_end) >>
- 				EFI_PAGE_SHIFT;
-+			if (virt_offset != -1)
-+				md->virt_addr = md->phys_addr + virt_offset;
- 		}
- 
- 		if ((start < m_start && m_start < end) &&
-@@ -373,6 +384,8 @@ void __init efi_memmap_insert(struct efi_memory_map *old_memmap, void *buf,
- 			md->num_pages = (end - md->phys_addr + 1) >>
- 				EFI_PAGE_SHIFT;
- 			md->attribute |= m_attr;
-+			if (virt_offset != -1)
-+				md->virt_addr = md->phys_addr + virt_offset;
- 		}
- 	}
- }
+ config UEFI_CPER
 -- 
-2.29.2
+2.27.0
 
