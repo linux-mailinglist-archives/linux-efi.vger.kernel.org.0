@@ -2,95 +2,106 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A7EE7330035
-	for <lists+linux-efi@lfdr.de>; Sun,  7 Mar 2021 12:03:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F39CB330085
+	for <lists+linux-efi@lfdr.de>; Sun,  7 Mar 2021 12:54:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230111AbhCGLCh (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sun, 7 Mar 2021 06:02:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42164 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231883AbhCGLCg (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sun, 7 Mar 2021 06:02:36 -0500
-Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com [IPv6:2607:f8b0:4864:20::432])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE478C06174A
-        for <linux-efi@vger.kernel.org>; Sun,  7 Mar 2021 03:02:35 -0800 (PST)
-Received: by mail-pf1-x432.google.com with SMTP id 16so3809743pfn.5
-        for <linux-efi@vger.kernel.org>; Sun, 07 Mar 2021 03:02:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=fGQzsTwieGJ+UsLlk4kxZajLdbBFP7Z9G/rD+ogP0AI=;
-        b=jJuzCq5vFClSpvp5DuROAFTlcSJqNeusrx5aG+tDb8KJ6vMNJZNHABUSwZngPxsIiC
-         +37MlDiEyx3159XFurcZxJFG6Qcb4zjjANOBz7sxIyiuxwPl6LbmyaGnKkndsLW3SpkQ
-         kcxn/oc1AewVX/LdHFHdPedmBLaBuNzkGFTNixksBP0AX70Vww5rEhwEulfbENv8VzIj
-         xW6nD+ToTtUgaUaJbH+fjgQK9iVwNj76upQzIteRGfRSbAPIQ4DeX8eBKLIpi5HOfj7X
-         jDoRs+viipI3a5yzllZebmbXlKRKdMQfBay1hHYG9zBeFyUEasmqUsECXoKgdrwkGhYq
-         G4dA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=fGQzsTwieGJ+UsLlk4kxZajLdbBFP7Z9G/rD+ogP0AI=;
-        b=kqLP3WijEdE+HkpwkP+JIoRYLGFf5DIsfRo7qA4jLXGgzfnutpjTEq7DXbEtOeA2TV
-         l1azU/kLOBVfSBVAUHWbqwRmOfhyDArxJ+VnTaKYcD11C0XzfHY9zNaWwbOt0e8O3xao
-         Wp3IdoDYhIs8LHKPqvlz4Y3RraJDWiNVM3TpeIE1NdUDvxty/tXA2mXSok75SZ5DF811
-         MZrtMtWpzmC2hTYFk82n1Fm8BPfKzfRdujdOVSLW8UMqcV60s6em5bOssBtKstjW3vzM
-         jJz92wsgTgygsst5nAj/d3BFxs0UKFLrZiHgl0vSPvcjiyowpKG1hZxOEIe4WuKaD2Qu
-         EjMQ==
-X-Gm-Message-State: AOAM5308W0aogAbPCENFMLKzSOBEAjegnjOpSTZ3k+QQj+Xqbs7V1Ayf
-        Ld+Xyp3y2lXSRPF176G/NXQ3og==
-X-Google-Smtp-Source: ABdhPJzw69vmH0tOiY3QhD5ZExxRFZEu2NUGV17EJAY/jeV7bnDxWXkjlFRl3V+MwwUh6aayB7lkSA==
-X-Received: by 2002:a63:1d5b:: with SMTP id d27mr11870099pgm.169.1615114955342;
-        Sun, 07 Mar 2021 03:02:35 -0800 (PST)
-Received: from dragon (80.251.214.228.16clouds.com. [80.251.214.228])
-        by smtp.gmail.com with ESMTPSA id x4sm212115pfn.134.2021.03.07.03.02.33
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Sun, 07 Mar 2021 03:02:34 -0800 (PST)
-Date:   Sun, 7 Mar 2021 19:02:29 +0800
-From:   Shawn Guo <shawn.guo@linaro.org>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     linux-efi@vger.kernel.org, Jeffrey Hugo <jhugo@codeaurora.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Rob Clark <robdclark@gmail.com>,
-        Leif Lindholm <leif@nuviainc.com>,
-        linux-arm-msm@vger.kernel.org
-Subject: Re: [PATCH] efi: stub: override RT_PROP table supported mask based
- on EFI variable
-Message-ID: <20210307110228.GP17424@dragon>
-References: <20210306113519.294287-1-ardb@kernel.org>
+        id S230430AbhCGLyZ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sun, 7 Mar 2021 06:54:25 -0500
+Received: from foss.arm.com ([217.140.110.172]:50106 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230412AbhCGLx6 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Sun, 7 Mar 2021 06:53:58 -0500
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CA147D6E;
+        Sun,  7 Mar 2021 03:53:57 -0800 (PST)
+Received: from [192.168.0.130] (unknown [172.31.20.19])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6E2D23F766;
+        Sun,  7 Mar 2021 03:53:54 -0800 (PST)
+Subject: Re: [PATCH] arm64/mm: Fix __enable_mmu() for new TGRAN range values
+To:     Mark Rutland <mark.rutland@arm.com>
+Cc:     linux-arm-kernel@lists.infradead.org,
+        James Morse <james.morse@arm.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
+        Suzuki K Poulose <suzuki.poulose@arm.com>,
+        Ard Biesheuvel <ardb@kernel.org>, kvmarm@lists.cs.columbia.edu,
+        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <1614954969-14338-1-git-send-email-anshuman.khandual@arm.com>
+ <20210305145111.GA78884@C02TD0UTHF1T.local>
+From:   Anshuman Khandual <anshuman.khandual@arm.com>
+Message-ID: <1f339512-34ac-9779-e534-bee6698b99aa@arm.com>
+Date:   Sun, 7 Mar 2021 17:24:21 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210306113519.294287-1-ardb@kernel.org>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <20210305145111.GA78884@C02TD0UTHF1T.local>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Sat, Mar 06, 2021 at 12:35:19PM +0100, Ard Biesheuvel wrote:
-> Allow EFI systems to override the set of supported runtime services
-> declared via the RT_PROP table, by checking for the existence of a
-> 'OverrideSupported' EFI variable of the appropriate size under the
-> RT_PROP table GUID, and if it does, combine the supported mask using
-> logical AND. (This means the override can only remove support, not
-> add it back).
+
+
+On 3/5/21 8:21 PM, Mark Rutland wrote:
+> On Fri, Mar 05, 2021 at 08:06:09PM +0530, Anshuman Khandual wrote:
+>> From: James Morse <james.morse@arm.com>
+>>
+>> As per ARM ARM DDI 0487G.a, when FEAT_LPA2 is implemented, ID_AA64MMFR0_EL1
+>> might contain a range of values to describe supported translation granules
+>> (4K and 16K pages sizes in particular) instead of just enabled or disabled
+>> values. This changes __enable_mmu() function to handle complete acceptable
+>> range of values (depending on whether the field is signed or unsigned) now
+>> represented with ID_AA64MMFR0_TGRAN_SUPPORTED_[MIN..MAX] pair. While here,
+>> also fix similar situations in EFI stub and KVM as well.
+>>
+>> Cc: Catalin Marinas <catalin.marinas@arm.com>
+>> Cc: Will Deacon <will@kernel.org>
+>> Cc: Marc Zyngier <maz@kernel.org>
+>> Cc: James Morse <james.morse@arm.com>
+>> Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
+>> Cc: Ard Biesheuvel <ardb@kernel.org>
+>> Cc: Mark Rutland <mark.rutland@arm.com>
+>> Cc: linux-arm-kernel@lists.infradead.org
+>> Cc: kvmarm@lists.cs.columbia.edu
+>> Cc: linux-efi@vger.kernel.org
+>> Cc: linux-kernel@vger.kernel.org
+>> Signed-off-by: James Morse <james.morse@arm.com>
+>> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+>> ---
+>>  arch/arm64/include/asm/sysreg.h           | 20 ++++++++++++++------
+>>  arch/arm64/kernel/head.S                  |  6 ++++--
+>>  arch/arm64/kvm/reset.c                    | 23 ++++++++++++-----------
+>>  drivers/firmware/efi/libstub/arm64-stub.c |  2 +-
+>>  4 files changed, 31 insertions(+), 20 deletions(-)
+>>
+>> diff --git a/arch/arm64/include/asm/sysreg.h b/arch/arm64/include/asm/sysreg.h
+>> index dfd4edb..d4a5fca9 100644
+>> --- a/arch/arm64/include/asm/sysreg.h
+>> +++ b/arch/arm64/include/asm/sysreg.h
+>> @@ -796,6 +796,11 @@
+>>  #define ID_AA64MMFR0_PARANGE_48		0x5
+>>  #define ID_AA64MMFR0_PARANGE_52		0x6
+>>  
+>> +#define ID_AA64MMFR0_TGRAN_2_SUPPORTED_DEFAULT	0x0
+>> +#define ID_AA64MMFR0_TGRAN_2_SUPPORTED_NONE	0x1
+>> +#define ID_AA64MMFR0_TGRAN_2_SUPPORTED_MIN	0x2
+>> +#define ID_AA64MMFR0_TGRAN_2_SUPPORTED_MAX	0x7
+>
+> The TGRAN2 fields doesn't quite follow the usual ID scheme rules, so how
+> do we deteremine the max value? Does the ARM ARM say anything in
+> particular about them, like we do for some of the PMU ID fields?
+
+Did not find anything in ARM ARM, regarding what scheme TGRAN2 fields
+actually follow. I had arrived at more restrictive 0x7 value, like the
+usual signed fields as the TGRAN4 fields definitely do not follow the
+unsigned ID scheme. Would restricting max value to 0x3 (i.e LPA2) be a
+better option instead ?
+
 > 
-> Cc: Jeffrey Hugo <jhugo@codeaurora.org>,
-> Cc: Bjorn Andersson <bjorn.andersson@linaro.org>
-> Cc: Shawn Guo <shawn.guo@linaro.org>
-> Cc: Rob Clark <robdclark@gmail.com>
-> Cc: Leif Lindholm <leif@nuviainc.com>
-> Cc: linux-arm-msm@vger.kernel.org
+> Otherwise, this patch looks correct to me.
 > 
-> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-
-Awesome, Ard!  On both Lenovo Yoga C630 and Flex 5G latops:
-
-Tested-by: Shawn Guo <shawn.guo@linaro.org>
-
-With 'OverrideSupported' EFI variable added from UEFI Shell, we can drop
-'efi=novamap' kernel cmdline and get around the broken poweroff runtime
-services nicely.  Thanks!
-
-Shawn
+> Thanks,
+> Mark.
+> 
