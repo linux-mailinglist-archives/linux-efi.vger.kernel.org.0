@@ -2,68 +2,95 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7570432FFC5
-	for <lists+linux-efi@lfdr.de>; Sun,  7 Mar 2021 10:01:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A7EE7330035
+	for <lists+linux-efi@lfdr.de>; Sun,  7 Mar 2021 12:03:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230023AbhCGJAe (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sun, 7 Mar 2021 04:00:34 -0500
-Received: from mail.kernel.org ([198.145.29.99]:36484 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229872AbhCGJAY (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Sun, 7 Mar 2021 04:00:24 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id B3B7E6512D;
-        Sun,  7 Mar 2021 09:00:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1615107624;
-        bh=2mJuN6pBgJ/Z+RcyKXHugODoyU6nX+wT0GsNevDHWy4=;
-        h=From:To:Cc:Subject:Date:From;
-        b=MLBJsFWHM9zuy9/DwSIgMFUix7mMpoD45yDjQew3P7dB+Ec4LmoyedUiyj/3DV+id
-         5oHUasxu/p3f2NBa0kyJXeBvhXwNs/c+du90xZO1I/sCLOWTto0ewKNEo3X7gnvVDT
-         1ktJ+uWK0DH074B9YUnuK33nHQ+9IFsEYkCj/JnQKQTkMu4f14To1kM+SWSK8F0gEa
-         HjLcaM4XNpQufyrk+ugcpclt+43Q9qswDnlCYAJJJzUhUTviyCT3Dmy08F9OgGvmdh
-         LcfOfq/ps8XOmnZxBkOze6SrpHA3nimwzw/pPj157zM//PprA3nNQnuRAN1fsOpufN
-         e1S1EBYxa4OKg==
-From:   Ard Biesheuvel <ardb@kernel.org>
-To:     linux-efi@vger.kernel.org
-Cc:     Ingo Molnar <mingo@redhat.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Borislav Petkov <bp@alien8.de>
-Subject: [GIT PULL] EFI fix for v5.12-rc2
-Date:   Sun,  7 Mar 2021 10:00:14 +0100
-Message-Id: <20210307090014.65474-1-ardb@kernel.org>
-X-Mailer: git-send-email 2.30.1
+        id S230111AbhCGLCh (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sun, 7 Mar 2021 06:02:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42164 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231883AbhCGLCg (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sun, 7 Mar 2021 06:02:36 -0500
+Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com [IPv6:2607:f8b0:4864:20::432])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE478C06174A
+        for <linux-efi@vger.kernel.org>; Sun,  7 Mar 2021 03:02:35 -0800 (PST)
+Received: by mail-pf1-x432.google.com with SMTP id 16so3809743pfn.5
+        for <linux-efi@vger.kernel.org>; Sun, 07 Mar 2021 03:02:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=fGQzsTwieGJ+UsLlk4kxZajLdbBFP7Z9G/rD+ogP0AI=;
+        b=jJuzCq5vFClSpvp5DuROAFTlcSJqNeusrx5aG+tDb8KJ6vMNJZNHABUSwZngPxsIiC
+         +37MlDiEyx3159XFurcZxJFG6Qcb4zjjANOBz7sxIyiuxwPl6LbmyaGnKkndsLW3SpkQ
+         kcxn/oc1AewVX/LdHFHdPedmBLaBuNzkGFTNixksBP0AX70Vww5rEhwEulfbENv8VzIj
+         xW6nD+ToTtUgaUaJbH+fjgQK9iVwNj76upQzIteRGfRSbAPIQ4DeX8eBKLIpi5HOfj7X
+         jDoRs+viipI3a5yzllZebmbXlKRKdMQfBay1hHYG9zBeFyUEasmqUsECXoKgdrwkGhYq
+         G4dA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=fGQzsTwieGJ+UsLlk4kxZajLdbBFP7Z9G/rD+ogP0AI=;
+        b=kqLP3WijEdE+HkpwkP+JIoRYLGFf5DIsfRo7qA4jLXGgzfnutpjTEq7DXbEtOeA2TV
+         l1azU/kLOBVfSBVAUHWbqwRmOfhyDArxJ+VnTaKYcD11C0XzfHY9zNaWwbOt0e8O3xao
+         Wp3IdoDYhIs8LHKPqvlz4Y3RraJDWiNVM3TpeIE1NdUDvxty/tXA2mXSok75SZ5DF811
+         MZrtMtWpzmC2hTYFk82n1Fm8BPfKzfRdujdOVSLW8UMqcV60s6em5bOssBtKstjW3vzM
+         jJz92wsgTgygsst5nAj/d3BFxs0UKFLrZiHgl0vSPvcjiyowpKG1hZxOEIe4WuKaD2Qu
+         EjMQ==
+X-Gm-Message-State: AOAM5308W0aogAbPCENFMLKzSOBEAjegnjOpSTZ3k+QQj+Xqbs7V1Ayf
+        Ld+Xyp3y2lXSRPF176G/NXQ3og==
+X-Google-Smtp-Source: ABdhPJzw69vmH0tOiY3QhD5ZExxRFZEu2NUGV17EJAY/jeV7bnDxWXkjlFRl3V+MwwUh6aayB7lkSA==
+X-Received: by 2002:a63:1d5b:: with SMTP id d27mr11870099pgm.169.1615114955342;
+        Sun, 07 Mar 2021 03:02:35 -0800 (PST)
+Received: from dragon (80.251.214.228.16clouds.com. [80.251.214.228])
+        by smtp.gmail.com with ESMTPSA id x4sm212115pfn.134.2021.03.07.03.02.33
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Sun, 07 Mar 2021 03:02:34 -0800 (PST)
+Date:   Sun, 7 Mar 2021 19:02:29 +0800
+From:   Shawn Guo <shawn.guo@linaro.org>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-efi@vger.kernel.org, Jeffrey Hugo <jhugo@codeaurora.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Rob Clark <robdclark@gmail.com>,
+        Leif Lindholm <leif@nuviainc.com>,
+        linux-arm-msm@vger.kernel.org
+Subject: Re: [PATCH] efi: stub: override RT_PROP table supported mask based
+ on EFI variable
+Message-ID: <20210307110228.GP17424@dragon>
+References: <20210306113519.294287-1-ardb@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210306113519.294287-1-ardb@kernel.org>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The following changes since commit a38fd8748464831584a19438cbb3082b5a2dab15:
+On Sat, Mar 06, 2021 at 12:35:19PM +0100, Ard Biesheuvel wrote:
+> Allow EFI systems to override the set of supported runtime services
+> declared via the RT_PROP table, by checking for the existence of a
+> 'OverrideSupported' EFI variable of the appropriate size under the
+> RT_PROP table GUID, and if it does, combine the supported mask using
+> logical AND. (This means the override can only remove support, not
+> add it back).
+> 
+> Cc: Jeffrey Hugo <jhugo@codeaurora.org>,
+> Cc: Bjorn Andersson <bjorn.andersson@linaro.org>
+> Cc: Shawn Guo <shawn.guo@linaro.org>
+> Cc: Rob Clark <robdclark@gmail.com>
+> Cc: Leif Lindholm <leif@nuviainc.com>
+> Cc: linux-arm-msm@vger.kernel.org
+> 
+> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 
-  Linux 5.12-rc2 (2021-03-05 17:33:41 -0800)
+Awesome, Ard!  On both Lenovo Yoga C630 and Flex 5G latops:
 
-are available in the Git repository at:
+Tested-by: Shawn Guo <shawn.guo@linaro.org>
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git tags/efi-urgent-for-v5.12-rc2
+With 'OverrideSupported' EFI variable added from UEFI Shell, we can drop
+'efi=novamap' kernel cmdline and get around the broken poweroff runtime
+services nicely.  Thanks!
 
-for you to fetch changes up to 9e9888a0fe97b9501a40f717225d2bef7100a2c1:
-
-  efi: stub: omit SetVirtualAddressMap() if marked unsupported in RT_PROP table (2021-03-07 09:31:02 +0100)
-
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Borislav Petkov <bp@alien8.de>
-
-----------------------------------------------------------------
-EFI fix for 5.12-rc2
-
-Fix an oversight in the handling of the UEFI 2.8 EFI_RT_PROPERTIES_TABLE,
-which was added v5.10, but failed to take the SetVirtualAddressMap() RT
-service into account.
-
-----------------------------------------------------------------
-Ard Biesheuvel (1):
-      efi: stub: omit SetVirtualAddressMap() if marked unsupported in RT_PROP table
-
- drivers/firmware/efi/libstub/efi-stub.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+Shawn
