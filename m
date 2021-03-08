@@ -2,215 +2,113 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C71E933079F
-	for <lists+linux-efi@lfdr.de>; Mon,  8 Mar 2021 06:40:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 58506330F30
+	for <lists+linux-efi@lfdr.de>; Mon,  8 Mar 2021 14:31:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234572AbhCHFjz (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 8 Mar 2021 00:39:55 -0500
-Received: from mga02.intel.com ([134.134.136.20]:23375 "EHLO mga02.intel.com"
+        id S229580AbhCHNbV (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 8 Mar 2021 08:31:21 -0500
+Received: from mail.kernel.org ([198.145.29.99]:57640 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234597AbhCHFji (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Mon, 8 Mar 2021 00:39:38 -0500
-IronPort-SDR: SvLtR7+h5b7TdUVzpuNw4W1Jfi1k516u/XalNzSNUD4eMG/Vk9vCg9nGUP56qDFclaWkitfoKI
- KW9CbghBSJSg==
-X-IronPort-AV: E=McAfee;i="6000,8403,9916"; a="175081514"
-X-IronPort-AV: E=Sophos;i="5.81,231,1610438400"; 
-   d="scan'208";a="175081514"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Mar 2021 21:39:37 -0800
-IronPort-SDR: 5frdGrKUVycK1Am7HfvlStneuEoDNuxz20RkALJDp/56cB/UWnjDTPphpH8bEFFZMPzPtULDEI
- YgsOiUwGD8Gw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.81,231,1610438400"; 
-   d="scan'208";a="598723176"
-Received: from lkp-server01.sh.intel.com (HELO 3e992a48ca98) ([10.239.97.150])
-  by fmsmga006.fm.intel.com with ESMTP; 07 Mar 2021 21:39:35 -0800
-Received: from kbuild by 3e992a48ca98 with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1lJ8cA-0000pD-Qk; Mon, 08 Mar 2021 05:39:34 +0000
-Date:   Mon, 08 Mar 2021 13:38:51 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     linux-efi@vger.kernel.org
-Subject: [efi:next] BUILD SUCCESS af6e3e61fe5623a7890807b0b13004ecb876fa1f
-Message-ID: <6045b86b.J965rPnsVAmud0sd%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S229575AbhCHNa7 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Mon, 8 Mar 2021 08:30:59 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id EA44964DA3;
+        Mon,  8 Mar 2021 13:30:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1615210258;
+        bh=pEXNet6N/egXd7wBXv+XZqh8Z0VGXmL8Y0GWpDXYgSU=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=cKyWPlExbizCNVfKpN0ou+bCV20Y4lb3vpBkQS2Vmo3MZrrlJQh/iUsAO0JLf7oom
+         Aflt8QGqmFYVUY8Zoiag1rK2aK5nf7xwG+EThpUDEqEjn6MScpRvXvHbMLGDeywvrw
+         WWiK5i+VSUsi8FHgLgoDTguaw2tETYur8CDLJvxvop3CT1bE01EW2xjxsh8OQ4qdXj
+         GwOH4MfOsamqJ4lC32GoG/POx0M8kDUF82rFM3HPT6hBlwnQ+glrbXy0A7BO3OfZGU
+         4cUoYzdmvTf2bToG82yD3eHRe2YFbLqF1oklALbm0QeZuNe7ARB0QrZ1vjAHnhVRDX
+         9nL4V2qDnHBug==
+Date:   Mon, 8 Mar 2021 13:30:53 +0000
+From:   Will Deacon <will@kernel.org>
+To:     Anshuman Khandual <anshuman.khandual@arm.com>
+Cc:     Mark Rutland <mark.rutland@arm.com>,
+        linux-arm-kernel@lists.infradead.org,
+        James Morse <james.morse@arm.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Marc Zyngier <maz@kernel.org>,
+        Suzuki K Poulose <suzuki.poulose@arm.com>,
+        Ard Biesheuvel <ardb@kernel.org>, kvmarm@lists.cs.columbia.edu,
+        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] arm64/mm: Fix __enable_mmu() for new TGRAN range values
+Message-ID: <20210308133053.GA26128@willie-the-truck>
+References: <1614954969-14338-1-git-send-email-anshuman.khandual@arm.com>
+ <20210305145111.GA78884@C02TD0UTHF1T.local>
+ <1f339512-34ac-9779-e534-bee6698b99aa@arm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+In-Reply-To: <1f339512-34ac-9779-e534-bee6698b99aa@arm.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git next
-branch HEAD: af6e3e61fe5623a7890807b0b13004ecb876fa1f  efi/apple-properties: Handle device properties with software node API
+On Sun, Mar 07, 2021 at 05:24:21PM +0530, Anshuman Khandual wrote:
+> 
+> 
+> On 3/5/21 8:21 PM, Mark Rutland wrote:
+> > On Fri, Mar 05, 2021 at 08:06:09PM +0530, Anshuman Khandual wrote:
+> >> From: James Morse <james.morse@arm.com>
+> >>
+> >> As per ARM ARM DDI 0487G.a, when FEAT_LPA2 is implemented, ID_AA64MMFR0_EL1
+> >> might contain a range of values to describe supported translation granules
+> >> (4K and 16K pages sizes in particular) instead of just enabled or disabled
+> >> values. This changes __enable_mmu() function to handle complete acceptable
+> >> range of values (depending on whether the field is signed or unsigned) now
+> >> represented with ID_AA64MMFR0_TGRAN_SUPPORTED_[MIN..MAX] pair. While here,
+> >> also fix similar situations in EFI stub and KVM as well.
+> >>
+> >> Cc: Catalin Marinas <catalin.marinas@arm.com>
+> >> Cc: Will Deacon <will@kernel.org>
+> >> Cc: Marc Zyngier <maz@kernel.org>
+> >> Cc: James Morse <james.morse@arm.com>
+> >> Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
+> >> Cc: Ard Biesheuvel <ardb@kernel.org>
+> >> Cc: Mark Rutland <mark.rutland@arm.com>
+> >> Cc: linux-arm-kernel@lists.infradead.org
+> >> Cc: kvmarm@lists.cs.columbia.edu
+> >> Cc: linux-efi@vger.kernel.org
+> >> Cc: linux-kernel@vger.kernel.org
+> >> Signed-off-by: James Morse <james.morse@arm.com>
+> >> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+> >> ---
+> >>  arch/arm64/include/asm/sysreg.h           | 20 ++++++++++++++------
+> >>  arch/arm64/kernel/head.S                  |  6 ++++--
+> >>  arch/arm64/kvm/reset.c                    | 23 ++++++++++++-----------
+> >>  drivers/firmware/efi/libstub/arm64-stub.c |  2 +-
+> >>  4 files changed, 31 insertions(+), 20 deletions(-)
+> >>
+> >> diff --git a/arch/arm64/include/asm/sysreg.h b/arch/arm64/include/asm/sysreg.h
+> >> index dfd4edb..d4a5fca9 100644
+> >> --- a/arch/arm64/include/asm/sysreg.h
+> >> +++ b/arch/arm64/include/asm/sysreg.h
+> >> @@ -796,6 +796,11 @@
+> >>  #define ID_AA64MMFR0_PARANGE_48		0x5
+> >>  #define ID_AA64MMFR0_PARANGE_52		0x6
+> >>  
+> >> +#define ID_AA64MMFR0_TGRAN_2_SUPPORTED_DEFAULT	0x0
+> >> +#define ID_AA64MMFR0_TGRAN_2_SUPPORTED_NONE	0x1
+> >> +#define ID_AA64MMFR0_TGRAN_2_SUPPORTED_MIN	0x2
+> >> +#define ID_AA64MMFR0_TGRAN_2_SUPPORTED_MAX	0x7
+> >
+> > The TGRAN2 fields doesn't quite follow the usual ID scheme rules, so how
+> > do we deteremine the max value? Does the ARM ARM say anything in
+> > particular about them, like we do for some of the PMU ID fields?
+> 
+> Did not find anything in ARM ARM, regarding what scheme TGRAN2 fields
+> actually follow. I had arrived at more restrictive 0x7 value, like the
+> usual signed fields as the TGRAN4 fields definitely do not follow the
+> unsigned ID scheme. Would restricting max value to 0x3 (i.e LPA2) be a
+> better option instead ?
 
-elapsed time: 720m
+I don't think it helps much, as TGRAN64_2 doesn't even define 0x3.
 
-configs tested: 154
-configs skipped: 2
+So I think this patch is probably the best we can do, but the Arm ARM could
+really do with describing the scheme here.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-powerpc                    amigaone_defconfig
-powerpc                     redwood_defconfig
-powerpc                     rainier_defconfig
-arm                           spitz_defconfig
-mips                         mpc30x_defconfig
-mips                           ci20_defconfig
-s390                       zfcpdump_defconfig
-powerpc                     akebono_defconfig
-arc                            hsdk_defconfig
-powerpc                        warp_defconfig
-mips                      loongson3_defconfig
-m68k                                defconfig
-powerpc                      chrp32_defconfig
-mips                        qi_lb60_defconfig
-arm                         mv78xx0_defconfig
-mips                  decstation_64_defconfig
-arm                        spear3xx_defconfig
-arc                          axs103_defconfig
-powerpc                       maple_defconfig
-arm                       omap2plus_defconfig
-sh                   sh7770_generic_defconfig
-arm                          simpad_defconfig
-sh                           se7722_defconfig
-mips                         db1xxx_defconfig
-arm                            pleb_defconfig
-arm                           omap1_defconfig
-s390                             allmodconfig
-sh                   rts7751r2dplus_defconfig
-sh                                  defconfig
-arm                         s5pv210_defconfig
-arm                            hisi_defconfig
-ia64                         bigsur_defconfig
-sparc                            allyesconfig
-sh                             espt_defconfig
-m68k                          sun3x_defconfig
-sparc                       sparc64_defconfig
-powerpc                  mpc885_ads_defconfig
-powerpc                 mpc8313_rdb_defconfig
-sh                          sdk7786_defconfig
-arm                     am200epdkit_defconfig
-mips                            gpr_defconfig
-m68k                          hp300_defconfig
-x86_64                           alldefconfig
-arm                        mini2440_defconfig
-sh                           se7343_defconfig
-mips                           ip22_defconfig
-sh                          sdk7780_defconfig
-powerpc                      bamboo_defconfig
-xtensa                       common_defconfig
-arm                      jornada720_defconfig
-powerpc                 mpc834x_itx_defconfig
-parisc                           alldefconfig
-mips                           rs90_defconfig
-sparc64                             defconfig
-m68k                            mac_defconfig
-sh                           se7721_defconfig
-nds32                               defconfig
-mips                           ip27_defconfig
-powerpc64                           defconfig
-xtensa                    smp_lx200_defconfig
-powerpc                mpc7448_hpc2_defconfig
-arc                          axs101_defconfig
-powerpc                   bluestone_defconfig
-xtensa                          iss_defconfig
-mips                         tb0226_defconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                               defconfig
-i386                               tinyconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-x86_64               randconfig-a006-20210308
-x86_64               randconfig-a001-20210308
-x86_64               randconfig-a004-20210308
-x86_64               randconfig-a002-20210308
-x86_64               randconfig-a005-20210308
-x86_64               randconfig-a003-20210308
-i386                 randconfig-a005-20210307
-i386                 randconfig-a003-20210307
-i386                 randconfig-a002-20210307
-i386                 randconfig-a004-20210307
-i386                 randconfig-a006-20210307
-i386                 randconfig-a001-20210307
-i386                 randconfig-a005-20210308
-i386                 randconfig-a003-20210308
-i386                 randconfig-a002-20210308
-i386                 randconfig-a006-20210308
-i386                 randconfig-a004-20210308
-i386                 randconfig-a001-20210308
-i386                 randconfig-a016-20210307
-i386                 randconfig-a012-20210307
-i386                 randconfig-a013-20210307
-i386                 randconfig-a014-20210307
-i386                 randconfig-a011-20210307
-i386                 randconfig-a015-20210307
-i386                 randconfig-a016-20210308
-i386                 randconfig-a012-20210308
-i386                 randconfig-a014-20210308
-i386                 randconfig-a013-20210308
-i386                 randconfig-a011-20210308
-i386                 randconfig-a015-20210308
-riscv                    nommu_k210_defconfig
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-x86_64                           allyesconfig
-x86_64                    rhel-7.6-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                      rhel-8.3-kbuiltin
-x86_64                                  kexec
-
-clang tested configs:
-x86_64               randconfig-a006-20210307
-x86_64               randconfig-a001-20210307
-x86_64               randconfig-a004-20210307
-x86_64               randconfig-a005-20210307
-x86_64               randconfig-a002-20210307
-x86_64               randconfig-a003-20210307
-x86_64               randconfig-a013-20210308
-x86_64               randconfig-a016-20210308
-x86_64               randconfig-a015-20210308
-x86_64               randconfig-a014-20210308
-x86_64               randconfig-a011-20210308
-x86_64               randconfig-a012-20210308
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+Will
