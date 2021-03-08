@@ -2,42 +2,42 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 82D9A3317E6
-	for <lists+linux-efi@lfdr.de>; Mon,  8 Mar 2021 20:58:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 752953317E9
+	for <lists+linux-efi@lfdr.de>; Mon,  8 Mar 2021 20:58:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231636AbhCHT6R (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        id S231683AbhCHT6R (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
         Mon, 8 Mar 2021 14:58:17 -0500
-Received: from mail-dm6nam10on2117.outbound.protection.outlook.com ([40.107.93.117]:24800
+Received: from mail-dm6nam10on2100.outbound.protection.outlook.com ([40.107.93.100]:11264
         "EHLO NAM10-DM6-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S231219AbhCHT6K (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Mon, 8 Mar 2021 14:58:10 -0500
+        id S231464AbhCHT6L (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Mon, 8 Mar 2021 14:58:11 -0500
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=JCTeN6EIpqlaFXGM4hizM6n2lIaxQg9+JEjLdadlJQFwlhrBnhcqiWkUGmO0RKadLBpeab07HF2fxlk8PRsSAU65LwLqZS4nwUMomICB9MWZ9SXzGw9r6HRqE8mMwbz+k5Dm2s2KAmNnJ2v0RL4hDia0iNnH9xZP8eJOp8BIRMs1dZE3HzPuZSuVYYIRGBEAeisaVKnGRgdNAeZoS632V8vPxSWZ3qMukJZQXLLLmWM+tGi6yvRMgwNKUJZJKmNo/77MWa3ATD3GknOP9NHR4o9VHscrIsV9/W6McJcaAOD0nHy9eu27rFUZOiABmV8o8K8SeNzAjKHk+aycTZatjg==
+ b=lGWKSf3lhmDMhmmQTEpTrT4t33r+P/Zy0zWlb30EflDDrBVqsye2Oao7uMUsLXV0FQF2ruigBO8pmcLwmYPINgvtGZQNzDOIpEbi7daa8c+BffHyXz3+cpqRKQYVX0YA9pf6TJ66Grb5R4YtTQ2jH0aKMIElIAvbwKLKCrJNSsq43Gc6ud782mXssMISimYa+idApFSsr8gFFFUhVYHlF1fPTX/Dk35pYx+vLhO6HjiP6yRXmJ82XeMljH/wko0nPVaStJTLZ69r1dP8ycjOk89nN3KCqROCbKILTj9nQo2aUu+PnSd0HKT3vUil2sMaZsISN3wirpxpcW3GjN3uYQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=NOTRZKeezOSyoE7f1kaPTj/KCAP7M5mHx1IFtayI1FU=;
- b=IPuU8FULYH7jaLbzF80fITqaI/1HNUFk7pfDhBcQ8IIotNMN7nCGv2/oe5+NkJGLGUygkv4HD75NgZKwp8qBphFKtEa7mLUVPE49qMFJozeVVKeLSxjyrHsoL4V5gzk4sGVaavJOgXAF7lBYn7q+004Cq8aeEICLKCBO605H9tSZKq0/ENg0PlzQr4qLCZpahsTvZt6AgupL9cK8VPt56ZFsQw2+Viqglw37s9zpvoisjlo18KLYfx6iMqmUKhYIJ6Mq/xX+1e1Gy2NsCShK4by5MrhpPZzVW7ydyHiOskMK//S2cYEep9EtwAlrWLdpw8WgIfMMFaNJCzM8fRCe6w==
+ bh=1MZsD270131MXJLcltQca+mvW6iQTGDJWJ9XrTuht4A=;
+ b=coXqrLLIxeRupwjUG+e5v3Myuh0c3lkzfFIR3zd5cLlSeof79LWnhriFwSrIIT+9Jz3PWKDUfACQLdZI5v01oVadwnn4NTmW9psdSBXo8Anqe1hl8HvIIuD2Sy6C/buS1CXMIsYcRcCsxAidKZCetOoPd71tDnUzi5MRNtGZhmhhMiUi2eaieDrYEAkd77lOX+SdMcNUvStc34MidwsOdlWqQRLiTDFxV+6l6mLf8LjocAyD4lihphgBnJkMElfkGgx7tUBKHkrJ0mntBRDkxfkLZ9AYOUMc+GHwHQ4ij8JoxZi0sMj2TwZYQsag9OBI9LH8ERTysepkeE6cRoKh3w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=microsoft.com; dmarc=pass action=none
  header.from=microsoft.com; dkim=pass header.d=microsoft.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=NOTRZKeezOSyoE7f1kaPTj/KCAP7M5mHx1IFtayI1FU=;
- b=XdgC2gnAb3ZDNE9LibTXLhFcnCPWOlOR86bBrKMIZpm99LPUKkzt2CVeASvuZwkrc5NajWk11ZxcRr7GOULah39IOTNcKGkGV9bqLAiOmVvtAliPt2Czlsa6OiYG9Zf+1JAF7P6mnbMXfTMbCwCFSiblfvblFN99WseXCadsMkk=
+ bh=1MZsD270131MXJLcltQca+mvW6iQTGDJWJ9XrTuht4A=;
+ b=JNkY3NfKfpgIrmUNrzy/uURYFAfyfenGiSDcqgbddq2I5n2+Mmab0GoBovkRSaF/lFVYCp0MymwWcJJ5bzXQD/Aacn2gjbm02i5rSioOx7uAqGg2ky5Pq0s5L69+xi9+AmQUfVv37qzTiKkvOjWZ5qmPhUC13yJPS/He90ghk3k=
 Authentication-Results: kernel.org; dkim=none (message not signed)
  header.d=none;kernel.org; dmarc=none action=none header.from=microsoft.com;
 Received: from DM6PR21MB1514.namprd21.prod.outlook.com (2603:10b6:5:22d::11)
  by DM5PR21MB1797.namprd21.prod.outlook.com (2603:10b6:4:aa::24) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3955.4; Mon, 8 Mar
- 2021 19:58:08 +0000
+ 2021 19:58:09 +0000
 Received: from DM6PR21MB1514.namprd21.prod.outlook.com
  ([fe80::1c32:e52a:6a36:3ff]) by DM6PR21MB1514.namprd21.prod.outlook.com
  ([fe80::1c32:e52a:6a36:3ff%4]) with mapi id 15.20.3933.025; Mon, 8 Mar 2021
- 19:58:08 +0000
+ 19:58:09 +0000
 From:   Michael Kelley <mikelley@microsoft.com>
 To:     will@kernel.org, catalin.marinas@arm.com, mark.rutland@arm.com,
         lorenzo.pieralisi@arm.com, sudeep.holla@arm.com,
@@ -46,9 +46,9 @@ To:     will@kernel.org, catalin.marinas@arm.com, mark.rutland@arm.com,
         arnd@arndb.de, wei.liu@kernel.org, ardb@kernel.org,
         daniel.lezcano@linaro.org, kys@microsoft.com
 Cc:     mikelley@microsoft.com
-Subject: [PATCH v9 4/7] arm64: hyperv: Add kexec and panic handlers
-Date:   Mon,  8 Mar 2021 11:57:16 -0800
-Message-Id: <1615233439-23346-5-git-send-email-mikelley@microsoft.com>
+Subject: [PATCH v9 5/7] arm64: hyperv: Initialize hypervisor on boot
+Date:   Mon,  8 Mar 2021 11:57:17 -0800
+Message-Id: <1615233439-23346-6-git-send-email-mikelley@microsoft.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1615233439-23346-1-git-send-email-mikelley@microsoft.com>
 References: <1615233439-23346-1-git-send-email-mikelley@microsoft.com>
@@ -59,203 +59,240 @@ X-ClientProxiedBy: MW4PR03CA0161.namprd03.prod.outlook.com
  (2603:10b6:5:22d::11)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from mhkdev.corp.microsoft.com (131.107.174.144) by MW4PR03CA0161.namprd03.prod.outlook.com (2603:10b6:303:8d::16) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3912.17 via Frontend Transport; Mon, 8 Mar 2021 19:58:07 +0000
+Received: from mhkdev.corp.microsoft.com (131.107.174.144) by MW4PR03CA0161.namprd03.prod.outlook.com (2603:10b6:303:8d::16) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3912.17 via Frontend Transport; Mon, 8 Mar 2021 19:58:08 +0000
 X-MS-PublicTrafficType: Email
 X-MS-Office365-Filtering-HT: Tenant
-X-MS-Office365-Filtering-Correlation-Id: d411b56c-53e9-482d-776f-08d8e26c7ea5
+X-MS-Office365-Filtering-Correlation-Id: c538f858-612d-4c08-ff29-08d8e26c7f49
 X-MS-TrafficTypeDiagnostic: DM5PR21MB1797:
 X-MS-Exchange-Transport-Forked: True
 X-LD-Processed: 72f988bf-86f1-41af-91ab-2d7cd011db47,ExtAddr
-X-Microsoft-Antispam-PRVS: <DM5PR21MB17974E7D8AA13E4529E8EF77D7939@DM5PR21MB1797.namprd21.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
+X-Microsoft-Antispam-PRVS: <DM5PR21MB1797CE0369598963388B0FD3D7939@DM5PR21MB1797.namprd21.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:1332;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 36qZscnykHtJamseO5x3ony9vRO700KO5cNyXbC74eBgstO9pcd9iJLGK/D0gh8/Pi7PxiAurCpmsDtNP6HqfkYrOq6eh6rl6Jv0c3pP2Bn/OV/U5U6RjSQgE6exZODQdYgzBH8/IrKZQ5gRLrVrwHX2TPPJLywsfxSddWfb3XZD6xouOrpYC5HbK+Xu1AueJBw+6+H5zW0pt9uA7W9HxJfKWURfZoACVW/zXk6JIBhAHvYGKEyhGBM0HndJi7hNLnjvSyJFQU/eRpKUDcxyWKhYKMGTeXwEPlw5fvHieglZBe9s4whXilqWNXwCrrPAMSMjGoOBWa0Sld4yO0ONgEsCs7C1OVP7VqzPTvgm5klTAfXxKRt12TP2Lq8miHFhLL289HqTT5euSr1iQOoRNoTEOC9xlocoyC0n+I+YHzk99GmHH1jTvmNaUF53wv3+gmwsoa4/iZHZH4SMCseHi5yEtqUC1ohZMz5pDHbqaVw+4aJILhvvxCzdVdqazdrZZpt7bmlg3lB+32+X3XZFUHADWyGam80MaNk3Pyt9AFbKhDxAQ0pHgv42kxjqCEiUGFWA7+zUqGdU7kUwYOpzz5k5R223bVukZ4c7QZlueLA=
+X-Microsoft-Antispam-Message-Info: DUJA3smbWnWW9+jJydbopFkqTKqPa7hJ5JTwywfD5PRsXvKjoi83Rkit3Px0WTCsN5pjkKZFZmVZvB2KlqeICZxidDiTPMwhMennb6li5D1aOpyEuEjOGLOYry8J7Wiaf1rsAfmgtRULiI+tRYgcbS1YBB3IzdKOHudRfvF/0u8sCdzYpudqNWzwFsrJaQiYMaKo8bhXusduOQpHTgL0sXwnzrECl0U4XtwMA85x6yxlE9oaummDL6mzVVLrF+6sw3cF69ZWltxdMYYl5iHCDltOqsowTBtiSZIPY3Faa46l4ffPOX0tnw6i32bCZtSEEl/K3RC/BMHxcm6AKPwhaqf9ZI3Kj1RY7TZwSe91kH4/1ysAc8qZOEMGBiCTtJSRBmjBibHIifdu52uFu8sVJfyCcw+QgtKpfV16z5pOFTPHLueicVLih5Cc9uZ4mPyoUVrks0Xd4UOJ4sfQFCdeo9jG/Lx7cfkk6Ta2LuXuFBPn4AOXetYhA+FHNCwXJx+WxkQ+jifF1oCsN0UA1zkEPFRl+1LzygFgsJxXT4QHILMh8R95lgQVeWZTmAG2JH6am9/6ZyrJUdU9M9ClC6QOR7lejlr/UVfJYikl1uvUg98=
 X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR21MB1514.namprd21.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(136003)(39860400002)(376002)(346002)(396003)(366004)(66556008)(186003)(52116002)(66476007)(66946007)(10290500003)(478600001)(26005)(16526019)(5660300002)(2906002)(36756003)(8936002)(6666004)(316002)(7696005)(8676002)(6486002)(2616005)(82960400001)(4326008)(6636002)(107886003)(82950400001)(7416002)(921005)(956004)(83380400001)(86362001);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData: =?us-ascii?Q?fVgdin+l5WTBLyWWvRs8DVdo1ELueacbbSzb0j4rx8GXSFMd5hWGhpkNGuMn?=
- =?us-ascii?Q?P3h8t3hUghr5nbQQYPhXN5x9fEvCPv9neLjj/qtkqCNuvHWQSHG4NZtvZ5BB?=
- =?us-ascii?Q?U8mGhWAzwv2uH+4rt0Qrj3mosywim80rbVL99xlqsMiu0Abc50aMm0poRbn4?=
- =?us-ascii?Q?ahfrwCixk7Hl8zFnjaGF6dIK9MFIAIomBo/1udKoseyX1+sYD+jFLwNLLLgk?=
- =?us-ascii?Q?jI0sgpIuYlGCUK3V5+vG3cn/6O0z3D44//RMg0h71AhYvyPioU3vqdIAJSm+?=
- =?us-ascii?Q?L84sfV1O5yQCmfQbop27MF3eQAjmiiG9ocCpZ5V3+0Q6SjX9jZs+du5TVkVz?=
- =?us-ascii?Q?kJEGs+sNGfh/s4U2yTQO9jF0u6qtrAf3par9z6WpgZ1bdKhklUmqxGuuUGKP?=
- =?us-ascii?Q?TlHHZS3UeLyB2p84zvVei/tvEGYC1iwF01e/IFjJPgA2U0xtpEXU2sGhCKSf?=
- =?us-ascii?Q?kf9lc2gZfkKDNPxnRdzpwa7CRu13DHuksVRXl/Z5R63XKlRPsHIx5chQIAxB?=
- =?us-ascii?Q?ZuVrAERyHk+CaFqnl86mNO/anaRJshrHXQd91grVjRYCGoZojKkdw1ov2lCi?=
- =?us-ascii?Q?OHxz67x3A+CxSAb3C7z3U7s/hFSAV6YT85uTjN+0B1qLMU7YvfXFXK2MjkmD?=
- =?us-ascii?Q?vjoA2+FmZAR8kjAqJtXA3JRj4u76SV7W1GBYNwktRlbb+N4Oa93ZGIqPb7GU?=
- =?us-ascii?Q?8szkocXMhXpsZIN/bYeJ2YV5vqwRfsob2uPs0Hpw+3EAffBZaBM66yPVlTvT?=
- =?us-ascii?Q?U58IBBD446Fvmsj626Ft6n7Rqc0gl8Um/73F3d8knja7gJseONYOIdcFPIlY?=
- =?us-ascii?Q?kmbMgKPUHQzeEZpaPhRyj7+Gf+5AdGKtAoq4FLLURa3tocu2BtxEaaUYBz+Q?=
- =?us-ascii?Q?jI820x9Xuqmxm2RoghS3K4BgFNmURHDfSmo/SzzpDkLKEFH1reeSeDbYqIXE?=
- =?us-ascii?Q?SY96gNJqUYhAIvO9U95+5Uo1KowKKJvwIjASIEwj6gKbaqwvqlLMdmVt5v4X?=
- =?us-ascii?Q?h4Qr8uUgW28HK2S/T3NXoitx17Nw2Zc5P1OkD+/Colx1QflIEps2FazIQ8MG?=
- =?us-ascii?Q?fueDpMTxsGW1/zh/M6hRDWGS2F9xBpIqDgWZGSCK5X9MxVoCMSKMkQsshNw7?=
- =?us-ascii?Q?n0BKipqa4wOj7SoKZrUx23dSKwOjLkYzyVd0lSbPyef/la4DXAPslT2pn2cC?=
- =?us-ascii?Q?908pM/BKQnzeVZ0+sGwXQ8VuLQVyVq80LxFmVR4WSnLr6zAz9dAekK9yWWMS?=
- =?us-ascii?Q?TbAoQDZkekE2XOuwyoHoFn8LkSFp7gJnVctoe8fnfcwIe6mgtFLUjKT0JUrq?=
- =?us-ascii?Q?H9lL5amhaxhV62wZZoqQNzj4?=
+X-MS-Exchange-AntiSpam-MessageData: =?us-ascii?Q?2zTmMK6VjIZi8I2pX1DGz2X3JLhI5CJ3TJ1f5m3DQFWroIXhRlwK7zc/q9YC?=
+ =?us-ascii?Q?/CiytX9Pfif/uBpokTpXIskO14nYF+aeESGQFfocEIVOrkxX8UHkV14rEVm/?=
+ =?us-ascii?Q?xd6Gogse/ekUuTW33lSTwEeAc24+0Kf8q4DlNXLMxvq/SOFS1sOZ6eipd870?=
+ =?us-ascii?Q?ni4sCvyZf8GT7RT3i2qKT5Iqd5MIBS23Rrv+R7ajRb+MbNFUNXXG9xGXwWSJ?=
+ =?us-ascii?Q?V6sVP7CyHFr2y0iaJs6+wDYIcPLHsPq8QeoDgSmvhCedHZ51pvIT9GgXjhaO?=
+ =?us-ascii?Q?2CHaucbJ+QQRj+I1ozhoW60zRIBde8wPUNraf+lmcmHlFIYTJX51jwTrOG7I?=
+ =?us-ascii?Q?40B+vmR36ch8LHi9n+EEL/w1jilKBMd/y5V5Vg0ebBxA6YlxjSCBXIwE7Jae?=
+ =?us-ascii?Q?2spq/9ziTw266bL437cKmuR0syvziX4DpLvgMQQODbBUbuhUwtko3Tt/8Rpq?=
+ =?us-ascii?Q?F0irUS1lMFsh5Sv5/AKQA9TYBv2IH2TrJKe+E8UeGMAv+doLi0FOMEar5ixd?=
+ =?us-ascii?Q?lt5KdrinOLqB3dGtUuMFQOaQ/9WJeOUZgkZvBlIMmlNAXsh5d7AmLgbnYJM9?=
+ =?us-ascii?Q?apQXxcMkGPVzaz9r4oyiSNtfqctU9K6Vt2bEatykuLz3js9d2P+k/i9VfriC?=
+ =?us-ascii?Q?6oXdyxUQtMVoRtAZ2QllRxjDzynH4peXCxLq3vBxo6Qd/Ol7TMzPyzb2tWDZ?=
+ =?us-ascii?Q?Z2YVtgjcPXiYCZrQx5ha7b3i/NWWl+SxrKdqocq/5sTItYaLy/4i1Ovlt+2u?=
+ =?us-ascii?Q?Aan50GuKGpGvxbQW+wfCNEBfDTFz6dU+peajXaBKbLktBd7rVJ39T86JvWXE?=
+ =?us-ascii?Q?KXxyQMYSPqJ35I9PyzMOOXsetY/TK46L1e8XLYkOUID5NWdbqXbGX/TlRk1q?=
+ =?us-ascii?Q?Cqr+ooov6d3qxrP6kCA960NavBFTn0A7tpXJmAK4Njjg+WGLkhNT5d/iG2eA?=
+ =?us-ascii?Q?WV+8Af7ZG8rypomDLuwRRKBEzBJO2yJ6Ar3dqXZfmMBlDfGV8i6pUI10Bq+2?=
+ =?us-ascii?Q?at9g2kK5Awya8NDMqWc2GMWjxXELQRUj7KINN1SKEXdKc0GawGH+h4AfqoXR?=
+ =?us-ascii?Q?d5xhdCwFdBWBdys56JExsVBhGRhtGRZkbQ0BxrjhAuALmf0qHs/ES4QgeJvJ?=
+ =?us-ascii?Q?idKSCyLbhdwCbT5XXD6lHgS6zLNsCiYO9usVIhvgs36Rk5SPNGWeTTb0/tXW?=
+ =?us-ascii?Q?G+bfLQ4Tq6xv9dF7lQAdvc6yL4CR/kbeO2KHu1ciQ7/49CIlipzdNp/FTpe1?=
+ =?us-ascii?Q?ftsmBcAljIOL+8a0fnInYeHOl0pXJ0/pz60DrHjfVdBvgLWDQWO+XsUDKDxU?=
+ =?us-ascii?Q?M4vkKld5l2xjZRMFZ3+fVXjJ?=
 X-OriginatorOrg: microsoft.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d411b56c-53e9-482d-776f-08d8e26c7ea5
+X-MS-Exchange-CrossTenant-Network-Message-Id: c538f858-612d-4c08-ff29-08d8e26c7f49
 X-MS-Exchange-CrossTenant-AuthSource: DM6PR21MB1514.namprd21.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Mar 2021 19:58:08.3626
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Mar 2021 19:58:09.4021
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 72f988bf-86f1-41af-91ab-2d7cd011db47
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: BPeumcPW86sIb9r5ykrGXCX2wvkVuhGk3cfBoS8N2eHAsLIuXFOmeULClOydHdGUV0BVUbuHAJ3wxZtdmYSF6A==
+X-MS-Exchange-CrossTenant-UserPrincipalName: W5vo5rAmKKUAbw8XmtP6y77IaJGzu8pig3xkKPkoFrHKltmAng0nS9EauGl1FHfv+tPfFiUcfW7jex94hx9D0A==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM5PR21MB1797
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Add function to inform Hyper-V about a guest panic.
-
-Also add functions to set up and remove kexec and panic
-handlers, which are currently unused on ARM64 but are
-called from architecture independent code in the VMbus
-driver.
+Add ARM64-specific code to initialize the Hyper-V
+hypervisor when booting as a guest VM. Provide functions
+and data structures indicating hypervisor status that
+are needed by VMbus driver.
 
 This code is built only when CONFIG_HYPERV is enabled.
 
 Signed-off-by: Michael Kelley <mikelley@microsoft.com>
-Reviewed-by: Sunil Muthuswamy <sunilmut@microsoft.com>
 ---
- arch/arm64/hyperv/Makefile   |  2 +-
- arch/arm64/hyperv/hv_core.c  | 52 ++++++++++++++++++++++++++++++++++++++++++
- arch/arm64/hyperv/mshyperv.c | 54 ++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 107 insertions(+), 1 deletion(-)
- create mode 100644 arch/arm64/hyperv/mshyperv.c
+ arch/arm64/hyperv/mshyperv.c      | 119 ++++++++++++++++++++++++++++++++++++++
+ arch/arm64/include/asm/mshyperv.h |   6 ++
+ arch/arm64/kernel/setup.c         |   4 ++
+ 3 files changed, 129 insertions(+)
 
-diff --git a/arch/arm64/hyperv/Makefile b/arch/arm64/hyperv/Makefile
-index 1697d30..87c31c0 100644
---- a/arch/arm64/hyperv/Makefile
-+++ b/arch/arm64/hyperv/Makefile
-@@ -1,2 +1,2 @@
- # SPDX-License-Identifier: GPL-2.0
--obj-y		:= hv_core.o
-+obj-y		:= hv_core.o mshyperv.o
-diff --git a/arch/arm64/hyperv/hv_core.c b/arch/arm64/hyperv/hv_core.c
-index d5a8a6e..fdcd69f 100644
---- a/arch/arm64/hyperv/hv_core.c
-+++ b/arch/arm64/hyperv/hv_core.c
-@@ -124,3 +124,55 @@ u64 hv_get_vpreg(u32 msr)
- 	return output.as64.low;
- }
- EXPORT_SYMBOL_GPL(hv_get_vpreg);
-+
-+/*
-+ * hyperv_report_panic - report a panic to Hyper-V.  This function uses
-+ * the older version of the Hyper-V interface that admittedly doesn't
-+ * pass enough information to be useful beyond just recording the
-+ * occurrence of a panic. The parallel hv_kmsg_dump() uses the
-+ * new interface that allows reporting 4 Kbytes of data, which is much
-+ * more useful. Hyper-V on ARM64 always supports the newer interface, but
-+ * we retain support for the older version because the sysadmin is allowed
-+ * to disable the newer version via sysctl in case of information security
-+ * concerns about the more verbose version.
-+ */
-+void hyperv_report_panic(struct pt_regs *regs, long err, bool in_die)
-+{
-+	static bool	panic_reported;
-+	u64		guest_id;
-+
-+	/* Don't report a panic to Hyper-V if we're not going to panic */
-+	if (in_die && !panic_on_oops)
-+		return;
-+
-+	/*
-+	 * We prefer to report panic on 'die' chain as we have proper
-+	 * registers to report, but if we miss it (e.g. on BUG()) we need
-+	 * to report it on 'panic'.
-+	 *
-+	 * Calling code in the 'die' and 'panic' paths ensures that only
-+	 * one CPU is running this code, so no atomicity is needed.
-+	 */
-+	if (panic_reported)
-+		return;
-+	panic_reported = true;
-+
-+	guest_id = hv_get_vpreg(HV_REGISTER_GUEST_OSID);
-+
-+	/*
-+	 * Hyper-V provides the ability to store only 5 values.
-+	 * Pick the passed in error value, the guest_id, and the PC.
-+	 * The first two general registers are added arbitrarily.
-+	 */
-+	hv_set_vpreg(HV_REGISTER_CRASH_P0, err);
-+	hv_set_vpreg(HV_REGISTER_CRASH_P1, guest_id);
-+	hv_set_vpreg(HV_REGISTER_CRASH_P2, regs->pc);
-+	hv_set_vpreg(HV_REGISTER_CRASH_P3, regs->regs[0]);
-+	hv_set_vpreg(HV_REGISTER_CRASH_P4, regs->regs[1]);
-+
-+	/*
-+	 * Let Hyper-V know there is crash data available
-+	 */
-+	hv_set_vpreg(HV_REGISTER_CRASH_CTL, HV_CRASH_CTL_CRASH_NOTIFY);
-+}
-+EXPORT_SYMBOL_GPL(hyperv_report_panic);
 diff --git a/arch/arm64/hyperv/mshyperv.c b/arch/arm64/hyperv/mshyperv.c
-new file mode 100644
-index 0000000..d202b4c
---- /dev/null
+index d202b4c..125e83e 100644
+--- a/arch/arm64/hyperv/mshyperv.c
 +++ b/arch/arm64/hyperv/mshyperv.c
-@@ -0,0 +1,54 @@
-+// SPDX-License-Identifier: GPL-2.0
+@@ -14,6 +14,125 @@
+ #include <linux/types.h>
+ #include <linux/export.h>
+ #include <linux/ptrace.h>
++#include <linux/errno.h>
++#include <linux/acpi.h>
++#include <linux/version.h>
++#include <linux/cpuhotplug.h>
++#include <linux/slab.h>
++#include <linux/cpumask.h>
++#include <asm/mshyperv.h>
 +
-+/*
-+ * Core routines for interacting with Microsoft's Hyper-V hypervisor.
-+ * Includes hypervisor initialization, and handling of crashes and
-+ * kexecs through a set of static "handler" variables set by the
-+ * architecture independent VMbus driver.
-+ *
-+ * Copyright (C) 2021, Microsoft, Inc.
-+ *
-+ * Author : Michael Kelley <mikelley@microsoft.com>
-+ */
++static bool		hyperv_initialized;
++struct ms_hyperv_info	ms_hyperv __ro_after_init;
++EXPORT_SYMBOL_GPL(ms_hyperv);
 +
-+#include <linux/types.h>
-+#include <linux/export.h>
-+#include <linux/ptrace.h>
++u32	*hv_vp_index;
++EXPORT_SYMBOL_GPL(hv_vp_index);
 +
-+/*
-+ * The VMbus handler functions are no-ops on ARM64 because
-+ * VMbus interrupts are handled as percpu IRQs.
-+ */
-+void hv_setup_vmbus_handler(void (*handler)(void))
++u32	hv_max_vp_index;
++EXPORT_SYMBOL_GPL(hv_max_vp_index);
++
++static int hv_cpu_init(unsigned int cpu)
 +{
++	hv_vp_index[cpu] = hv_get_vpreg(HV_REGISTER_VP_INDEX);
++	return 0;
 +}
-+EXPORT_SYMBOL_GPL(hv_setup_vmbus_handler);
 +
-+void hv_remove_vmbus_handler(void)
++void __init hyperv_early_init(void)
 +{
-+}
-+EXPORT_SYMBOL_GPL(hv_remove_vmbus_handler);
++	struct hv_get_vp_registers_output	result;
++	u32	a, b, c, d;
++	u64	guest_id;
 +
-+/*
-+ * The kexec and crash handler functions are
-+ * currently no-ops on ARM64.
-+ */
-+void hv_setup_kexec_handler(void (*handler)(void))
-+{
-+}
-+EXPORT_SYMBOL_GPL(hv_setup_kexec_handler);
++	/*
++	 * If we're in a VM on Hyper-V, the ACPI hypervisor_id field will
++	 * have the string "MsHyperV".
++	 */
++	if (strncmp((char *)&acpi_gbl_FADT.hypervisor_id, "MsHyperV", 8))
++		return;
 +
-+void hv_remove_kexec_handler(void)
-+{
-+}
-+EXPORT_SYMBOL_GPL(hv_remove_kexec_handler);
++	/* Setup the guest ID */
++	guest_id = generate_guest_id(0, LINUX_VERSION_CODE, 0);
++	hv_set_vpreg(HV_REGISTER_GUEST_OSID, guest_id);
 +
-+void hv_setup_crash_handler(void (*handler)(struct pt_regs *regs))
-+{
-+}
-+EXPORT_SYMBOL_GPL(hv_setup_crash_handler);
++	/* Get the features and hints from Hyper-V */
++	hv_get_vpreg_128(HV_REGISTER_FEATURES, &result);
++	ms_hyperv.features = result.as32.a;
++	ms_hyperv.misc_features = result.as32.c;
 +
-+void hv_remove_crash_handler(void)
-+{
++	hv_get_vpreg_128(HV_REGISTER_ENLIGHTENMENTS, &result);
++	ms_hyperv.hints = result.as32.a;
++
++	pr_info("Hyper-V: Features 0x%x, hints 0x%x, misc 0x%x\n",
++		ms_hyperv.features, ms_hyperv.hints, ms_hyperv.misc_features);
++
++	/*
++	 * If Hyper-V has crash notifications, set crash_kexec_post_notifiers
++	 * so that we will report the panic to Hyper-V before running kdump.
++	 */
++	if (ms_hyperv.misc_features & HV_FEATURE_GUEST_CRASH_MSR_AVAILABLE)
++		crash_kexec_post_notifiers = true;
++
++	/* Get information about the Hyper-V host version */
++	hv_get_vpreg_128(HV_REGISTER_HYPERVISOR_VERSION, &result);
++	a = result.as32.a;
++	b = result.as32.b;
++	c = result.as32.c;
++	d = result.as32.d;
++	pr_info("Hyper-V: Host Build %d.%d.%d.%d-%d-%d\n",
++		b >> 16, b & 0xFFFF, a,	d & 0xFFFFFF, c, d >> 24);
++
++	hyperv_initialized = true;
 +}
-+EXPORT_SYMBOL_GPL(hv_remove_crash_handler);
++
++static int __init hyperv_init(void)
++{
++	int	i;
++
++	/* Allocate and initialize percpu VP index array */
++	hv_max_vp_index = num_possible_cpus();
++	hv_vp_index = kmalloc_array(hv_max_vp_index, sizeof(*hv_vp_index),
++				    GFP_KERNEL);
++	if (!hv_vp_index) {
++		hv_max_vp_index = 0;
++		return -ENOMEM;
++	}
++
++	for (i = 0; i < hv_max_vp_index; i++)
++		hv_vp_index[i] = VP_INVAL;
++
++	if (cpuhp_setup_state(CPUHP_AP_ONLINE_DYN, "arm64/hyperv_init:online",
++					hv_cpu_init, NULL) < 0) {
++		hv_max_vp_index = 0;
++		kfree(hv_vp_index);
++		hv_vp_index = NULL;
++		return -EINVAL;
++	}
++
++	return 0;
++}
++
++early_initcall(hyperv_init);
++
++/* This routine is called before kexec/kdump. It does required cleanup. */
++void hyperv_cleanup(void)
++{
++	hv_set_vpreg(HV_REGISTER_GUEST_OSID, 0);
++
++}
++EXPORT_SYMBOL_GPL(hyperv_cleanup);
++
++bool hv_is_hyperv_initialized(void)
++{
++	return hyperv_initialized;
++}
++EXPORT_SYMBOL_GPL(hv_is_hyperv_initialized);
++
++bool hv_is_hibernation_supported(void)
++{
++	return false;
++}
++EXPORT_SYMBOL_GPL(hv_is_hibernation_supported);
+ 
+ /*
+  * The VMbus handler functions are no-ops on ARM64 because
+diff --git a/arch/arm64/include/asm/mshyperv.h b/arch/arm64/include/asm/mshyperv.h
+index b17299c..86ca5c5 100644
+--- a/arch/arm64/include/asm/mshyperv.h
++++ b/arch/arm64/include/asm/mshyperv.h
+@@ -23,6 +23,12 @@
+ #include <asm/hyperv-tlfs.h>
+ #include <clocksource/arm_arch_timer.h>
+ 
++#if IS_ENABLED(CONFIG_HYPERV)
++void __init hyperv_early_init(void);
++#else
++static inline void hyperv_early_init(void) {};
++#endif
++
+ /*
+  * Declare calls to get and set Hyper-V VP register values on ARM64, which
+  * requires a hypercall.
+diff --git a/arch/arm64/kernel/setup.c b/arch/arm64/kernel/setup.c
+index c18aacd..1df8285 100644
+--- a/arch/arm64/kernel/setup.c
++++ b/arch/arm64/kernel/setup.c
+@@ -49,6 +49,7 @@
+ #include <asm/traps.h>
+ #include <asm/efi.h>
+ #include <asm/xen/hypervisor.h>
++#include <asm/mshyperv.h>
+ #include <asm/mmu_context.h>
+ 
+ static int num_standard_resources;
+@@ -340,6 +341,9 @@ void __init __no_sanitize_address setup_arch(char **cmdline_p)
+ 	if (acpi_disabled)
+ 		unflatten_device_tree();
+ 
++	/* Do after acpi_boot_table_init() so local FADT is available */
++	hyperv_early_init();
++
+ 	bootmem_init();
+ 
+ 	kasan_init();
 -- 
 1.8.3.1
 
