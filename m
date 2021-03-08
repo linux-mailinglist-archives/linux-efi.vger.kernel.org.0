@@ -2,42 +2,42 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 285A13317E8
-	for <lists+linux-efi@lfdr.de>; Mon,  8 Mar 2021 20:58:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B3B8E3317ED
+	for <lists+linux-efi@lfdr.de>; Mon,  8 Mar 2021 20:58:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229650AbhCHT6S (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        id S231709AbhCHT6S (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
         Mon, 8 Mar 2021 14:58:18 -0500
-Received: from mail-eopbgr770137.outbound.protection.outlook.com ([40.107.77.137]:37480
-        "EHLO NAM02-SN1-obe.outbound.protection.outlook.com"
+Received: from mail-bn8nam12on2092.outbound.protection.outlook.com ([40.107.237.92]:46817
+        "EHLO NAM12-BN8-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S231472AbhCHT6M (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Mon, 8 Mar 2021 14:58:12 -0500
+        id S231486AbhCHT6N (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Mon, 8 Mar 2021 14:58:13 -0500
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=aP5qCxLMoJCvvsz+X8WVsjs4+W61jHtYGLmOeWhJ1xZcWZdT5y/oe7hkewUhJOba8GkxiIsKxMOBDVk3tjzOGwUsffDaUPHQpmiLqD7RwrPKmR8nX/H0Q9lUhE3LsRkgK5dLaDlTNBhtcuXtuhcluYwTPBCcNqS7eWJ0FflEpNpPvuilPsQod5HdlJsH/olM+skbrwu7RpvlyNkcztSP/zruWg+ym3+p05mGEcZZ6GXDi6CvP9LqIwfXlbfI3pGn+KTz2mnQDLN0v/e0QBlnzqs4uxi2E4mgwpd0kynA3/47r81GUYbiLHpRrY4Tn+T16/LMitqWinPy3KK2U32jpA==
+ b=C368pA6WkRSVkEFU2OflGPf72IjljJSPmZd8blNjIUiCuQEA62/8VQDmIAaXz0Ltc4a/Renvm0YfptgipXmVLY79qM82UDbeSA7LuB5ljY3TXwPElUZGzTprYPBkzYLGgsn3kLQia+XendeQQqguWjWabr/SbS2JFkDkIBEmX2zcyczzzGKG8evcgqSOUKr3ZmreQTPqvoXPd/ASDaEPoIOQ3At37a/BmI2+mXgo1+utaCyf+VeLEOwjLtzJBMoZNWjRmMYMoosg71eWsJsEf4BmqhovoYmGIx+heQNPHZzXmqUvr34FPx7cIYKQRD/USPqmukwpMqBkWshT4IfoNA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=pSKE7KsZhel89WAklbG+zH0DgO9IbVC7ODkZQ2KYEmI=;
- b=mbNo0bh70ct/X1jebPRgWQAerx8Z7nv8ZmqOJ8g9tyi4zhVMSzxPbt5O7tUKMDlX1QlEu4Mzkw55VQjAfsScV0ExejX6+9BRHcn8PEKsBPkCh//RGip4GyjF7VJMRb8WSR4TjAoXScWwpsWaIRRms+LZwN6PqiYOHuxjk6iBBt7EcX+G3jFX724Gt85d0aiADLuALN+u7eKowN0CnLHpnr9q7zU+0uMsDjBPZC8E4CZCw9T9MHWJIQZRM5rYRQbtClZMbDx2UQ4Cso53DNe80BLeilv7vTydKu5WP65IzSrAF+8fm3wkG9Yw0resHUJWS2DeKq5fwCYjgBGtrXx2qw==
+ bh=HOt6quckwKZHyyyERwRobYF7Kwt1TbHjEmKP8+rLMm4=;
+ b=AwYH46UKaSavWm2YboRcrApczw3m0NozPvV85vpjC5+K2sTGydLhZ+jMmizWa3KMfC8ja/kB1DSsmcWhu0y+ztPwT7z1qPaEm7CS1h/j/oAPjG5vSQOJFl5HomZ9xSgFhyLCxpgylcXGBjmXqI2ay51fSTF0JXF3AiBGNoBbyaRxxr7yPyeUp9UmlfCHV1jUIzqCcx++gYKQIXTdTf5TZhGhHePBpW14ae77zNrRemF5YLFFUbthiuWs+jF5rRlcMu9dKSpUI7idRCag1J740oDekcHQO2iVp/kNVoUqndTD/Mp120DbTb3yROdQPAyhAZ+TccLO77JPNmBpWFkBJQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=microsoft.com; dmarc=pass action=none
  header.from=microsoft.com; dkim=pass header.d=microsoft.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=pSKE7KsZhel89WAklbG+zH0DgO9IbVC7ODkZQ2KYEmI=;
- b=j42D40XGvM0coX6wm2DnomZfXC1uZ6pYwJCIF5Yz5kiRXx8JWb2gXw84N8HdtVPj5JpSUT0RQWCsz2sbhSKPM0co/gxYrhhFbtRSB0La/0v7SRW9uAIQGZ/SdQLRDh89UU6DT0k5/J3LmGrOGRiTX5e+YiKVHqq2frohI9hH5fo=
+ bh=HOt6quckwKZHyyyERwRobYF7Kwt1TbHjEmKP8+rLMm4=;
+ b=JfrTHniY4e4a8Yf7U+4cXhW77TtZLkib8qIcuPg06kZgCIOHDgSPHWgl79bMaOBlGV0d9Cmq1QuMs7CVjFJpO4OqxS8r+VFYQsG7c80sP0C3DN4EY6q08ED/GZRKbaeQdn9iaJH+ust8PZReSMjuYIFfa2Z5lZzKnZfBuR+WCFI=
 Authentication-Results: kernel.org; dkim=none (message not signed)
  header.d=none;kernel.org; dmarc=none action=none header.from=microsoft.com;
 Received: from DM6PR21MB1514.namprd21.prod.outlook.com (2603:10b6:5:22d::11)
  by DM5PR21MB1797.namprd21.prod.outlook.com (2603:10b6:4:aa::24) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3955.4; Mon, 8 Mar
- 2021 19:58:10 +0000
+ 2021 19:58:11 +0000
 Received: from DM6PR21MB1514.namprd21.prod.outlook.com
  ([fe80::1c32:e52a:6a36:3ff]) by DM6PR21MB1514.namprd21.prod.outlook.com
  ([fe80::1c32:e52a:6a36:3ff%4]) with mapi id 15.20.3933.025; Mon, 8 Mar 2021
- 19:58:10 +0000
+ 19:58:11 +0000
 From:   Michael Kelley <mikelley@microsoft.com>
 To:     will@kernel.org, catalin.marinas@arm.com, mark.rutland@arm.com,
         lorenzo.pieralisi@arm.com, sudeep.holla@arm.com,
@@ -46,9 +46,9 @@ To:     will@kernel.org, catalin.marinas@arm.com, mark.rutland@arm.com,
         arnd@arndb.de, wei.liu@kernel.org, ardb@kernel.org,
         daniel.lezcano@linaro.org, kys@microsoft.com
 Cc:     mikelley@microsoft.com
-Subject: [PATCH v9 6/7] arm64: efi: Export screen_info
-Date:   Mon,  8 Mar 2021 11:57:18 -0800
-Message-Id: <1615233439-23346-7-git-send-email-mikelley@microsoft.com>
+Subject: [PATCH v9 7/7] Drivers: hv: Enable Hyper-V code to be built on ARM64
+Date:   Mon,  8 Mar 2021 11:57:19 -0800
+Message-Id: <1615233439-23346-8-git-send-email-mikelley@microsoft.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1615233439-23346-1-git-send-email-mikelley@microsoft.com>
 References: <1615233439-23346-1-git-send-email-mikelley@microsoft.com>
@@ -59,78 +59,80 @@ X-ClientProxiedBy: MW4PR03CA0161.namprd03.prod.outlook.com
  (2603:10b6:5:22d::11)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from mhkdev.corp.microsoft.com (131.107.174.144) by MW4PR03CA0161.namprd03.prod.outlook.com (2603:10b6:303:8d::16) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3912.17 via Frontend Transport; Mon, 8 Mar 2021 19:58:09 +0000
+Received: from mhkdev.corp.microsoft.com (131.107.174.144) by MW4PR03CA0161.namprd03.prod.outlook.com (2603:10b6:303:8d::16) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3912.17 via Frontend Transport; Mon, 8 Mar 2021 19:58:10 +0000
 X-MS-PublicTrafficType: Email
 X-MS-Office365-Filtering-HT: Tenant
-X-MS-Office365-Filtering-Correlation-Id: d05628d3-caec-40be-153b-08d8e26c7fe7
+X-MS-Office365-Filtering-Correlation-Id: 449ccb24-94ee-47af-65e2-08d8e26c808a
 X-MS-TrafficTypeDiagnostic: DM5PR21MB1797:
 X-MS-Exchange-Transport-Forked: True
 X-LD-Processed: 72f988bf-86f1-41af-91ab-2d7cd011db47,ExtAddr
-X-Microsoft-Antispam-PRVS: <DM5PR21MB179768543C3262353CD54FEBD7939@DM5PR21MB1797.namprd21.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:6790;
+X-Microsoft-Antispam-PRVS: <DM5PR21MB17978139DE23220899E8B73ED7939@DM5PR21MB1797.namprd21.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:466;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: d5kaJbesTgMkCnUuTWOiZ9+ajUReswBBEEvBxqo5ZmHndqWg663/ADF2/g72bAzqHUjaaLjJUM8XXsgTxsreo24EhYuVGiSJzG7g5qRBQWT8q+z0VrZ5LamFTho+fJ9rwRHefTO4XhiiEusSUen5NVt3hz7Fs5anq8K86NAo59I+zIRFeyUFQaT2zR9/BYij3NiMe8uaINsoPOacRtRiFpYS0D+lLefz+md01iABMZEMSbpne/UMY1prot8zjlgMHrT8NOoOOMpSI7qjgi5IJ2+/3B/g2vBoIvhVAsf/rEt25jQ9qQvDq2fHLBOqVQWHUkj9apQC1SfLDAr71ojQPtl1AjmiATFsu7MQjfWvbOfrUeO5PFgQa4jCF+lcyekcRrM01SebanR98v1MU5sM2bvzq+NKaxyzj2cMJKQWem4/ulvsxn7NPTZUJjUuTii41DYhI8T9ZqWqxM2wIKBlPRQfT+TxPPqmrCPGyrSiKK9rHRXhjoF4mn1qBvxxN15JLL65zvRQW4pUV+T3j45x5UHG+9wEamnT2vcRJ821JPTH8n3vhKpH+zjXuSd22taRvQZTYt4JZGF51XopxUe2JjqAT9PJRbjU3ddKR60Du78=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR21MB1514.namprd21.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(136003)(39860400002)(376002)(346002)(396003)(366004)(4744005)(66556008)(186003)(52116002)(66476007)(66946007)(10290500003)(478600001)(26005)(16526019)(5660300002)(2906002)(36756003)(8936002)(6666004)(316002)(7696005)(8676002)(6486002)(2616005)(82960400001)(4326008)(6636002)(107886003)(82950400001)(7416002)(921005)(956004)(83380400001)(86362001);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData: =?us-ascii?Q?DpPsTYMHyMN8hjk7E1mR7utdclQLg63eRE7D4jrMMvYUd2OnwCfoIqHEOAUh?=
- =?us-ascii?Q?m/K0rRQgieVimBRShHuFLy4lTpSC8DSCk7HwOiyCUuoniWanhiVM4TeMVkAZ?=
- =?us-ascii?Q?FttHJbdDUd+T4ahmGridqaKdGYo2oodjNxQd1+yni6HrNh7NeJW7lAy8q7KH?=
- =?us-ascii?Q?45wcB976dUPcB2DC49G4v58EarV7J2xMcE9o4L9ddWI8HDPNHoGTiDVAtDKJ?=
- =?us-ascii?Q?f7L88MF6xgk70LSqTFyrOUQ+2A9RLX0r9QGVDX3XuIo5wwVABVs6jRazAjaz?=
- =?us-ascii?Q?rHynjencfubS5/tQigvx7/MKkBWySBS/R1d59vntkIuSw6eHsGOCm3TDbs1p?=
- =?us-ascii?Q?xHmbwRFczX8O2f488uIJ/b2ZZKoDa/7f3+nVvEdNQRwUJLNno7a+X/YjLa4C?=
- =?us-ascii?Q?nc37cdwhqV7EeBvPsFKMC4fgKfHPoHkHgDYJ441BkKdegAr19lVGIRicW5QE?=
- =?us-ascii?Q?CkYj5SBI/41tAM9TbemrFClXK5nyANLMe1cOtP/ue0j2xisNSmRZry/2af9q?=
- =?us-ascii?Q?YyEWpDKXfqRDUdJa79KBt7d9IbbhxNOR4HXqJmQg8zbwXm7hvbB2U/LERErx?=
- =?us-ascii?Q?U9zot3NBY1GBGArdhBMp7U5WBqkZaR3GOAcrIJxEXtRPsJqu2fXWz2hNjRd5?=
- =?us-ascii?Q?8KsQb2q3gA8eRzObOLYPzEwXK/2PfjXqrlt8W99bIqRscnuRXkIjenrSNNLJ?=
- =?us-ascii?Q?PteLVeWhTa1ImckQ+CcpdzqSyTt4+cHROu3Z/RkGmuzfmbQqbqr4C3qtLM9X?=
- =?us-ascii?Q?B6CbVskd3Sw4lv+eMvxxU5ADzrtlL3sMW6oKew3puSrug8vJ5bFp/D5K1BBu?=
- =?us-ascii?Q?+NSecB7CSn0RgpXDBm+UAuqDYXdmgWVmhPazdXUwQlx0Jq53r85pVyUVWv1r?=
- =?us-ascii?Q?HMVnXnMbOpGbRE5K0qqlkZh3ly5wByyYnwez8OBJ+85O3WpG4nBrXCn7lAIh?=
- =?us-ascii?Q?53Nzn5AzH3p8PVoqgA55sgFfOo5BUS34SwiOvBFZJj9fvo/UOEqPcNR4lYRe?=
- =?us-ascii?Q?IbhUDSq5ZvgdEI0BKjhYaLKhV2BYJDRzyVYjJl2AsH19vg9YwWYxcVEW9GpN?=
- =?us-ascii?Q?l3YtIWYKnQ356z99axan6d+cJzMtPTbPNdWvY/f0Me5Up+CDgwLOo+R6tRO1?=
- =?us-ascii?Q?ZaRRhdFfQpUXLu5h21vyUISf5Lj9rBv8y6yPfNHbndkCdl0tdlnK5Q0+sUx+?=
- =?us-ascii?Q?A/Iw/Clm3IEpGlDc8jJASW5DeTgAcNDAuWDinHLTiOxeJtbdBZsXP2kE/eZ4?=
- =?us-ascii?Q?peOYA5D9hd1MDKOpt0Z/AGiIXXetLn9Dlm3i4aRlpPq6q9z2jne6tg6imKYs?=
- =?us-ascii?Q?sPoO99SPcdqLHixLIGHGsIvH?=
+X-Microsoft-Antispam-Message-Info: XVi6PpRcbTykATeQuHoKvRrd5r+uGtGuPEJRi+nV9DAnbS7BJo1+kDscMz1w/VepfK80KTpJIeUYc1bYF1oL3HDOWK9rDekNJun6eGg1+WoFqPjD0+Ys2p4Hk7AP4XDWsq1uiFkdl3Ty3FtNvsB3pb24hEOn0YeGrWKOHx/bLXUI5Z0VPvKw0eoB7Gt+fcaAYf37O7mP+/B0R0gJWywNqxHK4/ft7XUXb0RCGmXzrYbHwP7IJBe8PZFJ0kSOQFdpWdW/Klk45+gws2HrjwoPR7zS9CDTRq7NCqxoz4e0yZgLwSDq8i1kQZrs7TJqiai5BiygQa13tpy3jxwWUnY/Ji6RLa+FeL4IW5UZzSSwa9KuW3X6EvemZAxbu09e9lkJfliIDBaUJjc6ASwPgcwxC51GQsrcZuC0otiXQ2aUiiEs+GWVZ5aEgyDO9mSbFEumCotZTwxtUKlih6HuMoNJQZ/rFGUUhVXgXt7y+boQBb0K/XYhMTcyQB4FkeZw7trmowpvtfSSv7cUrqka+tcTIsxXi0baNqkJBcI2Gg8lUn7wjBdLmY85lvoXY7BaR8DIpa+0nLKlhULeQMJIJIck58ogdOvoETeVlR6uz2dJgaw=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR21MB1514.namprd21.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(136003)(39860400002)(376002)(346002)(396003)(366004)(4744005)(66556008)(186003)(52116002)(66476007)(66946007)(10290500003)(478600001)(26005)(16526019)(5660300002)(2906002)(36756003)(8936002)(316002)(7696005)(8676002)(6486002)(2616005)(82960400001)(4326008)(6636002)(107886003)(82950400001)(7416002)(921005)(956004)(83380400001)(86362001);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData: =?us-ascii?Q?w5OJP256vXShaPfDTF94Z4+EUqFwdsNOWIi1qhY053LDQjRcyxAbVTcA5ttU?=
+ =?us-ascii?Q?Cp9e/G9/zYsLQsNJ47x5IckaL+gV/8Z0tHlV0hXRBk0wWJb3v7gFvRq9TRR9?=
+ =?us-ascii?Q?9iBrtpBP/SRaZnEyfxykukP5SphzNDx2itZ0Hcp4O4pgkoomx2Zw5r5zDnGl?=
+ =?us-ascii?Q?jiQrvdXIbwE1VzKB6LdDmQeoGm5BaFSM4m5R4+ULjwSxY+fAMtbPqZZEMk5M?=
+ =?us-ascii?Q?mYeS71n99cfq4XkxZKvnr0Tiu50ENvPWsV4QUIIGUgKA3QrvsGd2I8+294NN?=
+ =?us-ascii?Q?lCVMKsVkJKTzEDhlwJ2/RpkBJsDxlgov/WNShbM5qJbHAeUW0t7x951Ic0FC?=
+ =?us-ascii?Q?a5Hd+/Gnh8nfgEDwEjZON5DDGSz33N9S8Hso3ng46TnSjAlanEuTk2HT+sbq?=
+ =?us-ascii?Q?xl/S+J/efc4ciYlbieef58kHaDQz1XUn7uFLwpgqv+BaOU1woR6/9MzNsfBi?=
+ =?us-ascii?Q?xHS3UCqFuwm3aTBRBXuwxVTIzkmD+B9J1s15a17GZRU2MT/FoGr7YQFMG1oX?=
+ =?us-ascii?Q?QDLA2B69qX6vLrNOIX3L5fHBR6dn4WxLxuFEm/qDB5NKNqk/UBFbtP9Fk/f2?=
+ =?us-ascii?Q?Ja3ZYGwxhZDOEMUKKbGHLrs74NQb4zv++Lfqi96G/Jdh8utHhtaKsX8bwTQT?=
+ =?us-ascii?Q?TMk69h6Ou2V8gtaJsls5cD58RH6JCsnLwIdvUOBFALRmZMwtsE9AfolNoNLv?=
+ =?us-ascii?Q?p6KxSWInyMFTuGnom20R6CtScAcnaJ7/iAvWFmmw3ud0nUyURfp1m+BvDvgZ?=
+ =?us-ascii?Q?EOh0OuncMweA9UH/KHZ0M9Gt5KgqzoEvzvDhGOjWaWaTRJq3kVMLnx9UWFQd?=
+ =?us-ascii?Q?AKlHVMZHXw69Ce8vmI9fQ/FXxktrq18/ZWgnrnr+OXlBWKFjVOVbVfsdTJoM?=
+ =?us-ascii?Q?IJHdNW8yer4SMZJaDuBJNzzJbbO30yIvmcAgmPptABbtGtlKzLmgtYyqnp/r?=
+ =?us-ascii?Q?edDaS5nWL0HZ0j0ZlMGEJnGcUmdnMrxAkWjVEZx4yh0JT1u6VOqCgPG8usOY?=
+ =?us-ascii?Q?u697YPGaPm7XvQpamoFovAeflrJAMxcPJl6QWCrsGNYwYDpD/eM1euVzVouk?=
+ =?us-ascii?Q?uUXbx79sCXlJctt1a/NIG9BdyyGquDQl5F9sJY5TxtNj5X9UWiKBQptwP9AH?=
+ =?us-ascii?Q?TFsIJR8IuxAteKgy9vMqJ/6NyD7vztFc76DESUaERn8dPvCsOilTrMqYknaP?=
+ =?us-ascii?Q?1Ue4OZH7oJBbmChexDJj21I7Lep+f3O2m3e77BYe2TBDayXi0VW3iTluPmBr?=
+ =?us-ascii?Q?C6mrrYsuBpBjUz6Z7SwFWO2vRcDqq+srNpnKoDBHUoSG353Y7RJidr8X3j1S?=
+ =?us-ascii?Q?ppIw8ZBMPQ3B294oeWm/lMgd?=
 X-OriginatorOrg: microsoft.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d05628d3-caec-40be-153b-08d8e26c7fe7
+X-MS-Exchange-CrossTenant-Network-Message-Id: 449ccb24-94ee-47af-65e2-08d8e26c808a
 X-MS-Exchange-CrossTenant-AuthSource: DM6PR21MB1514.namprd21.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Mar 2021 19:58:10.4684
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Mar 2021 19:58:11.5357
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 72f988bf-86f1-41af-91ab-2d7cd011db47
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: qYHlpoEJy0gr1VRgF9OZkLENPyaoRxpoXtlGX4mGfvvQ8DaDCHaYIU6YfWyBHPxYMWawrwbHo+8jankXOr/hVw==
+X-MS-Exchange-CrossTenant-UserPrincipalName: lS9jvMDihAFs+17+esu40S282jQVVdzAyeM7YxwCS7LaCwT9YvExtCTfg8upYBH94/ijDRdyTMqasr+nWWCh1A==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM5PR21MB1797
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The Hyper-V frame buffer driver may be built as a module, and
-it needs access to screen_info. So export screen_info.
+Update drivers/hv/Kconfig so CONFIG_HYPERV can be selected on
+ARM64, causing the Hyper-V specific code to be built.
 
 Signed-off-by: Michael Kelley <mikelley@microsoft.com>
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
+Reviewed-by: Sunil Muthuswamy <sunilmut@microsoft.com>
 ---
- arch/arm64/kernel/efi.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/hv/Kconfig | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/kernel/efi.c b/arch/arm64/kernel/efi.c
-index fa02efb..e1be6c4 100644
---- a/arch/arm64/kernel/efi.c
-+++ b/arch/arm64/kernel/efi.c
-@@ -55,6 +55,7 @@ static __init pteval_t create_mapping_protection(efi_memory_desc_t *md)
+diff --git a/drivers/hv/Kconfig b/drivers/hv/Kconfig
+index 79e5356..d492682 100644
+--- a/drivers/hv/Kconfig
++++ b/drivers/hv/Kconfig
+@@ -4,7 +4,8 @@ menu "Microsoft Hyper-V guest support"
  
- /* we will fill this structure from the stub, so don't put it in .bss */
- struct screen_info screen_info __section(".data");
-+EXPORT_SYMBOL(screen_info);
- 
- int __init efi_create_mapping(struct mm_struct *mm, efi_memory_desc_t *md)
- {
+ config HYPERV
+ 	tristate "Microsoft Hyper-V client drivers"
+-	depends on X86 && ACPI && X86_LOCAL_APIC && HYPERVISOR_GUEST
++	depends on ACPI && ((X86 && X86_LOCAL_APIC && HYPERVISOR_GUEST) \
++		|| (ARM64 && !CPU_BIG_ENDIAN))
+ 	select PARAVIRT
+ 	select X86_HV_CALLBACK_VECTOR
+ 	help
 -- 
 1.8.3.1
 
