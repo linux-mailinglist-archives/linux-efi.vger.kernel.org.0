@@ -2,136 +2,200 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 563B9331D72
-	for <lists+linux-efi@lfdr.de>; Tue,  9 Mar 2021 04:23:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4AC42331F7A
+	for <lists+linux-efi@lfdr.de>; Tue,  9 Mar 2021 07:43:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230173AbhCIDXM (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 8 Mar 2021 22:23:12 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55670 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229854AbhCIDXH (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 8 Mar 2021 22:23:07 -0500
-Received: from mail-pj1-x102e.google.com (mail-pj1-x102e.google.com [IPv6:2607:f8b0:4864:20::102e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AFCA4C06175F
-        for <linux-efi@vger.kernel.org>; Mon,  8 Mar 2021 19:22:55 -0800 (PST)
-Received: by mail-pj1-x102e.google.com with SMTP id kr3-20020a17090b4903b02900c096fc01deso4372576pjb.4
-        for <linux-efi@vger.kernel.org>; Mon, 08 Mar 2021 19:22:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=a3Pw9lp9/ZAFdwTOb1S2bgPAA0lghUNsk5cDPcxdpiE=;
-        b=HZ7pbJEU03fnCJVoGWA8n8LnqM9Cu8S1Dt1tymQgzPGukeBPr2LKfb6wftHAiTkTtq
-         JlkM307WAYUqGovnS2lW6zVlkdvIKcRRK6SoFkXMFF13T1JZWpQHDcd70/2I9JuoAw0i
-         9B/IWqqsKBoTbFxgc7oQXffml4ndEOPM3ZvhN5etLOFHLJhSF+B2Ew0l8l60xDFGSXzC
-         WA/hcO1NbGoUt/SdJjyVQMpRj9ZSzsb7p9OyzVUa+NYJWAgyS534CSRR9uDUwiZ5bMz5
-         /AQtaXRmWa+TbTeXniOFa7q0qV+B4LRdtH3DyPHghKdSE3KmSPIk2TH3RwMg9fujJnIB
-         BLSg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=a3Pw9lp9/ZAFdwTOb1S2bgPAA0lghUNsk5cDPcxdpiE=;
-        b=Bt+j3vXAFYvZiKoIvr/I3/6Gu4Bbs/OIOeao/6MOfv53HdhPWYyU8EH61i35/mYTUf
-         Y09wY9Vimy058ZsTMUTocIcnCaPNi11LB/jq+xsTuwv/66Zkzty77dZX2xOr6n72TFax
-         8lgLeEp+ySl2QIwHJeqZ9QEp+fWpfftyL9Ynk6z5X3PqqNWeVDrHQGk94OUuw7HzvQgf
-         icUybfWzkS/mfEpFv6ouypGBro8kGbW9JILW8a7yl1w1xJeLsybCkr8EDLK/jlpfOu7f
-         ZINWaQM1N/t15vu3DSJRgeg+8K+4G/xrOxbQ+MKV9YzEHCh2It58OCBRZVSpRm62UNdA
-         ijDg==
-X-Gm-Message-State: AOAM532aPZsGqepGNzDPWlHFMOkW3yLhVWuOiy4isypZJ2cIL7hpF2Pv
-        Zn6PTRUKnFZpqZc1FH7aOgUBHw==
-X-Google-Smtp-Source: ABdhPJzQPN6qOWYJpZXhJTkprosApnqdCWirOWsTJcBeXA7z5PufsomIQdiU4i39K54G/14+pKSS8Q==
-X-Received: by 2002:a17:90a:a789:: with SMTP id f9mr2446391pjq.192.1615260175264;
-        Mon, 08 Mar 2021 19:22:55 -0800 (PST)
-Received: from dragon (80.251.214.228.16clouds.com. [80.251.214.228])
-        by smtp.gmail.com with ESMTPSA id p17sm3324377pfn.62.2021.03.08.19.22.53
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Mon, 08 Mar 2021 19:22:54 -0800 (PST)
-Date:   Tue, 9 Mar 2021 11:22:49 +0800
-From:   Shawn Guo <shawn.guo@linaro.org>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     linux-efi <linux-efi@vger.kernel.org>,
-        Jeffrey Hugo <jhugo@codeaurora.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Rob Clark <robdclark@gmail.com>,
-        Leif Lindholm <leif@nuviainc.com>,
-        linux-arm-msm@vger.kernel.org
-Subject: Re: [PATCH] efi: stub: override RT_PROP table supported mask based
- on EFI variable
-Message-ID: <20210309032248.GR17424@dragon>
-References: <20210306113519.294287-1-ardb@kernel.org>
- <20210307110228.GP17424@dragon>
- <CAMj1kXFiqXwCqJE9Wxu-tc3HYSh1qCqPLL_Csc=gW6SOYrweWw@mail.gmail.com>
+        id S229689AbhCIGnU (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 9 Mar 2021 01:43:20 -0500
+Received: from mail.kernel.org ([198.145.29.99]:50910 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229649AbhCIGnN (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Tue, 9 Mar 2021 01:43:13 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 4A59B652A4;
+        Tue,  9 Mar 2021 06:43:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1615272192;
+        bh=8aTJOb41W71/iAYGorZ+HicoBt7LRkfCHw2dKRKP5H8=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=PsLPWBfOWhe/SUGxap6rvsZXtVzh2EiQf7EnxMZZDhpQSHp8pryRMfdjo1ePU9uGy
+         4csLHWUbFWNa4SbM9RJy5TLnV8zAXHZsDPq7VibDYGiOO9WeEKpZk43SZkX2Dzscbq
+         J6XlTSnbzEzvxSjunZA94vLnZZFlPy05/xBtkormCNi3dRDH0kFD4xlFRXcMezlx5c
+         nKVb2CCGGlOUKlwyPdAQXKlocouJZrF+4dIrw8QP+Smis35zhLbmdw1hhheRDkoh+l
+         /zlsT1zEYpG/vD1wZu7C2rqmHTUh6fkkvnFdzvAV4HiOskAlhWePGPVxORbsCM6zwi
+         oZfa4b9vwf92w==
+Received: by mail-ot1-f54.google.com with SMTP id h22so11832640otr.6;
+        Mon, 08 Mar 2021 22:43:12 -0800 (PST)
+X-Gm-Message-State: AOAM5311Ad3G5pXMwx/SeL3TI2v1wrx17gfLProVSlDl6+LObIGBm7/O
+        hlhaswIYSRlGzebt47VOiPWT+YsccUAiPfB4mgA=
+X-Google-Smtp-Source: ABdhPJwwErlMGgTI6W9kWVTWXyRRpA2pqUCTwdh7w26x7CXw7TkH69DIf3SOIwcUVKSsFK4w6gv5mpplcLA5Tjexcsk=
+X-Received: by 2002:a9d:7512:: with SMTP id r18mr23355920otk.90.1615272191490;
+ Mon, 08 Mar 2021 22:43:11 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAMj1kXFiqXwCqJE9Wxu-tc3HYSh1qCqPLL_Csc=gW6SOYrweWw@mail.gmail.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+References: <20210309000247.2989531-8-danielwa@cisco.com>
+In-Reply-To: <20210309000247.2989531-8-danielwa@cisco.com>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Tue, 9 Mar 2021 07:43:01 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXF9k2J5eZdn6R6bn4ChRVyuGYHM7bOtycf1QKrakrua_g@mail.gmail.com>
+Message-ID: <CAMj1kXF9k2J5eZdn6R6bn4ChRVyuGYHM7bOtycf1QKrakrua_g@mail.gmail.com>
+Subject: Re: [PATCH v2 7/7] CMDLINE: x86: convert to generic builtin command line
+To:     Daniel Walker <danielwa@cisco.com>
+Cc:     Will Deacon <will@kernel.org>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Rob Herring <robh@kernel.org>,
+        Daniel Gimpelevich <daniel@gimpelevich.san-francisco.ca.us>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        X86 ML <x86@kernel.org>,
+        "open list:MIPS" <linux-mips@vger.kernel.org>,
+        "open list:LINUX FOR POWERPC (32-BIT AND 64-BIT)" 
+        <linuxppc-dev@lists.ozlabs.org>, xe-linux-external@cisco.com,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Ruslan Ruslichenko <rruslich@cisco.com>,
+        Ruslan Bilovol <ruslan.bilovol@gmail.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-efi <linux-efi@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Mon, Mar 08, 2021 at 02:34:48PM +0100, Ard Biesheuvel wrote:
-> On Sun, 7 Mar 2021 at 12:02, Shawn Guo <shawn.guo@linaro.org> wrote:
-> >
-> > On Sat, Mar 06, 2021 at 12:35:19PM +0100, Ard Biesheuvel wrote:
-> > > Allow EFI systems to override the set of supported runtime services
-> > > declared via the RT_PROP table, by checking for the existence of a
-> > > 'OverrideSupported' EFI variable of the appropriate size under the
-> > > RT_PROP table GUID, and if it does, combine the supported mask using
-> > > logical AND. (This means the override can only remove support, not
-> > > add it back).
-> > >
-> > > Cc: Jeffrey Hugo <jhugo@codeaurora.org>,
-> > > Cc: Bjorn Andersson <bjorn.andersson@linaro.org>
-> > > Cc: Shawn Guo <shawn.guo@linaro.org>
-> > > Cc: Rob Clark <robdclark@gmail.com>
-> > > Cc: Leif Lindholm <leif@nuviainc.com>
-> > > Cc: linux-arm-msm@vger.kernel.org
-> > >
-> > > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> >
-> > Awesome, Ard!  On both Lenovo Yoga C630 and Flex 5G latops:
-> >
-> > Tested-by: Shawn Guo <shawn.guo@linaro.org>
-> >
-> > With 'OverrideSupported' EFI variable added from UEFI Shell, we can drop
-> > 'efi=novamap' kernel cmdline and get around the broken poweroff runtime
-> > services nicely.  Thanks!
-> >
-> 
-> Thanks for confirming.
-> 
-> However, I am not going to merge this without some justification, and
-> hopefully some input from other folks (Leif?)
-> 
-> RTPROP already provides what we need on all platforms that use
-> DtbLoader, and the patch for that is queued up for v5.12-rcX, with a
-> cc:stable to v5.10. This allows any RT service to be marked as
-> disabled, including SetVirtualAddressMap().
-> 
-> So afaict, that means that this patch would be a special case for
-> Flex5G, right?
+On Tue, 9 Mar 2021 at 01:03, Daniel Walker <danielwa@cisco.com> wrote:
+>
+> This updates the x86 code to use the CONFIG_GENERIC_CMDLINE
+> option.
+>
+> Cc: xe-linux-external@cisco.com
+> Signed-off-by: Ruslan Ruslichenko <rruslich@cisco.com>
+> Signed-off-by: Ruslan Bilovol <ruslan.bilovol@gmail.com>
+> Signed-off-by: Daniel Walker <danielwa@cisco.com>
+> ---
+>  arch/x86/Kconfig                        | 44 +------------------------
+>  arch/x86/kernel/setup.c                 | 18 ++--------
+>  drivers/firmware/efi/libstub/x86-stub.c |  2 +-
+>  3 files changed, 4 insertions(+), 60 deletions(-)
+>
+> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+> index 21f851179ff0..3950f9bf9855 100644
+> --- a/arch/x86/Kconfig
+> +++ b/arch/x86/Kconfig
+> @@ -115,6 +115,7 @@ config X86
+>         select EDAC_SUPPORT
+>         select GENERIC_CLOCKEVENTS_BROADCAST    if X86_64 || (X86_32 && X86_LOCAL_APIC)
+>         select GENERIC_CLOCKEVENTS_MIN_ADJUST
+> +       select GENERIC_CMDLINE
+>         select GENERIC_CMOS_UPDATE
+>         select GENERIC_CPU_AUTOPROBE
+>         select GENERIC_CPU_VULNERABILITIES
+> @@ -2368,49 +2369,6 @@ choice
+>
+>  endchoice
+>
+> -config CMDLINE_BOOL
+> -       bool "Built-in kernel command line"
+> -       help
+> -         Allow for specifying boot arguments to the kernel at
+> -         build time.  On some systems (e.g. embedded ones), it is
+> -         necessary or convenient to provide some or all of the
+> -         kernel boot arguments with the kernel itself (that is,
+> -         to not rely on the boot loader to provide them.)
+> -
+> -         To compile command line arguments into the kernel,
+> -         set this option to 'Y', then fill in the
+> -         boot arguments in CONFIG_CMDLINE.
+> -
+> -         Systems with fully functional boot loaders (i.e. non-embedded)
+> -         should leave this option set to 'N'.
+> -
+> -config CMDLINE
+> -       string "Built-in kernel command string"
+> -       depends on CMDLINE_BOOL
+> -       default ""
+> -       help
+> -         Enter arguments here that should be compiled into the kernel
+> -         image and used at boot time.  If the boot loader provides a
+> -         command line at boot time, it is appended to this string to
+> -         form the full kernel command line, when the system boots.
+> -
+> -         However, you can use the CONFIG_CMDLINE_OVERRIDE option to
+> -         change this behavior.
+> -
+> -         In most cases, the command line (whether built-in or provided
+> -         by the boot loader) should specify the device for the root
+> -         file system.
+> -
+> -config CMDLINE_OVERRIDE
+> -       bool "Built-in command line overrides boot loader arguments"
+> -       depends on CMDLINE_BOOL && CMDLINE != ""
+> -       help
+> -         Set this option to 'Y' to have the kernel ignore the boot loader
+> -         command line, and use ONLY the built-in command line.
+> -
+> -         This is used to work around broken boot loaders.  This should
+> -         be set to 'N' under normal conditions.
+> -
+>  config MODIFY_LDT_SYSCALL
+>         bool "Enable the LDT (local descriptor table)" if EXPERT
+>         default y
+> diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
+> index 740f3bdb3f61..e748c3e5c1ae 100644
+> --- a/arch/x86/kernel/setup.c
+> +++ b/arch/x86/kernel/setup.c
+> @@ -48,6 +48,7 @@
+>  #include <asm/unwind.h>
+>  #include <asm/vsyscall.h>
+>  #include <linux/vmalloc.h>
+> +#include <linux/cmdline.h>
+>
+>  /*
+>   * max_low_pfn_mapped: highest directly mapped pfn < 4 GB
+> @@ -162,9 +163,6 @@ unsigned long saved_video_mode;
+>  #define RAMDISK_LOAD_FLAG              0x4000
+>
+>  static char __initdata command_line[COMMAND_LINE_SIZE];
+> -#ifdef CONFIG_CMDLINE_BOOL
+> -static char __initdata builtin_cmdline[COMMAND_LINE_SIZE] = CONFIG_CMDLINE;
+> -#endif
+>
+>  #if defined(CONFIG_EDD) || defined(CONFIG_EDD_MODULE)
+>  struct edd edd;
+> @@ -884,19 +882,7 @@ void __init setup_arch(char **cmdline_p)
+>         bss_resource.start = __pa_symbol(__bss_start);
+>         bss_resource.end = __pa_symbol(__bss_stop)-1;
+>
+> -#ifdef CONFIG_CMDLINE_BOOL
+> -#ifdef CONFIG_CMDLINE_OVERRIDE
+> -       strlcpy(boot_command_line, builtin_cmdline, COMMAND_LINE_SIZE);
+> -#else
+> -       if (builtin_cmdline[0]) {
+> -               /* append boot loader cmdline to builtin */
+> -               strlcat(builtin_cmdline, " ", COMMAND_LINE_SIZE);
+> -               strlcat(builtin_cmdline, boot_command_line, COMMAND_LINE_SIZE);
+> -               strlcpy(boot_command_line, builtin_cmdline, COMMAND_LINE_SIZE);
+> -       }
+> -#endif
+> -#endif
+> -
+> +       cmdline_add_builtin(boot_command_line, NULL, COMMAND_LINE_SIZE);
+>         strlcpy(command_line, boot_command_line, COMMAND_LINE_SIZE);
+>         *cmdline_p = command_line;
+>
+> diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
+> index f14c4ff5839f..9538c9d4a0bc 100644
+> --- a/drivers/firmware/efi/libstub/x86-stub.c
+> +++ b/drivers/firmware/efi/libstub/x86-stub.c
+> @@ -736,7 +736,7 @@ unsigned long efi_main(efi_handle_t handle,
+>         }
+>
+>  #ifdef CONFIG_CMDLINE_BOOL
 
-It's for all Snapdragon based laptops, as we need to disable
-SetVirtualAddressMap runtime services on all of them.
+Does this CMDLINE_BOOL check need to be dropped as well?
 
-> So how are platforms such as this one going to load the
-> DTB? If some loader will be involved (or even just GRUB),
-
-Yes, GRUB.
-
-> shouldn't it
-> be that component that sets RTPROP like DtbLoader will, not the kernel
-> itself.
-> 
-> Btw I don't think ACPI boot is a use case here. I don't see a software
-> framebuffer with no wifi support as a usage mode that justifies
-> carrying EFI stub hacks for everyone.
-
-Okay.  I'm fine to carry it as an out-of-tree patch until someday you
-consider ACPI boot is useful for everyone.  But I do boot these laptops
-with ACPI at daily basis right now as arm64 native build machine, with
-USB Ethernet adapter.
-
-Shawn
+> -       status = efi_parse_options(CONFIG_CMDLINE);
+> +       status = efi_parse_options(CONFIG_CMDLINE_PREPEND " " CONFIG_CMDLINE_APPEND);
+>         if (status != EFI_SUCCESS) {
+>                 efi_err("Failed to parse options\n");
+>                 goto fail;
+> --
+> 2.25.1
+>
