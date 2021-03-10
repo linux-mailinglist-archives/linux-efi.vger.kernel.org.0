@@ -2,176 +2,124 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 758C3333596
-	for <lists+linux-efi@lfdr.de>; Wed, 10 Mar 2021 06:53:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E6BF333711
+	for <lists+linux-efi@lfdr.de>; Wed, 10 Mar 2021 09:13:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230373AbhCJFxW (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 10 Mar 2021 00:53:22 -0500
-Received: from foss.arm.com ([217.140.110.172]:38512 "EHLO foss.arm.com"
+        id S229851AbhCJIMq (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 10 Mar 2021 03:12:46 -0500
+Received: from mail.kernel.org ([198.145.29.99]:49630 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229712AbhCJFws (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Wed, 10 Mar 2021 00:52:48 -0500
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 09A491FB;
-        Tue,  9 Mar 2021 21:52:48 -0800 (PST)
-Received: from p8cg001049571a15.arm.com (unknown [10.163.67.114])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id C791E3F70D;
-        Tue,  9 Mar 2021 21:52:43 -0800 (PST)
-From:   Anshuman Khandual <anshuman.khandual@arm.com>
-To:     linux-arm-kernel@lists.infradead.org
-Cc:     James Morse <james.morse@arm.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
-        Suzuki K Poulose <suzuki.poulose@arm.com>,
+        id S229516AbhCJIMR (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Wed, 10 Mar 2021 03:12:17 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id E7B6D64F37;
+        Wed, 10 Mar 2021 08:12:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1615363937;
+        bh=JG/KDVDWKQuLL2FjCZ1/wjC/6c4Hfq0whZC1yeJa7I0=;
+        h=From:To:Cc:Subject:Date:From;
+        b=NDS6gjWeQiAzqHXxRXyYEgSuWjIWMMR4sHpaULizZb+Njx760E0UiEXQ/JS9tqsRp
+         aZC1Zc/mP89FUqhoWls+OLQgpv/Q5LxZiPWb3V9WlpLrTuSI/XJvD9T9XqbdI7S1tz
+         mJ355veFHanCJGU94fuvqCkvuqGUs5OWVYEpBZtzUVsbcEAVkg1hh01ahv22lAOJFJ
+         0ohYBDUkGIkzCgesfteDiJotmGT/EfLWlSFgbzVPVzHvBKMsx9owxwea9mepRaLOaH
+         jyDXJOo+3o4Xlg+coZYdEXlIetxrNQWOMa+wg9VR6qmJOLpMCv8bEKD8QG3lm3D40N
+         GIAQkKZiGpoRQ==
+From:   Ard Biesheuvel <ardb@kernel.org>
+To:     linux-efi@vger.kernel.org
+Cc:     linux-arm-kernel@lists.infradead.org,
         Ard Biesheuvel <ardb@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        kvmarm@lists.cs.columbia.edu, linux-efi@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Anshuman Khandual <anshuman.khandual@arm.com>
-Subject: [PATCH V2] arm64/mm: Fix __enable_mmu() for new TGRAN range values
-Date:   Wed, 10 Mar 2021 11:23:10 +0530
-Message-Id: <1615355590-21102-1-git-send-email-anshuman.khandual@arm.com>
-X-Mailer: git-send-email 2.7.4
+        Nathan Chancellor <nathan@kernel.org>
+Subject: [PATCH] efi: use 32-bit alignment for efi_guid_t literals
+Date:   Wed, 10 Mar 2021 09:12:10 +0100
+Message-Id: <20210310081210.95147-1-ardb@kernel.org>
+X-Mailer: git-send-email 2.30.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-From: James Morse <james.morse@arm.com>
+Commit 494c704f9af0 ("efi: Use 32-bit alignment for efi_guid_t") updated
+the type definition of efi_guid_t to ensure that it always appears
+sufficiently aligned (the UEFI spec is ambiguous about this, but given
+the fact that its EFI_GUID type is defined in terms of a struct carrying
+a uint32_t, the natural alignment is definitely >= 32 bits).
 
-As per ARM ARM DDI 0487G.a, when FEAT_LPA2 is implemented, ID_AA64MMFR0_EL1
-might contain a range of values to describe supported translation granules
-(4K and 16K pages sizes in particular) instead of just enabled or disabled
-values. This changes __enable_mmu() function to handle complete acceptable
-range of values (depending on whether the field is signed or unsigned) now
-represented with ID_AA64MMFR0_TGRAN_SUPPORTED_[MIN..MAX] pair. While here,
-also fix similar situations in EFI stub and KVM as well.
+However, we missed the EFI_GUID() macro which is used to instantiate
+efi_guid_t literals: that macro is still based on the guid_t type,
+which does not have a minimum alignment at all. This results in warnings
+such as
 
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Marc Zyngier <maz@kernel.org>
-Cc: James Morse <james.morse@arm.com>
-Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: kvmarm@lists.cs.columbia.edu
-Cc: linux-efi@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Acked-by: Marc Zyngier <maz@kernel.org>
-Signed-off-by: James Morse <james.morse@arm.com>
-Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+  In file included from drivers/firmware/efi/mokvar-table.c:35:
+  include/linux/efi.h:1093:34: warning: passing 1-byte aligned argument to
+      4-byte aligned parameter 2 of 'get_var' may result in an unaligned pointer
+      access [-Walign-mismatch]
+          status = get_var(L"SecureBoot", &EFI_GLOBAL_VARIABLE_GUID, NULL, &size,
+                                          ^
+  include/linux/efi.h:1101:24: warning: passing 1-byte aligned argument to
+      4-byte aligned parameter 2 of 'get_var' may result in an unaligned pointer
+      access [-Walign-mismatch]
+          get_var(L"SetupMode", &EFI_GLOBAL_VARIABLE_GUID, NULL, &size, &setupmode);
+
+The distinction only matters on CPUs that do not support misaligned loads
+fully, but 32-bit ARM's load-multiple instructions fall into that category,
+and these are likely to be emitted by the compiler that built the firmware
+for loading word-aligned 128-bit GUIDs from memory
+
+Instead of bodging this further, let's simply switch to our own definition
+of efi_guid_t that carries a uint32_t as well. Since efi_guid_t is used as
+an opaque type everywhere in the EFI code, this is only a minor code change.
+
+Reported-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
-Changes in V2:
 
-- Changes back to switch construct in kvm_set_ipa_limit() per Marc
+I am currently testing this change via my for-kernelci branch. Please give
+this some soak time in the other CIs that we have access to.
 
-Changes in V1:
+ include/linux/efi.h | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
-https://patchwork.kernel.org/project/linux-arm-kernel/list/?series=442817
-
- arch/arm64/include/asm/sysreg.h           | 20 ++++++++++++++------
- arch/arm64/kernel/head.S                  |  6 ++++--
- arch/arm64/kvm/reset.c                    | 10 ++++++----
- drivers/firmware/efi/libstub/arm64-stub.c |  2 +-
- 4 files changed, 25 insertions(+), 13 deletions(-)
-
-diff --git a/arch/arm64/include/asm/sysreg.h b/arch/arm64/include/asm/sysreg.h
-index dfd4edb..d4a5fca9 100644
---- a/arch/arm64/include/asm/sysreg.h
-+++ b/arch/arm64/include/asm/sysreg.h
-@@ -796,6 +796,11 @@
- #define ID_AA64MMFR0_PARANGE_48		0x5
- #define ID_AA64MMFR0_PARANGE_52		0x6
+diff --git a/include/linux/efi.h b/include/linux/efi.h
+index 8710f5710c1d..f39e9ec7485f 100644
+--- a/include/linux/efi.h
++++ b/include/linux/efi.h
+@@ -63,17 +63,22 @@ typedef void *efi_handle_t;
+  * is 32 bits not 8 bits like our guid_t. In some cases (i.e., on 32-bit ARM),
+  * this means that firmware services invoked by the kernel may assume that
+  * efi_guid_t* arguments are 32-bit aligned, and use memory accessors that
+- * do not tolerate misalignment. So let's set the minimum alignment to 32 bits.
++ * do not tolerate misalignment.
+  *
+  * Note that the UEFI spec as well as some comments in the EDK2 code base
+  * suggest that EFI_GUID should be 64-bit aligned, but this appears to be
+  * a mistake, given that no code seems to exist that actually enforces that
+  * or relies on it.
+  */
+-typedef guid_t efi_guid_t __aligned(__alignof__(u32));
++typedef struct {
++	u32	a;
++	u16	b;
++	u16	c;
++	u8	d[8];
++} efi_guid_t;
  
-+#define ID_AA64MMFR0_TGRAN_2_SUPPORTED_DEFAULT	0x0
-+#define ID_AA64MMFR0_TGRAN_2_SUPPORTED_NONE	0x1
-+#define ID_AA64MMFR0_TGRAN_2_SUPPORTED_MIN	0x2
-+#define ID_AA64MMFR0_TGRAN_2_SUPPORTED_MAX	0x7
-+
- #ifdef CONFIG_ARM64_PA_BITS_52
- #define ID_AA64MMFR0_PARANGE_MAX	ID_AA64MMFR0_PARANGE_52
- #else
-@@ -961,14 +966,17 @@
- #define ID_PFR1_PROGMOD_SHIFT		0
+ #define EFI_GUID(a,b,c,d0,d1,d2,d3,d4,d5,d6,d7) \
+-	GUID_INIT(a, b, c, d0, d1, d2, d3, d4, d5, d6, d7)
++	(efi_guid_t){ a, b, c, { d0,d1,d2,d3,d4,d5,d6,d7 }}
  
- #if defined(CONFIG_ARM64_4K_PAGES)
--#define ID_AA64MMFR0_TGRAN_SHIFT	ID_AA64MMFR0_TGRAN4_SHIFT
--#define ID_AA64MMFR0_TGRAN_SUPPORTED	ID_AA64MMFR0_TGRAN4_SUPPORTED
-+#define ID_AA64MMFR0_TGRAN_SHIFT		ID_AA64MMFR0_TGRAN4_SHIFT
-+#define ID_AA64MMFR0_TGRAN_SUPPORTED_MIN	ID_AA64MMFR0_TGRAN4_SUPPORTED
-+#define ID_AA64MMFR0_TGRAN_SUPPORTED_MAX	0x7
- #elif defined(CONFIG_ARM64_16K_PAGES)
--#define ID_AA64MMFR0_TGRAN_SHIFT	ID_AA64MMFR0_TGRAN16_SHIFT
--#define ID_AA64MMFR0_TGRAN_SUPPORTED	ID_AA64MMFR0_TGRAN16_SUPPORTED
-+#define ID_AA64MMFR0_TGRAN_SHIFT		ID_AA64MMFR0_TGRAN16_SHIFT
-+#define ID_AA64MMFR0_TGRAN_SUPPORTED_MIN	ID_AA64MMFR0_TGRAN16_SUPPORTED
-+#define ID_AA64MMFR0_TGRAN_SUPPORTED_MAX	0xF
- #elif defined(CONFIG_ARM64_64K_PAGES)
--#define ID_AA64MMFR0_TGRAN_SHIFT	ID_AA64MMFR0_TGRAN64_SHIFT
--#define ID_AA64MMFR0_TGRAN_SUPPORTED	ID_AA64MMFR0_TGRAN64_SUPPORTED
-+#define ID_AA64MMFR0_TGRAN_SHIFT		ID_AA64MMFR0_TGRAN64_SHIFT
-+#define ID_AA64MMFR0_TGRAN_SUPPORTED_MIN	ID_AA64MMFR0_TGRAN64_SUPPORTED
-+#define ID_AA64MMFR0_TGRAN_SUPPORTED_MAX	0x7
- #endif
+ /*
+  * Generic EFI table header
+@@ -598,8 +603,8 @@ efi_guidcmp (efi_guid_t left, efi_guid_t right)
+ static inline char *
+ efi_guid_to_str(efi_guid_t *guid, char *out)
+ {
+-	sprintf(out, "%pUl", guid->b);
+-        return out;
++	sprintf(out, "%pUl", guid);
++	return out;
+ }
  
- #define MVFR2_FPMISC_SHIFT		4
-diff --git a/arch/arm64/kernel/head.S b/arch/arm64/kernel/head.S
-index 66b0e0b..8b469f1 100644
---- a/arch/arm64/kernel/head.S
-+++ b/arch/arm64/kernel/head.S
-@@ -655,8 +655,10 @@ SYM_FUNC_END(__secondary_too_slow)
- SYM_FUNC_START(__enable_mmu)
- 	mrs	x2, ID_AA64MMFR0_EL1
- 	ubfx	x2, x2, #ID_AA64MMFR0_TGRAN_SHIFT, 4
--	cmp	x2, #ID_AA64MMFR0_TGRAN_SUPPORTED
--	b.ne	__no_granule_support
-+	cmp     x2, #ID_AA64MMFR0_TGRAN_SUPPORTED_MIN
-+	b.lt    __no_granule_support
-+	cmp     x2, #ID_AA64MMFR0_TGRAN_SUPPORTED_MAX
-+	b.gt    __no_granule_support
- 	update_early_cpu_boot_status 0, x2, x3
- 	adrp	x2, idmap_pg_dir
- 	phys_to_ttbr x1, x1
-diff --git a/arch/arm64/kvm/reset.c b/arch/arm64/kvm/reset.c
-index 47f3f03..e81c7ec 100644
---- a/arch/arm64/kvm/reset.c
-+++ b/arch/arm64/kvm/reset.c
-@@ -311,16 +311,18 @@ int kvm_set_ipa_limit(void)
- 	}
- 
- 	switch (cpuid_feature_extract_unsigned_field(mmfr0, tgran_2)) {
--	default:
--	case 1:
-+	case ID_AA64MMFR0_TGRAN_2_SUPPORTED_NONE:
- 		kvm_err("PAGE_SIZE not supported at Stage-2, giving up\n");
- 		return -EINVAL;
--	case 0:
-+	case ID_AA64MMFR0_TGRAN_2_SUPPORTED_DEFAULT:
- 		kvm_debug("PAGE_SIZE supported at Stage-2 (default)\n");
- 		break;
--	case 2:
-+	case ID_AA64MMFR0_TGRAN_2_SUPPORTED_MIN ... ID_AA64MMFR0_TGRAN_2_SUPPORTED_MAX:
- 		kvm_debug("PAGE_SIZE supported at Stage-2 (advertised)\n");
- 		break;
-+	default:
-+		kvm_err("Unsupported value for TGRAN_2, giving up\n");
-+		return -EINVAL;
- 	}
- 
- 	kvm_ipa_limit = id_aa64mmfr0_parange_to_phys_shift(parange);
-diff --git a/drivers/firmware/efi/libstub/arm64-stub.c b/drivers/firmware/efi/libstub/arm64-stub.c
-index b69d631..7bf0a7a 100644
---- a/drivers/firmware/efi/libstub/arm64-stub.c
-+++ b/drivers/firmware/efi/libstub/arm64-stub.c
-@@ -24,7 +24,7 @@ efi_status_t check_platform_features(void)
- 		return EFI_SUCCESS;
- 
- 	tg = (read_cpuid(ID_AA64MMFR0_EL1) >> ID_AA64MMFR0_TGRAN_SHIFT) & 0xf;
--	if (tg != ID_AA64MMFR0_TGRAN_SUPPORTED) {
-+	if (tg < ID_AA64MMFR0_TGRAN_SUPPORTED_MIN || tg > ID_AA64MMFR0_TGRAN_SUPPORTED_MAX) {
- 		if (IS_ENABLED(CONFIG_ARM64_64K_PAGES))
- 			efi_err("This 64 KB granular kernel is not supported by your CPU\n");
- 		else
+ extern void efi_init (void);
 -- 
-2.7.4
+2.30.1
 
