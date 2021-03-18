@@ -2,88 +2,94 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B809340CC2
-	for <lists+linux-efi@lfdr.de>; Thu, 18 Mar 2021 19:18:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A3BA9340CCE
+	for <lists+linux-efi@lfdr.de>; Thu, 18 Mar 2021 19:21:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232403AbhCRSSV (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 18 Mar 2021 14:18:21 -0400
-Received: from mail.kernel.org ([198.145.29.99]:39582 "EHLO mail.kernel.org"
+        id S232326AbhCRSVF (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 18 Mar 2021 14:21:05 -0400
+Received: from mail.kernel.org ([198.145.29.99]:40078 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232520AbhCRSRx (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Thu, 18 Mar 2021 14:17:53 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 498E764F1D;
-        Thu, 18 Mar 2021 18:17:52 +0000 (UTC)
+        id S230164AbhCRSU5 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Thu, 18 Mar 2021 14:20:57 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id A362164F1D;
+        Thu, 18 Mar 2021 18:20:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1616091472;
-        bh=Gq0Q8gKOwpVXyByKGAa5jJL40jar/QLwtYEcv1B0tjI=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=QMXzloZrVamfrEr8TEfQdm3uN+usp/2mzrcJlIcJIwG2GOwjy/Tgt7NPtGNwsb2k7
-         sXjFByz7b6J6oDeroafri51ojv9tkhg8vRcQxSQWByd3pFlfQtyqKq+bUSIBETOpUZ
-         XpBIu5tc6gxFLES7gEDHr1W3/qbHVKKIIB+aAA4tUFfVndU7S8ZOWcwtxhgs3YaNn7
-         +QtNJOvIyidNPZnODf75YoPBQ98z2ELZ3LkXRPJKeno/6TfvePgKtS2f38Ti/qE5zd
-         zgR7fwzKiqZLDl8015bd8VtB7/NtQWq6mwJJTwMksfz4D/bjIgqqZjmtpjue08hk5F
-         QWvgJbptQCD9Q==
-Received: by mail-oo1-f47.google.com with SMTP id n12-20020a4ad12c0000b02901b63e7bc1b4so1661023oor.5;
-        Thu, 18 Mar 2021 11:17:52 -0700 (PDT)
-X-Gm-Message-State: AOAM533CAoHlcn19TOzFQ3uYLulftd9nn5b+UqJij5RLG7KtWediBl8V
-        lCaCmJqPf6XSoYxlybSIxB8X5A/tlSn4E4BcN1s=
-X-Google-Smtp-Source: ABdhPJw+C9b1zRhUVvBjlvQyrzhtXyLaneQxhEg0ejiSLyRGwVjmvZ+7NtXGfkUUl4VIEhtsQf6bYJXLVbSGfLgif2I=
-X-Received: by 2002:a4a:bd1a:: with SMTP id n26mr8501906oop.45.1616091471572;
- Thu, 18 Mar 2021 11:17:51 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210310083127.5784-1-lyl2019@mail.ustc.edu.cn>
-In-Reply-To: <20210310083127.5784-1-lyl2019@mail.ustc.edu.cn>
+        s=k20201202; t=1616091656;
+        bh=gVJl4kPht+oxkeuEuGnBtMPQ5kdYUCGId4HBATLbc1w=;
+        h=From:To:Cc:Subject:Date:From;
+        b=LwsMesVsfBq4YQKl7j1CRVV0i9wlLgkFmcK5pg9KYFSsU+f2FiURkd9/FdNgx7/X1
+         v0i/25EVV5t27+9DtJ9iq9et7S5Y+zpnb2TPuVYKWxLx16sGoctoktLu/VCO4kTe4I
+         o0vP6wQNE0xE7IEK2t0hmlbgGokxk4NXyfcG1LnFkz4z+UFItQWmJ+dICUaAqAVt1P
+         v6t6/hy0n+kt5ECclOW9RJquCSJbriZJTT1gGdd5XvOh8tDfF2RYPtzyLxLJNWB48w
+         r9zr+01KB29SYcauyWSGZYJ2mjFQHZ1Oaa8B/SlthW9/66YQ1WbDsJ4p5EVUXDWq1M
+         zqws96vl5ja2w==
 From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Thu, 18 Mar 2021 19:17:40 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXESeiozq=DAsYsKOP6DVEOQknPqUdam_LpRiPzhLhCCBg@mail.gmail.com>
-Message-ID: <CAMj1kXESeiozq=DAsYsKOP6DVEOQknPqUdam_LpRiPzhLhCCBg@mail.gmail.com>
-Subject: Re: [PATCH] firmware/efi: Fix a use after bug in efi_mem_reserve_persistent
-To:     Lv Yunlong <lyl2019@mail.ustc.edu.cn>
-Cc:     jonathan.richardson@broadcom.com,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+To:     linux-efi@vger.kernel.org
+Cc:     nathan@kernel.org, ndesaulniers@google.com,
+        Ard Biesheuvel <ardb@kernel.org>
+Subject: [PATCH v2] efi: use 32-bit alignment for efi_guid_t literals
+Date:   Thu, 18 Mar 2021 19:20:46 +0100
+Message-Id: <20210318182046.211165-1-ardb@kernel.org>
+X-Mailer: git-send-email 2.30.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, 10 Mar 2021 at 09:37, Lv Yunlong <lyl2019@mail.ustc.edu.cn> wrote:
->
-> In the for loop in efi_mem_reserve_persistent(), prsv = rsv->next
-> use the unmapped rsv. Use the unmapped pages will cause segment
-> fault.
->
-> Fixes: 18df7577adae6 ("efi/memreserve: deal with memreserve entries in unmapped memory")
-> Signed-off-by: Lv Yunlong <lyl2019@mail.ustc.edu.cn>
+Commit 494c704f9af0 ("efi: Use 32-bit alignment for efi_guid_t") updated
+the type definition of efi_guid_t to ensure that it always appears
+sufficiently aligned (the UEFI spec is ambiguous about this, but given
+the fact that its EFI_GUID type is defined in terms of a struct carrying
+a uint32_t, the natural alignment is definitely >= 32 bits).
 
-Queued as a fix, thanks.
+However, we missed the EFI_GUID() macro which is used to instantiate
+efi_guid_t literals: that macro is still based on the guid_t type,
+which does not have a minimum alignment at all. This results in warnings
+such as
 
-> ---
->  drivers/firmware/efi/efi.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
-> index df3f9bcab581..4b7ee3fa9224 100644
-> --- a/drivers/firmware/efi/efi.c
-> +++ b/drivers/firmware/efi/efi.c
-> @@ -927,7 +927,7 @@ int __ref efi_mem_reserve_persistent(phys_addr_t addr, u64 size)
->         }
->
->         /* first try to find a slot in an existing linked list entry */
-> -       for (prsv = efi_memreserve_root->next; prsv; prsv = rsv->next) {
-> +       for (prsv = efi_memreserve_root->next; prsv; ) {
->                 rsv = memremap(prsv, sizeof(*rsv), MEMREMAP_WB);
->                 index = atomic_fetch_add_unless(&rsv->count, 1, rsv->size);
->                 if (index < rsv->size) {
-> @@ -937,6 +937,7 @@ int __ref efi_mem_reserve_persistent(phys_addr_t addr, u64 size)
->                         memunmap(rsv);
->                         return efi_mem_reserve_iomem(addr, size);
->                 }
-> +               prsv = rsv->next;
->                 memunmap(rsv);
->         }
->
-> --
-> 2.25.1
->
->
+  In file included from drivers/firmware/efi/mokvar-table.c:35:
+  include/linux/efi.h:1093:34: warning: passing 1-byte aligned argument to
+      4-byte aligned parameter 2 of 'get_var' may result in an unaligned pointer
+      access [-Walign-mismatch]
+          status = get_var(L"SecureBoot", &EFI_GLOBAL_VARIABLE_GUID, NULL, &size,
+                                          ^
+  include/linux/efi.h:1101:24: warning: passing 1-byte aligned argument to
+      4-byte aligned parameter 2 of 'get_var' may result in an unaligned pointer
+      access [-Walign-mismatch]
+          get_var(L"SetupMode", &EFI_GLOBAL_VARIABLE_GUID, NULL, &size, &setupmode);
+
+The distinction only matters on CPUs that do not support misaligned loads
+fully, but 32-bit ARM's load-multiple instructions fall into that category,
+and these are likely to be emitted by the compiler that built the firmware
+for loading word-aligned 128-bit GUIDs from memory
+
+So re-implement the initializer in terms of our own efi_guid_t type, so that
+the alignment becomes a property of the literal's type.
+
+Reported-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+---
+ include/linux/efi.h | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/include/linux/efi.h b/include/linux/efi.h
+index 8710f5710c1d..6b5d36babfcc 100644
+--- a/include/linux/efi.h
++++ b/include/linux/efi.h
+@@ -72,8 +72,10 @@ typedef void *efi_handle_t;
+  */
+ typedef guid_t efi_guid_t __aligned(__alignof__(u32));
+ 
+-#define EFI_GUID(a,b,c,d0,d1,d2,d3,d4,d5,d6,d7) \
+-	GUID_INIT(a, b, c, d0, d1, d2, d3, d4, d5, d6, d7)
++#define EFI_GUID(a, b, c, d...) (efi_guid_t){ {					\
++	(a) & 0xff, ((a) >> 8) & 0xff, ((a) >> 16) & 0xff, ((a) >> 24) & 0xff,	\
++	(b) & 0xff, ((b) >> 8) & 0xff,						\
++	(c) & 0xff, ((c) >> 8) & 0xff, d } }
+ 
+ /*
+  * Generic EFI table header
+-- 
+2.30.2
+
