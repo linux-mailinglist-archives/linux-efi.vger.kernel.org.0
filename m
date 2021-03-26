@@ -2,131 +2,92 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D85134A354
-	for <lists+linux-efi@lfdr.de>; Fri, 26 Mar 2021 09:43:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E6C034A357
+	for <lists+linux-efi@lfdr.de>; Fri, 26 Mar 2021 09:43:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229463AbhCZImn (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 26 Mar 2021 04:42:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32932 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229839AbhCZImh (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 26 Mar 2021 04:42:37 -0400
-Received: from mail-il1-x12b.google.com (mail-il1-x12b.google.com [IPv6:2607:f8b0:4864:20::12b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 807F5C0613AA;
-        Fri, 26 Mar 2021 01:42:37 -0700 (PDT)
-Received: by mail-il1-x12b.google.com with SMTP id w2so3947891ilj.12;
-        Fri, 26 Mar 2021 01:42:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:reply-to:from:date:message-id
-         :subject:to:cc;
-        bh=CkY4A20RVJeXci+R5FXU3k0PYcW30JfQNZigwa1FYbw=;
-        b=R60U+wzx3jnsVA26KTij3dZvj6RFdb3iNSWfSRKj3lAb/a41KP9l44trthMGoKTwAM
-         C5kxLHKLoNmGBnhCPtbPwr7zWaiTUUft5PR4K2Vx3Mj+Ibtmg8yflreD4whGYRvrmGQc
-         YPQGT3D7jCpDnT40iIKuFA95vtDzK0gg/r5Et9BJPSzwrRr6q3Y42a8CyjIaCHmnbZo0
-         gBDuDjv6KCGzHMr6UP5VD8bdNsIIF4VJ1H6SCm/7trNKMalMwfSuVLTx+tLuSP5VUvBi
-         EQvdYM/ak4FNBaVfIlxfMJ/V0euWudFRmLfCloJ1cLk6oBo1oFFPwcyohXTS5AhE2Qwp
-         Ho2A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:reply-to
-         :from:date:message-id:subject:to:cc;
-        bh=CkY4A20RVJeXci+R5FXU3k0PYcW30JfQNZigwa1FYbw=;
-        b=QW8PIb3lzwsn5FXES9WFidhkS1mcdxDM6szvjLQEChaXcV2XZtThz9wsP6oUHm6+eP
-         3qjzK+qX0Aw7FcRusEJ3zLDoAKULbBqKg1Sooq7E35/nEM7fkAa6vlACa1/ce+ZqBY5J
-         SpPJLqBqwJF3glX2n6HqJd+d3Sbw58bNLP0WGngToYnsDV8DEvn9S2lNEXQnQ9XJwDB+
-         D73lIe35y0N315pYvJUoavj3aXQVqYzwtsr3FVZMqAZTRKO+VGp8okKtn94Qm9/OgwcC
-         qwEHkGqNVouwj6R+uFrjtP7pzlbP2r+NVbTDKcG5ToP8YiAEmOTFqpRzYUbNCdalKIi7
-         aYPw==
-X-Gm-Message-State: AOAM531JWn8kxl2DHSOsSNmSxp10dofGpfWiPd9EKGfeJK7lzKjCDZ/f
-        54M1TEzcxvfOgNBkIf4KUE+sM3qzv+LQVSQ11uI=
-X-Google-Smtp-Source: ABdhPJy7lA9QVsB35vSlO6zb1NcLlhJMXp7tNACv7/U3JBE7/g8c4G+FDuZK8eeH9L9hnlhR7Sx7w7PVlX0pBd+8p2k=
-X-Received: by 2002:a92:c5c6:: with SMTP id s6mr120887ilt.186.1616748157005;
- Fri, 26 Mar 2021 01:42:37 -0700 (PDT)
+        id S229744AbhCZInQ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 26 Mar 2021 04:43:16 -0400
+Received: from mail.kernel.org ([198.145.29.99]:51554 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229573AbhCZInM (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Fri, 26 Mar 2021 04:43:12 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 6A266619BB;
+        Fri, 26 Mar 2021 08:43:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1616748192;
+        bh=auPK4qEVEfZq7Im80hPIJ7nXvIOJt1yosAJO7vVnmqw=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=HjhYLnV1E+BKpuQI57WIVzVYJf2ey6I4NdgPGJUERWrr5XQNsYDypxVnH9WzQWFZX
+         PZEnCkshDSFnOpxNSo/fI/mtNa4ealAhVg9P3mCpo2UI1NI5y6UxAUgChGB3in59s6
+         QevFFiJ4JO03XPPrKtsEJquehCyq4j1tKxtAon4aKR5dKpNy/xgR5g9zi5/oAlHVmu
+         ZXEdy86G0rsnybM4g5zgkGi6yYdfeRwTO9XIRdAESlYODGttO1iMLNU/a0Ie4BlFka
+         nP+nAW8aANaTPRob3nZ4osjVAmoWjeHPzdlzWuvRgqM2YByp3RV9ael57BW19/zbID
+         pVYYvJu2khblw==
+Received: by mail-ot1-f41.google.com with SMTP id l12-20020a9d6a8c0000b0290238e0f9f0d8so4539486otq.8;
+        Fri, 26 Mar 2021 01:43:12 -0700 (PDT)
+X-Gm-Message-State: AOAM531jlIZQPqeeDDrq/cWskZW4FJSw0Xv2H77guJJFHSlFY7rgJlIn
+        ZJRXwOuADl37o0Ang2sWUlD7hs2mRpme1QTJZ10=
+X-Google-Smtp-Source: ABdhPJzI2WTeyRDqOC8veID600gsE1CYAWT0Q7qkgo4BS/jpCmDSH1tHOEx7obxOOMH2gj4SDAF3VxYacMH7IiNqnyQ=
+X-Received: by 2002:a9d:12cb:: with SMTP id g69mr10624384otg.77.1616748191665;
+ Fri, 26 Mar 2021 01:43:11 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210326000435.4785-1-nathan@kernel.org> <20210326000435.4785-2-nathan@kernel.org>
-In-Reply-To: <20210326000435.4785-2-nathan@kernel.org>
-Reply-To: sedat.dilek@gmail.com
-From:   Sedat Dilek <sedat.dilek@gmail.com>
-Date:   Fri, 26 Mar 2021 09:42:01 +0100
-Message-ID: <CA+icZUV2ieaw-YGRzpFM033aDcPFYa4ZNcBNdh2XWbVwqUp2Lg@mail.gmail.com>
-Subject: Re: [PATCH 1/3] x86: Propagate $(CLANG_FLAGS) to $(REALMODE_FLAGS)
+References: <20210326000435.4785-1-nathan@kernel.org>
+In-Reply-To: <20210326000435.4785-1-nathan@kernel.org>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Fri, 26 Mar 2021 09:43:00 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXHhdw2EDmsuM0KHXcbKVNSPjrYkTYELHGShDN5NhAkvOQ@mail.gmail.com>
+Message-ID: <CAMj1kXHhdw2EDmsuM0KHXcbKVNSPjrYkTYELHGShDN5NhAkvOQ@mail.gmail.com>
+Subject: Re: [PATCH 0/3] Fix cross compiling x86 with clang
 To:     Nathan Chancellor <nathan@kernel.org>
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        x86@kernel.org, Ard Biesheuvel <ardb@kernel.org>,
+        X86 ML <x86@kernel.org>,
         Nick Desaulniers <ndesaulniers@google.com>,
-        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Clang-Built-Linux ML <clang-built-linux@googlegroups.com>,
-        John Millikin <john@john-millikin.com>
+        linux-efi <linux-efi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        clang-built-linux <clang-built-linux@googlegroups.com>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, Mar 26, 2021 at 1:04 AM Nathan Chancellor <nathan@kernel.org> wrote:
+On Fri, 26 Mar 2021 at 01:04, Nathan Chancellor <nathan@kernel.org> wrote:
 >
-> From: John Millikin <john@john-millikin.com>
+> Hi all,
 >
-> When cross-compiling with Clang, the `$(CLANG_FLAGS)' variable
-> contains additional flags needed to build C and assembly sources
-> for the target platform. Normally this variable is automatically
-> included in `$(KBUILD_CFLAGS)' by via the top-level Makefile.
+> This series fixes cross compiling x86 with clang, which was initially
+> brought up by John here:
 >
-> The x86 real-mode makefile builds `$(REALMODE_CFLAGS)' from a
-> plain assignment and therefore drops the Clang flags. This causes
-> Clang to not recognize x86-specific assembler directives:
+> https://lore.kernel.org/r/cceb074c-861c-d716-5e19-834a8492f245@gmail.com/
 >
->   arch/x86/realmode/rm/header.S:36:1: error: unknown directive
->   .type real_mode_header STT_OBJECT ; .size real_mode_header, .-real_mode_header
->   ^
+> I have picked up that patch and added the same fix in a couple of other
+> places where it is needed.
 >
-> Explicit propagation of `$(CLANG_FLAGS)' to `$(REALMODE_CFLAGS)',
-> which is inherited by real-mode make rules, fixes cross-compilation
-> with Clang for x86 targets.
+> I have tested this on an ARM based server with both defconfig and
+> allmodconfig, where the build now passes.
 >
-> Relevant flags:
+> Please let me know if there are any problems.
 >
-> * `--target' sets the target architecture when cross-compiling. This
->   flag must be set for both compilation and assembly (`KBUILD_AFLAGS')
->   to support architecture-specific assembler directives.
+> Cheers,
+> Nathan
 >
-> * `-no-integrated-as' tells clang to assemble with GNU Assembler
->   instead of its built-in LLVM assembler. This flag is set by default
->   unless `LLVM_IAS=1' is set, because the LLVM assembler can't yet
->   parse certain GNU extensions.
+> John Millikin (1):
+>   x86: Propagate $(CLANG_FLAGS) to $(REALMODE_FLAGS)
 >
-> Signed-off-by: John Millikin <john@john-millikin.com>
-> Tested-by: Sedat Dilek <sedat.dilek@gmail.com>
-> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+> Nathan Chancellor (2):
+>   x86/boot: Add $(CLANG_FLAGS) to compressed KBUILD_CFLAGS
+>   efi/libstub: Add $(CLANG_FLAGS) to x86 flags
+>
 
-I had John's v2 of this patch in my custom 5.11 patchset.
-Thanks for bringing this up again, Nathan.
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
 
-Later, I will test the triple patchset series.
-
-Feel free to add for this one:
-
-Tested-by: Sedat Dilek <sedat.dilek@gmail.com>
-
-- Sedat -
-
-> ---
->  arch/x86/Makefile | 1 +
->  1 file changed, 1 insertion(+)
+>  arch/x86/Makefile                     | 1 +
+>  arch/x86/boot/compressed/Makefile     | 1 +
+>  drivers/firmware/efi/libstub/Makefile | 3 ++-
+>  3 files changed, 4 insertions(+), 1 deletion(-)
 >
-> diff --git a/arch/x86/Makefile b/arch/x86/Makefile
-> index 2d6d5a28c3bf..9a73e0cea19c 100644
-> --- a/arch/x86/Makefile
-> +++ b/arch/x86/Makefile
-> @@ -33,6 +33,7 @@ REALMODE_CFLAGS += -ffreestanding
->  REALMODE_CFLAGS += -fno-stack-protector
->  REALMODE_CFLAGS += $(call __cc-option, $(CC), $(REALMODE_CFLAGS), -Wno-address-of-packed-member)
->  REALMODE_CFLAGS += $(call __cc-option, $(CC), $(REALMODE_CFLAGS), $(cc_stack_align4))
-> +REALMODE_CFLAGS += $(CLANG_FLAGS)
->  export REALMODE_CFLAGS
 >
->  # BITS is used as extension for files which are available in a 32 bit
+> base-commit: 0d02ec6b3136c73c09e7859f0d0e4e2c4c07b49b
 > --
 > 2.31.0
 >
