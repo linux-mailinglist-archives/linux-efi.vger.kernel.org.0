@@ -2,62 +2,95 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C451E34BDE6
-	for <lists+linux-efi@lfdr.de>; Sun, 28 Mar 2021 20:08:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E390934BF40
+	for <lists+linux-efi@lfdr.de>; Sun, 28 Mar 2021 23:23:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231462AbhC1SHb (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sun, 28 Mar 2021 14:07:31 -0400
-Received: from mail.hanoi.gov.vn ([113.160.32.33]:31610 "EHLO
-        mx01.hanoi.gov.vn" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229647AbhC1SHR (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sun, 28 Mar 2021 14:07:17 -0400
-X-Greylist: delayed 474 seconds by postgrey-1.27 at vger.kernel.org; Sun, 28 Mar 2021 14:07:01 EDT
-Received: from mx01.hanoi.gov.vn (localhost [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 30259EC3D8;
-        Mon, 29 Mar 2021 00:57:51 +0700 (+07)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hanoi.gov.vn;
-        s=default; t=1616954272;
-        bh=FuW10Z6fSdeNlf/0u/BQ1jcwkjYBw0uHUPQgn0LGo7I=; h=Date:From:To;
-        b=R9blPfqJCHUsZAyZxsyyryS61fl4krmBjYKWM6eGGwB8ZdbTBVPL1mmKOmZXMqNlA
-         7CEqA0MXgUAy+X4oK/wthh4vC9Xoov1Ce8tjf/qJvnL7KGsGNVg9ic0krGeHrdNzGM
-         5cIEKsz0emmHL/izbEfCtadst3HYllOJWdonlm5o=
-X-IMSS-DKIM-Authentication-Result: mx01.hanoi.gov.vn; sigcount=0
-Received: from mx01.hanoi.gov.vn (localhost [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 50FCBEC3DD;
-        Mon, 29 Mar 2021 00:57:49 +0700 (+07)
-Received: from mail.hanoi.gov.vn (mail.hanoi.gov.vn [10.1.1.25])
-        by mx01.hanoi.gov.vn (Postfix) with ESMTPS;
-        Mon, 29 Mar 2021 00:57:49 +0700 (+07)
-Received: from mail.hanoi.gov.vn (localhost [127.0.0.1])
-        by mail.hanoi.gov.vn (Postfix) with ESMTPS id 02AFC7F41B42;
-        Mon, 29 Mar 2021 00:57:44 +0700 (+07)
-Received: from localhost (localhost [127.0.0.1])
-        by mail.hanoi.gov.vn (Postfix) with ESMTP id 08FE47F41B5D;
-        Mon, 29 Mar 2021 00:57:41 +0700 (+07)
-Received: from mail.hanoi.gov.vn ([127.0.0.1])
-        by localhost (mail.hanoi.gov.vn [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id 1D3oZsOAVsx3; Mon, 29 Mar 2021 00:57:36 +0700 (+07)
-Received: from mail.hanoi.gov.vn (mail.hanoi.gov.vn [10.1.1.25])
-        by mail.hanoi.gov.vn (Postfix) with ESMTP id 478CE7F41B59;
-        Mon, 29 Mar 2021 00:57:33 +0700 (+07)
-Date:   Mon, 29 Mar 2021 00:57:33 +0700 (ICT)
-From:   Mackenzie Scott <ttptqd_thanhoai@hanoi.gov.vn>
-Reply-To: Mackenzie Scott <propack@propck.net>
-Message-ID: <354204758.25920932.1616954253215.JavaMail.zimbra@hanoi.gov.vn>
-Subject: Congratulations ($ 100,800,000.00)
+        id S229656AbhC1VXD (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sun, 28 Mar 2021 17:23:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48692 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229655AbhC1VW6 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sun, 28 Mar 2021 17:22:58 -0400
+Received: from smtp.gentoo.org (woodpecker.gentoo.org [IPv6:2001:470:ea4a:1:5054:ff:fec7:86e4])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CCA6C061756;
+        Sun, 28 Mar 2021 14:22:58 -0700 (PDT)
+Received: by sf.home (Postfix, from userid 1000)
+        id BD73D5A22061; Sun, 28 Mar 2021 22:22:52 +0100 (BST)
+From:   Sergei Trofimovich <slyfox@gentoo.org>
+To:     Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org,
+        linux-ia64@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org,
+        Sergei Trofimovich <slyfox@gentoo.org>
+Subject: [PATCH v2] ia64: fix EFI_DEBUG build
+Date:   Sun, 28 Mar 2021 22:22:46 +0100
+Message-Id: <20210328212246.685601-1-slyfox@gentoo.org>
+X-Mailer: git-send-email 2.31.1
+In-Reply-To: <CAMj1kXEmuVWR=TAmzXHnvKxbtSn1-Zkhr-0rOWV0BB1OGyx_TQ@mail.gmail.com>
+References: <CAMj1kXEmuVWR=TAmzXHnvKxbtSn1-Zkhr-0rOWV0BB1OGyx_TQ@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [185.107.80.217]
-X-Mailer: Zimbra 8.8.15_GA_3894 (zclient/8.8.15_GA_3894)
-Thread-Index: ao/APhyKX+JH1nE2Rn/kAmnh2LEgkw==
-Thread-Topic: Congratulations ($ 100,800,000.00)
-To:     undisclosed-recipients:;
-X-TM-AS-GCONF: 00
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
+When enabled local debugging via `#define EFI_DEBUG 1` noticed
+build failure:
+    arch/ia64/kernel/efi.c:564:8: error: 'i' undeclared (first use in this function)
 
+While at it fixed benign string format mismatches visible only
+when EFI_DEBUG is enabled:
 
-Hello,i&#39;m Mackenzie Scott,Ex-wife of Amazon founder i&#39;m donating $4 billion to charities,individuals,universities across the Globe from my divorce funds,i&#39;m donating part of it to provide immediate support to people suffering economically during the COVID-19 pandemic,i have a donation worth $100,800,000.00 Dollars for you,you can contact me for more information if you&#39;re interested.
+    arch/ia64/kernel/efi.c:589:11:
+        warning: format '%lx' expects argument of type 'long unsigned int',
+        but argument 5 has type 'u64' {aka 'long long unsigned int'} [-Wformat=]
+
+Fixes: 14fb42090943559 ("efi: Merge EFI system table revision and vendor checks")
+CC: Ard Biesheuvel <ardb@kernel.org>
+CC: linux-efi@vger.kernel.org
+CC: linux-ia64@vger.kernel.org
+Signed-off-by: Sergei Trofimovich <slyfox@gentoo.org>
+---
+Change since v1: mention explicitly format string change
+
+ arch/ia64/kernel/efi.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
+
+diff --git a/arch/ia64/kernel/efi.c b/arch/ia64/kernel/efi.c
+index c5fe21de46a8..31149e41f9be 100644
+--- a/arch/ia64/kernel/efi.c
++++ b/arch/ia64/kernel/efi.c
+@@ -415,10 +415,10 @@ efi_get_pal_addr (void)
+ 		mask  = ~((1 << IA64_GRANULE_SHIFT) - 1);
+ 
+ 		printk(KERN_INFO "CPU %d: mapping PAL code "
+-                       "[0x%lx-0x%lx) into [0x%lx-0x%lx)\n",
+-                       smp_processor_id(), md->phys_addr,
+-                       md->phys_addr + efi_md_size(md),
+-                       vaddr & mask, (vaddr & mask) + IA64_GRANULE_SIZE);
++			"[0x%llx-0x%llx) into [0x%llx-0x%llx)\n",
++			smp_processor_id(), md->phys_addr,
++			md->phys_addr + efi_md_size(md),
++			vaddr & mask, (vaddr & mask) + IA64_GRANULE_SIZE);
+ #endif
+ 		return __va(md->phys_addr);
+ 	}
+@@ -560,6 +560,7 @@ efi_init (void)
+ 	{
+ 		efi_memory_desc_t *md;
+ 		void *p;
++		unsigned int i;
+ 
+ 		for (i = 0, p = efi_map_start; p < efi_map_end;
+ 		     ++i, p += efi_desc_size)
+@@ -586,7 +587,7 @@ efi_init (void)
+ 			}
+ 
+ 			printk("mem%02d: %s "
+-			       "range=[0x%016lx-0x%016lx) (%4lu%s)\n",
++			       "range=[0x%016llx-0x%016llx) (%4lu%s)\n",
+ 			       i, efi_md_typeattr_format(buf, sizeof(buf), md),
+ 			       md->phys_addr,
+ 			       md->phys_addr + efi_md_size(md), size, unit);
+-- 
+2.31.1
+
