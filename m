@@ -2,177 +2,156 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9DE7E354646
-	for <lists+linux-efi@lfdr.de>; Mon,  5 Apr 2021 19:45:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E8312355967
+	for <lists+linux-efi@lfdr.de>; Tue,  6 Apr 2021 18:42:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233242AbhDERqB (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 5 Apr 2021 13:46:01 -0400
-Received: from mail-mw2nam12on2111.outbound.protection.outlook.com ([40.107.244.111]:57760
-        "EHLO NAM12-MW2-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S233140AbhDERqA (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Mon, 5 Apr 2021 13:46:00 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=hVP93PaFjYFXnb2GU0irnnTitaNFJflZ13ZDJDt/tPQ3tcr4VmmKV7heIvcHml+8BpmBv71SsMo3RNyLYO3CRYQn/A/8v1UyMpml/5TwpmYIDMqoGPHAJIIikNal8bADyzti4gDl+n0KvgOw22xaSNu3R6zMCl8QoOz9PnKAFRZB8uJqHSa1CBgHBJUIm3NatV3DrLXSVe1+VQoDc6xoGBAhwi/3ITyr4TUR85TdfvvI/hNUNl2vOGKhtUjrrIr4KwzqM2vHh7gPLaEw8kex7PZdFRUfn6Bw1TpMsdql4rCuvfDw6Yqk8r5gch1s7CMGVSv5ENTXoYfX4vzYbH6afA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=/qRPECD5vB+c6skWEi/wOCMyeJpY8HWlEY5pE40rSz8=;
- b=OyiHbJtgWP2oIzYkgjH2YdkZNpfQSYplMAxcAY+tXw+WuXyQMHs794WsnakXdCGYphB3AtGdQkKLn9QBNRDMunmgB1oE3R/KiyTsSIbTOBaPFXbZ3NnokbYDS4r6Bm9mbhQtXY1V5p22PWqMuUAcGXpasHwqMCYgGlyh6zL05TTiPJHz+/6aKQdI0hPsm1ySaPU7/x1QlGdewL98sEOcW107pgMZgG7XpiCV0u6B/vbfRyRGRrDEFY4ssjUIHvTDuSj8lfSSojHg/E1JMNhNBieFcnzVOafGrk05S3em1M+MIu98X3RQVw+5I16SQb4TA8JXE5GbRVeiUkgLEHRDZA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=microsoft.com; dmarc=pass action=none
- header.from=microsoft.com; dkim=pass header.d=microsoft.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=/qRPECD5vB+c6skWEi/wOCMyeJpY8HWlEY5pE40rSz8=;
- b=M4jzcwL9UxS73jI2iQDWHPd0bmg1IGU8/7Ccox1CVPYE0Y9RiK1QCqh2V6bTNMo1iytKwTM6+IDG1fGca+Qy+JfPvWp7f/tALZ8QrbwtWZ2SAkc9YiTruZaUBQCWbUSqOlKQEYMeWNIb2q0KM+9c3n0mz1YLupkvxmZ7LRDX3ow=
-Received: from MWHPR21MB1593.namprd21.prod.outlook.com (2603:10b6:301:7c::11)
- by MW4PR21MB1875.namprd21.prod.outlook.com (2603:10b6:303:72::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4042.4; Mon, 5 Apr
- 2021 17:45:53 +0000
-Received: from MWHPR21MB1593.namprd21.prod.outlook.com
- ([fe80::5874:413c:8f1b:6b0b]) by MWHPR21MB1593.namprd21.prod.outlook.com
- ([fe80::5874:413c:8f1b:6b0b%3]) with mapi id 15.20.4042.004; Mon, 5 Apr 2021
- 17:45:53 +0000
-From:   Michael Kelley <mikelley@microsoft.com>
-To:     Michael Kelley <mikelley@microsoft.com>,
-        "will@kernel.org" <will@kernel.org>,
-        "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
-        Mark Rutland <Mark.Rutland@arm.com>,
-        "lorenzo.pieralisi@arm.com" <lorenzo.pieralisi@arm.com>,
-        "sudeep.holla@arm.com" <sudeep.holla@arm.com>
-CC:     "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
-        "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
-        "arnd@arndb.de" <arnd@arndb.de>,
-        "wei.liu@kernel.org" <wei.liu@kernel.org>,
-        "ardb@kernel.org" <ardb@kernel.org>,
-        "daniel.lezcano@linaro.org" <daniel.lezcano@linaro.org>,
-        KY Srinivasan <kys@microsoft.com>
-Subject: RE: [PATCH v9 0/7] Enable Linux guests on Hyper-V on ARM64
-Thread-Topic: [PATCH v9 0/7] Enable Linux guests on Hyper-V on ARM64
-Thread-Index: AQHXFFVaB5wOH2JbNEut11B5j7WvKqqTYJ2ggBL8mAA=
-Date:   Mon, 5 Apr 2021 17:45:52 +0000
-Message-ID: <MWHPR21MB1593C7CFE86E45374FCB4839D7779@MWHPR21MB1593.namprd21.prod.outlook.com>
-References: <1615233439-23346-1-git-send-email-mikelley@microsoft.com>
- <MWHPR21MB1593E68A0032D7344A42BD0DD7639@MWHPR21MB1593.namprd21.prod.outlook.com>
-In-Reply-To: <MWHPR21MB1593E68A0032D7344A42BD0DD7639@MWHPR21MB1593.namprd21.prod.outlook.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-msip_labels: MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Enabled=true;
- MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SetDate=2021-03-24T15:54:56Z;
- MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Method=Standard;
- MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Name=Internal;
- MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SiteId=72f988bf-86f1-41af-91ab-2d7cd011db47;
- MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ActionId=6488edde-ca30-4fab-ada2-e40fa988c40f;
- MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ContentBits=0
-authentication-results: microsoft.com; dkim=none (message not signed)
- header.d=none;microsoft.com; dmarc=none action=none
- header.from=microsoft.com;
-x-originating-ip: [24.22.167.197]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 85afa98e-ac57-4e12-b39a-08d8f85aa87b
-x-ms-traffictypediagnostic: MW4PR21MB1875:
-x-ms-exchange-transport-forked: True
-x-ld-processed: 72f988bf-86f1-41af-91ab-2d7cd011db47,ExtAddr
-x-microsoft-antispam-prvs: <MW4PR21MB1875359F8D993424D6C07385D7779@MW4PR21MB1875.namprd21.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:6430;
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: 0voqwSFMD2YgAyAMGDx6+2fTm+xbvH80j3/0TE9WRXiBM4E0TiuP0cOR8lKGAE9OGqDRXjXnzy93P6IrmCxWfj1tjxe/unsz5pmQHFayIysihuVbJrzMlKdl+wLq7ODLiXlr52dz4QjOWD+7JHLUtzzxkUaYMDCQxWYp0IinagOe9XQvk0Ln37DbX1hoKtgoJKhHTP+6BaMGMnIghjQdE/F9AUkkNi3D3SlRn2OCS2oOKDwE53wYEH1fxy45US2furAtCqAKGdiweRfScR59jwVOz6GbyWaCQ4KmKZ83v7l86uBZeZON0yScr8xR9K83zU4J1HbgjrweWl6YjImOrdygE/lZqRbxXpbNFeW8Tg1XsgL8LGv0lKU1WS0ZhO8qWjcF8xHtFfCrw98VALDPEONP8R9Cm9Or79HgffKz22716Y4dvvypY3fbTDKKALfNEca7LOZMlrx/q0awWWmfVjQ+YyhSxNMrQUge0n0NeFqUF6PC6grXZndSd9JO+mntuOGWs6I4Y/RSoN2mA92d86EwdBPkOz/S2XjCb1z8WiOaYdtQsxW1wNU+/vU+yn+bk0JVwdQxkw0zKzRcmasQieY20GDi+LUiJOE3CG7ZX8IOJ6zVBTvG36bIrEwZbvPkC+ycAWYLmctcl2QgpV3/RKiIQyzCYCvlKjso7ZVw220=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MWHPR21MB1593.namprd21.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(396003)(366004)(346002)(136003)(39860400002)(376002)(9686003)(8990500004)(71200400001)(55016002)(82960400001)(82950400001)(107886003)(26005)(86362001)(6506007)(316002)(54906003)(2906002)(110136005)(53546011)(10290500003)(52536014)(478600001)(64756008)(66476007)(5660300002)(66556008)(76116006)(38100700001)(8676002)(66946007)(186003)(4326008)(7416002)(8936002)(33656002)(7696005)(66446008);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata: =?us-ascii?Q?scBepA2o1r7dImKAoXY3Rrybcz6DvayWQuVZGu2S3F56aslxQZ3PHj5ckjEU?=
- =?us-ascii?Q?7dc+2HHw8FSwiNcSQ2qUzeukKxrZT4KfXEm0Hy8PEBw+hnFNmgZuhJ9Gppz9?=
- =?us-ascii?Q?poOx1GCQFrl3cdYdemdDvL5OLloL1699OqVLHYdx1TJeIoCcQqAY63IqjNyK?=
- =?us-ascii?Q?EsqvUiwTlfb+mTGYkJEQo0izZFR7ltJHAlG+oKkEqcyQ0/bxB149O9eA8Kgg?=
- =?us-ascii?Q?/j/DkX5MVoGljCe8d8Fh0+9cICZl42SKhO65TkN45/TXCW0Dq8HK3jkNMNtm?=
- =?us-ascii?Q?IxdjCowFpK0/owHPqZuv6ff6GS9Sb+WDV0UDocIRu0l3laLKyRZA1py7Uq//?=
- =?us-ascii?Q?C/4Fed0aTtc3f3ZqBF93NieR5GtnB3aUSSFSUaIrCMZ7kUl3+VyV6bVXJK5P?=
- =?us-ascii?Q?dOEr3cCsPn9kTOdY3EScUXN1dQS01P/KFimYQ/2r2kfNOoiIi+Uh5wQdZEdE?=
- =?us-ascii?Q?mLZBMj+1F5xNkhNf2WGBURmNJXN9iazUqv75JHb0qFg20VxtXU/4jA5HF2z7?=
- =?us-ascii?Q?MwzHcYYeOX5M/IQzJRm/Wz3uJTNzeimnyXeB6lrQVuQX4XismEoGFYnQ6uUE?=
- =?us-ascii?Q?e1m1DflEE6xE+7513Lt1bTOIzbehMeE/tT36a+92ROVpdJGJGhyXl63RQn1E?=
- =?us-ascii?Q?OxqfF/lhmxr+gPOgz8A/wnEbv9u1zGY8O1JyCCqFd6LuHxr/WJMxxD6OeY4B?=
- =?us-ascii?Q?2QaVkuzJGD7VKkbNZykTBg7+obBfyLyb0eGCabDebOgWIYGvqO6iQQmP0zn9?=
- =?us-ascii?Q?xDiPUgzz15HtfOeWT6kMEQujSRca2V4zE31DD2AawVQnI7QXor3V0YuwXLt5?=
- =?us-ascii?Q?2S3wmF2BwIuEeBB3neRMWs0k25zXK/GyPX0+EMH7y+8CnpVbWsviob8wTeiH?=
- =?us-ascii?Q?/+oADtlLBj3gpu6oLI2YTJ2pmYFdjihHVh7A/acdLIJwYZaZKHUH3Sf4tgtB?=
- =?us-ascii?Q?Bbd64xVo6lQe84cC3XaCiuJi8gZ2HfsSEp2kHsJNlQUC7n+NoO3diJf3l9rA?=
- =?us-ascii?Q?6tA2iwiN4yk7QLJEM3/RQ7ZMN4sCKPdtU9yRHw3TjlP6fSfR9eNelmTzDtrh?=
- =?us-ascii?Q?UZIiGkiuq0qtGYIG5oVuwOYH0KmHvc93mTLrMBPs/4DcqmccQJkI8o72Z+zC?=
- =?us-ascii?Q?73roZf/y02bJWxDucelbAKbW/sLI9p0Q0VjndpASm1R/sV0L/swJaQ9uV+83?=
- =?us-ascii?Q?VMZJNBzm7hG8Wanbt1kJzjcgfFKWJY7DMLAYilKYJGBnhXrQipGaMbUvK35h?=
- =?us-ascii?Q?0vjbyP2kg6WTp4yql5W0tn4lH2JM9ImDuv09rACHQHrOsygLmrS8jEjfQhRs?=
- =?us-ascii?Q?QtYx3/O5Q1bLZHJB+SAqkWj9?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        id S1346525AbhDFQmm (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 6 Apr 2021 12:42:42 -0400
+Received: from rcdn-iport-4.cisco.com ([173.37.86.75]:63769 "EHLO
+        rcdn-iport-4.cisco.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1346527AbhDFQmi (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 6 Apr 2021 12:42:38 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=cisco.com; i=@cisco.com; l=3115; q=dns/txt; s=iport;
+  t=1617727351; x=1618936951;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=50Y5J3ymEIV3Iw/tW/yMYxTzDSV1S32YCccq6b0npb0=;
+  b=O+l2WdgJHdqjz7CRsbSw3rpMz4eEj6h8Kr20AQHywZ/aSW09LiIA36ew
+   xeHaV3IcjhsdurAAHMLXWbWwqqyzraSJ+ABZR47PewZ/KTaECjElElR69
+   wUJCycTZupqKgElo3zL6cVgC5yKXYISYjcHxXbrLJ+n4nUZ45xBjIB9c/
+   A=;
+IronPort-HdrOrdr: =?us-ascii?q?A9a23=3ApIoZVqjAH57WgZJThgTPBhL7W3BQX6B13D?=
+ =?us-ascii?q?Abvn1ZSRFFG/GwvcrGppsm/DXzjyscX2xltNCbIa+bQW7d85kd2/h1AZ6JWg?=
+ =?us-ascii?q?76tGy0aLx45Yz5zDH6XwH4/OhR1aBvGpIObOHYJ158kMr8/U2EA88tqeP3kp?=
+ =?us-ascii?q?yAqO/Cwx5WJz1CRLpn625CZzqzMkozfwVeAIp8KZz03LshmxOFWVA6Kvu2HW?=
+ =?us-ascii?q?MEWe+rnaypqLvDbQQdDxAqrCmi5AnI1JfAHxKV3ggTXlp0qN9IzUH/nwP0/a?=
+ =?us-ascii?q?mluf2goyW960bo859UlNH9o+EsOOWwjKEuRgnEu0KBeJlmH4aPpikyp/uirG?=
+ =?us-ascii?q?w3icDWrw07Vv4DjU/5TyWSvQbn3RXm3XII7XLvoGXo+UfLkIjeWC8wDdZHiM?=
+ =?us-ascii?q?ZiVibhr2AkvN16zctwrhuki6Y=3D?=
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-Anti-Spam-Result: =?us-ascii?q?A0AKAABBjmxg/4sNJK1aGgEBAQEBAQE?=
+ =?us-ascii?q?BAQEDAQEBARIBAQEBAgIBAQEBQIE+BQEBAQELAYIqgU0BOTGMZokuA5AMFop?=
+ =?us-ascii?q?GgXwLAQEBDQEBNAQBAYEWAYM0AwICgXYCJTQJDgIDAQEMAQEFAQEBAgEGBHE?=
+ =?us-ascii?q?ThV2GRAEBAQMBMgFGBQsLGC48GwYThVghq051gTSBAYgfgUQUDoEXAY1MJxy?=
+ =?us-ascii?q?BSUKENT6KNwSBVRBigQ9NgWKROgaNUoEgmXWBFIMVgSabRzIQpGG4PgIEBgU?=
+ =?us-ascii?q?CFoFUOoFZMxoIGxWDJFAZDo4rFo5HIQMvOAIGAQkBAQMJjUQBAQ?=
+X-IronPort-AV: E=Sophos;i="5.82,310,1613433600"; 
+   d="scan'208";a="857077664"
+Received: from alln-core-6.cisco.com ([173.36.13.139])
+  by rcdn-iport-4.cisco.com with ESMTP/TLS/DHE-RSA-SEED-SHA; 06 Apr 2021 16:42:26 +0000
+Received: from zorba ([10.24.14.212])
+        by alln-core-6.cisco.com (8.15.2/8.15.2) with ESMTPS id 136GgOjZ008120
+        (version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+        Tue, 6 Apr 2021 16:42:26 GMT
+Date:   Tue, 6 Apr 2021 09:42:24 -0700
+From:   Daniel Walker <danielwa@cisco.com>
+To:     Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc:     Will Deacon <will@kernel.org>, ob Herring <robh@kernel.org>,
+        Daniel Gimpelevich <daniel@gimpelevich.san-francisco.ca.us>,
+        Andrew Morton <akpm@linux-foundation.org>, x86@kernel.org,
+        linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        xe-linux-external@cisco.com, Ard Biesheuvel <ardb@kernel.org>,
+        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 6/8] drivers: firmware: efi: libstub: enable generic
+ commandline
+Message-ID: <20210406164224.GU2469518@zorba>
+References: <41021d66db2ab427c14255d2a24bb4517c8b58fd.1617126961.git.danielwa@cisco.com>
+ <e5d98d566c38d6f8516b8d9d1fd603ec1f131037.1617126961.git.danielwa@cisco.com>
+ <72fbd293-1d83-a558-4d7a-141576371864@csgroup.eu>
 MIME-Version: 1.0
-X-OriginatorOrg: microsoft.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MWHPR21MB1593.namprd21.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 85afa98e-ac57-4e12-b39a-08d8f85aa87b
-X-MS-Exchange-CrossTenant-originalarrivaltime: 05 Apr 2021 17:45:52.6881
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 72f988bf-86f1-41af-91ab-2d7cd011db47
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: AP0JGToLLCQNSvxCGwrXKOXCrWFNmb0eJEtkiiAJ+yelLQfzX32kx28ciY1SiT3cUYBBMGDKyRNhwnUpFIErSxwx55MaRzKcNyoxwM4wuxM=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR21MB1875
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <72fbd293-1d83-a558-4d7a-141576371864@csgroup.eu>
+X-Auto-Response-Suppress: DR, OOF, AutoReply
+X-Outbound-SMTP-Client: 10.24.14.212, [10.24.14.212]
+X-Outbound-Node: alln-core-6.cisco.com
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-From: Michael Kelley <mikelley@microsoft.com>
-> Sent: Wednesday, March 24, 2021 8:55 AM
-> To: will@kernel.org; catalin.marinas@arm.com; Mark Rutland <Mark.Rutland@=
-arm.com>;
-> lorenzo.pieralisi@arm.com; sudeep.holla@arm.com
-> Cc: linux-arm-kernel@lists.infradead.org; linux-kernel@vger.kernel.org; l=
-inux-
-> hyperv@vger.kernel.org; linux-efi@vger.kernel.org; arnd@arndb.de; wei.liu=
-@kernel.org;
-> ardb@kernel.org; daniel.lezcano@linaro.org; KY Srinivasan <kys@microsoft.=
-com>
-> Subject: RE: [PATCH v9 0/7] Enable Linux guests on Hyper-V on ARM64
->=20
-> From: Michael Kelley <mikelley@microsoft.com> Sent: Monday, March 8, 2021=
- 11:57 AM
-> >
-> > This series enables Linux guests running on Hyper-V on ARM64
-> > hardware. New ARM64-specific code in arch/arm64/hyperv initializes
-> > Hyper-V, including its interrupts and hypercall mechanism.
-> > Existing architecture independent drivers for Hyper-V's VMbus and
-> > synthetic devices just work when built for ARM64. Hyper-V code is
-> > built and included in the image and modules only if CONFIG_HYPERV
-> > is enabled.
->=20
-> ARM64 maintainers --
->=20
-> What are the prospects for getting your review and Ack on this patch set?
-> We're wanting to get the Hyper-V support on ARM64 finally accepted upstre=
-am.
-> Previous comments should be addressed in this revision, with perhaps a
-> remaining discussion point around the alternate SMCCC hypercall interface
-> in Patch 1 that makes use of changes in v1.2 of the SMCCC spec.  There ar=
-e
-> several viable approaches that I've noted in the patch, depending on
-> your preferences.
->=20
-> Michael
+On Fri, Apr 02, 2021 at 07:36:53PM +0200, Christophe Leroy wrote:
+> 
+> 
+> Le 30/03/2021 à 19:57, Daniel Walker a écrit :
+> > This adds code to handle the generic command line changes.
+> > The efi code appears that it doesn't benefit as much from this design
+> > as it could.
+> > 
+> > For example, if you had a prepend command line with "nokaslr" then
+> > you might be helpful to re-enable it in the boot loader or dts,
+> > but there appears to be no way to re-enable kaslr or some of the
+> > other options.
+> > 
+> > Cc: xe-linux-external@cisco.com
+> > Signed-off-by: Daniel Walker <danielwa@cisco.com>
+> > ---
+> >   .../firmware/efi/libstub/efi-stub-helper.c    | 35 +++++++++++++++++++
+> >   drivers/firmware/efi/libstub/efi-stub.c       |  7 ++++
+> >   drivers/firmware/efi/libstub/efistub.h        |  1 +
+> >   drivers/firmware/efi/libstub/x86-stub.c       | 13 +++++--
+> >   4 files changed, 54 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/drivers/firmware/efi/libstub/efi-stub-helper.c b/drivers/firmware/efi/libstub/efi-stub-helper.c
+> > index aa8da0a49829..c155837cedc9 100644
+> > --- a/drivers/firmware/efi/libstub/efi-stub-helper.c
+> > +++ b/drivers/firmware/efi/libstub/efi-stub-helper.c
+> > @@ -13,6 +13,7 @@
+> >   #include <linux/efi.h>
+> >   #include <linux/kernel.h>
+> >   #include <linux/printk.h> /* For CONSOLE_LOGLEVEL_* */
+> > +#include <linux/cmdline.h>
+> >   #include <asm/efi.h>
+> >   #include <asm/setup.h>
+> > @@ -172,6 +173,40 @@ int efi_printk(const char *fmt, ...)
+> >   	return printed;
+> >   }
+> > +/**
+> > + * efi_handle_cmdline() - handle adding in building parts of the command line
+> > + * @cmdline:	kernel command line
+> > + *
+> > + * Add in the generic parts of the commandline and start the parsing of the
+> > + * command line.
+> > + *
+> > + * Return:	status code
+> > + */
+> > +efi_status_t efi_handle_cmdline(char const *cmdline)
+> > +{
+> > +	efi_status_t status;
+> > +
+> > +	status = efi_parse_options(CMDLINE_PREPEND);
+> > +	if (status != EFI_SUCCESS) {
+> > +		efi_err("Failed to parse options\n");
+> > +		return status;
+> > +	}
+> > +
+> > +	status = efi_parse_options(IS_ENABLED(CONFIG_CMDLINE_OVERRIDE) ? "" : cmdline);
+> > +	if (status != EFI_SUCCESS) {
+> > +		efi_err("Failed to parse options\n");
+> > +		return status;
+> > +	}
+> > +
+> > +	status = efi_parse_options(CMDLINE_APPEND);
+> > +	if (status != EFI_SUCCESS) {
+> > +		efi_err("Failed to parse options\n");
+> > +		return status;
+> > +	}
+> > +
+> > +	return EFI_SUCCESS;
+> > +}
+> 
+> I think we can refactor to first build the final command line, then call
+> efi_parse_options() only once after that.
+ 
+I tried this, like what you did in your v4 .. The issues are similar to the
+prom_init.c problems. The environment is delicate and requires careful
+programming to get it done correctly.
 
-Thanks, Mark, for jumping in on the SMCCC hypercall interface.  But I'm sti=
-ll
-looking for feedback or ACKs on the other patches in the series.  There's o=
-nly
-one place in Patch 2 of the series that needs the SMCCC v1.2 interface, and=
- I'd
-like to be able to respond to any remaining issues with the other patches
-while the SMCCC details are finished up.
+> The big advantage of GENERIC_CMDLINE should be to not address anymore
+> CONFIG_CMDLINE_XXX options at all outside of linux/cmdline.h
+ 
+I agree , but not I've found that it's not likely to get this all changed in a
+single series.
 
-Michael
+Daniel
