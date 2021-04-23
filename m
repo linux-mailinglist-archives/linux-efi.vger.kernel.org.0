@@ -2,100 +2,98 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A4563673AB
-	for <lists+linux-efi@lfdr.de>; Wed, 21 Apr 2021 21:46:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 897E336917A
+	for <lists+linux-efi@lfdr.de>; Fri, 23 Apr 2021 13:48:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238060AbhDUTrP (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 21 Apr 2021 15:47:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43878 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236672AbhDUTrP (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 21 Apr 2021 15:47:15 -0400
-Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42455C06138A
-        for <linux-efi@vger.kernel.org>; Wed, 21 Apr 2021 12:46:40 -0700 (PDT)
-Received: by mail-ed1-x52b.google.com with SMTP id j7so13825738eds.8
-        for <linux-efi@vger.kernel.org>; Wed, 21 Apr 2021 12:46:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rasmusvillemoes.dk; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=NH73FcWae9rxMtq6yzD0aN73DnT/UH/+Qs6UurLCK5w=;
-        b=huPQRuGRUE4Y4uwKg8uFU1m47r72vEsiaumjmyowVHGX87ArF6sX78MbsPayCF1U08
-         NOSegtbcqKB+r/cbPZd/DGnyBhjvcyOfexuNAD50XTomTz2d6nZGjD70o0a1yxHB+PVg
-         etrx5r3cPhNKLxSNhKeekOej6PLNDnFbbu9iw=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=NH73FcWae9rxMtq6yzD0aN73DnT/UH/+Qs6UurLCK5w=;
-        b=pnj+IlqvFgO1urqesPb+Y/GCXF3zj/Inup+4IdwmNZT5eoJUvo5YbzwG8NvR/wSOK8
-         7rVNSuBeeHdi/oxhL7Gd0C33Do5FUgMTu1YlnE5amgmmSt9lprLtk46M+cf/iLz+NXGi
-         RghxX4A7uYbmXMgj6xRvuLOSs0Rbz0CL2cHdavlrmpxRQnBsRV3P9tuEnp7mofBHlCwA
-         sqYNODLWSi14Hx7zmuNjnH9A0+7B46+7Fo+RIQwgpcPYs43Ud+zI33fdaGM80WNimR/u
-         /j5kgbnaEWnPHOr8x8Ix4Lqf/TL+uNO8JliqHxYUztMFa4IeWJdhhJUyYDIhmwgWYlQM
-         vnaQ==
-X-Gm-Message-State: AOAM531pjxj6GrVTyPPax0r+Z7B7LdiY1qFfHq/KTN1IElKk/7yhp2a8
-        leKUtVp12SWt4EpArJ7cYxyGrA==
-X-Google-Smtp-Source: ABdhPJx9aQwh5QxZXn4AHbBN6O3GvLRKyoZrRwrGBsP0BnWVQmiYmHwUWBmku3ZQz43Ct3u6LmFqCw==
-X-Received: by 2002:a50:fe8c:: with SMTP id d12mr40750422edt.336.1619034398879;
-        Wed, 21 Apr 2021 12:46:38 -0700 (PDT)
-Received: from prevas-ravi.prevas.se ([80.208.71.248])
-        by smtp.gmail.com with ESMTPSA id cd14sm321684ejb.53.2021.04.21.12.46.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Apr 2021 12:46:38 -0700 (PDT)
-From:   Rasmus Villemoes <linux@rasmusvillemoes.dk>
+        id S230482AbhDWLta (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 23 Apr 2021 07:49:30 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:39662 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229957AbhDWLt3 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 23 Apr 2021 07:49:29 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 13NBcwRV034176;
+        Fri, 23 Apr 2021 11:48:45 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
+ bh=iPby8n/oKiSg9iosJsx9rxTWFJNSezrrmzL3UQ0jX3w=;
+ b=T66eUBCC0JclzjlmpGtcL8C33MI1jV9nSKjMGW+vpV55thrQz0Qelu9x5nCEDX0pXeBq
+ nt4N1TohtoMWVhXNILiOb2GE/WjBR3Dprm9XTrOupSRyMqyIXfzqdJ8t1f86JYS/Chkh
+ Z3Zeo80A8OqVPjBzmCMbsPLVtZx8XdN7zeqPKEJX/LQvHK2LTV4vP649qxBMfI2NhUqq
+ MdOcIp1wvtV0qCYNVTmNaXBxaZxggJI0yZcy1A+u3QV5Y5pWrbliTgvYGzUHM79YT3nw
+ uIPBlJ08Pj4M4f0et2ySqkt9KUvrwgfns/Du7zWpI2vrcVie1hfHimw+cWxIMpDsbfJ3 Bw== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by aserp2120.oracle.com with ESMTP id 37yqmnr69j-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 23 Apr 2021 11:48:45 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 13NBjTEL009544;
+        Fri, 23 Apr 2021 11:48:45 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+        by aserp3020.oracle.com with ESMTP id 383cbf3436-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 23 Apr 2021 11:48:45 +0000
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [127.0.0.1])
+        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 13NBmiSS035729;
+        Fri, 23 Apr 2021 11:48:44 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by aserp3020.oracle.com with ESMTP id 383cbf3425-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 23 Apr 2021 11:48:44 +0000
+Received: from abhmp0005.oracle.com (abhmp0005.oracle.com [141.146.116.11])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 13NBmbqu002744;
+        Fri, 23 Apr 2021 11:48:37 GMT
+Received: from mwanda (/102.36.221.92)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Fri, 23 Apr 2021 04:48:37 -0700
+Date:   Fri, 23 Apr 2021 14:48:31 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
 To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     Alex Kluver <alex.kluver@hpe.com>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] efi: cper: fix snprintf() use in cper_dimm_err_location()
-Date:   Wed, 21 Apr 2021 21:46:36 +0200
-Message-Id: <20210421194636.1540448-1-linux@rasmusvillemoes.dk>
-X-Mailer: git-send-email 2.29.2
+Cc:     Arvind Sankar <nivedita@alum.mit.edu>,
+        Philipp Fent <fent@in.tum.de>, linux-efi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] efi/libstub: prevent read overflow in find_file_option()
+Message-ID: <YIK0D1JyV6ZeDMSS@mwanda>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
+X-Proofpoint-ORIG-GUID: 5ap1h2IUpdIXpA20rB1QYLJ-3aVVhSg9
+X-Proofpoint-GUID: 5ap1h2IUpdIXpA20rB1QYLJ-3aVVhSg9
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9962 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 mlxscore=0 adultscore=0
+ impostorscore=0 spamscore=0 malwarescore=0 clxscore=1011
+ lowpriorityscore=0 priorityscore=1501 suspectscore=0 mlxlogscore=999
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104060000 definitions=main-2104230076
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-snprintf() should be given the full buffer size, not one less. And it
-guarantees nul-termination, so doing it manually afterwards is
-pointless.
+If the buffer has slashes up to the end then this will read past the end
+of the array.  I don't anticipate that this is an issue for many people
+in real life, but it's the right thing to do and it makes static
+checkers happy.
 
-It's even potentially harmful (though probably not in practice because
-CPER_REC_LEN is 256), due to the "return how much would have been
-written had the buffer been big enough" semantics. I.e., if the bank
-and/or device strings are long enough that the "DIMM location ..."
-output gets truncated, writing to msg[n] is a buffer overflow.
-
-Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Fixes: 7a88a6227dc7 ("efi/libstub: Fix path separator regression")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- drivers/firmware/efi/cper.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/firmware/efi/libstub/file.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/efi/cper.c b/drivers/firmware/efi/cper.c
-index e15d484b6a5a..ea7ca74fc173 100644
---- a/drivers/firmware/efi/cper.c
-+++ b/drivers/firmware/efi/cper.c
-@@ -276,8 +276,7 @@ static int cper_dimm_err_location(struct cper_mem_err_compact *mem, char *msg)
- 	if (!msg || !(mem->validation_bits & CPER_MEM_VALID_MODULE_HANDLE))
+diff --git a/drivers/firmware/efi/libstub/file.c b/drivers/firmware/efi/libstub/file.c
+index 4e81c6077188..dd95f330fe6e 100644
+--- a/drivers/firmware/efi/libstub/file.c
++++ b/drivers/firmware/efi/libstub/file.c
+@@ -103,7 +103,7 @@ static int find_file_option(const efi_char16_t *cmdline, int cmdline_len,
  		return 0;
  
--	n = 0;
--	len = CPER_REC_LEN - 1;
-+	len = CPER_REC_LEN;
- 	dmi_memdev_name(mem->mem_dev_handle, &bank, &device);
- 	if (bank && device)
- 		n = snprintf(msg, len, "DIMM location: %s %s ", bank, device);
-@@ -286,7 +285,6 @@ static int cper_dimm_err_location(struct cper_mem_err_compact *mem, char *msg)
- 			     "DIMM location: not present. DMI handle: 0x%.4x ",
- 			     mem->mem_dev_handle);
+ 	/* Skip any leading slashes */
+-	while (cmdline[i] == L'/' || cmdline[i] == L'\\')
++	while (i < cmdline_len && (cmdline[i] == L'/' || cmdline[i] == L'\\'))
+ 		i++;
  
--	msg[n] = '\0';
- 	return n;
- }
- 
+ 	while (--result_len > 0 && i < cmdline_len) {
 -- 
-2.29.2
+2.30.2
 
