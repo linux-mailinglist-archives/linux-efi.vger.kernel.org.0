@@ -2,98 +2,123 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 897E336917A
-	for <lists+linux-efi@lfdr.de>; Fri, 23 Apr 2021 13:48:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F51136C5C4
+	for <lists+linux-efi@lfdr.de>; Tue, 27 Apr 2021 14:07:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230482AbhDWLta (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 23 Apr 2021 07:49:30 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:39662 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229957AbhDWLt3 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 23 Apr 2021 07:49:29 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 13NBcwRV034176;
-        Fri, 23 Apr 2021 11:48:45 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=iPby8n/oKiSg9iosJsx9rxTWFJNSezrrmzL3UQ0jX3w=;
- b=T66eUBCC0JclzjlmpGtcL8C33MI1jV9nSKjMGW+vpV55thrQz0Qelu9x5nCEDX0pXeBq
- nt4N1TohtoMWVhXNILiOb2GE/WjBR3Dprm9XTrOupSRyMqyIXfzqdJ8t1f86JYS/Chkh
- Z3Zeo80A8OqVPjBzmCMbsPLVtZx8XdN7zeqPKEJX/LQvHK2LTV4vP649qxBMfI2NhUqq
- MdOcIp1wvtV0qCYNVTmNaXBxaZxggJI0yZcy1A+u3QV5Y5pWrbliTgvYGzUHM79YT3nw
- uIPBlJ08Pj4M4f0et2ySqkt9KUvrwgfns/Du7zWpI2vrcVie1hfHimw+cWxIMpDsbfJ3 Bw== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by aserp2120.oracle.com with ESMTP id 37yqmnr69j-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 23 Apr 2021 11:48:45 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 13NBjTEL009544;
-        Fri, 23 Apr 2021 11:48:45 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-        by aserp3020.oracle.com with ESMTP id 383cbf3436-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 23 Apr 2021 11:48:45 +0000
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [127.0.0.1])
-        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 13NBmiSS035729;
-        Fri, 23 Apr 2021 11:48:44 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by aserp3020.oracle.com with ESMTP id 383cbf3425-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 23 Apr 2021 11:48:44 +0000
-Received: from abhmp0005.oracle.com (abhmp0005.oracle.com [141.146.116.11])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 13NBmbqu002744;
-        Fri, 23 Apr 2021 11:48:37 GMT
-Received: from mwanda (/102.36.221.92)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 23 Apr 2021 04:48:37 -0700
-Date:   Fri, 23 Apr 2021 14:48:31 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     Arvind Sankar <nivedita@alum.mit.edu>,
-        Philipp Fent <fent@in.tum.de>, linux-efi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] efi/libstub: prevent read overflow in find_file_option()
-Message-ID: <YIK0D1JyV6ZeDMSS@mwanda>
+        id S235469AbhD0MHu (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 27 Apr 2021 08:07:50 -0400
+Received: from mail-lf1-f51.google.com ([209.85.167.51]:36697 "EHLO
+        mail-lf1-f51.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235426AbhD0MHt (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 27 Apr 2021 08:07:49 -0400
+Received: by mail-lf1-f51.google.com with SMTP id n138so93456955lfa.3;
+        Tue, 27 Apr 2021 05:07:05 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=RJxVncGS6U+aW2CwWEyoK+WV9nu3WxeKlSv9zlz4jhY=;
+        b=NA8LH8xroKv34BoyPdLLJ3W8TrlBScMeazqbOr8CtMDlk/KJgYc6T60ntvA9gOYvHj
+         smMRzykGYhUdZSElciOlA+OVmGQW5b6MfZt/F+5/E9fEwOzSH89plQeZ2fRKjWl3qX9E
+         RBNzmIMsTaoAY17OAmZLTIreGq2b9z8dUqf+WSvjdWd8rV2B7XpuPLaESC7iZsXdBRSi
+         u+mfFx4SQNyL0YHO9B/4/emOkMVq1BMjvfcNtb4mw9z5YDlO/40JlSA7FJeqHhAL9hE0
+         kAp4yd5put2tjCij87pOfBZrY8LzlOPnH4NQtxVUoHJc+TWtMGeBoaTKrh7qMUQv/7bO
+         1dMw==
+X-Gm-Message-State: AOAM533S9N2VpBNoGqNQk70vPb6ir+yuX3aZgRjxSxJ/S52A10OnPAku
+        XfF5kBMhKHNUlMfRGDhoNlL35tVnjbk+eDa4pR0=
+X-Google-Smtp-Source: ABdhPJxQ0kxFGDW6SKs/ZkAuW3qrdumsGa+YE/HoO2jF89zCZ/AFVyqy0UdLvMZnvlj+iY/cKI8Sig==
+X-Received: by 2002:a05:6512:1116:: with SMTP id l22mr17431918lfg.655.1619525223175;
+        Tue, 27 Apr 2021 05:07:03 -0700 (PDT)
+Received: from arei.office.basealt.ru ([2a0c:88c0:1:813:96c6:91ff:fe6b:6650])
+        by smtp.gmail.com with ESMTPSA id h12sm376351ljh.21.2021.04.27.05.07.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 27 Apr 2021 05:07:02 -0700 (PDT)
+From:   Nikita Ermakov <arei@altlinux.org>
+To:     linux-efi@vger.kernel.org
+Cc:     Ard Biesheuvel <ardb@kernel.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Atish Patra <atish.patra@wdc.com>,
+        linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Nikita Ermakov <arei@altlinux.org>
+Subject: [PATCH] RISC-V: Relocate the kernel relative to a DRAM base.
+Date:   Tue, 27 Apr 2021 15:06:07 +0300
+Message-Id: <20210427120607.2646166-1-arei@altlinux.org>
+X-Mailer: git-send-email 2.29.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-X-Proofpoint-ORIG-GUID: 5ap1h2IUpdIXpA20rB1QYLJ-3aVVhSg9
-X-Proofpoint-GUID: 5ap1h2IUpdIXpA20rB1QYLJ-3aVVhSg9
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9962 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 mlxscore=0 adultscore=0
- impostorscore=0 spamscore=0 malwarescore=0 clxscore=1011
- lowpriorityscore=0 priorityscore=1501 suspectscore=0 mlxlogscore=999
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104060000 definitions=main-2104230076
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-If the buffer has slashes up to the end then this will read past the end
-of the array.  I don't anticipate that this is an issue for many people
-in real life, but it's the right thing to do and it makes static
-checkers happy.
+Try to get the base of the DRAM from a DTB to use it as a lowest address
+in physical memory to relocate the kernel. If it is not possible to
+obtain the base from a /memory node of the DTB let's make an assumption
+that the DRAM base at the beginning of the memory.
 
-Fixes: 7a88a6227dc7 ("efi/libstub: Fix path separator regression")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+Signed-off-by: Nikita Ermakov <arei@altlinux.org>
 ---
- drivers/firmware/efi/libstub/file.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/firmware/efi/libstub/riscv-stub.c | 39 ++++++++++++++++++++++-
+ 1 file changed, 38 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/efi/libstub/file.c b/drivers/firmware/efi/libstub/file.c
-index 4e81c6077188..dd95f330fe6e 100644
---- a/drivers/firmware/efi/libstub/file.c
-+++ b/drivers/firmware/efi/libstub/file.c
-@@ -103,7 +103,7 @@ static int find_file_option(const efi_char16_t *cmdline, int cmdline_len,
- 		return 0;
+diff --git a/drivers/firmware/efi/libstub/riscv-stub.c b/drivers/firmware/efi/libstub/riscv-stub.c
+index 380e4e251399..1b5944276e1a 100644
+--- a/drivers/firmware/efi/libstub/riscv-stub.c
++++ b/drivers/firmware/efi/libstub/riscv-stub.c
+@@ -46,6 +46,39 @@ static u32 get_boot_hartid_from_fdt(void)
+ 	return fdt32_to_cpu(*prop);
+ }
  
- 	/* Skip any leading slashes */
--	while (cmdline[i] == L'/' || cmdline[i] == L'\\')
-+	while (i < cmdline_len && (cmdline[i] == L'/' || cmdline[i] == L'\\'))
- 		i++;
++static unsigned long get_dram_base_from_fdt(void)
++{
++	const void *fdt;
++	int node, len;
++	const fdt32_t *addr_cells;
++	const void *prop;
++
++	fdt = get_efi_config_table(DEVICE_TREE_GUID);
++	if (!fdt)
++		return ULONG_MAX;
++
++	node = fdt_path_offset(fdt, "/");
++	if (node < 0)
++		return ULONG_MAX;
++
++	addr_cells = fdt_getprop((void *)fdt, node, "#address-cells", &len);
++	if (!addr_cells)
++		return ULONG_MAX;
++
++	node = fdt_path_offset(fdt, "/memory");
++	if (node < 0)
++		return ULONG_MAX;
++
++	prop = fdt_getprop((void *)fdt, node, "reg", &len);
++	if (!prop)
++		return ULONG_MAX;
++
++	if (fdt32_to_cpu(*addr_cells) > 1)
++		return fdt64_to_cpu(*((fdt64_t *)prop));
++	else
++		return fdt32_to_cpu(*((fdt32_t *)prop));
++}
++
+ efi_status_t check_platform_features(void)
+ {
+ 	hartid = get_boot_hartid_from_fdt();
+@@ -97,7 +130,11 @@ efi_status_t handle_kernel_image(unsigned long *image_addr,
+ 	 * lowest possible memory region as long as the address and size meets
+ 	 * the alignment constraints.
+ 	 */
+-	preferred_addr = MIN_KIMG_ALIGN;
++	preferred_addr = get_dram_base_from_fdt();
++	if (preferred_addr == ULONG_MAX)
++		preferred_addr = MIN_KIMG_ALIGN;
++	else
++		preferred_addr += MIN_KIMG_ALIGN;
+ 	status = efi_relocate_kernel(image_addr, kernel_size, *image_size,
+ 				     preferred_addr, MIN_KIMG_ALIGN, 0x0);
  
- 	while (--result_len > 0 && i < cmdline_len) {
 -- 
-2.30.2
+2.29.3
 
