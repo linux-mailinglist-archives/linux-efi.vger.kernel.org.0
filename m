@@ -2,60 +2,60 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C3DFE37767C
-	for <lists+linux-efi@lfdr.de>; Sun,  9 May 2021 13:45:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A38E937767D
+	for <lists+linux-efi@lfdr.de>; Sun,  9 May 2021 13:45:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229563AbhEILqN (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        id S229596AbhEILqN (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
         Sun, 9 May 2021 07:46:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51544 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51554 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229590AbhEILqM (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sun, 9 May 2021 07:46:12 -0400
-Received: from mail-wr1-x433.google.com (mail-wr1-x433.google.com [IPv6:2a00:1450:4864:20::433])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6E36C061573
-        for <linux-efi@vger.kernel.org>; Sun,  9 May 2021 04:45:08 -0700 (PDT)
-Received: by mail-wr1-x433.google.com with SMTP id a4so13703348wrr.2
-        for <linux-efi@vger.kernel.org>; Sun, 09 May 2021 04:45:08 -0700 (PDT)
+        with ESMTP id S229590AbhEILqN (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sun, 9 May 2021 07:46:13 -0400
+Received: from mail-wm1-x333.google.com (mail-wm1-x333.google.com [IPv6:2a00:1450:4864:20::333])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DCC6C061573
+        for <linux-efi@vger.kernel.org>; Sun,  9 May 2021 04:45:10 -0700 (PDT)
+Received: by mail-wm1-x333.google.com with SMTP id o26-20020a1c4d1a0000b0290146e1feccdaso8401939wmh.0
+        for <linux-efi@vger.kernel.org>; Sun, 09 May 2021 04:45:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=hoiAIq/z3yHkNOvXZ9mqTktxHY6cU6zfc8Z8n8hwB2c=;
-        b=fMYvUXUjg3oolfqTBDiYR0OIQuC7lcfDKZxNktcrYHxb8imwa8oKgsArc3NvQt2k4j
-         aAZRUQ1RglF0N4zmqgNPhI+oyDjwYyl//yro/Z8Vj6iUw5GKiP8pi5x0pyxqSQ0abtL2
-         R6Zdn9M9r33CUcezWhqbxINs5HHDf9PcZ3Rto0r6/Vi278lGAZwF02kTN1MugD9EC2i2
-         bWYalzp1Yj1rtfM4ndQ2jZ5H0SmJBRq5vGLg5BkF7192/gaCxnx+GsxEZtSUeu7K0x2D
-         3ux1gOM8DVIKfAjffP8wY46xke05fOuIJ4IbqcHKUB9+yEwoQB9bHlOIl05tz7qJRhRH
-         Ej0Q==
+        bh=X//EfKNG/JXgT7eprwoHweO50xjUkMsHD1BIDnk0dog=;
+        b=k+UMoVGJTcn6jeQGponxOiUb88fptFYg/B6C+VWWxTaZbgK3F5fOqjUsUumel0NbsN
+         avoYmLOgT5vVmnGDJGqxRemUs78LijJTcXn573C7cCGI3+TjcgksumcAX3evPPyBZFlB
+         Ml2Jdp7ymujCimLcdF3eznpsr9fFaAE9Z/A8eDFBEo82qSW475LIvJWeHOIken3EIfg3
+         /ZJgUwY025MeRn/gxHmGNdPbRZ7kxqkPfVxV6HYAijYoeueo9D5hi4r09YCEKcr7iFV4
+         KYbtQlRBZWWwCAo71kIWmAGbaWEtSRG7TQjHVAWSM1iR1ZFmCwxWa1x/gOQfj1VGv36D
+         W+Cg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=hoiAIq/z3yHkNOvXZ9mqTktxHY6cU6zfc8Z8n8hwB2c=;
-        b=eZwyZB86IEMMOi04qbY0XVIjefU40APvGPtE9U5kU9Z7at4mhZgJSxXEjMJPelbWC7
-         1zWYCSg0FIbu5QKCIGew5xzmC8bU/4IJHHWW7xAcflqFcNsTfIfd2YjwinWBMkg0jDId
-         nI5oUlaXiLywRVmG6YkSMvOd7eErNC/CB372Y6p9HuXgbtNg21RjfdvJZSmrhvXJhhoS
-         i27iZPodtUTwn1hUHKop/9lCIa9J6i0igC6+4kJ6MqyvZB8ncgNRtjmsQhvJlesxxlxE
-         oJRRL1HK8iXq//vTAP5rN/xNLE9z3zvIWzXYzV5iQ581PhqxnJlShjGcOPBUiPoUKsrP
-         /OTg==
-X-Gm-Message-State: AOAM531G9QNShqpcjfz7PhxGNn+Tdi7PIxg+9yxusPW49xn4SH7gQjOy
-        5qkkSrNvg1uqyTwYivVUe4Q5bn+KtVN3tw==
-X-Google-Smtp-Source: ABdhPJxF7tx9E/hR8sgMc8TFY509Bwjl9XwhtnIU049tnudzLXUVirVR6adC9mg+FF1GKRIMq5JEJw==
-X-Received: by 2002:adf:f251:: with SMTP id b17mr24522214wrp.410.1620560707728;
-        Sun, 09 May 2021 04:45:07 -0700 (PDT)
+        bh=X//EfKNG/JXgT7eprwoHweO50xjUkMsHD1BIDnk0dog=;
+        b=fSm6dQmu9UIAu9d1ZD212T6KHj9sqzIMeUeyz9bpuTIXRnMOtE/rLNZF1xQqmqsjdG
+         +vOJuG+6vAr02LRYl2+8hTBX+pxeuI7Hc9NJX+kPfRwlgq1F5WGX86sVtuHlR92r2a35
+         WfBpX9pxEekXd8t+Rd+yNqf3txND3znF3RXHegWjIHg5dofv3ofME/NBSNJB9p+RPG+X
+         TYmjvMlkSegnSbAXGr0tek4/1SaD8KYAy+clR02b5NSKoPYZAi+eX7UlVZmfxYV9FPs9
+         auTaDih2sxAnocBi2KgIp7nMierZzEmXlD/AC67teyutXOHR6/z3beCjpnDt2TMMDXgw
+         N3MQ==
+X-Gm-Message-State: AOAM531D3e9riwgi6+JgoZz6jUQrolg5EOb70+8k34lS0xZ/yANvnx57
+        Abev3nYSXGXTn7i3LHDZBpiAKoC5hXLAbQ==
+X-Google-Smtp-Source: ABdhPJzMX4W7GoN+F/h5bRPjw1rmtw7kRUxHBL3v81KQkRLSZfiqtBPdnlIvOksJiS8KDgwHcF+LTA==
+X-Received: by 2002:a05:600c:4642:: with SMTP id n2mr20504325wmo.103.1620560708960;
+        Sun, 09 May 2021 04:45:08 -0700 (PDT)
 Received: from apalos.home ([2a02:587:466e:1389:2e56:dcff:fe9a:8f06])
-        by smtp.gmail.com with ESMTPSA id c8sm17650244wrx.4.2021.05.09.04.45.06
+        by smtp.gmail.com with ESMTPSA id c8sm17650244wrx.4.2021.05.09.04.45.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 09 May 2021 04:45:07 -0700 (PDT)
+        Sun, 09 May 2021 04:45:08 -0700 (PDT)
 From:   Ilias Apalodimas <ilias.apalodimas@linaro.org>
 To:     linux-efi@vger.kernel.org
 Cc:     ardb@kernel.org, pjones@redhat.com, nivedita@alum.mit.edu,
         mjg59@google.com, daniel.kiper@oracle.com,
         James.Bottomley@hansenpartnership.com, leif@nuviainc.com,
         Ilias Apalodimas <ilias.apalodimas@linaro.org>
-Subject: [RFC PATCH 2/4] efi/libstub: x86/mixed: increase supported argument count
-Date:   Sun,  9 May 2021 14:44:52 +0300
-Message-Id: <20210509114454.185583-3-ilias.apalodimas@linaro.org>
+Subject: [RFC PATCH 3/4] efi/libstub: consolidate initrd handling across architectures
+Date:   Sun,  9 May 2021 14:44:53 +0300
+Message-Id: <20210509114454.185583-4-ilias.apalodimas@linaro.org>
 X-Mailer: git-send-email 2.31.0
 In-Reply-To: <20210509114454.185583-1-ilias.apalodimas@linaro.org>
 References: <20210509114454.185583-1-ilias.apalodimas@linaro.org>
@@ -67,146 +67,143 @@ X-Mailing-List: linux-efi@vger.kernel.org
 
 From: Ard Biesheuvel <ardb@kernel.org>
 
-Increase the number of arguments supported by mixed mode calls, so that
-we will be able to call into the TCG2 protocol to measure the initrd
-and extend the associated PCR. This involves the TCG2 protocol's
-hash_log_extend_event() method, which takes five arguments, three of
-which are u64 and need to be split, producing a total of 8 outgoing
-arguments.
+Before adding TPM measurement of the initrd contents, refactor the
+initrd handling slightly to be more self-contained and consistent.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Ilias Apalodimas <ilias.apalodimas@linaro.org>
 ---
- arch/x86/boot/compressed/efi_thunk_64.S | 17 ++++++++++++-----
- arch/x86/include/asm/efi.h              | 10 ++++++----
- arch/x86/platform/efi/efi_thunk_64.S    | 14 ++++++++++++--
- 3 files changed, 30 insertions(+), 11 deletions(-)
+ .../firmware/efi/libstub/efi-stub-helper.c    | 13 +++++++---
+ drivers/firmware/efi/libstub/efi-stub.c       | 10 ++-----
+ drivers/firmware/efi/libstub/efistub.h        |  1 -
+ drivers/firmware/efi/libstub/x86-stub.c       | 26 +++++++------------
+ 4 files changed, 21 insertions(+), 29 deletions(-)
 
-diff --git a/arch/x86/boot/compressed/efi_thunk_64.S b/arch/x86/boot/compressed/efi_thunk_64.S
-index 95a223b3e56a..fec6c48d6b30 100644
---- a/arch/x86/boot/compressed/efi_thunk_64.S
-+++ b/arch/x86/boot/compressed/efi_thunk_64.S
-@@ -27,8 +27,6 @@ SYM_FUNC_START(__efi64_thunk)
- 	push	%rbp
- 	push	%rbx
+diff --git a/drivers/firmware/efi/libstub/efi-stub-helper.c b/drivers/firmware/efi/libstub/efi-stub-helper.c
+index aa8da0a49829..72a7e7c4d403 100644
+--- a/drivers/firmware/efi/libstub/efi-stub-helper.c
++++ b/drivers/firmware/efi/libstub/efi-stub-helper.c
+@@ -20,10 +20,10 @@
  
--	leaq	1f(%rip), %rbp
+ bool efi_nochunk;
+ bool efi_nokaslr = !IS_ENABLED(CONFIG_RANDOMIZE_BASE);
+-bool efi_noinitrd;
+ int efi_loglevel = CONSOLE_LOGLEVEL_DEFAULT;
+ bool efi_novamap;
+ 
++static bool efi_noinitrd;
+ static bool efi_nosoftreserve;
+ static bool efi_disable_pci_dma = IS_ENABLED(CONFIG_EFI_DISABLE_PCI_DMA);
+ 
+@@ -643,8 +643,10 @@ efi_status_t efi_load_initrd(efi_loaded_image_t *image,
+ {
+ 	efi_status_t status;
+ 
+-	if (!load_addr || !load_size)
+-		return EFI_INVALID_PARAMETER;
++	if (efi_noinitrd) {
++		*load_addr = *load_size = 0;
++		return EFI_SUCCESS;
++	}
+ 
+ 	status = efi_load_initrd_dev_path(load_addr, load_size, hard_limit);
+ 	if (status == EFI_SUCCESS) {
+@@ -655,7 +657,10 @@ efi_status_t efi_load_initrd(efi_loaded_image_t *image,
+ 		if (status == EFI_SUCCESS && *load_size > 0)
+ 			efi_info("Loaded initrd from command line option\n");
+ 	}
 -
- 	movl	%ds, %eax
- 	push	%rax
- 	movl	%es, %eax
-@@ -36,19 +34,28 @@ SYM_FUNC_START(__efi64_thunk)
- 	movl	%ss, %eax
- 	push	%rax
++	if (status != EFI_SUCCESS) {
++		efi_err("Failed to load initrd: 0x%lx\n", status);
++		*load_addr = *load_size = 0;
++	}
+ 	return status;
+ }
  
-+	movq	0x30(%rsp), %rbp
-+	movq	0x38(%rsp), %rbx
-+	movq	0x40(%rsp), %rax
-+
- 	/*
- 	 * Convert x86-64 ABI params to i386 ABI
+diff --git a/drivers/firmware/efi/libstub/efi-stub.c b/drivers/firmware/efi/libstub/efi-stub.c
+index 26e69788f27a..e87e7f1b1a33 100644
+--- a/drivers/firmware/efi/libstub/efi-stub.c
++++ b/drivers/firmware/efi/libstub/efi-stub.c
+@@ -134,7 +134,6 @@ efi_status_t __efiapi efi_pe_entry(efi_handle_t handle,
+ 	enum efi_secureboot_mode secure_boot;
+ 	struct screen_info *si;
+ 	efi_properties_table_t *prop_tbl;
+-	unsigned long max_addr;
+ 
+ 	efi_system_table = sys_table_arg;
+ 
+@@ -240,13 +239,8 @@ efi_status_t __efiapi efi_pe_entry(efi_handle_t handle,
+ 	if (!fdt_addr)
+ 		efi_info("Generating empty DTB\n");
+ 
+-	if (!efi_noinitrd) {
+-		max_addr = efi_get_max_initrd_addr(image_addr);
+-		status = efi_load_initrd(image, &initrd_addr, &initrd_size,
+-					 ULONG_MAX, max_addr);
+-		if (status != EFI_SUCCESS)
+-			efi_err("Failed to load initrd!\n");
+-	}
++	efi_load_initrd(image, &initrd_addr, &initrd_size, ULONG_MAX,
++			efi_get_max_initrd_addr(image_addr));
+ 
+ 	efi_random_get_seed();
+ 
+diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
+index a2825c435158..edb77b0621ea 100644
+--- a/drivers/firmware/efi/libstub/efistub.h
++++ b/drivers/firmware/efi/libstub/efistub.h
+@@ -31,7 +31,6 @@
+ 
+ extern bool efi_nochunk;
+ extern bool efi_nokaslr;
+-extern bool efi_noinitrd;
+ extern int efi_loglevel;
+ extern bool efi_novamap;
+ 
+diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
+index f14c4ff5839f..01ddd4502e28 100644
+--- a/drivers/firmware/efi/libstub/x86-stub.c
++++ b/drivers/firmware/efi/libstub/x86-stub.c
+@@ -673,6 +673,7 @@ unsigned long efi_main(efi_handle_t handle,
+ 	unsigned long bzimage_addr = (unsigned long)startup_32;
+ 	unsigned long buffer_start, buffer_end;
+ 	struct setup_header *hdr = &boot_params->hdr;
++	unsigned long addr, size;
+ 	efi_status_t status;
+ 
+ 	efi_system_table = sys_table_arg;
+@@ -761,22 +762,15 @@ unsigned long efi_main(efi_handle_t handle,
+ 	 * arguments will be processed only if image is not NULL, which will be
+ 	 * the case only if we were loaded via the PE entry point.
  	 */
--	subq	$32, %rsp
-+	subq	$48, %rsp
- 	movl	%esi, 0x0(%rsp)
- 	movl	%edx, 0x4(%rsp)
- 	movl	%ecx, 0x8(%rsp)
- 	movl	%r8d, 0xc(%rsp)
- 	movl	%r9d, 0x10(%rsp)
-+	movl	%ebp, 0x14(%rsp)
-+	movl	%ebx, 0x18(%rsp)
-+	movl	%eax, 0x1c(%rsp)
+-	if (!efi_noinitrd) {
+-		unsigned long addr, size;
+-
+-		status = efi_load_initrd(image, &addr, &size,
+-					 hdr->initrd_addr_max, ULONG_MAX);
+-
+-		if (status != EFI_SUCCESS) {
+-			efi_err("Failed to load initrd!\n");
+-			goto fail;
+-		}
+-		if (size > 0) {
+-			efi_set_u64_split(addr, &hdr->ramdisk_image,
+-					  &boot_params->ext_ramdisk_image);
+-			efi_set_u64_split(size, &hdr->ramdisk_size,
+-					  &boot_params->ext_ramdisk_size);
+-		}
++	status = efi_load_initrd(image, &addr, &size, hdr->initrd_addr_max,
++				 ULONG_MAX);
++	if (status != EFI_SUCCESS)
++		goto fail;
++	if (size > 0) {
++		efi_set_u64_split(addr, &hdr->ramdisk_image,
++				  &boot_params->ext_ramdisk_image);
++		efi_set_u64_split(size, &hdr->ramdisk_size,
++				  &boot_params->ext_ramdisk_size);
+ 	}
  
--	leaq	0x14(%rsp), %rbx
-+	leaq	0x20(%rsp), %rbx
- 	sgdt	(%rbx)
- 
-+	leaq	1f(%rip), %rbp
-+
  	/*
- 	 * Switch to gdt with 32-bit segments. This is the firmware GDT
- 	 * that was installed when the kernel started executing. This
-@@ -67,7 +74,7 @@ SYM_FUNC_START(__efi64_thunk)
- 	pushq	%rax
- 	lretq
- 
--1:	addq	$32, %rsp
-+1:	addq	$48, %rsp
- 	movq	%rdi, %rax
- 
- 	pop	%rbx
-diff --git a/arch/x86/include/asm/efi.h b/arch/x86/include/asm/efi.h
-index 85f156f8ef81..a323dbac9182 100644
---- a/arch/x86/include/asm/efi.h
-+++ b/arch/x86/include/asm/efi.h
-@@ -46,13 +46,14 @@ extern unsigned long efi_mixed_mode_stack_pa;
- 
- #define __efi_nargs(...) __efi_nargs_(__VA_ARGS__)
- #define __efi_nargs_(...) __efi_nargs__(0, ##__VA_ARGS__,	\
-+	__efi_arg_sentinel(9), __efi_arg_sentinel(8),		\
- 	__efi_arg_sentinel(7), __efi_arg_sentinel(6),		\
- 	__efi_arg_sentinel(5), __efi_arg_sentinel(4),		\
- 	__efi_arg_sentinel(3), __efi_arg_sentinel(2),		\
- 	__efi_arg_sentinel(1), __efi_arg_sentinel(0))
--#define __efi_nargs__(_0, _1, _2, _3, _4, _5, _6, _7, n, ...)	\
-+#define __efi_nargs__(_0, _1, _2, _3, _4, _5, _6, _7, _8, _9, n, ...)	\
- 	__take_second_arg(n,					\
--		({ BUILD_BUG_ON_MSG(1, "__efi_nargs limit exceeded"); 8; }))
-+		({ BUILD_BUG_ON_MSG(1, "__efi_nargs limit exceeded"); 10; }))
- #define __efi_arg_sentinel(n) , n
- 
- /*
-@@ -176,8 +177,9 @@ extern u64 efi_setup;
- extern efi_status_t __efi64_thunk(u32, ...);
- 
- #define efi64_thunk(...) ({						\
--	__efi_nargs_check(efi64_thunk, 6, __VA_ARGS__);			\
--	__efi64_thunk(__VA_ARGS__);					\
-+	u64 __pad[3]; /* must have space for 3 args on the stack */	\
-+	__efi_nargs_check(efi64_thunk, 9, __VA_ARGS__);			\
-+	__efi64_thunk(__VA_ARGS__, __pad);				\
- })
- 
- static inline bool efi_is_mixed(void)
-diff --git a/arch/x86/platform/efi/efi_thunk_64.S b/arch/x86/platform/efi/efi_thunk_64.S
-index fd3dd1708eba..5b7c6e09954e 100644
---- a/arch/x86/platform/efi/efi_thunk_64.S
-+++ b/arch/x86/platform/efi/efi_thunk_64.S
-@@ -36,6 +36,17 @@ SYM_CODE_START(__efi64_thunk)
- 	movq	efi_mixed_mode_stack_pa(%rip), %rsp
- 	push	%rax
- 
-+	/*
-+	 * Copy args passed via the stack
-+	 */
-+	subq	$0x24, %rsp
-+	movq	0x18(%rax), %rbp
-+	movq	0x20(%rax), %rbx
-+	movq	0x28(%rax), %rax
-+	movl	%ebp, 0x18(%rsp)
-+	movl	%ebx, 0x1c(%rsp)
-+	movl	%eax, 0x20(%rsp)
-+
- 	/*
- 	 * Calculate the physical address of the kernel text.
- 	 */
-@@ -47,7 +58,6 @@ SYM_CODE_START(__efi64_thunk)
- 	subq	%rax, %rbp
- 	subq	%rax, %rbx
- 
--	subq	$28, %rsp
- 	movl	%ebx, 0x0(%rsp)		/* return address */
- 	movl	%esi, 0x4(%rsp)
- 	movl	%edx, 0x8(%rsp)
-@@ -60,7 +70,7 @@ SYM_CODE_START(__efi64_thunk)
- 	pushq	%rdi			/* EFI runtime service address */
- 	lretq
- 
--1:	movq	24(%rsp), %rsp
-+1:	movq	0x20(%rsp), %rsp
- 	pop	%rbx
- 	pop	%rbp
- 	retq
 -- 
 2.31.0
 
