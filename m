@@ -2,60 +2,60 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B9AD37767B
+	by mail.lfdr.de (Postfix) with ESMTP id C3DFE37767C
 	for <lists+linux-efi@lfdr.de>; Sun,  9 May 2021 13:45:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229593AbhEILqM (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sun, 9 May 2021 07:46:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51542 "EHLO
+        id S229563AbhEILqN (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sun, 9 May 2021 07:46:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51544 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229563AbhEILqL (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sun, 9 May 2021 07:46:11 -0400
-Received: from mail-wm1-x334.google.com (mail-wm1-x334.google.com [IPv6:2a00:1450:4864:20::334])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1043C061574
-        for <linux-efi@vger.kernel.org>; Sun,  9 May 2021 04:45:07 -0700 (PDT)
-Received: by mail-wm1-x334.google.com with SMTP id o127so7604721wmo.4
-        for <linux-efi@vger.kernel.org>; Sun, 09 May 2021 04:45:07 -0700 (PDT)
+        with ESMTP id S229590AbhEILqM (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sun, 9 May 2021 07:46:12 -0400
+Received: from mail-wr1-x433.google.com (mail-wr1-x433.google.com [IPv6:2a00:1450:4864:20::433])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6E36C061573
+        for <linux-efi@vger.kernel.org>; Sun,  9 May 2021 04:45:08 -0700 (PDT)
+Received: by mail-wr1-x433.google.com with SMTP id a4so13703348wrr.2
+        for <linux-efi@vger.kernel.org>; Sun, 09 May 2021 04:45:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=JM6tzI8U43hdDrmMeAqAWUx/ZtfoircetzM39x0T+Qo=;
-        b=qNlILJi9qtznNp58d1C9Yi3Qrf2oTMG/j3cbuOTcAfBlasYf8y5w5lVGH1LcEfa7Ig
-         xxWl9fq2CxE420DFEBsPsb52o4ZTE+9spEj20rc9ee9W61lEC99IK8J83WV2tSKpjyn5
-         zIkR0eRPPP8bzb8WHVPmQ7l7j2Qve0hlOvWNpdEfKmVa1b9LMifV+8mWhoWFHTL0g1hx
-         yySsPKoRZyPTPubpbQ6BqHtPFKRryENFQEDTv6630a9N+7ELN17xfslLD68q9aj3NgT1
-         4/zhPY5iJh9HuuTHy7T2u+219GNHPU73NnXvc/iErXFuPnqBv9dl9yPBgZHcpluquWUY
-         aIOw==
+        bh=hoiAIq/z3yHkNOvXZ9mqTktxHY6cU6zfc8Z8n8hwB2c=;
+        b=fMYvUXUjg3oolfqTBDiYR0OIQuC7lcfDKZxNktcrYHxb8imwa8oKgsArc3NvQt2k4j
+         aAZRUQ1RglF0N4zmqgNPhI+oyDjwYyl//yro/Z8Vj6iUw5GKiP8pi5x0pyxqSQ0abtL2
+         R6Zdn9M9r33CUcezWhqbxINs5HHDf9PcZ3Rto0r6/Vi278lGAZwF02kTN1MugD9EC2i2
+         bWYalzp1Yj1rtfM4ndQ2jZ5H0SmJBRq5vGLg5BkF7192/gaCxnx+GsxEZtSUeu7K0x2D
+         3ux1gOM8DVIKfAjffP8wY46xke05fOuIJ4IbqcHKUB9+yEwoQB9bHlOIl05tz7qJRhRH
+         Ej0Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=JM6tzI8U43hdDrmMeAqAWUx/ZtfoircetzM39x0T+Qo=;
-        b=esnig6Fbaj/eMzgdqrSus370JQOAxYNlMxoPld3dq707Ng1vpcpI5tP1JiNgOLX/ne
-         Nms1azWGkg/F18rqeZ1cVPAOO5EOkHzHxv2vT399XOtZjvLWBcOQbhIEQX9TgVbtJBUi
-         Sct0uQFHzYwxJZ1RiaNP/qh98GAXU4BfNRSom4+RdlplYFIi0wdJJCZzRHdTL3POM2gI
-         uX9bpgYngU115O2Tkf1QRMM+dfJt8iLJLrTuCyx7nuF7UNXErvYBP8CAcUSss9UgA0KF
-         YR2fR+G11QU9fJoJTuYR5Rf9nsu9Pt57vgR7aksvk6eUFam5Bx81Kv11x2hRHLFLMZ9Q
-         OvEQ==
-X-Gm-Message-State: AOAM5334gACMdgNjKN2ZfohtuSEGC/zD9CCwh6qac1hhCOZ5V4E8kTro
-        e9EZEGSn906VLzJsSDiUozxHUTVGbTBgUg==
-X-Google-Smtp-Source: ABdhPJyFKdjLQeXkDxpdfeDM2C9sBq7Mx2ncUZqrD28zIdmjHRSiOz9xld9sB624oCY4RVnRPTIOAQ==
-X-Received: by 2002:a1c:e409:: with SMTP id b9mr32165742wmh.189.1620560706479;
-        Sun, 09 May 2021 04:45:06 -0700 (PDT)
+        bh=hoiAIq/z3yHkNOvXZ9mqTktxHY6cU6zfc8Z8n8hwB2c=;
+        b=eZwyZB86IEMMOi04qbY0XVIjefU40APvGPtE9U5kU9Z7at4mhZgJSxXEjMJPelbWC7
+         1zWYCSg0FIbu5QKCIGew5xzmC8bU/4IJHHWW7xAcflqFcNsTfIfd2YjwinWBMkg0jDId
+         nI5oUlaXiLywRVmG6YkSMvOd7eErNC/CB372Y6p9HuXgbtNg21RjfdvJZSmrhvXJhhoS
+         i27iZPodtUTwn1hUHKop/9lCIa9J6i0igC6+4kJ6MqyvZB8ncgNRtjmsQhvJlesxxlxE
+         oJRRL1HK8iXq//vTAP5rN/xNLE9z3zvIWzXYzV5iQ581PhqxnJlShjGcOPBUiPoUKsrP
+         /OTg==
+X-Gm-Message-State: AOAM531G9QNShqpcjfz7PhxGNn+Tdi7PIxg+9yxusPW49xn4SH7gQjOy
+        5qkkSrNvg1uqyTwYivVUe4Q5bn+KtVN3tw==
+X-Google-Smtp-Source: ABdhPJxF7tx9E/hR8sgMc8TFY509Bwjl9XwhtnIU049tnudzLXUVirVR6adC9mg+FF1GKRIMq5JEJw==
+X-Received: by 2002:adf:f251:: with SMTP id b17mr24522214wrp.410.1620560707728;
+        Sun, 09 May 2021 04:45:07 -0700 (PDT)
 Received: from apalos.home ([2a02:587:466e:1389:2e56:dcff:fe9a:8f06])
-        by smtp.gmail.com with ESMTPSA id c8sm17650244wrx.4.2021.05.09.04.45.05
+        by smtp.gmail.com with ESMTPSA id c8sm17650244wrx.4.2021.05.09.04.45.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 09 May 2021 04:45:06 -0700 (PDT)
+        Sun, 09 May 2021 04:45:07 -0700 (PDT)
 From:   Ilias Apalodimas <ilias.apalodimas@linaro.org>
 To:     linux-efi@vger.kernel.org
 Cc:     ardb@kernel.org, pjones@redhat.com, nivedita@alum.mit.edu,
         mjg59@google.com, daniel.kiper@oracle.com,
         James.Bottomley@hansenpartnership.com, leif@nuviainc.com,
         Ilias Apalodimas <ilias.apalodimas@linaro.org>
-Subject: [RFC PATCH 1/4] efi/libstub: add prototype of efi_tcg2_protocol::hash_log_extend_event()
-Date:   Sun,  9 May 2021 14:44:51 +0300
-Message-Id: <20210509114454.185583-2-ilias.apalodimas@linaro.org>
+Subject: [RFC PATCH 2/4] efi/libstub: x86/mixed: increase supported argument count
+Date:   Sun,  9 May 2021 14:44:52 +0300
+Message-Id: <20210509114454.185583-3-ilias.apalodimas@linaro.org>
 X-Mailer: git-send-email 2.31.0
 In-Reply-To: <20210509114454.185583-1-ilias.apalodimas@linaro.org>
 References: <20210509114454.185583-1-ilias.apalodimas@linaro.org>
@@ -67,80 +67,146 @@ X-Mailing-List: linux-efi@vger.kernel.org
 
 From: Ard Biesheuvel <ardb@kernel.org>
 
-Define the right prototype for efi_tcg2_protocol::hash_log_extend_event()
-and add the required structs so we can start using it to measure the initrd
-into the TPM if it was loaded by the EFI stub itself.
+Increase the number of arguments supported by mixed mode calls, so that
+we will be able to call into the TCG2 protocol to measure the initrd
+and extend the associated PCR. This involves the TCG2 protocol's
+hash_log_extend_event() method, which takes five arguments, three of
+which are u64 and need to be split, producing a total of 8 outgoing
+arguments.
 
-Co-developed-by: Ilias Apalodimas <ilias.apalodimas@linaro.org>
-Signed-off-by: Ilias Apalodimas <ilias.apalodimas@linaro.org>
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Ilias Apalodimas <ilias.apalodimas@linaro.org>
 ---
- arch/x86/include/asm/efi.h             |  4 ++++
- drivers/firmware/efi/libstub/efistub.h | 29 +++++++++++++++++++++++++-
- 2 files changed, 32 insertions(+), 1 deletion(-)
+ arch/x86/boot/compressed/efi_thunk_64.S | 17 ++++++++++++-----
+ arch/x86/include/asm/efi.h              | 10 ++++++----
+ arch/x86/platform/efi/efi_thunk_64.S    | 14 ++++++++++++--
+ 3 files changed, 30 insertions(+), 11 deletions(-)
 
+diff --git a/arch/x86/boot/compressed/efi_thunk_64.S b/arch/x86/boot/compressed/efi_thunk_64.S
+index 95a223b3e56a..fec6c48d6b30 100644
+--- a/arch/x86/boot/compressed/efi_thunk_64.S
++++ b/arch/x86/boot/compressed/efi_thunk_64.S
+@@ -27,8 +27,6 @@ SYM_FUNC_START(__efi64_thunk)
+ 	push	%rbp
+ 	push	%rbx
+ 
+-	leaq	1f(%rip), %rbp
+-
+ 	movl	%ds, %eax
+ 	push	%rax
+ 	movl	%es, %eax
+@@ -36,19 +34,28 @@ SYM_FUNC_START(__efi64_thunk)
+ 	movl	%ss, %eax
+ 	push	%rax
+ 
++	movq	0x30(%rsp), %rbp
++	movq	0x38(%rsp), %rbx
++	movq	0x40(%rsp), %rax
++
+ 	/*
+ 	 * Convert x86-64 ABI params to i386 ABI
+ 	 */
+-	subq	$32, %rsp
++	subq	$48, %rsp
+ 	movl	%esi, 0x0(%rsp)
+ 	movl	%edx, 0x4(%rsp)
+ 	movl	%ecx, 0x8(%rsp)
+ 	movl	%r8d, 0xc(%rsp)
+ 	movl	%r9d, 0x10(%rsp)
++	movl	%ebp, 0x14(%rsp)
++	movl	%ebx, 0x18(%rsp)
++	movl	%eax, 0x1c(%rsp)
+ 
+-	leaq	0x14(%rsp), %rbx
++	leaq	0x20(%rsp), %rbx
+ 	sgdt	(%rbx)
+ 
++	leaq	1f(%rip), %rbp
++
+ 	/*
+ 	 * Switch to gdt with 32-bit segments. This is the firmware GDT
+ 	 * that was installed when the kernel started executing. This
+@@ -67,7 +74,7 @@ SYM_FUNC_START(__efi64_thunk)
+ 	pushq	%rax
+ 	lretq
+ 
+-1:	addq	$32, %rsp
++1:	addq	$48, %rsp
+ 	movq	%rdi, %rax
+ 
+ 	pop	%rbx
 diff --git a/arch/x86/include/asm/efi.h b/arch/x86/include/asm/efi.h
-index 4d0b126835b8..85f156f8ef81 100644
+index 85f156f8ef81..a323dbac9182 100644
 --- a/arch/x86/include/asm/efi.h
 +++ b/arch/x86/include/asm/efi.h
-@@ -308,6 +308,10 @@ static inline u32 efi64_convert_status(efi_status_t status)
- #define __efi64_argmap_query_mode(gop, mode, size, info)		\
- 	((gop), (mode), efi64_zero_upper(size), efi64_zero_upper(info))
+@@ -46,13 +46,14 @@ extern unsigned long efi_mixed_mode_stack_pa;
  
-+/* TCG2 protocol */
-+#define __efi64_argmap_hash_log_extend_event(prot, fl, addr, size, ev)	\
-+	((prot), (fl), 0ULL, (u64)(addr), 0ULL, (u64)(size), 0ULL, ev)
-+
+ #define __efi_nargs(...) __efi_nargs_(__VA_ARGS__)
+ #define __efi_nargs_(...) __efi_nargs__(0, ##__VA_ARGS__,	\
++	__efi_arg_sentinel(9), __efi_arg_sentinel(8),		\
+ 	__efi_arg_sentinel(7), __efi_arg_sentinel(6),		\
+ 	__efi_arg_sentinel(5), __efi_arg_sentinel(4),		\
+ 	__efi_arg_sentinel(3), __efi_arg_sentinel(2),		\
+ 	__efi_arg_sentinel(1), __efi_arg_sentinel(0))
+-#define __efi_nargs__(_0, _1, _2, _3, _4, _5, _6, _7, n, ...)	\
++#define __efi_nargs__(_0, _1, _2, _3, _4, _5, _6, _7, _8, _9, n, ...)	\
+ 	__take_second_arg(n,					\
+-		({ BUILD_BUG_ON_MSG(1, "__efi_nargs limit exceeded"); 8; }))
++		({ BUILD_BUG_ON_MSG(1, "__efi_nargs limit exceeded"); 10; }))
+ #define __efi_arg_sentinel(n) , n
+ 
  /*
-  * The macros below handle the plumbing for the argument mapping. To add a
-  * mapping for a specific EFI method, simply define a macro
-diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
-index cde0a2ef507d..a2825c435158 100644
---- a/drivers/firmware/efi/libstub/efistub.h
-+++ b/drivers/firmware/efi/libstub/efistub.h
-@@ -667,6 +667,29 @@ union apple_properties_protocol {
+@@ -176,8 +177,9 @@ extern u64 efi_setup;
+ extern efi_status_t __efi64_thunk(u32, ...);
  
- typedef u32 efi_tcg2_event_log_format;
+ #define efi64_thunk(...) ({						\
+-	__efi_nargs_check(efi64_thunk, 6, __VA_ARGS__);			\
+-	__efi64_thunk(__VA_ARGS__);					\
++	u64 __pad[3]; /* must have space for 3 args on the stack */	\
++	__efi_nargs_check(efi64_thunk, 9, __VA_ARGS__);			\
++	__efi64_thunk(__VA_ARGS__, __pad);				\
+ })
  
-+#define INITRD_EVENT_TAG_ID 0x8F3B22ECU
-+#define EV_EVENT_TAG 0x00000006U
-+#define EFI_TCG2_EVENT_HEADER_VERSION	0x1
-+
-+struct efi_tcg2_event {
-+	u32		event_size;
-+	struct {
-+		u32	header_size;
-+		u16	header_version;
-+		u32	pcr_index;
-+		u32	event_type;
-+	} __packed event_header;
-+	/* u8[] event follows here */
-+} __packed;
-+
-+struct efi_tcg2_tagged_event {
-+	u32 tagged_event_id;
-+	u32 tagged_event_data_size;
-+	/* u8  tagged event data follows here */
-+} __packed;
-+
-+typedef struct efi_tcg2_event efi_tcg2_event_t;
-+typedef struct efi_tcg2_tagged_event efi_tcg2_tagged_event_t;
- typedef union efi_tcg2_protocol efi_tcg2_protocol_t;
+ static inline bool efi_is_mixed(void)
+diff --git a/arch/x86/platform/efi/efi_thunk_64.S b/arch/x86/platform/efi/efi_thunk_64.S
+index fd3dd1708eba..5b7c6e09954e 100644
+--- a/arch/x86/platform/efi/efi_thunk_64.S
++++ b/arch/x86/platform/efi/efi_thunk_64.S
+@@ -36,6 +36,17 @@ SYM_CODE_START(__efi64_thunk)
+ 	movq	efi_mixed_mode_stack_pa(%rip), %rsp
+ 	push	%rax
  
- union efi_tcg2_protocol {
-@@ -677,7 +700,11 @@ union efi_tcg2_protocol {
- 						       efi_physical_addr_t *,
- 						       efi_physical_addr_t *,
- 						       efi_bool_t *);
--		void *hash_log_extend_event;
-+		efi_status_t (__efiapi *hash_log_extend_event)(efi_tcg2_protocol_t *,
-+							       u64,
-+							       efi_physical_addr_t,
-+							       u64,
-+							       const efi_tcg2_event_t *);
- 		void *submit_command;
- 		void *get_active_pcr_banks;
- 		void *set_active_pcr_banks;
++	/*
++	 * Copy args passed via the stack
++	 */
++	subq	$0x24, %rsp
++	movq	0x18(%rax), %rbp
++	movq	0x20(%rax), %rbx
++	movq	0x28(%rax), %rax
++	movl	%ebp, 0x18(%rsp)
++	movl	%ebx, 0x1c(%rsp)
++	movl	%eax, 0x20(%rsp)
++
+ 	/*
+ 	 * Calculate the physical address of the kernel text.
+ 	 */
+@@ -47,7 +58,6 @@ SYM_CODE_START(__efi64_thunk)
+ 	subq	%rax, %rbp
+ 	subq	%rax, %rbx
+ 
+-	subq	$28, %rsp
+ 	movl	%ebx, 0x0(%rsp)		/* return address */
+ 	movl	%esi, 0x4(%rsp)
+ 	movl	%edx, 0x8(%rsp)
+@@ -60,7 +70,7 @@ SYM_CODE_START(__efi64_thunk)
+ 	pushq	%rdi			/* EFI runtime service address */
+ 	lretq
+ 
+-1:	movq	24(%rsp), %rsp
++1:	movq	0x20(%rsp), %rsp
+ 	pop	%rbx
+ 	pop	%rbp
+ 	retq
 -- 
 2.31.0
 
