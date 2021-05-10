@@ -2,81 +2,92 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 32A193792E5
-	for <lists+linux-efi@lfdr.de>; Mon, 10 May 2021 17:39:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 609A53792EB
+	for <lists+linux-efi@lfdr.de>; Mon, 10 May 2021 17:39:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231724AbhEJPkY (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 10 May 2021 11:40:24 -0400
-Received: from mail.kernel.org ([198.145.29.99]:58302 "EHLO mail.kernel.org"
+        id S232180AbhEJPks (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 10 May 2021 11:40:48 -0400
+Received: from mail.kernel.org ([198.145.29.99]:59332 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234490AbhEJPju (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Mon, 10 May 2021 11:39:50 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id D4A7D60FE4;
-        Mon, 10 May 2021 15:38:41 +0000 (UTC)
+        id S231845AbhEJPko (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Mon, 10 May 2021 11:40:44 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id D848C611C1;
+        Mon, 10 May 2021 15:39:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1620661121;
-        bh=1Zsl9SztvxaW6X5yybQdHiTY0J0WjKFNG3noiaEUXQQ=;
+        s=k20201202; t=1620661179;
+        bh=CudXjd0hQkvW0675tw9uDcMFK77kr+Yf/Cpj1A3k0ws=;
         h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=OF5j/FVpcPcGwdaOBA/s3TbLmd8a7l+K09QjFCyscBSuOGMFXXhv/feNa4mF+8ryo
-         n0KzaCREFZN/zqNC0xENKxBaC4z7ZswREiNIH4NulcS7j1w1F/OCltsZY0oHDvX8Tj
-         TLO1g1Ex2WMEFst6LKOZd2AaRFigXknWTGTR9kLhgIMUEQL1nEUBC2iddPhWI1oi8w
-         LIdUX9kzzCDQP87ejxW0D8OOZ5SDsYp84QTmJOGtyReIOen0hC0E8UMWEQy3KLzokM
-         NQWiIg9UcH+aedKbchBNJZEnIsh0JETNrqhEVC47yfEi/ptsvpguH7Qkxp91ph49pz
-         TsmuJEa9ZFscg==
-Received: by mail-oi1-f179.google.com with SMTP id b25so10923321oic.0;
-        Mon, 10 May 2021 08:38:41 -0700 (PDT)
-X-Gm-Message-State: AOAM531QBFCbxRDhHrhlOZIkAWNXUWQVJh2mcdDhlPffZvSzMsMRm46c
-        XzyBMK3Kj1R1ipbruSX57zPPJGZRWLVBPTnYUbY=
-X-Google-Smtp-Source: ABdhPJyzL1Eyc5r70XnrgnFSkdgDVnk8oWZUFRX1A3dchBwdZpihODX/nbKKUaWX6vR16z6SR9rq6Mli+P1KA7DzDH8=
-X-Received: by 2002:aca:4056:: with SMTP id n83mr26631363oia.47.1620661121088;
- Mon, 10 May 2021 08:38:41 -0700 (PDT)
+        b=l8PSD+ZoAScwk8qp8Lntnu/ZV0qrcPXNjNKCwuN5A75ajOKvRYCOwjVx614CGy6e+
+         7LEBzW3wPyL8YPOCLBOW85lGUd649nUgR+owzNH0Nl05zFyRiREuuCxacHjCYJHrFq
+         cCbtDKIBq/zGWQbbqHx3XvvYz/x9jZdbnkGVtM1DxNqQpZiEHixqKpFvFbTwhJIcMV
+         BhhRkEchhrUN2dr2KMgcUOpXbapydyxrqAU9EGDAneweikYcD10s+qgINcuIRQ7fpf
+         SCGGhuClC8fo0VZnt5IBX0s9/2loaDxeFZLitxJkmloWoZZgGoqu7+bF0lvfUubOin
+         aR+zZcKcRunaQ==
+Received: by mail-oo1-f50.google.com with SMTP id i8-20020a4aa1080000b0290201edd785e7so3560885ool.1;
+        Mon, 10 May 2021 08:39:39 -0700 (PDT)
+X-Gm-Message-State: AOAM533STcQQOFuQl4A6BAKGAYY44lCsGtX9oYJC232s3nxA7PqqBDVr
+        wkIC8ZuGhiNDV0UHwgxf78vuvlqqGsG49Ddqrvc=
+X-Google-Smtp-Source: ABdhPJwOfNMKZ24sY/aXHzYc5zvDGIwk1+GBWD3EPBDZmfFULQUgBO8gIOkxhhHWdtFyWhIYgiISwzZkEoBbTYtDXcI=
+X-Received: by 2002:a4a:b997:: with SMTP id e23mr19330421oop.13.1620661179176;
+ Mon, 10 May 2021 08:39:39 -0700 (PDT)
 MIME-Version: 1.0
-References: <YIK0D1JyV6ZeDMSS@mwanda>
-In-Reply-To: <YIK0D1JyV6ZeDMSS@mwanda>
+References: <20210421194636.1540448-1-linux@rasmusvillemoes.dk>
+In-Reply-To: <20210421194636.1540448-1-linux@rasmusvillemoes.dk>
 From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Mon, 10 May 2021 17:38:30 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXHELn=t9H4z2SK7u5kkTuqh-TnW9YtY6PJs8Q=j-PLVTg@mail.gmail.com>
-Message-ID: <CAMj1kXHELn=t9H4z2SK7u5kkTuqh-TnW9YtY6PJs8Q=j-PLVTg@mail.gmail.com>
-Subject: Re: [PATCH] efi/libstub: prevent read overflow in find_file_option()
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Arvind Sankar <nivedita@alum.mit.edu>,
-        Philipp Fent <fent@in.tum.de>,
+Date:   Mon, 10 May 2021 17:39:28 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXE9MjzoQdt+ZHjmrf6MmVXXmkoJAm1y6qunLkQLDz+yKw@mail.gmail.com>
+Message-ID: <CAMj1kXE9MjzoQdt+ZHjmrf6MmVXXmkoJAm1y6qunLkQLDz+yKw@mail.gmail.com>
+Subject: Re: [PATCH] efi: cper: fix snprintf() use in cper_dimm_err_location()
+To:     Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Cc:     Alex Kluver <alex.kluver@hpe.com>,
         linux-efi <linux-efi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, 23 Apr 2021 at 13:48, Dan Carpenter <dan.carpenter@oracle.com> wrote:
+On Wed, 21 Apr 2021 at 21:46, Rasmus Villemoes <linux@rasmusvillemoes.dk> wrote:
 >
-> If the buffer has slashes up to the end then this will read past the end
-> of the array.  I don't anticipate that this is an issue for many people
-> in real life, but it's the right thing to do and it makes static
-> checkers happy.
+> snprintf() should be given the full buffer size, not one less. And it
+> guarantees nul-termination, so doing it manually afterwards is
+> pointless.
 >
-> Fixes: 7a88a6227dc7 ("efi/libstub: Fix path separator regression")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> It's even potentially harmful (though probably not in practice because
+> CPER_REC_LEN is 256), due to the "return how much would have been
+> written had the buffer been big enough" semantics. I.e., if the bank
+> and/or device strings are long enough that the "DIMM location ..."
+> output gets truncated, writing to msg[n] is a buffer overflow.
+>
+> Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
 > ---
->  drivers/firmware/efi/libstub/file.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  drivers/firmware/efi/cper.c | 4 +---
+>  1 file changed, 1 insertion(+), 3 deletions(-)
 >
-> diff --git a/drivers/firmware/efi/libstub/file.c b/drivers/firmware/efi/libstub/file.c
-> index 4e81c6077188..dd95f330fe6e 100644
-> --- a/drivers/firmware/efi/libstub/file.c
-> +++ b/drivers/firmware/efi/libstub/file.c
-> @@ -103,7 +103,7 @@ static int find_file_option(const efi_char16_t *cmdline, int cmdline_len,
+> diff --git a/drivers/firmware/efi/cper.c b/drivers/firmware/efi/cper.c
+> index e15d484b6a5a..ea7ca74fc173 100644
+> --- a/drivers/firmware/efi/cper.c
+> +++ b/drivers/firmware/efi/cper.c
+> @@ -276,8 +276,7 @@ static int cper_dimm_err_location(struct cper_mem_err_compact *mem, char *msg)
+>         if (!msg || !(mem->validation_bits & CPER_MEM_VALID_MODULE_HANDLE))
 >                 return 0;
 >
->         /* Skip any leading slashes */
-> -       while (cmdline[i] == L'/' || cmdline[i] == L'\\')
-> +       while (i < cmdline_len && (cmdline[i] == L'/' || cmdline[i] == L'\\'))
->                 i++;
+> -       n = 0;
+> -       len = CPER_REC_LEN - 1;
+> +       len = CPER_REC_LEN;
+>         dmi_memdev_name(mem->mem_dev_handle, &bank, &device);
+>         if (bank && device)
+>                 n = snprintf(msg, len, "DIMM location: %s %s ", bank, device);
+> @@ -286,7 +285,6 @@ static int cper_dimm_err_location(struct cper_mem_err_compact *mem, char *msg)
+>                              "DIMM location: not present. DMI handle: 0x%.4x ",
+>                              mem->mem_dev_handle);
 >
->         while (--result_len > 0 && i < cmdline_len) {
+> -       msg[n] = '\0';
+>         return n;
+>  }
+>
 > --
-> 2.30.2
+> 2.29.2
 >
 
-Thanks Dan, I will queue this up.
+Thanks, I will queue this up.
