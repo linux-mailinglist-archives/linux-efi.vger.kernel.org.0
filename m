@@ -2,176 +2,182 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F09337F257
-	for <lists+linux-efi@lfdr.de>; Thu, 13 May 2021 06:36:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 53D5637F2FA
+	for <lists+linux-efi@lfdr.de>; Thu, 13 May 2021 08:27:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230440AbhEMEhY (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 13 May 2021 00:37:24 -0400
-Received: from mail-co1nam11on2074.outbound.protection.outlook.com ([40.107.220.74]:31403
-        "EHLO NAM11-CO1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S229471AbhEMEhW (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Thu, 13 May 2021 00:37:22 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=gjqJo5JrI0/B1IpdOOBQabqJMxWbxdZbp7asFUu+Fu7m0ipudTy3OeBHcgox6vMyq9msKPsX6lBPQs4MMoE2ARwpPBBkmdodiyZkg1VGQ9ZXyGh14MYyxdw/tEbILRP0jM3U0gPlurTzQIYT5kz3fIRloMh6o7DMGemAc//YvL0kpU6kcsJsREtx+fMGbFdUwz12HaZFG2snokxiOCDWsW18i4FQuj9LwbWKVmxgcrbnocm/EAGJoreL1wcWK0k5iaoxFJIzBLKgoriMoU10GKos9Jw7patzBq0K4QRTmD3M/eO/6YONNH6iQQKmph46aGv12rwxt4Zin5IVz+u0iQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Y4AwDUSlQNjPwRXsPz01bK32LfhQ3pqQpry2sil7lVg=;
- b=OHXfRvTvNkrJnGSgJoATrHvEgUmOrB+4KhPPHD5BhG0SOYNFkGQdcZOZ2YmAtc+TfFl1GjdnEWrDoJRIwe2wsimphHxUHHc1cMfZxvqvzq1+YHSKRMUxUJprZ8HpjdyHGMBteILqYdeo3hBLzThznhmqJb2vEUkSUqr7hl0ZCdnxRLWnETOXv8V+OlbtNBQKl2DxNsm8easdMA1RP7ET0XaMNm3hSnDLcUaJq0SLrx0RkEhBRcBsykMH8nwMOhMzMB/9TvNQmT8dF0RdY+yy49zXWH3wi75a7mbMSUvs2grCPDSGBNRtxnIt2+iFMNP8+sdkpJLXUYtOeHPB4LMNfA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Y4AwDUSlQNjPwRXsPz01bK32LfhQ3pqQpry2sil7lVg=;
- b=lv9oNXEyb6wd7zi1iUJ2n/h53l7BUhR4doT62qm4Gq5ctmj8+Btt8NI9FN8aX5psSF4MvP/0Dz2aOw5LTW3udtIj1qOcI0jS+1StzCx10DNFSKVSopBj4OaoJRKvqXq/6fhy9GqE5X2TjgqYmZ61phHGVflZziL1lwB4vtono4M=
-Authentication-Results: kernel.org; dkim=none (message not signed)
- header.d=none;kernel.org; dmarc=none action=none header.from=amd.com;
-Received: from SN6PR12MB2767.namprd12.prod.outlook.com (2603:10b6:805:75::23)
- by SA0PR12MB4573.namprd12.prod.outlook.com (2603:10b6:806:9c::24) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4129.26; Thu, 13 May
- 2021 04:36:11 +0000
-Received: from SN6PR12MB2767.namprd12.prod.outlook.com
- ([fe80::1fb:7d59:2c24:615e]) by SN6PR12MB2767.namprd12.prod.outlook.com
- ([fe80::1fb:7d59:2c24:615e%6]) with mapi id 15.20.4129.026; Thu, 13 May 2021
- 04:36:11 +0000
-Date:   Thu, 13 May 2021 04:36:09 +0000
-From:   Ashish Kalra <ashish.kalra@amd.com>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     Borislav Petkov <bp@alien8.de>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Joerg Roedel <joro@8bytes.org>,
+        id S231329AbhEMG2M (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 13 May 2021 02:28:12 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:57890 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S231304AbhEMG2J (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 13 May 2021 02:28:09 -0400
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 14D6EbI7011135;
+        Thu, 13 May 2021 02:26:47 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=Oy6qL1rkJBWQzYlIHt95RLl8wBSmcbdaLyxkZyIqDsk=;
+ b=e9xl/vo/lIeeWsUbiIFIpnIxzsVaqDTBFoAdxTTc8hgc2CfcoRu6Yj2dI2bhjGcY6GD5
+ 8T/mKG/10dilhd/YqC5EAdz9JtFwalfIpX4zTgIvueGYNvZTpDnapMpwJg9wfnwp5dFM
+ WF6fsRmwgPysKxBqsPqpq8L/L6daEVKv3z02ToxUskoLx+qKBDQegIuZmk+IwZ0YKXmX
+ pVIxcjbelAh2FbYrAp04LMmcZgRLJ0Ei6/yAQJRnPjpXged+VAcYMqtmvp64/HTL+IGZ
+ RDgvVFGDaybq3RC7me0YoN0JMcTMKZfMng/n/UGekM2jg1RnrfcMUv1JPJmafnd3m1iJ Wg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 38gxnvg7r8-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 13 May 2021 02:26:47 -0400
+Received: from m0098404.ppops.net (m0098404.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 14D6GKuY022677;
+        Thu, 13 May 2021 02:26:47 -0400
+Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com [169.63.121.186])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 38gxnvg7r0-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 13 May 2021 02:26:46 -0400
+Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
+        by ppma03wdc.us.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 14D6C7K3002081;
+        Thu, 13 May 2021 06:26:45 GMT
+Received: from b03cxnp08025.gho.boulder.ibm.com (b03cxnp08025.gho.boulder.ibm.com [9.17.130.17])
+        by ppma03wdc.us.ibm.com with ESMTP id 38dj99axq2-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 13 May 2021 06:26:45 +0000
+Received: from b03ledav004.gho.boulder.ibm.com (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
+        by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 14D6Qiuk19726660
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 13 May 2021 06:26:44 GMT
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id F1A147805F;
+        Thu, 13 May 2021 06:26:43 +0000 (GMT)
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id D102678060;
+        Thu, 13 May 2021 06:26:42 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.2.130.16])
+        by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP;
+        Thu, 13 May 2021 06:26:42 +0000 (GMT)
+From:   Dov Murik <dovmurik@linux.ibm.com>
+To:     linux-efi@vger.kernel.org
+Cc:     Tobin Feldman-Fitzthum <tobin@linux.ibm.com>,
+        Tobin Feldman-Fitzthum <tobin@ibm.com>,
+        Jim Cadden <jcadden@ibm.com>,
+        James Bottomley <jejb@linux.ibm.com>,
+        Hubertus Franke <frankeh@us.ibm.com>,
+        Mike Rapoport <rppt@linux.ibm.com>,
+        Dov Murik <dovmurik@linux.ibm.com>,
+        Laszlo Ersek <lersek@redhat.com>,
+        Ashish Kalra <ashish.kalra@amd.com>,
+        Brijesh Singh <brijesh.singh@amd.com>,
         Tom Lendacky <thomas.lendacky@amd.com>,
-        X86 ML <x86@kernel.org>, kvm@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        srutherford@google.com, Sean Christopherson <seanjc@google.com>,
-        venu.busireddy@oracle.com, Brijesh Singh <brijesh.singh@amd.com>,
-        linux-efi <linux-efi@vger.kernel.org>
-Subject: Re: [PATCH v2 3/4] EFI: Introduce the new AMD Memory Encryption GUID.
-Message-ID: <20210513043609.GB28019@ashkalra_ubuntu_server>
-References: <cover.1619193043.git.ashish.kalra@amd.com>
- <f9d22080293f24bd92684915fcee71a4974593a3.1619193043.git.ashish.kalra@amd.com>
- <YJvV9yKclJWLppWU@zn.tnic>
- <CAMj1kXE0U4JxCLYPhetENDpXKMOAEXs8-dpce+CvBcgifQz2Ww@mail.gmail.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAMj1kXE0U4JxCLYPhetENDpXKMOAEXs8-dpce+CvBcgifQz2Ww@mail.gmail.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Originating-IP: [165.204.77.1]
-X-ClientProxiedBy: SN7PR04CA0170.namprd04.prod.outlook.com
- (2603:10b6:806:125::25) To SN6PR12MB2767.namprd12.prod.outlook.com
- (2603:10b6:805:75::23)
+        Ard Biesheuvel <ardb@kernel.org>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [RFC PATCH 0/3] Allow access to confidential computing secret area
+Date:   Thu, 13 May 2021 06:26:31 +0000
+Message-Id: <20210513062634.2481118-1-dovmurik@linux.ibm.com>
+X-Mailer: git-send-email 2.25.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: zOUGFAz3faWe8gvbrT8JGwuKcdW3Rrnm
+X-Proofpoint-ORIG-GUID: l-_Ay05EdoRCc5bBau-Tg7ZDuUvMZUAz
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from ashkalra_ubuntu_server (165.204.77.1) by SN7PR04CA0170.namprd04.prod.outlook.com (2603:10b6:806:125::25) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4108.24 via Frontend Transport; Thu, 13 May 2021 04:36:10 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: a1cad826-b653-4c7c-34c5-08d915c8a280
-X-MS-TrafficTypeDiagnostic: SA0PR12MB4573:
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <SA0PR12MB45731A2AF4EFE0AF4C374A698E519@SA0PR12MB4573.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: muL7Udw+A4ky4honAGWXSSwC3gCM1Jc+xsmAw1QMO0Uu4dsI+7J7iIU2FOqc8Ita8HNyToY+hbGilBMW88iYXqmCWRASguUyNHU8Qall3NF47eWazSRZMHtQjMTTbYcnvfcR2hFQAGPtj0/48dB2890zMh5rgwbyORPj3xUhN1+jinoHiCOArxEHAr43Rj+CbNb92OsujnDZ6ou1mh50H4uJqNMFgGRXRgvY927G9satq0/sVDnGSIvCJgxaszTqvXhT6j2gsiorShsLcZ0ZN44c5UdKqQyeA2HOe6675ne4ZCLFIRHo7sM3XBcJgluevJiqTWc9iBqwDLCbvAcrB9Fvv/Ume1xgiD2MAxddk7xBEr5Jx3LEToSv464UKWZWOuLOVJIZJ+BuPckFQrCtyr8dWnQ95qqDntzGP/DyYRLOB8fmERjYYIm1C/JQhULxHE8JAusFvi85apTK1M0j5apPTxiLS8xcIeSNAj0hIsE6/E8xG1KuWX3RwGvTu3kvtJVIktq3JMsGpIzrmbUSN4hO4be9jYRo0SYS8Y+KoFMuuYeoRSQGbjPiWK8px3pQ9+vRHJ41hG6gY+LB1lGlIu0++1uXAInKa3yGiJOLKhvoXvdk/u+GiAwtnq8gHSKGQrd0Vv+5L9C+x2kxoWf/s8BpbLYEkEJI0JZDVPq+Jyc=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR12MB2767.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(346002)(376002)(396003)(136003)(366004)(39860400002)(33716001)(7416002)(26005)(6496006)(83380400001)(44832011)(4326008)(2906002)(55016002)(52116002)(9686003)(8676002)(1076003)(478600001)(5660300002)(16526019)(38350700002)(186003)(316002)(38100700002)(8936002)(66946007)(66556008)(66476007)(54906003)(33656002)(6916009)(956004)(86362001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData: =?us-ascii?Q?tD3fY9YME0Rcfa1fcTcAaJDiln4IfuAYq5OIWf+bxqPxFDZJ0A9wJruAU1iT?=
- =?us-ascii?Q?DKERZUqLJ7jbRXhMpvbG8ZY4eOh1fuhZrSEzpdyv/lgOlHlqPsGRE8ttmSCD?=
- =?us-ascii?Q?FbMyFolVEuDjsBUrprLbePK7oNHI6fR1PM3WAUSRGfH7c0Z+Mz0ct7qdEkWB?=
- =?us-ascii?Q?Vea6SDcvwx2nlOok++lcECmntmutxDFm/II+QaVUlzcHEw4FwIBYXe8jUJhc?=
- =?us-ascii?Q?kxPSC3+la0LtVr15vpFoXYyWoz1oso463vQ9T6tF3KIrb/Wb00llE3O7qKD9?=
- =?us-ascii?Q?eF0/DaiXYH59yT4GiHSVbX3fnt7aUl7fdcK8vvoI1WNWidfKk7TKGtM2GmHF?=
- =?us-ascii?Q?Xz4KG3FgCOAI5z/kCNrro8YC0U1wyBE9RPdX/bVEHhYF7WfpTTzpcJ9POGHG?=
- =?us-ascii?Q?fTCiYAg4qYV7Nn+HcMm0e3j2aiYmO0xXygvLDe+XKoGnqzUsudvsuR2cIrQ3?=
- =?us-ascii?Q?MBhLPf8x8iX85LOnnmaraYtY9PNKt14XwuungbncBoUvAiRwOi0+N6hZ9DE9?=
- =?us-ascii?Q?G7A2PxQB2fjcg7/zNMAsHcyVw82WlzPRDceOU6iW2Dd6XPj/RDxhjL60EUXe?=
- =?us-ascii?Q?aeiHEqBuiXkdat7w6j4x7aXeMb68YwmamtZiLOUyE0/Hk+fNjJL2mDUK86n7?=
- =?us-ascii?Q?3u4DCPf3ZtOXqzxhB9oqMYgxmcXh1IZA/XtHssQRXduoHYBVX3TUeLHTvNC6?=
- =?us-ascii?Q?JFafW/HzIhsTVw3QUGmTalxnHEMXZmBHGYOdxq7ay0YHZ4hSrQdEu1VULzJQ?=
- =?us-ascii?Q?sFtqg4YRnu6s/KksNP29EUTpWah5pbNhaQcekr6y5PrWP1OqqqCTWzp8Wq56?=
- =?us-ascii?Q?0BYirgda1XtjQEV+jAN3DGhkUgCorrecx5cU18SDPUBjbf9OQfPX0XEzvZIo?=
- =?us-ascii?Q?svOEMjVdc3MYbZIBEuIRdbsfJAG5rRT4CTRTvJzOGZ0iMZY3Ifa8wbB2cNSa?=
- =?us-ascii?Q?L9TgPxg96qmo0/kHMggQ+SktVlANQ6AB9puuZzPO9qAj7TRK3F4VK0HJpVhR?=
- =?us-ascii?Q?UjGEjtC4Q1cwfovrIJvXkSUO6UQ0Ho5C/rE93+eGHmlmnH/5H6+4cTprrHww?=
- =?us-ascii?Q?7m3fnhJ+dl9O0Uu6PLiKjXMpnffxY61fz647vMHoYBtWyUppoe7wFkQdLmT+?=
- =?us-ascii?Q?naN4loCcLyqCL5f2BJ9C9nGMx+ja7yly51P9y9Jd6mQ6tSQpEvkiRYR3huGM?=
- =?us-ascii?Q?fHtRInmFJTH9DL8OZBSA2AcUnXCWmrIcwDayLJmFwdRVquk7y2RPnYeD3Gra?=
- =?us-ascii?Q?1KjuKRwPHD5kYM7jxzOneTpDRdZnzQ80N38FYjqgJM26q8+Ibmgif0TdfUbi?=
- =?us-ascii?Q?cl//zOkXw43JMcHpRDmOHmnI?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a1cad826-b653-4c7c-34c5-08d915c8a280
-X-MS-Exchange-CrossTenant-AuthSource: SN6PR12MB2767.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 May 2021 04:36:11.5638
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: w4xXj0wAkhIWtIAXTOxU+1+z5NR4lXDiKBhBPdffO+Z58ZPGl6YHu7gWcBd574LZ/RRgiBUn7un5IDxolzfPrw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB4573
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.761
+ definitions=2021-05-13_03:2021-05-12,2021-05-13 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 malwarescore=0
+ adultscore=0 priorityscore=1501 bulkscore=0 phishscore=0
+ lowpriorityscore=0 clxscore=1011 suspectscore=0 impostorscore=0
+ mlxlogscore=999 spamscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2104190000 definitions=main-2105130046
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, May 12, 2021 at 04:53:21PM +0200, Ard Biesheuvel wrote:
-> On Wed, 12 May 2021 at 15:19, Borislav Petkov <bp@alien8.de> wrote:
-> >
-> > On Fri, Apr 23, 2021 at 03:59:01PM +0000, Ashish Kalra wrote:
-> > > From: Ashish Kalra <ashish.kalra@amd.com>
-> > >
-> > > Introduce a new AMD Memory Encryption GUID which is currently
-> > > used for defining a new UEFI environment variable which indicates
-> > > UEFI/OVMF support for the SEV live migration feature. This variable
-> > > is setup when UEFI/OVMF detects host/hypervisor support for SEV
-> > > live migration and later this variable is read by the kernel using
-> > > EFI runtime services to verify if OVMF supports the live migration
-> > > feature.
-> > >
-> > > Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
-> > > ---
-> > >  include/linux/efi.h | 1 +
-> > >  1 file changed, 1 insertion(+)
-> > >
-> > > diff --git a/include/linux/efi.h b/include/linux/efi.h
-> > > index 8710f5710c1d..e95c144d1d02 100644
-> > > --- a/include/linux/efi.h
-> > > +++ b/include/linux/efi.h
-> > > @@ -360,6 +360,7 @@ void efi_native_runtime_setup(void);
-> > >
-> > >  /* OEM GUIDs */
-> > >  #define DELLEMC_EFI_RCI2_TABLE_GUID          EFI_GUID(0x2d9f28a2, 0xa886, 0x456a,  0x97, 0xa8, 0xf1, 0x1e, 0xf2, 0x4f, 0xf4, 0x55)
-> > > +#define MEM_ENCRYPT_GUID                     EFI_GUID(0x0cf29b71, 0x9e51, 0x433a,  0xa3, 0xb7, 0x81, 0xf3, 0xab, 0x16, 0xb8, 0x75)
-> > >
-> > >  typedef struct {
-> > >       efi_guid_t guid;
-> > > --
-> >
-> > When you apply this patch locally, you do:
-> >
-> > $ git log -p -1 | ./scripts/get_maintainer.pl
-> > Ard Biesheuvel <ardb@kernel.org> (maintainer:EXTENSIBLE FIRMWARE INTERFACE (EFI))
-> > linux-efi@vger.kernel.org (open list:EXTENSIBLE FIRMWARE INTERFACE (EFI))
-> > linux-kernel@vger.kernel.org (open list)
-> >
-> > and this tells you that you need to CC EFI folks too.
-> >
-> > I've CCed linux-efi now - please make sure you use that script to CC the
-> > relevant parties on patches, in the future.
-> >
-> 
-> Thanks Boris.
-> 
-> You are adding this GUID to the 'OEM GUIDs' section, in which case I'd
-> prefer the identifier to include which OEM.
-> 
-> Or alternatively, put it somewhere else, but in this case, putting
-> something like AMD_SEV in the identifier would still help to make it
-> more self-documenting.
+Confidential computing hardware such as AMD SEV (Secure Encrypted
+Virtualization) allows guest owners to inject secrets into the VMs
+memory without the host/hypervisor being able to read them.  In SEV,
+secret injection is performed early in the VM launch process, before the
+guest starts running.
 
-I will add AMD_SEV in the identifier above.
+Support for secret injection is already available in OVMF (in its AmdSev
+package; see edk2 commit 01726b6d23d4 "OvmfPkg/AmdSev: Expose the Sev
+Secret area using a configuration table" [1]), but the secrets were not
+available in the guest kernel.
 
-Thanks,
-Ashish
+The patch series copies the secrets from the EFI-provided memory to
+kernel reserved memory, and optionally exposes them to userspace via
+securityfs using a new sev_secret kernel module.
+
+The first patch in efi/libstub copies the secret area from the EFI
+memory to specially allocated memory; the second patch reserves that
+memory block; and the third patch introduces the new sev_secret module
+that exposes the content of the secret entries as securityfs files.
+
+This has been tested with AMD SEV guests, but the kernel side of
+handling the secret area has no SEV-specific dependencies, and therefore
+should be usable for any confidential computing hardware that can
+publish the secret area via the standard EFI config table entry.
+
+Here is a simple example for usage of the sev_secret module in a guest to which
+secrets were injected during launch:
+
+# modprobe sev_secret
+# ls -la /sys/kernel/security/sev_secret
+total 0
+drwxr-xr-x 2 root root 0 May 12 18:03 .
+drwxr-xr-x 3 root root 0 May 12 18:02 ..
+-r--r----- 1 root root 0 May 12 18:03 736870e5-84f0-4973-92ec-06879ce3da0b
+-r--r----- 1 root root 0 May 12 18:03 83c83f7f-1356-4975-8b7e-d3a0b54312c6
+-r--r----- 1 root root 0 May 12 18:03 9553f55d-3da2-43ee-ab5d-ff17f78864d2
+-r--r----- 1 root root 0 May 12 18:03 e6f5a162-d67f-4750-a67c-5d065f2a9910
+
+# xxd /sys/kernel/security/sev_secret/e6f5a162-d67f-4750-a67c-5d065f2a9910
+00000000: 7468 6573 652d 6172 652d 7468 652d 6b61  these-are-the-ka
+00000010: 7461 2d73 6563 7265 7473 0001 0203 0405  ta-secrets......
+00000020: 0607                                     ..
+
+
+[1] https://github.com/tianocore/edk2/commit/01726b6d23d4
+
+
+Cc: Laszlo Ersek <lersek@redhat.com>
+Cc: Ashish Kalra <ashish.kalra@amd.com>
+Cc: Brijesh Singh <brijesh.singh@amd.com>
+Cc: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: James Bottomley <jejb@linux.ibm.com>
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: James Morris <jmorris@namei.org>
+Cc: "Serge E. Hallyn" <serge@hallyn.com>
+Cc: linux-efi@vger.kernel.org
+Cc: linux-security-module@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+
+Dov Murik (3):
+  efi/libstub: Copy confidential computing secret area
+  efi: Reserve confidential computing secret area
+  virt: Add sev_secret module to expose confidential computing secrets
+
+ drivers/firmware/efi/Makefile                 |   2 +-
+ drivers/firmware/efi/confidential-computing.c |  41 +++
+ drivers/firmware/efi/efi.c                    |   5 +
+ drivers/firmware/efi/libstub/Makefile         |   3 +-
+ .../efi/libstub/confidential-computing.c      |  68 +++++
+ drivers/firmware/efi/libstub/efi-stub.c       |   2 +
+ drivers/firmware/efi/libstub/efistub.h        |   2 +
+ drivers/firmware/efi/libstub/x86-stub.c       |   2 +
+ drivers/virt/Kconfig                          |   2 +
+ drivers/virt/Makefile                         |   1 +
+ drivers/virt/sev_secret/Kconfig               |  11 +
+ drivers/virt/sev_secret/Makefile              |   2 +
+ drivers/virt/sev_secret/sev_secret.c          | 260 ++++++++++++++++++
+ include/linux/efi.h                           |  11 +
+ 14 files changed, 410 insertions(+), 2 deletions(-)
+ create mode 100644 drivers/firmware/efi/confidential-computing.c
+ create mode 100644 drivers/firmware/efi/libstub/confidential-computing.c
+ create mode 100644 drivers/virt/sev_secret/Kconfig
+ create mode 100644 drivers/virt/sev_secret/Makefile
+ create mode 100644 drivers/virt/sev_secret/sev_secret.c
+
+
+base-commit: c06a2ba62fc401b7aaefd23f5d0bc06d2457ccc1
+-- 
+2.25.1
+
