@@ -2,40 +2,40 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6DCC8383A38
-	for <lists+linux-efi@lfdr.de>; Mon, 17 May 2021 18:41:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 513E4383B45
+	for <lists+linux-efi@lfdr.de>; Mon, 17 May 2021 19:28:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241335AbhEQQnE (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 17 May 2021 12:43:04 -0400
-Received: from mail-dm6nam11on2113.outbound.protection.outlook.com ([40.107.223.113]:8680
-        "EHLO NAM11-DM6-obe.outbound.protection.outlook.com"
+        id S243641AbhEQR3g (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 17 May 2021 13:29:36 -0400
+Received: from mail-mw2nam10on2096.outbound.protection.outlook.com ([40.107.94.96]:65120
+        "EHLO NAM10-MW2-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S241895AbhEQQmi (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Mon, 17 May 2021 12:42:38 -0400
+        id S241680AbhEQR3I (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Mon, 17 May 2021 13:29:08 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=L18RIs7aiCh5eP1d2meu4V8oMAnEAZ6/gsA3ilPyqQg6yHVpD2UhHuZFIZuEPyLE5GnYI8OemNXRw7teQoPltTWvMrJvltrJx2Gh7hYbZGTJ6bVukWVhjII750dPklN3DltAT69cqqgqrGSkPmo2f7hpWDEV1F6jcsMlCkueTrmIJlUrI5R3mKoDkqXu5rEvppoDo0oPv6YiLxhHegQ9k5oMuvTHSdJVEuHVIvhKj9n8Xanc3fVLvbBGzVget3HcXpegivhivBtHI3se3a/GSViDiGxRdakxBFDY8DCmSLKllj5eTUGbfE8ISlvDni4G34x+pLCzC2JoFVONcPOCnw==
+ b=ZxKufeAwbpAb1Veyzgmu/h6pBdK1deoqjUSPkOrPR2KwOXlCAGnf8BcscSLCPyOd2k+CobCudWVufgtfVVsz8hwPkpEHs3KZFTFNs7oVG2KmOrjOCHG1KpIlVVji1oZ52G4vk7DwnGjOZUH6mMe9OetIaPBPUXkElk3CfGCxCZ/4gXbACBeBf2bVdbB8n+4wZhP+e1R4pN17yoRiX3ihS/pLU5Q6C2cJdatqS7XDnghCray0XItyrmAztPofs4zF9DTMgUpgdyi/kvRvPlNcsLa8W5XgepSBTxCQEzk0mSJRrAF/L+xRRUEnraSbf7fMmH0es2LjQBdHBQjm3+8VkA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=WtAdXnxHd+EBB1K9L54/taSy2iHRGATMSQW9v7G/A7E=;
- b=K/vsFtqwjUTCe4c/qIQmOHuK6uAlJIWaUuHHcVdf6oUbcWy9/eL5paLv4I1w/SCu9ttEk3F2XaUs1JzfLjsIslUv58InZP2M1m/GSWnGjmlRR67UblP+sBlIbkkC3bRfnDumb/j52+RUoj9YIUNrzLARzgkzhthesiS5LImaiNARUcbxO9A7Es2XP4gE1Y/7kph7BAEt3bIKK3TBwWQobHJXcbEM1iibYzK8YXF8jiQGq26IEOmj8wgeyd4qjUtrdK1AOR6AG3JR1Q1Iq+WRNEc03cYPrxUe9TGonFPkFaQS7mqq3//WSBn4TUD6MRL6Tu0vELGQW2BEDMoOHedWCA==
+ bh=JBI17b9hx74IEVRHvSf3tsdHnaGj6cAD/vX0w/zdljQ=;
+ b=Yd+gO55aDPfDvYg7ZxIJalpVCJDb2OeLCeuQkcjoUWwFPSsCMzj82G9l2QkKg0g4TOuft6p/m3ACDX/Pzdx/mHp/JU2p4AdsdXnQDA2LyrtMVqtGsfTiXKgdcpabdSrHs7UmyA+M4cRenkW8/GpjPz0WlGutRI5ytBjWG+GOm3SBV6FLEIG0lh9rJ0F5HPsK5UVtFzlh8OXp41GAuqZKM9KwkxZnP+ETAeW+kTHRkQrvWFXxxuEN14qxAhkenOGkxG9Iq9eOKIMyihIJU2tqomKS6N32FQQUdqBAHtW+rkKgT823i+fMoDEGS4+MzU5/OWtHqpbYlhMkEt2P6UAfuA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=microsoft.com; dmarc=pass action=none
  header.from=microsoft.com; dkim=pass header.d=microsoft.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=WtAdXnxHd+EBB1K9L54/taSy2iHRGATMSQW9v7G/A7E=;
- b=R+bkViN+7g4fiht8LHeSQl5Ho5nLwh3afhESzoP/74GyjlMMboEfR4LkbfizYstzTy6sLyZ02xXbjYI12v4KbEYc41sQ3Mt+WFYRhZszCWF22eR9zhEqqR7S1kc5ebpSshzrxtoZZFXa5IjDNFCXNN9GHDOVNqwR1i5+f1dd7AE=
+ bh=JBI17b9hx74IEVRHvSf3tsdHnaGj6cAD/vX0w/zdljQ=;
+ b=QJCfpsbDfqlb0tG8PK0Msy5SXyuHPYplD5LGmqhLu8bih8u2vZfZOwCX68MGiph1dXOSIX7cTXxq0BYVF4duo9c8t9VAneBYnPkRNu6oPeWiaLMrQ12XRBbHNdAJcC1BWMtJVHUuGAJgLZdy1t7+apSST5IYTfwJlZjF/x3Oq7Y=
 Received: from MWHPR21MB1593.namprd21.prod.outlook.com (2603:10b6:301:7c::11)
- by MW2PR2101MB1786.namprd21.prod.outlook.com (2603:10b6:302:f::30) with
+ by MW2PR2101MB0937.namprd21.prod.outlook.com (2603:10b6:302:4::10) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4173.3; Mon, 17 May
- 2021 16:41:18 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4173.6; Mon, 17 May
+ 2021 17:27:49 +0000
 Received: from MWHPR21MB1593.namprd21.prod.outlook.com
  ([fe80::3c30:6e04:401d:c31f]) by MWHPR21MB1593.namprd21.prod.outlook.com
  ([fe80::3c30:6e04:401d:c31f%4]) with mapi id 15.20.4129.023; Mon, 17 May 2021
- 16:41:16 +0000
+ 17:27:49 +0000
 From:   Michael Kelley <mikelley@microsoft.com>
 To:     Mark Rutland <Mark.Rutland@arm.com>
 CC:     "will@kernel.org" <will@kernel.org>,
@@ -52,160 +52,248 @@ CC:     "will@kernel.org" <will@kernel.org>,
         "ardb@kernel.org" <ardb@kernel.org>,
         "daniel.lezcano@linaro.org" <daniel.lezcano@linaro.org>,
         KY Srinivasan <kys@microsoft.com>
-Subject: RE: [PATCH v10 2/7] arm64: hyperv: Add Hyper-V hypercall and register
- access utilities
-Thread-Topic: [PATCH v10 2/7] arm64: hyperv: Add Hyper-V hypercall and
- register access utilities
-Thread-Index: AQHXR1WfbpYqXyQd1EyiAk5Edk8t8qri8WSAgAAjnhCABIBngIAAUccg
-Date:   Mon, 17 May 2021 16:41:16 +0000
-Message-ID: <MWHPR21MB1593ED3F7893F59E8BDF66ADD72D9@MWHPR21MB1593.namprd21.prod.outlook.com>
+Subject: RE: [PATCH v10 3/7] arm64: hyperv: Add Hyper-V clocksource/clockevent
+ support
+Thread-Topic: [PATCH v10 3/7] arm64: hyperv: Add Hyper-V
+ clocksource/clockevent support
+Thread-Index: AQHXR1WfRNuOt4THnkSQtAriU3aWFKri7Q2AgAAsnCCABJMQgIAAO7hQ
+Date:   Mon, 17 May 2021 17:27:49 +0000
+Message-ID: <MWHPR21MB15930A4EE785984292B1D72BD72D9@MWHPR21MB1593.namprd21.prod.outlook.com>
 References: <1620841067-46606-1-git-send-email-mikelley@microsoft.com>
- <1620841067-46606-3-git-send-email-mikelley@microsoft.com>
- <20210514125243.GC30645@C02TD0UTHF1T.local>
- <MWHPR21MB1593A7625285A3E3F376B352D7509@MWHPR21MB1593.namprd21.prod.outlook.com>
- <20210517114449.GB62656@C02TD0UTHF1T.local>
-In-Reply-To: <20210517114449.GB62656@C02TD0UTHF1T.local>
+ <1620841067-46606-4-git-send-email-mikelley@microsoft.com>
+ <20210514123711.GB30645@C02TD0UTHF1T.local>
+ <MWHPR21MB15932B44EC1E55614B219F5ED7509@MWHPR21MB1593.namprd21.prod.outlook.com>
+ <20210517130815.GC62656@C02TD0UTHF1T.local>
+In-Reply-To: <20210517130815.GC62656@C02TD0UTHF1T.local>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
-msip_labels: MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ActionId=3583aa69-f574-4060-a1ce-d27a09aaf8c9;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ContentBits=0;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Enabled=true;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Method=Standard;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Name=Internal;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SetDate=2021-05-17T16:37:30Z;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SiteId=72f988bf-86f1-41af-91ab-2d7cd011db47;
+msip_labels: MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ActionId=64b36f6f-5fad-4b61-b0f2-4e651fd5b71c;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ContentBits=0;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Enabled=true;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Method=Standard;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Name=Internal;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SetDate=2021-05-17T16:41:59Z;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SiteId=72f988bf-86f1-41af-91ab-2d7cd011db47;
 authentication-results: arm.com; dkim=none (message not signed)
  header.d=none;arm.com; dmarc=none action=none header.from=microsoft.com;
 x-originating-ip: [24.22.167.197]
 x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 374255f8-b8bc-4c3b-8f87-08d919529763
-x-ms-traffictypediagnostic: MW2PR2101MB1786:
+x-ms-office365-filtering-correlation-id: d4c8c0b7-4477-4a47-d9b7-08d919591817
+x-ms-traffictypediagnostic: MW2PR2101MB0937:
 x-ms-exchange-transport-forked: True
 x-ld-processed: 72f988bf-86f1-41af-91ab-2d7cd011db47,ExtAddr
-x-microsoft-antispam-prvs: <MW2PR2101MB17860925C47426E1A741C347D72D9@MW2PR2101MB1786.namprd21.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:8273;
+x-microsoft-antispam-prvs: <MW2PR2101MB09379183DD429C2A0CB18931D72D9@MW2PR2101MB0937.namprd21.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:9508;
 x-ms-exchange-senderadcheck: 1
 x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: cG+dpku0sG/dRKe80F5aZg5cXOSoAHHSPXqx/+bXt3p+NhkrfesCM9iq4x/jvJkUS6byczPSNt5k5/fZE6P9RQBCCNHTTjNI+ZRTNuoXAmCkggAmP3necED/BI5mtZklGFP7pl3ncaX2msvcIXP3h8+IKofnQoC/t4qojpTPWxSujZvbYKQ5EL/Mr9XUN0oR5DDii0wlZUnCHogVVTJnu6z993fj5r5070HaId1uXLy++zf3+dApbZe1De86QP/wW0wHSVK+PLNhKFMLa7YNPT5gI2NSHgT2w41hvcSHXcMkus/+dUpA6QYxZif3ApZY/6aLM9UonMxcwen1ZReWlkZ+YLk1xM+cEn6APStyXxcOxGuDfsBj1shfPND8XutFeEhRH6DH1D0yYa6RGBPr/ECHX7Go+7dwt4x4lDCGhLtienYGiwXOyRN6cknUrDpeB5+UXxOs9Xt2RsOb1GhTI1uvXl2tjBPwlRKRGkodHDSAggZBROnChxLr+OgtAtDFqX2AE8j4eqpQTIqxOpN1f1gXGwL7W9ffFt+wkUMdYHdWLi/IEDjc3Xnt0zJywMUesA1pcxjnb6jkMDFy8nb85QejBhp6Tf7/T9ec6JNmSHo=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MWHPR21MB1593.namprd21.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(366004)(7416002)(4326008)(6916009)(9686003)(122000001)(107886003)(33656002)(7696005)(5660300002)(82950400001)(478600001)(82960400001)(186003)(76116006)(55016002)(52536014)(26005)(66556008)(8676002)(66446008)(6506007)(86362001)(71200400001)(8990500004)(316002)(66946007)(8936002)(66476007)(10290500003)(38100700002)(2906002)(64756008)(54906003);DIR:OUT;SFP:1102;
+x-microsoft-antispam-message-info: Jgk65DRhWgHTNukWkW1I8uSLHJaabsPeBM7XiA8Cci0WrPQ8Pmgy53BcTUcIVxH7IjSeP6Aim4Bn2UHXCwLLTOrKUGDZXY8/KukjCOczPZ4+AaxoeT/z65jf75tP4+60/bl0ZslewRnsjrfao5rnxlWEGT01VdJFeCbo17vwHEKZf1gss2JgD4zH40A5MOIOlnZrZsnnMWy44TbidMIhPK4ozU5bKNicb4gyedpk9jwy4AyT43VLZM5oszH4l0WZpK5QIieWmizISKVp+AYyLno6DWKdZ7X4cH1PfVyVOg6J7NJ84EUr2kCm5sUhLHZrqWqNPoRZkq1KEYNMzxGVSOaBwj9pyPTQBTj+z3fBtp8GVv9HETJtq4UP8ssv+VfYSw0rZWC6liVkR/jovcWK3zbLivYJs0YRGfpOkSqw2OE/08XPe6OposTMkLowCW/GNOomxJYZJxlc+sRDW4qLbBJFarOENlC5LHCrGQMEfCVixM6l+bCPgeE5Iz4Djl3z0avsPCYgjY2H0ApQphLDF1HT8HzV66KMzu4ImWOj5+QE5SuVT1GVQ2fETkdResB+CjWJCyCbaCW/6ua+fFQt7Bu0Yg8ydZCW/0y7C9STVLI=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MWHPR21MB1593.namprd21.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(366004)(7696005)(71200400001)(66446008)(64756008)(6506007)(107886003)(82950400001)(82960400001)(33656002)(6916009)(5660300002)(26005)(83380400001)(7416002)(8676002)(66946007)(66556008)(66476007)(8990500004)(76116006)(478600001)(54906003)(122000001)(316002)(2906002)(8936002)(38100700002)(86362001)(55016002)(4326008)(9686003)(52536014)(10290500003)(186003);DIR:OUT;SFP:1102;
 x-ms-exchange-antispam-messagedata-chunkcount: 2
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?2aGCsXL7K7n9DQnKaericFNwZYF/fX0OY4T4E9rma7VBvVDAD/lU50qOTf3c?=
- =?us-ascii?Q?Eh3kLpn9VK32RVgYNJtAJXKCAwKojjWBiWQbTS5KRgYSnm1d0MdQeuGotGzN?=
- =?us-ascii?Q?+G5A+dDea+I0VNm7UDewG8q8G21CWj60p7YvmFZ9z19RHSSeJIQ4sV1k9tUD?=
- =?us-ascii?Q?txce+mZ46wbF7lHZ2Si1LRW+fK7X09d2fWW//w46zYva0xuNc8IkdqnVQdbe?=
- =?us-ascii?Q?8pZk3fdyqqfRrTWc1hz2o5GgK6ijAr4JKIVzpQRocFnqPRB/FP0/8QiCwSJS?=
- =?us-ascii?Q?MYRI0za+H/ymeKoRgi+6DqZftizkhFj0VHrJH74oysVl7SoowgwvoAQps6yW?=
- =?us-ascii?Q?KusALxmAeusYLdILm+5XCpnmH47kljQLqe97GfU959+Ps2uCX90FkgH0O5NS?=
- =?us-ascii?Q?bzDqIXSR+2BSCQIL7+0BmgZMfdCvDHOb0EWIQvDA//gs89NfL3O9JeZHo0C1?=
- =?us-ascii?Q?WI3E90EFX4aUZWCMxkre49gJ8Ri2C1bgWB/f0Xc2j5cPG0knL6ZJ9FFk03ej?=
- =?us-ascii?Q?luhjqh2mREl/N5pUirnEpL9HoIF/Asa/3BHr+8KgqtQ2zpiLrT0C26j8cRmx?=
- =?us-ascii?Q?UfUYVs6X3wbDgj2Oc+MFzPFxqdSiyxFXVyLVEk5PrPiecu+bocMFdtgeuk1n?=
- =?us-ascii?Q?TikXQDH4B+QYuflOspUqoKVecjlqdx0MsjAXkyBJQn8XnN03/lL7IzUXFcqZ?=
- =?us-ascii?Q?N3m2MZrdPY++GLB0QuTv3K4fppnWhM/8OgZa+GlUfY1fM/gT/rZr7gj4wrdY?=
- =?us-ascii?Q?HjBeKQ8OkkeJjKEc+hq+cZYU9rVTRz4u6djRMWNE6nee3UDxtlWTm4VY8kvx?=
- =?us-ascii?Q?jzuRqYTh0K8TKr0+LkiiWexFPIJJbzUAG+LBJDZdh6bIrhIK8pZgMvTSCiiU?=
- =?us-ascii?Q?zpSkPQzCM4292uYgXLnNzqxviwVssviuQk0I4waOdDSspSQzeJXDC+CJp3K8?=
- =?us-ascii?Q?0nGHSm0OQZzhBNHBK9sLv07k7B+Do9hdBvQTc88X?=
-x-ms-exchange-antispam-messagedata-1: aCQzS5ueOx+J/es3+bwHflX+to2cPyxb7a+EnSSfdH5us3o0fKFoiv7V2BeWi1bKbUwcj7txYqIgTc+larE74N1pQGRScfI/ITB5kyzBTApsGSLOs9Jqlp2tuT1XR/rY4SQw+NwGpwA0zRwS5KWvQDVNQiz5U0jZ/iYB1mFD3eKzSLSOC7jkBwdfauCxtexeyCjd4ZBp4rA0j7/oZv7opZomdCorPdgLWmRkrWqLBhsYLOXcENEb47w6uFRZjhBES2ulUrdga7RYb4PVyNm9y3LfZymtw7+NeFifnaV3nIO3KxOhtvgC4xxDZQgU/MmF5ESTmCK2fwDVNiZbzlbmlTBl
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?+PVczhLqXU75nVfDMi/t+uU7EnwM3120bTvSnplcPK8m8c8ozS3o9HN+k/l7?=
+ =?us-ascii?Q?Fa2zQeOFdPKhaqP+qskRpKR1m03hAeb4As4FK1/qLNp6hcSalaJDM8VXeWIC?=
+ =?us-ascii?Q?8OkWUOjWQPeG5wOn4D2NisaQ+NedBKOHjn36EiW0SheD3hh9wy1SkCxyt4oE?=
+ =?us-ascii?Q?GvhB18DsmhI0sn7VS4/5qB9FWPDRz60zrhl5qq1077L/QRf2Gr4LG8WmbHjU?=
+ =?us-ascii?Q?zWKE28o0kKb378oMPcpCUURcKhTidSO4PBUFPk5xbLWBMVmXqwwQMdHSfgpg?=
+ =?us-ascii?Q?N9E5acSy0lT6Zky5dnjIQXBw2vS8AvWMwvt8U4Vsot+uQ3ZyhqTczUO8fmdl?=
+ =?us-ascii?Q?yHwG7Bkjl/Dnbo6Xbj8ay9RS2JAyh+Zd4Zv1xqrrLSDwKtdvRnmgUDi9Few+?=
+ =?us-ascii?Q?4sCzwRgSVAAIOVSme0UoKk2aJq5NKgUK3eSn2WUUVGeJFy/zgYk6VpOU0+iO?=
+ =?us-ascii?Q?XuBwBdjk2XlEEJArD6jMScc1VgbSK4aaFGikENyVVwFBCW9I+gOijXwzWWV/?=
+ =?us-ascii?Q?DANBkxNe1p8ilaqRdkBqzGR2G3CF94193ROChYzRrmxCuT4bOw+TAAAQOPiJ?=
+ =?us-ascii?Q?5TI1l/oGHok/nbBetsChoiDy1Go15iwHl/DhpdIBP536o5OJTeFcynBMdIRe?=
+ =?us-ascii?Q?SLYnv1SFxOPhY9jTorESPXsQrHU4Mjmi9E4gysQtZce5hiYWkzC4qr3PyvnY?=
+ =?us-ascii?Q?LJljzONs/pBR8rON2WRhNdazkRpLWoevpPusAIsvy/DGbjDtGC5sKPEu+wkb?=
+ =?us-ascii?Q?/DeD29o66Cr9ghSqAwxLMiBkN7q90ExZc3N9FmhDQInINJvzktD+bj/UtLew?=
+ =?us-ascii?Q?H9t8gKgd/iOTEobdOgZzlkEr6KJ8YiY4NDt6GvGJ3+2AkxT1NsKggU5Hyvre?=
+ =?us-ascii?Q?IySEGDWgVQQccVt655aFlNE0YkGyGgJZB4zKNJVspG/RcZazgcKXhOIL81/Y?=
+ =?us-ascii?Q?EeewNKzi6EEDgc49GC4Ltso38lG22BBRO6dZYOgU?=
+x-ms-exchange-antispam-messagedata-1: ADcDrtwkxpSD/Ud6ECDedgRpWXcYi3/pqdUkMfkyfO7DElqZoo32kl227+kH9udkccwHZHV2eipG5tAMX3bjjdBVMrgXY2yaPmHmx2HP3JlD6TEIlGPDj9Wl1tn9d2NezIiSgnFNn//pGlU7Yv3W9GYxKWoKyn1Ar6hiEGFdXH7rR3Ghdgf3+qjq8tmflGCnFN25JvYuv3XdiSPsng3MQiwNCg0olxzFBP9hC7NTcoKX63y7gZ4QF2Djticw7yRcjNjazeEMWjOFma6FLYGLTaAGtzg1FRgxA0rMcCqwGVe0DoTgl4ZpDtRhCn10x1FlfzV7YxTuq8BUOPBpgKtm00Ee
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-OriginatorOrg: microsoft.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: MWHPR21MB1593.namprd21.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 374255f8-b8bc-4c3b-8f87-08d919529763
-X-MS-Exchange-CrossTenant-originalarrivaltime: 17 May 2021 16:41:16.6573
+X-MS-Exchange-CrossTenant-Network-Message-Id: d4c8c0b7-4477-4a47-d9b7-08d919591817
+X-MS-Exchange-CrossTenant-originalarrivaltime: 17 May 2021 17:27:49.5476
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 72f988bf-86f1-41af-91ab-2d7cd011db47
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: IS4NV/JtXy0uBHa8/C65QgLnqc8i6F7aeSvw+oXgVFB5scMPHzNC1q3OIbkaAwHzXXv4NugMVRK0oI5kIqbuHDtFi4qFy/N+qNI/ma9A/OA=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW2PR2101MB1786
+X-MS-Exchange-CrossTenant-userprincipalname: vkGNcDQ0njV0GhWcruLAL70CHC/Fyio/yHr8iONqZTeaSmJ0pN2lzMY37oRnhAA+hiGR48kEGsfkctpvi1gZfXX9pqYsXg1721sQzrXT0f4=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW2PR2101MB0937
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-From: Mark Rutland <mark.rutland@arm.com> Sent: Monday, May 17, 2021 4:45 A=
+From: Mark Rutland <mark.rutland@arm.com> Sent: Monday, May 17, 2021 6:08 A=
 M
 >=20
-> On Fri, May 14, 2021 at 03:14:41PM +0000, Michael Kelley wrote:
+> On Fri, May 14, 2021 at 03:35:15PM +0000, Michael Kelley wrote:
 > > From: Mark Rutland <mark.rutland@arm.com> Sent: Friday, May 14, 2021 5:=
-53 AM
+37 AM
+> > > On Wed, May 12, 2021 at 10:37:43AM -0700, Michael Kelley wrote:
+> > > > Add architecture specific definitions and functions needed
+> > > > by the architecture independent Hyper-V clocksource driver.
+> > > > Update the Hyper-V clocksource driver to be initialized
+> > > > on ARM64.
 > > >
-> > > On Wed, May 12, 2021 at 10:37:42AM -0700, Michael Kelley wrote:
-> > > > hyperv-tlfs.h defines Hyper-V interfaces from the Hyper-V Top Level
-> > > > Functional Spec (TLFS), and #includes the architecture-independent
-> > > > part of hyperv-tlfs.h in include/asm-generic.  The published TLFS
-> > > > is distinctly oriented to x86/x64, so the ARM64-specific
-> > > > hyperv-tlfs.h includes information for ARM64 that is not yet formal=
-ly
-> > > > published. The TLFS is available here:
-> > > >
-> > > >   docs.microsoft.com/en-us/virtualization/hyper-v-on-windows/refere=
-nce/tlfs
-> > > >
-> > > > mshyperv.h defines Linux-specific structures and routines for
-> > > > interacting with Hyper-V on ARM64, and #includes the architecture-
-> > > > independent part of mshyperv.h in include/asm-generic.
-> > > >
-> > > > Use these definitions to provide utility functions to make
-> > > > Hyper-V hypercalls and to get and set Hyper-V provided
-> > > > registers associated with a virtual processor.
+> > > Previously we've said that for a clocksource we must use the architec=
+ted
+> > > counter, since that's necessary for things like the VDSO to work
+> > > correctly and efficiently.
+> > >
+> > > Given that, I'm a bit confused that we're registering a per-cpu
+> > > clocksource that is in part based on the architected counter. Likewis=
+e,
+> > > I don't entirely follow why it's necessary to PV the clock_event_devi=
+ce.
+> > >
+> > > Are the architected counter and timer reliable without this PV
+> > > infrastructure? Why do we need to PV either of those?
+> > >
+> > > Thanks,
+> > > Mark.
+> >
+> > For the clocksource, we have a requirement to live migrate VMs
+> > between Hyper-V hosts running on hardware that may have different
+> > arch counter frequencies (it's not conformant to the ARM v8.6 1 GHz
+> > requirement).  The Hyper-V virtualization does scaling to handle the
+> > frequency difference.  And yes, there's a tradeoff with vDSO not
+> > working, though we have an out-of-tree vDSO implementation that
+> > we can use when necessary.
+>=20
+> Just to be clear, the vDSO is *one example* of something that won't
+> function correctly. More generally, because this undermines core
+> architectural guarantees, it requires more invasive changes (e.g. we'd
+> have to weaken the sanity checks, and not use the counter in things like
+> kexec paths), impacts any architectural features tied to the generic
+> timer/counter (e.g. the event stream, SPE and tracing, future features),
+> and means that other SW (e.g. bootloaders and other EFI applications)
+> are unlikley to function correctly in this environment.
+>=20
+> I am very much not keen on trying to PV this.
+>=20
+> What does the guest see when it reads CNTFRQ_EL0? Does this match the
+> real HW value (and can this change over time)? Or is this entirely
+> synthetic?
+>=20
+> What do the ACPI tables look like in the guest? Is there a GTDT table at
+> all?
+>=20
+> How does the counter event stream behave?
+>=20
+> Are there other architectural features which Hyper-V does not implement
+> for a guest?
+>=20
+> Is there anything else that may change across a migration? e.g. MIDR?
+> MPIDR? Any of the ID registers?
+
+The ARMv8 architectural system counter and associated registers are visible
+and functional in a VM on Hyper-V.   The "arch_sys_counter" clocksource is
+instantiated by the arm_arch_timer.c driver based on the GTDT in the guest,
+and a Linux guest on Hyper-V runs fine with this clocksource.  Low level co=
+de
+like bootloaders and EFI applications work normally.
+
+The Hyper-V virtualization provides another Linux clocksource that is an
+overlay on the arch counter and that provides time consistency across a liv=
+e
+migration. Live migration of ARM64 VMs on Hyper-V is not functional today,
+but the Hyper-V team believes they can make it functional.  I have not
+explored with them the live migration implications of things beyond time
+consistency, like event streams, CNTFRQ_EL0, MIDR/MPIDR, etc.
+
+Would a summary of your point be that live migration across hardware
+with different arch counter frequencies is likely to not be possible with
+100% fidelity because of these other dependencies on the arch counter
+frequency?  (hence the fixed 1 GHz frequency in ARM v8.6)
+
+>=20
+> > For clockevents, the only timer interrupt that Hyper-V provides
+> > in a guest VM is its virtualized "STIMER" interrupt.  There's no
+> > virtualization of the ARM arch timer in the guest.
+>=20
+> I think that is rather unfortunate, given it's a core architectural
+> feature. Is it just the interrupt that's missing? i.e. does all the
+> PE-local functionality behave as the architecture requires?
+
+Right off the bat, I don't know about timer-related PE-local
+functionality as it's not exercised in a Linux VM on Hyper-V that is
+using STIMER-based clockevents.  I'll explore with the Hyper-V
+team.  My impression is that enabling the ARM arch timer in a
+guest VM is more work for Hyper-V than just wiring up an
+interrupt.
+
+Michael
+
+>=20
+> Thanks,
+> Mark.
+>=20
+> >
 > > > >
 > > > > Signed-off-by: Michael Kelley <mikelley@microsoft.com>
 > > > > Reviewed-by: Sunil Muthuswamy <sunilmut@microsoft.com>
 > > > > ---
-> > > >  MAINTAINERS                          |   3 +
-> > > >  arch/arm64/Kbuild                    |   1 +
-> > > >  arch/arm64/hyperv/Makefile           |   2 +
-> > > >  arch/arm64/hyperv/hv_core.c          | 130
-> +++++++++++++++++++++++++++++++++++
-> > > >  arch/arm64/include/asm/hyperv-tlfs.h |  69 +++++++++++++++++++
-> > > >  arch/arm64/include/asm/mshyperv.h    |  54 +++++++++++++++
-> > > >  6 files changed, 259 insertions(+)
-> > > >  create mode 100644 arch/arm64/hyperv/Makefile
-> > > >  create mode 100644 arch/arm64/hyperv/hv_core.c
-> > > >  create mode 100644 arch/arm64/include/asm/hyperv-tlfs.h
-> > > >  create mode 100644 arch/arm64/include/asm/mshyperv.h
-> > >
-> > > > +/*
-> > > > + * hv_do_hypercall- Invoke the specified hypercall
+> > > >  arch/arm64/include/asm/mshyperv.h  | 12 ++++++++++++
+> > > >  drivers/clocksource/hyperv_timer.c | 14 ++++++++++++++
+> > > >  2 files changed, 26 insertions(+)
+> > > >
+> > > > diff --git a/arch/arm64/include/asm/mshyperv.h
+> b/arch/arm64/include/asm/mshyperv.h
+> > > > index c448704..b17299c 100644
+> > > > --- a/arch/arm64/include/asm/mshyperv.h
+> > > > +++ b/arch/arm64/include/asm/mshyperv.h
+> > > > @@ -21,6 +21,7 @@
+> > > >  #include <linux/types.h>
+> > > >  #include <linux/arm-smccc.h>
+> > > >  #include <asm/hyperv-tlfs.h>
+> > > > +#include <clocksource/arm_arch_timer.h>
+> > > >
+> > > >  /*
+> > > >   * Declare calls to get and set Hyper-V VP register values on ARM6=
+4, which
+> > > > @@ -41,6 +42,17 @@ static inline u64 hv_get_register(unsigned int r=
+eg)
+> > > >  	return hv_get_vpreg(reg);
+> > > >  }
+> > > >
+> > > > +/* Define the interrupt ID used by STIMER0 Direct Mode interrupts.=
+ This
+> > > > + * value can't come from ACPI tables because it is needed before t=
+he
+> > > > + * Linux ACPI subsystem is initialized.
 > > > > + */
-> > > > +u64 hv_do_hypercall(u64 control, void *input, void *output)
-> > > > +{
-> > > > +	struct arm_smccc_res	res;
-> > > > +	u64			input_address;
-> > > > +	u64			output_address;
+> > > > +#define HYPERV_STIMER0_VECTOR	31
 > > > > +
-> > > > +	input_address =3D input ? virt_to_phys(input) : 0;
-> > > > +	output_address =3D output ? virt_to_phys(output) : 0;
-> > >
-> > > I may have asked this before, but are `input` and `output` always lin=
-ear
-> > > map pointers, or can they ever be vmalloc pointers?
-> > >
-> > > Otherwise, this looks fine to me.
-> >
-> > The caller must ensure that hypercall arguments are aligned to
-> > 4 Kbytes, and no larger than 4 Kbytes, since that's the page size
-> > used by Hyper-V regardless of the guest page size.  A per-CPU
-> > 4 Kbyte memory area (hyperv_pcpu_input_arg) meeting these
-> > requirements is pre-allocated that callers can use for this purpose.
->=20
-> What I was trying to find out was how that was allocated, as vmalloc()'d
-> pointers aren't legitimate to pass to virt_to_phys().
->=20
-> From scanning ahead to patch 5, I see that memory comes from kmalloc(),
-> and so it is legitimate to use virt_to_phys().
->=20
->=20
-> I see; and from patch 5 I see that memory come from kmalloc(), and will
-> therefore be part of the linear map, and so virt_to_phys() is
-> legitimate.
->=20
-> What I was asking here was how that memory was allocated. So long as
-> those are the only buffers used, this looks fine to me.
->=20
-
-There is no vmalloc() or stack local memory used as arguments to a
-hypercall.   Call sites know about this requirement along with the
-requirement of being aligned to 4 Kbytes and no larger than 4 Kbytes.
-
-Michael
-
+> > > > +static inline u64 hv_get_raw_timer(void)
+> > > > +{
+> > > > +	return arch_timer_read_counter();
+> > > > +}
+> > > > +
+> > > >  /* SMCCC hypercall parameters */
+> > > >  #define HV_SMCCC_FUNC_NUMBER	1
+> > > >  #define HV_FUNC_ID	ARM_SMCCC_CALL_VAL(			\
+> > > > diff --git a/drivers/clocksource/hyperv_timer.c b/drivers/clocksour=
+ce/hyperv_timer.c
+> > > > index 977fd05..270ad9c 100644
+> > > > --- a/drivers/clocksource/hyperv_timer.c
+> > > > +++ b/drivers/clocksource/hyperv_timer.c
+> > > > @@ -569,3 +569,17 @@ void __init hv_init_clocksource(void)
+> > > >  	hv_setup_sched_clock(read_hv_sched_clock_msr);
+> > > >  }
+> > > >  EXPORT_SYMBOL_GPL(hv_init_clocksource);
+> > > > +
+> > > > +/* Initialize everything on ARM64 */
+> > > > +static int __init hyperv_timer_init(struct acpi_table_header *tabl=
+e)
+> > > > +{
+> > > > +	if (!hv_is_hyperv_initialized())
+> > > > +		return -EINVAL;
+> > > > +
+> > > > +	hv_init_clocksource();
+> > > > +	if (hv_stimer_alloc(true))
+> > > > +		return -EINVAL;
+> > > > +
+> > > > +	return 0;
+> > > > +}
+> > > > +TIMER_ACPI_DECLARE(hyperv, ACPI_SIG_GTDT, hyperv_timer_init);
+> > > > --
+> > > > 1.8.3.1
+> > > >
