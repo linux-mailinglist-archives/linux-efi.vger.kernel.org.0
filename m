@@ -2,175 +2,88 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B552A38D3CB
-	for <lists+linux-efi@lfdr.de>; Sat, 22 May 2021 07:14:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BAAD738D5C1
+	for <lists+linux-efi@lfdr.de>; Sat, 22 May 2021 14:09:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229794AbhEVFPx (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sat, 22 May 2021 01:15:53 -0400
-Received: from mx2.suse.de ([195.135.220.15]:43878 "EHLO mx2.suse.de"
+        id S230393AbhEVMLG (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 22 May 2021 08:11:06 -0400
+Received: from mail.kernel.org ([198.145.29.99]:34822 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229743AbhEVFPw (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Sat, 22 May 2021 01:15:52 -0400
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1621660467; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=fE0DYmrm9SxpZYdTHC8iCMREL4dmAA5TTbNe80rzyKI=;
-        b=dyswBoL09pf/e3t8Xn6tbAtVB2GFnAELtpQwp9alptrlr+Q8uaitdfYjXHS+9zTkR5aa/V
-        /zqkwMAeNqRLKZMsc79az2riu5QknFBLNbdDQ4l6JWbPiMNqyelW4Gwm4Qz5gzx8lYAat3
-        UexIb4asXmRFPcZxyyCCDXi/b2Y8R6A=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1621660467;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=fE0DYmrm9SxpZYdTHC8iCMREL4dmAA5TTbNe80rzyKI=;
-        b=oZpTW1j1zGwpEeSEuClOLupKR40dJykDS3YZ0DHQNmN43SqmUnOQucMJB4LXRABGIEfg7w
-        +Kjygicj77dnJCDQ==
-Received: from relay2.suse.de (unknown [195.135.221.27])
-        by mx2.suse.de (Postfix) with ESMTP id 6B63DAAFD;
-        Sat, 22 May 2021 05:14:27 +0000 (UTC)
-To:     Javier Martinez Canillas <javierm@redhat.com>,
-        linux-kernel@vger.kernel.org
-Cc:     Albert Ou <aou@eecs.berkeley.edu>, David Airlie <airlied@linux.ie>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Russell King <linux@armlinux.org.uk>,
-        dri-devel@lists.freedesktop.org,
-        Hans de Goede <hdegoede@redhat.com>,
-        linux-efi@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>,
-        Peter Robinson <pbrobinson@gmail.com>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        linux-arm-kernel@lists.infradead.org
-References: <20210521193704.3042024-1-javierm@redhat.com>
-From:   Thomas Zimmermann <tzimmermann@suse.de>
-Subject: Re: [PATCH 2/2] drivers/firmware: consolidate EFI framebuffer setup
- for all arches
-Message-ID: <e23a44ba-5e9d-d27b-b5e8-0cce3b158ed7@suse.de>
-Date:   Sat, 22 May 2021 07:14:25 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.0
+        id S230360AbhEVMLG (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Sat, 22 May 2021 08:11:06 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 7A73C61132;
+        Sat, 22 May 2021 12:09:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1621685381;
+        bh=9T2kqkYRlBFg6M+r87a0QKtYHZee+OSyZCnhm0RwhGc=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=nmgbmj+vh/ZbFFsNqC0MYt5yDbsp4syhZCa1TykgmUDEMYPLOctzLoSSzNJEkmFoV
+         WDL9XptsD8N0lsrE1Afbz0pfKppPcXQAf6Bte+e8NYpKzpKFsdnnkSZUsGdQyYF7YK
+         dup7VyMk6kDSgldNsHMxOEAocyh4HwNAH9QqQAREj0wrE9aqhgQlIMMnp74JZDGLEx
+         tFGEjFfQPWJZ6M2WJRREbA+F3WdmmRrYNSQdb3teQ9vIWpOMHHezfqOCJs7L+oAGlj
+         NLUuWnM211fVvaA2wOaxwNFLQNQoU6Zt/dF4JjFhaKluG4xfj8tmwgXhybUfAyDgfB
+         7zvUEMXmm2RKA==
+Received: by mail-ot1-f49.google.com with SMTP id v19-20020a0568301413b0290304f00e3d88so20539894otp.4;
+        Sat, 22 May 2021 05:09:41 -0700 (PDT)
+X-Gm-Message-State: AOAM5303CyeEM19NAueyAs9bPlmvbDk5Lz0RfuDRU48OaGbLHY7tbmr1
+        wAOAsnFpDrsa7onNEqt4/YRlz5urhlNPiKQ/9QQ=
+X-Google-Smtp-Source: ABdhPJzuh0wK2buuGxkzuTx4IPfRmkUDwRgK2S+Q8boHOQBaDpcj40nLkeUsrnh0wLU5YjRaPIjHWPPk5bIHOm9Lxds=
+X-Received: by 2002:a9d:69c5:: with SMTP id v5mr12105901oto.108.1621685380892;
+ Sat, 22 May 2021 05:09:40 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20210521193704.3042024-1-javierm@redhat.com>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="JtNxE1TITTUjh336w2OlWq1BXvBZPIZL1"
+References: <20210515081404.6334-1-pmenzel@molgen.mpg.de>
+In-Reply-To: <20210515081404.6334-1-pmenzel@molgen.mpg.de>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Sat, 22 May 2021 14:09:29 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXGCGysZCk59yMjsKWX5PcENvJnyv0nV12kGYObtjE3x3w@mail.gmail.com>
+Message-ID: <CAMj1kXGCGysZCk59yMjsKWX5PcENvJnyv0nV12kGYObtjE3x3w@mail.gmail.com>
+Subject: Re: [PATCH] x86/efi: Log 32/64-bit mismatch with kernel as an error
+To:     Paul Menzel <pmenzel@molgen.mpg.de>
+Cc:     Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        X86 ML <x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        platform-driver-x86@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---JtNxE1TITTUjh336w2OlWq1BXvBZPIZL1
-Content-Type: multipart/mixed; boundary="IkKD6gurUFm5U0BsW26VqMVD5IckojXuq";
- protected-headers="v1"
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: Javier Martinez Canillas <javierm@redhat.com>,
- linux-kernel@vger.kernel.org
-Cc: Albert Ou <aou@eecs.berkeley.edu>, David Airlie <airlied@linux.ie>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Russell King <linux@armlinux.org.uk>, dri-devel@lists.freedesktop.org,
- Hans de Goede <hdegoede@redhat.com>, linux-efi@vger.kernel.org,
- Palmer Dabbelt <palmer@dabbelt.com>, Peter Robinson <pbrobinson@gmail.com>,
- Paul Walmsley <paul.walmsley@sifive.com>, linux-riscv@lists.infradead.org,
- Will Deacon <will@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
- linux-arm-kernel@lists.infradead.org
-Message-ID: <e23a44ba-5e9d-d27b-b5e8-0cce3b158ed7@suse.de>
-Subject: Re: [PATCH 2/2] drivers/firmware: consolidate EFI framebuffer setup
- for all arches
-References: <20210521193704.3042024-1-javierm@redhat.com>
-In-Reply-To: <20210521193704.3042024-1-javierm@redhat.com>
-
---IkKD6gurUFm5U0BsW26VqMVD5IckojXuq
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
-
-Hi
-
-Am 21.05.21 um 21:37 schrieb Javier Martinez Canillas:
-> The register_gop_device() function registers an "efi-framebuffer" platf=
-orm
-> device to match against the efifb driver, to have an early framebuffer =
-for
-> EFI platforms.
->=20
-> But the Generic System Framebuffers (sysfb) already has support for thi=
-s.
->=20
-> Instead of having duplicated logic for x86 and other architectures usin=
-g
-> EFI, consolidate the two in sysfb and remove it from the EFI init logic=
-=2E
->=20
-> Signed-off-by: Javier Martinez Canillas <javierm@redhat.com>
+On Sat, 15 May 2021 at 10:14, Paul Menzel <pmenzel@molgen.mpg.de> wrote:
+>
+> Log the message
+>
+>     No EFI runtime due to 32/64-bit mismatch with kernel
+>
+> as an error condition, as several things like efivarfs won=E2=80=99t work
+> without the EFI runtime.
+>
+> Signed-off-by: Paul Menzel <pmenzel@molgen.mpg.de>
 > ---
->=20
->   arch/arm/Kconfig                  |  1 +
->   arch/arm/include/asm/efi.h        |  5 +-
->   arch/arm64/Kconfig                |  1 +
->   arch/arm64/include/asm/efi.h      |  5 +-
->   arch/riscv/Kconfig                |  1 +
->   arch/riscv/include/asm/efi.h      |  5 +-
->   drivers/firmware/Kconfig          |  7 ++-
->   drivers/firmware/Makefile         |  2 +-
->   drivers/firmware/efi/efi-init.c   | 90 ------------------------------=
--
->   drivers/firmware/efi/sysfb_efi.c  | 77 +++++++++++++++++++++++++-
->   drivers/firmware/sysfb.c          | 40 +++++++++-----
->   drivers/firmware/sysfb_simplefb.c | 29 ++++++----
->   include/linux/sysfb.h             | 28 +++++-----
->   13 files changed, 145 insertions(+), 146 deletions(-)
->=20
-> diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-> index 24804f11302..30ba195ca72 100644
-> --- a/arch/arm/Kconfig
-> +++ b/arch/arm/Kconfig
-> @@ -127,6 +127,7 @@ config ARM
->   	select PERF_USE_VMALLOC
->   	select RTC_LIB
->   	select SET_FS
-> +	select SYSFB
+>  arch/x86/platform/efi/efi.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/arch/x86/platform/efi/efi.c b/arch/x86/platform/efi/efi.c
+> index 8a26e705cb06..147c30a81f15 100644
+> --- a/arch/x86/platform/efi/efi.c
+> +++ b/arch/x86/platform/efi/efi.c
+> @@ -468,7 +468,7 @@ void __init efi_init(void)
+>          */
+>
+>         if (!efi_runtime_supported())
+> -               pr_info("No EFI runtime due to 32/64-bit mismatch with ke=
+rnel\n");
+> +               pr_err("No EFI runtime due to 32/64-bit mismatch with ker=
+nel\n");
+>
+>         if (!efi_runtime_supported() || efi_runtime_disabled()) {
+>                 efi_memmap_unmap();
+> --
+> 2.31.1
+>
 
-Don't select this as part of the architecture. Rather make an option for =
-
-SYSFB that depends in the architectures that supports it.
-
-Best regards
-Thomas
-
-
---=20
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Maxfeldstr. 5, 90409 N=C3=BCrnberg, Germany
-(HRB 36809, AG N=C3=BCrnberg)
-Gesch=C3=A4ftsf=C3=BChrer: Felix Imend=C3=B6rffer
-
-
---IkKD6gurUFm5U0BsW26VqMVD5IckojXuq--
-
---JtNxE1TITTUjh336w2OlWq1BXvBZPIZL1
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature"
-
------BEGIN PGP SIGNATURE-----
-
-wsF5BAABCAAjFiEExndm/fpuMUdwYFFolh/E3EQov+AFAmCokzEFAwAAAAAACgkQlh/E3EQov+Am
-OQ//Qi8H2p0Hk15vY3ajQsg465AoKPe35Vm5k/maVXwrOTqvV2TpRdL3IAy5IOhvaV9VPsbibLLk
-JDP7fvy1loqvwPGA5iiSfANQIqTEtlFySY7OZx5QFXV+Sl9Cp5Y4fJ3pl+GY0IzcbvMeWsiEet8h
-OdQfvHc/aH63OVs97BayrdUtikbKcp339FZ73Ewj4ORXWAiKw/NwumOR7nQEwKxYtNQbATH7XdDG
-cK5RP4pFRsUZQsy0YLZfsV6gqzoX/QoLtfd5yDQ5e0O4g3m2TOAgCHX5eTsDXIUjocU0uOXwXGYi
-A0gyh+soRIrMkMaUwVTeke5xsd2TEz+In3ZasbAOW+q6eLUjXpE3lnjCqusOeB9Aefe4RrwtVeAp
-VLRIJnykqONYXLVAvpmBodPYuji7AYBgdtSstdZ7eggwjzu0cvgM+OBkPwNFOTUz/RO13lGi7gGW
-DE3aTiZCHCFU5w4wy1NcI9uFTw75YWZY6n5biCmrMWzlX1MgXd5ICgniRXtQ3V04hlsZpB3bKDGK
-OX4sJbFdQUVPra6zTfeYrcxVJGHBNf4rAP9ugQab7QDaFPS42gSiqPY4nccWAPs9PIadUcz7nd/y
-4Wm2mwlhUg7RxjanrgrrD/yXjbD5Id0ms0y96dkO+BIlP9DSj56w1WAR+QVFqvYwu2GXlQJlbOwV
-vVs=
-=RRb+
------END PGP SIGNATURE-----
-
---JtNxE1TITTUjh336w2OlWq1BXvBZPIZL1--
+Queued up now, thanks.
