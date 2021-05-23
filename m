@@ -2,76 +2,91 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A3BB838DA94
-	for <lists+linux-efi@lfdr.de>; Sun, 23 May 2021 11:04:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 193EF38DAB8
+	for <lists+linux-efi@lfdr.de>; Sun, 23 May 2021 11:40:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231691AbhEWJFp (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sun, 23 May 2021 05:05:45 -0400
-Received: from mail.kernel.org ([198.145.29.99]:48306 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231636AbhEWJFp (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Sun, 23 May 2021 05:05:45 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 1736D61263;
-        Sun, 23 May 2021 09:04:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1621760659;
-        bh=i/nc1OrlPGzpVH/aTKSspa/XZTXPWeEdFI+EewgSTsI=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JalCXiYS3YgrmE/TOTd7JFSN5K8cCB7W3doh83aSIZ6m8XhtPXt4n7q+ZLd0bXm+H
-         PlckOvxfvj7nXga9VoS675+i/lgi7D/XGcYozsVL+DQRZeg8kOYmPa9M4cdqD3SHot
-         DbRVjHk91ywDOTh7eCTAryeOOq8bkHXOHzy8jPVKwE4Kf6sr6muKIf00d3qNzC/IKh
-         BBIfesSUip5e22QlR/UoRTJBhK2YA6+s6PcKg3Yuoe0UnOQ4+uxYKjgTwt7lGFuyUV
-         dMk9AR1rld8RBw01VzZ0TxS9wu/1RgZqHNH5+uOSjpyjR5oIefnT13XXWYPI+Uf7Ne
-         gmsN1LaAJ1WUQ==
-From:   Ard Biesheuvel <ardb@kernel.org>
-To:     linux-efi@vger.kernel.org
-Cc:     Ingo Molnar <mingo@redhat.com>,
+        id S231669AbhEWJlp (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sun, 23 May 2021 05:41:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46310 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231658AbhEWJlo (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sun, 23 May 2021 05:41:44 -0400
+Received: from mail-wr1-x42f.google.com (mail-wr1-x42f.google.com [IPv6:2a00:1450:4864:20::42f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0FA6C061574
+        for <linux-efi@vger.kernel.org>; Sun, 23 May 2021 02:40:17 -0700 (PDT)
+Received: by mail-wr1-x42f.google.com with SMTP id a4so25397029wrr.2
+        for <linux-efi@vger.kernel.org>; Sun, 23 May 2021 02:40:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=TkVZowMJRyrwTipOUZIYXQG2BTEYaj0c9HlfmUlYJZQ=;
+        b=CK/nDkmGQ0jA3WJyLg8JI21UhXDJlqUm/0pnE4sp+YOKX6DpAUG+FtM06WXucymjTm
+         V/6sTTF1BDbuUzY7PnNrt75FjeJeN/HeZKL22q6Ft0gHTJConL2LQ4GuPvDwBmv+22DY
+         REU04dWdBlcTAsR1bH6cI5+g6IWXZoI2ZHqWFJJb5Yt4ZwcM55g2j3PftO0Cug7MNhTq
+         2VGthlEhHtlH0hfHD4Efg4E9653rSp0/F+kq4F4D4tafHHfCnAQpi95QHLUkzltonPIq
+         AlKQITvnuV+mqEBMgyZdGUkrm2jIpdtvab8WzyCHOjo5URqSNyXd/BKm02tSLanseuaI
+         F9+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to;
+        bh=TkVZowMJRyrwTipOUZIYXQG2BTEYaj0c9HlfmUlYJZQ=;
+        b=ZnzZBSupF4yLbSbT4vC93SDxs0iI3Kys8lMSsG4rEkYEhEdKNXMFRyxLKszfuGllwC
+         DzkZMW/QWkNbF1cRnOZpicO0mOF/Xsm/mlXIwvTssMSGbMaMyEgIt9z7zddRQ46KaIEM
+         UFsaQXVtyeC7L2CMS97ggSEdu6CHBbKx4W4ybs9bb6i13UOHSP8QVyKMDd8tmyFUYYbX
+         9TRhy+HTkb2INIo/CtM/3GkUmXBaZaE1Q29fYpsthbjGbbIIibJcq0duciKRRaZflOLo
+         AYVQK2+mBXh3HGuHv1Vq+FgV7p7F0IPThDP1Np5gNt81fl/qk3LrsroUNmW72PjoJnIq
+         pGVw==
+X-Gm-Message-State: AOAM533jZWEGlQIffUsfsxj0YifL88yjCtQFlCx9EtGYxJVuN/23cxdF
+        1Hu8Tv5F+B9xln1XtuEMpk8=
+X-Google-Smtp-Source: ABdhPJz4eQx/RXtgRpTiOIDmdzQGlKt7RHl7yHQhilNYWB+KX0+269WqvG7NTKXkXSuMg77pgtAxZQ==
+X-Received: by 2002:a5d:4c48:: with SMTP id n8mr16786610wrt.422.1621762816351;
+        Sun, 23 May 2021 02:40:16 -0700 (PDT)
+Received: from gmail.com (178-164-235-213.pool.digikabel.hu. [178.164.235.213])
+        by smtp.gmail.com with ESMTPSA id i1sm8064160wrp.51.2021.05.23.02.40.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 23 May 2021 02:40:15 -0700 (PDT)
+Sender: Ingo Molnar <mingo.kernel.org@gmail.com>
+Date:   Sun, 23 May 2021 11:40:13 +0200
+From:   Ingo Molnar <mingo@kernel.org>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-efi@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
         Thomas Gleixner <tglx@linutronix.de>,
         Borislav Petkov <bp@alien8.de>
-Subject: [GIT PULL] EFI updates for v5.14
-Date:   Sun, 23 May 2021 11:04:13 +0200
-Message-Id: <20210523090413.70225-2-ardb@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20210523090413.70225-1-ardb@kernel.org>
+Subject: Re: [GIT PULL] EFI fixes for v5.13-rc
+Message-ID: <20210523094013.GA1716068@gmail.com>
 References: <20210523090413.70225-1-ardb@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210523090413.70225-1-ardb@kernel.org>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The following changes since commit 942859d969de7f6f7f2659a79237a758b42782da:
 
-  efi: cper: fix snprintf() use in cper_dimm_err_location() (2021-05-22 14:05:37 +0200)
+* Ard Biesheuvel <ardb@kernel.org> wrote:
 
-are available in the Git repository at:
+> The following changes since commit 6efb943b8616ec53a5e444193dccf1af9ad627b5:
+> 
+>   Linux 5.13-rc1 (2021-05-09 14:17:44 -0700)
+> 
+> are available in the Git repository at:
+> 
+>   git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git tags/efi-urgent-for-v5.13-rc2
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git tags/efi-next-for-v5.14
+> EFI fixes for v5.13-rc
+> 
+> A handful of low urgency EFI fixes accumulated over the past couple of
+> months.
 
-for you to fetch changes up to bb11580f61b6c4ba5c35706abd927c8ac8c32852:
+>  drivers/firmware/efi/cper.c         | 4 +---
+>  drivers/firmware/efi/fdtparams.c    | 3 +++
+>  drivers/firmware/efi/libstub/file.c | 2 +-
+>  drivers/firmware/efi/memattr.c      | 5 -----
+>  4 files changed, 5 insertions(+), 9 deletions(-)
 
-  x86/efi: Log 32/64-bit mismatch with kernel as an error (2021-05-22 14:09:07 +0200)
+Pulled into tip:efi/urgent, thanks a lot Ard!
 
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Borislav Petkov <bp@alien8.de>
-
-----------------------------------------------------------------
-EFI updates for v5.14
-
-First microbatch of EFI updates - not a lot going on these days.
-
-----------------------------------------------------------------
-Andy Shevchenko (1):
-      efi/dev-path-parser: Switch to use for_each_acpi_dev_match()
-
-Heikki Krogerus (1):
-      efi/apple-properties: Handle device properties with software node API
-
-Paul Menzel (1):
-      x86/efi: Log 32/64-bit mismatch with kernel as an error
-
- arch/x86/platform/efi/efi.c             |  2 +-
- drivers/firmware/efi/apple-properties.c |  2 +-
- drivers/firmware/efi/dev-path-parser.c  | 49 ++++++++++++---------------------
- 3 files changed, 20 insertions(+), 33 deletions(-)
+	Ingo
