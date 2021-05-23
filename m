@@ -2,79 +2,76 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A5AE38DA93
-	for <lists+linux-efi@lfdr.de>; Sun, 23 May 2021 11:04:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A3BB838DA94
+	for <lists+linux-efi@lfdr.de>; Sun, 23 May 2021 11:04:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231690AbhEWJFo (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sun, 23 May 2021 05:05:44 -0400
-Received: from mail.kernel.org ([198.145.29.99]:48298 "EHLO mail.kernel.org"
+        id S231691AbhEWJFp (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sun, 23 May 2021 05:05:45 -0400
+Received: from mail.kernel.org ([198.145.29.99]:48306 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231636AbhEWJFn (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Sun, 23 May 2021 05:05:43 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id AEFA961151;
-        Sun, 23 May 2021 09:04:16 +0000 (UTC)
+        id S231636AbhEWJFp (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Sun, 23 May 2021 05:05:45 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 1736D61263;
+        Sun, 23 May 2021 09:04:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1621760657;
-        bh=k/5+WR11A7lFmmLmWj6+1f6l8hJoblmWQDq4UYZs7CQ=;
-        h=From:To:Cc:Subject:Date:From;
-        b=Pfu1AdBU/KyvseRqwO6SAG4qcLfL1L9VfwxPzHdjr+Ql4/TQritUQi2eBRqjQ8q5f
-         Slq45eP5kJ3FMK8l6psFRGgvI07vomyar1hXVUSjpa39lYVp7tx2qwD3kjzSTSzTpz
-         5G5UBjplE9LGGSLLId3Fp88H8cAH9q8huqwV5AmvlOWbWkYCOCsPxSQEEg4e27nwo5
-         vcsVlnuPfaz1Z7JyK4iiX0hxhNHI3YObiBXO49u6DwddhGYkN5vS1rZpWN69Txy2tq
-         aUuPnYt20eMMDD3rCvSpKtMnP3aZU0FmmeN0DbaVI0eSyEjBukQ8MshTHRrCGyAA5D
-         NcHnR5yA0veYw==
+        s=k20201202; t=1621760659;
+        bh=i/nc1OrlPGzpVH/aTKSspa/XZTXPWeEdFI+EewgSTsI=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=JalCXiYS3YgrmE/TOTd7JFSN5K8cCB7W3doh83aSIZ6m8XhtPXt4n7q+ZLd0bXm+H
+         PlckOvxfvj7nXga9VoS675+i/lgi7D/XGcYozsVL+DQRZeg8kOYmPa9M4cdqD3SHot
+         DbRVjHk91ywDOTh7eCTAryeOOq8bkHXOHzy8jPVKwE4Kf6sr6muKIf00d3qNzC/IKh
+         BBIfesSUip5e22QlR/UoRTJBhK2YA6+s6PcKg3Yuoe0UnOQ4+uxYKjgTwt7lGFuyUV
+         dMk9AR1rld8RBw01VzZ0TxS9wu/1RgZqHNH5+uOSjpyjR5oIefnT13XXWYPI+Uf7Ne
+         gmsN1LaAJ1WUQ==
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-efi@vger.kernel.org
 Cc:     Ingo Molnar <mingo@redhat.com>,
         Thomas Gleixner <tglx@linutronix.de>,
         Borislav Petkov <bp@alien8.de>
-Subject: [GIT PULL] EFI fixes for v5.13-rc
-Date:   Sun, 23 May 2021 11:04:12 +0200
-Message-Id: <20210523090413.70225-1-ardb@kernel.org>
+Subject: [GIT PULL] EFI updates for v5.14
+Date:   Sun, 23 May 2021 11:04:13 +0200
+Message-Id: <20210523090413.70225-2-ardb@kernel.org>
 X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20210523090413.70225-1-ardb@kernel.org>
+References: <20210523090413.70225-1-ardb@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The following changes since commit 6efb943b8616ec53a5e444193dccf1af9ad627b5:
+The following changes since commit 942859d969de7f6f7f2659a79237a758b42782da:
 
-  Linux 5.13-rc1 (2021-05-09 14:17:44 -0700)
+  efi: cper: fix snprintf() use in cper_dimm_err_location() (2021-05-22 14:05:37 +0200)
 
 are available in the Git repository at:
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git tags/efi-urgent-for-v5.13-rc2
+  git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git tags/efi-next-for-v5.14
 
-for you to fetch changes up to 942859d969de7f6f7f2659a79237a758b42782da:
+for you to fetch changes up to bb11580f61b6c4ba5c35706abd927c8ac8c32852:
 
-  efi: cper: fix snprintf() use in cper_dimm_err_location() (2021-05-22 14:05:37 +0200)
+  x86/efi: Log 32/64-bit mismatch with kernel as an error (2021-05-22 14:09:07 +0200)
 
 Cc: Ingo Molnar <mingo@redhat.com>
 Cc: Thomas Gleixner <tglx@linutronix.de>
 Cc: Borislav Petkov <bp@alien8.de>
 
 ----------------------------------------------------------------
-EFI fixes for v5.13-rc
+EFI updates for v5.14
 
-A handful of low urgency EFI fixes accumulated over the past couple of
-months.
+First microbatch of EFI updates - not a lot going on these days.
 
 ----------------------------------------------------------------
-Changbin Du (1):
-      efi/fdt: fix panic when no valid fdt found
+Andy Shevchenko (1):
+      efi/dev-path-parser: Switch to use for_each_acpi_dev_match()
 
-Dan Carpenter (1):
-      efi/libstub: prevent read overflow in find_file_option()
+Heikki Krogerus (1):
+      efi/apple-properties: Handle device properties with software node API
 
-Heiner Kallweit (1):
-      efi: Allow EFI_MEMORY_XP and EFI_MEMORY_RO both to be cleared
+Paul Menzel (1):
+      x86/efi: Log 32/64-bit mismatch with kernel as an error
 
-Rasmus Villemoes (1):
-      efi: cper: fix snprintf() use in cper_dimm_err_location()
-
- drivers/firmware/efi/cper.c         | 4 +---
- drivers/firmware/efi/fdtparams.c    | 3 +++
- drivers/firmware/efi/libstub/file.c | 2 +-
- drivers/firmware/efi/memattr.c      | 5 -----
- 4 files changed, 5 insertions(+), 9 deletions(-)
+ arch/x86/platform/efi/efi.c             |  2 +-
+ drivers/firmware/efi/apple-properties.c |  2 +-
+ drivers/firmware/efi/dev-path-parser.c  | 49 ++++++++++++---------------------
+ 3 files changed, 20 insertions(+), 33 deletions(-)
