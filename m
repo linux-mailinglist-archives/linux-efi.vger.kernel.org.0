@@ -2,138 +2,113 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D3B538E49D
-	for <lists+linux-efi@lfdr.de>; Mon, 24 May 2021 12:52:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E0FA938E644
+	for <lists+linux-efi@lfdr.de>; Mon, 24 May 2021 14:08:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232574AbhEXKyY (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 24 May 2021 06:54:24 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:52648 "EHLO
+        id S232688AbhEXMJt (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 24 May 2021 08:09:49 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:23705 "EHLO
         us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S232513AbhEXKyX (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 24 May 2021 06:54:23 -0400
+        by vger.kernel.org with ESMTP id S232684AbhEXMJs (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 24 May 2021 08:09:48 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1621853575;
+        s=mimecast20190719; t=1621858100;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=HFtn2RHOEYss0CsLYkuce8tbA8oq7IWTJChBbEjpcfU=;
-        b=FmxiKnjoxDtH4t1ypWkogl7Q/osBEvsedoq5oRAHfUTQ4Ru5ztR+S5vvO8kTrOBhcb36Ox
-        wncHFzFaiol/1O2RLIJCmuUowLS5EV0JZkfzRmh9eyJv/4A8Otg2QK02nCQ0c1uPAQgp7O
-        SPOkgh4taEzzgG25DevunLyslweYr5U=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-164-0SMJKVPqOFa3-qeTi19hVA-1; Mon, 24 May 2021 06:52:53 -0400
-X-MC-Unique: 0SMJKVPqOFa3-qeTi19hVA-1
-Received: by mail-wr1-f70.google.com with SMTP id 22-20020adf82960000b02901115ae2f734so12930076wrc.5
-        for <linux-efi@vger.kernel.org>; Mon, 24 May 2021 03:52:53 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=HFtn2RHOEYss0CsLYkuce8tbA8oq7IWTJChBbEjpcfU=;
-        b=I0PIYyfg1LgccWlkKrKaWv3KF1Bal2/xf5Q4uy58tPzqpuyWqQiaAVSHFFrLZSq8/a
-         e5ImyIL3nYp0GrAUAbjk8+IwYo7TlL6hNE4w46NPsnHDLThn1hIrsFMyD1yMP3yrGfym
-         We7JUPcsrMKRaPWeuapmznwREAX2wdw3EqEY6Q3kfjF5jw9gIKmrF+IF/5MNKtzHP8RF
-         vwk6GKOC9OIOlsLn/+b/FOwzUbt9KbRYpEhLU9zc+JBuPbRCCC78VAOlFbMWb1ywxWCx
-         c3ztQ36KtezLInGd/+5cwpPK62yGrZ8Q52Vpr8wKQ/vRWCtAyv0A19RhXJ9pFBSnR+KR
-         GMmw==
-X-Gm-Message-State: AOAM530FgE8rYIlb5oIrs3oSRDGkVtLZa9A096LRpnOmObjZv9gLJuyD
-        z/bfPz4EV9sB9xZ7tWh7S36iAuKNwFm1MfYMOflJ3UB2WOwayrW2+RoQ7jC1CjYPyPwthylJ58D
-        2kfkB9ZORVDG8eo5pJnIa
-X-Received: by 2002:adf:cd0b:: with SMTP id w11mr20622274wrm.178.1621853572523;
-        Mon, 24 May 2021 03:52:52 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJyBBAfkXTMs2YQFUS4bUXgvPMEgtCieGtjpbUoBA1QSYRX/jn26s0lewHHOil8Ex/lxYcBBJg==
-X-Received: by 2002:adf:cd0b:: with SMTP id w11mr20622252wrm.178.1621853572312;
-        Mon, 24 May 2021 03:52:52 -0700 (PDT)
-Received: from [192.168.1.101] ([92.176.231.106])
-        by smtp.gmail.com with ESMTPSA id r11sm11966441wrp.46.2021.05.24.03.52.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 24 May 2021 03:52:51 -0700 (PDT)
-Subject: Re: [PATCH 0/2] allow the sysfb support to be used in non-x86 arches
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Peter Robinson <pbrobinson@gmail.com>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        David Airlie <airlied@linux.ie>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Borislav Petkov <bp@alien8.de>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Will Deacon <will@kernel.org>,
-        linux-arm-kernel@lists.infradead.org, linux-efi@vger.kernel.org,
-        linux-riscv@lists.infradead.org, x86@kernel.org
-References: <20210521192907.3040644-1-javierm@redhat.com>
- <CAMj1kXGrDm5yN5eRZJ0YAjCde=0Xw7hobC9Oz5CNovo0sWuM+g@mail.gmail.com>
-From:   Javier Martinez Canillas <javierm@redhat.com>
-Message-ID: <0613bc6b-31b4-93f6-b111-4692778f76c0@redhat.com>
-Date:   Mon, 24 May 2021 12:52:50 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.1
+        bh=SG5PHcm3N2r6OH4+o6Ayr7esIOujvwtFU8EaysbDMm0=;
+        b=R93jfKsmfLVXzUzS1rEMg4fsyypk/ULsFtZKs8f59KMB2kqssjDgnVRiHTgGJ/dPVmLkhF
+        kip0NiXzudT4fzAV8gLMfQYE0akIYhgCq0wDGHfByaBZ1Jl9q2p7rHDB5roDuLI8c6rVDv
+        3jEWi/xbyPJvK9xJm5ZHenlrNGGWAlA=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-60-Tb0XBAKPO4O5YKt-JoO5Gg-1; Mon, 24 May 2021 08:08:16 -0400
+X-MC-Unique: Tb0XBAKPO4O5YKt-JoO5Gg-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id BC473107ACF8;
+        Mon, 24 May 2021 12:08:09 +0000 (UTC)
+Received: from work-vm (ovpn-112-207.ams2.redhat.com [10.36.112.207])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id 42607100EBAF;
+        Mon, 24 May 2021 12:08:06 +0000 (UTC)
+Date:   Mon, 24 May 2021 13:08:03 +0100
+From:   "Dr. David Alan Gilbert" <dgilbert@redhat.com>
+To:     Andi Kleen <ak@linux.intel.com>, Dov Murik <dovmurik@linux.ibm.com>
+Cc:     Brijesh Singh <brijesh.singh@amd.com>, linux-efi@vger.kernel.org,
+        Tobin Feldman-Fitzthum <tobin@linux.ibm.com>,
+        Tobin Feldman-Fitzthum <tobin@ibm.com>,
+        Jim Cadden <jcadden@ibm.com>,
+        James Bottomley <jejb@linux.ibm.com>,
+        Hubertus Franke <frankeh@us.ibm.com>,
+        Mike Rapoport <rppt@linux.ibm.com>,
+        Laszlo Ersek <lersek@redhat.com>,
+        Ashish Kalra <ashish.kalra@amd.com>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        linux-security-module@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Kuppuswamy Sathyanarayanan 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>
+Subject: Re: [RFC PATCH 0/3] Allow access to confidential computing secret
+ area
+Message-ID: <YKuXI9TUBa3sjY3e@work-vm>
+References: <20210513062634.2481118-1-dovmurik@linux.ibm.com>
+ <2c8ae998-6dd0-bcb9-f735-e90da05ab9d9@amd.com>
+ <YKZAUdbikp2Pt0XV@work-vm>
+ <ccdf0059-7e39-7895-2733-412dbe4b13f1@linux.intel.com>
+ <c316c49c-03db-22e3-0072-ebaf3c7f2ca2@amd.com>
+ <45842efd-7b6b-496f-d161-e5786760078d@linux.intel.com>
 MIME-Version: 1.0
-In-Reply-To: <CAMj1kXGrDm5yN5eRZJ0YAjCde=0Xw7hobC9Oz5CNovo0sWuM+g@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <45842efd-7b6b-496f-d161-e5786760078d@linux.intel.com>
+User-Agent: Mutt/2.0.7 (2021-05-04)
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hello Ard,
-
-On 5/24/21 12:24 PM, Ard Biesheuvel wrote:
-
-[snip]
-
->> Since this touches both arch/{x86,arm,arm64,riscv} and drivers/firmware, I
->> don't know how it should be merged. But I didn't find a way to split these.
->>
+* Andi Kleen (ak@linux.intel.com) wrote:
 > 
-> We could merge this via the EFI tree without too much risk of
-> conflicts, I think.
->
-
-Great, thanks.
- 
-> However, I'd like to see a better explanation of why this is an improvement.
-> The diffstat does not show a huge net win, and it does not enable
-> anything we didn't already have before, right?
+> > The SEV-SNP attestation approach is very similar to what Andi described
+> > for the TDX. However, in the case of legacy SEV and ES, the attestation
+> > verification is performed before the guest is booted. In this case, the
+> > hyervisor puts the secret provided by the guest owner (after the
+> > attestation) at a fixed location. Dov's driver is simply reading that
+> > fixed location and making it available through the simple text file.
 > 
+> That's the same as our SVKL model.
+> 
+> The (not yet posted) driver is here:
+> 
+> https://github.com/intel/tdx/commit/62c2d9fae275d5bf50f869e8cfb71d2ca1f71363
 > 
 
-I mentioned a little in the cover letter but you are correct that wasn't that
-clear. My motivation was to use the simpledrm driver instead of efifb for the
-early console, so I could boot without using fbdev at all.
+Is there any way we could merge these two so that the TDX/SVKL would
+look similar to SEV/ES to userspace?  If we needed some initrd glue here
+for luks it would be great if we could have one piece of glue.
+[I'm not sure if the numbering/naming of the secrets, and their format
+are defined in the same way]
 
-The register_gop_device() in drivers/firmware/efi/efi-init.c only register an
-"efi-frambuffer" platform device, which means that it will only allow to use
-the efifb driver for the early framebuffer on EFI systems.
- 
-The "simple-framebuffer" platform device is only registered by OF if there's
-a DT node with this compatible string, but it won't be registered for EFI.
- 
-So the simplefb or newly added simpledrm driver won't be matched and probed
-with the current EFI support in aarch64 or riscv. In contrast, the x86 code
-does register a "simple-framebuffer" device that uses the GOP framebuffer.
- 
-One option is to add the same logic in register_gop_device(), but that would
-require even more code duplication. Another option would be to make the simple
-drivers to match against "efi-framebuffer", but that would be an ugly solution.
- 
-But even without taking the lack of "simple-framebuffer" into account, I wonder
-what would be the benefit of keeping two code paths that do basically the same.
+> We opted to use ioctls, with the idea that it should be just read and
+> cleared once to not let the secret lying around. Typically you would just
+> use it to set up dmcrypt or similar once. I think read-and-clear with
+> explicit operations is a better model than some virtual file because of the
+> security properties.
 
-Best regards,
+Do you think the ioctl is preferable to read+ftruncate/unlink ?
+And if it was an ioctl, again could we get some standardisation here -
+i.e.
+maybe a /dev/confguest with a CONF_COMP_GET_KEY etc ?
+
+Dave
+
+> -Andi
+> 
+> 
 -- 
-Javier Martinez Canillas
-Software Engineer
-New Platform Technologies Enablement team
-RHEL Engineering
+Dr. David Alan Gilbert / dgilbert@redhat.com / Manchester, UK
 
