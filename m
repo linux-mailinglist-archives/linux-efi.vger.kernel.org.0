@@ -2,168 +2,158 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 27AB0396FF1
-	for <lists+linux-efi@lfdr.de>; Tue,  1 Jun 2021 11:07:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DFF323975EC
+	for <lists+linux-efi@lfdr.de>; Tue,  1 Jun 2021 16:59:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233218AbhFAJIq (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 1 Jun 2021 05:08:46 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:33468 "EHLO
+        id S234212AbhFAPBK (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 1 Jun 2021 11:01:10 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:22084 "EHLO
         us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S233252AbhFAJIp (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 1 Jun 2021 05:08:45 -0400
+        by vger.kernel.org with ESMTP id S234386AbhFAPBI (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 1 Jun 2021 11:01:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1622538424;
+        s=mimecast20190719; t=1622559566;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=Wwyq+d8kaa3gE2iFZ3mOrS7Gyye0u9Y9IgFDFZTKJ9s=;
-        b=PjC+qSHS6V1NGrAXD5AscFZzz+FCrIKqy69DJ/XnCmiRBDvYVINI1hhUhBah+tNm+k7jfx
-        +kIzT5SSzULJoFP6gynBq0OCGuK5MxLyPCudF5r8OXbXpEtuv1cGH+yXWTT4tOCgIasIZ2
-        rG33uo9BqJ2ew1clunfrjinvjKu77RE=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-63-ZIwBcJjnPNS5dwTQpNN6pw-1; Tue, 01 Jun 2021 05:07:03 -0400
-X-MC-Unique: ZIwBcJjnPNS5dwTQpNN6pw-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 6DEB4803624;
-        Tue,  1 Jun 2021 09:07:00 +0000 (UTC)
-Received: from localhost (ovpn-13-211.pek2.redhat.com [10.72.13.211])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id 49D6469108;
-        Tue,  1 Jun 2021 09:06:56 +0000 (UTC)
-Date:   Tue, 1 Jun 2021 17:06:53 +0800
-From:   Baoquan He <bhe@redhat.com>
-To:     Mike Rapoport <rppt@kernel.org>
-Cc:     x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
-        Andy Lutomirski <luto@amacapital.net>,
-        Andy Shevchenko <andy@infradead.org>,
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=vBakIu1dQtk22INC/4X9gLrUw+kGXTDgbjVD36Rzgzs=;
+        b=iLyWy/5kdkKDEdvMMQLg053nj8yLJfThmyHs3dg5QIWMsNKvxrq6z+rfHgB+KwJKw6og2E
+        Jp8FFCLcjQIx0179h6eN3+tdIRU33ye0/RIieKX7YojgEHyL4j3IvwEaZbaSuM6uB9kB4n
+        tHrLIVh7ugBwjXbuhjr/c1Bz9/tjgdw=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-24-uHd4y-ByMSu0ja1IRnhGeQ-1; Tue, 01 Jun 2021 10:59:25 -0400
+X-MC-Unique: uHd4y-ByMSu0ja1IRnhGeQ-1
+Received: by mail-wr1-f71.google.com with SMTP id g14-20020a5d698e0000b0290117735bd4d3so1073003wru.13
+        for <linux-efi@vger.kernel.org>; Tue, 01 Jun 2021 07:59:25 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=vBakIu1dQtk22INC/4X9gLrUw+kGXTDgbjVD36Rzgzs=;
+        b=MD79LDCMcusDFSeHhusbmzsuLyDcj/Pt2Ytbz36WgHhWmBi0o16cxPoAUWClHewG0k
+         UpZ2ZYG6NadYJHcYa/E3OI3iXAo5qBTJCXMUGNoBPSthYZhAPGDbwYTj4Y3C+5Umz4u3
+         RXhx3Sg0O1Id75vsDpg50W9Hmx2knHaYi9hl4yK/xonPmFmCt8pWK/OasB5I+a8BbB5t
+         +HgAyd0Ogw4nOJmS5xqlh25D6MGHJhoGthYc6Lode+h/AvNdPww4nOPhn6gLomlha4BR
+         nN4CMfQ9uErf52ZCvC6E9enlRt+iSALEFcAAAyr22cEkWwYgzDBzLq5Zb+IR5NlmEDGk
+         u/BA==
+X-Gm-Message-State: AOAM532rNyVDjZumd+4EDyGynieIRfPNwQHEFwL/BWgG2Dc4iqXXqnFt
+        ZBIEkLZvIjB/W9J/HAt2rEI+7uN+RF5pQ5HoUKwIPhqdHyrEapIiDdtlx/N7X/1aiQWWUhJRLXP
+        ZYnNZtFXTET+rqxkdR0MF
+X-Received: by 2002:a1c:282:: with SMTP id 124mr350812wmc.82.1622559564310;
+        Tue, 01 Jun 2021 07:59:24 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJz9XbrF5UjA3Lkw2unmQqkjrGQdtKb1lFgUux9RmxthjhbwQ8B+MLPzmwDX65DDh6SYfSo0EA==
+X-Received: by 2002:a1c:282:: with SMTP id 124mr350790wmc.82.1622559564069;
+        Tue, 01 Jun 2021 07:59:24 -0700 (PDT)
+Received: from minerva.redhat.com ([92.176.231.106])
+        by smtp.gmail.com with ESMTPSA id h6sm3533153wrt.6.2021.06.01.07.59.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 01 Jun 2021 07:59:23 -0700 (PDT)
+From:   Javier Martinez Canillas <javierm@redhat.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     Hans de Goede <hdegoede@redhat.com>,
+        Peter Robinson <pbrobinson@gmail.com>,
+        dri-devel@lists.freedesktop.org, Daniel Vetter <daniel@ffwll.ch>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        David Airlie <airlied@linux.ie>,
+        Javier Martinez Canillas <javierm@redhat.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Ard Biesheuvel <ardb@kernel.org>,
+        Arvind Sankar <nivedita@alum.mit.edu>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
         Borislav Petkov <bp@alien8.de>,
-        Darren Hart <dvhart@infradead.org>,
-        Dave Young <dyoung@redhat.com>,
-        Hugh Dickins <hughd@google.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Lianbo Jiang <lijiang@redhat.com>,
-        Mike Rapoport <rppt@linux.ibm.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
+        Brijesh Singh <brijesh.singh@amd.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Chester Lin <clin@suse.com>, Dinh Nguyen <dinguyen@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+        Joerg Roedel <jroedel@suse.de>,
+        John Stultz <john.stultz@linaro.org>,
+        Josh Poimboeuf <jpoimboe@redhat.com>,
+        Juergen Gross <jgross@suse.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Nicolas Saenz Julienne <nsaenz@kernel.org>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Sudeep Holla <sudeep.holla@arm.com>,
         Thomas Gleixner <tglx@linutronix.de>,
-        linux-doc@vger.kernel.org, linux-efi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, platform-driver-x86@vger.kernel.org
-Subject: Re: [PATCH 1/3] x86/setup: always reserve the first 1M of RAM
-Message-ID: <20210601090653.GB361405@MiWiFi-R3L-srv>
-References: <20210601075354.5149-1-rppt@kernel.org>
- <20210601075354.5149-2-rppt@kernel.org>
+        Will Deacon <will@kernel.org>,
+        linux-arm-kernel@lists.infradead.org, linux-efi@vger.kernel.org,
+        linux-riscv@lists.infradead.org, x86@kernel.org
+Subject: [PATCH v2 0/2] allow simple{fb,drm} drivers to be used on non-x86 EFI platforms
+Date:   Tue,  1 Jun 2021 16:59:10 +0200
+Message-Id: <20210601145912.774054-1-javierm@redhat.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210601075354.5149-2-rppt@kernel.org>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 06/01/21 at 10:53am, Mike Rapoport wrote:
-> From: Mike Rapoport <rppt@linux.ibm.com>
-......  
+The simplefb and simpledrm drivers match against a "simple-framebuffer"
+device, but for aarch64 this is only registered when using Device Trees
+and there's a node with a "simple-framebuffer" compatible string.
 
-> diff --git a/arch/x86/platform/efi/quirks.c b/arch/x86/platform/efi/quirks.c
-> index 7850111008a8..b15ebfe40a73 100644
-> --- a/arch/x86/platform/efi/quirks.c
-> +++ b/arch/x86/platform/efi/quirks.c
-> @@ -450,6 +450,18 @@ void __init efi_free_boot_services(void)
->  			size -= rm_size;
->  		}
+There is no code to register a "simple-framebuffer" platform device when
+using EFI instead. In fact, the only platform device that's registered in
+this case is an "efi-framebuffer", which means that the efifb driver is
+the only driver supported to have an early console with EFI on aarch64.
 
-Thanks for taking care of the low-1M excluding in
-efi_free_boot_services(), Mike. You might want to remove the old real
-mode excluding code either since it's been covered by your new code.
+The x86 architecture platform has a Generic System Framebuffers (sysfb)
+support, that register a system frambuffer platform device. It either
+registers a "simple-framebuffer" for the simple{fb,drm} drivers or legacy
+VGA/EFI FB devices for the vgafb/efifb drivers.
 
-diff --git a/arch/x86/platform/efi/quirks.c b/arch/x86/platform/efi/quirks.c
-index b15ebfe40a73..be814f2089ff 100644
---- a/arch/x86/platform/efi/quirks.c
-+++ b/arch/x86/platform/efi/quirks.c
-@@ -409,7 +409,6 @@ void __init efi_free_boot_services(void)
- 	for_each_efi_memory_desc(md) {
- 		unsigned long long start = md->phys_addr;
- 		unsigned long long size = md->num_pages << EFI_PAGE_SHIFT;
--		size_t rm_size;
- 
- 		if (md->type != EFI_BOOT_SERVICES_CODE &&
- 		    md->type != EFI_BOOT_SERVICES_DATA) {
-@@ -430,26 +429,6 @@ void __init efi_free_boot_services(void)
- 		 */
- 		efi_unmap_pages(md);
- 
--		/*
--		 * Nasty quirk: if all sub-1MB memory is used for boot
--		 * services, we can get here without having allocated the
--		 * real mode trampoline.  It's too late to hand boot services
--		 * memory back to the memblock allocator, so instead
--		 * try to manually allocate the trampoline if needed.
--		 *
--		 * I've seen this on a Dell XPS 13 9350 with firmware
--		 * 1.4.4 with SGX enabled booting Linux via Fedora 24's
--		 * grub2-efi on a hard disk.  (And no, I don't know why
--		 * this happened, but Linux should still try to boot rather
--		 * panicking early.)
--		 */
--		rm_size = real_mode_size_needed();
--		if (rm_size && (start + rm_size) < (1<<20) && size >= rm_size) {
--			set_real_mode_mem(start);
--			start += rm_size;
--			size -= rm_size;
--		}
--
- 		/*
- 		 * Don't free memory under 1M for two reasons:
- 		 * - BIOS might clobber it
+The sysfb is generic enough to be reused by other architectures and can be
+moved out of the arch/x86 directory to drivers/firmware, allowing the EFI
+logic used by non-x86 architectures to be folded into sysfb as well.
 
->  
-> +		/*
-> +		 * Don't free memory under 1M for two reasons:
-> +		 * - BIOS might clobber it
-> +		 * - Crash kernel needs it to be reserved
-> +		 */
-> +		if (start + size < SZ_1M)
-> +			continue;
-> +		if (start < SZ_1M) {
-> +			size -= (SZ_1M - start);
-> +			start = SZ_1M;
-> +		}
-> +
->  		memblock_free_late(start, size);
->  	}
->  
-> diff --git a/arch/x86/realmode/init.c b/arch/x86/realmode/init.c
-> index 2e1c1bec0f9e..8ea285aca827 100644
-> --- a/arch/x86/realmode/init.c
-> +++ b/arch/x86/realmode/init.c
-> @@ -29,14 +29,16 @@ void __init reserve_real_mode(void)
->  
->  	/* Has to be under 1M so we can execute real-mode AP code. */
->  	mem = memblock_find_in_range(0, 1<<20, size, PAGE_SIZE);
-> -	if (!mem) {
-> +	if (!mem)
->  		pr_info("No sub-1M memory is available for the trampoline\n");
-> -		return;
-> -	}
-> +	else
-> +		set_real_mode_mem(mem);
->  
-> -	memblock_reserve(mem, size);
-> -	set_real_mode_mem(mem);
-> -	crash_reserve_low_1M();
-> +	/*
-> +	 * Unconditionally reserve the entire fisrt 1M, see comment in
-> +	 * setup_arch()
-> +	 */
-> +	memblock_reserve(0, SZ_1M);
->  }
->  
->  static void sme_sev_setup_real_mode(struct trampoline_header *th)
-> -- 
-> 2.28.0
-> 
+Patch #1 in this series do the former while patch #2 do the latter. It has
+been tested on x86_64 and aarch64 machines using the efifb, simplefb and
+simpledrm drivers. But more testing will be highly appreciated, to make
+sure that no regressions are being introduced by these changes.
+
+The series touches different subystems and will need coordination between
+maintainers. Ard Biesheuvel said that can be merged through the EFI tree.
+
+Best regards,
+Javier
+
+Changes in v2:
+- Use default y and depends on X86 instead doing a select in arch/x86/Kconfig.
+- Also enable the SYSFB Kconfig option when COMPILE_TEST.
+- Improve commit message to explain why is useful for other arches to use this.
+- Use "depends on" for the supported architectures instead of selecting it.
+- Improve commit message to explain the benefits of reusing sysfb for !X86.
+
+Javier Martinez Canillas (2):
+  drivers/firmware: move x86 Generic System Framebuffers support
+  drivers/firmware: consolidate EFI framebuffer setup for all arches
+
+ arch/arm/include/asm/efi.h                    |  5 +-
+ arch/arm64/include/asm/efi.h                  |  5 +-
+ arch/riscv/include/asm/efi.h                  |  5 +-
+ arch/x86/Kconfig                              | 26 ------
+ arch/x86/kernel/Makefile                      |  3 -
+ drivers/firmware/Kconfig                      | 32 +++++++
+ drivers/firmware/Makefile                     |  2 +
+ drivers/firmware/efi/Makefile                 |  2 +
+ drivers/firmware/efi/efi-init.c               | 90 -------------------
+ .../firmware/efi}/sysfb_efi.c                 | 79 +++++++++++++++-
+ {arch/x86/kernel => drivers/firmware}/sysfb.c | 42 +++++----
+ .../firmware}/sysfb_simplefb.c                | 31 ++++---
+ .../x86/include/asm => include/linux}/sysfb.h | 34 +++----
+ 13 files changed, 180 insertions(+), 176 deletions(-)
+ rename {arch/x86/kernel => drivers/firmware/efi}/sysfb_efi.c (84%)
+ rename {arch/x86/kernel => drivers/firmware}/sysfb.c (70%)
+ rename {arch/x86/kernel => drivers/firmware}/sysfb_simplefb.c (82%)
+ rename {arch/x86/include/asm => include/linux}/sysfb.h (68%)
+
+-- 
+2.31.1
 
