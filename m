@@ -2,68 +2,102 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D7873960AD
-	for <lists+linux-efi@lfdr.de>; Mon, 31 May 2021 16:29:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B4FA6396E41
+	for <lists+linux-efi@lfdr.de>; Tue,  1 Jun 2021 09:54:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232172AbhEaOar (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 31 May 2021 10:30:47 -0400
-Received: from mail.skyhub.de ([5.9.137.197]:41678 "EHLO mail.skyhub.de"
+        id S233194AbhFAHzr (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 1 Jun 2021 03:55:47 -0400
+Received: from mail.kernel.org ([198.145.29.99]:34476 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232591AbhEaO2c (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Mon, 31 May 2021 10:28:32 -0400
-Received: from zn.tnic (p200300ec2f080f0041f75464688c3931.dip0.t-ipconnect.de [IPv6:2003:ec:2f08:f00:41f7:5464:688c:3931])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id B500D1EC04DE;
-        Mon, 31 May 2021 16:26:49 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1622471209;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=pWoyNc/5ib9ExSAsSvvyTuh8dISKublQeSIUTS6gyFo=;
-        b=rUBHLWxlsportLZb96JapQrhx5KY6L5errtTbQH2jp+5S2P1RucW73TDiJCobc8l0fs/S6
-        sLXnY5sGpE7mMcThzoRfy52OxtLU42abXyuaLvw6rqqeo4fsaZdpFA56eW0sdmQ49dSeSn
-        drQRgCA/RPeDd4XXZVYd0wRhG9bv2lY=
-Date:   Mon, 31 May 2021 16:26:42 +0200
-From:   Borislav Petkov <bp@alien8.de>
-To:     Mike Rapoport <rppt@kernel.org>
-Cc:     Lianbo Jiang <lijiang@redhat.com>, linux-kernel@vger.kernel.org,
-        x86@kernel.org, linux-efi@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org, kexec@lists.infradead.org,
-        ardb@kernel.org, dvhart@infradead.org, andy@infradead.org,
-        tglx@linutronix.de, mingo@redhat.com, hpa@zytor.com,
-        luto@amacapital.net, bhe@redhat.com, dyoung@redhat.com
-Subject: Re: [PATCH v2] x86/efi: unconditionally hold the whole low-1MB
- memory regions
-Message-ID: <YLTyIn2S9wCB88Es@zn.tnic>
-References: <20210531090023.16471-1-lijiang@redhat.com>
- <YLSnkKeoQnokXVsK@zn.tnic>
- <YLSzUBQ/7CyINu87@kernel.org>
- <YLS/1sqz6Bncg5VU@zn.tnic>
- <YLTTR5bpOv3XNu32@kernel.org>
+        id S233160AbhFAHzq (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Tue, 1 Jun 2021 03:55:46 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id E64BA6136E;
+        Tue,  1 Jun 2021 07:54:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1622534045;
+        bh=+XAvuzMHMQcxwCnCNesqCmyb6X8V5ARJjsdHoon7pEE=;
+        h=From:To:Cc:Subject:Date:From;
+        b=vJX11QflGfehoVWetTIWOPft3Zql/d8Esr52RiXgnDt0LX43QF/OsR5I82cUSTyFr
+         hHd8Ku5eS7qpq+nBWjBNkbpRHmqWK8B4a6pfW0cxdNWNRQtdKvnXT1M+Yfk1Ly4uXC
+         4X+1t/UdvkbuXhBkBNjaWMctWMW1QZ6SxAgM0I8k40p6yGftCxnD6UD2dCYGj71uHJ
+         /apes1WW4DGlpisAA4jHON6e/zx4+RiUFImA+3CzS3zy4If+EdAEkRdjpueLJrcNP0
+         WhjYFC7TkmcF9WMeAljymC4rUZIvueGhD/CwHd6aMJ9gZD04v67b91yeVKOST+sWMA
+         CGcb7cxAoOv+A==
+From:   Mike Rapoport <rppt@kernel.org>
+To:     x86@kernel.org
+Cc:     "H. Peter Anvin" <hpa@zytor.com>,
+        Andy Lutomirski <luto@amacapital.net>,
+        Andy Shevchenko <andy@infradead.org>,
+        Ard Biesheuvel <ardb@kernel.org>, Baoquan He <bhe@redhat.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Darren Hart <dvhart@infradead.org>,
+        Dave Young <dyoung@redhat.com>,
+        Hugh Dickins <hughd@google.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Lianbo Jiang <lijiang@redhat.com>,
+        Mike Rapoport <rppt@kernel.org>,
+        Mike Rapoport <rppt@linux.ibm.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-doc@vger.kernel.org, linux-efi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, platform-driver-x86@vger.kernel.org
+Subject: [PATCH 0/3] x86/setup: always resrve the first 1M of RAM
+Date:   Tue,  1 Jun 2021 10:53:51 +0300
+Message-Id: <20210601075354.5149-1-rppt@kernel.org>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <YLTTR5bpOv3XNu32@kernel.org>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Mon, May 31, 2021 at 03:15:03PM +0300, Mike Rapoport wrote:
-> Hmm, why?
-> The regression is from v5.13-rc1, isn't it?
+From: Mike Rapoport <rppt@linux.ibm.com>
 
-Ah ok
+Hi,
 
-a799c2bd29d1 ("x86/setup: Consolidate early memory reservations")
+Commit a799c2bd29d1 ("x86/setup: Consolidate early memory reservations")
+changed the way early memory reservations are made and caused a regression
+for users that set CONFIG_X86_RESERVE_LOW to 640K in their kernel
+configuration [1] because there was no room for the real mode trampoline.
 
-went into -rc1.
+My initial suggestion was to reduce the limit of CONFIG_X86_RESERVE_LOW
+from 640K to 512K [2], but in the end it seems simpler to always reserve
+the first 1M of RAM after the real mode trampoline is allocated.
 
-Thx.
+The first patch in the series contains the rework of early memory
+reservations so that first 64K will be reserved very early before memblock
+allocations  are possible and the remaining memory under 1M would be
+reserved after the real mode trampoline is allocated. This patch also
+update freeing of EFI boot services so that memory under 1M will remain
+reserved which is also required for crash kernel [3].
 
+The second and the third patches are cleanups that remove pieces that are
+not longer required after the first patch is applied.
+
+Randy, Hugh, I'd appreciate if you give this a whirl on your old Sandy
+Bridge laptops as it changes again the way trim_snb_memory() works.
+
+[1] https://bugzilla.kernel.org/show_bug.cgi?id=213177
+[2] https://lore.kernel.org/lkml/20210526081100.12239-1-rppt@kernel.org
+[3] https://lore.kernel.org/lkml/20210531090023.16471-1-lijiang@redhat.com/#r
+
+Mike Rapoport (3):
+  x86/setup: always reserve the first 1M of RAM
+  x86/setup: remove CONFIG_X86_RESERVE_LOW and reservelow options
+  x86/crash: remove crash_reserve_low_1M()
+
+ .../admin-guide/kernel-parameters.txt         |  5 --
+ arch/x86/Kconfig                              | 29 ---------
+ arch/x86/include/asm/crash.h                  |  6 --
+ arch/x86/kernel/crash.c                       | 13 ----
+ arch/x86/kernel/setup.c                       | 59 +++++++------------
+ arch/x86/platform/efi/quirks.c                | 12 ++++
+ arch/x86/realmode/init.c                      | 14 +++--
+ 7 files changed, 41 insertions(+), 97 deletions(-)
+
+
+base-commit: c4681547bcce777daf576925a966ffa824edd09d
 -- 
-Regards/Gruss,
-    Boris.
+2.28.0
 
-https://people.kernel.org/tglx/notes-about-netiquette
