@@ -2,41 +2,41 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 26F9C398B68
-	for <lists+linux-efi@lfdr.de>; Wed,  2 Jun 2021 16:04:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 898EA398B6C
+	for <lists+linux-efi@lfdr.de>; Wed,  2 Jun 2021 16:04:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230169AbhFBOG1 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 2 Jun 2021 10:06:27 -0400
+        id S229654AbhFBOG3 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 2 Jun 2021 10:06:29 -0400
 Received: from mail-dm6nam11on2061.outbound.protection.outlook.com ([40.107.223.61]:8225
         "EHLO NAM11-DM6-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S229929AbhFBOG0 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Wed, 2 Jun 2021 10:06:26 -0400
+        id S229762AbhFBOG1 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Wed, 2 Jun 2021 10:06:27 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=XkwHQTPem+MatItVrXytgkmHeWk2XmhBbmu9uu+hWjg0wRsjIa/T7CKa4QC3VjZujSz+m+q5S7yQxO0iqXOTjIt0FA8PZ1I2I9LY6biGtZZfIlIez1l1RFWhtXro3WB+CtMOjzD7fcxJZPhpaRj5xDJq1Mrt3jnnM/bx4r/fOPXKBVw63jID3YRXah2iJYbG34l/cSF+NLYVdECQCpMLVvZVHJCu+CBuQ9Kbxj3EJqUvB48khPgONUXrkD6vJvZDD9Ylh/5SAlhLw6G/2GAmg6LwNvIdjDXYP21byxKRgh2MZa5AxV35vSeoJBrHHP/BvAMBS1OAlvtn+byo3FKspQ==
+ b=LRvrFSt26XYv14P915GN8eEEWZj6Mi4FRAnyUDNJcB94yijnZcZHhIx5ArIbol1Oy9TaI8lxeqvO0b4kzWWS9RpfP6F8ly/NoLJPKhVnorzXJyr+uqt4IrIyNvb2Ht7luuBC+I7oSIAW6U73n3Y8iUuFKrwFpTqnxCGGoXbkaMiGYhdPUt3PG4miWyXm7RG/8H9kOO1A8noco/UAGlGQ3xiciVEDnsLzqAxoC5qIz4Cky0tMj78M8QXXmGMJUlnP/6cdb3Dr8gJ0WTg/xCzeOWjO/CAH7kflRP1ZQw9+ahn/Zve3eXTGyUq++JeN8KwUN1xHa9dGETqkxq4uT3+1IA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=peVx0zH4JB1ZJYgUG/AjKof+2xC8mo0mNUU2PAGg2KU=;
- b=Pirg4CFMNxVyfqyEImI2uCRx8y7HW/hZnVjEe5DBeXjtios7ZANgEoJEpUSwBltIxEQ2SyiTf0hRFv6/iW6NI4UMw4m9D3KbYCP5C6oZRNQlRJ00Fn8zkH2L5oNRQlVAeIMxjyUtFG9i4jjTCumIuE1WjEl9TA1cxv2MTFmuveSK0cNppb6tukwzneuYrXCsDFRmJkRQ1bs6sgAvjarWr4yGVO5cS7ySR4/hHhgPPtm9nTkyYOVdKINe9kTc1RvE7QbJPuERfuF0ywcOEfGznLKJ2gEG5uwpoGF7GnfQ8Gdo+vgCyX5m4FlYlBM8oJl67JtBGiSymF8oqr/fYdLcIw==
+ bh=+P2zk1VcQPPAr7zpiOFCgxIcMjX1nTKHhNWkh8c8hO8=;
+ b=Ro9AXZBO8+XdLI7b9r3L6qkogzv3FXJSh95put+64sd+0Mi2s2vIJwQJqZP5Tw0+L/emH7Z9CPg1YSikUbiOD4Kc5z6u9KuditPJ+EroW/DFa7BwCWqMzwpCqvHqOz1ebWUVzTNzK7ZxDzQn1YsYw/rjaAog9qQcA+Fgj5j9HyRmGuHv3M7eDLzoRpI9ezEPJlTVOAlOXuBkujI7oW+DaIg+01hQnfSdqSm0zawM4eFvQAZuRmIx0NEw1XB+cxi3zT2Sb5rFACzWUCbWX+VSfXUyKpw5pQeRvl+jBcA6jb/tIPmUw3EYCj5s3osglVhKXxBEfB4HFyYAGUEL+j1R0Q==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
  header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=peVx0zH4JB1ZJYgUG/AjKof+2xC8mo0mNUU2PAGg2KU=;
- b=vA0RD39PH5Z9P2Ky1fAIMpASxn1R4LAvkG7VfxGZtYho6goFu4IA/pJ2DRSnB3OljXpIeWU2ofdbyo2nUZhWxYL1bBggR+sH7NNO8m5EU0R1wu4/3oTEvH7lx3l7WotCJ7ERA8imwLZgMsBvLWSZegZHIX1Lpi2p2DD/xSEogd8=
+ bh=+P2zk1VcQPPAr7zpiOFCgxIcMjX1nTKHhNWkh8c8hO8=;
+ b=pHib2uk5YI6TEkcn3sFqHrKQtUh0O7XV5ptozXU4cPynklvuFiGOrjG/qfEamDS2lwImQhF2syPyDbs5mz+XoAilxPaSxgSMpU6XZKdBZwlbavTVOY3/iAKR84cqhTi5ioRiS8dCKC7yc+yhJat07ZCEzb9xb5+UfALRHTJQDFQ=
 Authentication-Results: kernel.org; dkim=none (message not signed)
  header.d=none;kernel.org; dmarc=none action=none header.from=amd.com;
 Received: from SN6PR12MB2718.namprd12.prod.outlook.com (2603:10b6:805:6f::22)
  by SA0PR12MB4512.namprd12.prod.outlook.com (2603:10b6:806:71::9) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4173.21; Wed, 2 Jun
- 2021 14:04:41 +0000
+ 2021 14:04:42 +0000
 Received: from SN6PR12MB2718.namprd12.prod.outlook.com
  ([fe80::9898:5b48:a062:db94]) by SN6PR12MB2718.namprd12.prod.outlook.com
  ([fe80::9898:5b48:a062:db94%6]) with mapi id 15.20.4173.030; Wed, 2 Jun 2021
- 14:04:41 +0000
+ 14:04:42 +0000
 From:   Brijesh Singh <brijesh.singh@amd.com>
 To:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
         linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
@@ -58,9 +58,9 @@ Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
         David Rientjes <rientjes@google.com>, tony.luck@intel.com,
         npmccallum@redhat.com, Brijesh Singh <brijesh.singh@amd.com>
-Subject: [PATCH Part1 RFC v3 01/22] x86/sev: shorten GHCB terminate macro names
-Date:   Wed,  2 Jun 2021 09:03:55 -0500
-Message-Id: <20210602140416.23573-2-brijesh.singh@amd.com>
+Subject: [PATCH Part1 RFC v3 02/22] x86/sev: Define the Linux specific guest termination reasons
+Date:   Wed,  2 Jun 2021 09:03:56 -0500
+Message-Id: <20210602140416.23573-3-brijesh.singh@amd.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20210602140416.23573-1-brijesh.singh@amd.com>
 References: <20210602140416.23573-1-brijesh.singh@amd.com>
@@ -71,74 +71,84 @@ X-ClientProxiedBy: SN6PR05CA0010.namprd05.prod.outlook.com
  (2603:10b6:805:6f::22)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from sbrijesh-desktop.amd.com (165.204.77.1) by SN6PR05CA0010.namprd05.prod.outlook.com (2603:10b6:805:de::23) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4219.9 via Frontend Transport; Wed, 2 Jun 2021 14:04:40 +0000
+Received: from sbrijesh-desktop.amd.com (165.204.77.1) by SN6PR05CA0010.namprd05.prod.outlook.com (2603:10b6:805:de::23) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4219.9 via Frontend Transport; Wed, 2 Jun 2021 14:04:41 +0000
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: a0566013-336f-4a70-aa5c-08d925cf5da7
+X-MS-Office365-Filtering-Correlation-Id: dbdacf02-317b-4f14-6551-08d925cf5e5a
 X-MS-TrafficTypeDiagnostic: SA0PR12MB4512:
 X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <SA0PR12MB45127C47BA4A0CB96C2EE7D3E53D9@SA0PR12MB4512.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:6790;
+X-Microsoft-Antispam-PRVS: <SA0PR12MB451226E58C5B8FC2B9F3D663E53D9@SA0PR12MB4512.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: efH/JrUu4fxJJo1/V/ZW/rPfvdhoZznlYtBWMz+UGHn+7sWqO9ORqeHc4fV8eC5OyizhfYAnp5FTb6ebJWPsY/fVyk/qvru2NLktlY7tZ/mI35Qvy3SOvlxmYoQsEnC/jIKGS5YkY3tVPvIL2JRfnJAzMCeflsoiXzSRphWrWjclAzQuW6+E+E+EhnyucFxXFWQKbV4P2IpjBDngY51afMALoNhyw5uFEdrdrKXX7E75iZyZNzGwv+oM0ly8qEqIytOCV9eEpAp70yPH373RaTEWzGPhl8w7VYizfdU1wgaAALCFRSK/eB+IsAILYHSRmtkVXdvtRpZwnOv8lptZU8mn1IDUQulT3Z11+CPaEor+QYKv8Gp7on7vCGFbhk+1oUhlm1t4TjT9pwrUEXUsneTlBxRBYUd8jij4AqzQF9gV0bs+jE5V3n3j9hCZQao8WBsgntNroHuJsW3xmpG1NNbMieg50lCt8JfCqDGhbZcNEMzq8jytzVzUWW3KxPYH/Jqpw9AzZJ6A8eiiyPpG0LAgAPEVUOL1+kJcPkGdTkzfExk2xdTwG3lRPop1hNJ93tqa6oR33+dzckwBHBZ2IaciPdDTPyX+IfUGDeR5qB/t75X+xDlazU/vqfTCXz9z44/PHHTBHk4hqflbBSMcgcSWiU5UVHb9FoBm5nVJDFQ=
+X-Microsoft-Antispam-Message-Info: 0HljAJUMv2piUD3WlQBYqwoZaFrVUmgMOgIMTf/ZHpSFDAZQolPY6V/EhRsuE4n5bZkFhKF94FcetQx63vBf2RQfkO3qxOrJMG1DTcs1L0S9xpCvn/ehZy7JXAkDAKJCC4md4yAKHLKEOKKzUT5oy0kPbEP9LwKCcuYGyewIH/whTJ209nii7qlGHOxyBHgRHU0kOqNk+0ug6lSn630DTTnZiU8yVVfj0ALRA2noeIUiV2W/6YNcUS7dDC+6chULzCGVxt6PqL4Tup39KH1XHacTG6eGBRj0AODVpOdHv4V3Rpr66/c7blDYcvFaeYjGGLr6u7t/Q5J8vbOlHCYiMUh4xqEyQjlTxHpCOKejkDiB9IzdvI8UtCbXB77TGYt/F+nP6aQrmZOIFBNR8qg7qF4cGpsFZ3kkwmLFW8n6k+RYOTbG6xPkaeD7AQLvct6gJMC4p3tQeuROBme0sey1zkle5hSZrbtEztMGP8yb+QJeWLMsLrHO1l0bhqBlHSdAhrxIesgWTJRhf0JwXo5UePxiF1f80w9Cfu7hKYmg+TsBnRNjsdqsdPS8B3sPd59tkmbz/MO08KXcYeSmLnIaFc9hA2ZNA37aa+5A3uNG+u0xItaXQLOkTRTPP7xpQcFMZXiFVd5j/6+qkN6ZqCcleBjacrk7GqoEWX3TMsJdWRk=
 X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR12MB2718.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(376002)(366004)(346002)(396003)(39860400002)(136003)(6666004)(44832011)(7416002)(26005)(2906002)(8676002)(6486002)(7696005)(52116002)(38100700002)(478600001)(956004)(66556008)(186003)(1076003)(36756003)(8936002)(16526019)(66946007)(83380400001)(38350700002)(5660300002)(2616005)(54906003)(4326008)(86362001)(66476007)(316002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData: =?us-ascii?Q?+EhLSBTAPylrre06yM2RMSKsYTXFSh6vgg6njcTlDY/wD0OfIeZSZ+q5iDQ/?=
- =?us-ascii?Q?eLnrokUcZ0HkFWd0kJDLkeIFFGUr0gVxbkR5WfwjW7/v2naX/ZuqIOmfSUpa?=
- =?us-ascii?Q?mLmdAA8U0BLvxMC23kULJfZlP2MzevQ8YHalo6J9dzy2m28/41BQZ7LVRObO?=
- =?us-ascii?Q?2dnvHPTkFRd3RfX6ubFyn5WmFyKi0vDYMkIYO75QS4R2ofA7T658U+ZuE2WL?=
- =?us-ascii?Q?20dBjBv2lJhh+f9ejmD7QjxTbGgN4Yp8gVE0spywAVHubTI6LA3BackIb2qQ?=
- =?us-ascii?Q?hS3aS29OeCCRPGb1LU4oZiYrImaxG3acpIf4QTYWRvcfxqd/zLeKqP4IqtvW?=
- =?us-ascii?Q?sEZiGM3sKrnmGkRk76FWjURLDGEVeGMfYfhMsu8wB2AIereRUm2chYF8ictN?=
- =?us-ascii?Q?ucqR4TwDmjmi1/4DjmPR4Y4CiEuSbGeCN5vmas4hH9FWa0vSF9sU1RJ/hjib?=
- =?us-ascii?Q?waDOT3AahoEnE1X/lloqXNV2OUWyrXaUYpHt8iyE/getAaljUgSMUq/DyfUP?=
- =?us-ascii?Q?aMofra+C4kIItBYy1fm40jYouDniN12CaNiOvQZehjKidtFi8oCqBwtaYOqV?=
- =?us-ascii?Q?JVnk7mKZ2YSq9TRqvxp4v5GRrFB/JEyjapGIASek3xwK6tSJOETXmcLMIU2c?=
- =?us-ascii?Q?JqhQ0nMiYTGzqH9YLlLhxzvG7U+zB8O/kOQavT6h0wYIv8Q/bH979HpOrzoi?=
- =?us-ascii?Q?JH+kYSQthEIXiHrVBdrP55TPsa+Xa8m+I2DeFwSL+VdvHfgsiN7/OB005AkR?=
- =?us-ascii?Q?/QzZ3ttVBzDXVY+XJQPjlWW55xf5DRUyrOdUrr7xosq7okdS2nDD61GX17Cf?=
- =?us-ascii?Q?S+tnOJgodh6eGKyZpfQnmBJVriMfrkP8QZFFEyzob5EDQzaXuwn5UtzH97We?=
- =?us-ascii?Q?i1i8yOnPAws6YcaI8q0cJWhYN+L9kmVqD1jr0LAReb0opEToFrmBcm4nXoNC?=
- =?us-ascii?Q?H071vxQssFlXPm6Jjqk2vsHR2q/Ueo1dRIhPRE1jlHcpdxWrzxq+Yi0Z5bAh?=
- =?us-ascii?Q?Fkv1v9/2PqdEHFDZT796QZKcTJxREtBqAd6ZJAPO5LbSE1cUTAy8Cc/z8TnT?=
- =?us-ascii?Q?oCC5gM288JLIlxzW3qOpPyRm1RShjEbT4sdYVAQYZlWFZ9owZWmAZebDJ0JL?=
- =?us-ascii?Q?ofBch0KSwOkMH0wSAOnmdvRuYCydJHPU8xOYPZGOK+gyf9+pGHYHwDnpgk4e?=
- =?us-ascii?Q?wM3bTm1kBhEyI9frNtYHTNqHSD+Z1cDARLnda4IMh7+LhywFdxYTwF9/RPvM?=
- =?us-ascii?Q?YkH3LbHULz54oUw8MZQ6wna4da9QeyJ+32g/YpBAbi13SHk6do6ziEKw4cVh?=
- =?us-ascii?Q?JmFpJOMBJMXT21gI+6zfGQxs?=
+X-MS-Exchange-AntiSpam-MessageData: =?us-ascii?Q?lRapv/AGxDDbJbsx9eWs2It0XxN/sDgroLQdPPLY4ywbCnILkfsBZMqEzeyk?=
+ =?us-ascii?Q?EObcdv1NjrNqtAnEsbEOPW4EZEPElacWP8GmRBpPkdSD8ys0w9+CYHpeBwvi?=
+ =?us-ascii?Q?GyelKsExYqhajpuBMMlfe0Fu27NyM1dWn+0zYomfUGSOiAO4VHJ1wBSbe6gK?=
+ =?us-ascii?Q?MJH8Pfl+YdGGS06p/QhEMvXyhtptMKD2/QIqzgJV97zBeGfxHor/rZ1ifY8p?=
+ =?us-ascii?Q?DBH9X1AFpLedGpgGOKI4igqziXvw3l7AdpWk2gJV6zlyu9pcV2fwmGwIIzns?=
+ =?us-ascii?Q?//90a10oL9+L7/tS89HsFtu6cUjo34PC39LhLQRljGFBL/FTo/UM7asZi7aF?=
+ =?us-ascii?Q?NUZ5JUJxsA78hE4AP3zxgXx6+YHSjSIMSe1YNqSjuTgKBu7DBw7+BvYXUtcg?=
+ =?us-ascii?Q?cs7+axlNTVED2mqQgRTbvCcosnJ9ZDemb4gS/zenZiiAesmRiRKTQMwJhe5U?=
+ =?us-ascii?Q?f+CUC0/CVz5wnsYqLgfIPkx8o+B4q78D4Gw3SlWkxdCy0jYvajLFEpiTF4h4?=
+ =?us-ascii?Q?8/YFHINDtnt5fDZigJL+DamfcBdhzKK9tynQS215lL+9lgm3M9XZ2qdpEnPG?=
+ =?us-ascii?Q?gv952fZmV88Tyym0LhgNCV4gqy6ZoNTV9Ibs+XsUYPtpMduiPOwNyhKFitnl?=
+ =?us-ascii?Q?L1nGJ9nDDC+/1Z3YGzlYBwi8gYpwgqrYwY7F77/+cN1nv/IGmF2LNn0jdoZu?=
+ =?us-ascii?Q?k2elGeS+DP8JA9tXInWEZRBjgNClG1NvvU69bs8ExjhIhvNYvL8TBuPWPgF1?=
+ =?us-ascii?Q?3oart/sV1xG9N9CV3OjgplbkRYODo3fkBTNo6mLgCaPI0bi8qI9eVyOlhSYY?=
+ =?us-ascii?Q?nAKcPdygyCXFmccBPhGz/MgD84qf9Qo9O+nJ03sHGPJK252gg1+0aIXibUeI?=
+ =?us-ascii?Q?JeD2vNvSfTQ50d1jCIICg31rEY/a0sCS3u/S0y5Cd5h8gektxC6r/agQk/gp?=
+ =?us-ascii?Q?J9btleHEko7scr/BNGg97bhOvxTAe6RV1uM/haEW9ZQdVF2Sn906icJjIVk3?=
+ =?us-ascii?Q?C330cthEiCcGE3wGJizB7BGmVgrPOsyQhXugi6tDInLZoRpKbyEkhvWfFKkR?=
+ =?us-ascii?Q?t0v4ggnIKhv98TI2EmwkQQX6y53cT+uVmhXn8qDP1xwGdVmJ2dEemPB/TQb2?=
+ =?us-ascii?Q?TFOEYrnDK3U7vjZ7onAuyfrfHP8JDrv9o6hSiOaMkPOm7pKP/pDjrm+yNSOf?=
+ =?us-ascii?Q?YRX+zLZw8bXxhCC0Y+x5eQePm0A5UtNugMvbiqA40eCNhqr+qmN3nq/4HyYH?=
+ =?us-ascii?Q?qcLtgfvLkcL8KzT2yUcAA6iVMELWOKrbiqska09HyIbtQNo/Eem58xxnKIKn?=
+ =?us-ascii?Q?HJ3bvUzTXPH671AqPwOGGuru?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a0566013-336f-4a70-aa5c-08d925cf5da7
+X-MS-Exchange-CrossTenant-Network-Message-Id: dbdacf02-317b-4f14-6551-08d925cf5e5a
 X-MS-Exchange-CrossTenant-AuthSource: SN6PR12MB2718.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Jun 2021 14:04:41.1221
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Jun 2021 14:04:42.3115
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: vQcYoKMrzYvZ4kkWBJGSlEnrxlNKZb5gb0fuf97k8b+zSJgtw6hM+3I4y7pS8OYyLeh1bqgkevD/TC8wkJmhrQ==
+X-MS-Exchange-CrossTenant-UserPrincipalName: sMkzeT5jv+LZP/Rixi2qLwXMPWBmEjSEFnC/OZU+DtTFfWrwmsNir4hCtYNBx1kaaGEksqzoP+cMSaOAIx+w6w==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB4512
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Suggested-by: Borislav Petkov <bp@suse.de>
+GHCB specification defines the reason code for reason set 0. The reason
+codes defined in the set 0 do not cover all possible causes for a guest
+to request termination.
+
+The reason set 1 to 255 is reserved for the vendor-specific codes.
+Reseve the reason set 1 for the Linux guest. Define an error codes for
+reason set 1.
+
+While at it, change the sev_es_terminate() to accept the reason set
+parameter.
+
 Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
 ---
  arch/x86/boot/compressed/sev.c    | 6 +++---
- arch/x86/include/asm/sev-common.h | 4 ++--
- arch/x86/kernel/sev-shared.c      | 2 +-
+ arch/x86/include/asm/sev-common.h | 5 +++++
+ arch/x86/kernel/sev-shared.c      | 6 +++---
  arch/x86/kernel/sev.c             | 4 ++--
- 4 files changed, 8 insertions(+), 8 deletions(-)
+ 4 files changed, 13 insertions(+), 8 deletions(-)
 
 diff --git a/arch/x86/boot/compressed/sev.c b/arch/x86/boot/compressed/sev.c
-index 670e998fe930..28bcf04c022e 100644
+index 28bcf04c022e..87621f4e4703 100644
 --- a/arch/x86/boot/compressed/sev.c
 +++ b/arch/x86/boot/compressed/sev.c
 @@ -122,7 +122,7 @@ static enum es_result vc_read_mem(struct es_em_ctxt *ctxt,
  static bool early_setup_sev_es(void)
  {
  	if (!sev_es_negotiate_protocol())
--		sev_es_terminate(GHCB_SEV_ES_REASON_PROTOCOL_UNSUPPORTED);
-+		sev_es_terminate(GHCB_SEV_ES_PROT_UNSUPPORTED);
+-		sev_es_terminate(GHCB_SEV_ES_PROT_UNSUPPORTED);
++		sev_es_terminate(0, GHCB_SEV_ES_PROT_UNSUPPORTED);
  
  	if (set_page_decrypted((unsigned long)&boot_ghcb_page))
  		return false;
@@ -146,8 +156,8 @@ index 670e998fe930..28bcf04c022e 100644
  	enum es_result result;
  
  	if (!boot_ghcb && !early_setup_sev_es())
--		sev_es_terminate(GHCB_SEV_ES_REASON_GENERAL_REQUEST);
-+		sev_es_terminate(GHCB_SEV_ES_GEN_REQ);
+-		sev_es_terminate(GHCB_SEV_ES_GEN_REQ);
++		sev_es_terminate(0, GHCB_SEV_ES_GEN_REQ);
  
  	vc_ghcb_invalidate(boot_ghcb);
  	result = vc_init_em_ctxt(&ctxt, regs, exit_code);
@@ -155,47 +165,64 @@ index 670e998fe930..28bcf04c022e 100644
  	if (result == ES_OK)
  		vc_finish_insn(&ctxt);
  	else if (result != ES_RETRY)
--		sev_es_terminate(GHCB_SEV_ES_REASON_GENERAL_REQUEST);
-+		sev_es_terminate(GHCB_SEV_ES_GEN_REQ);
+-		sev_es_terminate(GHCB_SEV_ES_GEN_REQ);
++		sev_es_terminate(0, GHCB_SEV_ES_GEN_REQ);
  }
 diff --git a/arch/x86/include/asm/sev-common.h b/arch/x86/include/asm/sev-common.h
-index 629c3df243f0..11b7d9cea775 100644
+index 11b7d9cea775..f1e2aacb0d61 100644
 --- a/arch/x86/include/asm/sev-common.h
 +++ b/arch/x86/include/asm/sev-common.h
-@@ -54,8 +54,8 @@
- 	(((((u64)reason_set) &  GHCB_MSR_TERM_REASON_SET_MASK) << GHCB_MSR_TERM_REASON_SET_POS) | \
- 	((((u64)reason_val) & GHCB_MSR_TERM_REASON_MASK) << GHCB_MSR_TERM_REASON_POS))
- 
--#define GHCB_SEV_ES_REASON_GENERAL_REQUEST	0
--#define GHCB_SEV_ES_REASON_PROTOCOL_UNSUPPORTED	1
-+#define GHCB_SEV_ES_GEN_REQ		0
-+#define GHCB_SEV_ES_PROT_UNSUPPORTED	1
+@@ -59,4 +59,9 @@
  
  #define GHCB_RESP_CODE(v)		((v) & GHCB_MSR_INFO_MASK)
  
++/* Linux specific reason codes (used with reason set 1) */
++#define GHCB_TERM_REGISTER		0	/* GHCB GPA registration failure */
++#define GHCB_TERM_PSC			1	/* Page State Change failure */
++#define GHCB_TERM_PVALIDATE		2	/* Pvalidate failure */
++
+ #endif
 diff --git a/arch/x86/kernel/sev-shared.c b/arch/x86/kernel/sev-shared.c
-index 6ec8b3bfd76e..14198075ff8b 100644
+index 14198075ff8b..de0e7e6c52b8 100644
 --- a/arch/x86/kernel/sev-shared.c
 +++ b/arch/x86/kernel/sev-shared.c
+@@ -24,7 +24,7 @@ static bool __init sev_es_check_cpu_features(void)
+ 	return true;
+ }
+ 
+-static void __noreturn sev_es_terminate(unsigned int reason)
++static void __noreturn sev_es_terminate(unsigned int set, unsigned int reason)
+ {
+ 	u64 val = GHCB_MSR_TERM_REQ;
+ 
+@@ -32,7 +32,7 @@ static void __noreturn sev_es_terminate(unsigned int reason)
+ 	 * Tell the hypervisor what went wrong - only reason-set 0 is
+ 	 * currently supported.
+ 	 */
+-	val |= GHCB_SEV_TERM_REASON(0, reason);
++	val |= GHCB_SEV_TERM_REASON(set, reason);
+ 
+ 	/* Request Guest Termination from Hypvervisor */
+ 	sev_es_wr_ghcb_msr(val);
 @@ -207,7 +207,7 @@ void __init do_vc_no_ghcb(struct pt_regs *regs, unsigned long exit_code)
  
  fail:
  	/* Terminate the guest */
--	sev_es_terminate(GHCB_SEV_ES_REASON_GENERAL_REQUEST);
-+	sev_es_terminate(GHCB_SEV_ES_GEN_REQ);
+-	sev_es_terminate(GHCB_SEV_ES_GEN_REQ);
++	sev_es_terminate(0, GHCB_SEV_ES_GEN_REQ);
  }
  
  static enum es_result vc_insn_string_read(struct es_em_ctxt *ctxt,
 diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
-index 9578c82832aa..460717e3f72d 100644
+index 460717e3f72d..77a754365ba9 100644
 --- a/arch/x86/kernel/sev.c
 +++ b/arch/x86/kernel/sev.c
 @@ -1383,7 +1383,7 @@ DEFINE_IDTENTRY_VC_SAFE_STACK(exc_vmm_communication)
  		show_regs(regs);
  
  		/* Ask hypervisor to sev_es_terminate */
--		sev_es_terminate(GHCB_SEV_ES_REASON_GENERAL_REQUEST);
-+		sev_es_terminate(GHCB_SEV_ES_GEN_REQ);
+-		sev_es_terminate(GHCB_SEV_ES_GEN_REQ);
++		sev_es_terminate(0, GHCB_SEV_ES_GEN_REQ);
  
  		/* If that fails and we get here - just panic */
  		panic("Returned from Terminate-Request to Hypervisor\n");
@@ -203,8 +230,8 @@ index 9578c82832aa..460717e3f72d 100644
  
  	/* Do initial setup or terminate the guest */
  	if (unlikely(boot_ghcb == NULL && !sev_es_setup_ghcb()))
--		sev_es_terminate(GHCB_SEV_ES_REASON_GENERAL_REQUEST);
-+		sev_es_terminate(GHCB_SEV_ES_GEN_REQ);
+-		sev_es_terminate(GHCB_SEV_ES_GEN_REQ);
++		sev_es_terminate(0, GHCB_SEV_ES_GEN_REQ);
  
  	vc_ghcb_invalidate(boot_ghcb);
  
