@@ -2,177 +2,99 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2BCA939C6A9
-	for <lists+linux-efi@lfdr.de>; Sat,  5 Jun 2021 09:51:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 76F7039C78F
+	for <lists+linux-efi@lfdr.de>; Sat,  5 Jun 2021 12:53:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229850AbhFEHxM (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sat, 5 Jun 2021 03:53:12 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:47672 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229994AbhFEHxL (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sat, 5 Jun 2021 03:53:11 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1622879483;
+        id S229957AbhFEKy7 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 5 Jun 2021 06:54:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60332 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229924AbhFEKy7 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sat, 5 Jun 2021 06:54:59 -0400
+Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F69BC061766;
+        Sat,  5 Jun 2021 03:53:11 -0700 (PDT)
+Received: from zn.tnic (p4fed32f0.dip0.t-ipconnect.de [79.237.50.240])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id C2FC41EC01A2;
+        Sat,  5 Jun 2021 12:53:09 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1622890389;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=AFxfbRh44tx3itGF+2reHu0Dp0ddlJOouXymhxZA6d8=;
-        b=GYt53Obj6jmFG7mv9mvDmSAoW+EsmUQAKN1fWHPTWBGukhW00aNHxq1iG/KH9RzE+bXevO
-        yocY9CYv7i3HZw7RF6wmlIIfqrcwwxdxXt1/W1sA76L66geJySaswt1UBqtaIrl6mfz7hw
-        KLBSQwIoL75YHgXhCgX8uWf8gfnEmk4=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-286-fqSHjizUNGWV-HX4g9qZow-1; Sat, 05 Jun 2021 03:51:21 -0400
-X-MC-Unique: fqSHjizUNGWV-HX4g9qZow-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 652ED801B12;
-        Sat,  5 Jun 2021 07:51:20 +0000 (UTC)
-Received: from dhcp-128-65.nay.redhat.com (ovpn-12-110.pek2.redhat.com [10.72.12.110])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id 7BCB71B5B7;
-        Sat,  5 Jun 2021 07:51:16 +0000 (UTC)
-Date:   Sat, 5 Jun 2021 15:51:05 +0800
-From:   Dave Young <dyoung@redhat.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Jean Delvare <jdelvare@suse.com>, linux-kernel@vger.kernel.org,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Javier =?iso-8859-1?B?VGnh?= <javier.tia@gmail.com>,
-        kexec@lists.infradead.org, Eric Biederman <ebiederm@xmission.com>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Matt Fleming <matt@codeblueprint.co.uk>,
-        Ard Biesheuvel <ardb@kernel.org>
-Subject: Re: [PATCH v1 0/2] firmware: dmi_scan: Make it work in kexec'ed
- kernel
-Message-ID: <YLss6ZNPMIXleLLF@dhcp-128-65.nay.redhat.com>
-References: <20161202195416.58953-1-andriy.shevchenko@linux.intel.com>
- <YLdEZoSWI41fcTB1@smile.fi.intel.com>
- <YLdG91qspr19heDS@smile.fi.intel.com>
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=m4WFNDMn/F2hBFMtOb5KcbkKEA5fPujaJDdSpXTf3yI=;
+        b=b9euwxNWNDPFTyr/DO+tkH5SKsRbrIAcUy0+u+Jvmj/u6fbpiZz9u3lFXvXcgwIemAcufI
+        NyCxlLalL3M1NPfNHFgQhUWN/nBA/Vh8556EE5bzxFiKvpEO+aa9S/C6oi3V7LKg6VQ6eu
+        Z/KRkDNbfBU2ttfxGH9aWiVrTQ//cn8=
+Date:   Sat, 5 Jun 2021 12:50:53 +0200
+From:   Borislav Petkov <bp@alien8.de>
+To:     Brijesh Singh <brijesh.singh@amd.com>
+Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        linux-coco@lists.linux.dev, linux-mm@kvack.org,
+        linux-crypto@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Vitaly Kuznetsov <vkuznets@redhat.com>,
+        Wanpeng Li <wanpengli@tencent.com>,
+        Jim Mattson <jmattson@google.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        David Rientjes <rientjes@google.com>, tony.luck@intel.com,
+        npmccallum@redhat.com
+Subject: Re: [PATCH Part1 RFC v3 04/22] x86/mm: Add sev_feature_enabled()
+ helper
+Message-ID: <YLtXDQHWnAvCl99M@zn.tnic>
+References: <20210602140416.23573-1-brijesh.singh@amd.com>
+ <20210602140416.23573-5-brijesh.singh@amd.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <YLdG91qspr19heDS@smile.fi.intel.com>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
+In-Reply-To: <20210602140416.23573-5-brijesh.singh@amd.com>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hi,
-On 06/02/21 at 11:53am, Andy Shevchenko wrote:
-> +Cc: Ard
-> 
-> On Wed, Jun 02, 2021 at 11:42:14AM +0300, Andy Shevchenko wrote:
-> > On Fri, Dec 02, 2016 at 09:54:14PM +0200, Andy Shevchenko wrote:
-> > > Until now DMI information is lost when kexec'ing. Fix this in the same way as
-> > > it has been done for ACPI RSDP.
-> > > 
-> > > Series has been tested on Galileo Gen2 where DMI is used by drivers, in
-> > > particular the default I2C host speed is choosen based on DMI system
-> > > information and now gets it correct.
-> > 
-> > Still nothing happens for a while and problem still exists.
-> > Can we do something about it, please?
+On Wed, Jun 02, 2021 at 09:03:58AM -0500, Brijesh Singh wrote:
+> @@ -78,6 +85,7 @@ static inline void sev_es_init_vc_handling(void) { }
+>  static inline bool sme_active(void) { return false; }
+>  static inline bool sev_active(void) { return false; }
+>  static inline bool sev_es_active(void) { return false; }
+> +static inline bool sev_snp_active(void) { return false; }
 
-Seems I totally missed this thread. Old emails lost.
+Leftover from the previous version, can go.
 
-The question Ard asked is to confirm if the firmware converted the
-SMBIOS3 addr to a virtual address after exit boot service. I do not
-remember some easy way to check it due to lost the context of the code.
-But you can try to check it via dmesg|grep SMBIOS both in normal boot
-and kexeced boot log.  And then compare if those addresses are
-identical.
+> +bool sev_feature_enabled(unsigned int type)
+> +{
+> +	switch (type) {
+> +	case SEV: return sev_status & MSR_AMD64_SEV_ENABLED;
+> +	case SEV_ES: return sev_status & MSR_AMD64_SEV_ES_ENABLED;
+> +	case SEV_SNP: return sev_status & MSR_AMD64_SEV_SNP_ENABLED;
+> +	default: return false;
+> +	}
+> +}
 
-If the SMBIOS3 addr in kexec kernel is different then it should have
-been modified by firmware. Then we need patch kernel and kexec-tools to
-support it.
+Yeah, btw, we might even do a generic one, see:
 
-You can try below patch to see if it works:
+https://lkml.kernel.org/r/YLkcIuL2qvo0hviU@zn.tnic
 
-apply a kexec-tools patch to kexec-tools if you do not use kexec -s
-(kexec_file_load):
---- kexec-tools.orig/kexec/arch/i386/x86-linux-setup.c
-+++ kexec-tools/kexec/arch/i386/x86-linux-setup.c
-@@ -533,7 +533,8 @@ struct efi_setup_data {
- 	uint64_t runtime;
- 	uint64_t tables;
- 	uint64_t smbios;
--	uint64_t reserved[8];
-+	uint64_t smbios3;
-+	uint64_t reserved[7];
- };
- 
- struct setup_data {
-@@ -580,6 +581,8 @@ static int get_efi_values(struct efi_set
- 
- 	ret = get_efi_value("/sys/firmware/efi/systab", "SMBIOS=0x",
- 			    &esd->smbios);
-+	ret |= get_efi_value("/sys/firmware/efi/systab", "SMBIOS3=0x",
-+			    &esd->smbios3);
- 	ret |= get_efi_value("/sys/firmware/efi/fw_vendor", "0x",
- 			     &esd->fw_vendor);
- 	ret |= get_efi_value("/sys/firmware/efi/runtime", "0x",
+and the following mail.
 
-=============================================
-Kernel patch:
+But that doesn't matter as sev_feature_enabled()'s body can go into
+sev_protected_guest_has() or whatever we end up calling it.
 
---- linux-x86.orig/arch/x86/include/asm/efi.h
-+++ linux-x86/arch/x86/include/asm/efi.h
-@@ -167,7 +167,8 @@ struct efi_setup_data {
- 	u64 __unused;
- 	u64 tables;
- 	u64 smbios;
--	u64 reserved[8];
-+	u64 smbios3;
-+	u64 reserved[7];
- };
- 
- extern u64 efi_setup;
---- linux-x86.orig/arch/x86/kernel/kexec-bzimage64.c
-+++ linux-x86/arch/x86/kernel/kexec-bzimage64.c
-@@ -144,6 +144,7 @@ prepare_add_efi_setup_data(struct boot_p
- 	esd->fw_vendor = efi_fw_vendor;
- 	esd->tables = efi_config_table;
- 	esd->smbios = efi.smbios;
-+	esd->smbios3 = efi.smbios3;
- 
- 	sd->type = SETUP_EFI;
- 	sd->len = sizeof(struct efi_setup_data);
---- linux-x86.orig/arch/x86/platform/efi/quirks.c
-+++ linux-x86/arch/x86/platform/efi/quirks.c
-@@ -497,8 +497,8 @@ void __init efi_free_boot_services(void)
-  * their physical addresses therefore we pass them via setup_data and
-  * correct those entries to their respective physical addresses here.
-  *
-- * Currently only handles smbios which is necessary for some firmware
-- * implementation.
-+ * Currently only handles smbios and smbios3 which is necessary for
-+ * some firmware implementation.
-  */
- int __init efi_reuse_config(u64 tables, int nr_tables)
- {
-@@ -521,7 +521,7 @@ int __init efi_reuse_config(u64 tables,
- 		goto out;
- 	}
- 
--	if (!data->smbios)
-+	if (!data->smbios  && !data->smbios3)
- 		goto out_memremap;
- 
- 	sz = sizeof(efi_config_table_64_t);
-@@ -538,8 +538,10 @@ int __init efi_reuse_config(u64 tables,
- 
- 		guid = ((efi_config_table_64_t *)p)->guid;
- 
--		if (!efi_guidcmp(guid, SMBIOS_TABLE_GUID))
-+		if (!efi_guidcmp(guid, SMBIOS_TABLE_GUID) && data->smbios)
- 			((efi_config_table_64_t *)p)->table = data->smbios;
-+		else if (!efi_guidcmp(guid, SMBIOS3_TABLE_GUID) && data->smbios3)
-+			((efi_config_table_64_t *)p)->table = data->smbios3;
- 		p += sz;
- 	}
- 	early_memunmap(tablep, nr_tables * sz);
+Thx.
 
+-- 
+Regards/Gruss,
+    Boris.
 
-Thanks
-Dave
-
+https://people.kernel.org/tglx/notes-about-netiquette
