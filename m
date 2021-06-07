@@ -2,178 +2,193 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A444339E160
-	for <lists+linux-efi@lfdr.de>; Mon,  7 Jun 2021 18:03:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1092139E411
+	for <lists+linux-efi@lfdr.de>; Mon,  7 Jun 2021 18:40:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231196AbhFGQDa (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 7 Jun 2021 12:03:30 -0400
-Received: from mail-bn7nam10on2073.outbound.protection.outlook.com ([40.107.92.73]:28033
-        "EHLO NAM10-BN7-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S230197AbhFGQD3 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Mon, 7 Jun 2021 12:03:29 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=jgWGeNsElcdOFKUX29Bd7fj9glMF2xmCcVvk8gIciUE5nMBRwT8ABZkvhzDmePLCeLg/6a3q96uteylJzKP0MA70gNHqyCB6knye31aBJWy1jI9cBGez2Ja3hDrd068zlYKgD7k6wGV7HJrSLQaHEArAjJnRLvMJKHd1KO+0LMbEjm89hQJDE6da4puuHGstHYShC1o+E8oaMnFZijpqT4qL5ez8IO8umA/lKuqr9zzVIcBTTlOvax55o04GMVdAX3wYlZWprEtBVMNb1rkhu7uLKO7NEVBSMhPlimJdN2uwGgfqu/t571oLttHNRg+AjtNcSfkPEWRuXKhnsLPMZQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=nigzNm5cyzQaoGM5+FMvArHv7x9fVEDrN6XpO3PS1Dw=;
- b=nMHCbZgcj3tfvR3Ch6FfIzgtSbjlPZH+YK7NDw/Mk3NZCu30nmonorg49tHbtVqkRN49Ti67juAoVcx7Npcw1Zt9xKQVl14NzO3UF2ZJ9mqYt7VOWOqpTgOpTzwpSnmeNQvOuYRnvtcLNuGUMNGVmmR+poR+Rxmwfm2IokBn8noSGl3n32rKJG7+K1Mx9dZ0zLwDak488pUPrsi5BVyGYUkEkoWSB6vHmeTUrxo3T+WgJ8rgGgv00TF+wWbIxg5+iu0vtv/9Qp0ki0HvDPU62sct9DbjsgfgdnMyhzFIZPw5GZ/Krk0Iw1pgxU5cpOb3M3fpSHyy2ssP0qo6TGnaoA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=nigzNm5cyzQaoGM5+FMvArHv7x9fVEDrN6XpO3PS1Dw=;
- b=bN5+j2K6rKhjl+eMCK89s8rHtRwh4xBeIIA1nYmp4HPi1sJTsh9jOUUrjHJZpeYvFEso42lLPz7q+ObD1K1+G+qhB3Cstw7KwPL8PpO/5V4eLHuaysCNzjmtJrTtT7BHtLXnaaBqjFv3j5ysNO9tSgYwXcfgsjEJQTAmZOYAUZo=
-Authentication-Results: redhat.com; dkim=none (message not signed)
- header.d=none;redhat.com; dmarc=none action=none header.from=amd.com;
-Received: from SN6PR12MB2718.namprd12.prod.outlook.com (2603:10b6:805:6f::22)
- by SA0PR12MB4557.namprd12.prod.outlook.com (2603:10b6:806:9d::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4195.22; Mon, 7 Jun
- 2021 16:01:35 +0000
-Received: from SN6PR12MB2718.namprd12.prod.outlook.com
- ([fe80::a8a9:2aac:4fd1:88fa]) by SN6PR12MB2718.namprd12.prod.outlook.com
- ([fe80::a8a9:2aac:4fd1:88fa%3]) with mapi id 15.20.4195.030; Mon, 7 Jun 2021
- 16:01:35 +0000
-Cc:     brijesh.singh@amd.com, x86@kernel.org,
-        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        linux-coco@lists.linux.dev, linux-mm@kvack.org,
-        linux-crypto@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Vitaly Kuznetsov <vkuznets@redhat.com>,
-        Wanpeng Li <wanpengli@tencent.com>,
-        Jim Mattson <jmattson@google.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        David Rientjes <rientjes@google.com>, tony.luck@intel.com,
-        npmccallum@redhat.com
-Subject: Re: [PATCH Part1 RFC v3 06/22] x86/sev: check SEV-SNP features
- support
-To:     Borislav Petkov <bp@alien8.de>
-References: <20210602140416.23573-1-brijesh.singh@amd.com>
- <20210602140416.23573-7-brijesh.singh@amd.com> <YL4zJT1v6OuH+tvI@zn.tnic>
-From:   Brijesh Singh <brijesh.singh@amd.com>
-Message-ID: <57fce362-ba9a-2f04-6958-870fd4f8be5c@amd.com>
-Date:   Mon, 7 Jun 2021 11:01:32 -0500
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
- Gecko/20100101 Thunderbird/78.10.2
-In-Reply-To: <YL4zJT1v6OuH+tvI@zn.tnic>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-Originating-IP: [70.112.153.56]
-X-ClientProxiedBy: SA9PR13CA0028.namprd13.prod.outlook.com
- (2603:10b6:806:21::33) To SN6PR12MB2718.namprd12.prod.outlook.com
- (2603:10b6:805:6f::22)
+        id S232958AbhFGQan (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 7 Jun 2021 12:30:43 -0400
+Received: from mga12.intel.com ([192.55.52.136]:15733 "EHLO mga12.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S233725AbhFGQ1m (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Mon, 7 Jun 2021 12:27:42 -0400
+IronPort-SDR: ozCd7E40k43tKiZLGMbpGKGtiLESZ+G97Z3yRFHXuVB2TkoRzzuKEFUpltwtu4OYgccr9HBImO
+ fPh2ufAbO38w==
+X-IronPort-AV: E=McAfee;i="6200,9189,10008"; a="184338177"
+X-IronPort-AV: E=Sophos;i="5.83,255,1616482800"; 
+   d="scan'208";a="184338177"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jun 2021 09:22:26 -0700
+IronPort-SDR: fQnRzabtPjJ6MH8xgs/k3JwsMXLnAin1g8ZFIIvDop1ECWBhRnAyKwxQikPKnFXyvuZt76cdY+
+ 8iXQ39RTBIfg==
+X-IronPort-AV: E=Sophos;i="5.83,255,1616482800"; 
+   d="scan'208";a="447541131"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jun 2021 09:22:24 -0700
+Received: from andy by smile with local (Exim 4.94)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1lqI17-000Im0-4o; Mon, 07 Jun 2021 19:22:21 +0300
+Date:   Mon, 7 Jun 2021 19:22:21 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Dave Young <dyoung@redhat.com>
+Cc:     Jean Delvare <jdelvare@suse.com>, linux-kernel@vger.kernel.org,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Javier =?iso-8859-1?B?VGnh?= <javier.tia@gmail.com>,
+        kexec@lists.infradead.org, Eric Biederman <ebiederm@xmission.com>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        Matt Fleming <matt@codeblueprint.co.uk>,
+        Ard Biesheuvel <ardb@kernel.org>
+Subject: Re: [PATCH v1 0/2] firmware: dmi_scan: Make it work in kexec'ed
+ kernel
+Message-ID: <YL5HvUqtsDXx5CzM@smile.fi.intel.com>
+References: <20161202195416.58953-1-andriy.shevchenko@linux.intel.com>
+ <YLdEZoSWI41fcTB1@smile.fi.intel.com>
+ <YLdG91qspr19heDS@smile.fi.intel.com>
+ <YLss6ZNPMIXleLLF@dhcp-128-65.nay.redhat.com>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from Brijeshs-MacBook-Pro.local (70.112.153.56) by SA9PR13CA0028.namprd13.prod.outlook.com (2603:10b6:806:21::33) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4219.9 via Frontend Transport; Mon, 7 Jun 2021 16:01:33 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 8de45b26-7110-4410-599f-08d929cd8640
-X-MS-TrafficTypeDiagnostic: SA0PR12MB4557:
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <SA0PR12MB4557F7BACE3B9364C191CF6AE5389@SA0PR12MB4557.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:2331;
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 9dzT5SYogq8ajn0HIED7Pa8DS3+NX2MyK7E2cPoVIbWQI3oaSo+j/OmgoiAAHwiTGgEfgT9FRtO9+CeSvtxaZ0dlqx+uQtjpVSgT0wLCMR+pfdeCizJyL29UZIL2hw9QXFwON5O0PaI0fi1iiQsddMtbZfZuPFubBvPNwLlOYQMnMNovB0u8CFElS1/mX+4SM/Q7EIribqeSSIU2jLM761iM5ZLRquaxkw0ogi25g6v5pDTaZ/w3rVtQpBaB8N+H/tVMP50w/y5MUog1E/sCKh2Fi06X0xdWB3yIUAQQ2/mUDxuxe4nKxIReIbQkk8PDMOeBmbByEWHCKTMV4AfqzYg8VWepUSwAIQ9XS65/B4ZiT+hcToL6gt2kBakQZ+4y8K+WEe9c9rwka51Tn6+74fe0SnlBLZQNbWi9Pw98pmK77JfyCBZGo4cOgFvgfKh5KuyG9ZqAfZaKyj6MR2FAi/fBfcW9B6+Bff42NhGNmV3H1pp5wIU8NSG1BCJZhyMgamW0SDkLqD4Otx6ikCJN7oY9QBOEhEPSSQsPjlqeaggUWGh+JBoL8qp585eMaVbVJ4++HyobVisfhX1tmgSFXS/aL2Uji97TLv8tNJJEsWceGO9pRQ075EUIA15zK1CseR8LEVUGxw5alrcYVuvJp2OAKLV9qYc5kgPvXnrnPXLf9u/ra0LnVifaJkNmhXQifaikl+CeWEgzB56DB/VW0kRhFC7OmK4g5AInL9Ne+vs=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR12MB2718.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(396003)(346002)(366004)(376002)(136003)(39860400002)(6512007)(53546011)(6506007)(52116002)(4744005)(8676002)(956004)(2906002)(8936002)(44832011)(316002)(26005)(5660300002)(66556008)(66946007)(36756003)(478600001)(7416002)(31686004)(38100700002)(38350700002)(86362001)(4326008)(31696002)(186003)(54906003)(6486002)(16526019)(66476007)(2616005)(6916009)(45980500001)(43740500002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData: =?utf-8?B?b1hsVU5GQVBSeUtLUHZObGpzTlBWMDlYUEIyekZpUDI1b0pJNWhsUUNRdld1?=
- =?utf-8?B?SWh2OEpBYXNPOU5hWTRHdWlwTi9KOGRzL2ZIMlZLNmpDeGVXQW14VEU1SCto?=
- =?utf-8?B?cUM3K1kzTDF5VWFnTksyV0tFazdQMGZPRFd5WHF4SHpoSUI3UFhpWHU1YWVu?=
- =?utf-8?B?cWIzUHJMSkh1RDBCR2c0TGN4elNWT3RIUHBSL0Q0NkpLcXZPTlhrbm5BSzI4?=
- =?utf-8?B?UlR6a2hIU1E3OWVJY1VzaEJCRmFTNE91SXFKMmp5djFVb2g5SkYyMEdHcjhY?=
- =?utf-8?B?WkN0cmk4dWlySDl1MUU1alRNMjVZaEhJRFVXb1diR3BWVW9NYjAvRTdickwx?=
- =?utf-8?B?ZlArYk1XRzhjVCtkeVkvaVVKQ094b2dQUVpKcmc5YjRySUpjbzZrQ3Q2dVE5?=
- =?utf-8?B?dTNLQStYTitLMG51aWVmUG1TVC82cTR4RFRJYnMva0JFYUFNNXpzanpVeXFG?=
- =?utf-8?B?NTg0c3NyNGhDYSswYlJsMWJXbkpPSCswbVd1c0ZhWnVhUEZCaCtCT2xWaDBm?=
- =?utf-8?B?Sjl2d3AvZWpySzlMdHp3eXVOZTFJVWI0ZjVRbGxkeDJxODFmMGQ2NExyZC9h?=
- =?utf-8?B?RiszYVY4Z3JETG1xMGJwcmEzZ2xUMCtZYVZUYWlOYThjMGhWMmluQ1l2ZUZ3?=
- =?utf-8?B?MzM0SUdDU1c0bFVZYWNOQ3dqZDl3VWI4ZlFFbEJObEpCNUFtRjNnM0FyVTdT?=
- =?utf-8?B?ZlhSS1Jma3B6QUlrMFdScGZiei9wQVg0RTl0OElhR1kxYkxUWHpVSW10N0xz?=
- =?utf-8?B?NWVxQmZnc3ladWlFRnM5eVFnWU9adjlUU1dNL0R5a3U3STN2cG1SRFkzRmJT?=
- =?utf-8?B?N1ZCdjA0TWlVY0dVZGV1NjNWNjMvbUFHNHkvcVVUN1dpUTRsOXJYT3JzWHZv?=
- =?utf-8?B?QStMKzlQRGlHREZZeWZxamI0eklVTllrQ2E0MmcrYmZtcXNlU2VZL3hBYnRz?=
- =?utf-8?B?NUFNOGJRSzVycUtZcS9DTVFIZGRoQjVET29aNnhZNlNCMTdJRG5RWjJDUTlV?=
- =?utf-8?B?b1djK0xKcVpVTjFZbGRhbThiU1NiQTUvaFV5dE5EOStDc2l4M2FzclVaTDJX?=
- =?utf-8?B?Z3NXeXdvVVBlbnBDZVFmL1VRMmxTeHdMZnczZHlHT1ozNFJRNHZGb0NlTnVU?=
- =?utf-8?B?ZG92R3k0SFJXU0RpY2lLWWI5UThGNFhNckp2WXJnZWRQM05wRk1OODdCRys0?=
- =?utf-8?B?ZXpGZ01xUnVTYjhLOGlGZHF2eHZqQkNzVStCcnYvSG5aSFJlQnRWQzBuaEtW?=
- =?utf-8?B?MENkM1Vsd2hFVU9FNW5JYkk5NWwrWjQwcWRibTNzWE4vVEtydWU0MEdFN1pz?=
- =?utf-8?B?bzUydDNjcEZ2bGtBSWR2UVJHRTlpNDlkMDhyVHZPY1FGUG5sdnB0dUY4UWFo?=
- =?utf-8?B?STJMNktFRU1xY0pMdVF5Vmp5YXJxUmFMY2dLTnBGYzdVSnMzS1BIblNiOHlT?=
- =?utf-8?B?UHpZbk9QMWpNWXRHZVAvVE51bW1VbS9FTmxNeDJ2UEtaU2RxcnlMenk2MkU0?=
- =?utf-8?B?a2NKWUdiaktvN1c2czQwcUtnVCtwaEJWeGxRWCthVzZROUNDa2k3SlZET20v?=
- =?utf-8?B?aW9Na3k2UW96OVgzbGtOTTBlZ1NKTlJSa1ZuekZGTUFzT3RHOC9EZVBnSlVs?=
- =?utf-8?B?c3FpcmhpYTFNUGVCd0VSeXdzWFI5dDZIYlFkcEhVclpWY2QzZzZzbHdMYzlG?=
- =?utf-8?B?M29tRm8yVFcrdG81bHp1RmxSbTd5Mnd2YVE2bU9FT05wcDlTK281QjJITUti?=
- =?utf-8?Q?IpkXkasbjkTudfmxQ1UsEVThI6/mre5Iiy7AFjH?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8de45b26-7110-4410-599f-08d929cd8640
-X-MS-Exchange-CrossTenant-AuthSource: SN6PR12MB2718.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jun 2021 16:01:35.1092
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 6ycDPXuIoDI+tl/vZWaxIe0n5Q7EYAUNMv/DTJgNoFc+/qrMgej2zxvRf/J71K0RX84Tqx4pwVoD7Oqy1/N2kw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB4557
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YLss6ZNPMIXleLLF@dhcp-128-65.nay.redhat.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
+On Sat, Jun 05, 2021 at 03:51:05PM +0800, Dave Young wrote:
+> Hi,
+> On 06/02/21 at 11:53am, Andy Shevchenko wrote:
+> > +Cc: Ard
+> > 
+> > On Wed, Jun 02, 2021 at 11:42:14AM +0300, Andy Shevchenko wrote:
+> > > On Fri, Dec 02, 2016 at 09:54:14PM +0200, Andy Shevchenko wrote:
+> > > > Until now DMI information is lost when kexec'ing. Fix this in the same way as
+> > > > it has been done for ACPI RSDP.
+> > > > 
+> > > > Series has been tested on Galileo Gen2 where DMI is used by drivers, in
+> > > > particular the default I2C host speed is choosen based on DMI system
+> > > > information and now gets it correct.
+> > > 
+> > > Still nothing happens for a while and problem still exists.
+> > > Can we do something about it, please?
+> 
+> Seems I totally missed this thread. Old emails lost.
 
-On 6/7/21 9:54 AM, Borislav Petkov wrote:
-> On Wed, Jun 02, 2021 at 09:04:00AM -0500, Brijesh Singh wrote:
->>  static bool early_setup_sev_es(void)
-> This function is doing SNP init now too, so it should be called
-> something generic like
->
-> 	do_early_sev_setup()
->
-> or so.
+You can always access to it via lore :-)
+https://lore.kernel.org/linux-efi/20161217105721.GB6922@dhcp-128-65.nay.redhat.com/T/#u
 
-Okay, noted.
-
-
->>  #define GHCB_SEV_ES_GEN_REQ		0
->>  #define GHCB_SEV_ES_PROT_UNSUPPORTED	1
->> +#define GHCB_SEV_ES_SNP_UNSUPPORTED	2
-> GHCB_SNP_UNSUPPORTED
-
-Noted.
-
-
->
->> +static bool __init sev_snp_check_hypervisor_features(void)
-> check_hv_features()
->
-> is nice and short.
-
-Noted.
+(Okay, it's not full, but contains main parts anyway)
 
 
->> diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
->> index 77a754365ba9..9b70b7332614 100644
->> --- a/arch/x86/kernel/sev.c
->> +++ b/arch/x86/kernel/sev.c
->> @@ -609,6 +609,10 @@ static bool __init sev_es_setup_ghcb(void)
-> Ditto for this one: setup_ghcb()
+> The question Ard asked is to confirm if the firmware converted the
+> SMBIOS3 addr to a virtual address after exit boot service. I do not
+> remember some easy way to check it due to lost the context of the code.
+> But you can try to check it via dmesg|grep SMBIOS both in normal boot
+> and kexeced boot log.  And then compare if those addresses are
+> identical.
+> 
+> If the SMBIOS3 addr in kexec kernel is different then it should have
+> been modified by firmware. Then we need patch kernel and kexec-tools to
+> support it.
+> 
+> You can try below patch to see if it works:
 
-Noted.
+So, AFAIU I have to apply patch to kexec tools for the fist kernel + userspace
+and apply kernel patch for the second kernel? Or it's all for the first one?
+
+> apply a kexec-tools patch to kexec-tools if you do not use kexec -s
+> (kexec_file_load):
+
+Here is how we are using it:
+https://github.com/andy-shev/buildroot/blob/intel/board/intel/common/netboot/udhcpc-script.sh#L54
+
+> --- kexec-tools.orig/kexec/arch/i386/x86-linux-setup.c
+> +++ kexec-tools/kexec/arch/i386/x86-linux-setup.c
+> @@ -533,7 +533,8 @@ struct efi_setup_data {
+>  	uint64_t runtime;
+>  	uint64_t tables;
+>  	uint64_t smbios;
+> -	uint64_t reserved[8];
+> +	uint64_t smbios3;
+> +	uint64_t reserved[7];
+>  };
+>  
+>  struct setup_data {
+> @@ -580,6 +581,8 @@ static int get_efi_values(struct efi_set
+>  
+>  	ret = get_efi_value("/sys/firmware/efi/systab", "SMBIOS=0x",
+>  			    &esd->smbios);
+> +	ret |= get_efi_value("/sys/firmware/efi/systab", "SMBIOS3=0x",
+> +			    &esd->smbios3);
+>  	ret |= get_efi_value("/sys/firmware/efi/fw_vendor", "0x",
+>  			     &esd->fw_vendor);
+>  	ret |= get_efi_value("/sys/firmware/efi/runtime", "0x",
+> 
+> =============================================
+> Kernel patch:
+> 
+> --- linux-x86.orig/arch/x86/include/asm/efi.h
+> +++ linux-x86/arch/x86/include/asm/efi.h
+> @@ -167,7 +167,8 @@ struct efi_setup_data {
+>  	u64 __unused;
+>  	u64 tables;
+>  	u64 smbios;
+> -	u64 reserved[8];
+> +	u64 smbios3;
+> +	u64 reserved[7];
+>  };
+>  
+>  extern u64 efi_setup;
+> --- linux-x86.orig/arch/x86/kernel/kexec-bzimage64.c
+> +++ linux-x86/arch/x86/kernel/kexec-bzimage64.c
+> @@ -144,6 +144,7 @@ prepare_add_efi_setup_data(struct boot_p
+>  	esd->fw_vendor = efi_fw_vendor;
+>  	esd->tables = efi_config_table;
+>  	esd->smbios = efi.smbios;
+> +	esd->smbios3 = efi.smbios3;
+>  
+>  	sd->type = SETUP_EFI;
+>  	sd->len = sizeof(struct efi_setup_data);
+> --- linux-x86.orig/arch/x86/platform/efi/quirks.c
+> +++ linux-x86/arch/x86/platform/efi/quirks.c
+> @@ -497,8 +497,8 @@ void __init efi_free_boot_services(void)
+>   * their physical addresses therefore we pass them via setup_data and
+>   * correct those entries to their respective physical addresses here.
+>   *
+> - * Currently only handles smbios which is necessary for some firmware
+> - * implementation.
+> + * Currently only handles smbios and smbios3 which is necessary for
+> + * some firmware implementation.
+>   */
+>  int __init efi_reuse_config(u64 tables, int nr_tables)
+>  {
+> @@ -521,7 +521,7 @@ int __init efi_reuse_config(u64 tables,
+>  		goto out;
+>  	}
+>  
+> -	if (!data->smbios)
+> +	if (!data->smbios  && !data->smbios3)
+>  		goto out_memremap;
+>  
+>  	sz = sizeof(efi_config_table_64_t);
+> @@ -538,8 +538,10 @@ int __init efi_reuse_config(u64 tables,
+>  
+>  		guid = ((efi_config_table_64_t *)p)->guid;
+>  
+> -		if (!efi_guidcmp(guid, SMBIOS_TABLE_GUID))
+> +		if (!efi_guidcmp(guid, SMBIOS_TABLE_GUID) && data->smbios)
+>  			((efi_config_table_64_t *)p)->table = data->smbios;
+> +		else if (!efi_guidcmp(guid, SMBIOS3_TABLE_GUID) && data->smbios3)
+> +			((efi_config_table_64_t *)p)->table = data->smbios3;
+>  		p += sz;
+>  	}
+>  	early_memunmap(tablep, nr_tables * sz);
+> 
+> 
+> Thanks
+> Dave
+> 
+
+-- 
+With Best Regards,
+Andy Shevchenko
 
 
->
-> Thx.
->
