@@ -2,41 +2,41 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1BDBB39FE92
-	for <lists+linux-efi@lfdr.de>; Tue,  8 Jun 2021 20:06:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C96F939FE95
+	for <lists+linux-efi@lfdr.de>; Tue,  8 Jun 2021 20:07:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233682AbhFHSH4 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 8 Jun 2021 14:07:56 -0400
-Received: from mail-bn8nam12on2043.outbound.protection.outlook.com ([40.107.237.43]:12544
-        "EHLO NAM12-BN8-obe.outbound.protection.outlook.com"
+        id S234026AbhFHSIN (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 8 Jun 2021 14:08:13 -0400
+Received: from mail-dm6nam08on2050.outbound.protection.outlook.com ([40.107.102.50]:36833
+        "EHLO NAM04-DM6-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S232461AbhFHSHt (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Tue, 8 Jun 2021 14:07:49 -0400
+        id S233996AbhFHSIM (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Tue, 8 Jun 2021 14:08:12 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=eNXHzXY6+29IBP4MwAet8tzQfAaMIN+x8OgE5ND5zcgBOXSzAwD3IKFPTiEARcowLNtgVyIF1HPeJZJHYvJkB+8fPFY/hUVeuMq3HNQLRwybm+6d2KbofDpk5fy114ADcRqFSQ/lckoAPlwzzHfBE7DrDMFswZxrX2LwfbXIzJbZ/lxEB2l9liaUqDMbXmrMsE0rWGUdyd38JmvMklJ5R4mA2RIr72P4M5UyUgy5A8gXfGyWz+m3F4QEi6uvCh+08lBxIRFtTmIXunqzEZalkqlefmLrtQw5btshrFqR64XcR/9JUZOlSR+nR4STgtUlE3y97cZ910C7/ZSb6hyv8g==
+ b=WpAO0QT39p+77zMrggkj423NPPFKM1DoK9HbKzrP2KotyOKeppujxq4kmyvnUTYUwyA2tkU/CdTh96pARXfBP2Zki2p5T6x5FLA0a/6jUhD38tGXvVXRgbEc/rQ780cwOZQe7sg2emdHs3zGRrca8Py0NvMI+660JlgdOY84T+MfvqCIovjbM40HDE2Y2kiDTZNgYYnH0Ag+apbuIMu+sO0LFBeUPd7F4Q8gf47k3H8i/iQbemhxm1Wcp+wHfGo9Hn5WY5vVnvj8un0bQTgLVjt8B7MXUFwjsXMjIkvZpM3fONN9R5Lta/Fh9fG9wlnBK+YCa2Cr5LrQPmBK4OJHkg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=l9DMx7yo7+oDg4SeCgH+wtAlhFopEjAswcNpItO+Njk=;
- b=XllHWPvUkMP2Y9OQ/G76WGzoGFmX6c/zf8ZrPk/rv6oKnefNRadvWVyBngs1QrUTLc5HH5fg1U7pGKnmkXMI2eQshOYLruW8xi1hRT+4FJdFGVjvlyPe7W68NSXiZSpEZPNISGKdgmni1B8wMAvfKA6cfULuAV9Xv5FdRF4flRDkcq13y8Y0a4oxlQfO5qJ40Jw2SXeyYb1lZUXsTPnq07vSk+qI4BjBFO1WJchVseSnXZp4kgaEeJS9weTzHjU2YXR3YU0OWQIV2bGt6Qj1NoQEODyprSCt/bVQw9H//DM4QI+bJLxo/T/rv7eYMtI9mfYysrWmb93tUhAx8gqhNA==
+ bh=El3whwmkdfWMns+nsJ2zA7g76wDB9Lbs38DDSo8Hy5k=;
+ b=kQ+yruKgKyt5+c/np6ldVlrwBFoTg8cBBc9vyCa2QiHJTVU5LBCVhaMU8c/Ix4HwHs5B2TUnl+hi77R/lSQgrvMByh78KuLuh2Nl2o2F/RS9T3GIfm23/PConL/X/NO+Mzr9VTQqhp/F5j5JagUmnJSUkNQKKE06s0mYVQBEvm4rmx+xofNj+WeQS9iv5fGaPV6jLaNDtPuoTZ/VKJksyhU/hXOWQK8t5kvtxEKHd4V/8l1rm29ayH0NOjuFKZMSibdHEWg56tjN0uqpBhzGFVPA9bcHkMfJkwpAOk4w5nCQ6RTd43VVLZTdSBSHydFkULrKEBj37AVsM+0zsXBcdQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
  header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=l9DMx7yo7+oDg4SeCgH+wtAlhFopEjAswcNpItO+Njk=;
- b=E4STk0QT0WjEEnLveWyaqxRLMnxsjn7mOb2fgCfLpmVHkHpo41fBTQK3e7cK3pWyrBIUGc7OIoWy+QN0AHDDYnkSdzkCj8/3yT7yPXnHgjw7wl/7zHNcBePdNEhh3iYKqSay9QgvhR2JNzkYG+nEL0UY6mBMP8WK53D4zjohBjY=
+ bh=El3whwmkdfWMns+nsJ2zA7g76wDB9Lbs38DDSo8Hy5k=;
+ b=xFC+0gPaEa496spy1eU+dZGNSarS11eOcEGvm6RvfKh7ow/U/mVhqI0VMUbyWpYzPof1RddU48sAYc5GTFZmVUIxMD6wUjUVxvcCGjNd0oTxxzIbqIPutVRCOvyyFgL6AK1MOo5pBnHv34P8GyE1PAeS6dqRGwjNCUypZV3p1v0=
 Authentication-Results: redhat.com; dkim=none (message not signed)
  header.d=none;redhat.com; dmarc=none action=none header.from=amd.com;
 Received: from BYAPR12MB2759.namprd12.prod.outlook.com (2603:10b6:a03:61::32)
- by BY5PR12MB4321.namprd12.prod.outlook.com (2603:10b6:a03:204::15) with
+ by BYAPR12MB2936.namprd12.prod.outlook.com (2603:10b6:a03:12f::17) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4195.24; Tue, 8 Jun
- 2021 18:05:54 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4195.22; Tue, 8 Jun
+ 2021 18:06:17 +0000
 Received: from BYAPR12MB2759.namprd12.prod.outlook.com
  ([fe80::ed9c:d6cf:531c:731a]) by BYAPR12MB2759.namprd12.prod.outlook.com
  ([fe80::ed9c:d6cf:531c:731a%5]) with mapi id 15.20.4195.030; Tue, 8 Jun 2021
- 18:05:54 +0000
+ 18:06:17 +0000
 From:   Ashish Kalra <Ashish.Kalra@amd.com>
 To:     pbonzini@redhat.com
 Cc:     seanjc@google.com, tglx@linutronix.de, bp@alien8.de,
@@ -44,78 +44,81 @@ Cc:     seanjc@google.com, tglx@linutronix.de, bp@alien8.de,
         Thomas.Lendacky@amd.com, x86@kernel.org, kvm@vger.kernel.org,
         linux-kernel@vger.kernel.org, srutherford@google.com,
         brijesh.singh@amd.com, linux-efi@vger.kernel.org
-Subject: [PATCH v3 1/5] KVM: X86: Introduce KVM_HC_MAP_GPA_RANGE hypercall
-Date:   Tue,  8 Jun 2021 18:05:43 +0000
-Message-Id: <90778988e1ee01926ff9cac447aacb745f954c8c.1623174621.git.ashish.kalra@amd.com>
+Subject: [PATCH v3 2/5] KVM: x86: invert KVM_HYPERCALL to default to VMMCALL
+Date:   Tue,  8 Jun 2021 18:06:04 +0000
+Message-Id: <f45c503fad62c899473b5a6fd0f2085208d6dfaf.1623174621.git.ashish.kalra@amd.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <cover.1623174621.git.ashish.kalra@amd.com>
 References: <cover.1623174621.git.ashish.kalra@amd.com>
 Content-Type: text/plain
 X-Originating-IP: [165.204.77.1]
-X-ClientProxiedBy: SA0PR11CA0077.namprd11.prod.outlook.com
- (2603:10b6:806:d2::22) To BYAPR12MB2759.namprd12.prod.outlook.com
+X-ClientProxiedBy: SA0PR11CA0046.namprd11.prod.outlook.com
+ (2603:10b6:806:d0::21) To BYAPR12MB2759.namprd12.prod.outlook.com
  (2603:10b6:a03:61::32)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from ashkalra_ubuntu_server.amd.com (165.204.77.1) by SA0PR11CA0077.namprd11.prod.outlook.com (2603:10b6:806:d2::22) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4195.23 via Frontend Transport; Tue, 8 Jun 2021 18:05:52 +0000
+Received: from ashkalra_ubuntu_server.amd.com (165.204.77.1) by SA0PR11CA0046.namprd11.prod.outlook.com (2603:10b6:806:d0::21) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4219.20 via Frontend Transport; Tue, 8 Jun 2021 18:06:15 +0000
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 7becc568-c572-4c50-92e5-08d92aa80e97
-X-MS-TrafficTypeDiagnostic: BY5PR12MB4321:
+X-MS-Office365-Filtering-Correlation-Id: a73a46d5-8516-4c3c-cbf7-08d92aa81c4a
+X-MS-TrafficTypeDiagnostic: BYAPR12MB2936:
 X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <BY5PR12MB43214956CC30980DA62E13588E379@BY5PR12MB4321.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
+X-Microsoft-Antispam-PRVS: <BYAPR12MB29362974BBC5808668C856658E379@BYAPR12MB2936.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:5516;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: s8kPJxRbunAzfFGuEY2G8hhyDGRQZC6PD3R2Kvr58pLUwIHmdOz4AO7FjWH2jelZLzEsAydJTjN8JEawiZlCIJqXH/yR6mvKFFwSEAtSTpc5anjOl9FjWE5Kem8LqjlRNZ2okREH/XfFWz/J7z8kO9TQThin1Q9D2PvJ6qUvPzK8VnsB8Djl0MH+U38DWOQe+snC4ykJU2YzRQIVU1mRryXf/9L5kjjShUAoi88BjxbjAgFAdXVrEcDMqwBkY2eRPEtPmE6D29zOU2qb5ojw3zeb8NOenUujmEB+8w65nTKYJUz8qCnFcEH3gKyGDw+OyWWgTGtLPwZjr5jcE8tuxPQrJIKAkMrQHx78Of3bSBIZE1Zh755224SR3dKy0lDTLwBIncNxi/W2Ji/GwCzHWRuF1uamo+ZVJ9Kko5ZekZCcoKoLMtR5HHbSjJscQUdmby+aPg9TQMTCMWyclB7HDbxKxb1RBJyLayo7BOmAi6+4g85ArXbt8H9i+4/7pd8dZ6inslreDsPgKCYDIng1SRwBzRnX94zj5ghB+788u7hoDivEPnpSAwOE20199eghQkBSykUc6PomwVm+p2mvjAUjF7pwpW1phBMCiS0iIioUhnLc5Lv6bSie5NOtdYSUSx03oSpDG5f6HT2hfU833A==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR12MB2759.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(366004)(346002)(39860400002)(396003)(136003)(376002)(66476007)(5660300002)(66556008)(38350700002)(956004)(38100700002)(2906002)(2616005)(66946007)(8936002)(36756003)(7696005)(7416002)(186003)(16526019)(6916009)(30864003)(86362001)(6666004)(316002)(6486002)(478600001)(26005)(83380400001)(4326008)(52116002)(8676002);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: 2xKU1DH87gf9QnTSFBMUuwXniqZHuVxQaqWMc8J1VTTFTJDSHdXy9RFvGNY3ZnXAgHz5kXuCr7LJs/tgAtVty+Hi8gswS4k1300mnwzEy4pe4/PYlPTMvyf3L7JRr/EC2XINDn6Y60Oq6xD+fixSWnqq0oBwOfgJhYrp6y9nQtyR7Wa8N1RYxdgTbJ6GXW0at/sP9ye7nwJ6fhnhhm3iExub00TsA31SXdSX4dLkDgjGhHxHuLabzDUaYl90jCSMfu9A7G4XdiHwI2qOUZM4h9ayXlaTHXQZJgu+jrEiadPZMZ18V7zi8pbqSIfORp0n9G4G2ajsj2lBiw5vG8HYwGfV/gr4CcGyEwHnVZoRhfx2ekZWv7l+4gL0wfX44+CBnd4NxUWBhp+nLZ4/a6CCN3jleLKdWSX1SD4yZJ9Nd3AZD/C5sg19tAJ0IT2maYQEGV84yhJqRWoV7ngRd0pScmfS8A1vHZpWzpEWE7IZM2SiFSGt5pkuw6etSvYO7699tBk0CpE+A4B+wq3pbOG01swWFsy/08L02RyBm2DI90EluFdOecyd3b7Uc/a820YRkj/OtB4wnGWO5DbWCLjSQtetS/FzBpz7TPWS+v7sjl6gyhIdRPjBMcHqcZMJ9npfU+3QGEl2wSKxacPaDvCZGzxoiT2eGQ7YCMta9WBBmK8=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR12MB2759.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(376002)(136003)(39860400002)(396003)(346002)(366004)(478600001)(36756003)(38100700002)(38350700002)(16526019)(2616005)(316002)(186003)(956004)(7416002)(5660300002)(8676002)(6486002)(26005)(4326008)(83380400001)(52116002)(8936002)(7696005)(6916009)(66946007)(6666004)(66556008)(66476007)(86362001)(2906002);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?6M0jXS2bS8oEXI7dSBSG22Uugt6NME98TSxThNUDLaLjv8IX6Vw3wlvmzNQx?=
- =?us-ascii?Q?EggijGEVSDMfzPJQpxhfevdmf1T0NzMb4KHiPf1smVELEOOyGk9EcTudwwd5?=
- =?us-ascii?Q?RtG65rtRhSga8wPts+iFr5KeDLVw8gB4e1yd4wTpm21HMW6MLtnUTB5MNiiS?=
- =?us-ascii?Q?H9f0m+ffjRcMDxzB9jENsT+JqonpbKq8nnY+lRdsyXQ7S7/qOJcW1qr3NA+u?=
- =?us-ascii?Q?gakxXfPnKhPHzc35OImP0aaYBu+vSdZZtHS/GXjKvE+PTvAk1V0mNrQOFrh+?=
- =?us-ascii?Q?Jc0YSj491BKfDsUUfT5u4F+djMhSkval+T0+yhiXpkL7zzJGu9isU/jise94?=
- =?us-ascii?Q?Su050f0HoKUUgnToiQxpD8ChYzVfg5DHCOPqALYt7ewES1yV1fw8e9fRGraR?=
- =?us-ascii?Q?+EpBrWPrOEt76NDwkN6XObZJhSyY2/vMB/E0HKbiFr7mUDz/R1A2hmBBviGZ?=
- =?us-ascii?Q?qYjnJ/M5w166PLOFtEoVZZJxYExqe1avzClIzWTQfEbrFfnthA0H7eCaMQJS?=
- =?us-ascii?Q?O5HBebKuoSzW/VVqvzZfYUuakQ8Yzz2tKaPH8FKPgmYsOZulkPAqS8Op5kNC?=
- =?us-ascii?Q?pGtac47KseeurXvzY08UbrL0I8yKz12doaWpNxQtSBTtpWGgu/b7ETkSFlKL?=
- =?us-ascii?Q?Jf5CWSHIWCrHWRVxF6PTrDbpkUtI9Hfa8uXLSSL//5ZY6Km8J0zDMCgVKTjJ?=
- =?us-ascii?Q?xZQAcFkXhx/u+U1RkSFtOe6r9HVUEHcT68jcybvypDW+Gj5VFeI6qBaXzxFe?=
- =?us-ascii?Q?2RIxYXYK4+7CyrLKW7tl9AQxaLASS2i7hyMG9d1empdddtD6yB0Lt1xH5MxH?=
- =?us-ascii?Q?zRzX4M5YSmncey9EeuYiekR2MJH5UdHPgvpGBJoM+9NRZtnpcKiFcdFpnLbG?=
- =?us-ascii?Q?+M3yHbf0qUgDDwFYQtEVENA/Mc7UspG9P8yL/w30S7FN3pn7dmmF7hEIXn5d?=
- =?us-ascii?Q?ewLtWCIdsQneTALWwpiyQgACNrBdFJMXscw8IhVPdLCMX9P6E2QaZ8f7NEvv?=
- =?us-ascii?Q?P/FARgF1+N5Yn+Edcy4EAPj7j0ImFm+4A96xwH6oMELYPIHz5n4rOK+FWjzY?=
- =?us-ascii?Q?9thyml92uDuYppHQkzLvjRrX/yfnOSPSy2U5jr8wkYXO0ae3/rIVsGU8QRv+?=
- =?us-ascii?Q?YIx1AbJE2JCOKTW+/vCxtyhD7V9TB2iy5+ns6gPCYQ0TV+lOiA9ZfaPiZOTu?=
- =?us-ascii?Q?Cj8xNc9KgoL1eRGJYtBbgSPxd4lsq8lCf+d4JQqcFfsYdoMFpZhzNDXMjW65?=
- =?us-ascii?Q?ekbMQ91oLQ1KYhx/b8Sx1k0QgTsLr/iLHYqT5QpllHUAwsapfQ6vA+S75lXa?=
- =?us-ascii?Q?cQ04TELMkqH0qLdYncxCwIJc?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?iFW3aI07L/t0EmRhuZBTz8QcZxUkuZgohDhIh1HqCQQjgMTNkiazNP+qy24e?=
+ =?us-ascii?Q?0JB2SuGiSP6+eAvVvOT0bkgH7Gs6zBO7qZ+sRNQvnjGUv54kB7k2ZZ2Q+pmj?=
+ =?us-ascii?Q?+DiLqb/jyDVU+H8lgKKV1Kl5kGpi0aM6LW/HEFKWnhLogOhG+ALAEE/jhMDW?=
+ =?us-ascii?Q?Ijigc+RP2dZU9cMi8ORAncAhs/m2FI63a6UQ2aSABHpzrIJEGkeTb+xdGNXO?=
+ =?us-ascii?Q?4vUa3O7Q4+OZXMa25NGBF3ELJ08tDhLnmq35CRjqz91WaWK1eGrqwVqP935J?=
+ =?us-ascii?Q?JcwqEEoiHvsYWMkADVUgIxLhmt3hjj9lbvmlWPIoprWi8Jy1jJOAPW6M/NMD?=
+ =?us-ascii?Q?PZ9fbIM7irysO+VKVS66gY0obWR27WeDn4tcSaQL3gDkR9CE3YgFk9msHZPV?=
+ =?us-ascii?Q?TgDHioLeUGVXKsIoYTDwIgXhbaCTYSfFIR8Vc33LCpCA+AGm9HIeCA6cCivU?=
+ =?us-ascii?Q?geuMiKX0Tv9pgZ+HgudQD0/OYqBK6fbhips5uYK2nVkcbTrCmJOAlXNeB/Zd?=
+ =?us-ascii?Q?LttuELx6bctT+C0wm3SGJGz3wbs+BMJJIgcyPbaL3LxJVxV3/XngVjr3kCdB?=
+ =?us-ascii?Q?jAQthqzT/7biqxOIaz9TeRAVhqm6/7vT/XmoNKSoat93pCdyHVqLLLLIV69k?=
+ =?us-ascii?Q?voy5urpkXyHXJgIAVGRIcFzs0SMLop5RytoXSpywyas09v0jwLCltI13m5j4?=
+ =?us-ascii?Q?LKswfSCGX2QqiJbIpMCPpORt6bPBoqh2js+6kb9zHsFrid42td5m1UmvDxMm?=
+ =?us-ascii?Q?w4f/+yV0nxM5FGvDm382KgzNnLOUfzNIgEJiv9z+n/Rj0G4NwLtvKX4jQO9K?=
+ =?us-ascii?Q?yHFU8kiSvTwSYHoEpZIDm49GTgu0UYJ+oQyQN3N1kQO7hNje0erAyry1tqcO?=
+ =?us-ascii?Q?KiwkrBflQRfxl4+JjVIdZhvsveFM50WVbCkeQ/LiFTtVgOwVmzkZFhk0TjJZ?=
+ =?us-ascii?Q?EO3jrmeacdmgs0mh4T1Z2GloLJ0v8cdT1SbiEsJ9gtFS5YS+Pnea4NFt9okI?=
+ =?us-ascii?Q?CoQQnSgvKjFvPkoma8Wdi7NLr3CllPj9yTQJWothO5qZikld7CSzUsC8ZukX?=
+ =?us-ascii?Q?4DpYwapgMTV9SyDon8WQm7+NpDoWtI27ODX9w2+GxTUNqBPCJhwka97re5lW?=
+ =?us-ascii?Q?Gee7wUAWbKDzYoxoaT/BKf5CKvvQ7vRBLRUweFbiyawQtuHvz4vdYW++QQOS?=
+ =?us-ascii?Q?2i2w0PAISJ1EI6hvq8MKowEou9ItsPH2nj1+6Hf3q9dYbn5iUNT84K/vyPlW?=
+ =?us-ascii?Q?53FD6UvLRPAXPC3WyZkF/zK3EvPWjPEz6krlyUjhksZLtlp1sm0CFlC+Dd+l?=
+ =?us-ascii?Q?Xmm34ZYTNnkOg0UxRphr/keZ?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7becc568-c572-4c50-92e5-08d92aa80e97
+X-MS-Exchange-CrossTenant-Network-Message-Id: a73a46d5-8516-4c3c-cbf7-08d92aa81c4a
 X-MS-Exchange-CrossTenant-AuthSource: BYAPR12MB2759.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jun 2021 18:05:53.9711
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jun 2021 18:06:16.8841
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: GHH4saVn+IWpqTJuAzzDxovWFcGmEIkSSxJrHHrj2lvLqg4VS0gqyNKLtvJvsbmXw2gAYS7c15/z+aDW9Opgiw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4321
+X-MS-Exchange-CrossTenant-UserPrincipalName: GvrHb27/jwJN9KWRtI7nwcwz+sjfmFlPSabC3DeW5qProWfiq2N2DayFdc7VCjNJAg7H4zA5XxlFkZfClN+V/Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR12MB2936
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
 From: Ashish Kalra <ashish.kalra@amd.com>
 
-This hypercall is used by the SEV guest to notify a change in the page
-encryption status to the hypervisor. The hypercall should be invoked
-only when the encryption attribute is changed from encrypted -> decrypted
-and vice versa. By default all guest pages are considered encrypted.
+KVM hypercall framework relies on alternative framework to patch the
+VMCALL -> VMMCALL on AMD platform. If a hypercall is made before
+apply_alternative() is called then it defaults to VMCALL. The approach
+works fine on non SEV guest. A VMCALL would causes #UD, and hypervisor
+will be able to decode the instruction and do the right things. But
+when SEV is active, guest memory is encrypted with guest key and
+hypervisor will not be able to decode the instruction bytes.
 
-The hypercall exits to userspace to manage the guest shared regions and
-integrate with the userspace VMM's migration code.
+So invert KVM_HYPERCALL and X86_FEATURE_VMMCALL to default to VMMCALL
+and opt into VMCALL.
 
 Cc: Thomas Gleixner <tglx@linutronix.de>
 Cc: Ingo Molnar <mingo@redhat.com>
@@ -127,280 +130,25 @@ Cc: Tom Lendacky <thomas.lendacky@amd.com>
 Cc: x86@kernel.org
 Cc: kvm@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org
-Reviewed-by: Steve Rutherford <srutherford@google.com>
 Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
 Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
-Co-developed-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Co-developed-by: Paolo Bonzini <pbonzini@redhat.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- Documentation/virt/kvm/api.rst        | 19 +++++++++++
- Documentation/virt/kvm/cpuid.rst      |  7 ++++
- Documentation/virt/kvm/hypercalls.rst | 21 ++++++++++++
- Documentation/virt/kvm/msr.rst        | 13 ++++++++
- arch/x86/include/asm/kvm_host.h       |  2 ++
- arch/x86/include/uapi/asm/kvm_para.h  | 13 ++++++++
- arch/x86/kvm/x86.c                    | 46 +++++++++++++++++++++++++++
- include/uapi/linux/kvm.h              |  1 +
- include/uapi/linux/kvm_para.h         |  1 +
- 9 files changed, 123 insertions(+)
+ arch/x86/include/asm/kvm_para.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
-index 7fcb2fd38f42..6396ce8bfa44 100644
---- a/Documentation/virt/kvm/api.rst
-+++ b/Documentation/virt/kvm/api.rst
-@@ -6891,3 +6891,22 @@ This capability is always enabled.
- This capability indicates that the KVM virtual PTP service is
- supported in the host. A VMM can check whether the service is
- available to the guest on migration.
-+
-+8.33 KVM_CAP_EXIT_HYPERCALL
-+---------------------------
-+
-+:Capability: KVM_CAP_EXIT_HYPERCALL
-+:Architectures: x86
-+:Type: vm
-+
-+This capability, if enabled, will cause KVM to exit to userspace
-+with KVM_EXIT_HYPERCALL exit reason to process some hypercalls.
-+
-+Calling KVM_CHECK_EXTENSION for this capability will return a bitmask
-+of hypercalls that can be configured to exit to userspace.
-+Right now, the only such hypercall is KVM_HC_MAP_GPA_RANGE.
-+
-+The argument to KVM_ENABLE_CAP is also a bitmask, and must be a subset
-+of the result of KVM_CHECK_EXTENSION.  KVM will forward to userspace
-+the hypercalls whose corresponding bit is in the argument, and return
-+ENOSYS for the others.
-diff --git a/Documentation/virt/kvm/cpuid.rst b/Documentation/virt/kvm/cpuid.rst
-index cf62162d4be2..bda3e3e737d7 100644
---- a/Documentation/virt/kvm/cpuid.rst
-+++ b/Documentation/virt/kvm/cpuid.rst
-@@ -96,6 +96,13 @@ KVM_FEATURE_MSI_EXT_DEST_ID        15          guest checks this feature bit
-                                                before using extended destination
-                                                ID bits in MSI address bits 11-5.
+diff --git a/arch/x86/include/asm/kvm_para.h b/arch/x86/include/asm/kvm_para.h
+index 69299878b200..0267bebb0b0f 100644
+--- a/arch/x86/include/asm/kvm_para.h
++++ b/arch/x86/include/asm/kvm_para.h
+@@ -17,7 +17,7 @@ static inline bool kvm_check_and_clear_guest_paused(void)
+ #endif /* CONFIG_KVM_GUEST */
  
-+KVM_FEATURE_HC_MAP_GPA_RANGE       16          guest checks this feature bit before
-+                                               using the map gpa range hypercall
-+                                               to notify the page state change
-+
-+KVM_FEATURE_MIGRATION_CONTROL      17          guest checks this feature bit before
-+                                               using MSR_KVM_MIGRATION_CONTROL
-+
- KVM_FEATURE_CLOCKSOURCE_STABLE_BIT 24          host will warn if no guest-side
-                                                per-cpu warps are expected in
-                                                kvmclock
-diff --git a/Documentation/virt/kvm/hypercalls.rst b/Documentation/virt/kvm/hypercalls.rst
-index ed4fddd364ea..e56fa8b9cfca 100644
---- a/Documentation/virt/kvm/hypercalls.rst
-+++ b/Documentation/virt/kvm/hypercalls.rst
-@@ -169,3 +169,24 @@ a0: destination APIC ID
+ #define KVM_HYPERCALL \
+-        ALTERNATIVE("vmcall", "vmmcall", X86_FEATURE_VMMCALL)
++	ALTERNATIVE("vmmcall", "vmcall", X86_FEATURE_VMCALL)
  
- :Usage example: When sending a call-function IPI-many to vCPUs, yield if
- 	        any of the IPI target vCPUs was preempted.
-+
-+8. KVM_HC_MAP_GPA_RANGE
-+-------------------------
-+:Architecture: x86
-+:Status: active
-+:Purpose: Request KVM to map a GPA range with the specified attributes.
-+
-+a0: the guest physical address of the start page
-+a1: the number of (4kb) pages (must be contiguous in GPA space)
-+a2: attributes
-+
-+    Where 'attributes' :
-+        * bits  3:0 - preferred page size encoding 0 = 4kb, 1 = 2mb, 2 = 1gb, etc...
-+        * bit     4 - plaintext = 0, encrypted = 1
-+        * bits 63:5 - reserved (must be zero)
-+
-+**Implementation note**: this hypercall is implemented in userspace via
-+the KVM_CAP_EXIT_HYPERCALL capability. Userspace must enable that capability
-+before advertising KVM_FEATURE_HC_MAP_GPA_RANGE in the guest CPUID.  In
-+addition, if the guest supports KVM_FEATURE_MIGRATION_CONTROL, userspace
-+must also set up an MSR filter to process writes to MSR_KVM_MIGRATION_CONTROL.
-diff --git a/Documentation/virt/kvm/msr.rst b/Documentation/virt/kvm/msr.rst
-index e37a14c323d2..9315fc385fb0 100644
---- a/Documentation/virt/kvm/msr.rst
-+++ b/Documentation/virt/kvm/msr.rst
-@@ -376,3 +376,16 @@ data:
- 	write '1' to bit 0 of the MSR, this causes the host to re-scan its queue
- 	and check if there are more notifications pending. The MSR is available
- 	if KVM_FEATURE_ASYNC_PF_INT is present in CPUID.
-+
-+MSR_KVM_MIGRATION_CONTROL:
-+        0x4b564d08
-+
-+data:
-+        This MSR is available if KVM_FEATURE_MIGRATION_CONTROL is present in
-+        CPUID.  Bit 0 represents whether live migration of the guest is allowed.
-+
-+        When a guest is started, bit 0 will be 0 if the guest has encrypted
-+        memory and 1 if the guest does not have encrypted memory.  If the
-+        guest is communicating page encryption status to the host using the
-+        ``KVM_HC_MAP_GPA_RANGE`` hypercall, it can set bit 0 in this MSR to
-+        allow live migration of the guest.
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index 55efbacfc244..5b9bc8b3db20 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -1067,6 +1067,8 @@ struct kvm_arch {
- 	u32 user_space_msr_mask;
- 	struct kvm_x86_msr_filter __rcu *msr_filter;
- 
-+	u32 hypercall_exit_enabled;
-+
- 	/* Guest can access the SGX PROVISIONKEY. */
- 	bool sgx_provisioning_allowed;
- 
-diff --git a/arch/x86/include/uapi/asm/kvm_para.h b/arch/x86/include/uapi/asm/kvm_para.h
-index 950afebfba88..5146bbab84d4 100644
---- a/arch/x86/include/uapi/asm/kvm_para.h
-+++ b/arch/x86/include/uapi/asm/kvm_para.h
-@@ -33,6 +33,8 @@
- #define KVM_FEATURE_PV_SCHED_YIELD	13
- #define KVM_FEATURE_ASYNC_PF_INT	14
- #define KVM_FEATURE_MSI_EXT_DEST_ID	15
-+#define KVM_FEATURE_HC_MAP_GPA_RANGE	16
-+#define KVM_FEATURE_MIGRATION_CONTROL	17
- 
- #define KVM_HINTS_REALTIME      0
- 
-@@ -54,6 +56,7 @@
- #define MSR_KVM_POLL_CONTROL	0x4b564d05
- #define MSR_KVM_ASYNC_PF_INT	0x4b564d06
- #define MSR_KVM_ASYNC_PF_ACK	0x4b564d07
-+#define MSR_KVM_MIGRATION_CONTROL	0x4b564d08
- 
- struct kvm_steal_time {
- 	__u64 steal;
-@@ -90,6 +93,16 @@ struct kvm_clock_pairing {
- /* MSR_KVM_ASYNC_PF_INT */
- #define KVM_ASYNC_PF_VEC_MASK			GENMASK(7, 0)
- 
-+/* MSR_KVM_MIGRATION_CONTROL */
-+#define KVM_MIGRATION_READY		(1 << 0)
-+
-+/* KVM_HC_MAP_GPA_RANGE */
-+#define KVM_MAP_GPA_RANGE_PAGE_SZ_4K	0
-+#define KVM_MAP_GPA_RANGE_PAGE_SZ_2M	(1 << 0)
-+#define KVM_MAP_GPA_RANGE_PAGE_SZ_1G	(1 << 1)
-+#define KVM_MAP_GPA_RANGE_ENC_STAT(n)	(n << 4)
-+#define KVM_MAP_GPA_RANGE_ENCRYPTED	KVM_MAP_GPA_RANGE_ENC_STAT(1)
-+#define KVM_MAP_GPA_RANGE_DECRYPTED	KVM_MAP_GPA_RANGE_ENC_STAT(0)
- 
- /* Operations for KVM_HC_MMU_OP */
- #define KVM_MMU_OP_WRITE_PTE            1
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 9b6bca616929..6686d99b1d7b 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -102,6 +102,8 @@ static u64 __read_mostly efer_reserved_bits = ~((u64)EFER_SCE);
- 
- static u64 __read_mostly cr4_reserved_bits = CR4_RESERVED_BITS;
- 
-+#define KVM_EXIT_HYPERCALL_VALID_MASK (1 << KVM_HC_MAP_GPA_RANGE)
-+
- #define KVM_X2APIC_API_VALID_FLAGS (KVM_X2APIC_API_USE_32BIT_IDS | \
-                                     KVM_X2APIC_API_DISABLE_BROADCAST_QUIRK)
- 
-@@ -3894,6 +3896,9 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
- 	case KVM_CAP_VM_COPY_ENC_CONTEXT_FROM:
- 		r = 1;
- 		break;
-+	case KVM_CAP_EXIT_HYPERCALL:
-+		r = KVM_EXIT_HYPERCALL_VALID_MASK;
-+		break;
- 	case KVM_CAP_SET_GUEST_DEBUG2:
- 		return KVM_GUESTDBG_VALID_MASK;
- #ifdef CONFIG_KVM_XEN
-@@ -5499,6 +5504,14 @@ int kvm_vm_ioctl_enable_cap(struct kvm *kvm,
- 		if (kvm_x86_ops.vm_copy_enc_context_from)
- 			r = kvm_x86_ops.vm_copy_enc_context_from(kvm, cap->args[0]);
- 		return r;
-+	case KVM_CAP_EXIT_HYPERCALL:
-+		if (cap->args[0] & ~KVM_EXIT_HYPERCALL_VALID_MASK) {
-+			r = -EINVAL;
-+			break;
-+		}
-+		kvm->arch.hypercall_exit_enabled = cap->args[0];
-+		r = 0;
-+		break;
- 	default:
- 		r = -EINVAL;
- 		break;
-@@ -8384,6 +8397,17 @@ static void kvm_sched_yield(struct kvm_vcpu *vcpu, unsigned long dest_id)
- 	return;
- }
- 
-+static int complete_hypercall_exit(struct kvm_vcpu *vcpu)
-+{
-+	u64 ret = vcpu->run->hypercall.ret;
-+
-+	if (!is_64_bit_mode(vcpu))
-+		ret = (u32)ret;
-+	kvm_rax_write(vcpu, ret);
-+	++vcpu->stat.hypercalls;
-+	return kvm_skip_emulated_instruction(vcpu);
-+}
-+
- int kvm_emulate_hypercall(struct kvm_vcpu *vcpu)
- {
- 	unsigned long nr, a0, a1, a2, a3, ret;
-@@ -8449,6 +8473,28 @@ int kvm_emulate_hypercall(struct kvm_vcpu *vcpu)
- 		kvm_sched_yield(vcpu, a0);
- 		ret = 0;
- 		break;
-+	case KVM_HC_MAP_GPA_RANGE: {
-+		u64 gpa = a0, npages = a1, attrs = a2;
-+
-+		ret = -KVM_ENOSYS;
-+		if (!(vcpu->kvm->arch.hypercall_exit_enabled & (1 << KVM_HC_MAP_GPA_RANGE)))
-+			break;
-+
-+		if (!PAGE_ALIGNED(gpa) || !npages ||
-+		    gpa_to_gfn(gpa) + npages <= gpa_to_gfn(gpa)) {
-+			ret = -KVM_EINVAL;
-+			break;
-+		}
-+
-+		vcpu->run->exit_reason        = KVM_EXIT_HYPERCALL;
-+		vcpu->run->hypercall.nr       = KVM_HC_MAP_GPA_RANGE;
-+		vcpu->run->hypercall.args[0]  = gpa;
-+		vcpu->run->hypercall.args[1]  = npages;
-+		vcpu->run->hypercall.args[2]  = attrs;
-+		vcpu->run->hypercall.longmode = op_64_bit;
-+		vcpu->arch.complete_userspace_io = complete_hypercall_exit;
-+		return 0;
-+	}
- 	default:
- 		ret = -KVM_ENOSYS;
- 		break;
-diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
-index 3fd9a7e9d90c..1fb4fd863324 100644
---- a/include/uapi/linux/kvm.h
-+++ b/include/uapi/linux/kvm.h
-@@ -1082,6 +1082,7 @@ struct kvm_ppc_resize_hpt {
- #define KVM_CAP_SGX_ATTRIBUTE 196
- #define KVM_CAP_VM_COPY_ENC_CONTEXT_FROM 197
- #define KVM_CAP_PTP_KVM 198
-+#define KVM_CAP_EXIT_HYPERCALL 199
- 
- #ifdef KVM_CAP_IRQ_ROUTING
- 
-diff --git a/include/uapi/linux/kvm_para.h b/include/uapi/linux/kvm_para.h
-index 8b86609849b9..960c7e93d1a9 100644
---- a/include/uapi/linux/kvm_para.h
-+++ b/include/uapi/linux/kvm_para.h
-@@ -29,6 +29,7 @@
- #define KVM_HC_CLOCK_PAIRING		9
- #define KVM_HC_SEND_IPI		10
- #define KVM_HC_SCHED_YIELD		11
-+#define KVM_HC_MAP_GPA_RANGE		12
- 
- /*
-  * hypercalls use architecture specific
+ /* For KVM hypercalls, a three-byte sequence of either the vmcall or the vmmcall
+  * instruction.  The hypervisor may replace it with something else but only the
 -- 
 2.17.1
 
