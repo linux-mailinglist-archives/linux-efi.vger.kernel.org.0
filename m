@@ -2,285 +2,253 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D7E0939FAF1
-	for <lists+linux-efi@lfdr.de>; Tue,  8 Jun 2021 17:36:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D2FDC39FB55
+	for <lists+linux-efi@lfdr.de>; Tue,  8 Jun 2021 17:56:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233068AbhFHPiB (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 8 Jun 2021 11:38:01 -0400
-Received: from mail-dm6nam11on2128.outbound.protection.outlook.com ([40.107.223.128]:40504
-        "EHLO NAM11-DM6-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S231338AbhFHPiB (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Tue, 8 Jun 2021 11:38:01 -0400
+        id S233032AbhFHP6m (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 8 Jun 2021 11:58:42 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:36240 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230460AbhFHP6l (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 8 Jun 2021 11:58:41 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 158FsCPS180401;
+        Tue, 8 Jun 2021 15:55:09 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : content-type : in-reply-to :
+ mime-version; s=corp-2020-01-29;
+ bh=epx4g6O7+tisD9uK6B+ckv+e2nLXkSq2Y9ex3ZK36Zw=;
+ b=CGIOalGDOQwg8BIx6igKoixgyVyfiQVDYtB9iPQppUnSqkWFPGXv7jxS3qDe1YQ/2B3/
+ h19rnAba33GDOgFKwn3uaLDTukzJ9DQxXloR+XDf5i14fBwTH5bhzLJxDAG19sprBNrn
+ WZprPBNVAikk2q0blc7IDOsMme6Ua9gCXJGbtXC+/ZTw0l5OeMhwNroWCvIGWmrBmOWt
+ OQwScTxY/lRRZQly7Sz9zR9hYQXSCCtYyx4vhgcuLxWrVx6GX4jU7Q/erb0KTgPxFfv4
+ gxWEW6wcetKJHAn+nDNaidKAqUBrpJ2yrqHg5rc62+NqnT4uEyLnkR6XX/u/gDYfOlo5 mA== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by userp2130.oracle.com with ESMTP id 3900ps6k54-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 08 Jun 2021 15:55:08 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 158FkqHc137844;
+        Tue, 8 Jun 2021 15:55:08 GMT
+Received: from nam11-co1-obe.outbound.protection.outlook.com (mail-co1nam11lp2172.outbound.protection.outlook.com [104.47.56.172])
+        by aserp3030.oracle.com with ESMTP id 38yyaayt0c-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 08 Jun 2021 15:55:07 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=k2g9lLn4jwpRF+iKTx1iLe4n7sOspHkxPKYghYs3JgxNMLjeeBHzULHIbeU2V0ZvivjgF1l8oReFNPr+vJyfYpvMuAfdbYxooZUMbkF0zxojYO79+eaU/3y7mRAl/gYxmUwxrwq2D/9DyF0QwLxotokTiNEi4hv9aYZKbuKCL6EZCLoQnTFJS0NJLtQ+frqwt5NHVjoMFWjOQ5pgGkQjm231yNX1iOav9AGoY/OnkP6WKwEw0FTTOClkG+vFjR1MQyI18mpx6wnNQvmbE4UsPMo2pUkkuac4Nh33Mcr6Uudhs5tImy/mmuRKfkTAV7ccWM1ZF+mnV4VXFcJwAzvg6w==
+ b=k6ly4pXHhtIRGK3URkgFl8Z+5OY1Xd5xDjm+WQ+9Ii4RNJuOOpgZg1+uZChunttd9UlV7T6fZQBmCeKmNjk7BiMNli9E66j+DGkiALFL67XSUoCha50TN4PGBTW1EG/fp/y7CXIP7xiqhrHDwSCEkhVOQ9TH0BQJWqTVTj0iFxpIxk82fkfr5utRsn3sVy5Iwruy0SvqgsWEsAEa88dj1uyLclq4FFsTmLUko3MCEbW91oDew6OQfDDCs6czaPNpM5lYj20zFrHya+NtCwRWYoiwk7LrX2TcWiAPGhsHl2TQzTwawaBGALB1k5Vj969lZG/vFMAVOHi9Sj5iWVIcLw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Hfh2KfZ5IwRVSdfFpzix9BMUF5h7XFADDc4+2UYD+I0=;
- b=VdKppN4XQpYxGUGb0lQY7wSMKk8ay0wB1zgC4JmsjTXP9p0qrp2j7qn6yDnz5rSd6lEDUkoKy/oqVpYTQUyHhA0UeqBqIVluR0c7VICZGW0g0LvhKI+PwOw40scpesFxeGpxwsRJu6OZoNGSU/xke0VzTK4Ifcw0yA5LGiY+KPMYre+wVkORCu3fQ5WfhZ8PE9qePLQQBZibXjSIRIPJwem7wO1y5KD/YcemGLIFAfVJPCL3DM/q237p9Uow0Jap1CUv4SyF6dNhrsjL/+URiXHrcmW3CxqwYHvIKNqV1m/8VX0N0ZUhNMWjPtLV/uOZKL5xDdngoBHNbAdcs56l7w==
+ bh=epx4g6O7+tisD9uK6B+ckv+e2nLXkSq2Y9ex3ZK36Zw=;
+ b=VE7+UQESPrBAabLaz7hy0S71xvVyjpXhvuBgB2uhgHmbPkaFkURMHHpPCX6klZCmtE5gHu9yNsK9T66Uc+EPfOV0zIqav9TjhZ+eFw/eR/S6odYi30tT3+0P0QKnO7yuPG5mJeR32HD07pJUW5w/75HRKLxWfwNac2Hr/efSJY3dQLN1nreiLz3yruDznjEdr2qgaPkk3f4SPFTWUzYqrH2bqXQgJO0q7pjffcac8gSSHJPfihD6ucXufmZ4i9kA/BS/t7M2u0W8vSp1Jv3GYiC596ZrPUnh8mMMdklUDh73Ib5DEUV9bngH1K/HUTM9c0MwCi1Ru7zPRus80g48QQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=microsoft.com; dmarc=pass action=none
- header.from=microsoft.com; dkim=pass header.d=microsoft.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=selector2;
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Hfh2KfZ5IwRVSdfFpzix9BMUF5h7XFADDc4+2UYD+I0=;
- b=d+uBv7ydE/ucKCYkw7CkgnQyDVilQXCISSjj8x9RRPNEvnKjlB2MfpDyP5grgfXkTeNBEwBnUVNJDEb8w0bxgFEfNBKQ7FDCw96lNr6AkUMtYDNLVAD42BFzZPahemNaFSbtr2VrXQUxlhlyvBnPKk3+z41RQPGU65Pak+Rga0o=
-Received: from MWHPR21MB1593.namprd21.prod.outlook.com (2603:10b6:301:7c::11)
- by MW4PR21MB2057.namprd21.prod.outlook.com (2603:10b6:303:11c::22) with
+ bh=epx4g6O7+tisD9uK6B+ckv+e2nLXkSq2Y9ex3ZK36Zw=;
+ b=D6EXJ9E6V1y1U0rYLlNYBNtDO/T0xeOKIo7yg4Dj7hm+JomJXUEAm5nCgk2rFo8IroP0FFN/7OYNUGMNDNx7HdA4r7H9mu739hHMcQMtu4Z4ztt/ELBqdlMkh/Ake7ZFgPEiTZeQRDkoTWwGOiPl1Wc7VFRawUCYQr5cnrNjRdw=
+Authentication-Results: amd.com; dkim=none (message not signed)
+ header.d=none;amd.com; dmarc=none action=none header.from=oracle.com;
+Received: from SN6PR10MB2576.namprd10.prod.outlook.com (2603:10b6:805:44::15)
+ by SA2PR10MB4537.namprd10.prod.outlook.com (2603:10b6:806:116::23) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.7; Tue, 8 Jun
- 2021 15:36:06 +0000
-Received: from MWHPR21MB1593.namprd21.prod.outlook.com
- ([fe80::8dbd:8360:af6:b8a2]) by MWHPR21MB1593.namprd21.prod.outlook.com
- ([fe80::8dbd:8360:af6:b8a2%9]) with mapi id 15.20.4242.007; Tue, 8 Jun 2021
- 15:36:06 +0000
-From:   Michael Kelley <mikelley@microsoft.com>
-To:     Mark Rutland <Mark.Rutland@arm.com>
-CC:     "will@kernel.org" <will@kernel.org>,
-        "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
-        "lorenzo.pieralisi@arm.com" <lorenzo.pieralisi@arm.com>,
-        "sudeep.holla@arm.com" <sudeep.holla@arm.com>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
-        "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
-        "arnd@arndb.de" <arnd@arndb.de>,
-        "wei.liu@kernel.org" <wei.liu@kernel.org>,
-        "ardb@kernel.org" <ardb@kernel.org>,
-        "daniel.lezcano@linaro.org" <daniel.lezcano@linaro.org>,
-        KY Srinivasan <kys@microsoft.com>
-Subject: RE: [PATCH v10 3/7] arm64: hyperv: Add Hyper-V clocksource/clockevent
- support
-Thread-Topic: [PATCH v10 3/7] arm64: hyperv: Add Hyper-V
- clocksource/clockevent support
-Thread-Index: AQHXR1WfRNuOt4THnkSQtAriU3aWFKri7Q2AgAAsnCCABJMQgIAAO7hQgAGXcACAIOKsoA==
-Date:   Tue, 8 Jun 2021 15:36:06 +0000
-Message-ID: <MWHPR21MB1593800A20B55626ACE6A844D7379@MWHPR21MB1593.namprd21.prod.outlook.com>
-References: <1620841067-46606-1-git-send-email-mikelley@microsoft.com>
- <1620841067-46606-4-git-send-email-mikelley@microsoft.com>
- <20210514123711.GB30645@C02TD0UTHF1T.local>
- <MWHPR21MB15932B44EC1E55614B219F5ED7509@MWHPR21MB1593.namprd21.prod.outlook.com>
- <20210517130815.GC62656@C02TD0UTHF1T.local>
- <MWHPR21MB15930A4EE785984292B1D72BD72D9@MWHPR21MB1593.namprd21.prod.outlook.com>
- <20210518170016.GP82842@C02TD0UTHF1T.local>
-In-Reply-To: <20210518170016.GP82842@C02TD0UTHF1T.local>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-msip_labels: MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ActionId=75fcf65e-e61f-4d86-b22d-66fb3a29e44d;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ContentBits=0;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Enabled=true;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Method=Standard;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Name=Internal;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SetDate=2021-06-08T15:11:51Z;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SiteId=72f988bf-86f1-41af-91ab-2d7cd011db47;
-authentication-results: arm.com; dkim=none (message not signed)
- header.d=none;arm.com; dmarc=none action=none header.from=microsoft.com;
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 2d8ac072-4838-4f3f-f944-08d92a9321a7
-x-ms-traffictypediagnostic: MW4PR21MB2057:
-x-ms-exchange-transport-forked: True
-x-ld-processed: 72f988bf-86f1-41af-91ab-2d7cd011db47,ExtAddr
-x-microsoft-antispam-prvs: <MW4PR21MB2057E8D82544B6033EB03CEAD7379@MW4PR21MB2057.namprd21.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:9508;
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: XtmZSHm9GRDZX7YscFvENR+Fg5G/xDxid318kaZS1XR4H6LYIiiwn7PYWro2PdD4DCp7BLxBsxBX49wnddA+NDTuQBWJMnKJFmS+H3Oi+yNYzBvS8lWpR75I2M6MZerMgA7cLdAOrGh+SU0bk8Ve+dBsA+qYIAWuPl0pJRldjgA1Kx1On7rSoTqG8Mq9vOk9UyCwevFUNHx5D5RHKUsIp1RsP6lTsQtl9i+8m4G4al6tYPmyTCCIzRBMNaxE0w0ExzjpVBFLjUbWTWeNE8QdnTwDQ4J88196+ywEK/NEHj3Trp6KCGXp4a3TpL6NvnOX9gSIJmw6YfoaCFwfOqn7tqtpLUZbG8TrzEPe1egFo4IEcDXHySHF30YeS5tyrYVJFHOWe9VMP3R8TcdP8XIjIkRoqQtOUDEfoGZsvKmFChJolWUm8agcEmJ6YqOpaHPXP7hdsIsoMHZugrS7UaqQhHRcovnoUvomHIOJtfI7380iUA2NP1D1q1RluosxNQDIy/2lRY7NPA6O/qzc/WWoQgEm4ZkH7levsFBb7176FteamZhEUiYwYu905yVjt/zW1w47HU5AkdcsxteRRqnCmvjIbezAc45f27lSR4ayJ/thL61F2d1SMK9MGr2daZ4/RfnVFeOMUImdPqLepC+N+A==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MWHPR21MB1593.namprd21.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(366004)(5660300002)(7696005)(82950400001)(82960400001)(122000001)(86362001)(107886003)(478600001)(38100700002)(7416002)(83380400001)(55016002)(9686003)(71200400001)(4326008)(8676002)(26005)(8936002)(6506007)(76116006)(316002)(66946007)(52536014)(8990500004)(6916009)(64756008)(186003)(66446008)(66556008)(66476007)(2906002)(54906003)(10290500003)(33656002);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?xbcymaWUdo41kYE25iBm3//n2uFyNW0R4/fR9dVuH4+ZTfOWzey+PRm+gY1L?=
- =?us-ascii?Q?5mPLy1eeUXnU+9oADh21u3rpu0//QVcdxfuARlA66jsKHPHojV3nk7wN8FGE?=
- =?us-ascii?Q?L/6YY/IOic5tRqX0YyABLzvtlVsDugtSLy90Dy71gereQ3BSnWcQlhxc0pbE?=
- =?us-ascii?Q?mi+JLw3EXsWgdjuatu5ALKEa7a1tf+upCxNakWNhHayVJe3sxMycYWF5MPuk?=
- =?us-ascii?Q?Kn3IPUQ1sP/agB0A9yTtb3/91ElEMiz88fxuvEKjzEHq4pVCVtcbsemD7mWT?=
- =?us-ascii?Q?XnNKnc/ReVDUimcPUpfNxNc1z4QIHUzgAG4bQVQV1Q58aSod37pkZ7ToY9/u?=
- =?us-ascii?Q?FuuvU4TQntmprREbvb01hC+M3pkHfSGu/CD57wVOUlrEPNkTpSc4SC3RB8uZ?=
- =?us-ascii?Q?FebY/AW0ADFYUNemzISx/5iwfejBT7kKxxwJG1GzRZiqiO9uVJ91wjpSwE0n?=
- =?us-ascii?Q?NcEUvlS89ZOpxCs8wiE+96QPzwAWjJqmkL25CTTQocj9W+9X9v/qyQ339a+J?=
- =?us-ascii?Q?uiUDxBFNQyGbWYJrnLV3ZP9IBXTzT9cyVGDS93RzqSmAmMdHVxwlkDVJkCLC?=
- =?us-ascii?Q?cUN3mVnCyewRWTvAVGJkbnm/0Uq58qhBVGC6UhAX8zOSeO0AJINrOnSSaxqv?=
- =?us-ascii?Q?3HFOPsKTp4g+5l7DOE8ndIfFqB2ykk1uwAHk4q1B+SmC3RkPriWS3WZV9bd1?=
- =?us-ascii?Q?EPHCfeFx6XIVCT/GjsKPh2AYRJtkFu4jKzKZlCPbowtlNBsub3UG3QV0V6+4?=
- =?us-ascii?Q?qC/fUmhvEd/HIbiH+Mt2Eft0EdNdS9JOIflNz/3l9A4LSxiuALeSQ0Jan1dS?=
- =?us-ascii?Q?LcXIDtiMVwxPfMzrc4p0ltQUgv0/jKQrIhu7PzhqhXrFwnfWmWRpAXr0QE/D?=
- =?us-ascii?Q?W4dX7NeOH+J5t2p2DFj9nDoEXtK5MW/d0LJTqL1PWX7RbPAwk7bGQVTVr78J?=
- =?us-ascii?Q?hp7IqikEQcfgSDxHDKgK0eavbUa04wwUoa5cBpRzN03sDRIqmHDp6Zk2Uv68?=
- =?us-ascii?Q?0zDiaCXmDeZXEWB3dMfpBlsg++RhYbmDEeEW72eoDQueucZypptwG2p4kzMI?=
- =?us-ascii?Q?Kl7l5FAJCef3UHiD3ZhwHtliY2+gsFu9ESV9SCFfjZa8VXwMnp/4UuaaQZO3?=
- =?us-ascii?Q?JTs7izozd2TRkbGUUL1JvUbCBLWwMiM3i2sosBA3mkcmDFhsU0HpJMWK9JcF?=
- =?us-ascii?Q?QUoEH3RYntJifW/lGYh8ATSQT9WlmWoTmcebkORXBMmtAduLjF4bUmoBCoAK?=
- =?us-ascii?Q?vJTA/wQhyMptFSwflR1wHtHbOZgbaLRMsHKQE0gJQSxoE1J3v1Te4QsU0K1O?=
- =?us-ascii?Q?VJ4U4oZ6jlcM5U6Y4zPxOcx8?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4195.24; Tue, 8 Jun
+ 2021 15:55:05 +0000
+Received: from SN6PR10MB2576.namprd10.prod.outlook.com
+ ([fe80::945d:d394:f2ad:2c97]) by SN6PR10MB2576.namprd10.prod.outlook.com
+ ([fe80::945d:d394:f2ad:2c97%7]) with mapi id 15.20.4195.030; Tue, 8 Jun 2021
+ 15:55:05 +0000
+Date:   Tue, 8 Jun 2021 10:54:58 -0500
+From:   Venu Busireddy <venu.busireddy@oracle.com>
+To:     Brijesh Singh <brijesh.singh@amd.com>
+Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        linux-coco@lists.linux.dev, linux-mm@kvack.org,
+        linux-crypto@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Vitaly Kuznetsov <vkuznets@redhat.com>,
+        Wanpeng Li <wanpengli@tencent.com>,
+        Jim Mattson <jmattson@google.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        David Rientjes <rientjes@google.com>, tony.luck@intel.com,
+        npmccallum@redhat.com
+Subject: Re: [PATCH Part1 RFC v3 01/22] x86/sev: shorten GHCB terminate macro
+ names
+Message-ID: <YL+S0r0pgS5wNAJK@dt>
+References: <20210602140416.23573-1-brijesh.singh@amd.com>
+ <20210602140416.23573-2-brijesh.singh@amd.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210602140416.23573-2-brijesh.singh@amd.com>
+X-Originating-IP: [138.3.201.62]
+X-ClientProxiedBy: SN2PR01CA0009.prod.exchangelabs.com (2603:10b6:804:2::19)
+ To SN6PR10MB2576.namprd10.prod.outlook.com (2603:10b6:805:44::15)
 MIME-Version: 1.0
-X-OriginatorOrg: microsoft.com
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from dt (138.3.201.62) by SN2PR01CA0009.prod.exchangelabs.com (2603:10b6:804:2::19) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4195.23 via Frontend Transport; Tue, 8 Jun 2021 15:55:02 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: a2660c52-80a3-4953-b825-08d92a95c86e
+X-MS-TrafficTypeDiagnostic: SA2PR10MB4537:
+X-Microsoft-Antispam-PRVS: <SA2PR10MB4537531D8511565B116D5C49E6379@SA2PR10MB4537.namprd10.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:6790;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: +AIGgROPwv033P8PgOKuyB29wxAGgVwbSOR1fzTXcSsLK+587V8rj0+AmqI7iCuBGGLz7RjF1gQTX1ixqcgQ9wVuN3gaeBwo2Y8XvOtxv7u68I4uO8TVUsqNbNY05J+DMS3/eaCdQbli51HKP0/Gxf4XuThge4gxkxM0tOnbTc1jArpbXY6PuQa9cktbpZsn7NaFWHamE8JLjNGzK2RM0dRNQbgcFBhLqTU+m0vqhZUch0k3yMSKQhVy/vGQ3A8ViwJX0WtH8zfdJCQ3URiTq+cjRjFWYUQvrMCOcEQG0Fuq3VXqbCUdhswWdo4f8Tx+sgG6QKSF9UbQDUwA4eXlBI+qcsMCCd5a2ZvBvTFNckUNvIndXQRbdPElerKIcEWWAUg8RfGfYANJj24LDaPHT2yUryg84c1xxliwLBuBjHQqIiQ5oTrVwr6OcOzk4qIDPR2zfA8dC/UqFGAHedWdOCUUaxsAFnoNomMlPCuFLt0WB0O5FEgc8veCLv9e/fpAVgUKlyNxo50h19GEqO2QSUpmUh3n3LVT6VEUsw0Gisgywy+vj/6qGsbmxMpHOPZSnpdiSyK6qW5KLzJOG+DrYHSY0DdYXQ0SPRh3zC8gXtlpfjFn+kdoxt170GDup5/MsuaQK/PvJ3SH3hqFNwxcW1/IZRkRtH59sdMAFNvxGg0=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR10MB2576.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(366004)(396003)(136003)(376002)(346002)(39860400002)(478600001)(26005)(7416002)(8936002)(4326008)(83380400001)(2906002)(44832011)(9576002)(55016002)(9686003)(54906003)(316002)(6666004)(86362001)(186003)(66946007)(66556008)(66476007)(956004)(6916009)(53546011)(52116002)(16526019)(38350700002)(8676002)(6496006)(5660300002)(38100700002)(33716001)(67856001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?wFbRCyUyd+MJBp+iYd81QY8IULW/B26FDkvinnpj3y+kwDudWmEGJdE4NI/g?=
+ =?us-ascii?Q?z8RtXW5LpLCAcQrXoVN+zjuGj/jeIkDi8N+i5+V0Uvb4q5GtViD3j+8E8McQ?=
+ =?us-ascii?Q?/asq3mkRuDWNYpElgjBxMyk3VEJvAVvkyvphGj+lRCC1WjNJDThTmXjLaelm?=
+ =?us-ascii?Q?mNRX126tAqH1HKWrlEK+vnufqJIHuH8rTRE5yiHZhUfR1Dg4KR7qWcEnZGI+?=
+ =?us-ascii?Q?c1M9LlSfw+l+5UzsUdc1ysrO/a46IqvoR23Q9BzxAG7zMGUW1GvZVMd3FeDt?=
+ =?us-ascii?Q?Ipl081V6STKQ0Z6bGpfH+K311HV7DbY0XkBnvfU2L0pUc/T1pV/oPoso5lOi?=
+ =?us-ascii?Q?9wdFfnfp0Mlu7hTS3d1EDfipA5jbJB40LBwoaACEPYdAk/gA9kN2PnIRtgGT?=
+ =?us-ascii?Q?xdpfWwDWseE7JHyBT7UN5UhARqvWDBhssndVzsKd/3MA3v9nycp2PqfN4yVh?=
+ =?us-ascii?Q?EJYE73wsnkqfz/pr8vtULs0bFxbo2k6dIhLy1Yt19dRutt8QKE1prLgEFIRk?=
+ =?us-ascii?Q?yHU01IvE3O09R8yJ5TquNum/Axwetx1Xve0SWUdgztYxQS5Aa/nQ2GGnStp6?=
+ =?us-ascii?Q?jFtqUOqL6tYJCQ8RWI+dsWpgsehrYSwrJexVV7m+WehHGZknpoi/RsEgK3Sc?=
+ =?us-ascii?Q?YPjtQl4jwWUxULP0X6Nnqeb1h78FA/WZ4t1hfBdJUmD1hVRZgv0cL0EwdyJ/?=
+ =?us-ascii?Q?VI+28aoWRRZS+UjcdqmBygK2wK3s9glbpBpLq+NnqSMlaroG7uUMg3X9LFVN?=
+ =?us-ascii?Q?dGohxNv53s62Z2ofijZb/YRFnve8yy08yVh0u3Orp65BJ0EzeGnhdVkJvqE9?=
+ =?us-ascii?Q?S2Pz1/2Q9XJ73Mn0UY1Wbzcwvl8oL9qKj3xRvWJFEAoTR9eQn0/67Cqgy2Fx?=
+ =?us-ascii?Q?ZTKd4i60msnnc8wyx7eFfsM2EIP6IQLjXMFIWNZ0iC07cANHpT1DkYTOZB5+?=
+ =?us-ascii?Q?zTNXG7/kKK8DUepEBcOskTFl6kC2Rl40/VZlucRPClD5jO/YSTh0JcCEvqy5?=
+ =?us-ascii?Q?74vb7ZLkNGJhodQQk7HhixNo3vjFMog6yk84YPyOgmzHitVzSbM2PW9koC30?=
+ =?us-ascii?Q?FRNovC7oiIIQvGMt7QkzPOHuX1bUkAIzlLyewFdEaSTWeOZWBbVVaWUMgmJk?=
+ =?us-ascii?Q?imtPy80BvVIJJW0un8h+Qz7cSmgX1Vfpv0/pq5ikvE/tyASRwOQVj0KX9QlS?=
+ =?us-ascii?Q?aWZA5YPt3nVjCUN0A0iJwlovBuCNHMCfGFC9zQCohtSyac3Hf8d4xm8Bpoub?=
+ =?us-ascii?Q?5DYM0EH/9Y9eg/IkrMlnWrjSICaOZGMiD2yuphYSGxfULI50ICEIQ1UzaEAc?=
+ =?us-ascii?Q?v399Ll8x9c94hW4mekUzkrnC?=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a2660c52-80a3-4953-b825-08d92a95c86e
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR10MB2576.namprd10.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MWHPR21MB1593.namprd21.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2d8ac072-4838-4f3f-f944-08d92a9321a7
-X-MS-Exchange-CrossTenant-originalarrivaltime: 08 Jun 2021 15:36:06.1931
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jun 2021 15:55:05.2288
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 72f988bf-86f1-41af-91ab-2d7cd011db47
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 0JxWTEiQeaTRSQi1HBnMytuCTy2q1fNBAPz/NONlIlbfqhlOIa2iTmRLeVNT4Jgno1nQWoBINRzyoP6uwCqsIAtzFv5vm0qpjc/2lRi04zI=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR21MB2057
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ZzALlWomC6a7vmCjle5AL+wx8vlrpWdRSdAOMi9xQXN3d/o03mRqTLUMD1oysctusZZ+MhwMa+g7e7np3+FmTE2IZKvVGdynpyg5u6Cu5SU=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA2PR10MB4537
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=10009 signatures=668682
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 malwarescore=0 spamscore=0
+ adultscore=0 suspectscore=0 mlxscore=0 mlxlogscore=999 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2104190000
+ definitions=main-2106080101
+X-Proofpoint-GUID: -kOWVnw1_vMz-TvFgMg3xjZcmuHpRWYs
+X-Proofpoint-ORIG-GUID: -kOWVnw1_vMz-TvFgMg3xjZcmuHpRWYs
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=10009 signatures=668682
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 clxscore=1015
+ bulkscore=0 spamscore=0 mlxscore=0 adultscore=0 malwarescore=0
+ phishscore=0 suspectscore=0 lowpriorityscore=0 mlxlogscore=999
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104190000 definitions=main-2106080102
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-From: Mark Rutland <mark.rutland@arm.com> Sent: Tuesday, May 18, 2021 10:00=
- AM
->=20
-> On Mon, May 17, 2021 at 05:27:49PM +0000, Michael Kelley wrote:
-> > From: Mark Rutland <mark.rutland@arm.com> Sent: Monday, May 17, 2021 6:=
-08 AM
-> > >
-> > > On Fri, May 14, 2021 at 03:35:15PM +0000, Michael Kelley wrote:
-> > > > From: Mark Rutland <mark.rutland@arm.com> Sent: Friday, May 14, 202=
-1 5:37 AM
-> > > > > On Wed, May 12, 2021 at 10:37:43AM -0700, Michael Kelley wrote:
-> > > > > > Add architecture specific definitions and functions needed
-> > > > > > by the architecture independent Hyper-V clocksource driver.
-> > > > > > Update the Hyper-V clocksource driver to be initialized
-> > > > > > on ARM64.
-> > > > >
-> > > > > Previously we've said that for a clocksource we must use the arch=
-itected
-> > > > > counter, since that's necessary for things like the VDSO to work
-> > > > > correctly and efficiently.
-> > > > >
-> > > > > Given that, I'm a bit confused that we're registering a per-cpu
-> > > > > clocksource that is in part based on the architected counter. Lik=
-ewise,
-> > > > > I don't entirely follow why it's necessary to PV the clock_event_=
-device.
-> > > > >
-> > > > > Are the architected counter and timer reliable without this PV
-> > > > > infrastructure? Why do we need to PV either of those?
-> > > > >
-> > > > > Thanks,
-> > > > > Mark.
-> > > >
-> > > > For the clocksource, we have a requirement to live migrate VMs
-> > > > between Hyper-V hosts running on hardware that may have different
-> > > > arch counter frequencies (it's not conformant to the ARM v8.6 1 GHz
-> > > > requirement).  The Hyper-V virtualization does scaling to handle th=
-e
-> > > > frequency difference.  And yes, there's a tradeoff with vDSO not
-> > > > working, though we have an out-of-tree vDSO implementation that
-> > > > we can use when necessary.
-> > >
-> > > Just to be clear, the vDSO is *one example* of something that won't
-> > > function correctly. More generally, because this undermines core
-> > > architectural guarantees, it requires more invasive changes (e.g. we'=
-d
-> > > have to weaken the sanity checks, and not use the counter in things l=
-ike
-> > > kexec paths), impacts any architectural features tied to the generic
-> > > timer/counter (e.g. the event stream, SPE and tracing, future feature=
-s),
-> > > and means that other SW (e.g. bootloaders and other EFI applications)
-> > > are unlikley to function correctly in this environment.
-> > >
-> > > I am very much not keen on trying to PV this.
-> > >
-> > > What does the guest see when it reads CNTFRQ_EL0? Does this match the
-> > > real HW value (and can this change over time)? Or is this entirely
-> > > synthetic?
-> > >
-> > > What do the ACPI tables look like in the guest? Is there a GTDT table=
- at
-> > > all?
-> > >
-> > > How does the counter event stream behave?
-> > >
-> > > Are there other architectural features which Hyper-V does not impleme=
-nt
-> > > for a guest?
-> > >
-> > > Is there anything else that may change across a migration? e.g. MIDR?
-> > > MPIDR? Any of the ID registers?
-> >
-> > The ARMv8 architectural system counter and associated registers are vis=
-ible
-> > and functional in a VM on Hyper-V.   The "arch_sys_counter" clocksource=
- is
-> > instantiated by the arm_arch_timer.c driver based on the GTDT in the gu=
-est,
-> > and a Linux guest on Hyper-V runs fine with this clocksource.  Low leve=
-l code
-> > like bootloaders and EFI applications work normally.
->=20
-> That's good to hear!
->=20
-> One potential issue worth noting is that as those pieces of software are
-> unlikely to handle counter frequency changes reliably, and so may not
-> behave correctly if live-migrated.
->=20
-> > The Hyper-V virtualization provides another Linux clocksource that is a=
-n
-> > overlay on the arch counter and that provides time consistency across a=
- live
-> > migration. Live migration of ARM64 VMs on Hyper-V is not functional tod=
-ay,
-> > but the Hyper-V team believes they can make it functional.  I have not
-> > explored with them the live migration implications of things beyond tim=
-e
-> > consistency, like event streams, CNTFRQ_EL0, MIDR/MPIDR, etc.
-> >
-> > Would a summary of your point be that live migration across hardware
-> > with different arch counter frequencies is likely to not be possible wi=
-th
-> > 100% fidelity because of these other dependencies on the arch counter
-> > frequency?  (hence the fixed 1 GHz frequency in ARM v8.6)
->=20
-> Yes.
->=20
-> In addition, there are a larger set of things necessarily exposed to VMs
-> that mean that live migration isn't all that practical except betweenm
-> identical machines (where the counter frequency should be identical),
-> and the timer frequency might just be the canary in the coalmine. For
-> example, the cache properties enumerated in CTR_EL0 cannot necessarily
-> be emulated on another machine.
->=20
-> > > > For clockevents, the only timer interrupt that Hyper-V provides
-> > > > in a guest VM is its virtualized "STIMER" interrupt.  There's no
-> > > > virtualization of the ARM arch timer in the guest.
-> > >
-> > > I think that is rather unfortunate, given it's a core architectural
-> > > feature. Is it just the interrupt that's missing? i.e. does all the
-> > > PE-local functionality behave as the architecture requires?
-> >
-> > Right off the bat, I don't know about timer-related PE-local
-> > functionality as it's not exercised in a Linux VM on Hyper-V that is
-> > using STIMER-based clockevents.  I'll explore with the Hyper-V
-> > team.  My impression is that enabling the ARM arch timer in a
-> > guest VM is more work for Hyper-V than just wiring up an
-> > interrupt.
->=20
-> Thanks for chasing this up!
->=20
+On 2021-06-02 09:03:55 -0500, Brijesh Singh wrote:
+> Suggested-by: Borislav Petkov <bp@suse.de>
+> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
 
-I've had a couple rounds of discussions with the Hyper-V team.   For
-the clocksource we've agreed to table the live migration discussion, and
-I'll resubmit the code so that arm_arch_timer.c provides the
-standard arch_sys_counter clocksource.  As noted previously, this just
-works for a Hyper-V guest.  The live migration discussion may come
-back later after a deeper investigation by Hyper-V.
+Reviewed-by: Venu Busireddy <venu.busireddy@oracle.com>
 
-For clockevents, there's not a near term fix.  It's more than just plumbing
-an interrupt for Hyper-V to virtualize the ARM64 arch timer in a guest VM.
-From their perspective there's also benefit in having a timer abstraction
-that's independent of the architecture, and in the Linux guest, the STIMER
-code is common across x86/x64 and ARM64.  It follows the standard Linux
-clockevents model, as it should. The code is already in use in out-of-tree
-builds in the Linux VMs included in Windows 10 on ARM64 as part of the
-so-called "Windows Subsystem for Linux".
-
-So I'm hoping we can get this core support for ARM64 guests on Hyper-V
-into upstream using the existing STIMER support.  At some point, Hyper-V
-will do the virtualization of the ARM64 arch timer, but we don't want to
-have to stay out-of-tree until after that happens.
-
-Thoughts?
-
-Michael
+> ---
+>  arch/x86/boot/compressed/sev.c    | 6 +++---
+>  arch/x86/include/asm/sev-common.h | 4 ++--
+>  arch/x86/kernel/sev-shared.c      | 2 +-
+>  arch/x86/kernel/sev.c             | 4 ++--
+>  4 files changed, 8 insertions(+), 8 deletions(-)
+> 
+> diff --git a/arch/x86/boot/compressed/sev.c b/arch/x86/boot/compressed/sev.c
+> index 670e998fe930..28bcf04c022e 100644
+> --- a/arch/x86/boot/compressed/sev.c
+> +++ b/arch/x86/boot/compressed/sev.c
+> @@ -122,7 +122,7 @@ static enum es_result vc_read_mem(struct es_em_ctxt *ctxt,
+>  static bool early_setup_sev_es(void)
+>  {
+>  	if (!sev_es_negotiate_protocol())
+> -		sev_es_terminate(GHCB_SEV_ES_REASON_PROTOCOL_UNSUPPORTED);
+> +		sev_es_terminate(GHCB_SEV_ES_PROT_UNSUPPORTED);
+>  
+>  	if (set_page_decrypted((unsigned long)&boot_ghcb_page))
+>  		return false;
+> @@ -175,7 +175,7 @@ void do_boot_stage2_vc(struct pt_regs *regs, unsigned long exit_code)
+>  	enum es_result result;
+>  
+>  	if (!boot_ghcb && !early_setup_sev_es())
+> -		sev_es_terminate(GHCB_SEV_ES_REASON_GENERAL_REQUEST);
+> +		sev_es_terminate(GHCB_SEV_ES_GEN_REQ);
+>  
+>  	vc_ghcb_invalidate(boot_ghcb);
+>  	result = vc_init_em_ctxt(&ctxt, regs, exit_code);
+> @@ -202,5 +202,5 @@ void do_boot_stage2_vc(struct pt_regs *regs, unsigned long exit_code)
+>  	if (result == ES_OK)
+>  		vc_finish_insn(&ctxt);
+>  	else if (result != ES_RETRY)
+> -		sev_es_terminate(GHCB_SEV_ES_REASON_GENERAL_REQUEST);
+> +		sev_es_terminate(GHCB_SEV_ES_GEN_REQ);
+>  }
+> diff --git a/arch/x86/include/asm/sev-common.h b/arch/x86/include/asm/sev-common.h
+> index 629c3df243f0..11b7d9cea775 100644
+> --- a/arch/x86/include/asm/sev-common.h
+> +++ b/arch/x86/include/asm/sev-common.h
+> @@ -54,8 +54,8 @@
+>  	(((((u64)reason_set) &  GHCB_MSR_TERM_REASON_SET_MASK) << GHCB_MSR_TERM_REASON_SET_POS) | \
+>  	((((u64)reason_val) & GHCB_MSR_TERM_REASON_MASK) << GHCB_MSR_TERM_REASON_POS))
+>  
+> -#define GHCB_SEV_ES_REASON_GENERAL_REQUEST	0
+> -#define GHCB_SEV_ES_REASON_PROTOCOL_UNSUPPORTED	1
+> +#define GHCB_SEV_ES_GEN_REQ		0
+> +#define GHCB_SEV_ES_PROT_UNSUPPORTED	1
+>  
+>  #define GHCB_RESP_CODE(v)		((v) & GHCB_MSR_INFO_MASK)
+>  
+> diff --git a/arch/x86/kernel/sev-shared.c b/arch/x86/kernel/sev-shared.c
+> index 6ec8b3bfd76e..14198075ff8b 100644
+> --- a/arch/x86/kernel/sev-shared.c
+> +++ b/arch/x86/kernel/sev-shared.c
+> @@ -207,7 +207,7 @@ void __init do_vc_no_ghcb(struct pt_regs *regs, unsigned long exit_code)
+>  
+>  fail:
+>  	/* Terminate the guest */
+> -	sev_es_terminate(GHCB_SEV_ES_REASON_GENERAL_REQUEST);
+> +	sev_es_terminate(GHCB_SEV_ES_GEN_REQ);
+>  }
+>  
+>  static enum es_result vc_insn_string_read(struct es_em_ctxt *ctxt,
+> diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
+> index 9578c82832aa..460717e3f72d 100644
+> --- a/arch/x86/kernel/sev.c
+> +++ b/arch/x86/kernel/sev.c
+> @@ -1383,7 +1383,7 @@ DEFINE_IDTENTRY_VC_SAFE_STACK(exc_vmm_communication)
+>  		show_regs(regs);
+>  
+>  		/* Ask hypervisor to sev_es_terminate */
+> -		sev_es_terminate(GHCB_SEV_ES_REASON_GENERAL_REQUEST);
+> +		sev_es_terminate(GHCB_SEV_ES_GEN_REQ);
+>  
+>  		/* If that fails and we get here - just panic */
+>  		panic("Returned from Terminate-Request to Hypervisor\n");
+> @@ -1416,7 +1416,7 @@ bool __init handle_vc_boot_ghcb(struct pt_regs *regs)
+>  
+>  	/* Do initial setup or terminate the guest */
+>  	if (unlikely(boot_ghcb == NULL && !sev_es_setup_ghcb()))
+> -		sev_es_terminate(GHCB_SEV_ES_REASON_GENERAL_REQUEST);
+> +		sev_es_terminate(GHCB_SEV_ES_GEN_REQ);
+>  
+>  	vc_ghcb_invalidate(boot_ghcb);
+>  
+> -- 
+> 2.17.1
+> 
