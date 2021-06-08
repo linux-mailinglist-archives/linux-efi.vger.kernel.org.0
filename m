@@ -2,136 +2,142 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A6B7739F4B3
-	for <lists+linux-efi@lfdr.de>; Tue,  8 Jun 2021 13:12:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D5BC439F684
+	for <lists+linux-efi@lfdr.de>; Tue,  8 Jun 2021 14:25:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231698AbhFHLOb (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 8 Jun 2021 07:14:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44114 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230190AbhFHLOa (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 8 Jun 2021 07:14:30 -0400
-Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23111C061574;
-        Tue,  8 Jun 2021 04:12:37 -0700 (PDT)
-Received: from zn.tnic (p200300ec2f0bc9005757c3be7e9afbb5.dip0.t-ipconnect.de [IPv6:2003:ec:2f0b:c900:5757:c3be:7e9a:fbb5])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 6E0BA1EC036C;
-        Tue,  8 Jun 2021 13:12:35 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1623150755;
+        id S232531AbhFHM1o (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 8 Jun 2021 08:27:44 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:28956 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S231993AbhFHM1o (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 8 Jun 2021 08:27:44 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1623155150;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=3sPDCvRlwwIpxA2b3PcLxBUFevSmv4P/XZ/ZVXKpHEY=;
-        b=pm3yWyMyq0vfbN/1lB1/7YSiZn9GqmppzRw5hFrYhvwk6G8zDGbVnobmgbVtvU5ugIyGc2
-        AvNowWwi3/OJYL2ri6TSgeqQ6tZbxnkJW1XzcRYwrpPRsJY9eY4tLQhjhK0PfmioT/M5D8
-        XquQKU68mAu73X2MJSJsE7Wl84JJeyg=
-Date:   Tue, 8 Jun 2021 13:12:35 +0200
-From:   Borislav Petkov <bp@alien8.de>
-To:     Brijesh Singh <brijesh.singh@amd.com>
-Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        linux-coco@lists.linux.dev, linux-mm@kvack.org,
-        linux-crypto@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Vitaly Kuznetsov <vkuznets@redhat.com>,
-        Wanpeng Li <wanpengli@tencent.com>,
-        Jim Mattson <jmattson@google.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        David Rientjes <rientjes@google.com>, tony.luck@intel.com,
-        npmccallum@redhat.com
-Subject: Re: [PATCH Part1 RFC v3 08/22] x86/compressed: Add helper for
- validating pages in the decompression stage
-Message-ID: <YL9Qo/8ycWKZGRwt@zn.tnic>
-References: <20210602140416.23573-1-brijesh.singh@amd.com>
- <20210602140416.23573-9-brijesh.singh@amd.com>
+         in-reply-to:in-reply-to:references:references;
+        bh=Jga5cgK+A8ydMUQlLBxVKdrh6U1IwpbLL2b3HyDvHoQ=;
+        b=fUHqQNo/6RwSSGybkwRir1B+zjFbatU3jE5rwWqoQuX9rZz27KlArVl/Hps1d36NlZ32RQ
+        VZZoVyLYUespN8S1U8TdCuxJcvzAW4tWiEemk/6fzFyvk9ORUdKsF9VL4pRyv+B080oC7f
+        tqiH3CBC6E5ZGjj6Zw2HO6RopFm8Iu4=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-534-1Eiql0obMuq_UfswicDnmQ-1; Tue, 08 Jun 2021 08:25:49 -0400
+X-MC-Unique: 1Eiql0obMuq_UfswicDnmQ-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 0F3A31854E30;
+        Tue,  8 Jun 2021 12:25:48 +0000 (UTC)
+Received: from dhcp-128-65.nay.redhat.com (ovpn-12-220.pek2.redhat.com [10.72.12.220])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id 38DA15C1BB;
+        Tue,  8 Jun 2021 12:25:43 +0000 (UTC)
+Date:   Tue, 8 Jun 2021 20:25:40 +0800
+From:   Dave Young <dyoung@redhat.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Jean Delvare <jdelvare@suse.com>, linux-kernel@vger.kernel.org,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Javier =?iso-8859-1?B?VGnh?= <javier.tia@gmail.com>,
+        kexec@lists.infradead.org, Eric Biederman <ebiederm@xmission.com>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        Matt Fleming <matt@codeblueprint.co.uk>,
+        Ard Biesheuvel <ardb@kernel.org>
+Subject: Re: [PATCH v1 0/2] firmware: dmi_scan: Make it work in kexec'ed
+ kernel
+Message-ID: <YL9hxPdPj0dYMyaD@dhcp-128-65.nay.redhat.com>
+References: <20161202195416.58953-1-andriy.shevchenko@linux.intel.com>
+ <YLdEZoSWI41fcTB1@smile.fi.intel.com>
+ <YLdG91qspr19heDS@smile.fi.intel.com>
+ <YLss6ZNPMIXleLLF@dhcp-128-65.nay.redhat.com>
+ <YL5HvUqtsDXx5CzM@smile.fi.intel.com>
+ <YL5U/zSb50SnbLgW@smile.fi.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210602140416.23573-9-brijesh.singh@amd.com>
+In-Reply-To: <YL5U/zSb50SnbLgW@smile.fi.intel.com>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, Jun 02, 2021 at 09:04:02AM -0500, Brijesh Singh wrote:
-> +static void __page_state_change(unsigned long paddr, int op)
-> +{
-> +	u64 val;
-> +
-> +	if (!sev_snp_enabled())
-> +		return;
-> +
-> +	/*
-> +	 * If private -> shared then invalidate the page before requesting the
-> +	 * state change in the RMP table.
-> +	 */
-> +	if ((op == SNP_PAGE_STATE_SHARED) && pvalidate(paddr, RMP_PG_SIZE_4K, 0))
-> +		goto e_pvalidate;
-> +
-> +	/* Issue VMGEXIT to change the page state in RMP table. */
-> +	sev_es_wr_ghcb_msr(GHCB_MSR_PSC_REQ_GFN(paddr >> PAGE_SHIFT, op));
-> +	VMGEXIT();
-> +
-> +	/* Read the response of the VMGEXIT. */
-> +	val = sev_es_rd_ghcb_msr();
-> +	if ((GHCB_RESP_CODE(val) != GHCB_MSR_PSC_RESP) || GHCB_MSR_PSC_RESP_VAL(val))
-> +		sev_es_terminate(1, GHCB_TERM_PSC);
-> +
-> +	/*
-> +	 * Now that page is added in the RMP table, validate it so that it is
-> +	 * consistent with the RMP entry.
-> +	 */
-> +	if ((op == SNP_PAGE_STATE_PRIVATE) && pvalidate(paddr, RMP_PG_SIZE_4K, 1))
-> +		goto e_pvalidate;
-> +
-> +	return;
-> +
-> +e_pvalidate:
-> +	sev_es_terminate(1, GHCB_TERM_PVALIDATE);
-> +}
+On 06/07/21 at 08:18pm, Andy Shevchenko wrote:
+> On Mon, Jun 07, 2021 at 07:22:21PM +0300, Andy Shevchenko wrote:
+> > On Sat, Jun 05, 2021 at 03:51:05PM +0800, Dave Young wrote:
+> > > On 06/02/21 at 11:53am, Andy Shevchenko wrote:
+> > > > On Wed, Jun 02, 2021 at 11:42:14AM +0300, Andy Shevchenko wrote:
+> > > > > On Fri, Dec 02, 2016 at 09:54:14PM +0200, Andy Shevchenko wrote:
+> > > > > > Until now DMI information is lost when kexec'ing. Fix this in the same way as
+> > > > > > it has been done for ACPI RSDP.
+> > > > > > 
+> > > > > > Series has been tested on Galileo Gen2 where DMI is used by drivers, in
+> > > > > > particular the default I2C host speed is choosen based on DMI system
+> > > > > > information and now gets it correct.
+> > > > > 
+> > > > > Still nothing happens for a while and problem still exists.
+> > > > > Can we do something about it, please?
+> > > 
+> > > Seems I totally missed this thread. Old emails lost.
+> > 
+> > You can always access to it via lore :-)
+> > https://lore.kernel.org/linux-efi/20161217105721.GB6922@dhcp-128-65.nay.redhat.com/T/#u
 
-You don't even need that label, diff ontop:
+Thanks.  Hmm, this is for 32bit efi.  kexec efi boot support was only
+added for 64bit. So if 32bit dmidecode does not work I'm not surprise.
 
-diff --git a/arch/x86/boot/compressed/sev.c b/arch/x86/boot/compressed/sev.c
-index 808fe1f6b170..dd0f22386fd2 100644
---- a/arch/x86/boot/compressed/sev.c
-+++ b/arch/x86/boot/compressed/sev.c
-@@ -146,7 +146,7 @@ static void __page_state_change(unsigned long paddr, int op)
- 	 * state change in the RMP table.
- 	 */
- 	if ((op == SNP_PAGE_STATE_SHARED) && pvalidate(paddr, RMP_PG_SIZE_4K, 0))
--		goto e_pvalidate;
-+		sev_es_terminate(1, GHCB_TERM_PVALIDATE);
- 
- 	/* Issue VMGEXIT to change the page state in RMP table. */
- 	sev_es_wr_ghcb_msr(GHCB_MSR_PSC_REQ_GFN(paddr >> PAGE_SHIFT, op));
-@@ -162,12 +162,7 @@ static void __page_state_change(unsigned long paddr, int op)
- 	 * consistent with the RMP entry.
- 	 */
- 	if ((op == SNP_PAGE_STATE_PRIVATE) && pvalidate(paddr, RMP_PG_SIZE_4K, 1))
--		goto e_pvalidate;
--
--	return;
--
--e_pvalidate:
--	sev_es_terminate(1, GHCB_TERM_PVALIDATE);
-+		sev_es_terminate(1, GHCB_TERM_PVALIDATE);
- }
- 
- void snp_set_page_private(unsigned long paddr)
+> > 
+> > (Okay, it's not full, but contains main parts anyway)
+> > 
+> > 
+> > > The question Ard asked is to confirm if the firmware converted the
+> > > SMBIOS3 addr to a virtual address after exit boot service. I do not
+> > > remember some easy way to check it due to lost the context of the code.
+> > > But you can try to check it via dmesg|grep SMBIOS both in normal boot
+> > > and kexeced boot log.  And then compare if those addresses are
+> > > identical.
+> > > 
+> > > If the SMBIOS3 addr in kexec kernel is different then it should have
+> > > been modified by firmware. Then we need patch kernel and kexec-tools to
+> > > support it.
+> > > 
+> > > You can try below patch to see if it works:
+> > 
+> > So, AFAIU I have to apply patch to kexec tools for the fist kernel + userspace
+> > and apply kernel patch for the second kernel? Or it's all for the first one?
+> > 
+> > > apply a kexec-tools patch to kexec-tools if you do not use kexec -s
+> > > (kexec_file_load):
+> > 
+> > Here is how we are using it:
+> > https://github.com/andy-shev/buildroot/blob/intel/board/intel/common/netboot/udhcpc-script.sh#L54
+> 
+> Okay, thanks for the patches. I have applied them to both kernels, so the first
+> one and second one are the same and kexec tools have a patch provided in the
+> user space of the both kernels (only first one in use though).
+> 
+> Before applying your patch, I have reverted my hacks (as per this series).
+> 
+> Result is:
+> 
+> # uname -a
+> Linux buildroot 5.13.0-rc5+ #1 SMP Mon Jun 7 19:49:40 EEST 2021 i586 GNU/Linux
+> # dmidecode
+> # dmidecode 3.3
+> Scanning /dev/mem for entry point.
+> # No SMBIOS nor DMI entry point found, sorry.
+> 
+> I.o.w. it does NOT fix the issue. My patches do (with a hint from user space).
 
--- 
-Regards/Gruss,
-    Boris.
+As I said, since it is 32bit efi, so your test results are expected,
+also no need to check the kernel log about SMBIOS3 address changed or
+not.
 
-https://people.kernel.org/tglx/notes-about-netiquette
+> 
+> -- 
+> With Best Regards,
+> Andy Shevchenko
+> 
+> 
+
+Thanks
+Dave
+
