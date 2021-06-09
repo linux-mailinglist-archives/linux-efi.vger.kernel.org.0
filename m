@@ -2,164 +2,158 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7CA6B3A04A3
-	for <lists+linux-efi@lfdr.de>; Tue,  8 Jun 2021 21:58:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 20B243A138E
+	for <lists+linux-efi@lfdr.de>; Wed,  9 Jun 2021 13:56:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234087AbhFHTu3 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 8 Jun 2021 15:50:29 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:54160 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S229845AbhFHTu1 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 8 Jun 2021 15:50:27 -0400
-Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
-        by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 158JhxIc159290;
-        Tue, 8 Jun 2021 15:48:20 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=T+GhJj+B5oDuExla5uOSQKs7oMeENVFPj0/O7uKmuQ4=;
- b=B8GGq14uwkHma4SbtwyYSwGQL2tsvAYufU3aBN2TFKiIUbW3V+62fctihqPEsDoaPDIr
- z76AAUI41R8iAJB1ylAR5AxsveBJr5T+NK7fQe4wpyY9qJn+TL1jJJFlV6QRZ2sRb0ZR
- 14/nRGTlCsXp0guHrcAKa6F0abM32atIw0lkQu9sHGwpqMUpPA1LHiaI1NuZxTNqJG17
- PmpNxoEXwa4sdqi9wPX4nE8hsgcCmuD+wfIwgGiPuRtqlAAy9gfZULcLLRCaXENKeXmH
- 4boebzDKa7uo19Z/EYYVFJkfckK2IJShs6kdbNdPZ+Y7OS0WsM01FUwsEU5DDAimzW5N +w== 
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0b-001b2d01.pphosted.com with ESMTP id 392eycg2us-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 08 Jun 2021 15:48:20 -0400
-Received: from m0098414.ppops.net (m0098414.ppops.net [127.0.0.1])
-        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 158JiQSa160686;
-        Tue, 8 Jun 2021 15:48:19 -0400
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
-        by mx0b-001b2d01.pphosted.com with ESMTP id 392eycg2tr-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 08 Jun 2021 15:48:19 -0400
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
-        by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 158JhX88029559;
-        Tue, 8 Jun 2021 19:48:18 GMT
-Received: from b06avi18878370.portsmouth.uk.ibm.com (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
-        by ppma03ams.nl.ibm.com with ESMTP id 3900w8hq56-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 08 Jun 2021 19:48:17 +0000
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com [9.149.105.232])
-        by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 158JlQwr32440806
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 8 Jun 2021 19:47:26 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 307885204E;
-        Tue,  8 Jun 2021 19:48:15 +0000 (GMT)
-Received: from [9.160.30.75] (unknown [9.160.30.75])
-        by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 5C17252050;
-        Tue,  8 Jun 2021 19:48:10 +0000 (GMT)
-Subject: Re: [RFC PATCH 0/3] Allow access to confidential computing secret
- area
-To:     jejb@linux.ibm.com, Andi Kleen <ak@linux.intel.com>,
-        "Dr. David Alan Gilbert" <dgilbert@redhat.com>
-Cc:     Brijesh Singh <brijesh.singh@amd.com>, linux-efi@vger.kernel.org,
-        Tobin Feldman-Fitzthum <tobin@linux.ibm.com>,
-        Tobin Feldman-Fitzthum <tobin@ibm.com>,
-        Jim Cadden <jcadden@ibm.com>,
-        Hubertus Franke <frankeh@us.ibm.com>,
-        Mike Rapoport <rppt@linux.ibm.com>,
-        Laszlo Ersek <lersek@redhat.com>,
-        Ashish Kalra <ashish.kalra@amd.com>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        linux-security-module@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Kuppuswamy Sathyanarayanan 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>
-References: <20210513062634.2481118-1-dovmurik@linux.ibm.com>
- <2c8ae998-6dd0-bcb9-f735-e90da05ab9d9@amd.com> <YKZAUdbikp2Pt0XV@work-vm>
- <ccdf0059-7e39-7895-2733-412dbe4b13f1@linux.intel.com>
- <c316c49c-03db-22e3-0072-ebaf3c7f2ca2@amd.com>
- <45842efd-7b6b-496f-d161-e5786760078d@linux.intel.com>
- <YKuXI9TUBa3sjY3e@work-vm>
- <81aa5e70-ab94-393c-92e1-fdac14708aff@linux.intel.com>
- <ddfbcb36b928f6b0a1e9b3262b55cce48a3c326c.camel@linux.ibm.com>
-From:   Dov Murik <dovmurik@linux.ibm.com>
-Message-ID: <d5e352ab-8713-7864-8bf4-a8699cd4f607@linux.ibm.com>
-Date:   Tue, 8 Jun 2021 22:48:10 +0300
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+        id S239657AbhFIL6C (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 9 Jun 2021 07:58:02 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:56091 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S239645AbhFIL6B (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 9 Jun 2021 07:58:01 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1623239766;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=QsYYuHrua3D0nwfbXiXkP8WpKTH3SeSa8f6XqnxLdhM=;
+        b=LrZsNxGGjwzHMsrG15ZTvBZIT7tceZWiEPPa9fQgvmXwXfPStLfpF9Mr534IOJLcbgiue7
+        EwLQjs3rOwM8Ae6bQyuwLKRfAetOuExlMUYK513OCZ5mjARaHI9QSnUhS2l2Bu/kYBahh+
+        vF+09QxlDxgVQSApWYOwRroR5AZw0vQ=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-318-gJ5uh2mDNlChH6Z5_WPjqA-1; Wed, 09 Jun 2021 07:56:03 -0400
+X-MC-Unique: gJ5uh2mDNlChH6Z5_WPjqA-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 89D17100A8EB;
+        Wed,  9 Jun 2021 11:56:01 +0000 (UTC)
+Received: from dhcp-128-65.nay.redhat.com (ovpn-12-35.pek2.redhat.com [10.72.12.35])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id 853AD60877;
+        Wed,  9 Jun 2021 11:55:57 +0000 (UTC)
+Date:   Wed, 9 Jun 2021 19:55:54 +0800
+From:   Dave Young <dyoung@redhat.com>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Jean Delvare <jdelvare@suse.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Javier =?iso-8859-1?B?VGnh?= <javier.tia@gmail.com>,
+        kexec@lists.infradead.org, Eric Biederman <ebiederm@xmission.com>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        Matt Fleming <matt@codeblueprint.co.uk>,
+        Ard Biesheuvel <ardb@kernel.org>
+Subject: Re: [PATCH v1 0/2] firmware: dmi_scan: Make it work in kexec'ed
+ kernel
+Message-ID: <YMCsSqzmG4jb1Ojo@dhcp-128-65.nay.redhat.com>
+References: <20161202195416.58953-1-andriy.shevchenko@linux.intel.com>
+ <YLdEZoSWI41fcTB1@smile.fi.intel.com>
+ <YLdG91qspr19heDS@smile.fi.intel.com>
+ <YLss6ZNPMIXleLLF@dhcp-128-65.nay.redhat.com>
+ <YL5HvUqtsDXx5CzM@smile.fi.intel.com>
+ <YL5U/zSb50SnbLgW@smile.fi.intel.com>
+ <YL9hxPdPj0dYMyaD@dhcp-128-65.nay.redhat.com>
+ <CAHp75VcPuf6BLGf7Y3RO2M-gHMFZMTeb4ftnj_tbGS4TxvThxA@mail.gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <ddfbcb36b928f6b0a1e9b3262b55cce48a3c326c.camel@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: G5BmeTCPp5iaee8eR5_kLh98SBkJe_P1
-X-Proofpoint-ORIG-GUID: GPPg4mzJsCpt2ASXNYNNzOqhLw53CbbX
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.761
- definitions=2021-06-08_14:2021-06-04,2021-06-08 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
- lowpriorityscore=0 phishscore=0 mlxlogscore=999 clxscore=1011
- malwarescore=0 spamscore=0 mlxscore=0 adultscore=0 impostorscore=0
- priorityscore=1501 bulkscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2104190000 definitions=main-2106080126
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHp75VcPuf6BLGf7Y3RO2M-gHMFZMTeb4ftnj_tbGS4TxvThxA@mail.gmail.com>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-
-
-On 24/05/2021 20:12, James Bottomley wrote:
-> On Mon, 2021-05-24 at 09:31 -0700, Andi Kleen wrote:
->> On 5/24/2021 5:08 AM, Dr. David Alan Gilbert wrote:
->>> * Andi K
->>> Is there any way we could merge these two so that the TDX/SVKL
->>> would look similar to SEV/ES to userspace?  If we needed some
->>> initrd glue here for luks it would be great if we could have one
->>> piece of glue. [I'm not sure if the numbering/naming of the
->>> secrets, and their format are defined in the same way]
->> Maybe. There might well be differences in the contents as you say.
->> So far SVKL doesn't really exist yet,  initially there will be the
->> initrd based agents. The agents definitely will need to know about
->> TDX.
->>> Do you think the ioctl is preferable to read+ftruncate/unlink ?
->>> And if it was an ioctl, again could we get some standardisation
->>> here - i.e. maybe a /dev/confguest with a CONF_COMP_GET_KEY etc ?
->>
->> The advantage of the two ioctls is that they are very simple.
->> Anything with a file system would be a lot more complicated. For
->> security related code simplicity is a virtue.
+On 06/08/21 at 03:38pm, Andy Shevchenko wrote:
+> On Tue, Jun 8, 2021 at 3:29 PM Dave Young <dyoung@redhat.com> wrote:
+> > On 06/07/21 at 08:18pm, Andy Shevchenko wrote:
+> > > On Mon, Jun 07, 2021 at 07:22:21PM +0300, Andy Shevchenko wrote:
+> > > > On Sat, Jun 05, 2021 at 03:51:05PM +0800, Dave Young wrote:
+> > > > > On 06/02/21 at 11:53am, Andy Shevchenko wrote:
+> > > > > > On Wed, Jun 02, 2021 at 11:42:14AM +0300, Andy Shevchenko wrote:
+> > > > > > > On Fri, Dec 02, 2016 at 09:54:14PM +0200, Andy Shevchenko wrote:
+> > > > > > > > Until now DMI information is lost when kexec'ing. Fix this in the same way as
+> > > > > > > > it has been done for ACPI RSDP.
+> > > > > > > >
+> > > > > > > > Series has been tested on Galileo Gen2 where DMI is used by drivers, in
+> > > > > > > > particular the default I2C host speed is choosen based on DMI system
+> > > > > > > > information and now gets it correct.
+> > > > > > >
+> > > > > > > Still nothing happens for a while and problem still exists.
+> > > > > > > Can we do something about it, please?
+> > > > >
+> > > > > Seems I totally missed this thread. Old emails lost.
+> > > >
+> > > > You can always access to it via lore :-)
+> > > > https://lore.kernel.org/linux-efi/20161217105721.GB6922@dhcp-128-65.nay.redhat.com/T/#u
+> >
+> > Thanks.  Hmm, this is for 32bit efi.  kexec efi boot support was only
+> > added for 64bit. So if 32bit dmidecode does not work I'm not surprise.
+> >
+> > > >
+> > > > (Okay, it's not full, but contains main parts anyway)
+> > > >
+> > > >
+> > > > > The question Ard asked is to confirm if the firmware converted the
+> > > > > SMBIOS3 addr to a virtual address after exit boot service. I do not
+> > > > > remember some easy way to check it due to lost the context of the code.
+> > > > > But you can try to check it via dmesg|grep SMBIOS both in normal boot
+> > > > > and kexeced boot log.  And then compare if those addresses are
+> > > > > identical.
+> > > > >
+> > > > > If the SMBIOS3 addr in kexec kernel is different then it should have
+> > > > > been modified by firmware. Then we need patch kernel and kexec-tools to
+> > > > > support it.
+> > > > >
+> > > > > You can try below patch to see if it works:
+> > > >
+> > > > So, AFAIU I have to apply patch to kexec tools for the fist kernel + userspace
+> > > > and apply kernel patch for the second kernel? Or it's all for the first one?
+> > > >
+> > > > > apply a kexec-tools patch to kexec-tools if you do not use kexec -s
+> > > > > (kexec_file_load):
+> > > >
+> > > > Here is how we are using it:
+> > > > https://github.com/andy-shev/buildroot/blob/intel/board/intel/common/netboot/udhcpc-script.sh#L54
+> > >
+> > > Okay, thanks for the patches. I have applied them to both kernels, so the first
+> > > one and second one are the same and kexec tools have a patch provided in the
+> > > user space of the both kernels (only first one in use though).
+> > >
+> > > Before applying your patch, I have reverted my hacks (as per this series).
+> > >
+> > > Result is:
+> > >
+> > > # uname -a
+> > > Linux buildroot 5.13.0-rc5+ #1 SMP Mon Jun 7 19:49:40 EEST 2021 i586 GNU/Linux
+> > > # dmidecode
+> > > # dmidecode 3.3
+> > > Scanning /dev/mem for entry point.
+> > > # No SMBIOS nor DMI entry point found, sorry.
+> > >
+> > > I.o.w. it does NOT fix the issue. My patches do (with a hint from user space).
+> >
+> > As I said, since it is 32bit efi, so your test results are expected,
+> > also no need to check the kernel log about SMBIOS3 address changed or
+> > not.
 > 
-> This RFC contained the FS code.  In size terms its very comparable to
-> your ioctl.
+> So, what shall I do? It's already 5 years passed without any progress
+> while my patches definitely help here.
+> Should I rebase and resubmit?
+
+Probably it is doable to have kexec on 32bit efi working
+without runtime service support, that means no need the trick of fixed
+mapping.
+
+If I can restore my vm to boot 32bit efi on this weekend then I may provide some draft
+patches for test.
+
 > 
->> Also since it's a really simple read and clear model I don't expect
->> the value to be used widely, since it will be gone after boot
->> anyways.
-> 
-> Enumeration looks to be problematic with your interface ... what are
-> you supposed to do, keep calling ACPI_SVKL_GET_KEY_INFO on an advancing
-> index until it gives you an error and then try to work out what key
-> you're interested in by one of its numeric properties?
-> 
-> I think a GUIDed structure actually helps here because we don't have to
-> have someone assign, say, u16 types to keys we're interested in and the
-> filesystem does all the enumeration for us.  It also means new use
-> cases can simply expand the properties without waiting for any
-> internals to catch up.
+> -- 
+> With Best Regards,
+> Andy Shevchenko
 > 
 
+Thanks
+Dave
 
-Following the discussion here (and in various other meetings), the next
-version of this patch series will keep the securityfs interface but will
-introduce an unlink operation for the securityfs entries that will do
-the following:
-
-1. Remove the file entry from the securityfs dir
-
-2. Overwrite the secret data memory (memzero_explicit)
-
-3. Overwrite the GUID in the data memory with some invalid GUID
-(ffffffff-ffff-.... ?), so that if the module is removed and loaded
-again, the securityfs dir will not contain this entry (we'll ignore
-these invalid GUIDs in the iteration).
-
-
-
-Dov
