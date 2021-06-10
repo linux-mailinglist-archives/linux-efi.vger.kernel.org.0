@@ -2,83 +2,84 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 18C693A2414
-	for <lists+linux-efi@lfdr.de>; Thu, 10 Jun 2021 07:49:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3972F3A2473
+	for <lists+linux-efi@lfdr.de>; Thu, 10 Jun 2021 08:23:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229943AbhFJFv0 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 10 Jun 2021 01:51:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43344 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229911AbhFJFvZ (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 10 Jun 2021 01:51:25 -0400
-Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D78F9C061574;
-        Wed,  9 Jun 2021 22:49:29 -0700 (PDT)
-Received: from zn.tnic (p200300ec2f0cf6003c3f1790b4f2bf21.dip0.t-ipconnect.de [IPv6:2003:ec:2f0c:f600:3c3f:1790:b4f2:bf21])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 64CAA1EC0589;
-        Thu, 10 Jun 2021 07:49:27 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1623304167;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=RitcXYgrIWSrnu6FZ/EJXPF/tjn3PKo31V95ISXbgF0=;
-        b=qM1OQy1794JXyxVV5fsWNyyZSDAbcDerSJ88Q7muUjuvnYHleLySEJGIT9KZZI2c+v8RO9
-        AETG4d7ywrFpN6LOdY/nl/hh9bMi7nUeJZnyLsnzb/Ztow1RoHfAGsI4LJI+qI+zz6O/U8
-        M54qtas2cdYNR2624jhdc01yLKmtQ24=
-Date:   Thu, 10 Jun 2021 07:49:19 +0200
-From:   Borislav Petkov <bp@alien8.de>
-To:     Brijesh Singh <brijesh.singh@amd.com>
-Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        linux-coco@lists.linux.dev, linux-mm@kvack.org,
-        linux-crypto@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Vitaly Kuznetsov <vkuznets@redhat.com>,
-        Wanpeng Li <wanpengli@tencent.com>,
-        Jim Mattson <jmattson@google.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        David Rientjes <rientjes@google.com>, tony.luck@intel.com,
-        npmccallum@redhat.com
-Subject: Re: [PATCH Part1 RFC v3 10/22] x86/sev: Register GHCB memory when
- SEV-SNP is active
-Message-ID: <YMGn3/9t5QhS+1rp@zn.tnic>
-References: <20210602140416.23573-1-brijesh.singh@amd.com>
- <20210602140416.23573-11-brijesh.singh@amd.com>
+        id S229773AbhFJGZ2 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 10 Jun 2021 02:25:28 -0400
+Received: from mail.chalver.com.ec ([186.3.12.10]:15156 "EHLO
+        mail.chalver.com.ec" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229778AbhFJGZ1 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 10 Jun 2021 02:25:27 -0400
+X-Greylist: delayed 2668 seconds by postgrey-1.27 at vger.kernel.org; Thu, 10 Jun 2021 02:25:27 EDT
+Received: from mail.chalver.com.ec (localhost.localdomain [127.0.0.1])
+        by mail.chalver.com.ec (Postfix) with ESMTPS id E86EE1F227F8;
+        Thu, 10 Jun 2021 00:17:08 -0500 (ECT)
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by mail.chalver.com.ec (Postfix) with ESMTP id 8482A1F2287B;
+        Thu, 10 Jun 2021 00:10:56 -0500 (ECT)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mail.chalver.com.ec 8482A1F2287B
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chalver.com.ec;
+        s=E2A417BC-DDA7-11E6-85F6-38495636B764; t=1623301856;
+        bh=PxMh0SAMbBGlctefOH2OhvTlJNlHw25bONEEE7Ldp0I=;
+        h=MIME-Version:To:From:Date:Message-Id;
+        b=gZTgVp0yJgkc6I7RlIWzfrXph3s9aY1jkcp8kixMGRxgB1Qcp7KtIEAhtDB82lMYM
+         N+qI/BquLE5ns+67yhm59u1l1h110xp04LGw6Iafl+8bpDhYxkKU73altG3dT1jJ4V
+         WLb4O7yicp444uaNUDRH9Y8zqHSBEOXsDJ4mvDXvLbxPcydFbjeuouo7LEgGAuKFFM
+         hjFQjmv9jjX5B78nvZTgMIYmGGtYwoOQLmlcos4Yh3zzaFzVjv7o3TIHTKbxQylTuz
+         E+9o5Lo92jO/X00FY+NRw212z7PLJNI+7lzYzRpz4P3flkkJJeV07bLRUaABRwAKVB
+         s1U554HXpHnmw==
+X-Virus-Scanned: amavisd-new at chalver.com.ec
+Received: from mail.chalver.com.ec ([127.0.0.1])
+        by localhost (mail.chalver.com.ec [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id ciILd7HYu5-0; Thu, 10 Jun 2021 00:10:56 -0500 (ECT)
+Received: from cris-PC.wifi (unknown [105.9.120.116])
+        by mail.chalver.com.ec (Postfix) with ESMTPSA id 5104D1F2283C;
+        Thu, 10 Jun 2021 00:10:45 -0500 (ECT)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20210602140416.23573-11-brijesh.singh@amd.com>
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: =?utf-8?q?Covid_19_Wohlt=C3=A4tigkeitsfonds?=
+To:     Recipients <mpaucar@chalver.com.ec>
+From:   ''Tayeb souami'' <mpaucar@chalver.com.ec>
+Date:   Thu, 10 Jun 2021 07:18:01 +0200
+Reply-To: Tayebsouam.spende@gmail.com
+Message-Id: <20210610051046.5104D1F2283C@mail.chalver.com.ec>
+X-Laboratorios-Chalver-MailScanner-Information: Please contact the ISP for more information
+X-Laboratorios-Chalver-MailScanner-ID: 5104D1F2283C.A0958
+X-Laboratorios-Chalver-MailScanner: Not scanned: please contact your Internet E-Mail Service Provider for details
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, Jun 02, 2021 at 09:04:04AM -0500, Brijesh Singh wrote:
-> +++ b/arch/x86/kernel/sev-internal.h
-> @@ -0,0 +1,12 @@
-> +/* SPDX-License-Identifier: GPL-2.0-only */
-> +/*
-> + * Forward declarations for sev-shared.c
-> + *
-> + * Author: Brijesh Singh <brijesh.singh@amd.com>
-> + */
-> +
-> +#ifndef _ARCH_X86_KERNEL_SEV_INTERNAL_H
 
-	__X86_SEV_INTERNAL_H__
+Lieber Freund,
 
--- 
-Regards/Gruss,
-    Boris.
+Ich bin Herr Tayeb Souami, New Jersey, Vereinigte Staaten von Amerika, der =
+Mega-Gewinner von $ 315million In Mega Millions Jackpot, spende ich an 5 zu=
+f=C3=A4llige Personen, wenn Sie diese E-Mail erhalten, dann wurde Ihre E-Ma=
+il nach einem Spinball ausgew=C3=A4hlt.Ich habe den gr=C3=B6=C3=9Ften Teil =
+meines Verm=C3=B6gens auf eine Reihe von Wohlt=C3=A4tigkeitsorganisationen =
+und Organisationen verteilt.Ich habe mich freiwillig dazu entschieden, die =
+Summe von =E2=82=AC 2.000.000,00 an Sie als eine der ausgew=C3=A4hlten 5 zu=
+ spenden, um meine Gewinne zu =C3=BCberpr=C3=BCfen, sehen Sie bitte meine Y=
+ou Tube Seite unten.
 
-https://people.kernel.org/tglx/notes-about-netiquette
+UHR MICH HIER: https://www.youtube.com/watch?v=3DZ6ui8ZDQ6Ks
+
+
+
+Das ist dein Spendencode: [TS530342018]
+
+
+
+Antworten Sie mit dem SPENDE-CODE an diese
+
+E-Mail:Tayebsouam.spende@gmail.com
+
+
+Ich hoffe, Sie und Ihre Familie gl=C3=BCcklich zu machen.
+
+Gr=C3=BC=C3=9Fe
+Herr Tayeb Souami
