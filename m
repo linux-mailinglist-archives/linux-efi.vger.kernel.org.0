@@ -2,84 +2,91 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3972F3A2473
-	for <lists+linux-efi@lfdr.de>; Thu, 10 Jun 2021 08:23:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8EBF73A2EE7
+	for <lists+linux-efi@lfdr.de>; Thu, 10 Jun 2021 17:02:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229773AbhFJGZ2 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 10 Jun 2021 02:25:28 -0400
-Received: from mail.chalver.com.ec ([186.3.12.10]:15156 "EHLO
-        mail.chalver.com.ec" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229778AbhFJGZ1 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 10 Jun 2021 02:25:27 -0400
-X-Greylist: delayed 2668 seconds by postgrey-1.27 at vger.kernel.org; Thu, 10 Jun 2021 02:25:27 EDT
-Received: from mail.chalver.com.ec (localhost.localdomain [127.0.0.1])
-        by mail.chalver.com.ec (Postfix) with ESMTPS id E86EE1F227F8;
-        Thu, 10 Jun 2021 00:17:08 -0500 (ECT)
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by mail.chalver.com.ec (Postfix) with ESMTP id 8482A1F2287B;
-        Thu, 10 Jun 2021 00:10:56 -0500 (ECT)
-DKIM-Filter: OpenDKIM Filter v2.10.3 mail.chalver.com.ec 8482A1F2287B
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chalver.com.ec;
-        s=E2A417BC-DDA7-11E6-85F6-38495636B764; t=1623301856;
-        bh=PxMh0SAMbBGlctefOH2OhvTlJNlHw25bONEEE7Ldp0I=;
-        h=MIME-Version:To:From:Date:Message-Id;
-        b=gZTgVp0yJgkc6I7RlIWzfrXph3s9aY1jkcp8kixMGRxgB1Qcp7KtIEAhtDB82lMYM
-         N+qI/BquLE5ns+67yhm59u1l1h110xp04LGw6Iafl+8bpDhYxkKU73altG3dT1jJ4V
-         WLb4O7yicp444uaNUDRH9Y8zqHSBEOXsDJ4mvDXvLbxPcydFbjeuouo7LEgGAuKFFM
-         hjFQjmv9jjX5B78nvZTgMIYmGGtYwoOQLmlcos4Yh3zzaFzVjv7o3TIHTKbxQylTuz
-         E+9o5Lo92jO/X00FY+NRw212z7PLJNI+7lzYzRpz4P3flkkJJeV07bLRUaABRwAKVB
-         s1U554HXpHnmw==
-X-Virus-Scanned: amavisd-new at chalver.com.ec
-Received: from mail.chalver.com.ec ([127.0.0.1])
-        by localhost (mail.chalver.com.ec [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id ciILd7HYu5-0; Thu, 10 Jun 2021 00:10:56 -0500 (ECT)
-Received: from cris-PC.wifi (unknown [105.9.120.116])
-        by mail.chalver.com.ec (Postfix) with ESMTPSA id 5104D1F2283C;
-        Thu, 10 Jun 2021 00:10:45 -0500 (ECT)
-Content-Type: text/plain; charset="utf-8"
+        id S231504AbhFJPEG (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 10 Jun 2021 11:04:06 -0400
+Received: from mail.kernel.org ([198.145.29.99]:45282 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231451AbhFJPEC (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Thu, 10 Jun 2021 11:04:02 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 6D475613E9;
+        Thu, 10 Jun 2021 15:02:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1623337326;
+        bh=p+H8s0egdv3BGUJk4DbOgLzpOhw4FBnL6dPXfrgDCc0=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=cq8/V0Fpo8XOlZkPj+d/rVs3in/wDRFomFDz6ZeoQWR6G4Ok3yX5uSFkxuNU02eBb
+         PZwLF0VzB7opk+RJs51k4s1BH47qvnTYO9CHvm6w/IK63s/ugXRl3kdBR72Ej5gd3d
+         uhQXpRTdpuIdSbWl8rydlMOWYvGtl97ngU7HfU6yfm3Xr4xoEpalr5jrEzD9YVCqB9
+         5J50D2D20P37Ki3WNZDt/eGXVpE9z9hzzNZQJpT/l3lILuqoJBUhhLkp2qM4jecyDA
+         IC4Cav5iNZzrMdBwAcpIOJnWguN+7OdshvXSaJ2rpmbzk/gRS4XJvrMIA086TQTw4X
+         SlLpfIciQZ1ow==
+Received: by mail-oi1-f175.google.com with SMTP id z3so2420686oib.5;
+        Thu, 10 Jun 2021 08:02:06 -0700 (PDT)
+X-Gm-Message-State: AOAM533LnU/FxMm4phO3JehjJfAGkZPPq2juz10fK7/LIlRDV3wG21Vi
+        uQkSFmYBJiCIJoPjHw1kAZD3ejKYq8TonKyN80A=
+X-Google-Smtp-Source: ABdhPJzwc9dtTqV4JuYFW4MyFIjIJUhIi1DCsWgsdHf5pQ3cE8Zc4m+2QBQ9n5BXeIej8L3/LPhxI861X/0qqbQMsWI=
+X-Received: by 2002:a54:460a:: with SMTP id p10mr10583973oip.47.1623337325826;
+ Thu, 10 Jun 2021 08:02:05 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: =?utf-8?q?Covid_19_Wohlt=C3=A4tigkeitsfonds?=
-To:     Recipients <mpaucar@chalver.com.ec>
-From:   ''Tayeb souami'' <mpaucar@chalver.com.ec>
-Date:   Thu, 10 Jun 2021 07:18:01 +0200
-Reply-To: Tayebsouam.spende@gmail.com
-Message-Id: <20210610051046.5104D1F2283C@mail.chalver.com.ec>
-X-Laboratorios-Chalver-MailScanner-Information: Please contact the ISP for more information
-X-Laboratorios-Chalver-MailScanner-ID: 5104D1F2283C.A0958
-X-Laboratorios-Chalver-MailScanner: Not scanned: please contact your Internet E-Mail Service Provider for details
+References: <cover.1623174621.git.ashish.kalra@amd.com> <13d4bdd5fc0cf9aa0ad81d43da975deb37f0d39c.1623174621.git.ashish.kalra@amd.com>
+In-Reply-To: <13d4bdd5fc0cf9aa0ad81d43da975deb37f0d39c.1623174621.git.ashish.kalra@amd.com>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Thu, 10 Jun 2021 17:01:54 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXGOaTR6bCHYtdapgM4wfzNTFQ5f-n5Jf0q28JEmsKimZw@mail.gmail.com>
+Message-ID: <CAMj1kXGOaTR6bCHYtdapgM4wfzNTFQ5f-n5Jf0q28JEmsKimZw@mail.gmail.com>
+Subject: Re: [PATCH v3 4/5] EFI: Introduce the new AMD Memory Encryption GUID.
+To:     Ashish Kalra <Ashish.Kalra@amd.com>
+Cc:     Paolo Bonzini <pbonzini@redhat.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Borislav Petkov <bp@alien8.de>, Ingo Molnar <mingo@redhat.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Joerg Roedel <joro@8bytes.org>,
+        Tom Lendacky <Thomas.Lendacky@amd.com>,
+        X86 ML <x86@kernel.org>, kvm@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Steve Rutherford <srutherford@google.com>,
+        Brijesh Singh <brijesh.singh@amd.com>,
+        linux-efi <linux-efi@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
+On Tue, 8 Jun 2021 at 20:07, Ashish Kalra <Ashish.Kalra@amd.com> wrote:
+>
+> From: Ashish Kalra <ashish.kalra@amd.com>
+>
+> Introduce a new AMD Memory Encryption GUID which is currently
+> used for defining a new UEFI environment variable which indicates
+> UEFI/OVMF support for the SEV live migration feature. This variable
+> is setup when UEFI/OVMF detects host/hypervisor support for SEV
+> live migration and later this variable is read by the kernel using
+> EFI runtime services to verify if OVMF supports the live migration
+> feature.
+>
+> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
 
-Lieber Freund,
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
 
-Ich bin Herr Tayeb Souami, New Jersey, Vereinigte Staaten von Amerika, der =
-Mega-Gewinner von $ 315million In Mega Millions Jackpot, spende ich an 5 zu=
-f=C3=A4llige Personen, wenn Sie diese E-Mail erhalten, dann wurde Ihre E-Ma=
-il nach einem Spinball ausgew=C3=A4hlt.Ich habe den gr=C3=B6=C3=9Ften Teil =
-meines Verm=C3=B6gens auf eine Reihe von Wohlt=C3=A4tigkeitsorganisationen =
-und Organisationen verteilt.Ich habe mich freiwillig dazu entschieden, die =
-Summe von =E2=82=AC 2.000.000,00 an Sie als eine der ausgew=C3=A4hlten 5 zu=
- spenden, um meine Gewinne zu =C3=BCberpr=C3=BCfen, sehen Sie bitte meine Y=
-ou Tube Seite unten.
-
-UHR MICH HIER: https://www.youtube.com/watch?v=3DZ6ui8ZDQ6Ks
-
-
-
-Das ist dein Spendencode: [TS530342018]
-
-
-
-Antworten Sie mit dem SPENDE-CODE an diese
-
-E-Mail:Tayebsouam.spende@gmail.com
-
-
-Ich hoffe, Sie und Ihre Familie gl=C3=BCcklich zu machen.
-
-Gr=C3=BC=C3=9Fe
-Herr Tayeb Souami
+> ---
+>  include/linux/efi.h | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/include/linux/efi.h b/include/linux/efi.h
+> index 6b5d36babfcc..dbd39b20e034 100644
+> --- a/include/linux/efi.h
+> +++ b/include/linux/efi.h
+> @@ -362,6 +362,7 @@ void efi_native_runtime_setup(void);
+>
+>  /* OEM GUIDs */
+>  #define DELLEMC_EFI_RCI2_TABLE_GUID            EFI_GUID(0x2d9f28a2, 0xa886, 0x456a,  0x97, 0xa8, 0xf1, 0x1e, 0xf2, 0x4f, 0xf4, 0x55)
+> +#define AMD_SEV_MEM_ENCRYPT_GUID               EFI_GUID(0x0cf29b71, 0x9e51, 0x433a,  0xa3, 0xb7, 0x81, 0xf3, 0xab, 0x16, 0xb8, 0x75)
+>
+>  typedef struct {
+>         efi_guid_t guid;
+> --
+> 2.17.1
+>
