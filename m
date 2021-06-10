@@ -2,108 +2,98 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0BE503A3019
-	for <lists+linux-efi@lfdr.de>; Thu, 10 Jun 2021 18:06:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 95A433A3137
+	for <lists+linux-efi@lfdr.de>; Thu, 10 Jun 2021 18:45:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230294AbhFJQIP (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 10 Jun 2021 12:08:15 -0400
-Received: from mail.skyhub.de ([5.9.137.197]:49736 "EHLO mail.skyhub.de"
+        id S231310AbhFJQrV (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 10 Jun 2021 12:47:21 -0400
+Received: from foss.arm.com ([217.140.110.172]:36630 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230215AbhFJQIO (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Thu, 10 Jun 2021 12:08:14 -0400
-Received: from zn.tnic (p200300ec2f0cf600591105fc6a1dcc4d.dip0.t-ipconnect.de [IPv6:2003:ec:2f0c:f600:5911:5fc:6a1d:cc4d])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id DDC801EC047E;
-        Thu, 10 Jun 2021 18:06:16 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1623341177;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=zvbfcUZdo2PPbCEC0uqqnYngk3JUoL4NdQDuqHiqROE=;
-        b=rBw20HNvAR7V08L0GMft3uBM69albdHu50Ep8a4MZGOw3fZWG+UfB3UXav/Je4dU8ESW+y
-        ZPIxa2Juwmr4HNYQKQxeYeb1iwJfGFSqgGKx7tso3pjW7zOM2p3d/IkqTN/QFnstvh28uU
-        gtyPvIzRUxziNpMCQWbAfdkCvWqrpcU=
-Date:   Thu, 10 Jun 2021 18:06:15 +0200
-From:   Borislav Petkov <bp@alien8.de>
-To:     Brijesh Singh <brijesh.singh@amd.com>
-Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        linux-coco@lists.linux.dev, linux-mm@kvack.org,
-        linux-crypto@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Vitaly Kuznetsov <vkuznets@redhat.com>,
-        Wanpeng Li <wanpengli@tencent.com>,
-        Jim Mattson <jmattson@google.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        David Rientjes <rientjes@google.com>, tony.luck@intel.com,
-        npmccallum@redhat.com
-Subject: Re: [PATCH Part1 RFC v3 12/22] x86/kernel: Make the bss.decrypted
- section shared in RMP table
-Message-ID: <YMI4dxkwes15c+lx@zn.tnic>
-References: <20210602140416.23573-1-brijesh.singh@amd.com>
- <20210602140416.23573-13-brijesh.singh@amd.com>
+        id S230396AbhFJQrU (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Thu, 10 Jun 2021 12:47:20 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 45919ED1;
+        Thu, 10 Jun 2021 09:45:24 -0700 (PDT)
+Received: from C02TD0UTHF1T.local (unknown [10.57.7.234])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0F4F13F719;
+        Thu, 10 Jun 2021 09:45:21 -0700 (PDT)
+Date:   Thu, 10 Jun 2021 17:45:19 +0100
+From:   Mark Rutland <mark.rutland@arm.com>
+To:     Michael Kelley <mikelley@microsoft.com>
+Cc:     "will@kernel.org" <will@kernel.org>,
+        "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
+        "lorenzo.pieralisi@arm.com" <lorenzo.pieralisi@arm.com>,
+        "sudeep.holla@arm.com" <sudeep.holla@arm.com>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
+        "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
+        "arnd@arndb.de" <arnd@arndb.de>,
+        "wei.liu@kernel.org" <wei.liu@kernel.org>,
+        "ardb@kernel.org" <ardb@kernel.org>,
+        "daniel.lezcano@linaro.org" <daniel.lezcano@linaro.org>,
+        KY Srinivasan <kys@microsoft.com>
+Subject: Re: [PATCH v10 3/7] arm64: hyperv: Add Hyper-V
+ clocksource/clockevent support
+Message-ID: <20210610164519.GB63335@C02TD0UTHF1T.local>
+References: <1620841067-46606-1-git-send-email-mikelley@microsoft.com>
+ <1620841067-46606-4-git-send-email-mikelley@microsoft.com>
+ <20210514123711.GB30645@C02TD0UTHF1T.local>
+ <MWHPR21MB15932B44EC1E55614B219F5ED7509@MWHPR21MB1593.namprd21.prod.outlook.com>
+ <20210517130815.GC62656@C02TD0UTHF1T.local>
+ <MWHPR21MB15930A4EE785984292B1D72BD72D9@MWHPR21MB1593.namprd21.prod.outlook.com>
+ <20210518170016.GP82842@C02TD0UTHF1T.local>
+ <MWHPR21MB1593800A20B55626ACE6A844D7379@MWHPR21MB1593.namprd21.prod.outlook.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210602140416.23573-13-brijesh.singh@amd.com>
+In-Reply-To: <MWHPR21MB1593800A20B55626ACE6A844D7379@MWHPR21MB1593.namprd21.prod.outlook.com>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, Jun 02, 2021 at 09:04:06AM -0500, Brijesh Singh wrote:
-> The encryption attribute for the bss.decrypted region is cleared in the
-> initial page table build. This is because the section contains the data
-> that need to be shared between the guest and the hypervisor.
+Hi Michael,
+
+[trimming the bulk of the thrread]
+
+On Tue, Jun 08, 2021 at 03:36:06PM +0000, Michael Kelley wrote:
+> I've had a couple rounds of discussions with the Hyper-V team.   For
+> the clocksource we've agreed to table the live migration discussion, and
+> I'll resubmit the code so that arm_arch_timer.c provides the
+> standard arch_sys_counter clocksource.  As noted previously, this just
+> works for a Hyper-V guest.  The live migration discussion may come
+> back later after a deeper investigation by Hyper-V.
+
+Great; thanks for this!
+
+> For clockevents, there's not a near term fix.  It's more than just plumbing
+> an interrupt for Hyper-V to virtualize the ARM64 arch timer in a guest VM.
+> From their perspective there's also benefit in having a timer abstraction
+> that's independent of the architecture, and in the Linux guest, the STIMER
+> code is common across x86/x64 and ARM64.  It follows the standard Linux
+> clockevents model, as it should. The code is already in use in out-of-tree
+> builds in the Linux VMs included in Windows 10 on ARM64 as part of the
+> so-called "Windows Subsystem for Linux".
 > 
-> When SEV-SNP is active, just clearing the encryption attribute in the
-> page table is not enough. The page state need to be updated in the RMP
-> table.
-> 
-> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
-> ---
->  arch/x86/kernel/head64.c | 7 +++++++
->  1 file changed, 7 insertions(+)
-> 
-> diff --git a/arch/x86/kernel/head64.c b/arch/x86/kernel/head64.c
-> index de01903c3735..f4c3e632345a 100644
-> --- a/arch/x86/kernel/head64.c
-> +++ b/arch/x86/kernel/head64.c
-> @@ -288,7 +288,14 @@ unsigned long __head __startup_64(unsigned long physaddr,
->  	if (mem_encrypt_active()) {
->  		vaddr = (unsigned long)__start_bss_decrypted;
->  		vaddr_end = (unsigned long)__end_bss_decrypted;
-> +
->  		for (; vaddr < vaddr_end; vaddr += PMD_SIZE) {
-> +			/*
-> +			 * When SEV-SNP is active then transition the page to shared in the RMP
-> +			 * table so that it is consistent with the page table attribute change.
-> +			 */
-> +			early_snp_set_memory_shared(__pa(vaddr), __pa(vaddr), PTRS_PER_PMD);
-> +
->  			i = pmd_index(vaddr);
->  			pmd[i] -= sme_get_me_mask();
->  		}
-> -- 
+> So I'm hoping we can get this core support for ARM64 guests on Hyper-V
+> into upstream using the existing STIMER support.  At some point, Hyper-V
+> will do the virtualization of the ARM64 arch timer, but we don't want to
+> have to stay out-of-tree until after that happens.
 
-It seems to me that all that code from the sme_encrypt_kernel(bp); call
-to the end of the function should be in a separate function in sev.c
-called sev_prepare_kernel(...args...) to be at least abstracted away
-from the main boot path.
+My main concern here is making sure that we can rely on architected
+properties, and don't have to special-case architected bits for hyperv
+(or any other hypervisor), since that inevitably causes longer-term
+pain.
 
-Thx.
+While in abstract I'm not as worried about using the timer
+clock_event_device specifically, that same driver provides the
+clocksource and the event stream, and I want those to work as usual,
+without being tied into the hyperv code. IIUC that will require some
+work, since the driver won't register if the GTDT is missing timer
+interrupts (or if there is no GTDT).
 
--- 
-Regards/Gruss,
-    Boris.
+I think it really depends on what that looks like.
 
-https://people.kernel.org/tglx/notes-about-netiquette
+Thanks,
+Mark.
