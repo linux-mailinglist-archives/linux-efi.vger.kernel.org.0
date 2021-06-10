@@ -2,91 +2,383 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8EBF73A2EE7
-	for <lists+linux-efi@lfdr.de>; Thu, 10 Jun 2021 17:02:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F63F3A2FCE
+	for <lists+linux-efi@lfdr.de>; Thu, 10 Jun 2021 17:51:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231504AbhFJPEG (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 10 Jun 2021 11:04:06 -0400
-Received: from mail.kernel.org ([198.145.29.99]:45282 "EHLO mail.kernel.org"
+        id S231372AbhFJPwz (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 10 Jun 2021 11:52:55 -0400
+Received: from mail.skyhub.de ([5.9.137.197]:47044 "EHLO mail.skyhub.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231451AbhFJPEC (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Thu, 10 Jun 2021 11:04:02 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 6D475613E9;
-        Thu, 10 Jun 2021 15:02:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1623337326;
-        bh=p+H8s0egdv3BGUJk4DbOgLzpOhw4FBnL6dPXfrgDCc0=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=cq8/V0Fpo8XOlZkPj+d/rVs3in/wDRFomFDz6ZeoQWR6G4Ok3yX5uSFkxuNU02eBb
-         PZwLF0VzB7opk+RJs51k4s1BH47qvnTYO9CHvm6w/IK63s/ugXRl3kdBR72Ej5gd3d
-         uhQXpRTdpuIdSbWl8rydlMOWYvGtl97ngU7HfU6yfm3Xr4xoEpalr5jrEzD9YVCqB9
-         5J50D2D20P37Ki3WNZDt/eGXVpE9z9hzzNZQJpT/l3lILuqoJBUhhLkp2qM4jecyDA
-         IC4Cav5iNZzrMdBwAcpIOJnWguN+7OdshvXSaJ2rpmbzk/gRS4XJvrMIA086TQTw4X
-         SlLpfIciQZ1ow==
-Received: by mail-oi1-f175.google.com with SMTP id z3so2420686oib.5;
-        Thu, 10 Jun 2021 08:02:06 -0700 (PDT)
-X-Gm-Message-State: AOAM533LnU/FxMm4phO3JehjJfAGkZPPq2juz10fK7/LIlRDV3wG21Vi
-        uQkSFmYBJiCIJoPjHw1kAZD3ejKYq8TonKyN80A=
-X-Google-Smtp-Source: ABdhPJzwc9dtTqV4JuYFW4MyFIjIJUhIi1DCsWgsdHf5pQ3cE8Zc4m+2QBQ9n5BXeIej8L3/LPhxI861X/0qqbQMsWI=
-X-Received: by 2002:a54:460a:: with SMTP id p10mr10583973oip.47.1623337325826;
- Thu, 10 Jun 2021 08:02:05 -0700 (PDT)
-MIME-Version: 1.0
-References: <cover.1623174621.git.ashish.kalra@amd.com> <13d4bdd5fc0cf9aa0ad81d43da975deb37f0d39c.1623174621.git.ashish.kalra@amd.com>
-In-Reply-To: <13d4bdd5fc0cf9aa0ad81d43da975deb37f0d39c.1623174621.git.ashish.kalra@amd.com>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Thu, 10 Jun 2021 17:01:54 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXGOaTR6bCHYtdapgM4wfzNTFQ5f-n5Jf0q28JEmsKimZw@mail.gmail.com>
-Message-ID: <CAMj1kXGOaTR6bCHYtdapgM4wfzNTFQ5f-n5Jf0q28JEmsKimZw@mail.gmail.com>
-Subject: Re: [PATCH v3 4/5] EFI: Introduce the new AMD Memory Encryption GUID.
-To:     Ashish Kalra <Ashish.Kalra@amd.com>
-Cc:     Paolo Bonzini <pbonzini@redhat.com>,
+        id S230298AbhFJPwz (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Thu, 10 Jun 2021 11:52:55 -0400
+Received: from zn.tnic (p200300ec2f0cf600591105fc6a1dcc4d.dip0.t-ipconnect.de [IPv6:2003:ec:2f0c:f600:5911:5fc:6a1d:cc4d])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 1C6851EC047D;
+        Thu, 10 Jun 2021 17:50:57 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1623340257;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=/ucDEPiAjCNgh+5QYV19aaLxDA7Gu7w2xk6M9j+LUNE=;
+        b=hw2aXx8BFfNHa4IZlkwBdukgEW8Ik8YFYC6RGLU1bKHqwQ80CVn0B0VEaJxiCjJln46oPK
+        fYImG+6j+vFbfPd4bXZgu/g/Jzv1RMvR0bmq9ul0RLWe/yTIRreFOeWAtTyiBzTg2GEPDI
+        4imoc5EragOgkErfv4T4zV31vKEHWG8=
+Date:   Thu, 10 Jun 2021 17:50:51 +0200
+From:   Borislav Petkov <bp@alien8.de>
+To:     Brijesh Singh <brijesh.singh@amd.com>
+Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        linux-coco@lists.linux.dev, linux-mm@kvack.org,
+        linux-crypto@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
         Sean Christopherson <seanjc@google.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Borislav Petkov <bp@alien8.de>, Ingo Molnar <mingo@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Joerg Roedel <joro@8bytes.org>,
-        Tom Lendacky <Thomas.Lendacky@amd.com>,
-        X86 ML <x86@kernel.org>, kvm@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Steve Rutherford <srutherford@google.com>,
-        Brijesh Singh <brijesh.singh@amd.com>,
-        linux-efi <linux-efi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        Vitaly Kuznetsov <vkuznets@redhat.com>,
+        Wanpeng Li <wanpengli@tencent.com>,
+        Jim Mattson <jmattson@google.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        David Rientjes <rientjes@google.com>, tony.luck@intel.com,
+        npmccallum@redhat.com
+Subject: Re: [PATCH Part1 RFC v3 11/22] x86/sev: Add helper for validating
+ pages in early enc attribute changes
+Message-ID: <YMI02+k2zk9eazjQ@zn.tnic>
+References: <20210602140416.23573-1-brijesh.singh@amd.com>
+ <20210602140416.23573-12-brijesh.singh@amd.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20210602140416.23573-12-brijesh.singh@amd.com>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, 8 Jun 2021 at 20:07, Ashish Kalra <Ashish.Kalra@amd.com> wrote:
->
-> From: Ashish Kalra <ashish.kalra@amd.com>
->
-> Introduce a new AMD Memory Encryption GUID which is currently
-> used for defining a new UEFI environment variable which indicates
-> UEFI/OVMF support for the SEV live migration feature. This variable
-> is setup when UEFI/OVMF detects host/hypervisor support for SEV
-> live migration and later this variable is read by the kernel using
-> EFI runtime services to verify if OVMF supports the live migration
-> feature.
->
-> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
+On Wed, Jun 02, 2021 at 09:04:05AM -0500, Brijesh Singh wrote:
+> @@ -65,6 +65,12 @@ extern bool handle_vc_boot_ghcb(struct pt_regs *regs);
+>  /* RMP page size */
+>  #define RMP_PG_SIZE_4K			0
+>  
+> +/* Memory opertion for snp_prep_memory() */
+> +enum snp_mem_op {
+> +	MEMORY_PRIVATE,
+> +	MEMORY_SHARED
 
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
+See below.
 
-> ---
->  include/linux/efi.h | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/include/linux/efi.h b/include/linux/efi.h
-> index 6b5d36babfcc..dbd39b20e034 100644
-> --- a/include/linux/efi.h
-> +++ b/include/linux/efi.h
-> @@ -362,6 +362,7 @@ void efi_native_runtime_setup(void);
->
->  /* OEM GUIDs */
->  #define DELLEMC_EFI_RCI2_TABLE_GUID            EFI_GUID(0x2d9f28a2, 0xa886, 0x456a,  0x97, 0xa8, 0xf1, 0x1e, 0xf2, 0x4f, 0xf4, 0x55)
-> +#define AMD_SEV_MEM_ENCRYPT_GUID               EFI_GUID(0x0cf29b71, 0x9e51, 0x433a,  0xa3, 0xb7, 0x81, 0xf3, 0xab, 0x16, 0xb8, 0x75)
->
->  typedef struct {
->         efi_guid_t guid;
-> --
-> 2.17.1
->
+> +};
+> +
+>  #ifdef CONFIG_AMD_MEM_ENCRYPT
+>  extern struct static_key_false sev_es_enable_key;
+>  extern void __sev_es_ist_enter(struct pt_regs *regs);
+> @@ -103,6 +109,11 @@ static inline int pvalidate(unsigned long vaddr, bool rmp_psize, bool validate)
+>  
+>  	return rc;
+>  }
+> +void __init early_snp_set_memory_private(unsigned long vaddr, unsigned long paddr,
+> +		unsigned int npages);
+> +void __init early_snp_set_memory_shared(unsigned long vaddr, unsigned long paddr,
+> +		unsigned int npages);
+
+Align arguments on the opening brace.
+
+> +void __init snp_prep_memory(unsigned long paddr, unsigned int sz, int op);
+>  #else
+>  static inline void sev_es_ist_enter(struct pt_regs *regs) { }
+>  static inline void sev_es_ist_exit(void) { }
+> @@ -110,6 +121,15 @@ static inline int sev_es_setup_ap_jump_table(struct real_mode_header *rmh) { ret
+>  static inline void sev_es_nmi_complete(void) { }
+>  static inline int sev_es_efi_map_ghcbs(pgd_t *pgd) { return 0; }
+>  static inline int pvalidate(unsigned long vaddr, bool rmp_psize, bool validate) { return 0; }
+> +static inline void __init
+> +early_snp_set_memory_private(unsigned long vaddr, unsigned long paddr, unsigned int npages)
+
+Put those { } at the end of the line:
+
+early_snp_set_memory_private(unsigned long vaddr, unsigned long paddr, unsigned int npages) { }
+
+no need for separate lines. Ditto below.
+
+> +{
+> +}
+> +static inline void __init
+> +early_snp_set_memory_shared(unsigned long vaddr, unsigned long paddr, unsigned int npages)
+> +{
+> +}
+> +static inline void __init snp_prep_memory(unsigned long paddr, unsigned int sz, int op) { }
+>  #endif
+>  
+>  #endif
+> diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
+> index 455c09a9b2c2..6e9b45bb38ab 100644
+> --- a/arch/x86/kernel/sev.c
+> +++ b/arch/x86/kernel/sev.c
+> @@ -532,6 +532,111 @@ static u64 get_jump_table_addr(void)
+>  	return ret;
+>  }
+>  
+> +static void pvalidate_pages(unsigned long vaddr, unsigned int npages, bool validate)
+> +{
+> +	unsigned long vaddr_end;
+> +	int rc;
+> +
+> +	vaddr = vaddr & PAGE_MASK;
+> +	vaddr_end = vaddr + (npages << PAGE_SHIFT);
+> +
+> +	while (vaddr < vaddr_end) {
+> +		rc = pvalidate(vaddr, RMP_PG_SIZE_4K, validate);
+> +		if (WARN(rc, "Failed to validate address 0x%lx ret %d", vaddr, rc))
+> +			sev_es_terminate(1, GHCB_TERM_PVALIDATE);
+					^^
+
+I guess that 1 should be a define too, if we have to be correct:
+
+			sev_es_terminate(SEV_TERM_SET_LINUX, GHCB_TERM_PVALIDATE);
+
+or so. Ditto for all other calls of this.
+
+> +
+> +		vaddr = vaddr + PAGE_SIZE;
+> +	}
+> +}
+> +
+> +static void __init early_set_page_state(unsigned long paddr, unsigned int npages, int op)
+> +{
+> +	unsigned long paddr_end;
+> +	u64 val;
+> +
+> +	paddr = paddr & PAGE_MASK;
+> +	paddr_end = paddr + (npages << PAGE_SHIFT);
+> +
+> +	while (paddr < paddr_end) {
+> +		/*
+> +		 * Use the MSR protocol because this function can be called before the GHCB
+> +		 * is established.
+> +		 */
+> +		sev_es_wr_ghcb_msr(GHCB_MSR_PSC_REQ_GFN(paddr >> PAGE_SHIFT, op));
+> +		VMGEXIT();
+> +
+> +		val = sev_es_rd_ghcb_msr();
+> +
+> +		if (GHCB_RESP_CODE(val) != GHCB_MSR_PSC_RESP)
+
+From a previous review:
+
+Does that one need a warning too or am I being too paranoid?
+
+> +			goto e_term;
+> +
+> +		if (WARN(GHCB_MSR_PSC_RESP_VAL(val),
+> +			 "Failed to change page state to '%s' paddr 0x%lx error 0x%llx\n",
+> +			 op == SNP_PAGE_STATE_PRIVATE ? "private" : "shared",
+> +			 paddr, GHCB_MSR_PSC_RESP_VAL(val)))
+> +			goto e_term;
+> +
+> +		paddr = paddr + PAGE_SIZE;
+> +	}
+> +
+> +	return;
+> +
+> +e_term:
+> +	sev_es_terminate(1, GHCB_TERM_PSC);
+> +}
+> +
+> +void __init early_snp_set_memory_private(unsigned long vaddr, unsigned long paddr,
+> +					 unsigned int npages)
+> +{
+> +	if (!sev_feature_enabled(SEV_SNP))
+> +		return;
+> +
+> +	 /* Ask hypervisor to add the memory pages in RMP table as a 'private'. */
+
+	    Ask the hypervisor to mark the memory pages as private in the RMP table.
+
+> +	early_set_page_state(paddr, npages, SNP_PAGE_STATE_PRIVATE);
+> +
+> +	/* Validate the memory pages after they've been added in the RMP table. */
+> +	pvalidate_pages(vaddr, npages, 1);
+> +}
+> +
+> +void __init early_snp_set_memory_shared(unsigned long vaddr, unsigned long paddr,
+> +					unsigned int npages)
+> +{
+> +	if (!sev_feature_enabled(SEV_SNP))
+> +		return;
+> +
+> +	/*
+> +	 * Invalidate the memory pages before they are marked shared in the
+> +	 * RMP table.
+> +	 */
+> +	pvalidate_pages(vaddr, npages, 0);
+> +
+> +	 /* Ask hypervisor to make the memory pages shared in the RMP table. */
+
+			      mark
+
+> +	early_set_page_state(paddr, npages, SNP_PAGE_STATE_SHARED);
+> +}
+> +
+> +void __init snp_prep_memory(unsigned long paddr, unsigned int sz, int op)
+> +{
+> +	unsigned long vaddr, npages;
+> +
+> +	vaddr = (unsigned long)__va(paddr);
+> +	npages = PAGE_ALIGN(sz) >> PAGE_SHIFT;
+> +
+> +	switch (op) {
+> +	case MEMORY_PRIVATE: {
+> +		early_snp_set_memory_private(vaddr, paddr, npages);
+> +		return;
+> +	}
+> +	case MEMORY_SHARED: {
+> +		early_snp_set_memory_shared(vaddr, paddr, npages);
+> +		return;
+> +	}
+> +	default:
+> +		break;
+> +	}
+> +
+> +	WARN(1, "invalid memory op %d\n", op);
+
+A lot easier, diff ontop of your patch:
+
+---
+diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
+index 7c2cb5300e43..2ad4b5ab3f6c 100644
+--- a/arch/x86/include/asm/sev.h
++++ b/arch/x86/include/asm/sev.h
+@@ -65,12 +65,6 @@ extern bool handle_vc_boot_ghcb(struct pt_regs *regs);
+ /* RMP page size */
+ #define RMP_PG_SIZE_4K			0
+ 
+-/* Memory opertion for snp_prep_memory() */
+-enum snp_mem_op {
+-	MEMORY_PRIVATE,
+-	MEMORY_SHARED
+-};
+-
+ #ifdef CONFIG_AMD_MEM_ENCRYPT
+ extern struct static_key_false sev_es_enable_key;
+ extern void __sev_es_ist_enter(struct pt_regs *regs);
+diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
+index 2a5dce42af35..991d7964cee9 100644
+--- a/arch/x86/kernel/sev.c
++++ b/arch/x86/kernel/sev.c
+@@ -662,20 +662,13 @@ void __init snp_prep_memory(unsigned long paddr, unsigned int sz, int op)
+ 	vaddr = (unsigned long)__va(paddr);
+ 	npages = PAGE_ALIGN(sz) >> PAGE_SHIFT;
+ 
+-	switch (op) {
+-	case MEMORY_PRIVATE: {
++	if (op == SNP_PAGE_STATE_PRIVATE)
+ 		early_snp_set_memory_private(vaddr, paddr, npages);
+-		return;
+-	}
+-	case MEMORY_SHARED: {
++	else if (op == SNP_PAGE_STATE_SHARED)
+ 		early_snp_set_memory_shared(vaddr, paddr, npages);
+-		return;
++	else {
++		WARN(1, "invalid memory page op %d\n", op);
+ 	}
+-	default:
+-		break;
+-	}
+-
+-	WARN(1, "invalid memory op %d\n", op);
+ }
+ 
+ int sev_es_setup_ap_jump_table(struct real_mode_header *rmh)
+---
+
+>  static char sme_early_buffer[PAGE_SIZE] __initdata __aligned(PAGE_SIZE);
+>  
+> +/*
+> + * When SNP is active, changes the page state from private to shared before
+
+s/changes/change/
+
+> + * copying the data from the source to destination and restore after the copy.
+> + * This is required because the source address is mapped as decrypted by the
+> + * caller of the routine.
+> + */
+> +static inline void __init snp_memcpy(void *dst, void *src, size_t sz,
+> +				     unsigned long paddr, bool decrypt)
+> +{
+> +	unsigned long npages = PAGE_ALIGN(sz) >> PAGE_SHIFT;
+> +
+> +	if (!sev_feature_enabled(SEV_SNP) || !decrypt) {
+> +		memcpy(dst, src, sz);
+> +		return;
+> +	}
+> +
+> +	/*
+> +	 * If the paddr needs to be accessed decrypted, mark the page
+
+What do you mean "If" - this is the SNP version of memcpy. Just say:
+
+	/*
+	 * With SNP, the page address needs to be ...
+	 */
+
+> +	 * shared in the RMP table before copying it.
+> +	 */
+> +	early_snp_set_memory_shared((unsigned long)__va(paddr), paddr, npages);
+> +
+> +	memcpy(dst, src, sz);
+> +
+> +	/* Restore the page state after the memcpy. */
+> +	early_snp_set_memory_private((unsigned long)__va(paddr), paddr, npages);
+> +}
+> +
+>  /*
+>   * This routine does not change the underlying encryption setting of the
+>   * page(s) that map this memory. It assumes that eventually the memory is
+> @@ -96,8 +125,8 @@ static void __init __sme_early_enc_dec(resource_size_t paddr,
+>  		 * Use a temporary buffer, of cache-line multiple size, to
+>  		 * avoid data corruption as documented in the APM.
+>  		 */
+> -		memcpy(sme_early_buffer, src, len);
+> -		memcpy(dst, sme_early_buffer, len);
+> +		snp_memcpy(sme_early_buffer, src, len, paddr, enc);
+> +		snp_memcpy(dst, sme_early_buffer, len, paddr, !enc);
+>  
+>  		early_memunmap(dst, len);
+>  		early_memunmap(src, len);
+> @@ -277,9 +306,23 @@ static void __init __set_clr_pte_enc(pte_t *kpte, int level, bool enc)
+>  	else
+>  		sme_early_decrypt(pa, size);
+>  
+> +	/*
+> +	 * If page is getting mapped decrypted in the page table, then the page state
+> +	 * change in the RMP table must happen before the page table updates.
+> +	 */
+> +	if (!enc)
+> +		early_snp_set_memory_shared((unsigned long)__va(pa), pa, 1);
+
+Merge the two branches:
+
+	/* Encrypt/decrypt the contents in-place */
+        if (enc) {
+                sme_early_encrypt(pa, size);
+        } else {
+                sme_early_decrypt(pa, size);
+
+                /*
+                 * On SNP, the page state change in the RMP table must happen
+                 * before the page table updates.
+                 */
+                early_snp_set_memory_shared((unsigned long)__va(pa), pa, 1);
+        }
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
