@@ -2,241 +2,139 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2855C3A42E8
-	for <lists+linux-efi@lfdr.de>; Fri, 11 Jun 2021 15:17:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A3983A440F
+	for <lists+linux-efi@lfdr.de>; Fri, 11 Jun 2021 16:29:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231476AbhFKNTI (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 11 Jun 2021 09:19:08 -0400
-Received: from mail-bn8nam12on2040.outbound.protection.outlook.com ([40.107.237.40]:30304
-        "EHLO NAM12-BN8-obe.outbound.protection.outlook.com"
+        id S231180AbhFKObH (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 11 Jun 2021 10:31:07 -0400
+Received: from mail-dm6nam12on2072.outbound.protection.outlook.com ([40.107.243.72]:29664
+        "EHLO NAM12-DM6-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S230382AbhFKNTF (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Fri, 11 Jun 2021 09:19:05 -0400
+        id S230346AbhFKObG (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Fri, 11 Jun 2021 10:31:06 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=V3+IARQSmG03wpj7U8xniHdmtIlqUsT8Oojo5y4Y7ShFW6UwL6w9Aw/DrKyvQIixoDGpS6E9mn0uzUAtQSspJF81uHbFOfDT/30HB+CMHAJ6S1hx6R7Wkc20TetDu6Wl8RiDgwe/pTy444eTobZ75hfxgGif5QzG8HZVI88CqZx+FPIJfLObcLQA3VDq2KZb03+5FzCbDvXx44tOizvXOemhxGXnT9MG8FDI7QtXOgM9bVYydFaAbvRhlq5gmsyGSIC2Hojl0nvUExbfp58i3qghVdwVzLaED2Ci/5EmNpTIIZnlO4aO/ikIz9n7/ihgDBUBZONnAe8B5JQ1MTfsbA==
+ b=AugUPhsmH9itr9hphywU01Yz7FLHYyUbGlYEipX583Jshf3cncw3rEF8QbvEanGswI3x9WHap2WOk/Ie9/INiJK4gl51AgYvkKkTMalNPSh4pVY37IEum1b0R508xiSybeuT2rzQqoIKDpkfc7TOBpcUasyFaq1LzGlKpRzDx5Ndy4xgIKzIfDYxa7vWZhRrHeALRUH4B8tKtQXB2IebDRQaUTo4bsG7haGGQ4ze8o1jnR4wagYIz00cRtFwP/q1600UmMsc0TewBD7JteFH7lA23/6WCFQIZeywd07zvrm3RhrfVrfEZRUQ4Ax27oHczfg3elLfwaRr9esfqmyZKA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=pBqknHjiwykAU9w5UCvyqkoZnjOBFxVvZrC+yXP4RR0=;
- b=cnQdUlEs5GRj2pCLkxJgrRz7NurywSvba56R4kCkSetmhHV4Wf14zJRglDbXztrCiz+0BTe9FI3/wjNuoj3UfZqkGxBJqoA4MP/pRkirN7QI9Lzee5EDFq6ufauodUHZMrzqTlYmJd/aJ9M5+TftzvixMUE/xgLGPoejDr04nF0l7onk519dr66CmdtyI3To3PEBckPUFAPViFLVllbtg2xKW8vyLMy/uFu/Awhx9qQ3MOhr00+DTzQnb00nO+s7O0Y+9F4gDYAbxEVk81jsss19w8DoItudcAJFCv8zWc8sZQQ3QngSsTspWCPb+59H9/aWN6sMEKe8ASx4YPM8wQ==
+ bh=ImYRURSA0MWns+++F1GteOzG2evYIUzjTgbdkzculhc=;
+ b=Gu9WShkRvRC6RFU9txL6K8UnK4lqjVF21CENFva883OvHfBKJa9rwDfibWL2GeUwmFApetjsmNMfgkEUVc07s6JnL2wi+IGQI2dAP0Jx4/cZV3hpMkoMIur/j9hJ5lnJDOfEsRBaG10nKkkjMK0QoQYsis/ZDeZ/fS8XBqL8kOps7f7f/H2zkoYjag6Wou8zvxRQqEWy6aOgF/AH99/b9ocPgT9X+ft18k938/ssUyzaAUsOjSi4MvWzswdtSDIXsyX0fRl4S7Si6JP2n94EtJPFzkdY/P92IWvQkjMOfAl2DN6uVmGGXdt3sy2ee1g6nEhMuUzbuZa5WwYx9FYtvg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
  header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=pBqknHjiwykAU9w5UCvyqkoZnjOBFxVvZrC+yXP4RR0=;
- b=p427dS0lDrOgIUW1Zxu/ogum9k5/VBbvSADFLkukQeD9VP4Q5+SjfuLPQ55ur3OOTDZSN/4vkgH8GPu5YA/bfubzEoDgxoEaDqaRzOtUjY60mWLRQfXrCBCE6vdSYFgBJ1XcQZdOdc89kaLl+8ph5qXqGRfNrfKMx31uUfcRumM=
+ bh=ImYRURSA0MWns+++F1GteOzG2evYIUzjTgbdkzculhc=;
+ b=gtFNOYImn2S1NVgKtKre+lBk3Re/A9AUSstImgbkJciFkx/8BMZrN/jhivVWGSxPosOiVtU7f+W6evs2i9H46gOt9p645Z/oS5VO09vfmAwXjM1v6z06VuKbqFae7PQgVv0MyuEfQFHyhnjzbe2L1aeAuI+wMqCxJO7BTWVyNp0=
 Authentication-Results: redhat.com; dkim=none (message not signed)
  header.d=none;redhat.com; dmarc=none action=none header.from=amd.com;
-Received: from DM5PR12MB1355.namprd12.prod.outlook.com (2603:10b6:3:6e::7) by
- DM5PR1201MB0121.namprd12.prod.outlook.com (2603:10b6:4:56::9) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.4219.20; Fri, 11 Jun 2021 13:17:03 +0000
-Received: from DM5PR12MB1355.namprd12.prod.outlook.com
- ([fe80::b914:4704:ad6f:aba9]) by DM5PR12MB1355.namprd12.prod.outlook.com
- ([fe80::b914:4704:ad6f:aba9%12]) with mapi id 15.20.4195.032; Fri, 11 Jun
- 2021 13:17:02 +0000
-Subject: Re: [PATCH Part1 RFC v3 21/22] x86/sev: Register SNP guest request
- platform device
-To:     "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
-        Brijesh Singh <brijesh.singh@amd.com>
-Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        linux-coco@lists.linux.dev, linux-mm@kvack.org,
-        linux-crypto@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Vitaly Kuznetsov <vkuznets@redhat.com>,
-        Wanpeng Li <wanpengli@tencent.com>,
-        Jim Mattson <jmattson@google.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        David Rientjes <rientjes@google.com>, tony.luck@intel.com,
-        npmccallum@redhat.com
-References: <20210602140416.23573-1-brijesh.singh@amd.com>
- <20210602140416.23573-22-brijesh.singh@amd.com> <YMEVedGOrYgI1Klc@work-vm>
-From:   Tom Lendacky <thomas.lendacky@amd.com>
-Message-ID: <8a598020-7d89-b399-efb9-735b2a6da8a9@amd.com>
-Date:   Fri, 11 Jun 2021 08:16:58 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.1
-In-Reply-To: <YMEVedGOrYgI1Klc@work-vm>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [67.79.209.213]
-X-ClientProxiedBy: SA9PR13CA0086.namprd13.prod.outlook.com
- (2603:10b6:806:23::31) To DM5PR12MB1355.namprd12.prod.outlook.com
- (2603:10b6:3:6e::7)
+Received: from SN6PR12MB2767.namprd12.prod.outlook.com (2603:10b6:805:75::23)
+ by SA0PR12MB4382.namprd12.prod.outlook.com (2603:10b6:806:9a::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4219.23; Fri, 11 Jun
+ 2021 14:29:07 +0000
+Received: from SN6PR12MB2767.namprd12.prod.outlook.com
+ ([fe80::958d:2e44:518c:744c]) by SN6PR12MB2767.namprd12.prod.outlook.com
+ ([fe80::958d:2e44:518c:744c%7]) with mapi id 15.20.4219.024; Fri, 11 Jun 2021
+ 14:29:07 +0000
+From:   Ashish Kalra <Ashish.Kalra@amd.com>
+To:     pbonzini@redhat.com
+Cc:     seanjc@google.com, tglx@linutronix.de, bp@alien8.de,
+        mingo@redhat.com, hpa@zytor.com, joro@8bytes.org,
+        Thomas.Lendacky@amd.com, x86@kernel.org, kvm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, srutherford@google.com,
+        brijesh.singh@amd.com, linux-efi@vger.kernel.org
+Subject: [PATCH v4 4/5] EFI: Introduce the new AMD Memory Encryption GUID.
+Date:   Fri, 11 Jun 2021 14:28:57 +0000
+Message-Id: <eb86793b6964dc813cd6105dfd5b551d3d2eff46.1623421410.git.ashish.kalra@amd.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <cover.1623421410.git.ashish.kalra@amd.com>
+References: <cover.1623421410.git.ashish.kalra@amd.com>
+Content-Type: text/plain
+X-Originating-IP: [165.204.77.1]
+X-ClientProxiedBy: SN6PR2101CA0018.namprd21.prod.outlook.com
+ (2603:10b6:805:106::28) To SN6PR12MB2767.namprd12.prod.outlook.com
+ (2603:10b6:805:75::23)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from office-linux.texastahm.com (67.79.209.213) by SA9PR13CA0086.namprd13.prod.outlook.com (2603:10b6:806:23::31) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.9 via Frontend Transport; Fri, 11 Jun 2021 13:17:00 +0000
+Received: from ashkalra_ubuntu_server.amd.com (165.204.77.1) by SN6PR2101CA0018.namprd21.prod.outlook.com (2603:10b6:805:106::28) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.4 via Frontend Transport; Fri, 11 Jun 2021 14:29:06 +0000
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: d8d56218-0169-479b-ae2b-08d92cdb336c
-X-MS-TrafficTypeDiagnostic: DM5PR1201MB0121:
+X-MS-Office365-Filtering-Correlation-Id: e7516689-618a-4f96-da0a-08d92ce54517
+X-MS-TrafficTypeDiagnostic: SA0PR12MB4382:
 X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <DM5PR1201MB0121E86FF23AA91BA78C247DEC349@DM5PR1201MB0121.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
+X-Microsoft-Antispam-PRVS: <SA0PR12MB4382261A3ED69588862530918E349@SA0PR12MB4382.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:4941;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 1L4JREBiW0JeYNTcA26DsRcEeTC5lK6Wwt3YuHh/q5bCRdoWGfmdSpO36/Rn5Frl66GxGro0xBWWx8qC2hcvLI92xim6mw4wpuP7YGXGPtMvCM2emMIbcQGCXz8eJUIN5z5C2D+NQePWuNeM9P/nZf/HV7tAKrbmHc78YkSLErgHSwOFuJBer5HqbWN2v0IiALQIe4Qfs83DlpOwSS/vnTWTEyKADzfwVNKEhgPbwwYqm0dyiqk5owpJXMF4QAleifWEVmBhnARG85ek0zvHZ+I+9YCnuT+dcel6SF+k5Viun5FpnykAWiuBObG+wjsf+uPW3hmFbO6MKT8piPakUCYcRZAdko9JH7C2dn+BEGT1KLR2Z1rvYkFA+/QSnz+Lm99LWF575nYyDs2bUhHG9qH9wGgCAUZNW3GhbDXBqqMFYEl/xpmxxNfMf4Ndy+3tujz7NLz2kAqsZiPZB9bHaZac2Qo2kjQOi3RvdlRHqAq2Xa1q7dRXc3EsZI+I32gNs+dnpIjCC8czNM7NzyP1TW9r74P1YsE9DlZSkuYIYnlXZoNBPm04TMw4bgHl37JE5Oj+N/UY3FV6rOwzepP21RjPDFGJVUJdR40yjytjOBaeVumitFdVJvSlOZSmIuom9yb8pJkgRCmJHoQKuK09IQVvRvuTfjUVkxijjVo8cwBmvQWVW5W6rLiy+TL5mp8J
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM5PR12MB1355.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(39860400002)(136003)(346002)(396003)(366004)(376002)(31686004)(83380400001)(6636002)(26005)(6486002)(4326008)(54906003)(8936002)(110136005)(66946007)(478600001)(36756003)(66556008)(66476007)(5660300002)(6506007)(53546011)(956004)(16526019)(186003)(316002)(38100700002)(2616005)(6512007)(8676002)(7416002)(31696002)(86362001)(2906002)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: cmjOq+4k44Es0y2oeHCZQ2HJmi75YcqntgcleG3fBO0aSLE4XrNEX1WQ4s2hmGPyIosOGCi6FFC72TfYyAPpOC1ZPUsah71oGkeibWXb4QAu35YLLxi+yJDQ5h4zErcUWFbA9IEv6wtv4Gas1nn6wUBZK/7PzOltfc6ttVpGNyX2TVJES+t4Xtf/UUzJl/8jL8EDW44nCY8AVQ1IF4kvoyC2Szwa90IN5xNvjj3WccKlpVYy/0q184lC3Ve//qriEvc6P7/g4QGJVEPAnEiSGdmExQOQOv3HE7dDyZh0YiDeDUy6W02CIE+K9Cpq+1XWTBstamkmxyax38gd5l9viICfmBv2jlg4kPXnbjjrm4xt5g9JIo0NQ9+VYBqANEHLNMJ87xCvkLkEnk5Ctz9IS91pptuskDm52KcFeDHbcK57vkKIjDc3cICzXSHX6wWhYgFl4COlc7Z6j8bLuKqfmOptqSQDXGSIgI9WdnvbrKjwrC6ahDJMFvrfc8e4z1JYjsm9usV3X6t4Q/82NpR7MCOCMSMQo+IxWt95JZiezs0hq/3Bwq/9ziEXdJjZJbZKaah2y8pxc7EJQqCHbrQcQ/LXwzeI2C1aTSkw2xRPofqbIoLilVN9hXRF24rqQ6kGDgLDAGpFupu8oYUeoZqWVvM9jSyMuRQcRj1PX6JjEdA=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR12MB2767.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(376002)(366004)(346002)(39860400002)(136003)(396003)(4326008)(38100700002)(38350700002)(2906002)(52116002)(66946007)(8936002)(66476007)(66556008)(7696005)(6666004)(186003)(16526019)(478600001)(83380400001)(6486002)(8676002)(86362001)(26005)(36756003)(5660300002)(2616005)(6916009)(956004)(7416002)(316002);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?cHNqQ3EwN0dJbkRqTzc3ckY1VER4c3VXc08rL05nbS84Vy9qU1JENWtqZXhB?=
- =?utf-8?B?a2lJUmlaeHZmRlZNYURCemYrYW03MEp6ZDlWQ2N3TXQyOUhoNEFUTFQxM3hx?=
- =?utf-8?B?ZC81anIzS0V3ekNpajZpOVNPNGpiMnNEOTFlRHdhRW80VGJNUEM1Z1ppUExV?=
- =?utf-8?B?MW9tMU9TcWZXRGUwY2k4Tyt4aG5HbWxZRmlVWGhuVXc4aXNoRG43ODQ2OGhN?=
- =?utf-8?B?SGNzSmRxWjU2ZzBrS1BTN2NTYlZwTGkrYUYvN05RWEd0eGhLSjc0UHdCWDBM?=
- =?utf-8?B?OFQ2WjNmWTZyOGQxNm1vYjM3eGx2VlR6S29nOFdLdmM2YW1RcnlyS3ZzL2JB?=
- =?utf-8?B?OWVGd3BXSWFMNmNYS2ordktucEIrSzhLZlhibEU4Y3Q1OXdtTHNCTldhUEZS?=
- =?utf-8?B?Qy9KeFBrcG1HTmNqVWd3a1RMTTg4TmNnOFp5M1hZOSt6M1UrODgwc1QzTjZQ?=
- =?utf-8?B?TVFjZkE3Q2tzNVc3cTlXU1FtSS84L2ZNR2dYcDhYT3I2eEF5M2gzTTBaUVBj?=
- =?utf-8?B?QU5pNUcwVGJVa2dVTU5KZnJRd3NMc2xza1N0QXhidzZjTnBLdlQrb0ZpK1Ns?=
- =?utf-8?B?STRQTkNKOXlCSmE1dFUrVEIxb1lNT2xhNzUyeFlRL1ptQ1pOSUdrcTV0WU5H?=
- =?utf-8?B?RXNBTjRnOWxYS3FRdkNoSEhsdXJaVlhBT1hmbGdyMVRRcVFsMXBqa0VML2Z6?=
- =?utf-8?B?blQwME1rbWw1NkFBbEcyWDJNWDNpWkJHQ2gxclFKSkc3dnlXaUIyeEswMFRi?=
- =?utf-8?B?a0x0eFRud0swL3duZjVEQW9zb00xM05jYTYrVk5xaW1rV0NOTjR3c1dZR2lH?=
- =?utf-8?B?VTR3UU00Tk5OenE3NTYxRUczRE04U2JGS3BLaEJzYnlIR2tPdjd4RE1mK1NY?=
- =?utf-8?B?aEhnN0lSamwzSlJ3RjJIaXNoRWRkQWQzc2d5TDQrTVVnQmx5TENYbWlCOUxF?=
- =?utf-8?B?Z1RVdmtYQnMwSjM2Ulk3UlFKcVV4QmJhVU05azVGclNvejllN1dwZ0pwWmFO?=
- =?utf-8?B?WktRRjZQaDkwSUQ5N2Q0VXhRUWdkVkVMbWFObXltQkt1VFhEQnRDOTN2UDkx?=
- =?utf-8?B?VDV5N0FjTHJOVU1IQ0swR0N1VkJmbVRSbHpIQzRSR2FEYUlYN2NMQThuQkR6?=
- =?utf-8?B?U2JYdDg4T2FWaHkyWFM5UkorMDhPZTV1TU94aFpQWTc2MUZzMnhYbjE5TW13?=
- =?utf-8?B?T1pCSmhGNDkzWkVaZmtkam1mTVgrR2R0ZUxVQWFTcms4S3hlR1dFZHhMeEo2?=
- =?utf-8?B?UFQzKzI2L0ZMZ0pNUzhzWTFDMUxCMCtNMnpKMnh6R3lsKzNYTVpreEtpWTc0?=
- =?utf-8?B?aCtkZW1KYnhzU0IvbzREZDRQZ0ZjRW1RQkNGQXdLVFBSbVJYRUdxSjBHVmRj?=
- =?utf-8?B?bERFSkhBVWNwWHVkUVF3QjVmL1ZpdU9hem5VYzRQRi82Njg4dGlmNm55d1RK?=
- =?utf-8?B?YlUrdEphcFlYTzlmUDRWd1FGQjhuVWlGYXRMZUVwWkIvTStxU3pHSXNxeXQx?=
- =?utf-8?B?a3cwdkRkaHp5V3N3WnJ0VFR2aFFzU1JuQ3JWRFY1SFJlNDB3NWV1OWtUa1Vh?=
- =?utf-8?B?bW9HWlErWVdRWjhLc25vdXVkS3MrSWtuRmhzUGlGb2xPekU2RUJTc09KQmlY?=
- =?utf-8?B?cW9OS3c0SzVMWXhyMHFleTV0YmhPcmM5SHg2ZHdRazlDMS9iQi9IektSS0JX?=
- =?utf-8?B?RzN5d3lZdEdqQ0Q3Q2pBdkJqVmtlMWJVWXpjY0NtckFFcVcvdndQSWVDWDIz?=
- =?utf-8?Q?eyySo5SoVhfSJIL6hbNxjcyJyzL94+h7SXjaZTg?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?TR5cMB65hKPJQuU5cZmYaRh283v9REdBJIwBodnHy36IwsvAlSKcjOK5l1Sc?=
+ =?us-ascii?Q?IDf8yqdacvPPGh3as20r0vgCBSvuo9uu7TK8dwdiT+BIJUG1fGJtQM0u1Uqj?=
+ =?us-ascii?Q?SKVNoImNOaEh59D0t3n1BujZ3+OZhzM/pAbkMxRw/mPvKwkD1sGrIFO5EuC/?=
+ =?us-ascii?Q?yspvMBcI66uMXudGH/QwiPVoVhBUN4lAldv90+Q0nOgQQbP6G6S9RlerUGov?=
+ =?us-ascii?Q?XIu4e71vedKtYoakxmhnetRQL3EP9HDZdFXAEiX3bedBovvrYufqafRxLsxP?=
+ =?us-ascii?Q?TIVqMmhGdUWRJYNEP18UfqGvmN3vtdvnFUCt3yPM1o3S3ToT338T3bbLBl+F?=
+ =?us-ascii?Q?Y7fqtNsf7IrFtwiDCcPrvO/cy8vhXJDzfM5QukdqT43g5wh6ei4446UV4NON?=
+ =?us-ascii?Q?i7P40WMxYb8YuvRVAAqQt++ImW6646ji4zR7EDZ9PIs6Wsts0X+sdfipmXd9?=
+ =?us-ascii?Q?uS6B1t3Virhe94diYW06J90nP1lm+r+tPa/2nfuQLec3he2R7Ppg9dGJON2C?=
+ =?us-ascii?Q?NuJV/Oyg08/tiQTjesrZxGhQ/qg7UiaOIFkSNaDZ8kugqGL+F7csxQfO201p?=
+ =?us-ascii?Q?7JBDJx1HgXLNqWp1bOMY3GgJEu0FUvxPHpYS6UisgQV7QKh198Q5/gX6Hoth?=
+ =?us-ascii?Q?V9qH96oaZe7KS93MGXgbRUG3jat0jhO67F4WYVeRHqf5y3fBg+TjHkKzOIDY?=
+ =?us-ascii?Q?O5aipjrAsRVgbacz11m7Tk7THZSz3xTFHm+ePamLkv94gj729lGjXZ+RcHZM?=
+ =?us-ascii?Q?BjjhfIX7p/ml+vSmylC+0kAwma7VKxXC89Bw5GGokDURJbMrsbLdx14/yR89?=
+ =?us-ascii?Q?2SCsVE+kmWGSEdokLBeeUuHiRdyAYLKkLdXVR24J2M+aTvd2QMCJIuuppQaq?=
+ =?us-ascii?Q?FZDzPe8itTkPFcVkX9AJnmKTORe+quDH0aidzv/6+ywU0mBXdt3FDSc8hQvi?=
+ =?us-ascii?Q?L5KXf/5eF8eth8D+tvYRs6y8UrYKR4pjJZIEleC2SXu1kQNl5gFmciT4VeLR?=
+ =?us-ascii?Q?SfTn/Z1U7WoP6lZeRlDg3zZYzkVEW/omb5JlVldKzVOjvJfhJjSbFjDmxzVh?=
+ =?us-ascii?Q?pN/l3p5VkqOGSPNeGYJXkew4RDEje5mHbF+0yPE7dyrID5Cp5yQK9HgTv2P/?=
+ =?us-ascii?Q?MzoQWUUyBEhau6gEgPpj1nEk4rdD7XabPKohd5jHvLA7oN6cxNxO1CNdR5I4?=
+ =?us-ascii?Q?dZnShoRqPs6eBleQB+IGDXzWPLI+CHakAyyrmf85+H57EurUsX1NR6ZdgRlz?=
+ =?us-ascii?Q?ZligFwYf+NsuiFTHph1BVXSYbezBATLvAzZOb75rmJDMx0oFuun8pl7kNTpA?=
+ =?us-ascii?Q?gAnNHDLnpkk52ISdRfmCOgJI?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d8d56218-0169-479b-ae2b-08d92cdb336c
-X-MS-Exchange-CrossTenant-AuthSource: DM5PR12MB1355.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e7516689-618a-4f96-da0a-08d92ce54517
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR12MB2767.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Jun 2021 13:17:02.4884
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Jun 2021 14:29:06.9658
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: jTI5x4BpuNoL1aQc5KsELr2L0jFSF4BEwHM1ZV6cHuC68AqpkHu/1Dirb5+tGL1muBIygQ5ypm/A8yHUfYPCPA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM5PR1201MB0121
+X-MS-Exchange-CrossTenant-UserPrincipalName: lz4TEbV4VvXhzkOasYC4rRINxRuUioJC2Ji4kSShMCkq5SN+BFa4uJfCqiZ5LFuMQELTzIhu3+foenNH9m/CtA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB4382
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 6/9/21 2:24 PM, Dr. David Alan Gilbert wrote:
-> * Brijesh Singh (brijesh.singh@amd.com) wrote:
->> Version 2 of GHCB specification provides NAEs that can be used by the SNP
->> guest to communicate with the PSP without risk from a malicious hypervisor
->> who wishes to read, alter, drop or replay the messages sent.
->>
->> The hypervisor uses the SNP_GUEST_REQUEST command interface provided by
->> the SEV-SNP firmware to forward the guest messages to the PSP.
->>
->> In order to communicate with the PSP, the guest need to locate the secrets
->> page inserted by the hypervisor during the SEV-SNP guest launch. The
->> secrets page contains the communication keys used to send and receive the
->> encrypted messages between the guest and the PSP.
->>
->> The secrets page is located either through the setup_data cc_blob_address
->> or EFI configuration table.
->>
->> Create a platform device that the SNP guest driver can bind to get the
->> platform resources. The SNP guest driver can provide userspace interface
->> to get the attestation report, key derivation etc.
->>
->> The helper snp_issue_guest_request() will be used by the drivers to
->> send the guest message request to the hypervisor. The guest message header
->> contains a message count. The message count is used in the IV. The
->> firmware increments the message count by 1, and expects that next message
->> will be using the incremented count.
->>
->> The helper snp_msg_seqno() will be used by driver to get and message
->> sequence counter, and it will be automatically incremented by the
->> snp_issue_guest_request(). The incremented value is be saved in the
->> secrets page so that the kexec'ed kernel knows from where to begin.
->>
->> See SEV-SNP and GHCB spec for more details.
->>
->> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
->> ---
->>  arch/x86/include/asm/sev.h      |  12 +++
->>  arch/x86/include/uapi/asm/svm.h |   2 +
->>  arch/x86/kernel/sev.c           | 176 ++++++++++++++++++++++++++++++++
->>  arch/x86/platform/efi/efi.c     |   2 +
->>  include/linux/efi.h             |   1 +
->>  include/linux/sev-guest.h       |  76 ++++++++++++++
->>  6 files changed, 269 insertions(+)
->>  create mode 100644 include/linux/sev-guest.h
->>
+From: Ashish Kalra <ashish.kalra@amd.com>
 
->> +u64 snp_msg_seqno(void)
->> +{
->> +	struct snp_secrets_page_layout *layout;
->> +	u64 count;
->> +
->> +	layout = snp_map_secrets_page();
->> +	if (layout == NULL)
->> +		return 0;
->> +
->> +	/* Read the current message sequence counter from secrets pages */
->> +	count = readl(&layout->os_area.msg_seqno_0);
-> 
-> Why is this seqno_0 - is that because it's the count of talking to the
-> PSP?
+Introduce a new AMD Memory Encryption GUID which is currently
+used for defining a new UEFI environment variable which indicates
+UEFI/OVMF support for the SEV live migration feature. This variable
+is setup when UEFI/OVMF detects host/hypervisor support for SEV
+live migration and later this variable is read by the kernel using
+EFI runtime services to verify if OVMF supports the live migration
+feature.
 
-Yes, the sequence number is an ever increasing value that is used in
-communicating with the PSP. The PSP maintains the next expected sequence
-number and will reject messages which have a sequence number that is not
-in sync with the PSP. The 0 refers to the VMPL level. Each VMPL level has
-its own sequence number.
+Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
+---
+ include/linux/efi.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-> 
->> +	iounmap(layout);
->> +
->> +	/*
->> +	 * The message sequence counter for the SNP guest request is a 64-bit value
->> +	 * but the version 2 of GHCB specification defines the 32-bit storage for the
->> +	 * it.
->> +	 */
->> +	if ((count + 1) >= INT_MAX)
->> +		return 0;
-> 
-> Is that UINT_MAX?
-> 
->> +
->> +	return count + 1;
->> +}
->> +EXPORT_SYMBOL_GPL(snp_msg_seqno);
->> +
->> +static void snp_gen_msg_seqno(void)
->> +{
->> +	struct snp_secrets_page_layout *layout;
->> +	u64 count;
->> +
->> +	layout = snp_map_secrets_page();
->> +	if (layout == NULL)
->> +		return;
->> +
->> +	/* Increment the sequence counter by 2 and save in secrets page. */
->> +	count = readl(&layout->os_area.msg_seqno_0);
->> +	count += 2;
-> 
-> Why 2 not 1 ?
-
-The return message by the PSP also increments the sequence number, hence
-the increment by 2 instead of 1 for the next message to be submitted.
-
-I'll let Brijesh address the other questions.
-
-Thanks,
-Tom
+diff --git a/include/linux/efi.h b/include/linux/efi.h
+index 6b5d36babfcc..dbd39b20e034 100644
+--- a/include/linux/efi.h
++++ b/include/linux/efi.h
+@@ -362,6 +362,7 @@ void efi_native_runtime_setup(void);
+ 
+ /* OEM GUIDs */
+ #define DELLEMC_EFI_RCI2_TABLE_GUID		EFI_GUID(0x2d9f28a2, 0xa886, 0x456a,  0x97, 0xa8, 0xf1, 0x1e, 0xf2, 0x4f, 0xf4, 0x55)
++#define AMD_SEV_MEM_ENCRYPT_GUID		EFI_GUID(0x0cf29b71, 0x9e51, 0x433a,  0xa3, 0xb7, 0x81, 0xf3, 0xab, 0x16, 0xb8, 0x75)
+ 
+ typedef struct {
+ 	efi_guid_t guid;
+-- 
+2.17.1
 
