@@ -2,157 +2,94 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DEE573A6D0F
-	for <lists+linux-efi@lfdr.de>; Mon, 14 Jun 2021 19:23:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F36F53A6D27
+	for <lists+linux-efi@lfdr.de>; Mon, 14 Jun 2021 19:27:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234261AbhFNRZl (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 14 Jun 2021 13:25:41 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:25436 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S233843AbhFNRZl (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 14 Jun 2021 13:25:41 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1623691417;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=JHofTgDnAfH9up9hmcVY1pzQsltC1O56Hl0KypQcsag=;
-        b=PAMOchzGtOa48k4pPcxKpXNJYJ2JFe/Ep830q5B7SjEi5cR9scXNHKuTADlVe6lRLjqOmQ
-        x1Hv3U8ysaCkAjLZrc64R5KX3gsblId1X/3CD61Bv/n0NnfIucOP9dGQoyQPdu1tlC3lEA
-        KhCxTkzQUwAhTbGEB67CbROubaMi25A=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-198-BCI4OM8YP6WM6ilrahYegQ-1; Mon, 14 Jun 2021 13:23:36 -0400
-X-MC-Unique: BCI4OM8YP6WM6ilrahYegQ-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id DE0C580363A;
-        Mon, 14 Jun 2021 17:23:33 +0000 (UTC)
-Received: from work-vm (ovpn-114-158.ams2.redhat.com [10.36.114.158])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id 016135D6A8;
-        Mon, 14 Jun 2021 17:23:05 +0000 (UTC)
-Date:   Mon, 14 Jun 2021 18:23:03 +0100
-From:   "Dr. David Alan Gilbert" <dgilbert@redhat.com>
-To:     Brijesh Singh <brijesh.singh@amd.com>
-Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        linux-coco@lists.linux.dev, linux-mm@kvack.org,
-        linux-crypto@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Vitaly Kuznetsov <vkuznets@redhat.com>,
-        Wanpeng Li <wanpengli@tencent.com>,
-        Jim Mattson <jmattson@google.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        David Rientjes <rientjes@google.com>, tony.luck@intel.com,
-        npmccallum@redhat.com
-Subject: Re: [PATCH Part1 RFC v3 21/22] x86/sev: Register SNP guest request
- platform device
-Message-ID: <YMeQd6z1iwYyj6JK@work-vm>
-References: <20210602140416.23573-1-brijesh.singh@amd.com>
- <20210602140416.23573-22-brijesh.singh@amd.com>
- <YMEVedGOrYgI1Klc@work-vm>
- <aef906ea-764d-0bbc-49c6-b3ecfc192214@amd.com>
+        id S235445AbhFNR3q (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 14 Jun 2021 13:29:46 -0400
+Received: from mga17.intel.com ([192.55.52.151]:28811 "EHLO mga17.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S233843AbhFNR3p (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Mon, 14 Jun 2021 13:29:45 -0400
+IronPort-SDR: 0Ry1nqiSLO9dMAtvluaYzpqS4qu3vMlQcxpn1pzisSOWWOJZ8usDWr5d4kgRw7lV5kJkuPtGLs
+ y4EJoc6d/29A==
+X-IronPort-AV: E=McAfee;i="6200,9189,10015"; a="186222030"
+X-IronPort-AV: E=Sophos;i="5.83,273,1616482800"; 
+   d="scan'208";a="186222030"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jun 2021 10:27:42 -0700
+IronPort-SDR: 4CC/4Ql0kz/e6Gm28mECw/cfBEaDCFhBglwNFjN3NEUf4pMdO5VMxhV5jmgED7VLKqG9XGh0Es
+ YtKdOSSnaOog==
+X-IronPort-AV: E=Sophos;i="5.83,273,1616482800"; 
+   d="scan'208";a="471378595"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
+  by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jun 2021 10:27:40 -0700
+Received: from andy by smile with local (Exim 4.94)
+        (envelope-from <andy.shevchenko@gmail.com>)
+        id 1lsqN6-002I2U-O7; Mon, 14 Jun 2021 20:27:36 +0300
+Date:   Mon, 14 Jun 2021 20:27:36 +0300
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+To:     Dave Young <dyoung@redhat.com>
+Cc:     Jean Delvare <jdelvare@suse.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Javier =?iso-8859-1?B?VGnh?= <javier.tia@gmail.com>,
+        kexec@lists.infradead.org, Eric Biederman <ebiederm@xmission.com>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        Matt Fleming <matt@codeblueprint.co.uk>,
+        Ard Biesheuvel <ardb@kernel.org>
+Subject: Re: [PATCH v1 0/2] firmware: dmi_scan: Make it work in kexec'ed
+ kernel
+Message-ID: <YMeRiDMet2JyOV4P@smile.fi.intel.com>
+References: <YLdG91qspr19heDS@smile.fi.intel.com>
+ <YLss6ZNPMIXleLLF@dhcp-128-65.nay.redhat.com>
+ <YL5HvUqtsDXx5CzM@smile.fi.intel.com>
+ <YL5U/zSb50SnbLgW@smile.fi.intel.com>
+ <YL9hxPdPj0dYMyaD@dhcp-128-65.nay.redhat.com>
+ <CAHp75VcPuf6BLGf7Y3RO2M-gHMFZMTeb4ftnj_tbGS4TxvThxA@mail.gmail.com>
+ <YMCsSqzmG4jb1Ojo@dhcp-128-65.nay.redhat.com>
+ <YMQ62d1EFFjRcv6w@dhcp-128-65.nay.redhat.com>
+ <YMd39tIPercgljll@smile.fi.intel.com>
+ <YMeM1Xee9Yg3j21D@smile.fi.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aef906ea-764d-0bbc-49c6-b3ecfc192214@amd.com>
-User-Agent: Mutt/2.0.7 (2021-05-04)
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
+In-Reply-To: <YMeM1Xee9Yg3j21D@smile.fi.intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-* Brijesh Singh (brijesh.singh@amd.com) wrote:
-> I see that Tom answered few comments. I will cover others.
+On Mon, Jun 14, 2021 at 08:07:33PM +0300, Andy Shevchenko wrote:
+> On Mon, Jun 14, 2021 at 06:38:30PM +0300, Andy Shevchenko wrote:
+> > On Sat, Jun 12, 2021 at 12:40:57PM +0800, Dave Young wrote:
+> > > > Probably it is doable to have kexec on 32bit efi working
+> > > > without runtime service support, that means no need the trick of fixed
+> > > > mapping.
+> > > > 
+> > > > If I can restore my vm to boot 32bit efi on this weekend then I may provide some draft
+> > > > patches for test.
+> > > 
+> > > Unfortunately I failed to setup a 32bit efi guest,  here are some
+> > > untested draft patches, please have a try.
+> > 
+> > Thanks for the patches.
+> > 
+> > As previously, I have reverted my hacks and applied your patches (also I
+> > dropped patches from previous mail against kernel and kexec-tools) for both
+> > kernel and user space on first and second environments.
+> > 
+> > It does NOT solve the issue.
+> > 
+> > If there is no idea pops up soon, I'm going to resend my series that
+> > workarounds the issue.
 > 
-> 
-> On 6/9/21 2:24 PM, Dr. David Alan Gilbert wrote:
-> + /*
-> >> +	 * The message sequence counter for the SNP guest request is a 64-bit value
-> >> +	 * but the version 2 of GHCB specification defines the 32-bit storage for the
-> >> +	 * it.
-> >> +	 */
-> >> +	if ((count + 1) >= INT_MAX)
-> >> +		return 0;
-> > Is that UINT_MAX?
-> 
-> Good catch. It should be UINT_MAX.
+> Hold on, I may have made a mistake during testing. Let me retest this.
 
-OK, but I'm also confused by two things:
-  a) Why +1 given that Tom's reply says this gets incremented by 2 each
-time (once for the message, once for the reply)
-  b) Why >= ? I think here is count was INT_MAX-1 you'd skip to 0,
-skipping INT_MAX - is that what you want?
+Double checked, confirmed that it's NOT working.
 
-> 
-> > +	/*
-> > +	 * The secret page contains the VM encryption key used for encrypting the
-> > +	 * messages between the guest and the PSP. The secrets page location is
-> > +	 * available either through the setup_data or EFI configuration table.
-> > +	 */
-> > +	if (hdr->cc_blob_address) {
-> > +		paddr = hdr->cc_blob_address;
-> > Can you trust the paddr the host has given you or do you need to do some
-> > form of validation?
-> The paddr is mapped encrypted. That means that data  in the paddr must
-> be encrypted either through the guest or PSP. After locating the paddr,
-> we perform a simply sanity check (32-bit magic string "AMDE"). See the
-> verify header check below. Unfortunately the secrets page itself does
-> not contain any magic key which we can use to ensure that
-> hdr->secret_paddr is actually pointing to the secrets pages but all of
-> these memory is accessed encrypted so its safe to access it. If VMM
-> lying to us that basically means guest will not be able to communicate
-> with the PSP and can't do the attestation etc.
-
-OK; that nails pretty much anything bad that can happen - I was just
-thinking if the host did something odd like give you an address in the
-middle of some other useful structure.
-
-Dave
-
-> >
-> > Dave
-> > +	} else if (efi_enabled(EFI_CONFIG_TABLES)) {
-> > +#ifdef CONFIG_EFI
-> > +		paddr = cc_blob_phys;
-> > +#else
-> > +		return -ENODEV;
-> > +#endif
-> > +	} else {
-> > +		return -ENODEV;
-> > +	}
-> > +
-> > +	info = memremap(paddr, sizeof(*info), MEMREMAP_WB);
-> > +	if (!info)
-> > +		return -ENOMEM;
-> > +
-> > +	/* Verify the header that its a valid SEV_SNP CC header */
-> > +	if ((info->magic == CC_BLOB_SEV_HDR_MAGIC) &&
-> > +	    info->secrets_phys &&
-> > +	    (info->secrets_len == PAGE_SIZE)) {
-> > +		res->start = info->secrets_phys;
-> > +		res->end = info->secrets_phys + info->secrets_len;
-> > +		res->flags = IORESOURCE_MEM;
-> > +		snp_secrets_phys = info->secrets_phys;
-> > +		ret = 0;
-> > +	}
-> > +
-> > +	memunmap(info);
-> > +	return ret;
-> > +}
-> > +
-> 
 -- 
-Dr. David Alan Gilbert / dgilbert@redhat.com / Manchester, UK
+With Best Regards,
+Andy Shevchenko
+
 
