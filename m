@@ -2,33 +2,42 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B9553A9B9E
-	for <lists+linux-efi@lfdr.de>; Wed, 16 Jun 2021 15:07:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 487793A9BBA
+	for <lists+linux-efi@lfdr.de>; Wed, 16 Jun 2021 15:10:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233147AbhFPNJw (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 16 Jun 2021 09:09:52 -0400
-Received: from mail.skyhub.de ([5.9.137.197]:39064 "EHLO mail.skyhub.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232842AbhFPNJv (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Wed, 16 Jun 2021 09:09:51 -0400
-Received: from zn.tnic (p200300ec2f0c2b00ec25a986a17212ee.dip0.t-ipconnect.de [IPv6:2003:ec:2f0c:2b00:ec25:a986:a172:12ee])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 96CD31EC034B;
-        Wed, 16 Jun 2021 15:07:43 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1623848863;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=8yMX5wXDTeBZiEndRx46KxuvK70cJvRc3Y8fir3mrlw=;
-        b=WDIxjwPptED+sxhXVr4DebXCFDLW8mtSgcNBYWtYFsKOYuGQWek745RisCXpCy9k7nAUoH
-        8tm/3FFXAq5mbENPHW2GhtSl8/DeM3GO9werqpnARh9UL7OWh87hL8jwc8KIOW8kM2uDMf
-        NDDoT5/tDVPWYq0DjN1e9lPctPIWEvs=
-Date:   Wed, 16 Jun 2021 15:07:38 +0200
-From:   Borislav Petkov <bp@alien8.de>
-To:     Brijesh Singh <brijesh.singh@amd.com>
-Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        id S232408AbhFPNMi (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 16 Jun 2021 09:12:38 -0400
+Received: from mail-bn8nam08on2076.outbound.protection.outlook.com ([40.107.100.76]:41057
+        "EHLO NAM04-BN8-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S230087AbhFPNMg (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Wed, 16 Jun 2021 09:12:36 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=KF0xCX0P7CzAhAxHllGjiUUoikSF4gDSGswdzaHRxtXUlUlJ/D4Rp1vY1Py799efOChtNE7qECtWv3WqMhbH+fhdEAx2DGGt0brKY0pL1we+VoteuaTCIIsaysjLUF7liNUetb7BCfmTDv0xhxmp3idWDBhBgzeFFinrvGV5RHgtDNctZA4TWGXkWOyTvk59R0E3n0LzQCCZEN56eGAJkDx4LrPJynDn5ON1AqOaQozSqmPIKNCHBE8pgFMNgcRbqx1hm3but52j8JcReOSGc7Z1PabQSbGxt7MvAnSR0DuuoKXB1NqfNHo2pTFq90pH1IJim8RFsk/vBGXrM8gtAQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=DbaS5dURvQmOT5xfmAEd76xcoNSWxZOErLTldyNcUpE=;
+ b=F6BA2kem7FnCTOQDjQk3Pobd9xFXqA2eaiY8I/8+yF0k/5hy6JXK5Y4MwZnkmMlDT0ddNggSnGtjDynBfIIqwc4k/6qTK4weZn3tJOdNdaMunqc2hWRq3aAYnESuQEC31G3XXc2VWY6qKExDV+NdSb2b6M7moUEUQ44EiyHAkTvn9Oi4ekOFa372RjKoCZUnaoqz4mkZhzi5sVD70C+8NKZkSBB5rDtL18AZDnWGDL3L7y+hN0zaDCh4Tjmfe38PK4IAmboCfbaJ9+69Pr+badcEW+UqVdB+TnUtDszKOo+0z11tb81HsmaMX4fCiQyAZnGCZ3d6lzBfwvLVrIr+7g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=DbaS5dURvQmOT5xfmAEd76xcoNSWxZOErLTldyNcUpE=;
+ b=3KC6siarqDbNkBJ2hecxs2pdp/i8J8Vyab1fxjokOSXlvJffoo5PbOBvYUlsC8K4DBRC+RKIrc++MIjLcpMMGBPcTYL3csvJAYQp/3TIrU/QxqNhG0u9/TwK5azmOo0h0X7BLVfVviH0lX4xc2RFLOtDkeaFPu+NY6ilWKY5Pn4=
+Authentication-Results: redhat.com; dkim=none (message not signed)
+ header.d=none;redhat.com; dmarc=none action=none header.from=amd.com;
+Received: from DM6PR12MB2714.namprd12.prod.outlook.com (2603:10b6:5:42::18) by
+ DM5PR12MB2424.namprd12.prod.outlook.com (2603:10b6:4:b7::34) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.4219.22; Wed, 16 Jun 2021 13:10:26 +0000
+Received: from DM6PR12MB2714.namprd12.prod.outlook.com
+ ([fe80::7df8:b0cd:fe1b:ae7b]) by DM6PR12MB2714.namprd12.prod.outlook.com
+ ([fe80::7df8:b0cd:fe1b:ae7b%5]) with mapi id 15.20.4219.022; Wed, 16 Jun 2021
+ 13:10:26 +0000
+Cc:     brijesh.singh@amd.com, x86@kernel.org,
+        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
         linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
         linux-coco@lists.linux.dev, linux-mm@kvack.org,
         linux-crypto@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
@@ -47,423 +56,113 @@ Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
         Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
         David Rientjes <rientjes@google.com>, tony.luck@intel.com,
         npmccallum@redhat.com
-Subject: Re: [PATCH Part1 RFC v3 19/22] x86/sev-snp: SEV-SNP AP creation
- support
-Message-ID: <YMn3mnyLDUNYGJA2@zn.tnic>
+Subject: Re: [PATCH Part1 RFC v3 11/22] x86/sev: Add helper for validating
+ pages in early enc attribute changes
+To:     Borislav Petkov <bp@alien8.de>
 References: <20210602140416.23573-1-brijesh.singh@amd.com>
- <20210602140416.23573-20-brijesh.singh@amd.com>
-MIME-Version: 1.0
+ <20210602140416.23573-12-brijesh.singh@amd.com> <YMI02+k2zk9eazjQ@zn.tnic>
+ <d0759889-94df-73b0-4285-fa064eb187cd@amd.com> <YMen5wVqR31D/Q4z@zn.tnic>
+ <70db789d-b1aa-c355-2d16-51ace4666b3f@amd.com> <YMnNYNBvEEAr5kqd@zn.tnic>
+ <f7e70782-701c-13dd-43d2-67c92f8cf36f@amd.com> <YMnoeRcuMfAqX5Vf@zn.tnic>
+ <9f012bcb-4756-600d-6fe8-b1db9b972f17@amd.com> <YMn2aiMSEVUuWW8B@zn.tnic>
+From:   Brijesh Singh <brijesh.singh@amd.com>
+Message-ID: <91db9dfc-068a-3709-925b-9e249fbe8f6f@amd.com>
+Date:   Wed, 16 Jun 2021 08:10:22 -0500
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
+ Gecko/20100101 Thunderbird/78.11.0
+In-Reply-To: <YMn2aiMSEVUuWW8B@zn.tnic>
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20210602140416.23573-20-brijesh.singh@amd.com>
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-Originating-IP: [70.112.153.56]
+X-ClientProxiedBy: SN7PR04CA0040.namprd04.prod.outlook.com
+ (2603:10b6:806:120::15) To DM6PR12MB2714.namprd12.prod.outlook.com
+ (2603:10b6:5:42::18)
+MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from Brijeshs-MacBook-Pro.local (70.112.153.56) by SN7PR04CA0040.namprd04.prod.outlook.com (2603:10b6:806:120::15) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4219.21 via Frontend Transport; Wed, 16 Jun 2021 13:10:24 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: e7529508-0232-4002-51b7-08d930c81b66
+X-MS-TrafficTypeDiagnostic: DM5PR12MB2424:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <DM5PR12MB24247D34A843FF29EE4802ECE50F9@DM5PR12MB2424.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:3276;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: YeqKNIDXe/7amTas+90umI0Ay0MPGFpA4Hr2XLenNkCa6A7tLwomSi3RBaBLr0gHz6eCGDJiX6vc+JDq/i0q5ipufLwc4HnLkF+7vLerPmuXjclV1wX50KklAabIc6fkouhG38yo/ELOns7jlFICRWPze9KzrSnQI7JSWUZb/oaEnXBbus8/tYprNpgGx3HkQrJiTx7f5MEpcnDLO8DH3Wi+lWk0jh9DB2ZDskzLqfBGsbOz0977tNjRNyqs2nyFYoEcFvJ4pp3mdZ+nAph84HHqxEeivkrp4XX/8bTAp1dtJZeCqxdiJaVCUgXkww2vL44Sv8ckKk2CbzgJP4m10HKNT9sePi65ErWRFS2C00Ip2fQIOSzXr/f+zp1gUNTgZ6Qx4ee5Jm5t7U5Wb8Oz2Yu1xOjomfcDtfKoFtaZ9lLv75iIfKYyZLyxTPBcO+JGZoFfFug1zNIKGu/sIvd4+zTQn7nZTSxCI24+f9dmHTAfjDkw9uf/NXHhT39eWZ1E8qfNYTTZwXzwrklavxVqfVduIbKL2O9VvuhXD6r1/vDc5yCvgAA4kwNrvOmL/fekxnLV322w7wgRniicu6LGV6uaUB6kO24HTd+scAJ9LPWLCfR5+9PYwlHA0IIue4GEsTjfd7uMiOY9BKfrk+cP87cgBZTbBFrijS+ezlT0/a3QoU7JelaEKTiceZO0l9lI8MaaVxNFktAWYtC+FivKbpjuRpGVBskDurU6EA99KmE=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR12MB2714.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(346002)(39860400002)(136003)(396003)(376002)(366004)(2906002)(7416002)(6916009)(956004)(4326008)(2616005)(36756003)(44832011)(52116002)(8676002)(38350700002)(31696002)(316002)(38100700002)(16526019)(6486002)(66946007)(83380400001)(53546011)(6506007)(6512007)(66476007)(31686004)(478600001)(8936002)(86362001)(5660300002)(54906003)(66556008)(26005)(186003)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Sll5NGxMMFcrNThITWpwM0wrQmVJVkNhT094QUpickdBZUFsV3VNa1kyMnNR?=
+ =?utf-8?B?YlFJb0g2YVU0bjlueUpuL1ZGVHVaK2RQZmZVSWNDR1JRSjVKZ1E2aE5Jajg0?=
+ =?utf-8?B?REhxZ1J1VElsVjRoMlByU2lKY0VJekNKY21mNUozSnprVXdZbGpJUnhKOEVq?=
+ =?utf-8?B?ei9OTXVTRy83V2g3Z3dYQUlNemFwU1Jna1NZZy96MEV2UWd0MjhCKzFlZlNC?=
+ =?utf-8?B?c2dBZTMzWm9MY0w2R3VmdEtoRkN0SHZ5aFBjTGJxQ3NIZitxK0ZzY0Rnc3k2?=
+ =?utf-8?B?MkNDZytQeE5yaXNlN1ZJOFcwK2ZpSklnL25XWnZKRFZlOWJoZWlSR0pEcndV?=
+ =?utf-8?B?Yzd3TzBhOW12NjRza1NVU2hidktKS3JyMncvSkt1U25ZNDFKSEI4bmJ4TFJQ?=
+ =?utf-8?B?ZUpUZFJtcXJFelUwUk5wNzN3OW9uTytpYkZYOWdjekt6RGp2TmdwdnRVNHpL?=
+ =?utf-8?B?V3JNTmp5dlVqSmxvNCtpY1JJaXBmR2ZaU1NERDZhZC9YVkJxWWYxeDQ1d2tv?=
+ =?utf-8?B?VFA0OUdERUdEL0dJbllRYy9aWFhHK0x2VnAwZktXWVRsdVJDNWNJbTkxTkMx?=
+ =?utf-8?B?eUk3R3c3cTR3MDRiTWJLVUF6Nk5TM0xMUXQwYURKQXdaT2pyNEhnWVUwN3dL?=
+ =?utf-8?B?SkRBRjJJWGZ3T0VvRmgrVW9nUGJjck1FdmNjWFh2eGVBb09jNWJkWkdPUUto?=
+ =?utf-8?B?clg1ZWIzeU1LRWFCN0M4VHRRNS8vSGh2Q0VkR0xZYVZOMG9Rd3lreG9jcklS?=
+ =?utf-8?B?aEVHY0dIejNhN21ScG9Td2JWUlhDc0RZUElBR29rMU9Ta0lhODBscXNoamxY?=
+ =?utf-8?B?RGdJZCsrUnZDaW1jWWgrSlhrMGdtekdGN3RTaWtzdHBuaHRTRTFITUR1cEpP?=
+ =?utf-8?B?TnhUUDNZTjl2RVZsdWQ4cWRnanpXeVNrUjJTZFQ3U1h1QkJwQktxdXNBUlVE?=
+ =?utf-8?B?bU8za0dxSGlqV0RxQ1JqWmNhekYycEJLbDM5REdaZ0MrY2RqOXVJL3VIbjZr?=
+ =?utf-8?B?YXhFRVdBQWErbXdSTW91UWVDWnZGRDUxbkxBaWtVSm1KTW9icHhBNzdSSjZm?=
+ =?utf-8?B?UzROMThieU82Z1Z0Q004cEtrbFhUTmFEelNHK2k5bGlFSU4xb3JlK05ES2cr?=
+ =?utf-8?B?YnBxS3pvRVNncCtUVFVUeVAxTG0xM0Q4Zk81V2R1d1RHaEd2MTdZOFcxeWdi?=
+ =?utf-8?B?bDQvMWRxaVd3Z2FkUDNza1lNUEEwbXAxRW91R2c5SDdCdEs2Z0YxWGoxYXQx?=
+ =?utf-8?B?MVE3dWE4TkxFKzFQUHlEZ0hmbkwvZkxiaHUzeTJJaGkxcWYxVGgyVXZjQ1d5?=
+ =?utf-8?B?eE1EcmpOS3kvdW44S3hBL0NoWnBlMVlQMzJlMlpleVI2T245QUVVaEwrcURi?=
+ =?utf-8?B?YXF5L1pYZDJhbC9qalpRVkx6eDVrYS9YZ2ZRN1pNR3dOaFNxbjBEMnowc0RP?=
+ =?utf-8?B?QlhyYzN6VHVxUnFGNXpEcjl6ZXNOZ01uZ0NWd3Z4M2tJUE1ISEV4TG9xR0dI?=
+ =?utf-8?B?VWxyVWpOYkZoMG5MWFhRajg0V1RtejhwTVBiU2xTaGhJb3diUldvYVBNd2M4?=
+ =?utf-8?B?amZyQXluVVhIMjF0d01laGhySlZwUXByV1FtQkZpVVR2RmRCREl4enpieTV0?=
+ =?utf-8?B?Zy9ySWNMS0xwdk1hUFIzcitaTEZKcXZRM3h3cW1KQkFCazJONGFWUUFiTXFV?=
+ =?utf-8?B?MjVQeENiWkNaSFl4ZkllZW9aVUY3c25WTGRlbGpsdVk4d0tNakRURFdsUFU2?=
+ =?utf-8?Q?FITc7BsQq/ti3urFXbM23iKHC7OLYSFYk4cWFWJ?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e7529508-0232-4002-51b7-08d930c81b66
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB2714.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jun 2021 13:10:26.3477
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: qnpR4vE0k7t3NaiuN0gZKmoSW/MBGRI4vVOeHe+ePgsR8BmWe46ORXi/f4wzkC7TUMoHI1/TM+gEJJqx9r8pCw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM5PR12MB2424
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, Jun 02, 2021 at 09:04:13AM -0500, Brijesh Singh wrote:
-> From: Tom Lendacky <thomas.lendacky@amd.com>
 
-> Subject: Re: [PATCH Part1 RFC v3 19/22] x86/sev-snp: SEV-SNP AP creation support
+On 6/16/21 8:02 AM, Borislav Petkov wrote:
+> On Wed, Jun 16, 2021 at 07:49:25AM -0500, Brijesh Singh wrote:
+>> If you still think ...
+> I think you should answer my question first:
+>
+>> Imagine you're a guest owner and you haven't written the SNP code and
+>> you don't know how it works.
+>>
+>> You start a guest in the public cloud and it fails because the
+>> hypervisor violates the GHCB protocol and all that guest prints before
+>> it dies is
+>>
+>> "general request termination"
+>>
+>> How are you - the guest owner - going to find out what exactly happened?
+>>
+>> Call support?
+> And let me paraphrase it again: if the error condition with which the
+> guest terminates is not uniquely identifiable but simply a "general
+> request", how are such conditions going to be debugged?
 
-The condensed patch description in the subject line should be written in
-imperative tone. I.e., it needs a verb.
+I thought I said it somewhere in our previous conversation, I would look
+at the KVM trace log, each vmgexit entry and exit are logged. The log
+contains full GHCB MSR value, and in it you can see both the request and
+response code and decode the failure reason.
 
-And to simplify it even more, let's prefix all SEV-* stuff with
-"x86/sev: " from now on to mean the whole encrypted virt area.
+-Brijesh
 
-> To provide a more secure way to start APs under SEV-SNP, use the SEV-SNP
-> AP Creation NAE event. This allows for guest control over the AP register
-> state rather than trusting the hypervisor with the SEV-ES Jump Table
-> address.
-> 
-> During native_smp_prepare_cpus(), invoke an SEV-SNP function that, if
-> SEV-SNP is active, will set or override apic->wakeup_secondary_cpu. This
-> will allow the SEV-SNP AP Creation NAE event method to be used to boot
-> the APs.
-> 
-> Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
-> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
-> ---
->  arch/x86/include/asm/sev-common.h |   1 +
->  arch/x86/include/asm/sev.h        |  13 ++
->  arch/x86/include/uapi/asm/svm.h   |   5 +
->  arch/x86/kernel/sev-shared.c      |   5 +
->  arch/x86/kernel/sev.c             | 206 ++++++++++++++++++++++++++++++
->  arch/x86/kernel/smpboot.c         |   3 +
->  6 files changed, 233 insertions(+)
-> 
-> diff --git a/arch/x86/include/asm/sev-common.h b/arch/x86/include/asm/sev-common.h
-> index 86bb185b5ec1..47aa57bf654a 100644
-> --- a/arch/x86/include/asm/sev-common.h
-> +++ b/arch/x86/include/asm/sev-common.h
-> @@ -57,6 +57,7 @@
->  	(((unsigned long)((v) & GHCB_MSR_HV_FT_MASK) >> GHCB_MSR_HV_FT_POS))
->  
->  #define GHCB_HV_FT_SNP			BIT_ULL(0)
-> +#define GHCB_HV_FT_SNP_AP_CREATION	(BIT_ULL(1) | GHCB_HV_FT_SNP)
->  
->  /* SNP Page State Change */
->  #define GHCB_MSR_PSC_REQ		0x014
-> diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
-> index e2141fc28058..640108402ae9 100644
-> --- a/arch/x86/include/asm/sev.h
-> +++ b/arch/x86/include/asm/sev.h
-> @@ -71,6 +71,13 @@ enum snp_mem_op {
->  	MEMORY_SHARED
->  };
->  
-> +#define RMPADJUST_VMPL_MAX		3
-> +#define RMPADJUST_VMPL_MASK		GENMASK(7, 0)
-> +#define RMPADJUST_VMPL_SHIFT		0
-> +#define RMPADJUST_PERM_MASK_MASK	GENMASK(7, 0)
-
-mask mask huh?
-
-How about "perm mask" and "perm shift" ?
-
-> +#define RMPADJUST_PERM_MASK_SHIFT	8
-> +#define RMPADJUST_VMSA_PAGE_BIT		BIT(16)
-> +
->  #ifdef CONFIG_AMD_MEM_ENCRYPT
->  extern struct static_key_false sev_es_enable_key;
->  extern void __sev_es_ist_enter(struct pt_regs *regs);
-> @@ -116,6 +123,9 @@ void __init early_snp_set_memory_shared(unsigned long vaddr, unsigned long paddr
->  void __init snp_prep_memory(unsigned long paddr, unsigned int sz, int op);
->  void snp_set_memory_shared(unsigned long vaddr, unsigned int npages);
->  void snp_set_memory_private(unsigned long vaddr, unsigned int npages);
-> +
-
-No need for the newlines here - it is all function prototypes lumped
-together - the only one who reads them is the compiler.
-
-> +void snp_setup_wakeup_secondary_cpu(void);
-
-"setup" "wakeup" huh?
-
-snp_set_wakeup_secondary_cpu() looks just fine to me. :)
-
-> diff --git a/arch/x86/kernel/sev-shared.c b/arch/x86/kernel/sev-shared.c
-> index b62226bf51b9..7139c9ba59b2 100644
-> --- a/arch/x86/kernel/sev-shared.c
-> +++ b/arch/x86/kernel/sev-shared.c
-> @@ -32,6 +32,11 @@ static bool __init sev_es_check_cpu_features(void)
->  	return true;
->  }
->  
-> +static bool snp_ap_creation_supported(void)
-> +{
-> +	return (hv_features & GHCB_HV_FT_SNP_AP_CREATION) == GHCB_HV_FT_SNP_AP_CREATION;
-> +}
-
-Can we get rid of those silly accessors pls?
-
-We established earlier that hv_features is going to be __ro_after_init
-so we might just as well export it to sev.c for direct querying -
-there's no worry that something'll change it during runtime.
-
->  static bool __init sev_snp_check_hypervisor_features(void)
->  {
->  	if (ghcb_version < 2)
-> diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
-> index 4847ac81cca3..8f7ef35a25ef 100644
-> --- a/arch/x86/kernel/sev.c
-> +++ b/arch/x86/kernel/sev.c
-> @@ -19,6 +19,7 @@
->  #include <linux/memblock.h>
->  #include <linux/kernel.h>
->  #include <linux/mm.h>
-> +#include <linux/cpumask.h>
->  
->  #include <asm/cpu_entry_area.h>
->  #include <asm/stacktrace.h>
-> @@ -31,6 +32,7 @@
->  #include <asm/svm.h>
->  #include <asm/smp.h>
->  #include <asm/cpu.h>
-> +#include <asm/apic.h>
->  
->  #include "sev-internal.h"
->  
-> @@ -106,6 +108,8 @@ struct ghcb_state {
->  static DEFINE_PER_CPU(struct sev_es_runtime_data*, runtime_data);
->  DEFINE_STATIC_KEY_FALSE(sev_es_enable_key);
->  
-> +static DEFINE_PER_CPU(struct sev_es_save_area *, snp_vmsa);
-> +
->  /* Needed in vc_early_forward_exception */
->  void do_early_exception(struct pt_regs *regs, int trapnr);
->  
-> @@ -744,6 +748,208 @@ void snp_set_memory_private(unsigned long vaddr, unsigned int npages)
->  	pvalidate_pages(vaddr, npages, 1);
->  }
->  
-> +static int snp_rmpadjust(void *va, unsigned int vmpl, unsigned int perm_mask, bool vmsa)
-
-No need for the "snp_" prefix. Drop it for all static functions here too
-pls.
-
-@vmpl can be a u8 so that you don't need to mask it off. The same for
-@perm_mask. And then you can drop the mask defines too.
-
-> +{
-> +	unsigned int attrs;
-> +	int err;
-> +
-> +	attrs = (vmpl & RMPADJUST_VMPL_MASK) << RMPADJUST_VMPL_SHIFT;
-
-Shift by 0 huh? Can we drop this silliness pls?
-
-	/* Make sure Reserved[63:17] is 0 */
-	attrs = 0;
-
-	attrs |= vmpl;
-
-Plain and simple.
-
-> +	attrs |= (perm_mask & RMPADJUST_PERM_MASK_MASK) << RMPADJUST_PERM_MASK_SHIFT;
-
-perm_mask is always 0 - you don't even have to pass it in as a function
-argument.
-
-> +	if (vmsa)
-> +		attrs |= RMPADJUST_VMSA_PAGE_BIT;
-> +
-> +	/* Perform RMPADJUST */
-
-Add:
-
-	/* Instruction mnemonic supported in binutils versions v2.36 and later */
-
-> +	asm volatile (".byte 0xf3,0x0f,0x01,0xfe\n\t"
-> +		      : "=a" (err)
-
-here you should do:
-
-			: ... "c" (RMP_PG_SIZE_4K), ...
-
-so that it is clear what goes into %rcx.
-
-> +		      : "a" (va), "c" (0), "d" (attrs)
-> +		      : "memory", "cc");
-> +
-> +	return err;
-> +}
-> +
-> +static int snp_clear_vmsa(void *vmsa)
-> +{
-> +	/*
-> +	 * Clear the VMSA attribute for the page:
-> +	 *   RDX[7:0]  = 1, Target VMPL level, must be numerically
-> +	 *		    higher than current level (VMPL0)
-
-But RMPADJUST_VMPL_MAX is 3?!
-
-> +	 *   RDX[15:8] = 0, Target permission mask (not used)
-> +	 *   RDX[16]   = 0, Not a VMSA page
-> +	 */
-> +	return snp_rmpadjust(vmsa, RMPADJUST_VMPL_MAX, 0, false);
-> +}
-> +
-> +static int snp_set_vmsa(void *vmsa)
-> +{
-> +	/*
-> +	 * To set the VMSA attribute for the page:
-> +	 *   RDX[7:0]  = 1, Target VMPL level, must be numerically
-> +	 *		    higher than current level (VMPL0)
-> +	 *   RDX[15:8] = 0, Target permission mask (not used)
-> +	 *   RDX[16]   = 1, VMSA page
-> +	 */
-> +	return snp_rmpadjust(vmsa, RMPADJUST_VMPL_MAX, 0, true);
-> +}
-> +
-> +#define INIT_CS_ATTRIBS		(SVM_SELECTOR_P_MASK | SVM_SELECTOR_S_MASK | SVM_SELECTOR_READ_MASK | SVM_SELECTOR_CODE_MASK)
-> +#define INIT_DS_ATTRIBS		(SVM_SELECTOR_P_MASK | SVM_SELECTOR_S_MASK | SVM_SELECTOR_WRITE_MASK)
-> +
-
-Put SVM_SELECTOR_P_MASK | SVM_SELECTOR_S_MASK in a helper define and share it in the two
-definitions above pls.
-
-> +#define INIT_LDTR_ATTRIBS	(SVM_SELECTOR_P_MASK | 2)
-> +#define INIT_TR_ATTRIBS		(SVM_SELECTOR_P_MASK | 3)
-> +
-> +static int snp_wakeup_cpu_via_vmgexit(int apic_id, unsigned long start_ip)
-> +{
-> +	struct sev_es_save_area *cur_vmsa;
-> +	struct sev_es_save_area *vmsa;
-> +	struct ghcb_state state;
-> +	struct ghcb *ghcb;
-> +	unsigned long flags;
-> +	u8 sipi_vector;
-> +	u64 cr4;
-> +	int cpu;
-> +	int ret;
-
-Remember the reversed xmas tree. And you can combine the variables of
-the same type into a single line.
-
-> +
-> +	if (!snp_ap_creation_supported())
-> +		return -ENOTSUPP;
-
-WARNING: ENOTSUPP is not a SUSV4 error code, prefer EOPNOTSUPP
-#320: FILE: arch/x86/kernel/sev.c:813:
-+               return -ENOTSUPP;
-
-> +	/* Override start_ip with known SEV-ES/SEV-SNP starting RIP */
-> +	if (start_ip == real_mode_header->trampoline_start) {
-> +		start_ip = real_mode_header->sev_es_trampoline_start;
-> +	} else {
-> +		WARN_ONCE(1, "unsupported SEV-SNP start_ip: %lx\n", start_ip);
-> +		return -EINVAL;
-> +	}
-
-What's all that checking for? Why not simply and unconditionally doing:
-
-	start_ip = real_mode_header->sev_es_trampoline_start;
-
-?
-
-We are waking up an SNP guest so who cares what the previous start_ip
-value was?
-
-> +	/* Find the logical CPU for the APIC ID */
-> +	for_each_present_cpu(cpu) {
-> +		if (arch_match_cpu_phys_id(cpu, apic_id))
-> +			break;
-> +	}
-> +	if (cpu >= nr_cpu_ids)
-> +		return -EINVAL;
-> +
-> +	cur_vmsa = per_cpu(snp_vmsa, cpu);
-
-Where is that snp_vmsa thing used? I don't see it anywhere in the whole
-patchset.
-
-> +	vmsa = (struct sev_es_save_area *)get_zeroed_page(GFP_KERNEL);
-> +	if (!vmsa)
-> +		return -ENOMEM;
-> +
-> +	/* CR4 should maintain the MCE value */
-> +	cr4 = native_read_cr4() & ~X86_CR4_MCE;
-> +
-> +	/* Set the CS value based on the start_ip converted to a SIPI vector */
-> +	sipi_vector = (start_ip >> 12);
-> +	vmsa->cs.base     = sipi_vector << 12;
-> +	vmsa->cs.limit    = 0xffff;
-> +	vmsa->cs.attrib   = INIT_CS_ATTRIBS;
-> +	vmsa->cs.selector = sipi_vector << 8;
-> +
-> +	/* Set the RIP value based on start_ip */
-> +	vmsa->rip = start_ip & 0xfff;
-> +
-> +	/* Set VMSA entries to the INIT values as documented in the APM */
-> +	vmsa->ds.limit    = 0xffff;
-> +	vmsa->ds.attrib   = INIT_DS_ATTRIBS;
-> +	vmsa->es = vmsa->ds;
-> +	vmsa->fs = vmsa->ds;
-> +	vmsa->gs = vmsa->ds;
-> +	vmsa->ss = vmsa->ds;
-> +
-> +	vmsa->gdtr.limit    = 0xffff;
-> +	vmsa->ldtr.limit    = 0xffff;
-> +	vmsa->ldtr.attrib   = INIT_LDTR_ATTRIBS;
-> +	vmsa->idtr.limit    = 0xffff;
-> +	vmsa->tr.limit      = 0xffff;
-> +	vmsa->tr.attrib     = INIT_TR_ATTRIBS;
-> +
-> +	vmsa->efer    = 0x1000;			/* Must set SVME bit */
-> +	vmsa->cr4     = cr4;
-> +	vmsa->cr0     = 0x60000010;
-> +	vmsa->dr7     = 0x400;
-> +	vmsa->dr6     = 0xffff0ff0;
-> +	vmsa->rflags  = 0x2;
-> +	vmsa->g_pat   = 0x0007040600070406ULL;
-> +	vmsa->xcr0    = 0x1;
-> +	vmsa->mxcsr   = 0x1f80;
-> +	vmsa->x87_ftw = 0x5555;
-> +	vmsa->x87_fcw = 0x0040;
-
-Align them all on a single vertical line pls.
-
-> +	/*
-> +	 * Set the SNP-specific fields for this VMSA:
-> +	 *   VMPL level
-> +	 *   SEV_FEATURES (matches the SEV STATUS MSR right shifted 2 bits)
-> +	 */
-> +	vmsa->vmpl = 0;
-> +	vmsa->sev_features = sev_status >> 2;
-> +
-> +	/* Switch the page over to a VMSA page now that it is initialized */
-> +	ret = snp_set_vmsa(vmsa);
-> +	if (ret) {
-> +		pr_err("set VMSA page failed (%u)\n", ret);
-> +		free_page((unsigned long)vmsa);
-> +
-> +		return -EINVAL;
-> +	}
-> +
-> +	/* Issue VMGEXIT AP Creation NAE event */
-> +	local_irq_save(flags);
-> +
-> +	ghcb = sev_es_get_ghcb(&state);
-> +
-> +	vc_ghcb_invalidate(ghcb);
-> +	ghcb_set_rax(ghcb, vmsa->sev_features);
-> +	ghcb_set_sw_exit_code(ghcb, SVM_VMGEXIT_AP_CREATION);
-> +	ghcb_set_sw_exit_info_1(ghcb, ((u64)apic_id << 32) | SVM_VMGEXIT_AP_CREATE);
-> +	ghcb_set_sw_exit_info_2(ghcb, __pa(vmsa));
-> +
-> +	sev_es_wr_ghcb_msr(__pa(ghcb));
-> +	VMGEXIT();
-> +
-> +	if (!ghcb_sw_exit_info_1_is_valid(ghcb) ||
-> +	    lower_32_bits(ghcb->save.sw_exit_info_1)) {
-> +		pr_alert("SNP AP Creation error\n");
-> +		ret = -EINVAL;
-> +	}
-> +
-> +	sev_es_put_ghcb(&state);
-> +
-> +	local_irq_restore(flags);
-> +
-> +	/* Perform cleanup if there was an error */
-> +	if (ret) {
-> +		int err = snp_clear_vmsa(vmsa);
-> +
-
-
-^ Superfluous newline.
-
-> +		if (err)
-> +			pr_err("clear VMSA page failed (%u), leaking page\n", err);
-> +		else
-> +			free_page((unsigned long)vmsa);
-> +
-> +		vmsa = NULL;
-> +	}
-> +
-> +	/* Free up any previous VMSA page */
-> +	if (cur_vmsa) {
-> +		int err = snp_clear_vmsa(cur_vmsa);
-> +
-
-
-^ Superfluous newline.
-
-> +		if (err)
-> +			pr_err("clear VMSA page failed (%u), leaking page\n", err);
-> +		else
-> +			free_page((unsigned long)cur_vmsa);
-> +	}
-> +
-> +	/* Record the current VMSA page */
-> +	cur_vmsa = vmsa;
-> +
-> +	return ret;
-> +}
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
