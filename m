@@ -2,208 +2,88 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0139B3AC17C
-	for <lists+linux-efi@lfdr.de>; Fri, 18 Jun 2021 05:40:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A39F3AC2EB
+	for <lists+linux-efi@lfdr.de>; Fri, 18 Jun 2021 07:46:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232285AbhFRDmv (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 17 Jun 2021 23:42:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41404 "EHLO
+        id S232550AbhFRFtA (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 18 Jun 2021 01:49:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40686 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232148AbhFRDmq (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 17 Jun 2021 23:42:46 -0400
-Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DEA70C0617AE
-        for <linux-efi@vger.kernel.org>; Thu, 17 Jun 2021 20:40:36 -0700 (PDT)
-Received: by mail-ed1-x533.google.com with SMTP id w21so6647560edv.3
-        for <linux-efi@vger.kernel.org>; Thu, 17 Jun 2021 20:40:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=v3U6tSssyiyTmySewt2Ln0yQu0gc7Qdpf16AvD+Xaxk=;
-        b=2IcUlThUD9BpN0YyQAHGmGcQr5S6gOJpFAuAjkTFZTnpzRn9tzKgvjENS7ySkBTDUb
-         WVu8rDNnk4oMaPDWaYfJqGQq5hspjx3UAm8iGpqhN5Tm3s/4JNu9ecnP/aWmJefz9KgA
-         jyaF4PQvWKhcAMY06wY9zLmJ3F3grfHwVu/lTteAZll8NquJe5RM3crl0S/T9nJz4lga
-         qE6I+1oXf+z4XpHgtSakyooDjOifTHlFJYDjvZrRG53E21pvvJVkEQhe7yTOwfRW+SR3
-         lPE0DbuCzB2/MU+0Ln8LRSJFFCt8crMBcGon76/h7fb0x+sFtOdRmHlxhubL8TVLcdkW
-         w8MQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=v3U6tSssyiyTmySewt2Ln0yQu0gc7Qdpf16AvD+Xaxk=;
-        b=O00bXfwf8dXC2mMouH6Mf5r2DOEVqvZRSIs4ZEe0apGYKZSSj6ITGuvEKzzNksYO2l
-         xV/4MR1ABMTneWv6nxbD8tYpfJPbY8KxWJ5Y0ghc4WBs7w4+9NJbz0lh4BT47iqbgxYL
-         a/jynrFmO0Dkw1QRZxZ9Fq8tiOPk6y49f9WFw1j6g62pqeui3zlT/yRODJ6WOb57t0Pb
-         oEkJixhzQcXbuHHLh40MKbJM/JqYYAiwCHh8KMqx0Dc7JWIyLCfgXEhuQwHhCcuDqyOy
-         IvdY0FvHInPSp+W9lN4zNxeq3ZgI/Goz5sbdz/+Ib2N+7YfH0B4U3Gk78KznLcmn6Gm5
-         AzXg==
-X-Gm-Message-State: AOAM532Ndm/1bqZrN7S35X9vKovAncGEvtvegXzHcydceM2z8OYjmwbC
-        A84xglxupq/2hSj6REJrX5MB3oCLa6qCwUU07zJo
-X-Google-Smtp-Source: ABdhPJw5b/xZ/eb8rl7JdfhOxmPvL4XDmYW6VYxutA0Sjq6NM72bhKaQUg+rtX3S00r5obIGVrm+f+Zrvy0193ShGoE=
-X-Received: by 2002:a05:6402:1771:: with SMTP id da17mr2074259edb.31.1623987634898;
- Thu, 17 Jun 2021 20:40:34 -0700 (PDT)
+        with ESMTP id S229671AbhFRFs7 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 18 Jun 2021 01:48:59 -0400
+Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DEF98C061574;
+        Thu, 17 Jun 2021 22:46:50 -0700 (PDT)
+Received: from zn.tnic (p200300ec2f0dd800c1c0f109d0ca36f4.dip0.t-ipconnect.de [IPv6:2003:ec:2f0d:d800:c1c0:f109:d0ca:36f4])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 739671EC054F;
+        Fri, 18 Jun 2021 07:46:49 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1623995209;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=Z2NcsQEXbnE2U0G6jQczPtJMf0zCLQ336536FRXg81M=;
+        b=gf8n4odDGWXwGJEBtSR/Ph2wRe/dCxc/qC6TznTV/wZrAPIanM6DBG6ZnaRQcHTW2w7jNL
+        7X76OBMJf6LrsqYa+IVNSsAA0wJdWACrEla2WhdlZQLbax/a9Joo5Vv5xqQ+MarhLrZCi2
+        E5aBSMueO9iMceLUivF9j6PX26bQGqo=
+Date:   Fri, 18 Jun 2021 07:46:38 +0200
+From:   Borislav Petkov <bp@alien8.de>
+To:     Brijesh Singh <brijesh.singh@amd.com>
+Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        linux-coco@lists.linux.dev, linux-mm@kvack.org,
+        linux-crypto@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Vitaly Kuznetsov <vkuznets@redhat.com>,
+        Wanpeng Li <wanpengli@tencent.com>,
+        Jim Mattson <jmattson@google.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        David Rientjes <rientjes@google.com>, tony.luck@intel.com,
+        npmccallum@redhat.com
+Subject: Re: [PATCH Part1 RFC v3 06/22] x86/sev: check SEV-SNP features
+ support
+Message-ID: <YMwzPjV9s/6qW75m@zn.tnic>
+References: <20210602140416.23573-1-brijesh.singh@amd.com>
+ <20210602140416.23573-7-brijesh.singh@amd.com>
+ <YL4zJT1v6OuH+tvI@zn.tnic>
+ <e617a0a1-bb8d-9d75-56a4-2ac1138ebf8b@amd.com>
 MIME-Version: 1.0
-References: <20210616085118.1141101-1-omosnace@redhat.com>
-In-Reply-To: <20210616085118.1141101-1-omosnace@redhat.com>
-From:   Paul Moore <paul@paul-moore.com>
-Date:   Thu, 17 Jun 2021 23:40:24 -0400
-Message-ID: <CAHC9VhSr2KpeBXuyoHR3_hs+qczFUaBx0oCSMfBBA5UNYU+0KA@mail.gmail.com>
-Subject: Re: [PATCH v3] lockdown,selinux: fix wrong subject in some SELinux
- lockdown checks
-To:     Ondrej Mosnacek <omosnace@redhat.com>
-Cc:     linux-security-module@vger.kernel.org,
-        James Morris <jmorris@namei.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        Steffen Klassert <steffen.klassert@secunet.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S . Miller" <davem@davemloft.net>,
-        Stephen Smalley <stephen.smalley.work@gmail.com>,
-        selinux@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        x86@kernel.org, linux-acpi@vger.kernel.org,
-        linux-cxl@vger.kernel.org, linux-efi@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-pci@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-serial@vger.kernel.org,
-        bpf@vger.kernel.org, netdev@vger.kernel.org,
-        kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
-        Casey Schaufler <casey@schaufler-ca.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <e617a0a1-bb8d-9d75-56a4-2ac1138ebf8b@amd.com>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, Jun 16, 2021 at 4:51 AM Ondrej Mosnacek <omosnace@redhat.com> wrote:
->
-> Commit 59438b46471a ("security,lockdown,selinux: implement SELinux
-> lockdown") added an implementation of the locked_down LSM hook to
-> SELinux, with the aim to restrict which domains are allowed to perform
-> operations that would breach lockdown.
->
-> However, in several places the security_locked_down() hook is called in
-> situations where the current task isn't doing any action that would
-> directly breach lockdown, leading to SELinux checks that are basically
-> bogus.
->
-> To fix this, add an explicit struct cred pointer argument to
-> security_lockdown() and define NULL as a special value to pass instead
-> of current_cred() in such situations. LSMs that take the subject
-> credentials into account can then fall back to some default or ignore
-> such calls altogether. In the SELinux lockdown hook implementation, use
-> SECINITSID_KERNEL in case the cred argument is NULL.
->
-> Most of the callers are updated to pass current_cred() as the cred
-> pointer, thus maintaining the same behavior. The following callers are
-> modified to pass NULL as the cred pointer instead:
-> 1. arch/powerpc/xmon/xmon.c
->      Seems to be some interactive debugging facility. It appears that
->      the lockdown hook is called from interrupt context here, so it
->      should be more appropriate to request a global lockdown decision.
-> 2. fs/tracefs/inode.c:tracefs_create_file()
->      Here the call is used to prevent creating new tracefs entries when
->      the kernel is locked down. Assumes that locking down is one-way -
->      i.e. if the hook returns non-zero once, it will never return zero
->      again, thus no point in creating these files. Also, the hook is
->      often called by a module's init function when it is loaded by
->      userspace, where it doesn't make much sense to do a check against
->      the current task's creds, since the task itself doesn't actually
->      use the tracing functionality (i.e. doesn't breach lockdown), just
->      indirectly makes some new tracepoints available to whoever is
->      authorized to use them.
-> 3. net/xfrm/xfrm_user.c:copy_to_user_*()
->      Here a cryptographic secret is redacted based on the value returned
->      from the hook. There are two possible actions that may lead here:
->      a) A netlink message XFRM_MSG_GETSA with NLM_F_DUMP set - here the
->         task context is relevant, since the dumped data is sent back to
->         the current task.
->      b) When adding/deleting/updating an SA via XFRM_MSG_xxxSA, the
->         dumped SA is broadcasted to tasks subscribed to XFRM events -
->         here the current task context is not relevant as it doesn't
->         represent the tasks that could potentially see the secret.
->      It doesn't seem worth it to try to keep using the current task's
->      context in the a) case, since the eventual data leak can be
->      circumvented anyway via b), plus there is no way for the task to
->      indicate that it doesn't care about the actual key value, so the
->      check could generate a lot of "false alert" denials with SELinux.
->      Thus, let's pass NULL instead of current_cred() here faute de
->      mieux.
->
-> Improvements-suggested-by: Casey Schaufler <casey@schaufler-ca.com>
-> Improvements-suggested-by: Paul Moore <paul@paul-moore.com>
-> Fixes: 59438b46471a ("security,lockdown,selinux: implement SELinux lockdown")
-> Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
+On Thu, Jun 17, 2021 at 01:46:08PM -0500, Brijesh Singh wrote:
+> Based on your feedback on AP creation patch to not use the accessors, I am inclined to
+> remove this helper and have the caller directly check the feature bit, is that okay ?
+> 
+> something like:
+> 
+> if (sev_snp_enabled() && !(hv_features & GHCB_HV_FT_SNP))
+> 	sev_es_terminate(GHCB_SNP_UNSUPPORTED);
+> 
+> Let me know if you think I should still keep the accessors.
 
-This seems reasonable to me, but before I merge it into the SELinux
-tree I think it would be good to get some ACKs from the relevant
-subsystem folks.  I don't believe we ever saw a response to the last
-question for the PPC folks, did we?
+Yeah, looks about right. Let's keep hv_features in a sev-specific
+header so that there are no name clashes. Or maybe we should call it
+sev_hv_features since it is going to be read-only anyway.
 
-> ---
->
-> v3:
-> - add the cred argument to security_locked_down() and adapt all callers
-> - keep using current_cred() in BPF, as the hook calls have been shifted
->   to program load time (commit ff40e51043af ("bpf, lockdown, audit: Fix
->   buggy SELinux lockdown permission checks"))
-> - in SELinux, don't ignore hook calls where cred == NULL, but use
->   SECINITSID_KERNEL as the subject instead
-> - update explanations in the commit message
->
-> v2: https://lore.kernel.org/lkml/20210517092006.803332-1-omosnace@redhat.com/
-> - change to a single hook based on suggestions by Casey Schaufler
->
-> v1: https://lore.kernel.org/lkml/20210507114048.138933-1-omosnace@redhat.com/
->
->  arch/powerpc/xmon/xmon.c             |  4 ++--
->  arch/x86/kernel/ioport.c             |  4 ++--
->  arch/x86/kernel/msr.c                |  4 ++--
->  arch/x86/mm/testmmiotrace.c          |  2 +-
->  drivers/acpi/acpi_configfs.c         |  2 +-
->  drivers/acpi/custom_method.c         |  2 +-
->  drivers/acpi/osl.c                   |  3 ++-
->  drivers/acpi/tables.c                |  2 +-
->  drivers/char/mem.c                   |  2 +-
->  drivers/cxl/mem.c                    |  2 +-
->  drivers/firmware/efi/efi.c           |  2 +-
->  drivers/firmware/efi/test/efi_test.c |  2 +-
->  drivers/pci/pci-sysfs.c              |  6 +++---
->  drivers/pci/proc.c                   |  6 +++---
->  drivers/pci/syscall.c                |  2 +-
->  drivers/pcmcia/cistpl.c              |  2 +-
->  drivers/tty/serial/serial_core.c     |  2 +-
->  fs/debugfs/file.c                    |  2 +-
->  fs/debugfs/inode.c                   |  2 +-
->  fs/proc/kcore.c                      |  2 +-
->  fs/tracefs/inode.c                   |  2 +-
->  include/linux/lsm_hook_defs.h        |  2 +-
->  include/linux/lsm_hooks.h            |  1 +
->  include/linux/security.h             |  4 ++--
->  kernel/bpf/helpers.c                 | 10 ++++++----
->  kernel/events/core.c                 |  2 +-
->  kernel/kexec.c                       |  2 +-
->  kernel/kexec_file.c                  |  2 +-
->  kernel/module.c                      |  2 +-
->  kernel/params.c                      |  2 +-
->  kernel/power/hibernate.c             |  3 ++-
->  kernel/trace/bpf_trace.c             | 20 ++++++++++++--------
->  kernel/trace/ftrace.c                |  4 ++--
->  kernel/trace/ring_buffer.c           |  2 +-
->  kernel/trace/trace.c                 | 10 +++++-----
->  kernel/trace/trace_events.c          |  2 +-
->  kernel/trace/trace_events_hist.c     |  4 ++--
->  kernel/trace/trace_events_synth.c    |  2 +-
->  kernel/trace/trace_events_trigger.c  |  2 +-
->  kernel/trace/trace_kprobe.c          |  6 +++---
->  kernel/trace/trace_printk.c          |  2 +-
->  kernel/trace/trace_stack.c           |  2 +-
->  kernel/trace/trace_stat.c            |  2 +-
->  kernel/trace/trace_uprobe.c          |  4 ++--
->  net/xfrm/xfrm_user.c                 | 11 +++++++++--
->  security/lockdown/lockdown.c         |  3 ++-
->  security/security.c                  |  4 ++--
->  security/selinux/hooks.c             |  7 +++++--
->  48 files changed, 97 insertions(+), 77 deletions(-)
+Thx.
 
 -- 
-paul moore
-www.paul-moore.com
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
