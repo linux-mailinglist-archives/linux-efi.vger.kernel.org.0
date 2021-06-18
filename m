@@ -2,78 +2,157 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C79CA3ACE41
-	for <lists+linux-efi@lfdr.de>; Fri, 18 Jun 2021 17:05:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ACC4C3AD4EB
+	for <lists+linux-efi@lfdr.de>; Sat, 19 Jun 2021 00:18:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233336AbhFRPHy (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 18 Jun 2021 11:07:54 -0400
-Received: from mail.skyhub.de ([5.9.137.197]:55038 "EHLO mail.skyhub.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229550AbhFRPHx (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Fri, 18 Jun 2021 11:07:53 -0400
-Received: from zn.tnic (p200300ec2f0dd800f1d29af1870b9e89.dip0.t-ipconnect.de [IPv6:2003:ec:2f0d:d800:f1d2:9af1:870b:9e89])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id E16551EC0529;
-        Fri, 18 Jun 2021 17:05:42 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1624028743;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=DAkmjtSEjAQW5/oSQSGY2SJZEOQXFtsl+lpahSbt7CM=;
-        b=Ol1RhoAL2zOpnn55wSrncRMqg5PShyikP6yN9Dd9Spb+mo2L1xWn7DUx8YDT6MBohBRh4j
-        r4JUcLI0Bq1CtLIQIkucqpI/IRSrlQ8P5Qg6k9hoOVYEc08pew3bLadc5ekrVfBLtZef1X
-        N+VDfH4YnAnzuSIy9dUDc4cKbLo9mC4=
-Date:   Fri, 18 Jun 2021 17:05:28 +0200
-From:   Borislav Petkov <bp@alien8.de>
-To:     Brijesh Singh <brijesh.singh@amd.com>
-Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        linux-coco@lists.linux.dev, linux-mm@kvack.org,
-        linux-crypto@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Vitaly Kuznetsov <vkuznets@redhat.com>,
-        Wanpeng Li <wanpengli@tencent.com>,
-        Jim Mattson <jmattson@google.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        David Rientjes <rientjes@google.com>, tony.luck@intel.com,
-        npmccallum@redhat.com
-Subject: Re: [PATCH Part1 RFC v3 20/22] x86/boot: Add Confidential Computing
- address to setup_header
-Message-ID: <YMy2OGwsRzrR5bwD@zn.tnic>
-References: <20210602140416.23573-1-brijesh.singh@amd.com>
- <20210602140416.23573-21-brijesh.singh@amd.com>
- <YMw4UZn6AujpPSZO@zn.tnic>
- <15568c80-c9a9-5602-d940-264af87bed98@amd.com>
+        id S234916AbhFRWU1 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 18 Jun 2021 18:20:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38644 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234899AbhFRWUZ (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 18 Jun 2021 18:20:25 -0400
+Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB36EC061760
+        for <linux-efi@vger.kernel.org>; Fri, 18 Jun 2021 15:18:15 -0700 (PDT)
+Received: by mail-pl1-x636.google.com with SMTP id x22so3881875pll.11
+        for <linux-efi@vger.kernel.org>; Fri, 18 Jun 2021 15:18:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=FE3ige4IUrzO4rZznPTG12clkaJsue7K7FUGlSBMAfs=;
+        b=Yf/hd/nvGltzFs93oV+O815gndRr0N0A4GD+hlEjUljs8fR/r42/5waH+foBbKS7WR
+         4ieWebjxoeI31qMYukpCCF4suivtuw0KIX1kY4xCHCyeA8Pd+qdR2kMIky/pA2j/9n1z
+         T5UtTANEkuiNSh3GT2iBd2oGjOT4PXXJ8YxOU/uBtqj1IiaNYwuRoT9AQFd4bB3iGSod
+         26qHtN9qmDpGolnh/MwXPQ8M2sR3UfA7xZml5iJWrbGghC/MI1rSVb3r8vzpAHp9WgHN
+         rQlO7Wfj93/2gQ031V5AE3UWSmVQEAXyZXRDPtXzUcgRjadraLTfDfG3fXk5uJ+V0D/n
+         TtDw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=FE3ige4IUrzO4rZznPTG12clkaJsue7K7FUGlSBMAfs=;
+        b=Rm448+PEeNtptwVq/zixi7WF1qiQWJigQsga6HXryADg3lBM/+JVxCx1cqecov/rzH
+         T4oe+ONRzYyIZfFNDL/5+e7nPHQtgiYWm+JBPc7MHoZVBTiPD9/8pgBUdaI50/lckunl
+         F3OnyAWqbvmyw2TDq9a2JmdoCZpU8Xk9U/GEJ0tzvvKSHamDd+H811+3UOU0jrgCkhh2
+         tJZTzQxlx0leoFwuwRoQrDyrrsc0yD5NxoW5yJVS4LWjGTLrrGu/gWC/W7LD6KHBJKKS
+         RZjfd722zayG35kMKZOG/H2u0QGZduLvikKQNBOfzTxWDqPFFqBjinAqgH0j3Wp3XWl2
+         cFzw==
+X-Gm-Message-State: AOAM530WNmxsgzafWcBHPBT+YNxhT1UU1RWd4Nl6cGOU3PVeecV50pva
+        QQtomyrBajBRvV2Vwb/bhKyPWF9SZeQTLAQGdkASIw==
+X-Google-Smtp-Source: ABdhPJw3BE/jkA8KN4GViEwVomKCDOYCAzb4JhqF7GBtQ+4ny9zul9rQENwJ5XFkX0U2csBd6emTDpwOakbDlUjAcRc=
+X-Received: by 2002:a17:90a:fc88:: with SMTP id ci8mr24404565pjb.13.1624054695229;
+ Fri, 18 Jun 2021 15:18:15 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <15568c80-c9a9-5602-d940-264af87bed98@amd.com>
+References: <20210616085118.1141101-1-omosnace@redhat.com>
+In-Reply-To: <20210616085118.1141101-1-omosnace@redhat.com>
+From:   Dan Williams <dan.j.williams@intel.com>
+Date:   Fri, 18 Jun 2021 15:18:04 -0700
+Message-ID: <CAPcyv4jvR8CT4rYODR5KUHNdiqMwQSwJZ+OkVf61kLT3JfjC_Q@mail.gmail.com>
+Subject: Re: [PATCH v3] lockdown,selinux: fix wrong subject in some SELinux
+ lockdown checks
+To:     Ondrej Mosnacek <omosnace@redhat.com>
+Cc:     linux-security-module@vger.kernel.org,
+        James Morris <jmorris@namei.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Steffen Klassert <steffen.klassert@secunet.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S . Miller" <davem@davemloft.net>,
+        Paul Moore <paul@paul-moore.com>,
+        Stephen Smalley <stephen.smalley.work@gmail.com>,
+        selinux@vger.kernel.org,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        X86 ML <x86@kernel.org>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        linux-cxl@vger.kernel.org, linux-efi <linux-efi@vger.kernel.org>,
+        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+        Linux PCI <linux-pci@vger.kernel.org>,
+        Linux-pm mailing list <linux-pm@vger.kernel.org>,
+        linux-serial@vger.kernel.org, bpf@vger.kernel.org,
+        Netdev <netdev@vger.kernel.org>,
+        Kexec Mailing List <kexec@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Casey Schaufler <casey@schaufler-ca.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, Jun 18, 2021 at 08:57:12AM -0500, Brijesh Singh wrote:
-> Don't have any strong reason to keep it separate, I can define a new
-> type and use the setup_data to pass this information.
+On Wed, Jun 16, 2021 at 1:51 AM Ondrej Mosnacek <omosnace@redhat.com> wrote:
+>
+> Commit 59438b46471a ("security,lockdown,selinux: implement SELinux
+> lockdown") added an implementation of the locked_down LSM hook to
+> SELinux, with the aim to restrict which domains are allowed to perform
+> operations that would breach lockdown.
+>
+> However, in several places the security_locked_down() hook is called in
+> situations where the current task isn't doing any action that would
+> directly breach lockdown, leading to SELinux checks that are basically
+> bogus.
+>
+> To fix this, add an explicit struct cred pointer argument to
+> security_lockdown() and define NULL as a special value to pass instead
+> of current_cred() in such situations. LSMs that take the subject
+> credentials into account can then fall back to some default or ignore
+> such calls altogether. In the SELinux lockdown hook implementation, use
+> SECINITSID_KERNEL in case the cred argument is NULL.
+>
+> Most of the callers are updated to pass current_cred() as the cred
+> pointer, thus maintaining the same behavior. The following callers are
+> modified to pass NULL as the cred pointer instead:
+> 1. arch/powerpc/xmon/xmon.c
+>      Seems to be some interactive debugging facility. It appears that
+>      the lockdown hook is called from interrupt context here, so it
+>      should be more appropriate to request a global lockdown decision.
+> 2. fs/tracefs/inode.c:tracefs_create_file()
+>      Here the call is used to prevent creating new tracefs entries when
+>      the kernel is locked down. Assumes that locking down is one-way -
+>      i.e. if the hook returns non-zero once, it will never return zero
+>      again, thus no point in creating these files. Also, the hook is
+>      often called by a module's init function when it is loaded by
+>      userspace, where it doesn't make much sense to do a check against
+>      the current task's creds, since the task itself doesn't actually
+>      use the tracing functionality (i.e. doesn't breach lockdown), just
+>      indirectly makes some new tracepoints available to whoever is
+>      authorized to use them.
+> 3. net/xfrm/xfrm_user.c:copy_to_user_*()
+>      Here a cryptographic secret is redacted based on the value returned
+>      from the hook. There are two possible actions that may lead here:
+>      a) A netlink message XFRM_MSG_GETSA with NLM_F_DUMP set - here the
+>         task context is relevant, since the dumped data is sent back to
+>         the current task.
+>      b) When adding/deleting/updating an SA via XFRM_MSG_xxxSA, the
+>         dumped SA is broadcasted to tasks subscribed to XFRM events -
+>         here the current task context is not relevant as it doesn't
+>         represent the tasks that could potentially see the secret.
+>      It doesn't seem worth it to try to keep using the current task's
+>      context in the a) case, since the eventual data leak can be
+>      circumvented anyway via b), plus there is no way for the task to
+>      indicate that it doesn't care about the actual key value, so the
+>      check could generate a lot of "false alert" denials with SELinux.
+>      Thus, let's pass NULL instead of current_cred() here faute de
+>      mieux.
+>
+> Improvements-suggested-by: Casey Schaufler <casey@schaufler-ca.com>
+> Improvements-suggested-by: Paul Moore <paul@paul-moore.com>
+> Fixes: 59438b46471a ("security,lockdown,selinux: implement SELinux lockdown")
+> Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
+[..]
+> diff --git a/drivers/cxl/mem.c b/drivers/cxl/mem.c
+> index 2acc6173da36..c1747b6555c7 100644
+> --- a/drivers/cxl/mem.c
+> +++ b/drivers/cxl/mem.c
+> @@ -568,7 +568,7 @@ static bool cxl_mem_raw_command_allowed(u16 opcode)
+>         if (!IS_ENABLED(CONFIG_CXL_MEM_RAW_COMMANDS))
+>                 return false;
+>
+> -       if (security_locked_down(LOCKDOWN_NONE))
+> +       if (security_locked_down(current_cred(), LOCKDOWN_NONE))
 
-setup_data is exactly for use cases like that - pass a bunch of data
-to the kernel. So there's no need for a separate thing. Also see that
-kernel_info thing which got added recently for read_only data.
+Acked-by: Dan Williams <dan.j.williams@intel.com>
 
-Thx.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+...however that usage looks wrong. The expectation is that if kernel
+integrity protections are enabled then raw command access should be
+disabled. So I think that should be equivalent to LOCKDOWN_PCI_ACCESS
+in terms of the command capabilities to filter.
