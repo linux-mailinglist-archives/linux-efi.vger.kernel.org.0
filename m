@@ -2,41 +2,51 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0681D3B5015
-	for <lists+linux-efi@lfdr.de>; Sat, 26 Jun 2021 22:40:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A137F3B542B
+	for <lists+linux-efi@lfdr.de>; Sun, 27 Jun 2021 18:18:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230263AbhFZUm7 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-efi@lfdr.de>); Sat, 26 Jun 2021 16:42:59 -0400
-Received: from [210.180.118.67] ([210.180.118.67]:49846 "EHLO blank.cafe24.com"
-        rhost-flags-FAIL-FAIL-OK-FAIL) by vger.kernel.org with ESMTP
-        id S230107AbhFZUm6 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Sat, 26 Jun 2021 16:42:58 -0400
-Received: from IP-130-143.dataclub.eu (ip-130-143.dataclub.info [84.38.130.143] (may be forged))
-        (authenticated bits=0)
-        by blank.cafe24.com (8.14.7/8.14.7) with ESMTP id 15H5YDEl002098
-        for <linux-efi@vger.kernel.org>; Thu, 17 Jun 2021 14:34:39 +0900
-Message-Id: <202106170534.15H5YDEl002098@blank.cafe24.com>
-Content-Type: text/plain; charset="iso-8859-1"
+        id S230315AbhF0QU7 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sun, 27 Jun 2021 12:20:59 -0400
+Received: from titlani.fis.cinvestav.mx ([148.247.182.91]:40820 "EHLO
+        titlani.fis.cinvestav.mx" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229820AbhF0QU7 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sun, 27 Jun 2021 12:20:59 -0400
+X-Greylist: delayed 7056 seconds by postgrey-1.27 at vger.kernel.org; Sun, 27 Jun 2021 12:20:59 EDT
+Received: from amavis.fis.cinvestav.mx (titlani.fis.cinvestav.mx [127.0.0.1])
+        by titlani.fis.cinvestav.mx (smtp.fis.cinvestav.mx) with ESMTP id 27EAFACEEF;
+        Sun, 27 Jun 2021 08:21:07 -0500 (CDT)
+X-Virus-Scanned: amavisd-new at fis.cinvestav.mx
+Received: from titlani.fis.cinvestav.mx ([127.0.0.1])
+        by amavis.fis.cinvestav.mx (titlani.fis.cinvestav.mx [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id Ri2F7fTN40pn; Sun, 27 Jun 2021 08:21:06 -0500 (CDT)
+Received: from inbox.fis.cinvestav.mx (inbox.fis.cinvestav.mx [148.247.183.89])
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by titlani.fis.cinvestav.mx (smtp.fis.cinvestav.mx) with ESMTPS id A1A44ACECB;
+        Sun, 27 Jun 2021 08:21:06 -0500 (CDT)
+Received: from 105.112.148.252
+        (SquirrelMail authenticated user fcollazo)
+        by inbox.fis.cinvestav.mx with HTTP;
+        Sun, 27 Jun 2021 07:38:17 -0500
+Message-ID: <2dff993e0ed0c3ed97c3c35b22322625.squirrel@inbox.fis.cinvestav.mx>
+Date:   Sun, 27 Jun 2021 07:38:17 -0500
+Subject: ANTWORTEN!!!
+From:   "JILLIAN NIESLAY" <info@fis.cinvestav.mx>
+Reply-To: jillian.nieslay1@hotmail.com
+User-Agent: SquirrelMail/1.4.22-16.el7
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: BUSINESS LOAN/PROJECT FUNDING...67
-To:     linux-efi@vger.kernel.org
-From:   "Smith Green" <ssbinvestmentsllc@citromail.hu>
-Date:   Thu, 17 Jun 2021 08:34:31 +0300
-Reply-To: ssbinvestmentsllc@citromail.hu
+Content-Type: text/plain;charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+X-Priority: 3 (Normal)
+Importance: Normal
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Dear Sir/Madam,
 
-Our Investors are based in the middle east with a profound track record. We invite you to take advantage of our investment loan program to fund your existing or intending projects. We offer a straight or convertible loan investment program for projects with high-returns and payback prospects without the usual rigid procedures of conventional lenders.
- 
-Kindly forward a copy of your Executive business summary for our review: info@ssbinvestmentsllc.us
 
- 
-Best Regards.
-Smith Green
-E:info@ssbinvestmentsllc.us
-International investment broker
+
+SOLIDARITÄT DES LEGITIMIERTEN COVID-19 CHARITY-PROGRAMMS.
+KONTAKT: jillian.nieslay-chrty@hotmail.com
+
