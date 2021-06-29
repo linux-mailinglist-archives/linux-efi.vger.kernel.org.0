@@ -2,98 +2,187 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EE9EA3B735D
-	for <lists+linux-efi@lfdr.de>; Tue, 29 Jun 2021 15:40:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D318C3B7743
+	for <lists+linux-efi@lfdr.de>; Tue, 29 Jun 2021 19:33:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234038AbhF2NnL (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 29 Jun 2021 09:43:11 -0400
-Received: from mout.gmx.net ([212.227.17.20]:60227 "EHLO mout.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233957AbhF2NnL (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Tue, 29 Jun 2021 09:43:11 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1624974026;
-        bh=p5AhWvJObj5E48c5fHGcL6jXDuBVZdpgQb8yMlXS5lQ=;
-        h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
-        b=kbNAu9qrfhjH8KLiI0jIC/qkXlvAf5WyXLSyNdHAHYUDGWZB2UDKqDUZHp4kCXDwE
-         7GreXgsYkwrIovrYN8d6/PUWSVJ3HlwnQOZhRTtrP07B//BdrpL6FPD5hKZknLbSeh
-         KdKcMrGbq5DZrA7ghlvFfDFahf0FTEtGdOlIXPhY=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from LT02.fritz.box ([88.152.144.157]) by mail.gmx.net (mrgmx104
- [212.227.17.174]) with ESMTPSA (Nemesis) id 1MIMbU-1m3iAQ26PU-00EOFS; Tue, 29
- Jun 2021 15:40:26 +0200
-From:   Heinrich Schuchardt <xypron.glpk@gmx.de>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     Andreas Schwab <schwab@linux-m68k.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Atish Patra <atish.patra@wdc.com>, linux-efi@vger.kernel.org,
-        linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
-        Heinrich Schuchardt <xypron.glpk@gmx.de>
-Subject: [PATCH 1/1] RISC-V: load initrd wherever it fits into memory
-Date:   Tue, 29 Jun 2021 15:40:18 +0200
-Message-Id: <20210629134018.62859-1-xypron.glpk@gmx.de>
-X-Mailer: git-send-email 2.30.2
+        id S232523AbhF2RgC (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 29 Jun 2021 13:36:02 -0400
+Received: from smtp-out2.suse.de ([195.135.220.29]:57446 "EHLO
+        smtp-out2.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232308AbhF2Rf6 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 29 Jun 2021 13:35:58 -0400
+Received: from imap.suse.de (imap-alt.suse-dmz.suse.de [192.168.254.47])
+        (using TLSv1.2 with cipher ECDHE-ECDSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by smtp-out2.suse.de (Postfix) with ESMTPS id 8EFC31FD8F;
+        Tue, 29 Jun 2021 17:33:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1624988009; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=4ATW6Ca30ZVV7Zzd+CeAnHIUpIriktflFykS2CyCKVU=;
+        b=uxNn0trq96rjaJlhGmwt9nsqODDA6IvN3PPpJ5pLk6OxC6qBfAgIVpB5NRGMBE6k8IOXmv
+        ZSr1dwfkXmzSEkbW7k/NgzESvoQka9c2YO3aHmlvDbMXOxpDaDv3x93LomyFeoXQWtl7KR
+        B5yx/g/zAs4hqWi4ySdPiunHS+DKSKg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1624988009;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=4ATW6Ca30ZVV7Zzd+CeAnHIUpIriktflFykS2CyCKVU=;
+        b=Zka4re+vRWBErBR3ow9OxmqXnLm6TloqkjJiAV7fQVsYLeVWuXjSfTukR3Tr5dKPJE6Dm0
+        FDRQ/vAhvGvrrBBg==
+Received: from imap3-int (imap-alt.suse-dmz.suse.de [192.168.254.47])
+        by imap.suse.de (Postfix) with ESMTP id 7477A11906;
+        Tue, 29 Jun 2021 17:33:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1624988009; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=4ATW6Ca30ZVV7Zzd+CeAnHIUpIriktflFykS2CyCKVU=;
+        b=uxNn0trq96rjaJlhGmwt9nsqODDA6IvN3PPpJ5pLk6OxC6qBfAgIVpB5NRGMBE6k8IOXmv
+        ZSr1dwfkXmzSEkbW7k/NgzESvoQka9c2YO3aHmlvDbMXOxpDaDv3x93LomyFeoXQWtl7KR
+        B5yx/g/zAs4hqWi4ySdPiunHS+DKSKg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1624988009;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=4ATW6Ca30ZVV7Zzd+CeAnHIUpIriktflFykS2CyCKVU=;
+        b=Zka4re+vRWBErBR3ow9OxmqXnLm6TloqkjJiAV7fQVsYLeVWuXjSfTukR3Tr5dKPJE6Dm0
+        FDRQ/vAhvGvrrBBg==
+Received: from director2.suse.de ([192.168.254.72])
+        by imap3-int with ESMTPSA
+        id H0KjHGlZ22C1YAAALh3uQQ
+        (envelope-from <bp@suse.de>); Tue, 29 Jun 2021 17:33:29 +0000
+Date:   Tue, 29 Jun 2021 19:33:24 +0200
+From:   Borislav Petkov <bp@suse.de>
+To:     Dov Murik <dovmurik@linux.ibm.com>
+Cc:     linux-efi@vger.kernel.org, Laszlo Ersek <lersek@redhat.com>,
+        Ashish Kalra <ashish.kalra@amd.com>,
+        Brijesh Singh <brijesh.singh@amd.com>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Andi Kleen <ak@linux.intel.com>,
+        "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
+        James Bottomley <jejb@linux.ibm.com>,
+        Tobin Feldman-Fitzthum <tobin@linux.ibm.com>,
+        Jim Cadden <jcadden@ibm.com>, linux-coco@lists.linux.dev,
+        linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH v2 0/3] Allow access to confidential computing secret
+ area
+Message-ID: <YNtZZLWOO+qO/oAu@zn.tnic>
+References: <20210628183431.953934-1-dovmurik@linux.ibm.com>
+ <YNoiydeow+ftvfYX@zn.tnic>
+ <90fa45e6-8c24-6c72-2ef5-35a4b3c4d5d7@linux.ibm.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:EgBc8Ey65V6us9wivMljuEpQjELTw45ZYekN3WeWP7EoTZQqdi9
- lSTJfNjLwwn39LG5t+wlOV95sd/H5CVCUd2fcTQeINYy7VKpqnR5PvKUBw3tFj8vXTlLIRA
- xdg/VFCpoGQmlBASv2EnqDMC7oyUTAD6jzc3KfeuAsAwck59dBCiQSEcBkvVgxPraBjZQWy
- QzaGFch8Z/36PVcA2KcMQ==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:4vb5uaMYpIE=:5sDfrtR1QE2vNvA9ao0JqE
- QCuwt/pPqkBuNXZG6n+V0YepLxjcDmHWEkz0B/7tbDMrZGb/RnsgaYGZzPLYOEl7j+euc12aY
- XhImlGTnVQKvO0n0d/aR83TCkr5ie+etSl2BFe1F+ten38vMmkK6dH3m2/jyZCGLM1GaGHxhG
- /NrnWeNUlldqlRm1CjK8bTxj2fgFd2qf9zo2PXx9Ha41vtJGyMGa8KapunitBeV1AmA1QcVSU
- XmM+G3zQLGAOYSoOynunILlEH3yhiJ8LWGjSqk7hevu+vMd+z9XZKNnCD0iNhA2ku0L1frBdG
- RSGLwQXnMzokwwZW8PMySbic0VYy5yqGo7Fk901OokEfTHoz2GkqbSDnHid9VABbWDXBRV65+
- aT+PUuAP/iD0QHGflYWOokZXuzh3+twCKwHMMdU5GcKw1JyEv3/7zsg2WnLUSDM2xgiGwMscW
- Hg41CcaZbAIQMbjHQ7Tecy3Ko28hQKQ3rjid0kMd3mzIh97wARBfXgm8PJukYxEPbbe4CbSGA
- Y/2ecd0XEp2pUcsgDuaMut2NGQYgJGkddbyucAuEKt7c0n+ekRyio0GVwoQuTJwAqRoLJUZRD
- EeH8s20BCAd56PLxDnGjaItR8G+qr72D/GxG6h3Ga4G9ZP4cYuQpEpzz4zbD9aDOc+pHJheAT
- uFjQGNOnG4ipeXTV0ObUibh+cGmUlVZeOnqey1oaeIcvi18+a0aziBynTRKemC1rbt7pQgxeE
- CMTHgTVfIQIzSm0zff2ftyvvj68P73k3HiRUF7yMbrUwmOsfLjEd5nTdGLV+h3nOS3SSO1Zxj
- hHu9PBop3QFRgmjYDwwoteERFqYfTHT619wxtfXK07JYySnYm/xcneyAcuNj8XFsKXJ94+elh
- +/jbr4Y73K+6iBruxN4XKYdmXthtKJKdKp/wwNAppODlqcCwQsAq1vvAVJnZCT75XYdvuC5AZ
- CUIzh8gPAHE3PyQskMkvh1Wk73ICGpPKbQ0DXKUb16f1js3XVvkTpD3LGfp8uiNcYAKk8LVT/
- YllnIUhcVaO8EqtkpePpN58I/qAaX4j2Z4Cz/h1cz786BolNO+kNT86hIDjiIm9tH69AOOEBw
- t4xkpPWoQ4ZF1DyrfS2jXuD5ZZu3aA08NeJ
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <90fa45e6-8c24-6c72-2ef5-35a4b3c4d5d7@linux.ibm.com>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Requiring that initrd is loaded below RAM start + 256 MiB led to failure
-to boot SUSE Linux with GRUB on QEMU, cf.
-https://lists.gnu.org/archive/html/grub-devel/2021-06/msg00037.html
+On Tue, Jun 29, 2021 at 10:16:22AM +0300, Dov Murik wrote:
+> OK, I'll add it in the cover letter; something along the lines of:
+>
+> An example would be a guest performing computations on encrypted files.
+>  The Guest Owner provides the decryption key (= secret) using the secret
+> injection mechanism.  The guest application reads the secret from the
+> sev_secret filesystem and proceeds to decrypt the files into memory and
+> then performs the needed computations on the content.
+>
+> Host can't read the files from the disk image because they are
+> encrypted. Host can't read the decryption key because it is passed using
+> the secret injection mechanism (= secure channel). Host can't read the
+> decrypted content from memory because it's a confidential
+> (memory-encrypted) guest.
 
-Remove the constraint.
+Yap, much better, thanks!
 
-Reported-by: Andreas Schwab <schwab@linux-m68k.org>
-Signed-off-by: Heinrich Schuchardt <xypron.glpk@gmx.de>
-=2D--
- arch/riscv/include/asm/efi.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+And that whole deal with the providing the secret this way is because
+you want to be starting the same guest image in the cloud over and over
+again but each guest owner would have their own decryption key which
+they would supply this way.
 
-diff --git a/arch/riscv/include/asm/efi.h b/arch/riscv/include/asm/efi.h
-index 7542282f1141..649ab513dc99 100644
-=2D-- a/arch/riscv/include/asm/efi.h
-+++ b/arch/riscv/include/asm/efi.h
-@@ -33,10 +33,10 @@ static inline unsigned long efi_get_max_fdt_addr(unsig=
-ned long image_addr)
+Yap, good.
 
- #define ARCH_EFI_IRQ_FLAGS_MASK (SR_IE | SR_SPIE)
+> On one hand, I agree.  This entire series has no SEV-specific code (but
+> I tested it only on SEV).
+> 
+> On the other hand, secret injection mechanisms in SEV-SNP and TDX are
+> different beasts than the one used here (SEV).  In SEV the secrets must
+> be injected at VM launch time; so when OVMF runs and kernel efistub runs
+> the secrets are already there (patches 1+2).  However, in SNP there's no
+> secret injection at launch; (/me hand-waving) the guest can securely
+> talk with the PSP hardware, check the attestation, and if OK then
+> securely contact some Guest Owner secret provider to get the required
+> secrets.  Not sure it makes sense for the kernel to be part of this
+> "getting secrets from secret provider and exposing them in securityfs".
 
--/* Load initrd at enough distance from DRAM start */
-+/* Load initrd anywhere in system RAM */
- static inline unsigned long efi_get_max_initrd_addr(unsigned long image_a=
-ddr)
- {
--	return image_addr + SZ_256M;
-+	return ULONG_MAX;
- }
+Which begs the question: why are you even doing this for only SEV
+instead of supporting SEV-SNP/TDX only?
 
- #define alloc_screen_info(x...)		(&screen_info)
-=2D-
-2.30.2
+I'm under the impression that people should run only SNP and the
+equivalent of that in TDX, guests but not those earlier technologies
+which are lacking in some situations.
 
+> So maybe for regular SEV we'll use this sev_secret module to get one
+> secret which will allow the guest to contact to the Guest Owner secret
+> provider (and from here continue like SNP or TDX).  Brijesh (AMD) also
+> suggested collapsing the proposed sev_secret module into the new
+> sev-guest module ("[PATCH Part1 RFC v3 22/22] virt: Add SEV-SNP guest
+> driver", sent 2021-06-02),
+
+Which reminds me - I still need to take a look at that one.
+
+> and the logic suggested here will be used when SNP is not active.
+>
+> Or taking a step back: Maybe the kernel should not try to unify
+> SEV/SEV-SNP/TDX/PEF/s390x-SE.  Each should have its own API.  A
+> userspace process will have to understand what is available and get the
+> required info to run the application in a confidential environment.
+> 
+> Or maybe we can find an API that fits all these confidential computing
+> mechanisms and expose a unified API that hides the underlying
+> implementation.
+> 
+> (I'm not really sure - that's the reason this is an RFC series.)
+
+I'm gravitating towards a common API so that userspace doesn't have to
+care. But that comes at the price of having to define that API properly
+so that it fits them all. And we all know how that bikeshedding works.
+
+:-\
+
+> When I wrote this I didn't yet encounter "coco" as an abbreviation. Now
+> there's a linux-coco mailing list, but I saw no other mentions of it in
+> the kernel (as an abbreviation for confidential computing).
+
+That's what Joerg and me came up with - "coco" :-)
+
+> I agree that the full term is too long; I considered conf-comp (but in
+> my mind "conf" is short for "configuration").  I used it in one place:
+> "ConfCompSecret" in patch 2/3.
+> 
+> If as a community we settle on coco / CoCo / COCO then I agree these
+> should be renamed.
+> 
+> (in QEMU they use CGS = Confidential Guest Support [1].)
+
+That's not bad too.
+
+Thx.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+SUSE Software Solutions Germany GmbH, GF: Felix Imendörffer, HRB 36809, AG Nürnberg
