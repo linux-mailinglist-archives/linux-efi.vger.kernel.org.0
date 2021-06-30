@@ -2,99 +2,113 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AB9303B7E10
-	for <lists+linux-efi@lfdr.de>; Wed, 30 Jun 2021 09:30:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0EA0A3B7F36
+	for <lists+linux-efi@lfdr.de>; Wed, 30 Jun 2021 10:44:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232806AbhF3Hcy (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 30 Jun 2021 03:32:54 -0400
-Received: from mail.kernel.org ([198.145.29.99]:55156 "EHLO mail.kernel.org"
+        id S233291AbhF3IrE (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 30 Jun 2021 04:47:04 -0400
+Received: from mail.skyhub.de ([5.9.137.197]:35120 "EHLO mail.skyhub.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232785AbhF3Hcy (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Wed, 30 Jun 2021 03:32:54 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id E742361D0D;
-        Wed, 30 Jun 2021 07:30:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1625038225;
-        bh=LgLwRlM2vgAjiWG1CvKhmKGXiZHELEvEd1+PAclEGZM=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=cbubElthuvDlQB1LHWO6FW8GGsopz4SX7tKIdQK0TxDO74KeBFtcx0/DPVOwyYQDN
-         6qb8Mtw7D4qae4jShR9NApX3uTZoOyileMkHMDufA3sHz4RGhjJ+166IMMsRbDsvcn
-         3pQydfyZiKTr/Uzg+22NwSIz9uVBxlJuiA1XJYcE9JOE8IOY1BPgoAs3EmS/SbGJyu
-         rS/UpDJjN9vsTtspBOy37QpJ+j8W8XsuHa1dca/JWKB9TUIie2tB++xh+VebD6ncoZ
-         wHWGUGbqvHFJE3vQQrLZw72st6Bo3oqY45O4hCr5tgZ4ii6ZOBc1IWF0uIvtEAVRqn
-         qy64a4TG0mRjA==
-Received: by mail-oi1-f180.google.com with SMTP id h9so2016368oih.4;
-        Wed, 30 Jun 2021 00:30:25 -0700 (PDT)
-X-Gm-Message-State: AOAM530wvzLu0gj2DCmN07z9bIoRZdVi8RpcCPV6jTX0wT25QsOJ66Lc
-        JeYwF9tS5neBYGrT7UTXw7s+ytsrp3gfbV0Et8c=
-X-Google-Smtp-Source: ABdhPJz4vMMdAJ6JJGe6ILpvyoclvoJOW/dpZm8I2fUqYOw2PoCl+WKEED/i5LKogGBU687vnmdSi3bTOuRd7B2gAf8=
-X-Received: by 2002:aca:5a04:: with SMTP id o4mr24661915oib.33.1625038225214;
- Wed, 30 Jun 2021 00:30:25 -0700 (PDT)
+        id S233108AbhF3IrE (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Wed, 30 Jun 2021 04:47:04 -0400
+Received: from zn.tnic (p200300ec2f12c3005601b47fb9547aa2.dip0.t-ipconnect.de [IPv6:2003:ec:2f12:c300:5601:b47f:b954:7aa2])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 238381EC0521;
+        Wed, 30 Jun 2021 10:44:34 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1625042674;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:references;
+        bh=mjE5wjKFJgfHACkYVBoQm0MkgIkbvmXkN5Worc2rFtQ=;
+        b=kaw444MEx7UHj7NA4UFs6J2CPVplHWdTDZKwNMRrUuMwRUtnpC7eThdftdq06yeeIMcghG
+        wULRkuMyBHEUosM8PiiYx+UY/E/mGJ75Y2vd0dCobwYQCJRc7YRxoHRWw1xe4u74XKjqoF
+        4fC4wkvGiJRaOotTdB0LJ/Rq8MKMXLI=
+Date:   Wed, 30 Jun 2021 10:44:28 +0200
+From:   Borislav Petkov <bp@alien8.de>
+To:     Ard Biesheuvel <ardb@kernel.org>,
+        Lenny Szubowicz <lszubowi@redhat.com>
+Cc:     glin@suse.com, =?utf-8?B?SsO2cmcgUsO2ZGVs?= <jroedel@suse.de>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        linux-efi@vger.kernel.org, lkml <linux-kernel@vger.kernel.org>
+Subject: [RFC PATCH] efi/mokvar: Reserve the table only if it is in boot
+ services data
+Message-ID: <YNwu7LmZaImyoOer@zn.tnic>
 MIME-Version: 1.0
-References: <20210629134018.62859-1-xypron.glpk@gmx.de> <CAOnJCUKuHGUZi-13PpnZGHKkXxhj3asVJgaNMTv3=830eVwi=g@mail.gmail.com>
-In-Reply-To: <CAOnJCUKuHGUZi-13PpnZGHKkXxhj3asVJgaNMTv3=830eVwi=g@mail.gmail.com>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Wed, 30 Jun 2021 09:30:14 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXG-O5PLnEWGWXzYf2r471ng7j-jZ2ziTwLdSgdVFdJNaA@mail.gmail.com>
-Message-ID: <CAMj1kXG-O5PLnEWGWXzYf2r471ng7j-jZ2ziTwLdSgdVFdJNaA@mail.gmail.com>
-Subject: Re: [PATCH 1/1] RISC-V: load initrd wherever it fits into memory
-To:     Atish Patra <atishp@atishpatra.org>
-Cc:     Heinrich Schuchardt <xypron.glpk@gmx.de>,
-        Andreas Schwab <schwab@linux-m68k.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Atish Patra <atish.patra@wdc.com>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        linux-riscv <linux-riscv@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, 30 Jun 2021 at 00:56, Atish Patra <atishp@atishpatra.org> wrote:
->
-> On Tue, Jun 29, 2021 at 6:40 AM Heinrich Schuchardt <xypron.glpk@gmx.de> wrote:
-> >
-> > Requiring that initrd is loaded below RAM start + 256 MiB led to failure
-> > to boot SUSE Linux with GRUB on QEMU, cf.
-> > https://lists.gnu.org/archive/html/grub-devel/2021-06/msg00037.html
-> >
-> > Remove the constraint.
-> >
-> > Reported-by: Andreas Schwab <schwab@linux-m68k.org>
-> > Signed-off-by: Heinrich Schuchardt <xypron.glpk@gmx.de>
-> > ---
-> >  arch/riscv/include/asm/efi.h | 4 ++--
-> >  1 file changed, 2 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/arch/riscv/include/asm/efi.h b/arch/riscv/include/asm/efi.h
-> > index 7542282f1141..649ab513dc99 100644
-> > --- a/arch/riscv/include/asm/efi.h
-> > +++ b/arch/riscv/include/asm/efi.h
-> > @@ -33,10 +33,10 @@ static inline unsigned long efi_get_max_fdt_addr(unsigned long image_addr)
-> >
-> >  #define ARCH_EFI_IRQ_FLAGS_MASK (SR_IE | SR_SPIE)
-> >
-> > -/* Load initrd at enough distance from DRAM start */
-> > +/* Load initrd anywhere in system RAM */
-> >  static inline unsigned long efi_get_max_initrd_addr(unsigned long image_addr)
-> >  {
-> > -       return image_addr + SZ_256M;
-> > +       return ULONG_MAX;
-> >  }
-> >
-> >  #define alloc_screen_info(x...)                (&screen_info)
-> > --
-> > 2.30.2
-> >
->
-> LGTM
->
-> Reviewed-by: Atish Patra <atish.patra@wdc.com>
->
+Hi guys,
 
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
+so below is what we've been staring at recently, please doublecheck me
+whether I'm even making sense here.
 
-Please take this via the RISC-V tree.
+Thx!
+
+---
+From: Borislav Petkov <bp@suse.de>
+
+One of the SUSE QA tests triggered:
+
+  localhost kernel: efi: Failed to lookup EFI memory descriptor for 0x000000003dcf8000
+
+which comes from x86's version of efi_arch_mem_reserve() trying to
+reserve a memory region. Usually, that function expects
+EFI_BOOT_SERVICES_DATA memory descriptors but the above case is for the
+MOKvar table which is allocated in the EFI shim as runtime services.
+
+That lead to a fix changing the allocation of that table to boot services.
+
+However, that fix broke booting SEV guests with that shim leading to
+this kernel fix
+
+  8d651ee9c71b ("x86/ioremap: Map EFI-reserved memory as encrypted for SEV")
+
+which extended the ioremap hint to map reserved EFI boot services as
+decrypted too.
+
+However, all that wasn't needed, IMO, because that error message in
+efi_arch_mem_reserve() was innocuous in this case - if the MOKvar table
+is not in boot services, then it doesn't need to be reserved in the
+first place because it is, well, in runtime services which *should* be
+reserved anyway.
+
+So do that reservation for the MOKvar table only if it is allocated
+in boot services data. I couldn't find any requirement about where
+that table should be allocated in, unlike the ESRT which allocation is
+mandated to be done in boot services data by the UEFI spec.
+
+Signed-off-by: Borislav Petkov <bp@suse.de>
+---
+ drivers/firmware/efi/mokvar-table.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/firmware/efi/mokvar-table.c b/drivers/firmware/efi/mokvar-table.c
+index d8bc01340686..38722d2009e2 100644
+--- a/drivers/firmware/efi/mokvar-table.c
++++ b/drivers/firmware/efi/mokvar-table.c
+@@ -180,7 +180,10 @@ void __init efi_mokvar_table_init(void)
+ 		pr_err("EFI MOKvar config table is not valid\n");
+ 		return;
+ 	}
+-	efi_mem_reserve(efi.mokvar_table, map_size_needed);
++
++	if (md.type == EFI_BOOT_SERVICES_DATA)
++		efi_mem_reserve(efi.mokvar_table, map_size_needed);
++
+ 	efi_mokvar_table_size = map_size_needed;
+ }
+ 
+-- 
+2.29.2
+
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
