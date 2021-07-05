@@ -2,67 +2,60 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4EA0D3BBC93
-	for <lists+linux-efi@lfdr.de>; Mon,  5 Jul 2021 14:01:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D7013BC14B
+	for <lists+linux-efi@lfdr.de>; Mon,  5 Jul 2021 17:58:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231183AbhGEMES (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 5 Jul 2021 08:04:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48174 "EHLO
+        id S230307AbhGEQBS (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 5 Jul 2021 12:01:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44800 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230435AbhGEMER (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 5 Jul 2021 08:04:17 -0400
-Received: from mail-io1-xd2e.google.com (mail-io1-xd2e.google.com [IPv6:2607:f8b0:4864:20::d2e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34C9DC061574
-        for <linux-efi@vger.kernel.org>; Mon,  5 Jul 2021 05:01:41 -0700 (PDT)
-Received: by mail-io1-xd2e.google.com with SMTP id h6so3667481iok.6
-        for <linux-efi@vger.kernel.org>; Mon, 05 Jul 2021 05:01:41 -0700 (PDT)
+        with ESMTP id S230305AbhGEQBR (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 5 Jul 2021 12:01:17 -0400
+Received: from mail-yb1-xb35.google.com (mail-yb1-xb35.google.com [IPv6:2607:f8b0:4864:20::b35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F09C0C061574
+        for <linux-efi@vger.kernel.org>; Mon,  5 Jul 2021 08:58:39 -0700 (PDT)
+Received: by mail-yb1-xb35.google.com with SMTP id c8so29845396ybq.1
+        for <linux-efi@vger.kernel.org>; Mon, 05 Jul 2021 08:58:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=hREarKyarDnOaQJQq8t8TL5ER6glWi2o3ujP9ZIHN/8=;
-        b=BKFhp5Ugjw0AjCnJ9ulf31cgpBx0g1fkHap2BMGJ8zCAvyFVnRgQnrXWnofg42jt/z
-         wxt4R852ydUd/wPhsFpb3eSagWG2Y6J1Hp6QdhOj7ppc/CYYEOIqYzb3I/Dip0IypDln
-         HzpvMaX02VNdcV06wVtR+PAVdpYSmAb34CSSiW+CBOaztk6fB2qusqFIt8ZQIpXxUXOz
-         OquIBo3hHimmQl1KnsUJQ35RmoEE3SHmFkTjftdqG+qamn9V0rQIuocxrSjiqfngJL9z
-         XST/UELyWSRLg1AZvsCncTFzJlWG7/nMwwZZr4pEmcypXh6ubVA4hBsZVQ0HQCahYGRV
-         JDMQ==
+        h=mime-version:sender:from:date:message-id:subject:to;
+        bh=nsH4CrKT3J6+fs9dWVy3c039Y9wb3g5ZuRIL9UvGmwA=;
+        b=hkbYR/nXr/3jElLWzncIIjXn0Qd+hX3ryLkx09aBI8521yLOTXGEARA1kVQSJkFnj5
+         2PY+qjskXAdtgYFScMBEkmH8iGu+66rZrf4YnZkJWuIEyBgm6rU16Qe+E2c1r9A5o1Aq
+         dXCkmxIl8Cmx6cgoXnjy9yTKX7UIB2ZrO3B5B1EcGyB2hEm3yKx5+Vp4zfMRaiEzlfDk
+         sLQsdfO5dJYtgLgYqGr9POyC4w8qOAATTPthTKhaTJXzwR0+mLl9c6MUI0MaXUyHYyQb
+         dZVyaDGqiBrJh96mXiZNuwbOSYj4G/5yX2r8anGeHQYT94U37f7eNzFDvbhmaZjnQBBb
+         +WUw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=hREarKyarDnOaQJQq8t8TL5ER6glWi2o3ujP9ZIHN/8=;
-        b=gpLx6jsb0MXwj41Uu+Q4aWI9bpbzWMPXjAzM7cZsg5JtnWmIIBysNUuXvRFUmy8H5B
-         bTBwOaPrVgGE4GYscJkXl7wOv42RopPzHuzfXj6JWizUYJWMjw/qw3yUbixOkMTMF/Ii
-         uHYhPvFOk3TSt9Oc/uR7+nyKS/PEG3ayPo/tWv32HlXTI2rZq6V46Fs4Ue4zKkVdc7X+
-         ZGRU57YNvfxrssy1blxYt7pRBZ733ilOuOfksvGPvMi6oqDRiizMx7uYNrOdTYg8p6h4
-         gSJ/tgluQWmXzSDlR9klpUE355R6XGVYvU0Q9D14u7jt6O2kgrtrAF2yowfWFtfg1yOw
-         FbkQ==
-X-Gm-Message-State: AOAM530auPGm4HTrg198scfr/a7L/NeeGI7BzAeyd5/5TISAQ2QdaOvb
-        xf4ntDeJ2QFym1f8g8zQqubL18LYKfVh/ZqlMAA=
-X-Google-Smtp-Source: ABdhPJx4RwgVeDTf63rFQB3Bm2eQHQWSCk2nYvjN3O+67g8Oewq+fzSaUpm5farYwH014sjfyE4ZkZJFvWPR6fmELik=
-X-Received: by 2002:a6b:e40d:: with SMTP id u13mr338353iog.100.1625486500692;
- Mon, 05 Jul 2021 05:01:40 -0700 (PDT)
+        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
+         :to;
+        bh=nsH4CrKT3J6+fs9dWVy3c039Y9wb3g5ZuRIL9UvGmwA=;
+        b=D9fEOaGsrZzIdLEhCo2pbf9SGBa/hus2tRhnqRfFb9s35AQuodX0cC7hKCTo0AZmf8
+         E2xIsvHIYdbT+zKrJkNYssyOIK7Q+Q4SqIGFGGSStFEgQsZGATULio6w3LWcyZzhOxay
+         uU83C1ESLxjIHEZf4V5Fctmmr2LiFkKLaEUOrJoxfts+mrohCY9Tgj16tgYK6BJdm3/M
+         WYFMEAtiziDe9op/JWoIgT1JsRrFb7sfBEHFtz5YGmhSMrpmmeqHP2AtES2yAxAM3cSW
+         ZcJm2jxsQ7kQCN35y3sMjcLmyIyMAdTa+Bg8Z/V6GYaSHVNmFnAr6OfQ5mpWv65a+Tsb
+         15Aw==
+X-Gm-Message-State: AOAM530V1CdmE0P0egpzxjYV0ikbFdpdkQ9yu5C8CedkFZXh9IerTywP
+        gEwHA9O+jj+dCOiDTipqiBSmyobPHU1u8Bxcn5o=
+X-Google-Smtp-Source: ABdhPJw81ML7t+Dda6DOh3wm/pmHRn8i1oXC00YJCyKBxlxl1yqujR5qEUkyzo4xFkXiWiRlceto/sKVVg6ozMkPkKQ=
+X-Received: by 2002:a25:d008:: with SMTP id h8mr19069401ybg.215.1625500719302;
+ Mon, 05 Jul 2021 08:58:39 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:a02:84a1:0:0:0:0:0 with HTTP; Mon, 5 Jul 2021 05:01:40 -0700 (PDT)
-From:   anatoabraham5 <anatoabraham5@gmail.com>
-Date:   Mon, 5 Jul 2021 12:01:40 +0000
-Message-ID: <CAMxeGK516aJti-L9u=LiJaRBhJrXya43-jLsCzR_g=ZbNCpWgg@mail.gmail.com>
-Subject: My Belove Friend
+Sender: chefabakar@gmail.com
+Received: by 2002:a05:6900:1245:0:0:0:0 with HTTP; Mon, 5 Jul 2021 08:58:38
+ -0700 (PDT)
+From:   Jemy Ross <jrs61644@gmail.com>
+Date:   Mon, 5 Jul 2021 15:58:38 +0000
+X-Google-Sender-Auth: qV16zEgmjrBf-2o00_7JeNkiFLo
+Message-ID: <CAFVub+yOYXdhn1u6zbUj02xpJo_JBHYHjNWj6r7ZWZvo0Z6SaA@mail.gmail.com>
+Subject: Please can i have your attention,
 To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Salam
-Sizi=C5=88 bilen habarla=C5=9Fanyma begen=C3=BD=C3=A4rin, meni=C5=88 adym R=
-eacheal we size
-pe=C3=BDdaly bolup biljek m=C3=B6h=C3=BCm bir maksat bilen habarla=C5=9Fmak=
- isle=C3=BD=C3=A4rin. Bu
-haty alandygy=C5=88yzy g=C3=B6rkez=C3=BD=C3=A4n jogaby=C5=88yzy alanymdan s=
-o=C5=88, men hakda has
-gi=C5=88i=C5=9Fle=C3=BDin maglumat bererin.
-Hormat bilen,
-Reach
+Hello, my name is Jenny Ross, please your attention is needed, i have
+something to share with you.
