@@ -2,41 +2,41 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 276523BEE74
-	for <lists+linux-efi@lfdr.de>; Wed,  7 Jul 2021 20:18:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5541B3BEE77
+	for <lists+linux-efi@lfdr.de>; Wed,  7 Jul 2021 20:18:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232280AbhGGSVO (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 7 Jul 2021 14:21:14 -0400
-Received: from mail-bn8nam08on2046.outbound.protection.outlook.com ([40.107.100.46]:38144
+        id S232022AbhGGSVQ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 7 Jul 2021 14:21:16 -0400
+Received: from mail-bn8nam08on2041.outbound.protection.outlook.com ([40.107.100.41]:45792
         "EHLO NAM04-BN8-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S232296AbhGGSUZ (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        id S232512AbhGGSUZ (ORCPT <rfc822;linux-efi@vger.kernel.org>);
         Wed, 7 Jul 2021 14:20:25 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=mYmibSsd1an9rpJ6i4zVE993/QAMWrSPzesCwJwajqWIp/P+ngu9F8HfSHELFQ70usKMkm/jgKHsK1af9+WaRo+l9yTX0gBxObso6qkfQIvh2tm9ACh1AoOJmOfnY31TAI9prF1eYd7lnJNba+NgaEPK6iggusO7NOdI8+nzSpWmChNdnLVVFdu4n1yxkOFznoD3gj4YWxyJWwjS5cbBZFQ31zvGrOHnFrNLDn7QnXCof0nTGuO+Y/J1EXI6NuGYTv5wKAKg3AnkC+cZgS5cErrUNWvAl+4IJOyrufMnTsmrZXUqcbMIpGuZ/bE8aOI+QsKVcq78XVe5bnW2KVKzqA==
+ b=KGjq8o2xRrrrOHKcAoEq2hIIhCZfnbcc9YFfoapOguKPshRXhuOd5PVRroywGEQ2rTbGJmJA1TOqzvDvktflLjT4Ao8HntuoJ/nQhOxeeDA9KXdEQbg4H4vESMxkNug7AKTWJ6Dsn5hJxTTYatqSlcWbhUANOBihOAVSAn3X2a7JgiE/+aNkh9JlhzjDPr0kZ2BFkK2T/B9lp3HIblUZLHGzISIDNuz7KGvoYaBJovEmOwG6U4QEo/F7SSh1YatOeoH6c9W8Ll1od+jdCGUEVMoA2b1DhDhNtjUbu8L/Bx1Sv5k6M/+JjE29Uoy+Xu4A3bThHjQaM63/8VxZ/Ncn+g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=0B6FiFCaDmM5RZo5rPzgiexy2y5sO1Pr34P5srvJpVg=;
- b=Xj1nyMCylZAkTyO79kq2fphqMros1v4rapVAh08xZ2ujP1SHSmiR6+tPBVZ9GrrTeXnXGwRNIVWE3lT/eNVYvwbo/UwMgZbQXGp//uaLejRtQDEyJymZHOo4KQ7bp2To4BybEFILosB/f5hTr7Vipncr7Yzd3RnoGRPazNllGBM5d+QTKOS7JBDqITnD3hGEQPbt8Qy6szJQtpFyr8fLmiihy3U6wY/BVqmWo828s9JsQE/cxmoE5vuQK50ihWBETLokRT8kkuVqbPKVdPpRjRrOepK8MBxLR4a+T6e1WizXK1jnYSWC1ggNirMKtZMyqNhxKeaO1XApL5IiFagR7A==
+ bh=SuBnOuaowbP0FR6tF9Xy3nGftIpOT3sN0TZI5ddzKdE=;
+ b=S1sNRyQ6hptH3LJLEIBzybTbbrem2g/SwioPvp9pyeru/NVHlD66DHRDrIE0ckrwX+m2sB0EPSrixKdGmY/rPW4W010sJgeGdkRxNp5zZdIbSzaltVbzjnfgoXMyhHQtmVAjdSak1Iwux14sOXAW1ZcTXQQcpJgPuffsqOlbz0JHi1+/DNZA+xcXIjB+L5cwJuTIFPiCWB8U5KkjsJNQm9HsiFLvWO5JkHzf3kkjlifDZDn5Qi+J38E3vzjao6xtC74EyZeTXxHFMJSgfkCfmkQG5BBQFTINZIbbQUzBkJodNh8ZX9IaSSgnJ2s7rFCvedoFu1wuvvyDyDzM+ld3Qg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
  header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=0B6FiFCaDmM5RZo5rPzgiexy2y5sO1Pr34P5srvJpVg=;
- b=uuSpKkHMX2zlER3mgpcXzAh7KoI+YNnygi/zEQyOj62ouJnAKisTmp8eWFwrOG/SH2k6+bWjylzqpKZCPo1XI3t4xmVYPRNUVx6GNyB068b4zvZUuqm6bYjg5Zl7uJCg5j74OBXPbfmIP7cyIvU6nP6a99X37+h1WidXJoXhioc=
+ bh=SuBnOuaowbP0FR6tF9Xy3nGftIpOT3sN0TZI5ddzKdE=;
+ b=r9/WFUD23NqBGEbATgFPqBWNo9s8NOwJokbIoptpHGZcXBcB8SDAzTaHlCQxE7HNgLvqN7PF+cKgtAjXEvLQHwZw5IxH6KKPgaPfCNlLg8c0ZKgwXFzQrEIRrJPk4y7YNtPljQmuIcd0CdvVSK4flTifD2sIqMInSprTlPqAB5I=
 Authentication-Results: kernel.org; dkim=none (message not signed)
  header.d=none;kernel.org; dmarc=none action=none header.from=amd.com;
 Received: from BYAPR12MB2711.namprd12.prod.outlook.com (2603:10b6:a03:63::10)
  by BY5PR12MB3683.namprd12.prod.outlook.com (2603:10b6:a03:1a5::16) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4287.27; Wed, 7 Jul
- 2021 18:16:48 +0000
+ 2021 18:16:50 +0000
 Received: from BYAPR12MB2711.namprd12.prod.outlook.com
  ([fe80::40e3:aade:9549:4bed]) by BYAPR12MB2711.namprd12.prod.outlook.com
  ([fe80::40e3:aade:9549:4bed%7]) with mapi id 15.20.4287.033; Wed, 7 Jul 2021
- 18:16:48 +0000
+ 18:16:50 +0000
 From:   Brijesh Singh <brijesh.singh@amd.com>
 To:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
         linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
@@ -64,9 +64,9 @@ Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Vlastimil Babka <vbabka@suse.cz>, tony.luck@intel.com,
         npmccallum@redhat.com, brijesh.ksingh@gmail.com,
         Brijesh Singh <brijesh.singh@amd.com>
-Subject: [PATCH Part1 RFC v4 31/36] x86/sev: Provide support for SNP guest request NAEs
-Date:   Wed,  7 Jul 2021 13:15:01 -0500
-Message-Id: <20210707181506.30489-32-brijesh.singh@amd.com>
+Subject: [PATCH Part1 RFC v4 32/36] x86/sev: Add snp_msg_seqno() helper
+Date:   Wed,  7 Jul 2021 13:15:02 -0500
+Message-Id: <20210707181506.30489-33-brijesh.singh@amd.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20210707181506.30489-1-brijesh.singh@amd.com>
 References: <20210707181506.30489-1-brijesh.singh@amd.com>
@@ -76,221 +76,238 @@ X-ClientProxiedBy: SA0PR11CA0104.namprd11.prod.outlook.com
  (2603:10b6:a03:63::10)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from sbrijesh-desktop.amd.com (165.204.77.1) by SA0PR11CA0104.namprd11.prod.outlook.com (2603:10b6:806:d1::19) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4308.19 via Frontend Transport; Wed, 7 Jul 2021 18:16:46 +0000
+Received: from sbrijesh-desktop.amd.com (165.204.77.1) by SA0PR11CA0104.namprd11.prod.outlook.com (2603:10b6:806:d1::19) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4308.19 via Frontend Transport; Wed, 7 Jul 2021 18:16:48 +0000
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 85c1362f-5533-4479-f492-08d941736294
+X-MS-Office365-Filtering-Correlation-Id: 05944ca3-7fb5-400c-12af-08d941736410
 X-MS-TrafficTypeDiagnostic: BY5PR12MB3683:
 X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <BY5PR12MB36835A9E1EB36DF9FBA1311BE51A9@BY5PR12MB3683.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:8273;
+X-Microsoft-Antispam-PRVS: <BY5PR12MB36837B3B6CA6C5334D9F8F4EE51A9@BY5PR12MB3683.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: tyjYEU5u4AjayshIni8i0raGxh4dY4Sea/xwOo6jRcYsWxl6AV4qo91NQeP5VmioGElgpw/fI63gWd5ekrAhaEvRSsDaTpQhrqAC7sJLCAolEkHNM/TltuFkTRadvxa2luF1BImyWbdDP+3hnAUSazmdDMxUADQI9vgGd9Sh3scK7U+moDXomyLpAnM2825XatAUMbxsQVbu0QzCEZqevaZPc6r3FvCcI73NlJtro7TEe4c0+kKx03kXfKOLVixMy2HpMzq3pHeIlmWhUdBT/d2znH5yDUKM4z2rYtp/gVR3HScMqUx2kgejv8GCCU9/V+EhXZLuQ4mkMkQi828WlxLCnb/hg/FtVklnCs/WbApdv+LpSlm9P19MpYlz3s5ZLOzCl5yPX+sWT9JwC0SeCPfALF4GP45aempSz6ZMGOhzL9snVbI94iXl8ki+0vYYjw+DVafRkv2mOjGeBlBkp8qcVQwUlbNTgZG0fyZZypb2OVeVmqgZVB+uCwwb0740aLuyFnVV7HL24ON299/O6CErRmS96sc37oe/9DXXGqCkYtEYxih5q9lUcycujyuRIO3Co7Ch7xQLY8yrygLwjQjRhn+TKQHaT9pGA2cs2xwN40AdTt1rflrJT4wtgcnf+8z80iABO4osNklauWbB1TdpsR2sGV1YpYLZOWPhL/T2AOXNhU0Vn5aZnV60OjomZq5jUE6K+GwVScmxbpomXg==
+X-Microsoft-Antispam-Message-Info: nN9G3Kfjr5Wy/RpyBVRbW064AJgLKwyv59wAroKGQZ9Wq+x1FZbXoDmGCmKdrA8rytWCA/FuJE/4M+xmszIAJnMmLMYN9Ft51MkmCkOhdX/85EywzDoDdEkYP1X2UEaqWf12cwEsVexaqJ/0ydcgfSpJzTK68Kibi6DJ1ZqOKE5tubDg/xvYAjz6ca0qki98U9g4vUUK+LieCjEDwRWzLu4wTBoNftKDFLhcRN+jt7x42a605ywXZqjvsVOPd8REFfzPj/AeJ7pAWvu3RUGxbwzhlT/UUT0rnelc+0gbPrIb8KagiURb8QQQ2+R2z23jY411skY1yhHEHVCDkZ0I7NVw4W89zpaNHdF56s9o1dArvZIC3lVtRe3LMtTSc7qd4dRa5Fwni0BvOKBtqiUH73mM2johEztcQIL9ywodny2d/k0yjeP6LSJAtKd4IqSY+tnoCXR8r0O4L7BnKRnEGFaiP3Dn2ZjprxGuo2np469+gOknbxMCR3G/YGNAtnvmyaqzVG/Xw8ciVQSmXGKi8S8bYu3+1n7Y/9Ydb29CJ+qYbG2B+LE9p6ETCx3610mAsDUbrUP9Yr48TfAPXRuLOsJmmmIVuw38WxbHy535iYWkCJ/XtQeGOzG37CXTDOzJYIZeFj5MT/nSzXAIwY/iCsP04tpoLB8a9QkYLXOSznr69TBnaGxMHIkzXgl9rGvxWUuI8khf4a8oNQqTjLU/Hg==
 X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR12MB2711.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(366004)(39860400002)(136003)(346002)(376002)(396003)(5660300002)(8936002)(2616005)(44832011)(956004)(38350700002)(26005)(6666004)(7406005)(83380400001)(7416002)(1076003)(66946007)(4326008)(54906003)(66476007)(8676002)(66556008)(2906002)(36756003)(38100700002)(52116002)(186003)(6486002)(7696005)(478600001)(86362001)(316002);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?5sEiQH5zWHPUb4BKoyI9e9/07O3Oc1gzzD4+AMFTi9jfnUXPcO0+rFCogAVL?=
- =?us-ascii?Q?21aJUebMFF8DkU6QmYz8ycHHNApVj1q+qifzZpJlgwjnCOdkaVujvYh1AO3g?=
- =?us-ascii?Q?U+km/Qna7MJ+czWL/rdfKiacBJNFC7tNZsZB9p5bbVcMXFEYmaODQY/Pmh03?=
- =?us-ascii?Q?R5PaB+hVYzKjQuJUpOfMVTrGvT8x3o4NwVTIqvYsyMpv+bkRLxUPy8/H3FtL?=
- =?us-ascii?Q?u0ztkoMIeyb4vgiIJCEV9a3CtaRUpcAlrggPDocHr8eQb/TD0vqTGlWVzAW9?=
- =?us-ascii?Q?HSGGa2F3jNqyWiHZumX1aBAmIWk/oaTVhBOdqiEpUu4LHNUtbudpw+8t0mwb?=
- =?us-ascii?Q?kObpNxByUGhZCk/4yibIu0ByGU4hWUcZF96at0CfQDiANRyTNf0f/NyigPCv?=
- =?us-ascii?Q?jyabBNlRn5F9iB7XSifGMXXKiQXbyusMeIWgBn8tMtf7YSPrBgnUUrUgtu4V?=
- =?us-ascii?Q?15oDoJd7Us3pAUEeTRXWC2TdHjlCXouH/GZ3RYGj9AhtL0lS3wV/NkChBvav?=
- =?us-ascii?Q?W8wznJcatMHNtQiLVHfIWbmk222KR+STthXCZSYYt31JBD6EVwulULscMFd8?=
- =?us-ascii?Q?w6ooq9iKHvd8rbQ8ccWE42jL6by6QLv+2aw5mDLgOwVtKBj/QJIWJhlebQT2?=
- =?us-ascii?Q?ppLj4cJixK9yt2UrCuW1YH1sIR1ypQ+p9THc2pey9Xc441umsUqgdPbzoln0?=
- =?us-ascii?Q?a1jwT3pV7iGRB1xE1BoUU7BPt4PKcv9zMrO10+O03kBvGmz8FdgTBmcW+uf3?=
- =?us-ascii?Q?Inmmr/ATql1HtL/SKTNIAHneavIA6bMhPRm3/y3o8+BQeQIy2h6TZ5qVOMRM?=
- =?us-ascii?Q?YU5ivsdhjY0wso6XWtVuDbUCIqakzOY2aoiqVVQxka5fXJq297kft4pbyImi?=
- =?us-ascii?Q?3uaY1fCwBVsKjBlV72Q7iE/RI22l/HKmnlWKD7ZN0bRApjIaHK+jRpedPMrM?=
- =?us-ascii?Q?3dU2PVxgvK903mKl8QT+eCLPT7UVsQaEOI1Lg3JaH9HArzNrSv9M1lsQKC8i?=
- =?us-ascii?Q?vwNhtVPVRuYG1b7/G4V5EfsImRmSOKTv2a8FtBJrNCcIzoUlaxYhPymT9LhZ?=
- =?us-ascii?Q?IVrz+ytAzfd/KN3RJystfL2Nvj3XaMohdZ5h8FFm4EI0efj99pm5wXx2F5fY?=
- =?us-ascii?Q?cxst1lrT425o5TnZYpQrtX/rfL6INYMSYeZoM75r4zS0rAvpghlYHoYx5bMc?=
- =?us-ascii?Q?p237qxTct7weT9vqz6Y+a/Ws080vsxOSBV9zEkWYthbVnhzApnt4eaRkcudM?=
- =?us-ascii?Q?rxOAaLSRacPCedQqK1d6G4mPaSYct4giCl8lbljnZXffxzRupMuxY/cYh16T?=
- =?us-ascii?Q?2SofXJsuaT7iBmYwosJX5GPD?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?oEsm7nG0WjntBrZOKfwsioDyu09eKL+/ohQlBmeRhI3sldFHjIGvwxN1nSea?=
+ =?us-ascii?Q?E1MwA0z7CvSF4DoVu+kWMalEEeaFhbBIPmbkm0hlLEMrHJWD5uxSqXx07gDU?=
+ =?us-ascii?Q?uhNx9BjQSE+hE1CmiXidRSTOQv7LcwDMLka4KczCV/tLBmAsiM4JnupW8S4w?=
+ =?us-ascii?Q?u1DYu15f1w9oYiJAjIXdwR9F0rgJvAeQGAoB7Q2KfjizWAvAn1tqXqLBfLRR?=
+ =?us-ascii?Q?Kn2F1wYkYTOCR2m5nRqv2bvZB3XRh4DVlVbvY1cjvAJTfDdA1vVn2q49KlSi?=
+ =?us-ascii?Q?ZV52UpnC+xShuwzcLA0Yei6qD5KbhHTuniEBiJSCkAYNTWAwIM5jhFPjb1lA?=
+ =?us-ascii?Q?byNsN7cDRWRncLEn1RN9rsVtHdJ+nVb7PfTzeQnkERIwfYknhZ9h0kDaAmSr?=
+ =?us-ascii?Q?EXgpIrzI0Ff1GIOZbKe8JTjQM4/X4wPDEFW64rJAUM7xtu/RP5cxsKvCYNO8?=
+ =?us-ascii?Q?TkK4xUSsRxQyfyja7QCCnCLSgq0XXhSdiUzWcAdlmKWnPah/Ot3kb5Tm0RJ5?=
+ =?us-ascii?Q?JOyo3a0Udac6wgnbYySnHUFxRAsUdHr8ncG1efToZXmLfKaAHmYpJr/KtlzA?=
+ =?us-ascii?Q?FLwyvLD6D2ShUPK4HclHslVaEApBjA0bf6ZPuTkfpM0xx7hFz4JpEECJ7CT6?=
+ =?us-ascii?Q?1cFMQ2JJnUTB/XC8oj3az2RSBW46mjfB2elgdCi/WxiFEpSsqIfU9pV9cjv0?=
+ =?us-ascii?Q?4qxnljtwZojh5gC6EiwtAsewNdOWApfW8vo691o5QcsPoyIrT/Uf5zmu5eFQ?=
+ =?us-ascii?Q?MAFSRxag8k0KWuLYK1VCaKH1CKhhq5Wy8ootxypjjrhEqRtyODSdItDT8zPn?=
+ =?us-ascii?Q?Rnywkz/BlSdbaJUWn6a0YnCu6WZBx03tuf7s2b9/MF0QmyIrPv7wSbLeJ8sw?=
+ =?us-ascii?Q?Hzh7iMKqlT1JPaXE3lk4X3FsBsa/Bz3fbgvZJ75sB6tFeGC8CT8CS1kM28nA?=
+ =?us-ascii?Q?1ohqVdciyHysSv6h8PUwGIKOPz0xuv5yE36d4z5T5KGazrD7Wha1iPWfIqLQ?=
+ =?us-ascii?Q?WPlQcOoGmjZJma60H5YFHQMBRaVriNAx/nV04eQb2hTK9TdA3J2TuVv5F+iA?=
+ =?us-ascii?Q?dwWxw0KE/PjGF8RLyrjE8Z4doxboRqMLkB+Cq0Y7cqmv4VJKwnK809a5RH3r?=
+ =?us-ascii?Q?1tcwBh8kG6udHrONu1Q07kMnIvwFo2Mv3aU7w6TmjtEUrpSdpqrPfjE06MzZ?=
+ =?us-ascii?Q?bW+gC0eB0VdM4bgW72erdONk6uqhwL0iBo4zYZYLryNDkxL/s1NTCg1RZDP2?=
+ =?us-ascii?Q?92AR5FWqPTEotVWvCJ5ghOcV9iPiy1fkadCmkXo1fRRb3Z7bt6hJQJjh4+WX?=
+ =?us-ascii?Q?3gjuHGrE3qRXujZVsRYrmqEM?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 85c1362f-5533-4479-f492-08d941736294
+X-MS-Exchange-CrossTenant-Network-Message-Id: 05944ca3-7fb5-400c-12af-08d941736410
 X-MS-Exchange-CrossTenant-AuthSource: BYAPR12MB2711.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jul 2021 18:16:48.2618
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jul 2021 18:16:50.7464
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: GO+JN6d5AuR/WVWKlDC2OmzZh+FkGHHRJRBwJY0IVE2mgkvtWVhslo+dy1kuzNPGMiO6wYtVMnwIrCnO3eauKQ==
+X-MS-Exchange-CrossTenant-UserPrincipalName: Y8X9pa5JxUsHEABhzvctuGvpr+bOYGxc5n6WeyvG2rrX85qIbQQlYcE8+nMvREjJGniETMaOeG9XPNebWvD8LA==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB3683
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Version 2 of GHCB specification provides SNP_GUEST_REQUEST and
-SNP_EXT_GUEST_REQUEST NAE that can be used by the SNP guest to communicate
-with the PSP.
-
-While at it, add a snp_issue_guest_request() helper that can be used by
-driver or other subsystem to issue the request to PSP.
-
-See SEV-SNP and GHCB spec for more details.
+The SNP guest request message header contains a message count. The
+message count is used while building the IV. The PSP firmware increments
+the message count by 1, and expects that next message will be using the
+incremented count. The snp_msg_seqno() helper will be used by driver to
+get and message sequence counter used in the request message header,
+and it will be automatically incremented after the
+snp_issue_guest_request() is successful. The incremented value is saved
+in the secrets page so that the kexec'ed kernel knows from where to
+begin.
 
 Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
 ---
- arch/x86/include/uapi/asm/svm.h |  4 +++
- arch/x86/kernel/sev.c           | 57 +++++++++++++++++++++++++++++++++
- include/linux/sev-guest.h       | 48 +++++++++++++++++++++++++++
- 3 files changed, 109 insertions(+)
- create mode 100644 include/linux/sev-guest.h
+ arch/x86/kernel/sev.c     | 79 +++++++++++++++++++++++++++++++++++++++
+ include/linux/sev-guest.h | 37 ++++++++++++++++++
+ 2 files changed, 116 insertions(+)
 
-diff --git a/arch/x86/include/uapi/asm/svm.h b/arch/x86/include/uapi/asm/svm.h
-index 997918f0a89a..9aaf0ab386ef 100644
---- a/arch/x86/include/uapi/asm/svm.h
-+++ b/arch/x86/include/uapi/asm/svm.h
-@@ -109,6 +109,8 @@
- #define SVM_VMGEXIT_SET_AP_JUMP_TABLE		0
- #define SVM_VMGEXIT_GET_AP_JUMP_TABLE		1
- #define SVM_VMGEXIT_PSC				0x80000010
-+#define SVM_VMGEXIT_GUEST_REQUEST		0x80000011
-+#define SVM_VMGEXIT_EXT_GUEST_REQUEST		0x80000012
- #define SVM_VMGEXIT_AP_CREATION			0x80000013
- #define SVM_VMGEXIT_AP_CREATE_ON_INIT		0
- #define SVM_VMGEXIT_AP_CREATE			1
-@@ -221,6 +223,8 @@
- 	{ SVM_VMGEXIT_NMI_COMPLETE,	"vmgexit_nmi_complete" }, \
- 	{ SVM_VMGEXIT_AP_HLT_LOOP,	"vmgexit_ap_hlt_loop" }, \
- 	{ SVM_VMGEXIT_AP_JUMP_TABLE,	"vmgexit_ap_jump_table" }, \
-+	{ SVM_VMGEXIT_GUEST_REQUEST,	"vmgexit_guest_request" }, \
-+	{ SVM_VMGEXIT_EXT_GUEST_REQUEST,	"vmgexit_ext_guest_request" }, \
- 	{ SVM_VMGEXIT_PSC,	"vmgexit_page_state_change" }, \
- 	{ SVM_VMGEXIT_AP_CREATION,	"vmgexit_ap_creation" }, \
- 	{ SVM_VMGEXIT_HYPERVISOR_FEATURES,	"vmgexit_hypervisor_feature" }, \
 diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
-index 04ef5e79fa12..b85cab838372 100644
+index b85cab838372..663cfe96c186 100644
 --- a/arch/x86/kernel/sev.c
 +++ b/arch/x86/kernel/sev.c
-@@ -21,6 +21,7 @@
- #include <linux/cpumask.h>
- #include <linux/log2.h>
- #include <linux/efi.h>
-+#include <linux/sev-guest.h>
+@@ -51,6 +51,8 @@ static struct ghcb boot_ghcb_page __bss_decrypted __aligned(PAGE_SIZE);
+  */
+ static struct ghcb __initdata *boot_ghcb;
  
- #include <asm/cpu_entry_area.h>
- #include <asm/stacktrace.h>
-@@ -2024,3 +2025,59 @@ bool __init handle_vc_boot_ghcb(struct pt_regs *regs)
- 	while (true)
++static u64 snp_secrets_phys;
++
+ /* #VC handler runtime per-CPU data */
+ struct sev_es_runtime_data {
+ 	struct ghcb ghcb_page;
+@@ -2026,6 +2028,80 @@ bool __init handle_vc_boot_ghcb(struct pt_regs *regs)
  		halt();
  }
-+
-+int snp_issue_guest_request(int type, struct snp_guest_request_data *input, unsigned long *fw_err)
+ 
++static struct snp_secrets_page_layout *snp_map_secrets_page(void)
 +{
-+	struct ghcb_state state;
-+	unsigned long id, flags;
-+	struct ghcb *ghcb;
-+	int ret;
++	u16 __iomem *secrets;
 +
-+	if (!sev_feature_enabled(SEV_SNP))
-+		return -ENODEV;
++	if (!snp_secrets_phys || !sev_feature_enabled(SEV_SNP))
++		return NULL;
 +
++	secrets = ioremap_encrypted(snp_secrets_phys, PAGE_SIZE);
++	if (!secrets)
++		return NULL;
 +
-+	local_irq_save(flags);
-+
-+	ghcb = __sev_get_ghcb(&state);
-+	if (!ghcb)
-+		return -ENODEV;
-+
-+	vc_ghcb_invalidate(ghcb);
-+
-+	if (type == GUEST_REQUEST) {
-+		id = SVM_VMGEXIT_GUEST_REQUEST;
-+	} else if (type == EXT_GUEST_REQUEST) {
-+		id = SVM_VMGEXIT_EXT_GUEST_REQUEST;
-+		ghcb_set_rax(ghcb, input->data_gpa);
-+		ghcb_set_rbx(ghcb, input->data_npages);
-+	} else {
-+		ret = -EINVAL;
-+		goto e_put;
-+	}
-+
-+
-+	ret = sev_es_ghcb_hv_call(ghcb, NULL, id, input->req_gpa, input->resp_gpa);
-+	if (ret)
-+		goto e_put;
-+
-+	if (ghcb->save.sw_exit_info_2) {
-+
-+		/* Number of expected pages are returned in RBX */
-+		if (id == EXT_GUEST_REQUEST)
-+			input->data_npages = ghcb_get_rbx(ghcb);
-+
-+		if (fw_err)
-+			*fw_err = ghcb->save.sw_exit_info_2;
-+
-+		ret = -EIO;
-+		goto e_put;
-+	}
-+
-+e_put:
-+	__sev_put_ghcb(&state);
-+	local_irq_restore(flags);
-+
-+	return ret;
++	return (struct snp_secrets_page_layout *)secrets;
 +}
-+EXPORT_SYMBOL_GPL(snp_issue_guest_request);
++
++static inline u64 snp_read_msg_seqno(void)
++{
++	struct snp_secrets_page_layout *layout;
++	u64 count;
++
++	layout = snp_map_secrets_page();
++	if (layout == NULL)
++		return 0;
++
++	/* Read the current message sequence counter from secrets pages */
++	count = readl(&layout->os_area.msg_seqno_0);
++
++	iounmap(layout);
++
++	/* The sequence counter must begin with 1 */
++	if (!count)
++		return 1;
++
++	return count + 1;
++}
++
++u64 snp_msg_seqno(void)
++{
++	u64 count = snp_read_msg_seqno();
++
++	if (unlikely(!count))
++		return 0;
++
++	/*
++	 * The message sequence counter for the SNP guest request is a
++	 * 64-bit value but the version 2 of GHCB specification defines a
++	 * 32-bit storage for the it.
++	 */
++	if (count >= UINT_MAX)
++		return 0;
++
++	return count;
++}
++EXPORT_SYMBOL_GPL(snp_msg_seqno);
++
++static void snp_gen_msg_seqno(void)
++{
++	struct snp_secrets_page_layout *layout;
++	u64 count;
++
++	layout = snp_map_secrets_page();
++	if (layout == NULL)
++		return;
++
++	/*
++	 * The counter is also incremented by the PSP, so increment it by 2
++	 * and save in secrets page.
++	 */
++	count = readl(&layout->os_area.msg_seqno_0);
++	count += 2;
++
++	writel(count, &layout->os_area.msg_seqno_0);
++	iounmap(layout);
++}
++
+ int snp_issue_guest_request(int type, struct snp_guest_request_data *input, unsigned long *fw_err)
+ {
+ 	struct ghcb_state state;
+@@ -2074,6 +2150,9 @@ int snp_issue_guest_request(int type, struct snp_guest_request_data *input, unsi
+ 		goto e_put;
+ 	}
+ 
++	/* The command was successful, increment the sequence counter */
++	snp_gen_msg_seqno();
++
+ e_put:
+ 	__sev_put_ghcb(&state);
+ 	local_irq_restore(flags);
 diff --git a/include/linux/sev-guest.h b/include/linux/sev-guest.h
-new file mode 100644
-index 000000000000..24dd17507789
---- /dev/null
+index 24dd17507789..5f6c4d634e1f 100644
+--- a/include/linux/sev-guest.h
 +++ b/include/linux/sev-guest.h
-@@ -0,0 +1,48 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
+@@ -20,6 +20,41 @@ enum vmgexit_type {
+ 	GUEST_REQUEST_MAX
+ };
+ 
 +/*
-+ * AMD Secure Encrypted Virtualization (SEV) guest driver interface
++ * The secrets page contains 96-bytes of reserved field that can be used by
++ * the guest OS. The guest OS uses the area to save the message sequence
++ * number for each VMPL level.
 + *
-+ * Copyright (C) 2021 Advanced Micro Devices, Inc.
-+ *
-+ * Author: Brijesh Singh <brijesh.singh@amd.com>
-+ *
++ * See the GHCB spec section Secret page layout for the format for this area.
 + */
++struct secrets_os_area {
++	u32 msg_seqno_0;
++	u32 msg_seqno_1;
++	u32 msg_seqno_2;
++	u32 msg_seqno_3;
++	u64 ap_jump_table_pa;
++	u8 rsvd[40];
++	u8 guest_usage[32];
++} __packed;
 +
-+#ifndef __LINUX_SEV_GUEST_H_
-+#define __LINUX_SEV_GUEST_H_
++#define VMPCK_KEY_LEN		32
 +
-+#include <linux/types.h>
++/* See the SNP spec secrets page layout section for the structure */
++struct snp_secrets_page_layout {
++	u32 version;
++	u32 imiEn	: 1,
++	    rsvd1	: 31;
++	u32 fms;
++	u32 rsvd2;
++	u8 gosvw[16];
++	u8 vmpck0[VMPCK_KEY_LEN];
++	u8 vmpck1[VMPCK_KEY_LEN];
++	u8 vmpck2[VMPCK_KEY_LEN];
++	u8 vmpck3[VMPCK_KEY_LEN];
++	struct secrets_os_area os_area;
++	u8 rsvd3[3840];
++} __packed;
 +
-+enum vmgexit_type {
-+	GUEST_REQUEST,
-+	EXT_GUEST_REQUEST,
-+
-+	GUEST_REQUEST_MAX
-+};
-+
-+/*
-+ * The error code when the data_npages is too small. The error code
-+ * is defined in the GHCB specification.
-+ */
-+#define SNP_GUEST_REQ_INVALID_LEN	0x100000000ULL
-+
-+struct snp_guest_request_data {
-+	unsigned long req_gpa;
-+	unsigned long resp_gpa;
-+	unsigned long data_gpa;
-+	unsigned int data_npages;
-+};
-+
-+#ifdef CONFIG_AMD_MEM_ENCRYPT
-+int snp_issue_guest_request(int vmgexit_type, struct snp_guest_request_data *input,
-+			    unsigned long *fw_err);
-+#else
-+
-+static inline int snp_issue_guest_request(int type, struct snp_guest_request_data *input,
-+					  unsigned long *fw_err)
-+{
-+	return -ENODEV;
-+}
-+
-+#endif /* CONFIG_AMD_MEM_ENCRYPT */
-+#endif /* __LINUX_SEV_GUEST_H__ */
+ /*
+  * The error code when the data_npages is too small. The error code
+  * is defined in the GHCB specification.
+@@ -36,6 +71,7 @@ struct snp_guest_request_data {
+ #ifdef CONFIG_AMD_MEM_ENCRYPT
+ int snp_issue_guest_request(int vmgexit_type, struct snp_guest_request_data *input,
+ 			    unsigned long *fw_err);
++u64 snp_msg_seqno(void);
+ #else
+ 
+ static inline int snp_issue_guest_request(int type, struct snp_guest_request_data *input,
+@@ -43,6 +79,7 @@ static inline int snp_issue_guest_request(int type, struct snp_guest_request_dat
+ {
+ 	return -ENODEV;
+ }
++static inline u64 snp_msg_seqno(void) { return 0; }
+ 
+ #endif /* CONFIG_AMD_MEM_ENCRYPT */
+ #endif /* __LINUX_SEV_GUEST_H__ */
 -- 
 2.17.1
 
