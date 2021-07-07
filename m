@@ -2,41 +2,41 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 32E9D3BEF74
-	for <lists+linux-efi@lfdr.de>; Wed,  7 Jul 2021 20:40:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 399683BEF82
+	for <lists+linux-efi@lfdr.de>; Wed,  7 Jul 2021 20:40:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232917AbhGGSnA (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 7 Jul 2021 14:43:00 -0400
-Received: from mail-dm6nam11on2067.outbound.protection.outlook.com ([40.107.223.67]:36832
+        id S233038AbhGGSn2 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 7 Jul 2021 14:43:28 -0400
+Received: from mail-dm6nam11on2069.outbound.protection.outlook.com ([40.107.223.69]:46224
         "EHLO NAM11-DM6-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S232919AbhGGSlt (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Wed, 7 Jul 2021 14:41:49 -0400
+        id S233117AbhGGSmU (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Wed, 7 Jul 2021 14:42:20 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=EDPq6Nx5od9ndsMHe+qKuHnUZrunb4NIhUDQw5X+OJeaLDikpK0RJmEUmxE2JRIfqj8tjV8yt7SK0L1Gh73kxQd0Ba72FaR6MP1gi9JJerZn/8lyY3HfQbU+O6FfkTfr84h7GblXSeV8RbLT9Cqx9BexWv/XgL2+wmO+pxnIPweKT878HvWhrmJmWZXo4DxTJ/krAzJrfJcBxcguPRQqdZt3SSDVMSBvoaj182WZWKza7M2D9ijfW6tsQvvFWr7Ql6oU6WvVIKoDhbM+1HrNYTM1hjA9HyoELik0k7AHzXq2yu7+q+dF/3weMMqUNWYHdqAv32Dx5nJMQbCCnwt1Sg==
+ b=VPsK/IlkQtGceYQSMy3Sw8CV2mrPn+Fh+pBKSuYmRwHT7RYYrTdksxcUELCSbeJ8rpBKfAjMVdDrtBlLCuBEfd6k7w5G5Kare7KjN2ei2hZOFoNjQerdtg81SaLHwSs5Dm9/C6v9eV7ZqIOycDYhMdJWlY4gp9vUecton6+/IO8qdgtkTmgd4+wTeDu+8YXNmNb6tyuGIM5GQg9hlyY1VOUSJB6mHEPUQ4e8XH9m5fzXrw0Wh5POdnCthsA14f0QKiTiwl64hy6B3mvy92DEz5FPvC3fEWHjtwlR8K4jfQgzsy5MQKBSDkjwQg3wNJ/SBeTBLaUDWEjSocHKSximwg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zuQ6jECD770ybRkBmH8s+erhZW7p02EbJr+4zvD24f0=;
- b=molAb8dfmByoOZtJxp5PqmBNwSKrntGxfuD/6tnK+y4jN52Z536D2xW5MXG/7F2MMvsalIhG4+jn2/HzyvfE//6y4GXsRnVmMZU5U1LjsA99u0RnpXExUwiEXRzVRJhYppGkA7sAYamTz7iuvARwpAQgobTMaArwhR35Kr0zgH0pJFRjXkyDrf+cBvgvojaLUw+P7WKMPf7NABavwSfcxtAurN/uq/x+KmZ6r4qd4gX0HhS/15YR2CZyIhAV2msMxAdCAvGf7IS/yxSR/3HbCTnIYuCCsxE7Cwav0taP/s2nFcITJ7z2B41/7sE51gQ9b+UOQOul/YcJjlcWO+4ucw==
+ bh=zJsHY8n2NA4exO9t0dViCB784NHvK8fDVYNzRX7Qd/g=;
+ b=iKn2E4DViJ53Lpo9U/iIz13O5MEOGGyZKUSKS4tYcBuz/JA1W8/IOcp6BwEPhbjb6aL2noOy2qTLkI1oHmP0649MLd/qZaMLrddLdLL6bpIbnMrHXD2WAO6RrNgjQgbRwWOM/MbgHAUwGMVcilNx96VG5dlSn3Mi9qnOAnwNihuhmmQtFE8vfw3biDSyG5UxSdIPXVcIVy4B80+7wKuxLgOo/aMykwZcYgT2BLuO+mhTXeKsppC1uIVSqQjA31WJu0Awjey1xoaXfkrelKDCoQ0TiiZSgYtG2YwS9pnhyw9mfpHqr5nadUzEcznym8iR1PDQB2BDaD6x3hjAgosCxg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
  header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zuQ6jECD770ybRkBmH8s+erhZW7p02EbJr+4zvD24f0=;
- b=acca1ZLbjN0fFl8Bu8sN9kWlV9QVluFh7ncbkQNyaYGFJXafobmQ1LumfOitSuvCRmpSd1HPv9Ekrloe+D9ajV/8vz6ZGKFW0TB7KjMjqYa/YE5abJdS96x0UYWcJZrOqVxD/b9k2eYqRGaeFAvpQLlx0zd/GEVbohKsjXvtvB0=
+ bh=zJsHY8n2NA4exO9t0dViCB784NHvK8fDVYNzRX7Qd/g=;
+ b=NNDowqT6HXvX5rSOK+BqiWM8AbwZQh3Ryj9TlFpqAtPE2pgVJsxl2ZyXwE/PDOUt65oB1A/FB707WwLoWAhwQ89tE754C2Y3jAHc2GaFVWGVXHS6qQpr8/+le738YyBYrjVf4iwIXD9s1q80WPvAYSpVNR0pMU9F1tKgp2h6Jtk=
 Authentication-Results: kernel.org; dkim=none (message not signed)
  header.d=none;kernel.org; dmarc=none action=none header.from=amd.com;
 Received: from BYAPR12MB2711.namprd12.prod.outlook.com (2603:10b6:a03:63::10)
  by BY5PR12MB4082.namprd12.prod.outlook.com (2603:10b6:a03:212::19) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4308.20; Wed, 7 Jul
- 2021 18:38:12 +0000
+ 2021 18:38:15 +0000
 Received: from BYAPR12MB2711.namprd12.prod.outlook.com
  ([fe80::40e3:aade:9549:4bed]) by BYAPR12MB2711.namprd12.prod.outlook.com
  ([fe80::40e3:aade:9549:4bed%7]) with mapi id 15.20.4287.033; Wed, 7 Jul 2021
- 18:38:12 +0000
+ 18:38:15 +0000
 From:   Brijesh Singh <brijesh.singh@amd.com>
 To:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
         linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
@@ -64,9 +64,9 @@ Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Vlastimil Babka <vbabka@suse.cz>, tony.luck@intel.com,
         npmccallum@redhat.com, brijesh.ksingh@gmail.com,
         Brijesh Singh <brijesh.singh@amd.com>
-Subject: [PATCH Part2 RFC v4 30/40] KVM: X86: Define new RMP check related #NPF error bits
-Date:   Wed,  7 Jul 2021 13:36:06 -0500
-Message-Id: <20210707183616.5620-31-brijesh.singh@amd.com>
+Subject: [PATCH Part2 RFC v4 31/40] KVM: X86: update page-fault trace to log the 64-bit error code
+Date:   Wed,  7 Jul 2021 13:36:07 -0500
+Message-Id: <20210707183616.5620-32-brijesh.singh@amd.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20210707183616.5620-1-brijesh.singh@amd.com>
 References: <20210707183616.5620-1-brijesh.singh@amd.com>
@@ -76,96 +76,93 @@ X-ClientProxiedBy: SN6PR04CA0078.namprd04.prod.outlook.com
  (2603:10b6:a03:63::10)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from sbrijesh-desktop.amd.com (165.204.77.1) by SN6PR04CA0078.namprd04.prod.outlook.com (2603:10b6:805:f2::19) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4308.20 via Frontend Transport; Wed, 7 Jul 2021 18:38:10 +0000
+Received: from sbrijesh-desktop.amd.com (165.204.77.1) by SN6PR04CA0078.namprd04.prod.outlook.com (2603:10b6:805:f2::19) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4308.20 via Frontend Transport; Wed, 7 Jul 2021 18:38:12 +0000
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 9f6216c3-c8f7-420f-dd66-08d941765fff
+X-MS-Office365-Filtering-Correlation-Id: acba4824-8c8d-45d4-322c-08d941766197
 X-MS-TrafficTypeDiagnostic: BY5PR12MB4082:
 X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <BY5PR12MB40827DA277F8AFDE9AEF9C11E51A9@BY5PR12MB4082.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:3513;
+X-Microsoft-Antispam-PRVS: <BY5PR12MB4082A1A3681E9DC61EBB40B5E51A9@BY5PR12MB4082.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:5797;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: XYcpruXvypZvk8eSF7XPsBtW8SctmASGxfsf2AbuYYBtd7+MSiE9gEAv2VPB6v+EULaMxbS59ZHbQm11TfYI6zTQasVl5xcOz1nMJpG6+uqVibQhshtSV3NA9B43gQzRzWh5wFJZeRFZO0qq1O+uH26SLIfATtDzhBEbyC1fVMYlMhqsBCjRSQScoKzCX2yjlhD/GPZKz7K0rVoYynIu7XgKMDVDZNPTk/m+CCEm5RceWrR8pQ5/Q2MctqKGv0BoU8kfYl0vu/Ks+n0BPEPKH8RFJtxA8iDBINO9S70rMvzhxmbykG4fnAcNt8FsRIUmoGfnk+JBmaKUYIwg1iG8GvwDM3gE1mflow1aC+acWPvrUtIaXP60W2j8Ww6fYEAILJKl2rLigfoXvEKp39Mt0zvSIQqnXwf/5NyjGMXUdNsXWDMGp2eO+p3NikjehCpQXYHdf3FZvUBoiSp2Cxq2CzhnloDcGMrpfswcTkbKJ+gpf8NZrbUt/HeC+TbTdmnxrgwtalbb6GuAENRo4cPVGs/wggi6xkUQxYFg/Pf6/ScmGzrljs0Le8S2OZfXXWcHTVvEx3h0bKz9JGOpX1xbDKutJ0wLIBx00oCSroGhzOMh3HWI/0yKwTtsfrlL5kY4i2cmpxoSzA1qMYBHxmS6L4gkKi8tRZqq51bOPPfUyjRcksbghYta5D487ycvfQQN+VF7Pp0n7QfmrJCvEhStGw==
+X-Microsoft-Antispam-Message-Info: ociQfiE1QYoGxZ9jmEUHAoN8CN4BCgazgKqSScSgxnIWcBG1ll1+5qTHVZc5uiP9l6DcjV7jA0jiYgjcdgZIW3L59CihO+UIaVyLGgoklDNL+YJan4BqRgdmRxQK+U4XRu8uzIS0YdC77kHhOn6gy5uoaC2pSZ15WpX4MD8PJys9OVrpvLEjqPchVlzAJOVolKzb906R85YfcSRTETBrnuo1nfeNTJPiHbMTrOWpziq0V++eV6N4gVrZlO82T6tmwMV+APZilQQ/fx5fs5wcD7TZJQo3UCpbIOq76zLMj6WpjiSWdh/RFzpnEqLuUptnjDd1Eujlcp34WM9/I2Hid3CLb8VX7GHDkuOBwtTw9yPrbdpxOfPW4UsVb5oWh0GG533f+uh1a+BaJpajb6esLBFedR4+iSn8+jtm/s00fXr7WKqn0h1mnltpOGLc8KCstJZX1mKVcDiOkMwCpFUnr6q43T07rdZn/It0uFSm4KrqxaB3tarf6npCOz5iL0xZM4vShIx089FVG85ue7Igd9EXZr4h7rjFJb/REhksCe+0uqtLnLZjiRHSC82FCBPWmADWuFlfWsOvh/B5uMPmOMwh9rI/KbDXXvUQpuXSCRjHExF3tiBaBrF8jy6u95Fk++eV1VBXxw04psnk+TcEVAjpmLcHV+JlKUw8rxFna9Hk9Hy9CIHvT5pGld18lcj/
 X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR12MB2711.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(366004)(39860400002)(376002)(396003)(346002)(136003)(7696005)(52116002)(44832011)(8676002)(38350700002)(66946007)(38100700002)(54906003)(66476007)(8936002)(478600001)(6666004)(956004)(6486002)(7416002)(66556008)(7406005)(186003)(2616005)(2906002)(83380400001)(1076003)(4326008)(86362001)(5660300002)(36756003)(26005)(316002);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?Z0cdMLuw0T6bBAbnyyZd3gExyvhWO0L8HhErufAmslxIppHLxkdkEok4lsjw?=
- =?us-ascii?Q?0SVEMsNXNGTRrb0mvZUi+Cw0kYJvfAWQyIuimaAxiMxk8o+ZBwqcfCPdgQ2X?=
- =?us-ascii?Q?inMZfWI8MwAo1jUnjo3GSIqXrY2QAHF9TBco55t4qV020Ah+LEiVl7v//zbw?=
- =?us-ascii?Q?QrdT1w4Hxbz4ThEu0pjIunbAYteng0P0o7Z2REKTukirL/N2AsBiOT+RnC+t?=
- =?us-ascii?Q?6ebr7/9p5Iu40BbNu8mA4F5TaPLyKcOPueZF7kTIDroDXZJHQ89khz7EaY7z?=
- =?us-ascii?Q?ImWORk6Ynsjh2xh4cEWmYkKJYDxbrbPOK1yTW/Pe+PRiYKjIFEe4Hy3LhslR?=
- =?us-ascii?Q?4WwUPGmXgrH2qkzHFw2O2uLJJF88RjVn3mkVa7VimvsdRf8RwfO6EApPI+1J?=
- =?us-ascii?Q?mBxcncOHovM/bvqe9UpMghux2amb/jXNECx4Qvf3ymUMZovGZbZFUN228NIL?=
- =?us-ascii?Q?cV1koTA3QPVdZyIMuqbsNd39KE2fGrJF14ntomQyeA8rjpMerzBWUkEyf715?=
- =?us-ascii?Q?TcKIoXi1k4+KAbfzdYRtvCQGvnFi4+ZtlrD7423IF1Rwe0bKsNQ0EDyUS73D?=
- =?us-ascii?Q?tDlxFxU8Paz0dulkVVK2qg+6nhQhowwJObxpVC6lthngR+s7Bk+EX7esUrKZ?=
- =?us-ascii?Q?MuvqKas7ei1TTxMc5PwYel8C/MmMIsT1TrYTLDN6fgRRWZnNwB1/SIKJI3u7?=
- =?us-ascii?Q?8c7sr67H8czqTx8HkUTsUrRrbiiUvJxg1qIjADqNw4rBfJ7/RmcfMHcC6awV?=
- =?us-ascii?Q?FKAvoEJq32yhWF3T527R+r0CQE9O4zwpMudYYKrs9JNj4L8tcMnjnWmdGQZA?=
- =?us-ascii?Q?SaJcUuKtiAtzYEiQhCZBPM8AsR9HmrxNbBC5RxEQfxwKW0CLpL5P4EDk8BZI?=
- =?us-ascii?Q?WHjHHHMyOni8jB932mFedCnuA9EqCB/LVCh3P9IW/4aEK5dcNl+0SPKP2r0V?=
- =?us-ascii?Q?urHCbppzV/JO8SyZfDHwh4gBaBPxSDufTzhbWS2M1i+Q7Jv4MTMhGLj5kcGA?=
- =?us-ascii?Q?ohA3sjjDYn4hd0DslC9xgWS03DJHmtwAcUqHx0zs2PDWHtF3fdh8bn6F+Dzs?=
- =?us-ascii?Q?jJb+dEr0MZiT87T5XSZEe21tw9xtFisZhSX2WyLl7GmvWFLALcybO1zQFZZl?=
- =?us-ascii?Q?gt2uWqz/RBGwWsuhP7C/E28l7Di5739RNBe9AL1Dzm2SB7nUfz/lghCDPDRx?=
- =?us-ascii?Q?t7qKNb8eO4+MORDM6cQi+XnXyd0ew4DtD02PboVI6Gmo0tUlFKIvvA+frsaa?=
- =?us-ascii?Q?fXXHvP3OOgajDrM0ljQq4+xWE0n2eBuSkwSo/TvINYIvlGRkN/8C3LHwWPwG?=
- =?us-ascii?Q?srVdqgoGnKIlzttFOBgZCTlI?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?7IhPC2rsVeI4oA3QdOry8eSb1otqS8f2haYDG8fzPwh0cqEPnSMMpSdBu8rb?=
+ =?us-ascii?Q?hSXa/qxrOhj9ua3Z3uiEbyrkN97vDcapE7JQPvWJz8BtrVx0xQBj+IJruWnI?=
+ =?us-ascii?Q?cOW8ZxBm913FPH9+dlddFCH1pEvtV9fboXVETy0+DbGzv8tEk2d3ltDgwvJC?=
+ =?us-ascii?Q?/QkP8aSOtwOIWttS3noRFoo1Q9Tnc+O416rb8jZcEinp0X+0IfcmqlTslmbP?=
+ =?us-ascii?Q?wB3RTmzjwa8tuoMqt6jfkhK80L83/pWSajCQMRBfjG3/MkKhoj7vwdnR2iLu?=
+ =?us-ascii?Q?ASLlemjT9sIfmbeaUEEr0RRbwqAM9fBLJOc8r4Mc2G352Ah2asfRUwmFZEAn?=
+ =?us-ascii?Q?ElvYUrvah53YY3Q48XgIk8xnoFQ+JczV4qmYSrqtOTWoIs96Ppr1GL2Sqemy?=
+ =?us-ascii?Q?qlQSFexIDuikhyH1vU4d2padfLjY+eoBdiB6s6qtaPHmvplv72KEix2IC/kv?=
+ =?us-ascii?Q?qc3BrV/pvYWWx8GYd0S5DGSEihP5qKl1KcfvwRsymXyNOgLUt/GXsZFhSxbv?=
+ =?us-ascii?Q?LdBn27mrEpNTE05Lab9Gcd7lveWCEK5snupoOnjnq4YUF8BKJRo4n7R8E1bU?=
+ =?us-ascii?Q?XZEDCfI5zycZMljoPldWigesfrt6igywN/G9Z65SPBxvZ3jMBJorXHyviSPk?=
+ =?us-ascii?Q?lwbnZgLl6vxl6Kafzfwe2CcJsaKL0PhDXpzWei8Ur8TUrANLzkMXqKICnBmw?=
+ =?us-ascii?Q?RCJdK8pKyAmd6BDHsRN5yLP2IgWaVswxZnJYh2/YPbwOAak9c4VjqmCIx2yS?=
+ =?us-ascii?Q?IfxuL5YKoLG1v4gfIBZCrKPMEmejF39BQruk7/m/D8oSvprzPd9KqJ/igcu2?=
+ =?us-ascii?Q?StsUK+FoFuuu7JrXAj18nQRzqbzbrazexW1W1cFzow2+dlKaRVZbY5I5ED2r?=
+ =?us-ascii?Q?37DgxbW0/oxCw4FLIhpg/GabuQnq+JGIl74Wri3uiBMmqxJ6sNsf/tgiEFdd?=
+ =?us-ascii?Q?bdp9ewiuf99ahQnO+SCt+eAgiYoSmL7lbwHRG9e6OKxTCnDtFcbrJMe9h+z4?=
+ =?us-ascii?Q?XbONFJ4x0PqEvrfIgfNgDIu8G7/awHfmgRYOMt5aaO4xG4q0TjdE97eFJTMo?=
+ =?us-ascii?Q?XTdNXjCTb3rqR17LiSo4HR2VRZ+oPExqGbh+iPLRXH4JhO9y+PcYtgR62cx2?=
+ =?us-ascii?Q?rjKgV9zeP/c7iqhJoblL3bCcL/E6jY0i7e7Xx9XQblK+mkoIvp4ZkWandMyu?=
+ =?us-ascii?Q?CmFTgo5T2GfPTwXr49KU3myvprJtdAMqKMb+sf2zOAtoKy44rofeFR7qqb7I?=
+ =?us-ascii?Q?m26V6QTTv1DgBNU3CRzwN9loqbTADDBqfLrPYSCsNpN0y/M1s5G99wgmF2xX?=
+ =?us-ascii?Q?t3nfqrfcnVyBqSnkVk0aY90J?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9f6216c3-c8f7-420f-dd66-08d941765fff
+X-MS-Exchange-CrossTenant-Network-Message-Id: acba4824-8c8d-45d4-322c-08d941766197
 X-MS-Exchange-CrossTenant-AuthSource: BYAPR12MB2711.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jul 2021 18:38:12.5594
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jul 2021 18:38:15.0929
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 2XYg23nNB2yDtQ3DEmDxjNufO2SDOkYMKif3inBzUx/k0PwAynvxEOmBcDaXQBdkDRRYG5uKgArNTiILPVrTSQ==
+X-MS-Exchange-CrossTenant-UserPrincipalName: 0ZMm2n822mavlKSMwYviTsg83k3BaxGeX3RDGGKL8iA2iSZeddftrPsb0q9Syt2A2JSKCBHbZxdnBykzAJpuuA==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4082
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-When SEV-SNP is enabled globally, the hardware places restrictions on all
-memory accesses based on the RMP entry, whether the hyperviso or a VM,
-performs the accesses. When hardware encounters an RMP access violation
-during a guest access, it will cause a #VMEXIT(NPF).
-
-See APM2 section 16.36.10 for more details.
+The page-fault error code is a 64-bit value, but the trace prints only
+the lower 32-bits. Some of the SEV-SNP RMP fault error codes are
+available in the upper 32-bits.
 
 Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
 ---
- arch/x86/include/asm/kvm_host.h | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ arch/x86/kvm/trace.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index cd2e19e1d323..59185b6bc82a 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -239,8 +239,12 @@ enum x86_intercept_stage;
- #define PFERR_FETCH_BIT 4
- #define PFERR_PK_BIT 5
- #define PFERR_SGX_BIT 15
-+#define PFERR_GUEST_RMP_BIT 31
- #define PFERR_GUEST_FINAL_BIT 32
- #define PFERR_GUEST_PAGE_BIT 33
-+#define PFERR_GUEST_ENC_BIT 34
-+#define PFERR_GUEST_SIZEM_BIT 35
-+#define PFERR_GUEST_VMPL_BIT 36
+diff --git a/arch/x86/kvm/trace.h b/arch/x86/kvm/trace.h
+index a61c015870e3..78cbf53bf412 100644
+--- a/arch/x86/kvm/trace.h
++++ b/arch/x86/kvm/trace.h
+@@ -365,12 +365,12 @@ TRACE_EVENT(kvm_inj_exception,
+  * Tracepoint for page fault.
+  */
+ TRACE_EVENT(kvm_page_fault,
+-	TP_PROTO(unsigned long fault_address, unsigned int error_code),
++	TP_PROTO(unsigned long fault_address, u64 error_code),
+ 	TP_ARGS(fault_address, error_code),
  
- #define PFERR_PRESENT_MASK (1U << PFERR_PRESENT_BIT)
- #define PFERR_WRITE_MASK (1U << PFERR_WRITE_BIT)
-@@ -251,6 +255,10 @@ enum x86_intercept_stage;
- #define PFERR_SGX_MASK (1U << PFERR_SGX_BIT)
- #define PFERR_GUEST_FINAL_MASK (1ULL << PFERR_GUEST_FINAL_BIT)
- #define PFERR_GUEST_PAGE_MASK (1ULL << PFERR_GUEST_PAGE_BIT)
-+#define PFERR_GUEST_RMP_MASK (1ULL << PFERR_GUEST_RMP_BIT)
-+#define PFERR_GUEST_ENC_MASK (1ULL << PFERR_GUEST_ENC_BIT)
-+#define PFERR_GUEST_SIZEM_MASK (1ULL << PFERR_GUEST_SIZEM_BIT)
-+#define PFERR_GUEST_VMPL_MASK (1ULL << PFERR_GUEST_VMPL_BIT)
+ 	TP_STRUCT__entry(
+ 		__field(	unsigned long,	fault_address	)
+-		__field(	unsigned int,	error_code	)
++		__field(	u64,		error_code	)
+ 	),
  
- #define PFERR_NESTED_GUEST_PAGE (PFERR_GUEST_PAGE_MASK |	\
- 				 PFERR_WRITE_MASK |		\
+ 	TP_fast_assign(
+@@ -378,7 +378,7 @@ TRACE_EVENT(kvm_page_fault,
+ 		__entry->error_code	= error_code;
+ 	),
+ 
+-	TP_printk("address %lx error_code %x",
++	TP_printk("address %lx error_code %llx",
+ 		  __entry->fault_address, __entry->error_code)
+ );
+ 
 -- 
 2.17.1
 
