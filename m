@@ -2,41 +2,41 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CCB0E3BEF30
-	for <lists+linux-efi@lfdr.de>; Wed,  7 Jul 2021 20:39:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B7B13BEF4C
+	for <lists+linux-efi@lfdr.de>; Wed,  7 Jul 2021 20:39:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232171AbhGGSlR (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 7 Jul 2021 14:41:17 -0400
-Received: from mail-dm6nam11on2067.outbound.protection.outlook.com ([40.107.223.67]:36832
+        id S232837AbhGGSlh (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 7 Jul 2021 14:41:37 -0400
+Received: from mail-dm6nam11on2083.outbound.protection.outlook.com ([40.107.223.83]:37344
         "EHLO NAM11-DM6-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S232460AbhGGSk4 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Wed, 7 Jul 2021 14:40:56 -0400
+        id S232467AbhGGSlL (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Wed, 7 Jul 2021 14:41:11 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Kx5AJOj89jJQrfrz15SXQdRWS2IX/vFKkBxO0PXfozRLn5FklH9JQidEfYK4MIDt4MMb3YYeMi6wrhLm5uTIawhFcjzV3E9skC8w4/in4+U1JR+jFzaVzshI0AB7f08McpHVZaywAQnWrzUQtU0J7KW3TqiVf3k0YgkCruTBvgP+qgdthXEjb8IRN5TwJgVEd5u8PxmDl8q73Wlzm5DX96N1uJTb1R2fIVwwkjT1OnqaHGhqRsmRs8INyCEOTrXdglQKuN7zjIBAiT5vUER7CcJUIDrduhRwMI9cN9R3oYBLkRH7IJXtEei4j4XSSPRHmc+cQZxE6xNm5LH59UiL3w==
+ b=DNgObeCizbIUZcB2OXAY+IW1m0HRf8Rt57Gv+TxTSXZf3RnSLpAaHycW2Pdxw+B2Nj7HkcpfoHUyzW1PRE+yvs/QVq1ERDiEQkwVmVIhYTKZHfCHbtYopc/ew1hw3IpWfFknzJmLfJ9Aw8fBuwWE0DPw2mNmXSfTOMDh3LPCYV0lWXMd+fKE+EYXz76mXQMiZnY642e9AioUHkvP3QbBxMkIewaAGStEwlar+ldPN7Dg/ma6QuS9rsgN5T8QoR4EG9H77f+HWraxYVcx0Vav0FD3s/v6VXXbmkCk52dzJrEJ02MVwFa5beW/Kq43hU41HhETVP/gbzn6zeh468ojdA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=OVy7UHYHmjBJjZ7Yp20CGnjTrh5VaC01HKwed8xthz0=;
- b=AoCA/6Wtj4st9D5nbScyQ5eAXWBzGdB+xs6xdfMMn4MZHIsa8Po0rKcCkLIamZEfE6GpZJAyh53pjkDjte68FVJsNJcKjaqOdY7Ru76oo5UE637F9lB9cLl1EM8bDIslQtTOYNb5XTuUw81Q7Ebe5TRyZaxJX1PhjzZClWHr9run+sRbo/ZZ5D5hfmqRf3jwXLbudH1Yo4Vt8Rm/u2jPZDZqcgScgXwPP/F0Kh/J7YA7lO0o6Pxx3PTzlX9Hmhvl7hntm4U52FRqAcUCynnDBASnd1V2t7GSC/kaMBGNEVRFnoiYyL339yw7UO73oSrMWdk2LOJrf1Yoy0M+ih11uw==
+ bh=Wb6Km5viwoXyRU0rKJB8pC+lAqS2CVG30a+Z6f4SAPM=;
+ b=ZIFJEEh30KWo+MKbLZavsjrL5t1NXf+e0qaqYSBLWUEDyfkD1yo4jexVQBWI9LCc7wajlb6IaqCH+EEyBYj2FrDfDYCwEQs4Ewp/4BG+r9puUaG5xImLQOXFJuRVOnwGtTjtq85s8sYiavWrs62o8rm4RIWlA3g5gabwwWfDBbzizuTmJCSCdZ80fViI3kZwNSDr9Fj3i0w1lRXdbOKWZxwPNLDi0KehpkQ+TI4J4CIGgGpw9egD8CpZXgIeVL69tq5NLfbGHNbe/d+g8grZBR69Php5x2JXzwHTfU3fq/DSXigVvopizi7ZFFwg0BH6YkE65rbZiJJfosUkEK3zIA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
  header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=OVy7UHYHmjBJjZ7Yp20CGnjTrh5VaC01HKwed8xthz0=;
- b=0+6JYILSf5O4nQ1u0p/msmjhZyWX/FiqIwtnpytGGORvg6bJfysaH2mMNMmt9/LBAtEnzYokHn0eIJ9+PoFnHU3Rda3vpZjHF4/REti8h+hvBVYbv+Vq8cCgKhdkY6h64ugenYu7ttt121htv7OCQhcgoTOttQc+5Z3/jQeS90I=
+ bh=Wb6Km5viwoXyRU0rKJB8pC+lAqS2CVG30a+Z6f4SAPM=;
+ b=YVva+FclOTdh2Vmri3x6VTo5jkFUXNc8Hg9WyOTERhHZFK+87R0KJZrHNc1UShNhP07tpE8Sqg56vsnF2CenlktCnSH+GqIG1UTQIkHAo/6clgnC9ZrShiloFXracp4J+oQckYOrQ+sDa7E4DgALSJMHxYsVdX+SIsWL21j8xlg=
 Authentication-Results: kernel.org; dkim=none (message not signed)
  header.d=none;kernel.org; dmarc=none action=none header.from=amd.com;
 Received: from BYAPR12MB2711.namprd12.prod.outlook.com (2603:10b6:a03:63::10)
  by BY5PR12MB4082.namprd12.prod.outlook.com (2603:10b6:a03:212::19) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4308.20; Wed, 7 Jul
- 2021 18:38:02 +0000
+ 2021 18:38:04 +0000
 Received: from BYAPR12MB2711.namprd12.prod.outlook.com
  ([fe80::40e3:aade:9549:4bed]) by BYAPR12MB2711.namprd12.prod.outlook.com
  ([fe80::40e3:aade:9549:4bed%7]) with mapi id 15.20.4287.033; Wed, 7 Jul 2021
- 18:38:02 +0000
+ 18:38:04 +0000
 From:   Brijesh Singh <brijesh.singh@amd.com>
 To:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
         linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
@@ -64,9 +64,9 @@ Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Vlastimil Babka <vbabka@suse.cz>, tony.luck@intel.com,
         npmccallum@redhat.com, brijesh.ksingh@gmail.com,
         Brijesh Singh <brijesh.singh@amd.com>
-Subject: [PATCH Part2 RFC v4 26/40] KVM: SVM: Add KVM_SEV_SNP_LAUNCH_FINISH command
-Date:   Wed,  7 Jul 2021 13:36:02 -0500
-Message-Id: <20210707183616.5620-27-brijesh.singh@amd.com>
+Subject: [PATCH Part2 RFC v4 27/40] KVM: X86: Add kvm_x86_ops to get the max page level for the TDP
+Date:   Wed,  7 Jul 2021 13:36:03 -0500
+Message-Id: <20210707183616.5620-28-brijesh.singh@amd.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20210707183616.5620-1-brijesh.singh@amd.com>
 References: <20210707183616.5620-1-brijesh.singh@amd.com>
@@ -76,285 +76,198 @@ X-ClientProxiedBy: SN6PR04CA0078.namprd04.prod.outlook.com
  (2603:10b6:a03:63::10)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from sbrijesh-desktop.amd.com (165.204.77.1) by SN6PR04CA0078.namprd04.prod.outlook.com (2603:10b6:805:f2::19) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4308.20 via Frontend Transport; Wed, 7 Jul 2021 18:37:59 +0000
+Received: from sbrijesh-desktop.amd.com (165.204.77.1) by SN6PR04CA0078.namprd04.prod.outlook.com (2603:10b6:805:f2::19) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4308.20 via Frontend Transport; Wed, 7 Jul 2021 18:38:02 +0000
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 7c7432f4-40a0-40b2-a04c-08d9417659de
+X-MS-Office365-Filtering-Correlation-Id: f0564c62-a31f-44c9-7cac-08d941765b65
 X-MS-TrafficTypeDiagnostic: BY5PR12MB4082:
 X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <BY5PR12MB408289C3E3AEBC21A4EB5384E51A9@BY5PR12MB4082.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:7219;
+X-Microsoft-Antispam-PRVS: <BY5PR12MB4082B48F96FA174688F3BB9DE51A9@BY5PR12MB4082.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:8273;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: yIVyiPl8MaoJrLi5YdZlAe+Bb0nuOaAlFcE2FuIky1u2Ks66E6gRnckj51gNtPz0hNjwsT+8Xc1xA7Bt+U0iO1D3UvFg+4ik1sIvsxhylaubrApAbWAA57t2hc4r6BRS8ld4uYJdfHcOHBHXpBYnXy+Gt0K+rzHgvCVzsufj+n5AdP4O/VY4DlQ/8KKp5emji0ud3SVUj+s/13ZwFNGPlhENj87zcIbJ8BA0jar+JQzf9aVZCCMAq9lp4zEm9BLLsB0TFbbrPCD0a8v3NeONHeECz+vqHtfWRxpIUcWbW0MOYpqqjCVkkmqcT8SuH5RiMDeh6A1CGLQ8qT/iB7VxyHYs/g518gq58ueIVpAsR/8RtSKDrzF97WLAy3OkliKI7ggk2BlzaWxFEVRw8kJAbDfclfyEdDSOxlKioNvEeG8+T1Qhi/rxGOQSqJoL6Q8eQIB/wsg2RslZ7Z34MdDah5i5eQ7AE94/MfK3cyLuCAiheIkoN9gJEOc2pTB+pQBBkWp6TOp49wwXc4xwuByrwWg/vRbVQmHEkCAvNXSPCHneEInQF1MuWq52KW2gztRQflkSquk+G2jMSLlQs3uazZwZp1YNTUj3zP2HvTOcA5ZspfWRoa2CIu7PqmjH0jE0OzQX4Ib5ECOD8wfgVJegx/UvJGIwSbJxP3rgMq7NjDYczvoEqDUXQW1eFszziFhH87tiPQ0DpOUus5TxMBA6zw==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR12MB2711.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(366004)(39860400002)(376002)(396003)(346002)(136003)(7696005)(52116002)(44832011)(8676002)(38350700002)(66946007)(38100700002)(54906003)(66476007)(8936002)(478600001)(6666004)(956004)(6486002)(7416002)(66556008)(7406005)(186003)(2616005)(2906002)(83380400001)(1076003)(4326008)(86362001)(5660300002)(36756003)(26005)(316002);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: 4AtUwv30Gj9vrQG4Q/OGHOQkYNhjoqv+b/xEU2LULzuGNylHGx5QHk8sFgt7PjmvIkQewfjquAUO8tZHooCc6C/T0lkAM/z7MsOZ4BZXLl/lZ/M61qJo0AmD+X21Nlv5EA+P1oXCZ6xDSRBxGPheDVb3LnV83nD8Tv0umwK0tEVeM1MIn/7SgNbUyGSZlno1EpCabp5QKH+kPaiN5WoHpLZzv4FA06G8bW8gk7kLd7ccIAbVliX81goa3o6Vyo1nAW92wHkzF5oQadkrrZn9ovSvcgA3gSZE4u90ZUn5uIoX9ImyqVzELYTyU24e4wDSZJztUFw6Qvz701QlNux1KB9KvALXd/rHqwMgMmfcbeqtkXqkBVk7gZ1so9m3CnVOxSTqUVxKF7RalhBp/eTp9/PFs0bLbcuc0DjggJDX9F/m29dD/NYnji645tWaX88mhgvjKIAoI3jJIaDVbMmWHvtMgw8T/h2gkHKSYrKPsF4O3UMpJW4uaOnnlDGA+ssYLtTguxErBjE/bUU75jbbPfSsuraol1DXxZQidlW4LsRtv78U6pyAHD9dFKyRdN/7OlDWmhAkFnVSRhTghesPk7WQqwK67RPtoEoGqiEJVPRJa3XgDU2kQBYiCy4XYGTmU/DYDQgfmHvniVqhzdpuYxTSDcRVEzE0jv6gqmE1ek+7p7l4qhSgtTOoZUqfqDNHlk2W6O2/o3jqpi+ZtuczsPPGSkC/wo6X4i9fCVFYArs=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR12MB2711.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(366004)(39860400002)(376002)(396003)(346002)(136003)(7696005)(52116002)(44832011)(8676002)(38350700002)(66946007)(38100700002)(54906003)(66476007)(8936002)(478600001)(956004)(6486002)(7416002)(66556008)(7406005)(186003)(2616005)(2906002)(83380400001)(1076003)(4326008)(86362001)(5660300002)(36756003)(26005)(316002)(15583001);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?Ri/fH+bAUKa8w2qz/p+bxk+MJ92bkfMIh6U9rdVMsJNmT1zKJpk+k8p7Arx/?=
- =?us-ascii?Q?ZKFk2bcWxl5Gg9oh+oVwE7eEXm4cBSobdWhiOLxqEviVlz81MMw6cOsdnWNj?=
- =?us-ascii?Q?+h8srw/6jfm3mbp8Blwst8wTnXldOeVPs6a6SacPfRaWWDmQBUZrb3Bnbrvl?=
- =?us-ascii?Q?+2NGRpbOLiz11EyCK448XuCZm4yneGI5Wt6Lz0oBLktg8arEHfWusoc/UAiz?=
- =?us-ascii?Q?ricJv6Z+rT8/8hh27sxByDqZ3ArvOafh9774ewlAxDDyEa4BnmAopPpnSeax?=
- =?us-ascii?Q?RlRurMxJeK0cJmGBrLmxrBTAZ2qo0huuGh8LmUQAyMtd2Z6f0MJFXOy21Uuz?=
- =?us-ascii?Q?BD/tMCVDIwQAsHPyuw35QMzDsQ9UKyUfBW3DeWrR39Ia7DTUqaSyI4QoVRJy?=
- =?us-ascii?Q?/2ey9Q+MGGtb8jxxw/Pg1A2U5RYdkwazD3C8ppyg9MjIoLExIKNFuZpUH52X?=
- =?us-ascii?Q?9B8LNpPA5aJ0qnnZdIypEzxcWOu+XzoZCUzy1HtojvTAqg1aPUfF3Un4yicW?=
- =?us-ascii?Q?kSIH71mco0RPtdDiyGij1cfgLNFZ4iiVua9xV5BWCvorof+8NFQd7rmDBSb6?=
- =?us-ascii?Q?I9jG0IuXM9LRdqXXyU/gTKUto6pEbz9MrMQElf2q4KpvxbVnQ//Lfcoj1+r0?=
- =?us-ascii?Q?3W51Tg+I73kC4LD2bbJ4WoPFFADEEWsx3GhEZgZ06oR5Lbf4+/kiwmX+08Dr?=
- =?us-ascii?Q?4tUub9OrgIzRFuSPmMa3S7vAWDH46V/rkzVOq/mulP6bcJlR8CPi8k2t/M4T?=
- =?us-ascii?Q?Qhl9lPNsLISLiS+aG0f9IIYoU0FRK5kcUatHktA1SKJZ+a93VaI0q1D2OPMa?=
- =?us-ascii?Q?DUqwk98efyRxtNHWIsKNmE+mUTgUeTmvDZApjhKU1n3kmhWmGE1w8Ug3HCkP?=
- =?us-ascii?Q?zDQYy3YhYrknPHlrMwgY6nRe9YV9jEngdt7N/OeMnu1k6hRyFx8ByxWVfyro?=
- =?us-ascii?Q?CJSk1BUfV6/mu9vvLM2KwHLcnXM/7XeL+C6DwUsVcFsTRkQrR13LeJbXkt0y?=
- =?us-ascii?Q?TzTk4y1V8BaGeGI0vkOznxUernYMim6Cu0Yr4KM7YC3qgti11j6dmZVbk+iZ?=
- =?us-ascii?Q?lDgadQLBVrkCwxjrLxlgJ89zXlr4m4mnNEK5kUtFsMV112/81VyKUG3Z3Wgu?=
- =?us-ascii?Q?Vge+xpyE45ZxEZEA/t/RhYJQSX6Plh8RTbFH0uj9kysb3MzQK6/UZf5l9Yqg?=
- =?us-ascii?Q?v5+WUg/53l6JLVMyWf02lmjSFd1QU5h094IOnwmNI5ThnY51pSzfoJGIZ4R5?=
- =?us-ascii?Q?W1PSZtV1c2wL3bcEgNlD7wdYYnVyKg0vn+jD83Prv7buB1v1OlvxI1aghszG?=
- =?us-ascii?Q?lk29HpXj/6JMvRQGrZn4DHzH?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?jLdRBC6zcega0Qx0gjjb5FDXWezMxYPLAUi4dQ/ToB+LdTpeKpd/QIVx9xLT?=
+ =?us-ascii?Q?/ix3PRpWlPi0qGa+dv62BPISkxEQlVTjGOtjLjPItgJPqTHzZNS62Qc588gt?=
+ =?us-ascii?Q?k+bMLyELlVYINDg4w8gCAlxbY9WLwI//6g0RO+Q80ym+f1/vI02M3CTYNVqj?=
+ =?us-ascii?Q?QMkRXTgZoqxWcnxw0ezOZ07z9QrzJAeRv7f/Jb6oVcR6qshNeSVId+WCBQVy?=
+ =?us-ascii?Q?4qRMya3CXTJOu8DSRMx9uYQfxc3NCr89arDVX3V6pmsReBwuMLc3Vex5bbvj?=
+ =?us-ascii?Q?M3M4/l/9Vjy0epvMJpF7E4eL452AfTeLLCFD0DjKd9mhq/NADepEMlkDN5ya?=
+ =?us-ascii?Q?ynLy0dwaO8LgZRPcrTEhtFdYqF34qtIqLnMID7aLzPvEdcXzu2yn68qJGeg3?=
+ =?us-ascii?Q?Nosjc2HaRM5BcsFA+F02S+x+lz0rJDj8egOvCFTWzZmJL6QIVWUQtZmfqb1z?=
+ =?us-ascii?Q?cROA/QMYUzeEvcJg8VZ2vHYRbZQNHdqe3o1HUvLUnuHCaZq4NwHiiTQ+01OP?=
+ =?us-ascii?Q?PPovvFzad5HLovHWsTPRFr0LbB+daadvOW7WZL3CKfBriuyPBFumQ4tN6c0a?=
+ =?us-ascii?Q?7wrCwlaUQQ6SVkotkDtUfIllKCx+nX3IyW9ac35AFf974P35b1xKkLZhMLZ1?=
+ =?us-ascii?Q?97cS595d0P2MlQ4waMy/JUoyCIW/gY4O0++6iWl+m2yln2ifXK9JWgNwPfCb?=
+ =?us-ascii?Q?HTg1r6/uJtI+9UKQ/i86MtNGY6MvG+sfiFj+58IwavgXYKh8zPrf9Vb3CAQP?=
+ =?us-ascii?Q?53jo+yaPYczK/x0efBtK5OdX2of41nkEH1NDgLNZAmRiioQlsIhJpGNSiXrU?=
+ =?us-ascii?Q?2+W/xKk3h5uCmSEouDT4qgVEe9HA2drr/7QB4ynyni4BxluhOpQZmYPuQWPM?=
+ =?us-ascii?Q?tu0H41QHCOGad0Eg3m0jgbywjo6k2rJMxV7PJBv8Od1grcwDRZSYI0WEwS7f?=
+ =?us-ascii?Q?EdhLx5l32fPmRmaioP9RYweT2puzqGIneLqR6RmwzAQyub9SUIfXJqYxOuL1?=
+ =?us-ascii?Q?f7Rwl7bqYO2orAY9k8gFK2uMnP5c9PmkFn3nvQQ0yHSnDalQo2QGXwOeim5H?=
+ =?us-ascii?Q?1hAFePJObzCxd+wNqy9hU3mFMJnZjztof9XNKCwBjoEVLbEfR9k7MKnxn9Xe?=
+ =?us-ascii?Q?2AblUNmB8Paa5zgXlPQp/vL4FpOr/WlScNu0GJ5rvoZbbTcLqFY9WMfTc92s?=
+ =?us-ascii?Q?WET/EK9a+hDotBPf2G+zYx2wJRYrRsChKIAA6jjyPfb1g+PTKMe6qhb9xuwC?=
+ =?us-ascii?Q?AUYYbR1RE2SgsJnwOnBABQ+vEFZYqacsD0AXRN8i1k2KbYRhrVjZ9RfzS5/y?=
+ =?us-ascii?Q?pisZFI0pBE54D7iO/7cH7/Ka?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7c7432f4-40a0-40b2-a04c-08d9417659de
+X-MS-Exchange-CrossTenant-Network-Message-Id: f0564c62-a31f-44c9-7cac-08d941765b65
 X-MS-Exchange-CrossTenant-AuthSource: BYAPR12MB2711.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jul 2021 18:38:02.1183
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jul 2021 18:38:04.7128
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: wKpPk0YWgPeTOpI4RqIDj+FzRZpCY7666KAySqgwWRKiuF3BpqeJk7Rdx9L6lhiGvAh96KIvctXvZJlYLeRRew==
+X-MS-Exchange-CrossTenant-UserPrincipalName: 1/QmPPQvEbP5c/OQdru6bT0/+TpwBxNUs3A9lYFoaXVNfizXZc4Zknfwf27KPDRv/+JbYxq4/FR1Jyi7TJC9hw==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4082
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The KVM_SEV_SNP_LAUNCH_FINISH finalize the cryptographic digest and stores
-it as the measurement of the guest at launch.
+When running an SEV-SNP VM, the sPA used to index the RMP entry is
+obtained through the TDP translation (gva->gpa->spa). The TDP page
+level is checked against the page level programmed in the RMP entry.
+If the page level does not match, then it will cause a nested page
+fault with the RMP bit set to indicate the RMP violation.
 
-While finalizing the launch flow, it also issues the LAUNCH_UPDATE command
-to encrypt the VMSA pages.
+To keep the TDP and RMP page level's in sync, the KVM fault handle
+kvm_handle_page_fault() will call get_tdp_max_page_level() to get
+the maximum allowed page level so that it can limit the TDP level.
+
+In the case of SEV-SNP guest, the get_tdp_max_page_level() will consult
+the RMP table to compute the maximum allowed page level for a given
+GPA.
 
 Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
 ---
- .../virt/kvm/amd-memory-encryption.rst        |  22 +++
- arch/x86/kvm/svm/sev.c                        | 125 ++++++++++++++++++
- include/uapi/linux/kvm.h                      |  13 ++
- 3 files changed, 160 insertions(+)
+ arch/x86/include/asm/kvm_host.h |  1 +
+ arch/x86/kvm/mmu/mmu.c          |  6 ++++--
+ arch/x86/kvm/svm/sev.c          | 20 ++++++++++++++++++++
+ arch/x86/kvm/svm/svm.c          |  1 +
+ arch/x86/kvm/svm/svm.h          |  1 +
+ arch/x86/kvm/vmx/vmx.c          |  8 ++++++++
+ 6 files changed, 35 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/virt/kvm/amd-memory-encryption.rst b/Documentation/virt/kvm/amd-memory-encryption.rst
-index 60ace54438c3..a3d863e88869 100644
---- a/Documentation/virt/kvm/amd-memory-encryption.rst
-+++ b/Documentation/virt/kvm/amd-memory-encryption.rst
-@@ -495,6 +495,28 @@ Returns: 0 on success, -negative on error
- See the SEV-SNP spec for further details on how to build the VMPL permission
- mask and page type.
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index 188110ab2c02..cd2e19e1d323 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -1384,6 +1384,7 @@ struct kvm_x86_ops {
  
-+21. KVM_SNP_LAUNCH_FINISH
-+-------------------------
-+
-+After completion of the SNP guest launch flow, the KVM_SNP_LAUNCH_FINISH command can be
-+issued to make the guest ready for the execution.
-+
-+Parameters (in): struct kvm_sev_snp_launch_finish
-+
-+Returns: 0 on success, -negative on error
-+
-+::
-+
-+        struct kvm_sev_snp_launch_finish {
-+                __u64 id_block_uaddr;
-+                __u64 id_auth_uaddr;
-+                __u8 id_block_en;
-+                __u8 auth_key_en;
-+                __u8 host_data[32];
-+        };
-+
-+
-+See SEV-SNP specification for further details on launch finish input parameters.
+ 	void (*vcpu_deliver_sipi_vector)(struct kvm_vcpu *vcpu, u8 vector);
+ 	void *(*alloc_apic_backing_page)(struct kvm_vcpu *vcpu);
++	int (*get_tdp_max_page_level)(struct kvm_vcpu *vcpu, gpa_t gpa, int max_level);
+ };
  
- References
- ==========
+ struct kvm_x86_nested_ops {
+diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+index 0144c40d09c7..7991ffae7b31 100644
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -3781,11 +3781,13 @@ static int direct_page_fault(struct kvm_vcpu *vcpu, gpa_t gpa, u32 error_code,
+ static int nonpaging_page_fault(struct kvm_vcpu *vcpu, gpa_t gpa,
+ 				u32 error_code, bool prefault)
+ {
++	int max_level = kvm_x86_ops.get_tdp_max_page_level(vcpu, gpa, PG_LEVEL_2M);
++
+ 	pgprintk("%s: gva %lx error %x\n", __func__, gpa, error_code);
+ 
+ 	/* This path builds a PAE pagetable, we can map 2mb pages at maximum. */
+ 	return direct_page_fault(vcpu, gpa & PAGE_MASK, error_code, prefault,
+-				 PG_LEVEL_2M, false);
++				 max_level, false);
+ }
+ 
+ int kvm_handle_page_fault(struct kvm_vcpu *vcpu, u64 error_code,
+@@ -3826,7 +3828,7 @@ int kvm_tdp_page_fault(struct kvm_vcpu *vcpu, gpa_t gpa, u32 error_code,
+ {
+ 	int max_level;
+ 
+-	for (max_level = KVM_MAX_HUGEPAGE_LEVEL;
++	for (max_level = kvm_x86_ops.get_tdp_max_page_level(vcpu, gpa, KVM_MAX_HUGEPAGE_LEVEL);
+ 	     max_level > PG_LEVEL_4K;
+ 	     max_level--) {
+ 		int page_num = KVM_PAGES_PER_HPAGE(max_level);
 diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index 4468995dd209..3f8824c9a5dc 100644
+index 3f8824c9a5dc..fd2d00ad80b7 100644
 --- a/arch/x86/kvm/svm/sev.c
 +++ b/arch/x86/kvm/svm/sev.c
-@@ -1763,6 +1763,111 @@ static int snp_launch_update(struct kvm *kvm, struct kvm_sev_cmd *argp)
- 	return ret;
+@@ -3206,3 +3206,23 @@ struct page *snp_safe_alloc_page(struct kvm_vcpu *vcpu)
+ 
+ 	return pfn_to_page(pfn);
  }
- 
-+static int snp_launch_update_vmsa(struct kvm *kvm, struct kvm_sev_cmd *argp)
++
++int sev_get_tdp_max_page_level(struct kvm_vcpu *vcpu, gpa_t gpa, int max_level)
 +{
-+	struct kvm_sev_info *sev = &to_kvm_svm(kvm)->sev_info;
-+	struct sev_data_snp_launch_update data = {};
-+	int i, ret;
++	struct rmpentry *e;
++	kvm_pfn_t pfn;
++	int level;
 +
-+	data.gctx_paddr = __psp_pa(sev->snp_context);
-+	data.page_type = SNP_PAGE_TYPE_VMSA;
++	if (!sev_snp_guest(vcpu->kvm))
++		return max_level;
 +
-+	for (i = 0; i < kvm->created_vcpus; i++) {
-+		struct vcpu_svm *svm = to_svm(kvm->vcpus[i]);
-+		struct rmpupdate e = {};
++	pfn = gfn_to_pfn(vcpu->kvm, gpa_to_gfn(gpa));
++	if (is_error_noslot_pfn(pfn))
++		return max_level;
 +
-+		/* Perform some pre-encryption checks against the VMSA */
-+		ret = sev_es_sync_vmsa(svm);
-+		if (ret)
-+			return ret;
++	e = snp_lookup_page_in_rmptable(pfn_to_page(pfn), &level);
++	if (unlikely(!e))
++		return max_level;
 +
-+		/* Transition the VMSA page to a firmware state. */
-+		e.assigned = 1;
-+		e.immutable = 1;
-+		e.asid = sev->asid;
-+		e.gpa = -1;
-+		e.pagesize = RMP_PG_SIZE_4K;
-+		ret = rmpupdate(virt_to_page(svm->vmsa), &e);
-+		if (ret)
-+			return ret;
-+
-+		/* Issue the SNP command to encrypt the VMSA */
-+		data.address = __sme_pa(svm->vmsa);
-+		ret = __sev_issue_cmd(argp->sev_fd, SEV_CMD_SNP_LAUNCH_UPDATE,
-+				      &data, &argp->error);
-+		if (ret) {
-+			snp_page_reclaim(virt_to_page(svm->vmsa), RMP_PG_SIZE_4K);
-+			return ret;
-+		}
-+
-+		svm->vcpu.arch.guest_state_protected = true;
-+	}
-+
-+	return 0;
++	return min_t(uint32_t, level, max_level);
 +}
-+
-+static int snp_launch_finish(struct kvm *kvm, struct kvm_sev_cmd *argp)
-+{
-+	struct kvm_sev_info *sev = &to_kvm_svm(kvm)->sev_info;
-+	struct sev_data_snp_launch_finish *data;
-+	void *id_block = NULL, *id_auth = NULL;
-+	struct kvm_sev_snp_launch_finish params;
-+	int ret;
-+
-+	if (!sev_snp_guest(kvm))
-+		return -ENOTTY;
-+
-+	if (!sev->snp_context)
-+		return -EINVAL;
-+
-+	if (copy_from_user(&params, (void __user *)(uintptr_t)argp->data, sizeof(params)))
-+		return -EFAULT;
-+
-+	/* Measure all vCPUs using LAUNCH_UPDATE before we finalize the launch flow. */
-+	ret = snp_launch_update_vmsa(kvm, argp);
-+	if (ret)
-+		return ret;
-+
-+	data = kzalloc(sizeof(*data), GFP_KERNEL_ACCOUNT);
-+	if (!data)
-+		return -ENOMEM;
-+
-+	if (params.id_block_en) {
-+		id_block = psp_copy_user_blob(params.id_block_uaddr, KVM_SEV_SNP_ID_BLOCK_SIZE);
-+		if (IS_ERR(id_block)) {
-+			ret = PTR_ERR(id_block);
-+			goto e_free;
-+		}
-+
-+		data->id_block_en = 1;
-+		data->id_block_paddr = __sme_pa(id_block);
-+	}
-+
-+	if (params.auth_key_en) {
-+		id_auth = psp_copy_user_blob(params.id_auth_uaddr, KVM_SEV_SNP_ID_AUTH_SIZE);
-+		if (IS_ERR(id_auth)) {
-+			ret = PTR_ERR(id_auth);
-+			goto e_free_id_block;
-+		}
-+
-+		data->auth_key_en = 1;
-+		data->id_auth_paddr = __sme_pa(id_auth);
-+	}
-+
-+	data->gctx_paddr = __psp_pa(sev->snp_context);
-+	ret = sev_issue_cmd(kvm, SEV_CMD_SNP_LAUNCH_FINISH, data, &argp->error);
-+
-+	kfree(id_auth);
-+
-+e_free_id_block:
-+	kfree(id_block);
-+
-+e_free:
-+	kfree(data);
-+
-+	return ret;
-+}
-+
- int svm_mem_enc_op(struct kvm *kvm, void __user *argp)
- {
- 	struct kvm_sev_cmd sev_cmd;
-@@ -1858,6 +1963,9 @@ int svm_mem_enc_op(struct kvm *kvm, void __user *argp)
- 	case KVM_SEV_SNP_LAUNCH_UPDATE:
- 		r = snp_launch_update(kvm, &sev_cmd);
- 		break;
-+	case KVM_SEV_SNP_LAUNCH_FINISH:
-+		r = snp_launch_finish(kvm, &sev_cmd);
-+		break;
- 	default:
- 		r = -EINVAL;
- 		goto out;
-@@ -2346,8 +2454,25 @@ void sev_free_vcpu(struct kvm_vcpu *vcpu)
+diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+index a7adf6ca1713..2632eae52aa3 100644
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -4576,6 +4576,7 @@ static struct kvm_x86_ops svm_x86_ops __initdata = {
+ 	.vcpu_deliver_sipi_vector = svm_vcpu_deliver_sipi_vector,
  
- 	if (vcpu->arch.guest_state_protected)
- 		sev_flush_guest_memory(svm, svm->vmsa, PAGE_SIZE);
-+
-+	/*
-+	 * If its an SNP guest, then VMSA was added in the RMP entry as a guest owned page.
-+	 * Transition the page to hyperivosr state before releasing it back to the system.
-+	 */
-+	if (sev_snp_guest(vcpu->kvm)) {
-+		struct rmpupdate e = {};
-+		int rc;
-+
-+		rc = rmpupdate(virt_to_page(svm->vmsa), &e);
-+		if (rc) {
-+			pr_err("Failed to release SNP guest VMSA page (rc %d), leaking it\n", rc);
-+			goto skip_vmsa_free;
-+		}
-+	}
-+
- 	__free_page(virt_to_page(svm->vmsa));
- 
-+skip_vmsa_free:
- 	if (svm->ghcb_sa_free)
- 		kfree(svm->ghcb_sa);
- }
-diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
-index c9b453fb31d4..fb3f6e1defd9 100644
---- a/include/uapi/linux/kvm.h
-+++ b/include/uapi/linux/kvm.h
-@@ -1682,6 +1682,7 @@ enum sev_cmd_id {
- 	KVM_SEV_SNP_INIT = 256,
- 	KVM_SEV_SNP_LAUNCH_START,
- 	KVM_SEV_SNP_LAUNCH_UPDATE,
-+	KVM_SEV_SNP_LAUNCH_FINISH,
- 
- 	KVM_SEV_NR_MAX,
- };
-@@ -1808,6 +1809,18 @@ struct kvm_sev_snp_launch_update {
- 	__u8 vmpl1_perms;
+ 	.alloc_apic_backing_page = svm_alloc_apic_backing_page,
++	.get_tdp_max_page_level = sev_get_tdp_max_page_level,
  };
  
-+#define KVM_SEV_SNP_ID_BLOCK_SIZE	96
-+#define KVM_SEV_SNP_ID_AUTH_SIZE	4096
-+#define KVM_SEV_SNP_FINISH_DATA_SIZE	32
+ static struct kvm_x86_init_ops svm_init_ops __initdata = {
+diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
+index bc5582b44356..32abcbd774d0 100644
+--- a/arch/x86/kvm/svm/svm.h
++++ b/arch/x86/kvm/svm/svm.h
+@@ -568,6 +568,7 @@ void sev_vcpu_deliver_sipi_vector(struct kvm_vcpu *vcpu, u8 vector);
+ void sev_es_prepare_guest_switch(struct vcpu_svm *svm, unsigned int cpu);
+ void sev_es_unmap_ghcb(struct vcpu_svm *svm);
+ struct page *snp_safe_alloc_page(struct kvm_vcpu *vcpu);
++int sev_get_tdp_max_page_level(struct kvm_vcpu *vcpu, gpa_t gpa, int max_level);
+ 
+ /* vmenter.S */
+ 
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index 4bceb5ca3a89..fbc9034edf16 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -7612,6 +7612,12 @@ static bool vmx_check_apicv_inhibit_reasons(ulong bit)
+ 	return supported & BIT(bit);
+ }
+ 
 +
-+struct kvm_sev_snp_launch_finish {
-+	__u64 id_block_uaddr;
-+	__u64 id_auth_uaddr;
-+	__u8 id_block_en;
-+	__u8 auth_key_en;
-+	__u8 host_data[KVM_SEV_SNP_FINISH_DATA_SIZE];
-+};
++static int vmx_get_tdp_max_page_level(struct kvm_vcpu *vcpu, gpa_t gpa, int max_level)
++{
++	return max_level;
++}
 +
- #define KVM_DEV_ASSIGN_ENABLE_IOMMU	(1 << 0)
- #define KVM_DEV_ASSIGN_PCI_2_3		(1 << 1)
- #define KVM_DEV_ASSIGN_MASK_INTX	(1 << 2)
+ static struct kvm_x86_ops vmx_x86_ops __initdata = {
+ 	.hardware_unsetup = hardware_unsetup,
+ 
+@@ -7742,6 +7748,8 @@ static struct kvm_x86_ops vmx_x86_ops __initdata = {
+ 	.complete_emulated_msr = kvm_complete_insn_gp,
+ 
+ 	.vcpu_deliver_sipi_vector = kvm_vcpu_deliver_sipi_vector,
++
++	.get_tdp_max_page_level = vmx_get_tdp_max_page_level,
+ };
+ 
+ static __init void vmx_setup_user_return_msrs(void)
 -- 
 2.17.1
 
