@@ -2,41 +2,41 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C9B513BEF5E
-	for <lists+linux-efi@lfdr.de>; Wed,  7 Jul 2021 20:40:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AC9AB3BEF64
+	for <lists+linux-efi@lfdr.de>; Wed,  7 Jul 2021 20:40:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232710AbhGGSmI (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 7 Jul 2021 14:42:08 -0400
-Received: from mail-dm3nam07on2063.outbound.protection.outlook.com ([40.107.95.63]:38977
+        id S233073AbhGGSmL (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 7 Jul 2021 14:42:11 -0400
+Received: from mail-dm3nam07on2067.outbound.protection.outlook.com ([40.107.95.67]:40288
         "EHLO NAM02-DM3-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S232154AbhGGSlZ (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        id S232733AbhGGSlZ (ORCPT <rfc822;linux-efi@vger.kernel.org>);
         Wed, 7 Jul 2021 14:41:25 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Hy/ise+fbkDGPT3eM6advu8YZzBQDxtyMJh22IQEKSztq4Z9O63cH3cixhuC863zjqjMOZR+eULqQI0E+xgg/4zBR9o7oqafzBnPRnWiOQs+ZliPWZ87DLqbofRjHYOuDZ7kHyv+ijkCk9GNgPAhl+9NwoTnarOoWZoHoCySsL/4HATM5/yzzN+PMAF55OUzUWM7TMVovXIweH2QxMFyfh4jdcd3fxZADtWyv+YwyMQ+kvjerlLV1qziLsK0MzWUzPAadoKv21YxHYqRjnn5QbLfSYoeFnYL8RI59gFbNnYR6EWwIxQAkDaVaLUubIV78bCMLwvJl7jaNSMJBn9JOQ==
+ b=Z1hI1ZttB2GhvN3M93+uVLlmfPhFSb8MhRKrqTJiBRYrG5Y2n/wHOdYEYZDCoo5UBbhKE+LdEXADjHkYx8gYCrTtS2acd8zj+l23AqK8zj+xDX0/ktLGRV5fMQEZnQC9CjVLC0BJd41RwUugfnA2uZ3DNIT/ssTqm0UcWL9evXXLGtzFpa9skKwZw7wYJ5uEKGXy8I7H97FXqhhGVxDbjBBt7zPubqVTbZk+awnoPFGcsbSrrTLheZ7azVym8yQOf2Mk5btnufJTMgIMrMAe7D0tiTwi2WDDGTqpXcfCl5vxR1b4/dlp2Ha2a8FQpGmbuMhluEBLwEd5086FnS5ZPQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8RDvO1SeBTTdONAbw8qrNWEqb6uxjtb2FKLa+cR5mLU=;
- b=E1PM3nki4Nm+xVklpfoiwbWZUqn53aRUMgLFRKFq6QK68cZQU65iiRzxl9SrK/KgTgnxBFPpWX19+/71bmiqXbB2/jo/qO/oPN7on+dwBj4IdlFX8mc09S572veTbOpZ0BpLW1pcafz1nC2xw/DQQtIqQ3ftVsjNwBEHkahluanPmEiBJ37OyPsfViMgYp2bqnv7AUnrTHd79jTSGgAIPrxUDT2WBjGDO2bTL1s7KoCDBOwsxBJUjAKwly82IL9QQ4AESmgDyVNKHc83y5aHGcE4/6EUtDIUIs6MxCM3HARaQ+0HaawDpJRDpt4yoAQRaTVv7fHTgAgEvZQSBKY+BQ==
+ bh=V9TOASJEPAxL4xyLROuLjD1yZ4zAkH5/F5yGRivQZuE=;
+ b=kbY79exTBFuTVd/oDREtpUf87/YAzClXoGTaLJgNrRxg1NJ8fFXjAh5kwgvegUflU7Z9sJ8j5+YbyixjmTarWTs679ZlImmUvLfyzKRBtFqMaSE76K2C4X/xZz/rxtFI97SBaHzCQbnUWHBTKZqUf3qCNC3VLF+RN4e3SWemPkIGegT2TEKGWxLXCrTGELwKMAHIOTFuEXl2Qwe95qLsm2JbeiY008Nrysobtyy+uzNnWcoA8GjmCgTCtJhoEHEY67/JOOFG9rLyoUVLIjqfSowSnbRuZ5qRrdKtV7L8Jp+5MX717d8ZeaEbwoE3peigi2N+nxs5R2GEbMOeqTozcg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
  header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8RDvO1SeBTTdONAbw8qrNWEqb6uxjtb2FKLa+cR5mLU=;
- b=SfSxtvMoRLh69AT1w19CORZvE3wrRAdJ+zPIxuu8LF2T+sBw2HhVMo4sCPc8NqIK+j+8U1d+BWFBVn/qL4R6gRzd8Ka+yTdiGVSxf/JqP1KKfsV0jBiKFaiNibfS/o9nV7NFcBTuBFRQlQjBuGwPPva2rUvRa2BZQpfaf6Q5MBo=
+ bh=V9TOASJEPAxL4xyLROuLjD1yZ4zAkH5/F5yGRivQZuE=;
+ b=K/rwXML6FnOkb52uO3e205uhWV5u7ouPr9Fw7kVZMn5ZRpQIwV2ZB08UKkKu/omXIJL0XnI9auY+1vjsrEViXaE5tsS3ELQWAlDn4MDxv6wUjIq3zKtgqUT7pbOXiORdddcMz78fksZuJ283e5AHXRda86dMo0MH5BZte1CaHWs=
 Authentication-Results: kernel.org; dkim=none (message not signed)
  header.d=none;kernel.org; dmarc=none action=none header.from=amd.com;
 Received: from BYAPR12MB2711.namprd12.prod.outlook.com (2603:10b6:a03:63::10)
  by BYAPR12MB2808.namprd12.prod.outlook.com (2603:10b6:a03:69::24) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4287.26; Wed, 7 Jul
- 2021 18:37:52 +0000
+ 2021 18:37:54 +0000
 Received: from BYAPR12MB2711.namprd12.prod.outlook.com
  ([fe80::40e3:aade:9549:4bed]) by BYAPR12MB2711.namprd12.prod.outlook.com
  ([fe80::40e3:aade:9549:4bed%7]) with mapi id 15.20.4287.033; Wed, 7 Jul 2021
- 18:37:52 +0000
+ 18:37:54 +0000
 From:   Brijesh Singh <brijesh.singh@amd.com>
 To:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
         linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
@@ -64,9 +64,9 @@ Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Vlastimil Babka <vbabka@suse.cz>, tony.luck@intel.com,
         npmccallum@redhat.com, brijesh.ksingh@gmail.com,
         Brijesh Singh <brijesh.singh@amd.com>
-Subject: [PATCH Part2 RFC v4 22/40] KVM: SVM: Add KVM_SNP_INIT command
-Date:   Wed,  7 Jul 2021 13:35:58 -0500
-Message-Id: <20210707183616.5620-23-brijesh.singh@amd.com>
+Subject: [PATCH Part2 RFC v4 23/40] KVM: SVM: Add KVM_SEV_SNP_LAUNCH_START command
+Date:   Wed,  7 Jul 2021 13:35:59 -0500
+Message-Id: <20210707183616.5620-24-brijesh.singh@amd.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20210707183616.5620-1-brijesh.singh@amd.com>
 References: <20210707183616.5620-1-brijesh.singh@amd.com>
@@ -76,195 +76,319 @@ X-ClientProxiedBy: SN6PR04CA0078.namprd04.prod.outlook.com
  (2603:10b6:a03:63::10)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from sbrijesh-desktop.amd.com (165.204.77.1) by SN6PR04CA0078.namprd04.prod.outlook.com (2603:10b6:805:f2::19) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4308.20 via Frontend Transport; Wed, 7 Jul 2021 18:37:49 +0000
+Received: from sbrijesh-desktop.amd.com (165.204.77.1) by SN6PR04CA0078.namprd04.prod.outlook.com (2603:10b6:805:f2::19) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4308.20 via Frontend Transport; Wed, 7 Jul 2021 18:37:52 +0000
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 2a5d5012-605a-4fef-dae8-08d9417653d6
+X-MS-Office365-Filtering-Correlation-Id: 15511bc3-1fe7-4ec8-39e1-08d941765558
 X-MS-TrafficTypeDiagnostic: BYAPR12MB2808:
 X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <BYAPR12MB28088AAEFD662DF16D5B4869E51A9@BYAPR12MB2808.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:8882;
+X-Microsoft-Antispam-PRVS: <BYAPR12MB2808180B12ACE01E562456B0E51A9@BYAPR12MB2808.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:7219;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: cVLwaghKMVjfv+ZqeP+4BDwS+xunmrDUF/7bgE3P/ZaRneXq1DiQ8ib7OsaWaRq/gZDEmosP9NeTHAk46+JAjEbv/l9nwfXqUzWaGPgEeS1nMmIol+AHzcwSnaBMvqp/VznKvYuvSn2IUHPGz2VkTHrbwt77xUJtqgC3JXVdTpQdQTfjP+0vkiNaBRbHMk7qM39ghEUnutJYBpiU6rUl8DtM90sMguC7+MSPCAN9tf1bkwx0opAzAUuPVLl+ZZPchDEcW97iLnLHKLXp3nga89n7uzRxxR/RcniwyAzSpG8oasK63gMckThABzKEOZka9m+rM0mwDkwVQE/K8eQAsoMl2czre2SfswuMzg320emctVLKKZlT6Sf4z4yWPFRxWGH1JkXbN3sjf8yPBmVloWkYSM0Fcqanwqtyotlct0mBSYj9iYnbEemolDbpNjWByhfUUuXvEzrLlhyw7duvvwjEHOb44BmagGq5eM7GkfMX26+t5sC/HK3HMDGX+a2antd2Eg7jvxlA1tdyqceBtqjXdSNFWST9uHUWGWPAfTNIdzJkfvvONFHMfgCqiUox9g5P53N43qDQgQKC/pxbP4Cw76b124JtT2lQFA/zaob7DkU0Yw34L/iNojBYx9svaciMZ6GU848IPoBh0nm0BaY9nKaCuOmVXclomqwQuFJw44j1P5ccYTmHnMxgp2KRQIl1VM3QnKgPxgyJWE1CUw==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR12MB2711.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(396003)(136003)(346002)(39860400002)(366004)(376002)(7416002)(36756003)(83380400001)(66556008)(38100700002)(52116002)(2616005)(5660300002)(956004)(2906002)(86362001)(7406005)(4326008)(1076003)(44832011)(7696005)(66946007)(54906003)(316002)(8936002)(6486002)(8676002)(478600001)(6666004)(26005)(66476007)(186003)(38350700002);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: MnvE3XwqzWZO1DXdvbbN4r7+7IlUZ7g3m3yvpJPOX1NfgWffe8iwHsh8eACzwTrM0srB/beA8pIEnNFcPwG8YUdNwhv3H/+ppxncPhri3v7LzUeCGhJOB3dUsvseuhIBvVM4ld516UBsdNmN4kloFKnQcvUECwu85v+HYRUeqMu4BhmQkPaMdYRknxhnc4nzH9T7g7bBPehk1uOhWdsBbQYce6OyLe5th1z4ufGg/hjLkkifAbyrV0vImm2RTdBpFtT2RxZHDN5kJieUc6feKHWDJu3iVvdoePpDDKa/iZxpv4wcMW0ValOUcecftHhPqXfVAmv2czQTvyPe84tI07tO1yzkq8+82CK4xmAWKhyN6kQ36ihhD+fvBH3qxkq4vmGEFctTaSaNPeJd8iEoNnGgCT+nfx8g4zCHRoToEDOuaOej12IuGUg7ctY+YJ+4e7zyTfSeYkJsenkV0QSpmnL+vAuDfxCWiMmdhNKGMJlrrV1APL4p+keMWOe+i4QEq1cMEANXEja31b1HPMyQ4iXMek7kaE7aSey5wJvGO5e0HkB9oxA+kQTvKxI/HLf7oMFmtzSKX/+GaLvKnx2f84fqJXb28/i0gW+Ld6VFqnIcFS5IX0cn7VhozwXZPO2Momt+a6nhxZbP898hfulR6EBK31um+qBl0mzH0QclhKBbKF+wEviOSea/X6T/Jsy/4RwA65fMwvwMXQowMH68Bg==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR12MB2711.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(396003)(136003)(346002)(39860400002)(366004)(376002)(7416002)(36756003)(83380400001)(66556008)(38100700002)(52116002)(2616005)(5660300002)(956004)(2906002)(86362001)(7406005)(4326008)(1076003)(44832011)(7696005)(66946007)(54906003)(316002)(8936002)(6486002)(8676002)(478600001)(26005)(66476007)(186003)(38350700002);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?CjFan0Gq7yOUFI7fQhe91SaEazMTMdRYfU2rA4+vWXqrf0xg/UiBvPWGpkAF?=
- =?us-ascii?Q?TxCu4IPuk3Ob7C5Q5nAxjDAtUDDW43G0gr11fZhfyaCzKu0z28ex7NxKRLUD?=
- =?us-ascii?Q?/akJ3uzfruSQRWxLhJ10xRNCxIBTBwmBwCGUhdWFt10pB+WQwVYG3qST7o8z?=
- =?us-ascii?Q?OhCI++4/F6bs53E7pR+eNt199I/kXw6DvMtn9EzGPAeitndq1RhcCxmo6ayj?=
- =?us-ascii?Q?f8uFOMRRZI9ltnWIqERWpayyMxyzF+iwyltmDRQRonzsT0a3ZjuGRgH6MGVI?=
- =?us-ascii?Q?rsmYaBgHH6GKG25dqKl46/1fYgb1kBCzzHPsHZMH9pRl/vcOBCpYOvEq6/in?=
- =?us-ascii?Q?dIJZWAmgjc9kHXyMVelmmuJFIvJhMpX6NvWm74LTTraJSjXTLIMvVzZ09qiD?=
- =?us-ascii?Q?tnecDJKllSUQu/dXYu/nSdjwO3KsTV/wBeEbkxM/nCa+xiPj0kTgE1WUr9Ac?=
- =?us-ascii?Q?UadlNAcPs9UQYw9uwoX7jdOzZYUsFHXEeVcZB9EduNxScGYoYBy7rlNXcmNu?=
- =?us-ascii?Q?owF9NpT2CdGgwUKOfkcE3e+8lgT4E3JFXoVe6ObqF29CtHOPhHEHATvBWyAE?=
- =?us-ascii?Q?S/p9xirlIHdMhsL01lcVyJonYy07WA4tYQSoqVwBLdDQ0Zu3QDbKmcKOzbLh?=
- =?us-ascii?Q?/Iutg0YBBtJYVW3pc4dElk+BSb6HydhcwSbsQ0RRviBZpgfCPBfkkQUblGC0?=
- =?us-ascii?Q?tmHaJwTXEdzLXVEAUTumz6W8zdCVuWmmvUYBJo8RGI8NkkYUg6SgrsS3lAk+?=
- =?us-ascii?Q?tWrfLNoxAUvj2IMw/+PZsOYDnUANOXPBbqFNfukRJadL9bbe46cgOsBqo+JK?=
- =?us-ascii?Q?xOMStSR2HPRM4beFzlpruv41qZoM/UNSkBKdAcfgfiroMXU2ro4ruDEC6xEc?=
- =?us-ascii?Q?+VMPudLczMj1Fs/bdmUNrC1joqUNUA6EBOAzCrWp7kgKCMkvEJn1QV4XjI6I?=
- =?us-ascii?Q?pLu4Vw8p8Cu0tE8s9+64PMamZTbo5VahxNXC6D0p3PI8kBo8Dc0aRYb+SFA4?=
- =?us-ascii?Q?mGgUqm6htxfAfdEoEVzsP6pAKO1GTaTZ88u0n+g/eSPxtDWdzDdBIR8YFd8E?=
- =?us-ascii?Q?mgO1O8OyVIuJUF9Cp3Bjs11qwjtmIFinbdsx+mV7TmZ8DW3zcwGKh7ugASZF?=
- =?us-ascii?Q?L6V9IdM4PPvf4S6Fmwu6rq/MJt/DeTQ7W2RFXmKrOyoRy34/oiNXKl0Buc08?=
- =?us-ascii?Q?Go0z4bN8FXnEiqEoPP3JBssY7liJ2AoWlDuzLHWkRTjS5Vhx+b1PgZIjO7ki?=
- =?us-ascii?Q?sKE+1Yziofovp1Y/4mi7zSMM/RiRxd9dBXvzYwo3ln+NAleDFXOv7brfZlxM?=
- =?us-ascii?Q?U0cNZOZ+fLK63/+Iy9ii3FuZ?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?Kgcrr3RMFjIo9StNbPbGyaNmveiqYN5Xtj6W8ISUU3ewFuf5o/2f6s+iyjk9?=
+ =?us-ascii?Q?MmI9hIZQ1mPmlwf2FazjwhBhDq1XEOBt/qgeJ4mbfe5vDwE5+Yxt/mPVvota?=
+ =?us-ascii?Q?yvTs1oouCuYXJWdiQeo9JhRvGu3ee8gs0XAarQZy8Av/A9Zg2CKllRqiKl3q?=
+ =?us-ascii?Q?7ChwRefw3Tua7cI0CK1Yifyj7VhIS7cd/aqNoJX3jljQLrAGfSYbSX960+ny?=
+ =?us-ascii?Q?ivbyulBG7/gVhpTgxO4ZpeKBhmnaoAofbz6VvpwdNXCkLSdEk7RLZtzn+3HD?=
+ =?us-ascii?Q?w6XQ5qe3gc0PUtZx+qpu9tBqNvfLfYYhgRM1WBFRRMAXMFlzLQqWznhd+USX?=
+ =?us-ascii?Q?EQTTIjJocJky85ajheMNtCODYZVWcZ9XpFZjDSbVJeXWZKDOExH6Ek1qEefD?=
+ =?us-ascii?Q?C76BqK/VQUhVQ9ric7Pz4eVgwxkA46JQPWZm9Rn2tGeLJreV16ddyAO/KM9j?=
+ =?us-ascii?Q?zS6llturgKwnXLlzdNhqs8LPXK9KnmePSoIE9ZDeHMaKdc3HuhUl5vL8gE2P?=
+ =?us-ascii?Q?s/tDD0uie6p0TsrcSFKVweZTspwY6VJG7rTb+Kg1Nv+Tr40TUslDf4/PfIXL?=
+ =?us-ascii?Q?mMpGzYhhs0p0VW3WKFp0T3ATedLDYVT6a3KzfvOnmJRmwXvGdFci2Q/U4Fdn?=
+ =?us-ascii?Q?8poGSyGYEB8WELiMyT0TiIJCzowim4m676kAxsjTwM8ETBKWQeKaVOlDT8B2?=
+ =?us-ascii?Q?xsLxmRY+NIyXlVlWAH7zTO5ZZZq5cE8F4Rggectul6D2tbYXI4ggNdnZGogi?=
+ =?us-ascii?Q?aRx10N+GzGb5JdLKKYYDrnPaiyvX92Ajpr8KclLj3juqOpoSP1lNve6OMA6b?=
+ =?us-ascii?Q?GcesswzszVIHgBJ3WqKR32bmBKjRuZWNHEB6DPvSRNcbtkhB2LXX4rWr6idB?=
+ =?us-ascii?Q?XgidQPe1nvywTfBfZa0NT1cSekj910xy1QOG6sdFMLKbANjOwO3naT2bpbnE?=
+ =?us-ascii?Q?vzhgDPrgkJRXTeQ5cw9yRBOdvqJftOCfjsrx7iCXlTXN2Bodv5+ecHbrGUdL?=
+ =?us-ascii?Q?NypxB/qlR130GmqP3mMOr0CWPaHTgg2zC9li33A8wpIR2JWYoy52gMj6RJRX?=
+ =?us-ascii?Q?9i3qi3pjXQZyd153U7O/d8JAbIl73gSfnYA0L+msJzd9j4cIoqcYXv5zMx4z?=
+ =?us-ascii?Q?eo9c+pSvzElgVxQK4/z+Eo3jSF+rG6+0VoXsWrirLPGMIEqX59j6TOxYvWZb?=
+ =?us-ascii?Q?Sed4kxr/sf9I0ZCfF0VaSLyrHY781QXTOsiQL2jg6B6x3/XCiaPjEQJgU8+Y?=
+ =?us-ascii?Q?1wJlLQW1YzXfKDLHOkLRrQBhEIcrkjUALciSkZbAb92Miak6uclj6eZZK54z?=
+ =?us-ascii?Q?+frbyEW4K0uCOqg6Gj4tAjYX?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2a5d5012-605a-4fef-dae8-08d9417653d6
+X-MS-Exchange-CrossTenant-Network-Message-Id: 15511bc3-1fe7-4ec8-39e1-08d941765558
 X-MS-Exchange-CrossTenant-AuthSource: BYAPR12MB2711.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jul 2021 18:37:52.0000
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jul 2021 18:37:54.5436
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: cLGiiUITRBaxLLXkNgakSlAMuUT8Uy9YX9V6nvfzis9ptXe/C1FZpueb9NYkUq6aeq9HCkbjju38EiTMP9TdXg==
+X-MS-Exchange-CrossTenant-UserPrincipalName: CihhDUUbkFh02SGaIrx8/bqWVhe1A2ica8zjzxB+yltect4kGYVfOUkbmnuwUt/z6Gx5+qXVn2Das0xoUPvAzA==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR12MB2808
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The KVM_SNP_INIT command is used by the hypervisor to initialize the
-SEV-SNP platform context. In a typical workflow, this command should be the
-first command issued. When creating SEV-SNP guest, the VMM must use this
-command instead of the KVM_SEV_INIT or KVM_SEV_ES_INIT.
+KVM_SEV_SNP_LAUNCH_START begins the launch process for an SEV-SNP guest.
+The command initializes a cryptographic digest context used to construct
+the measurement of the guest. If the guest is expected to be migrated,
+the command also binds a migration agent (MA) to the guest.
 
-The flags value must be zero, it will be extended in future SNP support to
-communicate the optional features (such as restricted INT injection etc).
+For more information see the SEV-SNP specification.
 
 Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
 ---
- .../virt/kvm/amd-memory-encryption.rst        | 16 ++++++++
- arch/x86/kvm/svm/sev.c                        | 37 ++++++++++++++++++-
- include/uapi/linux/kvm.h                      |  7 ++++
- 3 files changed, 58 insertions(+), 2 deletions(-)
+ .../virt/kvm/amd-memory-encryption.rst        |  25 ++++
+ arch/x86/kvm/svm/sev.c                        | 132 +++++++++++++++++-
+ arch/x86/kvm/svm/svm.h                        |   1 +
+ include/uapi/linux/kvm.h                      |   9 ++
+ 4 files changed, 166 insertions(+), 1 deletion(-)
 
 diff --git a/Documentation/virt/kvm/amd-memory-encryption.rst b/Documentation/virt/kvm/amd-memory-encryption.rst
-index 5c081c8c7164..75ca60b6d40a 100644
+index 75ca60b6d40a..8620383d405a 100644
 --- a/Documentation/virt/kvm/amd-memory-encryption.rst
 +++ b/Documentation/virt/kvm/amd-memory-encryption.rst
-@@ -427,6 +427,22 @@ issued by the hypervisor to make the guest ready for execution.
+@@ -443,6 +443,31 @@ Returns: 0 on success, -negative on error
+                 __u64 flags;    /* must be zero */
+         };
  
- Returns: 0 on success, -negative on error
- 
-+18. KVM_SNP_INIT
-+----------------
 +
-+The KVM_SNP_INIT command can be used by the hypervisor to initialize SEV-SNP
-+context. In a typical workflow, this command should be the first command issued.
++19. KVM_SNP_LAUNCH_START
++------------------------
 +
-+Parameters (in): struct kvm_snp_init
++The KVM_SNP_LAUNCH_START command is used for creating the memory encryption
++context for the SEV-SNP guest. To create the encryption context, user must
++provide a guest policy, migration agent (if any) and guest OS visible
++workarounds value as defined SEV-SNP specification.
++
++Parameters (in): struct  kvm_snp_launch_start
 +
 +Returns: 0 on success, -negative on error
 +
 +::
 +
-+        struct kvm_snp_init {
-+                __u64 flags;    /* must be zero */
++        struct kvm_sev_snp_launch_start {
++                __u64 policy;           /* Guest policy to use. */
++                __u64 ma_uaddr;         /* userspace address of migration agent */
++                __u8 ma_en;             /* 1 if the migtation agent is enabled */
++                __u8 imi_en;            /* set IMI to 1. */
++                __u8 gosvw[16];         /* guest OS visible workarounds */
 +        };
++
++See the SEV-SNP specification for further detail on the launch input.
 +
  References
  ==========
  
 diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index abca2b9dee83..be31221f0a47 100644
+index be31221f0a47..f44a657e8912 100644
 --- a/arch/x86/kvm/svm/sev.c
 +++ b/arch/x86/kvm/svm/sev.c
-@@ -228,10 +228,24 @@ static void sev_unbind_asid(struct kvm *kvm, unsigned int handle)
- 	sev_guest_decommission(&decommission, NULL);
+@@ -20,6 +20,7 @@
+ #include <asm/fpu/internal.h>
+ 
+ #include <asm/trapnr.h>
++#include <asm/sev.h>
+ 
+ #include "x86.h"
+ #include "svm.h"
+@@ -75,6 +76,8 @@ static unsigned long sev_me_mask;
+ static unsigned long *sev_asid_bitmap;
+ static unsigned long *sev_reclaim_asid_bitmap;
+ 
++static int snp_decommission_context(struct kvm *kvm);
++
+ struct enc_region {
+ 	struct list_head list;
+ 	unsigned long npages;
+@@ -1527,6 +1530,100 @@ static int sev_receive_finish(struct kvm *kvm, struct kvm_sev_cmd *argp)
+ 	return sev_issue_cmd(kvm, SEV_CMD_RECEIVE_FINISH, &data, &argp->error);
  }
  
-+static int verify_snp_init_flags(struct kvm *kvm, struct kvm_sev_cmd *argp)
++static void *snp_context_create(struct kvm *kvm, struct kvm_sev_cmd *argp)
 +{
-+	struct kvm_snp_init params;
++	struct sev_data_snp_gctx_create data = {};
++	void *context;
++	int rc;
++
++	/* Allocate memory for context page */
++	context = snp_alloc_firmware_page(GFP_KERNEL_ACCOUNT);
++	if (!context)
++		return NULL;
++
++	data.gctx_paddr = __psp_pa(context);
++	rc = __sev_issue_cmd(argp->sev_fd, SEV_CMD_SNP_GCTX_CREATE, &data, &argp->error);
++	if (rc) {
++		snp_free_firmware_page(context);
++		return NULL;
++	}
++
++	return context;
++}
++
++static int snp_bind_asid(struct kvm *kvm, int *error)
++{
++	struct kvm_sev_info *sev = &to_kvm_svm(kvm)->sev_info;
++	struct sev_data_snp_activate data = {};
++	int asid = sev_get_asid(kvm);
++	int ret, retry_count = 0;
++
++	/* Activate ASID on the given context */
++	data.gctx_paddr = __psp_pa(sev->snp_context);
++	data.asid   = asid;
++again:
++	ret = sev_issue_cmd(kvm, SEV_CMD_SNP_ACTIVATE, &data, error);
++
++	/* Check if the DF_FLUSH is required, and try again */
++	if (ret && (*error == SEV_RET_DFFLUSH_REQUIRED) && (!retry_count)) {
++		/* Guard DEACTIVATE against WBINVD/DF_FLUSH used in ASID recycling */
++		down_read(&sev_deactivate_lock);
++		wbinvd_on_all_cpus();
++		ret = snp_guest_df_flush(error);
++		up_read(&sev_deactivate_lock);
++
++		if (ret)
++			return ret;
++
++		/* only one retry */
++		retry_count = 1;
++
++		goto again;
++	}
++
++	return ret;
++}
++
++static int snp_launch_start(struct kvm *kvm, struct kvm_sev_cmd *argp)
++{
++	struct kvm_sev_info *sev = &to_kvm_svm(kvm)->sev_info;
++	struct sev_data_snp_launch_start start = {};
++	struct kvm_sev_snp_launch_start params;
++	int rc;
++
++	if (!sev_snp_guest(kvm))
++		return -ENOTTY;
 +
 +	if (copy_from_user(&params, (void __user *)(uintptr_t)argp->data, sizeof(params)))
 +		return -EFAULT;
 +
-+	if (params.flags)
-+		return -EINVAL;
++	/* Initialize the guest context */
++	sev->snp_context = snp_context_create(kvm, argp);
++	if (!sev->snp_context)
++		return -ENOTTY;
++
++	/* Issue the LAUNCH_START command */
++	start.gctx_paddr = __psp_pa(sev->snp_context);
++	start.policy = params.policy;
++	memcpy(start.gosvw, params.gosvw, sizeof(params.gosvw));
++	rc = __sev_issue_cmd(argp->sev_fd, SEV_CMD_SNP_LAUNCH_START, &start, &argp->error);
++	if (rc)
++		goto e_free_context;
++
++	/* Bind ASID to this guest */
++	sev->fd = argp->sev_fd;
++	rc = snp_bind_asid(kvm, &argp->error);
++	if (rc)
++		goto e_free_context;
++
++	return 0;
++
++e_free_context:
++	snp_decommission_context(kvm);
++
++	return rc;
++}
++
+ int svm_mem_enc_op(struct kvm *kvm, void __user *argp)
+ {
+ 	struct kvm_sev_cmd sev_cmd;
+@@ -1616,6 +1713,9 @@ int svm_mem_enc_op(struct kvm *kvm, void __user *argp)
+ 	case KVM_SEV_RECEIVE_FINISH:
+ 		r = sev_receive_finish(kvm, &sev_cmd);
+ 		break;
++	case KVM_SEV_SNP_LAUNCH_START:
++		r = snp_launch_start(kvm, &sev_cmd);
++		break;
+ 	default:
+ 		r = -EINVAL;
+ 		goto out;
+@@ -1809,6 +1909,28 @@ int svm_vm_copy_asid_from(struct kvm *kvm, unsigned int source_fd)
+ 	return ret;
+ }
+ 
++static int snp_decommission_context(struct kvm *kvm)
++{
++	struct kvm_sev_info *sev = &to_kvm_svm(kvm)->sev_info;
++	struct sev_data_snp_decommission data = {};
++	int ret;
++
++	/* If context is not created then do nothing */
++	if (!sev->snp_context)
++		return 0;
++
++	data.gctx_paddr = __sme_pa(sev->snp_context);
++	ret = snp_guest_decommission(&data, NULL);
++	if (ret)
++		return ret;
++
++	/* free the context page now */
++	snp_free_firmware_page(sev->snp_context);
++	sev->snp_context = NULL;
 +
 +	return 0;
 +}
 +
- static int sev_guest_init(struct kvm *kvm, struct kvm_sev_cmd *argp)
+ void sev_vm_destroy(struct kvm *kvm)
  {
-+	bool es_active = (argp->id == KVM_SEV_ES_INIT || argp->id == KVM_SEV_SNP_INIT);
  	struct kvm_sev_info *sev = &to_kvm_svm(kvm)->sev_info;
--	bool es_active = argp->id == KVM_SEV_ES_INIT;
-+	bool snp_active = argp->id == KVM_SEV_SNP_INIT;
- 	int asid, ret;
+@@ -1847,7 +1969,15 @@ void sev_vm_destroy(struct kvm *kvm)
  
- 	if (kvm->created_vcpus)
-@@ -242,12 +256,22 @@ static int sev_guest_init(struct kvm *kvm, struct kvm_sev_cmd *argp)
- 		return ret;
+ 	mutex_unlock(&kvm->lock);
  
- 	sev->es_active = es_active;
-+	sev->snp_active = snp_active;
- 	asid = sev_asid_new(sev);
- 	if (asid < 0)
- 		goto e_no_asid;
- 	sev->asid = asid;
- 
--	ret = sev_platform_init(&argp->error);
-+	if (snp_active) {
-+		ret = verify_snp_init_flags(kvm, argp);
-+		if (ret)
-+			goto e_free;
-+
-+		ret = sev_snp_init(&argp->error);
+-	sev_unbind_asid(kvm, sev->handle);
++	if (sev_snp_guest(kvm)) {
++		if (snp_decommission_context(kvm)) {
++			pr_err("Failed to free SNP guest context, leaking asid!\n");
++			return;
++		}
 +	} else {
-+		ret = sev_platform_init(&argp->error);
++		sev_unbind_asid(kvm, sev->handle);
 +	}
 +
- 	if (ret)
- 		goto e_free;
- 
-@@ -591,6 +615,9 @@ static int sev_es_sync_vmsa(struct vcpu_svm *svm)
- 	save->pkru = svm->vcpu.arch.pkru;
- 	save->xss  = svm->vcpu.arch.ia32_xss;
- 
-+	if (sev_snp_guest(svm->vcpu.kvm))
-+		save->sev_features |= SVM_SEV_FEATURES_SNP_ACTIVE;
-+
- 	return 0;
+ 	sev_asid_free(sev);
  }
  
-@@ -1523,6 +1550,12 @@ int svm_mem_enc_op(struct kvm *kvm, void __user *argp)
- 	}
+diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
+index b9ea99f8579e..bc5582b44356 100644
+--- a/arch/x86/kvm/svm/svm.h
++++ b/arch/x86/kvm/svm/svm.h
+@@ -67,6 +67,7 @@ struct kvm_sev_info {
+ 	u64 ap_jump_table;	/* SEV-ES AP Jump Table address */
+ 	struct kvm *enc_context_owner; /* Owner of copied encryption context */
+ 	struct misc_cg *misc_cg; /* For misc cgroup accounting */
++	void *snp_context;      /* SNP guest context page */
+ };
  
- 	switch (sev_cmd.id) {
-+	case KVM_SEV_SNP_INIT:
-+		if (!sev_snp_enabled) {
-+			r = -ENOTTY;
-+			goto out;
-+		}
-+		fallthrough;
- 	case KVM_SEV_ES_INIT:
- 		if (!sev_es_enabled) {
- 			r = -ENOTTY;
+ struct kvm_svm {
 diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
-index 3fd9a7e9d90c..989a64aa1ae5 100644
+index 989a64aa1ae5..dbd05179d8fa 100644
 --- a/include/uapi/linux/kvm.h
 +++ b/include/uapi/linux/kvm.h
-@@ -1678,6 +1678,9 @@ enum sev_cmd_id {
- 	/* Guest Migration Extension */
- 	KVM_SEV_SEND_CANCEL,
+@@ -1680,6 +1680,7 @@ enum sev_cmd_id {
  
-+	/* SNP specific commands */
-+	KVM_SEV_SNP_INIT = 256,
-+
+ 	/* SNP specific commands */
+ 	KVM_SEV_SNP_INIT = 256,
++	KVM_SEV_SNP_LAUNCH_START,
+ 
  	KVM_SEV_NR_MAX,
  };
- 
-@@ -1774,6 +1777,10 @@ struct kvm_sev_receive_update_data {
- 	__u32 trans_len;
+@@ -1781,6 +1782,14 @@ struct kvm_snp_init {
+ 	__u64 flags;
  };
  
-+struct kvm_snp_init {
-+	__u64 flags;
++struct kvm_sev_snp_launch_start {
++	__u64 policy;
++	__u64 ma_uaddr;
++	__u8 ma_en;
++	__u8 imi_en;
++	__u8 gosvw[16];
 +};
 +
  #define KVM_DEV_ASSIGN_ENABLE_IOMMU	(1 << 0)
