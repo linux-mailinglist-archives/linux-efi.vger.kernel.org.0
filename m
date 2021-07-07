@@ -2,41 +2,41 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3EA9D3BEE06
-	for <lists+linux-efi@lfdr.de>; Wed,  7 Jul 2021 20:18:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A16EE3BEE10
+	for <lists+linux-efi@lfdr.de>; Wed,  7 Jul 2021 20:18:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231754AbhGGSTJ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 7 Jul 2021 14:19:09 -0400
-Received: from mail-bn8nam12on2067.outbound.protection.outlook.com ([40.107.237.67]:45063
+        id S231849AbhGGSTU (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 7 Jul 2021 14:19:20 -0400
+Received: from mail-bn8nam12on2057.outbound.protection.outlook.com ([40.107.237.57]:41568
         "EHLO NAM12-BN8-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S231643AbhGGSSy (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Wed, 7 Jul 2021 14:18:54 -0400
+        id S231852AbhGGSTI (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Wed, 7 Jul 2021 14:19:08 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Jiy0TjZ+TYvtmuj44nTHytWco0FcbE0XRvj445aKurJcHnP92YU4x5CCbXNxqbZg/S4PK3NWuMkYelK6tvvbIIqjtQw4yOZlxvV4M4g/+YJ07OzCbun5Q1Cn8NDRdP1PHgDkqIQTFgvAF4rLr5sCaQ+k/dHAti4rGQ+3/KalpIvtpJXuDmGQWw3oWwR/PimligL2wfwEC7A5d60xXVA4m2TTjnwFX4rmvfjcu+yLakitDvmpTh2Lc9np3Fy51KN7HpyWYOmK5Kr6TicFgC0n/ngJOBGN7cQDhgtT3F6WwmyZE0Jr10E5x4IOHP65FF2I9QUdX+qAFsZQ+C8E3DttBw==
+ b=PMpYYW/7hIy1JvaQr/V18OwzkizWzsGSXtbMoj6JUS3zMSQtieOm+yWeOUaP8an8AQTR/fUeH6JAlxx+MUxiZIhBmiZKLiYYnTVwvPLIysIOwzrh1RxQteifxyAHBNtPdikon95E5cvrvLXKdeq7KlcPZ7IhQM3JTSeQJZKjgkHx9vQHgg5oZnhR78mIZl+Gm6gNKn0Hp9i0pnOhFFKDv+LbgnK3nc8ayATYWrs6T3aEfE3hv2b4Pg0+/40TsQBZ6v3t00huGuBh+Zy0IWId5m0rSUbGBlpCq+UzrPzBKL8hSe1/pZH1zcYYPVRooFhxR/odDnIMx/Xx0YrfoZV5wg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9/JhxqSka73eZEhSsicofqkCL2gbRrNJ9DD4pCzki9Q=;
- b=k5FnIuX7rjWtZ7GCr1G5zM8CexVuJ0IIsryUEdlr2B86OTut71Lg0z/6s+1WhJX9qOofxRsGmVnu1zA4eKMoigqCQ1Q+lc3prazCH+1IOzFyN3pplQTrSxhcTv/e5Lye0hx61IJyqdUCiNB1P+1aYmTwP0CIv8Nij0vr+h1CLP8RuZP1ulJfoNQWmoKbRFfqJrY0HCgVjEjRtxehEutpGyP/9nP4Cwy/iZOirw83XWihbO/02WsRqmhlQ+EjyBYVMeFA4XnfvMTu5StjaiB4XetTI9Zd6m+u0ClpaVcGEvUUBIGYw7pX4qsxJ6Iw8rKQK7VJ3asbxeRmz0isCQ9V0w==
+ bh=+GAj0n/mh4HxIHmd8pu1nVhyIj/Ean9oCwoFOmBwMJ4=;
+ b=QZDNAd8tCQjcm/zLruYyjQa24/Bo1wwKs3o2Dy1Cwwa9DyyKiGoIYGYnQMfttvQMZIlycv++4fVqGSo+u8B3TpLX283CK39HC4zYGxaPHcpLSj2lZprWyb8staYcpsbqyx5ox2a66aD1t2jz+nwvkKYUjmaIJjUff+iG1Ak/X890MWnUezF07v7S8Lbs+6Xd88ojmJ/G4j3UzUucK5dTMLAWZ1Jax6Y/YNbmWKuqGKyEvyXLvGY1OH//bfB2tr3/JWQrG9mtKxU8GdNf5xF0RoxdKSYrBn5IUYBZfqcf3UL2UmukAUmg7+33DJBk7XuoToSpQJDY7mE71UvsKKcpyQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
  header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9/JhxqSka73eZEhSsicofqkCL2gbRrNJ9DD4pCzki9Q=;
- b=zNMq+2H/zFKKdft81z6cPzhQULA1co9DrKjSIeILuwxHi6/bkytxSxuONGULf1hChSiKhFeydR1i5h4Bd8VVkSkrYrhePPdVVTxHuGtrOJZqwNSGeWM2zn7Pk9zGMY9v6r/IvVKLH2amVXJxPSIUt9s8t4kDT8/+eMnh1JdAtkU=
+ bh=+GAj0n/mh4HxIHmd8pu1nVhyIj/Ean9oCwoFOmBwMJ4=;
+ b=5RHnVb78UBKrSMlIKp60JbFxI5m0avGO2ETkiNk6cocqafWzILc9vVMufIKvl2Twzgrc2eBG10HSVmITSCAY1T2B/3JNUCOoDUtPJwSymHXOst7DL5ILTTn7rD80IfuXnqbQU9PNr0UNTA4lAlNL/+v/DvLhgKuhWzpSuFV6pAQ=
 Authentication-Results: kernel.org; dkim=none (message not signed)
  header.d=none;kernel.org; dmarc=none action=none header.from=amd.com;
 Received: from BYAPR12MB2711.namprd12.prod.outlook.com (2603:10b6:a03:63::10)
  by BY5PR12MB5016.namprd12.prod.outlook.com (2603:10b6:a03:1c5::20) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4308.20; Wed, 7 Jul
- 2021 18:16:00 +0000
+ 2021 18:16:03 +0000
 Received: from BYAPR12MB2711.namprd12.prod.outlook.com
  ([fe80::40e3:aade:9549:4bed]) by BYAPR12MB2711.namprd12.prod.outlook.com
  ([fe80::40e3:aade:9549:4bed%7]) with mapi id 15.20.4287.033; Wed, 7 Jul 2021
- 18:16:00 +0000
+ 18:16:02 +0000
 From:   Brijesh Singh <brijesh.singh@amd.com>
 To:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
         linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
@@ -64,9 +64,9 @@ Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Vlastimil Babka <vbabka@suse.cz>, tony.luck@intel.com,
         npmccallum@redhat.com, brijesh.ksingh@gmail.com,
         Brijesh Singh <brijesh.singh@amd.com>
-Subject: [PATCH Part1 RFC v4 13/36] x86/kernel: Make the bss.decrypted section shared in RMP table
-Date:   Wed,  7 Jul 2021 13:14:43 -0500
-Message-Id: <20210707181506.30489-14-brijesh.singh@amd.com>
+Subject: [PATCH Part1 RFC v4 14/36] x86/kernel: Validate rom memory before accessing when SEV-SNP is active
+Date:   Wed,  7 Jul 2021 13:14:44 -0500
+Message-Id: <20210707181506.30489-15-brijesh.singh@amd.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20210707181506.30489-1-brijesh.singh@amd.com>
 References: <20210707181506.30489-1-brijesh.singh@amd.com>
@@ -76,88 +76,107 @@ X-ClientProxiedBy: SA0PR11CA0104.namprd11.prod.outlook.com
  (2603:10b6:a03:63::10)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from sbrijesh-desktop.amd.com (165.204.77.1) by SA0PR11CA0104.namprd11.prod.outlook.com (2603:10b6:806:d1::19) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4308.19 via Frontend Transport; Wed, 7 Jul 2021 18:15:57 +0000
+Received: from sbrijesh-desktop.amd.com (165.204.77.1) by SA0PR11CA0104.namprd11.prod.outlook.com (2603:10b6:806:d1::19) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4308.19 via Frontend Transport; Wed, 7 Jul 2021 18:16:00 +0000
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: bbb67c54-880d-42e9-1bd3-08d941734600
+X-MS-Office365-Filtering-Correlation-Id: d6c17605-d6ad-47b6-7608-08d941734783
 X-MS-TrafficTypeDiagnostic: BY5PR12MB5016:
 X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <BY5PR12MB50167185A2F697E7B8A608AEE51A9@BY5PR12MB5016.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:2958;
+X-Microsoft-Antispam-PRVS: <BY5PR12MB50164DE2EF6044E506BFD111E51A9@BY5PR12MB5016.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:6430;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: tJpKdITOIhzmD1u++4SQBeGV4QtdNH0EKlii/LpTNn6nX1UHTxnvcW8qhhIxRdcRIwzNfEGpTnp/er259LqJr2PimN5iWq0BSPwlCkit2uLrTSfn7po63prsJ/xlhKBi/TMgYyKkfXcZIUk250GFyUJFULNu6d9eBYqjz2tZbnuIuYbYP8/0ctRm2DofsTZWZWuIJPGf2h5fwOTbh5t2Jv3plIQtumCftrud0gubGLk1dercVolw50OOvwfTiM3YDRhS2bEaaLOj4RDifhtSG1XLg1D6Ncp714YeMM59WtRl1Hrss68vb9/rXUNAbb+uP0oDs9NAzrfEno499GuUoOp+qhyv9LerLA0dlOzIY8p0lbfKw+qunO20mRtlvkdh7oH4HZN3LN27FMMYQ1xpwcfyw6O+do9/z7c3YESX/PEMSyvzHxiL2M2uBNNXxMjMtSPAqRQbffRxZ76PhURuJjCC+gQUEav+U/d8yGfjDch6Ni9yX/KDj+iuw5P0YAKAoGN58S80dd7LJiuIsFxvRM3kD3ndsGB7sDjRIog7P0Ja0k8eYF6Sy3IlWm2hGORvmg4EJxa6SRIjgytkV7f917QBh4PhtXM8saHJ0n+U+Zs7e0NIHyyljLKjTlh95woFqK3gVPoOGlvPqGdvLOWHQZWeGmsz5HiBfsVjVerBGPP23UXuhuUYNi2TrHPLXZjb9HM/stxt7lErm8wXpII+gg==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR12MB2711.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(346002)(396003)(376002)(366004)(39860400002)(136003)(66556008)(66476007)(186003)(7416002)(52116002)(86362001)(26005)(956004)(8936002)(478600001)(7406005)(7696005)(8676002)(83380400001)(5660300002)(2616005)(38350700002)(38100700002)(44832011)(2906002)(1076003)(54906003)(6666004)(66946007)(316002)(4326008)(36756003)(6486002);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: a7vv3yFO3nB310cMkrqtD7Tvvoc/7evptrBTo1/FbTeYU+cjI+ctkUAVbPKH6oa2KBiY8UUJGHLNCs6KVcwDadxR7ARF4liJf9PPucoQ3x1movXfYWom6A1y3B+Ed0fst/BYRvPBzuaJssYw8a5z7QWpcODyNd/y63HoUm/xUYMuZWxPC2b5W84AEsUAuBDzzdHdXe8zMIUQStvwIHMAFx/wXLaUj5jSGW8G8mJQagwV72YlozWM79xf0fBe+2d9Jlf9GHSdDey5TSsA9Tz4Lh/+lyOS8zFj0wFprT8SezXMBLEe/WNtR7aY4iPvd0LpRqxsyCV5x3Wm3nlRHOBXpU58oNp1KrG2Sz3O19AMoL1wXAG9ZUA2XeJpE7uLGA2ZW8ctIzy0wX4uwMahd2e4g8NdAWmrVOuaE2OTHYgs34CLSvInw6ykSqnoimuGfeggci+4u/+ChYtSOwfx8YHzyIo5M/vbo1c6i5PxXO9X0/zqibdDG9I2ZHIDdq2euZFpTATjLBgzivsbbRMe+LwwM7+820YfEuhtNbLfrTSpiKBRVVADJ4gly/UVQjGUYs6TGcBXLUQ/hhvcOFqy96gSXMlhpudJ4D938rWckb0HTeGT0QNJi7KHy2SXsS7vbK8GBEbbCwf2h8LdORvnXFAiKjj0VtYxd1fLdjq1WUx+POrCBf/0tPBxLKZagwutpZcVOMDP+13tSKGPCgPLA7So5w==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR12MB2711.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(346002)(396003)(376002)(366004)(39860400002)(136003)(66556008)(66476007)(186003)(7416002)(52116002)(15650500001)(86362001)(26005)(956004)(8936002)(478600001)(7406005)(7696005)(8676002)(83380400001)(5660300002)(2616005)(38350700002)(38100700002)(44832011)(2906002)(1076003)(54906003)(6666004)(66946007)(316002)(4326008)(36756003)(6486002);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?ajMtQE9AbVQQ+clFVgmOfvc0Z1YHdo3hGpmQ27G6x0nsV8cqjt5jQ1nqv3Ji?=
- =?us-ascii?Q?RS4iiqSJb1V6k1wbFTMuwVaGi99+inT9PjO2Kvsajmn9RK7JqOQR2gVN5rl0?=
- =?us-ascii?Q?HtNRPFjLRbySLPZCLH6imKwZmKQRXmcmdZSqt1cmakrYTWsPJEagQN9Otnl4?=
- =?us-ascii?Q?Xjduc/ElqmdHYm7BJoLEfkQLWuWEOofLirmZ7b+xN1fS7x9oHa6YsgzXOB7o?=
- =?us-ascii?Q?MjXV+eLfQkVb1YB0BNuoPu2sBy8k6LFdsKu4b2y/+B7x7OhT0K2i0XI/o2rz?=
- =?us-ascii?Q?pYveUSFVnQX1rhKTF4PueAqVFKEceqak5F2MTCSwMWqkS275J/KObg5QeX7t?=
- =?us-ascii?Q?MGm1Pcu1PUq1jl4wruNUvRVKklcuBwfsTsd1bJtJ1PkCO4aJvsqnI1OHXR7L?=
- =?us-ascii?Q?MSfh5C6ory1ht6OTwLg7BTQm9QhD4HXYznKkU9ZpRSlXoUGwRBFA13A6pXJH?=
- =?us-ascii?Q?2RcX5ATpkJIWaYizUyPyhJI4pX8LfD9ahoysgJeh+vm5y98rChAsw50sE7vT?=
- =?us-ascii?Q?3/NajJ1FXDh+RAth9P/8kr4Sl3M74XCiw/tjFhbNWvUhf0kz2dyAHWaLKbSl?=
- =?us-ascii?Q?KvapuVlL7ndGFKbmeyTNeihPhVyIDToZdnBK+5hovJ1+6EGFeDcR5ZR9h23C?=
- =?us-ascii?Q?J3Irn6wI8FGaf8kzAtQb5bI0gnCTEjo8C690jHxOVpPVzQeIlQdysDrltLml?=
- =?us-ascii?Q?4tfNf5iWXU3sm+AT8GhugUlMJ4MrKuUs1sqnhkM+wbCIfQOWVIJ65LmF9wgE?=
- =?us-ascii?Q?aCDMsDjvDrpH+XUGfzgpq7g16FeK/y0JfGI0n9Z4AYNF8PfBZSfpjiGXBP8z?=
- =?us-ascii?Q?vgXdUHOF671GerFOwxpwkFpV3vp7pV8YxXLQUc54SWFA+8lAU2Ie43fuxksQ?=
- =?us-ascii?Q?V6Aqzwzk/ks0mPwoyhQV3EbNJFLoRL/hpCipTGWwNRdICjgiH13QtFWrbU/e?=
- =?us-ascii?Q?0gDonnInemk5jkKnUV6DFYYpI3HgorIi4h4W9B/Fz43BlPuNjCItOKF7Qca4?=
- =?us-ascii?Q?nek4eHUyZ1BCffQZEIl+IfjEnSYdXzQyHpqO1afItz3h+Cm2IbIdd11FijIf?=
- =?us-ascii?Q?wqm3A7hhDaBdrU6z3m+J4HY8wRCGcIW6WJaaGys5IMm1eFHFZPqxlVK67/xK?=
- =?us-ascii?Q?jP3kkh3Ol9azeF9Pijo0osPBGie8/AHB8ZovX9Fwh7otWT/b83359Dt43YLC?=
- =?us-ascii?Q?yh4LOtXJ9obKjFwuYiWafIBB54ucrYc3he/rzmB9H12yz2jX2xnJaP+CWsZ6?=
- =?us-ascii?Q?0K8nqkQkwSwUh22gGEsKWyroPBrVHR+6ZG4KnStJ46isB6kQltCxnBcJQZC0?=
- =?us-ascii?Q?UU9A44fO5Gl1WDGJmrj8qOeA?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?R/yRKhMEE+J12SNMMPueZRiIJbxEv/x0HAQl1rVMoKtd8zfyC6eCH7W94qnb?=
+ =?us-ascii?Q?RDs7UsBLQ8W5eJCxIxSaA/+ZSjGzfJ8dEsJdP9qVC1byKK29xcGlFwQ9rpp3?=
+ =?us-ascii?Q?Zd4Lrnph131b2+GeQDLU9kvB3OvEUr8inIpKB9Q8pNqRQnZSVUNwJ/LPIsJA?=
+ =?us-ascii?Q?GypzXGUpFwajfdaDkVvz/sD8IVhmtD/BjY4wp+1PG/n+KdP/IQ7xXqtaP6uD?=
+ =?us-ascii?Q?nfEZ4Jth8KupkBS2H9hj3seh8BkAOmYDdyHcJwiUsV4qPq8HtaUko6USv7lI?=
+ =?us-ascii?Q?izds4HzGBoZ2pf+ZXgqdrt1/uYSKtOzU6Pv2Y/DGgvJ5Nl4mWsPdGUJO4kVO?=
+ =?us-ascii?Q?T+DLg6l9lKESKEYlYe6k7xnkxjp1u/wSfIY5c+N5tglnyrLkJzUlPuLxYLm+?=
+ =?us-ascii?Q?viu1PupL3JvFtfgGXyhYmZmx9/AKnP/3m9B9CXAjo3oL/Niqu0s8GgAbqAMg?=
+ =?us-ascii?Q?x+Wu42KIr0WTkK7s7SLFhHU+cmXrMHchgzWi9aX4dRuq205iRc03ZFlHsCAx?=
+ =?us-ascii?Q?VIwWeeaV8r6ItbO3/9a17T/IzSwvKVlEyLaxIKa17I2Hvvejdn1/6kV9tS8J?=
+ =?us-ascii?Q?OholRSMEwSzqyiNL/ZtD0xMXQ9YUpxwgAzwWZQjT2K0U6oKJ+F2M2YPachqz?=
+ =?us-ascii?Q?azjc7vJEbZ7qV7BkMIdSpY9JfxSDeAafHoo8nSyb/ttOWFVww0iXXDVkFGnf?=
+ =?us-ascii?Q?umossHb1HeS3wyYepu9soR19iGhUtT31VVdjJsAuPfbLaHeZrMMBGeVbk/dd?=
+ =?us-ascii?Q?kyxiTwzYEceHIoVS+hmsHutJVRTqDalygD5N3aNmXxk9AJoL5R/16Umfk2+n?=
+ =?us-ascii?Q?yhuRjTNlTbU3poscYacFJ643UN1cPaHfXYbueZRfswe09rLgIJu8jyG3ElnN?=
+ =?us-ascii?Q?+OJcHEwHX1O+W6VNamkEICuClH06fYLTf6uj15UkDDv6C9+uPTZdrNqYrAWF?=
+ =?us-ascii?Q?uwOQExL7F6lPgJlTFdqcVeQ+nQhMufJDPqvKoVUl4KZDOBAHD8ApODjQYfaP?=
+ =?us-ascii?Q?odsf3oBQQ7ggosfE2gh3x2xDkt6R10E7CGiUYAAY8hlOdNvzGRUtqZ6uOtsb?=
+ =?us-ascii?Q?uxLGG4fglqkQCtq5WWPl7UR3y4csuDpHiOVcBSJne56ucen4B/Kgjv3JP716?=
+ =?us-ascii?Q?GOSF3oWfFvSD6H8V/kGrdZ6vIwvRAs0IdzmJKs81z48LIgwvcXx1CaSaEdle?=
+ =?us-ascii?Q?GFb8H8hAWGIzlCKSnz0xpOQjXaxtKD5/nKQsBwpnLA4CKG1JUesVcyXtDm+p?=
+ =?us-ascii?Q?F6eqYCfzENMmO8iBJnK0thoFjqYVIPvFWIO0QMDlC9WsdHraw0wuu5MTj7ay?=
+ =?us-ascii?Q?OLEA+f8B1wAufWYisZbPw6B6?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: bbb67c54-880d-42e9-1bd3-08d941734600
+X-MS-Exchange-CrossTenant-Network-Message-Id: d6c17605-d6ad-47b6-7608-08d941734783
 X-MS-Exchange-CrossTenant-AuthSource: BYAPR12MB2711.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jul 2021 18:16:00.3311
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jul 2021 18:16:02.8167
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Tcf4KLvWm2y2EvYROL4e4u7IE2AQiKcVqrqmmyMaj2GEVwHVO3Y61vJYOxiTXbPDlSr3CaMlQOsWGcJPaec1Ew==
+X-MS-Exchange-CrossTenant-UserPrincipalName: bTRMRBhlR2P3C9VixrNNYfNEPVCwKtKvR/E+Z1MtOAntDLHJGA34Kfqie/MCJSipK37ub0vfPM877CYW/JsgrQ==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB5016
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The encryption attribute for the bss.decrypted region is cleared in the
-initial page table build. This is because the section contains the data
-that need to be shared between the guest and the hypervisor.
-
-When SEV-SNP is active, just clearing the encryption attribute in the
-page table is not enough. The page state need to be updated in the RMP
+The probe_roms() access the memory range (0xc0000 - 0x10000) to probe
+various ROMs. The memory range is not part of the E820 system RAM
+range. The memory range is mapped as private (i.e encrypted) in page
 table.
+
+When SEV-SNP is active, all the private memory must be validated before
+the access. The ROM range was not part of E820 map, so the guest BIOS
+did not validate it. An access to invalidated memory will cause a VC
+exception. The guest does not support handling not-validated VC exception
+yet, so validate the ROM memory regions before it is accessed.
 
 Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
 ---
- arch/x86/kernel/head64.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ arch/x86/kernel/probe_roms.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/head64.c b/arch/x86/kernel/head64.c
-index de01903c3735..f4c3e632345a 100644
---- a/arch/x86/kernel/head64.c
-+++ b/arch/x86/kernel/head64.c
-@@ -288,7 +288,14 @@ unsigned long __head __startup_64(unsigned long physaddr,
- 	if (mem_encrypt_active()) {
- 		vaddr = (unsigned long)__start_bss_decrypted;
- 		vaddr_end = (unsigned long)__end_bss_decrypted;
+diff --git a/arch/x86/kernel/probe_roms.c b/arch/x86/kernel/probe_roms.c
+index 9e1def3744f2..9c09df86d167 100644
+--- a/arch/x86/kernel/probe_roms.c
++++ b/arch/x86/kernel/probe_roms.c
+@@ -21,6 +21,7 @@
+ #include <asm/sections.h>
+ #include <asm/io.h>
+ #include <asm/setup_arch.h>
++#include <asm/sev.h>
+ 
+ static struct resource system_rom_resource = {
+ 	.name	= "System ROM",
+@@ -197,11 +198,21 @@ static int __init romchecksum(const unsigned char *rom, unsigned long length)
+ 
+ void __init probe_roms(void)
+ {
+-	const unsigned char *rom;
+ 	unsigned long start, length, upper;
++	const unsigned char *rom;
+ 	unsigned char c;
+ 	int i;
+ 
++	/*
++	 * The ROM memory is not part of the E820 system RAM and is not pre-validated
++	 * by the BIOS. The kernel page table maps the ROM region as encrypted memory,
++	 * the SEV-SNP requires the encrypted memory must be validated before the
++	 * access. Validate the ROM before accessing it.
++	 */
++	snp_prep_memory(video_rom_resource.start,
++			((system_rom_resource.end + 1) - video_rom_resource.start),
++			SNP_PAGE_STATE_PRIVATE);
 +
- 		for (; vaddr < vaddr_end; vaddr += PMD_SIZE) {
-+			/*
-+			 * When SEV-SNP is active then transition the page to shared in the RMP
-+			 * table so that it is consistent with the page table attribute change.
-+			 */
-+			early_snp_set_memory_shared(__pa(vaddr), __pa(vaddr), PTRS_PER_PMD);
-+
- 			i = pmd_index(vaddr);
- 			pmd[i] -= sme_get_me_mask();
- 		}
+ 	/* video rom */
+ 	upper = adapter_rom_resources[0].start;
+ 	for (start = video_rom_resource.start; start < upper; start += 2048) {
 -- 
 2.17.1
 
