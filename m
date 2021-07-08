@@ -2,26 +2,26 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B69283C162C
-	for <lists+linux-efi@lfdr.de>; Thu,  8 Jul 2021 17:41:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E15ED3C16F5
+	for <lists+linux-efi@lfdr.de>; Thu,  8 Jul 2021 18:19:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231952AbhGHPnk (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 8 Jul 2021 11:43:40 -0400
-Received: from mga03.intel.com ([134.134.136.65]:20769 "EHLO mga03.intel.com"
+        id S229524AbhGHQWM (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 8 Jul 2021 12:22:12 -0400
+Received: from mga09.intel.com ([134.134.136.24]:17447 "EHLO mga09.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231804AbhGHPnk (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Thu, 8 Jul 2021 11:43:40 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10039"; a="209571446"
+        id S229468AbhGHQWM (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Thu, 8 Jul 2021 12:22:12 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10039"; a="209499244"
 X-IronPort-AV: E=Sophos;i="5.84,224,1620716400"; 
-   d="scan'208";a="209571446"
+   d="scan'208";a="209499244"
 Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2021 08:40:57 -0700
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2021 09:16:29 -0700
 X-IronPort-AV: E=Sophos;i="5.84,224,1620716400"; 
-   d="scan'208";a="645951409"
+   d="scan'208";a="645962338"
 Received: from kezheong-mobl.gar.corp.intel.com (HELO [10.212.152.178]) ([10.212.152.178])
-  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2021 08:40:55 -0700
-Subject: Re: [PATCH Part2 RFC v4 00/40] Add AMD Secure Nested Paging (SEV-SNP)
- Hypervisor Support
+  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2021 09:16:25 -0700
+Subject: Re: [PATCH Part2 RFC v4 10/40] x86/fault: Add support to handle the
+ RMP fault for user address
 To:     Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
         linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
@@ -49,6 +49,7 @@ Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Vlastimil Babka <vbabka@suse.cz>, tony.luck@intel.com,
         npmccallum@redhat.com, brijesh.ksingh@gmail.com
 References: <20210707183616.5620-1-brijesh.singh@amd.com>
+ <20210707183616.5620-11-brijesh.singh@amd.com>
 From:   Dave Hansen <dave.hansen@intel.com>
 Autocrypt: addr=dave.hansen@intel.com; keydata=
  xsFNBE6HMP0BEADIMA3XYkQfF3dwHlj58Yjsc4E5y5G67cfbt8dvaUq2fx1lR0K9h1bOI6fC
@@ -93,36 +94,218 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  OPsw5tV/LmQ5GXH0JQ/TZXWygyRFyyI2FqNTx4WHqUn3yFj8rwTAU1tluRUYyeLy0ayUlKBH
  ybj0N71vWO936MqP6haFERzuPAIpxj2ezwu0xb1GjTk4ynna6h5GjnKgdfOWoRtoWndMZxbA
  z5cecg==
-Message-ID: <aba678aa-ecd7-1a36-6096-10b2e015b25d@intel.com>
-Date:   Thu, 8 Jul 2021 08:40:53 -0700
+Message-ID: <3c6b6fc4-05b2-8d18-2eb8-1bd1a965c632@intel.com>
+Date:   Thu, 8 Jul 2021 09:16:21 -0700
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.10.0
 MIME-Version: 1.0
-In-Reply-To: <20210707183616.5620-1-brijesh.singh@amd.com>
+In-Reply-To: <20210707183616.5620-11-brijesh.singh@amd.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 7/7/21 11:35 AM, Brijesh Singh wrote:
-> Changes since v3:
->  * Add support for extended guest message request.
->  * Add ioctl to query the SNP Platform status.
->  * Add ioctl to get and set the SNP config.
->  * Add check to verify that memory reserved for the RMP covers the full system RAM.
->  * Start the SNP specific commands from 256 instead of 255.
->  * Multiple cleanup and fixes based on the review feedback.
-> 
-> Changes since v2:
->  * Add AP creation support.
->  * Drop the patch to handle the RMP fault for the kernel address.
->  * Add functions to track the write access from the hypervisor.
->  * Do not enable the SNP feature when IOMMU is disabled or is in passthrough mode.
->  * Dump the RMP entry on RMP violation for the debug.
->  * Shorten the GHCB macro names.
->  * Start the SNP_INIT command id from 255 to give some gap for the legacy SEV.
->  * Sync the header with the latest 0.9 SNP spec.
+Oh, here's the THP code.  The subject just changed.
 
-What happened to the THP splitting on RMP violations?
+On 7/7/21 11:35 AM, Brijesh Singh wrote:
+> When SEV-SNP is enabled globally, a write from the host goes through the
+> RMP check. When the host writes to pages, hardware checks the following
+> conditions at the end of page walk:
+> 
+> 1. Assigned bit in the RMP table is zero (i.e page is shared).
+> 2. If the page table entry that gives the sPA indicates that the target
+>    page size is a large page, then all RMP entries for the 4KB
+>    constituting pages of the target must have the assigned bit 0.
+> 3. Immutable bit in the RMP table is not zero.
+> 
+> The hardware will raise page fault if one of the above conditions is not
+> met. Try resolving the fault instead of taking fault again and again. If
+> the host attempts to write to the guest private memory then send the
+> SIGBUG signal to kill the process. If the page level between the host and
+
+"SIGBUG"?
+
+> RMP entry does not match, then split the address to keep the RMP and host
+> page levels in sync.
+
+
+> ---
+>  arch/x86/mm/fault.c | 69 +++++++++++++++++++++++++++++++++++++++++++++
+>  include/linux/mm.h  |  6 +++-
+>  mm/memory.c         | 13 +++++++++
+>  3 files changed, 87 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
+> index 195149eae9b6..cdf48019c1a7 100644
+> --- a/arch/x86/mm/fault.c
+> +++ b/arch/x86/mm/fault.c
+> @@ -1281,6 +1281,58 @@ do_kern_addr_fault(struct pt_regs *regs, unsigned long hw_error_code,
+>  }
+>  NOKPROBE_SYMBOL(do_kern_addr_fault);
+>  
+> +#define RMP_FAULT_RETRY		0
+> +#define RMP_FAULT_KILL		1
+> +#define RMP_FAULT_PAGE_SPLIT	2
+> +
+> +static inline size_t pages_per_hpage(int level)
+> +{
+> +	return page_level_size(level) / PAGE_SIZE;
+> +}
+> +
+> +static int handle_user_rmp_page_fault(unsigned long hw_error_code, unsigned long address)
+> +{
+> +	unsigned long pfn, mask;
+> +	int rmp_level, level;
+> +	struct rmpentry *e;
+> +	pte_t *pte;
+> +
+> +	if (unlikely(!cpu_feature_enabled(X86_FEATURE_SEV_SNP)))
+> +		return RMP_FAULT_KILL;
+
+Shouldn't this be a WARN_ON_ONCE()?  How can we get RMP faults without
+SEV-SNP?
+
+> +	/* Get the native page level */
+> +	pte = lookup_address_in_mm(current->mm, address, &level);
+> +	if (unlikely(!pte))
+> +		return RMP_FAULT_KILL;
+
+What would this mean?  There was an RMP fault on a non-present page?
+How could that happen?  What if there was a race between an unmapping
+event and the RMP fault delivery?
+
+> +	pfn = pte_pfn(*pte);
+> +	if (level > PG_LEVEL_4K) {
+> +		mask = pages_per_hpage(level) - pages_per_hpage(level - 1);
+> +		pfn |= (address >> PAGE_SHIFT) & mask;
+> +	}
+
+This looks inherently racy.  What happens if there are two parallel RMP
+faults on the same 2M page.  One of them splits the page tables, the
+other gets a fault for an already-split page table.
+
+Is that handled here somehow?
+
+> +	/* Get the page level from the RMP entry. */
+> +	e = snp_lookup_page_in_rmptable(pfn_to_page(pfn), &rmp_level);
+> +	if (!e)
+> +		return RMP_FAULT_KILL;
+
+The snp_lookup_page_in_rmptable() failure cases looks WARN-worthly.
+Either you're doing a lookup for something not *IN* the RMP table, or
+you don't support SEV-SNP, in which case you shouldn't be in this code
+in the first place.
+
+> +	/*
+> +	 * Check if the RMP violation is due to the guest private page access.
+> +	 * We can not resolve this RMP fault, ask to kill the guest.
+> +	 */
+> +	if (rmpentry_assigned(e))
+> +		return RMP_FAULT_KILL;
+
+No "We's", please.  Speak in imperative voice.
+
+> +	/*
+> +	 * The backing page level is higher than the RMP page level, request
+> +	 * to split the page.
+> +	 */
+> +	if (level > rmp_level)
+> +		return RMP_FAULT_PAGE_SPLIT;
+
+This can theoretically trigger on a hugetlbfs page.  Right?
+
+I thought I asked about this before... more below...
+
+> +	return RMP_FAULT_RETRY;
+> +}
+> +
+>  /*
+>   * Handle faults in the user portion of the address space.  Nothing in here
+>   * should check X86_PF_USER without a specific justification: for almost
+> @@ -1298,6 +1350,7 @@ void do_user_addr_fault(struct pt_regs *regs,
+>  	struct task_struct *tsk;
+>  	struct mm_struct *mm;
+>  	vm_fault_t fault;
+> +	int ret;
+>  	unsigned int flags = FAULT_FLAG_DEFAULT;
+>  
+>  	tsk = current;
+> @@ -1378,6 +1431,22 @@ void 
+(struct pt_regs *regs,
+>  	if (error_code & X86_PF_INSTR)
+>  		flags |= FAULT_FLAG_INSTRUCTION;
+>  
+> +	/*
+> +	 * If its an RMP violation, try resolving it.
+> +	 */
+> +	if (error_code & X86_PF_RMP) {
+> +		ret = handle_user_rmp_page_fault(error_code, address);
+> +		if (ret == RMP_FAULT_PAGE_SPLIT) {
+> +			flags |= FAULT_FLAG_PAGE_SPLIT;
+> +		} else if (ret == RMP_FAULT_KILL) {
+> +			fault |= VM_FAULT_SIGBUS;
+> +			do_sigbus(regs, error_code, address, fault);
+> +			return;
+> +		} else {
+> +			return;
+> +		}
+> +	}
+
+Why not just have handle_user_rmp_page_fault() return a VM_FAULT_* code
+directly?
+
+I also suspect you can just set VM_FAULT_SIGBUS and let the do_sigbus()
+call later on in the function do its work.
+
+>  	 * Faults in the vsyscall page might need emulation.  The
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index 322ec61d0da7..211dfe5d3b1d 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -450,6 +450,8 @@ extern pgprot_t protection_map[16];
+>   * @FAULT_FLAG_REMOTE: The fault is not for current task/mm.
+>   * @FAULT_FLAG_INSTRUCTION: The fault was during an instruction fetch.
+>   * @FAULT_FLAG_INTERRUPTIBLE: The fault can be interrupted by non-fatal signals.
+> + * @FAULT_FLAG_PAGE_SPLIT: The fault was due page size mismatch, split the
+> + *  region to smaller page size and retry.
+>   *
+>   * About @FAULT_FLAG_ALLOW_RETRY and @FAULT_FLAG_TRIED: we can specify
+>   * whether we would allow page faults to retry by specifying these two
+> @@ -481,6 +483,7 @@ enum fault_flag {
+>  	FAULT_FLAG_REMOTE =		1 << 7,
+>  	FAULT_FLAG_INSTRUCTION =	1 << 8,
+>  	FAULT_FLAG_INTERRUPTIBLE =	1 << 9,
+> +	FAULT_FLAG_PAGE_SPLIT =		1 << 10,
+>  };
+>  
+>  /*
+> @@ -520,7 +523,8 @@ static inline bool fault_flag_allow_retry_first(enum fault_flag flags)
+>  	{ FAULT_FLAG_USER,		"USER" }, \
+>  	{ FAULT_FLAG_REMOTE,		"REMOTE" }, \
+>  	{ FAULT_FLAG_INSTRUCTION,	"INSTRUCTION" }, \
+> -	{ FAULT_FLAG_INTERRUPTIBLE,	"INTERRUPTIBLE" }
+> +	{ FAULT_FLAG_INTERRUPTIBLE,	"INTERRUPTIBLE" }, \
+> +	{ FAULT_FLAG_PAGE_SPLIT,	"PAGESPLIT" }
+>  
+>  /*
+>   * vm_fault is filled by the pagefault handler and passed to the vma's
+> diff --git a/mm/memory.c b/mm/memory.c
+> index 730daa00952b..aef261d94e33 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -4407,6 +4407,15 @@ static vm_fault_t handle_pte_fault(struct vm_fault *vmf)
+>  	return 0;
+>  }
+>  
+> +static int handle_split_page_fault(struct vm_fault *vmf)
+> +{
+> +	if (!IS_ENABLED(CONFIG_AMD_MEM_ENCRYPT))
+> +		return VM_FAULT_SIGBUS;
+> +
+> +	__split_huge_pmd(vmf->vma, vmf->pmd, vmf->address, false, NULL);
+> +	return 0;
+> +}
+
+What will this do when you hand it a hugetlbfs page?
