@@ -2,26 +2,26 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 79B973C15FC
-	for <lists+linux-efi@lfdr.de>; Thu,  8 Jul 2021 17:30:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B69283C162C
+	for <lists+linux-efi@lfdr.de>; Thu,  8 Jul 2021 17:41:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231983AbhGHPcu (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 8 Jul 2021 11:32:50 -0400
-Received: from mga02.intel.com ([134.134.136.20]:36689 "EHLO mga02.intel.com"
+        id S231952AbhGHPnk (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 8 Jul 2021 11:43:40 -0400
+Received: from mga03.intel.com ([134.134.136.65]:20769 "EHLO mga03.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231955AbhGHPcu (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Thu, 8 Jul 2021 11:32:50 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10039"; a="196701341"
+        id S231804AbhGHPnk (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Thu, 8 Jul 2021 11:43:40 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10039"; a="209571446"
 X-IronPort-AV: E=Sophos;i="5.84,224,1620716400"; 
-   d="scan'208";a="196701341"
+   d="scan'208";a="209571446"
 Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2021 08:30:07 -0700
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2021 08:40:57 -0700
 X-IronPort-AV: E=Sophos;i="5.84,224,1620716400"; 
-   d="scan'208";a="645948336"
+   d="scan'208";a="645951409"
 Received: from kezheong-mobl.gar.corp.intel.com (HELO [10.212.152.178]) ([10.212.152.178])
-  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2021 08:30:05 -0700
-Subject: Re: [PATCH Part2 RFC v4 09/40] x86/fault: Add support to dump RMP
- entry on fault
+  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2021 08:40:55 -0700
+Subject: Re: [PATCH Part2 RFC v4 00/40] Add AMD Secure Nested Paging (SEV-SNP)
+ Hypervisor Support
 To:     Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
         linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
@@ -49,9 +49,6 @@ Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Vlastimil Babka <vbabka@suse.cz>, tony.luck@intel.com,
         npmccallum@redhat.com, brijesh.ksingh@gmail.com
 References: <20210707183616.5620-1-brijesh.singh@amd.com>
- <20210707183616.5620-10-brijesh.singh@amd.com>
- <cb9e3890-9642-f254-2fe7-30621e686844@intel.com>
- <0d19eb84-f2b7-aa24-2fe9-19035b49fbd6@amd.com>
 From:   Dave Hansen <dave.hansen@intel.com>
 Autocrypt: addr=dave.hansen@intel.com; keydata=
  xsFNBE6HMP0BEADIMA3XYkQfF3dwHlj58Yjsc4E5y5G67cfbt8dvaUq2fx1lR0K9h1bOI6fC
@@ -96,187 +93,36 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  OPsw5tV/LmQ5GXH0JQ/TZXWygyRFyyI2FqNTx4WHqUn3yFj8rwTAU1tluRUYyeLy0ayUlKBH
  ybj0N71vWO936MqP6haFERzuPAIpxj2ezwu0xb1GjTk4ynna6h5GjnKgdfOWoRtoWndMZxbA
  z5cecg==
-Message-ID: <15d5e954-0383-fe0e-e8c1-3e9f8b0ef8ff@intel.com>
-Date:   Thu, 8 Jul 2021 08:30:03 -0700
+Message-ID: <aba678aa-ecd7-1a36-6096-10b2e015b25d@intel.com>
+Date:   Thu, 8 Jul 2021 08:40:53 -0700
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.10.0
 MIME-Version: 1.0
-In-Reply-To: <0d19eb84-f2b7-aa24-2fe9-19035b49fbd6@amd.com>
+In-Reply-To: <20210707183616.5620-1-brijesh.singh@amd.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 7/8/21 8:02 AM, Brijesh Singh wrote:
-...
->>> +    pgd = __va(read_cr3_pa());
->>> +    pgd += pgd_index(address);
->>> +
->>> +    pte = lookup_address_in_pgd(pgd, address, &level);
->>> +    if (unlikely(!pte))
->>> +        return;
->>
->> It's a little annoying this is doing *another* separate page walk.
->> Don't we already do this for dumping the page tables themselves at oops
->> time?
+On 7/7/21 11:35 AM, Brijesh Singh wrote:
+> Changes since v3:
+>  * Add support for extended guest message request.
+>  * Add ioctl to query the SNP Platform status.
+>  * Add ioctl to get and set the SNP config.
+>  * Add check to verify that memory reserved for the RMP covers the full system RAM.
+>  * Start the SNP specific commands from 256 instead of 255.
+>  * Multiple cleanup and fixes based on the review feedback.
 > 
-> Yes, we already do the walk in oops function, I'll extend the
-> dump_rmpentry() to use the level from the oops to avoid the duplicate walk.
+> Changes since v2:
+>  * Add AP creation support.
+>  * Drop the patch to handle the RMP fault for the kernel address.
+>  * Add functions to track the write access from the hypervisor.
+>  * Do not enable the SNP feature when IOMMU is disabled or is in passthrough mode.
+>  * Dump the RMP entry on RMP violation for the debug.
+>  * Shorten the GHCB macro names.
+>  * Start the SNP_INIT command id from 255 to give some gap for the legacy SEV.
+>  * Sync the header with the latest 0.9 SNP spec.
 
-I was even thinking that you could use the pmd/pte entries that come
-from the walk in dump_pagetable().
-
-BTW, I think the snp_lookup_page_in_rmptable() interface is probably
-wrong.  It takes a 'struct page':
-
-+struct rmpentry *snp_lookup_page_in_rmptable(struct page *page, int *level)
-
-but then immediately converts it to a paddr:
-
-> +	unsigned long phys = page_to_pfn(page) << PAGE_SHIFT;
-
-If you just had it take a paddr, you wouldn't have to mess with all of
-this pfn_valid() and phys_to_page() error checking.
-
->>> +    case PG_LEVEL_2M: {
->>> +        pfn = pmd_pfn(*(pmd_t *)pte);
->>> +        break;
->>> +    }
->>> +    case PG_LEVEL_1G: {
->>> +        pfn = pud_pfn(*(pud_t *)pte);
->>> +        break;
->>> +    }
->>> +    case PG_LEVEL_512G: {
->>> +        pfn = p4d_pfn(*(p4d_t *)pte);
->>> +        break;
->>> +    }
->>> +    default:
->>> +        return;
->>> +    }
->>> +
->>> +    e = snp_lookup_page_in_rmptable(pfn_to_page(pfn), &level);
->>
->> So, lookup_address_in_pgd() looks to me like it will return pretty
->> random page table entries as long as the entry isn't
->> p{gd,4d,ud,md,te}_none().  It can certainly return !p*_present()
->> entries.  Those are *NOT* safe to call pfn_to_page() on.
->>
-> 
-> I will add some checks to make sure that we are accessing only safe pfn's.
-
-Or fix the snp_lookup_page_in_rmptable() interface, please.
-
->>> +    if (rmpentry_assigned(e)) {
->>> +        pr_alert("RMPEntry paddr 0x%lx [assigned=%d immutable=%d
->>> pagesize=%d gpa=0x%lx"
->>> +            " asid=%d vmsa=%d validated=%d]\n", pfn << PAGE_SHIFT,
->>> +            rmpentry_assigned(e), rmpentry_immutable(e),
->>> rmpentry_pagesize(e),
->>> +            rmpentry_gpa(e), rmpentry_asid(e), rmpentry_vmsa(e),
->>> +            rmpentry_validated(e));
->>> +
->>> +        pr_alert("RMPEntry paddr 0x%lx %016llx %016llx\n", pfn <<
->>> PAGE_SHIFT,
->>> +            e->high, e->low);
->>
->> Could you please include an entire oops in the changelog that also
->> includes this information?  It would be really nice if this was at least
->> consistent in style to the stuff around it.
-> 
-> Here is one example: (in this case page was immutable and HV attempted
-> to write to it).
-> 
-> BUG: unable to handle page fault for address: ffff98c78ee00000
-> #PF: supervisor write access in kernel mode
-> #PF: error_code(0x80000003) - rmp violation
-
-Let's capitalize "RMP" here, please.
-
-> PGD 304b201067 P4D 304b201067 PUD 20c7f06063 PMD 20c8976063 PTE
-> 80000020cee00163
-> RMPEntry paddr 0x20cee00000 [assigned=1 immutable=1 pagesize=0 gpa=0x0
-> asid=0 vmsa=0 validated=0]
-> RMPEntry paddr 0x20cee00000 000000000000000f 8000000000000ffd
-
-That's a good example, thanks!
-
-But, it does make me think that we shouldn't be spitting out
-"immutable".  Should we call it "readonly" or something so that folks
-have a better chance of figuring out what's wrong?  Even better, should
-we be looking specifically for X86_PF_RMP *and* immutable=1 and spitting
-out something in english about it?
-
-This also *looks* to be spitting out the same "RMPEntry paddr
-0x20cee00000" more than once.  Maybe we should just indent the extra
-entries instead of repeating things.  The high/low are missing a "0x"
-prefix, they also don't have any kind of text label.
-
->> Also, how much of this stuff like rmpentry_asid() is duplicated in the
->> "raw" dump of e->high and e->low?
-> 
-> Most of the rmpentry_xxx assessors read the e->low. The RMP entry is a
-> 16-bytes. AMD APM defines only a few bits and keeps everything else
-> reserved. We are in the process of updating APM to document few more
-> bits. I am not adding assessors for the undocumented fields. Until then,
-> we dump the entire 16-bytes.
-> 
-> I agree that we are duplicating the information. I can live with just a
-> raw dump. That means anyone who is debugging the crash will look at the
-> APM to decode the fields.
-
-I actually really like processing the fields.  I think it's a good
-investment to make the error messages as self-documenting as possible
-and not require the poor souls who are decoding oopses to also keep each
-vendor's architecture manuals at hand.
-
->> This also needs a comment about *WHY* this case is looking at a 2MB
->> region.
->>
-> 
-> Actually the comment above says why we are looking for the 2MB region.
-> Let me rearrange the comment block so that its more clear.
-> 
-> The reason for iterating through 2MB region is; if the faulting address
-> is not assigned in the RMP table, and page table walk level is 2MB then
-> one of entry within the large page is the root cause of the fault. Since
-> we don't know which entry hence I dump all the non-zero entries.
-
-Logically you can figure this out though, right?  Why throw 511 entries
-at the console when we *know* they're useless?
-
->>> +        pfn_end = pfn + PTRS_PER_PMD;
->>> +
->>> +        while (pfn < pfn_end) {
->>> +            e = snp_lookup_page_in_rmptable(pfn_to_page(pfn), &level);
->>> +
->>> +            if (unlikely(!e))
->>> +                return;
->>> +
->>> +            if (e->low || e->high)
->>> +                pr_alert("RMPEntry paddr 0x%lx: %016llx %016llx\n",
->>> +                    pfn << PAGE_SHIFT, e->high, e->low);
->>
->> Why does this dump "raw" RMP entries while the above stuff filters them
->> through a bunch of helper macros?
-> 
-> There are two cases which we need to consider:
-> 
-> 1) the faulting page is a guest private (aka assigned)
-> 2) the faulting page is a hypervisor (aka shared)
-> 
-> We will be primarily seeing #1. In this case, we know its a assigned
-> page, and we can decode the fields.
-> 
-> The #2 will happen in rare conditions,
-
-What rare conditions?
-
-> if it happens, one of the undocumented bit in the RMP entry can
-> provide us some useful information hence we dump the raw values.
-You're saying that there are things that can cause RMP faults that
-aren't documented?  That's rather nasty for your users, don't you think?
-
-I'd be fine if you want to define a mask of unknown bits and spit out to
-the users that some unknown bits are set.
+What happened to the THP splitting on RMP violations?
