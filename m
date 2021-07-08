@@ -2,119 +2,86 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 218183BF720
-	for <lists+linux-efi@lfdr.de>; Thu,  8 Jul 2021 10:53:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E40433BF7C2
+	for <lists+linux-efi@lfdr.de>; Thu,  8 Jul 2021 11:47:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231305AbhGHI4S (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 8 Jul 2021 04:56:18 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:31519 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S231236AbhGHI4R (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 8 Jul 2021 04:56:17 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1625734416;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=gIPcM/AEt6CFgVLe5U5Gt1G0R6Bu5ZtRDH8h8xxqSLM=;
-        b=SH3t12shlDdzBs865ZPodI9fv3qpRueZAr4V6/d+UXs+KKsXscn7CZf/qyuwFUehozR4OB
-        pQh3d2tE8RPw/hjsjtwuLUxS/ooqE7s+SN4rKDxTSknjClDm2EcqJOA4L/bPJDcArj905f
-        GFnWXxDOviN5x96sVs9GpdieAZAvTXA=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-350-bZgr8LI_PFOPbX_jBbTxrw-1; Thu, 08 Jul 2021 04:53:34 -0400
-X-MC-Unique: bZgr8LI_PFOPbX_jBbTxrw-1
-Received: by mail-ed1-f70.google.com with SMTP id p13-20020a05640210cdb029039560ff6f46so2907252edu.17
-        for <linux-efi@vger.kernel.org>; Thu, 08 Jul 2021 01:53:34 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=gIPcM/AEt6CFgVLe5U5Gt1G0R6Bu5ZtRDH8h8xxqSLM=;
-        b=U2nTxCJgA6kBWgMEnJNYgyyQ1L/9uwfdhjckF56MZLL+xUAyfvfUAkTmIc3TAL4uAP
-         1DZhWGhRK/zENlD8quPSDvlB4bH7Kr+Q+iIOhNwNoX5XztX6VOCxTB58310eoaa+BVIS
-         2tOAx1Zhc4e3+AU60To7kBSv06y8SVq3Ev7VUVoBfbCb0j/LGm47kipxIXvvGOW+K6wX
-         xK6qt+m6QkDd118j24XZtLASXjHROMyREwy4yFPsqeC3XpW0L4bM5EVwt30elq7SWv1c
-         k6GEB2Tsq2nN3qaz8kmrZW83jsVPky/hyfYd6Peii/7tJh36odyTnp6TXWVVyDu+wH0w
-         CXAw==
-X-Gm-Message-State: AOAM531QTXywVxtwrMb+IbR7PSVg7+yqAZBieKyw2Y110Ebsc4elwA/v
-        Cg0ucgZtc/YyheB2s4sZJ5TrhEqwlKrgNkJHAChkDoVV18zagWpVt8vEIYGoljJ2YgVPLcqSg9K
-        FsLT86PvgBus52CbvCR/X
-X-Received: by 2002:a05:6402:1014:: with SMTP id c20mr36763711edu.380.1625734413608;
-        Thu, 08 Jul 2021 01:53:33 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJxx/+0c8nIU7pwYBojXCHzTNcV8ZCk6Cqibqq/t9wTBQKxs+CGQcGK3UP/Yf8+cmhDD/LkdhQ==
-X-Received: by 2002:a05:6402:1014:: with SMTP id c20mr36763691edu.380.1625734413381;
-        Thu, 08 Jul 2021 01:53:33 -0700 (PDT)
-Received: from ?IPv6:2001:b07:6468:f312:c8dd:75d4:99ab:290a? ([2001:b07:6468:f312:c8dd:75d4:99ab:290a])
-        by smtp.gmail.com with ESMTPSA id u17sm853904edt.67.2021.07.08.01.53.30
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 08 Jul 2021 01:53:32 -0700 (PDT)
-Subject: Re: [PATCH Part1 RFC v4 04/36] x86/mm: Add sev_feature_enabled()
- helper
-To:     "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
-        Brijesh Singh <brijesh.singh@amd.com>
-Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        linux-coco@lists.linux.dev, linux-mm@kvack.org,
-        linux-crypto@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
-        Sean Christopherson <seanjc@google.com>,
-        Vitaly Kuznetsov <vkuznets@redhat.com>,
-        Wanpeng Li <wanpengli@tencent.com>,
-        Jim Mattson <jmattson@google.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        David Rientjes <rientjes@google.com>,
-        Dov Murik <dovmurik@linux.ibm.com>,
-        Tobin Feldman-Fitzthum <tobin@ibm.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Michael Roth <michael.roth@amd.com>,
-        Vlastimil Babka <vbabka@suse.cz>, tony.luck@intel.com,
-        npmccallum@redhat.com, brijesh.ksingh@gmail.com
-References: <20210707181506.30489-1-brijesh.singh@amd.com>
- <20210707181506.30489-5-brijesh.singh@amd.com> <YOa8TlaZM42+sz+E@work-vm>
-From:   Paolo Bonzini <pbonzini@redhat.com>
-Message-ID: <e6c68c70-ac6e-07f2-c24e-f1c892080eab@redhat.com>
-Date:   Thu, 8 Jul 2021 10:53:29 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+        id S231324AbhGHJtl (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 8 Jul 2021 05:49:41 -0400
+Received: from smtp-out1.suse.de ([195.135.220.28]:39334 "EHLO
+        smtp-out1.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230079AbhGHJtl (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 8 Jul 2021 05:49:41 -0400
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+        by smtp-out1.suse.de (Postfix) with ESMTP id 7907422134;
+        Thu,  8 Jul 2021 09:46:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1625737618; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+        bh=3WiGTxeJUD1NvAtf5DKhhhC7eQ4GrltVQ+LN36/PEG8=;
+        b=q4jIuGMI+Buk5p0CN5J3qSUMsDcy7SDwRrVEU7wZuGpCt+y4ZxwJrYaLO9Ju1xj4/pVKxi
+        uBx52mRL91aXDL+hNNQjDp0VgvW5Pml6L9/bW2da7nbOqC8FTKdxK78Ae/MZt6pfJGAS3F
+        L1lLstH+9PK+oCaPeHYXUYzbQoz/YiY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1625737618;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+        bh=3WiGTxeJUD1NvAtf5DKhhhC7eQ4GrltVQ+LN36/PEG8=;
+        b=1Uw8t4cB9XmSPrIhI/OM4F2ugBDB+/05GtuF8mTZ+e1wAtw32+vnUkzHlKT05OcvKwyNOv
+        5cOiKJVfR3EmmgDw==
+Received: from kitsune.suse.cz (kitsune.suse.cz [10.100.12.127])
+        by relay2.suse.de (Postfix) with ESMTP id 457F0A3B89;
+        Thu,  8 Jul 2021 09:46:58 +0000 (UTC)
+From:   Michal Suchanek <msuchanek@suse.de>
+To:     linux-integrity@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>
+Cc:     Michal Suchanek <msuchanek@suse.de>,
+        Peter Huewe <peterhuewe@gmx.de>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        =?UTF-8?q?Lo=C3=AFc=20Yhuel?= <loic.yhuel@gmail.com>,
+        Javier Martinez Canillas <javierm@redhat.com>,
+        Jerry Snitselaar <jsnitsel@redhat.com>,
+        Matthew Garrett <mjg59@google.com>, linux-efi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] efi/tpm: Differentiate missing and invalid final event log table.
+Date:   Thu,  8 Jul 2021 11:46:54 +0200
+Message-Id: <20210708094654.4157-1-msuchanek@suse.de>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-In-Reply-To: <YOa8TlaZM42+sz+E@work-vm>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 08/07/21 10:50, Dr. David Alan Gilbert wrote:
->> +enum sev_feature_type {
->> +	SEV,
->> +	SEV_ES,
->> +	SEV_SNP
->> +};
-> Is this ....
-> 
->> diff --git a/arch/x86/include/asm/msr-index.h b/arch/x86/include/asm/msr-index.h
->> index a7c413432b33..37589da0282e 100644
->> --- a/arch/x86/include/asm/msr-index.h
->> +++ b/arch/x86/include/asm/msr-index.h
->> @@ -481,8 +481,10 @@
->>   #define MSR_AMD64_SEV			0xc0010131
->>   #define MSR_AMD64_SEV_ENABLED_BIT	0
->>   #define MSR_AMD64_SEV_ES_ENABLED_BIT	1
->> +#define MSR_AMD64_SEV_SNP_ENABLED_BIT	2
-> Just the same as this ?
-> 
+Missing TPM final event log table is not a firmware bug.
 
-No, it's just a coincidence.
+Clearly if providing event log in the old format makes the final event
+log invalid it should not be provided at least in that case.
 
-Paolo
+Fixes: b4f1874c6216 ("tpm: check event log version before reading final events")
+Signed-off-by: Michal Suchanek <msuchanek@suse.de>
+---
+ drivers/firmware/efi/tpm.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/firmware/efi/tpm.c b/drivers/firmware/efi/tpm.c
+index c1955d320fec..8f665678e9e3 100644
+--- a/drivers/firmware/efi/tpm.c
++++ b/drivers/firmware/efi/tpm.c
+@@ -62,9 +62,11 @@ int __init efi_tpm_eventlog_init(void)
+ 	tbl_size = sizeof(*log_tbl) + log_tbl->size;
+ 	memblock_reserve(efi.tpm_log, tbl_size);
+ 
+-	if (efi.tpm_final_log == EFI_INVALID_TABLE_ADDR ||
+-	    log_tbl->version != EFI_TCG2_EVENT_LOG_FORMAT_TCG_2) {
+-		pr_warn(FW_BUG "TPM Final Events table missing or invalid\n");
++	if (efi.tpm_final_log == EFI_INVALID_TABLE_ADDR) {
++		pr_info("TPM Final Events table not present\n");
++		goto out;
++	} else if (log_tbl->version != EFI_TCG2_EVENT_LOG_FORMAT_TCG_2) {
++		pr_warn(FW_BUG "TPM Final Events table invalid\n");
+ 		goto out;
+ 	}
+ 
+-- 
+2.26.2
 
