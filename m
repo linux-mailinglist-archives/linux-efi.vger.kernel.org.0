@@ -2,32 +2,42 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C71AE3C179A
-	for <lists+linux-efi@lfdr.de>; Thu,  8 Jul 2021 18:59:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F1C5A3C17D3
+	for <lists+linux-efi@lfdr.de>; Thu,  8 Jul 2021 19:11:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229600AbhGHRBh (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 8 Jul 2021 13:01:37 -0400
-Received: from mga02.intel.com ([134.134.136.20]:45502 "EHLO mga02.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229975AbhGHRBg (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Thu, 8 Jul 2021 13:01:36 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10039"; a="196721498"
-X-IronPort-AV: E=Sophos;i="5.84,224,1620716400"; 
-   d="scan'208";a="196721498"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2021 09:58:49 -0700
-X-IronPort-AV: E=Sophos;i="5.84,224,1620716400"; 
-   d="scan'208";a="645975018"
-Received: from kezheong-mobl.gar.corp.intel.com (HELO [10.212.152.178]) ([10.212.152.178])
-  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2021 09:58:45 -0700
-Subject: Re: [PATCH Part2 RFC v4 09/40] x86/fault: Add support to dump RMP
- entry on fault
-To:     Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org,
-        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        linux-coco@lists.linux.dev, linux-mm@kvack.org,
-        linux-crypto@vger.kernel.org
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        id S229533AbhGHROC (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 8 Jul 2021 13:14:02 -0400
+Received: from mail-co1nam11on2070.outbound.protection.outlook.com ([40.107.220.70]:25952
+        "EHLO NAM11-CO1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S229489AbhGHROB (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Thu, 8 Jul 2021 13:14:01 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=JjW9RuSCHwLBeome86dp3kH4kS3x2OUFgiwickAIoCwlnL2sXzQFdFFKf0pPjk2c7K0QiH2tUEtVfUW0tYENHNjAFjo0hvPB9Xzcac5ImS0r66uDMlpZRA0oeIQQ57jA3yZqLfUh9C2H1NegGk9/UnHcg7Z5D7sX2t+ff8TeGCOD8uFb3RnSFRvznbOPkXFN+nTh69SCSSc2azO7TfAmBxeBGIXUCPTBSXgEswz7IxBBjdBOuYPNHb/qiu9mz/Sagpc/kC8zDbklbMD1io37t1S9SqbZB2peIVDJ2IgzdMXNX0h+XGivz/VLTys6KyyD49zcLq+qhy1NMRgiqr9uJQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=FPq3zMxzPCts67hAoPw+ZE/gSv/0Vn/W/bbxMA3QRw4=;
+ b=fEuj/HpnvGOZGyhHjwlk1ErICnVcH+rpx4u8PocRijpJQXIKqvjuwYQlHFnMOyrci6NFLLzDepYsMQBKCrTmPfsjypMI3/0+NmivtNKCkePi3z4sR/I/bfdDV2ZI2GdVk9tXFPjjoPDUo/5oAY4JqIC2K9Tu1EQ3G4TA9LTIm2vZ1XOF9oI1s+08DDxHjgngBAjT46kW5aSeY1zy4rnEr+GozbHwPwg3j0ybh/vxUIoVQ+jvNz/F30ao3iVVepmoEU4R3GB6zMhIwT9JGBgqG9lOOdYm/C4tMDaNTLVM+vLG3ApwaPKc6mlOHxSmLI3JGGre4iuaeP6eZQQgshXo3Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=FPq3zMxzPCts67hAoPw+ZE/gSv/0Vn/W/bbxMA3QRw4=;
+ b=b0PRu0WnDcWstejtpzgbeuxkN9cs2EnbjWlEqd9lV+eH69BDMDvDzPJZqEzpC8RK0idP7hw4qWVbbdtjHfLo4FeRdMWOwJ+XJ4z631iCramyaMGJFZ9NyOb+x7DOIamJNthw5sIGie3WeIKFxNRiwijNEHbhhxXxej2xqGNSlJs=
+Authentication-Results: gmail.com; dkim=none (message not signed)
+ header.d=none;gmail.com; dmarc=none action=none header.from=amd.com;
+Received: from SN6PR12MB2718.namprd12.prod.outlook.com (2603:10b6:805:6f::22)
+ by SN1PR12MB2367.namprd12.prod.outlook.com (2603:10b6:802:26::31) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4308.22; Thu, 8 Jul
+ 2021 17:11:16 +0000
+Received: from SN6PR12MB2718.namprd12.prod.outlook.com
+ ([fe80::a8a9:2aac:4fd1:88fa]) by SN6PR12MB2718.namprd12.prod.outlook.com
+ ([fe80::a8a9:2aac:4fd1:88fa%3]) with mapi id 15.20.4308.022; Thu, 8 Jul 2021
+ 17:11:16 +0000
+Cc:     brijesh.singh@amd.com, Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
         Tom Lendacky <thomas.lendacky@amd.com>,
         "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
@@ -48,121 +58,110 @@ Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Michael Roth <michael.roth@amd.com>,
         Vlastimil Babka <vbabka@suse.cz>, tony.luck@intel.com,
         npmccallum@redhat.com, brijesh.ksingh@gmail.com
+Subject: Re: [PATCH Part2 RFC v4 09/40] x86/fault: Add support to dump RMP
+ entry on fault
+To:     Dave Hansen <dave.hansen@intel.com>, x86@kernel.org,
+        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        linux-coco@lists.linux.dev, linux-mm@kvack.org,
+        linux-crypto@vger.kernel.org
 References: <20210707183616.5620-1-brijesh.singh@amd.com>
  <20210707183616.5620-10-brijesh.singh@amd.com>
  <cb9e3890-9642-f254-2fe7-30621e686844@intel.com>
  <0d19eb84-f2b7-aa24-2fe9-19035b49fbd6@amd.com>
  <15d5e954-0383-fe0e-e8c1-3e9f8b0ef8ff@intel.com>
  <23dbe0da-581e-2444-7126-428e79514614@amd.com>
-From:   Dave Hansen <dave.hansen@intel.com>
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
- z5cecg==
-Message-ID: <8c4852e4-8f57-354b-630d-cea8176fc026@intel.com>
-Date:   Thu, 8 Jul 2021 09:58:43 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
-MIME-Version: 1.0
-In-Reply-To: <23dbe0da-581e-2444-7126-428e79514614@amd.com>
-Content-Type: text/plain; charset=utf-8
+ <8c4852e4-8f57-354b-630d-cea8176fc026@intel.com>
+From:   Brijesh Singh <brijesh.singh@amd.com>
+Message-ID: <5861dd0a-7e46-af3d-3d0e-28b41ca17e1e@amd.com>
+Date:   Thu, 8 Jul 2021 12:11:13 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
+In-Reply-To: <8c4852e4-8f57-354b-630d-cea8176fc026@intel.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SN2PR01CA0046.prod.exchangelabs.com (2603:10b6:800::14) To
+ SN6PR12MB2718.namprd12.prod.outlook.com (2603:10b6:805:6f::22)
+MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from [10.236.31.95] (165.204.77.1) by SN2PR01CA0046.prod.exchangelabs.com (2603:10b6:800::14) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4308.20 via Frontend Transport; Thu, 8 Jul 2021 17:11:14 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 8d93122b-e903-40ea-2218-08d942336514
+X-MS-TrafficTypeDiagnostic: SN1PR12MB2367:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <SN1PR12MB23678918B48A011FD4C209D2E5199@SN1PR12MB2367.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:4502;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: Q4flnORIf1SiFoWH5+i9CtaYn+//Mka1wtWzHk+F6jpFKaIsvlCgVC/gTKmJEr6YRNWHwKARzO1FHDnTbQSXs6t7ar8tHaxTGPbVWobay2mKmHZqg14aaoFqZvQpndD25A+NkrWWAbPMxXXikh1/7kl1piNjtjA+Nh5VnZtWVo/iVIFhRw0oGgD6wwinTEtLmbo5RQ55XHapPtG7ytcCe4kn42imFODHCYBJ+KWK1Pr+765H9fqV71f7BSfgSI+7aw3+04Whd+PfUwWRYnH4kWH8jYRBfk798L1ZvXRfWh0uUq2JVr/yEmv0iNyuIl4eLkwQAR6bkt0nJtSzT6N3KJUTRHIFnaaqvP/IkAQC5HLP3t99A0WorZxbvbBI2kR1uVOh0saKD9tua5mrv7o3m54N/ir0y/YFaFxEO7s2FlImBsNRRtI7BDlhfe+jfaW/x1ZoRJA61QfnjwIgeMUxi/VfiLBOM3wwHRXSkDlJOLSfGUkRYFADUZuLIbaxaEXzr2MVfguRjmey2grneQRPtmrLe1jzmvM2nolp/VFbZMPdWektTc0fpT5jaPkE1ooUdrjWz/QB+bX7S82XXSem+h1Phv4bVMcXTrbndNn+Y/EKwodb6Y03JbNOh9DUgTkXNPNw4pg431dQ+Ag8wR1q7E5FVEFJpC7awfhvRmED7/LgdYYDoNvYz7Q8nt63M6jlA13+19QOibOvCMuIXBYioq0seeo7DETw1DiblGNANyg=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR12MB2718.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(396003)(39860400002)(346002)(136003)(366004)(376002)(478600001)(7406005)(8936002)(7416002)(316002)(2616005)(956004)(31696002)(36756003)(66556008)(66476007)(31686004)(52116002)(38350700002)(16576012)(186003)(8676002)(26005)(66946007)(44832011)(4744005)(5660300002)(6486002)(86362001)(2906002)(54906003)(4326008)(38100700002)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?RzB5WEJVMG0rRE1nc1lNcmNnZlJ2NFZydndFVGRJcG15QXdUWDBDTnNiYit4?=
+ =?utf-8?B?MU1WWGlzTC9HTER5ZUlpQmI1dW95UHRKYUZvNXFaM3g4SVlPWHphd2taSit4?=
+ =?utf-8?B?bEtiR3h3b3llZCt4MDVXd3hsd1J1WEZhVkZXZWJNRVg4R0ZrWVpzL3J6d3RN?=
+ =?utf-8?B?dllqWUEvNUR1ODlkcDRXLzhyOE1BOTR6cUF6YVVuQkpBd1NxcnRkbDNCYktt?=
+ =?utf-8?B?VFkyd3J5cWRYQ2lvNzBhSFFFa3p6eDNNcHpRaEpaRC9aR3V5QUdjNVRmWTJW?=
+ =?utf-8?B?aWJSOTgzd0RPbDdndHdRUENtd05qSGUvOEtSUThQQnhaV05uL2NKTUxnTmJB?=
+ =?utf-8?B?SUdHZEMyT3psZ0xOUFFaaGE1TnM2b0RuY1lrbVlaV3dJMTVLY1lEbUVKNW9E?=
+ =?utf-8?B?ZGhkTk5lK1QvVTZ1VjZYTzJNbHM5QWpEdnNucWhGRW94Q0NSZ2JxSkRjOWIw?=
+ =?utf-8?B?aVVxT2ttTUpDK01WNm5ITERZN1hKZzJKT09nSXZvV2hHZjJCOGd0LzFUNFNU?=
+ =?utf-8?B?MCtMNWF0WGxTZHZGbmtCbVl1SFQwREpYdFVYV0F4ZXZ0dEFPTkV5TENZeHpk?=
+ =?utf-8?B?WXY1VVNPSzducmhIWXhGYWZDNGFuSS9FSE44dWI0TmF6aWVWb0FHMlAydlR1?=
+ =?utf-8?B?b3R3MXAxdk44UmhCSHA0cktmTlpPTEV6NFBES3BHQ3paTnRIUS9hb0ViU2kw?=
+ =?utf-8?B?MnBweE9XbVUwcnVtNC9yZ09uVmlIc25PUWtxOU12MVlWMlV1RGdLQ1lPS09V?=
+ =?utf-8?B?Mll1MVRCSkhCOVFuUTRsdDJuVkVLV3RSMlhJQXE2UnU1dXN1NGEwVHhCNHNR?=
+ =?utf-8?B?cTVTUmpRblg3UHY0dU9LbW5NUXljT1hDWFRLTHh1N2NtYVY5SFV2c3p2aTdK?=
+ =?utf-8?B?VlJnR2VrQTd0RXNKcy9OK3pqcitEdnZVQjQxVXJmN1FiQk84ak02VTltYVFW?=
+ =?utf-8?B?cmEwcTFPaFo3UFNmc29kVytRSEUrU1NKVmE3T2IwVk11UUpKaTFtSzBVTVpX?=
+ =?utf-8?B?N21GZUNHY094SHBDR0paYnJEN1hSdTVsbkV4UGhGdndsVTludXlxVVhHdG5K?=
+ =?utf-8?B?dlRINHorNXB6aWc3bzZWZ2tQQmhmakoxakxQRWJTUkVKeWIxdndQeU9TcW9C?=
+ =?utf-8?B?clBIbm8rSTQ1SlM5cEFNM2RsZ3g3NkF2a3lPd3loc0VrVGYya250ZzExQ3RH?=
+ =?utf-8?B?bWVWNGpKdUhzaUMyVGIxVkY1V0hXdjN1dndnQ0QvQ1QwUzZ3bjhuRzRscmlX?=
+ =?utf-8?B?T1J3dTVKSThoanQ5QmFHMDdKSjc3by9xakFONWpkTnZxUXJlektBSWVMTHNa?=
+ =?utf-8?B?VnF6ZTBwcmVPRHhVaFpFaVBzZGxhM1paWEhMcWpBTFdKM2tGZXV0NHBQVXAy?=
+ =?utf-8?B?dDRHTERHTUc2U2pmRndwTndzbVJoTFZWSE1wZDRLcFMvdXZST2FXbURzMmFQ?=
+ =?utf-8?B?amxuSHNvbzRxcGtQYU1nRStwZEFzK3V1K0hBRStCa0pLYkI2emZ3WXo5VWVX?=
+ =?utf-8?B?eVdMSDdSWHdyRGdqbXV2U2RDdW5JZEFadFFSOWVJTWVKLzVwWDhGUVF6Vysv?=
+ =?utf-8?B?cHBLa3IyRExUV3hOcHhTTUhXZy9SL3FLdElVMUMrTjgveTlueFQwRTJ2TlQ4?=
+ =?utf-8?B?WkhwQWNibU94LzA5ZjFWb3pJVHVvd3JIREVIdFNYeXczdGErUDRiSnpDUXdi?=
+ =?utf-8?B?VWxuWFJ2VFFpd2Z2SHp1elhMNW1ZOUc3Mjg3eVMzL0FISmljTXc4VEdwcyth?=
+ =?utf-8?Q?fA/wpbka7geyDVvR7v13N/vp+7kaVDetqLwIctM?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8d93122b-e903-40ea-2218-08d942336514
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR12MB2718.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jul 2021 17:11:15.9707
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: CeZ6Q73xYZizYsCCcoQndqqq3N3TM6Kx2/rEp7ihFLZNCbeKszRH7unDryQ+uARLc2ZblVtl2T/8ZxljvKnsdw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN1PR12MB2367
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 7/8/21 9:48 AM, Brijesh Singh wrote:
-> On 7/8/21 10:30 AM, Dave Hansen wrote:
->>> The reason for iterating through 2MB region is; if the faulting address
->>> is not assigned in the RMP table, and page table walk level is 2MB then
->>> one of entry within the large page is the root cause of the fault. Since
->>> we don't know which entry hence I dump all the non-zero entries.
->>
->> Logically you can figure this out though, right?  Why throw 511 entries
->> at the console when we *know* they're useless?
+
+
+On 7/8/21 11:58 AM, Dave Hansen wrote:>> Logically its going to be 
+tricky to figure out which exact entry caused
+>> the fault, hence I dump any non-zero entry. I understand it may dump
+>> some useless.
 > 
-> Logically its going to be tricky to figure out which exact entry caused
-> the fault, hence I dump any non-zero entry. I understand it may dump
-> some useless.
-
-What's tricky about it?
-
-Sure, there's a possibility that more than one entry could contribute to
-a fault.  But, you always know *IF* an entry could contribute to a fault.
-
-I'm fine if you run through the logic, don't find a known reason
-(specific RMP entry) for the fault, and dump the whole table in that
-case.  But, unconditionally polluting the kernel log with noise isn't
-very nice for debugging.
-
->>> There are two cases which we need to consider:
->>>
->>> 1) the faulting page is a guest private (aka assigned)
->>> 2) the faulting page is a hypervisor (aka shared)
->>>
->>> We will be primarily seeing #1. In this case, we know its a assigned
->>> page, and we can decode the fields.
->>>
->>> The #2 will happen in rare conditions,
->>
->> What rare conditions?
+> What's tricky about it?
 > 
-> One such condition is RMP "in-use" bit is set; see the patch 20/40.
-> After applying the patch we should not see "in-use" bit set. If we run
-> into similar issues, a full RMP dump will greatly help debug.
-
-OK... so dump the "in-use" bit here if you see it.
-
->>> if it happens, one of the undocumented bit in the RMP entry can
->>> provide us some useful information hence we dump the raw values.
->> You're saying that there are things that can cause RMP faults that
->> aren't documented?  That's rather nasty for your users, don't you think?
+> Sure, there's a possibility that more than one entry could contribute to
+> a fault.  But, you always know *IF* an entry could contribute to a fault.
 > 
-> The "in-use" bit in the RMP entry caught me off guard. The AMD APM does
-> says that hardware sets in-use bit but it *never* explained in the
-> detail on how to check if the fault was due to in-use bit in the RMP
-> table. As I said, the documentation folks will be updating the RMP entry
-> to document the in-use bit. I hope we will not see any other
-> undocumented surprises, I am keeping my finger cross :)
+> I'm fine if you run through the logic, don't find a known reason
+> (specific RMP entry) for the fault, and dump the whole table in that
+> case.  But, unconditionally polluting the kernel log with noise isn't
+> very nice for debugging.
 
-Oh, ok.  That sounds fine.  Documentation is out of date all the time.
+The tricky part is to determine which undocumented bit to check to know 
+that we should stop dump. I can go with your suggestion that first try 
+with the known reasons and fallback to dump whole table for unknown 
+reasons only.
+
+thanks
