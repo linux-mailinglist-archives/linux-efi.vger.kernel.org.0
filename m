@@ -2,32 +2,42 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E15ED3C16F5
-	for <lists+linux-efi@lfdr.de>; Thu,  8 Jul 2021 18:19:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 00B803C1758
+	for <lists+linux-efi@lfdr.de>; Thu,  8 Jul 2021 18:48:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229524AbhGHQWM (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 8 Jul 2021 12:22:12 -0400
-Received: from mga09.intel.com ([134.134.136.24]:17447 "EHLO mga09.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229468AbhGHQWM (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Thu, 8 Jul 2021 12:22:12 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10039"; a="209499244"
-X-IronPort-AV: E=Sophos;i="5.84,224,1620716400"; 
-   d="scan'208";a="209499244"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2021 09:16:29 -0700
-X-IronPort-AV: E=Sophos;i="5.84,224,1620716400"; 
-   d="scan'208";a="645962338"
-Received: from kezheong-mobl.gar.corp.intel.com (HELO [10.212.152.178]) ([10.212.152.178])
-  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2021 09:16:25 -0700
-Subject: Re: [PATCH Part2 RFC v4 10/40] x86/fault: Add support to handle the
- RMP fault for user address
-To:     Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org,
-        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        linux-coco@lists.linux.dev, linux-mm@kvack.org,
-        linux-crypto@vger.kernel.org
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        id S229542AbhGHQvO (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 8 Jul 2021 12:51:14 -0400
+Received: from mail-co1nam11on2083.outbound.protection.outlook.com ([40.107.220.83]:60512
+        "EHLO NAM11-CO1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S229489AbhGHQvO (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Thu, 8 Jul 2021 12:51:14 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=U7f4AqckEAJqlKLe2m0BW2HXJlQVVp5Z0BSP5ZpUbb2TwvyGYkdt4KZJuAVH28TI6gMbu4gOcGoGLU6OKorCiqB8JGjxAgvOzN19M9BvW+pxKf+uNwq7hZnW5jHkJEa0FChj+kLtgiupTGJ+ZFgsfS7qVDPmEo3Yf/UM5/42GC3jukk7ZNMeJ8clWJtIdDNuFu7Zhu7Y6r8wzMoaf8inn/lxhKMHw8MY08146KXqX1kXWQ/mQPn4Z8+FM5V7OIVD2NVGHPVWvSz58ZmwneFyi63Fl7yfp4bEJMLGQzoHAV3TwevCQ6rhpnWOqD4tUiwgcHBRea5+FSJJDSMCWMTKeA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=wbBUSi4OXTUy4EV4/gnkSO6e39eYO1YxtH3Vl4K8tAE=;
+ b=JM/gVrFE8CEEUpWwAIK0A6f8xU9NfGvLw3qJkGnMzIZGHThjmhB7FyrDHeijI6804jyxuf4FHON8LybGqWTh8qpTp9zBGUISfduKIRI35Q58PXzXrOLXTIaJKKbBx7s7VITwgtDt8K6w+SK7YIvmRAMOVfrS0E1dAYptA19Lc+Q7t/FCA6tMd6khGJtJPcM1O9VNpRgBGVx3mKgP9SI3cY41uxf5p38vDqujIYCT/AkYllG5e7bEuM4nrLq658SLg1Zhi8zHziWDFWt7brxHmd8km01EYjnIPco3d093YQEyG0nk9Xm+fCWkk6LDxa6nDQGdL2Lg5/Zt9fPQ+htJZA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=wbBUSi4OXTUy4EV4/gnkSO6e39eYO1YxtH3Vl4K8tAE=;
+ b=idAgOskwQlgZvAnyMQNecKXQkffJNwhZxfoYSg4ggjnTtsGt+0P5ieZl6o+L5IQSXrnFv3TQhCIDB4NZd4+ippJxaxzytkT4BglUXPqqrFF1gK2DdhQt2ExKqneVxcuiXSuAK/5ZmK7LTlpkQCJWX7VgGuGQhtWSj4YSU6UIVlg=
+Authentication-Results: gmail.com; dkim=none (message not signed)
+ header.d=none;gmail.com; dmarc=none action=none header.from=amd.com;
+Received: from SN6PR12MB2718.namprd12.prod.outlook.com (2603:10b6:805:6f::22)
+ by SN6PR12MB2782.namprd12.prod.outlook.com (2603:10b6:805:73::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4287.32; Thu, 8 Jul
+ 2021 16:48:29 +0000
+Received: from SN6PR12MB2718.namprd12.prod.outlook.com
+ ([fe80::a8a9:2aac:4fd1:88fa]) by SN6PR12MB2718.namprd12.prod.outlook.com
+ ([fe80::a8a9:2aac:4fd1:88fa%3]) with mapi id 15.20.4308.022; Thu, 8 Jul 2021
+ 16:48:28 +0000
+Cc:     brijesh.singh@amd.com, Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
         Tom Lendacky <thomas.lendacky@amd.com>,
         "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
@@ -48,264 +58,212 @@ Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Michael Roth <michael.roth@amd.com>,
         Vlastimil Babka <vbabka@suse.cz>, tony.luck@intel.com,
         npmccallum@redhat.com, brijesh.ksingh@gmail.com
+Subject: Re: [PATCH Part2 RFC v4 09/40] x86/fault: Add support to dump RMP
+ entry on fault
+To:     Dave Hansen <dave.hansen@intel.com>, x86@kernel.org,
+        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        linux-coco@lists.linux.dev, linux-mm@kvack.org,
+        linux-crypto@vger.kernel.org
 References: <20210707183616.5620-1-brijesh.singh@amd.com>
- <20210707183616.5620-11-brijesh.singh@amd.com>
-From:   Dave Hansen <dave.hansen@intel.com>
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
- z5cecg==
-Message-ID: <3c6b6fc4-05b2-8d18-2eb8-1bd1a965c632@intel.com>
-Date:   Thu, 8 Jul 2021 09:16:21 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
-MIME-Version: 1.0
-In-Reply-To: <20210707183616.5620-11-brijesh.singh@amd.com>
-Content-Type: text/plain; charset=utf-8
+ <20210707183616.5620-10-brijesh.singh@amd.com>
+ <cb9e3890-9642-f254-2fe7-30621e686844@intel.com>
+ <0d19eb84-f2b7-aa24-2fe9-19035b49fbd6@amd.com>
+ <15d5e954-0383-fe0e-e8c1-3e9f8b0ef8ff@intel.com>
+From:   Brijesh Singh <brijesh.singh@amd.com>
+Message-ID: <23dbe0da-581e-2444-7126-428e79514614@amd.com>
+Date:   Thu, 8 Jul 2021 11:48:26 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
+In-Reply-To: <15d5e954-0383-fe0e-e8c1-3e9f8b0ef8ff@intel.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SA9PR13CA0172.namprd13.prod.outlook.com
+ (2603:10b6:806:28::27) To SN6PR12MB2718.namprd12.prod.outlook.com
+ (2603:10b6:805:6f::22)
+MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from [10.236.31.95] (165.204.77.1) by SA9PR13CA0172.namprd13.prod.outlook.com (2603:10b6:806:28::27) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4331.10 via Frontend Transport; Thu, 8 Jul 2021 16:48:27 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 81da37be-97e8-4ec8-1ff8-08d942303641
+X-MS-TrafficTypeDiagnostic: SN6PR12MB2782:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <SN6PR12MB278260326E34F4CBFD863FD2E5199@SN6PR12MB2782.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: xm3HOtPGAe95m3V5Q9Xhcnd+ZuNN/3t189W9v7KaE5W1Pw8oN2yhBjfON4zP00YYMSXWxHm7eM9sQqhO3ajpAGh8tTS7pQmRb9DZwMCx4qmCx115B8Wuya8Vn5N7xachfdej60jhp+xWmXvSS9FnSURfhJCwO+enqoqTZpB8RlZ8ehB1059HKyVKqVKXWeQnHLqPw7CzuhcNqv/mCX9EfWs0OUvdo2gxiDEEIunmzlmlGumAaxfJubcdfm/JE+8spkJwyu4Q8QV7hwxVxBBziWQKm9hJg1tfxK+ycNVC1rMVjV05Xf9iS0958StoCmI0Ko6H0r9kXBdnNR+kdYtnC0K78IJR7TFJI9nolXlmP5oGo93mfEFUNpICk6BLyege5vjcCQGaNDiaqnleu79escaYFgM0TEEARRSUjjp7LXLghnyt2bXkx2StdSHMfaNRVMqnDKKRhfqmOD9drh8KKAGmKV8gt0Ine9IjGNyjEMKWaQwogSke6xB3RVuZYz4LnJ+Qu9yl/RjlNOQZIo6NjLQK7OuBMLJmXgXjH7R1uSibzClUY9Q840h3DE9TnbL9+dcdNdZk01Qnuy1x/HTo6BjSUe7v9TdIEAJOGmnW3JWXP/1pEqOz3Bl8XQl+F06X7+Ok9VX5rGCgE2zm3RJmNkl8pYmsC1+DoIOGANgyim6O6oIBN/XtHJrGVqMg58DgkOslGUGLmhPDUUDdYF/lV502KEwBxVXvBk0yf7I/MJq3wPqq1VpoZxGosG98aQGv
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR12MB2718.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(396003)(346002)(376002)(366004)(136003)(39860400002)(31696002)(186003)(38100700002)(6486002)(66556008)(38350700002)(7416002)(66946007)(66476007)(316002)(5660300002)(956004)(7406005)(86362001)(16576012)(478600001)(44832011)(54906003)(2616005)(2906002)(8936002)(83380400001)(31686004)(8676002)(4326008)(36756003)(53546011)(52116002)(26005)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?aEg4anhIekU3TjFGWnhMUEgyTjg5blh3UFhhekpXdGpaNGtFemhnUmcrdFo3?=
+ =?utf-8?B?THQrV0xiYm03c1JKVnRudzZZUnZ6RVNvd0pTeG1iVmdOZEtVbXVhN2FYMlc1?=
+ =?utf-8?B?RW9UOVdncUJUaS9mRkRVY2JMckdxNGUzamZVY0NjQjN5Z05wN1JHSCttRzRJ?=
+ =?utf-8?B?NHBBaDZ5a09IQVI2TkIwaEpGNGxMREw5dVR3QWZVMGxvMXZib3E0TzZLNDN6?=
+ =?utf-8?B?T3ZoUUVQcDRNZWEyUEVjeEROdTdrdC9Pd0R0eUJHdWo2OFRGNjgwSVRnd0FU?=
+ =?utf-8?B?bzBSdzZURDBDRWNwY2l1UWhXQTNaUGI0N2JyYVJic2ZxUlIxeXZIRFZtaFJZ?=
+ =?utf-8?B?elBOMEpaaDhPdVdpTHdZSFVyK1g2TCthSkRGOVd4azdqWFEwRU5hdlZZOExZ?=
+ =?utf-8?B?Nlg0UkdkZWkzZW83a3VHUUs5aEhSYytDUGpHMWpLNWIvWW1sakNpTGM3Qk5X?=
+ =?utf-8?B?V3lTZUJPV2k4ck9QQU1wNjloeGRTRGl3Qkx4SlpxUEgydHFyclMxZWNuYVQ0?=
+ =?utf-8?B?L25KemYzQlF2VS9ZOFpuT0dwZy9kb29PakZ0K0x3a29KcHoxc0ZJWmtIcnpW?=
+ =?utf-8?B?U05QL1VIcStOTFVQWnpweG9mVC80MzlEbS9KUkZyTWt2azV5cFlLVm9ZQ1ll?=
+ =?utf-8?B?by9QWGo3RjZZOVNhUjE4ZnNtTCtQUTQwWmVvRjd5ZUtQcDNORzg1YWw2U1RQ?=
+ =?utf-8?B?V3FFTUIreFQ3dHgwWmZYeUpnZUI4VUJ4T1BZaGRWemQ5U2lVWDJUenBoOTRn?=
+ =?utf-8?B?ZUNjS2dkTmY2Z1lSN1h1MVVVRTVPdnhaQ1ZCWkxTSGJ1ay9BZW5WYmpnOGdz?=
+ =?utf-8?B?R0NSKzhLQU1hNDVmbk5YVGVPLzNxZjdYei9iWDNBTHFTRkFWY1l0VDV4MnlS?=
+ =?utf-8?B?K0IxWEFGRzRIb0pHaEt3YzBGNVpCd1ZFUzZGZWtLTC9WcHdrQ2tRWVU2T3Ux?=
+ =?utf-8?B?WDdYcjVhV08vRXVJOFc5d1hqZUdCblVVUDBEL1paUm8xWTF6UmtuN2F0WHhT?=
+ =?utf-8?B?ajRRemcxaElRWk1sRCsyT3ZaYkxZcUNlcHlvTUxFWTBGMTRYRjl1dkhQUHcv?=
+ =?utf-8?B?SUdZNTRGUk5EcjVOSW1hSDlxK0QvenNpbnRoT1BIMFFsN3hFMGhPVVByUEhB?=
+ =?utf-8?B?RFhhaXJyNWQ5TVBkS3ZvL1pGKzRDaTZRWDhnUURJOFFmU1RTVVB2SkJCK2Fl?=
+ =?utf-8?B?TFNlU1lqMWpvOHAzTlIyVlJWOU91RXp4R2xOWEZWaTlvOVlvbXJ1MUIwbndJ?=
+ =?utf-8?B?dU1oZ1VtNHBPOEk0RlJiT09CVTVWbk1aVTBvWk44bGxhenhpR0w5bGRNNTZu?=
+ =?utf-8?B?NTdsa25TRjNYNjdLcFNMTUZhWVVoT1R5TnBWa0c3aWFXc0lTM1Ztb2RWZ1dj?=
+ =?utf-8?B?cXNMck11S3czVlg2WEV3bDVCRVZIN3lUNE9rZzdhV1U4VUl5ck9EQmUwNEpt?=
+ =?utf-8?B?Q2x5T2pRVmQyVHJ2VlhrYWhVTDNEaUlkeitvRDgzREZVRWFXRHhjZVlQQVNY?=
+ =?utf-8?B?ZTlGb3FaVU1RaXYrYVNYekdkMHVUZlFTSW5wTG5xNm1qRFFjL1pRV0NiWHhz?=
+ =?utf-8?B?ek0zUTd6MnhZWVNFWFdQVGNuWGNKZWdITXRtWEhWOGsyR2hoSitmK3JzaTJR?=
+ =?utf-8?B?UnIrbnhQOVdXeWZ4ck80SjdrRkR1ZzY1VEVkdXcrdkx4WlVNdC9ocngvS1ZM?=
+ =?utf-8?B?ZFFiaTVRLy9TaVFKRmNRdEZjei9LYk9hOTV4dWZ3QUlOalo5ZnpRS21JcG8w?=
+ =?utf-8?Q?R6I32OTxMF7xRVQka9mLBUo01Vsk4YWCgRt+zcA?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 81da37be-97e8-4ec8-1ff8-08d942303641
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR12MB2718.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jul 2021 16:48:28.8755
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ql7XglSEPtjVGwWKDHLYEwEg9Azq20dupWJoJII48rTqsb/rCQazgaVQcirDSbpdgy43uEzWkApBZbev4jvwTg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN6PR12MB2782
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Oh, here's the THP code.  The subject just changed.
 
-On 7/7/21 11:35 AM, Brijesh Singh wrote:
-> When SEV-SNP is enabled globally, a write from the host goes through the
-> RMP check. When the host writes to pages, hardware checks the following
-> conditions at the end of page walk:
+
+On 7/8/21 10:30 AM, Dave Hansen wrote:
+> I was even thinking that you could use the pmd/pte entries that come
+> from the walk in dump_pagetable().
 > 
-> 1. Assigned bit in the RMP table is zero (i.e page is shared).
-> 2. If the page table entry that gives the sPA indicates that the target
->    page size is a large page, then all RMP entries for the 4KB
->    constituting pages of the target must have the assigned bit 0.
-> 3. Immutable bit in the RMP table is not zero.
+> BTW, I think the snp_lookup_page_in_rmptable() interface is probably
+> wrong.  It takes a 'struct page':
 > 
-> The hardware will raise page fault if one of the above conditions is not
-> met. Try resolving the fault instead of taking fault again and again. If
-> the host attempts to write to the guest private memory then send the
-> SIGBUG signal to kill the process. If the page level between the host and
 
-"SIGBUG"?
-
-> RMP entry does not match, then split the address to keep the RMP and host
-> page levels in sync.
+In some cases the caller already have 'struct page' so it was easier on 
+them. I can change it to snp_lookup_pfn_in_rmptable() to simplify the 
+things. In the cases where the caller already have 'struct page' will 
+simply do page_to_pfn().
 
 
-> ---
->  arch/x86/mm/fault.c | 69 +++++++++++++++++++++++++++++++++++++++++++++
->  include/linux/mm.h  |  6 +++-
->  mm/memory.c         | 13 +++++++++
->  3 files changed, 87 insertions(+), 1 deletion(-)
+> +struct rmpentry *snp_lookup_page_in_rmptable(struct page *page, int *level)
 > 
-> diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
-> index 195149eae9b6..cdf48019c1a7 100644
-> --- a/arch/x86/mm/fault.c
-> +++ b/arch/x86/mm/fault.c
-> @@ -1281,6 +1281,58 @@ do_kern_addr_fault(struct pt_regs *regs, unsigned long hw_error_code,
->  }
->  NOKPROBE_SYMBOL(do_kern_addr_fault);
->  
-> +#define RMP_FAULT_RETRY		0
-> +#define RMP_FAULT_KILL		1
-> +#define RMP_FAULT_PAGE_SPLIT	2
-> +
-> +static inline size_t pages_per_hpage(int level)
-> +{
-> +	return page_level_size(level) / PAGE_SIZE;
-> +}
-> +
-> +static int handle_user_rmp_page_fault(unsigned long hw_error_code, unsigned long address)
-> +{
-> +	unsigned long pfn, mask;
-> +	int rmp_level, level;
-> +	struct rmpentry *e;
-> +	pte_t *pte;
-> +
-> +	if (unlikely(!cpu_feature_enabled(X86_FEATURE_SEV_SNP)))
-> +		return RMP_FAULT_KILL;
+> but then immediately converts it to a paddr:
+> 
+>> +	unsigned long phys = page_to_pfn(page) << PAGE_SHIFT;
+> 
+> If you just had it take a paddr, you wouldn't have to mess with all of
+> this pfn_valid() and phys_to_page() error checking.
 
-Shouldn't this be a WARN_ON_ONCE()?  How can we get RMP faults without
-SEV-SNP?
+Noted.
 
-> +	/* Get the native page level */
-> +	pte = lookup_address_in_mm(current->mm, address, &level);
-> +	if (unlikely(!pte))
-> +		return RMP_FAULT_KILL;
+> 
+> Or fix the snp_lookup_page_in_rmptable() interface, please.
 
-What would this mean?  There was an RMP fault on a non-present page?
-How could that happen?  What if there was a race between an unmapping
-event and the RMP fault delivery?
+Yes.
 
-> +	pfn = pte_pfn(*pte);
-> +	if (level > PG_LEVEL_4K) {
-> +		mask = pages_per_hpage(level) - pages_per_hpage(level - 1);
-> +		pfn |= (address >> PAGE_SHIFT) & mask;
-> +	}
+> 
+> Let's capitalize "RMP" here, please.
 
-This looks inherently racy.  What happens if there are two parallel RMP
-faults on the same 2M page.  One of them splits the page tables, the
-other gets a fault for an already-split page table.
+Noted.
 
-Is that handled here somehow?
+> 
+>> PGD 304b201067 P4D 304b201067 PUD 20c7f06063 PMD 20c8976063 PTE
+>> 80000020cee00163
+>> RMPEntry paddr 0x20cee00000 [assigned=1 immutable=1 pagesize=0 gpa=0x0
+                                 ^^^^^^^^^^
 
-> +	/* Get the page level from the RMP entry. */
-> +	e = snp_lookup_page_in_rmptable(pfn_to_page(pfn), &rmp_level);
-> +	if (!e)
-> +		return RMP_FAULT_KILL;
+>> asid=0 vmsa=0 validated=0]
+>> RMPEntry paddr 0x20cee00000 000000000000000f 8000000000000ffd
+> 
+> That's a good example, thanks!
+> 
+> But, it does make me think that we shouldn't be spitting out
+> "immutable".  Should we call it "readonly" or something so that folks
+> have a better chance of figuring out what's wrong?  Even better, should
+> we be looking specifically for X86_PF_RMP *and* immutable=1 and spitting
+> out something in english about it?
+> 
 
-The snp_lookup_page_in_rmptable() failure cases looks WARN-worthly.
-Either you're doing a lookup for something not *IN* the RMP table, or
-you don't support SEV-SNP, in which case you shouldn't be in this code
-in the first place.
+A write to an assigned page will cause the RMP violation. In this case, 
+the page happen to be firmware page hence the immutable bit was also 
+set. I am trying to use the field name as documented in the APM and 
+SEV-SNP firmware spec.
 
-> +	/*
-> +	 * Check if the RMP violation is due to the guest private page access.
-> +	 * We can not resolve this RMP fault, ask to kill the guest.
-> +	 */
-> +	if (rmpentry_assigned(e))
-> +		return RMP_FAULT_KILL;
 
-No "We's", please.  Speak in imperative voice.
+> This also *looks* to be spitting out the same "RMPEntry paddr
+> 0x20cee00000" more than once.  Maybe we should just indent the extra
+> entries instead of repeating things.  The high/low are missing a "0x"
+> prefix, they also don't have any kind of text label.
+> 
+Noted, I will fix it.
 
-> +	/*
-> +	 * The backing page level is higher than the RMP page level, request
-> +	 * to split the page.
-> +	 */
-> +	if (level > rmp_level)
-> +		return RMP_FAULT_PAGE_SPLIT;
+> 
+> I actually really like processing the fields.  I think it's a good
+> investment to make the error messages as self-documenting as possible
+> and not require the poor souls who are decoding oopses to also keep each
+> vendor's architecture manuals at hand.
+> 
+Sounds good, I will keep it as-is.
 
-This can theoretically trigger on a hugetlbfs page.  Right?
 
-I thought I asked about this before... more below...
+>>
+>> The reason for iterating through 2MB region is; if the faulting address
+>> is not assigned in the RMP table, and page table walk level is 2MB then
+>> one of entry within the large page is the root cause of the fault. Since
+>> we don't know which entry hence I dump all the non-zero entries.
+> 
+> Logically you can figure this out though, right?  Why throw 511 entries
+> at the console when we *know* they're useless?
 
-> +	return RMP_FAULT_RETRY;
-> +}
-> +
->  /*
->   * Handle faults in the user portion of the address space.  Nothing in here
->   * should check X86_PF_USER without a specific justification: for almost
-> @@ -1298,6 +1350,7 @@ void do_user_addr_fault(struct pt_regs *regs,
->  	struct task_struct *tsk;
->  	struct mm_struct *mm;
->  	vm_fault_t fault;
-> +	int ret;
->  	unsigned int flags = FAULT_FLAG_DEFAULT;
->  
->  	tsk = current;
-> @@ -1378,6 +1431,22 @@ void 
-(struct pt_regs *regs,
->  	if (error_code & X86_PF_INSTR)
->  		flags |= FAULT_FLAG_INSTRUCTION;
->  
-> +	/*
-> +	 * If its an RMP violation, try resolving it.
-> +	 */
-> +	if (error_code & X86_PF_RMP) {
-> +		ret = handle_user_rmp_page_fault(error_code, address);
-> +		if (ret == RMP_FAULT_PAGE_SPLIT) {
-> +			flags |= FAULT_FLAG_PAGE_SPLIT;
-> +		} else if (ret == RMP_FAULT_KILL) {
-> +			fault |= VM_FAULT_SIGBUS;
-> +			do_sigbus(regs, error_code, address, fault);
-> +			return;
-> +		} else {
-> +			return;
-> +		}
-> +	}
+Logically its going to be tricky to figure out which exact entry caused 
+the fault, hence I dump any non-zero entry. I understand it may dump 
+some useless.
 
-Why not just have handle_user_rmp_page_fault() return a VM_FAULT_* code
-directly?
 
-I also suspect you can just set VM_FAULT_SIGBUS and let the do_sigbus()
-call later on in the function do its work.
+>> There are two cases which we need to consider:
+>>
+>> 1) the faulting page is a guest private (aka assigned)
+>> 2) the faulting page is a hypervisor (aka shared)
+>>
+>> We will be primarily seeing #1. In this case, we know its a assigned
+>> page, and we can decode the fields.
+>>
+>> The #2 will happen in rare conditions,
+> 
+> What rare conditions?
+> 
 
->  	 * Faults in the vsyscall page might need emulation.  The
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 322ec61d0da7..211dfe5d3b1d 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -450,6 +450,8 @@ extern pgprot_t protection_map[16];
->   * @FAULT_FLAG_REMOTE: The fault is not for current task/mm.
->   * @FAULT_FLAG_INSTRUCTION: The fault was during an instruction fetch.
->   * @FAULT_FLAG_INTERRUPTIBLE: The fault can be interrupted by non-fatal signals.
-> + * @FAULT_FLAG_PAGE_SPLIT: The fault was due page size mismatch, split the
-> + *  region to smaller page size and retry.
->   *
->   * About @FAULT_FLAG_ALLOW_RETRY and @FAULT_FLAG_TRIED: we can specify
->   * whether we would allow page faults to retry by specifying these two
-> @@ -481,6 +483,7 @@ enum fault_flag {
->  	FAULT_FLAG_REMOTE =		1 << 7,
->  	FAULT_FLAG_INSTRUCTION =	1 << 8,
->  	FAULT_FLAG_INTERRUPTIBLE =	1 << 9,
-> +	FAULT_FLAG_PAGE_SPLIT =		1 << 10,
->  };
->  
->  /*
-> @@ -520,7 +523,8 @@ static inline bool fault_flag_allow_retry_first(enum fault_flag flags)
->  	{ FAULT_FLAG_USER,		"USER" }, \
->  	{ FAULT_FLAG_REMOTE,		"REMOTE" }, \
->  	{ FAULT_FLAG_INSTRUCTION,	"INSTRUCTION" }, \
-> -	{ FAULT_FLAG_INTERRUPTIBLE,	"INTERRUPTIBLE" }
-> +	{ FAULT_FLAG_INTERRUPTIBLE,	"INTERRUPTIBLE" }, \
-> +	{ FAULT_FLAG_PAGE_SPLIT,	"PAGESPLIT" }
->  
->  /*
->   * vm_fault is filled by the pagefault handler and passed to the vma's
-> diff --git a/mm/memory.c b/mm/memory.c
-> index 730daa00952b..aef261d94e33 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -4407,6 +4407,15 @@ static vm_fault_t handle_pte_fault(struct vm_fault *vmf)
->  	return 0;
->  }
->  
-> +static int handle_split_page_fault(struct vm_fault *vmf)
-> +{
-> +	if (!IS_ENABLED(CONFIG_AMD_MEM_ENCRYPT))
-> +		return VM_FAULT_SIGBUS;
-> +
-> +	__split_huge_pmd(vmf->vma, vmf->pmd, vmf->address, false, NULL);
-> +	return 0;
-> +}
+One such condition is RMP "in-use" bit is set; see the patch 20/40. 
+After applying the patch we should not see "in-use" bit set. If we run 
+into similar issues, a full RMP dump will greatly help debug.
 
-What will this do when you hand it a hugetlbfs page?
+
+>> if it happens, one of the undocumented bit in the RMP entry can
+>> provide us some useful information hence we dump the raw values.
+> You're saying that there are things that can cause RMP faults that
+> aren't documented?  That's rather nasty for your users, don't you think?
+> 
+
+The "in-use" bit in the RMP entry caught me off guard. The AMD APM does 
+says that hardware sets in-use bit but it *never* explained in the 
+detail on how to check if the fault was due to in-use bit in the RMP 
+table. As I said, the documentation folks will be updating the RMP entry 
+to document the in-use bit. I hope we will not see any other 
+undocumented surprises, I am keeping my finger cross :)
+
+
+> I'd be fine if you want to define a mask of unknown bits and spit out to
+> the users that some unknown bits are set.
+> 
