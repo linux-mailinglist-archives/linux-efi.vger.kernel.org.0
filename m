@@ -2,238 +2,86 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3BA6D3C1975
-	for <lists+linux-efi@lfdr.de>; Thu,  8 Jul 2021 20:56:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1FCDF3C27AC
+	for <lists+linux-efi@lfdr.de>; Fri,  9 Jul 2021 18:38:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230120AbhGHS7T (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 8 Jul 2021 14:59:19 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:57531 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229566AbhGHS7T (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 8 Jul 2021 14:59:19 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1625770596;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=1va5nv4AZF0iU5FnZEUJ2+LCm5h8PaUbvUsoxAiHxDY=;
-        b=SnoPYTLQ2uxAUwAg0q7Z1p5+m/rGSe+DRm71vbsaEZIaRLOxwPE/ZUcnI/OdCLFmc7xjzB
-        LSWieuRvIo58pZkq0aFkM23E3ArKEKZ3e9cVXL8JGp5rhd46LctdvoCaM7Bmf9Ptedcj93
-        3A3KiM/FZ25MEndxO/erXVqT/a2tZbQ=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-245-iytTCVrRP02OIFvDgoKxpw-1; Thu, 08 Jul 2021 14:56:35 -0400
-X-MC-Unique: iytTCVrRP02OIFvDgoKxpw-1
-Received: by mail-wm1-f72.google.com with SMTP id m7-20020a05600c4f47b02901ff81a3bb59so1304284wmq.2
-        for <linux-efi@vger.kernel.org>; Thu, 08 Jul 2021 11:56:35 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=1va5nv4AZF0iU5FnZEUJ2+LCm5h8PaUbvUsoxAiHxDY=;
-        b=aj9digAJeulqOLpSjZK30SrNbxxMYDq760GZ6jpEG9XbxdyrkIfT0HD+HSzIOoL6aC
-         Qt1n4wiFBj+hsrCol8MAEk0Awd2kyMieT9JeW19jktMnANdDHLSBnERA9Bx8R6nB6ZPX
-         wRNe9+B9cYXVPmd2LZZ6GMEP6TuTJ4gkAOnQxZ12MIUNdNfOukBonl7HdEoOj816K7+L
-         BIvZLlvXuwGzD5oLvXFBahs2mGFmrczGo73FWlsfAt6E5HemyLOY+8iq3+7jaAMgzw0n
-         kzMKnHFhdZJ8wDFjKbDAIF1MGKpiAAWWTfvFEVrgpbrI2pgKOtXDF/hpcMhVYXWjWqMh
-         dZEA==
-X-Gm-Message-State: AOAM533BwQS4necMowv0fOO7Ko8Pj/hVRmoTLdR5oD4cbmsYFQZ9QZPA
-        WcjqYGL1oDP4Jn3Q8rin/pBxXsNy8BzSOBqtialwWWdD/4/DerU+MfsO8Ysj2FPuFV8/WZcGVV8
-        AZHMpENkzuBOYM5y44zqx
-X-Received: by 2002:a05:6000:1361:: with SMTP id q1mr35672355wrz.179.1625770594540;
-        Thu, 08 Jul 2021 11:56:34 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJwhquME75eUWVHFrrZ+V9pwudJ25ehwm0sVcMEMSNcf4tH+Xhq/bHqTeFabCsx2g8CMjSfcTw==
-X-Received: by 2002:a05:6000:1361:: with SMTP id q1mr35672310wrz.179.1625770594307;
-        Thu, 08 Jul 2021 11:56:34 -0700 (PDT)
-Received: from work-vm (cpc109021-salf6-2-0-cust453.10-2.cable.virginm.net. [82.29.237.198])
-        by smtp.gmail.com with ESMTPSA id o11sm10760305wmc.2.2021.07.08.11.56.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Jul 2021 11:56:33 -0700 (PDT)
-Date:   Thu, 8 Jul 2021 19:56:31 +0100
-From:   "Dr. David Alan Gilbert" <dgilbert@redhat.com>
-To:     Brijesh Singh <brijesh.singh@amd.com>
-Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        linux-coco@lists.linux.dev, linux-mm@kvack.org,
-        linux-crypto@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Vitaly Kuznetsov <vkuznets@redhat.com>,
-        Wanpeng Li <wanpengli@tencent.com>,
-        Jim Mattson <jmattson@google.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        David Rientjes <rientjes@google.com>,
-        Dov Murik <dovmurik@linux.ibm.com>,
-        Tobin Feldman-Fitzthum <tobin@ibm.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Michael Roth <michael.roth@amd.com>,
-        Vlastimil Babka <vbabka@suse.cz>, tony.luck@intel.com,
-        npmccallum@redhat.com, brijesh.ksingh@gmail.com
-Subject: Re: [PATCH Part2 RFC v4 14/40] crypto:ccp: Provide APIs to issue
- SEV-SNP commands
-Message-ID: <YOdKX/3cTytIiGYM@work-vm>
-References: <20210707183616.5620-1-brijesh.singh@amd.com>
- <20210707183616.5620-15-brijesh.singh@amd.com>
+        id S229701AbhGIQlc (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 9 Jul 2021 12:41:32 -0400
+Received: from mail.kernel.org ([198.145.29.99]:59742 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229685AbhGIQlc (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Fri, 9 Jul 2021 12:41:32 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 48B74613B4;
+        Fri,  9 Jul 2021 16:38:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1625848728;
+        bh=a1GISkv/+pWga0fuN5hJ5ZjRXhhLHwqNa2THjWIVVyU=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Iuk9WFJR/gnoHhhLixZZL1Qt8UMWvT704PCJFZaW9jX0oREYzGgmYNk2oAyCs1iZq
+         w1JFvLRVPZxmEpB+ttMRLb/1zUOhvk0rx3fzG6MIDJOF24q7KEt5D50OZs6Z2k6v/B
+         eMWGKaVcWEYVmQ3ZdHL3yxxu1JMBjbtBq8Pc2rpakCD6hOQrmD5IWR3f9FjuUVXLg1
+         Wa9ZoYZT9cARhFYknnYfIeLNBhSDe7yl4DlfeafStJLHpP00T9FN9FGs/kzBtdJhuc
+         ABel8KIJCbbBKJ5GUbLO9Ewacy0QO1ErxyXy5SYz7puEd5ZSaFfhaKcqobj9duT/9a
+         zYobmtu/RH1LA==
+Date:   Fri, 9 Jul 2021 19:38:46 +0300
+From:   Jarkko Sakkinen <jarkko@kernel.org>
+To:     Michal Suchanek <msuchanek@suse.de>
+Cc:     linux-integrity@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
+        Peter Huewe <peterhuewe@gmx.de>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        =?utf-8?B?TG/Dr2M=?= Yhuel <loic.yhuel@gmail.com>,
+        Javier Martinez Canillas <javierm@redhat.com>,
+        Jerry Snitselaar <jsnitsel@redhat.com>,
+        Matthew Garrett <mjg59@google.com>, linux-efi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] efi/tpm: Differentiate missing and invalid final event
+ log table.
+Message-ID: <20210709163846.3e753oectgbt7wh7@kernel.org>
+References: <20210708094654.4157-1-msuchanek@suse.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210707183616.5620-15-brijesh.singh@amd.com>
-User-Agent: Mutt/2.0.7 (2021-05-04)
+In-Reply-To: <20210708094654.4157-1-msuchanek@suse.de>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-* Brijesh Singh (brijesh.singh@amd.com) wrote:
-> Provide the APIs for the hypervisor to manage an SEV-SNP guest. The
-> commands for SEV-SNP is defined in the SEV-SNP firmware specification.
+On Thu, Jul 08, 2021 at 11:46:54AM +0200, Michal Suchanek wrote:
+> Missing TPM final event log table is not a firmware bug.
 > 
-> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
+> Clearly if providing event log in the old format makes the final event
+> log invalid it should not be provided at least in that case.
+> 
+> Fixes: b4f1874c6216 ("tpm: check event log version before reading final events")
+> Signed-off-by: Michal Suchanek <msuchanek@suse.de>
 > ---
->  drivers/crypto/ccp/sev-dev.c | 24 ++++++++++++
->  include/linux/psp-sev.h      | 74 ++++++++++++++++++++++++++++++++++++
->  2 files changed, 98 insertions(+)
+>  drivers/firmware/efi/tpm.c | 8 +++++---
+>  1 file changed, 5 insertions(+), 3 deletions(-)
 > 
-> diff --git a/drivers/crypto/ccp/sev-dev.c b/drivers/crypto/ccp/sev-dev.c
-> index 84c91bab00bd..ad9a0c8111e0 100644
-> --- a/drivers/crypto/ccp/sev-dev.c
-> +++ b/drivers/crypto/ccp/sev-dev.c
-> @@ -1017,6 +1017,30 @@ int sev_guest_df_flush(int *error)
->  }
->  EXPORT_SYMBOL_GPL(sev_guest_df_flush);
+> diff --git a/drivers/firmware/efi/tpm.c b/drivers/firmware/efi/tpm.c
+> index c1955d320fec..8f665678e9e3 100644
+> --- a/drivers/firmware/efi/tpm.c
+> +++ b/drivers/firmware/efi/tpm.c
+> @@ -62,9 +62,11 @@ int __init efi_tpm_eventlog_init(void)
+>  	tbl_size = sizeof(*log_tbl) + log_tbl->size;
+>  	memblock_reserve(efi.tpm_log, tbl_size);
 >  
-> +int snp_guest_decommission(struct sev_data_snp_decommission *data, int *error)
-> +{
-> +	return sev_do_cmd(SEV_CMD_SNP_DECOMMISSION, data, error);
-> +}
-> +EXPORT_SYMBOL_GPL(snp_guest_decommission);
-> +
-> +int snp_guest_df_flush(int *error)
-> +{
-> +	return sev_do_cmd(SEV_CMD_SNP_DF_FLUSH, NULL, error);
-> +}
-> +EXPORT_SYMBOL_GPL(snp_guest_df_flush);
-> +
-> +int snp_guest_page_reclaim(struct sev_data_snp_page_reclaim *data, int *error)
-> +{
-> +	return sev_do_cmd(SEV_CMD_SNP_PAGE_RECLAIM, data, error);
-> +}
-> +EXPORT_SYMBOL_GPL(snp_guest_page_reclaim);
-> +
-> +int snp_guest_dbg_decrypt(struct sev_data_snp_dbg *data, int *error)
-> +{
-> +	return sev_do_cmd(SEV_CMD_SNP_DBG_DECRYPT, data, error);
-> +}
-> +EXPORT_SYMBOL_GPL(snp_guest_dbg_decrypt);
-> +
->  static void sev_exit(struct kref *ref)
->  {
->  	misc_deregister(&misc_dev->misc);
-> diff --git a/include/linux/psp-sev.h b/include/linux/psp-sev.h
-> index 1b53e8782250..63ef766cbd7a 100644
-> --- a/include/linux/psp-sev.h
-> +++ b/include/linux/psp-sev.h
-> @@ -860,6 +860,65 @@ int sev_guest_df_flush(int *error);
->   */
->  int sev_guest_decommission(struct sev_data_decommission *data, int *error);
+> -	if (efi.tpm_final_log == EFI_INVALID_TABLE_ADDR ||
+> -	    log_tbl->version != EFI_TCG2_EVENT_LOG_FORMAT_TCG_2) {
+> -		pr_warn(FW_BUG "TPM Final Events table missing or invalid\n");
+> +	if (efi.tpm_final_log == EFI_INVALID_TABLE_ADDR) {
+> +		pr_info("TPM Final Events table not present\n");
+> +		goto out;
+> +	} else if (log_tbl->version != EFI_TCG2_EVENT_LOG_FORMAT_TCG_2) {
+> +		pr_warn(FW_BUG "TPM Final Events table invalid\n");
+>  		goto out;
+>  	}
 >  
-> +/**
-> + * snp_guest_df_flush - perform SNP DF_FLUSH command
-> + *
-> + * @sev_ret: sev command return code
-> + *
-> + * Returns:
-> + * 0 if the sev successfully processed the command
-> + * -%ENODEV    if the sev device is not available
-> + * -%ENOTSUPP  if the sev does not support SEV
-
-Weird wording.
-
-> + * -%ETIMEDOUT if the sev command timed out
-> + * -%EIO       if the sev returned a non-zero return code
-> + */
-> +int snp_guest_df_flush(int *error);
-> +
-> +/**
-> + * snp_guest_decommission - perform SNP_DECOMMISSION command
-> + *
-> + * @decommission: sev_data_decommission structure to be processed
-> + * @sev_ret: sev command return code
-> + *
-> + * Returns:
-> + * 0 if the sev successfully processed the command
-> + * -%ENODEV    if the sev device is not available
-> + * -%ENOTSUPP  if the sev does not support SEV
-> + * -%ETIMEDOUT if the sev command timed out
-> + * -%EIO       if the sev returned a non-zero return code
-> + */
-> +int snp_guest_decommission(struct sev_data_snp_decommission *data, int *error);
-> +
-> +/**
-> + * snp_guest_page_reclaim - perform SNP_PAGE_RECLAIM command
-> + *
-> + * @decommission: sev_snp_page_reclaim structure to be processed
-> + * @sev_ret: sev command return code
-> + *
-> + * Returns:
-> + * 0 if the sev successfully processed the command
-> + * -%ENODEV    if the sev device is not available
-> + * -%ENOTSUPP  if the sev does not support SEV
-> + * -%ETIMEDOUT if the sev command timed out
-> + * -%EIO       if the sev returned a non-zero return code
-> + */
-> +int snp_guest_page_reclaim(struct sev_data_snp_page_reclaim *data, int *error);
-> +
-> +/**
-> + * snp_guest_dbg_decrypt - perform SEV SNP_DBG_DECRYPT command
-> + *
-> + * @sev_ret: sev command return code
-> + *
-> + * Returns:
-> + * 0 if the sev successfully processed the command
-> + * -%ENODEV    if the sev device is not available
-> + * -%ENOTSUPP  if the sev does not support SEV
-> + * -%ETIMEDOUT if the sev command timed out
-> + * -%EIO       if the sev returned a non-zero return code
-> + */
-> +int snp_guest_dbg_decrypt(struct sev_data_snp_dbg *data, int *error);
-> +
-> +
->  void *psp_copy_user_blob(u64 uaddr, u32 len);
->  
->  #else	/* !CONFIG_CRYPTO_DEV_SP_PSP */
-> @@ -887,6 +946,21 @@ sev_issue_cmd_external_user(struct file *filep, unsigned int id, void *data, int
->  
->  static inline void *psp_copy_user_blob(u64 __user uaddr, u32 len) { return ERR_PTR(-EINVAL); }
->  
-> +static inline int
-> +snp_guest_decommission(struct sev_data_snp_decommission *data, int *error) { return -ENODEV; }
-> +
-> +static inline int snp_guest_df_flush(int *error) { return -ENODEV; }
-> +
-> +static inline int snp_guest_page_reclaim(struct sev_data_snp_page_reclaim *data, int *error)
-> +{
-> +	return -ENODEV;
-> +}
-> +
-> +static inline int snp_guest_dbg_decrypt(struct sev_data_snp_dbg *data, int *error)
-> +{
-> +	return -ENODEV;
-> +}
-> +
->  #endif	/* CONFIG_CRYPTO_DEV_SP_PSP */
->  
->  #endif	/* __PSP_SEV_H__ */
 > -- 
-> 2.17.1
+> 2.26.2
 > 
 > 
--- 
-Dr. David Alan Gilbert / dgilbert@redhat.com / Manchester, UK
 
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+
+/Jarkko
