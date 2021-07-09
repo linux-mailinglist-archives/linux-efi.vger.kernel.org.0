@@ -2,86 +2,95 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1FCDF3C27AC
-	for <lists+linux-efi@lfdr.de>; Fri,  9 Jul 2021 18:38:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BDF633C2823
+	for <lists+linux-efi@lfdr.de>; Fri,  9 Jul 2021 19:15:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229701AbhGIQlc (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 9 Jul 2021 12:41:32 -0400
-Received: from mail.kernel.org ([198.145.29.99]:59742 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229685AbhGIQlc (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Fri, 9 Jul 2021 12:41:32 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 48B74613B4;
-        Fri,  9 Jul 2021 16:38:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1625848728;
-        bh=a1GISkv/+pWga0fuN5hJ5ZjRXhhLHwqNa2THjWIVVyU=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Iuk9WFJR/gnoHhhLixZZL1Qt8UMWvT704PCJFZaW9jX0oREYzGgmYNk2oAyCs1iZq
-         w1JFvLRVPZxmEpB+ttMRLb/1zUOhvk0rx3fzG6MIDJOF24q7KEt5D50OZs6Z2k6v/B
-         eMWGKaVcWEYVmQ3ZdHL3yxxu1JMBjbtBq8Pc2rpakCD6hOQrmD5IWR3f9FjuUVXLg1
-         Wa9ZoYZT9cARhFYknnYfIeLNBhSDe7yl4DlfeafStJLHpP00T9FN9FGs/kzBtdJhuc
-         ABel8KIJCbbBKJ5GUbLO9Ewacy0QO1ErxyXy5SYz7puEd5ZSaFfhaKcqobj9duT/9a
-         zYobmtu/RH1LA==
-Date:   Fri, 9 Jul 2021 19:38:46 +0300
-From:   Jarkko Sakkinen <jarkko@kernel.org>
-To:     Michal Suchanek <msuchanek@suse.de>
-Cc:     linux-integrity@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
-        Peter Huewe <peterhuewe@gmx.de>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        =?utf-8?B?TG/Dr2M=?= Yhuel <loic.yhuel@gmail.com>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        Jerry Snitselaar <jsnitsel@redhat.com>,
-        Matthew Garrett <mjg59@google.com>, linux-efi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] efi/tpm: Differentiate missing and invalid final event
- log table.
-Message-ID: <20210709163846.3e753oectgbt7wh7@kernel.org>
-References: <20210708094654.4157-1-msuchanek@suse.de>
+        id S229651AbhGIRRq (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 9 Jul 2021 13:17:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41434 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229491AbhGIRRp (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 9 Jul 2021 13:17:45 -0400
+Received: from mail-yb1-xb2b.google.com (mail-yb1-xb2b.google.com [IPv6:2607:f8b0:4864:20::b2b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 052F6C0613DD
+        for <linux-efi@vger.kernel.org>; Fri,  9 Jul 2021 10:15:01 -0700 (PDT)
+Received: by mail-yb1-xb2b.google.com with SMTP id g19so15740722ybe.11
+        for <linux-efi@vger.kernel.org>; Fri, 09 Jul 2021 10:15:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=atishpatra.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=UfAm236+ZW2LhRr62fKnJMwoIctKDz6MX0I8ooLV4Hk=;
+        b=Ti/AAu6fROwptWF8bpkOULqE3NuqDJti9uO0acIPfDTodRUrNg0kunoeZmAMhw7eat
+         XNCt4Hsw8+Erz0qFR24p9Jj/TCMmVPcVdzb6cKu894/aUOFKeqoGXZ2u3GaZMWRzo3vU
+         K0YbzIvlfxGV4u/HDl9u7yhi0Z2G9bBsNMM94=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=UfAm236+ZW2LhRr62fKnJMwoIctKDz6MX0I8ooLV4Hk=;
+        b=uZNBDjvtj9Tj7UWnvaVQthyto+hpVK0BVROYsdf5l+IRIEOxPj9FhGGSCOgX/MzqWr
+         od8P2nzqE0Qx2gO27uvqUJbBbXno47ry4nrnlKU9SjyPQPYz9X83eef9nS2689mGh1fF
+         hUHL8NMJ173Osvp6Zhii+wfjDrjpZu4YXlx6ZtG1te8VA630MY190DiD28UG50i8sLFL
+         x9ZyeY/dWcgHwLe+0BgZT2BrL0fyu7QLbIQIJFukL6PWD6UQVgdqV0skaVpvCrNBZBWA
+         vA3ejd2YGdRrb1vOISPWzwod77u0kWjhazugiecMHdsySUV16KE/MxXYmTpoiVi4ixsq
+         WfPA==
+X-Gm-Message-State: AOAM533myYUySmdGyK/ymxUe9VzCjEmVSs3ebSIvfxIAUKQwcLk7SUnG
+        Ch8FgpXTMmG8MmKuEFFFthnO4JjJPjTUcgwQ5tru
+X-Google-Smtp-Source: ABdhPJyQNjjz+iD+y8t80vrh6c1jtsrqchb4uyODrpPHieb6ZiR1HsxyXwYB4IvCM86/upEIhDFi2E4YhoitiwyInY0=
+X-Received: by 2002:a25:3bcb:: with SMTP id i194mr45897853yba.442.1625850900256;
+ Fri, 09 Jul 2021 10:15:00 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210708094654.4157-1-msuchanek@suse.de>
+References: <20210629134018.62859-1-xypron.glpk@gmx.de> <877di3mfbe.fsf@igel.home>
+In-Reply-To: <877di3mfbe.fsf@igel.home>
+From:   Atish Patra <atishp@atishpatra.org>
+Date:   Fri, 9 Jul 2021 10:14:49 -0700
+Message-ID: <CAOnJCUJhYZbAL9dMReJt0=y9V33Ed1DaBCXGCdwxH8iUU3bcRg@mail.gmail.com>
+Subject: Re: [PATCH 1/1] RISC-V: load initrd wherever it fits into memory
+To:     Palmer Dabbelt <palmer@dabbelt.com>
+Cc:     Heinrich Schuchardt <xypron.glpk@gmx.de>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Atish Patra <atish.patra@wdc.com>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        linux-riscv <linux-riscv@lists.infradead.org>,
+        "linux-kernel@vger.kernel.org List" <linux-kernel@vger.kernel.org>,
+        Andreas Schwab <schwab@linux-m68k.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, Jul 08, 2021 at 11:46:54AM +0200, Michal Suchanek wrote:
-> Missing TPM final event log table is not a firmware bug.
-> 
-> Clearly if providing event log in the old format makes the final event
-> log invalid it should not be provided at least in that case.
-> 
-> Fixes: b4f1874c6216 ("tpm: check event log version before reading final events")
-> Signed-off-by: Michal Suchanek <msuchanek@suse.de>
-> ---
->  drivers/firmware/efi/tpm.c | 8 +++++---
->  1 file changed, 5 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/firmware/efi/tpm.c b/drivers/firmware/efi/tpm.c
-> index c1955d320fec..8f665678e9e3 100644
-> --- a/drivers/firmware/efi/tpm.c
-> +++ b/drivers/firmware/efi/tpm.c
-> @@ -62,9 +62,11 @@ int __init efi_tpm_eventlog_init(void)
->  	tbl_size = sizeof(*log_tbl) + log_tbl->size;
->  	memblock_reserve(efi.tpm_log, tbl_size);
->  
-> -	if (efi.tpm_final_log == EFI_INVALID_TABLE_ADDR ||
-> -	    log_tbl->version != EFI_TCG2_EVENT_LOG_FORMAT_TCG_2) {
-> -		pr_warn(FW_BUG "TPM Final Events table missing or invalid\n");
-> +	if (efi.tpm_final_log == EFI_INVALID_TABLE_ADDR) {
-> +		pr_info("TPM Final Events table not present\n");
-> +		goto out;
-> +	} else if (log_tbl->version != EFI_TCG2_EVENT_LOG_FORMAT_TCG_2) {
-> +		pr_warn(FW_BUG "TPM Final Events table invalid\n");
->  		goto out;
->  	}
->  
-> -- 
-> 2.26.2
-> 
-> 
+On Tue, Jul 6, 2021 at 12:07 PM Andreas Schwab <schwab@linux-m68k.org> wrote:
+>
+> On Jun 29 2021, Heinrich Schuchardt wrote:
+>
+> > Requiring that initrd is loaded below RAM start + 256 MiB led to failure
+> > to boot SUSE Linux with GRUB on QEMU, cf.
+> > https://lists.gnu.org/archive/html/grub-devel/2021-06/msg00037.html
+> >
+> > Remove the constraint.
+> >
+> > Reported-by: Andreas Schwab <schwab@linux-m68k.org>
+> > Signed-off-by: Heinrich Schuchardt <xypron.glpk@gmx.de>
+>
+> With that patch the image in
+> http://download.opensuse.org/ports/riscv/tumbleweed/iso/ work again.
+>
 
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Thanks.
+@palmer: Can you take this one in this cycle ?
 
-/Jarkko
+> Andreas.
+>
+> --
+> Andreas Schwab, schwab@linux-m68k.org
+> GPG Key fingerprint = 7578 EB47 D4E5 4D69 2510  2552 DF73 E780 A9DA AEC1
+> "And now for something completely different."
+
+
+
+-- 
+Regards,
+Atish
