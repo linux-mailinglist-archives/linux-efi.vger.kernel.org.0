@@ -2,55 +2,28 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E9F43C62E2
-	for <lists+linux-efi@lfdr.de>; Mon, 12 Jul 2021 20:46:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B1F33C6310
+	for <lists+linux-efi@lfdr.de>; Mon, 12 Jul 2021 21:00:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236018AbhGLStA (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 12 Jul 2021 14:49:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59614 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235995AbhGLSs7 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 12 Jul 2021 14:48:59 -0400
-Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 205DBC0613E8
-        for <linux-efi@vger.kernel.org>; Mon, 12 Jul 2021 11:46:10 -0700 (PDT)
-Received: by mail-lf1-x12a.google.com with SMTP id 22so14991238lfy.12
-        for <linux-efi@vger.kernel.org>; Mon, 12 Jul 2021 11:46:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=gxxKGdA+5qR/PqDl5JcB6bRGhDZ950mjZMdzjeHwe9A=;
-        b=v+epGUGrho+waSY/qXypfEen9g1FP1Y1I3VGFmt+FSd8NqjlYzx0xWVOhBij1bXxVe
-         1rOMkUh+FfFAQKz6Akh9cS91jlTHunIs6MU8tC+0vMNPOFx98/BXd7VJi6NojikBw66S
-         xuwJowHMP2SBEQFM0RFdRoPaFvfDUyTB7fKOIxuLad2FbLmwa9di03QUYyalRYiFy63E
-         OoZWfSLwumDFV/ZpiHpbtTOWfBntcWKDkqVeu+r2G9Hf0MXJoq259JaXexCZPI/Usx02
-         XIW38qdRKAXxDFSmfWCH6K/zlOqcrI8i7CPB7Euz7D0RucnOFsrWxxu0vLIJA0aOG0xp
-         4vjw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=gxxKGdA+5qR/PqDl5JcB6bRGhDZ950mjZMdzjeHwe9A=;
-        b=AztN44dff0UdB0/DjhXo6uOUYxobgVzFnu0GUe7wn3n4CwU2fFr1wISex6+BwsrMzH
-         fhVgae1ZQP8SH4Ck2jW3IqkUH7iLoaQvmok61C2X05t99oqF2TgrVrwjj4zoJ80CkBbk
-         yQGnQ447walSy1jA5TehIPXFKFX12iJwpZar9ijM8enBFarW0e+gmSPVrRHInPGYM/+N
-         l48sh6Qq0l5sGMAjYIFZ154AX/4NM/x3ARPN5UACv8BtxUmIU0M4BRBoElG5S3iwh7mO
-         N551OaFvZvZhUBNxeaDk2WYpRKa6SAXsVGiKn5VWfjkdDW/6aStcOSSLQSGHK1NjOdqv
-         vIrA==
-X-Gm-Message-State: AOAM5301y0CGzRWhLJJRaTr0lUlex7G4Jmp+Zj+Kp5o9+QxNeaLuIiPq
-        xWkLAQDvTzlp6g7qmOOvAwfQgF+bmMiG1TL8SWEM0Q==
-X-Google-Smtp-Source: ABdhPJzsnk7g8zQbTcCI707MmRveOtRone01I/489DLAAbH6SqY0xHeKZ2mm1i8batQMfCx2LW4ztu4s6lovd6kKRS4=
-X-Received: by 2002:a19:f710:: with SMTP id z16mr115428lfe.455.1626115568191;
- Mon, 12 Jul 2021 11:46:08 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210707183616.5620-1-brijesh.singh@amd.com> <20210707183616.5620-24-brijesh.singh@amd.com>
-In-Reply-To: <20210707183616.5620-24-brijesh.singh@amd.com>
-From:   Peter Gonda <pgonda@google.com>
-Date:   Mon, 12 Jul 2021 12:45:56 -0600
-Message-ID: <CAMkAt6q5Zjyn798fbhyQhmy+2drwSVRnCzMWxTUR-QUFzY9kEg@mail.gmail.com>
-Subject: Re: [PATCH Part2 RFC v4 23/40] KVM: SVM: Add KVM_SEV_SNP_LAUNCH_START command
-To:     Brijesh Singh <brijesh.singh@amd.com>
+        id S234097AbhGLTDB (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 12 Jul 2021 15:03:01 -0400
+Received: from mga04.intel.com ([192.55.52.120]:21259 "EHLO mga04.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230409AbhGLTDA (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Mon, 12 Jul 2021 15:03:00 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10043"; a="208220245"
+X-IronPort-AV: E=Sophos;i="5.84,234,1620716400"; 
+   d="scan'208";a="208220245"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jul 2021 12:00:06 -0700
+X-IronPort-AV: E=Sophos;i="5.84,234,1620716400"; 
+   d="scan'208";a="459287635"
+Received: from kpurma-mobl.amr.corp.intel.com (HELO [10.212.163.17]) ([10.212.163.17])
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jul 2021 12:00:04 -0700
+Subject: Re: [PATCH Part2 RFC v4 06/40] x86/sev: Add helper functions for
+ RMPUPDATE and PSMASH instruction
+To:     Peter Gonda <pgonda@google.com>,
+        Brijesh Singh <brijesh.singh@amd.com>
 Cc:     x86@kernel.org, linux-kernel@vger.kernel.org,
         kvm list <kvm@vger.kernel.org>, linux-efi@vger.kernel.org,
         platform-driver-x86@vger.kernel.org, linux-coco@lists.linux.dev,
@@ -77,61 +50,91 @@ Cc:     x86@kernel.org, linux-kernel@vger.kernel.org,
         Vlastimil Babka <vbabka@suse.cz>, tony.luck@intel.com,
         Nathaniel McCallum <npmccallum@redhat.com>,
         brijesh.ksingh@gmail.com
-Content-Type: text/plain; charset="UTF-8"
+References: <20210707183616.5620-1-brijesh.singh@amd.com>
+ <20210707183616.5620-7-brijesh.singh@amd.com>
+ <CAMkAt6quzRMiEJ=iYDocRvpaYuNcV5vm=swbowK+KG=j7FjyKA@mail.gmail.com>
+From:   Dave Hansen <dave.hansen@intel.com>
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+ z5cecg==
+Message-ID: <8ab309cd-8465-d543-55c8-5f6529fe74fd@intel.com>
+Date:   Mon, 12 Jul 2021 12:00:01 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
+MIME-Version: 1.0
+In-Reply-To: <CAMkAt6quzRMiEJ=iYDocRvpaYuNcV5vm=swbowK+KG=j7FjyKA@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
->
-> +static int snp_decommission_context(struct kvm *kvm)
-> +{
-> +       struct kvm_sev_info *sev = &to_kvm_svm(kvm)->sev_info;
-> +       struct sev_data_snp_decommission data = {};
-> +       int ret;
-> +
-> +       /* If context is not created then do nothing */
-> +       if (!sev->snp_context)
-> +               return 0;
-> +
-> +       data.gctx_paddr = __sme_pa(sev->snp_context);
-> +       ret = snp_guest_decommission(&data, NULL);
-> +       if (ret)
-> +               return ret;
+On 7/12/21 11:44 AM, Peter Gonda wrote:
+>> +int psmash(struct page *page)
+>> +{
+>> +       unsigned long spa = page_to_pfn(page) << PAGE_SHIFT;
+>> +       int ret;
+>> +
+>> +       if (!cpu_feature_enabled(X86_FEATURE_SEV_SNP))
+>> +               return -ENXIO;
+>> +
+>> +       /* Retry if another processor is modifying the RMP entry. */
+>> +       do {
+>> +               /* Binutils version 2.36 supports the PSMASH mnemonic. */
+>> +               asm volatile(".byte 0xF3, 0x0F, 0x01, 0xFF"
+>> +                             : "=a"(ret)
+>> +                             : "a"(spa)
+>> +                             : "memory", "cc");
+>> +       } while (ret == FAIL_INUSE);
+> Should there be some retry limit here for safety? Or do we know that
+> we'll never be stuck in this loop? Ditto for the loop in rmpupdate.
 
-Should we WARN or pr_err here? I see in the case of
-snp_launch_start's e_free_context we do not warn the user they have
-leaked a firmware page.
+It's probably fine to just leave this.  While you could *theoretically*
+lose this race forever, it's unlikely to happen in practice.  If it
+does, you'll get an easy-to-understand softlockup backtrace which should
+point here pretty quickly.
 
->
-> +
-> +       /* free the context page now */
-> +       snp_free_firmware_page(sev->snp_context);
-> +       sev->snp_context = NULL;
-> +
-> +       return 0;
-> +}
-> +
->  void sev_vm_destroy(struct kvm *kvm)
->  {
->         struct kvm_sev_info *sev = &to_kvm_svm(kvm)->sev_info;
-> @@ -1847,7 +1969,15 @@ void sev_vm_destroy(struct kvm *kvm)
->
->         mutex_unlock(&kvm->lock);
->
-> -       sev_unbind_asid(kvm, sev->handle);
-> +       if (sev_snp_guest(kvm)) {
-> +               if (snp_decommission_context(kvm)) {
-> +                       pr_err("Failed to free SNP guest context, leaking asid!\n");
-
-Should these errors be a WARN since we are leaking some state?
-
-
-> +                       return;
-> +               }
-> +       } else {
-> +               sev_unbind_asid(kvm, sev->handle);
-> +       }
-> +
->         sev_asid_free(sev);
->  }
->
+I think TDX has a few of these as well.  Most of the "SEAMCALL"s from
+host to the firmware doing the security enforcement have something like
+an -EBUSY as well.  I believe they just retry forever too.
