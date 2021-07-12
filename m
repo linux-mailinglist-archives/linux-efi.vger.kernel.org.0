@@ -2,161 +2,109 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5115E3C6288
-	for <lists+linux-efi@lfdr.de>; Mon, 12 Jul 2021 20:21:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D75F3C62D8
+	for <lists+linux-efi@lfdr.de>; Mon, 12 Jul 2021 20:44:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235550AbhGLSYo (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 12 Jul 2021 14:24:44 -0400
-Received: from mga17.intel.com ([192.55.52.151]:17337 "EHLO mga17.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230477AbhGLSYo (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Mon, 12 Jul 2021 14:24:44 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10043"; a="190413164"
-X-IronPort-AV: E=Sophos;i="5.84,234,1620716400"; 
-   d="scan'208";a="190413164"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jul 2021 11:21:49 -0700
-X-IronPort-AV: E=Sophos;i="5.84,234,1620716400"; 
-   d="scan'208";a="569602150"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jul 2021 11:21:45 -0700
-Received: from andy by smile with local (Exim 4.94.2)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1m30Yl-00CK2l-Lr; Mon, 12 Jul 2021 21:21:39 +0300
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-To:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-efi@vger.kernel.org, linux-media@vger.kernel.org,
-        devel@acpica.org
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
-        Yong Zhi <yong.zhi@intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Bingbu Cao <bingbu.cao@intel.com>,
-        Tianshu Qiu <tian.shu.qiu@intel.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Robert Moore <robert.moore@intel.com>,
-        Erik Kaneda <erik.kaneda@intel.com>
-Subject: [PATCH v2 1/1] ACPI: utils: Fix reference counting in for_each_acpi_dev_match()
-Date:   Mon, 12 Jul 2021 21:21:21 +0300
-Message-Id: <20210712182121.2936794-1-andy.shevchenko@gmail.com>
-X-Mailer: git-send-email 2.32.0
+        id S234198AbhGLSr1 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 12 Jul 2021 14:47:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59238 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230199AbhGLSr0 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 12 Jul 2021 14:47:26 -0400
+Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B02D5C0613E5
+        for <linux-efi@vger.kernel.org>; Mon, 12 Jul 2021 11:44:37 -0700 (PDT)
+Received: by mail-lf1-x135.google.com with SMTP id a12so128622lfb.7
+        for <linux-efi@vger.kernel.org>; Mon, 12 Jul 2021 11:44:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=PiEei4/RLF9jTsxsrsUBV60BJotPkybau7lkhBzo5/I=;
+        b=s5pTurZ13T3fHlyrCaThZOVUofr0Cky2/zld5yC8l0myWNX69BvnBNc9Opj6HMkCfc
+         y3CjiuyOByMOeSBVV+o4qu5xJGAw4E/i0pQADCVD/2UOoJrIHi3478hpZZLuoqg1WGst
+         OcCnt2jSO0vJrOopZchNBQ9+MjglGj0qNJPE/zKAtnQq1YJa/gtnDpyh4R1JAsZBUefy
+         UEn4mtsvyV/dfykaoHSxiB9rtcJ7XqsA3Zf+EHYgfdQgNtp/YlSs2jWfDZvn7iwNgCp8
+         ndBvPbOGbkTvsCYluNITw35znBdI+ATFOMw1rixRW4qkI/Kx/zacoIs85goZ2XGThimw
+         JBFQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=PiEei4/RLF9jTsxsrsUBV60BJotPkybau7lkhBzo5/I=;
+        b=i1dYK13avIzNlBZBBGSCkcTIov4fk6uVomjmKhQtUOqHHBXlbrf2bxcpovgbArcQv8
+         S8fc0vvsYWPmUjpnwZw4hBtflngjSCexiQO7ULio6j7jyrDIgs0cHPbvVwIJXVNRfRT5
+         ueUi7S+P/qIP0k5Ds3Yf5lNqFWOdxJBb30eU0RKEIypp0Htm0BSFma47AEFXUDc4xOpa
+         wZuaVtrJPp8uEFecFw2iQOt5syz1VmL8q0TQVBsib7/un5LS2syefe5k1/DmFzg5WW3T
+         NYzYssIwYA74QYWSnFuFwUp1lt0HLYpu2Qen8VaQsr2bfTXyUl24ro1G21S3cBUOPvQ6
+         hZgw==
+X-Gm-Message-State: AOAM5328dCXHRxk25UumxoKLu+aAT8trqtITxxef4KvQ2ZQ7Ou/QF5B1
+        otvQeoPrYA0f39yc255Enf3icHGdXgiyBqY6ba7XZQ==
+X-Google-Smtp-Source: ABdhPJw+0tMpJcSV02e9y5OpgohRH2ByLJzW2eRxTjnkHhxkF0WhBTLMKzB5LpXi+sxeGsfF6oUSnjAO+65wVmAaEuA=
+X-Received: by 2002:ac2:5b1e:: with SMTP id v30mr136916lfn.226.1626115475779;
+ Mon, 12 Jul 2021 11:44:35 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20210707183616.5620-1-brijesh.singh@amd.com> <20210707183616.5620-7-brijesh.singh@amd.com>
+In-Reply-To: <20210707183616.5620-7-brijesh.singh@amd.com>
+From:   Peter Gonda <pgonda@google.com>
+Date:   Mon, 12 Jul 2021 12:44:24 -0600
+Message-ID: <CAMkAt6quzRMiEJ=iYDocRvpaYuNcV5vm=swbowK+KG=j7FjyKA@mail.gmail.com>
+Subject: Re: [PATCH Part2 RFC v4 06/40] x86/sev: Add helper functions for
+ RMPUPDATE and PSMASH instruction
+To:     Brijesh Singh <brijesh.singh@amd.com>
+Cc:     x86@kernel.org, linux-kernel@vger.kernel.org,
+        kvm list <kvm@vger.kernel.org>, linux-efi@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org, linux-coco@lists.linux.dev,
+        linux-mm@kvack.org, linux-crypto@vger.kernel.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Vitaly Kuznetsov <vkuznets@redhat.com>,
+        Wanpeng Li <wanpengli@tencent.com>,
+        Jim Mattson <jmattson@google.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Sergio Lopez <slp@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        David Rientjes <rientjes@google.com>,
+        Dov Murik <dovmurik@linux.ibm.com>,
+        Tobin Feldman-Fitzthum <tobin@ibm.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Michael Roth <michael.roth@amd.com>,
+        Vlastimil Babka <vbabka@suse.cz>, tony.luck@intel.com,
+        Nathaniel McCallum <npmccallum@redhat.com>,
+        brijesh.ksingh@gmail.com
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Currently it's possible to iterate over the dangling pointer in case the device
-suddenly disappears. This may happen becase callers put it at the end of a loop.
+> +int psmash(struct page *page)
+> +{
+> +       unsigned long spa = page_to_pfn(page) << PAGE_SHIFT;
+> +       int ret;
+> +
+> +       if (!cpu_feature_enabled(X86_FEATURE_SEV_SNP))
+> +               return -ENXIO;
+> +
+> +       /* Retry if another processor is modifying the RMP entry. */
+> +       do {
+> +               /* Binutils version 2.36 supports the PSMASH mnemonic. */
+> +               asm volatile(".byte 0xF3, 0x0F, 0x01, 0xFF"
+> +                             : "=a"(ret)
+> +                             : "a"(spa)
+> +                             : "memory", "cc");
+> +       } while (ret == FAIL_INUSE);
 
-Instead, let's move that call inside acpi_dev_get_next_match_dev().
+Should there be some retry limit here for safety? Or do we know that
+we'll never be stuck in this loop? Ditto for the loop in rmpupdate.
 
-Fixes: 803abec64ef9 ("media: ipu3-cio2: Add cio2-bridge to ipu3-cio2 driver")
-Fixes: bf263f64e804 ("media: ACPI / bus: Add acpi_dev_get_next_match_dev() and helper macro")
-Fixes: edbd1bc4951e ("efi/dev-path-parser: Switch to use for_each_acpi_dev_match()")
-Signed-off-by: Andy Shevchenko <andy.shevchenko@gmail.com>
----
-v2:
-- rebased on top of v5.14-rc1 and hence added fix for EFI code
-- added kernel documentation update to point out that
-  acpi_dev_get_next_match_dev() drops a reference on the given
-  ACPI device (Rafael)
-
- drivers/acpi/utils.c                       | 7 +++----
- drivers/firmware/efi/dev-path-parser.c     | 1 -
- drivers/media/pci/intel/ipu3/cio2-bridge.c | 6 ++----
- include/acpi/acpi_bus.h                    | 5 -----
- 4 files changed, 5 insertions(+), 14 deletions(-)
-
-diff --git a/drivers/acpi/utils.c b/drivers/acpi/utils.c
-index e7ddd281afff..d5cedffeeff9 100644
---- a/drivers/acpi/utils.c
-+++ b/drivers/acpi/utils.c
-@@ -860,11 +860,9 @@ EXPORT_SYMBOL(acpi_dev_present);
-  * Return the next match of ACPI device if another matching device was present
-  * at the moment of invocation, or NULL otherwise.
-  *
-- * FIXME: The function does not tolerate the sudden disappearance of @adev, e.g.
-- * in the case of a hotplug event. That said, the caller should ensure that
-- * this will never happen.
-- *
-  * The caller is responsible for invoking acpi_dev_put() on the returned device.
-+ * On the other hand the function invokes  acpi_dev_put() on the given @adev
-+ * assuming that its reference counter had been increased beforehand.
-  *
-  * See additional information in acpi_dev_present() as well.
-  */
-@@ -880,6 +878,7 @@ acpi_dev_get_next_match_dev(struct acpi_device *adev, const char *hid, const cha
- 	match.hrv = hrv;
- 
- 	dev = bus_find_device(&acpi_bus_type, start, &match, acpi_dev_match_cb);
-+	acpi_dev_put(adev);
- 	return dev ? to_acpi_device(dev) : NULL;
- }
- EXPORT_SYMBOL(acpi_dev_get_next_match_dev);
-diff --git a/drivers/firmware/efi/dev-path-parser.c b/drivers/firmware/efi/dev-path-parser.c
-index 10d4457417a4..eb9c65f97841 100644
---- a/drivers/firmware/efi/dev-path-parser.c
-+++ b/drivers/firmware/efi/dev-path-parser.c
-@@ -34,7 +34,6 @@ static long __init parse_acpi_path(const struct efi_dev_path *node,
- 			break;
- 		if (!adev->pnp.unique_id && node->acpi.uid == 0)
- 			break;
--		acpi_dev_put(adev);
- 	}
- 	if (!adev)
- 		return -ENODEV;
-diff --git a/drivers/media/pci/intel/ipu3/cio2-bridge.c b/drivers/media/pci/intel/ipu3/cio2-bridge.c
-index 4657e99df033..59a36f922675 100644
---- a/drivers/media/pci/intel/ipu3/cio2-bridge.c
-+++ b/drivers/media/pci/intel/ipu3/cio2-bridge.c
-@@ -173,10 +173,8 @@ static int cio2_bridge_connect_sensor(const struct cio2_sensor_config *cfg,
- 	int ret;
- 
- 	for_each_acpi_dev_match(adev, cfg->hid, NULL, -1) {
--		if (!adev->status.enabled) {
--			acpi_dev_put(adev);
-+		if (!adev->status.enabled)
- 			continue;
--		}
- 
- 		if (bridge->n_sensors >= CIO2_NUM_PORTS) {
- 			acpi_dev_put(adev);
-@@ -185,7 +183,6 @@ static int cio2_bridge_connect_sensor(const struct cio2_sensor_config *cfg,
- 		}
- 
- 		sensor = &bridge->sensors[bridge->n_sensors];
--		sensor->adev = adev;
- 		strscpy(sensor->name, cfg->hid, sizeof(sensor->name));
- 
- 		ret = cio2_bridge_read_acpi_buffer(adev, "SSDB",
-@@ -215,6 +212,7 @@ static int cio2_bridge_connect_sensor(const struct cio2_sensor_config *cfg,
- 			goto err_free_swnodes;
- 		}
- 
-+		sensor->adev = acpi_dev_get(adev);
- 		adev->fwnode.secondary = fwnode;
- 
- 		dev_info(&cio2->dev, "Found supported sensor %s\n",
-diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
-index 1ae993fee4a5..b9d434a93632 100644
---- a/include/acpi/acpi_bus.h
-+++ b/include/acpi/acpi_bus.h
-@@ -707,11 +707,6 @@ acpi_dev_get_first_match_dev(const char *hid, const char *uid, s64 hrv);
-  * @hrv: Hardware Revision of the device, pass -1 to not check _HRV
-  *
-  * The caller is responsible for invoking acpi_dev_put() on the returned device.
-- *
-- * FIXME: Due to above requirement there is a window that may invalidate @adev
-- * and next iteration will use a dangling pointer, e.g. in the case of a
-- * hotplug event. That said, the caller should ensure that this will never
-- * happen.
-  */
- #define for_each_acpi_dev_match(adev, hid, uid, hrv)			\
- 	for (adev = acpi_dev_get_first_match_dev(hid, uid, hrv);	\
--- 
-2.32.0
-
+> +
+> +       return ret;
+> +}
+> +EXPORT_SYMBOL_GPL(psmash);
+>
