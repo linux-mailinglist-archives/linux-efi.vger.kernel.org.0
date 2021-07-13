@@ -2,118 +2,195 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B93373C756F
-	for <lists+linux-efi@lfdr.de>; Tue, 13 Jul 2021 19:00:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 69D263C79B8
+	for <lists+linux-efi@lfdr.de>; Wed, 14 Jul 2021 00:32:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229449AbhGMRCs (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 13 Jul 2021 13:02:48 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:32061 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229585AbhGMRCq (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 13 Jul 2021 13:02:46 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1626195596;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=XTHdlYNv/a9BuVPGjnPy+dQ/mQjufPe+yKG6ndLoXU8=;
-        b=eX0vNDQetw4M4XvuzdRcpzZcTe4FtS5+xgrR+G5VXPhCmc0t0q/NkkDd+By1EFfppUZwyA
-        j+0h4jpvRagFIp8303DxtzUj1YkYvw13WZsOOQGn4Jl4jrLAfIy0ZKR3eZwWWbnZr4HAVg
-        wN0h7kqIAlJJ8TlEVQGTw3NU2rn9dCk=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-206-A_zWNZF6OmuQmdBkUF4UIQ-1; Tue, 13 Jul 2021 12:59:55 -0400
-X-MC-Unique: A_zWNZF6OmuQmdBkUF4UIQ-1
-Received: by mail-wr1-f70.google.com with SMTP id 5-20020a0560001565b029013fe432d176so2670451wrz.23
-        for <linux-efi@vger.kernel.org>; Tue, 13 Jul 2021 09:59:54 -0700 (PDT)
+        id S236727AbhGMWfY (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 13 Jul 2021 18:35:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42046 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236721AbhGMWfX (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 13 Jul 2021 18:35:23 -0400
+Received: from mail-wr1-x429.google.com (mail-wr1-x429.google.com [IPv6:2a00:1450:4864:20::429])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D7D4C0613DD;
+        Tue, 13 Jul 2021 15:32:32 -0700 (PDT)
+Received: by mail-wr1-x429.google.com with SMTP id t5so623598wrw.12;
+        Tue, 13 Jul 2021 15:32:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding:content-language;
+        bh=3Y86rds+qthTs+3jeWO/3jomPKWg78OdmsOc8VtLnBI=;
+        b=W39CAfIRXwTWrKvQOtsx61xG7xI9Jc3tYx5DUlZcQcJW8IsPEDmIR4x1dizFyoq2t0
+         xECGqCTOEaXZiStggEPXMOyhccM1zHbGGW77HGFdbT6IF/+Kwky7pt1qjiR521S3K/7h
+         +H6Nc/gVBjtd0uK+3lMool/2i9Hrz/AfY5q2XH8yA5H0JR53qvKUjm6CZBhtxkWeSl8b
+         alj0iUjH4+BWYAIV63iu/nqKMT0zOlKtoaFUL3s10Qr9RLu3JJBHmm0hjL8Wvn1fxHY2
+         lA09iGr8qXq6Wv2oLnTg3TvinYFGxWRlKP1n7GqLvDTEkzOlvNA+WKcSLq3PF8r/qhiG
+         5eag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=XTHdlYNv/a9BuVPGjnPy+dQ/mQjufPe+yKG6ndLoXU8=;
-        b=O6ogds3h1j7OPZ9T0rL4TggTNFRVqevzSP+aTs/nNnnpBSpmbUAF2ONwBRoj/5Klvm
-         1X2VyB4afghCTLoVvRIl403XbIsYCxr9gHLJJxsOd7KaKlmuA9cenRx6JytHZdMGPAGf
-         nw7Mci552g0vR20cY55lJNgc1/fX5Fe3drilFbQFspWl6VbRW5HdEj/8jn6gO7VLy0v9
-         9OnE3O8mWE9UuFEz8hiXgqAmoNLicrd+ZFJCOqqdpx5qOFplAqq7PWieLE6FmFUSQwAe
-         Vx/ZsfAs0gycDAiJEz/OtAXlvDZR12QOUfCrk7O+xAGb7rNjFqQcKgmMei/Z1bVN7Yvh
-         97Kw==
-X-Gm-Message-State: AOAM531a7uqe2gE/99gpVYA4qpCx7DjOysXGGkWsozJEv8l+rBo6u7Kv
-        OX1Df0KPxPSwSlXxI88Uv1Mcyi/ISs8qUdKhIRoraZcdurklFCtpxmWyqPrbsuojYdEPZZU/UL9
-        4+PByhEJaf9irmqPekFJI
-X-Received: by 2002:a05:600c:2105:: with SMTP id u5mr1986028wml.18.1626195593924;
-        Tue, 13 Jul 2021 09:59:53 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJxumMUPdgM1d9aW8ug3rd8W69QVL7ebCKDjq/l4syiEd2xfO/CLyenHYKdqhxzMxt12Uge4rQ==
-X-Received: by 2002:a05:600c:2105:: with SMTP id u5mr1986010wml.18.1626195593743;
-        Tue, 13 Jul 2021 09:59:53 -0700 (PDT)
-Received: from [192.168.1.101] ([92.176.231.106])
-        by smtp.gmail.com with ESMTPSA id o28sm19766410wra.71.2021.07.13.09.59.52
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding
+         :content-language;
+        bh=3Y86rds+qthTs+3jeWO/3jomPKWg78OdmsOc8VtLnBI=;
+        b=DUd4wla56rKcB9LHAFwcIsZXX4eu9R1f21uKbFXVdPi3ugKvSRv0Vt2SzSDgtHngVg
+         Ya/rJTMfLmoysRKi7njCpOy5mpRVoAAGEwBOp5DjzbSStESTiZN/WelA+4bmrHiP4mh+
+         kmr6vsGohEhnzUyfqjhQ8DAGG2tgXWtGfE8lZtD3m4WS6QX5btwTca9fVhs+M2A+Ewl8
+         kX6pFRYXrHP4R9hEZANt5qOTSyCgaumXaIc10N5zy818hLlfpO19ERjrfQZmto+5cqhk
+         6wm5Jv0vr/Rs2jXjGWu1sz8Yxm7ln1Kh7v9fpLv9j2EugtGU8H0a8p2L4G2Q2+oovmDv
+         p5aw==
+X-Gm-Message-State: AOAM530mUgcP0jm4kzNuFOaf32ml/JsYuKJKqCmGFwjCbr2RBlpccj0Y
+        KDsOn0bDwHqSrE93p5Qi8meS4CHRJc8=
+X-Google-Smtp-Source: ABdhPJxm9Po+KvV1TqfW2KOBH0KZ+3/WqUVunDpah1FTOg9MWc61MCOCJr/qsSJGhTezyFmXUOCfqw==
+X-Received: by 2002:a5d:6a05:: with SMTP id m5mr8731903wru.253.1626215550711;
+        Tue, 13 Jul 2021 15:32:30 -0700 (PDT)
+Received: from [192.168.1.211] ([2.29.20.111])
+        by smtp.gmail.com with ESMTPSA id q19sm3388948wmq.38.2021.07.13.15.32.29
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 13 Jul 2021 09:59:53 -0700 (PDT)
-Subject: Re: [PATCH v3 0/2] allow simple{fb,drm} drivers to be used on non-x86
- EFI platforms
-To:     linux-kernel@vger.kernel.org
-Cc:     Thomas Zimmermann <tzimmermann@suse.de>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Russell King <linux@armlinux.org.uk>,
-        linux-efi@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-        Hans de Goede <hdegoede@redhat.com>, x86@kernel.org,
-        Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        linux-riscv@lists.infradead.org, Borislav Petkov <bp@suse.de>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Peter Robinson <pbrobinson@gmail.com>,
-        dri-devel@lists.freedesktop.org,
-        linux-arm-kernel@lists.infradead.org,
-        David Airlie <airlied@linux.ie>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Atish Patra <atish.patra@wdc.com>
-References: <20210625130947.1803678-1-javierm@redhat.com>
-From:   Javier Martinez Canillas <javierm@redhat.com>
-Message-ID: <e61cf77c-6bff-dfcc-d3df-2fb6b48e5897@redhat.com>
-Date:   Tue, 13 Jul 2021 18:59:51 +0200
+        Tue, 13 Jul 2021 15:32:29 -0700 (PDT)
+Subject: Re: [PATCH v2 1/1] ACPI: utils: Fix reference counting in
+ for_each_acpi_dev_match()
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-efi@vger.kernel.org, linux-media@vger.kernel.org,
+        devel@acpica.org
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
+        Yong Zhi <yong.zhi@intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Bingbu Cao <bingbu.cao@intel.com>,
+        Tianshu Qiu <tian.shu.qiu@intel.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Robert Moore <robert.moore@intel.com>,
+        Erik Kaneda <erik.kaneda@intel.com>
+References: <20210712182121.2936794-1-andy.shevchenko@gmail.com>
+From:   Daniel Scally <djrscally@gmail.com>
+Message-ID: <d542bc45-6e52-dc12-69bf-76fa6dcaaf5e@gmail.com>
+Date:   Tue, 13 Jul 2021 23:32:28 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.11.0
 MIME-Version: 1.0
-In-Reply-To: <20210625130947.1803678-1-javierm@redhat.com>
+In-Reply-To: <20210712182121.2936794-1-andy.shevchenko@gmail.com>
 Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
 Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 6/25/21 3:09 PM, Javier Martinez Canillas wrote:
-> The simplefb and simpledrm drivers match against a "simple-framebuffer"
-> device, but for aarch64 this is only registered when using Device Trees
-> and there's a node with a "simple-framebuffer" compatible string.
-> 
-> There is no code to register a "simple-framebuffer" platform device when
-> using EFI instead. In fact, the only platform device that's registered in
-> this case is an "efi-framebuffer", which means that the efifb driver is
-> the only driver supported to have an early console with EFI on aarch64.
-> 
-> The x86 architecture platform has a Generic System Framebuffers (sysfb)
-> support, that register a system frambuffer platform device. It either
-> registers a "simple-framebuffer" for the simple{fb,drm} drivers or legacy
-> VGA/EFI FB devices for the vgafb/efifb drivers.
-> 
-> The sysfb is generic enough to be reused by other architectures and can be
-> moved out of the arch/x86 directory to drivers/firmware, allowing the EFI
-> logic used by non-x86 architectures to be folded into sysfb as well.
-> 
+Hi Andy - thanks for fixing this
 
-Any more comments on this series? It would be nice for this to land so the
-simpledrm driver could be used on aarch64 EFI systems as well.
+On 12/07/2021 19:21, Andy Shevchenko wrote:
+> Currently it's possible to iterate over the dangling pointer in case the device
+> suddenly disappears. This may happen becase callers put it at the end of a loop.
+>
+> Instead, let's move that call inside acpi_dev_get_next_match_dev().
+>
+> Fixes: 803abec64ef9 ("media: ipu3-cio2: Add cio2-bridge to ipu3-cio2 driver")
+> Fixes: bf263f64e804 ("media: ACPI / bus: Add acpi_dev_get_next_match_dev() and helper macro")
+> Fixes: edbd1bc4951e ("efi/dev-path-parser: Switch to use for_each_acpi_dev_match()")
+> Signed-off-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 
-The patches have already been acked by x86 and DRM folks.
+Reviewed-by: Daniel Scally <djrscally@gmail.com>
 
-Best regards,
--- 
-Javier Martinez Canillas
-Linux Engineering
 
+> ---
+> v2:
+> - rebased on top of v5.14-rc1 and hence added fix for EFI code
+> - added kernel documentation update to point out that
+>   acpi_dev_get_next_match_dev() drops a reference on the given
+>   ACPI device (Rafael)
+>
+>  drivers/acpi/utils.c                       | 7 +++----
+>  drivers/firmware/efi/dev-path-parser.c     | 1 -
+>  drivers/media/pci/intel/ipu3/cio2-bridge.c | 6 ++----
+>  include/acpi/acpi_bus.h                    | 5 -----
+>  4 files changed, 5 insertions(+), 14 deletions(-)
+>
+> diff --git a/drivers/acpi/utils.c b/drivers/acpi/utils.c
+> index e7ddd281afff..d5cedffeeff9 100644
+> --- a/drivers/acpi/utils.c
+> +++ b/drivers/acpi/utils.c
+> @@ -860,11 +860,9 @@ EXPORT_SYMBOL(acpi_dev_present);
+>   * Return the next match of ACPI device if another matching device was present
+>   * at the moment of invocation, or NULL otherwise.
+>   *
+> - * FIXME: The function does not tolerate the sudden disappearance of @adev, e.g.
+> - * in the case of a hotplug event. That said, the caller should ensure that
+> - * this will never happen.
+> - *
+>   * The caller is responsible for invoking acpi_dev_put() on the returned device.
+> + * On the other hand the function invokes  acpi_dev_put() on the given @adev
+> + * assuming that its reference counter had been increased beforehand.
+>   *
+>   * See additional information in acpi_dev_present() as well.
+>   */
+> @@ -880,6 +878,7 @@ acpi_dev_get_next_match_dev(struct acpi_device *adev, const char *hid, const cha
+>  	match.hrv = hrv;
+>  
+>  	dev = bus_find_device(&acpi_bus_type, start, &match, acpi_dev_match_cb);
+> +	acpi_dev_put(adev);
+>  	return dev ? to_acpi_device(dev) : NULL;
+>  }
+>  EXPORT_SYMBOL(acpi_dev_get_next_match_dev);
+> diff --git a/drivers/firmware/efi/dev-path-parser.c b/drivers/firmware/efi/dev-path-parser.c
+> index 10d4457417a4..eb9c65f97841 100644
+> --- a/drivers/firmware/efi/dev-path-parser.c
+> +++ b/drivers/firmware/efi/dev-path-parser.c
+> @@ -34,7 +34,6 @@ static long __init parse_acpi_path(const struct efi_dev_path *node,
+>  			break;
+>  		if (!adev->pnp.unique_id && node->acpi.uid == 0)
+>  			break;
+> -		acpi_dev_put(adev);
+>  	}
+>  	if (!adev)
+>  		return -ENODEV;
+> diff --git a/drivers/media/pci/intel/ipu3/cio2-bridge.c b/drivers/media/pci/intel/ipu3/cio2-bridge.c
+> index 4657e99df033..59a36f922675 100644
+> --- a/drivers/media/pci/intel/ipu3/cio2-bridge.c
+> +++ b/drivers/media/pci/intel/ipu3/cio2-bridge.c
+> @@ -173,10 +173,8 @@ static int cio2_bridge_connect_sensor(const struct cio2_sensor_config *cfg,
+>  	int ret;
+>  
+>  	for_each_acpi_dev_match(adev, cfg->hid, NULL, -1) {
+> -		if (!adev->status.enabled) {
+> -			acpi_dev_put(adev);
+> +		if (!adev->status.enabled)
+>  			continue;
+> -		}
+>  
+>  		if (bridge->n_sensors >= CIO2_NUM_PORTS) {
+>  			acpi_dev_put(adev);
+> @@ -185,7 +183,6 @@ static int cio2_bridge_connect_sensor(const struct cio2_sensor_config *cfg,
+>  		}
+>  
+>  		sensor = &bridge->sensors[bridge->n_sensors];
+> -		sensor->adev = adev;
+>  		strscpy(sensor->name, cfg->hid, sizeof(sensor->name));
+>  
+>  		ret = cio2_bridge_read_acpi_buffer(adev, "SSDB",
+> @@ -215,6 +212,7 @@ static int cio2_bridge_connect_sensor(const struct cio2_sensor_config *cfg,
+>  			goto err_free_swnodes;
+>  		}
+>  
+> +		sensor->adev = acpi_dev_get(adev);
+>  		adev->fwnode.secondary = fwnode;
+>  
+>  		dev_info(&cio2->dev, "Found supported sensor %s\n",
+> diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
+> index 1ae993fee4a5..b9d434a93632 100644
+> --- a/include/acpi/acpi_bus.h
+> +++ b/include/acpi/acpi_bus.h
+> @@ -707,11 +707,6 @@ acpi_dev_get_first_match_dev(const char *hid, const char *uid, s64 hrv);
+>   * @hrv: Hardware Revision of the device, pass -1 to not check _HRV
+>   *
+>   * The caller is responsible for invoking acpi_dev_put() on the returned device.
+> - *
+> - * FIXME: Due to above requirement there is a window that may invalidate @adev
+> - * and next iteration will use a dangling pointer, e.g. in the case of a
+> - * hotplug event. That said, the caller should ensure that this will never
+> - * happen.
+>   */
+>  #define for_each_acpi_dev_match(adev, hid, uid, hrv)			\
+>  	for (adev = acpi_dev_get_first_match_dev(hid, uid, hrv);	\
