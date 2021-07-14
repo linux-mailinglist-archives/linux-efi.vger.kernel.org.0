@@ -2,43 +2,56 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 87F423C92B2
-	for <lists+linux-efi@lfdr.de>; Wed, 14 Jul 2021 23:00:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D3E663C92C7
+	for <lists+linux-efi@lfdr.de>; Wed, 14 Jul 2021 23:07:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234818AbhGNVDb (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 14 Jul 2021 17:03:31 -0400
-Received: from mail-bn8nam12on2062.outbound.protection.outlook.com ([40.107.237.62]:40801
-        "EHLO NAM12-BN8-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S230180AbhGNVDa (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Wed, 14 Jul 2021 17:03:30 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ic2ndTyNOi8vF/7O9Ro1q5EL3j96FsArGp08jBnLT5rBa+E+ulo2h/nm5CXg8OKIOGPP7TaIzk+dIT8UqApDmHTAIWER70xC9CvdWHP3T+0IIaQupjPadWQ3CdmdLAy3xZhLPAM2r602gSfYSvgzIWT6RLjRB0fLMN7RTCtVkVBW+5m/bKIpdpvoDu2IEkPYSVV0ak4lB752peNgMRhYR2SrhjUclicwQx/0JBwNd4kFt8cOFBzUX9AA8unLVdQhU576IbGkbR21LNDrVHaj4RKbbUWlNJ5ykYSKjzXtEFxnSmcRKP27qN3uIJlrL41fBPcirAm6PCPPyjNJdJn4LQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=j9xvcNON9zyFPgc7JUBLK5RCavrI19ElmjmM1FNb5rI=;
- b=C1RQW3DieFw+6daes91buR1aoY17bltLaaVZyNE6yxUL3VS+hWtOJ7je/pGumngQ7R6Gdgtxxs6Ldt7/jVhY7WyQER/YbT61AbCXwScU+B35h5zOFB7P0fNfpDdR71SQh7KA5q3HFO3GcAcDCQK2D3lbnm6Ep/xSfZyR4lL7KYJBCsuIac9dFm9etv720fSA8Bkegt5hlIz0Yl3M9b/yPrwMqP/GYe1LCec7Qf0iEZVU49BLDTPqNhgbHClvf7am53qYUuuT1IEcVRoN6ZC/mFU3oMNBOIo1BPaA4QNkfNLeEma5H75IF3AcJzOf6ZDonCL5WGoTZUFlZF9TQBujeA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=j9xvcNON9zyFPgc7JUBLK5RCavrI19ElmjmM1FNb5rI=;
- b=W3/EKb45iGzB6yyNGy+HMiBIZy3XngpGsO9DFBf3NueQxLG9Iu23RnmV5ZJ/jYcURgeLWF8MmISa9G1u4MxEzRd1l5Mr8HZs1UIUFHjtfjnwKJmd8iT/85KHlZlI5Y88ewf2/WO/e1PttgEEBFrpxeHWWxulpkBWw9ZmdmuQ8E8=
-Authentication-Results: gmail.com; dkim=none (message not signed)
- header.d=none;gmail.com; dmarc=none action=none header.from=amd.com;
-Received: from SN6PR12MB2718.namprd12.prod.outlook.com (2603:10b6:805:6f::22)
- by SA0PR12MB4512.namprd12.prod.outlook.com (2603:10b6:806:71::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4308.22; Wed, 14 Jul
- 2021 21:00:35 +0000
-Received: from SN6PR12MB2718.namprd12.prod.outlook.com
- ([fe80::a8a9:2aac:4fd1:88fa]) by SN6PR12MB2718.namprd12.prod.outlook.com
- ([fe80::a8a9:2aac:4fd1:88fa%3]) with mapi id 15.20.4308.027; Wed, 14 Jul 2021
- 21:00:35 +0000
-Cc:     brijesh.singh@amd.com, x86@kernel.org,
-        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        id S235097AbhGNVKf (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 14 Jul 2021 17:10:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42160 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234978AbhGNVKe (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 14 Jul 2021 17:10:34 -0400
+Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com [IPv6:2607:f8b0:4864:20::634])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03E37C061762
+        for <linux-efi@vger.kernel.org>; Wed, 14 Jul 2021 14:07:42 -0700 (PDT)
+Received: by mail-pl1-x634.google.com with SMTP id n10so2100205plk.1
+        for <linux-efi@vger.kernel.org>; Wed, 14 Jul 2021 14:07:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=OrJjmDihky9L5lychbpTBZwL1+xpeDWHYbd6hVXreJM=;
+        b=tlz5bGQLSoLrdG3yHlzIPTA4kenOD+40ek2Xmm5ZcZAuRAmgi1szyK30dlHoMqPjr1
+         HC6+ZapUN1ng1N8iPi3Xx+1Wk6Bzzl+zci2pX/dkzPsyvzPtUD5PHfZ6PZiaVwQ660uR
+         uXhtnHkr98V4781RINe/3kERQ//Xiv4ZIKUkPHx8R00NMWzEOkyqBnPzIPRQIrmjR2JR
+         AW0GQ2ltDtzB/uumhtBlcS22Ycv15zYhmDnK2LyN0oSlspTzcLWNdE2QdVVAmrvCsv7s
+         pCi4Qnr/JcI9IbckJWsASScJV6y7KBIAdxBYawEZyIeQg1TB8oc5D6AWSh5Kkcq749bg
+         HXbA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=OrJjmDihky9L5lychbpTBZwL1+xpeDWHYbd6hVXreJM=;
+        b=IciTOO4OkPFzVVgnPZokdLgS/k3Adqj9AkNufTM9wqcQoL2Jo6xNznEMz+ZEB+p1FD
+         R7d39pV9uKz/kewF1f4dGSrnde+0CpuiPB8QMWmbdxSEnmbizu3KnmY7cuC6JtCv25oG
+         TWuy/BD2S3DwQZYo+JhydCu30M0ZRJn4739IRQ+NL3OMn4wQ59v4Bkx9MwXXHr/MSSdE
+         DOTeJgGkDW9d6WqNi+iPIwQg0xka5/J0XbuuMB8Zs1Xib5U336BmRew8nu79+RF7ccu6
+         HDlgojHaVyOV9XrLArg/mTtcdtkDvcK2BK7gNUhCMg2c6RoBqyGynG3EG3XcLCm1rlTm
+         IpYA==
+X-Gm-Message-State: AOAM531r+tu7jcFSHo6XoDgJ+qI93XD9SwnR6us3GxFDapqe4ZQcpUOd
+        Qw8Jql0Cgu+Xoaaxu6KmySIhjw==
+X-Google-Smtp-Source: ABdhPJy6ZvJ7eEKoQQlA+dc27/Ymn/phT2UWrJkO7pxjQvI0kRR62Q2ZaSp9qAhwtDJisSV5ZIWr7g==
+X-Received: by 2002:a17:90a:c092:: with SMTP id o18mr5529982pjs.3.1626296861177;
+        Wed, 14 Jul 2021 14:07:41 -0700 (PDT)
+Received: from google.com (157.214.185.35.bc.googleusercontent.com. [35.185.214.157])
+        by smtp.gmail.com with ESMTPSA id m21sm3758645pfo.159.2021.07.14.14.07.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 14 Jul 2021 14:07:40 -0700 (PDT)
+Date:   Wed, 14 Jul 2021 21:07:37 +0000
+From:   Sean Christopherson <seanjc@google.com>
+To:     Brijesh Singh <brijesh.singh@amd.com>
+Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
         linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
         linux-coco@lists.linux.dev, linux-mm@kvack.org,
         linux-crypto@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
@@ -61,102 +74,254 @@ Cc:     brijesh.singh@amd.com, x86@kernel.org,
         Michael Roth <michael.roth@amd.com>,
         Vlastimil Babka <vbabka@suse.cz>, tony.luck@intel.com,
         npmccallum@redhat.com, brijesh.ksingh@gmail.com
-Subject: Re: [PATCH Part2 RFC v4 02/40] KVM: SVM: Provide the Hypervisor
- Feature support VMGEXIT
-To:     Sean Christopherson <seanjc@google.com>
+Subject: Re: [PATCH Part2 RFC v4 04/40] x86/sev: Add the host SEV-SNP
+ initialization support
+Message-ID: <YO9SGT6byW8w37oO@google.com>
 References: <20210707183616.5620-1-brijesh.singh@amd.com>
- <20210707183616.5620-3-brijesh.singh@amd.com> <YO9K8akh1CdY1kjd@google.com>
-From:   Brijesh Singh <brijesh.singh@amd.com>
-Message-ID: <b73ad44e-7719-cde7-d543-df34e5acf9a5@amd.com>
-Date:   Wed, 14 Jul 2021 16:00:33 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
-In-Reply-To: <YO9K8akh1CdY1kjd@google.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SN4PR0501CA0050.namprd05.prod.outlook.com
- (2603:10b6:803:41::27) To SN6PR12MB2718.namprd12.prod.outlook.com
- (2603:10b6:805:6f::22)
+ <20210707183616.5620-5-brijesh.singh@amd.com>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from [10.236.31.95] (165.204.77.1) by SN4PR0501CA0050.namprd05.prod.outlook.com (2603:10b6:803:41::27) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4331.14 via Frontend Transport; Wed, 14 Jul 2021 21:00:34 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: f3fce9c8-3c0b-47d3-51f1-08d9470a6d0c
-X-MS-TrafficTypeDiagnostic: SA0PR12MB4512:
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <SA0PR12MB451283FB2A2650873C4C24E7E5139@SA0PR12MB4512.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:3044;
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: yt3zoEKKSwtJgP1UnpclJPiMAyL7O4dNyHiXFmmpjQTAdmntmXVWOqNo6j54/0TaZyCenQv9e0rHc5e+6r8ZE1llSlquvi2PwVdnDJ8mt0Xo1ekFQ7Qv2wGx38sWm5w3L54VTwOV0eLUuDQYbzu5jioCLFKAbBvUtPE4e5wIRH+6rQ5+j+mQqz0WTTnK2shnoH7gIKQPa/J8pFNXWtQ7bn5zdV+1iTDSuX4DAj/2H93Bpyra+E9gfSwMuU6jCvra8AfafI9izSFhJyEUbxwEXB/eZ1hr4vV9l/EzwFSQFUlRnM7FQF2u1FkOm8JgD2Yj4GrsaDAjYJml6yEjwuxknswZoUbcRWauCl5MUAQjfoQ9nH17Ziwi2kYlZC9dVWwPbm2/M6JtVR9tDxu4mSEBlXD4wtJqx+LkJgJywhRL1qFQIqNswf0UH2EbuEQAhUMhB89LQlDHk1CEk7dtMqtDSEZ6TJaTGhCCmYVvhxfDLc21X5AhU1sKUUSXoK7YkjyxDGICxx+TLRnFjbEQX5MBWChS+X3GmeKHx6XxDEG6GnzuzmAZz7DWkV1pjpcwzduzk68O/83kvhTvhVu+mDE1HngUTSWwxRnFXmTouYlWmw4KYqAp9ToGDQqfrZ70XhDVNdkBO+pRIkhLW4tK/QkVCh4GDnAVc7R6Ah9X1MYIoGs4uzqRrDnpbippbxlw+Jah46hYmz45aJhDBzmic6RGeA/vQmVCs6RNzC0ZjJg/bdbhvzMOpvvjY+wvDGUmNc2FngFTmGgB4D17Ztkq8YJfJQ==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR12MB2718.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(366004)(136003)(39860400002)(346002)(396003)(376002)(31696002)(66946007)(86362001)(66476007)(53546011)(478600001)(26005)(38100700002)(36756003)(66556008)(186003)(31686004)(38350700002)(8936002)(6916009)(7406005)(44832011)(316002)(16576012)(2616005)(54906003)(4326008)(4744005)(956004)(7416002)(8676002)(6486002)(2906002)(83380400001)(52116002)(5660300002)(45980500001)(43740500002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?SElIRnk0MEllZ09wU0djdkpNZW95NHhqTmlVUFNkdFNVZUFXUGY0bjB4Q2dL?=
- =?utf-8?B?QU56c05LcnRUOVFXU0RXU0w2bUI1VUorMkpqZkxibTM3NnFyaU15UXBWalpW?=
- =?utf-8?B?MjRTL3FwODdua1I1WENZSkR5cjJDVTBUSzBua2dYUjROTG9FTXpqS3o1UGRm?=
- =?utf-8?B?R1FUVkUxaTVxdHdQSThlaWFQT2JGci82NE5SNDZwRE92SE51anFtNkNOc0hO?=
- =?utf-8?B?UE55RVpyMTdSb3RZem0xcW8vamc3M2xLUG51Z3FqQURLU3Axd1hyQVlpUnJn?=
- =?utf-8?B?NHdnQjJxTDl4OEU4b2V5WW5iemNqWnhHK1E5TEN4c1hOT1RyTGhBaGc0MGtO?=
- =?utf-8?B?azdvRVcweHM1bS9vSTIzdVNXQjVFNE1YemVNMU02RzJCZTVWRHFDM3gzWkd2?=
- =?utf-8?B?UksxbWpZV1gzQlBJWEJWUkJFMEphUk1pdHZNbENtMkNKTFlpR29DN0I3UWMz?=
- =?utf-8?B?VzZPT1dIRGFtSFMrWFhSOE9mR0w5Qm5YVjFXajZWMGJmTzRXQnIzOHFwYmdn?=
- =?utf-8?B?TzhITkxGUFp0UFJPNWpWRkx6RitwekdIMWl3NW85NG5ac3UyNzEzOWUxcFVQ?=
- =?utf-8?B?OFBEOFZjb0NrUGZlYWxxZlRQaE1lU0c4Q3UrTUxXVEU2YnhEUGpRWmpyWnQv?=
- =?utf-8?B?Q1F6Yk5BTTRZdWVHUmIxb1E2MUpKUVJ6azhjQ254bWtaNVhKdFpMZUtNcUlu?=
- =?utf-8?B?bHAzeUt4b0pmTmtod2w4YVozNVBKaU9SdHlJS3pyMkdFMDUzVUNmSHJJeFNL?=
- =?utf-8?B?eC8zdVFIWmdMKzR5SjNCL2c2eDgzUnF5S3E0MXJPRWRXT3o2RmFCeXFQRkkr?=
- =?utf-8?B?blVwbE5JazkwcTJCVmFmSzhkL05yTFpOOGV1RjVFUE1iTS9aWVFIZm1PT210?=
- =?utf-8?B?RWR0OTliQnZXT0xHL1M3S09RRWsrSC80Wm1ZMGkzRHdvYXpRM0NKN3dkZVkv?=
- =?utf-8?B?Y2kzTzZYTWVMSkpKeUoyRGU0UzBwOXh3Yyt2N1luU0tsdDlCMTZwUFg1M21m?=
- =?utf-8?B?YWl1MjJaTUJNeTN4alZpMXgvakxja281bzVVVUpBY1dQMEVHekN4bkY2Y0lt?=
- =?utf-8?B?Yk1lNE1nMDVCWDZwVlRScjB6MHhmVnk5Y1Yvdndkb1dQRFdMRFkrMGhsdjZB?=
- =?utf-8?B?MGFVcmI4Uk9XNzZoa1NHZnRqOXlxanhXYmlwU0x1VlEvb0VNSGwvNWtiaUkx?=
- =?utf-8?B?RjNhbk5zTUlsN2ZqMDJoR3VQM1huL0VRTHQ3K0hOQ2FJamxRbXVzVHJnSmtK?=
- =?utf-8?B?QnVvM0NQV3pxNEZZcTVtSzV4Q1NDcjBqNjhUZTN1Syt1eXUzTElwSGRpM0RH?=
- =?utf-8?B?aGV0WFoxSkFwZytiN2Y4R2lrc2VVbXM3WnhWK1NFbVd6NjkwNWplaGY5dmx1?=
- =?utf-8?B?MGc3aWV4MURoT0pabS9zVURvZmNxNWd0czdlN0RvTDlWdUVoL0prS3VvaFZR?=
- =?utf-8?B?MUdwb3BlY2EzNnBQL2Z5d0xQSWIxUGhNbkQ3b2FWZDBTMkRMS0UvT056bVhO?=
- =?utf-8?B?andaTW5JNWlZRVlmQnRKQmRxT00ydGwzUXZRSk5RZTRXeDVKVDJodmZvQXFK?=
- =?utf-8?B?Z0VsVEJyeVVXcEIxZEhyM2xWUDRSeG1MY0VBNHJvdHZxQ1Y2TGRTVmFCazM4?=
- =?utf-8?B?dXhkRmlrMEZTa1B6ejdXelV5NXN1emhBQThHODdiOEdQM1IwZlVheURPRWNn?=
- =?utf-8?B?VWZEU0oxUTI0QnlQSVd6Wld5SDUrMVJTNnhQWmYxejRLWjZnVXZUOFBlYkdm?=
- =?utf-8?Q?XsSsH1145yuIXUbGaMo1s9tSBfqtdd0IPfYZDFV?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f3fce9c8-3c0b-47d3-51f1-08d9470a6d0c
-X-MS-Exchange-CrossTenant-AuthSource: SN6PR12MB2718.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jul 2021 21:00:35.6473
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: X89NXbhRbN8ZqgBepbg0q9n/xxxvqMHXeO3T7X7QIcS4IT8LjzTyjhkMBx+AqreSnYEKulqc0Eg3GvDXHSOIXw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB4512
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20210707183616.5620-5-brijesh.singh@amd.com>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
+On Wed, Jul 07, 2021, Brijesh Singh wrote:
+> diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
+> index aa7e37631447..f9d813d498fa 100644
+> --- a/arch/x86/kernel/sev.c
+> +++ b/arch/x86/kernel/sev.c
+> @@ -24,6 +24,8 @@
+>  #include <linux/sev-guest.h>
+>  #include <linux/platform_device.h>
+>  #include <linux/io.h>
+> +#include <linux/io.h>
+> +#include <linux/iommu.h>
+>  
+>  #include <asm/cpu_entry_area.h>
+>  #include <asm/stacktrace.h>
+> @@ -40,11 +42,14 @@
+>  #include <asm/efi.h>
+>  #include <asm/cpuid-indexed.h>
+>  #include <asm/setup.h>
+> +#include <asm/iommu.h>
+>  
+>  #include "sev-internal.h"
+>  
+>  #define DR7_RESET_VALUE        0x400
+>  
+> +#define RMPTABLE_ENTRIES_OFFSET        0x4000
 
+A comment and/or blurb in the changelog describing this magic number would be
+quite helpful.  And maybe call out that this is for the bookkeeping, e.g.
 
-On 7/14/21 3:37 PM, Sean Christopherson wrote:
->> +#define SVM_VMGEXIT_HV_FT			0x8000fffd
+  #define RMPTABLE_CPU_BOOKKEEPING_SIZE	0x4000
+
+Also, the APM doesn't actually state the exact location of the bookkeeping
+region, it only states that it's somewhere between RMP_BASE and RMP_END.  This
+seems to imply that the bookkeeping region is always at RMP_BASE?
+
+  The region of memory between RMP_BASE and RMP_END contains a 16KB region used
+  for processor bookkeeping followed by the RMP entries, which are each 16B in
+  size. The size of the RMP determines the range of physical memory that the
+  hypervisor can assign to SNP-active virtual machines at runtime. The RMP covers
+  the system physical address space from address 0h to the address calculated by:
+
+  ((RMP_END + 1 – RMP_BASE – 16KB) / 16B) x 4KB
+
+>  /* For early boot hypervisor communication in SEV-ES enabled guests */
+>  static struct ghcb boot_ghcb_page __bss_decrypted __aligned(PAGE_SIZE);
+>  
+> @@ -56,6 +61,9 @@ static struct ghcb __initdata *boot_ghcb;
+>  
+>  static u64 snp_secrets_phys;
+>  
+> +static unsigned long rmptable_start __ro_after_init;
+> +static unsigned long rmptable_end __ro_after_init;
+> +
+>  /* #VC handler runtime per-CPU data */
+>  struct sev_es_runtime_data {
+>  	struct ghcb ghcb_page;
+> @@ -2176,3 +2184,138 @@ static int __init add_snp_guest_request(void)
+>  	return 0;
+>  }
+>  device_initcall(add_snp_guest_request);
+> +
+> +#undef pr_fmt
+> +#define pr_fmt(fmt)	"SEV-SNP: " fmt
+> +
+> +static int __snp_enable(unsigned int cpu)
+> +{
+> +	u64 val;
+> +
+> +	if (!cpu_feature_enabled(X86_FEATURE_SEV_SNP))
+> +		return 0;
+> +
+> +	rdmsrl(MSR_AMD64_SYSCFG, val);
+> +
+> +	val |= MSR_AMD64_SYSCFG_SNP_EN;
+> +	val |= MSR_AMD64_SYSCFG_SNP_VMPL_EN;
+
+Is VMPL required?  Do we plan on using VMPL out of the gate?
+
+> +
+> +	wrmsrl(MSR_AMD64_SYSCFG, val);
+> +
+> +	return 0;
+> +}
+> +
+> +static __init void snp_enable(void *arg)
+> +{
+> +	__snp_enable(smp_processor_id());
+> +}
+> +
+> +static bool get_rmptable_info(u64 *start, u64 *len)
+> +{
+> +	u64 calc_rmp_sz, rmp_sz, rmp_base, rmp_end, nr_pages;
+> +
+> +	rdmsrl(MSR_AMD64_RMP_BASE, rmp_base);
+> +	rdmsrl(MSR_AMD64_RMP_END, rmp_end);
+> +
+> +	if (!rmp_base || !rmp_end) {
+
+Can BIOS put the RMP at PA=0?
+
+Also, why is it a BIOS decision?  AFAICT, the MSRs aren't locked until SNP_EN
+is set in SYSCFG, and that appears to be a kernel decision (ignoring kexec),
+i.e. nothing would prevent the kernel from configuring it's own RMP.
+
+> +		pr_info("Memory for the RMP table has not been reserved by BIOS\n");
+> +		return false;
+> +	}
+> +
+> +	rmp_sz = rmp_end - rmp_base + 1;
+> +
+> +	/*
+> +	 * Calculate the amount the memory that must be reserved by the BIOS to
+> +	 * address the full system RAM. The reserved memory should also cover the
+> +	 * RMP table itself.
+> +	 *
+> +	 * See PPR section 2.1.5.2 for more information on memory requirement.
+> +	 */
+> +	nr_pages = totalram_pages();
+> +	calc_rmp_sz = (((rmp_sz >> PAGE_SHIFT) + nr_pages) << 4) + RMPTABLE_ENTRIES_OFFSET;
+> +
+> +	if (calc_rmp_sz > rmp_sz) {
+> +		pr_info("Memory reserved for the RMP table does not cover the full system "
+> +			"RAM (expected 0x%llx got 0x%llx)\n", calc_rmp_sz, rmp_sz);
+
+Is BIOS expected to provide exact coverage, e.g. should this be s/expected/need?
+
+Should the kernel also sanity check other requirements, e.g. the 8kb alignment,
+or does the CPU enforce those things at WRMSR?
+
+> +		return false;
+> +	}
+> +
+> +	*start = rmp_base;
+> +	*len = rmp_sz;
+> +
+> +	pr_info("RMP table physical address 0x%016llx - 0x%016llx\n", rmp_base, rmp_end);
+> +
+> +	return true;
+> +}
+> +
+> +static __init int __snp_rmptable_init(void)
+> +{
+> +	u64 rmp_base, sz;
+> +	void *start;
+> +	u64 val;
+> +
+> +	if (!get_rmptable_info(&rmp_base, &sz))
+> +		return 1;
+> +
+> +	start = memremap(rmp_base, sz, MEMREMAP_WB);
+> +	if (!start) {
+> +		pr_err("Failed to map RMP table 0x%llx+0x%llx\n", rmp_base, sz);
+> +		return 1;
+> +	}
+> +
+> +	/*
+> +	 * Check if SEV-SNP is already enabled, this can happen if we are coming from
+> +	 * kexec boot.
+> +	 */
+> +	rdmsrl(MSR_AMD64_SYSCFG, val);
+> +	if (val & MSR_AMD64_SYSCFG_SNP_EN)
+
+Hmm, it kinda feels like there should be a sanity check for the case where SNP is
+already enabled but get_rmptable_info() fails, e.g. due to insufficient RMP size.
+
+> +		goto skip_enable;
+> +
+> +	/* Initialize the RMP table to zero */
+> +	memset(start, 0, sz);
+> +
+> +	/* Flush the caches to ensure that data is written before SNP is enabled. */
+> +	wbinvd_on_all_cpus();
+> +
+> +	/* Enable SNP on all CPUs. */
+> +	on_each_cpu(snp_enable, NULL, 1);
+> +
+> +skip_enable:
+> +	rmptable_start = (unsigned long)start;
+
+Mostly out of curiosity, why store start/end as unsigned longs?  This is all 64-bit
+only so it doesn't actually affect the code generation, but it feels odd to store
+things that absolutely have to be 64-bit values as unsigned long.
+
+Similar question for why asm/sev-common.h cases to unsigned long instead of u64.
+E.g. the below in particular looks wrong because we're shifting an unsigned long
+b y32 bits, i.e. the value _must_ be a 64-bit value, why obfuscate that?
+
+	#define GHCB_CPUID_REQ(fn, reg)		\
+		(GHCB_MSR_CPUID_REQ | \
+		(((unsigned long)reg & GHCB_MSR_CPUID_REG_MASK) << GHCB_MSR_CPUID_REG_POS) | \
+		(((unsigned long)fn) << GHCB_MSR_CPUID_FUNC_POS))
+
+> +	rmptable_end = rmptable_start + sz;
+> +
+> +	return 0;
+> +}
+> +
+> +static int __init snp_rmptable_init(void)
+> +{
+> +	if (!boot_cpu_has(X86_FEATURE_SEV_SNP))
+> +		return 0;
+> +
+> +	/*
+> +	 * The SEV-SNP support requires that IOMMU must be enabled, and is not
+> +	 * configured in the passthrough mode.
+> +	 */
+> +	if (no_iommu || iommu_default_passthrough()) {
+
+Similar comment regarding the sanity check, kexec'ing into a kernel with SNP
+already enabled should probably fail explicitly if the new kernel is booted with
+incompatible params.
+
+> +		setup_clear_cpu_cap(X86_FEATURE_SEV_SNP);
+> +		pr_err("IOMMU is either disabled or configured in passthrough mode.\n");
+> +		return 0;
+> +	}
+> +
+> +	if (__snp_rmptable_init()) {
+> +		setup_clear_cpu_cap(X86_FEATURE_SEV_SNP);
+> +		return 1;
+> +	}
+> +
+> +	cpuhp_setup_state(CPUHP_AP_ONLINE_DYN, "x86/rmptable_init:online", __snp_enable, NULL);
+> +
+> +	return 0;
+> +}
+> +
+> +/*
+> + * This must be called after the PCI subsystem. This is because before enabling
+> + * the SNP feature we need to ensure that IOMMU is not configured in the
+> + * passthrough mode. The iommu_default_passthrough() is used for checking the
+> + * passthough state, and it is available after subsys_initcall().
+> + */
+> +fs_initcall(snp_rmptable_init);
+> -- 
+> 2.17.1
 > 
-> This is fixing up commit 3 from Part1, though I think it can and should be
-> omitted from that patch entirely since it's not relevant to the guest, only to
-> KVM.
-
-Yes, one of the thing which I was struggling header files between the 
-kvm/queue and tip/master was not in sync. I had to do some cherry-picks 
-to make my part2 still build. I hope this will get addressed in next rebase.
-
-> 
-> And FWIW, I like the verbose name, though it looks like Boris requested the
-> shorter names for the guest.  Can we keep the verbose form for KVM-only VMEGXIT
-> name?  Hyper-V has mostly laid claim to "HV", and feature is not the first thing
-> that comes to mind for "FT".
-> 
-
-For the uapi/asm/svm.h, I can stick with the verbose name.
-
-thanks
