@@ -2,195 +2,384 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 69D263C79B8
-	for <lists+linux-efi@lfdr.de>; Wed, 14 Jul 2021 00:32:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 640903C8537
+	for <lists+linux-efi@lfdr.de>; Wed, 14 Jul 2021 15:22:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236727AbhGMWfY (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 13 Jul 2021 18:35:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42046 "EHLO
+        id S239425AbhGNNZk (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 14 Jul 2021 09:25:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45892 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236721AbhGMWfX (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 13 Jul 2021 18:35:23 -0400
-Received: from mail-wr1-x429.google.com (mail-wr1-x429.google.com [IPv6:2a00:1450:4864:20::429])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D7D4C0613DD;
-        Tue, 13 Jul 2021 15:32:32 -0700 (PDT)
-Received: by mail-wr1-x429.google.com with SMTP id t5so623598wrw.12;
-        Tue, 13 Jul 2021 15:32:32 -0700 (PDT)
+        with ESMTP id S239405AbhGNNZk (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 14 Jul 2021 09:25:40 -0400
+Received: from mail-qt1-x830.google.com (mail-qt1-x830.google.com [IPv6:2607:f8b0:4864:20::830])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF5F1C06175F
+        for <linux-efi@vger.kernel.org>; Wed, 14 Jul 2021 06:22:47 -0700 (PDT)
+Received: by mail-qt1-x830.google.com with SMTP id d15so1778150qte.13
+        for <linux-efi@vger.kernel.org>; Wed, 14 Jul 2021 06:22:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding:content-language;
-        bh=3Y86rds+qthTs+3jeWO/3jomPKWg78OdmsOc8VtLnBI=;
-        b=W39CAfIRXwTWrKvQOtsx61xG7xI9Jc3tYx5DUlZcQcJW8IsPEDmIR4x1dizFyoq2t0
-         xECGqCTOEaXZiStggEPXMOyhccM1zHbGGW77HGFdbT6IF/+Kwky7pt1qjiR521S3K/7h
-         +H6Nc/gVBjtd0uK+3lMool/2i9Hrz/AfY5q2XH8yA5H0JR53qvKUjm6CZBhtxkWeSl8b
-         alj0iUjH4+BWYAIV63iu/nqKMT0zOlKtoaFUL3s10Qr9RLu3JJBHmm0hjL8Wvn1fxHY2
-         lA09iGr8qXq6Wv2oLnTg3TvinYFGxWRlKP1n7GqLvDTEkzOlvNA+WKcSLq3PF8r/qhiG
-         5eag==
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=8WaQzYZeQ7Li+6RRsoQKD67iI4SEvRFGh30cooQVpZw=;
+        b=ALZqB1qoxrXn+jAy7RQaf+A7TkxQvjq4ulZG5YO0uUIcybxnZKm0rpHD53EIfe8Jk/
+         YpGITna9ARYShBitncZbkmgkFksLsZIy/+ZdAoeYLBTDx8C1DKoohAJPaBYnRKyySVGc
+         ITV+cFCVYK57U2R6VkGW5CEThNcTLrXhcqZ3U/43GLOYRV5ZCgoQENAK9PMCgKrnE4Bx
+         RHXyl1CDuy68G1JGKqXbsBkwwZFSyQIkgTYpbX3O1ZpSJIeE/kExE2YJ4ajcd9qm2a80
+         xOkPSt+FopxTdx7Z1GVBLUUUa3y0DyeLiL1Gd0HkNb5dMY0ayoba9xVy0Kz+ZAL5/J4w
+         3PIw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding
-         :content-language;
-        bh=3Y86rds+qthTs+3jeWO/3jomPKWg78OdmsOc8VtLnBI=;
-        b=DUd4wla56rKcB9LHAFwcIsZXX4eu9R1f21uKbFXVdPi3ugKvSRv0Vt2SzSDgtHngVg
-         Ya/rJTMfLmoysRKi7njCpOy5mpRVoAAGEwBOp5DjzbSStESTiZN/WelA+4bmrHiP4mh+
-         kmr6vsGohEhnzUyfqjhQ8DAGG2tgXWtGfE8lZtD3m4WS6QX5btwTca9fVhs+M2A+Ewl8
-         kX6pFRYXrHP4R9hEZANt5qOTSyCgaumXaIc10N5zy818hLlfpO19ERjrfQZmto+5cqhk
-         6wm5Jv0vr/Rs2jXjGWu1sz8Yxm7ln1Kh7v9fpLv9j2EugtGU8H0a8p2L4G2Q2+oovmDv
-         p5aw==
-X-Gm-Message-State: AOAM530mUgcP0jm4kzNuFOaf32ml/JsYuKJKqCmGFwjCbr2RBlpccj0Y
-        KDsOn0bDwHqSrE93p5Qi8meS4CHRJc8=
-X-Google-Smtp-Source: ABdhPJxm9Po+KvV1TqfW2KOBH0KZ+3/WqUVunDpah1FTOg9MWc61MCOCJr/qsSJGhTezyFmXUOCfqw==
-X-Received: by 2002:a5d:6a05:: with SMTP id m5mr8731903wru.253.1626215550711;
-        Tue, 13 Jul 2021 15:32:30 -0700 (PDT)
-Received: from [192.168.1.211] ([2.29.20.111])
-        by smtp.gmail.com with ESMTPSA id q19sm3388948wmq.38.2021.07.13.15.32.29
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 13 Jul 2021 15:32:29 -0700 (PDT)
-Subject: Re: [PATCH v2 1/1] ACPI: utils: Fix reference counting in
- for_each_acpi_dev_match()
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-efi@vger.kernel.org, linux-media@vger.kernel.org,
-        devel@acpica.org
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
-        Yong Zhi <yong.zhi@intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Bingbu Cao <bingbu.cao@intel.com>,
-        Tianshu Qiu <tian.shu.qiu@intel.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Robert Moore <robert.moore@intel.com>,
-        Erik Kaneda <erik.kaneda@intel.com>
-References: <20210712182121.2936794-1-andy.shevchenko@gmail.com>
-From:   Daniel Scally <djrscally@gmail.com>
-Message-ID: <d542bc45-6e52-dc12-69bf-76fa6dcaaf5e@gmail.com>
-Date:   Tue, 13 Jul 2021 23:32:28 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=8WaQzYZeQ7Li+6RRsoQKD67iI4SEvRFGh30cooQVpZw=;
+        b=UVQ2MEQLExz4L5SG49niICYn5gAAWngVigcEzBW3rXO8W4G4WXKY3YPtMmyVMWmeyD
+         l72QSCLsCpsmhGWuweHN//rFelUzLex+Kq4ms0Nuyf4qYA/vPKd0MdI3Kvkmc0hq34jX
+         V/po9mcfjERQ6d9xZ9oGdScnFok8j6LVmo6Mo4Ml/AOOdcfmfNA6+qXvPZ3ZKR7Nc+On
+         0RUU1nya0MDV12OO3KmisnHY2bYj0VHpiRAhLYQTyHeGPxj6y//fH7aJviqhKZQT7X0N
+         Go8c0LEgRbdNEnFoAlJowzfn8W5/KMiX3S2OayzB1jTNuX1FibhaDcZA/VB3SYu1/o45
+         ceOw==
+X-Gm-Message-State: AOAM532Ajpn/HI8LuS0ua0XCRBerlEZRNk/xXVTGNGmJxRABee3XRISm
+        QUvYnxkjz2qt+J+rRXTTQSeNB5J1KXrDWaR+4GoF9w==
+X-Google-Smtp-Source: ABdhPJzUq99VHUKVJMfZn1C5QDzWePBXid78b3kd93+UIASO5flvGLThImwDSEJuQzURM3cOVvnjCPX/f4O4MxrE6VA=
+X-Received: by 2002:a05:622a:409:: with SMTP id n9mr9315541qtx.261.1626268966412;
+ Wed, 14 Jul 2021 06:22:46 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20210712182121.2936794-1-andy.shevchenko@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+References: <20210707183616.5620-1-brijesh.singh@amd.com> <20210707183616.5620-16-brijesh.singh@amd.com>
+In-Reply-To: <20210707183616.5620-16-brijesh.singh@amd.com>
+From:   Marc Orr <marcorr@google.com>
+Date:   Wed, 14 Jul 2021 06:22:35 -0700
+Message-ID: <CAA03e5HA_vjhOtTPL-vKFJvPxseLRMs5=s90ffUwDWQxtG7aCQ@mail.gmail.com>
+Subject: Re: [PATCH Part2 RFC v4 15/40] crypto: ccp: Handle the legacy TMR
+ allocation when SNP is enabled
+To:     Brijesh Singh <brijesh.singh@amd.com>
+Cc:     x86@kernel.org, linux-kernel@vger.kernel.org,
+        kvm list <kvm@vger.kernel.org>, linux-efi@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org, linux-coco@lists.linux.dev,
+        linux-mm@kvack.org, linux-crypto@vger.kernel.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Vitaly Kuznetsov <vkuznets@redhat.com>,
+        Wanpeng Li <wanpengli@tencent.com>,
+        Jim Mattson <jmattson@google.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        David Rientjes <rientjes@google.com>,
+        Dov Murik <dovmurik@linux.ibm.com>,
+        Tobin Feldman-Fitzthum <tobin@ibm.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Michael Roth <michael.roth@amd.com>,
+        Vlastimil Babka <vbabka@suse.cz>, tony.luck@intel.com,
+        npmccallum@redhat.com, brijesh.ksingh@gmail.com,
+        Alper Gun <alpergun@google.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hi Andy - thanks for fixing this
-
-On 12/07/2021 19:21, Andy Shevchenko wrote:
-> Currently it's possible to iterate over the dangling pointer in case the device
-> suddenly disappears. This may happen becase callers put it at the end of a loop.
+On Wed, Jul 7, 2021 at 11:37 AM Brijesh Singh <brijesh.singh@amd.com> wrote:
 >
-> Instead, let's move that call inside acpi_dev_get_next_match_dev().
+> The behavior and requirement for the SEV-legacy command is altered when
+> the SNP firmware is in the INIT state. See SEV-SNP firmware specification
+> for more details.
 >
-> Fixes: 803abec64ef9 ("media: ipu3-cio2: Add cio2-bridge to ipu3-cio2 driver")
-> Fixes: bf263f64e804 ("media: ACPI / bus: Add acpi_dev_get_next_match_dev() and helper macro")
-> Fixes: edbd1bc4951e ("efi/dev-path-parser: Switch to use for_each_acpi_dev_match()")
-> Signed-off-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-
-Reviewed-by: Daniel Scally <djrscally@gmail.com>
-
-
+> When SNP is INIT state, all the SEV-legacy commands that cause the
+> firmware to write memory must be in the firmware state. The TMR memory
+> is allocated by the host but updated by the firmware, so, it must be
+> in the firmware state.  Additionally, the TMR memory must be a 2MB aligned
+> instead of the 1MB, and the TMR length need to be 2MB instead of 1MB.
+> The helper __snp_{alloc,free}_firmware_pages() can be used for allocating
+> and freeing the memory used by the firmware.
+>
+> While at it, provide API that can be used by others to allocate a page
+> that can be used by the firmware. The immediate user for this API will
+> be the KVM driver. The KVM driver to need to allocate a firmware context
+> page during the guest creation. The context page need to be updated
+> by the firmware. See the SEV-SNP specification for further details.
+>
+> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
 > ---
-> v2:
-> - rebased on top of v5.14-rc1 and hence added fix for EFI code
-> - added kernel documentation update to point out that
->   acpi_dev_get_next_match_dev() drops a reference on the given
->   ACPI device (Rafael)
+>  drivers/crypto/ccp/sev-dev.c | 144 +++++++++++++++++++++++++++++++----
+>  include/linux/psp-sev.h      |  11 +++
+>  2 files changed, 142 insertions(+), 13 deletions(-)
 >
->  drivers/acpi/utils.c                       | 7 +++----
->  drivers/firmware/efi/dev-path-parser.c     | 1 -
->  drivers/media/pci/intel/ipu3/cio2-bridge.c | 6 ++----
->  include/acpi/acpi_bus.h                    | 5 -----
->  4 files changed, 5 insertions(+), 14 deletions(-)
+> diff --git a/drivers/crypto/ccp/sev-dev.c b/drivers/crypto/ccp/sev-dev.c
+> index ad9a0c8111e0..bb07c68834a6 100644
+> --- a/drivers/crypto/ccp/sev-dev.c
+> +++ b/drivers/crypto/ccp/sev-dev.c
+> @@ -54,6 +54,14 @@ static int psp_timeout;
+>  #define SEV_ES_TMR_SIZE                (1024 * 1024)
+>  static void *sev_es_tmr;
 >
-> diff --git a/drivers/acpi/utils.c b/drivers/acpi/utils.c
-> index e7ddd281afff..d5cedffeeff9 100644
-> --- a/drivers/acpi/utils.c
-> +++ b/drivers/acpi/utils.c
-> @@ -860,11 +860,9 @@ EXPORT_SYMBOL(acpi_dev_present);
->   * Return the next match of ACPI device if another matching device was present
->   * at the moment of invocation, or NULL otherwise.
->   *
-> - * FIXME: The function does not tolerate the sudden disappearance of @adev, e.g.
-> - * in the case of a hotplug event. That said, the caller should ensure that
-> - * this will never happen.
-> - *
->   * The caller is responsible for invoking acpi_dev_put() on the returned device.
-> + * On the other hand the function invokes  acpi_dev_put() on the given @adev
-> + * assuming that its reference counter had been increased beforehand.
->   *
->   * See additional information in acpi_dev_present() as well.
->   */
-> @@ -880,6 +878,7 @@ acpi_dev_get_next_match_dev(struct acpi_device *adev, const char *hid, const cha
->  	match.hrv = hrv;
->  
->  	dev = bus_find_device(&acpi_bus_type, start, &match, acpi_dev_match_cb);
-> +	acpi_dev_put(adev);
->  	return dev ? to_acpi_device(dev) : NULL;
+> +/* When SEV-SNP is enabled the TMR need to be 2MB aligned and 2MB size. */
+
+nit: "the TMR need" -> "the TMR needs"
+
+> +#define SEV_SNP_ES_TMR_SIZE    (2 * 1024 * 1024)
+> +
+> +static size_t sev_es_tmr_size = SEV_ES_TMR_SIZE;
+> +
+> +static int __sev_do_cmd_locked(int cmd, void *data, int *psp_ret);
+> +static int sev_do_cmd(int cmd, void *data, int *psp_ret);
+> +
+>  static inline bool sev_version_greater_or_equal(u8 maj, u8 min)
+>  {
+>         struct sev_device *sev = psp_master->sev_data;
+> @@ -151,6 +159,112 @@ static int sev_cmd_buffer_len(int cmd)
+>         return 0;
 >  }
->  EXPORT_SYMBOL(acpi_dev_get_next_match_dev);
-> diff --git a/drivers/firmware/efi/dev-path-parser.c b/drivers/firmware/efi/dev-path-parser.c
-> index 10d4457417a4..eb9c65f97841 100644
-> --- a/drivers/firmware/efi/dev-path-parser.c
-> +++ b/drivers/firmware/efi/dev-path-parser.c
-> @@ -34,7 +34,6 @@ static long __init parse_acpi_path(const struct efi_dev_path *node,
->  			break;
->  		if (!adev->pnp.unique_id && node->acpi.uid == 0)
->  			break;
-> -		acpi_dev_put(adev);
->  	}
->  	if (!adev)
->  		return -ENODEV;
-> diff --git a/drivers/media/pci/intel/ipu3/cio2-bridge.c b/drivers/media/pci/intel/ipu3/cio2-bridge.c
-> index 4657e99df033..59a36f922675 100644
-> --- a/drivers/media/pci/intel/ipu3/cio2-bridge.c
-> +++ b/drivers/media/pci/intel/ipu3/cio2-bridge.c
-> @@ -173,10 +173,8 @@ static int cio2_bridge_connect_sensor(const struct cio2_sensor_config *cfg,
->  	int ret;
->  
->  	for_each_acpi_dev_match(adev, cfg->hid, NULL, -1) {
-> -		if (!adev->status.enabled) {
-> -			acpi_dev_put(adev);
-> +		if (!adev->status.enabled)
->  			continue;
-> -		}
->  
->  		if (bridge->n_sensors >= CIO2_NUM_PORTS) {
->  			acpi_dev_put(adev);
-> @@ -185,7 +183,6 @@ static int cio2_bridge_connect_sensor(const struct cio2_sensor_config *cfg,
->  		}
->  
->  		sensor = &bridge->sensors[bridge->n_sensors];
-> -		sensor->adev = adev;
->  		strscpy(sensor->name, cfg->hid, sizeof(sensor->name));
->  
->  		ret = cio2_bridge_read_acpi_buffer(adev, "SSDB",
-> @@ -215,6 +212,7 @@ static int cio2_bridge_connect_sensor(const struct cio2_sensor_config *cfg,
->  			goto err_free_swnodes;
->  		}
->  
-> +		sensor->adev = acpi_dev_get(adev);
->  		adev->fwnode.secondary = fwnode;
->  
->  		dev_info(&cio2->dev, "Found supported sensor %s\n",
-> diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
-> index 1ae993fee4a5..b9d434a93632 100644
-> --- a/include/acpi/acpi_bus.h
-> +++ b/include/acpi/acpi_bus.h
-> @@ -707,11 +707,6 @@ acpi_dev_get_first_match_dev(const char *hid, const char *uid, s64 hrv);
->   * @hrv: Hardware Revision of the device, pass -1 to not check _HRV
->   *
->   * The caller is responsible for invoking acpi_dev_put() on the returned device.
-> - *
-> - * FIXME: Due to above requirement there is a window that may invalidate @adev
-> - * and next iteration will use a dangling pointer, e.g. in the case of a
-> - * hotplug event. That said, the caller should ensure that this will never
-> - * happen.
->   */
->  #define for_each_acpi_dev_match(adev, hid, uid, hrv)			\
->  	for (adev = acpi_dev_get_first_match_dev(hid, uid, hrv);	\
+>
+> +static int snp_reclaim_page(struct page *page, bool locked)
+> +{
+> +       struct sev_data_snp_page_reclaim data = {};
+
+Hmmm.. according to some things I read online, an empty initializer
+list is not legal in C. For example:
+https://stackoverflow.com/questions/17589533/is-an-empty-initializer-list-valid-c-code
+I'm sure this is compiling. Should we change this to `{0}`, which I
+believe will initialize all fields in this struct to zero, according
+to: https://stackoverflow.com/questions/11152160/initializing-a-struct-to-0?
+
+> +       int ret, err;
+> +
+> +       data.paddr = page_to_pfn(page) << PAGE_SHIFT;
+> +
+> +       if (locked)
+> +               ret = __sev_do_cmd_locked(SEV_CMD_SNP_PAGE_RECLAIM, &data, &err);
+> +       else
+> +               ret = sev_do_cmd(SEV_CMD_SNP_PAGE_RECLAIM, &data, &err);
+> +
+> +       return ret;
+> +}
+> +
+> +static int snp_set_rmptable_state(unsigned long paddr, int npages,
+> +                                 struct rmpupdate *val, bool locked, bool need_reclaim)
+> +{
+> +       unsigned long pfn = __sme_clr(paddr) >> PAGE_SHIFT;
+> +       unsigned long pfn_end = pfn + npages;
+> +       struct psp_device *psp = psp_master;
+> +       struct sev_device *sev;
+> +       int rc;
+> +
+> +       if (!psp || !psp->sev_data)
+> +               return 0;
+
+Should this return a non-zero value -- maybe `-ENODEV`? Otherwise, the
+`snp_alloc_firmware_page()` API will return a page that the caller
+believes is suitable to use with FW. My concern is that someone
+decides to use this API to stash a page very early on during kernel
+boot and that page becomes a time bomb.
+
+If we initialize `rc` to `-ENODEV` (or something similar), then every
+return in this function can be `return rc`.
+
+> +
+> +       /* If SEV-SNP is initialized then add the page in RMP table. */
+> +       sev = psp->sev_data;
+> +       if (!sev->snp_inited)
+> +               return 0;
+
+Ditto. Should this turn a non-zero value?
+
+> +
+> +       while (pfn < pfn_end) {
+> +               if (need_reclaim)
+> +                       if (snp_reclaim_page(pfn_to_page(pfn), locked))
+> +                               return -EFAULT;
+> +
+> +               rc = rmpupdate(pfn_to_page(pfn), val);
+> +               if (rc)
+> +                       return rc;
+> +
+> +               pfn++;
+> +       }
+> +
+> +       return 0;
+> +}
+> +
+> +static struct page *__snp_alloc_firmware_pages(gfp_t gfp_mask, int order, bool locked)
+> +{
+> +       struct rmpupdate val = {};
+
+`{}` -> `{0}`? (Not sure, see my previous comment.)
+
+> +       unsigned long paddr;
+> +       struct page *page;
+> +
+> +       page = alloc_pages(gfp_mask, order);
+> +       if (!page)
+> +               return NULL;
+> +
+> +       val.assigned = 1;
+> +       val.immutable = 1;
+> +       paddr = __pa((unsigned long)page_address(page));
+> +
+> +       if (snp_set_rmptable_state(paddr, 1 << order, &val, locked, false)) {
+> +               pr_warn("Failed to set page state (leaking it)\n");
+
+Maybe `WARN_ONCE` instead of `pr_warn`? It's both a big attention
+grabber and also rate limited.
+
+> +               return NULL;
+> +       }
+> +
+> +       return page;
+> +}
+> +
+> +void *snp_alloc_firmware_page(gfp_t gfp_mask)
+> +{
+> +       struct page *page;
+> +
+> +       page = __snp_alloc_firmware_pages(gfp_mask, 0, false);
+> +
+> +       return page ? page_address(page) : NULL;
+> +}
+> +EXPORT_SYMBOL_GPL(snp_alloc_firmware_page);
+>
+> +static void __snp_free_firmware_pages(struct page *page, int order, bool locked)
+> +{
+> +       struct rmpupdate val = {};
+
+`{}` -> `{0}`? (Not sure, see my previous comment.)
+
+> +       unsigned long paddr;
+> +
+> +       if (!page)
+> +               return;
+> +
+> +       paddr = __pa((unsigned long)page_address(page));
+> +
+> +       if (snp_set_rmptable_state(paddr, 1 << order, &val, locked, true)) {
+> +               pr_warn("Failed to set page state (leaking it)\n");
+
+WARN_ONCE?
+
+> +               return;
+> +       }
+> +
+> +       __free_pages(page, order);
+> +}
+> +
+> +void snp_free_firmware_page(void *addr)
+> +{
+> +       if (!addr)
+> +               return;
+> +
+> +       __snp_free_firmware_pages(virt_to_page(addr), 0, false);
+> +}
+> +EXPORT_SYMBOL(snp_free_firmware_page);
+> +
+>  static int __sev_do_cmd_locked(int cmd, void *data, int *psp_ret)
+>  {
+>         struct psp_device *psp = psp_master;
+> @@ -273,7 +387,7 @@ static int __sev_platform_init_locked(int *error)
+>
+>                 data.flags |= SEV_INIT_FLAGS_SEV_ES;
+>                 data.tmr_address = tmr_pa;
+> -               data.tmr_len = SEV_ES_TMR_SIZE;
+> +               data.tmr_len = sev_es_tmr_size;
+>         }
+>
+>         rc = __sev_do_cmd_locked(SEV_CMD_INIT, &data, error);
+> @@ -630,6 +744,8 @@ static int __sev_snp_init_locked(int *error)
+>         sev->snp_inited = true;
+>         dev_dbg(sev->dev, "SEV-SNP firmware initialized\n");
+>
+> +       sev_es_tmr_size = SEV_SNP_ES_TMR_SIZE;
+> +
+>         return rc;
+>  }
+>
+> @@ -1153,8 +1269,10 @@ static void sev_firmware_shutdown(struct sev_device *sev)
+>                 /* The TMR area was encrypted, flush it from the cache */
+>                 wbinvd_on_all_cpus();
+>
+> -               free_pages((unsigned long)sev_es_tmr,
+> -                          get_order(SEV_ES_TMR_SIZE));
+> +
+> +               __snp_free_firmware_pages(virt_to_page(sev_es_tmr),
+> +                                         get_order(sev_es_tmr_size),
+> +                                         false);
+>                 sev_es_tmr = NULL;
+>         }
+>
+> @@ -1204,16 +1322,6 @@ void sev_pci_init(void)
+>             sev_update_firmware(sev->dev) == 0)
+>                 sev_get_api_version();
+>
+> -       /* Obtain the TMR memory area for SEV-ES use */
+> -       tmr_page = alloc_pages(GFP_KERNEL, get_order(SEV_ES_TMR_SIZE));
+> -       if (tmr_page) {
+> -               sev_es_tmr = page_address(tmr_page);
+> -       } else {
+> -               sev_es_tmr = NULL;
+> -               dev_warn(sev->dev,
+> -                        "SEV: TMR allocation failed, SEV-ES support unavailable\n");
+> -       }
+> -
+>         /*
+>          * If boot CPU supports the SNP, then first attempt to initialize
+>          * the SNP firmware.
+> @@ -1229,6 +1337,16 @@ void sev_pci_init(void)
+>                 }
+>         }
+>
+> +       /* Obtain the TMR memory area for SEV-ES use */
+> +       tmr_page = __snp_alloc_firmware_pages(GFP_KERNEL, get_order(sev_es_tmr_size), false);
+> +       if (tmr_page) {
+> +               sev_es_tmr = page_address(tmr_page);
+> +       } else {
+> +               sev_es_tmr = NULL;
+> +               dev_warn(sev->dev,
+> +                        "SEV: TMR allocation failed, SEV-ES support unavailable\n");
+> +       }
+> +
+>         /* Initialize the platform */
+>         rc = sev_platform_init(&error);
+>         if (rc && (error == SEV_RET_SECURE_DATA_INVALID)) {
+> diff --git a/include/linux/psp-sev.h b/include/linux/psp-sev.h
+> index 63ef766cbd7a..b72a74f6a4e9 100644
+> --- a/include/linux/psp-sev.h
+> +++ b/include/linux/psp-sev.h
+> @@ -12,6 +12,8 @@
+>  #ifndef __PSP_SEV_H__
+>  #define __PSP_SEV_H__
+>
+> +#include <linux/sev.h>
+> +
+>  #include <uapi/linux/psp-sev.h>
+>
+>  #ifdef CONFIG_X86
+> @@ -920,6 +922,8 @@ int snp_guest_dbg_decrypt(struct sev_data_snp_dbg *data, int *error);
+>
+>
+>  void *psp_copy_user_blob(u64 uaddr, u32 len);
+> +void *snp_alloc_firmware_page(gfp_t mask);
+> +void snp_free_firmware_page(void *addr);
+>
+>  #else  /* !CONFIG_CRYPTO_DEV_SP_PSP */
+>
+> @@ -961,6 +965,13 @@ static inline int snp_guest_dbg_decrypt(struct sev_data_snp_dbg *data, int *erro
+>         return -ENODEV;
+>  }
+>
+> +static inline void *snp_alloc_firmware_page(gfp_t mask)
+> +{
+> +       return NULL;
+> +}
+> +
+> +static inline void snp_free_firmware_page(void *addr) { }
+> +
+>  #endif /* CONFIG_CRYPTO_DEV_SP_PSP */
+>
+>  #endif /* __PSP_SEV_H__ */
+> --
+> 2.17.1
+>
+>
