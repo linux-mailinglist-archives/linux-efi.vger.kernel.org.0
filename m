@@ -2,30 +2,29 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 597463CAABA
-	for <lists+linux-efi@lfdr.de>; Thu, 15 Jul 2021 21:12:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EB37E3CAB77
+	for <lists+linux-efi@lfdr.de>; Thu, 15 Jul 2021 21:20:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244022AbhGOTP0 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 15 Jul 2021 15:15:26 -0400
-Received: from mga05.intel.com ([192.55.52.43]:50311 "EHLO mga05.intel.com"
+        id S243742AbhGOTUT (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 15 Jul 2021 15:20:19 -0400
+Received: from mga17.intel.com ([192.55.52.151]:2063 "EHLO mga17.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S244280AbhGOTOk (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Thu, 15 Jul 2021 15:14:40 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10046"; a="296255391"
+        id S245667AbhGOTT6 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Thu, 15 Jul 2021 15:19:58 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10046"; a="190988507"
 X-IronPort-AV: E=Sophos;i="5.84,243,1620716400"; 
-   d="scan'208";a="296255391"
+   d="scan'208";a="190988507"
 Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jul 2021 12:08:34 -0700
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jul 2021 12:17:00 -0700
 X-IronPort-AV: E=Sophos;i="5.84,243,1620716400"; 
-   d="scan'208";a="495608620"
+   d="scan'208";a="495610768"
 Received: from snchan-mobl2.amr.corp.intel.com (HELO [10.209.125.33]) ([10.209.125.33])
-  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jul 2021 12:08:32 -0700
-Subject: Re: [PATCH Part2 RFC v4 06/40] x86/sev: Add helper functions for
- RMPUPDATE and PSMASH instruction
-To:     Sean Christopherson <seanjc@google.com>
-Cc:     Peter Gonda <pgonda@google.com>,
-        Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org,
-        linux-kernel@vger.kernel.org, kvm list <kvm@vger.kernel.org>,
+  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jul 2021 12:16:58 -0700
+Subject: Re: [PATCH Part2 RFC v4 08/40] x86/traps: Define RMP violation #PF
+ error code
+To:     Sean Christopherson <seanjc@google.com>,
+        Brijesh Singh <brijesh.singh@amd.com>
+Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
         linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
         linux-coco@lists.linux.dev, linux-mm@kvack.org,
         linux-crypto@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
@@ -38,7 +37,7 @@ Cc:     Peter Gonda <pgonda@google.com>,
         Jim Mattson <jmattson@google.com>,
         Andy Lutomirski <luto@kernel.org>,
         Dave Hansen <dave.hansen@linux.intel.com>,
-        Sergio Lopez <slp@redhat.com>,
+        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
         Peter Zijlstra <peterz@infradead.org>,
         Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
         David Rientjes <rientjes@google.com>,
@@ -47,13 +46,9 @@ Cc:     Peter Gonda <pgonda@google.com>,
         Borislav Petkov <bp@alien8.de>,
         Michael Roth <michael.roth@amd.com>,
         Vlastimil Babka <vbabka@suse.cz>, tony.luck@intel.com,
-        Nathaniel McCallum <npmccallum@redhat.com>,
-        brijesh.ksingh@gmail.com
+        npmccallum@redhat.com, brijesh.ksingh@gmail.com
 References: <20210707183616.5620-1-brijesh.singh@amd.com>
- <20210707183616.5620-7-brijesh.singh@amd.com>
- <CAMkAt6quzRMiEJ=iYDocRvpaYuNcV5vm=swbowK+KG=j7FjyKA@mail.gmail.com>
- <8ab309cd-8465-d543-55c8-5f6529fe74fd@intel.com>
- <YPCE5D6h7V0iZiX/@google.com>
+ <20210707183616.5620-9-brijesh.singh@amd.com> <YPCGVKESqZFWwdyB@google.com>
 From:   Dave Hansen <dave.hansen@intel.com>
 Autocrypt: addr=dave.hansen@intel.com; keydata=
  xsFNBE6HMP0BEADIMA3XYkQfF3dwHlj58Yjsc4E5y5G67cfbt8dvaUq2fx1lR0K9h1bOI6fC
@@ -98,12 +93,12 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  OPsw5tV/LmQ5GXH0JQ/TZXWygyRFyyI2FqNTx4WHqUn3yFj8rwTAU1tluRUYyeLy0ayUlKBH
  ybj0N71vWO936MqP6haFERzuPAIpxj2ezwu0xb1GjTk4ynna6h5GjnKgdfOWoRtoWndMZxbA
  z5cecg==
-Message-ID: <a00bb4f7-ab06-5773-8c8b-3540c75b257a@intel.com>
-Date:   Thu, 15 Jul 2021 12:08:29 -0700
+Message-ID: <801770da-f9b3-77a6-1aea-cb9a7796c386@intel.com>
+Date:   Thu, 15 Jul 2021 12:16:56 -0700
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.10.0
 MIME-Version: 1.0
-In-Reply-To: <YPCE5D6h7V0iZiX/@google.com>
+In-Reply-To: <YPCGVKESqZFWwdyB@google.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 8bit
@@ -111,38 +106,17 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 7/15/21 11:56 AM, Sean Christopherson wrote:
->>>> +       /* Retry if another processor is modifying the RMP entry. */
->>>> +       do {
->>>> +               /* Binutils version 2.36 supports the PSMASH mnemonic. */
->>>> +               asm volatile(".byte 0xF3, 0x0F, 0x01, 0xFF"
->>>> +                             : "=a"(ret)
->>>> +                             : "a"(spa)
->>>> +                             : "memory", "cc");
->>>> +       } while (ret == FAIL_INUSE);
->>> Should there be some retry limit here for safety? Or do we know that
->>> we'll never be stuck in this loop? Ditto for the loop in rmpupdate.
->> It's probably fine to just leave this.  While you could *theoretically*
->> lose this race forever, it's unlikely to happen in practice.  If it
->> does, you'll get an easy-to-understand softlockup backtrace which should
->> point here pretty quickly.
-> But should failure here even be tolerated?  The TDX cases spin on flows that are
-> _not_ due to (direct) contenion, e.g. a pending interrupt while flushing the
-> cache or lack of randomness when generating a key.  In this case, there are two
-> CPUs racing to modify the RMP entry, which implies that the final state of the
-> RMP entry is not deterministic.
+On 7/15/21 12:02 PM, Sean Christopherson wrote:
+>>  #ifndef _ASM_X86_TRAP_PF_H
+>>  #define _ASM_X86_TRAP_PF_H
+>>  
+>> +#include <vdso/bits.h>  /* BIT() macro */
+> What are people's thoughts on using linux/bits.h instead of vdso.bits.h, even
+> though the vDSO version is technically sufficient?  Seeing the "vdso" reference
+> definitely made me blink slowly a few times.
 
-I was envisioning that two different CPUs could try to smash two
-*different* 4k physical pages, but collide since they share
-a 2M page.
+Ugh, missed that.  Yes, that does look very weird.
 
-But, in patch 33, this is called via:
-
-> +		write_lock(&kvm->mmu_lock);
-> +
-> +		switch (op) {
-> +		case SNP_PAGE_STATE_SHARED:
-> +			rc = snp_make_page_shared(vcpu, gpa, pfn, level);
-...
-
-Which should make collisions impossible.  Did I miss another call-site?
+I don't see any reason to use that vdso/ version instead of BIT_ULL().
+I suspect I said to use BIT() when I commented on this in a previous
+round.  If so, that was wrong.
