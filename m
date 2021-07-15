@@ -2,49 +2,48 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 864033CA38C
-	for <lists+linux-efi@lfdr.de>; Thu, 15 Jul 2021 19:05:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 42BFF3CA393
+	for <lists+linux-efi@lfdr.de>; Thu, 15 Jul 2021 19:06:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231411AbhGORH7 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 15 Jul 2021 13:07:59 -0400
-Received: from mail-dm6nam10on2049.outbound.protection.outlook.com ([40.107.93.49]:23392
-        "EHLO NAM10-DM6-obe.outbound.protection.outlook.com"
+        id S230083AbhGORIx (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 15 Jul 2021 13:08:53 -0400
+Received: from mail-mw2nam12on2057.outbound.protection.outlook.com ([40.107.244.57]:7905
+        "EHLO NAM12-MW2-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S229566AbhGORH6 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Thu, 15 Jul 2021 13:07:58 -0400
+        id S229566AbhGORIw (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Thu, 15 Jul 2021 13:08:52 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=UPde9tS2Fex8UrYCRkPwfUcim0ZtR6OCY0yi436RuW/wur4xjcMIPRmjrJlfTkS4qW253Eae59HMq8wSsovlc5cKRTLbgZrbzeoIUDLxC8hssZD4F9J082JtY0vZAlm3joH6JMH86Uoe+l4ZF4k3/J2jdDL2+G+CwetmI+MRx4RzI7lIAT3igs5mWHpLNkpcCpHG3zN9T9OKSQh/c0O3Oe8KCd+1HdfmvdyIPzPAdAi1jGPlybbqMP/XrH3s8Fm3QxgtyBPF6tUFppqHIRDS6qTfHY4D12FtPtcTP5AkxzGkL4/EOMs8n5lCeSC2uL3NR6twfw88ze8clUyGJGXyDw==
+ b=JwqIMwetePY5nSjOSeV1gIAosNfuudIT+beQqP/MFbAMBa5uvQAUcQzapuEzjTt5yKdi4n9OeDXMUL36cZFHjBrem3NnfFWWUrxVQOBCsGOPj0WMnYNlvU/zOd1Ke3szrsPMpc0ev+JbYH4VuriK907r01sqVIJIP+nEMsx9oQj6YBfS5q0+sJBtkEJ+Ty0AoRUSR05ILptwwH7eDs48yJRe/hE8Bud0ZOtXJUYnKiMbJeYKtkr4pg0V8Bpgzkk637QfwT6sy5EeZeCk54RoNuiks/SSj2Ty0V/zMHnjCB7cmiKC3lD7nm+nUXkb+j1KHVa4CUxhTxotm1Cw5hSNWA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zPz4dbfGXn7Y8IxUX7EdLiWUhqJ8TjGtm559N/aElH4=;
- b=TMxsqfIgDEScEAa3G9dtPsKZL3rN06PCUCi7U4G8LHe9g6JKzl22rm1ZkcK6MozrPYpyvhPYtRbfQlAIm77GSuzp86qLwgiz+uJgxAv0nkQTvSEa3w9Ep+SSJ/QfxgUzY8yZEm/WD2AGAeQFBtd9g52Zp8btU0K2pgLNQpsh2uxrdMB6EF7mhPEXo0AgqCQUPZqs4tXae379W797lbQaeVYce56Ub4ktJl/2tS+Q8Cu8vtfNNTXjRQXHYN4mMJyXgeIJX4Q+Tae8GLFwki5LDwPqlRcae+pJWaGmGIynbUNow64iKTNYrw6ZNMT1Lna87VmPkNLXPXGM6ICaMgJfrw==
+ bh=GBchjtyFiOJzXoplBaTr2RPMpcVa4WNzxIAh4hTBSWw=;
+ b=MrUmNuhmloMmqe6O0ZGqOb3TDrs+G8H579e5e/sZ+bWFGp+RdZtT75UujdY+25IykLeAGsxHL+FdMaJzVKfWSxRa+jK6XgMGv08dRSZYJqUDHKy0fG4Xk2tVnsWgYMwQZszNiudO01M9GTReEjd5YGtS0IczVulEcLxDoXIYTF1mtpT3ljFCplnZ0+cWmx5hr4sfjsLynJ/HR3OjMzftj25f/F8RmZcfKfo9iFyQw3/xRcXZZgt0fCb+f4gmie/uJwFFx4uHWRbZgy3gOlKybqFcuLGOMiJrNS+R1gauZh5wgIVPXKhq3ZqmwerYFSbXUUnGpzFqo3zV3XgSCwUikQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
  header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zPz4dbfGXn7Y8IxUX7EdLiWUhqJ8TjGtm559N/aElH4=;
- b=Ywz+lFwN739ndtOfxZ4E4tUSQL1DAdmYXGgnj6gjJq9Wkz4eGHJ8Uw8dn6W9VgMsv/ynnWWTYqGm5RcDSyeAaIBvWAF51rki6hwjb/2CzjiXU77uZ1rU9sk+OmNKoxx41Ek77lfxqCQmihc2oBcJZ7PUUcP9tLXOIX6+vjjJn3I=
+ bh=GBchjtyFiOJzXoplBaTr2RPMpcVa4WNzxIAh4hTBSWw=;
+ b=uNeaYQlNUTRplOE5Mmr/sMrNRiU62mw4iYsqtHvFsdX+aHznY5RPX0+gRevpF2NjruEkXQd8lrOvkKwFlcSa5rB6ahFuOka/1CHx14ANP9ALWNmWW0WYufe30gM8b03QH59UEs61aZOhEIbRdSFiApJ+eGe0Z4Ptgcf5Ctlh9Hs=
 Authentication-Results: gmail.com; dkim=none (message not signed)
  header.d=none;gmail.com; dmarc=none action=none header.from=amd.com;
-Received: from DM4PR12MB5229.namprd12.prod.outlook.com (2603:10b6:5:398::12)
- by DM8PR12MB5397.namprd12.prod.outlook.com (2603:10b6:8:38::6) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.4331.23; Thu, 15 Jul 2021 17:05:03 +0000
-Received: from DM4PR12MB5229.namprd12.prod.outlook.com
- ([fe80::73:2581:970b:3208]) by DM4PR12MB5229.namprd12.prod.outlook.com
- ([fe80::73:2581:970b:3208%3]) with mapi id 15.20.4331.024; Thu, 15 Jul 2021
- 17:05:03 +0000
-Subject: Re: [PATCH Part2 RFC v4 01/40] KVM: SVM: Add support to handle AP
- reset MSR protocol
-To:     Sean Christopherson <seanjc@google.com>
-Cc:     Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org,
+Received: from SN6PR12MB2718.namprd12.prod.outlook.com (2603:10b6:805:6f::22)
+ by SN6PR12MB4670.namprd12.prod.outlook.com (2603:10b6:805:11::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4308.22; Thu, 15 Jul
+ 2021 17:05:56 +0000
+Received: from SN6PR12MB2718.namprd12.prod.outlook.com
+ ([fe80::a8a9:2aac:4fd1:88fa]) by SN6PR12MB2718.namprd12.prod.outlook.com
+ ([fe80::a8a9:2aac:4fd1:88fa%3]) with mapi id 15.20.4331.024; Thu, 15 Jul 2021
+ 17:05:56 +0000
+Cc:     brijesh.singh@amd.com, x86@kernel.org,
         linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
         linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
         linux-coco@lists.linux.dev, linux-mm@kvack.org,
         linux-crypto@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
         "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
         Paolo Bonzini <pbonzini@redhat.com>,
         Vitaly Kuznetsov <vkuznets@redhat.com>,
@@ -62,168 +61,133 @@ Cc:     Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org,
         Michael Roth <michael.roth@amd.com>,
         Vlastimil Babka <vbabka@suse.cz>, tony.luck@intel.com,
         npmccallum@redhat.com, brijesh.ksingh@gmail.com
+Subject: Re: [PATCH Part2 RFC v4 07/40] x86/sev: Split the physmap when adding
+ the page in RMP table
+To:     Sean Christopherson <seanjc@google.com>
 References: <20210707183616.5620-1-brijesh.singh@amd.com>
- <20210707183616.5620-2-brijesh.singh@amd.com> <YO9GWVsZmfXJ4BRl@google.com>
- <e634061d-78f4-dcb2-b7e5-ebcb25585765@amd.com> <YPBYMiOB44dhhPfr@google.com>
-From:   Tom Lendacky <thomas.lendacky@amd.com>
-Message-ID: <02dc78a6-9aa7-cb0f-af48-aed4c4a94f6e@amd.com>
-Date:   Thu, 15 Jul 2021 12:05:00 -0500
+ <20210707183616.5620-8-brijesh.singh@amd.com> <YO9kP1v0TAFXISHD@google.com>
+From:   Brijesh Singh <brijesh.singh@amd.com>
+Message-ID: <d486a008-8340-66b0-9667-11c8a50974e4@amd.com>
+Date:   Thu, 15 Jul 2021 12:05:54 -0500
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.11.0
-In-Reply-To: <YPBYMiOB44dhhPfr@google.com>
-Content-Type: text/plain; charset=utf-8
+In-Reply-To: <YO9kP1v0TAFXISHD@google.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SN4PR0201CA0057.namprd02.prod.outlook.com
- (2603:10b6:803:20::19) To DM4PR12MB5229.namprd12.prod.outlook.com
- (2603:10b6:5:398::12)
+X-ClientProxiedBy: SA0PR11CA0024.namprd11.prod.outlook.com
+ (2603:10b6:806:d3::29) To SN6PR12MB2718.namprd12.prod.outlook.com
+ (2603:10b6:805:6f::22)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from [10.236.30.241] (165.204.77.1) by SN4PR0201CA0057.namprd02.prod.outlook.com (2603:10b6:803:20::19) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4331.21 via Frontend Transport; Thu, 15 Jul 2021 17:05:01 +0000
+Received: from [10.236.31.95] (165.204.77.1) by SA0PR11CA0024.namprd11.prod.outlook.com (2603:10b6:806:d3::29) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4331.21 via Frontend Transport; Thu, 15 Jul 2021 17:05:54 +0000
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: de651d38-134e-48d0-5f36-08d947b2b006
-X-MS-TrafficTypeDiagnostic: DM8PR12MB5397:
+X-MS-Office365-Filtering-Correlation-Id: 60421bdb-8d1d-473a-52c9-08d947b2cf99
+X-MS-TrafficTypeDiagnostic: SN6PR12MB4670:
 X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <DM8PR12MB539749E74A63938ACDBD456CEC129@DM8PR12MB5397.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:10000;
+X-Microsoft-Antispam-PRVS: <SN6PR12MB46709FE5F5C3DAC0A8C8DBC3E5129@SN6PR12MB4670.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: O3HhZOd+j41zVwJ5IWRGUmbHeYzx5sipQT6VEWSU0jGvItpbqXYdqkr2S/0x774PHcWOsXhE8/jKYwDffH79GR/IY6OhgDD4n45LRYf8G6Vb61IAA3RYigZSqa26Rhg3quFqZVvQXtpg+balbyYFZYPn1INTSmfjcWFaW0u8OBZY5fDSFaIOYC1rpMRMoTjk81Xcb46bWg/fCgaqHpXydlcGOlu+U83ZavWiIGrr4hvyrt+EVMbK4aBP1W3cT7/1Ac5XbTdW2MTgfvDfzQoIMsIT9v1NDjhXfA1yK7qN6ZdRfG1NbERiY89bz3DZgo80ooimu0apNsPzqaMIW+MUc+M6o3CbA8oicX/iz31we4U57OYUhYb05skmA/gl4KyrukQIAv0EnQ2FTNuqu4e5iDyRysyQD8vVEBTFlh20MJdJ9ECe0atHo3SkOIgv4DIvlfe/DjEZZk1kz6j7ub9Tl7GU8AXmr5vEir7mjCcimeJyRcOFilhrH69uRlsVEvIvecbboOXLfo8fzypTzuRGpb1nqhG/0BiGQJhBj5jICSAzzGULOBNLzvE0WLDX0HJmECMzIu+pi/XxKdhxr0OJ20QTMRutuSkMiXRlhAgDh+4JRZWfRngD4D22I35fLvbvu44kORcO5pQrpZMFpwKtyDpkCaBW8gLnQvKvq9Lqd6aMLw/1JUUxrvC6PI25ER7yP1T3OokE+28GeMf7JtW4yJM9EXdWAfxkzHSCkd+t2yU=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB5229.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(366004)(478600001)(38100700002)(36756003)(53546011)(31696002)(26005)(6486002)(2906002)(86362001)(316002)(186003)(31686004)(16576012)(54906003)(6916009)(4326008)(7406005)(7416002)(83380400001)(8676002)(2616005)(956004)(66556008)(66476007)(8936002)(66946007)(5660300002)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: hljcrTp+7fOTz/aNHBSMOTp4SfklEV3LEFcwbF4/xeswMIETLJsgo7Oj0CF3y5wyvyyR0dPGRGrfao41nxF9M/qVJS5YHJarMMnG5+ZjoFnrSZW6qZEj3mDSDqvoXYdJRv6a6TfI2LdG2JItlqss5fslYv/YVRtPoe9T+T1TWMz2g0XnD55ymFVEqYkAQ+MdctQp34lFdvgC5n7ZQveQLJdHcxXrv9CFwuIT9yA8l98aqApqdtb8Pa9iLt8SbpqJp0UVHf9SbzxCVNZxiHI2IEPVmcEWLAQq3PUmvISkoTFMqz1L9G1tNQS0ZXK+dsgoGdAm1o8WhkfCssEMmqK+FJ6aJmYaoHFU7MF8I+C7uCipx879BnIB2aoeMJ4nawk920z7JsxErSc82uzMylmPky78hUD8vP206l4hrJMIM0krvuTiQTg9L/ccBLKSWgRJRmFuAu5i41QVfsSKHHVjrtF9PdMg7t2W9od3Kpg2gUPwhejP8kX0QlaBa9m5avnIWoI4FbKL7r5yF2blWQ1pj4040eE2qBFPRR7GyFPL4xx05V+/2omvy5j4Oo6vWMgFth9uWrVyYyosTqqYvjWEMoEu6RipnRWQQnXGzg8kXsXrFDTmsL74CIyhtEk9OLn2r674PZ/lw9VmttkSrDg5ie3NL/c7CyIImiEy8F+Tejxx+hvYADRQMiHdZ8pXsFLMYCscLP8WA+0mGK1iFpSFOqFlpNwAAT4Jmpu65Ccz0/MqVkV4kEOAeO9L/EPSd7XeaRSkr2uWYKNo+peKTrOXaQ==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR12MB2718.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(366004)(8676002)(7406005)(7416002)(8936002)(36756003)(83380400001)(2906002)(316002)(16576012)(54906003)(52116002)(53546011)(31696002)(66476007)(44832011)(6916009)(956004)(2616005)(26005)(6486002)(186003)(478600001)(38100700002)(66556008)(38350700002)(4326008)(31686004)(5660300002)(66946007)(86362001)(45980500001)(43740500002);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?QnhEb0tQSnk3YXNhRHJwWnJLZVgzS09zYUpTZ3hvS2M5MFNKY3VKUmx4RU1p?=
- =?utf-8?B?aFFEeUZoOGY5RGZSNkcxT3hxSGpZazEwNWJudDJMbmdISVA2dS9IZEhtVllC?=
- =?utf-8?B?cXlxSHF5K3dyNUQzZUI2VXYvaVNxdEVJWlFqR2NCazlpdnR1RTVVZWNWYzh3?=
- =?utf-8?B?R2diK00ybDlKQUpkRkxoTHY2TWdnd0M2Z0dKRFBwekg3bWFmeHFxUG5xd0c0?=
- =?utf-8?B?YS81QjVKbGZFY1ZKN0xVeFh6bnBMaTBueEt3L1RiaGp4ckhRMktSaUpGS1k0?=
- =?utf-8?B?aWlHWGhzVC85S1EzdjRnd2U5cnRCWHlTdjhYQy9rZlhrcUUyR1JBYlFyVGZs?=
- =?utf-8?B?K3Z4Unh6WllNUkU1dHQwOE5CNW1yM0hXbmxXaytmOTVqd08zamNab2xNMGNN?=
- =?utf-8?B?NENHWFg5R0ZPYU5ZRUNVbDBTMjZxa08zOHRYOXRXcVRoVXZZTU56VDZnaklk?=
- =?utf-8?B?ODZrUmgvL0dWWUZoUVJETXJrTUtDbHIyanJKTHEzUlJVOTlVRXJLMS9DeTFx?=
- =?utf-8?B?YkhJeU5xMmJmbzNxKzhHNURudjNYRFhqUWE1RFdhWC8zbGl5dHh1SDl6U0pw?=
- =?utf-8?B?ZXRLRjJYdWRkalRuTWVVcE8zbmhFK3MxQjBHUjNEWUs2NWx2L3phWGI0dVFN?=
- =?utf-8?B?QzlVNmxZYmF5cnB0N0lNUEJjQVVPQnI3Qm0zSHNGY3FZYXhuWmY2Vld1OEQz?=
- =?utf-8?B?Z3NjVFg5ZzJQNnRQNlUxWGswd1ZMY3FsOEVPZjlMRS9la1R1WXNiRGlmRi8v?=
- =?utf-8?B?bnNwMDdaTWoza1Jyd1M4NHVwbW5Ib0N1Ly9uL0F4SGVIdDczbHdNZjZXSjJP?=
- =?utf-8?B?M2VhUDlYZVRHR09FT1dPeTFKR1JWN0NDbmhiTms0aTZ2UFg4OFJJNklUaVhG?=
- =?utf-8?B?U1Y1VXFyZmZRQzZCNzdPSDA3RnZ0RXhFaCtTcXhSUmp4a280WWJ4ZVhUdUJl?=
- =?utf-8?B?SlRCeVgyQlVZd0EyVm9IWEwyNUc0d0ozSm9zbWV4OHYwNXovalYwbUNWRHJC?=
- =?utf-8?B?eGN5eHBuQVhyVlhFNnJJNDBZOTh5YUZzeTFFN3d3ZWRFN25KYVlsYWtYTUdi?=
- =?utf-8?B?R1FOajNRS3NnOGxra0Y5cUhUZlBoTnQrVlVPRkZBak85bXJTaFpmOU53aWls?=
- =?utf-8?B?aFJBbkxDOW9Db3YzYm1CblRHQ3lwZzVpWk92dmlZSUxFQldOUlhyd2ZwQkJT?=
- =?utf-8?B?UmovdS9tR2VtTWVBMzliY1ZRL1NaeGdMbXZYRGdHU3JJNGdDWEpZQ1ltdmc0?=
- =?utf-8?B?UEdIQm1jZHAram93Y2xtNmtxOFVJdUZwMkV0NC9ZTmFlVDZaZENmSmdNY0Q0?=
- =?utf-8?B?Y0hCNDVmVm4yUFZZWGR2S1EvRDg2aWphK0FHbittWTIrTmh6a2wrc1M1aHV4?=
- =?utf-8?B?YTRWLzk0cWFIcUY2RXpSQWtnRzhlelR3R2l2K3k3Sll4aE9xL2FOWHFoWjJ6?=
- =?utf-8?B?OW94RDBwa1hUcXh3Q3c2VFVjZ1cyaEFvM0dtd24xZGl4L3N1OWhxV1piNldM?=
- =?utf-8?B?eExXNmo2dmYyMHVPeWxsZ09hT1NjcU9jbmtuclVCZktvRmRnbk5ZOTU1TnlN?=
- =?utf-8?B?Q1U0T3hyampqT1oveGlqNUk2UEpkY1puYW1DK0hnUjhBbUVBbHNSbmN3eE8z?=
- =?utf-8?B?UVVkOUJzV3M0YzIyeDBHNDhadnMzU0lNaVhLdnQ0QmY1RW1vQlNKbU1SSzhn?=
- =?utf-8?B?OFdRZmNidUNZUXZSUHhESndwQXJaV3dDdXVqZy9SSkVHWUxIUWRXQlpBUjZm?=
- =?utf-8?Q?rBahteqVtYOad+gEMAe/ufz7k5XWEZpY1fo9cEy?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?SUt1aUZZRTFHOGdSMHVDMkRxb29HeTFFZ3RhY0c2THNLUkR5NFVVQjNBTEJC?=
+ =?utf-8?B?WWtFQmxUU1FrK1BRR28xTFNrZytubjBlZmRWR2VZS1o1OWhRNDhPY1U3T2lJ?=
+ =?utf-8?B?TXhaSVkwTWZVWlJPdHUzV29oNU4yT2pOSTFLS2dkNTFFcTBrZGlPeFNyYU94?=
+ =?utf-8?B?aEpON3RwZUd2SElrd0hrVEFpV1hhWVZwdWc0T3o3d0pXclhKalkzSldJdUM3?=
+ =?utf-8?B?c1BvWFZDTWNhSUh6c3ZPekU3cWkzakhnbXdnTjAyRDc5bjFrdGJUSGw0U0JO?=
+ =?utf-8?B?WEQ4RWhsWHB2bGdsN3h6M2xxTzBKUEFhYlF6UUhTb1cxQXRDaEVHM2N5ZVZH?=
+ =?utf-8?B?WTBvUXB5VTUvNkFFWmIwSnZtRGhFWUFXRHhITVY5UHB5UHBySTNBMTlUcDJC?=
+ =?utf-8?B?ZHpxekFwZW0xNnlyTEhTR0lTSHIxYzJwWUpjSHJ2Qm9lMDlFTEN3ZGIxVTlJ?=
+ =?utf-8?B?QUlYb0ZJeGZuT1VTOWo5MW8vbWlna2N4enF5WUpISGdHcmRoMHFyTEx2emhG?=
+ =?utf-8?B?T3dzcnp3RFZPam1nTWlVMCsxemhTZDJDQjBJSXpYVk03NkFvZERzdys1RFhz?=
+ =?utf-8?B?N3lpRlJwcXpkcjhweVhlcWdxQzdEZTgxTnM5NlpoOGxFVTM4bEJrTXBveTFR?=
+ =?utf-8?B?bm5Da0dwNktzbHZVeHZ3bXNHd1RuS2h1K1EydGt5aGdBU2Y5eDVjSVA4anZP?=
+ =?utf-8?B?L2JxSmV6UThGd01lazZjQldnamVuWWpDSFFuVFNBVXZ3WUJRWU84MlRXbWFQ?=
+ =?utf-8?B?Z2QrMmdSbDVQcVFkRm1kTERYK2grMlBkRlkyYXo1TnVUay9sbjNjOFh5SmhF?=
+ =?utf-8?B?Y3hPdjBJcEMxdDZldWxZNUphblVkTEdzVllwWjdJcEVPRUFsbU1LaEVtYmxy?=
+ =?utf-8?B?N29UamZLSnpvSzdOU3NRME5tUS8vaHV3dlJMaWJ6YnowQkpOYjBKZm9zTVds?=
+ =?utf-8?B?UDFaMVh5UWtydFpFa1lIWHpLYnAxWDh5bWx2L0swczdTcEZ3VnVNaVVTeUdG?=
+ =?utf-8?B?WjhzUVZnUXlvZHVPUjRGTDA2bFVFb1hST0d4eWFNREtDU0NPV1FYdEp2clFs?=
+ =?utf-8?B?L1NJOUQyN0tQcEw1OFRmNjVBbFg3c0xrTW5MWDFaUm04cHJZbVpFVVVRSFJm?=
+ =?utf-8?B?YWdZQkUzM25YK1VuZ2RQSFd6eDhGZ2tmZDFPWlZWVTNBbmdLUnVJVnk0WHFH?=
+ =?utf-8?B?c2xlWW91dW9uQ0ovcmVNUUFFUGxHYmRNSWFmTHo4YXpzUnlMemcrVzNkRUw0?=
+ =?utf-8?B?TTVoN0dvZTgxUG52QVJVYnpPbm5Vbi9VVHdoRkc4Sm9zdktrbndlQmU1dDB5?=
+ =?utf-8?B?ZGg5aFBNUGhoNWZGK3VET0UwNlcvVVFka2Q5S3ZwZnI4enBIVVp5Mm45WDBX?=
+ =?utf-8?B?R0NuRHRzQUUvd0lJT3gxN29lcitaVTJxZ3ZTeUgrZ1lMcURnYUtaQnBYOVV0?=
+ =?utf-8?B?ejgvUWo5M3ZKeHNrWXc4NTFjcEFQM2RDVVprWk5PdjNSMk5oUks4aWl3bTZ6?=
+ =?utf-8?B?Uzd3M2NJUVgyWktjaWFGNUsyKzdVK0ZabHVHQTY0YkRSTGVLMG1QNUZXM0pC?=
+ =?utf-8?B?RURlQkl6bFR5ajdTM1c3RktvSUp0ZmhBOHcxTElXUUpZYW03dHFZMWNzZ2p6?=
+ =?utf-8?B?TUtLaURta2crMFAxN2FlRlIwTW5yOFRWU3JmSEhwVUo4MFNReW9EOWxJaE9N?=
+ =?utf-8?B?RzBGN0xtRWNxVVYyMHcvaDU1a1A4bUU2MGt3b3o2MnYrN3lnQ3RPTFdqenE4?=
+ =?utf-8?Q?bXWvgtxd1I6bSKIXoYK6hBd6ZAjG4tQYL/BUZsN?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: de651d38-134e-48d0-5f36-08d947b2b006
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB5229.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 60421bdb-8d1d-473a-52c9-08d947b2cf99
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR12MB2718.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jul 2021 17:05:03.6069
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jul 2021 17:05:56.5796
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: N5yFBVDCMzOi0gtO3XZYOW0kKXGRcMUChlRXS3V+J+iJ6KSUGl5F5gELkSz3HNsVskIGGSmEQnN8Kfz5lLaWCw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM8PR12MB5397
+X-MS-Exchange-CrossTenant-UserPrincipalName: V2XjJfRg1EcaS/54CTwtFCRXAvOz4Riz5ylxJO76c4weszyVLXxUf9fIkDzj6svEDa314EFzGBiVWy9N12z9kQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN6PR12MB4670
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 7/15/21 10:45 AM, Sean Christopherson wrote:
-> On Thu, Jul 15, 2021, Tom Lendacky wrote:
->> On 7/14/21 3:17 PM, Sean Christopherson wrote:
->>>> +	case GHCB_MSR_AP_RESET_HOLD_REQ:
->>>> +		svm->ap_reset_hold_type = AP_RESET_HOLD_MSR_PROTO;
->>>> +		ret = kvm_emulate_ap_reset_hold(&svm->vcpu);
->>>
->>> The hold type feels like it should be a param to kvm_emulate_ap_reset_hold().
->>
->> I suppose it could be, but then the type would have to be tracked in the
->> kvm_vcpu_arch struct instead of the vcpu_svm struct, so I opted for the
->> latter. Maybe a helper function, sev_ap_reset_hold(), that sets the type
->> and then calls kvm_emulate_ap_reset_hold(), but I'm not seeing a big need
->> for it.
+
+
+On 7/14/21 5:25 PM, Sean Christopherson wrote:
+>> A write from the hypervisor goes through the RMP checks. When the
+>> hypervisor writes to pages, hardware checks to ensures that the assigned
+>> bit in the RMP is zero (i.e page is shared). If the page table entry that
+>> gives the sPA indicates that the target page size is a large page, then
+>> all RMP entries for the 4KB constituting pages of the target must have the
+>> assigned bit 0. If one of entry does not have assigned bit 0 then hardware
+>> will raise an RMP violation. To resolve it, split the page table entry
+>> leading to target page into 4K.
 > 
-> Huh.  Why is kvm_emulate_ap_reset_hold() in x86.c?  That entire concept is very
-> much SEV specific.  And if anyone argues its not SEV specific, then the hold type
-> should also be considered generic, i.e. put in kvm_vcpu_arch.
-
-That was based on review comments where it was desired that the halt be
-identified as specifically from the AP reset hold vs a normal halt. So
-kvm_emulate_ap_reset_hold() was created using KVM_MP_STATE_AP_RESET_HOLD
-and KVM_EXIT_AP_RESET_HOLD instead of exporting a version of
-kvm_vcpu_halt() with the state and reason as arguments.
-
-If there's no objection, then I don't have any issues with moving the hold
-type to kvm_vcpu_arch and adding a param to kvm_emulate_ap_reset_hold().
-
+> Isn't the above just saying:
 > 
->>>> +
->>>> +		/*
->>>> +		 * Preset the result to a non-SIPI return and then only set
->>>> +		 * the result to non-zero when delivering a SIPI.
->>>> +		 */
->>>> +		set_ghcb_msr_bits(svm, 0,
->>>> +				  GHCB_MSR_AP_RESET_HOLD_RESULT_MASK,
->>>> +				  GHCB_MSR_AP_RESET_HOLD_RESULT_POS);
->>>> +
->>>> +		set_ghcb_msr_bits(svm, GHCB_MSR_AP_RESET_HOLD_RESP,
->>>> +				  GHCB_MSR_INFO_MASK,
->>>> +				  GHCB_MSR_INFO_POS);
->>>
->>> It looks like all uses set an arbitrary value and then the response.  I think
->>> folding the response into the helper would improve both readability and robustness.
->>
->> Joerg pulled this patch out and submitted it as part of a small, three
->> patch series, so it might be best to address this in general in the
->> SEV-SNP patches or as a follow-on series specifically for this re-work.
->>
->>> I also suspect the helper needs to do WRITE_ONCE() to guarantee the guest sees
->>> what it's supposed to see, though memory ordering is not my strong suit.
->>
->> This is writing to the VMCB that is then used to set the value of the
->> guest MSR. I don't see anything done in general for writes to the VMCB, so
->> I wouldn't think this should be any different.
+>    All RMP entries covered by a large page must match the shared vs. encrypted
+>    state of the page, e.g. host large pages must have assigned=0 for all relevant
+>    RMP entries.
 > 
-> Ooooh, right.  I was thinking this was writing memory that's shared with the
-> guest, but this is KVM's copy of the GCHB MSR, not the GHCB itself.  Thanks!
+
+Yes.
+
+
+>> @@ -2375,6 +2375,12 @@ int rmpupdate(struct page *page, struct rmpupdate *val)
+>>   	if (!cpu_feature_enabled(X86_FEATURE_SEV_SNP))
+>>   		return -ENXIO;
+>>   
+>> +	ret = set_memory_4k((unsigned long)page_to_virt(page), 1);
 > 
->>> Might even be able to squeeze in a build-time assertion.
->>>
->>> Also, do the guest-provided contents actually need to be preserved?  That seems
->>> somewhat odd.
->>
->> Hmmm... not sure I see where the guest contents are being preserved.
+> IIUC, this shatters the direct map for page that's assigned to an SNP guest, and
+> the large pages are never recovered?
 > 
-> The fact that set_ghcb_msr_bits() is a RMW flow implies _something_ is being
-> preserved.  And unless KVM explicitly zeros/initializes control.ghcb_gpa, the
-> value being preserved is the value last written by the guest.  E.g. for CPUID
-> emulation, KVM reads the guest-requested function and register from ghcb_gpa,
-> then writes back the result.  But set_ghcb_msr_bits() is a RMW on a subset of
-> bits, and thus it's preserving the guest's value for the bits not being written.
-
-Yes, set_ghcb_msr_bits() is a RMW helper, but the intent was to set every
-bit. So for CPUID, I missed setting the reserved area to 0. There wouldn't
-be an issue initializing the whole field to zero once everything has been
-pulled out for the MSR protocol function being invoked.
-
+> I believe a better approach would be to do something similar to memfd_secret[*],
+> which encountered a similar problem with the direct map.  Instead of forcing the
+> direct map to be forever 4k, unmap the direct map when making a page guest private,
+> and restore the direct map when it's made shared (or freed).
 > 
-> Unless there is an explicit need to preserve the guest value, the whole RMW thing
-> is unnecessary and confusing.
+> I thought memfd_secret had also solved the problem of restoring large pages in
+> the direct map, but at a glance I can't tell if that's actually implemented
+> anywhere.  But, even if it's not currently implemented, I think it makes sense
+> to mimic the memfd_secret approach so that both features can benefit if large
+> page preservation/restoration is ever added.
+> 
 
-I guess it depends on who's reading the code. I don't find it confusing,
-which is probably why I implemented it that way :) But, yes, it certainly
-can be changed to create the result and then have a single function that
-combines the result and response code and sets the ghcb_gpa, which would
-have eliminated the missed setting of the reserved area.
+thanks for the memfd_secrets pointer. At the lowest level it shares the
+same logic to split the physmap. We both end up calling to
+change_page_attrs_set_clr() which split the page and updates the page
+table attributes.
 
-Thanks,
-Tom
+Given this, I believe in future if the change_page_attrs_set_clr() is 
+enhanced to track the splitting of the pages and restore it later then 
+it should work transparently.
+
+thanks
