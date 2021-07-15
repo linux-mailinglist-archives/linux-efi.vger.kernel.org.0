@@ -2,29 +2,57 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EB37E3CAB77
-	for <lists+linux-efi@lfdr.de>; Thu, 15 Jul 2021 21:20:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B4C353CAD12
+	for <lists+linux-efi@lfdr.de>; Thu, 15 Jul 2021 21:51:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243742AbhGOTUT (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 15 Jul 2021 15:20:19 -0400
-Received: from mga17.intel.com ([192.55.52.151]:2063 "EHLO mga17.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S245667AbhGOTT6 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Thu, 15 Jul 2021 15:19:58 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10046"; a="190988507"
-X-IronPort-AV: E=Sophos;i="5.84,243,1620716400"; 
-   d="scan'208";a="190988507"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jul 2021 12:17:00 -0700
-X-IronPort-AV: E=Sophos;i="5.84,243,1620716400"; 
-   d="scan'208";a="495610768"
-Received: from snchan-mobl2.amr.corp.intel.com (HELO [10.209.125.33]) ([10.209.125.33])
-  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jul 2021 12:16:58 -0700
-Subject: Re: [PATCH Part2 RFC v4 08/40] x86/traps: Define RMP violation #PF
- error code
-To:     Sean Christopherson <seanjc@google.com>,
-        Brijesh Singh <brijesh.singh@amd.com>
-Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        id S243448AbhGOTww (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 15 Jul 2021 15:52:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42140 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1346360AbhGOTvT (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 15 Jul 2021 15:51:19 -0400
+Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F8A1C0225A7
+        for <linux-efi@vger.kernel.org>; Thu, 15 Jul 2021 12:18:21 -0700 (PDT)
+Received: by mail-pf1-x42f.google.com with SMTP id a127so6395828pfa.10
+        for <linux-efi@vger.kernel.org>; Thu, 15 Jul 2021 12:18:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=elaxZZafDjVLiuc49owUeZ0204o65amFxOUC2qpgTKs=;
+        b=Q5HupHoPS4LdRZjI9aLLpJl+EXOusDVJvjG4Iz0vi484LYzH9bZJ+UVYAPgxON53tD
+         3HUhZR3sPDonrp6Rx9HVRmHE8bwdJDYe3XLJrkaVZXuJgNA1I9br3fWYQH0NR8D1K4Bh
+         wpY5QEoNAb+x/8n9tWtUWQ3oLRqyDIIHHMOiw2yPQ7Z+1WXGx+r3bT61UMlsD+Gt9KvD
+         wSosGIOovnI5kM/c/4ZOB1p0adgb7KpSr/rm6WtHEv8nbN2mbwno03HSeDBR3602UD+d
+         /PViOtSgang4WUW2+i6djc478rpbuJrqWD+lJ9Dy+1oTIcTKK+8C3zjn8Ias8jxuPdd5
+         sHkQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=elaxZZafDjVLiuc49owUeZ0204o65amFxOUC2qpgTKs=;
+        b=qiYaYVnwC0rBoD06lSmEoJLh/wqnPCWuC8zsEyIhEhlatjyBaoCd94rjrlDpJyQ01K
+         gupPhaIAqYn+77z3EJ21Y4jnrYH9QfYA7ReLhI/zSEwAy0PdbDKubjdDFmjVD/KvfYlR
+         eFjG2Mj0UT18/0KApTOZXuXALTOnWy/BIWqLmrzNSPsysa2A7NhXwNop+3z4Gwqo1u2m
+         KazhJAaQbS3OYf9t5tN3nqZb4j7oQ3w17f97Ize38wHGQSoi22/DANV38eqHTCM3KZEz
+         QinJHXZ58/0+9p19fTEeHAd8lfDThI6El0Q10W9eHbMwbbpfxBL9Lz0U/CE9/0ly/+hS
+         S69g==
+X-Gm-Message-State: AOAM532RB7svE2xacb8v768RQXB39YQrl+ihfmQuGBW41Typ+LUjhhSi
+        yprLfMVg5Gxt6/OhLk0A9wSIlA==
+X-Google-Smtp-Source: ABdhPJxs5P265vYYEPGZ8x+HkOKGVsrc3wav0sXpzToNYrqG5Ockpl2xyO49rMlEI8CkyKvDo3JDEA==
+X-Received: by 2002:a05:6a00:d5f:b029:32c:7264:2f65 with SMTP id n31-20020a056a000d5fb029032c72642f65mr6181751pfv.40.1626376700235;
+        Thu, 15 Jul 2021 12:18:20 -0700 (PDT)
+Received: from google.com (157.214.185.35.bc.googleusercontent.com. [35.185.214.157])
+        by smtp.gmail.com with ESMTPSA id i12sm6029283pjj.9.2021.07.15.12.18.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 15 Jul 2021 12:18:19 -0700 (PDT)
+Date:   Thu, 15 Jul 2021 19:18:15 +0000
+From:   Sean Christopherson <seanjc@google.com>
+To:     Dave Hansen <dave.hansen@intel.com>
+Cc:     Peter Gonda <pgonda@google.com>,
+        Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org,
+        linux-kernel@vger.kernel.org, kvm list <kvm@vger.kernel.org>,
         linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
         linux-coco@lists.linux.dev, linux-mm@kvack.org,
         linux-crypto@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
@@ -37,7 +65,7 @@ Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
         Jim Mattson <jmattson@google.com>,
         Andy Lutomirski <luto@kernel.org>,
         Dave Hansen <dave.hansen@linux.intel.com>,
-        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
+        Sergio Lopez <slp@redhat.com>,
         Peter Zijlstra <peterz@infradead.org>,
         Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
         David Rientjes <rientjes@google.com>,
@@ -46,77 +74,68 @@ Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
         Borislav Petkov <bp@alien8.de>,
         Michael Roth <michael.roth@amd.com>,
         Vlastimil Babka <vbabka@suse.cz>, tony.luck@intel.com,
-        npmccallum@redhat.com, brijesh.ksingh@gmail.com
+        Nathaniel McCallum <npmccallum@redhat.com>,
+        brijesh.ksingh@gmail.com
+Subject: Re: [PATCH Part2 RFC v4 06/40] x86/sev: Add helper functions for
+ RMPUPDATE and PSMASH instruction
+Message-ID: <YPCJ95ABlMjxnDWX@google.com>
 References: <20210707183616.5620-1-brijesh.singh@amd.com>
- <20210707183616.5620-9-brijesh.singh@amd.com> <YPCGVKESqZFWwdyB@google.com>
-From:   Dave Hansen <dave.hansen@intel.com>
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
- z5cecg==
-Message-ID: <801770da-f9b3-77a6-1aea-cb9a7796c386@intel.com>
-Date:   Thu, 15 Jul 2021 12:16:56 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+ <20210707183616.5620-7-brijesh.singh@amd.com>
+ <CAMkAt6quzRMiEJ=iYDocRvpaYuNcV5vm=swbowK+KG=j7FjyKA@mail.gmail.com>
+ <8ab309cd-8465-d543-55c8-5f6529fe74fd@intel.com>
+ <YPCE5D6h7V0iZiX/@google.com>
+ <a00bb4f7-ab06-5773-8c8b-3540c75b257a@intel.com>
 MIME-Version: 1.0
-In-Reply-To: <YPCGVKESqZFWwdyB@google.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a00bb4f7-ab06-5773-8c8b-3540c75b257a@intel.com>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 7/15/21 12:02 PM, Sean Christopherson wrote:
->>  #ifndef _ASM_X86_TRAP_PF_H
->>  #define _ASM_X86_TRAP_PF_H
->>  
->> +#include <vdso/bits.h>  /* BIT() macro */
-> What are people's thoughts on using linux/bits.h instead of vdso.bits.h, even
-> though the vDSO version is technically sufficient?  Seeing the "vdso" reference
-> definitely made me blink slowly a few times.
+On Thu, Jul 15, 2021, Dave Hansen wrote:
+> On 7/15/21 11:56 AM, Sean Christopherson wrote:
+> >>>> +       /* Retry if another processor is modifying the RMP entry. */
+> >>>> +       do {
+> >>>> +               /* Binutils version 2.36 supports the PSMASH mnemonic. */
+> >>>> +               asm volatile(".byte 0xF3, 0x0F, 0x01, 0xFF"
+> >>>> +                             : "=a"(ret)
+> >>>> +                             : "a"(spa)
+> >>>> +                             : "memory", "cc");
+> >>>> +       } while (ret == FAIL_INUSE);
+> >>> Should there be some retry limit here for safety? Or do we know that
+> >>> we'll never be stuck in this loop? Ditto for the loop in rmpupdate.
+> >> It's probably fine to just leave this.  While you could *theoretically*
+> >> lose this race forever, it's unlikely to happen in practice.  If it
+> >> does, you'll get an easy-to-understand softlockup backtrace which should
+> >> point here pretty quickly.
+> > But should failure here even be tolerated?  The TDX cases spin on flows that are
+> > _not_ due to (direct) contenion, e.g. a pending interrupt while flushing the
+> > cache or lack of randomness when generating a key.  In this case, there are two
+> > CPUs racing to modify the RMP entry, which implies that the final state of the
+> > RMP entry is not deterministic.
+> 
+> I was envisioning that two different CPUs could try to smash two
+> *different* 4k physical pages, but collide since they share
+> a 2M page.
+> 
+> But, in patch 33, this is called via:
+> 
+> > +		write_lock(&kvm->mmu_lock);
+> > +
+> > +		switch (op) {
+> > +		case SNP_PAGE_STATE_SHARED:
+> > +			rc = snp_make_page_shared(vcpu, gpa, pfn, level);
+> ...
+> 
+> Which should make collisions impossible.  Did I miss another call-site?
 
-Ugh, missed that.  Yes, that does look very weird.
+Ya, there's more, e.g. sev_snp_write_page_begin() and snp_handle_rmp_page_fault(),
+both of which run without holding mmu_lock.  The PSMASH operation isn't too
+concerning, but the associated RMPUDATE is most definitely a concern, e.g. if two
+vCPUs are trying to access different variants of a page.  It's ok if KVM's
+"response" in such a situation does weird things to the guest, but one of the
+two operations should "win", which I don't think is guaranteed if multiple RMP
+violations are racing.
 
-I don't see any reason to use that vdso/ version instead of BIT_ULL().
-I suspect I said to use BIT() when I commented on this in a previous
-round.  If so, that was wrong.
+I'll circle back to this patch after I've gone through the KVM MMU changes.
