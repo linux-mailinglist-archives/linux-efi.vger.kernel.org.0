@@ -2,52 +2,52 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B0693CBD83
-	for <lists+linux-efi@lfdr.de>; Fri, 16 Jul 2021 22:09:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 327C53CBD98
+	for <lists+linux-efi@lfdr.de>; Fri, 16 Jul 2021 22:18:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232896AbhGPUMU (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 16 Jul 2021 16:12:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35022 "EHLO
+        id S233119AbhGPUVd (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 16 Jul 2021 16:21:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37086 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232172AbhGPUMU (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 16 Jul 2021 16:12:20 -0400
-Received: from mail-pg1-x532.google.com (mail-pg1-x532.google.com [IPv6:2607:f8b0:4864:20::532])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21E2BC061762
-        for <linux-efi@vger.kernel.org>; Fri, 16 Jul 2021 13:09:25 -0700 (PDT)
-Received: by mail-pg1-x532.google.com with SMTP id t9so11038688pgn.4
-        for <linux-efi@vger.kernel.org>; Fri, 16 Jul 2021 13:09:25 -0700 (PDT)
+        with ESMTP id S232947AbhGPUVa (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 16 Jul 2021 16:21:30 -0400
+Received: from mail-pg1-x52f.google.com (mail-pg1-x52f.google.com [IPv6:2607:f8b0:4864:20::52f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4FFCC061764
+        for <linux-efi@vger.kernel.org>; Fri, 16 Jul 2021 13:18:32 -0700 (PDT)
+Received: by mail-pg1-x52f.google.com with SMTP id h4so11047394pgp.5
+        for <linux-efi@vger.kernel.org>; Fri, 16 Jul 2021 13:18:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20161025;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to;
-        bh=u0pjydLx3JpIq5yJNJLk5yOarBlyB2y3K/MnxWl/QbY=;
-        b=tRRdNY3rQ2yUA7YeMApBzYCfnUynKEQYzvoTtYjwb2IBJVLcaoKSbZCuXzwKfbLgIX
-         3mOjdoSJvrwbCvlxE+R6ynUZ8a+LIWwU2oZTWgBVs/mrUK+kAaJfUKGka+5z8/A16wVh
-         N69/Dpl7u65YeklLR0Bc+1yAIWu03kY4J+PtnrcYHIcqhdTtyQZYx+FETaMOCCrt7U+R
-         OjY/9ddNv9f7g8ftMdX+5rvrLUO0jghv5NOSeTY8BB2zhozAgoimF+FcM/+tg4tHpqQP
-         lnXivfv7pZzaXtBHgF18og1DTdi07tWTmhCc5A0spZAsi/PZDiblLHE44TH25UmFZDv7
-         yvPw==
+        bh=7BfdE/UnNU5Cufvf6AxaiSfhYzH0BNSWGCMFhxKGx24=;
+        b=E/6CFLEks/63BAj+rvhYCFw8+j7smWigt7E6yUbBVKRWlRh4N7F8j6bfSFznq5Pexd
+         iEJCSF81FF07VW1In+vgw7fKVgU1GCERXQxf8aQZUNZbSALSG+CX2F+XKV7NUrUtAWJ7
+         ZfhTy9tv9CvIii44N6QwKBAajeafbJHnYCiBPRppBc7l6DZwSY9HDsTA6fAGWgC5XQl9
+         uHP0lCmDLTn/ZErBYw/dnr8p5AzKbvX/5t0q1qetAfHdGQm5eBeQuyiumdM3qN90KASo
+         4BWIk/iOoYKVnBz4sy81Zudtpai8KHzWDLeVVYFmFgedPtIMuywTSq6e+ol03K9nNUhB
+         oisQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=u0pjydLx3JpIq5yJNJLk5yOarBlyB2y3K/MnxWl/QbY=;
-        b=VY+8NmAnRLbqVBtGWhdjPyw29ulEFN0br6+fPZHw7Sk24n5UMniy9+Rs8veOR2FwJW
-         iV3gXtpAeEAae6UVWumGwgcZSybs+FmfedbdMi3tq3+fM6oKDXop69qTiYntdY3Z/eJl
-         Njs0EUVc18lNppP/vVkmm02UWW2BSXtBuIbr4P3oFcml0ez6Umo6uywaHRrOK6AKQ07N
-         r8hxWTrGj6yNJwJ0o8DIy54r52QeakTt0+VT847cXF34AKIfmxXtCkr2P84xCTXvBndT
-         VLd6impouBJSp2exVt4DE5fQ2NREMUwIT8cXewktY/lA0M3FXAKDM241xtWnWs3EDbas
-         CTWg==
-X-Gm-Message-State: AOAM530qpLsqjlyOMrHg4m3I7bHzywsMa+P/1IjQXbPJ+k9YWUrZYvsF
-        7Ay6en/y/UY8mfwYXWrRax2Aig==
-X-Google-Smtp-Source: ABdhPJzSgg5eq5sHlSLHBqoD6kbg2B5nZ06VkbmBOHa18iisBV4VO+wis26EV8cOjPTv2CzUmcGMeg==
-X-Received: by 2002:aa7:81c5:0:b029:2f7:d4e3:78e9 with SMTP id c5-20020aa781c50000b02902f7d4e378e9mr12481425pfn.31.1626466164277;
-        Fri, 16 Jul 2021 13:09:24 -0700 (PDT)
+        bh=7BfdE/UnNU5Cufvf6AxaiSfhYzH0BNSWGCMFhxKGx24=;
+        b=PBK871iE4gFUXslBNL3Q4dsUsTSvHYVnP7nimryUdaEWMVC4yN0OQSHd7Xd4mrk51c
+         svsO4NbzFBg2dpOLNHeNcBZY1MxqcrHeGCk9GrfLiPp/lW2l8pnuwOqP/IcfG8DD5Dnu
+         j37vrpnXvPFnqRdxryjLW5tQut74C5sHoXoPgQpvEkWVhja7HyNOu3UiJyywBB12EnoY
+         BBLRylWtN8DtIP8tllPYNoljrseUf0RODzmehxKTvX18T6doihYYJYf5BRrMEfuQHUPW
+         sZoKLleHXBjjjClYZ5x7yp3kAvOguyEcwKJ7Tn2OQv5qT/xzFzLUBqpAuybk7GTaQi1R
+         SzoA==
+X-Gm-Message-State: AOAM533uu+4e55IDvkszIy1EOfML4DGRcy47fXrtAtEbKZrn/XOxQK4w
+        2SK2RkVQ8segm6DnvJKmlS4wVA==
+X-Google-Smtp-Source: ABdhPJxGmVxKHvgAi++bhPO4+E3+foVmkz5V2tqUg30o5TimNltdIyo4I4VHmzy377lREouP3naHHw==
+X-Received: by 2002:a63:770c:: with SMTP id s12mr7009862pgc.339.1626466711719;
+        Fri, 16 Jul 2021 13:18:31 -0700 (PDT)
 Received: from google.com (157.214.185.35.bc.googleusercontent.com. [35.185.214.157])
-        by smtp.gmail.com with ESMTPSA id 1sm11367598pfv.138.2021.07.16.13.09.23
+        by smtp.gmail.com with ESMTPSA id k8sm3003625pfu.116.2021.07.16.13.18.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Jul 2021 13:09:23 -0700 (PDT)
-Date:   Fri, 16 Jul 2021 20:09:19 +0000
+        Fri, 16 Jul 2021 13:18:31 -0700 (PDT)
+Date:   Fri, 16 Jul 2021 20:18:27 +0000
 From:   Sean Christopherson <seanjc@google.com>
 To:     Brijesh Singh <brijesh.singh@amd.com>
 Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
@@ -73,94 +73,82 @@ Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
         Michael Roth <michael.roth@amd.com>,
         Vlastimil Babka <vbabka@suse.cz>, tony.luck@intel.com,
         npmccallum@redhat.com, brijesh.ksingh@gmail.com
-Subject: Re: [PATCH Part2 RFC v4 25/40] KVM: SVM: Reclaim the guest pages
- when SEV-SNP VM terminates
-Message-ID: <YPHnb5pW9IoTcwWU@google.com>
+Subject: Re: [PATCH Part2 RFC v4 26/40] KVM: SVM: Add
+ KVM_SEV_SNP_LAUNCH_FINISH command
+Message-ID: <YPHpk3RFSmE13ZXz@google.com>
 References: <20210707183616.5620-1-brijesh.singh@amd.com>
- <20210707183616.5620-26-brijesh.singh@amd.com>
+ <20210707183616.5620-27-brijesh.singh@amd.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210707183616.5620-26-brijesh.singh@amd.com>
+In-Reply-To: <20210707183616.5620-27-brijesh.singh@amd.com>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
 On Wed, Jul 07, 2021, Brijesh Singh wrote:
-> The guest pages of the SEV-SNP VM maybe added as a private page in the
-> RMP entry (assigned bit is set). The guest private pages must be
-> transitioned to the hypervisor state before its freed.
+> +        struct kvm_sev_snp_launch_finish {
+> +                __u64 id_block_uaddr;
+> +                __u64 id_auth_uaddr;
+> +                __u8 id_block_en;
+> +                __u8 auth_key_en;
+> +                __u8 host_data[32];
 
-Isn't this patch needed much earlier in the series, i.e. when the first RMPUPDATE
-usage goes in?
+Pad this one too?
 
-> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
-> ---
->  arch/x86/kvm/svm/sev.c | 39 +++++++++++++++++++++++++++++++++++++++
->  1 file changed, 39 insertions(+)
-> 
-> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-> index 1f0635ac9ff9..4468995dd209 100644
-> --- a/arch/x86/kvm/svm/sev.c
-> +++ b/arch/x86/kvm/svm/sev.c
-> @@ -1940,6 +1940,45 @@ find_enc_region(struct kvm *kvm, struct kvm_enc_region *range)
->  static void __unregister_enc_region_locked(struct kvm *kvm,
->  					   struct enc_region *region)
->  {
-> +	struct rmpupdate val = {};
-> +	unsigned long i, pfn;
-> +	struct rmpentry *e;
-> +	int level, rc;
+> +        };
+> +
+> +
+> +See SEV-SNP specification for further details on launch finish input parameters.
+
+...
+
+> +	data->gctx_paddr = __psp_pa(sev->snp_context);
+> +	ret = sev_issue_cmd(kvm, SEV_CMD_SNP_LAUNCH_FINISH, data, &argp->error);
+
+Shouldn't KVM unwind everything it did if LAUNCH_FINISH fails?  And if that's
+not possible, take steps to make the VM unusable?
+
+> +
+> +	kfree(id_auth);
+> +
+> +e_free_id_block:
+> +	kfree(id_block);
+> +
+> +e_free:
+> +	kfree(data);
+> +
+> +	return ret;
+> +}
+> +
+
+...
+
+> @@ -2346,8 +2454,25 @@ void sev_free_vcpu(struct kvm_vcpu *vcpu)
+>  
+>  	if (vcpu->arch.guest_state_protected)
+>  		sev_flush_guest_memory(svm, svm->vmsa, PAGE_SIZE);
 > +
 > +	/*
-> +	 * The guest memory pages are assigned in the RMP table. Unassign it
-> +	 * before releasing the memory.
+> +	 * If its an SNP guest, then VMSA was added in the RMP entry as a guest owned page.
+> +	 * Transition the page to hyperivosr state before releasing it back to the system.
+
+"hyperivosr" typo.  And please wrap at 80 chars.
+
 > +	 */
-> +	if (sev_snp_guest(kvm)) {
-> +		for (i = 0; i < region->npages; i++) {
-> +			pfn = page_to_pfn(region->pages[i]);
+> +	if (sev_snp_guest(vcpu->kvm)) {
+> +		struct rmpupdate e = {};
+> +		int rc;
 > +
-> +			if (need_resched())
-> +				schedule();
+> +		rc = rmpupdate(virt_to_page(svm->vmsa), &e);
 
-This can simply be "cond_resched();"
+So why does this not need to go through snp_page_reclaim()?
 
-> +
-> +			e = snp_lookup_page_in_rmptable(region->pages[i], &level);
-> +			if (unlikely(!e))
-> +				continue;
-> +
-> +			/* If its not a guest assigned page then skip it. */
-> +			if (!rmpentry_assigned(e))
-> +				continue;
-> +
-> +			/* Is the page part of a 2MB RMP entry? */
-> +			if (level == PG_LEVEL_2M) {
-> +				val.pagesize = RMP_PG_SIZE_2M;
-> +				pfn &= ~(KVM_PAGES_PER_HPAGE(PG_LEVEL_2M) - 1);
-> +			} else {
-> +				val.pagesize = RMP_PG_SIZE_4K;
+> +		if (rc) {
+> +			pr_err("Failed to release SNP guest VMSA page (rc %d), leaking it\n", rc);
 
-This raises yet more questions (for me) as to the interaction between Page-Size
-and Hyperivsor-Owned flags in the RMP.  It also raises questions on the correctness
-of zeroing the RMP entry if KVM_SEV_SNP_LAUNCH_START (in the previous patch).
+Seems like a WARN would be simpler.  But the more I see the rmpupdate(..., {0})
+pattern, the more I believe that nuking an RMP entry needs a dedicated helper.
 
-> +			}
-> +
-> +			/* Transition the page to hypervisor owned. */
-> +			rc = rmpupdate(pfn_to_page(pfn), &val);
-> +			if (rc)
-> +				pr_err("Failed to release pfn 0x%lx ret=%d\n", pfn, rc);
+> +			goto skip_vmsa_free;
 
-This is not robust, e.g. KVM will unpin the memory and release it back to the
-kernel with a stale RMP entry.  Shouldn't this be a WARN+leak situation?
-
-> +		}
-> +	}
-> +
->  	sev_unpin_memory(kvm, region->pages, region->npages);
->  	list_del(&region->list);
->  	kfree(region);
-> -- 
-> 2.17.1
-> 
