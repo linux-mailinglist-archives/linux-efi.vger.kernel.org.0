@@ -2,52 +2,53 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0861C3CBDF2
-	for <lists+linux-efi@lfdr.de>; Fri, 16 Jul 2021 22:45:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2262A3CBE1C
+	for <lists+linux-efi@lfdr.de>; Fri, 16 Jul 2021 23:00:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234292AbhGPUsK (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 16 Jul 2021 16:48:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43166 "EHLO
+        id S232957AbhGPVDg (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 16 Jul 2021 17:03:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46642 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234268AbhGPUsI (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 16 Jul 2021 16:48:08 -0400
-Received: from mail-pg1-x52f.google.com (mail-pg1-x52f.google.com [IPv6:2607:f8b0:4864:20::52f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6880BC061762
-        for <linux-efi@vger.kernel.org>; Fri, 16 Jul 2021 13:45:10 -0700 (PDT)
-Received: by mail-pg1-x52f.google.com with SMTP id w15so11083240pgk.13
-        for <linux-efi@vger.kernel.org>; Fri, 16 Jul 2021 13:45:10 -0700 (PDT)
+        with ESMTP id S233454AbhGPVDf (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 16 Jul 2021 17:03:35 -0400
+Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 543FDC061762
+        for <linux-efi@vger.kernel.org>; Fri, 16 Jul 2021 14:00:39 -0700 (PDT)
+Received: by mail-pf1-x42f.google.com with SMTP id y4so9915451pfi.9
+        for <linux-efi@vger.kernel.org>; Fri, 16 Jul 2021 14:00:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20161025;
         h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=SVoSEdDgsOF278SEiT4bkNSj8tfCkbEPe6QxJ6ZAsEQ=;
-        b=t0vWasvz4oRzr+vYOWmdOoybGtIq6QFmUpca0QK8qN5g5wnlInrCHGZJsw5tap+hKN
-         12DomogOX59eHsUvDjxO0DSEf3pwET8LnmSFGbH5gx8mS7+qfVXQjEBg3FIPaWFgkZvi
-         WF0x+VvAmN+bUcCRxDXyl6rQGDbMC+7MfzzRGPTZFpqcs32O5+y6MuZKMdub4UJhFjbN
-         vqMhgYV5KJkJR7P0KVFbUa6njAcMVNSCw0SvO+QFdlXCp313bcGXTSEEfKZ1f++zMlEs
-         uY4l38PFa9zQzDTqw9puylWL7kHZLhH2SbEVAfd+KqRElAe9V0lA5o4j0Za07HLyYPrA
-         nhcA==
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=32owgdGkkMeFKYJKP96aJ0cepPQZmV7ASPwAnVQdyQ8=;
+        b=mWGfXWGNFAoNVa/XQEMEHBGq3nEvz+50vTLu166iLOmPRHDnbyzkms0w3ML3zNZeWP
+         GVWuqECe5KirV8LFrcLji/GmzrQ7GVbVpBIE3e5EzaXDLr6WyUx5EmX+jj1MebxKkklO
+         4FV8/YtI4QEurHcBfFD436NAdnosWqA7ukGoXATVmBIhLQbTxj1nAy4LNBJ4Rs+/Y1gn
+         frv72OoilRYqDRBvJQD2gN25MIilFA3t3XV9nKRiPei7WUH6uGHQRcrdLe3+TebOCdDS
+         53ONDWobK9c65N8sBOfetN8OnTEMw4ULi/OqXPosKkR+Pd3UuFCKTM65gtt0ZUlrb545
+         JcAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=SVoSEdDgsOF278SEiT4bkNSj8tfCkbEPe6QxJ6ZAsEQ=;
-        b=a/30TNM6gm0WnwHhye0ers2RSEsVom7hlcCUgLjTlJYc3idhNMfvKV+PDul4iJsM9q
-         hn+63vqSVKuSrqSSWkWd70TR8iUsworY1olUyHu5e8O3X70m+YXXvxRnrIQzOJs4/JuV
-         lGLU+WvYonJCIxj6Z1lCcDbG4/FrC9G596Os4+oFrIy2+ONMwF/OXD8+B/NM4fb6SuyA
-         U/uSmj2BkyiMSLNFGii97nNcxL7WAFAnm+Fk7I09CC2K3y3ZRllnByGjGs5AtNKPaBQW
-         ALDVn5JBDENs6kW7vc4xHBzzQuSmodm0PUQP+Jrvx1efJw3F8uOpXItsQYNj49I7qs8r
-         q+pQ==
-X-Gm-Message-State: AOAM532FgSGEeFS/REbE2+Yl0lPdaIiQvXi5M+gJquXhkx11mTZQhqGZ
-        pnrhEiM2XAjoD723tAlFxy71Fg==
-X-Google-Smtp-Source: ABdhPJxzXJMG7eNIWPnMlJihm93mr2tqoo2Emw3tCX3VwhK0jUTw4X6463ZC5w3P8nf6F+MZ58aggQ==
-X-Received: by 2002:a65:6416:: with SMTP id a22mr11788587pgv.433.1626468309671;
-        Fri, 16 Jul 2021 13:45:09 -0700 (PDT)
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=32owgdGkkMeFKYJKP96aJ0cepPQZmV7ASPwAnVQdyQ8=;
+        b=d7u5ID+t0DVCvyw+bXVDfZWQwX7K4bfH54k4yz+dYBDj0yoz3LI3BQ6js7aV8yTXF1
+         nmR2euFovi6oZ6CNzEehiRBiD63K7cDETLT71Bnho0g3Y+Ikzo5MKEMgFXyaAUEmf3ut
+         G8lBo4ABHy6BusJxoz6dQfzax9sOiEu7sYFVsx7FDpqW1AL2eG1OiWvaBG/Ft1jIApkB
+         ArUIf60unE2uDFl2miWSsjfZFznso2wlbTameEL0qpPtpVo57uTL2ydbJ0hZfoLqe6qg
+         Ak/CuBGzlnx2/G09V1xIZFjw2bx9e7VffCiDw5bIl5QNqA19IVGisKrsIvnhSzSgG7rz
+         6WNQ==
+X-Gm-Message-State: AOAM533edTf0GXPrAsYlaJQw/eQ1r4z0gtD7+lyNEjrr2d5m/WcnjK8/
+        U5lkIFlhJhYCYtCVjVHLBU1xYw==
+X-Google-Smtp-Source: ABdhPJwjG+4AKAUsolr4NhSH0onD6XOfm/OvTT2xz/g+OQ4KDyJFfI4r0VZGJsgBVJZPZ187YQk3wQ==
+X-Received: by 2002:a62:520e:0:b029:30b:fc21:975d with SMTP id g14-20020a62520e0000b029030bfc21975dmr12345822pfb.57.1626469238280;
+        Fri, 16 Jul 2021 14:00:38 -0700 (PDT)
 Received: from google.com (157.214.185.35.bc.googleusercontent.com. [35.185.214.157])
-        by smtp.gmail.com with ESMTPSA id d129sm11452261pfd.218.2021.07.16.13.45.08
+        by smtp.gmail.com with ESMTPSA id f18sm6484622pfe.25.2021.07.16.14.00.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Jul 2021 13:45:09 -0700 (PDT)
-Date:   Fri, 16 Jul 2021 20:45:05 +0000
+        Fri, 16 Jul 2021 14:00:37 -0700 (PDT)
+Date:   Fri, 16 Jul 2021 21:00:34 +0000
 From:   Sean Christopherson <seanjc@google.com>
 To:     Brijesh Singh <brijesh.singh@amd.com>
 Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
@@ -73,150 +74,145 @@ Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
         Michael Roth <michael.roth@amd.com>,
         Vlastimil Babka <vbabka@suse.cz>, tony.luck@intel.com,
         npmccallum@redhat.com, brijesh.ksingh@gmail.com
-Subject: Re: [PATCH Part2 RFC v4 32/40] KVM: SVM: Add support to handle GHCB
- GPA register VMGEXIT
-Message-ID: <YPHv0eCCOZQKne0O@google.com>
+Subject: Re: [PATCH Part2 RFC v4 33/40] KVM: SVM: Add support to handle MSR
+ based Page State Change VMGEXIT
+Message-ID: <YPHzcstus9mS8hOm@google.com>
 References: <20210707183616.5620-1-brijesh.singh@amd.com>
- <20210707183616.5620-33-brijesh.singh@amd.com>
+ <20210707183616.5620-34-brijesh.singh@amd.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20210707183616.5620-33-brijesh.singh@amd.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20210707183616.5620-34-brijesh.singh@amd.com>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
 On Wed, Jul 07, 2021, Brijesh Singh wrote:
-> SEV-SNP guests are required to perform a GHCB GPA registration (see
-> section 2.5.2 in GHCB specification). Before using a GHCB GPA for a vCPU
+> +static int __snp_handle_psc(struct kvm_vcpu *vcpu, int op, gpa_t gpa, int level)
 
-It's section 2.3.2 in version 2.0 of the spec.
+I can live with e.g. GHCB_MSR_PSC_REQ, but I'd strongly prefer to spell this out,
+e.g. __snp_handle_page_state_change() or whatever.  I had a hell of a time figuring
+out what PSC was the first time I saw it in some random context.
 
-> the first time, a guest must register the vCPU GHCB GPA. If hypervisor
-> can work with the guest requested GPA then it must respond back with the
-> same GPA otherwise return -1.
->
-> On VMEXIT, Verify that GHCB GPA matches with the registered value. If a
-> mismatch is detected then abort the guest.
-> 
-> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
-> ---
->  arch/x86/include/asm/sev-common.h |  2 ++
->  arch/x86/kvm/svm/sev.c            | 25 +++++++++++++++++++++++++
->  arch/x86/kvm/svm/svm.h            |  7 +++++++
->  3 files changed, 34 insertions(+)
-> 
-> diff --git a/arch/x86/include/asm/sev-common.h b/arch/x86/include/asm/sev-common.h
-> index 466baa9cd0f5..6990d5a9d73c 100644
-> --- a/arch/x86/include/asm/sev-common.h
-> +++ b/arch/x86/include/asm/sev-common.h
-> @@ -60,8 +60,10 @@
->  	GHCB_MSR_GPA_REG_REQ)
->  
->  #define GHCB_MSR_GPA_REG_RESP		0x013
-> +#define GHCB_MSR_GPA_REG_ERROR		GENMASK_ULL(51, 0)
->  #define GHCB_MSR_GPA_REG_RESP_VAL(v)	((v) >> GHCB_MSR_GPA_REG_VALUE_POS)
->  
+> +{
+> +	struct kvm *kvm = vcpu->kvm;
+> +	int rc, tdp_level;
+> +	kvm_pfn_t pfn;
+> +	gpa_t gpa_end;
 > +
->  /* SNP Page State Change */
->  #define GHCB_MSR_PSC_REQ		0x014
->  #define SNP_PAGE_STATE_PRIVATE		1
-> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-> index fd2d00ad80b7..3af5d1ad41bf 100644
-> --- a/arch/x86/kvm/svm/sev.c
-> +++ b/arch/x86/kvm/svm/sev.c
-> @@ -2922,6 +2922,25 @@ static int sev_handle_vmgexit_msr_protocol(struct vcpu_svm *svm)
->  				GHCB_MSR_INFO_MASK, GHCB_MSR_INFO_POS);
+> +	gpa_end = gpa + page_level_size(level);
+> +
+> +	while (gpa < gpa_end) {
+> +		/*
+> +		 * Get the pfn and level for the gpa from the nested page table.
+> +		 *
+> +		 * If the TDP walk failed, then its safe to say that we don't have a valid
+> +		 * mapping for the gpa in the nested page table. Create a fault to map the
+> +		 * page is nested page table.
+> +		 */
+> +		if (!kvm_mmu_get_tdp_walk(vcpu, gpa, &pfn, &tdp_level)) {
+> +			pfn = kvm_mmu_map_tdp_page(vcpu, gpa, PFERR_USER_MASK, level);
+> +			if (is_error_noslot_pfn(pfn))
+> +				goto out;
+> +
+> +			if (!kvm_mmu_get_tdp_walk(vcpu, gpa, &pfn, &tdp_level))
+> +				goto out;
+> +		}
+> +
+> +		/* Adjust the level so that we don't go higher than the backing page level */
+> +		level = min_t(size_t, level, tdp_level);
+> +
+> +		write_lock(&kvm->mmu_lock);
+
+Retrieving the PFN and level outside of mmu_lock is not correct.  Because the
+pages are pinned and the VMM is not malicious, it will function as intended, but
+it is far from correct.
+
+The overall approach also feels wrong, e.g. a guest won't be able to convert a
+2mb chunk back to a 2mb large page if KVM mapped the GPA as a 4kb page in the
+past (from a different conversion).
+
+I'd also strongly prefer to have a common flow between SNP and TDX for converting
+between shared/prviate.
+
+I'll circle back to this next week, it'll probably take a few hours of staring
+to figure out a solution, if a common one for SNP+TDX is even possible.
+
+> +
+> +		switch (op) {
+> +		case SNP_PAGE_STATE_SHARED:
+> +			rc = snp_make_page_shared(vcpu, gpa, pfn, level);
+> +			break;
+> +		case SNP_PAGE_STATE_PRIVATE:
+> +			rc = snp_make_page_private(vcpu, gpa, pfn, level);
+> +			break;
+> +		default:
+> +			rc = -EINVAL;
+> +			break;
+> +		}
+> +
+> +		write_unlock(&kvm->mmu_lock);
+> +
+> +		if (rc) {
+> +			pr_err_ratelimited("Error op %d gpa %llx pfn %llx level %d rc %d\n",
+> +					   op, gpa, pfn, level, rc);
+> +			goto out;
+> +		}
+> +
+> +		gpa = gpa + page_level_size(level);
+> +	}
+> +
+> +out:
+> +	return rc;
+> +}
+> +
+>  static int sev_handle_vmgexit_msr_protocol(struct vcpu_svm *svm)
+>  {
+>  	struct vmcb_control_area *control = &svm->vmcb->control;
+> @@ -2941,6 +3063,25 @@ static int sev_handle_vmgexit_msr_protocol(struct vcpu_svm *svm)
+>  				  GHCB_MSR_INFO_POS);
 >  		break;
 >  	}
-> +	case GHCB_MSR_GPA_REG_REQ: {
-
-Shouldn't KVM also support "Get preferred GHCB GPA", at least to the point where
-it responds with "No preferred GPA".  AFAICT, this series doesn't cover that,
-i.e. KVM will kill a guest that requests the VMM's preferred GPA.
-
-> +		kvm_pfn_t pfn;
-> +		u64 gfn;
+> +	case GHCB_MSR_PSC_REQ: {
+> +		gfn_t gfn;
+> +		int ret;
+> +		u8 op;
 > +
-> +		gfn = get_ghcb_msr_bits(svm, GHCB_MSR_GPA_REG_GFN_MASK,
-> +					GHCB_MSR_GPA_REG_VALUE_POS);
+> +		gfn = get_ghcb_msr_bits(svm, GHCB_MSR_PSC_GFN_MASK, GHCB_MSR_PSC_GFN_POS);
+> +		op = get_ghcb_msr_bits(svm, GHCB_MSR_PSC_OP_MASK, GHCB_MSR_PSC_OP_POS);
+> +
+> +		ret = __snp_handle_psc(vcpu, op, gfn_to_gpa(gfn), PG_LEVEL_4K);
+> +
+> +		/* If failed to change the state then spec requires to return all F's */
 
-This is confusing, the MASK/POS reference both GPA and GFN.
+That doesn't mesh with what I could find:
+
+  o 0x015 – SNP Page State Change Response
+    ▪ GHCBData[63:32] – Error code
+    ▪ GHCBData[31:12] – Reserved, must be zero
+  Written by the hypervisor in response to a Page State Change request. Any non-
+  zero value for the error code indicates that the page state change was not
+  successful.
+
+And if "all Fs" is indeed the error code, 'int ret' probably only works by luck
+since the return value is a 64-bit value, where as ret is a 32-bit signed int.
+
+> +		if (ret)
+> +			ret = -1;
+
+Uh, this is fubar.   You've created a shadow of 'ret', i.e. the outer ret is likely
+uninitialized.
 
 > +
-> +		pfn = kvm_vcpu_gfn_to_pfn(vcpu, gfn);
-> +		if (is_error_noslot_pfn(pfn))
-
-Checking the mapped PFN at this time isn't wrong, but it's also not complete,
-e.g. nothing prevents userspace from changing the gpa->hva mapping after the
-initial registration.  Not that that's likely to happen (or not break the guest),
-but my point is that random checks on the backing PFN really have no meaning in
-KVM unless KVM can guarantee that the PFN is stable for the duration of its use.
-
-And conversely, the GHCB doesn't require the GHCB to be shared until the first
-use.  E.g. arguably KVM should fully check the usability of the GPA, but the
-GHCB spec disallows that.  And I honestly can't see why SNP is special with
-respect to the GHCB.  ES guests will explode just as badly if the GPA points at
-garbage.
-
-I guess I'm not against the check, but it feels extremely arbitrary.
-
-> +			gfn = GHCB_MSR_GPA_REG_ERROR;
-> +		else
-> +			svm->ghcb_registered_gpa = gfn_to_gpa(gfn);
-> +
-> +		set_ghcb_msr_bits(svm, gfn, GHCB_MSR_GPA_REG_GFN_MASK,
-> +				  GHCB_MSR_GPA_REG_VALUE_POS);
-> +		set_ghcb_msr_bits(svm, GHCB_MSR_GPA_REG_RESP, GHCB_MSR_INFO_MASK,
-> +				  GHCB_MSR_INFO_POS);
+> +		set_ghcb_msr_bits(svm, ret, GHCB_MSR_PSC_ERROR_MASK, GHCB_MSR_PSC_ERROR_POS);
+> +		set_ghcb_msr_bits(svm, 0, GHCB_MSR_PSC_RSVD_MASK, GHCB_MSR_PSC_RSVD_POS);
+> +		set_ghcb_msr_bits(svm, GHCB_MSR_PSC_RESP, GHCB_MSR_INFO_MASK, GHCB_MSR_INFO_POS);
 > +		break;
 > +	}
 >  	case GHCB_MSR_TERM_REQ: {
 >  		u64 reason_set, reason_code;
 >  
-> @@ -2970,6 +2989,12 @@ int sev_handle_vmgexit(struct kvm_vcpu *vcpu)
->  		return -EINVAL;
->  	}
->  
-> +	/* SEV-SNP guest requires that the GHCB GPA must be registered */
-> +	if (sev_snp_guest(svm->vcpu.kvm) && !ghcb_gpa_is_registered(svm, ghcb_gpa)) {
-> +		vcpu_unimpl(&svm->vcpu, "vmgexit: GHCB GPA [%#llx] is not registered.\n", ghcb_gpa);
-
-I saw this a few other place.  vcpu_unimpl() is not the right API.  KVM supports
-the guest request, the problem is that the GHCB spec _requires_ KVM to terminate
-the guest in this case.
-
-> +		return -EINVAL;
-> +	}
-> +
->  	svm->ghcb = svm->ghcb_map.hva;
->  	ghcb = svm->ghcb_map.hva;
->  
-> diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
-> index 32abcbd774d0..af4cce39b30f 100644
-> --- a/arch/x86/kvm/svm/svm.h
-> +++ b/arch/x86/kvm/svm/svm.h
-> @@ -185,6 +185,8 @@ struct vcpu_svm {
->  	bool ghcb_sa_free;
->  
->  	bool guest_state_loaded;
-> +
-> +	u64 ghcb_registered_gpa;
->  };
->  
->  struct svm_cpu_data {
-> @@ -245,6 +247,11 @@ static inline bool sev_snp_guest(struct kvm *kvm)
->  #endif
->  }
->  
-> +static inline bool ghcb_gpa_is_registered(struct vcpu_svm *svm, u64 val)
-> +{
-> +	return svm->ghcb_registered_gpa == val;
-> +}
-> +
->  static inline void vmcb_mark_all_dirty(struct vmcb *vmcb)
->  {
->  	vmcb->control.clean = 0;
 > -- 
 > 2.17.1
 > 
