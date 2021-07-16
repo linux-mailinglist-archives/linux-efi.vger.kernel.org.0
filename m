@@ -2,177 +2,204 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B39B3CBB22
-	for <lists+linux-efi@lfdr.de>; Fri, 16 Jul 2021 19:27:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A74E43CBB86
+	for <lists+linux-efi@lfdr.de>; Fri, 16 Jul 2021 20:00:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229937AbhGPRa2 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 16 Jul 2021 13:30:28 -0400
-Received: from mail-oi1-f182.google.com ([209.85.167.182]:36449 "EHLO
-        mail-oi1-f182.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229803AbhGPRa2 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 16 Jul 2021 13:30:28 -0400
-Received: by mail-oi1-f182.google.com with SMTP id u15so11733102oiw.3;
-        Fri, 16 Jul 2021 10:27:32 -0700 (PDT)
+        id S231660AbhGPSDa (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 16 Jul 2021 14:03:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33834 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231715AbhGPSD0 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 16 Jul 2021 14:03:26 -0400
+Received: from mail-pg1-x534.google.com (mail-pg1-x534.google.com [IPv6:2607:f8b0:4864:20::534])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76FE7C061760
+        for <linux-efi@vger.kernel.org>; Fri, 16 Jul 2021 11:00:31 -0700 (PDT)
+Received: by mail-pg1-x534.google.com with SMTP id d12so10684511pgd.9
+        for <linux-efi@vger.kernel.org>; Fri, 16 Jul 2021 11:00:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=JJT3j10iJIIOsPHEEnbNQuVLTw5JnzSQ/acvTlgZAJ8=;
+        b=GwzdfStOFnu5bUYpHJmW5qaywa/s2A2QUEultL+m1JqZOp4yK+grRGfNrwTW9gYDni
+         UqvwTqYFLACzmBr+3+oAJUIEDDk0SfGX3M+dkfZq23+XWfGrzkVviYu0lCuiXM9PkmfN
+         VnO3DYxEBTHGP7EBr9YSyyvciKgdSDS/ekdvhUo9MHlz9j6dStUSGQcBD0oB8sHJKH3U
+         gWA5LIEuf9cVeVGn0fTk3/vs6U082z3MZAKK3zm+d4QRce0q2sMrV2JKMM+i6LkRQuyQ
+         6PU1WFaWteTtKwq+nAD46Kkt1uKcDZ7ZIHdLOQiNxLErn0Ufz5tdxfui9LCKHwLL6ctE
+         vBnA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=CeaYmmqy0BTpl+jDq91lfBNwbCyDsDM5K5yy/bAjZb8=;
-        b=FAPztlYFw1562P/9FCUHLVWBXjnHzhaV8eEK6EWsn2viuRPrgFrQIf0tkbeubJwyRy
-         oIqHCSy5/JDmDRuxK6Z3ShFAc/5v9bzZprxqBwWnfiz62VDq/BMzqOz7uvAjttuMQBKk
-         P2nzdNgLwVmbeiYXlLxpy+WenZbUHyKhUoKWsXvLsKZxoAAh1Q8Cl88lT45eYoC20SJf
-         TyG8CvsNniMvNFIW/rja5r4Ea+OLgoWTFMWLDvFq8Xyk7G027h2Y5v9PHMzu3Sch6nEu
-         xsc090SRo/Ypa6+kwTyKCrmgqjxz/O2dOqYRo9Fq+L0kVo8g+VnYdVzbFkKy2tQDBlB/
-         T6+Q==
-X-Gm-Message-State: AOAM532o9RjR1o3JWspNbqsvu9pO38AUDTdXfUop9qvK3RkI+BrYQ+Xr
-        L7WjhNZqruBDfu2z0rFDmsFgVHkwOr2B5NV5kcE=
-X-Google-Smtp-Source: ABdhPJwREseWLWurDmxtUAjhpSaJUD5vYvIYiRBtvUwiqgC0pgq77pnXlc+lgYa79H2Ecw7YYi0BHyoK3SF9OmCUYpY=
-X-Received: by 2002:a05:6808:10d0:: with SMTP id s16mr8300574ois.69.1626456451648;
- Fri, 16 Jul 2021 10:27:31 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=JJT3j10iJIIOsPHEEnbNQuVLTw5JnzSQ/acvTlgZAJ8=;
+        b=Ja8TSlfUKMrR947qv/fR58USt5IUOsWPLLN1zxnQYHX8Mi1CnOcb1sPNq0nyKVlFd5
+         eP9Fk11unKlNWMfgmDuW5Q8qi+TcBMAZ1fO+rH1+x+/PKVHh+ZHPOf7JIoJokgU2/JKL
+         kjN57tv4iL2lJQ4P+XIZ8D8aYdkcJdrW4eYISchgwicMOuqqCndP9G0GbXGPfUcWygPP
+         zW/Vuv48MiHwQrtbZ4G+L2ZMVb9nC0gLWTdwe/W+IcW6Y0ZWC4uxrRnAXOuLAVgO9o+Q
+         WtARQupcWQ3OnZSYwRUGwzTiNj+kkIyIUyKp0mJzh/nOCv9OHiO+bVnYOSy4sqWRoO5W
+         yc3A==
+X-Gm-Message-State: AOAM533R5kYqPtNqrE8LmAdtQHjhfEb23X6SmuF4y7whfC98AonWQtuc
+        8QnE6N6OSMquQi8htcVlYyaGDA==
+X-Google-Smtp-Source: ABdhPJyJxNSW4W+lQGEGZFuQKmM6xXoN4SsZLj1WhAcFQMeACiCuwpzphldu3fpnqiStbul1Zx/cQA==
+X-Received: by 2002:a65:6118:: with SMTP id z24mr11085274pgu.325.1626458430711;
+        Fri, 16 Jul 2021 11:00:30 -0700 (PDT)
+Received: from google.com (157.214.185.35.bc.googleusercontent.com. [35.185.214.157])
+        by smtp.gmail.com with ESMTPSA id cx4sm12694608pjb.53.2021.07.16.11.00.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 16 Jul 2021 11:00:30 -0700 (PDT)
+Date:   Fri, 16 Jul 2021 18:00:26 +0000
+From:   Sean Christopherson <seanjc@google.com>
+To:     Brijesh Singh <brijesh.singh@amd.com>
+Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        linux-coco@lists.linux.dev, linux-mm@kvack.org,
+        linux-crypto@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Vitaly Kuznetsov <vkuznets@redhat.com>,
+        Wanpeng Li <wanpengli@tencent.com>,
+        Jim Mattson <jmattson@google.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        David Rientjes <rientjes@google.com>,
+        Dov Murik <dovmurik@linux.ibm.com>,
+        Tobin Feldman-Fitzthum <tobin@ibm.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Michael Roth <michael.roth@amd.com>,
+        Vlastimil Babka <vbabka@suse.cz>, tony.luck@intel.com,
+        npmccallum@redhat.com, brijesh.ksingh@gmail.com
+Subject: Re: [PATCH Part2 RFC v4 21/40] KVM: SVM: Add initial SEV-SNP support
+Message-ID: <YPHJOmUOR65QY+YY@google.com>
+References: <20210707183616.5620-1-brijesh.singh@amd.com>
+ <20210707183616.5620-22-brijesh.singh@amd.com>
 MIME-Version: 1.0
-References: <20210712182121.2936794-1-andy.shevchenko@gmail.com> <d542bc45-6e52-dc12-69bf-76fa6dcaaf5e@gmail.com>
-In-Reply-To: <d542bc45-6e52-dc12-69bf-76fa6dcaaf5e@gmail.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 16 Jul 2021 19:27:20 +0200
-Message-ID: <CAJZ5v0jR5T2+EHXz_RqzMDxb0i9pDhQTDZomWe3po91A7Bb-xg@mail.gmail.com>
-Subject: Re: [PATCH v2 1/1] ACPI: utils: Fix reference counting in for_each_acpi_dev_match()
-To:     Daniel Scally <djrscally@gmail.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Linux Media Mailing List <linux-media@vger.kernel.org>,
-        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
-        Yong Zhi <yong.zhi@intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Bingbu Cao <bingbu.cao@intel.com>,
-        Tianshu Qiu <tian.shu.qiu@intel.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Robert Moore <robert.moore@intel.com>,
-        Erik Kaneda <erik.kaneda@intel.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210707183616.5620-22-brijesh.singh@amd.com>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, Jul 14, 2021 at 12:32 AM Daniel Scally <djrscally@gmail.com> wrote:
->
-> Hi Andy - thanks for fixing this
->
-> On 12/07/2021 19:21, Andy Shevchenko wrote:
-> > Currently it's possible to iterate over the dangling pointer in case the device
-> > suddenly disappears. This may happen becase callers put it at the end of a loop.
-> >
-> > Instead, let's move that call inside acpi_dev_get_next_match_dev().
-> >
-> > Fixes: 803abec64ef9 ("media: ipu3-cio2: Add cio2-bridge to ipu3-cio2 driver")
-> > Fixes: bf263f64e804 ("media: ACPI / bus: Add acpi_dev_get_next_match_dev() and helper macro")
-> > Fixes: edbd1bc4951e ("efi/dev-path-parser: Switch to use for_each_acpi_dev_match()")
-> > Signed-off-by: Andy Shevchenko <andy.shevchenko@gmail.com>
->
-> Reviewed-by: Daniel Scally <djrscally@gmail.com>
+On Wed, Jul 07, 2021, Brijesh Singh wrote:
+> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+> index 411ed72f63af..abca2b9dee83 100644
+> --- a/arch/x86/kvm/svm/sev.c
+> +++ b/arch/x86/kvm/svm/sev.c
+> @@ -52,9 +52,14 @@ module_param_named(sev, sev_enabled, bool, 0444);
+>  /* enable/disable SEV-ES support */
+>  static bool sev_es_enabled = true;
+>  module_param_named(sev_es, sev_es_enabled, bool, 0444);
+> +
+> +/* enable/disable SEV-SNP support */
+> +static bool sev_snp_enabled = true;
 
-Applied as 5.14-rc material, thanks!
+Is it safe to incrementally introduce SNP support?  Or should the module param
+be hidden until all support is in place?  E.g. what will happen when KVM allows
+userspace to create SNP guests but doesn't yet have the RMP management added?
 
-> > ---
-> > v2:
-> > - rebased on top of v5.14-rc1 and hence added fix for EFI code
-> > - added kernel documentation update to point out that
-> >   acpi_dev_get_next_match_dev() drops a reference on the given
-> >   ACPI device (Rafael)
-> >
-> >  drivers/acpi/utils.c                       | 7 +++----
-> >  drivers/firmware/efi/dev-path-parser.c     | 1 -
-> >  drivers/media/pci/intel/ipu3/cio2-bridge.c | 6 ++----
-> >  include/acpi/acpi_bus.h                    | 5 -----
-> >  4 files changed, 5 insertions(+), 14 deletions(-)
-> >
-> > diff --git a/drivers/acpi/utils.c b/drivers/acpi/utils.c
-> > index e7ddd281afff..d5cedffeeff9 100644
-> > --- a/drivers/acpi/utils.c
-> > +++ b/drivers/acpi/utils.c
-> > @@ -860,11 +860,9 @@ EXPORT_SYMBOL(acpi_dev_present);
-> >   * Return the next match of ACPI device if another matching device was present
-> >   * at the moment of invocation, or NULL otherwise.
-> >   *
-> > - * FIXME: The function does not tolerate the sudden disappearance of @adev, e.g.
-> > - * in the case of a hotplug event. That said, the caller should ensure that
-> > - * this will never happen.
-> > - *
-> >   * The caller is responsible for invoking acpi_dev_put() on the returned device.
-> > + * On the other hand the function invokes  acpi_dev_put() on the given @adev
-> > + * assuming that its reference counter had been increased beforehand.
-> >   *
-> >   * See additional information in acpi_dev_present() as well.
-> >   */
-> > @@ -880,6 +878,7 @@ acpi_dev_get_next_match_dev(struct acpi_device *adev, const char *hid, const cha
-> >       match.hrv = hrv;
-> >
-> >       dev = bus_find_device(&acpi_bus_type, start, &match, acpi_dev_match_cb);
-> > +     acpi_dev_put(adev);
-> >       return dev ? to_acpi_device(dev) : NULL;
-> >  }
-> >  EXPORT_SYMBOL(acpi_dev_get_next_match_dev);
-> > diff --git a/drivers/firmware/efi/dev-path-parser.c b/drivers/firmware/efi/dev-path-parser.c
-> > index 10d4457417a4..eb9c65f97841 100644
-> > --- a/drivers/firmware/efi/dev-path-parser.c
-> > +++ b/drivers/firmware/efi/dev-path-parser.c
-> > @@ -34,7 +34,6 @@ static long __init parse_acpi_path(const struct efi_dev_path *node,
-> >                       break;
-> >               if (!adev->pnp.unique_id && node->acpi.uid == 0)
-> >                       break;
-> > -             acpi_dev_put(adev);
-> >       }
-> >       if (!adev)
-> >               return -ENODEV;
-> > diff --git a/drivers/media/pci/intel/ipu3/cio2-bridge.c b/drivers/media/pci/intel/ipu3/cio2-bridge.c
-> > index 4657e99df033..59a36f922675 100644
-> > --- a/drivers/media/pci/intel/ipu3/cio2-bridge.c
-> > +++ b/drivers/media/pci/intel/ipu3/cio2-bridge.c
-> > @@ -173,10 +173,8 @@ static int cio2_bridge_connect_sensor(const struct cio2_sensor_config *cfg,
-> >       int ret;
-> >
-> >       for_each_acpi_dev_match(adev, cfg->hid, NULL, -1) {
-> > -             if (!adev->status.enabled) {
-> > -                     acpi_dev_put(adev);
-> > +             if (!adev->status.enabled)
-> >                       continue;
-> > -             }
-> >
-> >               if (bridge->n_sensors >= CIO2_NUM_PORTS) {
-> >                       acpi_dev_put(adev);
-> > @@ -185,7 +183,6 @@ static int cio2_bridge_connect_sensor(const struct cio2_sensor_config *cfg,
-> >               }
-> >
-> >               sensor = &bridge->sensors[bridge->n_sensors];
-> > -             sensor->adev = adev;
-> >               strscpy(sensor->name, cfg->hid, sizeof(sensor->name));
-> >
-> >               ret = cio2_bridge_read_acpi_buffer(adev, "SSDB",
-> > @@ -215,6 +212,7 @@ static int cio2_bridge_connect_sensor(const struct cio2_sensor_config *cfg,
-> >                       goto err_free_swnodes;
-> >               }
-> >
-> > +             sensor->adev = acpi_dev_get(adev);
-> >               adev->fwnode.secondary = fwnode;
-> >
-> >               dev_info(&cio2->dev, "Found supported sensor %s\n",
-> > diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
-> > index 1ae993fee4a5..b9d434a93632 100644
-> > --- a/include/acpi/acpi_bus.h
-> > +++ b/include/acpi/acpi_bus.h
-> > @@ -707,11 +707,6 @@ acpi_dev_get_first_match_dev(const char *hid, const char *uid, s64 hrv);
-> >   * @hrv: Hardware Revision of the device, pass -1 to not check _HRV
-> >   *
-> >   * The caller is responsible for invoking acpi_dev_put() on the returned device.
-> > - *
-> > - * FIXME: Due to above requirement there is a window that may invalidate @adev
-> > - * and next iteration will use a dangling pointer, e.g. in the case of a
-> > - * hotplug event. That said, the caller should ensure that this will never
-> > - * happen.
-> >   */
-> >  #define for_each_acpi_dev_match(adev, hid, uid, hrv)                 \
-> >       for (adev = acpi_dev_get_first_match_dev(hid, uid, hrv);        \
+> +module_param_named(sev_snp, sev_snp_enabled, bool, 0444);
+>  #else
+>  #define sev_enabled false
+>  #define sev_es_enabled false
+> +#define sev_snp_enabled  false
+>  #endif /* CONFIG_KVM_AMD_SEV */
+>  
+>  #define AP_RESET_HOLD_NONE		0
+> @@ -1825,6 +1830,7 @@ void __init sev_hardware_setup(void)
+>  {
+>  #ifdef CONFIG_KVM_AMD_SEV
+>  	unsigned int eax, ebx, ecx, edx, sev_asid_count, sev_es_asid_count;
+> +	bool sev_snp_supported = false;
+>  	bool sev_es_supported = false;
+>  	bool sev_supported = false;
+>  
+> @@ -1888,9 +1894,21 @@ void __init sev_hardware_setup(void)
+>  	pr_info("SEV-ES supported: %u ASIDs\n", sev_es_asid_count);
+>  	sev_es_supported = true;
+>  
+> +	/* SEV-SNP support requested? */
+> +	if (!sev_snp_enabled)
+> +		goto out;
+> +
+> +	/* Is SEV-SNP enabled? */
+> +	if (!cpu_feature_enabled(X86_FEATURE_SEV_SNP))
+
+Random question, why use cpu_feature_enabled?  Did something change in cpufeatures
+that prevents using boot_cpu_has() here?
+
+> +		goto out;
+> +
+> +	pr_info("SEV-SNP supported: %u ASIDs\n", min_sev_asid - 1);
+
+Use sev_es_asid_count instead of manually recomputing the same; the latter
+obfuscates the fact that ES and SNP share the same ASID pool.
+
+Even better would be to report ES+SNP together, otherwise the user could easily
+interpret ES and SNP having separate ASID pools.  And IMO the gotos for SNP are
+overkill, e.g.
+
+	sev_es_supported = true;
+	sev_snp_supported = sev_snp_enabled &&
+			    cpu_feature_enabled(X86_FEATURE_SEV_SNP);
+
+	pr_info("SEV-ES %ssupported: %u ASIDs\n",
+		sev_snp_supported ? "and SEV-SNP " : "", sev_es_asid_count);
+
+
+> +	sev_snp_supported = true;
+> +
+>  out:
+>  	sev_enabled = sev_supported;
+>  	sev_es_enabled = sev_es_supported;
+> +	sev_snp_enabled = sev_snp_supported;
+>  #endif
+>  }
+>  
+> diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
+> index 1175edb02d33..b9ea99f8579e 100644
+> --- a/arch/x86/kvm/svm/svm.h
+> +++ b/arch/x86/kvm/svm/svm.h
+> @@ -58,6 +58,7 @@ enum {
+>  struct kvm_sev_info {
+>  	bool active;		/* SEV enabled guest */
+>  	bool es_active;		/* SEV-ES enabled guest */
+> +	bool snp_active;	/* SEV-SNP enabled guest */
+>  	unsigned int asid;	/* ASID used for this guest */
+>  	unsigned int handle;	/* SEV firmware handle */
+>  	int fd;			/* SEV device fd */
+> @@ -232,6 +233,17 @@ static inline bool sev_es_guest(struct kvm *kvm)
+>  #endif
+>  }
+>  
+> +static inline bool sev_snp_guest(struct kvm *kvm)
+> +{
+> +#ifdef CONFIG_KVM_AMD_SEV
+> +	struct kvm_sev_info *sev = &to_kvm_svm(kvm)->sev_info;
+> +
+> +	return sev_es_guest(kvm) && sev->snp_active;
+
+Can't this be reduced to:
+
+	return to_kvm_svm(kvm)->sev_info.snp_active;
+
+KVM should never set snp_active without also setting es_active.
+
+Side topic, I think it would also be worthwhile to add to_sev (or maybe to_kvm_sev)
+given the frequency of the "&to_kvm_svm(kvm)->sev_info" pattern.
+
+> +#else
+> +	return false;
+> +#endif
+> +}
+> +
+>  static inline void vmcb_mark_all_dirty(struct vmcb *vmcb)
+>  {
+>  	vmcb->control.clean = 0;
+> -- 
+> 2.17.1
+> 
