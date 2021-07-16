@@ -2,56 +2,43 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2262A3CBE1C
-	for <lists+linux-efi@lfdr.de>; Fri, 16 Jul 2021 23:00:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A39C13CBE27
+	for <lists+linux-efi@lfdr.de>; Fri, 16 Jul 2021 23:04:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232957AbhGPVDg (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 16 Jul 2021 17:03:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46642 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233454AbhGPVDf (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 16 Jul 2021 17:03:35 -0400
-Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 543FDC061762
-        for <linux-efi@vger.kernel.org>; Fri, 16 Jul 2021 14:00:39 -0700 (PDT)
-Received: by mail-pf1-x42f.google.com with SMTP id y4so9915451pfi.9
-        for <linux-efi@vger.kernel.org>; Fri, 16 Jul 2021 14:00:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=32owgdGkkMeFKYJKP96aJ0cepPQZmV7ASPwAnVQdyQ8=;
-        b=mWGfXWGNFAoNVa/XQEMEHBGq3nEvz+50vTLu166iLOmPRHDnbyzkms0w3ML3zNZeWP
-         GVWuqECe5KirV8LFrcLji/GmzrQ7GVbVpBIE3e5EzaXDLr6WyUx5EmX+jj1MebxKkklO
-         4FV8/YtI4QEurHcBfFD436NAdnosWqA7ukGoXATVmBIhLQbTxj1nAy4LNBJ4Rs+/Y1gn
-         frv72OoilRYqDRBvJQD2gN25MIilFA3t3XV9nKRiPei7WUH6uGHQRcrdLe3+TebOCdDS
-         53ONDWobK9c65N8sBOfetN8OnTEMw4ULi/OqXPosKkR+Pd3UuFCKTM65gtt0ZUlrb545
-         JcAA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=32owgdGkkMeFKYJKP96aJ0cepPQZmV7ASPwAnVQdyQ8=;
-        b=d7u5ID+t0DVCvyw+bXVDfZWQwX7K4bfH54k4yz+dYBDj0yoz3LI3BQ6js7aV8yTXF1
-         nmR2euFovi6oZ6CNzEehiRBiD63K7cDETLT71Bnho0g3Y+Ikzo5MKEMgFXyaAUEmf3ut
-         G8lBo4ABHy6BusJxoz6dQfzax9sOiEu7sYFVsx7FDpqW1AL2eG1OiWvaBG/Ft1jIApkB
-         ArUIf60unE2uDFl2miWSsjfZFznso2wlbTameEL0qpPtpVo57uTL2ydbJ0hZfoLqe6qg
-         Ak/CuBGzlnx2/G09V1xIZFjw2bx9e7VffCiDw5bIl5QNqA19IVGisKrsIvnhSzSgG7rz
-         6WNQ==
-X-Gm-Message-State: AOAM533edTf0GXPrAsYlaJQw/eQ1r4z0gtD7+lyNEjrr2d5m/WcnjK8/
-        U5lkIFlhJhYCYtCVjVHLBU1xYw==
-X-Google-Smtp-Source: ABdhPJwjG+4AKAUsolr4NhSH0onD6XOfm/OvTT2xz/g+OQ4KDyJFfI4r0VZGJsgBVJZPZ187YQk3wQ==
-X-Received: by 2002:a62:520e:0:b029:30b:fc21:975d with SMTP id g14-20020a62520e0000b029030bfc21975dmr12345822pfb.57.1626469238280;
-        Fri, 16 Jul 2021 14:00:38 -0700 (PDT)
-Received: from google.com (157.214.185.35.bc.googleusercontent.com. [35.185.214.157])
-        by smtp.gmail.com with ESMTPSA id f18sm6484622pfe.25.2021.07.16.14.00.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Jul 2021 14:00:37 -0700 (PDT)
-Date:   Fri, 16 Jul 2021 21:00:34 +0000
-From:   Sean Christopherson <seanjc@google.com>
-To:     Brijesh Singh <brijesh.singh@amd.com>
-Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        id S234815AbhGPVHH (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 16 Jul 2021 17:07:07 -0400
+Received: from mail-mw2nam12on2074.outbound.protection.outlook.com ([40.107.244.74]:4075
+        "EHLO NAM12-MW2-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S234645AbhGPVHE (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Fri, 16 Jul 2021 17:07:04 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=iG7Tsy1tvi2ZK2JewCnJwhmUsBKagbgh9vqbdYlsYIblhb7Eoora57NdXi1doO+RePG4T++joXlOZBmtI02e7OJ8ATl3tnZuYBn0iY3aMa+CeHg31XiaJt2zIpHaCiZJk4JSVlNZFJdr98mAta/GlV05CRND9Gq3pikN8zcr2F3ZheFX9mY/l+H4UpFii0aG7u6MP+yh5xEQBD4eSjVkT8gLSCQwp0ICtTsf/FK0IaQcZqWJrTkJL4uAS0LbP4ssa6Wzgwpf6LpDkF+QolmTv4StwbnXeSfwXUYr46S2leRxbhJjAiO0CHd/z1uWKzicCwb5x9cLBmnVo57kbEmy2w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=zAfArWQ/ATZHt41qWz0zV1klf3ih37tfiAezn6UeIVo=;
+ b=TokkDNL3AYa3JWjdUR+MA0iVWTajKngc7GCWDcLcvrny/phwxH5Rg+Q2aJMpa+t3Ekdr6aVRLCqv0Q8UnehqDQ11ThsPpS/9uL6sIPIu9VsMtEyJFUcddVL+3+ExwKfBDjpGuNTzn0I2fSIH2D5UXwc1PIZnSqEo3fetqtZPRe67nkvHie1ZDGMA2XZsAewtMF06PGX7a7kt0rwp6Po0wKCmxjAVhWJWO7d0yVqpW9jA+Fq2biZfxM6J0AHJoeGFiEvkDd1y0j7ZLqfpdPqcqjxjBG3yfalaAai4dI545IcOCqH4Mz56xeBgPi4ANanyUTDT0M3y0VBRxZDV8Bdpww==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=zAfArWQ/ATZHt41qWz0zV1klf3ih37tfiAezn6UeIVo=;
+ b=rrrYpQ58A16VfBKucLPK1xOejvHxItD6O0AkqaH9z/fiHy3+Jnr4v4a2MzNWUT0CLftsT4xHVEQtpW4mz/lPTryENJP0NKwrK68FVxq7c7p+HeL12bfxgVshzRjyWLYjYt9OGxbF2P9iLmVyrj6OKeI2G1l/3MKuix9oGZjTXmA=
+Authentication-Results: gmail.com; dkim=none (message not signed)
+ header.d=none;gmail.com; dmarc=none action=none header.from=amd.com;
+Received: from SN6PR12MB2718.namprd12.prod.outlook.com (2603:10b6:805:6f::22)
+ by SN1PR12MB2447.namprd12.prod.outlook.com (2603:10b6:802:27::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4331.23; Fri, 16 Jul
+ 2021 21:04:05 +0000
+Received: from SN6PR12MB2718.namprd12.prod.outlook.com
+ ([fe80::a8a9:2aac:4fd1:88fa]) by SN6PR12MB2718.namprd12.prod.outlook.com
+ ([fe80::a8a9:2aac:4fd1:88fa%3]) with mapi id 15.20.4331.024; Fri, 16 Jul 2021
+ 21:04:05 +0000
+Cc:     brijesh.singh@amd.com, x86@kernel.org,
+        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
         linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
         linux-coco@lists.linux.dev, linux-mm@kvack.org,
         linux-crypto@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
@@ -74,145 +61,120 @@ Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
         Michael Roth <michael.roth@amd.com>,
         Vlastimil Babka <vbabka@suse.cz>, tony.luck@intel.com,
         npmccallum@redhat.com, brijesh.ksingh@gmail.com
-Subject: Re: [PATCH Part2 RFC v4 33/40] KVM: SVM: Add support to handle MSR
- based Page State Change VMGEXIT
-Message-ID: <YPHzcstus9mS8hOm@google.com>
+Subject: Re: [PATCH Part2 RFC v4 21/40] KVM: SVM: Add initial SEV-SNP support
+To:     Sean Christopherson <seanjc@google.com>
 References: <20210707183616.5620-1-brijesh.singh@amd.com>
- <20210707183616.5620-34-brijesh.singh@amd.com>
-MIME-Version: 1.0
+ <20210707183616.5620-22-brijesh.singh@amd.com> <YPHJOmUOR65QY+YY@google.com>
+ <ae47ae6b-16b1-f282-38d5-429d813243a8@amd.com> <YPHekXKC/XhWYlZE@google.com>
+From:   Brijesh Singh <brijesh.singh@amd.com>
+Message-ID: <fb54b509-29a3-f2d2-5a23-eb8d9d661fac@amd.com>
+Date:   Fri, 16 Jul 2021 16:03:57 -0500
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
+ Gecko/20100101 Thunderbird/78.12.0
+In-Reply-To: <YPHekXKC/XhWYlZE@google.com>
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20210707183616.5620-34-brijesh.singh@amd.com>
+Content-Language: en-US
+X-ClientProxiedBy: SA9PR03CA0030.namprd03.prod.outlook.com
+ (2603:10b6:806:20::35) To SN6PR12MB2718.namprd12.prod.outlook.com
+ (2603:10b6:805:6f::22)
+MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from Brijeshs-MacBook-Pro.local (70.112.153.56) by SA9PR03CA0030.namprd03.prod.outlook.com (2603:10b6:806:20::35) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4331.21 via Frontend Transport; Fri, 16 Jul 2021 21:03:59 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: d51fda21-626a-4454-8da4-08d9489d3ee7
+X-MS-TrafficTypeDiagnostic: SN1PR12MB2447:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <SN1PR12MB2447203EF2357F4000293A7DE5119@SN1PR12MB2447.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:10000;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: flp3REkdRRhjGjBs2Enqe5CpEO5i2eW/3HlX91kvAklg0S+jsEJ8QilTm6i3wMWwsGdVIDQcFqEsgtILds4JiJLuUUMVpXjWclf9kpOUS2nCsdJis7yfpJ/3FU3gRbYTYLobpyuO1bndJFBtZ4h8hZIceFqNYCVyL5wzk0yS711xhCo+rT+jOypWk75kPthRWWDqLsBV89ovTZyqfrw7+4VPSn+cGejR7Rk+oQptRrjKoCMssIROgcK3XZTTg/upuMgKuX7tPBcVsa3lic2LyRi9Vd2OcMVoSchFN0zNPGTNeXlKAs5n9LSC3PIxNTiKB/ZviMGw2JOrmnTjyWLzRRWgrwhr4XoGdHRJjx4qNS9yDqj7jX4sySNGM2weGWDcDW416lSYSNXNrMbxtsf0z7XSW8w4jFHBsxrQlh4gKIqD5ylPSx5mLfibs9kj4O7H5Mh/3BHATSIak+yp0+/4jhqQ85UDjztPyTTep8CL8YpmkiMrxGwQX92NuIm+0btlZCL/Lt39QNJrghIFKZLFQxWut4njxQVGw56DVlYTf+AjrsVDITnKrZys3gL4BHRJaBm+EtS7je39SKUctgPs0AppEGe+HRQM+t6+ZNuqEP7Dk7DCIvb1EB4HCerweXg8A7m2oJPreuQRIYG43QA7N6U6icjldfg9aa5kcWNeB/F4415BrYXecSi43R7UXX0JGsPnyjPRknTTsdesTyZ94Gh7La8TLQXJBOTv3qIVBeQ0juj5RVZAEA35kpgcKx3vz6/fMBfqjhNCu6ar72xapg==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR12MB2718.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(396003)(376002)(39860400002)(346002)(136003)(366004)(86362001)(38350700002)(6486002)(38100700002)(6506007)(478600001)(2906002)(6512007)(31686004)(186003)(53546011)(36756003)(26005)(316002)(956004)(7406005)(7416002)(8936002)(66476007)(44832011)(54906003)(8676002)(83380400001)(52116002)(4326008)(66556008)(6916009)(31696002)(5660300002)(66946007)(2616005)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?VVIxUTdBZnlLVlhTbk5pamxtNjI4WWFGV1dqOEFVdVhVWENsTi9PeHdHcW1h?=
+ =?utf-8?B?MkdqSkdZdy85TXRUQ1FTWVl2ekNma0w1VFMxb0pqOW9La0dUVElnTG1wbWIx?=
+ =?utf-8?B?aVpNZExRWHpTcHRHK1NwK2FhY2lFTDA0THZFQU80akxPd3FUTmZmLy80Z29q?=
+ =?utf-8?B?bUZMSUVXc0x6VWc5Wjg1bUd0ajBXN3BFQmN4bWRXa3JqRXc4TGUybnJ6MDc3?=
+ =?utf-8?B?RzdyekM2NkRHTVJlOGpnaFo2ZEdBTXdDdmR3eUhBYXFkT3NKWmd6MGpIamNQ?=
+ =?utf-8?B?eW1CZ0RreTVMR3Y5QzdQclVOWVEzVGN2dXg3YmFFbUpqRnNNWXIycHJFaDFL?=
+ =?utf-8?B?VmhSZUJpbDRleFlEQUk1Nk1nc0lrU0kxTEhhbWFCNVJCVm84dkplbEFrd21j?=
+ =?utf-8?B?VGdhaFNpY2VyaVc0V1FpdjZFeTdLME9tUHpLbGFXYk9NdGpwQnRxU092czZQ?=
+ =?utf-8?B?SEN1OXVKMjV0LytsZWZ6MFpGVkV3R2NJY0dibXVueXVHQjR1MFFWc282YkJi?=
+ =?utf-8?B?cEJRbnQ2dXFhNFplcVZrWFBETDBicmJYVC9xUlg4VzlCV0RGaDRpK2JlRDdR?=
+ =?utf-8?B?S29TeitRMlRJekRFOFk4OW1oYVdUR1MzUUVOMTBjNmhjdlJwL1ZZRVd2TjNn?=
+ =?utf-8?B?akx6QWZZa1haT2ZpbHU5NWUyWjZWVGhXSzlGMm8xZ0RVUUlRRk01V3ZFWHlt?=
+ =?utf-8?B?cThmcEVCU3dkS1ZDNHRReGRUYXEyQVdoblpKRnhKcG5uZkFoblFnRmhWTEUv?=
+ =?utf-8?B?cndIOUJ4RVREV2lVek5rcDBnRFVQTjh6RHZFMmtuUHNwVnhwU3JaY2JDYWt3?=
+ =?utf-8?B?MUlVVGZmT3FtOExEMXZ2Qk16RklSdmx3bndWRmxjWFIzQUF4dzdoaC9pMnFO?=
+ =?utf-8?B?L0V5eHlFNm5Pc3Z5ZDBlQ0UzeE85cVlkVlBuajkyamErdVp2bVNYQTA5bFhw?=
+ =?utf-8?B?OEZ5V3JodmxWZ3k2aFFKSXFuVGJPNUZHWVU0QUlDcmlxYlovQU1wN2t2bzhW?=
+ =?utf-8?B?RUtqdlFsMldFT2ZwTjdueC9kOGNPby8xZGJTNnNiN2lCUG42ay96OWFmL3ZL?=
+ =?utf-8?B?M3daVWpkRGwybFpLc0VCeHphdFFaNFRzdTJCdkRoQ0JmQ0dtZkx3RGRac0Y5?=
+ =?utf-8?B?V29rc25adDdLbG0vdUkzSVZQWG5JODhiQVg0aWpJSkZHdVY3UWpraDVuWWow?=
+ =?utf-8?B?bmxOVk1ocGRUOU9qOXhKOExDT1dvbS9nenNyWlRZRmFBdXp2Q0E4ckZDaTFN?=
+ =?utf-8?B?UTc4dXZBM1ZCTGNSUXMyQVc2ZURkWDRhOWxKSWdaVGNFTC9qNWZUbkV1STRL?=
+ =?utf-8?B?ZnR3dmc2cnM1MlJtam83Mjd5MmJNekxjSnVJNm9CTGlTczZJUnFCLzdka3hC?=
+ =?utf-8?B?NmlRQXlEcW5yZ05nZUtpaldHcUxLRHVxN0FFM29DcTFJOW5FTEc3VHltNFBy?=
+ =?utf-8?B?TURwYmZDK096VGtWNTJlQVhsTkVNSW1lWnNhck1BSi8yZXhZTXAwZW11c2ww?=
+ =?utf-8?B?QVV6YXdPSHdtN3FMYTJQa083T1UwMjJrN2V2eVNLTEVsR0hNU0FRaWRvY20v?=
+ =?utf-8?B?SG9TNUJMalJCSkhHcm9IWGxxQnl0bHI1UG5xUWE3NlN3V2lUWDlwZXhFVDVz?=
+ =?utf-8?B?cStIRjhpVTVtRk4vYUlzV3J0UE9pcXBaTDA3Vk4vSEUzK0w0TDRURkNuWTRI?=
+ =?utf-8?B?ZGxHekZna1lUL1NMR3RqSDltSlJoR2hLTXk4WURNOXREdjFqR1d1bXppRllq?=
+ =?utf-8?Q?12U5SsN7HG2RCOHg2eUv9mLBp6z4KT04pPeYPzg?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d51fda21-626a-4454-8da4-08d9489d3ee7
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR12MB2718.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jul 2021 21:04:05.4622
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: BrN8N0ouZ5ImIB2ObUuDiy2JKOlkK/aWGYA/SBhiNBkyJ1Kv4MtLMXgzMu7Sa6xK3mTwWCdSHk+lkw7YBRyjiw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN1PR12MB2447
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, Jul 07, 2021, Brijesh Singh wrote:
-> +static int __snp_handle_psc(struct kvm_vcpu *vcpu, int op, gpa_t gpa, int level)
 
-I can live with e.g. GHCB_MSR_PSC_REQ, but I'd strongly prefer to spell this out,
-e.g. __snp_handle_page_state_change() or whatever.  I had a hell of a time figuring
-out what PSC was the first time I saw it in some random context.
+On 7/16/21 2:31 PM, Sean Christopherson wrote:
+> That's not what I was asking.  My question is if KVM will break/fail if someone
+> runs a KVM build with SNP enabled halfway through the series.  E.g. if I make a
+> KVM build at patch 22, "KVM: SVM: Add KVM_SNP_INIT command", what will happen if
+> I attempt to launch an SNP guest?  Obviously it won't fully succeed, but will KVM
+> fail gracefully and do all the proper cleanup?  Repeat the question for all patches
+> between this one and the final patch of the series.
+>
+> SNP simply not working is ok, but if KVM explodes or does weird things without
+> "full" SNP support, then at minimum the module param should be off by default
+> until it's safe to enable.  E.g. for the TDP MMU, I believe the approach was to
+> put all the machinery in place but not actually let userspace flip on the module
+> param until the full implementation was ready.  Bisecting and testing the
+> individual commits is a bit painful because it requires modifying KVM code, but
+> on the plus side unrelated bisects won't stumble into a half-baked state.
 
-> +{
-> +	struct kvm *kvm = vcpu->kvm;
-> +	int rc, tdp_level;
-> +	kvm_pfn_t pfn;
-> +	gpa_t gpa_end;
-> +
-> +	gpa_end = gpa + page_level_size(level);
-> +
-> +	while (gpa < gpa_end) {
-> +		/*
-> +		 * Get the pfn and level for the gpa from the nested page table.
-> +		 *
-> +		 * If the TDP walk failed, then its safe to say that we don't have a valid
-> +		 * mapping for the gpa in the nested page table. Create a fault to map the
-> +		 * page is nested page table.
-> +		 */
-> +		if (!kvm_mmu_get_tdp_walk(vcpu, gpa, &pfn, &tdp_level)) {
-> +			pfn = kvm_mmu_map_tdp_page(vcpu, gpa, PFERR_USER_MASK, level);
-> +			if (is_error_noslot_pfn(pfn))
-> +				goto out;
-> +
-> +			if (!kvm_mmu_get_tdp_walk(vcpu, gpa, &pfn, &tdp_level))
-> +				goto out;
-> +		}
-> +
-> +		/* Adjust the level so that we don't go higher than the backing page level */
-> +		level = min_t(size_t, level, tdp_level);
-> +
-> +		write_lock(&kvm->mmu_lock);
+There is one to two patches where I can think of that we may break the
+KVM if SNP guest is created before applying the full series. In one
+patch we add LAUNCH_UPDATE but reclaim is done in next patch. I like
+your idea to push the module init  later in the series.
 
-Retrieving the PFN and level outside of mmu_lock is not correct.  Because the
-pages are pinned and the VMM is not malicious, it will function as intended, but
-it is far from correct.
 
-The overall approach also feels wrong, e.g. a guest won't be able to convert a
-2mb chunk back to a 2mb large page if KVM mapped the GPA as a 4kb page in the
-past (from a different conversion).
+>
+> Ya, got that, but again not what I was asking :-)  Why use cpu_feature_enabled()
+> instead of boot_cpu_has()?  As a random developer, I would fully expect that
+> boot_cpu_has(X86_FEATURE_SEV_SNP) is true iff SNP is fully enabled by the kernel.
 
-I'd also strongly prefer to have a common flow between SNP and TDX for converting
-between shared/prviate.
+I have to check but I think boot_cpu_has(X64_FEATURE_SEV_SNP) will
+return true even when the CONFIG_MEM_ENCRYPT is disabled.
 
-I'll circle back to this next week, it'll probably take a few hours of staring
-to figure out a solution, if a common one for SNP+TDX is even possible.
 
-> +
-> +		switch (op) {
-> +		case SNP_PAGE_STATE_SHARED:
-> +			rc = snp_make_page_shared(vcpu, gpa, pfn, level);
-> +			break;
-> +		case SNP_PAGE_STATE_PRIVATE:
-> +			rc = snp_make_page_private(vcpu, gpa, pfn, level);
-> +			break;
-> +		default:
-> +			rc = -EINVAL;
-> +			break;
-> +		}
-> +
-> +		write_unlock(&kvm->mmu_lock);
-> +
-> +		if (rc) {
-> +			pr_err_ratelimited("Error op %d gpa %llx pfn %llx level %d rc %d\n",
-> +					   op, gpa, pfn, level, rc);
-> +			goto out;
-> +		}
-> +
-> +		gpa = gpa + page_level_size(level);
-> +	}
-> +
-> +out:
-> +	return rc;
-> +}
-> +
->  static int sev_handle_vmgexit_msr_protocol(struct vcpu_svm *svm)
->  {
->  	struct vmcb_control_area *control = &svm->vmcb->control;
-> @@ -2941,6 +3063,25 @@ static int sev_handle_vmgexit_msr_protocol(struct vcpu_svm *svm)
->  				  GHCB_MSR_INFO_POS);
->  		break;
->  	}
-> +	case GHCB_MSR_PSC_REQ: {
-> +		gfn_t gfn;
-> +		int ret;
-> +		u8 op;
-> +
-> +		gfn = get_ghcb_msr_bits(svm, GHCB_MSR_PSC_GFN_MASK, GHCB_MSR_PSC_GFN_POS);
-> +		op = get_ghcb_msr_bits(svm, GHCB_MSR_PSC_OP_MASK, GHCB_MSR_PSC_OP_POS);
-> +
-> +		ret = __snp_handle_psc(vcpu, op, gfn_to_gpa(gfn), PG_LEVEL_4K);
-> +
-> +		/* If failed to change the state then spec requires to return all F's */
+>
+>> The approach here is similar to SEV/ES. IIRC, it was done mainly to
+>> avoid adding dead code when CONFIG_KVM_AMD_SEV is disabled.
+> But this is already in an #ifdef, checking sev_es_guest() is pointless.
 
-That doesn't mesh with what I could find:
 
-  o 0x015 – SNP Page State Change Response
-    ▪ GHCBData[63:32] – Error code
-    ▪ GHCBData[31:12] – Reserved, must be zero
-  Written by the hypervisor in response to a Page State Change request. Any non-
-  zero value for the error code indicates that the page state change was not
-  successful.
+Ah Good point.
 
-And if "all Fs" is indeed the error code, 'int ret' probably only works by luck
-since the return value is a 64-bit value, where as ret is a 32-bit signed int.
 
-> +		if (ret)
-> +			ret = -1;
-
-Uh, this is fubar.   You've created a shadow of 'ret', i.e. the outer ret is likely
-uninitialized.
-
-> +
-> +		set_ghcb_msr_bits(svm, ret, GHCB_MSR_PSC_ERROR_MASK, GHCB_MSR_PSC_ERROR_POS);
-> +		set_ghcb_msr_bits(svm, 0, GHCB_MSR_PSC_RSVD_MASK, GHCB_MSR_PSC_RSVD_POS);
-> +		set_ghcb_msr_bits(svm, GHCB_MSR_PSC_RESP, GHCB_MSR_INFO_MASK, GHCB_MSR_INFO_POS);
-> +		break;
-> +	}
->  	case GHCB_MSR_TERM_REQ: {
->  		u64 reason_set, reason_code;
->  
-> -- 
-> 2.17.1
-> 
