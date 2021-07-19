@@ -2,112 +2,71 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0AE5F3CCE43
-	for <lists+linux-efi@lfdr.de>; Mon, 19 Jul 2021 09:11:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 87A8F3CCE48
+	for <lists+linux-efi@lfdr.de>; Mon, 19 Jul 2021 09:13:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234793AbhGSHOF (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 19 Jul 2021 03:14:05 -0400
-Received: from mail.kernel.org ([198.145.29.99]:59020 "EHLO mail.kernel.org"
+        id S234559AbhGSHQE (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 19 Jul 2021 03:16:04 -0400
+Received: from mail.kernel.org ([198.145.29.99]:59702 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234730AbhGSHOD (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Mon, 19 Jul 2021 03:14:03 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 802B3611BE;
-        Mon, 19 Jul 2021 07:11:04 +0000 (UTC)
+        id S234314AbhGSHQD (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Mon, 19 Jul 2021 03:16:03 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id A1AC3611AF;
+        Mon, 19 Jul 2021 07:13:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1626678664;
-        bh=Pn/1Cj/0aZG99zqoi3ZzrECnvCBXU+18iWFv6gPyfSM=;
+        s=k20201202; t=1626678784;
+        bh=EYabTI88I7XIbufiiYgGBcMFw033HqY+rFyQgdAOxdE=;
         h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=bCW39FLNMP4SZgn5kgvw/weq+kRv4VAQe9Yl0X9IvGIET79Sv111ytlAfkeuQCy4+
-         0auxQNNbNpcDAZM+M+AmJAooC2j7JGbdI3GtyMeTbXItwsz/o3MvlXVKYKvsrfzlAe
-         7jHJ2Y7UFFpuEjHACQP7iXhobcygebdszESwk7tiR9tZGSToYXOe/f2ZQKwNNJfA4T
-         +WCaVuZ0r1K+eAHklgZ9MhZRHNmWZ65VuHQGHPiQOXyTpeXTvB+DriDAI2568NkFB7
-         ZTzq+bOFDk5gzVRiYpdiUuhKiM1fPVCQmHVYae8dSOnQ9xq1yNQaNcSvPR2uHEf6hh
-         XHmrehB38snjQ==
-Received: by mail-ot1-f51.google.com with SMTP id b18-20020a0568303112b02904cf73f54f4bso3719905ots.2;
-        Mon, 19 Jul 2021 00:11:04 -0700 (PDT)
-X-Gm-Message-State: AOAM530EV1Tw4cezUdRpEDUjuz0Dw/388gXnTiowc4knwt9TvQHHHcAi
-        fUTiIIBWb62KeT1jMlUpfhn8So5to4UN6I//aFI=
-X-Google-Smtp-Source: ABdhPJwdHFS1KJDwdJGVFAPZ7EQmJ/6+hWchGT5fri4AF+nsIVeMNNoeRd43R/6tIlkpHhDM1d09UMCoJxuAR70rmFo=
-X-Received: by 2002:a05:6830:34a6:: with SMTP id c38mr5088922otu.108.1626678663841;
- Mon, 19 Jul 2021 00:11:03 -0700 (PDT)
+        b=kQfD7GCe6PE4R6vRbo1pbEM1JSAk19gT3USixVR7yZt1kdnDCFoI28vDyyWmkLMAj
+         F4OQJhb2fRUdIbwe0itA20TxBL/fwLipMY8Q/dm43nDopcuJsPPqmtC+avIfAt6D/k
+         P5dAWVOyZQ2q3EdrPJ5jql92Ia0PZCVmvsIj6p90qC2lwo6qGDyNxPVlmgikv2ACyM
+         uTZy8F1VmZIGoIG+F7tYZk6Xid9G+TbpXOe4uR6kI3DxkcYld/QQiPEcTAPFnKqRON
+         uHANrjRWpPX0XBULJbmBd3Q57gYPwaO5Y6mr6pzaWZk1NnqDMJKDCuKOQK6oo1lDnd
+         sriTxMGIM40sA==
+Received: by mail-oo1-f45.google.com with SMTP id r14-20020a4ad4ce0000b029024b4146e2f5so4219614oos.1;
+        Mon, 19 Jul 2021 00:13:04 -0700 (PDT)
+X-Gm-Message-State: AOAM532o31t2r/OdbfJi6G66JTnWOS4PQyEa5zF322p5SzocyH4VJ4JP
+        PCYKyOJ4XEpZ22gHPwoMRwDHubxI5Sjpt0rz4CQ=
+X-Google-Smtp-Source: ABdhPJwuhTxA+Wh+bYt7u+sqUJV740cGnwcCmNCfOYWDD7g5TKapBaSaJmsEEpsOfksXPAbxrf8gZww+vV0VokGU3CY=
+X-Received: by 2002:a4a:e923:: with SMTP id a3mr16356559ooe.45.1626678784054;
+ Mon, 19 Jul 2021 00:13:04 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210625130947.1803678-1-javierm@redhat.com> <e61cf77c-6bff-dfcc-d3df-2fb6b48e5897@redhat.com>
- <8dd26141-a09c-39e2-5174-4cad8d21c49c@suse.de> <CAPM=9tyfNPa2f5PDBLm4w_H_riEQ5P3rEhX73YGE1y_ygRox+w@mail.gmail.com>
-In-Reply-To: <CAPM=9tyfNPa2f5PDBLm4w_H_riEQ5P3rEhX73YGE1y_ygRox+w@mail.gmail.com>
+References: <YNwu7LmZaImyoOer@zn.tnic> <CAMj1kXE--H53wu_X=GpgeJmWs7vjpnkUnG_fc+59GaNDF+sYEw@mail.gmail.com>
+ <YPJgYp9kt5p06WX+@nazgul.tnic>
+In-Reply-To: <YPJgYp9kt5p06WX+@nazgul.tnic>
 From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Mon, 19 Jul 2021 09:10:52 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXErHteZ+MKYvp=yYmwVxV3A=vjtnG351hZHV+3BPwDQvw@mail.gmail.com>
-Message-ID: <CAMj1kXErHteZ+MKYvp=yYmwVxV3A=vjtnG351hZHV+3BPwDQvw@mail.gmail.com>
-Subject: Re: [PATCH v3 0/2] allow simple{fb, drm} drivers to be used on
- non-x86 EFI platforms
-To:     Dave Airlie <airlied@gmail.com>
-Cc:     Thomas Zimmermann <tzimmermann@suse.de>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+Date:   Mon, 19 Jul 2021 09:12:53 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXGX=dMsCe-Na5f3LJtS_9=9cN4y7+rgLx2k04ifduJ8vw@mail.gmail.com>
+Message-ID: <CAMj1kXGX=dMsCe-Na5f3LJtS_9=9cN4y7+rgLx2k04ifduJ8vw@mail.gmail.com>
+Subject: Re: [RFC PATCH] efi/mokvar: Reserve the table only if it is in boot
+ services data
+To:     Borislav Petkov <bp@alien8.de>
+Cc:     Lenny Szubowicz <lszubowi@redhat.com>, Gary Lin <glin@suse.com>,
+        =?UTF-8?B?SsO2cmcgUsO2ZGVs?= <jroedel@suse.de>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
         linux-efi <linux-efi@vger.kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        David Airlie <airlied@linux.ie>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        "the arch/x86 maintainers" <x86@kernel.org>,
-        Russell King <linux@armlinux.org.uk>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        Atish Patra <atish.patra@wdc.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Peter Robinson <pbrobinson@gmail.com>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        linux-riscv <linux-riscv@lists.infradead.org>,
-        Borislav Petkov <bp@suse.de>, Will Deacon <will@kernel.org>,
-        Albert Ou <aou@eecs.berkeley.edu>
+        lkml <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Mon, 19 Jul 2021 at 04:59, Dave Airlie <airlied@gmail.com> wrote:
+On Sat, 17 Jul 2021 at 06:46, Borislav Petkov <bp@alien8.de> wrote:
 >
-> On Thu, 15 Jul 2021 at 18:11, Thomas Zimmermann <tzimmermann@suse.de> wrote:
-> >
-> > Hi
-> >
-> > Am 13.07.21 um 18:59 schrieb Javier Martinez Canillas:
-> > > On 6/25/21 3:09 PM, Javier Martinez Canillas wrote:
-> > >> The simplefb and simpledrm drivers match against a "simple-framebuffer"
-> > >> device, but for aarch64 this is only registered when using Device Trees
-> > >> and there's a node with a "simple-framebuffer" compatible string.
-> > >>
-> > >> There is no code to register a "simple-framebuffer" platform device when
-> > >> using EFI instead. In fact, the only platform device that's registered in
-> > >> this case is an "efi-framebuffer", which means that the efifb driver is
-> > >> the only driver supported to have an early console with EFI on aarch64.
-> > >>
-> > >> The x86 architecture platform has a Generic System Framebuffers (sysfb)
-> > >> support, that register a system frambuffer platform device. It either
-> > >> registers a "simple-framebuffer" for the simple{fb,drm} drivers or legacy
-> > >> VGA/EFI FB devices for the vgafb/efifb drivers.
-> > >>
-> > >> The sysfb is generic enough to be reused by other architectures and can be
-> > >> moved out of the arch/x86 directory to drivers/firmware, allowing the EFI
-> > >> logic used by non-x86 architectures to be folded into sysfb as well.
-> > >>
-> > >
-> > > Any more comments on this series? It would be nice for this to land so the
-> > > simpledrm driver could be used on aarch64 EFI systems as well.
-> > >
-> > > The patches have already been acked by x86 and DRM folks.
-> >
-> > Time to get this merged, I'd say. People are asking for these patches
-> > already.
+> On Fri, Jul 16, 2021 at 07:10:17PM +0200, Ard Biesheuvel wrote:
+> > Acked-by: Ard Biesheuvel <ardb@kernel.org>
 >
-> Can we just merge via drm-misc and make sure the acks are present and
-> I'll deal with the fallout if any.
+> Thanks for checking me here.
+>
+> > Would you like me to queue this as a fix?
+>
+> Well, I wanna say it is unnecessary to send it as an urgent fix because
+> we have the SEV fix in place now and I guess we'll leave it in in case
+> something else is in boot services and is needed for SEV guests to boot.
+>
+> So I guess just a normal, unexpedited fix please, so that it sees more
+> testing before it goes up.
 >
 
-Fine with me. Could you stick it on a separate branch so I can double
-check whether there are any issues wrt the EFI tree?
-
-Thanks,
-Ard.
+I have accumulated a handful of EFI fixes which are not urgent, but
+fixes nonetheless. I will add it to the set.
