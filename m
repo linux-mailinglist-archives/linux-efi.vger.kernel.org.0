@@ -2,52 +2,52 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 565853CF0A4
-	for <lists+linux-efi@lfdr.de>; Tue, 20 Jul 2021 02:19:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BBA633CF109
+	for <lists+linux-efi@lfdr.de>; Tue, 20 Jul 2021 02:59:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1356770AbhGSXcb (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 19 Jul 2021 19:32:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58650 "EHLO
+        id S240020AbhGTASb (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 19 Jul 2021 20:18:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48442 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1441888AbhGSWOD (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 19 Jul 2021 18:14:03 -0400
-Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9EF37C0613B5
-        for <linux-efi@vger.kernel.org>; Mon, 19 Jul 2021 15:50:07 -0700 (PDT)
-Received: by mail-pf1-x436.google.com with SMTP id p36so17956975pfw.11
-        for <linux-efi@vger.kernel.org>; Mon, 19 Jul 2021 15:50:07 -0700 (PDT)
+        with ESMTP id S1378416AbhGSXhL (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 19 Jul 2021 19:37:11 -0400
+Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3AC4C08EA6F
+        for <linux-efi@vger.kernel.org>; Mon, 19 Jul 2021 17:10:40 -0700 (PDT)
+Received: by mail-pf1-x42f.google.com with SMTP id m83so18153299pfd.0
+        for <linux-efi@vger.kernel.org>; Mon, 19 Jul 2021 17:10:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20161025;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to;
-        bh=/KQZ/og+MMwG7+gZQy+I2ifIZbW2sC3CrysTm6RWo48=;
-        b=TrC6uyzelR+/+DuhHGkQhT8ZilBSns6EN6zr6R3GsDzwt1A0B1ob14VfGLKbKtyYHf
-         UnePiDR4FpHICi6z5QS4Br4KOWkHIgLEeR8gx7IzpIzQOJFTLlF7+NNZycoVeKnxYD6h
-         HbjmZ/PaBHV0V8e+cfLnxBcowZivtCrjpWnTV8c2ZjABFcunj+ENtzWsgGQLyJbKIFv/
-         VR+A8muZqP5sibfw7uvl/qPo2Ty2GVOGxwdOKplp/U4hoGQCi7nhVUCLUrGwfAlFMGnd
-         p98tI4Tr+xvCXIgbQNI2AJDXVbX1JKOsFuuzRo2sS//yKyLQdg5uMFTMCUas9NSy8J5b
-         Frtg==
+        bh=AK7Am28M2zvc87KGZLscBYou7JeqfY9AoMRwA8Z1is0=;
+        b=kOJz/QU/yH26H5nk02wvJPuP7I15H5DyQmeaxzTCZy4nge9IPwiNMKHI7U3dCKd+z9
+         VC46tces4DPjfyQd6/7DoXA8J0G8oMlGEvEwNHxh8zAiKv4xlhDbHdbn7UTq6cU0emJX
+         bXtDSYyPOi2ynMErJTUKqEjXAR575c7xvzK3Q2zaohOoMkCX3bqOSYvttDkw34YdWZoW
+         UE0rNfvMHAczrp8ll5j1fxv/l7Y9beXzNf5dJ/pjBhVIxzpMgE/gLBA9qQHOdS4CIRbN
+         tPqP556jUWGYKfSbaAIj2nWSdziw0T1MJUhOJWd5mlT+jpq+wQgyLLVdbRUU7Xe1WZ0c
+         kv3w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=/KQZ/og+MMwG7+gZQy+I2ifIZbW2sC3CrysTm6RWo48=;
-        b=JbBcyk/L7ltzj+0v1clkACyTYzc/Sytw5NUobvLDsSFzyfKlCqxXad9vEf2p8YozlZ
-         /XTaiw6EN8G0oijowm5uj0bLCn8DLRVzZVPGqN3/RCUJweueK37mGEL4aPkbt1+vcYQr
-         93XBZpuXwKSdXSTULaq4jBCgozojIArLH4Lynd7OyIY25lsIOAQ9qlPBoeBQKkpauMik
-         VvEaDQ4lDINdT1IBZYhk2OfbO5pp/51RxAbgluwy2S3Pv4qmuT0v8HsdjWDY7LC96lv4
-         yC5SUtw6cTrwQYDUR0K9HcVn4JO0QD+R6NdnM9M83l7N+wpW3FtLyA83qwQ9dlc+ltVG
-         ZOxg==
-X-Gm-Message-State: AOAM532tDQwUx2AbBfPnKmX8rWucHG3AC6sKnuJc54Iv3+3PVCmXxKBy
-        dYmU/x00xbEq42p5mqEOVihVjg==
-X-Google-Smtp-Source: ABdhPJy/imUID7VPk45W7GZdlhJTj17s4zd4R4dZUGmjWKYmnjQB23dmeWQOvmtu+8kvlA6P6vSXfw==
-X-Received: by 2002:a63:a558:: with SMTP id r24mr12070616pgu.438.1626735006916;
-        Mon, 19 Jul 2021 15:50:06 -0700 (PDT)
+        bh=AK7Am28M2zvc87KGZLscBYou7JeqfY9AoMRwA8Z1is0=;
+        b=abZcdnRR+nditxAkHpQtXbUrEZ5baQSBGn6IM3gX4+978/UD2K6VspJVCYzz4L3ww/
+         B9ty6M7j/46LkrJDHv6oLFQq/a5BBi+ZFKk55HacF5ZCwafMPpoU06WAQ2STzNTY2yuz
+         15bI9yR5ZvWXo4OoHKL9bCIKlLyX6D5TD5oW+4Y8db/70tca3GMddwjpv0xS2ILcuUUq
+         5i7311KEhRLDIimgoRkvsG4Op8WmSVyqtQYE80VYVVBSSrSAuF5milLjN0AWuy9APt67
+         doeX4upVgjO+KWcrzL8boMc3eYAYyAHMaAJU61P9QnibEMWEAHAhAxXQvl6TnDjpztCf
+         m6oA==
+X-Gm-Message-State: AOAM531GE8JgEdknTmV9S02Fh6T5bD5VT5EQSZ7k1agvIBa+dTo7+6G0
+        FrlS8PhRHy/Pk1SQBej8Rpg98Q==
+X-Google-Smtp-Source: ABdhPJwXXNzz6kdDJ2LYdi7Q+ws13YMDHqvdk1hUvnOwKNdrC60c1ezx7UMJv5UI1Q2z1WInzxdE0g==
+X-Received: by 2002:a62:684:0:b029:330:2fe:28ef with SMTP id 126-20020a6206840000b029033002fe28efmr28679143pfg.21.1626739839808;
+        Mon, 19 Jul 2021 17:10:39 -0700 (PDT)
 Received: from google.com (157.214.185.35.bc.googleusercontent.com. [35.185.214.157])
-        by smtp.gmail.com with ESMTPSA id p33sm21208412pfw.40.2021.07.19.15.50.06
+        by smtp.gmail.com with ESMTPSA id d191sm24218090pga.27.2021.07.19.17.10.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Jul 2021 15:50:06 -0700 (PDT)
-Date:   Mon, 19 Jul 2021 22:50:02 +0000
+        Mon, 19 Jul 2021 17:10:39 -0700 (PDT)
+Date:   Tue, 20 Jul 2021 00:10:35 +0000
 From:   Sean Christopherson <seanjc@google.com>
 To:     Brijesh Singh <brijesh.singh@amd.com>
 Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
@@ -73,184 +73,170 @@ Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
         Michael Roth <michael.roth@amd.com>,
         Vlastimil Babka <vbabka@suse.cz>, tony.luck@intel.com,
         npmccallum@redhat.com, brijesh.ksingh@gmail.com
-Subject: Re: [PATCH Part2 RFC v4 38/40] KVM: SVM: Provide support for
- SNP_GUEST_REQUEST NAE event
-Message-ID: <YPYBmlCuERUIO5+M@google.com>
+Subject: Re: [PATCH Part2 RFC v4 37/40] KVM: SVM: Add support to handle the
+ RMP nested page fault
+Message-ID: <YPYUe8hAz5/c7IW9@google.com>
 References: <20210707183616.5620-1-brijesh.singh@amd.com>
- <20210707183616.5620-39-brijesh.singh@amd.com>
+ <20210707183616.5620-38-brijesh.singh@amd.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210707183616.5620-39-brijesh.singh@amd.com>
+In-Reply-To: <20210707183616.5620-38-brijesh.singh@amd.com>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
 On Wed, Jul 07, 2021, Brijesh Singh wrote:
-> Version 2 of GHCB specification added the support two SNP Guest Request
-> Message NAE event. The events allows for an SEV-SNP guest to make request
-> to the SEV-SNP firmware through hypervisor using the SNP_GUEST_REQUEST
-> API define in the SEV-SNP firmware specification.
+> Follow the recommendation from APM2 section 15.36.10 and 15.36.11 to
+> resolve the RMP violation encountered during the NPT table walk.
 
-IIUC, this snippet in the spec means KVM can't restrict what requests are made
-by the guests.  If so, that makes it difficult to detect/ratelimit a misbehaving
-guest, and also limits our options if there are firmware issues (hopefully there
-aren't).  E.g. ratelimiting a guest after KVM has explicitly requested it to
-migrate is not exactly desirable.
+Heh, please elaborate on exactly what that recommendation is.  A recommendation
+isn't exactly architectural, i.e. is subject to change :-)
 
-  The hypervisor cannot alter the messages without detection nor read the
-  plaintext of the messages.
+And, do we have to follow the APM's recommendation?  Specifically, can KVM treat
+#NPF RMP violations as guest errors, or is that not allowed by the GHCB spec?
+I.e. can we mandate accesses be preceded by page state change requests?  It would
+simplify KVM (albeit not much of a simplificiation) and would also make debugging
+easier since transitions would require an explicit guest request and guest bugs
+would result in errors instead of random corruption/weirdness.
 
-> The SNP_GUEST_REQUEST requires two unique pages, one page for the request
-> and one page for the response. The response page need to be in the firmware
-> state. The GHCB specification says that both the pages need to be in the
-> hypervisor state but before executing the SEV-SNP command the response page
-> need to be in the firmware state.
- 
-...
-
-> Now that KVM supports all the VMGEXIT NAEs required for the base SEV-SNP
-> feature, set the hypervisor feature to advertise it.
-
-It would helpful if this changelog listed the Guest Requests that are required
-for "base" SNP, e.g. to provide some insight as to why we care about guest
-requests.
-
->  static int snp_bind_asid(struct kvm *kvm, int *error)
-> @@ -1618,6 +1631,12 @@ static int snp_launch_start(struct kvm *kvm, struct kvm_sev_cmd *argp)
->  	if (rc)
->  		goto e_free_context;
+> index 46323af09995..117e2e08d7ed 100644
+> --- a/arch/x86/include/asm/kvm_host.h
+> +++ b/arch/x86/include/asm/kvm_host.h
+> @@ -1399,6 +1399,9 @@ struct kvm_x86_ops {
 >  
-> +	/* Used for rate limiting SNP guest message request, use the default settings */
-> +	ratelimit_default_init(&sev->snp_guest_msg_rs);
-
-Is this exposed to userspace in any way?  This feels very much like a knob that
-needs to be configurable per-VM.
-
-Also, what are the estimated latencies of a guest request?  If the worst case
-latency is >200ms, a default ratelimit frequency of 5hz isn't going to do a whole
-lot.
-
-> +static void snp_handle_guest_request(struct vcpu_svm *svm, struct ghcb *ghcb,
-> +				     gpa_t req_gpa, gpa_t resp_gpa)
+>  	void (*write_page_begin)(struct kvm *kvm, struct kvm_memory_slot *slot, gfn_t gfn);
+>  	void (*write_page_end)(struct kvm *kvm, struct kvm_memory_slot *slot, gfn_t gfn);
+> +
+> +	int (*handle_rmp_page_fault)(struct kvm_vcpu *vcpu, gpa_t gpa, kvm_pfn_t pfn,
+> +			int level, u64 error_code);
+>  };
+>  
+>  struct kvm_x86_nested_ops {
+> diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+> index e60f54455cdc..b6a676ba1862 100644
+> --- a/arch/x86/kvm/mmu/mmu.c
+> +++ b/arch/x86/kvm/mmu/mmu.c
+> @@ -5096,6 +5096,18 @@ static void kvm_mmu_pte_write(struct kvm_vcpu *vcpu, gpa_t gpa,
+>  	write_unlock(&vcpu->kvm->mmu_lock);
+>  }
+>  
+> +static int handle_rmp_page_fault(struct kvm_vcpu *vcpu, gpa_t gpa, u64 error_code)
 > +{
-> +	struct sev_data_snp_guest_request data = {};
-> +	struct kvm_vcpu *vcpu = &svm->vcpu;
-> +	struct kvm *kvm = vcpu->kvm;
-> +	struct kvm_sev_info *sev;
-> +	int rc, err = 0;
+> +	kvm_pfn_t pfn;
+> +	int level;
 > +
-> +	if (!sev_snp_guest(vcpu->kvm)) {
-> +		rc = -ENODEV;
-> +		goto e_fail;
-> +	}
+> +	if (unlikely(!kvm_mmu_get_tdp_walk(vcpu, gpa, &pfn, &level)))
+> +		return RET_PF_RETRY;
 > +
-> +	sev = &to_kvm_svm(kvm)->sev_info;
-> +
-> +	if (!__ratelimit(&sev->snp_guest_msg_rs)) {
-> +		pr_info_ratelimited("svm: too many guest message requests\n");
-> +		rc = -EAGAIN;
-
-What guarantee do we have that the guest actually understands -EAGAIN?  Ditto
-for -EINVAL returned by snp_build_guest_buf().  AFAICT, our options are to return
-one of the error codes defined in "Table 95. Status Codes for SNP_GUEST_REQUEST"
-of the firmware ABI, kill the guest, or ratelimit the guest without returning
-control to the guest.
-
-> +		goto e_fail;
-> +	}
-> +
-> +	rc = snp_build_guest_buf(svm, &data, req_gpa, resp_gpa);
-> +	if (rc)
-> +		goto e_fail;
-> +
-> +	sev = &to_kvm_svm(kvm)->sev_info;
-> +
-> +	mutex_lock(&kvm->lock);
-
-Question on the VMPCK sequences.  The firmware ABI says:
-
-   Each guest has four VMPCKs ... Each message contains a sequence number per
-   VMPCK. The sequence number is incremented with each message sent. Messages
-   sent by the guest to the firmware and by the firmware to the guest must be
-   delivered in order. If not, the firmware will reject subsequent messages ...
-
-Does that mean there are four independent sequences, i.e. four streams the guest
-can use "concurrently", or does it mean the overall freshess/integrity check is
-composed from four VMPCK sequences, all of which must be correct for the message
-to be valid?
-
-If it's the latter, then a traditional mutex isn't really necessary because the
-guest must implement its own serialization, e.g. it's own mutex or whatever, to
-ensure there is at most one request in-flight at any given time.  And on the KVM
-side it means KVM can simpy reject requests if there is already an in-flight
-request.  It might also give us more/better options for ratelimiting?
-
-> +	rc = sev_issue_cmd(kvm, SEV_CMD_SNP_GUEST_REQUEST, &data, &err);
-> +	if (rc) {
-> +		mutex_unlock(&kvm->lock);
-
-I suspect you reused this pattern from other, more complex code, but here it's
-overkill.  E.g.
-
-	if (!rc)
-		rc = kvm_write_guest(kvm, resp_gpa, sev->snp_resp_page, PAGE_SIZE);
-	else if (err)
-		rc = err;
-
-	mutex_unlock(&kvm->lock);
-
-	ghcb_set_sw_exit_info_2(ghcb, rc);
-
-> +		/* If we have a firmware error code then use it. */
-> +		if (err)
-> +			rc = err;
-> +
-> +		goto e_fail;
-> +	}
-> +
-> +	/* Copy the response after the firmware returns success. */
-> +	rc = kvm_write_guest(kvm, resp_gpa, sev->snp_resp_page, PAGE_SIZE);
-> +
-> +	mutex_unlock(&kvm->lock);
-> +
-> +e_fail:
-> +	ghcb_set_sw_exit_info_2(ghcb, rc);
+> +	kvm_x86_ops.handle_rmp_page_fault(vcpu, gpa, pfn, level, error_code);
+> +	return RET_PF_RETRY;
 > +}
 > +
-> +static void snp_handle_ext_guest_request(struct vcpu_svm *svm, struct ghcb *ghcb,
-> +					 gpa_t req_gpa, gpa_t resp_gpa)
+>  int kvm_mmu_page_fault(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa, u64 error_code,
+>  		       void *insn, int insn_len)
+>  {
+> @@ -5112,6 +5124,14 @@ int kvm_mmu_page_fault(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa, u64 error_code,
+>  			goto emulate;
+>  	}
+>  
+> +	if (unlikely(error_code & PFERR_GUEST_RMP_MASK)) {
+> +		r = handle_rmp_page_fault(vcpu, cr2_or_gpa, error_code);
+
+Adding a kvm_x86_ops hook is silly, there's literally one path, npf_interception()
+that can encounter RMP violations.  Just invoke snp_handle_rmp_page_fault() from
+there.  That works even if kvm_mmu_get_tdp_walk() stays around since it was
+exported earlier.
+
+> +		if (r == RET_PF_RETRY)
+> +			return 1;
+> +		else
+> +			return r;
+> +	}
+> +
+>  	if (r == RET_PF_INVALID) {
+>  		r = kvm_mmu_do_page_fault(vcpu, cr2_or_gpa,
+>  					  lower_32_bits(error_code), false);
+> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+> index 839cf321c6dd..53a60edc810e 100644
+> --- a/arch/x86/kvm/svm/sev.c
+> +++ b/arch/x86/kvm/svm/sev.c
+> @@ -3519,3 +3519,60 @@ void sev_snp_write_page_begin(struct kvm *kvm, struct kvm_memory_slot *slot, gfn
+>  		BUG_ON(rc != 0);
+>  	}
+>  }
+> +
+> +int snp_handle_rmp_page_fault(struct kvm_vcpu *vcpu, gpa_t gpa, kvm_pfn_t pfn,
+> +			      int level, u64 error_code)
 > +{
-> +	struct sev_data_snp_guest_request req = {};
-> +	struct kvm_vcpu *vcpu = &svm->vcpu;
-> +	struct kvm *kvm = vcpu->kvm;
-> +	unsigned long data_npages;
-> +	struct kvm_sev_info *sev;
-> +	unsigned long err;
-> +	u64 data_gpa;
-> +	int rc;
+> +	struct rmpentry *e;
+> +	int rlevel, rc = 0;
+> +	bool private;
+> +	gfn_t gfn;
 > +
-> +	if (!sev_snp_guest(vcpu->kvm)) {
-> +		rc = -ENODEV;
-> +		goto e_fail;
-> +	}
+> +	e = snp_lookup_page_in_rmptable(pfn_to_page(pfn), &rlevel);
+> +	if (!e)
+> +		return 1;
 > +
-> +	sev = &to_kvm_svm(kvm)->sev_info;
+> +	private = !!(error_code & PFERR_GUEST_ENC_MASK);
 > +
-> +	if (!__ratelimit(&sev->snp_guest_msg_rs)) {
-> +		pr_info_ratelimited("svm: too many guest message requests\n");
-> +		rc = -EAGAIN;
-> +		goto e_fail;
-> +	}
-> +
-> +	if (!sev->snp_certs_data) {
-> +		pr_err("svm: certs data memory is not allocated\n");
-> +		rc = -EFAULT;
+> +	/*
+> +	 * See APM section 15.36.11 on how to handle the RMP fault for the large pages.
 
-Another instance where the kernel's error numbers will not suffice.
+Please do not punt the reader to the APM for things like this.  It's ok when there
+are gory details about CPU behavior that aren't worth commenting, but under no
+circumstance should KVM's software implementation be "documented" in a CPU spec.
 
-> +		goto e_fail;
+> +	 *
+> +	 *  npt	     rmp    access      action
+> +	 *  --------------------------------------------------
+> +	 *  4k       2M     C=1       psmash
+> +	 *  x        x      C=1       if page is not private then add a new RMP entry
+> +	 *  x        x      C=0       if page is private then make it shared
+> +	 *  2M       4k     C=x       zap
+> +	 */
+> +	if ((error_code & PFERR_GUEST_SIZEM_MASK) ||
+> +	    ((level == PG_LEVEL_4K) && (rlevel == PG_LEVEL_2M) && private)) {
+> +		rc = snp_rmptable_psmash(vcpu, pfn);
+> +		goto zap_gfn;
 > +	}
 > +
-> +	data_gpa = ghcb_get_rax(ghcb);
-> +	data_npages = ghcb_get_rbx(ghcb);
+> +	/*
+> +	 * If it's a private access, and the page is not assigned in the RMP table, create a
+> +	 * new private RMP entry.
+> +	 */
+> +	if (!rmpentry_assigned(e) && private) {
+> +		rc = snp_make_page_private(vcpu, gpa, pfn, PG_LEVEL_4K);
+> +		goto zap_gfn;
+> +	}
+> +
+> +	/*
+> +	 * If it's a shared access, then make the page shared in the RMP table.
+> +	 */
+> +	if (rmpentry_assigned(e) && !private)
+> +		rc = snp_make_page_shared(vcpu, gpa, pfn, PG_LEVEL_4K);
+
+Hrm, this really feels like it needs to be protected by mmu_lock.  Functionally,
+it might all work out in the end after enough RMP violations, but it's extremely
+difficult to reason about and probably even more difficult if multiple vCPUs end
+up fighting over a gfn.
+
+My gut reaction is that this is also backwards, i.e. KVM should update the RMP
+to match its TDP SPTEs, not the other way around.
+
+The one big complication is that the TDP MMU only takes mmu_lock for read.  A few
+options come to mind but none of them are all that pretty.  I'll wait to hear back
+on whether or not we can make PSC request mandatory before thinking too hard on
+this one.
+
+> +zap_gfn:
+> +	/*
+> +	 * Now that we have updated the RMP pagesize, zap the existing rmaps for
+> +	 * large entry ranges so that nested page table gets rebuilt with the updated RMP
+> +	 * pagesize.
+> +	 */
+> +	gfn = gpa_to_gfn(gpa) & ~(KVM_PAGES_PER_HPAGE(PG_LEVEL_2M) - 1);
+> +	kvm_zap_gfn_range(vcpu->kvm, gfn, gfn + 512);
+> +
+> +	return 0;
+> +}
