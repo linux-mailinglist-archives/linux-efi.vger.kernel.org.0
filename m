@@ -2,219 +2,162 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B7403D01CC
-	for <lists+linux-efi@lfdr.de>; Tue, 20 Jul 2021 20:39:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A54F23D0233
+	for <lists+linux-efi@lfdr.de>; Tue, 20 Jul 2021 21:38:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230433AbhGTR6w (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 20 Jul 2021 13:58:52 -0400
-Received: from smtp-out2.suse.de ([195.135.220.29]:35116 "EHLO
-        smtp-out2.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229650AbhGTR6T (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 20 Jul 2021 13:58:19 -0400
-Received: from imap1.suse-dmz.suse.de (imap1.suse-dmz.suse.de [192.168.254.73])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out2.suse.de (Postfix) with ESMTPS id 80010202FE;
-        Tue, 20 Jul 2021 18:38:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1626806323; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=Itbuyl1CzYZ7paouos+Swyo4VPUIJaRt4atAD+g7b4E=;
-        b=vA6iScBn4/u/Wziq8CzkVziwPhiPjDEH98IrUR1IQ5re1rpNrSe4mS29cI54SS2WSvrFSy
-        B0diseP/p9EB+bvqo8x8SyLh8r1jSGENRGf5b5/B8okkZ9MeP2gL6EWZH0QbG3GL3m8FCc
-        n24nMyq14PEzxE/Mq0xGl22TrCV38jY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1626806323;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=Itbuyl1CzYZ7paouos+Swyo4VPUIJaRt4atAD+g7b4E=;
-        b=1JIMXVY4pTlFUqFjyxJevhpnFGvHqQgrdOo+pkrgWpfa0IdruwQvoLQDc99O69fuLtZEtS
-        nHTKbXeeMlZWEIAg==
-Received: from imap1.suse-dmz.suse.de (imap1.suse-dmz.suse.de [192.168.254.73])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap1.suse-dmz.suse.de (Postfix) with ESMTPS id 13CD013BA3;
-        Tue, 20 Jul 2021 18:38:43 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap1.suse-dmz.suse.de with ESMTPSA
-        id XqtiAzMY92DSXAAAGKfGzw
-        (envelope-from <tzimmermann@suse.de>); Tue, 20 Jul 2021 18:38:43 +0000
-Subject: Re: [PATCH v3 0/2] allow simple{fb, drm} drivers to be used on
- non-x86 EFI platforms
-To:     Javier Martinez Canillas <javierm@redhat.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Dave Airlie <airlied@gmail.com>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        David Airlie <airlied@linux.ie>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Atish Patra <atish.patra@wdc.com>,
-        linux-riscv <linux-riscv@lists.infradead.org>,
-        Will Deacon <will@kernel.org>,
-        the arch/x86 maintainers <x86@kernel.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        Peter Robinson <pbrobinson@gmail.com>,
-        Borislav Petkov <bp@suse.de>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Palmer Dabbelt <palmer@dabbelt.com>
-References: <20210625130947.1803678-1-javierm@redhat.com>
- <e61cf77c-6bff-dfcc-d3df-2fb6b48e5897@redhat.com>
- <8dd26141-a09c-39e2-5174-4cad8d21c49c@suse.de>
- <CAPM=9tyfNPa2f5PDBLm4w_H_riEQ5P3rEhX73YGE1y_ygRox+w@mail.gmail.com>
- <CAMj1kXErHteZ+MKYvp=yYmwVxV3A=vjtnG351hZHV+3BPwDQvw@mail.gmail.com>
- <YPbJJ/0tSO/fuW7a@phenom.ffwll.local>
- <03f0edef-e54e-8a2a-4b50-683d3d42e249@redhat.com>
- <YPbWrV/cIODdgu6A@phenom.ffwll.local>
-From:   Thomas Zimmermann <tzimmermann@suse.de>
-Message-ID: <37e05f02-b810-0cb1-cc4f-95711cd148d9@suse.de>
-Date:   Tue, 20 Jul 2021 20:38:42 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+        id S229556AbhGTS5q (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 20 Jul 2021 14:57:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56350 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230116AbhGTS5n (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 20 Jul 2021 14:57:43 -0400
+Received: from mail-pg1-x536.google.com (mail-pg1-x536.google.com [IPv6:2607:f8b0:4864:20::536])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA582C0613DB
+        for <linux-efi@vger.kernel.org>; Tue, 20 Jul 2021 12:38:19 -0700 (PDT)
+Received: by mail-pg1-x536.google.com with SMTP id y4so23465391pgl.10
+        for <linux-efi@vger.kernel.org>; Tue, 20 Jul 2021 12:38:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=opGYJ8ATKeLRJGjAJK6R9tbhbI7CJxP6XB4aUSj1rRc=;
+        b=U3suekfYP80TfhnSWCdW0AeB5YxRYqo2o3/gq9NjySLOotsA/QHsKv4nrfgs9Q6OW4
+         KjSFSlK0XO5pyVT8FlownP4GS3PcIrtF/1itOWU4Pga+6PwG15GCcUmAHgnsNMPMi4LX
+         DxT0uRyt0039tsJZa4N+W8sH3nZ3ORXDV7KdShXCKvh6oAxgtZUERz3/kYRLyJ5E2nWy
+         NESQv+xyyGvE5IhgT/cYsM8bQaF8F8f+olP6Pv+1dQQcP53pETJLgqGRDE75b9vRhf5t
+         erL1h5JQ4WgB3pRfhQQaD4CT4UWWh7xaKg8C46eFTZOacYR8kBVBLxEUzPFoFCtyV1A7
+         oJRA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=opGYJ8ATKeLRJGjAJK6R9tbhbI7CJxP6XB4aUSj1rRc=;
+        b=MhbB3FR2F6BST79yXGA+RFlATBs9Yp6lupuoqTMHqKrkMBcUGIKqkcscj0bPilBZv4
+         OeCcJyggmNWR3jiDyxSboKRTvchFGqtAlBD5B0Kl8hIQh2dLy+4A5tYZapFPzL4WYq9j
+         QZm7SRJTipBCTITujLQHMJ+SBXnDPQp420huRKwPb3/Wl+AlA9xMPFp2BHFQNQpMNH08
+         ZfIZf6A/AuL66bVW83+28qJxbdVKop7FAVensToEFm7vpjOoN54uKQ2TAZRGcrK7ZDJ/
+         L6YQMalj58HZINal7l9tljX+QDc5iuZEnffJkkzdpfiq6mEyoRtkMGDykd+DZDvaajFs
+         p9pg==
+X-Gm-Message-State: AOAM530p09E2Pmn+RPeiTKp8MqUz6tV0kmcxSen2khyX/y/0KBHSvsEn
+        K43oUzUnNZgo1SZuIDUYXtn63Q==
+X-Google-Smtp-Source: ABdhPJxaIdbx05Hn/m0/ilrMVvfZTLe2YGc+vQnLw4+1SqOXt5bk80Vq8MgVTJaPuxiVmjKAyXSIhA==
+X-Received: by 2002:a63:5620:: with SMTP id k32mr6362897pgb.32.1626809898963;
+        Tue, 20 Jul 2021 12:38:18 -0700 (PDT)
+Received: from google.com (157.214.185.35.bc.googleusercontent.com. [35.185.214.157])
+        by smtp.gmail.com with ESMTPSA id a20sm23827514pfv.101.2021.07.20.12.38.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 20 Jul 2021 12:38:18 -0700 (PDT)
+Date:   Tue, 20 Jul 2021 19:38:14 +0000
+From:   Sean Christopherson <seanjc@google.com>
+To:     Brijesh Singh <brijesh.singh@amd.com>
+Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        linux-coco@lists.linux.dev, linux-mm@kvack.org,
+        linux-crypto@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Vitaly Kuznetsov <vkuznets@redhat.com>,
+        Wanpeng Li <wanpengli@tencent.com>,
+        Jim Mattson <jmattson@google.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        David Rientjes <rientjes@google.com>,
+        Dov Murik <dovmurik@linux.ibm.com>,
+        Tobin Feldman-Fitzthum <tobin@ibm.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Michael Roth <michael.roth@amd.com>,
+        Vlastimil Babka <vbabka@suse.cz>, tony.luck@intel.com,
+        npmccallum@redhat.com, brijesh.ksingh@gmail.com
+Subject: Re: [PATCH Part2 RFC v4 27/40] KVM: X86: Add kvm_x86_ops to get the
+ max page level for the TDP
+Message-ID: <YPcmJuKHFYjCgpqd@google.com>
+References: <20210707183616.5620-1-brijesh.singh@amd.com>
+ <20210707183616.5620-28-brijesh.singh@amd.com>
+ <YPHbxAVbuFk6Xtkj@google.com>
+ <1ed3c439-a02c-7182-b140-32cddd5e4f34@amd.com>
 MIME-Version: 1.0
-In-Reply-To: <YPbWrV/cIODdgu6A@phenom.ffwll.local>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="zqBJYs0jTVrrb3d3a45VU8trX1N28Y7W5"
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <1ed3c439-a02c-7182-b140-32cddd5e4f34@amd.com>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---zqBJYs0jTVrrb3d3a45VU8trX1N28Y7W5
-Content-Type: multipart/mixed; boundary="1j8k54rxJM8w24eiu5PhN408CT5BxM6T4";
- protected-headers="v1"
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: Javier Martinez Canillas <javierm@redhat.com>,
- Ard Biesheuvel <ardb@kernel.org>, Dave Airlie <airlied@gmail.com>,
- linux-efi <linux-efi@vger.kernel.org>, David Airlie <airlied@linux.ie>,
- Catalin Marinas <catalin.marinas@arm.com>,
- dri-devel <dri-devel@lists.freedesktop.org>,
- Russell King <linux@armlinux.org.uk>, Atish Patra <atish.patra@wdc.com>,
- linux-riscv <linux-riscv@lists.infradead.org>, Will Deacon
- <will@kernel.org>, the arch/x86 maintainers <x86@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Peter Robinson <pbrobinson@gmail.com>,
- Borislav Petkov <bp@suse.de>, Albert Ou <aou@eecs.berkeley.edu>,
- Hans de Goede <hdegoede@redhat.com>, Paul Walmsley
- <paul.walmsley@sifive.com>, Thomas Gleixner <tglx@linutronix.de>,
- linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- LKML <linux-kernel@vger.kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>
-Message-ID: <37e05f02-b810-0cb1-cc4f-95711cd148d9@suse.de>
-Subject: Re: [PATCH v3 0/2] allow simple{fb, drm} drivers to be used on
- non-x86 EFI platforms
-References: <20210625130947.1803678-1-javierm@redhat.com>
- <e61cf77c-6bff-dfcc-d3df-2fb6b48e5897@redhat.com>
- <8dd26141-a09c-39e2-5174-4cad8d21c49c@suse.de>
- <CAPM=9tyfNPa2f5PDBLm4w_H_riEQ5P3rEhX73YGE1y_ygRox+w@mail.gmail.com>
- <CAMj1kXErHteZ+MKYvp=yYmwVxV3A=vjtnG351hZHV+3BPwDQvw@mail.gmail.com>
- <YPbJJ/0tSO/fuW7a@phenom.ffwll.local>
- <03f0edef-e54e-8a2a-4b50-683d3d42e249@redhat.com>
- <YPbWrV/cIODdgu6A@phenom.ffwll.local>
-In-Reply-To: <YPbWrV/cIODdgu6A@phenom.ffwll.local>
+On Fri, Jul 16, 2021, Brijesh Singh wrote:
+> On 7/16/21 2:19 PM, Sean Christopherson wrote:
+> > On Wed, Jul 07, 2021, Brijesh Singh wrote:
+> > Another option would be to drop the kvm_x86_ops hooks entirely and call
+> > snp_lookup_page_in_rmptable() directly from MMU code.  That would require tracking
+> > that a VM is SNP-enabled in arch code, but I'm pretty sure info has already bled
+> > into common KVM in one form or another.
+> 
+> I would prefer this as it eliminates some of the other unnecessary call
+> sites. Unfortunately, currently there is no generic way to know if its
+> an SEV guest (outside the svm/*).  So far there was no need as such but
+> with SNP having such information would help. Should we extend the
+> 'struct kvm' to include a new field that can be used to determine the
+> guest type. Something like
+> 
+> enum {
+> 
+>    GUEST_TYPE_SEV,
+> 
+>    GUEST_TYPE_SEV_ES,
+> 
+>    GUEST_TYPE_SEV_SNP,
+> 
+> };
+> 
+> struct kvm {
+> 
+>    ...
+> 
+>   u64 enc_type;
+> 
+> };
+> 
+> bool kvm_guest_enc_type(struct kvm *kvm, enum type); {
+> 
+>     return !!kvm->enc_type & type;
+> 
+> }
+> 
+> The mmu.c can then call kvm_guest_enc_type() to check if its SNP guest
+> and use the SNP lookup directly to determine the pagesize.
 
---1j8k54rxJM8w24eiu5PhN408CT5BxM6T4
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
+The other option is to use vm_type, which TDX is already planning on leveraging.
+Paolo raised the question of whether or not the TDX type could be reused for SNP.
+We should definitely sort that out before merging either series.  I'm personally
+in favor of separating TDX and SNP, it seems inevitable that common code will
+want to differentiate between the two.
 
-Hi
+https://lkml.kernel.org/r/8eb87cd52a89d957af03f93a9ece5634426a7757.1625186503.git.isaku.yamahata@intel.com
 
-Am 20.07.21 um 15:59 schrieb Daniel Vetter:
-> On Tue, Jul 20, 2021 at 03:42:45PM +0200, Javier Martinez Canillas wrot=
-e:
->> On 7/20/21 3:01 PM, Daniel Vetter wrote:
->>> On Mon, Jul 19, 2021 at 09:10:52AM +0200, Ard Biesheuvel wrote:
->>>> On Mon, 19 Jul 2021 at 04:59, Dave Airlie <airlied@gmail.com> wrote:=
+> > As the APM is currently worded, this is wrong, and the whole "tdp_max_page_level"
+> > name is wrong.  As noted above, the Page-Size bullet points states that 2mb/1gb
+> > pages in the NPT _must_ have RMP.page_size=1, and 4kb pages in the NPT _must_
+> > have RMP.page_size=0.  That means that the RMP adjustment is not a constraint,
+> > it's an exact requirement.  Specifically, if the RMP is a 2mb page then KVM must
+> > install a 2mb (or 1gb) page.  Maybe it works because KVM will PSMASH the RMP
+> > after installing a bogus 4kb NPT and taking an RMP violation, but that's a very
+> > convoluted and sub-optimal solution.
+> 
+> This is why I was passing the preferred max_level in the pre-fault
+> handle then later query the npt level; use the npt level in the RMP to
+> make sure they are in sync.
+> 
+> There is yet another reason why we can't avoid the PSMASH after doing
+> everything to ensure that NPT and RMP are in sync. e.g if NPT and RMP
+> are programmed with 2mb size but the guest tries to PVALIDATE the page
+> as a 4k. In that case, we will see #NPF with page size mismatch and have
+> to perform psmash.
 
->>
->> [snip]
->>
->>>>>
->>>>> Can we just merge via drm-misc and make sure the acks are present a=
-nd
->>>>> I'll deal with the fallout if any.
->>>>>
->>>>
->>>> Fine with me. Could you stick it on a separate branch so I can doubl=
-e
->>>> check whether there are any issues wrt the EFI tree?
->>>
->>> It'll pop up in linux-next for integration testing or you can pick up=
- the
->>> patch here for test-merge if you want.
->>>
->>
->> Thanks a lot Dave and Daniel!
->=20
-> Oh I haven't merged them, I'm assuming Thomas will do that. Just figure=
-d
-
-Can I simply put the patches in to drm-misc-next? There was some talk=20
-about a topic branch?
-
-Best regards
-Thomas
-
-> I'll throw my ack on top:
->=20
-> Acked-by: Daniel Vetter <daniel.vetter@ffwll.ch>
->=20
->>> And since Dave has given a blanket cheque for handling fallout he'll =
-deal
->>> with the need for fixups too if there's any.
->>
->> I also plan to look at any regression that might had been introduced b=
-y these.
->>
->> Best regards,
->> --=20
->> Javier Martinez Canillas
->> Linux Engineering
->> Red Hat
->>
->=20
-
---=20
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Maxfeldstr. 5, 90409 N=C3=BCrnberg, Germany
-(HRB 36809, AG N=C3=BCrnberg)
-Gesch=C3=A4ftsf=C3=BChrer: Felix Imend=C3=B6rffer
-
-
---1j8k54rxJM8w24eiu5PhN408CT5BxM6T4--
-
---zqBJYs0jTVrrb3d3a45VU8trX1N28Y7W5
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature"
-
------BEGIN PGP SIGNATURE-----
-
-wsF5BAABCAAjFiEExndm/fpuMUdwYFFolh/E3EQov+AFAmD3GDIFAwAAAAAACgkQlh/E3EQov+Cy
-CA/+NPcliJKPQpDfrX9J8jEslefrqYJqDEMFIXRQUC0mvqHkXwSy2cKKK18NSQGAbLKlii82BeoM
-wCuaTJ6XUaZmBHsd6IqnkGHTBi6ytimeuGMHy9iNUqieuamxl/h3vIkUraDnAHgmeZtBxwVxSxKe
-8HX+XJI/OEtaFdNqeZCHefwD4u3FFBmcSvnJDGKYFt84Wcbyt5LsvrzwXvyVEvSixkB6VFSLjufc
-lRbdqMdtWs6At9YoxDcDsnZhnVCCnyWrCbfxptyPg77C7GfT4CM3ZF+HYby+gjNpsqKBbAgGvpxM
-pNWsJP92rucNPnCopzcuPdpo4v6IPET4QCg8BQjIZVBoWsU8JAzoz75shl0/nICkpeAiwN58sMBt
-/KtHCAcnwVgHhuTf5LR7u6la16IC7++lsuoW4qefmeKiPOCMfhIaWqWxCVz7sfo1rasobhJUw5f2
-kWd1N1ujR5pRSfxTdfDYTqjUP8HEXK57E/KINStLfI8J+ERHhN117XTmO38juIHMkhWuvwL9nyff
-Bn+E5q23QYw8j55D7KOX0MFcp8RtW18IPojaBkWjsPrNDfTdmMiPlZcLjzPuZxJahOhJhWbK1HTO
-SWPPXnZX9Sk4eDdTaKZw/MnqD60ofyvpZn5USkKKQrVps+KZcjb4rFgQVHd9nOZzT/hFWNvX1yc+
-Fh8=
-=OXq5
------END PGP SIGNATURE-----
-
---zqBJYs0jTVrrb3d3a45VU8trX1N28Y7W5--
+Boo, there's no way to communicate to the guest that it's doing PVALIDATE wrong
+is there?
