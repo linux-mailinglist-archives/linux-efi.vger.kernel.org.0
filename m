@@ -2,165 +2,143 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D17C93CFA00
-	for <lists+linux-efi@lfdr.de>; Tue, 20 Jul 2021 15:01:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C5223CFA35
+	for <lists+linux-efi@lfdr.de>; Tue, 20 Jul 2021 15:12:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235417AbhGTMU5 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 20 Jul 2021 08:20:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50794 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231272AbhGTMUx (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 20 Jul 2021 08:20:53 -0400
-Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14511C061574
-        for <linux-efi@vger.kernel.org>; Tue, 20 Jul 2021 06:01:32 -0700 (PDT)
-Received: by mail-wm1-x32e.google.com with SMTP id p15-20020a05600c358fb0290245467f26a4so2033916wmq.0
-        for <linux-efi@vger.kernel.org>; Tue, 20 Jul 2021 06:01:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google;
-        h=date:from:to:cc:subject:message-id:mail-followup-to:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=aT7B7aLtrHA38WRCCkcWibI+OBLuTfXFqvYRJ204kL8=;
-        b=WQOOu9EUP4QZrBDWS9EctGVO+GmPjrxym15Qbs5R69qSSEdvCHmpIY1/pk31fA69bp
-         3bhC+HD4e8CKzboAfJ+pob2QA2TRhC1Np5OjjzICbqkxEwpGsaSp5RJW4pQU+z0OC23I
-         0sG4uqigJR5y1K6AdXcTXz1r+jHYxj5pVPrh8=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id
-         :mail-followup-to:references:mime-version:content-disposition
-         :in-reply-to;
-        bh=aT7B7aLtrHA38WRCCkcWibI+OBLuTfXFqvYRJ204kL8=;
-        b=NOra4tXK53XZc9iVzFeQaDOAT7ky3NbBI44iuZfLJFc2PE/5hZQjEuc8Yz0fBl8Or6
-         mnFxdolZHjBjU9fFk3P6jy/Suu06fN+RlS2Lv9TFoVVI+0AWvWsr/uq7s7YCKhVMlzma
-         Cg9pgrmYY+r/Ik6NfbeHeOU620k/w1GQw/4aOOGheBCaNNqvrc4Jot0WeZaclPu5z2hM
-         hG4pldcqPs/X/K5eei1zsJaCKwxFI0wRvGq4dK7uKmQrQ4YldoP+zCaLk++Lbv7ca/iI
-         yOfVh3BsmjrKVoqdpS9bieEdq505JgKFsfFNYwBeENnyK1Z02SZYPjKN1uPZGpEAxMMR
-         rRQA==
-X-Gm-Message-State: AOAM531JRJ6c/h9pBLq5Po79Xt9lpq97OI3E65U6zJm/ao7LwqPmrOGQ
-        CKWnnXG6rgb6sztlNckdcUSLxA==
-X-Google-Smtp-Source: ABdhPJwyy66JJKeYq0Mz7cYqrI/HK2CM9a/YOzkD7Z06g/Y6R4UrwQlWLQ5wT2w19Z/rHR9fxuhTcg==
-X-Received: by 2002:a05:600c:2948:: with SMTP id n8mr32984505wmd.11.1626786090699;
-        Tue, 20 Jul 2021 06:01:30 -0700 (PDT)
-Received: from phenom.ffwll.local ([2a02:168:57f4:0:efd0:b9e5:5ae6:c2fa])
-        by smtp.gmail.com with ESMTPSA id g18sm19422048wmk.37.2021.07.20.06.01.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Jul 2021 06:01:30 -0700 (PDT)
-Date:   Tue, 20 Jul 2021 15:01:27 +0200
-From:   Daniel Vetter <daniel@ffwll.ch>
+        id S236191AbhGTMb6 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 20 Jul 2021 08:31:58 -0400
+Received: from gate.crashing.org ([63.228.1.57]:57962 "EHLO gate.crashing.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S235727AbhGTMbz (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Tue, 20 Jul 2021 08:31:55 -0400
+Received: from ip6-localhost (localhost.localdomain [127.0.0.1])
+        by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 16KDAJVj025797;
+        Tue, 20 Jul 2021 08:10:19 -0500
+Message-ID: <0e1280c9ca789e15a46b65f6796a8c333a9da18a.camel@kernel.crashing.org>
+Subject: Re: [PATCH 2/2] arm64: efi: kaslr: Fix boot failure if
+ efi_random_alloc() fails
+From:   Benjamin Herrenschmidt <benh@kernel.crashing.org>
 To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     Dave Airlie <airlied@gmail.com>,
+Cc:     Linux ARM <linux-arm-kernel@lists.infradead.org>,
         linux-efi <linux-efi@vger.kernel.org>,
-        David Airlie <airlied@linux.ie>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Atish Patra <atish.patra@wdc.com>,
-        linux-riscv <linux-riscv@lists.infradead.org>,
-        Will Deacon <will@kernel.org>,
-        the arch/x86 maintainers <x86@kernel.org>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Peter Robinson <pbrobinson@gmail.com>,
-        Borislav Petkov <bp@suse.de>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Thomas Zimmermann <tzimmermann@suse.de>
-Subject: Re: [PATCH v3 0/2] allow simple{fb, drm} drivers to be used on
- non-x86 EFI platforms
-Message-ID: <YPbJJ/0tSO/fuW7a@phenom.ffwll.local>
-Mail-Followup-To: Ard Biesheuvel <ardb@kernel.org>,
-        Dave Airlie <airlied@gmail.com>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        David Airlie <airlied@linux.ie>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Atish Patra <atish.patra@wdc.com>,
-        linux-riscv <linux-riscv@lists.infradead.org>,
-        Will Deacon <will@kernel.org>,
-        the arch/x86 maintainers <x86@kernel.org>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Peter Robinson <pbrobinson@gmail.com>, Borislav Petkov <bp@suse.de>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Thomas Zimmermann <tzimmermann@suse.de>
-References: <20210625130947.1803678-1-javierm@redhat.com>
- <e61cf77c-6bff-dfcc-d3df-2fb6b48e5897@redhat.com>
- <8dd26141-a09c-39e2-5174-4cad8d21c49c@suse.de>
- <CAPM=9tyfNPa2f5PDBLm4w_H_riEQ5P3rEhX73YGE1y_ygRox+w@mail.gmail.com>
- <CAMj1kXErHteZ+MKYvp=yYmwVxV3A=vjtnG351hZHV+3BPwDQvw@mail.gmail.com>
+        "linux-kernel@vger.kernel.org Will Deacon" <will@kernel.org>
+Date:   Tue, 20 Jul 2021 23:10:18 +1000
+In-Reply-To: <CAMj1kXEuuiGELD-9Yruens_jKr7vY=dH3LkuyfhkxTK2SPQZfw@mail.gmail.com>
+References: <161920fc31ec4168290ca31b3e4ac7a75ac1df6b.camel@kernel.crashing.org>
+         <CAMj1kXEuuiGELD-9Yruens_jKr7vY=dH3LkuyfhkxTK2SPQZfw@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.5-0ubuntu1 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAMj1kXErHteZ+MKYvp=yYmwVxV3A=vjtnG351hZHV+3BPwDQvw@mail.gmail.com>
-X-Operating-System: Linux phenom 5.10.0-7-amd64 
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Mon, Jul 19, 2021 at 09:10:52AM +0200, Ard Biesheuvel wrote:
-> On Mon, 19 Jul 2021 at 04:59, Dave Airlie <airlied@gmail.com> wrote:
-> >
-> > On Thu, 15 Jul 2021 at 18:11, Thomas Zimmermann <tzimmermann@suse.de> wrote:
-> > >
-> > > Hi
-> > >
-> > > Am 13.07.21 um 18:59 schrieb Javier Martinez Canillas:
-> > > > On 6/25/21 3:09 PM, Javier Martinez Canillas wrote:
-> > > >> The simplefb and simpledrm drivers match against a "simple-framebuffer"
-> > > >> device, but for aarch64 this is only registered when using Device Trees
-> > > >> and there's a node with a "simple-framebuffer" compatible string.
-> > > >>
-> > > >> There is no code to register a "simple-framebuffer" platform device when
-> > > >> using EFI instead. In fact, the only platform device that's registered in
-> > > >> this case is an "efi-framebuffer", which means that the efifb driver is
-> > > >> the only driver supported to have an early console with EFI on aarch64.
-> > > >>
-> > > >> The x86 architecture platform has a Generic System Framebuffers (sysfb)
-> > > >> support, that register a system frambuffer platform device. It either
-> > > >> registers a "simple-framebuffer" for the simple{fb,drm} drivers or legacy
-> > > >> VGA/EFI FB devices for the vgafb/efifb drivers.
-> > > >>
-> > > >> The sysfb is generic enough to be reused by other architectures and can be
-> > > >> moved out of the arch/x86 directory to drivers/firmware, allowing the EFI
-> > > >> logic used by non-x86 architectures to be folded into sysfb as well.
-> > > >>
-> > > >
-> > > > Any more comments on this series? It would be nice for this to land so the
-> > > > simpledrm driver could be used on aarch64 EFI systems as well.
-> > > >
-> > > > The patches have already been acked by x86 and DRM folks.
-> > >
-> > > Time to get this merged, I'd say. People are asking for these patches
-> > > already.
-> >
-> > Can we just merge via drm-misc and make sure the acks are present and
-> > I'll deal with the fallout if any.
-> >
+On Tue, 2021-07-20 at 14:57 +0200, Ard Biesheuvel wrote:
+> On Tue, 20 Jul 2021 at 13:14, Benjamin Herrenschmidt
+> <benh@kernel.crashing.org> wrote:
+> > If efi_random_alloc() fails, we still try to use EFI_KIMG_ALIGN
+> > instead of MIN_KIMG_ALIGN to check the kernel image alignment,
+> > which is incorrect, we need to fallback to MIN_KIMG_ALIGN (2M).
+> > 
 > 
-> Fine with me. Could you stick it on a separate branch so I can double
-> check whether there are any issues wrt the EFI tree?
+> Why? Relocatable kernels can happily execute from any 64k aligned
+> address, and the PE/COFF header carries this value of 64k as the
+> minimum alignment.
 
-It'll pop up in linux-next for integration testing or you can pick up the
-patch here for test-merge if you want.
+This is not what I'm changing. If you look at the code before the
+patch, it was *already* only allowing 64k alignment with kaslr enabled
+(commit 7c116db24d94). There's even a big fat comment explaining why
+though it could use more details.
 
-And since Dave has given a blanket cheque for handling fallout he'll deal
-with the need for fixups too if there's any.
--Daniel
--- 
-Daniel Vetter
-Software Engineer, Intel Corporation
-http://blog.ffwll.ch
+In any case, the code isn't even testing for CONFIG_RELOCATABLE today,
+it makes its decisions entirely based on kaslr and doesn't properly
+handle the case where efi_random_alloc() fails.
+
+This fixes it.
+
+Cheers,
+Ben.
+
+
+> > This removes the not-that-useful min_kimg_align helper and instead
+> > uses the appropriate aligment in the respective call sites:
+> > 
+> > efi_random_alloc() always wants EFI_KIMG_ALIGN as this is only
+> > used when kaslr is on, and all other cases go into alignment
+> > check code which always need to check (and enforce) MIN_KIMG_ALIGN
+> > 
+> > Signed-off-by: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> > Fixes: 7c116db24d94 (efi/libstub/arm64: Retain 2MB kernel Image alignment if !KASLR)
+> > ---
+> >  drivers/firmware/efi/libstub/arm64-stub.c | 27 ++++++++++-------------
+> >  1 file changed, 12 insertions(+), 15 deletions(-)
+> > 
+> > diff --git a/drivers/firmware/efi/libstub/arm64-stub.c b/drivers/firmware/efi/libstub/arm64-stub.c
+> > index 7bf0a7acae5e..e264ff90ba03 100644
+> > --- a/drivers/firmware/efi/libstub/arm64-stub.c
+> > +++ b/drivers/firmware/efi/libstub/arm64-stub.c
+> > @@ -34,18 +34,6 @@ efi_status_t check_platform_features(void)
+> >         return EFI_SUCCESS;
+> >  }
+> > 
+> > -/*
+> > - * Although relocatable kernels can fix up the misalignment with respect to
+> > - * MIN_KIMG_ALIGN, the resulting virtual text addresses are subtly out of
+> > - * sync with those recorded in the vmlinux when kaslr is disabled but the
+> > - * image required relocation anyway. Therefore retain 2M alignment unless
+> > - * KASLR is in use.
+> > - */
+> > -static u64 min_kimg_align(void)
+> > -{
+> > -       return efi_nokaslr ? MIN_KIMG_ALIGN : EFI_KIMG_ALIGN;
+> > -}
+> > -
+> >  efi_status_t handle_kernel_image(unsigned long *image_addr,
+> >                                  unsigned long *image_size,
+> >                                  unsigned long *reserve_addr,
+> > @@ -84,15 +72,24 @@ efi_status_t handle_kernel_image(unsigned long *image_addr,
+> >                 /*
+> >                  * If KASLR is enabled, and we have some randomness available,
+> >                  * locate the kernel at a randomized offset in physical memory.
+> > +                *
+> > +                * In that case, we don't need to preserve the 2M alignment
+> >                  */
+> > -               status = efi_random_alloc(*reserve_size, min_kimg_align(),
+> > +               status = efi_random_alloc(*reserve_size, EFI_KIMG_ALIGN,
+> >                                           reserve_addr, phys_seed);
+> >         } else {
+> >                 status = EFI_OUT_OF_RESOURCES;
+> >         }
+> > 
+> >         if (status != EFI_SUCCESS) {
+> > -               if (IS_ALIGNED((u64)_text, min_kimg_align())) {
+> > +               /*
+> > +                * Although relocatable kernels can fix up the misalignment with respect to
+> > +                * MIN_KIMG_ALIGN, the resulting virtual text addresses are subtly out of
+> > +                * sync with those recorded in the vmlinux when kaslr is disabled but the
+> > +                * image required relocation anyway. Therefore retain 2M alignment unless
+> > +                * KASLR is in use.
+> > +                */
+> > +               if (IS_ALIGNED((u64)_text, MIN_KIMG_ALIGN)) {
+> >                         /*
+> >                          * Just execute from wherever we were loaded by the
+> >                          * UEFI PE/COFF loader if the alignment is suitable.
+> > @@ -103,7 +100,7 @@ efi_status_t handle_kernel_image(unsigned long *image_addr,
+> >                 }
+> > 
+> >                 status = efi_allocate_pages_aligned(*reserve_size, reserve_addr,
+> > -                                                   ULONG_MAX, min_kimg_align());
+> > +                                                   ULONG_MAX, MIN_KIMG_ALIGN);
+> > 
+> >                 if (status != EFI_SUCCESS) {
+> >                         efi_err("Failed to relocate kernel\n");
+> > 
+> > 
+> > 
+> 
+> _______________________________________________
+> linux-arm-kernel mailing list
+> linux-arm-kernel@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+
