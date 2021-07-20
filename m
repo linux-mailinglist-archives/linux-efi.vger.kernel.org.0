@@ -2,55 +2,43 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0322B3D0124
-	for <lists+linux-efi@lfdr.de>; Tue, 20 Jul 2021 20:02:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0FD7F3D0188
+	for <lists+linux-efi@lfdr.de>; Tue, 20 Jul 2021 20:22:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229782AbhGTRVr (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 20 Jul 2021 13:21:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34914 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229643AbhGTRVq (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 20 Jul 2021 13:21:46 -0400
-Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com [IPv6:2607:f8b0:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 339A2C061768
-        for <linux-efi@vger.kernel.org>; Tue, 20 Jul 2021 11:02:24 -0700 (PDT)
-Received: by mail-pg1-x52a.google.com with SMTP id y17so23201454pgf.12
-        for <linux-efi@vger.kernel.org>; Tue, 20 Jul 2021 11:02:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=M9MyM6SiQLZ5m3aBTaXSLwq/XGnRhh08/VcLgE/dXu0=;
-        b=STNATKcfH1avBpmTllo0BejrpE+zX75J13FmRFIATfMMH+ODZAEmHcUarX83AoF6E4
-         CCm9bro8RnZa4wVgDdnozFQnggMPUw/sucQh3JE/5zlmTB9UYuoE743sVGa31+KS2N5A
-         XtQOv5JnRkaKKyp/0AhP3l+ew8rMoVQr+9T+dZP9WDU9WEGJbu0VkOCqicPcFl8cHQAi
-         mJzSnKO+hkfhC4wVsD23n2VmibHbSG9HDT1aGu0RvrnBsAmHQFBQUot1BLzBhhDwoOKl
-         fqBqmjJ8O7lSuaa6Dv4/rACTMeCNfvkFJ1w6yI455+/K3WCCiXHNgR6Pqw3QbCxHZyg5
-         axKg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=M9MyM6SiQLZ5m3aBTaXSLwq/XGnRhh08/VcLgE/dXu0=;
-        b=WocTVI51devNJdxE3F0PWuOWFe8tEvtwmKO0wEsk/GIREiGZUSgxq5Wrox5gJPs4Qf
-         rueE0sjO/Kl8xif0z2p27IG48LqXkBlSSKjkj71F5tbhHWnboOz1x4fKAbi6T5JngNQn
-         s/NqGFlhKxHzxhDUgQ+TAn2o0YMw8xvBaHMYyzcO4B2nNNI5PJwEUv9YZaIO2VMox8du
-         DkmXblW369VbVFrn+6jm7VCymdg6N+x0Y9Vif0iepxTYM0DljwkS4onptfo4q5QPiOiP
-         g0wqlCF43hWn5dkisqfQF50vRH3D9LWSCa0XT4vtpAqsSDwoZwW94M8vzuH+3KqW1yPx
-         /udA==
-X-Gm-Message-State: AOAM531Safwyu3L46gWv4pJbXS0Rw8qjZZpFNlYOmNojEBZSnIAPskSN
-        ZNZnx3ZAbqLtMNMRrvfN2gDO5Q==
-X-Google-Smtp-Source: ABdhPJztjb1vCs7OC4JfJwLTVUau3HVEAMypgjUcIXcXHaeykJbmgjHUQ20ZSm2OZU/jp51eFJFfyg==
-X-Received: by 2002:aa7:95a4:0:b029:332:f4e1:1dac with SMTP id a4-20020aa795a40000b0290332f4e11dacmr31607712pfk.34.1626804143248;
-        Tue, 20 Jul 2021 11:02:23 -0700 (PDT)
-Received: from google.com (157.214.185.35.bc.googleusercontent.com. [35.185.214.157])
-        by smtp.gmail.com with ESMTPSA id x6sm3444697pjr.5.2021.07.20.11.02.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Jul 2021 11:02:22 -0700 (PDT)
-Date:   Tue, 20 Jul 2021 18:02:18 +0000
-From:   Sean Christopherson <seanjc@google.com>
-To:     Brijesh Singh <brijesh.singh@amd.com>
-Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        id S230271AbhGTRlY (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 20 Jul 2021 13:41:24 -0400
+Received: from mail-dm6nam11on2068.outbound.protection.outlook.com ([40.107.223.68]:48865
+        "EHLO NAM11-DM6-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S229806AbhGTRk1 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Tue, 20 Jul 2021 13:40:27 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=EKfF22mV1mys/BeMYozTl9rUtDHSi2ZezWFzK8B9/WZLWjr9hqi1bCHWDOLRTnU4rDODWCVcCbZfutvY3tsDyIH95TEDlCUsTugaaZCUPeHHwjs3aN7iGGjyrjbel09EC4MAi47qldbdmtAJvD54y0WMj3/I+dOftepI1V6AmVjJDStYZTpyGCuaQv9vW+eQign+q8EteEeUEVRWujTU95MEz9XRwMo3JTTW5KaDQwdwv9FGWuZWTMt9bdAakzYf79TytHhLlxfq8r2LmZMua3VAtpdghYA37SCL4rwYzer6rB+d1L+jqYfbDUUTRwun8S4OMEF1iHY+b9i4KFEhIg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ZQvL9mgrsZFoa14eptlqseFHdBuDW42yZ0KwiBrzrdM=;
+ b=f2hnWzQMeiizlOndy/oevE5w25eciq5AxSb6Oj5gn3WaKa2rF0Pd9uyIw8Lw3CuTBGwi/Jfm4mA95O3i7z4Him6PeGESJGlj8MQ5FepFLsouwSzlZ9GOEjNUER0dJqyVbWxmdep2vmNOl0OCocx7DZww7xpnARSDZVs8i2E4dMT1W18LBTkqIPbhYc1nAgdL8SCeiOltqNZRzm1HtdtdF/wC4A5XtdgndiXqVgKRE2Na+lW1mXh/AiA5hMcocuznkHyx/AiRN/HsPW8/P934vnHzMsnvsXya2gmfzID2JL/R+tpOzkREj23dyumhxfkujs823J96VzgwGwdnI+JoYw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ZQvL9mgrsZFoa14eptlqseFHdBuDW42yZ0KwiBrzrdM=;
+ b=B0SzVH5RRotBCu0NtJ7sdL1Dc3YeY2SWUY2PX1WFNnFvIgf4YMKwv80hsDN/ui/wvz76pIGBAzoBTQPER/OqCjbD3tQSsJ9ug+JY08yiBTFbtg5+FK5cV4kKTQEzoS6oyu39RnFbKX1kUvs6Vob/ATGOk+9aVjJiQ7a51X/60bc=
+Authentication-Results: gmail.com; dkim=none (message not signed)
+ header.d=none;gmail.com; dmarc=none action=none header.from=amd.com;
+Received: from SN6PR12MB2718.namprd12.prod.outlook.com (2603:10b6:805:6f::22)
+ by SA0PR12MB4512.namprd12.prod.outlook.com (2603:10b6:806:71::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4331.26; Tue, 20 Jul
+ 2021 18:21:03 +0000
+Received: from SN6PR12MB2718.namprd12.prod.outlook.com
+ ([fe80::a8a9:2aac:4fd1:88fa]) by SN6PR12MB2718.namprd12.prod.outlook.com
+ ([fe80::a8a9:2aac:4fd1:88fa%3]) with mapi id 15.20.4331.034; Tue, 20 Jul 2021
+ 18:21:02 +0000
+Cc:     brijesh.singh@amd.com, x86@kernel.org,
+        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
         linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
         linux-coco@lists.linux.dev, linux-mm@kvack.org,
         linux-crypto@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
@@ -73,210 +61,258 @@ Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
         Michael Roth <michael.roth@amd.com>,
         Vlastimil Babka <vbabka@suse.cz>, tony.luck@intel.com,
         npmccallum@redhat.com, brijesh.ksingh@gmail.com
-Subject: Re: [PATCH Part2 RFC v4 20/40] KVM: SVM: Make AVIC backing, VMSA and
- VMCB memory allocation SNP safe
-Message-ID: <YPcPqpqRju/QLoHI@google.com>
+Subject: Re: [PATCH Part2 RFC v4 38/40] KVM: SVM: Provide support for
+ SNP_GUEST_REQUEST NAE event
+To:     Sean Christopherson <seanjc@google.com>
 References: <20210707183616.5620-1-brijesh.singh@amd.com>
- <20210707183616.5620-21-brijesh.singh@amd.com>
+ <20210707183616.5620-39-brijesh.singh@amd.com> <YPYBmlCuERUIO5+M@google.com>
+ <68ea014c-51bc-6ed4-a77e-dd7ce1a09aaf@amd.com> <YPb5yfKEyJjvDbOl@google.com>
+From:   Brijesh Singh <brijesh.singh@amd.com>
+Message-ID: <0641fdec-48a0-b3b7-9926-3ce5a6e53eb0@amd.com>
+Date:   Tue, 20 Jul 2021 13:21:00 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
+In-Reply-To: <YPb5yfKEyJjvDbOl@google.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SN7PR18CA0017.namprd18.prod.outlook.com
+ (2603:10b6:806:f3::34) To SN6PR12MB2718.namprd12.prod.outlook.com
+ (2603:10b6:805:6f::22)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210707183616.5620-21-brijesh.singh@amd.com>
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from [10.236.31.95] (165.204.77.1) by SN7PR18CA0017.namprd18.prod.outlook.com (2603:10b6:806:f3::34) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4331.32 via Frontend Transport; Tue, 20 Jul 2021 18:21:01 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: c03adc93-d0fc-4988-857f-08d94bab21a0
+X-MS-TrafficTypeDiagnostic: SA0PR12MB4512:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <SA0PR12MB45126E82A5BB031E157E04E5E5E29@SA0PR12MB4512.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:10000;
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: B+g++qkCQOkub3JW5CHbH9wIVHJpBp2O2EEfdi0rfiJ3sstSYPiuyTh/5k5bKg1t83wmZq9n6kvDF2MrdIE3sMXl0LD6sydfCQTUnLRPhD4RJ4bM3k8sRDGrn7H1xKvdzro1KGEmzboffhND4tmmbVlg4glQm6XwLaL7SWBxLVosLGaxRYfps7GdRD1+qZ3K2SPxt07Ri0nG92LUE53cDzbloK6UhGiLE+cJynzXXtC7u7E+zahD21AEb0S/GI0dJA5W66A8ocVfrMAsVbkb8fD6YsX/JqSq7b9Fmxpw4SxZPaegvcJ3xV1oIkGTmLbKhJLKmU+49GeJ18u35zZpZNcg6zrMV4hLSfcpYYI2/4kzXm/ueKszzYRTzSGfzHdIXzYqe7PPHFMA+gymOQ3/mSZ7OCqsyOB+4LJSAPri5UMVFyr5EajtZSMJ505ZwYuxaNTz4N79zWlYMgCrn0CZasQd+h0m/nVSeTmN0w89NCv6nWOa6+vNWF5iBrEkkvT2ojvrt5Sj/Co9ByBgx4kXW0Y0kiyo2VwUHlcpPbYWIDu4iAZi9qqF0MjbKdSc4wn5WyLyo8uvAeThGx+N8GZN8AGKPleX02+YiZh6XfzxfhB/20A9Ju1LGDndPAld7SIpc0CTNUaMBcmAIv5rYdFJV/BrHJhDa9hlWpq7pEmb7KipSfmVGUrhfeWWczTu8xidjQu5jebp+AJSqo9YoQ1Dh9HKTpffdeM9zMCuSDnMWVlwFv8bzH3+OPhABGuXjIO8Q8WPOtJNXLVHdZZwY0GEtw==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR12MB2718.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(39860400002)(376002)(136003)(366004)(346002)(396003)(44832011)(478600001)(7406005)(86362001)(8936002)(6486002)(52116002)(26005)(956004)(7416002)(2906002)(66556008)(66476007)(8676002)(53546011)(186003)(54906003)(36756003)(38350700002)(2616005)(38100700002)(16576012)(66946007)(6916009)(4326008)(5660300002)(31696002)(83380400001)(316002)(31686004)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?NE1zTUxJUWhyRUlyUUNoRVZnTEJlRzdrNnFSc3l4dzhjWW10NlhoMDZUTTBn?=
+ =?utf-8?B?eWZ1TVpwenBCam1CTTR4c3Y4czhSVHU4Z2JIOVdpbGFCK0F2dGcwaDlyVnBF?=
+ =?utf-8?B?YmF3dTFicUswNTBSRTc2Yk9qUWFTZmdDdmR0dUIzeDhiczJQclhySU5WcmpP?=
+ =?utf-8?B?Y1NuOThheU1iY2tGLzZxdkN6OXVhQjNWYW9ZRGtDT0JPaHZkQzVPRDJhVCsw?=
+ =?utf-8?B?djBWMnNFdzdWWGhzUHNUTSsxT25pWXdXVm5SYkVrNFFYRGxGcTk3RDhUTnI5?=
+ =?utf-8?B?VHlQNkdIM1QrZFJ1dW41eG9NSXlFYmhiNy9uQkhZL2wvRWJYSUc5MW9LWGg1?=
+ =?utf-8?B?UHFBUWhBUDZmZVhhTU54ZXZxY3ByWnFzYUNPWWt4TUpwVUtGYk5ENStTdmZM?=
+ =?utf-8?B?bm44Uk5qZE42a3R6K1ErcnMzWGVoa3lHeWZPeXRPbC9tL2FBWnBDVmdyOEU3?=
+ =?utf-8?B?WEhyeVRaWTltblU0WkM5Y1FaOS9uREUwcXJZcWUvcjRFeUJMclBLTnNtNzZ3?=
+ =?utf-8?B?KzZHUU5pNGozRXNmMlUxNHhSdjgycWZVYW0rdHV4NGUrLy9UbDdaYUdpTUlv?=
+ =?utf-8?B?YVNGSDM5dmxONW9OejVPVk5ZV09samwyWUtZR0o0dUFaYTV5WENNWnNiNnlR?=
+ =?utf-8?B?ZG16Zk9PNXRrQTdudkx6NzhibjF3ckp4aDUyTU52NUlHbTF2Vkx1cTlPTGZ6?=
+ =?utf-8?B?TFR4WUVHOXlFdXNNVDdvT0xNZjNNZWlka0ZnbHlESnlGUlRrZEswVlNaSzZ6?=
+ =?utf-8?B?U2dTeTVEZW1NRzBoZ2Z2V29ZYUJCSzA1U1VLSHo3bEZ5UjlYUEltSk1xNDI4?=
+ =?utf-8?B?b2J1alVkVzd2NWl1Wm83N3dTcitlNlptRHNERndJdHB1RnYrNHBqNXZnb2Vi?=
+ =?utf-8?B?dlNLUjhwcHkvcXY4MFRmcHRrRDJrNWxHQXJRYXhhK1lWUWxZR3k4WUtQYy9z?=
+ =?utf-8?B?aVpENFNUeE9GbDc1UUs1NnZvY282ck5iODhYUDFlV2ZvTXFCQi8yaktQQzZj?=
+ =?utf-8?B?dVBqa01OSTNoUlIzemxlcVpqY2drVHQzTVZsc3NSZnVVQzI3bWpKZXhpV3Iv?=
+ =?utf-8?B?Y2Z4UDcwSmpObUdOOHFyb290Ym5xV21xcUZQTytvbjE4emFSQlZCTkJSK3NG?=
+ =?utf-8?B?R0xUTG1RMU5RUDA0ZS9lbnBTL1BEU3ZaS3lRbWY2MjdiVkJqVlZTQkZKdnpB?=
+ =?utf-8?B?MWhyQ09SMWdaL3pvT2xvUWIzRC9YanFFbnNDeEQ4ZS9VWWIrMHduZ05Eb1pX?=
+ =?utf-8?B?dWl6VjdVTmRLVVpzM0ZQK2lXRU1XaWY3Vm50MWF3VlNvWHdHVTJsN2VuRjAx?=
+ =?utf-8?B?dzV2ZlVQTmMrSk8wamJFS2ZaSmNYUEN3NlBBQnBsM01JSGdsV3VvdkZ2ZEI5?=
+ =?utf-8?B?TE5wempuOGlHeTBqdGtKdy9XcHNoYjF0MFk5KzhjZmlLNDZYVUFnVjI3MDN0?=
+ =?utf-8?B?eW0zWWUzSFhlaFVORU04T3Q5UTdob1ZlZFFBVmlnRkVKdHowSlVDeDJ2RTZo?=
+ =?utf-8?B?VjB3Nm94em9BTkdLOSthSkhiV3RaV3pUVkwvSWdMZ1NoOTh6d2hZT25EcHJx?=
+ =?utf-8?B?N2Fsa0hJVVhTZjNOZDFpcWRja0tyVGRvZVcreWFwYVdHdGNiRHhJckdXUWJR?=
+ =?utf-8?B?TlE5T2dSQTdKV1ltZlhPRHQ0aDRDVkVKcHpmV3pjZlRtNkJxY2VJSGFWeTNS?=
+ =?utf-8?B?MHl2c1lMMUszYzJSRC9MSXJrcG1UWTFNQ01LYTBjNnMrU0xKYWZSSFFJYkp2?=
+ =?utf-8?Q?RTxCAxNw1jbTtb7uAhA34GFhV07P6DMlMcvEXZZ?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c03adc93-d0fc-4988-857f-08d94bab21a0
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR12MB2718.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jul 2021 18:21:02.8153
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: GyQCkiKVEfdNWXht6XjLvSzlP+xuWGj4lgHJ5EuOwc6TKGmqjn9om9c4PXQ9T1sC3Me8tXvI5HpAGEnbAE+4RQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB4512
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-IMO, the CPU behavior is a bug, even if the behavior is working as intended for
-the microarchitecture.  I.e. this should be treated as an erratum.
 
-On Wed, Jul 07, 2021, Brijesh Singh wrote:
-> When SEV-SNP is globally enabled on a system, the VMRUN instruction
-> performs additional security checks on AVIC backing, VMSA, and VMCB page.
-> On a successful VMRUN, these pages are marked "in-use" by the
-> hardware in the RMP entry
 
-There's a lot of "noise" in this intro.  That the CPU does additional checks at
-VMRUN isn't all that interesting, what's relevant is that the CPU tags the
-associated RMP entry with a special flag.  And IIUC, it does that for _all_ VMs,
-not just SNP VMs.
+On 7/20/21 11:28 AM, Sean Christopherson wrote:
 
-Also, what happens if the pages aren't covered by the RMP?  Table 15-41 states
-that the VMCB, AVIC, and VMSA for non-SNP guests need to be Hypervisor-Owned,
-but doesn't explicitly require them to be RMP covered.  On the other hand, it
-does state that the VMSA for an SNP guest must be Guest-Owned and RMP-Covered.
-That implies that the Hypervisor-Owned pages do not need to contained within the
-RMP, but how does that work if the CPU is setting a magic flag in the RMP?  Does
-VMRUN explode?  Does the CPU corrupt random memory?
-
-Is the in-use flag visible to software?  We've already established that "struct
-rmpentry" is microarchitectural, so why not document it in the PPR?  It could be
-useful info for debugging unexpected RMP violations, even if the flag isn't stable.
-
-Are there other possible collisions with the in-use flag?  The APM states that
-the in-use flag results in RMPUPDATE failing with FAIL_INUSE.  That's the same
-error code that's returned if two CPUs attempt RMPUPDATE on the same entry.  That
-implies that the RMPUPDATE also sets the in-use flag.  If that's true, then isn't
-it possible that the spurious RMP violation #PF could happen if the kernel accesses
-a hugepage at the same time a CPU is doing RMPUPDATE on the associated 2mb-aligned
-entry?
-
-> and any attempt to modify the RMP entry for these pages will result in
-> page-fault (RMP violation check).
-
-Again, not that relevant since KVM isn't attempting to modify the RMP entry.
-I've no objection to mentioning this behavior in passing, but it should not be
-the focal point of the intro.
-
-> While performing the RMP check, hardware will try to create a 2MB TLB
-> entry for the large page accesses. When it does this, it first reads
-> the RMP for the base of 2MB region and verifies that all this memory is
-> safe. If AVIC backing, VMSA, and VMCB memory happen to be the base of
-> 2MB region, then RMP check will fail because of the "in-use" marking for
-> the base entry of this 2MB region.
-
-There's a critical piece missing here, which is why an RMP violation is thrown
-on "in-use" pages.  E.g. are any translations problematic, or just writable
-translations?  It may not affect the actual KVM workaround, but knowing exactly
-what goes awry is important.
-
-> e.g.
 > 
-> 1. A VMCB was allocated on 2MB-aligned address.
-> 2. The VMRUN instruction marks this RMP entry as "in-use".
-> 3. Another process allocated some other page of memory that happened to be
->    within the same 2MB region.
-> 4. That process tried to write its page using physmap.
-
-Please explicitly call out the relevance of the physmap.  IIUC, only the physmap,
-a.k.a. direct map, is problematic because that's the only scenario where a large
-page can overlap one of the magic pages.  That should be explicitly stated.
-
-> If the physmap entry in step #4 uses a large (1G/2M) page, then the
-
-Be consistent with 2MB vs. 2M, i.e. choose one.
-
-> hardware will attempt to create a 2M TLB entry. The hardware will find
-> that the "in-use" bit is set in the RMP entry (because it was a
-> VMCB page) and will cause an RMP violation check.
-
-So what happens if the problematic page isn't 2mb aligned?  The lack of an RMP
-violation on access implies that the hypervisor can bypass the in-use restriction
-and create a 2mb hugepage, i.e. access the in-use page.  Same question for if the
-TLB entry exists before the page is marked in-use, which also begs the question
-of why the in-use flag is being checked at all on RMP lookups.
-
-> See APM2 section 15.36.12 for more information on VMRUN checks when
-> SEV-SNP is globally active.
+> Ah, I got confused by this code in snp_build_guest_buf():
 > 
-> A generic allocator can return a page which are 2M aligned and will not
-> be safe to be used when SEV-SNP is globally enabled.
-
-> Add a snp_safe_alloc_page() helper that can be used for allocating the SNP
-> safe memory. The helper allocated 2 pages and splits them into order-1
-> allocation. It frees one page and keeps one of the page which is not 2M
-> aligned.
-
-I know it's personal preference as to whether to lead with the solution or the
-problem statement, but in this case it would be very helpful to at least provide
-a brief summary early on so that the reader has some idea of where the changelog
-is headed.  As is, the actual change is buried after a big pile of hardware
-details.
-
-E.g. something like this
-
-  Implement a workaround for an SNP erratum where the CPU will incorrectly
-  signal an RMP violation #PF if a hugepage (2mb or 1gb) collides with the
-  RMP entry of a VMCB, VMSA, or AVIC backing page.
-
-  When SEV-SNP is globally enabled, the CPU marks the VMCB, VMSA, and AVIC
-  backing   pages as "in-use" in the RMP after a successful VMRUN.  This is
-  done for _all_   VMs, not just SNP-Active VMs.
-
-  If the hypervisor accesses an in-use page through a writable translation,
-  the CPU will throw an RMP violation #PF.  On early SNP hardware, if an
-  in-use page is 2mb aligned and software accesses any part of the associated
-  2mb region with a hupage, the CPU will incorrectly treat the entire 2mb
-  region as in-use and signal a spurious RMP violation #PF.
-
-  <gory details on the workaround>
-
-> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
-> ---
->  arch/x86/include/asm/kvm_host.h |  1 +
->  arch/x86/kvm/lapic.c            |  5 ++++-
->  arch/x86/kvm/svm/sev.c          | 27 +++++++++++++++++++++++++++
->  arch/x86/kvm/svm/svm.c          | 16 ++++++++++++++--
->  arch/x86/kvm/svm/svm.h          |  1 +
->  5 files changed, 47 insertions(+), 3 deletions(-)
+> 	data->req_paddr = __sme_set(req_pfn << PAGE_SHIFT);
 > 
-> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-> index 55efbacfc244..188110ab2c02 100644
-> --- a/arch/x86/include/asm/kvm_host.h
-> +++ b/arch/x86/include/asm/kvm_host.h
-> @@ -1383,6 +1383,7 @@ struct kvm_x86_ops {
->  	int (*complete_emulated_msr)(struct kvm_vcpu *vcpu, int err);
->  
->  	void (*vcpu_deliver_sipi_vector)(struct kvm_vcpu *vcpu, u8 vector);
-> +	void *(*alloc_apic_backing_page)(struct kvm_vcpu *vcpu);
->  };
->  
->  struct kvm_x86_nested_ops {
-> diff --git a/arch/x86/kvm/lapic.c b/arch/x86/kvm/lapic.c
-> index c0ebef560bd1..d4c77f66d7d5 100644
-> --- a/arch/x86/kvm/lapic.c
-> +++ b/arch/x86/kvm/lapic.c
-> @@ -2441,7 +2441,10 @@ int kvm_create_lapic(struct kvm_vcpu *vcpu, int timer_advance_ns)
->  
->  	vcpu->arch.apic = apic;
->  
-> -	apic->regs = (void *)get_zeroed_page(GFP_KERNEL_ACCOUNT);
-> +	if (kvm_x86_ops.alloc_apic_backing_page)
-> +		apic->regs = kvm_x86_ops.alloc_apic_backing_page(vcpu);
+> I was thinking that setting the C-bit meant the memory was guest private, but
+> that's setting the C-bit for the HPA, which is correct since KVM installs guest
+> memory with C-bit=1 in the NPT, i.e. encrypts shared memory with the host key.
+> 
+> Tangetially related question, is it correct to say that the host can _read_ memory
+> from a page that is assigned=1, but has asid=0?  I.e. KVM can read the response
+> page in order to copy it into the guest, even though it is a firmware page?
+> 
 
-This can be a static_call().
+Yes. The firmware page means that x86 cannot write to it; the read is 
+still allowed.
 
-> +	else
-> +		apic->regs = (void *)get_zeroed_page(GFP_KERNEL_ACCOUNT);
->  	if (!apic->regs) {
->  		printk(KERN_ERR "malloc apic regs error for vcpu %x\n",
->  		       vcpu->vcpu_id);
-> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-> index b8505710c36b..411ed72f63af 100644
-> --- a/arch/x86/kvm/svm/sev.c
-> +++ b/arch/x86/kvm/svm/sev.c
-> @@ -2692,3 +2692,30 @@ void sev_vcpu_deliver_sipi_vector(struct kvm_vcpu *vcpu, u8 vector)
->  		break;
->  	}
->  }
-> +
-> +struct page *snp_safe_alloc_page(struct kvm_vcpu *vcpu)
-> +{
-> +	unsigned long pfn;
-> +	struct page *p;
-> +
-> +	if (!cpu_feature_enabled(X86_FEATURE_SEV_SNP))
-> +		return alloc_page(GFP_KERNEL_ACCOUNT | __GFP_ZERO);
-> +
-> +	p = alloc_pages(GFP_KERNEL_ACCOUNT | __GFP_ZERO, 1);
-> +	if (!p)
-> +		return NULL;
-> +
-> +	/* split the page order */
-> +	split_page(p, 1);
-> +
-> +	/* Find a non-2M aligned page */
 
-This isn't "finding" anything, it's identifying which of the two pages is
-_guaranteed_ to be unaligned.  The whole function needs a much bigger comment to
-explain what's going on.
+> 	/* Copy the response after the firmware returns success. */
+> 	rc = kvm_write_guest(kvm, resp_gpa, sev->snp_resp_page, PAGE_SIZE);
+> 
+>> In the current series we don't support migration etc so I decided to
+>> ratelimit unconditionally.
+> 
+> Since KVM can peek at the request header, KVM should flat out disallow requests
+> that KVM doesn't explicitly support.  E.g. migration requests should not be sent
+> to the PSP.
+> 
 
-> +	pfn = page_to_pfn(p);
-> +	if (IS_ALIGNED(__pfn_to_phys(pfn), PMD_SIZE)) {
-> +		pfn++;
-> +		__free_page(p);
-> +	} else {
-> +		__free_page(pfn_to_page(pfn + 1));
-> +	}
-> +
-> +	return pfn_to_page(pfn);
-> +}
+That is acceptable.
+
+
+> One concern though: How does the guest query what requests are supported?  This
+> snippet implies there's some form of enumeration:
+> 
+>    Note: This guest message may be removed in future versions as it is redundant
+>    with the CPUID page in SNP_LAUNCH_UPDATE (see Section 8.14).
+> 
+> But all I can find is a "Message Version" in "Table 94. Message Type Encodings",
+> which implies that request support is all or nothing for a given version.  That
+> would be rather unfortunate as KVM has no way to tell the guest that something
+> is unsupported :-(
+> 
+
+The firmware supports all the commands listed in the spec. The HV 
+support is always going to be behind what a firmware or hardware is 
+capable of doing. As per the spec is concerned, it say
+
+   The firmware checks that MSG_TYPE is a valid message type. The
+   firmware then checks that MSG_SIZE is large enough to hold the
+   indicated message type at the indicated message version. If
+   not, the firmware returns INVALID_PARAM.
+
+So, a hypervisor could potentially send the INVALID_PARAMS to indicate 
+that guest that a message type is not supported.
+
+
+>>> Is this exposed to userspace in any way?  This feels very much like a knob that
+>>> needs to be configurable per-VM.
+>>
+>> It's not exposed to the userspace and I am not sure if userspace care about
+>> this knob.
+> 
+> Userspace definitely cares, otherwise the system would need to be rebooted just to
+> tune the ratelimiting.  And userspace may want to disable ratelimiting entirely,
+> e.g. if the entire system is dedicated to a single VM.
+
+Ok.
+
+> 
+>>> Also, what are the estimated latencies of a guest request?  If the worst case
+>>> latency is >200ms, a default ratelimit frequency of 5hz isn't going to do a whole
+>>> lot.
+>>>
+>>
+>> The latency will depend on what else is going in the system at the time the
+>> request comes to the hypervisor. Access to the PSP is serialized so other
+>> parallel PSP command execution will contribute to the latency.
+> 
+> I get that it will be variable, but what are some ballpark latencies?  E.g. what's
+> the latency of the slowest command without PSP contention?
+> 
+
+In my single VM, I am seeing latency of guest request to be around ~35ms.
+
+>>> Question on the VMPCK sequences.  The firmware ABI says:
+>>>
+>>>      Each guest has four VMPCKs ... Each message contains a sequence number per
+>>>      VMPCK. The sequence number is incremented with each message sent. Messages
+>>>      sent by the guest to the firmware and by the firmware to the guest must be
+>>>      delivered in order. If not, the firmware will reject subsequent messages ...
+>>>
+>>> Does that mean there are four independent sequences, i.e. four streams the guest
+>>> can use "concurrently", or does it mean the overall freshess/integrity check is
+>>> composed from four VMPCK sequences, all of which must be correct for the message
+>>> to be valid?
+>>>
+>>
+>> There are four independent sequence counter and in theory guest can use them
+>> concurrently. But the access to the PSP must be serialized.
+> 
+> Technically that's not required from the guest's perspective, correct?  
+
+Correct.
+
+The guest
+> only cares about the sequence numbers for a given VMPCK, e.g. it can have one
+> in-flight request per VMPCK and expect that to work, even without fully serializing
+> its own requests.
+> 
+> Out of curiosity, why 4 VMPCKs?  It seems completely arbitrary.
+> 
+
+I believe the thought process was by providing 4 keys it can provide 
+flexibility for each VMPL levels to use a different keys (if they wish). 
+The firmware does not care about the vmpl level during the guest request 
+handling, it just want to know which key is used for encrypting the 
+payload so that he can decrypt and provide the  response for it.
+
+
+>> Currently, the guest driver uses the VMPCK0 key to communicate with the PSP.
+>>
+>>
+>>> If it's the latter, then a traditional mutex isn't really necessary because the
+>>> guest must implement its own serialization, e.g. it's own mutex or whatever, to
+>>> ensure there is at most one request in-flight at any given time.
+>>
+>> The guest driver uses the its own serialization to ensure that there is
+>> *exactly* one request in-flight.
+> 
+> But KVM can't rely on that because it doesn't control the guest, e.g. it may be
+> running a non-Linux guest.
+>
+
+Yes, KVM should not rely on it. I mentioned that mainly because you said 
+that guest must implement its own serialization. In the case of KVM, the 
+CCP driver ensure that the command sent to the PSP is serialized.
+
+
+>> The mutex used here is to protect the KVM's internal firmware response
+>> buffer.
+> 
+> Ya, where I was going with my question was that if the guest was architecturally
+> restricted to a single in-flight request, then KVM could do something like this
+> instead of taking kvm->lock (bad pseudocode):
+> 
+> 	if (test_and_set(sev->guest_request)) {
+> 		rc = AEAD_OFLOW;
+> 		goto fail;
+> 	}
+> 
+> 	<do request>
+> 
+> 	clear_bit(...)
+> 
+> I.e. multiple in-flight requests can't work because the guest can guarantee
+> ordering between vCPUs.  But, because the guest can theoretically have up to four
+> in-flight requests, it's not that simple.
+> 
+> The reason I'm going down this path is that taking kvm->lock inside vcpu->mutex
+> violates KVM's locking rules, i.e. is susceptibl to deadlocks.  Per kvm/locking.rst,
+> 
+>    - kvm->lock is taken outside vcpu->mutex
+> 
+> That means a different mutex is needed to protect the guest request pages.
+> 
+
+Ah, I see your point on the locking. From architecturally a guest can 
+issue multiple requests in parallel. It sounds like having a separate 
+lock to protect the guest request pages makes sense.
+
+
+-Brijesh
