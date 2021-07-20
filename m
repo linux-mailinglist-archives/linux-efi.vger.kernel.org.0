@@ -2,110 +2,101 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 73E333CF8AF
-	for <lists+linux-efi@lfdr.de>; Tue, 20 Jul 2021 13:16:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B6D343CF8DF
+	for <lists+linux-efi@lfdr.de>; Tue, 20 Jul 2021 13:34:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236430AbhGTKfk (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 20 Jul 2021 06:35:40 -0400
-Received: from gate.crashing.org ([63.228.1.57]:33406 "EHLO gate.crashing.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S237358AbhGTKfj (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Tue, 20 Jul 2021 06:35:39 -0400
-Received: from ip6-localhost (localhost.localdomain [127.0.0.1])
-        by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 16KBECBR017610;
-        Tue, 20 Jul 2021 06:14:13 -0500
-Message-ID: <161920fc31ec4168290ca31b3e4ac7a75ac1df6b.camel@kernel.crashing.org>
-Subject: [PATCH 2/2] arm64: efi: kaslr: Fix boot failure if
- efi_random_alloc() fails
-From:   Benjamin Herrenschmidt <benh@kernel.crashing.org>
-To:     linux-arm-kernel@lists.infradead.org
-Cc:     Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org,
-        "linux-kernel@vger.kernel.org Will Deacon" <will@kernel.org>
-Date:   Tue, 20 Jul 2021 21:14:12 +1000
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.5-0ubuntu1 
+        id S231707AbhGTKxU (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 20 Jul 2021 06:53:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59294 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231645AbhGTKxS (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 20 Jul 2021 06:53:18 -0400
+Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26D0BC061574
+        for <linux-efi@vger.kernel.org>; Tue, 20 Jul 2021 04:33:54 -0700 (PDT)
+Received: by mail-ej1-x631.google.com with SMTP id gb6so33801033ejc.5
+        for <linux-efi@vger.kernel.org>; Tue, 20 Jul 2021 04:33:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=15guqC/HBG7Dic1OlUp77ZbcX1TBQzpIElAR/75+W6w=;
+        b=pKKjhY3w7bfWjwki0FxgBeB1Ia/PnPUqn9FEkXEyySCzX/ebeRuPMVEdu4WGw7IgKD
+         E4Yljj12HDbA4rKavWFPHV8eSHOzTDE/ck81rNmDELlIgFNn2N4hM12Q7VLKbp/cvq/8
+         54smI0sVHzhGOj1KFaANCf8twaevhidVmgk+mNnc0tP6iPru98ne3eQzq+yv47EkVeDt
+         ERH4TIEz4MIdYzC48R5pL3JFrSH2ZTyBVPhCl+F/ttkv99v6smiKTpIoCJET9wX4Atv2
+         BCwnjzJxmlJ8R3w3ASca0JHQbolbJ+4mYiO0TPH0RDoiGhoDvYJ2mW2UUYFlY9MtiyMy
+         KImg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to;
+        bh=15guqC/HBG7Dic1OlUp77ZbcX1TBQzpIElAR/75+W6w=;
+        b=FCrcrgsZwmdJyFJNppOCtwYR1z1PCFAC/WcikM7HhqqsSTFQbvTmXMErTQUuUtCv/A
+         gRzfY3WYZIs6V1z+kKfTM58pZlc9XJOoCaq5m88I5TTieZt8ZTWjLLMBfc3KYKVuOiGO
+         we8ikqkk7Brkx4WVauHS7vISzddyXRRplEaThVo6bf33vBOo69xNnsif5Y/7RkPOL9Ib
+         C+9itPPkU/Ynd+lyzsSKxFXS5WkUO1b+mDHWES2L5LmAYqmN8fRhQTXz8KTmEiw4Th8T
+         VWsVRfbkiq5k0hknVjL7K3j+tAK2/BAtA8PPyIdSMGxYLBGOLqysFivA8hY9nz6JHtS1
+         1N/A==
+X-Gm-Message-State: AOAM533/S6N98DMW+IJbumskunGz8Zgbgj9ykHDq+9pawlaUpVWT/mOS
+        JiNjpDe7eDE+PZiCPUzX/PU=
+X-Google-Smtp-Source: ABdhPJyYhX+S/FVZFTRUPH2zaZTRMlbzPAKqZ2waaCBPTRpUB62bfNvTLMHq1QhG87sdamcd3X2Giw==
+X-Received: by 2002:a17:906:dc0f:: with SMTP id yy15mr31443923ejb.255.1626780833461;
+        Tue, 20 Jul 2021 04:33:53 -0700 (PDT)
+Received: from gmail.com (62-165-196-62.pool.digikabel.hu. [62.165.196.62])
+        by smtp.gmail.com with ESMTPSA id l1sm7111407ejk.17.2021.07.20.04.33.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 20 Jul 2021 04:33:52 -0700 (PDT)
+Sender: Ingo Molnar <mingo.kernel.org@gmail.com>
+Date:   Tue, 20 Jul 2021 13:33:50 +0200
+From:   Ingo Molnar <mingo@kernel.org>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-efi@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Borislav Petkov <bp@alien8.de>
+Subject: Re: [GIT PULL] EFI fixes for v5.14-rc2
+Message-ID: <YPa0nvuYa5apyQTV@gmail.com>
+References: <20210720073311.55452-1-ardb@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210720073311.55452-1-ardb@kernel.org>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-If efi_random_alloc() fails, we still try to use EFI_KIMG_ALIGN
-instead of MIN_KIMG_ALIGN to check the kernel image alignment,
-which is incorrect, we need to fallback to MIN_KIMG_ALIGN (2M).
 
-This removes the not-that-useful min_kimg_align helper and instead
-uses the appropriate aligment in the respective call sites:
+* Ard Biesheuvel <ardb@kernel.org> wrote:
 
-efi_random_alloc() always wants EFI_KIMG_ALIGN as this is only
-used when kaslr is on, and all other cases go into alignment
-check code which always need to check (and enforce) MIN_KIMG_ALIGN
+> The following changes since commit e73f0f0ee7541171d89f2e2491130c7771ba58d3:
+> 
+>   Linux 5.14-rc1 (2021-07-11 15:07:40 -0700)
+> 
+> are available in the Git repository at:
+> 
+>   git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git tags/efi-urgent-for-v5.14-rc2
+> 
+> for you to fetch changes up to 47e1e233e9d822dfda068383fb9a616451bda703:
+> 
+>   efi/mokvar: Reserve the table only if it is in boot services data (2021-07-20 09:28:09 +0200)
+> 
+> Cc: Ingo Molnar <mingo@redhat.com>
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Borislav Petkov <bp@alien8.de>
+> 
+> ----------------------------------------------------------------
+> EFI fixes for v5.14-rc2:
+> 
+> - Ensure that memblock reservations and IO reserved resources remain in
+> sync when using the EFI memreserve feature.
+> - Don't complain about invalid TPM final event log table if it is
+> missing altogether.
+> - Comment header fix for the stub.
+> - Avoid a spurious warning when attempting to reserve firmware memory
+> that is already reserved in the first place.
 
-Signed-off-by: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Fixes: 7c116db24d94 (efi/libstub/arm64: Retain 2MB kernel Image alignment if !KASLR)
----
- drivers/firmware/efi/libstub/arm64-stub.c | 27 ++++++++++-------------
- 1 file changed, 12 insertions(+), 15 deletions(-)
+>  4 files changed, 23 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/firmware/efi/libstub/arm64-stub.c b/drivers/firmware/efi/libstub/arm64-stub.c
-index 7bf0a7acae5e..e264ff90ba03 100644
---- a/drivers/firmware/efi/libstub/arm64-stub.c
-+++ b/drivers/firmware/efi/libstub/arm64-stub.c
-@@ -34,18 +34,6 @@ efi_status_t check_platform_features(void)
- 	return EFI_SUCCESS;
- }
- 
--/*
-- * Although relocatable kernels can fix up the misalignment with respect to
-- * MIN_KIMG_ALIGN, the resulting virtual text addresses are subtly out of
-- * sync with those recorded in the vmlinux when kaslr is disabled but the
-- * image required relocation anyway. Therefore retain 2M alignment unless
-- * KASLR is in use.
-- */
--static u64 min_kimg_align(void)
--{
--	return efi_nokaslr ? MIN_KIMG_ALIGN : EFI_KIMG_ALIGN;
--}
--
- efi_status_t handle_kernel_image(unsigned long *image_addr,
- 				 unsigned long *image_size,
- 				 unsigned long *reserve_addr,
-@@ -84,15 +72,24 @@ efi_status_t handle_kernel_image(unsigned long *image_addr,
- 		/*
- 		 * If KASLR is enabled, and we have some randomness available,
- 		 * locate the kernel at a randomized offset in physical memory.
-+		 *
-+		 * In that case, we don't need to preserve the 2M alignment
- 		 */
--		status = efi_random_alloc(*reserve_size, min_kimg_align(),
-+		status = efi_random_alloc(*reserve_size, EFI_KIMG_ALIGN,
- 					  reserve_addr, phys_seed);
- 	} else {
- 		status = EFI_OUT_OF_RESOURCES;
- 	}
- 
- 	if (status != EFI_SUCCESS) {
--		if (IS_ALIGNED((u64)_text, min_kimg_align())) {
-+		/*
-+		 * Although relocatable kernels can fix up the misalignment with respect to
-+		 * MIN_KIMG_ALIGN, the resulting virtual text addresses are subtly out of
-+		 * sync with those recorded in the vmlinux when kaslr is disabled but the
-+		 * image required relocation anyway. Therefore retain 2M alignment unless
-+		 * KASLR is in use.
-+		 */
-+		if (IS_ALIGNED((u64)_text, MIN_KIMG_ALIGN)) {
- 			/*
- 			 * Just execute from wherever we were loaded by the
- 			 * UEFI PE/COFF loader if the alignment is suitable.
-@@ -103,7 +100,7 @@ efi_status_t handle_kernel_image(unsigned long *image_addr,
- 		}
- 
- 		status = efi_allocate_pages_aligned(*reserve_size, reserve_addr,
--						    ULONG_MAX, min_kimg_align());
-+						    ULONG_MAX, MIN_KIMG_ALIGN);
- 
- 		if (status != EFI_SUCCESS) {
- 			efi_err("Failed to relocate kernel\n");
+Pulled into tip:efi/urgent, thanks a lot Ard!
 
-
-
+	Ingo
