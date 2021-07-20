@@ -2,101 +2,97 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B6D343CF8DF
-	for <lists+linux-efi@lfdr.de>; Tue, 20 Jul 2021 13:34:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B16433CF9B8
+	for <lists+linux-efi@lfdr.de>; Tue, 20 Jul 2021 14:38:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231707AbhGTKxU (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 20 Jul 2021 06:53:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59294 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231645AbhGTKxS (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 20 Jul 2021 06:53:18 -0400
-Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26D0BC061574
-        for <linux-efi@vger.kernel.org>; Tue, 20 Jul 2021 04:33:54 -0700 (PDT)
-Received: by mail-ej1-x631.google.com with SMTP id gb6so33801033ejc.5
-        for <linux-efi@vger.kernel.org>; Tue, 20 Jul 2021 04:33:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=15guqC/HBG7Dic1OlUp77ZbcX1TBQzpIElAR/75+W6w=;
-        b=pKKjhY3w7bfWjwki0FxgBeB1Ia/PnPUqn9FEkXEyySCzX/ebeRuPMVEdu4WGw7IgKD
-         E4Yljj12HDbA4rKavWFPHV8eSHOzTDE/ck81rNmDELlIgFNn2N4hM12Q7VLKbp/cvq/8
-         54smI0sVHzhGOj1KFaANCf8twaevhidVmgk+mNnc0tP6iPru98ne3eQzq+yv47EkVeDt
-         ERH4TIEz4MIdYzC48R5pL3JFrSH2ZTyBVPhCl+F/ttkv99v6smiKTpIoCJET9wX4Atv2
-         BCwnjzJxmlJ8R3w3ASca0JHQbolbJ+4mYiO0TPH0RDoiGhoDvYJ2mW2UUYFlY9MtiyMy
-         KImg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to;
-        bh=15guqC/HBG7Dic1OlUp77ZbcX1TBQzpIElAR/75+W6w=;
-        b=FCrcrgsZwmdJyFJNppOCtwYR1z1PCFAC/WcikM7HhqqsSTFQbvTmXMErTQUuUtCv/A
-         gRzfY3WYZIs6V1z+kKfTM58pZlc9XJOoCaq5m88I5TTieZt8ZTWjLLMBfc3KYKVuOiGO
-         we8ikqkk7Brkx4WVauHS7vISzddyXRRplEaThVo6bf33vBOo69xNnsif5Y/7RkPOL9Ib
-         C+9itPPkU/Ynd+lyzsSKxFXS5WkUO1b+mDHWES2L5LmAYqmN8fRhQTXz8KTmEiw4Th8T
-         VWsVRfbkiq5k0hknVjL7K3j+tAK2/BAtA8PPyIdSMGxYLBGOLqysFivA8hY9nz6JHtS1
-         1N/A==
-X-Gm-Message-State: AOAM533/S6N98DMW+IJbumskunGz8Zgbgj9ykHDq+9pawlaUpVWT/mOS
-        JiNjpDe7eDE+PZiCPUzX/PU=
-X-Google-Smtp-Source: ABdhPJyYhX+S/FVZFTRUPH2zaZTRMlbzPAKqZ2waaCBPTRpUB62bfNvTLMHq1QhG87sdamcd3X2Giw==
-X-Received: by 2002:a17:906:dc0f:: with SMTP id yy15mr31443923ejb.255.1626780833461;
-        Tue, 20 Jul 2021 04:33:53 -0700 (PDT)
-Received: from gmail.com (62-165-196-62.pool.digikabel.hu. [62.165.196.62])
-        by smtp.gmail.com with ESMTPSA id l1sm7111407ejk.17.2021.07.20.04.33.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Jul 2021 04:33:52 -0700 (PDT)
-Sender: Ingo Molnar <mingo.kernel.org@gmail.com>
-Date:   Tue, 20 Jul 2021 13:33:50 +0200
-From:   Ingo Molnar <mingo@kernel.org>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     linux-efi@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Borislav Petkov <bp@alien8.de>
-Subject: Re: [GIT PULL] EFI fixes for v5.14-rc2
-Message-ID: <YPa0nvuYa5apyQTV@gmail.com>
-References: <20210720073311.55452-1-ardb@kernel.org>
+        id S229631AbhGTL5Y (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 20 Jul 2021 07:57:24 -0400
+Received: from mail.kernel.org ([198.145.29.99]:40016 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229608AbhGTL5V (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Tue, 20 Jul 2021 07:57:21 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id F228D60E0C
+        for <linux-efi@vger.kernel.org>; Tue, 20 Jul 2021 12:37:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1626784680;
+        bh=8uItyTeZGwoskfvIymnWXgS6EH9/qVSnEA4rAvmRhaA=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=J8ikoevl3KTnHUWumZzVhsSK/IGTYSHUsklBUDBNCcGTVKe0R+4eRSGPuAvOPIbMK
+         ZN2K4z5qUYjig+xpnbPWF30E4GmIQ4DgRr1q1AaLwNFi/1TSnTzbDYl5DfG9PCkGhz
+         pzN6pDEeB0lN18V4tTZcvvfzsbcKJA5lqpFjZAvjBN8uJE2jCxGdJmOXwyV+bTSkeC
+         BmDGw4Y/bJdPK46q80yUm+Zw3M1pp+iMmyp5+JIXVaQF1JYEZilgVMgFVHgSTofBJn
+         gxk03Hm3T/Ki46p+Mr7bt/BLipDwRTvd3Lv6xxWUEGP421kcQLWtFz5I0mSbMxf0sy
+         mjVznjeBIzAIg==
+Received: by mail-oi1-f178.google.com with SMTP id p67so24357548oig.2
+        for <linux-efi@vger.kernel.org>; Tue, 20 Jul 2021 05:37:59 -0700 (PDT)
+X-Gm-Message-State: AOAM5332m0/NJ/gW5SAnesHYsUA+TZmoPenAyniHccgCvKcNBax3/3W7
+        7TcCrM7ya15Hcnhh9H65DiMpG2EuBef/RvsOV4s=
+X-Google-Smtp-Source: ABdhPJxQl14grkN6rj4YnaIdi098DXlbYIwmHhYmBOX6qRloPFSX+OoCJ8qBE3dJWFb4rNmF5LGqHJUsDM+D8dW+3ic=
+X-Received: by 2002:aca:5a04:: with SMTP id o4mr20605155oib.33.1626784679390;
+ Tue, 20 Jul 2021 05:37:59 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210720073311.55452-1-ardb@kernel.org>
+References: <c71fce9256e9caa7bd3400d525f22380b686d29e.camel@kernel.crashing.org>
+In-Reply-To: <c71fce9256e9caa7bd3400d525f22380b686d29e.camel@kernel.crashing.org>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Tue, 20 Jul 2021 14:37:48 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXGWOXjFt1hH7V3Ah=9tbcng34CxAGM+h3VNpUXPuBqMCA@mail.gmail.com>
+Message-ID: <CAMj1kXGWOXjFt1hH7V3Ah=9tbcng34CxAGM+h3VNpUXPuBqMCA@mail.gmail.com>
+Subject: Re: [PATCH 1/2] arm64: efi: kaslr: Fix occasional random alloc (and
+ boot) failure
+To:     Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc:     Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org Will Deacon" <will@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
+On Tue, 20 Jul 2021 at 13:14, Benjamin Herrenschmidt
+<benh@kernel.crashing.org> wrote:
+>
+> The EFI stub random allocator used for kaslr on arm64 has a subtle
+> bug. In function get_entry_num_slots() which counts the number of
+> possible allocation "slots" for the image in a given chunk of free
+> EFI memory, "last_slot" can become negative if the chunk is smaller
+> than the requested allocation size.
+>
+> The test "if (first_slot > last_slot)" doesn't catch it because
+> both first_slot and last_slot are unsigned.
+>
+> I chose not to make them signed to avoid problems if this is ever
+> used on architectures where there are meaningful addresses with the
+> top bit set. Instead, fix it with an additional test against the
+> allocation size.
+>
+> This can cause a boot failure in addition to a loss of randomisation
+> due to another bug in the arm64 stub fixed separately.
+>
+> Signed-off-by: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> Fixes: 2ddbfc81eac8 (efi: stub: add implementation of efi_random_alloc())
 
-* Ard Biesheuvel <ardb@kernel.org> wrote:
+Thanks for fixing this.
 
-> The following changes since commit e73f0f0ee7541171d89f2e2491130c7771ba58d3:
-> 
->   Linux 5.14-rc1 (2021-07-11 15:07:40 -0700)
-> 
-> are available in the Git repository at:
-> 
->   git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git tags/efi-urgent-for-v5.14-rc2
-> 
-> for you to fetch changes up to 47e1e233e9d822dfda068383fb9a616451bda703:
-> 
->   efi/mokvar: Reserve the table only if it is in boot services data (2021-07-20 09:28:09 +0200)
-> 
-> Cc: Ingo Molnar <mingo@redhat.com>
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Borislav Petkov <bp@alien8.de>
-> 
-> ----------------------------------------------------------------
-> EFI fixes for v5.14-rc2:
-> 
-> - Ensure that memblock reservations and IO reserved resources remain in
-> sync when using the EFI memreserve feature.
-> - Don't complain about invalid TPM final event log table if it is
-> missing altogether.
-> - Comment header fix for the stub.
-> - Avoid a spurious warning when attempting to reserve firmware memory
-> that is already reserved in the first place.
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
 
->  4 files changed, 23 insertions(+), 7 deletions(-)
 
-Pulled into tip:efi/urgent, thanks a lot Ard!
-
-	Ingo
+> ---
+>
+>  drivers/firmware/efi/libstub/randomalloc.c | 2 ++
+>  1 file changed, 2 insertions(+)
+>
+> diff --git a/drivers/firmware/efi/libstub/randomalloc.c b/drivers/firmware/efi/libstub/randomalloc.c
+> index a408df474d83..724155b9e10d 100644
+> --- a/drivers/firmware/efi/libstub/randomalloc.c
+> +++ b/drivers/firmware/efi/libstub/randomalloc.c
+> @@ -30,6 +30,8 @@ static unsigned long get_entry_num_slots(efi_memory_desc_t *md,
+>
+>         region_end = min(md->phys_addr + md->num_pages * EFI_PAGE_SIZE - 1,
+>                          (u64)ULONG_MAX);
+> +       if (region_end < size)
+> +               return 0;
+>
+>         first_slot = round_up(md->phys_addr, align);
+>         last_slot = round_down(region_end - size + 1, align);
+>
+>
