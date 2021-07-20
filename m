@@ -2,56 +2,43 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A54F23D0233
-	for <lists+linux-efi@lfdr.de>; Tue, 20 Jul 2021 21:38:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8FC9D3D0284
+	for <lists+linux-efi@lfdr.de>; Tue, 20 Jul 2021 22:07:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229556AbhGTS5q (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 20 Jul 2021 14:57:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56350 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230116AbhGTS5n (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 20 Jul 2021 14:57:43 -0400
-Received: from mail-pg1-x536.google.com (mail-pg1-x536.google.com [IPv6:2607:f8b0:4864:20::536])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA582C0613DB
-        for <linux-efi@vger.kernel.org>; Tue, 20 Jul 2021 12:38:19 -0700 (PDT)
-Received: by mail-pg1-x536.google.com with SMTP id y4so23465391pgl.10
-        for <linux-efi@vger.kernel.org>; Tue, 20 Jul 2021 12:38:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=opGYJ8ATKeLRJGjAJK6R9tbhbI7CJxP6XB4aUSj1rRc=;
-        b=U3suekfYP80TfhnSWCdW0AeB5YxRYqo2o3/gq9NjySLOotsA/QHsKv4nrfgs9Q6OW4
-         KjSFSlK0XO5pyVT8FlownP4GS3PcIrtF/1itOWU4Pga+6PwG15GCcUmAHgnsNMPMi4LX
-         DxT0uRyt0039tsJZa4N+W8sH3nZ3ORXDV7KdShXCKvh6oAxgtZUERz3/kYRLyJ5E2nWy
-         NESQv+xyyGvE5IhgT/cYsM8bQaF8F8f+olP6Pv+1dQQcP53pETJLgqGRDE75b9vRhf5t
-         erL1h5JQ4WgB3pRfhQQaD4CT4UWWh7xaKg8C46eFTZOacYR8kBVBLxEUzPFoFCtyV1A7
-         oJRA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=opGYJ8ATKeLRJGjAJK6R9tbhbI7CJxP6XB4aUSj1rRc=;
-        b=MhbB3FR2F6BST79yXGA+RFlATBs9Yp6lupuoqTMHqKrkMBcUGIKqkcscj0bPilBZv4
-         OeCcJyggmNWR3jiDyxSboKRTvchFGqtAlBD5B0Kl8hIQh2dLy+4A5tYZapFPzL4WYq9j
-         QZm7SRJTipBCTITujLQHMJ+SBXnDPQp420huRKwPb3/Wl+AlA9xMPFp2BHFQNQpMNH08
-         ZfIZf6A/AuL66bVW83+28qJxbdVKop7FAVensToEFm7vpjOoN54uKQ2TAZRGcrK7ZDJ/
-         L6YQMalj58HZINal7l9tljX+QDc5iuZEnffJkkzdpfiq6mEyoRtkMGDykd+DZDvaajFs
-         p9pg==
-X-Gm-Message-State: AOAM530p09E2Pmn+RPeiTKp8MqUz6tV0kmcxSen2khyX/y/0KBHSvsEn
-        K43oUzUnNZgo1SZuIDUYXtn63Q==
-X-Google-Smtp-Source: ABdhPJxaIdbx05Hn/m0/ilrMVvfZTLe2YGc+vQnLw4+1SqOXt5bk80Vq8MgVTJaPuxiVmjKAyXSIhA==
-X-Received: by 2002:a63:5620:: with SMTP id k32mr6362897pgb.32.1626809898963;
-        Tue, 20 Jul 2021 12:38:18 -0700 (PDT)
-Received: from google.com (157.214.185.35.bc.googleusercontent.com. [35.185.214.157])
-        by smtp.gmail.com with ESMTPSA id a20sm23827514pfv.101.2021.07.20.12.38.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Jul 2021 12:38:18 -0700 (PDT)
-Date:   Tue, 20 Jul 2021 19:38:14 +0000
-From:   Sean Christopherson <seanjc@google.com>
-To:     Brijesh Singh <brijesh.singh@amd.com>
-Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        id S229682AbhGTTZi (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 20 Jul 2021 15:25:38 -0400
+Received: from mail-mw2nam10on2043.outbound.protection.outlook.com ([40.107.94.43]:60768
+        "EHLO NAM10-MW2-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S229554AbhGTTZ1 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Tue, 20 Jul 2021 15:25:27 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=a2Tg41tTwexHWhLxvgT1KuurmLIe+BeOdHRbtCvhYqzS5MHP6FIYexuQcGjYszmlud0vODK4e9l/bgiIhaF8Mwmr1mgsYIP1IqVnuv+PT/ZDGvidjunBjk4aA1JTJtJKiDk75kLz+zUVYGvMkluvRc0nG7rM1ixBCE+X+N9mOs2JdZoB3AXPc9KmyGGKEXunBZ1DIGI1KkP7QKa3GbubKZmaLBLDNqErq450fmHQZQA2Vi1RMahj0tFyHALhoM6mPLpiCQhL6wcBjz9Mdf3iIT/npdu74ijVw34QaTn8EXtGKL8jG2igSu/Q+QoAcuDUjF16bnFBo0Z0A5eBsqPt9w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Q+SeTQNPSG5lVB6kD2qA1GHg+mKjGMSM1+9wnMYn2Fg=;
+ b=bJQxPeg4vM4bFVaonrgMtnqmiyXwjjH3tKiV5stSGc86x1TAwtVozbVmcq+9qeJdKbJWWP2OtzoTmutJLm1FveB0Y+VT4DVMpEvY70DF1Q1uoLv1hVijqnO8mSkYoXwvpdEP6rgmb/jjb7mDroWuh2C+pYIkR5jLEr0ohj5y6nV7G7C8sqJM1N1JYLoSLDdM8Mo/FSgAIBN09j/oNMALDad9drQdgs0DHXS6kxWnxSLYP4POkg/FUdD+bqPA/Tqb2d1E1/jKq+9JEjQW0F/3GxvBCMUrIdhsLM/Lq+KPhXjLSllKlnJzyukDg5jDNsLpU7eik2W4joDZmzIE7Umtpg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Q+SeTQNPSG5lVB6kD2qA1GHg+mKjGMSM1+9wnMYn2Fg=;
+ b=UREJsggq2CgYH8wJI1SeBPEJvB6Jjg3fEyPuRvZgRXs+7QP1lUjDWvot31rIU6kijmYK2o0kfE8e62/q4fBRzLubgJMBXsaoolJkeajOHm2LYQZQAcxD9Mwz2ilU0LrXQNBoJwfv/CsGh/XGLE+WgFKEOkYL/m1SIvhex4jC1aE=
+Authentication-Results: gmail.com; dkim=none (message not signed)
+ header.d=none;gmail.com; dmarc=none action=none header.from=amd.com;
+Received: from SN6PR12MB2718.namprd12.prod.outlook.com (2603:10b6:805:6f::22)
+ by SN1PR12MB2368.namprd12.prod.outlook.com (2603:10b6:802:32::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4331.21; Tue, 20 Jul
+ 2021 20:06:02 +0000
+Received: from SN6PR12MB2718.namprd12.prod.outlook.com
+ ([fe80::a8a9:2aac:4fd1:88fa]) by SN6PR12MB2718.namprd12.prod.outlook.com
+ ([fe80::a8a9:2aac:4fd1:88fa%3]) with mapi id 15.20.4331.034; Tue, 20 Jul 2021
+ 20:06:02 +0000
+Cc:     brijesh.singh@amd.com, x86@kernel.org,
+        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
         linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
         linux-coco@lists.linux.dev, linux-mm@kvack.org,
         linux-crypto@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
@@ -76,88 +63,119 @@ Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
         npmccallum@redhat.com, brijesh.ksingh@gmail.com
 Subject: Re: [PATCH Part2 RFC v4 27/40] KVM: X86: Add kvm_x86_ops to get the
  max page level for the TDP
-Message-ID: <YPcmJuKHFYjCgpqd@google.com>
+To:     Sean Christopherson <seanjc@google.com>
 References: <20210707183616.5620-1-brijesh.singh@amd.com>
- <20210707183616.5620-28-brijesh.singh@amd.com>
- <YPHbxAVbuFk6Xtkj@google.com>
- <1ed3c439-a02c-7182-b140-32cddd5e4f34@amd.com>
+ <20210707183616.5620-28-brijesh.singh@amd.com> <YPHbxAVbuFk6Xtkj@google.com>
+ <1ed3c439-a02c-7182-b140-32cddd5e4f34@amd.com> <YPcmJuKHFYjCgpqd@google.com>
+From:   Brijesh Singh <brijesh.singh@amd.com>
+Message-ID: <afa7bd42-ce18-c89e-3f54-cbf197143678@amd.com>
+Date:   Tue, 20 Jul 2021 15:06:00 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
+In-Reply-To: <YPcmJuKHFYjCgpqd@google.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SA9PR11CA0017.namprd11.prod.outlook.com
+ (2603:10b6:806:6e::22) To SN6PR12MB2718.namprd12.prod.outlook.com
+ (2603:10b6:805:6f::22)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1ed3c439-a02c-7182-b140-32cddd5e4f34@amd.com>
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from [10.236.31.95] (165.204.77.1) by SA9PR11CA0017.namprd11.prod.outlook.com (2603:10b6:806:6e::22) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4331.21 via Frontend Transport; Tue, 20 Jul 2021 20:06:01 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 59c0da7f-26e9-45e8-b7ba-08d94bb9cc76
+X-MS-TrafficTypeDiagnostic: SN1PR12MB2368:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <SN1PR12MB2368AA507D75DABEBFAE8349E5E29@SN1PR12MB2368.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:10000;
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: fqtE5AB1POCPOaQZ3bFRMae/5mC+yByn6wrfaMoZ+19Hqe+orM3RXC6kn8JlEosucKFttdTmBVT2YmvMT8kKIJNf3n+vrv641YQfZjSQrHUia0cEpfiK5PS69k3MRVLL52mtsGJYvNbcJJebTqg1CJ9EW4sTtG27DJfsgmazEYoYMUZtnc+xAOoLqzcIRu3bhZelesqY+9pV1+HRxKay4RxXhY/OWWIad/fZx5kV5V1tyQuxywOF8DwRE+rLwK3IZNUAla8uwtIPj44mrYyLRVzKrpY6yO3KnP5C1z734hzILKnWu1+TVreq0NPfkgOoKAdupo6Dz+lMPtgj8JapAlMJ3AdHi5WMT/0LHTdMuVYhOhnXVPPA/bTvP0mkJn+H66UMpZdMi9iZS4VwmcRw5iGpqe0HGvBnhkMkX1z45pfYYxL77VrebyBFVQ3UMjcQdZ2XEoNL8YE1/8xVz8isu2IzZuFFiDXGBs25CGQZzDutuM0PIqRlPAaz5rB+M3ZJHUgWU8C0DWDNBluTRbRMCHgTOMKVwsw0MakPdu/k9ok5SwnT9f4gBGWpzBiG/jfOzx8qXmIRi2AE/xAShtBFH5GiKp51cHUL+7+H3jW/OOAVnogQ2dRG6jp6nMUxeCrYm08D3pyXwIQcL2VnelcrhJ4qpJEjqLegZaniFjMhuDAssnb3P/xMm9mOercgkbTv8o2Z1lUfr5EEErfJCCvSmoxYKlWnQrkqVirFXrq7sDyvthWxj6nQEd4lnh1z7AdN/RkoUf8ohhdUJOaOTbxtoB9udvmhxCHNjxyAQenwMkQ0Dip1KGZXAhyYLpE7LcX383knreUWnFK1x1/Efub8dULhk1cNVWQC9+ShemjOssENZxV7dxZr65/hk4zse0Ub
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR12MB2718.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(39860400002)(376002)(346002)(396003)(366004)(136003)(54906003)(31686004)(956004)(186003)(26005)(66556008)(86362001)(44832011)(66476007)(7406005)(31696002)(66946007)(8676002)(966005)(52116002)(2616005)(53546011)(7416002)(6486002)(4326008)(478600001)(16576012)(83380400001)(36756003)(38100700002)(5660300002)(316002)(45080400002)(2906002)(8936002)(38350700002)(6916009)(15583001)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?R3dyUHBmdWJBTWE2Wkk3SEU2djZOVzZNd0FxSitJVkpZR3g4azB1STFhRlRP?=
+ =?utf-8?B?OUdDVDIyUldmbXZIOVhzVUFQbUcyTFlrakhUa0Y4bVVIOW1iZ2FEcEdxbW85?=
+ =?utf-8?B?S0UySmxNeXYwVWptNDFIQ2hibG9tYm1qZlBEaEFmS1RZVExzbE55RGliOENU?=
+ =?utf-8?B?L2xlaXBHa3RtazBVd3ZyamViWjAya2oxRmRCTkF0RUdoTzlhUjZEYjV2ZXZZ?=
+ =?utf-8?B?SVZHODVCREwyNXNyanVqVzdvR3NoSXJlQnBvUkRSMmlWOEFOL2NyWk9GVWFM?=
+ =?utf-8?B?Y2xlYzBXOVVSbm0rb1QrVHRCazVIbEs4b3dub0dTOFEwMG9UZndFWE5Yc0h0?=
+ =?utf-8?B?MTd6WTcrbk1RcEUyRmJhK3ZCVGgwTkxKZ3ZuaWpGYkx5d1FaRlg5RmxFVVRF?=
+ =?utf-8?B?a3ByWUhITEJXbGRPTjJ5YURvMVFncXJXM3F1Wkl5NDEzNDZPK2tBdHZTNDFU?=
+ =?utf-8?B?ZmJaaG1kcGY3N0dOc1RHNHh6SjJrb2E1R3c5TW4xdmx6SExrOGNUd2laakEy?=
+ =?utf-8?B?QXlrcW5YcHQ2a0x3VkJWbjhVZUhwTTZranhYVkdJSFhYeVZUOTdoNTJoQ29n?=
+ =?utf-8?B?dEFSb0NYZjdrVWZhTWM3bHJmdEx1SFlIakM5RkQ1dmhZWVBZeHg2dFNYd2dk?=
+ =?utf-8?B?bDkxMm1kODZldW5uUG5DaUdMdFFzdktuSExOMVVCSEtBTS95cnFhbXVza1Z4?=
+ =?utf-8?B?RU1hRzJSdDE0VFBwWEthZ21IY3hCakwwSHF6NzZPU1RjaTU2ekpOc1FiVXM5?=
+ =?utf-8?B?Wkdzb042OFJwd0grekJ0d00rd3IzbTBsQzV3aFpUS1B5VEZWWjZ4TVdkRFZP?=
+ =?utf-8?B?Y1dSUmFycFgzRVBSdmhpczVxUUIxWHplWTJIMVUzZ2VXdUFqOGpIRFI3UWNx?=
+ =?utf-8?B?TEd4TDFhTHhPSGxKVTFYaGdWeWswTTdEQzdzRjBWREdSWjNUSkdXL0tBSHlq?=
+ =?utf-8?B?aVJYVVFyVnphcjk4S3VpVWZwZHBjS0grVWVxbjRJTkdXcHB4YWFBN0ZrRmlS?=
+ =?utf-8?B?ZHNBaGlCeG9MdHhQcTEvOWRLWHdJYmhyTmtKV2txK2JBZEhIaVJGSnJYZFF6?=
+ =?utf-8?B?ajRGNXkvay9xOTFudHVZQTRTMFlVYVpmclJXTmdHcEJBZWxTTGttUDZGVnU2?=
+ =?utf-8?B?ZE1Wcy9mV2Zmbzd1YXBVTlBRRWhFa0NFSXFieVhLOXNvb25iUWVUMXRqdUM2?=
+ =?utf-8?B?OUdlNFowaGJ3NTM1T0xod1dSRldobmVlRVdFekhNZ1dpQkVUSUNxL2NXU0w1?=
+ =?utf-8?B?U0pxNG9aZFl6TkxFZkdQRmpVZ0sxZm1UWjQxdlRZTVpQa3J3bVE3SHJLMzVv?=
+ =?utf-8?B?OW9LV2ZtVVo5aitDRHlGUDVjZEVuMEZKNlZPRTNuM01mVG1NUWlMcGZuU0lK?=
+ =?utf-8?B?K1U1U2w3M2gxVXl1MzBCWXlrSzIzRnozQVRPM1UybWNXVUlXQzV6UUw4VGEy?=
+ =?utf-8?B?Ull1WXdMTEhKV0JMbWRVWWRwdVZYR3BBOWNlQTg4Y2dEYmM4ZWMza21NL2xl?=
+ =?utf-8?B?REczVklxZitnL2d2UEg4RTIzODExZXI5SFdnYVlDUEF5UVhZeFJVS2hQNU5T?=
+ =?utf-8?B?U0hzZUs0ZlBaUktsa1Y1WWNsQnl4UVNBVjVkaW1RZ3A3aUtQSHJaZ29PYlRC?=
+ =?utf-8?B?ZmtyanRiQVhBZU85M1kzaUV2Um1hTXc0MDhVVi9JcVo2YzBWTnZpTlJRQ0E2?=
+ =?utf-8?B?ZUdpMVpMekR1ZXladWlWdW9ON1ZQWWlsZUc1SUh4SCtGd2l6c3RDSDZJMUhm?=
+ =?utf-8?Q?qRM1v3YMvGKcqifWHzBa5yQ0i2sHO1WG/cSKc7P?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 59c0da7f-26e9-45e8-b7ba-08d94bb9cc76
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR12MB2718.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jul 2021 20:06:02.4539
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: dQxtMvWqoHP6oU+UcxhCsHxlE2b7XCgXXQo6SAmkw02/YWQrUKqdJs6lJjBZNDdjcCcvkWTjRwSa4uRvCVioeg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN1PR12MB2368
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, Jul 16, 2021, Brijesh Singh wrote:
-> On 7/16/21 2:19 PM, Sean Christopherson wrote:
-> > On Wed, Jul 07, 2021, Brijesh Singh wrote:
-> > Another option would be to drop the kvm_x86_ops hooks entirely and call
-> > snp_lookup_page_in_rmptable() directly from MMU code.  That would require tracking
-> > that a VM is SNP-enabled in arch code, but I'm pretty sure info has already bled
-> > into common KVM in one form or another.
-> 
-> I would prefer this as it eliminates some of the other unnecessary call
-> sites. Unfortunately, currently there is no generic way to know if its
-> an SEV guest (outside the svm/*).  So far there was no need as such but
-> with SNP having such information would help. Should we extend the
-> 'struct kvm' to include a new field that can be used to determine the
-> guest type. Something like
-> 
-> enum {
-> 
->    GUEST_TYPE_SEV,
-> 
->    GUEST_TYPE_SEV_ES,
-> 
->    GUEST_TYPE_SEV_SNP,
-> 
-> };
-> 
-> struct kvm {
-> 
->    ...
-> 
->   u64 enc_type;
-> 
-> };
-> 
-> bool kvm_guest_enc_type(struct kvm *kvm, enum type); {
-> 
->     return !!kvm->enc_type & type;
-> 
-> }
-> 
-> The mmu.c can then call kvm_guest_enc_type() to check if its SNP guest
-> and use the SNP lookup directly to determine the pagesize.
 
-The other option is to use vm_type, which TDX is already planning on leveraging.
-Paolo raised the question of whether or not the TDX type could be reused for SNP.
-We should definitely sort that out before merging either series.  I'm personally
-in favor of separating TDX and SNP, it seems inevitable that common code will
-want to differentiate between the two.
 
-https://lkml.kernel.org/r/8eb87cd52a89d957af03f93a9ece5634426a7757.1625186503.git.isaku.yamahata@intel.com
+On 7/20/21 2:38 PM, Sean Christopherson wrote:
+...
 
-> > As the APM is currently worded, this is wrong, and the whole "tdp_max_page_level"
-> > name is wrong.  As noted above, the Page-Size bullet points states that 2mb/1gb
-> > pages in the NPT _must_ have RMP.page_size=1, and 4kb pages in the NPT _must_
-> > have RMP.page_size=0.  That means that the RMP adjustment is not a constraint,
-> > it's an exact requirement.  Specifically, if the RMP is a 2mb page then KVM must
-> > install a 2mb (or 1gb) page.  Maybe it works because KVM will PSMASH the RMP
-> > after installing a bogus 4kb NPT and taking an RMP violation, but that's a very
-> > convoluted and sub-optimal solution.
 > 
-> This is why I was passing the preferred max_level in the pre-fault
-> handle then later query the npt level; use the npt level in the RMP to
-> make sure they are in sync.
-> 
-> There is yet another reason why we can't avoid the PSMASH after doing
-> everything to ensure that NPT and RMP are in sync. e.g if NPT and RMP
-> are programmed with 2mb size but the guest tries to PVALIDATE the page
-> as a 4k. In that case, we will see #NPF with page size mismatch and have
-> to perform psmash.
+> The other option is to use vm_type, which TDX is already planning on leveraging.
+> Paolo raised the question of whether or not the TDX type could be reused for SNP.
+> We should definitely sort that out before merging either series.  I'm personally
+> in favor of separating TDX and SNP, it seems inevitable that common code will
+> want to differentiate between the two.
 
-Boo, there's no way to communicate to the guest that it's doing PVALIDATE wrong
-is there?
+Yes, I did saw that and it seems much better.
+
+> 
+> https://nam11.safelinks.protection.outlook.com/?url=https%3A%2F%2Flkml.kernel.org%2Fr%2F8eb87cd52a89d957af03f93a9ece5634426a7757.1625186503.git.isaku.yamahata%40intel.com&amp;data=04%7C01%7Cbrijesh.singh%40amd.com%7Cb658fcf339234fd9030d08d94bb5edf1%7C3dd8961fe4884e608e11a82d994e183d%7C0%7C0%7C637624067039647374%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C1000&amp;sdata=tdVALNsQGer0Z69%2FyYaRqWYZvH27k%2BmgHdslQlJ7qlU%3D&amp;reserved=0
+> 
+
+...
+
+>>
+>> There is yet another reason why we can't avoid the PSMASH after doing
+>> everything to ensure that NPT and RMP are in sync. e.g if NPT and RMP
+>> are programmed with 2mb size but the guest tries to PVALIDATE the page
+>> as a 4k. In that case, we will see #NPF with page size mismatch and have
+>> to perform psmash.
+> 
+> Boo, there's no way to communicate to the guest that it's doing PVALIDATE wrong
+> is there?
+> 
+
+if the guest chooses smaller page-size then we don't have any means to 
+notify the guest; the hardware will cause an #NPF and its up to the 
+hypervisor to resolve the fault.
+
+However, if the guest attempts to validate with the larger page-level 
+(e.g guest using 2mb and RMP entry was 4k) then PVALIDATE will return 
+SIZEMISMATCH error to the guest.
+
+thanks
