@@ -2,43 +2,55 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DFE813D0106
-	for <lists+linux-efi@lfdr.de>; Tue, 20 Jul 2021 19:56:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0322B3D0124
+	for <lists+linux-efi@lfdr.de>; Tue, 20 Jul 2021 20:02:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232233AbhGTRPO (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 20 Jul 2021 13:15:14 -0400
-Received: from mail-sn1anam02on2062.outbound.protection.outlook.com ([40.107.96.62]:38478
-        "EHLO NAM02-SN1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S231954AbhGTRPE (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Tue, 20 Jul 2021 13:15:04 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=QHD/NrYGKJR65AMmR/leOQjm52rSkIggWAu0cXU2kzexadfuC62R4JPk12kpOYKBGo/bq96qBwQmf+D4HyV32pd9rY8Fq7nNhEs83odlxrHHD3nm1Qu+7VyLtxR3u17qybXn8ll0qM4cTliqIMWF+mEsisRxWoMDWHQCRwjDV5GPU7nzZ6PIsOp/Ehx3yG67ZOy5lMfj9YByWTTgkEMO5hLVFyEnG5eWC/DTLsraIzpE+APjqsZA7YXM1suE+Gif7FfRdN8HHfXwZ1rWHp8olVdAksR9MtvZO2Fvfq/J2LevXNWyKcPI4LPWkMkyzsNVveQteZx64U3PYiUU8UqCxg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Vct+0shJj2l+Oy06b5w7vhdce15QtGTFEw6lsbESlHw=;
- b=YlL3sh2IDSAGcpEnhEffEY0VXpo2bKI5lrf2i2nNzIWEETHUsgjXBo04vCjfCgFNczYMQUXFQI1/njeX3adCRxWc7sdT5mmoxe+zTp6nHzuoZp59j6f3tlmDedXSKkBZL3amg4zkOHk4z5xuc3zduCHw1pboAPvRw+c6v0WaKu+bE/wae13esFY6Z6yAZh1myaeDRwuE9bjYxLCxGi/bGg7cFFIX6Jxkadfzklk2jqLfr5t/99DF+PSKv6mX8F2W8vJ/adVpq5BdkoAkXupQRwMdWUtFQZLw/exrWBUfuUfQGKhBQTt/rZz/t6s0yhPLCaikl0TWvIJ9IGKhRjtNpg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Vct+0shJj2l+Oy06b5w7vhdce15QtGTFEw6lsbESlHw=;
- b=lm24ok8MwT9pjNgQozxMXdjj5rFHivGpR7aOWDRHXYR1ME93NK8MElkkvb9nznzK0XJ6+Ylkfb+eOUA/07obDkjkn4LDHmhf5oqDIcnLnp876m6RyHfMgtCbuHvlBfTF8Ks4XIaGVju5jOLEhmZzN22s/0owD23Ez+BIAB+8H7Q=
-Authentication-Results: gmail.com; dkim=none (message not signed)
- header.d=none;gmail.com; dmarc=none action=none header.from=amd.com;
-Received: from SN6PR12MB2718.namprd12.prod.outlook.com (2603:10b6:805:6f::22)
- by SN1PR12MB2414.namprd12.prod.outlook.com (2603:10b6:802:2e::31) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4331.25; Tue, 20 Jul
- 2021 17:55:39 +0000
-Received: from SN6PR12MB2718.namprd12.prod.outlook.com
- ([fe80::a8a9:2aac:4fd1:88fa]) by SN6PR12MB2718.namprd12.prod.outlook.com
- ([fe80::a8a9:2aac:4fd1:88fa%3]) with mapi id 15.20.4331.034; Tue, 20 Jul 2021
- 17:55:39 +0000
-Cc:     brijesh.singh@amd.com, x86@kernel.org,
-        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        id S229782AbhGTRVr (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 20 Jul 2021 13:21:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34914 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229643AbhGTRVq (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 20 Jul 2021 13:21:46 -0400
+Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com [IPv6:2607:f8b0:4864:20::52a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 339A2C061768
+        for <linux-efi@vger.kernel.org>; Tue, 20 Jul 2021 11:02:24 -0700 (PDT)
+Received: by mail-pg1-x52a.google.com with SMTP id y17so23201454pgf.12
+        for <linux-efi@vger.kernel.org>; Tue, 20 Jul 2021 11:02:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=M9MyM6SiQLZ5m3aBTaXSLwq/XGnRhh08/VcLgE/dXu0=;
+        b=STNATKcfH1avBpmTllo0BejrpE+zX75J13FmRFIATfMMH+ODZAEmHcUarX83AoF6E4
+         CCm9bro8RnZa4wVgDdnozFQnggMPUw/sucQh3JE/5zlmTB9UYuoE743sVGa31+KS2N5A
+         XtQOv5JnRkaKKyp/0AhP3l+ew8rMoVQr+9T+dZP9WDU9WEGJbu0VkOCqicPcFl8cHQAi
+         mJzSnKO+hkfhC4wVsD23n2VmibHbSG9HDT1aGu0RvrnBsAmHQFBQUot1BLzBhhDwoOKl
+         fqBqmjJ8O7lSuaa6Dv4/rACTMeCNfvkFJ1w6yI455+/K3WCCiXHNgR6Pqw3QbCxHZyg5
+         axKg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=M9MyM6SiQLZ5m3aBTaXSLwq/XGnRhh08/VcLgE/dXu0=;
+        b=WocTVI51devNJdxE3F0PWuOWFe8tEvtwmKO0wEsk/GIREiGZUSgxq5Wrox5gJPs4Qf
+         rueE0sjO/Kl8xif0z2p27IG48LqXkBlSSKjkj71F5tbhHWnboOz1x4fKAbi6T5JngNQn
+         s/NqGFlhKxHzxhDUgQ+TAn2o0YMw8xvBaHMYyzcO4B2nNNI5PJwEUv9YZaIO2VMox8du
+         DkmXblW369VbVFrn+6jm7VCymdg6N+x0Y9Vif0iepxTYM0DljwkS4onptfo4q5QPiOiP
+         g0wqlCF43hWn5dkisqfQF50vRH3D9LWSCa0XT4vtpAqsSDwoZwW94M8vzuH+3KqW1yPx
+         /udA==
+X-Gm-Message-State: AOAM531Safwyu3L46gWv4pJbXS0Rw8qjZZpFNlYOmNojEBZSnIAPskSN
+        ZNZnx3ZAbqLtMNMRrvfN2gDO5Q==
+X-Google-Smtp-Source: ABdhPJztjb1vCs7OC4JfJwLTVUau3HVEAMypgjUcIXcXHaeykJbmgjHUQ20ZSm2OZU/jp51eFJFfyg==
+X-Received: by 2002:aa7:95a4:0:b029:332:f4e1:1dac with SMTP id a4-20020aa795a40000b0290332f4e11dacmr31607712pfk.34.1626804143248;
+        Tue, 20 Jul 2021 11:02:23 -0700 (PDT)
+Received: from google.com (157.214.185.35.bc.googleusercontent.com. [35.185.214.157])
+        by smtp.gmail.com with ESMTPSA id x6sm3444697pjr.5.2021.07.20.11.02.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 20 Jul 2021 11:02:22 -0700 (PDT)
+Date:   Tue, 20 Jul 2021 18:02:18 +0000
+From:   Sean Christopherson <seanjc@google.com>
+To:     Brijesh Singh <brijesh.singh@amd.com>
+Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
         linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
         linux-coco@lists.linux.dev, linux-mm@kvack.org,
         linux-crypto@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
@@ -61,203 +73,210 @@ Cc:     brijesh.singh@amd.com, x86@kernel.org,
         Michael Roth <michael.roth@amd.com>,
         Vlastimil Babka <vbabka@suse.cz>, tony.luck@intel.com,
         npmccallum@redhat.com, brijesh.ksingh@gmail.com
-Subject: Re: [PATCH Part2 RFC v4 37/40] KVM: SVM: Add support to handle the
- RMP nested page fault
-To:     Sean Christopherson <seanjc@google.com>
+Subject: Re: [PATCH Part2 RFC v4 20/40] KVM: SVM: Make AVIC backing, VMSA and
+ VMCB memory allocation SNP safe
+Message-ID: <YPcPqpqRju/QLoHI@google.com>
 References: <20210707183616.5620-1-brijesh.singh@amd.com>
- <20210707183616.5620-38-brijesh.singh@amd.com> <YPYUe8hAz5/c7IW9@google.com>
-From:   Brijesh Singh <brijesh.singh@amd.com>
-Message-ID: <bff43050-aed7-011c-89e5-9899bd1df414@amd.com>
-Date:   Tue, 20 Jul 2021 12:55:36 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
-In-Reply-To: <YPYUe8hAz5/c7IW9@google.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SA0PR11CA0170.namprd11.prod.outlook.com
- (2603:10b6:806:1bb::25) To SN6PR12MB2718.namprd12.prod.outlook.com
- (2603:10b6:805:6f::22)
+ <20210707183616.5620-21-brijesh.singh@amd.com>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from [10.236.31.95] (165.204.77.1) by SA0PR11CA0170.namprd11.prod.outlook.com (2603:10b6:806:1bb::25) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4331.22 via Frontend Transport; Tue, 20 Jul 2021 17:55:37 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: cfefd896-ee7d-4532-8a14-08d94ba7955f
-X-MS-TrafficTypeDiagnostic: SN1PR12MB2414:
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <SN1PR12MB24149D5D67142863B650398BE5E29@SN1PR12MB2414.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:10000;
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: fPUog5W0mX8WpzfaaRT0Suij+84e+thkYX5gccTWJlhqBQiWXzDkfSMLAtmPzlp+rW17z2T0clQl8mqmnt5RIh6Jy2XMinvloOXvv9nj9DZlnRbcZRlzoJDB3Y5t0o9+q7lCkO7Iser1/2PY2+5GCf04rtlAQQgnmKeHnONVR2gxiFUAOazyg4yCtB2uD3mPlbRaHKRJAxi1dsg+A+zzfoilNRduyoWelcW73+QPamgkQjC5mKanzFtiViWaeS1uGCMkJrKS6jVTbRxeE6hlyF/gvOtB/EAJfXJkI26GncJ65bJEhV7VVOvAWYJw/xXSizYkp3L6/wMpcY1cdCRGYYMUzq5fdZCWppN30NJsj9kFsZXYhyfpE9iX9ae0EqTC2suCp5mFbIvqpf1fWQJ12W3Q9sCzJs1/EXHGZJvBLULY+mVu3qg1LbGfQelg+ayV+CJs0vX2wEtE6LK2p+tHlAOC2/2PbzA2gzLxEnx+HyrbQ2fnbqVCSa4QSsRY+AyVRABh15tqtAZIrTBs259+jw7x6yuY+XsX4qu7oUx+1QQoNDzZQ3QPIMEm5YqrvoPlE7VKfxc+yd0I1DkzcVlK8AUTeUUf4S+ezBjCZIzZMpj1ZF7oePjyVpWTPHomksjP4FTVSnp/S2dqjbGt4ofLgpwS6R/RxyuvwsiDDUuNSVH/qOZmEBmQZNNhnci0GN0Ma1jLMjTd73ZoAOLUnbUmRidQ5FfGdkrIZNzeHoLI12tkpzjHWxRgNVH2G9nVaJ4Ev7F2CGpDl72BjAwCBlgySw==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR12MB2718.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(396003)(136003)(39860400002)(376002)(346002)(366004)(5660300002)(7416002)(66476007)(52116002)(7406005)(38100700002)(38350700002)(54906003)(8936002)(2616005)(956004)(2906002)(6486002)(16576012)(31696002)(36756003)(8676002)(186003)(4326008)(66556008)(86362001)(44832011)(316002)(26005)(478600001)(6916009)(31686004)(66946007)(83380400001)(53546011)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Y2xobXYrNXpRaDc0dWZyVDNURU53blBoZmRhbnp4ZExMNCt1bGhqcG54WFZP?=
- =?utf-8?B?bVJNZVZlYjMzbkpCekdGYm0wb0NRQ200QmMrMGk5ekNWWU52VmxETm0yODVB?=
- =?utf-8?B?ekpUVFpzZTRzVFZyRTljeVJSQkE3bERUSTNiRWFYQVJLRldRVGtuOURsenBI?=
- =?utf-8?B?YTZrQnA0WTJaclI3RlNxZ1BvN0k0dmt3Uld1ZUFCeG9ZUDJ2eXlQbWYzc2pS?=
- =?utf-8?B?NnZQdVFHVk5xbktaTm5xUmR5YnlCV3JVN2NRK1ZFdEUzdDRUZGVrV1U3ZVhp?=
- =?utf-8?B?QjBYM0NrVlhZUVFXQUM2SlRxYWllckVzUWRwMG1USEpOdHFmZEF5T1ZBdTNu?=
- =?utf-8?B?T1pNNnRrU3JVRFMzNE9iY2ZSeUllUnFjTnpxL3JYK004Ykh5T1BlSHZXQkIz?=
- =?utf-8?B?dXFWcFgwdDBKb0ZleEhSWkRXQkdJT1dwSStQUDFPUCsrSTVPenVwSTBDYXFm?=
- =?utf-8?B?SnlkUlA5cXhDajVlQ2FkU01yTVV2djFzVit2eEJ2ZVo4N1A1MXJidy85QUVM?=
- =?utf-8?B?RG9vMEcwUkRPamZKZHhHd3NLRk5OUVdSaE9zcmRqa0Y5YnRQbklOYmhEeTdQ?=
- =?utf-8?B?b1YzZ0tZSjV5NmxWV3FSd2hXWUJwWG1yRlp1VGZDQmNJeGMvSmFFMUpkWlE3?=
- =?utf-8?B?M0ZIVEUwRFZ3U0NIMnNWdVZyNlV2V0pRK1JUSDZOUU9nTWRmVExRQjFYdTBh?=
- =?utf-8?B?WjhLdVR1U25Ld2VseU0wcSs4Ly9XelhwcnFxcXlSYU1RRVg4L0pVSWJNZUV1?=
- =?utf-8?B?TEhvWU5FMTl2MzR3eEpoV0FwbzNyQlNheGxMSVVybTZadURFakk1TURvMkRY?=
- =?utf-8?B?bm5zcjBCMTJXR0tNbEJSUnhQY055SDdxWjdKMVN3U01pVzRVN1BKMVdBT21C?=
- =?utf-8?B?WDZCc0pxWkZoc1QxVHplSGJRb3ptVlE4T3JrSWR1N0FQRW5lWVFBNzhieE1T?=
- =?utf-8?B?VWp6WTkrQzdFWUxiWVROVjA0clJoMVJ0dUt0dHBocGhiZlRaLzBXOVNKVDlD?=
- =?utf-8?B?MXA4Q2RLeUxrZytwSUVFL2RvQTNoN2pJQVhnMWZldm9HVjRSakQ2SmtoL3BJ?=
- =?utf-8?B?R0VZeFA1SjFSOEczM0dIOGdiVzZMUUd2QlhlSGRsYW5IdXF2U215WVg4VUlY?=
- =?utf-8?B?dmlOM0hWY2VqdnBKWitzbks2K1VqRlJqSzBuYkI3OUF0QjdlUGVwSlNHWDZ4?=
- =?utf-8?B?ZVRVbjFVU3N6RmtlbEp1NkNUdGpvdGNHUGJhWXJrR2FrL0hpbGN1cTB3dExr?=
- =?utf-8?B?QlZnUFBwMnlzcmJWU05kNU9VeGVWUzdLeWlXT2g1dU04NmIvNkMwaGRrOVJE?=
- =?utf-8?B?UXlmbkxsMWZ5WTZYbnVwaXQyUTN1eENTdTFCTWZNTDFMcEtUZzR3cFlhZFJF?=
- =?utf-8?B?TTRseURHRURtM01ZZldJU2hmWERqbWhhd2R1cEI1Rk5ZQ1VZYUxBRzd3Q1hv?=
- =?utf-8?B?MWNWVVUrQ3BISkI1Z2xNLzFDaUMxVlRUNmJaY0JQRFErN3Jxa3VrejZWZEZD?=
- =?utf-8?B?QkRDNGtiWjBEL3RWSmgzKzZyZ0pDYXRSdTFDMWk5emkzUEpkVlNtTkdaY0Zk?=
- =?utf-8?B?NDhucitteFlNNjJzK0dKbmYrS2gyUUo2RjdpRzUvRlVlMVIvK2MxTDNiTUxX?=
- =?utf-8?B?SHpqeVd6SmlkV3A2YjV6cmg3MXYvb2V2VWx3M3VzbU1sbHU0d1NNSVZIaTNV?=
- =?utf-8?B?QzA5bzZJMmhKT0xpbExEdEdQU1lsMytBSUZ0TnFCQVFQUXlEcFd2TnJNczZk?=
- =?utf-8?Q?ch10wM6Y0lOnqSpl7818hWl/oj4/DzkABojkvpm?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cfefd896-ee7d-4532-8a14-08d94ba7955f
-X-MS-Exchange-CrossTenant-AuthSource: SN6PR12MB2718.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jul 2021 17:55:39.0202
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: oHRuVJ2LK4TxHpaALoDEr+VhKXIa08KSECK5nkImgIR2dBz1erep+bagVV/BI0ax1qARfWof33O/o756dIwWtQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN1PR12MB2414
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210707183616.5620-21-brijesh.singh@amd.com>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
+IMO, the CPU behavior is a bug, even if the behavior is working as intended for
+the microarchitecture.  I.e. this should be treated as an erratum.
 
+On Wed, Jul 07, 2021, Brijesh Singh wrote:
+> When SEV-SNP is globally enabled on a system, the VMRUN instruction
+> performs additional security checks on AVIC backing, VMSA, and VMCB page.
+> On a successful VMRUN, these pages are marked "in-use" by the
+> hardware in the RMP entry
 
-On 7/19/21 7:10 PM, Sean Christopherson wrote:
-> On Wed, Jul 07, 2021, Brijesh Singh wrote:
->> Follow the recommendation from APM2 section 15.36.10 and 15.36.11 to
->> resolve the RMP violation encountered during the NPT table walk.
+There's a lot of "noise" in this intro.  That the CPU does additional checks at
+VMRUN isn't all that interesting, what's relevant is that the CPU tags the
+associated RMP entry with a special flag.  And IIUC, it does that for _all_ VMs,
+not just SNP VMs.
+
+Also, what happens if the pages aren't covered by the RMP?  Table 15-41 states
+that the VMCB, AVIC, and VMSA for non-SNP guests need to be Hypervisor-Owned,
+but doesn't explicitly require them to be RMP covered.  On the other hand, it
+does state that the VMSA for an SNP guest must be Guest-Owned and RMP-Covered.
+That implies that the Hypervisor-Owned pages do not need to contained within the
+RMP, but how does that work if the CPU is setting a magic flag in the RMP?  Does
+VMRUN explode?  Does the CPU corrupt random memory?
+
+Is the in-use flag visible to software?  We've already established that "struct
+rmpentry" is microarchitectural, so why not document it in the PPR?  It could be
+useful info for debugging unexpected RMP violations, even if the flag isn't stable.
+
+Are there other possible collisions with the in-use flag?  The APM states that
+the in-use flag results in RMPUPDATE failing with FAIL_INUSE.  That's the same
+error code that's returned if two CPUs attempt RMPUPDATE on the same entry.  That
+implies that the RMPUPDATE also sets the in-use flag.  If that's true, then isn't
+it possible that the spurious RMP violation #PF could happen if the kernel accesses
+a hugepage at the same time a CPU is doing RMPUPDATE on the associated 2mb-aligned
+entry?
+
+> and any attempt to modify the RMP entry for these pages will result in
+> page-fault (RMP violation check).
+
+Again, not that relevant since KVM isn't attempting to modify the RMP entry.
+I've no objection to mentioning this behavior in passing, but it should not be
+the focal point of the intro.
+
+> While performing the RMP check, hardware will try to create a 2MB TLB
+> entry for the large page accesses. When it does this, it first reads
+> the RMP for the base of 2MB region and verifies that all this memory is
+> safe. If AVIC backing, VMSA, and VMCB memory happen to be the base of
+> 2MB region, then RMP check will fail because of the "in-use" marking for
+> the base entry of this 2MB region.
+
+There's a critical piece missing here, which is why an RMP violation is thrown
+on "in-use" pages.  E.g. are any translations problematic, or just writable
+translations?  It may not affect the actual KVM workaround, but knowing exactly
+what goes awry is important.
+
+> e.g.
 > 
-> Heh, please elaborate on exactly what that recommendation is.  A recommendation
-> isn't exactly architectural, i.e. is subject to change :-)
+> 1. A VMCB was allocated on 2MB-aligned address.
+> 2. The VMRUN instruction marks this RMP entry as "in-use".
+> 3. Another process allocated some other page of memory that happened to be
+>    within the same 2MB region.
+> 4. That process tried to write its page using physmap.
 
-I will try to expand it :)
+Please explicitly call out the relevance of the physmap.  IIUC, only the physmap,
+a.k.a. direct map, is problematic because that's the only scenario where a large
+page can overlap one of the magic pages.  That should be explicitly stated.
 
+> If the physmap entry in step #4 uses a large (1G/2M) page, then the
+
+Be consistent with 2MB vs. 2M, i.e. choose one.
+
+> hardware will attempt to create a 2M TLB entry. The hardware will find
+> that the "in-use" bit is set in the RMP entry (because it was a
+> VMCB page) and will cause an RMP violation check.
+
+So what happens if the problematic page isn't 2mb aligned?  The lack of an RMP
+violation on access implies that the hypervisor can bypass the in-use restriction
+and create a 2mb hugepage, i.e. access the in-use page.  Same question for if the
+TLB entry exists before the page is marked in-use, which also begs the question
+of why the in-use flag is being checked at all on RMP lookups.
+
+> See APM2 section 15.36.12 for more information on VMRUN checks when
+> SEV-SNP is globally active.
 > 
-> And, do we have to follow the APM's recommendation?  
+> A generic allocator can return a page which are 2M aligned and will not
+> be safe to be used when SEV-SNP is globally enabled.
 
-Yes, unless we want to be very strict on what a guest can do.
+> Add a snp_safe_alloc_page() helper that can be used for allocating the SNP
+> safe memory. The helper allocated 2 pages and splits them into order-1
+> allocation. It frees one page and keeps one of the page which is not 2M
+> aligned.
 
+I know it's personal preference as to whether to lead with the solution or the
+problem statement, but in this case it would be very helpful to at least provide
+a brief summary early on so that the reader has some idea of where the changelog
+is headed.  As is, the actual change is buried after a big pile of hardware
+details.
 
-Specifically, can KVM treat
-> #NPF RMP violations as guest errors, or is that not allowed by the GHCB spec?
+E.g. something like this
 
-The GHCB spec does not say anything about the #NPF RMP violation error. 
-And not all #NPF RMP is a guest error (mainly those size mismatch etc).
+  Implement a workaround for an SNP erratum where the CPU will incorrectly
+  signal an RMP violation #PF if a hugepage (2mb or 1gb) collides with the
+  RMP entry of a VMCB, VMSA, or AVIC backing page.
 
-> I.e. can we mandate accesses be preceded by page state change requests?  
+  When SEV-SNP is globally enabled, the CPU marks the VMCB, VMSA, and AVIC
+  backing   pages as "in-use" in the RMP after a successful VMRUN.  This is
+  done for _all_   VMs, not just SNP-Active VMs.
 
-This is a good question, the GHCB spec does not enforce that a guest 
-*must* use page state. If the page state changes is not done by the 
-guest then it will cause #NPF and its up to the hypervisor to decide on 
-what it wants to do.
+  If the hypervisor accesses an in-use page through a writable translation,
+  the CPU will throw an RMP violation #PF.  On early SNP hardware, if an
+  in-use page is 2mb aligned and software accesses any part of the associated
+  2mb region with a hupage, the CPU will incorrectly treat the entire 2mb
+  region as in-use and signal a spurious RMP violation #PF.
 
+  <gory details on the workaround>
 
-It would
-> simplify KVM (albeit not much of a simplificiation) and would also make debugging
-> easier since transitions would require an explicit guest request and guest bugs
-> would result in errors instead of random corruption/weirdness.
+> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
+> ---
+>  arch/x86/include/asm/kvm_host.h |  1 +
+>  arch/x86/kvm/lapic.c            |  5 ++++-
+>  arch/x86/kvm/svm/sev.c          | 27 +++++++++++++++++++++++++++
+>  arch/x86/kvm/svm/svm.c          | 16 ++++++++++++++--
+>  arch/x86/kvm/svm/svm.h          |  1 +
+>  5 files changed, 47 insertions(+), 3 deletions(-)
 > 
+> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+> index 55efbacfc244..188110ab2c02 100644
+> --- a/arch/x86/include/asm/kvm_host.h
+> +++ b/arch/x86/include/asm/kvm_host.h
+> @@ -1383,6 +1383,7 @@ struct kvm_x86_ops {
+>  	int (*complete_emulated_msr)(struct kvm_vcpu *vcpu, int err);
+>  
+>  	void (*vcpu_deliver_sipi_vector)(struct kvm_vcpu *vcpu, u8 vector);
+> +	void *(*alloc_apic_backing_page)(struct kvm_vcpu *vcpu);
+>  };
+>  
+>  struct kvm_x86_nested_ops {
+> diff --git a/arch/x86/kvm/lapic.c b/arch/x86/kvm/lapic.c
+> index c0ebef560bd1..d4c77f66d7d5 100644
+> --- a/arch/x86/kvm/lapic.c
+> +++ b/arch/x86/kvm/lapic.c
+> @@ -2441,7 +2441,10 @@ int kvm_create_lapic(struct kvm_vcpu *vcpu, int timer_advance_ns)
+>  
+>  	vcpu->arch.apic = apic;
+>  
+> -	apic->regs = (void *)get_zeroed_page(GFP_KERNEL_ACCOUNT);
+> +	if (kvm_x86_ops.alloc_apic_backing_page)
+> +		apic->regs = kvm_x86_ops.alloc_apic_backing_page(vcpu);
 
-I am good with enforcing this from the KVM. But the question is, what 
-fault we should inject in the guest when KVM detects that guest has 
-issued the page state change.
+This can be a static_call().
 
+> +	else
+> +		apic->regs = (void *)get_zeroed_page(GFP_KERNEL_ACCOUNT);
+>  	if (!apic->regs) {
+>  		printk(KERN_ERR "malloc apic regs error for vcpu %x\n",
+>  		       vcpu->vcpu_id);
+> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+> index b8505710c36b..411ed72f63af 100644
+> --- a/arch/x86/kvm/svm/sev.c
+> +++ b/arch/x86/kvm/svm/sev.c
+> @@ -2692,3 +2692,30 @@ void sev_vcpu_deliver_sipi_vector(struct kvm_vcpu *vcpu, u8 vector)
+>  		break;
+>  	}
+>  }
+> +
+> +struct page *snp_safe_alloc_page(struct kvm_vcpu *vcpu)
+> +{
+> +	unsigned long pfn;
+> +	struct page *p;
+> +
+> +	if (!cpu_feature_enabled(X86_FEATURE_SEV_SNP))
+> +		return alloc_page(GFP_KERNEL_ACCOUNT | __GFP_ZERO);
+> +
+> +	p = alloc_pages(GFP_KERNEL_ACCOUNT | __GFP_ZERO, 1);
+> +	if (!p)
+> +		return NULL;
+> +
+> +	/* split the page order */
+> +	split_page(p, 1);
+> +
+> +	/* Find a non-2M aligned page */
 
->> index 46323af09995..117e2e08d7ed 100644
->> --- a/arch/x86/include/asm/kvm_host.h
->> +++ b/arch/x86/include/asm/kvm_host.h
->> @@ -1399,6 +1399,9 @@ struct kvm_x86_ops {
->>   
->>   	void (*write_page_begin)(struct kvm *kvm, struct kvm_memory_slot *slot, gfn_t gfn);
->>   	void (*write_page_end)(struct kvm *kvm, struct kvm_memory_slot *slot, gfn_t gfn);
->> +
->> +	int (*handle_rmp_page_fault)(struct kvm_vcpu *vcpu, gpa_t gpa, kvm_pfn_t pfn,
->> +			int level, u64 error_code);
->>   };
->>   
->>   struct kvm_x86_nested_ops {
->> diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
->> index e60f54455cdc..b6a676ba1862 100644
->> --- a/arch/x86/kvm/mmu/mmu.c
->> +++ b/arch/x86/kvm/mmu/mmu.c
->> @@ -5096,6 +5096,18 @@ static void kvm_mmu_pte_write(struct kvm_vcpu *vcpu, gpa_t gpa,
->>   	write_unlock(&vcpu->kvm->mmu_lock);
->>   }
->>   
->> +static int handle_rmp_page_fault(struct kvm_vcpu *vcpu, gpa_t gpa, u64 error_code)
->> +{
->> +	kvm_pfn_t pfn;
->> +	int level;
->> +
->> +	if (unlikely(!kvm_mmu_get_tdp_walk(vcpu, gpa, &pfn, &level)))
->> +		return RET_PF_RETRY;
->> +
->> +	kvm_x86_ops.handle_rmp_page_fault(vcpu, gpa, pfn, level, error_code);
->> +	return RET_PF_RETRY;
->> +}
->> +
->>   int kvm_mmu_page_fault(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa, u64 error_code,
->>   		       void *insn, int insn_len)
->>   {
->> @@ -5112,6 +5124,14 @@ int kvm_mmu_page_fault(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa, u64 error_code,
->>   			goto emulate;
->>   	}
->>   
->> +	if (unlikely(error_code & PFERR_GUEST_RMP_MASK)) {
->> +		r = handle_rmp_page_fault(vcpu, cr2_or_gpa, error_code);
-> 
-> Adding a kvm_x86_ops hook is silly, there's literally one path, npf_interception()
-> that can encounter RMP violations.  Just invoke snp_handle_rmp_page_fault() from
-> there.  That works even if kvm_mmu_get_tdp_walk() stays around since it was
-> exported earlier.
-> 
+This isn't "finding" anything, it's identifying which of the two pages is
+_guaranteed_ to be unaligned.  The whole function needs a much bigger comment to
+explain what's going on.
 
-Noted.
-
-
-
->> +
->> +	/*
->> +	 * If it's a shared access, then make the page shared in the RMP table.
->> +	 */
->> +	if (rmpentry_assigned(e) && !private)
->> +		rc = snp_make_page_shared(vcpu, gpa, pfn, PG_LEVEL_4K);
-> 
-> Hrm, this really feels like it needs to be protected by mmu_lock.  Functionally,
-> it might all work out in the end after enough RMP violations, but it's extremely
-> difficult to reason about and probably even more difficult if multiple vCPUs end
-> up fighting over a gfn.
-> 
-
-Lets see what's your thought on enforcing the page state change for the 
-KVM. If we want the guest to issue the page state change before the 
-access then this case will simply need to inject an error in the guest 
-and we can remove all of it.
-
-> My gut reaction is that this is also backwards, i.e. KVM should update the RMP
-> to match its TDP SPTEs, not the other way around.
-> 
-> The one big complication is that the TDP MMU only takes mmu_lock for read.  A few
-> options come to mind but none of them are all that pretty.  I'll wait to hear back
-> on whether or not we can make PSC request mandatory before thinking too hard on
-> this one.
-> 
-
+> +	pfn = page_to_pfn(p);
+> +	if (IS_ALIGNED(__pfn_to_phys(pfn), PMD_SIZE)) {
+> +		pfn++;
+> +		__free_page(p);
+> +	} else {
+> +		__free_page(pfn_to_page(pfn + 1));
+> +	}
+> +
+> +	return pfn_to_page(pfn);
+> +}
