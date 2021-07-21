@@ -2,173 +2,147 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B6F123D0626
-	for <lists+linux-efi@lfdr.de>; Wed, 21 Jul 2021 02:24:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D02473D0817
+	for <lists+linux-efi@lfdr.de>; Wed, 21 Jul 2021 07:10:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232477AbhGTXj7 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 20 Jul 2021 19:39:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34704 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232359AbhGTXj5 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 20 Jul 2021 19:39:57 -0400
-Received: from mail-pf1-x435.google.com (mail-pf1-x435.google.com [IPv6:2607:f8b0:4864:20::435])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A731C061768
-        for <linux-efi@vger.kernel.org>; Tue, 20 Jul 2021 17:20:33 -0700 (PDT)
-Received: by mail-pf1-x435.google.com with SMTP id u126so897582pfb.8
-        for <linux-efi@vger.kernel.org>; Tue, 20 Jul 2021 17:20:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=xsx3HQqSw4EPyNMxM9oP5SdyJb+SogTu3w/uAOd0oLk=;
-        b=cEWuOuugvVGVQn+IaenjLryO1wWgCOjt/YM2Kg9/wQVM/wZQZ67OtRnHOVJkUn4p5+
-         oXecvk/lXVdHh5LgWt0w/g64Drk8tZZrJGD28T9y5cC0Nxnod7L1qvnYcKAi27ZQ3j8G
-         PNlEydF9bXaF2opSpKep2gvoKiZNU1CTeGtx5BFMxWuEJTugu7AhwYkFG+gR2NFCnXEu
-         gSUJUqH4RNkeO8OwkSc4fB/7oLySNbXLE6lFafYRtyEGXXCxnBhE4xrtCtHPS0BAGR2J
-         N5AyGxEJnyZyZLgTRs/GS6tmRf+pUGoyQaNOObjf1/wqesnkxLshoNKWErNj+qhUi3+E
-         imUg==
+        id S231706AbhGUE3H (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 21 Jul 2021 00:29:07 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:42130 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S232735AbhGUE2z (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 21 Jul 2021 00:28:55 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1626844169;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=S+zWfy2tC40xUQfOhENAkA+DP5zrQupivowwlpIU07g=;
+        b=OKvQMBfJdOMJzGla1xXeLHAtj4kHE/ygi2s72aJf/7lRxWF/gVycMHi7Wwj8MJKvAUnRBH
+        47oeUp6V4Uheu25aj9ej3rvcFZMRke6yRQZm04PVlHVFORP7/TMlcvBJ5URYCWi1WSQjwb
+        XdEA7jKEhWxophxmjn9EX0gKAE1LNk0=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-508-y5kERe5OMvac2NeSUPHh_Q-1; Wed, 21 Jul 2021 01:09:27 -0400
+X-MC-Unique: y5kERe5OMvac2NeSUPHh_Q-1
+Received: by mail-wr1-f72.google.com with SMTP id y15-20020a5d614f0000b029013cd60e9baaso425167wrt.7
+        for <linux-efi@vger.kernel.org>; Tue, 20 Jul 2021 22:09:27 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=xsx3HQqSw4EPyNMxM9oP5SdyJb+SogTu3w/uAOd0oLk=;
-        b=jlHLij7QottTBAPQ+3eMNEOxzDfGQOeFTIXzLgFnNySPaThE2/gm3GhV9TfRQrW80t
-         Vm2z35x97AcZbdItgKaKfTnqVQaHbGgSD2tQv3WOJWclEAXbbK57MYxzKG1x/1jhdIrX
-         heWkactFbLmQgFOsqjRIgdHwprDOfE5BmWuxDHjMjXb5GMxbcQWq36GAxKZhjpeCbGs1
-         dmktX/O4mbJq5T/fo4b0LqlEh39ETfa7qs6KrZRzsAJs3Oi5RF0kDY8gfN6Ay7VBYcJ5
-         AD5VFDdO9jTDh3GqV36qDnL5DROJn53uStHzRs3l73oR+s6FbSSy/HSG32ulbjVapI2l
-         V5eg==
-X-Gm-Message-State: AOAM531tvQ8mNiwPDpyVItAM0aC+M0v2A+/EbfkWKHjTYuJdNuck0YLk
-        3H2qw+d3VXMoEneGa+ol3GufpA==
-X-Google-Smtp-Source: ABdhPJzO5a2tT2MSUn4GuU8F1gVkASk2rMMQW40YjFMKpseRmAH4meFchXyU//CEhkz6SKp8BznOpQ==
-X-Received: by 2002:a63:5c04:: with SMTP id q4mr32924434pgb.127.1626826832684;
-        Tue, 20 Jul 2021 17:20:32 -0700 (PDT)
-Received: from google.com (157.214.185.35.bc.googleusercontent.com. [35.185.214.157])
-        by smtp.gmail.com with ESMTPSA id f11sm28627430pga.61.2021.07.20.17.20.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Jul 2021 17:20:32 -0700 (PDT)
-Date:   Wed, 21 Jul 2021 00:20:28 +0000
-From:   Sean Christopherson <seanjc@google.com>
-To:     Brijesh Singh <brijesh.singh@amd.com>
-Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        linux-coco@lists.linux.dev, linux-mm@kvack.org,
-        linux-crypto@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Vitaly Kuznetsov <vkuznets@redhat.com>,
-        Wanpeng Li <wanpengli@tencent.com>,
-        Jim Mattson <jmattson@google.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        David Rientjes <rientjes@google.com>,
-        Dov Murik <dovmurik@linux.ibm.com>,
-        Tobin Feldman-Fitzthum <tobin@ibm.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Michael Roth <michael.roth@amd.com>,
-        Vlastimil Babka <vbabka@suse.cz>, tony.luck@intel.com,
-        npmccallum@redhat.com, brijesh.ksingh@gmail.com
-Subject: Re: [PATCH Part2 RFC v4 39/40] KVM: SVM: Use a VMSA physical address
- variable for populating VMCB
-Message-ID: <YPdoTK9V3anPZe7C@google.com>
-References: <20210707183616.5620-1-brijesh.singh@amd.com>
- <20210707183616.5620-40-brijesh.singh@amd.com>
+        h=x-gm-message-state:subject:to:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=S+zWfy2tC40xUQfOhENAkA+DP5zrQupivowwlpIU07g=;
+        b=uP19jw9inSpUfSPaM8q9jmdtQ4SD6bvrXnUEhEPrhCnwt7FqjS5HiHqW6twenoWE1b
+         4OtSZdeHgAt9yGThA3G1AQVCzPANldAJbWNDLTCm3etvm6hmFGLWkMnoo50INqdjwLqO
+         Ukt2YxbiBMdOrFjIAoWJpseARPqB3x+CAOMhDzkrR4HGmI33b5Tx2o94MfEafSFEC6cY
+         bJ03bcDerMQ+Dw01yj1diQ+IgS+Dv2QdoW6wzP7kUakTrsc8CP/NaHpgS8hgN/dohAdt
+         ZXgk6nSyRH9NR2aqAAS6yCEyrbWvN5eEelDfhMLBVT6e/qMBGMZ1arrecP+vd1STbGMc
+         VZtQ==
+X-Gm-Message-State: AOAM531mFGHVpUoNcovrBtXbMS8XNlxFaIrZPNYxUg9zBwVruEbc8dmi
+        XQ2SfWxpcSN7LYbjfEy33pgmfQiDp/rvdUNmbcTZflriVOz38eg4mpFWtZjYcm96YS4Xmuur9QY
+        8KyLb8KosSm9q4KmiZN4S
+X-Received: by 2002:a7b:c747:: with SMTP id w7mr2031958wmk.148.1626844166554;
+        Tue, 20 Jul 2021 22:09:26 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJwCxXonukubT9gJL2Rc7x0XVeUSko96/DCQuDEhTryxASNBDgCxR12O8zMwgWe3dBuGqn9kQg==
+X-Received: by 2002:a7b:c747:: with SMTP id w7mr2031926wmk.148.1626844166269;
+        Tue, 20 Jul 2021 22:09:26 -0700 (PDT)
+Received: from [192.168.1.101] ([92.176.231.106])
+        by smtp.gmail.com with ESMTPSA id k24sm26722409wrh.30.2021.07.20.22.09.24
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 20 Jul 2021 22:09:25 -0700 (PDT)
+Subject: Re: [PATCH v3 0/2] allow simple{fb, drm} drivers to be used on
+ non-x86 EFI platforms
+To:     Thomas Zimmermann <tzimmermann@suse.de>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Dave Airlie <airlied@gmail.com>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        David Airlie <airlied@linux.ie>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Atish Patra <atish.patra@wdc.com>,
+        linux-riscv <linux-riscv@lists.infradead.org>,
+        Will Deacon <will@kernel.org>,
+        the arch/x86 maintainers <x86@kernel.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Peter Robinson <pbrobinson@gmail.com>,
+        Borislav Petkov <bp@suse.de>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Palmer Dabbelt <palmer@dabbelt.com>
+References: <20210625130947.1803678-1-javierm@redhat.com>
+ <e61cf77c-6bff-dfcc-d3df-2fb6b48e5897@redhat.com>
+ <8dd26141-a09c-39e2-5174-4cad8d21c49c@suse.de>
+ <CAPM=9tyfNPa2f5PDBLm4w_H_riEQ5P3rEhX73YGE1y_ygRox+w@mail.gmail.com>
+ <CAMj1kXErHteZ+MKYvp=yYmwVxV3A=vjtnG351hZHV+3BPwDQvw@mail.gmail.com>
+ <YPbJJ/0tSO/fuW7a@phenom.ffwll.local>
+ <03f0edef-e54e-8a2a-4b50-683d3d42e249@redhat.com>
+ <YPbWrV/cIODdgu6A@phenom.ffwll.local>
+ <37e05f02-b810-0cb1-cc4f-95711cd148d9@suse.de>
+From:   Javier Martinez Canillas <javierm@redhat.com>
+Message-ID: <44a75f18-e3a6-f764-b0ec-ce3ac05805a9@redhat.com>
+Date:   Wed, 21 Jul 2021 07:09:23 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210707183616.5620-40-brijesh.singh@amd.com>
+In-Reply-To: <37e05f02-b810-0cb1-cc4f-95711cd148d9@suse.de>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, Jul 07, 2021, Brijesh Singh wrote:
-> From: Tom Lendacky <thomas.lendacky@amd.com>
+Hello Thomas,
+
+On 7/20/21 8:38 PM, Thomas Zimmermann wrote:
+> Am 20.07.21 um 15:59 schrieb Daniel Vetter:
+>> On Tue, Jul 20, 2021 at 03:42:45PM +0200, Javier Martinez Canillas wrote:
+>>> On 7/20/21 3:01 PM, Daniel Vetter wrote:
+>>>> On Mon, Jul 19, 2021 at 09:10:52AM +0200, Ard Biesheuvel wrote:
+>>>>> On Mon, 19 Jul 2021 at 04:59, Dave Airlie <airlied@gmail.com> wrote:
+
+[snip]
+
+>>>>>> Can we just merge via drm-misc and make sure the acks are present and
+>>>>>> I'll deal with the fallout if any.
+>>>>>>
+>>>>>
+>>>>> Fine with me. Could you stick it on a separate branch so I can double
+>>>>> check whether there are any issues wrt the EFI tree?
+>>>>
+>>>> It'll pop up in linux-next for integration testing or you can pick up the
+>>>> patch here for test-merge if you want.
+>>>>
+
+This is what Daniel said...
+
+>>>
+>>> Thanks a lot Dave and Daniel!
+>>
+>> Oh I haven't merged them, I'm assuming Thomas will do that. Just figured
 > 
-> In preparation to support SEV-SNP AP Creation, use a variable that holds
-> the VMSA physical address rather than converting the virtual address.
-> This will allow SEV-SNP AP Creation to set the new physical address that
-> will be used should the vCPU reset path be taken.
+> Can I simply put the patches in to drm-misc-next? There was some talk 
+> about a topic branch?
+>
 
-I'm pretty sure adding vmsa_pa is unnecessary.  The next patch sets svm->vmsa_pa
-and vmcb->control.vmsa_pa as a pair.  And for the existing code, my proposed
-patch to emulate INIT on shutdown would eliminate the one path that zeros the
-VMCB[1].  That series patch also drops the init_vmcb() in svm_create_vcpu()[2].
-
-Assuming there are no VMCB shenanigans I'm missing, sev_es_init_vmcb() can do
-
-	if (!init_event)
-		svm->vmcb->control.vmsa_pa = __pa(svm->vmsa);
-
-And while I'm thinking of it, the next patch should ideally free svm->vmsa when
-the the guest configures a new VMSA for the vCPU.
-
-[1] https://lkml.kernel.org/r/20210713163324.627647-45-seanjc@google.com
-[2] https://lkml.kernel.org/r/20210713163324.627647-10-seanjc@google.com
-
-> Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
-> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
-> ---
->  arch/x86/kvm/svm/sev.c | 5 ++---
->  arch/x86/kvm/svm/svm.c | 9 ++++++++-
->  arch/x86/kvm/svm/svm.h | 1 +
->  3 files changed, 11 insertions(+), 4 deletions(-)
+... which AFAIU means that there's no need for a topic branch, since the
+patches will be present in linux-next. And the EFI folks can use that to
+check if there are any integration issues or regressions caused by these.
+ 
+> Best regards
+> Thomas
 > 
-> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-> index 4cb4c1d7e444..d8ad6dd58c87 100644
-> --- a/arch/x86/kvm/svm/sev.c
-> +++ b/arch/x86/kvm/svm/sev.c
-> @@ -3553,10 +3553,9 @@ void sev_es_init_vmcb(struct vcpu_svm *svm)
->  
->  	/*
->  	 * An SEV-ES guest requires a VMSA area that is a separate from the
-> -	 * VMCB page. Do not include the encryption mask on the VMSA physical
-> -	 * address since hardware will access it using the guest key.
-> +	 * VMCB page.
->  	 */
-> -	svm->vmcb->control.vmsa_pa = __pa(svm->vmsa);
-> +	svm->vmcb->control.vmsa_pa = svm->vmsa_pa;
->  
->  	/* Can't intercept CR register access, HV can't modify CR registers */
->  	svm_clr_intercept(svm, INTERCEPT_CR0_READ);
-> diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-> index 32e35d396508..74bc635c9608 100644
-> --- a/arch/x86/kvm/svm/svm.c
-> +++ b/arch/x86/kvm/svm/svm.c
-> @@ -1379,9 +1379,16 @@ static int svm_create_vcpu(struct kvm_vcpu *vcpu)
->  	svm->vmcb01.ptr = page_address(vmcb01_page);
->  	svm->vmcb01.pa = __sme_set(page_to_pfn(vmcb01_page) << PAGE_SHIFT);
->  
-> -	if (vmsa_page)
-> +	if (vmsa_page) {
->  		svm->vmsa = page_address(vmsa_page);
->  
-> +		/*
-> +		 * Do not include the encryption mask on the VMSA physical
-> +		 * address since hardware will access it using the guest key.
-> +		 */
-> +		svm->vmsa_pa = __pa(svm->vmsa);
-> +	}
-> +
->  	svm->guest_state_loaded = false;
->  
->  	svm_switch_vmcb(svm, &svm->vmcb01);
-> diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
-> index 9fcfc0a51737..285d9b97b4d2 100644
-> --- a/arch/x86/kvm/svm/svm.h
-> +++ b/arch/x86/kvm/svm/svm.h
-> @@ -177,6 +177,7 @@ struct vcpu_svm {
->  
->  	/* SEV-ES support */
->  	struct sev_es_save_area *vmsa;
-> +	hpa_t vmsa_pa;
->  	struct ghcb *ghcb;
->  	struct kvm_host_map ghcb_map;
->  	bool received_first_sipi;
-> -- 
-> 2.17.1
-> 
+
+Best regards,
+-- 
+Javier Martinez Canillas
+Linux Engineering
+Red Hat
+
