@@ -2,137 +2,66 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 011E43D220E
-	for <lists+linux-efi@lfdr.de>; Thu, 22 Jul 2021 12:26:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B4C4E3D2318
+	for <lists+linux-efi@lfdr.de>; Thu, 22 Jul 2021 14:08:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231325AbhGVJqQ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 22 Jul 2021 05:46:16 -0400
-Received: from mail.kernel.org ([198.145.29.99]:57588 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231667AbhGVJqN (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Thu, 22 Jul 2021 05:46:13 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 3BC4960FED;
-        Thu, 22 Jul 2021 10:26:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1626949571;
-        bh=fHT59LhvE3gc9fM6N3ufqFMTVW0dfEM2SVeZ98t/cB0=;
-        h=From:To:Cc:Subject:Date:From;
-        b=jLlxmgvHZyeju+fi7zxuu2/WjWE6Cbc5+kLfAtzW/jhnNuA1kcGtCe8LbdKJnmXGB
-         O3Ht0J1et3VdswiquEdvtfiHBcBH1u/ivS778uPWzOBgQE0XzdgFz0MOWO4AM72YA3
-         Pyl4a8/lstZIrPORrhJ97AOguvzx94E+cabq+Km3OCdycM2+BkvOUYdjcEP6Pj1e2A
-         qstAPldzEX3IS9SDa1S01ZEpaDQjV1N4Pk9eyM4IwMmMv1v682tT/nV+i1xBXKFeJm
-         E2b5uuGWr82sLe9fk6mxJfGWzMZa0DpehTo9VyWL92fOW7LkXRlc6d7SY+M34K3+8u
-         mIdWJTVV1PfKQ==
-From:   Ard Biesheuvel <ardb@kernel.org>
-To:     linux-efi@vger.kernel.org
-Cc:     linux-arm-kernel@lists.infradead.org,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Subject: [PATCH] efistub: arm64: relax 2M alignment again for relocatable kernels
-Date:   Thu, 22 Jul 2021 12:26:00 +0200
-Message-Id: <20210722102600.58392-1-ardb@kernel.org>
-X-Mailer: git-send-email 2.20.1
+        id S231716AbhGVL1i (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 22 Jul 2021 07:27:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41430 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231712AbhGVL1h (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 22 Jul 2021 07:27:37 -0400
+Received: from mail-lj1-x22f.google.com (mail-lj1-x22f.google.com [IPv6:2a00:1450:4864:20::22f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BDA92C061575
+        for <linux-efi@vger.kernel.org>; Thu, 22 Jul 2021 05:08:12 -0700 (PDT)
+Received: by mail-lj1-x22f.google.com with SMTP id x24so3326975ljm.4
+        for <linux-efi@vger.kernel.org>; Thu, 22 Jul 2021 05:08:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=l5Y2znNQRSkjBZiXZQx9VmMz8ocHeR8lOb9HEivtVEM=;
+        b=bhz7rSo44lkemJ2kpqUAfXc/OX5L/OnCWrJxheWslbpv8qpvMeY6tOP3WrT3Nq2zFC
+         Cd1/4B+vu2eZwH4dHN5di04uX/B/+VNUie/FYxziWwxXdQrhttGaw3/Jyc6cDj/tvNlX
+         g+JuMnjX4iv59Nv4vTWtAvdbOx6bM7Y7ioRkIkpEpzIK7ZlF/3qjCjMgW35e/9oleoZ0
+         Lalq/Q+Fi1hsPePmcAPD6LArKAr84+LJF31N3sPClk3PxMU1jDEx9sjZ4VF/MlC/0Omo
+         6s4+w9CKmpiSiOr0PyiMiQSicArI1eV/sJAaWilpPcTxplDUtssBlX901zPJKCZ8pEpy
+         lBHQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=l5Y2znNQRSkjBZiXZQx9VmMz8ocHeR8lOb9HEivtVEM=;
+        b=r0XaO6ZvFlB8+edBbvA/SwdgAIuUPUA08IyKEmL51msTnHwVQ1TurYXWb3hDGYBSZ1
+         X/Lb161N4MoEhEP+lC4QEmxfcEbrlpfT7qsZWgkgWb7xGUGf6pUSn0V9Vt6ge0zK5baJ
+         mk178fNJBA8CI4P5KDsnjMsWRRlQaY4txhZdVdRFlBpT6wQSxP9KTB6jtF2duLBqAWfJ
+         bCt2rQrdZQBvINoZrdGyEguHfwU8XG8Kz1tZtdNrRWiqV0qWmbSjy/KdEZP4qfYims/f
+         7fVHDyL/qTktw7v8SNQ21Cmxn4/QKKCmfQypy00s22dfYbMf0g6DFGCkHn2oW38n/Ndz
+         XgVA==
+X-Gm-Message-State: AOAM530soG/LT5bHrbJBHOt0tlvQP+7BPJT/qu9GDMmVzh0tzasTApKT
+        XBOuGTLd4PFePh8pQZDBMIaReoZsk3wVdAXDsKI=
+X-Google-Smtp-Source: ABdhPJxTP/cHEGgJ9EOX8bhlBsNjRhAKVBt3vk3zrT8JvyF0+R1NsZGkQNdMskgW98UGfkTAauqJlclwQ5Xlfj5vueE=
+X-Received: by 2002:a05:651c:4d4:: with SMTP id e20mr8981517lji.130.1626955691192;
+ Thu, 22 Jul 2021 05:08:11 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Received: by 2002:a05:6512:712:0:0:0:0 with HTTP; Thu, 22 Jul 2021 05:08:10
+ -0700 (PDT)
+Reply-To: Salemchantal2@mail.com
+From:   MRS Salem Chantal Rowland <maitrenorbertenochdabire@gmail.com>
+Date:   Thu, 22 Jul 2021 12:08:10 +0000
+Message-ID: <CAGakO-QSMg9MWZuYWmJvK5D=cmZmcYY1oneXYf9r_a68XY68fQ@mail.gmail.com>
+Subject: Dear SIR/Madam
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Commit 82046702e288 ("efi/libstub/arm64: Replace 'preferred' offset with
-alignment check") simplified the way the stub moves the kernel image
-around in memory before booting it, given that a relocatable image does
-not need to be copied to a 2M aligned offset if it was loaded on a 64k
-boundary by EFI.
+ATTENTION
 
-Commit d32de9130f6c ("efi/arm64: libstub: Deal gracefully with
-EFI_RNG_PROTOCOL failure") inadvertently defeated this logic by
-overriding the value of efi_nokaslr if EFI_RNG_PROTOCOL is not
-available, which was mistaked by the loader logic as an explicit request
-on the part of the user to disable KASLR and any associated relocation
-of an Image not loaded on a 2M boundary.
+You have been compensated with the sum of 4.6 million dollars in this
+United Nation the payment will be issue into ATM Visa Card,
+and send to you from the Santander Bank of Spain we need your
+Address,Passport and your whatsapp number.
 
-So let's reinstate this functionality, by capturing the value of
-efi_nokaslr at function entry to choose the minimum alignment.
-
-Fixes: d32de9130f6c ("efi/arm64: libstub: Deal gracefully with EFI_RNG_PROTOCOL failure")
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
----
-This fixes the regression that was discussed in [0], but given that it
-is very likely to break Ben's use case again, I'll sit on it for the
-time being.
-
-[0] https://lore.kernel.org/linux-efi/161920fc31ec4168290ca31b3e4ac7a75ac1df6b.camel@kernel.crashing.org/
-
- drivers/firmware/efi/libstub/arm64-stub.c | 28 +++++++++-----------
- 1 file changed, 13 insertions(+), 15 deletions(-)
-
-diff --git a/drivers/firmware/efi/libstub/arm64-stub.c b/drivers/firmware/efi/libstub/arm64-stub.c
-index 7bf0a7acae5e..98e013404ca3 100644
---- a/drivers/firmware/efi/libstub/arm64-stub.c
-+++ b/drivers/firmware/efi/libstub/arm64-stub.c
-@@ -34,18 +34,6 @@ efi_status_t check_platform_features(void)
- 	return EFI_SUCCESS;
- }
- 
--/*
-- * Although relocatable kernels can fix up the misalignment with respect to
-- * MIN_KIMG_ALIGN, the resulting virtual text addresses are subtly out of
-- * sync with those recorded in the vmlinux when kaslr is disabled but the
-- * image required relocation anyway. Therefore retain 2M alignment unless
-- * KASLR is in use.
-- */
--static u64 min_kimg_align(void)
--{
--	return efi_nokaslr ? MIN_KIMG_ALIGN : EFI_KIMG_ALIGN;
--}
--
- efi_status_t handle_kernel_image(unsigned long *image_addr,
- 				 unsigned long *image_size,
- 				 unsigned long *reserve_addr,
-@@ -56,6 +44,16 @@ efi_status_t handle_kernel_image(unsigned long *image_addr,
- 	unsigned long kernel_size, kernel_memsize = 0;
- 	u32 phys_seed = 0;
- 
-+	/*
-+	 * Although relocatable kernels can fix up the misalignment with
-+	 * respect to MIN_KIMG_ALIGN, the resulting virtual text addresses are
-+	 * subtly out of sync with those recorded in the vmlinux when kaslr is
-+	 * disabled but the image required relocation anyway. Therefore retain
-+	 * 2M alignment if KASLR was explicitly disabled, even if it was not
-+	 * going to be activated to begin with.
-+	 */
-+	u64 min_kimg_align = efi_nokaslr ? MIN_KIMG_ALIGN : EFI_KIMG_ALIGN;
-+
- 	if (IS_ENABLED(CONFIG_RANDOMIZE_BASE)) {
- 		if (!efi_nokaslr) {
- 			status = efi_get_random_bytes(sizeof(phys_seed),
-@@ -85,14 +83,14 @@ efi_status_t handle_kernel_image(unsigned long *image_addr,
- 		 * If KASLR is enabled, and we have some randomness available,
- 		 * locate the kernel at a randomized offset in physical memory.
- 		 */
--		status = efi_random_alloc(*reserve_size, min_kimg_align(),
-+		status = efi_random_alloc(*reserve_size, min_kimg_align,
- 					  reserve_addr, phys_seed);
- 	} else {
- 		status = EFI_OUT_OF_RESOURCES;
- 	}
- 
- 	if (status != EFI_SUCCESS) {
--		if (IS_ALIGNED((u64)_text, min_kimg_align())) {
-+		if (IS_ALIGNED((u64)_text, min_kimg_align)) {
- 			/*
- 			 * Just execute from wherever we were loaded by the
- 			 * UEFI PE/COFF loader if the alignment is suitable.
-@@ -103,7 +101,7 @@ efi_status_t handle_kernel_image(unsigned long *image_addr,
- 		}
- 
- 		status = efi_allocate_pages_aligned(*reserve_size, reserve_addr,
--						    ULONG_MAX, min_kimg_align());
-+						    ULONG_MAX, min_kimg_align);
- 
- 		if (status != EFI_SUCCESS) {
- 			efi_err("Failed to relocate kernel\n");
--- 
-2.20.1
-
+THANKS
+MRS Salem Chantal Lawrence
