@@ -2,99 +2,137 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A59763D1E02
-	for <lists+linux-efi@lfdr.de>; Thu, 22 Jul 2021 08:09:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 011E43D220E
+	for <lists+linux-efi@lfdr.de>; Thu, 22 Jul 2021 12:26:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230262AbhGVF2b (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 22 Jul 2021 01:28:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44070 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229994AbhGVF2b (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 22 Jul 2021 01:28:31 -0400
-Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com [IPv6:2607:f8b0:4864:20::1034])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C5C8C061757
-        for <linux-efi@vger.kernel.org>; Wed, 21 Jul 2021 23:09:06 -0700 (PDT)
-Received: by mail-pj1-x1034.google.com with SMTP id jx7-20020a17090b46c7b02901757deaf2c8so4067995pjb.0
-        for <linux-efi@vger.kernel.org>; Wed, 21 Jul 2021 23:09:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dabbelt-com.20150623.gappssmtp.com; s=20150623;
-        h=date:subject:in-reply-to:cc:from:to:message-id:mime-version
-         :content-transfer-encoding;
-        bh=JGZNlAbWwH8KnKtTTLQVUHCmfrYBjCcYZGAw8CpDvDY=;
-        b=1evNGewArFpgG6ErFTJdQbJ3CgYm4mc2jK3DWn0rs7MMNuV61pPUXSYiijX0XfcXeO
-         Te0ApunX5CtjlgRjmzUUZGDGaa4UJZMB1cvrno8V0pXCa8BLwkYiperEM0pDWx1mB3wL
-         g/ar3PmfYDbuLzviAwHxbolEbwotsdsu5Ck2R0iwGhT9dtrBeuUTJApheQ+xzmWWEmBp
-         aXoLLEaGEo/MX7tPz0MoAyV7di0Ph2EpTcXoc6wIdU7LgghMLNRF3B8XjfMY6TLl9seC
-         RxjPXBSy9om7Rfa5/jqspLJPCCTxxg/H7Bv8NcsRV2hmGhl54PQ6OmpYbYzP9YgWVSah
-         aA+w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:subject:in-reply-to:cc:from:to:message-id
-         :mime-version:content-transfer-encoding;
-        bh=JGZNlAbWwH8KnKtTTLQVUHCmfrYBjCcYZGAw8CpDvDY=;
-        b=lJIU6Je39GFJmq/0ZTbDkIk4HQcuA2p/vUv5yHHlbpf3PKoK+dR2L3tX5/Eiqlcs+5
-         b0mLPD539zn1xbQRM6jfLRiILsz/j7dZ7HWwJFwSZVDlickr8xuVRT8oKh+/yAa+hg9+
-         0DV50W6i3YLR013fhdoYx91jH45xmLtUAajuzNYjQVksShd4+2iC57kABTEsxYVWObxw
-         b6DBkiRtIVQ7GHD4UyuqZ1Yw+fothLpORqrwcjbABl4N0JcmsuIPutZkVSHpkHIZj/HA
-         JQBWSdwpJP99/KPt/CUzBzK6ciSkqF8zgVBtogRt89omKgvxnrvQOukURhyS47jGOZAe
-         1jyg==
-X-Gm-Message-State: AOAM532npT0McFt56dOkBFo+SGqtornu0K0AlHfReNJINgXKQc7AzisC
-        vvZzCgSZnuWAyN8vswVxQS3l3w==
-X-Google-Smtp-Source: ABdhPJwbH8JkdIu9/4V/l6vl783ox75sPe2K7cYNoJWAhro5WSE2yrNRSmzunbrlu3M2pVUVp8RyMw==
-X-Received: by 2002:a17:90a:bc84:: with SMTP id x4mr7324526pjr.236.1626934145393;
-        Wed, 21 Jul 2021 23:09:05 -0700 (PDT)
-Received: from localhost (76-210-143-223.lightspeed.sntcca.sbcglobal.net. [76.210.143.223])
-        by smtp.gmail.com with ESMTPSA id v69sm29927398pfc.118.2021.07.21.23.09.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Jul 2021 23:09:04 -0700 (PDT)
-Date:   Wed, 21 Jul 2021 23:09:04 -0700 (PDT)
-X-Google-Original-Date: Wed, 21 Jul 2021 22:58:55 PDT (-0700)
-Subject:     Re: [PATCH 1/1] RISC-V: load initrd wherever it fits into memory
-In-Reply-To: <20210629134018.62859-1-xypron.glpk@gmx.de>
-CC:     ardb@kernel.org, schwab@linux-m68k.org,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        aou@eecs.berkeley.edu, Atish Patra <Atish.Patra@wdc.com>,
-        linux-efi@vger.kernel.org, linux-riscv@lists.infradead.org,
-        linux-kernel@vger.kernel.org, xypron.glpk@gmx.de
-From:   Palmer Dabbelt <palmer@dabbelt.com>
-To:     xypron.glpk@gmx.de
-Message-ID: <mhng-34467fe7-5a31-4c88-a5ad-6dea683fcfeb@palmerdabbelt-glaptop>
-Mime-Version: 1.0 (MHng)
-Content-Type: text/plain; charset=utf-8; format=flowed
+        id S231325AbhGVJqQ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 22 Jul 2021 05:46:16 -0400
+Received: from mail.kernel.org ([198.145.29.99]:57588 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231667AbhGVJqN (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Thu, 22 Jul 2021 05:46:13 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 3BC4960FED;
+        Thu, 22 Jul 2021 10:26:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1626949571;
+        bh=fHT59LhvE3gc9fM6N3ufqFMTVW0dfEM2SVeZ98t/cB0=;
+        h=From:To:Cc:Subject:Date:From;
+        b=jLlxmgvHZyeju+fi7zxuu2/WjWE6Cbc5+kLfAtzW/jhnNuA1kcGtCe8LbdKJnmXGB
+         O3Ht0J1et3VdswiquEdvtfiHBcBH1u/ivS778uPWzOBgQE0XzdgFz0MOWO4AM72YA3
+         Pyl4a8/lstZIrPORrhJ97AOguvzx94E+cabq+Km3OCdycM2+BkvOUYdjcEP6Pj1e2A
+         qstAPldzEX3IS9SDa1S01ZEpaDQjV1N4Pk9eyM4IwMmMv1v682tT/nV+i1xBXKFeJm
+         E2b5uuGWr82sLe9fk6mxJfGWzMZa0DpehTo9VyWL92fOW7LkXRlc6d7SY+M34K3+8u
+         mIdWJTVV1PfKQ==
+From:   Ard Biesheuvel <ardb@kernel.org>
+To:     linux-efi@vger.kernel.org
+Cc:     linux-arm-kernel@lists.infradead.org,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Subject: [PATCH] efistub: arm64: relax 2M alignment again for relocatable kernels
+Date:   Thu, 22 Jul 2021 12:26:00 +0200
+Message-Id: <20210722102600.58392-1-ardb@kernel.org>
+X-Mailer: git-send-email 2.20.1
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, 29 Jun 2021 06:40:18 PDT (-0700), xypron.glpk@gmx.de wrote:
-> Requiring that initrd is loaded below RAM start + 256 MiB led to failure
-> to boot SUSE Linux with GRUB on QEMU, cf.
-> https://lists.gnu.org/archive/html/grub-devel/2021-06/msg00037.html
->
-> Remove the constraint.
->
-> Reported-by: Andreas Schwab <schwab@linux-m68k.org>
-> Signed-off-by: Heinrich Schuchardt <xypron.glpk@gmx.de>
-> ---
->  arch/riscv/include/asm/efi.h | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/arch/riscv/include/asm/efi.h b/arch/riscv/include/asm/efi.h
-> index 7542282f1141..649ab513dc99 100644
-> --- a/arch/riscv/include/asm/efi.h
-> +++ b/arch/riscv/include/asm/efi.h
-> @@ -33,10 +33,10 @@ static inline unsigned long efi_get_max_fdt_addr(unsigned long image_addr)
->
->  #define ARCH_EFI_IRQ_FLAGS_MASK (SR_IE | SR_SPIE)
->
-> -/* Load initrd at enough distance from DRAM start */
-> +/* Load initrd anywhere in system RAM */
->  static inline unsigned long efi_get_max_initrd_addr(unsigned long image_addr)
->  {
-> -	return image_addr + SZ_256M;
-> +	return ULONG_MAX;
->  }
->
->  #define alloc_screen_info(x...)		(&screen_info)
+Commit 82046702e288 ("efi/libstub/arm64: Replace 'preferred' offset with
+alignment check") simplified the way the stub moves the kernel image
+around in memory before booting it, given that a relocatable image does
+not need to be copied to a 2M aligned offset if it was loaded on a 64k
+boundary by EFI.
 
-Thanks, this is on fixes.
+Commit d32de9130f6c ("efi/arm64: libstub: Deal gracefully with
+EFI_RNG_PROTOCOL failure") inadvertently defeated this logic by
+overriding the value of efi_nokaslr if EFI_RNG_PROTOCOL is not
+available, which was mistaked by the loader logic as an explicit request
+on the part of the user to disable KASLR and any associated relocation
+of an Image not loaded on a 2M boundary.
+
+So let's reinstate this functionality, by capturing the value of
+efi_nokaslr at function entry to choose the minimum alignment.
+
+Fixes: d32de9130f6c ("efi/arm64: libstub: Deal gracefully with EFI_RNG_PROTOCOL failure")
+Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+---
+This fixes the regression that was discussed in [0], but given that it
+is very likely to break Ben's use case again, I'll sit on it for the
+time being.
+
+[0] https://lore.kernel.org/linux-efi/161920fc31ec4168290ca31b3e4ac7a75ac1df6b.camel@kernel.crashing.org/
+
+ drivers/firmware/efi/libstub/arm64-stub.c | 28 +++++++++-----------
+ 1 file changed, 13 insertions(+), 15 deletions(-)
+
+diff --git a/drivers/firmware/efi/libstub/arm64-stub.c b/drivers/firmware/efi/libstub/arm64-stub.c
+index 7bf0a7acae5e..98e013404ca3 100644
+--- a/drivers/firmware/efi/libstub/arm64-stub.c
++++ b/drivers/firmware/efi/libstub/arm64-stub.c
+@@ -34,18 +34,6 @@ efi_status_t check_platform_features(void)
+ 	return EFI_SUCCESS;
+ }
+ 
+-/*
+- * Although relocatable kernels can fix up the misalignment with respect to
+- * MIN_KIMG_ALIGN, the resulting virtual text addresses are subtly out of
+- * sync with those recorded in the vmlinux when kaslr is disabled but the
+- * image required relocation anyway. Therefore retain 2M alignment unless
+- * KASLR is in use.
+- */
+-static u64 min_kimg_align(void)
+-{
+-	return efi_nokaslr ? MIN_KIMG_ALIGN : EFI_KIMG_ALIGN;
+-}
+-
+ efi_status_t handle_kernel_image(unsigned long *image_addr,
+ 				 unsigned long *image_size,
+ 				 unsigned long *reserve_addr,
+@@ -56,6 +44,16 @@ efi_status_t handle_kernel_image(unsigned long *image_addr,
+ 	unsigned long kernel_size, kernel_memsize = 0;
+ 	u32 phys_seed = 0;
+ 
++	/*
++	 * Although relocatable kernels can fix up the misalignment with
++	 * respect to MIN_KIMG_ALIGN, the resulting virtual text addresses are
++	 * subtly out of sync with those recorded in the vmlinux when kaslr is
++	 * disabled but the image required relocation anyway. Therefore retain
++	 * 2M alignment if KASLR was explicitly disabled, even if it was not
++	 * going to be activated to begin with.
++	 */
++	u64 min_kimg_align = efi_nokaslr ? MIN_KIMG_ALIGN : EFI_KIMG_ALIGN;
++
+ 	if (IS_ENABLED(CONFIG_RANDOMIZE_BASE)) {
+ 		if (!efi_nokaslr) {
+ 			status = efi_get_random_bytes(sizeof(phys_seed),
+@@ -85,14 +83,14 @@ efi_status_t handle_kernel_image(unsigned long *image_addr,
+ 		 * If KASLR is enabled, and we have some randomness available,
+ 		 * locate the kernel at a randomized offset in physical memory.
+ 		 */
+-		status = efi_random_alloc(*reserve_size, min_kimg_align(),
++		status = efi_random_alloc(*reserve_size, min_kimg_align,
+ 					  reserve_addr, phys_seed);
+ 	} else {
+ 		status = EFI_OUT_OF_RESOURCES;
+ 	}
+ 
+ 	if (status != EFI_SUCCESS) {
+-		if (IS_ALIGNED((u64)_text, min_kimg_align())) {
++		if (IS_ALIGNED((u64)_text, min_kimg_align)) {
+ 			/*
+ 			 * Just execute from wherever we were loaded by the
+ 			 * UEFI PE/COFF loader if the alignment is suitable.
+@@ -103,7 +101,7 @@ efi_status_t handle_kernel_image(unsigned long *image_addr,
+ 		}
+ 
+ 		status = efi_allocate_pages_aligned(*reserve_size, reserve_addr,
+-						    ULONG_MAX, min_kimg_align());
++						    ULONG_MAX, min_kimg_align);
+ 
+ 		if (status != EFI_SUCCESS) {
+ 			efi_err("Failed to relocate kernel\n");
+-- 
+2.20.1
+
