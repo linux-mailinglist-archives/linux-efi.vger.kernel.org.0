@@ -2,86 +2,99 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 362B43D6DCA
-	for <lists+linux-efi@lfdr.de>; Tue, 27 Jul 2021 07:05:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 940D43D6FF3
+	for <lists+linux-efi@lfdr.de>; Tue, 27 Jul 2021 09:06:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235041AbhG0FF0 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 27 Jul 2021 01:05:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60168 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234992AbhG0FFZ (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 27 Jul 2021 01:05:25 -0400
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35763C061757;
-        Mon, 26 Jul 2021 22:05:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
-        MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:
-        Content-Description:In-Reply-To:References;
-        bh=LbsOlfHeqNxTseZbI6JEafTqvq2PmDXu+dYbdpp/3uU=; b=LEYB0v4o2AJFAnH61UR7Bo2Uei
-        66oVAJZFUsUisXHx7BswJ31Lu3uD0IRNNyNKbQOwlt4i14TMxD8jwbKmyyeSbcnwLS5y6UKsTVDdq
-        0cQ6x9mnYEVCDDK4n9GgkX+sV/5cxzOaSB1IJGKx3MLIXjjBWESW/5CSgGQDFp2Lgn3hSKpYrZjkR
-        akuXBztefQZVtAVUFqR7hu5LuQGelkxi3HgoFs8VTdlI2AuHJcSht8EIkaRC23361loIG4efl5tM5
-        LX6SToyDSbo9g+7ze1jeNUWpkCkyQFTSXH0uB/ONszAbQsr0q/qZwcO/gIymbFzQMYGJgaMIy8NYR
-        YYgi40WQ==;
-Received: from [2601:1c0:6280:3f0:76e5:bff:fe2d:dc28] (helo=smtpauth.infradead.org)
-        by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1m8FGu-00Eg9T-RM; Tue, 27 Jul 2021 05:05:01 +0000
-From:   Randy Dunlap <rdunlap@infradead.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Randy Dunlap <rdunlap@infradead.org>,
-        Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org,
-        dri-devel@lists.freedesktop.org,
+        id S235612AbhG0HGR (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 27 Jul 2021 03:06:17 -0400
+Received: from mail.kernel.org ([198.145.29.99]:38670 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S235812AbhG0HGG (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Tue, 27 Jul 2021 03:06:06 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id EF3FE6120F;
+        Tue, 27 Jul 2021 07:06:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1627369567;
+        bh=1TC/Az3GWgRQRVEMAdi/3rlrGgY9/Gln3X8vwmTmv+g=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=e18QTB8FQVC/Pcu8BKEZpNDao+wOja4eIGe8ORUkTz/5mu433x3r6MlAyEWpROJ7F
+         lPOWO39RR4IIDbnnuKaaI9sbAPOS02dGWl3ugYBcXWXhjlCfZCau+i28gehAVHRurC
+         ErRp9qtzBgvGOfh8n4ms+39n3D4UDBVQ8uLGZMjQJLXq7BaVtujRLCD0g0voQadJOt
+         MyfiFP96UN7corSNOUr/x4HmBuJbjLUDTMrFjiU9aOsiTqDiVYxH92I6aZHAj56STi
+         OWHn+SOyClwoEmCRovJsScZBOkuQCoRtjySbpK5x0SqwtFAVY/GMK8nKo9xY2QM0Qe
+         2y95Khxudlecg==
+Received: by mail-ot1-f42.google.com with SMTP id o2-20020a9d22020000b0290462f0ab0800so7860275ota.11;
+        Tue, 27 Jul 2021 00:06:06 -0700 (PDT)
+X-Gm-Message-State: AOAM530hZV/K2AdwOP3jL0M4uCNKLBqDBSKaXyj7R5WrSlhbaOhgmtyx
+        CndFUGhnUilHubfVw1w9iYnYK0pA+BvCuC+znd8=
+X-Google-Smtp-Source: ABdhPJyeFgKOXhjrhvnFpEn730k8SbaVAr5F9/F0Cu8OnIZQ5j5sVRC5iYB6Y0/6aKl/ASZH0k9HGhADS98rRGUq0Bk=
+X-Received: by 2002:a05:6830:34a6:: with SMTP id c38mr14149146otu.108.1627369566333;
+ Tue, 27 Jul 2021 00:06:06 -0700 (PDT)
+MIME-Version: 1.0
+References: <20210727050447.7339-1-rdunlap@infradead.org>
+In-Reply-To: <20210727050447.7339-1-rdunlap@infradead.org>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Tue, 27 Jul 2021 09:05:55 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXE--e+XYVMR=i0_hWQ8TZD7a+OshxsuHbbAf6UZwH4=XA@mail.gmail.com>
+Message-ID: <CAMj1kXE--e+XYVMR=i0_hWQ8TZD7a+OshxsuHbbAf6UZwH4=XA@mail.gmail.com>
+Subject: Re: [PATCH] efi: sysfb_efi: fix build when EFI is not set
+To:     Randy Dunlap <rdunlap@infradead.org>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
         Javier Martinez Canillas <javierm@redhat.com>,
         Thomas Zimmermann <tzimmermann@suse.de>,
-        Mark Brown <broonie@kernel.org>, linux-next@vger.kernel.org
-Subject: [PATCH] efi: sysfb_efi: fix build when EFI is not set
-Date:   Mon, 26 Jul 2021 22:04:47 -0700
-Message-Id: <20210727050447.7339-1-rdunlap@infradead.org>
-X-Mailer: git-send-email 2.26.2
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+        Mark Brown <broonie@kernel.org>,
+        Linux Next Mailing List <linux-next@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-When # CONFIG_EFI is not set, there are 2 definitions of
-sysfb_apply_efi_quirks(). The stub from sysfb.h should be used
-and the __init function from sysfb_efi.c should not be used.
+On Tue, 27 Jul 2021 at 07:05, Randy Dunlap <rdunlap@infradead.org> wrote:
+>
+> When # CONFIG_EFI is not set, there are 2 definitions of
+> sysfb_apply_efi_quirks(). The stub from sysfb.h should be used
+> and the __init function from sysfb_efi.c should not be used.
+>
+> ../drivers/firmware/efi/sysfb_efi.c:337:13: error: redefinition of =E2=80=
+=98sysfb_apply_efi_quirks=E2=80=99
+>  __init void sysfb_apply_efi_quirks(struct platform_device *pd)
+>              ^~~~~~~~~~~~~~~~~~~~~~
+> In file included from ../drivers/firmware/efi/sysfb_efi.c:26:0:
+> ../include/linux/sysfb.h:65:20: note: previous definition of =E2=80=98sys=
+fb_apply_efi_quirks=E2=80=99 was here
+>  static inline void sysfb_apply_efi_quirks(struct platform_device *pd)
+>                     ^~~~~~~~~~~~~~~~~~~~~~
+>
+> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+> Cc: Ard Biesheuvel <ardb@kernel.org>
+> Cc: linux-efi@vger.kernel.org
+> Cc: dri-devel@lists.freedesktop.org
+> Cc: Javier Martinez Canillas <javierm@redhat.com>
+> Cc: Thomas Zimmermann <tzimmermann@suse.de>
+> Cc: Mark Brown <broonie@kernel.org>
+> Cc: linux-next@vger.kernel.org
 
-../drivers/firmware/efi/sysfb_efi.c:337:13: error: redefinition of ‘sysfb_apply_efi_quirks’
- __init void sysfb_apply_efi_quirks(struct platform_device *pd)
-             ^~~~~~~~~~~~~~~~~~~~~~
-In file included from ../drivers/firmware/efi/sysfb_efi.c:26:0:
-../include/linux/sysfb.h:65:20: note: previous definition of ‘sysfb_apply_efi_quirks’ was here
- static inline void sysfb_apply_efi_quirks(struct platform_device *pd)
-                    ^~~~~~~~~~~~~~~~~~~~~~
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
 
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Cc: linux-efi@vger.kernel.org
-Cc: dri-devel@lists.freedesktop.org
-Cc: Javier Martinez Canillas <javierm@redhat.com>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: linux-next@vger.kernel.org
----
- drivers/firmware/efi/sysfb_efi.c |    2 ++
- 1 file changed, 2 insertions(+)
-
---- linext-20210726.orig/drivers/firmware/efi/sysfb_efi.c
-+++ linext-20210726/drivers/firmware/efi/sysfb_efi.c
-@@ -332,6 +332,7 @@ static const struct fwnode_operations ef
- 	.add_links = efifb_add_links,
- };
- 
-+#ifdef CONFIG_EFI
- static struct fwnode_handle efifb_fwnode;
- 
- __init void sysfb_apply_efi_quirks(struct platform_device *pd)
-@@ -354,3 +355,4 @@ __init void sysfb_apply_efi_quirks(struc
- 		pd->dev.fwnode = &efifb_fwnode;
- 	}
- }
-+#endif
+> ---
+>  drivers/firmware/efi/sysfb_efi.c |    2 ++
+>  1 file changed, 2 insertions(+)
+>
+> --- linext-20210726.orig/drivers/firmware/efi/sysfb_efi.c
+> +++ linext-20210726/drivers/firmware/efi/sysfb_efi.c
+> @@ -332,6 +332,7 @@ static const struct fwnode_operations ef
+>         .add_links =3D efifb_add_links,
+>  };
+>
+> +#ifdef CONFIG_EFI
+>  static struct fwnode_handle efifb_fwnode;
+>
+>  __init void sysfb_apply_efi_quirks(struct platform_device *pd)
+> @@ -354,3 +355,4 @@ __init void sysfb_apply_efi_quirks(struc
+>                 pd->dev.fwnode =3D &efifb_fwnode;
+>         }
+>  }
+> +#endif
