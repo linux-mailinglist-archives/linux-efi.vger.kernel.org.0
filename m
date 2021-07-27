@@ -2,75 +2,86 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 02B813D5C21
-	for <lists+linux-efi@lfdr.de>; Mon, 26 Jul 2021 16:52:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 362B43D6DCA
+	for <lists+linux-efi@lfdr.de>; Tue, 27 Jul 2021 07:05:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234679AbhGZOLo (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 26 Jul 2021 10:11:44 -0400
-Received: from mail.kernel.org ([198.145.29.99]:53124 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234691AbhGZOLl (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Mon, 26 Jul 2021 10:11:41 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 14C1660F38;
-        Mon, 26 Jul 2021 14:52:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1627311130;
-        bh=HmJamR4DF8R3JiOkeQDkQrlPV4QfpmOrQy6gPG/dDX0=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UXJANHAp6BcHf+FFfyGULRRIcyl6FXBhBoJ84Bb37bXjAQtFqC6qhTTXRaqb9NdMl
-         R6q3BWA9Wbgt3LI77WQ1fbe/gmxVo6Dwux07ONqCfnpW6+yiidGfL3YL/q/FFhdWRP
-         Z/vZvNjZjHQVbqCrp37ZRs2WPCS1tetb8oQaXz7h5aYkvpOp0lrK8gmK7Itwve1gUR
-         oVDdKV+PiGSfyeyLBXkGgSeLqvwvEdmAL2ClJxfUYML4N9nsiw2fchoruopGeSnQNm
-         fAHJJhojmY+CGcDTGZmXxmOecDbUq4XJV1fPtnki6mmW8whvb6yAsW0sgAunth0vd7
-         4mGodlW+ChwWg==
-From:   Ard Biesheuvel <ardb@kernel.org>
-To:     linux-efi@vger.kernel.org
-Cc:     linux-arm-kernel@lists.infradead.org,
-        Ard Biesheuvel <ardb@kernel.org>, stable@vger.kernel.org
-Subject: [PATCH v3 4/4] efi/libstub: arm64: Double check image alignment at entry
-Date:   Mon, 26 Jul 2021 16:51:56 +0200
-Message-Id: <20210726145156.12006-5-ardb@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20210726145156.12006-1-ardb@kernel.org>
-References: <20210726145156.12006-1-ardb@kernel.org>
+        id S235041AbhG0FF0 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 27 Jul 2021 01:05:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60168 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234992AbhG0FFZ (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 27 Jul 2021 01:05:25 -0400
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35763C061757;
+        Mon, 26 Jul 2021 22:05:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
+        MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:
+        Content-Description:In-Reply-To:References;
+        bh=LbsOlfHeqNxTseZbI6JEafTqvq2PmDXu+dYbdpp/3uU=; b=LEYB0v4o2AJFAnH61UR7Bo2Uei
+        66oVAJZFUsUisXHx7BswJ31Lu3uD0IRNNyNKbQOwlt4i14TMxD8jwbKmyyeSbcnwLS5y6UKsTVDdq
+        0cQ6x9mnYEVCDDK4n9GgkX+sV/5cxzOaSB1IJGKx3MLIXjjBWESW/5CSgGQDFp2Lgn3hSKpYrZjkR
+        akuXBztefQZVtAVUFqR7hu5LuQGelkxi3HgoFs8VTdlI2AuHJcSht8EIkaRC23361loIG4efl5tM5
+        LX6SToyDSbo9g+7ze1jeNUWpkCkyQFTSXH0uB/ONszAbQsr0q/qZwcO/gIymbFzQMYGJgaMIy8NYR
+        YYgi40WQ==;
+Received: from [2601:1c0:6280:3f0:76e5:bff:fe2d:dc28] (helo=smtpauth.infradead.org)
+        by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1m8FGu-00Eg9T-RM; Tue, 27 Jul 2021 05:05:01 +0000
+From:   Randy Dunlap <rdunlap@infradead.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Randy Dunlap <rdunlap@infradead.org>,
+        Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org,
+        dri-devel@lists.freedesktop.org,
+        Javier Martinez Canillas <javierm@redhat.com>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Mark Brown <broonie@kernel.org>, linux-next@vger.kernel.org
+Subject: [PATCH] efi: sysfb_efi: fix build when EFI is not set
+Date:   Mon, 26 Jul 2021 22:04:47 -0700
+Message-Id: <20210727050447.7339-1-rdunlap@infradead.org>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On arm64, the stub only moves the kernel image around in memory if
-needed, which is typically only for KASLR, given that relocatable
-kernels (which is the default) can run from any 64k aligned address,
-which is also the minimum alignment communicated to EFI via the PE/COFF
-header.
+When # CONFIG_EFI is not set, there are 2 definitions of
+sysfb_apply_efi_quirks(). The stub from sysfb.h should be used
+and the __init function from sysfb_efi.c should not be used.
 
-Unfortunately, some loaders appear to ignore this header, and load the
-kernel at some arbitrary offset in memory. We can deal with this, but
-let's check for this condition anyway, so non-compliant code can be
-spotted and fixed.
+../drivers/firmware/efi/sysfb_efi.c:337:13: error: redefinition of ‘sysfb_apply_efi_quirks’
+ __init void sysfb_apply_efi_quirks(struct platform_device *pd)
+             ^~~~~~~~~~~~~~~~~~~~~~
+In file included from ../drivers/firmware/efi/sysfb_efi.c:26:0:
+../include/linux/sysfb.h:65:20: note: previous definition of ‘sysfb_apply_efi_quirks’ was here
+ static inline void sysfb_apply_efi_quirks(struct platform_device *pd)
+                    ^~~~~~~~~~~~~~~~~~~~~~
 
-Cc: <stable@vger.kernel.org> # v5.10+
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: linux-efi@vger.kernel.org
+Cc: dri-devel@lists.freedesktop.org
+Cc: Javier Martinez Canillas <javierm@redhat.com>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: linux-next@vger.kernel.org
 ---
- drivers/firmware/efi/libstub/arm64-stub.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/firmware/efi/sysfb_efi.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/firmware/efi/libstub/arm64-stub.c b/drivers/firmware/efi/libstub/arm64-stub.c
-index 010564f8bbc4..2363fee9211c 100644
---- a/drivers/firmware/efi/libstub/arm64-stub.c
-+++ b/drivers/firmware/efi/libstub/arm64-stub.c
-@@ -119,6 +119,10 @@ efi_status_t handle_kernel_image(unsigned long *image_addr,
- 	if (image->image_base != _text)
- 		efi_err("FIRMWARE BUG: efi_loaded_image_t::image_base has bogus value\n");
+--- linext-20210726.orig/drivers/firmware/efi/sysfb_efi.c
++++ linext-20210726/drivers/firmware/efi/sysfb_efi.c
+@@ -332,6 +332,7 @@ static const struct fwnode_operations ef
+ 	.add_links = efifb_add_links,
+ };
  
-+	if (!IS_ALIGNED((u64)_text, EFI_KIMG_ALIGN))
-+		efi_err("FIRMWARE BUG: kernel image not aligned on %ldk boundary\n",
-+			EFI_KIMG_ALIGN >> 10);
-+
- 	kernel_size = _edata - _text;
- 	kernel_memsize = kernel_size + (_end - _edata);
- 	*reserve_size = kernel_memsize;
--- 
-2.20.1
-
++#ifdef CONFIG_EFI
+ static struct fwnode_handle efifb_fwnode;
+ 
+ __init void sysfb_apply_efi_quirks(struct platform_device *pd)
+@@ -354,3 +355,4 @@ __init void sysfb_apply_efi_quirks(struc
+ 		pd->dev.fwnode = &efifb_fwnode;
+ 	}
+ }
++#endif
