@@ -2,37 +2,37 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 170E03D7693
-	for <lists+linux-efi@lfdr.de>; Tue, 27 Jul 2021 15:30:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B28F93D768B
+	for <lists+linux-efi@lfdr.de>; Tue, 27 Jul 2021 15:30:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236944AbhG0NaL (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 27 Jul 2021 09:30:11 -0400
+        id S236602AbhG0NaD (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 27 Jul 2021 09:30:03 -0400
 Received: from mail.kernel.org ([198.145.29.99]:56534 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S236764AbhG0NTx (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Tue, 27 Jul 2021 09:19:53 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id E514B61AA3;
-        Tue, 27 Jul 2021 13:19:28 +0000 (UTC)
+        id S236891AbhG0NUS (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Tue, 27 Jul 2021 09:20:18 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 5D52A61A3D;
+        Tue, 27 Jul 2021 13:19:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1627391969;
+        s=k20201202; t=1627391995;
         bh=fvvgQ9NlGndbKm/lUZW+jV4hnC9sgAUudL+0moyF+wo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bSdPWxAtUNrjtHVcWpBDEJvKVEIwmXjZwtoqNdPHUFH4YZcl09cHsbBexKUxP3pG0
-         8vpaMm2qC2Qx2dlEz0EuJnfXBxF9i50jPJjiUNAFDDnirOZIzohpcIwrINJJybRM2Q
-         7+AyHr7OXrrLIOaWtQ5OhwM/3ICMeE3TIG5eLHMu82LRjlyhGsFZuXSa+1LazPSW2c
-         AzHS9kvMPj6mrtCVWeK3FKqXxE1/0l2tdFSBykzvNDwTXRvdgnRDvE/+GjP6N9RSBw
-         hLlZ3q6i8V1AMcI+4WwmV80Bu05NFwAmYzEcaGuklxfJQ4lrLlax87dJieUisxyjAT
-         Jei5Qh56lLKlQ==
+        b=dqI49W68PCUTuJEyJzT2RpOdy9eYeRd71uiaMCM13IZrFSpyQWg8Aoxhqwkk3ApHY
+         THjBbxSn7Rs+GV9hDazgeVHXAHY2t/DeOCPxGTrlCMlvj2kDZq6tzPYHywSDthhiel
+         /OwxpJkhR8vVeNg0IdG0wATvIqm10qL83PthhaewSMgp+EP5tdqdV3ci9DigrgSZaV
+         VtwozL5d/1cVDTZR5OyS1TQo/q+lA0SzUHgxCHxvJha+WmpADPZcldpejpVU4MDqR4
+         BCHtXl2j9y4RFqtAb7eo5mOxx0B8QTFQNaz1AFN82DwIMAtwuW9tpTuy4I0BF+moqs
+         cs2QqRRWXlqWQ==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Borislav Petkov <bp@suse.de>, Ard Biesheuvel <ardb@kernel.org>,
         Sasha Levin <sashal@kernel.org>, linux-efi@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.13 15/21] efi/mokvar: Reserve the table only if it is in boot services data
-Date:   Tue, 27 Jul 2021 09:19:02 -0400
-Message-Id: <20210727131908.834086-15-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.10 13/17] efi/mokvar: Reserve the table only if it is in boot services data
+Date:   Tue, 27 Jul 2021 09:19:34 -0400
+Message-Id: <20210727131938.834920-13-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210727131908.834086-1-sashal@kernel.org>
-References: <20210727131908.834086-1-sashal@kernel.org>
+In-Reply-To: <20210727131938.834920-1-sashal@kernel.org>
+References: <20210727131938.834920-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
