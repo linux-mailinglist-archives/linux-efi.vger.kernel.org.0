@@ -2,199 +2,237 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F64D3D7BDB
-	for <lists+linux-efi@lfdr.de>; Tue, 27 Jul 2021 19:08:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 21C2F3D827A
+	for <lists+linux-efi@lfdr.de>; Wed, 28 Jul 2021 00:26:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232078AbhG0RIq (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 27 Jul 2021 13:08:46 -0400
-Received: from mail-bn7nam10on2121.outbound.protection.outlook.com ([40.107.92.121]:10592
-        "EHLO NAM10-BN7-obe.outbound.protection.outlook.com"
+        id S232327AbhG0W0s (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 27 Jul 2021 18:26:48 -0400
+Received: from mail-dm3nam07on2041.outbound.protection.outlook.com ([40.107.95.41]:19744
+        "EHLO NAM02-DM3-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S231828AbhG0RIk (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Tue, 27 Jul 2021 13:08:40 -0400
+        id S231730AbhG0W0m (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Tue, 27 Jul 2021 18:26:42 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=l5LtPMKR9hvFeuAbTSrgfMofBFNCJ3kbBzRrGN88nJbS3o7+W6pLd1gDVmqxeuzQYvqlqxijy4dIPUknhnXhu2jvSX5qrkuAsbQruxnUgHKSthXtKOWnZX7odOqjM07eGjAlc6cJgYtGXGgxLZUxFs+Q6Kz10yyN7kQS6JFPkJQrEtNVECsHkoAMeGrKIfP8KcNBjEAn4ftfipMKUvnmp0+d3CDjMqLJdVPhSeoLV1L4d7o101yKAMpeqgUWzpP1Pcxc+iORIuE37CCCySliohAhouYPzCb85SeP4IZHKI+VbHEygShO45Y89EsmJgfLgLk/BlVJNEr+gLryq5fTIA==
+ b=T9Id0MgxE+d86OU5IRH9zmd43UxECaZ+B5kjhSPCMQydhfr7AKcRTj+vupBwOaPAAtKUT31LnFYhX2WMyXbi6v4zKOS/JDEFLi5mrQQN6Wi18iBDQPmfWx6uQdCcmBEsQGjY+i7E++8oJ+i6sxeux0X+4muPQw2C07FBX0rkByp73ulXOccfbLdApnpWFtm7w6mUJrru6zrxf6zIpF/21iiDdldnmRyZwtzorpUugAr1aPWDfNxU5zRQlbxdEHFFmJAKE4bu0u8Rrcgmpnl6spvXsW+0ZjE7r20KfDT0wGlEvHsuqKHwwhW1h211A9U6A/c+JIJZRQ4vXKKMHp3xiw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=plCURwXMYnJyor0N1CN64wT3GnHl4TtArCOkQ7qubTQ=;
- b=btHviyUz79O6PjkFPj5gIHeeMB7yjiwiCe4oPftZM/HPlN4EEYQwe0plIDaYWwkRCJGu8bi2xsBBHmREJGFV4qlQWgMg1sKevNavys+eUtXWTDjLwvetRcVa6mv7MRZJNWg3hbxQCX9S5jHoC7okMchqJkZOpqnBPob5X9ictHBuBa6W5IAE8EyQTtIZmCD8YZFfKnq1MUwl1wBP9ZGYQ65uqdIjdwl3hSP+qvADMdAoepPAg9fqoEBpa5d6CC8OEA51R3eSksBIWctGMdEkaPAS92JRgYeZEPd+yZpd8M9fN81x0bcj6v05iUFaKAif7exW3+yBFw316SGd/cTilw==
+ bh=rh9WV4Bi2lUQnfZE/QgCYWFV0BrT697DbKGp9nczLr0=;
+ b=A3C5gfFkOUw50sa4VQJIhHr83BuR+F7vkU2zOTa6HUgjorVejVCHWJ42ue+pAI3som2ESAeLNtE0FddI1+hd4duJ/ycSIfu2Cpv0VJ6XiKl6FMS5FvMSt4xz8NHm1L06r1KzV5sfEJ/g3KrMcNYblHi9dL1NA/U0olosuNCfeB5YDz5GbRFMrjRywCoSrE6ljKcYAD2JDhEMOicr1CqlEUJE7plkgw/ZafslUp0Md8aDT5H8B52ASLzS6TUwoDx9Gqz4+AjkmD45Cc6E5nCYpf2Gb6BcPYZUc/hij8fLI9vYxu+yveM01UbmLz788OIDKTlEd6NGfxxgOppsb6TbGg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=microsoft.com; dmarc=pass action=none
- header.from=microsoft.com; dkim=pass header.d=microsoft.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=selector2;
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=plCURwXMYnJyor0N1CN64wT3GnHl4TtArCOkQ7qubTQ=;
- b=Hw1VSru/Lx/L6Ps7W26rHRol3vq1HliJk8n5m2dqfPgC4m0iUYRbBcJeAzCV0aulPKLEWdTltOv9zunTK85wasiKyH0+INOIrOLycyqnyDOtcarz6Tn8/zsE3DRkFLXmZb5ZAdC67LQswqyrQxHBy1RClPMAdc6Zl3pdDZ8iKEo=
-Received: from MW4PR21MB2002.namprd21.prod.outlook.com (2603:10b6:303:68::18)
- by MWHPR21MB0512.namprd21.prod.outlook.com (2603:10b6:300:df::14) with
+ bh=rh9WV4Bi2lUQnfZE/QgCYWFV0BrT697DbKGp9nczLr0=;
+ b=IMiZo1TudiL9gYAUloUs9Pf7ipEHBGXHLJtHZtM4pKx9RkKvgftSQ3Izw1i4A5+tQcu2j/HfcRrXXIwAxk/rJh4u+yMdKw2jqJLq8RMqU/UmrLNaKLs5vYBPn0TvjauY2af0/2AAZoq5JC6HBpqWgc5EyQK+qkutB8UjA+5ITWw=
+Authentication-Results: vger.kernel.org; dkim=none (message not signed)
+ header.d=none;vger.kernel.org; dmarc=none action=none header.from=amd.com;
+Received: from DM4PR12MB5229.namprd12.prod.outlook.com (2603:10b6:5:398::12)
+ by DM8PR12MB5416.namprd12.prod.outlook.com (2603:10b6:8:28::18) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4394.1; Tue, 27 Jul
- 2021 17:08:37 +0000
-Received: from MW4PR21MB2002.namprd21.prod.outlook.com
- ([fe80::292a:eeea:ee64:3f51]) by MW4PR21MB2002.namprd21.prod.outlook.com
- ([fe80::292a:eeea:ee64:3f51%4]) with mapi id 15.20.4394.005; Tue, 27 Jul 2021
- 17:08:37 +0000
-From:   Sunil Muthuswamy <sunilmut@microsoft.com>
-To:     Michael Kelley <mikelley@microsoft.com>,
-        "will@kernel.org" <will@kernel.org>,
-        "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
-        Mark Rutland <Mark.Rutland@arm.com>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
-        "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
-        "wei.liu@kernel.org" <wei.liu@kernel.org>,
-        KY Srinivasan <kys@microsoft.com>,
-        Stephen Hemminger <sthemmin@microsoft.com>,
-        "ardb@kernel.org" <ardb@kernel.org>
-CC:     Michael Kelley <mikelley@microsoft.com>
-Subject: RE: [PATCH v11 2/5] arm64: hyperv: Add panic handler
-Thread-Topic: [PATCH v11 2/5] arm64: hyperv: Add panic handler
-Thread-Index: AQHXfXkd4IWTbKiKBUGvcw1PlYsfqKtXGGgQ
-Date:   Tue, 27 Jul 2021 17:08:36 +0000
-Message-ID: <MW4PR21MB200286756CEF98F65332C6EAC0E99@MW4PR21MB2002.namprd21.prod.outlook.com>
-References: <1626793023-13830-1-git-send-email-mikelley@microsoft.com>
- <1626793023-13830-3-git-send-email-mikelley@microsoft.com>
-In-Reply-To: <1626793023-13830-3-git-send-email-mikelley@microsoft.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=microsoft.com;
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 5d479645-96cc-4920-7daa-08d951212c66
-x-ms-traffictypediagnostic: MWHPR21MB0512:
-x-ms-exchange-transport-forked: True
-x-ld-processed: 72f988bf-86f1-41af-91ab-2d7cd011db47,ExtAddr
-x-microsoft-antispam-prvs: <MWHPR21MB05127AC308A63DA72F509A03C0E99@MWHPR21MB0512.namprd21.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:8882;
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: YFEYRZRsiDo0+e7bYOocZX0fo1O2yCaTXVy3BDOpA1oVcDLRCNt1yc8KPTFKyuQvbSPdj9Rna5xNAHZY231NJsNAjDn8ipDdo8b9Z7JVo4ohf2KX0V4OxZ1aCHoOfWWxniwJCVNrIPtb635CGRtefnuvu6tl0zTywBhbmGc/T/GQzWHU07KCHFScXCT3+N+2P50xOjnHxHK7SZ3ert9l9HIgMrWjk+7DFqoskeBZA9vzpUFy7+gZOwMLmnTPRT9SPtxBKzFaaLrrzxBnQTXRcjtKpwg2zql+9Nxme7KtyaFvSSqsWJ9zn/gO7/Pi7So+LltMq7HZZw5lkcfVKU3crU2CbzzjunqaQEON04S0QUPB2foVk0vlt7jgSpzbUL+W0wLKlJica1R7RgxqQtjHytEItAh46M52hgzUy7EDZzKDQIamYfkjTugrHP6MWWWiI9W93GUeWI0Xwyn8yCouREndTusTWCofz3lj/jKBWOtrP9hetACIywnLM6h+YZYAxcEMjUYaIQhsAjmXKYy3QLWQGHSVxqJrlfKGlPv68hsPhGApB7N+citrVF8D/8oRQBd8aFSTL7NXIG1HfN2LNtN5dZJbXZUHe38SbU8UGeNbI596JFpHeZFiv2jqGJ8spai3nYycRA4I5g3JJ/WzSWXUpEcgg5vb3FFNWXClt82maeRv/welt3nrfbZ5tqfzpGiqmbKh4MdZAqtRWyQTGhbKkYj7b7S4rl3CDcrSQ6o=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR21MB2002.namprd21.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(366004)(6506007)(33656002)(64756008)(52536014)(76116006)(66446008)(82960400001)(66556008)(82950400001)(122000001)(10290500003)(8936002)(55016002)(5660300002)(110136005)(4326008)(66476007)(38100700002)(186003)(66946007)(508600001)(921005)(86362001)(71200400001)(316002)(7696005)(107886003)(8676002)(9686003)(2906002)(83380400001)(8990500004)(38070700004);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?pn/iG+pib7ta2A/mNsMO+EZ7hSATXgUEu72tLGwyJerI+gFtZr5zuLsh4Ops?=
- =?us-ascii?Q?ce6NRqCJ/W5icBU4XmSokEaQwhOgQyHqyfLov2uWrim5KEbe9lBjxbdYXLsv?=
- =?us-ascii?Q?ovKE6as9Z4dJhumUf9jLNJ7mA6w5/DRTvRbo6+lvvmlzF+d9HwPJJjRD2l0e?=
- =?us-ascii?Q?x4RQ8Q2LAkDbXN0nN/zafd7h662BMyZwDhaT2ZmGsbtK9vtijA995jNErJzJ?=
- =?us-ascii?Q?dhqRrYk3rTO/YlK89tLmkZOaalLULbvYf0waw8gT3yOzxYSjts9Vb9T8QWG+?=
- =?us-ascii?Q?4BfcBOssDvHD6WrmuVMrVhrPOWKBaZGzWW6BNSAelOPcxUJSH3T6Nh38wc9S?=
- =?us-ascii?Q?JgZqIQkK+WbYvcgMYyYj/Onn3zW8t3PVf2/4SV4PeKnTsbFGG3UC8yhGYQOi?=
- =?us-ascii?Q?nZQiFcqdO74wHuVoy/uQVgtcD5p+LqXSo0pWUogxdIR03MyQuUTrniyUeu+f?=
- =?us-ascii?Q?XihcQg2MQk/aTNWCgKTNJRtPRU4Xlm2A0FSByR7Sw1DPTx1WtonwpNzF7j35?=
- =?us-ascii?Q?3kPRRaynu1HA7vtYWZ7cJ/86KXSybstKnw8YWLlTxal6dY/klYvtzyClhvu5?=
- =?us-ascii?Q?BiKTuAKAXe93j8nxDtHCX0vgcd1RVqePeqJVG9JgO1Lhw1MTyuZimPyDfNQr?=
- =?us-ascii?Q?+CqRHogRyPo1xSFKaGXO/E+xSgs2lg8xBT8/YTwa11UUIA5gemtU4kieanUI?=
- =?us-ascii?Q?XmPELlKf4gnsZxo1hktNYeDdM77QlihsRK5Ek/cBLPjnF95j85MnQ/CKRNb3?=
- =?us-ascii?Q?5ZVUhvN5DVbK4ddxJi9fot9EAfT+WUhOrVQhdqC8QbWj9wcQz4cFyRXf9/Px?=
- =?us-ascii?Q?zNAMKmC9+2SltJI21L1K3/t/sBZVHy4HV3uFPTKTlk8vh5oGnZV8XRiLz4YZ?=
- =?us-ascii?Q?OvXiV0Ow/5eKn5DKBtKSs1eh39341rMiyJ0xQAgsYDnxzXu+rclMftdP42wN?=
- =?us-ascii?Q?9WWI8M4WMNmuhCqxEoIMrnRfDiASfnpx+up7iRGpR2FjjVeauDJdeH36jWoJ?=
- =?us-ascii?Q?BXNRqEb98pqHmnVCRkSUtXZLT3lo52T/EBDpsbG1eV7K7bADgTAHaSNYytNI?=
- =?us-ascii?Q?k6JGOtrawf8x6uDlo14/9jRT17eG6+RomJ84u02ic6RrNNFnOtmOOcbvmC7W?=
- =?us-ascii?Q?sXmuV5hA/FlZcQckdfDfUVZ0olu3cpqByjtjaaPFLjGgDtFSWzORCEagRbLZ?=
- =?us-ascii?Q?bx8NQstQKsz+mYLQBXNIN/8t2wuNTjRI/XEt0z8qmCKF8+l8kvrr6eikxH8o?=
- =?us-ascii?Q?ltZPSjp/jbdNT3YhFTMAkgfjB6ic3mbvYafNonrLjfM6jwX8rl+4jy3jteg1?=
- =?us-ascii?Q?LDiK7EwxRszMuxeOhh6YtND8EH3/y39BCAC6vBkiDHSdhjHueWJt50iWRpXT?=
- =?us-ascii?Q?nm0XGSbxaxvkgIUJ2dn8e1ZZda6/?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4352.25; Tue, 27 Jul
+ 2021 22:26:39 +0000
+Received: from DM4PR12MB5229.namprd12.prod.outlook.com
+ ([fe80::73:2581:970b:3208]) by DM4PR12MB5229.namprd12.prod.outlook.com
+ ([fe80::73:2581:970b:3208%3]) with mapi id 15.20.4352.031; Tue, 27 Jul 2021
+ 22:26:39 +0000
+From:   Tom Lendacky <thomas.lendacky@amd.com>
+To:     linux-kernel@vger.kernel.org, x86@kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        iommu@lists.linux-foundation.org, kvm@vger.kernel.org,
+        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        linux-graphics-maintainer@vmware.com,
+        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+        kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org
+Cc:     Borislav Petkov <bp@alien8.de>,
+        Brijesh Singh <brijesh.singh@amd.com>,
+        Joerg Roedel <joro@8bytes.org>,
+        Andi Kleen <ak@linux.intel.com>,
+        Sathyanarayanan Kuppuswamy 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        Tianyu Lan <Tianyu.Lan@microsoft.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Ard Biesheuvel <ardb@kernel.org>, Baoquan He <bhe@redhat.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Dave Young <dyoung@redhat.com>,
+        David Airlie <airlied@linux.ie>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <mripard@kernel.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Paul Mackerras <paulus@samba.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Will Deacon <will@kernel.org>
+Subject: [PATCH 00/11] Implement generic prot_guest_has() helper function
+Date:   Tue, 27 Jul 2021 17:26:03 -0500
+Message-Id: <cover.1627424773.git.thomas.lendacky@amd.com>
+X-Mailer: git-send-email 2.32.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SA9PR13CA0129.namprd13.prod.outlook.com
+ (2603:10b6:806:27::14) To DM4PR12MB5229.namprd12.prod.outlook.com
+ (2603:10b6:5:398::12)
 MIME-Version: 1.0
-X-OriginatorOrg: microsoft.com
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from tlendack-t1.amd.com (165.204.77.1) by SA9PR13CA0129.namprd13.prod.outlook.com (2603:10b6:806:27::14) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4373.11 via Frontend Transport; Tue, 27 Jul 2021 22:26:36 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 7dd6f380-a94d-4189-a68f-08d9514d9a5e
+X-MS-TrafficTypeDiagnostic: DM8PR12MB5416:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <DM8PR12MB541624EC7B23BCC92BBA1C2AECE99@DM8PR12MB5416.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:1107;
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: ypg0SFNtbzBB0RsnmARVE4LdePcQWM4LVL+7KnUssFPsFUJN+vrCDPIJ6eYPtAMhOjH1zr4NkhdDEDuFXEdB4jfeVUvhbXzJ/qCqbbfkLvHYOr4QS4sXm7/m4cphJaWvwF0mh2Xj+Sub3hmiqHaG6AbZ+cktNeWNnntN4jHIWLjLj/odyglhVQuqb71EEzcr0FQpgzcH/z9dHui/ZayHGKglPRGkW6ynARRrWyjT+lvrH16kNTj8EQEttlJ9E/BJ18DwQQQUdwl0id086c7CGYPtC2hbg6hMCc7lRgOlpVu0mimRU0zqcFsIvGKt1NMLObQdyen8oi/Lh9jJc7VxdrlAwFMhqLPzjvvTeCJMrwmr5qMwQpZreZxzYQhbyC1EIH1znxiYplKIZOS2UBmQKZZ2xId8UA1ApswOmOfSfcx3CzyBKVGm7NzRjav4jy9VxWV1bKUJPmyo2m4CWfX5noP81OHGVdl2Xm13829ULb2dIek3V2dXgJIc11+GC4t0USqV7/kcX9//y8ZJE9dzZ3Q8merXFkOP7eqTO75g4aHu1XYb8UNl16DjfiCcCLEC0bQkoZIvvhIa585mciqZTR4oJ5VBkFkaihas+vE1Cr5n3vgvvT5ForNNUW7D+Nsj2yVZRqLHJPe69BBVZgrvCo4lo90zcuIZECd+fy6KupEK4SlLUGUy5iy6Jf0W5QDwsaWTvWOOiPPCN6ehc4hEBisJrd/y4SxSvUjG4iX6hCEkX+EsdDY3u7Hs/2ylXgSMJ2Imq8O1rMVxvKvjPDeberLewqjt/BesWeCS3fgNztqLWVA2QQD+5CJeF3t+7xPw
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB5229.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(366004)(66476007)(66946007)(66556008)(508600001)(966005)(5660300002)(2906002)(6486002)(83380400001)(7416002)(316002)(54906003)(956004)(2616005)(26005)(7696005)(52116002)(8676002)(7406005)(921005)(36756003)(186003)(86362001)(6666004)(38100700002)(38350700002)(4326008)(8936002)(41533002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?aJnRTpan4y5HRpkYVUnzMWiZ4RxV25R9l2eVHtxCLQyM3DYnzrliquhdbrLj?=
+ =?us-ascii?Q?k1yifCAMe99mX2I3/KEGRuxnquZ/4ru44MV/Rl1ovfUhyCDCFkqzkmiq2umY?=
+ =?us-ascii?Q?UUiD1P4ZZNXEMByxNCu/sMDnDqCBDd9x0DwHn6m38L6bHH/UcrtrmR2MGstE?=
+ =?us-ascii?Q?ciD+SVGn8kuKbcSR3Ag5Hh+AMC+HAcjANDav4++LMsuwu5AkzuSyts2txCOF?=
+ =?us-ascii?Q?vauZ39Gm6jBGqFZ4RwaX11J2SBLbKy2pmZgSEPuw8ORt4XjaEq5qb922BvI8?=
+ =?us-ascii?Q?nlEI5p224WvGG+0whgW3Kl45c8Gklm7goT6aLwr4bp5AKlwWMuSkTwHQEF6+?=
+ =?us-ascii?Q?EWIavbRPP5DcbVxzW2Qzmi2Js4KVPPiU4LyqtBwmKfhk0j1mlM8DQlTT8z8d?=
+ =?us-ascii?Q?+1F0l7ObQDKBvHWvrrpQS3KzWDdyOfF3dqAXoOAB0pgoGoLNEIk986hZB7cH?=
+ =?us-ascii?Q?/r9sI+MjU3BfuWh6kfknRBqPQOmmS+3sQhb/MKhPF0uPAZFo+hfoiWOQk97B?=
+ =?us-ascii?Q?t9FNGuthQXPBIngIduZySMXfhCGuMNqJH+NRZUGnntpP5Kh/xIRkmaENsDaL?=
+ =?us-ascii?Q?XxYf1qPn/iInAt2pdYE3j/tqYfL3M289D1o2UHtiAkbWij68tk+fBXbWxWh2?=
+ =?us-ascii?Q?8wlzGRSUoWrh72xkMpRjb/3wjpPSVyljZTYXcCLR64j5SNnUG0LzB2GOzy1W?=
+ =?us-ascii?Q?DwWDrkWLciLWQHRl/72bSNiWeJJL9c7kWQpFf2QFlY+O8XvIf8ein9qEcd1F?=
+ =?us-ascii?Q?F/vC2l+9jupfr7buDz5ozI9ODuf4vDNDr6k23OdV23D7Gon3jtPivmnVk1NX?=
+ =?us-ascii?Q?Q6OFKaexHuAwuUJKJKpJ01YKrvmTVHU4jJE7V3cU0JwgRPV0ev7h5nh90rbf?=
+ =?us-ascii?Q?6lSR8g5TV3Owdxn5En0x4p5ZxwEGmo7YfJzMp/3O04mMzhVuokOyr9eX5lLe?=
+ =?us-ascii?Q?s4tR2z1v/3+zghl85PMUzIxLlpKitIQDVlXnEdEx/E0Xxv8ssxAQSvp5TzCZ?=
+ =?us-ascii?Q?OVzjJtLQ0B0mWKp9Iwcm2HC1E7f51KTQSI1FZ/ogpQNWR0S64rvykj1ES5OX?=
+ =?us-ascii?Q?BAbquEpO+73c9kjqDdgjWFoOfYpeVWWF9r45TjZRV+LygQqk7uQsMP42858E?=
+ =?us-ascii?Q?7nbhgq1Ui2NEXUAl/QKmLbFweGnhZWo3E15IwTNsLpf5ubxO7vKrSpW8pcVn?=
+ =?us-ascii?Q?0cJ7scFgi7bfHX2JL7l8XRq+7fMPmXn6s4jQ/jV8N+lVrgUgSp8QC3NyOw/m?=
+ =?us-ascii?Q?4HidL1Tz7f09rPhgXrpS7TCn1HNV0UQSejP2CvomnJladVJxskMWYI0PUx+x?=
+ =?us-ascii?Q?h9p4/Zv/sYdDUWImLwoK+L/K?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7dd6f380-a94d-4189-a68f-08d9514d9a5e
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB5229.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MW4PR21MB2002.namprd21.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5d479645-96cc-4920-7daa-08d951212c66
-X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Jul 2021 17:08:36.9484
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Jul 2021 22:26:39.6480
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 72f988bf-86f1-41af-91ab-2d7cd011db47
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: czISgSMQPG/kO6iuh26+Mo9lLkjJHWvlWX6lU6kBeJE1DLvr5342B991LukDR7EZCaCIqFPcKNr8kgBnWY8JdRGFWZGiKM0Yac7TEr6GjKE=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR21MB0512
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 31LZpPx2OLl8h3x8z4/dqP6dzfZSbFJk98bRtjbtIgeHtv4SPsg04KM72vwoC/bmaKL1Ny770jXOYIABe9+a6w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM8PR12MB5416
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-> Add a function to inform Hyper-V about a guest panic.
->=20
-> This code is built only when CONFIG_HYPERV is enabled.
->=20
-> Signed-off-by: Michael Kelley <mikelley@microsoft.com>
-> ---
->  arch/arm64/hyperv/hv_core.c | 52 +++++++++++++++++++++++++++++++++++++++=
-++++++
->  1 file changed, 52 insertions(+)
->=20
-> diff --git a/arch/arm64/hyperv/hv_core.c b/arch/arm64/hyperv/hv_core.c
-> index 4c5dc0f..b54c347 100644
-> --- a/arch/arm64/hyperv/hv_core.c
-> +++ b/arch/arm64/hyperv/hv_core.c
-> @@ -127,3 +127,55 @@ u64 hv_get_vpreg(u32 msr)
->  	return output.as64.low;
->  }
->  EXPORT_SYMBOL_GPL(hv_get_vpreg);
-> +
-> +/*
-> + * hyperv_report_panic - report a panic to Hyper-V.  This function uses
-> + * the older version of the Hyper-V interface that admittedly doesn't
-> + * pass enough information to be useful beyond just recording the
-> + * occurrence of a panic. The parallel hv_kmsg_dump() uses the
-> + * new interface that allows reporting 4 Kbytes of data, which is much
-> + * more useful. Hyper-V on ARM64 always supports the newer interface, bu=
-t
-> + * we retain support for the older version because the sysadmin is allow=
-ed
-> + * to disable the newer version via sysctl in case of information securi=
-ty
-> + * concerns about the more verbose version.
-> + */
-> +void hyperv_report_panic(struct pt_regs *regs, long err, bool in_die)
-> +{
-> +	static bool	panic_reported;
-> +	u64		guest_id;
-> +
-> +	/* Don't report a panic to Hyper-V if we're not going to panic */
-> +	if (in_die && !panic_on_oops)
-> +		return;
-> +
-> +	/*
-> +	 * We prefer to report panic on 'die' chain as we have proper
-> +	 * registers to report, but if we miss it (e.g. on BUG()) we need
-> +	 * to report it on 'panic'.
-> +	 *
-> +	 * Calling code in the 'die' and 'panic' paths ensures that only
-> +	 * one CPU is running this code, so no atomicity is needed.
-> +	 */
-> +	if (panic_reported)
-> +		return;
-> +	panic_reported =3D true;
-> +
-> +	guest_id =3D hv_get_vpreg(HV_REGISTER_GUEST_OSID);
-> +
-> +	/*
-> +	 * Hyper-V provides the ability to store only 5 values.
-> +	 * Pick the passed in error value, the guest_id, the PC,
-> +	 * and the SP.
-> +	 */
-> +	hv_set_vpreg(HV_REGISTER_CRASH_P0, err);
-> +	hv_set_vpreg(HV_REGISTER_CRASH_P1, guest_id);
-> +	hv_set_vpreg(HV_REGISTER_CRASH_P2, regs->pc);
-> +	hv_set_vpreg(HV_REGISTER_CRASH_P3, regs->sp);
-> +	hv_set_vpreg(HV_REGISTER_CRASH_P4, 0);
-> +
-> +	/*
-> +	 * Let Hyper-V know there is crash data available
-> +	 */
-> +	hv_set_vpreg(HV_REGISTER_CRASH_CTL, HV_CRASH_CTL_CRASH_NOTIFY);
-> +}
-> +EXPORT_SYMBOL_GPL(hyperv_report_panic);
-> --
-> 1.8.3.1
+This patch series provides a generic helper function, prot_guest_has(),
+to replace the sme_active(), sev_active(), sev_es_active() and
+mem_encrypt_active() functions.
 
-Reviewed-by: Sunil Muthuswamy <sunilmut@microsoft.com>
+It is expected that as new protected virtualization technologies are
+added to the kernel, they can all be covered by a single function call
+instead of a collection of specific function calls all called from the
+same locations.
+
+The powerpc and s390 patches have been compile tested only. Can the
+folks copied on this series verify that nothing breaks for them.
+
+Cc: Andi Kleen <ak@linux.intel.com>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: Baoquan He <bhe@redhat.com>
+Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: Christian Borntraeger <borntraeger@de.ibm.com>
+Cc: Daniel Vetter <daniel@ffwll.ch>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Dave Young <dyoung@redhat.com>
+Cc: David Airlie <airlied@linux.ie>
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Joerg Roedel <joro@8bytes.org>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Maxime Ripard <mripard@kernel.org>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Paul Mackerras <paulus@samba.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Vasily Gorbik <gor@linux.ibm.com>
+Cc: VMware Graphics <linux-graphics-maintainer@vmware.com>
+Cc: Will Deacon <will@kernel.org>
+
+---
+
+Patches based on:
+  https://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git master
+  commit 79e920060fa7 ("Merge branch 'WIP/fixes'")
+
+Tom Lendacky (11):
+  mm: Introduce a function to check for virtualization protection
+    features
+  x86/sev: Add an x86 version of prot_guest_has()
+  powerpc/pseries/svm: Add a powerpc version of prot_guest_has()
+  x86/sme: Replace occurrences of sme_active() with prot_guest_has()
+  x86/sev: Replace occurrences of sev_active() with prot_guest_has()
+  x86/sev: Replace occurrences of sev_es_active() with prot_guest_has()
+  treewide: Replace the use of mem_encrypt_active() with
+    prot_guest_has()
+  mm: Remove the now unused mem_encrypt_active() function
+  x86/sev: Remove the now unused mem_encrypt_active() function
+  powerpc/pseries/svm: Remove the now unused mem_encrypt_active()
+    function
+  s390/mm: Remove the now unused mem_encrypt_active() function
+
+ arch/Kconfig                               |  3 ++
+ arch/powerpc/include/asm/mem_encrypt.h     |  5 --
+ arch/powerpc/include/asm/protected_guest.h | 30 +++++++++++
+ arch/powerpc/platforms/pseries/Kconfig     |  1 +
+ arch/s390/include/asm/mem_encrypt.h        |  2 -
+ arch/x86/Kconfig                           |  1 +
+ arch/x86/include/asm/kexec.h               |  2 +-
+ arch/x86/include/asm/mem_encrypt.h         | 13 +----
+ arch/x86/include/asm/protected_guest.h     | 27 ++++++++++
+ arch/x86/kernel/crash_dump_64.c            |  4 +-
+ arch/x86/kernel/head64.c                   |  4 +-
+ arch/x86/kernel/kvm.c                      |  3 +-
+ arch/x86/kernel/kvmclock.c                 |  4 +-
+ arch/x86/kernel/machine_kexec_64.c         | 19 +++----
+ arch/x86/kernel/pci-swiotlb.c              |  9 ++--
+ arch/x86/kernel/relocate_kernel_64.S       |  2 +-
+ arch/x86/kernel/sev.c                      |  6 +--
+ arch/x86/kvm/svm/svm.c                     |  3 +-
+ arch/x86/mm/ioremap.c                      | 16 +++---
+ arch/x86/mm/mem_encrypt.c                  | 60 +++++++++++++++-------
+ arch/x86/mm/mem_encrypt_identity.c         |  3 +-
+ arch/x86/mm/pat/set_memory.c               |  3 +-
+ arch/x86/platform/efi/efi_64.c             |  9 ++--
+ arch/x86/realmode/init.c                   |  8 +--
+ drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c    |  4 +-
+ drivers/gpu/drm/drm_cache.c                |  4 +-
+ drivers/gpu/drm/vmwgfx/vmwgfx_drv.c        |  4 +-
+ drivers/gpu/drm/vmwgfx/vmwgfx_msg.c        |  6 +--
+ drivers/iommu/amd/init.c                   |  7 +--
+ drivers/iommu/amd/iommu.c                  |  3 +-
+ drivers/iommu/amd/iommu_v2.c               |  3 +-
+ drivers/iommu/iommu.c                      |  3 +-
+ fs/proc/vmcore.c                           |  6 +--
+ include/linux/mem_encrypt.h                |  4 --
+ include/linux/protected_guest.h            | 37 +++++++++++++
+ kernel/dma/swiotlb.c                       |  4 +-
+ 36 files changed, 218 insertions(+), 104 deletions(-)
+ create mode 100644 arch/powerpc/include/asm/protected_guest.h
+ create mode 100644 arch/x86/include/asm/protected_guest.h
+ create mode 100644 include/linux/protected_guest.h
+
+-- 
+2.32.0
 
