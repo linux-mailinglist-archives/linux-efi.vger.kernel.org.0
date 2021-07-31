@@ -2,101 +2,114 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 23AB33DC7C2
-	for <lists+linux-efi@lfdr.de>; Sat, 31 Jul 2021 20:46:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C32B73DC7CA
+	for <lists+linux-efi@lfdr.de>; Sat, 31 Jul 2021 20:57:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229642AbhGaSq6 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sat, 31 Jul 2021 14:46:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42072 "EHLO
+        id S229958AbhGaS5P (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 31 Jul 2021 14:57:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44722 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229590AbhGaSq5 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sat, 31 Jul 2021 14:46:57 -0400
-Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11A09C06175F;
-        Sat, 31 Jul 2021 11:46:51 -0700 (PDT)
-Received: by mail-lf1-x132.google.com with SMTP id y34so25191752lfa.8;
-        Sat, 31 Jul 2021 11:46:50 -0700 (PDT)
+        with ESMTP id S229590AbhGaS5P (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sat, 31 Jul 2021 14:57:15 -0400
+Received: from mail-lj1-x234.google.com (mail-lj1-x234.google.com [IPv6:2a00:1450:4864:20::234])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C143FC0613CF;
+        Sat, 31 Jul 2021 11:57:08 -0700 (PDT)
+Received: by mail-lj1-x234.google.com with SMTP id n6so17806291ljp.9;
+        Sat, 31 Jul 2021 11:57:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=subject:from:to:cc:references:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=f9mH7GxoUvwQhZmcblBHqMZcgMjxB0VFserqhea/TKU=;
-        b=CBqmFppPYdO06ERQx2RNzKBgI9zrYi2ri3gfb137prqZ5ZluaakXmvXjI7e27gjCq0
-         s1ZF7C3nrcEpmDj73hzhbhREHtM58okX2Re8RFBBS9h64QRtooSJuA9kwxt/DEn5h2fV
-         HYi3Q+1Jqx7y8VqSV1EN7aBHBcDvas+v/4JQfFdsp5TNqUY0XdqQDSJ8rjJXUPuFyT5u
-         0O7AAalmlTlDFe90rapJAdLlr8IB3VwWmMyFFLgVxGyh3eyMFpDURaCjx3xzQ740ub9g
-         zcbkUZnA6ch25cAaHMtjYV/RbGZQOlc2sQlZP42CmqRh1iwv7qI3Btiszn41tSyqc8c5
-         9nXw==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=M+obj5GrZr83iiBc3FGUT58tIa7AGQd7uAAiSvebjq8=;
+        b=LbWb3eocuhIkUbXbccz4umVOpSy249IQDZKpoqSBWh1YDfaHTBhkjg4HvbJigYGGig
+         /fVy5NsvHqEJtRMaKXe440u0T6lQXGgzgulBO9o1ORRJGL5MQLOR0YWdmxlXtitOFEfZ
+         7DHK/HnRln9lZsKFLE062Lpk+/LOg4nzo0B8/tUncqaDEFa17UlyMFpYD0ZeLhzL2Na7
+         kN65PZPGb/aHfF5P1qedKNozniu0stvbsSX+sHkAZI0Fo6dU2qN8rJB4Sf7VNYVxDImU
+         mju5I7aCawrpSQiUZKMg+dssOJ5DyOp7ixmq9RDq0bI8YCeO6PLimbYhx4A9S7vtQX4/
+         uRgA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:from:to:cc:references:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=f9mH7GxoUvwQhZmcblBHqMZcgMjxB0VFserqhea/TKU=;
-        b=rkJ1q4jKgCu8W0XA6mzZHWnBevZMfUia8WV925m/0xtvjJPFGgwjddVucNl4/7/sRZ
-         hnsKdTVD6EAuueaFWZjwtNGekHxnLhhlKu0PYmLFwiJAlcm4CGOeQ5NbeGtuVYbh3K3B
-         2UV9XA/jwaZcm1yc/AUdvitJ19GDo6YO5V7kFkI/gcBfFgcyuQ4VOpW4Dzr3bnJEY0GY
-         5k1cNbl3XqDpJZ1qFbLwmFDKx7if3URwXupHFhER6KWTTsWLVqxH3kJSFWwN6qAUEncl
-         hyZR+B3jaKUj6AZYEu5zoFtLDosvotv706O3qeoJCalcYiSZ4h66FpdutPiNA7Unc9V+
-         cq9g==
-X-Gm-Message-State: AOAM530x3egifzj3EPkd0zBq7OMqnRKaT03oncWgB7sgpt5tKBLTy6BI
-        vr8wcyQRmRgUTUzLs6K/nd+mcYKTMxU=
-X-Google-Smtp-Source: ABdhPJzzNUqZ7ZCsfj2v/sqLp+tz8+xToeofAP6yQRy4x9aPbIC1NkyegNgs72fj9ml4345TFtUZQA==
-X-Received: by 2002:a05:6512:138a:: with SMTP id p10mr6562178lfa.505.1627757209358;
-        Sat, 31 Jul 2021 11:46:49 -0700 (PDT)
-Received: from [192.168.2.145] (94-29-22-96.dynamic.spd-mgts.ru. [94.29.22.96])
-        by smtp.googlemail.com with ESMTPSA id j2sm426769ljc.49.2021.07.31.11.46.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 31 Jul 2021 11:46:49 -0700 (PDT)
-Subject: Re: [PATCH v2 3/3] partitions/efi: Support NVIDIA Tegra devices
+        bh=M+obj5GrZr83iiBc3FGUT58tIa7AGQd7uAAiSvebjq8=;
+        b=l0Wgc9o+d+r1UckrIUstgwdCsZa1WPT7/GDfb4XavIGvdKY8QQzpXipoLy8LjLIr8D
+         BD4f4wg/baUHOKSg8av6S5C7EAv3Rq0PU04BOoSZ6mEvZ51vXegljfzE2Kqzw+LVEuE1
+         EoAd73SGgQsw4aqM6YXTO33ua33SCatR587tweVk5RiA6nTI0ONlzq7w6cCYX02jG/7Q
+         VOnZ5j8T1+IZe554Oer99lc08cYhkckd7HiVM/+zsdT3+5MkuY/U5GnQkCt/Fy7EyoD7
+         KeDW4KNtcc5iRx2Wu0wvbMjaSKZlNZ9kjSloqFxiPa7rFOXD0M8DUHvXCCzdPSsCPjxI
+         TjfQ==
+X-Gm-Message-State: AOAM533+pJeiQSfRGASTkWPS8nowc4jysP77vGV6PlBdcv/dmuSjmg6N
+        ePQ7O9mXvvfh15hEV+QDuK0=
+X-Google-Smtp-Source: ABdhPJxxz6vYab6e4iT5uly1ygMAO3SmvMPYGbIBJgtJqML12DT2n/KwhFKTUsgEKq1N0Vk+fTA3gg==
+X-Received: by 2002:a2e:a164:: with SMTP id u4mr5766475ljl.121.1627757826264;
+        Sat, 31 Jul 2021 11:57:06 -0700 (PDT)
+Received: from localhost.localdomain (94-29-22-96.dynamic.spd-mgts.ru. [94.29.22.96])
+        by smtp.gmail.com with ESMTPSA id c10sm507653lfv.10.2021.07.31.11.57.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 31 Jul 2021 11:57:05 -0700 (PDT)
 From:   Dmitry Osipenko <digetx@gmail.com>
 To:     Jens Axboe <axboe@kernel.dk>,
         Thierry Reding <thierry.reding@gmail.com>,
         Jonathan Hunter <jonathanh@nvidia.com>,
-        =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>,
+        =?UTF-8?q?Micha=C5=82=20Miros=C5=82aw?= <mirq-linux@rere.qmqm.pl>,
         David Heidelberg <david@ixit.cz>,
         Peter Geis <pgwipeout@gmail.com>,
         Ulf Hansson <ulf.hansson@linaro.org>,
         Adrian Hunter <adrian.hunter@intel.com>,
         Christoph Hellwig <hch@infradead.org>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
         Davidlohr Bueso <dave@stgolabs.net>,
         Ion Agorria <AG0RRIA@yahoo.com>,
         Svyatoslav Ryhel <clamor95@gmail.com>
 Cc:     linux-tegra@vger.kernel.org, linux-block@vger.kernel.org,
         linux-efi <linux-efi@vger.kernel.org>
-References: <20210731183626.18568-1-digetx@gmail.com>
- <20210731183626.18568-4-digetx@gmail.com>
-Message-ID: <3d175de0-3c4e-1fcd-984c-0d9bf147779f@gmail.com>
-Date:   Sat, 31 Jul 2021 21:46:48 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+Subject: [PATCH v3 0/3] Support EFI partition on NVIDIA Tegra devices
+Date:   Sat, 31 Jul 2021 21:56:49 +0300
+Message-Id: <20210731185652.6421-1-digetx@gmail.com>
+X-Mailer: git-send-email 2.32.0
 MIME-Version: 1.0
-In-Reply-To: <20210731183626.18568-4-digetx@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-31.07.2021 21:36, Dmitry Osipenko пишет:
-> diff --git a/block/partitions/efi.c b/block/partitions/efi.c
-> index e2716792ecc1..dced55c0d2e1 100644
-> --- a/block/partitions/efi.c
-> +++ b/block/partitions/efi.c
-> @@ -98,6 +98,15 @@ static int force_gpt;
->  static int __init
->  force_gpt_fn(char *str)
->  {
-> +	/*
-> +	 * This check allows to properly parse cmdline variants like
-> +	 * "gpt gpt_sector=<sector>" and "gpt_sector=<sector> gpt" since
-> +	 * "gpt" overlaps with the "gpt_sector=", see tegra_gpt_sector_fn().
-> +	 * The argument is absent for a boolean cmdline option.
-> +	 */
-> +	if (strlen(str))
-> +		return 0;
+This series adds the most minimal EFI partition support for NVIDIA Tegra
+consumer devices, like Android tablets and game consoles, making theirs
+EMMC accessible out-of-the-box using downstream bootloader and mainline
+Linux kernel.  EMMC now works on Acer A500 tablet and Ouya game console
+that are already well supported in mainline and internal storage is the
+only biggest thing left to support.
 
-This is not needed anymore in this patch, I noticed it only once v2 was
-already sent out. Will correct it in v3.
+Changelog:
+
+v3: - Removed unnecessary v1 hunk that was left by accident in efi.c of v2.
+
+v2: - This is continuation of [1] where Davidlohr Bueso suggested that it
+      should be better to avoid supporting in mainline the custom gpt_sector
+      kernel cmdline parameter that downstream Android kernels use.  We can
+      do this for the devices that are already mainlined, so I dropped the
+      cmdline from the v2 and left only the variant with a fixed GPT address.
+
+[1] https://lore.kernel.org/linux-efi/20210327212100.3834-3-digetx@gmail.com/T/
+
+Dmitry Osipenko (3):
+  mmc: core: Add raw_boot_mult field to mmc_ext_csd
+  mmc: block: Add mmc_bdev_to_card() helper
+  partitions/efi: Support NVIDIA Tegra devices
+
+ block/partitions/Kconfig   |  8 ++++
+ block/partitions/Makefile  |  1 +
+ block/partitions/check.h   |  2 +
+ block/partitions/core.c    |  3 ++
+ block/partitions/efi.c     |  9 ++++
+ block/partitions/tegra.c   | 86 ++++++++++++++++++++++++++++++++++++++
+ drivers/mmc/core/block.c   | 15 +++++++
+ drivers/mmc/core/mmc.c     |  2 +
+ include/linux/mmc/blkdev.h | 13 ++++++
+ include/linux/mmc/card.h   |  1 +
+ 10 files changed, 140 insertions(+)
+ create mode 100644 block/partitions/tegra.c
+ create mode 100644 include/linux/mmc/blkdev.h
+
+-- 
+2.32.0
+
