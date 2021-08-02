@@ -2,27 +2,27 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 512473DDCDA
-	for <lists+linux-efi@lfdr.de>; Mon,  2 Aug 2021 17:55:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B95B3DDD05
+	for <lists+linux-efi@lfdr.de>; Mon,  2 Aug 2021 18:01:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235360AbhHBPzZ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 2 Aug 2021 11:55:25 -0400
-Received: from mail.kernel.org ([198.145.29.99]:54620 "EHLO mail.kernel.org"
+        id S229988AbhHBQBP (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 2 Aug 2021 12:01:15 -0400
+Received: from mail.kernel.org ([198.145.29.99]:57532 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235260AbhHBPzZ (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Mon, 2 Aug 2021 11:55:25 -0400
+        id S229805AbhHBQBO (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Mon, 2 Aug 2021 12:01:14 -0400
 Received: from disco-boy.misterjones.org (disco-boy.misterjones.org [51.254.78.96])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id F095661101;
-        Mon,  2 Aug 2021 15:55:15 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 1186060243;
+        Mon,  2 Aug 2021 16:01:05 +0000 (UTC)
 Received: from sofa.misterjones.org ([185.219.108.64] helo=why.misterjones.org)
         by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
         (Exim 4.94.2)
         (envelope-from <maz@kernel.org>)
-        id 1mAaHZ-002VoN-TK; Mon, 02 Aug 2021 16:55:14 +0100
-Date:   Mon, 02 Aug 2021 16:55:13 +0100
-Message-ID: <87lf5j265a.wl-maz@kernel.org>
+        id 1mAaNC-002VuC-LV; Mon, 02 Aug 2021 17:01:03 +0100
+Date:   Mon, 02 Aug 2021 17:01:02 +0100
+Message-ID: <87k0l325vl.wl-maz@kernel.org>
 From:   Marc Zyngier <maz@kernel.org>
 To:     Michael Kelley <mikelley@microsoft.com>
 Cc:     will@kernel.org, catalin.marinas@arm.com, mark.rutland@arm.com,
@@ -30,10 +30,9 @@ Cc:     will@kernel.org, catalin.marinas@arm.com, mark.rutland@arm.com,
         linux-hyperv@vger.kernel.org, linux-efi@vger.kernel.org,
         wei.liu@kernel.org, kys@microsoft.com, sthemmin@microsoft.com,
         ardb@kernel.org
-Subject: Re: [PATCH v11 3/5] arm64: hyperv: Initialize hypervisor on boot
-In-Reply-To: <1626793023-13830-4-git-send-email-mikelley@microsoft.com>
+Subject: Re: [PATCH v11 0/5] Enable Linux guests on Hyper-V on ARM64
+In-Reply-To: <1626793023-13830-1-git-send-email-mikelley@microsoft.com>
 References: <1626793023-13830-1-git-send-email-mikelley@microsoft.com>
-        <1626793023-13830-4-git-send-email-mikelley@microsoft.com>
 User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
  FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/27.1
  (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
@@ -47,127 +46,58 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, 20 Jul 2021 15:57:01 +0100,
+On Tue, 20 Jul 2021 15:56:58 +0100,
 Michael Kelley <mikelley@microsoft.com> wrote:
 > 
-> Add ARM64-specific code to initialize the Hyper-V
-> hypervisor when booting as a guest VM.
+> This series enables Linux guests running on Hyper-V on ARM64
+> hardware. New ARM64-specific code in arch/arm64/hyperv initializes
+> Hyper-V and its hypercall mechanism.  Existing architecture
+> independent drivers for Hyper-V's VMbus and synthetic devices just
+> work when built for ARM64. Hyper-V code is built and included in
+> the image and modules only if CONFIG_HYPERV is enabled.
 > 
-> This code is built only when CONFIG_HYPERV is enabled.
+> The five patches are organized as follows:
 > 
-> Signed-off-by: Michael Kelley <mikelley@microsoft.com>
-> ---
->  arch/arm64/hyperv/Makefile   |  2 +-
->  arch/arm64/hyperv/mshyperv.c | 83 ++++++++++++++++++++++++++++++++++++++++++++
->  2 files changed, 84 insertions(+), 1 deletion(-)
->  create mode 100644 arch/arm64/hyperv/mshyperv.c
+> 1) Add definitions and functions for making Hyper-V hypercalls
+>    and getting/setting virtual processor registers provided by
+>    Hyper-V
 > 
-> diff --git a/arch/arm64/hyperv/Makefile b/arch/arm64/hyperv/Makefile
-> index 1697d30..87c31c0 100644
-> --- a/arch/arm64/hyperv/Makefile
-> +++ b/arch/arm64/hyperv/Makefile
-> @@ -1,2 +1,2 @@
->  # SPDX-License-Identifier: GPL-2.0
-> -obj-y		:= hv_core.o
-> +obj-y		:= hv_core.o mshyperv.o
-> diff --git a/arch/arm64/hyperv/mshyperv.c b/arch/arm64/hyperv/mshyperv.c
-> new file mode 100644
-> index 0000000..2811fd0
-> --- /dev/null
-> +++ b/arch/arm64/hyperv/mshyperv.c
-> @@ -0,0 +1,83 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +/*
-> + * Core routines for interacting with Microsoft's Hyper-V hypervisor,
-> + * including hypervisor initialization.
-> + *
-> + * Copyright (C) 2021, Microsoft, Inc.
-> + *
-> + * Author : Michael Kelley <mikelley@microsoft.com>
-> + */
-> +
-> +#include <linux/types.h>
-> +#include <linux/acpi.h>
-> +#include <linux/export.h>
-> +#include <linux/errno.h>
-> +#include <linux/version.h>
-> +#include <linux/cpuhotplug.h>
-> +#include <asm/mshyperv.h>
-> +
-> +static bool hyperv_initialized;
-> +
-> +static int __init hyperv_init(void)
-> +{
-> +	struct hv_get_vp_registers_output	result;
-> +	u32	a, b, c, d;
-> +	u64	guest_id;
-> +	int	ret;
-> +
-> +	/*
-> +	 * If we're in a VM on Hyper-V, the ACPI hypervisor_id field will
-> +	 * have the string "MsHyperV".
-> +	 */
-> +	if (strncmp((char *)&acpi_gbl_FADT.hypervisor_id, "MsHyperV", 8))
-> +		return -EINVAL;
+> 2) Add the function needed by the arch independent VMbus driver
+>    for reporting a panic to Hyper-V.
+> 
+> 3) Add Hyper-V initialization code and utility functions that
+>    report Hyper-v status.
+> 
+> 4) Export screen_info so it may be used by the Hyper-V frame buffer
+>    driver built as a module. It is already exported for x86,
+>    powerpc, and alpha architectures.
+> 
+> 5) Make CONFIG_HYPERV selectable on ARM64 in addition to x86/x64.
+> 
+> Hyper-V on ARM64 runs with a 4 Kbyte page size, but allows guests
+> with 4K/16K/64K page size. Linux guests with this patch series
+> work with all three supported ARM64 page sizes.
+> 
+> The Hyper-V vPCI driver at drivers/pci/host/pci-hyperv.c has
+> x86/x64-specific code and is not being built for ARM64. Enabling
+> Hyper-V vPCI devices on ARM64 is in progress via a separate set
+> of patches.
+> 
+> This patch set is based on the linux-next20210720 code tree.
+> 
+> Changes in v11:
+> * Drop the previous Patch 1 as the fixes have already been
+>   separately accepted upstream.
+> * Drop the previous Patch 3 for enabling Hyper-V enlightened
+>   clocks/timers.  Hyper-V is now offering the full ARM64
+>   architectural Generic Timer in guest VMs, so the existing
+>   arch_arch_timer.c driver just works. [Mark Rutland, Marc
+>   Zyngier]
 
-Before going ahead and parsing the local FADT copy, it would be
-prudent to test that you are actually on an ACPI system, specially
-given that this function is unconditionally called, even on DT
-systems.  In the same vein, returning -EINVAL when failing to find
-Hyper-V is a bit excessive.
+Thanks for doing this. Assuming you fix the issue I mentioned in my
+reply to patch #3. FWIW:
 
-> +
-> +	/* Setup the guest ID */
-> +	guest_id = generate_guest_id(0, LINUX_VERSION_CODE, 0);
-> +	hv_set_vpreg(HV_REGISTER_GUEST_OSID, guest_id);
-> +
-> +	/* Get the features and hints from Hyper-V */
-> +	hv_get_vpreg_128(HV_REGISTER_FEATURES, &result);
-> +	ms_hyperv.features = result.as32.a;
-> +	ms_hyperv.priv_high = result.as32.b;
-> +	ms_hyperv.misc_features = result.as32.c;
-> +
-> +	hv_get_vpreg_128(HV_REGISTER_ENLIGHTENMENTS, &result);
-> +	ms_hyperv.hints = result.as32.a;
-> +
-> +	pr_info("Hyper-V: privilege flags low 0x%x, high 0x%x, hints 0x%x, misc 0x%x\n",
-> +		ms_hyperv.features, ms_hyperv.priv_high, ms_hyperv.hints,
-> +		ms_hyperv.misc_features);
-> +
-> +	/* Get information about the Hyper-V host version */
-> +	hv_get_vpreg_128(HV_REGISTER_HYPERVISOR_VERSION, &result);
-> +	a = result.as32.a;
-> +	b = result.as32.b;
-> +	c = result.as32.c;
-> +	d = result.as32.d;
-> +	pr_info("Hyper-V: Host Build %d.%d.%d.%d-%d-%d\n",
-> +		b >> 16, b & 0xFFFF, a,	d & 0xFFFFFF, c, d >> 24);
-> +
-> +	ret = hv_common_init();
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = cpuhp_setup_state(CPUHP_AP_ONLINE_DYN, "arm64/hyperv_init:online",
-> +				hv_common_cpu_init, hv_common_cpu_die);
-> +	if (ret < 0) {
-> +		hv_common_free();
-> +		return ret;
-> +	}
-> +
-> +	hyperv_initialized = true;
-> +	return 0;
-> +}
-> +
-> +early_initcall(hyperv_init);
-> +
-> +bool hv_is_hyperv_initialized(void)
-> +{
-> +	return hyperv_initialized;
-> +}
-> +EXPORT_SYMBOL_GPL(hv_is_hyperv_initialized);
-
-Thanks,
+Acked-by: Marc Zyngier <maz@kernel.org>
 
 	M.
 
