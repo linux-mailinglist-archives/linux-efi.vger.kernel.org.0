@@ -2,426 +2,226 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 416E33DD5F8
-	for <lists+linux-efi@lfdr.de>; Mon,  2 Aug 2021 14:50:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D3FE3DD6B0
+	for <lists+linux-efi@lfdr.de>; Mon,  2 Aug 2021 15:12:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233632AbhHBMu3 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 2 Aug 2021 08:50:29 -0400
-Received: from pegase2.c-s.fr ([93.17.235.10]:46189 "EHLO pegase2.c-s.fr"
+        id S233718AbhHBNM1 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 2 Aug 2021 09:12:27 -0400
+Received: from gate.crashing.org ([63.228.1.57]:49023 "EHLO gate.crashing.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232629AbhHBMu2 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Mon, 2 Aug 2021 08:50:28 -0400
-X-Greylist: delayed 456 seconds by postgrey-1.27 at vger.kernel.org; Mon, 02 Aug 2021 08:50:27 EDT
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-        by localhost (Postfix) with ESMTP id 4Gdd265BJvz9sTV;
-        Mon,  2 Aug 2021 14:42:38 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-        by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id hMLcQ9rc4PUn; Mon,  2 Aug 2021 14:42:38 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-        by pegase2.c-s.fr (Postfix) with ESMTP id 4Gdd253Z2xz9sRx;
-        Mon,  2 Aug 2021 14:42:37 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-        by messagerie.si.c-s.fr (Postfix) with ESMTP id 4F4668B770;
-        Mon,  2 Aug 2021 14:42:37 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-        by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-        with ESMTP id bydFCkI05YiT; Mon,  2 Aug 2021 14:42:37 +0200 (CEST)
-Received: from [10.25.200.145] (po15451.idsi0.si.c-s.fr [10.25.200.145])
-        by messagerie.si.c-s.fr (Postfix) with ESMTP id D4A988B763;
-        Mon,  2 Aug 2021 14:42:36 +0200 (CEST)
-Subject: Re: [PATCH 07/11] treewide: Replace the use of mem_encrypt_active()
- with prot_guest_has()
-To:     Tom Lendacky <thomas.lendacky@amd.com>,
-        linux-kernel@vger.kernel.org, x86@kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        iommu@lists.linux-foundation.org, kvm@vger.kernel.org,
-        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        linux-graphics-maintainer@vmware.com,
-        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-        kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org
-Cc:     Sathyanarayanan Kuppuswamy 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        Andi Kleen <ak@linux.intel.com>,
-        Tianyu Lan <Tianyu.Lan@microsoft.com>,
-        Daniel Vetter <daniel@ffwll.ch>, Baoquan He <bhe@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Joerg Roedel <joro@8bytes.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        David Airlie <airlied@linux.ie>,
-        Dave Young <dyoung@redhat.com>, Ingo Molnar <mingo@redhat.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Andy Lutomirski <luto@kernel.org>,
-        Brijesh Singh <brijesh.singh@amd.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Will Deacon <will@kernel.org>
-References: <cover.1627424773.git.thomas.lendacky@amd.com>
- <029791b24c6412f9427cfe6ec598156c64395964.1627424774.git.thomas.lendacky@amd.com>
-From:   Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <ab2b910b-cd2a-d63b-f080-987d0bb4b5a5@csgroup.eu>
-Date:   Mon, 2 Aug 2021 14:42:36 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.12.0
+        id S233686AbhHBNM1 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Mon, 2 Aug 2021 09:12:27 -0400
+Received: from ip6-localhost (localhost.localdomain [127.0.0.1])
+        by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 172DA2So006638;
+        Mon, 2 Aug 2021 08:10:02 -0500
+Message-ID: <8434c5ab953db145f74855d97258a346a5bf3046.camel@kernel.crashing.org>
+Subject: [PATCH v2] arm64: Fix EFI loader kernel image allocation
+From:   Benjamin Herrenschmidt <benh@kernel.crashing.org>
+To:     linux-efi <linux-efi@vger.kernel.org>
+Cc:     Javier Martinez Canillas <javierm@redhat.com>,
+        Peter Jones <pjones@redhat.com>,
+        Dimitri John Ledkov <xnox@ubuntu.com>,
+        Colin Watson <cjwatson@debian.org>,
+        "Saidi, Ali" <alisaidi@amazon.com>, benh@amazon.com
+Date:   Mon, 02 Aug 2021 23:10:01 +1000
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.5-0ubuntu1 
 MIME-Version: 1.0
-In-Reply-To: <029791b24c6412f9427cfe6ec598156c64395964.1627424774.git.thomas.lendacky@amd.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
+We are currently allocating just enough memory for the file size,
+which means that the kernel BSS is in limbo (and not even zeroed).
+
+We are also not honoring the alignment specified in the image
+PE header.
+
+This makes us use the PE optional header in which the kernel puts the
+actual size it needs, including BSS, and make sure we clear it, and
+honors the specified alignment for the image.
+
+Signed-off-by: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+---
+
+This is v2 of the patch against Fedora/RH/Ubuntu grub2 (ie, fixes
+the original shim lock introduction patch) to address random crashes
+at boot on arm64.
+
+ grub-core/loader/arm64/linux.c | 100 ++++++++++++++++++++++-----------
+ 1 file changed, 66 insertions(+), 34 deletions(-)
+
+diff --git a/grub-core/loader/arm64/linux.c b/grub-core/loader/arm64/linux.c
+index 47f8cf0d8..4a252d5e7 100644
+--- a/grub-core/loader/arm64/linux.c
++++ b/grub-core/loader/arm64/linux.c
+@@ -41,6 +41,8 @@ GRUB_MOD_LICENSE ("GPLv3+");
+ static grub_dl_t my_mod;
+ static int loaded;
+ 
++static void *kernel_alloc_addr;
++static grub_uint32_t kernel_alloc_pages;
+ static void *kernel_addr;
+ static grub_uint64_t kernel_size;
+ static grub_uint32_t handover_offset;
+@@ -204,9 +206,8 @@ grub_linux_unload (void)
+ 			 GRUB_EFI_BYTES_TO_PAGES (initrd_end - initrd_start));
+   initrd_start = initrd_end = 0;
+   grub_free (linux_args);
+-  if (kernel_addr)
+-    grub_efi_free_pages ((grub_addr_t) kernel_addr,
+-			 GRUB_EFI_BYTES_TO_PAGES (kernel_size));
++  if (kernel_alloc_addr)
++    grub_efi_free_pages ((grub_addr_t) kernel_alloc_addr, kernel_alloc_pages);
+   grub_fdt_unload ();
+   return GRUB_ERR_NONE;
+ }
+@@ -311,14 +312,35 @@ grub_cmd_initrd (grub_command_t cmd __attribute__ ((unused)),
+   return grub_errno;
+ }
+ 
++static grub_err_t
++parse_pe_header (void *kernel, grub_uint64_t *total_size,
++		 grub_uint32_t *entry_offset,
++		 grub_uint32_t *alignment)
++{
++  struct linux_arch_kernel_header *lh = kernel;
++  struct grub_armxx_linux_pe_header *pe;
++
++  pe = (void *)((unsigned long)kernel + lh->hdr_offset);
++
++  if (pe->opt.magic != GRUB_PE32_PE64_MAGIC)
++    return grub_error(GRUB_ERR_BAD_OS, "Invalid PE optional header magic");
++
++  *total_size   = pe->opt.image_size;
++  *entry_offset = pe->opt.entry_addr;
++  *alignment    = pe->opt.section_alignment;
++
++  return GRUB_ERR_NONE;
++}
++
+ static grub_err_t
+ grub_cmd_linux (grub_command_t cmd __attribute__ ((unused)),
+ 		int argc, char *argv[])
+ {
+   grub_file_t file = 0;
+-  struct linux_arch_kernel_header lh;
+-  struct grub_armxx_linux_pe_header *pe;
+   grub_err_t err;
++  grub_off_t filelen;
++  grub_uint32_t align;
++  void *kernel = NULL;
+   int rc;
+ 
+   grub_dl_ref (my_mod);
+@@ -333,40 +355,24 @@ grub_cmd_linux (grub_command_t cmd __attribute__ ((unused)),
+   if (!file)
+     goto fail;
+ 
+-  kernel_size = grub_file_size (file);
+-
+-  if (grub_file_read (file, &lh, sizeof (lh)) < (long) sizeof (lh))
+-    return grub_errno;
+-
+-  if (grub_arch_efi_linux_check_image (&lh) != GRUB_ERR_NONE)
+-    goto fail;
+-
+-  grub_loader_unset();
+-
+-  grub_dprintf ("linux", "kernel file size: %lld\n", (long long) kernel_size);
+-  kernel_addr = grub_efi_allocate_any_pages (GRUB_EFI_BYTES_TO_PAGES (kernel_size));
+-  grub_dprintf ("linux", "kernel numpages: %lld\n",
+-		(long long) GRUB_EFI_BYTES_TO_PAGES (kernel_size));
+-  if (!kernel_addr)
++  filelen = grub_file_size (file);
++  kernel = grub_malloc(filelen);
++  if (!kernel)
+     {
+-      grub_error (GRUB_ERR_OUT_OF_MEMORY, N_("out of memory"));
++      grub_error (GRUB_ERR_OUT_OF_MEMORY, N_("cannot allocate kernel load buffer"));
+       goto fail;
+     }
+ 
+-  grub_file_seek (file, 0);
+-  if (grub_file_read (file, kernel_addr, kernel_size)
+-      < (grub_int64_t) kernel_size)
++  if (grub_file_read (file, kernel, filelen) < (grub_ssize_t)filelen)
+     {
+-      if (!grub_errno)
+-	grub_error (GRUB_ERR_BAD_OS, N_("premature end of file %s"), argv[0]);
++      grub_error (GRUB_ERR_FILE_READ_ERROR, N_("Can't read kernel %s"),
++		  argv[0]);
+       goto fail;
+     }
+ 
+-  grub_dprintf ("linux", "kernel @ %p\n", kernel_addr);
+-
+   if (grub_efi_get_secureboot () == GRUB_EFI_SECUREBOOT_MODE_ENABLED)
+     {
+-      rc = grub_linuxefi_secure_validate (kernel_addr, kernel_size);
++      rc = grub_linuxefi_secure_validate (kernel, filelen);
+       if (rc <= 0)
+ 	{
+ 	  grub_error (GRUB_ERR_INVALID_COMMAND,
+@@ -375,8 +381,32 @@ grub_cmd_linux (grub_command_t cmd __attribute__ ((unused)),
+ 	}
+     }
+ 
+-  pe = (void *)((unsigned long)kernel_addr + lh.hdr_offset);
+-  handover_offset = pe->opt.entry_addr;
++  if (grub_arch_efi_linux_check_image (kernel) != GRUB_ERR_NONE)
++    goto fail;
++  if (parse_pe_header (kernel, &kernel_size, &handover_offset, &align) != GRUB_ERR_NONE)
++    goto fail;
++  grub_dprintf ("linux", "kernel mem size     : %lld\n", (long long) kernel_size);
++  grub_dprintf ("linux", "kernel entry offset : %d\n", handover_offset);
++  grub_dprintf ("linux", "kernel alignment    : 0x%x\n", align);
++
++  grub_loader_unset();
++
++  kernel_alloc_pages = GRUB_EFI_BYTES_TO_PAGES (kernel_size + align - 1);
++  kernel_alloc_addr = grub_efi_allocate_any_pages (kernel_alloc_pages);
++  grub_dprintf ("linux", "kernel numpages: %d\n", kernel_alloc_pages);
++  if (!kernel_alloc_addr)
++    {
++      grub_error (GRUB_ERR_OUT_OF_MEMORY, N_("out of memory"));
++      goto fail;
++    }
++  kernel_addr = (void *)ALIGN_UP((grub_uint64_t)kernel_alloc_addr, align);
++
++  grub_dprintf ("linux", "kernel @ %p\n", kernel_addr);
++  grub_memcpy (kernel_addr, kernel, grub_min(filelen, kernel_size));
++  if (kernel_size > filelen)
++    grub_memset ((char *)kernel_addr + filelen, 0, kernel_size - filelen);
++  grub_free(kernel);
++  kernel = NULL;
+ 
+   cmdline_size = grub_loader_cmdline_size (argc, argv) + sizeof (LINUX_IMAGE);
+   linux_args = grub_malloc (cmdline_size);
+@@ -400,6 +430,9 @@ grub_cmd_linux (grub_command_t cmd __attribute__ ((unused)),
+     }
+ 
+ fail:
++  if (kernel)
++    grub_free (kernel);
++
+   if (file)
+     grub_file_close (file);
+ 
+@@ -412,9 +445,8 @@ fail:
+   if (linux_args && !loaded)
+     grub_free (linux_args);
+ 
+-  if (kernel_addr && !loaded)
+-    grub_efi_free_pages ((grub_addr_t) kernel_addr,
+-			 GRUB_EFI_BYTES_TO_PAGES (kernel_size));
++  if (kernel_alloc_addr && !loaded)
++    grub_efi_free_pages ((grub_addr_t) kernel_alloc_addr, kernel_alloc_pages);
+ 
+   return grub_errno;
+ }
+-- 
+2.25.1
 
 
-Le 28/07/2021 à 00:26, Tom Lendacky a écrit :
-> Replace occurrences of mem_encrypt_active() with calls to prot_guest_has()
-> with the PATTR_MEM_ENCRYPT attribute.
-
-
-What about 
-https://patchwork.ozlabs.org/project/linuxppc-dev/patch/20210730114231.23445-1-will@kernel.org/ ?
-
-Christophe
-
-
-> 
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Ingo Molnar <mingo@redhat.com>
-> Cc: Borislav Petkov <bp@alien8.de>
-> Cc: Dave Hansen <dave.hansen@linux.intel.com>
-> Cc: Andy Lutomirski <luto@kernel.org>
-> Cc: Peter Zijlstra <peterz@infradead.org>
-> Cc: David Airlie <airlied@linux.ie>
-> Cc: Daniel Vetter <daniel@ffwll.ch>
-> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-> Cc: Maxime Ripard <mripard@kernel.org>
-> Cc: Thomas Zimmermann <tzimmermann@suse.de>
-> Cc: VMware Graphics <linux-graphics-maintainer@vmware.com>
-> Cc: Joerg Roedel <joro@8bytes.org>
-> Cc: Will Deacon <will@kernel.org>
-> Cc: Dave Young <dyoung@redhat.com>
-> Cc: Baoquan He <bhe@redhat.com>
-> Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
-> ---
->   arch/x86/kernel/head64.c                | 4 ++--
->   arch/x86/mm/ioremap.c                   | 4 ++--
->   arch/x86/mm/mem_encrypt.c               | 5 ++---
->   arch/x86/mm/pat/set_memory.c            | 3 ++-
->   drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c | 4 +++-
->   drivers/gpu/drm/drm_cache.c             | 4 ++--
->   drivers/gpu/drm/vmwgfx/vmwgfx_drv.c     | 4 ++--
->   drivers/gpu/drm/vmwgfx/vmwgfx_msg.c     | 6 +++---
->   drivers/iommu/amd/iommu.c               | 3 ++-
->   drivers/iommu/amd/iommu_v2.c            | 3 ++-
->   drivers/iommu/iommu.c                   | 3 ++-
->   fs/proc/vmcore.c                        | 6 +++---
->   kernel/dma/swiotlb.c                    | 4 ++--
->   13 files changed, 29 insertions(+), 24 deletions(-)
-> 
-> diff --git a/arch/x86/kernel/head64.c b/arch/x86/kernel/head64.c
-> index de01903c3735..cafed6456d45 100644
-> --- a/arch/x86/kernel/head64.c
-> +++ b/arch/x86/kernel/head64.c
-> @@ -19,7 +19,7 @@
->   #include <linux/start_kernel.h>
->   #include <linux/io.h>
->   #include <linux/memblock.h>
-> -#include <linux/mem_encrypt.h>
-> +#include <linux/protected_guest.h>
->   #include <linux/pgtable.h>
->   
->   #include <asm/processor.h>
-> @@ -285,7 +285,7 @@ unsigned long __head __startup_64(unsigned long physaddr,
->   	 * there is no need to zero it after changing the memory encryption
->   	 * attribute.
->   	 */
-> -	if (mem_encrypt_active()) {
-> +	if (prot_guest_has(PATTR_MEM_ENCRYPT)) {
->   		vaddr = (unsigned long)__start_bss_decrypted;
->   		vaddr_end = (unsigned long)__end_bss_decrypted;
->   		for (; vaddr < vaddr_end; vaddr += PMD_SIZE) {
-> diff --git a/arch/x86/mm/ioremap.c b/arch/x86/mm/ioremap.c
-> index 0f2d5ace5986..5e1c1f5cbbe8 100644
-> --- a/arch/x86/mm/ioremap.c
-> +++ b/arch/x86/mm/ioremap.c
-> @@ -693,7 +693,7 @@ static bool __init early_memremap_is_setup_data(resource_size_t phys_addr,
->   bool arch_memremap_can_ram_remap(resource_size_t phys_addr, unsigned long size,
->   				 unsigned long flags)
->   {
-> -	if (!mem_encrypt_active())
-> +	if (!prot_guest_has(PATTR_MEM_ENCRYPT))
->   		return true;
->   
->   	if (flags & MEMREMAP_ENC)
-> @@ -723,7 +723,7 @@ pgprot_t __init early_memremap_pgprot_adjust(resource_size_t phys_addr,
->   {
->   	bool encrypted_prot;
->   
-> -	if (!mem_encrypt_active())
-> +	if (!prot_guest_has(PATTR_MEM_ENCRYPT))
->   		return prot;
->   
->   	encrypted_prot = true;
-> diff --git a/arch/x86/mm/mem_encrypt.c b/arch/x86/mm/mem_encrypt.c
-> index 451de8e84fce..0f1533dbe81c 100644
-> --- a/arch/x86/mm/mem_encrypt.c
-> +++ b/arch/x86/mm/mem_encrypt.c
-> @@ -364,8 +364,7 @@ int __init early_set_memory_encrypted(unsigned long vaddr, unsigned long size)
->   /*
->    * SME and SEV are very similar but they are not the same, so there are
->    * times that the kernel will need to distinguish between SME and SEV. The
-> - * sme_active() and sev_active() functions are used for this.  When a
-> - * distinction isn't needed, the mem_encrypt_active() function can be used.
-> + * sme_active() and sev_active() functions are used for this.
->    *
->    * The trampoline code is a good example for this requirement.  Before
->    * paging is activated, SME will access all memory as decrypted, but SEV
-> @@ -451,7 +450,7 @@ void __init mem_encrypt_free_decrypted_mem(void)
->   	 * The unused memory range was mapped decrypted, change the encryption
->   	 * attribute from decrypted to encrypted before freeing it.
->   	 */
-> -	if (mem_encrypt_active()) {
-> +	if (sme_me_mask) {
->   		r = set_memory_encrypted(vaddr, npages);
->   		if (r) {
->   			pr_warn("failed to free unused decrypted pages\n");
-> diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
-> index ad8a5c586a35..6925f2bb4be1 100644
-> --- a/arch/x86/mm/pat/set_memory.c
-> +++ b/arch/x86/mm/pat/set_memory.c
-> @@ -18,6 +18,7 @@
->   #include <linux/libnvdimm.h>
->   #include <linux/vmstat.h>
->   #include <linux/kernel.h>
-> +#include <linux/protected_guest.h>
->   
->   #include <asm/e820/api.h>
->   #include <asm/processor.h>
-> @@ -1986,7 +1987,7 @@ static int __set_memory_enc_dec(unsigned long addr, int numpages, bool enc)
->   	int ret;
->   
->   	/* Nothing to do if memory encryption is not active */
-> -	if (!mem_encrypt_active())
-> +	if (!prot_guest_has(PATTR_MEM_ENCRYPT))
->   		return 0;
->   
->   	/* Should not be working on unaligned addresses */
-> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
-> index abb928894eac..8407224717df 100644
-> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
-> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
-> @@ -38,6 +38,7 @@
->   #include <drm/drm_probe_helper.h>
->   #include <linux/mmu_notifier.h>
->   #include <linux/suspend.h>
-> +#include <linux/protected_guest.h>
->   
->   #include "amdgpu.h"
->   #include "amdgpu_irq.h"
-> @@ -1239,7 +1240,8 @@ static int amdgpu_pci_probe(struct pci_dev *pdev,
->   	 * however, SME requires an indirect IOMMU mapping because the encryption
->   	 * bit is beyond the DMA mask of the chip.
->   	 */
-> -	if (mem_encrypt_active() && ((flags & AMD_ASIC_MASK) == CHIP_RAVEN)) {
-> +	if (prot_guest_has(PATTR_MEM_ENCRYPT) &&
-> +	    ((flags & AMD_ASIC_MASK) == CHIP_RAVEN)) {
->   		dev_info(&pdev->dev,
->   			 "SME is not compatible with RAVEN\n");
->   		return -ENOTSUPP;
-> diff --git a/drivers/gpu/drm/drm_cache.c b/drivers/gpu/drm/drm_cache.c
-> index 546599f19a93..4d01d44012fd 100644
-> --- a/drivers/gpu/drm/drm_cache.c
-> +++ b/drivers/gpu/drm/drm_cache.c
-> @@ -31,7 +31,7 @@
->   #include <linux/dma-buf-map.h>
->   #include <linux/export.h>
->   #include <linux/highmem.h>
-> -#include <linux/mem_encrypt.h>
-> +#include <linux/protected_guest.h>
->   #include <xen/xen.h>
->   
->   #include <drm/drm_cache.h>
-> @@ -204,7 +204,7 @@ bool drm_need_swiotlb(int dma_bits)
->   	 * Enforce dma_alloc_coherent when memory encryption is active as well
->   	 * for the same reasons as for Xen paravirtual hosts.
->   	 */
-> -	if (mem_encrypt_active())
-> +	if (prot_guest_has(PATTR_MEM_ENCRYPT))
->   		return true;
->   
->   	for (tmp = iomem_resource.child; tmp; tmp = tmp->sibling)
-> diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_drv.c b/drivers/gpu/drm/vmwgfx/vmwgfx_drv.c
-> index dde8b35bb950..06ec95a650ba 100644
-> --- a/drivers/gpu/drm/vmwgfx/vmwgfx_drv.c
-> +++ b/drivers/gpu/drm/vmwgfx/vmwgfx_drv.c
-> @@ -29,7 +29,7 @@
->   #include <linux/dma-mapping.h>
->   #include <linux/module.h>
->   #include <linux/pci.h>
-> -#include <linux/mem_encrypt.h>
-> +#include <linux/protected_guest.h>
->   
->   #include <drm/ttm/ttm_range_manager.h>
->   #include <drm/drm_aperture.h>
-> @@ -634,7 +634,7 @@ static int vmw_dma_select_mode(struct vmw_private *dev_priv)
->   		[vmw_dma_map_bind] = "Giving up DMA mappings early."};
->   
->   	/* TTM currently doesn't fully support SEV encryption. */
-> -	if (mem_encrypt_active())
-> +	if (prot_guest_has(PATTR_MEM_ENCRYPT))
->   		return -EINVAL;
->   
->   	if (vmw_force_coherent)
-> diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_msg.c b/drivers/gpu/drm/vmwgfx/vmwgfx_msg.c
-> index 3d08f5700bdb..0c70573d3dce 100644
-> --- a/drivers/gpu/drm/vmwgfx/vmwgfx_msg.c
-> +++ b/drivers/gpu/drm/vmwgfx/vmwgfx_msg.c
-> @@ -28,7 +28,7 @@
->   #include <linux/kernel.h>
->   #include <linux/module.h>
->   #include <linux/slab.h>
-> -#include <linux/mem_encrypt.h>
-> +#include <linux/protected_guest.h>
->   
->   #include <asm/hypervisor.h>
->   
-> @@ -153,7 +153,7 @@ static unsigned long vmw_port_hb_out(struct rpc_channel *channel,
->   	unsigned long msg_len = strlen(msg);
->   
->   	/* HB port can't access encrypted memory. */
-> -	if (hb && !mem_encrypt_active()) {
-> +	if (hb && !prot_guest_has(PATTR_MEM_ENCRYPT)) {
->   		unsigned long bp = channel->cookie_high;
->   
->   		si = (uintptr_t) msg;
-> @@ -208,7 +208,7 @@ static unsigned long vmw_port_hb_in(struct rpc_channel *channel, char *reply,
->   	unsigned long si, di, eax, ebx, ecx, edx;
->   
->   	/* HB port can't access encrypted memory */
-> -	if (hb && !mem_encrypt_active()) {
-> +	if (hb && !prot_guest_has(PATTR_MEM_ENCRYPT)) {
->   		unsigned long bp = channel->cookie_low;
->   
->   		si = channel->cookie_high;
-> diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
-> index 811a49a95d04..def63a8deab4 100644
-> --- a/drivers/iommu/amd/iommu.c
-> +++ b/drivers/iommu/amd/iommu.c
-> @@ -31,6 +31,7 @@
->   #include <linux/irqdomain.h>
->   #include <linux/percpu.h>
->   #include <linux/io-pgtable.h>
-> +#include <linux/protected_guest.h>
->   #include <asm/irq_remapping.h>
->   #include <asm/io_apic.h>
->   #include <asm/apic.h>
-> @@ -2178,7 +2179,7 @@ static int amd_iommu_def_domain_type(struct device *dev)
->   	 * active, because some of those devices (AMD GPUs) don't have the
->   	 * encryption bit in their DMA-mask and require remapping.
->   	 */
-> -	if (!mem_encrypt_active() && dev_data->iommu_v2)
-> +	if (!prot_guest_has(PATTR_MEM_ENCRYPT) && dev_data->iommu_v2)
->   		return IOMMU_DOMAIN_IDENTITY;
->   
->   	return 0;
-> diff --git a/drivers/iommu/amd/iommu_v2.c b/drivers/iommu/amd/iommu_v2.c
-> index f8d4ad421e07..ac359bc98523 100644
-> --- a/drivers/iommu/amd/iommu_v2.c
-> +++ b/drivers/iommu/amd/iommu_v2.c
-> @@ -16,6 +16,7 @@
->   #include <linux/wait.h>
->   #include <linux/pci.h>
->   #include <linux/gfp.h>
-> +#include <linux/protected_guest.h>
->   
->   #include "amd_iommu.h"
->   
-> @@ -741,7 +742,7 @@ int amd_iommu_init_device(struct pci_dev *pdev, int pasids)
->   	 * When memory encryption is active the device is likely not in a
->   	 * direct-mapped domain. Forbid using IOMMUv2 functionality for now.
->   	 */
-> -	if (mem_encrypt_active())
-> +	if (prot_guest_has(PATTR_MEM_ENCRYPT))
->   		return -ENODEV;
->   
->   	if (!amd_iommu_v2_supported())
-> diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
-> index 5419c4b9f27a..ddbedb1b5b6b 100644
-> --- a/drivers/iommu/iommu.c
-> +++ b/drivers/iommu/iommu.c
-> @@ -23,6 +23,7 @@
->   #include <linux/property.h>
->   #include <linux/fsl/mc.h>
->   #include <linux/module.h>
-> +#include <linux/protected_guest.h>
->   #include <trace/events/iommu.h>
->   
->   static struct kset *iommu_group_kset;
-> @@ -127,7 +128,7 @@ static int __init iommu_subsys_init(void)
->   		else
->   			iommu_set_default_translated(false);
->   
-> -		if (iommu_default_passthrough() && mem_encrypt_active()) {
-> +		if (iommu_default_passthrough() && prot_guest_has(PATTR_MEM_ENCRYPT)) {
->   			pr_info("Memory encryption detected - Disabling default IOMMU Passthrough\n");
->   			iommu_set_default_translated(false);
->   		}
-> diff --git a/fs/proc/vmcore.c b/fs/proc/vmcore.c
-> index 9a15334da208..b466f543dc00 100644
-> --- a/fs/proc/vmcore.c
-> +++ b/fs/proc/vmcore.c
-> @@ -26,7 +26,7 @@
->   #include <linux/vmalloc.h>
->   #include <linux/pagemap.h>
->   #include <linux/uaccess.h>
-> -#include <linux/mem_encrypt.h>
-> +#include <linux/protected_guest.h>
->   #include <asm/io.h>
->   #include "internal.h"
->   
-> @@ -177,7 +177,7 @@ ssize_t __weak elfcorehdr_read(char *buf, size_t count, u64 *ppos)
->    */
->   ssize_t __weak elfcorehdr_read_notes(char *buf, size_t count, u64 *ppos)
->   {
-> -	return read_from_oldmem(buf, count, ppos, 0, mem_encrypt_active());
-> +	return read_from_oldmem(buf, count, ppos, 0, prot_guest_has(PATTR_MEM_ENCRYPT));
->   }
->   
->   /*
-> @@ -378,7 +378,7 @@ static ssize_t __read_vmcore(char *buffer, size_t buflen, loff_t *fpos,
->   					    buflen);
->   			start = m->paddr + *fpos - m->offset;
->   			tmp = read_from_oldmem(buffer, tsz, &start,
-> -					       userbuf, mem_encrypt_active());
-> +					       userbuf, prot_guest_has(PATTR_MEM_ENCRYPT));
->   			if (tmp < 0)
->   				return tmp;
->   			buflen -= tsz;
-> diff --git a/kernel/dma/swiotlb.c b/kernel/dma/swiotlb.c
-> index e50df8d8f87e..2e8dee23a624 100644
-> --- a/kernel/dma/swiotlb.c
-> +++ b/kernel/dma/swiotlb.c
-> @@ -34,7 +34,7 @@
->   #include <linux/highmem.h>
->   #include <linux/gfp.h>
->   #include <linux/scatterlist.h>
-> -#include <linux/mem_encrypt.h>
-> +#include <linux/protected_guest.h>
->   #include <linux/set_memory.h>
->   #ifdef CONFIG_DEBUG_FS
->   #include <linux/debugfs.h>
-> @@ -515,7 +515,7 @@ phys_addr_t swiotlb_tbl_map_single(struct device *dev, phys_addr_t orig_addr,
->   	if (!mem)
->   		panic("Can not allocate SWIOTLB buffer earlier and can't now provide you with the DMA bounce buffer");
->   
-> -	if (mem_encrypt_active())
-> +	if (prot_guest_has(PATTR_MEM_ENCRYPT))
->   		pr_warn_once("Memory encryption is active and system is using DMA bounce buffers\n");
->   
->   	if (mapping_size > alloc_size) {
-> 
