@@ -2,212 +2,252 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 84FD53DDE3C
-	for <lists+linux-efi@lfdr.de>; Mon,  2 Aug 2021 19:13:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 611973DE635
+	for <lists+linux-efi@lfdr.de>; Tue,  3 Aug 2021 07:34:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229744AbhHBRNP (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 2 Aug 2021 13:13:15 -0400
-Received: from mail-mw2nam10on2114.outbound.protection.outlook.com ([40.107.94.114]:60623
-        "EHLO NAM10-MW2-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S229571AbhHBRNP (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Mon, 2 Aug 2021 13:13:15 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Kh7AZm3+pWFRS5kjXXM6YZu7/SqrQFQsUgg5DpkbtX9PPePmC0kbjUqlDEgayid5Bvvnas9oPkMZBq8YaMPRtQ/O2282ZtzHU0gpz5JXYnXm+PKwXfEsnd3SfU315HbaHhZCONlAApGzcbtKzVqsgFwvmM2HTgqbraVVmAurKd02e6ilYHU+LFQktGxF0LbgBIGpl1jMh/fgKrEjXT8nluqyXTIrW7ZMrzdDKgjUsYcx/KL83vnxV8EuJtgGdtHZUhAYwJgixbh+Efj+bcNmwR0Tv6xvxqcGykkFX5exZGmjbtLAciwklCqbMIPUcwYuFj3mgXG602tI6lE0ZpV/Sw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Yra5C488esazoH4z12sPOuVJ16mGY2/lPbqmzY3QSZo=;
- b=glEShXRy9d4lswtShQgjfMqPBvmD/oJ8Xja1Fz5ovSgcMo49Rjw+ceAiHQH4p92rgCIlwT1ej1Jr+fkhU/qOkoc9x/X27QjcOVOr9iwMfnEJJaaO0Bjl8bYx9mWe4qqxMtUtVH29ZldrOVMfmjVjewH0DJ92WPzoqzObUJH3mpaCbaFNaNEpE0RXcwpBlredk1H+uMpCSDq6IzzgBJA4W2s9HfPdpIHY0sKga/ReSmI3DGmwNK6MT7SwquXu7jbNMj+HSo0BFLYLfsxsrricCD5Ugya31GZQu9D1YJO1D7NE7DfTMCzWYr8KDSu4Vgntfa9B2GLNgbGm7d/XoOl7Gw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=microsoft.com; dmarc=pass action=none
- header.from=microsoft.com; dkim=pass header.d=microsoft.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Yra5C488esazoH4z12sPOuVJ16mGY2/lPbqmzY3QSZo=;
- b=A/qSxvOomGMHUkqHH/sn+mCQ2UxdncMCGsMGaNTBi7d712SrswNvF9oW9dsLhu+/gGmuB5oDM7HilgcyF28WCu2oljU8JxoVKI5ahBVL2rn9fz0cnSO3trT2cEQBxYsVjS+zu2TGZ9fp7kY1RNH4ku39hFTyszOQPMWW4fG9OWE=
-Received: from MWHPR21MB1593.namprd21.prod.outlook.com (2603:10b6:301:7c::11)
- by MW2PR2101MB1036.namprd21.prod.outlook.com (2603:10b6:302:a::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4394.5; Mon, 2 Aug
- 2021 17:13:03 +0000
-Received: from MWHPR21MB1593.namprd21.prod.outlook.com
- ([fe80::312e:7352:96f5:6afa]) by MWHPR21MB1593.namprd21.prod.outlook.com
- ([fe80::312e:7352:96f5:6afa%9]) with mapi id 15.20.4394.008; Mon, 2 Aug 2021
- 17:13:03 +0000
-From:   Michael Kelley <mikelley@microsoft.com>
-To:     Mark Rutland <Mark.Rutland@arm.com>
-CC:     "will@kernel.org" <will@kernel.org>,
-        "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
-        "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
-        "wei.liu@kernel.org" <wei.liu@kernel.org>,
-        KY Srinivasan <kys@microsoft.com>,
-        Stephen Hemminger <sthemmin@microsoft.com>,
-        "ardb@kernel.org" <ardb@kernel.org>
-Subject: RE: [PATCH v11 3/5] arm64: hyperv: Initialize hypervisor on boot
-Thread-Topic: [PATCH v11 3/5] arm64: hyperv: Initialize hypervisor on boot
-Thread-Index: AQHXfXeOJQHwhOTU+UeVguN4B2cBcqtge1SAgAAL3eA=
-Date:   Mon, 2 Aug 2021 17:13:03 +0000
-Message-ID: <MWHPR21MB15930692A0EF42DC49EAEE83D7EF9@MWHPR21MB1593.namprd21.prod.outlook.com>
-References: <1626793023-13830-1-git-send-email-mikelley@microsoft.com>
- <1626793023-13830-4-git-send-email-mikelley@microsoft.com>
- <20210802162623.GC59710@C02TD0UTHF1T.local>
-In-Reply-To: <20210802162623.GC59710@C02TD0UTHF1T.local>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-msip_labels: MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ActionId=9d98692f-507e-4c74-9c93-382bfa459a8a;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ContentBits=0;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Enabled=true;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Method=Standard;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Name=Internal;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SetDate=2021-08-02T17:08:49Z;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SiteId=72f988bf-86f1-41af-91ab-2d7cd011db47;
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=microsoft.com;
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 4da46af7-4bb7-40ef-459b-08d955d8c9b1
-x-ms-traffictypediagnostic: MW2PR2101MB1036:
-x-ms-exchange-transport-forked: True
-x-ld-processed: 72f988bf-86f1-41af-91ab-2d7cd011db47,ExtAddr
-x-microsoft-antispam-prvs: <MW2PR2101MB1036587B18477BA2F3671A06D7EF9@MW2PR2101MB1036.namprd21.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:8273;
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: 5wHD+RpTiT8KCwn1cms8Ep3MQC63cZN7WpqE3wEbLU9Zy2wNvNKyqI4ekWRXnd3lT72d4uu4hUlSgl02fqPYr27sva7gy7umnPO9/dNKQYJWMBldU0+oU15XHAcvCT0l+aOAPa91aE1QjRxbc7pvJkgZ8+JdaBdpk4ix1ovkTFCE2vW+12Y88qr0Xg3iMo8l289/HNRRIonGjvwMzxDxdA7RqSTOrT1Zt6KbtCm3gmdHPiwGGhxPLnqNrXIA/XBl4NQgtVPDJ3ixDHA39fz5QSJu7HCKm1GVG6k4VKgoQofQqzx1tTiDgpuojsfywxfekGw16rLimAYIuMuOslqEbBQvaVRqNCrnm3+jIywUpEGof1izdVHLzcGhRCBIMgafHPGR2YwkZn63xMvFpipQpLOuxAkVjnnO8r1NX7MFyWjdcwPWbJWKOyM4V1L0nVd99Sl+6+Led3y9GcazfK9OWJbHFEJtvn+UX6C1ozDLrS70hn+pkzdMRt+VAnkaGQG894mz+9G3Ul9XhvXCABO/BXeh0rn6A2sekwHxhBXFo/OT/YdcYHWy3wJr+fe16zjwHV+x/KSOPRuh1f6dBEcl42jOFri9pkZN7luI1B1asCleXblNR0CYSx82ao47wEX6ljp4EmbEe3qeTzeljljDfI6r/uRNB62onXiOKVe1WgT0utSi1ZbsFSx7izVkZ5rQzPLy+cVYkX9/QE3IsmTaUQ==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MWHPR21MB1593.namprd21.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(366004)(186003)(66476007)(71200400001)(66446008)(64756008)(66556008)(4326008)(76116006)(10290500003)(316002)(8936002)(8676002)(86362001)(38070700005)(26005)(6506007)(55016002)(38100700002)(2906002)(5660300002)(8990500004)(52536014)(83380400001)(6916009)(7696005)(9686003)(82960400001)(54906003)(508600001)(122000001)(82950400001)(66946007)(33656002);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?07tbWBBO3w4m+OLPTYOGqGezNSCl5wl3RDrJsoIWsUcKonRx63znn+NP/D8L?=
- =?us-ascii?Q?Gxh18Wv+L64npijvFOZfYLAQUH0XIgU7+f7CPLapNDKrZpOar7fn97VUAWwH?=
- =?us-ascii?Q?fQuQy7FYPlPUv0o7Ed77ktZbN2Ltai3+oXezLob87AQf3WA5QdkRllA4tMfu?=
- =?us-ascii?Q?XLMxYPVkLJbQ2ideYZ4FEXGX/L+p3AAe2tbcQppHcvta34SrUTZ3drBFlldS?=
- =?us-ascii?Q?tjepCju7CT7qAZrcRm58dLgyYFRooz9caQ0cv7D+VTRkwCSt/NDT1R4A/hmX?=
- =?us-ascii?Q?6kuJQQY8gR05Sj6A/r0u/vPVpbMpnnxQc5OZt8b4xrq7ilLiCF57Qw+zWSxB?=
- =?us-ascii?Q?3DZmlWo7aapQBznoA64tVHhdBrYAPylGBHhXN2HsoW107ekKaC8nMn18vBqC?=
- =?us-ascii?Q?EHlMs0WA1ykpmx1Ft062gcBjyfMRnxZm8kBQT4Al2ZMYb7WJQNIe3oVEacDI?=
- =?us-ascii?Q?Tx7D7QetMKocKV99sP5kdpJ6cplN1l0adL3oh/+/kvizFYgNQyTzUI6zWaPZ?=
- =?us-ascii?Q?oHlgwu9NhgvOcWSbI+hXmhn3zs7ylYflf35yBV3WjCDtGKSQof6WW0hgvNFm?=
- =?us-ascii?Q?0Ve96Ije9w10upKUp7YOOGgclKyfqvWFZuD7ZfI1VHgsN/dxEQhBSvYpcATY?=
- =?us-ascii?Q?EQsZynK6+iqu41MAQbhaA62l025vfP3GcRvyVI6Lw5IzqNpdXhDNgTP4G6Ny?=
- =?us-ascii?Q?T8x6W44wHaPUSpiCRnJX2Lf3THepmSXo1B6Hp1kzjWqVn8JOnGO6bMH3lNV9?=
- =?us-ascii?Q?U1Y/OXJxdgc/q9DU5NYLKl2kyU2rjP40l+nxsioqXfK8nxOPYEb0NWPxysDI?=
- =?us-ascii?Q?1mvzsISnFYzOBhVcNhWVH3zv08Ze+pkImb8KfdE5cWn14H1pcUeSXUIlCuDM?=
- =?us-ascii?Q?g2U2iFcl+yHuqBttLgFlQoQ6OF7GvvBNPV2B/r4L+lXY0pJflBf5Fx3lSMZa?=
- =?us-ascii?Q?8ZyqRRaUMpjeB4YLIAJVp/WqNXL6jqhpX9fbNm4xVLs3AaRqTiS8NIGAknWx?=
- =?us-ascii?Q?Wse5ukAUu8qusgHkVU2gcyaCmo7SEZetjqFjIIOfH+Wa79F1+xSmvsjYGHiH?=
- =?us-ascii?Q?ZCpVL4yLMjWrU1TsBeMgo3hgyXCj5mKQjc9d0WWpdCDsbNRF0FvKjuMpOq7E?=
- =?us-ascii?Q?3n2VPynq7cxHq2l/RVP+1OBRhkVEQMXbOrMvqUSZuba69Xpudr+NwDwEpMbe?=
- =?us-ascii?Q?nxPdF9YgTGMl43VGeV+8v+u9PlbYPeoK1wDkcv8SRjGcUCqDusmFm+7BqGxe?=
- =?us-ascii?Q?9JLBMq/qGp76CYeNZXVXQUys4T+vWvJ4dl1E1loaJ2j7lQOXugjwWwPTtIdb?=
- =?us-ascii?Q?Jl+eaadsARgigrfQf2qssdLo?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        id S233784AbhHCFeo (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 3 Aug 2021 01:34:44 -0400
+Received: from mail.kernel.org ([198.145.29.99]:42644 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S233582AbhHCFen (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Tue, 3 Aug 2021 01:34:43 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 758BF60F70
+        for <linux-efi@vger.kernel.org>; Tue,  3 Aug 2021 05:34:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1627968873;
+        bh=YxiNbcbITCDJq8H//6YyPbk6S6C9q7kbx8Di+XL6G+U=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=aMPtiUAQMJ7KKnZwAOtzJinNbO6nMOn17lJlYHpAL03EfNP63QmuFzt2o674/g8Sp
+         RmNhKbf2AOdoDnhwS7JLiiuuWHHsg9BG0gh4ETg2ya0A2eZbFrKgVH53c6NtFp0ftL
+         ++yC1RRvJT19sloBq4ntvEotBKfubFK3jJEhp9Pr2hHz31G1PSS/unDtnITqNVbbxP
+         Pgp+KTLCd5f++65wkHrZ4er6zsh0vsZ+5RIqV94A7bR7A5y4T0KILx1q4RPo5EJ1zI
+         SxeOU2i/B5Ki6iRFKsWf5uB3rQRUz2+slDcYun+p8N3Htcd9KHeXSVRHJASxw2qn0t
+         ELCLLjkf3uoMg==
+Received: by mail-oi1-f173.google.com with SMTP id u10so26917407oiw.4
+        for <linux-efi@vger.kernel.org>; Mon, 02 Aug 2021 22:34:33 -0700 (PDT)
+X-Gm-Message-State: AOAM532nhFXvv0DOKUaMIN2yqfIbpnT/RHfw6olpkdi9fBJqf9LYoZmF
+        qszQlNwuwrg5q2bZAsOKKT8pKkKSIP8en2gg6Fc=
+X-Google-Smtp-Source: ABdhPJxsNRTl+6xus8DcBSeJbhaXUK8gxOcQUQMu8Qj/07kjJ1V8yhbvBpHeOAIBF+lRG5o/k2C6C8iQnARPf1ZrMRg=
+X-Received: by 2002:aca:d64d:: with SMTP id n74mr1880177oig.47.1627968872880;
+ Mon, 02 Aug 2021 22:34:32 -0700 (PDT)
 MIME-Version: 1.0
-X-OriginatorOrg: microsoft.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MWHPR21MB1593.namprd21.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4da46af7-4bb7-40ef-459b-08d955d8c9b1
-X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Aug 2021 17:13:03.3611
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 72f988bf-86f1-41af-91ab-2d7cd011db47
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: NABPqVmIDUm+b97ZaLfgF40pWkTsDsNO7kmQGgoAguLJLnlCBRtCVSH0WfHzKzFLyE08ee+q4jmyb5JP1sTU4GgvXpCjGp6ygt4DDDBpr3A=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW2PR2101MB1036
+References: <8434c5ab953db145f74855d97258a346a5bf3046.camel@kernel.crashing.org>
+In-Reply-To: <8434c5ab953db145f74855d97258a346a5bf3046.camel@kernel.crashing.org>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Tue, 3 Aug 2021 07:34:21 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXE8p_XiuCUZpRxyx3m_JyvUmZ6YP_dkXQd9VY=+56HENQ@mail.gmail.com>
+Message-ID: <CAMj1kXE8p_XiuCUZpRxyx3m_JyvUmZ6YP_dkXQd9VY=+56HENQ@mail.gmail.com>
+Subject: Re: [PATCH v2] arm64: Fix EFI loader kernel image allocation
+To:     Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Steve McIntyre <steve@einval.com>
+Cc:     linux-efi <linux-efi@vger.kernel.org>,
+        Javier Martinez Canillas <javierm@redhat.com>,
+        Peter Jones <pjones@redhat.com>,
+        Dimitri John Ledkov <xnox@ubuntu.com>,
+        Colin Watson <cjwatson@debian.org>,
+        "Saidi, Ali" <alisaidi@amazon.com>,
+        "Herrenschmidt, Benjamin" <benh@amazon.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-From: Mark Rutland <mark.rutland@arm.com> Sent: Monday, August 2, 2021 9:26=
- AM
->=20
-> On Tue, Jul 20, 2021 at 07:57:01AM -0700, Michael Kelley wrote:
-> > Add ARM64-specific code to initialize the Hyper-V
-> > hypervisor when booting as a guest VM.
-> >
-> > This code is built only when CONFIG_HYPERV is enabled.
-> >
-> > Signed-off-by: Michael Kelley <mikelley@microsoft.com>
-> > ---
-> >  arch/arm64/hyperv/Makefile   |  2 +-
-> >  arch/arm64/hyperv/mshyperv.c | 83 ++++++++++++++++++++++++++++++++++++=
-++++++++
-> >  2 files changed, 84 insertions(+), 1 deletion(-)
-> >  create mode 100644 arch/arm64/hyperv/mshyperv.c
-> >
-> > diff --git a/arch/arm64/hyperv/Makefile b/arch/arm64/hyperv/Makefile
-> > index 1697d30..87c31c0 100644
-> > --- a/arch/arm64/hyperv/Makefile
-> > +++ b/arch/arm64/hyperv/Makefile
-> > @@ -1,2 +1,2 @@
-> >  # SPDX-License-Identifier: GPL-2.0
-> > -obj-y		:=3D hv_core.o
-> > +obj-y		:=3D hv_core.o mshyperv.o
-> > diff --git a/arch/arm64/hyperv/mshyperv.c b/arch/arm64/hyperv/mshyperv.=
-c
-> > new file mode 100644
-> > index 0000000..2811fd0
-> > --- /dev/null
-> > +++ b/arch/arm64/hyperv/mshyperv.c
-> > @@ -0,0 +1,83 @@
-> > +// SPDX-License-Identifier: GPL-2.0
-> > +
-> > +/*
-> > + * Core routines for interacting with Microsoft's Hyper-V hypervisor,
-> > + * including hypervisor initialization.
-> > + *
-> > + * Copyright (C) 2021, Microsoft, Inc.
-> > + *
-> > + * Author : Michael Kelley <mikelley@microsoft.com>
-> > + */
-> > +
-> > +#include <linux/types.h>
-> > +#include <linux/acpi.h>
-> > +#include <linux/export.h>
-> > +#include <linux/errno.h>
-> > +#include <linux/version.h>
-> > +#include <linux/cpuhotplug.h>
-> > +#include <asm/mshyperv.h>
-> > +
-> > +static bool hyperv_initialized;
-> > +
-> > +static int __init hyperv_init(void)
-> > +{
-> > +	struct hv_get_vp_registers_output	result;
-> > +	u32	a, b, c, d;
-> > +	u64	guest_id;
-> > +	int	ret;
->=20
-> As Marc suggests, before looking at the FADT, you need something like:
->=20
-> 	/*
-> 	 * Hyper-V VMs always have ACPI.
-> 	 */
-> 	if (acpi_disabled)
-> 		return 0;
->=20
-> ... where `acpi_disabled` is defined in <linux/acpi.h> (or via its
-> includes), so you don't need to include any additional headers.
->=20
-> > +
-> > +	/*
-> > +	 * If we're in a VM on Hyper-V, the ACPI hypervisor_id field will
-> > +	 * have the string "MsHyperV".
-> > +	 */
-> > +	if (strncmp((char *)&acpi_gbl_FADT.hypervisor_id, "MsHyperV", 8))
-> > +		return -EINVAL;
->=20
-> As Marc suggests, it's no an error for a platform to not have Hyper-V,
-> so returning 0 in tihs case would be preferable.
->=20
-> Otherwise this looks fine to me.
->=20
-
-Thanks Marc and Mark.  Good point that the code should cleanly
-handle the case where a kernel is built with CONFIG_HYPERV but
-running somewhere other than as a Hyper-V guest.
-
-Michael
+(+ Steve)
 
 
+On Mon, 2 Aug 2021 at 15:12, Benjamin Herrenschmidt
+<benh@kernel.crashing.org> wrote:
+>
+> We are currently allocating just enough memory for the file size,
+> which means that the kernel BSS is in limbo (and not even zeroed).
+>
+> We are also not honoring the alignment specified in the image
+> PE header.
+>
+> This makes us use the PE optional header in which the kernel puts the
+> actual size it needs, including BSS, and make sure we clear it, and
+> honors the specified alignment for the image.
+>
+> Signed-off-by: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> ---
+>
+> This is v2 of the patch against Fedora/RH/Ubuntu grub2 (ie, fixes
+> the original shim lock introduction patch) to address random crashes
+> at boot on arm64.
+>
+>  grub-core/loader/arm64/linux.c | 100 ++++++++++++++++++++++-----------
+>  1 file changed, 66 insertions(+), 34 deletions(-)
+>
+> diff --git a/grub-core/loader/arm64/linux.c b/grub-core/loader/arm64/linux.c
+> index 47f8cf0d8..4a252d5e7 100644
+> --- a/grub-core/loader/arm64/linux.c
+> +++ b/grub-core/loader/arm64/linux.c
+> @@ -41,6 +41,8 @@ GRUB_MOD_LICENSE ("GPLv3+");
+>  static grub_dl_t my_mod;
+>  static int loaded;
+>
+> +static void *kernel_alloc_addr;
+> +static grub_uint32_t kernel_alloc_pages;
+>  static void *kernel_addr;
+>  static grub_uint64_t kernel_size;
+>  static grub_uint32_t handover_offset;
+> @@ -204,9 +206,8 @@ grub_linux_unload (void)
+>                          GRUB_EFI_BYTES_TO_PAGES (initrd_end - initrd_start));
+>    initrd_start = initrd_end = 0;
+>    grub_free (linux_args);
+> -  if (kernel_addr)
+> -    grub_efi_free_pages ((grub_addr_t) kernel_addr,
+> -                        GRUB_EFI_BYTES_TO_PAGES (kernel_size));
+> +  if (kernel_alloc_addr)
+> +    grub_efi_free_pages ((grub_addr_t) kernel_alloc_addr, kernel_alloc_pages);
+>    grub_fdt_unload ();
+>    return GRUB_ERR_NONE;
+>  }
+> @@ -311,14 +312,35 @@ grub_cmd_initrd (grub_command_t cmd __attribute__ ((unused)),
+>    return grub_errno;
+>  }
+>
+> +static grub_err_t
+> +parse_pe_header (void *kernel, grub_uint64_t *total_size,
+> +                grub_uint32_t *entry_offset,
+> +                grub_uint32_t *alignment)
+> +{
+> +  struct linux_arch_kernel_header *lh = kernel;
+> +  struct grub_armxx_linux_pe_header *pe;
+> +
+> +  pe = (void *)((unsigned long)kernel + lh->hdr_offset);
+> +
+> +  if (pe->opt.magic != GRUB_PE32_PE64_MAGIC)
+> +    return grub_error(GRUB_ERR_BAD_OS, "Invalid PE optional header magic");
+> +
+> +  *total_size   = pe->opt.image_size;
+> +  *entry_offset = pe->opt.entry_addr;
+> +  *alignment    = pe->opt.section_alignment;
+> +
+> +  return GRUB_ERR_NONE;
+> +}
+> +
+>  static grub_err_t
+>  grub_cmd_linux (grub_command_t cmd __attribute__ ((unused)),
+>                 int argc, char *argv[])
+>  {
+>    grub_file_t file = 0;
+> -  struct linux_arch_kernel_header lh;
+> -  struct grub_armxx_linux_pe_header *pe;
+>    grub_err_t err;
+> +  grub_off_t filelen;
+> +  grub_uint32_t align;
+> +  void *kernel = NULL;
+>    int rc;
+>
+>    grub_dl_ref (my_mod);
+> @@ -333,40 +355,24 @@ grub_cmd_linux (grub_command_t cmd __attribute__ ((unused)),
+>    if (!file)
+>      goto fail;
+>
+> -  kernel_size = grub_file_size (file);
+> -
+> -  if (grub_file_read (file, &lh, sizeof (lh)) < (long) sizeof (lh))
+> -    return grub_errno;
+> -
+> -  if (grub_arch_efi_linux_check_image (&lh) != GRUB_ERR_NONE)
+> -    goto fail;
+> -
+> -  grub_loader_unset();
+> -
+> -  grub_dprintf ("linux", "kernel file size: %lld\n", (long long) kernel_size);
+> -  kernel_addr = grub_efi_allocate_any_pages (GRUB_EFI_BYTES_TO_PAGES (kernel_size));
+> -  grub_dprintf ("linux", "kernel numpages: %lld\n",
+> -               (long long) GRUB_EFI_BYTES_TO_PAGES (kernel_size));
+> -  if (!kernel_addr)
+> +  filelen = grub_file_size (file);
+> +  kernel = grub_malloc(filelen);
+> +  if (!kernel)
+>      {
+> -      grub_error (GRUB_ERR_OUT_OF_MEMORY, N_("out of memory"));
+> +      grub_error (GRUB_ERR_OUT_OF_MEMORY, N_("cannot allocate kernel load buffer"));
+>        goto fail;
+>      }
+>
+> -  grub_file_seek (file, 0);
+> -  if (grub_file_read (file, kernel_addr, kernel_size)
+> -      < (grub_int64_t) kernel_size)
+> +  if (grub_file_read (file, kernel, filelen) < (grub_ssize_t)filelen)
+>      {
+> -      if (!grub_errno)
+> -       grub_error (GRUB_ERR_BAD_OS, N_("premature end of file %s"), argv[0]);
+> +      grub_error (GRUB_ERR_FILE_READ_ERROR, N_("Can't read kernel %s"),
+> +                 argv[0]);
+>        goto fail;
+>      }
+>
+> -  grub_dprintf ("linux", "kernel @ %p\n", kernel_addr);
+> -
+>    if (grub_efi_get_secureboot () == GRUB_EFI_SECUREBOOT_MODE_ENABLED)
+>      {
+> -      rc = grub_linuxefi_secure_validate (kernel_addr, kernel_size);
+> +      rc = grub_linuxefi_secure_validate (kernel, filelen);
+>        if (rc <= 0)
+>         {
+>           grub_error (GRUB_ERR_INVALID_COMMAND,
+> @@ -375,8 +381,32 @@ grub_cmd_linux (grub_command_t cmd __attribute__ ((unused)),
+>         }
+>      }
+>
+> -  pe = (void *)((unsigned long)kernel_addr + lh.hdr_offset);
+> -  handover_offset = pe->opt.entry_addr;
+> +  if (grub_arch_efi_linux_check_image (kernel) != GRUB_ERR_NONE)
+> +    goto fail;
+> +  if (parse_pe_header (kernel, &kernel_size, &handover_offset, &align) != GRUB_ERR_NONE)
+> +    goto fail;
+> +  grub_dprintf ("linux", "kernel mem size     : %lld\n", (long long) kernel_size);
+> +  grub_dprintf ("linux", "kernel entry offset : %d\n", handover_offset);
+> +  grub_dprintf ("linux", "kernel alignment    : 0x%x\n", align);
+> +
+> +  grub_loader_unset();
+> +
+> +  kernel_alloc_pages = GRUB_EFI_BYTES_TO_PAGES (kernel_size + align - 1);
+> +  kernel_alloc_addr = grub_efi_allocate_any_pages (kernel_alloc_pages);
+> +  grub_dprintf ("linux", "kernel numpages: %d\n", kernel_alloc_pages);
+> +  if (!kernel_alloc_addr)
+> +    {
+> +      grub_error (GRUB_ERR_OUT_OF_MEMORY, N_("out of memory"));
+> +      goto fail;
+> +    }
+> +  kernel_addr = (void *)ALIGN_UP((grub_uint64_t)kernel_alloc_addr, align);
+> +
+> +  grub_dprintf ("linux", "kernel @ %p\n", kernel_addr);
+> +  grub_memcpy (kernel_addr, kernel, grub_min(filelen, kernel_size));
+> +  if (kernel_size > filelen)
+> +    grub_memset ((char *)kernel_addr + filelen, 0, kernel_size - filelen);
+> +  grub_free(kernel);
+> +  kernel = NULL;
+>
+>    cmdline_size = grub_loader_cmdline_size (argc, argv) + sizeof (LINUX_IMAGE);
+>    linux_args = grub_malloc (cmdline_size);
+> @@ -400,6 +430,9 @@ grub_cmd_linux (grub_command_t cmd __attribute__ ((unused)),
+>      }
+>
+>  fail:
+> +  if (kernel)
+> +    grub_free (kernel);
+> +
+>    if (file)
+>      grub_file_close (file);
+>
+> @@ -412,9 +445,8 @@ fail:
+>    if (linux_args && !loaded)
+>      grub_free (linux_args);
+>
+> -  if (kernel_addr && !loaded)
+> -    grub_efi_free_pages ((grub_addr_t) kernel_addr,
+> -                        GRUB_EFI_BYTES_TO_PAGES (kernel_size));
+> +  if (kernel_alloc_addr && !loaded)
+> +    grub_efi_free_pages ((grub_addr_t) kernel_alloc_addr, kernel_alloc_pages);
+>
+>    return grub_errno;
+>  }
+> --
+> 2.25.1
+>
+>
