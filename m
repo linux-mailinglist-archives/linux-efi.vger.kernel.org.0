@@ -2,490 +2,166 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 69EEE3E4C97
-	for <lists+linux-efi@lfdr.de>; Mon,  9 Aug 2021 21:03:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CE2013E4EC3
+	for <lists+linux-efi@lfdr.de>; Mon,  9 Aug 2021 23:56:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235885AbhHITCv (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 9 Aug 2021 15:02:51 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:42530 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S235742AbhHITCs (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 9 Aug 2021 15:02:48 -0400
-Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
-        by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 179IWtVY016676;
-        Mon, 9 Aug 2021 15:02:07 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=DwvPo+Uky6tTAz7t1+WXKTv3Qq80MJVjhxfLVM/TPW4=;
- b=c3FlFmfZN5uSa2jUJ6/EUeQ+xDTgKDYXCiutlOY0OaOZkyVAhLWc+MVMj9gtRqHPqM63
- jRKBT0ODJojaqknJ09E4wi0jFAik5ax5H21G8cZPjea15qpupt2X8XjrlP/wEF0zMPDv
- G+Bq3RQwVHyUksYmXDX8MpGoxxj+vkWVasp0/dXe7Z1U6vlxOmoGFumMw73zU+oV6kbE
- 213v0J0Kvu0JXiuO62YaNLEEwpRy8nsM+pH/Ks0FIRCfMfbsqstkHlbrQzAkuavZyags
- tsU5OBEGZgMt5zLNzlHhMs7ews4w6LZ4S+qBbzOrCPfOgEaxXdQwPO+MbWKDGc8h0vY8 Og== 
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0b-001b2d01.pphosted.com with ESMTP id 3ab9n10vtx-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 09 Aug 2021 15:02:06 -0400
-Received: from m0098413.ppops.net (m0098413.ppops.net [127.0.0.1])
-        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 179IXYRW018333;
-        Mon, 9 Aug 2021 15:02:06 -0400
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.11])
-        by mx0b-001b2d01.pphosted.com with ESMTP id 3ab9n10vtm-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 09 Aug 2021 15:02:06 -0400
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
-        by ppma03dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 179Iwj82019508;
-        Mon, 9 Aug 2021 19:02:05 GMT
-Received: from b01cxnp23034.gho.pok.ibm.com (b01cxnp23034.gho.pok.ibm.com [9.57.198.29])
-        by ppma03dal.us.ibm.com with ESMTP id 3a9htbm2sc-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 09 Aug 2021 19:02:05 +0000
-Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com [9.57.199.109])
-        by b01cxnp23034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 179J235E38207842
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 9 Aug 2021 19:02:03 GMT
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 2BB56112071;
-        Mon,  9 Aug 2021 19:02:03 +0000 (GMT)
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id E095011206E;
-        Mon,  9 Aug 2021 19:02:02 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.2.130.16])
-        by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
-        Mon,  9 Aug 2021 19:02:02 +0000 (GMT)
-From:   Dov Murik <dovmurik@linux.ibm.com>
-To:     linux-efi@vger.kernel.org
-Cc:     Dov Murik <dovmurik@linux.ibm.com>, Borislav Petkov <bp@suse.de>,
-        Ashish Kalra <ashish.kalra@amd.com>,
+        id S236131AbhHIV4U (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 9 Aug 2021 17:56:20 -0400
+Received: from mail-bn8nam11on2051.outbound.protection.outlook.com ([40.107.236.51]:1857
+        "EHLO NAM11-BN8-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S232193AbhHIV4U (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Mon, 9 Aug 2021 17:56:20 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Nzg0JsJe3+u5NO7aRkKN43ICh00ZXDe+OW0A/RD+LlkuqiLbY1DiZIZ4GRoqcQ0HfrFjnlrql/9bLYpYcdcki+UkmR8suztzR8D7Ofvrs/qtBc0JEC2MLS8Uj9b+nysfWTlozzkLTBDZE+EuiXOt43VOWTTMe5u55Eqz/1pgAHj5iWrDsezF6QeAFuQOGQQHqyT2zq8opGmwl21gpHb7TeTSz+MAKWrcbiec8ze8ROsQ2/4qiOz/J8XJCQ96HGWfTGfw7LdXcq+5erG9O0JNlXONqoJ1gzXfXPJdu4RjEbSbavorWVnGzHtIJZEomBNICCA2fKXPQynPfVFe7WO5KA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Qjfqcuynl6MNwWd/ZCoVZg3ncqANglufLbMbDorr4IU=;
+ b=Eb5d+tU/FMpC17fcA7BgpwhTd6835rEtKJcRmEEujF3wEqDplREPU+VwQi4GUQG/WInOQGQvrU6vcpNJ10PEYJs3Z8z9dXlsd01NMq3KVysnNHTW1f3hbDXYOnCcuM5naCStFg4Cq45qJnuHh1qNfZT2zZjNVCzQWiZRIvrGcItUqQgq3rB9QrndI2S3GhcaKOUoI7Mm47JXy3O+vdcSMbaOAmrffV8pjZxsZ9hdiu24b/LfeojqdICMK6OtkW6K7b9bmqTVczsOTqtAEcME66aGbdwR4AyqJ6BAmB88zxSQWptANlVu5PxJqpsqMR7QNc9u8hYxr5WkuziVd+fBUw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Qjfqcuynl6MNwWd/ZCoVZg3ncqANglufLbMbDorr4IU=;
+ b=FSu0tPPV2gwlr3Lx/QgZ8K7q+i6UTH800vC3B/j13KkRO4q11lhf8CsgVCTAE1Afmq9X19QEvU7K86G5wtvIKaSvoxY4CZ83uzbbzyCtuC56huvJQ5jaWMywx+Hpitpemfmt19cEiO+rG0DC6Ea9WR61BFiGYd1louHCe8DLLxE=
+Authentication-Results: redhat.com; dkim=none (message not signed)
+ header.d=none;redhat.com; dmarc=none action=none header.from=amd.com;
+Received: from DM4PR12MB5229.namprd12.prod.outlook.com (2603:10b6:5:398::12)
+ by DM4PR12MB5295.namprd12.prod.outlook.com (2603:10b6:5:39f::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4394.17; Mon, 9 Aug
+ 2021 21:55:56 +0000
+Received: from DM4PR12MB5229.namprd12.prod.outlook.com
+ ([fe80::73:2581:970b:3208]) by DM4PR12MB5229.namprd12.prod.outlook.com
+ ([fe80::73:2581:970b:3208%3]) with mapi id 15.20.4394.023; Mon, 9 Aug 2021
+ 21:55:56 +0000
+Subject: Re: [PATCH 07/11] treewide: Replace the use of mem_encrypt_active()
+ with prot_guest_has()
+To:     Sean Christopherson <seanjc@google.com>
+Cc:     linux-kernel@vger.kernel.org, x86@kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        iommu@lists.linux-foundation.org, kvm@vger.kernel.org,
+        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        linux-graphics-maintainer@vmware.com,
+        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+        kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org,
+        Borislav Petkov <bp@alien8.de>,
         Brijesh Singh <brijesh.singh@amd.com>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
+        Joerg Roedel <joro@8bytes.org>,
         Andi Kleen <ak@linux.intel.com>,
-        "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
-        James Bottomley <jejb@linux.ibm.com>,
-        Tobin Feldman-Fitzthum <tobin@linux.ibm.com>,
-        Jim Cadden <jcadden@ibm.com>, linux-coco@lists.linux.dev,
-        linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 3/3] virt: Add sev_secret module to expose confidential computing secrets
-Date:   Mon,  9 Aug 2021 19:01:57 +0000
-Message-Id: <20210809190157.279332-4-dovmurik@linux.ibm.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20210809190157.279332-1-dovmurik@linux.ibm.com>
-References: <20210809190157.279332-1-dovmurik@linux.ibm.com>
+        Sathyanarayanan Kuppuswamy 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        Tianyu Lan <Tianyu.Lan@microsoft.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <mripard@kernel.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Will Deacon <will@kernel.org>, Dave Young <dyoung@redhat.com>,
+        Baoquan He <bhe@redhat.com>
+References: <cover.1627424773.git.thomas.lendacky@amd.com>
+ <029791b24c6412f9427cfe6ec598156c64395964.1627424774.git.thomas.lendacky@amd.com>
+ <YQR+ffO92gMfGDbs@google.com>
+From:   Tom Lendacky <thomas.lendacky@amd.com>
+Message-ID: <a8a6a63e-3bb7-47a1-1427-55633f1bf211@amd.com>
+Date:   Mon, 9 Aug 2021 16:55:53 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
+In-Reply-To: <YQR+ffO92gMfGDbs@google.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SN7P220CA0014.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:806:123::19) To DM4PR12MB5229.namprd12.prod.outlook.com
+ (2603:10b6:5:398::12)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: Py4lGVxRo2So-NXPxvZAfroNrubvN_o4
-X-Proofpoint-ORIG-GUID: VDY84jtaeMVf7OACIZXuDiOMQfuy0KS1
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.790
- definitions=2021-08-09_07:2021-08-06,2021-08-09 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 malwarescore=0
- clxscore=1015 mlxlogscore=999 bulkscore=0 mlxscore=0 impostorscore=0
- priorityscore=1501 spamscore=0 adultscore=0 suspectscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2107140000 definitions=main-2108090131
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from [10.236.30.241] (165.204.77.1) by SN7P220CA0014.NAMP220.PROD.OUTLOOK.COM (2603:10b6:806:123::19) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4394.15 via Frontend Transport; Mon, 9 Aug 2021 21:55:54 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 0c9c3def-6ac3-4a7f-ad85-08d95b807723
+X-MS-TrafficTypeDiagnostic: DM4PR12MB5295:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <DM4PR12MB5295F82C01BEDC78DB002AEAECF69@DM4PR12MB5295.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: va1GgnlgkQoGJwHV4u/vWPT7qTpos8azTAmvWS6mQTBalS5XDFQ7rPECEiFxbzhVX4g9ynz6AYUXHBRPGK/BG4lHF214foWL5qc8Ipuv0n5mmNDzMO6Hv31jefLDxr2WadSnaBSsjhcOlIOeTWLFx35539aLQslnZfOQcrR9HIQ/6Jd3qwyUn+WpQhxX+RMaadPnpPiWvT9tSAdv9jKY2wvGt+n0iyJAStAkjw27F0ml616aW8od/L4TyCN/Rsf541EY8pzky7JXzvLU7/IGPLbkS9Hvxze0OonQm7R88g9MhsEH3AoxCa1Dm0lfC8HR3hmxX1uEP24QfIQXKcPZfwRKBPLq0NW1sw827/Ze3N7ol42kAYvvUSlkfJ1fdqtgA1kGUUXPxnFYsMw2nJtU9v6jqjnhxQynBDVvxyErLtGxsYZAlEmTNvdX+nmrFLK4DICPDMozvwfe4Oj00+8tawhx77i/3HhvN/VZYNdWL+sJYOkHz2yNX+Lwy5LNmgFVKmK14mEy7WoQSf1Xy8xi5vf+Mxe7pordAYQihwWwnshQp3BI/u3xhBqUxlGblRIQPkCHfOBx98RbAX43hywnlXnNdkX/s+2X2x6Pi/xKfx8gAVBEPaD5OgvLqBbD091GXXkIopa3grc0gvtmehCybzehCkXBaWrV8m3OjyvmpEFoODxwI3Yf98qWX4ZcfLXnsmSKLIhNbAq0Hm0Db0p2zYqIPigk2iJAVqz1CHGYfUQ=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB5229.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(376002)(366004)(136003)(396003)(346002)(39860400002)(956004)(16576012)(186003)(6486002)(8936002)(31696002)(86362001)(8676002)(53546011)(7406005)(54906003)(7416002)(478600001)(316002)(2906002)(4326008)(6916009)(26005)(2616005)(36756003)(66556008)(38100700002)(31686004)(4744005)(5660300002)(66476007)(66946007)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?YmZMNW96ZEk2QzY2UndOajg2OTJLTVYzanlKMlhka2FENy9NeEFGRXJETkdQ?=
+ =?utf-8?B?aWtaNU9oOCtFYkhVWnJpME9QQTdwT3Q2cXdlT1lxRzhuTHkwdmFaT2p1Y1NU?=
+ =?utf-8?B?VFVveHVIdERHcXNDOGs3Rks1dXlGeUhsc2FqT1BDTlZkNFRuQndsQTl0OFo4?=
+ =?utf-8?B?UllFdXU3RWVUOUFoSnkrOUE5SDVmVCs1YVV1SytqVHNEQW1zQnA1VnIwQW5Q?=
+ =?utf-8?B?TGpld0lkSWZOWEw2OThaZlY3NGs5RG5vSTlKRkFlbUxveThTL2dEM0g3dVpv?=
+ =?utf-8?B?TzZXWkl4WkRhZFViMTc5dk43UHVqRlNWTVdHRDM3N1BRelVrbHVhaDM4N09u?=
+ =?utf-8?B?Rm0wcVRTYS9wSzRhZEdUUkVBRTAyb01zUkdsU1pNRlhPanpvdXlBd2RLV2NJ?=
+ =?utf-8?B?RWN0YjRZTXVSVG1tK0k5cFRuRkd5Z1hiRFJ3dGNYQnU5dUtqVDl4aGtWemhz?=
+ =?utf-8?B?czdBOG4zSzZhQ3ZhK2Z3R2Z3c2xDVnRqc0VyWFZIeThXR054LzF4QTlOMXg3?=
+ =?utf-8?B?N1h2bDRieDB0VEczcXpTSjNyTUJkY3ZtNVB1amhjTmVGQXdUWlVVcVk0L0FF?=
+ =?utf-8?B?N1Q0L1pxUHljbjBXZHY2TWNMZGpUSTlra3ZHV2NNdWE0bmNoVFNvWEtHanR5?=
+ =?utf-8?B?Y3BsTUdwODJXSjhDMS9oNSt0WExzMDUyYkdzWFE3Mm9ZUmdsRy9BYnZjM2R0?=
+ =?utf-8?B?RFVuWlBheFpWejN6S09HSVQwNnA0WVJGZUhkUnhIamhGN1dQajgwSWtLNlVO?=
+ =?utf-8?B?a0JpbTNQWTZUZHRlRkZKWlg5TnpTcE9yN1BmZmN3WE01YXgwMjlJMSs1cXdx?=
+ =?utf-8?B?QzVOMUtoeWN4bytkVjByd0drZlJBNmFtblluOEwvMEpMcGl2T3I4c2tYbERZ?=
+ =?utf-8?B?U014OFVoRUVxSGl1RGo4YnhTSTFrcUQ4ZmYwMSszc2x3OFovZEhLUnFWSlRk?=
+ =?utf-8?B?aDNJWnJwaFhTUTEvZitBMkZPRkZPNE1xc1Z6aC9JaFdrOFFQbUlkb2hJOGlH?=
+ =?utf-8?B?MG9iL01CbERyeWtHRDJTd3pUVDlMS3hod2tNVW1qbTRJN2pzbzRIS0cxSXg3?=
+ =?utf-8?B?cVhLZzdZbjAzMmIwL0VvcStiQkJVSEVuMmw3cFkwQmw0Yzh5Z0tSWlVQNXp6?=
+ =?utf-8?B?cTM4bGx3cjVtV0ZBU1dOZlN3eEJNVk9NdDBaMG4wWEpPeU1mdmJrbmhVM2VJ?=
+ =?utf-8?B?RkMvZ0M2TDkxQXdnbWxKbWN6UkdIaS8wdDFZS1hGRXdsZ2JRcU9PREhOMmp0?=
+ =?utf-8?B?Wk9LcFk4eWQyV3BJTTNyMEl1Y2YrL0JPTDRWckd6OUFLbjBGZmFFbGdja2N5?=
+ =?utf-8?B?KzQ3WE8rODBHSDRxLytmSXBFbDZVL3R1TStDM1ZicjVKOG9aU0tWZGVLb1Fa?=
+ =?utf-8?B?Y1hjUGFscjNhUjRaV25ldllCdGthamREMVFiZ3Q2UThMTTNCbThLNlVnb0g1?=
+ =?utf-8?B?ZXQ1R0tZWWZkL1RjTlYzY2J3NncvNXplQSttT3R1MjFrZDJXSDd2WFhNMUJx?=
+ =?utf-8?B?VXlyQmNFSDR2VzhRVTFUK1V4M3h5L3l6WnNPZ0lteFprQkhNK1JTS3h2cmxq?=
+ =?utf-8?B?YTdMVjd4Nm9zYkdiMit1bGF3VlJIdHdlQUdRMFVvQzlKWktFeWJ3bVFvVlhr?=
+ =?utf-8?B?Y3E2dVFvK2NROUdqZXJmWEtWYStMTW42bWR5K2g2aERiOVRHZytIWGtqQ0tZ?=
+ =?utf-8?B?clhaZVV3blo0L2dRbDJYMUM0QmVFTGQyRjVjenYrN0xoeVhYblUzcFJHb3lu?=
+ =?utf-8?Q?hU5Nt3rVA6gzUChUx3/nd3C3z1WuFX1/ao0tSAJ?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0c9c3def-6ac3-4a7f-ad85-08d95b807723
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB5229.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Aug 2021 21:55:56.4514
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: gVMUdJrJtSzpeS/OVG6KXOyXh5yqKz+0hfHnt6FLUw5aHfd3whCwKAMeR092Kk8k7apxnVxc1jIYxygM9OqnpQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB5295
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The new sev_secret module exposes the confidential computing (coco)
-secret area via securityfs interface.
+On 7/30/21 5:34 PM, Sean Christopherson wrote:
+> On Tue, Jul 27, 2021, Tom Lendacky wrote:
+>> @@ -451,7 +450,7 @@ void __init mem_encrypt_free_decrypted_mem(void)
+>>  	 * The unused memory range was mapped decrypted, change the encryption
+>>  	 * attribute from decrypted to encrypted before freeing it.
+>>  	 */
+>> -	if (mem_encrypt_active()) {
+>> +	if (sme_me_mask) {
+> 
+> Any reason this uses sme_me_mask?  The helper it calls, __set_memory_enc_dec(),
+> uses prot_guest_has(PATTR_MEM_ENCRYPT) so I assume it's available?
 
-When the module is loaded (and securityfs is mounted, typically under
-/sys/kernel/security), a "coco/sev_secret" directory is created in
-securityfs.  In it, a file is created for each secret entry.  The name
-of each such file is the GUID of the secret entry, and its content is
-the secret data.
+Probably just a slip on my part. I was debating at one point calling the
+helper vs. referencing the variables/functions directly in the
+mem_encrypt.c file.
 
-This allows applications running in a confidential computing setting to
-read secrets provided by the guest owner via a secure secret injection
-mechanism (such as AMD SEV's LAUNCH_SECRET command).
+Thanks,
+Tom
 
-Removing (unlinking) files in the "coco/sev_secret" directory will zero
-out the secret in memory, and remove the filesystem entry.  If the
-module is removed and loaded again, that secret will not appear in the
-filesystem.
-
-Signed-off-by: Dov Murik <dovmurik@linux.ibm.com>
----
- drivers/virt/Kconfig                      |   3 +
- drivers/virt/Makefile                     |   1 +
- drivers/virt/coco/sev_secret/Kconfig      |  11 +
- drivers/virt/coco/sev_secret/Makefile     |   2 +
- drivers/virt/coco/sev_secret/sev_secret.c | 313 ++++++++++++++++++++++
- 5 files changed, 330 insertions(+)
- create mode 100644 drivers/virt/coco/sev_secret/Kconfig
- create mode 100644 drivers/virt/coco/sev_secret/Makefile
- create mode 100644 drivers/virt/coco/sev_secret/sev_secret.c
-
-diff --git a/drivers/virt/Kconfig b/drivers/virt/Kconfig
-index 8061e8ef449f..6f73672f593f 100644
---- a/drivers/virt/Kconfig
-+++ b/drivers/virt/Kconfig
-@@ -36,4 +36,7 @@ source "drivers/virt/vboxguest/Kconfig"
- source "drivers/virt/nitro_enclaves/Kconfig"
- 
- source "drivers/virt/acrn/Kconfig"
-+
-+source "drivers/virt/coco/sev_secret/Kconfig"
-+
- endif
-diff --git a/drivers/virt/Makefile b/drivers/virt/Makefile
-index 3e272ea60cd9..2a7d472478bd 100644
---- a/drivers/virt/Makefile
-+++ b/drivers/virt/Makefile
-@@ -8,3 +8,4 @@ obj-y				+= vboxguest/
- 
- obj-$(CONFIG_NITRO_ENCLAVES)	+= nitro_enclaves/
- obj-$(CONFIG_ACRN_HSM)		+= acrn/
-+obj-$(CONFIG_AMD_SEV_SECRET)	+= coco/sev_secret/
-diff --git a/drivers/virt/coco/sev_secret/Kconfig b/drivers/virt/coco/sev_secret/Kconfig
-new file mode 100644
-index 000000000000..76cfb4f405e0
---- /dev/null
-+++ b/drivers/virt/coco/sev_secret/Kconfig
-@@ -0,0 +1,11 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+config AMD_SEV_SECRET
-+	tristate "AMD SEV secret area securityfs support"
-+	depends on AMD_MEM_ENCRYPT && EFI
-+	select SECURITYFS
-+	help
-+	  This is a driver for accessing the AMD SEV secret area via
-+	  securityfs.
-+
-+	  To compile this driver as a module, choose M here.
-+	  The module will be called sev_secret.
-diff --git a/drivers/virt/coco/sev_secret/Makefile b/drivers/virt/coco/sev_secret/Makefile
-new file mode 100644
-index 000000000000..dca0ed3f8f94
---- /dev/null
-+++ b/drivers/virt/coco/sev_secret/Makefile
-@@ -0,0 +1,2 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+obj-$(CONFIG_AMD_SEV_SECRET) += sev_secret.o
-diff --git a/drivers/virt/coco/sev_secret/sev_secret.c b/drivers/virt/coco/sev_secret/sev_secret.c
-new file mode 100644
-index 000000000000..d9a60166b142
---- /dev/null
-+++ b/drivers/virt/coco/sev_secret/sev_secret.c
-@@ -0,0 +1,313 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * sev_secret module
-+ *
-+ * Copyright (C) 2021 IBM Corporation
-+ * Author: Dov Murik <dovmurik@linux.ibm.com>
-+ */
-+
-+/**
-+ * DOC: sev_secret: Allow reading confidential computing (coco) secret area via
-+ * securityfs interface.
-+ *
-+ * When the module is loaded (and securityfs is mounted, typically under
-+ * /sys/kernel/security), a "coco/sev_secret" directory is created in
-+ * securityfs.  In it, a file is created for each secret entry.  The name of
-+ * each such file is the GUID of the secret entry, and its content is the
-+ * secret data.
-+ */
-+
-+#include <linux/seq_file.h>
-+#include <linux/fs.h>
-+#include <linux/kernel.h>
-+#include <linux/init.h>
-+#include <linux/module.h>
-+#include <linux/io.h>
-+#include <linux/security.h>
-+#include <linux/efi.h>
-+
-+#define SEV_SECRET_NUM_FILES 64
-+
-+#define EFI_SEVSECRET_TABLE_HEADER_GUID \
-+	EFI_GUID(0x1e74f542, 0x71dd, 0x4d66, 0x96, 0x3e, 0xef, 0x42, 0x87, 0xff, 0x17, 0x3b)
-+
-+struct sev_secret {
-+	struct dentry *coco_dir;
-+	struct dentry *fs_dir;
-+	struct dentry *fs_files[SEV_SECRET_NUM_FILES];
-+	struct linux_efi_coco_secret_area *secret_area;
-+};
-+
-+/*
-+ * Structure of the SEV secret area
-+ *
-+ * Offset   Length
-+ * (bytes)  (bytes)  Usage
-+ * -------  -------  -----
-+ *       0       16  Secret table header GUID (must be 1e74f542-71dd-4d66-963e-ef4287ff173b)
-+ *      16        4  Length of bytes of the entire secret area
-+ *
-+ *      20       16  First secret entry's GUID
-+ *      36        4  First secret entry's length in bytes (= 16 + 4 + x)
-+ *      40        x  First secret entry's data
-+ *
-+ *    40+x       16  Second secret entry's GUID
-+ *    56+x        4  Second secret entry's length in bytes (= 16 + 4 + y)
-+ *    60+x        y  Second secret entry's data
-+ *
-+ * (... and so on for additional entries)
-+ *
-+ * The GUID of each secret entry designates the usage of the secret data.
-+ */
-+
-+/**
-+ * struct secret_header - Header of entire secret area; this should be followed
-+ * by instances of struct secret_entry.
-+ * @guid:	Must be EFI_SEVSECRET_TABLE_HEADER_GUID
-+ * @len:	Length in bytes of entire secret area, including header
-+ */
-+struct secret_header {
-+	efi_guid_t guid;
-+	u32 len;
-+} __attribute((packed));
-+
-+/**
-+ * struct secret_entry - Holds one secret entry
-+ * @guid:	Secret-specific GUID (or NULL_GUID if this secret entry was deleted)
-+ * @len:	Length of secret entry, including its guid and len fields
-+ * @data:	The secret data (full of zeros if this secret entry was deleted)
-+ */
-+struct secret_entry {
-+	efi_guid_t guid;
-+	u32 len;
-+	u8 data[];
-+} __attribute((packed));
-+
-+static size_t secret_entry_data_len(struct secret_entry *e)
-+{
-+	return e->len - sizeof(*e);
-+}
-+
-+static struct sev_secret the_sev_secret;
-+
-+static inline struct sev_secret *sev_secret_get(void)
-+{
-+	return &the_sev_secret;
-+}
-+
-+static int sev_secret_bin_file_show(struct seq_file *file, void *data)
-+{
-+	struct secret_entry *e = file->private;
-+
-+	if (e)
-+		seq_write(file, e->data, secret_entry_data_len(e));
-+
-+	return 0;
-+}
-+DEFINE_SHOW_ATTRIBUTE(sev_secret_bin_file);
-+
-+static int sev_secret_unlink(struct inode *dir, struct dentry *dentry)
-+{
-+	struct sev_secret *s = sev_secret_get();
-+	struct inode *inode = d_inode(dentry);
-+	struct secret_entry *e = (struct secret_entry *)inode->i_private;
-+	int i;
-+
-+	if (e) {
-+		/* Zero out the secret data */
-+		memzero_explicit(e->data, secret_entry_data_len(e));
-+		e->guid = NULL_GUID;
-+	}
-+
-+	inode->i_private = NULL;
-+
-+	for (i = 0; i < SEV_SECRET_NUM_FILES; i++)
-+		if (s->fs_files[i] == dentry)
-+			s->fs_files[i] = NULL;
-+
-+	/*
-+	 * securityfs_remove tries to lock the directory's inode, but we reach
-+	 * the unlink callback when it's already locked
-+	 */
-+	inode_unlock(dir);
-+	securityfs_remove(dentry);
-+	inode_lock(dir);
-+
-+	return 0;
-+}
-+
-+static const struct inode_operations sev_secret_dir_inode_operations = {
-+	.lookup         = simple_lookup,
-+	.unlink         = sev_secret_unlink,
-+};
-+
-+static int sev_secret_map_area(void)
-+{
-+	struct sev_secret *s = sev_secret_get();
-+	struct linux_efi_coco_secret_area *secret_area;
-+	u32 secret_area_size;
-+
-+	if (efi.coco_secret == EFI_INVALID_TABLE_ADDR) {
-+		pr_err("Secret area address is not available\n");
-+		return -EINVAL;
-+	}
-+
-+	secret_area = memremap(efi.coco_secret, sizeof(*secret_area), MEMREMAP_WB);
-+	if (secret_area == NULL) {
-+		pr_err("Could not map secret area header\n");
-+		return -ENOMEM;
-+	}
-+
-+	secret_area_size = sizeof(*secret_area) + secret_area->size;
-+	memunmap(secret_area);
-+
-+	secret_area = memremap(efi.coco_secret, secret_area_size, MEMREMAP_WB);
-+	if (secret_area == NULL) {
-+		pr_err("Could not map secret area\n");
-+		return -ENOMEM;
-+	}
-+
-+	s->secret_area = secret_area;
-+	return 0;
-+}
-+
-+static void sev_secret_securityfs_teardown(void)
-+{
-+	struct sev_secret *s = sev_secret_get();
-+	int i;
-+
-+	for (i = (SEV_SECRET_NUM_FILES - 1); i >= 0; i--) {
-+		securityfs_remove(s->fs_files[i]);
-+		s->fs_files[i] = NULL;
-+	}
-+
-+	securityfs_remove(s->fs_dir);
-+	s->fs_dir = NULL;
-+
-+	securityfs_remove(s->coco_dir);
-+	s->coco_dir = NULL;
-+
-+	pr_debug("Removed sev_secret securityfs entries\n");
-+}
-+
-+static int sev_secret_securityfs_setup(void)
-+{
-+	efi_guid_t tableheader_guid = EFI_SEVSECRET_TABLE_HEADER_GUID;
-+	struct sev_secret *s = sev_secret_get();
-+	int ret = 0, i = 0, bytes_left;
-+	unsigned char *ptr;
-+	struct secret_header *h;
-+	struct secret_entry *e;
-+	struct dentry *dent;
-+	char guid_str[EFI_VARIABLE_GUID_LEN + 1];
-+
-+	s->coco_dir = NULL;
-+	s->fs_dir = NULL;
-+	memset(s->fs_files, 0, sizeof(s->fs_files));
-+
-+	dent = securityfs_create_dir("coco", NULL);
-+	if (IS_ERR(dent)) {
-+		pr_err("Error creating coco securityfs directory entry err=%ld\n", PTR_ERR(dent));
-+		return PTR_ERR(dent);
-+	}
-+	s->coco_dir = dent;
-+
-+	dent = securityfs_create_dir("sev_secret", s->coco_dir);
-+	if (IS_ERR(dent)) {
-+		pr_err("Error creating SEV secret securityfs directory entry err=%ld\n",
-+		       PTR_ERR(dent));
-+		return PTR_ERR(dent);
-+	}
-+	d_inode(dent)->i_op = &sev_secret_dir_inode_operations;
-+	s->fs_dir = dent;
-+
-+	ptr = s->secret_area->area;
-+	h = (struct secret_header *)ptr;
-+	if (memcmp(&h->guid, &tableheader_guid, sizeof(h->guid))) {
-+		pr_err("SEV secret area does not start with correct GUID\n");
-+		ret = -EINVAL;
-+		goto err_cleanup;
-+	}
-+	if (h->len < sizeof(*h)) {
-+		pr_err("SEV secret area reported length is too small\n");
-+		ret = -EINVAL;
-+		goto err_cleanup;
-+	}
-+
-+	bytes_left = h->len - sizeof(*h);
-+	ptr += sizeof(*h);
-+	while (bytes_left >= (int)sizeof(*e) && i < SEV_SECRET_NUM_FILES) {
-+		e = (struct secret_entry *)ptr;
-+		if (e->len < sizeof(*e) || e->len > (unsigned int)bytes_left) {
-+			pr_err("SEV secret area is corrupted\n");
-+			ret = -EINVAL;
-+			goto err_cleanup;
-+		}
-+
-+		/* Skip deleted entries (which will have NULL_GUID) */
-+		if (efi_guidcmp(e->guid, NULL_GUID)) {
-+			efi_guid_to_str(&e->guid, guid_str);
-+
-+			dent = securityfs_create_file(guid_str, 0440, s->fs_dir, (void *)e,
-+						      &sev_secret_bin_file_fops);
-+			if (IS_ERR(dent)) {
-+				pr_err("Error creating SEV secret securityfs entry\n");
-+				ret = PTR_ERR(dent);
-+				goto err_cleanup;
-+			}
-+
-+			s->fs_files[i++] = dent;
-+		}
-+		ptr += e->len;
-+		bytes_left -= e->len;
-+	}
-+
-+	pr_debug("Created %d entries in sev_secret securityfs\n", i);
-+	return 0;
-+
-+err_cleanup:
-+	sev_secret_securityfs_teardown();
-+	return ret;
-+}
-+
-+static void sev_secret_unmap_area(void)
-+{
-+	struct sev_secret *s = sev_secret_get();
-+
-+	if (s->secret_area) {
-+		memunmap(s->secret_area);
-+		s->secret_area = NULL;
-+	}
-+}
-+
-+static int __init sev_secret_init(void)
-+{
-+	int ret;
-+
-+	ret = sev_secret_map_area();
-+	if (ret)
-+		return ret;
-+
-+	ret = sev_secret_securityfs_setup();
-+	if (ret)
-+		goto err_unmap;
-+
-+	return ret;
-+
-+err_unmap:
-+	sev_secret_unmap_area();
-+	return ret;
-+}
-+
-+static void __exit sev_secret_exit(void)
-+{
-+	sev_secret_securityfs_teardown();
-+	sev_secret_unmap_area();
-+}
-+
-+module_init(sev_secret_init);
-+module_exit(sev_secret_exit);
-+
-+MODULE_DESCRIPTION("AMD SEV confidential computing secret area access");
-+MODULE_AUTHOR("IBM");
-+MODULE_LICENSE("GPL");
--- 
-2.25.1
-
+> 
+>>  		r = set_memory_encrypted(vaddr, npages);
+>>  		if (r) {
+>>  			pr_warn("failed to free unused decrypted pages\n");
+> 
