@@ -2,188 +2,196 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D8CFE3E3DBF
-	for <lists+linux-efi@lfdr.de>; Mon,  9 Aug 2021 03:42:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 47E9A3E4C8E
+	for <lists+linux-efi@lfdr.de>; Mon,  9 Aug 2021 21:02:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232682AbhHIBmV (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sun, 8 Aug 2021 21:42:21 -0400
-Received: from mga12.intel.com ([192.55.52.136]:16048 "EHLO mga12.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232678AbhHIBmU (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Sun, 8 Aug 2021 21:42:20 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10070"; a="194200409"
-X-IronPort-AV: E=Sophos;i="5.84,305,1620716400"; 
-   d="scan'208";a="194200409"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Aug 2021 18:41:59 -0700
-X-IronPort-AV: E=Sophos;i="5.84,305,1620716400"; 
-   d="scan'208";a="670624711"
-Received: from ctrondse-mobl.amr.corp.intel.com (HELO skuppusw-mobl5.amr.corp.intel.com) ([10.212.77.4])
-  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Aug 2021 18:41:57 -0700
-Subject: Re: [PATCH 00/11] Implement generic prot_guest_has() helper function
-To:     Tom Lendacky <thomas.lendacky@amd.com>,
-        linux-kernel@vger.kernel.org, x86@kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        iommu@lists.linux-foundation.org, kvm@vger.kernel.org,
-        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        linux-graphics-maintainer@vmware.com,
-        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-        kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org
-Cc:     Borislav Petkov <bp@alien8.de>,
+        id S235534AbhHITCr (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 9 Aug 2021 15:02:47 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:14274 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S235246AbhHITCr (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 9 Aug 2021 15:02:47 -0400
+Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 179Icr4g057538;
+        Mon, 9 Aug 2021 15:02:06 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=HpqaO3+MhiLePUDKJkioMaJjmHnxGYgpMvVEEt+qXKg=;
+ b=PN2eVIZhPrmGoezSPvR6ROuitrF+cm/kjSXMTyVKr8vd9VZTwiLqlUDvLGCOtk5KZv1q
+ G2csg3mna4iYaeqAXKBolGb/AmvHjIH+8stXTpHAyoDUO16nAtdvFkKpGsM9fWOTy61t
+ wQxaNJee7y6PRnN2jhdGJ9xsxp5kNx/bkWoKNEROdzk6oUZ2wxbey1HWAtpLPePBbohr
+ lrmWKEXj/ib7dKAlD4uPEiP9ayqo//uK0h1CIJ224KPVq6XTWeEzrKA+gWJIzOuRZugh
+ DD7VoCO+tK2+jXrmSlSY4EMGgf2RFcO8brMut+MEqUSvR2oiFG/3gT0P0AysjZIP+YrJ 6g== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 3ab1j8fcwp-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 09 Aug 2021 15:02:05 -0400
+Received: from m0098394.ppops.net (m0098394.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 179IhPRU084423;
+        Mon, 9 Aug 2021 15:02:05 -0400
+Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com [169.47.144.26])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 3ab1j8fcw2-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 09 Aug 2021 15:02:05 -0400
+Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
+        by ppma04wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 179Iv0jb012346;
+        Mon, 9 Aug 2021 19:02:03 GMT
+Received: from b01cxnp23033.gho.pok.ibm.com (b01cxnp23033.gho.pok.ibm.com [9.57.198.28])
+        by ppma04wdc.us.ibm.com with ESMTP id 3a9htb3wcw-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 09 Aug 2021 19:02:03 +0000
+Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com [9.57.199.109])
+        by b01cxnp23033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 179J22eO42140026
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 9 Aug 2021 19:02:02 GMT
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 31580112066;
+        Mon,  9 Aug 2021 19:02:02 +0000 (GMT)
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id EBAD911206B;
+        Mon,  9 Aug 2021 19:02:01 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.2.130.16])
+        by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
+        Mon,  9 Aug 2021 19:02:01 +0000 (GMT)
+From:   Dov Murik <dovmurik@linux.ibm.com>
+To:     linux-efi@vger.kernel.org
+Cc:     Dov Murik <dovmurik@linux.ibm.com>, Borislav Petkov <bp@suse.de>,
+        Ashish Kalra <ashish.kalra@amd.com>,
         Brijesh Singh <brijesh.singh@amd.com>,
-        Joerg Roedel <joro@8bytes.org>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
         Andi Kleen <ak@linux.intel.com>,
-        Tianyu Lan <Tianyu.Lan@microsoft.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Ard Biesheuvel <ardb@kernel.org>, Baoquan He <bhe@redhat.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Dave Young <dyoung@redhat.com>,
-        David Airlie <airlied@linux.ie>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Paul Mackerras <paulus@samba.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Will Deacon <will@kernel.org>
-References: <cover.1627424773.git.thomas.lendacky@amd.com>
-From:   "Kuppuswamy, Sathyanarayanan" 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>
-Message-ID: <0d75f283-50b7-460d-3165-185cb955bd70@linux.intel.com>
-Date:   Sun, 8 Aug 2021 18:41:54 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Firefox/78.0 Thunderbird/78.11.0
+        "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
+        James Bottomley <jejb@linux.ibm.com>,
+        Tobin Feldman-Fitzthum <tobin@linux.ibm.com>,
+        Jim Cadden <jcadden@ibm.com>, linux-coco@lists.linux.dev,
+        linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH 0/3] Allow access to confidential computing secret area in SEV guests
+Date:   Mon,  9 Aug 2021 19:01:54 +0000
+Message-Id: <20210809190157.279332-1-dovmurik@linux.ibm.com>
+X-Mailer: git-send-email 2.25.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 2_POTc4eDedfA_kbZXChZhodWJSIokXz
+X-Proofpoint-ORIG-GUID: B8rkwtUXUfE5w291her3XjbeAw70QWrD
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-In-Reply-To: <cover.1627424773.git.thomas.lendacky@amd.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.790
+ definitions=2021-08-09_07:2021-08-06,2021-08-09 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ clxscore=1015 impostorscore=0 suspectscore=0 mlxlogscore=999
+ lowpriorityscore=0 malwarescore=0 adultscore=0 phishscore=0 mlxscore=0
+ spamscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2107140000 definitions=main-2108090131
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hi Tom,
+Confidential computing (coco) hardware such as AMD SEV (Secure Encrypted
+Virtualization) allows guest owners to inject secrets into the VMs
+memory without the host/hypervisor being able to read them.  In SEV,
+secret injection is performed early in the VM launch process, before the
+guest starts running.
 
-On 7/27/21 3:26 PM, Tom Lendacky wrote:
-> This patch series provides a generic helper function, prot_guest_has(),
-> to replace the sme_active(), sev_active(), sev_es_active() and
-> mem_encrypt_active() functions.
-> 
-> It is expected that as new protected virtualization technologies are
-> added to the kernel, they can all be covered by a single function call
-> instead of a collection of specific function calls all called from the
-> same locations.
-> 
-> The powerpc and s390 patches have been compile tested only. Can the
-> folks copied on this series verify that nothing breaks for them.
+OVMF already reserves designated area for secret injection (in its
+AmdSev package; see edk2 commit 01726b6d23d4 "OvmfPkg/AmdSev: Expose the
+Sev Secret area using a configuration table" [1]), but the secrets were
+not available in the guest kernel.
 
-With this patch set, select ARCH_HAS_PROTECTED_GUEST and set
-CONFIG_AMD_MEM_ENCRYPT=n, creates following error.
+The patch series copies the secrets from the EFI-provided memory to
+kernel reserved memory, and optionally exposes them to userspace via
+securityfs using a new sev_secret kernel module.
 
-ld: arch/x86/mm/ioremap.o: in function `early_memremap_is_setup_data':
-arch/x86/mm/ioremap.c:672: undefined reference to `early_memremap_decrypted'
+The first patch in efi/libstub copies the secret area from the EFI
+memory to specially allocated memory; the second patch reserves that
+memory block; and the third patch introduces the new sev_secret module
+that exposes the content of the secret entries as securityfs files, and
+allows clearing out secrets with a file unlink interface.
 
-It looks like early_memremap_is_setup_data() is not protected with
-appropriate config.
+As a usage example, consider a guest performing computations on
+encrypted files.  The Guest Owner provides the decryption key (= secret)
+using the secret injection mechanism.  The guest application reads the
+secret from the sev_secret filesystem and proceeds to decrypt the files
+into memory and then performs the needed computations on the content.
+
+In this example, the host can't read the files from the disk image
+because they are encrypted.  Host can't read the decryption key because
+it is passed using the secret injection mechanism (= secure channel).
+Host can't read the decrypted content from memory because it's a
+confidential (memory-encrypted) guest.
+
+This has been tested with AMD SEV guests, but the kernel side of
+handling the secret area has no SEV-specific dependencies, and therefore
+might be usable (perhaps with minor changes) for any confidential
+computing hardware that can publish the secret area via the standard EFI
+config table entry.
+
+Here is a simple example for usage of the sev_secret module in a guest
+to which a secret are with 4 secrets was injected during launch:
+
+# modprobe sev_secret
+# ls -la /sys/kernel/security/coco/sev_secret
+total 0
+drwxr-xr-x 2 root root 0 Jun 28 11:54 .
+drwxr-xr-x 3 root root 0 Jun 28 11:54 ..
+-r--r----- 1 root root 0 Jun 28 11:54 736870e5-84f0-4973-92ec-06879ce3da0b
+-r--r----- 1 root root 0 Jun 28 11:54 83c83f7f-1356-4975-8b7e-d3a0b54312c6
+-r--r----- 1 root root 0 Jun 28 11:54 9553f55d-3da2-43ee-ab5d-ff17f78864d2
+-r--r----- 1 root root 0 Jun 28 11:54 e6f5a162-d67f-4750-a67c-5d065f2a9910
+
+# xxd /sys/kernel/security/coco/sev_secret/e6f5a162-d67f-4750-a67c-5d065f2a9910
+00000000: 7468 6573 652d 6172 652d 7468 652d 6b61  these-are-the-ka
+00000010: 7461 2d73 6563 7265 7473 0001 0203 0405  ta-secrets......
+00000020: 0607                                     ..
+
+# rm /sys/kernel/security/coco/sev_secret/e6f5a162-d67f-4750-a67c-5d065f2a9910
+
+# ls -la /sys/kernel/security/coco/sev_secret
+total 0
+drwxr-xr-x 2 root root 0 Jun 28 11:55 .
+drwxr-xr-x 3 root root 0 Jun 28 11:54 ..
+-r--r----- 1 root root 0 Jun 28 11:54 736870e5-84f0-4973-92ec-06879ce3da0b
+-r--r----- 1 root root 0 Jun 28 11:54 83c83f7f-1356-4975-8b7e-d3a0b54312c6
+-r--r----- 1 root root 0 Jun 28 11:54 9553f55d-3da2-43ee-ab5d-ff17f78864d2
 
 
-> 
-> Cc: Andi Kleen <ak@linux.intel.com>
-> Cc: Andy Lutomirski <luto@kernel.org>
-> Cc: Ard Biesheuvel <ardb@kernel.org>
-> Cc: Baoquan He <bhe@redhat.com>
-> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-> Cc: Borislav Petkov <bp@alien8.de>
-> Cc: Christian Borntraeger <borntraeger@de.ibm.com>
-> Cc: Daniel Vetter <daniel@ffwll.ch>
-> Cc: Dave Hansen <dave.hansen@linux.intel.com>
-> Cc: Dave Young <dyoung@redhat.com>
-> Cc: David Airlie <airlied@linux.ie>
-> Cc: Heiko Carstens <hca@linux.ibm.com>
-> Cc: Ingo Molnar <mingo@redhat.com>
-> Cc: Joerg Roedel <joro@8bytes.org>
-> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-> Cc: Maxime Ripard <mripard@kernel.org>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Paul Mackerras <paulus@samba.org>
-> Cc: Peter Zijlstra <peterz@infradead.org>
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Thomas Zimmermann <tzimmermann@suse.de>
-> Cc: Vasily Gorbik <gor@linux.ibm.com>
-> Cc: VMware Graphics <linux-graphics-maintainer@vmware.com>
-> Cc: Will Deacon <will@kernel.org>
-> 
-> ---
-> 
-> Patches based on:
->    https://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git master
->    commit 79e920060fa7 ("Merge branch 'WIP/fixes'")
-> 
-> Tom Lendacky (11):
->    mm: Introduce a function to check for virtualization protection
->      features
->    x86/sev: Add an x86 version of prot_guest_has()
->    powerpc/pseries/svm: Add a powerpc version of prot_guest_has()
->    x86/sme: Replace occurrences of sme_active() with prot_guest_has()
->    x86/sev: Replace occurrences of sev_active() with prot_guest_has()
->    x86/sev: Replace occurrences of sev_es_active() with prot_guest_has()
->    treewide: Replace the use of mem_encrypt_active() with
->      prot_guest_has()
->    mm: Remove the now unused mem_encrypt_active() function
->    x86/sev: Remove the now unused mem_encrypt_active() function
->    powerpc/pseries/svm: Remove the now unused mem_encrypt_active()
->      function
->    s390/mm: Remove the now unused mem_encrypt_active() function
-> 
->   arch/Kconfig                               |  3 ++
->   arch/powerpc/include/asm/mem_encrypt.h     |  5 --
->   arch/powerpc/include/asm/protected_guest.h | 30 +++++++++++
->   arch/powerpc/platforms/pseries/Kconfig     |  1 +
->   arch/s390/include/asm/mem_encrypt.h        |  2 -
->   arch/x86/Kconfig                           |  1 +
->   arch/x86/include/asm/kexec.h               |  2 +-
->   arch/x86/include/asm/mem_encrypt.h         | 13 +----
->   arch/x86/include/asm/protected_guest.h     | 27 ++++++++++
->   arch/x86/kernel/crash_dump_64.c            |  4 +-
->   arch/x86/kernel/head64.c                   |  4 +-
->   arch/x86/kernel/kvm.c                      |  3 +-
->   arch/x86/kernel/kvmclock.c                 |  4 +-
->   arch/x86/kernel/machine_kexec_64.c         | 19 +++----
->   arch/x86/kernel/pci-swiotlb.c              |  9 ++--
->   arch/x86/kernel/relocate_kernel_64.S       |  2 +-
->   arch/x86/kernel/sev.c                      |  6 +--
->   arch/x86/kvm/svm/svm.c                     |  3 +-
->   arch/x86/mm/ioremap.c                      | 16 +++---
->   arch/x86/mm/mem_encrypt.c                  | 60 +++++++++++++++-------
->   arch/x86/mm/mem_encrypt_identity.c         |  3 +-
->   arch/x86/mm/pat/set_memory.c               |  3 +-
->   arch/x86/platform/efi/efi_64.c             |  9 ++--
->   arch/x86/realmode/init.c                   |  8 +--
->   drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c    |  4 +-
->   drivers/gpu/drm/drm_cache.c                |  4 +-
->   drivers/gpu/drm/vmwgfx/vmwgfx_drv.c        |  4 +-
->   drivers/gpu/drm/vmwgfx/vmwgfx_msg.c        |  6 +--
->   drivers/iommu/amd/init.c                   |  7 +--
->   drivers/iommu/amd/iommu.c                  |  3 +-
->   drivers/iommu/amd/iommu_v2.c               |  3 +-
->   drivers/iommu/iommu.c                      |  3 +-
->   fs/proc/vmcore.c                           |  6 +--
->   include/linux/mem_encrypt.h                |  4 --
->   include/linux/protected_guest.h            | 37 +++++++++++++
->   kernel/dma/swiotlb.c                       |  4 +-
->   36 files changed, 218 insertions(+), 104 deletions(-)
->   create mode 100644 arch/powerpc/include/asm/protected_guest.h
->   create mode 100644 arch/x86/include/asm/protected_guest.h
->   create mode 100644 include/linux/protected_guest.h
-> 
+Previously sent as an RFC series [2].
 
+[1] https://github.com/tianocore/edk2/commit/01726b6d23d4
+[2] https://lore.kernel.org/linux-coco/20210628183431.953934-1-dovmurik@linux.ibm.com/
+
+
+Dov Murik (3):
+  efi/libstub: Copy confidential computing secret area
+  efi: Reserve confidential computing secret area
+  virt: Add sev_secret module to expose confidential computing secrets
+
+ arch/x86/platform/efi/efi.c               |   1 +
+ drivers/firmware/efi/Makefile             |   2 +-
+ drivers/firmware/efi/coco.c               |  41 +++
+ drivers/firmware/efi/efi.c                |   3 +
+ drivers/firmware/efi/libstub/Makefile     |   2 +-
+ drivers/firmware/efi/libstub/coco.c       |  68 +++++
+ drivers/firmware/efi/libstub/efi-stub.c   |   2 +
+ drivers/firmware/efi/libstub/efistub.h    |   2 +
+ drivers/firmware/efi/libstub/x86-stub.c   |   2 +
+ drivers/virt/Kconfig                      |   3 +
+ drivers/virt/Makefile                     |   1 +
+ drivers/virt/coco/sev_secret/Kconfig      |  11 +
+ drivers/virt/coco/sev_secret/Makefile     |   2 +
+ drivers/virt/coco/sev_secret/sev_secret.c | 313 ++++++++++++++++++++++
+ include/linux/efi.h                       |   9 +
+ 15 files changed, 460 insertions(+), 2 deletions(-)
+ create mode 100644 drivers/firmware/efi/coco.c
+ create mode 100644 drivers/firmware/efi/libstub/coco.c
+ create mode 100644 drivers/virt/coco/sev_secret/Kconfig
+ create mode 100644 drivers/virt/coco/sev_secret/Makefile
+ create mode 100644 drivers/virt/coco/sev_secret/sev_secret.c
+
+
+base-commit: 36a21d51725af2ce0700c6ebcb6b9594aac658a6
 -- 
-Sathyanarayanan Kuppuswamy
-Linux Kernel Developer
+2.25.1
+
