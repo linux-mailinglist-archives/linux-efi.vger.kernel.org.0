@@ -2,98 +2,163 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D4EF3E85B1
-	for <lists+linux-efi@lfdr.de>; Tue, 10 Aug 2021 23:51:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 21CBA3E905E
+	for <lists+linux-efi@lfdr.de>; Wed, 11 Aug 2021 14:19:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234748AbhHJVwO (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 10 Aug 2021 17:52:14 -0400
-Received: from mail.skyhub.de ([5.9.137.197]:53452 "EHLO mail.skyhub.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234545AbhHJVwN (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Tue, 10 Aug 2021 17:52:13 -0400
-Received: from zn.tnic (p200300ec2f0d6500329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ec:2f0d:6500:329c:23ff:fea6:a903])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 95C511EC0347;
-        Tue, 10 Aug 2021 23:51:45 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1628632305;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=bhrvSWnua4QgXGDLToC7m7WROlxA3VPxoYeGWv6d9b4=;
-        b=p7oMu+RhNEK0R7x19i+M996JIz9jAolp9gSi95HKMhewjNccujQhOtGEXBac5xmuyWnoQ8
-        VtNpb/aUb4bne0yLrWo++9p6EawNSD7KAttCXyDPqb0UwUAg1MTrP2eFAOM1Zm3RyuHGj4
-        2kVcVvuDB8EtlmSykCB6fmc5ev+4LKM=
-Date:   Tue, 10 Aug 2021 23:52:25 +0200
-From:   Borislav Petkov <bp@alien8.de>
+        id S237478AbhHKMTl (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 11 Aug 2021 08:19:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53970 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237453AbhHKMTe (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 11 Aug 2021 08:19:34 -0400
+Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4E4AC06179C
+        for <linux-efi@vger.kernel.org>; Wed, 11 Aug 2021 05:19:07 -0700 (PDT)
+Received: by mail-lf1-x12c.google.com with SMTP id t9so5263651lfc.6
+        for <linux-efi@vger.kernel.org>; Wed, 11 Aug 2021 05:19:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=shutemov-name.20150623.gappssmtp.com; s=20150623;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=QRfjFOudnOiwA+M7/UAaVDTJpihSFBYjea6mHo6NSYA=;
+        b=FrdABWFOYFHYVQYvsn9eIFG1XXIqUnaFBCPEPrWXTbkImjcaYqnfbbDKJbjXTj8n2z
+         XKpeeMl+HDYMaw1njH7BCzSmXb2GWH1pBn4+E1w1Zkax9zqjTCMN0ceFLpN0oNSL7p4h
+         tTOYo06jVnb3EuSp9CAkw3RajLjCGRh5DcWWOVaUC3oCLa3fiXHjMHrKiPKxkbd9MHf4
+         XWiG9YDES/j+Q6K8AbBgatHhy3Ey7EF4Mw9l8egNLjOvPiIJBkLqlDJHfGJd1OD2IwY9
+         /Dj5oeYRUTA55X3eykWwXtvq+RdRhaXu8H17iGSYXfRtDXdJr3ACYPa147h4M5kexh1Q
+         1YFg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=QRfjFOudnOiwA+M7/UAaVDTJpihSFBYjea6mHo6NSYA=;
+        b=oFG/TgiqPEKjar6bLGLjYkuG6CNqOTsxlPcR/t0MVPqBRv6UqPZIrv9DTy5zcMP9ZZ
+         GIDuZsNOdbi6ZAfETVdXRjOL50kuVVKdOblphslpb2pD+uPcHCZ7XQ0cJwPgT+FGK9sh
+         xzouaAFPIpDlkuYzb6Zn2ENCVT/MxtDYMfdgh+r6M/juMl24GjoVhBG6ZskID1uX7JQv
+         PrD8aGIVcJemHcoGQL7B9g53JJDsSedHBaGJ0yi8CrZN2HDFL93K2374VV1d+elxQhPp
+         9k7GPJzDJt128RLEFtFznbizc9z0AijdER5+bW8sGDPtUnPBez92+T7MIsIHAbLB+eCT
+         AZsg==
+X-Gm-Message-State: AOAM532irh6D+LZsMRWpOo/TlIKyz3TxuAnlK0vFmpp67LiGyrRc37xC
+        k6vdGxxS66na0gHE+iycGGRwXA==
+X-Google-Smtp-Source: ABdhPJwYqCmmrayYkwT8dKOh/tHUuUvcGTl6bQD02skpgV77PxIfPFHOo1k2HSgXk2Z2qwWhaj6ksA==
+X-Received: by 2002:ac2:50d8:: with SMTP id h24mr4762329lfm.631.1628684346244;
+        Wed, 11 Aug 2021 05:19:06 -0700 (PDT)
+Received: from box.localdomain ([86.57.175.117])
+        by smtp.gmail.com with ESMTPSA id w7sm2337599lft.285.2021.08.11.05.19.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Aug 2021 05:19:05 -0700 (PDT)
+Received: by box.localdomain (Postfix, from userid 1000)
+        id A68EB102A2E; Wed, 11 Aug 2021 15:19:17 +0300 (+03)
+Date:   Wed, 11 Aug 2021 15:19:17 +0300
+From:   "Kirill A. Shutemov" <kirill@shutemov.name>
 To:     Tom Lendacky <thomas.lendacky@amd.com>
-Cc:     Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org,
-        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+Cc:     "Kuppuswamy, Sathyanarayanan" 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        linux-kernel@vger.kernel.org, x86@kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        iommu@lists.linux-foundation.org, kvm@vger.kernel.org,
         linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        linux-coco@lists.linux.dev, linux-mm@kvack.org,
-        linux-crypto@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Vitaly Kuznetsov <vkuznets@redhat.com>,
-        Wanpeng Li <wanpengli@tencent.com>,
-        Jim Mattson <jmattson@google.com>,
-        Andy Lutomirski <luto@kernel.org>,
+        linux-graphics-maintainer@vmware.com,
+        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+        kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org,
+        Borislav Petkov <bp@alien8.de>,
+        Brijesh Singh <brijesh.singh@amd.com>,
+        Joerg Roedel <joro@8bytes.org>,
+        Andi Kleen <ak@linux.intel.com>,
+        Tianyu Lan <Tianyu.Lan@microsoft.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
         Dave Hansen <dave.hansen@linux.intel.com>,
-        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
+        Andy Lutomirski <luto@kernel.org>,
         Peter Zijlstra <peterz@infradead.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        David Rientjes <rientjes@google.com>,
-        Dov Murik <dovmurik@linux.ibm.com>,
-        Tobin Feldman-Fitzthum <tobin@ibm.com>,
-        Michael Roth <michael.roth@amd.com>,
-        Vlastimil Babka <vbabka@suse.cz>, tony.luck@intel.com,
-        brijesh.ksingh@gmail.com
-Subject: Re: [PATCH Part1 RFC v4 05/36] x86/sev: Define the Linux specific
- guest termination reasons
-Message-ID: <YRL1GSmdJhoUCXZv@zn.tnic>
-References: <20210707181506.30489-1-brijesh.singh@amd.com>
- <20210707181506.30489-6-brijesh.singh@amd.com>
- <YRJkDhcbUi9xQemM@zn.tnic>
- <955b4f50-5a7b-8c60-d31e-864bc29638f5@amd.com>
- <65c53556-94e1-b372-7fb1-64bb78c7ae15@amd.com>
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <mripard@kernel.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Will Deacon <will@kernel.org>, Dave Young <dyoung@redhat.com>,
+        Baoquan He <bhe@redhat.com>
+Subject: Re: [PATCH 07/11] treewide: Replace the use of mem_encrypt_active()
+ with prot_guest_has()
+Message-ID: <20210811121917.ghxi7g4mctuybhbk@box.shutemov.name>
+References: <cover.1627424773.git.thomas.lendacky@amd.com>
+ <029791b24c6412f9427cfe6ec598156c64395964.1627424774.git.thomas.lendacky@amd.com>
+ <166f30d8-9abb-02de-70d8-6e97f44f85df@linux.intel.com>
+ <4b885c52-f70a-147e-86bd-c71a8f4ef564@amd.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <65c53556-94e1-b372-7fb1-64bb78c7ae15@amd.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <4b885c52-f70a-147e-86bd-c71a8f4ef564@amd.com>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, Aug 10, 2021 at 02:30:44PM -0500, Tom Lendacky wrote:
-> IIRC, during the review of the first GHCB version there was discussion
-> about assigning reason sets outside of 0 within the spec and the overall
-> feeling was to not do that as part of the spec.
+On Tue, Aug 10, 2021 at 02:48:54PM -0500, Tom Lendacky wrote:
+> On 8/10/21 1:45 PM, Kuppuswamy, Sathyanarayanan wrote:
+> > 
+> > 
+> > On 7/27/21 3:26 PM, Tom Lendacky wrote:
+> >> diff --git a/arch/x86/kernel/head64.c b/arch/x86/kernel/head64.c
+> >> index de01903c3735..cafed6456d45 100644
+> >> --- a/arch/x86/kernel/head64.c
+> >> +++ b/arch/x86/kernel/head64.c
+> >> @@ -19,7 +19,7 @@
+> >>   #include <linux/start_kernel.h>
+> >>   #include <linux/io.h>
+> >>   #include <linux/memblock.h>
+> >> -#include <linux/mem_encrypt.h>
+> >> +#include <linux/protected_guest.h>
+> >>   #include <linux/pgtable.h>
+> >>     #include <asm/processor.h>
+> >> @@ -285,7 +285,7 @@ unsigned long __head __startup_64(unsigned long
+> >> physaddr,
+> >>        * there is no need to zero it after changing the memory encryption
+> >>        * attribute.
+> >>        */
+> >> -    if (mem_encrypt_active()) {
+> >> +    if (prot_guest_has(PATTR_MEM_ENCRYPT)) {
+> >>           vaddr = (unsigned long)__start_bss_decrypted;
+> >>           vaddr_end = (unsigned long)__end_bss_decrypted;
+> > 
+> > 
+> > Since this change is specific to AMD, can you replace PATTR_MEM_ENCRYPT with
+> > prot_guest_has(PATTR_SME) || prot_guest_has(PATTR_SEV). It is not used in
+> > TDX.
 > 
-> We can re-open that discussion for the next version of the GHCB document.
+> This is a direct replacement for now.
 
-My worry is that if nothing documents which sets are allocated to which
-vendor, it'll become a mess.
+With current implementation of prot_guest_has() for TDX it breaks boot for
+me.
 
-Imagine a Linux SNP guest and a windoze one, both running on a KVM
-hypervisor (is that even possible?) and both using the same termination
-reason set with conflicting reason numbers.
+Looking at code agains, now I *think* the reason is accessing a global
+variable from __startup_64() inside TDX version of prot_guest_has().
 
-Unneeded confusion.
+__startup_64() is special. If you access any global variable you need to
+use fixup_pointer(). See comment before __startup_64().
 
-Unless the spec says, "reason set 1 is allocated to Linux, set 2 to
-windoze, etc"
+I'm not sure how you get away with accessing sme_me_mask directly from
+there. Any clues? Maybe just a luck and complier generates code just right
+for your case, I donno.
 
-Then all know which is which.
+A separate point is that TDX version of prot_guest_has() relies on
+cpu_feature_enabled() which is not ready at this point.
 
-And so on...
+I think __bss_decrypted fixup has to be done if sme_me_mask is non-zero.
+Or just do it uncoditionally because it's NOP for sme_me_mask == 0.
 
-Thx.
+> I think the change you're requesting
+> should be done as part of the TDX support patches so it's clear why it is
+> being changed.
+> 
+> But, wouldn't TDX still need to do something with this shared/unencrypted
+> area, though? Or since it is shared, there's actually nothing you need to
+> do (the bss decrpyted section exists even if CONFIG_AMD_MEM_ENCRYPT is not
+> configured)?
+
+AFAICS, only kvmclock uses __bss_decrypted. We don't enable kvmclock in
+TDX at the moment. It may change in the future.
 
 -- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+ Kirill A. Shutemov
