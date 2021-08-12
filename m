@@ -2,186 +2,103 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A626B3EA2B4
-	for <lists+linux-efi@lfdr.de>; Thu, 12 Aug 2021 12:07:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 368E53EA670
+	for <lists+linux-efi@lfdr.de>; Thu, 12 Aug 2021 16:21:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235654AbhHLKHn (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 12 Aug 2021 06:07:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44584 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235696AbhHLKHi (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 12 Aug 2021 06:07:38 -0400
-Received: from mail-lj1-x231.google.com (mail-lj1-x231.google.com [IPv6:2a00:1450:4864:20::231])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9AF28C0613D3
-        for <linux-efi@vger.kernel.org>; Thu, 12 Aug 2021 03:07:13 -0700 (PDT)
-Received: by mail-lj1-x231.google.com with SMTP id x9so9816780ljj.2
-        for <linux-efi@vger.kernel.org>; Thu, 12 Aug 2021 03:07:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=shutemov-name.20150623.gappssmtp.com; s=20150623;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=MYArfwyoBo3dGsKUJMsxwhHgYqZKbCcsgh7gGUNtDK4=;
-        b=i5pl2dc+IIZq62s73J165t7SbTE/a6uwhQcs74jwe9KmwHHHprhV6B7adGgzY2ul5F
-         h3ad9IJiBKNdQ1Yy+0atN7ISXCxsrMGXnfmJsO6X4rAencCuDMvqer1gR8DISUT+MUdX
-         mFWLcuQYXLFjOzlL0+b+7kJuGkuB4wCN/YMkw/r+eyS6zgywYe+L6amtdlG3N+EOpGsE
-         J1HMLNEKBn3QeV3/WPSCpmI5s5ySDG9/4fJ+UJO1H5Xch03iP3WdOduEdYUt1pTqbuK7
-         XsqkYhAszn/r202BsWcaBlPgkZHQ5nFUcQEBqetJcuzusrxc9TEefXgeJD4qBlDR12PM
-         /RWw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=MYArfwyoBo3dGsKUJMsxwhHgYqZKbCcsgh7gGUNtDK4=;
-        b=SmqoIelQEjLvj4JhBc36fpeOaSwQfLb8KTxKIOvqLpKGO6A7z1wu7I4lQkhVizKATz
-         as6vIv4ITeH/6UN+sm1APBFN0bZgJnVZ4P/ANClGslECHlODerW++KYoLNmemN1UVkxP
-         +HreXHn7PalJgSc27DDfha3OFafRety5Pi7vJDeEH4db5SbAcz539uE3nGoFgsF8KfBO
-         JCLVnTRwj6zTa+/zZ1KyI7H+oIY3rsbeASKodG7MMyxriL7d6BMJimW5D7MoJBiL/1CL
-         ojnnIEnmYoFF3mnF4kma+JMB7VKEJ5FVdankwyYLs/+BNJto7BM7c1eVD190TOMV8yIn
-         A3Hw==
-X-Gm-Message-State: AOAM531v0KS7rBmMiaWSy1eZzueU5Q5PGIHTFg9Zg9+l0gRcI3fvNw0c
-        400gOso4j8OmF9OAdyVifBGgMw==
-X-Google-Smtp-Source: ABdhPJzegmFCE5odxbsD4HArsZ9uuMjN7H8TkJnoN55vikWCUHEpo/5436B3LFAXNhCNvYbyx3Wtvw==
-X-Received: by 2002:a2e:814a:: with SMTP id t10mr2410500ljg.318.1628762831975;
-        Thu, 12 Aug 2021 03:07:11 -0700 (PDT)
-Received: from box.localdomain ([86.57.175.117])
-        by smtp.gmail.com with ESMTPSA id o8sm212528lfo.292.2021.08.12.03.07.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Aug 2021 03:07:11 -0700 (PDT)
-Received: by box.localdomain (Postfix, from userid 1000)
-        id B75B41028BC; Thu, 12 Aug 2021 13:07:24 +0300 (+03)
-Date:   Thu, 12 Aug 2021 13:07:24 +0300
-From:   "Kirill A. Shutemov" <kirill@shutemov.name>
-To:     Tom Lendacky <thomas.lendacky@amd.com>
-Cc:     "Kuppuswamy, Sathyanarayanan" 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        linux-kernel@vger.kernel.org, x86@kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        iommu@lists.linux-foundation.org, kvm@vger.kernel.org,
-        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        linux-graphics-maintainer@vmware.com,
-        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-        kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org,
-        Borislav Petkov <bp@alien8.de>,
-        Brijesh Singh <brijesh.singh@amd.com>,
-        Joerg Roedel <joro@8bytes.org>,
-        Andi Kleen <ak@linux.intel.com>,
-        Tianyu Lan <Tianyu.Lan@microsoft.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Will Deacon <will@kernel.org>, Dave Young <dyoung@redhat.com>,
-        Baoquan He <bhe@redhat.com>
-Subject: Re: [PATCH 07/11] treewide: Replace the use of mem_encrypt_active()
- with prot_guest_has()
-Message-ID: <20210812100724.t4cdh7xbkuqgnsc3@box.shutemov.name>
-References: <cover.1627424773.git.thomas.lendacky@amd.com>
- <029791b24c6412f9427cfe6ec598156c64395964.1627424774.git.thomas.lendacky@amd.com>
- <166f30d8-9abb-02de-70d8-6e97f44f85df@linux.intel.com>
- <4b885c52-f70a-147e-86bd-c71a8f4ef564@amd.com>
- <20210811121917.ghxi7g4mctuybhbk@box.shutemov.name>
- <0a819549-e481-c004-7da8-82ba427b13ce@amd.com>
+        id S237931AbhHLOV6 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 12 Aug 2021 10:21:58 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:63078 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S236287AbhHLOV5 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 12 Aug 2021 10:21:57 -0400
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 17CE4fYR035638;
+        Thu, 12 Aug 2021 10:21:18 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=4rFKLwpJOQMMqGRC+zW+jrbs8nb5tBinDGArMD5AuCw=;
+ b=DDXo3ijmM5GI1auEmnXHEpeqylNP3bObxI7sALFa3XRH2C+ofdrsIcEI2plk0LSc8crG
+ RCN0wNGobu+OFiMBCnkmKfOMpwjYNXALaPuD2zgMt71o5UtG4i1lD89Mrly7kUdZDM2Y
+ sF2xhej/iyVpAmxn7AKQMOff5orbqP+ZJcTATeF0xILVyFhoeMSHt0mLm9IuO6n41wly
+ FU0GtQr60AJ94fNDU5c+UJrQKFlbNp5HoEmJGf/BD7NGSQZmcZqQ/ZA6dVJ3MRQO8pkz
+ SI0w/TrAC7BdCZON7Mn16bzunmWcZ0MS1wfy4JE/59avd8rs+O2HnR80XlkiyaMjFy8L 4Q== 
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com [169.51.49.102])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 3ad0qy1vjt-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 12 Aug 2021 10:21:17 -0400
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+        by ppma06ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 17CEIsOw014713;
+        Thu, 12 Aug 2021 14:21:15 GMT
+Received: from b06avi18626390.portsmouth.uk.ibm.com (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
+        by ppma06ams.nl.ibm.com with ESMTP id 3acf0ktjyh-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 12 Aug 2021 14:21:15 +0000
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com [9.149.105.232])
+        by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 17CEHxxE30540192
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 12 Aug 2021 14:17:59 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id AAC4D52057;
+        Thu, 12 Aug 2021 14:21:12 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.145.92.71])
+        by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 5803052069;
+        Thu, 12 Aug 2021 14:21:12 +0000 (GMT)
+Subject: Re: [PATCH 1/4] block: store a gendisk in struct parsed_partitions
+To:     Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>
+Cc:     Davidlohr Bueso <dave@stgolabs.net>,
+        Jan Hoeppner <hoeppner@linux.ibm.com>,
+        "Richard Russon (FlatCap)" <ldm@flatcap.org>,
+        linux-block@vger.kernel.org, linux-efi@vger.kernel.org,
+        linux-s390@vger.kernel.org, linux-ntfs-dev@lists.sourceforge.net
+References: <20210810154512.1809898-1-hch@lst.de>
+ <20210810154512.1809898-2-hch@lst.de>
+From:   Stefan Haberland <sth@linux.ibm.com>
+Message-ID: <15ddb7b3-8b43-2e36-652c-c6ccb06c7f88@linux.ibm.com>
+Date:   Thu, 12 Aug 2021 16:21:12 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <0a819549-e481-c004-7da8-82ba427b13ce@amd.com>
+In-Reply-To: <20210810154512.1809898-2-hch@lst.de>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: GZUZdAv0WiWL02u5O1Ht1A2vEmREStlc
+X-Proofpoint-ORIG-GUID: GZUZdAv0WiWL02u5O1Ht1A2vEmREStlc
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.790
+ definitions=2021-08-12_04:2021-08-12,2021-08-12 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ spamscore=0 mlxlogscore=999 lowpriorityscore=0 suspectscore=0
+ clxscore=1011 phishscore=0 impostorscore=0 mlxscore=0 bulkscore=0
+ adultscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2107140000 definitions=main-2108120087
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, Aug 11, 2021 at 10:52:55AM -0500, Tom Lendacky wrote:
-> On 8/11/21 7:19 AM, Kirill A. Shutemov wrote:
-> > On Tue, Aug 10, 2021 at 02:48:54PM -0500, Tom Lendacky wrote:
-> >> On 8/10/21 1:45 PM, Kuppuswamy, Sathyanarayanan wrote:
-> >>>
-> >>>
-> >>> On 7/27/21 3:26 PM, Tom Lendacky wrote:
-> >>>> diff --git a/arch/x86/kernel/head64.c b/arch/x86/kernel/head64.c
-> >>>> index de01903c3735..cafed6456d45 100644
-> >>>> --- a/arch/x86/kernel/head64.c
-> >>>> +++ b/arch/x86/kernel/head64.c
-> >>>> @@ -19,7 +19,7 @@
-> >>>>   #include <linux/start_kernel.h>
-> >>>>   #include <linux/io.h>
-> >>>>   #include <linux/memblock.h>
-> >>>> -#include <linux/mem_encrypt.h>
-> >>>> +#include <linux/protected_guest.h>
-> >>>>   #include <linux/pgtable.h>
-> >>>>     #include <asm/processor.h>
-> >>>> @@ -285,7 +285,7 @@ unsigned long __head __startup_64(unsigned long
-> >>>> physaddr,
-> >>>>        * there is no need to zero it after changing the memory encryption
-> >>>>        * attribute.
-> >>>>        */
-> >>>> -    if (mem_encrypt_active()) {
-> >>>> +    if (prot_guest_has(PATTR_MEM_ENCRYPT)) {
-> >>>>           vaddr = (unsigned long)__start_bss_decrypted;
-> >>>>           vaddr_end = (unsigned long)__end_bss_decrypted;
-> >>>
-> >>>
-> >>> Since this change is specific to AMD, can you replace PATTR_MEM_ENCRYPT with
-> >>> prot_guest_has(PATTR_SME) || prot_guest_has(PATTR_SEV). It is not used in
-> >>> TDX.
-> >>
-> >> This is a direct replacement for now.
-> > 
-> > With current implementation of prot_guest_has() for TDX it breaks boot for
-> > me.
-> > 
-> > Looking at code agains, now I *think* the reason is accessing a global
-> > variable from __startup_64() inside TDX version of prot_guest_has().
-> > 
-> > __startup_64() is special. If you access any global variable you need to
-> > use fixup_pointer(). See comment before __startup_64().
-> > 
-> > I'm not sure how you get away with accessing sme_me_mask directly from
-> > there. Any clues? Maybe just a luck and complier generates code just right
-> > for your case, I donno.
-> 
-> Hmm... yeah, could be that the compiler is using rip-relative addressing
-> for it because it lives in the .data section?
+Am 10.08.21 um 17:45 schrieb Christoph Hellwig:
+> Partition scanning only happens on the whole device, so pass a
+> struct gendisk instead of the whole device block_device to the scanners.
+> This allows to simplify printing the device name in various places as the
+> disk name is available in disk->name.
+>
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
+> ---
+>  block/partitions/acorn.c   |  4 ++--
+>  block/partitions/aix.c     | 20 ++------------------
+>  block/partitions/amiga.c   |  7 +++----
+>  block/partitions/atari.c   |  4 ++--
+>  block/partitions/check.h   |  2 +-
+>  block/partitions/cmdline.c |  6 ++----
+>  block/partitions/core.c    |  6 +++---
+>  block/partitions/efi.c     | 36 +++++++++++++++++-------------------
+>  block/partitions/ibm.c     |  4 ++--
 
-I guess. It has to be fixed. It may break with complier upgrade or any
-random change around the code.
+for the DASD part:
 
-BTW, does it work with clang for you?
+Looks good.
 
-> For the static variables in mem_encrypt_identity.c I did an assembler rip
-> relative LEA, but probably could have passed physaddr to sme_enable() and
-> used a fixup_pointer() style function, instead.
+Reviewed-by: Stefan Haberland <sth@linux.ibm.com>
 
-Sounds like a plan.
 
-> > A separate point is that TDX version of prot_guest_has() relies on
-> > cpu_feature_enabled() which is not ready at this point.
-> 
-> Does TDX have to do anything special to make memory able to be shared with
-> the hypervisor?
-
-Yes. But there's nothing that required any changes in early boot. It
-handled in ioremap/set_memory.
-
-> You might have to use something that is available earlier
-> than cpu_feature_enabled() in that case (should you eventually support
-> kvmclock).
-
-Maybe.
-
-> > I think __bss_decrypted fixup has to be done if sme_me_mask is non-zero.
-> > Or just do it uncoditionally because it's NOP for sme_me_mask == 0.
-> 
-> For SNP, we'll have to additionally call the HV to update the RMP to make
-> the memory shared. But that could also be done unconditionally since the
-> early_snp_set_memory_shared() routine will check for SNP before doing
-> anything.
-
--- 
- Kirill A. Shutemov
