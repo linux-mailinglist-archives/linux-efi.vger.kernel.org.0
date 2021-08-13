@@ -2,44 +2,43 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1CE8C3EB5FD
-	for <lists+linux-efi@lfdr.de>; Fri, 13 Aug 2021 15:13:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 90C3F3EB6A1
+	for <lists+linux-efi@lfdr.de>; Fri, 13 Aug 2021 16:21:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240624AbhHMNOA (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 13 Aug 2021 09:14:00 -0400
-Received: from mail-dm6nam10on2088.outbound.protection.outlook.com ([40.107.93.88]:34752
-        "EHLO NAM10-DM6-obe.outbound.protection.outlook.com"
+        id S234515AbhHMOVq (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 13 Aug 2021 10:21:46 -0400
+Received: from mail-dm6nam11on2070.outbound.protection.outlook.com ([40.107.223.70]:26176
+        "EHLO NAM11-DM6-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S239062AbhHMNN7 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Fri, 13 Aug 2021 09:13:59 -0400
+        id S233567AbhHMOVp (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Fri, 13 Aug 2021 10:21:45 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=lqbngGVFM7Tqrm9BSRJ8Lxr48Yr2x7+bjERkhCaS2RzYWPqlNgOZsBhvWmFYUSpN/y8vXWrTN9fwQx4LPTmnSXkShNc+8cXoohPUNJKJAaph0BwHqJEf9IvyCzetEkWOHknbzVfS+mlloz6vNyvRQ/WoV6wpTtZMcMhvnBDBIJn2rLrLGf40H2Wa+ZRljrcGaQFSs2DwJxItT9nyUpJBefm9SLG/4YmzuVEeb9vrsQ83MZ7VHIIeBV7xTs3ZTfiQVgRgHjXh3i3OkFDz03VCjiY2Tt9sgnTUyI4qvs/6WGpWFx4YsK9Qi6dPEC6rt78MSX8r5molzcD5yFSC/lHdZA==
+ b=Ne19XzovXIUurJCUI7TYwxSZSTISSCikfAKmPccSEskYI8U0yQXr9vlXPmbILbguqjmSzaPlxnSuyMlsSZv4wGApakhk5DHL93uqMeXErUy8DOMzQ75lErRtf/Dr+mW1J5Z7fvfria6vq2yfcQW5mg114b6gVYNmLVe61pcz9Sv6OgZAkfQkmvEv9OOrzJthqsAPL3KRYrlMEneHnCvbks0X5PowbVMYbDAgX5Wv+k73mTzfEZdfE9WPzb4ijm191hG39TLkVgiTziLAKdINL9WjZEZWK1kZn7hgFymUy2frek7b4jfsIyfYj9gE3Rl379qgREDMg0IUZ3v71l2KiA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=JXOTb+JBRqlmpBN1/PJyDRdw09B+LaUvdSNrUr0VwEk=;
- b=goIV88aXkk1NguZzWRSzlmI+1DME2nX/ZqjH8G+27yi+33XjYvK17jeNoagyA+K6OEIZ0qynLtnpCoag3xJHrJ84ihCHnAKpLY6qJarFmO5Koh6Ihid85lWYJ8xr5Q3RdagF8V0Zceg0RRgpO7FWeqUY/A1veatWTGM5LV4yrW4kXggi086Fby7+uED3MbTJ6S3iT99Qg+e/L2Z0fc8xxI7PROScQ0iPIMjrdHWcLkG8F/cPJrKYhP0S15hKkqIwnh//NZ4r60wCFTnCA/NYPNGX4uvmYs8FFzkcrwNSrlRamfQECFNHXsk/QKTSEbCHO2Qy6JkkCwYhWpjxY+TC1Q==
+ bh=VzOEbGD1NjT7zx8CjUUzUaHGs4jadV56i48/BH3yj9Q=;
+ b=Ykcj4DF07mWTh4c7r70+Z6p9a7oiAmi92Vn9CjHYKY20dPI+Mgp/91Ib/eWtd4p+w88izqsmDJ+EWmg7ThEwgErGeFer2kzX3JcH3uDWMiNL5WYq6VZmZQ3bzeAN+pcRTBXJNnOetx8SoqjJChImVNIMQyeXDWtregfmz84+Ii0rsY2l7yC71TbMHZneHLwUToq+w9k0lAWWpMleSnJs7LeiLjaxTkeTqgeinew0bMd4PNiLaE2bZpAeo4HogjfAJGGST2BeE2lL3P8pyQlnxlT9d1bxrnLkLjh3QiPHQnQJ6j0rc0+xsz+gDnN+LbbrpkMMhTxsm4HxKWxbdQ0Zkg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
  header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=JXOTb+JBRqlmpBN1/PJyDRdw09B+LaUvdSNrUr0VwEk=;
- b=aVvB97SjrgWMm3Yfwjvgdx3QPV7NWAK2gxTX4BPpqk1AFiJwuuwBlBnrr0mqOmPGIsTKvz9dJviwHHAawyEoUHz/tFEVc0hivySrbPeLFMDQ9MNZhbXJZjsusLn7SHpddNzstfT2gmryrNxQeB7kRVAlfUZZiuDYZpaskMBZTbI=
+ bh=VzOEbGD1NjT7zx8CjUUzUaHGs4jadV56i48/BH3yj9Q=;
+ b=X/DpPj2qKwoodKy+BbpDc5m7DwB4Tk+SwVo6UJmnq/Pk7I94eIKK78EXXr8dXFSr/XUItMcmvrYPpiIPYzvF2Um4e4PQZsCZNFgep6AwJZbqWgGROEyCBhpOjLZytXgNnundEsil8fySoycjAtNP5T6UZ6P5Rn5J5wjGEYZOWBI=
 Authentication-Results: gmail.com; dkim=none (message not signed)
  header.d=none;gmail.com; dmarc=none action=none header.from=amd.com;
 Received: from SN6PR12MB2718.namprd12.prod.outlook.com (2603:10b6:805:6f::22)
- by SN6PR12MB2768.namprd12.prod.outlook.com (2603:10b6:805:72::11) with
+ by SA0PR12MB4431.namprd12.prod.outlook.com (2603:10b6:806:95::11) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4415.15; Fri, 13 Aug
- 2021 13:13:30 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4415.16; Fri, 13 Aug
+ 2021 14:21:16 +0000
 Received: from SN6PR12MB2718.namprd12.prod.outlook.com
  ([fe80::78b7:7336:d363:9be3]) by SN6PR12MB2718.namprd12.prod.outlook.com
  ([fe80::78b7:7336:d363:9be3%6]) with mapi id 15.20.4415.017; Fri, 13 Aug 2021
- 13:13:30 +0000
-Subject: Re: [PATCH Part1 RFC v4 08/36] x86/sev: check the vmpl level
-To:     Borislav Petkov <bp@alien8.de>
-Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+ 14:21:16 +0000
+Cc:     brijesh.singh@amd.com, x86@kernel.org,
+        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
         linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
         linux-coco@lists.linux.dev, linux-mm@kvack.org,
         linux-crypto@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
@@ -61,193 +60,136 @@ Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
         Tobin Feldman-Fitzthum <tobin@ibm.com>,
         Michael Roth <michael.roth@amd.com>,
         Vlastimil Babka <vbabka@suse.cz>, tony.luck@intel.com,
-        npmccallum@redhat.com, brijesh.ksingh@gmail.com
+        brijesh.ksingh@gmail.com
+Subject: Re: [PATCH Part1 RFC v4 09/36] x86/compressed: Add helper for
+ validating pages in the decompression stage
+To:     Borislav Petkov <bp@alien8.de>
 References: <20210707181506.30489-1-brijesh.singh@amd.com>
- <20210707181506.30489-9-brijesh.singh@amd.com> <YRYegqsigZfrbFbk@zn.tnic>
+ <20210707181506.30489-10-brijesh.singh@amd.com> <YRZIA+qQ7EpO0zxC@zn.tnic>
 From:   Brijesh Singh <brijesh.singh@amd.com>
-Message-ID: <bd5b8826-ab0b-4f4f-8594-0c7e6232941a@amd.com>
-Date:   Fri, 13 Aug 2021 08:13:20 -0500
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
- Gecko/20100101 Thunderbird/78.12.0
-In-Reply-To: <YRYegqsigZfrbFbk@zn.tnic>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
+Message-ID: <c519e685-5447-1847-2c97-99c5fcbbaa15@amd.com>
+Date:   Fri, 13 Aug 2021 09:21:14 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
+In-Reply-To: <YRZIA+qQ7EpO0zxC@zn.tnic>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
-X-ClientProxiedBy: SN4PR0201CA0030.namprd02.prod.outlook.com
- (2603:10b6:803:2e::16) To SN6PR12MB2718.namprd12.prod.outlook.com
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SA9PR13CA0026.namprd13.prod.outlook.com
+ (2603:10b6:806:21::31) To SN6PR12MB2718.namprd12.prod.outlook.com
  (2603:10b6:805:6f::22)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from Brijeshs-MacBook-Pro.local (70.112.153.56) by SN4PR0201CA0030.namprd02.prod.outlook.com (2603:10b6:803:2e::16) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4415.15 via Frontend Transport; Fri, 13 Aug 2021 13:13:22 +0000
+Received: from [10.236.31.95] (165.204.77.1) by SA9PR13CA0026.namprd13.prod.outlook.com (2603:10b6:806:21::31) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4436.9 via Frontend Transport; Fri, 13 Aug 2021 14:21:15 +0000
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 0bb169ad-34df-44f4-1e76-08d95e5c24e9
-X-MS-TrafficTypeDiagnostic: SN6PR12MB2768:
+X-MS-Office365-Filtering-Correlation-Id: abaf655d-65a4-4d7a-5a68-08d95e659c76
+X-MS-TrafficTypeDiagnostic: SA0PR12MB4431:
 X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <SN6PR12MB2768FEDCB8F9077966A4404BE5FA9@SN6PR12MB2768.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:8273;
+X-Microsoft-Antispam-PRVS: <SA0PR12MB4431E6D1A8EC8E963CF2356CE5FA9@SA0PR12MB4431.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:3826;
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: yK+Z/2WXlwUIWUP8TcbCYd2UjzHkkvtACM8KBTd0DApjbl67oRXBwL6c4TvUXKy5Yn1f+WI8hhShPVLJT4ALqHe6oBEsBA2kXyLHI6OVXtz9v9vMMs+Ix+NCUQp7dWIzjPFt1WmiExszHRYDlqJ7pXXKvM9mZ4MIoRsTEBZpjrOQS08AKfF+n+SVRqr9u4U9tFw6GyJvIdvJIasUV++Pj4gv1bsXysdL4HJ89EX2zX1FcBMk6MCF+t2FiaGFubMYut4o8EcsNYqxNpEOxsxWor9FyOnvUuHV7MP61/xaiDVCdAtnVlJS3PeD3JTB9gZ1ENOISviHakCRWV+sMK1zXwpNFKQK17JNbBWRdA4rxFDbXDrQUnVepnSRTg612BT+VWERe929ZT8KteqjsxJf/91IeSW2bXacnqLOOH1v5c74D5hu76K4IPDbdirxcy5iQsMtjQeiU6xymuI2lyv2/vOffU+jE8jfm8E/2KC7mWDHalQUzdxbcT4vXiuVjYm4oPEfXIEE0zLioLYVT0jIoPWvD7h/9eTjMuwLbt7VxsEUlalkuEFT25EjDJxnTQyhgxmHDOO0IdIJLxLr2Yac9pe4rc+kiPfMQOax9g9Wj1+cGB8vXE6yDtI5uoY2ijMtY9fRmw339LECjqziIJFVLnOhx/Niamo427Jn75br3uDqQ8pAzMpq44r0M6T/S6TvpLkTqKUjs8RYpf0/nfWlIn5fy7WRKtPcSQdjoj+gfth+ccle4r/qz8ap3tAFQ0AsUbb9uYtnQfoxGpU72j0tQA==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR12MB2718.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(346002)(376002)(396003)(136003)(39860400002)(366004)(186003)(6916009)(7406005)(478600001)(316002)(86362001)(54906003)(8936002)(8676002)(6486002)(44832011)(4326008)(956004)(2616005)(38100700002)(31696002)(38350700002)(6512007)(7416002)(52116002)(66476007)(66946007)(66556008)(83380400001)(26005)(53546011)(6506007)(36756003)(31686004)(2906002)(5660300002)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: ea6oVCmQ3ph4c3t/GfddKikoC24q8pRQDAOrAC7XElp5vcOPUSsJETtt0MMQNAS/IPZe7tyQ2zJZSk3iM6FIK6ye/V8cLDc9Q0gp/2c7OPET34GyrN0jVfV6CvEDt8KFYil9O/D1iDfIU4AzGcvbcmxxnSh6lGvoLtTmQPiwfLnGENSWiyeNTtHyyOH0NEHH7RmrZ2tq3Xw5KW4mUQqGylLDcIVAgWSEpjBCxrV4CjjGyhphA/XraqLvAWqovrHk8e8ludtYdwgGIHOZiOyxBbUXHbz20NEefb+5D4O9wziMpY+9xccRqm1z1zhBFhuvfuEwaUKG3Vo9g4AobI3boLIdwXciUhycMB4lb4AmNAt0Ukikn3YjhamCYerDIi0NYm7axFfwGlmtZLNPpKnvzpPcfRrqiWDFTCJKYIXCzAJbdZngwUSgb5BYyb5j2Uyqgjq3ZMTBY+LfBWu0Gu5RmdDv14uSAhKbG1pHUDLoC4V87CcoS24H5tuPKDJldNIW+zSQ/6LyoroStBh0zPknZjpi5FxZerQyc2sMkuCJ3Z1pS+sEz6SwSc2FOnP6NG/qrSN0bJ0UC5tNEGV3Mv/zlQhGcSQRklEZpjRL3PJkm0M1zJy8rGK5ltctQISvKnokAK0l1jQYxpwbEM1+ljY/xEv9m2+Razm5tlkgUUxejzePK6+llr5Url6twF0ywbxwI52Tln3372ft3+oRqUpBIhMxVRSS2xhEx/zzFCJxA8VrSGYee0rnVr2eZpdTYWTxECDEtHQscFOKwCNdouWewg==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR12MB2718.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(366004)(346002)(39860400002)(396003)(136003)(376002)(2616005)(956004)(2906002)(478600001)(52116002)(53546011)(86362001)(7416002)(7406005)(316002)(6916009)(16576012)(5660300002)(54906003)(44832011)(4326008)(36756003)(31686004)(31696002)(66946007)(66556008)(26005)(66476007)(6486002)(38100700002)(8936002)(186003)(38350700002)(8676002)(43740500002)(45980500001);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?aU10VFByVDRzWHNYRmhNeTZldU8xckhQNTFuSXhCN0thZ0pDRlNmWWNmcUJs?=
- =?utf-8?B?ZS9VMTIvNVNhZFhWbHlEQi9ITk5NSDdMVmhBU1pHUm83cmJLdUJqZngxczl6?=
- =?utf-8?B?NXJ3cUNhUkVBbjE2NXNFRmFscXp3NEFTRmlOa2pGbVJ5bEFMMU5IdDFWWURm?=
- =?utf-8?B?cXpFdkZKMTVuMkkwWUpwWW1IUm9lOGdaNVZXVHUxd3JhR2s4clJoR2d4b2dM?=
- =?utf-8?B?Tyt1SDZ6a1Y5M3kxNTRzMnJWeEdnUDFRSlJwdEY3MWZiNUpZNEhnNGpLeEVP?=
- =?utf-8?B?UmhrcGRlR1JCN1ExN1BhVW12OFdJNEU2a3R3SnRNKzl2dHNhYm5oNzNuaHJG?=
- =?utf-8?B?VG5Iak1WOVFrc0JTdXlpeTJFa1ZSUWV2bWZ0amhJeldhekQxTjlaWDhEQjN3?=
- =?utf-8?B?eDJ1NFM4TDRkMHd4NXZlSS8wMm1KTzF4ODVKaFdHL3ZWN1RyeDdhTmlFcldK?=
- =?utf-8?B?M1dNRnVYZGpOWE4xZkNCRXhDQXFjNE1XdXltbENlL245c0ZWR1hrTzMxWVpL?=
- =?utf-8?B?VlJRb3ZPSTNzYUREUmQreWxWZnEwaUFDdFd1UnRwK2pleTNpZHBhd1ZIeUhw?=
- =?utf-8?B?MDhnWlBaUjJiZmd5N1RKL3RuOG9pNUhCYVJiTmNWaUVKUFhTU0pNMldpbWFT?=
- =?utf-8?B?dG9HMlNkR0Faa2MvQWsySjlqb2pmL3R5WnhwRkJSWFpDUVZlR3ZXSW1JMk9n?=
- =?utf-8?B?TG16WEd4RzdvNHRCTUNmRjlmZ2hyNHlFTFJmZ25lS0RQM0Q1RlFVOW91UXdI?=
- =?utf-8?B?bmpOcXZVU0RFRWYvWjBTVmo3bFBOQ2haTUZHWmRMVDVjVkpOMzIyOC9ITUNo?=
- =?utf-8?B?OEs5L3NjaW8wd3ZyUExJMkhaYnJSeVBXTks4d3AwUnNKMlRqNzMxaGpsVFhE?=
- =?utf-8?B?dE5UVmVUK1UzK2RnbERrQzZzaVB4emtHT1BEMVpKcTZHK3JlR2VpZ1g5Qzds?=
- =?utf-8?B?aW9ZSjFnM0pNdFArd3Y1NmxnSGNJUnEwU2JHRktlMUo5aE1IWE1OTVc0ZDZw?=
- =?utf-8?B?ZGptWXg3bXhEK1ZuTE5FWGhJbUV5cks5YlVTbGpEaHNWWkdSSHBlYm02enFj?=
- =?utf-8?B?NytXL3FQZ3l2M041K2NYQUNRbXRwRDJHZ3BDVVloWTIyNUloeDJ3TUtxOVNR?=
- =?utf-8?B?Z3NRY0tEZ0I4SVhWNE13dm9sQXV4UUFCcHlrcGFkLzlESmwrdTlDWUhZOW1n?=
- =?utf-8?B?MEhkRy9VcjZvWG53Nk1Pb1hEdVloQ1F0UEk5T1Z6LzV1cmkrRVdSQXdIYjZt?=
- =?utf-8?B?Um50OXhVTUFIQy9DVGwzV010bUhSTTc0dWVOTWpPR2J4V0JYZldVYmpBWUha?=
- =?utf-8?B?bFAxQ1lNV3psYW9pSExvd0ZwUzl2dUdOMHE2SkxtVE1sTE5CeXM0VXBsK1FZ?=
- =?utf-8?B?dFJYTC9OQzdEUnF0WFFXWmFEajZWbnJCUmlwRU5oRzB2T01hZ1pyaVJEV3U4?=
- =?utf-8?B?S3c1aUFnOU0rSmkyVEliUUxiak9BVjJ1dlI4NVY3NmRDa0oxY0dVbmpna2Y2?=
- =?utf-8?B?UWFBMlU4eWZQTHFjYXR5NktKQ2EvYTBsdDZGL0hhN2h3L2RVN3FMM29kT3RQ?=
- =?utf-8?B?SEk1Q2ZScGcvY3REc2syQlJCUE56UXBjdnNTdWZ6dlhReEVjREJ3KzZqcHkz?=
- =?utf-8?B?Z2NPWEpqWW50WkgzN2lLTGwwUGlISEg3UzRvMzdDRjFwaytvRzAyVkxlTkZi?=
- =?utf-8?B?M3BkMWdOT0NsZVcyVlg1MHc0R3IwN0VQNUdpbnZxVytGMlNQR3FNYjMzL3pJ?=
- =?utf-8?Q?tBykImuQBC93V2wOtfFtxovYTSpVLbQP8r/1dEW?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Mm5QTi9nbGp0RmhVTWExL1ZqM2svN2I2SjBTVFJjQ05YdmdreHJjSHZBMzlM?=
+ =?utf-8?B?TnpJS2ZCaEdBOENhcFFmUkhDbTc0eUJvQnJsTm9OSEl2d0d3L1dyMCtDQ0dZ?=
+ =?utf-8?B?blNzUWFlU0U3b0RPU1ZYald2ZUN3aUFjbWoyWDZDQ0RJS0J5Tk9KQ3lhRitt?=
+ =?utf-8?B?dlRIcmRPRnZGZm9vSERmY1k1dTdQZWlpTjRHVnVyNmRSa1ZFNzdXeS9yNUtU?=
+ =?utf-8?B?emdmakNFb3duU0ZyM1pLTHlORmpqMGpaNUhCTjVWVXpjMTRzM0xxeWJSbDJ3?=
+ =?utf-8?B?ZVVTMDhSQXY5VEVpa1hGK2pjYnJ6V3hIclNuZWFIcTVDWkIxN2dEMklHb2F5?=
+ =?utf-8?B?R2xadHZUQk9lNmFsbkQwdDJEL0YrK2M5Nmg4THVGU3JPUmVyV2FWVGV0T09p?=
+ =?utf-8?B?bVh6MlRlSFk0V3g5c0tCNzZ3QUErQ09SRjMrcVlUcXNIeHptNlU0Tk1BenFr?=
+ =?utf-8?B?MUZKdXkxdWxKOXVrUXVickJtM25WVWFVVmZwZGQ1WElyWGRFRjViQjRzOGFH?=
+ =?utf-8?B?VVFpQWFSaUtvZFdLY2xQa2FpSmVPNTF5QUhLSmFmVWFXQm0zNHZSUzZhM1R1?=
+ =?utf-8?B?d1pybjdrTm1IUHY0d095dnNrY1N1dUFiRytjbDhrbUFnd0gxcjFGVmNhR1VF?=
+ =?utf-8?B?RXh0TVU2UHBacVhUVnNieUU2MkF6VzA5d0JwRkFpU3RNdnhwcGkwTFdvVFFy?=
+ =?utf-8?B?R2VPQU44TUxUcXMxNUFrUG9iN1VQT1VaNlJORHAxdGNRSTlYU3NkZFdicEYw?=
+ =?utf-8?B?RzIrVjBuSVBaOUZGUE9OUENNenZYSHRubUVoZi9ZQWg0SmtndmNnQmc4ZlpE?=
+ =?utf-8?B?SEJGUHdhZzRZOWNWOVJCTFVMK1I5MW1iY0YzeDBjQ0FOTnpHU3R2L3hDam5h?=
+ =?utf-8?B?ZUo0aFNHQStWREs2cXBKRHFpaktPTmVvRE5INGcrU3pQOFVJUmpMemFQWVhH?=
+ =?utf-8?B?TkpHSThlWlJDb1l5bXFXSzBwTXo0dE9MbHhISGRvazY3L1M0ekh5THdiN3Rw?=
+ =?utf-8?B?Nk43S1ZzMTJVb1FBNnNqcE45UmZPMGUwdnNkcmhVL1hKMERFbXEydVlKWW9P?=
+ =?utf-8?B?cmNXczA5b1NXZ0tBVzZIclJ0WkIxNmdMMXltSlY2ODlsclF2cDhDamIxUDRj?=
+ =?utf-8?B?eUVtMksvYjZqbEpBT014a1ArOVVMVkZRUUxrVjBmRUJlbWorRGVhMEEvSVQ3?=
+ =?utf-8?B?WjJiZ3JTV0xENm1zTnc2K3NGdTF6UzVTMzZUeVBrTnFIdnZsMlJTUE8xTVVa?=
+ =?utf-8?B?V0dpRWVPd1FNaWgwY2dMMUkrdkxNLzI0YjBMZyttSVhjRGh4V1ptRUxRNUdk?=
+ =?utf-8?B?QWM1N2pya3pjRkxtaHZMR3hDVHVWYmVJQWNSY1RrMUV4TjVRckpINGJJTlQ4?=
+ =?utf-8?B?OXNYMjdjcTJnNjE0NUZtTWFaek42clFheXlsZHJwaVpwdGZIY0VTeXhydEVa?=
+ =?utf-8?B?QlIyb3FXMGRmbWZLVTRiem5OaHdwVnQzTUJ5aDFoalVFV0NMSTJiZWF1dHlH?=
+ =?utf-8?B?bGVLdFM1cXNvUm9GRE9oa3puZ2N6Y0QrY3VzRU9JN0JhbnFsVFV3Q01jWWZt?=
+ =?utf-8?B?S2dhbkhiVTZhOE5uTGFEaE9lZlVuM2ZCV2I0ZWJBekxDOThwM3N1RjVRT3Ir?=
+ =?utf-8?B?QlgvdTJ3UWluTUZpMnFMT1psdDM5THZpSHozbGVaMWVTY1dVVU5QZW9NMlUw?=
+ =?utf-8?B?SFRBbUJoekVFWXFHUUZIcXc0bjUwT28zQkZuOFlVZHZ5aUxPakVIa0pFd2N2?=
+ =?utf-8?Q?IkY/oOT6KBLlZlIPSpka16KgE9E+fVuzXVp20wQ?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0bb169ad-34df-44f4-1e76-08d95e5c24e9
+X-MS-Exchange-CrossTenant-Network-Message-Id: abaf655d-65a4-4d7a-5a68-08d95e659c76
 X-MS-Exchange-CrossTenant-AuthSource: SN6PR12MB2718.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Aug 2021 13:13:30.6201
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Aug 2021 14:21:16.2513
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: KTLZI2KZs7I52fPNGQF1rOYq8y+IEoHUN4EP7eS20+uWtKSt7fUzydopLTYUvvxuItRHYvCsOBpPNq3G8WqBlQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN6PR12MB2768
+X-MS-Exchange-CrossTenant-UserPrincipalName: nYY1dE0DoghugYyAuk6kJ7qlY0DckWtY3cWtgOgOC2FVEhz0CbNIHvZxakPMnrz1y6jNR2HAUMzwkDSe4RT9Gw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB4431
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
 
-On 8/13/21 2:25 AM, Borislav Petkov wrote:
-> On Wed, Jul 07, 2021 at 01:14:38PM -0500, Brijesh Singh wrote:
->> Virtual Machine Privilege Level (VMPL) is an optional feature in the
->> SEV-SNP architecture, which allows a guest VM to divide its address space
->> into four levels. The level can be used to provide the hardware isolated
->> abstraction layers with a VM. The VMPL0 is the highest privilege, and
->> VMPL3 is the least privilege. Certain operations must be done by the VMPL0
->> software, such as:
->>
->> * Validate or invalidate memory range (PVALIDATE instruction)
->> * Allocate VMSA page (RMPADJUST instruction when VMSA=1)
->>
->> The initial SEV-SNP support assumes that the guest kernel is running on
->> VMPL0. Let's add a check to make sure that kernel is running at VMPL0
->> before continuing the boot. There is no easy method to query the current
->> VMPL level, so use the RMPADJUST instruction to determine whether its
->> booted at the VMPL0.
->>
->> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
->> ---
->>  arch/x86/boot/compressed/sev.c    | 41 ++++++++++++++++++++++++++++---
->>  arch/x86/include/asm/sev-common.h |  1 +
->>  arch/x86/include/asm/sev.h        |  3 +++
->>  3 files changed, 42 insertions(+), 3 deletions(-)
->>
->> diff --git a/arch/x86/boot/compressed/sev.c b/arch/x86/boot/compressed/sev.c
->> index 7be325d9b09f..2f3081e9c78c 100644
->> --- a/arch/x86/boot/compressed/sev.c
->> +++ b/arch/x86/boot/compressed/sev.c
->> @@ -134,6 +134,36 @@ static inline bool sev_snp_enabled(void)
->>  	return msr_sev_status & MSR_AMD64_SEV_SNP_ENABLED;
->>  }
->>  
->> +static bool is_vmpl0(void)
->> +{
->> +	u64 attrs, va;
->> +	int err;
+
+On 8/13/21 5:22 AM, Borislav Petkov wrote:
+>> +static void __page_state_change(unsigned long paddr, int op)
+> 
+> That op should be:
+> 
+> enum psc_op {
+> 	SNP_PAGE_STATE_SHARED,
+> 	SNP_PAGE_STATE_PRIVATE,
+> };
+> 
+
+Noted.
+
+> and have
+> 
+> static void __page_state_change(unsigned long paddr, enum psc_op op)
+> 
+> so that the compiler can check you're at least passing from the correct
+> set of defines.
+> 
+>> diff --git a/arch/x86/include/asm/sev-common.h b/arch/x86/include/asm/sev-common.h
+>> index ea508835ab33..aee07d1bb138 100644
+>> --- a/arch/x86/include/asm/sev-common.h
+>> +++ b/arch/x86/include/asm/sev-common.h
+>> @@ -45,6 +45,23 @@
+>>   		(((unsigned long)reg & GHCB_MSR_CPUID_REG_MASK) << GHCB_MSR_CPUID_REG_POS) | \
+>>   		(((unsigned long)fn) << GHCB_MSR_CPUID_FUNC_POS))
+>>   
+>> +/* SNP Page State Change */
+>> +#define GHCB_MSR_PSC_REQ		0x014
+>> +#define SNP_PAGE_STATE_PRIVATE		1
+>> +#define SNP_PAGE_STATE_SHARED		2
+>> +#define GHCB_MSR_PSC_GFN_POS		12
+>> +#define GHCB_MSR_PSC_GFN_MASK		GENMASK_ULL(39, 0)
+>> +#define GHCB_MSR_PSC_OP_POS		52
+>> +#define GHCB_MSR_PSC_OP_MASK		0xf
+>> +#define GHCB_MSR_PSC_REQ_GFN(gfn, op)	\
+>> +	(((unsigned long)((op) & GHCB_MSR_PSC_OP_MASK) << GHCB_MSR_PSC_OP_POS) | \
+>> +	((unsigned long)((gfn) & GHCB_MSR_PSC_GFN_MASK) << GHCB_MSR_PSC_GFN_POS) | \
+>> +	GHCB_MSR_PSC_REQ)
 >> +
->> +	/*
->> +	 * There is no straightforward way to query the current VMPL level. The
-> So this is not nice at all.
->
-> And this VMPL level checking can't be part of the GHCB MSR protocol
-> because the HV can tell us any VPML level it wants to.
->
-> Is there a way to disable VMPL levels and say, this guest should run
-> only at VMPL0?
+>> +#define GHCB_MSR_PSC_RESP		0x015
+>> +#define GHCB_MSR_PSC_ERROR_POS		32
+>> +#define GHCB_MSR_PSC_RESP_VAL(val)	((val) >> GHCB_MSR_PSC_ERROR_POS)
+>> +
+> 
+> Also get rid of eccessive defines...
 
-No.
-
->
-> Err, I see SYSCFG[VMPLEn]:
->
-> "VMPLEn. Bit 25. Setting this bit to 1 enables the VMPL feature (Section
-> 15.36.7 “Virtual Machine Privilege Levels,” on page 580). Software
-> should set this bit to 1 when SecureNestedPagingEn is being set to 1.
-> Once SecureNestedPagingEn is set to 1, VMPLEn cannot be changed."
->
-> But why should that bit be set if SNP is enabled? Can I run a SNP guest
-> without VPMLs, i.e, at an implicit VPML level 0?
-
-During the firmware initialization the PSP requires that the VMPLEn is
-set. See SNP firmware spec [1] section 8.6. To run the SNP guest you
-*must* specify a VMPL level during the vCPU creation.
-
-
->
-> It says above VPML is optional...
-
-I should not say its optional when we know from the SEV-SNP spec that
-VMPLEn must be set to launch SEV-SNP guest. I will fix the description.
-
-
-> Also, why do you even need to do this at all since the guest controls
-> and validates its memory with the RMP? It can simply go and check the
-> VMPLs of every page it owns to make sure it is 0.
-
-There is no easy way for a guest to query its VMPL level. The VMPL level
-is set during the vCPU creation. The boot cpu is created by the HV and
-thus its VMPL level is set by the HV. If HV chooses a lower VMPL level
-for the boot CPU then Linux guest will not be able to validate its
-memory because the PVALIDATE instruction will cause #GP when the vCPU is
-running at !VMPL0. The patch tries to detect the boot CPU VMPL level and
-terminate the boot.
-
-
->
-> Also, if you really wanna support guests with multiple VMPLs, then
-> prevalidating its memory is going to be a useless exercise because it'll
-> have to go and revalidate the VMPL levels...
-
-We do not need to re-valiate memory when changing to different VMPL
-level. The RMPADJUST instruction inside the guest can be used to change
-the VMPL permission.
-
-
-> I also see this:
->
-> "When the hypervisor assigns a page to a guest using RMPUPDATE, full
-> permissions are enabled for VMPL0 and are disabled for all other VMPLs."
->
-> so you get your memory at VMPL0 by the HV. So what is that check for?
-
-Validating the memory is a two step process:
-
-#1 HV adding the memory using the RMPUPDATE in the RMP table.
-
-#2 Guest issuing the PVALIDATE
-
-If guest is not running at VMPL0 then step #2 will cause #GP.  The check
-is prevent the #GP and terminate the boot early.
+I am getting conflicting review comments on function naming, comment 
+style, macro etc. While addressing the feedback I try to incorporate all 
+those comments, lets see how I do in next rev.
 
 thanks
-
