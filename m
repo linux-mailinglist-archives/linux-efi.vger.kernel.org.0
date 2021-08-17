@@ -2,41 +2,41 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 84B5C3EF160
-	for <lists+linux-efi@lfdr.de>; Tue, 17 Aug 2021 20:07:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D0A153EF188
+	for <lists+linux-efi@lfdr.de>; Tue, 17 Aug 2021 20:11:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232344AbhHQSIT (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 17 Aug 2021 14:08:19 -0400
-Received: from mail-bn8nam11on2053.outbound.protection.outlook.com ([40.107.236.53]:53920
-        "EHLO NAM11-BN8-obe.outbound.protection.outlook.com"
+        id S232301AbhHQSMT (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 17 Aug 2021 14:12:19 -0400
+Received: from mail-bn8nam12on2059.outbound.protection.outlook.com ([40.107.237.59]:23264
+        "EHLO NAM12-BN8-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S231452AbhHQSIS (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Tue, 17 Aug 2021 14:08:18 -0400
+        id S233084AbhHQSMN (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Tue, 17 Aug 2021 14:12:13 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=aBL4HR54hCmsLY0hoSazrc8TxUI/WGe5LC0R7NTG22Mqwk+sW7BAE//9u1b68Bn81sROndLaRok+uSY5rQbaTAaqlQ5v/s/2cnxGoHtVC5HVv13of9SEithT6fqqGj7T6K/S+CTWf0b4RB7QDCVo44slJ2D5FaKDemodADA5smN7EEWa5u681mW4NtrVFd2FE6LOIZveB6sZkpQIYaojDxEnztA7L7my23jZnWJoxvwAzC9LfY7bQeu/eYrX/P+2v7yf//l1ant5FLBrp4A113UsDjDywdSUm1mDQWbNqewq6Xlvkiy89hJXnasJchAF5mpjBFflzMWvZj1NAOx27A==
+ b=koIdjRLIQI5W0y4LsBXedMqQiL0gWDny8kbXlaHBcds6qSv2P7uSwhylMG60nrPM8vhDGiSihDkwJdle2mZBN18FJsOhihkldp4JBGZ2/5o8pHuFVd9kQX5EFoyuHQPDsbVlDB5ZB+ZVYM2m69a1HYRiAyPh3c9j8angmarVO7KSBFiJbjLHfVYHJ5E1obnSZ9x8mYlKs9TqUKRn7u5/MuzVKts0eyo8iKMG7GbVcZJw/PuDjZZlpB6lCxrWlA3rSUjy8EZJ9TbglKyeihdP4cCEMoSEKhR8j1DDrAfObESzDOaIxXEaX5xISo/kg5A9TyA/pdPJFWTHyncdo6oWLw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6XTh8DMdSjrMYv2eDdJl/uasRRbmRmutbvPIgKB7lFQ=;
- b=j0gjfiHLvlFfdcLWKm1Hnvrj0Y4VNdE6BIAYio+Z5jYGW1snk61g9E5ZY2CUkU/qcvX2z5PX9AjgtFam8nW8xD+ogH1w4o0fh70qXtN4zTDKDuUXKuzOUhFBGWD3TqqY5UACVgZlRHIz6VYcupS9t116ghm9JcdcKqlKyhKW86W/HD9/5nDso3dftuU6xfsCSrDplBq7cTMg9XIZu0S8YQlqziUgxrcmspn9jqCE7i9ogiwP+0rV3GvJ2WRmK5pz6JcAlTh9TLzwRiQrF30/cAWW60d07O8a+9MlVIwppebqN0V7QhwA67NiZeKKmRQ1DxnMP+94jTcHwgCCicZA5Q==
+ bh=4pJspvcBeIATx3Kl/6MmCUp3yHCHVixx8d5wkNMoEyo=;
+ b=a+Mm19ew2Rtxrjd53yVgntL+G2eN7utmPnTW7RH8JD/gvTC8MR+UiCWipuIippgkADpfU8gwG9M29pThWgEkHUi0mjLfbNdh/Zhb8MQ+yeFAWOGYoghmOpbh1tuczE2uMY0TTsotTMOQ+Wq92e+b49Vq+tMlrp1WzfIiEcsl/SfUxFaw7Ig9hCSfQRNrutgT6vSyyhgHAKmdmC6uCKw1OntnK5r3DCHMAws8XZB4xXwFyNoU9TO/CjV2DvRCjoKdeeRDSLlzyx+v9NVvmWUvUMnbulQgSKUWPMC18sctKuXOCchN0KnR1lN4geEFoDtkoMuBd/PhGOqY+ghMnjSjNQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
  header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6XTh8DMdSjrMYv2eDdJl/uasRRbmRmutbvPIgKB7lFQ=;
- b=u+fJM9SnzWW+El29VopP15Md2GtsSdFwtcD+bA1S3NSpBzMS6FUj2o9zM1oPMEJkG7tW0pjR1FVDtWsAaTr1RKlQVK/y5L/rJb+Qb7xWnpAurzSk3CAJ68VDBz7z4DK0FBXEHmu1l0GismvpNlcV+5T2LxjlqDE00ykEooTZEOI=
+ bh=4pJspvcBeIATx3Kl/6MmCUp3yHCHVixx8d5wkNMoEyo=;
+ b=mOOHlx8gX9ocYG5ZXGe3ZhbOyzE/yoIk8WRKt3KNVXi0buzWNe/iN1lqmBFsru9bOmfiahlXu2VpRSyB7eDDIgvPB7wKnTDoFGiXYY7hLgNuECQFZn3ACVgmDzjEw657rhqzf73n67sGwKQYnkBPxsAp4cdCu4cRvMoxJsmIcQY=
 Authentication-Results: gmail.com; dkim=none (message not signed)
  header.d=none;gmail.com; dmarc=none action=none header.from=amd.com;
 Received: from SN6PR12MB2718.namprd12.prod.outlook.com (2603:10b6:805:6f::22)
- by SA0PR12MB4512.namprd12.prod.outlook.com (2603:10b6:806:71::9) with
+ by SA0PR12MB4511.namprd12.prod.outlook.com (2603:10b6:806:95::9) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4415.17; Tue, 17 Aug
- 2021 18:07:42 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4415.14; Tue, 17 Aug
+ 2021 18:11:38 +0000
 Received: from SN6PR12MB2718.namprd12.prod.outlook.com
  ([fe80::78b7:7336:d363:9be3]) by SN6PR12MB2718.namprd12.prod.outlook.com
  ([fe80::78b7:7336:d363:9be3%6]) with mapi id 15.20.4415.024; Tue, 17 Aug 2021
- 18:07:42 +0000
+ 18:11:38 +0000
 Cc:     brijesh.singh@amd.com, x86@kernel.org,
         linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
         linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
@@ -61,186 +61,137 @@ Cc:     brijesh.singh@amd.com, x86@kernel.org,
         Michael Roth <michael.roth@amd.com>,
         Vlastimil Babka <vbabka@suse.cz>, tony.luck@intel.com,
         npmccallum@redhat.com, brijesh.ksingh@gmail.com
-Subject: Re: [PATCH Part1 RFC v4 15/36] x86/mm: Add support to validate memory
- when changing C-bit
+Subject: Re: [PATCH Part1 RFC v4 16/36] KVM: SVM: define new SEV_FEATURES
+ field in the VMCB Save State Area
 To:     Borislav Petkov <bp@alien8.de>
 References: <20210707181506.30489-1-brijesh.singh@amd.com>
- <20210707181506.30489-16-brijesh.singh@amd.com> <YRvxZtLkVNda9xwX@zn.tnic>
+ <20210707181506.30489-17-brijesh.singh@amd.com> <YRv3x/JeNjcJ4E8a@zn.tnic>
 From:   Brijesh Singh <brijesh.singh@amd.com>
-Message-ID: <162d75ca-f0ec-bb7e-bb47-70060772a52c@amd.com>
-Date:   Tue, 17 Aug 2021 13:07:40 -0500
+Message-ID: <9ffbdf3d-05c8-38a8-96f0-ae782280ca94@amd.com>
+Date:   Tue, 17 Aug 2021 13:11:35 -0500
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.11.0
-In-Reply-To: <YRvxZtLkVNda9xwX@zn.tnic>
+In-Reply-To: <YRv3x/JeNjcJ4E8a@zn.tnic>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SN4PR0801CA0007.namprd08.prod.outlook.com
- (2603:10b6:803:29::17) To SN6PR12MB2718.namprd12.prod.outlook.com
+X-ClientProxiedBy: SN6PR2101CA0030.namprd21.prod.outlook.com
+ (2603:10b6:805:106::40) To SN6PR12MB2718.namprd12.prod.outlook.com
  (2603:10b6:805:6f::22)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from [10.236.31.95] (165.204.77.1) by SN4PR0801CA0007.namprd08.prod.outlook.com (2603:10b6:803:29::17) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4436.19 via Frontend Transport; Tue, 17 Aug 2021 18:07:41 +0000
+Received: from [10.236.31.95] (165.204.77.1) by SN6PR2101CA0030.namprd21.prod.outlook.com (2603:10b6:805:106::40) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4457.3 via Frontend Transport; Tue, 17 Aug 2021 18:11:36 +0000
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: cfaef9bb-8de0-438c-bf8a-08d961a9e81d
-X-MS-TrafficTypeDiagnostic: SA0PR12MB4512:
+X-MS-Office365-Filtering-Correlation-Id: 54644afe-9218-47ca-4b94-08d961aa74a9
+X-MS-TrafficTypeDiagnostic: SA0PR12MB4511:
 X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <SA0PR12MB4512547AFE84A2FC203BAB5EE5FE9@SA0PR12MB4512.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:8273;
+X-Microsoft-Antispam-PRVS: <SA0PR12MB45112882171752610600FBAFE5FE9@SA0PR12MB4511.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:7691;
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: BdivRqcRWaehpNz8VU5WKJK+ze+6UpRXIRlzgO6xfWE1WDZc90jaldNjP4uftOtQjbYzMwo4BAwnJ24bLJVothECLPC6JT45AQYXkhQCNR7AbRmUep77oonuyZwz1PrzwGjyJqq6H1/2HKfm2Sa3+rsDZ8UxtLNkw3ugPPbis/YkfMCxAode+B4MLu+eQgXkIjegpuICNTFlolw3UzbMQJQMAO5OpyRN3VRNFi9m15Aq29UevcI0XHjq5juB+ZohPPf05l+RcMSaVs8EqyXHXvD12zxxUg/JywLzVtGg6DaN2E0gAu9Zyau2vLGNxY6tB5uDQXkWEPie7KsK6Ze71FQBUFTRwAn2ZjnL87cjDWfUz1b4lQuSA2YiI5u5xc9xb0zhq+eObmYLbMHoyA7/Yhebf1iRuiE7k3YeNyLgfrRL+m0LvLV4TreVCVIzaoFvZlL2APv70p3iLNIeLdDLsfb9JiHEhFWk+AYU1tGv1TPd3R+nNovIRdlOR95ZivR3/hcvaO8wCEeKXkGOnxMT9q8mM4Jb4LErkZ62YKLcCk61RtiRvDQUJLjxLxL9tZwRJv2Lte5KXUQyRL2hHHHi6xAJtmrMw5STzHSi30+x7uGn5/3hho4cwb3pwhNA3PjlNEPK5uu9KgGbMEMdkUt1E9OHdOaqsIyM7MKsLcWyYHjpuoi9QCNC8hjaoiaMt1fnPIUGAbpQUOqSq8ioNkVQE72aLn2SuCJ/dZoRsTD8MNI+1oul0XaHblx2Rde70C34lMMZVeyu52rByQgp/J5u9g==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR12MB2718.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(396003)(39860400002)(346002)(366004)(136003)(376002)(6486002)(38100700002)(26005)(53546011)(316002)(54906003)(52116002)(478600001)(186003)(16576012)(66946007)(31686004)(36756003)(66476007)(66556008)(2616005)(38350700002)(83380400001)(7416002)(8936002)(86362001)(6916009)(956004)(7406005)(31696002)(2906002)(44832011)(4326008)(5660300002)(15650500001)(8676002)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: GuRR4XPfMrYhY+AL8jbhrCcCNWJmeWj/4FnaPhSxdB884EYU0to/OYK0sXWhvDMzMuciGcaojJhJUnPsBIBZzfs+3JZIXuG0ZLoMv8DZekYw1LUZhn3hmAe5GmzyCC9rwaqEPh9GCEWVnlvs8WR16GdurdPUHhnuwsifBu+ZIAtoQz9nTIMKXjyCyRMc2MiyqvzjvdFWTOdU3xt4bclFSw0s8zU+DSG7AhtrOz7KHCAiWoej4fmFYvUrVHIjCiAdxyG0BKm/33UVR+w58WfrIA8cGJTMUxwbi9K0prN12qKeRjyIxyI/Yr1SkY7E+POwGNEFnVKBRiplmmuO/28vp0ebHunctcSlOm+m7XTCkmZ50V7yb+MpfGYP9THpdsfokJGsjpPLTVOcLDoBGVsHhMWHgBOY7URz3K84HES+uwzyoOyoWp68TSjDxoMjQKZQlZnAjN574FRtFxxIz2D2ASpJVZI4XT0ufGQZ9WNRdQ7kSQ8OSaOA4ZpUoJMw8Sdd6TvUEMM6PElxIHXWpbuMNq4O4tUQLkqAXQYyt9i08WaMEp0G/ansBWRfbdQ7FUyoOCmeyj6naja94UiKLAnzeNGDB5DMaLaRDxLdPJhpXVT3TafaLTjNEyS94N/G+whlaRIQhKffFBVIUDk/jHvbYQYJNmMMsh8RNLvroDtyXS1PQ4q1Cjfj2ATlnmWJV4V0qnvWNbl2ygtQOvuenl4cGCim8jofLEL3VAWn3Bpc7C0dB+AI/1GXXR+tlOTLHMXeiAo91CrljZBSBhk/FnWsZQ==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR12MB2718.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(366004)(376002)(136003)(396003)(346002)(39860400002)(83380400001)(4326008)(6916009)(53546011)(316002)(186003)(956004)(38100700002)(38350700002)(5660300002)(6486002)(8676002)(52116002)(16576012)(31686004)(66946007)(31696002)(36756003)(8936002)(54906003)(44832011)(26005)(66476007)(66556008)(2616005)(86362001)(7406005)(7416002)(2906002)(478600001)(43740500002)(45980500001);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?OXU2L0Urek9sYk1qSFQ0dXNXaXFyYkNpdmJyOXF5K1JQSVhtVThITGM1cXp5?=
- =?utf-8?B?OE9Ncks4QUdVY2dybGhjMENzV0NYWktIUHQ4b000ZVR0YjVURk9MU0M5Zi9W?=
- =?utf-8?B?bXNLWFBtN2F0WXMzbXBFNG1wTlg0UVJ0Ky9LQlNHVEVab1h3Z002elNLQWdx?=
- =?utf-8?B?eSt1L1MxdjhwYW9iSGV2RjlUV3YwVXFHd0FhNU0yS2pHb1VkTlVjbVNpZEVB?=
- =?utf-8?B?MUN5ekQ2aDFIZkhYVEZ2QXNXd0l4TkhOeHZEY2Y1c00yZ2J4cElLeWFydW9W?=
- =?utf-8?B?eUVmU0hlRENjSTlpYnpYSUExcXR2Q09mZUhESEZ5MDlFejV1NUhGY2JvTUxx?=
- =?utf-8?B?V25wcllZNks3bjJ2eDAvZGJ2S1E0NlZYbmlMYXBjZzJOQlU0OVpnZzJPYU84?=
- =?utf-8?B?YWNhYkRmOW5JRTNDbmFiMFdKOWhSWTJHdGlORXFhV29Ca2FiR3ZTVVA5V2p5?=
- =?utf-8?B?NVY3eEhoTXJ4QWk1bTdqdjE4ZHF6TXdBSzAzcEMzNXdQRmpMUjlsZDJwamhw?=
- =?utf-8?B?eVRwbVUrVjFuZlJxQk12cDFSNDBTMTNyNlh6Qk1LeVpkUTlPODg0aFR3a2Nh?=
- =?utf-8?B?V0QrUzFJeG5SRHl2bm1BSHhUejlVQmc4WGk5U2dDLzl0Z3BvY21VeDJUbmFq?=
- =?utf-8?B?a2tLRDZMeHFRT2c0ekFDcTZQejFtcUJRbURyZzB2Y2V1UEFJbit6WnBuQzlp?=
- =?utf-8?B?dENrNEUrUmxzTUJQWkNZKzFWYmgvbDgwNm9qSEUranREeXRydm9rTEttQnVt?=
- =?utf-8?B?YStWeWM0ODZnQzZ1UmlsYkp3dFlYbkthQ09taUpXazRHQkRvTkd5WHlNcVdM?=
- =?utf-8?B?YzJlYzhmamsrZHBGQmNNSjdzd2VUT2xRSUJTSERtZ01FVDFXN2l3NndzZmJE?=
- =?utf-8?B?Nkw1UGU5RS9DNEV2S1hnZkdjdEFJZmVzUUpGeHd5V0hpbllCZjRQWWUwSWFk?=
- =?utf-8?B?OGNWUkJSYkFoTWxON01rdkRXblJHczY0eldFYmtCN3hPZHhUWWhLbGRIWEU0?=
- =?utf-8?B?cG1HZHlMM2tDMEpxdnVFWE5FSFMrUng3VkZFR3Y1ZnpqSXN4NEUvSXUwUzBE?=
- =?utf-8?B?SUVCZHFSVE1RbDZnandNcEkrZE1kcFNZeFV0dFNpTWZQZXhVWjdBOUlXR0N0?=
- =?utf-8?B?T3pUWk9ZRWZHcnprUS8vWFc0TTJvbjhGNzcvV1JUOTJ2c2NPcUVzVzh1ODAz?=
- =?utf-8?B?TkJZZU95NndaVG9aRmtmOGk1OStlNloxRFlLMlM4ZG5aSTJkd05lQ1l5bEFz?=
- =?utf-8?B?cXl1MmRIY3kwUUh0V2VUaHRHR0tqWU9LWUI3R2RFdU83bzhrcWRuRmRNdG5D?=
- =?utf-8?B?TWJUc0E1Y1N5THd0S1hZOVpVblFIeUZCNmMxRVJDU0pza0t2WG93YmNKdFVj?=
- =?utf-8?B?MEhIME5oajlsVXdFY0IyQlIvZmg0OVdHS0ZDdXRhZlVMYnFoZmNGTndXYkpU?=
- =?utf-8?B?ekc2Z04zbUgrNFNOTUMyMUZBUEtTR0JuM3BlT00wWmErVGJqbnkzM2NTdE5Y?=
- =?utf-8?B?L1BOcHZ0TzBlRUoyNzdQaDJLbkRiS1gyem1hNlFaZ3ZIdmR5bVBDVEtEakUx?=
- =?utf-8?B?WWtIaFgweWxVejIxMUszNjcyOFBXR1ZYYi9hVVVwQ1FTMW01eHhEaWxJV2xW?=
- =?utf-8?B?R0tQc1hrdXJUWnk0djFNeEtRVHgrVDRPZGJFMW5VZFU5elhwQTBEem9YMVpm?=
- =?utf-8?B?dy81KzIwNGlzVlgzMVNxbzFKVnBuTXdxQTB5UmNEN1hKUHArQ3FSZzBMa0tC?=
- =?utf-8?Q?UtGT+DOr06FBxJuZNN8JqGURNKx/2O2Dw6QSjyB?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?OWtiMHpWRTk4NDRIbFB0dEpXYVRtd0U5ZTdPZTVSb1pHbUxuVkhtNThTWXdi?=
+ =?utf-8?B?QUVpTDJKdFN3RDhHd1MxVXlIVVZabEpDOWJ2bER2ZEZ5R25yWU11OVozL2lX?=
+ =?utf-8?B?REdJTkY0ekpvTGNnRTZrSkNkZVZSak16dFQwbHlXbVhhbkd0OTdSL2k0ZUtW?=
+ =?utf-8?B?K0JlTEhRRFdCLy9wTkZFMmxRMGpZeVhIRFpqMitBaXBsa3NWMGlrdDl2bHps?=
+ =?utf-8?B?QkhmSGdWa1h5R0lNN1hEdUcyQkQ3eFJqU2JVdVhmSVdKc2pRdFlMWEJxMGsw?=
+ =?utf-8?B?bU1QT1lmdVpwNHl2cUYzcTYvNFdjSktsNlBlMTJlMGxsTS9qa2xiNUFIRXd5?=
+ =?utf-8?B?OHdURDNXYmEwMkxrQ0c4MjhvMUV0SnVhKzltbW5DR3NhS0RrWDVVNjBoUHNT?=
+ =?utf-8?B?Z0Z1ZzIyN3dPeURITWRPdzB3Y0ZlcmdKNXV6VXRWZTVWYnJ3M0JQZ0g1OFBU?=
+ =?utf-8?B?UmxRSjQyZnN5OUV5b1lFaDdwQU5YV01QbzZHN2NpUlJxM3JVS1Z4Q2ZlREVi?=
+ =?utf-8?B?eit0Y2h1OS9hWjJaUFVOTmpmdWU0ZkFEOUJUUDJjbVVLaHMxdEtWZTNZUUcx?=
+ =?utf-8?B?dGpUSUVURnNoUGc0Slc2YWk2NlhnenpYWGovdzN4TEw1cmVyZDIvYVJFRUtI?=
+ =?utf-8?B?QWZuZVhFRDBwV2M1c2tydVFONENiTEIvRExRdlJwVWNhVXhlcm1DNk13WTV3?=
+ =?utf-8?B?VjdlV1FqZ3NXaW5KdE1wNTRrUXhkYWNMVnkxanRiS0ZlSHIrNXZOQ1QycnZw?=
+ =?utf-8?B?Q2crSXpTbnNjVTFaR0VKSElzdElZeE1kZEw2QnVud2ptTHp0VytRbWJ6SDdz?=
+ =?utf-8?B?VldJR1BEWklqQythc3pnOVFhejEzZjJBaGE0TVBpeDVWM0FyTzFaajc0VFkr?=
+ =?utf-8?B?SkxmRFh5RE16OWVtMklBQVZCUmNXU0VnWmdkd3E0alJPN2JtdTJwZ0w4WU1l?=
+ =?utf-8?B?MW1uVUkrZkRCd1ViVzllWUMzMXoxVTJyNUhOa3huWVNqV25NUFJ2RzRwQk1Q?=
+ =?utf-8?B?cmdQMGpvaDdzS2p6Um1OZVh1SmxFeVp4S25NLzAweTIrQU9tN05PWFRTMmd5?=
+ =?utf-8?B?YnRRa00vZ3pjc0tBVXBtc2g5ZlNDOVV4SlNoVm5qT3IrY1N0ZTZJMzVNWjJk?=
+ =?utf-8?B?eTNCT005NGViY0VrNkpUSGUycDV1a3cxanROTFkzQjNOSEtOOG1qR213S2RC?=
+ =?utf-8?B?V2ptRFlESkJnN2tSM1JjalRodnJHUTBRK3draDNUWFE5Q0dwMkpPYzV6aitE?=
+ =?utf-8?B?NWpBV2UxblZwS3lROWowS1RJVlFuTXNMREdOdkdBQ2ZBNWRlZE40Yno1d2ds?=
+ =?utf-8?B?Q0JEdVppVXlBL05wMlBmWDg0Z3hsZlhSeHFwNFlWWDdaMUxDc1E2QlIyRzdH?=
+ =?utf-8?B?aDMrRWJZRkxuYWlBVFd3V0hBbG9FN2xrSTArT09sM043dkIyY2U0STVQSEZR?=
+ =?utf-8?B?SzNzbjRtMEJTamZxU2QwMURVNU94WTc3czJxaTBheGdzcDFnZEMyNlFxWFJJ?=
+ =?utf-8?B?L3I3eENnNlIrekYzdXRmek5xOC94TUsxNXpOWWY5WjU0THVJY091NWY1Q1Jm?=
+ =?utf-8?B?VTRnMEY0WXpjVHBweXhtSnZRMUxhVDJ4SXE2ajgwSUlHakVSdzdTY3Q0VlQz?=
+ =?utf-8?B?aVZPREY3RFBmYjFsWWlrY2oycEl5RDRyV21lTlExQ1RkUHdPUlR5eEtwa0hq?=
+ =?utf-8?B?aVo3aE9GeS9xdXRIc2V2UzVQc2JYTkhkanVLTVc0NEQwOXJaSTNCOFpCaERh?=
+ =?utf-8?Q?srGAYz97ona1VmOgMCafqYbL1EUT1ZfoWBERxyY?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cfaef9bb-8de0-438c-bf8a-08d961a9e81d
+X-MS-Exchange-CrossTenant-Network-Message-Id: 54644afe-9218-47ca-4b94-08d961aa74a9
 X-MS-Exchange-CrossTenant-AuthSource: SN6PR12MB2718.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Aug 2021 18:07:42.5424
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Aug 2021 18:11:38.1850
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: MLcSnRylZj4ZNxfVYCu4bX9oQKbI+U3F0smPE06eHIWQ7gzZ4EdHmAhkjvM4WCnuLagFrEv/MmG2glZft7k4aA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB4512
+X-MS-Exchange-CrossTenant-UserPrincipalName: AUQTdeRPqAddbKbh+IChdYjxhEhNHhKF3ShRo8QWf2l0pSz/UOK0SKPBUJL8qTD6PiNDP2ZO9avWSw+wXUqdNg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB4511
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
 
 
-On 8/17/21 12:27 PM, Borislav Petkov wrote:
+On 8/17/21 12:54 PM, Borislav Petkov wrote:
+> On Wed, Jul 07, 2021 at 01:14:46PM -0500, Brijesh Singh wrote:
+>> The hypervisor uses the SEV_FEATURES field (offset 3B0h) in the Save State
+>> Area to control the SEV-SNP guest features such as SNPActive, vTOM,
+>> ReflectVC etc. An SEV-SNP guest can read the SEV_FEATURES fields through
+>> the SEV_STATUS MSR.
+>>
+>> While at it, update the dump_vmcb() to log the VMPL level.
+>>
+>> See APM2 Table 15-34 and B-4 for more details.
+>>
+>> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
+>> ---
+>>   arch/x86/include/asm/svm.h | 15 +++++++++++++--
+>>   arch/x86/kvm/svm/svm.c     |  4 ++--
+>>   2 files changed, 15 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/arch/x86/include/asm/svm.h b/arch/x86/include/asm/svm.h
+>> index 772e60efe243..ff614cdcf628 100644
+>> --- a/arch/x86/include/asm/svm.h
+>> +++ b/arch/x86/include/asm/svm.h
+>> @@ -212,6 +212,15 @@ struct __attribute__ ((__packed__)) vmcb_control_area {
+>>   #define SVM_NESTED_CTL_SEV_ENABLE	BIT(1)
+>>   #define SVM_NESTED_CTL_SEV_ES_ENABLE	BIT(2)
+>>   
+>> +#define SVM_SEV_FEATURES_SNP_ACTIVE		BIT(0)
+>> +#define SVM_SEV_FEATURES_VTOM			BIT(1)
+>> +#define SVM_SEV_FEATURES_REFLECT_VC		BIT(2)
+>> +#define SVM_SEV_FEATURES_RESTRICTED_INJECTION	BIT(3)
+>> +#define SVM_SEV_FEATURES_ALTERNATE_INJECTION	BIT(4)
+>> +#define SVM_SEV_FEATURES_DEBUG_SWAP		BIT(5)
+>> +#define SVM_SEV_FEATURES_PREVENT_HOST_IBS	BIT(6)
+>> +#define SVM_SEV_FEATURES_BTB_ISOLATION		BIT(7)
 > 
-> The majority of kernel code puts __packed after the struct definition,
-> let's put it there too pls, out of the way.
+> Only some of those get used and only later. Please introduce only those
+> with the patch that adds usage.
 > 
-> ...
-
-Noted.
-
->> +		if (WARN(ret || ghcb->save.sw_exit_info_2,
->> +			 "SEV-SNP: page state change failed ret=%d exit_info_2=%llx\n",
->> +			 ret, ghcb->save.sw_exit_info_2))
->> +			return 1;
-> 
-> Yikes, you return here and below with interrupts disabled.
-> 
-> All your returns need to be "goto out;" instead where you do
-> 
-> out:
->          __sev_put_ghcb(&state);
->          local_irq_restore(flags);
-> 
-> Yap, you very likely need to put the GHCB too.
-> 
-
-Sure, let me revisit this code to fix those path.
-
->> +		/*
->> +		 * Lets do some sanity check that entry processing is not going
->> +		 * backward. This will happen only if hypervisor is tricking us.
->> +		 */
->> +		if (WARN((hdr->end_entry > end_entry) || (cur_entry > hdr->cur_entry),
->> +			"SEV-SNP: page state change processing going backward, end_entry "
->> +			"(expected %d got %d) cur_entry (expected %d got %d)\n",
->> +			end_entry, hdr->end_entry, cur_entry, hdr->cur_entry))
->> +			return 1;
-> 
-> WARNING: quoted string split across lines
-> #293: FILE: arch/x86/kernel/sev.c:750:
-> +			"SEV-SNP: page state change processing going backward, end_entry "
-> +			"(expected %d got %d) cur_entry (expected %d got %d)\n",
-> 
-> If you're wondering what to do, yes, you can really stretch that string
-> and shorten it too:
 
 Okay.
 
+> Also,
 > 
->                  if (WARN((hdr->end_entry > end_entry) || (cur_entry > hdr->cur_entry),
-> "SEV-SNP: PSC processing going backwards, end_entry %d (got %d) cur_entry: %d (got %d)\n",
->                           end_entry, hdr->end_entry, cur_entry, hdr->cur_entry))
->                          return 1;
-> 
-> so that it fits on a single line and grepping can find it.
-> 
-Noted.
-
->> +		/* Lets verify that reserved bit is not set in the header*/
->> +		if (WARN(hdr->reserved, "Reserved bit is set in the PSC header\n"))
-> 
-> psc_entry has a ->reserved field too and since we're iterating over the
-> entries...
-> 
-Sure I can add that check.
-
-
->> +
->> +	desc = kmalloc(sizeof(*desc), GFP_KERNEL_ACCOUNT);
-> 
-> kzalloc() so that you don't have to memset() later in
-> __set_page_state().
-
-Depending on the size, the __set_page_state() can be call multiple times 
-so it should clear the desc memory before filling it.
-
-> 
->> +	if (!desc)
->> +		panic("failed to allocate memory");
-> 
-> Make that error message more distinctive so that *if* it happens, one
-> can pinpoint the place in the code where the panic comes from.
+> s/SVM_SEV_FEATURES_/SVM_SEV_FEAT_/g
 > 
 
-Now I am running checkpatch and notice that it complain about the 
-message too. I can add a BUG() or WARN() to get the stack trace before 
-the crashing.
+I can do that.
 
->> +	while (vaddr < vaddr_end) {
->> +		/*
->> +		 * Calculate the last vaddr that can be fit in one
->> +		 * struct snp_psc_desc.
->> +		 */
->> +		next_vaddr = min_t(unsigned long, vaddr_end,
->> +				(VMGEXIT_PSC_MAX_ENTRY * PAGE_SIZE) + vaddr);
->> +
->> +		__set_page_state(desc, vaddr, next_vaddr, op);
->> +
->> +		vaddr = next_vaddr;
->> +	}
->> +
->> +	kfree(desc);
->> +}
->> +
+> at least.
 > 
+> And by the way, why is this patch and the next 3 part of the guest set?
+> They look like they belong into the hypervisor set.
+> 
+
+This is needed by the AP creation, in SNP the AP creation need to 
+populate the VMSA page and thus need to use some of macros and fields  etc.
