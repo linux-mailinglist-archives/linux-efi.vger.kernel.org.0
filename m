@@ -2,111 +2,275 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D8813EF008
-	for <lists+linux-efi@lfdr.de>; Tue, 17 Aug 2021 18:16:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 59F593EF0DF
+	for <lists+linux-efi@lfdr.de>; Tue, 17 Aug 2021 19:26:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229881AbhHQQQj (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 17 Aug 2021 12:16:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52410 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229460AbhHQQQi (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 17 Aug 2021 12:16:38 -0400
-Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B213FC061764;
-        Tue, 17 Aug 2021 09:16:04 -0700 (PDT)
-Received: by mail-lf1-x12a.google.com with SMTP id g13so42345984lfj.12;
-        Tue, 17 Aug 2021 09:16:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=Sr3avq56PYejYeB2Me2mzHjNTPeEs3a02cpJLO7/D6U=;
-        b=qwhpvCTYuEpxYyDJgSBovtiE85s5rKgmF+DxhtA5V5lOcFt6CISL+8RHcWMkQ4tp68
-         SbO6IjG2y25leDfUv+RvQAG9HWaj7jrF8OnchWfyEOXX1Tb8DUABMpwsnBGRqe11RC/6
-         GP5x8Xa5N/tvitCfqTmCrMyuzRee25bE9LthZZvP4QBnr6jCqZwv7DaLePzg3Na5tBMx
-         jKRwLIs/I4uhTU3UeKgEp1U8CgoJ7dVXDwGARzW6pyOsZHa9IRBfeHV/HPID7l1xQ+zc
-         zyXM6K0R9Z+ZYi9W7Q0BIW+qwhPK90dVrEbUrmfX7iVItX8SXbv4fAbbAA1lQE/wqN8p
-         MQEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=Sr3avq56PYejYeB2Me2mzHjNTPeEs3a02cpJLO7/D6U=;
-        b=Cyffk0pKvc1vIByAe2R1CnNYR734bpHdqmOlZzY2Y+1iYpr7P9Lmx7R4JJt0+YfyfV
-         1HwaT6KDXy/+U7G9xxd+n442/Ocou/0bdaIku13q/mD61BfUqoO88FYizYahdv3JIivR
-         GKIoLHuBJs/BzNEk7Fqf9GKUepWeb7N6vgF3MI7egv1bikFvD6wTQ8csHTcLCKxcM4CC
-         vnFppwnziBBG7l2jOeJ7HjLopBtRIuphzI7E0ixGJi6t5OjOqWJHeo+nKlRgoVjh/4aM
-         XNcD2/LrBcFdMl9UlF0tA4T5sLK1I4GtFYzkQkl/1EshvMX1fXLBg6BSUNL7Y5b6RHXi
-         Syog==
-X-Gm-Message-State: AOAM533P+vbmaYnlHE5XU5mmdIxQ3gKUvHQRH38PVjKbQUCAXfvPiemI
-        qGa5NPUhdmJyPJYqg2YFvGyCSDUOdFQ=
-X-Google-Smtp-Source: ABdhPJwVPpaQiTFgxDrurEO/5BlrPD6UoCBghjkErm6OjS4O+FIeprnIovhj8Ym0bfe7h/BF10OFwQ==
-X-Received: by 2002:a05:6512:3091:: with SMTP id z17mr3069736lfd.207.1629216962947;
-        Tue, 17 Aug 2021 09:16:02 -0700 (PDT)
-Received: from [192.168.2.145] (46-138-85-91.dynamic.spd-mgts.ru. [46.138.85.91])
-        by smtp.googlemail.com with ESMTPSA id w14sm228979lfk.161.2021.08.17.09.16.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 17 Aug 2021 09:16:02 -0700 (PDT)
-Subject: Re: [PATCH v4 3/3] partitions/efi: Support NVIDIA Tegra devices
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     Jens Axboe <axboe@kernel.dk>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>,
-        David Heidelberg <david@ixit.cz>,
-        Peter Geis <pgwipeout@gmail.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Christoph Hellwig <hch@infradead.org>,
-        Davidlohr Bueso <dave@stgolabs.net>,
-        Ion Agorria <AG0RRIA@yahoo.com>,
-        Svyatoslav Ryhel <clamor95@gmail.com>,
-        linux-tegra <linux-tegra@vger.kernel.org>,
-        linux-block <linux-block@vger.kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>
-References: <20210817013643.13061-1-digetx@gmail.com>
- <20210817013643.13061-4-digetx@gmail.com>
- <CAPDyKFr3d5tTsKVhgvqw1C-Np=6N2onJ+bo_hoFqtD6JSPn2Bg@mail.gmail.com>
-From:   Dmitry Osipenko <digetx@gmail.com>
-Message-ID: <7268eb54-614c-df98-c685-6cc360116941@gmail.com>
-Date:   Tue, 17 Aug 2021 19:16:01 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+        id S231874AbhHQR1C (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 17 Aug 2021 13:27:02 -0400
+Received: from mail.skyhub.de ([5.9.137.197]:39710 "EHLO mail.skyhub.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230311AbhHQR1B (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Tue, 17 Aug 2021 13:27:01 -0400
+Received: from zn.tnic (p200300ec2f1175006a73053df3c19379.dip0.t-ipconnect.de [IPv6:2003:ec:2f11:7500:6a73:53d:f3c1:9379])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id D659F1EC01B5;
+        Tue, 17 Aug 2021 19:26:22 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1629221183;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=DNJ7vQbeipIQzVqoNzpebqgTcO1JqCy5VA8Wf98/yoc=;
+        b=g1khrBdad75yo8euxQQm3YXRG/lrWYNNavOA/yqhWhFYsf3+kH3fltXo+mjEjOxrwlbahA
+        RK9GLTwIgfvCxq0DaaKZDczWmhZrDoJ9xvCOsd6/ajPMdZM8QuqEalus8YDh1p3DgNhY7s
+        IIh11MTwqipTCOwGaV0F1PgcV7NUGrw=
+Date:   Tue, 17 Aug 2021 19:27:02 +0200
+From:   Borislav Petkov <bp@alien8.de>
+To:     Brijesh Singh <brijesh.singh@amd.com>
+Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        linux-coco@lists.linux.dev, linux-mm@kvack.org,
+        linux-crypto@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Vitaly Kuznetsov <vkuznets@redhat.com>,
+        Wanpeng Li <wanpengli@tencent.com>,
+        Jim Mattson <jmattson@google.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        David Rientjes <rientjes@google.com>,
+        Dov Murik <dovmurik@linux.ibm.com>,
+        Tobin Feldman-Fitzthum <tobin@ibm.com>,
+        Michael Roth <michael.roth@amd.com>,
+        Vlastimil Babka <vbabka@suse.cz>, tony.luck@intel.com,
+        npmccallum@redhat.com, brijesh.ksingh@gmail.com
+Subject: Re: [PATCH Part1 RFC v4 15/36] x86/mm: Add support to validate
+ memory when changing C-bit
+Message-ID: <YRvxZtLkVNda9xwX@zn.tnic>
+References: <20210707181506.30489-1-brijesh.singh@amd.com>
+ <20210707181506.30489-16-brijesh.singh@amd.com>
 MIME-Version: 1.0
-In-Reply-To: <CAPDyKFr3d5tTsKVhgvqw1C-Np=6N2onJ+bo_hoFqtD6JSPn2Bg@mail.gmail.com>
 Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Disposition: inline
+In-Reply-To: <20210707181506.30489-16-brijesh.singh@amd.com>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-17.08.2021 11:24, Ulf Hansson пишет:
->> +int tegra_partition_forced_gpt(struct parsed_partitions *state)
->> +{
->> +       struct gendisk *disk = state->disk;
->> +       struct block_device *bdev = disk->part0;
->> +       struct mmc_card *card = mmc_bdev_to_card(bdev);
->> +       int ret, boot_offset;
->> +
->> +       if (!soc_is_tegra())
->> +               return 0;
->> +
->> +       /* filter out unrelated and untested boot sources */
->> +       if (!card || card->ext_csd.rev < 3 ||
->> +           !mmc_card_is_blockaddr(card) ||
->> +            mmc_card_is_removable(card->host) ||
->> +            bdev_logical_block_size(bdev) != SZ_512 ||
->> +           !of_match_node(tegra_sdhci_match, card->host->parent->of_node)) {
-> I think you need to convince Rob Herring that the location of the GPT
-> table in the eMMC flash memory is allowed to depend on the compatible
-> string of the sdhci controller.
+On Wed, Jul 07, 2021 at 01:14:45PM -0500, Brijesh Singh wrote:
+> +struct __packed psc_hdr {
+> +	u16 cur_entry;
+> +	u16 end_entry;
+> +	u32 reserved;
+> +};
+> +
+> +struct __packed psc_entry {
+> +	u64	cur_page	: 12,
+> +		gfn		: 40,
+> +		operation	: 4,
+> +		pagesize	: 1,
+> +		reserved	: 7;
+> +};
+> +
+> +struct __packed snp_psc_desc {
+> +	struct psc_hdr hdr;
+> +	struct psc_entry entries[VMGEXIT_PSC_MAX_ENTRY];
+> +};
 
-I'll CC Rob on the next revision, although I think he doesn't care much
-about this.
+The majority of kernel code puts __packed after the struct definition,
+let's put it there too pls, out of the way.
 
-> In any case, I think Christoph raised some interesting ideas in his
-> reply. Moving more of this code into the mmc core/block layer seems
-> reasonable to me as well.
+...
 
-Will prepare v5, thanks.
+> +static int vmgexit_psc(struct snp_psc_desc *desc)
+> +{
+> +	int cur_entry, end_entry, ret;
+> +	struct snp_psc_desc *data;
+> +	struct ghcb_state state;
+> +	struct ghcb *ghcb;
+> +	struct psc_hdr *hdr;
+> +	unsigned long flags;
+> +
+> +	local_irq_save(flags);
+> +
+> +	ghcb = __sev_get_ghcb(&state);
+> +	if (unlikely(!ghcb))
+> +		panic("SEV-SNP: Failed to get GHCB\n");
+> +
+> +	/* Copy the input desc into GHCB shared buffer */
+> +	data = (struct snp_psc_desc *)ghcb->shared_buffer;
+> +	memcpy(ghcb->shared_buffer, desc, sizeof(*desc));
+> +
+> +	hdr = &data->hdr;
+> +	cur_entry = hdr->cur_entry;
+> +	end_entry = hdr->end_entry;
+> +
+> +	/*
+> +	 * As per the GHCB specification, the hypervisor can resume the guest
+> +	 * before processing all the entries. Checks whether all the entries
+> +	 * are processed. If not, then keep retrying.
+> +	 *
+> +	 * The stragtegy here is to wait for the hypervisor to change the page
+> +	 * state in the RMP table before guest access the memory pages. If the
+> +	 * page state was not successful, then later memory access will result
+> +	 * in the crash.
+> +	 */
+> +	while (hdr->cur_entry <= hdr->end_entry) {
+> +		ghcb_set_sw_scratch(ghcb, (u64)__pa(data));
+> +
+> +		ret = sev_es_ghcb_hv_call(ghcb, NULL, SVM_VMGEXIT_PSC, 0, 0);
+> +
+> +		/*
+> +		 * Page State Change VMGEXIT can pass error code through
+> +		 * exit_info_2.
+> +		 */
+> +		if (WARN(ret || ghcb->save.sw_exit_info_2,
+> +			 "SEV-SNP: page state change failed ret=%d exit_info_2=%llx\n",
+> +			 ret, ghcb->save.sw_exit_info_2))
+> +			return 1;
+
+Yikes, you return here and below with interrupts disabled.
+
+All your returns need to be "goto out;" instead where you do
+
+out:
+        __sev_put_ghcb(&state);
+        local_irq_restore(flags);
+
+Yap, you very likely need to put the GHCB too.
+
+> +		/*
+> +		 * Lets do some sanity check that entry processing is not going
+> +		 * backward. This will happen only if hypervisor is tricking us.
+> +		 */
+> +		if (WARN((hdr->end_entry > end_entry) || (cur_entry > hdr->cur_entry),
+> +			"SEV-SNP: page state change processing going backward, end_entry "
+> +			"(expected %d got %d) cur_entry (expected %d got %d)\n",
+> +			end_entry, hdr->end_entry, cur_entry, hdr->cur_entry))
+> +			return 1;
+
+WARNING: quoted string split across lines
+#293: FILE: arch/x86/kernel/sev.c:750:
++			"SEV-SNP: page state change processing going backward, end_entry "
++			"(expected %d got %d) cur_entry (expected %d got %d)\n",
+
+If you're wondering what to do, yes, you can really stretch that string
+and shorten it too:
+
+                if (WARN((hdr->end_entry > end_entry) || (cur_entry > hdr->cur_entry),
+"SEV-SNP: PSC processing going backwards, end_entry %d (got %d) cur_entry: %d (got %d)\n",
+                         end_entry, hdr->end_entry, cur_entry, hdr->cur_entry))
+                        return 1;
+
+so that it fits on a single line and grepping can find it.
+
+> +		/* Lets verify that reserved bit is not set in the header*/
+> +		if (WARN(hdr->reserved, "Reserved bit is set in the PSC header\n"))
+
+psc_entry has a ->reserved field too and since we're iterating over the
+entries...
+
+> +			return 1;
+> +	}
+> +
+> +	__sev_put_ghcb(&state);
+> +	local_irq_restore(flags);
+> +
+> +	return 0;
+> +}
+> +
+> +static void __set_page_state(struct snp_psc_desc *data, unsigned long vaddr,
+> +			     unsigned long vaddr_end, int op)
+> +{
+> +	struct psc_hdr *hdr;
+> +	struct psc_entry *e;
+> +	unsigned long pfn;
+> +	int i;
+> +
+> +	hdr = &data->hdr;
+> +	e = data->entries;
+> +
+> +	memset(data, 0, sizeof(*data));
+> +	i = 0;
+> +
+> +	while (vaddr < vaddr_end) {
+> +		if (is_vmalloc_addr((void *)vaddr))
+> +			pfn = vmalloc_to_pfn((void *)vaddr);
+> +		else
+> +			pfn = __pa(vaddr) >> PAGE_SHIFT;
+> +
+> +		e->gfn = pfn;
+> +		e->operation = op;
+> +		hdr->end_entry = i;
+> +
+> +		/*
+> +		 * The GHCB specification provides the flexibility to
+> +		 * use either 4K or 2MB page size in the RMP table.
+> +		 * The current SNP support does not keep track of the
+> +		 * page size used in the RMP table. To avoid the
+> +		 * overlap request, use the 4K page size in the RMP
+> +		 * table.
+> +		 */
+> +		e->pagesize = RMP_PG_SIZE_4K;
+> +
+> +		vaddr = vaddr + PAGE_SIZE;
+> +		e++;
+> +		i++;
+> +	}
+> +
+> +	/* Terminate the guest on page state change failure. */
+
+That comment is kinda obvious :)
+
+> +	if (vmgexit_psc(data))
+> +		sev_es_terminate(1, GHCB_TERM_PSC);
+> +}
+> +
+> +static void set_page_state(unsigned long vaddr, unsigned int npages, int op)
+> +{
+> +	unsigned long vaddr_end, next_vaddr;
+> +	struct snp_psc_desc *desc;
+> +
+> +	vaddr = vaddr & PAGE_MASK;
+> +	vaddr_end = vaddr + (npages << PAGE_SHIFT);
+> +
+> +	desc = kmalloc(sizeof(*desc), GFP_KERNEL_ACCOUNT);
+
+kzalloc() so that you don't have to memset() later in
+__set_page_state().
+
+> +	if (!desc)
+> +		panic("failed to allocate memory");
+
+Make that error message more distinctive so that *if* it happens, one
+can pinpoint the place in the code where the panic comes from.
+
+> +	while (vaddr < vaddr_end) {
+> +		/*
+> +		 * Calculate the last vaddr that can be fit in one
+> +		 * struct snp_psc_desc.
+> +		 */
+> +		next_vaddr = min_t(unsigned long, vaddr_end,
+> +				(VMGEXIT_PSC_MAX_ENTRY * PAGE_SIZE) + vaddr);
+> +
+> +		__set_page_state(desc, vaddr, next_vaddr, op);
+> +
+> +		vaddr = next_vaddr;
+> +	}
+> +
+> +	kfree(desc);
+> +}
+> +
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
