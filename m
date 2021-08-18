@@ -2,139 +2,142 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 95DA53F08D7
-	for <lists+linux-efi@lfdr.de>; Wed, 18 Aug 2021 18:15:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 117D23F0DFD
+	for <lists+linux-efi@lfdr.de>; Thu, 19 Aug 2021 00:19:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231218AbhHRQQW (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 18 Aug 2021 12:16:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47208 "EHLO
+        id S234529AbhHRWUR (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 18 Aug 2021 18:20:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46816 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229454AbhHRQQV (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 18 Aug 2021 12:16:21 -0400
-Received: from mail-lj1-x233.google.com (mail-lj1-x233.google.com [IPv6:2a00:1450:4864:20::233])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99616C061764;
-        Wed, 18 Aug 2021 09:15:46 -0700 (PDT)
-Received: by mail-lj1-x233.google.com with SMTP id f2so6124633ljn.1;
-        Wed, 18 Aug 2021 09:15:46 -0700 (PDT)
+        with ESMTP id S234488AbhHRWUR (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 18 Aug 2021 18:20:17 -0400
+Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3E41C061764;
+        Wed, 18 Aug 2021 15:19:41 -0700 (PDT)
+Received: by mail-lf1-x135.google.com with SMTP id r9so7987331lfn.3;
+        Wed, 18 Aug 2021 15:19:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=1hKEYv+Fr6C7EKch69Wd8Zt8f3YFEBcPg/InLCEUJH0=;
-        b=DlGZ4gR97mpf2cthrcTkSHnW4ubQjP55OzuLMZ5FJ3WzJHWmXdMj9I1J/wa3iFKxbV
-         reTTXA1FdeH0Lnh7LeCaYAsP1ms5xymPaIc89etWdd6ilpV7DqzkeUDODydlbS3g57LY
-         OLQw33yl9EcKWcKzoHwZuOmGQX84H+5l5uwCCjxd7Zl3zvf3BHCHy+74SMwVQCdSUfyk
-         LtDRs10b5IWjRfJqbs8v5eUano+zIMC5NNZuXSmeoy7IYGyppN3BkFVeK+xwimNrtSM2
-         YRknBJPkpGCj6lbmhS/4y5plsqLJFZTd9neXaL+CFUC1+SqOvfJj32YmKEvvzUoZJZrj
-         n50A==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=5BboEvAw/HXnB0UvGjpwIn05vh6cZYmjySlOfPuZwrE=;
+        b=hgZIRiaXwImTjHwfFZuPHRnszNPvCAJDpqC4f1lrhXuxiaT+osmSgA3AmTOfw2Uo5w
+         cQOGhWBaETsWQfDc2RZ8JNL4wGVJrHShTZsQXaYu/wEeU3h2FobGP+meifcvpz2pNrJ1
+         YeGa49uSV8f4yCPh6zOR+BzruY1sTtKRGRC3hL0G1TCJs12Y1dFKKB1KfpF65RzVsBbS
+         /A1RfELqzcdkyz3S+jY0VIBLj4TBRo43UPlRGNos5rMNfyM1fKqMT3pIbMGiHh2MjDvP
+         q7vOVf4/T5mOrCv00Q6+h3DbC2LC4uNxCbLtVd4DIREGQQdlDxpCaosiqTI3P5tKe6dp
+         X9vA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=1hKEYv+Fr6C7EKch69Wd8Zt8f3YFEBcPg/InLCEUJH0=;
-        b=W8qJ7Ca5KlZA3IGhOBfeMaQE/PtmomSf4UeJOUGclDN5hqVYz1gktcwSTIqnH7Ekad
-         gstFDFpnymVoVT+Nl4jz+GUmzOGAHEyhXb7XWLr97OjrwQ94mlmGFO4Fh6ZthIuTNkOb
-         sHlEJ5umZbQ81Jm8uS3xmfbts/bVPenxyhl+gvt4oZ7m8imDIf13QXW2fuV5MtlyTIA6
-         jwuizFLtp0w7rad3Ymg4MtGZdrAIcMlLgKf8MEW3FM4LbVHqI1beefQEC2xF5wPkKUX2
-         CodkWWzQUAXBgqlQeEJSSzLfmEDU5P87ysqQe0fg3SEp5X4HKTkWeiPsA31KMJDMLp5G
-         jFiQ==
-X-Gm-Message-State: AOAM532cTQCA79ynSycYNDngMNeFQR2QuCCd512gS++JC3wMliVFnpsA
-        gUkbdQgmaBrq5M/UDoUJpojzgW0t1Go=
-X-Google-Smtp-Source: ABdhPJxWo8J3/Yk16JNcOWy4IODSkq8yj5RsFCPqgmTt0th+73KqVgrS8LlFvPMGpwmXw+uMKaFBEw==
-X-Received: by 2002:a2e:a88b:: with SMTP id m11mr8603688ljq.51.1629303344842;
-        Wed, 18 Aug 2021 09:15:44 -0700 (PDT)
-Received: from [192.168.2.145] (46-138-85-91.dynamic.spd-mgts.ru. [46.138.85.91])
-        by smtp.googlemail.com with ESMTPSA id d9sm35914ljq.54.2021.08.18.09.15.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 18 Aug 2021 09:15:44 -0700 (PDT)
-Subject: Re: [PATCH v5 4/5] mmc: sdhci-tegra: Implement
- alternative_gpt_sector()
-To:     Thierry Reding <thierry.reding@gmail.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     Jens Axboe <axboe@kernel.dk>,
+        bh=5BboEvAw/HXnB0UvGjpwIn05vh6cZYmjySlOfPuZwrE=;
+        b=AtXVozjufvYJLZOXmW+Z9uuhC+vwvx8MkwWvWVbSldSiILxIasHjALpPq5pcgVBWLa
+         FCkxbke9Oiw1YOrD0hcoZ2D7wSye9cDS/IcQ/ddcYJ3eeBj30YSESIzdESst2PocRF0R
+         hIPaIcMuLZu9jJprylLdkPuoEH2p62MbikwICRFxn22h5VxhiLk0C4H6LlOy5n96KXbr
+         LcWjw3b0cqnyoDisdj/G7GXl2/EUDG8WueTgc2w/4zIhABOhO2/SgUpsZM974pMWZ2yI
+         PT3CqD9TzCSo+soaBgEt/vbi9bxuDgwRLqovYiv19pZ3slWMpEmNTcvoojQYOVptfAfh
+         1IVg==
+X-Gm-Message-State: AOAM533zO0822Y2EZUOayV3//2T6xE7CiYKrYQ4lyFtTwsrXYMXFssh1
+        torLUB3AhPQc8GcWmQMY4Fg=
+X-Google-Smtp-Source: ABdhPJw4cjJyL7VSkdfr2ReID0KqC3U9eHuPzSOYpi8CLcoeKk5QqBqylN1F+Y7MMSnPRz7In2yUIA==
+X-Received: by 2002:a05:6512:3d16:: with SMTP id d22mr7938119lfv.132.1629325179946;
+        Wed, 18 Aug 2021 15:19:39 -0700 (PDT)
+Received: from localhost.localdomain (46-138-85-91.dynamic.spd-mgts.ru. [46.138.85.91])
+        by smtp.gmail.com with ESMTPSA id v23sm93300lfr.208.2021.08.18.15.19.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 18 Aug 2021 15:19:39 -0700 (PDT)
+From:   Dmitry Osipenko <digetx@gmail.com>
+To:     Jens Axboe <axboe@kernel.dk>,
+        Thierry Reding <thierry.reding@gmail.com>,
         Jonathan Hunter <jonathanh@nvidia.com>,
-        =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>,
+        =?UTF-8?q?Micha=C5=82=20Miros=C5=82aw?= <mirq-linux@rere.qmqm.pl>,
         David Heidelberg <david@ixit.cz>,
         Peter Geis <pgwipeout@gmail.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
         Adrian Hunter <adrian.hunter@intel.com>,
         Christoph Hellwig <hch@infradead.org>,
         Davidlohr Bueso <dave@stgolabs.net>,
         Rob Herring <robh+dt@kernel.org>,
         Ion Agorria <AG0RRIA@yahoo.com>,
-        Svyatoslav Ryhel <clamor95@gmail.com>,
-        linux-tegra <linux-tegra@vger.kernel.org>,
-        linux-block <linux-block@vger.kernel.org>,
+        Svyatoslav Ryhel <clamor95@gmail.com>
+Cc:     linux-tegra@vger.kernel.org, linux-block@vger.kernel.org,
         linux-efi <linux-efi@vger.kernel.org>
-References: <20210818005547.14497-1-digetx@gmail.com>
- <20210818005547.14497-5-digetx@gmail.com>
- <CAPDyKFqQbe4k-Sem436Fzsr6mbvwZr83VtEaEZTF8oWYoHHQwg@mail.gmail.com>
- <YR0MrlxFLTpsR628@orome.fritz.box>
-From:   Dmitry Osipenko <digetx@gmail.com>
-Message-ID: <90dcb1e9-30df-e721-5ddc-156ae295636e@gmail.com>
-Date:   Wed, 18 Aug 2021 19:15:43 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+Subject: [PATCH v6 0/5] Support EFI partition on NVIDIA Tegra devices
+Date:   Thu, 19 Aug 2021 01:19:15 +0300
+Message-Id: <20210818221920.3893-1-digetx@gmail.com>
+X-Mailer: git-send-email 2.32.0
 MIME-Version: 1.0
-In-Reply-To: <YR0MrlxFLTpsR628@orome.fritz.box>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-18.08.2021 16:35, Thierry Reding пишет:
->>> +static int sdhci_tegra_alternative_gpt_sector(struct mmc_card *card,
->>> +                                             sector_t *gpt_sector)
->>> +{
->>> +       unsigned int boot_sectors_num;
->>> +
->>> +       /* filter out unrelated cards */
->>> +       if (card->ext_csd.rev < 3 ||
->>> +           !mmc_card_mmc(card) ||
->>> +           !mmc_card_is_blockaddr(card) ||
->>> +            mmc_card_is_removable(card->host))
->>> +               return -ENOENT;
->>> +
->>> +       /*
->>> +        * eMMC storage has two special boot partitions in addition to the
->>> +        * main one.  NVIDIA's bootloader linearizes eMMC boot0->boot1->main
->>> +        * accesses, this means that the partition table addresses are shifted
->>> +        * by the size of boot partitions.  In accordance with the eMMC
->>> +        * specification, the boot partition size is calculated as follows:
->>> +        *
->>> +        *      boot partition size = 128K byte x BOOT_SIZE_MULT
->>> +        *
->>> +        * Calculate number of sectors occupied by the both boot partitions.
->>> +        */
->>> +       boot_sectors_num = card->ext_csd.raw_boot_mult * SZ_128K /
->>> +                          SZ_512 * MMC_NUM_BOOT_PARTITION;
->>> +
->>> +       /* Defined by NVIDIA and used by Android devices. */
->>> +       *gpt_sector = card->ext_csd.sectors - boot_sectors_num - 1;
->>> +
->>> +       return 0;
->>> +}
->> I suggest you move this code into the mmc core/block layer instead (it
->> better belongs there).
->>
->> Additionally, let's add a new host cap, MMC_CAP_ALTERNATIVE_GPT, to
->> let the core know when it should use the code above.
-> Couldn't a generic "alternative GPT" mean pretty much anything? As far
-> as I know this is very specific to a series of Tegra chips and firmware
-> running on them. On some of these devices you can even replace the OEM
-> firmware by something custom that's less quirky.
-> 
-> I'm not aware of anyone else employing this kind of quirk, so I don't
-> want anyone to get any ideas that this is a good thing. Putting it into
-> the core runs the risk of legitimizing this.
+This series adds the most minimal EFI partition support for NVIDIA Tegra
+consumer devices, like Android tablets and game consoles, making theirs
+eMMC accessible out-of-the-box using downstream bootloader and mainline
+Linux kernel.  eMMC now works on Acer A500 tablet and Ouya game console
+that are already well supported in mainline and internal storage is the
+only biggest thing left to support.
 
-I also think it's better to keep it internal to Tegra. Ulf, could you
-please clarify why do you want to have it moved into the core? Are you
-aware of any other platforms that want exactly the same quirk? Thierry
-should be correct that it's relevant only to Tegra SoCs.
+Changelog:
 
-Regarding the 'legitimizing', it's not a bad thing to me at all. If we
-want to run more devices with a mainline kernel, then such quirks are
-inevitable.
+v6: - Added comment for the alternative_gpt_sector() callback, which
+      was asked by Christoph Hellwig.
+
+    - Changed alternative_gpt_sector() to take disk for the argument
+      instead of blkdev. This was asked by Christoph Hellwig.
+
+    - Dropped mmc_bdops check as it was suggested by Christoph Hellwig.
+
+    - Added missing mmc_blk_put() that was spotted by Christoph Hellwig.
+
+    - Moved GPT calculation into MMC core and added MMC_CAP2_ALT_GPT_SECTOR
+      flag, like it was asked by Ulf Hansson. Me and Thierry have concerns
+      about whether it's better to have Tegra-specific function in a core
+      instead of Tegra driver, but it also works, so I decided to try that
+      variant.
+
+v5: - Implemented alternative_gpt_sector() blk/mmc callback that was
+      suggested by Christoph Hellwig in a comment to v4.
+
+    - mmc_bdev_to_card() now checks blk fops instead of the major number,
+      like it was suggested by Christoph Hellwig in a comment to v4.
+
+    - Emailed Rob Herring, which was asked by Ulf Hansson in a comment
+      to v4. Although the of-match change is gone now in v5, the matching
+      is transformed into the new SDHCI quirk of the Tegra driver.
+
+v4: - Rebased on top of recent linux-next.
+
+v3: - Removed unnecessary v1 hunk that was left by accident in efi.c of v2.
+
+v2: - This is continuation of [1] where Davidlohr Bueso suggested that it
+      should be better to avoid supporting in mainline the custom gpt_sector
+      kernel cmdline parameter that downstream Android kernels use.  We can
+      do this for the devices that are already mainlined, so I dropped the
+      cmdline from the v2 and left only the variant with a fixed GPT address.
+
+[1] https://lore.kernel.org/linux-efi/20210327212100.3834-3-digetx@gmail.com/T/
+
+Dmitry Osipenko (5):
+  block: Add alternative_gpt_sector() operation
+  partitions/efi: Support non-standard GPT location
+  mmc: core: Add raw_boot_mult field to mmc_ext_csd
+  mmc: block: Support alternative_gpt_sector() operation
+  mmc: sdhci-tegra: Enable MMC_CAP2_ALT_GPT_SECTOR
+
+ block/partitions/efi.c         | 12 ++++++++++++
+ drivers/mmc/core/block.c       | 21 ++++++++++++++++++++
+ drivers/mmc/core/core.c        | 35 ++++++++++++++++++++++++++++++++++
+ drivers/mmc/core/core.h        |  2 ++
+ drivers/mmc/core/mmc.c         |  2 ++
+ drivers/mmc/host/sdhci-tegra.c |  9 +++++++++
+ include/linux/blkdev.h         |  7 +++++++
+ include/linux/mmc/card.h       |  1 +
+ include/linux/mmc/host.h       |  1 +
+ 9 files changed, 90 insertions(+)
+
+-- 
+2.32.0
+
