@@ -2,54 +2,53 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EA72F3EFA40
-	for <lists+linux-efi@lfdr.de>; Wed, 18 Aug 2021 07:40:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3DD783EFA44
+	for <lists+linux-efi@lfdr.de>; Wed, 18 Aug 2021 07:41:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237833AbhHRFkz (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 18 Aug 2021 01:40:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38470 "EHLO
+        id S237618AbhHRFl4 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 18 Aug 2021 01:41:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38718 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229768AbhHRFky (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 18 Aug 2021 01:40:54 -0400
-Received: from mail-lj1-x22a.google.com (mail-lj1-x22a.google.com [IPv6:2a00:1450:4864:20::22a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98F1DC061764;
-        Tue, 17 Aug 2021 22:40:20 -0700 (PDT)
-Received: by mail-lj1-x22a.google.com with SMTP id n7so2975041ljq.0;
-        Tue, 17 Aug 2021 22:40:20 -0700 (PDT)
+        with ESMTP id S229768AbhHRFlz (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 18 Aug 2021 01:41:55 -0400
+Received: from mail-lj1-x234.google.com (mail-lj1-x234.google.com [IPv6:2a00:1450:4864:20::234])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E847C061764;
+        Tue, 17 Aug 2021 22:41:21 -0700 (PDT)
+Received: by mail-lj1-x234.google.com with SMTP id x7so2831197ljn.10;
+        Tue, 17 Aug 2021 22:41:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=subject:to:cc:references:from:message-id:date:user-agent
          :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=ZcizrYLU6y5HJFAgIb30UDjYj0374xDfzw/H/m7g3Nk=;
-        b=USZdPk+yWnkedrOOtr8KxP70SGQYMIXpfOV4rV1oOKtR1tcJmcwAZIO4+d83Hb8tYr
-         AMZ2zSRDxicUtsGndPolzXUSaAqF59yTalnWQjAKsY11/RPMX3aYJVXG7qgHpc6X7uCM
-         jIl70tMsn4zWCRFtNZa+7xTlxgs5G8IUj42zNgX5MSgWZ1gS0IRg8IGvKrQJI05pL/PJ
-         ln6vYv0e9zUn0lKkdtBHC/W5lBkoxGVYLT2kVFFHZLgryJc3zx5WdRPhsCunH+L/U0nt
-         Ehuenp/VllVCgpVifKoreU7rIL416QhLB8oosr3wzph7t1UM61ajKm+w2strKi46/OXz
-         64Dw==
+        bh=LgaztypwHOuux+3EfKG5YAexoTrlMb3JoRy+4l/W+a0=;
+        b=YOmqhxUoB1cCf/nrZJ4X++rOT7JUE1N77azq+aTWVswlHz/4VBxf0VrtfH1Gm6GxK2
+         3pmSsJ92MDlUe7unfmxgcLsD0IZpgBj/4VgnH8Ou1D36QHdvI8SAaW65o0eoaIiT5pPE
+         dqBcp7TqKpSgMmHQALUSE+f1XLRVqHo1f2zgT4o4OZUb/nAr0AL1vQBJlVu1ws56rAaS
+         Euq7UDIr8nHdqQVMY2UGCIzHaI+6s6MeKj0h8GJEDMY+SCFccGqxhDy4XO1C2NR4tCnQ
+         AmWSsZ8K/M64Vwh2km72ZijiBVgA7ry1pvZK0hltXUp/TH9Jg5B+uII/BEGo91lItkP/
+         HHpA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:subject:to:cc:references:from:message-id:date
          :user-agent:mime-version:in-reply-to:content-language
          :content-transfer-encoding;
-        bh=ZcizrYLU6y5HJFAgIb30UDjYj0374xDfzw/H/m7g3Nk=;
-        b=jHLiTyTrzSGAQSmRz2Uj2L2V/OmDzqylfq0lwwPjPJxULyhVSdQHamaXeCtQHY8Jsp
-         SVZiz7bi9VTXB0DPS0UxZCUCfrXQX8NUeRvh4w8Xm2/G+jeMO8Ap/3R/T4H0291rdipp
-         vMNLO5COPUnd9yO3acEWyr5DatMCn5HGOtfmiwLifCBs2Q6bUGSHjrg49+SzxXalVRVa
-         IQpkHCac12SA/bm/L+OJXTHUwAl/dTNPmvEM3qyIUaiUu15Zjlc2xlhxkBkw5ZRnicka
-         czA/cDqiDQalBApqReeDloykfs3UEuM+w14CJyT6wuSj1a5FUG7hE4nugD7pkg2F6wN9
-         uIzQ==
-X-Gm-Message-State: AOAM5323l0pIQ8tvVJTAZbFeF1PMWsG3TCHm6DROfp7TrF06KvaQ6T2+
-        YKUah3BVXPatnvuaHPcbhX8VGP61Gdk=
-X-Google-Smtp-Source: ABdhPJw2dpwLL1dbQpICuE1/Nqw4koagP47CHNPcipYd/r4HkB0E//zbKzEs+dlJBez4jh3tvWCJiQ==
-X-Received: by 2002:a2e:934c:: with SMTP id m12mr6046555ljh.375.1629265218423;
-        Tue, 17 Aug 2021 22:40:18 -0700 (PDT)
+        bh=LgaztypwHOuux+3EfKG5YAexoTrlMb3JoRy+4l/W+a0=;
+        b=km5dXrZTkIJRSUos5jMycMhMXoH5W+eFmp8X5xKwrEufY2es1nu616DFdm8zRPdycQ
+         yRpddB1xodDxvQDlLDhgtuSLcv7u3XRCBHSIhsLJekqaOOHoE3YK0GBCrWUsUpODWN/H
+         fPUMu3W9aYLyyimwAlbOtrV8lSEDIjBW/ZpJFcKiTLcNTpp7tI0duKaOf1uxD+6z3GK4
+         pXhcDMNYYD4Dzuhj715qCRHtT6MJ3wjXv6QeqodwNG0sUdmcoqr+3idb1GBeSxqsddPq
+         Gv1McEF1la77f4C5Daja7D6YllfYW3ymtWv+rzsewiiHVjvTGBWiUzpOHChQL0ew86wv
+         Xh4Q==
+X-Gm-Message-State: AOAM531YzBTLc9V3Hw8HXTrYkphLuU0YY3fQlLYh2rrTc5A0osz4R/rv
+        ls6EArD9kjgYoMNT4dRHK1vGDvuOh2U=
+X-Google-Smtp-Source: ABdhPJzogo+e6LEosiozLvOD1rpYvP4gVzDFZPVfZUUoINyVIZIQnCQJErd65A5AhSTRtOfC87Bqsg==
+X-Received: by 2002:a2e:a549:: with SMTP id e9mr6361217ljn.500.1629265279653;
+        Tue, 17 Aug 2021 22:41:19 -0700 (PDT)
 Received: from [192.168.2.145] (46-138-85-91.dynamic.spd-mgts.ru. [46.138.85.91])
-        by smtp.googlemail.com with ESMTPSA id m5sm461818ljg.55.2021.08.17.22.40.17
+        by smtp.googlemail.com with ESMTPSA id f1sm396437lfs.44.2021.08.17.22.41.18
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 17 Aug 2021 22:40:18 -0700 (PDT)
-Subject: Re: [PATCH v5 2/5] mmc: block: Support alternative_gpt_sector()
- operation
+        Tue, 17 Aug 2021 22:41:19 -0700 (PDT)
+Subject: Re: [PATCH v5 5/5] partitions/efi: Support non-standard GPT location
 To:     Christoph Hellwig <hch@infradead.org>
 Cc:     Jens Axboe <axboe@kernel.dk>,
         Thierry Reding <thierry.reding@gmail.com>,
@@ -66,14 +65,14 @@ Cc:     Jens Axboe <axboe@kernel.dk>,
         linux-tegra@vger.kernel.org, linux-block@vger.kernel.org,
         linux-efi <linux-efi@vger.kernel.org>
 References: <20210818005547.14497-1-digetx@gmail.com>
- <20210818005547.14497-3-digetx@gmail.com> <YRyagtKThKYK+Eah@infradead.org>
+ <20210818005547.14497-6-digetx@gmail.com> <YRyZsDAiDX8OEO35@infradead.org>
 From:   Dmitry Osipenko <digetx@gmail.com>
-Message-ID: <32a009f6-7357-27cc-20e3-247de6f7d786@gmail.com>
-Date:   Wed, 18 Aug 2021 08:40:17 +0300
+Message-ID: <101227e9-b101-ffc9-1dc2-fc23a9d4905b@gmail.com>
+Date:   Wed, 18 Aug 2021 08:41:18 +0300
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.11.0
 MIME-Version: 1.0
-In-Reply-To: <YRyagtKThKYK+Eah@infradead.org>
+In-Reply-To: <YRyZsDAiDX8OEO35@infradead.org>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 8bit
@@ -81,43 +80,48 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-18.08.2021 08:28, Christoph Hellwig пишет:
-> On Wed, Aug 18, 2021 at 03:55:44AM +0300, Dmitry Osipenko wrote:
->> +static int mmc_blk_alternative_gpt_sector(struct block_device *bdev,
->> +					  sector_t *sector)
->> +{
->> +	struct mmc_card *card = mmc_bdev_to_card(bdev);
+18.08.2021 08:25, Christoph Hellwig пишет:
+> On Wed, Aug 18, 2021 at 03:55:47AM +0300, Dmitry Osipenko wrote:
+>> Support looking up GPT at a non-standard location specified by a block
+>> device driver.
+>>
+>> Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
+>> ---
+>>  block/partitions/efi.c | 13 +++++++++++++
+>>  1 file changed, 13 insertions(+)
+>>
+>> diff --git a/block/partitions/efi.c b/block/partitions/efi.c
+>> index aaa3dc487cb5..b9509f445b3c 100644
+>> --- a/block/partitions/efi.c
+>> +++ b/block/partitions/efi.c
+>> @@ -585,6 +585,8 @@ static int find_valid_gpt(struct parsed_partitions *state, gpt_header **gpt,
+>>  	gpt_header *pgpt = NULL, *agpt = NULL;
+>>  	gpt_entry *pptes = NULL, *aptes = NULL;
+>>  	legacy_mbr *legacymbr;
+>> +	struct gendisk *disk = state->disk;
+>> +	const struct block_device_operations *fops = disk->fops;
+>>  	sector_t total_sectors = get_capacity(state->disk);
+>>  	u64 lastlba;
+>>  
+>> @@ -619,6 +621,17 @@ static int find_valid_gpt(struct parsed_partitions *state, gpt_header **gpt,
+>>          if (!good_agpt && force_gpt)
+>>                  good_agpt = is_gpt_valid(state, lastlba, &agpt, &aptes);
+>>  
+>> +	if (!good_agpt && force_gpt && fops->alternative_gpt_sector) {
+>> +		struct block_device *bdev = disk->part0;
+>> +		sector_t agpt_sector;
+>> +		int err;
 >> +
->> +	if (!card)
->> +		return -ENODEV;
->> +
->> +	if (!card->host->ops->alternative_gpt_sector)
->> +		return -EOPNOTSUPP;
->> +
->> +	return card->host->ops->alternative_gpt_sector(card, sector);
->> +}
->> +
+>> +		err = fops->alternative_gpt_sector(bdev, &agpt_sector);
 > 
->> +static struct mmc_card *mmc_bdev_to_card(struct block_device *bdev)
->> +{
->> +	struct mmc_blk_data *md;
->> +
->> +	if (bdev->bd_disk->fops != &mmc_bdops)
->> +		return NULL;
-> 
-> No need for this check bow that it is only called through mmc_bdops.
+> Please call the method with the disk as the argument.  I've been moving
+> the block layer to generally pass the gendisk whenever we're dealing
+> with the whole device, as that makes the intent very clear.
 
-Alright
+I'll change it in v6.
 
->> +
->> +	md = mmc_blk_get(bdev->bd_disk);
->> +	if (!md)
->> +		return NULL;
->> +
->> +	return md->queue.card;
->> +}
-> 
-> This reference seems to never be dropped anywhere.
-> 
+> Also do we really need the force_gpt check?  That is we always require
+> the user to pass a command line argument to use this?
 
-Indeed, I missed that it bumps the refcnt.
+User indeed must pass the 'gpt' argument to kernel cmdline. That's what
+all those Android devices do. Should be okay to keep that requirement.
