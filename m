@@ -2,51 +2,51 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C2EA53F0E00
-	for <lists+linux-efi@lfdr.de>; Thu, 19 Aug 2021 00:19:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 932F13F0E03
+	for <lists+linux-efi@lfdr.de>; Thu, 19 Aug 2021 00:19:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234545AbhHRWUS (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 18 Aug 2021 18:20:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46818 "EHLO
+        id S234574AbhHRWUT (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 18 Aug 2021 18:20:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46824 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234535AbhHRWUR (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 18 Aug 2021 18:20:17 -0400
-Received: from mail-lj1-x230.google.com (mail-lj1-x230.google.com [IPv6:2a00:1450:4864:20::230])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56E9DC0613CF;
-        Wed, 18 Aug 2021 15:19:42 -0700 (PDT)
-Received: by mail-lj1-x230.google.com with SMTP id l18so312309lji.12;
-        Wed, 18 Aug 2021 15:19:42 -0700 (PDT)
+        with ESMTP id S234550AbhHRWUS (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 18 Aug 2021 18:20:18 -0400
+Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3AF6EC061764;
+        Wed, 18 Aug 2021 15:19:43 -0700 (PDT)
+Received: by mail-lf1-x12a.google.com with SMTP id w20so7951820lfu.7;
+        Wed, 18 Aug 2021 15:19:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=1uZZlco6eQq/HqnOfmLu683xT1D8kyQqDaHKpo2lnkI=;
-        b=L5j6fWLECUk64iGSu82/m8pclA8wZ5I1TMpN43cAv7b0CGDs09iwoTh1z8f9MVyNBq
-         fz8Xft9KpJAv0BTfl5Zd+9KxPxlOqj5qTMErLv7h6fZj7Ky+PK1ILBE42qevDBA7my6N
-         wTFhIOsQYA1nUHOlWd6HaWvdYmPXAm42ml5uKLnbIW+DP5UjhON5ilFnnCfRuQcdaI2c
-         jrljvxLxGmxLc0zXjtSIsZcjVQT4ZpjBIYYLBsyInJlhmALaWUzbtj19ZXZ+Yt454nPT
-         QwLnjUcIUS0WM4i2t1k45CFyMSpaI2WP5Jf8suXoCzgjUqrF9rTFJ8RF0myzPBSlAuyX
-         1IKA==
+        bh=I8m3A5ojjjGr4tuZYoRH+9ybdfTR7NPts/xjHNXW+cg=;
+        b=gCDGdNdaWu8hdnPG/tggLoVZlPxn7OWnfGa9sPTodCjCVf3q8a7+t9uzPYNJfNgvCS
+         iW5l2Z5JYtzWy/3wnZ8ZT373nNP9qioBBw2HO1j9mO1zO6m+TWvMy6oaEW5BYWkZ9iV1
+         sAyNsQmpznLGwWYDSf1jOmSO6I8E5RtPiJ7va8DDcFeAnaDjJnVZCPZfNRi9Q6O+W7oJ
+         y88+yCZu67CL8A3ANxogqBWmfNOcC0oGsiq+8IZ7/4mF1lydpk5ztuk3ReZv3HjnX6D8
+         7khYZn6djJBl7bffqNPIb+Wm7U10IDKn5avHJ5BMh6AuxBHzK13qdA6hRNIXa65Lup9F
+         wdPw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=1uZZlco6eQq/HqnOfmLu683xT1D8kyQqDaHKpo2lnkI=;
-        b=TIZhK8cjNFJjrH+Q1JNkszaPeetDaCI3bWA+nqwzlLOFhh9U1d7L7VKkE1L9pnXAwh
-         z2Dq7QMymptSD1uvWmKia7gEwOiU2ylfXcHh4eQDRm6p8fV+77M1DFh8wGHlCRfHSQqA
-         jKzkDxS+fb8rgXKE7uD3jPWrkONVBvF7fr8uh/FUluseua22uU3le0mIWyVYeNSy+RvB
-         sneTX9l4zYGcbuvU4XBahrl5ZffglPp6ylH4Cqb8CLvFuGuDYDeuLjpcrOa7xkWwJxQ+
-         a5I/VLicWD3IeVUtXUcuJdmsji95WNmCh9pRZw0H2PGGLAcZxWuJgM9gM589EPHr5joU
-         sRSg==
-X-Gm-Message-State: AOAM531E0Ss68mV23Zf2FBvaVITxo9q9a+YXSqnrA63pTvku93hvJqOn
-        w1xT2wbdLVX4G67Yq6yOQDA=
-X-Google-Smtp-Source: ABdhPJxbgdXy1i81skijA/xJRm2fiSBlefs/wkh/MKv1EkaiQ08WVRcChJB/HKNRo+EyXLFeqGlMvg==
-X-Received: by 2002:a2e:8147:: with SMTP id t7mr9480074ljg.126.1629325180744;
-        Wed, 18 Aug 2021 15:19:40 -0700 (PDT)
+        bh=I8m3A5ojjjGr4tuZYoRH+9ybdfTR7NPts/xjHNXW+cg=;
+        b=Bx8QKodg0+rdelS4N7amuxk8sHQkyAyaviVsDlwYpbzq6D1hbrHvenb45VxJNoRGQi
+         U3CmWMc3mPjoAXKBSIW7QfuMvyZf5EUi2PN7bLztt/fttMRrCyieqtFjg2/mXl0iSrov
+         CoLAW985flD6Vj2pJ8t45mu75e4qH2C8CarW/CDJ5RpKkJgxXrfHz6PfWIVIPy69XfFV
+         GIiT08UH3mBrCvZKCXvg/4Izc4mLpNjJT3sobkekgdV2ajTgVEBi55cKzoX5zb/Q6htw
+         7X+EQNIWEpu3x/gck6hWqu7oZppBhYHt2z0yIzkaoAM/3ysDlIteg+o1D0h2NaRFOXjz
+         +azg==
+X-Gm-Message-State: AOAM531lWkKLznK3fxKq3/hQ6JJ5ubRi7Pvzl+/aj1ViUAN0LWnTfsJ0
+        wLvUpFps1emv2KsQkFwWNDU=
+X-Google-Smtp-Source: ABdhPJxoavpH2kVL2BHylmnUL2aT6+FMjqUA6wXolJmwoncdXvHbyt6lQ7+oxUEaMeiXoXTxeNgIQA==
+X-Received: by 2002:a05:6512:401a:: with SMTP id br26mr3654435lfb.539.1629325181601;
+        Wed, 18 Aug 2021 15:19:41 -0700 (PDT)
 Received: from localhost.localdomain (46-138-85-91.dynamic.spd-mgts.ru. [46.138.85.91])
         by smtp.gmail.com with ESMTPSA id v23sm93300lfr.208.2021.08.18.15.19.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Aug 2021 15:19:40 -0700 (PDT)
+        Wed, 18 Aug 2021 15:19:41 -0700 (PDT)
 From:   Dmitry Osipenko <digetx@gmail.com>
 To:     Jens Axboe <axboe@kernel.dk>,
         Thierry Reding <thierry.reding@gmail.com>,
@@ -63,9 +63,9 @@ To:     Jens Axboe <axboe@kernel.dk>,
         Svyatoslav Ryhel <clamor95@gmail.com>
 Cc:     linux-tegra@vger.kernel.org, linux-block@vger.kernel.org,
         linux-efi <linux-efi@vger.kernel.org>
-Subject: [PATCH v6 1/5] block: Add alternative_gpt_sector() operation
-Date:   Thu, 19 Aug 2021 01:19:16 +0300
-Message-Id: <20210818221920.3893-2-digetx@gmail.com>
+Subject: [PATCH v6 2/5] partitions/efi: Support non-standard GPT location
+Date:   Thu, 19 Aug 2021 01:19:17 +0300
+Message-Id: <20210818221920.3893-3-digetx@gmail.com>
 X-Mailer: git-send-email 2.32.0
 In-Reply-To: <20210818221920.3893-1-digetx@gmail.com>
 References: <20210818221920.3893-1-digetx@gmail.com>
@@ -75,35 +75,44 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Add alternative_gpt_sector() block device operation which specifies
-alternative location of a GPT entry. This allows us to support Android
-devices that have GPT entry at a non-standard location and can't be
-repartitioned easily.
+Support looking up GPT at a non-standard location specified by a block
+device driver.
 
-Suggested-by: Christoph Hellwig <hch@infradead.org>
 Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
 ---
- include/linux/blkdev.h | 7 +++++++
- 1 file changed, 7 insertions(+)
+ block/partitions/efi.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/include/linux/blkdev.h b/include/linux/blkdev.h
-index 111a3911c4d2..d65c8f60ad8e 100644
---- a/include/linux/blkdev.h
-+++ b/include/linux/blkdev.h
-@@ -1850,6 +1850,13 @@ struct block_device_operations {
- 	char *(*devnode)(struct gendisk *disk, umode_t *mode);
- 	struct module *owner;
- 	const struct pr_ops *pr_ops;
-+
-+	/*
-+	 * Special callback for probing GPT entry at a given sector.
-+	 * Needed by Android devices, used by GPT scanner and MMC blk
-+	 * driver.
-+	 */
-+	int (*alternative_gpt_sector)(struct gendisk *disk, sector_t *sector);
- };
+diff --git a/block/partitions/efi.c b/block/partitions/efi.c
+index aaa3dc487cb5..7ca5c4c374d4 100644
+--- a/block/partitions/efi.c
++++ b/block/partitions/efi.c
+@@ -585,6 +585,8 @@ static int find_valid_gpt(struct parsed_partitions *state, gpt_header **gpt,
+ 	gpt_header *pgpt = NULL, *agpt = NULL;
+ 	gpt_entry *pptes = NULL, *aptes = NULL;
+ 	legacy_mbr *legacymbr;
++	struct gendisk *disk = state->disk;
++	const struct block_device_operations *fops = disk->fops;
+ 	sector_t total_sectors = get_capacity(state->disk);
+ 	u64 lastlba;
  
- #ifdef CONFIG_COMPAT
+@@ -619,6 +621,16 @@ static int find_valid_gpt(struct parsed_partitions *state, gpt_header **gpt,
+         if (!good_agpt && force_gpt)
+                 good_agpt = is_gpt_valid(state, lastlba, &agpt, &aptes);
+ 
++	if (!good_agpt && force_gpt && fops->alternative_gpt_sector) {
++		sector_t agpt_sector;
++		int err;
++
++		err = fops->alternative_gpt_sector(disk, &agpt_sector);
++		if (!err)
++			good_agpt = is_gpt_valid(state, agpt_sector,
++						 &agpt, &aptes);
++	}
++
+         /* The obviously unsuccessful case */
+         if (!good_pgpt && !good_agpt)
+                 goto fail;
 -- 
 2.32.0
 
