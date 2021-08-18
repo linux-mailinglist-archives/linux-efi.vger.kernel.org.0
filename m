@@ -2,49 +2,49 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A94A3EF717
+	by mail.lfdr.de (Postfix) with ESMTP id E57283EF71A
 	for <lists+linux-efi@lfdr.de>; Wed, 18 Aug 2021 02:57:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237325AbhHRA5u (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 17 Aug 2021 20:57:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59184 "EHLO
+        id S237277AbhHRA5v (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 17 Aug 2021 20:57:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59198 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237271AbhHRA5t (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 17 Aug 2021 20:57:49 -0400
-Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9491C061764;
-        Tue, 17 Aug 2021 17:57:15 -0700 (PDT)
-Received: by mail-lf1-x12a.google.com with SMTP id z2so947988lft.1;
-        Tue, 17 Aug 2021 17:57:15 -0700 (PDT)
+        with ESMTP id S237271AbhHRA5v (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 17 Aug 2021 20:57:51 -0400
+Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BC3AC061764;
+        Tue, 17 Aug 2021 17:57:17 -0700 (PDT)
+Received: by mail-lf1-x136.google.com with SMTP id p38so1009676lfa.0;
+        Tue, 17 Aug 2021 17:57:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=jb8ONuZrLSTX5nrNt5iZbaPVBcdEQEKZDB8VnBowyRQ=;
-        b=fEby/6An7FHD0Mmy6Kb78PCT9cdYLrmqaT67k1qevHu6EwTOmtPmps7blJtVpFOBbM
-         nqdFi1kyaCyOEuPt6Ah8W/D+5aQEfNZaOP/EvPePyyEx2F6cWPrfqQF9LmFtTKtxvi6h
-         v49Q0zth4aW64B03QFb7kcO2lZzKRcqfBiYxU8dPp5pqpOFB+QJhTY78YxPvqLJ5M0Ay
-         +jHKNFgQkf+tFFsUdZudos9vNwRC7t3aU+nugH53qrMqUVJx1hk5kA3hjT+OTIApzoQH
-         vb2rLBIAQHIvHmOaUGNvldioovL+ctv/bp5CxBD4wKxSpOBTo0Qo8qfbBDhQi2s8zev9
-         ZGBw==
+        bh=I01H5a6uHWni87egbbK4J+JI32iz47EYQ+sGtHJn9C8=;
+        b=N6JSsp07CpZCty+GpUO8Ix550NiKbjjfrr3MgQs6vBbp0jeZ2mo4YGpEwCfpOyU2fS
+         XbLBOGzidYQAvvw8vr521Wfpl+G2A0uhBOv5Ao/+qI26ERIW6HSeqZLCqYDifZcjDq7V
+         9pYnMVA8yeHjOAcvrbyHnCEaB6qUMYtaIpihhyQIVj5zwzxDkX3Ku8fXTkHrxv4yO0gd
+         4gvZLn8FQk0/6d40xcXz0BDe5lbAZSWFO1PZ8yABdh2ImVq9iJ/txZD2BbBFpnRHtKx7
+         Di2clJlPnhcSvfIcXGgy8BEivwI85p1b2C8e22q8TlT7KjTgiK9pzkW2eaUG1gSu6aps
+         cQgA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=jb8ONuZrLSTX5nrNt5iZbaPVBcdEQEKZDB8VnBowyRQ=;
-        b=bqJbKcwsf3Yji+fGvBS0lEE+SsyGdjpM66Ix2FTvuLcZlqd+eflfi1PAsBj90gBl4G
-         cceK2YPFnqADc4tCYqdDRXwXTjwHBS91RmeIIvEODTWSHC8N033vrsv8E7GJAjqEZpV/
-         GXp9n/DeFxqO6HqloUJ9mXVkI6ATO+fMll4XhHhU4XFVkhT4ln9KzygU7FZpSRFDXIUL
-         gxCjEBPLYc+7Lmn1gkZ1zDcZd1QdX82VuEUP9D7/iJ5JuXY3Eo8vVusAXpjzNEEsoLgu
-         E/kDk9o2fhHG4sz8w+fVbqI6mZFoI7XmLQO4wNjt6HPu687phncHBS2tLIbnjRodZ9Go
-         6OpA==
-X-Gm-Message-State: AOAM531muNJQrZCS08h7ADO/iDuObsdwtPFP229M4w5xhPiGfszo3rEZ
-        u2UcMO+AU8/ONj+WswJdLCA=
-X-Google-Smtp-Source: ABdhPJynee7m2Gi3rS6YccjCsxhmk9gdk3eIOqSz+KU7xgorcTAVU8K1ZJUUmgelnOh3cEgFMx1E6A==
-X-Received: by 2002:ac2:4c2a:: with SMTP id u10mr4435697lfq.631.1629248234298;
-        Tue, 17 Aug 2021 17:57:14 -0700 (PDT)
+        bh=I01H5a6uHWni87egbbK4J+JI32iz47EYQ+sGtHJn9C8=;
+        b=ibwHReew4h90c7iobA+39RBGbbzJllBg5SHAflYA3TcYr+jl0OC/AVw4BxNwQtkT9k
+         olC810k00mCjnf/HJMEz/xVY2WIVOeZX+XSlJVE/SkP+Y2JWV6g/GdsxQ9ij42HhfCvF
+         BJWri+JrHZk7quRN69h0q7SQfT7SZV1VBCdRze6OKn/ab051GTtBWhE8U1IoVtlRBqWg
+         H2v+7GURP6sm4HKYTod+dPiFiJJHp+3W5mUG2UMvg1WadJsHAvqWFmN8tMWW94ej5g2k
+         BBMvLMT3pljQPTLfxixUcBfZrOUA+sXKTX0rbEHe7Zj7HA34BwzTWOoP8igkfYIrqhDw
+         0JDg==
+X-Gm-Message-State: AOAM533BZxYgAhdi2c9hyLxWYqt/vr2vMGVQtKAg1xMJliV/H28Qmu+Q
+        JZGQKuKhEHs3nBJtqJl70kI=
+X-Google-Smtp-Source: ABdhPJyM2Pw5uNedmsQZXhYwx6gDYixKDMuB77RrrxaMT/g2PWwc2DQwvCordjK6ChUFqDanxd6hBA==
+X-Received: by 2002:ac2:428a:: with SMTP id m10mr4503044lfh.636.1629248235291;
+        Tue, 17 Aug 2021 17:57:15 -0700 (PDT)
 Received: from localhost.localdomain (46-138-85-91.dynamic.spd-mgts.ru. [46.138.85.91])
-        by smtp.gmail.com with ESMTPSA id h19sm335879lfu.138.2021.08.17.17.57.13
+        by smtp.gmail.com with ESMTPSA id h19sm335879lfu.138.2021.08.17.17.57.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Tue, 17 Aug 2021 17:57:14 -0700 (PDT)
 From:   Dmitry Osipenko <digetx@gmail.com>
@@ -63,9 +63,9 @@ To:     Jens Axboe <axboe@kernel.dk>,
         Svyatoslav Ryhel <clamor95@gmail.com>
 Cc:     linux-tegra@vger.kernel.org, linux-block@vger.kernel.org,
         linux-efi <linux-efi@vger.kernel.org>
-Subject: [PATCH v5 4/5] mmc: sdhci-tegra: Implement alternative_gpt_sector()
-Date:   Wed, 18 Aug 2021 03:55:46 +0300
-Message-Id: <20210818005547.14497-5-digetx@gmail.com>
+Subject: [PATCH v5 5/5] partitions/efi: Support non-standard GPT location
+Date:   Wed, 18 Aug 2021 03:55:47 +0300
+Message-Id: <20210818005547.14497-6-digetx@gmail.com>
 X-Mailer: git-send-email 2.32.0
 In-Reply-To: <20210818005547.14497-1-digetx@gmail.com>
 References: <20210818005547.14497-1-digetx@gmail.com>
@@ -75,110 +75,45 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Tegra20/30/114/124 Android devices place GPT at a non-standard location.
-Implement alternative_gpt_sector() callback of the MMC host ops which
-specifies that GPT location for the partition scanner.
+Support looking up GPT at a non-standard location specified by a block
+device driver.
 
 Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
 ---
- drivers/mmc/host/sdhci-tegra.c | 42 ++++++++++++++++++++++++++++++++++
- 1 file changed, 42 insertions(+)
+ block/partitions/efi.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/drivers/mmc/host/sdhci-tegra.c b/drivers/mmc/host/sdhci-tegra.c
-index 387ce9cdbd7c..24a713689d5b 100644
---- a/drivers/mmc/host/sdhci-tegra.c
-+++ b/drivers/mmc/host/sdhci-tegra.c
-@@ -116,6 +116,8 @@
-  */
- #define NVQUIRK_HAS_TMCLK				BIT(10)
+diff --git a/block/partitions/efi.c b/block/partitions/efi.c
+index aaa3dc487cb5..b9509f445b3c 100644
+--- a/block/partitions/efi.c
++++ b/block/partitions/efi.c
+@@ -585,6 +585,8 @@ static int find_valid_gpt(struct parsed_partitions *state, gpt_header **gpt,
+ 	gpt_header *pgpt = NULL, *agpt = NULL;
+ 	gpt_entry *pptes = NULL, *aptes = NULL;
+ 	legacy_mbr *legacymbr;
++	struct gendisk *disk = state->disk;
++	const struct block_device_operations *fops = disk->fops;
+ 	sector_t total_sectors = get_capacity(state->disk);
+ 	u64 lastlba;
  
-+#define NVQUIRK_HAS_ANDROID_GPT_SECTOR			BIT(11)
+@@ -619,6 +621,17 @@ static int find_valid_gpt(struct parsed_partitions *state, gpt_header **gpt,
+         if (!good_agpt && force_gpt)
+                 good_agpt = is_gpt_valid(state, lastlba, &agpt, &aptes);
+ 
++	if (!good_agpt && force_gpt && fops->alternative_gpt_sector) {
++		struct block_device *bdev = disk->part0;
++		sector_t agpt_sector;
++		int err;
 +
- /* SDMMC CQE Base Address for Tegra Host Ver 4.1 and Higher */
- #define SDHCI_TEGRA_CQE_BASE_ADDR			0xF000
- 
-@@ -1361,6 +1363,7 @@ static const struct sdhci_tegra_soc_data soc_data_tegra20 = {
- 	.pdata = &sdhci_tegra20_pdata,
- 	.dma_mask = DMA_BIT_MASK(32),
- 	.nvquirks = NVQUIRK_FORCE_SDHCI_SPEC_200 |
-+		    NVQUIRK_HAS_ANDROID_GPT_SECTOR |
- 		    NVQUIRK_ENABLE_BLOCK_GAP_DET,
- };
- 
-@@ -1390,6 +1393,7 @@ static const struct sdhci_tegra_soc_data soc_data_tegra30 = {
- 	.nvquirks = NVQUIRK_ENABLE_SDHCI_SPEC_300 |
- 		    NVQUIRK_ENABLE_SDR50 |
- 		    NVQUIRK_ENABLE_SDR104 |
-+		    NVQUIRK_HAS_ANDROID_GPT_SECTOR |
- 		    NVQUIRK_HAS_PADCALIB,
- };
- 
-@@ -1422,6 +1426,7 @@ static const struct sdhci_pltfm_data sdhci_tegra114_pdata = {
- static const struct sdhci_tegra_soc_data soc_data_tegra114 = {
- 	.pdata = &sdhci_tegra114_pdata,
- 	.dma_mask = DMA_BIT_MASK(32),
-+	.nvquirks = NVQUIRK_HAS_ANDROID_GPT_SECTOR,
- };
- 
- static const struct sdhci_pltfm_data sdhci_tegra124_pdata = {
-@@ -1438,6 +1443,7 @@ static const struct sdhci_pltfm_data sdhci_tegra124_pdata = {
- static const struct sdhci_tegra_soc_data soc_data_tegra124 = {
- 	.pdata = &sdhci_tegra124_pdata,
- 	.dma_mask = DMA_BIT_MASK(34),
-+	.nvquirks = NVQUIRK_HAS_ANDROID_GPT_SECTOR,
- };
- 
- static const struct sdhci_ops tegra210_sdhci_ops = {
-@@ -1590,6 +1596,38 @@ static int sdhci_tegra_add_host(struct sdhci_host *host)
- 	return ret;
- }
- 
-+static int sdhci_tegra_alternative_gpt_sector(struct mmc_card *card,
-+					      sector_t *gpt_sector)
-+{
-+	unsigned int boot_sectors_num;
++		err = fops->alternative_gpt_sector(bdev, &agpt_sector);
++		if (!err)
++			good_agpt = is_gpt_valid(state, agpt_sector,
++						 &agpt, &aptes);
++	}
 +
-+	/* filter out unrelated cards */
-+	if (card->ext_csd.rev < 3 ||
-+	    !mmc_card_mmc(card) ||
-+	    !mmc_card_is_blockaddr(card) ||
-+	     mmc_card_is_removable(card->host))
-+		return -ENOENT;
-+
-+	/*
-+	 * eMMC storage has two special boot partitions in addition to the
-+	 * main one.  NVIDIA's bootloader linearizes eMMC boot0->boot1->main
-+	 * accesses, this means that the partition table addresses are shifted
-+	 * by the size of boot partitions.  In accordance with the eMMC
-+	 * specification, the boot partition size is calculated as follows:
-+	 *
-+	 *	boot partition size = 128K byte x BOOT_SIZE_MULT
-+	 *
-+	 * Calculate number of sectors occupied by the both boot partitions.
-+	 */
-+	boot_sectors_num = card->ext_csd.raw_boot_mult * SZ_128K /
-+			   SZ_512 * MMC_NUM_BOOT_PARTITION;
-+
-+	/* Defined by NVIDIA and used by Android devices. */
-+	*gpt_sector = card->ext_csd.sectors - boot_sectors_num - 1;
-+
-+	return 0;
-+}
-+
- static int sdhci_tegra_probe(struct platform_device *pdev)
- {
- 	const struct of_device_id *match;
-@@ -1616,6 +1654,10 @@ static int sdhci_tegra_probe(struct platform_device *pdev)
- 	tegra_host->pad_control_available = false;
- 	tegra_host->soc_data = soc_data;
- 
-+	if (soc_data->nvquirks & NVQUIRK_HAS_ANDROID_GPT_SECTOR)
-+		host->mmc_host_ops.alternative_gpt_sector =
-+				sdhci_tegra_alternative_gpt_sector;
-+
- 	if (soc_data->nvquirks & NVQUIRK_NEEDS_PAD_CONTROL) {
- 		rc = tegra_sdhci_init_pinctrl_info(&pdev->dev, tegra_host);
- 		if (rc == 0)
+         /* The obviously unsuccessful case */
+         if (!good_pgpt && !good_agpt)
+                 goto fail;
 -- 
 2.32.0
 
