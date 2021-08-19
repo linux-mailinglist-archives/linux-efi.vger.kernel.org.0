@@ -2,114 +2,68 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A56403F1679
-	for <lists+linux-efi@lfdr.de>; Thu, 19 Aug 2021 11:45:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B8A4D3F1692
+	for <lists+linux-efi@lfdr.de>; Thu, 19 Aug 2021 11:47:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236292AbhHSJpi (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 19 Aug 2021 05:45:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32958 "EHLO
+        id S237726AbhHSJsW (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 19 Aug 2021 05:48:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33616 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232750AbhHSJpi (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 19 Aug 2021 05:45:38 -0400
-Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C410C061575;
-        Thu, 19 Aug 2021 02:45:02 -0700 (PDT)
-Received: from zn.tnic (p200300ec2f0f6a00d82486aa7bad8753.dip0.t-ipconnect.de [IPv6:2003:ec:2f0f:6a00:d824:86aa:7bad:8753])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 77C831EC046C;
-        Thu, 19 Aug 2021 11:44:56 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1629366296;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=uwmNYKgUvDl1MbeSM8Zbb3wFcWRj1jNc+CWB7kbhWHw=;
-        b=lfXxT/rKfaIm0ZtPpptiTqf0qCun2SrPQ6oRQQ0UoETMJZABV80vUnbMS9+m6inEZ15Hjp
-        bp4UuLvXP3Id5wKidovffjUau1hQYozxYFQHk5JdMNAger0/gwaVe39YAwkH/9RoG7TpS8
-        9so/nY/sffmLI3KXVeb2zWHB3XSDeqE=
-Date:   Thu, 19 Aug 2021 11:45:35 +0200
-From:   Borislav Petkov <bp@alien8.de>
-To:     Brijesh Singh <brijesh.singh@amd.com>
-Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        with ESMTP id S233957AbhHSJsV (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 19 Aug 2021 05:48:21 -0400
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3763EC061575;
+        Thu, 19 Aug 2021 02:47:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=NIZCsGrRQbuo1Iii34pN1v0m0SpMM+x4PkA8jTWERkg=; b=q25frNr0RfbqC0fjoCxNp5/U9p
+        XnS1Itp1kpFsNA/GpDu0yM5K5YaejGcpknYJqfk8EgGP6+4iHFTTLMsGRjmoCzrQgPNE5f0aWiJMP
+        QQ9tLG/1QdIBzMpXUBSA5pPGezmjPq0CJwrYYk/ziy5TebK/nnSrHMZcfb2uIjCNLa4oakg80HoTF
+        YSz/UGMzIuFO8B1+V7x8S7PTgRuTau4iALVZWpphyWlovh+/DBjKAy4vaUD6UbIXav3hhIt7y7OBs
+        dRqDYFfcQQ/aBbwuYMYcW8088vlsXsee7dROmQFMco7Esnk7wRaXkBLBwlTa2FrZ/OuYJHiz30tR2
+        lqk0CO2A==;
+Received: from hch by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1mGedJ-004t0t-0g; Thu, 19 Aug 2021 09:46:56 +0000
+Date:   Thu, 19 Aug 2021 10:46:45 +0100
+From:   Christoph Hellwig <hch@infradead.org>
+To:     Tom Lendacky <thomas.lendacky@amd.com>
+Cc:     linux-kernel@vger.kernel.org, x86@kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        iommu@lists.linux-foundation.org, kvm@vger.kernel.org,
         linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        linux-coco@lists.linux.dev, linux-mm@kvack.org,
-        linux-crypto@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Vitaly Kuznetsov <vkuznets@redhat.com>,
-        Wanpeng Li <wanpengli@tencent.com>,
-        Jim Mattson <jmattson@google.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        David Rientjes <rientjes@google.com>,
-        Dov Murik <dovmurik@linux.ibm.com>,
-        Tobin Feldman-Fitzthum <tobin@ibm.com>,
-        Michael Roth <michael.roth@amd.com>,
-        Vlastimil Babka <vbabka@suse.cz>, tony.luck@intel.com,
-        brijesh.ksingh@gmail.com
-Subject: Re: [PATCH Part1 RFC v4 22/36] x86/sev: move MSR-based VMGEXITs for
- CPUID to helper
-Message-ID: <YR4oP+PDnmJbvfKR@zn.tnic>
-References: <20210707181506.30489-1-brijesh.singh@amd.com>
- <20210707181506.30489-23-brijesh.singh@amd.com>
+        linux-graphics-maintainer@vmware.com,
+        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+        kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org,
+        Borislav Petkov <bp@alien8.de>,
+        Brijesh Singh <brijesh.singh@amd.com>,
+        Joerg Roedel <joro@8bytes.org>,
+        Andi Kleen <ak@linux.intel.com>,
+        Sathyanarayanan Kuppuswamy 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        Tianyu Lan <Tianyu.Lan@microsoft.com>,
+        Joerg Roedel <jroedel@suse.de>
+Subject: Re: [PATCH v2 02/12] mm: Introduce a function to check for
+ virtualization protection features
+Message-ID: <YR4ohWC4/cLsuCvv@infradead.org>
+References: <cover.1628873970.git.thomas.lendacky@amd.com>
+ <482fe51f1671c1cd081039801b03db7ec0036332.1628873970.git.thomas.lendacky@amd.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210707181506.30489-23-brijesh.singh@amd.com>
+In-Reply-To: <482fe51f1671c1cd081039801b03db7ec0036332.1628873970.git.thomas.lendacky@amd.com>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Finally drop this bouncing npmccallum at RH email address from the Cc
-list.
+On Fri, Aug 13, 2021 at 11:59:21AM -0500, Tom Lendacky wrote:
+> +#define PATTR_MEM_ENCRYPT		0	/* Encrypted memory */
+> +#define PATTR_HOST_MEM_ENCRYPT		1	/* Host encrypted memory */
+> +#define PATTR_GUEST_MEM_ENCRYPT		2	/* Guest encrypted memory */
+> +#define PATTR_GUEST_PROT_STATE		3	/* Guest encrypted state */
 
-On Wed, Jul 07, 2021 at 01:14:52PM -0500, Brijesh Singh wrote:
-> From: Michael Roth <michael.roth@amd.com>
-> 
-> This code will also be used later for SEV-SNP-validated CPUID code in
-> some cases, so move it to a common helper.
-> 
-> Signed-off-by: Michael Roth <michael.roth@amd.com>
-> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
-> ---
->  arch/x86/kernel/sev-shared.c | 84 +++++++++++++++++++++++++-----------
->  1 file changed, 58 insertions(+), 26 deletions(-)
-> 
-> diff --git a/arch/x86/kernel/sev-shared.c b/arch/x86/kernel/sev-shared.c
-> index be4025f14b4f..4884de256a49 100644
-> --- a/arch/x86/kernel/sev-shared.c
-> +++ b/arch/x86/kernel/sev-shared.c
-> @@ -184,6 +184,58 @@ static enum es_result sev_es_ghcb_hv_call(struct ghcb *ghcb,
->  	return ret;
->  }
->  
-> +static int sev_es_cpuid_msr_proto(u32 func, u32 subfunc, u32 *eax, u32 *ebx,
+Please write an actual detailed explanaton of what these mean, that
+is what implications it has on the kernel.
 
-Since it is not only SEV-ES, then it should be prefixed with "sev_" like
-we do for the other such functions. I guess simply
-
-	sev_cpuid()
-
-?
-
-> +				  u32 *ecx, u32 *edx)
-> +{
-> +	u64 val;
-> +
-> +	if (eax) {
-
-What's the protection for? Is it ever going to be called with NULL ptrs
-for the regs? That's not the case in this patchset at least...
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
