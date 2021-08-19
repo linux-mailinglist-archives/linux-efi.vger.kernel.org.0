@@ -2,106 +2,70 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C09A23F1EC1
-	for <lists+linux-efi@lfdr.de>; Thu, 19 Aug 2021 19:09:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A8323F1EE7
+	for <lists+linux-efi@lfdr.de>; Thu, 19 Aug 2021 19:19:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230089AbhHSRJq (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 19 Aug 2021 13:09:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53224 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229659AbhHSRJp (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 19 Aug 2021 13:09:45 -0400
-Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78E1DC061575;
-        Thu, 19 Aug 2021 10:09:09 -0700 (PDT)
-Received: from zn.tnic (p200300ec2f0f6a00894cffc8901d9ad3.dip0.t-ipconnect.de [IPv6:2003:ec:2f0f:6a00:894c:ffc8:901d:9ad3])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        id S232481AbhHSRTm (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 19 Aug 2021 13:19:42 -0400
+Received: from smtp-out2.suse.de ([195.135.220.29]:35764 "EHLO
+        smtp-out2.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230475AbhHSRTm (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 19 Aug 2021 13:19:42 -0400
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
         (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id F092D1EC04F3;
-        Thu, 19 Aug 2021 19:09:02 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1629392943;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=5h/pBCa48TpXaDC5k6IrIdMKol2hS7fNRvaR9js1Y0w=;
-        b=Y+o2JyP4Tg1O4OSMYH/GIP8+RzcS0qjXj/JucPGugTCf3iMvd2TXwRWBSklMZvSnsBBjzn
-        fr3Y7u61lMY10cqPUfxz1UkhK57dEAyb8NrVtZid6qA8GMlZphUUqzbVVrsR6nRZEgXn0p
-        Zwnk5rkTl3zqeU7wg2G67ypkiAml6Zw=
-Date:   Thu, 19 Aug 2021 19:09:42 +0200
-From:   Borislav Petkov <bp@alien8.de>
-To:     Michael Roth <michael.roth@amd.com>
-Cc:     Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org,
-        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        linux-coco@lists.linux.dev, linux-mm@kvack.org,
-        linux-crypto@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Vitaly Kuznetsov <vkuznets@redhat.com>,
-        Wanpeng Li <wanpengli@tencent.com>,
-        Jim Mattson <jmattson@google.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        David Rientjes <rientjes@google.com>,
-        Dov Murik <dovmurik@linux.ibm.com>,
-        Tobin Feldman-Fitzthum <tobin@ibm.com>,
-        Vlastimil Babka <vbabka@suse.cz>, tony.luck@intel.com,
-        brijesh.ksingh@gmail.com
-Subject: Re: [PATCH Part1 RFC v4 24/36] x86/compressed/acpi: move EFI config
- table access to common code
-Message-ID: <YR6QVh3qZUxqsyI+@zn.tnic>
-References: <20210707181506.30489-1-brijesh.singh@amd.com>
- <20210707181506.30489-25-brijesh.singh@amd.com>
- <YR42323cUxsbQo5h@zn.tnic>
- <20210819145831.42uszc4lcsffebzu@amd.com>
+        by smtp-out2.suse.de (Postfix) with ESMTPS id CDD611FDCB;
+        Thu, 19 Aug 2021 17:19:03 +0000 (UTC)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 0284113DDF;
+        Thu, 19 Aug 2021 17:18:59 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id nnnJLYOSHmF3OwAAMHmgww
+        (envelope-from <dave@stgolabs.net>); Thu, 19 Aug 2021 17:18:59 +0000
+Date:   Thu, 19 Aug 2021 10:18:54 -0700
+From:   Davidlohr Bueso <dave@stgolabs.net>
+To:     Dmitry Osipenko <digetx@gmail.com>
+Cc:     Jens Axboe <axboe@kernel.dk>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Micha?? Miros??aw <mirq-linux@rere.qmqm.pl>,
+        David Heidelberg <david@ixit.cz>,
+        Peter Geis <pgwipeout@gmail.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Christoph Hellwig <hch@infradead.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Ion Agorria <AG0RRIA@yahoo.com>,
+        Svyatoslav Ryhel <clamor95@gmail.com>,
+        linux-tegra@vger.kernel.org, linux-block@vger.kernel.org,
+        linux-efi <linux-efi@vger.kernel.org>
+Subject: Re: [PATCH v6 0/5] Support EFI partition on NVIDIA Tegra devices
+Message-ID: <20210819171854.hmpycxs5pqiwq4qg@offworld>
+References: <20210818221920.3893-1-digetx@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <20210819145831.42uszc4lcsffebzu@amd.com>
+In-Reply-To: <20210818221920.3893-1-digetx@gmail.com>
+User-Agent: NeoMutt/20201120
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, Aug 19, 2021 at 09:58:31AM -0500, Michael Roth wrote:
-> Not sure what you mean here. All the interfaces introduced here are used
-> by acpi.c. There is another helper added later (efi_bp_find_vendor_table())
-> in "enable SEV-SNP-validated CPUID in #VC handler", since it's not used
-> here by acpi.c.
+On Thu, 19 Aug 2021, Dmitry Osipenko wrote:
 
-Maybe I got confused by the amount of changes in a single patch. I'll
-try harder with your v5. :)
+>    - Moved GPT calculation into MMC core and added MMC_CAP2_ALT_GPT_SECTOR
+>      flag, like it was asked by Ulf Hansson. Me and Thierry have concerns
+>      about whether it's better to have Tegra-specific function in a core
+>      instead of Tegra driver, but it also works, so I decided to try that
+>      variant.
 
-> There is the aforementioned efi_bp_find_vendor_table() that does the
-> simple iteration, but I wasn't sure how to build the "find one of these,
-> but this one is preferred" logic into it in a reasonable way.
+I think this is better as you had it in v5. This is specific to tegra and
+shouldn't be in generic code.
 
-Instead of efi_foreach_conf_entry() you simply do a bog-down simple
-loop and each time you stop at a table, you examine it and overwrite
-pointers, if you've found something better.
-
-With "overwrite pointers" I mean you cache the pointers to those conf
-tables you iterate over and dig out so that you don't have to do it a
-second time. That is, *if* you need them a second time. I believe you
-call at least efi_bp_get_conf_table() twice... you get the idea.
-
-> I could just call it once for each of these GUIDs though. I was
-> hesitant to do so since it's less efficient than existing code, but if
-> it's worth it for the simplification then I'm all for it.
-
-Yeah, this is executed once during boot so I don't think you can make it
-more efficient than a single iteration over the config table blobs.
-
-I hope that makes more sense.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Thanks,
+Davidlohr
