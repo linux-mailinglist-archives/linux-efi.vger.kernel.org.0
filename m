@@ -2,153 +2,179 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4BD083F17AB
-	for <lists+linux-efi@lfdr.de>; Thu, 19 Aug 2021 13:05:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 83AC73F19EB
+	for <lists+linux-efi@lfdr.de>; Thu, 19 Aug 2021 15:02:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238506AbhHSLGK (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 19 Aug 2021 07:06:10 -0400
-Received: from mail.skyhub.de ([5.9.137.197]:47074 "EHLO mail.skyhub.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S238480AbhHSLGI (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Thu, 19 Aug 2021 07:06:08 -0400
-Received: from zn.tnic (p200300ec2f0f6a00d82486aa7bad8753.dip0.t-ipconnect.de [IPv6:2003:ec:2f0f:6a00:d824:86aa:7bad:8753])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id D5FDA1EC0493;
-        Thu, 19 Aug 2021 13:05:24 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1629371124;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=qYeEdAdRBAT5O+WdbHDpuPXSfRMndL3DIZs7pWBioVc=;
-        b=q6r7R7vGlQf+ERAX7mscYkzVq0uRzGz45F6etud3utGOg3RinTBSMuc9Xmj+EyMbchdzZO
-        OOVFQf0HdzhwssWUvLfAuwvfVdrZMjXAy6Z/POiHVxuPTMHpHUpzS1w8HmUQYCKCreGb4v
-        cKiOJUGGGE7qp4uR8n7/adWYgLRm8vo=
-Date:   Thu, 19 Aug 2021 13:06:08 +0200
-From:   Borislav Petkov <bp@alien8.de>
-To:     Brijesh Singh <brijesh.singh@amd.com>,
-        Ard Biesheuvel <ardb@kernel.org>
-Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        linux-coco@lists.linux.dev, linux-mm@kvack.org,
-        linux-crypto@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Vitaly Kuznetsov <vkuznets@redhat.com>,
-        Wanpeng Li <wanpengli@tencent.com>,
-        Jim Mattson <jmattson@google.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        David Rientjes <rientjes@google.com>,
-        Dov Murik <dovmurik@linux.ibm.com>,
-        Tobin Feldman-Fitzthum <tobin@ibm.com>,
-        Michael Roth <michael.roth@amd.com>,
-        Vlastimil Babka <vbabka@suse.cz>, tony.luck@intel.com,
-        brijesh.ksingh@gmail.com
-Subject: Re: [PATCH Part1 RFC v4 25/36] x86/boot: Add Confidential Computing
- type to setup_data
-Message-ID: <YR47IEALXIvAGmy8@zn.tnic>
-References: <20210707181506.30489-1-brijesh.singh@amd.com>
- <20210707181506.30489-26-brijesh.singh@amd.com>
+        id S239586AbhHSNDd (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 19 Aug 2021 09:03:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51284 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S239578AbhHSNDd (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 19 Aug 2021 09:03:33 -0400
+Received: from mail-qk1-x72c.google.com (mail-qk1-x72c.google.com [IPv6:2607:f8b0:4864:20::72c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DC0BC061756
+        for <linux-efi@vger.kernel.org>; Thu, 19 Aug 2021 06:02:57 -0700 (PDT)
+Received: by mail-qk1-x72c.google.com with SMTP id az7so7012867qkb.5
+        for <linux-efi@vger.kernel.org>; Thu, 19 Aug 2021 06:02:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=/uITF9PsXzVGX7hd3I0YUfetvnjHbmqb4UwwTMwonFI=;
+        b=MPi0hnE/ra70VrPe/cNO1Ormx0fhJ3InR0Y4lORCcGbpHnwdkrxn1VeXvH+TSBCUTU
+         v0oNczhQ45wov/kN+l3jtld33Kte9pDI7LQjdbpJ6VesA3zUtrn7vRlwd08l5CwfMpDU
+         GlQPWNOam5K6Fiq2V6Tbbttqwgpactcl62UgdWtN/WPmIXzluJIqO6nt1o0a/sj/A3Kb
+         Gxj3Qr4qTluQCE1kJnhok4GHfTTD2AXsJ1YntzkD+POopVeAhimTW2k9AryGeRJHHuhp
+         kdJHiN3MnWJN2tX98TIbuatikanJs4miyWRTUopfWqD7Nq7cZCv8w0OJZFNZnDNw+tSN
+         yv7g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=/uITF9PsXzVGX7hd3I0YUfetvnjHbmqb4UwwTMwonFI=;
+        b=Dqlm5UPOWODXAjYm4BYzU7rPEcDDeeFmEk+Co7DqLWPLoMnr/kBbDLiGioIPN5cMgn
+         +u9mOrT1NYn6JvaEqxp3+z0W+nCBf1V0giOrWmucvMf1cjj8io8fDuGg+vaWpZMFGE6l
+         vxB+RmFwUJT7+oQ26msfIVly200Py+kzmu5PsBtUIWDOtZDZAZXrdDktrgsC9lm+77Qr
+         AW7ywdHipJDUCEu+ZlnaBlcxozfwqDYJL9E9q95QAJ75qv8bGe9ewVogN0rtpaVneLvF
+         o3ZciaWoyVJz+p7ZRFHQB/nTZdJdQxVmhgSjCFdNzLpuNeJNrWyG45IV2qyM5JwUyzqD
+         t8Yg==
+X-Gm-Message-State: AOAM530uAnGrFqtLpTlbCYBKWWtulDFhKfDzN44/mcblArqJuxkEp8kF
+        aCjm54mUUXsDBjpPfJT7HtjHz9SPNa4qJfVskmfmVQ==
+X-Google-Smtp-Source: ABdhPJy5I18zBxQ1LGmdihiCjtGWvx+HuJJjQQGxxo70NaOSKWyTzogqPmmLqLM1CdEM2C4vIeoyMMoZ809yk2xCmpI=
+X-Received: by 2002:a37:dcc7:: with SMTP id v190mr3652195qki.445.1629378176061;
+ Thu, 19 Aug 2021 06:02:56 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20210707181506.30489-26-brijesh.singh@amd.com>
+References: <20210809190157.279332-1-dovmurik@linux.ibm.com>
+ <20210809190157.279332-4-dovmurik@linux.ibm.com> <YRZuIIVIzMfgjtEl@google.com>
+ <CAMj1kXFC-cizTw2Tv40uZHdLArKtdMNxdQXWoPWSL-8qexdkLQ@mail.gmail.com>
+In-Reply-To: <CAMj1kXFC-cizTw2Tv40uZHdLArKtdMNxdQXWoPWSL-8qexdkLQ@mail.gmail.com>
+From:   Andrew Scull <ascull@google.com>
+Date:   Thu, 19 Aug 2021 14:02:44 +0100
+Message-ID: <CADcWuH0mP+e6GxkUGN3ni_Yu0z8YTn-mo677obH+p-OFCL+wOQ@mail.gmail.com>
+Subject: Re: [PATCH 3/3] virt: Add sev_secret module to expose confidential
+ computing secrets
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     Dov Murik <dovmurik@linux.ibm.com>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        Borislav Petkov <bp@suse.de>,
+        Ashish Kalra <ashish.kalra@amd.com>,
+        Brijesh Singh <brijesh.singh@amd.com>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Andi Kleen <ak@linux.intel.com>,
+        "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
+        James Bottomley <jejb@linux.ibm.com>,
+        Tobin Feldman-Fitzthum <tobin@linux.ibm.com>,
+        Jim Cadden <jcadden@ibm.com>, linux-coco@lists.linux.dev,
+        linux-security-module@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-(Moving Ard to To: for the EFI bits)
+On Mon, 16 Aug 2021 at 10:57, Ard Biesheuvel <ardb@kernel.org> wrote:
+>
+> On Fri, 13 Aug 2021 at 15:05, Andrew Scull <ascull@google.com> wrote:
+> >
+> > On Mon, Aug 09, 2021 at 07:01:57PM +0000, Dov Murik wrote:
+> > > The new sev_secret module exposes the confidential computing (coco)
+> > > secret area via securityfs interface.
+> > >
+> > > When the module is loaded (and securityfs is mounted, typically under
+> > > /sys/kernel/security), a "coco/sev_secret" directory is created in
+> > > securityfs.  In it, a file is created for each secret entry.  The name
+> > > of each such file is the GUID of the secret entry, and its content is
+> > > the secret data.
+> > >
+> > > This allows applications running in a confidential computing setting to
+> > > read secrets provided by the guest owner via a secure secret injection
+> > > mechanism (such as AMD SEV's LAUNCH_SECRET command).
+> > >
+> > > Removing (unlinking) files in the "coco/sev_secret" directory will zero
+> > > out the secret in memory, and remove the filesystem entry.  If the
+> > > module is removed and loaded again, that secret will not appear in the
+> > > filesystem.
+> >
+> > We've also been looking into a similar secret mechanism recently in the
+> > context of Android and protected KVM [1]. Our secrets would come from a
+> > different source, likely described as a reserved-memory node in the DT,
+> > but would need to be exposed to userspace in the same way as the SEV
+> > secrets. Originally I tried using a character device, but this approach
+> > with securityfs feels neater to me.
+> >
+>
+> Agreed. I particularly like how deleting the file wipes the secret from memory.
+>
+> > We're also looking to pass secrets from the bootloader to Linux, outside
+> > of any virtualization or confidential compute context (at least a far as
+> > I have understood the meaning of the term). Again, this feels like it
+> > would be exposed to userspace in the same way.
+> >
+>
+> Indeed.
+>
+> > It would be good to be able to share the parts that would be common. I
+> > expect that would mean the operations for a secret file and for a
+> > directory of secrets at a minimum. But it might also influence the paths
+> > in securityfs; I see, looking back, that the "coco" directory was added
+> > since the RFC but would a generalized "secret" subsystem make sense? Or
+> > would it be preferable for each case to define their own path?
+> >
+>
+> I think we should avoid 'secret', to be honest. Even if protected KVM
+> is not riding the SEV/TDX wave, I think confidential computing is
+> still an accurate description of its semantics.
 
-On Wed, Jul 07, 2021 at 01:14:55PM -0500, Brijesh Singh wrote:
-> While launching the encrypted guests, the hypervisor may need to provide
-> some additional information during the guest boot. When booting under the
-> EFI based BIOS, the EFI configuration table contains an entry for the
-> confidential computing blob that contains the required information.
-> 
-> To support booting encrypted guests on non-EFI VM, the hypervisor needs to
-> pass this additional information to the kernel with a different method.
-> 
-> For this purpose, introduce SETUP_CC_BLOB type in setup_data to hold the
-> physical address of the confidential computing blob location. The boot
-> loader or hypervisor may choose to use this method instead of EFI
-> configuration table. The CC blob location scanning should give preference
-> to setup_data data over the EFI configuration table.
-> 
-> In AMD SEV-SNP, the CC blob contains the address of the secrets and CPUID
-> pages. The secrets page includes information such as a VM to PSP
-> communication key and CPUID page contains PSP filtered CPUID values.
-> Define the AMD SEV confidential computing blob structure.
-> 
-> While at it, define the EFI GUID for the confidential computing blob.
-> 
-> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
-> ---
->  arch/x86/include/asm/sev.h            | 12 ++++++++++++
->  arch/x86/include/uapi/asm/bootparam.h |  1 +
->  include/linux/efi.h                   |  1 +
->  3 files changed, 14 insertions(+)
-> 
-> diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
-> index f68c9e2c3851..e41bd55dba5d 100644
-> --- a/arch/x86/include/asm/sev.h
-> +++ b/arch/x86/include/asm/sev.h
-> @@ -44,6 +44,18 @@ struct es_em_ctxt {
->  
->  void do_vc_no_ghcb(struct pt_regs *regs, unsigned long exit_code);
->  
-> +/* AMD SEV Confidential computing blob structure */
-> +#define CC_BLOB_SEV_HDR_MAGIC	0x45444d41
-> +struct cc_blob_sev_info {
-> +	u32 magic;
-> +	u16 version;
-> +	u16 reserved;
-> +	u64 secrets_phys;
-> +	u32 secrets_len;
-> +	u64 cpuid_phys;
-> +	u32 cpuid_len;
-> +};
-> +
->  static inline u64 lower_bits(u64 val, unsigned int bits)
->  {
->  	u64 mask = (1ULL << bits) - 1;
-> diff --git a/arch/x86/include/uapi/asm/bootparam.h b/arch/x86/include/uapi/asm/bootparam.h
-> index b25d3f82c2f3..1ac5acca72ce 100644
-> --- a/arch/x86/include/uapi/asm/bootparam.h
-> +++ b/arch/x86/include/uapi/asm/bootparam.h
-> @@ -10,6 +10,7 @@
->  #define SETUP_EFI			4
->  #define SETUP_APPLE_PROPERTIES		5
->  #define SETUP_JAILHOUSE			6
-> +#define SETUP_CC_BLOB			7
->  
->  #define SETUP_INDIRECT			(1<<31)
->  
-> diff --git a/include/linux/efi.h b/include/linux/efi.h
-> index 6b5d36babfcc..75aeb2a56888 100644
-> --- a/include/linux/efi.h
-> +++ b/include/linux/efi.h
-> @@ -344,6 +344,7 @@ void efi_native_runtime_setup(void);
->  #define EFI_CERT_SHA256_GUID			EFI_GUID(0xc1c41626, 0x504c, 0x4092, 0xac, 0xa9, 0x41, 0xf9, 0x36, 0x93, 0x43, 0x28)
->  #define EFI_CERT_X509_GUID			EFI_GUID(0xa5c059a1, 0x94e4, 0x4aa7, 0x87, 0xb5, 0xab, 0x15, 0x5c, 0x2b, 0xf0, 0x72)
->  #define EFI_CERT_X509_SHA256_GUID		EFI_GUID(0x3bd2a492, 0x96c0, 0x4079, 0xb4, 0x20, 0xfc, 0xf9, 0x8e, 0xf1, 0x03, 0xed)
-> +#define EFI_CC_BLOB_GUID			EFI_GUID(0x067b1f5f, 0xcf26, 0x44c5, 0x85, 0x54, 0x93, 0xd7, 0x77, 0x91, 0x2d, 0x42)
->  
->  /*
->   * This GUID is used to pass to the kernel proper the struct screen_info
-> -- 
-> 2.17.1
-> 
+I agree that protected KVM fits with the ideas of confidential
+computing. It was the non-virtualization context that I was less
+certain about. For example, the Open Profile for DICE [2] starts with
+a hardware secret and derives, at each boot stage, a secret that is
+passed to the next stage. It's a process that applies both to a VM,
+matching confidential compute as I understand it, but also the host
+Linux, which is the part that I wasn't so clear on.
 
--- 
-Regards/Gruss,
-    Boris.
+[2] -- https://pigweed.googlesource.com/open-dice/+/refs/heads/main/docs/specification.md
 
-https://people.kernel.org/tglx/notes-about-netiquette
+> > [1] -- https://lwn.net/Articles/836693/
+> >
+> > > +static int sev_secret_unlink(struct inode *dir, struct dentry *dentry)
+> > > +{
+> > > +     struct sev_secret *s = sev_secret_get();
+> > > +     struct inode *inode = d_inode(dentry);
+> > > +     struct secret_entry *e = (struct secret_entry *)inode->i_private;
+> > > +     int i;
+> > > +
+> > > +     if (e) {
+> > > +             /* Zero out the secret data */
+> > > +             memzero_explicit(e->data, secret_entry_data_len(e));
+> >
+> > Would there be a benefit in flushing these zeros?
+> >
+>
+> Do you mean cache clean+invalidate? Better to be precise here.
+
+At least a clean, to have the zeros written back to memory from the
+cache, in order to overwrite the secret.
+
+>
+> > > +             e->guid = NULL_GUID;
+> > > +     }
+> > > +
+> > > +     inode->i_private = NULL;
+> > > +
+> > > +     for (i = 0; i < SEV_SECRET_NUM_FILES; i++)
+> > > +             if (s->fs_files[i] == dentry)
+> > > +                     s->fs_files[i] = NULL;
+> > > +
+> > > +     /*
+> > > +      * securityfs_remove tries to lock the directory's inode, but we reach
+> > > +      * the unlink callback when it's already locked
+> > > +      */
+> > > +     inode_unlock(dir);
+> > > +     securityfs_remove(dentry);
+> > > +     inode_lock(dir);
+> > > +
+> > > +     return 0;
+> > > +}
