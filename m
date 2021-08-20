@@ -2,30 +2,30 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 073C03F3692
-	for <lists+linux-efi@lfdr.de>; Sat, 21 Aug 2021 00:41:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1BBFD3F369D
+	for <lists+linux-efi@lfdr.de>; Sat, 21 Aug 2021 00:45:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233828AbhHTWmU (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 20 Aug 2021 18:42:20 -0400
-Received: from rere.qmqm.pl ([91.227.64.183]:5699 "EHLO rere.qmqm.pl"
+        id S232888AbhHTWqJ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 20 Aug 2021 18:46:09 -0400
+Received: from rere.qmqm.pl ([91.227.64.183]:10174 "EHLO rere.qmqm.pl"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233567AbhHTWmT (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Fri, 20 Aug 2021 18:42:19 -0400
+        id S229451AbhHTWqI (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Fri, 20 Aug 2021 18:46:08 -0400
 Received: from remote.user (localhost [127.0.0.1])
-        by rere.qmqm.pl (Postfix) with ESMTPSA id 4GrxSx5Mzgz6q;
-        Sat, 21 Aug 2021 00:41:37 +0200 (CEST)
+        by rere.qmqm.pl (Postfix) with ESMTPSA id 4GrxYN3sXXzbS;
+        Sat, 21 Aug 2021 00:45:28 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=rere.qmqm.pl; s=1;
-        t=1629499299; bh=dReQbCqzMBnPYZYQCC3ZPA0hKt+oRD/wuekxzfsrifk=;
+        t=1629499528; bh=16gKLJUDkQ7g0JmAzH1SE2EE5CY64jDwYOhZeIxA1g8=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=VWAlxPNpdBW/4CoWX1YZJ/MCVVkydV7sbTHA+8dckaNuJwD3eTM7E6HfMpkkYrFKU
-         9BK8xCu6k6+GDh1ep3qWpa5ko4KOQv8Ba1dEBnSrTewETCCeeIYD2zuT7Ii1RrLw1C
-         m7mfSTqCFjTOVKNTvMWjnMc4qVRDMfFdvamIuibU/DuIfuCP4z/FBAJmOEp0hPr0w1
-         PMdPJGvfR3u6SGV4Xz9y5eeCy5/Usl7nrtxNMEt7m/NMkjcbg4j55JDq0i+XIUG0oR
-         Jw4223EpLgHjNYXSbM7Jt1AvW5UeKpQ0gqgx4tdBBM9jeonrTeCMfjhHAFopmBr61f
-         aLwGTfNDflJ3g==
+        b=Syvwzk2S35gJ9J/aw/QJcRoBqhn1mAPzPbMD2mq1AX5V5c6SAiCMepKd280SNNNse
+         1n07WSjm19aVqG5gSdgWlvndQFAArpNtyWr+RDBSCfmm4dzrv5F5ZkXdRJFhuGfqsJ
+         j7l/atIymYAO8yfHYuUUxdkKSYcrFaI6ZhATveTZwlYCo+YuS/cd2oVFyj9Nj4wFjr
+         qlILDjP0jYwItLUILOP8T9ltfFZM9sGZS46EvQmHX8gywnHnFVGMB5cxv1FTmECSOd
+         9hHt7IPdGX/HcpQ/Pn5zqiR5rlPJPTUSXvEfPV3qJa/+SP47TXa3UVpXAPF6q8Bt8W
+         5S3FJ3PCbGfZQ==
 X-Virus-Status: Clean
 X-Virus-Scanned: clamav-milter 0.103.2 at mail
-Date:   Sat, 21 Aug 2021 00:41:33 +0200
+Date:   Sat, 21 Aug 2021 00:45:27 +0200
 From:   =?iso-8859-2?Q?Micha=B3_Miros=B3aw?= <mirq-linux@rere.qmqm.pl>
 To:     Dmitry Osipenko <digetx@gmail.com>
 Cc:     Jens Axboe <axboe@kernel.dk>,
@@ -42,31 +42,60 @@ Cc:     Jens Axboe <axboe@kernel.dk>,
         Svyatoslav Ryhel <clamor95@gmail.com>,
         linux-tegra@vger.kernel.org, linux-block@vger.kernel.org,
         linux-efi <linux-efi@vger.kernel.org>
-Subject: Re: [PATCH v6 0/5] Support EFI partition on NVIDIA Tegra devices
-Message-ID: <YSAvnQb29XlhqY7k@qmqm.qmqm.pl>
+Subject: Re: [PATCH v6 2/5] partitions/efi: Support non-standard GPT location
+Message-ID: <YSAwh+3xEsutWWLG@qmqm.qmqm.pl>
 References: <20210818221920.3893-1-digetx@gmail.com>
+ <20210818221920.3893-3-digetx@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-2
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20210818221920.3893-1-digetx@gmail.com>
+In-Reply-To: <20210818221920.3893-3-digetx@gmail.com>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, Aug 19, 2021 at 01:19:15AM +0300, Dmitry Osipenko wrote:
-> This series adds the most minimal EFI partition support for NVIDIA Tegra
-> consumer devices, like Android tablets and game consoles, making theirs
-> eMMC accessible out-of-the-box using downstream bootloader and mainline
-> Linux kernel.  eMMC now works on Acer A500 tablet and Ouya game console
-> that are already well supported in mainline and internal storage is the
-> only biggest thing left to support.
-[...]
+On Thu, Aug 19, 2021 at 01:19:17AM +0300, Dmitry Osipenko wrote:
+> Support looking up GPT at a non-standard location specified by a block
+> device driver.
+> 
+> Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
+> ---
+>  block/partitions/efi.c | 12 ++++++++++++
+>  1 file changed, 12 insertions(+)
+> 
+> diff --git a/block/partitions/efi.c b/block/partitions/efi.c
+> index aaa3dc487cb5..7ca5c4c374d4 100644
+> --- a/block/partitions/efi.c
+> +++ b/block/partitions/efi.c
+> @@ -585,6 +585,8 @@ static int find_valid_gpt(struct parsed_partitions *state, gpt_header **gpt,
+>  	gpt_header *pgpt = NULL, *agpt = NULL;
+>  	gpt_entry *pptes = NULL, *aptes = NULL;
+>  	legacy_mbr *legacymbr;
+> +	struct gendisk *disk = state->disk;
+> +	const struct block_device_operations *fops = disk->fops;
+>  	sector_t total_sectors = get_capacity(state->disk);
+>  	u64 lastlba;
+>  
+> @@ -619,6 +621,16 @@ static int find_valid_gpt(struct parsed_partitions *state, gpt_header **gpt,
+>          if (!good_agpt && force_gpt)
+>                  good_agpt = is_gpt_valid(state, lastlba, &agpt, &aptes);
+>  
+> +	if (!good_agpt && force_gpt && fops->alternative_gpt_sector) {
+> +		sector_t agpt_sector;
+> +		int err;
+> +
+> +		err = fops->alternative_gpt_sector(disk, &agpt_sector);
+> +		if (!err)
+> +			good_agpt = is_gpt_valid(state, agpt_sector,
+> +						 &agpt, &aptes);
+> +	}
+> +
 
-Could we provide the GPT sector via DT? As I understand this is for
-non-removable eMMC storage. It would remove the need for a cap bit and
-hardcoded calculations instead just checking if DT node of the controller
-contains a magic entry with a number.
+When alternative_gpt_sector is provided I would expect it to override
+the default, not be a fallback for it. But if someone tries to put
+a broken (decoy, garbage) GPT at a standard place, current ordering
+will prevent overriding it.
 
 Best Regards
 Micha³ Miros³aw
