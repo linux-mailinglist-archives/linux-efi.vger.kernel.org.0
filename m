@@ -2,191 +2,217 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 172883F2D2F
-	for <lists+linux-efi@lfdr.de>; Fri, 20 Aug 2021 15:32:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 19AC83F2E4E
+	for <lists+linux-efi@lfdr.de>; Fri, 20 Aug 2021 16:44:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231650AbhHTNdN (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 20 Aug 2021 09:33:13 -0400
-Received: from mail-co1nam11on2072.outbound.protection.outlook.com ([40.107.220.72]:58721
-        "EHLO NAM11-CO1-obe.outbound.protection.outlook.com"
+        id S240887AbhHTOpE (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 20 Aug 2021 10:45:04 -0400
+Received: from mail-bn8nam11on2059.outbound.protection.outlook.com ([40.107.236.59]:63201
+        "EHLO NAM11-BN8-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S229829AbhHTNdL (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Fri, 20 Aug 2021 09:33:11 -0400
+        id S238509AbhHTOpE (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Fri, 20 Aug 2021 10:45:04 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=BVTOj/VujymBa6S/G8M702M2M+sn4i4PSaF36R9JVDX8xqvypB4dt1bBY9bCfow+Qp1RWCkd/9D2lMNARUxsYQpESWE3BuG2RT7VurqxOb/X0BKtK3P0tcVdl5VqWbPOr5alTdACXVeVw52JmCwjHM1q6AXB1UUHsRk3hFVhwfgmQ9DP6YgqFg+xquNmtwaEqLddV4kCeoCqykUTsXrtYFjg8GZljtCCv9v8Tv1U4+R2C4si1sPRCkk8nRp+MJ0f0MuaonWBF/m2Oe4n57pQ77VFjGpw/otiW4A4a8EKJCK0V5Fh4rDpTvYcURpUBUMGnNgW1U/moI9Ai2ehcSpCGw==
+ b=gPaTW9l1JipghBtxVV/65WyjbOAzyLDehiX+cbzBsEI/pXd1nktuluZvJ7qFy1itsnombavIZzP+367vVcVpDxejAZTYHptBN/OJRERh79p0Xaagj0hVGFFBGYu5H30mkZPXX2QqAaFbtS3AVJuZOrTnb2QAMrz3cFnb+28d2u7bx1yaaeW92As27kJkWZsD1x5Ccuo3Fs9uTxEZWEDmAxsONagaVQWRyvOQk43Ez5fVa6PhPP8qN7KG6ebGf7frWegsVcFVKqauXkSTK+d3+bW/8GihHDl/ZvFTcAUsScXtRegGRxtWHv9qPvfWd86rfSoR6sae4TMcjlcB8kYPzA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=a95gJk+SgDwaoGQzpIk3sL1O7mJ6FgQFRTWINhTDJeI=;
- b=ew0q337x5pWnjitSaiSpAwd96yXKWZSYyyvcqfnJwNvMWT60OicJftA4nwc+av61gT3YKl3OVzKAu0dUBGZ+Zn6UgOnr0YLb3dAFkWPZzg8ckmU+QdK0EXhapwiSG6CahHAG0ukBfsTuTT6zOm0lTKUMDcMKsue058QWFNlNKl3Kabfp9aGxCrWUQ1mbnKFtvNckB3w65Y0P0derGJHO3rAi6b1FEUQ1FFPLdwqzxVHbry2T+9R81QTeXTn+TBIhjkrQyYFl4rKvybH9KzmU3W9vWW/3GyVGqorK0MWdepncnE29BoCGHOciaAgsLmGbmQQZXjVywRGyAQy9BVrReg==
+ bh=aKDtsECNsHosOLJLM/6e/53wNBUP1pxulo1gTveKU/Q=;
+ b=IGOV867ERuZ+W5zqI0i8bPqwzzv/zOONuAnUgtHpPjT76s33fcgzsVjSrpwvGFhfKq0NLd5gAdJCJHXf9v+AuqV4O1YNzawkNVvYy17fZX9vMt85091aczLAKMUuPDjJHKBAscKNPR4Szsbp2Asj5RvxolzROxReHfsMWvUjKnDVM3CMoaBiuor6cAupBnIdMJLxuTG5keoopciReUgtWd7UZICxtTLdqXhCiOFWTNK/+R5l/UF3r1nKIDacWYowWyrxXNy5C3Z/zusxPkS1GPzccPasWHH6154nN0r2ktoRY5S5QciQsVPUWPl/DxyPlO/GZiPZtWBtMHTQMzGH/A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
  header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=a95gJk+SgDwaoGQzpIk3sL1O7mJ6FgQFRTWINhTDJeI=;
- b=0c8nwf5xZK5CVmKAe1/5h5FTeMvttE3gmcU5FOq8XyQdRoFZTbft/foX43uG+ANtJhMPDHAvt7w+T4uQLFnknAMFM2PWeViFYP4xdJCdhShGBAJzaLcDBXTP7nBx6IOTe2bqvqaLgzcW+/A4LuivscEwSsvFXalYP/ia2Xk3NGc=
-Authentication-Results: google.com; dkim=none (message not signed)
- header.d=none;google.com; dmarc=none action=none header.from=amd.com;
-Received: from SN6PR12MB2767.namprd12.prod.outlook.com (2603:10b6:805:75::23)
- by SN1PR12MB2447.namprd12.prod.outlook.com (2603:10b6:802:27::22) with
+ bh=aKDtsECNsHosOLJLM/6e/53wNBUP1pxulo1gTveKU/Q=;
+ b=2+3jWKnJYvNVjx2WeWzYlQVagdhXhr7Q9eCQZRIZF3f5bjTRiQfjwJqtvfzUNT/VO8tUJ1VnwEdckfdS/xFEWqpHjXA2vQUFjgtPRUflCMI+jWs616MkL7luIQqC3+eWhG6DqL9aVOvX2jfyTnWIArUa5ucsbhvDP5xGBCqQAX8=
+Authentication-Results: gmail.com; dkim=none (message not signed)
+ header.d=none;gmail.com; dmarc=none action=none header.from=amd.com;
+Received: from BL1PR12MB5221.namprd12.prod.outlook.com (2603:10b6:208:30b::9)
+ by BL1PR12MB5349.namprd12.prod.outlook.com (2603:10b6:208:31f::7) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4436.19; Fri, 20 Aug
- 2021 13:32:31 +0000
-Received: from SN6PR12MB2767.namprd12.prod.outlook.com
- ([fe80::491e:2642:bae2:8b73]) by SN6PR12MB2767.namprd12.prod.outlook.com
- ([fe80::491e:2642:bae2:8b73%7]) with mapi id 15.20.4415.025; Fri, 20 Aug 2021
- 13:32:31 +0000
-Date:   Fri, 20 Aug 2021 13:32:23 +0000
-From:   Ashish Kalra <ashish.kalra@amd.com>
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4415.15; Fri, 20 Aug
+ 2021 14:44:23 +0000
+Received: from BL1PR12MB5221.namprd12.prod.outlook.com
+ ([fe80::8ce1:ecac:a5bd:e463]) by BL1PR12MB5221.namprd12.prod.outlook.com
+ ([fe80::8ce1:ecac:a5bd:e463%6]) with mapi id 15.20.4436.021; Fri, 20 Aug 2021
+ 14:44:23 +0000
+From:   Tom Lendacky <thomas.lendacky@amd.com>
+Subject: Re: [PATCH Part2 RFC v4 40/40] KVM: SVM: Support SEV-SNP AP Creation
+ NAE event
 To:     Sean Christopherson <seanjc@google.com>
-Cc:     "pbonzini@redhat.com" <pbonzini@redhat.com>,
-        "tglx@linutronix.de" <tglx@linutronix.de>,
-        "bp@alien8.de" <bp@alien8.de>,
-        "mingo@redhat.com" <mingo@redhat.com>,
-        "hpa@zytor.com" <hpa@zytor.com>,
-        "joro@8bytes.org" <joro@8bytes.org>,
-        "Lendacky, Thomas" <Thomas.Lendacky@amd.com>,
-        "x86@kernel.org" <x86@kernel.org>,
-        "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "srutherford@google.com" <srutherford@google.com>,
-        "Singh, Brijesh" <brijesh.singh@amd.com>,
-        "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>
-Subject: Re: [PATCH v3 2/5] KVM: x86: invert KVM_HYPERCALL to default to
- VMMCALL
-Message-ID: <20210820133223.GA28059@ashkalra_ubuntu_server>
-References: <cover.1623174621.git.ashish.kalra@amd.com>
- <f45c503fad62c899473b5a6fd0f2085208d6dfaf.1623174621.git.ashish.kalra@amd.com>
- <YR7C56Yc+Qd256P6@google.com>
- <B184FCFE-BDC8-4124-B5B8-B271BA89CE06@amd.com>
- <ED74106C-ECBB-4FA1-83F9-49ED9FB35019@amd.com>
- <YR7mDlxJyVkSkCbO@google.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YR7mDlxJyVkSkCbO@google.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-ClientProxiedBy: SN4PR0501CA0032.namprd05.prod.outlook.com
- (2603:10b6:803:40::45) To SN6PR12MB2767.namprd12.prod.outlook.com
- (2603:10b6:805:75::23)
+Cc:     Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org,
+        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        linux-coco@lists.linux.dev, linux-mm@kvack.org,
+        linux-crypto@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Vitaly Kuznetsov <vkuznets@redhat.com>,
+        Wanpeng Li <wanpengli@tencent.com>,
+        Jim Mattson <jmattson@google.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        David Rientjes <rientjes@google.com>,
+        Dov Murik <dovmurik@linux.ibm.com>,
+        Tobin Feldman-Fitzthum <tobin@ibm.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Michael Roth <michael.roth@amd.com>,
+        Vlastimil Babka <vbabka@suse.cz>, tony.luck@intel.com,
+        npmccallum@redhat.com, brijesh.ksingh@gmail.com
+References: <20210707183616.5620-1-brijesh.singh@amd.com>
+ <20210707183616.5620-41-brijesh.singh@amd.com> <YPdjvca28JaWPZRb@google.com>
+ <c007821a-3a79-d270-07af-eb7d4c2d0862@amd.com> <YPh7F2talucL7FQ9@google.com>
+Message-ID: <e9b3882c-b8f9-88ee-0df1-409fdd9b6229@amd.com>
+Date:   Fri, 20 Aug 2021 09:44:18 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
+In-Reply-To: <YPh7F2talucL7FQ9@google.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SA0PR11CA0182.namprd11.prod.outlook.com
+ (2603:10b6:806:1bc::7) To BL1PR12MB5221.namprd12.prod.outlook.com
+ (2603:10b6:208:30b::9)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from ashkalra_ubuntu_server (165.204.77.1) by SN4PR0501CA0032.namprd05.prod.outlook.com (2603:10b6:803:40::45) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4457.6 via Frontend Transport; Fri, 20 Aug 2021 13:32:30 +0000
+Received: from office-ryzen.texastahm.com (67.79.209.213) by SA0PR11CA0182.namprd11.prod.outlook.com (2603:10b6:806:1bc::7) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4436.19 via Frontend Transport; Fri, 20 Aug 2021 14:44:20 +0000
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 5b6ae8c0-37f9-4c80-1b16-08d963def621
-X-MS-TrafficTypeDiagnostic: SN1PR12MB2447:
+X-MS-Office365-Filtering-Correlation-Id: bdd3b7d0-955a-4b28-41c0-08d963e9001b
+X-MS-TrafficTypeDiagnostic: BL1PR12MB5349:
 X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <SN1PR12MB24475DDEE2592974CACD6AF78EC19@SN1PR12MB2447.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
+X-Microsoft-Antispam-PRVS: <BL1PR12MB534967E5F9BF5103D8089DBAECC19@BL1PR12MB5349.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:10000;
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 18hhAmubpYERhVvoorcbD6+rKVESmDcwDC9FpZb1T9blsFnfkRh+cCJto3c/4+Ai+wnST5utAGj5n5uHHr/BeDxAyyoc6iGrdu5WooqPzY/0xINOmDiBCM/dBpFw+g9jsrGd4ZN6eooCLQlmjieVXF51cMv1r2R9+r0ra+I19HdYhywM9qdIVXs6xcgFE68S2QJOy1LEfaPAm4qJI5uvuA940ls7fbjZisJheuh0iG7X9NMQa0m6Pz7y9/Jr2gQyPKBTfl+YmPNCNPFuS71FtTLMBySttVyGTdzImLrv6BaWz/Q2UURqbGrIgXKe/kZbni8BAQcEqPJlSSPfNi0ar9Fmtr2igHkB8BDN6UFlVil56SpaBfbd97z/IroZuzjGVxiRkK54215keR3rsV2akl4kX7CglWLcR9Tr8aAeiftHKKKSanVUJ/n6xvIp1xZna8Xct+hmmXVsX+7njqYml2cZkmQlSp46pKslmclKVKs/RWk6e5TXqHNncRTWy1SpzzJrqA33jvAX1ux9isUgTsFUGzNd+7bMRkCD0lcckrntfMyLAu1J4L187rBaPG8TrhP3EkIMFERfuJKWhb/Yrk7N904eBF0tXY2O3omOjVlSgHFc9GBk5JhiAB7YZ5u8u3or4YFi0CDGsLuRSA3dXyMJFc+jtrxyGnHGxHtJGut9/QfkrIeGyppIVoTeV+BdrTEguzOUhJBf8ObcuqVP3w==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR12MB2767.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(346002)(39860400002)(376002)(136003)(396003)(366004)(6916009)(38100700002)(9686003)(86362001)(956004)(33716001)(6496006)(55016002)(53546011)(52116002)(6666004)(38350700002)(1076003)(54906003)(44832011)(33656002)(8936002)(5660300002)(316002)(8676002)(26005)(7416002)(186003)(2906002)(66556008)(66476007)(478600001)(66946007)(83380400001)(4326008);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: IVirDJ4OekyEgxVOrHmIgtm35Qan8hZnb88oA2BSrYOda3EV8BkuyQiIkWXeYYYxGXnz6c79+PygM/GWunP739ci2Wk/E2HGyU7TW8e+PYl5vCSrptIekUbX66Fe4flTCfUNWIdtveAKA2g/+DcWQ0oLNwEoOGBFw1zi8W1GYfmRX5UicX06I7Q8cY58F+uZPUWsuEKJiUKLHGc45P59QWfeL60lpxA+5SS6//1+P1dR8V+mT7S7LPQBwQn+MMjrveU8Mzo52qt6fIfLzwkFnGPONY+2uEcDG8Rr5zPXHiXowg3wvWkCBG+Ga2/knNGSBQ1PdQG+3Q1N2EF02PRGDypw72ZKkFFFp5zbz5VKIvy652j5vfcnwulgTtGMmvDiBK7RYPmi+qfug5UhwTK+1KUSMK4k8ot8fIWWraD5fQ3Ahw4fL5l+aQ0zkbzUZYjPUqc5icEnWZ1F66GFv9rwhfrFpVf+eclhTkzYtY1kw1Lm1Ui4KmkoFhzfypEznFuQLRw6fedwnxVUDGGEuQtqkwGC3uSHlDmMtcjtlO7h+nCnicgEDfUhjbuseS4AufoGY2ie5Tb1OjRkTp/WgG3EEbuIWvsJo+5ieCYUOxvuFrJeYDoSnTRg//LS4JCotoiE3Jyp7f5RePBo4Y3I5aJ58yLXoWqVjv571xWbXS3Qc8HIgWaBJBWhlqdF9LP7CHcroOSUVY9Ktf/y6Indbr4DVbJJsKUIB0Jt6kuo9SUyxdw=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR12MB5221.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(39860400002)(346002)(366004)(396003)(136003)(376002)(31696002)(2906002)(5660300002)(66946007)(66476007)(7406005)(54906003)(4326008)(66556008)(8936002)(36756003)(478600001)(7416002)(38100700002)(31686004)(956004)(53546011)(316002)(26005)(6486002)(8676002)(6916009)(6506007)(6512007)(86362001)(2616005)(83380400001)(186003)(45980500001)(43740500002);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?FqD6qpU+F2PQX2ANZsB5xOVYXw8CZb8IESfsvQoCEb3HMfBL+S8RmDbDR6tE?=
- =?us-ascii?Q?R0Unddqn5H8ffDLnsWm2VFao9azzwP+EKeVm7e+956GKP7N+hQHNlmiPR9K/?=
- =?us-ascii?Q?v8YQdO3eDFD/we3Q6kCNirJ8YZVg1m2iDxkUASyKR6s+lDoRIl3Bsolvh+St?=
- =?us-ascii?Q?HDVy0jd2+rrz/QHH/6UNnEn5Dl2TPHdv3Yi7+LmRZ6FRtPoAvBO2NGrcZUWc?=
- =?us-ascii?Q?0Oq6jEiSnYGtCBzhKuF+4Yu3pzy3+BvC+ijDCuyaDugwuYNhDiziCJ60sQHy?=
- =?us-ascii?Q?YKTIZ3Flzrqons8t1fD0yEto0lOqCJ9fUBdeYosU9fkSoQeOV5r7yROeiUhv?=
- =?us-ascii?Q?/MGUSlI0P+ZfOpug3kAXS5gdYfT9910+vCLLcpF4bUt1KKa4PmGu9BGLD4bq?=
- =?us-ascii?Q?u8hZ6AX6F8bCErsVAKxxcMK7gJ4wD6LHKNPZFO6v4dqcLAbxgtI8b7wrwMqb?=
- =?us-ascii?Q?X1NyCvy6g+wD84vjt/XXBdhdQghC02kgYujrwlJyLidzLdnMeirkRrp1hwy8?=
- =?us-ascii?Q?kEvlbcJgsX6aPTV1KUFzuHm0ApRezTShN1qzkbI+UDcGSlMWatsRk+hAXGow?=
- =?us-ascii?Q?zvrXGdv2hTV42qZxc2piIk1nPKwysx4agLpxl3TdCI1+b5TZnL409t1p/3na?=
- =?us-ascii?Q?Oh9rV2go/yzOPLY7ChgDkQrvcemHwRN5aPK0l3ho/vgIhq3rUnPi99dLZ/qG?=
- =?us-ascii?Q?a4HVHHed3lFhPDEUs8ZDTuvKenk0tSOzlXxy76XEqK6km/thg+YZen3Wa2aX?=
- =?us-ascii?Q?TiJps9NNDEqBnewkv3bISAlhf30o7A2ERGAOvQzPQvUqeH8zyp6htb8edygs?=
- =?us-ascii?Q?pTN1khys7HI2OfpbwBkNk+p89GpPnLCNUid/Pn7ig094tLBJRSpl5BthBqyL?=
- =?us-ascii?Q?wJA7EMdDRtTgW/0/i9Uugp4Pjx1hqy8QgHwXTFkE7pZJM2bJrvM1PJccJ+uK?=
- =?us-ascii?Q?N3sn4kyoeG8/CxX7AbKZP7udZ39jfWrXQLaiAmmRbiHO+dhzMB/wGsU0nTwh?=
- =?us-ascii?Q?+Q920lXr/LJQB4TSEnVIj7sw78dNSSgvmJHNgNW2xqHY33/3Zik6p3m7tLE6?=
- =?us-ascii?Q?e1UamWLezJIWpd15pVjLg6jsWOIJRXAx32mOat0RnVTnIcXjzwSyc7qu/mHS?=
- =?us-ascii?Q?kA2Ph7ULCpRLoqo0TPWxK7mUzRwkZmue7MrWLy0fUngbk+gzjqo/aP3QusYX?=
- =?us-ascii?Q?4cqdt1CHt8MvgPk5CDrSlaLd2a0UhQLrpR1ryrPyEq3Ousby4IjdlW0DJmS9?=
- =?us-ascii?Q?CdL5YPAD1rZe/20q8MsXqil0vRUzEWGcGCpo4XUJQxaWP/gNw0H/HXiC2Y/1?=
- =?us-ascii?Q?l14E1FxuLde+9MLi40vM2Rtu?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?K24xbnNuVFFhZ1VOclhPQWV5RXVCeHQ0NnUyVmhZMGxZQ1RBYzZ0eWZ3Z1c4?=
+ =?utf-8?B?VkdyT0tvRjFCb29BOGNubllraGVyVzdzUFhTQ3NkL01HWWJaTyttRk1TdlUy?=
+ =?utf-8?B?U0JqTGpHRVRBVGNaWkpUTDZUUUx3T0MxQ212a3RQQ0ovSkFjSWNHZEF1TXo4?=
+ =?utf-8?B?RytHMzZsZ2dMZVFQcHE0UXB4czJ4OFhqZitiK3kzand0QzFuajlhbnFIYXlj?=
+ =?utf-8?B?OUhCcUJralgyZ3I5TmhSMW0vODN4UVBwVytjWTlzV09VdHlxUjdMZFp6WkhN?=
+ =?utf-8?B?eEpxOU0rWUFWZUVpV3h0T0ZweStBL3FrUjZnQkZJOGZ1YkRpbjBOa2FFdFBH?=
+ =?utf-8?B?djJMVGplK1hkbENVeHVXdzUwQVhQWi9hUlJnU0dzTzIyU3pVaTlCNXo4MHNF?=
+ =?utf-8?B?em56aG9nV25sVWdWR3FSTktKVDV1N2VwdGpTZVI3N0tnSGpUZkZMZGFaL2Jy?=
+ =?utf-8?B?MzUzQm02QWkvQ2UxMHB5bzdtQ0QxMEZNYUErRXRHTlVRdGNJY2MyaXJ3dWp0?=
+ =?utf-8?B?c2I0cjJLenBrUVVycmNVVTJIbXl1TU41WTgwZHlVZFJJY2RJUXVkU3EveVM1?=
+ =?utf-8?B?bXk4VHNtQVNKUlRqTElqOXZnVmZIMU10ZTNrVzhwV1AyZGFDMHo2cHc1Z0JL?=
+ =?utf-8?B?bk0zMmx0OHpUc2ZyZ2tDVDh0d0hNbHBZejBBTjRqMlhzeGFPcTUrMkEySWRj?=
+ =?utf-8?B?dkRESUZycE9WYVZWWDk4cXdNbmtKaVVkaFhUMXIxZkZRVlp0Qk5JUWpXR2JZ?=
+ =?utf-8?B?VGxrT3dqaDJnS3J1dUV0bWhMdU1HRUtrVUg2ZlVDWWk2bEVNOHQ2U0hMb01i?=
+ =?utf-8?B?SGNlZCtNQytLSzdKYnB0VU5DR0RnQk1xVmFZN1A1c1MvVS9BVHlFS1U0VXZH?=
+ =?utf-8?B?MVl4czNDY3psSVFPMGpTMi95bXM3V0dMbGd0M2xacHFNY1FFUnRQSzNzVjJq?=
+ =?utf-8?B?SitubzJsZFZnMmZnV290UzBUK1dwRGo2b0xwRWhFQlVPS0lGdkJxOWt1bFMr?=
+ =?utf-8?B?dTNOM0l2NTY4OFFpSGdCbDFySDF3aThBdHllbnFLbFpiaHZOUzNyTVFIcDBH?=
+ =?utf-8?B?M3VQZHQyRllZQmZzbVR1ZmVydnJGWW9KOElSWGlUZFM4NWN1L21zZHVpZks0?=
+ =?utf-8?B?MjdueTRSZHd0NjRqRUdYQWJLRjQzWFErb3pzZFBIUEFQTVFEN2VpT2NJbzRa?=
+ =?utf-8?B?STZCTmFMMGNvU2FhYlhneHlxWmM5bDVUQkxYZDlBNGRWSFhnZE5hdnJOK1JM?=
+ =?utf-8?B?bXlvYW9PTVd0dTUybGZaQUZYbEdzQVN2d2RFaEdLOStFQ091M0pVM3lNNWpr?=
+ =?utf-8?B?Y3VLSGhhL3FMRGYrWDlRbUMreGNJRDZHdjZJei9OM25zOS80R1RTbzFpNWph?=
+ =?utf-8?B?MzF5ckcyT3BBREhlZzVQNllIMUZQaFM4R01lbUZFWnhDd0JQQzMxcWtzcFps?=
+ =?utf-8?B?eEdNN2FrSSt2M0MvUTU2VWhtWTN1azBadjY1QTlUNmQyNFpLWXpCYXFHQW0x?=
+ =?utf-8?B?a3JRbHpCT21ibzdYb0d6RUxtZEZwNnRBRDFiR0JQTlVRNnRvVVZXdVNzRTRV?=
+ =?utf-8?B?QXFmV1pRNjhkRlFyeDZGc25ZQ2pINjYrM1pNZzU5ditlZ2pQOU5xWlZoS3dz?=
+ =?utf-8?B?eHVXeHhtckFBZUx5OHRqOTJPVm5hcXB3aWxTTE1IS2MzcW8yR1ZxRlRySzZD?=
+ =?utf-8?B?M0Q0TEdDSE9ZZUFFYlR5S2Z6ZTFxUzllSklYdGFrQUFBUUltcTN3NVhGRElq?=
+ =?utf-8?Q?Bls17XfnV/aUgqWk1uugzKRln5ildZnSagFG+8e?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5b6ae8c0-37f9-4c80-1b16-08d963def621
-X-MS-Exchange-CrossTenant-AuthSource: SN6PR12MB2767.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: bdd3b7d0-955a-4b28-41c0-08d963e9001b
+X-MS-Exchange-CrossTenant-AuthSource: BL1PR12MB5221.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Aug 2021 13:32:31.6578
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Aug 2021 14:44:23.3665
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 8VnXs0qa051zXnP9hq+GOeJ3lXzsnCdbp32WimK1SdwWvd8G7Wd7RTrongBLXMgOM054kCB4V3HBDahQV3r7mA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN1PR12MB2447
+X-MS-Exchange-CrossTenant-UserPrincipalName: x6oaKGC2ZEvdeQUBz2EF6t4CepFAvKFmoWiJ4vnBBq7rtqe705yZlHnfjcIOd+GtXk17WoiLr/vIHD4M3Dtl0Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR12MB5349
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, Aug 19, 2021 at 11:15:26PM +0000, Sean Christopherson wrote:
-> On Thu, Aug 19, 2021, Kalra, Ashish wrote:
-> > 
-> > > On Aug 20, 2021, at 3:38 AM, Kalra, Ashish <Ashish.Kalra@amd.com> wrote:
-> > > I think it makes more sense to stick to the original approach/patch, i.e.,
-> > > introducing a new private hypercall interface like kvm_sev_hypercall3() and
-> > > let early paravirtualized kernel code invoke this private hypercall
-> > > interface wherever required.
+On 7/21/21 2:52 PM, Sean Christopherson wrote:
+> On Wed, Jul 21, 2021, Tom Lendacky wrote:
+>> On 7/20/21 7:01 PM, Sean Christopherson wrote:
+>>> On Wed, Jul 07, 2021, Brijesh Singh wrote:
+>>>> From: Tom Lendacky <thomas.lendacky@amd.com>
+>>>
+...
+>>> This seems like it's missing a big pile of sanity checks.  E.g. KVM should reject
+>>> SVM_VMGEXIT_AP_CREATE if the target vCPU is already "created", including the case
+>>> where it was "created_on_init" but hasn't yet received INIT-SIPI.
+>>
+>> Why? If the guest wants to call it multiple times I guess I don't see a
+>> reason that it would need to call DESTROY first and then CREATE. I don't
+>> know why a guest would want to do that, but I don't think we should
+>> prevent it.
 > 
-> I don't like the idea of duplicating code just because the problem is tricky to
-> solve.  Right now it's just one function, but it could balloon to multiple in
-> the future.  Plus there's always the possibility of a new, pre-alternatives
-> kvm_hypercall() being added in generic code, at which point using an SEV-specific
-> variant gets even uglier.
+> Because "creating" a vCPU that already exists is non-sensical.  Ditto for
+
+Maybe the names of CREATE and DESTROY weren't the best choice. The intent 
+is to replace INIT-SIPI.
+
+> onlining a vCPU that is already onlined.  E.g. from the guest's perspective, I
+> would fully expect a SVM_VMGEXIT_AP_CREATE to fail, not effectively send the vCPU
+> to an arbitrary state.
+
+The GHCB document does not require thos. To accomplish the same thing that 
+a CREATE does today, the guest does DESTROY followed by CREATE. What's the 
+difference, the DESTROY will kick the vCPU out and make it non-runnable 
+and the guest will immediately follow that with a CREATE and set the new 
+state. All of which can be accomplished by just calling CREATE to begin 
+with - the net is the same, the vCPU gets taken from one state to a new state.
+
 > 
+> Any ambiguity as to the legality of CREATE/DESTROY absolutely needs to be clarified
+> in the GHCB.
 
-Also to highlight the need to support this interface, capturing the flow
-of apply_alternatives() as part of this thread: 
+I don't see any ambiguity. The document states when the VMSA becomes 
+effective and there's no requirement/need to issue a DESTROY before 
+another CREATE.
 
-setup_arch() call init_hypervisor_platform() which detects the
-hypervisor platform the kernel is running under and then the hypervisor
-specific initialization code can make early hypercalls. For example, KVM
-specific initialization in case of SEV will try to mark the
-"__bss_decrypted" section's encryption state via early page encryption
-status hypercalls. 
+> 
+>>>> +
+>>>> +	target_svm->snp_vmsa_gpa = 0;
+>>>> +	target_svm->snp_vmsa_update_on_init = false;
+>>>> +
+>>>> +	/* Interrupt injection mode shouldn't change for AP creation */
+>>>> +	if (request < SVM_VMGEXIT_AP_DESTROY) {
+>>>> +		u64 sev_features;
+>>>> +
+>>>> +		sev_features = vcpu->arch.regs[VCPU_REGS_RAX];
+>>>> +		sev_features ^= sev->sev_features;
+>>>> +		if (sev_features & SVM_SEV_FEATURES_INT_INJ_MODES) {
+>>>
+>>> Why is only INT_INJ_MODES checked?  The new comment in sev_es_sync_vmsa() explicitly
+>>> states that sev_features are the same for all vCPUs, but that's not enforced here.
+>>> At a bare minimum I would expect this to sanity check SVM_SEV_FEATURES_SNP_ACTIVE.
+>>
+>> That's because we can't really enforce it. The SEV_FEATURES value is part
+>> of the VMSA, of which the hypervisor has no insight into (its encrypted).
+>>
+>> The interrupt injection mechanism was specifically requested as a sanity
+>> check type of thing during the GHCB review, and as there were no
+>> objections, it was added (see the end of section 4.1.9).
+>>
+>> I can definitely add the check for the SNP_ACTIVE bit, but it isn't required.
+> 
+> I'm confused.  If we've no insight into what the guest is actually using, what's
+> the point of the INT_INJ_MODES check?
 
-Now, apply_alternatives() is called much later when setup_arch() calls
-check_bugs(), so we do need some kind of an early, pre-alternatives
-hypercall interface. 
-
-Other cases of pre-alternatives hypercalls include marking per-cpu GHCB
-pages as decrypted on SEV-ES and per-cpu apf_reason, steal_time and
-kvm_apic_eoi as decrypted for SEV generally.
-
-Actually using this kvm_sev_hypercall3() function may be abstracted
-quite nicely. All these early hypercalls are made through
-early_set_memory_XX() interfaces, which in turn invoke pv_ops. 
-
-Now, pv_ops can have this SEV/TDX specific abstractions.
-
-Currently, pv_ops.mmu.notify_page_enc_status_changed() callback is setup
-to kvm_sev_hypercall3() in case of SEV.
-
-Similarly, in case of TDX, pv_ops.mmu.notify_page_enc_status_changed() can
-be setup to a TDX specific callback. 
-
-Therefore, this early_set_memory_XX() -> pv_ops.mmu.notify_page_enc_status_changed()
-is a generic interface and can easily have SEV, TDX and any other future platform
-specific abstractions added to it.
+As I said, it was requested and there were no objections, all with the 
+knowledge that the guest could "lie" about it. Maybe it is just to ensure 
+the proper behavior of an "honest" guest? It makes for a small bit of 
+extra work, but, yes, isn't very useful from a KVM perspective.
 
 Thanks,
-Ashish
+Tom
 
-> > > This helps avoiding Intel CPUs taking unnecessary #UDs and also avoid using
-> > > hacks as below.
-> > > 
-> > > TDX code can introduce similar private hypercall interface for their early
-> > > para virtualized kernel code if required.
-> > 
-> > Actually, if we are using this kvm_sev_hypercall3() and not modifying
-> > KVM_HYPERCALL() then Intel CPUs avoid unnecessary #UDs and TDX code does not
-> > need any new interface. Only early AMD/SEV specific code will use this
-> > kvm_sev_hypercall3() interface. TDX code will always work with
-> > KVM_HYPERCALL().
 > 
-> Even if VMCALL is the default, i.e. not patched in, VMCALL it will #VE on TDX.
-> In other words, VMCALL isn't really any better than VMMCALL, TDX will need to do
-> something clever either way.
