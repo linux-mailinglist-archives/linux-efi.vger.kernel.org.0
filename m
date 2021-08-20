@@ -2,191 +2,241 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 260BC3F2551
-	for <lists+linux-efi@lfdr.de>; Fri, 20 Aug 2021 05:29:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 793343F2835
+	for <lists+linux-efi@lfdr.de>; Fri, 20 Aug 2021 10:17:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238287AbhHTDaS (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 19 Aug 2021 23:30:18 -0400
-Received: from mail-dm3nam07on2071.outbound.protection.outlook.com ([40.107.95.71]:9312
-        "EHLO NAM02-DM3-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S238210AbhHTDaR (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Thu, 19 Aug 2021 23:30:17 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=jKzkWn7e21bYs7sznyKHYKJiEmQerUUFv2+s3rwuiOhIwXDP+p851C3Yhv7xbRLLWZ/vAjjhtvlY1UyXFO2EWbg4l2ODgbovSy6jHCgtZoAunFukj4se7O1eXOnWvfFRT30bOFpwPidTGc3rjhzRxjR/KsELJ8eSs/z3ooAAoKh5kOsPQ4euh/by9/jWQ9Oeksbea88anYvnok1PrcPkuio08AprBzi3c18AZli2E+8neovpRftlcp1g66I3PF/zIjMcp0LqdvkfUEXDYQC34JsAvIZbisVxNFnHKP2JG8Avj/9tfnbWEB24q72c8c23jpbyXYxW8WT6749uHBVuJw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=LXUPqze+r+yg/gdTEKBolBIBQCuJcQGrjS4gBt9oHBw=;
- b=c2EZSz18hKkSu96xwdtVh6nZEQYO1l40Vcf6VSSo9ZWxbXkT/y5eboeEx2jGIkVut9K6PnYiu7WRvIPNidraThQ+EjaiTv34bbSyU+lPNaZoy6zxQ8zJjwDxbyhdCaOVK7GySHu3iiUdrX/Z+uqpYdboWHm6w2EaPzI/MpzBFqCVPaSF5Kno9GcPkshwd4Uq37Q2teMPkuwjycS1sM7RQjd2q52zaQE6A9a5R32Jbn9PN9vSvwv41M0v/v7GwoczQeEMxa2187PjMA+zU4nwDonKmFHdFyRbTwt+hgpAo4LFTtw1m3JTXskKlt7IaE3TXDakhcedP6GeXhnQWFAglA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=LXUPqze+r+yg/gdTEKBolBIBQCuJcQGrjS4gBt9oHBw=;
- b=Ena1QRYMb8Jfl70HoNr0udUaAGCZ+m9duEkCTwiUpoWxqFKmX6l+tXOrfZW147M601xJLSwwWP7BXyB51cNahBwz8yGPgDIynvsNC2Okj8NHrTzDVNv5ZHuYoi8XcEWCpAEwnJps3uITuM1FOq4APAZnx19tuDl3ojyHeD9Ty5A=
-Authentication-Results: alien8.de; dkim=none (message not signed)
- header.d=none;alien8.de; dmarc=none action=none header.from=amd.com;
-Received: from CH2PR12MB4133.namprd12.prod.outlook.com (2603:10b6:610:7a::13)
- by CH2PR12MB4005.namprd12.prod.outlook.com (2603:10b6:610:22::32) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4436.19; Fri, 20 Aug
- 2021 03:29:38 +0000
-Received: from CH2PR12MB4133.namprd12.prod.outlook.com
- ([fe80::d19e:b657:5259:24d0]) by CH2PR12MB4133.namprd12.prod.outlook.com
- ([fe80::d19e:b657:5259:24d0%8]) with mapi id 15.20.4436.019; Fri, 20 Aug 2021
- 03:29:38 +0000
-Date:   Thu, 19 Aug 2021 22:29:08 -0500
-From:   Michael Roth <michael.roth@amd.com>
-To:     Borislav Petkov <bp@alien8.de>
-Cc:     Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org,
-        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        linux-coco@lists.linux.dev, linux-mm@kvack.org,
-        linux-crypto@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Vitaly Kuznetsov <vkuznets@redhat.com>,
-        Wanpeng Li <wanpengli@tencent.com>,
-        Jim Mattson <jmattson@google.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        David Rientjes <rientjes@google.com>,
-        Dov Murik <dovmurik@linux.ibm.com>,
-        Tobin Feldman-Fitzthum <tobin@ibm.com>,
-        Vlastimil Babka <vbabka@suse.cz>, tony.luck@intel.com,
-        brijesh.ksingh@gmail.com
-Subject: Re: [PATCH Part1 RFC v4 22/36] x86/sev: move MSR-based VMGEXITs for
- CPUID to helper
-Message-ID: <20210820032908.vqnptvjqnp7xxa6i@amd.com>
-References: <20210707181506.30489-1-brijesh.singh@amd.com>
- <20210707181506.30489-23-brijesh.singh@amd.com>
- <YR4oP+PDnmJbvfKR@zn.tnic>
- <20210819153741.h6yloeihz5vl6hvu@amd.com>
- <YR6K+BzCB9Tokw85@zn.tnic>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YR6K+BzCB9Tokw85@zn.tnic>
-X-ClientProxiedBy: SN7PR04CA0016.namprd04.prod.outlook.com
- (2603:10b6:806:f2::21) To CH2PR12MB4133.namprd12.prod.outlook.com
- (2603:10b6:610:7a::13)
+        id S231757AbhHTIR6 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 20 Aug 2021 04:17:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33402 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231921AbhHTIRt (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 20 Aug 2021 04:17:49 -0400
+Received: from mail-vk1-xa31.google.com (mail-vk1-xa31.google.com [IPv6:2607:f8b0:4864:20::a31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42815C061760
+        for <linux-efi@vger.kernel.org>; Fri, 20 Aug 2021 01:17:12 -0700 (PDT)
+Received: by mail-vk1-xa31.google.com with SMTP id bb10so2260663vkb.9
+        for <linux-efi@vger.kernel.org>; Fri, 20 Aug 2021 01:17:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=y5t+2Oo5yym0OJ3etipsjRBTyv7Vn0GjQI8wMxvms5k=;
+        b=mxFXngFqSxmVJjIcBJy/PJZ2TZWD4D5JgMEkMuzRL0oGlZFRZ9zL5SwmdMPPbE/vma
+         1AO5vPktkKK5CNZ9usJdbW1SXZqYKUV1u08LPaDbkMtiuPINpDQkHiReRpZPx7D0EbQY
+         AU1ZC/2cX+ZExtSdZHMcBho5essfmpQhJC/a9JQNHFoGhaM1IcsP0fRD3H1fbSYqbkwd
+         Pq3YFwLf1qU9W9gP57vSn2z+//1jkgMXqbL83W5GWBPSxtZGnfCH3mzyC2cnjdPojhiZ
+         yQTL5cY980LMxa4KnuBnXmE6o72yA6dNoXoeceG9wooQSrV5DCP//ide8LOdfVNJdLoG
+         quog==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=y5t+2Oo5yym0OJ3etipsjRBTyv7Vn0GjQI8wMxvms5k=;
+        b=BAUqVyjlS8DVDhl8lavYvfef7tSQDH71iAoMUJ3ITTQlxpAijS6cPtS/lVOZVsp9z3
+         pdTXpuHAndWMAj7DZ9m9DT76SnQV3CLUZfE/Y/FuNP8Sw8RbxBocLUMPUxEef1BSDNom
+         zQSHqeNsASe9Ipz78Eca99f0WyL9LBSGzsydccV1Q6eepeaFIKNuLGt6Ew6CYlyZhPvs
+         njEPOktzFuOgI79JXVmtB/MgCXqS7JG6cN1EGio8qdRSzk/LxOZ6+4nqAtlc++gr9HCJ
+         Fl+o9LO3NWnw1KNTSFpEMKKvVg3Xg2w1yHHXZaKxFMhMCnReQD4eB1pAJBtUcMQCkHKt
+         siLg==
+X-Gm-Message-State: AOAM531v8Cr73LRhO14r+n1DUUZ9QHhMxHKjUmFPANeQp8DR02SZLq5C
+        gZuq+ccD0FnXQMVibR2ckY2uwzYlZTk/suiLRnRF9A==
+X-Google-Smtp-Source: ABdhPJwnXcF5jSuimmLI3XIw81d0SDbFuLoIO4o4UILtPyGEj2uz+uCsImanEERqS9WiyHwD5N9GEei+p0qvMLjeqbs=
+X-Received: by 2002:a1f:a555:: with SMTP id o82mr14607010vke.8.1629447430991;
+ Fri, 20 Aug 2021 01:17:10 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from localhost (165.204.77.11) by SN7PR04CA0016.namprd04.prod.outlook.com (2603:10b6:806:f2::21) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4436.19 via Frontend Transport; Fri, 20 Aug 2021 03:29:37 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 7f45aa21-4942-47c4-cf5e-08d9638abcfa
-X-MS-TrafficTypeDiagnostic: CH2PR12MB4005:
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <CH2PR12MB4005F031409829FD4165592A95C19@CH2PR12MB4005.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:8273;
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: FQ9bAn8nniJgZcMM5XaZrH16TKMcYcqKCrhx1I2g9godVrW3EuGoQ+BqZFJAuLfIMDntdLCXCTJAWStUN1pxRbU3vPafuD9mQwr7GQyRJAbCauY+tdFSntQcoGXZW2aboPzgmA6NBoOLiPjS5N7VQL8UvxvqgzbuVZvXonnW+/SgSqNy/eqvwilWCbMpVyPRtAQGT5FCEfmROuVWDpG5LFNvfUyFFG0EYI1KkJkkRy6cclfTG6epnzVBt1/O9rDz22CF8KV5HQztyw2fr29XjUwqC//uQr0DBNU/pKT+FIeMF2WgR+esh+HoGfkCtQsMyInDN/mwVeIMRu/owHHG5+9yzOGbWCF8mFZ7vOpBnqoYH7b5KNVQlAmD1XP6E2jGj6M8qchrOybc6tMOpe1mHt3jquiuYNz6bvpavStjBydpfFeU71Ua+ZKtysdaGpVMyYF9eSV5tteTUtSUrIVjWmTyzjfRIC8cpfwbc+Wp/yoftGgTWbaU6NQEzfy4G1NfwvDE+L35eEaQQ2G7kM3pY6wYFy0OGIaKpyGD5mzpLBuxwiaH0/RlmqwDMUHOLOgo+UsnNH7ZIm2cZftDLVRMSHP3AK4VphDK3x8dswLvgoPlDQM4vJn7wQq9PfCP+zW5bTlHzSJ7Wf52FoLJxYTFoNfKH2CuAi9mNRG5Q+plAJWqkwTzPLGdqEI0iNju7ffQ2ydKpYOyxqjVg+sSPyJrP0+FuxHdLYA+7M1lhQNV25WXSluErveaqJAcltcio+VZMSAVGaE/zLJCPljC1ngcJQ==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB4133.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(346002)(366004)(396003)(39860400002)(376002)(136003)(4326008)(54906003)(83380400001)(5660300002)(966005)(36756003)(45080400002)(186003)(66476007)(52116002)(1076003)(6486002)(6496006)(66946007)(478600001)(6666004)(66556008)(26005)(7406005)(8936002)(6916009)(7416002)(8676002)(2616005)(956004)(38350700002)(44832011)(38100700002)(2906002)(86362001)(316002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?iiJszZvVpN9M72CUZsLRBlNJ9pkYpUeWZ9BhzyGi7hAQ/+9/x/8iqYp48H7S?=
- =?us-ascii?Q?oZxEVj6WhK9beFKKxZYMzpNO+dnx9HygVjUZI31YPcOjkhVIzwwZSfk6ZS/Z?=
- =?us-ascii?Q?QUxg20J5lsX8K1nE8rMykXsbaAACMm0/T9HiTrZTR/5w5CaoAfrK7TYHxEw8?=
- =?us-ascii?Q?Y8MHZIZoTjJbYRfcs2Y4djAv8/efeP3EtfVPe3peAQteAKtYfyx4eLie3h/o?=
- =?us-ascii?Q?PKpYNJ3JOcPBJJxG61gJJgoTR0Y4jM1KLp1lTW3XXCYCcSjfYmcFVOpAn4wX?=
- =?us-ascii?Q?FrT4VFmRNuyltVfH3W+9FVFPMybsVU54Z9KuTkA/PS1hs/aFOEg2iecm6PEM?=
- =?us-ascii?Q?ISIg+YLjZGd+YgCUF9Ek7Y+UML9L5xEUq56AU8WhTsf7NalM6SrP2tuq55FS?=
- =?us-ascii?Q?zSjFjzu3HqbilgHZ7TuBgJGZg6EMqitu9TD32BW1+5YRYxNfAJ8Q+IZtgak3?=
- =?us-ascii?Q?m3U5YIGrDld+L4yb0i6oIiikAAub6drVgySr7MtDLMzPkdVtnb01BDwYkf2G?=
- =?us-ascii?Q?EUhkhTiORKSk1TVcGAK27KpJDYcdMPBERjuONaZ+SSvNLJvBjehNL8/MQv3c?=
- =?us-ascii?Q?5CACuIwifodLzugik6LOxoy55FPVAKmd8MQ0qRbvHYlAGH7aBQJx0MoWaXFZ?=
- =?us-ascii?Q?4fPNNg75pEyLH1xsKjl6W+AVcj41mze+bKGPFTl8ggZSYZ9EACJBNmcp9Zxz?=
- =?us-ascii?Q?Vbxeso+wQ3+WsckvBRmIBANd58ni5FaJ+EZEJ1rfSTWJfgdfB7xPi1q6l/JR?=
- =?us-ascii?Q?5lX7V7kRqnO8zvfY3qadalHRfnX9AzbwFFl7w7wL8zyXiH0uxaic7LrRJQIz?=
- =?us-ascii?Q?24fB/CQjHSiVGO0xPcs1K640GU07eruqu5aKx1sE0OPkMEHHqv2zPQ/BLTR/?=
- =?us-ascii?Q?bESUvx2Wf6yV6Og3Ux9yFCtueoth50LnXzUFeHZ+gCn3xj0N3wLM4MgyciPD?=
- =?us-ascii?Q?GH84y22rywlCgXdfYJNlyXw7fYEqvwQ640lNk7ojWJdbRBtNmvObgbVYmmkZ?=
- =?us-ascii?Q?XnKVLbjOpLvo6xyTAC7Ruv2hKzcYTnBcV0Fe6wgcIu4uKicDWia0OS6Emuex?=
- =?us-ascii?Q?F+XNDGb+H+t7e9Xyv1QEK+5NxqqgMHg15C/egFb07lqSEw/6QvGt/lwSlAn9?=
- =?us-ascii?Q?DYmLTeUIVhouQtsjT6fXkeb68WNvuc72iFfcPfcul4TdqRoDsP3HxOOfushh?=
- =?us-ascii?Q?7smwqtx5OU9oLWe3rI2GpX3UzsDgLPyhxtaE7OMRb9SB60+LerBhOdPehTDZ?=
- =?us-ascii?Q?+VAum/8Ep9kRRdNeuUN8L3SBrENPxV8lcroFzZu3hfhwI7HHh4nh6jL444Ia?=
- =?us-ascii?Q?7JoAwBxKvMDXabZ8iufkyy7h?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7f45aa21-4942-47c4-cf5e-08d9638abcfa
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB4133.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Aug 2021 03:29:37.9434
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: QZ1JOVSa3Dzhx38JBWPw8lzWncJuwBbXwJleOXaaha5vmNHbgInbbAtKM+SQr++ZnyWhIGG8Sjo3P4JEyR9JsA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4005
+References: <20210818005547.14497-1-digetx@gmail.com> <20210818005547.14497-5-digetx@gmail.com>
+ <CAPDyKFqQbe4k-Sem436Fzsr6mbvwZr83VtEaEZTF8oWYoHHQwg@mail.gmail.com>
+ <YR0MrlxFLTpsR628@orome.fritz.box> <CAPDyKFpObGwWhnwDKG59wdt6Pr35DodogXbDjzPJGoshMD7piQ@mail.gmail.com>
+ <YR6SuVxJ37IoxyBF@orome.fritz.box>
+In-Reply-To: <YR6SuVxJ37IoxyBF@orome.fritz.box>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Fri, 20 Aug 2021 10:16:34 +0200
+Message-ID: <CAPDyKFoT3Qw47ecnZbhBtGNB=NruWW9VnKPEb+ST3ozX4H+-sA@mail.gmail.com>
+Subject: Re: [PATCH v5 4/5] mmc: sdhci-tegra: Implement alternative_gpt_sector()
+To:     Thierry Reding <thierry.reding@gmail.com>
+Cc:     Dmitry Osipenko <digetx@gmail.com>, Jens Axboe <axboe@kernel.dk>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>,
+        David Heidelberg <david@ixit.cz>,
+        Peter Geis <pgwipeout@gmail.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Christoph Hellwig <hch@infradead.org>,
+        Davidlohr Bueso <dave@stgolabs.net>,
+        Rob Herring <robh+dt@kernel.org>,
+        Ion Agorria <AG0RRIA@yahoo.com>,
+        Svyatoslav Ryhel <clamor95@gmail.com>,
+        linux-tegra <linux-tegra@vger.kernel.org>,
+        linux-block <linux-block@vger.kernel.org>,
+        linux-efi <linux-efi@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, Aug 19, 2021 at 06:46:48PM +0200, Borislav Petkov wrote:
-> On Thu, Aug 19, 2021 at 10:37:41AM -0500, Michael Roth wrote:
-> > That makes sense, but I think it helps in making sense of the security
-> > aspects of the code to know that sev_cpuid() would be fetching cpuid
-> > information from the hypervisor.
-> 
-> Why is it important for the callers to know where do we fetch the CPUID
-> info from?
-
-The select cases where we still fetch CPUID values from hypervisor in
-SNP need careful consideration, so for the purposes of auditing the code
-for security, or just noticing things in patches, I think it's important
-to make it clear what is the "normal" SNP case (not trusting hypervisor
-CPUID values) and what are exceptional cases (getting select values from
-hypervisor). If something got added in the future, I think something
-like:
-
-  +sev_cpuid_hv(0x8000001f, ...)
-
-would be more likely to raise eyebrows and get more scrutiny than:
-
-  +sev_cpuid(0x8000001f, ...)
-
-where it might get lost in the noise or mistaken as similar to
-sev_snp_cpuid().
-
-Maybe a bit contrived, and probably not a big deal in practice, but
-conveying the source it in the naming does seem at least seem slightly
-better than not doing so.
-
-> 
-> > "msr_proto" is meant to be an indicator that it will be using the GHCB
-> > MSR protocol to do it, but maybe just "_hyp" is enough to get the idea
-> > across? I use the convention elsewhere in the series as well.
+On Thu, 19 Aug 2021 at 19:19, Thierry Reding <thierry.reding@gmail.com> wrote:
+>
+> On Thu, Aug 19, 2021 at 03:20:57PM +0200, Ulf Hansson wrote:
+> > On Wed, 18 Aug 2021 at 15:35, Thierry Reding <thierry.reding@gmail.com> wrote:
+> > >
+> > > On Wed, Aug 18, 2021 at 11:55:05AM +0200, Ulf Hansson wrote:
+> > > > On Wed, 18 Aug 2021 at 02:57, Dmitry Osipenko <digetx@gmail.com> wrote:
+> > > > >
+> > > > > Tegra20/30/114/124 Android devices place GPT at a non-standard location.
+> > > > > Implement alternative_gpt_sector() callback of the MMC host ops which
+> > > > > specifies that GPT location for the partition scanner.
+> > > > >
+> > > > > Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
+> > > > > ---
+> > > > >  drivers/mmc/host/sdhci-tegra.c | 42 ++++++++++++++++++++++++++++++++++
+> > > > >  1 file changed, 42 insertions(+)
+> > > > >
+> > > > > diff --git a/drivers/mmc/host/sdhci-tegra.c b/drivers/mmc/host/sdhci-tegra.c
+> > > > > index 387ce9cdbd7c..24a713689d5b 100644
+> > > > > --- a/drivers/mmc/host/sdhci-tegra.c
+> > > > > +++ b/drivers/mmc/host/sdhci-tegra.c
+> > > > > @@ -116,6 +116,8 @@
+> > > > >   */
+> > > > >  #define NVQUIRK_HAS_TMCLK                              BIT(10)
+> > > > >
+> > > > > +#define NVQUIRK_HAS_ANDROID_GPT_SECTOR                 BIT(11)
+> > > > > +
+> > > > >  /* SDMMC CQE Base Address for Tegra Host Ver 4.1 and Higher */
+> > > > >  #define SDHCI_TEGRA_CQE_BASE_ADDR                      0xF000
+> > > > >
+> > > > > @@ -1361,6 +1363,7 @@ static const struct sdhci_tegra_soc_data soc_data_tegra20 = {
+> > > > >         .pdata = &sdhci_tegra20_pdata,
+> > > > >         .dma_mask = DMA_BIT_MASK(32),
+> > > > >         .nvquirks = NVQUIRK_FORCE_SDHCI_SPEC_200 |
+> > > > > +                   NVQUIRK_HAS_ANDROID_GPT_SECTOR |
+> > > > >                     NVQUIRK_ENABLE_BLOCK_GAP_DET,
+> > > > >  };
+> > > > >
+> > > > > @@ -1390,6 +1393,7 @@ static const struct sdhci_tegra_soc_data soc_data_tegra30 = {
+> > > > >         .nvquirks = NVQUIRK_ENABLE_SDHCI_SPEC_300 |
+> > > > >                     NVQUIRK_ENABLE_SDR50 |
+> > > > >                     NVQUIRK_ENABLE_SDR104 |
+> > > > > +                   NVQUIRK_HAS_ANDROID_GPT_SECTOR |
+> > > > >                     NVQUIRK_HAS_PADCALIB,
+> > > > >  };
+> > > > >
+> > > > > @@ -1422,6 +1426,7 @@ static const struct sdhci_pltfm_data sdhci_tegra114_pdata = {
+> > > > >  static const struct sdhci_tegra_soc_data soc_data_tegra114 = {
+> > > > >         .pdata = &sdhci_tegra114_pdata,
+> > > > >         .dma_mask = DMA_BIT_MASK(32),
+> > > > > +       .nvquirks = NVQUIRK_HAS_ANDROID_GPT_SECTOR,
+> > > > >  };
+> > > > >
+> > > > >  static const struct sdhci_pltfm_data sdhci_tegra124_pdata = {
+> > > > > @@ -1438,6 +1443,7 @@ static const struct sdhci_pltfm_data sdhci_tegra124_pdata = {
+> > > > >  static const struct sdhci_tegra_soc_data soc_data_tegra124 = {
+> > > > >         .pdata = &sdhci_tegra124_pdata,
+> > > > >         .dma_mask = DMA_BIT_MASK(34),
+> > > > > +       .nvquirks = NVQUIRK_HAS_ANDROID_GPT_SECTOR,
+> > > > >  };
+> > > > >
+> > > > >  static const struct sdhci_ops tegra210_sdhci_ops = {
+> > > > > @@ -1590,6 +1596,38 @@ static int sdhci_tegra_add_host(struct sdhci_host *host)
+> > > > >         return ret;
+> > > > >  }
+> > > > >
+> > > > > +static int sdhci_tegra_alternative_gpt_sector(struct mmc_card *card,
+> > > > > +                                             sector_t *gpt_sector)
+> > > > > +{
+> > > > > +       unsigned int boot_sectors_num;
+> > > > > +
+> > > > > +       /* filter out unrelated cards */
+> > > > > +       if (card->ext_csd.rev < 3 ||
+> > > > > +           !mmc_card_mmc(card) ||
+> > > > > +           !mmc_card_is_blockaddr(card) ||
+> > > > > +            mmc_card_is_removable(card->host))
+> > > > > +               return -ENOENT;
+> > > > > +
+> > > > > +       /*
+> > > > > +        * eMMC storage has two special boot partitions in addition to the
+> > > > > +        * main one.  NVIDIA's bootloader linearizes eMMC boot0->boot1->main
+> > > > > +        * accesses, this means that the partition table addresses are shifted
+> > > > > +        * by the size of boot partitions.  In accordance with the eMMC
+> > > > > +        * specification, the boot partition size is calculated as follows:
+> > > > > +        *
+> > > > > +        *      boot partition size = 128K byte x BOOT_SIZE_MULT
+> > > > > +        *
+> > > > > +        * Calculate number of sectors occupied by the both boot partitions.
+> > > > > +        */
+> > > > > +       boot_sectors_num = card->ext_csd.raw_boot_mult * SZ_128K /
+> > > > > +                          SZ_512 * MMC_NUM_BOOT_PARTITION;
+> > > > > +
+> > > > > +       /* Defined by NVIDIA and used by Android devices. */
+> > > > > +       *gpt_sector = card->ext_csd.sectors - boot_sectors_num - 1;
+> > > > > +
+> > > > > +       return 0;
+> > > > > +}
+> > > >
+> > > > I suggest you move this code into the mmc core/block layer instead (it
+> > > > better belongs there).
+> > > >
+> > > > Additionally, let's add a new host cap, MMC_CAP_ALTERNATIVE_GPT, to
+> > > > let the core know when it should use the code above.
+> > >
+> > > Couldn't a generic "alternative GPT" mean pretty much anything? As far
+> > > as I know this is very specific to a series of Tegra chips and firmware
+> > > running on them. On some of these devices you can even replace the OEM
+> > > firmware by something custom that's less quirky.
 > >
-> > So sev_cpuid_hyp() maybe?
-> 
-> sev_cpuid_hv() pls. We abbreviate the hypervisor as HV usually.
-
-Ah yes, much nicer. I've gone with this for v5 and adopted the
-convention in the rest of the code.
-
-> 
-> > In "enable SEV-SNP-validated CPUID in #VC handler", it does:
+> > Good point!
 > >
-> >   sev_snp_cpuid() -> sev_snp_cpuid_hyp(),
+> > Perhaps naming the cap MMC_CAP_TEGRA_GPT would make this more clear.
+>
+> Yeah, that sounds like a better name. Or if people are hung up on
+> "alternative", perhaps MMC_CAP_ALTERNATIVE_GPT_TEGRA.
+
+That works too. Dmitry can pick what he prefers.
+
+>
+> > > I'm not aware of anyone else employing this kind of quirk, so I don't
+> > > want anyone to get any ideas that this is a good thing. Putting it into
+> > > the core runs the risk of legitimizing this.
 > >
-> > which will call this with NULL e{a,b,c,d}x arguments in some cases. There
-> > are enough call-sites in sev_snp_cpuid() that it seemed worthwhile to
-> > add the guards so we wouldn't need to declare dummy variables for arguments.
-> 
-> Yah, saw that in the later patches.
-> 
-> Thx.
-> 
-> -- 
-> Regards/Gruss,
->     Boris.
-> 
-> https://nam11.safelinks.protection.outlook.com/?url=https%3A%2F%2Fpeople.kernel.org%2Ftglx%2Fnotes-about-netiquette&amp;data=04%7C01%7Cmichael.roth%40amd.com%7C6e23d0d9be7a4125d70008d96330de54%7C3dd8961fe4884e608e11a82d994e183d%7C0%7C0%7C637649883863838712%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C1000&amp;sdata=HaRdEA0P4%2FGzmTXYyVYhGCnDaQHR8rbJqf%2B0xTBPSt0%3D&amp;reserved=0
+> > I certainly don't want to legitimize this. But no matter what, that is
+> > exactly what we are doing, anyways.
+>
+> I think there's a difference between supporting a quirk and legitimizing
+> it. I certainly would hate for anyone to come across this "feature" and
+> then go: "Oh, this is neat, let's implement this on our new platform!".
+>
+> > In summary, I still prefer code to be put in their proper layers, and
+> > there aren't any host specific things going on here, except for
+> > parsing a compatible string.
+>
+> Fair enough. Perhaps if we put enough warnings in the comments
+> surrounding this and are vigilant enough during code review we can
+> prevent this from proliferating. Obviously, once somebody implements
+> this in their flash/boot stack, it can become difficult to change it,
+> so by the time we get to review the kernel bits it might already be
+> set in stone.
+
+Sure, good idea. Some recommendations in the form of comments in the
+code would be nice.
+
+>
+> Then again, like you hinted at already, once we support it, we support
+> it. So no real harm is done if anyone copies this.
+>
+> I don't exactly know how this came about in the first place, but it's
+> pretty exotic, so I doubt that anyone else will come up with something
+> like this anytime soon.
+
+Hopefully, but who knows. :-)
+
+In the end, I think a lot of these homebrewed flash layouts, have been
+invented to store bootbinararies in a robust way, tolerating data loss
+and sudden power failures.
+
+That said, let me take the opportunity to highlight the work
+ARM/Linaro is doing on EBBR [1]. We should have done that many years
+ago, but better late than never.
+
+Kind regards
+Uffe
+
+[1] EBBR - Embedded Base Boot Requirements
+https://github.com/ARM-software/ebbr
