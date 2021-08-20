@@ -2,30 +2,30 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5415E3F2F24
-	for <lists+linux-efi@lfdr.de>; Fri, 20 Aug 2021 17:23:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 666EF3F2F44
+	for <lists+linux-efi@lfdr.de>; Fri, 20 Aug 2021 17:24:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241142AbhHTPXc (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 20 Aug 2021 11:23:32 -0400
-Received: from mail-bn1nam07on2078.outbound.protection.outlook.com ([40.107.212.78]:42963
+        id S241242AbhHTPYx (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 20 Aug 2021 11:24:53 -0400
+Received: from mail-bn1nam07on2073.outbound.protection.outlook.com ([40.107.212.73]:11243
         "EHLO NAM02-BN1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S241379AbhHTPWj (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Fri, 20 Aug 2021 11:22:39 -0400
+        id S241492AbhHTPXN (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Fri, 20 Aug 2021 11:23:13 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=e3Baqv0uSDBin+SeHzykkDi8gh27Cax8Ts7bnB6JQJcYGFF2aO/s4cysmdEe5GwdXzOtISWEyoWVPszR9tcW2V2wUns1Ppl7icl91lES+vYr0kXbPDshntLnoNmlf20VLBQriTshdFX0F2yzX5DaMA8RHTAx1P4yFNTxpNHVksi0PDaLMiMvSQsvlsoYC3gmaW/vPYvxIPFdWHnXJYf2w6RtCgCRSymkOnSKToPR9x3pB1nuPSVuVACBurLMNWXk+1QxkrlmXLVm5rHgpiyAycuZHJ/DQ/P1MucwI7gqc+x1aQG+AznbOejvgQfIvJuQGecvpC9wxzeOSZhopCyOTw==
+ b=l7ZsPhGu/yduXLGZh4e3UviWjIwusEKsqf19Vfk4bgyt0VXn57y1/BbBpLzV6I5iNctejKO4pLkoQuefUqZy3DD9vFomiZHLswI9a/RmQRkoB+bPX0hIWocdatbfxDQ0jD0F3y5iTImwb5UdERLW2QikQnXyzJzWyPveX8IDbrioWrYrJ1nXqfLFBNuKd1Z6g93ni1ewZ+ymlztdgIv+pUDBEuOrcOLJ+2XPGxQly524da1aDWhVUZ82DYJuMAxXGGaO3v1d0VSo6boGU4eE5vy/4dQq6RnWFR6pPST9bx4Fy5xjmciaO4ld/EPylgAM2ocpXCq93tT41KRhed5cLQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=avLF6Udb91bbGGtykJCdLRsOgYGd8bNxvuZiGtuAHm8=;
- b=DyZONSZ9Svw1yu1ERK42IQPGFVHxPjIsTMR8s4E3LYNJkahadmhoyO4iQjn7QjGG5iLK9SrsDogifLd3gGJFMb9izNh4Aits2PAtMUwzLPx56dzxTVDaYSRoc0G8sqH4TqnMXlIIg1EFly3N4UJTg1xyPr5w3RrRUxNlinLg+JJ2esV3sg9x9sPa2vsgP4kna0Hpgj9MFqqBLZfAKkg+0kozo4MzqnyFpdbhSo0sU9K9w5B9FhRtPu1sH7d9MyGrUpIdj3usJndAO2eNc1fYNC0Yiq0jhudJ8IZ313jJOpDQRvJIrkRh1ldY8Av3q5Nuw4/g1aQq0kDv+SGay7f8fQ==
+ bh=TJcUNVlui0PHuiBwQIVI8DOA68ENcPTaKmWVAZOdWzI=;
+ b=eUyub166iVWGjMYn4LVZd/7wiD/4hXO4A/Ke9071VZswjGvZDWTLNym331kA6nLMc1AEritjx5f4Ikj1QIWNI2Pi2eXXTp5Ii2D1c5lrjedfXUvfiSptzyeNvP/7b99kcAFonN/d9yRFIlRhpLeP/wELw2wqBWioQs9GqFYNljXGrF3xjpIG3XZQLWkY6e87rCfiySllFp/GGj7L702IjMxizjSSKQSoeaA1uOwIRLK1JS7X4g5MmduyTNl0eS2vU70uwy+1yOn2oQuvbL4Uc1ygDK4jSt8Fqi+KFBcYQHSgH731ZKqxZr5bY7icwVYcvGdMqAukpIgnwX1uvXswqw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
  header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=avLF6Udb91bbGGtykJCdLRsOgYGd8bNxvuZiGtuAHm8=;
- b=nRQ3pHcDV/jGvTAV9eqMHvODGhRjVZ17389JWRtMF8zyiBBe3Plaau3BVN2GL0wbb70Wvc0xtN8RZWCsoiZ/duk+zzKPTfSWKg4uxemplIEuPIrUZ4B87FknkX48jShSSEug8j80bEJCvijIVMhmsFy3knTvBSXgK+erfxGjRo0=
+ bh=TJcUNVlui0PHuiBwQIVI8DOA68ENcPTaKmWVAZOdWzI=;
+ b=HeKZP3K8oRVsDiPupyO9EyIUgMcPWZzbBekA9YzATauX38NNkcjNPOXVRsYmy6hg1qlqq97xSldn2EqY5/b3ReD6HCxg+R7NoK3CF363dtyJ9JUdlJ70EbJ9Y7nBXGaJxI0cpTx3/Kxgfhjrm2h7xje2C4i487znq1SiLn6WWvI=
 Authentication-Results: kernel.org; dkim=none (message not signed)
  header.d=none;kernel.org; dmarc=none action=none header.from=amd.com;
 Received: from SN6PR12MB2718.namprd12.prod.outlook.com (2603:10b6:805:6f::22)
@@ -65,9 +65,9 @@ Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Andi Kleen <ak@linux.intel.com>, tony.luck@intel.com,
         marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com,
         Brijesh Singh <brijesh.singh@amd.com>
-Subject: [PATCH Part1 v5 30/38] x86/compressed/64: store Confidential Computing blob address in bootparams
-Date:   Fri, 20 Aug 2021 10:19:25 -0500
-Message-Id: <20210820151933.22401-31-brijesh.singh@amd.com>
+Subject: [PATCH Part1 v5 31/38] x86/compressed/64: add identity mapping for Confidential Computing blob
+Date:   Fri, 20 Aug 2021 10:19:26 -0500
+Message-Id: <20210820151933.22401-32-brijesh.singh@amd.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20210820151933.22401-1-brijesh.singh@amd.com>
 References: <20210820151933.22401-1-brijesh.singh@amd.com>
@@ -77,52 +77,52 @@ X-ClientProxiedBy: SA9P223CA0002.NAMP223.PROD.OUTLOOK.COM
  (2603:10b6:805:6f::22)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from sbrijesh-desktop.amd.com (165.204.77.1) by SA9P223CA0002.NAMP223.PROD.OUTLOOK.COM (2603:10b6:806:26::7) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4436.19 via Frontend Transport; Fri, 20 Aug 2021 15:21:25 +0000
+Received: from sbrijesh-desktop.amd.com (165.204.77.1) by SA9P223CA0002.NAMP223.PROD.OUTLOOK.COM (2603:10b6:806:26::7) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4436.19 via Frontend Transport; Fri, 20 Aug 2021 15:21:27 +0000
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 7b8cafd1-d7e9-47e1-309a-08d963ee2d63
+X-MS-Office365-Filtering-Correlation-Id: e5148727-bc2d-4958-a297-08d963ee2e47
 X-MS-TrafficTypeDiagnostic: SA0PR12MB4592:
 X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <SA0PR12MB4592039A179F3824619B6A70E5C19@SA0PR12MB4592.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:260;
+X-Microsoft-Antispam-PRVS: <SA0PR12MB4592F6F7376D331CBFB5C9C3E5C19@SA0PR12MB4592.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:8273;
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 32bI4iIsadWKzq408pzfPklxLjlVA0kSBL5QhBpO0kdeToOVU5r7lEgN3MATeBjLpcBSfVPh14n7K60SaZ1Dnlb3HpH2KuOgBz/nYVKBi1agDWfpwsOYVZDbdYpDWk3/xojFuRf0fPlxAf/TmH1eX+WEKcujQ+9xQKWxkNwp2RqtGQ+NYSwP7iMws1rlKbK9SaP7ToFvc+Gbztui1iHGdvBOm5/1fVngB/VoZOkCqLeYOrXAI8OwathAFSkv2lxaSOHvdz6daRdEAXGcdbtxwyrgX0JqLjFRZcM+V+u9ZReqAdYMi+CmFcMIX0/NXZ4pi12eYfO51gEDHSZtwHmLpMHWlf7jJa37mdDSHr1bo9GpiB0Rs/DNLDID9is1HLohliE2DY8o+3cY2x0gTh49Fy+T8CPOyud0WezoFBIiGDDT0KbzYPnh6wssPQUZ/L1mtIa98LJ9KJ+8680DDnIshk0zqtJrJaE1cDiHLuhl2fhtzaLp2cijtvYPRdaNiVcwWBnLzB3xz7eqZBVYd76PHSkkwCBLimL80yWQrZc/5yfKgbB05kZ/tNEag1xQjhPYOq9FKlLLVUT1DMGE5TmBI5U4FjEqp9kDaZ5Q6m5Jkqzh8SLTLGB+Z01Q0jjym+y5bAOKW7LaAb5qsqG1K9In7tcSurw+yTrSiCK0NNJl9o2hNhxmUAJsPEXDVJ5eAXkWiCjxzMxX4fdnyLG4y5wfHg==
+X-Microsoft-Antispam-Message-Info: acvn+3OuHEMfTGo6eD+UlUJf59Dpm2jRXtadfZKicqYXKvmGsjIAJOrXOjYN1sMEqOfTpY26EE5l+AVX4qh8LS259N346TpQ04sYXIK+Adzs0YUjdKYGm8ntCGfBHoUXp3z7IZxj0u2eL+Ebfv78CXNXJ58R1crBVjvZxqufWS4TX26Y+BxkcGmcFSsGaxlLk7o0oBdX01LPwFtfQyFXyWl/7O9vfhI3Jip4cv2Z8jIs8oLuqg+psjidj7rzR1MazxW9b7M/gFUlXBVj8i0q0QVLGH3Ktf3972bUdAlIUUNFZNupYgxv1uWxXdiLHtOrn14r6vooEN0K/yZL4UnzeBsg/JJEFCcK9Tilietzvk3t9KfauDSUk/UKOeVnwER4K8TzUz9QlOsBACR04Z+M6UywjtIFFvtFWIgYowJzvSN+7kuqRHlJ+AMgYbPY9/TeaEnAvLCUfiFPxWLdhQePoqJK7jVq0OpALoiz9IYBb5kPcv/dSNINM2vXRoCxGVUr/LEvZ2aSxKHxFiEHAP/plmBgiXFPt196+LVasBzRMHNcFJ7Eny0b+7nxaJLI4/A3OV6JRykTSeOwfxNo0kEqd0fxJKA3KTpzVapWNj09CRbASmyVQdmVWd/+3zSRlTZ3XwI5LbiIK4Bmf72L4GwfpKVlNJS7df67oG0QcqUGWuD5HAV/LQXrgw1sMMxQabwj8vOmd/6jt0+FK9fEzmV1hw==
 X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR12MB2718.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(346002)(136003)(396003)(39860400002)(366004)(376002)(66556008)(6486002)(54906003)(66946007)(1076003)(66476007)(316002)(38100700002)(7406005)(7416002)(38350700002)(8676002)(4326008)(956004)(2616005)(8936002)(26005)(36756003)(44832011)(86362001)(186003)(5660300002)(52116002)(83380400001)(2906002)(478600001)(7696005);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?4wv8xktt9t2W8zIhcO9A0MrtRksclycPmi2sxp3DdEhFsq32fIzlyRbY+613?=
- =?us-ascii?Q?SQgv8dLOH2a+/U835ZUPMyfNiZT8LMkq47Nk5ABZR0sewi7Xu1/t2pVfKL5L?=
- =?us-ascii?Q?wqOJBj7gDd5HzakimxC7kcRSbL1Eqf3bsYdptLcgSd4gU0ngvG0/G86qTz1Q?=
- =?us-ascii?Q?WV6hwspbMAH19L4xws9tkB9xPzk3ZyNyxSEs8xz5kHTgMbn1oWbhvBh16+nG?=
- =?us-ascii?Q?xjpvUzcoz9EjKiCW42t8H2jikRv84G/EnvoBcgnfwDivfMN5lTCzoIuxh84Y?=
- =?us-ascii?Q?kSRTcYiqKK6FoFlg+6wpWfVboy9g7Pqtrlamfooc6xZz0Gk5ErONq0fhuy1D?=
- =?us-ascii?Q?uBKwJigQn/D0ZCTOGMASjJXssbjwq1makAZak61WpF0BLbA/R4QKQlqaHER7?=
- =?us-ascii?Q?8C7tU4H7DmPGg5KcIj1tX1BK0xClIBRpbL1TF9g42e5woXY0MkJjn/dAs/CX?=
- =?us-ascii?Q?0gvPMVs6ZI/BmrpqgLXvnhlWFan5dzhvvaV7BiY3eWYLeKgoowd8JN/BaGUV?=
- =?us-ascii?Q?rWuB6cISPl6naBSonth4pgE8mcZPcGf+xpRot6uuQX+ZUkACbzvzmBAOI+9+?=
- =?us-ascii?Q?S2nXmzO8MB7y4H2PMemeKjcQ304Ilwk3OHczx+cXQd4AM5xKmXN3UO17XDHI?=
- =?us-ascii?Q?tcx9iOahDh9bi1ad4uxjWDIiCfOo0IAz/eldW2k/EFxGo3Sn+G3GGq+klUGp?=
- =?us-ascii?Q?JAPkv3gk2bvO1DsFBSzllkZ89zmSIAWm4k4BuRLo2l/jwytKcsdT09Df9CII?=
- =?us-ascii?Q?4Tej7uPoWrHWcAoOm+ge8tvqZaE1oUb8/1D/x+tdJ4WnduUGu8ZZ9+Ryq3mI?=
- =?us-ascii?Q?xL1YybVxUDBQdDJ6kYFIMcp4P0QpAiIN5SUirfUHfLZtKQdPQ7IQM7zzoUnc?=
- =?us-ascii?Q?NTcUmE+X7M3wGLmMgzq1bkAIpim+83tySKm1/YjCwkWnGR8s3/LPDnyFUmKm?=
- =?us-ascii?Q?We5zHRMhVl0wjCH00/Z2XSoF9QNd3NPqvp/Vbr2relXcWH/ynbFU6wl1g8gP?=
- =?us-ascii?Q?chIsZV1zCi42EWQ1pFhm5jkRqQKiYMk4cNrv+H6Vr0lFWd0zpgTRBPJskPww?=
- =?us-ascii?Q?x8wH4t30hYM3h86y0ovg65M3Y/qMo2CR/jShjXyC5AOCBcyKktuRq20hmy0Z?=
- =?us-ascii?Q?RdJohqqZz2b5wf4squfFrnSe+fv487zMQVavH552A19PM6mEO/bjlHCpkZ0l?=
- =?us-ascii?Q?Yq9XZmIAqxiSUEC4MmbrDv3CuitazKC107FEoDSoECyKWlbfqCqet+dFu1vi?=
- =?us-ascii?Q?jihVdwRp0Kn7FLSbQsZMZGF/6tDZKOgpTZB9xYVE5FfjSBa9IiBqxjF37RTY?=
- =?us-ascii?Q?mPYMekvY6FIqpPQZomqojYCl?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?6uZVRoR8VS+T/QrT3D9ljSbiTp5XXkKgR4HQqwQ/ekkN/8mbvHhf5gSyofbW?=
+ =?us-ascii?Q?lifANB2NWJbWR2lv97wjcLJxTVHfX7gWEYP8/welVITUK/LZM3G+oljkK3RN?=
+ =?us-ascii?Q?E4mF7QY4oUrfUYTliB2sozqhJVjVCr3JK39yTp1LQ61oq6HzKOv8dyTmD9kh?=
+ =?us-ascii?Q?m3wmh1Y5ikpb4ADpkL9aRr54ReaJ9otM6i5ZLly7xecZpx1UYCmRuYBoO+a0?=
+ =?us-ascii?Q?6ou6OZorzPnuYUGbEDRqpuhQ0tTQCTDzhxbjUqjIa9iXjSGV9eLugqrziOJL?=
+ =?us-ascii?Q?ZZcJIXcYPK2Jk2ZcEffbapcw+7RXu0OBb/UaR+m+sGedEEkq9I3SpoKGr+UD?=
+ =?us-ascii?Q?nZxF94/Y0soDOtN3mEWG06BHb0+r8G13j4Lry+eUMF85OY0wpyHlJuZWuJrK?=
+ =?us-ascii?Q?vD+Dg7D+l00x9qNM3Sr3ji0bfwSb2xkbgmv8BqU13+hDOLsyNYtBTWF7pLbe?=
+ =?us-ascii?Q?KTpxLiykZTJQL/6VLd+z33IXW9hTui5g7Xivgg9ggE9NepNy3cwiuQlWUVJ2?=
+ =?us-ascii?Q?r4Fl4Yz1liC0iHnA8ZsfJrNw6IFY4/Zce1yIdm5mP+mBk0bYP/W5gsfW4U6e?=
+ =?us-ascii?Q?E6HzvopoMcwsjY5O9NJZQcnRftCIFktmLjUdtAJNcbtZRuM7Qh2mBmwjSPw5?=
+ =?us-ascii?Q?O1f2v1sSlAG7LPs6erKu9/7RjnxiDjGNddyYDdZA+GllXTdO2UEMEh3hUubP?=
+ =?us-ascii?Q?7/NlRKhBkU74bZ70h1UNPyvM3Y9PCWi1sFRcaF2rsiW+hZ8zOeNkCBICBKbj?=
+ =?us-ascii?Q?KR8910FVrImeJb+G7/q5zVQdz5Dc6edhRUhQexoEwD7fmh6k8kAfSDrV1Bgz?=
+ =?us-ascii?Q?xGFqX2WGIsjjfkwGPtzIJURipbPzO75KU/Hbdg2KmquGYc46wXjLWAQmAccB?=
+ =?us-ascii?Q?K4+RbQEYLB8ssmEb60hMbxzHYDhcnoCjTSU6Ax608x1EbNQGpYhM2HzeQYYQ?=
+ =?us-ascii?Q?quEWz9WsRF3mHFsGb+tIdrfUCpsRRQMluUNF/EiXJ025diJgs/RkgoxoJyJ6?=
+ =?us-ascii?Q?ymtrIqh7FQCOlcqy8LGzBNWkyPQ10BL9XuabtBrCX2aoGusqFs6xQyb3b0RP?=
+ =?us-ascii?Q?KS/jpkhmjeuWSq0LqicqWzsCQsQyky3u83/qBiStDlt8XbVQJ4H1bfuKU9/p?=
+ =?us-ascii?Q?psR7cvk/zIRf+UrKlY5/g5yoeqgmV6BcKhn2yyGSmow1k6MgbvHXkBnDWFWa?=
+ =?us-ascii?Q?8WMzr77rjkK+3tZFLNGXx21tpJ3I/UxFBkdEcpu542VNdPAFqSvPvdYrrESP?=
+ =?us-ascii?Q?eIqzZZD7pcp8mHtnEEiDYJ2G42/oXsNAPXwgdvLzPex/LtseMaW1LJEl0gOl?=
+ =?us-ascii?Q?yE8qAlL3d+qafNMVJpMtlkvn?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7b8cafd1-d7e9-47e1-309a-08d963ee2d63
+X-MS-Exchange-CrossTenant-Network-Message-Id: e5148727-bc2d-4958-a297-08d963ee2e47
 X-MS-Exchange-CrossTenant-AuthSource: SN6PR12MB2718.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Aug 2021 15:21:26.6166
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Aug 2021 15:21:28.1277
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: rLhalUd0y6j0oBaPiHrCRGSXUqCeArOsRgF6/sos9F9+q+g5uywnq1M5JAcM/vzDeNc//HD73plt5HBhFHPB8A==
+X-MS-Exchange-CrossTenant-UserPrincipalName: bRdM5PCCzWOQrDO+4j9/nA+CDoDbwQjWXXvKj2RCLpxklLm/jck35oXVWftc8pAjSLBm35Z+9lZMBB9wSyjf6g==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB4592
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
@@ -130,109 +130,93 @@ X-Mailing-List: linux-efi@vger.kernel.org
 
 From: Michael Roth <michael.roth@amd.com>
 
-When the Confidential Computing blob is located by the boot/compressed
-kernel, store a pointer to it in bootparams->cc_blob_address to avoid
-the need for the run-time kernel to rescan the EFI config table to find
-it again.
-
-Since this function is also shared by the run-time kernel, this patch
-also adds the logic to make use of bootparams->cc_blob_address when it
-has been initialized.
+The run-time kernel will need to access the Confidential Computing
+blob very early in boot to access the CPUID table it points to. At that
+stage of boot it will be relying on the identity-mapped page table set
+up by boot/compressed kernel, so make sure we have both of them mapped
+in advance.
 
 Signed-off-by: Michael Roth <michael.roth@amd.com>
 Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
 ---
- arch/x86/kernel/sev-shared.c | 40 ++++++++++++++++++++++++++----------
- 1 file changed, 29 insertions(+), 11 deletions(-)
+ arch/x86/boot/compressed/ident_map_64.c | 18 ++++++++++++++++++
+ arch/x86/boot/compressed/sev.c          |  2 +-
+ arch/x86/include/asm/sev.h              |  6 ++++++
+ 3 files changed, 25 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/sev-shared.c b/arch/x86/kernel/sev-shared.c
-index 651980ddbd65..6f70ba293c5e 100644
---- a/arch/x86/kernel/sev-shared.c
-+++ b/arch/x86/kernel/sev-shared.c
-@@ -868,7 +868,6 @@ static enum es_result vc_handle_rdtsc(struct ghcb *ghcb,
- 	return ES_OK;
- }
+diff --git a/arch/x86/boot/compressed/ident_map_64.c b/arch/x86/boot/compressed/ident_map_64.c
+index 3cf7a7575f5c..54374e0f0257 100644
+--- a/arch/x86/boot/compressed/ident_map_64.c
++++ b/arch/x86/boot/compressed/ident_map_64.c
+@@ -37,6 +37,9 @@
+ #include <asm/setup.h>	/* For COMMAND_LINE_SIZE */
+ #undef _SETUP
  
--#ifdef BOOT_COMPRESSED
- static struct setup_data *get_cc_setup_data(struct boot_params *bp)
- {
- 	struct setup_data *hdr = (struct setup_data *)bp->hdr.setup_data;
-@@ -888,6 +887,16 @@ static struct setup_data *get_cc_setup_data(struct boot_params *bp)
-  *   1) Search for CC blob in the following order/precedence:
-  *      - via linux boot protocol / setup_data entry
-  *      - via EFI configuration table
-+ *   2) If found, initialize boot_params->cc_blob_address to point to the
-+ *      blob so that uncompressed kernel can easily access it during very
-+ *      early boot without the need to re-parse EFI config table
-+ *   3) Return a pointer to the CC blob, NULL otherwise.
-+ *
-+ * For run-time/uncompressed kernel:
-+ *
-+ *   1) Search for CC blob in the following order/precedence:
-+ *      - via linux boot protocol / setup_data entry
-+ *      - via boot_params->cc_blob_address
-  *   2) Return a pointer to the CC blob, NULL otherwise.
-  */
- static struct cc_blob_sev_info *sev_snp_probe_cc_blob(struct boot_params *bp)
-@@ -897,9 +906,11 @@ static struct cc_blob_sev_info *sev_snp_probe_cc_blob(struct boot_params *bp)
- 		struct setup_data header;
- 		u32 cc_blob_address;
- 	} *sd;
-+#ifdef __BOOT_COMPRESSED
- 	unsigned long conf_table_pa;
- 	unsigned int conf_table_len;
- 	bool efi_64;
-+#endif
- 
- 	/* Try to get CC blob via setup_data */
- 	sd = (struct setup_data_cc *)get_cc_setup_data(bp);
-@@ -908,29 +919,36 @@ static struct cc_blob_sev_info *sev_snp_probe_cc_blob(struct boot_params *bp)
- 		goto out_verify;
- 	}
- 
-+#ifdef __BOOT_COMPRESSED
- 	/* CC blob isn't in setup_data, see if it's in the EFI config table */
- 	if (!efi_get_conf_table(bp, &conf_table_pa, &conf_table_len, &efi_64))
- 		(void)efi_find_vendor_table(conf_table_pa, conf_table_len,
- 					    EFI_CC_BLOB_GUID, efi_64,
- 					    (unsigned long *)&cc_info);
-+#else
-+	/*
-+	 * CC blob isn't in setup_data, see if boot kernel passed it via
-+	 * boot_params.
-+	 */
-+	if (bp->cc_blob_address)
-+		cc_info = (struct cc_blob_sev_info *)(unsigned long)bp->cc_blob_address;
-+#endif
- 
- out_verify:
- 	/* CC blob should be either valid or not present. Fail otherwise. */
- 	if (cc_info && cc_info->magic != CC_BLOB_SEV_HDR_MAGIC)
- 		sev_es_terminate(1, GHCB_SNP_UNSUPPORTED);
- 
-+#ifdef __BOOT_COMPRESSED
-+	/*
-+	 * Pass run-time kernel a pointer to CC info via boot_params for easier
-+	 * access during early boot.
-+	 */
-+	bp->cc_blob_address = (u32)(unsigned long)cc_info;
-+#endif
++#define __BOOT_COMPRESSED
++#include <asm/sev.h> /* For sev_snp_active() + ConfidentialComputing blob */
 +
- 	return cc_info;
- }
--#else
--/*
-- * Probing for CC blob for run-time kernel will be enabled in a subsequent
-- * patch. For now we need to stub this out.
-- */
--static struct cc_blob_sev_info *sev_snp_probe_cc_blob(struct boot_params *bp)
--{
--	return NULL;
--}
--#endif
+ extern unsigned long get_cmd_line_ptr(void);
  
- /*
-  * Initial set up of CPUID table when running identity-mapped.
+ /* Used by PAGE_KERN* macros: */
+@@ -163,6 +166,21 @@ void initialize_identity_maps(void *rmode)
+ 	cmdline = get_cmd_line_ptr();
+ 	add_identity_map(cmdline, cmdline + COMMAND_LINE_SIZE);
+ 
++	/*
++	 * The ConfidentialComputing blob is used very early in uncompressed
++	 * kernel to find CPUID memory to handle cpuid instructions. Make sure
++	 * an identity-mapping exists so they can be accessed after switchover.
++	 */
++	if (sev_snp_enabled()) {
++		struct cc_blob_sev_info *cc_info =
++			(void *)(unsigned long)boot_params->cc_blob_address;
++
++		add_identity_map((unsigned long)cc_info,
++				 (unsigned long)cc_info + sizeof(*cc_info));
++		add_identity_map((unsigned long)cc_info->cpuid_phys,
++				 (unsigned long)cc_info->cpuid_phys + cc_info->cpuid_len);
++	}
++
+ 	/* Load the new page-table. */
+ 	sev_verify_cbit(top_level_pgt);
+ 	write_cr3(top_level_pgt);
+diff --git a/arch/x86/boot/compressed/sev.c b/arch/x86/boot/compressed/sev.c
+index 910bf5cf010e..d1ecba457350 100644
+--- a/arch/x86/boot/compressed/sev.c
++++ b/arch/x86/boot/compressed/sev.c
+@@ -123,7 +123,7 @@ static enum es_result vc_read_mem(struct es_em_ctxt *ctxt,
+ /* Include code for early handlers */
+ #include "../../kernel/sev-shared.c"
+ 
+-static inline bool sev_snp_enabled(void)
++bool sev_snp_enabled(void)
+ {
+ 	unsigned long low, high;
+ 
+diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
+index c73931548346..345740aa5559 100644
+--- a/arch/x86/include/asm/sev.h
++++ b/arch/x86/include/asm/sev.h
+@@ -127,6 +127,9 @@ void __init snp_prep_memory(unsigned long paddr, unsigned int sz, enum psc_op op
+ void snp_set_memory_shared(unsigned long vaddr, unsigned int npages);
+ void snp_set_memory_private(unsigned long vaddr, unsigned int npages);
+ void snp_set_wakeup_secondary_cpu(void);
++#ifdef __BOOT_COMPRESSED
++bool sev_snp_enabled(void);
++#endif /* __BOOT_COMPRESSED */
+ void sev_snp_cpuid_init(struct boot_params *bp);
+ #else
+ static inline void sev_es_ist_enter(struct pt_regs *regs) { }
+@@ -144,6 +147,9 @@ static inline void snp_set_memory_shared(unsigned long vaddr, unsigned int npage
+ static inline void snp_set_memory_private(unsigned long vaddr, unsigned int npages) { }
+ static inline void snp_set_wakeup_secondary_cpu(void) { }
+ static inline void sev_snp_cpuid_init(struct boot_params *bp) { }
++#ifdef __BOOT_COMPRESSED
++static inline bool sev_snp_enabled { return false; }
++#endif /*__BOOT_COMPRESSED */
+ #endif
+ 
+ #endif
 -- 
 2.17.1
 
