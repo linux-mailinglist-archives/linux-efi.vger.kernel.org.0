@@ -2,41 +2,41 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A76463F2F27
-	for <lists+linux-efi@lfdr.de>; Fri, 20 Aug 2021 17:23:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B8EDF3F2F48
+	for <lists+linux-efi@lfdr.de>; Fri, 20 Aug 2021 17:24:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241143AbhHTPXg (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 20 Aug 2021 11:23:36 -0400
-Received: from mail-dm6nam12on2061.outbound.protection.outlook.com ([40.107.243.61]:31073
+        id S241286AbhHTPZA (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 20 Aug 2021 11:25:00 -0400
+Received: from mail-dm6nam12on2072.outbound.protection.outlook.com ([40.107.243.72]:5249
         "EHLO NAM12-DM6-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S241293AbhHTPWp (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Fri, 20 Aug 2021 11:22:45 -0400
+        id S241250AbhHTPXU (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Fri, 20 Aug 2021 11:23:20 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=lPuBty+QUf/opknLzZpqEyr3zpP1KkDKZ9wRBGOGy/0Sk0z9fDfV6ADoeYNarVVEpM0CaW1ScHd4xdNBSXBPTiyixsXHQFOqavtrtKmMRfCAV7whnY7vxcSPgAQ2qMeM3t+6txOEv71cVGuBAcPCsWz+dGaJ6CLoDEDU4NuBK1qJuY3uJv48zkX9uAYuEhNvEEt86n1I0Bz2PjvknHWGlgt3KFRuqrk1DIdCrLmYMagfVvZtFV3nWcQB+1kPKDTRekrBo4T6MyPCUlCpnTpVbUTzDVi3S1IeNv+tx0PrW/SI66jVRgLRuuH8LkQzs9f5E2TSvHWtykCyYQ/SvxHTxg==
+ b=BEaYfhV6G9nMyIQgj1PEg8iaARZVrfeiQmL+LnypyPSoFbkzuXlrzqpRHgo7FqV6RCL2GEh61R3keYbLqobkm0yGiKfsJcvmt37xX0JxruHnQH8x/IRzzpHR7AM5sZdUulYPbIEcVQ5s4Dpp1eWBiqfjOTQkNZbuyIoOBswVou8YJJH5MgdT94f1LDWqtLj4W/Ahhqy5EaA0MJ+0/l5StbpO1c6AQ2bGR1h5iI1Dtctkagp8bhBOG5e+hkPdHRjZzfKne6JEpCE71h8jnhfKiIsF8avqF4cQNRjgK2nk6rykk65FspNmij45w8J/EGb9184Lbhz+/hgpvissgezINg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=H/+bHTo94EVVINGI1AA9OmGjpus5VFiLwPvPo3mcMXQ=;
- b=NfRz/jkBI6YEMEcjUzg45MLaNW7/BP685MsCri7YZJwYYHhyFLueP1Rpgxa7b/QvMqzBQHbyQnxcBfA6H9aE7CHCRYlCQjlLvXzYNsFxMefBPnuYHqWDV3H6zNWB6wMjry/OQHgLeNx72LFGF/M7Xfaenz67eGs/5zGCL1N0RTVZoz3QcaCPAx5IOWjKdv8Iy/9BvihbC71l0c0IqKQ2v+4nnFffHw/LPBiUF45u3WctLwx7PAFCGdDt/pLcY2E9G5Ctj+eSRhjPuYyaItMYFme/9NRP/aBOIUZHxxsWSWY8qPuQ2NiDfxcQ+Q+OJSPu3pRMrZ3GhECsRTcnPUSH2g==
+ bh=lqx/QsgOVB/SYDeLx4UhWZPPc6BLaGZV9MlEYf9LX/k=;
+ b=m8W9wAryG8qp8jJtFDPMzjzvhomwvjIrX0C+m7whopHEEukfjfwMyDr1hEcFKc0obKNWUD9apb1P/AJcAYa3SUCCeuImjHXXiDyEFdIrqREtbPtq0sGN2jC88n+ipT+XIY1i3Rz0sp05aCGFTqhJyH7NMYLCKSkwfr8XVMZ43DGBESEbcqLf+QDwlF4Axjhex+x+OReBDLpGf/ngn2vI/6HEkRGFEX2yrH3WBohbnfkHOI8Cwzo+WihAHXt2KlH/LLyHA/iuhRDHWCjSgxKGSoUygnS8WJY9Zu97oRgyxQzrA3TrgFke1KCMPolucQicTcMkvZOaQDPgmLQBg2AFuA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
  header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=H/+bHTo94EVVINGI1AA9OmGjpus5VFiLwPvPo3mcMXQ=;
- b=nGauTfhDo2gdmyPtyQzu5+P/W+Jo8gj0s1LmC94IaQCxJ3s9KQtFQ2PkDTESlKSM0rlUcIIAFCOXiB4Njn1WQjBEeS3dN/+F3XMQhKleWLMkpaAL3i4t6Qa90aHrw3vbcq780H2hH6QX50oGde6qpJYcjlpN3fFdbdaMRt81eao=
+ bh=lqx/QsgOVB/SYDeLx4UhWZPPc6BLaGZV9MlEYf9LX/k=;
+ b=nvlQV/qngjb/FiNfLdrD5gqoWVXNhmCGTz0fGL39hv0Mwb2yrEQaCglE+4rbbDZ9O9hw+J7VSLObbwXCHvSHfRPhlwp/jz9NiybvohIzviZC00S4gUR0luRSbo5EEbFF2p1fpQ4MNmfL6WG29fOD0rK327rN1o1Plc6frSX1ipc=
 Authentication-Results: kernel.org; dkim=none (message not signed)
  header.d=none;kernel.org; dmarc=none action=none header.from=amd.com;
 Received: from SN6PR12MB2718.namprd12.prod.outlook.com (2603:10b6:805:6f::22)
  by SN6PR12MB2637.namprd12.prod.outlook.com (2603:10b6:805:6b::23) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4415.21; Fri, 20 Aug
- 2021 15:22:00 +0000
+ 2021 15:22:04 +0000
 Received: from SN6PR12MB2718.namprd12.prod.outlook.com
  ([fe80::78b7:7336:d363:9be3]) by SN6PR12MB2718.namprd12.prod.outlook.com
  ([fe80::78b7:7336:d363:9be3%6]) with mapi id 15.20.4436.019; Fri, 20 Aug 2021
- 15:22:00 +0000
+ 15:22:04 +0000
 From:   Brijesh Singh <brijesh.singh@amd.com>
 To:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
         linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
@@ -65,9 +65,9 @@ Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Andi Kleen <ak@linux.intel.com>, tony.luck@intel.com,
         marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com,
         Brijesh Singh <brijesh.singh@amd.com>
-Subject: [PATCH Part1 v5 34/38] x86/sev: Add snp_msg_seqno() helper
-Date:   Fri, 20 Aug 2021 10:19:29 -0500
-Message-Id: <20210820151933.22401-35-brijesh.singh@amd.com>
+Subject: [PATCH Part1 v5 35/38] x86/sev: Register SNP guest request platform device
+Date:   Fri, 20 Aug 2021 10:19:30 -0500
+Message-Id: <20210820151933.22401-36-brijesh.singh@amd.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20210820151933.22401-1-brijesh.singh@amd.com>
 References: <20210820151933.22401-1-brijesh.singh@amd.com>
@@ -77,238 +77,185 @@ X-ClientProxiedBy: SA9P223CA0002.NAMP223.PROD.OUTLOOK.COM
  (2603:10b6:805:6f::22)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from sbrijesh-desktop.amd.com (165.204.77.1) by SA9P223CA0002.NAMP223.PROD.OUTLOOK.COM (2603:10b6:806:26::7) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4436.19 via Frontend Transport; Fri, 20 Aug 2021 15:21:30 +0000
+Received: from sbrijesh-desktop.amd.com (165.204.77.1) by SA9P223CA0002.NAMP223.PROD.OUTLOOK.COM (2603:10b6:806:26::7) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4436.19 via Frontend Transport; Fri, 20 Aug 2021 15:21:32 +0000
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 84a9fb13-c8b9-4cea-8b0f-08d963ee3088
+X-MS-Office365-Filtering-Correlation-Id: 219a4af7-401f-4b6e-cbb7-08d963ee3145
 X-MS-TrafficTypeDiagnostic: SN6PR12MB2637:
 X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <SN6PR12MB2637E4BF8ADDC07B54918136E5C19@SN6PR12MB2637.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
+X-Microsoft-Antispam-PRVS: <SN6PR12MB263766DBDD67C63DBDFC3D88E5C19@SN6PR12MB2637.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:7691;
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: TycLKnsnCjYjK31Z873lPi1LDMvTkrfsbSq25mQjVeYJ/hv/hkaIcBdZgYMtm38A5OLvL9pJls6Rj1WFjhV1HqYS1h5ynmfvJuf4f+3UZ/MBTiRkKoeuJHi1CRnfu1I+77Clymn1t73Ns0IYOkl/ljlCr7BQxuUgQZ8A/J84dE3ANRoSx96n2xJ88sXh+fRGwsTYCV8w8QkWgnC1iT5sfsGryVm7dhx3qzsZAlobRY0cYpeIHFoOLQo4pvLmsNLZsyDONx7avo+GEVYRgDjgKLJQ1Blm5Sgp2NxYESQctZLjg4ntTkDWxWpkBoI0EfdXC0zeNEdhQnr7VYQxe7pqw1rl+dHWGMwRDwrYLvrUkOBMrOZwCk6Vz6p096EPdF0iH3VrM6HQnj0dFYlBBC6FF0Vywlhs0qd7hIDQGwxRQ1yi2VCYNajOkO7pxufGO5x0oVAqxMbNQRmV4Ecme9tlY0rhB3TnLzrQOPCMtfykrdjxpl3LookBuCrDQFmUTrMNszih/PtapaflVpn2nm6VVA+ezSaNpaHuB5KllA7VELPiAVVTyVIDr/AOK/N8zIY7lKcLrFFtkP6h/8TjIzyIKYc55nD0uVgjgcXGXR+WUfj31zrbAcejzuZp+tkkNTJnJj466WbUJMkgrukknvwPvo0hj3F+1gG7LCCvSa7d9CMxoUBesRH+djqM413WhETyISrn/GxTKW5zdR/4xULHBQ==
+X-Microsoft-Antispam-Message-Info: Pi7s78NIG/pzWvI1T1hi+QQoBRH8jfA5VDRhufUJuIfPd2qltGzg07W2f3puqeAH0OEY7MBKvwe9LP+tIXRzeHja+AI7RXbc9AZ/wQzeEwzCbFPFf8IMVVn0+XmkRgEMsUy8/6iqKRChUBYXdxX56bfxU/QlJdD+d5UtO5Kn1GistUKbhx3dKhLbd4p1RI+xu8f4NXHHyhICERBYo1BhbEBrYDwsIrIrCF54r3MuiK79V3WfJdoHZaGZspClrA+UkCO2vs/JsSXNDrtQPp1yPImH4HNKAw6rUzIc7GUVT6jMu717VC/vZfY4tP+F1TJuYSxYeJdOMX89uOlk7rK4zgORyeGeKrmoU0MQdmYkX/6bbkDm22391mc3/LfBm7XegJLg5QUR/8udBn/V3eEIYJlfkFl5G3tDMopIBNHAMkqCgk62qsf8WrEQiRrrQLF4ZV+LLQYPxR9KRc5LQMOm7OyOS5sZHVnSUb5kib8z+Z5Id4KyFxu/1Y5E7B8XEMg4dtQkMGL6BY6IC5HEi+EvbOqT6rpPqykzFoEufiRWiP5492IpPM/GmhBdPM7HEpnw5OwaAFPqO6XhTAFPfHLIA80ZwXUNvcriIWMtq3QmGCMv1QIHqwLyZmHoemkOOih3dIRxLwCUR/M6SWQ+Zg7qmjE20+eQRr9SaHTRM3TBdTeGYGG3KmycVpkgGY6cvi1mL1YlmfD1pH/D2+c1Flc0eg==
 X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR12MB2718.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(366004)(396003)(136003)(346002)(376002)(39860400002)(36756003)(956004)(8936002)(2906002)(4326008)(52116002)(8676002)(83380400001)(2616005)(26005)(86362001)(7416002)(7406005)(186003)(66476007)(44832011)(38100700002)(54906003)(5660300002)(7696005)(38350700002)(1076003)(316002)(6486002)(66946007)(478600001)(66556008);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?QapVGBRQ9/8Kjy5pN2tNvrAE27q4BVH6/w/SDooAT4kkmNOMSrOAlNv0qquk?=
- =?us-ascii?Q?DUwGK3pblTLI3ZbPfAAGTGBhhkGMLUnCwPGUpHZnR4NgyTHg+JcTLRpXDjKM?=
- =?us-ascii?Q?Q2RzRyjzEaVIYLNAJJjT+DUo6Hm8iaYMuss0outWgr8dkYi2wwLM014MO/HH?=
- =?us-ascii?Q?4Uf7Ha7gJkw7zKVUN2tPwUoWc6ySFQYn0CkXxo8v+15t2L3Mev+KqQJ8qAoj?=
- =?us-ascii?Q?Axql+NtMDn/3JfsWtU7aIW4SL3MWKdCDnYDYzMJHgjM0UxPjIbF2TAYjLew8?=
- =?us-ascii?Q?dWLIOnnPTHk0SVHZC6KqYYOgTk1pJoFuGusXRX+35+Qe4wCACC5I+23e6UGi?=
- =?us-ascii?Q?/b4KZw87NEK1GdncJQedtvAG/5Pqy1FI9uG7fTKrXb81HTPTNyil2eF4NPxD?=
- =?us-ascii?Q?IU4lq1JQowNFJNc7psMvC+aEnl8XXoFYO9Dd58g4qv6VPj8mrpa3ExJVuk0A?=
- =?us-ascii?Q?lqaum6EEVsjoTq7QSxPp/cOMv3aEufiDw+xaGk8pktSkb44eHR6dAmS31Ge0?=
- =?us-ascii?Q?PriS2Acl2ZXCz6rD6pLZKjsMstAl1CvMXDun10MyE/vmwxenlZDUjg+6nJJY?=
- =?us-ascii?Q?cW3j1yMPw7Lg6yX/n7GnLQayVy0SmKuzAxeZ5mV2t6dTdRftLrEwZiAm4t4Z?=
- =?us-ascii?Q?k3fbfFWjXHcZS/42dlF1ufQRshDPTF738NC0H4aV105rc3ALRCCovbNBdyuA?=
- =?us-ascii?Q?LOYBCvnHkMgUi4RCzDRchEaaf7868Ckj/vAemaL7Jf1pk53/DLxp+h2MiFnn?=
- =?us-ascii?Q?/O+mOOq+PFlX45sgQpcn/WfLAxOqo/3Wadwv7Vtv+qNTS4Rrit2FnC5DV2Eu?=
- =?us-ascii?Q?PjiOn8LUevl2mnX4wFNJXvCkvfYWj34Uo2hrjSq+t16/tf3ve3wimhPJlU0L?=
- =?us-ascii?Q?zyCXaspe4eLSKKSQv0nd0LAMGDg0h5k6YFDeo/3JeL86m1K4ycxIhC1QkW8W?=
- =?us-ascii?Q?wf4b564bwgQVjkqc8uhaasoQUdJ1UxE85plt64wUg1lurNoxnauF8DEtz54M?=
- =?us-ascii?Q?rgD2/3lmFm2lUKOAs+pDHSd2CUEK9//GQuvuhU3crP9FzZA+WfQA8q/NDGPS?=
- =?us-ascii?Q?1NU7b4f1kwp5CHBQFz3To9ZFSC9cR5omHevhMr6o5dZel9WbW9UZFM8GNKaT?=
- =?us-ascii?Q?f25rml3lFCtupezdmZwIBMHtr5dPKRYKx3/9ssGyx3ZLb7cdW7Eq2+JOuLVP?=
- =?us-ascii?Q?Nc7ZWbdj30G2mqDw6fB6QIgTndCTfAeBgEfpZPEjk1CYdunsDUVpcQwJvsUS?=
- =?us-ascii?Q?yiZPT9WHLgVlFgDRvCRojretRpDUTEPx5+DVBtZs7ybsTN7JQpHxbhOky4Gq?=
- =?us-ascii?Q?hRUJlqEAwvTsep6g15AQTbOs?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?A6j9d4e+i/guQXwHWM9ybatHMzqpRWkdTPFeRHjlnkTSckvh5LGIckJtZPZq?=
+ =?us-ascii?Q?1H5u/8NO3jb/oJumIV92v1LgonZ+1Xq3H5fGZh75lVd6uJ+ndatUaHK7RdgE?=
+ =?us-ascii?Q?tcCHq9UfOoff/fEB8wDQfWDE6QcFMKHGp/xWv9KUS68JuXf3/I3+TVuBhIWH?=
+ =?us-ascii?Q?505jKd+4PMj1vWB7qTF+O9mRnkkK63YuQL+HAYB22TcQusw+wir12PI3/Sv5?=
+ =?us-ascii?Q?MaalAeR1ev7oApfqpaBilwDZRfROMnksZJagr0PSCNyZMiNSTc25k+XVdUxE?=
+ =?us-ascii?Q?7uquZAGtU4fJ7OX/Xvx6DVLINpF0IPVzCbQToLN+J2X+ws/29ADTqQPBTQxK?=
+ =?us-ascii?Q?9YKq1uSzu9fCtM/0hTdvTo10+VBKM7Vp758CgiQB0DPWmjG/PcFS2gqyRvrs?=
+ =?us-ascii?Q?gb0eSbocKgl2rkuVZTrBRjcD2dVbD+1xsNREVDulOWURBE/I4hSuYMfTf3MU?=
+ =?us-ascii?Q?+ALkI/z94uqW7+ksa1KFtLndBYCTUUNdo9FHOCtDMfyJrtCY5Z8xBSnxCdb7?=
+ =?us-ascii?Q?/s0tAJl2TZUD/Dw60VIf3VXtpqtIASqEv0lBGMoI4xFewACxkk+/WVtj+Gb1?=
+ =?us-ascii?Q?kzr3z/oO0BPoyhCsDJkF5z2INLadoqZRQS4+KGlYIUXd/vs2Enoh1NRp1AMu?=
+ =?us-ascii?Q?GcnFYqPdqG58IBn2i9DKyObG16YtUmIid89GQwFDOWdgyrVrGTWGeJIu/zzu?=
+ =?us-ascii?Q?74LtzIFG4RvORU/jLJ8suzcWQwrWHUzmoJ4JG15pMgz2yILNC2HyqxhC3r6u?=
+ =?us-ascii?Q?h7vHazktNZ0T7ZCrh3TKvlITs7ul7EO7H7lediGgOopI7CJ9RL3w0Y7qDyHB?=
+ =?us-ascii?Q?b6jrvzwErZUEHsQC8bFXTJfmQG0Vb+mHZgjo0vHqPHnEbz1BeUiBz2O0SjmQ?=
+ =?us-ascii?Q?6D4bTW+uv6UGfvJ+U0WkZt+V4VvslM0r3QuWKr/QLJ0qXhKN24zzybnKLt9W?=
+ =?us-ascii?Q?zx1LubNLJvl5x4uqfGhAr0igkzhmmvBm+TQmfdJfHWF4KqNToj9KnomLZNXf?=
+ =?us-ascii?Q?Z5DENMjo1V+78pofNuzjDgQ/d7VGESJCZF5WTS/nodXUIaBWIKgDYP9OkaAD?=
+ =?us-ascii?Q?gvkL6G+PdJUZNhaWGFY2EX159Wz6rAEudb2y4lDr6cZ/1Ve3h4KP08cyM1pj?=
+ =?us-ascii?Q?GYxz9kk+L0N1kJ0r6BQYSPe/zfzuXT3epWjGw53gBYK3EHlCwYZWRt7Fla7W?=
+ =?us-ascii?Q?us1cg9BjcxEwYsUD+3JnhPFFLZi2gz/oK6XGsut94H+dy+7KCHqowl7X9Opk?=
+ =?us-ascii?Q?PCF93Y18xKVP/C73L+nAOO860Z9Zp0NmhLcfklx/RHwZ+l2T2KvFkUzkS00e?=
+ =?us-ascii?Q?Y+7MFcLbO3sSodI7bxxFcnmq?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 84a9fb13-c8b9-4cea-8b0f-08d963ee3088
+X-MS-Exchange-CrossTenant-Network-Message-Id: 219a4af7-401f-4b6e-cbb7-08d963ee3145
 X-MS-Exchange-CrossTenant-AuthSource: SN6PR12MB2718.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Aug 2021 15:21:31.8856
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Aug 2021 15:21:33.1458
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: uHeRh0fpplqu0oiDL/wnPDaNA3qClCfrOuyyrjh0cAarQF3jtJBk9Fx1rCYj81phl0L0JOlT3lEc9cuFryg+/g==
+X-MS-Exchange-CrossTenant-UserPrincipalName: nJF8N1+1MzNPZLzNfNlZUJnlxb7hSFQnqPI1lrsLyt3+ICg/cWUrSojnlaAPzC9hBj6LYZci2vBduMuNLPFzsQ==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN6PR12MB2637
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The SNP guest request message header contains a message count. The
-message count is used while building the IV. The PSP firmware increments
-the message count by 1, and expects that next message will be using the
-incremented count. The snp_msg_seqno() helper will be used by driver to
-get the message sequence counter used in the request message header,
-and it will be automatically incremented after the request is successful.
-The incremented value is saved in the secrets page so that the kexec'ed
-kernel knows from where to begin.
+Version 2 of GHCB specification provides NAEs that can be used by the SNP
+guest to communicate with the PSP without risk from a malicious hypervisor
+who wishes to read, alter, drop or replay the messages sent.
+
+In order to communicate with the PSP, the guest need to locate the secrets
+page inserted by the hypervisor during the SEV-SNP guest launch. The
+secrets page contains the communication keys used to send and receive the
+encrypted messages between the guest and the PSP. The secrets page location
+is passed through the setup_data.
+
+Create a platform device that the SNP guest driver can bind to get the
+platform resources such as encryption key and message id to use to
+communicate with the PSP. The SNP guest driver can provide userspace
+interface to get the attestation report, key derivation, extended
+attestation report etc.
 
 Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
 ---
- arch/x86/kernel/sev.c     | 79 +++++++++++++++++++++++++++++++++++++++
- include/linux/sev-guest.h | 37 ++++++++++++++++++
- 2 files changed, 116 insertions(+)
+ arch/x86/kernel/sev.c     | 68 +++++++++++++++++++++++++++++++++++++++
+ include/linux/sev-guest.h |  5 +++
+ 2 files changed, 73 insertions(+)
 
 diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
-index 319a40fc57ce..f42cd5a8e7bb 100644
+index f42cd5a8e7bb..ab17c93634e9 100644
 --- a/arch/x86/kernel/sev.c
 +++ b/arch/x86/kernel/sev.c
-@@ -51,6 +51,8 @@ static struct ghcb boot_ghcb_page __bss_decrypted __aligned(PAGE_SIZE);
-  */
- static struct ghcb __initdata *boot_ghcb;
+@@ -22,6 +22,8 @@
+ #include <linux/log2.h>
+ #include <linux/efi.h>
+ #include <linux/sev-guest.h>
++#include <linux/platform_device.h>
++#include <linux/io.h>
  
-+static u64 snp_secrets_phys;
-+
- /* #VC handler runtime per-CPU data */
- struct sev_es_runtime_data {
- 	struct ghcb ghcb_page;
-@@ -2030,6 +2032,80 @@ bool __init handle_vc_boot_ghcb(struct pt_regs *regs)
- 		halt();
+ #include <asm/cpu_entry_area.h>
+ #include <asm/stacktrace.h>
+@@ -37,6 +39,7 @@
+ #include <asm/apic.h>
+ #include <asm/efi.h>
+ #include <asm/cpuid.h>
++#include <asm/setup.h>
+ 
+ #include "sev-internal.h"
+ 
+@@ -2164,3 +2167,68 @@ int snp_issue_guest_request(int type, struct snp_guest_request_data *input, unsi
+ 	return ret;
  }
- 
-+static struct snp_secrets_page_layout *snp_map_secrets_page(void)
+ EXPORT_SYMBOL_GPL(snp_issue_guest_request);
++
++static struct platform_device guest_req_device = {
++	.name		= "snp-guest",
++	.id		= -1,
++};
++
++static u64 find_secrets_paddr(void)
 +{
-+	u16 __iomem *secrets;
++	u64 pa_data = boot_params.cc_blob_address;
++	struct cc_blob_sev_info info;
++	void *map;
 +
-+	if (!snp_secrets_phys || !sev_feature_enabled(SEV_SNP))
-+		return NULL;
++	/*
++	 * The CC blob contains the address of the secrets page, check if the
++	 * blob is present.
++	 */
++	if (!pa_data)
++		return 0;
 +
-+	secrets = ioremap_encrypted(snp_secrets_phys, PAGE_SIZE);
-+	if (!secrets)
-+		return NULL;
++	map = early_memremap(pa_data, sizeof(info));
++	memcpy(&info, map, sizeof(info));
++	early_memunmap(map, sizeof(info));
 +
-+	return (struct snp_secrets_page_layout *)secrets;
++	/* Verify that secrets page address is passed */
++	if (info.secrets_phys && info.secrets_len == PAGE_SIZE)
++		return info.secrets_phys;
++
++	return 0;
 +}
 +
-+static inline u64 snp_read_msg_seqno(void)
++static int __init add_snp_guest_request(void)
 +{
 +	struct snp_secrets_page_layout *layout;
-+	u64 count;
++	struct snp_guest_platform_data data;
++
++	if (!sev_feature_enabled(SEV_SNP))
++		return -ENODEV;
++
++	snp_secrets_phys = find_secrets_paddr();
++	if (!snp_secrets_phys)
++		return -ENODEV;
 +
 +	layout = snp_map_secrets_page();
 +	if (!layout)
-+		return 0;
++		return -ENODEV;
 +
-+	/* Read the current message sequence counter from secrets pages */
-+	count = readl(&layout->os_area.msg_seqno_0);
++	/*
++	 * The secrets page contains three VMPCK that can be used for
++	 * communicating with the PSP. We choose the VMPCK0 to encrypt guest
++	 * messages send and receive by the Linux. Provide the key and
++	 * id through the platform data to the driver.
++	 */
++	data.vmpck_id = 0;
++	memcpy_fromio(data.vmpck, layout->vmpck0, sizeof(data.vmpck));
 +
 +	iounmap(layout);
 +
-+	/* The sequence counter must begin with 1 */
-+	if (!count)
-+		return 1;
++	platform_device_add_data(&guest_req_device, &data, sizeof(data));
 +
-+	return count + 1;
++	if (!platform_device_register(&guest_req_device))
++		dev_info(&guest_req_device.dev, "secret phys 0x%llx\n", snp_secrets_phys);
++
++	return 0;
 +}
-+
-+u64 snp_msg_seqno(void)
-+{
-+	u64 count = snp_read_msg_seqno();
-+
-+	if (unlikely(!count))
-+		return 0;
-+
-+	/*
-+	 * The message sequence counter for the SNP guest request is a
-+	 * 64-bit value but the version 2 of GHCB specification defines a
-+	 * 32-bit storage for the it.
-+	 */
-+	if (count >= UINT_MAX)
-+		return 0;
-+
-+	return count;
-+}
-+EXPORT_SYMBOL_GPL(snp_msg_seqno);
-+
-+static void snp_gen_msg_seqno(void)
-+{
-+	struct snp_secrets_page_layout *layout;
-+	u64 count;
-+
-+	layout = snp_map_secrets_page();
-+	if (!layout)
-+		return;
-+
-+	/*
-+	 * The counter is also incremented by the PSP, so increment it by 2
-+	 * and save in secrets page.
-+	 */
-+	count = readl(&layout->os_area.msg_seqno_0);
-+	count += 2;
-+
-+	writel(count, &layout->os_area.msg_seqno_0);
-+	iounmap(layout);
-+}
-+
- int snp_issue_guest_request(int type, struct snp_guest_request_data *input, unsigned long *fw_err)
- {
- 	struct ghcb_state state;
-@@ -2077,6 +2153,9 @@ int snp_issue_guest_request(int type, struct snp_guest_request_data *input, unsi
- 		ret = -EIO;
- 	}
- 
-+	/* The command was successful, increment the sequence counter */
-+	snp_gen_msg_seqno();
-+
- e_put:
- 	__sev_put_ghcb(&state);
- e_restore_irq:
++device_initcall(add_snp_guest_request);
 diff --git a/include/linux/sev-guest.h b/include/linux/sev-guest.h
-index 24dd17507789..16b6af24fda7 100644
+index 16b6af24fda7..e1cb3f7dd034 100644
 --- a/include/linux/sev-guest.h
 +++ b/include/linux/sev-guest.h
-@@ -20,6 +20,41 @@ enum vmgexit_type {
- 	GUEST_REQUEST_MAX
+@@ -68,6 +68,11 @@ struct snp_guest_request_data {
+ 	unsigned int data_npages;
  };
  
-+/*
-+ * The secrets page contains 96-bytes of reserved field that can be used by
-+ * the guest OS. The guest OS uses the area to save the message sequence
-+ * number for each VMPCK.
-+ *
-+ * See the GHCB spec section Secret page layout for the format for this area.
-+ */
-+struct secrets_os_area {
-+	u32 msg_seqno_0;
-+	u32 msg_seqno_1;
-+	u32 msg_seqno_2;
-+	u32 msg_seqno_3;
-+	u64 ap_jump_table_pa;
-+	u8 rsvd[40];
-+	u8 guest_usage[32];
-+} __packed;
++struct snp_guest_platform_data {
++	u8 vmpck_id;
++	char vmpck[VMPCK_KEY_LEN];
++};
 +
-+#define VMPCK_KEY_LEN		32
-+
-+/* See the SNP spec for secrets page format */
-+struct snp_secrets_page_layout {
-+	u32 version;
-+	u32 imien	: 1,
-+	    rsvd1	: 31;
-+	u32 fms;
-+	u32 rsvd2;
-+	u8 gosvw[16];
-+	u8 vmpck0[VMPCK_KEY_LEN];
-+	u8 vmpck1[VMPCK_KEY_LEN];
-+	u8 vmpck2[VMPCK_KEY_LEN];
-+	u8 vmpck3[VMPCK_KEY_LEN];
-+	struct secrets_os_area os_area;
-+	u8 rsvd3[3840];
-+} __packed;
-+
- /*
-  * The error code when the data_npages is too small. The error code
-  * is defined in the GHCB specification.
-@@ -36,6 +71,7 @@ struct snp_guest_request_data {
  #ifdef CONFIG_AMD_MEM_ENCRYPT
  int snp_issue_guest_request(int vmgexit_type, struct snp_guest_request_data *input,
  			    unsigned long *fw_err);
-+u64 snp_msg_seqno(void);
- #else
- 
- static inline int snp_issue_guest_request(int type, struct snp_guest_request_data *input,
-@@ -43,6 +79,7 @@ static inline int snp_issue_guest_request(int type, struct snp_guest_request_dat
- {
- 	return -ENODEV;
- }
-+static inline u64 snp_msg_seqno(void) { return 0; }
- 
- #endif /* CONFIG_AMD_MEM_ENCRYPT */
- #endif /* __LINUX_SEV_GUEST_H__ */
 -- 
 2.17.1
 
