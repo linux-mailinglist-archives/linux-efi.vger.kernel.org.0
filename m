@@ -2,46 +2,33 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 43F333F7B5A
-	for <lists+linux-efi@lfdr.de>; Wed, 25 Aug 2021 19:15:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C35913F7CA0
+	for <lists+linux-efi@lfdr.de>; Wed, 25 Aug 2021 21:18:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242263AbhHYRQG (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 25 Aug 2021 13:16:06 -0400
-Received: from mail-co1nam11on2055.outbound.protection.outlook.com ([40.107.220.55]:37473
-        "EHLO NAM11-CO1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S233392AbhHYRQD (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Wed, 25 Aug 2021 13:16:03 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=FnzTKJzmZYZnrfVyW1ddGtr0ZAXSFKrlvhwtsaApbL9y/zW/lZjzgvAh7dg/SZcWBJOqpQEYXdsLBPq8s3fYclY1pllRbeGCS6fMKD7RqdA8dIScjq0xp7Dkzes2nyT4uNQEZ3pkx+fvOBlhYBpBfwgE/k2nvzeCZDc4b1lMfFmruj4Nf/qUjB8jMDKhAw3xi2l1eijdJbOs+X3alTwmaUEKFeTuXlENjL8nZO4USUYy+Xar4C/FQ5BNd5UO/6EpVyU0JAp1YDAGQrG0ghoIsyNL+0ahjpvczayD6shzpKWP0tvVkGsWjkT9xwxnSPuFo4IGH1908wVH/k8X4zI6gQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=o3CZDxORU7oV/ZHy73jmtUQj0Aj1QmYt/d9cd+dLzhs=;
- b=nrFPcJvttkvMNuFeZCPjkyT7EXrkEoAfCmhKYTsbNvDZKsSED402bXNY2La+7FntItxCFWCprkObnUpkRGdxqioLZxM1yppGqxRF3Jr8Ye+Zme7oyJEaeKhxs+WJMI/lMzCiSnraMCaeA5dhSVib5ePazusR+cv4Fek9q6rrciQzm7UEeklfLqDZqbHsnYCiQccjw59xYCSNV4PikCsbgt3GoJa17Ltt7Ur1qiVdJ9d76gVXasqHWv/P51aQ4dccY+YcgkekcXBP301fMuYBaLbil9++QypWVSWXxnrUHyw5/dLJZgXe/5kZBMp9k8tQIXaPstvLbBiOmyXXKnupbw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=o3CZDxORU7oV/ZHy73jmtUQj0Aj1QmYt/d9cd+dLzhs=;
- b=2fD9/5MkO5krZY2qQMjflZAc0rSg0AYQ8w9z6pQptecX4i1dYXb5yIBAKZrqOjiyt5F2w/PM5JdlsqbtBgfRKPGGlnmYt6p9qOHGX88nRqswobqsFIsNTRbD0thNq7valjOIumICYZBM7vVU+LckYm9/6EX/rz8vaXtyAhgWGco=
-Authentication-Results: alien8.de; dkim=none (message not signed)
- header.d=none;alien8.de; dmarc=none action=none header.from=amd.com;
-Received: from CH2PR12MB4133.namprd12.prod.outlook.com (2603:10b6:610:7a::13)
- by CH2PR12MB4006.namprd12.prod.outlook.com (2603:10b6:610:25::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4457.17; Wed, 25 Aug
- 2021 17:15:14 +0000
-Received: from CH2PR12MB4133.namprd12.prod.outlook.com
- ([fe80::d19e:b657:5259:24d0]) by CH2PR12MB4133.namprd12.prod.outlook.com
- ([fe80::d19e:b657:5259:24d0%8]) with mapi id 15.20.4436.019; Wed, 25 Aug 2021
- 17:15:14 +0000
-Date:   Wed, 25 Aug 2021 12:14:48 -0500
-From:   Michael Roth <michael.roth@amd.com>
-To:     Borislav Petkov <bp@alien8.de>
-Cc:     Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org,
-        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        id S235172AbhHYTTf (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 25 Aug 2021 15:19:35 -0400
+Received: from mail.skyhub.de ([5.9.137.197]:49774 "EHLO mail.skyhub.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S237549AbhHYTTe (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Wed, 25 Aug 2021 15:19:34 -0400
+Received: from zn.tnic (p200300ec2f0ea7007b784b676aa09a2d.dip0.t-ipconnect.de [IPv6:2003:ec:2f0e:a700:7b78:4b67:6aa0:9a2d])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 05D121EC0301;
+        Wed, 25 Aug 2021 21:18:40 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1629919121;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=vGtCbkWWcZU1UftG25Zvj4+jED+zYU9/qkqUZZNspiw=;
+        b=ktovmpUyQpXqlSeljgV2k4XrX23GlANVNbHO4/vcqGzv8Cszo/n9kE6TVlAbNko1+BvlB9
+        mOo7W2+HhO6mE3fbu/fILBazBq9d8cpdPT69IpDCkCUXuOGx9+T9PAqTOjFok1rWOVTmbm
+        JJ1qWHi/vNN7ey2R98H3ZyRZklFTcW8=
+Date:   Wed, 25 Aug 2021 21:19:18 +0200
+From:   Borislav Petkov <bp@alien8.de>
+To:     Brijesh Singh <brijesh.singh@amd.com>
+Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
         linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
         linux-coco@lists.linux.dev, linux-mm@kvack.org,
         Thomas Gleixner <tglx@linutronix.de>,
@@ -61,313 +48,837 @@ Cc:     Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org,
         David Rientjes <rientjes@google.com>,
         Dov Murik <dovmurik@linux.ibm.com>,
         Tobin Feldman-Fitzthum <tobin@ibm.com>,
+        Michael Roth <michael.roth@amd.com>,
         Vlastimil Babka <vbabka@suse.cz>,
         "Kirill A . Shutemov" <kirill@shutemov.name>,
         Andi Kleen <ak@linux.intel.com>, tony.luck@intel.com,
         marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com
-Subject: Re: [PATCH Part1 v5 26/38] x86/compressed/acpi: move EFI config
- table access to common code
-Message-ID: <20210825171448.zaakoue7ilbmsrau@amd.com>
+Subject: Re: [PATCH Part1 v5 28/38] x86/compressed/64: enable
+ SEV-SNP-validated CPUID in #VC handler
+Message-ID: <YSaXtpKT+iE7dxYq@zn.tnic>
 References: <20210820151933.22401-1-brijesh.singh@amd.com>
- <20210820151933.22401-27-brijesh.singh@amd.com>
- <YSZfPFrzXv0dImsv@zn.tnic>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YSZfPFrzXv0dImsv@zn.tnic>
-X-ClientProxiedBy: SN4PR0501CA0126.namprd05.prod.outlook.com
- (2603:10b6:803:42::43) To CH2PR12MB4133.namprd12.prod.outlook.com
- (2603:10b6:610:7a::13)
+ <20210820151933.22401-29-brijesh.singh@amd.com>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from localhost (165.204.77.11) by SN4PR0501CA0126.namprd05.prod.outlook.com (2603:10b6:803:42::43) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4457.9 via Frontend Transport; Wed, 25 Aug 2021 17:15:13 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 0d87d218-b8fb-479a-9847-08d967ebe6bb
-X-MS-TrafficTypeDiagnostic: CH2PR12MB4006:
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <CH2PR12MB4006B04DF20794E90517422B95C69@CH2PR12MB4006.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:7219;
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: zV49ItrRU1vZGm3h1/v/+5W7Pyg9DQCbYYSjdfgfIN7RBq2+7UQ/aBiHNWW/PXgfXtBgOghnlLLwUh1hglWLOyrk7t2ohS9xGhSzaZRZknruJTvjbxo+4ysRyJ22BsYmMKhb0x9zdouhtluQjv3AVDyjOTVgYfvOBTnpq7Vq/aNtXDrradoNmo8D78WVJfMeTU09NSBTIhBlRXb7+uk+Y+/LL2rlKj2HsSiXio6SxiH5t5HVnwSiROd6IqaEzLGT9ftAYR8zjO1YXH0CHyC92BhPiT1iJhzwlm9Sc78sHRtNDKE8mxYY1NjSYGkkxVXlp6xfx4RxLMqoSkvDgcfynaE18l0lEbGUrv5hPof/Upwdzh9DjSrNX25hplT6Vh0qvVtAfihk+IFQZwjw6oWyQp0PkwPSAxhVLTmDAt1ry8LVUU3HDwCoMQk/DPeGmrtIUyD9OA59Xi2gUL/4RKFWfGgkUazsJhY6X4AzM/VE0x55KtLQY9gsBkWrT++OpeAawydLsuxMV4OKg9XZDq8IaekSI0zHni6ykzoi/fZbBo05WXazSSCrELA7leYP0IRLm4LO1F2sOkpTVH4wMHiefTUs80bI74Cqj9ARoBgiXIJ9bCn8VuD8gDQS7W19HdfJhlTfQ7JjOwWZphYx9SkhZ6w9H2CszbPO2sZzzFIZoIwpWUTPG1hNQoav50zhJcCg6LKvkP13ScACedy8acmXvMRRa3N0naRRLVhccqCaPYeGcj6FoBhD5NRLNGBcebMZqgYk5/7xFefrFbOdeSx4Pj72zF/wunlYyirpzdcoWPU=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB4133.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(376002)(396003)(346002)(366004)(39860400002)(136003)(8676002)(956004)(4326008)(38350700002)(36756003)(44832011)(6916009)(2616005)(38100700002)(86362001)(83380400001)(478600001)(966005)(45080400002)(186003)(26005)(8936002)(52116002)(6666004)(66556008)(66476007)(1076003)(316002)(5660300002)(7416002)(6496006)(54906003)(6486002)(66946007)(7406005)(2906002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?wZT38xm3cKitOjVYjbzIFYe3vVMAczoyUW6DAFz2UvgsT6gLTJwFJxF5Fllq?=
- =?us-ascii?Q?QpRLKRjf4zLji95STvG9gI6hdDw3Q1Q9D2aG8fPnkDlo526BA7fgYwAd7Y2D?=
- =?us-ascii?Q?UKHilGVHcN08G5Vz8vOQMR6efsIdtcocWINuJ0cZGDEx8IFDKb9PT7hxJaoi?=
- =?us-ascii?Q?71wXM59sT2A1pzN12Nf4as4lhRgML+D89IhDPuTKHXF/HIWRtxIiws2CwQxe?=
- =?us-ascii?Q?tGCGxrX6eh+pAHm3c2sJGqtWmUJRxqjV7bb8JrpdODC+pubeFQMxb6aC0d6O?=
- =?us-ascii?Q?tta3pX1glXIiaLNuCrtfl7jxbk5UL3/M6a5V9CGjAg4bSl7ls6Vp/OYNprn1?=
- =?us-ascii?Q?/SeGvxfBUDTs2eG9XyoYKK4KfiGTixldQvKnQCkkGXRhQbCUNLM0JIbCuDCM?=
- =?us-ascii?Q?KH8TZeAwKTCV52qPoebc5pEciOwTVfzcDLAhMbcuSXpWq5/UGbhrb6PwMPoK?=
- =?us-ascii?Q?V2FgVIL+L0nWYusBCWuwn9WVL+kSs7DfVP1NekolChLxIxEcUnTmA8PdzbXv?=
- =?us-ascii?Q?p5nhZ1l/9eumyG3e+/e1v55x9sG2YTdrUB5kKmz6o4qngbXsJyGLWyY1y0uK?=
- =?us-ascii?Q?r+EoB0jrkXyf3fbna0/0H/v+Iiu9X2WR3Y41mMav/zogi3a3aLtOsWtRzzze?=
- =?us-ascii?Q?m5clcrpmQLtEWJEl2MBOKKf2Ku9SROVo5D7qDy/2emGumCYVuOSRPCQEY3nA?=
- =?us-ascii?Q?qJ9HnrTnUOUEOkOUZPB8pzMtoZsceJg7JGJRnGvFcqsNeJKK+PlHcYvLnyap?=
- =?us-ascii?Q?8a5QXQuoqWaqGVuSV+wS6RDaphX4N9xzV3XiP9fXd4rE1KZOityWIdPuF9sC?=
- =?us-ascii?Q?vaYBE6sVlLM8LpNqFvbTxvMDoz3FC6/9VB84VeTxWkmpvpx7wQdEMTWeB3MI?=
- =?us-ascii?Q?tD9Fb3xlH5gWmlqbF7jUDGKbz2lZYxFdw9VpGVmxu+I5C6VfHb0O4/wn60WS?=
- =?us-ascii?Q?zKN7EpgcwC1esWn89r9YmtUq1aDr7Mjxn8R7Ui9NJyfTG6ey8a8y/zJQSea9?=
- =?us-ascii?Q?mhVUhOHIRu+RWhamYFlJv2NUbz34dYpXwWNgQChoL7ZAasTntQDYadB2eFMJ?=
- =?us-ascii?Q?DJaeM/TQOoPchltAQ1HuZiLu6sEtLmZbaZnEAqLF9Zhs8ZEEQnXV/rnTEPSr?=
- =?us-ascii?Q?E0tZmGUxA0l2amQQXwnEB6PRz8P5vvLLd/tBncO75NSW1WAFrN8oV1svnIEz?=
- =?us-ascii?Q?/2Sb/4m7A07fID95O2Jq9dPZ85ZFZXI1h2/gGwLhiQaE+j5WqUJXCSNzRT3l?=
- =?us-ascii?Q?ogugF6+X75mranSVJAVGxODXZaJ92skL3zb6sCgbm0ezICjo7Bv5DwqAZs8y?=
- =?us-ascii?Q?dh1WFJQmqz8jIqK4ed+ZC9jV?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0d87d218-b8fb-479a-9847-08d967ebe6bb
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB4133.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Aug 2021 17:15:13.8512
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: apfuaYi8jrc1gFy1i0aW1MOCfXXAw/7t9abMrAKLUAOKuNYg7ErthqMzUkPV76cYyO+YDCX6n+q+hu6Eg3R0Eg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4006
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20210820151933.22401-29-brijesh.singh@amd.com>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, Aug 25, 2021 at 05:18:20PM +0200, Borislav Petkov wrote:
-> On Fri, Aug 20, 2021 at 10:19:21AM -0500, Brijesh Singh wrote:
-> > From: Michael Roth <michael.roth@amd.com>
-> > 
-> > Future patches for SEV-SNP-validated CPUID will also require early
-> > parsing of the EFI configuration. Move the related code into a set of
-> > helpers that can be re-used for that purpose.
-> > 
-> > Signed-off-by: Michael Roth <michael.roth@amd.com>
-> > Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
-> > ---
-> >  arch/x86/boot/compressed/Makefile |   1 +
-> >  arch/x86/boot/compressed/acpi.c   | 113 +++++--------------
-> >  arch/x86/boot/compressed/efi.c    | 178 ++++++++++++++++++++++++++++++
-> >  arch/x86/boot/compressed/misc.h   |  43 ++++++++
-> >  4 files changed, 251 insertions(+), 84 deletions(-)
-> >  create mode 100644 arch/x86/boot/compressed/efi.c
+On Fri, Aug 20, 2021 at 10:19:23AM -0500, Brijesh Singh wrote:
+> From: Michael Roth <michael.roth@amd.com>
 > 
-> Ok, better, but this patch needs splitting. And I have a good idea how:
-> in at least three patches:
+> CPUID instructions generate a #VC exception for SEV-ES/SEV-SNP guests,
+> for which early handlers are currently set up to handle. In the case
+> of SEV-SNP, guests can use a special location in guest memory address
+> space that has been pre-populated with firmware-validated CPUID
+> information to look up the relevant CPUID values rather than
+> requesting them from hypervisor via a VMGEXIT.
 > 
-> 1. Add efi_get_system_table() and use it
-> 2. Add efi_get_conf_table() and use it
-> 3. Add efi_find_vendor_table() and use it
+> Determine the location of the CPUID memory address in advance of any
+> CPUID instructions/exceptions and, when available, use it to handle
+> the CPUID lookup.
 > 
-> This will facilitate review immensely.
+> Signed-off-by: Michael Roth <michael.roth@amd.com>
+> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
+> ---
+>  arch/x86/boot/compressed/efi.c     |   1 +
+>  arch/x86/boot/compressed/head_64.S |   1 +
+>  arch/x86/boot/compressed/idt_64.c  |   7 +-
+>  arch/x86/boot/compressed/misc.h    |   1 +
+>  arch/x86/boot/compressed/sev.c     |   3 +
+>  arch/x86/include/asm/sev-common.h  |   2 +
+>  arch/x86/include/asm/sev.h         |   3 +
+>  arch/x86/kernel/sev-shared.c       | 374 +++++++++++++++++++++++++++++
+>  arch/x86/kernel/sev.c              |   4 +
+>  9 files changed, 394 insertions(+), 2 deletions(-)
 
-Ok, that makes sense.
+Another huuge patch. I wonder if it can be split...
 
-> 
-> Also, here's a diff ontop of what to do also, style-wise.
-> 
-> - change how you look for the preferred vendor table along with commenting what you do
-> - shorten variable names so that you don't have so many line breaks.
-
-Thanks for the suggestions, I'll incorporate those changes in the next spin as
-well.
-
-> 
-> Thx.
-> 
-> diff --git a/arch/x86/boot/compressed/acpi.c b/arch/x86/boot/compressed/acpi.c
-> index 3a3f997d7210..c22b21e94a95 100644
-> --- a/arch/x86/boot/compressed/acpi.c
-> +++ b/arch/x86/boot/compressed/acpi.c
-> @@ -20,27 +20,29 @@
->   */
->  struct mem_vector immovable_mem[MAX_NUMNODES*2];
->  
-> -/*
-> - * Search EFI system tables for RSDP.  If both ACPI_20_TABLE_GUID and
-> - * ACPI_TABLE_GUID are found, take the former, which has more features.
-> - */
->  static acpi_physical_address
-> -__efi_get_rsdp_addr(unsigned long config_table_pa,
-> -		    unsigned int config_table_len, bool efi_64)
-> +__efi_get_rsdp_addr(unsigned long cfg_tbl_pa, unsigned int cfg_tbl_len, bool efi_64)
->  {
->  	acpi_physical_address rsdp_addr = 0;
-> +
->  #ifdef CONFIG_EFI
->  	int ret;
->  
-> -	ret = efi_find_vendor_table(config_table_pa, config_table_len,
-> -				    ACPI_20_TABLE_GUID, efi_64,
-> -				    (unsigned long *)&rsdp_addr);
-> -	if (ret == -ENOENT)
-> -		ret = efi_find_vendor_table(config_table_pa, config_table_len,
-> -					    ACPI_TABLE_GUID, efi_64,
-> -					    (unsigned long *)&rsdp_addr);
-> +	/*
-> +	 * Search EFI system tables for RSDP. Preferred is ACPI_20_TABLE_GUID to
-> +	 * ACPI_TABLE_GUID because it has more features.
-> +	 */
-> +	ret = efi_find_vendor_table(cfg_tbl_pa, cfg_tbl_len, ACPI_20_TABLE_GUID,
-> +				    efi_64, (unsigned long *)&rsdp_addr);
-> +	if (!ret)
-> +		return rsdp_addr;
-> +
-> +	/* No ACPI_20_TABLE_GUID found, fallback to ACPI_TABLE_GUID. */
-> +	ret = efi_find_vendor_table(cfg_tbl_pa, cfg_tbl_len, ACPI_TABLE_GUID,
-> +				    efi_64, (unsigned long *)&rsdp_addr);
->  	if (ret)
->  		debug_putstr("Error getting RSDP address.\n");
-> +
->  #endif
->  	return rsdp_addr;
->  }
-> @@ -100,18 +102,16 @@ static acpi_physical_address kexec_get_rsdp_addr(void) { return 0; }
->  static acpi_physical_address efi_get_rsdp_addr(void)
->  {
->  #ifdef CONFIG_EFI
-> -	unsigned long config_table_pa = 0;
-> -	unsigned int config_table_len;
-> +	unsigned long cfg_tbl_pa = 0;
-> +	unsigned int cfg_tbl_len;
->  	bool efi_64;
->  	int ret;
->  
-> -	ret = efi_get_conf_table(boot_params, &config_table_pa,
-> -				 &config_table_len, &efi_64);
-> -	if (ret || !config_table_pa)
-> +	ret = efi_get_conf_table(boot_params, &cfg_tbl_pa, &cfg_tbl_len, &efi_64);
-> +	if (ret || !cfg_tbl_pa)
->  		error("EFI config table not found.");
->  
-> -	return __efi_get_rsdp_addr(config_table_pa, config_table_len,
-> -				   efi_64);
-> +	return __efi_get_rsdp_addr(cfg_tbl_pa, cfg_tbl_len, efi_64);
->  #else
->  	return 0;
->  #endif
 > diff --git a/arch/x86/boot/compressed/efi.c b/arch/x86/boot/compressed/efi.c
-> index 16ff5cb9a1fb..7ed31b943c04 100644
+> index 16ff5cb9a1fb..a1529a230ea7 100644
 > --- a/arch/x86/boot/compressed/efi.c
 > +++ b/arch/x86/boot/compressed/efi.c
-> @@ -12,14 +12,14 @@
->  #include <asm/efi.h>
->  
->  /* Get vendor table address/guid from EFI config table at the given index */
-> -static int get_vendor_table(void *conf_table, unsigned int idx,
-> +static int get_vendor_table(void *cfg_tbl, unsigned int idx,
->  			    unsigned long *vendor_table_pa,
->  			    efi_guid_t *vendor_table_guid,
->  			    bool efi_64)
->  {
->  	if (efi_64) {
->  		efi_config_table_64_t *table_entry =
-> -			(efi_config_table_64_t *)conf_table + idx;
-> +			(efi_config_table_64_t *)cfg_tbl + idx;
->  
->  		if (!IS_ENABLED(CONFIG_X86_64) &&
->  		    table_entry->table >> 32) {
-> @@ -32,7 +32,7 @@ static int get_vendor_table(void *conf_table, unsigned int idx,
->  
->  	} else {
->  		efi_config_table_32_t *table_entry =
-> -			(efi_config_table_32_t *)conf_table + idx;
-> +			(efi_config_table_32_t *)cfg_tbl + idx;
->  
->  		*vendor_table_pa = table_entry->table;
->  		*vendor_table_guid = table_entry->guid;
-> @@ -45,27 +45,25 @@ static int get_vendor_table(void *conf_table, unsigned int idx,
->   * Given EFI config table, search it for the physical address of the vendor
->   * table associated with GUID.
->   *
-> - * @conf_table:        pointer to EFI configuration table
-> - * @conf_table_len:    number of entries in EFI configuration table
-> + * @cfg_tbl:        pointer to EFI configuration table
-> + * @cfg_tbl_len:    number of entries in EFI configuration table
->   * @guid:              GUID of vendor table
->   * @efi_64:            true if using 64-bit EFI
->   * @vendor_table_pa:   location to store physical address of vendor table
->   *
->   * Returns 0 on success. On error, return params are left unchanged.
->   */
-> -int
-> -efi_find_vendor_table(unsigned long conf_table_pa, unsigned int conf_table_len,
-> -		      efi_guid_t guid, bool efi_64,
-> -		      unsigned long *vendor_table_pa)
-> +int efi_find_vendor_table(unsigned long cfg_tbl_pa, unsigned int cfg_tbl_len,
-> +			  efi_guid_t guid, bool efi_64, unsigned long *vendor_table_pa)
->  {
->  	unsigned int i;
->  
-> -	for (i = 0; i < conf_table_len; i++) {
-> +	for (i = 0; i < cfg_tbl_len; i++) {
->  		unsigned long vendor_table_pa_tmp;
->  		efi_guid_t vendor_table_guid;
->  		int ret;
->  
-> -		if (get_vendor_table((void *)conf_table_pa, i,
-> +		if (get_vendor_table((void *)cfg_tbl_pa, i,
->  				     &vendor_table_pa_tmp,
->  				     &vendor_table_guid, efi_64))
->  			return -EINVAL;
-> @@ -88,9 +86,8 @@ efi_find_vendor_table(unsigned long conf_table_pa, unsigned int conf_table_len,
->   *
->   * Returns 0 on success. On error, return params are left unchanged.
->   */
-> -int
-> -efi_get_system_table(struct boot_params *boot_params,
-> -		     unsigned long *sys_table_pa, bool *is_efi_64)
-> +int efi_get_system_table(struct boot_params *boot_params, unsigned long *sys_table_pa,
-> +			 bool *is_efi_64)
->  {
->  	unsigned long sys_table;
->  	struct efi_info *ei;
-> @@ -137,22 +134,19 @@ efi_get_system_table(struct boot_params *boot_params,
->   * address EFI configuration table.
->   *
->   * @boot_params:        pointer to boot_params
-> - * @conf_table_pa:      location to store physical address of config table
-> - * @conf_table_len:     location to store number of config table entries
-> + * @cfg_tbl_pa:      location to store physical address of config table
-> + * @cfg_tbl_len:     location to store number of config table entries
->   * @is_efi_64:          location to store whether using 64-bit EFI or not
->   *
->   * Returns 0 on success. On error, return params are left unchanged.
->   */
-> -int
-> -efi_get_conf_table(struct boot_params *boot_params,
-> -		   unsigned long *conf_table_pa,
-> -		   unsigned int *conf_table_len,
-> -		   bool *is_efi_64)
-> +int efi_get_conf_table(struct boot_params *boot_params, unsigned long *cfg_tbl_pa,
-> +		       unsigned int *cfg_tbl_len, bool *is_efi_64)
->  {
->  	unsigned long sys_table_pa = 0;
->  	int ret;
->  
-> -	if (!conf_table_pa || !conf_table_len || !is_efi_64)
-> +	if (!cfg_tbl_pa || !cfg_tbl_len || !is_efi_64)
->  		return -EINVAL;
->  
->  	ret = efi_get_system_table(boot_params, &sys_table_pa, is_efi_64);
-> @@ -164,14 +158,14 @@ efi_get_conf_table(struct boot_params *boot_params,
->  		efi_system_table_64_t *stbl =
->  			(efi_system_table_64_t *)sys_table_pa;
->  
-> -		*conf_table_pa	= stbl->tables;
-> -		*conf_table_len	= stbl->nr_tables;
-> +		*cfg_tbl_pa	= stbl->tables;
-> +		*cfg_tbl_len	= stbl->nr_tables;
->  	} else {
->  		efi_system_table_32_t *stbl =
->  			(efi_system_table_32_t *)sys_table_pa;
->  
-> -		*conf_table_pa	= stbl->tables;
-> -		*conf_table_len	= stbl->nr_tables;
-> +		*cfg_tbl_pa	= stbl->tables;
-> +		*cfg_tbl_len	= stbl->nr_tables;
->  	}
+> @@ -176,3 +176,4 @@ efi_get_conf_table(struct boot_params *boot_params,
 >  
 >  	return 0;
-> 
-> -- 
-> Regards/Gruss,
->     Boris.
-> 
-> https://nam11.safelinks.protection.outlook.com/?url=https%3A%2F%2Fpeople.kernel.org%2Ftglx%2Fnotes-about-netiquette&amp;data=04%7C01%7CMichael.Roth%40amd.com%7Cb4091a3e85cd463b1cb608d967db81ec%7C3dd8961fe4884e608e11a82d994e183d%7C0%7C0%7C637655014764920013%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C1000&amp;sdata=rvxyc%2FAURXMBWX5lkUHQoM1a%2FlGt4ZtcfGCJZ1TjIQU%3D&amp;reserved=0
+>  }
+> +
+
+Applying: x86/compressed/64: Enable SEV-SNP-validated CPUID in #VC handler
+.git/rebase-apply/patch:21: new blank line at EOF.
++
+warning: 1 line adds whitespace errors.
+
+That looks like a stray hunk which doesn't belong.
+
+> diff --git a/arch/x86/boot/compressed/head_64.S b/arch/x86/boot/compressed/head_64.S
+> index a2347ded77ea..1c1658693fc9 100644
+> --- a/arch/x86/boot/compressed/head_64.S
+> +++ b/arch/x86/boot/compressed/head_64.S
+> @@ -441,6 +441,7 @@ SYM_CODE_START(startup_64)
+>  .Lon_kernel_cs:
+>  
+>  	pushq	%rsi
+> +	movq	%rsi, %rdi		/* real mode address */
+>  	call	load_stage1_idt
+>  	popq	%rsi
+>  
+> diff --git a/arch/x86/boot/compressed/idt_64.c b/arch/x86/boot/compressed/idt_64.c
+> index 9b93567d663a..1f6511a6625d 100644
+> --- a/arch/x86/boot/compressed/idt_64.c
+> +++ b/arch/x86/boot/compressed/idt_64.c
+> @@ -3,6 +3,7 @@
+>  #include <asm/segment.h>
+>  #include <asm/trapnr.h>
+>  #include "misc.h"
+> +#include <asm/sev.h>
+
+asm/ namespaced headers should go together, before the private ones,
+i.e., above the misc.h line.
+
+>  static void set_idt_entry(int vector, void (*handler)(void))
+>  {
+> @@ -28,13 +29,15 @@ static void load_boot_idt(const struct desc_ptr *dtr)
+>  }
+>  
+>  /* Setup IDT before kernel jumping to  .Lrelocated */
+> -void load_stage1_idt(void)
+> +void load_stage1_idt(void *rmode)
+>  {
+>  	boot_idt_desc.address = (unsigned long)boot_idt;
+>  
+>  
+> -	if (IS_ENABLED(CONFIG_AMD_MEM_ENCRYPT))
+> +	if (IS_ENABLED(CONFIG_AMD_MEM_ENCRYPT)) {
+> +		sev_snp_cpuid_init(rmode);
+>  		set_idt_entry(X86_TRAP_VC, boot_stage1_vc);
+> +	}
+>  
+>  	load_boot_idt(&boot_idt_desc);
+>  }
+> diff --git a/arch/x86/boot/compressed/misc.h b/arch/x86/boot/compressed/misc.h
+> index 16b092fd7aa1..cdd328aa42c2 100644
+> --- a/arch/x86/boot/compressed/misc.h
+> +++ b/arch/x86/boot/compressed/misc.h
+> @@ -190,6 +190,7 @@ int efi_get_conf_table(struct boot_params *boot_params,
+>  		       unsigned long *conf_table_pa,
+>  		       unsigned int *conf_table_len,
+>  		       bool *is_efi_64);
+> +
+
+Another stray hunk.
+
+>  #else
+>  static inline int
+>  efi_find_vendor_table(unsigned long conf_table_pa, unsigned int conf_table_len,
+> diff --git a/arch/x86/boot/compressed/sev.c b/arch/x86/boot/compressed/sev.c
+> index 6e8d97c280aa..910bf5cf010e 100644
+> --- a/arch/x86/boot/compressed/sev.c
+> +++ b/arch/x86/boot/compressed/sev.c
+> @@ -20,6 +20,9 @@
+>  #include <asm/fpu/xcr.h>
+>  #include <asm/ptrace.h>
+>  #include <asm/svm.h>
+> +#include <asm/cpuid.h>
+> +#include <linux/efi.h>
+> +#include <linux/log2.h>
+
+What are those includes for?
+
+Polluting the decompressor namespace with kernel proper defines is a
+real pain to untangle as it is. What do you need those for and can you
+do it without them?
+
+>  #include "error.h"
+>  
+> diff --git a/arch/x86/include/asm/sev-common.h b/arch/x86/include/asm/sev-common.h
+> index 072540dfb129..5f134c172dbf 100644
+> --- a/arch/x86/include/asm/sev-common.h
+> +++ b/arch/x86/include/asm/sev-common.h
+> @@ -148,6 +148,8 @@ struct snp_psc_desc {
+>  #define GHCB_TERM_PSC			1	/* Page State Change failure */
+>  #define GHCB_TERM_PVALIDATE		2	/* Pvalidate failure */
+>  #define GHCB_TERM_NOT_VMPL0		3	/* SNP guest is not running at VMPL-0 */
+> +#define GHCB_TERM_CPUID			4	/* CPUID-validation failure */
+> +#define GHCB_TERM_CPUID_HV		5	/* CPUID failure during hypervisor fallback */
+>  
+>  #define GHCB_RESP_CODE(v)		((v) & GHCB_MSR_INFO_MASK)
+>  
+> diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
+> index 534fa1c4c881..c73931548346 100644
+> --- a/arch/x86/include/asm/sev.h
+> +++ b/arch/x86/include/asm/sev.h
+> @@ -11,6 +11,7 @@
+>  #include <linux/types.h>
+>  #include <asm/insn.h>
+>  #include <asm/sev-common.h>
+> +#include <asm/bootparam.h>
+>  
+>  #define GHCB_PROTOCOL_MIN	1ULL
+>  #define GHCB_PROTOCOL_MAX	2ULL
+> @@ -126,6 +127,7 @@ void __init snp_prep_memory(unsigned long paddr, unsigned int sz, enum psc_op op
+>  void snp_set_memory_shared(unsigned long vaddr, unsigned int npages);
+>  void snp_set_memory_private(unsigned long vaddr, unsigned int npages);
+>  void snp_set_wakeup_secondary_cpu(void);
+> +void sev_snp_cpuid_init(struct boot_params *bp);
+>  #else
+>  static inline void sev_es_ist_enter(struct pt_regs *regs) { }
+>  static inline void sev_es_ist_exit(void) { }
+> @@ -141,6 +143,7 @@ static inline void __init snp_prep_memory(unsigned long paddr, unsigned int sz,
+>  static inline void snp_set_memory_shared(unsigned long vaddr, unsigned int npages) { }
+>  static inline void snp_set_memory_private(unsigned long vaddr, unsigned int npages) { }
+>  static inline void snp_set_wakeup_secondary_cpu(void) { }
+> +static inline void sev_snp_cpuid_init(struct boot_params *bp) { }
+>  #endif
+>  
+>  #endif
+> diff --git a/arch/x86/kernel/sev-shared.c b/arch/x86/kernel/sev-shared.c
+> index ae4556925485..651980ddbd65 100644
+> --- a/arch/x86/kernel/sev-shared.c
+> +++ b/arch/x86/kernel/sev-shared.c
+> @@ -14,6 +14,25 @@
+>  #define has_cpuflag(f)	boot_cpu_has(f)
+>  #endif
+>  
+> +struct sev_snp_cpuid_fn {
+> +	u32 eax_in;
+> +	u32 ecx_in;
+> +	u64 unused;
+> +	u64 unused2;
+
+What are those for? Padding? Or are they spec-ed somewhere and left for
+future use?
+
+Seeing how the struct is __packed, they probably are part of a spec
+definition somewhere.
+
+Link pls.
+
+> +	u32 eax;
+> +	u32 ebx;
+> +	u32 ecx;
+> +	u32 edx;
+> +	u64 reserved;
+
+Ditto.
+
+Please prefix all those unused/reserved members with "__".
+
+> +} __packed;
+> +
+> +struct sev_snp_cpuid_info {
+> +	u32 count;
+> +	u32 reserved1;
+> +	u64 reserved2;
+
+Ditto.
+
+> +	struct sev_snp_cpuid_fn fn[0];
+> +} __packed;
+> +
+>  /*
+>   * Since feature negotiation related variables are set early in the boot
+>   * process they must reside in the .data section so as not to be zeroed
+> @@ -26,6 +45,15 @@ static u16 __ro_after_init ghcb_version;
+>  /* Bitmap of SEV features supported by the hypervisor */
+>  u64 __ro_after_init sev_hv_features = 0;
+>  
+> +/*
+> + * These are also stored in .data section to avoid the need to re-parse
+> + * boot_params and re-determine CPUID memory range when .bss is cleared.
+> + */
+> +static int sev_snp_cpuid_enabled __section(".data");
+
+That will become part of prot_guest_has() or cc_platform_has() or
+whatever its name is going to be.
+
+> +static unsigned long sev_snp_cpuid_pa __section(".data");
+> +static unsigned long sev_snp_cpuid_sz __section(".data");
+> +static const struct sev_snp_cpuid_info *cpuid_info __section(".data");
+
+All those: __ro_after_init?
+
+Also, just like the ones above have a short comment explaining what they
+are, add such comments for those too pls and perhaps what they're used
+for.
+
+> +
+>  static bool __init sev_es_check_cpu_features(void)
+>  {
+>  	if (!has_cpuflag(X86_FEATURE_RDRAND)) {
+> @@ -236,6 +264,219 @@ static int sev_cpuid_hv(u32 func, u32 subfunc, u32 *eax, u32 *ebx,
+>  	return 0;
+>  }
+>  
+> +static bool sev_snp_cpuid_active(void)
+> +{
+> +	return sev_snp_cpuid_enabled;
+> +}
+
+That too will become part of prot_guest_has() or cc_platform_has() or
+whatever its name is going to be.
+
+> +
+> +static int sev_snp_cpuid_xsave_size(u64 xfeatures_en, u32 base_size,
+> +				    u32 *xsave_size, bool compacted)
+
+Function name needs a verb. Please audit all your patches.
+
+> +{
+> +	u64 xfeatures_found = 0;
+> +	int i;
+> +
+> +	*xsave_size = base_size;
+
+Set that xsave_size only...
+> +
+> +	for (i = 0; i < cpuid_info->count; i++) {
+> +		const struct sev_snp_cpuid_fn *fn = &cpuid_info->fn[i];
+> +
+> +		if (!(fn->eax_in == 0xd && fn->ecx_in > 1 && fn->ecx_in < 64))
+> +			continue;
+> +		if (!(xfeatures_en & (1UL << fn->ecx_in)))
+> +			continue;
+> +		if (xfeatures_found & (1UL << fn->ecx_in))
+> +			continue;
+> +
+> +		xfeatures_found |= (1UL << fn->ecx_in);
+
+For all use BIT_ULL().
+
+> +		if (compacted)
+> +			*xsave_size += fn->eax;
+> +		else
+> +			*xsave_size = max(*xsave_size, fn->eax + fn->ebx);
+
+... not here ...
+
+> +	}
+> +
+> +	/*
+> +	 * Either the guest set unsupported XCR0/XSS bits, or the corresponding
+> +	 * entries in the CPUID table were not present. This is not a valid
+> +	 * state to be in.
+> +	 */
+> +	if (xfeatures_found != (xfeatures_en & ~3ULL))
+> +		return -EINVAL;
+
+... but here when you're not going to return an error because callers
+will see that value change temporarily which is not clean.
+
+Also, you need to set it once - not during each loop iteration.
+
+> +
+> +	return 0;
+> +}
+> +
+> +static void sev_snp_cpuid_hv(u32 func, u32 subfunc, u32 *eax, u32 *ebx,
+> +			     u32 *ecx, u32 *edx)
+> +{
+> +	/*
+> +	 * Currently MSR protocol is sufficient to handle fallback cases, but
+> +	 * should that change make sure we terminate rather than grabbing random
+
+Fix the "we"s please. Please audit all your patches.
+
+> +	 * values. Handling can be added in future to use GHCB-page protocol for
+> +	 * cases that occur late enough in boot that GHCB page is available
+
+End comment sentences with a fullstop. Please audit all your patches.
+
+> +	 */
+
+Also, put that comment over the function.
+
+> +	if (cpuid_function_is_indexed(func) && subfunc != 0)
+
+In all your patches:
+
+s/ != 0//g
+
+> +		sev_es_terminate(1, GHCB_TERM_CPUID_HV);
+> +
+> +	if (sev_cpuid_hv(func, 0, eax, ebx, ecx, edx))
+> +		sev_es_terminate(1, GHCB_TERM_CPUID_HV);
+> +}
+> +
+> +static bool sev_snp_cpuid_find(u32 func, u32 subfunc, u32 *eax, u32 *ebx,
+
+I guess
+
+	find_validated_cpuid_func()
+
+or so to denote where it picks it out from.
+
+> +			       u32 *ecx, u32 *edx)
+> +{
+> +	int i;
+> +	bool found = false;
+
+The tip-tree preferred ordering of variable declarations at the
+beginning of a function is reverse fir tree order::
+
+	struct long_struct_name *descriptive_name;
+	unsigned long foo, bar;
+	unsigned int tmp;
+	int ret;
+
+The above is faster to parse than the reverse ordering::
+
+	int ret;
+	unsigned int tmp;
+	unsigned long foo, bar;
+	struct long_struct_name *descriptive_name;
+
+And even more so than random ordering::
+
+	unsigned long foo, bar;
+	int ret;
+	struct long_struct_name *descriptive_name;
+	unsigned int tmp;
+
+Audit all your patches pls.
+
+> +
+> +	for (i = 0; i < cpuid_info->count; i++) {
+> +		const struct sev_snp_cpuid_fn *fn = &cpuid_info->fn[i];
+> +
+> +		if (fn->eax_in != func)
+> +			continue;
+> +
+> +		if (cpuid_function_is_indexed(func) && fn->ecx_in != subfunc)
+> +			continue;
+> +
+> +		*eax = fn->eax;
+> +		*ebx = fn->ebx;
+> +		*ecx = fn->ecx;
+> +		*edx = fn->edx;
+> +		found = true;
+> +
+> +		break;
+
+That's just silly. Simply:
+
+		return true;
+
+
+> +	}
+> +
+> +	return found;
+
+	return false;
+
+here and the "found" variable can go.
+
+> +}
+> +
+> +static bool sev_snp_cpuid_in_range(u32 func)
+> +{
+> +	int i;
+> +	u32 std_range_min = 0;
+> +	u32 std_range_max = 0;
+> +	u32 hyp_range_min = 0x40000000;
+> +	u32 hyp_range_max = 0;
+> +	u32 ext_range_min = 0x80000000;
+> +	u32 ext_range_max = 0;
+> +
+> +	for (i = 0; i < cpuid_info->count; i++) {
+> +		const struct sev_snp_cpuid_fn *fn = &cpuid_info->fn[i];
+> +
+> +		if (fn->eax_in == std_range_min)
+> +			std_range_max = fn->eax;
+> +		else if (fn->eax_in == hyp_range_min)
+> +			hyp_range_max = fn->eax;
+> +		else if (fn->eax_in == ext_range_min)
+> +			ext_range_max = fn->eax;
+> +	}
+
+So this loop which determines those ranges will run each time
+sev_snp_cpuid_find() doesn't find @func among the validated CPUID leafs.
+
+Why don't you do that determination once at init...
+
+> +
+> +	if ((func >= std_range_min && func <= std_range_max) ||
+> +	    (func >= hyp_range_min && func <= hyp_range_max) ||
+> +	    (func >= ext_range_min && func <= ext_range_max))
+
+... so that this function becomes only this check?
+
+This is unnecessary work as it is.
+
+> +		return true;
+> +
+> +	return false;
+> +}
+> +
+> +/*
+> + * Returns -EOPNOTSUPP if feature not enabled. Any other return value should be
+> + * treated as fatal by caller since we cannot fall back to hypervisor to fetch
+> + * the values for security reasons (outside of the specific cases handled here)
+> + */
+> +static int sev_snp_cpuid(u32 func, u32 subfunc, u32 *eax, u32 *ebx, u32 *ecx,
+> +			 u32 *edx)
+> +{
+> +	if (!sev_snp_cpuid_active())
+> +		return -EOPNOTSUPP;
+> +
+> +	if (!cpuid_info)
+> +		return -EIO;
+> +
+> +	if (!sev_snp_cpuid_find(func, subfunc, eax, ebx, ecx, edx)) {
+> +		/*
+> +		 * Some hypervisors will avoid keeping track of CPUID entries
+> +		 * where all values are zero, since they can be handled the
+> +		 * same as out-of-range values (all-zero). In our case, we want
+> +		 * to be able to distinguish between out-of-range entries and
+> +		 * in-range zero entries, since the CPUID table entries are
+> +		 * only a template that may need to be augmented with
+> +		 * additional values for things like CPU-specific information.
+> +		 * So if it's not in the table, but is still in the valid
+> +		 * range, proceed with the fix-ups below. Otherwise, just return
+> +		 * zeros.
+> +		 */
+> +		*eax = *ebx = *ecx = *edx = 0;
+> +		if (!sev_snp_cpuid_in_range(func))
+> +			goto out;
+
+That label is not needed.
+
+> +	}
+
+All that from here on looks like it should go into a separate function
+called
+
+snp_cpuid_postprocess()
+
+where you can do a switch-case on func and have it nice, readable and
+extensible there, in case more functions get added.
+
+> +	if (func == 0x1) {
+> +		u32 ebx2, edx2;
+> +
+> +		sev_snp_cpuid_hv(func, subfunc, NULL, &ebx2, NULL, &edx2);
+> +		/* initial APIC ID */
+> +		*ebx = (*ebx & 0x00FFFFFF) | (ebx2 & 0xFF000000);
+
+For all hex masks: use GENMASK_ULL.
+
+> +		/* APIC enabled bit */
+> +		*edx = (*edx & ~BIT_ULL(9)) | (edx2 & BIT_ULL(9));
+> +
+> +		/* OSXSAVE enabled bit */
+> +		if (native_read_cr4() & X86_CR4_OSXSAVE)
+> +			*ecx |= BIT_ULL(27);
+> +	} else if (func == 0x7) {
+> +		/* OSPKE enabled bit */
+> +		*ecx &= ~BIT_ULL(4);
+> +		if (native_read_cr4() & X86_CR4_PKE)
+> +			*ecx |= BIT_ULL(4);
+> +	} else if (func == 0xB) {
+> +		/* extended APIC ID */
+> +		sev_snp_cpuid_hv(func, 0, NULL, NULL, NULL, edx);
+> +	} else if (func == 0xd && (subfunc == 0x0 || subfunc == 0x1)) {
+> +		bool compacted = false;
+> +		u64 xcr0 = 1, xss = 0;
+> +		u32 xsave_size;
+> +
+> +		if (native_read_cr4() & X86_CR4_OSXSAVE)
+> +			xcr0 = xgetbv(XCR_XFEATURE_ENABLED_MASK);
+> +		if (subfunc == 1) {
+> +			/* boot/compressed doesn't set XSS so 0 is fine there */
+> +#ifndef __BOOT_COMPRESSED
+> +			if (*eax & 0x8) /* XSAVES */
+> +				if (boot_cpu_has(X86_FEATURE_XSAVES))
+
+cpu_feature_enabled()
+
+> +					rdmsrl(MSR_IA32_XSS, xss);
+> +#endif
+> +			/*
+> +			 * The PPR and APM aren't clear on what size should be
+> +			 * encoded in 0xD:0x1:EBX when compaction is not enabled
+> +			 * by either XSAVEC or XSAVES since SNP-capable hardware
+> +			 * has the entries fixed as 1. KVM sets it to 0 in this
+> +			 * case, but to avoid this becoming an issue it's safer
+> +			 * to simply treat this as unsupported or SNP guests.
+> +			 */
+> +			if (!(*eax & 0xA)) /* (XSAVEC|XSAVES) */
+
+Please put side comments over the line they comment.
+
+> +				return -EINVAL;
+> +
+> +			compacted = true;
+> +		}
+> +
+> +		if (sev_snp_cpuid_xsave_size(xcr0 | xss, *ebx, &xsave_size,
+> +					     compacted))
+
+No need for that linebreak.
+
+> +			return -EINVAL;
+> +
+> +		*ebx = xsave_size;
+> +	} else if (func == 0x8000001E) {
+> +		u32 ebx2, ecx2;
+> +
+> +		/* extended APIC ID */
+> +		sev_snp_cpuid_hv(func, subfunc, eax, &ebx2, &ecx2, NULL);
+> +		/* compute ID */
+> +		*ebx = (*ebx & 0xFFFFFFF00) | (ebx2 & 0x000000FF);
+> +		/* node ID */
+> +		*ecx = (*ecx & 0xFFFFFFF00) | (ecx2 & 0x000000FF);
+> +	}
+> +
+> +out:
+> +	return 0;
+> +}
+> +
+>  /*
+>   * Boot VC Handler - This is the first VC handler during boot, there is no GHCB
+>   * page yet, so it only supports the MSR based communication with the
+
+Is that comment...
+
+> @@ -244,15 +485,25 @@ static int sev_cpuid_hv(u32 func, u32 subfunc, u32 *eax, u32 *ebx,
+>  void __init do_vc_no_ghcb(struct pt_regs *regs, unsigned long exit_code)
+>  {
+>  	unsigned int fn = lower_bits(regs->ax, 32);
+> +	unsigned int subfn = lower_bits(regs->cx, 32);
+>  	u32 eax, ebx, ecx, edx;
+> +	int ret;
+>  
+>  	/* Only CPUID is supported via MSR protocol */
+
+... and that still valid?
+
+>  	if (exit_code != SVM_EXIT_CPUID)
+>  		goto fail;
+>  
+> +	ret = sev_snp_cpuid(fn, subfn, &eax, &ebx, &ecx, &edx);
+> +	if (ret == 0)
+> +		goto out;
+
+I think you mean here "goto cpuid_done;" or so.
+
+> +
+> +	if (ret != -EOPNOTSUPP)
+> +		goto fail;
+> +
+>  	if (sev_cpuid_hv(fn, 0, &eax, &ebx, &ecx, &edx))
+>  		goto fail;
+>  
+> +out:
+>  	regs->ax = eax;
+>  	regs->bx = ebx;
+>  	regs->cx = ecx;
+> @@ -552,6 +803,19 @@ static enum es_result vc_handle_cpuid(struct ghcb *ghcb,
+>  	struct pt_regs *regs = ctxt->regs;
+>  	u32 cr4 = native_read_cr4();
+>  	enum es_result ret;
+> +	u32 eax, ebx, ecx, edx;
+> +	int cpuid_ret;
+> +
+> +	cpuid_ret = sev_snp_cpuid(regs->ax, regs->cx, &eax, &ebx, &ecx, &edx);
+> +	if (cpuid_ret == 0) {
+> +		regs->ax = eax;
+> +		regs->bx = ebx;
+> +		regs->cx = ecx;
+> +		regs->dx = edx;
+> +		return ES_OK;
+> +	}
+> +	if (cpuid_ret != -EOPNOTSUPP)
+> +		return ES_VMM_ERROR;
+
+I don't like this thing slapped inside the function. Pls put it in a separate 
+
+vc_handle_cpuid_snp()
+
+which is called by vc_handle_cpuid() instead.
+
+>  
+>  	ghcb_set_rax(ghcb, regs->ax);
+>  	ghcb_set_rcx(ghcb, regs->cx);
+> @@ -603,3 +867,113 @@ static enum es_result vc_handle_rdtsc(struct ghcb *ghcb,
+>  
+>  	return ES_OK;
+>  }
+> +
+> +#ifdef BOOT_COMPRESSED
+> +static struct setup_data *get_cc_setup_data(struct boot_params *bp)
+> +{
+> +	struct setup_data *hdr = (struct setup_data *)bp->hdr.setup_data;
+> +
+> +	while (hdr) {
+> +		if (hdr->type == SETUP_CC_BLOB)
+> +			return hdr;
+> +		hdr = (struct setup_data *)hdr->next;
+> +	}
+> +
+> +	return NULL;
+> +}
+> +
+> +/*
+> + * For boot/compressed kernel:
+> + *
+> + *   1) Search for CC blob in the following order/precedence:
+> + *      - via linux boot protocol / setup_data entry
+> + *      - via EFI configuration table
+> + *   2) Return a pointer to the CC blob, NULL otherwise.
+> + */
+> +static struct cc_blob_sev_info *sev_snp_probe_cc_blob(struct boot_params *bp)
+
+snp_find_cc_blob() simply.
+
+> +{
+> +	struct cc_blob_sev_info *cc_info = NULL;
+> +	struct setup_data_cc {
+> +		struct setup_data header;
+> +		u32 cc_blob_address;
+> +	} *sd;
+
+Define that struct above the function and call it "cc_setup_data" like
+the rest of the stuff which deals with that.
+
+> +	unsigned long conf_table_pa;
+> +	unsigned int conf_table_len;
+> +	bool efi_64;
+> +
+> +	/* Try to get CC blob via setup_data */
+> +	sd = (struct setup_data_cc *)get_cc_setup_data(bp);
+> +	if (sd) {
+> +		cc_info = (struct cc_blob_sev_info *)(unsigned long)sd->cc_blob_address;
+> +		goto out_verify;
+> +	}
+> +
+> +	/* CC blob isn't in setup_data, see if it's in the EFI config table */
+> +	if (!efi_get_conf_table(bp, &conf_table_pa, &conf_table_len, &efi_64))
+> +		(void)efi_find_vendor_table(conf_table_pa, conf_table_len,
+> +					    EFI_CC_BLOB_GUID, efi_64,
+> +					    (unsigned long *)&cc_info);
+
+Yah, check that retval pls with a proper ret variable. No need to cram
+it all together.
+
+> +
+> +out_verify:
+> +	/* CC blob should be either valid or not present. Fail otherwise. */
+> +	if (cc_info && cc_info->magic != CC_BLOB_SEV_HDR_MAGIC)
+> +		sev_es_terminate(1, GHCB_SNP_UNSUPPORTED);
+> +
+> +	return cc_info;
+> +}
+> +#else
+> +/*
+> + * Probing for CC blob for run-time kernel will be enabled in a subsequent
+> + * patch. For now we need to stub this out.
+> + */
+> +static struct cc_blob_sev_info *sev_snp_probe_cc_blob(struct boot_params *bp)
+> +{
+> +	return NULL;
+> +}
+> +#endif
+> +
+> +/*
+> + * Initial set up of CPUID table when running identity-mapped.
+> + *
+> + * NOTE: Since SEV_SNP feature partly relies on CPUID checks that can't
+> + * happen until we access CPUID page, we skip the check and hope the
+> + * bootloader is providing sane values.
+
+So I don't like the sound of that even one bit. We shouldn't hope
+anything here...
+
+> Current code relies on all CPUID
+> + * page lookups originating from #VC handler, which at least provides
+> + * indication that SEV-ES is enabled. Subsequent init levels will check for
+> + * SEV_SNP feature once available to also take SEV MSR value into account.
+> + */
+> +void sev_snp_cpuid_init(struct boot_params *bp)
+
+snp_cpuid_init()
+
+In general, prefix all SNP-specific variables, structs, functions, etc
+with "snp_" simply.
+
+> +{
+> +	struct cc_blob_sev_info *cc_info;
+> +
+> +	if (!bp)
+> +		sev_es_terminate(1, GHCB_TERM_CPUID);
+> +
+> +	cc_info = sev_snp_probe_cc_blob(bp);
+> +
+
+^ Superfluous newline.
+
+> +	if (!cc_info)
+> +		return;
+> +
+> +	sev_snp_cpuid_pa = cc_info->cpuid_phys;
+> +	sev_snp_cpuid_sz = cc_info->cpuid_len;
+
+You can do those assignments ...
+
+> +
+> +	/*
+> +	 * These should always be valid values for SNP, even if guest isn't
+> +	 * actually configured to use the CPUID table.
+> +	 */
+> +	if (!sev_snp_cpuid_pa || sev_snp_cpuid_sz < PAGE_SIZE)
+> +		sev_es_terminate(1, GHCB_TERM_CPUID);
+
+
+... here, after you've verified them.
+
+> +
+> +	cpuid_info = (const struct sev_snp_cpuid_info *)sev_snp_cpuid_pa;
+> +
+> +	/*
+> +	 * We should be able to trust the 'count' value in the CPUID table
+> +	 * area, but ensure it agrees with CC blob value to be safe.
+> +	 */
+> +	if (sev_snp_cpuid_sz < (sizeof(struct sev_snp_cpuid_info) +
+> +				sizeof(struct sev_snp_cpuid_fn) *
+> +				cpuid_info->count))
+
+Yah, this is the type of paranoia I'm talking about!
+
+> +		sev_es_terminate(1, GHCB_TERM_CPUID);
+> +
+> +	sev_snp_cpuid_enabled = 1;
+> +}
+> diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
+> index ddf8ced4a879..d7b6f7420551 100644
+> --- a/arch/x86/kernel/sev.c
+> +++ b/arch/x86/kernel/sev.c
+> @@ -19,6 +19,8 @@
+>  #include <linux/kernel.h>
+>  #include <linux/mm.h>
+>  #include <linux/cpumask.h>
+> +#include <linux/log2.h>
+> +#include <linux/efi.h>
+>  
+>  #include <asm/cpu_entry_area.h>
+>  #include <asm/stacktrace.h>
+> @@ -32,6 +34,8 @@
+>  #include <asm/smp.h>
+>  #include <asm/cpu.h>
+>  #include <asm/apic.h>
+> +#include <asm/efi.h>
+> +#include <asm/cpuid.h>
+>  
+>  #include "sev-internal.h"
+
+What are those includes for?
+
+Looks like a leftover...
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
