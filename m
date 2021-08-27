@@ -2,143 +2,144 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D0F73F9A76
-	for <lists+linux-efi@lfdr.de>; Fri, 27 Aug 2021 15:51:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5DFBE3F9A86
+	for <lists+linux-efi@lfdr.de>; Fri, 27 Aug 2021 15:57:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232312AbhH0Nvr (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 27 Aug 2021 09:51:47 -0400
-Received: from mail.skyhub.de ([5.9.137.197]:37258 "EHLO mail.skyhub.de"
+        id S232257AbhH0N5m (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 27 Aug 2021 09:57:42 -0400
+Received: from mail.kernel.org ([198.145.29.99]:43978 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232257AbhH0Nvq (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Fri, 27 Aug 2021 09:51:46 -0400
-Received: from zn.tnic (p200300ec2f1117006e0d6268a9fc7b3e.dip0.t-ipconnect.de [IPv6:2003:ec:2f11:1700:6e0d:6268:a9fc:7b3e])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 59FAE1EC0537;
-        Fri, 27 Aug 2021 15:50:52 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1630072252;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=MgcfjTqcSY9gu+zATu+viDfC+xRfq+ze2XUVEcy5kJQ=;
-        b=cO0UcApzABFyvPv+e6G4bGRLUXS/CNO2/DFEGytg7MS8u7V43idZQCwPExuB4RZ2dTpRkF
-        ZxrfGsWj2Lzr+LOSyR0G1Fy/jCw1vouDlF4GKT7VnZ9xWps8tPd6rZuQft0qi4nHtT/Sfa
-        fAPo0aIk+YOA4sfiUsRttbNgb58ivFI=
-Date:   Fri, 27 Aug 2021 15:51:29 +0200
-From:   Borislav Petkov <bp@alien8.de>
-To:     Brijesh Singh <brijesh.singh@amd.com>
-Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        linux-coco@lists.linux.dev, linux-mm@kvack.org,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Vitaly Kuznetsov <vkuznets@redhat.com>,
-        Wanpeng Li <wanpengli@tencent.com>,
-        Jim Mattson <jmattson@google.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        David Rientjes <rientjes@google.com>,
-        Dov Murik <dovmurik@linux.ibm.com>,
-        Tobin Feldman-Fitzthum <tobin@ibm.com>,
-        Michael Roth <michael.roth@amd.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        "Kirill A . Shutemov" <kirill@shutemov.name>,
-        Andi Kleen <ak@linux.intel.com>, tony.luck@intel.com,
-        marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com
-Subject: Re: [PATCH Part1 v5 29/38] x86/boot: add a pointer to Confidential
- Computing blob in bootparams
-Message-ID: <YSjt4YDQR8vDeOdI@zn.tnic>
-References: <20210820151933.22401-1-brijesh.singh@amd.com>
- <20210820151933.22401-30-brijesh.singh@amd.com>
+        id S231675AbhH0N5m (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Fri, 27 Aug 2021 09:57:42 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 92B6560F35
+        for <linux-efi@vger.kernel.org>; Fri, 27 Aug 2021 13:56:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1630072613;
+        bh=xTMrR/+Di4u84mT1/ADwHuGsAHWnH465vDxM0jGQXEw=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=X+FvTnQEaOOtjhrRPBqrZBVIJ2O9rZWo8gnZwLJ5H4tNx/DgKItUw/M2+Vd95jl54
+         svPYd6AeFY7Yd2yAcea+xZEtQMyZv9A1tWlNn5mDU6Da4IyDYIM7++iRzG52YWTVh7
+         jXFlrq+Gpu3Y6ngOt6+W1LsCzloNjdCSIjMPrk5X2Dao3PRROukpxsTfdMSpx4gKte
+         yOXfAvsHgd8Gj+/2pTzk+7RZCreEbd09DroBmSKcxhH025OqLu76abay4PzJZ0M/Mw
+         du4yTfOR+ojHCA9EpxOqiO9zphQyvBLiv/sIoaiBtDMdzHb22EwcrjNbDnWBgJNfQd
+         bsvYN2/8rz30Q==
+Received: by mail-oi1-f178.google.com with SMTP id n27so10009042oij.0
+        for <linux-efi@vger.kernel.org>; Fri, 27 Aug 2021 06:56:53 -0700 (PDT)
+X-Gm-Message-State: AOAM531a6on1Di1Jhol0NihBlIwRonFEBLTioGWrSlWYdwSwsjiYscfD
+        9HJt1kCnNqgGgccAdBgcUYxFmHpcPGSRMNJMQ8w=
+X-Google-Smtp-Source: ABdhPJztZ0OEIB9TM9Exc3IVz2olakTNtAp9kg7LQ/UGA1R/7CTEHc4nE7qNhvSxLy4cK+nALIdxFwC0KzXJQkwlAqU=
+X-Received: by 2002:aca:ea54:: with SMTP id i81mr6528767oih.174.1630072612889;
+ Fri, 27 Aug 2021 06:56:52 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20210820151933.22401-30-brijesh.singh@amd.com>
+References: <dad4cdef71cf415f8ee6f0987b467b01@intel.com> <20210514032137.94458-1-qiuxu.zhuo@intel.com>
+In-Reply-To: <20210514032137.94458-1-qiuxu.zhuo@intel.com>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Fri, 27 Aug 2021 15:56:41 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXHNtX3Qa4Zvmhq5XEkPSpW6DDpTvCW813fnbbLxeP3pzw@mail.gmail.com>
+Message-ID: <CAMj1kXHNtX3Qa4Zvmhq5XEkPSpW6DDpTvCW813fnbbLxeP3pzw@mail.gmail.com>
+Subject: Re: [PATCH v6 2/2] eif/capsule-pstore: Add capsule pstore backend
+To:     Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+Cc:     Kees Cook <keescook@chromium.org>, liming.gao@intel.com,
+        linux-efi <linux-efi@vger.kernel.org>,
+        Matt Fleming <matt@codeblueprint.co.uk>,
+        Tony Luck <tony.luck@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, Aug 20, 2021 at 10:19:24AM -0500, Brijesh Singh wrote:
-> From: Michael Roth <michael.roth@amd.com>
-> 
-> The previously defined Confidential Computing blob is provided to the
-> kernel via a setup_data structure or EFI config table entry. Currently
-> these are both checked for by boot/compressed kernel to access the
-> CPUID table address within it for use with SEV-SNP CPUID enforcement.
-> 
-> To also enable SEV-SNP CPUID enforcement for the run-time kernel,
-> similar early access to the CPUID table is needed early on while it's
-> still using the identity-mapped page table set up by boot/compressed,
-> where global pointers need to be accessed via fixup_pointer().
-> 
-> This is much of an issue for accessing setup_data, and the EFI config
-> table helper code currently used in boot/compressed *could* be used in
-> this case as well since they both rely on identity-mapping. However, it
-> has some reliance on EFI helpers/string constants that would need to be
-> accessed via fixup_pointer(), and fixing it up while making it
-> shareable between boot/compressed and run-time kernel is fragile and
-> introduces a good bit of uglyness.
-> 
-> Instead, this patch adds a boot_params->cc_blob_address pointer that
+On Fri, 14 May 2021 at 05:21, Qiuxu Zhuo <qiuxu.zhuo@intel.com> wrote:
+>
+> >> From: linux-efi-owner@vger.kernel.org <linux-efi-owner@vger.kernel.org=
+> On Behalf Of Ard Biesheuvel
+> >> ...
+> >>
+> >> OK, so I see one complication with this. The EFI UpdateCapsule() runti=
+me
+> >> service expects the OS to use the EFI ResetSystem() runtime service to
+> >> perform the reboot. pstore is designed to record whatever it can while=
+ the
+> >> system is crashing, and so it this would need reboot_on_panic at the v=
+ery
+> >> least, but even then, it is not very likely that you would be able to =
+do a
+> >> clean soft reboot from that state in the general case.
+> >>
+> >> So unless there is a way to perform the test steps /without/ relying o=
+n
+> >> magic SysRq to do a soft reboot after the system has panicked, I'm not=
+ convinced this is worthwhile.
+>
+>
+> > Hi Ard,
+> >
+> > Your concern is reasonable! Thanks!
+> >
+> > Yes, the capsule-pstore driver depends on the EFI ResetSystem() runtime=
+ service
+> > to perform the reboot to save the capsules of crashing dump across a wa=
+rm reset.
+> > Investigation on current Linux kernel reboot code (see the commits belo=
+w) of
+> > arm64 and x86 shows that if the system is UEFI Runtime Services availab=
+le or
+> > if an EFI capsule has been sent to the firmware then the system is forc=
+ed to
+> > use EFI ResetSystem(). I.e., the EFI ResetSystem() will be the preferre=
+d reboot
+> > path if we have EFI capsules.
+> >
+> >      arm64: 60c0d45a7f7a ("efi/arm64: use UEFI for system reset and pow=
+eroff")
+> >        x86: 87615a34d561 ("x86/efi: Force EFI reboot to process pending=
+ capsules")
+> >
+> > So the capsule-pstore simply depends on reboot_on_panic. The dependency=
+ may
+> > make it seem to be different from some other pstore backend drivers tha=
+t save
+> > the dump to some persistent memory, so they don=E2=80=99t care how the =
+system is reset
+> > (could even be power-cycled). Whether rebooting the kernel or pinning i=
+t in a
+> > loop on panic is controlled by "panic_timeout" which is exported for ex=
+ternal
+> > modules. The capsule-pstore driver may check it and print a warning mes=
+sage if
+> > it isn't set to trigger a reboot (panic_timeout=3D0).
+> >
+> > One more example of pstore successfully using the capsule-pstore driver=
+ is showed
+> > as below (the panic_timeout=3D1 was pre-set, so the kernel got reboot o=
+n panic).
+> > It didn't relying on magic SysRq to reboot the system. Tested the capsu=
+le-pstore
+> > driver that it still worked well.
+> >
+> > Summary: The capsule-pstore only depends on panic_timeout !=3D0. If pan=
+ic_timeout !=3D0,
+> > then the capsule-pstore can work (certainly, the system should have EFI=
+ Runtime Services).
+> > Hope the capsule-pstore is still a worthwhile pstore backend.  :-)
+> > ...
+>
+> Hi Ard,
+>
+> Hope all is well with you. May I know whether the comments above make sen=
+se for you?
+> Thanks!
+>
 
-Avoid having "This patch" or "This commit" in the commit message. It is
-tautologically useless.
+The point is really that even when reboot_on_panic is enabled, there
+are many cases where a panic condition prevents the kernel from doing
+anything at all, including scheduling the workqueue thread that
+handles EFI runtime service calls.
 
-Also, do
-
-$ git grep 'This patch' Documentation/process
-
-for more details.
-
-> boot/compressed can initialize so that the run-time kernel can access
-> the prelocated CC blob that way instead.
-> 
-> Signed-off-by: Michael Roth <michael.roth@amd.com>
-> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
-> ---
->  arch/x86/include/asm/bootparam_utils.h | 1 +
->  arch/x86/include/uapi/asm/bootparam.h  | 3 ++-
->  2 files changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/x86/include/asm/bootparam_utils.h b/arch/x86/include/asm/bootparam_utils.h
-> index 981fe923a59f..53e9b0620d96 100644
-> --- a/arch/x86/include/asm/bootparam_utils.h
-> +++ b/arch/x86/include/asm/bootparam_utils.h
-> @@ -74,6 +74,7 @@ static void sanitize_boot_params(struct boot_params *boot_params)
->  			BOOT_PARAM_PRESERVE(hdr),
->  			BOOT_PARAM_PRESERVE(e820_table),
->  			BOOT_PARAM_PRESERVE(eddbuf),
-> +			BOOT_PARAM_PRESERVE(cc_blob_address),
->  		};
->  
->  		memset(&scratch, 0, sizeof(scratch));
-> diff --git a/arch/x86/include/uapi/asm/bootparam.h b/arch/x86/include/uapi/asm/bootparam.h
-> index 1ac5acca72ce..bea5cdcdf532 100644
-> --- a/arch/x86/include/uapi/asm/bootparam.h
-> +++ b/arch/x86/include/uapi/asm/bootparam.h
-> @@ -188,7 +188,8 @@ struct boot_params {
->  	__u32 ext_ramdisk_image;			/* 0x0c0 */
->  	__u32 ext_ramdisk_size;				/* 0x0c4 */
->  	__u32 ext_cmd_line_ptr;				/* 0x0c8 */
-> -	__u8  _pad4[116];				/* 0x0cc */
-> +	__u8  _pad4[112];				/* 0x0cc */
-> +	__u32 cc_blob_address;				/* 0x13c */
-
-So I know I've heard grub being mentioned in conjunction with this: if
-you are ever going to pass this through the boot loader, then you'd need
-to update Documentation/x86/zero-page.rst too to state that this field
-can be written by the boot loader too.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Of course, this applies equally to efi-pstore itself, but at least
+that uses EFI runtime services that can be expected to work at
+runtime, as opposed to UpdateCapsule(), which is only ever used at
+boot time in that majority of cases (both Linux and Windows carry a
+special capsule loader that reboots into UEFI so that UpdateCapsule()
+can be invoked at boot time, as UpdateCapsule() at runtime is hardly
+tested and therefore broken on most production PC hardware)
