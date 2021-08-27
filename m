@@ -2,144 +2,81 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5DFBE3F9A86
-	for <lists+linux-efi@lfdr.de>; Fri, 27 Aug 2021 15:57:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B9CB3F9A96
+	for <lists+linux-efi@lfdr.de>; Fri, 27 Aug 2021 16:05:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232257AbhH0N5m (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 27 Aug 2021 09:57:42 -0400
-Received: from mail.kernel.org ([198.145.29.99]:43978 "EHLO mail.kernel.org"
+        id S245205AbhH0OF3 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 27 Aug 2021 10:05:29 -0400
+Received: from mail.kernel.org ([198.145.29.99]:45976 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231675AbhH0N5m (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Fri, 27 Aug 2021 09:57:42 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 92B6560F35
-        for <linux-efi@vger.kernel.org>; Fri, 27 Aug 2021 13:56:53 +0000 (UTC)
+        id S244821AbhH0OF3 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Fri, 27 Aug 2021 10:05:29 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 4EF0E60F25;
+        Fri, 27 Aug 2021 14:04:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1630072613;
-        bh=xTMrR/+Di4u84mT1/ADwHuGsAHWnH465vDxM0jGQXEw=;
+        s=k20201202; t=1630073080;
+        bh=44QU6B7UHXV3vt00RetJeW55g4tXsNAqT+PxKxmKGW0=;
         h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=X+FvTnQEaOOtjhrRPBqrZBVIJ2O9rZWo8gnZwLJ5H4tNx/DgKItUw/M2+Vd95jl54
-         svPYd6AeFY7Yd2yAcea+xZEtQMyZv9A1tWlNn5mDU6Da4IyDYIM7++iRzG52YWTVh7
-         jXFlrq+Gpu3Y6ngOt6+W1LsCzloNjdCSIjMPrk5X2Dao3PRROukpxsTfdMSpx4gKte
-         yOXfAvsHgd8Gj+/2pTzk+7RZCreEbd09DroBmSKcxhH025OqLu76abay4PzJZ0M/Mw
-         du4yTfOR+ojHCA9EpxOqiO9zphQyvBLiv/sIoaiBtDMdzHb22EwcrjNbDnWBgJNfQd
-         bsvYN2/8rz30Q==
-Received: by mail-oi1-f178.google.com with SMTP id n27so10009042oij.0
-        for <linux-efi@vger.kernel.org>; Fri, 27 Aug 2021 06:56:53 -0700 (PDT)
-X-Gm-Message-State: AOAM531a6on1Di1Jhol0NihBlIwRonFEBLTioGWrSlWYdwSwsjiYscfD
-        9HJt1kCnNqgGgccAdBgcUYxFmHpcPGSRMNJMQ8w=
-X-Google-Smtp-Source: ABdhPJztZ0OEIB9TM9Exc3IVz2olakTNtAp9kg7LQ/UGA1R/7CTEHc4nE7qNhvSxLy4cK+nALIdxFwC0KzXJQkwlAqU=
-X-Received: by 2002:aca:ea54:: with SMTP id i81mr6528767oih.174.1630072612889;
- Fri, 27 Aug 2021 06:56:52 -0700 (PDT)
+        b=J+6xVaYLfmFda9E6Xfhy0qs0X9nojl1N1jKgKnf29vo2E+t0XQe/kUanKV/z99W84
+         pbhJQEjZ/EhGQfrsw++H9maezou3hFkMTLrpZ0CzESHMx9i82Qj7XnV+D4JNJRwYQj
+         N3SZ8+FLL+A/ss7yv+7Nx7NTudIU9TiEytsxjEWf28PJzgTBJC8jEtUEGl4rk6hX3U
+         bPtSIpJpRMTu8SL9J2hGmHj6IUwMS2aagl80rOK6yVzU3ER2v3sKfJb28bw8zq8xDU
+         Om3H9oCwJ/EUp7qNtHNCSPpx70MQL7VTi0TfCSNnMXeDZ3cac+a9FQbQ4JkThywhpX
+         cuclQsvrluoNg==
+Received: by mail-oi1-f180.google.com with SMTP id o185so9608777oih.13;
+        Fri, 27 Aug 2021 07:04:40 -0700 (PDT)
+X-Gm-Message-State: AOAM533hDtv8pjBeRl8nZJs7FHUeqIQQN8JNGT8VsXLpwQDi2Ide76y7
+        NGsdNhUMkPIlWjJ2YccmEvYpIKdiFBbUZZpv7cg=
+X-Google-Smtp-Source: ABdhPJwl71FxMHI1K9ik8wmBUJnxFjkrkeihPqyYzOH5gE4Mtgs5Qb/AGyKRNVnOmEfMW2i9q/U9tfZP1r1/Vk7pUJA=
+X-Received: by 2002:aca:ea54:: with SMTP id i81mr6560180oih.174.1630073079708;
+ Fri, 27 Aug 2021 07:04:39 -0700 (PDT)
 MIME-Version: 1.0
-References: <dad4cdef71cf415f8ee6f0987b467b01@intel.com> <20210514032137.94458-1-qiuxu.zhuo@intel.com>
-In-Reply-To: <20210514032137.94458-1-qiuxu.zhuo@intel.com>
+References: <20210823115654.45405-1-xueshuai@linux.alibaba.com>
+In-Reply-To: <20210823115654.45405-1-xueshuai@linux.alibaba.com>
 From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Fri, 27 Aug 2021 15:56:41 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXHNtX3Qa4Zvmhq5XEkPSpW6DDpTvCW813fnbbLxeP3pzw@mail.gmail.com>
-Message-ID: <CAMj1kXHNtX3Qa4Zvmhq5XEkPSpW6DDpTvCW813fnbbLxeP3pzw@mail.gmail.com>
-Subject: Re: [PATCH v6 2/2] eif/capsule-pstore: Add capsule pstore backend
-To:     Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-Cc:     Kees Cook <keescook@chromium.org>, liming.gao@intel.com,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Matt Fleming <matt@codeblueprint.co.uk>,
-        Tony Luck <tony.luck@intel.com>
+Date:   Fri, 27 Aug 2021 16:04:28 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXEY=kK9+LfJtemBZND_u-+nP7qu6cNJxxLfQJ6CV1Ub8Q@mail.gmail.com>
+Message-ID: <CAMj1kXEY=kK9+LfJtemBZND_u-+nP7qu6cNJxxLfQJ6CV1Ub8Q@mail.gmail.com>
+Subject: Re: [PATCH] efi: cper: check section header more appropriately
+To:     Shuai Xue <xueshuai@linux.alibaba.com>
+Cc:     linux-efi <linux-efi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        zhangliguang@linux.alibaba.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, 14 May 2021 at 05:21, Qiuxu Zhuo <qiuxu.zhuo@intel.com> wrote:
+On Mon, 23 Aug 2021 at 13:57, Shuai Xue <xueshuai@linux.alibaba.com> wrote:
 >
-> >> From: linux-efi-owner@vger.kernel.org <linux-efi-owner@vger.kernel.org=
-> On Behalf Of Ard Biesheuvel
-> >> ...
-> >>
-> >> OK, so I see one complication with this. The EFI UpdateCapsule() runti=
-me
-> >> service expects the OS to use the EFI ResetSystem() runtime service to
-> >> perform the reboot. pstore is designed to record whatever it can while=
- the
-> >> system is crashing, and so it this would need reboot_on_panic at the v=
-ery
-> >> least, but even then, it is not very likely that you would be able to =
-do a
-> >> clean soft reboot from that state in the general case.
-> >>
-> >> So unless there is a way to perform the test steps /without/ relying o=
-n
-> >> magic SysRq to do a soft reboot after the system has panicked, I'm not=
- convinced this is worthwhile.
+> When checking a generic status block, we iterate over all the generic data
+> blocks. The loop condition checks that the generic data block is valid.
+> Because the size of data blocks (excluding error data) may vary depending
+> on the revision and the revision is contained within the data block, we
+> should ensure that enough of the current data block is valid appropiriately
+> for different revision.
 >
->
-> > Hi Ard,
-> >
-> > Your concern is reasonable! Thanks!
-> >
-> > Yes, the capsule-pstore driver depends on the EFI ResetSystem() runtime=
- service
-> > to perform the reboot to save the capsules of crashing dump across a wa=
-rm reset.
-> > Investigation on current Linux kernel reboot code (see the commits belo=
-w) of
-> > arm64 and x86 shows that if the system is UEFI Runtime Services availab=
-le or
-> > if an EFI capsule has been sent to the firmware then the system is forc=
-ed to
-> > use EFI ResetSystem(). I.e., the EFI ResetSystem() will be the preferre=
-d reboot
-> > path if we have EFI capsules.
-> >
-> >      arm64: 60c0d45a7f7a ("efi/arm64: use UEFI for system reset and pow=
-eroff")
-> >        x86: 87615a34d561 ("x86/efi: Force EFI reboot to process pending=
- capsules")
-> >
-> > So the capsule-pstore simply depends on reboot_on_panic. The dependency=
- may
-> > make it seem to be different from some other pstore backend drivers tha=
-t save
-> > the dump to some persistent memory, so they don=E2=80=99t care how the =
-system is reset
-> > (could even be power-cycled). Whether rebooting the kernel or pinning i=
-t in a
-> > loop on panic is controlled by "panic_timeout" which is exported for ex=
-ternal
-> > modules. The capsule-pstore driver may check it and print a warning mes=
-sage if
-> > it isn't set to trigger a reboot (panic_timeout=3D0).
-> >
-> > One more example of pstore successfully using the capsule-pstore driver=
- is showed
-> > as below (the panic_timeout=3D1 was pre-set, so the kernel got reboot o=
-n panic).
-> > It didn't relying on magic SysRq to reboot the system. Tested the capsu=
-le-pstore
-> > driver that it still worked well.
-> >
-> > Summary: The capsule-pstore only depends on panic_timeout !=3D0. If pan=
-ic_timeout !=3D0,
-> > then the capsule-pstore can work (certainly, the system should have EFI=
- Runtime Services).
-> > Hope the capsule-pstore is still a worthwhile pstore backend.  :-)
-> > ...
->
-> Hi Ard,
->
-> Hope all is well with you. May I know whether the comments above make sen=
-se for you?
-> Thanks!
->
+> Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
 
-The point is really that even when reboot_on_panic is enabled, there
-are many cases where a panic condition prevents the kernel from doing
-anything at all, including scheduling the workqueue thread that
-handles EFI runtime service calls.
+Applied, thanks.
 
-Of course, this applies equally to efi-pstore itself, but at least
-that uses EFI runtime services that can be expected to work at
-runtime, as opposed to UpdateCapsule(), which is only ever used at
-boot time in that majority of cases (both Linux and Windows carry a
-special capsule loader that reboots into UEFI so that UpdateCapsule()
-can be invoked at boot time, as UpdateCapsule() at runtime is hardly
-tested and therefore broken on most production PC hardware)
+> ---
+>  drivers/firmware/efi/cper.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/firmware/efi/cper.c b/drivers/firmware/efi/cper.c
+> index e15d484b6a5a..e80706d9e78a 100644
+> --- a/drivers/firmware/efi/cper.c
+> +++ b/drivers/firmware/efi/cper.c
+> @@ -635,7 +635,7 @@ int cper_estatus_check(const struct acpi_hest_generic_status *estatus)
+>         data_len = estatus->data_length;
+>
+>         apei_estatus_for_each_section(estatus, gdata) {
+> -               if (sizeof(struct acpi_hest_generic_data) > data_len)
+> +               if (acpi_hest_get_size(gdata) > data_len)
+>                         return -EINVAL;
+>
+>                 record_size = acpi_hest_get_record_size(gdata);
+> --
+> 2.20.1.12.g72788fdb
+>
