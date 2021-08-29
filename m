@@ -2,79 +2,90 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 25AC53FABF3
-	for <lists+linux-efi@lfdr.de>; Sun, 29 Aug 2021 15:25:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DF7F63FAC15
+	for <lists+linux-efi@lfdr.de>; Sun, 29 Aug 2021 16:00:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235434AbhH2NYJ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sun, 29 Aug 2021 09:24:09 -0400
-Received: from smtp-relay-canonical-1.canonical.com ([185.125.188.121]:43814
-        "EHLO smtp-relay-canonical-1.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S235376AbhH2NYI (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sun, 29 Aug 2021 09:24:08 -0400
-Received: from workstation5.fritz.box (ip-88-152-144-157.hsi03.unitymediagroup.de [88.152.144.157])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by smtp-relay-canonical-1.canonical.com (Postfix) with ESMTPSA id 837F83F0B8;
-        Sun, 29 Aug 2021 13:23:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1630243395;
-        bh=Lck8ieg/DRVz0Gp1/fiKpkSJ54XkbC9/gukX6sShCVA=;
-        h=From:To:Cc:Subject:Date:Message-Id:MIME-Version;
-        b=Xp1+St3j8flp394JKP8Spx5GM1WW090lOQ+G4xpW6rDhipjXBx9PgWIzACu/iLKI6
-         8sA+O6ChILCe5f3/6KctodaZJPIkewqXgSpjhLhO0c4ymArYMkmfV8w40jZN84NQvK
-         sAXvJU8qj2d8lBshtY1Cyub/FKqhHM3vknVFFi2zpQZpkj3syIiut3/NyHsntnXlmJ
-         thcrmh0QZ1ps2rVv2fsq/maaICMvN+XO0PpSCeGbEvAtHKxXoCv7LpFbDXFtu+x687
-         xo9yGOYv3Fn4dgx9NCnV8QKGdegV4ToqqyIgardHYtj3GCoJIirHzWqPDpP+emG0ZF
-         zABBFVbNl3tPg==
-From:   Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
-To:     Ard Biesheuvel <ardb@kernel.org>
+        id S231199AbhH2OA6 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sun, 29 Aug 2021 10:00:58 -0400
+Received: from mail.kernel.org ([198.145.29.99]:36062 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229463AbhH2OA6 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Sun, 29 Aug 2021 10:00:58 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 31A9F60F39;
+        Sun, 29 Aug 2021 14:00:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1630245606;
+        bh=mgK01xy87hSjH3l7m4l0m0nsFd/lEgiW70qMYmQvsC4=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=tDladQOdBbzp+rnr3Jn1DZWDEtzXbVETtHMN1aLHWtNdVHJqsSdq4GllYFeDOQWZ7
+         nV8/7RrhGV/9VztZHjP9Qj+JFs3EUIkEKZoSzbyCS41ZaYicMmYWY+n0/c04tq+WlX
+         fDT2oM4s1P5nLLS7DcZBVu6vSTcrWjo3Wt7NrfbyCYD2Qv2+b8SR86eSOVnGf224Mi
+         O3+3y+hU6kbhK+N7Yf9zACDp/OrRBJMctyovUx2YRE6arqRd1ZC2CblExdYMCdn7W+
+         WMDapqvZ8S8wYR7NR3uK6JxZbhNQqLV+8+YYkiDUVp6vKMRRdhHHiYHiP/GE3GxGsP
+         COeVfmam52RKg==
+Received: by mail-ot1-f43.google.com with SMTP id i8-20020a056830402800b0051afc3e373aso14843007ots.5;
+        Sun, 29 Aug 2021 07:00:06 -0700 (PDT)
+X-Gm-Message-State: AOAM532CZpjJnERa20JpnpxSurhH7ciLyDV7iJmQ+NSxItvx+FteguuP
+        WBLBSUzrN/BL6GbEzUIbJtvecbK/sfC2QhKRrvU=
+X-Google-Smtp-Source: ABdhPJyG63/MhW0MEr9Re4yydZQ3gu720GRly9dwS+/n4vYzuPLmVHZ2cnirWP/vGcaXhXjbm/2Ja2vQC39UkiR6qkM=
+X-Received: by 2002:a05:6830:444:: with SMTP id d4mr15709583otc.108.1630245605549;
+ Sun, 29 Aug 2021 07:00:05 -0700 (PDT)
+MIME-Version: 1.0
+References: <20210829132310.75687-1-heinrich.schuchardt@canonical.com>
+In-Reply-To: <20210829132310.75687-1-heinrich.schuchardt@canonical.com>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Sun, 29 Aug 2021 15:59:54 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXESt+1mWLx1oQUCWcQUa6e2M4D44jD_LH8gDraAQy-=9Q@mail.gmail.com>
+Message-ID: <CAMj1kXESt+1mWLx1oQUCWcQUa6e2M4D44jD_LH8gDraAQy-=9Q@mail.gmail.com>
+Subject: Re: [PATCH v2: 1/1] efi/libstub: "Exiting bootservices" message
+To:     Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
 Cc:     Atish Patra <atish.patra@wdc.com>,
         Heinrich Schuchardt <xypron.gpk@gmx.de>,
-        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
-Subject: [PATCH v2: 1/1] efi/libstub: "Exiting bootservices" message
-Date:   Sun, 29 Aug 2021 15:23:10 +0200
-Message-Id: <20210829132310.75687-1-heinrich.schuchardt@canonical.com>
-X-Mailer: git-send-email 2.30.2
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        linux-efi <linux-efi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The message
+On Sun, 29 Aug 2021 at 15:23, Heinrich Schuchardt
+<heinrich.schuchardt@canonical.com> wrote:
+>
+> The message
+>
+>     "Exiting boot services and installing virtual address map...\n"
+>
+> is even shown if we have efi=novamap on the command line or the firmware
+> does not provide EFI_RT_SUPPORTED_SET_VIRTUAL_ADDRESS_MAP.
+>
+> To avoid confusion just print
+>
+>     "Exiting boot services...\n"
+>
+> Signed-off-by: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
+> ---
+> v2:
+>         reduce complexity, use same message irrespective of efi_novamap
 
-    "Exiting boot services and installing virtual address map...\n"
+Queued up now, thanks.
 
-is even shown if we have efi=novamap on the command line or the firmware
-does not provide EFI_RT_SUPPORTED_SET_VIRTUAL_ADDRESS_MAP.
-
-To avoid confusion just print
-
-    "Exiting boot services...\n"
-
-Signed-off-by: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
----
-v2:
-	reduce complexity, use same message irrespective of efi_novamap
----
- drivers/firmware/efi/libstub/fdt.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/firmware/efi/libstub/fdt.c b/drivers/firmware/efi/libstub/fdt.c
-index 365c3a43a198..fe567be0f118 100644
---- a/drivers/firmware/efi/libstub/fdt.c
-+++ b/drivers/firmware/efi/libstub/fdt.c
-@@ -271,7 +271,7 @@ efi_status_t allocate_new_fdt_and_exit_boot(void *handle,
- 		return status;
- 	}
- 
--	efi_info("Exiting boot services and installing virtual address map...\n");
-+	efi_info("Exiting boot services...\n");
- 
- 	map.map = &memory_map;
- 	status = efi_allocate_pages(MAX_FDT_SIZE, new_fdt_addr, ULONG_MAX);
--- 
-2.30.2
-
+> ---
+>  drivers/firmware/efi/libstub/fdt.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/firmware/efi/libstub/fdt.c b/drivers/firmware/efi/libstub/fdt.c
+> index 365c3a43a198..fe567be0f118 100644
+> --- a/drivers/firmware/efi/libstub/fdt.c
+> +++ b/drivers/firmware/efi/libstub/fdt.c
+> @@ -271,7 +271,7 @@ efi_status_t allocate_new_fdt_and_exit_boot(void *handle,
+>                 return status;
+>         }
+>
+> -       efi_info("Exiting boot services and installing virtual address map...\n");
+> +       efi_info("Exiting boot services...\n");
+>
+>         map.map = &memory_map;
+>         status = efi_allocate_pages(MAX_FDT_SIZE, new_fdt_addr, ULONG_MAX);
+> --
+> 2.30.2
+>
