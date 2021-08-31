@@ -2,110 +2,136 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0DBC03FC416
-	for <lists+linux-efi@lfdr.de>; Tue, 31 Aug 2021 10:22:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6364B3FC45A
+	for <lists+linux-efi@lfdr.de>; Tue, 31 Aug 2021 11:00:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240174AbhHaIDi (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 31 Aug 2021 04:03:38 -0400
-Received: from mail.skyhub.de ([5.9.137.197]:33872 "EHLO mail.skyhub.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S240134AbhHaIDg (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Tue, 31 Aug 2021 04:03:36 -0400
-Received: from zn.tnic (p200300ec2f0f2f00e5150ccccff88358.dip0.t-ipconnect.de [IPv6:2003:ec:2f0f:2f00:e515:ccc:cff8:8358])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        id S240331AbhHaIeS (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 31 Aug 2021 04:34:18 -0400
+Received: from smtp-relay-internal-0.canonical.com ([185.125.188.122]:57874
+        "EHLO smtp-relay-internal-0.canonical.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S240329AbhHaIeS (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 31 Aug 2021 04:34:18 -0400
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com [209.85.128.71])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id ADB021EC050D;
-        Tue, 31 Aug 2021 10:02:35 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1630396955;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=+Hzu0yamQhg+NF0YFQ2l8T9eIMH/KofAiCkpDBBtktU=;
-        b=VeIJeDe1YeYq7fFcAdVoI5uWnR5kZeO3gHSjdm7P0w2zseJrdTyLkmnLIxDVAPlI2AsiSY
-        A+LccssbTECpYseBuznoG4ooAs7HrnywRA7Kz+fsPvyHpK3v02E9EVPNp3Epjm4MuGNrOk
-        apXrBYO+XWahTfw18+1NXcVGqOgDrYI=
-Date:   Tue, 31 Aug 2021 10:03:12 +0200
-From:   Borislav Petkov <bp@alien8.de>
-To:     Michael Roth <michael.roth@amd.com>
-Cc:     Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org,
-        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        linux-coco@lists.linux.dev, linux-mm@kvack.org,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Vitaly Kuznetsov <vkuznets@redhat.com>,
-        Wanpeng Li <wanpengli@tencent.com>,
-        Jim Mattson <jmattson@google.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        David Rientjes <rientjes@google.com>,
-        Dov Murik <dovmurik@linux.ibm.com>,
-        Tobin Feldman-Fitzthum <tobin@ibm.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        "Kirill A . Shutemov" <kirill@shutemov.name>,
-        Andi Kleen <ak@linux.intel.com>, tony.luck@intel.com,
-        marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com
-Subject: Re: [PATCH Part1 v5 23/38] x86/head/64: set up a startup %gs for
- stack protector
-Message-ID: <YS3iCqSY2vEmmkQ+@zn.tnic>
-References: <20210820151933.22401-1-brijesh.singh@amd.com>
- <20210820151933.22401-24-brijesh.singh@amd.com>
- <YSZTubkROktMMSba@zn.tnic>
- <20210825151835.wzgabnl7rbrge3a2@amd.com>
- <YSZv632kJKPzpayk@zn.tnic>
- <20210827133831.xfdw7z55q6ixpgjg@amd.com>
+        by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id E024840179
+        for <linux-efi@vger.kernel.org>; Tue, 31 Aug 2021 08:33:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+        s=20210705; t=1630398801;
+        bh=rVFvbeyORM+yDfxXk+EyYDIWSSluCwYhSXT1xfwcA1Q=;
+        h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+         In-Reply-To:Content-Type;
+        b=KSN5/BrmtvV5myU4kX1so75e4E6RRBNEZKbFsJr34sRTEBBdU7AGT1VJucJJrhVVF
+         S4UjCbkO2ErZyN9cOXitxOxHx8qSPgOInHQ4dv5nYvhjrk/P4+03zbV1L2hGHxxsvW
+         PoZ8ZAGvg8FCRB7QV6vUzg5cS3R9VtLH6qvQLF+HgKT78bcbTZXe9nstsm2xJF/FPU
+         zVngww9XzTX1h5hYjKr27BliG2CqWLzz6hP7VZbYb6OW6hFNaXpcSr4RDOYjjd141J
+         to5uyf9/oHPb2TKO50X6HtyxD9wocPZUi6OOE7SqHM0dogdMEXrHRISXuS7Ahai2rs
+         qIf3RxWBGDzQQ==
+Received: by mail-wm1-f71.google.com with SMTP id o20-20020a05600c379400b002e755735eedso1071245wmr.0
+        for <linux-efi@vger.kernel.org>; Tue, 31 Aug 2021 01:33:21 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id
+         :disposition-notification-to:date:user-agent:mime-version
+         :in-reply-to:content-language:content-transfer-encoding;
+        bh=rVFvbeyORM+yDfxXk+EyYDIWSSluCwYhSXT1xfwcA1Q=;
+        b=feGRY/dVKbW15WGy46TuOn67qHx+GsW2oyPR9nZU2jo+nmdA0s4ewGriIj30u7lWYp
+         urrDdim0SqvmTiA1UJb7JLFdhAkAgRZ7WYOdPorp0oPIAd7CNX7fZ7GO1Bo6TdGcendb
+         KrpnIZEX6Y6hde4VohtSEuYRXV74IuRbIqowF3Yjmlqch29Kv0PBSTIGjb+QFkfG2ybq
+         4J0VWOWxTMyRMtR+wvpEDRnRlLsJj7ZXVAu4m0dr55qA+lp8ruWEpMFWAbwL1j0mSJAR
+         Y9sT01Uec3uFbCFf5NNHy+72cd556DrlqCWxa3OxhhdTq863J60ZIdboPa7dwDtYhAjn
+         8wDg==
+X-Gm-Message-State: AOAM531awDv3wNi1n/vQElnYDO8CgyI0ZGeOiDFi2ehWVvQyonqJcZtV
+        ur1qNQC3xIS8VnTq4vZ2foWmlx8G6rujRIJhW8dKdJodZTX+AI0dRo1bJoWaOpCYX9PFHxVPVE+
+        WcMazfoJziuee3MrzTOEpQSd4RVvGhryVh4GT9Q==
+X-Received: by 2002:a5d:40c9:: with SMTP id b9mr29375474wrq.212.1630398801617;
+        Tue, 31 Aug 2021 01:33:21 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJyCa7b6B3ytD/ViUfIT43xB0dQK6owLm0wzrDkfQGNGVs09vAMWylFANsy71s5LasxCEN/saQ==
+X-Received: by 2002:a5d:40c9:: with SMTP id b9mr29375462wrq.212.1630398801456;
+        Tue, 31 Aug 2021 01:33:21 -0700 (PDT)
+Received: from [192.168.123.55] (ip-88-152-144-157.hsi03.unitymediagroup.de. [88.152.144.157])
+        by smtp.gmail.com with ESMTPSA id k1sm18013796wrz.61.2021.08.31.01.33.21
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 31 Aug 2021 01:33:21 -0700 (PDT)
+Subject: Re: [efitools PATCH 1/1] Make.rules: enable building on riscv64
+To:     James Bottomley <James.Bottomley@HansenPartnership.com>
+Cc:     Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Heinrich Schuchardt <xypron.glpk@gmx.de>
+References: <20210401165754.131719-1-xypron.glpk@gmx.de>
+From:   Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
+Message-ID: <fb11e204-a306-8857-08a0-267d28c12ef1@canonical.com>
+Date:   Tue, 31 Aug 2021 10:33:20 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20210827133831.xfdw7z55q6ixpgjg@amd.com>
+In-Reply-To: <20210401165754.131719-1-xypron.glpk@gmx.de>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, Aug 27, 2021 at 08:38:31AM -0500, Michael Roth wrote:
-> I've been periodically revising/rewording my comments since I saw you're
-> original comments to Brijesh a few versions back, but it's how I normally
-> talk when discussing code with people so it keeps managing to sneak back in.
 
-Oh sure, happens to me too and I know it is hard to keep out but when
-you start doing git archeology and start going through old commit
-messages, wondering why stuff was done the way it is sitting there,
-you'd be very grateful if someone actually took the time to write up the
-"why" properly. Why was it done this way, what the constraints were,
-yadda yadda.
 
-And when you see a "we" there, you sometimes wonder, who's "we"? Was it
-the party who submitted the code, was it the person who's submitting the
-code but talking with the generic voice of a programmer who means "we"
-the community writing the kernel, etc.
+On 4/1/21 6:57 PM, Heinrich Schuchardt wrote:
+> We can use just the same flags as for aarch64.
+> 
+> Signed-off-by: Heinrich Schuchardt <xypron.glpk@gmx.de>
+> ---
+> RISC-V patches for gnu-efi are not yet accepted in upstream. Cf.
+> 
+> [Gnu-efi-discuss] [PATCH 1/1] Initial support for RISCV64
+> https://sourceforge.net/p/gnu-efi/mailman/gnu-efi-discuss/thread/20210401153553.103286-1-xypron.glpk%40gmx.de/#msg37253360
+> [Gnu-efi-discuss] [PATCH 1/1] Undefined Status in LibGetVariableAndSize()
+> https://sourceforge.net/p/gnu-efi/mailman/gnu-efi-discuss/thread/20210319162557.334645-1-xypron.glpk%40gmx.de/#msg37243995
+> 
+> You can use
+> https://github.com/xypron/gnu-efi/releases/tag/riscv64-2021-04-01 for
+> building sbsigntools and efitools.
 
-So yes, it is ambiguous and it probably wasn't a big deal at all when
-the people writing the kernel all knew each other back then but that
-long ain't the case anymore. So we (see, snuck in on me too :)) ... so
-maintainers need to pay attention to those things now too.
+Hello James,
 
-Oh look, the last "we" above meant "maintainers".
+I did not see any review from you on this patch yet.
+https://lore.kernel.org/linux-efi/?q=Make.rules%3A+enable+building+on+riscv64
 
-I believe that should explain with a greater detail what I mean.
+gnu-efi 3.0.14 has been released with RISC-V support.
 
-:-)
+Best regards
 
-> I've added a git hook to check for this and found other instances that need
-> fixing as well, so hopefully with the help of technology I can get them all
-> sorted for the next spin.
+Heinrich
 
-Thanks, very much appreciated!
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+> ---
+>   Make.rules | 7 +++++++
+>   1 file changed, 7 insertions(+)
+> 
+> diff --git a/Make.rules b/Make.rules
+> index 903a5a4..69bd3bd 100644
+> --- a/Make.rules
+> +++ b/Make.rules
+> @@ -10,6 +10,8 @@ else ifeq ($(ARCH),aarch64)
+>   ARCH3264 =
+>   else ifeq ($(ARCH),arm)
+>   ARCH3264 =
+> +else ifeq ($(ARCH),riscv64)
+> +ARCH3264 =
+>   else
+>   $(error unknown architecture $(ARCH))
+>   endif
+> @@ -56,6 +58,11 @@ ifeq ($(ARCH),aarch64)
+>     FORMAT = -O binary
+>   endif
+> 
+> +ifeq ($(ARCH),riscv64)
+> +  LDFLAGS += --defsym=EFI_SUBSYSTEM=0x0a
+> +  FORMAT = -O binary
+> +endif
+> +
+>   %.efi: %.so
+>   	$(OBJCOPY) -j .text -j .sdata -j .data -j .dynamic -j .dynsym \
+>   		   -j .rel -j .rela -j .rel.* -j .rela.* -j .rel* -j .rela* \
+> --
+> 2.30.2
+> 
