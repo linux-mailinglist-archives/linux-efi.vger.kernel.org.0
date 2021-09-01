@@ -2,42 +2,42 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B17E93FD08F
-	for <lists+linux-efi@lfdr.de>; Wed,  1 Sep 2021 03:04:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 01C433FD0A6
+	for <lists+linux-efi@lfdr.de>; Wed,  1 Sep 2021 03:17:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241552AbhIABEr (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 31 Aug 2021 21:04:47 -0400
-Received: from mail-co1nam11on2063.outbound.protection.outlook.com ([40.107.220.63]:39520
-        "EHLO NAM11-CO1-obe.outbound.protection.outlook.com"
+        id S241574AbhIABSI (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 31 Aug 2021 21:18:08 -0400
+Received: from mail-bn7nam10on2061.outbound.protection.outlook.com ([40.107.92.61]:22525
+        "EHLO NAM10-BN7-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S241544AbhIABEq (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Tue, 31 Aug 2021 21:04:46 -0400
+        id S241207AbhIABSH (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Tue, 31 Aug 2021 21:18:07 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=VBHEhm5ufbv1cuwCtaG91ThHPnSIa4QtXmN127YqoPRsXmeSSODiC2jcdyoujy3Cq7Of4inhuBUYvdZzC+lD3RDFCAppx8CN6R3KjlkjB44eAUlkXNWwgpXsehUWJ2acurYXCDCkmZrN77sUUcPAOGjIdeZCv7UnHl0ZWBB11pioqla3iQ9dVKG8gESrNgP5fU/zxNo7kSDIHwKr5XcENS6sI0gEJqW+aWxksHX364sXn1gk3tvBaJ0NVfHcgOx3Wt4RV4VWcLNGTmP3abWJ6iERJB9o/tpiWq0nDGEanrbsS9X5uORLdkhEA4IGWkECt0t/7WNY7xtNua73EMMCfA==
+ b=OqABQwOT56ilksc1BhxYT44RxmWqtvuqg/b31fpOI81o+tRprPNk73L6gBMofiKpUE2bbJ0b+LloFFfIUrnzx586RRjhKEzYQb1gXJhDQxaXgps8OuSss001mYWRkSdErLS0CdlgfXbhNxf6+iPUc5cfOJ/V3Mg/uON6pVc5mPuBkckb68xyjHByElUgJCh6uldkvJLRjCmGf72aF6i+pOBE7VSrs92JmLYj7s4xi5dprgfVMLeMx79x3PqPF9R2BH+i7KdT1TiiNKc0KhPpuYOqpqPwKd2pktC57iCP/3VIiDURUj5rthv9GP/CHFgjQ0bRo/St6i4uc364E08OfA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wh2oHMArEH4Nx+/9A5fLqUvoRevYnAlOcPspQAx8h/Y=;
- b=kLgWYLNz7ao/QWvv7mT6sRfbp2r12I1hjShgNmn0oNQEsQ/dn1cKysckIJ/oFOyQYKQHpmX5WqTtTfA72jxRZhwdON8cl/903bXUTwoJ1qJT6ihyhgYJzgOEYD6lJ/835HWe2Fw98f1sCJIHdEhVQmrmJpTDh18+p5Olqs1/hb4+JoyWGdcTOc67tBdwjDjUNI7VV8krCOomVF7WiEN4xWuXHDE9weC3kH1HdEFeQYhIUhX1B0fLv5d6X7yCuQMqjTkJid9+watUaSUPBhhIXck9c1h3mk2zu8OUsUNs/Z9E91Fk6HK0/YvtqxoMHno42B2GRvSp1OS/nQ2FGyaHLQ==
+ bh=1yelLIWaMCkgIfaz4DqO6DMFkOWziwSNxaALSIEaMLY=;
+ b=YntwTCVlDt1LuzKs8w4uRtj0aI6vQbD5Pd29E+e8sYRpU47cReakihlrZaU5WpASyxyq4oPu7BqC22tte74UYFHj4YqghRR0leAHhKoHwiBvR8ajdpdYZAst0krb83NuBzJjvCugMdH/FV4rS7+S3LCgWfrWxzUUintKz/O7S/2enjCX4K6cYrV/eCex/YnthHhVg4SjsZXWtEQv/54j7RlKnUaMI5Iufj7e3lc/u2j/T50eMyiAvVwXFihWBIlemNgpwXTnxnD9VwBP40jL7iTgXCWQjmpqGPMF65YNg5GYDBzAJU+bmkuCcAJ2V2h1zk+7zyJ26rqBdTqc1wMaDg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
  header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wh2oHMArEH4Nx+/9A5fLqUvoRevYnAlOcPspQAx8h/Y=;
- b=3lvAclBIYbodye5w6//PMYzxMpcpYrQWDEX47FoWr+BIuJ5EA54aNzYTDMGyLAI+NGfbdWe8SHZJnM+qlHyRSvt81N3V9Lxx8czenrZjjom6HqqLG8AhuhukUF/ZwXsgXD/2xN9wdKVJscKncjgydP45kxrBwgLBjBF7PaQVohI=
+ bh=1yelLIWaMCkgIfaz4DqO6DMFkOWziwSNxaALSIEaMLY=;
+ b=coTwRjk/raNWdXUrFaIGJHfuj7bxChPWg1ZcsiS5cd6zf+CHHy5l/dPns0EModNyxzTZKOBq+EhY+hr0ESsZfbjKP6WX4nghR7wxBZEAfk+8XVvFp11W6xVyUxks+BjMnHQZbsVSoeLzxT5xgqZILNIPwjm4Tvk94e11tbf/SM4=
 Authentication-Results: alien8.de; dkim=none (message not signed)
  header.d=none;alien8.de; dmarc=none action=none header.from=amd.com;
 Received: from CH2PR12MB4133.namprd12.prod.outlook.com (2603:10b6:610:7a::13)
- by CH2PR12MB4823.namprd12.prod.outlook.com (2603:10b6:610:11::15) with
+ by CH2PR12MB3959.namprd12.prod.outlook.com (2603:10b6:610:28::21) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4457.17; Wed, 1 Sep
- 2021 01:03:42 +0000
+ 2021 01:17:07 +0000
 Received: from CH2PR12MB4133.namprd12.prod.outlook.com
  ([fe80::f5af:373a:5a75:c353]) by CH2PR12MB4133.namprd12.prod.outlook.com
  ([fe80::f5af:373a:5a75:c353%6]) with mapi id 15.20.4457.024; Wed, 1 Sep 2021
- 01:03:42 +0000
-Date:   Tue, 31 Aug 2021 20:03:25 -0500
+ 01:17:07 +0000
+Date:   Tue, 31 Aug 2021 20:16:58 -0500
 From:   Michael Roth <michael.roth@amd.com>
 To:     Borislav Petkov <bp@alien8.de>
 Cc:     Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org,
@@ -65,134 +65,109 @@ Cc:     Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org,
         "Kirill A . Shutemov" <kirill@shutemov.name>,
         Andi Kleen <ak@linux.intel.com>, tony.luck@intel.com,
         marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com
-Subject: Re: [PATCH Part1 v5 28/38] x86/compressed/64: enable
- SEV-SNP-validated CPUID in #VC handler
-Message-ID: <20210901010325.3nqw7d44vhsdzryb@amd.com>
+Subject: Re: [PATCH Part1 v5 32/38] x86/sev: enable SEV-SNP-validated CPUID
+ in #VC handlers
+Message-ID: <20210901011658.s4hgmvbptgseqcm3@amd.com>
 References: <20210820151933.22401-1-brijesh.singh@amd.com>
- <20210820151933.22401-29-brijesh.singh@amd.com>
- <YSaXtpKT+iE7dxYq@zn.tnic>
- <20210827164601.fzr45veg7a6r4lbp@amd.com>
- <YS3+saDefHwkYwny@zn.tnic>
+ <20210820151933.22401-33-brijesh.singh@amd.com>
+ <YSkCWVTd0ZEvphlx@zn.tnic>
+ <20210827183240.f7zvo3ujkeohmlrt@amd.com>
+ <YS5XVBNrASp7Zrig@zn.tnic>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <YS3+saDefHwkYwny@zn.tnic>
-X-ClientProxiedBy: SA9PR13CA0178.namprd13.prod.outlook.com
- (2603:10b6:806:28::33) To CH2PR12MB4133.namprd12.prod.outlook.com
- (2603:10b6:610:7a::13)
+In-Reply-To: <YS5XVBNrASp7Zrig@zn.tnic>
+X-ClientProxiedBy: SN6PR01CA0031.prod.exchangelabs.com (2603:10b6:805:b6::44)
+ To CH2PR12MB4133.namprd12.prod.outlook.com (2603:10b6:610:7a::13)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from localhost (165.204.77.1) by SA9PR13CA0178.namprd13.prod.outlook.com (2603:10b6:806:28::33) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4478.9 via Frontend Transport; Wed, 1 Sep 2021 01:03:41 +0000
+Received: from localhost (165.204.77.1) by SN6PR01CA0031.prod.exchangelabs.com (2603:10b6:805:b6::44) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4457.19 via Frontend Transport; Wed, 1 Sep 2021 01:17:06 +0000
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: f132e3ef-7381-47dc-cc38-08d96ce456cd
-X-MS-TrafficTypeDiagnostic: CH2PR12MB4823:
+X-MS-Office365-Filtering-Correlation-Id: cefba45e-34cf-4c81-0dff-08d96ce636c5
+X-MS-TrafficTypeDiagnostic: CH2PR12MB3959:
 X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <CH2PR12MB482347D07C712DEBFC050E3095CD9@CH2PR12MB4823.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:6108;
+X-Microsoft-Antispam-PRVS: <CH2PR12MB39593FEA145F92F918A9081795CD9@CH2PR12MB3959.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:8882;
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: j3bpRzP0spx0ZGtSGUnEhEGpQjzPEIvdky6kMBrzBpC2WiZrtvla0VVKyN2YxmI//wb6lNhVvXCehNFW8J+4XpnaI0S2bCi409WJ5nqJ4ofh0rbFiR5KrpG6sNsLIh+9RLggvMz6cbbHE/9L+V20ZWbB08aMwZOhvOVbZJPC6lHwXUzdIq1v96lzU3DDsyfn9VCRZS2fj2Wc2v9Npnq48hbQkQwa/Xw0jDDjsmyRwEIXq4cRRLR5YYwKX1A00XNbUOgTtuzp9rveXxyU5jzMRruTCw5R6/WW+fR2BHeOlZ5gnwegTiyK+jCrdJbzUqnsg7UMsDKZShWnfWzkUFb0W+9qjhmjquimqNEZPc04GPVkKt1gySKi3fNa9Z3G6zkCTWOiy4ivc0WpqBsgqirBYBJExQdUKeOT+0i+T+2v0vjqufh5X9PfYOYvBnUbP3k4QuwAOrQ6Kwsb+PDi6U7aL9t24Gz4hfoQyK747t1AyTUPajZPIb4Z6y4QErT/16m8ND+kIAV5ehgP/FMwEtEElH+hTn5BtCKwvqimb7ozg+PxQkKyD4OBEiDv0SkjwnsXfCMns2fREZPi3/FklFQ+u6QIgmXMxLcGfHyDxKQbTEHXyUCf7mh+sUfD4RhfBXHIBDOBE3c6+uwLA9kVXhjVz2I9o2UFYn9KbiIbwNKOq3uHSO9JL78NgD6hzUqI+/y3688ldYKNxqLKvtNpwyWvPw==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB4133.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(396003)(346002)(136003)(366004)(39860400002)(376002)(8676002)(6666004)(86362001)(1076003)(8936002)(6486002)(186003)(36756003)(52116002)(26005)(66946007)(66556008)(83380400001)(38100700002)(38350700002)(6496006)(66476007)(6916009)(2616005)(956004)(5660300002)(2906002)(478600001)(44832011)(7416002)(7406005)(4326008)(54906003)(316002);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: t7TX3NCRV+ATbmgQaGqaaq9dXFxLUvt9u3o6/PQQ5V/9SErHr+sw9kUmxOgcMErJH/Cbc3++qiRyEfC6sJ6Q02XapSazQp1es8xLZqQ+f188Jm7F8Z7v4IafO29r7437ZmhEwYLpTluuaRcKi/BXZqN3T5uK27YivGnBsafO+aLobvGt19W43d+E8hEGqYw4gGRwAbohLfhoRVjMYavMFVe8nb9c/RQwswqSo4osIG24EwFJIPLo5cSZYMfubn3P8rhD+dGmRe1M2AlHf/e0gIfnTDUPHL+ffqQcqtXbxUhAhrgAmk6F3S+0nWbbv61EPZ5z1+fnC/0KoD8q+0DIQAWgrW9mTW3eT8MEhIdM6mWgcFudGxqnunaf1laAoOvDlqyGmpAZvff/APAGVZTrmhWr5lorPsShrlhQSZYjRS+OmYWi2wUVsrpTAZaGc6KnoHCT418MEfjx+DWz9PtNpM18K/M4rtppG7wlJkyK6pQaPRZE3yTLn6UMaAux5ynbFhEIkllT686PjcXx0OQ9GHjT7/Bz1XqczKWbLeH/vWcNi4Vvd5YBtUt6LLxVYm/fCUUEGpxzYtfsw8I0A8o1HjGDLeSJ306ZCgYZ6GYKClb3VJtBbTfZv1rjE77x/lSUPMoV8KQM6rWxQ+db/GE55hRfFoFAxfQVLQsoBIqHbmwt2NLnXJgQPwi0UhbE8zto1RNxxC/P+TxT0izdRrKQ+52bbBCOXT8jDaaL/pem8RLuvSfMFv5eezNb0s4hk0SNMFQ+xTbsS+raP0sLzMclxw==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB4133.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(396003)(39860400002)(136003)(346002)(366004)(376002)(36756003)(66946007)(66476007)(54906003)(6496006)(44832011)(45080400002)(52116002)(8676002)(1076003)(4326008)(26005)(186003)(83380400001)(6666004)(478600001)(956004)(6486002)(86362001)(2616005)(38350700002)(2906002)(966005)(7416002)(7406005)(5660300002)(8936002)(38100700002)(66556008)(316002)(6916009);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?dzjHCdGh+AdsDYWflQjAfH0iNfGbwIumJg4B5MipRsnKjaTu9XmBSgHpa8Up?=
- =?us-ascii?Q?IcQhh41pF1SFyCz9KXXw9eoeDVHt7QE/JEWmk4xWzYyIGItS8xxiTqxQtWO/?=
- =?us-ascii?Q?Vb0eWJwYbGuod9WIXzDc5mckgW4eV1ZI3NHThGuCR379cN4ibSy8Bev1UQQ3?=
- =?us-ascii?Q?NnTTMwjPML5OO2hSLTpG4DV5ZL9sqCfhVdheYFbEylxnYZG3rLbKLR7uTJI7?=
- =?us-ascii?Q?2xLgt9xPzhfV2h5+5jVk07dD0+/AUsjtSXHc6UCdakW+BtiC5p5Nv+bG3+65?=
- =?us-ascii?Q?MlKwyQFVsB7JcZazlce6VaFEMWG9V5HgaaFjHGOG7CgPIR/PaKAIcA/2kQWS?=
- =?us-ascii?Q?1ANLtKT63UMmW058grGxDfr/hWVsYNevkRVlViCGbFInYb09iw5hXw3jG6Am?=
- =?us-ascii?Q?kRlXAalwMDCHY6o449RwpKQL47M2Ke/7pKyKi0oXCSXTs0uYWX3CQEti4Ppg?=
- =?us-ascii?Q?Ts3d+W6nEtFG1AEGHChNbMlYEYDUlqN+jV0WQnQN4ANyV5Xc1YuUJURaMMql?=
- =?us-ascii?Q?OatYvU4zLU52cvoNdbu8JvqQFX6jgkIwX6PjSfVQXztFsr0vWaOdnLtVyqQq?=
- =?us-ascii?Q?LNiDrQyvp4HpDII1W8pfL4VmAey/Mu1UdCqbgeIiuCBCFytr8HeJpORgSGma?=
- =?us-ascii?Q?gFOVwTwyUwqlE1NLZLDU3eDgmzL2/2kVrE3kpGxqITH3ejte+H3HE9/HD8Ob?=
- =?us-ascii?Q?RnTKZnC53uvbar/z93ovaFa8EnBiPtAQuSjrVUHLEHOiANP9qV//Eb2gumx2?=
- =?us-ascii?Q?px5MblW1fc8FCE5crLJENSbTVXc3oquKoxYclAx9uEb9QPl1gGr1dDdvXMW2?=
- =?us-ascii?Q?KTXYV48Y3vjJg+qeRKJvPN3TktZAk0hYlbxC1WYijzIDhPe3pX1cm8TjOaRY?=
- =?us-ascii?Q?dE8OnhnnYwhMJxNLwpwjDaQDkJYFh3ZUrIV1/tguWm1aECWf6fELsINjQYkl?=
- =?us-ascii?Q?5qdD5dc5+B4GBa2Aw+TNwVImJnYp32qrft192xndLg+Lz1pa9F4tp+IAl5+U?=
- =?us-ascii?Q?QaXlImJ7+yX1WEV+6bEYclH1jvZHsrWSY94/NsDp+g9JZzfbj65hyoUsfIvD?=
- =?us-ascii?Q?QolFRDmiVvIKgc1zoxXJJXhP89H0crg+JHS1kIjUZgqLMUU/6uSuN0bYkYFU?=
- =?us-ascii?Q?UPT55zvbzZ8CgSft7+LfRrTH87XPIzkliy+lJ635DqZ9oK5cFCbXAB4HtlyU?=
- =?us-ascii?Q?IfIzdxgbPQxuM/qEyRRcCdJ/mNWjmpnNTldRaKpqZL3rcXmbZeW8NmuapwQJ?=
- =?us-ascii?Q?hzhVsx1oYPZHpUs53Sfl+XYqeV1BROuR8aHiBYbLG6s7WFAGcOAPZALFN1xP?=
- =?us-ascii?Q?SKdp7+rlLUqLuoveR6fHBYAY?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?9ekcKrei8q6JG5V9Q+w0zYk2jLj9ZHBVYI3E6glVzu5H87g7A6coir5XqqRu?=
+ =?us-ascii?Q?1Xodn6T7SoBIfvLEKnyPx7HfA6sOndQl+j4+3uq8HH/cXJn/Ca8GdiHUMTAi?=
+ =?us-ascii?Q?HXcviPwBxInoWHNKNU/vqqF2kaE538VBA30rCbyY6vrZFoH9l314nVMIkkf0?=
+ =?us-ascii?Q?arfl4e6RCTNdlkeeA09XFZXBwC0pIaa8sMHxNoIloPoj4LSpdYjQ6iYkygQ3?=
+ =?us-ascii?Q?1M8OPJ9VxtrlA+F1YVvv84rDZTA70zSZmYftQvcNYJjCkMsg53jw+J7qyMsU?=
+ =?us-ascii?Q?uGqpvoYwkPH/KhEaYSRZ0XdUX2tX+XPauSRFOIJxva1DRFz8vg3gXpBBIfEo?=
+ =?us-ascii?Q?i5kYetmDE4YyYyLFlUbE7TBBo6zAmsdqSWrqZrdOBTCqVDdfplEdYavDIcYe?=
+ =?us-ascii?Q?5ZLSxdPRtPUFotFRYzaFKd3X+X75MXEM4E9dLMS5K7jAwbAf0yZYQ/aW5gSV?=
+ =?us-ascii?Q?yvi568rZYz7amZGXfTO6FlNJEDQWeyhVtV2x6acctMWWbtEHBObK4HXPndrr?=
+ =?us-ascii?Q?hN96570yeBGkUciytSrVC+S9DCjDU2sZlYNpv+q+tIB7+23helb50NVldcDW?=
+ =?us-ascii?Q?6SsxrRf9kyzFc5Vs/HdyDt8ZiqTAk3egOR53uNU6gTlJdB9hSkPx7YrRTPjl?=
+ =?us-ascii?Q?qMg71AJFYbl36f+5zuOVLIklDflYwbgBLXrGp8N39kZbw7xc+Q8uj2PHHMC6?=
+ =?us-ascii?Q?3HFYtDl+3fPUNPBA+h+FhvjMAyQGV89DFLk1LBboVarMv9uHSQxJ4mgiRkHf?=
+ =?us-ascii?Q?Dij0Zex9ZR/2KH+wQK01Zw8cGTBGUpJbI8Q5aHgdRJfU3ZTufJOIqvI6niLM?=
+ =?us-ascii?Q?Cl1eUxVAmQtLbX2WKuxKsBEfP+34Jc0G9IZmd4Eh890T0HxWgdSiClafSHLM?=
+ =?us-ascii?Q?/GEYjhghRK8erj05gaI/07Pr6nMCk7goD46vCnoOTfdIlhJqABLNP06fJW9u?=
+ =?us-ascii?Q?cL0/zUPIqexBNHU/wewelsF9qLTsoIG3p6evwxR1hoMYT3yav4/LEsackP9k?=
+ =?us-ascii?Q?iXm9QXL0kVWkB7nWVUW4UA3hVQPjvqYKeKlln9EMPqD7gPMXhyIHuLRCgqck?=
+ =?us-ascii?Q?fxPR3qrSNGAeEZHRAQT6JvTdqjVr+LvBdWUmZnklY7Pmfz7/999jMyzJHUUA?=
+ =?us-ascii?Q?VyFAbHLmOa7eo5hYmIdDT2vRezsgXy7ZewBy9PNjE9ThePlivrqJVhTXOWlF?=
+ =?us-ascii?Q?5jK+A+Shzvcjo8rhd1nh+GKohHAESMsdpbMsVXO1dRAuDxhSMNrk9jMQAMgg?=
+ =?us-ascii?Q?azsv+g9yUIsQ7pExkcVeC+tS+jUAwHYLKkeofU8Ad+fZ80unh65S/3S6/uyh?=
+ =?us-ascii?Q?V+gXu0+DZZZaXei5mJg5HB8C?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f132e3ef-7381-47dc-cc38-08d96ce456cd
+X-MS-Exchange-CrossTenant-Network-Message-Id: cefba45e-34cf-4c81-0dff-08d96ce636c5
 X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB4133.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Sep 2021 01:03:41.8080
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Sep 2021 01:17:06.9047
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: dSFYioyk3kjt47ctFiUnzelIR86hqWFAXIc7nifuQSXs4qKwVLoHurigh2m0yxlEI/bdUm2yYNEADSAsTIMMlg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4823
+X-MS-Exchange-CrossTenant-UserPrincipalName: /98pKlYnxJxdyxazVQ0oysgGsstB19EgXyYso3eABL7e8exl/r4LEQHkeD62y3eTBdvLAf7kJujpa+gcZuOtTw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB3959
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, Aug 31, 2021 at 12:04:33PM +0200, Borislav Petkov wrote:
-> On Fri, Aug 27, 2021 at 11:46:01AM -0500, Michael Roth wrote:
-> > Will make sure to great these together, but there seems to be a convention
-> > of including misc.h first, since it does some fixups for subsequent
-> > includes. So maybe that should be moved to the top? There's a comment in
-> > boot/compressed/sev.c:
-> > 
-> > /*
-> >  * misc.h needs to be first because it knows how to include the other kernel
-> >  * headers in the pre-decompression code in a way that does not break
-> >  * compilation.
-> >  */
-> > 
-> > And while it's not an issue here, asm/sev.h now needs to have
-> > __BOOT_COMPRESSED #define'd in advance. So maybe that #define should be
-> > moved into misc.h so it doesn't have to happen before each include?
+On Tue, Aug 31, 2021 at 06:22:44PM +0200, Borislav Petkov wrote:
+> On Fri, Aug 27, 2021 at 01:32:40PM -0500, Michael Roth wrote:
+> > If the memory is allocated in boot/compressed/mem_encrypt.S, wouldn't
+> > kernel proper still need to create a static buffer for its copy?
 > 
-> Actually, I'd like to avoid all such nasty games, if possible, with the
-> compressed kernel includes because this is where it leads us: sprinkling
-> defines left and right and all kinds of magic include order which is
-> fragile and error prone.
-> 
-> So please try to be very conservative here with all the including games.
-> 
-> So I'd like to understand first *why* asm/sev.h needs to have
-> __BOOT_COMPRESSED defined and can that be avoided? Maybe in a separate
-> mail because this one already deals with a bunch of things.
+> Just like the other variables like sme_me_mask etc that file allocates
+> at the bottom. Or do you have a better idea?
 
-I think I just convinced myself at some point that that's where all
-these sev-shared.c declarations are supposed to go, but you're right, I
-could just as easily move all the __BOOT_COMPRESSED-only definitions
-into boot/compressed/misc.h and avoid the mess.
-
-That'll make it nicer if I can get some of the __BOOT_COMPRESSED-guarded
-definitions in sev-shared.c moved out boot/compressed/sev.c and
-kernel/sev.c as well, with the help of some common setter/getter helpers
-to still keep most of the core logic/data structures contained in
-sev-shared.c.
+What did you think of the suggestion of defining it in sev-shared.c
+as a static buffer/struct as __ro_after_init? It would be nice to
+declare/reserve the memory in one place. Another benefit is it doesn't
+need to be exported, and could just be local with all the other
+snp_cpuid* helpers that access it in sev-shared.c
 
 > 
-> > cpuid.h is for cpuid_function_is_indexed(), which was introduced in this
-> > series with patch "KVM: x86: move lookup of indexed CPUID leafs to helper".
+> > Would that be a reasonable approach for v6?
 > 
-> Ok, if we keep cpuid.h only strictly with cpuid-specific helpers, I
-> guess that's fine.
-> 
-> > efi.h is for EFI_CC_BLOB_GUID, which gets referenced by sev-shared.c
-> > when it gets included here. However, misc.h seems to already include it,
-> > so it can be safely dropped from this patch.
-> 
-> Yeah, and this is what I mean: efi.h includes a bunch of linux/
-> namespace headers and then we have to go deal with compressed
-> pulling all kinds of definitions from kernel proper, with hacks like
-> __BOOT_COMPRESSED, for example.
-> 
-> That EFI_CC_BLOB_GUID is only needed in the compressed kernel, right?
-> That is, if you move all the CC blob parsing to the compressed kernel
-> and supply the thusly parsed info to kernel proper. In that case, you
-> can simply define in there, in efi.c or so.
+> I don't like the ifdeffery one bit, TBH. I guess you should split it
+> and have a boot/compressed page and a kernel proper one and keep 'em
+> separate. That should make everything nice and clean at the cost of 2*4K
+> which is nothing nowadays.
 
-It was used previously in kernel proper to get at the secrets page later,
-but now it's obtained via the cached entry in boot_params.cc_blob_address.
-Unfortunately it uses EFI_GUID() macro, so maybe efi.c or misc.h where
-it makes more sense to add a copy of the macro?
+I think I can address the ifdeffery by splitting the boot/proper routines
+into separate self-contained routines (and maybe move them out into
+boot/compressed/sev.c and kernel/sev.c, respectively), then having them
+just initialize the table pointer and create the copy using a common setter
+function, e.g.
+
+  snp_cpuid_table_create(cc_blob, fixup_offset)
+
+and for boot/compressed.c fixup_offset would just be passed in as 0.
+
+> 
+> Thx.
+> 
+> -- 
+> Regards/Gruss,
+>     Boris.
+> 
+> https://nam11.safelinks.protection.outlook.com/?url=https%3A%2F%2Fpeople.kernel.org%2Ftglx%2Fnotes-about-netiquette&amp;data=04%7C01%7CMichael.Roth%40amd.com%7Cb4adf700d33e42ffe4be08d96c9b7fe6%7C3dd8961fe4884e608e11a82d994e183d%7C0%7C0%7C637660237404006013%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C1000&amp;sdata=nVGIpG0WAcqcHZWXK1%2BQoaPBoeCLwtkqgs8Mfgz%2Fr04%3D&amp;reserved=0
