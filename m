@@ -2,91 +2,124 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E0953FE1E4
-	for <lists+linux-efi@lfdr.de>; Wed,  1 Sep 2021 20:11:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6AAFD3FE2C6
+	for <lists+linux-efi@lfdr.de>; Wed,  1 Sep 2021 21:09:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344635AbhIASMW (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 1 Sep 2021 14:12:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53724 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346802AbhIASMU (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 1 Sep 2021 14:12:20 -0400
-Received: from mail-pg1-x52e.google.com (mail-pg1-x52e.google.com [IPv6:2607:f8b0:4864:20::52e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48243C0612AD
-        for <linux-efi@vger.kernel.org>; Wed,  1 Sep 2021 11:11:22 -0700 (PDT)
-Received: by mail-pg1-x52e.google.com with SMTP id q68so268746pga.9
-        for <linux-efi@vger.kernel.org>; Wed, 01 Sep 2021 11:11:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=2joGkq8i8C5vglZO1FYNTlWqLyr4vSiCXKQYXBVnv4Q=;
-        b=LD3mpzy1s09M3e/Eheelu/QMtbN6lrYJQ+S1BsYhmG4zP9OQuKOeD1zHV2lZaK7Hdt
-         vXoBMumPRACuZhnwd8TYAFIvdImPe0Zn4DA41GnzHGsnpDZPE0wUFWVFNzgpxF6bh6D8
-         CVxTiiIN7w8BVpPirFLytZKK2cFqqV6q9qR8cw4XmdYYgGZs+MdnDeP+neEr/SbnLI2h
-         mwT6gqJ8+HvNCQei5Zu6b3U+/YcUOepEDfVn6t0IkNG5YzxTV8mH8IqZ4zEsqBchdgxI
-         E/zGH3KCiuS7UdfEMBVKPbpzhhPyh4quLRALvE4iCHtswqSZDgWUuzksodIw8OWwGR1Z
-         0RlA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=2joGkq8i8C5vglZO1FYNTlWqLyr4vSiCXKQYXBVnv4Q=;
-        b=SuMP/hBMOOWAFDws/x5ZKkGQnQHhISr66PaNcjoMEGbgPEJsL004fSPtwtf1ErTnCF
-         yD69IvmQX8Bt6Y3SS+LXKlqdMYhoHKN6vZzNRL+DOteHsUGj1O3GgbsgvZPaIVX2IOOT
-         vW5SiPjayMaMqJM+oRqoLkNE/KkpsaTKZOaLcrmJ5E0zP3rqzDMYCcbcv589GmC57lXj
-         xZLCU7eZN+X959wYpxUQKoxhXxbuIA/2+BN5gLs/j8mHHrZveS9En7pdGAKI5VloWoIy
-         cwkPwd1F85js3l5l8lDGSMy5826I2NzYOj+SPRncosJ+U+esLzNv/Gu1x4mehWzj8qzw
-         r+jw==
-X-Gm-Message-State: AOAM533Htb9Vw65dpHYVCPdCMR5btutIBsF2UbY77fGVnNUb+gvJK5kw
-        LPo2OQjENamoJmRzK5a7FlCx8XB0TtfC/XRiFUXygkal2Dguew==
-X-Google-Smtp-Source: ABdhPJwbbBYGjUEQSS3Bb7EfYk34O3AVuG22pVIF78fkATQG8c+PQmeHgcc35+YrriS74Wl5STB8JbzOasp+8kCVBlk=
-X-Received: by 2002:a67:8c5:: with SMTP id 188mr1017695vsi.4.1630519870726;
- Wed, 01 Sep 2021 11:11:10 -0700 (PDT)
+        id S1344585AbhIATKG (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 1 Sep 2021 15:10:06 -0400
+Received: from mga04.intel.com ([192.55.52.120]:32359 "EHLO mga04.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1345546AbhIATJ6 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Wed, 1 Sep 2021 15:09:58 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10094"; a="216990183"
+X-IronPort-AV: E=Sophos;i="5.84,370,1620716400"; 
+   d="scan'208";a="216990183"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2021 12:08:41 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.84,370,1620716400"; 
+   d="scan'208";a="520493204"
+Received: from lkp-server01.sh.intel.com (HELO 4fbc2b3ce5aa) ([10.239.97.150])
+  by fmsmga004.fm.intel.com with ESMTP; 01 Sep 2021 12:08:39 -0700
+Received: from kbuild by 4fbc2b3ce5aa with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1mLVbD-0008Cq-60; Wed, 01 Sep 2021 19:08:39 +0000
+Date:   Thu, 02 Sep 2021 03:08:36 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-efi@vger.kernel.org
+Subject: [efi:urgent] BUILD SUCCESS
+ adcc9645e4f3d38505c317649dc2f20a484852f6
+Message-ID: <612fcfb4.L44IAXvkxHfEZpyX%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Received: by 2002:ab0:740d:0:0:0:0:0 with HTTP; Wed, 1 Sep 2021 11:11:10 -0700 (PDT)
-From:   CorisBank International <corisbankintlbf@gmail.com>
-Date:   Wed, 1 Sep 2021 11:11:10 -0700
-Message-ID: <CA+25hwzjLgVdtDXYWeuqFBTvAbpc4oxK0dW54s7tjGNyU_m0ow@mail.gmail.com>
-Subject: CORISBANK INTERNATIONAL OFFICIAL NOTIFICATION
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Att: Client
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git urgent
+branch HEAD: adcc9645e4f3d38505c317649dc2f20a484852f6  efi/cper: use stack buffer for error record decoding
 
+elapsed time: 724m
 
-CORISBANK INTERNATIONAL URGENT NOTIFICATION
+configs tested: 66
+configs skipped: 3
 
-Notification / Notification/ Notification
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-Note, We are writing to inform you officially that Finally the Central
-Bank Financial Authority have approved to transfer your $8.2Million
-which was signed by late Mrs Rose Banneth the COVID.19 victim to
-transfer to you, Late Mrs Rose Banneth the France Lady contacted us to
-transfer her fund in our bank to you for Orphanage work before she
-died by the COVID.19
-and as it is now, you will receive your fund through our corresponding
-bank in Dubai [Emirate Investment Bank ] for security reason. Please
-you should reconfirm your details to receive the $8.2Million.
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+s390                             allmodconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+x86_64               randconfig-a005-20210831
+x86_64               randconfig-a001-20210831
+x86_64               randconfig-a003-20210831
+x86_64               randconfig-a002-20210831
+x86_64               randconfig-a004-20210831
+x86_64               randconfig-a006-20210831
+riscv                randconfig-r042-20210901
+s390                 randconfig-r044-20210901
+arc                  randconfig-r043-20210901
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+x86_64                    rhel-8.3-kselftests
+um                           x86_64_defconfig
+um                             i386_defconfig
+x86_64                           allyesconfig
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                                  kexec
 
-Name, Country, Address, occupations, Age, Telephone number, account
-Details so that we can immediately forward to the World Bank to
-transfer the fund.
-You are advised to comply on timely manner to permit this esteem bank
-transfer your fund as scheduled.
+clang tested configs:
+hexagon              randconfig-r045-20210901
+hexagon              randconfig-r041-20210901
+s390                 randconfig-r044-20210831
+hexagon              randconfig-r041-20210831
+hexagon              randconfig-r045-20210831
+riscv                randconfig-r042-20210831
 
-We look forward to serving you better
-Your Financial Comfort Is A Priority
-Thank you for choosing Corisbank International.
-
-Sincerely,
-
-----
-
-Mr Diakarya Ouattara
-Managing Director
-Bank Coris
-Burkina Faso
-+226 556 163 37
-financial_bf_info@accountant.com
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
