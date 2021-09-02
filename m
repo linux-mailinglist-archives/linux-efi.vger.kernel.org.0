@@ -2,37 +2,33 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8978C3FEC9D
-	for <lists+linux-efi@lfdr.de>; Thu,  2 Sep 2021 13:05:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 810F43FECE4
+	for <lists+linux-efi@lfdr.de>; Thu,  2 Sep 2021 13:26:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233427AbhIBLGP (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 2 Sep 2021 07:06:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57822 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230256AbhIBLGP (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 2 Sep 2021 07:06:15 -0400
-Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C74F2C061575;
-        Thu,  2 Sep 2021 04:05:16 -0700 (PDT)
-Received: from zn.tnic (p200300ec2f0ed100d115725f57e7001c.dip0.t-ipconnect.de [IPv6:2003:ec:2f0e:d100:d115:725f:57e7:1c])
+        id S245221AbhIBL1a (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 2 Sep 2021 07:27:30 -0400
+Received: from mail.skyhub.de ([5.9.137.197]:40846 "EHLO mail.skyhub.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S233850AbhIBL13 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Thu, 2 Sep 2021 07:27:29 -0400
+Received: from zn.tnic (p200300ec2f0ed1002d220efd52bc539e.dip0.t-ipconnect.de [IPv6:2003:ec:2f0e:d100:2d22:efd:52bc:539e])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 400421EC0528;
-        Thu,  2 Sep 2021 13:05:11 +0200 (CEST)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id E179F1EC0528;
+        Thu,  2 Sep 2021 13:26:25 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1630580711;
+        t=1630581986;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=qrih5nOxCt8KX8+xxQwcW009cmgk6NbkNVdkRjjSG0s=;
-        b=Uo+t/oIfbI8rJlB3MWNOvzZBGwQz2x6Er54vJvC277hf/75pt4jxpEm/nVpzSFsIiiCVRj
-        X+1ltV5NAxwh0jq60Oy/XIYQGVQJUYNxs/WGRGxHh4CvYPmfUojTxRx0jeCLu0+AMj3jyX
-        TFzVyb8+6qw4WI6Pkct1YFlXl2Gfz4w=
-Date:   Thu, 2 Sep 2021 13:05:45 +0200
+        bh=nZDBbNwW0kzPiqS/jH6ifLFLt5uI+iZ0TLZo07Wo180=;
+        b=PVqkwqgxwkgB67Wb5b6iXPa5pJWSmTjnI/8EkkTlPxlHEXlvZhiVAYvl6uEAVRmlmYHbg3
+        T4hS6EmZOtkeycXGzbvzamDU6UNpeyViICmVFuIUyYQckxeXgvZ5u9EcMhgOL3iLiEyxcS
+        cHbsR20RNgm2UWY23Pl2ZCMPmOwcMPo=
+Date:   Thu, 2 Sep 2021 13:26:56 +0200
 From:   Borislav Petkov <bp@alien8.de>
-To:     Michael Roth <michael.roth@amd.com>
-Cc:     Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org,
-        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+To:     Brijesh Singh <brijesh.singh@amd.com>
+Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
         linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
         linux-coco@lists.linux.dev, linux-mm@kvack.org,
         Thomas Gleixner <tglx@linutronix.de>,
@@ -52,35 +48,51 @@ Cc:     Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org,
         David Rientjes <rientjes@google.com>,
         Dov Murik <dovmurik@linux.ibm.com>,
         Tobin Feldman-Fitzthum <tobin@ibm.com>,
+        Michael Roth <michael.roth@amd.com>,
         Vlastimil Babka <vbabka@suse.cz>,
         "Kirill A . Shutemov" <kirill@shutemov.name>,
         Andi Kleen <ak@linux.intel.com>, tony.luck@intel.com,
         marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com
-Subject: Re: [PATCH Part1 v5 32/38] x86/sev: enable SEV-SNP-validated CPUID
- in #VC handlers
-Message-ID: <YTCwCZr5KZXd8bsG@zn.tnic>
+Subject: Re: [PATCH Part1 v5 34/38] x86/sev: Add snp_msg_seqno() helper
+Message-ID: <YTC1ANx81eQeGN4o@zn.tnic>
 References: <20210820151933.22401-1-brijesh.singh@amd.com>
- <20210820151933.22401-33-brijesh.singh@amd.com>
- <YSkCWVTd0ZEvphlx@zn.tnic>
- <20210827183240.f7zvo3ujkeohmlrt@amd.com>
- <YS5XVBNrASp7Zrig@zn.tnic>
- <20210901011658.s4hgmvbptgseqcm3@amd.com>
+ <20210820151933.22401-35-brijesh.singh@amd.com>
+ <YSkxxkVdupkyxAJi@zn.tnic>
+ <9e0e734d-7d2f-4703-b9ce-8362f0c740f4@amd.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20210901011658.s4hgmvbptgseqcm3@amd.com>
+In-Reply-To: <9e0e734d-7d2f-4703-b9ce-8362f0c740f4@amd.com>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, Aug 31, 2021 at 08:16:58PM -0500, Michael Roth wrote:
-> What did you think of the suggestion of defining it in sev-shared.c
-> as a static buffer/struct as __ro_after_init? It would be nice to
-> declare/reserve the memory in one place. Another benefit is it doesn't
-> need to be exported, and could just be local with all the other
-> snp_cpuid* helpers that access it in sev-shared.c
+On Mon, Aug 30, 2021 at 10:07:39AM -0500, Brijesh Singh wrote:
+> The SNP firmware spec says that counter must begin with the 1.
 
-Yap.
+So put that in the comment and explain what 0 is: magic or invalid or
+whatnot and why is that so and that it is spec-ed this way, etc.
+
+Just having it there without a reasoning makes one wonder whether that's
+some arbitrary limitation or so.
+
+> During the GHCB writing the seqno use to be 32-bit value and hence the GHCB
+> spec choose the 32-bit value but recently the SNP firmware changed it from
+> the 32 to 64. So, now we are left with the option of limiting the sequence
+> number to 32-bit. If we go beyond 32-bit then all we can do is fail the
+> call. If we pass the value of zero then FW will fail the call.
+
+That sounds weird again. So make it 64-bit like the FW and fix the spec.
+
+> I just choose the smaller name but I have no issues matching with the spec.
+> Also those keys does not have anything to do with the VMPL level. The
+> secrets page provides 4 different keys and they are referred as vmpck0..3
+> and each of them have a sequence numbers associated with it.
+> 
+> In GHCB v3 we probably need to rework the structure name.
+
+You can point to the spec section so that readers can find the struct
+layout there.
 
 -- 
 Regards/Gruss,
