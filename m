@@ -2,162 +2,221 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E28CF3FF173
-	for <lists+linux-efi@lfdr.de>; Thu,  2 Sep 2021 18:32:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 787463FF1A1
+	for <lists+linux-efi@lfdr.de>; Thu,  2 Sep 2021 18:40:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242414AbhIBQdH (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 2 Sep 2021 12:33:07 -0400
-Received: from mail.kernel.org ([198.145.29.99]:34952 "EHLO mail.kernel.org"
+        id S234558AbhIBQlE (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 2 Sep 2021 12:41:04 -0400
+Received: from mail.skyhub.de ([5.9.137.197]:57826 "EHLO mail.skyhub.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1345905AbhIBQdA (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Thu, 2 Sep 2021 12:33:00 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id E5C406023F;
-        Thu,  2 Sep 2021 16:32:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1630600321;
-        bh=B9mcUFqJNGZAURjFxYwd81UPlQdY2dl8ve7nusbvJp8=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=eIvtGjmucVVCDn0Og/6GBqZQgKZ0dZAC3GKI+qze5/utAM5fXeF/fSf01VNcQyViL
-         x5i9CS80x36maY4qAvas5xv9cl7hKuJ0isz/SNVRDu/jZiSfkzSmZ/wdCfzsn6SfbP
-         JOqGe5jeqkco3/aa+hgMCsmV6hX+LlNbzQT5EKwY=
-Date:   Thu, 2 Sep 2021 18:31:58 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     James Bottomley <jejb@linux.ibm.com>
-Cc:     Dov Murik <dovmurik@linux.ibm.com>, linux-efi@vger.kernel.org,
-        Borislav Petkov <bp@suse.de>,
-        Ashish Kalra <ashish.kalra@amd.com>,
-        Brijesh Singh <brijesh.singh@amd.com>,
+        id S234478AbhIBQlD (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Thu, 2 Sep 2021 12:41:03 -0400
+Received: from zn.tnic (p200300ec2f0ed100559a5c00047fe4a9.dip0.t-ipconnect.de [IPv6:2003:ec:2f0e:d100:559a:5c00:47f:e4a9])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 5DB381EC051F;
+        Thu,  2 Sep 2021 18:39:59 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1630600799;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=tInBcwV8PPz5HgTlj8s9pKw/c3XcI6QQac6T1fjypAs=;
+        b=DZzM4T7hNki0hfWFToM06T3uIqTpW3S1x3aH9e5p4NtsH7K6Jdwm5Z5VMiIfsO0s2cTTXw
+        U+fCaPc/GyJmhSw7rXntDZUX6+BDp5bUMg+nlj6y21g2g1mWWZT9o8FZHVsus7nbxZUZug
+        8wKREAEDQ63F73TH7zNyF13KdEvoIKk=
+Date:   Thu, 2 Sep 2021 18:40:34 +0200
+From:   Borislav Petkov <bp@alien8.de>
+To:     Brijesh Singh <brijesh.singh@amd.com>
+Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        linux-coco@lists.linux.dev, linux-mm@kvack.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
         Tom Lendacky <thomas.lendacky@amd.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        Andi Kleen <ak@linux.intel.com>,
-        "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
-        Tobin Feldman-Fitzthum <tobin@linux.ibm.com>,
-        Jim Cadden <jcadden@ibm.com>, linux-coco@lists.linux.dev,
-        linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/3] Allow access to confidential computing secret area
- in SEV guests
-Message-ID: <YTD8fkAfjutR8G/o@kroah.com>
-References: <20210809190157.279332-1-dovmurik@linux.ibm.com>
- <YTDKUe8rXrr0Zika@kroah.com>
- <e6fb1d54605690cc1877d7140fc9346c22268111.camel@linux.ibm.com>
- <YTDoS5XycY3gO4MM@kroah.com>
- <6cb65cb3bd69ae69bde044f809525e478bdb8512.camel@linux.ibm.com>
- <YTD3U70FCkXzNMrF@kroah.com>
- <61212d923295203173b1a8c3c24b6dd19835c57e.camel@linux.ibm.com>
+        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Vitaly Kuznetsov <vkuznets@redhat.com>,
+        Wanpeng Li <wanpengli@tencent.com>,
+        Jim Mattson <jmattson@google.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        David Rientjes <rientjes@google.com>,
+        Dov Murik <dovmurik@linux.ibm.com>,
+        Tobin Feldman-Fitzthum <tobin@ibm.com>,
+        Michael Roth <michael.roth@amd.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        "Kirill A . Shutemov" <kirill@shutemov.name>,
+        Andi Kleen <ak@linux.intel.com>, tony.luck@intel.com,
+        marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com
+Subject: Re: [PATCH Part1 v5 35/38] x86/sev: Register SNP guest request
+ platform device
+Message-ID: <YTD+go747TIU6k9g@zn.tnic>
+References: <20210820151933.22401-1-brijesh.singh@amd.com>
+ <20210820151933.22401-36-brijesh.singh@amd.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <61212d923295203173b1a8c3c24b6dd19835c57e.camel@linux.ibm.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20210820151933.22401-36-brijesh.singh@amd.com>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, Sep 02, 2021 at 09:19:13AM -0700, James Bottomley wrote:
-> On Thu, 2021-09-02 at 18:09 +0200, Greg KH wrote:
-> > On Thu, Sep 02, 2021 at 08:19:51AM -0700, James Bottomley wrote:
-> > > On Thu, 2021-09-02 at 17:05 +0200, Greg KH wrote:
-> > > > On Thu, Sep 02, 2021 at 07:35:10AM -0700, James Bottomley wrote:
-> > > > > On Thu, 2021-09-02 at 14:57 +0200, Greg KH wrote:
-> > > > > [...]
-> > > > > > Wait, why are you using securityfs for this?
-> > > > > > 
-> > > > > > securityfs is for LSMs to use. 
-> > > > > 
-> > > > > No it isn't ... at least not exclusively; we use it for non LSM
-> > > > > security purposes as well, like for the TPM BIOS log and for
-> > > > > IMA.  What makes you think we should start restricting
-> > > > > securityfs to LSMs only?  That's not been the policy up to now.
-> > > > 
-> > > > Well that was the original intent of the filesystem when it was
-> > > > created, but I guess it's really up to the LSM maintainers now
-> > > > what they want it for.
-> > > > 
-> > > > > >  If you want your own filesystem to play around with stuff
-> > > > > > like this, great, write your own, it's only 200 lines or less
-> > > > > > these days.  We used to do it all the time until people
-> > > > > > realized they should just use sysfs for driver stuff.
-> > > > > 
-> > > > > This is a security purpose (injected key retrieval), so
-> > > > > securityfs seems to be the best choice.  It's certainly
-> > > > > possible to create a new filesystem, but I really think things
-> > > > > with a security purpose should use securityfs so people know
-> > > > > where to look for them.
-> > > > 
-> > > > knowing where to look should not be an issue, as that should be
-> > > > documented in Documentation/ABI/ anyway, right?
-> > > > 
-> > > > It's just the overlap / overreach of using an existing filesystem
-> > > > for things that don't seem to be LSM-related that feels odd to
-> > > > me.
-> > > > 
-> > > > Why not just make a cocofs if those people want a filesystem
-> > > > interface?
-> > > > It's 200 lines or so these days, if not less, and that way you
-> > > > only mount what you actually need for the system.
-> > > 
-> > > Secrets transfer is actually broader than confidential computing,
-> > > although confidential computing is a first proposed use, so I think
-> > > cocofs would be too narrow.
-> > > 
-> > > > Why force this into securityfs if it doesn't have to be?
-> > > 
-> > > It's not being forced.  Secrets transfer is a security function in
-> > > the same way the bios log is.
-> > 
-> > Is the bios log in securityfs today?
+On Fri, Aug 20, 2021 at 10:19:30AM -0500, Brijesh Singh wrote:
+> Version 2 of GHCB specification provides NAEs that can be used by the SNP
+
+Resolve the "NAE" abbreviation here so that it is clear what this means.
+
+> guest to communicate with the PSP without risk from a malicious hypervisor
+> who wishes to read, alter, drop or replay the messages sent.
+
+This here says "malicious hypervisor" from which we protect from...
+
+> In order to communicate with the PSP, the guest need to locate the secrets
+> page inserted by the hypervisor during the SEV-SNP guest launch. The
+
+... but this here says the secrets page is inserted by the same
+hypervisor from which we're actually protecting.
+
+You wanna rephrase that to explain what exactly happens so that it
+doesn't sound like we're really trusting the HV with the secrets page.
+
+> secrets page contains the communication keys used to send and receive the
+> encrypted messages between the guest and the PSP. The secrets page location
+> is passed through the setup_data.
 > 
-> Yes. It's under /sys/kernel/security/tpm0/  All the ima policy control
-> and its log is under /sys/kernel/security/ima/  that's why I think
-> declaring securityfs as being for anything security related is already
-> our de facto (if not de jure) policy.
+> Create a platform device that the SNP guest driver can bind to get the
+> platform resources such as encryption key and message id to use to
+> communicate with the PSP. The SNP guest driver can provide userspace
+> interface to get the attestation report, key derivation, extended
+> attestation report etc.
 > 
-> > Anyway, it's up to the securityfs maintainer (i.e. not me), but
-> > personally, I think this should be a separate filesystem as that
-> > would probably make things easier in the long run...
-> 
-> I know Al likes this business of loads of separate filesystems, but
-> personally I'm not in favour.  For every one you do, you not only have
-> to document it all,
+> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
+> ---
+>  arch/x86/kernel/sev.c     | 68 +++++++++++++++++++++++++++++++++++++++
+>  include/linux/sev-guest.h |  5 +++
+>  2 files changed, 73 insertions(+)
 
-Wait, why would you not have to document your new files no matter what?
-That should not be an issue either way.
+...
 
-> you also have to find a preferred mount point that
-> the distributions can agree on and also have them agree to enable the
-> mount for,
+> +static u64 find_secrets_paddr(void)
+> +{
+> +	u64 pa_data = boot_params.cc_blob_address;
+> +	struct cc_blob_sev_info info;
+> +	void *map;
+> +
+> +	/*
+> +	 * The CC blob contains the address of the secrets page, check if the
+> +	 * blob is present.
+> +	 */
+> +	if (!pa_data)
+> +		return 0;
+> +
+> +	map = early_memremap(pa_data, sizeof(info));
+> +	memcpy(&info, map, sizeof(info));
+> +	early_memunmap(map, sizeof(info));
+> +
+> +	/* Verify that secrets page address is passed */
 
-You create that yourself, just like tracefs does, and set the standard
-right away, not an issue.
+That's hardly verifying something - if anything, it should say
 
-> which often takes months of negotiation.
+	/* smoke-test the secrets page passed */
 
-Enabling it does take time, which is good because if they do not think
-it should be present because they do not want to use it, then it will
-not be, which means either they do not need your new feature, or you
-have not made it useful enough.
+> +	if (info.secrets_phys && info.secrets_len == PAGE_SIZE)
+> +		return info.secrets_phys;
 
-So again, not an issue.
-And you can even mount it yourself from the kernel if you insist on it
-always being present.
+... which begs the question: how do we verify the HV is not passing some
+garbage instead of an actual secrets page?
 
-> Having fewer
-> filesystems grouped by common purpose which have agreed mount points
-> that distros actually mount seems a far easier approach to enablement.
+I guess it is that:
 
-The issue is that random things gets added to those filesystems,
-exposing stuff that perhaps some systems do NOT want exposed to
-userspace.  Making it explicit as to what they have to mount to get
-access to that is a good thing because you have less of an "attack
-surface" and all of that.
+"SNP_LAUNCH_UPDATE can insert two special pages into the guest’s
+memory: the secrets page and the CPUID page. The secrets page contains
+encryption keys used by the guest to interact with the firmware. Because
+the secrets page is encrypted with the guest’s memory encryption
+key, the hypervisor cannot read the keys. The CPUID page contains
+hypervisor provided CPUID function values that it passes to the guest.
+The firmware validates these values to ensure the hypervisor is not
+providing out-of-range values."
 
-So again, this should not be an issue.  If coco stuff is so important
-that people need it, then having them have to add it to their init
-scripts just to mount the filesystem is not an issue as there are other
-userspace components of all of this mess that they had to install
-anyway.  Just make it part of the userspace tools that are going to be
-accessing these files because you have to get those onto the systems no
-matter what.
+From "4.5 Launching a Guest" in the SNP FW ABI spec.
 
-greg k-h
+I think that explanation above is very important wrt to explaining the
+big picture how this all works with those pages injected into the guest
+so I guess somewhere around here a comment should say
+
+"See section 4.5 Launching a Guest in the SNP FW ABI spec for details
+about those special pages."
+
+or so.
+
+> +
+> +	return 0;
+> +}
+> +
+> +static int __init add_snp_guest_request(void)
+
+If anything, that should be called
+
+init_snp_platform_device()
+
+or so.
+
+> +{
+> +	struct snp_secrets_page_layout *layout;
+> +	struct snp_guest_platform_data data;
+> +
+> +	if (!sev_feature_enabled(SEV_SNP))
+> +		return -ENODEV;
+> +
+> +	snp_secrets_phys = find_secrets_paddr();
+> +	if (!snp_secrets_phys)
+> +		return -ENODEV;
+> +
+> +	layout = snp_map_secrets_page();
+> +	if (!layout)
+> +		return -ENODEV;
+> +
+> +	/*
+> +	 * The secrets page contains three VMPCK that can be used for
+
+What's VMPCK?
+
+> +	 * communicating with the PSP. We choose the VMPCK0 to encrypt guest
+
+"We" is?
+
+> +	 * messages send and receive by the Linux. Provide the key and
+
+"... by the Linux."?! That sentence needs more love.
+
+> +	 * id through the platform data to the driver.
+> +	 */
+> +	data.vmpck_id = 0;
+> +	memcpy_fromio(data.vmpck, layout->vmpck0, sizeof(data.vmpck));
+> +
+> +	iounmap(layout);
+> +
+> +	platform_device_add_data(&guest_req_device, &data, sizeof(data));
+
+Oh look, that function can return an error.
+
+> +
+> +	if (!platform_device_register(&guest_req_device))
+> +		dev_info(&guest_req_device.dev, "secret phys 0x%llx\n", snp_secrets_phys);
+
+Make that message human-readable - not a debug one.
+
+Thx.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
