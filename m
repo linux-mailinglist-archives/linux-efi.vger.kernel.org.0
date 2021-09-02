@@ -2,100 +2,109 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 810F43FECE4
-	for <lists+linux-efi@lfdr.de>; Thu,  2 Sep 2021 13:26:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A7A693FEE2D
+	for <lists+linux-efi@lfdr.de>; Thu,  2 Sep 2021 14:57:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245221AbhIBL1a (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 2 Sep 2021 07:27:30 -0400
-Received: from mail.skyhub.de ([5.9.137.197]:40846 "EHLO mail.skyhub.de"
+        id S1344481AbhIBM6y (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 2 Sep 2021 08:58:54 -0400
+Received: from mail.kernel.org ([198.145.29.99]:52644 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233850AbhIBL13 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Thu, 2 Sep 2021 07:27:29 -0400
-Received: from zn.tnic (p200300ec2f0ed1002d220efd52bc539e.dip0.t-ipconnect.de [IPv6:2003:ec:2f0e:d100:2d22:efd:52bc:539e])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id E179F1EC0528;
-        Thu,  2 Sep 2021 13:26:25 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1630581986;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=nZDBbNwW0kzPiqS/jH6ifLFLt5uI+iZ0TLZo07Wo180=;
-        b=PVqkwqgxwkgB67Wb5b6iXPa5pJWSmTjnI/8EkkTlPxlHEXlvZhiVAYvl6uEAVRmlmYHbg3
-        T4hS6EmZOtkeycXGzbvzamDU6UNpeyViICmVFuIUyYQckxeXgvZ5u9EcMhgOL3iLiEyxcS
-        cHbsR20RNgm2UWY23Pl2ZCMPmOwcMPo=
-Date:   Thu, 2 Sep 2021 13:26:56 +0200
-From:   Borislav Petkov <bp@alien8.de>
-To:     Brijesh Singh <brijesh.singh@amd.com>
-Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        linux-coco@lists.linux.dev, linux-mm@kvack.org,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
+        id S234249AbhIBM6y (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Thu, 2 Sep 2021 08:58:54 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id AD8AC60EBA;
+        Thu,  2 Sep 2021 12:57:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1630587476;
+        bh=Bps1FaIxz5iNAoCtnYdnUEPVPlf7hRaEFB3v0KWO/ts=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=uwGTRJ7r6NQQRm+VL1BKDs8+rxJnY0VmZPsqJG2vp5+0E5u6Hc5/fCNbzpcQwMsVH
+         4WfHNWeYCNrh0WAUlQGrWpyU1b+10KjxETY3Yxd3j1YxblND4YI8qLzo43o+i0IjcO
+         G+ryL1YDtkydujh5SJvmsQKcxKxA+kp5jKRupNLE=
+Date:   Thu, 2 Sep 2021 14:57:53 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Dov Murik <dovmurik@linux.ibm.com>
+Cc:     linux-efi@vger.kernel.org, Borislav Petkov <bp@suse.de>,
+        Ashish Kalra <ashish.kalra@amd.com>,
+        Brijesh Singh <brijesh.singh@amd.com>,
         Tom Lendacky <thomas.lendacky@amd.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Vitaly Kuznetsov <vkuznets@redhat.com>,
-        Wanpeng Li <wanpengli@tencent.com>,
-        Jim Mattson <jmattson@google.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        David Rientjes <rientjes@google.com>,
-        Dov Murik <dovmurik@linux.ibm.com>,
-        Tobin Feldman-Fitzthum <tobin@ibm.com>,
-        Michael Roth <michael.roth@amd.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        "Kirill A . Shutemov" <kirill@shutemov.name>,
-        Andi Kleen <ak@linux.intel.com>, tony.luck@intel.com,
-        marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com
-Subject: Re: [PATCH Part1 v5 34/38] x86/sev: Add snp_msg_seqno() helper
-Message-ID: <YTC1ANx81eQeGN4o@zn.tnic>
-References: <20210820151933.22401-1-brijesh.singh@amd.com>
- <20210820151933.22401-35-brijesh.singh@amd.com>
- <YSkxxkVdupkyxAJi@zn.tnic>
- <9e0e734d-7d2f-4703-b9ce-8362f0c740f4@amd.com>
+        Ard Biesheuvel <ardb@kernel.org>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Andi Kleen <ak@linux.intel.com>,
+        "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
+        James Bottomley <jejb@linux.ibm.com>,
+        Tobin Feldman-Fitzthum <tobin@linux.ibm.com>,
+        Jim Cadden <jcadden@ibm.com>, linux-coco@lists.linux.dev,
+        linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/3] Allow access to confidential computing secret area
+ in SEV guests
+Message-ID: <YTDKUe8rXrr0Zika@kroah.com>
+References: <20210809190157.279332-1-dovmurik@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <9e0e734d-7d2f-4703-b9ce-8362f0c740f4@amd.com>
+In-Reply-To: <20210809190157.279332-1-dovmurik@linux.ibm.com>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Mon, Aug 30, 2021 at 10:07:39AM -0500, Brijesh Singh wrote:
-> The SNP firmware spec says that counter must begin with the 1.
-
-So put that in the comment and explain what 0 is: magic or invalid or
-whatnot and why is that so and that it is spec-ed this way, etc.
-
-Just having it there without a reasoning makes one wonder whether that's
-some arbitrary limitation or so.
-
-> During the GHCB writing the seqno use to be 32-bit value and hence the GHCB
-> spec choose the 32-bit value but recently the SNP firmware changed it from
-> the 32 to 64. So, now we are left with the option of limiting the sequence
-> number to 32-bit. If we go beyond 32-bit then all we can do is fail the
-> call. If we pass the value of zero then FW will fail the call.
-
-That sounds weird again. So make it 64-bit like the FW and fix the spec.
-
-> I just choose the smaller name but I have no issues matching with the spec.
-> Also those keys does not have anything to do with the VMPL level. The
-> secrets page provides 4 different keys and they are referred as vmpck0..3
-> and each of them have a sequence numbers associated with it.
+On Mon, Aug 09, 2021 at 07:01:54PM +0000, Dov Murik wrote:
+> Confidential computing (coco) hardware such as AMD SEV (Secure Encrypted
+> Virtualization) allows guest owners to inject secrets into the VMs
+> memory without the host/hypervisor being able to read them.  In SEV,
+> secret injection is performed early in the VM launch process, before the
+> guest starts running.
 > 
-> In GHCB v3 we probably need to rework the structure name.
+> OVMF already reserves designated area for secret injection (in its
+> AmdSev package; see edk2 commit 01726b6d23d4 "OvmfPkg/AmdSev: Expose the
+> Sev Secret area using a configuration table" [1]), but the secrets were
+> not available in the guest kernel.
+> 
+> The patch series copies the secrets from the EFI-provided memory to
+> kernel reserved memory, and optionally exposes them to userspace via
+> securityfs using a new sev_secret kernel module.
+> 
+> The first patch in efi/libstub copies the secret area from the EFI
+> memory to specially allocated memory; the second patch reserves that
+> memory block; and the third patch introduces the new sev_secret module
+> that exposes the content of the secret entries as securityfs files, and
+> allows clearing out secrets with a file unlink interface.
+> 
+> As a usage example, consider a guest performing computations on
+> encrypted files.  The Guest Owner provides the decryption key (= secret)
+> using the secret injection mechanism.  The guest application reads the
+> secret from the sev_secret filesystem and proceeds to decrypt the files
+> into memory and then performs the needed computations on the content.
+> 
+> In this example, the host can't read the files from the disk image
+> because they are encrypted.  Host can't read the decryption key because
+> it is passed using the secret injection mechanism (= secure channel).
+> Host can't read the decrypted content from memory because it's a
+> confidential (memory-encrypted) guest.
+> 
+> This has been tested with AMD SEV guests, but the kernel side of
+> handling the secret area has no SEV-specific dependencies, and therefore
+> might be usable (perhaps with minor changes) for any confidential
+> computing hardware that can publish the secret area via the standard EFI
+> config table entry.
+> 
+> Here is a simple example for usage of the sev_secret module in a guest
+> to which a secret are with 4 secrets was injected during launch:
+> 
+> # modprobe sev_secret
+> # ls -la /sys/kernel/security/coco/sev_secret
 
-You can point to the spec section so that readers can find the struct
-layout there.
 
--- 
-Regards/Gruss,
-    Boris.
+Wait, why are you using securityfs for this?
 
-https://people.kernel.org/tglx/notes-about-netiquette
+securityfs is for LSMs to use.  If you want your own filesystem to play
+around with stuff like this, great, write your own, it's only 200 lines
+or less these days.  We used to do it all the time until people realized
+they should just use sysfs for driver stuff.
+
+But this isn't a driver, so sure, add your own virtual filesystem, mount
+it somewhere and away you go, no messing around with securityfs, right?
+
+thanks,
+
+greg k-h
