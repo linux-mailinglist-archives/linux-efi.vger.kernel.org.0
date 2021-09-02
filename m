@@ -2,236 +2,92 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D0EED3FEABD
-	for <lists+linux-efi@lfdr.de>; Thu,  2 Sep 2021 10:40:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 39F573FEC7D
+	for <lists+linux-efi@lfdr.de>; Thu,  2 Sep 2021 12:53:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233391AbhIBIle (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 2 Sep 2021 04:41:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52744 "EHLO
+        id S233504AbhIBKyX (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 2 Sep 2021 06:54:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55098 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244443AbhIBIld (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 2 Sep 2021 04:41:33 -0400
-Received: from mail-yb1-xb34.google.com (mail-yb1-xb34.google.com [IPv6:2607:f8b0:4864:20::b34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7FB1C061575
-        for <linux-efi@vger.kernel.org>; Thu,  2 Sep 2021 01:40:35 -0700 (PDT)
-Received: by mail-yb1-xb34.google.com with SMTP id f4so2375578ybr.5
-        for <linux-efi@vger.kernel.org>; Thu, 02 Sep 2021 01:40:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=HShRPnlheFdi99JQ73veO100jTprsf4Ae9maxTvRsaQ=;
-        b=YxyLzShrRN5mxTfywG3ueupjEryP/lZMCi2gCH9iIBbaqwND3uWt3jvKMCwsHRMbkb
-         MPcuBq9D6eEzzhG9bmUgWh0mbYdWuo2aC3HT7ZEVk1dKdftL82FrEtRY3UPtXpPJF16i
-         Re3h5TYh0Vb3NTIiTvFDzLfgxOLlpRCHheRfZa/Vm+GmLurN2qJ7uEOPoy3n1cvxrFEG
-         eEWvLUDJjag2ThlX2sN1FRV3K6CrFuS+OvmM/PezDXQQ1F4z7WOr49WdXFEEyNf8fTAi
-         ebv23e5jpePHYi4LZ2oqU466sQr41gfVUhTrnp8Jipx3M2j/DRb58a+7VVavFxZkng0D
-         6eXw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=HShRPnlheFdi99JQ73veO100jTprsf4Ae9maxTvRsaQ=;
-        b=na5d0SW+Ser0i+O1STTwKHFQW4WpzpZBTCe3Qv79EIwU5C0Y3pZtw/M1OEk9Y/6jmb
-         YPzDnkslYxaWR1rMxDc/inDSduskC0Y5zmYiNQd4t2QCSDjIk/ShtOKmBe+j8cuJHeSR
-         HFUw4ejLqp7GWCsrJ2T75RS1gHptU10CWJqGIvtM5qQoF1q8k8alS4BFdkSyDGJQBzkF
-         HiZPh+IPyAEoEA0g1Zj2SU854XFKFscXCdPWvdGZByTZFhNxupPVX8+dfJbUcmZRbm2S
-         VEdwW40S/23Rk98ddRhRjJilQ+YudcaRniWkDbHXnhjGP1GyAWBYVZZYczfTpYdQi9Vm
-         7Q2w==
-X-Gm-Message-State: AOAM532frev9Qjv/5KSQjJVPgXjrWqHucW/EZFxnDS+p9OwtBJgwtorB
-        56ZBp5Bf1qsq/1ZEY1q6gPNP+XMV7XrKGkxh3Fv4qQ==
-X-Google-Smtp-Source: ABdhPJxYG2spvTl2pz1iVPXlzRHkFqqDXgFa1eiiloB7iGeKX1TpqBAJCygm2h6lmfzwg/Sjtlo+il1pnabsX4DL2ro=
-X-Received: by 2002:a25:3545:: with SMTP id c66mr2897436yba.317.1630572035110;
- Thu, 02 Sep 2021 01:40:35 -0700 (PDT)
+        with ESMTP id S231544AbhIBKyW (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 2 Sep 2021 06:54:22 -0400
+Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AEEB6C061575;
+        Thu,  2 Sep 2021 03:53:24 -0700 (PDT)
+Received: from zn.tnic (p200300ec2f0ed100d115725f57e7001c.dip0.t-ipconnect.de [IPv6:2003:ec:2f0e:d100:d115:725f:57e7:1c])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 40DE61EC054C;
+        Thu,  2 Sep 2021 12:53:18 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1630579998;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=8MEGxmWQPn7vM1CQz7iBVTV01OFVHRNCMyD18pnrHMU=;
+        b=hBCT8Uo/0yz1DU5li4Hs9UtPsjlEm8FmUlzn/tonYVYiGIN/T/kboq1BgbTUZuSI2ukhRi
+        Ws+JOgMzpu2KMb4rGDb6V3inGADA7TGs2Zvh2CjBVtAvObOz+yYSkJumbV2g10a+Mw6cqi
+        6ZQcJMuehyqettHsgGfQCeAU+K9g0Io=
+Date:   Thu, 2 Sep 2021 12:53:54 +0200
+From:   Borislav Petkov <bp@alien8.de>
+To:     Michael Roth <michael.roth@amd.com>
+Cc:     Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org,
+        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        linux-coco@lists.linux.dev, linux-mm@kvack.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Vitaly Kuznetsov <vkuznets@redhat.com>,
+        Wanpeng Li <wanpengli@tencent.com>,
+        Jim Mattson <jmattson@google.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        David Rientjes <rientjes@google.com>,
+        Dov Murik <dovmurik@linux.ibm.com>,
+        Tobin Feldman-Fitzthum <tobin@ibm.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        "Kirill A . Shutemov" <kirill@shutemov.name>,
+        Andi Kleen <ak@linux.intel.com>, tony.luck@intel.com,
+        marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com
+Subject: Re: [PATCH Part1 v5 28/38] x86/compressed/64: enable
+ SEV-SNP-validated CPUID in #VC handler
+Message-ID: <YTCtQmxGaYSL+ZqZ@zn.tnic>
+References: <20210820151933.22401-1-brijesh.singh@amd.com>
+ <20210820151933.22401-29-brijesh.singh@amd.com>
+ <YSaXtpKT+iE7dxYq@zn.tnic>
+ <20210827164601.fzr45veg7a6r4lbp@amd.com>
+ <YS3+saDefHwkYwny@zn.tnic>
+ <20210901010325.3nqw7d44vhsdzryb@amd.com>
 MIME-Version: 1.0
-References: <20210902080416.5461-1-ilias.apalodimas@linaro.org>
- <20210902080416.5461-3-ilias.apalodimas@linaro.org> <CAMj1kXEuFOKeiSPFzAtd1tmog-sBuUUg3cqAGtHn9KgiinwL1g@mail.gmail.com>
- <YTCNSjIyqMquKawg@apalos.home>
-In-Reply-To: <YTCNSjIyqMquKawg@apalos.home>
-From:   Ilias Apalodimas <ilias.apalodimas@linaro.org>
-Date:   Thu, 2 Sep 2021 11:39:59 +0300
-Message-ID: <CAC_iWj+ohNaa1HvSwO4+pZuD47omTR5W9G-+tUF98vbr7N_zCw@mail.gmail.com>
-Subject: Re: [PATCH 2/4 v2] efi/libstub: x86/mixed: increase supported
- argument count
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     linux-efi <linux-efi@vger.kernel.org>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Peter Jones <pjones@redhat.com>,
-        Arvind Sankar <nivedita@alum.mit.edu>,
-        Matthew Garrett <mjg59@google.com>,
-        Daniel Kiper <daniel.kiper@oracle.com>,
-        Leif Lindholm <leif@nuviainc.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20210901010325.3nqw7d44vhsdzryb@amd.com>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, 2 Sept 2021 at 11:37, Ilias Apalodimas
-<ilias.apalodimas@linaro.org> wrote:
->
-> Hi Ard,
->
-> On Thu, Sep 02, 2021 at 10:27:19AM +0200, Ard Biesheuvel wrote:
-> > On Thu, 2 Sept 2021 at 10:04, Ilias Apalodimas
-> > <ilias.apalodimas@linaro.org> wrote:
-> > >
-> > > From: Ard Biesheuvel <ardb@kernel.org>
-> > >
-> > > Increase the number of arguments supported by mixed mode calls, so that
-> > > we will be able to call into the TCG2 protocol to measure the initrd
-> > > and extend the associated PCR. This involves the TCG2 protocol's
-> > > hash_log_extend_event() method, which takes five arguments, three of
-> > > which are u64 and need to be split, producing a total of 8 outgoing
-> > > arguments.
-> > >
-> > > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> > > Signed-off-by: Ilias Apalodimas <ilias.apalodimas@linaro.org>
-> >
-> > Does this still apply cleanly? There was a last minute fix that went
-> > into v5.14 that looked like it would conflict with this.
->
-> Not sure, I just rebased this on on top of net-next.  The last commit I can
-> see in there is 9d31d2338950.  I'll give it a try and send a v3 if that
-> fails.
->
+On Tue, Aug 31, 2021 at 08:03:25PM -0500, Michael Roth wrote:
+> It was used previously in kernel proper to get at the secrets page later,
+> but now it's obtained via the cached entry in boot_params.cc_blob_address.
+> Unfortunately it uses EFI_GUID() macro, so maybe efi.c or misc.h where
+> it makes more sense to add a copy of the macro?
 
-Replying to myself here, but you are right. I'll wait a few more days
-for feedback and send a v3
+A copy?
 
-Cheers
-/Ilias
-> >
-> > > ---
-> > >  arch/x86/boot/compressed/efi_thunk_64.S | 17 ++++++++++++-----
-> > >  arch/x86/include/asm/efi.h              | 10 ++++++----
-> > >  arch/x86/platform/efi/efi_thunk_64.S    | 14 ++++++++++++--
-> > >  3 files changed, 30 insertions(+), 11 deletions(-)
-> > >
-> > > diff --git a/arch/x86/boot/compressed/efi_thunk_64.S b/arch/x86/boot/compressed/efi_thunk_64.S
-> > > index 95a223b3e56a..fec6c48d6b30 100644
-> > > --- a/arch/x86/boot/compressed/efi_thunk_64.S
-> > > +++ b/arch/x86/boot/compressed/efi_thunk_64.S
-> > > @@ -27,8 +27,6 @@ SYM_FUNC_START(__efi64_thunk)
-> > >         push    %rbp
-> > >         push    %rbx
-> > >
-> > > -       leaq    1f(%rip), %rbp
-> > > -
-> > >         movl    %ds, %eax
-> > >         push    %rax
-> > >         movl    %es, %eax
-> > > @@ -36,19 +34,28 @@ SYM_FUNC_START(__efi64_thunk)
-> > >         movl    %ss, %eax
-> > >         push    %rax
-> > >
-> > > +       movq    0x30(%rsp), %rbp
-> > > +       movq    0x38(%rsp), %rbx
-> > > +       movq    0x40(%rsp), %rax
-> > > +
-> > >         /*
-> > >          * Convert x86-64 ABI params to i386 ABI
-> > >          */
-> > > -       subq    $32, %rsp
-> > > +       subq    $48, %rsp
-> > >         movl    %esi, 0x0(%rsp)
-> > >         movl    %edx, 0x4(%rsp)
-> > >         movl    %ecx, 0x8(%rsp)
-> > >         movl    %r8d, 0xc(%rsp)
-> > >         movl    %r9d, 0x10(%rsp)
-> > > +       movl    %ebp, 0x14(%rsp)
-> > > +       movl    %ebx, 0x18(%rsp)
-> > > +       movl    %eax, 0x1c(%rsp)
-> > >
-> > > -       leaq    0x14(%rsp), %rbx
-> > > +       leaq    0x20(%rsp), %rbx
-> > >         sgdt    (%rbx)
-> > >
-> > > +       leaq    1f(%rip), %rbp
-> > > +
-> > >         /*
-> > >          * Switch to gdt with 32-bit segments. This is the firmware GDT
-> > >          * that was installed when the kernel started executing. This
-> > > @@ -67,7 +74,7 @@ SYM_FUNC_START(__efi64_thunk)
-> > >         pushq   %rax
-> > >         lretq
-> > >
-> > > -1:     addq    $32, %rsp
-> > > +1:     addq    $48, %rsp
-> > >         movq    %rdi, %rax
-> > >
-> > >         pop     %rbx
-> > > diff --git a/arch/x86/include/asm/efi.h b/arch/x86/include/asm/efi.h
-> > > index 85f156f8ef81..a323dbac9182 100644
-> > > --- a/arch/x86/include/asm/efi.h
-> > > +++ b/arch/x86/include/asm/efi.h
-> > > @@ -46,13 +46,14 @@ extern unsigned long efi_mixed_mode_stack_pa;
-> > >
-> > >  #define __efi_nargs(...) __efi_nargs_(__VA_ARGS__)
-> > >  #define __efi_nargs_(...) __efi_nargs__(0, ##__VA_ARGS__,      \
-> > > +       __efi_arg_sentinel(9), __efi_arg_sentinel(8),           \
-> > >         __efi_arg_sentinel(7), __efi_arg_sentinel(6),           \
-> > >         __efi_arg_sentinel(5), __efi_arg_sentinel(4),           \
-> > >         __efi_arg_sentinel(3), __efi_arg_sentinel(2),           \
-> > >         __efi_arg_sentinel(1), __efi_arg_sentinel(0))
-> > > -#define __efi_nargs__(_0, _1, _2, _3, _4, _5, _6, _7, n, ...)  \
-> > > +#define __efi_nargs__(_0, _1, _2, _3, _4, _5, _6, _7, _8, _9, n, ...)  \
-> > >         __take_second_arg(n,                                    \
-> > > -               ({ BUILD_BUG_ON_MSG(1, "__efi_nargs limit exceeded"); 8; }))
-> > > +               ({ BUILD_BUG_ON_MSG(1, "__efi_nargs limit exceeded"); 10; }))
-> > >  #define __efi_arg_sentinel(n) , n
-> > >
-> > >  /*
-> > > @@ -176,8 +177,9 @@ extern u64 efi_setup;
-> > >  extern efi_status_t __efi64_thunk(u32, ...);
-> > >
-> > >  #define efi64_thunk(...) ({                                            \
-> > > -       __efi_nargs_check(efi64_thunk, 6, __VA_ARGS__);                 \
-> > > -       __efi64_thunk(__VA_ARGS__);                                     \
-> > > +       u64 __pad[3]; /* must have space for 3 args on the stack */     \
-> > > +       __efi_nargs_check(efi64_thunk, 9, __VA_ARGS__);                 \
-> > > +       __efi64_thunk(__VA_ARGS__, __pad);                              \
-> > >  })
-> > >
-> > >  static inline bool efi_is_mixed(void)
-> > > diff --git a/arch/x86/platform/efi/efi_thunk_64.S b/arch/x86/platform/efi/efi_thunk_64.S
-> > > index fd3dd1708eba..5b7c6e09954e 100644
-> > > --- a/arch/x86/platform/efi/efi_thunk_64.S
-> > > +++ b/arch/x86/platform/efi/efi_thunk_64.S
-> > > @@ -36,6 +36,17 @@ SYM_CODE_START(__efi64_thunk)
-> > >         movq    efi_mixed_mode_stack_pa(%rip), %rsp
-> > >         push    %rax
-> > >
-> > > +       /*
-> > > +        * Copy args passed via the stack
-> > > +        */
-> > > +       subq    $0x24, %rsp
-> > > +       movq    0x18(%rax), %rbp
-> > > +       movq    0x20(%rax), %rbx
-> > > +       movq    0x28(%rax), %rax
-> > > +       movl    %ebp, 0x18(%rsp)
-> > > +       movl    %ebx, 0x1c(%rsp)
-> > > +       movl    %eax, 0x20(%rsp)
-> > > +
-> > >         /*
-> > >          * Calculate the physical address of the kernel text.
-> > >          */
-> > > @@ -47,7 +58,6 @@ SYM_CODE_START(__efi64_thunk)
-> > >         subq    %rax, %rbp
-> > >         subq    %rax, %rbx
-> > >
-> > > -       subq    $28, %rsp
-> > >         movl    %ebx, 0x0(%rsp)         /* return address */
-> > >         movl    %esi, 0x4(%rsp)
-> > >         movl    %edx, 0x8(%rsp)
-> > > @@ -60,7 +70,7 @@ SYM_CODE_START(__efi64_thunk)
-> > >         pushq   %rdi                    /* EFI runtime service address */
-> > >         lretq
-> > >
-> > > -1:     movq    24(%rsp), %rsp
-> > > +1:     movq    0x20(%rsp), %rsp
-> > >         pop     %rbx
-> > >         pop     %rbp
-> > >         retq
-> > > --
-> > > 2.32.0.rc0
-> > >
+arch/x86/boot/compressed/efi.c already includes linux/efi.h where that
+macro is defined.
+
+That ship has already sailed. ;-\
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
