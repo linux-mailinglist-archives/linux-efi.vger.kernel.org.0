@@ -2,27 +2,65 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ABB863FEE38
-	for <lists+linux-efi@lfdr.de>; Thu,  2 Sep 2021 14:59:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D02CA3FEF8D
+	for <lists+linux-efi@lfdr.de>; Thu,  2 Sep 2021 16:37:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234322AbhIBNAm (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 2 Sep 2021 09:00:42 -0400
-Received: from mail.kernel.org ([198.145.29.99]:53114 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1344892AbhIBNAf (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Thu, 2 Sep 2021 09:00:35 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 2CA2B610E6;
-        Thu,  2 Sep 2021 12:59:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1630587577;
-        bh=kvnpsl+vAp5F0vMNJjaVKsRfY+l5b5vVyeef5rRTjk8=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=V6RHHHiwxiAeyErGszL2Ra4YcwPeYHqG+7fpO88sfz0eN6pIrD0bg+n2A0Wdq9T/S
-         JIb24b1tkd4cplsfcwebbeGGjZk8DVs9NG9v5i+idgWd5RebFAIKKjY9jsz+b4n4Ed
-         dRs7WdnYocqUoBi03ynSEdvIqAeDfv9sMqDo4Lms=
-Date:   Thu, 2 Sep 2021 14:59:34 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Dov Murik <dovmurik@linux.ibm.com>
+        id S1345620AbhIBOiY (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 2 Sep 2021 10:38:24 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:61562 "EHLO
+        mx0b-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1345384AbhIBOiX (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 2 Sep 2021 10:38:23 -0400
+Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 182EaOXo165236;
+        Thu, 2 Sep 2021 10:36:58 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : reply-to : to : cc : date : in-reply-to : references : content-type
+ : mime-version : content-transfer-encoding; s=pp1;
+ bh=QQOx2dSPxDVAXueWM26ZKrTyuuWFHbOcZuKe0GxBDqc=;
+ b=lXe6mpMY1RSgVZiN+/t0QYXE7+GVP7HYxEavQmupFDFcYlAc2mcinNYtLKwgimP4GT/s
+ xAVMeNZ7r56BoiXMCVUdKcGPxj/JgvAHbIqEKvlPBZ+c2CYuwBbGsuXPspzbCHszNEON
+ U2kZQ1o0axMpxgZSGPl1hy2dFvCYOTULatqIPpIBGY+8LKSslWO44G3l/ofYwf+gLndQ
+ jh8po++74rQPHl/00cWBUHk5ReFqSlUoL5rpWC1/bboMJkcak1lRhkfrqYqvKAP4/fXA
+ X6AL71NknFnflYh8uaDJPkw47HSUNuD6ty5yv/9EXvlYx5ydIi9otUZtanTnCQfYTwBm 1g== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 3atx7s4n7t-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 02 Sep 2021 10:36:58 -0400
+Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 182Eamt9176030;
+        Thu, 2 Sep 2021 10:36:50 -0400
+Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com [169.55.85.253])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 3atx7s4kv0-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 02 Sep 2021 10:36:50 -0400
+Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
+        by ppma01wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 182EX1AY009907;
+        Thu, 2 Sep 2021 14:35:15 GMT
+Received: from b03cxnp07027.gho.boulder.ibm.com (b03cxnp07027.gho.boulder.ibm.com [9.17.130.14])
+        by ppma01wdc.us.ibm.com with ESMTP id 3atdxcw61g-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 02 Sep 2021 14:35:15 +0000
+Received: from b03ledav004.gho.boulder.ibm.com (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
+        by b03cxnp07027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 182EZDpb22544680
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 2 Sep 2021 14:35:13 GMT
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 580717805E;
+        Thu,  2 Sep 2021 14:35:13 +0000 (GMT)
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 9203C7805C;
+        Thu,  2 Sep 2021 14:35:11 +0000 (GMT)
+Received: from jarvis.int.hansenpartnership.com (unknown [9.211.89.117])
+        by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP;
+        Thu,  2 Sep 2021 14:35:11 +0000 (GMT)
+Message-ID: <e6fb1d54605690cc1877d7140fc9346c22268111.camel@linux.ibm.com>
+Subject: Re: [PATCH 0/3] Allow access to confidential computing secret area
+ in SEV guests
+From:   James Bottomley <jejb@linux.ibm.com>
+Reply-To: jejb@linux.ibm.com
+To:     Greg KH <gregkh@linuxfoundation.org>,
+        Dov Murik <dovmurik@linux.ibm.com>
 Cc:     linux-efi@vger.kernel.org, Borislav Petkov <bp@suse.de>,
         Ashish Kalra <ashish.kalra@amd.com>,
         Brijesh Singh <brijesh.singh@amd.com>,
@@ -32,170 +70,61 @@ Cc:     linux-efi@vger.kernel.org, Borislav Petkov <bp@suse.de>,
         "Serge E. Hallyn" <serge@hallyn.com>,
         Andi Kleen <ak@linux.intel.com>,
         "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
-        James Bottomley <jejb@linux.ibm.com>,
         Tobin Feldman-Fitzthum <tobin@linux.ibm.com>,
         Jim Cadden <jcadden@ibm.com>, linux-coco@lists.linux.dev,
         linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/3] virt: Add sev_secret module to expose confidential
- computing secrets
-Message-ID: <YTDKtr+W7wBTn/96@kroah.com>
+Date:   Thu, 02 Sep 2021 07:35:10 -0700
+In-Reply-To: <YTDKUe8rXrr0Zika@kroah.com>
 References: <20210809190157.279332-1-dovmurik@linux.ibm.com>
- <20210809190157.279332-4-dovmurik@linux.ibm.com>
+         <YTDKUe8rXrr0Zika@kroah.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.34.4 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210809190157.279332-4-dovmurik@linux.ibm.com>
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 2uIctKjwkKId-PZq3lXiSlKWDWRXbgD2
+X-Proofpoint-GUID: nu-lMzyUK01YpvCD-ek8yGODxVmxN_Rw
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.790
+ definitions=2021-09-02_04:2021-09-02,2021-09-02 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ suspectscore=0 mlxscore=0 bulkscore=0 adultscore=0 mlxlogscore=999
+ priorityscore=1501 malwarescore=0 phishscore=0 clxscore=1011 spamscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2108310000 definitions=main-2109020086
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Mon, Aug 09, 2021 at 07:01:57PM +0000, Dov Murik wrote:
-> The new sev_secret module exposes the confidential computing (coco)
-> secret area via securityfs interface.
+On Thu, 2021-09-02 at 14:57 +0200, Greg KH wrote:
+[...]
+> Wait, why are you using securityfs for this?
 > 
-> When the module is loaded (and securityfs is mounted, typically under
-> /sys/kernel/security), a "coco/sev_secret" directory is created in
-> securityfs.  In it, a file is created for each secret entry.  The name
-> of each such file is the GUID of the secret entry, and its content is
-> the secret data.
-> 
-> This allows applications running in a confidential computing setting to
-> read secrets provided by the guest owner via a secure secret injection
-> mechanism (such as AMD SEV's LAUNCH_SECRET command).
-> 
-> Removing (unlinking) files in the "coco/sev_secret" directory will zero
-> out the secret in memory, and remove the filesystem entry.  If the
-> module is removed and loaded again, that secret will not appear in the
-> filesystem.
-> 
-> Signed-off-by: Dov Murik <dovmurik@linux.ibm.com>
-> ---
->  drivers/virt/Kconfig                      |   3 +
->  drivers/virt/Makefile                     |   1 +
->  drivers/virt/coco/sev_secret/Kconfig      |  11 +
->  drivers/virt/coco/sev_secret/Makefile     |   2 +
->  drivers/virt/coco/sev_secret/sev_secret.c | 313 ++++++++++++++++++++++
->  5 files changed, 330 insertions(+)
->  create mode 100644 drivers/virt/coco/sev_secret/Kconfig
->  create mode 100644 drivers/virt/coco/sev_secret/Makefile
->  create mode 100644 drivers/virt/coco/sev_secret/sev_secret.c
-> 
-> diff --git a/drivers/virt/Kconfig b/drivers/virt/Kconfig
-> index 8061e8ef449f..6f73672f593f 100644
-> --- a/drivers/virt/Kconfig
-> +++ b/drivers/virt/Kconfig
-> @@ -36,4 +36,7 @@ source "drivers/virt/vboxguest/Kconfig"
->  source "drivers/virt/nitro_enclaves/Kconfig"
->  
->  source "drivers/virt/acrn/Kconfig"
-> +
-> +source "drivers/virt/coco/sev_secret/Kconfig"
-> +
->  endif
-> diff --git a/drivers/virt/Makefile b/drivers/virt/Makefile
-> index 3e272ea60cd9..2a7d472478bd 100644
-> --- a/drivers/virt/Makefile
-> +++ b/drivers/virt/Makefile
-> @@ -8,3 +8,4 @@ obj-y				+= vboxguest/
->  
->  obj-$(CONFIG_NITRO_ENCLAVES)	+= nitro_enclaves/
->  obj-$(CONFIG_ACRN_HSM)		+= acrn/
-> +obj-$(CONFIG_AMD_SEV_SECRET)	+= coco/sev_secret/
-> diff --git a/drivers/virt/coco/sev_secret/Kconfig b/drivers/virt/coco/sev_secret/Kconfig
-> new file mode 100644
-> index 000000000000..76cfb4f405e0
-> --- /dev/null
-> +++ b/drivers/virt/coco/sev_secret/Kconfig
-> @@ -0,0 +1,11 @@
-> +# SPDX-License-Identifier: GPL-2.0-only
-> +config AMD_SEV_SECRET
-> +	tristate "AMD SEV secret area securityfs support"
-> +	depends on AMD_MEM_ENCRYPT && EFI
-> +	select SECURITYFS
-> +	help
-> +	  This is a driver for accessing the AMD SEV secret area via
-> +	  securityfs.
-> +
-> +	  To compile this driver as a module, choose M here.
-> +	  The module will be called sev_secret.
-> diff --git a/drivers/virt/coco/sev_secret/Makefile b/drivers/virt/coco/sev_secret/Makefile
-> new file mode 100644
-> index 000000000000..dca0ed3f8f94
-> --- /dev/null
-> +++ b/drivers/virt/coco/sev_secret/Makefile
-> @@ -0,0 +1,2 @@
-> +# SPDX-License-Identifier: GPL-2.0-only
-> +obj-$(CONFIG_AMD_SEV_SECRET) += sev_secret.o
-> diff --git a/drivers/virt/coco/sev_secret/sev_secret.c b/drivers/virt/coco/sev_secret/sev_secret.c
-> new file mode 100644
-> index 000000000000..d9a60166b142
-> --- /dev/null
-> +++ b/drivers/virt/coco/sev_secret/sev_secret.c
-> @@ -0,0 +1,313 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * sev_secret module
-> + *
-> + * Copyright (C) 2021 IBM Corporation
-> + * Author: Dov Murik <dovmurik@linux.ibm.com>
-> + */
-> +
-> +/**
-> + * DOC: sev_secret: Allow reading confidential computing (coco) secret area via
-> + * securityfs interface.
-> + *
-> + * When the module is loaded (and securityfs is mounted, typically under
-> + * /sys/kernel/security), a "coco/sev_secret" directory is created in
-> + * securityfs.  In it, a file is created for each secret entry.  The name of
-> + * each such file is the GUID of the secret entry, and its content is the
-> + * secret data.
-> + */
-> +
-> +#include <linux/seq_file.h>
-> +#include <linux/fs.h>
-> +#include <linux/kernel.h>
-> +#include <linux/init.h>
-> +#include <linux/module.h>
-> +#include <linux/io.h>
-> +#include <linux/security.h>
-> +#include <linux/efi.h>
-> +
-> +#define SEV_SECRET_NUM_FILES 64
-> +
-> +#define EFI_SEVSECRET_TABLE_HEADER_GUID \
-> +	EFI_GUID(0x1e74f542, 0x71dd, 0x4d66, 0x96, 0x3e, 0xef, 0x42, 0x87, 0xff, 0x17, 0x3b)
-> +
-> +struct sev_secret {
-> +	struct dentry *coco_dir;
-> +	struct dentry *fs_dir;
-> +	struct dentry *fs_files[SEV_SECRET_NUM_FILES];
-> +	struct linux_efi_coco_secret_area *secret_area;
-> +};
-> +
-> +/*
-> + * Structure of the SEV secret area
-> + *
-> + * Offset   Length
-> + * (bytes)  (bytes)  Usage
-> + * -------  -------  -----
-> + *       0       16  Secret table header GUID (must be 1e74f542-71dd-4d66-963e-ef4287ff173b)
-> + *      16        4  Length of bytes of the entire secret area
-> + *
-> + *      20       16  First secret entry's GUID
-> + *      36        4  First secret entry's length in bytes (= 16 + 4 + x)
-> + *      40        x  First secret entry's data
-> + *
-> + *    40+x       16  Second secret entry's GUID
-> + *    56+x        4  Second secret entry's length in bytes (= 16 + 4 + y)
-> + *    60+x        y  Second secret entry's data
-> + *
-> + * (... and so on for additional entries)
+> securityfs is for LSMs to use. 
 
-Why isn't all of this documented in Documentation/ABI/ which is needed
-for any new user/kernel api that you come up with like this.  We have to
-have it documented somewhere, otherwise how will you know how to use
-these files?
+No it isn't ... at least not exclusively; we use it for non LSM
+security purposes as well, like for the TPM BIOS log and for IMA.  What
+makes you think we should start restricting securityfs to LSMs only? 
+That's not been the policy up to now.
+ 
+>  If you want your own filesystem to play around with stuff like this,
+> great, write your own, it's only 200 lines or less these days.  We
+> used to do it all the time until people realized they should just use
+> sysfs for driver stuff.
 
-thanks
+This is a security purpose (injected key retrieval), so securityfs
+seems to be the best choice.  It's certainly possible to create a new
+filesystem, but I really think things with a security purpose should
+use securityfs so people know where to look for them.
 
-greg k-h
+James
+
+
+> But this isn't a driver, so sure, add your own virtual filesystem,
+> mount it somewhere and away you go, no messing around with
+> securityfs, right?
+> 
+> thanks,
+> 
+> greg k-h
+
+
