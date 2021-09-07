@@ -2,33 +2,42 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D3632401F3B
-	for <lists+linux-efi@lfdr.de>; Mon,  6 Sep 2021 19:38:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 241534029C8
+	for <lists+linux-efi@lfdr.de>; Tue,  7 Sep 2021 15:35:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243962AbhIFRjY (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 6 Sep 2021 13:39:24 -0400
-Received: from mail.skyhub.de ([5.9.137.197]:37542 "EHLO mail.skyhub.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S237281AbhIFRjY (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Mon, 6 Sep 2021 13:39:24 -0400
-Received: from zn.tnic (p200300ec2f0c240054be6003e2b88cf4.dip0.t-ipconnect.de [IPv6:2003:ec:2f0c:2400:54be:6003:e2b8:8cf4])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 36C451EC04DF;
-        Mon,  6 Sep 2021 19:38:17 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1630949897;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=Ic9idha1eNRSeBbKjXxejnqYa8Nsdxsy/xZxuh1y44E=;
-        b=PPM9iAzRTqGs9JPf6ALMDL2Vgz1dUv1TO1PLsi8TBnLEGNydqiBXeH71rVHga/8DD9iDnS
-        wRmuA8ywktfe9FKU9LtxfmbGBqTZ8c/6KxLqToTiI6fRf3s9ig5kXgJmpDyBMtn0CyzenZ
-        +/XaZvLq7O0pvAJ06c5tURTgK4zgBoE=
-Date:   Mon, 6 Sep 2021 19:38:08 +0200
-From:   Borislav Petkov <bp@alien8.de>
-To:     Brijesh Singh <brijesh.singh@amd.com>
-Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        id S243642AbhIGNgY (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 7 Sep 2021 09:36:24 -0400
+Received: from mail-dm6nam11on2048.outbound.protection.outlook.com ([40.107.223.48]:51105
+        "EHLO NAM11-DM6-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S234489AbhIGNgY (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Tue, 7 Sep 2021 09:36:24 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Uw8M303kuHk/KU2Rbo2sZYXbBlf4ITFV5h8ymmN6z53V94c1jo9VryxNJKE2afxTKDakfJbzH6cdFGpqdvw/N7yYBTpw0mHvVhlmqYq5fKb3bOyrVDCrtv4G5fqkMaXVBPe+0OpRq237+Otg3BReIItTUvfdzeay0UBhQ7U/kWDliVXoa/YxcjaBSlOF3Os1s+qWx4ENmRkttx4XlBEKMB7i27ckJVqLT7Kvyh642YSFXpAQbqY9ZlTxzTBMT+nDw4Fu1t9WJo+01nOpBnYv6VITCuaqH6MSDDy1/isoZYGLmil9M7uN2tJIKRlXck4w19KvOmdOTz9jpEFnb+qxmw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901; h=From:Date:Subject:Message-ID:Content-Type:MIME-Version;
+ bh=O9tMxmG5CV8CDnk6qhKVe397KJrFl96yY+YUW4LTQZA=;
+ b=c6bEWdk5ofyb7QNA/H6CZphX0dqZAUU9tot1n5g3KnWHfjwjMETFInSp/Rs4abksiKo8XsYZti9gfeS4IGXC5/bvqKFXNUj0nDojz0K4OV+DeAncmc3eEwLb2Fr4a0P22dmUQ6xu1r8TdgzIoJigkC1nmm28TEeKh9kfvmVgbsOMsdxsDdxerajvnSLRs1+Or+0S+yvostkuQHSKxy395aQf9XX10wCmRM+d+pDHwQN3l9wr1e6r8tXKrTfzzu/YVD9Ng45DHZCZHBmrUIFUA6Dmomc9rTz1NoAEqJktuDpZauzflvlsFM0ejEgKB9iDFFZyvCZAROVw1kFbRyKL5Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=O9tMxmG5CV8CDnk6qhKVe397KJrFl96yY+YUW4LTQZA=;
+ b=tqlGI6Eqnkp0XXr1ywyun6+ztF2iivSrAVEezx0X9tlopIqXm3M0wVHsRwG/eqbFzgIRkxcfZPLOC8VbXAkhJn7u2RMPcV1wnIq9gYaus6g2K6RBxWE/2XDOtDSF1F7vhsTcTnPJNeAKn0dJm3OkZFWxF/Qp5Bssg889HY78RTc=
+Authentication-Results: linux.intel.com; dkim=none (message not signed)
+ header.d=none;linux.intel.com; dmarc=none action=none header.from=amd.com;
+Received: from SN6PR12MB2718.namprd12.prod.outlook.com (2603:10b6:805:6f::22)
+ by SN6PR12MB2717.namprd12.prod.outlook.com (2603:10b6:805:68::29) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4478.19; Tue, 7 Sep
+ 2021 13:35:15 +0000
+Received: from SN6PR12MB2718.namprd12.prod.outlook.com
+ ([fe80::78b7:7336:d363:9be3]) by SN6PR12MB2718.namprd12.prod.outlook.com
+ ([fe80::78b7:7336:d363:9be3%6]) with mapi id 15.20.4478.025; Tue, 7 Sep 2021
+ 13:35:15 +0000
+Cc:     brijesh.singh@amd.com, x86@kernel.org,
+        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
         linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
         linux-coco@lists.linux.dev, linux-mm@kvack.org,
         Thomas Gleixner <tglx@linutronix.de>,
@@ -54,262 +63,115 @@ Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
         Andi Kleen <ak@linux.intel.com>, tony.luck@intel.com,
         marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com
 Subject: Re: [PATCH Part1 v5 36/38] virt: Add SEV-SNP guest driver
-Message-ID: <YTZSAB5H9EC2uk8z@zn.tnic>
+To:     Borislav Petkov <bp@alien8.de>
 References: <20210820151933.22401-1-brijesh.singh@amd.com>
- <20210820151933.22401-37-brijesh.singh@amd.com>
+ <20210820151933.22401-37-brijesh.singh@amd.com> <YTZSAB5H9EC2uk8z@zn.tnic>
+From:   Brijesh Singh <brijesh.singh@amd.com>
+Message-ID: <bb72ce36-19d3-e2df-fa51-3940e4e9118e@amd.com>
+Date:   Tue, 7 Sep 2021 08:35:13 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
+In-Reply-To: <YTZSAB5H9EC2uk8z@zn.tnic>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SN6PR01CA0008.prod.exchangelabs.com (2603:10b6:805:b6::21)
+ To SN6PR12MB2718.namprd12.prod.outlook.com (2603:10b6:805:6f::22)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20210820151933.22401-37-brijesh.singh@amd.com>
+Received: from [10.236.31.95] (165.204.77.1) by SN6PR01CA0008.prod.exchangelabs.com (2603:10b6:805:b6::21) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4478.25 via Frontend Transport; Tue, 7 Sep 2021 13:35:14 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 3ac7b708-e2f3-4181-935b-08d97204535c
+X-MS-TrafficTypeDiagnostic: SN6PR12MB2717:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <SN6PR12MB27173020AC2BF425626EF4D6E5D39@SN6PR12MB2717.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:3968;
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: oYA/5IJLFExkPSqT1IfnInye0TAVC25gY8PPNtYuWNL1mM/akeUnErq5KXN39DrCGPYm4EpozGoHWoHmNcmrOFTWJK4S2GYPUcuPyHdqA2ynfwWfHmVBmD3sIWhhBuoEhQ2FROdE5bP4ajIHCYhZZr4BjopcBxEf+QgX+fKJ/E+RKkyFTbMmJPFCE/BSbpexKDYfxwLn99zqfjcpzvELQCW4xEeIW7qCo10Sp4mZq9nz9dq8xu3ql8UsbB++dfCc5VzQwQLXemisIvvwXlAzrl9XcBUGdK/tx+thBTwlfbUmNB+IQg1x0mr2lGqWqhAsc7DIJVRp/Q+/QCpQ87Aip92RyjDE8s/AlWlvarBS+w+nkkzfrT5y5Q7JTil5zk9KS3k/G8kcsvT9CgW3cRp/AUxUQZKplwEwj/y5m8YGU4vgz4HXtsohL5PRzTe0gN4dlyk0vvWwuzmiYUShd5HH3GvjjCutCtprnNAndo6maVuqA0gI3a/EdCLX35wksiIXWOjkczXm8kN9cdRNlg32tYFiOtWkcWsNhY4jfEP7SK4Ykwqf1kD4AeEhj2/hNT6ut/SGHmv82uKwNdjNU0Cpa9xrGP4Nkcn41Dgl1NgerXdczt0I8jCKFJy83bkCNCHjNtXN+G46ByTWIQGNqaYYCYY8+vx7GEfcSrAsHgc/L4oq0lX/HGXFu+fb5aXiqceKz5AUKT0MTlVv+H5sjM7SAEzlDEi7ERBGtB9iHP26ReRZgJZuAftynGrwKz8JJEV18ZLezo9m9N5Tm9KcE7eY/fKeYZ6zkotG1puTx6t5ZjRLdiuhU/csb+hy3jU+JH1s
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR12MB2718.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(346002)(396003)(136003)(366004)(376002)(39860400002)(956004)(2616005)(966005)(36756003)(44832011)(83380400001)(54906003)(16576012)(6916009)(186003)(38350700002)(31686004)(316002)(7406005)(8936002)(86362001)(7416002)(38100700002)(26005)(6486002)(2906002)(66946007)(66556008)(8676002)(66476007)(31696002)(478600001)(53546011)(52116002)(5660300002)(45080400002)(4326008)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?YW94RCtBUkxXMlNLK05pNHR4NVN5L0o0RE1QS2U0VDhyWGY2VWdycTkrK0Iy?=
+ =?utf-8?B?MEFhUTdCU3VFVHZESUd5cStocWRzZDdBZnZsSWkyQnNGUm5KanFsRU5sUzFG?=
+ =?utf-8?B?QlRjSktxM0k2WlRZRWtxd3ZqWGhqVHpraGxKaGZSbDQ4WW1XRnMxelR0OTJz?=
+ =?utf-8?B?WmhUSmtTVWZ6OU1IQThuYWJJcHM2bHliRU5vS2h0Z203OXZkeFdWSUJzZDV6?=
+ =?utf-8?B?bEgzVUxCRHo1T1RkcFhnMWpNUEVQU2RHdUJyZnV5NFhBOHgvU0lrZWFGOWN6?=
+ =?utf-8?B?cXJmVTA3Nm1SMzY3NzU1Tk9BNmM0UjZrem9NYzBRN2JuU3dTRFBpODd4OXV4?=
+ =?utf-8?B?Zmt4ckdkN3RuaXdYWXlBSG4yOUgwTVNPVnpHZHN1VFIvOEFRd3U3cjdpZ2Qv?=
+ =?utf-8?B?Zjl1bUJNL2FNTXpFV3YvNVp2Y3YvSEd1aE94dUxtNWp4ajY3eDRpZVp3eG9q?=
+ =?utf-8?B?dVJBOGpCbHlxUERzc1E3anpHakZWNGFDb0lLWGZuZzVONU1mZjFJNjhpSnNK?=
+ =?utf-8?B?K0lsUVJjell4NVp3YzZrdC9FK1JXQkNZeDdLYUpJT1BDcEV2THFzQ1B2djRJ?=
+ =?utf-8?B?VlhQdlc3dWF1OG5qUjVkQ05DSEZFMkZCZ2hxZjFXTVlFaHZzUExMejNXUm9h?=
+ =?utf-8?B?aDRTZmZIRXQvNkU2VU5ObXM5TS9sbGk5bXkzY3EzRGFYSmFySGllbnJQMUFj?=
+ =?utf-8?B?MWhxb2c5czNlVlVPaDBtUEFNV2g1QWlzVys3OE5vRXZkejFsS3MzM2RSbjFW?=
+ =?utf-8?B?SkZaK2hrOVZqdUZQVWR5UkdEUUlldDdJK1NhWlpxaWoycENRR0ZSQ2RIWnlV?=
+ =?utf-8?B?V2EzZHNSTVRnakkrb1dGbUNXRXE1c2xxblBId2dnUUJCOXhHRVNLT3Z1WGFU?=
+ =?utf-8?B?Q0Z5Nm9GQzZsWFE2SkQwajZLeFBSbzhoVWtjcVd3Z0ZZTEhTZFgxQnJjcjFJ?=
+ =?utf-8?B?bmM5c0RoOHJzWitSVDNRSkhWQXM4MFVlSk9XR1lHaG5yQkNLeVltcFhvOVRz?=
+ =?utf-8?B?aDJGVHFjMnE0YlBqbS93NEU5eHdJbWdwTnA5aDlYQkRaZUdoekNjMnNNUzMw?=
+ =?utf-8?B?Y2NuUVhoZTVKS3lCcmh0NGhJKzNLTlRaYkxXa3Q3Z0pVYXYwcFVSb1NOL2x0?=
+ =?utf-8?B?ZTEvdVluek1tTnRWaGtTVyt0Nzd4VUh3WHhIUStPazgxWDVub3FOeGZ0TEhh?=
+ =?utf-8?B?clI2QnJsMHZNM245bEhyRThZQW15bk93Z0lvSkdZQURsS0FOYSsrY0N3M1Rz?=
+ =?utf-8?B?WCtBcDRjbENZV1pEU1JYMldCNTRTRFc0SE5uenQ3WHlteG5uZXIvQS92bmdK?=
+ =?utf-8?B?Q3FaekhNYkRQazcrQUQ4aWJDMHZQVHdCTnY1YVAvOEJUL1lmVmtCRzZENHR4?=
+ =?utf-8?B?RmxUY1l1eUtKNVg3VzQ3aGV2K3daTzRTNis1T3dDTkx1ek9GektjSUZiLzlj?=
+ =?utf-8?B?NEN3ZTc1L01QbXBkSUZXVU1KUm5RVkExeWZNaXFtOS9TRVpRckZnU0p6aC9C?=
+ =?utf-8?B?ZjJCZHB2NXRvS3Z3RGNvUkdkYWhmVW80ZW5JV1pPSTF1K1I2Z0J1aFZJUDg5?=
+ =?utf-8?B?UUpsMGV5ZW5tY2VUSUpZRkpSOG01UDVpd2tCT3o3aFJzUjNUakhWSitzVXJo?=
+ =?utf-8?B?Y0NrSy9yMWEvRkF2TFMyRjBlei9mMGlhYnp0SFRsektsZmFQNGNYNnY1SUJp?=
+ =?utf-8?B?a1RHNSt3aEMxQlMvOTc3TDE5M3loeHgxN05YajdjYTZzVTlTeTM5Z0lUV3J0?=
+ =?utf-8?Q?SjdnlJYAN9gq85MKkSJahr9IWIP6pki1BNMigBo?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3ac7b708-e2f3-4181-935b-08d97204535c
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR12MB2718.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Sep 2021 13:35:15.6735
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 8uy4tuWi10V/6MV7kboEPJHs10sr6E+HPuvHd9YKBlkpFs/3WdxNNlogepfnNc8U7UNnJSqpabY4X5BmIGq6oA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN6PR12MB2717
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, Aug 20, 2021 at 10:19:31AM -0500, Brijesh Singh wrote:
-> +===================================================================
-> +The Definitive SEV Guest API Documentation
-> +===================================================================
-> +
-> +1. General description
-> +======================
-> +
-> +The SEV API is a set of ioctls that are issued to by the guest or
+Hi Boris,
 
-issued to by?
+I will update doc and commit per your feedback.
 
-Issued by the guest or hypervisor, you mean..
+On 9/6/21 12:38 PM, Borislav Petkov wrote:
+> 
+> So you said earlier:
+> 
+>> I followed the naming convension you recommended during the initial SEV driver
+>> developement. IIRC, the main reason for us having to add "user" in it because
+>> we wanted to distinguious that this structure is not exactly same as the what
+>> is defined in the SEV-SNP firmware spec.
+> 
+> but looking at the current variant in the code, the structure in the SNP spec is
+> 
+> Table 91. Layout of the CMDBUF_SNP_GUEST_REQUEST Structure
+> 
+> which corresponds to struct snp_guest_request_data so you can call this one:
+> 
+> 	struct snp_guest_request_ioctl
+> 
+> and then it is perfectly clear what is what.
 
-> +hypervisor to get or set certain aspect of the SEV virtual machine.
-> +The ioctls belong to the following classes:
-> +
-> + - Hypervisor ioctls: These query and set global attributes which affect the
-> +   whole SEV firmware.  These ioctl is used by platform provision tools.
+Noted.
 
-"These ioctls are used ... "
+> 
+> 
+> "... which can be found at https://nam11.safelinks.protection.outlook.com/?url=https%3A%2F%2Fdeveloper.amd.com%2Fsev%2F&amp;data=04%7C01%7Cbrijesh.singh%40amd.com%7C9bc8f642dbad48a2a78008d9715d1edd%7C3dd8961fe4884e608e11a82d994e183d%7C0%7C0%7C637665467074351191%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C1000&amp;sdata=Iiz3emjR%2Blx8H73g2N0bOfPHeXXv%2FhLtlljOWNoD2mQ%3D&amp;reserved=0."
+> 
+> assuming that URL will keep its validity in the foreseeable future.
 
-> +
-> + - Guest ioctls: These query and set attribute of the SEV virtual machine.
+Unfortunately, the doc folks are replacing the current spec with the 
+new, and previous URLs are no longer valid. I will spell out the spec 
+version number so that anyone downloading the spec from bugzilla will 
+able to locate it.
 
-"... attributes... "
 
-> +
-> +2. API description
-> +==================
-> +
-> +This section describes ioctls that can be used to query or set SEV guests.
-> +For each ioctl, the following information is provided along with a
-> +description:
-> +
-> +  Technology:
-> +      which SEV techology provides this ioctl. sev, sev-es, sev-snp or all.
-> +
-> +  Type:
-> +      hypervisor or guest. The ioctl can be used inside the guest or the
-> +      hypervisor.
-> +
-> +  Parameters:
-> +      what parameters are accepted by the ioctl.
-> +
-> +  Returns:
-> +      the return value.  General error numbers (ENOMEM, EINVAL)
-> +      are not detailed, but errors with specific meanings are.
-> +
-> +The guest ioctl should be called to /dev/sev-guest device. The ioctl accepts
-
-s/called to/issued on a file descriptor of the/
-
-> +struct snp_user_guest_request. The input and output structure is specified
-> +through the req_data and resp_data field respectively. If the ioctl fails
-> +to execute due to the firmware error, then fw_err code will be set.
-
-"... due to a ... "
-
-> +
-> +::
-> +        struct snp_user_guest_request {
-
-So you said earlier:
-
-> I followed the naming convension you recommended during the initial SEV driver
-> developement. IIRC, the main reason for us having to add "user" in it because
-> we wanted to distinguious that this structure is not exactly same as the what
-> is defined in the SEV-SNP firmware spec.
-
-but looking at the current variant in the code, the structure in the SNP spec is
-
-Table 91. Layout of the CMDBUF_SNP_GUEST_REQUEST Structure
-
-which corresponds to struct snp_guest_request_data so you can call this one:
-
-	struct snp_guest_request_ioctl
-
-and then it is perfectly clear what is what.
-
-> +                /* Request and response structure address */
-> +                __u64 req_data;
-> +                __u64 resp_data;
-> +
-> +                /* firmware error code on failure (see psp-sev.h) */
-> +                __u64 fw_err;
-> +        };
-> +
-> +2.1 SNP_GET_REPORT
-> +------------------
-> +
-> +:Technology: sev-snp
-> +:Type: guest ioctl
-> +:Parameters (in): struct snp_report_req
-> +:Returns (out): struct snp_report_resp on success, -negative on error
-> +
-> +The SNP_GET_REPORT ioctl can be used to query the attestation report from the
-> +SEV-SNP firmware. The ioctl uses the SNP_GUEST_REQUEST (MSG_REPORT_REQ) command
-> +provided by the SEV-SNP firmware to query the attestation report.
-> +
-> +On success, the snp_report_resp.data will contains the report. The report
-
-"... will contain... "
-
-> +format is described in the SEV-SNP specification. See the SEV-SNP specification
-> +for further details.
-
-"... which can be found at https://developer.amd.com/sev/."
-
-assuming that URL will keep its validity in the foreseeable future.
-
-> +static long snp_guest_ioctl(struct file *file, unsigned int ioctl, unsigned long arg)
-> +{
-> +	struct snp_guest_dev *snp_dev = to_snp_dev(file);
-> +	void __user *argp = (void __user *)arg;
-> +	struct snp_user_guest_request input;
-> +	int ret = -ENOTTY;
-> +
-> +	if (copy_from_user(&input, argp, sizeof(input)))
-> +		return -EFAULT;
-> +
-> +	mutex_lock(&snp_cmd_mutex);
-> +
-> +	switch (ioctl) {
-> +	case SNP_GET_REPORT: {
-> +		ret = get_report(snp_dev, &input);
-> +		break;
-> +	}
-
-No need for those {} brackets around the case.
-
-> +	default:
-> +		break;
-> +	}
-> +
-> +	mutex_unlock(&snp_cmd_mutex);
-> +
-> +	if (copy_to_user(argp, &input, sizeof(input)))
-> +		return -EFAULT;
-> +
-> +	return ret;
-> +}
-> +
-> +static void free_shared_pages(void *buf, size_t sz)
-> +{
-> +	unsigned int npages = PAGE_ALIGN(sz) >> PAGE_SHIFT;
-> +
-> +	/* If fail to restore the encryption mask then leak it. */
-> +	if (set_memory_encrypted((unsigned long)buf, npages))
-
-Hmm, this sounds like an abnormal condition about which we should at
-least warn...
-
-> +		return;
-> +
-> +	__free_pages(virt_to_page(buf), get_order(sz));
-> +}
-> +
-> +static void *alloc_shared_pages(size_t sz)
-> +{
-> +	unsigned int npages = PAGE_ALIGN(sz) >> PAGE_SHIFT;
-> +	struct page *page;
-> +	int ret;
-> +
-> +	page = alloc_pages(GFP_KERNEL_ACCOUNT, get_order(sz));
-> +	if (IS_ERR(page))
-> +		return NULL;
-> +
-> +	ret = set_memory_decrypted((unsigned long)page_address(page), npages);
-> +	if (ret) {
-> +		__free_pages(page, get_order(sz));
-> +		return NULL;
-> +	}
-> +
-> +	return page_address(page);
-> +}
-> +
-> +static const struct file_operations snp_guest_fops = {
-> +	.owner	= THIS_MODULE,
-> +	.unlocked_ioctl = snp_guest_ioctl,
-> +};
-> +
-> +static int __init snp_guest_probe(struct platform_device *pdev)
-> +{
-> +	struct snp_guest_platform_data *data;
-> +	struct device *dev = &pdev->dev;
-> +	struct snp_guest_dev *snp_dev;
-> +	struct miscdevice *misc;
-> +	int ret;
-> +
-> +	if (!dev->platform_data)
-> +		return -ENODEV;
-> +
-> +	data = (struct snp_guest_platform_data *)dev->platform_data;
-> +	vmpck_id = data->vmpck_id;
-> +
-> +	snp_dev = devm_kzalloc(&pdev->dev, sizeof(struct snp_guest_dev), GFP_KERNEL);
-> +	if (!snp_dev)
-> +		return -ENOMEM;
-> +
-> +	platform_set_drvdata(pdev, snp_dev);
-> +	snp_dev->dev = dev;
-> +
-> +	snp_dev->crypto = init_crypto(snp_dev, data->vmpck, sizeof(data->vmpck));
-> +	if (!snp_dev->crypto)
-> +		return -EIO;
-
-I guess you should put the crypto init...
-
-> +
-> +	/* Allocate the shared page used for the request and response message. */
-> +	snp_dev->request = alloc_shared_pages(sizeof(struct snp_guest_msg));
-> +	if (IS_ERR(snp_dev->request)) {
-> +		ret = PTR_ERR(snp_dev->request);
-> +		goto e_free_crypto;
-> +	}
-> +
-> +	snp_dev->response = alloc_shared_pages(sizeof(struct snp_guest_msg));
-> +	if (IS_ERR(snp_dev->response)) {
-> +		ret = PTR_ERR(snp_dev->response);
-> +		goto e_free_req;
-> +	}
-
-... here, after the page allocation to save yourself all the setup work
-if the shared pages allocation fails.
-
-> +
-> +	misc = &snp_dev->misc;
-> +	misc->minor = MISC_DYNAMIC_MINOR;
-> +	misc->name = DEVICE_NAME;
-> +	misc->fops = &snp_guest_fops;
-> +
-> +	return misc_register(misc);
-> +
-> +e_free_req:
-> +	free_shared_pages(snp_dev->request, sizeof(struct snp_guest_msg));
-> +
-> +e_free_crypto:
-> +	deinit_crypto(snp_dev->crypto);
-> +
-> +	return ret;
-> +}
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+thanks
+Brijesh
