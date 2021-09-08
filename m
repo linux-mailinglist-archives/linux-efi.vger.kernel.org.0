@@ -2,178 +2,119 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 173AC403B1B
-	for <lists+linux-efi@lfdr.de>; Wed,  8 Sep 2021 16:00:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 33C93403D90
+	for <lists+linux-efi@lfdr.de>; Wed,  8 Sep 2021 18:26:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347842AbhIHOBu (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 8 Sep 2021 10:01:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53444 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235767AbhIHOBu (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 8 Sep 2021 10:01:50 -0400
-Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D341EC061575;
-        Wed,  8 Sep 2021 07:00:41 -0700 (PDT)
-Received: from zn.tnic (p200300ec2f0efc003bde2e7441c2ae39.dip0.t-ipconnect.de [IPv6:2003:ec:2f0e:fc00:3bde:2e74:41c2:ae39])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 537511EC0298;
-        Wed,  8 Sep 2021 16:00:36 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1631109636;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=FPmCIettNSQ3hJ3fLlb/FqgkzqUF7CIDcbo8CDhLUf8=;
-        b=Nc04+xpA2MmAZFNCVhPl1P6lsbelU/cKur7xnArKEftSArWcXYPjSXl/i8afF9fF2wOWtg
-        VJya2j168umGzNSDaldIW1+0VLNiMZSefupEmUoWe5c1WKs515ik72cjV8eKRW92ixnf7s
-        sBmuJxp0nGblT0trjBgJZ0lsGLFwKjc=
-Date:   Wed, 8 Sep 2021 16:00:28 +0200
-From:   Borislav Petkov <bp@alien8.de>
-To:     Brijesh Singh <brijesh.singh@amd.com>
-Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        linux-coco@lists.linux.dev, linux-mm@kvack.org,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Vitaly Kuznetsov <vkuznets@redhat.com>,
-        Wanpeng Li <wanpengli@tencent.com>,
-        Jim Mattson <jmattson@google.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        David Rientjes <rientjes@google.com>,
-        Dov Murik <dovmurik@linux.ibm.com>,
-        Tobin Feldman-Fitzthum <tobin@ibm.com>,
-        Michael Roth <michael.roth@amd.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        "Kirill A . Shutemov" <kirill@shutemov.name>,
-        Andi Kleen <ak@linux.intel.com>, tony.luck@intel.com,
-        marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com
-Subject: Re: [PATCH Part1 v5 37/38] virt: sevguest: Add support to derive key
-Message-ID: <YTjB/KTBsqExqylc@zn.tnic>
-References: <20210820151933.22401-1-brijesh.singh@amd.com>
- <20210820151933.22401-38-brijesh.singh@amd.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20210820151933.22401-38-brijesh.singh@amd.com>
+        id S1347729AbhIHQ1d (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 8 Sep 2021 12:27:33 -0400
+Received: from foss.arm.com ([217.140.110.172]:48646 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S238352AbhIHQ1c (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Wed, 8 Sep 2021 12:27:32 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 64B231FB;
+        Wed,  8 Sep 2021 09:26:24 -0700 (PDT)
+Received: from donnerap.arm.com (donnerap.cambridge.arm.com [10.1.197.93])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 108923F766;
+        Wed,  8 Sep 2021 09:26:22 -0700 (PDT)
+From:   Andre Przywara <andre.przywara@arm.com>
+To:     Russell King <linux@armlinux.org.uk>,
+        Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-efi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Adam Lackorzynski <adam@l4re.org>,
+        Peter Maydell <peter.maydell@linaro.org>
+Subject: [PATCH] ARM: decompressor: Avoid UNPREDICTABLE NOP encoding
+Date:   Wed,  8 Sep 2021 17:26:17 +0100
+Message-Id: <20210908162617.104962-1-andre.przywara@arm.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, Aug 20, 2021 at 10:19:32AM -0500, Brijesh Singh wrote:
-> +2.2 SNP_GET_DERIVED_KEY
-> +-----------------------
-> +:Technology: sev-snp
-> +:Type: guest ioctl
-> +:Parameters (in): struct snp_derived_key_req
-> +:Returns (out): struct snp_derived_key_req on success, -negative on error
-> +
-> +The SNP_GET_DERIVED_KEY ioctl can be used to get a key derive from a root key.
-> +The derived key can be used by the guest for any purpose, such as sealing keys
-> +or communicating with external entities.
-> +
-> +The ioctl uses the SNP_GUEST_REQUEST (MSG_KEY_REQ) command provided by the
-> +SEV-SNP firmware to derive the key. See SEV-SNP specification for further details
-> +on the various fileds passed in the key derivation request.
-> +
-> +On success, the snp_derived_key_resp.data will contains the derived key
+In the decompressor's head.S we need to start with an instruction that
+is some kind of NOP, but also mimics as the PE/COFF header, when the
+kernel is linked as an UEFI application. The clever solution here is
+"tstne r0, #0x4d000", which in the worst case just clobbers the
+condition flags, and bears the magic "MZ" signature in the lowest 16 bits.
 
-"will contain"
+However the encoding used (0x13105a4d) is actually not valid, since bits
+[15:12] are supposed to be 0 (written as "(0)" in the ARM ARM).
+Violating this is UNPREDICTABLE, and *can* trigger an UNDEFINED
+exception. Common Cortex cores seem to ignore those bits, but QEMU
+chooses to trap, so the code goes fishing because of a missing exception
+handler at this point. We are just saved by the fact that commonly (with
+-kernel or when running from U-Boot) the "Z" bit is set, so the
+instruction is never executed. See [0] for more details.
 
-> +value.
-> diff --git a/drivers/virt/coco/sevguest/sevguest.c b/drivers/virt/coco/sevguest/sevguest.c
-> index d029a98ad088..621b1c5a9cfc 100644
-> --- a/drivers/virt/coco/sevguest/sevguest.c
-> +++ b/drivers/virt/coco/sevguest/sevguest.c
-> @@ -303,6 +303,50 @@ static int get_report(struct snp_guest_dev *snp_dev, struct snp_user_guest_reque
->  	return rc;
->  }
->  
-> +static int get_derived_key(struct snp_guest_dev *snp_dev, struct snp_user_guest_request *arg)
-> +{
-> +	struct snp_guest_crypto *crypto = snp_dev->crypto;
-> +	struct snp_derived_key_resp *resp;
-> +	struct snp_derived_key_req req;
-> +	int rc, resp_len;
-> +
-> +	if (!arg->req_data || !arg->resp_data)
-> +		return -EINVAL;
-> +
-> +	/* Copy the request payload from the userspace */
+To make things more robust and avoid UNPREDICTABLE behaviour in the
+kernel code, lets replace this with a "two-instruction NOP":
+The first instruction is an exclusive OR, the effect of which the second
+instruction reverts. This does not leave any trace, neither in a
+register nor in the condition flags. Also it's a perfectly valid
+encoding. Kudos to Peter Maydell for coming up with this gem.
 
-"from userspace"
+[0] https://lore.kernel.org/qemu-devel/YTPIdbUCmwagL5%2FD@os.inf.tu-dresden.de/T/
 
-> +	if (copy_from_user(&req, (void __user *)arg->req_data, sizeof(req)))
-> +		return -EFAULT;
-> +
-> +	/* Message version must be non-zero */
-> +	if (!req.msg_version)
-> +		return -EINVAL;
-> +
-> +	/*
-> +	 * The intermediate response buffer is used while decrypting the
-> +	 * response payload. Make sure that it has enough space to cover the
-> +	 * authtag.
-> +	 */
-> +	resp_len = sizeof(resp->data) + crypto->a_len;
-> +	resp = kzalloc(resp_len, GFP_KERNEL_ACCOUNT);
-> +	if (!resp)
-> +		return -ENOMEM;
-> +
-> +	/* Issue the command to get the attestation report */
-> +	rc = handle_guest_request(snp_dev, req.msg_version, SNP_MSG_KEY_REQ,
-> +				  &req.data, sizeof(req.data), resp->data, resp_len,
-> +				  &arg->fw_err);
-> +	if (rc)
-> +		goto e_free;
-> +
-> +	/* Copy the response payload to userspace */
-> +	if (copy_to_user((void __user *)arg->resp_data, resp, sizeof(*resp)))
-> +		rc = -EFAULT;
-> +
-> +e_free:
-> +	kfree(resp);
-> +	return rc;
-> +}
-> +
->  static long snp_guest_ioctl(struct file *file, unsigned int ioctl, unsigned long arg)
->  {
->  	struct snp_guest_dev *snp_dev = to_snp_dev(file);
-> @@ -320,6 +364,10 @@ static long snp_guest_ioctl(struct file *file, unsigned int ioctl, unsigned long
->  		ret = get_report(snp_dev, &input);
->  		break;
->  	}
-> +	case SNP_GET_DERIVED_KEY: {
-> +		ret = get_derived_key(snp_dev, &input);
-> +		break;
-> +	}
+Signed-off-by: Andre Przywara <andre.przywara@arm.com>
+Reported-by: Adam Lackorzynski <adam@l4re.org>
+Suggested-by: Peter Maydell <peter.maydell@linaro.org>
+---
+ arch/arm/boot/compressed/efi-header.S | 22 ++++++++++++++--------
+ arch/arm/boot/compressed/head.S       |  3 ++-
+ 2 files changed, 16 insertions(+), 9 deletions(-)
 
-{} brackets are not needed.
-
-What, however, is bothering me more in this function is that you call
-the respective ioctl function which might fail, you do not look at the
-return value and copy_to_user() unconditionally.
-
-Looking at get_derived_key(), for example, if it returns after:
-
-        if (!arg->req_data || !arg->resp_data)
-                return -EINVAL;
-
-you will be copying the same thing back to the user, you copied in
-earlier. That doesn't make any sense to me.
-
-Thx.
-
+diff --git a/arch/arm/boot/compressed/efi-header.S b/arch/arm/boot/compressed/efi-header.S
+index c0e7a745103e..230030c13085 100644
+--- a/arch/arm/boot/compressed/efi-header.S
++++ b/arch/arm/boot/compressed/efi-header.S
+@@ -9,16 +9,22 @@
+ #include <linux/sizes.h>
+ 
+ 		.macro	__nop
+-#ifdef CONFIG_EFI_STUB
+-		@ This is almost but not quite a NOP, since it does clobber the
+-		@ condition flags. But it is the best we can do for EFI, since
+-		@ PE/COFF expects the magic string "MZ" at offset 0, while the
+-		@ ARM/Linux boot protocol expects an executable instruction
+-		@ there.
+-		.inst	MZ_MAGIC | (0x1310 << 16)	@ tstne r0, #0x4d000
+-#else
+  AR_CLASS(	mov	r0, r0		)
+   M_CLASS(	nop.w			)
++		.endm
++
++		.macro __initial_nops
++#ifdef CONFIG_EFI_STUB
++		@ This is a two-instruction NOP, which happens to bear the
++		@ PE/COFF signature "MZ" in the first two bytes, so the kernel
++		@ is accepted as an EFI binary. Booting via the UEFI stub
++		@ will not execute those instructions, but the ARM/Linux
++		@ boot protocol does, so we need some NOPs here.
++		.inst	MZ_MAGIC | (0xe225 << 16)	@ eor r5, r5, 0x4d000
++		eor	r5, r5, 0x4d000			@ undo previous insn
++#else
++		__nop
++		__nop
+ #endif
+ 		.endm
+ 
+diff --git a/arch/arm/boot/compressed/head.S b/arch/arm/boot/compressed/head.S
+index b1cb1972361b..bf79f2f78d23 100644
+--- a/arch/arm/boot/compressed/head.S
++++ b/arch/arm/boot/compressed/head.S
+@@ -203,7 +203,8 @@ start:
+ 		 * were patching the initial instructions of the kernel, i.e
+ 		 * had started to exploit this "patch area".
+ 		 */
+-		.rept	7
++		__initial_nops
++		.rept	5
+ 		__nop
+ 		.endr
+ #ifndef CONFIG_THUMB2_KERNEL
 -- 
-Regards/Gruss,
-    Boris.
+2.17.1
 
-https://people.kernel.org/tglx/notes-about-netiquette
