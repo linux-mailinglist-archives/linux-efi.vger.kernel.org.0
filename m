@@ -2,99 +2,86 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8CC2E4031A6
-	for <lists+linux-efi@lfdr.de>; Wed,  8 Sep 2021 01:57:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 864F2403AE1
+	for <lists+linux-efi@lfdr.de>; Wed,  8 Sep 2021 15:44:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233183AbhIGX6J (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 7 Sep 2021 19:58:09 -0400
-Received: from mga09.intel.com ([134.134.136.24]:12470 "EHLO mga09.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231519AbhIGX6I (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Tue, 7 Sep 2021 19:58:08 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10100"; a="220369543"
-X-IronPort-AV: E=Sophos;i="5.85,276,1624345200"; 
-   d="scan'208";a="220369543"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Sep 2021 16:57:01 -0700
-X-IronPort-AV: E=Sophos;i="5.85,276,1624345200"; 
-   d="scan'208";a="538242883"
-Received: from liao1-mobl.ccr.corp.intel.com (HELO chenyu5-mobl1) ([10.249.169.181])
-  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Sep 2021 16:56:58 -0700
-Date:   Wed, 8 Sep 2021 07:56:55 +0800
-From:   Chen Yu <yu.c.chen@intel.com>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <len.brown@intel.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Andy Shevchenko <andriy.shevchenko@intel.com>,
-        Aubrey Li <aubrey.li@intel.com>,
-        Ashok Raj <ashok.raj@intel.com>,
-        linux-efi <linux-efi@vger.kernel.org>
-Subject: Re: [PATCH 2/5][RFC] efi: Introduce
- EFI_FIRMWARE_MANAGEMENT_CAPSULE_HEADER and corresponding structures
-Message-ID: <20210907235655.GA39306@chenyu5-mobl1>
-References: <cover.1631025237.git.yu.c.chen@intel.com>
- <14bb2fa2c49934c627aec07077b96720d46b5202.1631025237.git.yu.c.chen@intel.com>
- <CAMj1kXH-S5t0kYfTELU_kmhK_Nzmf1WAdZTEGfSFUsDmbG7MYA@mail.gmail.com>
+        id S235655AbhIHNpp (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 8 Sep 2021 09:45:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49794 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232667AbhIHNpo (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 8 Sep 2021 09:45:44 -0400
+Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9AE9EC061575;
+        Wed,  8 Sep 2021 06:44:36 -0700 (PDT)
+Received: from zn.tnic (p200300ec2f0efc003bde2e7441c2ae39.dip0.t-ipconnect.de [IPv6:2003:ec:2f0e:fc00:3bde:2e74:41c2:ae39])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id D2F9F1EC0354;
+        Wed,  8 Sep 2021 15:44:29 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1631108670;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=g4fdFT9TphduKbM4f8gqWCQfmgmAQk4nxlIef4GbtEo=;
+        b=n7yul8HTwJlFp/yx7QkeuLuAqcNy1w6sC78Xa/KvUJ/p6ymPJmlKdKSwscxfKa9Jz3Ey5l
+        mXyRjO9EfjkNGERJzM1tGCuR1wvUQelK+vzkRQCEZzNhrDDteBL2amE5o/9RdZOlLbk76f
+        IrcezixdaotsLOtinE6VQs+cgQ77L1I=
+Date:   Wed, 8 Sep 2021 15:44:22 +0200
+From:   Borislav Petkov <bp@alien8.de>
+To:     Brijesh Singh <brijesh.singh@amd.com>
+Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        linux-coco@lists.linux.dev, linux-mm@kvack.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Vitaly Kuznetsov <vkuznets@redhat.com>,
+        Wanpeng Li <wanpengli@tencent.com>,
+        Jim Mattson <jmattson@google.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        David Rientjes <rientjes@google.com>,
+        Dov Murik <dovmurik@linux.ibm.com>,
+        Tobin Feldman-Fitzthum <tobin@ibm.com>,
+        Michael Roth <michael.roth@amd.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        "Kirill A . Shutemov" <kirill@shutemov.name>,
+        Andi Kleen <ak@linux.intel.com>, tony.luck@intel.com,
+        marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com
+Subject: Re: [PATCH Part1 v5 36/38] virt: Add SEV-SNP guest driver
+Message-ID: <YTi+NgNW/iIKBfKL@zn.tnic>
+References: <20210820151933.22401-1-brijesh.singh@amd.com>
+ <20210820151933.22401-37-brijesh.singh@amd.com>
+ <YTZSAB5H9EC2uk8z@zn.tnic>
+ <bb72ce36-19d3-e2df-fa51-3940e4e9118e@amd.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <CAMj1kXH-S5t0kYfTELU_kmhK_Nzmf1WAdZTEGfSFUsDmbG7MYA@mail.gmail.com>
+In-Reply-To: <bb72ce36-19d3-e2df-fa51-3940e4e9118e@amd.com>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, Sep 07, 2021 at 06:06:28PM +0200, Ard Biesheuvel wrote:
-> On Tue, 7 Sept 2021 at 17:12, Chen Yu <yu.c.chen@intel.com> wrote:
-> >
-> > Platform Firmware Runtime Update image starts with UEFI headers, and the headers
-> > are defined in UEFI specification, but some of them have not been defined in the
-> > kernel yet.
-> >
-> > For example, the header layout of a capsule file looks like this:
-> >
-> > EFI_CAPSULE_HEADER
-> > EFI_FIRMWARE_MANAGEMENT_CAPSULE_HEADER
-> > EFI_FIRMWARE_MANAGEMENT_CAPSULE_IMAGE_HEADER
-> > EFI_FIRMWARE_IMAGE_AUTHENTICATION
-> >
-> > These structures would be used by the Platform Firmware Runtime Update
-> > driver to parse the format of capsule file to verify if the corresponding
-> > version number is valid. The EFI_CAPSULE_HEADER has been defined in the
-> > kernel, however the rest are not, thus introduce corresponding UEFI structures
-> > accordingly.
-> >
-> > The reason why efi_manage_capsule_header_t and efi_manage_capsule_image_header_t
-> > are packedi might be that:
-> > According to the uefi spec,
-> > [Figure 23-6 Firmware Management and Firmware Image Management headers]
-> > EFI_FIRMWARE_MANAGEMENT_CAPSULE_HEADER is located at the lowest offset within
-> > the body of the capsule. And this structure is designed to be unaligned to save
-> > space, because in this way the adjacent drivers and binary payload elements could
-> > start on byte boundary with no padding. And the
-> > EFI_FIRMWARE_MANAGEMENT_CAPSULE_IMAGE_HEADER is at the head of each payload, so
-> > packing this structure also makes room for more data.
-> >
-> > Signed-off-by: Chen Yu <yu.c.chen@intel.com>
-> 
-> Who is going to use these definitions? I only see this patch, where is
-> the rest of the series?
->
-Sorry, Ard, and thanks for taking a look at this patch.
+On Tue, Sep 07, 2021 at 08:35:13AM -0500, Brijesh Singh wrote:
+> Unfortunately, the doc folks are replacing the current spec with the new,
+> and previous URLs are no longer valid. I will spell out the spec version
+> number so that anyone downloading the spec from bugzilla will able to locate
+> it.
 
-The user of this definitions is an ACPI device driver, named Platform Firmware
-Runtime Update driver. This driver is designed to do firmware update via SMI.
-This driver will do sanity check of the capsule file using these structures before
-the file is passed to SMI. We put this check in kernel space rather than leaving
-it to SMI because the latter is very costly.
+Yap, this is yet another example why we need a stable collection for
+docs, outside of the vendor domains which change way too often and URLs
+end up disappearing.
 
-The series patch is at:
-https://patchwork.kernel.org/project/linux-acpi/list/?series=543211
-and the user is mainly PATCH 3/5:
-https://patchwork.kernel.org/project/linux-acpi/patch/9b2bd7d1e40633ce6f4845fb5c9e30a3faad5e7a.1631025237.git.yu.c.chen@intel.com/
-in valid_version().
+-- 
+Regards/Gruss,
+    Boris.
 
-thanks,
-Chenyu
+https://people.kernel.org/tglx/notes-about-netiquette
