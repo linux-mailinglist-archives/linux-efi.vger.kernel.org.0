@@ -2,277 +2,285 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F8DC405612
-	for <lists+linux-efi@lfdr.de>; Thu,  9 Sep 2021 15:36:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 457124059BD
+	for <lists+linux-efi@lfdr.de>; Thu,  9 Sep 2021 16:55:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1356843AbhIINRv (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 9 Sep 2021 09:17:51 -0400
-Received: from mail-mw2nam12on2067.outbound.protection.outlook.com ([40.107.244.67]:12783
-        "EHLO NAM12-MW2-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1356072AbhIINML (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Thu, 9 Sep 2021 09:12:11 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ETocO9MD7awuKcvREmcFgtfAPRiX1/q762wVztU0A21EBXNxUPb2TxJXyFW116FDrIrH7n/ZudjTskpRTQMX1ukJYeCsQqc+OWJli/VyPFZeaYnZkjGDyPyUiykMct6+IPERqgI6a7D3Xvu9S8nkXFkvMA2FjjA9UaI7vP1nveIfOe1UlbpIqOAJSVCuitTG513Bhxp2UdzjNJ/fOzbrGt/HWmTLzgDMgKAO6Cwe27AirY9aiT5Yok4Q2Krm+CtS+z9kUB73uDVc1XTbaU3q2FqAVbk86dxhzSRBxNoao+jh5te6f4QWYb61fIwNChPo8aOmSp2h/jyBqxPCUp55GQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901; h=From:Date:Subject:Message-ID:Content-Type:MIME-Version;
- bh=y84+NfD7FLJMoALtVzut1WPveI2uTlUXwRmcSqYr1jY=;
- b=ih2p6V4PI0nE/+7slez17tQkGw2epz7BqBALPXRKl2B1iJY4Sb+LgccBYbSCSxEDA1QKr5b0ZT5wtOZR2SL4KAdeCdxmsI7rI8tthHgNa8CpeObzRawBQ1O2/1TwB335DGG6X3yZZCJ4ewdSObHLJFeE4C0X91Uc2Y9Udq5s4gDL4bKNICCfYe+mxjCsWoRmnMiqAX//UWSXB6VGVdfGMtJpqXFsxxa+d2By7sc++1ndlpGMHOLhMQJvkl5hgkfTjkeUIe8/jjONc3FWYZWaWxmfaRSfp8/ZkozY0lndaGDSwAjMC2GVe/jWpurOMcwcW8dMRUzc52DYBovk557vbw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=y84+NfD7FLJMoALtVzut1WPveI2uTlUXwRmcSqYr1jY=;
- b=ig1LdEzHC+YWtCw2sgYLqwP1tGSSMS2vXfYqw8gUmIlXGQ0YYf4mpDK0EBTR7MW21ljxrNjXWqyOo705a0DSzoD86C7qtEQQBdeRQBobyLx8xAzHNTvSXzygS/nZwGItZDZ7WltBU5AAV1vexrwIpB0ctNh+twhQiMM0FjBGIug=
-Authentication-Results: ffwll.ch; dkim=none (message not signed)
- header.d=none;ffwll.ch; dmarc=none action=none header.from=amd.com;
-Received: from DM4PR12MB5229.namprd12.prod.outlook.com (2603:10b6:5:398::12)
- by DM8PR12MB5479.namprd12.prod.outlook.com (2603:10b6:8:38::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4500.16; Thu, 9 Sep
- 2021 13:10:57 +0000
-Received: from DM4PR12MB5229.namprd12.prod.outlook.com
- ([fe80::d560:d21:cd59:9418]) by DM4PR12MB5229.namprd12.prod.outlook.com
- ([fe80::d560:d21:cd59:9418%6]) with mapi id 15.20.4500.017; Thu, 9 Sep 2021
- 13:10:57 +0000
-Subject: Re: [PATCH v3 8/8] treewide: Replace the use of mem_encrypt_active()
- with cc_platform_has()
-To:     Christophe Leroy <christophe.leroy@csgroup.eu>,
-        linux-kernel@vger.kernel.org, x86@kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        iommu@lists.linux-foundation.org, kvm@vger.kernel.org,
-        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        linux-graphics-maintainer@vmware.com,
-        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-        kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org
-Cc:     Sathyanarayanan Kuppuswamy 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        Brijesh Singh <brijesh.singh@amd.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Paul Mackerras <paulus@samba.org>,
-        Will Deacon <will@kernel.org>, Andi Kleen <ak@linux.intel.com>,
-        Baoquan He <bhe@redhat.com>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        Joerg Roedel <joro@8bytes.org>,
-        Christoph Hellwig <hch@infradead.org>,
-        David Airlie <airlied@linux.ie>,
-        Ingo Molnar <mingo@redhat.com>, Dave Young <dyoung@redhat.com>,
-        Tianyu Lan <Tianyu.Lan@microsoft.com>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Borislav Petkov <bp@alien8.de>,
-        Andy Lutomirski <luto@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Daniel Vetter <daniel@ffwll.ch>
-References: <cover.1631141919.git.thomas.lendacky@amd.com>
- <46a18427dc4e9dda985b10e472965e3e4c769f1d.1631141919.git.thomas.lendacky@amd.com>
- <a9d9a6a7-b3b3-570c-ef3d-2f5f0b61eb0b@csgroup.eu>
-From:   Tom Lendacky <thomas.lendacky@amd.com>
-Message-ID: <76ace164-92d8-c970-f9e5-d259c3573314@amd.com>
-Date:   Thu, 9 Sep 2021 08:10:54 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
-In-Reply-To: <a9d9a6a7-b3b3-570c-ef3d-2f5f0b61eb0b@csgroup.eu>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SA9PR13CA0125.namprd13.prod.outlook.com
- (2603:10b6:806:27::10) To DM4PR12MB5229.namprd12.prod.outlook.com
- (2603:10b6:5:398::12)
+        id S233058AbhIIO4K (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 9 Sep 2021 10:56:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50500 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229709AbhIIO4J (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 9 Sep 2021 10:56:09 -0400
+Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com [IPv6:2a00:1450:4864:20::12d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6349C061574
+        for <linux-efi@vger.kernel.org>; Thu,  9 Sep 2021 07:54:59 -0700 (PDT)
+Received: by mail-lf1-x12d.google.com with SMTP id k13so4287127lfv.2
+        for <linux-efi@vger.kernel.org>; Thu, 09 Sep 2021 07:54:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=UXDQZf9GzYNTEO852SsaCLl2x7HS0RgCfhZ04IuDC2I=;
+        b=JmUdq4Wh16MijW68342W/rE/D7fXFeyOtoOKzi7u5wegZlDayNEemJqHGu5Pv9EMfv
+         O3yK5jfNQWOv+JhpDuIV1LnSI8PjS94xPdjGuAh6yNEjkIA3yAAuqUzLCjqCyFCcN6Xo
+         daekX6B2mNlFawoQnV15OrMMyQnvV/c8uxXZZHnLaac/lpU7GY10oJNGM/R0/6e+Y/gF
+         QEPBHJHHCWohS5g2kCmcODC7rfSbNA6i9Zm/KIuokcvwlMC0Yv1Py+laDT43vW6WiH4I
+         VHVpfJDllRA41xwd+PYM8PhubIV9K0ym+dGqP0Yv3CvIE0iosrl1Xz/C/NAcPMAeBjK+
+         IsqA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=UXDQZf9GzYNTEO852SsaCLl2x7HS0RgCfhZ04IuDC2I=;
+        b=XcmA+VJ2sMyCNoZ2LC9N5wfvIZpsFEVtulU0s6ivDHk+K58bQEJDdusbXbu4SAgLQN
+         VPEYpLsab3Mn+Fazh7l0z7Oio0ZiC8D6eaCIpzA2O5Nd90TrU8mx7nc8tely3bqLu8lA
+         r4QHtXCYptNeZJXAriftrbMOKesGHT1Dj6ASnADVT8Mi24l5tew/b4WNRCaAXeYerpRf
+         slZ7x2vTkz4Zy5zTq0M9j5j8ODIaDWVydiQmkzR7jLIHv5utc6frUTUPYWQ5Qo6bEG8g
+         USZgFhS4ZYoU3ua2YdQR4mNTN6nvFTRPbuUibj2IxQQjRDQYcTUMlexIFJrY59UR8tP9
+         1+gQ==
+X-Gm-Message-State: AOAM531rQLY6W1hCyiizhwsFkwtBKPZFuF0n68+CUZQjldhe2e1BQQ6f
+        6PMcPEvzeiWHKx+/WLMP4pF6QwJGRtky2BQOljER6A==
+X-Google-Smtp-Source: ABdhPJzVlDJrIFcJ2i81VlE5b1q6SgGaZDssMEI+LEFLRhNJoDi+tgy/aITWYuMKp0ppmEZ9S1Cumb8525ItJFbkX28=
+X-Received: by 2002:a05:6512:1112:: with SMTP id l18mr204163lfg.402.1631199297810;
+ Thu, 09 Sep 2021 07:54:57 -0700 (PDT)
 MIME-Version: 1.0
-Received: from [10.236.30.241] (165.204.77.1) by SA9PR13CA0125.namprd13.prod.outlook.com (2603:10b6:806:27::10) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4523.8 via Frontend Transport; Thu, 9 Sep 2021 13:10:55 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: ee4ebcc4-c34d-4506-688a-08d9739342f6
-X-MS-TrafficTypeDiagnostic: DM8PR12MB5479:
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <DM8PR12MB5479A0D2B0392DD6E5F5AE49ECD59@DM8PR12MB5479.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:5797;
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: K47tNBsaYzzuzlxXL3/vD/zxcrr1/yJ4Gvskt7vedtiQCf87xHqzY4QOah94oDRuAquR6XAP3kdNvZ0Y37vC9x8ta4MScHcRqpulefomH5L1J0tS5Uufnm634CoVOm7y9yTHDloCmNePqISnmnU1QkpjnY3SwklRIRe7RK6E0lmV+5pCQ1kY8wDfdiF2wYT5qGvUImVaBCO8bH3B+veIjq3a8xnO7jLywvu7dz25mFAzWExFjzehck3dYoR6wclHB1+2wQljopz4K79i/ccfAyNZYWdoKV6bdGstsdYQ+ReosB9j85TwkvTi+OY4cyba2tweEQNzbU7VZvWWiG0vK6PiN1hLDlq9QOl9CZPGZqL1Ut9Vq+P7oOajm7VjoZ8PurcoLmHL1bi1f1Sg9bJWiCay1IYGASWQ2djvD0cZ8uNp4U99zJoUolPef3Je60SSjXEYJwROzX2yS2qIi0VRoUN1kwdG0wjqMDCN+1o8vlHpXyF80eOpDClnWexMt52lqv6oXJZmhGJyVTqYuIrwkf/xXtHmSpPNqNZgcUpp9/khby16Jfbz7Vbu2xjzR+UGMxdS4inCGtzzIxoAveutdTbk6uQ4+hmuOsVXlH4v2/6BQQ10lr3vZUmK8rPDJgYJqiLkF3cuyvqYDmqkejlRUdY2KZCpX3EYOhWgV8y+jQTSPCWICFIoasSpV8HOAAKr8USJbnFOLETy40qfJm2g+cfCS/T5tBJ+5wmoNKdPFcasuKSP/mFu6KCo/im6sxQIvMcAmg57BR9suMwoa9k9gaV1ivpJcyk6UNMAmvs42nNBI5xPSAViRTl33OPlINJwzy6pwEeaji3cxtMGy7Kddj1Z2I50UWZ4453Y2Gg32/LFRAypwWpK5fFXf0hdmUa3
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB5229.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(136003)(396003)(39860400002)(346002)(366004)(376002)(31696002)(31686004)(86362001)(66476007)(66556008)(66946007)(8936002)(921005)(38100700002)(83380400001)(316002)(53546011)(36756003)(2906002)(16576012)(956004)(2616005)(26005)(186003)(5660300002)(8676002)(966005)(4326008)(7416002)(7406005)(478600001)(6486002)(54906003)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?SkIvQk1IaWJxbGhFeXZZai9xNGdiQTladU1pYW9WNTREcktUY0dEc0pxeWQw?=
- =?utf-8?B?NVVEYXI4bk9KcXluY2ovNWF3ckNDQXphT1BwL3lFWDdueWgxREtEdy9nSkJO?=
- =?utf-8?B?ZEtHd0FPeGxyQmxGVXQ5UEZTTlFMVlkxY0lNbUpYaURVSllxUGtEZCtIbkdx?=
- =?utf-8?B?NTlpUE4yZzg0ei9yR0hmdnl3aUx5ajEzMnFKTTBGWStOZGEwcXQ1WGw3T3NO?=
- =?utf-8?B?MnBKby9RYjVReVJ5Ly9TOVJHV1g5ZU02VUVTcXg0ZXZHNFlxTWtYejlXWk9Q?=
- =?utf-8?B?OGRxVFk2NU5EZHpacWhydzJZSjRMMTU3eXV4cllSNmlVcFNrMjJiZzRyeWV1?=
- =?utf-8?B?UGVOdnVxMVVrdDVySzIrOVhIYU5hSHAvQjJiYTFwWDh1T1Y4T3lzSUlzWDF5?=
- =?utf-8?B?WU1RZTdHWXdFc0hZcnlLcGdqcEJoM0xhUFNEY3pSRUxWUSs2Q3VxSDRuZHJW?=
- =?utf-8?B?L0lhRlJmTEIwSGxKZXNJc2oyMmZyRDFGK25wbWtmMWtkbWIrbkVSdldsYmpP?=
- =?utf-8?B?T2haOHJpa1NwVXFJZEpadWVlVVFNUW9mcHVJMURNYUNNRTlBMEV1aGJraDZV?=
- =?utf-8?B?THBRdm5DRGhlMHJrTTNyTnlzVXZ4cUE2Ly96ZHRYZkdkVEZtVS9PdWtXRFdr?=
- =?utf-8?B?ZFBuVzd2RmREK0ZPYXQxVmZJbkVkaXZSM1RPMDJRQzAxNVlRdGhBQ2ZYL2Vl?=
- =?utf-8?B?MkJ0ZnpRejAyQ0lWdG9wdGprRm9uMk1KMWlDTFo4VEdMYUQ4eGZzYXUwK1VV?=
- =?utf-8?B?bWFIdDJLV1JpUUVYRXVCbitvUVQwb0tKQVBMdHZ6cUtVK25TRVlZM21kNW1z?=
- =?utf-8?B?TFBiWVZuUTlEbW1hTkZJM2hZNXduMWN1WW9ZTDNDWjJnRU1ESUJ5UXYwVktO?=
- =?utf-8?B?MGtXTHBVbVVLK242dWs3VlVkYkg4clo4UTV0UWZWTG02STE1RTdYTXZlQkZK?=
- =?utf-8?B?aU5BeXlaMnRrb2VEeitLeFNtS0daSXRTS29FV25hNG9OU1gzbStqSG9hVHlw?=
- =?utf-8?B?clBidWEvMHg0c3MyWk9wZ203TEtRYWd6R0c4Smh3T3pWQ1d4VWl0TnVId1BB?=
- =?utf-8?B?ZXQ4eXZac25LRGk0SVhGdFNOSWRmeVlvR3VSNG0vaytLbEpaRlJaNnoxNDJV?=
- =?utf-8?B?T1MzS2NlYzg5ajl5V3Qrd1VZWmc4MjRUdlU1ZG1ZazZLbW5OZExhNkNPUlhj?=
- =?utf-8?B?aE8ySGt3U0xyQ0lFeHVlaCs2ZkthYzE2eWdoa3A2Mkw5TXhFNFlVQkVoUmZE?=
- =?utf-8?B?ZUM3UFRyRURKeHdaYzRCWEtrazh2aTY1U29NTU5VWTRpTG5LL2ZJSDNBbUZC?=
- =?utf-8?B?YURMK0hWNWUvcWtnZFhGSEhETkxDT05tbG5FZUFBeTU2eEpKaFVRRGxHL1JF?=
- =?utf-8?B?TzJKWGZnMm90dE1RMWZ1OWN4bkEySXhHNUp4c05uWGZCODVsZWd2VWY5SjNz?=
- =?utf-8?B?UlZ3NVhJc2Y0d1ZiMGxjdXFFOFhJdHlsZGNubnVSL1Nta2xIMmhtQVJGUms5?=
- =?utf-8?B?bzhiUDNwUG55Sk9CYmhEYU53Z1pEZi9kSTFnWDlyNXp2VTBSL2hEQjBuR2l6?=
- =?utf-8?B?anRML1IyOTZaQU5VLzhjTlhDRXFxUFROcXYrSE9zSy9yS3FyR3Y5eDdINmFO?=
- =?utf-8?B?bHVESDlpZjVjTGdDR3lvVFBPa0xFMWRCS3pLay8vMzN3akFNamc4YzZWaFd0?=
- =?utf-8?B?aHdNRmNBNTVzOERpSGVBa0Y0ZUx5RnYvd2pBV3hzV1JRNUpRZitQcXNJdHJB?=
- =?utf-8?Q?8rWV+nyfWW75Hy/CbuTr7nsrSFfY7gpo462nm72?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ee4ebcc4-c34d-4506-688a-08d9739342f6
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB5229.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Sep 2021 13:10:57.2787
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: UxAPyqV7mZbEtpfsm2iUdAAFImWIav2+gAszeKAjPJ9M2SQqmTftN3mymGAKltwLQ3UXedkqi2rRhaJ95bU76w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM8PR12MB5479
+References: <20210820151933.22401-1-brijesh.singh@amd.com> <20210820151933.22401-35-brijesh.singh@amd.com>
+In-Reply-To: <20210820151933.22401-35-brijesh.singh@amd.com>
+From:   Peter Gonda <pgonda@google.com>
+Date:   Thu, 9 Sep 2021 08:54:46 -0600
+Message-ID: <CAMkAt6qQOgZVEMQdMXqvs2s8pELnAFV-Msgc2_MC5WOYf8oAiQ@mail.gmail.com>
+Subject: Re: [PATCH Part1 v5 34/38] x86/sev: Add snp_msg_seqno() helper
+To:     Brijesh Singh <brijesh.singh@amd.com>
+Cc:     x86@kernel.org, linux-kernel@vger.kernel.org,
+        kvm list <kvm@vger.kernel.org>, linux-efi@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org, linux-coco@lists.linux.dev,
+        linux-mm@kvack.org, Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Vitaly Kuznetsov <vkuznets@redhat.com>,
+        Wanpeng Li <wanpengli@tencent.com>,
+        Jim Mattson <jmattson@google.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Sergio Lopez <slp@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        David Rientjes <rientjes@google.com>,
+        Dov Murik <dovmurik@linux.ibm.com>,
+        Tobin Feldman-Fitzthum <tobin@ibm.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Michael Roth <michael.roth@amd.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        "Kirill A . Shutemov" <kirill@shutemov.name>,
+        Andi Kleen <ak@linux.intel.com>, tony.luck@intel.com,
+        Marc Orr <marcorr@google.com>,
+        sathyanarayanan.kuppuswamy@linux.intel.com
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 9/9/21 2:25 AM, Christophe Leroy wrote:
-> 
-> 
-> On 9/8/21 10:58 PM, Tom Lendacky wrote:
->>
->> diff --git a/arch/powerpc/include/asm/mem_encrypt.h 
->> b/arch/powerpc/include/asm/mem_encrypt.h
->> index ba9dab07c1be..2f26b8fc8d29 100644
->> --- a/arch/powerpc/include/asm/mem_encrypt.h
->> +++ b/arch/powerpc/include/asm/mem_encrypt.h
->> @@ -10,11 +10,6 @@
->>   #include <asm/svm.h>
->> -static inline bool mem_encrypt_active(void)
->> -{
->> -    return is_secure_guest();
->> -}
->> -
->>   static inline bool force_dma_unencrypted(struct device *dev)
->>   {
->>       return is_secure_guest();
->> diff --git a/arch/powerpc/platforms/pseries/svm.c 
->> b/arch/powerpc/platforms/pseries/svm.c
->> index 87f001b4c4e4..c083ecbbae4d 100644
->> --- a/arch/powerpc/platforms/pseries/svm.c
->> +++ b/arch/powerpc/platforms/pseries/svm.c
->> @@ -8,6 +8,7 @@
->>   #include <linux/mm.h>
->>   #include <linux/memblock.h>
->> +#include <linux/cc_platform.h>
->>   #include <asm/machdep.h>
->>   #include <asm/svm.h>
->>   #include <asm/swiotlb.h>
->> @@ -63,7 +64,7 @@ void __init svm_swiotlb_init(void)
->>   int set_memory_encrypted(unsigned long addr, int numpages)
->>   {
->> -    if (!mem_encrypt_active())
->> +    if (!cc_platform_has(CC_ATTR_MEM_ENCRYPT))
->>           return 0;
->>       if (!PAGE_ALIGNED(addr))
->> @@ -76,7 +77,7 @@ int set_memory_encrypted(unsigned long addr, int 
->> numpages)
->>   int set_memory_decrypted(unsigned long addr, int numpages)
->>   {
->> -    if (!mem_encrypt_active())
->> +    if (!cc_platform_has(CC_ATTR_MEM_ENCRYPT))
->>           return 0;
->>       if (!PAGE_ALIGNED(addr))
-> 
-> This change unnecessarily complexifies the two functions. This is due to 
-> cc_platform_has() being out-line. It should really remain inline.
+On Fri, Aug 20, 2021 at 9:22 AM Brijesh Singh <brijesh.singh@amd.com> wrote:
+>
+> The SNP guest request message header contains a message count. The
+> message count is used while building the IV. The PSP firmware increments
+> the message count by 1, and expects that next message will be using the
+> incremented count. The snp_msg_seqno() helper will be used by driver to
+> get the message sequence counter used in the request message header,
+> and it will be automatically incremented after the request is successful.
+> The incremented value is saved in the secrets page so that the kexec'ed
+> kernel knows from where to begin.
+>
+> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
+> ---
+>  arch/x86/kernel/sev.c     | 79 +++++++++++++++++++++++++++++++++++++++
+>  include/linux/sev-guest.h | 37 ++++++++++++++++++
+>  2 files changed, 116 insertions(+)
+>
+> diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
+> index 319a40fc57ce..f42cd5a8e7bb 100644
+> --- a/arch/x86/kernel/sev.c
+> +++ b/arch/x86/kernel/sev.c
+> @@ -51,6 +51,8 @@ static struct ghcb boot_ghcb_page __bss_decrypted __aligned(PAGE_SIZE);
+>   */
+>  static struct ghcb __initdata *boot_ghcb;
+>
+> +static u64 snp_secrets_phys;
+> +
+>  /* #VC handler runtime per-CPU data */
+>  struct sev_es_runtime_data {
+>         struct ghcb ghcb_page;
+> @@ -2030,6 +2032,80 @@ bool __init handle_vc_boot_ghcb(struct pt_regs *regs)
+>                 halt();
+>  }
+>
+> +static struct snp_secrets_page_layout *snp_map_secrets_page(void)
+> +{
+> +       u16 __iomem *secrets;
+> +
+> +       if (!snp_secrets_phys || !sev_feature_enabled(SEV_SNP))
+> +               return NULL;
+> +
+> +       secrets = ioremap_encrypted(snp_secrets_phys, PAGE_SIZE);
+> +       if (!secrets)
+> +               return NULL;
+> +
+> +       return (struct snp_secrets_page_layout *)secrets;
+> +}
+> +
+> +static inline u64 snp_read_msg_seqno(void)
+> +{
+> +       struct snp_secrets_page_layout *layout;
+> +       u64 count;
+> +
+> +       layout = snp_map_secrets_page();
+> +       if (!layout)
+> +               return 0;
+> +
+> +       /* Read the current message sequence counter from secrets pages */
+> +       count = readl(&layout->os_area.msg_seqno_0);
+> +
+> +       iounmap(layout);
+> +
+> +       /* The sequence counter must begin with 1 */
+> +       if (!count)
+> +               return 1;
+> +
+> +       return count + 1;
+> +}
+> +
+> +u64 snp_msg_seqno(void)
+> +{
+> +       u64 count = snp_read_msg_seqno();
+> +
+> +       if (unlikely(!count))
+> +               return 0;
+> +
+> +       /*
+> +        * The message sequence counter for the SNP guest request is a
+> +        * 64-bit value but the version 2 of GHCB specification defines a
+> +        * 32-bit storage for the it.
+> +        */
+> +       if (count >= UINT_MAX)
+> +               return 0;
+> +
+> +       return count;
+> +}
+> +EXPORT_SYMBOL_GPL(snp_msg_seqno);
 
-Please see previous discussion(s) on this series for why the function is
-implemented out of line and for the naming:
+Do we need some sort of get sequence number, then ack that sequence
+number was used API? Taking your host changes in Part2 V5 as an
+example. If 'snp_setup_guest_buf' fails the given sequence number is
+never actually used by a message to the PSP. So the guest will have
+the wrong current sequence number, an off by 1 error, right?
 
-V1: https://lore.kernel.org/lkml/cover.1627424773.git.thomas.lendacky@amd.com/
+Also it seems like there is a concurrency error waiting to happen
+here. If 2 callers call snp_msg_seqno() before either actually places
+a call to the PSP, if the first caller's request doesn't reach the PSP
+before the second caller's request both calls will fail. And again I
+think the sequence numbers in the guest will be incorrect and
+unrecoverable.
 
-V2: https://lore.kernel.org/lkml/cover.1628873970.git.thomas.lendacky@amd.com/
-
-Thanks,
-Tom
-
-> 
-> Before the change we got:
-> 
-> 0000000000000000 <.set_memory_encrypted>:
->     0:    7d 20 00 a6     mfmsr   r9
->     4:    75 29 00 40     andis.  r9,r9,64
->     8:    41 82 00 48     beq     50 <.set_memory_encrypted+0x50>
->     c:    78 69 04 20     clrldi  r9,r3,48
->    10:    2c 29 00 00     cmpdi   r9,0
->    14:    40 82 00 4c     bne     60 <.set_memory_encrypted+0x60>
->    18:    7c 08 02 a6     mflr    r0
->    1c:    7c 85 23 78     mr      r5,r4
->    20:    78 64 85 02     rldicl  r4,r3,48,20
->    24:    61 23 f1 34     ori     r3,r9,61748
->    28:    f8 01 00 10     std     r0,16(r1)
->    2c:    f8 21 ff 91     stdu    r1,-112(r1)
->    30:    48 00 00 01     bl      30 <.set_memory_encrypted+0x30>
->              30: R_PPC64_REL24    .ucall_norets
->    34:    60 00 00 00     nop
->    38:    38 60 00 00     li      r3,0
->    3c:    38 21 00 70     addi    r1,r1,112
->    40:    e8 01 00 10     ld      r0,16(r1)
->    44:    7c 08 03 a6     mtlr    r0
->    48:    4e 80 00 20     blr
->    50:    38 60 00 00     li      r3,0
->    54:    4e 80 00 20     blr
->    60:    38 60 ff ea     li      r3,-22
->    64:    4e 80 00 20     blr
-> 
-> After the change we get:
-> 
-> 0000000000000000 <.set_memory_encrypted>:
->     0:    7c 08 02 a6     mflr    r0
->     4:    fb c1 ff f0     std     r30,-16(r1)
->     8:    fb e1 ff f8     std     r31,-8(r1)
->     c:    7c 7f 1b 78     mr      r31,r3
->    10:    38 60 00 00     li      r3,0
->    14:    7c 9e 23 78     mr      r30,r4
->    18:    f8 01 00 10     std     r0,16(r1)
->    1c:    f8 21 ff 81     stdu    r1,-128(r1)
->    20:    48 00 00 01     bl      20 <.set_memory_encrypted+0x20>
->              20: R_PPC64_REL24    .cc_platform_has
->    24:    60 00 00 00     nop
->    28:    2c 23 00 00     cmpdi   r3,0
->    2c:    41 82 00 44     beq     70 <.set_memory_encrypted+0x70>
->    30:    7b e9 04 20     clrldi  r9,r31,48
->    34:    2c 29 00 00     cmpdi   r9,0
->    38:    40 82 00 58     bne     90 <.set_memory_encrypted+0x90>
->    3c:    38 60 00 00     li      r3,0
->    40:    7f c5 f3 78     mr      r5,r30
->    44:    7b e4 85 02     rldicl  r4,r31,48,20
->    48:    60 63 f1 34     ori     r3,r3,61748
->    4c:    48 00 00 01     bl      4c <.set_memory_encrypted+0x4c>
->              4c: R_PPC64_REL24    .ucall_norets
->    50:    60 00 00 00     nop
->    54:    38 60 00 00     li      r3,0
->    58:    38 21 00 80     addi    r1,r1,128
->    5c:    e8 01 00 10     ld      r0,16(r1)
->    60:    eb c1 ff f0     ld      r30,-16(r1)
->    64:    eb e1 ff f8     ld      r31,-8(r1)
->    68:    7c 08 03 a6     mtlr    r0
->    6c:    4e 80 00 20     blr
->    70:    38 21 00 80     addi    r1,r1,128
->    74:    38 60 00 00     li      r3,0
->    78:    e8 01 00 10     ld      r0,16(r1)
->    7c:    eb c1 ff f0     ld      r30,-16(r1)
->    80:    eb e1 ff f8     ld      r31,-8(r1)
->    84:    7c 08 03 a6     mtlr    r0
->    88:    4e 80 00 20     blr
->    90:    38 60 ff ea     li      r3,-22
->    94:    4b ff ff c4     b       58 <.set_memory_encrypted+0x58>
-> 
+> +
+> +static void snp_gen_msg_seqno(void)
+> +{
+> +       struct snp_secrets_page_layout *layout;
+> +       u64 count;
+> +
+> +       layout = snp_map_secrets_page();
+> +       if (!layout)
+> +               return;
+> +
+> +       /*
+> +        * The counter is also incremented by the PSP, so increment it by 2
+> +        * and save in secrets page.
+> +        */
+> +       count = readl(&layout->os_area.msg_seqno_0);
+> +       count += 2;
+> +
+> +       writel(count, &layout->os_area.msg_seqno_0);
+> +       iounmap(layout);
+> +}
+> +
+>  int snp_issue_guest_request(int type, struct snp_guest_request_data *input, unsigned long *fw_err)
+>  {
+>         struct ghcb_state state;
+> @@ -2077,6 +2153,9 @@ int snp_issue_guest_request(int type, struct snp_guest_request_data *input, unsi
+>                 ret = -EIO;
+>         }
+>
+> +       /* The command was successful, increment the sequence counter */
+> +       snp_gen_msg_seqno();
+> +
+>  e_put:
+>         __sev_put_ghcb(&state);
+>  e_restore_irq:
+> diff --git a/include/linux/sev-guest.h b/include/linux/sev-guest.h
+> index 24dd17507789..16b6af24fda7 100644
+> --- a/include/linux/sev-guest.h
+> +++ b/include/linux/sev-guest.h
+> @@ -20,6 +20,41 @@ enum vmgexit_type {
+>         GUEST_REQUEST_MAX
+>  };
+>
+> +/*
+> + * The secrets page contains 96-bytes of reserved field that can be used by
+> + * the guest OS. The guest OS uses the area to save the message sequence
+> + * number for each VMPCK.
+> + *
+> + * See the GHCB spec section Secret page layout for the format for this area.
+> + */
+> +struct secrets_os_area {
+> +       u32 msg_seqno_0;
+> +       u32 msg_seqno_1;
+> +       u32 msg_seqno_2;
+> +       u32 msg_seqno_3;
+> +       u64 ap_jump_table_pa;
+> +       u8 rsvd[40];
+> +       u8 guest_usage[32];
+> +} __packed;
+> +
+> +#define VMPCK_KEY_LEN          32
+> +
+> +/* See the SNP spec for secrets page format */
+> +struct snp_secrets_page_layout {
+> +       u32 version;
+> +       u32 imien       : 1,
+> +           rsvd1       : 31;
+> +       u32 fms;
+> +       u32 rsvd2;
+> +       u8 gosvw[16];
+> +       u8 vmpck0[VMPCK_KEY_LEN];
+> +       u8 vmpck1[VMPCK_KEY_LEN];
+> +       u8 vmpck2[VMPCK_KEY_LEN];
+> +       u8 vmpck3[VMPCK_KEY_LEN];
+> +       struct secrets_os_area os_area;
+> +       u8 rsvd3[3840];
+> +} __packed;
+> +
+>  /*
+>   * The error code when the data_npages is too small. The error code
+>   * is defined in the GHCB specification.
+> @@ -36,6 +71,7 @@ struct snp_guest_request_data {
+>  #ifdef CONFIG_AMD_MEM_ENCRYPT
+>  int snp_issue_guest_request(int vmgexit_type, struct snp_guest_request_data *input,
+>                             unsigned long *fw_err);
+> +u64 snp_msg_seqno(void);
+>  #else
+>
+>  static inline int snp_issue_guest_request(int type, struct snp_guest_request_data *input,
+> @@ -43,6 +79,7 @@ static inline int snp_issue_guest_request(int type, struct snp_guest_request_dat
+>  {
+>         return -ENODEV;
+>  }
+> +static inline u64 snp_msg_seqno(void) { return 0; }
+>
+>  #endif /* CONFIG_AMD_MEM_ENCRYPT */
+>  #endif /* __LINUX_SEV_GUEST_H__ */
+> --
+> 2.17.1
+>
+>
