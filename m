@@ -2,134 +2,121 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A226540730F
-	for <lists+linux-efi@lfdr.de>; Fri, 10 Sep 2021 23:44:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ECA394075FE
+	for <lists+linux-efi@lfdr.de>; Sat, 11 Sep 2021 12:10:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234581AbhIJVp5 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 10 Sep 2021 17:45:57 -0400
-Received: from mail.kernel.org ([198.145.29.99]:37442 "EHLO mail.kernel.org"
+        id S235547AbhIKKLn (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 11 Sep 2021 06:11:43 -0400
+Received: from mail.skyhub.de ([5.9.137.197]:42550 "EHLO mail.skyhub.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233480AbhIJVp4 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Fri, 10 Sep 2021 17:45:56 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 9D16661211;
-        Fri, 10 Sep 2021 21:44:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1631310284;
-        bh=/Oq6QaIgV+Ix7/mPJ0fNxuXGWyRdrpmf8tttDsijvVI=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=Y8Q+LXVHLbtdzYzENjAjzaDnQ8qJILMP1+k+dPJ8ev+RF+7S6GVW0MhzE54x86c8B
-         L1DFHJQrYKsgj4DQGahRccPWmqn0eXZQ+OJxgEXyC2oIVEZpu0ohJ4JWB9naB27E/0
-         1FipDJSYzvmdb3X/0dkQe83h5I7P1TwG4NRNmhqn4yd2/t85vTnYrYVFM+o9j5UGSj
-         udcwRk8u7dli8GOGHx2smG49CXDU63XfePfB1aVb0/tHTwn/LSsyZ7PAPZIs2lR73v
-         GjIuSFAE1xFSJHQkhZ7BdG9bLv63HNIpY903a13yud4NpGTFWFlIKxplnJiaokBFS0
-         /0KXQ4vFLe9zw==
-Received: by mail-oi1-f175.google.com with SMTP id y128so4900133oie.4;
-        Fri, 10 Sep 2021 14:44:44 -0700 (PDT)
-X-Gm-Message-State: AOAM531u/6fOolyA4pqgaUnt/wjeBAuNa/HGXi8nRhNvCH+dja3z5KxV
-        RjClyx0f5PGDJXpM0WmokErYut2jeI/Cx5fH1YE=
-X-Google-Smtp-Source: ABdhPJw7JCE4CjTZMIYR0iXqsK0bZmmrjy56W6cOIlXblc1J7wRcG/foJ9NDmNnxp607ZjyncMf1EmlNjuBhrNR9Khc=
-X-Received: by 2002:a54:418e:: with SMTP id 14mr5880009oiy.174.1631310283855;
- Fri, 10 Sep 2021 14:44:43 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210910213337.48017-1-martin.fernandez@eclypsium.com>
-In-Reply-To: <20210910213337.48017-1-martin.fernandez@eclypsium.com>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Fri, 10 Sep 2021 23:44:32 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXEqjHVRNV131=o_aO3TX+58xhYzgfaVDrd0RngAqqtrVg@mail.gmail.com>
-Message-ID: <CAMj1kXEqjHVRNV131=o_aO3TX+58xhYzgfaVDrd0RngAqqtrVg@mail.gmail.com>
-Subject: Re: [PATCH 0/1] [RFC] x86: Export information about hardware memory
- encryption to sysfs
-To:     Martin Fernandez <martin.fernandez@eclypsium.com>
-Cc:     linux-efi <linux-efi@vger.kernel.org>,
-        platform-driver-x86@vger.kernel.org,
+        id S235443AbhIKKLl (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Sat, 11 Sep 2021 06:11:41 -0400
+Received: from zn.tnic (p200300ec2f1e14001f3479bbc118498e.dip0.t-ipconnect.de [IPv6:2003:ec:2f1e:1400:1f34:79bb:c118:498e])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id B0AD71EC0136;
+        Sat, 11 Sep 2021 12:10:22 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1631355022;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=HR27o8pZq+/+uFK0n68ub/mxfkE1ISiJNZUKmCms7j8=;
+        b=I197+52KgpqBBgLvuSMSrQpQNRo13IqV+FgdnGwdscix9JqjZo6kiEOakrW3iQQS6u0uVD
+        WzR3O2CXEOh8ZykdepQmAsy+NBoupC0qZ8IdrqxtxuX9zNND17uAXyBpIh83Qsid6C7Ugn
+        zY+/3Zj7u8+b/OQlEkEddX/RceOjyqA=
+Date:   Sat, 11 Sep 2021 12:10:14 +0200
+From:   Borislav Petkov <bp@alien8.de>
+To:     Tom Lendacky <thomas.lendacky@amd.com>
+Cc:     linux-kernel@vger.kernel.org, x86@kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        iommu@lists.linux-foundation.org, kvm@vger.kernel.org,
+        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        linux-graphics-maintainer@vmware.com,
+        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+        kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org,
+        Brijesh Singh <brijesh.singh@amd.com>,
+        Joerg Roedel <joro@8bytes.org>,
+        Andi Kleen <ak@linux.intel.com>,
+        Sathyanarayanan Kuppuswamy 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        Tianyu Lan <Tianyu.Lan@microsoft.com>,
+        Christoph Hellwig <hch@infradead.org>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        X86 ML <x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>,
+        Ingo Molnar <mingo@redhat.com>,
         Dave Hansen <dave.hansen@linux.intel.com>,
         Andy Lutomirski <luto@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Darren Hart <dvhart@infradead.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        daniel.gutson@eclypsium.com, hughsient@gmail.com
-Content-Type: text/plain; charset="UTF-8"
+        Peter Zijlstra <peterz@infradead.org>
+Subject: Re: [PATCH v3 3/8] x86/sev: Add an x86 version of cc_platform_has()
+Message-ID: <YTyAhmPf39Vqd7G9@zn.tnic>
+References: <cover.1631141919.git.thomas.lendacky@amd.com>
+ <f9951644147e27772bf4512325e8ba6472e363b7.1631141919.git.thomas.lendacky@amd.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <f9951644147e27772bf4512325e8ba6472e363b7.1631141919.git.thomas.lendacky@amd.com>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hello Martin,
+On Wed, Sep 08, 2021 at 05:58:34PM -0500, Tom Lendacky wrote:
+> diff --git a/arch/x86/kernel/cc_platform.c b/arch/x86/kernel/cc_platform.c
+> new file mode 100644
+> index 000000000000..3c9bacd3c3f3
+> --- /dev/null
+> +++ b/arch/x86/kernel/cc_platform.c
+> @@ -0,0 +1,21 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/*
+> + * Confidential Computing Platform Capability checks
+> + *
+> + * Copyright (C) 2021 Advanced Micro Devices, Inc.
+> + *
+> + * Author: Tom Lendacky <thomas.lendacky@amd.com>
+> + */
+> +
+> +#include <linux/export.h>
+> +#include <linux/cc_platform.h>
+> +#include <linux/mem_encrypt.h>
+> +
+> +bool cc_platform_has(enum cc_attr attr)
+> +{
+> +	if (sme_me_mask)
 
-Thanks for your contribution.
+Why are you still checking the sme_me_mask here? AFAIR, we said that
+we'll do that only when the KVM folks come with a valid use case...
 
-Your emails contain a footer that threatens with legal repercussions
-if their contents are treated in a certain way. This usually means
-that, even if some people may comment on the code, there is no way we
-can legally merge it, given that these restrictions are incompatible
-with the GPL
+> +		return amd_cc_platform_has(attr);
+> +
+> +	return false;
+> +}
+> +EXPORT_SYMBOL_GPL(cc_platform_has);
+> diff --git a/arch/x86/mm/mem_encrypt.c b/arch/x86/mm/mem_encrypt.c
+> index ff08dc463634..18fe19916bc3 100644
+> --- a/arch/x86/mm/mem_encrypt.c
+> +++ b/arch/x86/mm/mem_encrypt.c
+> @@ -20,6 +20,7 @@
+>  #include <linux/bitops.h>
+>  #include <linux/dma-mapping.h>
+>  #include <linux/virtio_config.h>
+> +#include <linux/cc_platform.h>
+>  
+>  #include <asm/tlbflush.h>
+>  #include <asm/fixmap.h>
+> @@ -389,6 +390,26 @@ bool noinstr sev_es_active(void)
+>  	return sev_status & MSR_AMD64_SEV_ES_ENABLED;
+>  }
+>  
+> +bool amd_cc_platform_has(enum cc_attr attr)
+> +{
+> +	switch (attr) {
+> +	case CC_ATTR_MEM_ENCRYPT:
+> +		return sme_me_mask != 0;
 
-So please find a way to resend these emails without the footers. I'll
-be happy to look into more detail once you do that.
+No need for the "!= 0"
 
 -- 
-Ard.
+Regards/Gruss,
+    Boris.
 
-
-On Fri, 10 Sept 2021 at 23:34, Martin Fernandez
-<martin.fernandez@eclypsium.com> wrote:
->
-> Show the value of EFI_MEMORY_CPU_CRYPTO of the system memory as a whole
-> on each memory node in sysfs.
->
-> This is a first step in a serie of patches for exporting the needed
-> information to userspace to determine if a machine is doing using
-> Intel's TME or MKTME.
->
-> In a next patch I'm going to export if TME/MKTME is activated by the
-> BIOS to sysfs, since right now for the user, this information is only
-> available in the kernel logs, and it's not appropiate for fwupd to scan
-> the boot logs just to parse an integer. I'm looking for suggestions
-> for where to store this value.
->
-> Martin Fernandez (1):
->   x86: Export information about hardware memory encryption to sysfs
->
->  Documentation/ABI/testing/sysfs-devices-node | 11 +++
->  arch/x86/include/asm/numa.h                  |  2 +
->  arch/x86/mm/numa.c                           |  5 ++
->  arch/x86/mm/numa_emulation.c                 |  2 +-
->  arch/x86/platform/efi/efi.c                  | 27 +++++++
->  drivers/base/node.c                          | 80 +++++++++++++++++++-
->  include/linux/efi.h                          |  7 ++
->  include/linux/node.h                         |  5 ++
->  8 files changed, 137 insertions(+), 2 deletions(-)
->  create mode 100644 Documentation/ABI/testing/sysfs-devices-node
->
->
-> base-commit: 0bcfe68b876748762557797a940d0a82de700629
-> --
-> 2.30.2
->
-> --
->
->
-> This e-mail and any attachments may contain information that is
-> privileged, confidential,  and/or exempt from disclosure under applicable
-> law.  If you are not the intended recipient, you are hereby notified that
-> any disclosure, copying, distribution or use of any information contained
-> herein is strictly prohibited. If you have received this transmission in
-> error, please immediately notify the sender and destroy the original
-> transmission and any attachments, whether in electronic or hard copy
-> format, without reading or saving.
->
->
->
->
->
->
->
->
->
->
->
->
+https://people.kernel.org/tglx/notes-about-netiquette
