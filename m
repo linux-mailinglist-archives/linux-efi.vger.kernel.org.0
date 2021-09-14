@@ -2,142 +2,116 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F97940A752
-	for <lists+linux-efi@lfdr.de>; Tue, 14 Sep 2021 09:25:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B56A40ACE2
+	for <lists+linux-efi@lfdr.de>; Tue, 14 Sep 2021 13:58:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240702AbhINH0V (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 14 Sep 2021 03:26:21 -0400
-Received: from mga01.intel.com ([192.55.52.88]:45311 "EHLO mga01.intel.com"
+        id S232412AbhINL7e (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 14 Sep 2021 07:59:34 -0400
+Received: from mail.skyhub.de ([5.9.137.197]:57542 "EHLO mail.skyhub.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S240150AbhINH0U (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Tue, 14 Sep 2021 03:26:20 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10106"; a="244240553"
-X-IronPort-AV: E=Sophos;i="5.85,292,1624345200"; 
-   d="scan'208";a="244240553"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Sep 2021 00:25:01 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.85,292,1624345200"; 
-   d="scan'208";a="451920695"
-Received: from chenyu-desktop.sh.intel.com ([10.239.158.176])
-  by orsmga002.jf.intel.com with ESMTP; 14 Sep 2021 00:24:58 -0700
-From:   Chen Yu <yu.c.chen@intel.com>
-To:     linux-acpi@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <len.brown@intel.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Andy Shevchenko <andriy.shevchenko@intel.com>,
-        Aubrey Li <aubrey.li@intel.com>,
-        Ashok Raj <ashok.raj@intel.com>, Chen Yu <yu.c.chen@intel.com>,
-        Mike Rapoport <rppt@kernel.org>,
-        Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org
-Subject: [PATCH v2 2/5] efi: Introduce EFI_FIRMWARE_MANAGEMENT_CAPSULE_HEADER and corresponding structures
-Date:   Tue, 14 Sep 2021 15:30:36 +0800
-Message-Id: <d2e2dcb260d0c45d9bd781e23f410ed2c9a71610.1631600169.git.yu.c.chen@intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <cover.1631600169.git.yu.c.chen@intel.com>
-References: <cover.1631600169.git.yu.c.chen@intel.com>
+        id S232287AbhINL7d (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Tue, 14 Sep 2021 07:59:33 -0400
+Received: from zn.tnic (p200300ec2f1048001e15ef619509992f.dip0.t-ipconnect.de [IPv6:2003:ec:2f10:4800:1e15:ef61:9509:992f])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 8B7241EC04EC;
+        Tue, 14 Sep 2021 13:58:10 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1631620690;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=b/N09IsvqYn24JfFZ47aDfAefXmwmXR82Pt3awNAfbs=;
+        b=bxwwIzIyK+Rg4oIy01BbpgT86ORE1XKclCEYAaQ9uu2p2YFJBhtO9vvO21Z67RPc0ptMoP
+        47+Ry7kCX0P48iid+/PmdkrtsbH5uZdiuAmR5uxqjBKZy74znSrvhF2nYkipmdb9VWoPx/
+        PSVn04awQpG91qOKWcYNAHUkxFtjb44=
+Date:   Tue, 14 Sep 2021 13:58:04 +0200
+From:   Borislav Petkov <bp@alien8.de>
+To:     Michael Ellerman <mpe@ellerman.id.au>
+Cc:     Tom Lendacky <thomas.lendacky@amd.com>,
+        linux-kernel@vger.kernel.org, x86@kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        iommu@lists.linux-foundation.org, kvm@vger.kernel.org,
+        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        linux-graphics-maintainer@vmware.com,
+        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+        kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org,
+        Brijesh Singh <brijesh.singh@amd.com>,
+        Joerg Roedel <joro@8bytes.org>,
+        Andi Kleen <ak@linux.intel.com>,
+        Sathyanarayanan Kuppuswamy 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        Tianyu Lan <Tianyu.Lan@microsoft.com>,
+        Christoph Hellwig <hch@infradead.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>
+Subject: Re: [PATCH v3 4/8] powerpc/pseries/svm: Add a powerpc version of
+ cc_platform_has()
+Message-ID: <YUCOTIPPsJJpLO/d@zn.tnic>
+References: <cover.1631141919.git.thomas.lendacky@amd.com>
+ <9d4fc3f8ea7b325aaa1879beab1286876f45d450.1631141919.git.thomas.lendacky@amd.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <9d4fc3f8ea7b325aaa1879beab1286876f45d450.1631141919.git.thomas.lendacky@amd.com>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Platform Firmware Runtime Update image starts with UEFI headers, and the
-headers are defined in UEFI specification, but some of them have not been
-defined in the kernel yet.
+On Wed, Sep 08, 2021 at 05:58:35PM -0500, Tom Lendacky wrote:
+> Introduce a powerpc version of the cc_platform_has() function. This will
+> be used to replace the powerpc mem_encrypt_active() implementation, so
+> the implementation will initially only support the CC_ATTR_MEM_ENCRYPT
+> attribute.
+> 
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> Cc: Paul Mackerras <paulus@samba.org>
+> Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
+> ---
+>  arch/powerpc/platforms/pseries/Kconfig       |  1 +
+>  arch/powerpc/platforms/pseries/Makefile      |  2 ++
+>  arch/powerpc/platforms/pseries/cc_platform.c | 26 ++++++++++++++++++++
+>  3 files changed, 29 insertions(+)
+>  create mode 100644 arch/powerpc/platforms/pseries/cc_platform.c
 
-For example, the header layout of a capsule file looks like this:
+Michael,
 
-EFI_CAPSULE_HEADER
-EFI_FIRMWARE_MANAGEMENT_CAPSULE_HEADER
-EFI_FIRMWARE_MANAGEMENT_CAPSULE_IMAGE_HEADER
-EFI_FIRMWARE_IMAGE_AUTHENTICATION
+can I get an ACK for the ppc bits to carry them through the tip tree
+pls?
 
-These structures would be used by the Platform Firmware Runtime Update
-driver to parse the format of capsule file to verify if the corresponding
-version number is valid. The EFI_CAPSULE_HEADER has been defined in the
-kernel, however the rest are not, thus introduce corresponding UEFI
-structures accordingly.
+Btw, on a related note, cross-compiling this throws the following error here:
 
-The reason why efi_manage_capsule_header_t and
-efi_manage_capsule_image_header_t are packedi might be that:
-According to the uefi spec,
-[Figure 23-6 Firmware Management and Firmware Image Management headers]
-EFI_FIRMWARE_MANAGEMENT_CAPSULE_HEADER is located at the lowest offset
-within the body of the capsule. And this structure is designed to be
-unaligned to save space, because in this way the adjacent drivers and
-binary payload elements could start on byte boundary with no padding.
-And the EFI_FIRMWARE_MANAGEMENT_CAPSULE_IMAGE_HEADER is at the head of
-each payload, so packing this structure also makes room for more data.
+$ make CROSS_COMPILE=/home/share/src/crosstool/gcc-9.4.0-nolibc/powerpc64-linux/bin/powerpc64-linux- V=1 ARCH=powerpc
 
-Signed-off-by: Chen Yu <yu.c.chen@intel.com>
----
- include/linux/efi.h | 50 +++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 50 insertions(+)
+...
 
-diff --git a/include/linux/efi.h b/include/linux/efi.h
-index 6b5d36babfcc..19ff834e1388 100644
---- a/include/linux/efi.h
-+++ b/include/linux/efi.h
-@@ -148,6 +148,56 @@ typedef struct {
- 	u32 imagesize;
- } efi_capsule_header_t;
- 
-+#pragma pack(1)
-+
-+/* EFI_FIRMWARE_MANAGEMENT_CAPSULE_HEADER */
-+typedef struct {
-+	u32	ver;
-+	u16	emb_drv_cnt;
-+	u16	payload_cnt;
-+	/*
-+	 * Variable array indicated by number of
-+	 * (emb_drv_cnt + payload_cnt)
-+	 */
-+	u64	offset_list[];
-+} efi_manage_capsule_header_t;
-+
-+/* EFI_FIRMWARE_MANAGEMENT_CAPSULE_IMAGE_HEADER */
-+typedef struct {
-+	u32	ver;
-+	guid_t	image_type_id;
-+	u8	image_index;
-+	u8	reserved_bytes[3];
-+	u32	image_size;
-+	u32	vendor_code_size;
-+	/* ver = 2. */
-+	u64	hw_ins;
-+	/* ver = v3. */
-+	u64	capsule_support;
-+} efi_manage_capsule_image_header_t;
-+
-+#pragma pack()
-+
-+/* WIN_CERTIFICATE */
-+typedef struct {
-+	u32	len;
-+	u16	rev;
-+	u16	cert_type;
-+} win_cert_t;
-+
-+/* WIN_CERTIFICATE_UEFI_GUID */
-+typedef struct {
-+	win_cert_t	hdr;
-+	guid_t		cert_type;
-+	u8		cert_data[];
-+} win_cert_uefi_guid_t;
-+
-+/* EFI_FIRMWARE_IMAGE_AUTHENTICATIO */
-+typedef struct {
-+	u64				mon_count;
-+	win_cert_uefi_guid_t		auth_info;
-+} efi_image_auth_t;
-+
- /*
-  * EFI capsule flags
-  */
+/home/share/src/crosstool/gcc-9.4.0-nolibc/powerpc64-linux/bin/powerpc64-linux-gcc -Wp,-MD,arch/powerpc/boot/.crt0.o.d -D__ASSEMBLY__ -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs -fno-strict-aliasing -O2 -msoft-float -mno-altivec -mno-vsx -pipe -fomit-frame-pointer -fno-builtin -fPIC -nostdinc -include ./include/linux/compiler_attributes.h -I./arch/powerpc/include -I./arch/powerpc/include/generated  -I./include -I./arch/powerpc/include/uapi -I./arch/powerpc/include/generated/uapi -I./include/uapi -I./include/generated/uapi -include ./include/linux/compiler-version.h -include ./include/linux/kconfig.h -m32 -isystem /home/share/src/crosstool/gcc-9.4.0-nolibc/powerpc64-linux/bin/../lib/gcc/powerpc64-linux/9.4.0/include -mbig-endian -nostdinc -c -o arch/powerpc/boot/crt0.o arch/powerpc/boot/crt0.S
+In file included from <command-line>:
+././include/linux/compiler_attributes.h:62:5: warning: "__has_attribute" is not defined, evaluates to 0 [-Wundef]
+   62 | #if __has_attribute(__assume_aligned__)
+      |     ^~~~~~~~~~~~~~~
+././include/linux/compiler_attributes.h:62:20: error: missing binary operator before token "("
+   62 | #if __has_attribute(__assume_aligned__)
+      |                    ^
+././include/linux/compiler_attributes.h:88:5: warning: "__has_attribute" is not defined, evaluates to 0 [-Wundef]
+   88 | #if __has_attribute(__copy__)
+      |     ^~~~~~~~~~~~~~~
+...
+
+Known issue?
+
+This __has_attribute() thing is supposed to be supported
+in gcc since 5.1 and I'm using the crosstool stuff from
+https://www.kernel.org/pub/tools/crosstool/ and gcc-9.4 above is pretty
+new so that should not happen actually.
+
+But it does...
+
+Hmmm.
+
 -- 
-2.25.1
+Regards/Gruss,
+    Boris.
 
+https://people.kernel.org/tglx/notes-about-netiquette
