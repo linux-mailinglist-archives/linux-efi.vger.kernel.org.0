@@ -2,78 +2,75 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9EA9740B24B
-	for <lists+linux-efi@lfdr.de>; Tue, 14 Sep 2021 16:56:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8918540B337
+	for <lists+linux-efi@lfdr.de>; Tue, 14 Sep 2021 17:34:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234495AbhINO5q (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 14 Sep 2021 10:57:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44574 "EHLO
+        id S233241AbhINPfj (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 14 Sep 2021 11:35:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53698 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234452AbhINO5n (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 14 Sep 2021 10:57:43 -0400
-Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A627DC061574;
-        Tue, 14 Sep 2021 07:56:25 -0700 (PDT)
-Received: from zn.tnic (p200300ec2f1048001ab509412f10df56.dip0.t-ipconnect.de [IPv6:2003:ec:2f10:4800:1ab5:941:2f10:df56])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 3AA951EC04D1;
-        Tue, 14 Sep 2021 16:56:19 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1631631379;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=fC6oRVekYYeOWo6Ou3mRPO8RAeBaCtshKbuZA0gycas=;
-        b=DjTjeMWi1aTZkXxq8Lf9KyX6WC0t0Xl9olO8XFqhK7E+qGjzzzpMJxBPFDqtXa7lxuvLMF
-        BJZxFO3MGqQdmfuJdFwoNpN1Q2f2YF1GOFt4ptUcVjuOWJnOJOQqL4VXuXLUK8z4I3mRHF
-        ddNSSmZuSk4r3r8c6iL+tcOt78DT0h0=
-Date:   Tue, 14 Sep 2021 16:56:09 +0200
-From:   Borislav Petkov <bp@alien8.de>
-To:     Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc:     Michael Ellerman <mpe@ellerman.id.au>,
-        Sathyanarayanan Kuppuswamy 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        linux-efi@vger.kernel.org, Brijesh Singh <brijesh.singh@amd.com>,
-        kvm@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        platform-driver-x86@vger.kernel.org,
-        Paul Mackerras <paulus@samba.org>, linux-s390@vger.kernel.org,
-        Andi Kleen <ak@linux.intel.com>,
-        Joerg Roedel <joro@8bytes.org>, x86@kernel.org,
-        amd-gfx@lists.freedesktop.org,
-        Christoph Hellwig <hch@infradead.org>,
-        linux-graphics-maintainer@vmware.com,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        Tianyu Lan <Tianyu.Lan@microsoft.com>,
-        kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
-        iommu@lists.linux-foundation.org, linux-fsdevel@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v3 4/8] powerpc/pseries/svm: Add a powerpc version of
- cc_platform_has()
-Message-ID: <YUC4CW02tqEttZZJ@zn.tnic>
-References: <cover.1631141919.git.thomas.lendacky@amd.com>
- <9d4fc3f8ea7b325aaa1879beab1286876f45d450.1631141919.git.thomas.lendacky@amd.com>
- <YUCOTIPPsJJpLO/d@zn.tnic>
- <41b93dae-2f10-15a3-a079-c632381bec73@csgroup.eu>
+        with ESMTP id S234462AbhINPfj (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 14 Sep 2021 11:35:39 -0400
+Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com [IPv6:2607:f8b0:4864:20::434])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF95FC061574
+        for <linux-efi@vger.kernel.org>; Tue, 14 Sep 2021 08:34:21 -0700 (PDT)
+Received: by mail-pf1-x434.google.com with SMTP id j6so12296585pfa.4
+        for <linux-efi@vger.kernel.org>; Tue, 14 Sep 2021 08:34:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:sender:from:date:message-id:subject:to;
+        bh=Ji+q4N9noIdzAlk7ReOzxs3EvL6pDsGbQL9mPgu1HFQ=;
+        b=K1dlO0JbfWrkN5/P+7rMSPjwENntQuG8drI70Rm7+3tCiVWRsYVRT+C5VpqNptHOio
+         DMluF5JGS/WZcYJ1PqWDQg5PEBoiCQ3AwG6gu+Ur5X/AmrzTjdWBKIE4+hExl0k9Rs3y
+         hKQmW5Qzj43OkZsf5g4Qe68HfpbPCbUvjAGVpck4Zwa3O65r1KQtQyQ2tcz7LsvrlofM
+         hW7pIJyBSuNDQ3P9aptb++90N0WR1zBdAQ27wK6ysOSybKLomp4wPXEmK7bpUlrfucXy
+         Uxcq/c0Qwat9U7EShVy1sLh+Y9lz778JyUWI3sUCVlJimZQJbKeheAsrvq5JCEwrYS2c
+         +upg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
+         :to;
+        bh=Ji+q4N9noIdzAlk7ReOzxs3EvL6pDsGbQL9mPgu1HFQ=;
+        b=DxxXiSxyP5wPWT6XXqJfbdDYQi+sNRvbdhLw8gxAikfirKVKJ+PCWYNYPC0wW876vR
+         KS9m/4G66aWk5CMD0qKFJNtSG7onJOyOFKe+6l1TbIOC8BJXCtQiWgFmcUMEvFAyFlqY
+         CCnRzYlFNxd3lRKwk1wBd+Bc6GmxfAFz83BxlcRLNnQ1ge/zNKGLAbirfzlyn7YNBRPz
+         EE8MmWeKTDFSQ/OMarjm6jhaSALvtqYC6eNOvU6IdyYAFx3YpGLpbKmvT2+bcgnvuq8/
+         Z+OWSr9ue9xgYaRpowA+iFTooUdg8gE0Pa9nqfDSbwsl7BFaL8p5mPsVMfs4sQDl8YUv
+         1+xw==
+X-Gm-Message-State: AOAM532HoGx1NZVXgHVlFKIq+iFnvToasJWxrTGCyrsDOFmlwkVLhmLt
+        QzESzT4rYo6UW7Gy2wVVyHQR1W3yqvrIWm6EmAE=
+X-Google-Smtp-Source: ABdhPJznq2x2V5gozU7M0zwFJOxaSeg6vgoBGUAFh/rjD9BBEnammo9ns7TWlHUYxCmxZLi1VnLyRbyWnBI7LhcH1UI=
+X-Received: by 2002:a63:ed4a:: with SMTP id m10mr16253011pgk.448.1631633661467;
+ Tue, 14 Sep 2021 08:34:21 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <41b93dae-2f10-15a3-a079-c632381bec73@csgroup.eu>
+Sender: mrsaishiag6@gmail.com
+Received: by 2002:a05:6a10:2810:0:0:0:0 with HTTP; Tue, 14 Sep 2021 08:34:21
+ -0700 (PDT)
+From:   Mrs Aisha Al-Qaddafi <mrsaishag6555@gmail.com>
+Date:   Tue, 14 Sep 2021 08:34:21 -0700
+X-Google-Sender-Auth: QfVX4nAoxLP4FkIOgBnmIZ2HzIE
+Message-ID: <CAMhFSh+9PhmE13a+EMaMOJW_Q_=ZL6GE0=tQ5iqVi92rpp9HHQ@mail.gmail.com>
+Subject: HELLO DEAR FRIEND PLEASE CAN I TRUST YOU
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, Sep 14, 2021 at 04:47:41PM +0200, Christophe Leroy wrote:
-> Yes, see https://lore.kernel.org/linuxppc-dev/20210914123919.58203eef@canb.auug.org.au/T/#t
-
-Aha, more compiler magic stuff ;-\
-
-Oh well, I guess that fix will land upstream soon.
-
-Thx.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Dear Friend,
+I came across your e-mail contact prior a private search while in need
+of your assistance. I am Aisha Al-Qaddafi, the only biological
+Daughter of Former President of Libya Col. Muammar Al-Qaddafi. Am a
+single Mother and a Widow with three Children.
+I have investment funds worth Twenty Seven Million Five Hundred
+Thousand United State Dollar ($27.500.000.00 ) and i need a trusted
+investment Manager/Partner because of my current refugee status,
+however, I am interested in you for investment project assistance in
+your country, may be from there, we can build business relationship in
+the nearest future.
+If you are willing to handle this project on my behalf kindly reply
+urgent to enable me provide you more information about the investment
+funds.
+Your Urgent Reply Will Be Appreciated
+Best Regards
+Mrs Aisha Al-Qaddafi
