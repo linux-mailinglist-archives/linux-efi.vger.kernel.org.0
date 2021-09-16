@@ -2,94 +2,142 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 05F3C40DD7A
-	for <lists+linux-efi@lfdr.de>; Thu, 16 Sep 2021 17:02:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E1F8F40DEBB
+	for <lists+linux-efi@lfdr.de>; Thu, 16 Sep 2021 17:54:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239052AbhIPPES (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 16 Sep 2021 11:04:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56386 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238971AbhIPPEO (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 16 Sep 2021 11:04:14 -0400
-Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60AE0C061574;
-        Thu, 16 Sep 2021 08:02:52 -0700 (PDT)
-Received: from zn.tnic (p200300ec2f11c600e73b4cdd38695acb.dip0.t-ipconnect.de [IPv6:2003:ec:2f11:c600:e73b:4cdd:3869:5acb])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 56F431EC0136;
-        Thu, 16 Sep 2021 17:02:46 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1631804566;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=Ry9NO0W0dY1PlRpeMUb1ltduv1HjeDhspaE6VFY8fE0=;
-        b=dzihOSpZSIsZh7rL/9DrKrEUKj+fwC3WBoadhJkTSM7ks3hY+DLbUVbUxsNt3sZ013SNbv
-        1uoFXr/UPHLRN/IWfbqSc9ua9o0PdzpF9X5dQXtDeWZUajOJiu0Yx7FrtLENXoeeq5i90A
-        kjm7WIQn/Y72ZtAGCfVPiXsaokbbn6M=
-Date:   Thu, 16 Sep 2021 17:02:40 +0200
-From:   Borislav Petkov <bp@alien8.de>
-To:     "Kuppuswamy, Sathyanarayanan" 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>
-Cc:     Tom Lendacky <thomas.lendacky@amd.com>,
-        linux-kernel@vger.kernel.org, x86@kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        iommu@lists.linux-foundation.org, kvm@vger.kernel.org,
-        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        linux-graphics-maintainer@vmware.com,
-        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-        kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org,
-        Brijesh Singh <brijesh.singh@amd.com>,
-        Joerg Roedel <joro@8bytes.org>,
-        Andi Kleen <ak@linux.intel.com>,
-        Tianyu Lan <Tianyu.Lan@microsoft.com>,
-        Christoph Hellwig <hch@infradead.org>,
-        Andy Lutomirski <luto@kernel.org>,
-        Ard Biesheuvel <ardb@kernel.org>, Baoquan He <bhe@redhat.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Dave Young <dyoung@redhat.com>,
-        David Airlie <airlied@linux.ie>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Paul Mackerras <paulus@samba.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Will Deacon <will@kernel.org>
-Subject: Re: [PATCH v3 0/8] Implement generic cc_platform_has() helper
- function
-Message-ID: <YUNckGH0+KXdEmqu@zn.tnic>
-References: <cover.1631141919.git.thomas.lendacky@amd.com>
- <YUIjS6lKEY5AadZx@zn.tnic>
- <d48e6a17-d2b4-67da-56d1-fc9a61dfe2b8@linux.intel.com>
+        id S239837AbhIPPzv (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 16 Sep 2021 11:55:51 -0400
+Received: from mga05.intel.com ([192.55.52.43]:25691 "EHLO mga05.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231702AbhIPPzv (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Thu, 16 Sep 2021 11:55:51 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10109"; a="308140566"
+X-IronPort-AV: E=Sophos;i="5.85,298,1624345200"; 
+   d="scan'208";a="308140566"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Sep 2021 08:54:28 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.85,298,1624345200"; 
+   d="scan'208";a="472823204"
+Received: from chenyu-desktop.sh.intel.com ([10.239.158.176])
+  by orsmga007.jf.intel.com with ESMTP; 16 Sep 2021 08:54:24 -0700
+From:   Chen Yu <yu.c.chen@intel.com>
+To:     linux-acpi@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <len.brown@intel.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Andy Shevchenko <andriy.shevchenko@intel.com>,
+        Aubrey Li <aubrey.li@intel.com>,
+        Ashok Raj <ashok.raj@intel.com>, Chen Yu <yu.c.chen@intel.com>,
+        Mike Rapoport <rppt@kernel.org>,
+        Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org
+Subject: [PATCH v3 2/5] efi: Introduce EFI_FIRMWARE_MANAGEMENT_CAPSULE_HEADER and corresponding structures
+Date:   Fri, 17 Sep 2021 00:00:10 +0800
+Message-Id: <afe88d0bbab0fbed289cceceec009be99120effa.1631802163.git.yu.c.chen@intel.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <cover.1631802162.git.yu.c.chen@intel.com>
+References: <cover.1631802162.git.yu.c.chen@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <d48e6a17-d2b4-67da-56d1-fc9a61dfe2b8@linux.intel.com>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, Sep 15, 2021 at 10:26:06AM -0700, Kuppuswamy, Sathyanarayanan wrote:
-> I have a Intel variant patch (please check following patch). But it includes
-> TDX changes as well. Shall I move TDX changes to different patch and just
-> create a separate patch for adding intel_cc_platform_has()?
+Platform Firmware Runtime Update image starts with UEFI headers, and the
+headers are defined in UEFI specification, but some of them have not been
+defined in the kernel yet.
 
-Yes, please, so that I can expedite that stuff separately and so that it
-can go in early in order for future work to be based ontop.
+For example, the header layout of a capsule file looks like this:
 
-Thx.
+EFI_CAPSULE_HEADER
+EFI_FIRMWARE_MANAGEMENT_CAPSULE_HEADER
+EFI_FIRMWARE_MANAGEMENT_CAPSULE_IMAGE_HEADER
+EFI_FIRMWARE_IMAGE_AUTHENTICATION
 
+These structures would be used by the Platform Firmware Runtime Update
+driver to parse the format of capsule file to verify if the corresponding
+version number is valid. The EFI_CAPSULE_HEADER has been defined in the
+kernel, however the rest are not, thus introduce corresponding UEFI
+structures accordingly.
+
+The reason why efi_manage_capsule_header_t and
+efi_manage_capsule_image_header_t are packedi might be that:
+According to the uefi spec,
+[Figure 23-6 Firmware Management and Firmware Image Management headers]
+EFI_FIRMWARE_MANAGEMENT_CAPSULE_HEADER is located at the lowest offset
+within the body of the capsule. And this structure is designed to be
+unaligned to save space, because in this way the adjacent drivers and
+binary payload elements could start on byte boundary with no padding.
+And the EFI_FIRMWARE_MANAGEMENT_CAPSULE_IMAGE_HEADER is at the head of
+each payload, so packing this structure also makes room for more data.
+
+Signed-off-by: Chen Yu <yu.c.chen@intel.com>
+---
+ include/linux/efi.h | 50 +++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 50 insertions(+)
+
+diff --git a/include/linux/efi.h b/include/linux/efi.h
+index 6b5d36babfcc..19ff834e1388 100644
+--- a/include/linux/efi.h
++++ b/include/linux/efi.h
+@@ -148,6 +148,56 @@ typedef struct {
+ 	u32 imagesize;
+ } efi_capsule_header_t;
+ 
++#pragma pack(1)
++
++/* EFI_FIRMWARE_MANAGEMENT_CAPSULE_HEADER */
++typedef struct {
++	u32	ver;
++	u16	emb_drv_cnt;
++	u16	payload_cnt;
++	/*
++	 * Variable array indicated by number of
++	 * (emb_drv_cnt + payload_cnt)
++	 */
++	u64	offset_list[];
++} efi_manage_capsule_header_t;
++
++/* EFI_FIRMWARE_MANAGEMENT_CAPSULE_IMAGE_HEADER */
++typedef struct {
++	u32	ver;
++	guid_t	image_type_id;
++	u8	image_index;
++	u8	reserved_bytes[3];
++	u32	image_size;
++	u32	vendor_code_size;
++	/* ver = 2. */
++	u64	hw_ins;
++	/* ver = v3. */
++	u64	capsule_support;
++} efi_manage_capsule_image_header_t;
++
++#pragma pack()
++
++/* WIN_CERTIFICATE */
++typedef struct {
++	u32	len;
++	u16	rev;
++	u16	cert_type;
++} win_cert_t;
++
++/* WIN_CERTIFICATE_UEFI_GUID */
++typedef struct {
++	win_cert_t	hdr;
++	guid_t		cert_type;
++	u8		cert_data[];
++} win_cert_uefi_guid_t;
++
++/* EFI_FIRMWARE_IMAGE_AUTHENTICATIO */
++typedef struct {
++	u64				mon_count;
++	win_cert_uefi_guid_t		auth_info;
++} efi_image_auth_t;
++
+ /*
+  * EFI capsule flags
+  */
 -- 
-Regards/Gruss,
-    Boris.
+2.25.1
 
-https://people.kernel.org/tglx/notes-about-netiquette
