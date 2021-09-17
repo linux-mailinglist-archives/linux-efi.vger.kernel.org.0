@@ -2,97 +2,152 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DE50040EA02
-	for <lists+linux-efi@lfdr.de>; Thu, 16 Sep 2021 20:38:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B9E340F3D5
+	for <lists+linux-efi@lfdr.de>; Fri, 17 Sep 2021 10:11:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344499AbhIPSjq (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 16 Sep 2021 14:39:46 -0400
-Received: from mga04.intel.com ([192.55.52.120]:61035 "EHLO mga04.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1344129AbhIPSje (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Thu, 16 Sep 2021 14:39:34 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10109"; a="220749921"
-X-IronPort-AV: E=Sophos;i="5.85,299,1624345200"; 
-   d="scan'208";a="220749921"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Sep 2021 11:38:09 -0700
-X-IronPort-AV: E=Sophos;i="5.85,299,1624345200"; 
-   d="scan'208";a="516866664"
-Received: from yunyizha-mobl2.amr.corp.intel.com (HELO skuppusw-mobl5.amr.corp.intel.com) ([10.212.124.4])
-  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Sep 2021 11:38:07 -0700
-Subject: Re: [PATCH v3 0/8] Implement generic cc_platform_has() helper
- function
-To:     Borislav Petkov <bp@alien8.de>
-Cc:     Tom Lendacky <thomas.lendacky@amd.com>,
-        linux-kernel@vger.kernel.org, x86@kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        iommu@lists.linux-foundation.org, kvm@vger.kernel.org,
-        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        linux-graphics-maintainer@vmware.com,
-        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-        kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org,
-        Brijesh Singh <brijesh.singh@amd.com>,
-        Joerg Roedel <joro@8bytes.org>,
-        Andi Kleen <ak@linux.intel.com>,
-        Tianyu Lan <Tianyu.Lan@microsoft.com>,
-        Christoph Hellwig <hch@infradead.org>,
-        Andy Lutomirski <luto@kernel.org>,
-        Ard Biesheuvel <ardb@kernel.org>, Baoquan He <bhe@redhat.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Dave Young <dyoung@redhat.com>,
-        David Airlie <airlied@linux.ie>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Paul Mackerras <paulus@samba.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Will Deacon <will@kernel.org>
-References: <cover.1631141919.git.thomas.lendacky@amd.com>
- <YUIjS6lKEY5AadZx@zn.tnic>
- <d48e6a17-d2b4-67da-56d1-fc9a61dfe2b8@linux.intel.com>
- <YUNckGH0+KXdEmqu@zn.tnic>
-From:   "Kuppuswamy, Sathyanarayanan" 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>
-Message-ID: <9fee1cec-fc91-f87d-d590-5e606211f1b7@linux.intel.com>
-Date:   Thu, 16 Sep 2021 11:38:04 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Firefox/78.0 Thunderbird/78.13.0
+        id S231782AbhIQING (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 17 Sep 2021 04:13:06 -0400
+Received: from mout.kundenserver.de ([212.227.126.134]:40981 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233348AbhIQINE (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 17 Sep 2021 04:13:04 -0400
+Received: from mail-wm1-f46.google.com ([209.85.128.46]) by
+ mrelayeu.kundenserver.de (mreue012 [213.165.67.97]) with ESMTPSA (Nemesis) id
+ 1MAtoX-1mcRUr2ycL-00BLqu; Fri, 17 Sep 2021 10:11:40 +0200
+Received: by mail-wm1-f46.google.com with SMTP id f62-20020a1c1f41000000b0030b42643f72so1282753wmf.3;
+        Fri, 17 Sep 2021 01:11:40 -0700 (PDT)
+X-Gm-Message-State: AOAM531drqy4BbYmcUK2E/pc2+hOJO9tQCwdg32h/aWDgC+Qojuh1RSU
+        UfC/Wm2K5+iwHVU5jBQ12a93HBlP49QMQ7ubulQ=
+X-Google-Smtp-Source: ABdhPJzdLqnRgI4cH6Nyy5LXIDujO3LJsA9YmMdPik3wbbxv6tFICqff3PNBsHdiQf1eaKsTtL5RdxVWXX/UgvbQIM8=
+X-Received: by 2002:a1c:23cb:: with SMTP id j194mr13725733wmj.1.1631866300248;
+ Fri, 17 Sep 2021 01:11:40 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <YUNckGH0+KXdEmqu@zn.tnic>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <20210917035736.3934017-1-chenhuacai@loongson.cn> <20210917035736.3934017-10-chenhuacai@loongson.cn>
+In-Reply-To: <20210917035736.3934017-10-chenhuacai@loongson.cn>
+From:   Arnd Bergmann <arnd@arndb.de>
+Date:   Fri, 17 Sep 2021 10:11:24 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a0BkYBoBh37YyZ1HU4f1thL6ckJR0MZhbkhpKanVK1WcQ@mail.gmail.com>
+Message-ID: <CAK8P3a0BkYBoBh37YyZ1HU4f1thL6ckJR0MZhbkhpKanVK1WcQ@mail.gmail.com>
+Subject: Re: [PATCH V3 09/22] LoongArch: Add boot and setup routines
+To:     Huacai Chen <chenhuacai@loongson.cn>
+Cc:     Arnd Bergmann <arnd@arndb.de>, Andy Lutomirski <luto@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        David Airlie <airlied@linux.ie>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Xuefeng Li <lixuefeng@loongson.cn>,
+        Yanteng Si <siyanteng@loongson.cn>,
+        Huacai Chen <chenhuacai@gmail.com>,
+        Jiaxun Yang <jiaxun.yang@flygoat.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        linux-efi <linux-efi@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Provags-ID: V03:K1:xX3+od/obibddeM4KisBEcIfw3ae01neA0i41oKlXY7PmDRQkbV
+ gd7xnoQncgU5oZo1atrpKQOyYCS8qqp6pFdOmBVaY32r8RyizwNteLpzETqJFBM7+PhbJ8z
+ +bJ81FyRd4cjY+DMiF/SmYD1lvNlKcQJ5YcIS559iQ8SE+VehBRYvNPcjudGHp01wcSJR1u
+ ri5pDfW4OZHCcGCXkvGKA==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:Xjcg/tARvE4=:KCXqULx1p511re317mZ7tf
+ mfRWXwKw3ufYl8Q+AnV5f8x47mRIxkbUVolojz+TVRvY8xsbrb3T75uoO5lIJyfKRjORBXEXS
+ 9sjT4djIa9adZjCeDE6zGwfOKbASK74uaSGfBphqOF9SQwjQ2/JoeUYAWVG7a72oMGTnykIsd
+ QxoPca5+LuX+fR241YLQmIjYtIp5MNauvE9Y/G7Kt5eWv+e0I25DmSKteod4wULy2YZeBMWz2
+ NKd3vDFXtpyfh5fmxoWJ8oHNGUKsBymswi+5qfbVNremY5kQClIJQD1rizx4EU/Mf1Fg09pxc
+ vFGG+VcagIyq1s6SxRcujVzwxEK6w7siFrRiLIiLxoiJwe04PUtE+YffLpwruzwJMilPJgW+2
+ +q7L/dLqDF+dzZ1zDmnrvATCJTZrIwZiSKArubg+1l9jO52gaXNR8xaa9a/BUdWQxN1bdaAXP
+ 3tV4F8zcoS3wGqF7oEdK/+5yeAXpGy9WeZ5CcRko5ReBVIqzlHTPq/eqbBlTQKVbEgechP2Yo
+ d6LgrzaPoLhnrNVRQ6pr7W/99ViGq7WdipQTWbvdvz4GdAEaMdilrdMN8gOuYgGPWEaGZkxXo
+ PZTUjh5/UOLjofNpKJXnW0sP+1uo0whlOfQxF/kCij1kYaeDLYZN3npTYb6V51Ul8DqnQ5HCy
+ USujMVq/JyADIWmH5hePb9jxs07n8xHiauzL4eWAlQY9E9sS0UPBLoDZE1yI4Z1jRg5X1uRzP
+ 3F7+oOv2Lp8STlt+d50spCdAhUdffET5vW8ZkLMzmqcwNW0S5tVsl96GH2/rspmZQaoIz2p03
+ qCoGhVsmRuAGYmtk3iVsaTLjxgDFWkeEPKZr+NKEjgpKRZiYxJKjVXKGJFIcO1GRFImnmHzMF
+ BdcEC22ZLyxVHGYNOrYQ==
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
+On Fri, Sep 17, 2021 at 5:57 AM Huacai Chen <chenhuacai@loongson.cn> wrote:
+> This patch adds basic boot, setup and reset routines for LoongArch.
+> LoongArch uses UEFI-based firmware and uses ACPI as the boot protocol.
 
+This needs to be reviewed by the maintainers for the EFI and ACPI subsystems,
+I added them to Cc here. If you add lines like
 
-On 9/16/21 8:02 AM, Borislav Petkov wrote:
-> On Wed, Sep 15, 2021 at 10:26:06AM -0700, Kuppuswamy, Sathyanarayanan wrote:
->> I have a Intel variant patch (please check following patch). But it includes
->> TDX changes as well. Shall I move TDX changes to different patch and just
->> create a separate patch for adding intel_cc_platform_has()?
-> 
-> Yes, please, so that I can expedite that stuff separately and so that it
-> can go in early in order for future work to be based ontop.
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: linux-efi@vger.kernel.org
 
-Sent it part of TDX patch series. Please check and cherry pick it.
+in the patch description before your Signed-off-by, then git-send-email will
+Cc them automatically without you having to spam them with the entire series.
 
-https://lore.kernel.org/lkml/20210916183550.15349-2-sathyanarayanan.kuppuswamy@linux.intel.com/
+In particular, I know that Ard previously complained that you did not use the
+EFI boot protocol correctly, and I want to make sure that he's happy with the
+final version.
 
-> 
-> Thx.
-> 
+> +static ssize_t boardinfo_show(struct kobject *kobj,
+> +                             struct kobj_attribute *attr, char *buf)
+> +{
+> +       return sprintf(buf,
+> +               "BIOS Information\n"
+> +               "Vendor\t\t\t: %s\n"
+> +               "Version\t\t\t: %s\n"
+> +               "ROM Size\t\t: %d KB\n"
+> +               "Release Date\t\t: %s\n\n"
+> +               "Board Information\n"
+> +               "Manufacturer\t\t: %s\n"
+> +               "Board Name\t\t: %s\n"
+> +               "Family\t\t\t: LOONGSON64\n\n",
+> +               b_info.bios_vendor, b_info.bios_version,
+> +               b_info.bios_size, b_info.bios_release_date,
+> +               b_info.board_vendor, b_info.board_name);
+> +}
+> +
+> +static struct kobj_attribute boardinfo_attr = __ATTR(boardinfo, 0444,
+> +                                                    boardinfo_show, NULL);
+> +
+> +static int __init boardinfo_init(void)
+> +{
+> +       if (!efi_kobj)
+> +               return -EINVAL;
+> +
+> +       return sysfs_create_file(efi_kobj, &boardinfo_attr.attr);
+> +}
+> +late_initcall(boardinfo_init);
 
--- 
-Sathyanarayanan Kuppuswamy
-Linux Kernel Developer
+I see you have documented this interface for your mips machines,
+but nothing else uses it.
+
+I think some of this information should be part of the soc_device,
+either in addition to, or in place of this sysfs file.
+
+Isn't there an existing method to do this on x86/arm/ia64 machines?
+
+> +static int constant_set_state_periodic(struct clock_event_device *evt)
+> +{
+> +       unsigned long period;
+> +       unsigned long timer_config;
+> +
+> +       raw_spin_lock(&state_lock);
+> +
+> +       period = const_clock_freq / HZ;
+> +       timer_config = period & CSR_TCFG_VAL;
+> +       timer_config |= (CSR_TCFG_PERIOD | CSR_TCFG_EN);
+> +       csr_writeq(timer_config, LOONGARCH_CSR_TCFG);
+> +
+> +       raw_spin_unlock(&state_lock);
+
+I see this pattern in a couple of places, using a spinlock or raw_spinlock
+to guard MMIO access, but on many architectures a register write is
+not serialized by the following spin_unlock, unless you insert another
+read from the same address in there. E.g. on PCIe, writes are always
+posted and it would not work.
+
+Can you confirm that it works correctly on CSR registers in loongarch?
+
+         Arnd
