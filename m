@@ -2,167 +2,142 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 335A3413AE6
-	for <lists+linux-efi@lfdr.de>; Tue, 21 Sep 2021 21:45:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A5F5413C45
+	for <lists+linux-efi@lfdr.de>; Tue, 21 Sep 2021 23:21:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232145AbhIUTqf (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 21 Sep 2021 15:46:35 -0400
-Received: from mail.kernel.org ([198.145.29.99]:52942 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231468AbhIUTqf (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Tue, 21 Sep 2021 15:46:35 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 8D87F6112F;
-        Tue, 21 Sep 2021 19:45:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1632253506;
-        bh=TG/Sor91iMlLGQKzaFrGTL6wc9VnOoLST+DeZedZHa0=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=omHIxpIW3eT4kf2aXXTpbZBkJtpwkJXWG6FiY3eVv5ZfRA5wx02Y0qmjlJaDRmF+E
-         SjVitdjtNLVqWQDHNQ2k4VW/LuQmMsmZ/fRU74xqrcmw0NRzbuK7U+JLAw9hBG2mhC
-         lpovLVsKZqW3CtV6AlLQ4q7m1y/iVr+hfSgpatHuSwo7GOf7xVeL7u3IUap6S/cNpI
-         8q6t7ReEsSBOsgGUekkxKZ74lKAYmlDr+ykmQPuh5KaqmezovKBN3gAF+/8MoEsT0U
-         Z/45mgoZfUWzdruBFzQRsrZtHYr16YAQZfNXhQzcfhLOLrS6O99CV2IOVh2iqWbI+9
-         Ymj8I5NmXNtTg==
-Received: by mail-ed1-f43.google.com with SMTP id ee50so525390edb.13;
-        Tue, 21 Sep 2021 12:45:06 -0700 (PDT)
-X-Gm-Message-State: AOAM532RwEEQjZq1j3EXbotb+e2hnMRFIfxwFuNMR8gmCybh9ujn0cSs
-        xB+cmd/tZG86s3ZyOcAQyC1mXEeOAFEpsA22mg==
-X-Google-Smtp-Source: ABdhPJztD14XM+ABXOQ8afWfcx03LpCn85LuBtodjgJNaa1df1UXoQ8GgYwkn75WV9713c6C+KbGt+a3JQIc3ibERr0=
-X-Received: by 2002:a05:6402:b23:: with SMTP id bo3mr38015381edb.145.1632253505043;
- Tue, 21 Sep 2021 12:45:05 -0700 (PDT)
+        id S229624AbhIUVWa (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 21 Sep 2021 17:22:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47436 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233145AbhIUVW3 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 21 Sep 2021 17:22:29 -0400
+Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com [IPv6:2a00:1450:4864:20::12d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A09EC061574
+        for <linux-efi@vger.kernel.org>; Tue, 21 Sep 2021 14:21:00 -0700 (PDT)
+Received: by mail-lf1-x12d.google.com with SMTP id p29so2829788lfa.11
+        for <linux-efi@vger.kernel.org>; Tue, 21 Sep 2021 14:21:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=shutemov-name.20210112.gappssmtp.com; s=20210112;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=GYWKxxwDs0cZgU7zoLo4TUhsJ8M50sSfexrGGa7nvK0=;
+        b=6GA+nKi4dJGN5Y/djnNixBrKu6T3pljCu3U/BgzvrwouwWOron03nG2FotSmE1IvQS
+         MgoEePxggSU/gxjqerZifjJ0UmN+Rpgv4VXnbx+GeN6FcHZXKGVGGXh/gwowELfGRgeB
+         k1v+6RGz165vVjf8qTg9T5T2FYUEcrHSwLBk5fRy4e1eic4Bwe7QkdtvB988rBItCSlw
+         5pJbiBObITlEWIumnOpwgWSOod/vvf6//SPAXj5IzXKsXsn8DowBeLy2GH+tdsAPmUH0
+         ZbwUoQIW4DTzzxX46eJW+ys3iupLGzexzYNkzIcWmfRnNP3AUY1kX51pUUaEoehoA6Yb
+         KPPw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=GYWKxxwDs0cZgU7zoLo4TUhsJ8M50sSfexrGGa7nvK0=;
+        b=hj9YHogXKL+SwrSZFAec5aAIA9hZ5cphht0Mi2OlardsnezSRChuK2f7th4ky6Zc7g
+         D4R1F0ry3xwfSa9/h2bmdA18t9F33Q6olVHM1GssmAHWmdiA4j+VidnQJhx4jNbbDLUy
+         SATjzvTCUhx8M6f2zFjwX6yvafgFJvE0tjTrKvbqAIkhEWg1dTkQHZArOv/KPyrq9lVZ
+         PAd3vv1hCFAK7yvHVG0+iujAHF17I5fu9cRk/elytg5a114gS85PgcDeNBEzyDcyxuaD
+         S58c59p68wE/6/N5WVSFwCLblr7H9u4db9If+0Wbs1bWTc+wp2ht0w2cMK+URwoNplBM
+         E0hQ==
+X-Gm-Message-State: AOAM532AQSDADauu/bFAEVnjHftr5TJFI77pUUGIWlyDM0x2f7gA/Pou
+        We6xz7InTlrJTpoGqWWSI539KQ==
+X-Google-Smtp-Source: ABdhPJwekUVL/x16ZZDpG4z5bQ8XnWA1mYPT1pSdbtQA7F8rIf0C+IYx6L1iOsCNob4BliQK4ObStw==
+X-Received: by 2002:a2e:5009:: with SMTP id e9mr25102801ljb.245.1632259258818;
+        Tue, 21 Sep 2021 14:20:58 -0700 (PDT)
+Received: from box.localdomain ([86.57.175.117])
+        by smtp.gmail.com with ESMTPSA id t12sm13948lfc.55.2021.09.21.14.20.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 21 Sep 2021 14:20:58 -0700 (PDT)
+Received: by box.localdomain (Postfix, from userid 1000)
+        id 1B39910305C; Wed, 22 Sep 2021 00:20:59 +0300 (+03)
+Date:   Wed, 22 Sep 2021 00:20:59 +0300
+From:   "Kirill A. Shutemov" <kirill@shutemov.name>
+To:     Borislav Petkov <bp@alien8.de>
+Cc:     Tom Lendacky <thomas.lendacky@amd.com>,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-kernel@vger.kernel.org, x86@kernel.org,
+        iommu@lists.linux-foundation.org, kvm@vger.kernel.org,
+        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        linux-graphics-maintainer@vmware.com,
+        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+        kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org,
+        Brijesh Singh <brijesh.singh@amd.com>,
+        Joerg Roedel <joro@8bytes.org>,
+        Andi Kleen <ak@linux.intel.com>,
+        Sathyanarayanan Kuppuswamy 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        Tianyu Lan <Tianyu.Lan@microsoft.com>,
+        Christoph Hellwig <hch@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Will Deacon <will@kernel.org>
+Subject: Re: [PATCH v3 5/8] x86/sme: Replace occurrences of sme_active() with
+ cc_platform_has()
+Message-ID: <20210921212059.wwlytlmxoft4cdth@box.shutemov.name>
+References: <cover.1631141919.git.thomas.lendacky@amd.com>
+ <367624d43d35d61d5c97a8b289d9ddae223636e9.1631141919.git.thomas.lendacky@amd.com>
+ <20210920192341.maue7db4lcbdn46x@box.shutemov.name>
+ <77df37e1-0496-aed5-fd1d-302180f1edeb@amd.com>
+ <YUoao0LlqQ6+uBrq@zn.tnic>
 MIME-Version: 1.0
-References: <20210906041424.115473-1-gshan@redhat.com>
-In-Reply-To: <20210906041424.115473-1-gshan@redhat.com>
-From:   Rob Herring <robh@kernel.org>
-Date:   Tue, 21 Sep 2021 14:44:53 -0500
-X-Gmail-Original-Message-ID: <CAL_JsqLccwTEhzonvdOOox+D6=3gHxbDbtsXTJpqtQfuxA4xvg@mail.gmail.com>
-Message-ID: <CAL_JsqLccwTEhzonvdOOox+D6=3gHxbDbtsXTJpqtQfuxA4xvg@mail.gmail.com>
-Subject: Re: [PATCH] Documentation, dt, numa: Add note to empty NUMA node
-To:     Gavin Shan <gshan@redhat.com>
-Cc:     devicetree@vger.kernel.org,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        linux-efi@vger.kernel.org,
-        "open list:KERNEL VIRTUAL MACHINE FOR ARM64 (KVM/arm64)" 
-        <kvmarm@lists.cs.columbia.edu>,
-        Randy Dunlap <rdunlap@infradead.org>, drjones@redhat.com,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>, shan.gavin@gmail.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YUoao0LlqQ6+uBrq@zn.tnic>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Sun, Sep 5, 2021 at 11:16 PM Gavin Shan <gshan@redhat.com> wrote:
->
-> The empty memory nodes, where no memory resides in, are allowed.
-> For these empty memory nodes, the 'len' of 'reg' property is zero.
-> The NUMA node IDs are still valid and parsed, but memory may be
-> added to them through hotplug afterwards. Currently, QEMU fails
-> to boot when multiple empty memory nodes are specified. It's
-> caused by device-tree population failure and duplicated memory
-> node names.
+On Tue, Sep 21, 2021 at 07:47:15PM +0200, Borislav Petkov wrote:
+> On Tue, Sep 21, 2021 at 12:04:58PM -0500, Tom Lendacky wrote:
+> > Looks like instrumentation during early boot. I worked with Boris offline to
+> > exclude arch/x86/kernel/cc_platform.c from some of the instrumentation and
+> > that allowed an allyesconfig to boot.
+> 
+> And here's the lineup I have so far, I'd appreciate it if ppc and s390 folks
+> could run it too:
+> 
+> https://git.kernel.org/pub/scm/linux/kernel/git/bp/bp.git/log/?h=rc2-cc
 
-I still don't like the fake addresses. I can't really give suggestions
-on alternative ways to fix this with you just presenting a solution.
+Still broken for me with allyesconfig.
 
-What is the failure you see? Can we relax the kernel's expectations?
-What about UEFI boot as the memory nodes aren't used (or maybe they
-are for NUMA?) How does this work with ACPI?
+gcc version 11.2.0 (Gentoo 11.2.0 p1)
+GNU ld (Gentoo 2.37_p1 p0) 2.37
 
-> As device-tree specification indicates, the 'unit-address' of
-> these empty memory nodes, part of their names, are the equivalents
-> to 'base-address'. Unfortunately, I finds difficulty to get where
-> the assignment of 'base-address' is properly documented for these
-> empty memory nodes. So lets add a section for empty memory nodes
-> to cover this in NUMA binding document. The 'unit-address',
-> equivalent to 'base-address' in the 'reg' property of these empty
-> memory nodes is specified to be the summation of highest memory
-> address plus the NUMA node ID.
->
-> Signed-off-by: Gavin Shan <gshan@redhat.com>
-> Acked-by: Randy Dunlap <rdunlap@infradead.org>
-> ---
->  Documentation/devicetree/bindings/numa.txt | 60 +++++++++++++++++++++-
->  1 file changed, 59 insertions(+), 1 deletion(-)
->
-> diff --git a/Documentation/devicetree/bindings/numa.txt b/Documentation/devicetree/bindings/numa.txt
-> index 21b35053ca5a..82f047bc8dd6 100644
-> --- a/Documentation/devicetree/bindings/numa.txt
-> +++ b/Documentation/devicetree/bindings/numa.txt
-> @@ -103,7 +103,65 @@ Example:
->                 };
->
->  ==============================================================================
-> -4 - Example dts
-> +4 - Empty memory nodes
-> +==============================================================================
-> +
-> +Empty memory nodes, which no memory resides in, are allowed. The 'length'
-> +field of the 'reg' property is zero. However, the 'base-address' is a
-> +dummy and invalid address, which is the summation of highest memory address
-> +plus the NUMA node ID. The NUMA node IDs and distance maps are still valid
-> +and memory may be added into them through hotplug afterwards.
-> +
-> +Example:
-> +
-> +       memory@0 {
-> +               device_type = "memory";
-> +               reg = <0x0 0x0 0x0 0x80000000>;
-> +               numa-node-id = <0>;
-> +       };
-> +
-> +       memory@80000000 {
-> +               device_type = "memory";
-> +               reg = <0x0 0x80000000 0x0 0x80000000>;
-> +               numa-node-id = <1>;
-> +       };
-> +
-> +       /* Empty memory node */
-> +       memory@100000002 {
-> +               device_type = "memory";
-> +               reg = <0x1 0x2 0x0 0x0>;
-> +               numa-node-id = <2>;
-> +       };
-> +
-> +       /* Empty memory node */
-> +       memory@100000003 {
-> +               device_type = "memory";
-> +               reg = <0x1 0x3 0x0 0x0>;
-> +               numa-node-id = <3>;
-> +       };
+I still believe calling cc_platform_has() from __startup_64() is totally
+broken as it lacks proper wrapping while accessing global variables.
 
-Do you really need the memory nodes here or just some way to define
-numa node id's 2 and 3 as valid?
+I think sme_get_me_mask() has the same problem. I just happened to work
+(until next compiler update).
 
+This hack makes kernel boot again:
 
-> +
-> +       distance-map {
-> +               compatible = "numa-distance-map-v1";
-> +               distance-matrix = <0 0  10>,
-> +                                 <0 1  20>,
-> +                                 <0 2  40>,
-> +                                 <0 3  20>,
-> +                                 <1 0  20>,
-> +                                 <1 1  10>,
-> +                                 <1 2  20>,
-> +                                 <1 3  40>,
-> +                                 <2 0  40>,
-> +                                 <2 1  20>,
-> +                                 <2 2  10>,
-> +                                 <2 3  20>,
-> +                                 <3 0  20>,
-> +                                 <3 1  40>,
-> +                                 <3 2  20>,
-> +                                 <3 3  10>;
-> +       };
-> +
-> +==============================================================================
-> +5 - Example dts
->  ==============================================================================
->
->  Dual socket system consists of 2 boards connected through ccn bus and
-> --
-> 2.23.0
->
+diff --git a/arch/x86/kernel/head64.c b/arch/x86/kernel/head64.c
+index f98c76a1d16c..e9110a44bf1b 100644
+--- a/arch/x86/kernel/head64.c
++++ b/arch/x86/kernel/head64.c
+@@ -285,7 +285,7 @@ unsigned long __head __startup_64(unsigned long physaddr,
+ 	 * there is no need to zero it after changing the memory encryption
+ 	 * attribute.
+ 	 */
+-	if (cc_platform_has(CC_ATTR_MEM_ENCRYPT)) {
++	if (0 && cc_platform_has(CC_ATTR_MEM_ENCRYPT)) {
+ 		vaddr = (unsigned long)__start_bss_decrypted;
+ 		vaddr_end = (unsigned long)__end_bss_decrypted;
+ 		for (; vaddr < vaddr_end; vaddr += PMD_SIZE) {
+diff --git a/arch/x86/mm/mem_encrypt_identity.c b/arch/x86/mm/mem_encrypt_identity.c
+index eff4d19f9cb4..91638ed0b1db 100644
+--- a/arch/x86/mm/mem_encrypt_identity.c
++++ b/arch/x86/mm/mem_encrypt_identity.c
+@@ -288,7 +288,7 @@ void __init sme_encrypt_kernel(struct boot_params *bp)
+ 	unsigned long pgtable_area_len;
+ 	unsigned long decrypted_base;
+ 
+-	if (!cc_platform_has(CC_ATTR_HOST_MEM_ENCRYPT))
++	if (1 || !cc_platform_has(CC_ATTR_HOST_MEM_ENCRYPT))
+ 		return;
+ 
+ 	/*
+-- 
+ Kirill A. Shutemov
