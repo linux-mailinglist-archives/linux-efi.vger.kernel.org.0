@@ -2,120 +2,186 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 42309413D25
-	for <lists+linux-efi@lfdr.de>; Tue, 21 Sep 2021 23:58:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7DDBA414738
+	for <lists+linux-efi@lfdr.de>; Wed, 22 Sep 2021 13:05:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235766AbhIUWAF (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 21 Sep 2021 18:00:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56332 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235743AbhIUWAA (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 21 Sep 2021 18:00:00 -0400
-Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75D6DC06175F
-        for <linux-efi@vger.kernel.org>; Tue, 21 Sep 2021 14:58:31 -0700 (PDT)
-Received: by mail-lf1-x129.google.com with SMTP id z24so3134977lfu.13
-        for <linux-efi@vger.kernel.org>; Tue, 21 Sep 2021 14:58:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=shutemov-name.20210112.gappssmtp.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=3LA4/O2mCyOef4VI1WFdoR8n1dGVVw7qzM7cBS6DVhU=;
-        b=uz74/2S9fGGuaG1ODTSPcqBPXWYPIeYWZ5doyMS2bRw5AX5Q0Ua+uMdim4ZuJxyrxA
-         jJZQO4P96OqxH5cKvegadiVeIhPzNJbdYGDNOj6HudiXM/SjkCNrO1WvHS6o1vufFzsX
-         2aSN3AaXAf4xQbbvR+FPssTEArjutFFJ66GH7RUNHyFCNozOqySWjjTExvVocPFb39xr
-         6cGXTnJkbxFWnWohqMtGSjOnjJQnu/xNRG5R8l2FsElk/Lpvl66TfQOcwUYfJ1TTZ5xS
-         XHIL9Tea6doFMlP16r8MNgBnWMAMa0JaH2OsWma5jit+qxznz4qqyPPj9R612HR9czFp
-         8TyQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=3LA4/O2mCyOef4VI1WFdoR8n1dGVVw7qzM7cBS6DVhU=;
-        b=pbTbnPpaHkmIddTM5OuyjTvtvsnwnG4xeEBEQHim+aRK/mF9ivexhVPSb7Ek8I6LnK
-         HtKaHKPCo1MrQWbBxDMKU2UmSdeKZOYjoE7nJPq+TGiejjMmGwgBSo2c6GpmGby9xx6R
-         bqYD1mhxM5sb2OjWKu30cDnrBxhH9EPDMk52Uc+MVnhEr/4KTbFD3db561CYZEsElrWN
-         IcczF3lkojRKsekeZkzRC1tuaO6ILmpxfXfq/BYBZbS3PqanDnADseXthZA/GZao2kAF
-         CISyx2P+h46BG49AcQ+WOfgUgC+3bG7oku2I9kFMLO07GqgcbAZSmgBktofv0ez+6cwl
-         qZ0A==
-X-Gm-Message-State: AOAM533Nb3cenHwbVx337ogaHicrdqIp89wVRdmvYlVwN14Ca0ZAmta9
-        TODgsEtcxayTjT/fWYm6Vr498A==
-X-Google-Smtp-Source: ABdhPJwDR/A8UmkVQG/A20LQ6G5BoWJFTrnWNencwdMb7p0WPRY497q9Nuc+l8sjchxpIRdzv87pHg==
-X-Received: by 2002:a2e:86ce:: with SMTP id n14mr11214294ljj.211.1632261509754;
-        Tue, 21 Sep 2021 14:58:29 -0700 (PDT)
-Received: from box.localdomain ([86.57.175.117])
-        by smtp.gmail.com with ESMTPSA id q7sm16555ljg.137.2021.09.21.14.58.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Sep 2021 14:58:29 -0700 (PDT)
-Received: by box.localdomain (Postfix, from userid 1000)
-        id 5DF1710305C; Wed, 22 Sep 2021 00:58:30 +0300 (+03)
-Date:   Wed, 22 Sep 2021 00:58:30 +0300
-From:   "Kirill A. Shutemov" <kirill@shutemov.name>
-To:     Tom Lendacky <thomas.lendacky@amd.com>
-Cc:     Borislav Petkov <bp@alien8.de>, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
-        x86@kernel.org, iommu@lists.linux-foundation.org,
-        kvm@vger.kernel.org, linux-efi@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org,
-        linux-graphics-maintainer@vmware.com,
-        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-        kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org,
-        Brijesh Singh <brijesh.singh@amd.com>,
-        Joerg Roedel <joro@8bytes.org>,
-        Andi Kleen <ak@linux.intel.com>,
-        Sathyanarayanan Kuppuswamy 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        Tianyu Lan <Tianyu.Lan@microsoft.com>,
-        Christoph Hellwig <hch@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Will Deacon <will@kernel.org>
-Subject: Re: [PATCH v3 5/8] x86/sme: Replace occurrences of sme_active() with
- cc_platform_has()
-Message-ID: <20210921215830.vqxd75r4eyau6cxy@box.shutemov.name>
-References: <cover.1631141919.git.thomas.lendacky@amd.com>
- <367624d43d35d61d5c97a8b289d9ddae223636e9.1631141919.git.thomas.lendacky@amd.com>
- <20210920192341.maue7db4lcbdn46x@box.shutemov.name>
- <77df37e1-0496-aed5-fd1d-302180f1edeb@amd.com>
- <YUoao0LlqQ6+uBrq@zn.tnic>
- <20210921212059.wwlytlmxoft4cdth@box.shutemov.name>
- <YUpONYwM4dQXAOJr@zn.tnic>
- <20210921213401.i2pzaotgjvn4efgg@box.shutemov.name>
- <00f52bf8-cbc6-3721-f40e-2f51744751b0@amd.com>
+        id S235194AbhIVLGx (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 22 Sep 2021 07:06:53 -0400
+Received: from mail.kernel.org ([198.145.29.99]:60832 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S234760AbhIVLGw (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Wed, 22 Sep 2021 07:06:52 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 9EBC361050;
+        Wed, 22 Sep 2021 11:05:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1632308722;
+        bh=lKxTtQAI2dVJN/lgVduhPktu2QvJtfw+Vyeet6Wg0kk=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=tx3ksSSLnT10rE/aRMTTfisLEWB1roDYi4W1eVYJ3mwNTPUcFc1xRdYUed30yNnAk
+         dqLWXreNv7I3qk+PvSQ2gJp3Z8h/PZgOn6XFkI0CAuxPn3TFxNrVu4C53+I9sDCGWo
+         TY++0NtH5Vn2od4tifHGGPAikKWCYnS7qIkUc9IIezTuyojt9DIZ0iPepxsvXmO5rM
+         Zz+KmNrft/j2XzhW/lJv+cfExHgPgu+WbV0k3HcAIZ+Rrl1+qrZtM1BByShI2pc7zl
+         +1//r9FPD7l0IX/VjD5lOMbC9gdvqF2+cLD1PAHXzpYNENAgDQ+myBQL8NQMuP9Tck
+         p4oqNIiezVLKw==
+Received: by mail-oi1-f170.google.com with SMTP id s24so1274538oij.8;
+        Wed, 22 Sep 2021 04:05:22 -0700 (PDT)
+X-Gm-Message-State: AOAM5304lahi6KLy6hrXnjUMdRAELWIr7dDQ5SFUsH/txqtTTrO+2tTt
+        Bry4yw2uCsqmF5D8kKZq6GVK2LAbzA4w3xVSnac=
+X-Google-Smtp-Source: ABdhPJyqRljhIu3cnaTtcTjBsYyXn04mQxYNKOI8lDMU6oo+6R/HRFtbw4XbqGArYlNafsVzssonf+JD+jJaDgbmRtw=
+X-Received: by 2002:a05:6808:15a2:: with SMTP id t34mr7416338oiw.47.1632308721925;
+ Wed, 22 Sep 2021 04:05:21 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <00f52bf8-cbc6-3721-f40e-2f51744751b0@amd.com>
+References: <20210906041424.115473-1-gshan@redhat.com> <CAL_JsqLccwTEhzonvdOOox+D6=3gHxbDbtsXTJpqtQfuxA4xvg@mail.gmail.com>
+In-Reply-To: <CAL_JsqLccwTEhzonvdOOox+D6=3gHxbDbtsXTJpqtQfuxA4xvg@mail.gmail.com>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Wed, 22 Sep 2021 13:05:10 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXFgnbuQzqf4rnpzn+Ez-sL3859q=1z_PkE1Mgd3SL19rA@mail.gmail.com>
+Message-ID: <CAMj1kXFgnbuQzqf4rnpzn+Ez-sL3859q=1z_PkE1Mgd3SL19rA@mail.gmail.com>
+Subject: Re: [PATCH] Documentation, dt, numa: Add note to empty NUMA node
+To:     Rob Herring <robh@kernel.org>
+Cc:     Gavin Shan <gshan@redhat.com>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        "open list:KERNEL VIRTUAL MACHINE FOR ARM64 (KVM/arm64)" 
+        <kvmarm@lists.cs.columbia.edu>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Andrew Jones <drjones@redhat.com>,
+        Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>, shan.gavin@gmail.com
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, Sep 21, 2021 at 04:43:59PM -0500, Tom Lendacky wrote:
-> On 9/21/21 4:34 PM, Kirill A. Shutemov wrote:
-> > On Tue, Sep 21, 2021 at 11:27:17PM +0200, Borislav Petkov wrote:
-> > > On Wed, Sep 22, 2021 at 12:20:59AM +0300, Kirill A. Shutemov wrote:
-> > > > I still believe calling cc_platform_has() from __startup_64() is totally
-> > > > broken as it lacks proper wrapping while accessing global variables.
-> > > 
-> > > Well, one of the issues on the AMD side was using boot_cpu_data too
-> > > early and the Intel side uses it too. Can you replace those checks with
-> > > is_tdx_guest() or whatever was the helper's name which would check
-> > > whether the the kernel is running as a TDX guest, and see if that helps?
-> > 
-> > There's no need in Intel check this early. Only AMD need it. Maybe just
-> > opencode them?
-> 
-> Any way you can put a gzipped/bzipped copy of your vmlinux file somewhere I
-> can grab it from and take a look at it?
+On Tue, 21 Sept 2021 at 21:45, Rob Herring <robh@kernel.org> wrote:
+>
+> On Sun, Sep 5, 2021 at 11:16 PM Gavin Shan <gshan@redhat.com> wrote:
+> >
+> > The empty memory nodes, where no memory resides in, are allowed.
+> > For these empty memory nodes, the 'len' of 'reg' property is zero.
+> > The NUMA node IDs are still valid and parsed, but memory may be
+> > added to them through hotplug afterwards. Currently, QEMU fails
+> > to boot when multiple empty memory nodes are specified. It's
+> > caused by device-tree population failure and duplicated memory
+> > node names.
 
-You can find broken vmlinux and bzImage here:
+Those memory regions are known in advance, right? So wouldn't it be
+better to use something like 'status = "disabled"' here?
 
-https://drive.google.com/drive/folders/1n74vUQHOGebnF70Im32qLFY8iS3wvjIs?usp=sharing
+>
+> I still don't like the fake addresses. I can't really give suggestions
+> on alternative ways to fix this with you just presenting a solution.
+>
 
-Let me know when I can remove it.
+Agreed. Please try to explain what the problem is, and why this is the
+best way to solve it. Please include other solutions that were
+considered and rejected if any exist.
 
--- 
- Kirill A. Shutemov
+> What is the failure you see? Can we relax the kernel's expectations?
+> What about UEFI boot as the memory nodes aren't used (or maybe they
+> are for NUMA?) How does this work with ACPI?
+>
+
+The EFI memory map only needs to describe the memory that was present
+at boot. More memory can be represented as ACPI objects, including
+coldplugged memory that is already present at boot. None of this
+involves the memory nodes in DT.
+
+> > As device-tree specification indicates, the 'unit-address' of
+> > these empty memory nodes, part of their names, are the equivalents
+> > to 'base-address'. Unfortunately, I finds difficulty to get where
+> > the assignment of 'base-address' is properly documented for these
+> > empty memory nodes. So lets add a section for empty memory nodes
+> > to cover this in NUMA binding document. The 'unit-address',
+> > equivalent to 'base-address' in the 'reg' property of these empty
+> > memory nodes is specified to be the summation of highest memory
+> > address plus the NUMA node ID.
+> >
+> > Signed-off-by: Gavin Shan <gshan@redhat.com>
+> > Acked-by: Randy Dunlap <rdunlap@infradead.org>
+> > ---
+> >  Documentation/devicetree/bindings/numa.txt | 60 +++++++++++++++++++++-
+> >  1 file changed, 59 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/Documentation/devicetree/bindings/numa.txt b/Documentation/devicetree/bindings/numa.txt
+> > index 21b35053ca5a..82f047bc8dd6 100644
+> > --- a/Documentation/devicetree/bindings/numa.txt
+> > +++ b/Documentation/devicetree/bindings/numa.txt
+> > @@ -103,7 +103,65 @@ Example:
+> >                 };
+> >
+> >  ==============================================================================
+> > -4 - Example dts
+> > +4 - Empty memory nodes
+> > +==============================================================================
+> > +
+> > +Empty memory nodes, which no memory resides in, are allowed. The 'length'
+> > +field of the 'reg' property is zero. However, the 'base-address' is a
+> > +dummy and invalid address, which is the summation of highest memory address
+> > +plus the NUMA node ID. The NUMA node IDs and distance maps are still valid
+> > +and memory may be added into them through hotplug afterwards.
+> > +
+> > +Example:
+> > +
+> > +       memory@0 {
+> > +               device_type = "memory";
+> > +               reg = <0x0 0x0 0x0 0x80000000>;
+> > +               numa-node-id = <0>;
+> > +       };
+> > +
+> > +       memory@80000000 {
+> > +               device_type = "memory";
+> > +               reg = <0x0 0x80000000 0x0 0x80000000>;
+> > +               numa-node-id = <1>;
+> > +       };
+> > +
+> > +       /* Empty memory node */
+> > +       memory@100000002 {
+> > +               device_type = "memory";
+> > +               reg = <0x1 0x2 0x0 0x0>;
+> > +               numa-node-id = <2>;
+> > +       };
+> > +
+> > +       /* Empty memory node */
+> > +       memory@100000003 {
+> > +               device_type = "memory";
+> > +               reg = <0x1 0x3 0x0 0x0>;
+> > +               numa-node-id = <3>;
+> > +       };
+>
+> Do you really need the memory nodes here or just some way to define
+> numa node id's 2 and 3 as valid?
+>
+>
+> > +
+> > +       distance-map {
+> > +               compatible = "numa-distance-map-v1";
+> > +               distance-matrix = <0 0  10>,
+> > +                                 <0 1  20>,
+> > +                                 <0 2  40>,
+> > +                                 <0 3  20>,
+> > +                                 <1 0  20>,
+> > +                                 <1 1  10>,
+> > +                                 <1 2  20>,
+> > +                                 <1 3  40>,
+> > +                                 <2 0  40>,
+> > +                                 <2 1  20>,
+> > +                                 <2 2  10>,
+> > +                                 <2 3  20>,
+> > +                                 <3 0  20>,
+> > +                                 <3 1  40>,
+> > +                                 <3 2  20>,
+> > +                                 <3 3  10>;
+> > +       };
+> > +
+> > +==============================================================================
+> > +5 - Example dts
+> >  ==============================================================================
+> >
+> >  Dual socket system consists of 2 boards connected through ccn bus and
+> > --
+> > 2.23.0
+> >
