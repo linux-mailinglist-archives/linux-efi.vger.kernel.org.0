@@ -2,186 +2,126 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4502D4165A4
-	for <lists+linux-efi@lfdr.de>; Thu, 23 Sep 2021 21:08:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D7DA41661B
+	for <lists+linux-efi@lfdr.de>; Thu, 23 Sep 2021 21:46:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242833AbhIWTJ3 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 23 Sep 2021 15:09:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56604 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242839AbhIWTJ0 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 23 Sep 2021 15:09:26 -0400
-Received: from mail-ed1-x535.google.com (mail-ed1-x535.google.com [IPv6:2a00:1450:4864:20::535])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5ACF1C061766
-        for <linux-efi@vger.kernel.org>; Thu, 23 Sep 2021 12:07:54 -0700 (PDT)
-Received: by mail-ed1-x535.google.com with SMTP id c21so26251074edj.0
-        for <linux-efi@vger.kernel.org>; Thu, 23 Sep 2021 12:07:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore-com.20210112.gappssmtp.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=wPA6Pkqk/8ab9RW5HZw193jEL/3tz5PDXJBPjTVJtdU=;
-        b=t1rPCUcoa8HEEbAcar5GeFzOJfqI7UfROKcFgIGMv00KZqB4bGNj1yz/Io6IQtZ9+Z
-         NusuDSgjdkYMBVPbv2Vf3ap3Dbmry0u8fptJLN2cjl3LD0YJiwSIuBvYwnbH0rpaioQF
-         s88qN4rAhn2A6bjocX70mp+3vXylM59wSuZYYWLOfUKeLAaAxF3Zwk8fzDO06/nV0A9+
-         HsVgP4O9uIzFx80rDBeCkIGHcNp1EPBKoNORwSEOCOnT2lOJA5lLnJNU7gfbyJ+41Gti
-         zD8XRqIUaiJOWJBUAoo8PMoRjsXYVqkGOPgNVTuehmVHE3E5VSK+CrreHU4ugQScViDj
-         7cjQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=wPA6Pkqk/8ab9RW5HZw193jEL/3tz5PDXJBPjTVJtdU=;
-        b=QBkdvMbpJQhjeRcIkKN67URjOE8i7aP6gPWsFFIew1rBLT5Mq48R6KbRZenPQNnbOu
-         FCisaHeUsxCc+Hn074KpXczD4YOqroTbnfuMpd6PXff9HciZUD601JTAnIrWdCbOdT7o
-         i66r/wK7C/qCpDwmqEb3VNSPoaCUrfG2socgwm+pmAU4Hl3di2/972bPBk4LnIyuR8hO
-         ezNxqknASGD2y3KYUIYMkKHxPe/lR7N8c5eAXY0Nvk6ueBtpWk8sqS6qvdVPfcpiEQW8
-         1GqDhj41zC9G/qcKOslZ1C2xJ123qDqsvT2uHdgsDJQBK331gV9rIcl3C+QFiVl4yGsK
-         Zt6g==
-X-Gm-Message-State: AOAM530XquniwHfmIAqv9t4WMNWeyXw63XOO/B5eY/JYqwF/idrMRNza
-        mUP3WKBSo+2UKdcF4oHjxUDP+hJvScfneELTDEwt
-X-Google-Smtp-Source: ABdhPJyHqn4EAltoJO7dd9O2Dz9oZ7VSNs98CCkrk2Tu48ZH4l2ycuGj+3CiT1FgWeVjeG1GWQpOD1Ti5aR3sTkLnrk=
-X-Received: by 2002:a50:cf48:: with SMTP id d8mr377146edk.293.1632424072663;
- Thu, 23 Sep 2021 12:07:52 -0700 (PDT)
+        id S242885AbhIWTro (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 23 Sep 2021 15:47:44 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:10952 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S242861AbhIWTrn (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 23 Sep 2021 15:47:43 -0400
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 18NJW36f031236;
+        Thu, 23 Sep 2021 15:45:59 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
+ subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=pp1; bh=OlfxwL5SxCQJGsEygNnP+Bd9S5CycoibyIwI1T9qbFQ=;
+ b=o2g9xUdg4iWokOSpifGukNkZK7jrG3PCnBFvuz4C7oP+gzjHDglARWvYTHBDYKWgrmUN
+ nywTanPgUpTOTd5/xMfhi1L+mJwrCvVoKxej3UCLp5sG7C25GVynwAmr4q0nxjw5T5YF
+ XfSS+haqO/MAAWW7EoLHEph+pIjpH8koxcOuzA2lkqyOwZ+Lt0jX5schDBGsmjxT7nCn
+ nj0KpCKZ1MAIxT1dHKe+ArroeI/VY7R10b19vbUGLmbRaxdWWrC+tHtvcRU2gpGyiZee
+ fQz965XLLMlLTgvc9SCxBhiIocufoeoMuCL9s+OrHLUbKOqWsHzC5EoSrMfU3XKh1xK9 Bg== 
+Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com [149.81.74.107])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 3b8wkuupat-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 23 Sep 2021 15:45:58 -0400
+Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
+        by ppma03fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 18NJRuDe003688;
+        Thu, 23 Sep 2021 19:45:56 GMT
+Received: from b06cxnps3075.portsmouth.uk.ibm.com (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
+        by ppma03fra.de.ibm.com with ESMTP id 3b7q6kd587-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 23 Sep 2021 19:45:56 +0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com [9.149.105.58])
+        by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 18NJjrxv44106172
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 23 Sep 2021 19:45:53 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id A19734C04A;
+        Thu, 23 Sep 2021 19:45:53 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 903DC4C05A;
+        Thu, 23 Sep 2021 19:45:51 +0000 (GMT)
+Received: from linux.ibm.com (unknown [9.145.159.121])
+        by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+        Thu, 23 Sep 2021 19:45:51 +0000 (GMT)
+Date:   Thu, 23 Sep 2021 22:45:49 +0300
+From:   Mike Rapoport <rppt@linux.ibm.com>
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     Mike Rapoport <rppt@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        iommu <iommu@lists.linux-foundation.org>,
+        kasan-dev <kasan-dev@googlegroups.com>,
+        KVM list <kvm@vger.kernel.org>,
+        alpha <linux-alpha@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+        Linux-MM <linux-mm@kvack.org>,
+        linux-riscv <linux-riscv@lists.infradead.org>,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        "open list:SYNOPSYS ARC ARCHITECTURE" 
+        <linux-snps-arc@lists.infradead.org>,
+        linux-um <linux-um@lists.infradead.org>,
+        linux-usb@vger.kernel.org,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        linux-sparc <sparclinux@vger.kernel.org>,
+        xen-devel@lists.xenproject.org
+Subject: Re: [PATCH 0/3] memblock: cleanup memblock_free interface
+Message-ID: <YUzZberbgZE+7HEo@linux.ibm.com>
+References: <20210923074335.12583-1-rppt@kernel.org>
+ <CAHk-=wiJB8H5pZz-AKaSJ7ViRtdxQGJT7eOByp8DJx2OwZSYwA@mail.gmail.com>
 MIME-Version: 1.0
-References: <20210913140229.24797-1-omosnace@redhat.com> <CAHC9VhRw-S+zZUFz5QFFLMBATjo+YbPAiR21jX6p7cT0T+MVLA@mail.gmail.com>
- <CAHC9VhQyejnmLn0NHQiWzikHs8ZdzAUdZ2WqNxgGM6xhJ4mvMQ@mail.gmail.com>
-In-Reply-To: <CAHC9VhQyejnmLn0NHQiWzikHs8ZdzAUdZ2WqNxgGM6xhJ4mvMQ@mail.gmail.com>
-From:   Paul Moore <paul@paul-moore.com>
-Date:   Thu, 23 Sep 2021 15:07:41 -0400
-Message-ID: <CAHC9VhSzh90kFR8wzkmwR-YZNtHGAvYyATc2R1UDaBzZ944OFg@mail.gmail.com>
-Subject: Re: [PATCH v4] lockdown,selinux: fix wrong subject in some SELinux
- lockdown checks
-To:     Ondrej Mosnacek <omosnace@redhat.com>
-Cc:     linux-security-module@vger.kernel.org,
-        James Morris <jmorris@namei.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        Steffen Klassert <steffen.klassert@secunet.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S . Miller" <davem@davemloft.net>,
-        Stephen Smalley <stephen.smalley.work@gmail.com>,
-        selinux@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        x86@kernel.org, linux-acpi@vger.kernel.org,
-        linux-cxl@vger.kernel.org, linux-efi@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-pci@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-serial@vger.kernel.org,
-        bpf@vger.kernel.org, netdev@vger.kernel.org,
-        kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
-        Casey Schaufler <casey@schaufler-ca.com>,
-        Dan Williams <dan.j.williams@intel.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHk-=wiJB8H5pZz-AKaSJ7ViRtdxQGJT7eOByp8DJx2OwZSYwA@mail.gmail.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: NmcKtlYbna1qS7iyZ4wr-YnA7UP6mwwQ
+X-Proofpoint-ORIG-GUID: NmcKtlYbna1qS7iyZ4wr-YnA7UP6mwwQ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.391,FMLib:17.0.607.475
+ definitions=2021-09-23_06,2021-09-23_01,2020-04-07_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ lowpriorityscore=0 mlxscore=0 malwarescore=0 spamscore=0
+ priorityscore=1501 bulkscore=0 clxscore=1015 suspectscore=0
+ mlxlogscore=691 adultscore=0 phishscore=0 classifier=spam adjust=0
+ reason=mlx scancount=1 engine=8.12.0-2109200000
+ definitions=main-2109230115
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, Sep 15, 2021 at 10:59 PM Paul Moore <paul@paul-moore.com> wrote:
->
-> On Mon, Sep 13, 2021 at 5:05 PM Paul Moore <paul@paul-moore.com> wrote:
-> >
-> > On Mon, Sep 13, 2021 at 10:02 AM Ondrej Mosnacek <omosnace@redhat.com> wrote:
-> > >
-> > > Commit 59438b46471a ("security,lockdown,selinux: implement SELinux
-> > > lockdown") added an implementation of the locked_down LSM hook to
-> > > SELinux, with the aim to restrict which domains are allowed to perform
-> > > operations that would breach lockdown.
-> > >
-> > > However, in several places the security_locked_down() hook is called in
-> > > situations where the current task isn't doing any action that would
-> > > directly breach lockdown, leading to SELinux checks that are basically
-> > > bogus.
-> > >
-> > > To fix this, add an explicit struct cred pointer argument to
-> > > security_lockdown() and define NULL as a special value to pass instead
-> > > of current_cred() in such situations. LSMs that take the subject
-> > > credentials into account can then fall back to some default or ignore
-> > > such calls altogether. In the SELinux lockdown hook implementation, use
-> > > SECINITSID_KERNEL in case the cred argument is NULL.
-> > >
-> > > Most of the callers are updated to pass current_cred() as the cred
-> > > pointer, thus maintaining the same behavior. The following callers are
-> > > modified to pass NULL as the cred pointer instead:
-> > > 1. arch/powerpc/xmon/xmon.c
-> > >      Seems to be some interactive debugging facility. It appears that
-> > >      the lockdown hook is called from interrupt context here, so it
-> > >      should be more appropriate to request a global lockdown decision.
-> > > 2. fs/tracefs/inode.c:tracefs_create_file()
-> > >      Here the call is used to prevent creating new tracefs entries when
-> > >      the kernel is locked down. Assumes that locking down is one-way -
-> > >      i.e. if the hook returns non-zero once, it will never return zero
-> > >      again, thus no point in creating these files. Also, the hook is
-> > >      often called by a module's init function when it is loaded by
-> > >      userspace, where it doesn't make much sense to do a check against
-> > >      the current task's creds, since the task itself doesn't actually
-> > >      use the tracing functionality (i.e. doesn't breach lockdown), just
-> > >      indirectly makes some new tracepoints available to whoever is
-> > >      authorized to use them.
-> > > 3. net/xfrm/xfrm_user.c:copy_to_user_*()
-> > >      Here a cryptographic secret is redacted based on the value returned
-> > >      from the hook. There are two possible actions that may lead here:
-> > >      a) A netlink message XFRM_MSG_GETSA with NLM_F_DUMP set - here the
-> > >         task context is relevant, since the dumped data is sent back to
-> > >         the current task.
-> > >      b) When adding/deleting/updating an SA via XFRM_MSG_xxxSA, the
-> > >         dumped SA is broadcasted to tasks subscribed to XFRM events -
-> > >         here the current task context is not relevant as it doesn't
-> > >         represent the tasks that could potentially see the secret.
-> > >      It doesn't seem worth it to try to keep using the current task's
-> > >      context in the a) case, since the eventual data leak can be
-> > >      circumvented anyway via b), plus there is no way for the task to
-> > >      indicate that it doesn't care about the actual key value, so the
-> > >      check could generate a lot of "false alert" denials with SELinux.
-> > >      Thus, let's pass NULL instead of current_cred() here faute de
-> > >      mieux.
-> > >
-> > > Improvements-suggested-by: Casey Schaufler <casey@schaufler-ca.com>
-> > > Improvements-suggested-by: Paul Moore <paul@paul-moore.com>
-> > > Fixes: 59438b46471a ("security,lockdown,selinux: implement SELinux lockdown")
-> > > Acked-by: Dan Williams <dan.j.williams@intel.com>         [cxl]
-> > > Acked-by: Steffen Klassert <steffen.klassert@secunet.com> [xfrm]
-> > > Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
-> > > ---
-> > >
-> > > v4:
-> > > - rebase on top of TODO
-> > > - fix rebase conflicts:
-> > >   * drivers/cxl/pci.c
-> > >     - trivial: the lockdown reason was corrected in mainline
-> > >   * kernel/bpf/helpers.c, kernel/trace/bpf_trace.c
-> > >     - trivial: LOCKDOWN_BPF_READ was renamed to LOCKDOWN_BPF_READ_KERNEL
-> > >       in mainline
-> > >   * kernel/power/hibernate.c
-> > >     - trivial: !secretmem_active() was added to the condition in
-> > >       hibernation_available()
-> > > - cover new security_locked_down() call in kernel/bpf/helpers.c
-> > >   (LOCKDOWN_BPF_WRITE_USER in BPF_FUNC_probe_write_user case)
-> > >
-> > > v3: https://lore.kernel.org/lkml/20210616085118.1141101-1-omosnace@redhat.com/
-> > > - add the cred argument to security_locked_down() and adapt all callers
-> > > - keep using current_cred() in BPF, as the hook calls have been shifted
-> > >   to program load time (commit ff40e51043af ("bpf, lockdown, audit: Fix
-> > >   buggy SELinux lockdown permission checks"))
-> > > - in SELinux, don't ignore hook calls where cred == NULL, but use
-> > >   SECINITSID_KERNEL as the subject instead
-> > > - update explanations in the commit message
-> > >
-> > > v2: https://lore.kernel.org/lkml/20210517092006.803332-1-omosnace@redhat.com/
-> > > - change to a single hook based on suggestions by Casey Schaufler
-> > >
-> > > v1: https://lore.kernel.org/lkml/20210507114048.138933-1-omosnace@redhat.com/
-> >
-> > The changes between v3 and v4 all seem sane to me, but I'm going to
-> > let this sit for a few days in hopes that we can collect a few more
-> > Reviewed-bys and ACKs.  If I don't see any objections I'll merge it
-> > mid-week(ish) into selinux/stable-5.15 and plan on sending it to Linus
-> > after it goes through a build/test cycle.
->
-> Time's up, I just merged this into selinux/stable-5.15 and I'll send
-> this to Linus once it passes testing.
+Hi Linus,
 
-... and it's back out of selinux/stable-5.15 in spectacular fashion.
-I'll be following up with another SELinux patch today or tomorrow.
+On Thu, Sep 23, 2021 at 09:01:46AM -0700, Linus Torvalds wrote:
+> On Thu, Sep 23, 2021 at 12:43 AM Mike Rapoport <rppt@kernel.org> wrote:
+> >
+> You need to be a LOT more careful.
+> 
+> From a trivial check - exactly because I looked at doing it with a
+> script, and decided it's not so easy - I found cases like this:
+> 
+> -               memblock_free(__pa(paca_ptrs) + new_ptrs_size,
+> +               memblock_free(paca_ptrs + new_ptrs_size,
+> 
+> which is COMPLETELY wrong.
+
+I did use a coccinelle script that's slightly more robust that a sed you've
+sent, but then I did a manual review, hence the two small patches with
+fixes. Indeed I missed this one, so to be on the safe side I'll rename only
+the obvious cases where coccinelle can be used reliably and leave all the
+rest as it's now. If somebody cares enough they can update it later.
+ 
+> And no, making the scripting just replace '__pa(x)' with '(void *)(x)'
+
+These were actually manual and they are required for variables that
+used as virtual addresses but have unsigned long type, like e.g.
+initrd_start. So it's either __pa(x) or (void *).
 
 -- 
-paul moore
-www.paul-moore.com
+Sincerely yours,
+Mike.
