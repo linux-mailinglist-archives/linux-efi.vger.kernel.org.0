@@ -2,161 +2,126 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 136B3416B36
-	for <lists+linux-efi@lfdr.de>; Fri, 24 Sep 2021 07:32:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 83EE6416F38
+	for <lists+linux-efi@lfdr.de>; Fri, 24 Sep 2021 11:41:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244129AbhIXFeU (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 24 Sep 2021 01:34:20 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:51076 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S243369AbhIXFeU (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 24 Sep 2021 01:34:20 -0400
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
-        by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 18O4TxLE003727;
-        Fri, 24 Sep 2021 01:32:30 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
- subject : message-id : references : content-type : in-reply-to :
- content-transfer-encoding : mime-version; s=pp1;
- bh=LcclFexTC3W4CGWQ05F30N7TENmKQs3CWJF8lIJhAyA=;
- b=fM5r0pOd7rJd2mnURChsSfJfJrX/C+3BofObflhTYGzVXv/HEJS9Aw8BgIC//ggGIR4j
- CZ5JxdcP59VcALFL5IzVij2oY4zwlRyWWbJs8bYZFXoi5eLF6aEHqAyx0sRU0twQi+Nx
- uTzT35Ud5rz3mMLTSHcDte6njyO8gAKbwGxAXdnivxmbV3hoFkXGse9K5ImTnY3FP/yx
- Dcg6IMAClTzZSYBturZR2pFZSHk8drui/RqjiPVFtbOoDuEmvxDYqAtOWfweNAxqZrTZ
- HQI3Eeh+Tf3jj5APaqHV6+/E8KJV71sFQyUh51zWXPgx91EVjartcf89ESTdpFpWq0zU zQ== 
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
-        by mx0b-001b2d01.pphosted.com with ESMTP id 3b97px199p-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 24 Sep 2021 01:32:30 -0400
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
-        by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 18O5WBU3010032;
-        Fri, 24 Sep 2021 05:32:28 GMT
-Received: from b06avi18878370.portsmouth.uk.ibm.com (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
-        by ppma03ams.nl.ibm.com with ESMTP id 3b93gb1yvs-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 24 Sep 2021 05:32:28 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com [9.149.105.58])
-        by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 18O5RWr150528586
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 24 Sep 2021 05:27:32 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id A77234C04E;
-        Fri, 24 Sep 2021 05:32:25 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 26CB04C050;
-        Fri, 24 Sep 2021 05:32:23 +0000 (GMT)
-Received: from linux.ibm.com (unknown [9.145.159.121])
-        by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
-        Fri, 24 Sep 2021 05:32:23 +0000 (GMT)
-Date:   Fri, 24 Sep 2021 08:32:21 +0300
-From:   Mike Rapoport <rppt@linux.ibm.com>
-To:     Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc:     Mike Rapoport <rppt@kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        devicetree@vger.kernel.org, linux-efi@vger.kernel.org,
-        kvm@vger.kernel.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, linux-um@lists.infradead.org,
-        linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
-        linux-mips@vger.kernel.org, linux-mm@kvack.org,
-        iommu@lists.linux-foundation.org, linux-usb@vger.kernel.org,
-        linux-alpha@vger.kernel.org, sparclinux@vger.kernel.org,
-        xen-devel@lists.xenproject.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linux-snps-arc@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
-        linux-riscv@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 3/3] memblock: cleanup memblock_free interface
-Message-ID: <YU1i5YyldfS1HH0j@linux.ibm.com>
-References: <20210923074335.12583-1-rppt@kernel.org>
- <20210923074335.12583-4-rppt@kernel.org>
- <1101e3c7-fcb7-a632-8e22-47f4a01ea02e@csgroup.eu>
- <YUxsgN/uolhn1Ok+@linux.ibm.com>
- <96e3da9f-70ff-e5c0-ef2e-cf0b636e5695@csgroup.eu>
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-In-Reply-To: <96e3da9f-70ff-e5c0-ef2e-cf0b636e5695@csgroup.eu>
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: EYYWPQtbK60SNKLXoEtnrAemGAQvCJn5
-X-Proofpoint-GUID: EYYWPQtbK60SNKLXoEtnrAemGAQvCJn5
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+        id S245305AbhIXJnJ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 24 Sep 2021 05:43:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56594 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S244969AbhIXJnF (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 24 Sep 2021 05:43:05 -0400
+Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C3ECC061762
+        for <linux-efi@vger.kernel.org>; Fri, 24 Sep 2021 02:41:32 -0700 (PDT)
+Received: by mail-lf1-x12a.google.com with SMTP id t10so37967539lfd.8
+        for <linux-efi@vger.kernel.org>; Fri, 24 Sep 2021 02:41:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=shutemov-name.20210112.gappssmtp.com; s=20210112;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=7QWYmDDdQ14wxTTMWtNorG+4hnmrm04qfz4ZOujDnZs=;
+        b=a94RXEUJuMmQvxSDKok9kJbMV98Mo28f1Csi4Z4iwvW7+MkRyX5SrQhnYAAaonglNs
+         TqzSbC141ptsWvvzM0S2r5099PgvSLUTd+llMs5cQH1O/KYv2VKwA3rHbEQ17XEUoJiN
+         b88sf+8/Kq6CN5gKqNMDbt0WofHePWjCWhJfrHH/URopiQYKQJViZtb5wMUubTQfdu6m
+         e490qkHKD0Pb0R4D5rMx+0JuhhDDbQUkFWETXBCjCVPYNSZnkKFRM+sk+iiLVm+sara7
+         E1aPac0dVliF4TZMk0iL6yousngzwZf3UFxxtnempLUEnPswt9hwLB+6ECQ/gPgJLFvg
+         u+ag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=7QWYmDDdQ14wxTTMWtNorG+4hnmrm04qfz4ZOujDnZs=;
+        b=sltOeOk5dguJ7t7lC2FNwRzmCnynw3ZLkFkLCxhxo2jpiZMcCVZdGv7nftwxzIYRbm
+         0mWICMd125TJtME/zzIbxP0UAS/B3iXcJ3+iDWiIG8AEQB0wJD0fuwCiMVXiejxT2mai
+         gcVxrM6YOQJ/p3Nz0hR0EpzoR8LfkDs7dkj6NML2L49YIlzFzCuJUdA4Vbh2/y9wn2s6
+         ihydk0cfavXKWQb5z+ZHLpvRAqF9Efjg5xGMK5lz4KqKeQUrqgSfmXhHK6dP96JbCSo7
+         iz9zzFMLvs8vjcDOX13iWEzVeXXfIRxXSEZhC7nvKzHph/6Y65gOj2AXln0zH8+ifn/b
+         /DjA==
+X-Gm-Message-State: AOAM533mAYXmsDsFxAfZUJMO02ezECbQtkkui26tzoFpXg562vHlffTv
+        C3h6ohnyyPMkuTDBI1sZynsByQ==
+X-Google-Smtp-Source: ABdhPJz+tcQG7FGy3FlEBQPrN+mpMikLwlc4Lo7J+ey+pIvMNuRrMxCLd7yfmXFIncsb4Qxt6AJb6g==
+X-Received: by 2002:a2e:804c:: with SMTP id p12mr10420673ljg.344.1632476490492;
+        Fri, 24 Sep 2021 02:41:30 -0700 (PDT)
+Received: from box.localdomain ([86.57.175.117])
+        by smtp.gmail.com with ESMTPSA id k21sm952544lji.81.2021.09.24.02.41.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 24 Sep 2021 02:41:29 -0700 (PDT)
+Received: by box.localdomain (Postfix, from userid 1000)
+        id 84289103068; Fri, 24 Sep 2021 12:41:32 +0300 (+03)
+Date:   Fri, 24 Sep 2021 12:41:32 +0300
+From:   "Kirill A. Shutemov" <kirill@shutemov.name>
+To:     Borislav Petkov <bp@alien8.de>
+Cc:     Tom Lendacky <thomas.lendacky@amd.com>,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-kernel@vger.kernel.org, x86@kernel.org,
+        iommu@lists.linux-foundation.org, kvm@vger.kernel.org,
+        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        linux-graphics-maintainer@vmware.com,
+        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+        kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org,
+        Brijesh Singh <brijesh.singh@amd.com>,
+        Joerg Roedel <joro@8bytes.org>,
+        Andi Kleen <ak@linux.intel.com>,
+        Sathyanarayanan Kuppuswamy 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        Tianyu Lan <Tianyu.Lan@microsoft.com>,
+        Christoph Hellwig <hch@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Will Deacon <will@kernel.org>
+Subject: Re: [PATCH v3 5/8] x86/sme: Replace occurrences of sme_active() with
+ cc_platform_has()
+Message-ID: <20210924094132.gxyqp4z3qdk5w4j6@box.shutemov.name>
+References: <20210921212059.wwlytlmxoft4cdth@box.shutemov.name>
+ <YUpONYwM4dQXAOJr@zn.tnic>
+ <20210921213401.i2pzaotgjvn4efgg@box.shutemov.name>
+ <00f52bf8-cbc6-3721-f40e-2f51744751b0@amd.com>
+ <20210921215830.vqxd75r4eyau6cxy@box.shutemov.name>
+ <01891f59-7ec3-cf62-a8fc-79f79ca76587@amd.com>
+ <20210922143015.vvxvh6ec73lffvkf@box.shutemov.name>
+ <YUuJZ2qOgbdpfk6N@zn.tnic>
+ <20210922210558.itofvu3725dap5xx@box.shutemov.name>
+ <YUzFj+yH79XRc3F3@zn.tnic>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.391,FMLib:17.0.607.475
- definitions=2021-09-24_01,2021-09-23_01,2020-04-07_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
- impostorscore=0 mlxscore=0 lowpriorityscore=0 bulkscore=0 spamscore=0
- clxscore=1015 mlxlogscore=856 adultscore=0 phishscore=0 suspectscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2109230001 definitions=main-2109240031
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YUzFj+yH79XRc3F3@zn.tnic>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, Sep 23, 2021 at 03:54:46PM +0200, Christophe Leroy wrote:
+On Thu, Sep 23, 2021 at 08:21:03PM +0200, Borislav Petkov wrote:
+> On Thu, Sep 23, 2021 at 12:05:58AM +0300, Kirill A. Shutemov wrote:
+> > Unless we find other way to guarantee RIP-relative access, we must use
+> > fixup_pointer() to access any global variables.
 > 
-> Le 23/09/2021 à 14:01, Mike Rapoport a écrit :
-> > On Thu, Sep 23, 2021 at 11:47:48AM +0200, Christophe Leroy wrote:
-> > > 
-> > > 
-> > > Le 23/09/2021 à 09:43, Mike Rapoport a écrit :
-> > > > From: Mike Rapoport <rppt@linux.ibm.com>
-> > > > 
-> > > > For ages memblock_free() interface dealt with physical addresses even
-> > > > despite the existence of memblock_alloc_xx() functions that return a
-> > > > virtual pointer.
-> > > > 
-> > > > Introduce memblock_phys_free() for freeing physical ranges and repurpose
-> > > > memblock_free() to free virtual pointers to make the following pairing
-> > > > abundantly clear:
-> > > > 
-> > > > 	int memblock_phys_free(phys_addr_t base, phys_addr_t size);
-> > > > 	phys_addr_t memblock_phys_alloc(phys_addr_t base, phys_addr_t size);
-> > > > 
-> > > > 	void *memblock_alloc(phys_addr_t size, phys_addr_t align);
-> > > > 	void memblock_free(void *ptr, size_t size);
-> > > > 
-> > > > Replace intermediate memblock_free_ptr() with memblock_free() and drop
-> > > > unnecessary aliases memblock_free_early() and memblock_free_early_nid().
-> > > > 
-> > > > Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
-> > > > Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
-> > > > ---
-> > > 
-> > > > diff --git a/arch/s390/kernel/smp.c b/arch/s390/kernel/smp.c
-> > > > index 1a04e5bdf655..37826d8c4f74 100644
-> > > > --- a/arch/s390/kernel/smp.c
-> > > > +++ b/arch/s390/kernel/smp.c
-> > > > @@ -723,7 +723,7 @@ void __init smp_save_dump_cpus(void)
-> > > >    			/* Get the CPU registers */
-> > > >    			smp_save_cpu_regs(sa, addr, is_boot_cpu, page);
-> > > >    	}
-> > > > -	memblock_free(page, PAGE_SIZE);
-> > > > +	memblock_phys_free(page, PAGE_SIZE);
-> > > >    	diag_amode31_ops.diag308_reset();
-> > > >    	pcpu_set_smt(0);
-> > > >    }
-> > > > @@ -880,7 +880,7 @@ void __init smp_detect_cpus(void)
-> > > >    	/* Add CPUs present at boot */
-> > > >    	__smp_rescan_cpus(info, true);
-> > > > -	memblock_free_early((unsigned long)info, sizeof(*info));
-> > > > +	memblock_free(info, sizeof(*info));
-> > > >    }
-> > > >    /*
-> > > 
-> > > I'm a bit lost. IIUC memblock_free_early() and memblock_free() where
-> > > identical.
-> > 
-> > Yes, they were, but all calls to memblock_free_early() were using
-> > __pa(vaddr) because they had a virtual address at hand.
+> Yah, I've asked compiler folks about any guarantees we have wrt
+> rip-relative addresses but it doesn't look good. Worst case, we'd have
+> to do the fixup_pointer() thing.
 > 
-> I'm still not following. In the above memblock_free_early() was taking
-> (unsigned long)info . Was it a bug ? 
+> In the meantime, Tom and I did some more poking at this and here's a
+> diff ontop.
+> 
+> The direction being that we'll stick both the AMD and Intel
+> *cc_platform_has() call into cc_platform.c for which instrumentation
+> will be disabled so no issues with that.
+> 
+> And that will keep all that querying all together in a single file.
 
-Not really because s390 has pa == va:
+And still do cc_platform_has() calls in __startup_64() codepath?
 
-https://elixir.bootlin.com/linux/latest/source/arch/s390/include/asm/page.h#L169
+It's broken.
 
+Intel detection in cc_platform_has() relies on boot_cpu_data.x86_vendor
+which is not initialized until early_cpu_init() in setup_arch(). Given
+that X86_VENDOR_INTEL is 0 it leads to false-positive.
+
+I think opencode these two calls is the way forward. Maybe also move the
+check from sme_encrypt_kernel() to __startup_64().
 
 -- 
-Sincerely yours,
-Mike.
+ Kirill A. Shutemov
