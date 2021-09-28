@@ -2,27 +2,36 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4336741B8A1
-	for <lists+linux-efi@lfdr.de>; Tue, 28 Sep 2021 22:49:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A52141B8CA
+	for <lists+linux-efi@lfdr.de>; Tue, 28 Sep 2021 22:58:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242784AbhI1Uur (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 28 Sep 2021 16:50:47 -0400
-Received: from mga05.intel.com ([192.55.52.43]:10739 "EHLO mga05.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S242572AbhI1Uug (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Tue, 28 Sep 2021 16:50:36 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10121"; a="310352163"
-X-IronPort-AV: E=Sophos;i="5.85,330,1624345200"; 
-   d="scan'208";a="310352163"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2021 13:48:51 -0700
-X-IronPort-AV: E=Sophos;i="5.85,330,1624345200"; 
-   d="scan'208";a="554299062"
-Received: from oogunmoy-mobl1.amr.corp.intel.com (HELO skuppusw-mobl5.amr.corp.intel.com) ([10.212.221.219])
-  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2021 13:48:48 -0700
-Subject: Re: [PATCH v4 0/8] Implement generic cc_platform_has() helper
- function
-To:     Borislav Petkov <bp@alien8.de>
+        id S242755AbhI1U7z (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 28 Sep 2021 16:59:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58410 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235775AbhI1U7y (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 28 Sep 2021 16:59:54 -0400
+Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6AE3C06161C;
+        Tue, 28 Sep 2021 13:58:14 -0700 (PDT)
+Received: from zn.tnic (p200300ec2f13b200371079131a9f19c8.dip0.t-ipconnect.de [IPv6:2003:ec:2f13:b200:3710:7913:1a9f:19c8])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 4A4B41EC0529;
+        Tue, 28 Sep 2021 22:58:13 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1632862693;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=M/Cii95WfOPrNG19OOrHcFSw1uCJM/Fe6XaBsvPv/q0=;
+        b=X+KsAAbMs1uanqVNfGCkoJXUvknzrq5pvak0sOS+MjmfXY2qB4lzrw64Bimu4Cq8+89XgB
+        yHHrp11ozTm+i5EAg49QGg6AkWNd//wfu8OHOvqtXvmcPpQrh6xA2Ffl2p9ynOstXNSjk0
+        6cfYOGShP/slK+ZySkt9MjU5vG5BW4M=
+Date:   Tue, 28 Sep 2021 22:58:06 +0200
+From:   Borislav Petkov <bp@alien8.de>
+To:     "Kuppuswamy, Sathyanarayanan" 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>
 Cc:     LKML <linux-kernel@vger.kernel.org>,
         Andi Kleen <ak@linux.intel.com>,
         Andy Lutomirski <luto@kernel.org>,
@@ -50,43 +59,41 @@ Cc:     LKML <linux-kernel@vger.kernel.org>,
         linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
         amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
         kexec@lists.infradead.org
+Subject: Re: [PATCH v4 0/8] Implement generic cc_platform_has() helper
+ function
+Message-ID: <YVOB3mFV1Kj3MXAs@zn.tnic>
 References: <20210928191009.32551-1-bp@alien8.de>
  <80593893-c63b-d481-45f1-42a3a6fd762a@linux.intel.com>
  <YVN7vPE/7jecXcJ/@zn.tnic>
-From:   "Kuppuswamy, Sathyanarayanan" 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>
-Message-ID: <7319b756-55dc-c4d1-baf6-4686f0156ac4@linux.intel.com>
-Date:   Tue, 28 Sep 2021 13:48:46 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Firefox/78.0 Thunderbird/78.13.0
+ <7319b756-55dc-c4d1-baf6-4686f0156ac4@linux.intel.com>
 MIME-Version: 1.0
-In-Reply-To: <YVN7vPE/7jecXcJ/@zn.tnic>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <7319b756-55dc-c4d1-baf6-4686f0156ac4@linux.intel.com>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
+On Tue, Sep 28, 2021 at 01:48:46PM -0700, Kuppuswamy, Sathyanarayanan wrote:
+> Just read it. If you want to use cpuid_has_tdx_guest() directly in
+> cc_platform_has(), then you want to rename intel_cc_platform_has() to
+> tdx_cc_platform_has()?
 
+Why?
 
-On 9/28/21 1:31 PM, Borislav Petkov wrote:
-> On Tue, Sep 28, 2021 at 12:19:49PM -0700, Kuppuswamy, Sathyanarayanan wrote:
->> Intel CC support patch is not included in this series. You want me
->> to address the issue raised by Joerg before merging it?
-> 
-> Did you not see my email to you today:
-> 
-> https://lkml.kernel.org/r/YVL4ZUGhfsh1QfRX@zn.tnic
+You simply do:
 
-Just read it. If you want to use cpuid_has_tdx_guest() directly in
-cc_platform_has(), then you want to rename intel_cc_platform_has() to
-tdx_cc_platform_has()?
+	if (cpuid_has_tdx_guest())
+		intel_cc_platform_has(...);
 
-> 
-> ?
-> 
+and lemme paste from that mail: " ...you should use
+cpuid_has_tdx_guest() instead but cache its result so that you don't
+call CPUID each time the kernel executes cc_platform_has()."
+
+Makes sense?
 
 -- 
-Sathyanarayanan Kuppuswamy
-Linux Kernel Developer
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
