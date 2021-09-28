@@ -2,113 +2,138 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4739241B50C
-	for <lists+linux-efi@lfdr.de>; Tue, 28 Sep 2021 19:22:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D7D3E41B6F9
+	for <lists+linux-efi@lfdr.de>; Tue, 28 Sep 2021 21:10:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229778AbhI1RYG (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 28 Sep 2021 13:24:06 -0400
-Received: from mail.kernel.org ([198.145.29.99]:56118 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S241995AbhI1RYF (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Tue, 28 Sep 2021 13:24:05 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id A36BD610E6;
-        Tue, 28 Sep 2021 17:22:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1632849744;
-        bh=p1omdo8J0LTck4weGVlceL1bR9p0Zh2+XitDJiT9QIA=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=W7e95aYScYjgBzh8nhBa4jglUt8uT5Zyk76gaF3/yQ2D7s4KfcgYaBrWJ08Di0zNM
-         xIPk5nMpNO+l1I1rJqvfXavCgeKI7pZrYDKcn+K0Ow7yydL6PVo1D8LU08ZUUPbyxT
-         z7LNpN16o03DwF5wNkf3JK4/9fSa7zr+c3P6s0CDlnAQC5qjSgztQiGpOCd+WCvH21
-         VF4/BDYQyzA47h0+zDtfcSpIY+jqbzTXXk0BQxdX0asWQs52o6ouIMuci+2HyvAhz3
-         RIcZz/mcKPFNrolrlRy4bkjyW/8JltpIC8U9AFRaxCfWhP+KMJYgTin09XgLGOhJ22
-         rc0zGUJIMW/4w==
-Received: by mail-ed1-f43.google.com with SMTP id bd28so24496787edb.9;
-        Tue, 28 Sep 2021 10:22:24 -0700 (PDT)
-X-Gm-Message-State: AOAM531lVz1zLn3+S1vuaykDvjFw5yfS3el2+sSdxGlaGyD9f4bkZrby
-        Ww2GJcmbDnLZITTyI4tq8eDPDWXixwAZ3h1Sdw==
-X-Google-Smtp-Source: ABdhPJyYj6eZo+4rVJU4CYW255+Mc68GtlF90gxDfm5SHY/AXdUWRENNY4sqvr/w1Y6jnQWE59TZVZjjORVMXH70how=
-X-Received: by 2002:a17:906:a294:: with SMTP id i20mr8026916ejz.128.1632849740003;
- Tue, 28 Sep 2021 10:22:20 -0700 (PDT)
+        id S242391AbhI1TMD (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 28 Sep 2021 15:12:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33306 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S242325AbhI1TMB (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 28 Sep 2021 15:12:01 -0400
+Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BB8EC06161C;
+        Tue, 28 Sep 2021 12:10:20 -0700 (PDT)
+Received: from zn.tnic (p200300ec2f13b20078349fd04295260b.dip0.t-ipconnect.de [IPv6:2003:ec:2f13:b200:7834:9fd0:4295:260b])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 394BC1EC067E;
+        Tue, 28 Sep 2021 21:10:18 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1632856218;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:
+         content-transfer-encoding:content-transfer-encoding:in-reply-to:
+         references; bh=GCnPTyFFnPSLiurFbR8iLYuDvIM/ZylVNPX31loBg1U=;
+        b=PgysYne7oRqig38Wg3EljqkqTDirqwkPAzRh5HiMtoiV+jJbJHTdrk3tVWUMlO9AliXjoI
+        QYxOn8YzMjaQP86uf/uYhrT2bAzVSbUmsndVFpCY5/rue9vmSI/Ae0ek/NbRQmmnCheeB1
+        XkhBbUOn81FbH/ZWzpMG01inkCayyvg=
+From:   Borislav Petkov <bp@alien8.de>
+To:     LKML <linux-kernel@vger.kernel.org>
+Cc:     Andi Kleen <ak@linux.intel.com>, Andy Lutomirski <luto@kernel.org>,
+        Ard Biesheuvel <ardb@kernel.org>, Baoquan He <bhe@redhat.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Dave Young <dyoung@redhat.com>,
+        David Airlie <airlied@linux.ie>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Joerg Roedel <joro@8bytes.org>,
+        "Kirill A. Shutemov" <kirill@shutemov.name>,
+        "Kuppuswamy, Sathyanarayanan" 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <mripard@kernel.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Paul Mackerras <paulus@samba.org>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        VMware Graphics <linux-graphics-maintainer@vmware.com>,
+        Will Deacon <will@kernel.org>,
+        Christoph Hellwig <hch@infradead.org>, x86@kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        iommu@lists.linux-foundation.org, kvm@vger.kernel.org,
+        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+        kexec@lists.infradead.org
+Subject: [PATCH v4 0/8] Implement generic cc_platform_has() helper function
+Date:   Tue, 28 Sep 2021 21:10:01 +0200
+Message-Id: <20210928191009.32551-1-bp@alien8.de>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-References: <20210927064119.127285-1-gshan@redhat.com> <20210927064119.127285-3-gshan@redhat.com>
- <CAL_JsqL8+_Q690-c3J4TS6LBF-mCUBxbhTfr994=Fwffqab0_w@mail.gmail.com> <c101363f-1de7-1d56-a8d9-243f003b48c1@redhat.com>
-In-Reply-To: <c101363f-1de7-1d56-a8d9-243f003b48c1@redhat.com>
-From:   Rob Herring <robh@kernel.org>
-Date:   Tue, 28 Sep 2021 12:22:08 -0500
-X-Gmail-Original-Message-ID: <CAL_JsqJtckde=Ngfhr7u3f_xsccavo+4Pt-v9o_nGHTX+wD91w@mail.gmail.com>
-Message-ID: <CAL_JsqJtckde=Ngfhr7u3f_xsccavo+4Pt-v9o_nGHTX+wD91w@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] of, numa: Fetch empty NUMA node ID from distance map
-To:     Gavin Shan <gshan@redhat.com>
-Cc:     devicetree@vger.kernel.org,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        "open list:KERNEL VIRTUAL MACHINE FOR ARM64 (KVM/arm64)" 
-        <kvmarm@lists.cs.columbia.edu>, Marc Zyngier <maz@kernel.org>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, shan.gavin@gmail.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Mon, Sep 27, 2021 at 6:59 PM Gavin Shan <gshan@redhat.com> wrote:
->
-> Hi Rob,
->
-> On 9/28/21 12:49 AM, Rob Herring wrote:
-> > On Mon, Sep 27, 2021 at 1:42 AM Gavin Shan <gshan@redhat.com> wrote:
-> >>
-> >> There is no device node for the empty NUMA node. However, the
-> >> corresponding NUMA node ID and distance map is still valid in
-> >> "numa-distance-map-v1" compatible device node.
-> >>
-> >> This fetches the NUMA node ID and distance map for these empty
-> >> NUMA node from "numa-distance-map-v1" compatible device node.
-> >
-> > This is much nicer.
-> >
->
-> Indeed, thanks for your suggestions :)
->
-> >> Signed-off-by: Gavin Shan <gshan@redhat.com>
-> >> ---
-> >>   drivers/of/of_numa.c | 2 ++
-> >>   1 file changed, 2 insertions(+)
-> >>
-> >> diff --git a/drivers/of/of_numa.c b/drivers/of/of_numa.c
-> >> index fe6b13608e51..5949829a1b00 100644
-> >> --- a/drivers/of/of_numa.c
-> >> +++ b/drivers/of/of_numa.c
-> >> @@ -111,6 +111,8 @@ static int __init of_numa_parse_distance_map_v1(struct device_node *map)
-> >>                          return -EINVAL;
-> >>                  }
-> >>
-> >> +               node_set(nodea, numa_nodes_parsed);
-> >> +
-> >
-> > With this, couldn't we remove of_numa_parse_cpu_nodes() as the only
-> > thing it does is node_set()?
-> >
->
-> I don't think so for couple of reasons:
->
-> (1) With problematic device-tree, the distance map node might be missed
->      or incomplete. In this case, of_numa_parse_cpu_nodes() still helps.
+From: Borislav Petkov <bp@suse.de>
 
-It's not the kernel's job to validate the DT (if it was, it is doing a
-terrible job). I would suggest writing some checks for dtc if we're
-worried about correctness. (The schemas don't work too well for cross
-node checks.)
+Hi all,
 
-> (2) @numa_nodes_parsed is also updated when the memory nodes are iterated
->      in of_numa_parse_memory_nodes() and numa_add_memblk().
->
-> So @numa_nodes_parsed, which is synchronized to @node_possible_map afterwards,
-> is the gathering output of CPU nodes, memory nodes and distance map node.
+here's v4 of the cc_platform_has() patchset with feedback incorporated.
 
-Is it valid to have node id's that are not in the distance map?
+I'm going to route this through tip if there are no objections.
 
-Rob
+Thx.
+
+Tom Lendacky (8):
+  x86/ioremap: Selectively build arch override encryption functions
+  arch/cc: Introduce a function to check for confidential computing
+    features
+  x86/sev: Add an x86 version of cc_platform_has()
+  powerpc/pseries/svm: Add a powerpc version of cc_platform_has()
+  x86/sme: Replace occurrences of sme_active() with cc_platform_has()
+  x86/sev: Replace occurrences of sev_active() with cc_platform_has()
+  x86/sev: Replace occurrences of sev_es_active() with cc_platform_has()
+  treewide: Replace the use of mem_encrypt_active() with
+    cc_platform_has()
+
+ arch/Kconfig                                 |  3 +
+ arch/powerpc/include/asm/mem_encrypt.h       |  5 --
+ arch/powerpc/platforms/pseries/Kconfig       |  1 +
+ arch/powerpc/platforms/pseries/Makefile      |  2 +
+ arch/powerpc/platforms/pseries/cc_platform.c | 26 ++++++
+ arch/powerpc/platforms/pseries/svm.c         |  5 +-
+ arch/s390/include/asm/mem_encrypt.h          |  2 -
+ arch/x86/Kconfig                             |  1 +
+ arch/x86/include/asm/io.h                    |  8 ++
+ arch/x86/include/asm/kexec.h                 |  2 +-
+ arch/x86/include/asm/mem_encrypt.h           | 12 +--
+ arch/x86/kernel/Makefile                     |  6 ++
+ arch/x86/kernel/cc_platform.c                | 69 +++++++++++++++
+ arch/x86/kernel/crash_dump_64.c              |  4 +-
+ arch/x86/kernel/head64.c                     |  9 +-
+ arch/x86/kernel/kvm.c                        |  3 +-
+ arch/x86/kernel/kvmclock.c                   |  4 +-
+ arch/x86/kernel/machine_kexec_64.c           | 19 +++--
+ arch/x86/kernel/pci-swiotlb.c                |  9 +-
+ arch/x86/kernel/relocate_kernel_64.S         |  2 +-
+ arch/x86/kernel/sev.c                        |  6 +-
+ arch/x86/kvm/svm/svm.c                       |  3 +-
+ arch/x86/mm/ioremap.c                        | 18 ++--
+ arch/x86/mm/mem_encrypt.c                    | 55 ++++--------
+ arch/x86/mm/mem_encrypt_identity.c           |  9 +-
+ arch/x86/mm/pat/set_memory.c                 |  3 +-
+ arch/x86/platform/efi/efi_64.c               |  9 +-
+ arch/x86/realmode/init.c                     |  8 +-
+ drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c      |  4 +-
+ drivers/gpu/drm/drm_cache.c                  |  4 +-
+ drivers/gpu/drm/vmwgfx/vmwgfx_drv.c          |  4 +-
+ drivers/gpu/drm/vmwgfx/vmwgfx_msg.c          |  6 +-
+ drivers/iommu/amd/init.c                     |  7 +-
+ drivers/iommu/amd/iommu.c                    |  3 +-
+ drivers/iommu/amd/iommu_v2.c                 |  3 +-
+ drivers/iommu/iommu.c                        |  3 +-
+ fs/proc/vmcore.c                             |  6 +-
+ include/linux/cc_platform.h                  | 88 ++++++++++++++++++++
+ include/linux/mem_encrypt.h                  |  4 -
+ kernel/dma/swiotlb.c                         |  4 +-
+ 40 files changed, 310 insertions(+), 129 deletions(-)
+ create mode 100644 arch/powerpc/platforms/pseries/cc_platform.c
+ create mode 100644 arch/x86/kernel/cc_platform.c
+ create mode 100644 include/linux/cc_platform.h
+
+-- 
+2.29.2
+
