@@ -2,104 +2,83 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C26E41B843
-	for <lists+linux-efi@lfdr.de>; Tue, 28 Sep 2021 22:21:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA54641B84D
+	for <lists+linux-efi@lfdr.de>; Tue, 28 Sep 2021 22:28:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242668AbhI1UW4 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 28 Sep 2021 16:22:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49996 "EHLO
+        id S242724AbhI1UaJ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 28 Sep 2021 16:30:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51604 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233437AbhI1UW4 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 28 Sep 2021 16:22:56 -0400
-Received: from mail-yb1-xb2b.google.com (mail-yb1-xb2b.google.com [IPv6:2607:f8b0:4864:20::b2b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E4ECC06161C
-        for <linux-efi@vger.kernel.org>; Tue, 28 Sep 2021 13:21:16 -0700 (PDT)
-Received: by mail-yb1-xb2b.google.com with SMTP id r1so288573ybo.10
-        for <linux-efi@vger.kernel.org>; Tue, 28 Sep 2021 13:21:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=eclypsium.com; s=google;
-        h=mime-version:from:date:message-id:subject:to:cc;
-        bh=sLVCD0rExduyTXmZdt0ez2+ozlFNyBz7kwhtChEvjZU=;
-        b=INrkyL/3icrs5muSdyE3VDftT6APzNLOiyxbywrdyrboRfo8i/NHOnG8ZNSvzHTDaS
-         0BeL+3w9HwAKpPZFCjw7z4Og0djOL2RnDJQYnjwVRSUB4nioLlccMgNKWKdqwnz3Tj4F
-         bZuxobXhj4LXK3iKzkSe5HbuuZCZm0m3UHL5P4Q3KQuW+O3eADa8iKDAf7S0R7WNUPsg
-         uPBtc32HVVBhQ9tZsbfjhmrF9elPMvxMxGHifMDAQbnn7kIRE0/Ca5EXpRQflzQmd0g9
-         0iuDRGH6t7mNElbSaw8jKPlU5tyA7Z4uXXXjRIdQijMoZxvdy73QrxWdogjgrazjQNFH
-         /g/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
-        bh=sLVCD0rExduyTXmZdt0ez2+ozlFNyBz7kwhtChEvjZU=;
-        b=tfx2SgUG4ctyEuDWW6RXrTHMHUG/l+sC0SAPlqzccRi3EZ2ER0zPm6DrxxyZq2MCJ+
-         YgkUhlO/ZtVkNurOY05s6pZb2QGLBeCbRDsNs7/e12aoXkMS7K3r7FDR7D/mXp6SZy2A
-         w4CLECUJ1Jz1QLVtjxqNK7UOts36a8k0zbWl6l6SkhpwWeNZv/mGaAM+tv5x8xTCUjaE
-         LtAdAxh+MdMzWHKviYiCnnMzS1FgXV8Af7bd1tM9FhnCfp5INuadj1MZg1rHWV06jb6d
-         nlu3HlJ8UKMM+bh/O9vHXYKQBfBLr1Xm3jXMG99qE1j7wBF1AFiffrAutdFhWnfSfHKG
-         oqJA==
-X-Gm-Message-State: AOAM532BGYUdVnzMnwKAT4vg4Xa8ll/lsiwDW8pyCo0WWUN5P+PwiVob
-        s9pOpm0Dj25HHN3RMrhnkKz58Z17NOgNonK9ZeN3zcfD5NTyBEdx
-X-Google-Smtp-Source: ABdhPJyye4vX+N0TjVGhwGJMuu+Mt07kRf5Q/1NVJ1iYUP3ibuGV2MlIF60umrVDJW1sZM5CorBMaXKaFY4xp1W3oN0=
-X-Received: by 2002:a25:b3c9:: with SMTP id x9mr10207681ybf.514.1632860474799;
- Tue, 28 Sep 2021 13:21:14 -0700 (PDT)
+        with ESMTP id S242386AbhI1UaI (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 28 Sep 2021 16:30:08 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21B7DC06161C
+        for <linux-efi@vger.kernel.org>; Tue, 28 Sep 2021 13:28:29 -0700 (PDT)
+From:   Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1632860907;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=QJqu5/StzOaQ0WVlLeYP47uh7BKNBhkFRr164Dujha0=;
+        b=OzOAveG6MstssmvS0XD9onvjnDouAwYYw8Ybp+LcsbQLQ/J/iwhG+XZfQxtX/D58XzsTKo
+        qpkVSQK4QSW/r10DxQNj814vnbhY7azIMgsgnUNldyqZU706HI/TXRe6PZbBqUcUM/hMFr
+        xtA4mZ/f8b9F1UWi9qNGcJbr4kqJKnQPOE5HAy47xiiwwKjBuI4wV36P5kZfMDH3iZsDO/
+        bH21HxQzeJkry+iUOy64SBbxToC9jVtOiq1Qh1v57pFgQ95Dq5MLlmz9TsD6lN0SBY0P39
+        ajqZ+MPP+4sJxDPP/g0Rm7hLhAlA8KAZ5C1Jfa/ZHBKD8XJW9sMHnlsn4CDzNQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1632860907;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=QJqu5/StzOaQ0WVlLeYP47uh7BKNBhkFRr164Dujha0=;
+        b=1PzJ2uLe323HTiwwXDAeshvrfL0O3z/9y4xRmjtA5kpxkMDDUAyiZJvSon4ANMduQ/k22Q
+        Vl/3cB2+7ToEZIDw==
+To:     Ard Biesheuvel <ardb@kernel.org>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc:     linux-efi <linux-efi@vger.kernel.org>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Subject: Re: [PATCH 1/2] efi: Disable runtime services on RT
+In-Reply-To: <CAMj1kXG5-i5LqnQrjK79KWZYTPO4C4fF32KhQexj8WsHLQM_Lg@mail.gmail.com>
+References: <20210924134919.1913476-1-bigeasy@linutronix.de>
+ <20210924134919.1913476-2-bigeasy@linutronix.de>
+ <CAMj1kXFJm-su9tc20n+DyJjMwrhK6R4BR0Kd_ov62NqXd-jwUw@mail.gmail.com>
+ <20210928133340.tmpjzdj367h54ddt@linutronix.de>
+ <CAMj1kXG5-i5LqnQrjK79KWZYTPO4C4fF32KhQexj8WsHLQM_Lg@mail.gmail.com>
+Date:   Tue, 28 Sep 2021 22:28:27 +0200
+Message-ID: <87k0j0a1hw.ffs@tglx>
 MIME-Version: 1.0
-From:   Martin Fernandez <martin.fernandez@eclypsium.com>
-Date:   Tue, 28 Sep 2021 17:21:03 -0300
-Message-ID: <CAKgze5aPLn-2ZOJsmWMnsSsYoAsxuJRq7rE4X1f0JMKjQeupPA@mail.gmail.com>
-Subject: Can EFI memory descriptors overlap?
-To:     linux-efi@vger.kernel.org
-Cc:     Daniel Gutson <daniel.gutson@eclypsium.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hi, I'm working on the rework of
-https://lore.kernel.org/linux-efi/CAMj1kXEqjHVRNV131=o_aO3TX+58xhYzgfaVDrd0RngAqqtrVg@mail.gmail.com/T/
-and I wanted to know if the memory map given by EFI have any guarantee
-that the regions don't overlap.
+Ard,
 
-I couldn't find anything in the UEFI spec, but there is a piece of
-code in the kernel that seems to "doesn't care" and assumes that the
-regions given by EFI are sorted and don't overlap.
+On Tue, Sep 28 2021 at 15:34, Ard Biesheuvel wrote:
+> On Tue, 28 Sept 2021 at 15:33, Sebastian Andrzej Siewior
+> <bigeasy@linutronix.de> wrote:
+>>
+>> On 2021-09-28 15:30:32 [+0200], Ard Biesheuvel wrote:
+>> > This is generic code and the commit log only talks about arm64. How
+>> > about other architectures?
+>>
+>> They also invoke the EFI services with disables interrupts. If they
+>> provide a RTC behind spi/i2c then we end up in the same situation right?
+>> Or did I misunderstand your point?
+>>
+> Are you sure you want to disable EFI runtime services on all x86
+> systems with PREEMPT_RT as well?
 
-https://elixir.bootlin.com/linux/latest/source/arch/x86/platform/efi/efi.c#L502
+I'm pretty sure because we've ran into inacceptable latencies with EFI
+runtime services often enough.
 
-static void __init efi_merge_regions(void)
-{
-    efi_memory_desc_t *md, *prev_md = NULL;
+Since we disabled them these complaints have gone down to 0 and nobody
+so far complained about their non-availability.
 
-    for_each_efi_memory_desc(md) {
-        u64 prev_size;
+We might revisit that and make them default disabled on RT and offer a
+command line option to enable them for those who really want them.
 
-        if (!prev_md) {
-            prev_md = md;
-            continue;
-        }
+Thanks,
 
-        if (prev_md->type != md->type ||
-            prev_md->attribute != md->attribute) {
-            prev_md = md;
-            continue;
-        }
-
-        prev_size = prev_md->num_pages << EFI_PAGE_SHIFT;
-
-        if (md->phys_addr == (prev_md->phys_addr + prev_size)) {
-            prev_md->num_pages += md->num_pages;
-            md->type = EFI_RESERVED_TYPE;
-            md->attribute = 0;
-            continue;
-        }
-        prev_md = md;
-    }
-}
-
-Is this a bug or in practice EFI always gives a "nice" memory map? I
-think that if there is no overlap then the sorting (EFI doesn't give
-me a sorted memory map on my machine) is a kind of easy problem to
-solve, but if there is overlap involved then we need to decide for the
-type and the attributes of those overlaps, which can be tricky.
-
-I'm working on x86 and with the master branch of the kernel.
-
-Martin.
+        tglx
