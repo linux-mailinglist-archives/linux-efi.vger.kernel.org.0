@@ -2,63 +2,113 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3363541B20B
-	for <lists+linux-efi@lfdr.de>; Tue, 28 Sep 2021 16:24:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4739241B50C
+	for <lists+linux-efi@lfdr.de>; Tue, 28 Sep 2021 19:22:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241174AbhI1O0Q (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 28 Sep 2021 10:26:16 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:35984 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240960AbhI1O0Q (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 28 Sep 2021 10:26:16 -0400
-Date:   Tue, 28 Sep 2021 16:24:34 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1632839075;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=nWO/auxSHRfRWpNEL7Md5kMBOjo28ZBmKHwz1FV9Mjg=;
-        b=fyyN2RI1thGBQm4a8q9/sWzDNDSrkft2gIpINgYhBEwezUvAgxkmmZsdJNukhBV2Ud5KMB
-        dkonZ/iW0mwYeiicCqUpI2nG4rzHGzmBhXCGxZXxDYcfI2CzELr/y9bBxfHQ2+YJpG1XK2
-        QPTy6eueIwBbXeHqYy3FNoPW55Uag7q3o+Nc7Te+A5dX4ULBiC29mzz3syRGtPuqsMni5u
-        VTEsiwaBmjR+irkuWY51a5pIHg/jFX2aAuKew8E0GFAnL1SnHwcVQL0BLI7ey+JXkZtcIX
-        MEuDcBJpBEh6IZQpRZXpU2ZUC65AolGqy10ag6EHqyy3otjNJ0d6xPVrdWkZGQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1632839075;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=nWO/auxSHRfRWpNEL7Md5kMBOjo28ZBmKHwz1FV9Mjg=;
-        b=Iq2pEujzO/8eyAjouJlxXzLuXzmXA2/PjuIwRWmqkrjLTktksHeC6S6z6D8J1ZT9ivFJvT
-        t7igIM2wrRog00AQ==
-From:   Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     linux-efi <linux-efi@vger.kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>
-Subject: Re: [PATCH 1/2] efi: Disable runtime services on RT
-Message-ID: <20210928142434.uqhkd3ribja6j654@linutronix.de>
-References: <20210924134919.1913476-1-bigeasy@linutronix.de>
- <20210924134919.1913476-2-bigeasy@linutronix.de>
- <CAMj1kXFJm-su9tc20n+DyJjMwrhK6R4BR0Kd_ov62NqXd-jwUw@mail.gmail.com>
- <20210928133340.tmpjzdj367h54ddt@linutronix.de>
- <CAMj1kXG5-i5LqnQrjK79KWZYTPO4C4fF32KhQexj8WsHLQM_Lg@mail.gmail.com>
+        id S229778AbhI1RYG (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 28 Sep 2021 13:24:06 -0400
+Received: from mail.kernel.org ([198.145.29.99]:56118 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S241995AbhI1RYF (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Tue, 28 Sep 2021 13:24:05 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id A36BD610E6;
+        Tue, 28 Sep 2021 17:22:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1632849744;
+        bh=p1omdo8J0LTck4weGVlceL1bR9p0Zh2+XitDJiT9QIA=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=W7e95aYScYjgBzh8nhBa4jglUt8uT5Zyk76gaF3/yQ2D7s4KfcgYaBrWJ08Di0zNM
+         xIPk5nMpNO+l1I1rJqvfXavCgeKI7pZrYDKcn+K0Ow7yydL6PVo1D8LU08ZUUPbyxT
+         z7LNpN16o03DwF5wNkf3JK4/9fSa7zr+c3P6s0CDlnAQC5qjSgztQiGpOCd+WCvH21
+         VF4/BDYQyzA47h0+zDtfcSpIY+jqbzTXXk0BQxdX0asWQs52o6ouIMuci+2HyvAhz3
+         RIcZz/mcKPFNrolrlRy4bkjyW/8JltpIC8U9AFRaxCfWhP+KMJYgTin09XgLGOhJ22
+         rc0zGUJIMW/4w==
+Received: by mail-ed1-f43.google.com with SMTP id bd28so24496787edb.9;
+        Tue, 28 Sep 2021 10:22:24 -0700 (PDT)
+X-Gm-Message-State: AOAM531lVz1zLn3+S1vuaykDvjFw5yfS3el2+sSdxGlaGyD9f4bkZrby
+        Ww2GJcmbDnLZITTyI4tq8eDPDWXixwAZ3h1Sdw==
+X-Google-Smtp-Source: ABdhPJyYj6eZo+4rVJU4CYW255+Mc68GtlF90gxDfm5SHY/AXdUWRENNY4sqvr/w1Y6jnQWE59TZVZjjORVMXH70how=
+X-Received: by 2002:a17:906:a294:: with SMTP id i20mr8026916ejz.128.1632849740003;
+ Tue, 28 Sep 2021 10:22:20 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CAMj1kXG5-i5LqnQrjK79KWZYTPO4C4fF32KhQexj8WsHLQM_Lg@mail.gmail.com>
+References: <20210927064119.127285-1-gshan@redhat.com> <20210927064119.127285-3-gshan@redhat.com>
+ <CAL_JsqL8+_Q690-c3J4TS6LBF-mCUBxbhTfr994=Fwffqab0_w@mail.gmail.com> <c101363f-1de7-1d56-a8d9-243f003b48c1@redhat.com>
+In-Reply-To: <c101363f-1de7-1d56-a8d9-243f003b48c1@redhat.com>
+From:   Rob Herring <robh@kernel.org>
+Date:   Tue, 28 Sep 2021 12:22:08 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqJtckde=Ngfhr7u3f_xsccavo+4Pt-v9o_nGHTX+wD91w@mail.gmail.com>
+Message-ID: <CAL_JsqJtckde=Ngfhr7u3f_xsccavo+4Pt-v9o_nGHTX+wD91w@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] of, numa: Fetch empty NUMA node ID from distance map
+To:     Gavin Shan <gshan@redhat.com>
+Cc:     devicetree@vger.kernel.org,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        "open list:KERNEL VIRTUAL MACHINE FOR ARM64 (KVM/arm64)" 
+        <kvmarm@lists.cs.columbia.edu>, Marc Zyngier <maz@kernel.org>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, shan.gavin@gmail.com
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 2021-09-28 15:34:47 [+0200], Ard Biesheuvel wrote:
-> Are you sure you want to disable EFI runtime services on all x86
-> systems with PREEMPT_RT as well?
+On Mon, Sep 27, 2021 at 6:59 PM Gavin Shan <gshan@redhat.com> wrote:
+>
+> Hi Rob,
+>
+> On 9/28/21 12:49 AM, Rob Herring wrote:
+> > On Mon, Sep 27, 2021 at 1:42 AM Gavin Shan <gshan@redhat.com> wrote:
+> >>
+> >> There is no device node for the empty NUMA node. However, the
+> >> corresponding NUMA node ID and distance map is still valid in
+> >> "numa-distance-map-v1" compatible device node.
+> >>
+> >> This fetches the NUMA node ID and distance map for these empty
+> >> NUMA node from "numa-distance-map-v1" compatible device node.
+> >
+> > This is much nicer.
+> >
+>
+> Indeed, thanks for your suggestions :)
+>
+> >> Signed-off-by: Gavin Shan <gshan@redhat.com>
+> >> ---
+> >>   drivers/of/of_numa.c | 2 ++
+> >>   1 file changed, 2 insertions(+)
+> >>
+> >> diff --git a/drivers/of/of_numa.c b/drivers/of/of_numa.c
+> >> index fe6b13608e51..5949829a1b00 100644
+> >> --- a/drivers/of/of_numa.c
+> >> +++ b/drivers/of/of_numa.c
+> >> @@ -111,6 +111,8 @@ static int __init of_numa_parse_distance_map_v1(struct device_node *map)
+> >>                          return -EINVAL;
+> >>                  }
+> >>
+> >> +               node_set(nodea, numa_nodes_parsed);
+> >> +
+> >
+> > With this, couldn't we remove of_numa_parse_cpu_nodes() as the only
+> > thing it does is node_set()?
+> >
+>
+> I don't think so for couple of reasons:
+>
+> (1) With problematic device-tree, the distance map node might be missed
+>      or incomplete. In this case, of_numa_parse_cpu_nodes() still helps.
 
-The only problem that I am aware of is that you need to reboot with
-enabled runtime service (via bootargs, #2) in order to alter boot loader
-settings.
-I'm not aware of any other shortcomings. There are no guarantees how
-long an EFI service routine may take.
-That patch is in the RT queue since v4.18-rc8-rt1.
+It's not the kernel's job to validate the DT (if it was, it is doing a
+terrible job). I would suggest writing some checks for dtc if we're
+worried about correctness. (The schemas don't work too well for cross
+node checks.)
 
-Sebastian
+> (2) @numa_nodes_parsed is also updated when the memory nodes are iterated
+>      in of_numa_parse_memory_nodes() and numa_add_memblk().
+>
+> So @numa_nodes_parsed, which is synchronized to @node_possible_map afterwards,
+> is the gathering output of CPU nodes, memory nodes and distance map node.
+
+Is it valid to have node id's that are not in the distance map?
+
+Rob
