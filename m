@@ -2,93 +2,91 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C4D4D41B886
-	for <lists+linux-efi@lfdr.de>; Tue, 28 Sep 2021 22:41:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4336741B8A1
+	for <lists+linux-efi@lfdr.de>; Tue, 28 Sep 2021 22:49:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242757AbhI1Un2 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 28 Sep 2021 16:43:28 -0400
-Received: from mail.kernel.org ([198.145.29.99]:53878 "EHLO mail.kernel.org"
+        id S242784AbhI1Uur (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 28 Sep 2021 16:50:47 -0400
+Received: from mga05.intel.com ([192.55.52.43]:10739 "EHLO mga05.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S242734AbhI1Un2 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Tue, 28 Sep 2021 16:43:28 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 7887A61373
-        for <linux-efi@vger.kernel.org>; Tue, 28 Sep 2021 20:41:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1632861708;
-        bh=R6ico/w3xvjUwc0cpoYBrmW8uUbBJOufS34XYbcwsSg=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=tpNi45zs3RLsF5OUW7s1qcvIYxhsgtnJeMxEf/qOl1fOMfGLTsuQsURupwBk9UBx0
-         afqcOVwRV1T3OyRMYXYzUC8LaBlIGXfoKa7bsHp/EdKss73kGO1/7/9TqQOfm9h4yd
-         DhHU6h/7ZATNKVDtT50iFrp4artTAGU6ucRvlE5XYa/A5vecQ4jJxWWIyD952VvUkB
-         ccQHkUXHmoFrJYDk1EnZEeRv4Z1/r/TCEXpj5VYPZRJB9AF3vf09oKF1Pp5sD7gOGK
-         v9/jza8xhPIuDTtJ9tvf3qo8ugxe2Xvp77sqijpQNXyhpKl88eZo6AfNPcWDahorm6
-         K9K5WXReIDU/w==
-Received: by mail-ot1-f49.google.com with SMTP id j11-20020a9d190b000000b00546fac94456so85058ota.6
-        for <linux-efi@vger.kernel.org>; Tue, 28 Sep 2021 13:41:48 -0700 (PDT)
-X-Gm-Message-State: AOAM530DYyaOBqCAEZtF0jDOLmQMqhkUyivmNBdYAbJ34vVRgMmrxCms
-        IpzMgOoIkBR9AEBMrmZI5QzTcUTWppgDPnwZLac=
-X-Google-Smtp-Source: ABdhPJzSSPCUEW5QAIe49opqaZ+5yBgTb1A8ZDhjodRoMqcpulQrotvkXZt6CSxazmnS9/0S7YvqaPkdBtPxKt1pAdY=
-X-Received: by 2002:a9d:63c7:: with SMTP id e7mr2514381otl.30.1632861707874;
- Tue, 28 Sep 2021 13:41:47 -0700 (PDT)
+        id S242572AbhI1Uug (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Tue, 28 Sep 2021 16:50:36 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10121"; a="310352163"
+X-IronPort-AV: E=Sophos;i="5.85,330,1624345200"; 
+   d="scan'208";a="310352163"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2021 13:48:51 -0700
+X-IronPort-AV: E=Sophos;i="5.85,330,1624345200"; 
+   d="scan'208";a="554299062"
+Received: from oogunmoy-mobl1.amr.corp.intel.com (HELO skuppusw-mobl5.amr.corp.intel.com) ([10.212.221.219])
+  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2021 13:48:48 -0700
+Subject: Re: [PATCH v4 0/8] Implement generic cc_platform_has() helper
+ function
+To:     Borislav Petkov <bp@alien8.de>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        Andi Kleen <ak@linux.intel.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Ard Biesheuvel <ardb@kernel.org>, Baoquan He <bhe@redhat.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Dave Young <dyoung@redhat.com>,
+        David Airlie <airlied@linux.ie>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Joerg Roedel <joro@8bytes.org>,
+        "Kirill A. Shutemov" <kirill@shutemov.name>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <mripard@kernel.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Paul Mackerras <paulus@samba.org>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        VMware Graphics <linux-graphics-maintainer@vmware.com>,
+        Will Deacon <will@kernel.org>,
+        Christoph Hellwig <hch@infradead.org>, x86@kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        iommu@lists.linux-foundation.org, kvm@vger.kernel.org,
+        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+        kexec@lists.infradead.org
+References: <20210928191009.32551-1-bp@alien8.de>
+ <80593893-c63b-d481-45f1-42a3a6fd762a@linux.intel.com>
+ <YVN7vPE/7jecXcJ/@zn.tnic>
+From:   "Kuppuswamy, Sathyanarayanan" 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>
+Message-ID: <7319b756-55dc-c4d1-baf6-4686f0156ac4@linux.intel.com>
+Date:   Tue, 28 Sep 2021 13:48:46 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Firefox/78.0 Thunderbird/78.13.0
 MIME-Version: 1.0
-References: <20210924134919.1913476-1-bigeasy@linutronix.de>
- <20210924134919.1913476-2-bigeasy@linutronix.de> <CAMj1kXFJm-su9tc20n+DyJjMwrhK6R4BR0Kd_ov62NqXd-jwUw@mail.gmail.com>
- <20210928133340.tmpjzdj367h54ddt@linutronix.de> <CAMj1kXG5-i5LqnQrjK79KWZYTPO4C4fF32KhQexj8WsHLQM_Lg@mail.gmail.com>
- <87k0j0a1hw.ffs@tglx>
-In-Reply-To: <87k0j0a1hw.ffs@tglx>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Tue, 28 Sep 2021 22:41:36 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXHp7NzPfGjZg+199vR09PuQfb=da+iqhh-Ts5kf337UHQ@mail.gmail.com>
-Message-ID: <CAMj1kXHp7NzPfGjZg+199vR09PuQfb=da+iqhh-Ts5kf337UHQ@mail.gmail.com>
-Subject: Re: [PATCH 1/2] efi: Disable runtime services on RT
-To:     Thomas Gleixner <tglx@linutronix.de>
-Cc:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <YVN7vPE/7jecXcJ/@zn.tnic>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, 28 Sept 2021 at 22:28, Thomas Gleixner <tglx@linutronix.de> wrote:
->
-> Ard,
->
-> On Tue, Sep 28 2021 at 15:34, Ard Biesheuvel wrote:
-> > On Tue, 28 Sept 2021 at 15:33, Sebastian Andrzej Siewior
-> > <bigeasy@linutronix.de> wrote:
-> >>
-> >> On 2021-09-28 15:30:32 [+0200], Ard Biesheuvel wrote:
-> >> > This is generic code and the commit log only talks about arm64. How
-> >> > about other architectures?
-> >>
-> >> They also invoke the EFI services with disables interrupts. If they
-> >> provide a RTC behind spi/i2c then we end up in the same situation right?
-> >> Or did I misunderstand your point?
-> >>
-> > Are you sure you want to disable EFI runtime services on all x86
-> > systems with PREEMPT_RT as well?
->
-> I'm pretty sure because we've ran into inacceptable latencies with EFI
-> runtime services often enough.
->
-> Since we disabled them these complaints have gone down to 0 and nobody
-> so far complained about their non-availability.
->
 
-Excellent.
 
-> We might revisit that and make them default disabled on RT and offer a
-> command line option to enable them for those who really want them.
->
+On 9/28/21 1:31 PM, Borislav Petkov wrote:
+> On Tue, Sep 28, 2021 at 12:19:49PM -0700, Kuppuswamy, Sathyanarayanan wrote:
+>> Intel CC support patch is not included in this series. You want me
+>> to address the issue raised by Joerg before merging it?
+> 
+> Did you not see my email to you today:
+> 
+> https://lkml.kernel.org/r/YVL4ZUGhfsh1QfRX@zn.tnic
 
-Yes this is what Sebastian's second patch provides.
+Just read it. If you want to use cpuid_has_tdx_guest() directly in
+cc_platform_has(), then you want to rename intel_cc_platform_has() to
+tdx_cc_platform_has()?
 
-> Thanks,
->
->         tglx
+> 
+> ?
+> 
 
-I'll take this as an ack from you, Thomas, and queue these up for v5.16
-
-Thanks,
-Ard.
+-- 
+Sathyanarayanan Kuppuswamy
+Linux Kernel Developer
