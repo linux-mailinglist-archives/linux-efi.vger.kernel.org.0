@@ -2,83 +2,149 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C0F241FB78
-	for <lists+linux-efi@lfdr.de>; Sat,  2 Oct 2021 14:03:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E387141FF3D
+	for <lists+linux-efi@lfdr.de>; Sun,  3 Oct 2021 04:47:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232994AbhJBMFl (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sat, 2 Oct 2021 08:05:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60948 "EHLO
+        id S229567AbhJCCtH (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 2 Oct 2021 22:49:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56410 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232987AbhJBMFk (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sat, 2 Oct 2021 08:05:40 -0400
-Received: from mail-io1-xd2d.google.com (mail-io1-xd2d.google.com [IPv6:2607:f8b0:4864:20::d2d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D79A1C061570
-        for <linux-efi@vger.kernel.org>; Sat,  2 Oct 2021 05:03:54 -0700 (PDT)
-Received: by mail-io1-xd2d.google.com with SMTP id y197so14688514iof.11
-        for <linux-efi@vger.kernel.org>; Sat, 02 Oct 2021 05:03:54 -0700 (PDT)
+        with ESMTP id S229534AbhJCCtH (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sat, 2 Oct 2021 22:49:07 -0400
+Received: from mail-io1-xd43.google.com (mail-io1-xd43.google.com [IPv6:2607:f8b0:4864:20::d43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB005C061781
+        for <linux-efi@vger.kernel.org>; Sat,  2 Oct 2021 19:47:20 -0700 (PDT)
+Received: by mail-io1-xd43.google.com with SMTP id b78so16274013iof.2
+        for <linux-efi@vger.kernel.org>; Sat, 02 Oct 2021 19:47:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=nsZbpm1YBoHMpWTnzHLuE/zYZ0yg4jBiKD5Q7oCTPBE=;
-        b=idRfWwWRQcrPHyjwdf3kM/roBVLtNJzTTHvbOcy9uQHlJQ9zwcG3Fbykno0UxqDOln
-         OrKGgbsKZcVclL5reOWz/9XC9sFjfKNSuRmYDnIUv7HtuEBB7B58+UyxhFA1Q7a/w47L
-         DtZVpozM2Yq5l5YTGkpLRrL7yjqUJfJPuKvg73OqoK0VyjcjX58Pp6ygc3z5YaVA3ePN
-         S56JNN+ab72eDveTTtKj0V/g8gN8h69sise9pk8wqpd6ktdWmmChcbmN7/0GT46bQaKM
-         v293PbxKBUw/eF6NUmeh/yBw0MnmmUmWsuHRS3dS+RSGKQHB5ltN0+I2fzQW0QuGyzRH
-         xeUw==
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=/T9drlD1s9vO6lHEMs4LJzmDo2MKXEHBXvFYaWoQWpk=;
+        b=pr+5UdCp6FVN3ayIp8PavfXN5zb/PZO+VwerYGrOc6sLN3ZoVK8vKBLlkrCVgvT/DO
+         qeHmfUiLdDar9LYhRZjmrHxt3LaXAxiuJ+6fnjAq2RQnxuthjyql9fx+9wXhrbgrV+OH
+         pjhIi4O9+KyKIcmikHsrqU7HLB4OBaTJKEDdEOV/7ft7k/VRl53qsApmILjyywst2xVy
+         c5Bb2jcwMNV03ZfqsEarCEhOZ3dX5tWHnMRSxC5kg/k3l26WF0tehGLrZNkjbvMdcZd2
+         vsiA78i/Yz1ifb8J3c+OgDBTouD5/tI6WLxAxeEtkKW44iZcbNAJfFx5ohT6EzTDctXG
+         H2PQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=nsZbpm1YBoHMpWTnzHLuE/zYZ0yg4jBiKD5Q7oCTPBE=;
-        b=6gO9uG24PL82fkBX313stktbW73uS5N5kg7BbIlSu19fCdkFTK8scWdV8/IUDx7VJU
-         6HFBK61xcrAp9MgDUn3MqLlP6zkjM07Ix/BlcUP6CYbh2Bp5sX3B2jO90/eoMtiWkk4W
-         uoqFcqPeb8+yiyDtgRzfNPfeF3E9F1vdoTO0IQoGGLU0hZVfRSjod1joF/26UXfFMdgj
-         39OE5qZdIlFNKBDwuA+wsnzkl2/ozoHgpvvx7pJvEsGt59KNbfCCwImMITnfm/cPNzdP
-         f/Sv/QiqJmL/web1GPzBj5zS23Virq8Gu/jWYHnEstg1as2uoSNyAyg7CLfLbIdEZF6Y
-         hUJw==
-X-Gm-Message-State: AOAM532bD740/z3PbRu03Z3VCNEUmTQWHp5AMu8fqSTVKWVIshbGgM1p
-        ak5hU2kWd4gWzWrcgo857y8F4bFytXt+ScIrrHI=
-X-Google-Smtp-Source: ABdhPJyMCgWBu0+znYWYWW0Lze6+Dvy0DD7TBuuDEn4uwLgYup8eR86IAL4td60wQDZlgK0AAFAQ88N7sBeQbsS0hF8=
-X-Received: by 2002:a05:6638:24c4:: with SMTP id y4mr2549466jat.31.1633176234334;
- Sat, 02 Oct 2021 05:03:54 -0700 (PDT)
+         :subject:to;
+        bh=/T9drlD1s9vO6lHEMs4LJzmDo2MKXEHBXvFYaWoQWpk=;
+        b=IKMe7RT66D1zix951xmBHYwID7OSM+MQLDjCbTnIiu9BOcsyVcsTDdSN8Do9G3Qge3
+         /KMtAIVrOI8oiwYlCXgrS3y1HTXPYD4/okk0oFG52Xgd445RsEL0z0oD7JE9HWhQd6UT
+         4xK2hDzfIlmJuuxRkBiYAJdcx2b36ZQfoM/WnRkWCVtwcP6sOp+ZmVM0oU1M+ic6yqdV
+         L46KgnZXnTkM2aDgLsTRiaqfzjRwvmKvaQ96m6HL5t9S1K0A7d9j7DXy8/757oRwHTEw
+         X2RZOumxA3d9qGDy9A9BXXKEhyX90q4XvLxZCjCxNistZIOL7G0DqBIuGTXdFNcgsdpy
+         kifQ==
+X-Gm-Message-State: AOAM530TdjATXDsjy8INCJOZ5iyfITSk/hL+X5zY6BmBi6biUzWU0VDt
+        oyD0fBocopMPpXEtZ1ZXt9Webeimm8ZnsvkoN4o=
+X-Google-Smtp-Source: ABdhPJyHwFxljeiJM9ull72OJnPTtelWaoQjJuwm8Zme2I/k9jzOEPXpCgYYr/5uYdMUjIyvgGDoegV0Zk1X908pdUE=
+X-Received: by 2002:a5e:860b:: with SMTP id z11mr4297378ioj.145.1633229239681;
+ Sat, 02 Oct 2021 19:47:19 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:a4f:f90d:0:0:0:0:0 with HTTP; Sat, 2 Oct 2021 05:03:54 -0700 (PDT)
-Reply-To: unitednnation0@gmail.com
-From:   "U.n" <wadebaye33@gmail.com>
-Date:   Sat, 2 Oct 2021 00:03:54 -1200
-Message-ID: <CACE0T5XCdA8Hen=oQ4eLy8J=yfx7+mKzcArcxg6fkhg2AS+cew@mail.gmail.com>
-Subject: Attention
-To:     unitednnation0@gmail.com
+Received: by 2002:a4f:bf57:0:0:0:0:0 with HTTP; Sat, 2 Oct 2021 19:47:19 -0700 (PDT)
+Reply-To: irenezakari88@gmail.com
+From:   Irene Zakari <irenezakari44@gmail.com>
+Date:   Sat, 2 Oct 2021 19:47:19 -0700
+Message-ID: <CALwnxk=qihXmstj9BMSoVOmwC933C-eMREZWqfSU+6PoZrpekw@mail.gmail.com>
+Subject: PLEASE I NEED YOUR HELP
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
---=20
+Hello   ..
 
+How do you do over there? I hope you are doing well?
 
-Attention Sir/Madam
-This is the United Nation (UN). We the United Nations (UN) Globally
-has approved (US$2.500,000)( two Million Five hundred thousand
-dollars) compensation as part of our responsibilities for humanitarian
-Aid for fighting against CoronaVirus and you are among the lucky ones.
+My name is Irene. (24 years), i am single, from Gambia, the only child
+of late Eng. Bernard Bakary Zakaria. the Director of Bajam Enterprise
+(Building Construction Company in The Gambia) also the CEO of Bernard
+Import and Export (GAMBIA).
 
+As a matter of fact my mother died when i was barely 4 years old
+according to my late father and because of the type of love he had for
+my mother made him to remain UN-married till he left the ghost..
 
-This compensation is for the most affected countries, communities and
-families across the global. Your funds were deposited with Bank in USA
-to transfer your funds to you via Internet Banking. You have to send
-your full details as state below:with this email Address
-  ( unitednnation0@gmail.com )
-Your full names:
-Address:
-Telephone:
-Occupation:
+So after the death of my father as a result of assassinate, his brother (My
+Uncle) who is the purchasing and marketing sale manager of my late
+fathers company named (Mr. James Tokunbo Oriade Zakaria) wanted to
+convert all the properties and resources of my late father into his
+which i quarreled with him and it made him to lay his anger on me to
+the extent of hiring an assassins to kill me but to God be the glory i
+succeeded by making a way to Burkina faso for my dear life.
+Honestly i do live a fearful life even here in Burkina faso because of
+those Assassins coming after me .
 
+I would want to live and study in your country for my better future.
+because my father same blood brother wanted to force me into undecided
+marriage, just for me to leave my father home and went and live with
+another man I never know as he want to occupied all my father home
+and maybe to sold it as my father no longer alive, I'm the only child
+daughter my father born, '' but he don't know that i am not
+interesting in any of my father properties or early marriage for now,
+because i still have future to think about and to focus on my studies
+first as i was doing my first year in the University before the death
+of my father.
 
+Actually what I want to discuss with you is about my personal issue
+concern funds my late father deposited in a bank outside my country,
+worth $4.5 million united state dollars. i need your assistance to
+receive and invest this funds in your country.
 
-Yours Sincerely
-Mr. Ant=C3=B3nio Guterres
-United Nations (UN).
+Please help me, I am sincere to you and I want to be member of your
+family as well if you wouldn't mind to accept me and lead me to better
+future in your country.
+
+All the documents the bank issue to my father during time of deposit
+is with me now.
+I already notify the bank on phone about the death of my father and
+they are surprise for the news and accept that my father is their good
+customer.
+I will be happy if this money can be invested in any business of your
+choice and it will be under your control till i finished my education,
+also I'm assuring you good relationship and I am ready to discuss the
+amount of money to give you from this money for your help.
+
+Therefore, I shall give you the bank contact and other necessary
+information in my next email if you will only promise me that you will
+not/never betray and disclosed this matter to anybody, because, this
+money is the only hope i have for survival on earth since I have lost
+my parents.
+
+Moreover I have the FUND PLACEMENT CERTIFICATE and the DEATH
+CERTIFICATE here with me, but before I give you further information, i
+will like to know your full data
+
+1. Full Name: ........................
+2. Address: ..................
+3. Nationality: ........... Sex................
+4. Age:........... Date of Birth:................
+5. Occupation:...................
+.....
+6. Phone: ........... Fax:.........................
+7. State of Origin: .......Country:..............
+8. Occupation:...................
+................
+9. Marital status........... E-mail address's: ............
+10. Scan copy of your ID card or Driving License/Photo:............
+DECLARATION:
+
+so that i will be fully sure that i am not trusting the wrong person.
+and it will also give me the mind to send you the bank contact for you
+to communicate with them for more verification about this money. and
+to know you more better.
+
+Meanwhile, you can reach me through my pastor,his name is Pastor Paul
+any time you call, tell him that you want to speak with me because
+right now i am living in the church here in Burkina faso and i don't
+want to stay here any longer,
+send for me to speak with you his phone number is this(+226 75213646)
+
+I will stop here and i will be waiting for your reply and feel free
+ask any thing you want to know about me.
+Please help me, I would be highly appreciated
+Have nice day.
+From Irene
