@@ -2,77 +2,114 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 75D6242214C
-	for <lists+linux-efi@lfdr.de>; Tue,  5 Oct 2021 10:51:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 559214224AA
+	for <lists+linux-efi@lfdr.de>; Tue,  5 Oct 2021 13:08:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233383AbhJEIxa (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 5 Oct 2021 04:53:30 -0400
-Received: from smtp-relay-canonical-1.canonical.com ([185.125.188.121]:46508
-        "EHLO smtp-relay-canonical-1.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S233583AbhJEIxY (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 5 Oct 2021 04:53:24 -0400
-Received: from workstation5.fritz.box (ip-88-152-144-157.hsi03.unitymediagroup.de [88.152.144.157])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by smtp-relay-canonical-1.canonical.com (Postfix) with ESMTPSA id DE76B3FFE3;
-        Tue,  5 Oct 2021 08:51:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1633423893;
-        bh=LcOIx5nhCnLkNDGhB88lSqiIHuHJTa5m5nJnpaZ9Xr0=;
-        h=From:To:Cc:Subject:Date:Message-Id:MIME-Version;
-        b=IVQipN017uieeWu7rnJzY71I+41/aSk2syz6YJQVx0rs64Smnt1xOE0A24rCrCRHY
-         rFmk2vOhGWvnIkRRqeL57FLAmwwmN05XtvaP8M3XDKFlwbDrn5xvoekDKYvp6TkTYf
-         7LC/yrQtJ0FIeTNCAH5xgnZr6cPFIKtyYr0HwatqcQeakJIpGZ5Ij9CvnxThNRNI3b
-         YaiyWiOgzFMAL2TMtggmv5rwLgtr1Rnc8sJC4NlT5vOXWNKmLwROD4Xa+D7SK84Nn7
-         MoQ7p0C5/9cFEAWH0IGo2broJrCM98hgCNijObxh719GrxVSwZ8sYF79CIYCM0WOHa
-         9W40kGC6JyvKQ==
-From:   Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
-To:     James Bottomley <James.Bottomley@HansenPartnership.com>
-Cc:     linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
-Subject: [PATCH 1/1] efitools: enable RISC-V build
-Date:   Tue,  5 Oct 2021 10:50:18 +0200
-Message-Id: <20211005085018.9974-1-heinrich.schuchardt@canonical.com>
-X-Mailer: git-send-email 2.32.0
+        id S233790AbhJELKl (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 5 Oct 2021 07:10:41 -0400
+Received: from mail.kernel.org ([198.145.29.99]:46172 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S233705AbhJELKk (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Tue, 5 Oct 2021 07:10:40 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 247AB61139;
+        Tue,  5 Oct 2021 11:08:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1633432130;
+        bh=SK7eY4NLZwK5bvcJfHQqG6L6urfKlYCHvBS337E52fQ=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=IC85uUWO2seeOaaSFQTW+PabksX3oQUbsvNgbstYqt43b/Ex7SB+HmubJKDyTaeom
+         V5LU+fBI0x8fkjbRpHiFniV3jnZivRVbXzbIMAyi4GV8fKzJeOr7X4i1VofiyizjAQ
+         8YB3E93OL0wqyJlDKfB5jUIUmjpTe3WgEE5ysZBKqWGMD3esfxIiulfv7wUzhO0nW4
+         k3g2XqeseKFLYTPeUHSbSkkyuRZDlq2tM775p3nGqxZX9SgGCdZCVGe8KxrJ+3oUUQ
+         RDnwCSlYXV7euPSryFjEo067DR60IwkDYQwhI6Twkxk3Dg4IFLG3pJ4svwTFnNo6Yv
+         Qinw+x6Y5li6A==
+Received: by mail-oi1-f176.google.com with SMTP id e24so25675007oig.11;
+        Tue, 05 Oct 2021 04:08:50 -0700 (PDT)
+X-Gm-Message-State: AOAM532IF/73hwRnVs0GxMYddYdh41Q9c9HKY5Ut4v1qKsX37ENo2au9
+        hnKQ96jHIsSFfFrCTCzK4Rch6PD5vSLmOSekA5I=
+X-Google-Smtp-Source: ABdhPJw1fTVVd9mg1h4QkZ1n3WgvTTZXBC3+rEmlU4jhDoUQaaTJE71wyR4VXcF9Nl4VCy+cCK2uDn1cXhXeYOELDJc=
+X-Received: by 2002:a05:6808:1148:: with SMTP id u8mr1979937oiu.33.1633432129486;
+ Tue, 05 Oct 2021 04:08:49 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20210923025340.1469836-1-chris.zjh@huawei.com>
+In-Reply-To: <20210923025340.1469836-1-chris.zjh@huawei.com>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Tue, 5 Oct 2021 13:08:38 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXFqa5ftkO0EirKeYxzaDLcSagM80qkYPdomdSc-02UK4w@mail.gmail.com>
+Message-ID: <CAMj1kXFqa5ftkO0EirKeYxzaDLcSagM80qkYPdomdSc-02UK4w@mail.gmail.com>
+Subject: Re: [PATCH -next] efi: Change down_interruptible() in
+ virt_efi_reset_system() to down_trylock()
+To:     Zhang Jianhua <chris.zjh@huawei.com>
+Cc:     linux-efi <linux-efi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Set necessary Makefile variables for architecture riscv64.
+On Thu, 23 Sept 2021 at 04:51, Zhang Jianhua <chris.zjh@huawei.com> wrote:
+>
+> While reboot the system by sysrq, the following bug will be occur.
+>
+> BUG: sleeping function called from invalid context at kernel/locking/semaphore.c:90
+> in_atomic(): 0, irqs_disabled(): 128, non_block: 0, pid: 10052, name: rc.shutdown
+> CPU: 3 PID: 10052 Comm: rc.shutdown Tainted: G        W O      5.10.0 #1
+> Call trace:
+>  dump_backtrace+0x0/0x1c8
+>  show_stack+0x18/0x28
+>  dump_stack+0xd0/0x110
+>  ___might_sleep+0x14c/0x160
+>  __might_sleep+0x74/0x88
+>  down_interruptible+0x40/0x118
+>  virt_efi_reset_system+0x3c/0xd0
+>  efi_reboot+0xd4/0x11c
+>  machine_restart+0x60/0x9c
+>  emergency_restart+0x1c/0x2c
+>  sysrq_handle_reboot+0x1c/0x2c
+>  __handle_sysrq+0xd0/0x194
+>  write_sysrq_trigger+0xbc/0xe4
+>  proc_reg_write+0xd4/0xf0
+>  vfs_write+0xa8/0x148
+>  ksys_write+0x6c/0xd8
+>  __arm64_sys_write+0x18/0x28
+>  el0_svc_common.constprop.3+0xe4/0x16c
+>  do_el0_svc+0x1c/0x2c
+>  el0_svc+0x20/0x30
+>  el0_sync_handler+0x80/0x17c
+>  el0_sync+0x158/0x180
+>
+> The reason for this problem is that irq has been disabled in
+> machine_restart() and then it calls down_interruptible() in
+> virt_efi_reset_system(), which would occur sleep in irq context,
+> it is dangerous! Commit 99409b935c9a("locking/semaphore: Add
+> might_sleep() to down_*() family") add might_sleep() in
+> down_interruptible(), so the bug info is here. down_trylock()
+> can solve this problem, cause there is no might_sleep.
+>
+> --------
+>
+> Signed-off-by: Zhang Jianhua <chris.zjh@huawei.com>
 
-Signed-off-by: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
----
- Make.rules | 7 +++++++
- 1 file changed, 7 insertions(+)
+Thanks. I will queue this up.
 
-diff --git a/Make.rules b/Make.rules
-index 903a5a4..69bd3bd 100644
---- a/Make.rules
-+++ b/Make.rules
-@@ -10,6 +10,8 @@ else ifeq ($(ARCH),aarch64)
- ARCH3264 =
- else ifeq ($(ARCH),arm)
- ARCH3264 =
-+else ifeq ($(ARCH),riscv64)
-+ARCH3264 =
- else
- $(error unknown architecture $(ARCH))
- endif
-@@ -56,6 +58,11 @@ ifeq ($(ARCH),aarch64)
-   FORMAT = -O binary
- endif
- 
-+ifeq ($(ARCH),riscv64)
-+  LDFLAGS += --defsym=EFI_SUBSYSTEM=0x0a
-+  FORMAT = -O binary
-+endif
-+
- %.efi: %.so
- 	$(OBJCOPY) -j .text -j .sdata -j .data -j .dynamic -j .dynsym \
- 		   -j .rel -j .rela -j .rel.* -j .rela.* -j .rel* -j .rela* \
--- 
-2.32.0
 
+> ---
+>  drivers/firmware/efi/runtime-wrappers.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/firmware/efi/runtime-wrappers.c b/drivers/firmware/efi/runtime-wrappers.c
+> index 1410beaef5c3..f3e54f6616f0 100644
+> --- a/drivers/firmware/efi/runtime-wrappers.c
+> +++ b/drivers/firmware/efi/runtime-wrappers.c
+> @@ -414,7 +414,7 @@ static void virt_efi_reset_system(int reset_type,
+>                                   unsigned long data_size,
+>                                   efi_char16_t *data)
+>  {
+> -       if (down_interruptible(&efi_runtime_lock)) {
+> +       if (down_trylock(&efi_runtime_lock)) {
+>                 pr_warn("failed to invoke the reset_system() runtime service:\n"
+>                         "could not get exclusive access to the firmware\n");
+>                 return;
+> --
+> 2.31.0
+>
