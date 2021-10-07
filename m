@@ -2,24 +2,24 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2BC7C425423
-	for <lists+linux-efi@lfdr.de>; Thu,  7 Oct 2021 15:33:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B9B2C42549D
+	for <lists+linux-efi@lfdr.de>; Thu,  7 Oct 2021 15:48:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241529AbhJGNew (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 7 Oct 2021 09:34:52 -0400
-Received: from mga18.intel.com ([134.134.136.126]:57238 "EHLO mga18.intel.com"
+        id S241675AbhJGNuw (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 7 Oct 2021 09:50:52 -0400
+Received: from mga01.intel.com ([192.55.52.88]:19008 "EHLO mga01.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S241508AbhJGNew (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Thu, 7 Oct 2021 09:34:52 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10129"; a="213196886"
+        id S241536AbhJGNuv (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Thu, 7 Oct 2021 09:50:51 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10130"; a="249571043"
 X-IronPort-AV: E=Sophos;i="5.85,354,1624345200"; 
-   d="scan'208";a="213196886"
+   d="scan'208";a="249571043"
 Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Oct 2021 06:32:44 -0700
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Oct 2021 06:48:57 -0700
 X-IronPort-AV: E=Sophos;i="5.85,354,1624345200"; 
-   d="scan'208";a="488990424"
+   d="scan'208";a="488997557"
 Received: from likanto-mobl.amr.corp.intel.com (HELO [10.209.99.172]) ([10.209.99.172])
-  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Oct 2021 06:32:44 -0700
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Oct 2021 06:48:57 -0700
 Subject: Re: [PATCH v2 4/4] virt: Add sev_secret module to expose confidential
  computing secrets
 To:     Dov Murik <dovmurik@linux.ibm.com>, linux-efi@vger.kernel.org
@@ -85,8 +85,8 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  OPsw5tV/LmQ5GXH0JQ/TZXWygyRFyyI2FqNTx4WHqUn3yFj8rwTAU1tluRUYyeLy0ayUlKBH
  ybj0N71vWO936MqP6haFERzuPAIpxj2ezwu0xb1GjTk4ynna6h5GjnKgdfOWoRtoWndMZxbA
  z5cecg==
-Message-ID: <7e2a4595-3f9c-6d65-34e3-af7c1d6da196@intel.com>
-Date:   Thu, 7 Oct 2021 06:32:41 -0700
+Message-ID: <290c21a8-a68f-0826-2754-1480f79a081d@intel.com>
+Date:   Thu, 7 Oct 2021 06:48:54 -0700
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.10.0
 MIME-Version: 1.0
@@ -99,23 +99,46 @@ List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
 On 10/6/21 11:18 PM, Dov Murik wrote:
-> +static int sev_secret_map_area(void)
+> +static void wipe_memory(void *addr, size_t size)
 > +{
-> +	struct sev_secret *s = sev_secret_get();
-> +	struct linux_efi_coco_secret_area *secret_area;
-> +	u32 secret_area_size;
-> +
-> +	if (efi.coco_secret == EFI_INVALID_TABLE_ADDR) {
-> +		pr_err("Secret area address is not available\n");
-> +		return -EINVAL;
-> +	}
-> +
-> +	secret_area = memremap(efi.coco_secret, sizeof(*secret_area), MEMREMAP_WB);
-> +	if (secret_area == NULL) {
-> +		pr_err("Could not map secret area header\n");
-> +		return -ENOMEM;
-> +	}
+> +	memzero_explicit(addr, size);
+> +	clean_cache_range(addr, size);
+> +}
 
-There doesn't seem to be anything truly SEV-specific in here at all.
-Isn't this more accurately called "efi_secret" or something?  What's to
-prevent Intel or an ARM vendor from implementing this?
+What's the purpose of the clean_cache_range()?  It's backed in a CLWB
+instruction on x86 which seems like an odd choice.  I guess the point is
+that the memzero_explicit() will overwrite the contents, but might have
+dirty lines in the cache.  The CLWB will ensure that the lines are
+actually written back to memory, clearing the secret out of memory.
+Without the CLWB, the secret might live in memory until the dirtied
+cachelines are written back.
+
+Could you document this, please?  It would also be nice to include some
+of this motivation in the patch that exports clean_cache_range() in the
+first place.
+
+I also think clean_cache_range() an odd choice.  If it were me, I
+probably would have just used the already-exported
+clflush_cache_range().  The practical difference between writing back
+and flushing the cachelines is basically zero.  The lines will never be
+reused.
+
+*If* we export anything from x86 code, I think it should be something
+which is specific to the task at hand, like arch_invalidate_pmem() is.
+
+Also, when you are modifying x86 code, including exports, it would be
+nice to include (all of) the x86 maintainers.  The relevant ones for
+this series would probably be:
+
+X86 ARCHITECTURE (32-BIT AND 64-BIT)
+M:      Thomas Gleixner <tglx@linutronix.de>
+M:      Ingo Molnar <mingo@redhat.com>
+M:      Borislav Petkov <bp@alien8.de>
+M:      x86@kernel.org
+
+X86 MM
+M:      Dave Hansen <dave.hansen@linux.intel.com>
+M:      Andy Lutomirski <luto@kernel.org>
+M:      Peter Zijlstra <peterz@infradead.org>
+
+There's also the handy dandy scripts/get_maintainer.pl to help.
