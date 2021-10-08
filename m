@@ -2,41 +2,41 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E67B4427035
-	for <lists+linux-efi@lfdr.de>; Fri,  8 Oct 2021 20:06:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 742B5427048
+	for <lists+linux-efi@lfdr.de>; Fri,  8 Oct 2021 20:07:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241460AbhJHSIg (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 8 Oct 2021 14:08:36 -0400
-Received: from mail-bn8nam08on2042.outbound.protection.outlook.com ([40.107.100.42]:23064
-        "EHLO NAM04-BN8-obe.outbound.protection.outlook.com"
+        id S243585AbhJHSJL (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 8 Oct 2021 14:09:11 -0400
+Received: from mail-mw2nam10on2056.outbound.protection.outlook.com ([40.107.94.56]:39264
+        "EHLO NAM10-MW2-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S241389AbhJHSH6 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Fri, 8 Oct 2021 14:07:58 -0400
+        id S241703AbhJHSIC (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Fri, 8 Oct 2021 14:08:02 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=be+/vwOsK8n6U/+vpBHVadhikf2C14576AHAQ3XNkKrN7PkTHAjLquWEqwNdqlTd34rv72vioijDwOSZgwzJjq44l4zzhRhLO8CNgJkXBFB/6PtJjkQBjmPTOKX51XTMZon7GWUcuhwi8x8JFXvfJBLAqxFsuRx5bFN9fqs5AK1c10TTp15euEw/DSxJEvSWv7RF8SglnR4czzpFZgSxS4gOemrZUdNWQleetbQ/J/P9Fq8ovxnJkQyzy963cfaJ0FAXJeXAoKdb33sQwCUxE7pOGgo/QclZKY79fnEUMTiNLDvCkLGnLi8qMgTS/ffuBLKT/kV6Snm8YxYbftMO0g==
+ b=QVkPbeHNoiptEXl4i+dS8qeT3qwBADcpzhnpxxyRDFCJOVqWcAoXrULjMGv6aG7VWF4o2HRnDvtej0iWmnr3RW0T3ppeYr5a34tqZHSnaTA36NyqBF5oQJfnzjXVPe/ICaamRWh5Rctqj21Vn2z4bq73E2UhXwAeG4vMVj0scw1BNl7CksmkWaDzba5FxuMz1w8uXgOpCa40ArjZaBSRfPB1cD8fKTWJNP0qaCyhmjQxzDWoLk7bIxCtiMjc+U+rojF8RkUumumz5SUiw+d+OoA0Rb+A8oza77b6IimyhbySE0GOqvVclDsKWdj/WmrRorGJwQYVMouFwbf3OIt52A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wPXzH3Bsug6WGB8FMnXlcHfENVqw+RdwULEDA/GB1ps=;
- b=iadus4afvxzQaUFo+mCCMuWJRfkhiXyyU016yVNUncm+cJyR4Ru9/waH/sJgg662CrAXIQB6i+twFyX+mteqAx3dVb4xbd+Xj2hpW80YjqNC1Vv6A5kCrij0G/cFhoEpn7gPNf++T+BA4P9uoy4QpdUQAjM1cjjYXOrNLXh6XqzO7rTAGbj+mhHXeBJFogEIkIPSgN2qVZ5eawbRSLctDKLUi+WrEFc7os8qoeFG8D9eRsBfRWtHwcAqivZ21TpZZPKqdCMj0m9P27YttNW/0EnScstYsK9I/k2nqvhiNKqOS13DARqZ86TyY94McCPXco9DP18x7Yd1MUTTbOViWQ==
+ bh=MZC1ELFT5sLbu2sH3g1K5XG4as5f6VW2VApG8NVi2wk=;
+ b=Mla61apAQTxAt5aQhF7lLLaFPap5YAalWI9uoT+eDKtkODK0KyfAifcg5qQREjOsfe9LHSSq0Zm5LOjf7y/K14u9HDj8F5a/LGsUDg8x8/1HlEVSg8etoG+KcyrCKXwK1qVpnc7Z71gDDGCt+3nMnAoubgN0/lnO4tLaVhm/wcsK62OpujwyVjwsLhfAaTg4z0269QGgkrOkbGFlDlcXYDtV2R9+ErSwPv+YSOY93lr7UWIVp2RlBv5MkUKO0zNKDpx/ZUbmqka8rFhhYBM3G+1NMHINTu8e8LnhLdIkJtI9pJqPCnoq8GjSh+0oHYWEdLNZeTJOVbIRe6JNPtGTyA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wPXzH3Bsug6WGB8FMnXlcHfENVqw+RdwULEDA/GB1ps=;
- b=wbkkstahliTIsguueeZcku7kEM8kie7eoMTQPp0d7ppA7xME7NTNQEgsv/F3I4xXTqov4znscMBblmWYMnC+XlKj016CX6EzIJw5fQtvncLrmpqoXKaVKFWhI51cq5NfVsXd8tYQO6CtXDiBYQCzqeXf6YXOhsufX/4d451T1co=
-Received: from MWHPR21CA0066.namprd21.prod.outlook.com (2603:10b6:300:db::28)
- by MWHPR1201MB0029.namprd12.prod.outlook.com (2603:10b6:301:4d::15) with
+ bh=MZC1ELFT5sLbu2sH3g1K5XG4as5f6VW2VApG8NVi2wk=;
+ b=enYyUE+pney8CpfHvC/HYFMhS77QYaOfvw8bpqn4EwTz9WRf2M2ieRstoZ0fSKanmCjf8NtFC7PmA9mPX9V9XP7CFX+0zfr+iH6LarA4b3zJhKh1zn/azc+Z4otA/sOp3s+hNrkO5sNUC/jj+GFl2T/tyJv1boeSWs3WBIymurs=
+Received: from CO2PR04CA0129.namprd04.prod.outlook.com (2603:10b6:104:7::31)
+ by BN6PR12MB1202.namprd12.prod.outlook.com (2603:10b6:404:1c::12) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4587.19; Fri, 8 Oct
- 2021 18:05:55 +0000
-Received: from CO1NAM11FT012.eop-nam11.prod.protection.outlook.com
- (2603:10b6:300:db:cafe::cb) by MWHPR21CA0066.outlook.office365.com
- (2603:10b6:300:db::28) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4608.1 via Frontend
- Transport; Fri, 8 Oct 2021 18:05:55 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4587.18; Fri, 8 Oct
+ 2021 18:05:57 +0000
+Received: from CO1NAM11FT026.eop-nam11.prod.protection.outlook.com
+ (2603:10b6:104:7:cafe::4a) by CO2PR04CA0129.outlook.office365.com
+ (2603:10b6:104:7::31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4587.18 via Frontend
+ Transport; Fri, 8 Oct 2021 18:05:57 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; kernel.org; dkim=none (message not signed)
  header.d=none;kernel.org; dmarc=pass action=none header.from=amd.com;
@@ -44,13 +44,13 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=SATLEXMB04.amd.com;
 Received: from SATLEXMB04.amd.com (165.204.84.17) by
- CO1NAM11FT012.mail.protection.outlook.com (10.13.175.192) with Microsoft SMTP
+ CO1NAM11FT026.mail.protection.outlook.com (10.13.175.67) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.4587.18 via Frontend Transport; Fri, 8 Oct 2021 18:05:55 +0000
+ 15.20.4587.18 via Frontend Transport; Fri, 8 Oct 2021 18:05:57 +0000
 Received: from sbrijesh-desktop.amd.com (10.180.168.240) by SATLEXMB04.amd.com
  (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.8; Fri, 8 Oct 2021
- 13:05:53 -0500
+ 13:05:54 -0500
 From:   Brijesh Singh <brijesh.singh@amd.com>
 To:     <x86@kernel.org>, <linux-kernel@vger.kernel.org>,
         <kvm@vger.kernel.org>, <linux-efi@vger.kernel.org>,
@@ -81,9 +81,9 @@ CC:     Thomas Gleixner <tglx@linutronix.de>,
         <tony.luck@intel.com>, <marcorr@google.com>,
         <sathyanarayanan.kuppuswamy@linux.intel.com>,
         Brijesh Singh <brijesh.singh@amd.com>
-Subject: [PATCH v6 25/42] x86/head: re-enable stack protection for 32/64-bit builds
-Date:   Fri, 8 Oct 2021 13:04:36 -0500
-Message-ID: <20211008180453.462291-26-brijesh.singh@amd.com>
+Subject: [PATCH v6 26/42] x86/sev: move MSR-based VMGEXITs for CPUID to helper
+Date:   Fri, 8 Oct 2021 13:04:37 -0500
+Message-ID: <20211008180453.462291-27-brijesh.singh@amd.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20211008180453.462291-1-brijesh.singh@amd.com>
 References: <20211008180453.462291-1-brijesh.singh@amd.com>
@@ -95,137 +95,151 @@ X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
  (10.181.40.145)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 97eac712-136a-4258-f03a-08d98a864638
-X-MS-TrafficTypeDiagnostic: MWHPR1201MB0029:
-X-Microsoft-Antispam-PRVS: <MWHPR1201MB0029334DD302A4462CD3B6CDE5B29@MWHPR1201MB0029.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:10000;
+X-MS-Office365-Filtering-Correlation-Id: ff95202d-840a-4b6f-b792-08d98a864740
+X-MS-TrafficTypeDiagnostic: BN6PR12MB1202:
+X-Microsoft-Antispam-PRVS: <BN6PR12MB1202166E5727EDAC4DA57BFAE5B29@BN6PR12MB1202.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:4303;
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 2yYNTAUPxEnf4Yfy58jvNAxFpltNZdb7yqdrLANEfd2FSbWSp+sf1YMT3adLm56ass/qjOKvojwcbRY3dSJ5dEHBT2YBZXuwMr/MHp1dCwtVDjmzS9EhLw/+awIU7KdF3ci1rvtL7rXDKYajksqrADDyIUE48c7/aO3idDJj9H89CNx6Kqq4grzaNBA6TymA2X8yrQoY8gbx62Id8Km0ji1tunZNft6e6wvNG255NEBq5Z2l0z9/XEYtQsgiACiqYqnC5zYlPjanBOj6lxGyHcHRczvX+wkNz65ZEzAfKzlewJ1ydiriOvlbNgbVQ934iRoLmTVXSeMXg0hD0Q834e8YOPWJMxSvbVVj/UR9FOZXfleRDRHGdSR9CFI8LE7wFSk4K3NG+ZdcLyjTJJHBIUxUP+/QeT9QEcNCZngrOreEwn3hlFGnvww1o/S2h/Ox1Zx6ol8fqUVKJW1/MFQO59ywOFNPe66trpzcr/4t+p8wxsvlPwpN+mbF842ojl4Z9AcEefLLqp+R+De0kIlW1PpJPRPUhikPC9DmupEcmeUhhiGgyyihR1LsRpkTJAM+t/dtRs3Zav9s4SrTwoOMKTimYELGeCEzm3DgH6jnRuX0WQ7XV9G5PEEzjNE3rgHdjwMP1OJKWSuR/uoiHYpGTNQrgcr8gGypxNtNhApWCmzqMrNBb0oaMg8L1HuQWBTphJVVRBFpdxO/+Zu4wRM39AbOVFBfNbCpKWuN/Tscj7whX77HtokGWsy68UApedxC
-X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(4636009)(46966006)(36840700001)(8936002)(70206006)(70586007)(16526019)(186003)(47076005)(6666004)(316002)(2906002)(4326008)(8676002)(26005)(82310400003)(54906003)(508600001)(7416002)(7406005)(36860700001)(5660300002)(83380400001)(44832011)(1076003)(426003)(7696005)(356005)(81166007)(110136005)(86362001)(36756003)(336012)(2616005)(2101003)(36900700001);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: sdFrzmvkmdQLsH+F+Wr0Kc6hAP2v6cCh7ErBWLGy6s4WRUd75eXjfEch7/P/6mquCe0ktSwDpO+zqBmv4ilJLD/eDN9KcO3aa2BKw67JKbkrToN0DvxmxGAOIMCdEUGp3m+gVGav5Ap8ODZF15AZKTGaJoTzHmFfunwf8xGATuiZfaDSSpCCQCCKeblR0u736DRh9jek/mVO5YgJGwM+OUWZur+7MIUc3Uitb8pl8448qCIN0qCmFx0Z2yONYVkgezxCqvDQEU6tBy23nJoRUOrXbxWOjOPT7uwnuIw+LnxWox+v1Y1W3m59c/IBcDD93TqCVITJtsQSuujvd3g501jdciIC6Al5T3V6YwBRB4FSEXiMEMgBdmMDke+hCmvVCR98N0OZxNSIVFjNal+VpiZHd8l/+og0WrETtDAzP1uwjorlXJeI9Vb6r+9C1k6GNySUN+YNbHJz3OgV5c6e+/GBN6yWoZlbVQhHKVXXtEkkhAgthhW5OajRL4z+fl4fE6LP/F8+P3/yVYmeGSW2Rfnc73w/8OkOeRCHR83i4HON3AXSph6VmZYS9HtrwOvCIRhO1cTG2Gx12CNiAASVcc2dBneRrkCRp/EWhtyvuCICjaD9aRaaB12Mp5gdaAF74LdtnnJoFo/LKJGjXvGEd7IdT94K8KbpmrrbBJERnzH8i19/C8dVDtrxljb/gUGJ4XmsOW9F28yO7ACxnHIg5YZfqeRJhvuggNdrqhAkmu+P/S5OgH/3gbPT30lJtFqb
+X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(4636009)(36840700001)(46966006)(5660300002)(83380400001)(7696005)(6666004)(2906002)(508600001)(8676002)(36756003)(7406005)(7416002)(4326008)(16526019)(186003)(1076003)(8936002)(81166007)(82310400003)(26005)(47076005)(110136005)(36860700001)(54906003)(44832011)(86362001)(70586007)(426003)(316002)(336012)(356005)(70206006)(2616005)(36900700001)(2101003);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Oct 2021 18:05:55.6484
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Oct 2021 18:05:57.3771
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 97eac712-136a-4258-f03a-08d98a864638
+X-MS-Exchange-CrossTenant-Network-Message-Id: ff95202d-840a-4b6f-b792-08d98a864740
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: CO1NAM11FT012.eop-nam11.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthSource: CO1NAM11FT026.eop-nam11.prod.protection.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR1201MB0029
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN6PR12MB1202
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
 From: Michael Roth <michael.roth@amd.com>
 
-As of commit 103a4908ad4d ("x86/head/64: Disable stack protection for
-head$(BITS).o") kernel/head64.c is compiled with -fno-stack-protector
-to allow a call to set_bringup_idt_handler(), which would otherwise
-have stack protection enabled with CONFIG_STACKPROTECTOR_STRONG. While
-sufficient for that case, there may still be issues with calls to any
-external functions that were compiled with stack protection enabled that
-in-turn make stack-protected calls, or if the exception handlers set up
-by set_bringup_idt_handler() make calls to stack-protected functions.
-As part of 103a4908ad4d, stack protection was also disabled for
-kernel/head32.c as a precaution.
+This code will also be used later for SEV-SNP-validated CPUID code in
+some cases, so move it to a common helper.
 
-Subsequent patches for SEV-SNP CPUID validation support will introduce
-both such cases. Attempting to disable stack protection for everything
-in scope to address that is prohibitive since much of the code, like
-SEV-ES #VC handler, is shared code that remains in use after boot and
-could benefit from having stack protection enabled. Attempting to inline
-calls is brittle and can quickly balloon out to library/helper code
-where that's not really an option.
-
-Instead, re-enable stack protection for head32.c/head64.c and make the
-appropriate changes to ensure the segment used for the stack canary is
-initialized in advance of any stack-protected C calls.
-
-for head64.c:
-
-- The BSP will enter from startup_64 and call into C code
-  (startup_64_setup_env) shortly after setting up the stack, which may
-  result in calls to stack-protected code. Set up %gs early to allow
-  for this safely.
-- APs will enter from secondary_startup_64*, and %gs will be set up
-  soon after. There is one call to C code prior to this
-  (__startup_secondary_64), but it is only to fetch sme_me_mask, and
-  unlikely to be stack-protected, so leave things as they are, but add
-  a note about this in case things change in the future.
-
-for head32.c:
-
-- BSPs/APs will set %fs to __BOOT_DS prior to any C calls. In recent
-  kernels, the compiler is configured to access the stack canary at
-  %fs:__stack_chk_guard, which overlaps with the initial per-cpu
-  __stack_chk_guard variable in the initial/'master' .data..percpu
-  area. This is sufficient to allow access to the canary for use
-  during initial startup, so no changes are needed there.
-
-Suggested-by: Joerg Roedel <jroedel@suse.de> #for 64-bit %gs set up
 Signed-off-by: Michael Roth <michael.roth@amd.com>
 Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
 ---
- arch/x86/kernel/Makefile  |  1 -
- arch/x86/kernel/head_64.S | 24 ++++++++++++++++++++++++
- 2 files changed, 24 insertions(+), 1 deletion(-)
+ arch/x86/kernel/sev-shared.c | 84 +++++++++++++++++++++++++-----------
+ 1 file changed, 58 insertions(+), 26 deletions(-)
 
-diff --git a/arch/x86/kernel/Makefile b/arch/x86/kernel/Makefile
-index 2ff3e600f426..4df8c8f7d2ac 100644
---- a/arch/x86/kernel/Makefile
-+++ b/arch/x86/kernel/Makefile
-@@ -48,7 +48,6 @@ endif
- # non-deterministic coverage.
- KCOV_INSTRUMENT		:= n
+diff --git a/arch/x86/kernel/sev-shared.c b/arch/x86/kernel/sev-shared.c
+index 2b53b622108f..402b19f1c75d 100644
+--- a/arch/x86/kernel/sev-shared.c
++++ b/arch/x86/kernel/sev-shared.c
+@@ -193,6 +193,58 @@ static enum es_result sev_es_ghcb_hv_call(struct ghcb *ghcb,
+ 	return ret;
+ }
  
--CFLAGS_head$(BITS).o	+= -fno-stack-protector
- CFLAGS_cc_platform.o	+= -fno-stack-protector
- 
- CFLAGS_irq.o := -I $(srctree)/$(src)/../include/asm/trace
-diff --git a/arch/x86/kernel/head_64.S b/arch/x86/kernel/head_64.S
-index d8b3ebd2bb85..7074ebf2b47b 100644
---- a/arch/x86/kernel/head_64.S
-+++ b/arch/x86/kernel/head_64.S
-@@ -65,6 +65,22 @@ SYM_CODE_START_NOALIGN(startup_64)
- 	leaq	(__end_init_task - FRAME_SIZE)(%rip), %rsp
- 
- 	leaq	_text(%rip), %rdi
++static int sev_cpuid_hv(u32 func, u32 subfunc, u32 *eax, u32 *ebx,
++			u32 *ecx, u32 *edx)
++{
++	u64 val;
 +
-+	/*
-+	 * initial_gs points to initial fixed_per_cpu struct with storage for
-+	 * the stack protector canary. Global pointer fixups are needed at this
-+	 * stage, so apply them as is done in fixup_pointer(), and initialize %gs
-+	 * such that the canary can be accessed at %gs:40 for subsequent C calls.
-+	 */
-+	movl	$MSR_GS_BASE, %ecx
-+	movq	initial_gs(%rip), %rax
-+	movq	$_text, %rdx
-+	subq	%rdx, %rax
-+	addq	%rdi, %rax
-+	movq	%rax, %rdx
-+	shrq	$32,  %rdx
-+	wrmsr
++	if (eax) {
++		sev_es_wr_ghcb_msr(GHCB_CPUID_REQ(func, GHCB_CPUID_REQ_EAX));
++		VMGEXIT();
++		val = sev_es_rd_ghcb_msr();
 +
- 	pushq	%rsi
- 	call	startup_64_setup_env
- 	popq	%rsi
-@@ -133,6 +149,14 @@ SYM_INNER_LABEL(secondary_startup_64_no_verify, SYM_L_GLOBAL)
- 	 * added to the initial pgdir entry that will be programmed into CR3.
- 	 */
- 	pushq	%rsi
-+	/*
-+	 * NOTE: %gs at this point is a stale data segment left over from the
-+	 * real-mode trampoline, so the default stack protector canary location
-+	 * at %gs:40 does not yet coincide with the expected fixed_per_cpu struct
-+	 * that contains storage for the stack canary. So take care not to add
-+	 * anything to the C functions in this path that would result in stack
-+	 * protected C code being generated.
-+	 */
- 	call	__startup_secondary_64
- 	popq	%rsi
++		if (GHCB_RESP_CODE(val) != GHCB_MSR_CPUID_RESP)
++			return -EIO;
++
++		*eax = (val >> 32);
++	}
++
++	if (ebx) {
++		sev_es_wr_ghcb_msr(GHCB_CPUID_REQ(func, GHCB_CPUID_REQ_EBX));
++		VMGEXIT();
++		val = sev_es_rd_ghcb_msr();
++
++		if (GHCB_RESP_CODE(val) != GHCB_MSR_CPUID_RESP)
++			return -EIO;
++
++		*ebx = (val >> 32);
++	}
++
++	if (ecx) {
++		sev_es_wr_ghcb_msr(GHCB_CPUID_REQ(func, GHCB_CPUID_REQ_ECX));
++		VMGEXIT();
++		val = sev_es_rd_ghcb_msr();
++
++		if (GHCB_RESP_CODE(val) != GHCB_MSR_CPUID_RESP)
++			return -EIO;
++
++		*ecx = (val >> 32);
++	}
++
++	if (edx) {
++		sev_es_wr_ghcb_msr(GHCB_CPUID_REQ(func, GHCB_CPUID_REQ_EDX));
++		VMGEXIT();
++		val = sev_es_rd_ghcb_msr();
++
++		if (GHCB_RESP_CODE(val) != GHCB_MSR_CPUID_RESP)
++			return -EIO;
++
++		*edx = (val >> 32);
++	}
++
++	return 0;
++}
++
+ /*
+  * Boot VC Handler - This is the first VC handler during boot, there is no GHCB
+  * page yet, so it only supports the MSR based communication with the
+@@ -201,7 +253,7 @@ static enum es_result sev_es_ghcb_hv_call(struct ghcb *ghcb,
+ void __init do_vc_no_ghcb(struct pt_regs *regs, unsigned long exit_code)
+ {
+ 	unsigned int fn = lower_bits(regs->ax, 32);
+-	unsigned long val;
++	u32 eax, ebx, ecx, edx;
  
+ 	/* Only CPUID is supported via MSR protocol */
+ 	if (exit_code != SVM_EXIT_CPUID)
+@@ -221,33 +273,13 @@ void __init do_vc_no_ghcb(struct pt_regs *regs, unsigned long exit_code)
+ 		sev_status = (hi << 32) | lo;
+ 	}
+ 
+-	sev_es_wr_ghcb_msr(GHCB_CPUID_REQ(fn, GHCB_CPUID_REQ_EAX));
+-	VMGEXIT();
+-	val = sev_es_rd_ghcb_msr();
+-	if (GHCB_RESP_CODE(val) != GHCB_MSR_CPUID_RESP)
++	if (sev_cpuid_hv(fn, 0, &eax, &ebx, &ecx, &edx))
+ 		goto fail;
+-	regs->ax = val >> 32;
+ 
+-	sev_es_wr_ghcb_msr(GHCB_CPUID_REQ(fn, GHCB_CPUID_REQ_EBX));
+-	VMGEXIT();
+-	val = sev_es_rd_ghcb_msr();
+-	if (GHCB_RESP_CODE(val) != GHCB_MSR_CPUID_RESP)
+-		goto fail;
+-	regs->bx = val >> 32;
+-
+-	sev_es_wr_ghcb_msr(GHCB_CPUID_REQ(fn, GHCB_CPUID_REQ_ECX));
+-	VMGEXIT();
+-	val = sev_es_rd_ghcb_msr();
+-	if (GHCB_RESP_CODE(val) != GHCB_MSR_CPUID_RESP)
+-		goto fail;
+-	regs->cx = val >> 32;
+-
+-	sev_es_wr_ghcb_msr(GHCB_CPUID_REQ(fn, GHCB_CPUID_REQ_EDX));
+-	VMGEXIT();
+-	val = sev_es_rd_ghcb_msr();
+-	if (GHCB_RESP_CODE(val) != GHCB_MSR_CPUID_RESP)
+-		goto fail;
+-	regs->dx = val >> 32;
++	regs->ax = eax;
++	regs->bx = ebx;
++	regs->cx = ecx;
++	regs->dx = edx;
+ 
+ 	/*
+ 	 * This is a VC handler and the #VC is only raised when SEV-ES is
 -- 
 2.25.1
 
