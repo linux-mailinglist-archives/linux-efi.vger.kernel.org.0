@@ -2,41 +2,41 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E40C426FF8
-	for <lists+linux-efi@lfdr.de>; Fri,  8 Oct 2021 20:05:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A8D77427001
+	for <lists+linux-efi@lfdr.de>; Fri,  8 Oct 2021 20:06:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240861AbhJHSHl (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 8 Oct 2021 14:07:41 -0400
-Received: from mail-dm6nam12on2063.outbound.protection.outlook.com ([40.107.243.63]:23136
-        "EHLO NAM12-DM6-obe.outbound.protection.outlook.com"
+        id S240366AbhJHSHt (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 8 Oct 2021 14:07:49 -0400
+Received: from mail-co1nam11on2046.outbound.protection.outlook.com ([40.107.220.46]:45408
+        "EHLO NAM11-CO1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S240320AbhJHSHa (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Fri, 8 Oct 2021 14:07:30 -0400
+        id S240396AbhJHSHc (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Fri, 8 Oct 2021 14:07:32 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=erWSxe8xDgcH5NyEJaEyBbOg2cWc0my/qp9TUImgMpUt1wTpyHLKfT9Y6gMz5CjFJWOyBAQCynDG0Rs9SQKuq6d7BgwkdiRjIlTDwxgbVkvIM8WK7e3NvUYmDNP/07q0JCY1kG/U52A1/pEsvf6blwo/8KQsCfNOUfqBYrgM3g26liqhvj34X7pcyhNhxVPMFMPqm92+9uFIpCzoGh/XERbuWEwGBovD7m9XFjSaahhJ6fd9kxrvK+wPy4y6qf1KJRtO52B9hOq9C0Tf5zl+jM8vKNu26FeFfbFEBYlSclqbodwXSvP8oRQPZW7s7zfWDtgXYizkrZFlMfZ1JwNjxA==
+ b=nJQnBytqjjGdPavCtgTtsewJNgueuXmph/MbtCg62A3KzmZTahN8co6LHT11/13F4GxRhYlhtVLF0fkPGWg9lmp+4YPfq4CECyY8Bk/bxdoH4gsGsoV1t0oY5IDevx3ajfbK0jE/JQ+etHLbl8CkVuliE1uo1sEoRWm+ylV1JQlNdD/w6H1Cq/X7CKagqpZZ02b6EpgoeQyGIM3rib30Q/pvIjLkP8VdOBj7QS+/tm2mh8BJYEMbAuQ+n5py2kHy8+NoVVE1cyd+ADBaMtE+YQJGm/pce6TT6obBIpRgmRj6YkcT7in9rV8tv0O5rjD5LwgDd4qj55LwLmA68M9TRg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=JkrXMwUN2tL9EWoBzRkWKI0TcJjQz9ETB1UY+Lt+sVE=;
- b=CA3xQQTJ0EVIv0sJ1ZLTWt4gj+hOFQpy685F0tyVPuUPhwwqU16B8ZxV7Xu1Y4wsY93iYiyaAXF3IHIv0Wcwk2WB9/2khkaSZtYNceqr4NUD6sFPfEKfdmVz+z2xABakQyP18whshpOdWrEoeghQR/iUXi0zOZfWmWO5Sq+F2BkunGz2Wo2HsDvPkTmGSNteyY+2WhMJ3JYakIg7eTc0R/j+ksRSGhFwC0CTw+3h+Mpyy90UnVdpVwD9/lEhS1d9nu1hDCz9ZPLUtewc+k2sj5TCvcQ47i06gPZ4OdMTukeSvDXX9tcbHLOko8s+9ZwFSl+2QlyhXLzwBlsHx4GaHA==
+ bh=+7JLW7qyMOtwTvf9nO3DychHihJM9mMSUw4fkrt8pak=;
+ b=YIIzVo2v2qr+O6kMzPuX7x51ZDun65bgNzBrBF34UJIVY3j/AGweJVSjLP7qK8oSm3sN9PNjt8qeb8TtHnJZAwrAGBMvaxnOpceHiDGfCjhscugswYAJEVokXIQl1NvthaYSncDBHzAPfqbFqFIGL7JH1bvQ2lM7Tot57/JTOfj6f9BWn0ifAiFmSuUORWEPC2x+laoxnkFbQcxM/rD5+euUziHxbwA68IDfnaZpkVcMy7xqqS4K2sEQXM2yh8aOcHIysRuw0Rl6Oj30sCivybBO3GWnqCwnle/c5+/yQGfoGao5GSP2u5OA+aAR7c26yca0/APXiGA2GELJvE+YTQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=JkrXMwUN2tL9EWoBzRkWKI0TcJjQz9ETB1UY+Lt+sVE=;
- b=txIak1DWTCXzLcs0B51fhwgWWcWhRevzqQAsTrHFPlscQpK5oLn7wgeTsLOsfW1j69rZOEVRsZqP8BAtcjwcVFQ22ZJrT/u6SW6vKAAFHpdy/x3bwl3aY5XLWzTYvNJRrDWYuapivSKFGFHN4K/yX+UDS6Lx87z/1adLEJdj3NU=
-Received: from MWHPR15CA0072.namprd15.prod.outlook.com (2603:10b6:301:4c::34)
- by SN6PR12MB2816.namprd12.prod.outlook.com (2603:10b6:805:75::16) with
+ bh=+7JLW7qyMOtwTvf9nO3DychHihJM9mMSUw4fkrt8pak=;
+ b=f0NlTBHz5A5XYzoy+536hVe5ZCyYTPqPQ9rWYspYgGK5pjiBNzgWOAhFLiOmb40br+ZX/nhEsJy/RMFwQGReJ1MP41jO8mttbYTiyFX2d1AsH6ymAfjNr+1U/T7eAiUJQutB1W8WFZYy+gTo3gRtGXgp/bk8fgr6wyvBmW7vOdw=
+Received: from MWHPR01CA0034.prod.exchangelabs.com (2603:10b6:300:101::20) by
+ MN2PR12MB4157.namprd12.prod.outlook.com (2603:10b6:208:1db::13) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4587.18; Fri, 8 Oct
- 2021 18:05:29 +0000
-Received: from CO1NAM11FT048.eop-nam11.prod.protection.outlook.com
- (2603:10b6:301:4c:cafe::74) by MWHPR15CA0072.outlook.office365.com
- (2603:10b6:301:4c::34) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4587.18 via Frontend
- Transport; Fri, 8 Oct 2021 18:05:29 +0000
+ 2021 18:05:33 +0000
+Received: from CO1NAM11FT038.eop-nam11.prod.protection.outlook.com
+ (2603:10b6:300:101:cafe::2e) by MWHPR01CA0034.outlook.office365.com
+ (2603:10b6:300:101::20) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4566.16 via Frontend
+ Transport; Fri, 8 Oct 2021 18:05:33 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; kernel.org; dkim=none (message not signed)
  header.d=none;kernel.org; dmarc=pass action=none header.from=amd.com;
@@ -44,13 +44,13 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=SATLEXMB04.amd.com;
 Received: from SATLEXMB04.amd.com (165.204.84.17) by
- CO1NAM11FT048.mail.protection.outlook.com (10.13.175.148) with Microsoft SMTP
+ CO1NAM11FT038.mail.protection.outlook.com (10.13.174.231) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.4587.18 via Frontend Transport; Fri, 8 Oct 2021 18:05:28 +0000
+ 15.20.4587.18 via Frontend Transport; Fri, 8 Oct 2021 18:05:32 +0000
 Received: from sbrijesh-desktop.amd.com (10.180.168.240) by SATLEXMB04.amd.com
  (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.8; Fri, 8 Oct 2021
- 13:05:23 -0500
+ 13:05:25 -0500
 From:   Brijesh Singh <brijesh.singh@amd.com>
 To:     <x86@kernel.org>, <linux-kernel@vger.kernel.org>,
         <kvm@vger.kernel.org>, <linux-efi@vger.kernel.org>,
@@ -81,9 +81,9 @@ CC:     Thomas Gleixner <tglx@linutronix.de>,
         <tony.luck@intel.com>, <marcorr@google.com>,
         <sathyanarayanan.kuppuswamy@linux.intel.com>,
         Brijesh Singh <brijesh.singh@amd.com>
-Subject: [PATCH v6 08/42] x86/sev-es: initialize sev_status/features within #VC handler
-Date:   Fri, 8 Oct 2021 13:04:19 -0500
-Message-ID: <20211008180453.462291-9-brijesh.singh@amd.com>
+Subject: [PATCH v6 09/42] x86/sev: Check SEV-SNP features support
+Date:   Fri, 8 Oct 2021 13:04:20 -0500
+Message-ID: <20211008180453.462291-10-brijesh.singh@amd.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20211008180453.462291-1-brijesh.singh@amd.com>
 References: <20211008180453.462291-1-brijesh.singh@amd.com>
@@ -95,74 +95,134 @@ X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
  (10.181.40.145)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 27db9027-eae2-420a-048a-08d98a863615
-X-MS-TrafficTypeDiagnostic: SN6PR12MB2816:
-X-Microsoft-Antispam-PRVS: <SN6PR12MB28165AD3729A6D86D72C1156E5B29@SN6PR12MB2816.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:8882;
+X-MS-Office365-Filtering-Correlation-Id: a4ca3b02-8edc-4edd-2689-08d98a863891
+X-MS-TrafficTypeDiagnostic: MN2PR12MB4157:
+X-Microsoft-Antispam-PRVS: <MN2PR12MB41572519BBFEE52B39F84100E5B29@MN2PR12MB4157.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:6108;
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: jHE2kKm7pA8JWjCBhB9VO6n+tbmKXlwqAdqhjFdC97R9poAx0zwh8IBqe9w2hxl5IGrhtcd8Iuf5TPRfXATVnZVrNqKx7/WQfUPX4kIVutNLJ/MFnm0rvguh5RL+4fJtuzmaoVnLZgMnWE1k4MKC/IV27h5PKeP8GQIX7bY7cEd2kd6dplua/1aXgbxIKPDN1VKEu/WULYY6kqCuaJY903R3I2MxEWYXimEDUVQrPxlgVyfzpdU37wPYMOjENXD1bMi4rixxoQ0pWeqKQxo/SgfCEvsTIf33oh7TuWp9KKqPg3nv3w6S1V7OSyurnGjx9QcR4f9UHkCCCatzum8tDcqWDbLT8lNvIU1EhOZCpX9GdEb23qp+J80unytJcdehe2pD6eIQ5x4gy3KR3eylFBzcuErG3ozz2xKTWO2k9CZBBdzrnXTPdFOrlpVwWShGcLlnXfHqxyY7MEVddZAxKgROG91UJTdGH0SZ3N3V/UtzX3s6F41sdRC08BkmBLkoneMRF8D+qNo1hv0qOZb8eP3MSR59KcbxXIIBzj8PEYbsSqYtOCnhFCw7wFn0Km/JfT+u+jDizSYNTba9PjWw3Q9Whg096mH3ihT2e98j7mOxdNfpa8m4YZB8d928mT7qSxHg/IlEIo2rH9mt088X3025SIRqskNAOqA6NfSQByanP3b0TBSJ/bd15GAMQ9m+LmnABvofiwmLmfLparDKLRmDrgc4HIxXbcuGqATB/819sO9/KWT3kthMUX4ZzQYw
-X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(4636009)(36840700001)(46966006)(186003)(110136005)(54906003)(2906002)(26005)(8936002)(7696005)(8676002)(44832011)(70586007)(316002)(426003)(5660300002)(4326008)(16526019)(7406005)(336012)(83380400001)(82310400003)(81166007)(2616005)(47076005)(36860700001)(70206006)(508600001)(1076003)(86362001)(356005)(36756003)(6666004)(7416002)(2101003)(36900700001);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: lVMgLVl8ijagWv2Ct/uOtn9J2GixkcaxybQCCnto+e9TZalYeRSCt7dmn6WnRiUL21HrFmUOUhgYTlc7pAiOtJgHNzZLzO9w9IefHvlTwnhSJmqakIGwHYLTp5BZsAV3k0Pbris8EfnjprWfqYFm1eg6LHnyBluod8q2ET+7YGiXcVpE3iDQgjNYxZPCcHEkRrwlRcGs7O4prC08StOs+PmtMlXBJkVsrQsO+N+jHU0ZDs1jjOJHpOf+zxBmAgMIxLjAo4Oak7ol35Tr2jqHdmFrkvNpDDCUhaCAWn5G2H4F7ewqsrvi+2IqeqU3tTihODE4xNbSqtr3BzzKqLNS5O5bpN8yhuqNABOvt2CrOzS7EO7Uvo5RnuF/yBKheEfQxp2FHCUFZjVg1ZDKxMIgOCNG7xh2yCQlYAdqJFs9weUNC4Ehv+7/P0ZpDyU8oQHakcMGGI0lPQIdGc1HRtwINDN3WsdaAJE9f+KStmCmOXWLLF5Aw2QiYgIToVZzDwgfIzI8VTiijUyTPoG6gL3f6kMLWt8Qhlaeu/1nqqWBg9gowyuh1BDiVq3k+9iODfyzobkvV/rfzK4NR5e1Q+TRF8AT6ljiOq8jTNIVLbaZtVo/KQe45EY3Ikz4pQOwQFVmmzSq2llhv0vg8jdR162iF4AXowxoVCiwgU5NtlA76ZRBQXl/HI/noBQOBBRFlc8rhLZ/G00qCwzdj9iXUw8wEmDE0hk3nM33pZeHzgIS7xUeD915N3MCL2ZtMdahg+yI
+X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(4636009)(36840700001)(46966006)(54906003)(7416002)(4326008)(44832011)(7406005)(70206006)(36860700001)(8936002)(47076005)(110136005)(5660300002)(6666004)(7696005)(316002)(8676002)(36756003)(70586007)(82310400003)(336012)(508600001)(426003)(2616005)(83380400001)(2906002)(26005)(186003)(16526019)(1076003)(356005)(81166007)(86362001)(36900700001)(2101003);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Oct 2021 18:05:28.5594
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Oct 2021 18:05:32.7401
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 27db9027-eae2-420a-048a-08d98a863615
+X-MS-Exchange-CrossTenant-Network-Message-Id: a4ca3b02-8edc-4edd-2689-08d98a863891
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: CO1NAM11FT048.eop-nam11.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthSource: CO1NAM11FT038.eop-nam11.prod.protection.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN6PR12MB2816
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4157
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-From: Michael Roth <michael.roth@amd.com>
+Version 2 of the GHCB specification added the advertisement of features
+that are supported by the hypervisor. If hypervisor supports the SEV-SNP
+then it must set the SEV-SNP features bit to indicate that the base
+SEV-SNP is supported.
 
-Generally access to MSR_AMD64_SEV is only safe if the 0x8000001F CPUID
-leaf indicates SEV support. With SEV-SNP, CPUID responses from the
-hypervisor are not considered trustworthy, particularly for 0x8000001F.
-SEV-SNP provides a firmware-validated CPUID table to use as an
-alternative, but prior to checking MSR_AMD64_SEV there are no
-guarantees that this is even an SEV-SNP guest.
+Check the SEV-SNP feature while establishing the GHCB, if failed,
+terminate the guest.
 
-Rather than relying on these CPUID values early on, allow SEV-ES and
-SEV-SNP guests to instead use a cpuid instruction to trigger a #VC and
-have it cache MSR_AMD64_SEV in sev_status, since it is known to be safe
-to access MSR_AMD64_SEV if a #VC has triggered.
-
-Signed-off-by: Michael Roth <michael.roth@amd.com>
 Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
 ---
- arch/x86/kernel/sev-shared.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ arch/x86/boot/compressed/sev.c    | 16 ++++++++++++++--
+ arch/x86/include/asm/sev-common.h |  3 +++
+ arch/x86/kernel/sev.c             |  8 ++++++--
+ 3 files changed, 23 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/kernel/sev-shared.c b/arch/x86/kernel/sev-shared.c
-index 8ee27d07c1cd..2796c524d174 100644
---- a/arch/x86/kernel/sev-shared.c
-+++ b/arch/x86/kernel/sev-shared.c
-@@ -191,6 +191,20 @@ void __init do_vc_no_ghcb(struct pt_regs *regs, unsigned long exit_code)
- 	if (exit_code != SVM_EXIT_CPUID)
- 		goto fail;
+diff --git a/arch/x86/boot/compressed/sev.c b/arch/x86/boot/compressed/sev.c
+index 7760959fe96d..8b0f892c072b 100644
+--- a/arch/x86/boot/compressed/sev.c
++++ b/arch/x86/boot/compressed/sev.c
+@@ -119,11 +119,23 @@ static enum es_result vc_read_mem(struct es_em_ctxt *ctxt,
+ /* Include code for early handlers */
+ #include "../../kernel/sev-shared.c"
+ 
+-static bool early_setup_sev_es(void)
++static inline bool sev_snp_enabled(void)
++{
++	return sev_status & MSR_AMD64_SEV_SNP_ENABLED;
++}
++
++static bool do_early_sev_setup(void)
+ {
+ 	if (!sev_es_negotiate_protocol())
+ 		sev_es_terminate(SEV_TERM_SET_GEN, GHCB_SEV_ES_PROT_UNSUPPORTED);
  
 +	/*
-+	 * A #VC implies that either SEV-ES or SEV-SNP are enabled, so the SEV
-+	 * MSR is also available. Go ahead and initialize sev_status here to
-+	 * allow SEV features to be checked without relying solely on the SEV
-+	 * cpuid bit to indicate whether it is safe to do so.
++	 * If SEV-SNP is enabled, then check if the hypervisor supports the SEV-SNP
++	 * features.
 +	 */
-+	if (!sev_status) {
-+		unsigned long lo, hi;
++	if (sev_snp_enabled() && !(sev_hv_features & GHCB_HV_FT_SNP))
++		sev_es_terminate(SEV_TERM_SET_GEN, GHCB_SNP_UNSUPPORTED);
 +
-+		asm volatile("rdmsr" : "=a" (lo), "=d" (hi)
-+				     : "c" (MSR_AMD64_SEV));
-+		sev_status = (hi << 32) | lo;
-+	}
+ 	if (set_page_decrypted((unsigned long)&boot_ghcb_page))
+ 		return false;
+ 
+@@ -174,7 +186,7 @@ void do_boot_stage2_vc(struct pt_regs *regs, unsigned long exit_code)
+ 	struct es_em_ctxt ctxt;
+ 	enum es_result result;
+ 
+-	if (!boot_ghcb && !early_setup_sev_es())
++	if (!boot_ghcb && !do_early_sev_setup())
+ 		sev_es_terminate(SEV_TERM_SET_GEN, GHCB_SEV_ES_GEN_REQ);
+ 
+ 	vc_ghcb_invalidate(boot_ghcb);
+diff --git a/arch/x86/include/asm/sev-common.h b/arch/x86/include/asm/sev-common.h
+index 891569c07ed7..f80a3cde2086 100644
+--- a/arch/x86/include/asm/sev-common.h
++++ b/arch/x86/include/asm/sev-common.h
+@@ -64,6 +64,8 @@
+ 	/* GHCBData[63:12] */				\
+ 	(((u64)(v) & GENMASK_ULL(63, 12)) >> 12)
+ 
++#define GHCB_HV_FT_SNP			BIT_ULL(0)
 +
- 	sev_es_wr_ghcb_msr(GHCB_CPUID_REQ(fn, GHCB_CPUID_REQ_EAX));
- 	VMGEXIT();
- 	val = sev_es_rd_ghcb_msr();
+ #define GHCB_MSR_TERM_REQ		0x100
+ #define GHCB_MSR_TERM_REASON_SET_POS	12
+ #define GHCB_MSR_TERM_REASON_SET_MASK	0xf
+@@ -80,6 +82,7 @@
+ #define SEV_TERM_SET_GEN		0
+ #define GHCB_SEV_ES_GEN_REQ		0
+ #define GHCB_SEV_ES_PROT_UNSUPPORTED	1
++#define GHCB_SNP_UNSUPPORTED		2
+ 
+ /* Linux-specific reason codes (used with reason set 1) */
+ #define SEV_TERM_SET_LINUX		1
+diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
+index 427b1c6d08a8..2290fbcc1844 100644
+--- a/arch/x86/kernel/sev.c
++++ b/arch/x86/kernel/sev.c
+@@ -631,12 +631,16 @@ static enum es_result vc_handle_msr(struct ghcb *ghcb, struct es_em_ctxt *ctxt)
+  * This function runs on the first #VC exception after the kernel
+  * switched to virtual addresses.
+  */
+-static bool __init sev_es_setup_ghcb(void)
++static bool __init setup_ghcb(void)
+ {
+ 	/* First make sure the hypervisor talks a supported protocol. */
+ 	if (!sev_es_negotiate_protocol())
+ 		return false;
+ 
++	/* If SNP is active, make sure that hypervisor supports the feature. */
++	if (cc_platform_has(CC_ATTR_SEV_SNP) && !(sev_hv_features & GHCB_HV_FT_SNP))
++		sev_es_terminate(SEV_TERM_SET_GEN, GHCB_SNP_UNSUPPORTED);
++
+ 	/*
+ 	 * Clear the boot_ghcb. The first exception comes in before the bss
+ 	 * section is cleared.
+@@ -1444,7 +1448,7 @@ bool __init handle_vc_boot_ghcb(struct pt_regs *regs)
+ 	enum es_result result;
+ 
+ 	/* Do initial setup or terminate the guest */
+-	if (unlikely(boot_ghcb == NULL && !sev_es_setup_ghcb()))
++	if (unlikely(!boot_ghcb && !setup_ghcb()))
+ 		sev_es_terminate(SEV_TERM_SET_GEN, GHCB_SEV_ES_GEN_REQ);
+ 
+ 	vc_ghcb_invalidate(boot_ghcb);
 -- 
 2.25.1
 
