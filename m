@@ -2,35 +2,34 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 568DD42631D
-	for <lists+linux-efi@lfdr.de>; Fri,  8 Oct 2021 05:37:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 91A21426341
+	for <lists+linux-efi@lfdr.de>; Fri,  8 Oct 2021 05:43:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238501AbhJHDjV (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 7 Oct 2021 23:39:21 -0400
-Received: from mga03.intel.com ([134.134.136.65]:31801 "EHLO mga03.intel.com"
+        id S231569AbhJHDpW (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 7 Oct 2021 23:45:22 -0400
+Received: from mga12.intel.com ([192.55.52.136]:20717 "EHLO mga12.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229696AbhJHDjU (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Thu, 7 Oct 2021 23:39:20 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10130"; a="226377523"
+        id S236585AbhJHDpW (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Thu, 7 Oct 2021 23:45:22 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10130"; a="206545711"
 X-IronPort-AV: E=Sophos;i="5.85,356,1624345200"; 
-   d="scan'208";a="226377523"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Oct 2021 20:37:25 -0700
+   d="scan'208";a="206545711"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Oct 2021 20:43:27 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.85,356,1624345200"; 
-   d="scan'208";a="522850615"
+   d="scan'208";a="568870788"
 Received: from lkp-server01.sh.intel.com (HELO 72c3bd3cf19c) ([10.239.97.150])
-  by orsmga001.jf.intel.com with ESMTP; 07 Oct 2021 20:37:24 -0700
+  by fmsmga002.fm.intel.com with ESMTP; 07 Oct 2021 20:43:26 -0700
 Received: from kbuild by 72c3bd3cf19c with local (Exim 4.92)
         (envelope-from <lkp@intel.com>)
-        id 1mYghI-0007tf-2Z; Fri, 08 Oct 2021 03:37:24 +0000
-Date:   Fri, 08 Oct 2021 11:37:08 +0800
+        id 1mYgn7-0007zO-Ug; Fri, 08 Oct 2021 03:43:25 +0000
+Date:   Fri, 08 Oct 2021 11:42:58 +0800
 From:   kernel test robot <lkp@intel.com>
 To:     Ard Biesheuvel <ardb@kernel.org>
 Cc:     linux-efi@vger.kernel.org
-Subject: [efi:urgent] BUILD SUCCESS
- 38fa3206bf441911258e5001ac8b6738693f8d82
-Message-ID: <615fbce4.rgP2o1Wd+hQCCRhH%lkp@intel.com>
+Subject: [efi:next] BUILD SUCCESS 720dff78de360ad9742d5f438101cedcdb5dad84
+Message-ID: <615fbe42.haYg32xI06/Jjcx5%lkp@intel.com>
 User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -39,10 +38,10 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git urgent
-branch HEAD: 38fa3206bf441911258e5001ac8b6738693f8d82  efi: Change down_interruptible() in virt_efi_reset_system() to down_trylock()
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git next
+branch HEAD: 720dff78de360ad9742d5f438101cedcdb5dad84  efi: Allow efi=runtime
 
-elapsed time: 1053m
+elapsed time: 1059m
 
 configs tested: 135
 configs skipped: 3
