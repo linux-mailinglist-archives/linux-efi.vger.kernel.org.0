@@ -2,94 +2,100 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E8F2C428D9F
-	for <lists+linux-efi@lfdr.de>; Mon, 11 Oct 2021 15:15:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D419429FC5
+	for <lists+linux-efi@lfdr.de>; Tue, 12 Oct 2021 10:27:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235287AbhJKNRZ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 11 Oct 2021 09:17:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55066 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235196AbhJKNRY (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 11 Oct 2021 09:17:24 -0400
-Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96466C061570;
-        Mon, 11 Oct 2021 06:15:24 -0700 (PDT)
-Received: from zn.tnic (p200300ec2f08bb00608dded251e09f1b.dip0.t-ipconnect.de [IPv6:2003:ec:2f08:bb00:608d:ded2:51e0:9f1b])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        id S234711AbhJLI3V (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 12 Oct 2021 04:29:21 -0400
+Received: from smtp-out1.suse.de ([195.135.220.28]:42676 "EHLO
+        smtp-out1.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234736AbhJLI3U (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 12 Oct 2021 04:29:20 -0400
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
         (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 161DB1EC01B7;
-        Mon, 11 Oct 2021 15:15:23 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1633958123;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=jCMoAF/G6nShUACG0ht2kXTNSZwdTajCxjyuJX54Kmg=;
-        b=YYMwvqngYlD0Vfggl3CGG7j1wno7aGftVm86pVdEvkTAF2WXsZE2p2el+RlGwnWjVc0fby
-        GquYSnZklcwTHOg48URxTs3OP3g5iMplqm4VaBPmavEfPooaN4YjC5+G+/LTjCr6nO4Gqc
-        kGH+HsmjZ5ZCvNsQqE25noSASoHWfvA=
-Date:   Mon, 11 Oct 2021 15:15:23 +0200
-From:   Borislav Petkov <bp@alien8.de>
-To:     Brijesh Singh <brijesh.singh@amd.com>
-Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        linux-coco@lists.linux.dev, linux-mm@kvack.org,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Vitaly Kuznetsov <vkuznets@redhat.com>,
-        Jim Mattson <jmattson@google.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        David Rientjes <rientjes@google.com>,
-        Dov Murik <dovmurik@linux.ibm.com>,
-        Tobin Feldman-Fitzthum <tobin@ibm.com>,
-        Michael Roth <michael.roth@amd.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        "Kirill A . Shutemov" <kirill@shutemov.name>,
-        Andi Kleen <ak@linux.intel.com>,
-        "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
-        tony.luck@intel.com, marcorr@google.com,
-        sathyanarayanan.kuppuswamy@linux.intel.com,
-        Venu Busireddy <venu.busireddy@oracle.com>
-Subject: Re: [PATCH v6 02/42] x86/sev: Shorten GHCB terminate macro names
-Message-ID: <YWQ4694RuZUY3TaU@zn.tnic>
-References: <20211008180453.462291-1-brijesh.singh@amd.com>
- <20211008180453.462291-3-brijesh.singh@amd.com>
+        by smtp-out1.suse.de (Postfix) with ESMTPS id A1BEC21F2C;
+        Tue, 12 Oct 2021 08:27:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1634027238; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+        bh=zD9QTV4WyXthA7N/2eYXkVzurQrRAnyA96sGjWbnf5A=;
+        b=j5ZCZf6SyHkjCi5k0JocrOJfsP4v3eZUU9uNo1rxGQJn8ktR7Tt2ubUs0JfqtrY2iNlpec
+        ETHMFEk73gM4gj74FUyTqsm0AipjlyOFV1YBu7fsDmm75SFH7s23MNqt5/fV47LFPBoRAC
+        NMJvAiKQNl/6f4F6NM3dkqQ9q5C32MU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1634027238;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+        bh=zD9QTV4WyXthA7N/2eYXkVzurQrRAnyA96sGjWbnf5A=;
+        b=aLWA8vxcED2t4X6I9/ThVRx7D02Hpg3kFw8dnxb6bTL6fDlOacqKqIzWCqFya2DaRN19y3
+        udvxByOy2o86mVAA==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 8792813AD5;
+        Tue, 12 Oct 2021 08:27:18 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id uHvPIOZGZWE+SQAAMHmgww
+        (envelope-from <iivanov@suse.de>); Tue, 12 Oct 2021 08:27:18 +0000
+From:   "Ivan T. Ivanov" <iivanov@suse.de>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     Dominik Brodowski <linux@dominikbrodowski.net>,
+        Bhupesh Sharma <bhsharma@redhat.com>,
+        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        "Ivan T. Ivanov" <iivanov@suse.de>
+Subject: [PATCH] Revert "efi/random: Treat EFI_RNG_PROTOCOL output as bootloader randomness"
+Date:   Tue, 12 Oct 2021 11:27:08 +0300
+Message-Id: <20211012082708.121931-1-iivanov@suse.de>
+X-Mailer: git-send-email 2.33.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20211008180453.462291-3-brijesh.singh@amd.com>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, Oct 08, 2021 at 01:04:13PM -0500, Brijesh Singh wrote:
+This reverts commit 18b915ac6b0ac5ba7ded03156860f60a9f16df2b.
 
-Yeah, let's add a trivial commit message here anyway:
+When CONFIG_RANDOM_TRUST_BOOTLOADER is enabled add_bootloader_randomness()
+calls add_hwgenerator_randomness() which might sleep, but this is not
+possible during early kernel initialization. This revert fixes following
+NULL pointer deference:
 
-<-- "Shorten macro names for improved readability."
-
-> Reviewed-by: Venu Busireddy <venu.busireddy@oracle.com>
-> Suggested-by: Borislav Petkov <bp@suse.de>
-> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
-> ---
->  arch/x86/boot/compressed/sev.c    | 6 +++---
->  arch/x86/include/asm/sev-common.h | 4 ++--
->  arch/x86/kernel/sev-shared.c      | 2 +-
->  arch/x86/kernel/sev.c             | 4 ++--
->  4 files changed, 8 insertions(+), 8 deletions(-)
-
+[    0.000000] efi: seeding entropy pool
+[    0.000000] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
 ...
+[    0.000000] pc : kthread_should_stop+0x2c/0x60
+[    0.000000] lr : add_hwgenerator_randomness+0x58/0x178
+...
+[    0.000000] Call trace:
+[    0.000000]  kthread_should_stop+0x2c/0x60
+[    0.000000]  add_bootloader_randomness+0x2c/0x38
+[    0.000000]  efi_config_parse_tables+0x120/0x250
+[    0.000000]  efi_init+0x138/0x1e0
+[    0.000000]  setup_arch+0x394/0x778
+[    0.000000]  start_kernel+0x90/0x568
 
+Signed-off-by: Ivan T. Ivanov <iivanov@suse.de>
+---
+ drivers/firmware/efi/efi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
+index 847f33ffc4ae..8aad3c524947 100644
+--- a/drivers/firmware/efi/efi.c
++++ b/drivers/firmware/efi/efi.c
+@@ -600,7 +600,7 @@ int __init efi_config_parse_tables(const efi_config_table_t *config_tables,
+ 					      sizeof(*seed) + size);
+ 			if (seed != NULL) {
+ 				pr_notice("seeding entropy pool\n");
+-				add_bootloader_randomness(seed->bits, size);
++				add_device_randomness(seed->bits, size);
+ 				early_memunmap(seed, sizeof(*seed) + size);
+ 			} else {
+ 				pr_err("Could not map UEFI random seed!\n");
 -- 
-Regards/Gruss,
-    Boris.
+2.33.0
 
-https://people.kernel.org/tglx/notes-about-netiquette
