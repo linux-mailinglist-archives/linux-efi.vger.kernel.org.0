@@ -2,114 +2,79 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D059B42C206
-	for <lists+linux-efi@lfdr.de>; Wed, 13 Oct 2021 16:02:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D2C742CAAE
+	for <lists+linux-efi@lfdr.de>; Wed, 13 Oct 2021 22:07:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233969AbhJMOEk (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 13 Oct 2021 10:04:40 -0400
-Received: from mail.skyhub.de ([5.9.137.197]:36956 "EHLO mail.skyhub.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230324AbhJMOEj (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Wed, 13 Oct 2021 10:04:39 -0400
-Received: from zn.tnic (p200300ec2f1208001796bb6dc2170571.dip0.t-ipconnect.de [IPv6:2003:ec:2f12:800:1796:bb6d:c217:571])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id EF28E1EC051F;
-        Wed, 13 Oct 2021 16:02:34 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1634133755;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=NurK9sx2E3ZorSLuDzTSVMGD0abr259MgqmkGxhYunc=;
-        b=BfN4IUFU3/eKIX37iXR25VuZJZfq0gwCcmJIo74REhBJxLHgr2IUVEc/tOe6+OWsIjhtwF
-        pqmUlzUvmYxmZqM3q5gdwSGDl6BRWnqJfG0Qw1p1V2i06CSWDsBqNUW0EudVX23OlHE2Jy
-        FVCoeKqYWNp5vr875rp1nUyJ4f0r800=
-Date:   Wed, 13 Oct 2021 16:02:33 +0200
-From:   Borislav Petkov <bp@alien8.de>
-To:     Brijesh Singh <brijesh.singh@amd.com>
-Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        linux-coco@lists.linux.dev, linux-mm@kvack.org,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Vitaly Kuznetsov <vkuznets@redhat.com>,
-        Jim Mattson <jmattson@google.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        David Rientjes <rientjes@google.com>,
-        Dov Murik <dovmurik@linux.ibm.com>,
-        Tobin Feldman-Fitzthum <tobin@ibm.com>,
-        Michael Roth <michael.roth@amd.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        "Kirill A . Shutemov" <kirill@shutemov.name>,
-        Andi Kleen <ak@linux.intel.com>,
-        "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
-        tony.luck@intel.com, marcorr@google.com,
-        sathyanarayanan.kuppuswamy@linux.intel.com
-Subject: Re: [PATCH v6 07/42] x86/sev: Add support for hypervisor feature
- VMGEXIT
-Message-ID: <YWbm+SOMv7AXduWR@zn.tnic>
-References: <20211008180453.462291-1-brijesh.singh@amd.com>
- <20211008180453.462291-8-brijesh.singh@amd.com>
+        id S238432AbhJMUJh (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 13 Oct 2021 16:09:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44372 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231245AbhJMUJg (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 13 Oct 2021 16:09:36 -0400
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9102C061570;
+        Wed, 13 Oct 2021 13:07:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
+        Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+        Content-Description:In-Reply-To:References;
+        bh=RXVnMLzX0n92WenFQsNXvxZfnumwQy6spJ6FkB8/pLo=; b=n+Ps40O18Scs0fFFiCjsG5RddG
+        L2h5n411+IZlaZPnon3TgZNCz2kx5vWiWsuVXQPy4kgzVnCbsLLbmvUnzF7+J7iQp9uHRruUyWnof
+        e8Wo8oNWTJQ1boA+tzSvIgoJ4U2nqO9Kn4kPmjgjCG4tgFpUjVeOeB49EoqleT1iUZfpzNrVjCURU
+        lZ8SYwoqU+xd1yYPgJ6seMYYzU2bcnpIRW0ESYLVJl2Ah4ENaQFDlbr3xF3fGAeO9jylhlq9XcTsN
+        niyKlGK0qHsiuX1YhcFT65Fs6gLyl6NcLrnCVRmDmXumDutE336gLYahXFyVdcrWGRkCB7TB7qxtu
+        VHmi3OJg==;
+Received: from willy by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1makVR-007lZ6-EL; Wed, 13 Oct 2021 20:06:09 +0000
+From:   "Matthew Wilcox (Oracle)" <willy@infradead.org>
+Cc:     "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+        efi@lists.einval.com, debian-kernel@lists.debian.org,
+        linux-efi@vger.kernel.org
+Subject: [PATCH] builddeb: Support signing kernels with a Machine Owner Key
+Date:   Wed, 13 Oct 2021 21:05:36 +0100
+Message-Id: <20211013200536.1851070-1-willy@infradead.org>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20211008180453.462291-8-brijesh.singh@amd.com>
+Content-Transfer-Encoding: 8bit
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, Oct 08, 2021 at 01:04:18PM -0500, Brijesh Singh wrote:
-> Version 2 of GHCB specification introduced advertisement of a features
-> that are supported by the hypervisor. Add support to query the HV
-> features on boot.
-> 
-> Version 2 of GHCB specification adds several new NAEs, most of them are
-> optional except the hypervisor feature. Now that hypervisor feature NAE
-> is implemented, so bump the GHCB maximum support protocol version.
-> 
-> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
-> ---
->  arch/x86/include/asm/sev-common.h |  3 +++
->  arch/x86/include/asm/sev.h        |  2 +-
->  arch/x86/include/uapi/asm/svm.h   |  2 ++
->  arch/x86/kernel/sev-shared.c      | 30 ++++++++++++++++++++++++++++++
->  4 files changed, 36 insertions(+), 1 deletion(-)
+If the config file specifies a signing key, use it to sign
+the kernel so that machines with SecureBoot enabled can boot.
+See https://wiki.debian.org/SecureBoot
 
-For the next version, when you add those variables, do this too pls:
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+---
+ scripts/package/builddeb | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/sev-shared.c b/arch/x86/kernel/sev-shared.c
-index 8ee27d07c1cd..7a2176e0d0ad 100644
---- a/arch/x86/kernel/sev-shared.c
-+++ b/arch/x86/kernel/sev-shared.c
-@@ -21,10 +21,10 @@
-  *
-  * GHCB protocol version negotiated with the hypervisor.
-  */
--static u16 __ro_after_init ghcb_version;
-+static u16 ghcb_version __ro_after_init;
+diff --git a/scripts/package/builddeb b/scripts/package/builddeb
+index 91a502bb97e8..4fa6ff2b5cac 100755
+--- a/scripts/package/builddeb
++++ b/scripts/package/builddeb
+@@ -147,7 +147,15 @@ else
+ 	cp System.map "$tmpdir/boot/System.map-$version"
+ 	cp $KCONFIG_CONFIG "$tmpdir/boot/config-$version"
+ fi
+-cp "$($MAKE -s -f $srctree/Makefile image_name)" "$tmpdir/$installed_image_path"
++
++vmlinux=$($MAKE -s -f $srctree/Makefile image_name)
++if is_enabled CONFIG_MODULE_SIG; then
++	cert=$srctree/$(grep ^CONFIG_MODULE_SIG_KEY= include/config/auto.conf | cut -d\" -f2)
++	key=${cert%pem}priv
++	sbsign --key $key --cert $cert "$vmlinux" --output "$tmpdir/$installed_image_path"
++else
++	cp "$vmlinux" "$tmpdir/$installed_image_path"
++fi
  
- /* Bitmap of SEV features supported by the hypervisor */
--static u64 __ro_after_init sev_hv_features;
-+static u64 sev_hv_features __ro_after_init;
- 
- static bool __init sev_es_check_cpu_features(void)
- {
-
-I didn't realize this earlier but we put that annotation at the end.
-
-Thx.
-
+ if is_enabled CONFIG_OF_EARLY_FLATTREE; then
+ 	# Only some architectures with OF support have this target
 -- 
-Regards/Gruss,
-    Boris.
+2.32.0
 
-https://people.kernel.org/tglx/notes-about-netiquette
