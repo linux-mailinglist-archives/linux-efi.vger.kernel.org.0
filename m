@@ -2,58 +2,58 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1537B42D9F7
-	for <lists+linux-efi@lfdr.de>; Thu, 14 Oct 2021 15:14:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 205A942D9CD
+	for <lists+linux-efi@lfdr.de>; Thu, 14 Oct 2021 15:09:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230518AbhJNNQP (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 14 Oct 2021 09:16:15 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:11308 "EHLO
+        id S231680AbhJNNLk (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 14 Oct 2021 09:11:40 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:46365 "EHLO
         mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S230339AbhJNNQP (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 14 Oct 2021 09:16:15 -0400
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 19ED4kNv023463;
-        Thu, 14 Oct 2021 09:13:59 -0400
+        by vger.kernel.org with ESMTP id S231607AbhJNNLe (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 14 Oct 2021 09:11:34 -0400
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 19EBC5dL017855;
+        Thu, 14 Oct 2021 09:09:01 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=mSMhS5KuMYXSCCHFWTjt0J4W3hRXJ0JBE2fkifaGDT8=;
- b=ELieMpXYvHzwWCXV/nG6KZKb/zhit22gYHYEK523A4425R8qIWWASYhf/2wT8jMolaIq
- f8kaoaLenSCgfHaj1uW4mWSte61Pfeaa8OxW9RpigeKPO7LVNOTZCtJebEFLxPqr40cx
- YkiHjL1jUqEsVg7GvfbK36R86HQAoULctWIHBhdoagHXmHeh+uiTVRpO+OgYL9e3b7Py
- 8ViFiEx4gsPcGp4j47Ee14veU/pthAWz4S5BN+im5o6X/rPdbD/eNb2jE0BKJH92bFBi
- zpMqiL+Yd+3XNcW6sw0JruzcMytihSiTUWF9VgalCrQyZmxFMU+8uteJOXB+OPDkC7kq uA== 
+ bh=Iqjb/HuqAPee0d/niWc0Tugcm0RWM3NiSGvG5Q1ad6Y=;
+ b=CpHSJbNrUb5GwmVgmQnynlrsFMsaptnNXelWobM1TYi/LfOgjz1Uyrdn0r4qou5XZEVf
+ B84IYhrqMqrArmwbPomJTkhz6OAd8l0Mmczvi8RQ6CYjRiybKtNvvjy2dxrUVwVAydGD
+ RYpRucA80PFVMkLRJ8CJ0kscCN0ryFAbRgIEt7GPlKtRSLVE7Bo3Sp7v+RCvVMfTehkG
+ cvvkncBj4E7Zt4GD2vymZdYAVwAfF4VMH/fVCqkAkmhTG/HTCPqreBnIrNODOi5bNS4J
+ R/QNQjcH4a5/uqJSQ0Ver7StvxDVcOyVB7LTW4gv1P2GsY1Mx/E2sgVTAr15pW5UnW+i IQ== 
 Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 3bpn3vgbur-1
+        by mx0a-001b2d01.pphosted.com with ESMTP id 3bnrndq6b9-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 14 Oct 2021 09:13:59 -0400
-Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
-        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 19ED562p024445;
-        Thu, 14 Oct 2021 09:13:58 -0400
+        Thu, 14 Oct 2021 09:09:01 -0400
+Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 19ECnkva023854;
+        Thu, 14 Oct 2021 09:09:00 -0400
 Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com [169.53.41.122])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 3bpn3vgbtx-1
+        by mx0a-001b2d01.pphosted.com with ESMTP id 3bnrndq6a1-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 14 Oct 2021 09:13:58 -0400
+        Thu, 14 Oct 2021 09:09:00 -0400
 Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
-        by ppma04dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 19ED1o5p028228;
-        Thu, 14 Oct 2021 13:08:57 GMT
-Received: from b03cxnp07029.gho.boulder.ibm.com (b03cxnp07029.gho.boulder.ibm.com [9.17.130.16])
-        by ppma04dal.us.ibm.com with ESMTP id 3bkeq8fg2s-1
+        by ppma04dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 19ED1oP7028226;
+        Thu, 14 Oct 2021 13:08:59 GMT
+Received: from b03cxnp08025.gho.boulder.ibm.com (b03cxnp08025.gho.boulder.ibm.com [9.17.130.17])
+        by ppma04dal.us.ibm.com with ESMTP id 3bkeq8fg3h-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 14 Oct 2021 13:08:57 +0000
+        Thu, 14 Oct 2021 13:08:59 +0000
 Received: from b03ledav004.gho.boulder.ibm.com (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
-        by b03cxnp07029.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 19ED8tFr47579514
+        by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 19ED8uwq48628170
         (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 14 Oct 2021 13:08:55 GMT
+        Thu, 14 Oct 2021 13:08:56 GMT
 Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 3B06778069;
+        by IMSVA (Postfix) with ESMTP id B3D4D7805C;
+        Thu, 14 Oct 2021 13:08:56 +0000 (GMT)
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 5CC4878069;
         Thu, 14 Oct 2021 13:08:55 +0000 (GMT)
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id CBAD47806B;
-        Thu, 14 Oct 2021 13:08:53 +0000 (GMT)
 Received: from amdrome3.watson.ibm.com (unknown [9.2.130.16])
         by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP;
-        Thu, 14 Oct 2021 13:08:53 +0000 (GMT)
+        Thu, 14 Oct 2021 13:08:55 +0000 (GMT)
 From:   Dov Murik <dovmurik@linux.ibm.com>
 To:     linux-efi@vger.kernel.org
 Cc:     Dov Murik <dovmurik@linux.ibm.com>, Borislav Petkov <bp@suse.de>,
@@ -74,75 +74,73 @@ Cc:     Dov Murik <dovmurik@linux.ibm.com>, Borislav Petkov <bp@suse.de>,
         Daniele Buono <dbuono@linux.vnet.ibm.com>,
         linux-coco@lists.linux.dev, linux-security-module@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH v3 1/3] efi/libstub: Copy confidential computing secret area
-Date:   Thu, 14 Oct 2021 13:08:46 +0000
-Message-Id: <20211014130848.592611-2-dovmurik@linux.ibm.com>
+Subject: [PATCH v3 2/3] efi: Reserve confidential computing secret area
+Date:   Thu, 14 Oct 2021 13:08:47 +0000
+Message-Id: <20211014130848.592611-3-dovmurik@linux.ibm.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20211014130848.592611-1-dovmurik@linux.ibm.com>
 References: <20211014130848.592611-1-dovmurik@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: g-x72YszDybe12iWAPWaQ5xrAnD4NRCD
-X-Proofpoint-ORIG-GUID: NdDWlULNK4F2NzG9_WhKBCSI9NLCulsV
+X-Proofpoint-GUID: yx5Gfz-6P4vTRy7Djs4iVYRWiOKwytTX
+X-Proofpoint-ORIG-GUID: 6HXCS_vLp3UT_1unKxewKjspuKTe6XGc
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
- definitions=2021-10-14_08,2021-10-14_02,2020-04-07_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- spamscore=0 phishscore=0 bulkscore=0 adultscore=0 impostorscore=0
- mlxscore=0 malwarescore=0 clxscore=1015 mlxlogscore=999 suspectscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ definitions=2021-10-14_07,2021-10-14_02,2020-04-07_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
+ mlxlogscore=999 adultscore=0 spamscore=0 lowpriorityscore=0 bulkscore=0
+ mlxscore=0 suspectscore=0 phishscore=0 impostorscore=0 clxscore=1015
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2109230001 definitions=main-2110140084
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Confidential computing (coco) hardware such as AMD SEV (Secure Encrypted
-Virtualization) allows a guest owner to inject secrets into the VMs
-memory without the host/hypervisor being able to read them.
-
-Firmware support for secret injection is available in OVMF, which
-reserves a memory area for secret injection and includes a pointer to it
-the in EFI config table entry LINUX_EFI_COCO_SECRET_TABLE_GUID.
-However, OVMF doesn't force the guest OS to keep this memory area
-reserved.
-
-If EFI exposes such a table entry, efi/libstub will copy this area to a
-reserved memory for future use inside the kernel.
-
-A pointer to the new copy is kept in the EFI table under
-LINUX_EFI_COCO_SECRET_AREA_GUID.
+When efi-stub copies an EFI-provided confidential computing (coco)
+secret area, reserve that memory block for future use within the kernel.
 
 Signed-off-by: Dov Murik <dovmurik@linux.ibm.com>
 ---
- drivers/firmware/efi/libstub/Makefile   |  2 +-
- drivers/firmware/efi/libstub/coco.c     | 68 +++++++++++++++++++++++++
- drivers/firmware/efi/libstub/efi-stub.c |  2 +
- drivers/firmware/efi/libstub/efistub.h  |  2 +
- drivers/firmware/efi/libstub/x86-stub.c |  2 +
- include/linux/efi.h                     |  6 +++
- 6 files changed, 81 insertions(+), 1 deletion(-)
- create mode 100644 drivers/firmware/efi/libstub/coco.c
+ arch/x86/platform/efi/efi.c   |  1 +
+ drivers/firmware/efi/Makefile |  2 +-
+ drivers/firmware/efi/coco.c   | 41 +++++++++++++++++++++++++++++++++++
+ drivers/firmware/efi/efi.c    |  4 ++++
+ include/linux/efi.h           |  3 +++
+ 5 files changed, 50 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/firmware/efi/coco.c
 
-diff --git a/drivers/firmware/efi/libstub/Makefile b/drivers/firmware/efi/libstub/Makefile
-index d0537573501e..d77690b7dfb9 100644
---- a/drivers/firmware/efi/libstub/Makefile
-+++ b/drivers/firmware/efi/libstub/Makefile
-@@ -55,7 +55,7 @@ KCOV_INSTRUMENT			:= n
- lib-y				:= efi-stub-helper.o gop.o secureboot.o tpm.o \
- 				   file.o mem.o random.o randomalloc.o pci.o \
- 				   skip_spaces.o lib-cmdline.o lib-ctype.o \
--				   alignedmem.o relocate.o vsprintf.o
-+				   alignedmem.o relocate.o vsprintf.o coco.o
+diff --git a/arch/x86/platform/efi/efi.c b/arch/x86/platform/efi/efi.c
+index 147c30a81f15..35e082e5f603 100644
+--- a/arch/x86/platform/efi/efi.c
++++ b/arch/x86/platform/efi/efi.c
+@@ -93,6 +93,7 @@ static const unsigned long * const efi_tables[] = {
+ #ifdef CONFIG_LOAD_UEFI_KEYS
+ 	&efi.mokvar_table,
+ #endif
++	&efi.coco_secret,
+ };
  
- # include the stub's generic dependencies from lib/ when building for ARM/arm64
- efi-deps-y := fdt_rw.c fdt_ro.c fdt_wip.c fdt.c fdt_empty_tree.c fdt_sw.c
-diff --git a/drivers/firmware/efi/libstub/coco.c b/drivers/firmware/efi/libstub/coco.c
+ u64 efi_setup;		/* efi setup_data physical address */
+diff --git a/drivers/firmware/efi/Makefile b/drivers/firmware/efi/Makefile
+index c02ff25dd477..bfd35294703e 100644
+--- a/drivers/firmware/efi/Makefile
++++ b/drivers/firmware/efi/Makefile
+@@ -12,7 +12,7 @@ KASAN_SANITIZE_runtime-wrappers.o	:= n
+ 
+ obj-$(CONFIG_ACPI_BGRT) 		+= efi-bgrt.o
+ obj-$(CONFIG_EFI)			+= efi.o vars.o reboot.o memattr.o tpm.o
+-obj-$(CONFIG_EFI)			+= memmap.o
++obj-$(CONFIG_EFI)			+= memmap.o coco.o
+ ifneq ($(CONFIG_EFI_CAPSULE_LOADER),)
+ obj-$(CONFIG_EFI)			+= capsule.o
+ endif
+diff --git a/drivers/firmware/efi/coco.c b/drivers/firmware/efi/coco.c
 new file mode 100644
-index 000000000000..bf546b6a3f72
+index 000000000000..42f477d6188c
 --- /dev/null
-+++ b/drivers/firmware/efi/libstub/coco.c
-@@ -0,0 +1,68 @@
++++ b/drivers/firmware/efi/coco.c
+@@ -0,0 +1,41 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/*
 + * Confidential computing (coco) secret area handling
@@ -151,125 +149,89 @@ index 000000000000..bf546b6a3f72
 + * Author: Dov Murik <dovmurik@linux.ibm.com>
 + */
 +
++#define pr_fmt(fmt) "efi: " fmt
++
 +#include <linux/efi.h>
-+#include <linux/sizes.h>
-+#include <asm/efi.h>
-+
-+#include "efistub.h"
-+
-+#define LINUX_EFI_COCO_SECRET_TABLE_GUID                                                           \
-+	EFI_GUID(0xadf956ad, 0xe98c, 0x484c, 0xae, 0x11, 0xb5, 0x1c, 0x7d, 0x33, 0x64, 0x47)
-+
-+/**
-+ * struct efi_coco_secret_table - EFI config table that points to the
-+ * confidential computing secret area. The guid
-+ * LINUX_EFI_COCO_SECRET_TABLE_GUID holds this table.
-+ * @base:	Physical address of the EFI secret area
-+ * @size:	Size (in bytes) of the EFI secret area
-+ */
-+struct efi_coco_secret_table {
-+	u64 base;
-+	u64 size;
-+} __attribute((packed));
++#include <linux/init.h>
++#include <linux/memblock.h>
++#include <asm/early_ioremap.h>
 +
 +/*
-+ * Create a copy of EFI's confidential computing secret area (if available) so
-+ * that the secrets are accessible in the kernel after ExitBootServices.
++ * Reserve the confidential computing secret area memory
 + */
-+void efi_copy_coco_secret_area(void)
++int __init efi_coco_secret_area_reserve(void)
 +{
-+	efi_guid_t linux_secret_area_guid = LINUX_EFI_COCO_SECRET_AREA_GUID;
-+	efi_status_t status;
-+	struct efi_coco_secret_table *secret_table;
 +	struct linux_efi_coco_secret_area *secret_area;
++	unsigned long secret_area_size;
 +
-+	secret_table = get_efi_config_table(LINUX_EFI_COCO_SECRET_TABLE_GUID);
-+	if (!secret_table)
-+		return;
++	if (efi.coco_secret == EFI_INVALID_TABLE_ADDR)
++		return 0;
 +
-+	if (secret_table->size == 0 || secret_table->size >= SZ_4G)
-+		return;
-+
-+	/* Allocate space for the secret area and copy it */
-+	status = efi_bs_call(allocate_pool, EFI_LOADER_DATA,
-+			     sizeof(*secret_area) + secret_table->size, (void **)&secret_area);
-+
-+	if (status != EFI_SUCCESS) {
-+		efi_err("Unable to allocate memory for confidential computing secret area copy\n");
-+		return;
++	secret_area = early_memremap(efi.coco_secret, sizeof(*secret_area));
++	if (!secret_area) {
++		pr_err("Failed to map confidential computing secret area\n");
++		efi.coco_secret = EFI_INVALID_TABLE_ADDR;
++		return -ENOMEM;
 +	}
 +
-+	secret_area->size = secret_table->size;
-+	memcpy(secret_area->area, (void *)(unsigned long)secret_table->base, secret_table->size);
++	secret_area_size = sizeof(*secret_area) + secret_area->size;
++	memblock_reserve(efi.coco_secret, secret_area_size);
 +
-+	status = efi_bs_call(install_configuration_table, &linux_secret_area_guid, secret_area);
-+	if (status != EFI_SUCCESS)
-+		goto err_free;
++	pr_info("Reserved memory of EFI-provided confidential computing secret area");
 +
-+	return;
-+
-+err_free:
-+	efi_bs_call(free_pool, secret_area);
++	early_memunmap(secret_area, sizeof(*secret_area));
++	return 0;
 +}
-diff --git a/drivers/firmware/efi/libstub/efi-stub.c b/drivers/firmware/efi/libstub/efi-stub.c
-index 26e69788f27a..18b3acd15c85 100644
---- a/drivers/firmware/efi/libstub/efi-stub.c
-+++ b/drivers/firmware/efi/libstub/efi-stub.c
-@@ -205,6 +205,8 @@ efi_status_t __efiapi efi_pe_entry(efi_handle_t handle,
- 
- 	efi_retrieve_tpm2_eventlog();
- 
-+	efi_copy_coco_secret_area();
-+
- 	/* Ask the firmware to clear memory on unclean shutdown */
- 	efi_enable_reset_attack_mitigation();
- 
-diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
-index cde0a2ef507d..d604c6744cef 100644
---- a/drivers/firmware/efi/libstub/efistub.h
-+++ b/drivers/firmware/efi/libstub/efistub.h
-@@ -858,4 +858,6 @@ efi_enable_reset_attack_mitigation(void) { }
- 
- void efi_retrieve_tpm2_eventlog(void);
- 
-+void efi_copy_coco_secret_area(void);
-+
+diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
+index 847f33ffc4ae..4c1ab98cf693 100644
+--- a/drivers/firmware/efi/efi.c
++++ b/drivers/firmware/efi/efi.c
+@@ -46,6 +46,7 @@ struct efi __read_mostly efi = {
+ #ifdef CONFIG_LOAD_UEFI_KEYS
+ 	.mokvar_table		= EFI_INVALID_TABLE_ADDR,
  #endif
-diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
-index f14c4ff5839f..4ad85e1b6191 100644
---- a/drivers/firmware/efi/libstub/x86-stub.c
-+++ b/drivers/firmware/efi/libstub/x86-stub.c
-@@ -793,6 +793,8 @@ unsigned long efi_main(efi_handle_t handle,
++	.coco_secret		= EFI_INVALID_TABLE_ADDR,
+ };
+ EXPORT_SYMBOL(efi);
  
- 	efi_retrieve_tpm2_eventlog();
+@@ -526,6 +527,7 @@ static const efi_config_table_type_t common_tables[] __initconst = {
+ #ifdef CONFIG_LOAD_UEFI_KEYS
+ 	{LINUX_EFI_MOK_VARIABLE_TABLE_GUID,	&efi.mokvar_table,	"MOKvar"	},
+ #endif
++	{LINUX_EFI_COCO_SECRET_AREA_GUID,	&efi.coco_secret,	"CocoSecret"	},
+ 	{},
+ };
  
-+	efi_copy_coco_secret_area();
+@@ -613,6 +615,8 @@ int __init efi_config_parse_tables(const efi_config_table_t *config_tables,
+ 
+ 	efi_tpm_eventlog_init();
+ 
++	efi_coco_secret_area_reserve();
 +
- 	setup_graphics(boot_params);
+ 	if (mem_reserve != EFI_INVALID_TABLE_ADDR) {
+ 		unsigned long prsv = mem_reserve;
  
- 	setup_efi_pci(boot_params);
 diff --git a/include/linux/efi.h b/include/linux/efi.h
-index 6b5d36babfcc..9021dd521302 100644
+index 9021dd521302..e86600af5dfd 100644
 --- a/include/linux/efi.h
 +++ b/include/linux/efi.h
-@@ -359,6 +359,7 @@ void efi_native_runtime_setup(void);
- #define LINUX_EFI_MEMRESERVE_TABLE_GUID		EFI_GUID(0x888eb0c6, 0x8ede, 0x4ff5,  0xa8, 0xf0, 0x9a, 0xee, 0x5c, 0xb9, 0x77, 0xc2)
- #define LINUX_EFI_INITRD_MEDIA_GUID		EFI_GUID(0x5568e427, 0x68fc, 0x4f3d,  0xac, 0x74, 0xca, 0x55, 0x52, 0x31, 0xcc, 0x68)
- #define LINUX_EFI_MOK_VARIABLE_TABLE_GUID	EFI_GUID(0xc451ed2b, 0x9694, 0x45d3,  0xba, 0xba, 0xed, 0x9f, 0x89, 0x88, 0xa3, 0x89)
-+#define LINUX_EFI_COCO_SECRET_AREA_GUID		EFI_GUID(0x940ed1e9, 0xd3da, 0x408b,  0xb3, 0x07, 0xe3, 0x2d, 0x25, 0x4a, 0x65, 0x16)
+@@ -550,6 +550,7 @@ extern struct efi {
+ 	unsigned long			tpm_log;		/* TPM2 Event Log table */
+ 	unsigned long			tpm_final_log;		/* TPM2 Final Events Log table */
+ 	unsigned long			mokvar_table;		/* MOK variable config table */
++	unsigned long			coco_secret;		/* Confidential computing secret table */
  
- /* OEM GUIDs */
- #define DELLEMC_EFI_RCI2_TABLE_GUID		EFI_GUID(0x2d9f28a2, 0xa886, 0x456a,  0x97, 0xa8, 0xf1, 0x1e, 0xf2, 0x4f, 0xf4, 0x55)
-@@ -1282,4 +1283,9 @@ static inline struct efi_mokvar_table_entry *efi_mokvar_entry_find(
- }
- #endif
+ 	efi_get_time_t			*get_time;
+ 	efi_set_time_t			*set_time;
+@@ -1189,6 +1190,8 @@ extern int efi_tpm_final_log_size;
  
-+struct linux_efi_coco_secret_area {
-+	u32	size;
-+	u8	area[];
-+};
+ extern unsigned long rci2_table_phys;
+ 
++extern int efi_coco_secret_area_reserve(void);
 +
- #endif /* _LINUX_EFI_H */
+ /*
+  * efi_runtime_service() function identifiers.
+  * "NONE" is used by efi_recover_from_page_fault() to check if the page
 -- 
 2.25.1
 
