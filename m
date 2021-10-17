@@ -2,120 +2,90 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CC0474307A7
-	for <lists+linux-efi@lfdr.de>; Sun, 17 Oct 2021 12:01:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A0C4543095F
+	for <lists+linux-efi@lfdr.de>; Sun, 17 Oct 2021 15:33:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235789AbhJQKDl (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sun, 17 Oct 2021 06:03:41 -0400
-Received: from smtp-out1.suse.de ([195.135.220.28]:57306 "EHLO
-        smtp-out1.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234519AbhJQKDl (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sun, 17 Oct 2021 06:03:41 -0400
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out1.suse.de (Postfix) with ESMTPS id A292321970;
-        Sun, 17 Oct 2021 10:01:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1634464890; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=hEmSZTL6h9K3pFBzmHbHxjmAJKZVNOfltGHmYQwF5VA=;
-        b=ZTcaHH/0BiwIGAiveDUabgm6Rvg2nfLx+EtVdFVNnHInGUSa6k1RBXtAEz54uDsx8BFa2n
-        YpUZR5Wfa9UHZppc+aVggiRx61SOfVOJ8mgP7n+HcyIBwdvGkFnA8Sy48uzZRm5fI12CSn
-        XrAzgZgBEXb5FjNokbUQgmavNqebLoE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1634464890;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=hEmSZTL6h9K3pFBzmHbHxjmAJKZVNOfltGHmYQwF5VA=;
-        b=Q7kM0BXpNh/FFyF7V5Sexc220EQf66pgAV2uIA0hSKx+0xMtRzL8wZoWQk6XIi61TYhm64
-        +htNGVLqsKplZYDw==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 9071613A39;
-        Sun, 17 Oct 2021 10:01:30 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id p4szI3r0a2FiNAAAMHmgww
-        (envelope-from <bp@suse.de>); Sun, 17 Oct 2021 10:01:30 +0000
-Date:   Sun, 17 Oct 2021 12:01:33 +0200
-From:   Borislav Petkov <bp@suse.de>
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     linux-efi <linux-efi@vger.kernel.org>, x86-ml <x86@kernel.org>,
-        lkml <linux-kernel@vger.kernel.org>
-Subject: [GIT PULL] efi/urgent for v5.15-rc6
-Message-ID: <YWv0fTagC0e4D0Jy@zn.tnic>
+        id S236817AbhJQNdj (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sun, 17 Oct 2021 09:33:39 -0400
+Received: from mail.kernel.org ([198.145.29.99]:45564 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S236809AbhJQNdi (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Sun, 17 Oct 2021 09:33:38 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id D34EA61266;
+        Sun, 17 Oct 2021 13:31:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1634477488;
+        bh=u1XYLs8DDwxN3/FCsIgwCHksZ0bYQZv6HnXSBDhzDfc=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=NzsGzuYj3uswx80Ap1YJbBsMYjQ82DXhR1gfL8SrZekVD58dCFi7mkPIfHHC2xuCq
+         GowMw0pYAoVa7ACJ/QEJUPOrsHCtJX2VinnLFrjaZ+RlL1lLasgJto1W5zldUSOs7q
+         09UbB/Yy1/ZT1vUURudbtGpuuMagT+Ha4YCaGNCwZ9SsqFEGrBRL6jh/wQIH1ZCF1A
+         ZVjx3/YC/3P4k13X4mS99ZwNEomhJpcUBnz0U04gq+zf9jYAyIGotKvu8wMoxEYL68
+         vBZIk+B+qa+5M03QjdNF6ksNzSfRFxpLxGuSyhdS0WYRHi/n1M9B/O4JPEJepv986a
+         l1Z2KOtlv9z6g==
+Received: by mail-oi1-f173.google.com with SMTP id g125so20617062oif.9;
+        Sun, 17 Oct 2021 06:31:28 -0700 (PDT)
+X-Gm-Message-State: AOAM532r4GwbUuY1fLvGNKSkCLuwzmoBEhPJXmhBo4bcXq8tiK3AB2/d
+        y0bnUXVrYOkEwdUdoJTx5BbDMm6ILo/vmK7gRbA=
+X-Google-Smtp-Source: ABdhPJwLY3AD3ztimj/lJV5pJFYgq5YTJpEFIk/GnGfwMCw0BiTRGVIBW8tUVAbSraA0DjktE6/pz5y7DaqYuZT5vFk=
+X-Received: by 2002:a05:6808:1805:: with SMTP id bh5mr9709124oib.47.1634477488180;
+ Sun, 17 Oct 2021 06:31:28 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+References: <YLss6ZNPMIXleLLF@dhcp-128-65.nay.redhat.com> <YL5HvUqtsDXx5CzM@smile.fi.intel.com>
+ <YL5U/zSb50SnbLgW@smile.fi.intel.com> <YL9hxPdPj0dYMyaD@dhcp-128-65.nay.redhat.com>
+ <CAHp75VcPuf6BLGf7Y3RO2M-gHMFZMTeb4ftnj_tbGS4TxvThxA@mail.gmail.com>
+ <YMCsSqzmG4jb1Ojo@dhcp-128-65.nay.redhat.com> <YMQ62d1EFFjRcv6w@dhcp-128-65.nay.redhat.com>
+ <YMd39tIPercgljll@smile.fi.intel.com> <YMeM1Xee9Yg3j21D@smile.fi.intel.com>
+ <YMeRiDMet2JyOV4P@smile.fi.intel.com> <YV3Oonc5s3UpzRq0@smile.fi.intel.com>
+ <CAMj1kXHjXcFePeRWDtxZnC6eHEeELA6kZXOU=sA9oDZ1HzW_Vg@mail.gmail.com> <CAHp75VdLLZsJnektx+n=BGvGeaogN0r=viNJpbR-au5RUURi9Q@mail.gmail.com>
+In-Reply-To: <CAHp75VdLLZsJnektx+n=BGvGeaogN0r=viNJpbR-au5RUURi9Q@mail.gmail.com>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Sun, 17 Oct 2021 15:31:17 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXFn+6AfVEksrEhPtPTHx-DmfTPwq=F7xpgs6D7EmKHMmA@mail.gmail.com>
+Message-ID: <CAMj1kXFn+6AfVEksrEhPtPTHx-DmfTPwq=F7xpgs6D7EmKHMmA@mail.gmail.com>
+Subject: Re: [PATCH v1 0/2] firmware: dmi_scan: Make it work in kexec'ed kernel
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Dave Young <dyoung@redhat.com>, Jean Delvare <jdelvare@suse.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        =?UTF-8?Q?Javier_Ti=C3=A1?= <javier.tia@gmail.com>,
+        kexec@lists.infradead.org, Eric Biederman <ebiederm@xmission.com>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        Matt Fleming <matt@codeblueprint.co.uk>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hi Linus,
+On Thu, 7 Oct 2021 at 09:23, Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+>
+> On Thu, Oct 7, 2021 at 10:20 AM Ard Biesheuvel <ardb@kernel.org> wrote:
+> > On Wed, 6 Oct 2021 at 18:28, Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+> > > On Mon, Jun 14, 2021 at 08:27:36PM +0300, Andy Shevchenko wrote:
+> > > > On Mon, Jun 14, 2021 at 08:07:33PM +0300, Andy Shevchenko wrote:
+>
+> ...
+>
+> > > > Double checked, confirmed that it's NOT working.
+> > >
+> > > Any news here?
+> > >
+> > > Shall I resend my series?
+> >
+> > As I said before:
+> >
+> > """
+> > I would still prefer to get to the bottom of this before papering over
+> > it with command line options. If the memory gets corrupted by the
+> > first kernel, maybe we are not preserving it correctly in the first
+> > kernel.
+> > """
+>
+> And I can't agree more, but above I asked about news, implying if
+> there is anything to test?
+> The issue is still there and it becomes a bit annoying to see my hack
+> patches in every tree I have been using.
+>
 
-please pull (forwarded) EFI urgent fixes for 5.15.
-
-This is going to be the one before last EFI pull request going through
-the tip tree and Ard will send stuff directly to you in the future.
-
- [ There's one more branch which we'll send to you during the upcoming
-   merge window which should be the last one. ]
-
-The reasoning being, EFI work doesn't really have a lot to do (only)
-with x86 anymore.
-
-Anyway, JFYI.
-
-Please pull,
-thx.
-
----
-
-The following changes since commit 6880fa6c56601bb8ed59df6c30fd390cc5f6dd8f:
-
-  Linux 5.15-rc1 (2021-09-12 16:28:37 -0700)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git tags/efi-urgent-for-v5.15
-
-for you to fetch changes up to 38fa3206bf441911258e5001ac8b6738693f8d82:
-
-  efi: Change down_interruptible() in virt_efi_reset_system() to down_trylock() (2021-10-05 13:07:01 +0200)
-
-----------------------------------------------------------------
-EFI fixes for v5.15
-
-Low priority fixes but fixes nonetheless:
-- update stub diagnostic print that is no longer accurate
-- avoid statically allocated buffer for CPER error record decoding
-- avoid sleeping on the efi_runtime semaphore when calling the
-  ResetSystem EFI runtime service
-
-----------------------------------------------------------------
-Ard Biesheuvel (1):
-      efi/cper: use stack buffer for error record decoding
-
-Heinrich Schuchardt (1):
-      efi/libstub: Simplify "Exiting bootservices" message
-
-Zhang Jianhua (1):
-      efi: Change down_interruptible() in virt_efi_reset_system() to down_trylock()
-
- drivers/firmware/efi/cper.c             | 4 ++--
- drivers/firmware/efi/libstub/fdt.c      | 2 +-
- drivers/firmware/efi/runtime-wrappers.c | 2 +-
- 3 files changed, 4 insertions(+), 4 deletions(-)
-
--- 
-Regards/Gruss,
-    Boris.
-
-SUSE Software Solutions Germany GmbH, GF: Felix Imendörffer, HRB 36809, AG Nürnberg
+If nobody can be bothered to properly diagnose this, how important is
+it, really?
