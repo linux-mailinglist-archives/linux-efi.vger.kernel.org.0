@@ -2,60 +2,70 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9AFAC430E83
-	for <lists+linux-efi@lfdr.de>; Mon, 18 Oct 2021 06:08:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0EE8943128E
+	for <lists+linux-efi@lfdr.de>; Mon, 18 Oct 2021 10:56:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229768AbhJREKk (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 18 Oct 2021 00:10:40 -0400
-Received: from mail.kernel.org ([198.145.29.99]:41030 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229818AbhJREKi (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Mon, 18 Oct 2021 00:10:38 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPS id 3A18D610A3;
-        Mon, 18 Oct 2021 04:08:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1634530108;
-        bh=eFIIfXUMZ151X4HKeWezU8m2rG7vkphhPY7AbLCKouc=;
-        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-        b=ruFqEkW7GpvVjJSUkSAOXBHhv1kfXreT/MZI30fWXfLHJXFtpwTdQs0EzTK4JUtcE
-         X43GZaq0kJ2QU25m7YGPgQ3rq2Ac8C7mqyByBaQnwYUB67PcMbIwwV6GlF1XM3vZPz
-         itnFKpJKvrOZP55nE41d6GEYRIB3lbHdCFDo0igaVFGWcAxw3ialpNCIktgGkyZ3gt
-         N0pXqOyFqSKyCdLwRACgdKukjxfNFFeOOhbW0kf/a4LUDZRGVLZRQZIcmBi1hubqan
-         eCe4WmUWclIXURzhH64BzGMjRvqYHxCCByRwHHF1RCX+juHukc8d/JGm+SrBeRCcrQ
-         mTz1kZrLkHmsg==
-Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 33A77609AD;
-        Mon, 18 Oct 2021 04:08:28 +0000 (UTC)
-Subject: Re: [GIT PULL] efi/urgent for v5.15-rc6
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <YWv0fTagC0e4D0Jy@zn.tnic>
-References: <YWv0fTagC0e4D0Jy@zn.tnic>
-X-PR-Tracked-List-Id: <linux-efi.vger.kernel.org>
-X-PR-Tracked-Message-Id: <YWv0fTagC0e4D0Jy@zn.tnic>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git tags/efi-urgent-for-v5.15
-X-PR-Tracked-Commit-Id: 38fa3206bf441911258e5001ac8b6738693f8d82
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 424e7d878cb7a51f446514826a0b9ddbc78ff1d0
-Message-Id: <163453010820.24310.15007129835621206171.pr-tracker-bot@kernel.org>
-Date:   Mon, 18 Oct 2021 04:08:28 +0000
-To:     Borislav Petkov <bp@suse.de>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-efi <linux-efi@vger.kernel.org>, x86-ml <x86@kernel.org>,
-        lkml <linux-kernel@vger.kernel.org>
+        id S231338AbhJRI6S (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 18 Oct 2021 04:58:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55336 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231363AbhJRI6Q (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 18 Oct 2021 04:58:16 -0400
+Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com [IPv6:2607:f8b0:4864:20::1033])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3BFF2C06176C
+        for <linux-efi@vger.kernel.org>; Mon, 18 Oct 2021 01:56:05 -0700 (PDT)
+Received: by mail-pj1-x1033.google.com with SMTP id gn3so6204919pjb.0
+        for <linux-efi@vger.kernel.org>; Mon, 18 Oct 2021 01:56:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=U+wvXPwvhucTVlxnfZp7fdTxV1dqI6RrlYLlpej7n+A=;
+        b=MNdN7D3A6IJ9IpEnrZK0wQ5+brpRm9T0KBJNjcU9HcD4RFx1rlQtjBDRO+0VA0uqa2
+         y6c36Ke5B+OaHyVH0gymIikifvVrbl2oJkQkkkXyXUsrcKBNaebBUadVPLVXNw/Y1JOi
+         4IkP56jiDHwMkn3gzmLobAyRxVS18cPcWVN8X70gamUpX9M3qMkP5AHwyutNXPnYfz/i
+         YEaE1srzdpeXm6qciQyraHqD5fUVzvBU4ssLQyOJ+YSGngFNYLEuxnX8G9PDV2CrFEHa
+         Blv1EYWBSbZDnLd0T45uvnjApCiBZYPsKKPEq5sFNTPvn7J37oWxGDoPEgTxZAYGF8l4
+         sVlg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=U+wvXPwvhucTVlxnfZp7fdTxV1dqI6RrlYLlpej7n+A=;
+        b=h2PTQ7rUr4taglueyjRC2IIsv1zTJO9AABf+UEU+7U+JfwcMRlFF7wqx8v+dHNda5c
+         2CgZktMLQAbBdkxVQU9JBvwBIrCrsevTpVlQY/upH2+5/WPR/amwjpiBo9uRNzkwKqT9
+         c26QoW/34rYQvftFHUm8rA+bbIC0uZcB4/rR07hc4IHEvnAJ5pKMetI1NY4R+YIPN/An
+         MQRWSw6vT3N0K0Xy2zis8hC6HqoWmSjOeh9BtLaTeX1YMMutXA45hGtvdwAEQd1lBe3D
+         bv/5VS3xBnwlgqIMgr/KE17+JQMdka+694SZNu3WtftO+8aWm5UA5X6E6kEQZEeczjR/
+         zDlg==
+X-Gm-Message-State: AOAM530TpA4d3dIE97R+PGLqCzk6tcgSuG1Zo1PBffIThMTKhlk8V8qU
+        BIzj98fjFNDgytJHUAG7yaMcVSyj+7AeTsiiwGE=
+X-Google-Smtp-Source: ABdhPJy5ftVhB3OwVsAEkfW2zBOikKz5dUqtHYB9CFBNXF7TdJ2h5I9fw9KuqI30/l3rGsJTUWN/AmHIMciTnLSQs60=
+X-Received: by 2002:a17:902:d4d1:b0:13f:af7:9068 with SMTP id
+ o17-20020a170902d4d100b0013f0af79068mr26001887plg.20.1634547364677; Mon, 18
+ Oct 2021 01:56:04 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 2002:a05:6a10:178f:0:0:0:0 with HTTP; Mon, 18 Oct 2021 01:56:04
+ -0700 (PDT)
+Reply-To: mauhin11@gmail.com
+From:   Maureen Hinckley <addialexy@gmail.com>
+Date:   Mon, 18 Oct 2021 11:56:04 +0300
+Message-ID: <CAHUzaZ1onNBXAddKYj94cVaP_pisc=xZ8a7woJJr9vnTBGE_aQ@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The pull request you sent on Sun, 17 Oct 2021 12:01:33 +0200:
+--=20
+Hello,
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git tags/efi-urgent-for-v5.15
+I am Maureen Hinckley and my foundation is donating ($2.2 Million.
+Dollars) to you. Contact us via my email at (mauhin13@gmail.com) for
+further details.
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/424e7d878cb7a51f446514826a0b9ddbc78ff1d0
-
-Thank you!
-
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+Best Regards,
+Mrs. Maureen Hinckley,
+Copyright =C2=A92021 The Maureen Hinckley Foundation All Rights Reserved.
