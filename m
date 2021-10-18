@@ -2,90 +2,60 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A0C4543095F
-	for <lists+linux-efi@lfdr.de>; Sun, 17 Oct 2021 15:33:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9AFAC430E83
+	for <lists+linux-efi@lfdr.de>; Mon, 18 Oct 2021 06:08:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236817AbhJQNdj (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sun, 17 Oct 2021 09:33:39 -0400
-Received: from mail.kernel.org ([198.145.29.99]:45564 "EHLO mail.kernel.org"
+        id S229768AbhJREKk (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 18 Oct 2021 00:10:40 -0400
+Received: from mail.kernel.org ([198.145.29.99]:41030 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S236809AbhJQNdi (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Sun, 17 Oct 2021 09:33:38 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id D34EA61266;
-        Sun, 17 Oct 2021 13:31:28 +0000 (UTC)
+        id S229818AbhJREKi (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Mon, 18 Oct 2021 00:10:38 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPS id 3A18D610A3;
+        Mon, 18 Oct 2021 04:08:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1634477488;
-        bh=u1XYLs8DDwxN3/FCsIgwCHksZ0bYQZv6HnXSBDhzDfc=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=NzsGzuYj3uswx80Ap1YJbBsMYjQ82DXhR1gfL8SrZekVD58dCFi7mkPIfHHC2xuCq
-         GowMw0pYAoVa7ACJ/QEJUPOrsHCtJX2VinnLFrjaZ+RlL1lLasgJto1W5zldUSOs7q
-         09UbB/Yy1/ZT1vUURudbtGpuuMagT+Ha4YCaGNCwZ9SsqFEGrBRL6jh/wQIH1ZCF1A
-         ZVjx3/YC/3P4k13X4mS99ZwNEomhJpcUBnz0U04gq+zf9jYAyIGotKvu8wMoxEYL68
-         vBZIk+B+qa+5M03QjdNF6ksNzSfRFxpLxGuSyhdS0WYRHi/n1M9B/O4JPEJepv986a
-         l1Z2KOtlv9z6g==
-Received: by mail-oi1-f173.google.com with SMTP id g125so20617062oif.9;
-        Sun, 17 Oct 2021 06:31:28 -0700 (PDT)
-X-Gm-Message-State: AOAM532r4GwbUuY1fLvGNKSkCLuwzmoBEhPJXmhBo4bcXq8tiK3AB2/d
-        y0bnUXVrYOkEwdUdoJTx5BbDMm6ILo/vmK7gRbA=
-X-Google-Smtp-Source: ABdhPJwLY3AD3ztimj/lJV5pJFYgq5YTJpEFIk/GnGfwMCw0BiTRGVIBW8tUVAbSraA0DjktE6/pz5y7DaqYuZT5vFk=
-X-Received: by 2002:a05:6808:1805:: with SMTP id bh5mr9709124oib.47.1634477488180;
- Sun, 17 Oct 2021 06:31:28 -0700 (PDT)
-MIME-Version: 1.0
-References: <YLss6ZNPMIXleLLF@dhcp-128-65.nay.redhat.com> <YL5HvUqtsDXx5CzM@smile.fi.intel.com>
- <YL5U/zSb50SnbLgW@smile.fi.intel.com> <YL9hxPdPj0dYMyaD@dhcp-128-65.nay.redhat.com>
- <CAHp75VcPuf6BLGf7Y3RO2M-gHMFZMTeb4ftnj_tbGS4TxvThxA@mail.gmail.com>
- <YMCsSqzmG4jb1Ojo@dhcp-128-65.nay.redhat.com> <YMQ62d1EFFjRcv6w@dhcp-128-65.nay.redhat.com>
- <YMd39tIPercgljll@smile.fi.intel.com> <YMeM1Xee9Yg3j21D@smile.fi.intel.com>
- <YMeRiDMet2JyOV4P@smile.fi.intel.com> <YV3Oonc5s3UpzRq0@smile.fi.intel.com>
- <CAMj1kXHjXcFePeRWDtxZnC6eHEeELA6kZXOU=sA9oDZ1HzW_Vg@mail.gmail.com> <CAHp75VdLLZsJnektx+n=BGvGeaogN0r=viNJpbR-au5RUURi9Q@mail.gmail.com>
-In-Reply-To: <CAHp75VdLLZsJnektx+n=BGvGeaogN0r=viNJpbR-au5RUURi9Q@mail.gmail.com>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Sun, 17 Oct 2021 15:31:17 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXFn+6AfVEksrEhPtPTHx-DmfTPwq=F7xpgs6D7EmKHMmA@mail.gmail.com>
-Message-ID: <CAMj1kXFn+6AfVEksrEhPtPTHx-DmfTPwq=F7xpgs6D7EmKHMmA@mail.gmail.com>
-Subject: Re: [PATCH v1 0/2] firmware: dmi_scan: Make it work in kexec'ed kernel
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Dave Young <dyoung@redhat.com>, Jean Delvare <jdelvare@suse.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        =?UTF-8?Q?Javier_Ti=C3=A1?= <javier.tia@gmail.com>,
-        kexec@lists.infradead.org, Eric Biederman <ebiederm@xmission.com>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Matt Fleming <matt@codeblueprint.co.uk>
-Content-Type: text/plain; charset="UTF-8"
+        s=k20201202; t=1634530108;
+        bh=eFIIfXUMZ151X4HKeWezU8m2rG7vkphhPY7AbLCKouc=;
+        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+        b=ruFqEkW7GpvVjJSUkSAOXBHhv1kfXreT/MZI30fWXfLHJXFtpwTdQs0EzTK4JUtcE
+         X43GZaq0kJ2QU25m7YGPgQ3rq2Ac8C7mqyByBaQnwYUB67PcMbIwwV6GlF1XM3vZPz
+         itnFKpJKvrOZP55nE41d6GEYRIB3lbHdCFDo0igaVFGWcAxw3ialpNCIktgGkyZ3gt
+         N0pXqOyFqSKyCdLwRACgdKukjxfNFFeOOhbW0kf/a4LUDZRGVLZRQZIcmBi1hubqan
+         eCe4WmUWclIXURzhH64BzGMjRvqYHxCCByRwHHF1RCX+juHukc8d/JGm+SrBeRCcrQ
+         mTz1kZrLkHmsg==
+Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 33A77609AD;
+        Mon, 18 Oct 2021 04:08:28 +0000 (UTC)
+Subject: Re: [GIT PULL] efi/urgent for v5.15-rc6
+From:   pr-tracker-bot@kernel.org
+In-Reply-To: <YWv0fTagC0e4D0Jy@zn.tnic>
+References: <YWv0fTagC0e4D0Jy@zn.tnic>
+X-PR-Tracked-List-Id: <linux-efi.vger.kernel.org>
+X-PR-Tracked-Message-Id: <YWv0fTagC0e4D0Jy@zn.tnic>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git tags/efi-urgent-for-v5.15
+X-PR-Tracked-Commit-Id: 38fa3206bf441911258e5001ac8b6738693f8d82
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 424e7d878cb7a51f446514826a0b9ddbc78ff1d0
+Message-Id: <163453010820.24310.15007129835621206171.pr-tracker-bot@kernel.org>
+Date:   Mon, 18 Oct 2021 04:08:28 +0000
+To:     Borislav Petkov <bp@suse.de>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        linux-efi <linux-efi@vger.kernel.org>, x86-ml <x86@kernel.org>,
+        lkml <linux-kernel@vger.kernel.org>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, 7 Oct 2021 at 09:23, Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
->
-> On Thu, Oct 7, 2021 at 10:20 AM Ard Biesheuvel <ardb@kernel.org> wrote:
-> > On Wed, 6 Oct 2021 at 18:28, Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
-> > > On Mon, Jun 14, 2021 at 08:27:36PM +0300, Andy Shevchenko wrote:
-> > > > On Mon, Jun 14, 2021 at 08:07:33PM +0300, Andy Shevchenko wrote:
->
-> ...
->
-> > > > Double checked, confirmed that it's NOT working.
-> > >
-> > > Any news here?
-> > >
-> > > Shall I resend my series?
-> >
-> > As I said before:
-> >
-> > """
-> > I would still prefer to get to the bottom of this before papering over
-> > it with command line options. If the memory gets corrupted by the
-> > first kernel, maybe we are not preserving it correctly in the first
-> > kernel.
-> > """
->
-> And I can't agree more, but above I asked about news, implying if
-> there is anything to test?
-> The issue is still there and it becomes a bit annoying to see my hack
-> patches in every tree I have been using.
->
+The pull request you sent on Sun, 17 Oct 2021 12:01:33 +0200:
 
-If nobody can be bothered to properly diagnose this, how important is
-it, really?
+> git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git tags/efi-urgent-for-v5.15
+
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/424e7d878cb7a51f446514826a0b9ddbc78ff1d0
+
+Thank you!
+
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
