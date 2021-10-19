@@ -2,97 +2,94 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C3AB433286
-	for <lists+linux-efi@lfdr.de>; Tue, 19 Oct 2021 11:38:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F5CA4335C0
+	for <lists+linux-efi@lfdr.de>; Tue, 19 Oct 2021 14:18:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234953AbhJSJlH (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 19 Oct 2021 05:41:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54108 "EHLO
+        id S235514AbhJSMUW (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 19 Oct 2021 08:20:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34414 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235087AbhJSJlE (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 19 Oct 2021 05:41:04 -0400
-Received: from mail-io1-xd2c.google.com (mail-io1-xd2c.google.com [IPv6:2607:f8b0:4864:20::d2c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E81AC061769
-        for <linux-efi@vger.kernel.org>; Tue, 19 Oct 2021 02:38:51 -0700 (PDT)
-Received: by mail-io1-xd2c.google.com with SMTP id r134so19550022iod.11
-        for <linux-efi@vger.kernel.org>; Tue, 19 Oct 2021 02:38:51 -0700 (PDT)
+        with ESMTP id S235586AbhJSMUV (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 19 Oct 2021 08:20:21 -0400
+Received: from mail-il1-x12e.google.com (mail-il1-x12e.google.com [IPv6:2607:f8b0:4864:20::12e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B853C061746
+        for <linux-efi@vger.kernel.org>; Tue, 19 Oct 2021 05:18:09 -0700 (PDT)
+Received: by mail-il1-x12e.google.com with SMTP id k3so7766228ilo.7
+        for <linux-efi@vger.kernel.org>; Tue, 19 Oct 2021 05:18:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=h7Ka/8DlpkXEXF23rPgOfJJ3SyquA2FhD5HYDsybiG4=;
-        b=TOvN/3L74NxJ8jkZLAwc1HWcAigE5PqgL50bgmFqgfF5N3Ni/F/hFF6HKKLKTN31yN
-         HevaAXYbPfypt8hhKvSPyehT5ALdXqczNk+5xUwtC+i5sgHXh2uIQwAecZjfCaWU8ix6
-         IP3iNNDeKzM9Rarn67S7Y6Q5meavaw7Mpk+sez5Jm9gTXVkS2K7rH0HxN0wGBD1vTEZW
-         SlZ7Ohjm5TDffwxVe9psHKkZrw9F8ewS3UJdvRp48BugnVC9N6o6tGt7kOuD9dBL9WOI
-         l1dbXlU20FuuDCR1G9eGV6dpPzPq/obtSd+vSUmjw4dvgQ3M4KndmuUgzevCd5/KLP2j
-         AvJA==
+        d=kernel-dk.20210112.gappssmtp.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=+u6Zw+sZeymRMtbHbtGbZtKzgW0EhyLBdVB1VY/1pQs=;
+        b=Tb48ymzvjxLTClrHNJYA4D2dVJ8Ztfbhzy0Ie48bKme14dbHEk7NHzUlD4CtsOuTVh
+         JgNzHEVLQhxIsPLhyJX7Z/VzlReaLnFXc1kKfHdgzt2BBNgXuoe+ZF4bik430vu4puMl
+         I+VMmrKJgTvifkJbrey0kcq4cSbLwlRG2Hgmwgr+LEzoG7E29CJqi0uqRCgehTOMKsrq
+         Jh6TX2smlG382jHo0pR4VfMS1s4K5fB1q8nrd8S+Dn/GnVyVBFeUcEAXY/7qL1iaBQvm
+         mo2ph9WGKLDLbO76XEykkT73n30KhxsNtReurXqJLhHlkq4NYNbpzmPgymF9ctR4BHQv
+         4WIw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=h7Ka/8DlpkXEXF23rPgOfJJ3SyquA2FhD5HYDsybiG4=;
-        b=UW9Xug7oSvHy3fk1mQFCae4CnJnCDO0EaeUetCKDIi90CYKj93NETBVkmJ2nlKeBGu
-         USffzSGEVw4EDR20PtLXQ4fKX/BA+cw/X41rbYDIEvLMP6GOs55SGO9Ck3LbyGH0kbeQ
-         Oe6i5wNs87ShkGbsV8+f17MXffHnbtmuWo2Th9O+R9/vJI3hEi7ViwEIU2Pj3sl6rdcO
-         yMdSBtzibE0oWVeQVG2SL5w2mwnvQSja+ld1GqFobmFEz7YX2CpNqrNlS43+ZfQdqeZ2
-         Asirl12Cck+n6o9rmFF5upqrmB/esHTWIdNt5fBYhpZMklY1uWt1BIcBJ0LyQKv8Q39i
-         d8Xw==
-X-Gm-Message-State: AOAM532VIdj3dXiTHo/pybJ9DN8/yBk0d398O/rCnj4E1lHLEe5I1pLe
-        P1u3cZxNs0ucy5yo/Y4qHCHC1JIIw5cQ3DCwJPM=
-X-Google-Smtp-Source: ABdhPJzMH7/Viv+gmOFi/wRxRbcc549EbhNxq1WBmFuuCl5Y1sIaNw3hPc5P9A8SHm6QnP1HNGNAvecvirmJS/oiL6w=
-X-Received: by 2002:a02:6f5d:: with SMTP id b29mr3319085jae.113.1634636331013;
- Tue, 19 Oct 2021 02:38:51 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=+u6Zw+sZeymRMtbHbtGbZtKzgW0EhyLBdVB1VY/1pQs=;
+        b=UUKEhdFHM4eI4Daiu1Fo1M0Bn9ad/xRUBt5Tyu/xXHnqiJMzI7IE7MZGl8VfTgRMEA
+         ppTk9KrDNk5/7j+S/TCDAoDGE2LFZP2Tl+N5gl1zO6Bio3Yvt8iDecOwQEo7jUDUBgnV
+         7I7mhv/TTw6FSpgIxKO+CRl7OaNDpfP6SbewIzkImjdELpIcoceU7l1fH6jAVJjhC6CX
+         sR+LIB0sATLL6IfBDbvvImgzqnanM5c0PJ6TIT7FR0IJu49HyDZYgJnc2oNMAR8weewr
+         XdOsQKpn/8AQCQkC7XpSWfhOilAOx0+6LOcqWvhO3sf8wSS9keFM79NxUl0tGRLUgBgG
+         nbAA==
+X-Gm-Message-State: AOAM5337VqsTayU2SImDIr6LPqCBXQsdVS4FidBGtCn7U0yh121JNriY
+        e2tPWK26hE/Ylg8zHR7Tf5h6lvvx49YsVQ==
+X-Google-Smtp-Source: ABdhPJwdq2OzbwJ+5kSgKNQu/1r0vmMuOrQGPUlHM7JK+ER+0G+nwVQiAnqSrEK4pLXtvo4sGlmmaw==
+X-Received: by 2002:a92:de47:: with SMTP id e7mr11929867ilr.282.1634645888670;
+        Tue, 19 Oct 2021 05:18:08 -0700 (PDT)
+Received: from localhost.localdomain ([66.219.217.159])
+        by smtp.gmail.com with ESMTPSA id o14sm8393559ilq.81.2021.10.19.05.18.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 19 Oct 2021 05:18:08 -0700 (PDT)
+From:   Jens Axboe <axboe@kernel.dk>
+To:     Christoph Hellwig <hch@lst.de>
+Cc:     Jens Axboe <axboe@kernel.dk>, linux-efi@vger.kernel.org,
+        linux-s390@vger.kernel.org, Jan Hoeppner <hoeppner@linux.ibm.com>,
+        Stefan Haberland <sth@linux.ibm.com>,
+        Davidlohr Bueso <dave@stgolabs.net>,
+        linux-block@vger.kernel.org
+Subject: Re: more bdev_nr_sectors / bdev_nr_bytes conversions
+Date:   Tue, 19 Oct 2021 06:18:05 -0600
+Message-Id: <163464587890.599826.15140587721963730407.b4-ty@kernel.dk>
+X-Mailer: git-send-email 2.33.1
+In-Reply-To: <20211019062024.2171074-1-hch@lst.de>
+References: <20211019062024.2171074-1-hch@lst.de>
 MIME-Version: 1.0
-Received: by 2002:a92:c7c6:0:0:0:0:0 with HTTP; Tue, 19 Oct 2021 02:38:50
- -0700 (PDT)
-Reply-To: megaritalouisdrayfu199@yahoo.com
-From:   "Mrs. Margarita Louis-Dreyfus." <anniewei112@gmail.com>
-Date:   Mon, 18 Oct 2021 21:38:50 -1200
-Message-ID: <CAGT4pMkzKn8mfeY05OAG04CCAxodKEVDUk46D=O7cfK8+n1=tA@mail.gmail.com>
-Subject: Charitable funds to help the less privilege!
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
---=20
-Hello,
+On Tue, 19 Oct 2021 08:20:21 +0200, Christoph Hellwig wrote:
+> these somehow slipped into a different branch, so here is another
+> small batch.
+> 
+> Diffstat:
+>  ioctl.c          |   20 ++++++++------------
+>  partitions/efi.c |    2 +-
+>  partitions/ibm.c |   19 ++++++++++---------
+>  3 files changed, 19 insertions(+), 22 deletions(-)
+> 
+> [...]
 
-I am sorry to encroach into your privacy in this manner, my name
-Margarita Louis-Dreyfus , I find it pleasurable to offer you my
-partnership in business, i only pray at this time that your email
-address is still valid. I want to solicit your attention to receive
-money on my behalf for humanitarian project to help the less
-priviledge.
+Applied, thanks!
 
-The purpose of my contacting you is because my status would not permit
-me to do this alone. Given my current state of health, I have decided
-to donate Ninety -Eight Million United State Dollars to establish a
-foundation with your help to reach out to the less privilege, orphans,
-sick and homeless people in your country who will receive their
-blessings as i promised my God before i leave this earth.
+[1/3] block/ioctl: use bdev_nr_sectors and bdev_nr_bytes
+      commit: 946e99373037be4841e8b42dcd136e03093c9fd5
+[2/3] partitions/efi: use bdev_nr_bytes instead of open coding it
+      commit: f9831b885709978ed9d16833ceeb3a2ec174a2d2
+[3/3] partitions/ibm: use bdev_nr_sectors instead of open coding it
+      commit: 97eeb5fc14cc4b2091df8b841a07a1ac69f2d762
 
-I got your contact through my personal search, you were revealed as
-being quite astute in private entrepreneurship, and i have no doubt
-that you can handle this huge financial transaction. Please contact my
-executor for more information:
+Best regards,
+-- 
+Jens Axboe
 
-Mr. Ford Spencer(Attorney at Law).
-For: Mrs. Margarita Louis-Dreyfus
-LEGAL DEPARTMENT LAWSON & ASSOCIATES
-(JUSTICE, FAIRPLAY & EQUITY)
-Email: fordspencer828@yahoo.com, fordspencereqs828@gmail.com
-Office: +1-970-414-1400
-+1-702-714-3422
-Mobile: +1 916 269 2733
-Fax: +1-970-414-1433
-=C2=AE Property of Steven C Spence PA.
 
-Your earliest response to this letter will be appreciated.
-
-Kind Regards,
-
-Mrs. Margarita Louis-Dreyfus.
