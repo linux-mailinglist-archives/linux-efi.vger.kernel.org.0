@@ -2,25 +2,25 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6FC68434559
-	for <lists+linux-efi@lfdr.de>; Wed, 20 Oct 2021 08:44:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 38EED43455C
+	for <lists+linux-efi@lfdr.de>; Wed, 20 Oct 2021 08:44:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229715AbhJTGqW (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 20 Oct 2021 02:46:22 -0400
-Received: from mail.kernel.org ([198.145.29.99]:57842 "EHLO mail.kernel.org"
+        id S229911AbhJTGqY (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 20 Oct 2021 02:46:24 -0400
+Received: from mail.kernel.org ([198.145.29.99]:57904 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229591AbhJTGqV (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Wed, 20 Oct 2021 02:46:21 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 3FE3760F56;
-        Wed, 20 Oct 2021 06:44:07 +0000 (UTC)
+        id S229591AbhJTGqY (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Wed, 20 Oct 2021 02:46:24 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id A85CE610EA;
+        Wed, 20 Oct 2021 06:44:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1634712247;
-        bh=zZtE1uUkMw3FVu1iCN2hyE3Rx/xQEkGP0d4Fm4c8TyE=;
+        s=korg; t=1634712250;
+        bh=pJ6WR/t3kSUGVEbEEgaAeXBrFHQpAxoHqhWBx9sS1rE=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=0tsEgxzCl5EMwin7R1eZgGXvzJd53YW6R81LYHCb/M1gV5iVDINALouHcWH0dJ/Tt
-         X0RDRLZDUnpq8KWjssOpC4L9LTVrCj7OhXMRZJt7JM0dD/Cnv9dNCc6PLaBpR935KR
-         ut5G1CHi32hBJosBEqUexeIIqUwu4EaXZ93xQ5D4=
-Date:   Wed, 20 Oct 2021 08:39:34 +0200
+        b=X7kPJcuXrIpclvVWP3ARxvSGjHQGl4awiLNDu5UpKZjn+uh3UaXm88SzYgI27+gWU
+         MRKN2rgmQVZ+Kqh+9UbgUYHMgDios3U7xLU6uswezW7ai4dipDZvK4GXQbqa2MPToB
+         eiGs6360/lQ5OFNjAHrgZ2X5nMPFCQi5MtMdAVNk=
+Date:   Wed, 20 Oct 2021 08:40:37 +0200
 From:   Greg KH <gregkh@linuxfoundation.org>
 To:     Dov Murik <dovmurik@linux.ibm.com>
 Cc:     linux-efi@vger.kernel.org, Borislav Petkov <bp@suse.de>,
@@ -40,101 +40,64 @@ Cc:     linux-efi@vger.kernel.org, Borislav Petkov <bp@suse.de>,
         Daniele Buono <dbuono@linux.vnet.ibm.com>,
         linux-coco@lists.linux.dev, linux-security-module@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 1/3] efi/libstub: Copy confidential computing secret
- area
-Message-ID: <YW+5phDcxynJD2qy@kroah.com>
+Subject: Re: [PATCH v4 2/3] efi: Reserve confidential computing secret area
+Message-ID: <YW+55YcXqUtrw4/T@kroah.com>
 References: <20211020061408.3447533-1-dovmurik@linux.ibm.com>
- <20211020061408.3447533-2-dovmurik@linux.ibm.com>
+ <20211020061408.3447533-3-dovmurik@linux.ibm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20211020061408.3447533-2-dovmurik@linux.ibm.com>
+In-Reply-To: <20211020061408.3447533-3-dovmurik@linux.ibm.com>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, Oct 20, 2021 at 06:14:06AM +0000, Dov Murik wrote:
-> Confidential computing (coco) hardware such as AMD SEV (Secure Encrypted
-> Virtualization) allows a guest owner to inject secrets into the VMs
-> memory without the host/hypervisor being able to read them.
-> 
-> Firmware support for secret injection is available in OVMF, which
-> reserves a memory area for secret injection and includes a pointer to it
-> the in EFI config table entry LINUX_EFI_COCO_SECRET_TABLE_GUID.
-> However, OVMF doesn't force the guest OS to keep this memory area
-> reserved.
-> 
-> If EFI exposes such a table entry, efi/libstub will copy this area to a
-> reserved memory for future use inside the kernel.
-> 
-> A pointer to the new copy is kept in the EFI table under
-> LINUX_EFI_COCO_SECRET_AREA_GUID.
-> 
-> The new functionality can be enabled with CONFIG_EFI_COCO_SECRET=y.
+On Wed, Oct 20, 2021 at 06:14:07AM +0000, Dov Murik wrote:
+> When efi-stub copies an EFI-provided confidential computing (coco)
+> secret area, reserve that memory block for future use within the kernel.
 > 
 > Signed-off-by: Dov Murik <dovmurik@linux.ibm.com>
 > ---
->  drivers/firmware/efi/Kconfig            | 12 +++++
->  drivers/firmware/efi/libstub/Makefile   |  1 +
->  drivers/firmware/efi/libstub/coco.c     | 68 +++++++++++++++++++++++++
->  drivers/firmware/efi/libstub/efi-stub.c |  2 +
->  drivers/firmware/efi/libstub/efistub.h  |  6 +++
->  drivers/firmware/efi/libstub/x86-stub.c |  2 +
->  include/linux/efi.h                     |  6 +++
->  7 files changed, 97 insertions(+)
->  create mode 100644 drivers/firmware/efi/libstub/coco.c
+>  arch/x86/platform/efi/efi.c   |  3 +++
+>  drivers/firmware/efi/Makefile |  1 +
+>  drivers/firmware/efi/coco.c   | 41 +++++++++++++++++++++++++++++++++++
+>  drivers/firmware/efi/efi.c    |  8 +++++++
+>  include/linux/efi.h           | 10 +++++++++
+>  5 files changed, 63 insertions(+)
+>  create mode 100644 drivers/firmware/efi/coco.c
 > 
-> diff --git a/drivers/firmware/efi/Kconfig b/drivers/firmware/efi/Kconfig
-> index 2c3dac5ecb36..68d1c5e6a7b5 100644
-> --- a/drivers/firmware/efi/Kconfig
-> +++ b/drivers/firmware/efi/Kconfig
-> @@ -284,3 +284,15 @@ config EFI_CUSTOM_SSDT_OVERLAYS
+> diff --git a/arch/x86/platform/efi/efi.c b/arch/x86/platform/efi/efi.c
+> index 147c30a81f15..1591d67e0bcd 100644
+> --- a/arch/x86/platform/efi/efi.c
+> +++ b/arch/x86/platform/efi/efi.c
+> @@ -93,6 +93,9 @@ static const unsigned long * const efi_tables[] = {
+>  #ifdef CONFIG_LOAD_UEFI_KEYS
+>  	&efi.mokvar_table,
+>  #endif
+> +#ifdef CONFIG_EFI_COCO_SECRET
+> +	&efi.coco_secret,
+> +#endif
+>  };
 >  
->  	  See Documentation/admin-guide/acpi/ssdt-overlays.rst for more
->  	  information.
-> +
-> +config EFI_COCO_SECRET
-> +	bool "Copy and reserve EFI Confidential Computing secret area"
-> +	depends on EFI
-> +	default n
-
-default is always "n", no need to list this.
-
-> +	help
-> +	  Copy memory reserved by EFI for Confidential Computing (coco)
-> +	  injected secrets, if EFI exposes such a table entry.
-
-Why would you want to "copy" secret memory?
-
-This sounds really odd here, it sounds like you are opening up a
-security hole.  Are you sure this is the correct text that everyone on
-the "COCO" group agrees with?
-
-> +
-> +	  If you say Y here, the EFI stub copy the EFI secret area (if
-> +	  available) and reserve it for use inside the kernel.  This will
-> +	  allow the virt/coo/efi_secret module to access the secrets.
-
-What is "virt/coo/efi_secret"?
-
-> diff --git a/drivers/firmware/efi/libstub/Makefile b/drivers/firmware/efi/libstub/Makefile
-> index d0537573501e..fdada3fd5d9b 100644
-> --- a/drivers/firmware/efi/libstub/Makefile
-> +++ b/drivers/firmware/efi/libstub/Makefile
-> @@ -66,6 +66,7 @@ $(obj)/lib-%.o: $(srctree)/lib/%.c FORCE
->  lib-$(CONFIG_EFI_GENERIC_STUB)	+= efi-stub.o fdt.o string.o \
->  				   $(patsubst %.c,lib-%.o,$(efi-deps-y))
+>  u64 efi_setup;		/* efi setup_data physical address */
+> diff --git a/drivers/firmware/efi/Makefile b/drivers/firmware/efi/Makefile
+> index c02ff25dd477..49c4a8c0bfc4 100644
+> --- a/drivers/firmware/efi/Makefile
+> +++ b/drivers/firmware/efi/Makefile
+> @@ -32,6 +32,7 @@ obj-$(CONFIG_APPLE_PROPERTIES)		+= apple-properties.o
+>  obj-$(CONFIG_EFI_RCI2_TABLE)		+= rci2-table.o
+>  obj-$(CONFIG_EFI_EMBEDDED_FIRMWARE)	+= embedded-firmware.o
+>  obj-$(CONFIG_LOAD_UEFI_KEYS)		+= mokvar-table.o
+> +obj-$(CONFIG_EFI_COCO_SECRET)		+= coco.o
 >  
-> +lib-$(CONFIG_EFI_COCO_SECRET)	+= coco.o
->  lib-$(CONFIG_ARM)		+= arm32-stub.o
->  lib-$(CONFIG_ARM64)		+= arm64-stub.o
->  lib-$(CONFIG_X86)		+= x86-stub.o
-> diff --git a/drivers/firmware/efi/libstub/coco.c b/drivers/firmware/efi/libstub/coco.c
+>  fake_map-y				+= fake_mem.o
+>  fake_map-$(CONFIG_X86)			+= x86_fake_mem.o
+> diff --git a/drivers/firmware/efi/coco.c b/drivers/firmware/efi/coco.c
 > new file mode 100644
-> index 000000000000..bf546b6a3f72
+> index 000000000000..42f477d6188c
 > --- /dev/null
-> +++ b/drivers/firmware/efi/libstub/coco.c
-> @@ -0,0 +1,68 @@
+> +++ b/drivers/firmware/efi/coco.c
+> @@ -0,0 +1,41 @@
 > +// SPDX-License-Identifier: GPL-2.0
 > +/*
 > + * Confidential computing (coco) secret area handling
@@ -143,76 +106,45 @@ What is "virt/coo/efi_secret"?
 > + * Author: Dov Murik <dovmurik@linux.ibm.com>
 > + */
 > +
+> +#define pr_fmt(fmt) "efi: " fmt
+> +
 > +#include <linux/efi.h>
-> +#include <linux/sizes.h>
-> +#include <asm/efi.h>
-> +
-> +#include "efistub.h"
-> +
-> +#define LINUX_EFI_COCO_SECRET_TABLE_GUID                                                           \
-> +	EFI_GUID(0xadf956ad, 0xe98c, 0x484c, 0xae, 0x11, 0xb5, 0x1c, 0x7d, 0x33, 0x64, 0x47)
-> +
-> +/**
-> + * struct efi_coco_secret_table - EFI config table that points to the
-> + * confidential computing secret area. The guid
-> + * LINUX_EFI_COCO_SECRET_TABLE_GUID holds this table.
-> + * @base:	Physical address of the EFI secret area
-> + * @size:	Size (in bytes) of the EFI secret area
-> + */
-> +struct efi_coco_secret_table {
-> +	u64 base;
-> +	u64 size;
-
-__le64?  Or is this really in host endian format?
-
-> +} __attribute((packed));
+> +#include <linux/init.h>
+> +#include <linux/memblock.h>
+> +#include <asm/early_ioremap.h>
 > +
 > +/*
-> + * Create a copy of EFI's confidential computing secret area (if available) so
-> + * that the secrets are accessible in the kernel after ExitBootServices.
+> + * Reserve the confidential computing secret area memory
 > + */
-> +void efi_copy_coco_secret_area(void)
+> +int __init efi_coco_secret_area_reserve(void)
 > +{
-> +	efi_guid_t linux_secret_area_guid = LINUX_EFI_COCO_SECRET_AREA_GUID;
-> +	efi_status_t status;
-> +	struct efi_coco_secret_table *secret_table;
 > +	struct linux_efi_coco_secret_area *secret_area;
+> +	unsigned long secret_area_size;
 > +
-> +	secret_table = get_efi_config_table(LINUX_EFI_COCO_SECRET_TABLE_GUID);
-> +	if (!secret_table)
-> +		return;
+> +	if (efi.coco_secret == EFI_INVALID_TABLE_ADDR)
+> +		return 0;
 > +
-> +	if (secret_table->size == 0 || secret_table->size >= SZ_4G)
-> +		return;
-> +
-> +	/* Allocate space for the secret area and copy it */
-> +	status = efi_bs_call(allocate_pool, EFI_LOADER_DATA,
-> +			     sizeof(*secret_area) + secret_table->size, (void **)&secret_area);
-> +
-> +	if (status != EFI_SUCCESS) {
-> +		efi_err("Unable to allocate memory for confidential computing secret area copy\n");
-> +		return;
+> +	secret_area = early_memremap(efi.coco_secret, sizeof(*secret_area));
+> +	if (!secret_area) {
+> +		pr_err("Failed to map confidential computing secret area\n");
+> +		efi.coco_secret = EFI_INVALID_TABLE_ADDR;
+> +		return -ENOMEM;
 > +	}
 > +
-> +	secret_area->size = secret_table->size;
-> +	memcpy(secret_area->area, (void *)(unsigned long)secret_table->base, secret_table->size);
+> +	secret_area_size = sizeof(*secret_area) + secret_area->size;
+> +	memblock_reserve(efi.coco_secret, secret_area_size);
+> +
+> +	pr_info("Reserved memory of EFI-provided confidential computing secret area");
 
-Why the double cast?
-
-And you can treat this value as a "raw" pointer directly?  No need to
-map it at all?  What could go wrong...
+When kernel code works properly, it is quiet.  Why do you need to print
+this out at every boot?
 
 > +
-> +	status = efi_bs_call(install_configuration_table, &linux_secret_area_guid, secret_area);
-> +	if (status != EFI_SUCCESS)
-> +		goto err_free;
-> +
-> +	return;
-> +
-> +err_free:
-> +	efi_bs_call(free_pool, secret_area);
+> +	early_memunmap(secret_area, sizeof(*secret_area));
+> +	return 0;
+> +}
 
-This memory is never freed when shutting down the system?
+And again, when is this memory freed when shutting down?
 
 thanks,
 
