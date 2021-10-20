@@ -2,77 +2,218 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 26564434521
-	for <lists+linux-efi@lfdr.de>; Wed, 20 Oct 2021 08:28:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6FC68434559
+	for <lists+linux-efi@lfdr.de>; Wed, 20 Oct 2021 08:44:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229691AbhJTGbI (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 20 Oct 2021 02:31:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54200 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229591AbhJTGbH (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 20 Oct 2021 02:31:07 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D61B7C06161C
-        for <linux-efi@vger.kernel.org>; Tue, 19 Oct 2021 23:28:53 -0700 (PDT)
-Date:   Wed, 20 Oct 2021 08:28:50 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1634711331;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=0ONMbJ4fxECIMEdtMhfpwODwaZp4eWmvVz/rQM5VLfU=;
-        b=lwvLrz3oqR4Q6zgicpxqM/qURy0NvMIpeo2AJG8hyOjkopmWo2I4MGeJeJ0X/gtR8TN37O
-        KhrFAlPP/9hMdY3jeuO/oq3Cbf8O4Cm+cZzkYSUEK2oGLtMtpvk68kKHnPJBMSoWRZhChF
-        vnYN8YFRHQ3jgMfYWuT8vfFqWVPx4lv34sSNSXnVz4g3S7Tpbt4aK5NHAN1G1qgaWarpot
-        8o99tL1i9970Gwovqgekczx4AFh+XmjpC498vDrJ65Zt+aDiHsp8piDaSpoyoQuowrJuF9
-        J/y/Yo/4ehEy/ZK5KJ9mtokhPLgeshiRNWC2cxrEWmzhZLUzIbFhgRaZMORD0A==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1634711331;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=0ONMbJ4fxECIMEdtMhfpwODwaZp4eWmvVz/rQM5VLfU=;
-        b=kCugfiwmK6lR+20diMAPoLx4wCWKwerrvvm3zQPf8+PiSUAtnjheyS62RDlwEfLUijhgek
-        yko+NS4mS5rbyrBg==
-From:   Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To:     joeyli <jlee@suse.com>
-Cc:     Ard Biesheuvel <ardb@kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>
-Subject: Re: [PATCH 1/2] efi: Disable runtime services on RT
-Message-ID: <20211020062850.3wvw7lqauh6pzfd2@linutronix.de>
-References: <20210924134919.1913476-1-bigeasy@linutronix.de>
- <20210924134919.1913476-2-bigeasy@linutronix.de>
- <CAMj1kXFJm-su9tc20n+DyJjMwrhK6R4BR0Kd_ov62NqXd-jwUw@mail.gmail.com>
- <20210928133340.tmpjzdj367h54ddt@linutronix.de>
- <CAMj1kXG5-i5LqnQrjK79KWZYTPO4C4fF32KhQexj8WsHLQM_Lg@mail.gmail.com>
- <20210928142434.uqhkd3ribja6j654@linutronix.de>
- <20211020060955.GC3965@linux-l9pv.suse>
+        id S229715AbhJTGqW (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 20 Oct 2021 02:46:22 -0400
+Received: from mail.kernel.org ([198.145.29.99]:57842 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229591AbhJTGqV (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Wed, 20 Oct 2021 02:46:21 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 3FE3760F56;
+        Wed, 20 Oct 2021 06:44:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1634712247;
+        bh=zZtE1uUkMw3FVu1iCN2hyE3Rx/xQEkGP0d4Fm4c8TyE=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=0tsEgxzCl5EMwin7R1eZgGXvzJd53YW6R81LYHCb/M1gV5iVDINALouHcWH0dJ/Tt
+         X0RDRLZDUnpq8KWjssOpC4L9LTVrCj7OhXMRZJt7JM0dD/Cnv9dNCc6PLaBpR935KR
+         ut5G1CHi32hBJosBEqUexeIIqUwu4EaXZ93xQ5D4=
+Date:   Wed, 20 Oct 2021 08:39:34 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Dov Murik <dovmurik@linux.ibm.com>
+Cc:     linux-efi@vger.kernel.org, Borislav Petkov <bp@suse.de>,
+        Ashish Kalra <ashish.kalra@amd.com>,
+        Brijesh Singh <brijesh.singh@amd.com>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Andi Kleen <ak@linux.intel.com>,
+        Andrew Scull <ascull@google.com>,
+        Dave Hansen <dave.hansen@intel.com>,
+        "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
+        James Bottomley <jejb@linux.ibm.com>,
+        Tobin Feldman-Fitzthum <tobin@linux.ibm.com>,
+        Jim Cadden <jcadden@ibm.com>,
+        Daniele Buono <dbuono@linux.vnet.ibm.com>,
+        linux-coco@lists.linux.dev, linux-security-module@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 1/3] efi/libstub: Copy confidential computing secret
+ area
+Message-ID: <YW+5phDcxynJD2qy@kroah.com>
+References: <20211020061408.3447533-1-dovmurik@linux.ibm.com>
+ <20211020061408.3447533-2-dovmurik@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20211020060955.GC3965@linux-l9pv.suse>
+In-Reply-To: <20211020061408.3447533-2-dovmurik@linux.ibm.com>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 2021-10-20 14:09:55 [+0800], joeyli wrote:
-> On Tue, Sep 28, 2021 at 04:24:34PM +0200, Sebastian Andrzej Siewior wrote:
-> > On 2021-09-28 15:34:47 [+0200], Ard Biesheuvel wrote:
-> > > Are you sure you want to disable EFI runtime services on all x86
-> > > systems with PREEMPT_RT as well?
-> > 
-> > The only problem that I am aware of is that you need to reboot with
-> > enabled runtime service (via bootargs, #2) in order to alter boot loader
-> > settings.
+On Wed, Oct 20, 2021 at 06:14:06AM +0000, Dov Murik wrote:
+> Confidential computing (coco) hardware such as AMD SEV (Secure Encrypted
+> Virtualization) allows a guest owner to inject secrets into the VMs
+> memory without the host/hypervisor being able to read them.
 > 
-> Just provide another case:
-> Anyone who uses mokutil for enrolling MOK will also need reboot with
-> efi=runtime first.
+> Firmware support for secret injection is available in OVMF, which
+> reserves a memory area for secret injection and includes a pointer to it
+> the in EFI config table entry LINUX_EFI_COCO_SECRET_TABLE_GUID.
+> However, OVMF doesn't force the guest OS to keep this memory area
+> reserved.
+> 
+> If EFI exposes such a table entry, efi/libstub will copy this area to a
+> reserved memory for future use inside the kernel.
+> 
+> A pointer to the new copy is kept in the EFI table under
+> LINUX_EFI_COCO_SECRET_AREA_GUID.
+> 
+> The new functionality can be enabled with CONFIG_EFI_COCO_SECRET=y.
+> 
+> Signed-off-by: Dov Murik <dovmurik@linux.ibm.com>
+> ---
+>  drivers/firmware/efi/Kconfig            | 12 +++++
+>  drivers/firmware/efi/libstub/Makefile   |  1 +
+>  drivers/firmware/efi/libstub/coco.c     | 68 +++++++++++++++++++++++++
+>  drivers/firmware/efi/libstub/efi-stub.c |  2 +
+>  drivers/firmware/efi/libstub/efistub.h  |  6 +++
+>  drivers/firmware/efi/libstub/x86-stub.c |  2 +
+>  include/linux/efi.h                     |  6 +++
+>  7 files changed, 97 insertions(+)
+>  create mode 100644 drivers/firmware/efi/libstub/coco.c
+> 
+> diff --git a/drivers/firmware/efi/Kconfig b/drivers/firmware/efi/Kconfig
+> index 2c3dac5ecb36..68d1c5e6a7b5 100644
+> --- a/drivers/firmware/efi/Kconfig
+> +++ b/drivers/firmware/efi/Kconfig
+> @@ -284,3 +284,15 @@ config EFI_CUSTOM_SSDT_OVERLAYS
+>  
+>  	  See Documentation/admin-guide/acpi/ssdt-overlays.rst for more
+>  	  information.
+> +
+> +config EFI_COCO_SECRET
+> +	bool "Copy and reserve EFI Confidential Computing secret area"
+> +	depends on EFI
+> +	default n
 
-I have no idea what it does. This enrolling is only required once
-per-lifetime and not on each system boot, right?
+default is always "n", no need to list this.
 
-> Joey Lee
+> +	help
+> +	  Copy memory reserved by EFI for Confidential Computing (coco)
+> +	  injected secrets, if EFI exposes such a table entry.
 
-Sebastian
+Why would you want to "copy" secret memory?
+
+This sounds really odd here, it sounds like you are opening up a
+security hole.  Are you sure this is the correct text that everyone on
+the "COCO" group agrees with?
+
+> +
+> +	  If you say Y here, the EFI stub copy the EFI secret area (if
+> +	  available) and reserve it for use inside the kernel.  This will
+> +	  allow the virt/coo/efi_secret module to access the secrets.
+
+What is "virt/coo/efi_secret"?
+
+> diff --git a/drivers/firmware/efi/libstub/Makefile b/drivers/firmware/efi/libstub/Makefile
+> index d0537573501e..fdada3fd5d9b 100644
+> --- a/drivers/firmware/efi/libstub/Makefile
+> +++ b/drivers/firmware/efi/libstub/Makefile
+> @@ -66,6 +66,7 @@ $(obj)/lib-%.o: $(srctree)/lib/%.c FORCE
+>  lib-$(CONFIG_EFI_GENERIC_STUB)	+= efi-stub.o fdt.o string.o \
+>  				   $(patsubst %.c,lib-%.o,$(efi-deps-y))
+>  
+> +lib-$(CONFIG_EFI_COCO_SECRET)	+= coco.o
+>  lib-$(CONFIG_ARM)		+= arm32-stub.o
+>  lib-$(CONFIG_ARM64)		+= arm64-stub.o
+>  lib-$(CONFIG_X86)		+= x86-stub.o
+> diff --git a/drivers/firmware/efi/libstub/coco.c b/drivers/firmware/efi/libstub/coco.c
+> new file mode 100644
+> index 000000000000..bf546b6a3f72
+> --- /dev/null
+> +++ b/drivers/firmware/efi/libstub/coco.c
+> @@ -0,0 +1,68 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Confidential computing (coco) secret area handling
+> + *
+> + * Copyright (C) 2021 IBM Corporation
+> + * Author: Dov Murik <dovmurik@linux.ibm.com>
+> + */
+> +
+> +#include <linux/efi.h>
+> +#include <linux/sizes.h>
+> +#include <asm/efi.h>
+> +
+> +#include "efistub.h"
+> +
+> +#define LINUX_EFI_COCO_SECRET_TABLE_GUID                                                           \
+> +	EFI_GUID(0xadf956ad, 0xe98c, 0x484c, 0xae, 0x11, 0xb5, 0x1c, 0x7d, 0x33, 0x64, 0x47)
+> +
+> +/**
+> + * struct efi_coco_secret_table - EFI config table that points to the
+> + * confidential computing secret area. The guid
+> + * LINUX_EFI_COCO_SECRET_TABLE_GUID holds this table.
+> + * @base:	Physical address of the EFI secret area
+> + * @size:	Size (in bytes) of the EFI secret area
+> + */
+> +struct efi_coco_secret_table {
+> +	u64 base;
+> +	u64 size;
+
+__le64?  Or is this really in host endian format?
+
+> +} __attribute((packed));
+> +
+> +/*
+> + * Create a copy of EFI's confidential computing secret area (if available) so
+> + * that the secrets are accessible in the kernel after ExitBootServices.
+> + */
+> +void efi_copy_coco_secret_area(void)
+> +{
+> +	efi_guid_t linux_secret_area_guid = LINUX_EFI_COCO_SECRET_AREA_GUID;
+> +	efi_status_t status;
+> +	struct efi_coco_secret_table *secret_table;
+> +	struct linux_efi_coco_secret_area *secret_area;
+> +
+> +	secret_table = get_efi_config_table(LINUX_EFI_COCO_SECRET_TABLE_GUID);
+> +	if (!secret_table)
+> +		return;
+> +
+> +	if (secret_table->size == 0 || secret_table->size >= SZ_4G)
+> +		return;
+> +
+> +	/* Allocate space for the secret area and copy it */
+> +	status = efi_bs_call(allocate_pool, EFI_LOADER_DATA,
+> +			     sizeof(*secret_area) + secret_table->size, (void **)&secret_area);
+> +
+> +	if (status != EFI_SUCCESS) {
+> +		efi_err("Unable to allocate memory for confidential computing secret area copy\n");
+> +		return;
+> +	}
+> +
+> +	secret_area->size = secret_table->size;
+> +	memcpy(secret_area->area, (void *)(unsigned long)secret_table->base, secret_table->size);
+
+Why the double cast?
+
+And you can treat this value as a "raw" pointer directly?  No need to
+map it at all?  What could go wrong...
+
+> +
+> +	status = efi_bs_call(install_configuration_table, &linux_secret_area_guid, secret_area);
+> +	if (status != EFI_SUCCESS)
+> +		goto err_free;
+> +
+> +	return;
+> +
+> +err_free:
+> +	efi_bs_call(free_pool, secret_area);
+
+This memory is never freed when shutting down the system?
+
+thanks,
+
+greg k-h
