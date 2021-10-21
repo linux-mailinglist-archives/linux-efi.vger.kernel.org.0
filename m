@@ -2,56 +2,32 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C34F4369AF
-	for <lists+linux-efi@lfdr.de>; Thu, 21 Oct 2021 19:48:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B2336436AD9
+	for <lists+linux-efi@lfdr.de>; Thu, 21 Oct 2021 20:46:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232466AbhJURuP (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 21 Oct 2021 13:50:15 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:30884 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S232417AbhJURuN (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 21 Oct 2021 13:50:13 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1634838476;
+        id S231216AbhJUSsu (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 21 Oct 2021 14:48:50 -0400
+Received: from mail.skyhub.de ([5.9.137.197]:39864 "EHLO mail.skyhub.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230103AbhJUSst (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Thu, 21 Oct 2021 14:48:49 -0400
+Received: from zn.tnic (p200300ec2f1912005c22c248f35985a5.dip0.t-ipconnect.de [IPv6:2003:ec:2f19:1200:5c22:c248:f359:85a5])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id DF4681EC053B;
+        Thu, 21 Oct 2021 20:46:31 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1634841992;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=sdVy6FwDaq466AExZNtZZOl0E2m/+xf4V5tJYwOKByc=;
-        b=eugDPjAcOFmIxVsh4ad+0OdKhkR40/LvJTeI92IFk1pXjalZ2RP0xkxKAvn397qtP222t2
-        Qz76xSDgujap/RGCf22oabsaRZ8CONB3e2Tbw77TLgTeDR1C5+PoPNp7uUsAzzeLxO3VvH
-        FmU4u0Ghc36bQRFYU4zTe7ieDmPQNI8=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-236-0ULJJKnfOeKPxZHDLByP1Q-1; Thu, 21 Oct 2021 13:47:54 -0400
-X-MC-Unique: 0ULJJKnfOeKPxZHDLByP1Q-1
-Received: by mail-wr1-f72.google.com with SMTP id y11-20020adfdf0b000000b0016657f93454so157717wrl.3
-        for <linux-efi@vger.kernel.org>; Thu, 21 Oct 2021 10:47:54 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=sdVy6FwDaq466AExZNtZZOl0E2m/+xf4V5tJYwOKByc=;
-        b=IEJzExV+5Zxpmxk5Ag+R6uh1qAlUpjXakW0OHxoQfXUIzIqHun1v+tCTYBTEmDPfYR
-         +J8O+EsFBw+OAzAnQ7tTkUVV7JvRAnK6eg/Qeyz2CsWQq/nIwbiwcToKPb6iApo6P1r5
-         ++FloZz02EyyQbkxWJGtFpuuhEtmddRMZR7kHVGUbgVtQmx42gaD3g7+5sBwc6NtJdDi
-         kyPAerqrcKm1AFfF+U34So41Dc+rUHIO6TX+gRxKAORaO6ObAtqMTo8GjVDnIXmanzfq
-         xYgJrgXbudwa0zp/C74JWaTUQn5qhEPS+JPoteBSGFH2jJV/n3ZxpIZFdGsoEmQX7snF
-         BsiA==
-X-Gm-Message-State: AOAM531keSLbtJfANsRYyx+CpsNk6CrkDjqmz49aoh+h0nJbekQqG1h/
-        yKB5tfQ2nbOYbdD6LNI3lxC9t04QE3hFkt0fsPvc5QHiMks9NzxuhBmtvUSXIe9KztGDgzPhtqd
-        RNx6fUUhGqLQ2Qn/F8lCm
-X-Received: by 2002:a7b:cbd1:: with SMTP id n17mr23050394wmi.113.1634838473753;
-        Thu, 21 Oct 2021 10:47:53 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJyrJOA3K2+jcEdUJkI5yUOvDRbh0LHvWJK/dSXnO5HgNUEG6KoK85UuOyllpMd1Zyh5XoN7lA==
-X-Received: by 2002:a7b:cbd1:: with SMTP id n17mr23050368wmi.113.1634838473557;
-        Thu, 21 Oct 2021 10:47:53 -0700 (PDT)
-Received: from work-vm (cpc109025-salf6-2-0-cust480.10-2.cable.virginm.net. [82.30.61.225])
-        by smtp.gmail.com with ESMTPSA id l40sm6144308wms.31.2021.10.21.10.47.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 Oct 2021 10:47:52 -0700 (PDT)
-Date:   Thu, 21 Oct 2021 18:47:50 +0100
-From:   "Dr. David Alan Gilbert" <dgilbert@redhat.com>
-To:     Borislav Petkov <bp@alien8.de>
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=WvxWgq2dLAGqen8UM31jjC2Q8Nfg2PZVc4rOcpkz+RQ=;
+        b=TabvkIr+qmtR55/vwHcln6Rs8ye3YUSx9Dog/d2cXtpz1H4TnQNoL9czyC7cFT+ujxLj0B
+        cZfWEH+Var/MpHaA0blwxefl9GWCYta5nWH3/guDkDjWtCVLZpnZukGu/mc4DX54BQoph+
+        yDf69FlEAUe5W1ly8gCa/HifIYG1APE=
+Date:   Thu, 21 Oct 2021 20:46:30 +0200
+From:   Borislav Petkov <bp@alien8.de>
+To:     "Dr. David Alan Gilbert" <dgilbert@redhat.com>
 Cc:     Michael Roth <michael.roth@amd.com>,
         Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
@@ -79,9 +55,8 @@ Cc:     Michael Roth <michael.roth@amd.com>,
         marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com
 Subject: Re: [PATCH v6 08/42] x86/sev-es: initialize sev_status/features
  within #VC handler
-Message-ID: <YXGnxs0hV3IKGDwP@work-vm>
-References: <20211008180453.462291-9-brijesh.singh@amd.com>
- <YW2EsxcqBucuyoal@zn.tnic>
+Message-ID: <YXG1hvxcXsU2XCa1@zn.tnic>
+References: <YW2EsxcqBucuyoal@zn.tnic>
  <20211018184003.3ob2uxcpd2rpee3s@amd.com>
  <YW3IdfMs61191qnU@zn.tnic>
  <20211020161023.hzbj53ehmzjrt4xd@amd.com>
@@ -90,58 +65,48 @@ References: <20211008180453.462291-9-brijesh.singh@amd.com>
  <YXGbcqN2IRh9YJk9@zn.tnic>
  <YXGflXdrAXH5fE5H@work-vm>
  <YXGlPf5OTPzp09qr@zn.tnic>
+ <YXGnxs0hV3IKGDwP@work-vm>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <YXGlPf5OTPzp09qr@zn.tnic>
-User-Agent: Mutt/2.0.7 (2021-05-04)
+In-Reply-To: <YXGnxs0hV3IKGDwP@work-vm>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-* Borislav Petkov (bp@alien8.de) wrote:
-> On Thu, Oct 21, 2021 at 06:12:53PM +0100, Dr. David Alan Gilbert wrote:
-> > OK, so that bit is 8...21 Eax ext2eax bit 6 page 1-109
-> > 
-> > then 2.1.5.3 CPUID policy enforcement shows 8...21 EAX as
-> > 'bitmask'
-> > 'bits set in the GuestVal must also be set in HostVal.
-> > This is often applied to feature fields where each bit indicates
-> > support for a feature'
-> > 
-> > So that's right isn't it?
+On Thu, Oct 21, 2021 at 06:47:50PM +0100, Dr. David Alan Gilbert wrote:
+> Hang on, I think it's perfectly fine for it to clear that bit - it just
+> gets caught if it *sets* it (i.e. claims to be a chip unaffected by the
+> bug).
 > 
-> Yap, AFAIRC, it would fail the check if:
+> i.e. if guestval=0 then (GustVal & whatever) == GuestVal
+>   fine
 > 
-> (GuestVal & HostVal) != GuestVal
-> 
-> and GuestVal is "the CPUID result value created by the hypervisor that
-> it wants to give to the guest". Let's say it clears bit 6 there.
-                                               ^^^^^^^
+> ?
 
-> Then HostVal comes in which is "the actual CPUID result value specified
-> in this PPR" and there the guest catches the HV lying its *ss off.
-> 
-> :-)
+Bah, ofc. The name of the bit is NullSelectorClearsBase - so when it is
+clear, we will note we're affected, as that patch does:
 
-Hang on, I think it's perfectly fine for it to clear that bit - it just
-gets caught if it *sets* it (i.e. claims to be a chip unaffected by the
-bug).
++       /*
++        * CPUID bit above wasn't set. If this kernel is still running
++        * as a HV guest, then the HV has decided not to advertize
++        * that CPUID bit for whatever reason.  For example, one
++        * member of the migration pool might be vulnerable.  Which
++        * means, the bug is present: set the BUG flag and return.
++        */
++       if (cpu_has(c, X86_FEATURE_HYPERVISOR)) {
++               set_cpu_bug(c, X86_BUG_NULL_SEG);
++               return;
++       }
 
-i.e. if guestval=0 then (GustVal & whatever) == GuestVal
-  fine
+I have managed to flip the meaning in my mind.
 
-?
+Ok, that makes more sense.
 
-Dave
+Thx.
 
-> 
-> -- 
-> Regards/Gruss,
->     Boris.
-> 
-> https://people.kernel.org/tglx/notes-about-netiquette
-> 
 -- 
-Dr. David Alan Gilbert / dgilbert@redhat.com / Manchester, UK
+Regards/Gruss,
+    Boris.
 
+https://people.kernel.org/tglx/notes-about-netiquette
