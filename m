@@ -2,30 +2,30 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 157C1436484
-	for <lists+linux-efi@lfdr.de>; Thu, 21 Oct 2021 16:39:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 664484364AE
+	for <lists+linux-efi@lfdr.de>; Thu, 21 Oct 2021 16:48:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230372AbhJUOlx (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 21 Oct 2021 10:41:53 -0400
-Received: from mail.skyhub.de ([5.9.137.197]:56822 "EHLO mail.skyhub.de"
+        id S230471AbhJUOud (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 21 Oct 2021 10:50:33 -0400
+Received: from mail.skyhub.de ([5.9.137.197]:58222 "EHLO mail.skyhub.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230483AbhJUOlu (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Thu, 21 Oct 2021 10:41:50 -0400
+        id S230072AbhJUOub (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Thu, 21 Oct 2021 10:50:31 -0400
 Received: from zn.tnic (p200300ec2f1912003b8abe7004197216.dip0.t-ipconnect.de [IPv6:2003:ec:2f19:1200:3b8a:be70:419:7216])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 1D5941EC03C9;
-        Thu, 21 Oct 2021 16:39:33 +0200 (CEST)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id BF9201EC0554;
+        Thu, 21 Oct 2021 16:48:13 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1634827173;
+        t=1634827693;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=y17JTnGMD0mtwTslqhoBBVABf5L1UdFOBWZGIOCjXBc=;
-        b=WBGqbz725B0Tn4Gqi9IfVffxfPZHOyMrX9swMzwzKOKDnAf95Ur6JThfCJ9KBP7gbW1Dh0
-        r24q9fqe9U0q38J4Z4zQLkXLXqluT8qQUy7iWT1AHe+c2HFsXO79fNq8iAHcPUE/bd0dTI
-        8uOp5LTDa0i52bQxYYTnt6TwbG41+zU=
-Date:   Thu, 21 Oct 2021 16:39:31 +0200
+        bh=LFIuHJqA1Ok8eGxsQDk+FzhK+VwfVCIGalVILCtc6mM=;
+        b=F5CjdLMt3ljZR1pMBN0I0I40KB+bqYCabnPHfamE/zWwBlD+b7GndmIPbxEEZdzMWYOKBc
+        QQuBG9sOlY7F34hP3KevRm1q0eYMT4x8d02Rmzs4Q89yN+sDrxE0esRUINg416udbF0AgO
+        b/qutwzImWXA1ZE5aFGniElqF/PQqiM=
+Date:   Thu, 21 Oct 2021 16:48:16 +0200
 From:   Borislav Petkov <bp@alien8.de>
 To:     Michael Roth <michael.roth@amd.com>
 Cc:     Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org,
@@ -56,81 +56,57 @@ Cc:     Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org,
         sathyanarayanan.kuppuswamy@linux.intel.com
 Subject: Re: [PATCH v6 08/42] x86/sev-es: initialize sev_status/features
  within #VC handler
-Message-ID: <YXF7o8X9Elc8s8t7@zn.tnic>
+Message-ID: <YXF9sCbPDsLwlm42@zn.tnic>
 References: <20211008180453.462291-1-brijesh.singh@amd.com>
  <20211008180453.462291-9-brijesh.singh@amd.com>
  <YW2EsxcqBucuyoal@zn.tnic>
  <20211018184003.3ob2uxcpd2rpee3s@amd.com>
  <YW3IdfMs61191qnU@zn.tnic>
  <20211020161023.hzbj53ehmzjrt4xd@amd.com>
- <YXBbJwd2M03Ssq6I@zn.tnic>
- <20211021020542.v5s7xr4s2j3gsale@amd.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20211021020542.v5s7xr4s2j3gsale@amd.com>
+In-Reply-To: <20211020161023.hzbj53ehmzjrt4xd@amd.com>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, Oct 20, 2021 at 09:05:42PM -0500, Michael Roth wrote:
-> According to the APM at least, (Rev 3.37, 15.34.10, "SEV_STATUS MSR"), the
-> SEV MSR is the appropriate source for guests to use. This is what is used
-> in the EFI code as well. So that seems to be the right way to make the
-> initial determination.
+On Wed, Oct 20, 2021 at 11:10:23AM -0500, Michael Roth wrote:
+> At which point we then switch to using the CPUID table? But at that
+> point all the previous CPUID checks, both SEV-related/non-SEV-related,
+> are now possibly not consistent with what's in the CPUID table. Do we
+> then revalidate?
 
-Yap.
+Well, that's a tough question. That's basically the same question as,
+does Linux support heterogeneous cores and can it handle hardware
+features which get enabled after boot. The perfect example is, late
+microcode loading which changes CPUID bits and adds new functionality.
 
-> There's a dependency there on the SEV CPUID bit however, since setting the
-> bit to 0 would generally result in a guest skipping the SEV MSR read and
-> assuming 0. So for SNP it would be more reliable to make use of the CPUID
-> table at that point, since it's less-susceptible to manipulation, or do the
-> #VC-based SEV MSR read (or both).
+And the answer to that is, well, hard. You need to decide this on a
+case-by-case basis.
 
-So the CPUID page is supplied by the firmware, right?
+But isn't it that the SNP CPUID page will be parsed early enough anyway
+so that kernel proper will see only SNP CPUID info and init properly
+using that?
 
-Then, you parse it and see that the CPUID bit is 1, then you start using
-the SEV_STATUS MSR and all good.
+> Even a non-malicious hypervisor might provide inconsistent values
+> between the two sources due to bugs, or SNP validation suppressing
+> certain feature bits that hypervisor otherwise exposes, etc.
 
-If there *is* a CPUID page but that bit is 0, then you can safely assume
-that something is playing tricks on ya so you simply refuse booting.
+There's also migration, lemme point to a very recent example:
 
-> Fully-unencrypted should result in a crash due to the reasons below.
+https://lore.kernel.org/r/20211021104744.24126-1-jane.malalane@citrix.com
 
-Crash is a good thing in confidential computing. :)
+which is exactly what you say - a non-malicious HV taking care of its
+migration pool. So how do you handle that?
 
-> But there may exist some carefully crafted outside influences that could
-> goad the guest into, perhaps, not marking certain pages as private. The
-> best that can be done to prevent that is to audit/harden all the code in the
-> boot stack so that it is less susceptible to that kind of outside
-> manipulation (via mechanisms like SEV-ES, SNP page validation, SNP CPUID
-> table, SNP restricted injection, etc.)
+> Now all the code after sme_enable() can potentially take unexpected
+> execution paths, where post-sme_enable() code makes assumptions about
+> pre-sme_enable() checks that may no longer hold true.
 
-So to me I wonder why would one use anything *else* but an SNP guest. We
-all know that those previous technologies were just the stepping stones
-towards SNP.
-
-> Then of course that boot stack needs to be part of the attestation process
-> to provide any meaningful assurances about the resulting guest state.
->
-> Outside of the boot stack the guest owner might take some extra precautions.
-> Perhaps custom some kernel driver to verify encryption/validated status of
-> guest pages, some checks against the CPUID table to verify it contains sane
-> values, but not really worth speculating on that aspect as it will be
-> ultimately dependent on how the cloud vendor decides to handle things after
-> boot.
-
-Well, I've always advocated having a best-practices writeup somewhere
-goes a long way to explain this technology to people and how to get
-their feet wet. And there you can give hints how such verification could
-look like in detail...
-
-> That would indeed be useful. Perhaps as a nice big comment in sme_enable()
-> and/or the proposed sev_init() so that those invariants can be maintained,
-> or updated in sync with future changes. I'll look into that for the next
-> spin and check with Brijesh on the details.
-
-There is Documentation/x86/amd-memory-encryption.rst, for example.
+So as I said above, if you parse SNP CPUID page early enough, you don't
+have to worry about feature rediscovery. Early enough means, before
+identify_boot_cpu().
 
 -- 
 Regards/Gruss,
