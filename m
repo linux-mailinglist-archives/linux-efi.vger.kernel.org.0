@@ -2,89 +2,114 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 984124376CD
-	for <lists+linux-efi@lfdr.de>; Fri, 22 Oct 2021 14:21:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 83C29437949
+	for <lists+linux-efi@lfdr.de>; Fri, 22 Oct 2021 16:48:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232073AbhJVMYK (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 22 Oct 2021 08:24:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53588 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231394AbhJVMYJ (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 22 Oct 2021 08:24:09 -0400
-Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5FF4C061348
-        for <linux-efi@vger.kernel.org>; Fri, 22 Oct 2021 05:21:51 -0700 (PDT)
-Received: by mail-ed1-x52b.google.com with SMTP id r4so6135731edi.5
-        for <linux-efi@vger.kernel.org>; Fri, 22 Oct 2021 05:21:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=EabbjzyBCsHP1Pqryzjhoy0dM3xlyxLmmpO8ACgMTo8=;
-        b=opUIgqVWyZcHOIldu+LgQVfQLu2JLSm4eq0yRYoR8X3EkJ0jJdtgK1LJrEC4fAYG/u
-         x5QndCavFk6KrgrLKL2M04eWhmo9Ht5gsCUOTzm6BFmYlOhPKCnfQmAWRcGWJ3Kgd+Po
-         dxnzE1GzD0Fe/zdoRYGanqsnNZ7HZwcDd5jvb2P53Z7ySB2eUUW5eKcCwJjvHcLwQW3D
-         hmZMQ0WQ67mADARNZlQPTMDFACAa1pT2f55C5E+z5xU/0SGGI05AA1ys/nk/8Z7QRecx
-         rbFLK51ODld/urTp+hjZ3tCNNEiv03NL8R5n8H4ZVv1sIR3Pcfr4FSd/aUugOrtvCJBK
-         4QUQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=EabbjzyBCsHP1Pqryzjhoy0dM3xlyxLmmpO8ACgMTo8=;
-        b=zPWThiuixI6UaT4UGI3ylff98TYUErS8VBmIk7aEipHJcn+W+UNP9uQaIAO2jbiljK
-         KBvrOkPQFnWHvWezVGZtVw1urL9upEuLCux97FhJBim5zW7H9vnVT0+gtrVbDaFWQD8v
-         37JjoUDwRLtkGO3/pcSgbB8N+Zo/3mnL2oLpguxwQqi+UNEndfJLbn7u9KAugx7gbKJ/
-         LCaKBAXDO8xeTpK2pEhVrhPDw6FSt8OToqmPcAI37/x5Y2TdPXHXFfuHIP+Skjm1Ej8e
-         sLVA+LGbf7yKIvnxjIoZOjB+FU692MGtGV7t+vhnr8Iqx9VpTYSu7MMaqiSLmo6zk9sx
-         uQgw==
-X-Gm-Message-State: AOAM532miRSpmF3CNzXWiGsoU79XAlEbKJADa0wr8xCMzW2HUE3cYy1i
-        0/lfGe6XUBUOK9H4qbt+6taGRB5E0xtxU0j+B4Y=
-X-Google-Smtp-Source: ABdhPJy2Z+mCK6UsBedDHfuHLqHjOelryE6bx9xZ/OavTEghlxY+bPID2uQBe/oD5nVNF4jHf9BZTkpf3h9vpVXzB08=
-X-Received: by 2002:a17:907:1b0a:: with SMTP id mp10mr15488909ejc.29.1634905309828;
- Fri, 22 Oct 2021 05:21:49 -0700 (PDT)
+        id S233279AbhJVOvB (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 22 Oct 2021 10:51:01 -0400
+Received: from mail.kernel.org ([198.145.29.99]:37188 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S233269AbhJVOvB (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Fri, 22 Oct 2021 10:51:01 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id C4D9861213;
+        Fri, 22 Oct 2021 14:48:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1634914123;
+        bh=D7YiPLV5BWiABRuEJr1caIsL8j1JOmX/Rlc+/V7Zfbg=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=sHa0yAkhFeH0wZLIgP+ZI7JoVDO5tgcdXSeghzQbQK7n/dxfo66MH/BjWZ/GwXYsY
+         1lmUGj33d6m9ZyKJVNRgOnfGQf6661uVPXTNjyiQVYf2SEd27wMupbpxE5k1cNCRpM
+         Y7TGbObewe6NQWRkG0jIaqgVqtC6/OyDZcfm2mUoRVAe6k8KDCEsK8TLhu0x5e9V1T
+         FZLL09ifW1DG2+8UYL7E9psr+jwEKpcegXa58VLfO9xnwswOxplLAXtGgmLgW5fSFr
+         8ELzw3slNSG/FZEpwOCBZtuoxL1qo3u6UCLPNYi3DMe4PCTM2GBqA7Bf4muiaG2gcg
+         N136D/QBNtSLQ==
+Received: by mail-oi1-f169.google.com with SMTP id v77so5329881oie.1;
+        Fri, 22 Oct 2021 07:48:43 -0700 (PDT)
+X-Gm-Message-State: AOAM530FzKiqbAFhZAcm+0Y5Kh40LEFcrBIquFq8dAmAW//06pwQdR0l
+        JzAGEUch7G6/YKkutBhKiWvdu8rqA6nFDzYeQFE=
+X-Google-Smtp-Source: ABdhPJypGAKfqCWEfb5UwFvo4wdFO3IfTvhmWl1YbhLQa54b43BdKPBALNvuxXcnPQLKw9/L9/PCjOHfhxdGtFJefWc=
+X-Received: by 2002:aca:4bc4:: with SMTP id y187mr92315oia.174.1634914123022;
+ Fri, 22 Oct 2021 07:48:43 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:a17:907:7fa7:0:0:0:0 with HTTP; Fri, 22 Oct 2021 05:21:48
- -0700 (PDT)
-Reply-To: bahadur.rayanby@gmail.com
-From:   Ryan Bahadur <dr.philposman7@gmail.com>
-Date:   Fri, 22 Oct 2021 05:21:48 -0700
-Message-ID: <CAMOT=VQ19xGMh1Soq8rNHNKaBCqZh03d0u+Nrf_Ou9bAtd-seQ@mail.gmail.com>
-Subject: CAN I TRUST YOU
-To:     undisclosed-recipients:;
+References: <ebf1eb2940405438a09d51d121ec0d02c8755558.1634752931.git.thomas.lendacky@amd.com>
+ <9d9ca009-93c5-acc3-7445-d514c7878478@amd.com>
+In-Reply-To: <9d9ca009-93c5-acc3-7445-d514c7878478@amd.com>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Fri, 22 Oct 2021 16:48:31 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXEDPwORj=oeQJ66FVD6WMjpxWiXX1Y317izHzRH1c1ncw@mail.gmail.com>
+Message-ID: <CAMj1kXEDPwORj=oeQJ66FVD6WMjpxWiXX1Y317izHzRH1c1ncw@mail.gmail.com>
+Subject: Re: [PATCH] x86/sme: Explicitly map new EFI memmap table as encrypted
+To:     Tom Lendacky <thomas.lendacky@amd.com>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        X86 ML <x86@kernel.org>, linux-efi <linux-efi@vger.kernel.org>,
+        platform-driver-x86@vger.kernel.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Matt Fleming <matt@codeblueprint.co.uk>,
+        "# 3.4.x" <stable@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
--- 
-Greetings,
+On Thu, 21 Oct 2021 at 15:21, Tom Lendacky <thomas.lendacky@amd.com> wrote:
+>
+> On 10/20/21 1:02 PM, Tom Lendacky wrote:
+> > Reserving memory using efi_mem_reserve() calls into the x86
+> > efi_arch_mem_reserve() function. This function will insert a new EFI
+> > memory descriptor into the EFI memory map representing the area of
+> > memory to be reserved and marking it as EFI runtime memory. As part
+> > of adding this new entry, a new EFI memory map is allocated and mapped.
+> > The mapping is where a problem can occur. This new memory map is mapped
+> > using early_memremap() and generally mapped encrypted, unless the new
+> > memory for the mapping happens to come from an area of memory that is
+> > marked as EFI_BOOT_SERVICES_DATA memory.
 
-Firstly, I apologize for encroaching into your privacy in this manner
-as it may seem unethical though it is a matter of great importance.
+This bit already sounds dodgy to me. At runtime, anything provided by
+the firmware that needs to be mapped unencrypted should be
+identifiable as such, regardless of the memory type. So why is there a
+special case for BS data?
 
-I am Mr.Ryan Bahadur, I work with Cayman National Bank (Cayman Islands).
+> > In this case, the new memory will
+> > be mapped unencrypted. However, during replacement of the old memory map,
+> > efi_mem_type() is disabled, so the new memory map will now be long-term
+> > mapped encrypted (in efi.memmap), resulting in the map containing invalid
+> > data and causing the kernel boot to crash.
+> >
+> > Since it is known that the area will be mapped encrypted going forward,
+> > explicitly map the new memory map as encrypted using early_memremap_prot().
+> >
+> > Cc: <stable@vger.kernel.org> # 4.14.x
+> > Fixes: 8f716c9b5feb ("x86/mm: Add support to access boot related data in the clear")
+> > Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
+> > ---
+> >   arch/x86/platform/efi/quirks.c | 3 ++-
+> >   1 file changed, 2 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/arch/x86/platform/efi/quirks.c b/arch/x86/platform/efi/quirks.c
+> > index b15ebfe40a73..b0b848d6933a 100644
+> > --- a/arch/x86/platform/efi/quirks.c
+> > +++ b/arch/x86/platform/efi/quirks.c
+> > @@ -277,7 +277,8 @@ void __init efi_arch_mem_reserve(phys_addr_t addr, u64 size)
+> >               return;
+> >       }
+> >
+> > -     new = early_memremap(data.phys_map, data.size);
+> > +     new = early_memremap_prot(data.phys_map, data.size,
+> > +                               pgprot_val(pgprot_encrypted(FIXMAP_PAGE_NORMAL)));
+>
+> I should really have a comment above this as to why this version of the
+> early_memremap is being used.
+>
+> Let me add that (and maybe work on the commit message a bit) and submit a
+> v2. But I'll hold off for a bit in case any discussion comes about.
+>
 
-I am contacting you because my status would not permit me to do this
-alone as it is concerning our customer and an investment placed under
-our bank's management over 5 years ago.
+For the [backported] change itself (with the comment added)
 
-I have a proposal I would love to discuss with you which will be very
-beneficial to both of us. It's regarding my late client who has a huge
-deposit with my bank.
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
 
-He is from your country and shares the same last name with you.
-
-I want to seek your consent to present you as the next of kin to my
-late client who died and left a huge deposit with my bank.
-
-I would respectfully request that you keep the contents of this mail
-confidential and respect the integrity of the information you come by
-as a result of this mail.
-
-Please kindly get back to me for more details if I can TRUST YOU.{
-bahadur.rayanby@gmail.com}
-
-Regards
-Mr.Ryan Bahadur
-Treasury and Deposit Management,
-Cayman National Bank Cayman Islands.
+but I'd still like to understand if we can improve the situation with BS data.
