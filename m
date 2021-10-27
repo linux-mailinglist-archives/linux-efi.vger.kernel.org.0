@@ -2,198 +2,195 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B39243CD2A
-	for <lists+linux-efi@lfdr.de>; Wed, 27 Oct 2021 17:11:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B16943CD40
+	for <lists+linux-efi@lfdr.de>; Wed, 27 Oct 2021 17:14:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237890AbhJ0POM (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 27 Oct 2021 11:14:12 -0400
-Received: from mail-dm6nam12on2070.outbound.protection.outlook.com ([40.107.243.70]:11105
-        "EHLO NAM12-DM6-obe.outbound.protection.outlook.com"
+        id S242688AbhJ0PQs (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 27 Oct 2021 11:16:48 -0400
+Received: from mail-dm6nam10on2071.outbound.protection.outlook.com ([40.107.93.71]:38772
+        "EHLO NAM10-DM6-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S236709AbhJ0POL (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Wed, 27 Oct 2021 11:14:11 -0400
+        id S242681AbhJ0PQr (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Wed, 27 Oct 2021 11:16:47 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=R2oc+s7NipBF2uewd9O5hclrqnk2H9dfLYGOAFmnmKH19MTzCigL4ZpGHyO3aZ2squ+wjr5ANKqPJZvTspFOJ11eeLCLx/1w2Xw8cLF5JBL2rnPmcOHMeqm0cnvaIKfwEvWcud/zGSILzMxTLhrAL8m4B7RkodRw5p6bZjKMMJcM3dQ8v94Pc2XislBhIlGezAb47CvPXwtE5fvSjyp5SZYQdG1IlgLpV6PIB6pFc+T46Y6ushgt9nrhx5rRP/pDaTP5MgKaTUN22HENfG+8ybo3OzhJEFbfnyogpy7i12Wo/9mv53bPre6lBD/SYBE1ellwepEbvf33gWGIsc3cMA==
+ b=OBeHbpXsMEm0ZgaYkUyXjFAYbGRNGV40JcdzP/J6HIflEDlOBXYTvIofn9UgdPjKEBGrCdGk8OE3EDwBfhGF6nqihC63CsJQD4VYaNfKd3bprgCHlWwHoW+ivRIy8N0Kj3kQnaKOa66vD/6Zj7qmBCqAdpo//ZgHOMAm3bswKsMfwD7slyIZk50FE0JF7TQAg2F1CgsB0phMlWuK43N6f6W+dayA3O5thG8zbUd42gkSvVCjsxW8zm9xrnGxhVcNZepICQ9NFDRW6RPy0WntKGNj3DjgM2eCzGZ3Zu2CtbjH4VN6dHrpgz+uerB/tl6ZlrdzrsVSm7u+3WNTA6Xksg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=YZa4ULctBWnUHsTT1790sHV4VshTYOrL/uvBmJNXdcY=;
- b=ddKXFfdh6CfNgiGarvvzQh4JVIHU2oKYL76fZzrX60m66mSuCqqWLg7GXDicRlO+Fkb5yb03/RQp2jbcWn313N5dLJLMUDt+iaXayq67tvxWJjKjjM7TBvly+hL7ESSELg1W8QX177Ke8ZspW1rGh2aTfexW7W7WSnajxuO1cTG7uoS2OJBszPrZHNkY4vUqyyI+2pjQrE0WKaB3vPxGqulmEG2mp6lOWWcc9if0Qjrcb6KAjTP2vvzsBuJjJ4k1tOeiIVanAA0NIDhrPwcN56nDqDVr/6tyqYCuoLKGH0u0eC0sz9GIx9eGAJxIgIQdwse8fJgo63B0IOEKDivS6Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
+ bh=wPod+ObHf4kgKPISc2cRbmeSv313djtHuT9BF8uRLQQ=;
+ b=ILastPJMq/ttmRZ6OeGDJY0IBiwGYMXKJ0arlnEwNtMhWX3BClhNdSOnxIxcFzsI3sxLLkUd4yTHfnxw9jYdRcS+9/5BzzWnvjbTdUk3vS3f9edEyQAYvRzpUQVOaMgNngwQsQ9rAgWMND/A6RqaDtvcV+8JXWAtdjmgw7Uz06fWAekehdhAfvMyNd9IJZovLxmLSuE7LZvP6gNkZ/Qi8DLuX6g/CJm5ndQaCo2H6D4baRxdGd+w2Sg7lvse4+zL2hM9eSlAt0oxVYFrdail/m9btbJxsXuLCXT3r9848QZqaC7xgJ3wM0UTLLOszqyINbB42LnaRVTk/vapd1IXjw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=alien8.de smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=YZa4ULctBWnUHsTT1790sHV4VshTYOrL/uvBmJNXdcY=;
- b=e94FmgcmgHbuV4YArzKmXJ2l9qMFA0qp2UsN0eDDuaxTXx2Kwfy9AVWOLqs0E9mceTf+XB6G1X0T1DmLLTL6cEHh0U/3OgOXcfU5ln7h27qNrok4JwflIpOXlIvNI69LSaQ8oIH6XdNRPc1im13B8it27wUlOY+5lVic2aoXICQ=
-Authentication-Results: kernel.org; dkim=none (message not signed)
- header.d=none;kernel.org; dmarc=none action=none header.from=amd.com;
-Received: from DM4PR12MB5229.namprd12.prod.outlook.com (2603:10b6:5:398::12)
- by DM4PR12MB5246.namprd12.prod.outlook.com (2603:10b6:5:399::17) with
+ bh=wPod+ObHf4kgKPISc2cRbmeSv313djtHuT9BF8uRLQQ=;
+ b=Xct1ifkX2noaqHa3vgHSJhZGn1Z2Um08u58aK5WKGimBRHuWWb5ddLIW7sM5S3qWvRP8USUO8nDQtB7TuBC5Dz/mzQ9MW0fKi2hNiOC1xsGeL8sF+MplwQ8S770wWBouxmJ5vtNx1BQRapDND/86fRu1u4mNDN9VR9ZfqQSInrk=
+Received: from CO1PR15CA0067.namprd15.prod.outlook.com (2603:10b6:101:20::11)
+ by SN6PR12MB2717.namprd12.prod.outlook.com (2603:10b6:805:68::29) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4628.18; Wed, 27 Oct
- 2021 15:11:44 +0000
-Received: from DM4PR12MB5229.namprd12.prod.outlook.com
- ([fe80::a87d:568d:994f:c5f9]) by DM4PR12MB5229.namprd12.prod.outlook.com
- ([fe80::a87d:568d:994f:c5f9%7]) with mapi id 15.20.4628.020; Wed, 27 Oct 2021
- 15:11:44 +0000
-Subject: Re: [PATCH v2] x86/sme: Explicitly map new EFI memmap table as
- encrypted
-From:   Tom Lendacky <thomas.lendacky@amd.com>
-To:     Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Darren Hart <dvhart@infradead.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        Matt Fleming <matt@codeblueprint.co.uk>,
-        stable@vger.kernel.org, linux-kernel@vger.kernel.org,
-        x86@kernel.org
-References: <8afff0c64feb6b96db36112cb865243f4ae280ca.1634922135.git.thomas.lendacky@amd.com>
-Message-ID: <c997e8a2-b364-2a8e-d247-438e9d937a1e@amd.com>
-Date:   Wed, 27 Oct 2021 10:11:41 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
-In-Reply-To: <8afff0c64feb6b96db36112cb865243f4ae280ca.1634922135.git.thomas.lendacky@amd.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SN4PR0501CA0101.namprd05.prod.outlook.com
- (2603:10b6:803:42::18) To DM4PR12MB5229.namprd12.prod.outlook.com
- (2603:10b6:5:398::12)
+ 2021 15:14:18 +0000
+Received: from CO1NAM11FT003.eop-nam11.prod.protection.outlook.com
+ (2603:10b6:101:20:cafe::b0) by CO1PR15CA0067.outlook.office365.com
+ (2603:10b6:101:20::11) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4649.14 via Frontend
+ Transport; Wed, 27 Oct 2021 15:14:18 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; alien8.de; dkim=none (message not signed)
+ header.d=none;alien8.de; dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com;
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CO1NAM11FT003.mail.protection.outlook.com (10.13.175.93) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.4649.14 via Frontend Transport; Wed, 27 Oct 2021 15:14:16 +0000
+Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.15; Wed, 27 Oct
+ 2021 10:14:15 -0500
+Date:   Wed, 27 Oct 2021 10:13:25 -0500
+From:   Michael Roth <michael.roth@amd.com>
+To:     Borislav Petkov <bp@alien8.de>
+CC:     Brijesh Singh <brijesh.singh@amd.com>, <x86@kernel.org>,
+        <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
+        <linux-efi@vger.kernel.org>, <platform-driver-x86@vger.kernel.org>,
+        <linux-coco@lists.linux.dev>, <linux-mm@kvack.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Sean Christopherson <seanjc@google.com>,
+        "Vitaly Kuznetsov" <vkuznets@redhat.com>,
+        Jim Mattson <jmattson@google.com>,
+        "Andy Lutomirski" <luto@kernel.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
+        "Peter Zijlstra" <peterz@infradead.org>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        David Rientjes <rientjes@google.com>,
+        Dov Murik <dovmurik@linux.ibm.com>,
+        Tobin Feldman-Fitzthum <tobin@ibm.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        "Kirill A . Shutemov" <kirill@shutemov.name>,
+        Andi Kleen <ak@linux.intel.com>,
+        "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
+        <tony.luck@intel.com>, <marcorr@google.com>,
+        <sathyanarayanan.kuppuswamy@linux.intel.com>
+Subject: Re: [PATCH v6 08/42] x86/sev-es: initialize sev_status/features
+ within #VC handler
+Message-ID: <20211027151325.v3w3nghq5z2o5dto@amd.com>
+References: <20211008180453.462291-9-brijesh.singh@amd.com>
+ <YW2EsxcqBucuyoal@zn.tnic>
+ <20211018184003.3ob2uxcpd2rpee3s@amd.com>
+ <YW3IdfMs61191qnU@zn.tnic>
+ <20211020161023.hzbj53ehmzjrt4xd@amd.com>
+ <YXF+WjMHW/dd0Wb6@zn.tnic>
+ <20211021204149.pof2exhwkzy2zqrg@amd.com>
+ <YXaPKsicNYFZe84I@zn.tnic>
+ <20211025163518.rztqnngwggnbfxvs@amd.com>
+ <YXk1N6ApJA8PgkwM@zn.tnic>
 MIME-Version: 1.0
-Received: from office-ryzen.texastahm.com (67.79.209.213) by SN4PR0501CA0101.namprd05.prod.outlook.com (2603:10b6:803:42::18) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4649.11 via Frontend Transport; Wed, 27 Oct 2021 15:11:42 +0000
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <YXk1N6ApJA8PgkwM@zn.tnic>
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: fd7239fe-6875-4b0b-657e-08d9995c1609
-X-MS-TrafficTypeDiagnostic: DM4PR12MB5246:
-X-Microsoft-Antispam-PRVS: <DM4PR12MB524633F8746F63FC3E640D83EC859@DM4PR12MB5246.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:2958;
+X-MS-Office365-Filtering-Correlation-Id: 21678983-18d1-43f4-bcd9-08d9995c7102
+X-MS-TrafficTypeDiagnostic: SN6PR12MB2717:
+X-Microsoft-Antispam-PRVS: <SN6PR12MB271797E5EDB35909FC705D4195859@SN6PR12MB2717.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: MFcruFJecNpKiBKcillEdFDVpBrjGfIGFD8Eomt84mJDJukzFxoG2Ho8zKdpUWBaVWXQ2Oe7See7gvF6JVYh8/HYbgCSVNvMX8foFG798Qz1Hw4vv0kUr0Zo1sszRlOZXvclMwE4pVeWSQpDDEhs8M7shWFrziF9CdIVobYoas5KA+y/UQTaI67jJf18V8Uy5lXE+3wJ1NH1xGWSVP7sm8Dk8GoRMtla2pmUGtAQF/M5RN+z9WIKecvdhXPJPvGzj1Jmi1GcrPhq3i4eMstp/Xpnz/a/zZCR8tfAwttyPFoJ6HYQkRwtLPnfrLuQAnVHKvUuTuaGhO0BM0u4f/darL8iVI2Pr2+15wFItopF86EmR/ch2aAqDLxn5LAlHvfJuw3IEuCfS5me+8sxwMpEf9BvjB7bYIA6eN2hXRsfOl6AsdT4119cuXSYQFkg7C8/mC/0gByMbmdt1S4l2tjtHUSmDT5ORjoz7X1Z8MWQHam3Gbx4lhRId4QQ6Wc38m1TTA1HZh28iIojU5zTfNYj3D3ACOI1RSNzvyo/DvKTEkXTNKrsrznZKfAxQEMHa9JRv46wRAbOM0jBo1xswMA+cStlpqGMUnDPhCzVFlhIPuBBoZZXPe9jjdtRoTpAyx9nTeI1z9mn+N13/FvyDIl3y+rovVXnNtAeOu08Bk4MoZz74NRHwYt/pw1rZbFDTmnEKOA9MSxg+mUTH9YvVZA2lUrqctyLsfPyz+FUAOZ6woI=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB5229.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(366004)(86362001)(26005)(4326008)(8936002)(7416002)(66556008)(66946007)(6486002)(53546011)(83380400001)(5660300002)(6506007)(2906002)(31696002)(54906003)(316002)(38100700002)(31686004)(186003)(2616005)(956004)(8676002)(36756003)(66476007)(6512007)(508600001)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?aTU0SnlrV0tBM21jeDVVanF4WkZCRDhRWDROclo2NDl6RW0rSEtXcUZrL2lq?=
- =?utf-8?B?Zi9helE4aVNTSWJXS1pyc0lNUnRXWW5obVdsWnRZbjczd3E0TEt4VzYzV0Rx?=
- =?utf-8?B?aUE3anJKOVVaWEFZRTFObkVQaUVTQ1BJYWdSZHIweEZnNCtIUmVIU01pLzZP?=
- =?utf-8?B?cUxmc2t4c2loaGorWUVMRGE2RkxuSDZkcy9vTGM3R2ZNTnpZempCTmZ2ZE0v?=
- =?utf-8?B?Q2tsdmRRZUo2UXBwckRJQXJNaXBxdVk2L05LQlEyNDEzeVVabmpZUHZ4dWNX?=
- =?utf-8?B?STVYS1dIQmR1QkdRWlUyb2dJVXFIWmFZWk9DYThrOU9CVWNTZU9TNDczZ2JJ?=
- =?utf-8?B?NG45M25kRWpYL2NscWVXdDZGYSt3aEN4MFJzQmN4SkdydFNscWQ2NUV4Tzl0?=
- =?utf-8?B?VlhKVEFGZlRtZjhsOHgyRmYyR2NsZzlaYlJFc3AzdDlpcmxZTVdmU01FcVZv?=
- =?utf-8?B?YmlPQ3RiMWFOeksxVnpVR1psSE1leHhXd3NQODRiV0krZzlNa2wzTmhKcUh5?=
- =?utf-8?B?NldoQ3pHYmpnN2lUMWoyT3d6L1pTcnFVT21xdWRqanU2MXJqUW5SUFdzd2d2?=
- =?utf-8?B?eVBIYmMwM0FNcUZtVkZoV2dlRGJRWS9DMnEzc0hUZnNGZmhDc2w5c2VxRGNq?=
- =?utf-8?B?TDhDTUhOeE9FRUtRNmdPWFl4Vjlyc0laVzZIUk84UldyZVhrcjNLa1V4VXZz?=
- =?utf-8?B?cjFxRWM1M0IwTVJQMUNLWngydXBROXNJMVBkM1FYT0p4VUlUNVNwUnRHQlVI?=
- =?utf-8?B?UTJEaTRSUXc1RlZ0RUVGYmpjYmpiSGVlcmR6ZnlKYnVZV0RKTTFQTm5JTVBM?=
- =?utf-8?B?UTU3OGQrSktpYW9wQVZGazhRY1pOVmsyYytlcTRqVHdHcU1NT3EwTnNKZFVk?=
- =?utf-8?B?WDd1MlFqWTNobVNzRkthY0xFekdyZFExcndBaXdLNGhCZVNEdDVCZkhOQTJW?=
- =?utf-8?B?ZUVublJCT04xMDlyL2l4Wkh2aitKYSs3WDRRVDBleUVvVUdpdEJCWW1GZ1Vn?=
- =?utf-8?B?UlNHWk04UU9nVGh5Y21YUmJUMzdVNHNMY2plN1V1ekdOQ0tjSkwwTUpQZXNH?=
- =?utf-8?B?ZFcrN0pvR254YjVTQ0pYSFJacHlmeFdQOTV1ZUVvQXI3WWNkQlQxWEZtSmxK?=
- =?utf-8?B?QUEzSVNhZlFnTG9QVHBNcDJuMFZLUGI5a0I0Nm9KaHRzcEFZRW5ma092NGRn?=
- =?utf-8?B?WHF3QStaalpYeTZuK3Fja0w2Mkw1cEV5WWRiem8rVnY4NnFBL1RqVFRlREpY?=
- =?utf-8?B?MTJNVjJlRWFVc29LbExuSzB2UjJ6cjlRK0xQbHQ2b2tOZHhUZDBwbFV5YjBU?=
- =?utf-8?B?cmFqblN0VjJWa0loZHl1eUVxaU5BMWZUZ0VDWjdoenhGc053aWZPSnc2TTNa?=
- =?utf-8?B?T3BHTEI3cU1GclBFaVVsKzlYeTZUaklXa0tXZzJ4cSs0cm4wbUdEMjBBZUVT?=
- =?utf-8?B?NldUVXUxMVNiM25DT01rVmFCYlhXYUY1WUZhZmEwUytXbUFQK1pLNzYzbm5T?=
- =?utf-8?B?c3Z3cnpSYWQrMlZkaWdTWTNuaUlROGZlNmZMa0FqblpkdVc2T2tVNzdqVzh6?=
- =?utf-8?B?V0Rpd1VpTG9xekNaMlo2ZTYvTmNMWXhhT1R3MWM5b0grZTBtOW05Y0tXYkhz?=
- =?utf-8?B?b1EyV0FtVU9WTDN0am84Mml4cGxGcFZ3RjVOeE5MNGh4bGJrYnZZaGdiVWpW?=
- =?utf-8?B?RUFIaklhWHh1OXBTUUlocHpSRDhNNXNjNDNDanVxZFozT3BTUXMzS2Jobndj?=
- =?utf-8?B?WjUwMmtPUEZTSjVFT1BML2NKaWFZY3dSMkpWa3hSeUFNWms4L3RTYVhscHpa?=
- =?utf-8?B?TFJsZWZnekZlc1NVTUtCdjlXWnRPWllKUlBmK2xpYlMxL3JPYUVkTUkzM1BC?=
- =?utf-8?B?Z2JZRko4enVSWXZFV3NDUisvd0ExYVJZckM5TW9qOU00MmxGa2xwaE5WM3lX?=
- =?utf-8?B?R21tcldSdVdDZWxycXRCQlJzam5TbW1PTHRDNmY4VlhvbjQwTWpJVGNYcnlk?=
- =?utf-8?B?M1NWaGZhVEh3MWMwRDBlVXZCWE9WSHE4TWtSK3RWbTdxbENLcHhiSFRsRThj?=
- =?utf-8?B?TXdrZ3dDL1kzcWI5TXZFOXczYVhNclJlOUZPVktNWnBoUS9jeTEzdkY1TFhu?=
- =?utf-8?B?Yks3OEcveElhd0U1WXprQTVBNnlhSWZyc3dwMTJXVUUwZmxyTlcyZFhrcnVw?=
- =?utf-8?Q?StzEP+xtKwhyz4MpPJIAEig=3D?=
+X-Microsoft-Antispam-Message-Info: 335AejeA9HH0DRMzDDGwerbr/qGVU7oe6fLBXvuyTlBPwu+Bvu5Bl0zt6tve0gioFtIfk+rei5zWfeG0itST0AcZFi9VlP0ssb/mMkTXpGLz0hZXEgrTlRS0dBuA7ATYHx0N4QJozESJpXamz+5tRu4u63m+HmkMn/LSkJ5kZpEByrUqRKP27lddmPT22oEe85MAbblpHRTKudfSLPIqQqRLEa1gXGbyeJqrUAPFo63R8Mw6DO4wUQGK6H+IyQccCbnUn/75NIkuXOWUmdND6xObU5tjqeu4Gl4S3OGqMwjB2hp78IRkkBftKEfvTbQD8PKJWBtHL6DcUY1d9rTKXZtv7h33sAw54MWFEKSeFS8DOyr2YX0y+6tS7buSy+MbhPIssHCNKugvcJIhjRHJuXiWgLp64viVR7iRsXpEIB/eJtI/okXdPcR4nAyhK8TCgFc0Jq9Tu6PGjUALNVGvV7qqTzZrwp9boMW/y/VZwkOm2lyzmwOXyt+D2mU7gFUeKlnliZXsUyIpzHw4Oya4vmdXbNOD1u6iqJkAvM2K50YPsIvL2Ji0D9kdd6UuyOuW/XzH7OXiw6uLRhCrTuoA31tBtYzKp0uK1ZNtturb93qwEfrR0gYhAgN8gyoMsIXMjRNKz/xtLc4FSzdYEQ57g2ezeZDnFla1AjpqyM5XFgwSvmangswGQ0Y9W38PhqFE1p1VgjHcLdoRjh4k5obyT2KbkT8gRL+ZPyaPvdGd8g0v5Gzdezqr8eEzbuwHmdLCVqgcvXKInFsvBaMo2FOvR4ZR4A2vWgiPfDfoag3CKXitR44zGLpje3JJffKfQBe+
+X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(4636009)(46966006)(36840700001)(2906002)(5660300002)(316002)(7416002)(83380400001)(4326008)(36860700001)(8676002)(70586007)(356005)(54906003)(1076003)(966005)(81166007)(8936002)(82310400003)(6916009)(47076005)(70206006)(7406005)(426003)(2616005)(45080400002)(508600001)(26005)(86362001)(336012)(36756003)(16526019)(6666004)(186003)(44832011)(36900700001);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fd7239fe-6875-4b0b-657e-08d9995c1609
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB5229.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Oct 2021 15:11:44.1066
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Oct 2021 15:14:16.0062
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Network-Message-Id: 21678983-18d1-43f4-bcd9-08d9995c7102
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: xLESfygwYYy5i+b1oqLVWlbCubWi4t3U+oLsfDy26OIec6jn0d/7gCwPqf76kKLpi2i/pqbe5ikowXMdW0IYhw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB5246
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: CO1NAM11FT003.eop-nam11.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN6PR12MB2717
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 10/22/21 12:02 PM, Tom Lendacky wrote:
-> Reserving memory using efi_mem_reserve() calls into the x86
-> efi_arch_mem_reserve() function. This function will insert a new EFI
-> memory descriptor into the EFI memory map representing the area of
-> memory to be reserved and marking it as EFI runtime memory.
+On Wed, Oct 27, 2021 at 01:17:11PM +0200, Borislav Petkov wrote:
+> On Mon, Oct 25, 2021 at 11:35:18AM -0500, Michael Roth wrote:
+> > As counter-intuitive as it sounds, it actually doesn't buy us if the CPUID
+> > table is part of the PSP attestation report, since:
 > 
-> As part of adding this new entry, a new EFI memory map is allocated and
-> mapped. The mapping is where a problem can occur. This new EFI memory map
-> is mapped using early_memremap(). If the allocated memory comes from an
-> area that is marked as EFI_BOOT_SERVICES_DATA memory in the current EFI
-> memory map, then it will be mapped unencrypted (see memremap_is_efi_data()
-> and the call to efi_mem_type()).
+> Thanks for taking the time to explain in detail - I think I know now
+> what's going on, and David explained some additional stuff to me
+> yesterday.
 > 
-> However, during replacement of the old EFI memory map with the new EFI
-> memory map, efi_mem_type() is disabled, resulting in the new EFI memory
-> map always being mapped encrypted in efi.memmap. This will cause a kernel
-> crash later in the boot.
+> So, to cut to the chase:
 > 
-> Since it is known that the new EFI memory map will always be mapped
-> encrypted when efi_memmap_install() is called, explicitly map the new EFI
-> memory map as encrypted (using early_memremap_prot()) when inserting the
-> new memory map entry.
+>  - yeah, ok, I guess guest owner attestation is what should happen.
 > 
-> Cc: <stable@vger.kernel.org> # 4.14.x
-> Fixes: 8f716c9b5feb ("x86/mm: Add support to access boot related data in the clear")
-> Acked-by: Ard Biesheuvel <ardb@kernel.org>
-> Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
+>  - as to the boot detection, I think you should do in sme_enable(), in
+> pseudo:
+> 
+> 	bool snp_guest_detected;
+> 
+>         if (CPUID page address) {
+>                 read SEV_STATUS;
+> 
+>                 snp_guest_detected = SEV_STATUS & MSR_AMD64_SEV_SNP_ENABLED;
+>         }
+> 
+>         /* old SME/SEV detection path */
+>         read 0x8000_001F_EAX and look at bits SME and SEV, yadda yadda.
+> 
+>         if (snp_guest_detected && (!SME || !SEV))
+>                 /*
+> 		 * HV is lying to me, do something there, dunno what. I guess we can
+> 		 * continue booting unencrypted so that the guest owner knows that
+> 		 * detection has failed and maybe the HV didn't want us to force SNP.
+> 		 * This way, attestation will fail and the user will know why.
+> 		 * Or something like that.
+> 		 */
+> 
+> 
+>         /* normal feature detection continues. */
+> 
+> How does that sound?
 
-Ard, are you going to take this through the EFI tree or does it need to go 
-through another tree?
+That seems promising. I've been testing a similar approach in conjunction with
+moving sme_enable() to after the initial #VC handler is set up and things seem
+to work out pretty nicely.
 
-Thanks,
-Tom
+boot/compressed is a little less straightforward since the sme_enable()
+equivalent is set_sev_encryption_mask() which sets sev_status and is written
+in assembly, whereas the SNP-specific bits we're adding relies on C code
+that handles stuff like scanning EFI config table are in C, so probably
+worthwhile to see if everything can be redone in C. But then there's
+get_sev_encryption_bit(), which needs to be in assembly since it needs
+to be called from 32-bit entry path as well, but that doesn't actually
+rely on anything set by set_sev_encryption_mask(), so it seems like it
+should be okay to split set_sev_encryption_mask() out into a separate C
+routine.
+
+Will work on implementing/testing that approach, but if you or Joerg are
+aware of any showstoppers there just let me know.
+
+Thanks!
+
+-Mike
 
 > 
-> ---
-> Changes for v2:
-> - Update/expand commit message to (hopefully) make it easier to read and
->    understand
-> - Add a comment around the use of the early_memremap_prot() call
-> ---
->   arch/x86/platform/efi/quirks.c | 14 +++++++++++++-
->   1 file changed, 13 insertions(+), 1 deletion(-)
+> -- 
+> Regards/Gruss,
+>     Boris.
 > 
-> diff --git a/arch/x86/platform/efi/quirks.c b/arch/x86/platform/efi/quirks.c
-> index b15ebfe40a73..14f8f20d727a 100644
-> --- a/arch/x86/platform/efi/quirks.c
-> +++ b/arch/x86/platform/efi/quirks.c
-> @@ -277,7 +277,19 @@ void __init efi_arch_mem_reserve(phys_addr_t addr, u64 size)
->   		return;
->   	}
->   
-> -	new = early_memremap(data.phys_map, data.size);
-> +	/*
-> +	 * When SME is active, early_memremap() can map the memory unencrypted
-> +	 * if the allocation came from EFI_BOOT_SERVICES_DATA (see
-> +	 * memremap_is_efi_data() and the call to efi_mem_type()). However,
-> +	 * when efi_memmap_install() is called to replace the memory map,
-> +	 * efi_mem_type() is "disabled" and so the memory will always be mapped
-> +	 * encrypted. To avoid this possible mismatch between the mappings,
-> +	 * always map the newly allocated memmap memory as encrypted.
-> +	 *
-> +	 * When SME is not active, this behaves just like early_memremap().
-> +	 */
-> +	new = early_memremap_prot(data.phys_map, data.size,
-> +				  pgprot_val(pgprot_encrypted(FIXMAP_PAGE_NORMAL)));
->   	if (!new) {
->   		pr_err("Failed to map new boot services memmap\n");
->   		return;
-> 
+> https://nam11.safelinks.protection.outlook.com/?url=https%3A%2F%2Fpeople.kernel.org%2Ftglx%2Fnotes-about-netiquette&amp;data=04%7C01%7Cmichael.roth%40amd.com%7C72940826a93b49882ffa08d9993b5390%7C3dd8961fe4884e608e11a82d994e183d%7C0%7C0%7C637709302358641670%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C1000&amp;sdata=%2BoUx7zP3RA57CwGG2q5IkUkrYQZiOL9ZoLxvIVTq%2BDY%3D&amp;reserved=0
