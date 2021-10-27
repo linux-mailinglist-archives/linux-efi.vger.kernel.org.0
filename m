@@ -2,53 +2,53 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C1C9943D1F1
-	for <lists+linux-efi@lfdr.de>; Wed, 27 Oct 2021 21:56:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B96043D1F4
+	for <lists+linux-efi@lfdr.de>; Wed, 27 Oct 2021 21:56:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243753AbhJ0T6w (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 27 Oct 2021 15:58:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34762 "EHLO
+        id S240452AbhJ0T65 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 27 Oct 2021 15:58:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34790 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243752AbhJ0T6t (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 27 Oct 2021 15:58:49 -0400
-Received: from mail-qt1-x82d.google.com (mail-qt1-x82d.google.com [IPv6:2607:f8b0:4864:20::82d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC76BC061745
-        for <linux-efi@vger.kernel.org>; Wed, 27 Oct 2021 12:56:22 -0700 (PDT)
-Received: by mail-qt1-x82d.google.com with SMTP id c28so3589330qtv.11
-        for <linux-efi@vger.kernel.org>; Wed, 27 Oct 2021 12:56:22 -0700 (PDT)
+        with ESMTP id S243745AbhJ0T6z (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 27 Oct 2021 15:58:55 -0400
+Received: from mail-qv1-xf32.google.com (mail-qv1-xf32.google.com [IPv6:2607:f8b0:4864:20::f32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1339C061745
+        for <linux-efi@vger.kernel.org>; Wed, 27 Oct 2021 12:56:29 -0700 (PDT)
+Received: by mail-qv1-xf32.google.com with SMTP id c3so2561985qvh.7
+        for <linux-efi@vger.kernel.org>; Wed, 27 Oct 2021 12:56:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=eclypsium.com; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=t1kBW0d9pD6seGnAQ7jq8Ieh+iAytlhqrQvM2gwdu4s=;
-        b=FcVCllWOSYajhFKBudg8ug7c8zWuqjMKc4zVNLW2IXljZkVpqdxxgflWKbNUQxAxy1
-         rgDvPoQiR/ugBR3TbOFWVqWwKBBECOGpL9ZMPpNvcyoW7g7cFTuaMmIRnum0N1Kaxu04
-         CA2fIZulguOPahkfGKjkK+9mnHwW98feJUHA1F1zsEMDPx74NI0ZkP3n1ukzV2WHQY3n
-         JV6m17rwAjIQ5N8gbqWlUYFHXoCqBItr071LPrSKiq1sMAutfni03RmtKQvnAmrydVDN
-         JyLo2ASFRgVV4iIEpejzczaTuxWPqeIEUuNwzNqnmINYW2X8H3q++Pj6c8/RC1SBrgmJ
-         6wBQ==
+        bh=Xby3AcWuwiF2/YpLjxmhcrgchEGEkaLlTH6SE3Th+bE=;
+        b=U5B9/euHxaYwr4q1GnGKFck0VuzMD26xFq+QFzlo/gcgik3XIP2HtKlsbE6AgSTNgZ
+         LDpo6yIJfcCaR+3VXsSENCmCs23wm6UJhxaur83jENbUir50TDyKuO+TR/Xp14Kskidy
+         lEGj2KbDz7ev959NyfP/beJ5lTG5Z2mvoF+VEm+i0wcuyBxIeeDpJFHLkU5WjeQbMBw8
+         QMCXvymUJElePPLMoB90iyYtXSTvntxUHdc9Pl/elLB3phvnx/PTYOz/9qI6gmcwNhCQ
+         9F68NP+G7EcoF/kD9GzdfT7SvmlPt8fter45xHVxnSgDVzdBecB2M60/FqDnIrpEtHVP
+         08dA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=t1kBW0d9pD6seGnAQ7jq8Ieh+iAytlhqrQvM2gwdu4s=;
-        b=jVKH2Z/fDK8y9wyQY6ADqzrHeg7/wMMSTNyzcB6Hg7omuMc+A8UW5l9zd7FJzUMuuO
-         0xY4jWoQ5dSrjcBq0V8sRFGrowMGUCUO2LEHAhtT1aCnmg1OkAKTjJuNiHkwxQdssZHI
-         RdMxV9fHIjrqGhL1zFBkAzAyoiepVi3sqstatSO/oZim6a0cZy9urU/KKq0HvbPaKQdz
-         DVvmjfsv2qdkpxWLyl+U8gI6+vYoFTMr3E0pZcwyz7+Pxw+LDRAKLTYjGEDzgbqHpMvT
-         oO28kxE97PwnbrDmUrkR3UxGaQRibeNlgZKyROWZ7JRru73tObuh7L4OoFPvmXV15WXh
-         WK7g==
-X-Gm-Message-State: AOAM530YdrlJ2Fx39rTtCHk6uMyQ9Le76wPJI4Hal9R+0MvNta+riB2E
-        89avuUqNacFoum7ySH4ZE/ssOP4N2N+i8PRlWNtr2olgVnTzib9zME3Gjvqrl2TMmbJvhGdHc3b
-        ve7shQe/ClTizs8XhUfdHU8mBLw/TF5GaF2nqtTHJzEGkEo/hMX1wtki+h6Jhsbms2zEPcGHFAT
-        EhkPYF+gBiRdZwVT0=
-X-Google-Smtp-Source: ABdhPJxFnYBrRFmj8DmNEthepNjBoUGIbPrjTfa+YzWiXvfOdIPDl/puoPwtP3vXUTZtKhi380R2pQ==
-X-Received: by 2002:a05:622a:1a24:: with SMTP id f36mr34135057qtb.321.1635364581856;
-        Wed, 27 Oct 2021 12:56:21 -0700 (PDT)
+        bh=Xby3AcWuwiF2/YpLjxmhcrgchEGEkaLlTH6SE3Th+bE=;
+        b=L1JizCSz19o172i5ov2aY9vvv/LeNKXnUHkRYjKsl12ynVNW+NqP5GPfBjexiaK4+y
+         zWQQHfn1siHbeUoYR9TMQ6SB5Xx48QM+OP2Cta9hfX/jlhjf1+Y1ej5rQfXeiYTphNOm
+         m09NS0zZWJuhzhTP+zs1Iov0IuH9xE93l4fm8rwR2Qg/Xnxb+dkxm/UC2/6JZSL77U3X
+         rxb7w+eyw6hSVZbiGNPNJN6wiYoxay62I6SLkRYCybpcnhUetysC1GabdgOMvAeU2X86
+         XtKe4TArZ8zHhWOQsj7QJ3ku1cooUCxQxvZ/4P+S80yM44uSb9ntPPyqwm3iLW5Ps9et
+         eF0g==
+X-Gm-Message-State: AOAM5318VQwIWOu88EF1/Gx0GTsfqIoKB0Uvx0ePeNQXHG2JAjUQ8CCW
+        oa7beSTfYTP4pv58lOLwmXFsCNNej0ino1TnvcAHq6QaR5obZvr0ubB0NiqiFn3kQmxX7G/Swp7
+        fLxWln2hWMM/v9Z432kiompSTtCIaDmKNjmp2iVakpHSeyH/vnmtup6sM90PwuutvpLip2LK6oL
+        wD+CRGMWrdq5VD0pk=
+X-Google-Smtp-Source: ABdhPJzqgDHxf+Bt5ptAFyE/O1ypZao44NBgMPIKrdWdj0gR8lrzuFWJ5KpcUtU2+v4ENGs5tCI+fQ==
+X-Received: by 2002:ad4:5966:: with SMTP id eq6mr32222115qvb.64.1635364588652;
+        Wed, 27 Oct 2021 12:56:28 -0700 (PDT)
 Received: from localhost (7-153-16-190.fibertel.com.ar. [190.16.153.7])
-        by smtp.gmail.com with ESMTPSA id t26sm516651qtq.77.2021.10.27.12.56.17
+        by smtp.gmail.com with ESMTPSA id bi17sm656051qkb.115.2021.10.27.12.56.24
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 27 Oct 2021 12:56:21 -0700 (PDT)
+        Wed, 27 Oct 2021 12:56:28 -0700 (PDT)
 From:   Martin Fernandez <martin.fernandez@eclypsium.com>
 To:     linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org
 Cc:     tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, x86@kernel.org,
@@ -57,9 +57,9 @@ Cc:     tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, x86@kernel.org,
         andy@infradead.org, gregkh@linuxfoundation.org, rafael@kernel.org,
         martin.fernandez@eclypsium.com, daniel.gutson@eclypsium.com,
         hughsient@gmail.com
-Subject: [PATCH v2 2/5] Extend pg_data_t to hold information about memory encryption
-Date:   Wed, 27 Oct 2021 16:55:08 -0300
-Message-Id: <20211027195511.207552-3-martin.fernandez@eclypsium.com>
+Subject: [PATCH v2 3/5] Extend e820_table to hold information about memory encryption
+Date:   Wed, 27 Oct 2021 16:55:09 -0300
+Message-Id: <20211027195511.207552-4-martin.fernandez@eclypsium.com>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20211027195511.207552-1-martin.fernandez@eclypsium.com>
 References: <20211027195511.207552-1-martin.fernandez@eclypsium.com>
@@ -69,40 +69,132 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Add a new member in the pg_data_t struct tell whether the node
-corresponding to that pg_data_t is able to do hardware memory encryption.
+Add a new member in e820_entry to hold whether an entry is able to do
+hardware memory encryption or not.
 
 Signed-off-by: Martin Fernandez <martin.fernandez@eclypsium.com>
 ---
- include/linux/mmzone.h | 2 ++
- mm/page_alloc.c        | 1 +
- 2 files changed, 3 insertions(+)
+ arch/x86/include/asm/e820/api.h   |  2 ++
+ arch/x86/include/asm/e820/types.h |  1 +
+ arch/x86/kernel/e820.c            | 32 +++++++++++++++++++++++++++++--
+ 3 files changed, 33 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-index 6a1d79d84675..998fbe371a81 100644
---- a/include/linux/mmzone.h
-+++ b/include/linux/mmzone.h
-@@ -869,6 +869,8 @@ typedef struct pglist_data {
- 	unsigned long		min_slab_pages;
- #endif /* CONFIG_NUMA */
+diff --git a/arch/x86/include/asm/e820/api.h b/arch/x86/include/asm/e820/api.h
+index e8f58ddd06d9..f3a09b6afca1 100644
+--- a/arch/x86/include/asm/e820/api.h
++++ b/arch/x86/include/asm/e820/api.h
+@@ -18,6 +18,8 @@ extern void e820__range_add   (u64 start, u64 size, enum e820_type type);
+ extern u64  e820__range_update(u64 start, u64 size, enum e820_type old_type, enum e820_type new_type);
+ extern u64  e820__range_remove(u64 start, u64 size, enum e820_type old_type, bool check_type);
  
-+	bool crypto_capable;
++extern void e820__mark_regions_as_crypto_capable(u64 start, u64 size);
 +
- 	/* Write-intensive fields used by page reclaim */
- 	ZONE_PADDING(_pad1_)
+ extern void e820__print_table(char *who);
+ extern int  e820__update_table(struct e820_table *table);
+ extern void e820__update_table_print(void);
+diff --git a/arch/x86/include/asm/e820/types.h b/arch/x86/include/asm/e820/types.h
+index 314f75d886d0..231c9ad9a9c3 100644
+--- a/arch/x86/include/asm/e820/types.h
++++ b/arch/x86/include/asm/e820/types.h
+@@ -56,6 +56,7 @@ struct e820_entry {
+ 	u64			addr;
+ 	u64			size;
+ 	enum e820_type		type;
++	bool			crypto_capable;
+ } __attribute__((packed));
  
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index b37435c274cf..a19d95bb5c0f 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -7575,6 +7575,7 @@ static void __init free_area_init_node(int nid)
- 	pgdat->node_id = nid;
- 	pgdat->node_start_pfn = start_pfn;
- 	pgdat->per_cpu_nodestats = NULL;
-+	pgdat->crypto_capable = memblock_node_is_crypto_capable(nid);
+ /*
+diff --git a/arch/x86/kernel/e820.c b/arch/x86/kernel/e820.c
+index bc0657f0deed..3e0aaa5525e0 100644
+--- a/arch/x86/kernel/e820.c
++++ b/arch/x86/kernel/e820.c
+@@ -176,6 +176,7 @@ static void __init __e820__range_add(struct e820_table *table, u64 start, u64 si
+ 	table->entries[x].addr = start;
+ 	table->entries[x].size = size;
+ 	table->entries[x].type = type;
++	table->entries[x].crypto_capable = false;
+ 	table->nr_entries++;
+ }
  
- 	pr_info("Initmem setup node %d [mem %#018Lx-%#018Lx]\n", nid,
- 		(u64)start_pfn << PAGE_SHIFT,
+@@ -184,6 +185,19 @@ void __init e820__range_add(u64 start, u64 size, enum e820_type type)
+ 	__e820__range_add(e820_table, start, size, type);
+ }
+ 
++void __init e820__mark_regions_as_crypto_capable(u64 start, u64 size)
++{
++	int i;
++	u64 end = start + size;
++
++	for (i = 0; i < e820_table->nr_entries; i++) {
++		struct e820_entry *const entry = &e820_table->entries[i];
++
++		if (entry->addr >= start && entry->addr + entry->size <= end)
++			entry->crypto_capable = true;
++	}
++}
++
+ static void __init e820_print_type(enum e820_type type)
+ {
+ 	switch (type) {
+@@ -211,6 +225,8 @@ void __init e820__print_table(char *who)
+ 			e820_table->entries[i].addr + e820_table->entries[i].size - 1);
+ 
+ 		e820_print_type(e820_table->entries[i].type);
++		pr_cont("%s",
++			e820_table->entries[i].crypto_capable ? "; crypto-capable" : "");
+ 		pr_cont("\n");
+ 	}
+ }
+@@ -327,6 +343,8 @@ int __init e820__update_table(struct e820_table *table)
+ 	unsigned long long last_addr;
+ 	u32 new_nr_entries, overlap_entries;
+ 	u32 i, chg_idx, chg_nr;
++	bool current_crypto;
++	bool last_crypto = false;
+ 
+ 	/* If there's only one memory region, don't bother: */
+ 	if (table->nr_entries < 2)
+@@ -388,13 +406,17 @@ int __init e820__update_table(struct e820_table *table)
+ 		 * 1=usable, 2,3,4,4+=unusable)
+ 		 */
+ 		current_type = 0;
++		current_crypto = false;
+ 		for (i = 0; i < overlap_entries; i++) {
++			current_crypto = current_crypto || overlap_list[i]->crypto_capable;
+ 			if (overlap_list[i]->type > current_type)
+ 				current_type = overlap_list[i]->type;
+ 		}
+ 
+ 		/* Continue building up new map based on this information: */
+-		if (current_type != last_type || e820_nomerge(current_type)) {
++		if (current_type != last_type ||
++		    current_crypto != last_crypto ||
++		    e820_nomerge(current_type)) {
+ 			if (last_type != 0)	 {
+ 				new_entries[new_nr_entries].size = change_point[chg_idx]->addr - last_addr;
+ 				/* Move forward only if the new size was non-zero: */
+@@ -406,6 +428,9 @@ int __init e820__update_table(struct e820_table *table)
+ 			if (current_type != 0)	{
+ 				new_entries[new_nr_entries].addr = change_point[chg_idx]->addr;
+ 				new_entries[new_nr_entries].type = current_type;
++				new_entries[new_nr_entries].crypto_capable = current_crypto;
++
++				last_crypto = current_crypto;
+ 				last_addr = change_point[chg_idx]->addr;
+ 			}
+ 			last_type = current_type;
+@@ -1321,7 +1346,10 @@ void __init e820__memblock_setup(void)
+ 		if (entry->type != E820_TYPE_RAM && entry->type != E820_TYPE_RESERVED_KERN)
+ 			continue;
+ 
+-		memblock_add(entry->addr, entry->size);
++		if (entry->crypto_capable)
++			memblock_add_crypto_capable(entry->addr, entry->size);
++		else
++			memblock_add(entry->addr, entry->size);
+ 	}
+ 
+ 	/* Throw away partial pages: */
 -- 
 2.30.2
 
