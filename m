@@ -2,78 +2,137 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F64443BF56
-	for <lists+linux-efi@lfdr.de>; Wed, 27 Oct 2021 04:13:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 464A043C386
+	for <lists+linux-efi@lfdr.de>; Wed, 27 Oct 2021 09:08:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237732AbhJ0CPo (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 26 Oct 2021 22:15:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46234 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234907AbhJ0CPo (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 26 Oct 2021 22:15:44 -0400
-Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com [IPv6:2607:f8b0:4864:20::641])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6747C061570
-        for <linux-efi@vger.kernel.org>; Tue, 26 Oct 2021 19:13:19 -0700 (PDT)
-Received: by mail-pl1-x641.google.com with SMTP id t21so905054plr.6
-        for <linux-efi@vger.kernel.org>; Tue, 26 Oct 2021 19:13:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:sender:from:date:message-id:subject:to;
-        bh=+OhYyTKGmAf5Y61RBhMkXMlQv+hOjswu4u5NSWPSjMI=;
-        b=EG9Nsjl+Eip141PWF+gaBUl1KOWYkVWkt1OXOEZnqtckn0jrX24eTk8UDRzdanWsjC
-         9yBSsvsQJotknvFKA9EQtwg6TYbjKuB2B6TeA9FpEjuXwfev4spJrb1stelnldSVU05K
-         9gDfyUx9hxjQgXAvSoidRv5/L36SOUZnVcgUrTM9tbDStJSMOyaTK7co10bTYaslWL6G
-         KEMVQ2/UtsJj5Uhe9sAzIbF0NlCUlFDN4b2Grw7CXZCthk66H6QQ7cfpSD7pU+Ay2+Nj
-         Q0QsrrBll0HvZsVEqt8NPrW+XN3K+0FC+b/X0b9b+fJud88cD9kdaePkDe4cxFsTTvDp
-         HYfQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
-         :to;
-        bh=+OhYyTKGmAf5Y61RBhMkXMlQv+hOjswu4u5NSWPSjMI=;
-        b=urjqi2Yw6AxtRRZlCGn6B4o3fP+BYzIR/AP9d3COEz3IjXTylqIZYJAQ0xZq2Rpj8i
-         VDHxuH+UcIfcmYrAVzZNwSCuyqtaOaJylyYM5KHYcKaraFJsaTB7hka3MRhKLMro+W93
-         YjXyREmPynsoThMlgSpW6d38n/+/mp944+9aUVHyGrW1rqJPvW78bHEcXNMS2ZeCuXhW
-         C6Z0S35dlezv1aQ3oAyp2MWwY/rtLB/2RmXL4X9S6VSH0jvuuo5DGe1Fm2aOtCnmLw2d
-         pCEkMIz+mfZc64qJSMi/kOP+PgVMx8yGEN05uaYPBcxpF+rYQSfltsfigOryAbCInKaE
-         tHcg==
-X-Gm-Message-State: AOAM531cHdeRrAI0xYEf2K1ra4S1Thn8uoiQgrRZKVGzR6DmB3v6G7kY
-        nxashoW8ZDJcQvL5ggZ3FPdbYAHPUvaJz96Gd0g=
-X-Google-Smtp-Source: ABdhPJzwOfSEFC+ZhBFJFbO7cJJvi3wx28mFQEmwNZmSp0wIuhE8auS2ZQZdxDxGrsxbdq14UKAhXuffjqSVAtd5Ev8=
-X-Received: by 2002:a17:90b:1c02:: with SMTP id oc2mr2782635pjb.52.1635300799308;
- Tue, 26 Oct 2021 19:13:19 -0700 (PDT)
+        id S240302AbhJ0HKj (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 27 Oct 2021 03:10:39 -0400
+Received: from mga03.intel.com ([134.134.136.65]:2286 "EHLO mga03.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S240291AbhJ0HKi (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Wed, 27 Oct 2021 03:10:38 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10149"; a="230039154"
+X-IronPort-AV: E=Sophos;i="5.87,186,1631602800"; 
+   d="scan'208";a="230039154"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2021 00:08:12 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.87,186,1631602800"; 
+   d="scan'208";a="635605540"
+Received: from chenyu-desktop.sh.intel.com ([10.239.158.186])
+  by fmsmga001.fm.intel.com with ESMTP; 27 Oct 2021 00:08:09 -0700
+From:   Chen Yu <yu.c.chen@intel.com>
+To:     linux-acpi@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Ard Biesheuvel <ardb@kernel.org>, Len Brown <lenb@kernel.org>,
+        Ashok Raj <ashok.raj@intel.com>,
+        Andy Shevchenko <andriy.shevchenko@intel.com>,
+        Mike Rapoport <rppt@kernel.org>,
+        Aubrey Li <aubrey.li@intel.com>, Chen Yu <yu.c.chen@intel.com>,
+        linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org
+Subject: [PATCH v7 1/4] efi: Introduce EFI_FIRMWARE_MANAGEMENT_CAPSULE_HEADER and corresponding structures
+Date:   Wed, 27 Oct 2021 15:07:24 +0800
+Message-Id: <4898b5784e79b89bb25ce91384427b5ca3547b8f.1635317102.git.yu.c.chen@intel.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <cover.1635317102.git.yu.c.chen@intel.com>
+References: <cover.1635317102.git.yu.c.chen@intel.com>
 MIME-Version: 1.0
-Sender: officedeskofgeneral0@gmail.com
-Received: by 2002:a17:90b:4c11:0:0:0:0 with HTTP; Tue, 26 Oct 2021 19:13:18
- -0700 (PDT)
-From:   "Mr. Mustafa Ali." <muafalia@gmail.com>
-Date:   Wed, 27 Oct 2021 03:13:18 +0100
-X-Google-Sender-Auth: -ap4vRnh22PsKG1mBvTJWKrUl0o
-Message-ID: <CAL=mczUC43H-jvBwTepLgLaj-FOUBZcvw1kdD=RpB4-U2MPw0g@mail.gmail.com>
-Subject: Greetings Dear Friend.
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hello Friend,
+Platform Firmware Runtime Update image starts with UEFI headers, and the
+headers are defined in UEFI specification, but some of them have not been
+defined in the kernel yet.
 
-This message might meet you in utmost surprise. However, It's just my
-urgent need for a foreign partner that made me contact you for this
-transaction. I assured you of honesty and reliability to champion this
-business opportunity. I am a banker by profession in Turkey, and
-currently holding the post of Auditor in Standard Chartered Bank.
+For example, the header layout of a capsule file looks like this:
 
-I have the opportunity of transferring the leftover funds ($15 Million
-Dollars) of one of my clients who died along with his entire family in
-a crisis in Myanmar Asia. I am inviting you for a business deal where
-this money can be shared between us if you agree to my business
-proposal.
+EFI_CAPSULE_HEADER
+EFI_FIRMWARE_MANAGEMENT_CAPSULE_HEADER
+EFI_FIRMWARE_MANAGEMENT_CAPSULE_IMAGE_HEADER
+EFI_FIRMWARE_IMAGE_AUTHENTICATION
 
-Further details of the transfer will be forwarded to you immediately
-after I receive your return letter.
+These structures would be used by the Platform Firmware Runtime Update
+driver to parse the format of capsule file to verify if the corresponding
+version number is valid. The EFI_CAPSULE_HEADER has been defined in the
+kernel, however the rest are not, thus introduce corresponding UEFI
+structures accordingly. Besides, EFI_FIRMWARE_MANAGEMENT_CAPSULE_HEADER
+and EFI_FIRMWARE_MANAGEMENT_CAPSULE_IMAGE_HEADER are required to be packed
+in the uefi specification. And Ard has pointed out that, the __packed
+attribute does indicate to the compiler that the entire thing can appear
+misaligned in memory. So if one follows the other in the capsule header,
+the __packed attribute may be appropriate to ensure that the second one
+is not accessed using misaligned loads and stores.
 
-Best Regards,
-Mr. Mustafa Ali.
-mustafa.ali@rahroco.com
+Signed-off-by: Chen Yu <yu.c.chen@intel.com>
+---
+v7: Use __packed instead of pragma pack(1). (Greg Kroah-Hartman, Ard Biesheuve) 
+v6: No change since v5.
+v5: No change since v4.
+v4: Revise the commit log to make it more clear. (Rafael J. Wysocki) 
+---
+ include/linux/efi.h | 46 +++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 46 insertions(+)
+
+diff --git a/include/linux/efi.h b/include/linux/efi.h
+index 6b5d36babfcc..f4acdb52cdfb 100644
+--- a/include/linux/efi.h
++++ b/include/linux/efi.h
+@@ -148,6 +148,52 @@ typedef struct {
+ 	u32 imagesize;
+ } efi_capsule_header_t;
+ 
++/* EFI_FIRMWARE_MANAGEMENT_CAPSULE_HEADER */
++struct efi_manage_capsule_header {
++	u32	ver;
++	u16	emb_drv_cnt;
++	u16	payload_cnt;
++	/*
++	 * Variable array indicated by number of
++	 * (emb_drv_cnt + payload_cnt)
++	 */
++	u64	offset_list[];
++} __packed;
++
++/* EFI_FIRMWARE_MANAGEMENT_CAPSULE_IMAGE_HEADER */
++struct efi_manage_capsule_image_header {
++	u32	ver;
++	guid_t	image_type_id;
++	u8	image_index;
++	u8	reserved_bytes[3];
++	u32	image_size;
++	u32	vendor_code_size;
++	/* ver = 2. */
++	u64	hw_ins;
++	/* ver = v3. */
++	u64	capsule_support;
++} __packed;
++
++/* WIN_CERTIFICATE */
++struct win_cert {
++	u32	len;
++	u16	rev;
++	u16	cert_type;
++};
++
++/* WIN_CERTIFICATE_UEFI_GUID */
++struct win_cert_uefi_guid {
++	struct win_cert	hdr;
++	guid_t		cert_type;
++	u8		cert_data[];
++};
++
++/* EFI_FIRMWARE_IMAGE_AUTHENTICATIO */
++struct efi_image_auth {
++	u64				mon_count;
++	struct win_cert_uefi_guid	auth_info;
++};
++
+ /*
+  * EFI capsule flags
+  */
+-- 
+2.25.1
+
