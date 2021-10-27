@@ -2,112 +2,121 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1830743C740
-	for <lists+linux-efi@lfdr.de>; Wed, 27 Oct 2021 12:01:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A2D843C864
+	for <lists+linux-efi@lfdr.de>; Wed, 27 Oct 2021 13:17:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237147AbhJ0KDm (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 27 Oct 2021 06:03:42 -0400
-Received: from mga03.intel.com ([134.134.136.65]:16201 "EHLO mga03.intel.com"
+        id S241606AbhJ0LTj (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 27 Oct 2021 07:19:39 -0400
+Received: from mail.skyhub.de ([5.9.137.197]:48362 "EHLO mail.skyhub.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235237AbhJ0KDd (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Wed, 27 Oct 2021 06:03:33 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10149"; a="230073802"
-X-IronPort-AV: E=Sophos;i="5.87,186,1631602800"; 
-   d="scan'208";a="230073802"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2021 03:01:08 -0700
-X-IronPort-AV: E=Sophos;i="5.87,186,1631602800"; 
-   d="scan'208";a="529573274"
-Received: from smile.fi.intel.com ([10.237.72.184])
-  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2021 03:01:03 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.95)
-        (envelope-from <andriy.shevchenko@intel.com>)
-        id 1mffjf-001Qor-Po;
-        Wed, 27 Oct 2021 13:00:43 +0300
-Date:   Wed, 27 Oct 2021 13:00:43 +0300
-From:   Andy Shevchenko <andriy.shevchenko@intel.com>
-To:     Chen Yu <yu.c.chen@intel.com>
-Cc:     linux-acpi@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Ard Biesheuvel <ardb@kernel.org>, Len Brown <lenb@kernel.org>,
-        Ashok Raj <ashok.raj@intel.com>,
-        Mike Rapoport <rppt@kernel.org>,
-        Aubrey Li <aubrey.li@intel.com>, linux-kernel@vger.kernel.org,
-        linux-efi@vger.kernel.org
-Subject: Re: [PATCH v7 1/4] efi: Introduce
- EFI_FIRMWARE_MANAGEMENT_CAPSULE_HEADER and corresponding structures
-Message-ID: <YXkjS/yhAYAIAWRu@smile.fi.intel.com>
-References: <cover.1635317102.git.yu.c.chen@intel.com>
- <4898b5784e79b89bb25ce91384427b5ca3547b8f.1635317102.git.yu.c.chen@intel.com>
+        id S237402AbhJ0LTi (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Wed, 27 Oct 2021 07:19:38 -0400
+Received: from zn.tnic (p200300ec2f1615002935f4cf24b5c3ba.dip0.t-ipconnect.de [IPv6:2003:ec:2f16:1500:2935:f4cf:24b5:c3ba])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id C06CA1EC0622;
+        Wed, 27 Oct 2021 13:17:11 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1635333431;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=stNjoo2XJVbCmOdEgRU5yFEgbX9ASxd3JdeLr48Zahs=;
+        b=ebK1cCm9TusIIJya8AsuEOa2C3nQXceCim+lTIqBQiXlDB1x/eNW5KTm2nrR7tb97mQhQS
+        vnvCswmbz10LpK/Kw8nzXp85LtQ568h2zkaEyr3nXmArdt3dd3cOUNBshF/UW+o8mvILwa
+        acBETot9fx4OESPek0YesL84jKRUcrY=
+Date:   Wed, 27 Oct 2021 13:17:11 +0200
+From:   Borislav Petkov <bp@alien8.de>
+To:     Michael Roth <michael.roth@amd.com>
+Cc:     Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org,
+        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        linux-coco@lists.linux.dev, linux-mm@kvack.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Vitaly Kuznetsov <vkuznets@redhat.com>,
+        Jim Mattson <jmattson@google.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        David Rientjes <rientjes@google.com>,
+        Dov Murik <dovmurik@linux.ibm.com>,
+        Tobin Feldman-Fitzthum <tobin@ibm.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        "Kirill A . Shutemov" <kirill@shutemov.name>,
+        Andi Kleen <ak@linux.intel.com>,
+        "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
+        tony.luck@intel.com, marcorr@google.com,
+        sathyanarayanan.kuppuswamy@linux.intel.com
+Subject: Re: [PATCH v6 08/42] x86/sev-es: initialize sev_status/features
+ within #VC handler
+Message-ID: <YXk1N6ApJA8PgkwM@zn.tnic>
+References: <20211008180453.462291-1-brijesh.singh@amd.com>
+ <20211008180453.462291-9-brijesh.singh@amd.com>
+ <YW2EsxcqBucuyoal@zn.tnic>
+ <20211018184003.3ob2uxcpd2rpee3s@amd.com>
+ <YW3IdfMs61191qnU@zn.tnic>
+ <20211020161023.hzbj53ehmzjrt4xd@amd.com>
+ <YXF+WjMHW/dd0Wb6@zn.tnic>
+ <20211021204149.pof2exhwkzy2zqrg@amd.com>
+ <YXaPKsicNYFZe84I@zn.tnic>
+ <20211025163518.rztqnngwggnbfxvs@amd.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <4898b5784e79b89bb25ce91384427b5ca3547b8f.1635317102.git.yu.c.chen@intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+In-Reply-To: <20211025163518.rztqnngwggnbfxvs@amd.com>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, Oct 27, 2021 at 03:07:24PM +0800, Chen Yu wrote:
-> Platform Firmware Runtime Update image starts with UEFI headers, and the
-> headers are defined in UEFI specification, but some of them have not been
-> defined in the kernel yet.
-> 
-> For example, the header layout of a capsule file looks like this:
-> 
-> EFI_CAPSULE_HEADER
-> EFI_FIRMWARE_MANAGEMENT_CAPSULE_HEADER
-> EFI_FIRMWARE_MANAGEMENT_CAPSULE_IMAGE_HEADER
-> EFI_FIRMWARE_IMAGE_AUTHENTICATION
-> 
-> These structures would be used by the Platform Firmware Runtime Update
-> driver to parse the format of capsule file to verify if the corresponding
-> version number is valid. The EFI_CAPSULE_HEADER has been defined in the
-> kernel, however the rest are not, thus introduce corresponding UEFI
-> structures accordingly. Besides, EFI_FIRMWARE_MANAGEMENT_CAPSULE_HEADER
-> and EFI_FIRMWARE_MANAGEMENT_CAPSULE_IMAGE_HEADER are required to be packed
-> in the uefi specification. And Ard has pointed out that, the __packed
-> attribute does indicate to the compiler that the entire thing can appear
-> misaligned in memory. So if one follows the other in the capsule header,
-> the __packed attribute may be appropriate to ensure that the second one
-> is not accessed using misaligned loads and stores.
+On Mon, Oct 25, 2021 at 11:35:18AM -0500, Michael Roth wrote:
+> As counter-intuitive as it sounds, it actually doesn't buy us if the CPUID
+> table is part of the PSP attestation report, since:
 
-...
+Thanks for taking the time to explain in detail - I think I know now
+what's going on, and David explained some additional stuff to me
+yesterday.
 
-> +/* EFI_FIRMWARE_MANAGEMENT_CAPSULE_IMAGE_HEADER */
-> +struct efi_manage_capsule_image_header {
-> +	u32	ver;
+So, to cut to the chase:
 
-> +	guid_t	image_type_id;
+ - yeah, ok, I guess guest owner attestation is what should happen.
 
-Shouldn't it be efi_guid_t ?
+ - as to the boot detection, I think you should do in sme_enable(), in
+pseudo:
 
-> +	u8	image_index;
-> +	u8	reserved_bytes[3];
-> +	u32	image_size;
-> +	u32	vendor_code_size;
-> +	/* ver = 2. */
-> +	u64	hw_ins;
-> +	/* ver = v3. */
-> +	u64	capsule_support;
-> +} __packed;
+	bool snp_guest_detected;
 
-...
+        if (CPUID page address) {
+                read SEV_STATUS;
 
-> +/* WIN_CERTIFICATE_UEFI_GUID */
-> +struct win_cert_uefi_guid {
-> +	struct win_cert	hdr;
+                snp_guest_detected = SEV_STATUS & MSR_AMD64_SEV_SNP_ENABLED;
+        }
 
-> +	guid_t		cert_type;
+        /* old SME/SEV detection path */
+        read 0x8000_001F_EAX and look at bits SME and SEV, yadda yadda.
 
-Ditto.
+        if (snp_guest_detected && (!SME || !SEV))
+                /*
+		 * HV is lying to me, do something there, dunno what. I guess we can
+		 * continue booting unencrypted so that the guest owner knows that
+		 * detection has failed and maybe the HV didn't want us to force SNP.
+		 * This way, attestation will fail and the user will know why.
+		 * Or something like that.
+		 */
 
-> +	u8		cert_data[];
-> +};
+
+        /* normal feature detection continues. */
+
+How does that sound?
 
 -- 
-With Best Regards,
-Andy Shevchenko
+Regards/Gruss,
+    Boris.
 
-
+https://people.kernel.org/tglx/notes-about-netiquette
