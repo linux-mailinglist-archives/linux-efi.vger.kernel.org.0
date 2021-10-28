@@ -2,89 +2,107 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 30DDE43DF45
-	for <lists+linux-efi@lfdr.de>; Thu, 28 Oct 2021 12:52:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2BA6643E3B9
+	for <lists+linux-efi@lfdr.de>; Thu, 28 Oct 2021 16:29:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230178AbhJ1Kyk (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 28 Oct 2021 06:54:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37472 "EHLO
+        id S230451AbhJ1Ob0 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 28 Oct 2021 10:31:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59878 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230110AbhJ1Kyj (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 28 Oct 2021 06:54:39 -0400
-Received: from mail-lj1-x242.google.com (mail-lj1-x242.google.com [IPv6:2a00:1450:4864:20::242])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4AA6FC061226
-        for <linux-efi@vger.kernel.org>; Thu, 28 Oct 2021 03:52:12 -0700 (PDT)
-Received: by mail-lj1-x242.google.com with SMTP id l2so9928354lji.6
-        for <linux-efi@vger.kernel.org>; Thu, 28 Oct 2021 03:52:12 -0700 (PDT)
+        with ESMTP id S230401AbhJ1Ob0 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 28 Oct 2021 10:31:26 -0400
+Received: from mail-yb1-xb34.google.com (mail-yb1-xb34.google.com [IPv6:2607:f8b0:4864:20::b34])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F54FC061745
+        for <linux-efi@vger.kernel.org>; Thu, 28 Oct 2021 07:28:59 -0700 (PDT)
+Received: by mail-yb1-xb34.google.com with SMTP id v138so10238426ybb.8
+        for <linux-efi@vger.kernel.org>; Thu, 28 Oct 2021 07:28:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=vprh3gRT3Cegcj0K7Fy7tqOfLGKK384XjLMkCZvF/BY=;
-        b=MqgQiMnth4O6zLvpsYbAhVLW1BorpgoCleWwfkY0/i+i6OSDuXRZO1jIKzpTTrmehO
-         XtsLWdXiTcL+XCe4naFtf2tTUJnbwwmDpuUkpvRhLd+LEnuxY7nNr11hmTRUVX1WOHsO
-         bN0u1arCg4gm9LHdXRMZFcXOD22U5gDGuBOuhPo6qvWbt6nA2j/p/5IZ88XFHrEsiSW3
-         12hentYJMlWeUfa2lUQkLm+5/fvMSizrI7wGoF2taOa3dgGUV5HKZWb0yAAH7nAXVevJ
-         tDC/xbHNLzSn310XeD3Gkoobjl6MPBQzT5DSLzerNBdTKOdmyp3xvfvOyo80qVUTZIED
-         gaRg==
+        d=eclypsium.com; s=google;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc;
+        bh=NfqCKwSiudzoy040zfsjV59xe6Kv1QKYM+WaXee+uzk=;
+        b=el/g/UEC31xUtQUXmx5KY4IiNLVFRhj53qpXZxHvClNvldCbFo/R/L0R20WN/PSekJ
+         sKGZmHW9n94+h1VlYC1rM+hzpAmR6VsQU89SFYo/ghF5KR03h+mpnMV4Q65TxiD5tK/q
+         dFS0QwPpuHxi1qNXPlicxJgGhSVN6E7Q0FdUXaCFpX48S6kY5d3Uj7s03AAF3SHScjPN
+         upzlBnFMZkaVF98jm1gM7YLIj/Y5dNXEYUQ9RJSZXBSDv2AsibSF2rjEw5ukHpeqvLHp
+         ZMAuU10fzfuLLxmFmaDvEi2SpgnIficljCYpRCjQIz78qrH/uIDu+ybY7nw2ZBjNDeA1
+         ulGg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=vprh3gRT3Cegcj0K7Fy7tqOfLGKK384XjLMkCZvF/BY=;
-        b=DwhYQyJIthxTRH5NyQ7QkrfJEpoaxPr1iHW/3Uu15yZCpqTig0oawt3vo49TsGbfTB
-         mOk0yRmOkJAEMGcxf5azkglExgSQgxAv6V8I8ja0wRrJVOXr8NFuBBZfrDTTYwZen/iJ
-         a8yy7Up2UOvVVt+xW5Rr/KSeG+tt/1ClA4x8dT8l+ssJAi9gxLW8Dus2B38C6iX/+zXM
-         0kJOq4lKFlP+WEFyLVNbMl5JDkJ/oF/X3DRJFGsKIZ9uYDjSC5128nB5VUxj0xNJBpbG
-         QeZ6JoYt7N+/UZaMfDVfmIbQXBT9uUZ5hgO8D0jLYjcKgjaYfKa2uAcotIdG9uNU/K/M
-         1iUQ==
-X-Gm-Message-State: AOAM533BhCwwhIqwf4iI7agvdPxHngQs2TZxmV8Fl/k9ZFpr806Oo+Wq
-        Uqq/ZsLMAUaqBUafmDyZ+pU/glvqEBicZkhEcus=
-X-Google-Smtp-Source: ABdhPJw39EF9dJlXS9lAFrZ3adXxB8DVzXcygVzA3uRLiZxWlggxaB9ElCxkEB0P82xisoA6G442GD5iqMe2hCgLIt8=
-X-Received: by 2002:a2e:9a83:: with SMTP id p3mr3750290lji.145.1635418330269;
- Thu, 28 Oct 2021 03:52:10 -0700 (PDT)
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc;
+        bh=NfqCKwSiudzoy040zfsjV59xe6Kv1QKYM+WaXee+uzk=;
+        b=q+Y0eSaxq6bzsiTDzUhEjxdhIROCyY/cMxgXkMo0qBIk6tFq/C0kQG4rN1l2VN1pjw
+         jhdlZAZH52d9s2molV1pXqVWVpiNJanvBDMmFrvgrI0c+RB8wzLCfGkA+SiScZuZJJRh
+         Rh1/4shcm/gkgNb0ri1RIrWydRm8k+HBGzD1mBrlLX9pCpKkXY2qrlYmjhfwmeOLrHid
+         Y3pPMckb9HtovavMy5/3qmd07XjSzVB6ui/tzbkOevZ7zbwebaL3RL0G2RCVo1iieZxo
+         KR3IrmZ2OXcCSRKzHG7OJPM964+pLoa2ZbUJnFIqxU9+2kijQN4s8GDym45G6X6Dmyig
+         14fg==
+X-Gm-Message-State: AOAM533G1ed0hiHsQPDGgYs6RRBPB1hQV7n1aeqnGF5k2vsnbc/PxmXr
+        PBDK5mz5oddq7pH5IbmyJusAWiGmgstUo3FLL2UHbw==
+X-Google-Smtp-Source: ABdhPJwJXRCaJ0v6WZhe3JOeO/5btk+I/mpZxoMYb2Z/6vjvRpQ4CmDcWplAVjT1RxwzxSLTn527bI66fbSZ0N2YPOQ=
+X-Received: by 2002:a25:e755:: with SMTP id e82mr4941087ybh.528.1635431338767;
+ Thu, 28 Oct 2021 07:28:58 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:ab3:6f89:0:0:0:0:0 with HTTP; Thu, 28 Oct 2021 03:52:09
+Received: by 2002:a81:1f09:0:0:0:0:0 with HTTP; Thu, 28 Oct 2021 07:28:57
  -0700 (PDT)
-Reply-To: aabdulwalialhashmi@gmail.com
-From:   Abdulwali Alhashmi <husamalsayed.hs@gmail.com>
-Date:   Thu, 28 Oct 2021 03:52:09 -0700
-Message-ID: <CAF6yYCeS=rm8=_71-kMjVo4oaVK57w9X52R_yv1HDrBe7vh-sA@mail.gmail.com>
-Subject: PLEASE GET BACK TO ME IF I CAN I TRUST YOU
-To:     undisclosed-recipients:;
+In-Reply-To: <8a8e0743-e54d-ec96-da4e-1d101b550274@intel.com>
+References: <20211027195511.207552-1-martin.fernandez@eclypsium.com> <8a8e0743-e54d-ec96-da4e-1d101b550274@intel.com>
+From:   Martin Fernandez <martin.fernandez@eclypsium.com>
+Date:   Thu, 28 Oct 2021 11:28:57 -0300
+Message-ID: <CAKgze5Z3fT9F0S-mogfP6is9sL3=0imtCbfy6ZYrd3zgaBUqRg@mail.gmail.com>
+Subject: Re: [PATCH v2 0/5] [RFC] x86: Export information about hardware
+ memory encryption to sysfs
+To:     Dave Hansen <dave.hansen@intel.com>
+Cc:     linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, x86@kernel.org,
+        hpa@zytor.com, dave.hansen@linux.intel.com, luto@kernel.org,
+        peterz@infradead.org, ardb@kernel.org, dvhart@infradead.org,
+        andy@infradead.org, gregkh@linuxfoundation.org, rafael@kernel.org,
+        daniel.gutson@eclypsium.com, hughsient@gmail.com
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
--- 
-Greetings,
+On 10/27/21, Dave Hansen <dave.hansen@intel.com> wrote:
+> On 10/27/21 12:55 PM, Martin Fernandez wrote:
+>> This is a serie of patches for exporting the needed information to
+>> userspace to determine if a machine is using Intel's TME or MKTME.
+>>
+>> In a next patch I'm going to export if TME/MKTME is activated by the
+>> BIOS to sysfs, since right now for the user, this information is only
+>> available in the kernel logs, and it's not appropriate for fwupd to
+>> scan the boot logs just to parse an integer. I'm looking for
+>> suggestions for where to store this value.
+>
+> I didn't see any TME or MKTME-specific stuff in these patches.  Are you
+> assuming that all systems with any MEMBLOCK_CRYPTO_CAPABLE regions have
+> TME activated?
 
-Firstly, I apologize for encroaching into your privacy in this manner
-as it may seem unethical though it is a matter of great importance.
+Yes, you are correct, I didn't do anything TME-specific. That's the
+part that I still need to do, I'm planning to do something similar to
+detect_tme in /arch/x86/kernel/cpu/intel.c, but showing "TME" or
+"MKTME" somewhere in sysfs, don't know where. Maybe in securityfs? And
+it can also show the AMD variants in the future.
 
-I am Abdulwali Alhashmi, I work with Cayman National Bank (Cayman Islands).
+And no, I'm assuming that MEMBLOCK_CRYPTO_CAPABLE implies TME
+activated, it's just another check to secure that the memory is
+actually being encrypted.
 
-I am contacting you because my status would not permit me to do this
-alone as it is concerning our customer and an investment placed under
-our bank's management over 5 years ago.
+> This also doesn't mention how userspace plans to *use* this information.
+>  I think you mentioned it before, but it needs to be in the cover letter
+> and changelogs too.
+>
 
-I have a proposal I would love to discuss with you which will be very
-beneficial to both of us. It's regarding my late client who has a huge
-deposit with my bank.
+Userspace will just read this values and conclude (as it is right now)
+if your memory is able to do encryption. As I mentioned above, with
+the TME part, you will conclude if your memory is being encrypted or
+not, and if not, you can see why not. For example, if you have TME,
+you have it enabled but you have crypto_capable = 0 in your nodes,
+then you probably have an old BIOS that doesn't support UEFI 2.7, and
+that's why you don't have your memory flagged with
+EFI_MEMORY_CPU_CRYPTO. And then you can tell to the user that maybe a
+BIOS update will fix that.
 
-He is from your country and shares the same last name with you.
-
-I want to seek your consent to present you as the next of kin to my
-late client who died and left a huge deposit with my bank.
-
-I would respectfully request that you keep the contents of this mail
-confidential and respect the integrity of the information you come by
-as a result of this mail.
-
-Please kindly get back to me for more details if I can TRUST YOU.{
-aabdulwalialhashmi@gmail.com }
-
-Regards
-Abdulwali Alhashmi
-Treasury and Deposit Management,
-Cayman National Bank Cayman Islands
+That's what fwupd will try to do.
