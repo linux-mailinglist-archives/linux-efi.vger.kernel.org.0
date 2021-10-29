@@ -2,83 +2,94 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D399A43EA07
-	for <lists+linux-efi@lfdr.de>; Thu, 28 Oct 2021 23:11:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CBC9143FD3C
+	for <lists+linux-efi@lfdr.de>; Fri, 29 Oct 2021 15:14:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230495AbhJ1VOV (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 28 Oct 2021 17:14:21 -0400
-Received: from smtp26.services.sfr.fr ([93.17.128.205]:22588 "EHLO
-        smtp26.services.sfr.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230404AbhJ1VOV (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 28 Oct 2021 17:14:21 -0400
-X-Greylist: delayed 361 seconds by postgrey-1.27 at vger.kernel.org; Thu, 28 Oct 2021 17:14:21 EDT
-X-mail-filterd: {"version":"1.3.4","queueID":"B8ED41C00043F","contextId":"b24eb595-3e85-4e1e-9472-0076e02e6a39"}
-Received: from debian.numericable.fr (89-156-196-228.rev.numericable.fr [89.156.196.228])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by msfrf2625.sfr.fr (SMTP Server) with ESMTPS id B8ED41C00043F;
-        Thu, 28 Oct 2021 23:05:44 +0200 (CEST)
-X-mail-filterd: {"version":"1.3.4","queueID":"9DE051C000407","contextId":"411325b9-9a4e-4a1a-ac67-3dad4b23fc6a"}
-X-sfr-mailing: LEGIT
-X-sfr-spamrating: 40
-X-sfr-spam: not-spam
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=noos.fr; s=202006;
- t=1635455144; h=From:To:Cc:Subject:Date; bh=JDOYQpKXCthaJH1zjM0JweVD26t6pd9pY
-  UmIXQQDC34=; b=BL+2nrkw7HhrPASMhZGAz+xeBb7jgNRrTDWCDzfCg+YjtgRH1vy1bYQOLT0xq
-  AzBI7fQwftcKPGRsqKvc8AYFemCC3IPEyUFqieru0CNd9CCFDFvmjKfhLeWkQTf4uJ/YJlrdbnQ+
-  mIBLDgqPzgWd6P/Rcod9AWGbwq3CRM3GIoOwIcjn+ydONKQxKOR3MMyxlwGP1wxJ++as3s3OnEa+
-  43+t8H5L5H1FJZiZ0EIU8acVGIi3b3DyMLG8qFvnOlIGFZS+JfGKNUGbzs1Na7zB7ill/DVVFsoL
-  70fBQOgUAvEG8uYh8w7w/kn1dZ7tK1+wc5qX8E3ien+k2ULf4g7+A==
-Received: from debian.numericable.fr (89-156-196-228.rev.numericable.fr [89.156.196.228])
-        by msfrf2625.sfr.fr (SMTP Server) with ESMTP id 9DE051C000407;
-        Thu, 28 Oct 2021 23:05:44 +0200 (CEST)
-Received: from debian.numericable.fr (89-156-196-228.rev.numericable.fr [89.156.196.228])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by msfrf2625.sfr.fr (SMTP Server) with ESMTPS;
-        Thu, 28 Oct 2021 23:05:44 +0200 (CEST)
-From:   Elyes HAOUAS <ehaouas@noos.fr>
-To:     linux-efi@vger.kernel.org
-Cc:     Elyes HAOUAS <ehaouas@noos.fr>
-Subject: [PATCH] include/linux/efi.h: Remove unneeded whitespaces before tabs
-Date:   Thu, 28 Oct 2021 23:05:17 +0200
-Message-Id: <20211028210517.10881-1-ehaouas@noos.fr>
-X-Mailer: git-send-email 2.33.0
+        id S231523AbhJ2NRM (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 29 Oct 2021 09:17:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56522 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230213AbhJ2NRL (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 29 Oct 2021 09:17:11 -0400
+Received: from mail-lj1-x22c.google.com (mail-lj1-x22c.google.com [IPv6:2a00:1450:4864:20::22c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCA8EC061570;
+        Fri, 29 Oct 2021 06:14:42 -0700 (PDT)
+Received: by mail-lj1-x22c.google.com with SMTP id l2so16844098lji.6;
+        Fri, 29 Oct 2021 06:14:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=osDamQOuONsYrpKcvETFaiMS87IGXmH0jox9ViqQ238=;
+        b=hRxPn9kf5utbmv79GgZM21YGEg+2weS4UCfoFwFvDJ4HvUnJjrdLlBT7rLK+BVB9iX
+         D6lI/76Z2dmHfsJboeTibySTEC3rxrgxwUDCQeydihBDtbQXj1vR5mT2aslyM34lZQw4
+         6Dtivo6dQtpZXcMfESU7f/+nWoLsBCIObAi410ITGxuCGowr0JFCpgMn3ypRfGZyfADt
+         aNbsOTw8znTeUSnfDRwYiOZNTYNp042xfcF/9yvQblKxMZJw4T7WOopI8W2nEXDTkbRf
+         h6etLt771nqgrhb1WKVnZM/aX0wTPZXQoGNTYvIqAFsWNOeCVzITJYQIbl7m8gfv54mY
+         /XjQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=osDamQOuONsYrpKcvETFaiMS87IGXmH0jox9ViqQ238=;
+        b=pq1JkEEEuNlkKRY8xAu58fJOmdLb49O0imESOU6SppeByxIz/gXHnEKYiB1NaCoTij
+         n5e1TtHqFdvvfqw2yf0vGWydt6nkvrYSPO7kutiFoI1RwaS3Fg8aXmqX4/Ngt6SJgplf
+         jYgKePNrU7mt69ob4W6EaPDfiNF8uiZW7UtvChhwhDNVAR6V6P3F8NYdhLwQ21KVwKbs
+         5Yutdc7QWpEeYWOUdH3xy6uqwm88q/lB4C5mMyh6lVeB6DoAS48ilmBICCR4OwMnFJGR
+         qIJngalGQ//6IqK2JC6l6ocrjwtm9euVPSKK7CItbQlIY2LT3K46jJ++jqnUbL/cR9NH
+         TJ1A==
+X-Gm-Message-State: AOAM533LybN3wypnUwaC2e4TNZ8hQXNGzp8PUvLxYef2PRR8/MzSZV/I
+        ZHi2brsd+Fbu+GJsFMJeQFysErmB04v2dkeIV8Su1WB8AkA=
+X-Google-Smtp-Source: ABdhPJyFnCZne9XeVCKdL8ft8JTJVYclV9S/a3sZtLvY3wZiLOU7vpAe9KMcmjVFsT0nFq6qx3RGBvI2LrBMnPlMSQs=
+X-Received: by 2002:a2e:901:: with SMTP id 1mr11738396ljj.333.1635513281231;
+ Fri, 29 Oct 2021 06:14:41 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20211027195511.207552-1-martin.fernandez@eclypsium.com>
+ <8a8e0743-e54d-ec96-da4e-1d101b550274@intel.com> <CAKgze5Z3fT9F0S-mogfP6is9sL3=0imtCbfy6ZYrd3zgaBUqRg@mail.gmail.com>
+ <YXq50yzJQqrJk13v@zn.tnic> <CAD2FfiFS++2-Sn5nCft8Eb-R41MM6abCjXyDn8bOVY-_miCpRA@mail.gmail.com>
+ <YXrRN+pDr4Uv5p0t@zn.tnic>
+In-Reply-To: <YXrRN+pDr4Uv5p0t@zn.tnic>
+From:   Richard Hughes <hughsient@gmail.com>
+Date:   Fri, 29 Oct 2021 14:14:29 +0100
+Message-ID: <CAD2FfiEurBe34_dx-ChY7BPtaiZpFW7SFBBa4hKU2w-3QLr+DQ@mail.gmail.com>
+Subject: Re: [PATCH v2 0/5] [RFC] x86: Export information about hardware
+ memory encryption to sysfs
+To:     Borislav Petkov <bp@alien8.de>
+Cc:     Martin Fernandez <martin.fernandez@eclypsium.com>,
+        Dave Hansen <dave.hansen@intel.com>, linux-efi@vger.kernel.org,
+        Platform Driver <platform-driver-x86@vger.kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, X86 ML <x86@kernel.org>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>, ardb@kernel.org,
+        dvhart@infradead.org, andy@infradead.org,
+        Greg KH <gregkh@linuxfoundation.org>, rafael@kernel.org,
+        Daniel Gutson <daniel.gutson@eclypsium.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Signed-off-by: Elyes HAOUAS <ehaouas@noos.fr>
----
- include/linux/efi.h | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+On Thu, 28 Oct 2021 at 17:35, Borislav Petkov <bp@alien8.de> wrote:
+> Sorry, you need to expand on that: part of what specification?
 
-diff --git a/include/linux/efi.h b/include/linux/efi.h
-index 6b5d36babfcc..d009149df23c 100644
---- a/include/linux/efi.h
-+++ b/include/linux/efi.h
-@@ -569,8 +569,8 @@ extern struct efi {
- 	unsigned long			flags;
- } efi;
- 
--#define EFI_RT_SUPPORTED_GET_TIME 				0x0001
--#define EFI_RT_SUPPORTED_SET_TIME 				0x0002
-+#define EFI_RT_SUPPORTED_GET_TIME				0x0001
-+#define EFI_RT_SUPPORTED_SET_TIME				0x0002
- #define EFI_RT_SUPPORTED_GET_WAKEUP_TIME			0x0004
- #define EFI_RT_SUPPORTED_SET_WAKEUP_TIME			0x0008
- #define EFI_RT_SUPPORTED_GET_VARIABLE				0x0010
-@@ -837,7 +837,7 @@ extern int efi_status_to_err(efi_status_t status);
- #define EFI_VARIABLE_TIME_BASED_AUTHENTICATED_WRITE_ACCESS 0x0000000000000020
- #define EFI_VARIABLE_APPEND_WRITE	0x0000000000000040
- 
--#define EFI_VARIABLE_MASK 	(EFI_VARIABLE_NON_VOLATILE | \
-+#define EFI_VARIABLE_MASK	(EFI_VARIABLE_NON_VOLATILE | \
- 				EFI_VARIABLE_BOOTSERVICE_ACCESS | \
- 				EFI_VARIABLE_RUNTIME_ACCESS | \
- 				EFI_VARIABLE_HARDWARE_ERROR_RECORD | \
--- 
-2.33.0
+My apologies, I should have linked to the specification. It's called
+Host Security ID: https://fwupd.github.io/libfwupdplugin/hsi.html
 
+> How is this going to be run?
+
+HSI tests are run at every boot and logged. HSI is part of Insights
+(for servers) and is even now part of several large companies'
+purchasing policies.
+
+> Why cannot this be a userspace program, script, tool, whatever?
+
+We actually tried this, using the journal API:
+https://github.com/fwupd/fwupd/pull/2129
+
+It was a hack, and took a really long time to complete on slow
+embedded hardware.
+
+Richard
