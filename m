@@ -2,37 +2,37 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8583C440B1B
-	for <lists+linux-efi@lfdr.de>; Sat, 30 Oct 2021 20:30:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B394C440B1F
+	for <lists+linux-efi@lfdr.de>; Sat, 30 Oct 2021 20:30:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231936AbhJ3SbS (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sat, 30 Oct 2021 14:31:18 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:55310 "EHLO
+        id S232010AbhJ3SbT (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 30 Oct 2021 14:31:19 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:53501 "EHLO
         us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S231462AbhJ3SbR (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sat, 30 Oct 2021 14:31:17 -0400
+        by vger.kernel.org with ESMTP id S231485AbhJ3SbS (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sat, 30 Oct 2021 14:31:18 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1635618526;
+        s=mimecast20190719; t=1635618528;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Y+Dng0wkC1+F0UUNHu8qdIK3Gm5IP43FdCxwyGpAGOg=;
-        b=TEaBP21Mh32YsGK+ZLmYDd9kyxX+UHDS+TbWbbHMcOoTo4mT83koSJ/KQKRRVbEXVuIFGq
-        mthVMACTf+d8kSfdSKbo0PbC6mkKgFzy7ZZWFEs3QFVYAfthR2yPiGdQ9u283de8IWD3w+
-        4bDZ/WswxHL9oWACfeIW+0mw2RC/f+s=
+        bh=5I5u7rZgS0hlNCSBlHnDbyo/0DfFLenVV2CPz8MtkPA=;
+        b=jGN7UUyUbh2YstNcAFaz1xV5grPqG976SetSWPyNImA/rrTKcXEQ4r0ia1pDmND8t35OTT
+        OPR5is06mrnrUPZdschNa+fKiffcYSdbsAdO7Bx+TDbm6TZSiy9jeSqQSUa6tjyxgQxvGh
+        BUXNhhiwDdxslQkzWz6eMWohHp9kqDo=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-279-inHHBM-PPKCA76gMm2xtcA-1; Sat, 30 Oct 2021 14:28:41 -0400
-X-MC-Unique: inHHBM-PPKCA76gMm2xtcA-1
+ us-mta-515-PsKouzDrOPGf4HO5oaye5Q-1; Sat, 30 Oct 2021 14:28:44 -0400
+X-MC-Unique: PsKouzDrOPGf4HO5oaye5Q-1
 Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 2C3E98018AC;
-        Sat, 30 Oct 2021 18:28:39 +0000 (UTC)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 4284810066F3;
+        Sat, 30 Oct 2021 18:28:42 +0000 (UTC)
 Received: from x1.localdomain (unknown [10.39.192.75])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 644605F4E1;
-        Sat, 30 Oct 2021 18:28:36 +0000 (UTC)
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 724FF5F4E1;
+        Sat, 30 Oct 2021 18:28:39 +0000 (UTC)
 From:   Hans de Goede <hdegoede@redhat.com>
 To:     Mark Gross <markgross@kernel.org>,
         Andy Shevchenko <andy@infradead.org>,
@@ -47,9 +47,9 @@ Cc:     Hans de Goede <hdegoede@redhat.com>,
         platform-driver-x86@vger.kernel.org, linux-i2c@vger.kernel.org,
         linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-efi@vger.kernel.org
-Subject: [PATCH 07/13] power: supply: bq25890: Enable charging on boards where we skip reset
-Date:   Sat, 30 Oct 2021 20:28:07 +0200
-Message-Id: <20211030182813.116672-8-hdegoede@redhat.com>
+Subject: [PATCH 08/13] power: supply: bq25890: Drop dev->platform_data == NULL check
+Date:   Sat, 30 Oct 2021 20:28:08 +0200
+Message-Id: <20211030182813.116672-9-hdegoede@redhat.com>
 In-Reply-To: <20211030182813.116672-1-hdegoede@redhat.com>
 References: <20211030182813.116672-1-hdegoede@redhat.com>
 MIME-Version: 1.0
@@ -59,41 +59,42 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On boards where the "ti,skip-init" boolean property is set we don't reset
-the charger; and on some boards where the fw takes care of initalizition
-F_CHG_CFG is set to 0 before handing control over to the OS.
+Drop the "if (!dev->platform_data)" check, this seems to be an attempt
+for allowing loading the driver on devices without devicetree stemming
+from the initial commit of the driver (with the presumed intention being
+the "return -ENODEV" else branch getting replaced with something else).
 
-Explicitly set F_CHG_CFG to 1 on boards where we don't reset the charger,
-so that charging is always enabled on these boards, like it is always
-enabled on boards where we do reset the charger.
+With the new "ti,skip-init" property the driver can actually supports
+devices without devicetree and this check no longer makes sense.
 
 Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 ---
- drivers/power/supply/bq25890_charger.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/power/supply/bq25890_charger.c | 12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
 
 diff --git a/drivers/power/supply/bq25890_charger.c b/drivers/power/supply/bq25890_charger.c
-index 280821a6a6c6..aa4d04d20cdc 100644
+index aa4d04d20cdc..163ca5d761aa 100644
 --- a/drivers/power/supply/bq25890_charger.c
 +++ b/drivers/power/supply/bq25890_charger.c
-@@ -689,6 +689,17 @@ static int bq25890_hw_init(struct bq25890_device *bq)
- 			dev_dbg(bq->dev, "Reset failed %d\n", ret);
- 			return ret;
- 		}
-+	} else {
-+		/*
-+		 * Ensure charging is enabled, on some boards where the fw
-+		 * takes care of initalizition F_CHG_CFG is set to 0 before
-+		 * handing control over to the OS.
-+		 */
-+		ret = bq25890_field_write(bq, F_CHG_CFG, 1);
-+		if (ret < 0) {
-+			dev_dbg(bq->dev, "Enabling charging failed %d\n", ret);
-+			return ret;
-+		}
+@@ -990,14 +990,10 @@ static int bq25890_probe(struct i2c_client *client,
+ 		return ret;
  	}
  
- 	/* disable watchdog */
+-	if (!dev->platform_data) {
+-		ret = bq25890_fw_probe(bq);
+-		if (ret < 0) {
+-			dev_err(dev, "Cannot read device properties.\n");
+-			return ret;
+-		}
+-	} else {
+-		return -ENODEV;
++	ret = bq25890_fw_probe(bq);
++	if (ret < 0) {
++		dev_err(dev, "Cannot read device properties.\n");
++		return ret;
+ 	}
+ 
+ 	ret = bq25890_hw_init(bq);
 -- 
 2.31.1
 
