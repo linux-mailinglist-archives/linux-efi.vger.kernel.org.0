@@ -2,36 +2,37 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 613B9440AFE
-	for <lists+linux-efi@lfdr.de>; Sat, 30 Oct 2021 20:28:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 49579440AFB
+	for <lists+linux-efi@lfdr.de>; Sat, 30 Oct 2021 20:28:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230323AbhJ3Sa7 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sat, 30 Oct 2021 14:30:59 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:54162 "EHLO
+        id S229863AbhJ3Sa5 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 30 Oct 2021 14:30:57 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:36613 "EHLO
         us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S230131AbhJ3Sa6 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sat, 30 Oct 2021 14:30:58 -0400
+        by vger.kernel.org with ESMTP id S229474AbhJ3Sa5 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sat, 30 Oct 2021 14:30:57 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1635618508;
+        s=mimecast20190719; t=1635618506;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=tVvWAEyocSYIBR9AcGsLALyZb02ytJh04fxwsOMZ8rM=;
-        b=dZRzDV9N+NIKxwDBXl2e3Q/tan7Ppy4ux9aw38+Qxn3XSeiLuKUk5lkDs+OMXP+3yMCYzd
-        FWPtt/omSZUCxSv1DuwUVcW9ZJxkVBtOpnIdmVMReVqkEdwIfz4YJ7V772uc5RMKXNZ9pu
-        qIAHSLt8BgoF66z4gFT8iRra7h5saKg=
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=1cdF+sE/SLgTIc7hDDLi/Ba/YvIkdSSZy+iz0SwSwrw=;
+        b=GFfbNoDWeEW2HzHLyYPxWAQ/sge4deqZCrmgHkRb07GhLHIkRYjEXR0mGlosYxsOculS0D
+        zTjLbcgMXl8Ohxqebx4ge3qChVDF7HOVc15Fhosp3DYZD0F3E/CxqHPa654iEVCqIs0W1F
+        d5h2HsBLRsK5pxD2LoDlI59c7RQjHh0=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-549-bnSJrRByMw68x3MMRsWsFw-1; Sat, 30 Oct 2021 14:28:19 -0400
-X-MC-Unique: bnSJrRByMw68x3MMRsWsFw-1
+ us-mta-268-BkS4txVNN-GYa76GsBKkJQ-1; Sat, 30 Oct 2021 14:28:22 -0400
+X-MC-Unique: BkS4txVNN-GYa76GsBKkJQ-1
 Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id A1DCD1808319;
-        Sat, 30 Oct 2021 18:28:17 +0000 (UTC)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id B5E4F362F9;
+        Sat, 30 Oct 2021 18:28:20 +0000 (UTC)
 Received: from x1.localdomain (unknown [10.39.192.75])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id D26425F4E9;
-        Sat, 30 Oct 2021 18:28:14 +0000 (UTC)
+        by smtp.corp.redhat.com (Postfix) with ESMTP id E95575F4E1;
+        Sat, 30 Oct 2021 18:28:17 +0000 (UTC)
 From:   Hans de Goede <hdegoede@redhat.com>
 To:     Mark Gross <markgross@kernel.org>,
         Andy Shevchenko <andy@infradead.org>,
@@ -46,121 +47,178 @@ Cc:     Hans de Goede <hdegoede@redhat.com>,
         platform-driver-x86@vger.kernel.org, linux-i2c@vger.kernel.org,
         linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-efi@vger.kernel.org
-Subject: [PATCH 00/13] power-suppy/i2c/extcon: Add support for cht-wc PMIC without USB-PD support
-Date:   Sat, 30 Oct 2021 20:28:00 +0200
-Message-Id: <20211030182813.116672-1-hdegoede@redhat.com>
+Subject: [PATCH 01/13] platform/x86: Rename touchscreen_dmi to dmi_device_properties
+Date:   Sat, 30 Oct 2021 20:28:01 +0200
+Message-Id: <20211030182813.116672-2-hdegoede@redhat.com>
+In-Reply-To: <20211030182813.116672-1-hdegoede@redhat.com>
+References: <20211030182813.116672-1-hdegoede@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On many X86 devices with a Cherry Trail SoC the PMIC / battery charger
-support is not fully handled by ACPI. Instead we need to load native
-drivers for the PMIC and various chips surrounding the PMIC like the
-charger IC. So far we mostly support the AXP288 PMIC this way, as well
-as the Intel Whiskey Cove PMIC with a FUSB302 Type-C controller + other
-ICs for a USB-PD, USB-3 (superspeed) and DP-altmode capable Type-C
-connector, as found on the GPD win and GPD pocket mini laptops.
+The ability to attach device-properties to (I2C) devices based on
+a DMI + I2C device-name match to address the hw-description in
+some ACPI tables being incomplete is useful for more things then just
+touchscreens. Rename the Kconfig option and file to reflect this.
 
-On the Xiaomi Mi Pad 2 tablet the Whiskey Cove PMIC is used in
-a different setup then on the GPD devices, supporting only USB-2 with
-BC1.2 spec charger detection on its USB connector.
+The specific use-case triggering this change is describing the
+hardware surrounding the Whiskey Cove PMIC found on several
+Cherry Trail based devices. At least 3 configs are known:
 
-This series adds support for the charger IC in this setup and for having
-the extcon-intel-cht-wc code control the 5V Vbus boost converter and
-the USB role-switch, which is done by the FUSB302 Type-C controller driver
-in the GPD case.
+1. The WC PMIC is connected to a TI BQ24292i charger, paired with
+   a Maxim MAX17047 fuelgauge + a FUSB302 USB Type-C Controller +
+   a PI3USB30532 USB switch, for a fully functional Type-C port
 
-This fixes the tablet not charging under Linux, host-mode only working
-when booted in host-mode, as well as device-mode not working. Note
-device-mode still does not work when plugged into a CDP port. I have
-identified the cause for this and I plan to submit a fix later.
+2. The WC PMIC is connected to a TI BQ25890 charger, paired with
+   a TI BQ27520 fuelgauge, for a USB-2 only Type-C port without PD
 
-This series consists of the following parts:
+3. The WC PMIC is connected to a TI BQ25890 charger, paired with
+   a TI BQ27542 fuelgauge, for a micro-USB port
 
-Patch 1 + 2: Add a "intel,cht-wc-setup" device property to the Whiskey Cove
-i2c-client so that various WC drivers can use this to identify which setup
-they are dealing with.
+And various drivers (extcon-intel-cht-wc.c, i2c-cht-wc.c, ...) need
+to know which config they are dealing with.
 
-Patch 3 + 4: bq25890 psy driver bug-fixes
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+---
+ MAINTAINERS                                   |  2 +-
+ drivers/firmware/efi/embedded-firmware.c      |  4 ++--
+ drivers/platform/x86/Kconfig                  | 20 ++++++++++---------
+ drivers/platform/x86/Makefile                 |  2 +-
+ ...chscreen_dmi.c => dmi_device_properties.c} |  8 ++++----
+ include/linux/efi_embedded_fw.h               |  2 +-
+ 6 files changed, 20 insertions(+), 18 deletions(-)
+ rename drivers/platform/x86/{touchscreen_dmi.c => dmi_device_properties.c} (99%)
 
-Patch 5 - 8: bq25890 psy support for non-devicetree devices
-
-Patch 9 + 10: bq25890 psy support for registering the builtin Vbus boost
-converter as a regulator
-
-Patch 11: Add support to the i2c-cht-wc I2C-controller driver to
-instantiate an i2c-client for the attached bq25890 charger
-
-Patch 12 + 13: extcon-intel-cht-wc add support for the USB-2 only with
-BC1.2 charger detection setup
-
-Assuming everybody is ok with this series, we need to talk about how
-to merge this.
-
-Patch 1 makes some very small changes (just a rename) to
-drivers/firmware/efi code, I would like to merging this + patch 2 through
-the pdx86 tree (where the real changes are). Ard, can I have your ack
-for this please ?
-
-Patch 11 depends on a header file added by patch 10, since the
-i2c-cht-wc.c code otherwise sees very little changes I believe it makes
-sense for patch 11 to be merged into linux-power-supply.git/for-next
-together with patches 3-10. Wolfram can we have you ack for this?
-
-Patch 12 + 13 can be merged through the extcon tree, these have no
-(compile time) dependencies on the other patches.
-
-This is all 5.17 material, and I will make sure the pdx86 patches
-adding the new property will land in 5.17-rc1, hopefully the rest
-will land then too, but if other bits land later that is fine too,
-as long as the new property is there behavior won't change on the
-GPD win/pocket and we won't get any regressions.
-
-Regards,
-
-Hans
-
-p.s.
-
-Patch 3 and 4 are pure bq25890 bugfixes and should probably be picked up
-right away independent of the rest of the series.
-
-
-Hans de Goede (13):
-  platform/x86: Rename touchscreen_dmi to dmi_device_properties
-  platform/x86: dmi_device_properties: Add setup info for boards with a
-    CHT Whiskey Cove PMIC
-  power: supply: bq25890: Fix race causing oops at boot
-  power: supply: bq25890: Fix initial setting of the F_CONV_RATE field
-  power: supply: bq25890: Add a bq25890_rw_init_data() helper
-  power: supply: bq25890: Add support for skipping initialization
-  power: supply: bq25890: Enable charging on boards where we skip reset
-  power: supply: bq25890: Drop dev->platform_data == NULL check
-  power: supply: bq25890: Add bq25890_set_otg_cfg() helper
-  power: supply: bq25890: Add support for registering the Vbus boost
-    converter as a regulator
-  i2c: cht-wc: Add support for devices using a bq25890 charger
-  extcon: intel-cht-wc: Check new "intel,cht-wc-setup" device-property
-  extcon: intel-cht-wc: Add support for devices with an USB-micro-B
-    connector
-
- MAINTAINERS                                   |   2 +-
- drivers/extcon/extcon-intel-cht-wc.c          | 119 ++++++++--
- drivers/firmware/efi/embedded-firmware.c      |   4 +-
- drivers/i2c/busses/i2c-cht-wc.c               |  77 ++++--
- drivers/platform/x86/Kconfig                  |  20 +-
- drivers/platform/x86/Makefile                 |   2 +-
- ...chscreen_dmi.c => dmi_device_properties.c} |  54 ++++-
- drivers/power/supply/bq25890_charger.c        | 223 ++++++++++++------
- include/linux/efi_embedded_fw.h               |   2 +-
- include/linux/power/bq25890_charger.h         |  15 ++
- 10 files changed, 400 insertions(+), 118 deletions(-)
- rename drivers/platform/x86/{touchscreen_dmi.c => dmi_device_properties.c} (96%)
- create mode 100644 include/linux/power/bq25890_charger.h
-
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 09abc1d84a7f..fe6a952c0232 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -17156,7 +17156,7 @@ L:	linux-input@vger.kernel.org
+ L:	platform-driver-x86@vger.kernel.org
+ S:	Maintained
+ F:	drivers/input/touchscreen/silead.c
+-F:	drivers/platform/x86/touchscreen_dmi.c
++F:	drivers/platform/x86/dmi_device_properties.c
+ 
+ SILICON LABS WIRELESS DRIVERS (for WFxxx series)
+ M:	Jérôme Pouiller <jerome.pouiller@silabs.com>
+diff --git a/drivers/firmware/efi/embedded-firmware.c b/drivers/firmware/efi/embedded-firmware.c
+index f5be8e22305b..f8212af0ba5e 100644
+--- a/drivers/firmware/efi/embedded-firmware.c
++++ b/drivers/firmware/efi/embedded-firmware.c
+@@ -21,8 +21,8 @@ bool efi_embedded_fw_checked;
+ EXPORT_SYMBOL_NS_GPL(efi_embedded_fw_checked, TEST_FIRMWARE);
+ 
+ static const struct dmi_system_id * const embedded_fw_table[] = {
+-#ifdef CONFIG_TOUCHSCREEN_DMI
+-	touchscreen_dmi_table,
++#ifdef CONFIG_DMI_DEVICE_PROPERTIES
++	dmi_device_properties,
+ #endif
+ 	NULL
+ };
+diff --git a/drivers/platform/x86/Kconfig b/drivers/platform/x86/Kconfig
+index b110a2e6b8f3..9cb8d33cc6e1 100644
+--- a/drivers/platform/x86/Kconfig
++++ b/drivers/platform/x86/Kconfig
+@@ -981,17 +981,19 @@ config MLX_PLATFORM
+ 
+ 	  If you have a Mellanox system, say Y or M here.
+ 
+-config TOUCHSCREEN_DMI
+-	bool "DMI based touchscreen configuration info"
+-	depends on ACPI && DMI && I2C=y && TOUCHSCREEN_SILEAD
++config DMI_DEVICE_PROPERTIES
++	bool "DMI based extra device properties"
++	depends on ACPI && DMI && I2C=y
+ 	select EFI_EMBEDDED_FIRMWARE if EFI
+ 	help
+-	  Certain ACPI based tablets with e.g. Silead or Chipone touchscreens
+-	  do not have enough data in ACPI tables for the touchscreen driver to
+-	  handle the touchscreen properly, as OEMs expect the data to be baked
+-	  into the tablet model specific version of the driver shipped with the
+-	  the OS-image for the device. This option supplies the missing info.
+-	  Enable this for x86 tablets with Silead or Chipone touchscreens.
++	  Sometimes ACPI based x86 devices do not have enough data in their ACPI
++	  tables to fully describe the hardware. This option enables support for
++	  supplying the missing info based on DMI (vendor & model string)
++	  matching for devices where this info has been added to the
++	  dmi-device-properties code.
++
++	  This option is often necessary for correct operation of x86 based
++	  tablets and 2-in-1 devices. If in doubt, say Y here.
+ 
+ config FW_ATTR_CLASS
+ 	tristate
+diff --git a/drivers/platform/x86/Makefile b/drivers/platform/x86/Makefile
+index 219478061683..3f610332b556 100644
+--- a/drivers/platform/x86/Makefile
++++ b/drivers/platform/x86/Makefile
+@@ -107,10 +107,10 @@ obj-$(CONFIG_SYSTEM76_ACPI)	+= system76_acpi.o
+ obj-$(CONFIG_TOPSTAR_LAPTOP)	+= topstar-laptop.o
+ 
+ # Platform drivers
++obj-$(CONFIG_DMI_DEVICE_PROPERTIES)	+= dmi_device_properties.o
+ obj-$(CONFIG_FW_ATTR_CLASS)		+= firmware_attributes_class.o
+ obj-$(CONFIG_I2C_MULTI_INSTANTIATE)	+= i2c-multi-instantiate.o
+ obj-$(CONFIG_MLX_PLATFORM)		+= mlx-platform.o
+-obj-$(CONFIG_TOUCHSCREEN_DMI)		+= touchscreen_dmi.o
+ obj-$(CONFIG_WIRELESS_HOTKEY)		+= wireless-hotkey.o
+ 
+ # Intel uncore drivers
+diff --git a/drivers/platform/x86/touchscreen_dmi.c b/drivers/platform/x86/dmi_device_properties.c
+similarity index 99%
+rename from drivers/platform/x86/touchscreen_dmi.c
+rename to drivers/platform/x86/dmi_device_properties.c
+index b5d007875423..1bcd14a0bc78 100644
+--- a/drivers/platform/x86/touchscreen_dmi.c
++++ b/drivers/platform/x86/dmi_device_properties.c
+@@ -1,8 +1,8 @@
+ // SPDX-License-Identifier: GPL-2.0-or-later
+ /*
+- * Touchscreen driver DMI based configuration code
++ * DMI based device-property addition (adding info missing from ACPI tables)
+  *
+- * Copyright (c) 2017 Red Hat Inc.
++ * Copyright (c) 2017-2021 Red Hat Inc.
+  *
+  * Red Hat authors:
+  * Hans de Goede <hdegoede@redhat.com>
+@@ -979,7 +979,7 @@ static const struct ts_dmi_data vinga_twizzle_j116_data = {
+ };
+ 
+ /* NOTE: Please keep this table sorted alphabetically */
+-const struct dmi_system_id touchscreen_dmi_table[] = {
++const struct dmi_system_id dmi_device_properties[] = {
+ 	{
+ 		/* Chuwi Hi8 */
+ 		.driver_data = (void *)&chuwi_hi8_data,
+@@ -1633,7 +1633,7 @@ static int __init ts_dmi_init(void)
+ 	const struct dmi_system_id *dmi_id;
+ 	int error;
+ 
+-	dmi_id = dmi_first_match(touchscreen_dmi_table);
++	dmi_id = dmi_first_match(dmi_device_properties);
+ 	if (!dmi_id)
+ 		return 0; /* Not an error */
+ 
+diff --git a/include/linux/efi_embedded_fw.h b/include/linux/efi_embedded_fw.h
+index a97a12bb2c9e..01105c38a309 100644
+--- a/include/linux/efi_embedded_fw.h
++++ b/include/linux/efi_embedded_fw.h
+@@ -34,7 +34,7 @@ struct efi_embedded_fw_desc {
+ 	u8 sha256[32];
+ };
+ 
+-extern const struct dmi_system_id touchscreen_dmi_table[];
++extern const struct dmi_system_id dmi_device_properties[];
+ 
+ int efi_get_embedded_fw(const char *name, const u8 **dat, size_t *sz);
+ 
 -- 
 2.31.1
 
