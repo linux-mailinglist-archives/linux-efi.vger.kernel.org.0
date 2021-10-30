@@ -2,37 +2,37 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B394C440B1F
-	for <lists+linux-efi@lfdr.de>; Sat, 30 Oct 2021 20:30:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D421440B27
+	for <lists+linux-efi@lfdr.de>; Sat, 30 Oct 2021 20:30:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232010AbhJ3SbT (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sat, 30 Oct 2021 14:31:19 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:53501 "EHLO
+        id S232187AbhJ3Sbe (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 30 Oct 2021 14:31:34 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:34518 "EHLO
         us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S231485AbhJ3SbS (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sat, 30 Oct 2021 14:31:18 -0400
+        by vger.kernel.org with ESMTP id S232066AbhJ3SbW (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sat, 30 Oct 2021 14:31:22 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1635618528;
+        s=mimecast20190719; t=1635618530;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=5I5u7rZgS0hlNCSBlHnDbyo/0DfFLenVV2CPz8MtkPA=;
-        b=jGN7UUyUbh2YstNcAFaz1xV5grPqG976SetSWPyNImA/rrTKcXEQ4r0ia1pDmND8t35OTT
-        OPR5is06mrnrUPZdschNa+fKiffcYSdbsAdO7Bx+TDbm6TZSiy9jeSqQSUa6tjyxgQxvGh
-        BUXNhhiwDdxslQkzWz6eMWohHp9kqDo=
+        bh=/bfr/J+hsxQ0Z01UTG2JJSH9Wj47Az2V8snWyLCXfIg=;
+        b=ZrgvTVIRap9Ga8nqI011dodvQADRHGmCz7qmw10KBuSfDrE2xK9UEGrp16CulpwF55y7hX
+        wlBZ1kVxJN4ziaAzt9uDCx0atm235lVN80Xn5qlAmWG5VBLa4G0FhuIUmYFPgkY0/9vsZx
+        wuN3rN9/tj5YDg9bVM8x/n8oEOxXJ9E=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-515-PsKouzDrOPGf4HO5oaye5Q-1; Sat, 30 Oct 2021 14:28:44 -0400
-X-MC-Unique: PsKouzDrOPGf4HO5oaye5Q-1
+ us-mta-506--IRfLJ7hO1a66JEzzKlLJg-1; Sat, 30 Oct 2021 14:28:47 -0400
+X-MC-Unique: -IRfLJ7hO1a66JEzzKlLJg-1
 Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 4284810066F3;
-        Sat, 30 Oct 2021 18:28:42 +0000 (UTC)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 579D710A8E07;
+        Sat, 30 Oct 2021 18:28:45 +0000 (UTC)
 Received: from x1.localdomain (unknown [10.39.192.75])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 724FF5F4E1;
-        Sat, 30 Oct 2021 18:28:39 +0000 (UTC)
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 896A55F4E1;
+        Sat, 30 Oct 2021 18:28:42 +0000 (UTC)
 From:   Hans de Goede <hdegoede@redhat.com>
 To:     Mark Gross <markgross@kernel.org>,
         Andy Shevchenko <andy@infradead.org>,
@@ -47,9 +47,9 @@ Cc:     Hans de Goede <hdegoede@redhat.com>,
         platform-driver-x86@vger.kernel.org, linux-i2c@vger.kernel.org,
         linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-efi@vger.kernel.org
-Subject: [PATCH 08/13] power: supply: bq25890: Drop dev->platform_data == NULL check
-Date:   Sat, 30 Oct 2021 20:28:08 +0200
-Message-Id: <20211030182813.116672-9-hdegoede@redhat.com>
+Subject: [PATCH 09/13] power: supply: bq25890: Add bq25890_set_otg_cfg() helper
+Date:   Sat, 30 Oct 2021 20:28:09 +0200
+Message-Id: <20211030182813.116672-10-hdegoede@redhat.com>
 In-Reply-To: <20211030182813.116672-1-hdegoede@redhat.com>
 References: <20211030182813.116672-1-hdegoede@redhat.com>
 MIME-Version: 1.0
@@ -59,42 +59,66 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Drop the "if (!dev->platform_data)" check, this seems to be an attempt
-for allowing loading the driver on devices without devicetree stemming
-from the initial commit of the driver (with the presumed intention being
-the "return -ENODEV" else branch getting replaced with something else).
-
-With the new "ti,skip-init" property the driver can actually supports
-devices without devicetree and this check no longer makes sense.
+Add a bq25890_set_otg_cfg() helper function, this is a preparation
+patch for adding regulator support.
 
 Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 ---
- drivers/power/supply/bq25890_charger.c | 12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
+ drivers/power/supply/bq25890_charger.c | 28 ++++++++++++++------------
+ 1 file changed, 15 insertions(+), 13 deletions(-)
 
 diff --git a/drivers/power/supply/bq25890_charger.c b/drivers/power/supply/bq25890_charger.c
-index aa4d04d20cdc..163ca5d761aa 100644
+index 163ca5d761aa..7504e30f1e4d 100644
 --- a/drivers/power/supply/bq25890_charger.c
 +++ b/drivers/power/supply/bq25890_charger.c
-@@ -990,14 +990,10 @@ static int bq25890_probe(struct i2c_client *client,
- 		return ret;
- 	}
+@@ -773,6 +773,17 @@ static int bq25890_power_supply_init(struct bq25890_device *bq)
+ 	return PTR_ERR_OR_ZERO(bq->charger);
+ }
  
--	if (!dev->platform_data) {
--		ret = bq25890_fw_probe(bq);
--		if (ret < 0) {
--			dev_err(dev, "Cannot read device properties.\n");
--			return ret;
--		}
--	} else {
--		return -ENODEV;
-+	ret = bq25890_fw_probe(bq);
-+	if (ret < 0) {
-+		dev_err(dev, "Cannot read device properties.\n");
-+		return ret;
- 	}
++static int bq25890_set_otg_cfg(struct bq25890_device *bq, u8 val)
++{
++	int ret;
++
++	ret = bq25890_field_write(bq, F_OTG_CFG, val);
++	if (ret < 0)
++		dev_err(bq->dev, "Error switching to boost/charger mode: %d\n", ret);
++
++	return ret;
++}
++
+ static void bq25890_usb_work(struct work_struct *data)
+ {
+ 	int ret;
+@@ -782,25 +793,16 @@ static void bq25890_usb_work(struct work_struct *data)
+ 	switch (bq->usb_event) {
+ 	case USB_EVENT_ID:
+ 		/* Enable boost mode */
+-		ret = bq25890_field_write(bq, F_OTG_CFG, 1);
+-		if (ret < 0)
+-			goto error;
++		bq25890_set_otg_cfg(bq, 1);
+ 		break;
  
- 	ret = bq25890_hw_init(bq);
+ 	case USB_EVENT_NONE:
+ 		/* Disable boost mode */
+-		ret = bq25890_field_write(bq, F_OTG_CFG, 0);
+-		if (ret < 0)
+-			goto error;
+-
+-		power_supply_changed(bq->charger);
++		ret = bq25890_set_otg_cfg(bq, 0);
++		if (ret == 0)
++			power_supply_changed(bq->charger);
+ 		break;
+ 	}
+-
+-	return;
+-
+-error:
+-	dev_err(bq->dev, "Error switching to boost/charger mode.\n");
+ }
+ 
+ static int bq25890_usb_notifier(struct notifier_block *nb, unsigned long val,
 -- 
 2.31.1
 
