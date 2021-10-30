@@ -2,37 +2,37 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D6B03440B34
-	for <lists+linux-efi@lfdr.de>; Sat, 30 Oct 2021 20:30:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3CE90440B3B
+	for <lists+linux-efi@lfdr.de>; Sat, 30 Oct 2021 20:30:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232135AbhJ3Sbr (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sat, 30 Oct 2021 14:31:47 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124]:46220 "EHLO
+        id S232172AbhJ3Sby (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 30 Oct 2021 14:31:54 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:52994 "EHLO
         us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S232161AbhJ3Sba (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sat, 30 Oct 2021 14:31:30 -0400
+        by vger.kernel.org with ESMTP id S232186AbhJ3Sbd (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sat, 30 Oct 2021 14:31:33 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1635618539;
+        s=mimecast20190719; t=1635618542;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=EUspNMepzsV3gt9zAr51OvvfE1pc4mjqmhHE949y10A=;
-        b=dSxPjegt8g74fOQjUKx69ULv0t6SQfw34ctB4es4z2ZfxDFe20jDhyYK3+Znl2PAuxP+w6
-        yoql4gNAe+BkjHK6KL9I84GTIT038KvceC4CDhRNPPsCAuju+0jc52orQx13khUIS/MWTj
-        GDg5Y0XDkjHVDdRFHuxlp/htzQdFwqY=
+        bh=m6HmNT833c+9fVgs3GgWn5FyPC8j48ztpTXVuqbk+XU=;
+        b=eVXFpdl8FR3v8fvzLX0JU44bQ538LwTaPwFgWvPImS+c+XusA60sCge1fKxrge1pbBo9o2
+        0zXkQ/MjpimuY4ei861R/FVPhgWc+FD8PGzYKBKjTELhcumXeEOscnJOA9kTg3T/GQsref
+        EPxzFlOICA8adtQMonSemIlShIr/WoE=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-209-bnG8VKYiNyujiy2At0-kPA-1; Sat, 30 Oct 2021 14:28:53 -0400
-X-MC-Unique: bnG8VKYiNyujiy2At0-kPA-1
+ us-mta-476-ws3MFhw3PN2RDUpf6G4_5A-1; Sat, 30 Oct 2021 14:28:56 -0400
+X-MC-Unique: ws3MFhw3PN2RDUpf6G4_5A-1
 Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 9B5048018AC;
-        Sat, 30 Oct 2021 18:28:51 +0000 (UTC)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id CC7D7806688;
+        Sat, 30 Oct 2021 18:28:54 +0000 (UTC)
 Received: from x1.localdomain (unknown [10.39.192.75])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id B83845F4E1;
-        Sat, 30 Oct 2021 18:28:48 +0000 (UTC)
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 09D6D5F4E1;
+        Sat, 30 Oct 2021 18:28:51 +0000 (UTC)
 From:   Hans de Goede <hdegoede@redhat.com>
 To:     Mark Gross <markgross@kernel.org>,
         Andy Shevchenko <andy@infradead.org>,
@@ -47,9 +47,9 @@ Cc:     Hans de Goede <hdegoede@redhat.com>,
         platform-driver-x86@vger.kernel.org, linux-i2c@vger.kernel.org,
         linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-efi@vger.kernel.org
-Subject: [PATCH 11/13] i2c: cht-wc: Add support for devices using a bq25890 charger
-Date:   Sat, 30 Oct 2021 20:28:11 +0200
-Message-Id: <20211030182813.116672-12-hdegoede@redhat.com>
+Subject: [PATCH 12/13] extcon: intel-cht-wc: Check new "intel,cht-wc-setup" device-property
+Date:   Sat, 30 Oct 2021 20:28:12 +0200
+Message-Id: <20211030182813.116672-13-hdegoede@redhat.com>
 In-Reply-To: <20211030182813.116672-1-hdegoede@redhat.com>
 References: <20211030182813.116672-1-hdegoede@redhat.com>
 MIME-Version: 1.0
@@ -59,142 +59,87 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The i2c-controller on the Cherry Trail - Whiskey Cove PMIC is special
-in that it is always connected to the I2C charger IC of the board on
-which the PMIC is used; and the charger IC is not described in ACPI,
-so the i2c-cht-wc code needs to instantiate an i2c-client for it itself.
+The CHT_WC_VBUS_GPIO_CTLO GPIO actually driving an external 5V Vboost
+converter for Vbus depends on the board on which the Cherry Trail -
+Whiskey Cove PMIC is actually used.
 
-So far there has been a rudimentary check to make sure the ACPI tables
-are at least somewhat as expected by checking for the presence of an
-INT33FE device and sofar the code has assumed that if this INT33FE
-device is present that the used charger then is a bq24290i.
+Since the information about the exact PMIC setup is necessary in other
+places too, the kernel now adds a "intel,cht-wc-setup" string property
+to the Whiskey Cove PMIC i2c-client based on DMI matching.
 
-But some boards with an INT33FE device in their ACPI tables use a
-different charger IC and some boards don't have an INT33FE device at all.
-
-Since the information about the used charger + fuel-gauge + other chips is
-necessary in other places too, the kernel now adds a "intel,cht-wc-setup"
-string property to the Whiskey Cove PMIC i2c-client based on DMI matching,
-which reliably describes the board's setup of the PMIC.
-
-Switch to using the "intel,cht-wc-setup" property and add support for
-instantiating an i2c-client for either a bq24292i or a bq25890 charger.
-
-This has been tested on a GPD pocket (which uses the old bq24292i setup)
-and on a Xiaomi Mi Pad 2 with a bq25890 charger.
+Only poke the CHT_WC_VBUS_GPIO_CTLO GPIO if this new property has the
+"bq24292i,max17047,fusb302,pi3usb30532" value which indicates the Type-C
+(with PD and DP-altmode) setup used on the GPD pocket and GPD win; and
+on which this GPIO actually controls an external 5V Vboost converter.
 
 Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 ---
- drivers/i2c/busses/i2c-cht-wc.c | 77 +++++++++++++++++++++++++--------
- 1 file changed, 59 insertions(+), 18 deletions(-)
+ drivers/extcon/extcon-intel-cht-wc.c | 38 ++++++++++++++++------------
+ 1 file changed, 22 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/i2c/busses/i2c-cht-wc.c b/drivers/i2c/busses/i2c-cht-wc.c
-index 1cf68f85b2e1..e7d62af6c39d 100644
---- a/drivers/i2c/busses/i2c-cht-wc.c
-+++ b/drivers/i2c/busses/i2c-cht-wc.c
-@@ -18,6 +18,7 @@
+diff --git a/drivers/extcon/extcon-intel-cht-wc.c b/drivers/extcon/extcon-intel-cht-wc.c
+index 771f6f4cf92e..a7a6b43d699b 100644
+--- a/drivers/extcon/extcon-intel-cht-wc.c
++++ b/drivers/extcon/extcon-intel-cht-wc.c
+@@ -14,6 +14,7 @@
  #include <linux/module.h>
+ #include <linux/mod_devicetable.h>
  #include <linux/platform_device.h>
- #include <linux/power/bq24190_charger.h>
-+#include <linux/power/bq25890_charger.h>
++#include <linux/property.h>
+ #include <linux/regmap.h>
  #include <linux/slab.h>
  
- #define CHT_WC_I2C_CTRL			0x5e24
-@@ -304,18 +305,55 @@ static struct bq24190_platform_data bq24190_pdata = {
- 	.regulator_init_data = &bq24190_vbus_init_data,
- };
- 
-+static struct i2c_board_info bq24190_board_info = {
-+	.type = "bq24190",
-+	.addr = 0x6b,
-+	.dev_name = "bq24190",
-+	.swnode = &bq24190_node,
-+	.platform_data = &bq24190_pdata,
-+};
-+
-+static struct regulator_consumer_supply bq25890_vbus_consumer = {
-+	.supply = "vbus",
-+	.dev_name = "cht_wcove_pwrsrc",
-+};
-+
-+static const struct regulator_init_data bq25890_vbus_init_data = {
-+	.constraints = {
-+		.valid_ops_mask = REGULATOR_CHANGE_STATUS,
-+	},
-+	.consumer_supplies = &bq25890_vbus_consumer,
-+	.num_consumer_supplies = 1,
-+};
-+
-+static struct bq25890_platform_data bq25890_pdata = {
-+	.regulator_init_data = &bq25890_vbus_init_data,
-+};
-+
-+static const struct property_entry bq25890_props[] = {
-+	PROPERTY_ENTRY_BOOL("ti,skip-init"),
-+	{ }
-+};
-+
-+static const struct software_node bq25890_node = {
-+	.properties = bq25890_props,
-+};
-+
-+static struct i2c_board_info bq25890_board_info = {
-+	.type = "bq25890",
-+	.addr = 0x6a,
-+	.dev_name = "bq25890",
-+	.swnode = &bq25890_node,
-+	.platform_data = &bq25890_pdata,
-+};
-+
- static int cht_wc_i2c_adap_i2c_probe(struct platform_device *pdev)
- {
+@@ -338,8 +339,8 @@ static int cht_wc_extcon_probe(struct platform_device *pdev)
  	struct intel_soc_pmic *pmic = dev_get_drvdata(pdev->dev.parent);
-+	struct i2c_board_info *board_info = NULL;
- 	struct cht_wc_i2c_adap *adap;
--	struct i2c_board_info board_info = {
--		.type = "bq24190",
--		.addr = 0x6b,
--		.dev_name = "bq24190",
--		.swnode = &bq24190_node,
--		.platform_data = &bq24190_pdata,
--	};
- 	int ret, reg, irq;
-+	const char *str;
+ 	struct cht_wc_extcon_data *ext;
+ 	unsigned long mask = ~(CHT_WC_PWRSRC_VBUS | CHT_WC_PWRSRC_USBID_MASK);
+-	int pwrsrc_sts, id;
+-	int irq, ret;
++	int id, irq, pwrsrc_sts, ret;
++	const char *setup;
  
  	irq = platform_get_irq(pdev, 0);
  	if (irq < 0)
-@@ -379,17 +417,20 @@ static int cht_wc_i2c_adap_i2c_probe(struct platform_device *pdev)
- 	if (ret)
- 		goto remove_irq_domain;
+@@ -358,20 +359,25 @@ static int cht_wc_extcon_probe(struct platform_device *pdev)
+ 	if (IS_ERR(ext->edev))
+ 		return PTR_ERR(ext->edev);
  
 -	/*
--	 * Normally the Whiskey Cove PMIC is paired with a TI bq24292i charger,
--	 * connected to this i2c bus, and a max17047 fuel-gauge and a fusb302
--	 * USB Type-C controller connected to another i2c bus. In this setup
--	 * the max17047 and fusb302 devices are enumerated through an INT33FE
--	 * ACPI device. If this device is present register an i2c-client for
--	 * the TI bq24292i charger.
+-	 * When a host-cable is detected the BIOS enables an external 5v boost
+-	 * converter to power connected devices there are 2 problems with this:
+-	 * 1) This gets seen by the external battery charger as a valid Vbus
+-	 *    supply and it then tries to feed Vsys from this creating a
+-	 *    feedback loop which causes aprox. 300 mA extra battery drain
+-	 *    (and unless we drive the external-charger-disable pin high it
+-	 *    also tries to charge the battery causing even more feedback).
+-	 * 2) This gets seen by the pwrsrc block as a SDP USB Vbus supply
+-	 * Since the external battery charger has its own 5v boost converter
+-	 * which does not have these issues, we simply turn the separate
+-	 * external 5v boost converter off and leave it off entirely.
 -	 */
--	if (acpi_dev_present("INT33FE", NULL, -1)) {
--		board_info.irq = adap->client_irq;
--		adap->client = i2c_new_client_device(&adap->adapter, &board_info);
-+	ret = device_property_read_string(pdev->dev.parent, "intel,cht-wc-setup", &str);
-+	if (ret)
-+		dev_warn(&pdev->dev, "intel,cht-wc-setup not set, not instantiating charger device\n");
-+	else if (!strcmp(str, "bq24292i,max17047,fusb302,pi3usb30532"))
-+		board_info = &bq24190_board_info;
-+	else if (!strcmp(str, "bq25890,bq27520"))
-+		board_info = &bq25890_board_info;
-+	else
-+		dev_warn(&pdev->dev, "Unknown intel,cht-wc-setup value: '%s', not instantiating charger device\n",
-+			 str);
-+
-+	if (board_info) {
-+		board_info->irq = adap->client_irq;
-+		adap->client = i2c_new_client_device(&adap->adapter, board_info);
- 		if (IS_ERR(adap->client)) {
- 			ret = PTR_ERR(adap->client);
- 			goto del_adapter;
+-	cht_wc_extcon_set_5v_boost(ext, false);
++	ret = device_property_read_string(ext->dev->parent, "intel,cht-wc-setup", &setup);
++	if (ret) {
++		dev_warn(ext->dev, "intel,cht-wc-setup not set\n");
++	} else if (!strcmp(setup, "bq24292i,max17047,fusb302,pi3usb30532")) {
++		/*
++		 * When a host-cable is detected the BIOS enables an external 5v boost
++		 * converter to power connected devices there are 2 problems with this:
++		 * 1) This gets seen by the external battery charger as a valid Vbus
++		 *    supply and it then tries to feed Vsys from this creating a
++		 *    feedback loop which causes aprox. 300 mA extra battery drain
++		 *    (and unless we drive the external-charger-disable pin high it
++		 *    also tries to charge the battery causing even more feedback).
++		 * 2) This gets seen by the pwrsrc block as a SDP USB Vbus supply
++		 * Since the external battery charger has its own 5v boost converter
++		 * which does not have these issues, we simply turn the separate
++		 * external 5v boost converter off and leave it off entirely.
++		 */
++		cht_wc_extcon_set_5v_boost(ext, false);
++	}
+ 
+ 	/* Enable sw control */
+ 	ret = cht_wc_extcon_sw_control(ext, true);
 -- 
 2.31.1
 
