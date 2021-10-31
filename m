@@ -2,37 +2,37 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A2060440F50
-	for <lists+linux-efi@lfdr.de>; Sun, 31 Oct 2021 17:24:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CE7A7440F5D
+	for <lists+linux-efi@lfdr.de>; Sun, 31 Oct 2021 17:25:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230131AbhJaQ1Q (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sun, 31 Oct 2021 12:27:16 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:37011 "EHLO
+        id S231185AbhJaQ1g (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sun, 31 Oct 2021 12:27:36 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:55988 "EHLO
         us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S230081AbhJaQ1N (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sun, 31 Oct 2021 12:27:13 -0400
+        by vger.kernel.org with ESMTP id S230192AbhJaQ1U (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sun, 31 Oct 2021 12:27:20 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1635697481;
+        s=mimecast20190719; t=1635697488;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=FN7A1ujpQU/zFOX8EqwJrJMl7Y0oOgtAm3LGtcEJ7Ko=;
-        b=FStI00fFlE+oEIST/8aOdLmjrip00dx0wO9etNavPKzhJ8ONDQun+1vACGyqpNx1J57mse
-        CO69qLedBQRxYiiMHwmBQNWW87IhJZkfbxkM6Clch57DeMYTOMWaRHWUIZUSdiRBNdR4j0
-        Q3/0Es3KdfajR2elYzg2Ra2MIwjn3gk=
+        bh=hnwM/VxBeSUArrlRw7RqLce8E045sD/TjiPL5pXvtrU=;
+        b=cC+vVA0oUJnvlxDPpxnhWq6PoDGChQq9D+kwZAOy77enzoqn9HUPhewbUD3+h/SGxFu/X/
+        kY0CPA+zy1Umk9zhFqhrSwULc1fdsK8xjD8juFgBe/5dD+1PuevAPBVBZVqZYtW69zOcRZ
+        VQtNkHuF9+tiLcKcdAW6OuWZVJLmWDc=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-303-LN3JFnwcPSeZLLd5YiDyLw-1; Sun, 31 Oct 2021 12:24:39 -0400
-X-MC-Unique: LN3JFnwcPSeZLLd5YiDyLw-1
+ us-mta-386-tPQqVU_6PMyu-Uijlapnhg-1; Sun, 31 Oct 2021 12:24:43 -0400
+X-MC-Unique: tPQqVU_6PMyu-Uijlapnhg-1
 Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 1EA8F8018AC;
-        Sun, 31 Oct 2021 16:24:37 +0000 (UTC)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id B3DA910A8E00;
+        Sun, 31 Oct 2021 16:24:40 +0000 (UTC)
 Received: from x1.localdomain.com (unknown [10.39.192.35])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 9F30B1017CE8;
-        Sun, 31 Oct 2021 16:24:33 +0000 (UTC)
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 64D6510190A7;
+        Sun, 31 Oct 2021 16:24:37 +0000 (UTC)
 From:   Hans de Goede <hdegoede@redhat.com>
 To:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
         Mika Westerberg <mika.westerberg@linux.intel.com>,
@@ -49,9 +49,9 @@ Cc:     Hans de Goede <hdegoede@redhat.com>, Len Brown <lenb@kernel.org>,
         platform-driver-x86@vger.kernel.org, linux-i2c@vger.kernel.org,
         linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-efi@vger.kernel.org
-Subject: [RFC 1/5] ACPI / x86: Add 3 devices on the Xiaomi Mi Pad 2 to the always_present list
-Date:   Sun, 31 Oct 2021 17:24:24 +0100
-Message-Id: <20211031162428.22368-2-hdegoede@redhat.com>
+Subject: [RFC 2/5] gpiolib: acpi: Make acpi_gpio_in_ignore_list() more generic
+Date:   Sun, 31 Oct 2021 17:24:25 +0100
+Message-Id: <20211031162428.22368-3-hdegoede@redhat.com>
 In-Reply-To: <20211031162428.22368-1-hdegoede@redhat.com>
 References: <20211031162428.22368-1-hdegoede@redhat.com>
 MIME-Version: 1.0
@@ -61,89 +61,59 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The Xiaomi Mi Pad 2 ships in both Windows and Android variants and the BIOS
-detects the OS by looking at the EFI executable the efibootmgr entry points
-to. If this executable is not the original Android bootloader (signed with
-Xiaomi's own keys) it detects the OS as Windows and sets the OSID variable
-used in the DSDT to "1".
+Pass the ignore list to parse into acpi_gpio_in_ignore_list() instead
+of hardcoding it to the ignore_wake module-param.
 
-This causes the following problems when running Linux:
-
-1. Like many other CHT based tablets the Xiaomi Mi Pad 2 does not have
-   a properly working ACPI battery interface instead we need to load
-   a native driver for the fuel-gauge, but the TXN27520 ACPI device for
-   the fuel-gauge gets hidden when OSID == "1".
-
-2. There are backlit LEDs behind the capacitive menu, home, back buttons
-   below the screen which are controlled by the second PWM controller of
-   the CHT SoC, this gets hidden when OSID == "1".
-
-3. There is an I2C attached KTD2026 RGB LED controller for the notification
-   LED, this gets hidden when OSID != "4".
-
-Add always_present_ids table entries for these devices so that they are
-always seen as present independent of the OSID value.
-
-Note the TXN27520 ACPI device does not have a UID set, so add support for
-matching devices with no UID.
+This is a preparation patch for adding support to fully ignore some
+_AEI entries.
 
 Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 ---
- drivers/acpi/x86/utils.c | 27 +++++++++++++++++++++++++--
- 1 file changed, 25 insertions(+), 2 deletions(-)
+ drivers/gpio/gpiolib-acpi.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/acpi/x86/utils.c b/drivers/acpi/x86/utils.c
-index f22f23933063..831949fda492 100644
---- a/drivers/acpi/x86/utils.c
-+++ b/drivers/acpi/x86/utils.c
-@@ -58,6 +58,11 @@ static const struct always_present_id always_present_ids[] = {
- 	ENTRY("80862289", "2", X86_MATCH(ATOM_AIRMONT), {
- 			DMI_MATCH(DMI_PRODUCT_NAME, "Lenovo YB1-X9"),
- 		}),
-+	/* The Xiaomi Mi Pad 2 uses PWM2 for touchkeys backlight control */
-+	ENTRY("80862289", "2", X86_MATCH(ATOM_AIRMONT), {
-+		DMI_MATCH(DMI_SYS_VENDOR, "Xiaomi Inc"),
-+		DMI_MATCH(DMI_PRODUCT_NAME, "Mipad2"),
-+	      }),
- 	/*
- 	 * The INT0002 device is necessary to clear wakeup interrupt sources
- 	 * on Cherry Trail devices, without it we get nobody cared IRQ msgs.
-@@ -107,6 +112,24 @@ static const struct always_present_id always_present_ids[] = {
- 		DMI_MATCH(DMI_PRODUCT_NAME, "Default string"),
- 		DMI_MATCH(DMI_BIOS_DATE, "05/25/2017")
- 	      }),
-+	/*
-+	 * The Xiaomi Mi Pad 2 does not use the ACPI battery interface
-+	 * instead we need to load a native driver for the fuel-gauge,
-+	 * but if the BIOS thinks we are Windows rather then Android,
-+	 * the fuel-gauge ACPI device is hidden.
-+	 */
-+	ENTRY("TXN27520", NULL, X86_MATCH(ATOM_AIRMONT), {
-+		DMI_MATCH(DMI_SYS_VENDOR, "Xiaomi Inc"),
-+		DMI_MATCH(DMI_PRODUCT_NAME, "Mipad2"),
-+	      }),
-+	/*
-+	 * The Xiaomi Mi Pad 2 has a RGB LED controller for its notifcation
-+	 * LED which is hidden when the BIOS thinks we are Windows, unhide it.
-+	 */
-+	ENTRY("KTD20260", "1", X86_MATCH(ATOM_AIRMONT), {
-+		DMI_MATCH(DMI_SYS_VENDOR, "Xiaomi Inc"),
-+		DMI_MATCH(DMI_PRODUCT_NAME, "Mipad2"),
-+	      }),
- };
+diff --git a/drivers/gpio/gpiolib-acpi.c b/drivers/gpio/gpiolib-acpi.c
+index 47712b6903b5..342219a58a32 100644
+--- a/drivers/gpio/gpiolib-acpi.c
++++ b/drivers/gpio/gpiolib-acpi.c
+@@ -320,13 +320,15 @@ static struct gpio_desc *acpi_request_own_gpiod(struct gpio_chip *chip,
+ 	return desc;
+ }
  
- bool acpi_device_always_present(struct acpi_device *adev)
-@@ -118,8 +141,8 @@ bool acpi_device_always_present(struct acpi_device *adev)
- 		if (acpi_match_device_ids(adev, always_present_ids[i].hid))
- 			continue;
+-static bool acpi_gpio_in_ignore_list(const char *controller_in, int pin_in)
++static bool acpi_gpio_in_ignore_list(const char *ignore_list,
++				     const char *controller_in,
++				     int pin_in)
+ {
+ 	const char *controller, *pin_str;
+ 	int len, pin;
+ 	char *endp;
  
--		if (!adev->pnp.unique_id ||
--		    strcmp(adev->pnp.unique_id, always_present_ids[i].uid))
-+		if (always_present_ids[i].uid && (!adev->pnp.unique_id ||
-+		    strcmp(adev->pnp.unique_id, always_present_ids[i].uid)))
- 			continue;
+-	controller = ignore_wake;
++	controller = ignore_list;
+ 	while (controller) {
+ 		pin_str = strchr(controller, '@');
+ 		if (!pin_str)
+@@ -350,8 +352,8 @@ static bool acpi_gpio_in_ignore_list(const char *controller_in, int pin_in)
  
- 		if (!x86_match_cpu(always_present_ids[i].cpu_ids))
+ 	return false;
+ err:
+-	pr_err_once("Error invalid value for gpiolib_acpi.ignore_wake: %s\n",
+-		    ignore_wake);
++	pr_err_once("Error invalid value for gpiolib_acpi.ignore_xxx: %s\n",
++		    ignore_list);
+ 	return false;
+ }
+ 
+@@ -363,7 +365,7 @@ static bool acpi_gpio_irq_is_wake(struct device *parent,
+ 	if (agpio->wake_capable != ACPI_WAKE_CAPABLE)
+ 		return false;
+ 
+-	if (acpi_gpio_in_ignore_list(dev_name(parent), pin)) {
++	if (acpi_gpio_in_ignore_list(ignore_wake, dev_name(parent), pin)) {
+ 		dev_info(parent, "Ignoring wakeup on pin %d\n", pin);
+ 		return false;
+ 	}
 -- 
 2.31.1
 
