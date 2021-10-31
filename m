@@ -2,121 +2,122 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CD2BB440E6B
-	for <lists+linux-efi@lfdr.de>; Sun, 31 Oct 2021 13:33:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CBCAC440E73
+	for <lists+linux-efi@lfdr.de>; Sun, 31 Oct 2021 13:52:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229877AbhJaMgS (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sun, 31 Oct 2021 08:36:18 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35064 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229798AbhJaMgS (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Sun, 31 Oct 2021 08:36:18 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 83CF360FD9;
-        Sun, 31 Oct 2021 12:33:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1635683626;
-        bh=NRhO6hzo10XWUP2bFt6QNKXuMxBJ25uRfWxqDqY/+8M=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=Jv5eTWcVA2z5JT5Ug7EiUMbH52+8dNpb/VkCf+EPr30fedYWXUmNZFRJMIHIC3j+r
-         6T25N7FKIwciqwuAaqDfxutRyRRXKahzZpE5vN2Z3xenC7srxDMSnGZJTwZfoPxgg3
-         LFv5mOcXmWURzDBG8n2REorEsFWZtw7e9T/edFX1WZ6y4gNT/vLog7Y45vDUt23c+l
-         afQMNXZ7/dK9gKdCxdTSmyXwBPFB76JE7z0dBOEmLYYERrazqEPj1lz5+vsSI2FMsn
-         jWMcTKZFeojo3DC/wA5FUoQEAD8AXA5WIEJnUGNIxzFy0Z9eVvHITxn2lsNKrXh0dg
-         gD7bmlVX1nChg==
-Received: by mail-oo1-f50.google.com with SMTP id m37-20020a4a9528000000b002b83955f771so5247282ooi.7;
-        Sun, 31 Oct 2021 05:33:46 -0700 (PDT)
-X-Gm-Message-State: AOAM530AcGtmbNf9FcxCs6h74fxU5euTx4BNfwxcevcRwh+3+XEL1CEV
-        urVfV43fqww3foh298vIB2Rms63eCeDTEEvNpDY=
-X-Google-Smtp-Source: ABdhPJzRyhFZSvvjXFfXlEbz9eE+P8RVY2MhVsjkKOk/v+Ogtl4XZxBwYW17JwmZzmZkY6SmoAfsZrsnF22NHXBzwEI=
-X-Received: by 2002:a4a:e93d:: with SMTP id a29mr15115163ooe.63.1635683625840;
- Sun, 31 Oct 2021 05:33:45 -0700 (PDT)
+        id S229877AbhJaMzV (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sun, 31 Oct 2021 08:55:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57620 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229798AbhJaMzV (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sun, 31 Oct 2021 08:55:21 -0400
+Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6269DC061570;
+        Sun, 31 Oct 2021 05:52:49 -0700 (PDT)
+Received: by mail-lf1-x12c.google.com with SMTP id bu18so13856717lfb.0;
+        Sun, 31 Oct 2021 05:52:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=KsU6C8DCbzTsNFFfktVF1wri/7sdYIU4HQYUbAWLagc=;
+        b=PhslQAKvrpeIN7feHYjaT5Px4ASWnFZP1fd1o0IpUunKpikQj842qisdh07HLB74Iy
+         +4tGrRWCvDG2rV5CDp5eA6bZ310HUXb6vtZfp98kFUnTEPlRpTL24qpi6l/iaMlg+jWZ
+         DjYjQUy0//T74C8jPP0cr9BffYT8HwbznZ5ccT+pW7pJPRVsq0ia1QN4pwDxTNz5dcHr
+         vrV95BTa2gZym8+wBR222hBgJBK0bLKgGlyqgpA5zpQxL8hhbxh6s01/1//ouL9Ju57H
+         1zgshTF8xcfZwKSepeqn5E1uvYMaMedTR4Ukvrx3WrWHOaGB3Cvg3tzIcjafR9eQdWfB
+         iKyA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=KsU6C8DCbzTsNFFfktVF1wri/7sdYIU4HQYUbAWLagc=;
+        b=O13/7zCjlVGlzoL/1OIedA0cKiFs3zHozZyVs0yBRnyRd2vDOmjDaXqcAGgJFrkI1+
+         7hvTzJ7bs43JZ55PdOxxLosAPZg4iXXAA9w3eIHl5IKkxhFz6haj2sVxDJHsrOzRHt5C
+         HRnhhJjtHepQ1BA3FaqqRLs3zIvCuiLj/24RBZ52RppJk5SVOwjoUHch4XK/umP7z1nD
+         kIeEgHHjb41BLjZe1fDQBAIY3DvX7q3fJt5/qWXZ2+FE8LFXO+fBtsn05y36FaKfSwim
+         PcOC6epQXSHnQRUPJIXq8d73LzE0BpHPuDTwe9Eq+f6uEPRFnIKMjcQ3Xyb9yAZj3RxS
+         jWGQ==
+X-Gm-Message-State: AOAM532ZyzNI1CpqU4Tz/2aUzdZylQsknOrPiA8vjwAFVDygvxW2LwL6
+        aOXqeqsdQ5JTQKc3MweA/0eRsl81fIBrAjznjHM=
+X-Google-Smtp-Source: ABdhPJzKIgyiS9xupKWX+ht1y8HzbkQ9S2BGp5QpsvkwXuwzgDgydBnU1hAMgz/1QNnxMJSFj38Hdmd26EuI/eqD7VE=
+X-Received: by 2002:a05:6512:acd:: with SMTP id n13mr21685799lfu.60.1635684767624;
+ Sun, 31 Oct 2021 05:52:47 -0700 (PDT)
 MIME-Version: 1.0
-References: <20211012082708.121931-1-iivanov@suse.de> <YWVKAk4h5bsUA3b6@light.dominikbrodowski.net>
- <YX44DCaIg/qGOrtE@light.dominikbrodowski.net>
-In-Reply-To: <YX44DCaIg/qGOrtE@light.dominikbrodowski.net>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Sun, 31 Oct 2021 13:33:34 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXEeCwhADMEwfE8SaG=1+J8Lzrck72DixSdxOP3cAK_Uzg@mail.gmail.com>
-Message-ID: <CAMj1kXEeCwhADMEwfE8SaG=1+J8Lzrck72DixSdxOP3cAK_Uzg@mail.gmail.com>
-Subject: Re: [PATCH] random: fix crash on multiple early calls to add_bootloader_randomness()
-To:     Dominik Brodowski <linux@dominikbrodowski.net>
-Cc:     "Theodore Y. Ts'o" <tytso@mit.edu>,
-        "Ivan T. Ivanov" <iivanov@suse.de>,
-        Bhupesh Sharma <bhsharma@redhat.com>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+References: <20211030182813.116672-1-hdegoede@redhat.com> <20211030182813.116672-14-hdegoede@redhat.com>
+In-Reply-To: <20211030182813.116672-14-hdegoede@redhat.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Sun, 31 Oct 2021 14:52:11 +0200
+Message-ID: <CAHp75VfRALjbGaY8rdt5HCte3_NPuwpdkr+GNZV7qMWBK1idWg@mail.gmail.com>
+Subject: Re: [PATCH 13/13] extcon: intel-cht-wc: Add support for devices with
+ an USB-micro-B connector
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     Mark Gross <markgross@kernel.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Wolfram Sang <wsa@the-dreams.de>,
+        Sebastian Reichel <sre@kernel.org>,
+        MyungJoo Ham <myungjoo.ham@samsung.com>,
+        Chanwoo Choi <cw00.choi@samsung.com>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Yauhen Kharuzhy <jekhor@gmail.com>,
+        Tsuchiya Yuto <kitakar@gmail.com>,
+        Platform Driver <platform-driver-x86@vger.kernel.org>,
+        linux-i2c <linux-i2c@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-efi <linux-efi@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Sun, 31 Oct 2021 at 07:31, Dominik Brodowski
-<linux@dominikbrodowski.net> wrote:
+On Sat, Oct 30, 2021 at 9:29 PM Hans de Goede <hdegoede@redhat.com> wrote:
 >
-> If add_bootloader_randomness() or add_hwgenerator_randomness() is
-> called for the first time during early boot, crng_init equals 0. Then,
-> crng_fast_load() gets called -- which is safe to do even if the input
-> pool is not yet properly set up.
+> So far the extcon-intel-cht-wc code has only been tested on devices with
+> a Type-C connector with USB-PD, USB3 (superspeed) and DP-altmode support
+> through a FUSB302 Type-C controller.
 >
-> If the added entropy suffices to increase crng_init to 1, future calls
-> to add_bootloader_randomness() or add_hwgenerator_randomness() used to
-> progress to credit_entropy_bits(). However, if the input pool is not yet
-> properly set up, the cmpxchg call within that function can lead to an
-> infinite recursion. This is not only a hypothetical problem, as qemu
-> on x86 may provide bootloader entropy via EFI and via devicetree.
+> Some devices with the intel-cht-wc PMIC however come with an USB-micro-B
+> connector, or an USB-2 only Type-C connector without USB-PD.
 >
+> These device are identified by "intel,cht-wc-setup" = "bq25890,bq27520",
+> since there is no Type-C controller on these devices the extcon code must
+> control the Vbus 5V boost converter and the USB role switch depending on
+> the detected cable-type.
 
-arm64 not x86
+...
 
-> As crng_global_init_time is set to != 0 once the input pool is properly
-> set up, check (also) for this condition to determine which branch to take.
->
-> Calls to crng_fast_load() do not modify the input pool; therefore, the
-> entropy_count for the input pool must not be modified at that early
-> stage.
->
-> Reported-and-tested-by: Ivan T. Ivanov <iivanov@suse.de>
+> +       if (ext->vbus_boost && ext->vbus_boost_enabled != enable) {
+> +               if (enable)
+> +                       ret = regulator_enable(ext->vbus_boost);
+> +               else
+> +                       ret = regulator_disable(ext->vbus_boost);
 
-Nit: fancy tags like this are more difficult to grep for
+> +               if (ret == 0)
+> +                       ext->vbus_boost_enabled = enable;
+> +               else
+> +                       dev_err(ext->dev, "Error updating Vbus boost regulator: %d\n", ret);
 
-Better to use separate Reported-by and Tested-by tags
+if (ret)
+ dev_err()
+else
+ ...
 
-> Fixes: 18b915ac6b0a ("efi/random: Treat EFI_RNG_PROTOCOL output as bootloader randomness")
-> Signed-off-by: Dominik Brodowski <linux@dominikbrodowski.net>
->
+?
 
-Please don't drop the diffstat. Are you using git format-patch?
+> +       }
+
+...
 
 
-> diff --git a/drivers/char/random.c b/drivers/char/random.c
-> index 605969ed0f96..4211ff3092f9 100644
-> --- a/drivers/char/random.c
-> +++ b/drivers/char/random.c
-> @@ -1763,8 +1763,8 @@ static void __init init_std_data(struct entropy_store *r)
->  }
->
->  /*
-> - * Note that setup_arch() may call add_device_randomness()
-> - * long before we get here. This allows seeding of the pools
-> + * add_device_randomness() or add_bootloader_randomness() may be
-> + * called long before we get here. This allows seeding of the pools
->   * with some platform dependent data very early in the boot
->   * process. But it limits our options here. We must use
->   * statically allocated structures that already have all
-> @@ -2274,7 +2274,12 @@ void add_hwgenerator_randomness(const char *buffer, size_t count,
->  {
->         struct entropy_store *poolp = &input_pool;
->
-> -       if (unlikely(crng_init == 0)) {
-> +       /* We cannot do much with the input pool until it is set up in
-> +        * rand_initalize(); therefore just mix into the crng state.
-> +        * As this does not affect the input pool, we cannot credit
-> +        * entropy for this.
-> +        */
-> +       if (unlikely(crng_init == 0) || unlikely(crng_global_init_time == 0)) {
+> +               /*
+> +                * Classic micro USB-B setup, this requires controling
 
-Can we just drop the unlikely()s here?
+controlling
 
->                 crng_fast_load(buffer, count);
->                 return;
->         }
+> +                * the role-sw and vbus based on the id-pin.
+> +                */
+
+-- 
+With Best Regards,
+Andy Shevchenko
