@@ -2,36 +2,37 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B6D50440F51
-	for <lists+linux-efi@lfdr.de>; Sun, 31 Oct 2021 17:24:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A2060440F50
+	for <lists+linux-efi@lfdr.de>; Sun, 31 Oct 2021 17:24:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230153AbhJaQ1T (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sun, 31 Oct 2021 12:27:19 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:55768 "EHLO
+        id S230131AbhJaQ1Q (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sun, 31 Oct 2021 12:27:16 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:37011 "EHLO
         us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S230097AbhJaQ1N (ORCPT
+        by vger.kernel.org with ESMTP id S230081AbhJaQ1N (ORCPT
         <rfc822;linux-efi@vger.kernel.org>); Sun, 31 Oct 2021 12:27:13 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
         s=mimecast20190719; t=1635697481;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=u5C+Qf6IU8slVoGKJPdCjLHtDa3yJhcLurHHBUByHR0=;
-        b=IVUXgTQemQ6t/eZpMPIRYwP4FN9CeqN6ocAuxeXk8gEXjkP+bofrbpdR0XziHX5J+l10xr
-        AbBVP6bP3SRS63y4jvuWWMd3w6XRiSTvlwfBgJ0NCa7F6WFqtkntz46ZM6Ja7ohu61CrGg
-        3o6s3N1lNqWhUdYErGtMV56uYAMiqM0=
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=FN7A1ujpQU/zFOX8EqwJrJMl7Y0oOgtAm3LGtcEJ7Ko=;
+        b=FStI00fFlE+oEIST/8aOdLmjrip00dx0wO9etNavPKzhJ8ONDQun+1vACGyqpNx1J57mse
+        CO69qLedBQRxYiiMHwmBQNWW87IhJZkfbxkM6Clch57DeMYTOMWaRHWUIZUSdiRBNdR4j0
+        Q3/0Es3KdfajR2elYzg2Ra2MIwjn3gk=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-347-FPctjynDNqW61vfpULqtww-1; Sun, 31 Oct 2021 12:24:36 -0400
-X-MC-Unique: FPctjynDNqW61vfpULqtww-1
+ us-mta-303-LN3JFnwcPSeZLLd5YiDyLw-1; Sun, 31 Oct 2021 12:24:39 -0400
+X-MC-Unique: LN3JFnwcPSeZLLd5YiDyLw-1
 Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 59476362F9;
-        Sun, 31 Oct 2021 16:24:33 +0000 (UTC)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 1EA8F8018AC;
+        Sun, 31 Oct 2021 16:24:37 +0000 (UTC)
 Received: from x1.localdomain.com (unknown [10.39.192.35])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id A4A0B100763D;
-        Sun, 31 Oct 2021 16:24:29 +0000 (UTC)
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 9F30B1017CE8;
+        Sun, 31 Oct 2021 16:24:33 +0000 (UTC)
 From:   Hans de Goede <hdegoede@redhat.com>
 To:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
         Mika Westerberg <mika.westerberg@linux.intel.com>,
@@ -48,9 +49,11 @@ Cc:     Hans de Goede <hdegoede@redhat.com>, Len Brown <lenb@kernel.org>,
         platform-driver-x86@vger.kernel.org, linux-i2c@vger.kernel.org,
         linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-efi@vger.kernel.org
-Subject: [RFC 0/5] ACPI/power-suppy add fuel-gauge support on cht-wc PMIC without USB-PD support devs
-Date:   Sun, 31 Oct 2021 17:24:23 +0100
-Message-Id: <20211031162428.22368-1-hdegoede@redhat.com>
+Subject: [RFC 1/5] ACPI / x86: Add 3 devices on the Xiaomi Mi Pad 2 to the always_present list
+Date:   Sun, 31 Oct 2021 17:24:24 +0100
+Message-Id: <20211031162428.22368-2-hdegoede@redhat.com>
+In-Reply-To: <20211031162428.22368-1-hdegoede@redhat.com>
+References: <20211031162428.22368-1-hdegoede@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
@@ -58,127 +61,89 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hi All,
+The Xiaomi Mi Pad 2 ships in both Windows and Android variants and the BIOS
+detects the OS by looking at the EFI executable the efibootmgr entry points
+to. If this executable is not the original Android bootloader (signed with
+Xiaomi's own keys) it detects the OS as Windows and sets the OSID variable
+used in the DSDT to "1".
 
-Together with my earlier series to hookup the charger, Vbus boost converter
-and USB role-switching:
-https://lore.kernel.org/platform-driver-x86/20211030182813.116672-1-hdegoede@redhat.com/T/#t
+This causes the following problems when running Linux:
 
-This series also adds battery-monitoring support on the Xiaomi Mi Pad 2
-and the generic parts of it should also be usable on other devices with
-the same PMIC setup.
+1. Like many other CHT based tablets the Xiaomi Mi Pad 2 does not have
+   a properly working ACPI battery interface instead we need to load
+   a native driver for the fuel-gauge, but the TXN27520 ACPI device for
+   the fuel-gauge gets hidden when OSID == "1".
 
-I've marked this series as a RFC because I'm not happy about the amount of
-DMI quirks this series requires. The 3 separate quirks in
-drivers/acpi/x86/utils.c are a bit much, but esp. when combined with also
-the changes needed in drivers/gpio/gpiolib-acpi.c it all becomes a bit too
-much special casing for just a single device.
+2. There are backlit LEDs behind the capacitive menu, home, back buttons
+   below the screen which are controlled by the second PWM controller of
+   the CHT SoC, this gets hidden when OSID == "1".
 
-So I've been thinking about alternatives for this and I've come up with
-3 ways to deal with this:
+3. There is an I2C attached KTD2026 RGB LED controller for the notification
+   LED, this gets hidden when OSID != "4".
 
-1. This patch set.
+Add always_present_ids table entries for these devices so that they are
+always seen as present independent of the OSID value.
 
-2. Instead of the quirks in drivers/acpi/x86/utils.c, write an old-fashioned
-"board" .c file/module which autoloads based on a DMI match and manually
-instantiates i2c-clients for the BQ27520 fuel-gauge and the KTD20260 LED ctrlr.
-Combined with not giving an IRQ to the fuel-gauge i2c-client (i), this allows
-completely dropping the gpiolib-acpi.c changes and only requires 1 quirk for
-the 2nd PWM controller in drivers/acpi/x86/utils.c. As an added bonus this
-approach will also removes the need to add ACPI enumeration support to the
-bq27xxx_battery code.
+Note the TXN27520 ACPI device does not have a UID set, so add support for
+matching devices with no UID.
 
-3. While working on this I noticed that the Mi Pad 2 DSDT actually has
-full ac and battery ACPI code in its DSDT, which Linux was not trying to
-use because of the Whiskey Cove PMIC ACPI HID in acpi_ac_blacklist[] in
-drivers/apci/ac.c, resp. a missing _DEP for the ACPI battery.
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+---
+ drivers/acpi/x86/utils.c | 27 +++++++++++++++++++++++++--
+ 1 file changed, 25 insertions(+), 2 deletions(-)
 
-With the native drivers disabled (the default in 5.15-rc7 without patches),
-both those things fixed and a fix to intel_pmic_regs_handler() in
-drivers/acpi/pmic/intel_pmic.c, battery monitoring actually starts working
-somwhat!
-
-I say somewhat because changes are not detected until userspace polls
-the power_supply and switching from charge/device to host mode and
-back does not work at all. This is due to the AML code for this relying
-on _AEI ACPI events on virtual GPIOs on the PMIC :|  This means that we
-would need to reverse engineer which events these virtual GPIO interrupts
-represent; and then somehow rework the whole MFD + child driver setup
-to deliver, e.g. extcon/pwrsrc events to a to-be-written GPIO driver
-which supports these virtual GPIOs, while at the same time also keeping
-normal native driver support since boards which USB-PD support need the
-native drivers...  So OTOH this option has the promise of solving this
-in a generic way which may work on more boards, OTOH it is a big mess
-and we lack documentation for it.  Interestingly enough the ACPI
-battery/ac code also takes ownership of the notification LED, downgrading
-it from a full RGB led to a green charging LED, which is both a pre
-and a con at the same time (since we would loose full RGB function).
-
-###
-
-Although I started out with implementing option 1, I now think I
-Would personally prefer option 2. This isolates most of the code
-needed to support some of these special boards into a single
-(per board) file which can be build as a module which can be
-autoloaded, rather then growing vmlinuz by adding quirks there.
-
-The downside would be this sorta re-introduces the old ARM model
-of one board file per (special-case) board, but there are only
-1 or 2 more x86 tablets (ii) that I know about which may also
-need such a board file. Which I think is managable and should
-not run into the original objections against the original ARM
-approach where there were way too many board files in the end.
-
-Option 3 IMHO is a no go unless someone at Intel manages to
-come up with documentation on all the virtual GPIOs which the
-Windows PMIC drivers implement as method of communicating
-between the PMIC driver and the AML code in the DSDT.
-
-I'm a bit in dubio about how to progress with this, so I would
-love to hear what others think about this. I would esp. appreciate
-Rafael's and Mika's input on this since most of the added ugliness
-in this RFC is in the ACPI code.
-
-Regards,
-
-Hans
-
-
-i) This means that the _AEI ACPI handler for the fuel-gauge will run on
-FG interrupts. This is fine it does a single I2C read and a couple of
-ACPI notifies which will get ignored. Note the interrupts are "something
-changed" pulses which don't need IRQ clearing.
-
-ii) There are not that many CHT boards with a Whiskey Cove PMIC, other
-then the GPD win/pocket with full USB-PD support and the Xiaomi Mi Pad 2
-I'm only aware of one other, the Lenovo Yoga Book YB1-X91L/F . Since this
-whole saga has gotten me quite curious and I already have the other
-2 devices I've decided to spend some money on this and bought a 2nd hand
-Lenovo Yoga Book YB1-X91L, whose setup is similar to the Mi Pad 2.
-I should have this in about a week. I'll post a reply to this thread
-with info no how the DSDT looks on the Lenovo Yoga Book and if e.g.
-using the standard ACPI battery interface seems to be an option there.
-
-iii) Note the "power: supply: bq27xxx: Add dev helper variable to
-bq27xxx_battery_i2c_probe()" patch applies on top of the
-"power: supply: bq27xxx: Fix kernel crash on IRQ handler register error"
-bug-fix which I send out earlier.
-
-
-Hans de Goede (5):
-  ACPI / x86: Add 3 devices on the Xiaomi Mi Pad 2 to the always_present
-    list
-  gpiolib: acpi: Make acpi_gpio_in_ignore_list() more generic
-  gpiolib: acpi: Add a new "ignore" module option
-  power: supply: bq27xxx: Add dev helper variable to
-    bq27xxx_battery_i2c_probe()
-  power: supply: bq27xxx: Add support for ACPI enumeration
-
- drivers/acpi/x86/utils.c                   | 27 +++++++++++-
- drivers/gpio/gpiolib-acpi.c                | 40 +++++++++++++++---
- drivers/power/supply/bq27xxx_battery_i2c.c | 48 +++++++++++++++++-----
- 3 files changed, 97 insertions(+), 18 deletions(-)
-
+diff --git a/drivers/acpi/x86/utils.c b/drivers/acpi/x86/utils.c
+index f22f23933063..831949fda492 100644
+--- a/drivers/acpi/x86/utils.c
++++ b/drivers/acpi/x86/utils.c
+@@ -58,6 +58,11 @@ static const struct always_present_id always_present_ids[] = {
+ 	ENTRY("80862289", "2", X86_MATCH(ATOM_AIRMONT), {
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "Lenovo YB1-X9"),
+ 		}),
++	/* The Xiaomi Mi Pad 2 uses PWM2 for touchkeys backlight control */
++	ENTRY("80862289", "2", X86_MATCH(ATOM_AIRMONT), {
++		DMI_MATCH(DMI_SYS_VENDOR, "Xiaomi Inc"),
++		DMI_MATCH(DMI_PRODUCT_NAME, "Mipad2"),
++	      }),
+ 	/*
+ 	 * The INT0002 device is necessary to clear wakeup interrupt sources
+ 	 * on Cherry Trail devices, without it we get nobody cared IRQ msgs.
+@@ -107,6 +112,24 @@ static const struct always_present_id always_present_ids[] = {
+ 		DMI_MATCH(DMI_PRODUCT_NAME, "Default string"),
+ 		DMI_MATCH(DMI_BIOS_DATE, "05/25/2017")
+ 	      }),
++	/*
++	 * The Xiaomi Mi Pad 2 does not use the ACPI battery interface
++	 * instead we need to load a native driver for the fuel-gauge,
++	 * but if the BIOS thinks we are Windows rather then Android,
++	 * the fuel-gauge ACPI device is hidden.
++	 */
++	ENTRY("TXN27520", NULL, X86_MATCH(ATOM_AIRMONT), {
++		DMI_MATCH(DMI_SYS_VENDOR, "Xiaomi Inc"),
++		DMI_MATCH(DMI_PRODUCT_NAME, "Mipad2"),
++	      }),
++	/*
++	 * The Xiaomi Mi Pad 2 has a RGB LED controller for its notifcation
++	 * LED which is hidden when the BIOS thinks we are Windows, unhide it.
++	 */
++	ENTRY("KTD20260", "1", X86_MATCH(ATOM_AIRMONT), {
++		DMI_MATCH(DMI_SYS_VENDOR, "Xiaomi Inc"),
++		DMI_MATCH(DMI_PRODUCT_NAME, "Mipad2"),
++	      }),
+ };
+ 
+ bool acpi_device_always_present(struct acpi_device *adev)
+@@ -118,8 +141,8 @@ bool acpi_device_always_present(struct acpi_device *adev)
+ 		if (acpi_match_device_ids(adev, always_present_ids[i].hid))
+ 			continue;
+ 
+-		if (!adev->pnp.unique_id ||
+-		    strcmp(adev->pnp.unique_id, always_present_ids[i].uid))
++		if (always_present_ids[i].uid && (!adev->pnp.unique_id ||
++		    strcmp(adev->pnp.unique_id, always_present_ids[i].uid)))
+ 			continue;
+ 
+ 		if (!x86_match_cpu(always_present_ids[i].cpu_ids))
 -- 
 2.31.1
 
