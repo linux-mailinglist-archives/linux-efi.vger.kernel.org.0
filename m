@@ -2,37 +2,37 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E5043440F60
-	for <lists+linux-efi@lfdr.de>; Sun, 31 Oct 2021 17:25:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 62DF8440F67
+	for <lists+linux-efi@lfdr.de>; Sun, 31 Oct 2021 17:25:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230184AbhJaQ1i (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sun, 31 Oct 2021 12:27:38 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124]:41665 "EHLO
+        id S230121AbhJaQ1q (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sun, 31 Oct 2021 12:27:46 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:50043 "EHLO
         us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S230232AbhJaQ1W (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sun, 31 Oct 2021 12:27:22 -0400
+        by vger.kernel.org with ESMTP id S230106AbhJaQ12 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sun, 31 Oct 2021 12:27:28 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1635697490;
+        s=mimecast20190719; t=1635697495;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=rErM9mU4rrqY2HhIkpXGYB44QeGVz2mXY7yCgAHfu74=;
-        b=GE01BB9Iri/DhWQJP6LsdgFgdnKN5bLnwJ1E723dS4kIULz6k4U1PakfOTWnkX9/tJKumi
-        aIJbuoR3y8eumYj8KHYgB8LXWhl2H3pmD8JzqvzsH0Rej9Pvm2jzfFLwLYEcYhiU10Xq7o
-        Ou9hbXE3FTnTHpiPMcRCLBdAh58F8wY=
+        bh=fPOEwjI1K1hO+z9xpZRtE63xzqb/sG/Qd2WRtIRCf0M=;
+        b=HOp/vxAohmSwK5gTgcSAhsxh3K+ixCeodwfsDzzn/x3kVIkBKH62dRuMRoNattun3drsjF
+        Z+eXjoARmNwR6WOWZmYWJtwyDMUJYMAHMky7RTUz/95M1w8nhSx4m83ftrM3xxrlj+Cbhd
+        THLmRtcIOJOf8tIIGGJR6vBjxE+uIsc=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-29-SYnxvPuaMduoLH7jKyRtvw-1; Sun, 31 Oct 2021 12:24:46 -0400
-X-MC-Unique: SYnxvPuaMduoLH7jKyRtvw-1
+ us-mta-577-m8dTSM8mMaaylGzLBFFztA-1; Sun, 31 Oct 2021 12:24:50 -0400
+X-MC-Unique: m8dTSM8mMaaylGzLBFFztA-1
 Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 570D41006AA3;
-        Sun, 31 Oct 2021 16:24:44 +0000 (UTC)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id EDB4A362F9;
+        Sun, 31 Oct 2021 16:24:47 +0000 (UTC)
 Received: from x1.localdomain.com (unknown [10.39.192.35])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 053DC100763D;
-        Sun, 31 Oct 2021 16:24:40 +0000 (UTC)
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 9BE3F100763D;
+        Sun, 31 Oct 2021 16:24:44 +0000 (UTC)
 From:   Hans de Goede <hdegoede@redhat.com>
 To:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
         Mika Westerberg <mika.westerberg@linux.intel.com>,
@@ -49,9 +49,9 @@ Cc:     Hans de Goede <hdegoede@redhat.com>, Len Brown <lenb@kernel.org>,
         platform-driver-x86@vger.kernel.org, linux-i2c@vger.kernel.org,
         linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-efi@vger.kernel.org
-Subject: [RFC 3/5] gpiolib: acpi: Add a new "ignore" module option
-Date:   Sun, 31 Oct 2021 17:24:26 +0100
-Message-Id: <20211031162428.22368-4-hdegoede@redhat.com>
+Subject: [RFC 4/5] power: supply: bq27xxx: Add dev helper variable to bq27xxx_battery_i2c_probe()
+Date:   Sun, 31 Oct 2021 17:24:27 +0100
+Message-Id: <20211031162428.22368-5-hdegoede@redhat.com>
 In-Reply-To: <20211031162428.22368-1-hdegoede@redhat.com>
 References: <20211031162428.22368-1-hdegoede@redhat.com>
 MIME-Version: 1.0
@@ -61,84 +61,66 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Add a new "ignore" module option to completely ignore controller@pin combos
-from _AEI lists.
+Add a dev local variable to the bq27xxx_battery_i2c_probe(), to replace
+"&client->dev" in various places.
 
-And add a DMI quirk to ignore the interrupt of the BQ27520 fuel-gauge IC
-on the Xiaomi Mi Pad 2. On this device we use native charger + fuel-gauge
-drivers because of issues with the ACPI battery implementation. The _AEI
-listing of the fuel-gauge IRQ is intended for use with the unused ACPI
-battery implementation and is blocking the bq27xxx fuel-gauge driver
-from binding.
+Note the resulting cleanup is somewhat minimal, this is mostly
+a preparation for adding ACPI enumeration support which will
+use the new "dev" variable more.
 
 Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 ---
- drivers/gpio/gpiolib-acpi.c | 28 ++++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+ drivers/power/supply/bq27xxx_battery_i2c.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpio/gpiolib-acpi.c b/drivers/gpio/gpiolib-acpi.c
-index 342219a58a32..2d08f33a22a6 100644
---- a/drivers/gpio/gpiolib-acpi.c
-+++ b/drivers/gpio/gpiolib-acpi.c
-@@ -32,9 +32,16 @@ MODULE_PARM_DESC(ignore_wake,
- 		 "controller@pin combos on which to ignore the ACPI wake flag "
- 		 "ignore_wake=controller@pin[,controller@pin[,...]]");
+diff --git a/drivers/power/supply/bq27xxx_battery_i2c.c b/drivers/power/supply/bq27xxx_battery_i2c.c
+index cf38cbfe13e9..0a1b922389e1 100644
+--- a/drivers/power/supply/bq27xxx_battery_i2c.c
++++ b/drivers/power/supply/bq27xxx_battery_i2c.c
+@@ -139,6 +139,7 @@ static int bq27xxx_battery_i2c_bulk_write(struct bq27xxx_device_info *di,
+ static int bq27xxx_battery_i2c_probe(struct i2c_client *client,
+ 				     const struct i2c_device_id *id)
+ {
++	struct device *dev = &client->dev;
+ 	struct bq27xxx_device_info *di;
+ 	int ret;
+ 	char *name;
+@@ -151,16 +152,16 @@ static int bq27xxx_battery_i2c_probe(struct i2c_client *client,
+ 	if (num < 0)
+ 		return num;
  
-+static char *ignore;
-+module_param(ignore, charp, 0444);
-+MODULE_PARM_DESC(ignore,
-+		 "controller@pin combos which are to be ignored from _AEI lists "
-+		 "ignore=controller@pin[,controller@pin[,...]]");
-+
- struct acpi_gpiolib_dmi_quirk {
- 	bool no_edge_events_on_boot;
- 	char *ignore_wake;
-+	char *ignore;
- };
+-	name = devm_kasprintf(&client->dev, GFP_KERNEL, "%s-%d", id->name, num);
++	name = devm_kasprintf(dev, GFP_KERNEL, "%s-%d", id->name, num);
+ 	if (!name)
+ 		goto err_mem;
  
- /**
-@@ -407,6 +414,11 @@ static acpi_status acpi_gpiochip_alloc_event(struct acpi_resource *ares,
- 	if (!handler)
- 		return AE_OK;
+-	di = devm_kzalloc(&client->dev, sizeof(*di), GFP_KERNEL);
++	di = devm_kzalloc(dev, sizeof(*di), GFP_KERNEL);
+ 	if (!di)
+ 		goto err_mem;
  
-+	if (acpi_gpio_in_ignore_list(ignore, dev_name(chip->parent), pin)) {
-+		dev_info(chip->parent, "Ignoring _AEI entry for pin %d\n", pin);
-+		return AE_OK;
-+	}
-+
- 	desc = acpi_request_own_gpiod(chip, agpio, 0, "ACPI:Event");
- 	if (IS_ERR(desc)) {
- 		dev_err(chip->parent,
-@@ -1565,6 +1577,19 @@ static const struct dmi_system_id gpiolib_acpi_quirks[] __initconst = {
- 			.ignore_wake = "INT33FF:01@0",
- 		},
- 	},
-+	{
-+		/*
-+		 * On the Xiaomi Mi Pad 2 we use native battery drivers, disable
-+		 * the _AEI entry for the fuel-gauge IRQ.
-+		 */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Xiaomi Inc"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Mipad2"),
-+		},
-+		.driver_data = &(struct acpi_gpiolib_dmi_quirk) {
-+			.ignore = "INT33FF:03@52",
-+		},
-+	},
- 	{} /* Terminating entry */
- };
+ 	di->id = num;
+-	di->dev = &client->dev;
++	di->dev = dev;
+ 	di->chip = id->driver_data;
+ 	di->name = name;
  
-@@ -1587,6 +1612,9 @@ static int __init acpi_gpio_setup_params(void)
- 	if (ignore_wake == NULL && quirk && quirk->ignore_wake)
- 		ignore_wake = quirk->ignore_wake;
+@@ -179,13 +180,12 @@ static int bq27xxx_battery_i2c_probe(struct i2c_client *client,
+ 	i2c_set_clientdata(client, di);
  
-+	if (ignore == NULL && quirk && quirk->ignore)
-+		ignore = quirk->ignore;
-+
- 	return 0;
- }
- 
+ 	if (client->irq) {
+-		ret = devm_request_threaded_irq(&client->dev, client->irq,
++		ret = devm_request_threaded_irq(dev, client->irq,
+ 				NULL, bq27xxx_battery_irq_handler_thread,
+ 				IRQF_ONESHOT,
+ 				di->name, di);
+ 		if (ret) {
+-			dev_err(&client->dev,
+-				"Unable to register IRQ %d error %d\n",
++			dev_err(dev, "Unable to register IRQ %d error %d\n",
+ 				client->irq, ret);
+ 			bq27xxx_battery_teardown(di);
+ 			goto err_failed;
 -- 
 2.31.1
 
