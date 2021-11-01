@@ -2,80 +2,63 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 04ABD44149B
-	for <lists+linux-efi@lfdr.de>; Mon,  1 Nov 2021 09:03:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C99804415EF
+	for <lists+linux-efi@lfdr.de>; Mon,  1 Nov 2021 10:17:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231185AbhKAIFd (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 1 Nov 2021 04:05:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53262 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231402AbhKAIFc (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 1 Nov 2021 04:05:32 -0400
-Received: from mail-lj1-x230.google.com (mail-lj1-x230.google.com [IPv6:2a00:1450:4864:20::230])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 700E5C0613B9
-        for <linux-efi@vger.kernel.org>; Mon,  1 Nov 2021 01:02:59 -0700 (PDT)
-Received: by mail-lj1-x230.google.com with SMTP id 17so24947270ljq.0
-        for <linux-efi@vger.kernel.org>; Mon, 01 Nov 2021 01:02:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=kTlPYaJ3qmdiuwil3bN4/5BGELxQxYaH2mDV2D/+NOc=;
-        b=afk96XLZPNdq0XUQ+C+Sg/ozYAwaC3yaDksIj/6w1qfCAtpHcUBLhL7vVLQ2g6kyU8
-         HuE8JkrDQw9Pe98zTGVBizjoC/CJ2gIf2SQfvUW4I2bBAgnGSkvoj21GNxy44xhgi8wa
-         zFqdnoxEWlXQcHKmvAjcp9ZZENtgzq59rPy6DMYJA8ElDG6A/MSiYpBhtVSFjq7WeFZP
-         cS6h1mcE593mSy7oo/5H2eZoBJu7VmxoLBdfXFmBSkynwummjWwhugkKOoxpGYUahMwe
-         FMx1gVtUWQYu0DZ7PVYIUCO/5nTM47dFNeeCKaLcfD+PjrFqLHGMy32UvVj5G8XqzaCt
-         nFaA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=kTlPYaJ3qmdiuwil3bN4/5BGELxQxYaH2mDV2D/+NOc=;
-        b=ESongeEgBsE/kfFz5wcuX+r7fLnG57hnS14bWH9IR4i5CPDQfq2jEsMACKw7e+tkgv
-         JyZT65bOCQMPuFLcJGiFBInPq7AgRI/6eTp6iS2he1C3Gl6HznlqrHaSubz7wN+GZObp
-         eJ0pP+307VFRSWws/iUM0M48iQxp5DE0uHncloFNXicVkEdaddJx6VNJUx7mHkxJ8p20
-         8e0KJNdbqHmxwzKFeLS/IeT/ttAQ6Pi1DmSGnXNRVh0z2EeFYF6VpMiM2EgVJZe15d1s
-         H11orQE0G2Ev7DjXoxZIPXeG7bVliie6BSxlUqDoLvzz5owSujb8vIgWn+oWJUvt/zcX
-         K5tA==
-X-Gm-Message-State: AOAM530j/fOqUHQrh8B3TvqAInaerdFR9nR9is1ylc72ALXp+hCSRGRG
-        3C+N04DTRSPQ+iSGRZuqc3jbuP129FSUoVPxsLo=
-X-Google-Smtp-Source: ABdhPJz7bell/PbLM6PCZG9oyOsUGoUjtisMZ1a9wMI9p2Dqg6vVVtPriD7UyogYfoQSpqejN5auU/4R+7TnSX8/I0Y=
-X-Received: by 2002:a05:651c:893:: with SMTP id d19mr30628974ljq.236.1635753777571;
- Mon, 01 Nov 2021 01:02:57 -0700 (PDT)
+        id S231320AbhKAJTt (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 1 Nov 2021 05:19:49 -0400
+Received: from szxga01-in.huawei.com ([45.249.212.187]:13994 "EHLO
+        szxga01-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230520AbhKAJTs (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 1 Nov 2021 05:19:48 -0400
+Received: from dggeme762-chm.china.huawei.com (unknown [172.30.72.54])
+        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4HjS6j0DpXzZcKP;
+        Mon,  1 Nov 2021 17:15:09 +0800 (CST)
+Received: from ubuntu1804.huawei.com (10.67.174.44) by
+ dggeme762-chm.china.huawei.com (10.3.19.108) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
+ 15.1.2308.15; Mon, 1 Nov 2021 17:17:11 +0800
+From:   Gaosheng Cui <cuigaosheng1@huawei.com>
+To:     <ardb@kernel.org>, <cuigaosheng1@huawei.com>
+CC:     <linux-efi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <wangweiyang2@huawei.com>
+Subject: [PATCH -next] efi/libstub: arm32: Use "align" for the size alignment
+Date:   Mon, 1 Nov 2021 17:18:54 +0800
+Message-ID: <20211101091854.190982-1-cuigaosheng1@huawei.com>
+X-Mailer: git-send-email 2.30.0
 MIME-Version: 1.0
-Received: by 2002:a05:6512:304b:0:0:0:0 with HTTP; Mon, 1 Nov 2021 01:02:57
- -0700 (PDT)
-Reply-To: aisha.7d@yahoo.com
-From:   Aisha AG <rbx17058@gmail.com>
-Date:   Mon, 1 Nov 2021 00:02:57 -0800
-Message-ID: <CA+KbyyfmtMHH304LH3vgL9OeVB3eEp+KwfJyCty=yC1JWDycfg@mail.gmail.com>
-Subject: Hello Dear,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.67.174.44]
+X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
+ dggeme762-chm.china.huawei.com (10.3.19.108)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
+We are doing page-based allocations, and both the address
+and size must meet alignment constraints, so using "align"
+for the size alignment is a better choice.
+
+Signed-off-by: Gaosheng Cui <cuigaosheng1@huawei.com>
+---
+ drivers/firmware/efi/libstub/relocate.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/firmware/efi/libstub/relocate.c b/drivers/firmware/efi/libstub/relocate.c
+index 8ee9eb2b9039..d6d27e8c23f8 100644
+--- a/drivers/firmware/efi/libstub/relocate.c
++++ b/drivers/firmware/efi/libstub/relocate.c
+@@ -50,7 +50,7 @@ efi_status_t efi_low_alloc_above(unsigned long size, unsigned long align,
+ 	if (align < EFI_ALLOC_ALIGN)
+ 		align = EFI_ALLOC_ALIGN;
+ 
+-	size = round_up(size, EFI_ALLOC_ALIGN);
++	size = round_up(size, align);
+ 	nr_pages = size / EFI_PAGE_SIZE;
+ 	for (i = 0; i < map_size / desc_size; i++) {
+ 		efi_memory_desc_t *desc;
 -- 
-Hello Dear,
+2.30.0
 
-I came across your e-mail contact prior to a private search while in
-need of your assistance. I am Aisha Al-Qaddafi, the only biological
-Daughter of Former President of Libya Col.Muammar Al-Qaddafi.
-Am a Widow and a single Mother with three Children.
-
-I have investment funds worth Twenty Seven Million Five Hundred
-Thousand United State Dollar $27.500.000.00, and i need a trusted
-investment Manager/Partner because of my current refugee status,
-however, I am interested in you for investment project assistance in
-your country, may be from there, we can build business relationship
-in the nearest future.
-
-I am willing to negotiate an investment/business profit sharing ratio
-with you based on the future investment earning profits.
-
-If you are willing to handle this project on my behalf kindly reply
-urgently to enable me to provide you more information about the
-investment funds.
-Best Regards
-Mrs Aisha Al-Qaddafi.
