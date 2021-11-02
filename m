@@ -2,60 +2,77 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B004F4423C2
-	for <lists+linux-efi@lfdr.de>; Tue,  2 Nov 2021 00:10:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A60A544256E
+	for <lists+linux-efi@lfdr.de>; Tue,  2 Nov 2021 03:04:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231806AbhKAXNa (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 1 Nov 2021 19:13:30 -0400
-Received: from mail.kernel.org ([198.145.29.99]:60272 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229684AbhKAXNa (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Mon, 1 Nov 2021 19:13:30 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPS id 8420860EE5;
-        Mon,  1 Nov 2021 23:10:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1635808256;
-        bh=9C0wTVSJ7NMBI80NS5DZ9QjEat1Vfe5bIHIn17RMU0g=;
-        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-        b=cdSrFwb5TAppZUS4G3NfU5Yqe0iG2kxtAGGVxT+wUGSsRtoxK1u5N25r4B9fpDwdQ
-         YTNMppVsm4RSAUpPTPoQd4K655MisDyL2k6RihTa4u8kwAZVOl56xckALCIc0HBc7A
-         DOnHnco8yITs2ga9UkN0FeJlHuhr1MfCEgfQzWadvcUFU5Br1yvkznUT0+dCiCx0vM
-         47B92PdK8XfCghs9qGD/cmFUdw22gCkDyWkyqEUC/7IYe043WtktjPCvuuGZyA+rgb
-         cYjmBF7A9minuzglUnGZTpe5XGvcCycj9s2Yjpoel7EAfOHs262yM5HIgktR7H8HUp
-         kZl+Jgzl7D7fA==
-Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 762E4609EF;
-        Mon,  1 Nov 2021 23:10:56 +0000 (UTC)
-Subject: Re: [GIT PULL] EFI updates for v5.16
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <YX+xIaS0R2F9HJwr@zn.tnic>
-References: <YX+xIaS0R2F9HJwr@zn.tnic>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <YX+xIaS0R2F9HJwr@zn.tnic>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git tags/efi-next-for-v5.16
-X-PR-Tracked-Commit-Id: 720dff78de360ad9742d5f438101cedcdb5dad84
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 93351d2cc99643960f3931bcd1fe21ae7e5c6ae5
-Message-Id: <163580825647.31036.2631945165217193139.pr-tracker-bot@kernel.org>
-Date:   Mon, 01 Nov 2021 23:10:56 +0000
-To:     Borislav Petkov <bp@suse.de>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-efi <linux-efi@vger.kernel.org>, x86-ml <x86@kernel.org>,
-        lkml <linux-kernel@vger.kernel.org>
+        id S229699AbhKBCGj (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 1 Nov 2021 22:06:39 -0400
+Received: from szxga01-in.huawei.com ([45.249.212.187]:13997 "EHLO
+        szxga01-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229486AbhKBCGi (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 1 Nov 2021 22:06:38 -0400
+Received: from dggeme762-chm.china.huawei.com (unknown [172.30.72.53])
+        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4HjtSR4p5dzZch4;
+        Tue,  2 Nov 2021 10:01:59 +0800 (CST)
+Received: from ubuntu1804.huawei.com (10.67.174.44) by
+ dggeme762-chm.china.huawei.com (10.3.19.108) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
+ 15.1.2308.15; Tue, 2 Nov 2021 10:04:02 +0800
+From:   Gaosheng Cui <cuigaosheng1@huawei.com>
+To:     <ardb@kernel.org>, <cuigaosheng1@huawei.com>
+CC:     <linux-efi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <wangweiyang2@huawei.com>
+Subject: [PATCH -next,v2] efi/libstub: arm32: Use "align" for the size alignment
+Date:   Tue, 2 Nov 2021 10:05:45 +0800
+Message-ID: <20211102020545.145840-1-cuigaosheng1@huawei.com>
+X-Mailer: git-send-email 2.30.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.67.174.44]
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+ dggeme762-chm.china.huawei.com (10.3.19.108)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The pull request you sent on Mon, 1 Nov 2021 10:19:29 +0100:
+We are doing page-based allocations, and both the address
+and size must meet alignment constraints, so using "align"
+for the size alignment is a better choice.
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git tags/efi-next-for-v5.16
+Signed-off-by: Gaosheng Cui <cuigaosheng1@huawei.com>
+---
+ drivers/firmware/efi/libstub/randomalloc.c | 2 +-
+ drivers/firmware/efi/libstub/relocate.c    | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/93351d2cc99643960f3931bcd1fe21ae7e5c6ae5
-
-Thank you!
-
+diff --git a/drivers/firmware/efi/libstub/randomalloc.c b/drivers/firmware/efi/libstub/randomalloc.c
+index 724155b9e10d..7b7159bb035d 100644
+--- a/drivers/firmware/efi/libstub/randomalloc.c
++++ b/drivers/firmware/efi/libstub/randomalloc.c
+@@ -76,7 +76,7 @@ efi_status_t efi_random_alloc(unsigned long size,
+ 	if (align < EFI_ALLOC_ALIGN)
+ 		align = EFI_ALLOC_ALIGN;
+ 
+-	size = round_up(size, EFI_ALLOC_ALIGN);
++	size = round_up(size, align);
+ 
+ 	/* count the suitable slots in each memory map entry */
+ 	for (map_offset = 0; map_offset < map_size; map_offset += desc_size) {
+diff --git a/drivers/firmware/efi/libstub/relocate.c b/drivers/firmware/efi/libstub/relocate.c
+index 8ee9eb2b9039..d6d27e8c23f8 100644
+--- a/drivers/firmware/efi/libstub/relocate.c
++++ b/drivers/firmware/efi/libstub/relocate.c
+@@ -50,7 +50,7 @@ efi_status_t efi_low_alloc_above(unsigned long size, unsigned long align,
+ 	if (align < EFI_ALLOC_ALIGN)
+ 		align = EFI_ALLOC_ALIGN;
+ 
+-	size = round_up(size, EFI_ALLOC_ALIGN);
++	size = round_up(size, align);
+ 	nr_pages = size / EFI_PAGE_SIZE;
+ 	for (i = 0; i < map_size / desc_size; i++) {
+ 		efi_memory_desc_t *desc;
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+2.30.0
+
