@@ -2,25 +2,26 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 41C48446B1E
-	for <lists+linux-efi@lfdr.de>; Sat,  6 Nov 2021 00:08:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 89D3E446B3F
+	for <lists+linux-efi@lfdr.de>; Sat,  6 Nov 2021 00:31:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233210AbhKEXK7 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 5 Nov 2021 19:10:59 -0400
-Received: from mga17.intel.com ([192.55.52.151]:1035 "EHLO mga17.intel.com"
+        id S232502AbhKEXdl (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 5 Nov 2021 19:33:41 -0400
+Received: from mga03.intel.com ([134.134.136.65]:54124 "EHLO mga03.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230331AbhKEXK7 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Fri, 5 Nov 2021 19:10:59 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10159"; a="212739697"
+        id S229917AbhKEXdl (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Fri, 5 Nov 2021 19:33:41 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10159"; a="231948292"
 X-IronPort-AV: E=Sophos;i="5.87,212,1631602800"; 
-   d="scan'208";a="212739697"
+   d="scan'208";a="231948292"
 Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2021 16:08:16 -0700
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2021 16:31:00 -0700
 X-IronPort-AV: E=Sophos;i="5.87,212,1631602800"; 
-   d="scan'208";a="490496440"
+   d="scan'208";a="490502066"
 Received: from luhan1-mobl2.amr.corp.intel.com (HELO [10.212.219.183]) ([10.212.219.183])
-  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2021 16:08:15 -0700
-Subject: Re: [PATCH 1/5] Extend memblock to support memory encryption
+  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2021 16:30:59 -0700
+Subject: Re: [PATCH 2/5] Extend pg_data_t to hold information about memory
+ encryption
 To:     Martin Fernandez <martin.fernandez@eclypsium.com>,
         linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org
 Cc:     tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, x86@kernel.org,
@@ -30,7 +31,7 @@ Cc:     tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, x86@kernel.org,
         daniel.gutson@eclypsium.com, hughsient@gmail.com,
         alison.schofield@intel.com, alex@eclypsium.com
 References: <20211105212724.2640-1-martin.fernandez@eclypsium.com>
- <20211105212724.2640-2-martin.fernandez@eclypsium.com>
+ <20211105212724.2640-3-martin.fernandez@eclypsium.com>
 From:   Dave Hansen <dave.hansen@intel.com>
 Autocrypt: addr=dave.hansen@intel.com; keydata=
  xsFNBE6HMP0BEADIMA3XYkQfF3dwHlj58Yjsc4E5y5G67cfbt8dvaUq2fx1lR0K9h1bOI6fC
@@ -75,12 +76,12 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  OPsw5tV/LmQ5GXH0JQ/TZXWygyRFyyI2FqNTx4WHqUn3yFj8rwTAU1tluRUYyeLy0ayUlKBH
  ybj0N71vWO936MqP6haFERzuPAIpxj2ezwu0xb1GjTk4ynna6h5GjnKgdfOWoRtoWndMZxbA
  z5cecg==
-Message-ID: <1ef16875-a115-44c3-bbb9-874308337566@intel.com>
-Date:   Fri, 5 Nov 2021 16:08:12 -0700
+Message-ID: <12d32040-4869-f28f-550a-f85adec7eaa1@intel.com>
+Date:   Fri, 5 Nov 2021 16:30:57 -0700
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.10.0
 MIME-Version: 1.0
-In-Reply-To: <20211105212724.2640-2-martin.fernandez@eclypsium.com>
+In-Reply-To: <20211105212724.2640-3-martin.fernandez@eclypsium.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 8bit
@@ -89,30 +90,16 @@ List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
 On 11/5/21 2:27 PM, Martin Fernandez wrote:
-> Add the capability to mark regions of the memory memory_type able of
-> hardware memory encryption.
+> @@ -869,6 +869,8 @@ typedef struct pglist_data {
+>  	unsigned long		min_slab_pages;
+>  #endif /* CONFIG_NUMA */
 > 
-> Also add the capability to query if all regions of a memory node are
-> able to do hardware memory encryption.
+> +	bool crypto_capable;
 
-This is looking quite a bit nicer than the last post.  One nit on the
-changelogs: please make an effort to connect the patches.  If you
-introduce a function here but don't use it, tell us where it _will_ be used.
+When adding to a data structure, please take a moment and familiarize
+yourself with it.  For instance, would it make sense to have an
+'enum pgdat_flags' for this as opposed to a bool?
 
-As it stands, this series _looks_ like it is touching 3 disjoint things:
- * pg_data_t
- * e820
- * memblocks
-
-It would be valuable to spend a few sentences to connect the dots.
-
-Subsystem prefixes are also highly preferred.  Perhaps:
-
-	mm: Extend memblock to support memory encryption
-
-or
-
-	mm/memblock: Tag memblocks with crypto capabilities
-
-It also helps make it obvious that this series touches both core mm/ and
-arch/x86/ code.
+Or, if you place it up next to the CONFIG_COMPACTION
+proactive_compact_trigger, can it share storage?  Placing it next to a
+ulong is probably the worst place it can go.
