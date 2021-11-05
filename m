@@ -2,53 +2,53 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 54177446A93
-	for <lists+linux-efi@lfdr.de>; Fri,  5 Nov 2021 22:28:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E2CC3446A96
+	for <lists+linux-efi@lfdr.de>; Fri,  5 Nov 2021 22:28:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233879AbhKEVbG (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 5 Nov 2021 17:31:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37606 "EHLO
+        id S232771AbhKEVbJ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 5 Nov 2021 17:31:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37630 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232771AbhKEVbD (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 5 Nov 2021 17:31:03 -0400
-Received: from mail-qk1-x72c.google.com (mail-qk1-x72c.google.com [IPv6:2607:f8b0:4864:20::72c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB8DFC061714
-        for <linux-efi@vger.kernel.org>; Fri,  5 Nov 2021 14:28:22 -0700 (PDT)
-Received: by mail-qk1-x72c.google.com with SMTP id bm28so9963006qkb.9
-        for <linux-efi@vger.kernel.org>; Fri, 05 Nov 2021 14:28:22 -0700 (PDT)
+        with ESMTP id S233814AbhKEVbJ (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 5 Nov 2021 17:31:09 -0400
+Received: from mail-qt1-x82b.google.com (mail-qt1-x82b.google.com [IPv6:2607:f8b0:4864:20::82b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6AA4BC061714
+        for <linux-efi@vger.kernel.org>; Fri,  5 Nov 2021 14:28:29 -0700 (PDT)
+Received: by mail-qt1-x82b.google.com with SMTP id v4so8411377qtw.8
+        for <linux-efi@vger.kernel.org>; Fri, 05 Nov 2021 14:28:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=eclypsium.com; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=Jks3I8fcjhzIOYMy1pj9d8V57adFhYQFjVhjoHgCtkY=;
-        b=cInTTVncQphHdaitMdAqnk4fNtCW7xX8BVA84/RmyGu6fcqcX4f8hT2RVZYJ6RAje7
-         R53V4X95vPboYhNItwIfFeMgMU9BifeyS53ZnabmNw0Waq7KsQEYQH4Tp3qDELcDHqua
-         uUsUifiMYs6a2Mfqei6Ej75KnS5Bq5twIZ4cW7YQF4MvIPugbIiujuc1d5St97ElqgQJ
-         3UwtPtGG6Y5yrjVSNkqxXJri+tAuI6NaNKIlImz9PdKgztwv6QOQdOXYCK3RauVgTMT/
-         pikEDgHQEm90lbka5gKUgL0srLbpc4HIGhZQgnznc1C0MW00NqzLcDq0EX6YQJIj7L1e
-         GVUw==
+        bh=gxIUf/B3N4aGGQUAMZHbQRCyO8Uzdu2r5wmZjCrSyg0=;
+        b=L1eS+i4oKuVI5Q1uem7KkM3uw6ruSey2ogCweNsogV1NCmM1EgSU6Ed8N1xt5PnB/4
+         XxN0Iwx/QxhK6/9Bp6gBzzChhpCJTvp8zsyNLBVpXoeE6KCTBfcJ/xTrXi9W1fCNLkx2
+         tZDe31haI4Yge0wZajTw3WV5axnLouyVC/5cpFIx1s/ByJV2U7BQXy/vmy2tf9KBMjZn
+         GP5ulmNcj5ogpVTqYBMZvr/bKthnjloH66OPOdBGfk/vtxdwr2IzeaTRR+MlOs1EBtJB
+         deDjsWbv48fjj9GC4y03dnARDMKrlklQ8BiZ8NGwnkuzUCe6mUjYjKD+WXtEqlzvOrIO
+         2bWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=Jks3I8fcjhzIOYMy1pj9d8V57adFhYQFjVhjoHgCtkY=;
-        b=YxKPCj4X9Qq5hx6+jDOaWYaKdkiyF7VYQElZ70XVJ2LFEkkgaPv90S6ti0psHN0Xa6
-         u3nLKy6QBuSuDnh/T/fFBLS0fBkzOsaNdWmQb0SrtGgZchGAgQJCcY5hGAhfBnIwxuxs
-         6Gf5i+3W3Ww++83m3rv8dH4cHgskiupIV1NRplWqAHHnKs0V6aTWBl2pTFpG7aaVVCvZ
-         TiTsDo8eIb3IKf6ntIrbLAvQBMJ8C5MJtFVo0QUewPfecWdOhdeUcpF9T8qclhlHHtEh
-         H2Yp5Qo8fkQ2HSJS1b/5WllilsM6caK46ojJRHmipVykFKjO4m1E7kj/xqNzCPYW5gJR
-         FcBg==
-X-Gm-Message-State: AOAM533Y9G7dXkKH86HblWQzAI47GcNTYxdyV8lmuxIwMI52SNsXsE9g
-        4C6zkXr+pta7PFS9s4QeeqOwWCj9WH9fmKSAZ6w3wYTuNJBfqn6ocveLZBOjIa7pM1waBwKutSL
-        4gsr1wmLHIgSZAWco/UlHkaWftbOAI4uof9qBwU+ynEwS3O0+elNFPSjBGSe648yTYXM65ptBI/
-        B4e0HANU9z4NEMcDbYaA==
-X-Google-Smtp-Source: ABdhPJy1mrXB8ozWkZoiHZCXchb/119XB3jx6ByNJLH0wcO7IS4+ptdSHFs1c7o8G7IrLvWwZnUVgg==
-X-Received: by 2002:a05:620a:430a:: with SMTP id u10mr50286414qko.53.1636147701753;
-        Fri, 05 Nov 2021 14:28:21 -0700 (PDT)
+        bh=gxIUf/B3N4aGGQUAMZHbQRCyO8Uzdu2r5wmZjCrSyg0=;
+        b=SLmH9nh8NhevVIks/nM1rrsFCvgwzxzUl+LPQfFGKJU1zU/7de26Wigp/r6mAHM0n2
+         KsIRvQm7YpNfgEW/uj5XMFFPSP2Ss6TCzJ6fGx5AWBgXAheMh9iUAgtapz6UxiM4PGE2
+         pJYwF4TKiHFp27fhdvmWXUarX2WE0rSitz0jI4HPd6OQ5t6bhNSQZAbdWmQUFWSDebKf
+         rhzY+UGxkM0FDvq1l6B2CMKQG87iG+z8vog0IXa7RXN2VBFFSxj4ivQf/uJzGQAAtNUQ
+         M+BKcDeSczudcjgPb7GwV3YVkJYk0EDSII2/RMlgpeDL+o/h4IghrXoo8m4mt8xAHrux
+         d0dw==
+X-Gm-Message-State: AOAM533S9b4z7HPki3U3z6pey62l6TGGQPWMsGxCuNf6Z8diUGFHshaX
+        gWcu8GHDkP4kCjKHe1zlR1kQoPdGiF0JmUEj0MpB9Hm2ahwV8k5HElf2DNrGHFPb9KH8duRGaQ+
+        uBGv1CRxS86xvQt2nNTgm7aaNXc9leB29t4dvihyYYranKHWIM5StlAMnvF0nnpxp9JU/jWq348
+        hpLFhwNPdBEffG0EaWxw==
+X-Google-Smtp-Source: ABdhPJwYBeSyDO3JGC+Sc9jq/t4j69Yuj7HadpAAHp4OHQi2KcqG3CfMMkpuf2MJEAp+wynaZw4gng==
+X-Received: by 2002:ac8:1e9e:: with SMTP id c30mr64933163qtm.238.1636147708412;
+        Fri, 05 Nov 2021 14:28:28 -0700 (PDT)
 Received: from localhost (7-153-16-190.fibertel.com.ar. [190.16.153.7])
-        by smtp.gmail.com with ESMTPSA id g8sm6636765qko.27.2021.11.05.14.28.15
+        by smtp.gmail.com with ESMTPSA id d129sm5815706qkf.136.2021.11.05.14.28.23
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 05 Nov 2021 14:28:20 -0700 (PDT)
+        Fri, 05 Nov 2021 14:28:28 -0700 (PDT)
 From:   Martin Fernandez <martin.fernandez@eclypsium.com>
 To:     linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org
 Cc:     tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, x86@kernel.org,
@@ -58,154 +58,73 @@ Cc:     tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, x86@kernel.org,
         daniel.gutson@eclypsium.com, hughsient@gmail.com,
         alison.schofield@intel.com, alex@eclypsium.com,
         Martin Fernandez <martin.fernandez@eclypsium.com>
-Subject: [PATCH 4/5] Mark e820_entries as crypto capable from EFI memmap
-Date:   Fri,  5 Nov 2021 18:27:23 -0300
-Message-Id: <20211105212724.2640-5-martin.fernandez@eclypsium.com>
+Subject: [PATCH 5/5] Show in sysfs if a memory node is able to do encryption
+Date:   Fri,  5 Nov 2021 18:27:24 -0300
+Message-Id: <20211105212724.2640-6-martin.fernandez@eclypsium.com>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20211105212724.2640-1-martin.fernandez@eclypsium.com>
 References: <20211105212724.2640-1-martin.fernandez@eclypsium.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Iterate over the EFI memmap finding the contiguous regions that are
-able to do hardware encryption (ie, those who have the
-EFI_MEMORY_CPU_CRYPTO enabled) and mark those in the e820_table.
+Show in each node in sysfs if its memory is able to do hardware memory
+encryption, ie. if all its memory is marked with EFI_MEMORY_CPU_CRYPTO
+in the EFI memory map.
 
 Signed-off-by: Martin Fernandez <martin.fernandez@eclypsium.com>
 ---
- arch/x86/platform/efi/efi.c | 109 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 109 insertions(+)
+ Documentation/ABI/testing/sysfs-devices-node | 10 ++++++++++
+ drivers/base/node.c                          | 10 ++++++++++
+ 2 files changed, 20 insertions(+)
+ create mode 100644 Documentation/ABI/testing/sysfs-devices-node
 
-diff --git a/arch/x86/platform/efi/efi.c b/arch/x86/platform/efi/efi.c
-index 147c30a81f15..6cd1c11dbdad 100644
---- a/arch/x86/platform/efi/efi.c
-+++ b/arch/x86/platform/efi/efi.c
-@@ -441,6 +441,113 @@ static int __init efi_config_init(const efi_config_table_type_t *arch_tables)
- 	return ret;
+diff --git a/Documentation/ABI/testing/sysfs-devices-node b/Documentation/ABI/testing/sysfs-devices-node
+new file mode 100644
+index 000000000000..ab46fdd3f6a8
+--- /dev/null
++++ b/Documentation/ABI/testing/sysfs-devices-node
+@@ -0,0 +1,10 @@
++What:		/sys/devices/system/node/nodeX/crypto_capable
++Date:		October 2021
++Contact:	Martin Fernandez <martin.fernandez@eclypsium.com>
++Users:		fwupd
++Description:
++		This value is 1 if all system memory in this node is
++		marked with EFI_MEMORY_CPU_CRYPTO, indicating that the
++		system memory is capable of being protected with the
++		CPU’s memory cryptographic capabilities. It is 0
++		otherwise.
+\ No newline at end of file
+diff --git a/drivers/base/node.c b/drivers/base/node.c
+index c56d34f8158f..4e6ef86f4523 100644
+--- a/drivers/base/node.c
++++ b/drivers/base/node.c
+@@ -560,11 +560,21 @@ static ssize_t node_read_distance(struct device *dev,
  }
+ static DEVICE_ATTR(distance, 0444, node_read_distance, NULL);
  
-+/*
-+ * The contiguous_region type is used to help
-+ * efi_mark_e820_regions_as_crypto_capable to pick all the contiguous
-+ * regions that have the EFI_MEMORY_CPU_CRYPTO attribute, and call a
-+ * function of the e820 module to mark those regions as being able to
-+ * do hardware encryption.
-+ *
-+ * To use this properly the memory map must not have any overlapped
-+ * regions and the regions should be sorted.
-+ *
-+ * cr in the function names stands for contiguous_region
-+ */
-+struct contiguous_region {
-+	u64 start;
-+	u64 end;
-+};
-+
-+static void __init cr_init(struct contiguous_region *region)
++static ssize_t crypto_capable_show(struct device *dev,
++				   struct device_attribute *attr, char *buf)
 +{
-+	region->start = 0;
-+	region->end = 0;
++	struct pglist_data *pgdat = NODE_DATA(dev->id);
++
++	return sysfs_emit(buf, "%d\n", pgdat->crypto_capable);
 +}
++static DEVICE_ATTR_RO(crypto_capable);
 +
-+static void __init efi_md_to_cr(const efi_memory_desc_t *md,
-+				struct contiguous_region *region)
-+{
-+	region->start = md->phys_addr;
-+	region->end = md->phys_addr + (md->num_pages << EFI_PAGE_SHIFT) - 1;
-+}
-+
-+static u64 __init cr_size(const struct contiguous_region *r)
-+{
-+	return r->end - r->start + 1;
-+}
-+
-+static bool __init cr_is_empty(const struct contiguous_region *r)
-+{
-+	/*
-+	 * Since contiguous regions are built upon efi_memory_desc_t
-+	 * it is safe to say that a region is empty if its size is
-+	 * lower than the size of one EFI page.
-+	 */
-+	return cr_size(r) < (1 << EFI_PAGE_SHIFT);
-+}
-+
-+static bool __init cr_merge_regions(struct contiguous_region *region1,
-+				    const struct contiguous_region *region2)
-+{
-+	bool merged_result;
-+
-+	if (cr_is_empty(region1)) {
-+		*region1 = *region2;
-+		merged_result = true;
-+	} else if (region1->end + 1 == region2->start) {
-+		/* Extend region1 */
-+		region1->end = region2->end;
-+		merged_result = true;
-+	} else {
-+		merged_result = false;
-+	}
-+
-+	return merged_result;
-+}
-+
-+static void __init cr_mark_e820_as_crypto_capable(const struct contiguous_region *r)
-+{
-+	e820__mark_regions_as_crypto_capable(r->start, cr_size(r));
-+}
-+
-+/*
-+ * This assumes that there'll be no overlaps in the memory map
-+ * (otherwise we'd have a deeper problem going on). It also assumes
-+ * that the system DRAM regions are already sorted; in EDK2 based UEFI
-+ * firmware the entries covering system DRAM are usually sorted, with
-+ * additional MMIO entries appearing unordered. This is because the
-+ * UEFI memory map is constructed from the GCD memory map, which is
-+ * seeded with the DRAM regions at boot, and allocations are created
-+ * by splitting them up.
-+ */
-+static void __init efi_mark_e820_regions_as_crypto_capable(void)
-+{
-+	efi_memory_desc_t *md;
-+	struct contiguous_region prev_region;
-+
-+	cr_init(&prev_region);
-+
-+	for_each_efi_memory_desc(md) {
-+		if (md->attribute & EFI_MEMORY_CPU_CRYPTO) {
-+			struct contiguous_region cur_region;
-+
-+			efi_md_to_cr(md, &cur_region);
-+
-+			if (!cr_merge_regions(&prev_region, &cur_region)) {
-+				cr_mark_e820_as_crypto_capable(&prev_region);
-+				prev_region = cur_region;
-+			} /* else: Merge succeeded, don't mark yet */
-+		} else if (!cr_is_empty(&prev_region)) {
-+			cr_mark_e820_as_crypto_capable(&prev_region);
-+			cr_init(&prev_region);
-+		} /* else: All previous regions are already marked */
-+	}
-+
-+	/* Mark last region (if any) */
-+	if (!cr_is_empty(&prev_region))
-+		cr_mark_e820_as_crypto_capable(&prev_region);
-+}
-+
- void __init efi_init(void)
- {
- 	if (IS_ENABLED(CONFIG_X86_32) &&
-@@ -494,6 +601,8 @@ void __init efi_init(void)
- 	set_bit(EFI_RUNTIME_SERVICES, &efi.flags);
- 	efi_clean_memmap();
+ static struct attribute *node_dev_attrs[] = {
+ 	&dev_attr_meminfo.attr,
+ 	&dev_attr_numastat.attr,
+ 	&dev_attr_distance.attr,
+ 	&dev_attr_vmstat.attr,
++	&dev_attr_crypto_capable.attr,
+ 	NULL
+ };
  
-+	efi_mark_e820_regions_as_crypto_capable();
-+
- 	if (efi_enabled(EFI_DBG))
- 		efi_print_memmap();
- }
 -- 
 2.30.2
 
