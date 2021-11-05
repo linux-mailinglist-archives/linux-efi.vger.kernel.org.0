@@ -2,129 +2,117 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E2CC3446A96
-	for <lists+linux-efi@lfdr.de>; Fri,  5 Nov 2021 22:28:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 41C48446B1E
+	for <lists+linux-efi@lfdr.de>; Sat,  6 Nov 2021 00:08:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232771AbhKEVbJ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 5 Nov 2021 17:31:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37630 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233814AbhKEVbJ (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 5 Nov 2021 17:31:09 -0400
-Received: from mail-qt1-x82b.google.com (mail-qt1-x82b.google.com [IPv6:2607:f8b0:4864:20::82b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6AA4BC061714
-        for <linux-efi@vger.kernel.org>; Fri,  5 Nov 2021 14:28:29 -0700 (PDT)
-Received: by mail-qt1-x82b.google.com with SMTP id v4so8411377qtw.8
-        for <linux-efi@vger.kernel.org>; Fri, 05 Nov 2021 14:28:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=eclypsium.com; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=gxIUf/B3N4aGGQUAMZHbQRCyO8Uzdu2r5wmZjCrSyg0=;
-        b=L1eS+i4oKuVI5Q1uem7KkM3uw6ruSey2ogCweNsogV1NCmM1EgSU6Ed8N1xt5PnB/4
-         XxN0Iwx/QxhK6/9Bp6gBzzChhpCJTvp8zsyNLBVpXoeE6KCTBfcJ/xTrXi9W1fCNLkx2
-         tZDe31haI4Yge0wZajTw3WV5axnLouyVC/5cpFIx1s/ByJV2U7BQXy/vmy2tf9KBMjZn
-         GP5ulmNcj5ogpVTqYBMZvr/bKthnjloH66OPOdBGfk/vtxdwr2IzeaTRR+MlOs1EBtJB
-         deDjsWbv48fjj9GC4y03dnARDMKrlklQ8BiZ8NGwnkuzUCe6mUjYjKD+WXtEqlzvOrIO
-         2bWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=gxIUf/B3N4aGGQUAMZHbQRCyO8Uzdu2r5wmZjCrSyg0=;
-        b=SLmH9nh8NhevVIks/nM1rrsFCvgwzxzUl+LPQfFGKJU1zU/7de26Wigp/r6mAHM0n2
-         KsIRvQm7YpNfgEW/uj5XMFFPSP2Ss6TCzJ6fGx5AWBgXAheMh9iUAgtapz6UxiM4PGE2
-         pJYwF4TKiHFp27fhdvmWXUarX2WE0rSitz0jI4HPd6OQ5t6bhNSQZAbdWmQUFWSDebKf
-         rhzY+UGxkM0FDvq1l6B2CMKQG87iG+z8vog0IXa7RXN2VBFFSxj4ivQf/uJzGQAAtNUQ
-         M+BKcDeSczudcjgPb7GwV3YVkJYk0EDSII2/RMlgpeDL+o/h4IghrXoo8m4mt8xAHrux
-         d0dw==
-X-Gm-Message-State: AOAM533S9b4z7HPki3U3z6pey62l6TGGQPWMsGxCuNf6Z8diUGFHshaX
-        gWcu8GHDkP4kCjKHe1zlR1kQoPdGiF0JmUEj0MpB9Hm2ahwV8k5HElf2DNrGHFPb9KH8duRGaQ+
-        uBGv1CRxS86xvQt2nNTgm7aaNXc9leB29t4dvihyYYranKHWIM5StlAMnvF0nnpxp9JU/jWq348
-        hpLFhwNPdBEffG0EaWxw==
-X-Google-Smtp-Source: ABdhPJwYBeSyDO3JGC+Sc9jq/t4j69Yuj7HadpAAHp4OHQi2KcqG3CfMMkpuf2MJEAp+wynaZw4gng==
-X-Received: by 2002:ac8:1e9e:: with SMTP id c30mr64933163qtm.238.1636147708412;
-        Fri, 05 Nov 2021 14:28:28 -0700 (PDT)
-Received: from localhost (7-153-16-190.fibertel.com.ar. [190.16.153.7])
-        by smtp.gmail.com with ESMTPSA id d129sm5815706qkf.136.2021.11.05.14.28.23
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 05 Nov 2021 14:28:28 -0700 (PDT)
-From:   Martin Fernandez <martin.fernandez@eclypsium.com>
-To:     linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org
+        id S233210AbhKEXK7 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 5 Nov 2021 19:10:59 -0400
+Received: from mga17.intel.com ([192.55.52.151]:1035 "EHLO mga17.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230331AbhKEXK7 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Fri, 5 Nov 2021 19:10:59 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10159"; a="212739697"
+X-IronPort-AV: E=Sophos;i="5.87,212,1631602800"; 
+   d="scan'208";a="212739697"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2021 16:08:16 -0700
+X-IronPort-AV: E=Sophos;i="5.87,212,1631602800"; 
+   d="scan'208";a="490496440"
+Received: from luhan1-mobl2.amr.corp.intel.com (HELO [10.212.219.183]) ([10.212.219.183])
+  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2021 16:08:15 -0700
+Subject: Re: [PATCH 1/5] Extend memblock to support memory encryption
+To:     Martin Fernandez <martin.fernandez@eclypsium.com>,
+        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org
 Cc:     tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, x86@kernel.org,
         hpa@zytor.com, dave.hansen@linux.intel.com, luto@kernel.org,
         peterz@infradead.org, ardb@kernel.org, dvhart@infradead.org,
         andy@infradead.org, gregkh@linuxfoundation.org, rafael@kernel.org,
         daniel.gutson@eclypsium.com, hughsient@gmail.com,
-        alison.schofield@intel.com, alex@eclypsium.com,
-        Martin Fernandez <martin.fernandez@eclypsium.com>
-Subject: [PATCH 5/5] Show in sysfs if a memory node is able to do encryption
-Date:   Fri,  5 Nov 2021 18:27:24 -0300
-Message-Id: <20211105212724.2640-6-martin.fernandez@eclypsium.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20211105212724.2640-1-martin.fernandez@eclypsium.com>
+        alison.schofield@intel.com, alex@eclypsium.com
 References: <20211105212724.2640-1-martin.fernandez@eclypsium.com>
+ <20211105212724.2640-2-martin.fernandez@eclypsium.com>
+From:   Dave Hansen <dave.hansen@intel.com>
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+ z5cecg==
+Message-ID: <1ef16875-a115-44c3-bbb9-874308337566@intel.com>
+Date:   Fri, 5 Nov 2021 16:08:12 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+In-Reply-To: <20211105212724.2640-2-martin.fernandez@eclypsium.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Show in each node in sysfs if its memory is able to do hardware memory
-encryption, ie. if all its memory is marked with EFI_MEMORY_CPU_CRYPTO
-in the EFI memory map.
+On 11/5/21 2:27 PM, Martin Fernandez wrote:
+> Add the capability to mark regions of the memory memory_type able of
+> hardware memory encryption.
+> 
+> Also add the capability to query if all regions of a memory node are
+> able to do hardware memory encryption.
 
-Signed-off-by: Martin Fernandez <martin.fernandez@eclypsium.com>
----
- Documentation/ABI/testing/sysfs-devices-node | 10 ++++++++++
- drivers/base/node.c                          | 10 ++++++++++
- 2 files changed, 20 insertions(+)
- create mode 100644 Documentation/ABI/testing/sysfs-devices-node
+This is looking quite a bit nicer than the last post.  One nit on the
+changelogs: please make an effort to connect the patches.  If you
+introduce a function here but don't use it, tell us where it _will_ be used.
 
-diff --git a/Documentation/ABI/testing/sysfs-devices-node b/Documentation/ABI/testing/sysfs-devices-node
-new file mode 100644
-index 000000000000..ab46fdd3f6a8
---- /dev/null
-+++ b/Documentation/ABI/testing/sysfs-devices-node
-@@ -0,0 +1,10 @@
-+What:		/sys/devices/system/node/nodeX/crypto_capable
-+Date:		October 2021
-+Contact:	Martin Fernandez <martin.fernandez@eclypsium.com>
-+Users:		fwupd
-+Description:
-+		This value is 1 if all system memory in this node is
-+		marked with EFI_MEMORY_CPU_CRYPTO, indicating that the
-+		system memory is capable of being protected with the
-+		CPU’s memory cryptographic capabilities. It is 0
-+		otherwise.
-\ No newline at end of file
-diff --git a/drivers/base/node.c b/drivers/base/node.c
-index c56d34f8158f..4e6ef86f4523 100644
---- a/drivers/base/node.c
-+++ b/drivers/base/node.c
-@@ -560,11 +560,21 @@ static ssize_t node_read_distance(struct device *dev,
- }
- static DEVICE_ATTR(distance, 0444, node_read_distance, NULL);
- 
-+static ssize_t crypto_capable_show(struct device *dev,
-+				   struct device_attribute *attr, char *buf)
-+{
-+	struct pglist_data *pgdat = NODE_DATA(dev->id);
-+
-+	return sysfs_emit(buf, "%d\n", pgdat->crypto_capable);
-+}
-+static DEVICE_ATTR_RO(crypto_capable);
-+
- static struct attribute *node_dev_attrs[] = {
- 	&dev_attr_meminfo.attr,
- 	&dev_attr_numastat.attr,
- 	&dev_attr_distance.attr,
- 	&dev_attr_vmstat.attr,
-+	&dev_attr_crypto_capable.attr,
- 	NULL
- };
- 
--- 
-2.30.2
+As it stands, this series _looks_ like it is touching 3 disjoint things:
+ * pg_data_t
+ * e820
+ * memblocks
 
+It would be valuable to spend a few sentences to connect the dots.
+
+Subsystem prefixes are also highly preferred.  Perhaps:
+
+	mm: Extend memblock to support memory encryption
+
+or
+
+	mm/memblock: Tag memblocks with crypto capabilities
+
+It also helps make it obvious that this series touches both core mm/ and
+arch/x86/ code.
