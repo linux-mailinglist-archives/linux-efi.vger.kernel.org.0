@@ -2,83 +2,100 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 78FF34456B6
-	for <lists+linux-efi@lfdr.de>; Thu,  4 Nov 2021 17:03:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E66B446051
+	for <lists+linux-efi@lfdr.de>; Fri,  5 Nov 2021 08:54:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231484AbhKDQF7 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 4 Nov 2021 12:05:59 -0400
-Received: from mail.skyhub.de ([5.9.137.197]:33520 "EHLO mail.skyhub.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229770AbhKDQF6 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Thu, 4 Nov 2021 12:05:58 -0400
-Received: from [127.0.0.1] (dynamic-046-114-037-055.46.114.pool.telefonica.de [46.114.37.55])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id E61611EC03AD;
-        Thu,  4 Nov 2021 17:03:18 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1636041799;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=a4evrOHd0IfTyrs3k9/fwX+W/P75BgRT5NqUyOT/QhA=;
-        b=MfYrIi/NzQzu7+bUg8+JE8a/TjdlOnIxd1Ge1UeACXOJRNorLjOjCGPP2/IX3XfM4XWYch
-        J+HgUXwKITXMoxJV2gESgaK97zM9aRSiRhSnUzToelJvc4z36gX3fHpH5mvFXVlQXFcdzp
-        cs5LiiOtD9sx6+Z9xuk74MSKNsFALDI=
-Date:   Thu, 04 Nov 2021 16:03:15 +0000
-From:   Boris Petkov <bp@alien8.de>
-To:     Brijesh Singh <brijesh.singh@amd.com>
-CC:     brijesh.singh@amd.com, x86@kernel.org,
-        linux-kernel@vger.kernel.org,
-        Peter Zijlstra <peterz@infradead.org>,
-        linux-efi@vger.kernel.org, kvm@vger.kernel.org,
-        linux-coco@lists.linux.dev, Andy Lutomirski <luto@kernel.org>,
-        Sergio Lopez <slp@redhat.com>,
-        platform-driver-x86@vger.kernel.org, linux-mm@kvack.org,
-        Joerg Roedel <jroedel@suse.de>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Ingo Molnar <mingo@redhat.com>, tony.luck@intel.com,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jim Mattson <jmattson@google.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Peter Gonda <pgonda@google.com>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        David Rientjes <rientjes@google.com>,
-        Dov Murik <dovmurik@linux.ibm.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Michael Roth <michael.roth@amd.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        "Kirill A . Shutemov" <kirill@shutemov.name>,
-        Tobin Feldman-Fitzthum <tobin@ibm.com>,
-        "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
-        Vitaly Kuznetsov <vkuznets@redhat.com>, marcorr@google.com,
-        Andi Kleen <ak@linux.intel.com>,
-        sathyanarayanan.kuppuswamy@linux.intel.com
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v6_14/42=5D_x86/sev=3A_Regist?= =?US-ASCII?Q?er_GHCB_memory_when_SEV-SNP_is_active?=
-User-Agent: K-9 Mail for Android
-In-Reply-To: <47815dd4-f9ac-b141-2852-8f48c8299a5e@amd.com>
-References: <20211008180453.462291-1-brijesh.singh@amd.com> <20211008180453.462291-15-brijesh.singh@amd.com> <YYFs+5UUMfyDgh/a@zn.tnic> <aea0e0c8-7f03-b9db-3084-f487a233c50b@amd.com> <YYGGv6EtWrw7cnLA@zn.tnic> <a975dfbf-f9bb-982e-9814-7259bc075b71@amd.com> <YYPnGeW+8tlNgW34@zn.tnic> <47815dd4-f9ac-b141-2852-8f48c8299a5e@amd.com>
-Message-ID: <C01A4C34-D84A-4489-A2D0-91003B9B564C@alien8.de>
+        id S232068AbhKEH4j (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 5 Nov 2021 03:56:39 -0400
+Received: from isilmar-4.linta.de ([136.243.71.142]:37664 "EHLO
+        isilmar-4.linta.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230395AbhKEH4i (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 5 Nov 2021 03:56:38 -0400
+X-isilmar-external: YES
+X-isilmar-external: YES
+X-isilmar-external: YES
+X-isilmar-external: YES
+X-isilmar-external: YES
+Received: from light.dominikbrodowski.net (brodo.linta [10.2.0.102])
+        by isilmar-4.linta.de (Postfix) with ESMTPSA id C0941201332;
+        Fri,  5 Nov 2021 07:53:57 +0000 (UTC)
+Received: by light.dominikbrodowski.net (Postfix, from userid 1000)
+        id 5AD76204B5; Fri,  5 Nov 2021 07:04:36 +0100 (CET)
+Date:   Fri, 5 Nov 2021 07:04:36 +0100
+From:   Dominik Brodowski <linux@dominikbrodowski.net>
+To:     tytso@mit.edu
+Cc:     "Ivan T. Ivanov" <iivanov@suse.de>,
+        Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v3] random: fix crash on multiple early calls to
+ add_bootloader_randomness()
+Message-ID: <YYTJdLuuFAShnblb@light.dominikbrodowski.net>
+References: <20211012082708.121931-1-iivanov@suse.de>
+ <YWVKAk4h5bsUA3b6@light.dominikbrodowski.net>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YWVKAk4h5bsUA3b6@light.dominikbrodowski.net>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On November 4, 2021 3:26:56 PM UTC, Brijesh Singh <brijesh=2Esingh@amd=2Eco=
-m> wrote:
->Of course, the current patch does not suffer with it=2E Let me know your=
-=20
->preference=2E
+If add_bootloader_randomness() or add_hwgenerator_randomness() is
+called for the first time during early boot, crng_init equals 0. Then,
+crng_fast_load() gets called -- which is safe to do even if the input
+pool is not yet properly set up.
 
-Whatever keeps the code simpler=2E
+If the added entropy suffices to increase crng_init to 1, future calls
+to add_bootloader_randomness() or add_hwgenerator_randomness() used to
+progress to credit_entropy_bits(). However, if the input pool is not yet
+properly set up, the cmpxchg call within that function can lead to an
+infinite recursion. This is not only a hypothetical problem, as qemu
+on arm64 may provide bootloader entropy via EFI and via devicetree.
 
-Thx=2E
+As crng_global_init_time is set to != 0 once the input pool is properly
+set up, check (also) for this condition to determine which branch to take.
 
---=20
-Sent from a small device: formatting sux and brevity is inevitable=2E 
+Calls to crng_fast_load() do not modify the input pool; therefore, the
+entropy_count for the input pool must not be modified at that early
+stage.
+
+Reported-by: Ivan T. Ivanov <iivanov@suse.de>
+Fixes: 18b915ac6b0a ("efi/random: Treat EFI_RNG_PROTOCOL output as bootloader randomness")
+Tested-by: Ivan T. Ivanov <iivanov@suse.de>
+Signed-off-by: Dominik Brodowski <linux@dominikbrodowski.net>
+---
+v2->v3: onle one unlikely (Ard Biesheuvel)
+v1->v2: fix commit message; unmerge Reported-and-tested-by-tag (Ard Biesheuvel)
+
+ drivers/char/random.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/char/random.c b/drivers/char/random.c
+index 605969ed0f96..18fe804c1bf8 100644
+--- a/drivers/char/random.c
++++ b/drivers/char/random.c
+@@ -1763,8 +1763,8 @@ static void __init init_std_data(struct entropy_store *r)
+ }
+ 
+ /*
+- * Note that setup_arch() may call add_device_randomness()
+- * long before we get here. This allows seeding of the pools
++ * add_device_randomness() or add_bootloader_randomness() may be
++ * called long before we get here. This allows seeding of the pools
+  * with some platform dependent data very early in the boot
+  * process. But it limits our options here. We must use
+  * statically allocated structures that already have all
+@@ -2274,7 +2274,12 @@ void add_hwgenerator_randomness(const char *buffer, size_t count,
+ {
+ 	struct entropy_store *poolp = &input_pool;
+ 
+-	if (unlikely(crng_init == 0)) {
++	/* We cannot do much with the input pool until it is set up in
++	 * rand_initalize(); therefore just mix into the crng state.
++	 * As this does not affect the input pool, we cannot credit
++	 * entropy for this.
++	 */
++	if (unlikely(crng_init == 0 || crng_global_init_time == 0)) {
+ 		crng_fast_load(buffer, count);
+ 		return;
+ 	}
