@@ -2,25 +2,26 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E084E446B79
-	for <lists+linux-efi@lfdr.de>; Sat,  6 Nov 2021 01:02:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C9F69446B7B
+	for <lists+linux-efi@lfdr.de>; Sat,  6 Nov 2021 01:04:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229932AbhKFAF2 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 5 Nov 2021 20:05:28 -0400
-Received: from mga05.intel.com ([192.55.52.43]:54939 "EHLO mga05.intel.com"
+        id S230064AbhKFAHO (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 5 Nov 2021 20:07:14 -0400
+Received: from mga09.intel.com ([134.134.136.24]:44605 "EHLO mga09.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229894AbhKFAF2 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Fri, 5 Nov 2021 20:05:28 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10159"; a="318202705"
+        id S229894AbhKFAHO (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Fri, 5 Nov 2021 20:07:14 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10159"; a="231847122"
 X-IronPort-AV: E=Sophos;i="5.87,212,1631602800"; 
-   d="scan'208";a="318202705"
+   d="scan'208";a="231847122"
 Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2021 17:02:46 -0700
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2021 17:04:34 -0700
 X-IronPort-AV: E=Sophos;i="5.87,212,1631602800"; 
-   d="scan'208";a="490508136"
+   d="scan'208";a="490508495"
 Received: from luhan1-mobl2.amr.corp.intel.com (HELO [10.212.219.183]) ([10.212.219.183])
-  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2021 17:02:45 -0700
-Subject: Re: [PATCH 4/5] Mark e820_entries as crypto capable from EFI memmap
+  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2021 17:04:33 -0700
+Subject: Re: [PATCH 5/5] Show in sysfs if a memory node is able to do
+ encryption
 To:     Martin Fernandez <martin.fernandez@eclypsium.com>,
         linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org
 Cc:     tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, x86@kernel.org,
@@ -30,7 +31,7 @@ Cc:     tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, x86@kernel.org,
         daniel.gutson@eclypsium.com, hughsient@gmail.com,
         alison.schofield@intel.com, alex@eclypsium.com
 References: <20211105212724.2640-1-martin.fernandez@eclypsium.com>
- <20211105212724.2640-5-martin.fernandez@eclypsium.com>
+ <20211105212724.2640-6-martin.fernandez@eclypsium.com>
 From:   Dave Hansen <dave.hansen@intel.com>
 Autocrypt: addr=dave.hansen@intel.com; keydata=
  xsFNBE6HMP0BEADIMA3XYkQfF3dwHlj58Yjsc4E5y5G67cfbt8dvaUq2fx1lR0K9h1bOI6fC
@@ -75,12 +76,12 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  OPsw5tV/LmQ5GXH0JQ/TZXWygyRFyyI2FqNTx4WHqUn3yFj8rwTAU1tluRUYyeLy0ayUlKBH
  ybj0N71vWO936MqP6haFERzuPAIpxj2ezwu0xb1GjTk4ynna6h5GjnKgdfOWoRtoWndMZxbA
  z5cecg==
-Message-ID: <1ba3f33b-05ef-60f1-d6dd-375b2d84e597@intel.com>
-Date:   Fri, 5 Nov 2021 17:02:43 -0700
+Message-ID: <9437a437-c119-b424-1b01-366d16d4df07@intel.com>
+Date:   Fri, 5 Nov 2021 17:04:33 -0700
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.10.0
 MIME-Version: 1.0
-In-Reply-To: <20211105212724.2640-5-martin.fernandez@eclypsium.com>
+In-Reply-To: <20211105212724.2640-6-martin.fernandez@eclypsium.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 8bit
@@ -89,89 +90,19 @@ List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
 On 11/5/21 2:27 PM, Martin Fernandez wrote:
-> Iterate over the EFI memmap finding the contiguous regions that are
-> able to do hardware encryption (ie, those who have the
-> EFI_MEMORY_CPU_CRYPTO enabled) and mark those in the e820_table.
+> +++ b/Documentation/ABI/testing/sysfs-devices-node
+> @@ -0,0 +1,10 @@
+> +What:		/sys/devices/system/node/nodeX/crypto_capable
+> +Date:		October 2021
+> +Contact:	Martin Fernandez <martin.fernandez@eclypsium.com>
+> +Users:		fwupd
+> +Description:
+> +		This value is 1 if all system memory in this node is
+> +		marked with EFI_MEMORY_CPU_CRYPTO, indicating that the
+> +		system memory is capable of being protected with the
+> +		CPU’s memory cryptographic capabilities. It is 0
+> +		otherwise.
 
-It would also be nice to remind the reader about the connection between
-EFI memory maps and the e820.
-
-...
-> +/*
-> + * This assumes that there'll be no overlaps in the memory map
-> + * (otherwise we'd have a deeper problem going on). It also assumes
-> + * that the system DRAM regions are already sorted; in EDK2 based UEFI
-> + * firmware the entries covering system DRAM are usually sorted, with
-> + * additional MMIO entries appearing unordered. This is because the
-> + * UEFI memory map is constructed from the GCD memory map, which is
-> + * seeded with the DRAM regions at boot, and allocations are created
-> + * by splitting them up.
-> + */
-> +static void __init efi_mark_e820_regions_as_crypto_capable(void)
-> +{
-> +	efi_memory_desc_t *md;
-> +	struct contiguous_region prev_region;
-> +
-> +	cr_init(&prev_region);
-
-A little theory of operation for this would be nice.  What's collected
-in here?  What does this region mean?  Is the *entire* region in here
-crypto-capable system RAM?
-
-> +	for_each_efi_memory_desc(md) {
-> +		if (md->attribute & EFI_MEMORY_CPU_CRYPTO) {
-> +			struct contiguous_region cur_region;
-> +
-> +			efi_md_to_cr(md, &cur_region);
-
-FWIW, I think that helper obfuscates more than it helps.  I say, just
-open-code it.
-
-> +			if (!cr_merge_regions(&prev_region, &cur_region)) {
-> +				cr_mark_e820_as_crypto_capable(&prev_region);
-> +				prev_region = cur_region;
-> +			} /* else: Merge succeeded, don't mark yet */
-
-That's really unusual CodingStyle.  Could you try to move those to a
-more normal place: below or above the if() entirely.
-
-> +		} else if (!cr_is_empty(&prev_region)) {
-> +			cr_mark_e820_as_crypto_capable(&prev_region);
-> +			cr_init(&prev_region);
-> +		} /* else: All previous regions are already marked */
-
-There are much nicer ways to write this.  For instance, I'd much prefer:
-
-		/* Bail on empty regions: */
-		if (cr_is_empty(&prev_region))
-			continue;
-
-		/* Mark the region: */
-		cr_mark_e820_as_crypto_capable(&prev_region);
-		cr_init(&prev_region);
-	
-That makes the flow much more understandable.  In general, you want to
-keep the "main" flow if your code at the lowest indent and the exception
-handling as indented.
-
-> +	}
-> +
-> +	/* Mark last region (if any) */
-> +	if (!cr_is_empty(&prev_region))
-> +		cr_mark_e820_as_crypto_capable(&prev_region);
-> +}
-> +
->  void __init efi_init(void)
->  {
->  	if (IS_ENABLED(CONFIG_X86_32) &&
-> @@ -494,6 +601,8 @@ void __init efi_init(void)
->  	set_bit(EFI_RUNTIME_SERVICES, &efi.flags);
->  	efi_clean_memmap();
->  
-> +	efi_mark_e820_regions_as_crypto_capable();
-> +
->  	if (efi_enabled(EFI_DBG))
->  		efi_print_memmap();
->  }
-> 
-
+This looks fine.  I do wonder if we want to call this the full on
+cpu_crypto_capable, in case we ever get something like CXL devices with
+system memory and their *own* crypto capabilities.
