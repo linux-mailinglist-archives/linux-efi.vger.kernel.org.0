@@ -2,25 +2,25 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C9F69446B7B
-	for <lists+linux-efi@lfdr.de>; Sat,  6 Nov 2021 01:04:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 73BE8446BAA
+	for <lists+linux-efi@lfdr.de>; Sat,  6 Nov 2021 01:49:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230064AbhKFAHO (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 5 Nov 2021 20:07:14 -0400
-Received: from mga09.intel.com ([134.134.136.24]:44605 "EHLO mga09.intel.com"
+        id S232996AbhKFAwC (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 5 Nov 2021 20:52:02 -0400
+Received: from mga03.intel.com ([134.134.136.65]:62936 "EHLO mga03.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229894AbhKFAHO (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Fri, 5 Nov 2021 20:07:14 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10159"; a="231847122"
+        id S229504AbhKFAwC (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Fri, 5 Nov 2021 20:52:02 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10159"; a="231954802"
 X-IronPort-AV: E=Sophos;i="5.87,212,1631602800"; 
-   d="scan'208";a="231847122"
+   d="scan'208";a="231954802"
 Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2021 17:04:34 -0700
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2021 17:49:21 -0700
 X-IronPort-AV: E=Sophos;i="5.87,212,1631602800"; 
-   d="scan'208";a="490508495"
+   d="scan'208";a="490515652"
 Received: from luhan1-mobl2.amr.corp.intel.com (HELO [10.212.219.183]) ([10.212.219.183])
-  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2021 17:04:33 -0700
-Subject: Re: [PATCH 5/5] Show in sysfs if a memory node is able to do
+  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2021 17:49:20 -0700
+Subject: Re: [PATCH 0/5] x86: Show in sysfs if a memory node is able to do
  encryption
 To:     Martin Fernandez <martin.fernandez@eclypsium.com>,
         linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org
@@ -31,7 +31,6 @@ Cc:     tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, x86@kernel.org,
         daniel.gutson@eclypsium.com, hughsient@gmail.com,
         alison.schofield@intel.com, alex@eclypsium.com
 References: <20211105212724.2640-1-martin.fernandez@eclypsium.com>
- <20211105212724.2640-6-martin.fernandez@eclypsium.com>
 From:   Dave Hansen <dave.hansen@intel.com>
 Autocrypt: addr=dave.hansen@intel.com; keydata=
  xsFNBE6HMP0BEADIMA3XYkQfF3dwHlj58Yjsc4E5y5G67cfbt8dvaUq2fx1lR0K9h1bOI6fC
@@ -76,12 +75,12 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  OPsw5tV/LmQ5GXH0JQ/TZXWygyRFyyI2FqNTx4WHqUn3yFj8rwTAU1tluRUYyeLy0ayUlKBH
  ybj0N71vWO936MqP6haFERzuPAIpxj2ezwu0xb1GjTk4ynna6h5GjnKgdfOWoRtoWndMZxbA
  z5cecg==
-Message-ID: <9437a437-c119-b424-1b01-366d16d4df07@intel.com>
-Date:   Fri, 5 Nov 2021 17:04:33 -0700
+Message-ID: <abf764e2-d92f-5f60-e1b9-ad9afc92c0a3@intel.com>
+Date:   Fri, 5 Nov 2021 17:49:18 -0700
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.10.0
 MIME-Version: 1.0
-In-Reply-To: <20211105212724.2640-6-martin.fernandez@eclypsium.com>
+In-Reply-To: <20211105212724.2640-1-martin.fernandez@eclypsium.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 8bit
@@ -90,19 +89,20 @@ List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
 On 11/5/21 2:27 PM, Martin Fernandez wrote:
-> +++ b/Documentation/ABI/testing/sysfs-devices-node
-> @@ -0,0 +1,10 @@
-> +What:		/sys/devices/system/node/nodeX/crypto_capable
-> +Date:		October 2021
-> +Contact:	Martin Fernandez <martin.fernandez@eclypsium.com>
-> +Users:		fwupd
-> +Description:
-> +		This value is 1 if all system memory in this node is
-> +		marked with EFI_MEMORY_CPU_CRYPTO, indicating that the
-> +		system memory is capable of being protected with the
-> +		CPU’s memory cryptographic capabilities. It is 0
-> +		otherwise.
+>  Documentation/ABI/testing/sysfs-devices-node |  10 ++
+>  arch/x86/include/asm/e820/api.h              |   2 +
+>  arch/x86/include/asm/e820/types.h            |   1 +
+>  arch/x86/kernel/e820.c                       |  32 +++++-
+>  arch/x86/platform/efi/efi.c                  | 109 +++++++++++++++++++
+>  drivers/base/node.c                          |  10 ++
+>  include/linux/memblock.h                     |   6 +
+>  include/linux/mmzone.h                       |   2 +
+>  mm/memblock.c                                |  74 +++++++++++++
+>  mm/page_alloc.c                              |   1 +
 
-This looks fine.  I do wonder if we want to call this the full on
-cpu_crypto_capable, in case we ever get something like CXL devices with
-system memory and their *own* crypto capabilities.
+One more high-level comment: While the majority of this is x86 code, the
+ABI implications are all arch-generic.  It would be really nice to know
+if other architectures have any need for something like this.  Is the
+ARM EFI code just a total fork of the x86 stuff?
+
+I'd highly suggest cc'ing linux-mm@kvack.org on future versions.
