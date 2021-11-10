@@ -2,113 +2,115 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D98B44C6F7
-	for <lists+linux-efi@lfdr.de>; Wed, 10 Nov 2021 19:44:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 832F544C9F5
+	for <lists+linux-efi@lfdr.de>; Wed, 10 Nov 2021 21:02:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232779AbhKJSrQ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 10 Nov 2021 13:47:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43546 "EHLO
+        id S230345AbhKJUFq (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 10 Nov 2021 15:05:46 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33686 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232799AbhKJSq4 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 10 Nov 2021 13:46:56 -0500
-Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47C74C06120E;
-        Wed, 10 Nov 2021 10:44:08 -0800 (PST)
-Received: from zn.tnic (p200300ec2f111e00f6c7178ba52ca674.dip0.t-ipconnect.de [IPv6:2003:ec:2f11:1e00:f6c7:178b:a52c:a674])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id C01551EC0529;
-        Wed, 10 Nov 2021 19:44:06 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1636569846;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=C2VOLfmvL9L0orajbDbFzDBlQB82yHKAfIoIPQsHwAc=;
-        b=VDuO+2n5Q4g0soTuNocoR45e46tiy9TDeRzGik3lHMNjnRD9uQhO4dlPkWbAtwc4lkoPeS
-        vFCQpLvnUi5kmukfhsnFhL/G0/zNJhgBHrg8TlSWs59ed8ytsQFLhbJ687F/hUcYodJw4Z
-        zAOdxjE5tQGFJkJMn8ubDa5uRWi+Ptw=
-Date:   Wed, 10 Nov 2021 19:43:59 +0100
-From:   Borislav Petkov <bp@alien8.de>
-To:     Brijesh Singh <brijesh.singh@amd.com>
-Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        linux-coco@lists.linux.dev, linux-mm@kvack.org,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Vitaly Kuznetsov <vkuznets@redhat.com>,
-        Jim Mattson <jmattson@google.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        David Rientjes <rientjes@google.com>,
-        Dov Murik <dovmurik@linux.ibm.com>,
-        Tobin Feldman-Fitzthum <tobin@ibm.com>,
-        Michael Roth <michael.roth@amd.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        "Kirill A . Shutemov" <kirill@shutemov.name>,
-        Andi Kleen <ak@linux.intel.com>,
-        "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
-        tony.luck@intel.com, marcorr@google.com,
-        sathyanarayanan.kuppuswamy@linux.intel.com
-Subject: Re: [PATCH v6 19/42] x86/mm: Add support to validate memory when
- changing C-bit
-Message-ID: <YYwS74PbHfNuAGQ7@zn.tnic>
-References: <20211008180453.462291-1-brijesh.singh@amd.com>
- <20211008180453.462291-20-brijesh.singh@amd.com>
- <YYrNL7U07SxeUQ3E@zn.tnic>
- <4ea63467-3869-b6f5-e154-d70d1033135b@amd.com>
+        with ESMTP id S230311AbhKJUFp (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 10 Nov 2021 15:05:45 -0500
+Received: from mail-lj1-x22b.google.com (mail-lj1-x22b.google.com [IPv6:2a00:1450:4864:20::22b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E19A2C061764;
+        Wed, 10 Nov 2021 12:02:56 -0800 (PST)
+Received: by mail-lj1-x22b.google.com with SMTP id d11so7467165ljg.8;
+        Wed, 10 Nov 2021 12:02:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=date:from:to:cc:subject:message-id:mime-version:content-disposition;
+        bh=QrY6DTXVsJXnxgZM0Vf8TBQU6FkE1rvTuD+fiMvH20c=;
+        b=Feof8M4nyNH527Qrvhf9zoyT0pcoz6VCbSW341AfYot8EsdyZe/LBgPtHi/oFwgoH1
+         8okXUyJnJpXxRAS9I/mECNLBkzXjxJGEsBOjXbhbV1hvy/zwHs+DUd6giijj/fuUCdr8
+         JCVmfvYNsn+7dcDQ1E8rlCJvV0/lsRWqD3XW8fRGBxPMIvGvmcpjHiLC8eKGZxLoqQ4G
+         +z4ZVRAqJRRKyMRHFyRiTYP0AFQrchLq8Nts6ASOn3eNNKCMGEb5Zn1Wa3TAqkS+V4pS
+         74QdixjWc8UOe77Vo22nU9qhwZKe/pso1RbuP/rb9MkXSwvhYQ+y0L2fHCRADr6G9bEi
+         QX+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition;
+        bh=QrY6DTXVsJXnxgZM0Vf8TBQU6FkE1rvTuD+fiMvH20c=;
+        b=heR8TjBmrXM0UKJ4Xu3MgGBIs1oNjuEa4HChbUBcH1VnKzWyZHmHb6WDbD4LqD6N3l
+         bqJjU92g8Pmd4J2yR8kXHkzwy9Dq6yXr6Wq/trX7I84d2Dl4vLpKl3+S9q+lWokkNhzM
+         e0ytTUS862wT1wEmGLAQFX8sDZa6U2E3we0eroliXBJSofzuryW2T7aYXYn8mKO+WmSJ
+         at0MakuJXndaJTlDKSy9VmCeYPMIIf8qm8z7rh3ylTLG0uCHpvjeB68O1NdZnsfHtttY
+         SIGI9i4hG9qqRd1SEpdNsldzo6N6UsKvwdtSdQbxBnw3+NOZ9JDqTcGjTGUXhF0gpwvx
+         nH+w==
+X-Gm-Message-State: AOAM531VeGprvgqLC/mVoRv0ttHobIZrY/KymzaG9uIbFIMOqDk8+/Kr
+        tPwkpnrxJolVRsCSWXioDw/27/ekPf4=
+X-Google-Smtp-Source: ABdhPJyopJbTR3pmC18s8EjWmFMTxwza5dakDnojaHWRZIjFaxEm4Y55Xa357tNVVGrgvOonVSjPxA==
+X-Received: by 2002:a2e:3a18:: with SMTP id h24mr1448702lja.372.1636574575025;
+        Wed, 10 Nov 2021 12:02:55 -0800 (PST)
+Received: from lahvuun (93-76-191-141.kha.volia.net. [93.76.191.141])
+        by smtp.gmail.com with ESMTPSA id i6sm79856lfr.163.2021.11.10.12.02.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 10 Nov 2021 12:02:54 -0800 (PST)
+Date:   Wed, 10 Nov 2021 22:02:53 +0200
+From:   Ilya Trukhanov <lahvuun@gmail.com>
+To:     stable@vger.kernel.org
+Cc:     regressions@lists.linux.dev, linux-efi@vger.kernel.org,
+        linux-pm@vger.kernel.org, javierm@redhat.com, tzimmermann@suse.de,
+        ardb@kernel.org, rafael@kernel.org, len.brown@intel.com,
+        pavel@ucw.cz
+Subject: [REGRESSION]: drivers/firmware: move x86 Generic System Framebuffers
+ support
+Message-ID: <20211110200253.rfudkt3edbd3nsyj@lahvuun>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <4ea63467-3869-b6f5-e154-d70d1033135b@amd.com>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, Nov 10, 2021 at 08:21:21AM -0600, Brijesh Singh wrote:
-> I am assuming you mean add some compile time check to ensure that desc will
-> fit in the shared buffer ?
+Suspend-to-RAM with elogind under Wayland stopped working in 5.15.
 
-No:
+This occurs with 5.15, 5.15.1 and latest master at
+89d714ab6043bca7356b5c823f5335f5dce1f930. 5.14 and earlier releases work
+fine.
 
-struct ghcb {
+git bisect gives d391c58271072d0b0fad93c82018d495b2633448.
 
-	...
+To reproduce:
+- Use elogind and Linux 5.15.1 with CONFIG_SYSFB_SIMPLEFB=n.
+- Start a Wayland session. I tested sway and weston, neither worked.
+- In a terminal emulator (I used alacritty) execute `loginctl suspend`.
 
-        u8 shared_buffer[2032];
+Normally after the last step the system would suspend, but it no longer
+does so after I upgraded to Linux 5.15. After running `loginctl suspend`
+in dmesg I get the following:
+[  103.098782] elogind-daemon[2357]: Suspending system...
+[  103.098794] PM: suspend entry (deep)
+[  103.124621] Filesystems sync: 0.025 seconds
 
-so that memcpy needs to do:
+But nothing happens afterwards.
 
-	memcpy(ghcb->shared_buffer, desc, min_t(int, 2032, sizeof(*desc)));
+Suspend works as expected if I do any of the following:
+- Revert d391c58271072d0b0fad93c82018d495b2633448.
+- Build with CONFIG_SYSFB_SIMPLEFB=y.
+- Suspend from tty, even if a Wayland session is running in parallel.
+- Suspend from under an X11 session.
+- Suspend with `echo mem > /sys/power/state`.
 
-with that 2032 behind a proper define, ofc.
+If I attach strace to the elogind-daemon process after running
+`loginctl suspend` then the system immediately suspends. However, if
+I attach strace *prior* to running `loginctl suspend` then no suspend,
+and the process gets stuck on a write syscall to `/sys/power/state`.
 
-> I can drop the overlap comment to avoid the confusion, as you pointed it
-> more of the future thing. Basically overlap is the below condition
-> 
-> set_memory_private(gfn=0, page_size=2m)
-> set_memory_private(gfn=10, page_size=4k)
-> 
-> The RMPUPDATE instruction will detect overlap on the second call and return
-> an error to the guest. After we add the support to track the page validation
-> state (either in bitmap or page flag), the second call will not be issued
-> and thus avoid an overlap errors. For now, we use the page_size=4k for all
-> the page state changes from the kernel.
+I "traced" a little bit with printk (sorry, I don't know of a better
+way) and the call chain is as follows:
+state_store -> pm_suspend -> enter_state -> suspend_prepare
+-> pm_prepare_console -> vt_move_to_console -> vt_waitactive
+-> __vt_event_wait
 
-Yah, sounds like the comment is not needed now. You could put this in
-the commit message, though.
+__vt_event_wait just waits until wait_event_interruptible completes, but
+it never does (not until I attach to elogind-daemon with strace, at
+least). I did not follow the chain further.
 
-Thx.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+- Linux version 5.15.1 (lahvuun@lahvuun) (gcc (Gentoo 11.2.0 p1) 11.2.0,
+  GNU ld (Gentoo 2.37_p1 p0) 2.37) #51 SMP PREEMPT Tue Nov 9 23:39:25
+  EET 2021
+- Gentoo Linux 2.8
+- x86_64 AuthenticAMD
+- dmesg: https://pastebin.com/duj33bY8
+- .config: https://pastebin.com/7Hew1g0T
