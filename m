@@ -2,18 +2,18 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A8D9744BF42
-	for <lists+linux-efi@lfdr.de>; Wed, 10 Nov 2021 11:56:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3423E44BF4C
+	for <lists+linux-efi@lfdr.de>; Wed, 10 Nov 2021 11:57:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231488AbhKJK7j (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 10 Nov 2021 05:59:39 -0500
-Received: from mail.ispras.ru ([83.149.199.84]:53898 "EHLO mail.ispras.ru"
+        id S231517AbhKJK7l (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 10 Nov 2021 05:59:41 -0500
+Received: from mail.ispras.ru ([83.149.199.84]:53950 "EHLO mail.ispras.ru"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231380AbhKJK7i (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Wed, 10 Nov 2021 05:59:38 -0500
+        id S231478AbhKJK7k (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Wed, 10 Nov 2021 05:59:40 -0500
 Received: from localhost.localdomain (unknown [80.240.223.29])
-        by mail.ispras.ru (Postfix) with ESMTPSA id 08A7540A2BBC;
-        Wed, 10 Nov 2021 10:46:59 +0000 (UTC)
+        by mail.ispras.ru (Postfix) with ESMTPSA id BE4DF40D3BFF;
+        Wed, 10 Nov 2021 10:47:00 +0000 (UTC)
 From:   Baskov Evgeniy <baskov@ispras.ru>
 To:     Ard Biesheuvel <ardb@kernel.org>
 Cc:     Baskov Evgeniy <baskov@ispras.ru>, Borislav Petkov <bp@alien8.de>,
@@ -23,52 +23,53 @@ Cc:     Baskov Evgeniy <baskov@ispras.ru>, Borislav Petkov <bp@alien8.de>,
         Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
         linux-doc@vger.kernel.org, linux-efi@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH RFC 0/5] Handle UEFI NX-restricted page tables
-Date:   Wed, 10 Nov 2021 13:46:08 +0300
-Message-Id: <20211110104613.23881-1-baskov@ispras.ru>
+Subject: [PATCH RFC 1/5] efi/x86: Disable paging when booting via efistub
+Date:   Wed, 10 Nov 2021 13:46:09 +0300
+Message-Id: <20211110104613.23881-2-baskov@ispras.ru>
 X-Mailer: git-send-email 2.33.1
+In-Reply-To: <20211110104613.23881-1-baskov@ispras.ru>
+References: <20211110104613.23881-1-baskov@ispras.ru>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Note, that this patch series is RFC, since it is yet untested
-and possibly incompatible with AMD SEV and related extensions.
+Some UEFI implementations protect lower 1M memory regions and memory
+regions allocated by libstub from being executable, which prevents
+Linux kernel from booting.
 
-The UEFI specification states that certain memory regions may
-not have every permission, i.e. may not be writable or executable.
+Disable paging after returning from efi_main() before jumping
+to potentially relocated code to prevent page fault from happening.
 
-Furthermore there exist some implementations (at least on i386/x86_64)
-that restrict execution of memory regions expected by the kernel to
-be executable. E.g. first megabyte of address space, where trampoline
-for switching between 4/5 level paging is placed and memory regions,
-allocated as loader data.
+Signed-off-by: Baskov Evgeniy <baskov@ispras.ru>
+---
+ arch/x86/boot/compressed/head_32.S | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-This patch series allows Linux kernel to boot on such UEFI
-implementations on i386 and x86_64.
+diff --git a/arch/x86/boot/compressed/head_32.S b/arch/x86/boot/compressed/head_32.S
+index 659fad53ca82..c66fccaa90a2 100644
+--- a/arch/x86/boot/compressed/head_32.S
++++ b/arch/x86/boot/compressed/head_32.S
+@@ -156,6 +156,18 @@ SYM_FUNC_START_ALIAS(efi_stub_entry)
+ 	add	$0x4, %esp
+ 	movl	8(%esp), %esi	/* save boot_params pointer */
+ 	call	efi_main
++
++#ifdef CONFIG_EFI_STRICT_PGTABLE
++	/*
++	 * Disable paging before jumping to relocated address to prevent
++	 * page faulting on EFI firmware versions that enforces restricted
++	 * permissions on identity page tables
++	 */
++	movl	%cr0, %ecx
++	btrl	$31, %ecx
++	movl	%ecx, %cr0
++#endif
++
+ 	/* efi_main returns the possibly relocated address of startup_32 */
+ 	jmp	*%eax
+ SYM_FUNC_END(efi32_stub_entry)
+-- 
+2.33.1
 
-The simplest way to achieve that on i386 is to disable paging
-before jumping to potentially relocated code.
-
-x86_64, on the other hand, does not allow disabling paging so it
-is required to build temporary page tables containing memory regions
-required for Linux kernel to boot with appropriate access permissions.
-
-Baskov Evgeniy (5):
-       Docs: document notemppt option
-       efi: Add option for handling efi memory protection
-       libstub: build temporary page table without NX-bit
-       efi/x86_64: set page table if provided by libstub
-       efi/x86: Disable paging when booting via efistub
-
- Documentation/admin-guide/kernel-parameters.txt |    7 
- arch/x86/boot/compressed/head_32.S              |   12 +
- arch/x86/boot/compressed/head_64.S              |   12 +
- drivers/firmware/efi/Kconfig                    |   17 ++
- drivers/firmware/efi/libstub/Makefile           |    2 
- drivers/firmware/efi/libstub/efi-stub-helper.c  |    3 
- drivers/firmware/efi/libstub/efistub.h          |   10 +
- drivers/firmware/efi/libstub/temp-pgtable.c     |  190 ++++++++++++++++++++++++
- drivers/firmware/efi/libstub/x86-stub.c         |    8 -
- 9 files changed, 258 insertions(+), 3 deletions(-)
