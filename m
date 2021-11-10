@@ -2,54 +2,55 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 041F144CBD4
-	for <lists+linux-efi@lfdr.de>; Wed, 10 Nov 2021 23:09:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C93C144CC1F
+	for <lists+linux-efi@lfdr.de>; Wed, 10 Nov 2021 23:11:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234159AbhKJWMF (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 10 Nov 2021 17:12:05 -0500
-Received: from mail-bn7nam10on2089.outbound.protection.outlook.com ([40.107.92.89]:20545
-        "EHLO NAM10-BN7-obe.outbound.protection.outlook.com"
+        id S234697AbhKJWNb (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 10 Nov 2021 17:13:31 -0500
+Received: from mail-mw2nam12on2072.outbound.protection.outlook.com ([40.107.244.72]:12896
+        "EHLO NAM12-MW2-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S233891AbhKJWLd (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Wed, 10 Nov 2021 17:11:33 -0500
+        id S234034AbhKJWLv (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Wed, 10 Nov 2021 17:11:51 -0500
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=CPGJQitw9kXLUTHOVkBJtHRBr8FShwSacp2OhhFxt2iPmk79StKie+vbZ7wamLgy3gKyKrvIo1/lxPUqrqFsLgUpr6LJly9cQYGR+UUHi40d0g4ziI3bLbgYy62LBCgOL46+SRz/b5eap9CRVggTvSW9tFvmsRIAdRE60uY0zvywqqmHSTNYHFS3vvPMvJ2nJkpB4tkv7fuesi8WMDhi4iCATJNLYNT+DNl1orN5ttWagwMtr3nb2+oQ/9Amkh9teuXNypvoCtjvgLkX092dugb8psYLDzkyQwWy59YPZH4GsevCxp+UktOFfQ2l5iLBtMsbgBjc6bWUsb4oPO4FfQ==
+ b=U9FIqf3KfYutWgqJda/jkHpU/0BHci35y6rRTOhvMMaZvsLqxcY4SrxrMMmSIiltw2CTpChIujlZjzJfyprbLVrc7r0noQjsoOANPM8fxMOgpVt9nGLbEkN+shD79l/FJY0OuXzfGE4KJ1hGofA+DjWTrC3oFvqjJGVUeUVjCBV9k2SiygLFgBVFPcRYvxl+0EMVl5zIarVoKOmZWX5lNgtKoH7ZOJHKkyIjF+NWCbEVU42SdWf5j6Qp5wTTJ+A2B3WKSZAwQ2UONHFgohH5HiRJCJDAkqZz8vTPq6PzEZm6WLD8IVKJnmXKJxm8TZqK2QCnh/sBmkFcdzbE06RSIA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=sGjTpKzDP7c6ROB4BD0Wz20WdJwwCdbU1Vg7fEMir8A=;
- b=M6FyfruqlPPwkCpsyOZ3neLmtgwKQl3B+02p+5cCrQ9Obtxqcj4LJ4ZBVCbohp3bwqqQRlRxwwJzga9H9/rs71La+8TuP4cHGdfKiJQRx9lJ1fbnH5XGyQkmh21oo28LKTVpPuIPAi14+lP7sReljnXO07u+/AEYLnRBNKafwkJS7Mzncx9ncn+qPa8bxg8g+S0u3Nei+CJU+PcIPkxd6aWz1dYU/4hX3hc6cAn5giNz+Fx6KVsio2id+7hcEfU0KUYGyUFeOFPmVhfwi3UJKQhtfeDyyJeqVBaXdlLTKFd6C1Onjp5W3ylrtRxvl6Pt6+1XrOvZXbOyNuLG8Qo0AA==
+ bh=gJFWUjd0B3rTzpv8yuA5raaKMB69nrJGb4ObrnVCSEg=;
+ b=bfqTXRqX1PI2TAuH9mvV0L1aSbNZ1Em8MclV/flkldWweaiPKR0Gi54USWsFc8TlDept4QWDte+uXZzeEvQmrcYnmOHT4Rpp1M0IKCIvzDdOKnmlRDePn34y6CFj2uT7t4RL19UE6WkxIX6XCqcgXul/GoEylRTxoRnxxj7+xxRdnNd0gtMQ2l2q1ybBpTa89USuJjjpjpQBwUjEv3jZZvHWvHEzMBMR44Mdf+Q9wgiLjp6ltmZBeFdIxF6zRDDANU4X2YZc7iAGZnhZMuDJb0tm6yP+0jk5cQbbHE2SjrnDqRwVg1YZXZ0Whs7e1KaDxdKPqt1Cw6eEiOcY6HlCOA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=sGjTpKzDP7c6ROB4BD0Wz20WdJwwCdbU1Vg7fEMir8A=;
- b=l7lmsM34TUWYoG+3Mw5pLEJT7jYTHYko8QHApUmDKoWn2VHSVnYYchyVL7zWgIIs3eppABTOotTCudu0qwffj6s6+SOaf5WhKFDuwj5tLdSISO1KU73qM+HbncdzGIqIHulScVv3xXN5Ocu+KI2Csw+H22ZwrRZRenuovy2mjy0=
-Received: from DM3PR08CA0009.namprd08.prod.outlook.com (2603:10b6:0:52::19) by
- BY5PR12MB5014.namprd12.prod.outlook.com (2603:10b6:a03:1c4::8) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.4690.15; Wed, 10 Nov 2021 22:08:42 +0000
-Received: from DM6NAM11FT041.eop-nam11.prod.protection.outlook.com
- (2603:10b6:0:52:cafe::6f) by DM3PR08CA0009.outlook.office365.com
- (2603:10b6:0:52::19) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4669.11 via Frontend
- Transport; Wed, 10 Nov 2021 22:08:41 +0000
+ bh=gJFWUjd0B3rTzpv8yuA5raaKMB69nrJGb4ObrnVCSEg=;
+ b=aCW8aTygwVJb9//amAWzIlnad6Zta6NXe1qe+0rPKm1swk6r2159BgAdWcNe1EAEct+TA/40bZT6MpGoV69oxKX0uVkrtWW5BtoBjZFm/tjWGshJXaCvvnBYH2A6X43I0087RmNVaNji/JsImwOJetkDBtKh7QOGEb4XVomshLA=
+Received: from DM5PR2001CA0005.namprd20.prod.outlook.com (2603:10b6:4:16::15)
+ by DM5PR12MB2376.namprd12.prod.outlook.com (2603:10b6:4:b9::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4669.10; Wed, 10 Nov
+ 2021 22:08:43 +0000
+Received: from DM6NAM11FT057.eop-nam11.prod.protection.outlook.com
+ (2603:10b6:4:16:cafe::60) by DM5PR2001CA0005.outlook.office365.com
+ (2603:10b6:4:16::15) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4690.15 via Frontend
+ Transport; Wed, 10 Nov 2021 22:08:43 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
+ smtp.mailfrom=amd.com; kernel.org; dkim=none (message not signed)
+ header.d=none;kernel.org; dmarc=pass action=none header.from=amd.com;
 Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=SATLEXMB04.amd.com;
 Received: from SATLEXMB04.amd.com (165.204.84.17) by
- DM6NAM11FT041.mail.protection.outlook.com (10.13.172.98) with Microsoft SMTP
+ DM6NAM11FT057.mail.protection.outlook.com (10.13.172.252) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.4690.15 via Frontend Transport; Wed, 10 Nov 2021 22:08:41 +0000
+ 15.20.4690.15 via Frontend Transport; Wed, 10 Nov 2021 22:08:43 +0000
 Received: from sbrijesh-desktop.amd.com (10.180.168.240) by SATLEXMB04.amd.com
  (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.17; Wed, 10 Nov
- 2021 16:08:39 -0600
+ 2021 16:08:41 -0600
 From:   Brijesh Singh <brijesh.singh@amd.com>
 To:     <x86@kernel.org>, <linux-kernel@vger.kernel.org>,
         <kvm@vger.kernel.org>, <linux-efi@vger.kernel.org>,
@@ -80,9 +81,9 @@ CC:     Thomas Gleixner <tglx@linutronix.de>,
         <tony.luck@intel.com>, <marcorr@google.com>,
         <sathyanarayanan.kuppuswamy@linux.intel.com>,
         Brijesh Singh <brijesh.singh@amd.com>
-Subject: [PATCH v7 29/45] x86/compressed/acpi: move EFI system table lookup to helper
-Date:   Wed, 10 Nov 2021 16:07:15 -0600
-Message-ID: <20211110220731.2396491-30-brijesh.singh@amd.com>
+Subject: [PATCH v7 30/45] x86/compressed/acpi: move EFI config table lookup to helper
+Date:   Wed, 10 Nov 2021 16:07:16 -0600
+Message-ID: <20211110220731.2396491-31-brijesh.singh@amd.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20211110220731.2396491-1-brijesh.singh@amd.com>
 References: <20211110220731.2396491-1-brijesh.singh@amd.com>
@@ -94,25 +95,25 @@ X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
  (10.181.40.145)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 2277680b-2803-4568-8973-08d9a496a7dc
-X-MS-TrafficTypeDiagnostic: BY5PR12MB5014:
-X-Microsoft-Antispam-PRVS: <BY5PR12MB5014EBA61B1916A9A555D2A4E5939@BY5PR12MB5014.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:6790;
+X-MS-Office365-Filtering-Correlation-Id: 4aa05274-370d-46ce-af91-08d9a496a8df
+X-MS-TrafficTypeDiagnostic: DM5PR12MB2376:
+X-Microsoft-Antispam-PRVS: <DM5PR12MB237681E1ACB36E78ED718542E5939@DM5PR12MB2376.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:8882;
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: qLjwsozlCZ7gHizYjjVmne9Dqmlg02ycBeCi2BaJuXNJ3u/K1+qO60wKBhMFteXMLZy2MhMWJrinI7H6unYtb8LxppGixGJnQfgJAebbY4uPWgCutmGhc3l/WzjCAxLVlYOs3s4ERkJlvB2Y6M1e71r11gwZKQcMZ7YdK97Yx9ukIK3ZrdYeYqTZ/TJR3CElfVah0vMHlMJGsAE1W2jmAVnIsHGtucKgbmStwCmhRsCDuirBdOhG49PqR8/obvLssLu4I07LtTjIl7B2Lgb54WIZ4ezwXGCsoCa7AI4EDre0Ggpj3MyKXlChayBqFMQapa7USin9uR8poeXvErQJTzstq0lMteuQETQ1e6Cuexfd198FUAEaA0cXQjkaYZpZyCCAJ7sJgj69LoGkekfaEdkymwn3WuqmZHbZXjFaj4NgpZiOI+K5PQmHdmTc4MQXoL7xVZHrJW/A1/tFtriWwr5I3PVK5oYEvnVHOnKl7Ryq52G8gY9Kt11X/JHExnvrV1XE+wA54bwIBGsmvGe85wBHdXPvmX+BdmH3KVoWzDp9gnOjNaz3x9qxTM8X5QsunQgPPT0cFF7UGnpg5EQdpmXtFLQVnE8B1D6yQ59egRuo57bkPiKRPq/N4tFnmM9EmsExUNFy+8aGRl6nN1hZ0Hmt9908qoZ2t7HtxVKkG0rNqDoTIZy2Gsl+ZiOK06E/xKgrmK5EhlAqwGPyMTWJAG1l/apiaZKNNu6BhUVQzj5RYRT4hiv140Hc/4xen/Eh
-X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(4636009)(36840700001)(46966006)(316002)(356005)(7416002)(6666004)(26005)(7406005)(508600001)(8936002)(336012)(8676002)(186003)(54906003)(16526019)(81166007)(5660300002)(110136005)(70206006)(36860700001)(70586007)(36756003)(7696005)(4326008)(44832011)(82310400003)(47076005)(2616005)(86362001)(1076003)(2906002)(426003)(83380400001)(2101003)(36900700001);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: 6MhNruxZX5Z/rWBM/+IdomnFxtS5A7jWQnf1/LVn58UtsU602RlaSvFCPjBSL2vjdaDZlOmh6W6IL8x/9Ni0NbvU8Y7g8CgMdQjlzFZDev3s7+SXVJNg8SDYlMMNRlJ528KZ4PfmWxWwmKS8wNv57Rb7cpDwb0CUVZUNjRMTct9j9foprnfsFAzWX9NW0yGAEAs3QhNS8Nwtq5ebUpFEXom26uzvxPjLE9jKxn31rrjNsfB1YSB0W0kbCkU0+ftyAZmVx85GuM2sBLOvYRirvL2bZmAdpZdCXKR6T3h21Av1XMxO9bNMLKz26IqjmsjOn/7RV/yO9TuVbKxgkdWeJkHfO4a0J6ZaVUIaUhqyqF7BEcd0Sd9Kne+tTBR/ySmMjFcyXALMVMw/9d22u7RHiryD7Jns3XGxubc8gFnMAWqkXej5VNtmJWRWgiw+d96BGnfaEJIaznhpD7FiIh14vgqaSKgQR6UhY3cGUT8LZPBrqN/QYmt8+zZYXl84sHPztyNvAgyO9oahVRASMbCfEKJ9AOkXiCZYKN7Y6muECynTAP9Q++8upBQtfpT1CO29ece+8neb9Mg9FRNCxSFIgUB0bABY+m3VdbVFSnkc89I/6q6vxKyVdJa7MHmHLFschDel7Wjfjh9vO4Agd5ASV9xd8VLYmsi2DA7nQxOaq8pd9lXyFs0JT7WDr+fHZnx4FVcA66Z0mM8zTaosU+i0FF6O2hqeR7tNWQd6NID5DrenYwdCEqRlBRJozKxKHMrY
+X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(4636009)(46966006)(36840700001)(5660300002)(7696005)(8936002)(83380400001)(82310400003)(70206006)(2906002)(81166007)(8676002)(47076005)(508600001)(6666004)(70586007)(316002)(186003)(36860700001)(4326008)(44832011)(2616005)(356005)(110136005)(7406005)(1076003)(7416002)(54906003)(36756003)(426003)(86362001)(336012)(26005)(16526019)(36900700001)(2101003);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Nov 2021 22:08:41.7074
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Nov 2021 22:08:43.4037
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2277680b-2803-4568-8973-08d9a496a7dc
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4aa05274-370d-46ce-af91-08d9a496a8df
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: DM6NAM11FT041.eop-nam11.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthSource: DM6NAM11FT057.eop-nam11.prod.protection.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB5014
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM5PR12MB2376
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
@@ -126,231 +127,131 @@ into a set of helpers that can be re-used for that purpose.
 Signed-off-by: Michael Roth <michael.roth@amd.com>
 Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
 ---
- arch/x86/boot/compressed/Makefile |  1 +
- arch/x86/boot/compressed/acpi.c   | 60 ++++++++++----------------
- arch/x86/boot/compressed/efi.c    | 71 +++++++++++++++++++++++++++++++
- arch/x86/boot/compressed/misc.h   | 14 ++++++
- 4 files changed, 108 insertions(+), 38 deletions(-)
- create mode 100644 arch/x86/boot/compressed/efi.c
+ arch/x86/boot/compressed/acpi.c | 25 ++++++--------------
+ arch/x86/boot/compressed/efi.c  | 42 +++++++++++++++++++++++++++++++++
+ arch/x86/boot/compressed/misc.h |  9 +++++++
+ 3 files changed, 58 insertions(+), 18 deletions(-)
 
-diff --git a/arch/x86/boot/compressed/Makefile b/arch/x86/boot/compressed/Makefile
-index 431bf7f846c3..d364192c2367 100644
---- a/arch/x86/boot/compressed/Makefile
-+++ b/arch/x86/boot/compressed/Makefile
-@@ -100,6 +100,7 @@ endif
- vmlinux-objs-$(CONFIG_ACPI) += $(obj)/acpi.o
- 
- vmlinux-objs-$(CONFIG_EFI_MIXED) += $(obj)/efi_thunk_$(BITS).o
-+vmlinux-objs-$(CONFIG_EFI) += $(obj)/efi.o
- efi-obj-$(CONFIG_EFI_STUB) = $(objtree)/drivers/firmware/efi/libstub/lib.a
- 
- $(obj)/vmlinux: $(vmlinux-objs-y) $(efi-obj-y) FORCE
 diff --git a/arch/x86/boot/compressed/acpi.c b/arch/x86/boot/compressed/acpi.c
-index 8bcbcee54aa1..9e784bd7b2e6 100644
+index 9e784bd7b2e6..fea72a1504ff 100644
 --- a/arch/x86/boot/compressed/acpi.c
 +++ b/arch/x86/boot/compressed/acpi.c
-@@ -86,8 +86,8 @@ static acpi_physical_address kexec_get_rsdp_addr(void)
- {
- 	efi_system_table_64_t *systab;
- 	struct efi_setup_data *esd;
--	struct efi_info *ei;
--	char *sig;
-+	bool efi_64;
-+	int ret;
- 
- 	esd = (struct efi_setup_data *)get_kexec_setup_data_addr();
- 	if (!esd)
-@@ -98,18 +98,16 @@ static acpi_physical_address kexec_get_rsdp_addr(void)
- 		return 0;
- 	}
- 
--	ei = &boot_params->efi_info;
--	sig = (char *)&ei->efi_loader_signature;
--	if (strncmp(sig, EFI64_LOADER_SIGNATURE, 4)) {
-+	/* Get systab from boot params. */
-+	ret = efi_get_system_table(boot_params, (unsigned long *)&systab, &efi_64);
-+	if (ret)
-+		error("EFI system table not found in kexec boot_params.");
-+
-+	if (!efi_64) {
- 		debug_putstr("Wrong kexec EFI loader signature.\n");
- 		return 0;
- 	}
- 
--	/* Get systab from boot params. */
--	systab = (efi_system_table_64_t *) (ei->efi_systab | ((__u64)ei->efi_systab_hi << 32));
--	if (!systab)
--		error("EFI system table not found in kexec boot_params.");
--
- 	return __efi_get_rsdp_addr((unsigned long)esd->tables, systab->nr_tables, true);
- }
- #else
-@@ -119,45 +117,31 @@ static acpi_physical_address kexec_get_rsdp_addr(void) { return 0; }
+@@ -117,8 +117,9 @@ static acpi_physical_address kexec_get_rsdp_addr(void) { return 0; }
  static acpi_physical_address efi_get_rsdp_addr(void)
  {
  #ifdef CONFIG_EFI
--	unsigned long systab, config_tables;
-+	unsigned long systab_tbl_pa, config_tables;
- 	unsigned int nr_tables;
--	struct efi_info *ei;
+-	unsigned long systab_tbl_pa, config_tables;
+-	unsigned int nr_tables;
++	unsigned long cfg_tbl_pa = 0;
++	unsigned long systab_tbl_pa;
++	unsigned int cfg_tbl_len;
  	bool efi_64;
--	char *sig;
--
--	ei = &boot_params->efi_info;
--	sig = (char *)&ei->efi_loader_signature;
--
--	if (!strncmp(sig, EFI64_LOADER_SIGNATURE, 4)) {
--		efi_64 = true;
--	} else if (!strncmp(sig, EFI32_LOADER_SIGNATURE, 4)) {
--		efi_64 = false;
+ 	int ret;
+ 
+@@ -134,23 +135,11 @@ static acpi_physical_address efi_get_rsdp_addr(void)
+ 	if (ret)
+ 		error("EFI support advertised, but unable to locate system table.");
+ 
+-	/* Handle EFI bitness properly */
+-	if (efi_64) {
+-		efi_system_table_64_t *stbl = (efi_system_table_64_t *)systab_tbl_pa;
++	ret = efi_get_conf_table(boot_params, &cfg_tbl_pa, &cfg_tbl_len, &efi_64);
++	if (ret || !cfg_tbl_pa)
++		error("EFI config table not found.");
+ 
+-		config_tables	= stbl->tables;
+-		nr_tables	= stbl->nr_tables;
 -	} else {
--		debug_putstr("Wrong EFI loader signature.\n");
--		return 0;
+-		efi_system_table_32_t *stbl = (efi_system_table_32_t *)systab_tbl_pa;
+-
+-		config_tables	= stbl->tables;
+-		nr_tables	= stbl->nr_tables;
 -	}
-+	int ret;
- 
--	/* Get systab from boot params. */
--#ifdef CONFIG_X86_64
--	systab = ei->efi_systab | ((__u64)ei->efi_systab_hi << 32);
--#else
--	if (ei->efi_systab_hi || ei->efi_memmap_hi) {
--		debug_putstr("Error getting RSDP address: EFI system table located above 4GB.\n");
-+	/*
-+	 * This function is called even for non-EFI BIOSes, and callers expect
-+	 * failure to locate the EFI system table to result in 0 being returned
-+	 * as indication that EFI is not available, rather than outright
-+	 * failure/abort.
-+	 */
-+	ret = efi_get_system_table(boot_params, &systab_tbl_pa, &efi_64);
-+	if (ret == -EOPNOTSUPP)
- 		return 0;
--	}
--	systab = ei->efi_systab;
--#endif
--	if (!systab)
--		error("EFI system table not found.");
-+	if (ret)
-+		error("EFI support advertised, but unable to locate system table.");
- 
- 	/* Handle EFI bitness properly */
- 	if (efi_64) {
--		efi_system_table_64_t *stbl = (efi_system_table_64_t *)systab;
-+		efi_system_table_64_t *stbl = (efi_system_table_64_t *)systab_tbl_pa;
- 
- 		config_tables	= stbl->tables;
- 		nr_tables	= stbl->nr_tables;
- 	} else {
--		efi_system_table_32_t *stbl = (efi_system_table_32_t *)systab;
-+		efi_system_table_32_t *stbl = (efi_system_table_32_t *)systab_tbl_pa;
- 
- 		config_tables	= stbl->tables;
- 		nr_tables	= stbl->nr_tables;
+-
+-	if (!config_tables)
+-		error("EFI config tables not found.");
+-
+-	return __efi_get_rsdp_addr(config_tables, nr_tables, efi_64);
++	return __efi_get_rsdp_addr(cfg_tbl_pa, cfg_tbl_len, efi_64);
+ #else
+ 	return 0;
+ #endif
 diff --git a/arch/x86/boot/compressed/efi.c b/arch/x86/boot/compressed/efi.c
-new file mode 100644
-index 000000000000..bcf1d5650e26
---- /dev/null
+index bcf1d5650e26..4398b55acd9f 100644
+--- a/arch/x86/boot/compressed/efi.c
 +++ b/arch/x86/boot/compressed/efi.c
-@@ -0,0 +1,71 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Helpers for early access to EFI configuration table
-+ *
-+ * Copyright (C) 2021 Advanced Micro Devices, Inc.
-+ *
-+ * Author: Michael Roth <michael.roth@amd.com>
-+ */
-+
-+#include "misc.h"
-+#include <linux/efi.h>
-+#include <asm/efi.h>
+@@ -69,3 +69,45 @@ int efi_get_system_table(struct boot_params *boot_params, unsigned long *sys_tbl
+ 	*is_efi_64 = efi_64;
+ 	return 0;
+ }
 +
 +/**
-+ * Given boot_params, retrieve the physical address of EFI system table.
++ * Given boot_params, locate EFI system table from it and return the physical
++ * address EFI configuration table.
 + *
 + * @boot_params:        pointer to boot_params
-+ * @sys_tbl_pa:         location to store physical address of system table
++ * @cfg_tbl_pa:         location to store physical address of config table
++ * @cfg_tbl_len:        location to store number of config table entries
 + * @is_efi_64:          location to store whether using 64-bit EFI or not
 + *
 + * Returns 0 on success. On error, return params are left unchanged.
-+ *
-+ * Note: Existing callers like ACPI will call this unconditionally even for
-+ * non-EFI BIOSes. In such cases, those callers may treat cases where
-+ * bootparams doesn't indicate that a valid EFI system table is available as
-+ * non-fatal errors to allow fall-through to non-EFI alternatives. This
-+ * class of errors are reported as EOPNOTSUPP and should be kept in sync with
-+ * callers who check for that specific error.
 + */
-+int efi_get_system_table(struct boot_params *boot_params, unsigned long *sys_tbl_pa,
-+			 bool *is_efi_64)
++int efi_get_conf_table(struct boot_params *boot_params, unsigned long *cfg_tbl_pa,
++		       unsigned int *cfg_tbl_len, bool *is_efi_64)
 +{
-+	unsigned long sys_tbl;
-+	struct efi_info *ei;
-+	bool efi_64;
-+	char *sig;
++	unsigned long sys_tbl_pa = 0;
++	int ret;
 +
-+	if (!sys_tbl_pa || !is_efi_64)
++	if (!cfg_tbl_pa || !cfg_tbl_len || !is_efi_64)
 +		return -EINVAL;
 +
-+	ei = &boot_params->efi_info;
-+	sig = (char *)&ei->efi_loader_signature;
++	ret = efi_get_system_table(boot_params, &sys_tbl_pa, is_efi_64);
++	if (ret)
++		return ret;
 +
-+	if (!strncmp(sig, EFI64_LOADER_SIGNATURE, 4)) {
-+		efi_64 = true;
-+	} else if (!strncmp(sig, EFI32_LOADER_SIGNATURE, 4)) {
-+		efi_64 = false;
++	/* Handle EFI bitness properly */
++	if (*is_efi_64) {
++		efi_system_table_64_t *stbl =
++			(efi_system_table_64_t *)sys_tbl_pa;
++
++		*cfg_tbl_pa	= stbl->tables;
++		*cfg_tbl_len	= stbl->nr_tables;
 +	} else {
-+		debug_putstr("Wrong EFI loader signature.\n");
-+		return -EOPNOTSUPP;
++		efi_system_table_32_t *stbl =
++			(efi_system_table_32_t *)sys_tbl_pa;
++
++		*cfg_tbl_pa	= stbl->tables;
++		*cfg_tbl_len	= stbl->nr_tables;
 +	}
 +
-+	/* Get systab from boot params. */
-+#ifdef CONFIG_X86_64
-+	sys_tbl = ei->efi_systab | ((__u64)ei->efi_systab_hi << 32);
-+#else
-+	if (ei->efi_systab_hi || ei->efi_memmap_hi) {
-+		debug_putstr("Error: EFI system table located above 4GB.\n");
-+		return -EOPNOTSUPP;
-+	}
-+	sys_tbl = ei->efi_systab;
-+#endif
-+	if (!sys_tbl) {
-+		debug_putstr("EFI system table not found.");
-+		return -ENOENT;
-+	}
-+
-+	*sys_tbl_pa = sys_tbl;
-+	*is_efi_64 = efi_64;
 +	return 0;
 +}
 diff --git a/arch/x86/boot/compressed/misc.h b/arch/x86/boot/compressed/misc.h
-index 01cc13c12059..165640f64b71 100644
+index 165640f64b71..074674b89925 100644
 --- a/arch/x86/boot/compressed/misc.h
 +++ b/arch/x86/boot/compressed/misc.h
-@@ -23,6 +23,7 @@
- #include <linux/screen_info.h>
- #include <linux/elf.h>
- #include <linux/io.h>
-+#include <linux/efi.h>
- #include <asm/page.h>
- #include <asm/boot.h>
- #include <asm/bootparam.h>
-@@ -176,4 +177,17 @@ void boot_stage2_vc(void);
- 
- unsigned long sev_verify_cbit(unsigned long cr3);
- 
-+#ifdef CONFIG_EFI
-+/* helpers for early EFI config table access */
-+int efi_get_system_table(struct boot_params *boot_params,
-+			 unsigned long *sys_tbl_pa, bool *is_efi_64);
-+#else
+@@ -181,6 +181,8 @@ unsigned long sev_verify_cbit(unsigned long cr3);
+ /* helpers for early EFI config table access */
+ int efi_get_system_table(struct boot_params *boot_params,
+ 			 unsigned long *sys_tbl_pa, bool *is_efi_64);
++int efi_get_conf_table(struct boot_params *boot_params, unsigned long *cfg_tbl_pa,
++			unsigned int *cfg_tbl_len, bool *is_efi_64);
+ #else
+ static inline int
+ efi_get_system_table(struct boot_params *boot_params,
+@@ -188,6 +190,13 @@ efi_get_system_table(struct boot_params *boot_params,
+ {
+ 	return -ENOENT;
+ }
++
 +static inline int
-+efi_get_system_table(struct boot_params *boot_params,
-+		     unsigned long *sys_tbl_pa, bool *is_efi_64)
++efi_get_conf_table(struct boot_params *boot_params, unsigned long *cfg_tbl_pa,
++		   unsigned int *cfg_tbl_len, bool *is_efi_64)
 +{
 +	return -ENOENT;
 +}
-+#endif /* CONFIG_EFI */
-+
+ #endif /* CONFIG_EFI */
+ 
  #endif /* BOOT_COMPRESSED_MISC_H */
 -- 
 2.25.1
