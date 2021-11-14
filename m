@@ -2,37 +2,37 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 153F944F984
-	for <lists+linux-efi@lfdr.de>; Sun, 14 Nov 2021 18:06:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5575044F98F
+	for <lists+linux-efi@lfdr.de>; Sun, 14 Nov 2021 18:07:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236353AbhKNRI6 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sun, 14 Nov 2021 12:08:58 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:49668 "EHLO
+        id S236257AbhKNRJu (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sun, 14 Nov 2021 12:09:50 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:36672 "EHLO
         us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S236250AbhKNRHg (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sun, 14 Nov 2021 12:07:36 -0500
+        by vger.kernel.org with ESMTP id S236355AbhKNRHh (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sun, 14 Nov 2021 12:07:37 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1636909481;
+        s=mimecast20190719; t=1636909483;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=fVv8YUteH9MirfaKYfDD1ToB/iZr9iQujBoD/v0QeWk=;
-        b=R/o3HniABhzAGpKl140fM+9+1gMFws37WvNjrZHr95aSegEt93mAodJ30+Axg/fm9whm+n
-        GCTBTIVoGx92e/VOBfMHv2j6qXloKIEKx668YtZCJNlYwt1kr5mqfCNlf6qAJyzhU4/S3H
-        wt/HMaIs6gAxKMTqYJsWaYqcp1Ho1mU=
+        bh=2e9rLIVxP/XfpfOWUukUdN+7FQrdvef2m+/BSxyecVw=;
+        b=KnLVgGjaE4q+eYYJxpGuhkpXGL7jdkJt24S81/iY5k3QTlXMopkCOL9mSsqtqYTswD3/EC
+        96TNjBzqNpAXw+kOQi8urMCfNOPU3kS+bvKzycxmhfMYTqN1JRs+nhd5DlDEgEHMNUs5C1
+        Q1AKqEjNBgUY03AwwEf2zmtc7H2/e+4=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-520-7R6Re83DPDGuJ3SoplgHRQ-1; Sun, 14 Nov 2021 12:04:36 -0500
-X-MC-Unique: 7R6Re83DPDGuJ3SoplgHRQ-1
+ us-mta-410-Jl1B_W7FOq2gVyF9yp1Z8g-1; Sun, 14 Nov 2021 12:04:39 -0500
+X-MC-Unique: Jl1B_W7FOq2gVyF9yp1Z8g-1
 Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id BA9281808303;
-        Sun, 14 Nov 2021 17:04:33 +0000 (UTC)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 9B5AC1006AA0;
+        Sun, 14 Nov 2021 17:04:37 +0000 (UTC)
 Received: from x1.localdomain (unknown [10.39.192.93])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 41D951346F;
-        Sun, 14 Nov 2021 17:04:30 +0000 (UTC)
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 0F8361346F;
+        Sun, 14 Nov 2021 17:04:33 +0000 (UTC)
 From:   Hans de Goede <hdegoede@redhat.com>
 To:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
         Mika Westerberg <mika.westerberg@linux.intel.com>,
@@ -49,9 +49,9 @@ Cc:     Hans de Goede <hdegoede@redhat.com>, Len Brown <lenb@kernel.org>,
         platform-driver-x86@vger.kernel.org, linux-i2c@vger.kernel.org,
         linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-efi@vger.kernel.org
-Subject: [PATCH v2 14/20] mfd: intel_soc_pmic_chtwc: Add intel_cht_wc_get_model() helper function
-Date:   Sun, 14 Nov 2021 18:03:29 +0100
-Message-Id: <20211114170335.66994-15-hdegoede@redhat.com>
+Subject: [PATCH v2 15/20] i2c: cht-wc: Make charger i2c-client instantiation board/device-model specific
+Date:   Sun, 14 Nov 2021 18:03:30 +0100
+Message-Id: <20211114170335.66994-16-hdegoede@redhat.com>
 In-Reply-To: <20211114170335.66994-1-hdegoede@redhat.com>
 References: <20211114170335.66994-1-hdegoede@redhat.com>
 MIME-Version: 1.0
@@ -61,141 +61,190 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Tablet / laptop designs using an Intel Cherry Trail x86 main SoC with
-an Intel Whiskey Cove PMIC do not use a single standard setup for
-the charger, fuel-gauge and other chips surrounding the PMIC /
-charging+data USB port.
+The i2c-controller on the Cherry Trail - Whiskey Cove PMIC is special
+in that it is always connected to the I2C charger IC of the board on
+which the PMIC is used; and the charger IC is not described in ACPI,
+so the i2c-cht-wc code needs to instantiate an i2c-client for it itself.
 
-Unlike what is normal on X86 this diversity in designs is not handled
-by the ACPI tables. On 2 of the 3 known designs there are no standard
-(PNP0C0A) ACPI battery devices and on the 3th design the ACPI battery
-device does not work under Linux due to it requiring non-standard
-and undocumented ACPI behavior.
+So far this was hardcoded to instantiate an i2c-client for the
+bq24292i, with all properties, etc. set to match how this charger
+is used on the GPD win and GPD pcoket devices.
 
-So to make things work under Linux we use native charger and fuel-gauge
-drivers on these devices, re-using the native drivers used on ARM boards
-with the same charger / fuel-gauge ICs.
+There is a rudimentary check to make sure the ACPI tables are at least
+somewhat as expected, but this is far from accurate, leading to
+a wrong i2c-client being instantiated for the charger on some boards.
 
-This requires various MFD-cell drivers for the CHT-WC PMIC cells to
-know which model they are exactly running on so that they can e.g.
-instantiate an I2C-client for the right model charger-IC (the charger
-is connected to an I2C-controller which is part of the PMIC).
+Switch to the new DMI based intel_cht_wc_get_model() helper which is
+exported by the MFD driver for the CHT Whiskey Cove PMIC to help PMIC
+cell drivers like the i2c-cht-wc code reliably detect which board
+they are running on.
 
-Rather then duplicating DMI-id matching to check which model we are
-running on in each MFD-cell driver add a helper function for this
-and make this id all 3 known models:
+And add board_info for the charger ICs as found on the other 2 known
+boards with a Whisky Cove PMIC.
 
-1. The GPD Win and GPD Pocket mini-laptops, these are really 2 models
-but the Pocket re-uses the GPD Win's design in a different housing:
-
-The WC PMIC is connected to a TI BQ24292i charger, paired with
-a Maxim MAX17047 fuelgauge + a FUSB302 USB Type-C Controller +
-a PI3USB30532 USB switch, for a fully functional Type-C port.
-
-2. The Xiaomi Mi Pad 2:
-
-The WC PMIC is connected to a TI BQ25890 charger, paired with
-a TI BQ27520 fuelgauge, using the TI BQ25890 for BC1.2 charger type
-detection, for a USB-2 only Type-C port without PD.
-
-3. The Lenovo Yoga Book YB1-X90 / Lenovo Yoga Book YB1-X91 series:
-
-The WC PMIC is connected to a TI BQ25892 charger, paired with
-a TI BQ27542 fuelgauge, using the WC PMIC for BC1.2 charger type
-detection and using the BQ25892's Mediatek Pump Express+ (1.0)
-support to enable charging with up to 12V through a micro-USB port.
+This has been tested on all 3 known boards.
 
 Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 ---
- drivers/mfd/intel_soc_pmic_chtwc.c | 46 ++++++++++++++++++++++++++++++
- include/linux/mfd/intel_soc_pmic.h |  9 ++++++
- 2 files changed, 55 insertions(+)
+ drivers/i2c/busses/i2c-cht-wc.c | 120 +++++++++++++++++++++++++++-----
+ 1 file changed, 102 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/mfd/intel_soc_pmic_chtwc.c b/drivers/mfd/intel_soc_pmic_chtwc.c
-index 49c5f71664bc..3432bd18f5d0 100644
---- a/drivers/mfd/intel_soc_pmic_chtwc.c
-+++ b/drivers/mfd/intel_soc_pmic_chtwc.c
-@@ -10,6 +10,7 @@
+diff --git a/drivers/i2c/busses/i2c-cht-wc.c b/drivers/i2c/busses/i2c-cht-wc.c
+index 1cf68f85b2e1..e700373bf388 100644
+--- a/drivers/i2c/busses/i2c-cht-wc.c
++++ b/drivers/i2c/busses/i2c-cht-wc.c
+@@ -18,6 +18,7 @@
+ #include <linux/module.h>
+ #include <linux/platform_device.h>
+ #include <linux/power/bq24190_charger.h>
++#include <linux/power/bq25890_charger.h>
+ #include <linux/slab.h>
  
- #include <linux/acpi.h>
- #include <linux/delay.h>
-+#include <linux/dmi.h>
- #include <linux/err.h>
- #include <linux/i2c.h>
- #include <linux/interrupt.h>
-@@ -134,6 +135,51 @@ static const struct regmap_irq_chip cht_wc_regmap_irq_chip = {
- 	.num_regs = 1,
+ #define CHT_WC_I2C_CTRL			0x5e24
+@@ -270,6 +271,7 @@ static const struct irq_chip cht_wc_i2c_irq_chip = {
+ 	.name			= "cht_wc_ext_chrg_irq_chip",
  };
  
-+static const struct dmi_system_id cht_wc_model_dmi_ids[] = {
-+	{	/* GPD win / GPD pocket mini laptops */
-+		.driver_data = (void *)(long)INTEL_CHT_WC_GPD_WIN_POCKET,
-+		/*
-+		 * Note this may not seem like a very unique match, but in the
-+		 * 24000+ DMI decode dumps from linux-hardware.org only 42 have
-+		 * a board_vendor value of "AMI Corporation" and of those 42
-+		 * only 1 (the GPD win/pocket entry) has a board_name of
-+		 * "Default string". Also very few devices have both board_ and
-+		 * product_name not set.
-+		 */
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "AMI Corporation"),
-+			DMI_MATCH(DMI_BOARD_NAME, "Default string"),
-+			DMI_MATCH(DMI_BOARD_SERIAL, "Default string"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Default string"),
-+		},
-+	}, {	/* Xiaomi Mi Pad 2 */
-+		.driver_data = (void *)(long)INTEL_CHT_WC_XIAOMI_MIPAD2,
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Xiaomi Inc"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Mipad2"),
-+		},
-+	}, {	/* Lenovo Yoga Book X90F / X91F / X91L */
-+		.driver_data = (void *)(long)INTEL_CHT_WC_LENOVO_YOGABOOK1,
-+		.matches = {
-+		  /* Non exact match to match all versions */
-+		  DMI_MATCH(DMI_PRODUCT_NAME, "Lenovo YB1-X9"),
-+		},
++/********** GPD Win / Pocket charger IC settings **********/
+ static const char * const bq24190_suppliers[] = {
+ 	"tcpm-source-psy-i2c-fusb302" };
+ 
+@@ -304,17 +306,93 @@ static struct bq24190_platform_data bq24190_pdata = {
+ 	.regulator_init_data = &bq24190_vbus_init_data,
+ };
+ 
++static struct i2c_board_info gpd_win_board_info = {
++	.type = "bq24190",
++	.addr = 0x6b,
++	.dev_name = "bq24190",
++	.swnode = &bq24190_node,
++	.platform_data = &bq24190_pdata,
++};
++
++/********** Xiaomi Mi Pad 2 charger IC settings  **********/
++static struct regulator_consumer_supply bq2589x_vbus_consumer = {
++	.supply = "vbus",
++	.dev_name = "cht_wcove_pwrsrc",
++};
++
++static const struct regulator_init_data bq2589x_vbus_init_data = {
++	.constraints = {
++		.valid_ops_mask = REGULATOR_CHANGE_STATUS,
 +	},
-+	{ } /* Terminating empty */
++	.consumer_supplies = &bq2589x_vbus_consumer,
++	.num_consumer_supplies = 1,
 +};
 +
-+enum intel_cht_wc_models intel_cht_wc_get_model(void)
-+{
-+	const struct dmi_system_id *id;
++static struct bq25890_platform_data bq2589x_pdata = {
++	.regulator_init_data = &bq2589x_vbus_init_data,
++};
 +
-+	id = dmi_first_match(cht_wc_model_dmi_ids);
-+	if (!id)
-+		return INTEL_CHT_WC_UNKNOWN;
++static const struct property_entry xiaomi_mipad2_props[] = {
++	PROPERTY_ENTRY_BOOL("linux,skip-reset"),
++	PROPERTY_ENTRY_BOOL("linux,read-back-settings"),
++	{ }
++};
 +
-+	return (long)id->driver_data;
-+}
-+EXPORT_SYMBOL_GPL(intel_cht_wc_get_model);
++static const struct software_node xiaomi_mipad2_node = {
++	.properties = xiaomi_mipad2_props,
++};
 +
- static int cht_wc_probe(struct i2c_client *client)
++static struct i2c_board_info xiaomi_mipad2_board_info = {
++	.type = "bq25890",
++	.addr = 0x6a,
++	.dev_name = "bq25890",
++	.swnode = &xiaomi_mipad2_node,
++	.platform_data = &bq2589x_pdata,
++};
++
++/********** Lenovo Yogabook YB1-X90F/-X91F/-X91L charger settings **********/
++static const char * const lenovo_yb1_bq25892_suppliers[] = {
++	"cht_wcove_pwrsrc" };
++
++static const struct property_entry lenovo_yb1_bq25892_props[] = {
++	PROPERTY_ENTRY_STRING_ARRAY("supplied-from",
++				    lenovo_yb1_bq25892_suppliers),
++	PROPERTY_ENTRY_U32("linux,pump-express-vbus-max", 12000000),
++	PROPERTY_ENTRY_BOOL("linux,skip-reset"),
++	/*
++	 * The firmware sets everything to the defaults, which leads to a
++	 * somewhat low charge-current of 2048mA and worse to a batter-voltage
++	 * of 4.2V instead of 4.35V (when booted without a charger connected).
++	 * Use our own values instead of "linux,read-back-settings" to fix this.
++	 */
++	PROPERTY_ENTRY_U32("ti,charge-current", 4224000),
++	PROPERTY_ENTRY_U32("ti,battery-regulation-voltage", 4352000),
++	PROPERTY_ENTRY_U32("ti,termination-current", 256000),
++	PROPERTY_ENTRY_U32("ti,precharge-current", 128000),
++	PROPERTY_ENTRY_U32("ti,minimum-sys-voltage", 3500000),
++	PROPERTY_ENTRY_U32("ti,boost-voltage", 4998000),
++	PROPERTY_ENTRY_U32("ti,boost-max-current", 1400000),
++	PROPERTY_ENTRY_BOOL("ti,use-ilim-pin"),
++	{ }
++};
++
++static const struct software_node lenovo_yb1_bq25892_node = {
++	.properties = lenovo_yb1_bq25892_props,
++};
++
++static struct i2c_board_info lenovo_yogabook1_board_info = {
++	.type = "bq25892",
++	.addr = 0x6b,
++	.dev_name = "bq25892",
++	.swnode = &lenovo_yb1_bq25892_node,
++	.platform_data = &bq2589x_pdata,
++};
++
+ static int cht_wc_i2c_adap_i2c_probe(struct platform_device *pdev)
  {
- 	struct device *dev = &client->dev;
-diff --git a/include/linux/mfd/intel_soc_pmic.h b/include/linux/mfd/intel_soc_pmic.h
-index 6a88e34cb955..dd17d7f82434 100644
---- a/include/linux/mfd/intel_soc_pmic.h
-+++ b/include/linux/mfd/intel_soc_pmic.h
-@@ -41,7 +41,16 @@ struct intel_soc_pmic {
- 	struct intel_scu_ipc_dev *scu;
- };
+ 	struct intel_soc_pmic *pmic = dev_get_drvdata(pdev->dev.parent);
++	struct i2c_board_info *board_info = NULL;
+ 	struct cht_wc_i2c_adap *adap;
+-	struct i2c_board_info board_info = {
+-		.type = "bq24190",
+-		.addr = 0x6b,
+-		.dev_name = "bq24190",
+-		.swnode = &bq24190_node,
+-		.platform_data = &bq24190_pdata,
+-	};
+ 	int ret, reg, irq;
  
-+enum intel_cht_wc_models {
-+	INTEL_CHT_WC_UNKNOWN,
-+	INTEL_CHT_WC_GPD_WIN_POCKET,
-+	INTEL_CHT_WC_XIAOMI_MIPAD2,
-+	INTEL_CHT_WC_LENOVO_YOGABOOK1,
-+};
-+
- int intel_soc_pmic_exec_mipi_pmic_seq_element(u16 i2c_address, u32 reg_address,
- 					      u32 value, u32 mask);
+ 	irq = platform_get_irq(pdev, 0);
+@@ -379,17 +457,23 @@ static int cht_wc_i2c_adap_i2c_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		goto remove_irq_domain;
  
-+enum intel_cht_wc_models intel_cht_wc_get_model(void);
+-	/*
+-	 * Normally the Whiskey Cove PMIC is paired with a TI bq24292i charger,
+-	 * connected to this i2c bus, and a max17047 fuel-gauge and a fusb302
+-	 * USB Type-C controller connected to another i2c bus. In this setup
+-	 * the max17047 and fusb302 devices are enumerated through an INT33FE
+-	 * ACPI device. If this device is present register an i2c-client for
+-	 * the TI bq24292i charger.
+-	 */
+-	if (acpi_dev_present("INT33FE", NULL, -1)) {
+-		board_info.irq = adap->client_irq;
+-		adap->client = i2c_new_client_device(&adap->adapter, &board_info);
++	switch (intel_cht_wc_get_model()) {
++	case INTEL_CHT_WC_GPD_WIN_POCKET:
++		board_info = &gpd_win_board_info;
++		break;
++	case INTEL_CHT_WC_XIAOMI_MIPAD2:
++		board_info = &xiaomi_mipad2_board_info;
++		break;
++	case INTEL_CHT_WC_LENOVO_YOGABOOK1:
++		board_info = &lenovo_yogabook1_board_info;
++		break;
++	default:
++		dev_warn(&pdev->dev, "Unknown model, not instantiating charger device\n");
++	}
 +
- #endif	/* __INTEL_SOC_PMIC_H__ */
++	if (board_info) {
++		board_info->irq = adap->client_irq;
++		adap->client = i2c_new_client_device(&adap->adapter, board_info);
+ 		if (IS_ERR(adap->client)) {
+ 			ret = PTR_ERR(adap->client);
+ 			goto del_adapter;
 -- 
 2.31.1
 
