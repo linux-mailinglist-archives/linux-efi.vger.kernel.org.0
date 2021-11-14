@@ -2,37 +2,37 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B03744F954
-	for <lists+linux-efi@lfdr.de>; Sun, 14 Nov 2021 18:04:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0756F44F965
+	for <lists+linux-efi@lfdr.de>; Sun, 14 Nov 2021 18:05:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236347AbhKNRHf (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sun, 14 Nov 2021 12:07:35 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124]:29949 "EHLO
+        id S236186AbhKNRHv (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sun, 14 Nov 2021 12:07:51 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:21873 "EHLO
         us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S236215AbhKNRHH (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sun, 14 Nov 2021 12:07:07 -0500
+        by vger.kernel.org with ESMTP id S236265AbhKNRHM (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sun, 14 Nov 2021 12:07:12 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1636909453;
+        s=mimecast20190719; t=1636909458;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=z0PtzQUpE4e+rg3mkfPABfZsN9EZ2U/8QQiDQfDb9rE=;
-        b=DpLerv8DxjcQMj4rn9Sd+RUqgBEDIwRAipu/4MIpwwWXxrbO0FJnvjNXF8/MUWXE9fwmb9
-        frmXr5JM5MDx++KiH9n/gXzNrzB8E/l4vdYeu/Iv0ewDaSca2E1jb4HU7S95RJB5up3TFe
-        eKCtRblG3QZagMrOcBH8riy3+houpjE=
+        bh=hbo3H69E27X3xdtb6FN9nDkX51ICU4AEhWEkpawIJNY=;
+        b=BT8Jwdm7nGOGEUjlfjirmRRb+TSXErXFvA9VsHg6n9BCnEGFYJAQmyqt2nEcWA9gg7vsjR
+        i0+BoSzbg47bnJf0xuXDa/xmj4/KaL7zaP07hLgC9ZEt1c+BY39XemAfd8vblgth3tmDJs
+        z7rKMaqEFCxiZWgvTpYBTngaj6jI28k=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-199-spOxP1pDOqWTG9O659uzYg-1; Sun, 14 Nov 2021 12:04:09 -0500
-X-MC-Unique: spOxP1pDOqWTG9O659uzYg-1
+ us-mta-527-H7tedUprPKi7WQNDbL-MAw-1; Sun, 14 Nov 2021 12:04:13 -0500
+X-MC-Unique: H7tedUprPKi7WQNDbL-MAw-1
 Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id DABA98005A2;
-        Sun, 14 Nov 2021 17:04:06 +0000 (UTC)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id AF8B415720;
+        Sun, 14 Nov 2021 17:04:10 +0000 (UTC)
 Received: from x1.localdomain (unknown [10.39.192.93])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 5723B1346F;
-        Sun, 14 Nov 2021 17:04:03 +0000 (UTC)
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 2DA2E19EF9;
+        Sun, 14 Nov 2021 17:04:07 +0000 (UTC)
 From:   Hans de Goede <hdegoede@redhat.com>
 To:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
         Mika Westerberg <mika.westerberg@linux.intel.com>,
@@ -49,9 +49,9 @@ Cc:     Hans de Goede <hdegoede@redhat.com>, Len Brown <lenb@kernel.org>,
         platform-driver-x86@vger.kernel.org, linux-i2c@vger.kernel.org,
         linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-efi@vger.kernel.org
-Subject: [PATCH v2 07/20] power: supply: bq25890: Add support to read back the settings from the chip
-Date:   Sun, 14 Nov 2021 18:03:22 +0100
-Message-Id: <20211114170335.66994-8-hdegoede@redhat.com>
+Subject: [PATCH v2 08/20] power: supply: bq25890: Enable charging on boards where we skip reset
+Date:   Sun, 14 Nov 2021 18:03:23 +0100
+Message-Id: <20211114170335.66994-9-hdegoede@redhat.com>
 In-Reply-To: <20211114170335.66994-1-hdegoede@redhat.com>
 References: <20211114170335.66994-1-hdegoede@redhat.com>
 MIME-Version: 1.0
@@ -61,58 +61,41 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On most X86/ACPI devices there is no devicetree to supply the necessary
-init-data. Instead the firmware already fully initializes the bq25890
-charger at boot. To support this, add support for reading back the
-settings from the chip through a new "linux,read-back-settings" boolean.
+On boards where the "linux,skip-reset" boolean property is set we don't
+reset the charger; and on some boards where the fw takes care of
+initalizition F_CHG_CFG is set to 0 before handing control over to the OS.
 
-So far this new property is only used on X86/ACPI (non devicetree) devs,
-IOW it is not used in actual devicetree files. The devicetree-bindings
-maintainers have requested properties like these to not be added to the
-devicetree-bindings, so the new property is deliberately not added
-to the existing devicetree-bindings.
+Explicitly set F_CHG_CFG to 1 on boards where we don't reset the charger,
+so that charging is always enabled on these boards, like it is always
+enabled on boards where we do reset the charger.
 
 Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 ---
-Changes in v2:
-- New patch in v2 of this series, together with the "linux,skip-reset" patch
-  this patch replaces the "ti,skip-init" patch from v1
----
- drivers/power/supply/bq25890_charger.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/power/supply/bq25890_charger.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
 diff --git a/drivers/power/supply/bq25890_charger.c b/drivers/power/supply/bq25890_charger.c
-index 864904d7eaeb..b7c38d2c5ede 100644
+index b7c38d2c5ede..a69a2173e31a 100644
 --- a/drivers/power/supply/bq25890_charger.c
 +++ b/drivers/power/supply/bq25890_charger.c
-@@ -111,6 +111,7 @@ struct bq25890_device {
- 	struct regmap_field *rmap_fields[F_MAX_FIELDS];
+@@ -717,6 +717,17 @@ static int bq25890_hw_init(struct bq25890_device *bq)
+ 			dev_dbg(bq->dev, "Reset failed %d\n", ret);
+ 			return ret;
+ 		}
++	} else {
++		/*
++		 * Ensure charging is enabled, on some boards where the fw
++		 * takes care of initalizition F_CHG_CFG is set to 0 before
++		 * handing control over to the OS.
++		 */
++		ret = bq25890_field_write(bq, F_CHG_CFG, 1);
++		if (ret < 0) {
++			dev_dbg(bq->dev, "Enabling charging failed %d\n", ret);
++			return ret;
++		}
+ 	}
  
- 	bool skip_reset;
-+	bool read_back_init_data;
- 	enum bq25890_chip_version chip_version;
- 	struct bq25890_init_data init_data;
- 	struct bq25890_state state;
-@@ -666,7 +667,7 @@ static int bq25890_chip_reset(struct bq25890_device *bq)
- 
- static int bq25890_rw_init_data(struct bq25890_device *bq)
- {
--	bool write = true;
-+	bool write = !bq->read_back_init_data;
- 	int ret;
- 	int i;
- 
-@@ -950,6 +951,10 @@ static int bq25890_fw_probe(struct bq25890_device *bq)
- 	struct bq25890_init_data *init = &bq->init_data;
- 
- 	bq->skip_reset = device_property_read_bool(bq->dev, "linux,skip-reset");
-+	bq->read_back_init_data = device_property_read_bool(bq->dev,
-+						"linux,read-back-settings");
-+	if (bq->read_back_init_data)
-+		return 0;
- 
- 	ret = bq25890_fw_read_u32_props(bq);
- 	if (ret < 0)
+ 	/* disable watchdog */
 -- 
 2.31.1
 
