@@ -2,39 +2,59 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4FFB744F996
-	for <lists+linux-efi@lfdr.de>; Sun, 14 Nov 2021 18:07:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A2B66450219
+	for <lists+linux-efi@lfdr.de>; Mon, 15 Nov 2021 11:12:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236247AbhKNRKl (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sun, 14 Nov 2021 12:10:41 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:49003 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S236423AbhKNRH7 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sun, 14 Nov 2021 12:07:59 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1636909505;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=HKhlJl6L8XG/e1kTNa2zkugX2OC5+vLBLiGtbBb04F8=;
-        b=MLOg2iwmBd3QCJ0ICb+PAK2bXOOoOhxNfBGmcZPkD2xoOKuOKSHkj/eZQtrddDe94xlEOK
-        KhbL/PLnQrt92GbXvyAiYMumcw5c+KEwkSXQsTCrnH725w6HcqjkGItmpBy5etwRk0kRCS
-        Q3tmUMYMgc2cRTAnItnGdPGqQ1JQTUk=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-512-sStz62q6NCWVIasF6iVnTA-1; Sun, 14 Nov 2021 12:04:58 -0500
-X-MC-Unique: sStz62q6NCWVIasF6iVnTA-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 4C7E2809864;
-        Sun, 14 Nov 2021 17:04:56 +0000 (UTC)
-Received: from x1.localdomain (unknown [10.39.192.93])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id CFF3819EF9;
-        Sun, 14 Nov 2021 17:04:52 +0000 (UTC)
-From:   Hans de Goede <hdegoede@redhat.com>
-To:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        id S237552AbhKOKOi (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 15 Nov 2021 05:14:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52786 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231127AbhKOKOP (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 15 Nov 2021 05:14:15 -0500
+Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94B7CC061767;
+        Mon, 15 Nov 2021 02:11:18 -0800 (PST)
+Received: by mail-lf1-x135.google.com with SMTP id b1so36244253lfs.13;
+        Mon, 15 Nov 2021 02:11:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=uxwfsA+44ef1b7hlksCPyj8IFexX6NAJcsqLHIbZtDw=;
+        b=ED1+rjMpnaWFy7IyLpgI4t6+NWjYrk9yvRsbDXQNO4edejFPeS5Fluo5T9eRA4iZWY
+         qyAtRjrCuhzRvbF7arz5giRx/1OyeHYOPGZ8idBnsCSX89Lz1hbrQoL1Q4hSMMvQY/vY
+         sRTdgNumGFp9+brp6ZmdJVdNJA1Y1oYxwd5Rsl/tcpXCmRMO0cstWd6ECUQhnVeqMk66
+         GMbaWu75HDQfPUtV03ha+oCfVVDZbuvVHXdBj/09cnQ8kjv4gtZmPvt4twaMUl5rf6qm
+         V6HQpYyJTgipoGQBWZki3AkHxRPM7Nafs76W5lF1USMKUixqfNtzgAZBYmtw1Ok/Tfkq
+         SMzQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=uxwfsA+44ef1b7hlksCPyj8IFexX6NAJcsqLHIbZtDw=;
+        b=yHDloWQsuFZ0WRGEVlzKfVhUrOFkWqSB1jeId550atKckqs5StOQKDkZx+YQsT5LAR
+         jnTDW12I9hSb6vaUsFwJIXzGEuXDSpxYKz/MwFYXHvUF0d6jA0ymje5W3mzhdgxFFxAk
+         HXnIj0jErpYzPktDUK52PFw6Ch2G+U7rcCMURsu2nwxPvgQjwlT5N9MOk/XRGzaWWvsw
+         f8NHhY315VT/xjjyzm7WFC+Z0JprD6X/JYLcztZFFljm+f5LihD4woqUwzdYaeVyM33B
+         QIK54OQX/P+CkPJhf+VJLYU1MxYLi7pYx6oDfGooDRwnZQWW2hLp9K3Ehq/FwIAJ+Gug
+         QNOw==
+X-Gm-Message-State: AOAM532nuAg4DbUHc5b0S+JUdX559GiByuNwTzUeruA4AUb+vzJ9LRZD
+        ZlNH1zf1gtcArplj4Xbngw8=
+X-Google-Smtp-Source: ABdhPJzzG0A94HwBEFevyB5R/o6ZsnhSI8DcBgN+Z4YhggnKS037qGfUrVTsqxrckLGnY2R6XXXm3w==
+X-Received: by 2002:a05:6512:2201:: with SMTP id h1mr33409940lfu.397.1636971076884;
+        Mon, 15 Nov 2021 02:11:16 -0800 (PST)
+Received: from localhost.localdomain ([178.127.153.223])
+        by smtp.gmail.com with ESMTPSA id f15sm1246622lfq.236.2021.11.15.02.11.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 15 Nov 2021 02:11:16 -0800 (PST)
+Received: from jek by localhost.localdomain with local (Exim 4.95)
+        (envelope-from <jekhor@gmail.com>)
+        id 1mmYxH-001Bq1-5o;
+        Mon, 15 Nov 2021 13:11:15 +0300
+Date:   Mon, 15 Nov 2021 13:11:15 +0300
+From:   Yauhen Kharuzhy <jekhor@gmail.com>
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
         Mika Westerberg <mika.westerberg@linux.intel.com>,
         Mark Gross <markgross@kernel.org>,
         Andy Shevchenko <andy@infradead.org>,
@@ -42,76 +62,63 @@ To:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
         Sebastian Reichel <sre@kernel.org>,
         MyungJoo Ham <myungjoo.ham@samsung.com>,
         Chanwoo Choi <cw00.choi@samsung.com>,
-        Ard Biesheuvel <ardb@kernel.org>
-Cc:     Hans de Goede <hdegoede@redhat.com>, Len Brown <lenb@kernel.org>,
-        linux-acpi@vger.kernel.org, Yauhen Kharuzhy <jekhor@gmail.com>,
-        Tsuchiya Yuto <kitakar@gmail.com>,
+        Ard Biesheuvel <ardb@kernel.org>, Len Brown <lenb@kernel.org>,
+        linux-acpi@vger.kernel.org, Tsuchiya Yuto <kitakar@gmail.com>,
         platform-driver-x86@vger.kernel.org, linux-i2c@vger.kernel.org,
         linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-efi@vger.kernel.org
-Subject: [PATCH v2 20/20] extcon: intel-cht-wc: Report RID_A for ACA adapters
-Date:   Sun, 14 Nov 2021 18:03:35 +0100
-Message-Id: <20211114170335.66994-21-hdegoede@redhat.com>
-In-Reply-To: <20211114170335.66994-1-hdegoede@redhat.com>
+Subject: Re: [PATCH v2 10/20] power: supply: bq25890: Add
+ bq25890_set_otg_cfg() helper
+Message-ID: <YZIyQ1BdJ0v8QTtj@jeknote.loshitsa1.net>
 References: <20211114170335.66994-1-hdegoede@redhat.com>
+ <20211114170335.66994-11-hdegoede@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20211114170335.66994-11-hdegoede@redhat.com>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Make cht_wc_extcon_get_id() report RID_A for ACA adapters, instead of
-reporting ID_FLOAT.
+On Sun, Nov 14, 2021 at 06:03:25PM +0100, Hans de Goede wrote:
+> Add a bq25890_set_otg_cfg() helper function, this is a preparation
+> patch for adding regulator support.
+> 
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+> ---
+>  drivers/power/supply/bq25890_charger.c | 28 ++++++++++++++------------
+>  1 file changed, 15 insertions(+), 13 deletions(-)
+> 
+> diff --git a/drivers/power/supply/bq25890_charger.c b/drivers/power/supply/bq25890_charger.c
+> index 2bdfb58cda75..3c41fe86b3d3 100644
+> --- a/drivers/power/supply/bq25890_charger.c
+> +++ b/drivers/power/supply/bq25890_charger.c
+> @@ -801,6 +801,17 @@ static int bq25890_power_supply_init(struct bq25890_device *bq)
+>  	return PTR_ERR_OR_ZERO(bq->charger);
+>  }
+>  
+> +static int bq25890_set_otg_cfg(struct bq25890_device *bq, u8 val)
+> +{
+> +	int ret;
+> +
+> +	ret = bq25890_field_write(bq, F_OTG_CFG, val);
+> +	if (ret < 0)
+> +		dev_err(bq->dev, "Error switching to boost/charger mode: %d\n", ret);
 
-According to the spec. we should read the USB-ID pin ADC value
-to determine the resistance of the used pull-down resister and
-then return RID_A / RID_B / RID_C based on this. But all "Accessory
-Charger Adapter"s (ACAs) which users can actually buy always use
-a combination of a charging port with one or more USB-A ports, so
-they should always use a resistor indicating RID_A. But the spec
-is hard to read / badly-worded so some of them actually indicate
-they are a RID_B ACA evnen though they clearly are a RID_A ACA.
+Just a note: if a connected USB device has relative big capacitor
+at power wires inside, then a starting current pulse may be enough to
+overload the boost reguator and VBUS will not be powered. I met this
+at Yoga Book: the firmware set boost current limit to 1.4 A (default
+value for bq25892) but when USB hub connected, the BOOST_FAULT event
+appeared.
 
-To workaround this simply always return INTEL_USB_RID_A, which
-matches all the ACAs which users can actually buy.
+To avoid this, Lenovo uses following trick in its kernel: set a boost
+current limit to big value (2.1 A), wait some time (500 ms) and set
+the current limit to right value (1.4A). This provides enough current to
+charge capacitors in the connected device but saves desired long-time limit
+to prevent overloading if the device consumes too much power itself.
 
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
----
- drivers/extcon/extcon-intel-cht-wc.c | 18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/extcon/extcon-intel-cht-wc.c b/drivers/extcon/extcon-intel-cht-wc.c
-index 1030610a3494..c92bc98cb428 100644
---- a/drivers/extcon/extcon-intel-cht-wc.c
-+++ b/drivers/extcon/extcon-intel-cht-wc.c
-@@ -121,13 +121,21 @@ static int cht_wc_extcon_get_id(struct cht_wc_extcon_data *ext, int pwrsrc_sts)
- 		return INTEL_USB_ID_GND;
- 	case CHT_WC_PWRSRC_RID_FLOAT:
- 		return INTEL_USB_ID_FLOAT;
-+	/*
-+	 * According to the spec. we should read the USB-ID pin ADC value here
-+	 * to determine the resistance of the used pull-down resister and then
-+	 * return RID_A / RID_B / RID_C based on this. But all "Accessory
-+	 * Charger Adapter"s (ACAs) which users can actually buy always use
-+	 * a combination of a charging port with one or more USB-A ports, so
-+	 * they should always use a resistor indicating RID_A. But the spec
-+	 * is hard to read / badly-worded so some of them actually indicate
-+	 * they are a RID_B ACA evnen though they clearly are a RID_A ACA.
-+	 * To workaround this simply always return INTEL_USB_RID_A, which
-+	 * matches all the ACAs which users can actually buy.
-+	 */
- 	case CHT_WC_PWRSRC_RID_ACA:
-+		return INTEL_USB_RID_A;
- 	default:
--		/*
--		 * Once we have IIO support for the GPADC we should read
--		 * the USBID GPADC channel here and determine ACA role
--		 * based on that.
--		 */
- 		return INTEL_USB_ID_FLOAT;
- 	}
- }
+
 -- 
-2.31.1
-
+Yauhen Kharuzhy
